@@ -16,3 +16,76 @@ dialog{width:min(620px,calc(100vw - 32px));max-height:90dvh;overflow-y:auto;back
 .world-labels{position:absolute;inset:0;overflow:hidden;pointer-events:none;z-index:1}.world-label{position:absolute;left:0;top:0;white-space:nowrap;text-align:center;color:#f4edd5;text-shadow:0 1px 3px #132314,0 0 7px #142918;font-size:11px;letter-spacing:.5px;will-change:transform}.world-label strong{font-weight:500}.world-label small{display:block;font-size:8px;color:#ddd0a5;margin-top:4px}.world-label.resource{font-size:9px;background:#1b302d80;border:1px solid #dbc89530;padding:4px 9px;border-radius:4px}.world-label.npc strong{color:#f1da9b}.world-label.player strong{color:#bee6cf}.world-label.camp{font-size:10px;color:#dbc89c;letter-spacing:1px}.world-label.camp.complete:before{content:'✦ ';color:#ebc36b}.world-label[hidden]{display:none}.tps-reticle{position:absolute;left:50%;top:50%;width:15px;height:15px;border:1px solid #fff8;border-radius:50%;transform:translate(-50%,-50%);pointer-events:none;opacity:.42;box-shadow:0 1px 3px #0004}.tps-reticle i{position:absolute;left:6px;top:6px;width:1px;height:1px;background:#fff}.camera-badge{position:absolute;left:32px;top:176px;display:flex;align-items:center;gap:7px;font-size:8px;letter-spacing:1.5px;background:#1f302c80;border:1px solid #d3ddbd26;border-radius:4px;padding:6px 9px;color:#e9e9cd;pointer-events:none}.camera-badge>span:last-child{font-size:8px;letter-spacing:.5px;color:#c3ceb5}.render-error{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);background:#23372cf5;border:1px solid #c8c59460;padding:30px;border-radius:9px;z-index:10;width:min(380px,80%);text-align:center}.render-error strong{font-size:17px}.render-error p{font-size:11px;line-height:1.9;color:#aaba9e;margin:18px 0}.tps-mode .scene-shade{background:linear-gradient(180deg,#13212738,transparent 29%,transparent 68%,#14221da6);box-shadow:none}.tps-mode .location-title{top:26px}.tps-mode .location-title h1{font-size:27px;margin:10px 0 7px;letter-spacing:2px}.tps-mode .location-title p{font-size:9px}.tps-mode .location-meta{margin-top:16px}.tps-mode .discovery-card{top:215px;background:#22382ccc}.tps-mode .hotbar-wrap,.tps-mode .chat-panel,.tps-mode .location-title,.tps-mode .map-hud,.tps-mode .scene-tools,.tps-mode .discovery-card{z-index:2}.tps-mode .hotbar-wrap{bottom:22px}.tps-mode .chat-panel{background:#1e3329ba}.tps-mode .controls-caption{color:#b6c1a3;text-shadow:0 1px 3px #132318}.tps-mode .camera-badge{top:176px}.tps-mode .game-viewport{background:#becbb2}.tps-mode .scene-tools{bottom:160px}
 @media(max-width:760px){.tps-mode .location-title h1{font-size:22px}.tps-mode .location-title p{display:none}.tps-mode .camera-badge{top:140px;left:20px;font-size:6px}.tps-mode .location-meta{margin-top:13px}.tps-mode .discovery-card{top:180px}.tps-mode .hotbar-wrap{bottom:17px}.tps-mode .controls-caption>span:last-child{max-width:140px;white-space:normal;line-height:1.7}.world-label{font-size:9px}}
 .world-loading{position:absolute;inset:0;z-index:3;display:grid;place-items:center;background:#283c34b8;color:#efe9ce;font-size:14px;letter-spacing:.08em;pointer-events:none}
+/* Run control shares the action bar so it cannot cover the NPC navigation card. */
+#run-button[aria-pressed="true"] { background: #8b805333; border-color: #c5b77b; color: #f3e8b8; }
+.gender-options { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.gender-options .species-option { margin: 0; }
+/* Hunting actions stay beside inventory; progress uses the same compact row. */
+.hunting-card { width: 236px; }
+.hunting-card>div { flex: 1; min-width: 0; }
+.hunting-card p { white-space: normal; line-height: 1.6; }
+.hunting-card progress,.world-label.animal progress { display:block; appearance:none; width:100%; height:5px; border:0; border-radius:4px; overflow:hidden; margin-top:8px; background:#182a23; }
+progress::-webkit-progress-bar { background:#14251fcc; border-radius:4px; }
+progress::-webkit-progress-value { background:#d3ab79; border-radius:4px; }
+progress::-moz-progress-bar { background:#d3ab79; border-radius:4px; }
+.hunting-card progress[hidden],.world-label.animal progress[hidden],.cooking-status[hidden] { display:none; }
+.world-label.animal { min-width:115px; padding:6px 9px; border-radius:5px; background:#1c2f26a8; }
+.hunt-controls { display:flex; gap:5px; margin-bottom:7px; justify-content:center; }
+.hunt-button { display:flex; align-items:center; justify-content:center; gap:5px; min-height:36px; padding:7px 10px; color:#e9e6cf; background:#24392fec; border:1px solid #a7bc8838; border-radius:5px; font-size:10px; white-space:nowrap; }
+.hunt-button .icon { width:16px; height:16px; }
+.hunt-button kbd { color:#dac295; font-size:9px; }
+.hunt-button:disabled { opacity:.45; cursor:default; }
+.attack-button { border-color:#cda9796b; }
+.attack-button.in-range { background:#6a5433ed; border-color:#e2bd85; }
+.meat-counts { font-size:9px; color:#c7cbb4; }
+.meat-counts b { color:#f0dab9; }
+.cooking-status { display:flex; align-items:center; gap:8px; margin-bottom:7px; padding:8px 10px; border:1px solid #d4a86c45; border-radius:5px; background:#273a2fee; font-size:10px; color:#e3d9b9; }
+.cooking-status progress { flex:1; width:60px; height:5px; border:0; }
+.cooking-status button { color:#e4c5a3; background:none; padding:2px 6px; font-size:10px; }
+.inventory-grid { grid-template-columns:repeat(auto-fit,minmax(130px,1fr)); }
+.resource-icon.rawMeat { color:#ca927e; }.resource-icon.cookedMeat { color:#d1ac76; }
+.map-locations { flex-wrap:wrap; }
+@media(max-width:1000px){.tps-mode .chat-panel{bottom:197px}.tps-mode .scene-tools{bottom:200px}}
+@media(max-width:760px){.tps-mode .hunting-card{top:169px;width:190px}.hunt-button{font-size:9px;padding:6px 8px;min-height:34px}.hunt-button .icon{width:14px;height:14px}.hunting-card small{display:none}}
+@media(max-width:520px){.tps-mode .hunting-card{top:135px;right:12px;width:145px;padding:10px}.hunting-card p{max-width:none;font-size:8px}.hunting-card strong{font-size:10px}.tps-mode .hotbar-wrap{max-width:calc(100% - 18px)}.hunt-controls{gap:4px}.hunt-button{padding:6px;gap:3px;font-size:8px}.hunt-button .icon{width:13px;height:13px}.meat-counts{font-size:8px}.cooking-status{font-size:9px}.tps-mode .chat-panel{bottom:212px}.inventory-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.world-label.animal{min-width:100px;font-size:9px}}
+@media(max-width:1000px){.tps-mode .game-viewport:has(#cooking-status:not([hidden])) .chat-panel{bottom:249px}}
+@media(max-width:520px){.tps-mode .game-viewport:has(#cooking-status:not([hidden])) .chat-panel{bottom:264px}}
+.hunting-card { flex-wrap:wrap; }
+.hunting-card.hostile { border-color:#cc8d785e; background:#382c29db; }
+.hunting-card .enemy-link { flex-basis:100%; width:auto; height:auto; padding:7px 0 0; margin-top:3px; border-top:1px solid #c59b7933; border-radius:0; color:#f1baaa; background:none; font-size:9px; display:flex; justify-content:space-between; align-items:center; }
+.hunting-card .enemy-link .icon { width:13px; height:13px; }
+.hunting-card .enemy-link[hidden] { display:none; }
+.enemy-map-button { border-color:#b477665e; color:#f0b7aa; }
+.world-label.enemy { min-width:110px; padding:6px 9px; border:1px solid #c7826966; border-radius:5px; background:#352622bd; color:#ffe0cc; }
+.world-label.enemy progress { display:block; appearance:none; width:100%; height:5px; border:0; border-radius:4px; overflow:hidden; margin-top:7px; background:#231d1b; }
+.world-label.enemy progress::-webkit-progress-value,.hunting-card.hostile progress::-webkit-progress-value { background:#dd8a76; }
+.world-label.enemy progress::-moz-progress-bar,.hunting-card.hostile progress::-moz-progress-bar { background:#dd8a76; }
+.damage-flash { position:absolute; inset:0; z-index:3; pointer-events:none; box-shadow:inset 0 0 100px #b629297a; background:#ba222215; }
+.combat-status { position:absolute; left:50%; top:38%; transform:translate(-50%,-50%); z-index:4; pointer-events:none; width:max-content; max-width:calc(100% - 28px); padding:12px 16px; border:1px solid #d8a09077; border-radius:7px; background:#382826e8; color:#fff0dd; text-align:center; font-size:12px; line-height:1.8; white-space:pre-line; }
+.combat-status.downed { border-color:#e1b49d; }
+.damage-flash[hidden],.combat-status[hidden] { display:none; }
+@media(max-width:520px){.hunting-card .enemy-link{font-size:8px;line-height:1.7}.combat-status{top:43%;font-size:10px;padding:9px 12px}}
+.character-choice-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.character-options .character-choice{margin:0;min-height:100px;padding:12px;align-items:center;gap:9px}
+.character-choice>span:last-child{min-width:0}
+.character-choice strong{font-size:12px;line-height:1.5}
+.character-choice small{display:block;font-size:10px;line-height:1.6;margin-top:4px;color:#aab4a7}
+.character-choice .portrait{flex:0 0 46px;width:46px;height:56px}
+.character-choice:has(input:checked){border-color:#e0b978;background:#49452e}
+.character-choice:focus-within{outline:2px solid #e0b978;outline-offset:2px}
+.gender-options[hidden]{display:none!important}
+.portrait.cat{background:#515850 url('/models/cat-kunoichi/portrait.png') 50% 7%/420% auto no-repeat}
+.portrait.bear{background:#615942 url('/models/bear-mage/portrait.png') 50% 10%/220% auto no-repeat}
+.portrait.cat:before,.portrait.cat:after,.portrait.cat i,.portrait.bear:before,.portrait.bear:after,.portrait.bear i{display:none}
+.attack-button[data-style=magic]{border-color:#a7d9d8;color:#d5f7ec}
+.attack-button[data-style=katana]{border-color:#bdb6d9;color:#e5ddf1}
+.biome-destinations{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:7px;margin:12px 0 18px}
+.biome-destination{text-align:left;padding:10px 8px;border:1px solid #ffffff20;border-top:3px solid var(--biome-color);border-radius:5px;background:#344038;color:#eee8d9;line-height:1.6}
+.biome-destination span{display:block;font-size:11px}.biome-destination small{display:block;font-size:9px;opacity:.7}
+.biome-destination:hover,.biome-destination:focus-visible{background:#4b574a;outline:1px solid var(--biome-color)}
+.big-map{cursor:crosshair;display:block;width:min(100%,430px,54dvh);height:auto;margin-inline:auto}
+.map-locations{flex-wrap:wrap;gap:8px;margin-top:14px}
+.location-title h1{font-size:clamp(22px,3.2vw,42px);letter-spacing:.06em}
+@media(max-width:520px){.biome-destinations{grid-template-columns:repeat(3,minmax(0,1fr))}.biome-destination{padding:7px}.biome-destination span{font-size:10px}.location-title h1{font-size:22px}}
+@media(max-width:430px){.character-options .character-choice{min-height:116px;padding:10px 8px;gap:6px;flex-wrap:wrap}.character-choice .portrait{width:34px;height:40px;flex-basis:34px}.character-choice>span:last-child{flex-basis:100%}.character-choice strong{font-size:11px}.character-choice small{font-size:9px}}
+

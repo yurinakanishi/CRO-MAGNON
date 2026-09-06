@@ -1,0 +1,14 @@
+{
+  "schemaVersion": 1,
+  "modelKey": "bear-mage",
+  "status": "copied-and-all-source-and-destination-hashes-verified",
+  "verifiedAt": "2026-09-06T19:12:12.993Z",
+  "planSha256": "df70b6a94afff099b96cbf9d567533fe5b5dceee61d97c14cb04aa9ba4f77a74",
+  "sourceRoot": "C:\\Users\\yurin\\Desktop\\projects\\CRO-MAGNON\\output\\model-generation\\models\\bear-mage",
+  "destinationRoot": "C:\\Users\\yurin\\Desktop\\projects\\threed-model-creation\\models\\bear-mage",
+  "files": 799,
+  "bytes": 581714840,
+  "copied": 799,
+  "skippedEqual": 0,
+  "preflightExistingEqual": 0
+}

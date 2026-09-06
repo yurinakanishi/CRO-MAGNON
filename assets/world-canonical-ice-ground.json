@@ -1,0 +1,14 @@
+{
+  "schemaVersion": 1,
+  "modelKey": "ice-ground",
+  "status": "copied-and-all-source-and-destination-hashes-verified",
+  "verifiedAt": "2026-09-06T21:38:38.005Z",
+  "planSha256": "b722962633358849217d93bd2320042a830529dd8c4acf07d1ff7586e2342c65",
+  "sourceRoot": "C:\\Users\\yurin\\Desktop\\projects\\CRO-MAGNON\\output\\model-generation\\models\\ice-ground",
+  "destinationRoot": "C:\\Users\\yurin\\Desktop\\projects\\threed-model-creation\\models\\ice-ground",
+  "files": 84,
+  "bytes": 233192122,
+  "copied": 84,
+  "skippedEqual": 0,
+  "preflightExistingEqual": 0
+}

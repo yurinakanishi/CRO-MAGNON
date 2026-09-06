@@ -1,0 +1,52 @@
+{
+  "status": "all-source-and-destination-hashes-verified",
+  "files": 550,
+  "bytes": 1115669069,
+  "reports": [
+    "assets/world-canonical-snow-ground.json",
+    "assets/world-canonical-ice-ground.json",
+    "assets/world-canonical-desert-ground.json",
+    "assets/world-canonical-volcanic-ground.json",
+    "assets/world-canonical-glacier-spires.json",
+    "assets/world-canonical-volcanic-cone.json"
+  ],
+  "verifiedAt": "2026-09-06T21:41:29.579Z",
+  "models": [
+    {
+      "key": "snow-ground",
+      "files": 111,
+      "bytes": 150889972,
+      "destination": "C:\\Users\\yurin\\Desktop\\projects\\threed-model-creation\\models\\snow-ground"
+    },
+    {
+      "key": "ice-ground",
+      "files": 84,
+      "bytes": 233192122,
+      "destination": "C:\\Users\\yurin\\Desktop\\projects\\threed-model-creation\\models\\ice-ground"
+    },
+    {
+      "key": "desert-ground",
+      "files": 109,
+      "bytes": 189464480,
+      "destination": "C:\\Users\\yurin\\Desktop\\projects\\threed-model-creation\\models\\desert-ground"
+    },
+    {
+      "key": "volcanic-ground",
+      "files": 84,
+      "bytes": 148827618,
+      "destination": "C:\\Users\\yurin\\Desktop\\projects\\threed-model-creation\\models\\volcanic-ground"
+    },
+    {
+      "key": "glacier-spires",
+      "files": 81,
+      "bytes": 225668744,
+      "destination": "C:\\Users\\yurin\\Desktop\\projects\\threed-model-creation\\models\\glacier-spires"
+    },
+    {
+      "key": "volcanic-cone",
+      "files": 81,
+      "bytes": 167626133,
+      "destination": "C:\\Users\\yurin\\Desktop\\projects\\threed-model-creation\\models\\volcanic-cone"
+    }
+  ]
+}

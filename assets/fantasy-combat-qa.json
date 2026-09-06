@@ -1,0 +1,39 @@
+{
+  "startedAt": "2026-09-06T19:02:53.680Z",
+  "mode": "real-clock public WebSocket; normal terrain and NPCs; no internal state mutation",
+  "status": "passed",
+  "maxPlayers": 5,
+  "snapshots": 796,
+  "staticPenetrations": 0,
+  "dynamicPenetrations": 0,
+  "projectiles": [
+    "2a46e697-3a2a-4e93-96cb-ec7effa553cf:1",
+    "2a46e697-3a2a-4e93-96cb-ec7effa553cf:2",
+    "2a46e697-3a2a-4e93-96cb-ec7effa553cf:3",
+    "2a46e697-3a2a-4e93-96cb-ec7effa553cf:4"
+  ],
+  "fights": [
+    {
+      "weapon": "katana",
+      "health": [
+        50,
+        25,
+        0
+      ],
+      "attacks": 3,
+      "replicatedTo": 5
+    },
+    {
+      "weapon": "magic",
+      "health": [
+        50,
+        25,
+        0
+      ],
+      "attacks": 3,
+      "replicatedTo": 5
+    }
+  ],
+  "errors": [],
+  "finishedAt": "2026-09-06T19:04:20.796Z"
+}

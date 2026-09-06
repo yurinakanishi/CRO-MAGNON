@@ -1,0 +1,14 @@
+{
+  "schemaVersion": 1,
+  "modelKey": "glacier-spires",
+  "status": "copied-and-all-source-and-destination-hashes-verified",
+  "verifiedAt": "2026-09-06T21:38:43.885Z",
+  "planSha256": "e5beec58f63e3cfdba330982f76f873911cebda8cd2b753f920d622b7a24fe15",
+  "sourceRoot": "C:\\Users\\yurin\\Desktop\\projects\\CRO-MAGNON\\output\\model-generation\\models\\glacier-spires",
+  "destinationRoot": "C:\\Users\\yurin\\Desktop\\projects\\threed-model-creation\\models\\glacier-spires",
+  "files": 81,
+  "bytes": 225668744,
+  "copied": 81,
+  "skippedEqual": 0,
+  "preflightExistingEqual": 0
+}

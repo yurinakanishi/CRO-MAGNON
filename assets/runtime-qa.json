@@ -1,0 +1,121 @@
+{
+  "schemaVersion": 1,
+  "recordedOn": "2026-09-06",
+  "reviewer": "Codex",
+  "status": "passed",
+  "scope": "Walking, running, facing, removal of legacy models, runtime optimization and server-authoritative collision",
+  "validation": {
+    "npmTest": { "passed": 26, "failed": 0 },
+    "npmRunCheck": "passed",
+    "npmRunVerifyAssets": "passed: all 16 assets; existing Cro-Magnon GLB preserved",
+    "glbGeometryChanged": false,
+    "assetHashBaseline": "assets/world-game-qa.json#/assetHashes"
+  },
+  "browser": {
+    "url": "http://127.0.0.1:3001/?room=MOTION-QA",
+    "surface": "Codex in-app browser",
+    "observedErrorsAndWarnings": [],
+    "finalPositionXZ": [49, 54],
+    "screenshots": "Actual screenshots inspected in this conversation; no local screenshot files are claimed.",
+    "serverIsolation": "Updated server is running on 3001. Existing user server and room on 3000 were not restarted."
+  },
+  "locomotion": {
+    "walkMetersPerSecond": 1.25,
+    "runMetersPerSecond": 3.5,
+    "runControls": "Hold Shift or toggle the run button",
+    "walkObservation": {
+      "clip": "Walk_Loop",
+      "displayedSpeed": 1.2499999999999865,
+      "visualHeadingRadians": 2.1913,
+      "serverHeadingRadians": 2.1913091,
+      "positionXZ": [54.76, 48.46]
+    },
+    "runObservation": {
+      "clip": "Run_Loop",
+      "displayedSpeed": 3.499999999999887,
+      "visualHeadingRadians": 2.3562,
+      "serverHeadingRadians": 2.35619449,
+      "positionXZ": [50.70, 52.30]
+    },
+    "finalVersionRunObservation": {
+      "clip": "Run_Loop",
+      "displayedSpeed": 3.4999999999996922,
+      "visualHeadingRadians": 4.8542,
+      "serverHeadingRadians": -1.42889927219,
+      "headingComparison": "Equal within rounded display precision modulo 2 pi"
+    },
+    "stop": "Observed Idle_Loop and retained final movement direction",
+    "implementation": "Unanimated world-heading parent contains the animated GLB child. Clip playback is retimed to actual visual movement and asset stride speed."
+  },
+  "collision": {
+    "authority": "Server",
+    "boundsSource": "shared/model-bounds.mjs, measured from actual GLBs by scripts/measure-collision-bounds.mjs with source SHA-256",
+    "staticShapes": "Oriented rectangles and circles for huts, rocks including ridge rocks, trunks, wood, rack, firepit and bridge rails",
+    "dynamicShapes": "Player, NPC and mammoth horizontal circles; mammoth radius conservatively encloses the whole model",
+    "movement": "Spatial hash, maximum 0.1 m substeps, sliding and A* click routes",
+    "observedRoutes": ["NPC route avoided scenery and entered the bridge", "Camp route returned to [49,54]"],
+    "resourceRegeneration": "Solid resources defer regeneration while an actor occupies their footprint",
+    "multiplayerAudit": {
+      "record": "assets/motion-network-qa.json",
+      "method": "Four actual WebSocket clients plus one browser player; checks use the same measured collision proxy shapes, not mesh-triangle intersections",
+      "maximumPlayers": 5,
+      "stateObservations": 4000,
+      "staticPenetrations": 0,
+      "dynamicPenetrations": 0,
+      "species": ["cro", "nea"],
+      "sixthClient": "ROOM_FULL",
+      "mammothClips": ["Walk_Loop", "Idle_Loop", "Graze_Loop"]
+    },
+    "camera": "Analytic obstacle intersections replace invisible box meshes. Shoulder offset reduces near obstacles; character remained visible in inspected close-hut view at camera distance 3.68 m."
+  },
+  "noFallback": {
+    "deleted": [
+      "src/models.js",
+      "src/world.js",
+      "output/world3d-before-all-assets.js",
+      "output/world3d-complete.js",
+      "output/stage-world-renderer.py",
+      "tests/temporary-geometry.test.mjs"
+    ],
+    "failureTest": {
+      "method": "Isolated temporary proxy returned HTTP 503 for the world asset catalog; real assets were untouched",
+      "worldAssetState": "error",
+      "canvasVisibility": "hidden",
+      "registeredGlbActors": 0,
+      "visibleResult": "3D loading error overlay; no primitive replacement",
+      "cleanup": "Temporary proxy exited and failure-test browser tab closed"
+    },
+    "modelReview": "Failed model load clears the previous model and disables playback"
+  },
+  "optimization": {
+    "changes": {
+      "groundTiles": { "before": 225, "after": 81 },
+      "waterSections": { "before": 25, "after": 15 },
+      "shadowMapSidePixels": { "before": 2048, "after": 1024 },
+      "shadowUpdatesPerSecond": 15,
+      "pixelRatioCap": 1.25,
+      "other": ["Shared terrain material", "Distance-based vegetation LOD and near-tree shadows", "Frozen static transforms", "Removed duplicate grass LOD and invisible camera geometry", "Room snapshot encoded once", "Unchanged resource/camp/NPC data omitted from movement snapshots", "ETag and HTTP 304 for unchanged files"]
+    },
+    "comparison": {
+      "kind": "Spot observations, not a controlled FPS benchmark; actor poses and other browser load may differ",
+      "players": 5,
+      "playerXYZ": [52.4, 0.002, 57],
+      "canvasCssPixels": [1035, 618],
+      "drawingBufferPixels": [1293, 772],
+      "previousRecord": "assets/world-game-qa.json",
+      "previous": { "fps": 60, "drawCalls": 276, "renderTriangles": 2956184, "geometries": 323, "textures": 38, "jsHeapMiB": 225.6 },
+      "updated": { "fps": 48, "drawCalls": 169, "renderTriangles": 2061936, "geometries": 64, "textures": 38, "jsHeapMiB": 208.5 },
+      "conclusion": "Observed rendering workload decreased; FPS improvement is not demonstrated. Heap values exclude GPU memory."
+    },
+    "fivePlayerLoadTimesMs": { "worldGlbs": 537, "sceneReady": 2298, "croMagnonGlb": 303 },
+    "networkSnapshotBytes": { "fullSampleRange": [3304, 4111], "movementSampleRange": [1814, 1999] }
+  },
+  "limitations": [
+    "Huts have solid exterior footprints; interiors are not accessible.",
+    "Mammoth circles are conservative and prevent entry into narrow gaps.",
+    "Collision is kinematic horizontal movement plus terrain height, not ragdolls, jumping or full rigid-body dynamics.",
+    "Asset files and image-to-3D provenance are unchanged; optimization reduces runtime workload rather than further simplifying exported meshes.",
+    "Existing close-view image-to-3D art imperfections remain.",
+    "Five local connections were tested; this is not an internet or multiple-device load test."
+  ]
+}

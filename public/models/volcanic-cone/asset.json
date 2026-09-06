@@ -1,0 +1,43 @@
+{
+  "modelKey": "volcanic-cone",
+  "name": "火口の山",
+  "kind": "static",
+  "candidate": 1,
+  "status": "reviewed-prototype",
+  "environment": true,
+  "onDemand": true,
+  "url": "/models/volcanic-cone/model.glb",
+  "sha256": "868c062028af62fedf491ed7391602991dbc76b1ddbbd09494ee958a7898cd5b",
+  "bytes": 2081908,
+  "triangles": 13382,
+  "upAxis": "Y",
+  "forwardAxis": "+Z",
+  "heightMetres": 24.034038949757814,
+  "widthMetres": 111.15295028686523,
+  "placement": {
+    "pivot": "ground-centred",
+    "min": [
+      -55.65746307373047,
+      -0.04521792009472847,
+      -53.36841583251953
+    ],
+    "max": [
+      55.495487213134766,
+      23.988821029663086,
+      53.58268737792969
+    ]
+  },
+  "clips": [],
+  "lods": [],
+  "notes": "Broad charcoal volcanic mountain with an open summit crater and source orange lava. The 13,382-triangle main mesh retains silhouette, opening and radial channels. Further QEM LODs show folded slopes and black facet patches and are REJECTED for delivery; source files and browser failures remain archived. The two placed mountains share the accepted main geometry at every visible distance. This still removes over 95% of dense triangles, without substituting a broken model. Matte dielectric rock with local lava glow. Source internal/seam topology warnings remain recorded; no watertight claim.",
+  "provenance": {
+    "provider": "Codex",
+    "claudeUsed": false,
+    "referenceGenerator": "Built-in imagegen",
+    "referenceImage": "output/model-generation/models/volcanic-cone/source/original/reference-v1.png",
+    "referenceSha256": "f6d4b8c6a48ef90c380d34e2115c06aec02e5c675d4eab7258f0180cf9ca0770",
+    "reconstruction": "Local TRELLIS-2; preserved dense reconstruction, source-derived reduction and separate revisions.",
+    "candidateFile": "output/model-generation/models/volcanic-cone/work/low-poly/candidate-01/candidate.glb",
+    "visualReview": "output/model-generation/models/volcanic-cone/qa/adoption-review.json"
+  }
+}

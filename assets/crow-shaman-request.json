@@ -1,0 +1,43 @@
+{
+  "date": "2026-09-07",
+  "modelKey": "crow-shaman",
+  "name": "白羽の呪術師",
+  "candidate": 1,
+  "userRequest": "敵のカラス人間つくって。とりあえず候補画像５個下さい.",
+  "userSelection": "白羽の呪術師：白い冠羽と杖",
+  "selectedImage": "output/imagegen/crow-enemy-candidates-20260907/03-crow-shaman.png",
+  "selectedImageSha256": "9db04a0e910a84014c95477b9055fababb4378be7226160bb8c82bcb0c5b6d72",
+  "conceptPromptSet": "output/imagegen/crow-enemy-candidates-20260907/prompts.json",
+  "workspace": "output/model-generation/models/crow-shaman",
+  "provider": "Codex with built-in imagegen and local TRELLIS-2; no Claude",
+  "appearance": [
+    "Actual crow head and black beak with silver-white crown and cheek feathers",
+    "Black feathered humanoid body with clawed hands and taloned feet",
+    "Primitive hide clothing with small bone ornaments",
+    "Weathered wooden staff topped with a tied stone"
+  ],
+  "requiredClips": [
+    "Idle_Loop",
+    "Walk_Loop",
+    "Run_Loop",
+    "Attack",
+    "Hit",
+    "Death"
+  ],
+  "status": {
+    "concept": "selected-by-user",
+    "generation": "completed",
+    "adoption": "exact-glb-reviewed-and-adopted",
+    "gameIntegration": "completed",
+    "gameQA": "passed",
+    "canonicalSync": "completed-all-hashes-verified"
+  },
+  "delivery": {
+    "url": "/models/crow-shaman/model.glb",
+    "sha256": "b0937988961c537fa4edb457c16baaa057d40b59e1393e4b493ec434684499a3",
+    "triangles": 65750,
+    "bytes": 8194344
+  },
+  "gameQA": "assets/crow-game-qa.json",
+  "canonicalSync": "assets/crow-canonical-sync.json"
+}

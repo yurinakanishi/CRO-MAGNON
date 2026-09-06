@@ -9,22 +9,24 @@
       "name": "ネアンデルタール人とオル",
       "kind": "humanoid",
       "height": 1.72,
-      "status": "integrated-reviewed-prototype",
+      "status": "integrated-and-game-qa-passed",
       "subject": "One original fully clothed adult Neanderthal hunter, natural stocky powerful human anatomy, broad chest, short robust lower limbs, subtle broad nose and brow, upright dignified posture, short dark beard, brown hair tied compactly. Fitted grey-brown hide tunic ending above the knees, compact fur shoulders, belt, ankle boots, small cream shoulder cloth accent. Empty hands. Symmetrical relaxed A-pose with both arms separated 35 degrees from torso, fingers readable, knees and elbows visible, legs apart. Full body, near-frontal view with at most 10 degrees three-quarter turn, both feet visible.",
       "geometryResolution": 1024,
-      "sha256": "55232891640fed7e15bb75f3ad985ae53b5a8b19b31013e85d8c5d5f70619c65",
-      "delivery": "/models/neanderthal-hunter/model.glb"
+      "sha256": "7ce4ff20eb1e2ca64df6b51d1c2060311e630394afdb38996eb7e34bbe5ca1e0",
+      "delivery": "/models/neanderthal-hunter/model.glb",
+      "gameQA": "assets/hunting-game-qa.json"
     },
     {
       "key": "woolly-mammoth",
       "name": "マンモス",
       "kind": "quadruped",
       "height": 3.6,
-      "status": "integrated-reviewed-prototype",
+      "status": "integrated-and-game-qa-passed",
       "subject": "One anatomically believable woolly mammoth, warm dark brown thick fur in compact clean masses, high shoulder hump, domed head, small ears, two complete ivory tusks curving forward and upward with clear space between tusks and trunk. Trunk hangs almost straight with a gentle tip curl, visibly separated from chest and tusks. All four sturdy legs and complete flat feet visible and separated in a neutral standing pose. Small tail visible. Full animal, moderate three-quarter side view facing left, no overlapping legs, no vegetation, no rock or base.",
       "geometryResolution": 1024,
-      "sha256": "6d675f895bb26cad7f62b5a7161b442e04a07f1582562498d6033a85cf977abf",
-      "delivery": "/models/woolly-mammoth/model.glb"
+      "sha256": "f3ebbe7d55268affc715052dbd3c98e68577cd34298aeeb74f0ade94004c2f2d",
+      "delivery": "/models/woolly-mammoth/model.glb",
+      "gameQA": "assets/hunting-game-qa.json"
     },
     {
       "key": "valley-pine",
@@ -176,6 +178,173 @@
       "geometryResolution": 1024,
       "sha256": "629a8ec5db3dd16b7a126b1c8ea4877a5ec0bc4037017e0a2a53ec2f63e3a369",
       "delivery": "/models/wood-footbridge/model.glb"
+    },
+    {
+      "key": "cro-magnon-woman",
+      "name": "クロマニョン人 女性",
+      "kind": "humanoid",
+      "height": 1.67,
+      "gender": "female",
+      "species": "cro",
+      "status": "integrated-and-game-qa-passed",
+      "geometryResolution": 1024,
+      "subject": "Edit this image for a prehistoric MMORPG image-to-3D character reference. Preserve this exact ADULT 24-year-old woman's beautiful idol-like face, hairstyle, skin, feminine hourglass body proportions, pose, camera, full-body framing and neutral background. Change ONLY her entire costume to unmistakably primitive prehistoric hunter-gatherer clothing. Replace the tailored shirt and trousers completely. She wears a naturally irregular tawny animal-hide wrap across the torso, fastened over one shoulder by a simple rawhide tie, with a modest fully covered chest; the edge of the other shoulder is visible. The hide conforms lightly to her slender waist and feminine shape without modern tailoring. A narrow simple twisted rawhide cord ties around the waist. A separate short layered animal-hide wrap skirt / fur waist wrap reaches mid-thigh, with rough naturally irregular edges and a little dark brown fur at its hem, overlapping panels closed securely across front and back, legs separate and visible below. Bare knees and calves. Feet have simple soft rawhide foot coverings folded around the feet and ankles, held by a few thin leather ties, no manufactured soles or boot shafts. Natural irregular hide, rough edges, subtle primitive hand-pierced lacing only where necessary; NO tailored shirt, NO trousers or leggings, NO modern leather jacket, NO fabric buttons, NO metal buckle or zipper, NO denim-like seams, NO modern stitching grids, NO corset, NO armor, NO jewelry, NO tools, NO weapons. It should read immediately as a beautiful adult prehistoric woman wearing a small number of raw animal hides, not modern leather fashion. Keep costume practical and securely covering her bust and pelvis; neither sexualized nor glamorous modern clothing. Maintain empty hands in the same relaxed A-pose, unobscured arms and hands, clear gaps between arms and waist and between both legs, flat feet, whole figure in frame. Premium realistic Japanese fantasy MMORPG character render with soft neutral light. No scenery or text.",
+      "referenceVersion": 3,
+      "sha256": "8690d5563233614397c7cfad6af0e0b3d89273a29fa59bf421372ec1168ef1b7",
+      "delivery": "/models/cro-magnon-woman/model.glb",
+      "gameQA": "assets/hunting-game-qa.json"
+    },
+    {
+      "key": "neanderthal-woman",
+      "name": "ネアンデルタール人 女性",
+      "kind": "humanoid",
+      "height": 1.6,
+      "gender": "female",
+      "species": "nea",
+      "status": "integrated-and-game-qa-passed",
+      "geometryResolution": 1024,
+      "subject": "Precise edit of the attached adult prehistoric woman character reference for image-to-3D reconstruction. Keep her exact beautiful ADULT 25-year-old idol-like facial identity, eyes, nose, lips, slight smile, face shape, feminine figure, skin, primitive one-shoulder grey-brown fur wrap, dark fur waist wrap, rawhide ties and foot wraps, pose, background, lighting and framing unchanged. Change ONLY the hairstyle near the forehead: sweep and tuck ALL front hair neatly back behind both ears into the existing compact low bun. Both eyebrows, BOTH complete eyes, forehead, cheeks and ears must be clearly visible with absolutely no hair overlapping the face or hanging beside the eyes. No bangs, no fringe and no long loose strands. A pretty neat swept-back idol hairstyle, naturally soft and elegant. Retain the same compact bun at the back. This small hairstyle clarification is necessary because image-to-3D mistakenly turned the original fringe into a thick flap covering an eye. Do not change the costume, body, face identity, expression, stance or camera. Single complete figure, full head and feet visible, neutral grey studio background, no text.",
+      "referenceVersion": 4,
+      "sha256": "63ab98a62b2706e76b4cc551d2a0c8bd23363072258598b606d5129ad32a9ff9",
+      "delivery": "/models/neanderthal-woman/model.glb",
+      "gameQA": "assets/hunting-game-qa.json"
+    },
+    {
+      "key": "mammoth-meat",
+      "name": "マンモスの生肉",
+      "kind": "static",
+      "width": 0.55,
+      "geometryResolution": 512,
+      "status": "integrated-and-game-qa-passed",
+      "subject": "A single isolated food resource asset reference for a realistic prehistoric fantasy MMORPG, intended for image-to-3D reconstruction. One compact thick boneless cut of raw mammoth meat, like a clean butcher's cut of red game meat, resting on its widest flat underside. Irregular rounded triangular chunky silhouette, around 50 cm wide and 20 cm tall, clearly three-dimensional, red-brown muscle with a few broad pale cream fat seams and a thin natural fat edge. Coarse but clean food texture, moist satin surface, matte fatty areas. No blood, no drips, no gore, no wound, no animal parts or carcass, no bones, no plate, no packaging, no leaves, no string, no tools, no person. One connected solid object, no separate pieces. High three-quarter view from slightly above, full object entirely in frame with a generous margin. Soft neutral studio lighting, nearly white neutral background, no cast shadows that obscure the base, no text, no scenery, no pedestal. Natural earthy color, clear silhouette and thickness for TRELLIS.\n",
+      "height": 0.12715373989156983,
+      "sha256": "50bf72d1dc5ff23b7eb206e7d0c6535d9a4ac1559190e6c4f5bbb94cd0ffaf2d",
+      "delivery": "/models/mammoth-meat/model.glb",
+      "gameQA": "assets/hunting-game-qa.json"
+    },
+    {
+      "key": "crow-shaman",
+      "name": "白羽の呪術師",
+      "kind": "enemy",
+      "height": 1.8500001471790228,
+      "geometryResolution": 1024,
+      "referenceVersion": 2,
+      "status": "integrated-and-game-qa-passed",
+      "sha256": "b0937988961c537fa4edb457c16baaa057d40b59e1393e4b493ec434684499a3",
+      "delivery": "/models/crow-shaman/model.glb",
+      "subject": "User-selected white-crested crow shaman with primitive hide clothing and a stone-topped wooden staff.",
+      "gameQA": "assets/crow-game-qa.json"
+    },
+    {
+      "key": "cat-kunoichi",
+      "name": "猫耳のクノイチ",
+      "kind": "humanoid",
+      "height": 1.679999839962781,
+      "geometryResolution": 1024,
+      "referenceVersion": 1,
+      "status": "integrated-and-game-qa-passed",
+      "sha256": "9ab72ce3d6e6a4a80b25bbb2de023c3a154b790cb1d1c5f1a4a7746d833f34aa",
+      "delivery": "/models/cat-kunoichi/model.glb",
+      "subject": "Adult female cat-eared kunoichi in a covered primitive dark outfit.",
+      "gameQA": "assets/fantasy-game-qa.json"
+    },
+    {
+      "key": "bear-mage",
+      "name": "こぐまの魔法使い",
+      "kind": "humanoid",
+      "height": 0.7799999798311026,
+      "geometryResolution": 1024,
+      "referenceVersion": 1,
+      "status": "integrated-and-game-qa-passed",
+      "sha256": "3b58124a53297cf5974b340c941fb22ac9e7be1ed9eae6d0cd1362943f70aadf",
+      "delivery": "/models/bear-mage/model.glb",
+      "subject": "Original tiny round bear mage in a moss-green woven capelet and waistwrap.",
+      "gameQA": "assets/fantasy-game-qa.json"
+    },
+    {
+      "key": "kunoichi-katana",
+      "name": "クノイチの刀",
+      "kind": "equipment",
+      "height": 1.050037994980812,
+      "geometryResolution": 1024,
+      "referenceVersion": 1,
+      "status": "integrated-and-game-qa-passed",
+      "sha256": "3e6e061fc02779d3516d114b53629fa0d5b585e815d4683ce74dd7d9c2822e0e",
+      "delivery": "/models/kunoichi-katana/model.glb",
+      "subject": "Single curved katana with wrapped indigo grip, dark guard and silver blade.",
+      "gameQA": "assets/fantasy-game-qa.json"
+    },
+    {
+      "key": "snow-ground",
+      "name": "雪原の地面",
+      "kind": "terrain",
+      "height": 0.4015480689704418,
+      "geometryResolution": 1024,
+      "referenceVersion": 1,
+      "status": "integrated-and-game-qa-passed",
+      "sha256": "ddf7037c1cd52801d7c5f1a71492c496d7885f407372edb275e445ce0e009f44",
+      "delivery": "/models/snow-ground/model.glb",
+      "gameQA": "assets/open-world-game-qa.json"
+    },
+    {
+      "key": "ice-ground",
+      "name": "氷原の地面",
+      "kind": "terrain",
+      "height": 0.3511239290237427,
+      "geometryResolution": 1024,
+      "referenceVersion": 1,
+      "status": "integrated-and-game-qa-passed",
+      "sha256": "30eeb7ceea111e33576b497e8341f9f01bf232fc598c6bbefa79a9867df51cce",
+      "delivery": "/models/ice-ground/model.glb",
+      "gameQA": "assets/open-world-game-qa.json"
+    },
+    {
+      "key": "desert-ground",
+      "name": "砂漠の砂地",
+      "kind": "terrain",
+      "height": 2.3142130374908447,
+      "geometryResolution": 1024,
+      "referenceVersion": 1,
+      "status": "integrated-and-game-qa-passed",
+      "sha256": "fcf25dfc8bed6ce7ecfbdf445674e3c092f36d353462685cb5730ba3ef00005e",
+      "delivery": "/models/desert-ground/model.glb",
+      "gameQA": "assets/open-world-game-qa.json"
+    },
+    {
+      "key": "volcanic-ground",
+      "name": "火山の玄武岩地面",
+      "kind": "terrain",
+      "height": 0.44992197304964066,
+      "geometryResolution": 1024,
+      "referenceVersion": 1,
+      "status": "integrated-and-game-qa-passed",
+      "sha256": "2bca15ffc01cce6148f8569a60b3fbecd16ac0c7946014f7b48f267b5eaffb88",
+      "delivery": "/models/volcanic-ground/model.glb",
+      "gameQA": "assets/open-world-game-qa.json"
+    },
+    {
+      "key": "glacier-spires",
+      "name": "青氷の氷壁",
+      "kind": "static",
+      "height": 12.994153937266674,
+      "geometryResolution": 1024,
+      "referenceVersion": 1,
+      "status": "integrated-and-game-qa-passed",
+      "sha256": "af945c2fec27252389a05ca2eabb6970003372a584a83cf18e2e6c34a42f6b53",
+      "delivery": "/models/glacier-spires/model.glb",
+      "gameQA": "assets/open-world-game-qa.json"
+    },
+    {
+      "key": "volcanic-cone",
+      "name": "火口の山",
+      "kind": "static",
+      "height": 24.034038949757814,
+      "geometryResolution": 1024,
+      "referenceVersion": 1,
+      "status": "integrated-and-game-qa-passed",
+      "sha256": "868c062028af62fedf491ed7391602991dbc76b1ddbbd09494ee958a7898cd5b",
+      "delivery": "/models/volcanic-cone/model.glb",
+      "gameQA": "assets/open-world-game-qa.json"
     }
   ],
   "reuse": {
@@ -191,5 +360,5 @@
     "navigation marker and labels",
     "invisible collision and raycast helpers"
   ],
-  "gameQA": "assets/world-game-qa.json"
+  "gameQA": "assets/hunting-game-qa.json"
 }

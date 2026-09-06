@@ -1,0 +1,822 @@
+{
+  "startedAt": "2026-09-06T18:54:59.673Z",
+  "url": "ws://127.0.0.1:3000/ws",
+  "room": "FANTASY-QA",
+  "role": "three passive peers, two browser players",
+  "maxPlayers": 5,
+  "states": 6274,
+  "characters": [
+    "cat/female",
+    "cro/female",
+    "nea/male",
+    "bear/female"
+  ],
+  "attacks": {
+    "cat": 2,
+    "cro": 0,
+    "nea": 0,
+    "bear": 1
+  },
+  "projectileIds": [
+    "7c0316fc-b403-471d-a694-f46ef513198f:1",
+    "2a168737-9325-46c0-b53d-8dc20bf38f35:1",
+    "812d6433-8d48-41df-9a8b-1e5e3dff5a8a:1"
+  ],
+  "impactCount": 0,
+  "sixthClientRefused": true,
+  "staticPenetrations": 0,
+  "examples": [],
+  "changes": [
+    {
+      "serverTime": 1788721056955,
+      "id": "7c0316fc-b403-471d-a694-f46ef513198f",
+      "name": "魔法のテスト",
+      "species": "bear",
+      "attackSequence": 1,
+      "energy": 96,
+      "inventory": {
+        "wood": 0,
+        "stone": 0,
+        "berry": 0,
+        "rawMeat": 0,
+        "cookedMeat": 0
+      }
+    },
+    {
+      "serverTime": 1788721139626,
+      "id": "2a168737-9325-46c0-b53d-8dc20bf38f35",
+      "name": "魔法のテスト",
+      "species": "bear",
+      "attackSequence": 1,
+      "energy": 96,
+      "inventory": {
+        "wood": 0,
+        "stone": 0,
+        "berry": 0,
+        "rawMeat": 0,
+        "cookedMeat": 0
+      }
+    },
+    {
+      "serverTime": 1788721151931,
+      "id": "0b3afa01-d596-4c79-b9ef-948f4288031e",
+      "name": "刀のテスト",
+      "species": "cat",
+      "attackSequence": 1,
+      "energy": 98,
+      "inventory": {
+        "wood": 0,
+        "stone": 0,
+        "berry": 0,
+        "rawMeat": 0,
+        "cookedMeat": 0
+      }
+    },
+    {
+      "serverTime": 1788721164141,
+      "id": "0b3afa01-d596-4c79-b9ef-948f4288031e",
+      "name": "刀のテスト",
+      "species": "cat",
+      "attackSequence": 1,
+      "energy": 83,
+      "inventory": {
+        "wood": 0,
+        "stone": 0,
+        "berry": 0,
+        "rawMeat": 0,
+        "cookedMeat": 0
+      }
+    },
+    {
+      "serverTime": 1788721165910,
+      "id": "0b3afa01-d596-4c79-b9ef-948f4288031e",
+      "name": "刀のテスト",
+      "species": "cat",
+      "attackSequence": 1,
+      "energy": 68,
+      "inventory": {
+        "wood": 0,
+        "stone": 0,
+        "berry": 0,
+        "rawMeat": 0,
+        "cookedMeat": 0
+      }
+    },
+    {
+      "serverTime": 1788721167795,
+      "id": "0b3afa01-d596-4c79-b9ef-948f4288031e",
+      "name": "刀のテスト",
+      "species": "cat",
+      "attackSequence": 1,
+      "energy": 53,
+      "inventory": {
+        "wood": 0,
+        "stone": 0,
+        "berry": 0,
+        "rawMeat": 0,
+        "cookedMeat": 0
+      }
+    },
+    {
+      "serverTime": 1788721169578,
+      "id": "0b3afa01-d596-4c79-b9ef-948f4288031e",
+      "name": "刀のテスト",
+      "species": "cat",
+      "attackSequence": 1,
+      "energy": 38,
+      "inventory": {
+        "wood": 0,
+        "stone": 0,
+        "berry": 0,
+        "rawMeat": 0,
+        "cookedMeat": 0
+      }
+    },
+    {
+      "serverTime": 1788721171411,
+      "id": "0b3afa01-d596-4c79-b9ef-948f4288031e",
+      "name": "刀のテスト",
+      "species": "cat",
+      "attackSequence": 1,
+      "energy": 23,
+      "inventory": {
+        "wood": 0,
+        "stone": 0,
+        "berry": 0,
+        "rawMeat": 0,
+        "cookedMeat": 0
+      }
+    },
+    {
+      "serverTime": 1788721173312,
+      "id": "0b3afa01-d596-4c79-b9ef-948f4288031e",
+      "name": "刀のテスト",
+      "species": "cat",
+      "attackSequence": 1,
+      "energy": 8,
+      "inventory": {
+        "wood": 0,
+        "stone": 0,
+        "berry": 0,
+        "rawMeat": 0,
+        "cookedMeat": 0
+      }
+    },
+    {
+      "serverTime": 1788721174138,
+      "id": "0b3afa01-d596-4c79-b9ef-948f4288031e",
+      "name": "刀のテスト",
+      "species": "cat",
+      "attackSequence": 2,
+      "energy": 6,
+      "inventory": {
+        "wood": 0,
+        "stone": 0,
+        "berry": 0,
+        "rawMeat": 0,
+        "cookedMeat": 0
+      }
+    },
+    {
+      "serverTime": 1788721175126,
+      "id": "0b3afa01-d596-4c79-b9ef-948f4288031e",
+      "name": "刀のテスト",
+      "species": "cat",
+      "attackSequence": 2,
+      "energy": 0,
+      "inventory": {
+        "wood": 0,
+        "stone": 0,
+        "berry": 0,
+        "rawMeat": 0,
+        "cookedMeat": 0
+      }
+    },
+    {
+      "serverTime": 1788721179176,
+      "id": "0b3afa01-d596-4c79-b9ef-948f4288031e",
+      "name": "刀のテスト",
+      "species": "cat",
+      "attackSequence": 2,
+      "energy": 50,
+      "inventory": {
+        "wood": 0,
+        "stone": 0,
+        "berry": 0,
+        "rawMeat": 0,
+        "cookedMeat": 0
+      }
+    },
+    {
+      "serverTime": 1788721191709,
+      "id": "2a168737-9325-46c0-b53d-8dc20bf38f35",
+      "name": "魔法のテスト",
+      "species": "bear",
+      "attackSequence": 1,
+      "energy": 81,
+      "inventory": {
+        "wood": 0,
+        "stone": 0,
+        "berry": 0,
+        "rawMeat": 0,
+        "cookedMeat": 0
+      }
+    },
+    {
+      "serverTime": 1788721193477,
+      "id": "2a168737-9325-46c0-b53d-8dc20bf38f35",
+      "name": "魔法のテスト",
+      "species": "bear",
+      "attackSequence": 1,
+      "energy": 66,
+      "inventory": {
+        "wood": 0,
+        "stone": 0,
+        "berry": 0,
+        "rawMeat": 0,
+        "cookedMeat": 0
+      }
+    },
+    {
+      "serverTime": 1788721195327,
+      "id": "2a168737-9325-46c0-b53d-8dc20bf38f35",
+      "name": "魔法のテスト",
+      "species": "bear",
+      "attackSequence": 1,
+      "energy": 51,
+      "inventory": {
+        "wood": 0,
+        "stone": 0,
+        "berry": 0,
+        "rawMeat": 0,
+        "cookedMeat": 0
+      }
+    },
+    {
+      "serverTime": 1788721197111,
+      "id": "2a168737-9325-46c0-b53d-8dc20bf38f35",
+      "name": "魔法のテスト",
+      "species": "bear",
+      "attackSequence": 1,
+      "energy": 36,
+      "inventory": {
+        "wood": 0,
+        "stone": 0,
+        "berry": 0,
+        "rawMeat": 0,
+        "cookedMeat": 0
+      }
+    },
+    {
+      "serverTime": 1788721198963,
+      "id": "2a168737-9325-46c0-b53d-8dc20bf38f35",
+      "name": "魔法のテスト",
+      "species": "bear",
+      "attackSequence": 1,
+      "energy": 21,
+      "inventory": {
+        "wood": 0,
+        "stone": 0,
+        "berry": 0,
+        "rawMeat": 0,
+        "cookedMeat": 0
+      }
+    },
+    {
+      "serverTime": 1788721200774,
+      "id": "2a168737-9325-46c0-b53d-8dc20bf38f35",
+      "name": "魔法のテスト",
+      "species": "bear",
+      "attackSequence": 1,
+      "energy": 6,
+      "inventory": {
+        "wood": 0,
+        "stone": 0,
+        "berry": 0,
+        "rawMeat": 0,
+        "cookedMeat": 0
+      }
+    },
+    {
+      "serverTime": 1788721202660,
+      "id": "2a168737-9325-46c0-b53d-8dc20bf38f35",
+      "name": "魔法のテスト",
+      "species": "bear",
+      "attackSequence": 1,
+      "energy": 0,
+      "inventory": {
+        "wood": 0,
+        "stone": 0,
+        "berry": 0,
+        "rawMeat": 0,
+        "cookedMeat": 0
+      }
+    },
+    {
+      "serverTime": 1788721206712,
+      "id": "2a168737-9325-46c0-b53d-8dc20bf38f35",
+      "name": "魔法のテスト",
+      "species": "bear",
+      "attackSequence": 1,
+      "energy": 50,
+      "inventory": {
+        "wood": 0,
+        "stone": 0,
+        "berry": 0,
+        "rawMeat": 0,
+        "cookedMeat": 0
+      }
+    },
+    {
+      "serverTime": 1788721256646,
+      "id": "0b3afa01-d596-4c79-b9ef-948f4288031e",
+      "name": "刀のテスト",
+      "species": "cat",
+      "attackSequence": 2,
+      "energy": 35,
+      "inventory": {
+        "wood": 0,
+        "stone": 0,
+        "berry": 0,
+        "rawMeat": 0,
+        "cookedMeat": 0
+      }
+    },
+    {
+      "serverTime": 1788721258493,
+      "id": "0b3afa01-d596-4c79-b9ef-948f4288031e",
+      "name": "刀のテスト",
+      "species": "cat",
+      "attackSequence": 2,
+      "energy": 20,
+      "inventory": {
+        "wood": 0,
+        "stone": 0,
+        "berry": 0,
+        "rawMeat": 0,
+        "cookedMeat": 0
+      }
+    },
+    {
+      "serverTime": 1788721260311,
+      "id": "0b3afa01-d596-4c79-b9ef-948f4288031e",
+      "name": "刀のテスト",
+      "species": "cat",
+      "attackSequence": 2,
+      "energy": 5,
+      "inventory": {
+        "wood": 0,
+        "stone": 0,
+        "berry": 0,
+        "rawMeat": 0,
+        "cookedMeat": 0
+      }
+    },
+    {
+      "serverTime": 1788721262162,
+      "id": "0b3afa01-d596-4c79-b9ef-948f4288031e",
+      "name": "刀のテスト",
+      "species": "cat",
+      "attackSequence": 2,
+      "energy": 0,
+      "inventory": {
+        "wood": 0,
+        "stone": 0,
+        "berry": 0,
+        "rawMeat": 0,
+        "cookedMeat": 0
+      }
+    },
+    {
+      "serverTime": 1788721265978,
+      "id": "2a168737-9325-46c0-b53d-8dc20bf38f35",
+      "name": "魔法のテスト",
+      "species": "bear",
+      "attackSequence": 1,
+      "energy": 35,
+      "inventory": {
+        "wood": 0,
+        "stone": 0,
+        "berry": 0,
+        "rawMeat": 0,
+        "cookedMeat": 0
+      }
+    },
+    {
+      "serverTime": 1788721266213,
+      "id": "0b3afa01-d596-4c79-b9ef-948f4288031e",
+      "name": "刀のテスト",
+      "species": "cat",
+      "attackSequence": 2,
+      "energy": 50,
+      "inventory": {
+        "wood": 0,
+        "stone": 0,
+        "berry": 0,
+        "rawMeat": 0,
+        "cookedMeat": 0
+      }
+    },
+    {
+      "serverTime": 1788721267767,
+      "id": "2a168737-9325-46c0-b53d-8dc20bf38f35",
+      "name": "魔法のテスト",
+      "species": "bear",
+      "attackSequence": 1,
+      "energy": 20,
+      "inventory": {
+        "wood": 0,
+        "stone": 0,
+        "berry": 0,
+        "rawMeat": 0,
+        "cookedMeat": 0
+      }
+    },
+    {
+      "serverTime": 1788721269596,
+      "id": "2a168737-9325-46c0-b53d-8dc20bf38f35",
+      "name": "魔法のテスト",
+      "species": "bear",
+      "attackSequence": 1,
+      "energy": 5,
+      "inventory": {
+        "wood": 0,
+        "stone": 0,
+        "berry": 0,
+        "rawMeat": 0,
+        "cookedMeat": 0
+      }
+    },
+    {
+      "serverTime": 1788721271397,
+      "id": "2a168737-9325-46c0-b53d-8dc20bf38f35",
+      "name": "魔法のテスト",
+      "species": "bear",
+      "attackSequence": 1,
+      "energy": 0,
+      "inventory": {
+        "wood": 0,
+        "stone": 0,
+        "berry": 0,
+        "rawMeat": 0,
+        "cookedMeat": 0
+      }
+    },
+    {
+      "serverTime": 1788721275435,
+      "id": "2a168737-9325-46c0-b53d-8dc20bf38f35",
+      "name": "魔法のテスト",
+      "species": "bear",
+      "attackSequence": 1,
+      "energy": 50,
+      "inventory": {
+        "wood": 0,
+        "stone": 0,
+        "berry": 0,
+        "rawMeat": 0,
+        "cookedMeat": 0
+      }
+    },
+    {
+      "serverTime": 1788721425345,
+      "id": "c9b0bba0-5324-41c4-9fd1-8aa5dfed22a8",
+      "name": "魔法のテスト",
+      "species": "cat",
+      "attackSequence": 1,
+      "energy": 98,
+      "inventory": {
+        "wood": 0,
+        "stone": 0,
+        "berry": 0,
+        "rawMeat": 0,
+        "cookedMeat": 0
+      }
+    },
+    {
+      "serverTime": 1788721477535,
+      "id": "812d6433-8d48-41df-9a8b-1e5e3dff5a8a",
+      "name": "魔法のテスト",
+      "species": "bear",
+      "attackSequence": 1,
+      "energy": 96,
+      "inventory": {
+        "wood": 0,
+        "stone": 0,
+        "berry": 0,
+        "rawMeat": 0,
+        "cookedMeat": 0
+      }
+    },
+    {
+      "serverTime": 1788721546607,
+      "id": "812d6433-8d48-41df-9a8b-1e5e3dff5a8a",
+      "name": "魔法のテスト",
+      "species": "bear",
+      "attackSequence": 1,
+      "energy": 81,
+      "inventory": {
+        "wood": 0,
+        "stone": 0,
+        "berry": 0,
+        "rawMeat": 0,
+        "cookedMeat": 0
+      }
+    },
+    {
+      "serverTime": 1788721548414,
+      "id": "812d6433-8d48-41df-9a8b-1e5e3dff5a8a",
+      "name": "魔法のテスト",
+      "species": "bear",
+      "attackSequence": 1,
+      "energy": 66,
+      "inventory": {
+        "wood": 0,
+        "stone": 0,
+        "berry": 0,
+        "rawMeat": 0,
+        "cookedMeat": 0
+      }
+    },
+    {
+      "serverTime": 1788721550222,
+      "id": "812d6433-8d48-41df-9a8b-1e5e3dff5a8a",
+      "name": "魔法のテスト",
+      "species": "bear",
+      "attackSequence": 1,
+      "energy": 51,
+      "inventory": {
+        "wood": 0,
+        "stone": 0,
+        "berry": 0,
+        "rawMeat": 0,
+        "cookedMeat": 0
+      }
+    },
+    {
+      "serverTime": 1788721552040,
+      "id": "812d6433-8d48-41df-9a8b-1e5e3dff5a8a",
+      "name": "魔法のテスト",
+      "species": "bear",
+      "attackSequence": 1,
+      "energy": 36,
+      "inventory": {
+        "wood": 0,
+        "stone": 0,
+        "berry": 0,
+        "rawMeat": 0,
+        "cookedMeat": 0
+      }
+    },
+    {
+      "serverTime": 1788721553856,
+      "id": "812d6433-8d48-41df-9a8b-1e5e3dff5a8a",
+      "name": "魔法のテスト",
+      "species": "bear",
+      "attackSequence": 1,
+      "energy": 21,
+      "inventory": {
+        "wood": 0,
+        "stone": 0,
+        "berry": 0,
+        "rawMeat": 0,
+        "cookedMeat": 0
+      }
+    },
+    {
+      "serverTime": 1788721555707,
+      "id": "812d6433-8d48-41df-9a8b-1e5e3dff5a8a",
+      "name": "魔法のテスト",
+      "species": "bear",
+      "attackSequence": 1,
+      "energy": 6,
+      "inventory": {
+        "wood": 0,
+        "stone": 0,
+        "berry": 0,
+        "rawMeat": 0,
+        "cookedMeat": 0
+      }
+    }
+  ],
+  "errors": [],
+  "lastPlayers": [
+    {
+      "id": "1a4c5481-e6d4-48f8-a9df-d43df0ea2d61",
+      "name": "Kunoichi-peer",
+      "species": "cat",
+      "gender": "female",
+      "x": 47,
+      "z": 56,
+      "radius": 0.32,
+      "color": "#e4ac65",
+      "inventory": {
+        "wood": 0,
+        "stone": 0,
+        "berry": 0,
+        "rawMeat": 0,
+        "cookedMeat": 0
+      },
+      "tool": false,
+      "ready": false,
+      "energy": 100,
+      "facing": -2.356194490192345,
+      "moving": false,
+      "running": false,
+      "speed": 0,
+      "attackSequence": 0,
+      "attackAt": 0,
+      "cookingEndsAt": 0,
+      "hurtSequence": 0,
+      "hurtAt": 0,
+      "defeatSequence": 0,
+      "downedUntil": 0,
+      "invulnerableUntil": 0
+    },
+    {
+      "id": "21e46a6e-8482-453e-a1dd-193eec4dae64",
+      "name": "Cro-peer",
+      "species": "cro",
+      "gender": "female",
+      "x": 49,
+      "z": 56,
+      "radius": 0.32,
+      "color": "#87b899",
+      "inventory": {
+        "wood": 0,
+        "stone": 0,
+        "berry": 0,
+        "rawMeat": 0,
+        "cookedMeat": 0
+      },
+      "tool": false,
+      "ready": false,
+      "energy": 100,
+      "facing": -3.0916342578678697,
+      "moving": false,
+      "running": false,
+      "speed": 0,
+      "attackSequence": 0,
+      "attackAt": 0,
+      "cookingEndsAt": 0,
+      "hurtSequence": 0,
+      "hurtAt": 0,
+      "defeatSequence": 0,
+      "downedUntil": 0,
+      "invulnerableUntil": 0
+    },
+    {
+      "id": "64f477bd-d882-4e98-9afa-6fcd11dc3653",
+      "name": "Neanderthal-peer",
+      "species": "nea",
+      "gender": "male",
+      "x": 51,
+      "z": 56,
+      "radius": 0.32,
+      "color": "#b49cd2",
+      "inventory": {
+        "wood": 0,
+        "stone": 0,
+        "berry": 0,
+        "rawMeat": 0,
+        "cookedMeat": 0
+      },
+      "tool": false,
+      "ready": false,
+      "energy": 100,
+      "facing": 2.4668517113662474,
+      "moving": false,
+      "running": false,
+      "speed": 0,
+      "attackSequence": 0,
+      "attackAt": 0,
+      "cookingEndsAt": 0,
+      "hurtSequence": 0,
+      "hurtAt": 0,
+      "defeatSequence": 0,
+      "downedUntil": 0,
+      "invulnerableUntil": 0
+    },
+    {
+      "id": "0b3afa01-d596-4c79-b9ef-948f4288031e",
+      "name": "刀のテスト",
+      "species": "cat",
+      "gender": "female",
+      "x": 48.99852716725805,
+      "z": 52.3862078028625,
+      "radius": 0.32,
+      "color": "#76a7c3",
+      "inventory": {
+        "wood": 0,
+        "stone": 0,
+        "berry": 0,
+        "rawMeat": 0,
+        "cookedMeat": 0
+      },
+      "tool": false,
+      "ready": false,
+      "energy": 50,
+      "facing": 0.1063842271148254,
+      "moving": false,
+      "running": false,
+      "speed": 0,
+      "attackSequence": 2,
+      "attackAt": 1788721174137,
+      "cookingEndsAt": 0,
+      "hurtSequence": 11,
+      "hurtAt": 1788721262162,
+      "defeatSequence": 2,
+      "downedUntil": 0,
+      "invulnerableUntil": 1788721271212
+    },
+    {
+      "id": "812d6433-8d48-41df-9a8b-1e5e3dff5a8a",
+      "name": "魔法のテスト",
+      "species": "bear",
+      "gender": "female",
+      "x": 49.6,
+      "z": 52.4,
+      "radius": 0.28,
+      "color": "#ce8c8b",
+      "inventory": {
+        "wood": 0,
+        "stone": 0,
+        "berry": 0,
+        "rawMeat": 0,
+        "cookedMeat": 0
+      },
+      "tool": false,
+      "ready": false,
+      "energy": 6,
+      "facing": 0.07155347546879097,
+      "moving": false,
+      "running": false,
+      "speed": 0,
+      "attackSequence": 1,
+      "attackAt": 1788721477535,
+      "cookingEndsAt": 0,
+      "hurtSequence": 6,
+      "hurtAt": 1788721555706,
+      "defeatSequence": 0,
+      "downedUntil": 0,
+      "invulnerableUntil": 0
+    }
+  ],
+  "lastEnemies": [
+    {
+      "id": "crow-shaman-1",
+      "modelKey": "crow-shaman",
+      "name": "白羽の呪術師",
+      "hostile": true,
+      "x": 46.34611397107103,
+      "z": 13.542719051505975,
+      "scale": 1,
+      "facing": -0.9278628885927084,
+      "speed": 0.7000000000000376,
+      "radius": 0.48,
+      "clip": "Walk_Loop",
+      "phase": "alive",
+      "health": 75,
+      "maxHealth": 75,
+      "phaseStartedAt": 1788720899679,
+      "behavior": "roam",
+      "targetId": null,
+      "attackSequence": 28,
+      "attackAt": 1788721555240,
+      "hitSequence": 0,
+      "hitAt": 0
+    }
+  ],
+  "lastAnimals": [
+    {
+      "id": "mammoth-1",
+      "x": 22.571328331636426,
+      "z": 18.27134119054116,
+      "facing": -1.895812328309319,
+      "speed": 0.35416669999998196,
+      "scale": 1,
+      "radius": 2.9473143603559735,
+      "clip": "Walk_Loop",
+      "phase": "alive",
+      "health": 100,
+      "maxHealth": 100,
+      "meatRemaining": 0,
+      "phaseStartedAt": 1788720899678
+    },
+    {
+      "id": "mammoth-2",
+      "x": 20.76422153037064,
+      "z": 87.878471049805,
+      "facing": -0.412642135650957,
+      "speed": 0,
+      "scale": 0.76,
+      "radius": 2.25915891387054,
+      "clip": "Graze_Loop",
+      "phase": "alive",
+      "health": 100,
+      "maxHealth": 100,
+      "meatRemaining": 0,
+      "phaseStartedAt": 1788720899678
+    }
+  ],
+  "finishedAt": "2026-09-06T19:06:47.360Z"
+}

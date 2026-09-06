@@ -1,0 +1,56 @@
+{
+  "modelKey": "glacier-spires",
+  "name": "青氷の氷壁",
+  "kind": "static",
+  "candidate": 1,
+  "status": "reviewed-prototype",
+  "environment": true,
+  "onDemand": true,
+  "url": "/models/glacier-spires/model.glb",
+  "sha256": "af945c2fec27252389a05ca2eabb6970003372a584a83cf18e2e6c34a42f6b53",
+  "bytes": 2190204,
+  "triangles": 12582,
+  "upAxis": "Y",
+  "forwardAxis": "+Z",
+  "heightMetres": 12.994153937266674,
+  "widthMetres": 14.620878219604492,
+  "placement": {
+    "pivot": "ground-centred",
+    "min": [
+      -7.309194087982178,
+      0.0006933604017831385,
+      -7.277850151062012
+    ],
+    "max": [
+      7.3116841316223145,
+      12.994847297668457,
+      7.29189920425415
+    ]
+  },
+  "clips": [],
+  "lods": [
+    {
+      "url": "/models/glacier-spires/lod1.glb",
+      "sha256": "763d759cf19ed420903233d58051a2d9c619071a8c748f72fc29f6c525e4f1a2",
+      "bytes": 1833232,
+      "triangles": 1760
+    },
+    {
+      "url": "/models/glacier-spires/lod2.glb",
+      "sha256": "3a6fa1607b3a778910797750dedfe6e1dd285871c10bb25ee70ec2514dd07caf",
+      "bytes": 1770552,
+      "triangles": 440
+    }
+  ],
+  "notes": "Blue frosted glacier fins, three main groups, readable tips and deep separations. Source silhouette and creases retained; adaptive reduction rejected its coarsest near candidate. Rough dielectric frost is intentional; no costly translucent pass. Tiny reconstructed internal/underside nonmanifold edges are documented; no visible upper hole or flashing facet in the fixed views.",
+  "provenance": {
+    "provider": "Codex",
+    "claudeUsed": false,
+    "referenceGenerator": "Built-in imagegen",
+    "referenceImage": "output/model-generation/models/glacier-spires/source/original/reference-v1.png",
+    "referenceSha256": "4d2c99dc58bffba2bd978d386f8f415c491176adbc94d23cde466977946fafe9",
+    "reconstruction": "Local TRELLIS-2; preserved dense reconstruction, source-derived reduction and separate revisions.",
+    "candidateFile": "output/model-generation/models/glacier-spires/work/low-poly/candidate-01/candidate.glb",
+    "visualReview": "output/model-generation/models/glacier-spires/qa/adoption-review.json"
+  }
+}

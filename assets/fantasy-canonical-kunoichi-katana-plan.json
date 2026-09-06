@@ -1,0 +1,806 @@
+{
+  "schemaVersion": 1,
+  "modelKey": "kunoichi-katana",
+  "generatedAt": "2026-09-06T19:11:15.254Z",
+  "status": "planned-not-copied",
+  "workspaceRoot": "C:\\Users\\yurin\\Desktop\\projects\\CRO-MAGNON",
+  "sourceRoot": "C:\\Users\\yurin\\Desktop\\projects\\CRO-MAGNON\\output\\model-generation\\models\\kunoichi-katana",
+  "destinationRoot": "C:\\Users\\yurin\\Desktop\\projects\\threed-model-creation\\models\\kunoichi-katana",
+  "files": [
+    {
+      "path": "geometry/accepted.glb",
+      "bytes": 2019308,
+      "sha256": "3e6e061fc02779d3516d114b53629fa0d5b585e815d4683ce74dd7d9c2822e0e"
+    },
+    {
+      "path": "model.json",
+      "bytes": 1081,
+      "sha256": "52323b83e3a5585ff5e91de415ace5a71cbb5cd8aebbecc737ab088bf17e9fb7"
+    },
+    {
+      "path": "qa/adoption-review.json",
+      "bytes": 1966,
+      "sha256": "fed6d3ad94c804c0c0bf406690f0e9503eb4d3bc5836a3d111a2f030cde5761f"
+    },
+    {
+      "path": "qa/browser-dense-left.png",
+      "bytes": 38968,
+      "sha256": "c2328914ee451d0a90e5803d1b8671d0650370cf1d9ffd105ec07c94b8ccda95"
+    },
+    {
+      "path": "qa/browser-dense-right.png",
+      "bytes": 40512,
+      "sha256": "64d50133ee4da2b27081cc699cc026f78937e92ba6ead7792bb7414190789f56"
+    },
+    {
+      "path": "qa/browser-final-front.png",
+      "bytes": 35612,
+      "sha256": "d10717671a970d6636d76366b049e8eef74903e4591e5e5dbcda3c444bd5ef9d"
+    },
+    {
+      "path": "qa/browser-final-rear.png",
+      "bytes": 35210,
+      "sha256": "8344c7d6e6adf989ba657be76bc5983b629c6a33614baf30b0361fb762e15d3a"
+    },
+    {
+      "path": "qa/browser-peer-flint-spear.png",
+      "bytes": 42654,
+      "sha256": "7e1ab195dc176d13197481bb10a19d79ab85371f2a769b2c58bc448db75aa9cb"
+    },
+    {
+      "path": "qa/clay-07/candidate-front.png",
+      "bytes": 356556,
+      "sha256": "021d484f7c9fc0f657f4ae77b4d72a15c10b234edbc494becf642d19c756be58"
+    },
+    {
+      "path": "qa/clay-07/candidate-rear.png",
+      "bytes": 353145,
+      "sha256": "f74b8833156e2e2023d3b0a880d005e8580e9f8f35a958c55a825cc3e34080f3"
+    },
+    {
+      "path": "qa/clay-07/candidate-threequarter.png",
+      "bytes": 354488,
+      "sha256": "c122c4a34b7cf5dc754f35f8b8ab300a56399ae25bda3a227341ca104d506390"
+    },
+    {
+      "path": "qa/clay-07/candidate-views.json",
+      "bytes": 811,
+      "sha256": "4ac809932a02a6fed7251cc01f37b8eaeaff64c40aca65515efe8752e8d8219a"
+    },
+    {
+      "path": "qa/clay-07.log",
+      "bytes": 1370,
+      "sha256": "04ed16dea4d14b65204f9e57e3a4b2baf8fdb90f7ab9b43ca92112c349d689ba"
+    },
+    {
+      "path": "qa/delivery-inspection.json",
+      "bytes": 390,
+      "sha256": "e8e5b171613eb514997753ad5752f905a06792336957a495196f7ff3a651ca1d"
+    },
+    {
+      "path": "qa/delivery-manifest.json",
+      "bytes": 1964,
+      "sha256": "97bc4566aca39d10b8010865fdc825d6b5a3e343f6512a309a969a8555ca902c"
+    },
+    {
+      "path": "qa/denoised-07/candidate-front.png",
+      "bytes": 366566,
+      "sha256": "5c7f96a12124704c0c2ee6ffc0ca536a1b5e82a4e968dd3126c14cf475fb175d"
+    },
+    {
+      "path": "qa/denoised-07/candidate-rear.png",
+      "bytes": 364870,
+      "sha256": "ee431c69615e5cc2f7540491e9fe207edf82c630e9259240808b48701f9f4f4b"
+    },
+    {
+      "path": "qa/denoised-07/candidate-threequarter.png",
+      "bytes": 363267,
+      "sha256": "ccb2924989ae7b02ba0f9721e9104024a6175cdebe59f4b5e15c84683f982f7c"
+    },
+    {
+      "path": "qa/denoised-07/candidate-views.json",
+      "bytes": 812,
+      "sha256": "2b8fbdaa2832cbaff5eeb72dd064eb94fe29adc9fe86e466d4da28d1612c6689"
+    },
+    {
+      "path": "qa/denoised-07.log",
+      "bytes": 1124,
+      "sha256": "cf171afd212fe688502d49f87c48a8c8b6f1fea03e34a34cb27376133f5ff1b4"
+    },
+    {
+      "path": "qa/dense-neutral/dense-res1024-seed0042-bottom.png",
+      "bytes": 348774,
+      "sha256": "387a4b83bc77457b82e2e2e38d73cea9890a799b95868156b725a7116317f899"
+    },
+    {
+      "path": "qa/dense-neutral/dense-res1024-seed0042-front.png",
+      "bytes": 341244,
+      "sha256": "5606bbc06e676ea62a3eb41f9fa729614495ca5aceb6afc1c9e9b433826a3636"
+    },
+    {
+      "path": "qa/dense-neutral/dense-res1024-seed0042-left.png",
+      "bytes": 356105,
+      "sha256": "93a5e7b09e93fcda9661797b594e8d897638121e6e1d656920b3923a737bdfa7"
+    },
+    {
+      "path": "qa/dense-neutral/dense-res1024-seed0042-rear.png",
+      "bytes": 338059,
+      "sha256": "50e50efe953b2daa3fc54d14c8cfaa7ae5f1ccda5e74bdb700d1ff44b1beed65"
+    },
+    {
+      "path": "qa/dense-neutral/dense-res1024-seed0042-right.png",
+      "bytes": 354591,
+      "sha256": "0eb2d4a22f5b2c209902f7df71d0db4218c0820dccc40cf9beb67f83d8b5972a"
+    },
+    {
+      "path": "qa/dense-neutral/dense-res1024-seed0042-threequarter.png",
+      "bytes": 359044,
+      "sha256": "8f3e73783a32d61e3f899786329dc175258a8b6209b5197e11789d1bd6a9bd06"
+    },
+    {
+      "path": "qa/dense-neutral/dense-res1024-seed0042-top.png",
+      "bytes": 351667,
+      "sha256": "d0e6b61bb287a0115b42d3a1bd05e07dfa21c8c9ef51c9ce1146d68816f54081"
+    },
+    {
+      "path": "qa/dense-neutral/dense-res1024-seed0042-views.json",
+      "bytes": 1357,
+      "sha256": "393b261d95084b0b97706bf926d737a5d076bbc21e7abce751ea7eb45c7caff1"
+    },
+    {
+      "path": "qa/dense-render.log",
+      "bytes": 1870,
+      "sha256": "d9e8e52b60a7ac3c01b12557a3fdb2591b797d5c277003e71d07f6572045b1ba"
+    },
+    {
+      "path": "qa/fantasy-bear-cast.png",
+      "bytes": 130709,
+      "sha256": "cb52e60e244d882d3dc67e533ba0031d9b616e55ee80758d00a693a71ae2e97e"
+    },
+    {
+      "path": "qa/fantasy-bear-mobile.png",
+      "bytes": 44690,
+      "sha256": "ac407c1be0d7860e7d7e333e1a554faf42a5fff19504c375be908e4e3b0339f1"
+    },
+    {
+      "path": "qa/fantasy-browser-evidence.json",
+      "bytes": 12187,
+      "sha256": "f0ebbd0d0e205d5e35ec2f9d5ca697fda5afc8bfa3d9b173e74e813896a941c2"
+    },
+    {
+      "path": "qa/fantasy-cat-mobile.png",
+      "bytes": 47442,
+      "sha256": "b6f4a5dc68b3c20ee239c7a1354b7850e534912b956472853de9b042f9e0e8b6"
+    },
+    {
+      "path": "qa/fantasy-combat-qa.json",
+      "bytes": 828,
+      "sha256": "d6ddd431ff441d47bcfb44d9569978c227c53d4d9cbfe3490c6ab89d835c6a8b"
+    },
+    {
+      "path": "qa/fantasy-five-game.png",
+      "bytes": 126785,
+      "sha256": "b5f18058d5ffa5648fabd55b7327550b0c4a30041a536e311d50c1e2714616d2"
+    },
+    {
+      "path": "qa/fantasy-game-qa.json",
+      "bytes": 2921,
+      "sha256": "88f1fce67bf55ba8841f3004382a8a4e0ed7f9a0505f9d1628e1aa8250d0416b"
+    },
+    {
+      "path": "qa/fantasy-network-qa.json",
+      "bytes": 18746,
+      "sha256": "2854566d532a0f81b6190ba72d22dd2bac0ee6a85d87286706c63fd1255ca0b3"
+    },
+    {
+      "path": "qa/fantasy-selection-desktop.png",
+      "bytes": 50001,
+      "sha256": "85c7b0454c167bf451e312b1af57fac9b9c590e9c42f4cb80f3f997fb892aea0"
+    },
+    {
+      "path": "qa/fantasy-selection-mobile.png",
+      "bytes": 30992,
+      "sha256": "5e0e11c1a32552584975378f7bdf2fd720e8c373e5d8aca3b6f308437cd5d9fa"
+    },
+    {
+      "path": "qa/fantasy-weapon-contact.json",
+      "bytes": 2349,
+      "sha256": "bb20c87ffcbd5678ab75d6166b68771b0841ae55c3e3d9e4b030d8ad692556d1"
+    },
+    {
+      "path": "qa/final-05-neutral/candidate-bottom.png",
+      "bytes": 337618,
+      "sha256": "b25e3d629e171592a06de88a3fb2f0999270da4c7df084e9fcb86de48145de0f"
+    },
+    {
+      "path": "qa/final-05-neutral/candidate-front.png",
+      "bytes": 367344,
+      "sha256": "60e54249cf60875eb1591ac1c121db329de159cccc377aa3ae9487bfbf731d84"
+    },
+    {
+      "path": "qa/final-05-neutral/candidate-left.png",
+      "bytes": 348994,
+      "sha256": "458903a8b969ed8d910e9cd9c42a5aed8a7e17bcf18e55f6a0a49e838e2bf10e"
+    },
+    {
+      "path": "qa/final-05-neutral/candidate-rear.png",
+      "bytes": 365719,
+      "sha256": "8e72dba84d6617ad92cd568f6fc3335481bf257ed9d02033cf6ca7bbecf9dc10"
+    },
+    {
+      "path": "qa/final-05-neutral/candidate-right.png",
+      "bytes": 349745,
+      "sha256": "8d721a80cda9cf591e7044b1fd90a47a3758eec1c490fa856352643eda43fa7c"
+    },
+    {
+      "path": "qa/final-05-neutral/candidate-threequarter.png",
+      "bytes": 363786,
+      "sha256": "c69d0c244e02994beaba08e8bd8b8b21891c69a32eef886e6b9f60a2f0dc3e13"
+    },
+    {
+      "path": "qa/final-05-neutral/candidate-top.png",
+      "bytes": 339153,
+      "sha256": "7b54c997a1f7878d97d7cdd7684e63fb82676bbb9dfa58384294f28d556c809f"
+    },
+    {
+      "path": "qa/final-05-neutral/candidate-views.json",
+      "bytes": 1277,
+      "sha256": "e87ada96cba95312ad13baaae67d5201b8394c9f91dbf465baa75a71607c9fce"
+    },
+    {
+      "path": "qa/final-05-render.log",
+      "bytes": 1822,
+      "sha256": "2cfe13c97c241faa19f2a4c5fb2e75f031d389a25f844e25e868215f3626832b"
+    },
+    {
+      "path": "qa/final-08-neutral/candidate-bottom.png",
+      "bytes": 337227,
+      "sha256": "f0db453fd0825d0c62bbba33e195e5ed04b8d6f866ea9c111aff88bdff76e2f2"
+    },
+    {
+      "path": "qa/final-08-neutral/candidate-front.png",
+      "bytes": 367826,
+      "sha256": "629fc74a2710e8995a11647df44cc3e23c7c4925408964ec5bedbb76de69b2aa"
+    },
+    {
+      "path": "qa/final-08-neutral/candidate-left.png",
+      "bytes": 349113,
+      "sha256": "e71702fcca2e5e7f42ce032c2fb6e4d9d9051eb8bb1e44dbaa2e4883e2350ab7"
+    },
+    {
+      "path": "qa/final-08-neutral/candidate-rear.png",
+      "bytes": 365859,
+      "sha256": "ea6e3857ffca8cb7bb3c3e97ddc786481abd69d8805a075ff3760522c1e5b95d"
+    },
+    {
+      "path": "qa/final-08-neutral/candidate-right.png",
+      "bytes": 349966,
+      "sha256": "6ba74b1a1f5db0c4e00955b9b2eb07fa891eb22ac9cf86be74ed236c4c52c4cd"
+    },
+    {
+      "path": "qa/final-08-neutral/candidate-threequarter.png",
+      "bytes": 363883,
+      "sha256": "cd10a1e780e1ad9b172a57297afbe824a50f8bf639ffc54dfae4b8b2b89e8296"
+    },
+    {
+      "path": "qa/final-08-neutral/candidate-top.png",
+      "bytes": 339221,
+      "sha256": "8d2db01ca07fcfe8fa916eaff4674946700ab54b6c17291bb1fd1a51fb391bb5"
+    },
+    {
+      "path": "qa/final-08-neutral/candidate-views.json",
+      "bytes": 1278,
+      "sha256": "da825d4cf447c89f6e7f2085c73d365b165fe4d67a55b7aeaf16a62ded89eb6d"
+    },
+    {
+      "path": "qa/final-08-neutral.log",
+      "bytes": 1822,
+      "sha256": "b3c95fee5f39de8b8d04e3e192bdd1eb80f7a6fdd86c48471d33fbaa10990664"
+    },
+    {
+      "path": "qa/final-neutral/candidate-bottom.png",
+      "bytes": 337137,
+      "sha256": "00f6bf7441db1c0f7eb510744d28a71541fe4e451c5202114cfafb224dbd9f5f"
+    },
+    {
+      "path": "qa/final-neutral/candidate-front.png",
+      "bytes": 366759,
+      "sha256": "9741fd0ec32036ae5e795ec6206a73075b8b26df1b6b4a8bc93956fab5b6583f"
+    },
+    {
+      "path": "qa/final-neutral/candidate-left.png",
+      "bytes": 348585,
+      "sha256": "7d87a5df027d491b418063273b7fc6f0e9cef0ec979b47c6fb3682261e2b2730"
+    },
+    {
+      "path": "qa/final-neutral/candidate-rear.png",
+      "bytes": 364235,
+      "sha256": "8b56bc578720b8ceada3a524008a2776aa52c3f43824765225f7aa55b7b46420"
+    },
+    {
+      "path": "qa/final-neutral/candidate-right.png",
+      "bytes": 349263,
+      "sha256": "75dd0ba33fc16872dc39caf6d77a501608d00a088f45aca9045efaec10ec10e0"
+    },
+    {
+      "path": "qa/final-neutral/candidate-threequarter.png",
+      "bytes": 362847,
+      "sha256": "8789f59a5ba0b69bc37652d82a91abd775fff93fb7da69b5806cb5bda4b79a11"
+    },
+    {
+      "path": "qa/final-neutral/candidate-top.png",
+      "bytes": 339114,
+      "sha256": "c1bca2f47f660a65ab72a08005aabf2e27b1757e964b32971ed21b5c154b11a2"
+    },
+    {
+      "path": "qa/final-neutral/candidate-views.json",
+      "bytes": 1278,
+      "sha256": "f1d0223134bb9686629a8531e16ce55a2721d83bab864898bb4a3f07d53de384"
+    },
+    {
+      "path": "qa/final-render.log",
+      "bytes": 1798,
+      "sha256": "942d11ed60bb3d85cfbeb067d9a8ebc5fc1e758c3fac23d6eb9367267546b924"
+    },
+    {
+      "path": "qa/game-qa.json",
+      "bytes": 2921,
+      "sha256": "88f1fce67bf55ba8841f3004382a8a4e0ed7f9a0505f9d1628e1aa8250d0416b"
+    },
+    {
+      "path": "qa/mobile-qa.json",
+      "bytes": 719,
+      "sha256": "e7c61462620b859d7ce6c9007624a23bcadf537e977c56c4694d5adac56282da"
+    },
+    {
+      "path": "qa/normal-repair-06/candidate-front.png",
+      "bytes": 365494,
+      "sha256": "bedd580ff35f55662b58f8a8d5aeebefe57043e8812127e3d5474f226fde0008"
+    },
+    {
+      "path": "qa/normal-repair-06/candidate-rear.png",
+      "bytes": 363566,
+      "sha256": "b11fd950dd863091027a64d18ac9385587f7c19ecc0fa897747bf3df9b9a6a53"
+    },
+    {
+      "path": "qa/normal-repair-06/candidate-threequarter.png",
+      "bytes": 361735,
+      "sha256": "5de8aa7874c5736f6c2fc0cd29f989db3d404e6b40f66066a6c6215fab3f16ad"
+    },
+    {
+      "path": "qa/normal-repair-06/candidate-views.json",
+      "bytes": 812,
+      "sha256": "bf1b98faabc0557e80b4b5397535ac8d72456c68764ae75a620d22e4da585356"
+    },
+    {
+      "path": "qa/normal-repair-06.log",
+      "bytes": 1144,
+      "sha256": "c20beb63bab6465689f00689fe26ffcf93c38c340965384a8db2eb56574804a9"
+    },
+    {
+      "path": "qa/reduce-01.log",
+      "bytes": 1558,
+      "sha256": "ffc9d05adfe57a8d31c08f03dd9a320a26e831b22c403f645b1cf4a71ec14883"
+    },
+    {
+      "path": "qa/reduce-02.log",
+      "bytes": 3372,
+      "sha256": "cd5e69fb205536d9b6518cb926616ec7ca15c87a1c7dfb3147a7d1eda74cd086"
+    },
+    {
+      "path": "qa/reduce-04.log",
+      "bytes": 3381,
+      "sha256": "95820cbcb005faf76996fe946737e70528784feeb33fa5ba8753f54849e99cf0"
+    },
+    {
+      "path": "qa/reduce-06.log",
+      "bytes": 3523,
+      "sha256": "ad839020735460a2cfeeb25aa335adf45763331f2e771e04d1a34f6e64afff7c"
+    },
+    {
+      "path": "qa/reduce-07.log",
+      "bytes": 4232,
+      "sha256": "94914b31b08c43718bb22bbbe2f173aea98f38f0625d1609e91a31f1abaf7127"
+    },
+    {
+      "path": "README.md",
+      "bytes": 1036,
+      "sha256": "b4500a0e253df617806535eddc39baedf081b7bbf97546ac02548ca82dd28a67"
+    },
+    {
+      "path": "request-spec.json",
+      "bytes": 545,
+      "sha256": "00a92fb90c48f045974a370b0ea2e669907bccfeb0e4ba575394fccc79649782"
+    },
+    {
+      "path": "REQUEST.md",
+      "bytes": 639,
+      "sha256": "8239348ff7e42109a104b66831114f323e11a7330701a25666b906e80e9f0929"
+    },
+    {
+      "path": "source/original/prompt.txt",
+      "bytes": 1226,
+      "sha256": "fa8cce0b4c3c69153131a0863da8848784b5c14dae486ab89ff48cae85305b71"
+    },
+    {
+      "path": "source/original/reference-v1.json",
+      "bytes": 1592,
+      "sha256": "13708ede39f521eba6ffaecd29c9234caa2081d6cd00014bc3d39c196ffccf1d"
+    },
+    {
+      "path": "source/original/reference-v1.png",
+      "bytes": 1337700,
+      "sha256": "3b0d5d4606f60389875cf4fca9dfe14933e7f06ae25db2f55b70b0129676e313"
+    },
+    {
+      "path": "source/prepared/birefnet_cutout.png",
+      "bytes": 444301,
+      "sha256": "a66b6750f228acbce2c8627e067453812dffc1127974019e9bec8b0e89219ad9"
+    },
+    {
+      "path": "source/prepared/birefnet.log",
+      "bytes": 568,
+      "sha256": "77abb45bf141eca4627c4fdb361f037ea1b6afe795c132c5c1458964beed772a"
+    },
+    {
+      "path": "source/prepared/conditioning.png",
+      "bytes": 139087,
+      "sha256": "d815fc3ecbb2da4d1912c704d7060c13ad5aaa98f8ec0b59d5be61c18f403d8a"
+    },
+    {
+      "path": "source/prepared/matte.png",
+      "bytes": 12410,
+      "sha256": "fb53fabdb0699b503c430d8c6f2c0a55548a77f6dd39c537cd1ff84ddb981790"
+    },
+    {
+      "path": "source/prepared/preparation.json",
+      "bytes": 497,
+      "sha256": "0e8dafb6ac0b19f83ab1020fa02325c15f5c706f0cf1dce1578bf04fa5b5c0f7"
+    },
+    {
+      "path": "work/candidate-ledger.json",
+      "bytes": 2330,
+      "sha256": "f7374bebabb139c1f666585e2ac6f5a7311a807e7a9497d1e4fca12a035db50d"
+    },
+    {
+      "path": "work/low-poly/revision-01/prepare-katana.py",
+      "bytes": 5379,
+      "sha256": "5f44e03429ccb76a8ba7c438fdec4dcd935cec36613bdf2a39c4b5501c7422d1"
+    },
+    {
+      "path": "work/low-poly/revision-02/candidate.glb",
+      "bytes": 5939816,
+      "sha256": "0330b1ab8fbe49de2df752129c385a62a19239eaa04330a8e8c4d3d7ef16f432"
+    },
+    {
+      "path": "work/low-poly/revision-02/prepare-katana.py",
+      "bytes": 5385,
+      "sha256": "ca85d0ff0fa56f14c0b92f3aa2ab54b4abd01e2d6687d5c60d3412a6961edf69"
+    },
+    {
+      "path": "work/low-poly/revision-02/process.json",
+      "bytes": 2799,
+      "sha256": "036785a50283bfc5f285f5b4b2e51fd4130aa0b5d3653671fd53466365eaffa6"
+    },
+    {
+      "path": "work/low-poly/revision-02/source.blend",
+      "bytes": 9201104,
+      "sha256": "f8c425620a53dccd0d7b02c4adda551d3511e0cd27694e58cf08c60661d770e5"
+    },
+    {
+      "path": "work/low-poly/revision-03/candidate.glb",
+      "bytes": 1628876,
+      "sha256": "1773ab02ac5ab49f48b78397ccfc9f6dd96be004b5e07280f3f8fa2a1dc06178"
+    },
+    {
+      "path": "work/low-poly/revision-03/process.json",
+      "bytes": 2942,
+      "sha256": "7c8fba0ad68025bea12e0e13528a026ed8afb2ae3954ec808fe200719ef32aed"
+    },
+    {
+      "path": "work/low-poly/revision-03/texture-packing.json",
+      "bytes": 2572,
+      "sha256": "e1d7da8a462b763bb699d363c6958f9f23bf5687d5a9c21e6a6edbe0625435f8"
+    },
+    {
+      "path": "work/low-poly/revision-04/candidate.glb",
+      "bytes": 6872464,
+      "sha256": "6962d040ae98e126b0ed64e5e8e7cbb453cf5582a9f7dafc98c718d5682b45f3"
+    },
+    {
+      "path": "work/low-poly/revision-04/prepare-katana.py",
+      "bytes": 5483,
+      "sha256": "9740b3e1081056058142250185cff156eff89b4ddba23a46017302538b486563"
+    },
+    {
+      "path": "work/low-poly/revision-04/process.json",
+      "bytes": 2805,
+      "sha256": "9e53fe3e1431bd3fec545b9d9b12a6f23d4bd123b257fcd3fbe51e825cc96b98"
+    },
+    {
+      "path": "work/low-poly/revision-04/source.blend",
+      "bytes": 10445551,
+      "sha256": "0ffab2995243314f00ceb15fd3b15c2b39fc486e2666fe8a2b0e0e3de28c3bf5"
+    },
+    {
+      "path": "work/low-poly/revision-05/candidate.glb",
+      "bytes": 2561520,
+      "sha256": "9ee333d177c1f5411a694e18a175683ff9a9133901908399a26421e81b0fc906"
+    },
+    {
+      "path": "work/low-poly/revision-05/process.json",
+      "bytes": 2948,
+      "sha256": "d6c1bc1ecb4cf89e5acbc635a42da4121e3354395999ef128fae0e5e37165d68"
+    },
+    {
+      "path": "work/low-poly/revision-05/texture-packing.json",
+      "bytes": 2580,
+      "sha256": "f968ced11b62c0d323e8bd35f43516f5c2555c3e3cb6ab6b1a6efa339ac6e22b"
+    },
+    {
+      "path": "work/low-poly/revision-06/candidate.glb",
+      "bytes": 5939816,
+      "sha256": "11fcadb2e2d94f998e18127fdf30c683e20dedb37c7826dccb4253b8c5f6e738"
+    },
+    {
+      "path": "work/low-poly/revision-06/prepare-katana.py",
+      "bytes": 5921,
+      "sha256": "54fe789a61af317a2ba7365e93009edbc9d5ca72928c23f7ac8bf247b86549fc"
+    },
+    {
+      "path": "work/low-poly/revision-06/process.json",
+      "bytes": 2968,
+      "sha256": "e82079a34b5c8ac057418191547e37227a9266f07b6fae8992e0fee0ef01a923"
+    },
+    {
+      "path": "work/low-poly/revision-06/source.blend",
+      "bytes": 9187271,
+      "sha256": "1e84f8cbf16c398f68e64dafed928024127438944df431b67c6156d80a0c674b"
+    },
+    {
+      "path": "work/low-poly/revision-07/candidate.glb",
+      "bytes": 6330248,
+      "sha256": "0a29e6002a83a66aafa1720547ff74830ed095ee6fc718a2fd647d4bf7075059"
+    },
+    {
+      "path": "work/low-poly/revision-07/prepare-katana.py",
+      "bytes": 6007,
+      "sha256": "c2bca0ebed07d5c517b02ab0ae4b8f0c9d1b820847b86899652ae4e57b0193de"
+    },
+    {
+      "path": "work/low-poly/revision-07/process.json",
+      "bytes": 3811,
+      "sha256": "04e453bb60211bdca10c4d9c77674dd5a564947c10d22d0f47fc0d376d948dc3"
+    },
+    {
+      "path": "work/low-poly/revision-07/source.blend",
+      "bytes": 9667157,
+      "sha256": "f02385b86b8ede4de43766c0f4f5575e9581bbf6f5425d911dc52d4353b7ddcf"
+    },
+    {
+      "path": "work/low-poly/revision-08/candidate.glb",
+      "bytes": 2019308,
+      "sha256": "3e6e061fc02779d3516d114b53629fa0d5b585e815d4683ce74dd7d9c2822e0e"
+    },
+    {
+      "path": "work/low-poly/revision-08/pack-fantasy-texture.py",
+      "bytes": 4117,
+      "sha256": "6f8da34fe585279a11647db82f3e62ec9088be55af5d2aa607d4776b108149bd"
+    },
+    {
+      "path": "work/low-poly/revision-08/process.json",
+      "bytes": 3978,
+      "sha256": "21d27b6a59e7c4c399b9a645543446b0814d32c0f62aafd771c575670e8aa83d"
+    },
+    {
+      "path": "work/low-poly/revision-08/texture-packing.json",
+      "bytes": 2577,
+      "sha256": "1d4952d677f3d58f2fd17aae611cf905fad840a4677f2b0c86326017e14c3d4d"
+    },
+    {
+      "path": "work/trellis/dense-res1024-seed0042_base.png",
+      "bytes": 5406332,
+      "sha256": "ee2c8099391ea81d693375b6e5e8c476b3bb4479995a2253e6091c3c4d8859e8"
+    },
+    {
+      "path": "work/trellis/dense-res1024-seed0042.glb",
+      "bytes": 18525536,
+      "sha256": "472d1178377f458270dc16ccf22b8876fb6180ebfde66504a0272e897a4b4bde"
+    },
+    {
+      "path": "work/trellis/dense-res1024-seed0042.json",
+      "bytes": 922,
+      "sha256": "4800040a3f3f780b2f90cf320d92e05355d6d63efe360a0622c8224a22ad6061"
+    },
+    {
+      "path": "work/trellis/dense-res1024-seed0042.log",
+      "bytes": 6324,
+      "sha256": "c8da9d7965262767b79c61a8490c28e24f7b526cab286718aeebf0308d3290a3"
+    },
+    {
+      "path": "work/trellis/dense-res1024-seed0042.ply",
+      "bytes": 9637291,
+      "sha256": "3e327cb9bd515550f7144ba0c9dea6cb9c838792d1e74b5772559d1c3b00c5bc"
+    },
+    {
+      "path": "work/trellis/selected-dense.json",
+      "bytes": 238,
+      "sha256": "391165f9264d481357d66d3b43d59c5b44b3573890e9c9cec288a6f3feba4d6e"
+    },
+    {
+      "path": "workflow/candidate-01/__pycache__/align_apply.cpython-313.pyc",
+      "bytes": 4997,
+      "sha256": "de6bc4f3c2e2c2b38decc683b874d825fb37dd64b2d232c80835449dbf95e355"
+    },
+    {
+      "path": "workflow/candidate-01/__pycache__/blender_reduce.cpython-313.pyc",
+      "bytes": 30589,
+      "sha256": "73662a64f2558f010d2cd4c2650efd7411527aa9781245631a5f7c6aec81a2aa"
+    },
+    {
+      "path": "workflow/candidate-01/__pycache__/blender_rig.cpython-313.pyc",
+      "bytes": 96056,
+      "sha256": "71c29d5bef37403375f83879017564aecc9033026422391d78d3c72985cd1bf3"
+    },
+    {
+      "path": "workflow/candidate-01/__pycache__/clips_data.cpython-313.pyc",
+      "bytes": 31116,
+      "sha256": "8baaa482a23641ccbbd0b0cc87027d817dd1a59852b75d1e55da045bc691bba1"
+    },
+    {
+      "path": "workflow/candidate-01/__pycache__/graph_tools.cpython-313.pyc",
+      "bytes": 10678,
+      "sha256": "868dd1ecd66af8dc96e5db291730bbd3f4c52a8c2ea9e62ec34c4db16bf07132"
+    },
+    {
+      "path": "workflow/candidate-01/__pycache__/skin_weights.cpython-313.pyc",
+      "bytes": 16770,
+      "sha256": "4f88aaab15fdfbd70611dfed0eacf6db8d2a1e9ecd7bf859c1fcba3f2debf793"
+    },
+    {
+      "path": "workflow/candidate-01/align_apply.py",
+      "bytes": 2775,
+      "sha256": "ff04ae64da24a2169a2057d2055c682885ea0e513f8e3c371987b0b3773fb3e7"
+    },
+    {
+      "path": "workflow/candidate-01/blender_clip_sheet.py",
+      "bytes": 7617,
+      "sha256": "bd8b1911f05f02bffe3d84c01bffc039f5818f2aa29704e096a37f060c5ac294"
+    },
+    {
+      "path": "workflow/candidate-01/blender_clip_video.py",
+      "bytes": 3769,
+      "sha256": "a576c06839204bff9c7ba2d6f10e5c67b0d240a88d0f2fad1c5c43ea98facea1"
+    },
+    {
+      "path": "workflow/candidate-01/blender_reduce.py",
+      "bytes": 18407,
+      "sha256": "85e895de6f4e993b21f11affbf6e8c835fb52fb35b8fb906f2a517b6d656d9e2"
+    },
+    {
+      "path": "workflow/candidate-01/blender_rig.py",
+      "bytes": 60126,
+      "sha256": "4aeb763b62743f99a9da468bbbf040ffeda440cbdb5a1bf8e36aaf96caaeb803"
+    },
+    {
+      "path": "workflow/candidate-01/clips_data.py",
+      "bytes": 22262,
+      "sha256": "72e43f2a38024a08c273651fb73fd28eb7a2891e333ed284d36a244791d468d3"
+    },
+    {
+      "path": "workflow/candidate-01/glb_skin.py",
+      "bytes": 8834,
+      "sha256": "57f44a9daba03f7a5b7d4df8043685ec4a67a772d669694548c31e34b16a2117"
+    },
+    {
+      "path": "workflow/candidate-01/graph_tools.py",
+      "bytes": 5866,
+      "sha256": "c69c2d3a60fa7a511ac241c9b05d5adabe460c666afab89ac1e7b82c10466637"
+    },
+    {
+      "path": "workflow/candidate-01/mesh_tools.py",
+      "bytes": 6079,
+      "sha256": "8c2e32d44412aa835a15cb55bccbc8162421af368848fbf95e756485b2bf123c"
+    },
+    {
+      "path": "workflow/candidate-01/skin_weights.py",
+      "bytes": 10277,
+      "sha256": "30c7caf8c3d07ecb7c36d4d85c541404860093889cb023d388ad1a8acee78c56"
+    },
+    {
+      "path": "workflow/candidate-01/tool-lineage.json",
+      "bytes": 2491,
+      "sha256": "c01aa9d1af6aaa33d21419108c7d7f9b986d1eca08672470f546793204486d40"
+    },
+    {
+      "path": "workflow/codex-completion/generate-playable-model.py",
+      "bytes": 5858,
+      "sha256": "ba3302f923b0a908bbeb804b5cb0ab7a3fe03b8de7eebb7c593d841faf4678bb"
+    },
+    {
+      "path": "workflow/codex-completion/measure-fantasy-contact.mjs",
+      "bytes": 1531,
+      "sha256": "a4f1718fc0978eab3a2624ad75b0decda696de536bd501298bbddf79cfa8999b"
+    },
+    {
+      "path": "workflow/codex-completion/pack-fantasy-texture.py",
+      "bytes": 4117,
+      "sha256": "6f8da34fe585279a11647db82f3e62ec9088be55af5d2aa607d4776b108149bd"
+    },
+    {
+      "path": "workflow/codex-completion/prepare-fantasy-surface.py",
+      "bytes": 5829,
+      "sha256": "d9ac79d832fec65c6fe40e0820eecb5f117a9ff9da0f023feaf92e2d8b7bd121"
+    },
+    {
+      "path": "workflow/codex-completion/prepare-katana.py",
+      "bytes": 6007,
+      "sha256": "c2bca0ebed07d5c517b02ab0ae4b8f0c9d1b820847b86899652ae4e57b0193de"
+    },
+    {
+      "path": "workflow/codex-completion/render-fantasy-qa.py",
+      "bytes": 4086,
+      "sha256": "1e62c4275df7c8c7e02e525725bf12dcd7d1f4ef9d4eb58152c0be3be320a640"
+    },
+    {
+      "path": "workflow/codex-completion/rig-fantasy-playable.py",
+      "bytes": 13282,
+      "sha256": "83732c6469ec1ccf2b105a30784a405f0fb3a6310eaef23733266781172772a2"
+    },
+    {
+      "path": "workflow/codex-completion/validate-fantasy-glb.py",
+      "bytes": 4391,
+      "sha256": "4064a048e9e582e1b91b8cea336cd6b5655cda46eb143ec547c849e4ef4a1e5d"
+    },
+    {
+      "path": "workflow/current/generate-playable-model.py",
+      "bytes": 5858,
+      "sha256": "ba3302f923b0a908bbeb804b5cb0ab7a3fe03b8de7eebb7c593d841faf4678bb"
+    },
+    {
+      "path": "workflow/current/prepare-fantasy-surface.py",
+      "bytes": 5795,
+      "sha256": "3b7d8f05b492e64bc2b519a0d7ce62996bb4db6e52d3021cee7835b929261811"
+    },
+    {
+      "path": "workflow/current/setup-fantasy-playables.py",
+      "bytes": 8613,
+      "sha256": "6638c84240455bf85228c7581f3704b1b545ea76d332f2b5cde77ada009592cf"
+    }
+  ],
+  "directories": [
+    "geometry",
+    "qa",
+    "qa/clay-07",
+    "qa/denoised-07",
+    "qa/dense-neutral",
+    "qa/final-05-neutral",
+    "qa/final-08-neutral",
+    "qa/final-neutral",
+    "qa/normal-repair-06",
+    "source",
+    "source/original",
+    "source/prepared",
+    "work",
+    "work/low-poly",
+    "work/low-poly/revision-01",
+    "work/low-poly/revision-02",
+    "work/low-poly/revision-03",
+    "work/low-poly/revision-04",
+    "work/low-poly/revision-05",
+    "work/low-poly/revision-06",
+    "work/low-poly/revision-07",
+    "work/low-poly/revision-08",
+    "work/rig",
+    "work/trellis",
+    "workflow",
+    "workflow/candidate-01",
+    "workflow/candidate-01/__pycache__",
+    "workflow/codex-completion",
+    "workflow/current"
+  ],
+  "fileCount": 152,
+  "totalBytes": 121614214,
+  "existingEqualFiles": 0,
+  "newFiles": 152
+}

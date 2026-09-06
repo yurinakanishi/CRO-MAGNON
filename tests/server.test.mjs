@@ -12,8 +12,8 @@ async function start(t) {
   return { game, url: `ws://127.0.0.1:${game.address().port}/ws`, http: `http://127.0.0.1:${game.address().port}` };
 }
 
-function connect(url, room = 'TEST', name = '旅人') {
-  const socket = new WebSocket(`${url}?room=${room}&name=${encodeURIComponent(name)}`);
+function connect(url, room = 'TEST', name = '旅人', character = {}) {
+  const socket = new WebSocket(`${url}?${new URLSearchParams({ ...character, room, name })}`);
   const messages = [];
   socket.on('message', (data) => messages.push(JSON.parse(data.toString())));
   socket.on('error', () => {});
@@ -51,6 +51,16 @@ test('five actual clients synchronize, sixth is refused, and rooms are isolated'
   separate.socket.close();
   await sleep(40);
   assert.equal(game.rooms.has('OTHER'), false);
+});
+
+test('female is the server default and all four appearances synchronize to peers', async (t) => {
+  const { url } = await start(t);
+  const appearances = [{}, { species: 'cro', gender: 'male' }, { species: 'nea', gender: 'female' }, { species: 'nea', gender: 'male' }, { species: 'nea', gender: 'invalid' }];
+  const clients = appearances.map((appearance, index) => connect(url, 'APPEARANCE', `Character ${index}`, appearance));
+  const states = await Promise.all(clients.map(client => client.wait(message => message.type === 'state' && message.players.length === 5)));
+  const expected = ['cro/female', 'cro/male', 'nea/female', 'nea/female', 'nea/male'];
+  for (const state of states) assert.deepEqual(state.players.map(player => `${player.species}/${player.gender}`).sort(), expected);
+  assert.equal(states[0].npc.gender, 'male');
 });
 
 test('resource gathering and camp completion are decided by the server', async (t) => {
@@ -99,11 +109,46 @@ test('movement is normalized, times out, and ignores client-authored position', 
   client.send({ type: 'move', dx: 1000, dz: 1000, x: 99999, z: 99999 });
   await sleep(700);
   const traveled = Math.hypot(player.x - origin.x, player.z - origin.z);
-  assert.ok(traveled > 2 && traveled < 4.5, `Unexpected travel distance: ${traveled}`);
+  assert.ok(traveled > .4 && traveled < .8, `Unexpected walking distance: ${traveled}`);
   const stopped = { x: player.x, z: player.z };
   await sleep(150);
   assert.equal(player.x, stopped.x);
   assert.equal(player.z, stopped.z);
+});
+
+test('run requests use the server speed and gait changes keep the planned destination', async t => {
+  const {game,url}=await start(t),client=connect(url,'GAIT');
+  const {id}=await client.wait(m=>m.type==='welcome');
+  const p=game.rooms.get('GAIT').players.get(id);
+  client.send({type:'target',x:58,z:46,running:false,speed:900});
+  await client.wait(m=>m.type==='state'&&m.players[0].moving);
+  assert.ok(p.target);assert.ok(p.speed<=1.25001);
+  client.send({type:'gait',running:true});
+  const run=await client.wait(m=>m.type==='state'&&m.players[0].running);
+  assert.ok(Math.abs(run.players[0].speed-3.5)<.001);assert.ok(p.target);
+  client.send({type:'move',dx:0,dz:0,running:false});await sleep(60);
+  assert.equal(p.running,false);assert.equal(p.moving,false);assert.equal(p.target,null);assert.deepEqual(p.path,[]);
+});
+
+test('unchanged world resources are not resent on movement ticks and static files revalidate from cache', async t => {
+  const {url,http}=await start(t),client=connect(url,'DELTA');
+  const initial=await client.wait(m=>m.type==='state'&&m.resources);
+  const tick=await client.wait(m=>m.type==='state'&&!m.resources);
+  assert.ok(tick.animals.length===2);assert.ok(JSON.stringify(tick).length<JSON.stringify(initial).length*.65);
+  const asset=await fetch(`${http}/models/stone-axe/model.glb`,{method:'HEAD'});
+  assert.ok(asset.headers.get('etag'));
+  const cached=await fetch(`${http}/models/stone-axe/model.glb`,{headers:{'if-none-match':asset.headers.get('etag')}});
+  assert.equal(cached.status,304);assert.equal((await cached.arrayBuffer()).byteLength,0);
+  assert.equal((await fetch(`${http}/src/models.js`)).status,404);
+  assert.equal((await fetch(`${http}/src/world.js`)).status,404);
+});
+
+test('depleted solid resources cannot regenerate inside a player',async t=>{
+  const {game,url}=await start(t),client=connect(url,'REGROW');
+  const {id}=await client.wait(m=>m.type==='welcome'),room=game.rooms.get('REGROW'),p=room.players.get(id),resource=room.resources[0];
+  resource.amount=0;resource.regeneratedAt=Date.now()-21000;p.x=resource.x;p.z=resource.z;
+  await sleep(80);assert.equal(resource.amount,0);
+  p.x=49;p.z=54;await sleep(80);assert.equal(resource.amount,1);
 });
 
 test('crafting, trading, and regeneration enforce resource costs and proximity', async (t) => {
@@ -120,7 +165,7 @@ test('crafting, trading, and regeneration enforce resource costs and proximity',
   player.lastAction = 0;
   client.send({ type: 'action', action: 'craft' });
   await client.wait((message) => message.type === 'state' && message.players[0].tool);
-  assert.deepEqual(player.inventory, { wood: 2, stone: 0, berry: 0 });
+  assert.deepEqual(player.inventory, { wood: 2, stone: 0, berry: 0, rawMeat: 0, cookedMeat: 0 });
   player.lastAction = 0;
   client.send({ type: 'action', action: 'trade' });
   await client.wait((message) => message.type === 'notice' && message.text.startsWith('オルに近づいて'));
@@ -130,11 +175,11 @@ test('crafting, trading, and regeneration enforce resource costs and proximity',
   player.lastAction = 0;
   client.send({ type: 'action', action: 'trade' });
   await client.wait((message) => message.type === 'notice' && message.text.includes('ベリー +3'));
-  assert.deepEqual(player.inventory, { wood: 0, stone: 0, berry: 3 });
+  assert.deepEqual(player.inventory, { wood: 0, stone: 0, berry: 3, rawMeat: 0, cookedMeat: 0 });
   const resource = room.resources[0];
   resource.amount = 0;
   resource.regeneratedAt = Date.now() - 21000;
-  await client.wait((message) => message.type === 'state' && message.resources[0].amount === 1);
+  await client.wait((message) => message.type === 'state' && message.resources?.[0].amount === 1);
   assert.equal(resource.amount, 1);
 });
 

@@ -1,0 +1,14 @@
+{
+  "schemaVersion": 1,
+  "modelKey": "cat-kunoichi",
+  "status": "copied-and-all-source-and-destination-hashes-verified",
+  "verifiedAt": "2026-09-06T19:11:49.932Z",
+  "planSha256": "892b73861d9bb987d1f7c581a050ecab4ded474878ee77c71ebfdc09dac43cfd",
+  "sourceRoot": "C:\\Users\\yurin\\Desktop\\projects\\CRO-MAGNON\\output\\model-generation\\models\\cat-kunoichi",
+  "destinationRoot": "C:\\Users\\yurin\\Desktop\\projects\\threed-model-creation\\models\\cat-kunoichi",
+  "files": 699,
+  "bytes": 419465924,
+  "copied": 699,
+  "skippedEqual": 0,
+  "preflightExistingEqual": 0
+}

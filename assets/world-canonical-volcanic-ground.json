@@ -1,0 +1,14 @@
+{
+  "schemaVersion": 1,
+  "modelKey": "volcanic-ground",
+  "status": "copied-and-all-source-and-destination-hashes-verified",
+  "verifiedAt": "2026-09-06T21:38:41.889Z",
+  "planSha256": "25495bf38d6dea4ae02a893f1a68e477fac3ae15c359b480ad3562b0735b8bdd",
+  "sourceRoot": "C:\\Users\\yurin\\Desktop\\projects\\CRO-MAGNON\\output\\model-generation\\models\\volcanic-ground",
+  "destinationRoot": "C:\\Users\\yurin\\Desktop\\projects\\threed-model-creation\\models\\volcanic-ground",
+  "files": 84,
+  "bytes": 148827618,
+  "copied": 84,
+  "skippedEqual": 0,
+  "preflightExistingEqual": 0
+}

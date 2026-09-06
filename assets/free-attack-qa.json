@@ -1,0 +1,41 @@
+{
+  "date": "2026-09-06",
+  "status": "passed",
+  "problem": [
+    "The UI and server required an alive in-range mammoth before starting an attack.",
+    "The user's 3002 server was running pre-hunting code while serving newer frontend files. One open page had no F handler; another had a disabled attack button because the legacy animal state had no phase."
+  ],
+  "changes": [
+    "F, physical KeyF, 5 and the attack button initiate a forward spear swing without selecting or requiring a target.",
+    "The server resolves one nearest damageable target after 333 ms within reach, a forward 55-degree half-angle, and unobstructed line of sight. Swing cooldown is 850 ms.",
+    "Explicit nearby click targets can aim; stale, missing, remote and invalid targets do not block the swing.",
+    "The common combat handler supports hostile entries in room.enemies and animals, excluding friendly players and the village NPC. No new enemy species or spawn locations were introduced.",
+    "Attacking interrupts cooking while retaining raw meat. IME composition, text entry and modifier shortcuts do not trigger attacks.",
+    "All four existing local game ports now report combatVersion 2. The user's existing pages were refreshed at the same URLs."
+  ],
+  "automated": {
+    "fullSuitePassed": 58,
+    "syntax": "passed",
+    "disposableRestoreServerTestsPassed": 5,
+    "cases": ["empty world swings", "five-peer swing synchronization", "generic enemy damage and death", "friendly exclusion", "range and occlusion", "behind-player exclusion", "windup entry and exit", "cooldown", "immediate cooking interruption", "physical keyboard layout"]
+  },
+  "browser": {
+    "freshRoom": "http://127.0.0.1:3000/?room=FREE-ATTACK-QA",
+    "airSwing": {"huntInRange": false, "attackSequence": [0, 1, 2], "animalHealth": 100, "facingUnchanged": true, "attackAnimationObserved": true, "buttonEnabledAfterCooldown": true},
+    "untargetedForwardHit": {"attackSequence": 3, "animalHealthBefore": 100, "animalHealthAfter": 75},
+    "existingInApp3002": {"profile": "旅人604", "woodPreserved": 1, "combatVersion": 2, "fAirSwingSequence": 1},
+    "existingChrome3002": {"profile": "旅人505", "woodPreserved": 0, "combatVersion": 2, "fAirSwingSequence": 1},
+    "previous3003Demo": {"reloaded": true, "combatVersion": 2, "attackEnabledWithoutNearbyTarget": true},
+    "newPageConsoleErrors": [],
+    "newPageConsoleWarnings": []
+  },
+  "restart": {
+    "updatedPorts": [3000, 3001, 3002, 3003],
+    "checkpointDirectory": "output/free-attack-restart",
+    "userProfilesRestored": 2,
+    "preserved": ["profile name/species/gender", "inventory", "tool", "energy", "camp", "resource amounts", "safe position"],
+    "legacyAnimals": "Moved to the new open-meadow defaults; original snapshot retained.",
+    "limits": "Public snapshots do not include movement paths or resource regeneration timestamps. Movement stops and regeneration timers restart. This is a one-time local upgrade wrapper, not permanent account persistence."
+  },
+  "modelChanges": false
+}

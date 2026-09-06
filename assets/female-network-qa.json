@@ -1,0 +1,73 @@
+{
+  "room": "FEMALE-QA",
+  "checks": [
+    "sixth client refused"
+  ],
+  "maxPlayers": 5,
+  "states": 3053,
+  "staticPenetrations": 0,
+  "dynamicPenetrations": 0,
+  "fullSnapshotBytes": [
+    4149,
+    3984,
+    4253,
+    3967,
+    4242,
+    3995,
+    4261,
+    3975,
+    4229,
+    3954,
+    4222,
+    4239,
+    4248,
+    4244
+  ],
+  "movementSnapshotBytes": [
+    2048,
+    2062,
+    2050,
+    2063,
+    2011,
+    1966,
+    1981,
+    1981,
+    1979,
+    1978,
+    1983,
+    1994,
+    1984,
+    1975,
+    1977,
+    1975,
+    1977,
+    1948,
+    1944,
+    1945,
+    1962,
+    1959,
+    1943,
+    1957,
+    1943,
+    1958,
+    1923,
+    1932,
+    1931,
+    1921
+  ],
+  "animalClips": [
+    "Walk_Loop",
+    "Idle_Loop",
+    "Graze_Loop"
+  ],
+  "species": [
+    "cro",
+    "nea"
+  ],
+  "characters": [
+    "cro/female",
+    "nea/female",
+    "cro/male",
+    "nea/male"
+  ]
+}

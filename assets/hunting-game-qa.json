@@ -1,0 +1,155 @@
+{
+  "checkedAt": "2026-09-06T13:50:19.356121+00:00",
+  "status": "passed-reviewed-prototype",
+  "gameUrl": "http://127.0.0.1:3003/?room=HUNT-QA",
+  "tests": {
+    "fullSuitePassed": 48,
+    "syntax": "passed",
+    "exactDeliveryVerification": {
+      "models": 19,
+      "status": "passed"
+    }
+  },
+  "browser": {
+    "surface": "Codex in-app browser",
+    "viewport": [
+      1280,
+      720
+    ],
+    "room": "HUNT-QA",
+    "players": 5,
+    "appearanceVariants": [
+      "cro/female",
+      "cro/male",
+      "nea/female",
+      "nea/male"
+    ],
+    "consoleErrors": [],
+    "consoleWarnings": []
+  },
+  "observations": [
+    "Default Cro-Magnon woman loaded; all four appearance variants rendered among five players, plus NPC and two mammoths.",
+    "Used run button and north meadow map destination. Open grass clearing had no trees or rocks within the roaming footprint; mammoth moved and grazed.",
+    "Button and F key attacks used visible forward spear thrust. Authoritative HP changed 100→75→50→25→0 after four accepted strikes.",
+    "Mammoth entered dying then meat phase; one real TRELLIS meat model appeared at the kill location.",
+    "E and interaction button picked up exactly four raw meat, remaining shared count decreased 4→3→2→1→0 and ground pile disappeared.",
+    "Raw meat left the eat button disabled. Cook button navigated back to the central fire at camp level zero.",
+    "Immediate cooking cancellation retained all four raw meat and zero cooked meat.",
+    "E started a visible three-second progress bar; completion changed raw 4→3 and cooked 0→1.",
+    "Eating cooked meat changed cooked 1→0 and energy 92→100 (recovery capped at maximum).",
+    "Network observer clients only moved and watched; all attacks, harvesting, cooking and eating were performed through the browser UI.",
+    "After depletion, the shared mammoth respawned at full health in the northern clearing after 90.029 seconds."
+  ],
+  "performanceSamples": [
+    {
+      "location": "camp",
+      "fps": 57,
+      "drawCalls": 121,
+      "renderTriangles": 1249984,
+      "jsHeapMiB": 249.3
+    },
+    {
+      "location": "north meadow with five players",
+      "fps": 60,
+      "drawCalls": 78,
+      "renderTriangles": 988162,
+      "jsHeapMiB": 251.4
+    }
+  ],
+  "loadingSampleMs": {
+    "characters": 555,
+    "worldAssets": 1036,
+    "sceneReady": 3902
+  },
+  "networkEvidence": "assets/hunting-network-qa.json",
+  "mobileEvidence": "assets/hunting-mobile-qa.json",
+  "animationEvidence": "output/hunting-animation/reviewed-candidates.json",
+  "changedAssets": {
+    "cro-magnon-hunter": {
+      "sha256": "5a23c4abe7903466307bba7c2915276e0c431128771d7b7c612882ada89745eb",
+      "bytes": 10014340,
+      "triangles": 69990,
+      "clips": [
+        "Craft",
+        "Eat",
+        "Gather",
+        "Give",
+        "Idle_Loop",
+        "Run_Loop",
+        "Walk_Loop",
+        "Wave",
+        "Attack"
+      ]
+    },
+    "neanderthal-hunter": {
+      "sha256": "7ce4ff20eb1e2ca64df6b51d1c2060311e630394afdb38996eb7e34bbe5ca1e0",
+      "bytes": 10562780,
+      "triangles": 54422,
+      "clips": [
+        "Craft",
+        "Eat",
+        "Gather",
+        "Give",
+        "Idle_Loop",
+        "Run_Loop",
+        "Walk_Loop",
+        "Wave",
+        "Attack"
+      ]
+    },
+    "cro-magnon-woman": {
+      "sha256": "8690d5563233614397c7cfad6af0e0b3d89273a29fa59bf421372ec1168ef1b7",
+      "bytes": 13859220,
+      "triangles": 65707,
+      "clips": [
+        "Craft",
+        "Eat",
+        "Gather",
+        "Give",
+        "Idle_Loop",
+        "Run_Loop",
+        "Walk_Loop",
+        "Wave",
+        "Attack"
+      ]
+    },
+    "neanderthal-woman": {
+      "sha256": "63ab98a62b2706e76b4cc551d2a0c8bd23363072258598b606d5129ad32a9ff9",
+      "bytes": 13484804,
+      "triangles": 68090,
+      "clips": [
+        "Craft",
+        "Eat",
+        "Gather",
+        "Give",
+        "Idle_Loop",
+        "Run_Loop",
+        "Walk_Loop",
+        "Wave",
+        "Attack"
+      ]
+    },
+    "woolly-mammoth": {
+      "sha256": "f3ebbe7d55268affc715052dbd3c98e68577cd34298aeeb74f0ade94004c2f2d",
+      "bytes": 4286096,
+      "triangles": 24173,
+      "clips": [
+        "Graze_Loop",
+        "Idle_Loop",
+        "Run_Loop",
+        "Walk_Loop",
+        "Death"
+      ]
+    },
+    "mammoth-meat": {
+      "sha256": "50bf72d1dc5ff23b7eb206e7d0c6535d9a4ac1559190e6c4f5bbb94cd0ffaf2d",
+      "bytes": 579220,
+      "triangles": 2826,
+      "clips": []
+    }
+  },
+  "limits": [
+    "Local five-client smoke test; these FPS samples are not a guarantee for every device. No long-duration memory soak test.",
+    "Spear melee and authored death animation; no thrown spear, retaliation, free ragdoll physics or PvP in this increment."
+  ]
+}

@@ -22,7 +22,7 @@ function actor() {
   const clips = HUMAN_CLIPS.map((name, index) => new THREE.AnimationClip(name, 1, [
     new THREE.NumberKeyframeTrack('Joint.rotation[x]', [0, .5, 1], [0, .1 * (index + 1), 0]),
   ]));
-  return { root, joint, animation: new CharacterAnimation(root, clips, { speed: 8, runSpeed: 4 }) };
+  return { root, joint, animation: new CharacterAnimation(root, clips, { walkSpeed: 1, runSpeed: 4 }) };
 }
 
 test('each player can perform a different action and one-shots return to idle', () => {
@@ -41,7 +41,7 @@ test('each player can perform a different action and one-shots return to idle', 
 test('movement cancels a stationary action, matches clip speed, and stops cleanly', () => {
   const { animation, root } = actor();
   animation.play('Craft');
-  animation.update(.2, true);
+  animation.update(.2, 8, true);
   assert.equal(animation.name, 'Run_Loop');
   assert.ok(Math.abs(animation.current.time - .4) < 1e-6);
   assert.equal(animation.play('Gather'), false);
@@ -52,4 +52,34 @@ test('movement cancels a stationary action, matches clip speed, and stops cleanl
   assert.ok(animation.current.time < .2);
   assert.deepEqual(root.position.toArray(), [12, 0, 6]);
   animation.dispose();
+});
+
+test('walking and running use separate clips and retime to actual travel speed', () => {
+  const { animation } = actor();
+  animation.update(.2, 1.25, false);
+  assert.equal(animation.name, 'Walk_Loop');
+  assert.equal(animation.current.getEffectiveTimeScale(), 1.25);
+  animation.update(.2, 3.5, true);
+  assert.equal(animation.name, 'Run_Loop');
+  assert.equal(animation.current.getEffectiveTimeScale(), .875);
+  animation.update(.2, 0, true);
+  assert.equal(animation.name, 'Idle_Loop');
+  animation.dispose();
+});
+
+test('attacks require a new server sequence and ignore interpolation drift', () => {
+  const before={id:'one',attackSequence:2,inventory:{rawMeat:0,cookedMeat:0}},after={...before,attackSequence:3};
+  assert.equal(confirmedAction(before,after),'Attack');assert.equal(confirmedAction(after,after),null);
+  assert.equal(confirmedAction(null,after),null);
+  const {animation}=actor();animation.update(.1,1.25);assert.equal(animation.playAttack(.25),true);
+  animation.update(.1,.1);assert.equal(animation.name,'Attack');assert.ok(animation.current.time>.3);
+  animation.update(.7,0);assert.equal(animation.name,'Idle_Loop');assert.equal(animation.playAttack(10),false);animation.dispose();
+});
+
+test('harvesting, cooking start, and eating meat animate only confirmed changes', () => {
+  const before={id:'one',energy:40,inventory:{wood:0,stone:0,berry:0,rawMeat:0,cookedMeat:1}};
+  assert.equal(confirmedAction(before,{...before,inventory:{...before.inventory,rawMeat:1}}),'Gather');
+  assert.equal(confirmedAction(before,{...before,cookingEndsAt:5000}),'Craft');
+  assert.equal(confirmedAction(before,{...before,energy:85,inventory:{...before.inventory,cookedMeat:0}}),'Eat');
+  assert.equal(confirmedAction(before,{...before,inventory:{...before.inventory,cookedMeat:2}}),null);
 });

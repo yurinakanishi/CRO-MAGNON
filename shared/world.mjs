@@ -1,11 +1,14 @@
-export const WORLD = Object.freeze({ size: 100, speed: 8, maxPlayers: 5 });
+export const WORLD = Object.freeze({ version: 2, size: 640, minX: -256, minZ: -256, maxX: 384, maxZ: 384,
+  chunkSize: 32, edgeMargin: 2, walkSpeed: 1.25, runSpeed: 3.5, playerRadius: .32, maxPlayers: 5 });
+export const worldClamp = (value, axis = 'x') => Math.max(WORLD[axis === 'x' ? 'minX' : 'minZ'] + WORLD.edgeMargin,
+  Math.min(WORLD[axis === 'x' ? 'maxX' : 'maxZ'] - WORLD.edgeMargin, value));
 
 export const CAMP = Object.freeze({
   x: 50, z: 50, wood: 0, stone: 0, level: 0, goalWood: 12, goalStone: 6,
 });
 
 export const NPC = Object.freeze({
-  x: 70, z: 41, name: 'オル', species: 'nea',
+  x: 70, z: 41, name: 'オル', species: 'nea', gender: 'male',
   greeting: '火は、ひとりでは守れない。木か石を2つ、ベリー3つと交換しよう。',
 });
 
@@ -20,6 +23,10 @@ const nodes = [
   ['stone', 82, 19, 8], ['stone', 16, 51, 6],
   ['berry', 60, 53, 5], ['berry', 40, 41, 5], ['berry', 32, 69, 5],
   ['berry', 72, 49, 5], ['berry', 49, 28, 5], ['berry', 78, 83, 5],
+  ['wood',-108,-91,7],['stone',-122,-92,8],['berry',-119,-101,4],
+  ['stone',202,-101,8],['stone',215,-112,8],
+  ['stone',204,211,8],['wood',216,200,5],
+  ['stone',-110,226,8],['wood',-96,212,5],
 ];
 
 export const INITIAL_RESOURCES = Object.freeze(nodes.map(([type, x, z, amount], index) =>

@@ -1,11 +1,16 @@
+import { CHARACTER_MODELS } from '/shared/characters.mjs';
 import * as THREE from 'three';
 import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
 import { clone } from 'three/addons/utils/SkeletonUtils.js';
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 import { handGripPlacement } from './character-assets.js';
 import { loadVerifiedGLB } from './world-assets.js';
+import { HUMAN_CLIPS } from './character-animation.js';
+import { ENEMY_CLIPS } from './enemy-state.js';
+import { orientSpear } from './spear-pose.js';
+import { orientKatana } from './katana-pose.js';
 
-const requiredClips = ['Idle_Loop', 'Walk_Loop', 'Run_Loop', 'Gather', 'Craft', 'Give', 'Eat', 'Wave'];
+const requiredClips = HUMAN_CLIPS;
 const ui = Object.fromEntries(['review-canvas', 'viewport', 'status', 'performance', 'model-file', 'clip', 'play', 'timeline', 'count', 'camera', 'skeleton', 'ground', 'model-info', 'clip-report', 'hash', 'equipment', 'equipment-info'].map(id => [id, document.getElementById(id)]));
 const renderer = new THREE.WebGLRenderer({ canvas: ui['review-canvas'], antialias: true });
 renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
@@ -26,7 +31,7 @@ sun.castShadow = true;
 sun.shadow.mapSize.set(2048, 2048);
 Object.assign(sun.shadow.camera, { left: -8, right: 8, top: 8, bottom: -8, near: .1, far: 30 });
 sun.shadow.normalBias = .012;
-scene.add(sun);
+scene.add(sun,sun.target);
 // A metre grid and shadow receiver are diagnostic aids, not production assets.
 const floor = new THREE.Mesh(new THREE.PlaneGeometry(50, 50), new THREE.MeshStandardMaterial({ color: '#656960', roughness: 1 }));
 floor.rotation.x = -Math.PI / 2;
@@ -73,6 +78,18 @@ function disposeModel(gltf) {
 }
 
 function setCamera() {
+  if(actors.length) {
+    const bounds=new THREE.Box3();for(const actor of actors)bounds.expandByObject(actor.root);
+    const size=bounds.getSize(new THREE.Vector3()),centre=bounds.getCenter(new THREE.Vector3()),radius=Math.max(2,size.length()*.6);
+    orbit.maxDistance=Math.max(40,radius*12);camera.far=Math.max(200,radius*20);camera.updateProjectionMatrix();
+    sun.target.position.copy(centre);sun.position.copy(centre).add(new THREE.Vector3(-2,3.5,2.5).multiplyScalar(radius));
+    Object.assign(sun.shadow.camera,{left:-radius,right:radius,top:radius,bottom:-radius,near:.1,far:radius*9});sun.shadow.camera.updateProjectionMatrix();
+    // Keep shadow depth precision proportional to the inspected object. A human-
+    // sized bias creates contour-like self-shadow acne on 32-metre terrain tiles.
+    sun.shadow.bias=-.0001;sun.shadow.normalBias=Math.max(.012,radius*.001);
+    floor.position.y=Math.min(-.003,bounds.min.y-.01);grid.position.y=floor.position.y+.002;
+    floor.scale.setScalar(Math.max(1,Math.max(size.x,size.z)/40));
+  }
   const span = framingSpan * (actors.length === 5 && ui.camera.value !== 'tps' ? 2.2 : 1);
   const views = {
     front: [.9 * span, framingSpan * .8, 1.55 * span], rear: [0, framingSpan * .75, -2 * span],
@@ -85,7 +102,7 @@ function setCamera() {
   camera.position.set(...views[ui.camera.value]);
   orbit.target.add(framingOffset);
   camera.position.add(framingOffset);
-  if (actors.length && (!model?.animations.length || actors.some(actor => actor.gear)) && ui.camera.value !== 'tps') {
+  if (actors.length && (actors.length > 1 || !model?.animations.length || actors.some(actor => actor.gear)) && ui.camera.value !== 'tps') {
     // Fit every actual bounds corner. Height-only framing can crop long shelters,
     // bridges or ground tiles even when their nominal height fits the viewport.
     const bounds = new THREE.Box3();
@@ -115,7 +132,7 @@ function setClip() {
   ui.play.disabled = ui.timeline.disabled = !selected;
   ui.timeline.value = 0;
   for (const [index, actor] of actors.entries()) {
-    if (actor.gear) actor.gear.visible = !selected || selected.name.endsWith('_Loop');
+    if (actor.gear) actor.gear.visible = !selected || selected.name.endsWith('_Loop') || (selected.name === 'Attack' && ['flint-spear','kunoichi-katana'].includes(ui.equipment.value)) || (selected.name === 'Gather' && ui.equipment.value === 'stone-axe');
     actor.mixer.stopAllAction();
     actor.root.traverse(object => { if (object.isSkinnedMesh) object.skeleton.pose(); });
     actor.action = null;
@@ -132,7 +149,9 @@ function setClip() {
 function populateActors() {
   clearActors();
   if (!model) return;
-  const positions = [[0, 0], [-2.5, 0], [2.5, 0], [-1.25, 2.5], [1.25, 2.5]];
+  const assetBounds=new THREE.Box3().setFromObject(model.scene),assetSize=assetBounds.getSize(new THREE.Vector3());
+  const spacing=Math.max(2.5,assetSize.x*1.08,assetSize.z*1.08);
+  const positions = [[0, 0], [-spacing, 0], [spacing, 0], [-spacing*.5, spacing], [spacing*.5, spacing]];
   for (let i = 0; i < Number(ui.count.value); i++) {
     const root = clone(model.scene);
     // The parent offsets copies without correcting the file's origin, scale or axes.
@@ -141,7 +160,7 @@ function populateActors() {
     placement.add(root);
     root.traverse(object => { if (object.isMesh) { object.castShadow = true; object.receiveShadow = true; object.frustumCulled = false; } });
     const { grip, rotation } = handGripPlacement(root);
-    const equipment = grip && equipmentModels.get(ui.equipment.value);
+    const equipment = !ui.equipment.disabled && grip && equipmentModels.get(ui.equipment.value);
     let gear = null;
     if (equipment) {
       gear = equipment.gltf.scene.clone(true); gear.quaternion.copy(rotation); grip.add(gear);
@@ -150,7 +169,7 @@ function populateActors() {
     const helper = new THREE.SkeletonHelper(root);
     helper.visible = ui.skeleton.checked;
     const mixer = new THREE.AnimationMixer(root);
-    actors.push({ root: placement, animatedRoot: root, helper, mixer, action: null, gear });
+    actors.push({ root: placement, animatedRoot: root, helper, mixer, action: null, gear, gripUp: rotation });
     scene.add(placement, helper);
   }
   setClip();
@@ -182,9 +201,12 @@ async function openBuffer(buffer, name) {
     ui.clip.replaceChildren(new Option('静止姿勢', ''), ...model.animations.map(clip => new Option(`${clip.name} · ${clip.duration.toFixed(2)}秒`, clip.name)));
     ui.clip.value = model.animations.some(clip => clip.name === 'Idle_Loop') ? 'Idle_Loop' : '';
     ui.clip.disabled = ui.count.disabled = false;
-    ui.equipment.disabled = !model.scene.getObjectByName(THREE.PropertyBinding.sanitizeNodeName('Grip.R'));
-    ui['equipment-info'].hidden = ui.equipment.disabled;
-    const expected = !bones.size ? [] : model.animations.some(clip => clip.name === 'Graze_Loop') ? ['Idle_Loop', 'Walk_Loop', 'Run_Loop', 'Graze_Loop'] : requiredClips;
+    const enemy = model.animations.some(clip => clip.name === 'Hit');
+    ui.equipment.disabled = enemy || !model.scene.getObjectByName(THREE.PropertyBinding.sanitizeNodeName('Grip.R'));
+    ui['equipment-info'].hidden = ui.equipment.disabled && !enemy;
+    if(enemy)ui['equipment-info'].textContent='杖はこのGLBに含まれ、手の動きに合わせて動きます。外付けの槍は使用しません。';
+    else ui['equipment-info'].textContent=ui.equipment.value?'選択した装備を手に取り付けています。':'装備を選択すると握り位置を確認できます。';
+    const expected = !bones.size ? [] : enemy ? ENEMY_CLIPS : model.animations.some(clip => clip.name === 'Graze_Loop') ? ['Idle_Loop', 'Walk_Loop', 'Run_Loop', 'Graze_Loop', 'Death'] : requiredClips;
     const missing = expected.filter(name => !model.animations.some(clip => clip.name === name));
     ui['clip-report'].textContent = missing.length ? `必要な動作の不足: ${missing.join('、')}` : expected.length ? `${expected.length}クリップを検出。動き・接地・貫通・ループの継ぎ目を確認してください。` : '静物モデル。形状、材質、裏側、原点と寸法を確認してください。';
     ui['model-info'].textContent = `${name} / ${(buffer.byteLength / 1048576).toFixed(2)} MB / ${Math.round(triangles).toLocaleString()} triangles / ${meshes} meshes / ${bones.size} bones / 寸法 ${size.x.toFixed(2)} × ${size.y.toFixed(2)} × ${size.z.toFixed(2)} m / 最下点 Y=${bounds.min.y.toFixed(3)} m`;
@@ -194,7 +216,11 @@ async function openBuffer(buffer, name) {
     ui.status.textContent = '候補を表示中 — 形状、リグ、全動作を確認';
   } catch (error) {
     if (loaded && loaded !== model) disposeModel(loaded);
-    if (ownLoad === loadId) ui.status.textContent = `読込失敗: ${error.message}${model ? ' 前のモデルを表示しています。' : ''}`;
+    if (ownLoad === loadId) {
+      clearActors();disposeModel(model);model=null;selected=null;
+      ui.status.textContent = `読込失敗: ${error.message}`;
+      ui.hash.textContent='';ui.play.disabled=true;ui.timeline.disabled=true;
+    }
     console.error('GLB review load failed', error);
   }
 }
@@ -202,6 +228,7 @@ async function openBuffer(buffer, name) {
 ui['model-file'].addEventListener('change', async () => {
   const file = ui['model-file'].files[0];
   if (!file) return;
+  assetSelect.value = '';
   const request = ++requestId;
   ++loadId;
   const bytes = await file.arrayBuffer();
@@ -220,7 +247,7 @@ ui.equipment.addEventListener('change', async () => {
       else equipmentModels.set(key, { asset, gltf });
     }
     if (key !== ui.equipment.value) return;
-    ui['equipment-info'].textContent = key ? `装備 SHA-256 ${equipmentModels.get(key).asset.sha256} · ゲームと同じ握り位置。単発動作では装備を隠します。` : '';
+    ui['equipment-info'].textContent = key ? `装備 SHA-256 ${equipmentModels.get(key).asset.sha256} · ゲームと同じ握り位置・攻撃中の向き。` : '';
     populateActors();
   } catch (error) { ui['equipment-info'].textContent = `装備の読込失敗: ${error.message}`; }
 });
@@ -255,6 +282,10 @@ renderer.setAnimationLoop(now => {
   for (const actor of actors) {
     if (actor.action) actor.action.paused = !playing;
     if (playing) actor.mixer.update(dt);
+    if(actor.gear){
+      if(ui.equipment.value==='kunoichi-katana')orientKatana(actor.gear,actor.root,selected?.name==='Attack',actor.action?.time??0,actor.gripUp);
+      else orientSpear(actor.gear,actor.root,selected?.name==='Attack'&&ui.equipment.value==='flint-spear',actor.gripUp);
+    }
   }
   if (selected && playing && actors[0]?.action) ui.timeline.value = actors[0].action.time / selected.duration;
   orbit.update();
@@ -285,13 +316,13 @@ async function openServedModel(modelPath) {
 const assetSelect = document.getElementById('asset-model');
 assetSelect.addEventListener('change', () => { if (assetSelect.value) openServedModel(assetSelect.value); });
 async function populateAssetMenu() {
-  const sources = ['/models/cro-magnon-hunter/asset.json', '/models/neanderthal-hunter/asset.json', '/models/world-assets.json'];
+  const sources = [...CHARACTER_MODELS.map(model => `/models/${model.key}/asset.json`), '/models/world-assets.json'];
   for (const source of sources) {
     try {
       const response = await fetch(source); if (!response.ok) continue;
       const record = await response.json();
       for (const asset of record.assets ?? [record]) {
-        assetSelect.add(new Option(asset.name ?? (asset.modelKey === 'cro-magnon-hunter' ? 'クロマニョン人' : asset.modelKey), asset.url));
+        assetSelect.add(new Option(CHARACTER_MODELS.find(model => model.key === asset.modelKey)?.name ?? asset.name ?? asset.modelKey, asset.url));
         for (const [index, lod] of (asset.lods ?? []).entries()) assetSelect.add(new Option(`${asset.name ?? asset.modelKey} · LOD ${index + 1}`, lod.url));
       }
     } catch { /* Local file review remains available if the delivery catalog is absent. */ }

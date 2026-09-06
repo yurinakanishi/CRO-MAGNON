@@ -1,0 +1,49 @@
+{
+  "schemaVersion": 1,
+  "userRequest": "猫耳の女性キャラクターと、小さいちいかわ？くまさん？みたいなかわいい小人のキャラも選択できるようにしたい。猫耳は、刀を使うクノイチ的な。小人は、魔法を使う。",
+  "provider": "Codex imagegen + local TRELLIS-2",
+  "models": [
+    {
+      "key": "cat-kunoichi",
+      "candidate": 1,
+      "generation": "completed",
+      "adoption": "exact-glb-reviewed-and-adopted",
+      "gameQa": "passed",
+      "sha256": "9ab72ce3d6e6a4a80b25bbb2de023c3a154b790cb1d1c5f1a4a7746d833f34aa",
+      "canonicalArchive": "all-source-and-destination-hashes-verified",
+      "canonicalReceipt": "assets/fantasy-canonical-cat-kunoichi.json"
+    },
+    {
+      "key": "bear-mage",
+      "candidate": 1,
+      "generation": "completed",
+      "adoption": "exact-glb-reviewed-and-adopted",
+      "gameQa": "passed",
+      "sha256": "3b58124a53297cf5974b340c941fb22ac9e7be1ed9eae6d0cd1362943f70aadf",
+      "canonicalArchive": "all-source-and-destination-hashes-verified",
+      "canonicalReceipt": "assets/fantasy-canonical-bear-mage.json"
+    },
+    {
+      "key": "kunoichi-katana",
+      "candidate": 1,
+      "generation": "completed",
+      "adoption": "exact-glb-reviewed-and-adopted",
+      "gameQa": "passed",
+      "sha256": "3e6e061fc02779d3516d114b53629fa0d5b585e815d4683ce74dd7d9c2822e0e",
+      "canonicalArchive": "all-source-and-destination-hashes-verified",
+      "canonicalReceipt": "assets/fantasy-canonical-kunoichi-katana.json"
+    }
+  ],
+  "gameplay": {
+    "cat": "Katana slash, F / 5 / attack button",
+    "bear": "Forward light projectile from paws, F / 5 / attack button"
+  },
+  "inventory": {
+    "existingCandidatesPerNewKey": 0,
+    "inspectedBeforeGeneration": true
+  },
+  "claudeUsed": false,
+  "status": "integrated-and-game-qa-passed",
+  "completedAt": "2026-09-06T19:08:45.086045+00:00",
+  "gameQA": "assets/fantasy-game-qa.json"
+}

@@ -1,0 +1,10 @@
+import {readFile,writeFile} from 'node:fs/promises';
+import {createModelSync} from './crow-canonical-sync.mjs';
+const [key,mode]=process.argv.slice(2);
+if(!['snow-ground','ice-ground','desert-ground','volcanic-ground','glacier-spires','volcanic-cone'].includes(key)||!['plan','copy','verify'].includes(mode))throw Error('Usage: world-canonical-sync.mjs model-key plan|copy|verify');
+const sync=createModelSync(key),file=new URL(`../assets/world-canonical-${key}-plan.json`,import.meta.url);
+const plan=mode==='plan'?await sync.plan():JSON.parse(await readFile(file,'utf8'));
+if(mode==='plan')await writeFile(file,JSON.stringify(plan,null,2)+'\n',{flag:'wx'});
+const result=mode==='plan'?{status:plan.status,key,files:plan.fileCount,bytes:plan.totalBytes}:await sync[mode](plan);
+if(mode==='copy')await writeFile(new URL(`../assets/world-canonical-${key}.json`,import.meta.url),JSON.stringify(result,null,2)+'\n',{flag:'wx'});
+console.log(JSON.stringify(result,null,2));

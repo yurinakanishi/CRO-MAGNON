@@ -1,0 +1,52 @@
+{
+  "createdAt": "2026-09-06T21:06:02.987Z",
+  "method": "Ray hits on delivered GLBs transformed exactly as the streaming renderer, compared against walking-height samples at four actual chunk rotations.",
+  "regions": [
+    {
+      "id": "grassland",
+      "sha256": "6c6b41bdec1631236027c567635623aa9cdd1e0d92c0ae9e89f77764b52995e1",
+      "samples": 1200,
+      "rotations": 4,
+      "missing": 0,
+      "p95HeightErrorMetres": 0.00003078954483661661,
+      "maximumHeightErrorMetres": 0.00033960132224651347
+    },
+    {
+      "id": "snow",
+      "sha256": "ddf7037c1cd52801d7c5f1a71492c496d7885f407372edb275e445ce0e009f44",
+      "samples": 1200,
+      "rotations": 4,
+      "missing": 0,
+      "p95HeightErrorMetres": 0.0019191597851036801,
+      "maximumHeightErrorMetres": 0.007056903920236252
+    },
+    {
+      "id": "ice",
+      "sha256": "30eeb7ceea111e33576b497e8341f9f01bf232fc598c6bbefa79a9867df51cce",
+      "samples": 1200,
+      "rotations": 4,
+      "missing": 0,
+      "p95HeightErrorMetres": 0.00034824168960739463,
+      "maximumHeightErrorMetres": 0.0016644929750942797
+    },
+    {
+      "id": "volcano",
+      "sha256": "2bca15ffc01cce6148f8569a60b3fbecd16ac0c7946014f7b48f267b5eaffb88",
+      "samples": 1200,
+      "rotations": 4,
+      "missing": 0,
+      "p95HeightErrorMetres": 0.005798210139911239,
+      "maximumHeightErrorMetres": 0.02131793121649564
+    },
+    {
+      "id": "desert",
+      "sha256": "fcf25dfc8bed6ce7ecfbdf445674e3c092f36d353462685cb5730ba3ef00005e",
+      "samples": 1200,
+      "rotations": 4,
+      "missing": 0,
+      "p95HeightErrorMetres": 0.009955236445038207,
+      "maximumHeightErrorMetres": 0.021551952203611738
+    }
+  ],
+  "status": "passed"
+}

@@ -1,0 +1,79 @@
+{
+  "status": "passed",
+  "verifiedAt": "2026-09-06T19:08:45.086045+00:00",
+  "testCount": 97,
+  "assetCount": 23,
+  "playableModelCount": 6,
+  "rendering": {
+    "models": [
+      "cat-kunoichi",
+      "bear-mage",
+      "kunoichi-katana"
+    ],
+    "bodyAnimationClips": 9,
+    "browserPlayers": 5,
+    "browserConnections": 2,
+    "passiveNetworkPeers": 3,
+    "fpsObservedRange": [
+      45,
+      60
+    ],
+    "settledFps": {
+      "cat": 60,
+      "bear": 59
+    },
+    "note": "Local RTX A1000 6 GB; two game views plus existing user game tabs were open. Transient camera/movement samples fell to 45–49 FPS; this is not a constant-60 guarantee.",
+    "consoleWarningsAndErrors": 0
+  },
+  "movement": {
+    "cat": {
+      "walk": 1.25,
+      "run": 3.5
+    },
+    "bear": {
+      "walk": 0.6,
+      "run": 1.8
+    },
+    "observed": "Both actual clips and network speeds observed in game. Heading matches server modulo 2π, including negative accumulated render angles.",
+    "captures": [
+      "output/fantasy-cat-walk-game.json",
+      "output/fantasy-bear-return-run.json"
+    ]
+  },
+  "combat": {
+    "airAttacks": "F works without targets for both classes; mobile buttons also verified.",
+    "katana": "267 ms cut, 700 ms cooldown. Exact equipped GLB tip reaches z=1.390 m at impact.",
+    "magic": "400 ms two-paw charge, 7 m/s visible light projectile, maximum 8 m travel, server-controlled sweep and obstacle collision.",
+    "normalWorld": "Each weapon defeated the normal crow with 75→50→25→0 HP, replicated to five clients through public messages; no state edits.",
+    "protocolReport": "assets/fantasy-combat-qa.json",
+    "browserObserverReport": "assets/fantasy-network-qa.json",
+    "limits": "No friendly fire or PvP. Open palms use whole-hand bones; individual finger grips are not rigged."
+  },
+  "selection": {
+    "choices": [
+      "cro",
+      "nea",
+      "cat",
+      "bear"
+    ],
+    "humanGenders": [
+      "female",
+      "male"
+    ],
+    "humanDefault": "female",
+    "fixedCharacters": [
+      "cat/female",
+      "bear/female"
+    ],
+    "profileCameraSwitchBug": "Fixed first-state camera reset when the authenticated self ID changes. Both 5.50 m and 4.50 m transitions verified.",
+    "profileChange": "Rejoins room and resets individual inventory, as the existing UI explains."
+  },
+  "mobile": "assets/fantasy-mobile-qa.json",
+  "evidence": "output/fantasy-browser-evidence.json",
+  "existingUserSessions": "Existing 3002 and 3003 game servers/tabs were left running. Only empty 3000 was restarted.",
+  "prototypeLimits": [
+    "TRELLIS hair, fur and wrapping remain solid reconstructed forms.",
+    "No separate face or finger articulation; minor garment deformation remains in extreme poses.",
+    "Progress still uses server memory; no persistence or external deployment added."
+  ]
+}

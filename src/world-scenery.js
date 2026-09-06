@@ -1,22 +1,17 @@
 import * as THREE from 'three';
-import { terrainHeight, walkHeight, riverX, WATER_LEVEL, clamp, installSourceTerrain, installSourceBridge } from '/shared/terrain.mjs';
+import { terrainHeight, walkHeight, riverX, riverFade, WATER_LEVEL, clamp, installSourceBridge } from '/shared/terrain.mjs';
 import { NPC, INITIAL_RESOURCES } from '/shared/world.mjs';
 import { LandscapeInstances } from './world-assets.js';
 import { fitSourceRiverBank } from './source-surface-fit.js';
+import { SCENERY, seededRandom, grassForChunk } from '/shared/scenery-layout.mjs';
+import { OpenWorldTerrain } from './open-world.js';
 
 export const resourceAssets = { wood: 'firewood-pile', stone: 'valley-boulder', berry: 'berry-bush' };
 const TAU = Math.PI * 2;
-function random(seed) { return () => { seed |= 0; seed = (seed + 0x6d2b79f5) | 0; let t = Math.imul(seed ^ (seed >>> 15), 1 | seed); t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t; return ((t ^ (t >>> 14)) >>> 0) / 4294967296; }; }
+const random=seededRandom;
 
 function addModel(world, key, x, z, yaw = 0, scale = 1) {
   const model = world.worldAssets.create(key); model.position.set(x, walkHeight(x, z), z); model.rotation.y = yaw; model.scale.setScalar(scale); world.scene.add(model); return model;
-}
-
-function cameraBox(world, x, z, width, height, depth, yaw = 0) {
-  // Invisible interaction/camera geometry, never a rendered replacement asset.
-  const object = new THREE.Mesh(new THREE.BoxGeometry(width, height, depth), new THREE.MeshBasicMaterial({ visible: false }));
-  object.position.set(x, walkHeight(x, z) + height / 2, z); object.rotation.y = yaw;
-  world.scene.add(object); world.cameraBlockers.push(object);
 }
 
 function surfaceMeshes(root) {
@@ -25,40 +20,10 @@ function surfaceMeshes(root) {
   return result;
 }
 
-export function buildTerrainAssets(world) {
-  const terrainTemplate = world.worldAssets.get('meadow-ground').gltf.scene;
-  const placement = world.worldAssets.get('meadow-ground').asset.placement;
-  world.releaseTerrainSampler = installSourceTerrain(placement.heightField);
-  const sourceBounds = new THREE.Box3().setFromObject(terrainTemplate), size = sourceBounds.getSize(new THREE.Vector3());
-  const centre = sourceBounds.getCenter(new THREE.Vector3());
-  world.terrain = new THREE.Group(); world.terrain.name = 'TRELLIS meadow tiles';
-  const parts = surfaceMeshes(terrainTemplate);
-  // The original reconstructed top/bottom faces, UVs and relief are retained.
-  // A shallow bank offset fits the river;
-  // distant hills use reconstructed boulders rather than a generated height field.
-  for (let x = -90; x <= 190; x += 20) for (let z = -90; z <= 190; z += 20) {
-    for (const part of parts) {
-      const source = part.geometry.clone().applyMatrix4(part.matrix), original = source.attributes.position;
-      for (let i = 0; i < original.count; i++) {
-        original.setXYZ(i, x + (original.getX(i) - centre.x) / size.x * 20.04, original.getY(i) - placement.surfaceHeightMetres, z + (original.getZ(i) - centre.z) / size.z * 20.04);
-      }
-      const geometry = fitSourceRiverBank(source), p = geometry.attributes.position;
-      if (geometry !== source) source.dispose();
-      const colors = new Float32Array(p.count * 3), color = new THREE.Color();
-      for (let i = 0; i < p.count; i++) {
-        const wx = p.getX(i), wz = p.getZ(i);
-        const camp = clamp((10 - Math.hypot(wx - 50, wz - 50)) / 3, 0, 1), orl = clamp((5 - Math.hypot(wx - 70, wz - 41)) / 2, 0, 1);
-        const trail = Math.exp(-((wx - 49 - Math.sin(wz * .16) * 2) ** 2) / 1.8) * .6;
-        const crossing = wx > 45 && wx < 78 ? Math.exp(-(((wz - 43.5) / 1.7) ** 2)) * .8 : 0;
-        const dirt = Math.max(camp, orl, trail, crossing);
-        color.setRGB(1 + dirt * .55, 1 + dirt * .2, 1 - dirt * .08); color.toArray(colors, i * 3);
-      }
-      geometry.setAttribute('color', new THREE.BufferAttribute(colors, 3)); geometry.computeVertexNormals(); geometry.computeBoundingSphere();
-      const material = part.material.clone(); material.vertexColors = true; material.roughness = 1;
-      const mesh = new THREE.Mesh(geometry, material); mesh.receiveShadow = true; world.terrain.add(mesh);
-    }
-  }
-  world.scene.add(world.terrain);
+export async function buildTerrainAssets(world) {
+  world.openWorld = new OpenWorldTerrain(world);
+  await world.openWorld.initialize(world.focus);
+  if (world.disposed) return;
 
   const waterTemplate = world.worldAssets.get('river-water').gltf.scene;
   const waterBounds = new THREE.Box3().setFromObject(waterTemplate), waterSize = waterBounds.getSize(new THREE.Vector3()), waterCentre = waterBounds.getCenter(new THREE.Vector3());
@@ -70,12 +35,12 @@ export function buildTerrainAssets(world) {
     shader.fragmentShader = 'uniform float flowTime;\n' + shader.fragmentShader;
     shader.fragmentShader = shader.fragmentShader.replace('#include <color_fragment>', '#include <color_fragment>\n#ifdef USE_MAP\nfloat shimmer = pow(sin(vMapUv.y * 90.0 - flowTime * 1.5 + sin(vMapUv.x * 18.0)) * .5 + .5, 20.0); diffuseColor.rgb += shimmer * .035;\n#endif');
   };
-  for (let z = -94; z < 198; z += 12) for (const part of surfaceMeshes(waterTemplate)) {
+  for (let z = -58; z < 184; z += 12) for (const part of surfaceMeshes(waterTemplate)) {
     const geometry = part.geometry.clone().applyMatrix4(part.matrix), p = geometry.attributes.position;
     if (part.material.map) world.waterMaterial.map = part.material.map;
     for (let i = 0; i < p.count; i++) {
       const wz = z + (p.getZ(i) - waterCentre.z) / waterSize.z * 12.25;
-      p.setXYZ(i, riverX(wz) + (p.getX(i) - waterCentre.x) / waterSize.x * 5.5, WATER_LEVEL + (p.getY(i) - waterBounds.max.y) * .015, wz);
+      p.setXYZ(i, riverX(wz) + (p.getX(i) - waterCentre.x) / waterSize.x * 5.5 * riverFade(wz), WATER_LEVEL + (p.getY(i) - waterBounds.max.y) * .015, wz);
     }
     geometry.computeVertexNormals(); geometry.computeBoundingSphere(); world.water.add(new THREE.Mesh(geometry, world.waterMaterial));
   }
@@ -87,45 +52,27 @@ export function buildTerrainAssets(world) {
 }
 
 export function buildForestAssets(world) {
-  const rng = random(404), trees = [], grass = [];
-  for (let i = 0; i < 840; i++) {
-    const x = -35 + rng() * 170, z = -35 + rng() * 170;
-    if (Math.hypot(x - 50, z - 50) < 14 || Math.hypot(x - 70, z - 41) < 7 || Math.abs(x - riverX(z)) < 5.8 || Math.abs(x - 49 - Math.sin(z * .16) * 2) < 2.7 || (x > 43 && x < 80 && Math.abs(z - 43.5) < 2.8)) continue;
-    if (INITIAL_RESOURCES.some(r => Math.hypot(r.x - x, r.z - z) < 2)) continue;
-    const height = 6 + rng() * 7, width = .75 + rng() * .5, yaw = rng() * TAU;
-    trees.push({ position: new THREE.Vector3(x, terrainHeight(x, z), z), scale: new THREE.Vector3(width * height / 10, height / 10, width * height / 10), height, yaw });
-    cameraBox(world, x, z, .45, height * .7, .45);
-  }
-  for (let i = 0; i < 13500; i++) {
-    const x = rng() * 115 - 7, z = rng() * 115 - 7;
-    if (Math.hypot(x - 50, z - 50) < 10 || Math.hypot(x - 70, z - 41) < 5 || Math.abs(x - riverX(z)) < 3.4 || Math.abs(x - 49 - Math.sin(z * .16) * 2) < 1.8 || (x > 45 && x < 78 && Math.abs(z - 43.5) < 1.9)) continue;
-    const s = .65 + rng() * .65; grass.push({ position: new THREE.Vector3(x, terrainHeight(x, z) - .018, z), scale: new THREE.Vector3(s, s, s), height: .55 * s, yaw: rng() * TAU });
-  }
-  world.landscapes = [
-    new LandscapeInstances({ assets: world.worldAssets, key: 'valley-pine', placements: trees, renderer: world.renderer, scene: world.scene, distances: [18, 48, 130] }),
-    new LandscapeInstances({ assets: world.worldAssets, key: 'meadow-grass', placements: grass, renderer: world.renderer, scene: world.scene, distances: [2.4, 2.4, 32], foliage: true }),
+  const grassPlacement=item=>({...item,position:new THREE.Vector3(item.x,terrainHeight(item.x,item.z)-.018,item.z),scale:new THREE.Vector3().setScalar(item.scale)});
+  const trees=SCENERY.trees.map(item=>({...item,position:new THREE.Vector3(item.x,terrainHeight(item.x,item.z),item.z),scale:new THREE.Vector3(...item.scale)}));
+  const grass=SCENERY.grass.map(grassPlacement);
+  const rocks=SCENERY.rocks.map(item=>({...item,height:1.7*item.scale,position:new THREE.Vector3(item.x,terrainHeight(item.x,item.z),item.z),scale:new THREE.Vector3().setScalar(item.scale)}));
+  world.landscapes=[
+    new LandscapeInstances({assets:world.worldAssets,key:'valley-pine',placements:trees,renderer:world.renderer,scene:world.scene,distances:[14,38,110]}),
+    new LandscapeInstances({assets:world.worldAssets,key:'meadow-grass',placements:grass,renderer:world.renderer,scene:world.scene,distances:[1.1,1.1,28],foliage:true,generateCell:(x,z)=>grassForChunk(x+8,z+8).map(grassPlacement)}),
+    new LandscapeInstances({assets:world.worldAssets,key:'valley-boulder',placements:rocks,renderer:world.renderer,scene:world.scene,distances:[28,28,110]}),
   ];
-  for (let i = 0; i < 65; i++) {
-    const x = rng() * 140 - 20, z = rng() * 140 - 20;
-    if (Math.hypot(x - 50, z - 50) < 16 || Math.hypot(x - 70, z - 41) < 7 || Math.abs(x - riverX(z)) < 5) continue;
-    const s = .4 + rng() * 2.6; addModel(world, 'valley-boulder', x, z, rng() * TAU, s / 1.7); cameraBox(world, x, z, s, s * .8, s);
-  }
-  for (let i = 0; i < 34; i++) {
-    const angle = i / 34 * TAU, radius = 77 + rng() * 16;
-    const rock = addModel(world, 'valley-boulder', 50 + Math.sin(angle) * radius, 50 + Math.cos(angle) * radius, angle, 1);
-    const height = 14 + rng() * 19; rock.scale.set(height * .9, height / 1.7, height * .7);
-    rock.traverse(node => { if (node.isMesh) node.castShadow = false; });
+  for(const item of SCENERY.ridges) {
+    const rock=addModel(world,item.key,item.x,item.z,item.yaw,1);
+    if(Array.isArray(item.scale)){rock.scale.set(...item.scale);rock.traverse(node=>{if(node.isMesh)node.castShadow=false;});}else rock.scale.setScalar(item.scale);
+    freezeStatic(world,rock);
   }
 }
-
+function freezeStatic(world,root) { root.updateMatrixWorld(true);root.traverse(node=>{node.matrixAutoUpdate=false;});const bounds=new THREE.Box3().setFromObject(root);world.staticScenery.push({root,radius:bounds.getSize(new THREE.Vector3()).length()*.5}); }
 export function buildCampAssets(world) {
-  for (const [x, z, yaw, scale] of [[45, 46, .4, 1], [54.5, 44, -.55, .85], [54, 55, -2, .65], [73, 37, -.7, .85]]) {
-    addModel(world, 'hide-tent', x, z, yaw, scale); cameraBox(world, x, z, 3.5 * scale, 2.8 * scale, 3 * scale, yaw);
-  }
-  addModel(world, 'drying-rack', 55.8, 50); addModel(world, 'firewood-pile', 47, 49, 0, 1.25);
-  buildFireEffect(world, 50, 50, 1); buildFireEffect(world, 72, 43, .65);
-  world.campLabel = world.createLabel('みんなの野営地', 'camp', new THREE.Vector3(50, 3, 50));
-  world.npcLabel = world.createLabel('オル', 'npc', new THREE.Vector3(NPC.x, walkHeight(NPC.x, NPC.z) + 2.17, NPC.z), 'ネアンデルタール人 · 交易');
+  for(const item of [...SCENERY.tents,...SCENERY.props])freezeStatic(world,addModel(world,item.key,item.x,item.z,item.yaw,item.scale));
+  for(const item of SCENERY.fires)buildFireEffect(world,item.x,item.z,item.scale);
+  world.campLabel=world.createLabel('みんなの野営地','camp',new THREE.Vector3(50,3,50));
+  world.npcLabel=world.createLabel('オル','npc',new THREE.Vector3(NPC.x,walkHeight(NPC.x,NPC.z)+2.17,NPC.z),'ネアンデルタール人 · 交易');
 }
 
 function buildFireEffect(world, x, z, size) {
@@ -142,9 +89,14 @@ function buildFireEffect(world, x, z, size) {
 }
 
 export function buildAnimalAssets(world) {
-  for (const [x, z, scale] of [[37, 29, 1], [29, 67, .76]]) {
-    const actor = world.worldAssets.createAnimal('woolly-mammoth'); actor.root.scale.setScalar(scale); world.scene.add(actor.root);
-    world.mammoths.push({ model: actor.root, actor, x, z, scale, phase: x * .35, age: x, angle: x * .35 });
+  for (const spec of SCENERY.animals) {
+    const actor=world.worldAssets.createAnimal('woolly-mammoth'),model=new THREE.Group();
+    model.add(actor.root);model.scale.setScalar(spec.scale);world.scene.add(model);
+    model.userData.animalId=spec.id;
+    const meat=world.worldAssets.create('mammoth-meat');meat.visible=false;meat.userData.animalId=spec.id;world.scene.add(meat);
+    const label=world.createLabel('マンモス','animal',new THREE.Vector3(),'');label.active=false;
+    const detail=document.createElement('small'),health=document.createElement('progress');health.max=100;health.value=100;health.setAttribute('aria-label','マンモスの体力');label.element.append(detail,health);
+    world.mammoths.push({id:spec.id,model,meat,label,health,detail,actor,initialized:false});
   }
   const rng = random(623), points = [];
   for (let i = 0; i < 65; i++) points.push(rng() * 80 + 10, rng() * 5 + 1, rng() * 80 + 10);

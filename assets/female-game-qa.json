@@ -1,0 +1,65 @@
+{
+  "schemaVersion": 1,
+  "status": "passed",
+  "recordedAt": "2026-09-06T13:07:14.348424+00:00",
+  "scope": "Two adult female avatars, primitive costume, female default, four selectable profiles and existing world preservation",
+  "room": "FEMALE-QA",
+  "server": "http://127.0.0.1:3002/",
+  "newModels": 2,
+  "totalModels": 18,
+  "connectedPlayers": 5,
+  "assetHashes": {
+    "cro-magnon-woman": "4705b3e681b572a21225493db90730cec366c9f51fcbd71082c49e4f808379a9",
+    "neanderthal-woman": "ea63762e435024d4f907fdca86946e48b449d1d3a9d0e07856fc77395f0ba1ea"
+  },
+  "existingSixteenGlbsPreserved": true,
+  "tests": {
+    "nodeTests": 30,
+    "passed": 30,
+    "syntax": "passed",
+    "assetVerificationModels": 18
+  },
+  "browserChecks": [
+    "Initial profile with no saved gender loaded cro-magnon-woman; female radio selected.",
+    "Five players rendered together using all four species/gender profiles; actual asset hashes matched delivered files.",
+    "Neanderthal female and both male profiles selected through the profile dialog. Explicit male selection survived a full page reload.",
+    "Both female avatars observed at Walk_Loop 1.25 m/s and Run_Loop 3.5 m/s. Neanderthal heading matched server heading modulo 2*pi.",
+    "Cro-Magnon female Wave and Gather observed; gathering added one wood.",
+    "No console warnings or errors in the browser log samples.",
+    "Returned to female Cro-Magnon profile."
+  ],
+  "performanceObservations": [
+    {
+      "context": "one player at starting camp",
+      "fps": 60,
+      "drawCalls": 85,
+      "renderTriangles": 782881,
+      "jsHeapMiB": 234.7,
+      "sceneReadyMilliseconds": 4087
+    },
+    {
+      "context": "five players, all four avatar types, camp",
+      "fps": 59,
+      "drawCalls": 99,
+      "renderTriangles": 1063806,
+      "jsHeapMiB": 261.3
+    },
+    {
+      "context": "five players, after profile changes, female Wave",
+      "fps": 60,
+      "drawCalls": 84
+    }
+  ],
+  "measurementLimits": "Spot observations in the Codex in-app browser, 665x742 capture, local RTX A1000 6 GB. These are not a benchmark or a guaranteed frame rate; camera, activity and cache affect results.",
+  "performanceChanges": [
+    "Female meshes reduced from 286044/296400 to 65707/68090 triangles using measured source geometry error.",
+    "Humanoid templates load on first use; shared geometry/textures and separate bones/mixers per actor. A single default-female session loads 16 of 18 models; all four avatar types load 18."
+  ],
+  "networkEvidence": "assets/female-network-qa.json",
+  "modelEvidence": "output/model-generation/models/<model-key>/qa/adoption-review.json",
+  "limitations": [
+    "Prototype faces, hair and fur retain simplified image-reconstructed detail. Fur wraps have slight stretching during large arm/leg poses.",
+    "Gender changes appearance only. Changing profile reconnects and resets individual inventory, as stated in the UI.",
+    "World physics and gameplay limitations from README remain applicable."
+  ]
+}

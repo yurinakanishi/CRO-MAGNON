@@ -1,0 +1,75 @@
+{
+  "startedAt": "2026-09-06T16:28:24.861Z",
+  "mode": "real-clock-public-websocket-protocol",
+  "status": "passed",
+  "snapshots": 561,
+  "maxPlayers": 5,
+  "enemyHealth": [
+    75,
+    50,
+    25,
+    0
+  ],
+  "phases": [
+    "alive",
+    "dead",
+    "respawning"
+  ],
+  "clips": [
+    "Idle_Loop",
+    "Walk_Loop",
+    "Run_Loop",
+    "Attack",
+    "Hit",
+    "Death",
+    null
+  ],
+  "statesPerClient": [
+    561,
+    559,
+    558,
+    556,
+    555
+  ],
+  "staticPenetrations": 0,
+  "dynamicPenetrations": 0,
+  "errors": [],
+  "lastEnemy": {
+    "x": 45,
+    "z": 16,
+    "health": 75,
+    "phase": "alive"
+  },
+  "characterVariants": [
+    "cro/female",
+    "cro/male",
+    "nea/female",
+    "nea/male"
+  ],
+  "sixthClientRefused": true,
+  "airSwing": {
+    "attackSequence": 1,
+    "enemyHealthUnchanged": true
+  },
+  "staffDamage": {
+    "energy": 83,
+    "hurtSequence": 1,
+    "enemyAttackSequence": 1
+  },
+  "defeated": {
+    "health": 0,
+    "phase": "dead",
+    "clip": "Death",
+    "phaseStartedAt": 1788712120787
+  },
+  "deathDurationObservedMs": 1235,
+  "respawn": {
+    "health": 75,
+    "phase": "alive",
+    "sharedBy": 5,
+    "phaseStartedAt": 1788712167041,
+    "hiddenAt": 1788712122022
+  },
+  "respawnDelayObservedMs": 45019,
+  "finishedAt": "2026-09-06T16:29:27.109Z"
+}

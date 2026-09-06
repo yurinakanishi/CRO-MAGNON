@@ -1,0 +1,14 @@
+{
+  "schemaVersion": 1,
+  "modelKey": "crow-shaman",
+  "status": "copied-and-all-source-and-destination-hashes-verified",
+  "verifiedAt": "2026-09-06T16:43:20.932Z",
+  "planSha256": "87a5f8bd4262bdb6f2e306258e2a21f2e89309400d111fdca0b5e608e909dd94",
+  "sourceRoot": "C:\\Users\\yurin\\Desktop\\projects\\CRO-MAGNON\\output\\model-generation\\models\\crow-shaman",
+  "destinationRoot": "C:\\Users\\yurin\\Desktop\\projects\\threed-model-creation\\models\\crow-shaman",
+  "files": 758,
+  "bytes": 573060351,
+  "copied": 758,
+  "skippedEqual": 0,
+  "preflightExistingEqual": 0
+}

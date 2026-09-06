@@ -1,0 +1,17 @@
+{
+  "status": "passed",
+  "verifiedAt": "2026-09-06T21:37:38.853Z",
+  "port": 3000,
+  "worldVersion": 2,
+  "checkpoint": "output/open-world-restart/port-3000-2026-09-06T21-31-04-881Z.json",
+  "afterCheckpoint": "C:\\Users\\yurin\\Desktop\\projects\\CRO-MAGNON\\output\\open-world-restart\\port-3000-2026-09-06T21-34-51-595Z.json",
+  "players": 1,
+  "identityInventoryToolAndPositionPreserved": true,
+  "campPreserved": true,
+  "originalResourcesPreserved": 29,
+  "resourcesAfter": 38,
+  "dayBefore": 35,
+  "dayAfter": 36,
+  "browser": "output/open-world-qa/live-3000.json",
+  "note": "One-time controlled rollout. The existing game still resets a room after its last player leaves; this is not durable account persistence."
+}

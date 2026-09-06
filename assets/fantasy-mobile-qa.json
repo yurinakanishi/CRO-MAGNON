@@ -1,0 +1,19 @@
+{
+  "status": "passed",
+  "viewport": {
+    "width": 390,
+    "height": 844
+  },
+  "evidence": [
+    "output/fantasy-selection-mobile.png",
+    "output/fantasy-cat-mobile.png",
+    "output/fantasy-bear-mobile.png"
+  ],
+  "checks": [
+    "All four character cards and the submit button fit the modal; no horizontal document overflow.",
+    "Cat selection changes model, katana attachment, F button and camera distance to 5.50 m.",
+    "Bear selection changes model and magic button, removes weapon, and sets camera distance to 4.50 m.",
+    "Both attack buttons emit their actual character animation; bear hand charge is visibly rendered.",
+    "Temporary viewport override reset after review."
+  ]
+}

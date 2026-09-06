@@ -1,0 +1,14 @@
+{
+  "schemaVersion": 1,
+  "modelKey": "volcanic-cone",
+  "status": "copied-and-all-source-and-destination-hashes-verified",
+  "verifiedAt": "2026-09-06T21:38:45.578Z",
+  "planSha256": "db7a5c8e4eec6f224ea891e70881f46055dec54c57b0d646e2f5954dde022610",
+  "sourceRoot": "C:\\Users\\yurin\\Desktop\\projects\\CRO-MAGNON\\output\\model-generation\\models\\volcanic-cone",
+  "destinationRoot": "C:\\Users\\yurin\\Desktop\\projects\\threed-model-creation\\models\\volcanic-cone",
+  "files": 81,
+  "bytes": 167626133,
+  "copied": 81,
+  "skippedEqual": 0,
+  "preflightExistingEqual": 0
+}

@@ -1,0 +1,172 @@
+{
+  "status": "passed",
+  "verifiedAt": "2026-09-06T21:37:38.853Z",
+  "world": {
+    "version": 2,
+    "sizeMetres": 640,
+    "regions": [
+      "grassland",
+      "snow",
+      "ice",
+      "volcano",
+      "desert"
+    ],
+    "finite": true,
+    "regionLoadingScreens": false,
+    "regionalCamps": 4,
+    "cookingFires": 6
+  },
+  "assets": {
+    "total": 29,
+    "new": [
+      {
+        "key": "snow-ground",
+        "revision": "04",
+        "sha256": "ddf7037c1cd52801d7c5f1a71492c496d7885f407372edb275e445ce0e009f44"
+      },
+      {
+        "key": "ice-ground",
+        "revision": "02",
+        "sha256": "30eeb7ceea111e33576b497e8341f9f01bf232fc598c6bbefa79a9867df51cce"
+      },
+      {
+        "key": "desert-ground",
+        "revision": "04",
+        "sha256": "fcf25dfc8bed6ce7ecfbdf445674e3c092f36d353462685cb5730ba3ef00005e"
+      },
+      {
+        "key": "volcanic-ground",
+        "revision": "02",
+        "sha256": "2bca15ffc01cce6148f8569a60b3fbecd16ac0c7946014f7b48f267b5eaffb88"
+      },
+      {
+        "key": "glacier-spires",
+        "revision": "01",
+        "sha256": "af945c2fec27252389a05ca2eabb6970003372a584a83cf18e2e6c34a42f6b53"
+      },
+      {
+        "key": "volcanic-cone",
+        "revision": "01",
+        "sha256": "868c062028af62fedf491ed7391602991dbc76b1ddbbd09494ee958a7898cd5b"
+      }
+    ],
+    "pipeline": "Built-in imagegen → local TRELLIS-2 → source-derived reduction/repair → exact-GLB visual and numerical QA",
+    "fallback": false,
+    "existing23DeliveriesPreserved": true
+  },
+  "checks": {
+    "tests": 110,
+    "syntax": "passed",
+    "assetVerification": "passed",
+    "logs": [
+      "output/open-world-final-tests.log",
+      "output/open-world-final-check.log",
+      "output/open-world-final-assets.log"
+    ],
+    "sourceSurfaceSamples": 6000,
+    "sourceSurfaceMaximumErrorMetres": 0.021551952203611738,
+    "sourceSurfaceReport": "assets/open-world-surface-qa.json"
+  },
+  "network": {
+    "actualBrowserClients": 2,
+    "passiveWebsocketPeers": 3,
+    "maxPlayers": 5,
+    "sixthRefused": true,
+    "snapshotsObserved": 6150,
+    "staticPenetrations": 0,
+    "errors": [],
+    "report": "assets/open-world-network-qa.json"
+  },
+  "rendering": {
+    "hardware": "Local RTX A1000 6 GB; other existing user game tabs remained open",
+    "fpsObservedRange": [
+      43,
+      60
+    ],
+    "drawCallsObservedRange": [
+      15,
+      104
+    ],
+    "trianglesObservedRange": [
+      188490,
+      2795266
+    ],
+    "residentChunksObservedRange": [
+      67,
+      69
+    ],
+    "visibleChunksObservedRange": [
+      13,
+      25
+    ],
+    "terrainAssetTypesObservedRange": [
+      2,
+      5
+    ],
+    "geometriesObservedRange": [
+      46,
+      69
+    ],
+    "texturesObservedRange": [
+      22,
+      43
+    ],
+    "jsHeapMiBObservedRange": [
+      333.1,
+      428.2
+    ],
+    "consoleErrorsAndWarnings": 0,
+    "strategy": [
+      "32-metre chunks within 128 metres; at most 69 in the complete-world grid test, allocation 100",
+      "Two coalesced regional decode jobs, at most two chunk admissions or 3 ms per frame",
+      "Terrain instances and distance LODs; old exact-model foliage impostors and spatial placement queries",
+      "Shared texture bytes across LODs, unused regions and prepared meshes evicted after 12 seconds",
+      "Far static objects and actors culled; only nearby actor animation and fire lights update",
+      "60 FPS upper limit, shadows at 15 Hz, pixel ratio capped at 1.25",
+      "Snow, ash and sand use one fixed buffer of 384 shader-driven points"
+    ],
+    "caveat": "Observed samples are not a constant-60 FPS guarantee. Grassland at a region boundary with the map dialog open reached 43 FPS; settled snow, ice, volcano and desert samples reached 60 FPS. No sustained frame-time percentile benchmark is claimed.",
+    "samples": "output/open-world-qa/browser-samples.json",
+    "fixes": [
+      "Sky and mesh fog now use the same output colour space; distant silhouettes no longer appear as pale cutouts",
+      "The volcanic cone uses the accepted 13,382-triangle mesh for both placements; folded lower-detail revisions were rejected and preserved only in source history"
+    ]
+  },
+  "movement": {
+    "actualFootCrossings": [
+      "grassland → desert",
+      "grassland → snow"
+    ],
+    "method": "Stdin-only fixtures positioned the isolated QA players near each boundary; the real map UI then sent ordinary running targets and the server simulated continuous movement. Fixtures are not part of the web protocol.",
+    "observedBearRunMetresPerSecond": 1.8,
+    "clips": "Run_Loop, idle and free attacks observed",
+    "heading": "Rendering and authoritative server heading agree modulo 2π",
+    "routes": "All five destinations tested outward and return with a five-person crowd; every segment swept against actual colliders",
+    "landmarks": "Exact-delivery hash verified; rotated silhouette cells stop human and mammoth high-speed sweeps, leave traversable approaches and contract the camera"
+  },
+  "mobile": {
+    "viewport": {
+      "width": 390,
+      "height": 844
+    },
+    "mapAllFiveRegionsVisible": true,
+    "regionButtonEnabledRunMode": true,
+    "freeMagicAttackConfirmed": true,
+    "captures": [
+      "output/open-world-qa/mobile-map-390x844.png",
+      "output/open-world-qa/mobile-game-390x844.png"
+    ],
+    "temporaryViewportReset": true,
+    "note": "The attack intentionally stops the selected route. The after-attack frame is idle, not evidence of continuing movement."
+  },
+  "cooking": {
+    "test": "Regional snow fire completes real inventory conversion and cancels a later cook without consumption after leaving its range",
+    "otherRegions": "All six fire positions are shared by the server and client"
+  },
+  "rollout": "assets/open-world-rollout-qa.json",
+  "limits": [
+    "Finite 640 × 640 metre prototype; not an infinite world",
+    "Surface tile repetition and stylized source-derived details remain visible",
+    "Shelters and volcanic mountains have solid external collision; no interior exploration or mountain-climbing physics"
+  ]
+}

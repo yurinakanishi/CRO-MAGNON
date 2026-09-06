@@ -1,0 +1,108 @@
+{
+  "date": "2026-09-06",
+  "status": "passed",
+  "scope": "Responsive hunting UI and normal button-driven gameplay in a separate disposable room",
+  "url": "http://127.0.0.1:3003/?room=HUNT-MOBILE",
+  "browser": "Chrome through CUA extension; in-app browser was unavailable to this sub-agent",
+  "viewport": { "width": 390, "height": 844 },
+  "roomPlayers": 1,
+  "rootQaRoomUntouched": "HUNT-QA",
+  "method": "Actual UI clicks and read-only DOM inspection. No teleports, inventory injection, or server state modification. Mobile viewport emulation on desktop Chrome, not a physical phone.",
+  "layout": {
+    "documentScrollWidth": 390,
+    "documentScrollHeight": 844,
+    "horizontalOverflow": false,
+    "huntControlsWithinViewport": true,
+    "map": {
+      "opened": true,
+      "northwestAndSouthwestButtonsVisible": true,
+      "campCookingButtonVisible": true,
+      "clientWidth": 357,
+      "scrollWidth": 357,
+      "maximumButtonRight": 341.1
+    },
+    "inventory": {
+      "openedFromMeatCounts": true,
+      "rawAndCookedMeatCardsVisible": true,
+      "cookAndEatButtonsPresent": true,
+      "clientWidth": 346,
+      "scrollWidth": 346,
+      "clientHeight": 758,
+      "scrollHeight": 837,
+      "verticalScrollingExpected": true
+    },
+    "profile": {
+      "opened": true,
+      "speciesAndGenderFieldsVisible": true,
+      "femaleSelected": true,
+      "clientWidth": 357,
+      "scrollWidth": 357,
+      "maximumFieldRight": 353.61,
+      "submitBottom": 763.95,
+      "profileNotResubmitted": true
+    },
+    "cookingOverlapRepair": {
+      "problem": "Visible cooking progress increased the action stack height, causing the collapsed chat header to overlap the hunting controls at 390 px.",
+      "file": "src/style.css",
+      "change": "While cooking progress is visible, move the chat panel up 52 px at the mobile breakpoints.",
+      "verifiedAfterFullReload": true,
+      "chatBounds": { "x": 74, "y": 512.8, "right": 262, "bottom": 550 },
+      "huntControlBounds": { "x": 102.89, "y": 580, "right": 345.5, "bottom": 614 },
+      "overlap": false,
+      "cancelButtonBounds": { "x": 296.08, "y": 637.8, "right": 328.08, "bottom": 657 },
+      "documentScrollWidthWhileCooking": 390
+    }
+  },
+  "normalGameplay": {
+    "runModeEnabledByButton": true,
+    "southwestGroundSelectedOnMap": true,
+    "arrivedWithinSpearRange": true,
+    "attackButtonConfirmedHealthSequence": [100, 75, 50, 25, 0],
+    "meatPhaseDisplayed": true,
+    "visibleMeatPiles": 1,
+    "sharedPileInitialAmount": 4,
+    "approachedMeatUsingNavigationButton": true,
+    "harvestedByClickingEContextHint": true,
+    "rawMeatAfterOneHarvest": 1,
+    "cookButtonFromFarAwayNavigatesToCamp": true,
+    "campArrival": { "x": 49, "z": 52.4 },
+    "cookingProgressVisible": true,
+    "observedProgressLabel": "肉を焼いています · 2.8秒",
+    "cancelButtonWorkedDuringCooking": true,
+    "inventoryAfterCancel": { "rawMeat": 1, "cookedMeat": 0 },
+    "cookingCompletedAfterRestart": true,
+    "inventoryAfterCooking": { "rawMeat": 0, "cookedMeat": 1 },
+    "ateWithOnscreenButton": true,
+    "inventoryAfterEating": { "rawMeat": 0, "cookedMeat": 0 },
+    "energyBeforeEating": 92,
+    "energyAfterEating": 100,
+    "energyCappedAt100": true,
+    "firstJourneyAndPostCssReloadJourneyCompleted": true
+  },
+  "finalClientState": {
+    "worldAsset": "ready",
+    "characterAsset": "ready",
+    "browserErrors": [],
+    "browserWarnings": []
+  },
+  "additionalRendererRepair": {
+    "file": "src/world3d.js",
+    "change": "A changed alive phaseStartedAt resets the animal position and clip even if RAF missed the entire death-to-respawn cycle while the tab was in the background.",
+    "validation": "Syntax check and existing animal death seek/clamp/reset unit test passed. A full 90-second background lifetime was not manually replayed in this mobile check."
+  },
+  "targetedChecksAfterCodeChanges": {
+    "syntax": "node --check src/world3d.js",
+    "tests": "node --test tests/hunting-client.test.mjs tests/character-animation.test.mjs",
+    "passed": 10,
+    "failed": 0
+  },
+  "cleanup": {
+    "createdTabClosed": true,
+    "viewportOverrideReset": true,
+    "publicAssetsUnchangedByMobileQa": true
+  },
+  "limitations": [
+    "390x844 emulation verifies responsive layout and button workflows, not physical-device GPU performance or touch gesture ergonomics.",
+    "Five-player synchronization, full asset verification, and final overall test counts are recorded separately by the root task."
+  ]
+}

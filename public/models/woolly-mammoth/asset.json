@@ -5,8 +5,8 @@
   "candidate": 1,
   "status": "reviewed-prototype",
   "url": "/models/woolly-mammoth/model.glb",
-  "sha256": "6d675f895bb26cad7f62b5a7161b442e04a07f1582562498d6033a85cf977abf",
-  "bytes": 4250576,
+  "sha256": "f3ebbe7d55268affc715052dbd3c98e68577cd34298aeeb74f0ade94004c2f2d",
+  "bytes": 4286096,
   "triangles": 24173,
   "upAxis": "Y",
   "forwardAxis": "+Z",
@@ -35,10 +35,16 @@
       "name": "Walk_Loop",
       "seconds": 2.4000000953674316,
       "loop": true
+    },
+    {
+      "name": "Death",
+      "seconds": 1.2000000476837158,
+      "loop": false
     }
   ],
   "notes": [
-    "Exact GLB four-loop pose sheets and 30 fps MP4 metadata reviewed. Mammoth-specific 24-bone rig, four-beat walk and trunk/tail motion. Repaired belly weighting and reachable leg IK retain 24173 source-derived triangles. Walk foot-surface p02 stance range -1.04 to +1.88 cm; run -3.03 to +2.06 cm. Two borderline local stretch edges in Run remain a prototype limitation, without visible gross tearing in reviewed views."
+    "Exact GLB four-loop pose sheets and 30 fps MP4 metadata reviewed. Mammoth-specific 24-bone rig, four-beat walk and trunk/tail motion. Repaired belly weighting and reachable leg IK retain 24173 source-derived triangles. Walk foot-surface p02 stance range -1.04 to +1.88 cm; run -3.03 to +2.06 cm. Two borderline local stretch edges in Run remain a prototype limitation, without visible gross tearing in reviewed views.",
+    "Hunting revision 03 adds Death; original mesh, rig, textures and earlier clips retained byte-for-byte. Previous delivery archived."
   ],
   "provenance": {
     "provider": "Codex",
@@ -47,8 +53,10 @@
     "referenceImage": "output/model-generation/models/woolly-mammoth/source/original/reference-v1.png",
     "referenceSha256": "306a8308bf2de33664feee4ab1e697729e195881857b47b85526ea0e41169f87",
     "reconstruction": "Local TRELLIS-2; settings and dense SHA in model workspace",
-    "candidateFile": "output/model-generation/models/woolly-mammoth/work/low-poly/rigged-05/candidate.glb",
-    "visualReview": "output/model-generation/models/woolly-mammoth/qa/adoption-review.json"
+    "candidateFile": "output/model-generation/models/woolly-mammoth/work/hunting/revision-03/candidate.glb",
+    "visualReview": "output/model-generation/models/woolly-mammoth/qa/adoption-review.json",
+    "previousDeliverySha256": "6d675f895bb26cad7f62b5a7161b442e04a07f1582562498d6033a85cf977abf",
+    "huntingAnimationAuthor": "Codex; appended keyframes, previous surface/rig/materials/animation bytes preserved"
   },
   "lods": [],
   "bones": 24,
@@ -59,5 +67,57 @@
     "Run_Loop": {
       "metresPerSecond": 1.1250000000000002
     }
+  },
+  "hunting": {
+    "clip": {
+      "name": "Death",
+      "seconds": 1.2,
+      "fps": 30,
+      "frames": 37,
+      "loop": false,
+      "description": "Legs fold gently as the mammoth settles on its side, then remains still. Non-graphic defeat, root stays fixed.",
+      "terminalPose": "clamp final frame until meat appears",
+      "hipVerticalContactFitMetres": [
+        0.0016168850148109985,
+        0.0008774173372418852,
+        -0.0013278551466289626,
+        -0.005084155848962878,
+        -0.010558486116350605,
+        -0.017935094199183155,
+        -0.027360926373127,
+        -0.03585069182617028,
+        -0.03892289830881543,
+        -0.03843939891579221,
+        -0.03681125788739858,
+        -0.035402059464299536,
+        -0.035531668904398774,
+        -0.03821543689622636,
+        -0.03463136720087195,
+        -0.03441884954208831,
+        -0.03583388801888051,
+        -0.04198381324099534,
+        -0.053517542682606986,
+        -0.07328271535163981,
+        -0.10381565546667178,
+        -0.14488519873604053,
+        -0.19579124091693784,
+        -0.2553912089454824,
+        -0.32214588217477125,
+        -0.3941809315096892,
+        -0.46935945774242493,
+        -0.5453602405843755,
+        -0.6197564344232812,
+        -0.6900900794279023,
+        -0.7539389930012929,
+        -0.8089742785002875,
+        -0.8530087217303789,
+        -0.8840386192479657,
+        -0.9002839779196647,
+        -0.9023784111734572,
+        -0.9023784111734572
+      ],
+      "groundClearanceMetres": 0.003
+    },
+    "visualReview": "output/model-generation/models/woolly-mammoth/work/hunting/revision-03/qa/visual-review.json"
   }
 }

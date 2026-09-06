@@ -1,0 +1,41 @@
+{
+  "modelKey": "kunoichi-katana",
+  "name": "クノイチの刀",
+  "kind": "equipment",
+  "candidate": 1,
+  "status": "reviewed-prototype",
+  "url": "/models/kunoichi-katana/model.glb",
+  "sha256": "3e6e061fc02779d3516d114b53629fa0d5b585e815d4683ce74dd7d9c2822e0e",
+  "bytes": 2019308,
+  "triangles": 22201,
+  "upAxis": "Y",
+  "forwardAxis": "+Z",
+  "heightMetres": 1.050037994980812,
+  "widthMetres": 0.14215365052223206,
+  "placement": {
+    "pivot": "grip",
+    "gripNode": "Grip.R",
+    "shaftAxis": "+Y",
+    "gripToButtMetres": 0.1583334375,
+    "gripToTipMetres": 0.8916665625
+  },
+  "clips": [],
+  "lods": [],
+  "notes": [
+    "Imagegen reference → local TRELLIS-2 dense reconstruction → bounded feature-weighted Taubin smoothing and QEM. No primitive replacement.",
+    "22,201 triangles; 1.05 m long; grip origin, shaft +Y. Blade and guard retain the source albedo with metallic 0.62/roughness 0.32; wrapped handle is rough dielectric.",
+    "Surface P95 0.114 mm and sampled maximum deviation 0.447 mm from the original dense surface after scaling. JPEG quality 94, PSNR 45.62 dB, non-image buffers byte-identical to revision 07.",
+    "Static rigid equipment; no unnecessary bones or clips. Character animation drives the verified Grip.R attachment. Grip contact and combat review recorded separately."
+  ],
+  "provenance": {
+    "provider": "Codex",
+    "claudeUsed": false,
+    "referenceGenerator": "Built-in imagegen",
+    "referenceImage": "output/model-generation/models/kunoichi-katana/source/original/reference-v1.png",
+    "referenceSha256": "3b0d5d4606f60389875cf4fca9dfe14933e7f06ae25db2f55b70b0129676e313",
+    "reconstruction": "Local TRELLIS-2; preserved dense reconstruction and measured reduction.",
+    "candidateFile": "output/model-generation/models/kunoichi-katana/work/low-poly/revision-08/candidate.glb",
+    "visualReview": "output/model-generation/models/kunoichi-katana/qa/adoption-review.json"
+  },
+  "onDemand": true
+}

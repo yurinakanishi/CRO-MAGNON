@@ -1,0 +1,454 @@
+{
+  "schemaVersion": 1,
+  "modelKey": "volcanic-ground",
+  "generatedAt": "2026-09-06T21:37:55.888Z",
+  "status": "planned-not-copied",
+  "workspaceRoot": "C:\\Users\\yurin\\Desktop\\projects\\CRO-MAGNON",
+  "sourceRoot": "C:\\Users\\yurin\\Desktop\\projects\\CRO-MAGNON\\output\\model-generation\\models\\volcanic-ground",
+  "destinationRoot": "C:\\Users\\yurin\\Desktop\\projects\\threed-model-creation\\models\\volcanic-ground",
+  "files": [
+    {
+      "path": "geometry/accepted.glb",
+      "bytes": 1506956,
+      "sha256": "2bca15ffc01cce6148f8569a60b3fbecd16ac0c7946014f7b48f267b5eaffb88"
+    },
+    {
+      "path": "model.json",
+      "bytes": 1301,
+      "sha256": "bd14c8e4c53ba0ab5eac230edaf87747501288c8bba2ca3dd0efcc8c500f4fbe"
+    },
+    {
+      "path": "qa/adoption-review.json",
+      "bytes": 2707,
+      "sha256": "a93b55203285fb7ddc7c9e82428af3d3b7ba0fc7174bc80b57ad84369a8601d6"
+    },
+    {
+      "path": "qa/browser/approved-meadow-peer.png",
+      "bytes": 56836,
+      "sha256": "270fb671bdd43b857e56cf4a42d279fb20fa45e09e5fa18c5a42e185b52ebf9a"
+    },
+    {
+      "path": "qa/browser/dense-front.png",
+      "bytes": 49207,
+      "sha256": "8a50caa8c13dbdd3ad76bf1019752e5b408e3d432db2d2542494bf4c5a2c92b3"
+    },
+    {
+      "path": "qa/browser/final-five-top.png",
+      "bytes": 48263,
+      "sha256": "362f82acc1904306863dd70e854586560d01d278b9d27d83bd27a6ee5f0aec56"
+    },
+    {
+      "path": "qa/browser/final-front.png",
+      "bytes": 43333,
+      "sha256": "8b07e0a8fa69a6f78ed7634bff2e6bdd4de69f2c670c16b4d22453b40a6f2aec"
+    },
+    {
+      "path": "qa/browser/lod1-front.png",
+      "bytes": 43120,
+      "sha256": "9996cf06ba5ee672952b096acb8637f42197abd3c2e237ce7d8a22953a4fa604"
+    },
+    {
+      "path": "qa/browser/lod2-front.png",
+      "bytes": 42895,
+      "sha256": "10bb9651718b39c57e95eb7d4ca81bdcd2e2d8e8b7dce206ac1db386a78fa520"
+    },
+    {
+      "path": "qa/clay-02/candidate-rear.png",
+      "bytes": 344406,
+      "sha256": "8492d573006ad5d733482fb539a5de34257ecca2f7c6bb4d617ead09ac335062"
+    },
+    {
+      "path": "qa/clay-02/candidate-threequarter.png",
+      "bytes": 360610,
+      "sha256": "b704bef23e3b1586be6b520aea58dcedf97c9358213483962450b42e8d6864eb"
+    },
+    {
+      "path": "qa/clay-02/candidate-top.png",
+      "bytes": 421621,
+      "sha256": "6f3a8a5a8531a1f60d0212581ce27d9c3e49ccb7440f6f52b1bade823990f31e"
+    },
+    {
+      "path": "qa/clay-02/candidate-views.json",
+      "bytes": 809,
+      "sha256": "f9bb0b328cbe068060495a63ae8c4e9d3201b078b6c408201cc895ec31722e9c"
+    },
+    {
+      "path": "qa/delivery-inspection.json",
+      "bytes": 390,
+      "sha256": "0fd55ffcc2b2bef898aa1695230e1073d8e6012a0c4dc3492e3d4705096a496a"
+    },
+    {
+      "path": "qa/delivery-manifest.json",
+      "bytes": 79906,
+      "sha256": "fbd87c8d4f13546fe268161a65cf5382f31138dd642c27ac0922fcacf12d76b2"
+    },
+    {
+      "path": "qa/dense/dense-res1024-seed0042-bottom.png",
+      "bytes": 451586,
+      "sha256": "fa0e3d5f3d330d2512a84a5a05f03205962262cd2c8cfb4cd04f669d1f993c2e"
+    },
+    {
+      "path": "qa/dense/dense-res1024-seed0042-front.png",
+      "bytes": 378072,
+      "sha256": "9a430f485348e728375ae658339bafe52d5620bdb924a63219ac3e941e14d6ee"
+    },
+    {
+      "path": "qa/dense/dense-res1024-seed0042-left.png",
+      "bytes": 369841,
+      "sha256": "b93539e944c4b780669b21e1fe5992f2130518240d1d27137821cb9f1307016f"
+    },
+    {
+      "path": "qa/dense/dense-res1024-seed0042-rear.png",
+      "bytes": 376189,
+      "sha256": "762076503184a877d0e58e921fba9621ddecccea71481f6cad11bb033c0a58db"
+    },
+    {
+      "path": "qa/dense/dense-res1024-seed0042-right.png",
+      "bytes": 370977,
+      "sha256": "2822947f52328684ed7111c146fe26d3c9fd1bfcefe88b7a7a061be0adff388c"
+    },
+    {
+      "path": "qa/dense/dense-res1024-seed0042-threequarter.png",
+      "bytes": 392263,
+      "sha256": "4eebd9978990f8e9f46e3160357556da31b0fd60e5e97eeb0745c04d16c334e9"
+    },
+    {
+      "path": "qa/dense/dense-res1024-seed0042-top.png",
+      "bytes": 528576,
+      "sha256": "5b9f5fdf127e08346aa8635d5d69f4fd9b2d05af35f3b7b2de6003ad970f79e6"
+    },
+    {
+      "path": "qa/dense/dense-res1024-seed0042-views.json",
+      "bytes": 1360,
+      "sha256": "336b2332d1574dee0a7a57f4436b50f766067b15c74fd1f18a0ee39cde118e04"
+    },
+    {
+      "path": "qa/dense-review-sheet-02.jpg",
+      "bytes": 103529,
+      "sha256": "debfdd11aeb7ebef2c92211a71638a35bdef5a2811078f34dcf68d6c6bc50508"
+    },
+    {
+      "path": "qa/final-review-sheet-02.jpg",
+      "bytes": 88062,
+      "sha256": "6f9a30c0c457e96c19b058dd83b6e03dbe733ca4721d1b05725c944c25c09ea7"
+    },
+    {
+      "path": "qa/game/browser-samples.json",
+      "bytes": 7952,
+      "sha256": "a8b3fc8410852a79951382466d4cf236eed508e36d3308ee8b710968e095d815"
+    },
+    {
+      "path": "qa/game/open-world-game-qa.json",
+      "bytes": 6106,
+      "sha256": "5f4641f086eff52243dbf3e4f0a7814d43b8ea65e2e7f1bb1eeb20ad9e3819dc"
+    },
+    {
+      "path": "qa/game/open-world-network-qa.json",
+      "bytes": 7781,
+      "sha256": "e15e99cc80b975b2d713f199f4e8e0a41527cffc75defe9cbc9c5acd56c67e54"
+    },
+    {
+      "path": "qa/game/open-world-surface-qa.json",
+      "bytes": 1709,
+      "sha256": "05d39f7eafb26ab0972b14add9be1ae9ba0419e6cd25c4786e833928d8b97e53"
+    },
+    {
+      "path": "qa/game/volcano-final.png",
+      "bytes": 90112,
+      "sha256": "26abd0078f48aec12251b1d853d0576d6fe5c12695e7dffa7fc099c943d485ac"
+    },
+    {
+      "path": "qa/game/volcano-five-players.png",
+      "bytes": 86813,
+      "sha256": "8285bcea75db25f54d036632136748aab035dd616c87b1aca39aaabdc46b1edc"
+    },
+    {
+      "path": "qa/mesh-audit-02.json",
+      "bytes": 687,
+      "sha256": "f534c03fb0a13657be71ec4f2e768ba7e098b35ea9a05e3bd4bb605ee2a9605d"
+    },
+    {
+      "path": "qa/revision-02/candidate-bottom.png",
+      "bytes": 440821,
+      "sha256": "259892adb9f255dc5f982328312a173c9d06df7d21a5d196b9c423e5a9bd99ba"
+    },
+    {
+      "path": "qa/revision-02/candidate-front.png",
+      "bytes": 350473,
+      "sha256": "a7aa3d2c435aa19e14f9a105d81c9a039254489b5535a16a573bcf696401a100"
+    },
+    {
+      "path": "qa/revision-02/candidate-left.png",
+      "bytes": 349905,
+      "sha256": "15d553f1ed02319a1018d08bfe70ac88b0ff2bc9ccec5041d849dcb0808524ed"
+    },
+    {
+      "path": "qa/revision-02/candidate-rear.png",
+      "bytes": 350593,
+      "sha256": "3ba9a4983538a28eade7509bdad7a5e643bc3a8cc3917bf4c0251b5510021551"
+    },
+    {
+      "path": "qa/revision-02/candidate-right.png",
+      "bytes": 351080,
+      "sha256": "1bf172de8abeccd7292a5e6d9bcc597ea674068306e1f7cb5dae3639da21c368"
+    },
+    {
+      "path": "qa/revision-02/candidate-threequarter.png",
+      "bytes": 364957,
+      "sha256": "e3c1527ff4019335ea67fdf742acec186429bb993a1a51a9527190986d8eb462"
+    },
+    {
+      "path": "qa/revision-02/candidate-top.png",
+      "bytes": 472743,
+      "sha256": "a14e9bc0def4f03a7ad85b3bbc392e192809cac19400aea748c8308e5b2c4e1f"
+    },
+    {
+      "path": "qa/revision-02/candidate-views.json",
+      "bytes": 1279,
+      "sha256": "a1fa707e207b55a810a5949df697ce465195c930fc386b79191fa4bf7fb038ed"
+    },
+    {
+      "path": "request-spec.json",
+      "bytes": 548,
+      "sha256": "51904d84419beafd195bb8153940d8b973755338d7254418de19bc3dc66d53e7"
+    },
+    {
+      "path": "REQUEST.md",
+      "bytes": 516,
+      "sha256": "29dabd0f36f663b89e263764eda93414bf98f9df1c53386504b687f4a72cb44d"
+    },
+    {
+      "path": "source/original/prompt.txt",
+      "bytes": 1111,
+      "sha256": "160b5899341c61655252f4f11a99e27f6f7b0301f5689e8fa57ca677acead927"
+    },
+    {
+      "path": "source/original/reference-v1.json",
+      "bytes": 1477,
+      "sha256": "5ec2b48e6c531c79a9c3d22dbfd7277a398667448909ccbb87dd5f0c887869cc"
+    },
+    {
+      "path": "source/original/reference-v1.png",
+      "bytes": 1858781,
+      "sha256": "1eef13f39f4aa2f818a915f12130ae1bc541e152ad6cd089a3288d43f5928e74"
+    },
+    {
+      "path": "source/prepared/birefnet_cutout.png",
+      "bytes": 1962644,
+      "sha256": "6c82bacfd0b3270e856bb8004eec78749c3282949f06fa8a639f69f5fc728e06"
+    },
+    {
+      "path": "source/prepared/birefnet.log",
+      "bytes": 567,
+      "sha256": "30af0d49ec677d1f1455cedc569cb1db999e77fbaa4f8e3ba89fcf3653a0d1c1"
+    },
+    {
+      "path": "source/prepared/conditioning.png",
+      "bytes": 803145,
+      "sha256": "a7169c1970c0db9863a144c58172b5d94ece8f7c47e044391631296aca2e4f69"
+    },
+    {
+      "path": "source/prepared/matte.png",
+      "bytes": 16778,
+      "sha256": "2542d3e6dfc094b3a42ed9e87cbfb12ca86eb84124a7da29baca8bc9ffd35dd5"
+    },
+    {
+      "path": "source/prepared/preparation.json",
+      "bytes": 497,
+      "sha256": "deac92f8e8c453fa8984fc047211527804fc8122f972017f3396861c9fe3cbeb"
+    },
+    {
+      "path": "work/candidate-ledger.json",
+      "bytes": 473,
+      "sha256": "ad5e68e9c55d18a38db454ab5cf384823dbad2c8af5e530c3d2eb46611f081b4"
+    },
+    {
+      "path": "work/low-poly/candidate-01/candidate.glb",
+      "bytes": 1511968,
+      "sha256": "f715817408ad30d0bdff15e075dc26ad34ff13565fb273d2581c619afdd2445f"
+    },
+    {
+      "path": "work/low-poly/candidate-01/lod1.glb",
+      "bytes": 1356268,
+      "sha256": "4d8761fbb6bc9ec1ccde077caf6d2101583f37b5275b04cc29ce9a4b7d76be9c"
+    },
+    {
+      "path": "work/low-poly/candidate-01/lod2.glb",
+      "bytes": 1332856,
+      "sha256": "87665253be703863252ee8459b88aac70e29a85067bcbde71d51e3fe750d804b"
+    },
+    {
+      "path": "work/low-poly/candidate-01/process-report.json",
+      "bytes": 3285,
+      "sha256": "d710f13221a00d2535b5eee2c7281ce698db2130ef411253668d4dac054855ed"
+    },
+    {
+      "path": "work/low-poly/candidate-02/candidate.glb",
+      "bytes": 1506956,
+      "sha256": "2bca15ffc01cce6148f8569a60b3fbecd16ac0c7946014f7b48f267b5eaffb88"
+    },
+    {
+      "path": "work/low-poly/candidate-02/lod1.glb",
+      "bytes": 1354216,
+      "sha256": "dd46d5d0bd30c0d98f8c4aff2fbb907d91585e1e11dda60a6f1ff08000c207f2"
+    },
+    {
+      "path": "work/low-poly/candidate-02/lod2.glb",
+      "bytes": 1332664,
+      "sha256": "ff9d0530565596a465f6dbf8d17f4d2788e541df44d09e017ef8f499805ef2ac"
+    },
+    {
+      "path": "work/low-poly/candidate-02/process-report.json",
+      "bytes": 83845,
+      "sha256": "67b1cc291b7b240163927b17fddb711e41dd9d57da04ce81ec2e0b67ec003cbc"
+    },
+    {
+      "path": "work/trellis/dense-res1024-seed0042_base.png",
+      "bytes": 5145830,
+      "sha256": "0e11d7fec37115bf1380236f716ea2ba3275528fa49b62fea3dac7afb241e72a"
+    },
+    {
+      "path": "work/trellis/dense-res1024-seed0042.glb",
+      "bytes": 16901672,
+      "sha256": "050317155b39ab7355aee1632517deb629547b4d8c6f82f0b044207f31a3c4b2"
+    },
+    {
+      "path": "work/trellis/dense-res1024-seed0042.json",
+      "bytes": 922,
+      "sha256": "6dbcb18fb16d0d36b6d96e4bcf48ef4934f7d3795b3d93d8579db181d447cd5c"
+    },
+    {
+      "path": "work/trellis/dense-res1024-seed0042.log",
+      "bytes": 6233,
+      "sha256": "33b6e83858e36a75db1450b820c9c69fda74c9460ebf766ac48142fe592548e9"
+    },
+    {
+      "path": "work/trellis/dense-res1024-seed0042.ply",
+      "bytes": 104615867,
+      "sha256": "20e5b60f3dcaaedd7eb3c430da70e1af336efc6739518da01e4d5f76e27c64c6"
+    },
+    {
+      "path": "work/trellis/selected-dense.json",
+      "bytes": 238,
+      "sha256": "44be7f6bb83cb51c5bd2db9e742adc3eec1f5c025847545c37ca0b350fd397a2"
+    },
+    {
+      "path": "workflow/current/adopt-open-world-model.mjs",
+      "bytes": 5343,
+      "sha256": "3b0349b8cb872f237597531742c409f6307814b8872fd18f04cada912545d719"
+    },
+    {
+      "path": "workflow/current/audit-environment-glb.mjs",
+      "bytes": 2301,
+      "sha256": "b8856a1e17c7191ba6fbf6f08d56351a34bb0237985b2cbbe1f2488a2f596f28"
+    },
+    {
+      "path": "workflow/current/biomes.mjs",
+      "bytes": 4365,
+      "sha256": "34b30568b542b5bde9978da48605f537ce2fb0dceea4b4aff2b239d0e96b47d4"
+    },
+    {
+      "path": "workflow/current/check-world-surface.mjs",
+      "bytes": 2849,
+      "sha256": "2c443a19fc9f90dcb7ea90e8df8e6ced0fa220d74b11c71e6b7e315ca09df5a5"
+    },
+    {
+      "path": "workflow/current/finish-open-world-model.py",
+      "bytes": 2145,
+      "sha256": "1eeaa5f855933a6314bd902e4f4a8fa44122dd73822a2dd005570472fe5c18c9"
+    },
+    {
+      "path": "workflow/current/fit-open-world-terrain.py",
+      "bytes": 5352,
+      "sha256": "089eaa02a1db767bc514cf0bb64960d1cacb62ca0a8882af942c54bcade9dbe5"
+    },
+    {
+      "path": "workflow/current/generate-playable-model.py",
+      "bytes": 5858,
+      "sha256": "ba3302f923b0a908bbeb804b5cb0ab7a3fe03b8de7eebb7c593d841faf4678bb"
+    },
+    {
+      "path": "workflow/current/measure-world-landmark.py",
+      "bytes": 3267,
+      "sha256": "2e5b5ed41a5c6cf4cf28f8ff9f55d7d9f73486a3326ec99242fa02fc226a6d27"
+    },
+    {
+      "path": "workflow/current/open-world.js",
+      "bytes": 9713,
+      "sha256": "789527789fbebf4eff8bf2172d8ef919fcad8a1e5c2f52fc106421a1375394e3"
+    },
+    {
+      "path": "workflow/current/process-static-model.py",
+      "bytes": 13434,
+      "sha256": "73ecb2000ce43a61ca47fb3053ebd17e624313cb3d9ebb4ea7792725fd502784"
+    },
+    {
+      "path": "workflow/current/project-terrain-reference.py",
+      "bytes": 4033,
+      "sha256": "65832855154e62421562549092dfc35973bdc659774b9e75a84f19cc6158df4e"
+    },
+    {
+      "path": "workflow/current/README.md",
+      "bytes": 603,
+      "sha256": "15012f35f091b7aa08c549229e2779907096d8ba77177e747131dd84c5f970ac"
+    },
+    {
+      "path": "workflow/current/record-world-review.mjs",
+      "bytes": 5289,
+      "sha256": "a16fd7b2a8ac02532ef638a7afe3fa61423d95d280ab66a61e8df7699d4ec10f"
+    },
+    {
+      "path": "workflow/current/remesh-open-world-terrain.py",
+      "bytes": 8004,
+      "sha256": "5c900c76e204cd750805ddbc8cc5c158d9d02e041c835d85d05810e2beb459f1"
+    },
+    {
+      "path": "workflow/current/setup-open-world-model.py",
+      "bytes": 2765,
+      "sha256": "efd0491550f7e74f38c9ae242e898d6fdaa78571b4d8dd5fa8d262571edbf05e"
+    },
+    {
+      "path": "workflow/current/update-landmark-bounds.mjs",
+      "bytes": 943,
+      "sha256": "bd4ad0d701348c32cb5e7f8c6c3d0fc9102cb26f06586e8b2ec1d6a5bc667150"
+    },
+    {
+      "path": "workflow/current/world-clay-qa.py",
+      "bytes": 1354,
+      "sha256": "5bd7ca5e1e4e3b0dcff5bb614571f7206f3e7885aa900bc486e19734580d537a"
+    },
+    {
+      "path": "workflow/current/world-landmarks.js",
+      "bytes": 3586,
+      "sha256": "2038f8f064e81100ba2aa6fb7c5967990e7230281dce6e50cf1c33a3c99f6812"
+    },
+    {
+      "path": "workflow/current/world-review-sheets.py",
+      "bytes": 1231,
+      "sha256": "907ba0b302ca307cde7b46235938004fed1ceaf091e6d41999bd7c85991037f2"
+    }
+  ],
+  "directories": [
+    "geometry",
+    "qa",
+    "qa/browser",
+    "qa/clay-02",
+    "qa/dense",
+    "qa/game",
+    "qa/revision-02",
+    "source",
+    "source/original",
+    "source/prepared",
+    "work",
+    "work/low-poly",
+    "work/low-poly/candidate-01",
+    "work/low-poly/candidate-02",
+    "work/trellis",
+    "workflow",
+    "workflow/current"
+  ],
+  "fileCount": 84,
+  "totalBytes": 148827618,
+  "existingEqualFiles": 0,
+  "newFiles": 84
+}

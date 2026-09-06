@@ -1,0 +1,530 @@
+{
+  "startedAt": "2026-09-06T13:38:29.817Z",
+  "server": "ws://127.0.0.1:3003/ws",
+  "room": "HUNT-QA",
+  "observerOnly": true,
+  "botActions": [
+    "target",
+    "move"
+  ],
+  "states": 2980,
+  "maxPlayers": 5,
+  "characters": [
+    "cro/female",
+    "cro/male",
+    "nea/female",
+    "nea/male"
+  ],
+  "phases": {
+    "mammoth-1": [
+      "alive",
+      "dying",
+      "meat",
+      "respawning"
+    ],
+    "mammoth-2": [
+      "alive"
+    ]
+  },
+  "animalHealthValues": {
+    "mammoth-1": [
+      100,
+      75,
+      50,
+      25,
+      0
+    ],
+    "mammoth-2": [
+      100
+    ]
+  },
+  "attackSequenceIncrements": 4,
+  "attackSequencesMax": {
+    "45d967f7-62ee-44f8-afdc-827dbfff11a5": 4,
+    "e1d32758-b490-4f06-abc0-c5ccbc84934c": 0,
+    "a5127799-2cd3-4989-b2a3-f2a9483e314a": 0,
+    "17f15415-115b-4484-9467-c9b5996212ce": 0,
+    "a42bab70-21aa-4eac-b68f-b198ed6c4202": 0
+  },
+  "cookingObserved": true,
+  "rawMeatPickedUp": 4,
+  "rawMeatCooked": 1,
+  "cookedMeatCreated": 1,
+  "cookedMeatEaten": 1,
+  "staticPenetrations": 0,
+  "dynamicPenetrations": 0,
+  "penetrationExamples": [],
+  "fullSnapshotBytes": [
+    3718,
+    4075,
+    4434,
+    4792
+  ],
+  "movementSnapshotBytes": [
+    2473,
+    2474,
+    2465,
+    2476,
+    2718,
+    2718,
+    2706,
+    2715,
+    2703,
+    2710,
+    2706,
+    2718,
+    2716,
+    2703,
+    2706,
+    2714,
+    2721,
+    2719,
+    2718,
+    2721,
+    2714,
+    2720,
+    2713,
+    2703,
+    2699,
+    2697,
+    2697,
+    2694,
+    2686,
+    2681
+  ],
+  "sixthClientRefused": true,
+  "bots": [
+    {
+      "name": "Hunt-QA-1",
+      "species": "cro",
+      "gender": "female",
+      "id": "e1d32758-b490-4f06-abc0-c5ccbc84934c",
+      "goal": {
+        "x": 28.31005590962353,
+        "z": 28.829018449024524
+      },
+      "arrivedAt": 1788701920867,
+      "position": {
+        "x": 28.311492674356238,
+        "z": 28.833414738800165
+      }
+    },
+    {
+      "name": "Hunt-QA-2",
+      "species": "cro",
+      "gender": "male",
+      "id": "a5127799-2cd3-4989-b2a3-f2a9483e314a",
+      "goal": {
+        "x": 31.097526772645942,
+        "z": 26.922007029450906
+      },
+      "arrivedAt": 1788701920867,
+      "position": {
+        "x": 31.097526772645942,
+        "z": 26.92200702945091
+      }
+    },
+    {
+      "name": "Hunt-QA-3",
+      "species": "nea",
+      "gender": "female",
+      "id": "17f15415-115b-4484-9467-c9b5996212ce",
+      "goal": {
+        "x": 32.92233223072142,
+        "z": 24.080040913051725
+      },
+      "arrivedAt": 1788701921986,
+      "position": {
+        "x": 32.92233223072142,
+        "z": 24.080040913051725
+      }
+    },
+    {
+      "name": "Hunt-QA-4",
+      "species": "nea",
+      "gender": "male",
+      "id": "a42bab70-21aa-4eac-b68f-b198ed6c4202",
+      "goal": {
+        "x": 33.49637562585279,
+        "z": 20.751804060439046
+      },
+      "arrivedAt": 1788701922487,
+      "position": {
+        "x": 33.49637562585279,
+        "z": 20.751804060439046
+      }
+    }
+  ],
+  "changes": [
+    {
+      "kind": "animal",
+      "serverTime": 1788701909834,
+      "id": "mammoth-1",
+      "x": 27.4715575694004,
+      "z": 18.302051812890536,
+      "phase": "alive",
+      "health": 100,
+      "meatRemaining": 0,
+      "phaseStartedAt": 1788701899502
+    },
+    {
+      "kind": "animal",
+      "serverTime": 1788701909834,
+      "id": "mammoth-2",
+      "x": 23.51567698422135,
+      "z": 82.26174079310526,
+      "phase": "alive",
+      "health": 100,
+      "meatRemaining": 0,
+      "phaseStartedAt": 1788701899502
+    },
+    {
+      "kind": "player",
+      "serverTime": 1788702015549,
+      "id": "45d967f7-62ee-44f8-afdc-827dbfff11a5",
+      "name": "旅人376",
+      "attackSequence": 1,
+      "attackAt": 1788702015547,
+      "cookingEndsAt": 0,
+      "rawMeat": 0,
+      "cookedMeat": 0,
+      "energy": 98,
+      "delta": {
+        "attacks": 1,
+        "rawMeat": 0,
+        "cookedMeat": 0,
+        "energy": -2
+      }
+    },
+    {
+      "kind": "animal",
+      "serverTime": 1788702015909,
+      "id": "mammoth-1",
+      "x": 25.910085432808515,
+      "z": 19.01255955966437,
+      "phase": "alive",
+      "health": 75,
+      "meatRemaining": 0,
+      "phaseStartedAt": 1788701899502
+    },
+    {
+      "kind": "player",
+      "serverTime": 1788702024651,
+      "id": "45d967f7-62ee-44f8-afdc-827dbfff11a5",
+      "name": "旅人376",
+      "attackSequence": 2,
+      "attackAt": 1788702024651,
+      "cookingEndsAt": 0,
+      "rawMeat": 0,
+      "cookedMeat": 0,
+      "energy": 96,
+      "delta": {
+        "attacks": 1,
+        "rawMeat": 0,
+        "cookedMeat": 0,
+        "energy": -2
+      }
+    },
+    {
+      "kind": "animal",
+      "serverTime": 1788702025006,
+      "id": "mammoth-1",
+      "x": 24.154977903924685,
+      "z": 21.420279905786632,
+      "phase": "alive",
+      "health": 50,
+      "meatRemaining": 0,
+      "phaseStartedAt": 1788701899502
+    },
+    {
+      "kind": "player",
+      "serverTime": 1788702034852,
+      "id": "45d967f7-62ee-44f8-afdc-827dbfff11a5",
+      "name": "旅人376",
+      "attackSequence": 3,
+      "attackAt": 1788702034852,
+      "cookingEndsAt": 0,
+      "rawMeat": 0,
+      "cookedMeat": 0,
+      "energy": 94,
+      "delta": {
+        "attacks": 1,
+        "rawMeat": 0,
+        "cookedMeat": 0,
+        "energy": -2
+      }
+    },
+    {
+      "kind": "animal",
+      "serverTime": 1788702035198,
+      "id": "mammoth-1",
+      "x": 27.13966381747253,
+      "z": 20.147388231571366,
+      "phase": "alive",
+      "health": 25,
+      "meatRemaining": 0,
+      "phaseStartedAt": 1788701899502
+    },
+    {
+      "kind": "player",
+      "serverTime": 1788702046149,
+      "id": "45d967f7-62ee-44f8-afdc-827dbfff11a5",
+      "name": "旅人376",
+      "attackSequence": 4,
+      "attackAt": 1788702046148,
+      "cookingEndsAt": 0,
+      "rawMeat": 0,
+      "cookedMeat": 0,
+      "energy": 92,
+      "delta": {
+        "attacks": 1,
+        "rawMeat": 0,
+        "cookedMeat": 0,
+        "energy": -2
+      }
+    },
+    {
+      "kind": "animal",
+      "serverTime": 1788702046485,
+      "id": "mammoth-1",
+      "x": 25.42188447283193,
+      "z": 19.768140596678112,
+      "phase": "dying",
+      "health": 0,
+      "meatRemaining": 0,
+      "phaseStartedAt": 1788702046484
+    },
+    {
+      "kind": "animal",
+      "serverTime": 1788702047723,
+      "id": "mammoth-1",
+      "x": 25.42188447283193,
+      "z": 19.768140596678112,
+      "phase": "meat",
+      "health": 0,
+      "meatRemaining": 4,
+      "phaseStartedAt": 1788702047723
+    },
+    {
+      "kind": "animal",
+      "serverTime": 1788702079603,
+      "id": "mammoth-1",
+      "x": 25.42188447283193,
+      "z": 19.768140596678112,
+      "phase": "meat",
+      "health": 0,
+      "meatRemaining": 3,
+      "phaseStartedAt": 1788702047723
+    },
+    {
+      "kind": "player",
+      "serverTime": 1788702079603,
+      "id": "45d967f7-62ee-44f8-afdc-827dbfff11a5",
+      "name": "旅人376",
+      "attackSequence": 4,
+      "attackAt": 1788702046148,
+      "cookingEndsAt": 0,
+      "rawMeat": 1,
+      "cookedMeat": 0,
+      "energy": 92,
+      "delta": {
+        "attacks": 0,
+        "rawMeat": 1,
+        "cookedMeat": 0,
+        "energy": 0
+      }
+    },
+    {
+      "kind": "animal",
+      "serverTime": 1788702087330,
+      "id": "mammoth-1",
+      "x": 25.42188447283193,
+      "z": 19.768140596678112,
+      "phase": "meat",
+      "health": 0,
+      "meatRemaining": 2,
+      "phaseStartedAt": 1788702047723
+    },
+    {
+      "kind": "player",
+      "serverTime": 1788702087330,
+      "id": "45d967f7-62ee-44f8-afdc-827dbfff11a5",
+      "name": "旅人376",
+      "attackSequence": 4,
+      "attackAt": 1788702046148,
+      "cookingEndsAt": 0,
+      "rawMeat": 2,
+      "cookedMeat": 0,
+      "energy": 92,
+      "delta": {
+        "attacks": 0,
+        "rawMeat": 1,
+        "cookedMeat": 0,
+        "energy": 0
+      }
+    },
+    {
+      "kind": "animal",
+      "serverTime": 1788702094487,
+      "id": "mammoth-1",
+      "x": 25.42188447283193,
+      "z": 19.768140596678112,
+      "phase": "meat",
+      "health": 0,
+      "meatRemaining": 1,
+      "phaseStartedAt": 1788702047723
+    },
+    {
+      "kind": "player",
+      "serverTime": 1788702094487,
+      "id": "45d967f7-62ee-44f8-afdc-827dbfff11a5",
+      "name": "旅人376",
+      "attackSequence": 4,
+      "attackAt": 1788702046148,
+      "cookingEndsAt": 0,
+      "rawMeat": 3,
+      "cookedMeat": 0,
+      "energy": 92,
+      "delta": {
+        "attacks": 0,
+        "rawMeat": 1,
+        "cookedMeat": 0,
+        "energy": 0
+      }
+    },
+    {
+      "kind": "animal",
+      "serverTime": 1788702103031,
+      "id": "mammoth-1",
+      "x": 25.42188447283193,
+      "z": 19.768140596678112,
+      "phase": "respawning",
+      "health": 0,
+      "meatRemaining": 0,
+      "phaseStartedAt": 1788702103031
+    },
+    {
+      "kind": "player",
+      "serverTime": 1788702103031,
+      "id": "45d967f7-62ee-44f8-afdc-827dbfff11a5",
+      "name": "旅人376",
+      "attackSequence": 4,
+      "attackAt": 1788702046148,
+      "cookingEndsAt": 0,
+      "rawMeat": 4,
+      "cookedMeat": 0,
+      "energy": 92,
+      "delta": {
+        "attacks": 0,
+        "rawMeat": 1,
+        "cookedMeat": 0,
+        "energy": 0
+      }
+    },
+    {
+      "kind": "player",
+      "serverTime": 1788702139886,
+      "id": "45d967f7-62ee-44f8-afdc-827dbfff11a5",
+      "name": "旅人376",
+      "attackSequence": 4,
+      "attackAt": 1788702046148,
+      "cookingEndsAt": 1788702142886,
+      "rawMeat": 4,
+      "cookedMeat": 0,
+      "energy": 92,
+      "delta": {
+        "attacks": 0,
+        "rawMeat": 0,
+        "cookedMeat": 0,
+        "energy": 0
+      }
+    },
+    {
+      "kind": "player",
+      "serverTime": 1788702140291,
+      "id": "45d967f7-62ee-44f8-afdc-827dbfff11a5",
+      "name": "旅人376",
+      "attackSequence": 4,
+      "attackAt": 1788702046148,
+      "cookingEndsAt": 0,
+      "rawMeat": 4,
+      "cookedMeat": 0,
+      "energy": 92,
+      "delta": {
+        "attacks": 0,
+        "rawMeat": 0,
+        "cookedMeat": 0,
+        "energy": 0
+      }
+    },
+    {
+      "kind": "player",
+      "serverTime": 1788702153321,
+      "id": "45d967f7-62ee-44f8-afdc-827dbfff11a5",
+      "name": "旅人376",
+      "attackSequence": 4,
+      "attackAt": 1788702046148,
+      "cookingEndsAt": 1788702156320,
+      "rawMeat": 4,
+      "cookedMeat": 0,
+      "energy": 92,
+      "delta": {
+        "attacks": 0,
+        "rawMeat": 0,
+        "cookedMeat": 0,
+        "energy": 0
+      }
+    },
+    {
+      "kind": "player",
+      "serverTime": 1788702156351,
+      "id": "45d967f7-62ee-44f8-afdc-827dbfff11a5",
+      "name": "旅人376",
+      "attackSequence": 4,
+      "attackAt": 1788702046148,
+      "cookingEndsAt": 0,
+      "rawMeat": 3,
+      "cookedMeat": 1,
+      "energy": 92,
+      "delta": {
+        "attacks": 0,
+        "rawMeat": -1,
+        "cookedMeat": 1,
+        "energy": 0
+      }
+    },
+    {
+      "kind": "player",
+      "serverTime": 1788702165776,
+      "id": "45d967f7-62ee-44f8-afdc-827dbfff11a5",
+      "name": "旅人376",
+      "attackSequence": 4,
+      "attackAt": 1788702046148,
+      "cookingEndsAt": 0,
+      "rawMeat": 3,
+      "cookedMeat": 0,
+      "energy": 100,
+      "delta": {
+        "attacks": 0,
+        "rawMeat": 0,
+        "cookedMeat": -1,
+        "energy": 8
+      }
+    },
+    {
+      "kind": "animal",
+      "serverTime": 1788702193061,
+      "id": "mammoth-1",
+      "x": 25,
+      "z": 21,
+      "phase": "alive",
+      "health": 100,
+      "meatRemaining": 0,
+      "phaseStartedAt": 1788702193060
+    }
+  ],
+  "errors": [],
+  "finishedAt": "2026-09-06T13:44:38.255Z",
+  "endReason": "stdin q",
+  "workflowObserved": true
+}

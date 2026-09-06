@@ -1,0 +1,38 @@
+{
+  "modelKey": "mammoth-meat",
+  "name": "マンモスの生肉",
+  "kind": "static",
+  "candidate": 1,
+  "status": "reviewed-prototype",
+  "url": "/models/mammoth-meat/model.glb",
+  "sha256": "50bf72d1dc5ff23b7eb206e7d0c6535d9a4ac1559190e6c4f5bbb94cd0ffaf2d",
+  "bytes": 579220,
+  "triangles": 2826,
+  "upAxis": "Y",
+  "forwardAxis": "+Z",
+  "heightMetres": 0.12715373989156983,
+  "widthMetres": 0.55,
+  "placement": {
+    "pivot": "ground-centred"
+  },
+  "clips": [],
+  "gender": null,
+  "species": null,
+  "notes": [
+    "Single boneless meat cut reconstructed from built-in imagegen reference through local TRELLIS-2.",
+    "Exact dense and reduced GLB front, rear, top, bottom and oblique views reviewed: closed surface, readable muscle and pale fat, no gross holes or normal artifacts.",
+    "141302 source triangles reduced to 2826 by measured QEM; source UV/albedo retained at 512px. Dielectric roughness 0.62.",
+    "Width 0.55m; rigid pickup requires no skeleton. Unreviewed experimental LODs retained in source workspace but not delivered."
+  ],
+  "provenance": {
+    "provider": "Codex",
+    "claudeUsed": false,
+    "referenceGenerator": "Built-in imagegen",
+    "referenceImage": "output/model-generation/models/mammoth-meat/source/original/reference-v1.png",
+    "referenceSha256": "f883f52206d01d9108ed6868de483c9ed2c7ec6237f1cbcad4424993354827fd",
+    "reconstruction": "Local TRELLIS-2; settings and dense SHA in model workspace",
+    "candidateFile": "output/model-generation/models/mammoth-meat/work/low-poly/candidate-01/candidate.glb",
+    "visualReview": "output/model-generation/models/mammoth-meat/qa/adoption-review.json"
+  },
+  "lods": []
+}

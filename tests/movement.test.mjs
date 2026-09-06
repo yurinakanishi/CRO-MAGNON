@@ -1,0 +1,39 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import { movePlayer } from '../shared/movement.mjs';
+import { WORLD } from '../shared/world.mjs';
+const player = () => ({ x:40,z:50,dx:1,dz:0,lastInput:1000,target:null,facing:0,runningRequested:false });
+
+test('walk and run cover their configured distance; diagonal input cannot boost speed', () => {
+  for (const runningRequested of [false,true]) {
+    const p = {...player(),runningRequested,dx:1,dz:1};
+    movePlayer(p,.1,1000);
+    const speed = runningRequested ? WORLD.runSpeed : WORLD.walkSpeed;
+    assert.ok(Math.abs(Math.hypot(p.x-40,p.z-50)-speed*.1)<1e-10);
+    assert.equal(p.running,runningRequested);
+    assert.ok(Math.abs(p.facing-Math.PI/4)<1e-10);
+  }
+});
+
+test('a short click target updates facing, arrives without overshoot and retains heading on stop', () => {
+  const p = {...player(),target:{x:39.99,z:50.02}};
+  movePlayer(p,.1,1000);
+  assert.deepEqual([p.x,p.z],[39.99,50.02]);
+  assert.equal(p.target,null);
+  assert.ok(Math.abs(p.facing-Math.atan2(-.01,.02))<1e-10);
+  const facing=p.facing;
+  movePlayer(p,.1,2000);
+  assert.equal(p.moving,false);assert.equal(p.speed,0);assert.equal(p.facing,facing);
+});
+
+test('the short bear uses a measured smaller gait while the kunoichi keeps human speeds', () => {
+  for (const [species,walk,run] of [['bear',.6,1.8],['cat',1.25,3.5]]) {
+    for (const runningRequested of [false,true]) {
+      const p={...player(),species,runningRequested,dx:-1,dz:1};
+      movePlayer(p,.1,1000);
+      assert.ok(Math.abs(Math.hypot(p.x-40,p.z-50)-(runningRequested?run:walk)*.1)<1e-10);
+      assert.ok(Math.abs(p.facing+Math.PI/4)<1e-10);
+      assert.equal(p.running,runningRequested);
+    }
+  }
+});

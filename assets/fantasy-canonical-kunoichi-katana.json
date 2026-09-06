@@ -1,0 +1,14 @@
+{
+  "schemaVersion": 1,
+  "modelKey": "kunoichi-katana",
+  "status": "copied-and-all-source-and-destination-hashes-verified",
+  "verifiedAt": "2026-09-06T19:12:16.554Z",
+  "planSha256": "8a68606acba90398cf09abee780b7aa6493bab7443c57a46d7d738bad31ffb82",
+  "sourceRoot": "C:\\Users\\yurin\\Desktop\\projects\\CRO-MAGNON\\output\\model-generation\\models\\kunoichi-katana",
+  "destinationRoot": "C:\\Users\\yurin\\Desktop\\projects\\threed-model-creation\\models\\kunoichi-katana",
+  "files": 152,
+  "bytes": 121614214,
+  "copied": 152,
+  "skippedEqual": 0,
+  "preflightExistingEqual": 0
+}

@@ -1,0 +1,140 @@
+{
+  "date": "2026-09-07",
+  "status": "passed",
+  "modelKey": "crow-shaman",
+  "selection": "Candidate image 3: 白羽の呪術師",
+  "delivery": {
+    "sha256": "b0937988961c537fa4edb457c16baaa057d40b59e1393e4b493ec434684499a3",
+    "bytes": 8194344,
+    "triangles": 65750,
+    "bones": 23,
+    "clips": 6
+  },
+  "automated": {
+    "gameTestsPassed": 86,
+    "migrationTestsPassed": 6,
+    "syntax": "passed",
+    "assetValidation": {
+      "models": 20,
+      "status": "passed"
+    },
+    "networkReport": "assets/crow-network-qa.json",
+    "networkStatus": "passed"
+  },
+  "modelReview": {
+    "status": "passed",
+    "exactRevision": 6,
+    "denseReducedPeerComparison": true,
+    "sixClipPoseImages": 186,
+    "sixClipVideos": 6,
+    "evidence": "output/model-generation/models/crow-shaman/work/rig/revision-06/qa",
+    "browserEvidence": "output/crow-browser-qa",
+    "noFallback": true
+  },
+  "gameBrowser": {
+    "status": "passed",
+    "room": "CROW-CROWD-QA",
+    "players": 5,
+    "characterVariants": 4,
+    "observedFps": 60,
+    "fpsLimit": 60,
+    "drawCalls": 63,
+    "renderTriangles": 732562,
+    "heapMiB": 285.6,
+    "performanceNote": "Single local browser observation, not a minimum guaranteed across hardware",
+    "checks": [
+      "F air swing",
+      "patrol and chase",
+      "visible staff attack",
+      "damage and downed HUD",
+      "camp recovery",
+      "recovery then navigation around peers",
+      "three spear hits 75-50-25-0",
+      "Death and hidden phase",
+      "six synchronized enemy clips",
+      "strict final GLB SHA",
+      "no browser warning or error logs"
+    ],
+    "recoveryNavigation": {
+      "before": {
+        "defeats": "1",
+        "downed": "false",
+        "x": "49.90",
+        "z": "53.00"
+      },
+      "after": {
+        "downed": "false",
+        "fps": "60",
+        "players": "5",
+        "range": "true",
+        "x": "46.77",
+        "z": "27.52"
+      }
+    },
+    "peerReport": "assets/crow-browser-final-network-qa.json"
+  },
+  "liveRollout": {
+    "status": "completed",
+    "health": [
+      {
+        "port": 3000,
+        "ok": true,
+        "combatVersion": 2,
+        "enemyVersion": 1,
+        "rooms": 1,
+        "players": 1,
+        "maxPlayers": 5
+      },
+      {
+        "port": 3001,
+        "ok": true,
+        "combatVersion": 2,
+        "enemyVersion": 1,
+        "rooms": 0,
+        "players": 0,
+        "maxPlayers": 5
+      },
+      {
+        "port": 3002,
+        "ok": true,
+        "combatVersion": 2,
+        "enemyVersion": 1,
+        "rooms": 1,
+        "players": 2,
+        "maxPlayers": 5
+      },
+      {
+        "port": 3003,
+        "ok": true,
+        "combatVersion": 2,
+        "enemyVersion": 1,
+        "rooms": 1,
+        "players": 1,
+        "maxPlayers": 5
+      }
+    ],
+    "preservedInventory": [
+      {
+        "name": "旅人604",
+        "wood": 1
+      },
+      {
+        "name": "旅人505",
+        "rawMeat": 4
+      }
+    ],
+    "inventoryRecoveryAudit": "output/crow-restart/port-3002-2026-09-06T16-38-42-318Z-inventory-recovered-audit.json",
+    "note": "Initial restart restored checkpoints; refreshing old clients consumed one-time identities. Final approved recovery retained a fresh current world and restored only inventory erased by the agent reload. This does not add persistent accounts."
+  },
+  "canonicalSync": {
+    "status": "completed-all-hashes-verified",
+    "record": "assets/crow-canonical-sync.json",
+    "files": 758,
+    "bytes": 573060351
+  },
+  "limitations": [
+    "Skinned feather/cloth layers; no cloth simulation or ragdoll",
+    "Staff melee only",
+    "No crow meat or loot"
+  ]
+}

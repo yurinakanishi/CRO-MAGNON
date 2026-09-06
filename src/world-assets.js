@@ -1,6 +1,8 @@
 import * as THREE from 'three';
 import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
 import { clone as cloneSkeleton } from 'three/addons/utils/SkeletonUtils.js';
+import { requireEnemyClips } from './enemy-state.js';
+import { PlacementGrid } from '../shared/spatial-grid.mjs';
 
 function disposeTemplate(root) {
   const resources = new Set();
@@ -32,18 +34,45 @@ export async function loadVerifiedGLB(record) {
     if (!url.startsWith('blob:') && !url.startsWith('data:')) throw new Error('GLB must embed its resources');
     return url;
   });
-  return new GLTFLoader(manager).parseAsync(bytes, '');
+  const gltf=await new GLTFLoader(manager).parseAsync(bytes, '');
+  if(crypto.subtle) {
+    const view=new DataView(bytes),jsonEnd=20+view.getUint32(12,true),binaryStart=jsonEnd+8;
+    const hashes=await Promise.all((gltf.parser.json.images??[]).map(async image=>{
+      const range=gltf.parser.json.bufferViews[image.bufferView];if(!range)return null;
+      const digest=await crypto.subtle.digest('SHA-256',bytes.slice(binaryStart+(range.byteOffset??0),binaryStart+(range.byteOffset??0)+range.byteLength));
+      return Array.from(new Uint8Array(digest),n=>n.toString(16).padStart(2,'0')).join('');
+    }));
+    gltf.scene.traverse(node=>{for(const material of [node.material].flat().filter(Boolean))for(const value of Object.values(material))if(value?.isTexture){
+      const index=gltf.parser.associations.get(value)?.textures,source=gltf.parser.json.textures?.[index]?.source;
+      if(hashes[source])value.userData.embeddedSha256=hashes[source];
+    }});
+  }
+  return gltf;
+}
+
+function shareLodTextures(models) {
+  const canonical=new Map(),retired=new Set(),images=new Set();
+  for(const model of models)model.scene.traverse(node=>{for(const material of [node.material].flat().filter(Boolean))for(const [slot,texture]of Object.entries(material)) {
+    if(!texture?.isTexture)continue;
+    const hash=texture.userData.embeddedSha256;
+    if(!hash){images.add(texture.source?.data);continue;}
+    const key=[hash,texture.colorSpace,texture.wrapS,texture.wrapT,texture.minFilter,texture.magFilter,texture.flipY,texture.channel,...texture.offset.toArray(),...texture.repeat.toArray(),texture.rotation].join(':');
+    if(canonical.has(key)&&canonical.get(key)!==texture){material[slot]=canonical.get(key);retired.add(texture);}
+    else {canonical.set(key,texture);images.add(texture.source?.data);}
+  }});
+  const closed=new Set();
+  for(const texture of retired){texture.dispose();const data=texture.source?.data;if(!images.has(data)&&!closed.has(data)){data?.close?.();closed.add(data);}}
 }
 
 export class WorldAssets {
-  constructor() { this.templates = new Map(); this.animals = new Set(); this.disposed = false; }
+  constructor({loadEnvironment=loadVerifiedGLB}={}) { this.environmentLoader=loadEnvironment;this.templates = new Map(); this.animals = new Set(); this.enemyLoads = new Map(); this.equipmentLoads = new Map(); this.environmentLoads = new Map(); this.environmentQueue=[]; this.environmentActive=0; this.disposed = false; }
   async load() {
     const started = performance.now();
     const response = await fetch('/models/world-assets.json');
     if (!response.ok) throw new Error(`World assets: HTTP ${response.status}`);
     this.catalog = await response.json();
     if (this.catalog.status !== 'ready' || !Array.isArray(this.catalog.assets)) throw new Error('World model catalog is not ready');
-    const pending = [...this.catalog.assets];
+    const pending = this.catalog.assets.filter(asset => asset.kind !== 'enemy' && !asset.onDemand);
     // Bound concurrent texture decoding while keeping independent downloads busy.
     await Promise.all(Array.from({ length: 3 }, async () => {
       while (pending.length) {
@@ -56,6 +85,7 @@ export class WorldAssets {
           throw error;
         }
         if (this.disposed) { for (const model of [gltf, ...lods]) disposeTemplate(model.scene); continue; }
+        shareLodTextures([gltf,...lods]);
         for (const model of [gltf, ...lods]) {
           model.scene.updateMatrixWorld(true);
           model.scene.traverse(node => {
@@ -74,8 +104,44 @@ export class WorldAssets {
     if (!template) throw new Error(`Missing model ${key}`);
     return template;
   }
+  ensureEnvironment(key) {
+    if(this.disposed)return Promise.reject(new Error('World assets disposed'));
+    if(this.templates.has(key))return Promise.resolve(this.get(key));
+    if(this.environmentLoads.has(key))return this.environmentLoads.get(key);
+    const asset=this.catalog.assets.find(record=>record.modelKey===key&&record.environment);
+    if(!asset)return Promise.reject(new Error(`Missing verified environment ${key}`));
+    const promise=new Promise((resolve,reject)=>this.environmentQueue.push({asset,resolve,reject}));
+    this.environmentLoads.set(key,promise);this.pumpEnvironment();return promise;
+  }
+  pumpEnvironment() {
+    while(this.environmentActive<2&&this.environmentQueue.length) {
+      const job=this.environmentQueue.shift();this.environmentActive++;
+      (async()=>{
+        const models=[];
+        try {
+          if(this.disposed)throw new Error('World assets disposed');
+          for(const record of [job.asset,...(job.asset.lods??[])]) {
+            models.push(await this.environmentLoader(record));
+            if(this.disposed)throw new Error('World assets disposed');
+          }
+          shareLodTextures(models);
+          for(const model of models){model.scene.updateMatrixWorld(true);model.scene.traverse(node=>{if(node.isMesh){node.castShadow=true;node.receiveShadow=true;}});}
+          const template={asset:job.asset,gltf:models[0],lods:models.slice(1)};
+          this.templates.set(job.asset.modelKey,template);job.resolve(template);
+        }catch(error){for(const model of models)disposeTemplate(model.scene);job.reject(error);}
+        finally{this.environmentActive--;this.environmentLoads.delete(job.asset.modelKey);this.pumpEnvironment();}
+      })();
+    }
+  }
+  releaseEnvironment(key) {
+    const template=this.templates.get(key);
+    if(!template?.asset.environment||!template.asset.onDemand)return;
+    for(const model of [template.gltf,...template.lods])disposeTemplate(model.scene);
+    this.templates.delete(key);
+  }
   create(key, level = 0) {
-    const template = this.get(key), model = level ? template.lods[level - 1] ?? template.gltf : template.gltf;
+    const template = this.get(key), model = level ? template.lods[level - 1] : template.gltf;
+    if (!model) throw new Error(`Missing verified LOD ${level} for ${key}`);
     const root = model.scene.clone(true);
     root.userData.assetKey = key;
     return root;
@@ -91,10 +157,24 @@ export class WorldAssets {
     }
     return root;
   }
+  async createEquipment(key) {
+    if(this.templates.has(key))return this.create(key);
+    if(!this.equipmentLoads.has(key))this.equipmentLoads.set(key,(async()=>{
+      const asset=this.catalog.assets.find(record=>record.modelKey===key&&record.kind==='equipment');
+      if(!asset)throw new Error(`Missing verified equipment ${key}`);
+      const gltf=await loadVerifiedGLB(asset);
+      if(this.disposed){disposeTemplate(gltf.scene);return;}
+      gltf.scene.updateMatrixWorld(true);gltf.scene.traverse(node=>{if(node.isMesh){node.castShadow=true;node.receiveShadow=true;}});
+      this.templates.set(key,{gltf,lods:[],asset});
+    })());
+    await this.equipmentLoads.get(key);
+    return this.disposed?null:this.create(key);
+  }
   createAnimal(key) {
     const { gltf, asset } = this.get(key), root = cloneSkeleton(gltf.scene), mixer = new THREE.AnimationMixer(root);
     const actions = new Map(gltf.animations.map(clip => [clip.name, mixer.clipAction(clip)]));
     let current = null;
+    const retiring = new Map();
     const actor = {
       root, asset, mixer, name: null,
       play(name, speed = 1) {
@@ -102,16 +182,53 @@ export class WorldAssets {
         if (!next) throw new Error(`${key}: missing clip ${name}`);
         next.timeScale = speed;
         if (next === current) return;
-        next.reset().play(); if (current) { next.crossFadeFrom(current, .45, false); } current = next; actor.name = name;
+        retiring.delete(next);
+        next.reset().setEffectiveWeight(1).setLoop(THREE.LoopRepeat, Infinity); next.clampWhenFinished = false; next.play();
+        if (current) { next.crossFadeFrom(current, .45, false); retiring.set(current, .45); } current = next; actor.name = name;
       },
-      update: dt => mixer.update(dt),
+      sampleOnce(name, elapsed) {
+        const next = actions.get(name);
+        if (!next) throw new Error(`${key}: missing clip ${name}`);
+        if (next !== current) {
+          mixer.stopAllAction(); retiring.clear();
+          next.reset().setEffectiveWeight(1).setEffectiveTimeScale(1).setLoop(THREE.LoopOnce, 1);
+          next.clampWhenFinished = true; next.play(); current = next; actor.name = name;
+        }
+        next.time = Math.min(next.getClip().duration, Math.max(0, elapsed));
+        mixer.update(0);
+      },
+      stop() { mixer.stopAllAction(); retiring.clear(); current = null; actor.name = null; },
+      update(dt) {
+        mixer.update(dt);
+        for (const [action, remaining] of retiring) {
+          if (remaining <= dt) { action.stop(); retiring.delete(action); }
+          else retiring.set(action, remaining - dt);
+        }
+      },
       dispose: () => {
         if (!this.animals.delete(actor)) return;
-        mixer.stopAllAction(); mixer.uncacheRoot(root);
+        retiring.clear(); mixer.stopAllAction(); mixer.uncacheRoot(root);
         root.traverse(node => { if (node.isSkinnedMesh) node.skeleton.dispose(); });
       },
     };
     this.animals.add(actor); actor.play('Idle_Loop'); return actor;
+  }
+  async createEnemy(key) {
+    // Older servers have no enemies: only require this verified model when a
+    // snapshot actually contains one. Concurrent instances share one download.
+    if (!this.enemyLoads.has(key)) this.enemyLoads.set(key, (async () => {
+      const asset = this.catalog.assets.find(record => record.modelKey === key && record.kind === 'enemy');
+      if (!asset) throw new Error(`Missing verified enemy ${key}`);
+      const gltf = await loadVerifiedGLB(asset);
+      try { requireEnemyClips(gltf.animations, key); }
+      catch (error) { disposeTemplate(gltf.scene); throw error; }
+      if (this.disposed) { disposeTemplate(gltf.scene); return; }
+      gltf.scene.updateMatrixWorld(true);
+      gltf.scene.traverse(node => { if (node.isMesh) { node.castShadow = true; node.receiveShadow = true; } });
+      this.templates.set(key, { gltf, lods: [], asset });
+    })());
+    await this.enemyLoads.get(key);
+    return this.disposed ? null : this.createAnimal(key);
   }
   dispose() {
     this.disposed = true;
@@ -146,21 +263,26 @@ function renderImpostor(renderer, root) {
 }
 
 export class LandscapeInstances {
-  constructor({ assets, key, placements, renderer, scene, distances, foliage = false }) {
+  constructor({ assets, key, placements, renderer, scene, distances, foliage = false, generateCell = null }) {
     this.placements = placements; this.distances = distances; this.scene = scene; this.levels = []; this.nextUpdate = 0;
+    this.grid=new PlacementGrid(placements);this.generateCell=generateCell;this.generated=new Map();
+    this.castNearbyShadows=!foliage;
+    const generatorCapacity=generateCell?250*(Math.ceil(distances[2]/32)*2+2)**2:0;
+    this.capacity=this.grid.maximumNearby(distances[2])+generatorCapacity;
     const template = assets.get(key);
-    for (const model of [template.gltf, template.lods[0] ?? template.gltf]) {
+    for (const model of [template.gltf, template.lods[0]]) {
+      if (!model) { this.levels.push([]); continue; }
       const meshes = []; model.scene.updateMatrixWorld(true);
       model.scene.traverse(node => {
         if (!node.isMesh) return;
-        const mesh = new THREE.InstancedMesh(node.geometry, node.material, placements.length);
+        const mesh = new THREE.InstancedMesh(node.geometry, node.material, this.capacity);
         mesh.instanceMatrix.setUsage(THREE.DynamicDrawUsage); mesh.count = 0; mesh.frustumCulled = false;
-        mesh.castShadow = !foliage; mesh.receiveShadow = true; scene.add(mesh); meshes.push({ mesh, local: node.matrixWorld.clone() });
+        mesh.castShadow = !foliage && this.levels.length === 0; mesh.matrixAutoUpdate = false; mesh.receiveShadow = true; scene.add(mesh); meshes.push({ mesh, local: node.matrixWorld.clone() });
       });
       this.levels.push(meshes);
     }
     this.impostor = renderImpostor(renderer, template.gltf.scene);
-    const billboard = new THREE.InstancedMesh(this.impostor.geometry, this.impostor.material, placements.length);
+    const billboard = new THREE.InstancedMesh(this.impostor.geometry, this.impostor.material, this.capacity);
     billboard.instanceMatrix.setUsage(THREE.DynamicDrawUsage); billboard.count = 0; billboard.frustumCulled = false; scene.add(billboard);
     this.levels.push([{ mesh: billboard, local: new THREE.Matrix4() }]);
     this.matrix = new THREE.Matrix4(); this.composed = new THREE.Matrix4(); this.rotation = new THREE.Quaternion(); this.axis = new THREE.Vector3(0, 1, 0); this.sphere = new THREE.Sphere();
@@ -170,11 +292,22 @@ export class LandscapeInstances {
     if (time < this.nextUpdate) return; this.nextUpdate = time + .18;
     this.projection.multiplyMatrices(camera.projectionMatrix, camera.matrixWorldInverse); this.frustum.setFromProjectionMatrix(this.projection);
     const counts = [0, 0, 0];
-    for (const item of this.placements) {
+    const nearby=[...this.grid.near(camera.position.x,camera.position.z,this.distances[2])];
+    if(this.generateCell) {
+      const active=new Set(),radius=this.distances[2];
+      for(let x=Math.floor((camera.position.x-radius)/32);x<=Math.floor((camera.position.x+radius)/32);x++)for(let z=Math.floor((camera.position.z-radius)/32);z<=Math.floor((camera.position.z+radius)/32);z++) {
+        const key=`${x},${z}`;active.add(key);
+        if(!this.generated.has(key))this.generated.set(key,this.generateCell(x,z));
+        nearby.push(...this.generated.get(key));
+      }
+      for(const key of this.generated.keys())if(!active.has(key))this.generated.delete(key);
+    }
+    this.examined=nearby.length;
+    for (const item of nearby) {
       const distance = item.position.distanceTo(camera.position);
       if (distance > this.distances[2]) continue;
       this.sphere.center.copy(item.position); this.sphere.center.y += item.height * .5; this.sphere.radius = item.height * .75;
-      if (!this.frustum.intersectsSphere(this.sphere)) continue;
+      if (!this.frustum.intersectsSphere(this.sphere) && !(this.castNearbyShadows&&distance<Math.min(24,this.distances[0]))) continue;
       const level = distance < this.distances[0] ? 0 : distance < this.distances[1] ? 1 : 2;
       const yaw = level === 2 ? Math.atan2(camera.position.x - item.position.x, camera.position.z - item.position.z) : item.yaw;
       this.rotation.setFromAxisAngle(this.axis, yaw); this.matrix.compose(item.position, this.rotation, item.scale);

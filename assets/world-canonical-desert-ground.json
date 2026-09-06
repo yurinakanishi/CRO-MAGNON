@@ -1,0 +1,14 @@
+{
+  "schemaVersion": 1,
+  "modelKey": "desert-ground",
+  "status": "copied-and-all-source-and-destination-hashes-verified",
+  "verifiedAt": "2026-09-06T21:38:40.196Z",
+  "planSha256": "7bf15f124fd72fad5db5db4156456874f7d40ba28b89a33e83dcf00f39d52e20",
+  "sourceRoot": "C:\\Users\\yurin\\Desktop\\projects\\CRO-MAGNON\\output\\model-generation\\models\\desert-ground",
+  "destinationRoot": "C:\\Users\\yurin\\Desktop\\projects\\threed-model-creation\\models\\desert-ground",
+  "files": 109,
+  "bytes": 189464480,
+  "copied": 109,
+  "skippedEqual": 0,
+  "preflightExistingEqual": 0
+}

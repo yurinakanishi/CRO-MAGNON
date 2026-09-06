@@ -1,0 +1,99 @@
+{
+  "startedAt": "2026-09-06T16:18:20.749Z",
+  "room": "CROW-BROWSER-QA",
+  "url": "ws://127.0.0.1:3000/ws",
+  "role": "four-passive-observers",
+  "maxPlayers": 5,
+  "states": 6407,
+  "phases": [
+    "alive"
+  ],
+  "health": [
+    75
+  ],
+  "clips": [
+    "Walk_Loop",
+    "Run_Loop",
+    "Attack",
+    "Idle_Loop"
+  ],
+  "playerHurt": true,
+  "playerDefeat": true,
+  "errors": [],
+  "lastPlayers": [
+    {
+      "name": "Crow-observer-1",
+      "species": "cro",
+      "gender": "female",
+      "x": 49,
+      "z": 53,
+      "energy": 50,
+      "attackSequence": 0,
+      "hurtSequence": 7,
+      "downedUntil": 0,
+      "inventory": {
+        "wood": 0,
+        "stone": 0,
+        "berry": 0,
+        "rawMeat": 0,
+        "cookedMeat": 0
+      }
+    },
+    {
+      "name": "Crow-observer-2",
+      "species": "cro",
+      "gender": "male",
+      "x": 44,
+      "z": 28,
+      "energy": 100,
+      "attackSequence": 0,
+      "hurtSequence": 0,
+      "downedUntil": 0,
+      "inventory": {
+        "wood": 0,
+        "stone": 0,
+        "berry": 0,
+        "rawMeat": 0,
+        "cookedMeat": 0
+      }
+    },
+    {
+      "name": "Crow-observer-3",
+      "species": "nea",
+      "gender": "female",
+      "x": 46,
+      "z": 28.000000000000004,
+      "energy": 100,
+      "attackSequence": 0,
+      "hurtSequence": 0,
+      "downedUntil": 0,
+      "inventory": {
+        "wood": 0,
+        "stone": 0,
+        "berry": 0,
+        "rawMeat": 0,
+        "cookedMeat": 0
+      }
+    },
+    {
+      "name": "Crow-observer-4",
+      "species": "nea",
+      "gender": "male",
+      "x": 49.9,
+      "z": 53,
+      "energy": 50,
+      "attackSequence": 0,
+      "hurtSequence": 7,
+      "downedUntil": 0,
+      "inventory": {
+        "wood": 0,
+        "stone": 0,
+        "berry": 0,
+        "rawMeat": 0,
+        "cookedMeat": 0
+      }
+    }
+  ],
+  "finishedAt": "2026-09-06T16:30:20.776Z",
+  "endReason": "12 minute limit"
+}

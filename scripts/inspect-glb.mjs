@@ -6,11 +6,16 @@ import path from 'node:path';
 // Visual quality, contact and intersections still require the actual GLB to be rendered.
 const filename = process.argv[2];
 if (!filename) {
-  console.error('Usage: node scripts/inspect-glb.mjs <model.glb> [--humanoid]');
+  console.error('Usage: node scripts/inspect-glb.mjs <model.glb> [--humanoid] [--hunting] [--enemy]');
   process.exit(1);
 }
 const humanoid = process.argv.includes('--humanoid');
-const requiredClips = ['Idle_Loop', 'Walk_Loop', 'Run_Loop', 'Gather', 'Craft', 'Give', 'Eat', 'Wave'];
+const hunting = process.argv.includes('--hunting');
+const enemy = process.argv.includes('--enemy');
+const biped = humanoid || enemy;
+const requiredClips = enemy
+  ? ['Idle_Loop', 'Walk_Loop', 'Run_Loop', 'Attack', 'Hit', 'Death']
+  : ['Idle_Loop', 'Walk_Loop', 'Run_Loop', 'Gather', 'Craft', 'Give', 'Eat', 'Wave', ...(hunting ? ['Attack'] : [])];
 const errors = [];
 function requireValue(condition, message) { if (!condition) throw new Error(message); }
 
@@ -94,7 +99,7 @@ try {
     requireValue(jointSet.size === skin.joints.length && skin.joints.every(joint => nodes[joint]), `Skin ${index}: invalid joints`);
     const roots = skin.joints.filter(joint => !jointSet.has(parents.get(joint)));
     roots.forEach(root => rootJoints.add(root));
-    if (humanoid && (roots.length !== 1 || nodes[roots[0]].name !== 'Root')) errors.push(`Skin ${index}: expected one Root joint`);
+    if (biped && (roots.length !== 1 || nodes[roots[0]].name !== 'Root')) errors.push(`Skin ${index}: expected one Root joint`);
     requireValue(skin.inverseBindMatrices !== undefined, `Skin ${index}: inverse bind matrices missing`);
     const matrices = readAccessor(skin.inverseBindMatrices);
     requireValue(matrices.length === skin.joints.length && matrices.every(row => row.length === 16), `Skin ${index}: inverse bind matrix count/type mismatch`);
@@ -121,7 +126,7 @@ try {
       vertices += count;
     }
     if (unweighted || invalidWeights || invalidJoints || maxInfluences > 4 || maxWeightError > .001) errors.push(`Skin ${index}: weight/joint validation failed`);
-    if (humanoid && !vertices) errors.push(`Skin ${index}: no bound vertices`);
+    if (biped && !vertices) errors.push(`Skin ${index}: no bound vertices`);
     skins.push({ joints: skin.joints.length, roots: roots.map(root => nodes[root].name), vertices, unweighted, invalidWeights, invalidJoints, maxInfluences, maxWeightError });
   }
 
@@ -145,14 +150,21 @@ try {
       }
     }
     if (animation.name?.endsWith('_Loop') && !loopClosed) errors.push(`${animation.name}: loop endpoints differ`);
-    if (humanoid && (!duration || !animation.channels.length)) errors.push(`${animation.name}: empty animation`);
-    if (humanoid && !rootInPlace) errors.push(`${animation.name}: Root moves`);
+    if (biped && (!duration || !animation.channels.length)) errors.push(`${animation.name}: empty animation`);
+    if (biped && !rootInPlace) errors.push(`${animation.name}: Root moves`);
     return { name: animation.name, duration, channels: animation.channels.length, loopClosed, rootInPlace };
   });
-  if (humanoid) {
-    if (!skins.length) errors.push('Humanoid has no skin');
+  if (biped) {
+    if (!skins.length) errors.push('Biped has no skin');
     for (const clip of requiredClips) if (animations.filter(animation => animation.name === clip).length !== 1) errors.push(`Expected exactly one ${clip} clip`);
-    for (const socket of ['Grip.L', 'Grip.R']) if (!nodes.some(node => node.name === socket)) errors.push(`Missing socket ${socket}`);
+    if (humanoid) for (const socket of ['Grip.L', 'Grip.R']) if (!nodes.some(node => node.name === socket)) errors.push(`Missing socket ${socket}`);
+  }
+  if (hunting && !biped) {
+    for (const name of ['Idle_Loop', 'Walk_Loop', 'Run_Loop', 'Graze_Loop', 'Death']) {
+      if (animations.filter(animation => animation.name === name).length !== 1) errors.push(`Expected exactly one ${name} clip`);
+    }
+    if (!skins.length) errors.push('Hunted animal has no skin');
+    if (animations.some(animation => !animation.rootInPlace)) errors.push('Hunted animal Root moves');
   }
   const report = { file: path.resolve(filename), sha256: createHash('sha256').update(bytes).digest('hex'), bytes: bytes.length, triangles, skins, animations, validation: errors.length ? 'failed' : 'passed', errors, visualReviewRequired: true };
   console.log(JSON.stringify(report, null, 2));

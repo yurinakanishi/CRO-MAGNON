@@ -31,7 +31,7 @@ function disposeScene(scene) {
 
 // One template per world; geometry/textures are shared, bones/mixers are not.
 export class CharacterAssets {
-  constructor(manifestURL = '/models/cro-magnon-hunter/asset.json') {
+  constructor(manifestURL = '/models/cro-magnon-woman/asset.json') {
     this.manifestURL = manifestURL; this.instances = new Set(); this.disposed = false;
   }
 
@@ -70,7 +70,7 @@ export class CharacterAssets {
     return this.template;
   }
 
-  async create({ color, speed }) {
+  async create({ color }) {
     const template = await this.load();
     if (!template || this.disposed) return null;
     const { gltf, asset } = template;
@@ -91,7 +91,9 @@ export class CharacterAssets {
       node.material = Array.isArray(node.material) ? node.material.map(tint) : tint(node.material);
     });
     const { rotation: gripUp } = handGripPlacement(root);
-    const animation = new CharacterAnimation(root, gltf.animations, { speed, runSpeed: asset.locomotion.Run_Loop.metresPerSecond });
+    const animation = new CharacterAnimation(root, gltf.animations, {
+      walkSpeed: asset.locomotion.Walk_Loop.metresPerSecond, runSpeed: asset.locomotion.Run_Loop.metresPerSecond,
+    });
     animation.mixer.update(Math.random() * animation.current.getClip().duration);
     const instance = {
       root, animation, asset, gripUp,

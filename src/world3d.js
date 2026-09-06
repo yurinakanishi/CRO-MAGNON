@@ -1,41 +1,55 @@
 import * as THREE from 'three';
-import { terrainHeight, walkHeight, riverX, WATER_LEVEL, clamp, movementFromCamera } from '/shared/terrain.mjs';
-import { WORLD, CAMP, NPC, INITIAL_RESOURCES } from '/shared/world.mjs';
+import { terrainHeight, walkHeight, riverX, riverHalfWidth, WATER_LEVEL, clamp, movementFromCamera } from '/shared/terrain.mjs';
+import { WORLD, worldClamp, CAMP, NPC, INITIAL_RESOURCES } from '/shared/world.mjs';
 import { WorldAssets } from './world-assets.js';
+import { WorldLandmarks } from './world-landmarks.js';
 import { buildTerrainAssets, buildForestAssets, buildCampAssets, buildAnimalAssets, resourceAssets } from './world-scenery.js';
 import { CharacterAssets } from './character-assets.js';
 import { confirmedAction } from './character-animation.js';
+import { orientSpear } from './spear-pose.js';
+import { orientKatana } from './katana-pose.js';
+import { SpellEffects } from './spell-effects.js';
+import { attackProfile } from '/shared/combat-profiles.mjs';
+import { CollisionWorld } from '/shared/collision.mjs';
+import { CHARACTER_MODELS, characterModel } from '/shared/characters.mjs';
+import { enemyAnimationState, playerRecovered } from './enemy-state.js';
+import { FrameClock } from './frame-clock.js';
+import { WorldAtmosphere } from './world-atmosphere.js';
 
 const DEFAULT_DISTANCE=5.5;
 const tempPoint=new THREE.Vector3();
+const focusHeight=profile=>profile.species==='bear'?.64:1.4;
 
 function mesh(geometry, material, parent, position=[0,0,0]) {const object=new THREE.Mesh(geometry,material);object.position.set(...position);parent.add(object);return object;}
 
 export class WorldRenderer {
-  constructor(canvas,{onMoveTarget=()=>{},onError=()=>{}}={}) {
-    this.canvas=canvas;this.onMoveTarget=onMoveTarget;this.onError=onError;
+  constructor(canvas,{onMoveTarget=()=>{},onAnimal=()=>{},onError=()=>{}}={}) {
+    this.canvas=canvas;this.onMoveTarget=onMoveTarget;this.onAnimal=onAnimal;this.onError=onError;
     this.state={players:[],resources:INITIAL_RESOURCES,camp:CAMP,npc:NPC};this.selfId=null;
     this.yaw=-.28;this.pitch=.19;this.distance=DEFAULT_DISTANCE;this.targetDistance=DEFAULT_DISTANCE;this.zoom=1;
     this.focus=new THREE.Vector3(48,walkHeight(48,57)+1.4,57);this.firstState=true;
-    this.players=new Map();this.resources=new Map();this.labels=[];this.fires=[];this.mammoths=[];
-    this.characterAssets=new CharacterAssets();this.neanderthalAssets=new CharacterAssets('/models/neanderthal-hunter/asset.json');this.worldAssets=new WorldAssets();this.landscapes=[];this.canvas.dataset.characterAsset='not-loaded';this.canvas.dataset.worldAsset='loading';
+    this.collision=new CollisionWorld(undefined,{active:o=>!o.resourceId||this.state.resources.some(r=>r.id===o.resourceId&&r.amount>0)});
+    this.players=new Map();this.resources=new Map();this.labels=[];this.fires=[];this.mammoths=[];this.enemies=new Map();this.staticScenery=[];this.nextStaticCull=0;
+    this.humanAssets=new Map(CHARACTER_MODELS.map(model=>[model.key,new CharacterAssets(`/models/${model.key}/asset.json`)]));this.npcAssets=this.humanAssets.get(characterModel(NPC).key);this.worldAssets=new WorldAssets();this.landscapes=[];this.canvas.dataset.characterAsset='not-loaded';this.canvas.dataset.worldAsset='loading';
     this.disposables=[];this.disposed=false;this.fpsFrames=0;this.lastFpsTime=0;
     this.renderer=new THREE.WebGLRenderer({canvas,antialias:true,alpha:false,powerPreference:'high-performance'});
-    this.renderer.setPixelRatio(Math.min(devicePixelRatio,1.75));
-    this.renderer.shadowMap.enabled=true;this.renderer.shadowMap.type=THREE.PCFShadowMap;
+    this.renderer.setPixelRatio(Math.min(devicePixelRatio,1.25));
+    this.renderer.shadowMap.enabled=true;this.renderer.shadowMap.autoUpdate=false;this.nextShadowUpdate=0;this.renderer.shadowMap.type=THREE.PCFShadowMap;
     this.renderer.outputColorSpace=THREE.SRGBColorSpace;this.renderer.toneMapping=THREE.ACESFilmicToneMapping;this.renderer.toneMappingExposure=1.18;
-    this.scene=new THREE.Scene();this.scene.background=new THREE.Color('#c0cec1');this.scene.fog=new THREE.FogExp2('#b5c4b2',.0105);
+    this.scene=new THREE.Scene();this.scene.background=new THREE.Color('#c0cec1');this.scene.fog=new THREE.Fog('#b5c4b2',45,118);
+    this.spells=new SpellEffects(this.scene);
     this.camera=new THREE.PerspectiveCamera(57,1,.15,360);
-    this.raycaster=new THREE.Raycaster();this.cameraRay=new THREE.Raycaster();this.cameraBlockers=[];
+    this.raycaster=new THREE.Raycaster();
     this.labelLayer=document.createElement('div');this.labelLayer.className='world-labels';this.labelLayer.setAttribute('aria-hidden','true');canvas.parentElement.append(this.labelLayer);
     this.setupLighting();
+    this.atmosphere=new WorldAtmosphere(this);
     this.createNavigation();this.setupInput();
     this.resizeObserver=new ResizeObserver(()=>this.resize());this.resizeObserver.observe(canvas);this.resize();
     this.contextLost=e=>{e.preventDefault();this.onError('3D描画が一時停止しました。ページを再読み込みしてください。');};
     canvas.addEventListener('webglcontextlost',this.contextLost);
-    this.lastTime=performance.now();
-    this.animate=(now)=>{if(this.disposed)return;const dt=Math.min((now-this.lastTime)/1000,.06);this.lastTime=now;this.render(now/1000,dt);this.frame=requestAnimationFrame(this.animate);};
-    this.frame=requestAnimationFrame(this.animate);canvas.dataset.renderer='three-webgl-tps';
+    this.frameClock=new FrameClock(performance.now(),60);
+    this.animate=(now)=>{if(this.disposed||this.failed)return;const dt=this.frameClock.advance(now,document.hidden);if(dt!==null)this.render(now/1000,dt);this.frame=requestAnimationFrame(this.animate);};
+    this.frame=requestAnimationFrame(this.animate);canvas.dataset.renderer='three-webgl-tps';canvas.dataset.fpsLimit='60';
     this.loadingLabel=document.createElement('div');this.loadingLabel.className='world-loading';this.loadingLabel.textContent='渓谷を準備しています…';canvas.parentElement.append(this.loadingLabel);
     this.assetsPromise=this.initializeWorld();this.assetsPromise.catch(()=>{});
   }
@@ -43,34 +57,47 @@ export class WorldRenderer {
   setupLighting() {
     this.scene.add(new THREE.HemisphereLight('#dce7d7','#546047',2.0));
     this.sun=new THREE.DirectionalLight('#ffe4b5',2.65);this.sun.position.set(5,47,18);this.sun.castShadow=true;
-    this.sun.shadow.mapSize.set(2048,2048);this.sun.shadow.camera.left=-46;this.sun.shadow.camera.right=46;
-    this.sun.shadow.camera.top=46;this.sun.shadow.camera.bottom=-46;this.sun.shadow.camera.near=.5;this.sun.shadow.camera.far=135;
+    this.sun.shadow.mapSize.set(1024,1024);this.sun.shadow.camera.left=-22;this.sun.shadow.camera.right=22;
+    this.sun.shadow.camera.top=22;this.sun.shadow.camera.bottom=-22;this.sun.shadow.camera.near=.5;this.sun.shadow.camera.far=135;
     this.sun.shadow.bias=-.00025;this.sun.shadow.normalBias=.055;
     this.sun.target.position.set(50,0,50);this.scene.add(this.sun,this.sun.target);
     // Full-screen atmospheric shader: sky, sun and clouds are runtime effects.
-    this.skyUniforms={cameraWorld:{value:this.camera.matrixWorld},inverseProjection:{value:this.camera.projectionMatrixInverse}};
+    this.skyUniforms={cameraWorld:{value:this.camera.matrixWorld},inverseProjection:{value:this.camera.projectionMatrixInverse},biomeSky:{value:new THREE.Color('#bfd3cb')},biomeFog:{value:new THREE.Color('#b5c4b2')}};
     const skyMaterial=new THREE.ShaderMaterial({depthWrite:false,depthTest:false,uniforms:this.skyUniforms,
       vertexShader:'varying vec2 vUv;void main(){vUv=uv;gl_Position=vec4(position.xy,1.0,1.0);}',
-      fragmentShader:'varying vec2 vUv;uniform mat4 cameraWorld;uniform mat4 inverseProjection;void main(){vec4 eye=inverseProjection*vec4(vUv*2.0-1.0,1.0,1.0);vec3 d=normalize(mat3(cameraWorld)*eye.xyz);float h=clamp(d.y*1.7,0.0,1.0);vec3 color=mix(vec3(.72,.75,.65),vec3(.29,.49,.58),pow(h,.7));float sun=pow(max(0.0,dot(d,normalize(vec3(-.65,.55,-.85)))),850.0);color+=vec3(.9,.72,.42)*sun;vec2 p=d.xz/max(.12,d.y)*3.0;float noise=sin(p.x*.7+sin(p.y))*.25+sin(p.y*.5-p.x*.3)*.2+sin(p.x*1.3+p.y*.8)*.1;float cloud=smoothstep(.15,.43,noise)*smoothstep(.03,.23,d.y);color=mix(color,vec3(.83,.84,.75),cloud*.65);gl_FragColor=vec4(color,1.0);}'});
+      fragmentShader:'varying vec2 vUv;uniform mat4 cameraWorld;uniform mat4 inverseProjection;uniform vec3 biomeSky;uniform vec3 biomeFog;void main(){vec4 eye=inverseProjection*vec4(vUv*2.0-1.0,1.0,1.0);vec3 d=normalize(mat3(cameraWorld)*eye.xyz);float h=clamp(d.y*1.7,0.0,1.0);vec3 color=mix(vec3(.72,.75,.65),vec3(.29,.49,.58),pow(h,.7));float sun=pow(max(0.0,dot(d,normalize(vec3(-.65,.55,-.85)))),850.0);color+=vec3(.9,.72,.42)*sun;vec2 p=d.xz/max(.12,d.y)*3.0;float noise=sin(p.x*.7+sin(p.y))*.25+sin(p.y*.5-p.x*.3)*.2+sin(p.x*1.3+p.y*.8)*.1;float cloud=smoothstep(.15,.43,noise)*smoothstep(.03,.23,d.y);color=mix(color,vec3(.83,.84,.75),cloud*.65);color=mix(color,biomeSky,.65);color=mix(biomeFog,color,smoothstep(-.04,.18,d.y));gl_FragColor=vec4(color,1.0);\n#include <colorspace_fragment>\n}'});
     const sky=new THREE.Mesh(new THREE.PlaneGeometry(2,2),skyMaterial);sky.frustumCulled=false;sky.renderOrder=-1000;this.scene.add(sky);
   }
 
   async initializeWorld() {
     const started=performance.now();
     try {
-      await Promise.all([this.worldAssets.load(),this.characterAssets.load(),this.neanderthalAssets.load()]);
+      await Promise.all([this.worldAssets.load(),this.npcAssets.load()]);
       if(this.disposed)return;
-      buildTerrainAssets(this);buildForestAssets(this);buildCampAssets(this);buildAnimalAssets(this);
-      this.assetsReady=true;this.syncResources();this.campLabel.element.classList.toggle('complete',this.state.camp.level>0);
-      this.npcActor=await this.neanderthalAssets.create({color:'#ad9d79',speed:WORLD.speed});
+      await buildTerrainAssets(this);if(this.disposed)return;buildForestAssets(this);buildCampAssets(this);buildAnimalAssets(this);this.landmarks=new WorldLandmarks(this);
+      this.assetsReady=true;this.syncResources();this.syncEnemies();this.campLabel.element.classList.toggle('complete',this.state.camp.level>0);
+      this.npcActor=await this.npcAssets.create({color:'#ad9d79',});
       if(this.disposed){this.npcActor?.dispose();return;}
       this.npc=this.npcActor.root;this.npc.position.set(NPC.x,walkHeight(NPC.x,NPC.z),NPC.z);this.npc.rotation.y=-1.9;this.scene.add(this.npc);
-      this.canvas.dataset.worldHashes=JSON.stringify(Object.fromEntries([...this.worldAssets.templates].map(([key,template])=>[key,template.asset.sha256]).concat([['cro-magnon-hunter',this.characterAssets.template.asset.sha256],['neanderthal-hunter',this.neanderthalAssets.template.asset.sha256]])));
-      this.canvas.dataset.worldAsset='ready';this.canvas.dataset.worldModels=String(this.worldAssets.templates.size+2);this.canvas.dataset.worldLoadMs=this.worldAssets.loadMilliseconds.toFixed(0);this.canvas.dataset.worldSceneReadyMs=(performance.now()-started).toFixed(0);this.loadingLabel.remove();
+      this.updateAssetDiagnostics();
+      this.canvas.dataset.worldAsset='ready';this.canvas.dataset.worldLoadMs=this.worldAssets.loadMilliseconds.toFixed(0);this.canvas.dataset.worldSceneReadyMs=(performance.now()-started).toFixed(0);this.loadingLabel.remove();
     } catch(error) {
       if(this.disposed)return;
-      this.canvas.dataset.worldAsset='error';this.loadingLabel.textContent='渓谷を読み込めませんでした。再読み込みしてください。';console.error('World GLB loading failed',error);throw error;
+      this.failWorld('検証済みの3D素材を読み込めませんでした。再読み込みしてください。',error);throw error;
     }
+  }
+
+  updateAssetDiagnostics() {
+    const loaded=[...this.worldAssets.templates].map(([key,template])=>[key,template.asset.sha256]);
+    for(const [key,provider] of this.humanAssets)if(provider.template)loaded.push([key,provider.template.asset.sha256]);
+    this.canvas.dataset.worldHashes=JSON.stringify(Object.fromEntries(loaded));
+    this.canvas.dataset.worldModels=String(loaded.length);
+  }
+
+  failWorld(message,error) {
+    this.failed=true;this.assetsReady=false;cancelAnimationFrame(this.frame);
+    this.canvas.dataset.worldAsset='error';this.canvas.style.visibility='hidden';
+    this.loadingLabel?.remove();this.onError(message);console.error(message,error);
   }
 
   createNavigation() {
@@ -98,6 +125,39 @@ export class WorldRenderer {
     }
   }
 
+  syncEnemies() {
+    if(!this.assetsReady)return;
+    const present=new Set();
+    for(const state of this.state.enemies||[]){
+      present.add(state.id);let entity=this.enemies.get(state.id);
+      if(entity&&entity.state.modelKey!==state.modelKey){this.removeEnemy(state.id);entity=null;}
+      if(!entity){
+        const model=new THREE.Group();model.visible=false;model.userData.animalId=state.id;this.scene.add(model);
+        const label=this.createLabel(state.name,'enemy',new THREE.Vector3());label.active=false;
+        const health=document.createElement('progress');health.setAttribute('aria-label',`${state.name}の体力`);label.element.append(health);
+        entity={model,label,health,state,actor:null};this.enemies.set(state.id,entity);this.loadEnemy(entity,state.id);
+      }
+      entity.state=state;
+    }
+    for(const id of this.enemies.keys())if(!present.has(id))this.removeEnemy(id);
+  }
+
+  removeEnemy(id) {
+    const entity=this.enemies.get(id);if(!entity)return;
+    this.scene.remove(entity.model);entity.actor?.dispose();entity.label.element.remove();
+    this.labels.splice(this.labels.indexOf(entity.label),1);this.enemies.delete(id);
+  }
+
+  async loadEnemy(entity,id) {
+    try {
+      const actor=await this.worldAssets.createEnemy(entity.state.modelKey);
+      if(!actor)return;
+      if(this.disposed||this.enemies.get(id)!==entity){actor.dispose();return;}
+      entity.actor=actor;entity.model.add(actor.root);entity.model.scale.setScalar(entity.state.scale??1);
+      this.updateAssetDiagnostics();
+    } catch(error){if(!this.disposed&&this.enemies.get(id)===entity)this.failWorld('敵の検証済み3D素材を読み込めませんでした。再読み込みしてください。',error);}
+  }
+
   setupInput() {
     this.down=e=>{if(e.button!==0&&e.button!==2)return;e.preventDefault();this.canvas.focus({preventScroll:true});this.pointer={id:e.pointerId,x:e.clientX,y:e.clientY,lastX:e.clientX,lastY:e.clientY,button:e.button,dragged:false};this.canvas.setPointerCapture(e.pointerId);};
     this.move=e=>{
@@ -109,7 +169,10 @@ export class WorldRenderer {
       if(!this.pointer||this.pointer.id!==e.pointerId)return;const click=!this.pointer.dragged&&this.pointer.button===0;this.pointer=null;this.canvas.style.cursor='crosshair';
       if(this.canvas.hasPointerCapture(e.pointerId))this.canvas.releasePointerCapture(e.pointerId);
       if(click){const rect=this.canvas.getBoundingClientRect();this.raycaster.setFromCamera(new THREE.Vector2((e.clientX-rect.left)/rect.width*2-1,-(e.clientY-rect.top)/rect.height*2+1),this.camera);
-        const hits=this.raycaster.intersectObjects([this.terrain,this.bridge].filter(Boolean),true);if(hits.length){const hit=hits[0].point,x=clamp(hit.x,2,98),z=clamp(hit.z,2,98);this.onMoveTarget(x,z);this.marker.position.set(x,walkHeight(x,z)+.065,z);this.marker.visible=true;this.markerUntil=performance.now()+6500;}}
+        const animalRoots=[...this.mammoths.flatMap(animal=>[animal.model,animal.meat]),...[...this.enemies.values()].map(enemy=>enemy.model)].filter(root=>root.visible);
+        const animalHit=this.raycaster.intersectObjects(animalRoots,true)[0];
+        if(animalHit){let root=animalHit.object;while(root&&!root.userData.animalId)root=root.parent;if(root){this.onAnimal(root.userData.animalId);return;}}
+        const hits=this.raycaster.intersectObjects([this.terrain,this.bridge].filter(Boolean),true);if(hits.length){const hit=hits[0].point,x=worldClamp(hit.x,'x'),z=worldClamp(hit.z,'z');this.onMoveTarget(x,z);this.marker.position.set(x,walkHeight(x,z)+.065,z);this.marker.visible=true;this.markerUntil=performance.now()+6500;}}
     };
     this.cancel=()=>{this.pointer=null;this.canvas.style.cursor='crosshair';};
     this.wheel=e=>{e.preventDefault();this.targetDistance=clamp(this.targetDistance+e.deltaY*.009,3.2,19);this.zoom=DEFAULT_DISTANCE/this.targetDistance;};this.context=e=>e.preventDefault();
@@ -117,16 +180,23 @@ export class WorldRenderer {
   }
 
   setState(state,selfId) {
-    this.state=state;this.selfId=selfId;this.syncResources();const present=new Set();
+    if(Number.isFinite(state.serverTime)){this.serverTime=state.serverTime;this.stateReceivedAt=performance.now();}
+    if(this.selfId!==selfId)this.firstState=true;
+    const resourcesChanged=this.state.resources!==state.resources;this.state=state;this.selfId=selfId;if(resourcesChanged)this.syncResources();this.syncEnemies();const present=new Set();
     for(const p of state.players){
       present.add(p.id);let entity=this.players.get(p.id);
-      if(!entity){const model=new THREE.Group();model.position.set(p.x,walkHeight(p.x,p.z),p.z);model.rotation.y=p.facing||Math.PI-.28;this.scene.add(model);
+      if(!entity){const model=new THREE.Group();model.position.set(p.x,walkHeight(p.x,p.z),p.z);model.rotation.y=p.facing??0;this.scene.add(model);
         const label=this.createLabel(p.name,p.id===selfId?'self':'player',new THREE.Vector3(p.x,0,p.z));entity={model,label,state:p};this.players.set(p.id,entity);
         this.loadHuman(entity,p.id);
       }
+      if(playerRecovered(entity.state,p)){
+        entity.model.position.set(p.x,walkHeight(p.x,p.z),p.z);entity.model.rotation.y=p.facing??0;
+        if(p.id===selfId)this.focus.set(p.x,walkHeight(p.x,p.z)+focusHeight(p),p.z);
+      }
       const action=confirmedAction(entity.state,p);
-      if(action&&!p.moving)entity.actor?.animation.play(action);
-      entity.state=p;if(p.id===selfId&&this.firstState){this.focus.set(p.x,walkHeight(p.x,p.z)+1.4,p.z);this.firstState=false;}
+      if(action==='Attack')entity.actor?.animation.playAttack(Math.max(0,(this.serverNow()-(p.attackAt??0))/1000));
+      else if(action&&!p.moving)entity.actor?.animation.play(action);
+      entity.state=p;if(p.id===selfId&&this.firstState){this.focus.set(p.x,walkHeight(p.x,p.z)+focusHeight(p),p.z);this.targetDistance=p.species==='bear'?4.5:DEFAULT_DISTANCE;this.distance=this.targetDistance;this.zoom=DEFAULT_DISTANCE/this.targetDistance;this.firstState=false;}
     }
     for(const[id,entity]of this.players)if(!present.has(id)){this.scene.remove(entity.model);entity.actor?.dispose();entity.label.element.remove();this.labels.splice(this.labels.indexOf(entity.label),1);this.players.delete(id);}
     this.campLabel?.element.classList.toggle('complete',state.camp.level>0);
@@ -134,68 +204,161 @@ export class WorldRenderer {
 
   async loadHuman(entity,id) {
     this.canvas.dataset.characterAsset='loading';
+    let pendingActor;
     try {
       await this.assetsPromise;
       if(this.disposed||this.players.get(id)!==entity||!this.assetsReady)return;
-      const provider=entity.state.species==='nea'?this.neanderthalAssets:this.characterAssets;
-      const actor=await provider.create({color:entity.state.color,speed:WORLD.speed});
+      const provider=this.humanAssets.get(characterModel(entity.state).key);
+      const actor=pendingActor=await provider.create({color:entity.state.color,});
       if(!actor)return;
       if(this.disposed||this.players.get(id)!==entity){actor.dispose();return;}
-      const previous=entity.model;actor.root.position.copy(previous.position);actor.root.quaternion.copy(previous.quaternion);
+      const previous=entity.model;actor.root.position.set(0,0,0);
       const grip=actor.root.getObjectByName(THREE.PropertyBinding.sanitizeNodeName('Grip.R'));
+      entity.gripRight=grip;entity.gripLeft=actor.root.getObjectByName(THREE.PropertyBinding.sanitizeNodeName('Grip.L'));
       if(grip){
-        entity.weapon=this.worldAssets.create('flint-spear');entity.axe=this.worldAssets.create('stone-axe');
-        for(const tool of [entity.weapon,entity.axe]){grip.add(tool);tool.position.set(0,0,0);tool.quaternion.copy(actor.gripUp);}
+        const profile=attackProfile(entity.state);
+        entity.weapon=profile.modelKey?await this.worldAssets.createEquipment(profile.modelKey):null;
+        if(this.disposed||this.players.get(id)!==entity){actor.dispose();return;}
+        entity.axe=this.worldAssets.create('stone-axe');
+        for(const tool of [entity.weapon,entity.axe].filter(Boolean)){grip.add(tool);tool.position.set(0,0,0);tool.quaternion.copy(actor.gripUp);}
+        if(entity.state.species==='bear')entity.axe.scale.setScalar(.55);
         entity.axe.visible=false;
       }
-      this.scene.remove(previous);this.scene.add(actor.root);entity.model=actor.root;entity.actor=actor;
+      previous.add(actor.root);entity.actor=actor;pendingActor=null;this.updateAssetDiagnostics();
+      if(entity.state.attackAt)actor.animation.playAttack(Math.max(0,(this.serverNow()-entity.state.attackAt)/1000));
       this.canvas.dataset.characterAsset='ready';this.canvas.dataset.characterHash=actor.asset.sha256;this.canvas.dataset.modelLoadMs=provider.loadMilliseconds.toFixed(0);
     } catch(error) {
+      pendingActor?.dispose();
       if(this.disposed)return;
-      this.canvas.dataset.characterAsset='error';console.error('Character GLB loading failed',error);
+      this.canvas.dataset.characterAsset='error';this.failWorld('人物の3D素材を読み込めませんでした。再読み込みしてください。',error);
     }
   }
 
   setEmote(id,emote){const entity=this.players.get(id);if(emote==='wave'&&!entity?.state.moving)entity?.actor?.animation.play('Wave');}
 
   getMovementDirection(sx,sy){return movementFromCamera(sx,sy,this.yaw);}
+  serverNow(){return this.serverTime===undefined?Date.now():this.serverTime+performance.now()-this.stateReceivedAt;}
   setZoom(value){this.zoom=clamp(Number(value)||1,DEFAULT_DISTANCE/19,DEFAULT_DISTANCE/3.2);this.targetDistance=clamp(DEFAULT_DISTANCE/this.zoom,3.2,19);}
   adjustZoom(delta){this.setZoom(this.zoom+delta);}
-  focusPlayer(){const me=this.players.get(this.selfId);if(me?.state.moving)this.yaw=me.state.facing+Math.PI;else this.yaw=-.28;this.pitch=.19;this.targetDistance=DEFAULT_DISTANCE;this.zoom=1;}
+  focusPlayer(){const me=this.players.get(this.selfId);if(me?.state.moving)this.yaw=me.state.facing+Math.PI;else this.yaw=-.28;this.pitch=.19;this.targetDistance=me?.state.species==='bear'?4.5:DEFAULT_DISTANCE;this.zoom=DEFAULT_DISTANCE/this.targetDistance;}
   resize(){const r=this.canvas.getBoundingClientRect();this.width=Math.max(1,r.width);this.height=Math.max(1,r.height);this.renderer.setSize(this.width,this.height,false);this.camera.aspect=this.width/this.height;this.camera.updateProjectionMatrix();}
 
   render(time,dt) {
     for(const entity of this.players.values()){
-      const{model,state:p}=entity,factor=1-Math.exp(-dt*15);model.position.x+=(p.x-model.position.x)*factor;model.position.z+=(p.z-model.position.z)*factor;model.position.y=walkHeight(model.position.x,model.position.z);
-      if(p.moving){const diff=Math.atan2(Math.sin(p.facing-model.rotation.y),Math.cos(p.facing-model.rotation.y));model.rotation.y+=diff*(1-Math.exp(-dt*12));}
+      const{model,state:p}=entity,factor=1-Math.exp(-dt*20);
+      model.visible=p.id===this.selfId||Math.hypot(p.x-this.focus.x,p.z-this.focus.z)<95;
+      if(!model.visible){model.position.set(p.x,walkHeight(p.x,p.z),p.z);model.rotation.y=p.facing;entity.label.active=false;continue;}
+      entity.label.active=true;
+      let remaining=Math.hypot(p.x-model.position.x,p.z-model.position.z);
+      // A long suspension or server recovery can skip many movement snapshots.
+      // Accept that authoritative correction instead of interpolating through a
+      // building along a route the player never actually took.
+      if(remaining>6){model.position.set(p.x,walkHeight(p.x,p.z),p.z);remaining=0;if(p.id===this.selfId)this.focus.set(p.x,walkHeight(p.x,p.z)+focusHeight(p),p.z);}
+      const next=this.collision.move(model.position,(p.x-model.position.x)*(remaining<.012?1:factor),(p.z-model.position.z)*(remaining<.012?1:factor),p.radius??WORLD.playerRadius);
+      const mx=next.x-model.position.x,mz=next.z-model.position.z;
+      const visualSpeed=remaining<.012?0:Math.hypot(mx,mz)/Math.max(dt,.001);
+      model.position.set(next.x,walkHeight(next.x,next.z),next.z);
+      if(p.moving)entity.running=p.running;
+      const attacking=entity.actor?.animation.name==='Attack';
+      const facing=attacking?p.facing:visualSpeed>.025?Math.atan2(mx,mz):p.facing;
+      const diff=Math.atan2(Math.sin(facing-model.rotation.y),Math.cos(facing-model.rotation.y));
+      model.rotation.y+=diff*(1-Math.exp(-dt*24));
       if(entity.actor){
-        entity.actor.animation.update(dt,p.moving);
-        if(entity.weapon){entity.weapon.visible=!entity.actor.animation.oneShot&&!p.tool;entity.axe.visible=!entity.actor.animation.oneShot&&p.tool;}
+        if(p.cookingEndsAt>this.serverNow()&&!p.moving&&!entity.actor.animation.oneShot)entity.actor.animation.play('Craft');
+        entity.actor.animation.update(dt,visualSpeed,entity.running);
+        if(entity.axe){
+          const attack=entity.actor.animation.name==='Attack';
+          const profile=attackProfile(p);
+          entity.axe.visible=p.tool&&(profile.key==='spear'?!entity.actor.animation.oneShot:entity.actor.animation.name==='Gather');
+          if(entity.weapon){
+            entity.weapon.visible=attack||(!entity.actor.animation.oneShot&&(profile.key==='katana'||!p.tool));
+            if(profile.key==='katana')orientKatana(entity.weapon,entity.model,attack,entity.actor.animation.current.time,entity.actor.gripUp);
+            else orientSpear(entity.weapon,entity.model,attack,entity.actor.gripUp);
+          }
+        }
       }
       entity.label.position.set(model.position.x,model.position.y+(entity.actor?entity.actor.asset.heightMetres+.45:2.7),model.position.z);
     }
-    const self=this.players.get(this.selfId);if(self){tempPoint.copy(self.model.position);tempPoint.y+=1.4;this.focus.lerp(tempPoint,1-Math.exp(-dt*11));}
+    const self=this.players.get(this.selfId);if(self){tempPoint.copy(self.model.position);tempPoint.y+=focusHeight(self.state);this.focus.lerp(tempPoint,1-Math.exp(-dt*11));}
     this.distance+=(this.targetDistance-this.distance)*(1-Math.exp(-dt*10));
     const shoulder=new THREE.Vector3(Math.cos(this.yaw),0,-Math.sin(this.yaw)).multiplyScalar(.75),aim=this.focus.clone().add(shoulder);
     const offset=new THREE.Vector3(Math.sin(this.yaw)*Math.cos(this.pitch),Math.sin(this.pitch),Math.cos(this.yaw)*Math.cos(this.pitch));let cameraDistance=this.distance;
-    this.cameraRay.set(aim,offset);this.cameraRay.far=this.distance;const obstacles=this.cameraRay.intersectObjects(this.cameraBlockers,true);if(obstacles.length)cameraDistance=Math.max(1.6,obstacles[0].distance-.3);
-    this.camera.position.copy(aim).addScaledVector(offset,cameraDistance);this.camera.position.y=Math.max(this.camera.position.y,terrainHeight(this.camera.position.x,this.camera.position.z)+.55,WATER_LEVEL+.65);
+    cameraDistance=this.collision.cameraDistance(aim,offset,this.distance);
+    if(cameraDistance<2.8){
+      aim.copy(this.focus).addScaledVector(shoulder,clamp((cameraDistance-.8)/2,0,1));
+      cameraDistance=this.collision.cameraDistance(aim,offset,this.distance);
+    }
+    this.camera.position.copy(aim).addScaledVector(offset,cameraDistance);
+    const aboveWater=riverHalfWidth(this.camera.position.z)>.7&&Math.abs(this.camera.position.x-riverX(this.camera.position.z))<riverHalfWidth(this.camera.position.z);
+    this.camera.position.y=Math.max(this.camera.position.y,terrainHeight(this.camera.position.x,this.camera.position.z)+.55,aboveWater?WATER_LEVEL+.65:-Infinity);
     this.camera.lookAt(aim);this.camera.updateMatrixWorld();this.sun.position.set(this.focus.x-32,48,this.focus.z-25);this.sun.target.position.set(this.focus.x,0,this.focus.z);
-    if(this.waterMaterial)this.waterMaterial.userData.time.value=time;this.npcActor?.animation.update(dt,false);for(const landscape of this.landscapes)landscape.update(this.camera,time);
+    this.openWorld?.update(this.camera,time);
+    this.landmarks?.update(this.camera,time);
+    this.atmosphere.update(this.focus,time,dt);
+    if(time>=this.nextStaticCull){
+      this.nextStaticCull=time+.2;
+      for(const {root,radius} of this.staticScenery)root.visible=Math.hypot(root.position.x-this.camera.position.x,root.position.z-this.camera.position.z)<this.scene.fog.far+radius;
+    }
+    for(const item of this.resources.values())item.model.visible=item.resource.amount>0&&item.model.position.distanceTo(this.camera.position)<this.scene.fog.far+5;
+    if(this.waterMaterial)this.waterMaterial.userData.time.value=time;
+    if(this.npc){this.npc.visible=this.npc.position.distanceTo(this.camera.position)<75;if(this.npc.visible)this.npcActor?.animation.update(dt,0);}
+    for(const landscape of this.landscapes)landscape.update(this.camera,time);
     for(const fire of this.fires){
+      const visible=fire.root.position.distanceTo(this.camera.position)<65;fire.light.visible=visible;fire.sparks.visible=visible;if(!visible)continue;
       fire.light.intensity=4.1+Math.sin(time*9+fire.seed)*.5;
       const pos=fire.sparks.geometry.attributes.position;for(let i=0;i<pos.count;i++){const life=(time*.32+i/pos.count)%1;pos.setXYZ(i,Math.sin(i*51+time)*life*.45,.35+life*2.4,Math.cos(i*23+time*.5)*life*.45);}pos.needsUpdate=true;
     }
     for(const animal of this.mammoths){
-      animal.age+=dt;const grazing=animal.age%38>27;
-      if(!grazing)animal.angle+=dt*.08;
-      const t=animal.angle,x=animal.x+Math.sin(t)*4,z=animal.z+Math.cos(t)*3;
-      animal.model.position.set(x,walkHeight(x,z),z);
-      if(!grazing)animal.model.rotation.y=Math.atan2(Math.cos(t)*4,-Math.sin(t)*3);
-      const speed=.08*Math.hypot(Math.cos(t)*4,Math.sin(t)*3);
-      animal.actor.play(grazing?'Graze_Loop':'Walk_Loop',grazing?1:speed/(animal.scale*animal.actor.asset.locomotion.Walk_Loop.metresPerSecond));animal.actor.update(dt);
+      const state=this.state.animals?.find(item=>item.id===animal.id);
+      const phase=state?.phase??'alive';
+      animal.model.visible=!!state&&(phase==='alive'||phase==='dying');animal.meat.visible=!!state&&phase==='meat';
+      animal.label.active=!!state&&(phase==='alive'||phase==='meat');
+      if(!state)continue;
+      if(Math.hypot(state.x-this.camera.position.x,state.z-this.camera.position.z)>90){animal.model.visible=false;animal.meat.visible=false;animal.label.active=false;animal.initialized=false;continue;}
+      if(phase!==animal.phase||(phase==='alive'&&state.phaseStartedAt!==animal.phaseStartedAt)){
+        if(phase==='meat'||phase==='respawning')animal.actor.stop();
+        // A background tab can miss the entire death / respawn cycle while its
+        // render loop is suspended. A new alive timestamp starts a new lifetime.
+        if(phase==='alive'&&animal.phase){animal.initialized=false;animal.actor.stop();}
+        animal.phase=phase;animal.phaseStartedAt=state.phaseStartedAt;
+      }
+      if(!animal.initialized){animal.model.position.set(state.x,walkHeight(state.x,state.z),state.z);animal.initialized=true;}
+      const factor=1-Math.exp(-dt*15),next=this.collision.move(animal.model.position,(state.x-animal.model.position.x)*factor,(state.z-animal.model.position.z)*factor,state.radius);
+      animal.model.position.set(next.x,walkHeight(next.x,next.z),next.z);
+      const diff=Math.atan2(Math.sin(state.facing-animal.model.rotation.y),Math.cos(state.facing-animal.model.rotation.y));animal.model.rotation.y+=diff*(1-Math.exp(-dt*10));
+      animal.meat.position.set(state.x,walkHeight(state.x,state.z),state.z);animal.meat.rotation.y=state.facing;
+      animal.label.position.set(animal.model.position.x,animal.model.position.y+(phase==='meat'?.8:state.scale*animal.actor.asset.heightMetres+.35),animal.model.position.z);
+      animal.label.element.querySelector('strong').textContent=phase==='meat'?'マンモスの肉':'マンモス';
+      animal.detail.textContent=phase==='meat'?`Eで採る · 残り${state.meatRemaining}個`:'F / クリックで攻撃';
+      animal.health.hidden=phase!=='alive';animal.health.max=state.maxHealth??100;animal.health.value=state.health??100;
+      if(phase==='dying')animal.actor.sampleOnce('Death',Math.max(0,(this.serverNow()-state.phaseStartedAt)/1000));
+      else if(phase==='alive'){animal.actor.play(state.clip,state.clip==='Walk_Loop'?state.speed/(state.scale*animal.actor.asset.locomotion.Walk_Loop.metresPerSecond):1);animal.actor.update(dt);}
+    }
+    for(const enemy of this.enemies.values()){
+      const {state,model,actor}=enemy;if(!actor)continue;
+      if(enemy.phase!==state.phase||enemy.phaseStartedAt!==state.phaseStartedAt){
+        actor.stop();if(state.phase==='alive')enemy.initialized=false;
+        enemy.phase=state.phase;enemy.phaseStartedAt=state.phaseStartedAt;
+      }
+      if(!enemy.initialized){model.position.set(state.x,walkHeight(state.x,state.z),state.z);model.rotation.y=state.facing;enemy.initialized=true;}
+      const visible=state.phase!=='respawning'&&model.position.distanceTo(this.camera.position)<75;
+      model.visible=visible;enemy.label.active=visible&&state.phase==='alive';
+      if(!visible){model.position.set(state.x,walkHeight(state.x,state.z),state.z);continue;}
+      const factor=1-Math.exp(-dt*20),next=this.collision.move(model.position,(state.x-model.position.x)*factor,(state.z-model.position.z)*factor,state.radius);
+      model.position.set(next.x,walkHeight(next.x,next.z),next.z);
+      const diff=Math.atan2(Math.sin(state.facing-model.rotation.y),Math.cos(state.facing-model.rotation.y));model.rotation.y+=diff*(1-Math.exp(-dt*24));
+      enemy.label.position.set(model.position.x,model.position.y+(actor.asset.heightMetres??1.85)*(state.scale??1)+.3,model.position.z);
+      enemy.label.element.querySelector('strong').textContent=state.name;enemy.health.max=state.maxHealth;enemy.health.value=state.health;
+      const animation=enemyAnimationState(state,this.serverNow());
+      if(animation&&animation.elapsed!==null)actor.sampleOnce(animation.clip,animation.elapsed);
+      else if(animation){
+        const clipSpeed=actor.asset.locomotion?.[animation.clip]?.metresPerSecond;
+        actor.play(animation.clip,clipSpeed?state.speed/((state.scale??1)*clipSpeed):1);actor.update(dt);
+      }
     }
     if(this.motes)this.motes.rotation.y=Math.sin(time*.02)*.03;if(this.marker.visible){this.marker.rotation.y=time*.25;this.marker.visible=performance.now()<this.markerUntil;}
+    if(time>=this.nextShadowUpdate){this.renderer.shadowMap.needsUpdate=true;this.nextShadowUpdate=time+1/15;}
+    this.spells.update(this.state,this.players,this.serverNow(),dt,this.height*this.renderer.getPixelRatio());
     this.updateLabels();this.renderer.render(this.scene,this.camera);
     this.fpsFrames++;
     if(time-this.lastFpsTime>1){
@@ -204,14 +367,22 @@ export class WorldRenderer {
       data.cameraPosition=[this.camera.position.x,this.camera.position.y,this.camera.position.z].map(n=>n.toFixed(2)).join(',');
       data.resourceLods=JSON.stringify([...this.resources.entries()].filter(([,item])=>item.model.isLOD&&item.model.visible).map(([id,item])=>({id,level:item.model.getCurrentLevel(),distance:Number(item.model.position.distanceTo(this.camera.position).toFixed(2))})));
       data.vegetationInstances=JSON.stringify(this.landscapes.map(landscape=>landscape.levels.map(meshes=>meshes[0]?.mesh.count??0)));
-      data.glbNpcs=String(this.npcActor?1:0);data.glbAnimals=String(this.mammoths.length);
+      data.glbNpcs=String(this.npcActor?1:0);data.glbAnimals=String(this.mammoths.filter(a=>a.model.visible).length);data.animals=JSON.stringify(this.state.animals||[]);
+      data.meatPiles=String(this.mammoths.filter(a=>a.meat.visible).length);data.animalAnimations=JSON.stringify(this.mammoths.map(a=>({id:a.id,phase:a.phase,clip:a.actor.name,time:a.actor.mixer.time})));
+      data.glbEnemies=String([...this.enemies.values()].filter(enemy=>enemy.model.visible&&enemy.actor).length);
+      data.enemyAnimations=JSON.stringify([...this.enemies.values()].map(enemy=>({id:enemy.state.id,phase:enemy.state.phase,clip:enemy.actor?.name??'loading',visible:enemy.model.visible,x:Number(enemy.model.position.x.toFixed(2)),z:Number(enemy.model.position.z.toFixed(2))})));
       if(performance.memory)data.jsHeapMiB=(performance.memory.usedJSHeapSize/1048576).toFixed(1);
+      data.actorModels=JSON.stringify([...this.players.values()].filter(entity=>entity.actor).map(entity=>({id:entity.state.id,species:entity.state.species,gender:entity.state.gender,model:entity.actor.asset.modelKey,sha256:entity.actor.asset.sha256})));
       data.actorSpecies=[...this.players.values()].filter(entity=>entity.actor).map(entity=>entity.state.species).sort().join(',');
       data.cameraYaw=this.yaw.toFixed(3);data.cameraDistance=cameraDistance.toFixed(2);
       data.drawCalls=String(info.render.calls);data.renderTriangles=String(info.render.triangles);
+      data.activeFireLights=String(this.fires.filter(fire=>fire.light.visible).length);
+      data.staticSceneryVisible=String(this.staticScenery.filter(item=>item.root.visible).length);
+      data.vegetationExamined=String(this.landscapes.reduce((sum,item)=>sum+(item.examined??0),0));
       data.geometries=String(info.memory.geometries);data.textures=String(info.memory.textures);
       data.glbPlayers=String([...this.players.values()].filter(entity=>entity.actor).length);
-      if(self){data.playerY=self.model.position.y.toFixed(3);data.playerX=self.model.position.x.toFixed(2);data.playerZ=self.model.position.z.toFixed(2);data.playerAnimation=self.actor?.animation.name||'loading';}
+      data.projectileCount=String(this.state.projectiles?.length??0);data.spellParticles=String(this.spells.count);data.attackStyle=self?attackProfile(self.state).key:'';data.weaponModel=self?.weapon?.userData.assetKey??'';
+      if(self){data.playerModel=self.actor?.asset.modelKey||'loading';data.playerGender=self.state.gender;data.playerY=self.model.position.y.toFixed(3);data.playerX=self.model.position.x.toFixed(2);data.playerZ=self.model.position.z.toFixed(2);data.playerAnimation=self.actor?.animation.name||'loading';data.playerFacing=self.model.rotation.y.toFixed(4);data.serverFacing=String(self.state.facing);data.playerSpeed=String(self.state.speed);data.playerRunning=String(self.state.running);}
       this.fpsFrames=0;this.lastFpsTime=time;
     }
   }
@@ -228,10 +399,12 @@ export class WorldRenderer {
   }
 
   destroy(){
-    this.disposed=true;this.releaseTerrainSampler?.();this.releaseBridgeSampler?.();cancelAnimationFrame(this.frame);this.resizeObserver.disconnect();this.labelLayer.remove();this.loadingLabel?.remove();
+    this.disposed=true;this.landmarks?.dispose();this.openWorld?.dispose();this.releaseTerrainSampler?.();this.releaseBridgeSampler?.();cancelAnimationFrame(this.frame);this.resizeObserver.disconnect();this.labelLayer.remove();this.loadingLabel?.remove();
     for(const entity of this.players.values())if(entity.actor)this.scene.remove(entity.model);
     for(const landscape of this.landscapes)landscape.dispose();
-    this.characterAssets.dispose();this.neanderthalAssets.dispose();this.worldAssets.dispose();
+    for(const provider of this.humanAssets.values())provider.dispose();this.worldAssets.dispose();
+    this.spells.dispose();
+    this.atmosphere.dispose();
     for(const[event,handler]of[['pointerdown',this.down],['pointermove',this.move],['pointerup',this.up],['pointercancel',this.cancel],['lostpointercapture',this.cancel],['wheel',this.wheel],['contextmenu',this.context],['webglcontextlost',this.contextLost]])this.canvas.removeEventListener(event,handler);
     const geometries=new Set(),mats=new Set();this.scene.traverse(o=>{if(o.geometry)geometries.add(o.geometry);if(o.material){for(const m of Array.isArray(o.material)?o.material:[o.material])mats.add(m);}if(o.isInstancedMesh)o.dispose();});geometries.forEach(g=>g.dispose());mats.forEach(m=>m.dispose());this.disposables.forEach(d=>d.dispose());this.renderer.dispose();
   }

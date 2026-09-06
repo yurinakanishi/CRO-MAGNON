@@ -1,0 +1,14 @@
+{
+  "schemaVersion": 1,
+  "modelKey": "snow-ground",
+  "status": "copied-and-all-source-and-destination-hashes-verified",
+  "verifiedAt": "2026-09-06T21:38:36.071Z",
+  "planSha256": "0e8aff54d25cd2ab5462e8014e1e24e29469c3a82eabc2c4e9fd15bd367e85e6",
+  "sourceRoot": "C:\\Users\\yurin\\Desktop\\projects\\CRO-MAGNON\\output\\model-generation\\models\\snow-ground",
+  "destinationRoot": "C:\\Users\\yurin\\Desktop\\projects\\threed-model-creation\\models\\snow-ground",
+  "files": 111,
+  "bytes": 150889972,
+  "copied": 111,
+  "skippedEqual": 0,
+  "preflightExistingEqual": 0
+}

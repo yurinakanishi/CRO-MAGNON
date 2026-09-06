@@ -1,0 +1,125 @@
+{
+  "startedAt": "2026-09-06T16:30:01.508Z",
+  "room": "CROW-CROWD-QA",
+  "url": "ws://127.0.0.1:3001/ws",
+  "role": "four-passive-observers",
+  "maxPlayers": 5,
+  "states": 3280,
+  "phases": [
+    "alive",
+    "dead",
+    "respawning"
+  ],
+  "health": [
+    75,
+    50,
+    25,
+    0
+  ],
+  "clips": [
+    "Walk_Loop",
+    "Run_Loop",
+    "Attack",
+    "Idle_Loop",
+    "Hit",
+    "Death",
+    null
+  ],
+  "playerHurt": true,
+  "playerDefeat": true,
+  "errors": [],
+  "lastPlayers": [
+    {
+      "name": "旅人838",
+      "species": "cro",
+      "gender": "female",
+      "x": 49.3,
+      "z": 52.4,
+      "energy": 44,
+      "attackSequence": 3,
+      "hurtSequence": 7,
+      "downedUntil": 0,
+      "inventory": {
+        "wood": 0,
+        "stone": 0,
+        "berry": 0,
+        "rawMeat": 0,
+        "cookedMeat": 0
+      }
+    },
+    {
+      "name": "Crow-observer-1",
+      "species": "cro",
+      "gender": "female",
+      "x": 49,
+      "z": 53,
+      "energy": 50,
+      "attackSequence": 0,
+      "hurtSequence": 7,
+      "downedUntil": 0,
+      "inventory": {
+        "wood": 0,
+        "stone": 0,
+        "berry": 0,
+        "rawMeat": 0,
+        "cookedMeat": 0
+      }
+    },
+    {
+      "name": "Crow-observer-2",
+      "species": "cro",
+      "gender": "male",
+      "x": 44,
+      "z": 28,
+      "energy": 100,
+      "attackSequence": 0,
+      "hurtSequence": 0,
+      "downedUntil": 0,
+      "inventory": {
+        "wood": 0,
+        "stone": 0,
+        "berry": 0,
+        "rawMeat": 0,
+        "cookedMeat": 0
+      }
+    },
+    {
+      "name": "Crow-observer-3",
+      "species": "nea",
+      "gender": "female",
+      "x": 46,
+      "z": 28,
+      "energy": 100,
+      "attackSequence": 0,
+      "hurtSequence": 0,
+      "downedUntil": 0,
+      "inventory": {
+        "wood": 0,
+        "stone": 0,
+        "berry": 0,
+        "rawMeat": 0,
+        "cookedMeat": 0
+      }
+    },
+    {
+      "name": "Crow-observer-4",
+      "species": "nea",
+      "gender": "male",
+      "x": 49.9,
+      "z": 53,
+      "energy": 50,
+      "attackSequence": 0,
+      "hurtSequence": 7,
+      "downedUntil": 0,
+      "inventory": {
+        "wood": 0,
+        "stone": 0,
+        "berry": 0,
+        "rawMeat": 0,
+        "cookedMeat": 0
+      }
+    }
+  ],
+  "finishedAt": "2026-09-06T16:36:14.383Z",
+  "endReason": "stdin q"
+}

@@ -6,7 +6,7 @@ import { riverBankDrop } from '../shared/terrain.mjs';
 // Coarse flat triangles otherwise bridge across the lowered riverbed.
 export function fitSourceRiverBank(source, maximumEdge = .5) {
   source.computeBoundingBox();
-  if (source.boundingBox.max.x < 57 || source.boundingBox.min.x > 73) return source;
+  if (source.boundingBox.max.x < 57 || source.boundingBox.min.x > 73 || source.boundingBox.max.z < -64 || source.boundingBox.min.z > 184) return source;
   const names = Object.keys(source.attributes).filter(name => name !== 'normal' && name !== 'tangent');
   const attributes = names.map(name => source.attributes[name]);
   const output = attributes.map(() => []), positionIndex = names.indexOf('position');
