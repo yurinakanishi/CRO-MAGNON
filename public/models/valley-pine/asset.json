@@ -1,0 +1,40 @@
+{
+  "modelKey": "valley-pine",
+  "name": "針葉樹",
+  "kind": "tree",
+  "candidate": 1,
+  "status": "reviewed-prototype",
+  "url": "/models/valley-pine/model.glb",
+  "sha256": "068c0253b58a13e096cb39a5f825a80de5cb7d129ef9351726cd40ee126551c5",
+  "bytes": 3544400,
+  "triangles": 26131,
+  "upAxis": "Y",
+  "forwardAxis": "+Z",
+  "heightMetres": 10,
+  "widthMetres": null,
+  "placement": {
+    "pivot": "ground-centred"
+  },
+  "clips": [],
+  "notes": [
+    "Reviewed source-derived branch tiers, complete trunk, green needle masses and brown bark. 3.5 cm voxel cleanup avoids non-manifold QEM stall; near mesh 26131 triangles, medium LOD 4180 triangles. The reconstructed foliage is stylized and clumped at close range; no individual needle geometry is claimed. Medium LOD is intended beyond 18 metres, with exact-model impostors beyond 48 metres."
+  ],
+  "provenance": {
+    "provider": "Codex",
+    "claudeUsed": false,
+    "referenceGenerator": "Built-in imagegen",
+    "referenceImage": "output/model-generation/models/valley-pine/source/original/reference-v1.png",
+    "referenceSha256": "be22c40a16f270da881fdc5b27bd24b0da740a0c5a53d61bb4690edd0a8aa10d",
+    "reconstruction": "Local TRELLIS-2; settings and dense SHA in model workspace",
+    "candidateFile": "output/model-generation/models/valley-pine/work/low-poly/candidate-02/candidate.glb",
+    "visualReview": "output/model-generation/models/valley-pine/qa/adoption-review.json"
+  },
+  "lods": [
+    {
+      "url": "/models/valley-pine/lod1.glb",
+      "sha256": "b971cfcc68caa553f5a5298fed4e42aa32015f916321851acff826bfead8761c",
+      "bytes": 1577712,
+      "triangles": 4180
+    }
+  ]
+}

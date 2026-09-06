@@ -1,0 +1,38 @@
+{
+  "modelKey": "stone-axe",
+  "name": "石斧",
+  "kind": "equipment",
+  "candidate": 1,
+  "status": "reviewed-prototype",
+  "url": "/models/stone-axe/model.glb",
+  "sha256": "12dc3f23f8ec2acfb9fb6f770ab05f59c21584be00795f9b8cf272a2f6cf5ac0",
+  "bytes": 743996,
+  "triangles": 6405,
+  "upAxis": "Y",
+  "forwardAxis": "+Z",
+  "heightMetres": 0.95,
+  "widthMetres": null,
+  "placement": {
+    "pivot": "grip",
+    "gripNode": "Grip.R",
+    "shaftAxis": "+Y",
+    "gripToButtMetres": 0.2091411054134369,
+    "gripToTipMetres": 0.7411690950393677,
+    "attachment": "Rigid child of the character hand grip; the mesh already carries its grip-relative offset."
+  },
+  "clips": [],
+  "notes": [
+    "Exact GLB six-view comparison passed: curved wood handle, complete lashings, dark stone blade and tapered cutting edge preserved. 6405 triangles; stricter 2845-triangle probe exceeded measured surface tolerance and was rejected. Grip origin measured from reimport; .9503 m total height. No rig required; rigid attachment to character Grip.R."
+  ],
+  "provenance": {
+    "provider": "Codex",
+    "claudeUsed": false,
+    "referenceGenerator": "Built-in imagegen",
+    "referenceImage": "output/model-generation/models/stone-axe/source/original/reference-v1.png",
+    "referenceSha256": "e8b90c316db88246e2e113aba4e22d5244bcadfad817e0c66b98008d264680e4",
+    "reconstruction": "Local TRELLIS-2; settings and dense SHA in model workspace",
+    "candidateFile": "output/model-generation/models/stone-axe/work/low-poly/candidate-01/candidate.glb",
+    "visualReview": "output/model-generation/models/stone-axe/qa/adoption-review.json"
+  },
+  "lods": []
+}

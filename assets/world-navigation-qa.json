@@ -1,0 +1,25 @@
+{
+  "status": "passed",
+  "recordedAt": "2026-09-06T09:17:03.890878+00:00",
+  "parentQA": "assets/world-game-qa.json",
+  "change": "Both camp navigation buttons now target (49,54), outside the reconstructed hide tent at (54,55). The previous (53,54) arrival intersected that shelter.",
+  "file": "src/main.js",
+  "sha256": "20cb28fe0d75396c04d2ffa36b397e872e0edcb24e210240058552ed7d88187b",
+  "verification": {
+    "browser": "Existing owned 127.0.0.1 QA tab reloaded after four test clients expired",
+    "controls": [
+      "焚き火のそばへ",
+      "地図 > みんなの野営地"
+    ],
+    "observedPlayerXYZ": [
+      49,
+      0.004,
+      54
+    ],
+    "worldModels": 16,
+    "visual": "Player stands fully visible on open ground outside the shelter, near the firepit.",
+    "browserErrorsAndWarnings": [],
+    "syntax": "node --check src/main.js passed",
+    "scope": "UI arrival-coordinate correction only. All 16 GLBs and renderer files retain the hashes and five-player QA of the parent record."
+  }
+}

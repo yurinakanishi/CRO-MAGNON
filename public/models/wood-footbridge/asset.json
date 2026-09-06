@@ -1,0 +1,40 @@
+{
+  "modelKey": "wood-footbridge",
+  "name": "木造の橋",
+  "kind": "bridge",
+  "candidate": 1,
+  "status": "reviewed-prototype",
+  "url": "/models/wood-footbridge/model.glb",
+  "sha256": "629a8ec5db3dd16b7a126b1c8ea4877a5ec0bc4037017e0a2a53ec2f63e3a369",
+  "bytes": 1821888,
+  "triangles": 5876,
+  "upAxis": "Y",
+  "forwardAxis": "+Z",
+  "heightMetres": null,
+  "widthMetres": 11,
+  "placement": {
+    "pivot": "ground-centred",
+    "deckHeightMetres": 0.5862622261047363,
+    "walkBounds": {
+      "minX": -5.121252209981283,
+      "maxX": 4.988082171758016,
+      "minZ": -1.2622603230953215,
+      "maxZ": 1.3524676167488099
+    }
+  },
+  "clips": [],
+  "notes": [
+    "Exact six-view comparison passed: continuous plank deck, both low rails, all uprights/lashed joints and two support logs remain connected; underside has no added base. 5876 triangles, measured 10.998 m total length. Deck median height .586262 m, p10-p90 .567535-.598196 m. Actual deck bounds measured with rays below the rails and installed as the walk support, replacing the wider temporary bridge rectangle. Original source UV/wood texture retained."
+  ],
+  "provenance": {
+    "provider": "Codex",
+    "claudeUsed": false,
+    "referenceGenerator": "Built-in imagegen",
+    "referenceImage": "output/model-generation/models/wood-footbridge/source/original/reference-v1.png",
+    "referenceSha256": "767a3b8822b0e427ca8c8e6f8def897a14aeca302e40c4406fbf583314b68465",
+    "reconstruction": "Local TRELLIS-2; settings and dense SHA in model workspace",
+    "candidateFile": "output/model-generation/models/wood-footbridge/work/low-poly/candidate-01/candidate.glb",
+    "visualReview": "output/model-generation/models/wood-footbridge/qa/adoption-review.json"
+  },
+  "lods": []
+}

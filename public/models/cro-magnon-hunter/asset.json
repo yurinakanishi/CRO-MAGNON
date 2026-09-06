@@ -1,0 +1,84 @@
+{
+  "bones": 22,
+  "bytes": 9991448,
+  "candidate": 1,
+  "clips": [
+    {
+      "loop": true,
+      "name": "Idle_Loop",
+      "seconds": 4
+    },
+    {
+      "loop": true,
+      "name": "Walk_Loop",
+      "seconds": 1
+    },
+    {
+      "loop": true,
+      "name": "Run_Loop",
+      "seconds": 0.7
+    },
+    {
+      "loop": false,
+      "name": "Gather",
+      "seconds": 1.5
+    },
+    {
+      "loop": false,
+      "name": "Craft",
+      "seconds": 2
+    },
+    {
+      "loop": false,
+      "name": "Give",
+      "seconds": 1.2
+    },
+    {
+      "loop": false,
+      "name": "Eat",
+      "seconds": 1.8
+    },
+    {
+      "loop": false,
+      "name": "Wave",
+      "seconds": 2
+    }
+  ],
+  "forwardAxis": "+Z",
+  "heightMetres": 1.8,
+  "locomotion": {
+    "Run_Loop": {
+      "metresPerSecond": 2.775
+    },
+    "Walk_Loop": {
+      "metresPerSecond": 0.9296
+    }
+  },
+  "modelKey": "cro-magnon-hunter",
+  "notes": [
+    "Candidate 1 completed by Codex after the explicit user handoff. Original failed Claude execution records are preserved.",
+    "Prototype art: close-up fur/hair surface noise, small armpit/hem stretch and knee shading artifacts remain; not a polished production character.",
+    "Run hem deformation diagnostic retains 9 edges over the stated 5 cm / 4x threshold at 0.6 s; these are local skirt folds, reviewed visually. Other seven clips have zero such edges.",
+    "Current game speed is 8 m/s; Run plays at 8/2.775, giving a fast cadence. No walk/run toggle was added.",
+    "Other species, animals, environment, spear and axe are still temporary assets.",
+    "Performance is a sample on this PC, not a guarantee for all devices; long-running memory soak testing was not performed."
+  ],
+  "provenance": {
+    "candidateFile": "output/model-generation/models/cro-magnon-hunter/work/low-poly/batch-001/run-01/attempt-05/codex-final/candidate.glb",
+    "completedBy": "Codex",
+    "denseSha256": "e2b7cf95f07d081ed0a972bd3a1c56d045a8a983d40dd1f3aebad49a13cac840",
+    "frozenRequestSha256": "5a745b4aa8e37fead622b7d498c74e92fe339acc441853bc0b34886d8140e8db",
+    "originalClaudeCandidateSha256": "d9393d2eaa09b19bc29e2b578a5925581e022631b9953eb9b20755ab5c58b091",
+    "provider": "claude-opus-5 / max / existing Claude Max subscription",
+    "reconstruction": "Local TRELLIS-2, resolution 1024, seed 42",
+    "referenceGenerator": "Built-in imagegen, equivalent image generator permitted by the source workflow",
+    "referenceImage": "assets/sources/cro-magnon-hunter/reference-v1.png",
+    "referenceImageSha256": "dd4a7997bbe953880157ba81cd240db389282191f60d674616f5c237d3e107f2",
+    "repair": "Central torso skin weights; geometry/materials/rig/animations preserved."
+  },
+  "sha256": "8f92a0086c7aa3f44d4120c48c1c2ac70672c5febdb162e4b6156f361d0fc805",
+  "status": "completed-prototype-candidate",
+  "triangles": 69990,
+  "upAxis": "Y",
+  "url": "/models/cro-magnon-hunter/model.glb"
+}

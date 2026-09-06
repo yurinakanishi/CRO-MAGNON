@@ -1,0 +1,29 @@
+{
+  "modelKey": "cro-magnon-hunter",
+  "status": "integration-preview",
+  "date": "2026-09-06",
+  "sha256": "47dd8a7b8aa80a6fa24eeab5758c2aa69c330a04770fbf6bbb85dcec1425d74e",
+  "source": "output/model-generation/models/cro-magnon-hunter/work/low-poly/batch-001/run-01/attempt-04/probe/rig-v1.glb",
+  "room": "QA-CRO-0906",
+  "clients": {"browser": 1, "websocketHelpers": 4, "croMagnonGLBPlayers": 5, "sixthClient": "ROOM_FULL"},
+  "browser": "Codex in-app browser, hidden test tab; original user tab untouched",
+  "runtime": "Three.js r185",
+  "sample": {"fps": 60, "drawCalls": 1151, "renderTrianglesIncludingShadowPasses": 1041506, "geometries": 362, "textures": 16, "modelLoadMilliseconds": 179, "cameraDistanceMetres": 5.5},
+  "lifecycleCheck": {
+    "afterTemporaryGeometryDisposalFix": true,
+    "onePlayer": {"geometries": 341, "textures": 8},
+    "fivePlayers": {"geometries": 345, "textures": 16},
+    "afterFourLeave": {"geometries": 341, "textures": 8},
+    "note": "Counts return to the original one-player state. This short test does not establish absence of all long-session leaks. During concurrent model QA work, FPS varied from 36 to 53."
+  },
+  "observations": [
+    "Five independent skinned characters displayed together with the existing environment.",
+    "Wave and Run_Loop visible in actual game; character returns to Idle_Loop after travel.",
+    "Successful gathering updates inventory and starts the connected character action.",
+    "Temporary spear orientation corrected at Grip.R; temporary equipment is hidden during one-shot clips.",
+    "No browser console errors observed after loading.",
+    "Eat is incomplete in this preview; final adoption requires the corrected attempt-05 file and exact-byte QA.",
+    "Renderer geometry/texture counts are recorded; GPU memory bytes and long-session leak testing were not measured.",
+    "The performance sample is local on this computer, not a guarantee for other devices or network conditions."
+  ]
+}

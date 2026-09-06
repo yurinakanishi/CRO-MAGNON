@@ -1,0 +1,33 @@
+{
+  "modelKey": "stone-firepit",
+  "name": "焚き火の薪と石",
+  "kind": "static",
+  "candidate": 1,
+  "status": "reviewed-prototype",
+  "url": "/models/stone-firepit/model.glb",
+  "sha256": "d47aa67f9987cacd61d523d53622e33ebf0778c9a03f9e68559ad3f6db20f65a",
+  "bytes": 4326524,
+  "triangles": 31466,
+  "upAxis": "Y",
+  "forwardAxis": "+Z",
+  "heightMetres": 0.5,
+  "widthMetres": null,
+  "placement": {
+    "pivot": "ground-centred"
+  },
+  "clips": [],
+  "notes": [
+    "Exact reduced GLB preserves the rounded stone ring, overlapping central logs and dark ember bed. Six views compared with source image and dense mesh, including underside. Height 0.5 m, ground-centred. Two camp instances use the complete 31466-triangle mesh; flame and sparks are separate runtime effects. No primitive stone/log replacement or extra caps were added."
+  ],
+  "provenance": {
+    "provider": "Codex",
+    "claudeUsed": false,
+    "referenceGenerator": "Built-in imagegen",
+    "referenceImage": "output/model-generation/models/stone-firepit/source/original/reference-v1.png",
+    "referenceSha256": "791db8b2eca331ce7cc0574bd38faa302e7ae8e9796a46b695f2ada4b6417734",
+    "reconstruction": "Local TRELLIS-2; settings and dense SHA in model workspace",
+    "candidateFile": "output/model-generation/models/stone-firepit/work/low-poly/candidate-01/candidate.glb",
+    "visualReview": "output/model-generation/models/stone-firepit/qa/adoption-review.json"
+  },
+  "lods": []
+}

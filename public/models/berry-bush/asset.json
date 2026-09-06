@@ -1,0 +1,40 @@
+{
+  "modelKey": "berry-bush",
+  "name": "ベリーの茂み",
+  "kind": "foliage",
+  "candidate": 1,
+  "status": "reviewed-prototype",
+  "url": "/models/berry-bush/model.glb",
+  "sha256": "3d405ba99daa2d984810e9a2cf4418ad2008c0ee9279c0157fb68fc5a3008ee1",
+  "bytes": 9032376,
+  "triangles": 103563,
+  "upAxis": "Y",
+  "forwardAxis": "+Z",
+  "heightMetres": 1.2,
+  "widthMetres": null,
+  "placement": {
+    "pivot": "ground-centred"
+  },
+  "clips": [],
+  "notes": [
+    "Revision 02 preserves rounded leaf edges and berry clusters more faithfully than revision 01; all six exact-GLB views inspected. Height 1.2 m, grounded root crown and open branch gaps. LOD1 retains the crown silhouette and is intended beyond 10 m; verify the actual transition in game. LOD2 was inspected and rejected because its crown loses too much foliage, and is retained only in the source workspace. Individual berries remain stylized connected clusters from TRELLIS."
+  ],
+  "provenance": {
+    "provider": "Codex",
+    "claudeUsed": false,
+    "referenceGenerator": "Built-in imagegen",
+    "referenceImage": "output/model-generation/models/berry-bush/source/original/reference-v1.png",
+    "referenceSha256": "4663b4c3a4e019868453f3c0edcd48aaf4a132e7152caf573f87301ea43c2e99",
+    "reconstruction": "Local TRELLIS-2; settings and dense SHA in model workspace",
+    "candidateFile": "output/model-generation/models/berry-bush/work/low-poly/candidate-02/candidate.glb",
+    "visualReview": "output/model-generation/models/berry-bush/qa/adoption-review.json"
+  },
+  "lods": [
+    {
+      "url": "/models/berry-bush/lod1.glb",
+      "sha256": "a5073cf0717125339f6baea01ac415a91b87db8fada01dada236863eda89e0c2",
+      "bytes": 6009448,
+      "triangles": 41368
+    }
+  ]
+}

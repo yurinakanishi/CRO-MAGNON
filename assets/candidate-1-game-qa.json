@@ -1,0 +1,68 @@
+{
+  "automatedChecks": {
+    "syntaxCheck": "passed",
+    "testsPassed": 11
+  },
+  "browser": {
+    "clips": [
+      "Idle_Loop",
+      "Walk_Loop",
+      "Run_Loop",
+      "Gather",
+      "Craft",
+      "Give",
+      "Eat",
+      "Wave"
+    ],
+    "consoleErrors": 0,
+    "engine": "Three.js r185",
+    "independentCloneCount": 5,
+    "views": [
+      "front",
+      "rear",
+      "left",
+      "right",
+      "tps"
+    ]
+  },
+  "candidate": 1,
+  "candidateCompletedBy": "Codex",
+  "coordinatorCompleted": false,
+  "date": "2026-09-06",
+  "lifecycle": {
+    "afterFourLeave": {
+      "geometries": 341,
+      "glbPlayers": 1,
+      "textures": 8
+    },
+    "scope": "Exit resource release previously measured on the identical runtime with the pre-repair GLB; only skin accessor bytes changed."
+  },
+  "limitations": [
+    "Prototype art: close-up fur/hair surface noise, small armpit/hem stretch and knee shading artifacts remain; not a polished production character.",
+    "Run hem deformation diagnostic retains 9 edges over the stated 5 cm / 4x threshold at 0.6 s; these are local skirt folds, reviewed visually. Other seven clips have zero such edges.",
+    "Current game speed is 8 m/s; Run plays at 8/2.775, giving a fast cadence. No walk/run toggle was added.",
+    "Other species, animals, environment, spear and axe are still temporary assets.",
+    "Performance is a sample on this PC, not a guarantee for all devices; long-running memory soak testing was not performed."
+  ],
+  "modelKey": "cro-magnon-hunter",
+  "network": {
+    "browserClients": 1,
+    "glbPlayers": 5,
+    "room": "QA-CRO-0906",
+    "sixthClient": "ROOM_FULL",
+    "websocketHelpers": 4
+  },
+  "performance": {
+    "cameraDistanceMetres": 5.5,
+    "drawCalls": 1143,
+    "fps": 60,
+    "geometries": 345,
+    "modelLoadMilliseconds": 255,
+    "textures": 16,
+    "trianglesIncludingShadowPasses": 971112
+  },
+  "sha256": "8f92a0086c7aa3f44d4120c48c1c2ac70672c5febdb162e4b6156f361d0fc805",
+  "status": "prototype-candidate-verified",
+  "structuralReport": "qa/codex-review/final-structure.json",
+  "videoVerification": "qa/codex-review/final-videos/verification.json"
+}

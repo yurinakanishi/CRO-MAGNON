@@ -1,0 +1,33 @@
+{
+  "modelKey": "meadow-grass",
+  "name": "草の株",
+  "kind": "foliage",
+  "candidate": 1,
+  "status": "reviewed-prototype",
+  "url": "/models/meadow-grass/model.glb",
+  "sha256": "23e834c851fc6cfd1e091edf11e9be093802f047ccb33a2af3b579e2dbb0bb48",
+  "bytes": 10436008,
+  "triangles": 134051,
+  "upAxis": "Y",
+  "forwardAxis": "+Z",
+  "heightMetres": 0.55,
+  "widthMetres": null,
+  "placement": {
+    "pivot": "ground-centred"
+  },
+  "clips": [],
+  "notes": [
+    "Curved blades, rooted clump, source-green albedo and matte dielectric material reviewed. Direct QEM LODs are still too dense: use exact-GLB rendered impostors beyond 2.4 metres, full source-derived mesh only at close range; final game performance review remains required."
+  ],
+  "provenance": {
+    "provider": "Codex",
+    "claudeUsed": false,
+    "referenceGenerator": "Built-in imagegen",
+    "referenceImage": "output/model-generation/models/meadow-grass/source/original/reference-v1.png",
+    "referenceSha256": "2c000bf50446ec4c3a6d11fff811943c7219e3e7870f28e8ffe3d776d8bc8c47",
+    "reconstruction": "Local TRELLIS-2; settings and dense SHA in model workspace",
+    "candidateFile": "output/model-generation/models/meadow-grass/work/low-poly/candidate-01/candidate.glb",
+    "visualReview": "output/model-generation/models/meadow-grass/qa/adoption-review.json"
+  },
+  "lods": []
+}

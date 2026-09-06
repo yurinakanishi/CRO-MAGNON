@@ -1,0 +1,33 @@
+{
+  "modelKey": "valley-boulder",
+  "name": "岩と石資源",
+  "kind": "static",
+  "candidate": 1,
+  "status": "reviewed-prototype",
+  "url": "/models/valley-boulder/model.glb",
+  "sha256": "f46449aa51814b9037c8ed3c43179845e63c6f9b48b94e02c7979266cb09bb1d",
+  "bytes": 2443928,
+  "triangles": 2953,
+  "upAxis": "Y",
+  "forwardAxis": "+Z",
+  "heightMetres": 1.7,
+  "widthMetres": null,
+  "placement": {
+    "pivot": "ground-centred"
+  },
+  "clips": [],
+  "notes": [
+    "Original reference and six dense/final views reviewed. Broad cracked rock silhouette and source texture retained at 2953 triangles, 1.7 metres high, matte nonmetallic material. Solid-topology probe found zero open boundary loops; the pale source underside patch is preserved and faces the ground. Reused for stone resources, scattered rocks and distant rock formations."
+  ],
+  "provenance": {
+    "provider": "Codex",
+    "claudeUsed": false,
+    "referenceGenerator": "Built-in imagegen",
+    "referenceImage": "output/model-generation/models/valley-boulder/source/original/reference-v1.png",
+    "referenceSha256": "f77077203ee36b02dd16939d2af681e5e8942c15e6b2c569e73286bcb8313592",
+    "reconstruction": "Local TRELLIS-2; settings and dense SHA in model workspace",
+    "candidateFile": "output/model-generation/models/valley-boulder/work/low-poly/candidate-01/candidate.glb",
+    "visualReview": "output/model-generation/models/valley-boulder/qa/adoption-review.json"
+  },
+  "lods": []
+}

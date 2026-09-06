@@ -1,0 +1,227 @@
+{
+  "schemaVersion": 1,
+  "status": "passed",
+  "scope": "All-model local prototype integration",
+  "recordedAt": "2026-09-06T09:12:33.982681+00:00",
+  "reviewer": "Codex",
+  "claudeUsedForThisBatch": false,
+  "worldModels": 16,
+  "newModels": 15,
+  "connectedPlayers": 5,
+  "assetHashes": {
+    "woolly-mammoth": "6d675f895bb26cad7f62b5a7161b442e04a07f1582562498d6033a85cf977abf",
+    "meadow-grass": "23e834c851fc6cfd1e091edf11e9be093802f047ccb33a2af3b579e2dbb0bb48",
+    "valley-pine": "068c0253b58a13e096cb39a5f825a80de5cb7d129ef9351726cd40ee126551c5",
+    "valley-boulder": "f46449aa51814b9037c8ed3c43179845e63c6f9b48b94e02c7979266cb09bb1d",
+    "firewood-pile": "88fdbe0514694b4b484e285dc6ffa85c8cebe134ea120d34f7486dc27d3d3d3a",
+    "drying-rack": "b106d53d89e9fa51ee38d3baa2c3a0b898fd39658f5718728ef12844b9f1d65d",
+    "hide-tent": "7c7aef410b4f8eee268cd32f75faa65f0b7ea3f2d8e4cf53b6d810e5a1e20de7",
+    "flint-spear": "1a10db6d1b44da1e982f88e5ae9ef6be8fb74f5900ebd9258380ad200e53ed3d",
+    "stone-firepit": "d47aa67f9987cacd61d523d53622e33ebf0778c9a03f9e68559ad3f6db20f65a",
+    "berry-bush": "3d405ba99daa2d984810e9a2cf4418ad2008c0ee9279c0157fb68fc5a3008ee1",
+    "stone-axe": "12dc3f23f8ec2acfb9fb6f770ab05f59c21584be00795f9b8cf272a2f6cf5ac0",
+    "river-water": "8575faa5fd988da815d622ebbd03d49390339df5eeafd0eb794e1b0368ec0274",
+    "wood-footbridge": "629a8ec5db3dd16b7a126b1c8ea4877a5ec0bc4037017e0a2a53ec2f63e3a369",
+    "meadow-ground": "6c6b41bdec1631236027c567635623aa9cdd1e0d92c0ae9e89f77764b52995e1",
+    "cro-magnon-hunter": "8f92a0086c7aa3f44d4120c48c1c2ac70672c5febdb162e4b6156f361d0fc805",
+    "neanderthal-hunter": "55232891640fed7e15bb75f3ad985ae53b5a8b19b31013e85d8c5d5f70619c65"
+  },
+  "browserSession": {
+    "url": "http://127.0.0.1:3000/?room=QA-WORLD-0906",
+    "browser": "Codex in-app browser",
+    "engine": "Three.js r185 / WebGL2",
+    "canvasCssPixels": [
+      1035,
+      618
+    ],
+    "drawingBufferPixels": [
+      1293,
+      772
+    ],
+    "fpsSource": "One-second requestAnimationFrame counter; spot observations, not a percentile benchmark",
+    "memorySource": "performance.memory.usedJSHeapSize; JS heap only, not total/GPU memory",
+    "observedBrowserErrorsAndWarnings": [],
+    "screenshots": "Actual screenshots inspected in this Codex conversation; no local screenshot file is claimed."
+  },
+  "multiplayer": {
+    "method": "Four actual ws test clients from output/five-player-check.mjs plus one browser player",
+    "room": "QA-WORLD-0906",
+    "playerSpecies": [
+      "cro",
+      "cro",
+      "cro",
+      "nea",
+      "nea"
+    ],
+    "npcCount": 1,
+    "mammothCount": 2,
+    "sixthClientResult": "ROOM_FULL",
+    "actions": "QA-1 waves and QA-2 moves on timed server messages; all five skinned GLB actors loaded independently.",
+    "isolation": "127.0.0.1 origin isolates the saved profile from the original localhost tab. The existing server and original user room were not restarted."
+  },
+  "loadTimesMs": {
+    "worldGlbs": 669,
+    "worldSceneReady": 2454,
+    "croMagnonGlb": 406
+  },
+  "performanceSamples": [
+    {
+      "place": "camp, initial shoulder view",
+      "playerXYZ": [
+        52.4,
+        0.002,
+        57
+      ],
+      "fps": 60,
+      "drawCalls": 276,
+      "renderTriangles": 2956184,
+      "jsHeapMiB": 225.6,
+      "vegetationInstances": [
+        [
+          0,
+          26,
+          176
+        ],
+        [
+          0,
+          0,
+          299
+        ]
+      ],
+      "geometries": 323,
+      "textures": 38
+    },
+    {
+      "place": "forest edge, south camera",
+      "playerXYZ": [
+        47.14,
+        null,
+        58.65
+      ],
+      "fps": 51,
+      "drawCalls": 225,
+      "renderTriangles": 2461811,
+      "jsHeapMiB": 237.2,
+      "vegetationInstances": [
+        [
+          2,
+          30,
+          156
+        ],
+        [
+          0,
+          0,
+          699
+        ]
+      ],
+      "geometries": null,
+      "textures": null
+    },
+    {
+      "place": "on reconstructed bridge",
+      "playerXYZ": [
+        68,
+        0.3,
+        43
+      ],
+      "fps": 51,
+      "drawCalls": 195,
+      "renderTriangles": 2226652,
+      "jsHeapMiB": 242.2,
+      "vegetationInstances": [
+        [
+          0,
+          50,
+          134
+        ],
+        [
+          0,
+          0,
+          686
+        ]
+      ],
+      "geometries": 815,
+      "textures": 40
+    },
+    {
+      "place": "east bank, berry bush",
+      "playerXYZ": [
+        72.14,
+        0.006,
+        47.55
+      ],
+      "fps": 52,
+      "drawCalls": 184,
+      "renderTriangles": 2229638,
+      "jsHeapMiB": 235.7,
+      "vegetationInstances": [
+        [
+          0,
+          52,
+          116
+        ],
+        [
+          0,
+          0,
+          758
+        ]
+      ],
+      "geometries": 815,
+      "textures": 40
+    }
+  ],
+  "observations": [
+    "All 16 model hashes reported ready in the canvas match the delivered files. Camp structures, reconstructed trees/grass/boulders, water, bridge, two human species and NPC are visible; mammoths are present in the same world.",
+    "TPS horizontal dragging rotates to front, side and rear views; ground clicks move the player with the server. Wood 0 -> 3 and stone 0 -> 2 were gathered through the visible buttons.",
+    "Gather was observed in the DOM and screenshot with the spear hidden. Craft consumed wood 3 / stone 2, showed its gesture and completed the tool quest. The reconstructed stone axe replaced the spear and was visibly attached to the right hand from the front and on the bridge.",
+    "The go-NPC control reached (68,43), with player root Y=.300 on the measured bridge deck. Feet rested on its planks in the screenshot. Clicking beyond the bridge reached (72.14,47.55), Y=.006 on the source-derived bank.",
+    "Nearby berry-27 changed from LOD1 at 11.84 m to full model at 6.18 m. Berry-24 was also observed at full model 7.50 m and LOD1 12.82 m. Pine full/medium/impostor instance counts changed with camera position. Grass impostors were visible in the game; its full model was reviewed separately.",
+    "The berry bush yielded one berry. Eating consumed it and restored energy from 82 to 100 (capped); another berry was gathered afterward. This session did not separately time every frame of Eat.",
+    "No visible white underbody remained in the reconstructed river surface. Bridge rails, plank deck and support geometry, open-ended hide shelters, drying rack, source firepit/logs and shader fire were inspected in the game.",
+    "Both species with spear and axe were also inspected in the model review page in standing/Run, front/three-quarter/rear/TPS views; Gather/Wave hide equipment. These standalone checks are recorded separately for each weapon."
+  ],
+  "offlineVerification": {
+    "unitTests": {
+      "command": "npm test",
+      "passed": 15,
+      "failed": 0
+    },
+    "syntax": {
+      "command": "npm run check",
+      "status": "passed"
+    },
+    "delivery": {
+      "command": "npm run verify:assets",
+      "status": "passed",
+      "modelCount": 16
+    },
+    "rigs": {
+      "humanBonesEach": 22,
+      "humanClipsEach": 8,
+      "mammothBones": 24,
+      "mammothClips": 4
+    },
+    "exactMotionEvidence": [
+      "output/model-generation/models/neanderthal-hunter/qa/final-motion-05",
+      "output/model-generation/models/woolly-mammoth/qa/final-motion-05"
+    ],
+    "equipmentEvidence": [
+      "output/model-generation/models/flint-spear/qa/equipped-browser-review.json",
+      "output/model-generation/models/stone-axe/qa/equipped-browser-review.json"
+    ],
+    "riverBankFit": {
+      "evidence": "output/terrain-bank-fit-after.json",
+      "samples": 1517,
+      "p95Metres": 0.018572220536154246,
+      "maxMetres": 0.046185750485964294
+    },
+    "terrainEdgeMismatchMetres": 1.48e-05
+  },
+  "limitations": [
+    "Local five-client prototype QA, not five separate devices or an internet load test. Observed FPS ranged 51-60; performance is device/view dependent. No TRELLIS or Blender job ran during these whole-world measurements.",
+    "Image reconstruction retains clumped hair/fur/leaves, grainy distant grass and visible LOD changes. The shelter is open at both ends. Terrain and river sections repeat source parts.",
+    "Minor Neanderthal armpit and mammoth Run stretch thresholds remain documented in exact-GLB reviews. The shared 22-bone humanoid rig has no independent finger-grip animation.",
+    "Bridge support is a measured flat deck height with a shallow end step; there is no foot IK over individual planks. Bank fitting error is below 4.7 cm in the sampled area.",
+    "Character obstacle collision, bridge-route pathfinding, shooting/combat, persistent saves and authentication remain outside this prototype. NPC trade and camp contribution were not repeated in this particular visual pass; existing server tests cover those rules."
+  ]
+}

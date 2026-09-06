@@ -1,0 +1,43 @@
+{
+  "modelKey": "cro-magnon-hunter",
+  "canonicalModelRoot": "C:\\Users\\yurin\\Desktop\\projects\\threed-model-creation\\models\\cro-magnon-hunter",
+  "reason": "Compare before syncing only this task model back from the isolated worktree.",
+  "files": [
+    {
+      "path": "model.json",
+      "sha256": "f04526fd46248fa9882ca4c770e020d2c7de6806b7104369320047992fa94c99"
+    },
+    {
+      "path": "README.md",
+      "sha256": "fc6588d41c54203503b074e40b08b22c5fd6f847b700d0cb87e007ea1171121e"
+    },
+    {
+      "path": "release/spec.json",
+      "sha256": "0bba17102e0862530bd0b3ea60c3abdfdc5387c089338f7b02db3cd1d582e404"
+    },
+    {
+      "path": "source/original/reference-v1.json",
+      "sha256": "0bf79d41e446c974035d16833d9ea0c2fa0eb241aa1955b42e76aa7104864186"
+    },
+    {
+      "path": "source/original/reference-v1.png",
+      "sha256": "dd4a7997bbe953880157ba81cd240db389282191f60d674616f5c237d3e107f2"
+    },
+    {
+      "path": "work/generation-batches/batch-001/batch.json",
+      "sha256": "a9853fd5beb9fa71adfaf8834cb4d844f57ef1a3f2c929780009c344e27a7f8a"
+    },
+    {
+      "path": "work/generation-batches/batch-001/request.md",
+      "sha256": "865c1a4ef738de12d0a033ad966eee1dd6046f1515ad7410a18fc2839a4ddb7c"
+    },
+    {
+      "path": "work/generation-batches/batch-001/runs/run-01/attempt-01/prompt.md",
+      "sha256": "12fc5d4d16ce0d3df17970b6ff7f65a5c9110868223aef1d1161ac31b777ed0f"
+    },
+    {
+      "path": "work/generation-batches/batch-001/runs/run-01/attempt-01/run.json",
+      "sha256": "b212adaa7340fed715d6cffa559161fb055b50abd532ce01ea1f2073097a8443"
+    }
+  ]
+}

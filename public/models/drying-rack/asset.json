@@ -1,0 +1,33 @@
+{
+  "modelKey": "drying-rack",
+  "name": "乾燥棚",
+  "kind": "static",
+  "candidate": 1,
+  "status": "reviewed-prototype",
+  "url": "/models/drying-rack/model.glb",
+  "sha256": "b106d53d89e9fa51ee38d3baa2c3a0b898fd39658f5718728ef12844b9f1d65d",
+  "bytes": 3022452,
+  "triangles": 23901,
+  "upAxis": "Y",
+  "forwardAxis": "+Z",
+  "heightMetres": 2.4,
+  "widthMetres": null,
+  "placement": {
+    "pivot": "ground-centred"
+  },
+  "clips": [],
+  "notes": [
+    "The exact reduced GLB retains both braced uprights, forked tips, crossbar, lashings, open gaps and all three hanging hides. Six views compared against the dense mesh and source image. Height 2.4 m, ground-centred pivot; static camp structure, no unnecessary skeleton. Natural wood and rough hide remain source-derived. Full 23901-triangle model is used for the single camp rack; intermediate LODs remain in the workspace."
+  ],
+  "provenance": {
+    "provider": "Codex",
+    "claudeUsed": false,
+    "referenceGenerator": "Built-in imagegen",
+    "referenceImage": "output/model-generation/models/drying-rack/source/original/reference-v1.png",
+    "referenceSha256": "a7c151a06a289d584879ce1a88fdeb1dfb0c617478d25764afa486702c3c374a",
+    "reconstruction": "Local TRELLIS-2; settings and dense SHA in model workspace",
+    "candidateFile": "output/model-generation/models/drying-rack/work/low-poly/candidate-01/candidate.glb",
+    "visualReview": "output/model-generation/models/drying-rack/qa/adoption-review.json"
+  },
+  "lods": []
+}

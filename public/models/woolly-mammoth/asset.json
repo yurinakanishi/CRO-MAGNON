@@ -1,0 +1,63 @@
+{
+  "modelKey": "woolly-mammoth",
+  "name": "マンモス",
+  "kind": "quadruped",
+  "candidate": 1,
+  "status": "reviewed-prototype",
+  "url": "/models/woolly-mammoth/model.glb",
+  "sha256": "6d675f895bb26cad7f62b5a7161b442e04a07f1582562498d6033a85cf977abf",
+  "bytes": 4250576,
+  "triangles": 24173,
+  "upAxis": "Y",
+  "forwardAxis": "+Z",
+  "heightMetres": 3.6,
+  "widthMetres": null,
+  "placement": {
+    "pivot": "ground-centred"
+  },
+  "clips": [
+    {
+      "name": "Graze_Loop",
+      "seconds": 5,
+      "loop": true
+    },
+    {
+      "name": "Idle_Loop",
+      "seconds": 4,
+      "loop": true
+    },
+    {
+      "name": "Run_Loop",
+      "seconds": 1.2000000476837158,
+      "loop": true
+    },
+    {
+      "name": "Walk_Loop",
+      "seconds": 2.4000000953674316,
+      "loop": true
+    }
+  ],
+  "notes": [
+    "Exact GLB four-loop pose sheets and 30 fps MP4 metadata reviewed. Mammoth-specific 24-bone rig, four-beat walk and trunk/tail motion. Repaired belly weighting and reachable leg IK retain 24173 source-derived triangles. Walk foot-surface p02 stance range -1.04 to +1.88 cm; run -3.03 to +2.06 cm. Two borderline local stretch edges in Run remain a prototype limitation, without visible gross tearing in reviewed views."
+  ],
+  "provenance": {
+    "provider": "Codex",
+    "claudeUsed": false,
+    "referenceGenerator": "Built-in imagegen",
+    "referenceImage": "output/model-generation/models/woolly-mammoth/source/original/reference-v1.png",
+    "referenceSha256": "306a8308bf2de33664feee4ab1e697729e195881857b47b85526ea0e41169f87",
+    "reconstruction": "Local TRELLIS-2; settings and dense SHA in model workspace",
+    "candidateFile": "output/model-generation/models/woolly-mammoth/work/low-poly/rigged-05/candidate.glb",
+    "visualReview": "output/model-generation/models/woolly-mammoth/qa/adoption-review.json"
+  },
+  "lods": [],
+  "bones": 24,
+  "locomotion": {
+    "Walk_Loop": {
+      "metresPerSecond": 0.3541666666666667
+    },
+    "Run_Loop": {
+      "metresPerSecond": 1.1250000000000002
+    }
+  }
+}

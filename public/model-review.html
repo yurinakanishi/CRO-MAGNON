@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>CRO-MAGNON — モデル候補レビュー</title>
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+  <link rel="stylesheet" href="/src/model-review.css" />
+</head>
+<body>
+  <main>
+    <header><div><small>CRO-MAGNON / ASSET REVIEW</small><h1>モデル候補レビュー</h1></div><a href="/" target="_blank" rel="noopener">ゲームを開く ↗</a></header>
+    <div id="viewport"><canvas id="review-canvas" aria-label="3Dモデルの表示"></canvas><p id="status" role="status">GLBを選ぶと、形状・骨格・動作を確認できます。</p><div id="performance" aria-live="off"></div></div>
+    <section class="controls" aria-label="モデルの確認操作">
+      <label class="file-label">GLBを開く<input id="model-file" type="file" accept=".glb" /></label>
+      <label>ゲーム素材<select id="asset-model"><option value="">素材を選ぶ</option></select></label>
+      <label>動作<select id="clip" disabled><option value="">静止姿勢</option></select></label>
+      <button id="play" disabled>一時停止</button>
+      <label class="timeline">再生位置<input id="timeline" type="range" min="0" max="1" step="0.001" value="0" disabled /></label>
+      <label>表示数<select id="count" disabled><option value="1">1体</option><option value="5">5体</option></select></label>
+      <label>装備<select id="equipment" disabled><option value="">なし</option><option value="flint-spear">石槍</option><option value="stone-axe">石斧</option></select></label>
+      <label>視点<select id="camera"><option value="front">正面斜め</option><option value="rear">背面</option><option value="left">左側</option><option value="right">右側</option><option value="tps">肩越し</option><option value="top">上から</option></select></label>
+      <label class="checkbox"><input id="skeleton" type="checkbox" />骨格を表示</label>
+      <label class="checkbox"><input id="ground" type="checkbox" checked />地面を表示</label>
+    </section>
+    <section class="details"><p id="model-info">原点と実寸を保って表示します。格子は1 mです。</p><p id="clip-report">ドラッグで回転、ホイールでズーム。読み込んだファイルは外部へ送信されません。</p><p id="hash"></p><p id="equipment-info"></p></section>
+    <footer>候補の確認用です。5体表示は描画負荷の確認で、5人のネットワーク接続試験は別途行います。モデルの採用やゲーム内の素材交換は行いません。</footer>
+  </main>
+  <script type="importmap">{"imports":{"three":"/vendor/three.module.js","three/addons/":"/vendor/addons/"}}</script>
+  <script type="module" src="/src/model-review.js"></script>
+</body>
+</html>

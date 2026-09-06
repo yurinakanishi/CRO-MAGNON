@@ -1,0 +1,33 @@
+{
+  "modelKey": "firewood-pile",
+  "name": "薪と木材資源",
+  "kind": "static",
+  "candidate": 1,
+  "status": "reviewed-prototype",
+  "url": "/models/firewood-pile/model.glb",
+  "sha256": "88fdbe0514694b4b484e285dc6ffa85c8cebe134ea120d34f7486dc27d3d3d3a",
+  "bytes": 2566200,
+  "triangles": 12282,
+  "upAxis": "Y",
+  "forwardAxis": "+Z",
+  "heightMetres": 0.7,
+  "widthMetres": null,
+  "placement": {
+    "pivot": "ground-centred"
+  },
+  "clips": [],
+  "notes": [
+    "Five source-derived logs retain bark, both cut ends, stacked contact gaps and stable underside after conservative reduction. Height 0.70 m, ground-centred pivot. Reviewed exact reimported candidate from six views; no added primitive geometry. Source gaps are stylized but coherent for the game prototype."
+  ],
+  "provenance": {
+    "provider": "Codex",
+    "claudeUsed": false,
+    "referenceGenerator": "Built-in imagegen",
+    "referenceImage": "output/model-generation/models/firewood-pile/source/original/reference-v1.png",
+    "referenceSha256": "71003fe9cd41aa8ef1bbc163cbf7033fc53f07da600d53d024eee39dddab6a23",
+    "reconstruction": "Local TRELLIS-2; settings and dense SHA in model workspace",
+    "candidateFile": "output/model-generation/models/firewood-pile/work/low-poly/candidate-01/candidate.glb",
+    "visualReview": "output/model-generation/models/firewood-pile/qa/adoption-review.json"
+  },
+  "lods": []
+}

@@ -1,0 +1,81 @@
+{
+  "file": "C:\\Users\\yurin\\Desktop\\projects\\CRO-MAGNON\\public\\models\\cro-magnon-hunter\\model.glb",
+  "sha256": "8f92a0086c7aa3f44d4120c48c1c2ac70672c5febdb162e4b6156f361d0fc805",
+  "bytes": 9991448,
+  "triangles": 69990,
+  "skins": [
+    {
+      "joints": 22,
+      "roots": [
+        "Root"
+      ],
+      "vertices": 92706,
+      "unweighted": 0,
+      "invalidWeights": 0,
+      "invalidJoints": 0,
+      "maxInfluences": 4,
+      "maxWeightError": 4.516914486885071e-8
+    }
+  ],
+  "animations": [
+    {
+      "name": "Craft",
+      "duration": 2,
+      "channels": 66,
+      "loopClosed": true,
+      "rootInPlace": true
+    },
+    {
+      "name": "Eat",
+      "duration": 1.7999999523162842,
+      "channels": 66,
+      "loopClosed": true,
+      "rootInPlace": true
+    },
+    {
+      "name": "Gather",
+      "duration": 1.5,
+      "channels": 66,
+      "loopClosed": true,
+      "rootInPlace": true
+    },
+    {
+      "name": "Give",
+      "duration": 1.2000000476837158,
+      "channels": 66,
+      "loopClosed": true,
+      "rootInPlace": true
+    },
+    {
+      "name": "Idle_Loop",
+      "duration": 4,
+      "channels": 66,
+      "loopClosed": true,
+      "rootInPlace": true
+    },
+    {
+      "name": "Run_Loop",
+      "duration": 0.699999988079071,
+      "channels": 66,
+      "loopClosed": true,
+      "rootInPlace": true
+    },
+    {
+      "name": "Walk_Loop",
+      "duration": 1,
+      "channels": 66,
+      "loopClosed": true,
+      "rootInPlace": true
+    },
+    {
+      "name": "Wave",
+      "duration": 2,
+      "channels": 66,
+      "loopClosed": true,
+      "rootInPlace": true
+    }
+  ],
+  "validation": "passed",
+  "errors": [],
+  "visualReviewRequired": true
+}

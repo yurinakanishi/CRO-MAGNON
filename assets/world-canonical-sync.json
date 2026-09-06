@@ -1,0 +1,236 @@
+{
+  "apply": true,
+  "models": 15,
+  "newFiles": 45,
+  "identicalExistingFiles": 2732,
+  "bytes": 569610,
+  "canonicalRoot": "C:\\Users\\yurin\\Desktop\\projects\\threed-model-creation\\models",
+  "files": [
+    {
+      "model": "neanderthal-hunter",
+      "path": "qa/world-navigation-qa.json",
+      "sha256": "39511541b426a6eed54c2a76a51e8be9810169b7d3dc8ee6ba52efdce12fdd3a"
+    },
+    {
+      "model": "neanderthal-hunter",
+      "path": "workflow/codex-all-assets-20260906/output/record-world-navigation-qa.py",
+      "sha256": "18f76d3a814d79a05c048168abb8ca62fa810e7c94485c7f6e57e8ec038c4318"
+    },
+    {
+      "model": "neanderthal-hunter",
+      "path": "workflow/codex-all-assets-20260906/src/main.js",
+      "sha256": "20cb28fe0d75396c04d2ffa36b397e872e0edcb24e210240058552ed7d88187b"
+    },
+    {
+      "model": "woolly-mammoth",
+      "path": "qa/world-navigation-qa.json",
+      "sha256": "39511541b426a6eed54c2a76a51e8be9810169b7d3dc8ee6ba52efdce12fdd3a"
+    },
+    {
+      "model": "woolly-mammoth",
+      "path": "workflow/codex-all-assets-20260906/output/record-world-navigation-qa.py",
+      "sha256": "18f76d3a814d79a05c048168abb8ca62fa810e7c94485c7f6e57e8ec038c4318"
+    },
+    {
+      "model": "woolly-mammoth",
+      "path": "workflow/codex-all-assets-20260906/src/main.js",
+      "sha256": "20cb28fe0d75396c04d2ffa36b397e872e0edcb24e210240058552ed7d88187b"
+    },
+    {
+      "model": "valley-pine",
+      "path": "qa/world-navigation-qa.json",
+      "sha256": "39511541b426a6eed54c2a76a51e8be9810169b7d3dc8ee6ba52efdce12fdd3a"
+    },
+    {
+      "model": "valley-pine",
+      "path": "workflow/codex-all-assets-20260906/output/record-world-navigation-qa.py",
+      "sha256": "18f76d3a814d79a05c048168abb8ca62fa810e7c94485c7f6e57e8ec038c4318"
+    },
+    {
+      "model": "valley-pine",
+      "path": "workflow/codex-all-assets-20260906/src/main.js",
+      "sha256": "20cb28fe0d75396c04d2ffa36b397e872e0edcb24e210240058552ed7d88187b"
+    },
+    {
+      "model": "meadow-grass",
+      "path": "qa/world-navigation-qa.json",
+      "sha256": "39511541b426a6eed54c2a76a51e8be9810169b7d3dc8ee6ba52efdce12fdd3a"
+    },
+    {
+      "model": "meadow-grass",
+      "path": "workflow/codex-all-assets-20260906/output/record-world-navigation-qa.py",
+      "sha256": "18f76d3a814d79a05c048168abb8ca62fa810e7c94485c7f6e57e8ec038c4318"
+    },
+    {
+      "model": "meadow-grass",
+      "path": "workflow/codex-all-assets-20260906/src/main.js",
+      "sha256": "20cb28fe0d75396c04d2ffa36b397e872e0edcb24e210240058552ed7d88187b"
+    },
+    {
+      "model": "valley-boulder",
+      "path": "qa/world-navigation-qa.json",
+      "sha256": "39511541b426a6eed54c2a76a51e8be9810169b7d3dc8ee6ba52efdce12fdd3a"
+    },
+    {
+      "model": "valley-boulder",
+      "path": "workflow/codex-all-assets-20260906/output/record-world-navigation-qa.py",
+      "sha256": "18f76d3a814d79a05c048168abb8ca62fa810e7c94485c7f6e57e8ec038c4318"
+    },
+    {
+      "model": "valley-boulder",
+      "path": "workflow/codex-all-assets-20260906/src/main.js",
+      "sha256": "20cb28fe0d75396c04d2ffa36b397e872e0edcb24e210240058552ed7d88187b"
+    },
+    {
+      "model": "firewood-pile",
+      "path": "qa/world-navigation-qa.json",
+      "sha256": "39511541b426a6eed54c2a76a51e8be9810169b7d3dc8ee6ba52efdce12fdd3a"
+    },
+    {
+      "model": "firewood-pile",
+      "path": "workflow/codex-all-assets-20260906/output/record-world-navigation-qa.py",
+      "sha256": "18f76d3a814d79a05c048168abb8ca62fa810e7c94485c7f6e57e8ec038c4318"
+    },
+    {
+      "model": "firewood-pile",
+      "path": "workflow/codex-all-assets-20260906/src/main.js",
+      "sha256": "20cb28fe0d75396c04d2ffa36b397e872e0edcb24e210240058552ed7d88187b"
+    },
+    {
+      "model": "berry-bush",
+      "path": "qa/world-navigation-qa.json",
+      "sha256": "39511541b426a6eed54c2a76a51e8be9810169b7d3dc8ee6ba52efdce12fdd3a"
+    },
+    {
+      "model": "berry-bush",
+      "path": "workflow/codex-all-assets-20260906/output/record-world-navigation-qa.py",
+      "sha256": "18f76d3a814d79a05c048168abb8ca62fa810e7c94485c7f6e57e8ec038c4318"
+    },
+    {
+      "model": "berry-bush",
+      "path": "workflow/codex-all-assets-20260906/src/main.js",
+      "sha256": "20cb28fe0d75396c04d2ffa36b397e872e0edcb24e210240058552ed7d88187b"
+    },
+    {
+      "model": "hide-tent",
+      "path": "qa/world-navigation-qa.json",
+      "sha256": "39511541b426a6eed54c2a76a51e8be9810169b7d3dc8ee6ba52efdce12fdd3a"
+    },
+    {
+      "model": "hide-tent",
+      "path": "workflow/codex-all-assets-20260906/output/record-world-navigation-qa.py",
+      "sha256": "18f76d3a814d79a05c048168abb8ca62fa810e7c94485c7f6e57e8ec038c4318"
+    },
+    {
+      "model": "hide-tent",
+      "path": "workflow/codex-all-assets-20260906/src/main.js",
+      "sha256": "20cb28fe0d75396c04d2ffa36b397e872e0edcb24e210240058552ed7d88187b"
+    },
+    {
+      "model": "drying-rack",
+      "path": "qa/world-navigation-qa.json",
+      "sha256": "39511541b426a6eed54c2a76a51e8be9810169b7d3dc8ee6ba52efdce12fdd3a"
+    },
+    {
+      "model": "drying-rack",
+      "path": "workflow/codex-all-assets-20260906/output/record-world-navigation-qa.py",
+      "sha256": "18f76d3a814d79a05c048168abb8ca62fa810e7c94485c7f6e57e8ec038c4318"
+    },
+    {
+      "model": "drying-rack",
+      "path": "workflow/codex-all-assets-20260906/src/main.js",
+      "sha256": "20cb28fe0d75396c04d2ffa36b397e872e0edcb24e210240058552ed7d88187b"
+    },
+    {
+      "model": "stone-firepit",
+      "path": "qa/world-navigation-qa.json",
+      "sha256": "39511541b426a6eed54c2a76a51e8be9810169b7d3dc8ee6ba52efdce12fdd3a"
+    },
+    {
+      "model": "stone-firepit",
+      "path": "workflow/codex-all-assets-20260906/output/record-world-navigation-qa.py",
+      "sha256": "18f76d3a814d79a05c048168abb8ca62fa810e7c94485c7f6e57e8ec038c4318"
+    },
+    {
+      "model": "stone-firepit",
+      "path": "workflow/codex-all-assets-20260906/src/main.js",
+      "sha256": "20cb28fe0d75396c04d2ffa36b397e872e0edcb24e210240058552ed7d88187b"
+    },
+    {
+      "model": "flint-spear",
+      "path": "qa/world-navigation-qa.json",
+      "sha256": "39511541b426a6eed54c2a76a51e8be9810169b7d3dc8ee6ba52efdce12fdd3a"
+    },
+    {
+      "model": "flint-spear",
+      "path": "workflow/codex-all-assets-20260906/output/record-world-navigation-qa.py",
+      "sha256": "18f76d3a814d79a05c048168abb8ca62fa810e7c94485c7f6e57e8ec038c4318"
+    },
+    {
+      "model": "flint-spear",
+      "path": "workflow/codex-all-assets-20260906/src/main.js",
+      "sha256": "20cb28fe0d75396c04d2ffa36b397e872e0edcb24e210240058552ed7d88187b"
+    },
+    {
+      "model": "stone-axe",
+      "path": "qa/world-navigation-qa.json",
+      "sha256": "39511541b426a6eed54c2a76a51e8be9810169b7d3dc8ee6ba52efdce12fdd3a"
+    },
+    {
+      "model": "stone-axe",
+      "path": "workflow/codex-all-assets-20260906/output/record-world-navigation-qa.py",
+      "sha256": "18f76d3a814d79a05c048168abb8ca62fa810e7c94485c7f6e57e8ec038c4318"
+    },
+    {
+      "model": "stone-axe",
+      "path": "workflow/codex-all-assets-20260906/src/main.js",
+      "sha256": "20cb28fe0d75396c04d2ffa36b397e872e0edcb24e210240058552ed7d88187b"
+    },
+    {
+      "model": "meadow-ground",
+      "path": "qa/world-navigation-qa.json",
+      "sha256": "39511541b426a6eed54c2a76a51e8be9810169b7d3dc8ee6ba52efdce12fdd3a"
+    },
+    {
+      "model": "meadow-ground",
+      "path": "workflow/codex-all-assets-20260906/output/record-world-navigation-qa.py",
+      "sha256": "18f76d3a814d79a05c048168abb8ca62fa810e7c94485c7f6e57e8ec038c4318"
+    },
+    {
+      "model": "meadow-ground",
+      "path": "workflow/codex-all-assets-20260906/src/main.js",
+      "sha256": "20cb28fe0d75396c04d2ffa36b397e872e0edcb24e210240058552ed7d88187b"
+    },
+    {
+      "model": "river-water",
+      "path": "qa/world-navigation-qa.json",
+      "sha256": "39511541b426a6eed54c2a76a51e8be9810169b7d3dc8ee6ba52efdce12fdd3a"
+    },
+    {
+      "model": "river-water",
+      "path": "workflow/codex-all-assets-20260906/output/record-world-navigation-qa.py",
+      "sha256": "18f76d3a814d79a05c048168abb8ca62fa810e7c94485c7f6e57e8ec038c4318"
+    },
+    {
+      "model": "river-water",
+      "path": "workflow/codex-all-assets-20260906/src/main.js",
+      "sha256": "20cb28fe0d75396c04d2ffa36b397e872e0edcb24e210240058552ed7d88187b"
+    },
+    {
+      "model": "wood-footbridge",
+      "path": "qa/world-navigation-qa.json",
+      "sha256": "39511541b426a6eed54c2a76a51e8be9810169b7d3dc8ee6ba52efdce12fdd3a"
+    },
+    {
+      "model": "wood-footbridge",
+      "path": "workflow/codex-all-assets-20260906/output/record-world-navigation-qa.py",
+      "sha256": "18f76d3a814d79a05c048168abb8ca62fa810e7c94485c7f6e57e8ec038c4318"
+    },
+    {
+      "model": "wood-footbridge",
+      "path": "workflow/codex-all-assets-20260906/src/main.js",
+      "sha256": "20cb28fe0d75396c04d2ffa36b397e872e0edcb24e210240058552ed7d88187b"
+    }
+  ],
+  "status": "copied-and-hashes-verified"
+}

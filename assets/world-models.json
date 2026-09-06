@@ -1,0 +1,195 @@
+{
+  "schemaVersion": 1,
+  "authorization": "claudeは使わなくていいから、他のすべての3dモデルについても、あなたの方でimage to threed を使って修正してください。",
+  "provider": "Codex with built-in imagegen and local TRELLIS-2; no Claude",
+  "status": "integrated-reviewed-prototype",
+  "assets": [
+    {
+      "key": "neanderthal-hunter",
+      "name": "ネアンデルタール人とオル",
+      "kind": "humanoid",
+      "height": 1.72,
+      "status": "integrated-reviewed-prototype",
+      "subject": "One original fully clothed adult Neanderthal hunter, natural stocky powerful human anatomy, broad chest, short robust lower limbs, subtle broad nose and brow, upright dignified posture, short dark beard, brown hair tied compactly. Fitted grey-brown hide tunic ending above the knees, compact fur shoulders, belt, ankle boots, small cream shoulder cloth accent. Empty hands. Symmetrical relaxed A-pose with both arms separated 35 degrees from torso, fingers readable, knees and elbows visible, legs apart. Full body, near-frontal view with at most 10 degrees three-quarter turn, both feet visible.",
+      "geometryResolution": 1024,
+      "sha256": "55232891640fed7e15bb75f3ad985ae53b5a8b19b31013e85d8c5d5f70619c65",
+      "delivery": "/models/neanderthal-hunter/model.glb"
+    },
+    {
+      "key": "woolly-mammoth",
+      "name": "マンモス",
+      "kind": "quadruped",
+      "height": 3.6,
+      "status": "integrated-reviewed-prototype",
+      "subject": "One anatomically believable woolly mammoth, warm dark brown thick fur in compact clean masses, high shoulder hump, domed head, small ears, two complete ivory tusks curving forward and upward with clear space between tusks and trunk. Trunk hangs almost straight with a gentle tip curl, visibly separated from chest and tusks. All four sturdy legs and complete flat feet visible and separated in a neutral standing pose. Small tail visible. Full animal, moderate three-quarter side view facing left, no overlapping legs, no vegetation, no rock or base.",
+      "geometryResolution": 1024,
+      "sha256": "6d675f895bb26cad7f62b5a7161b442e04a07f1582562498d6033a85cf977abf",
+      "delivery": "/models/woolly-mammoth/model.glb"
+    },
+    {
+      "key": "valley-pine",
+      "name": "針葉樹",
+      "kind": "tree",
+      "height": 10,
+      "status": "integrated-reviewed-prototype",
+      "subject": "One complete mature evergreen Scots pine tree, tall slightly tapering textured brown trunk, naturally irregular dense green needle boughs arranged in readable compact masses, clear lower trunk and grounded root collar, asymmetrical natural silhouette, upright. Broad branch tiers taper toward the tip without looking like geometric cones. Clean believable MMORPG environment asset. Full tree visible from root to highest tip; no terrain, pot, pedestal, grass, other tree or falling needles.",
+      "geometryResolution": 1024,
+      "sha256": "068c0253b58a13e096cb39a5f825a80de5cb7d129ef9351726cd40ee126551c5",
+      "delivery": "/models/valley-pine/model.glb"
+    },
+    {
+      "key": "meadow-grass",
+      "name": "草の株",
+      "kind": "foliage",
+      "height": 0.55,
+      "status": "integrated-reviewed-prototype",
+      "subject": "One compact rooted tuft of wild meadow grass, many gently bending medium-width grass blades with believable thickness, muted olive green and straw-yellow tips, clean grouped leaf masses and small dense root crown. Low irregular rounded tuft suitable for repeating on a game meadow. Complete object with open readable silhouette. No flower, soil slab, pot, rocks, surrounding field or pedestal. Three-quarter view slightly above ground.",
+      "geometryResolution": 1024,
+      "sha256": "23e834c851fc6cfd1e091edf11e9be093802f047ccb33a2af3b579e2dbb0bb48",
+      "delivery": "/models/meadow-grass/model.glb"
+    },
+    {
+      "key": "valley-boulder",
+      "name": "岩と石資源",
+      "kind": "static",
+      "height": 1.7,
+      "status": "integrated-reviewed-prototype",
+      "subject": "One weathered grey granite boulder, irregular rounded angular form, broad clean rock faces and a few natural cracks, subtly green-grey lichen, stable flat-ish underside. Natural nonmetallic matte stone. Complete isolated object, three-quarter view showing front top and right side. No tiny fragments, grass, soil, pedestal or scene.",
+      "geometryResolution": 512,
+      "resolutionRationale": "Small prop/foliage or nearly planar module: 512 reconstruction chosen for the 6 GB GPU after the tree 1024 pass took 24.5 minutes and grass exceeded 30 minutes. Inspect actual silhouette and surface detail before adoption; larger characters/structures retain 1024.",
+      "sha256": "f46449aa51814b9037c8ed3c43179845e63c6f9b48b94e02c7979266cb09bb1d",
+      "delivery": "/models/valley-boulder/model.glb"
+    },
+    {
+      "key": "firewood-pile",
+      "name": "薪と木材資源",
+      "kind": "static",
+      "height": 0.7,
+      "status": "integrated-reviewed-prototype",
+      "subject": "One compact stack of five cut rough hardwood logs, each thick and short with readable pale cut ends and dark brown bark, stacked securely two layers high, approximately 2.2 times wider than tall and 2.5 times deeper than tall. Natural irregular timber, no rope. Complete stack in a three-quarter view. No axe, fire, stones, ground slab or other objects.",
+      "geometryResolution": 512,
+      "resolutionRationale": "Small prop/foliage or nearly planar module: 512 reconstruction chosen for the 6 GB GPU after the tree 1024 pass took 24.5 minutes and grass exceeded 30 minutes. Inspect actual silhouette and surface detail before adoption; larger characters/structures retain 1024.",
+      "sha256": "88fdbe0514694b4b484e285dc6ffa85c8cebe134ea120d34f7486dc27d3d3d3a",
+      "delivery": "/models/firewood-pile/model.glb"
+    },
+    {
+      "key": "berry-bush",
+      "name": "ベリーの茂み",
+      "kind": "foliage",
+      "height": 1.2,
+      "status": "integrated-reviewed-prototype",
+      "subject": "One compact wild berry shrub, small dense green oval leaves grouped into clean readable leafy branches, several clearly visible clusters of muted red-purple ripe berries, woody stems joined to a single root crown. Rounded irregular form about as wide as tall, complete rooted object. Three-quarter view. No pot, dirt slab, other vegetation, loose berries, pedestal or background scene.",
+      "geometryResolution": 512,
+      "resolutionRationale": "Small prop/foliage or nearly planar module: 512 reconstruction chosen for the 6 GB GPU after the tree 1024 pass took 24.5 minutes and grass exceeded 30 minutes. Inspect actual silhouette and surface detail before adoption; larger characters/structures retain 1024.",
+      "sha256": "3d405ba99daa2d984810e9a2cf4418ad2008c0ee9279c0157fb68fc5a3008ee1",
+      "delivery": "/models/berry-bush/model.glb"
+    },
+    {
+      "key": "hide-tent",
+      "name": "皮のテント",
+      "kind": "static",
+      "height": 3.5,
+      "status": "integrated-reviewed-prototype",
+      "subject": "One complete prehistoric A-frame shelter made from stitched tan animal hides over thick rough wooden support poles, compact sturdy construction, open triangular entrance with a dark empty interior and a visible back wall, natural hide seams and modest wrinkles. Two crossed front poles, rear supports and a ridgepole, short thick lashings joining wood. Complete tent and all pole tips in frame, no extremely thin long ropes. Width about 4 metres, depth 3.4 metres, height 3.5 metres. Three-quarter view clearly showing the open front and one roof side. No person, surrounding terrain, campfire, loose props or pedestal.",
+      "geometryResolution": 1024,
+      "sha256": "7c7aef410b4f8eee268cd32f75faa65f0b7ea3f2d8e4cf53b6d810e5a1e20de7",
+      "delivery": "/models/hide-tent/model.glb"
+    },
+    {
+      "key": "drying-rack",
+      "name": "乾燥棚",
+      "kind": "static",
+      "height": 2.4,
+      "status": "integrated-reviewed-prototype",
+      "subject": "One freestanding prehistoric wooden drying rack, two sturdy forked upright poles on short braced feet joined by one horizontal branch, three modest pieces of brown cured hide hanging from thick leather lashings. Rustic but believable joinery, broad open negative spaces, clean readable wood and leather surfaces. Whole object in a frontal three-quarter view, height and width similar. No human, ground slab, extra rack or background scene.",
+      "geometryResolution": 1024,
+      "sha256": "b106d53d89e9fa51ee38d3baa2c3a0b898fd39658f5718728ef12844b9f1d65d",
+      "delivery": "/models/drying-rack/model.glb"
+    },
+    {
+      "key": "stone-firepit",
+      "name": "焚き火の薪と石",
+      "kind": "static",
+      "height": 0.5,
+      "status": "integrated-reviewed-prototype",
+      "subject": "One unlit prehistoric campfire base: a circular low ring of eleven irregular grey stones surrounding a compact criss-cross stack of six dark brown charred logs. Wide low object, all pieces in contact with the assembly, a small black ember bed inside the stone ring. No flame, smoke, glowing effects, floating pieces, soil base or scene. Three-quarter view from 35 degrees above, complete ring and every log visible.",
+      "geometryResolution": 512,
+      "resolutionRationale": "Small prop/foliage or nearly planar module: 512 reconstruction chosen for the 6 GB GPU after the tree 1024 pass took 24.5 minutes and grass exceeded 30 minutes. Inspect actual silhouette and surface detail before adoption; larger characters/structures retain 1024.",
+      "sha256": "d47aa67f9987cacd61d523d53622e33ebf0778c9a03f9e68559ad3f6db20f65a",
+      "delivery": "/models/stone-firepit/model.glb"
+    },
+    {
+      "key": "flint-spear",
+      "name": "石槍",
+      "kind": "equipment",
+      "height": 2.1,
+      "status": "integrated-reviewed-prototype",
+      "subject": "One single straight prehistoric hunting spear standing vertically, long sturdy brown wood shaft and a clearly visible pointed grey flint spearhead secured by compact thick sinew wrapping. Shaft thick enough to reconstruct, slight natural wooden irregularity, tip aligned with shaft, pointed flint visible from front and slight side. Entire spear from bottom to tip with generous margins. No hand, stand, pedestal, other weapon or shadow floor.",
+      "geometryResolution": 1024,
+      "sha256": "1a10db6d1b44da1e982f88e5ae9ef6be8fb74f5900ebd9258380ad200e53ed3d",
+      "delivery": "/models/flint-spear/model.glb"
+    },
+    {
+      "key": "stone-axe",
+      "name": "石斧",
+      "kind": "equipment",
+      "height": 0.95,
+      "status": "integrated-reviewed-prototype",
+      "subject": "One single prehistoric stone axe standing with wooden handle vertical, substantial oval sharpened dark grey stone axe head projecting sideways near the top, securely lashed with thick tan sinew to a naturally curved sturdy brown wooden haft. Believable practical tool, natural matte stone and rough wood, readable head thickness. Complete handle and head, slight three-quarter view. No hand, stand, pedestal, other tool or terrain.",
+      "geometryResolution": 512,
+      "resolutionRationale": "Small prop/foliage or nearly planar module: 512 reconstruction chosen for the 6 GB GPU after the tree 1024 pass took 24.5 minutes and grass exceeded 30 minutes. Inspect actual silhouette and surface detail before adoption; larger characters/structures retain 1024.",
+      "sha256": "12dc3f23f8ec2acfb9fb6f770ab05f59c21584be00795f9b8cf272a2f6cf5ac0",
+      "delivery": "/models/stone-axe/model.glb"
+    },
+    {
+      "key": "meadow-ground",
+      "name": "草地・道・地形",
+      "kind": "terrain",
+      "width": 20,
+      "status": "integrated-reviewed-prototype",
+      "subject": "One square modular piece of natural meadow ground seen from a high three-quarter angle, approximately 20 metres wide, a broad almost-flat continuous top surface of muted olive short turf and patches of tan bare earth with very gentle unevenness. No tall grass or individual plants. The four edges are straight and level with matching height, corners clearly square; a shallow earth thickness below the top. Surface extends continuously to the square edges with no border rim. This is a realistic game terrain patch, not a toy diorama. Whole isolated slab, no scenery, trees, stones, mountains, labels or pedestal.",
+      "geometryResolution": 512,
+      "resolutionRationale": "Small prop/foliage or nearly planar module: 512 reconstruction chosen for the 6 GB GPU after the tree 1024 pass took 24.5 minutes and grass exceeded 30 minutes. Inspect actual silhouette and surface detail before adoption; larger characters/structures retain 1024.",
+      "sha256": "6c6b41bdec1631236027c567635623aa9cdd1e0d92c0ae9e89f77764b52995e1",
+      "delivery": "/models/meadow-ground/model.glb"
+    },
+    {
+      "key": "river-water",
+      "name": "川の水面",
+      "kind": "water",
+      "width": 6,
+      "status": "integrated-reviewed-prototype",
+      "subject": "One rectangular continuous patch of clear muted blue-green river water, six metres wide and twelve metres long, broad flat gently rippled surface, very shallow thickness, exact straight rectangular edges without a rim. Subtle natural flow ripples, translucent-looking water but no view of bottom objects. High three-quarter view showing the entire rectangle. No bank, rocks, foam objects, fish, basin, container, pedestal or scenery. A standalone game water surface tile against plain off-white.",
+      "geometryResolution": 512,
+      "resolutionRationale": "Small prop/foliage or nearly planar module: 512 reconstruction chosen for the 6 GB GPU after the tree 1024 pass took 24.5 minutes and grass exceeded 30 minutes. Inspect actual silhouette and surface detail before adoption; larger characters/structures retain 1024.",
+      "sha256": "8575faa5fd988da815d622ebbd03d49390339df5eeafd0eb794e1b0368ec0274",
+      "delivery": "/models/river-water/model.glb"
+    },
+    {
+      "key": "wood-footbridge",
+      "name": "木造の橋",
+      "kind": "bridge",
+      "width": 11,
+      "depth": 3.1,
+      "status": "integrated-reviewed-prototype",
+      "subject": "One complete rustic prehistoric timber footbridge, eleven metres long and three metres wide, straight level deck built from thick rough planks laid across two long sturdy supporting beams. Low simple wooden handrails on both long sides, thick posts and lashings, open ends, no stairs. All parts structurally connected. Entire isolated bridge, high three-quarter view clearly showing the deck, supports, both ends and rails. Natural weathered brown timber. No terrain, water, rocks, person, platform below the bridge, pedestal or background scene.",
+      "geometryResolution": 1024,
+      "sha256": "629a8ec5db3dd16b7a126b1c8ea4877a5ec0bc4037017e0a2a53ec2f63e3a369",
+      "delivery": "/models/wood-footbridge/model.glb"
+    }
+  ],
+  "reuse": {
+    "npc-orl": "neanderthal-hunter",
+    "stone-resource": "valley-boulder",
+    "distant-rocks": "valley-boulder",
+    "camp-wood-stack": "firewood-pile"
+  },
+  "runtimeEffects": [
+    "sky and atmospheric cloud/sun effects",
+    "fire, embers and sparks",
+    "water-flow shader",
+    "navigation marker and labels",
+    "invisible collision and raycast helpers"
+  ],
+  "gameQA": "assets/world-game-qa.json"
+}

@@ -1,0 +1,33 @@
+{
+  "modelKey": "hide-tent",
+  "name": "皮のテント",
+  "kind": "static",
+  "candidate": 1,
+  "status": "reviewed-prototype",
+  "url": "/models/hide-tent/model.glb",
+  "sha256": "7c7aef410b4f8eee268cd32f75faa65f0b7ea3f2d8e4cf53b6d810e5a1e20de7",
+  "bytes": 3426740,
+  "triangles": 24603,
+  "upAxis": "Y",
+  "forwardAxis": "+Z",
+  "heightMetres": 3.5,
+  "widthMetres": null,
+  "placement": {
+    "pivot": "ground-centred"
+  },
+  "clips": [],
+  "notes": [
+    "Reviewed the exact reduced GLB from six views: A-frame roof silhouette, hide panels and seams, lashed wooden supports, interior cross-members and entrance remain coherent. Height 3.5 m, ground-centred pivot. This reconstruction is an open-ended shelter with no closed back wall; accepted for the prototype camp and not filled with generated primitive geometry. Minor pole and seam simplification remains. No LODs delivered because four copies of the 24603-triangle mesh are sufficient pending whole-game performance QA."
+  ],
+  "provenance": {
+    "provider": "Codex",
+    "claudeUsed": false,
+    "referenceGenerator": "Built-in imagegen",
+    "referenceImage": "output/model-generation/models/hide-tent/source/original/reference-v1.png",
+    "referenceSha256": "c862d2659c559241b0ad5b3c3651e6f08706b5bb7fd6d4bbb01e6d0c9d1e1b75",
+    "reconstruction": "Local TRELLIS-2; settings and dense SHA in model workspace",
+    "candidateFile": "output/model-generation/models/hide-tent/work/low-poly/candidate-01/candidate.glb",
+    "visualReview": "output/model-generation/models/hide-tent/qa/adoption-review.json"
+  },
+  "lods": []
+}
