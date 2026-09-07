@@ -1,0 +1,61 @@
+{
+  "modelKey": "desert-cactus",
+  "name": "砂漠のサボテン",
+  "kind": "static",
+  "candidate": 1,
+  "status": "reviewed-prototype",
+  "environment": true,
+  "onDemand": true,
+  "url": "/models/desert-cactus/model.glb",
+  "sha256": "df3e780323fd45808d92b2f7edcd2c7d9ee8000f1ea0c67b29baab73c939d7ed",
+  "bytes": 2122540,
+  "triangles": 24435,
+  "upAxis": "Y",
+  "forwardAxis": "+Z",
+  "heightMetres": 2.3997425960260443,
+  "widthMetres": 0.523504376411438,
+  "placement": {
+    "pivot": "ground-centred",
+    "min": [
+      -0.26156508922576904,
+      0.0003228260320611298,
+      -0.618472695350647
+    ],
+    "max": [
+      0.26193928718566895,
+      2.4000654220581055,
+      0.6181135177612305
+    ]
+  },
+  "clips": [],
+  "lods": [
+    {
+      "url": "/models/desert-cactus/lod1.glb",
+      "sha256": "d04e3a4dcab15ab00753fe26bf84a062c40c09d5ae3083174148e3bb6d19ed2d",
+      "bytes": 1662216,
+      "triangles": 9773
+    },
+    {
+      "url": "/models/desert-cactus/lod2.glb",
+      "sha256": "1f1642cf62ce45665a5e326a0ef795a716a4397822c1fdc9ff0366e39fb13f8e",
+      "bytes": 1424504,
+      "triangles": 3419
+    }
+  ],
+  "notes": [
+    "Three joined upward-curving arms, rounded tips, shallow ribs, green skin and weathered root retain the source reference.",
+    "Browser comparison rejected the coarser first revision and retained the normal-transfer experiment as revision 02. The final revision preserves more source surface in both close and distant LODs.",
+    "Seven exact neutral and clay views, source/candidate browser comparison, and five model copies reviewed. The mesh is a visual game asset, not a watertight fabrication solid.",
+    "Original UV/albedo and approximately 2.4-metre proportions retained; dielectric roughness 0.78. LOD gates are 35 and 80 metres beyond the model footprint. Static model without rig or animation."
+  ],
+  "provenance": {
+    "provider": "Codex",
+    "claudeUsed": false,
+    "referenceGenerator": "Built-in imagegen",
+    "referenceImage": "output/model-generation/models/desert-cactus/source/original/reference-v1.png",
+    "referenceSha256": "b2c14d1ab18ecac5809c3e269da6e069e57a435ddd334f568bf718d7a4858efb",
+    "reconstruction": "Local TRELLIS-2; preserved dense reconstruction, source-derived reduction and separate revisions.",
+    "candidateFile": "output/model-generation/models/desert-cactus/work/low-poly/candidate-03/candidate.glb",
+    "visualReview": "output/model-generation/models/desert-cactus/qa/adoption-review.json"
+  }
+}

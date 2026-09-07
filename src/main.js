@@ -8,8 +8,9 @@ import { HUNTING, nearestCookingFire } from '/shared/hunting.mjs';
 import { RIDING, ridingDistance } from '/shared/riding.mjs';
 import { RideApproach } from './riding-input.js';
 import { inventoryCounts, selectedCombatTarget, huntInteraction, attackReady, approachAnimal, approachEnemyGround } from './hunting-ui.js';
-import { canStartAttack, isAttackShortcut, MovementCommands } from './combat-input.js';
+import { canStartAttack, isAttackShortcut, MovementCommands, movementKey, acceptsGameShortcut } from './combat-input.js';
 import { inAttackArc } from '/shared/combat.mjs';
+import { interactionVisible } from '/shared/interactions.mjs';
 import { ENEMY_GROUNDS, SCENERY } from '/shared/scenery-layout.mjs';
 import { playerDamageEvent } from './enemy-state.js';
 import { BIOMES, biomeAt, JOURNEY_STOPS } from '/shared/biomes.mjs';
@@ -50,10 +51,14 @@ const GAME_TITLE = 'CRO-MAGNON';
 const $ = (s) => document.querySelector(s);
 const readSaved = (key, fallback) => { try { return localStorage.getItem(key) || fallback; } catch { return fallback; } };
 const save = (key, value) => { try { localStorage.setItem(key, value); } catch {} };
+const resumeTokens=new Map();
+function savedSession(room){try{return resumeTokens.get(room)||sessionStorage.getItem(`cro-session:${room}`)||'';}catch{return resumeTokens.get(room)||'';}}
+function saveSession(room,token){if(token)resumeTokens.set(room,token);else resumeTokens.delete(room);try{if(token)sessionStorage.setItem(`cro-session:${room}`,token);else sessionStorage.removeItem(`cro-session:${room}`);}catch{}}
 const query = new URLSearchParams(location.search);
 let profile = { name: readSaved('cro-name', `旅人${Math.floor(Math.random() * 900 + 100)}`), ...normalizeCharacter({ species: readSaved('cro-species', 'cro'), gender: readSaved('cro-gender', 'female') }), room: (query.get('room') || readSaved('cro-room', 'EMBER')).toUpperCase().replace(/[^A-Z0-9_-]/g, '').slice(0, 16) || 'EMBER' };
 let state = { players: [], resources: INITIAL_RESOURCES, camp: { ...CAMP }, npc: { ...NPC }, day: 1 };
-let selfId = null, socket, joined = false, retry = null, manualLeave = false, ping = 0, gathered = 0, lastInventory = 0;
+let selfId = null, socket, joined = false, retry = null, manualLeave = false, ping = 0;
+let renderUnavailable = false;
 let audioContext = null, audioTimer = null, soundEnabled = false;
 const keys = new Set();
 const blockedMovementKeys = new Set();
@@ -106,6 +111,8 @@ $('#app').innerHTML = `
   <dialog id="modal"><div class="modal-top"><span class="eyebrow">${GAME_TITLE} · FIELD NOTES</span><button id="modal-close" class="icon-button" aria-label="閉じる">${icon('close')}</button></div><div id="modal-body"></div></dialog>`;
 
 function showRenderError(text) {
+  renderUnavailable = true;
+  stopInput();
   if ($('#render-error')) return;
   const message=document.createElement('div');message.id='render-error';message.className='render-error';
   const heading=document.createElement('strong');heading.textContent='3D画面を表示できません';
@@ -135,7 +142,13 @@ $('#profile-name').textContent = profile.name;
 $('#room-label').textContent = profile.room;
 
 function send(message) { if (socket?.readyState === WebSocket.OPEN) socket.send(JSON.stringify(message)); }
-function sendMoveTarget(x,z,followingRide=false) { if(!followingRide)rideApproach.cancel();movementCommands.reset();send({ type:'target',x,z,running:wantsToRun() }); }
+function stopInput() {
+  rideApproach.cancel();
+  for (const key of keys) blockedMovementKeys.add(key);
+  keys.clear(); movementCommands.reset();
+  send({ type: 'move', dx: 0, dz: 0, running: false });
+}
+function sendMoveTarget(x,z,followingRide=false) { if(!joined||renderUnavailable)return false;if(!followingRide)rideApproach.cancel();movementCommands.reset();send({ type:'target',x,z,running:wantsToRun() });return true; }
 function notify(text, tone = 'info') {
   const toast = document.createElement('div'); toast.className = `toast ${tone}`;
   const mark = document.createElement('span'); mark.innerHTML = icon(tone === 'success' ? 'check' : 'leaf');
@@ -153,18 +166,25 @@ function connection(connected, label) {
   joined = connected; $('#connection-dot').classList.toggle('offline', !connected); $('#connection-label').textContent = label;
 }
 function connect() {
-  clearTimeout(retry); manualLeave = false; selfId = null; connection(false, '接続中…');
-  const ws = new WebSocket(`${location.protocol === 'https:' ? 'wss:' : 'ws:'}//${location.host}/ws?${new URLSearchParams(profile)}`); socket = ws;
+  clearTimeout(retry); manualLeave = false; selfId = null; keys.clear();blockedMovementKeys.clear();movementCommands.reset();lastGait=null;connection(false, '接続中…');
+  state = { players: [], resources: INITIAL_RESOURCES, camp: { ...CAMP }, npc: { ...NPC }, day: 1 };
+  renderer.setState(state, selfId);updateHUD();
+  const ws = new WebSocket(`${location.protocol === 'https:' ? 'wss:' : 'ws:'}//${location.host}/ws?${new URLSearchParams({...profile,resume:'1',session:savedSession(profile.room)})}`); socket = ws;
   ws.addEventListener('message', ({ data }) => {
     if (ws !== socket) return;
     let message; try { message = JSON.parse(data); } catch { return; }
-    if (message.type === 'welcome') { selfId = message.id; profile.room = message.room; save('cro-room', profile.room); $('#room-label').textContent = profile.room; connection(true, 'オンライン'); notify('谷へようこそ。近くの木や石を集めてみよう。', 'success'); }
+    if (message.type === 'welcome') { selfId = message.id;profile={...profile,...message.profile,room:message.room};saveSession(profile.room,message.session);for(const [key,value] of Object.entries(profile))save(`cro-${key}`,value);$('#profile-name').textContent=profile.name;$('#room-label').textContent=profile.room;connection(true,'オンライン');notify(message.resumed?'接続が戻りました。持ち物と進行を復元しました。':'谷へようこそ。近くの木や石を集めてみよう。','success'); }
     if (message.type === 'state') { const previous=player();state = { ...state, ...message }; stateReceivedAt=performance.now();if((previous?.mountId??null)!==(player()?.mountId??null)){movementCommands.reset();lastGait=null;}if(playerDamageEvent(previous,player()))hurtUntil=performance.now()+750;if(player()?.downedUntil){for(const key of keys)blockedMovementKeys.add(key);keys.clear();movementCommands.reset();}renderer.setState(state, selfId); updateHUD(); }
     if (message.type === 'emote') renderer.setEmote(message.id,message.emote);
     if (message.type === 'notice') { notify(message.text, message.tone); if (message.tone === 'success') playNote(); }
     if (message.type === 'chat') addChat(message);
     if (message.type === 'pong') { ping = Math.max(0, Date.now() - message.at); $('#ping-label').textContent = `${ping} ms`; }
-    if (message.type === 'error') { manualLeave = true; notify(message.text, 'error'); connection(false, '参加できません'); openRoom(message.text); }
+    if (message.type === 'error') { manualLeave = true;notify(message.text,'error');connection(false,'参加できません');openRoom(message.text);
+      if(message.code==='ROOM_FULL'&&savedSession(profile.room)){
+        $('#room-error').insertAdjacentHTML('afterend','<button id="retry-session" class="button button-outline wide" type="button">保存した持ち物で再接続する</button>');
+        $('#retry-session').onclick=()=>{$('#modal').close();connect();};
+      }
+    }
   });
   ws.addEventListener('close', () => { if (ws !== socket) return; connection(false, manualLeave ? '未接続' : '再接続中…'); rideApproach.cancel();keys.clear(); movementCommands.reset(); if (!manualLeave) retry = setTimeout(connect, 2500); });
   ws.addEventListener('error', () => { if (ws === socket) $('#connection-label').textContent = 'サーバーを確認中…'; });
@@ -172,16 +192,15 @@ function connect() {
 function player() { return state.players.find(p => p.id === selfId); }
 function distance(a, b) { return Math.hypot(a.x - b.x, a.z - b.z); }
 function nearby() {
-  const me = player(); if (!me||me.downedUntil) return null;
-  const hunting=huntInteraction(state,me);if(hunting)return hunting;
-  const objects = state.resources.filter(r => r.amount > 0).map(r => ({ ...r, action: 'gather', label: `${{wood:'木材',stone:'石',berry:'ベリー'}[r.type]}を採集する`, range: 8 }));
+  const me = player(); if (!me||me.downedUntil||me.mountId) return null;
+  const hunting=huntInteraction(state,me,renderer.collision);if(hunting)return hunting;
+  const objects = state.resources.filter(r => r.amount > 0 && me.inventory[r.type] < 99).map(r => ({ ...r, action: 'gather', label: `${{wood:'木材',stone:'石',berry:'ベリー'}[r.type]}を採集する`, range: 8 }));
   objects.push({ ...state.camp, action: 'contribute', label: '焚き火に資材を届ける', range: 10 }, { ...state.npc, action: 'trade', label: 'オルと物々交換する', range: 10 });
-  return objects.filter(o => distance(me, o) <= o.range).sort((a, b) => distance(me, a) - distance(me, b))[0];
+  return objects.filter(o => distance(me, o) <= o.range && (!renderer.collision || interactionVisible(renderer.collision, me, o))).sort((a, b) => distance(me, a) - distance(me, b))[0];
 }
 function updateHUD() {
   const me = player(), inv = inventoryCounts(me?.inventory);
-  const gatheredCount=inv.wood+inv.stone+inv.berry,count=Object.values(inv).reduce((a,b)=>a+b,0);
-  if (gatheredCount > lastInventory) gathered += gatheredCount - lastInventory; lastInventory = gatheredCount;
+  const gathered=me?.gathered??0,count=Object.values(inv).reduce((a,b)=>a+b,0);
   for (const key of Object.keys(inv)) $(`#${key}-count`).textContent = inv[key];
   $('#bag-count').textContent = count; $('#tribe-count').textContent = `${state.players.length} / 5`; $('#online-count').textContent = `${state.players.length}/5`;
   $('#camp-wood').textContent = state.camp.wood; $('#camp-stone').textContent = state.camp.stone;
@@ -204,10 +223,36 @@ function updateHUD() {
   $('.location-meta span:first-child').textContent=`${biome.short} · ${Math.round(me?.x??50)}, ${Math.round(me?.z??50)}`;
   $('.map-caption').innerHTML=`WORLD · ${biome.short} ${icon('expand')}`;
   drawMinimap();
+  updateModalHUD();
+  if ($('#modal').open && $('#big-map')) drawMinimap($('#big-map'), true);
+}
+function updateModalHUD() {
+  const me=player(),inv=inventoryCounts(me?.inventory);
+  const unavailable=!joined||renderUnavailable||!me||!!me.downedUntil||!!me.mountId||!!me.cookingEndsAt;
+  for(const count of document.querySelectorAll('[data-modal-count]'))count.textContent=inv[count.dataset.modalCount];
+  if($('#modal-eat'))$('#modal-eat').disabled=unavailable||!inv.berry||me.energy>=100;
+  if($('#modal-cook'))$('#modal-cook').disabled=unavailable||!inv.rawMeat||inv.cookedMeat>=99;
+  if($('#modal-eat-meat'))$('#modal-eat-meat').disabled=unavailable||!inv.cookedMeat||me.energy>=100;
+  if($('#modal-craft')){
+    $('#modal-craft').disabled=unavailable||me.tool||inv.wood<3||inv.stone<2;
+    $('#modal-craft').textContent=me?.tool?'装備中':'つくる';
+    $('#modal-axe-label').textContent=me?.tool?'石斧を装備中':'石斧をつくる';
+  }
+  const list=$('#tribe-list');
+  if(list){
+    const signature=JSON.stringify(state.players.map(({id,name,species,gender})=>({id,name,species,gender})));
+    if(list.dataset.signature!==signature){
+      list.dataset.signature=signature;list.replaceChildren();
+      $('#tribe-summary').textContent=`いま、この谷で暮らしている ${state.players.length} 人。`;
+      for(const p of state.players){const row=document.createElement('div');row.className='tribe-member';row.innerHTML=`<span class="portrait ${normalizeCharacter(p).species}"><i></i></span><div><strong></strong><small>${characterModel(p).name}</small></div><span class="member-status"><i class="status-dot"></i> ${p.id===selfId?'あなた':'オンライン'}</span>`;row.querySelector('strong').textContent=p.name;list.append(row);}
+    }
+  }
 }
 function action(type, targetId) {
+  if (rideApproach.targetId) stopInput();
   rideApproach.cancel();
   if (!joined) return notify('サーバーへの接続を待っています。', 'error');
+  if (renderUnavailable) return;
   if(player()?.downedUntil)return;
   if(player()?.mountId&&type!=='ride')return notify('騎乗中です。攻撃・採集・食事は R で降りてから。');
   send({ type: 'action', action: type, ...(targetId?{targetId}:{}) });
@@ -230,14 +275,17 @@ function rideTarget(){
   return (state.animals||[]).filter(a=>a.phase==='alive'&&!a.riderId).sort((a,b)=>ridingDistance(me,a)-ridingDistance(me,b))[0]??null;
 }
 function ride(){
+  if(!joined||renderUnavailable||player()?.downedUntil)return;
   const me=player(),animal=rideTarget();
-  if(rideApproach.targetId){rideApproach.cancel();send({type:'move',dx:0,dz:0});return;}
+  if(rideApproach.targetId){stopInput();return;}
   if(me?.mountId)return action('ride');
   if(animal&&ridingDistance(me,animal)>RIDING.reach){rideApproach.begin(animal.id);selectedAnimalId=animal.id;return notify('マンモスへ近づいて乗ります。WASD または R で中止。');}
   action('ride',animal?.id);
 }
 function interactAnimal(id){
   const animal=[...(state.animals||[]),...(state.enemies||[]).filter(item=>item.hostile===true)].find(item=>item.id===id),me=player();if(!animal||!me)return;
+  if(animal.riderId)return notify('このマンモスには仲間が乗っています。');
+  if(me.mountId||me.downedUntil||renderUnavailable)return;
   selectedAnimalId=id;updateHuntingHUD();
   if(animal.phase==='alive'){
     if(attackReady(me,animal))action('attack',id);else{approachHunt(animal);notify(`相手を向いて F または「${attackProfile(me).label}」。`);}
@@ -248,7 +296,7 @@ function interactAnimal(id){
 function updateHuntingHUD(){
   const me=player(),animal=me?.mountId?(state.animals||[]).find(a=>a.id===me.mountId):huntTarget(),inv=inventoryCounts(me?.inventory),serverNow=(state.serverTime??Date.now())+performance.now()-stateReceivedAt;
   const cooking=!!me?.cookingEndsAt&&me.cookingEndsAt>serverNow;
-  if(joined){
+  if(joined&&!renderUnavailable&&!$('#modal').open&&!document.activeElement?.closest('input,textarea,select,[contenteditable]')){
     const command=rideApproach.update(me,state.animals||[],performance.now());
     if(command?.kind==='target')sendMoveTarget(command.x,command.z,true);
     if(command?.kind==='mount')action('ride',command.id);
@@ -257,7 +305,7 @@ function updateHuntingHUD(){
   const rideAnimal=rideTarget(),mounted=!!me?.mountId,nearRide=rideAnimal&&me&&ridingDistance(me,rideAnimal)<=RIDING.reach;
   $('.hotbar-wrap').classList.toggle('riding',mounted);
   const rideButton=$('#ride-button');
-  rideButton.disabled=!joined||!!me?.downedUntil||(!mounted&&!rideAnimal);
+  rideButton.disabled=!joined||renderUnavailable||!!me?.downedUntil||(!mounted&&!rideAnimal);
   rideButton.classList.toggle('mounted',mounted);
   rideButton.querySelector('span').textContent=mounted?'マンモスから降りる':rideApproach.targetId?'向かうのを中止':nearRide?'マンモスに乗る':rideAnimal?'近づいて乗る':'空いているマンモスを待つ';
   $('#riding-hint').textContent=mounted?'WASD 移動 · Shift 走る · 攻撃・採集は降りてから':rideApproach.targetId?'WASD / R で中止 · 1頭に1人':'1頭に1人 · R で乗る';
@@ -279,12 +327,12 @@ function updateHuntingHUD(){
     $('#discovery-card small').textContent='MAMMOTH RIDE · 草原の旅';
     $('#go-hunt').disabled=true;
   }else if(animal?.riderId){$('#hunt-target-note').textContent='仲間が騎乗中 · このマンモスには攻撃できません。';}
-  const attackAvailable=joined&&canStartAttack(me,serverNow);
+  const attackAvailable=joined&&!renderUnavailable&&canStartAttack(me,serverNow);
   $('#attack-button').disabled=!attackAvailable;$('#attack-button').classList.toggle('in-range',targetInFront);
   const combat=attackProfile(me??profile),attackButton=$('#attack-button');
   if(attackButton.dataset.style!==combat.key){attackButton.dataset.style=combat.key;attackButton.innerHTML=`${icon(combat.key)}<kbd>F</kbd><span>${combat.label}</span>`;}
   attackButton.title=mounted?'Rで降りてから攻撃できます。':attackAvailable?`前方へ${combat.label} [F / 5]。相手がいなくても発動できます。`:'次の攻撃を準備しています。';
-  $('#cook-button').disabled=!joined||downed||mounted||cooking||!inv.rawMeat;$('#eat-meat-button').disabled=!joined||downed||mounted||cooking||!inv.cookedMeat;
+  $('#cook-button').disabled=!joined||renderUnavailable||downed||mounted||cooking||!inv.rawMeat;$('#eat-meat-button').disabled=!joined||renderUnavailable||downed||mounted||cooking||!inv.cookedMeat||me?.energy>=100;
   $('#cooking-status').hidden=!cooking;
   if(cooking){const remaining=Math.max(0,me.cookingEndsAt-serverNow);$('#cooking-label').textContent=`肉を焼いています · ${(remaining/1000).toFixed(1)}秒`;$('#cooking-progress').value=1-remaining/HUNTING.cookDurationMs;}
   $('#damage-flash').hidden=performance.now()>hurtUntil&&!downed;
@@ -294,14 +342,14 @@ function updateHuntingHUD(){
   Object.assign($('#world').dataset,{combatVersion:String(state.combatVersion??0),huntTarget:animal?.id??'',huntPhase:animal?.phase??'',huntHealth:String(animal?.health??0),huntInRange:String(attackReady(me,animal)),attackAvailable:String(attackAvailable),attackSequence:String(me?.attackSequence??0),attackAt:String(me?.attackAt??0),cooking:String(cooking),rawMeat:String(inv.rawMeat),cookedMeat:String(inv.cookedMeat)});
   Object.assign($('#world').dataset,{enemyVersion:String(state.enemyVersion??0),enemyCount:String(enemies.length),enemyName:nearestEnemy?.name??'',enemyHealth:String(nearestEnemy?.health??0),enemyPhase:nearestEnemy?.phase??'',enemyBehavior:nearestEnemy?.behavior??'',enemyClip:nearestEnemy?.clip??'',enemyAttackSequence:String(nearestEnemy?.attackSequence??0),enemyHitSequence:String(nearestEnemy?.hitSequence??0),hurtSequence:String(me?.hurtSequence??0),defeatSequence:String(me?.defeatSequence??0),downed:String(downed),invulnerable:String(protectedNow)});
 }
-function goTo(x, z, label) { if(player()?.downedUntil)return;sendMoveTarget(x,z); notify(`${label}へ向かいます。`); $('#modal').close(); }
+function goTo(x, z, label) { if(player()?.downedUntil)return;if(!sendMoveTarget(x,z))return notify('サーバーへの接続と3D画面を確認してください。','error');notify(`${label}へ向かいます。`); $('#modal').close(); }
 function drawMinimap(canvas = $('#minimap'), big = false) { drawWorldMap(canvas,state,selfId,big); }
-function openModal(content) { rideApproach.cancel();keys.clear(); send({ type: 'move', dx: 0, dz: 0 }); $('#modal-body').innerHTML = content; if (!$('#modal').open) $('#modal').showModal(); }
+function openModal(content) { stopInput(); $('#modal-body').innerHTML = content; if (!$('#modal').open) $('#modal').showModal(); }
 function openRoom(error = '') {
   openModal(`<h2>あなたの物語を、ここから。</h2><p class="modal-intro">キャラクターを選んで、同じ部屋の仲間と暮らそう。</p>${error?'<p class="form-error" id="room-error"></p>':''}<form id="join-form"><label>あなたの名前<input id="name-input" name="name" maxlength="16" required autocomplete="off"></label><label>部屋のコード <span>英数字・ハイフン・アンダースコア / 最大16文字</span><input id="room-input" name="room" maxlength="16" pattern="[A-Za-z0-9_-]+" required autocomplete="off"></label>${characterChoicesMarkup()}<p class="form-note">人間は槍、クノイチは刀、こぐまは光の魔法を使います。人間の男女で能力の差はありません。参加中に変更すると、もちものはリセットされます。</p><button class="button button-accent wide" type="submit">この谷で暮らす ${icon('arrow')}</button></form>`);
   if(error) $('#room-error').textContent = error;
   $('#name-input').value=profile.name;$('#room-input').value=profile.room;bindCharacterSelection($('#join-form'),profile);
-  $('#join-form').onsubmit = e => { e.preventDefault(); const form = new FormData(e.currentTarget); manualLeave=true; const previous=socket; socket=null; previous?.close(); profile={name:String(form.get('name')).trim() || '旅人',room:String(form.get('room')).toUpperCase(),...normalizeCharacter({species:String(form.get('species')),gender:String(form.get('gender'))})}; for(const [k,v] of Object.entries(profile))save(`cro-${k}`,v); history.replaceState({},'',`?room=${encodeURIComponent(profile.room)}`); $('#profile-name').textContent=profile.name; gathered=0;lastInventory=0;$('#modal').close();connect(); };
+  $('#join-form').onsubmit = e => { e.preventDefault(); const form = new FormData(e.currentTarget);manualLeave=true;saveSession(profile.room,null);send({type:'leave'});const previous=socket;socket=null;previous?.close();profile={name:String(form.get('name')).trim() || '旅人',room:String(form.get('room')).toUpperCase(),...normalizeCharacter({species:String(form.get('species')),gender:String(form.get('gender'))})};saveSession(profile.room,null);for(const [k,v] of Object.entries(profile))save(`cro-${k}`,v);history.replaceState({},'',`?room=${encodeURIComponent(profile.room)}`);$('#profile-name').textContent=profile.name;$('#modal').close();connect(); };
 }
 async function openInvite() {
   openModal(`<span class="modal-illustration">${icon('people')}</span><h2>ひとつの火を、5人で。</h2><p class="modal-intro">同じ部屋のリンクを仲間に渡して、一緒に谷を探索しよう。</p><div class="invite-code"><small>ROOM CODE</small><strong id="invite-code"></strong><span>最大5人でプレイ</span></div><label>招待リンク<input id="invite-url" readonly aria-label="招待リンク"></label><button id="copy-invite" class="button button-accent wide">${icon('link')} 招待リンクをコピー</button><p id="invite-note" class="form-note">このPCと同じWi-Fi・LANにいる仲間が参加できます。インターネット越しの参加には、サーバーの公開が必要です。</p><button id="change-room" class="text-button">別の部屋に参加する ${icon('arrow')}</button>`);
@@ -318,10 +366,12 @@ function openInventory() {
   openModal(`<h2>旅に持っていくもの。</h2><p class="modal-intro">狩りで得た生肉は、各地の焚き火で焼いてから食べよう。</p><div class="inventory-grid">${[['wood','木材','採集して、道具や拠点に。'],['stone','石','丈夫な道具と火の囲いに。'],['berry','ベリー','食べると元気が回復。'],['rawMeat','生肉','そのままでは食べられません。焚き火で3秒焼こう。'],['cookedMeat','焼き肉','1個で元気を45回復します。']].map(([key,label,note])=>`<div class="inventory-card"><span class="resource-icon ${key}">${icon(key.endsWith('Meat')?'meat':key)}</span><strong>${label}<b>${inv[key]}</b></strong><p>${note}</p>${key==='berry'?'<button id="modal-eat" class="button button-outline">食べる</button>':key==='rawMeat'?`<button id="modal-cook" class="button button-outline" ${inv.rawMeat?'':'disabled'}>焚き火で焼く</button>`:key==='cookedMeat'?`<button id="modal-eat-meat" class="button button-outline" ${inv.cookedMeat?'':'disabled'}>焼き肉を食べる</button>`:''}</div>`).join('')}</div><div class="recipe"><span class="resource-icon stone">${icon('axe')}</span><div><strong>${me?.tool?'石斧を装備中':'石斧をつくる'}</strong><p>木材3 + 石2 ・ 採集量が増えます</p></div><button id="modal-craft" class="button button-accent" ${me?.tool?'disabled':''}>${me?.tool?'装備中':'つくる'}</button></div><p class="form-note">${attackProfile(me??profile).label}は最初から使えます。相手を向いて F。敵がいない場所でも発動できます。</p>`);
   $('#modal-eat').onclick=()=>{action('eat');$('#modal').close();}; $('#modal-craft').onclick=()=>{action('craft');$('#modal').close();};
   $('#modal-cook').onclick=()=>{$('#modal').close();cook();};$('#modal-eat-meat').onclick=()=>{action('eatMeat');$('#modal').close();};
+  document.querySelectorAll('.inventory-card strong b').forEach((count,index)=>count.dataset.modalCount=['wood','stone','berry','rawMeat','cookedMeat'][index]);
+  $('.recipe strong').id='modal-axe-label';updateModalHUD();
 }
 function openTribe() {
   openModal(`<h2>同じ火を囲む仲間。</h2><p class="modal-intro">いま、この谷で暮らしている ${state.players.length} 人。</p><div id="tribe-list" class="tribe-list"></div><button id="tribe-invite" class="button button-accent wide">${icon('plus')} 仲間を招待する</button><p class="form-note">NPCのオルは参加人数に含まれません。ひとりでも採集や拠点づくりを楽しめます。</p>`);
-  state.players.forEach(p=>{const row=document.createElement('div');row.className='tribe-member';row.innerHTML=`<span class="portrait ${normalizeCharacter(p).species}"><i></i></span><div><strong></strong><small>${characterModel(p).name}</small></div><span class="member-status"><i class="status-dot"></i> ${p.id===selfId?'あなた':'オンライン'}</span>`;row.querySelector('strong').textContent=p.name;$('#tribe-list').append(row);});
+  $('#modal-body .modal-intro').id='tribe-summary';updateModalHUD();
   $('#tribe-invite').onclick=openInvite;
 }
 function openJournal() {
@@ -337,7 +387,7 @@ function openHelp() {
 }
 function openMap() {
   openModal(`<h2>五つの大地を、歩いてつなぐ。</h2><p class="modal-intro">640 m四方のオープンワールド。地域を選ぶと、道をたどって走ります。WASDでいつでも移動を切り替えられます。</p><canvas id="big-map" width="580" height="450" class="big-map" aria-label="草原・雪原・氷原・火山・砂漠の世界地図"></canvas><div class="biome-destinations">${BIOMES.map(b=>`<button class="biome-destination" data-biome="${b.id}" style="--biome-color:${b.color}"><span>${b.name}</span><small>走って向かう</small></button>`).join('')}</div><div class="map-locations"><button class="button button-outline" id="map-camp">${icon('flame')} 焚き火・調理</button><button class="button button-outline" id="map-hunt-north">${icon('spear')} 北西の狩場</button><button class="button button-outline" id="map-hunt-south">${icon('spear')} 南西の狩場</button><button class="button button-outline" id="map-npc">${icon('people')} オルの集落</button></div>`);
-  drawMinimap($('#big-map'),true);$('#map-camp').onclick=()=>goTo(49,52.4,'野営地の焚き火');$('#map-npc').onclick=()=>goTo(68,43,'オルの集落');
+  drawMinimap($('#big-map'),true);$('#map-camp').onclick=()=>goTo(49,52.4,'野営地の焚き火');$('#map-npc').onclick=()=>goTo(NPC.x,NPC.z-2,'オルの集落');
   if(state.enemies?.some(enemy=>enemy.hostile===true)){
     $('.map-locations').insertAdjacentHTML('beforeend',`<button class="button button-outline enemy-map-button" id="map-enemy">${icon('spear')} 北の白羽の呪術師</button>`);
     $('#map-enemy').onclick=approachEnemy;
@@ -373,24 +423,33 @@ $('#run-button').onclick=()=>{runMode=!runMode;$('#run-button').setAttribute('ar
 $('#sound-button').onclick=toggleSound;
 $('#fullscreen-button').onclick=async()=>{try{if(document.fullscreenElement)await document.exitFullscreen();else await document.documentElement.requestFullscreen();}catch{notify('この画面では全画面表示を利用できません。');}};
 $('#modal-close').onclick=()=>$('#modal').close();$('#modal').addEventListener('click',e=>{if(e.target===$('#modal')){const r=e.target.getBoundingClientRect();if(e.clientX<r.left||e.clientX>r.right||e.clientY<r.top||e.clientY>r.bottom)e.target.close();}});
-$('#chat-toggle').onclick=()=>{const hidden=$('#chat-content').hidden=!$('#chat-content').hidden;$('.chat-collapse').textContent=hidden?'+':'−';};
+function setChatOpen(open) {
+  $('#chat-content').hidden=!open;$('.chat-collapse').textContent=open?'−':'+';
+  $('#chat-toggle').setAttribute('aria-expanded',String(open));
+  if(open)stopInput();else $('#chat-input').blur();
+}
+$('#chat-toggle').setAttribute('aria-label','チャットを開く／閉じる');
+$('#chat-toggle').setAttribute('aria-expanded',String(!$('#chat-content').hidden));
+$('#chat-toggle').onclick=()=>setChatOpen($('#chat-content').hidden);
 $('#chat-form').onsubmit=e=>{e.preventDefault();const text=$('#chat-input').value.trim();if(!text)return;if(!joined)return notify('チャットの送信には接続が必要です。','error');send({type:'chat',text});$('#chat-input').value='';$('#chat-input').blur();};
+$('#chat-input').addEventListener('focus',stopInput);
 document.addEventListener('keydown',e=>{
-  if(e.target.closest('input,textarea,select,[contenteditable=""],[contenteditable="true"]')||e.isComposing||$('#modal').open)return;
-  const k=e.key.toLowerCase();if(['w','a','s','d','arrowup','arrowdown','arrowleft','arrowright','shift'].includes(k)){e.preventDefault();if(k!=='shift')rideApproach.cancel();if(player()?.downedUntil)blockedMovementKeys.add(k);else if(!blockedMovementKeys.has(k))keys.add(k);return;}
+  if(e.target.closest('input,textarea,select,[contenteditable]')||!acceptsGameShortcut(e)||$('#modal').open||renderUnavailable)return;
+  if(['Enter',' '].includes(e.key)&&e.target.closest('button,a,[role="button"]'))return;
+  const k=movementKey(e);if(['w','a','s','d','arrowup','arrowdown','arrowleft','arrowright','shift'].includes(k)){e.preventDefault();if(k!=='shift')rideApproach.cancel();if(player()?.downedUntil)blockedMovementKeys.add(k);else if(!blockedMovementKeys.has(k))keys.add(k);return;}
   if(e.repeat)return;
   if((e.code==='KeyR'||k==='r')&&!e.ctrlKey&&!e.metaKey&&!e.altKey){e.preventDefault();ride();}
   if(k==='e'){e.preventDefault();const next=nearby();action(next?.action||'gather',next?.targetId);}
   if(isAttackShortcut(e)){e.preventDefault();attack();}
   if(['1','2','3','4'].includes(k))action(['gather','craft','contribute','trade'][Number(k)-1]);
-  if(k==='enter'){e.preventDefault();$('#chat-content').hidden=false;$('#chat-input').focus();}
+  if(k==='enter'){e.preventDefault();setChatOpen(true);$('#chat-input').focus();}
   if(k==='?'||k==='h')openHelp();
 });
-document.addEventListener('keyup',e=>{const key=e.key.toLowerCase();keys.delete(key);blockedMovementKeys.delete(key);});
-window.addEventListener('blur',()=>{rideApproach.cancel();keys.clear();send({type:'move',dx:0,dz:0});});
-document.addEventListener('visibilitychange',()=>{if(document.hidden){rideApproach.cancel();keys.clear();send({type:'move',dx:0,dz:0});}});
+document.addEventListener('keyup',e=>{const key=movementKey(e);keys.delete(key);blockedMovementKeys.delete(key);});
+window.addEventListener('blur',stopInput);
+document.addEventListener('visibilitychange',()=>{if(document.hidden)stopInput();});
 setInterval(()=>{
-  if(player()?.downedUntil){keys.clear();movementCommands.reset();return;}
+  if(player()?.downedUntil||!joined||renderUnavailable){keys.clear();movementCommands.reset();return;}
   let sx=0,sy=0;if(!$('#modal').open&&!document.activeElement.matches('input,textarea')){if(keys.has('w')||keys.has('arrowup'))sy--;if(keys.has('s')||keys.has('arrowdown'))sy++;if(keys.has('a')||keys.has('arrowleft'))sx--;if(keys.has('d')||keys.has('arrowright'))sx++;}
   const running=wantsToRun();if(running!==lastGait){send({type:'gait',running});lastGait=running;}
   const {dx,dz}=renderer.getMovementDirection(sx,sy),command=movementCommands.next({dx,dz,running});
@@ -398,5 +457,7 @@ setInterval(()=>{
 },70);
 setInterval(()=>send({type:'ping',at:Date.now()}),3000);
 setInterval(updateHuntingHUD,100);
-window.addEventListener('beforeunload',()=>{manualLeave=true;socket?.close();renderer.destroy();});
+const hudObserver = new ResizeObserver(([entry]) => $('.game-viewport').style.setProperty('--hud-height', `${entry.target.getBoundingClientRect().height}px`));
+hudObserver.observe($('.hotbar-wrap'));
+window.addEventListener('beforeunload',()=>{manualLeave=true;socket?.close();hudObserver.disconnect();renderer.destroy();});
 connect();

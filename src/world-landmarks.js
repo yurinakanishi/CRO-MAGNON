@@ -1,14 +1,19 @@
 import * as THREE from 'three';
-import { LANDMARKS } from '/shared/landmarks.mjs';
-import { terrainHeight } from '/shared/terrain.mjs';
+import { LANDMARKS } from '../shared/landmarks.mjs';
+import { REGION_FEATURES } from '../shared/region-features.mjs';
+import { terrainHeight } from '../shared/terrain.mjs';
+import { regionFeatureDiagnostics } from './region-feature-diagnostics.js';
+
+const PLACEMENTS=Object.freeze([...LANDMARKS,...REGION_FEATURES]);
 
 // Meshes and all LODs are verified image-to-3D files. Only nearby landmark types
 // are decoded; copies share geometries and materials, and inactive types expire.
 export class WorldLandmarks {
-  constructor(world){this.world=world;this.assets=world.worldAssets;this.instances=new Map();this.pending=new Map();this.used=new Map();this.next=0;this.disposed=false;}
+  constructor(world,placements=PLACEMENTS){this.world=world;this.assets=world.worldAssets;this.placements=placements;this.featureKeys=new Set(REGION_FEATURES.map(item=>item.key));this.instances=new Map();this.pending=new Map();this.used=new Map();this.next=0;this.disposed=false;}
   update(camera,time){
     if(this.disposed||time<this.next)return;this.next=time+.3;
-    const desired=LANDMARKS.filter(item=>Math.hypot(camera.position.x-item.x,camera.position.z-item.z)<125+item.clearance);
+    const desired=this.placements.filter(item=>Math.hypot(camera.position.x-item.x,camera.position.z-item.z)<125+item.clearance);
+    let created=0;
     const ids=new Set(desired.map(item=>item.id));
     for(const[id,root]of this.instances)if(!ids.has(id)){this.world.scene.remove(root);this.instances.delete(id);}
     for(const item of desired){
@@ -16,14 +21,16 @@ export class WorldLandmarks {
       if(!this.assets.templates.has(item.key)){
         if(!this.pending.has(item.key)){
           const promise=this.assets.ensureEnvironment(item.key).then(()=>{if(!this.disposed)this.world.updateAssetDiagnostics();})
-            .catch(error=>{if(!this.disposed)this.world.failWorld('氷壁・火山の3D素材を読み込めませんでした。再読み込みしてください。',error);})
+            .catch(error=>{if(!this.disposed)this.world.failWorld('地域の3D素材を読み込めませんでした。再読み込みしてください。',error);})
             .finally(()=>this.pending.delete(item.key));
           this.pending.set(item.key,promise);
         }
         continue;
       }
       if(!this.instances.has(item.id)){
+        if(created>=4)continue;created++;
         const template=this.assets.get(item.key),root=new THREE.LOD();root.name=item.id;root.userData.landmarkId=item.id;
+        if(this.featureKeys.has(item.key))root.userData.regionFeature=item.key;
         if(item.key==='volcanic-cone'&&!template.lavaPrepared){
           template.lavaPrepared=true;
           for(const gltf of [template.gltf,...template.lods])gltf.scene.traverse(node=>{if(node.isMesh)for(const material of [node.material].flat()){
@@ -33,7 +40,7 @@ export class WorldLandmarks {
             material.customProgramCacheKey=()=> 'source-volcano-lava-1';material.needsUpdate=true;
           }});
         }
-        root.position.set(item.x,terrainHeight(item.x,item.z)-.08,item.z);root.rotation.y=item.yaw;root.scale.setScalar(item.scale);
+        root.position.set(item.x,terrainHeight(item.x,item.z)+(item.groundOffset??-.08),item.z);root.rotation.y=item.yaw;root.scale.setScalar(item.scale);
         for(let level=0;level<=template.lods.length;level++){
           const model=this.assets.create(item.key,level);
           model.traverse(node=>{if(node.isMesh){node.castShadow=level===0;node.receiveShadow=true;}});
@@ -51,5 +58,6 @@ export class WorldLandmarks {
     }
     this.world.canvas.dataset.landmarks=String(this.instances.size);
   }
+  diagnostics(){return regionFeatureDiagnostics(this.assets,this.instances,this.featureKeys);}
   dispose(){this.disposed=true;for(const root of this.instances.values())this.world.scene.remove(root);this.instances.clear();}
 }

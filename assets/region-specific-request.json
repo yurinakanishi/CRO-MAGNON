@@ -1,0 +1,254 @@
+{
+  "schemaVersion": 1,
+  "status": "integrated-and-game-qa-passed",
+  "userDirection": "基本モデルは共有し、地域に特有の形が必要なモデルは一から制作してよい。",
+  "scope": "New distinct shapes only; retain the existing shared snow/frost/ash/sand bases, terrain, glaciers and volcanoes.",
+  "provider": "Codex built-in imagegen + local TRELLIS-2",
+  "claudeUsed": false,
+  "models": [
+    {
+      "key": "desert-cactus",
+      "name": "砂漠のサボテン",
+      "biome": "desert",
+      "kind": "static",
+      "height": 2.4,
+      "prompt": "Use case: stylized-concept. Asset type: ONE isolated 3D game environment asset reference for image-to-3D reconstruction, CRO-MAGNON prehistoric fantasy third-person adventure. Primary subject: one mature desert candelabra cactus, approximately 2.4 metres tall, a stout gently tapered central ribbed green trunk rooted directly at the bottom and three asymmetrical thick upward-curving arms at different heights; the arms connect solidly to the trunk. Readable organic lobes and shallow vertical ribs, rounded growing tips, dusty muted sage-green skin with warm ochre weathering at the foot. Sparse tiny pale spine clusters visible as surface detail, not long needle geometry. Rounded natural shapes with continuous substantial surfaces, convincingly textured stylized realistic game quality matching hand-built natural terrain assets. Composition: entire cactus in frame with 12% clear margin, one three-quarter front view from slightly above eye level, strong readable silhouette with clear spaces between the arms. Neutral even studio lighting, natural nonmetallic matte material. Plain medium grey background. No separate plants, flowers, pots, pedestal, soil slab, terrain, loose stones, text, labels, frames, shadows of other objects, people, animals or modern items. This is a full cactus, not a landscape or collage.",
+      "geometryResolution": 1024,
+      "textureResolution": 512,
+      "roughness": 0.78,
+      "candidate": 1,
+      "reference": "reviewed-and-frozen",
+      "generation": "completed",
+      "adoption": "exact-glb-reviewed-and-adopted",
+      "gameQA": "passed",
+      "sourceSha256": "b2c14d1ab18ecac5809c3e269da6e069e57a435ddd334f568bf718d7a4858efb",
+      "dense": {
+        "path": "work/trellis/dense-res1024-seed0042.glb",
+        "sha256": "bf2aada05a51e848af5420693fb3b87382b63f479a973783cc4fcc13d6049f06",
+        "resolution": 1024,
+        "seed": 42,
+        "status": "reconstruction-only; visual review required"
+      },
+      "reduction": [
+        {
+          "path": "candidate.glb",
+          "sha256": "df3e780323fd45808d92b2f7edcd2c7d9ee8000f1ea0c67b29baab73c939d7ed",
+          "bytes": 2122540,
+          "triangles": 24435,
+          "vertices_before_export_splits": 12202
+        },
+        {
+          "path": "lod1.glb",
+          "sha256": "d04e3a4dcab15ab00753fe26bf84a062c40c09d5ae3083174148e3bb6d19ed2d",
+          "bytes": 1662216,
+          "triangles": 9773,
+          "vertices_before_export_splits": 4871
+        },
+        {
+          "path": "lod2.glb",
+          "sha256": "1f1642cf62ce45665a5e326a0ef795a716a4397822c1fdc9ff0366e39fb13f8e",
+          "bytes": 1424504,
+          "triangles": 3419,
+          "vertices_before_export_splits": 1694
+        }
+      ],
+      "revision": "03",
+      "sha256": "df3e780323fd45808d92b2f7edcd2c7d9ee8000f1ea0c67b29baab73c939d7ed",
+      "gameQaFile": "assets/region-specific-game-qa.json",
+      "surfaceVerification": {
+        "surfaceSamples": 122175,
+        "misses": 0
+      }
+    },
+    {
+      "key": "volcanic-basalt-columns",
+      "name": "火山の柱状玄武岩",
+      "prompt": "Use case: stylized-concept. Asset type: ONE isolated environment model reference for TRELLIS image-to-3D, a prehistoric fantasy third-person adventure game. Primary subject: one compact naturally joined outcrop of columnar volcanic basalt, a cluster of seven stout irregular hexagonal stone columns at staggered heights. Tallest column approximately 4.6 metres; total width approximately 4 metres. Uneven broken flat tops, broad vertical prism faces, believable cooling-joint seams, restrained horizontal fractures and a small amount of attached angular basalt at their common base. Clear stepped skyline; the columns stand mostly vertical with subtle natural irregularity and are solidly joined at the foot. The rock is matte charcoal slate-grey with slightly lighter weathered vertical faces and subtle warm ash in the cracks, fine natural texture, no bright veins. Readable large planes, no granular lumps, thin spikes or sharp crystal tips. Stylized realistic game asset with convincing natural stone detail, not a sculpture on a plinth. Entire object visible from ground contact to tallest top, generous 12 percent margin, three-quarter front view looking down slightly enough to see the tops. Neutral even studio lighting, plain medium grey background. No lava, red glow, snow, ice, plants, surrounding landscape, floor slab, pedestal, extra separate rocks, text, people, animals, metal or glossy crystal material.",
+      "biome": "volcano",
+      "kind": "static",
+      "height": 4.6,
+      "geometryResolution": 512,
+      "textureResolution": 512,
+      "roughness": 0.91,
+      "candidate": 1,
+      "reference": "reviewed-and-frozen",
+      "generation": "completed",
+      "adoption": "exact-glb-reviewed-and-adopted",
+      "gameQA": "passed",
+      "sourceSha256": "08d0f3e28effe14fe6fdbad52ee78ee9a71130075caaf541662ed61bb66e936a",
+      "generationAdjustment": {
+        "resolution": 1024,
+        "seed": 42,
+        "status": "stopped-after-VRAM-saturation",
+        "reason": "RTX A1000 6 GB reached 5991 MiB and 100 percent GPU utilization. HR 1024 reconstruction expanded to 33336 tokens and remained at step 0 for over five minutes. Stopped only this task-owned process, retained its log, and selected the practical 512 reconstruction for these broad basalt planes. No dense model from the interrupted attempt was produced or adopted.",
+        "log": "work/trellis/dense-res1024-seed0042.log"
+      },
+      "dense": {
+        "path": "work/trellis/dense-res512-seed0042.glb",
+        "sha256": "9ac0dd783d411e3c0fc026d6e96a4e942ab414def09217c69d243fa07e3e7106",
+        "resolution": 512,
+        "seed": 42,
+        "status": "reconstruction-only; visual review required"
+      },
+      "reduction": [
+        {
+          "path": "candidate.glb",
+          "sha256": "a3cf5fa909494f4250e4cacd9bc9529b9780f9d7292fc1bfd6bf6235ae71c0fc",
+          "bytes": 5454964,
+          "triangles": 62337,
+          "vertices_before_export_splits": 29654
+        },
+        {
+          "path": "lod1.glb",
+          "sha256": "2a3e890af2b0bf31f71fba58db39eff122f6b60c06cf341c86c85f80db665dde",
+          "bytes": 3088636,
+          "triangles": 15460,
+          "vertices_before_export_splits": 6220
+        },
+        {
+          "path": "lod2.glb",
+          "sha256": "2a3e890af2b0bf31f71fba58db39eff122f6b60c06cf341c86c85f80db665dde",
+          "bytes": 3088636,
+          "triangles": 15460,
+          "vertices_before_export_splits": 6220
+        }
+      ],
+      "revision": "01",
+      "sha256": "a3cf5fa909494f4250e4cacd9bc9529b9780f9d7292fc1bfd6bf6235ae71c0fc",
+      "gameQaFile": "assets/region-specific-game-qa.json",
+      "surfaceVerification": {
+        "surfaceSamples": 311685,
+        "misses": 0
+      }
+    }
+  ],
+  "previousDelivery": {
+    "scenerySha256": "0ca1ec09ce4012b5e7e5fd65b57281ee7541e368c87e17ff99327bf7406cdf51",
+    "models": [
+      {
+        "key": "neanderthal-hunter",
+        "sha256": "7ce4ff20eb1e2ca64df6b51d1c2060311e630394afdb38996eb7e34bbe5ca1e0"
+      },
+      {
+        "key": "woolly-mammoth",
+        "sha256": "f3ebbe7d55268affc715052dbd3c98e68577cd34298aeeb74f0ade94004c2f2d"
+      },
+      {
+        "key": "valley-pine",
+        "sha256": "068c0253b58a13e096cb39a5f825a80de5cb7d129ef9351726cd40ee126551c5"
+      },
+      {
+        "key": "meadow-grass",
+        "sha256": "23e834c851fc6cfd1e091edf11e9be093802f047ccb33a2af3b579e2dbb0bb48"
+      },
+      {
+        "key": "valley-boulder",
+        "sha256": "f46449aa51814b9037c8ed3c43179845e63c6f9b48b94e02c7979266cb09bb1d"
+      },
+      {
+        "key": "firewood-pile",
+        "sha256": "88fdbe0514694b4b484e285dc6ffa85c8cebe134ea120d34f7486dc27d3d3d3a"
+      },
+      {
+        "key": "berry-bush",
+        "sha256": "3d405ba99daa2d984810e9a2cf4418ad2008c0ee9279c0157fb68fc5a3008ee1"
+      },
+      {
+        "key": "hide-tent",
+        "sha256": "7c7aef410b4f8eee268cd32f75faa65f0b7ea3f2d8e4cf53b6d810e5a1e20de7"
+      },
+      {
+        "key": "drying-rack",
+        "sha256": "b106d53d89e9fa51ee38d3baa2c3a0b898fd39658f5718728ef12844b9f1d65d"
+      },
+      {
+        "key": "stone-firepit",
+        "sha256": "d47aa67f9987cacd61d523d53622e33ebf0778c9a03f9e68559ad3f6db20f65a"
+      },
+      {
+        "key": "flint-spear",
+        "sha256": "1a10db6d1b44da1e982f88e5ae9ef6be8fb74f5900ebd9258380ad200e53ed3d"
+      },
+      {
+        "key": "stone-axe",
+        "sha256": "12dc3f23f8ec2acfb9fb6f770ab05f59c21584be00795f9b8cf272a2f6cf5ac0"
+      },
+      {
+        "key": "meadow-ground",
+        "sha256": "6c6b41bdec1631236027c567635623aa9cdd1e0d92c0ae9e89f77764b52995e1"
+      },
+      {
+        "key": "river-water",
+        "sha256": "8575faa5fd988da815d622ebbd03d49390339df5eeafd0eb794e1b0368ec0274"
+      },
+      {
+        "key": "wood-footbridge",
+        "sha256": "629a8ec5db3dd16b7a126b1c8ea4877a5ec0bc4037017e0a2a53ec2f63e3a369"
+      },
+      {
+        "key": "cro-magnon-woman",
+        "sha256": "8690d5563233614397c7cfad6af0e0b3d89273a29fa59bf421372ec1168ef1b7"
+      },
+      {
+        "key": "neanderthal-woman",
+        "sha256": "63ab98a62b2706e76b4cc551d2a0c8bd23363072258598b606d5129ad32a9ff9"
+      },
+      {
+        "key": "mammoth-meat",
+        "sha256": "50bf72d1dc5ff23b7eb206e7d0c6535d9a4ac1559190e6c4f5bbb94cd0ffaf2d"
+      },
+      {
+        "key": "crow-shaman",
+        "sha256": "b0937988961c537fa4edb457c16baaa057d40b59e1393e4b493ec434684499a3"
+      },
+      {
+        "key": "cat-kunoichi",
+        "sha256": "9ab72ce3d6e6a4a80b25bbb2de023c3a154b790cb1d1c5f1a4a7746d833f34aa"
+      },
+      {
+        "key": "bear-mage",
+        "sha256": "3b58124a53297cf5974b340c941fb22ac9e7be1ed9eae6d0cd1362943f70aadf"
+      },
+      {
+        "key": "kunoichi-katana",
+        "sha256": "3e6e061fc02779d3516d114b53629fa0d5b585e815d4683ce74dd7d9c2822e0e"
+      },
+      {
+        "key": "snow-ground",
+        "sha256": "ddf7037c1cd52801d7c5f1a71492c496d7885f407372edb275e445ce0e009f44"
+      },
+      {
+        "key": "ice-ground",
+        "sha256": "30eeb7ceea111e33576b497e8341f9f01bf232fc598c6bbefa79a9867df51cce"
+      },
+      {
+        "key": "desert-ground",
+        "sha256": "fcf25dfc8bed6ce7ecfbdf445674e3c092f36d353462685cb5730ba3ef00005e"
+      },
+      {
+        "key": "volcanic-ground",
+        "sha256": "2bca15ffc01cce6148f8569a60b3fbecd16ac0c7946014f7b48f267b5eaffb88"
+      },
+      {
+        "key": "glacier-spires",
+        "sha256": "af945c2fec27252389a05ca2eabb6970003372a584a83cf18e2e6c34a42f6b53"
+      },
+      {
+        "key": "volcanic-cone",
+        "sha256": "868c062028af62fedf491ed7391602991dbc76b1ddbbd09494ee958a7898cd5b"
+      }
+    ],
+    "recordedAt": "2026-09-07T01:48:02.089Z"
+  },
+  "placements": {
+    "desert-cactus": 48,
+    "volcanic-basalt-columns": 18
+  },
+  "gameQA": "assets/region-specific-game-qa.json",
+  "networkQA": "assets/region-specific-network-qa.json",
+  "rolloutQA": "assets/region-specific-rollout-qa.json",
+  "canonicalArchives": [
+    "assets/region-canonical-desert-cactus.json",
+    "assets/region-canonical-volcanic-basalt-columns.json"
+  ]
+}

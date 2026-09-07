@@ -1,0 +1,71 @@
+{
+  "schemaVersion": 2,
+  "status": "implemented-and-verified",
+  "timestamp": "2026-09-07T01:25:19.188Z",
+  "initialUserRequest": "始まりの谷のアセットを全地域で使い回さず、各地形にふさわしい3Dモデルをそれぞれ制作して使用する。時間をかけてよい。",
+  "latestUserDirection": "基本モデルを地域間で使い回してメモリを節約する。雪は元モデルに重ねる。地域ごとの見た目と配置を適切にする。",
+  "implementation": "Reuse accepted TRELLIS base geometry, texture objects and LODs; add shared regional material variants and biome-appropriate placement.",
+  "production": {
+    "newBaseModels": 0,
+    "newAdoptedGLBs": 0,
+    "existingGLBs": 29,
+    "baseGLBBytesPreserved": true,
+    "claudeUsed": false
+  },
+  "regions": {
+    "grassland": "Original valley materials and vegetation",
+    "snow": "Source-shaped snow on pines, rocks, wood, bushes, tent roof and hearth rim",
+    "ice": "Frost/cold rock surfaces and compact snowy shelter; no pine forest or grass",
+    "volcano": "Dark rock and charred wood with ash; no green vegetation",
+    "desert": "Warm stratified rock, dry grass, bleached wood and lower hide shelter; no pines"
+  },
+  "sharing": {
+    "baseGeometryCopies": 0,
+    "baseTextureCopies": 0,
+    "additional": "Regional materials/uniforms, per-instance transforms, and 256px far-view renders of resident regional vegetation",
+    "unusedVariantGraceSeconds": 12
+  },
+  "sourceReview": "assets/biome-surface-qa.json",
+  "gameQA": "assets/biome-game-qa.json",
+  "networkQA": "assets/biome-network-qa.json",
+  "unusedProductionHistory": [
+    {
+      "key": "snow-pine",
+      "reference": "output/imagegen/biome-reference-history/snow-pine.png",
+      "sha256": "c34050e0ff94be83d079a83d4a412383ce7a4b9cd027fab1ff7cbb1609601090",
+      "generation": "TRELLIS attempt stopped after the user clarified base reuse; partial output retained",
+      "adoption": "not-adopted",
+      "gameQA": "not-applicable"
+    },
+    {
+      "key": "snow-boulder",
+      "reference": "output/imagegen/biome-reference-history/snow-boulder.png",
+      "sha256": "44e92b2e36eb528d8a12b8a24457042493f5590b1f1a5d48fb90779a08e5a2c8",
+      "generation": "Reference only; no 3D reconstruction",
+      "adoption": "not-adopted",
+      "gameQA": "not-applicable"
+    },
+    {
+      "key": "snow-berry-bush",
+      "reference": "output/imagegen/biome-reference-history/snow-berry-bush.png",
+      "sha256": "aff5307d10b1d99d6a1acd1266a8771ac86bacc21a4355c5496735ef1c7c23a6",
+      "generation": "Reference only; no 3D reconstruction",
+      "adoption": "not-adopted",
+      "gameQA": "not-applicable"
+    },
+    {
+      "key": "snow-fallen-wood",
+      "reference": "output/imagegen/biome-reference-history/snow-fallen-wood.png",
+      "sha256": "d29e7fa9476dfe06d7800de05173e6c368af368dab32b2adc7ffb8fe78545724",
+      "generation": "Reference only; no 3D reconstruction",
+      "adoption": "not-adopted",
+      "gameQA": "not-applicable"
+    }
+  ],
+  "limitations": [
+    "Snow is a coating of the existing source surface, without extra snow thickness or collision volume.",
+    "This change does not add new terrain GLBs; the existing region-specific grounds, glaciers and volcanic cones are retained.",
+    "Runtime allocations are not zero: the shared base prevents model duplication while small regional rendering resources are added."
+  ],
+  "rolloutQA": "assets/biome-rollout-qa.json"
+}

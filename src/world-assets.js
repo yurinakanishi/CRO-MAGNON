@@ -3,6 +3,8 @@ import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
 import { clone as cloneSkeleton } from 'three/addons/utils/SkeletonUtils.js';
 import { requireEnemyClips } from './enemy-state.js';
 import { PlacementGrid } from '../shared/spatial-grid.mjs';
+import { createSurfaceTemplate } from './biome-surfaces.js';
+import { sha256 } from './asset-hash.js';
 
 function disposeTemplate(root) {
   const resources = new Set();
@@ -24,23 +26,18 @@ export async function loadVerifiedGLB(record) {
   if (!response.ok) throw new Error(`${record.url}: HTTP ${response.status}`);
   const bytes = await response.arrayBuffer();
   if (bytes.byteLength !== record.bytes) throw new Error(`${record.url}: file length mismatch`);
-  if (crypto.subtle) {
-    const digest = await crypto.subtle.digest('SHA-256', bytes);
-    const hash = Array.from(new Uint8Array(digest), n => n.toString(16).padStart(2, '0')).join('');
-    if (hash !== record.sha256) throw new Error(`${record.url}: SHA-256 mismatch`);
-  }
+  if (await sha256(bytes) !== record.sha256) throw new Error(`${record.url}: SHA-256 mismatch`);
   const manager = new THREE.LoadingManager();
   manager.setURLModifier(url => {
     if (!url.startsWith('blob:') && !url.startsWith('data:')) throw new Error('GLB must embed its resources');
     return url;
   });
   const gltf=await new GLTFLoader(manager).parseAsync(bytes, '');
-  if(crypto.subtle) {
+  {
     const view=new DataView(bytes),jsonEnd=20+view.getUint32(12,true),binaryStart=jsonEnd+8;
     const hashes=await Promise.all((gltf.parser.json.images??[]).map(async image=>{
       const range=gltf.parser.json.bufferViews[image.bufferView];if(!range)return null;
-      const digest=await crypto.subtle.digest('SHA-256',bytes.slice(binaryStart+(range.byteOffset??0),binaryStart+(range.byteOffset??0)+range.byteLength));
-      return Array.from(new Uint8Array(digest),n=>n.toString(16).padStart(2,'0')).join('');
+      return sha256(new Uint8Array(bytes,binaryStart+(range.byteOffset??0),range.byteLength));
     }));
     gltf.scene.traverse(node=>{for(const material of [node.material].flat().filter(Boolean))for(const value of Object.values(material))if(value?.isTexture){
       const index=gltf.parser.associations.get(value)?.textures,source=gltf.parser.json.textures?.[index]?.source;
@@ -65,7 +62,7 @@ function shareLodTextures(models) {
 }
 
 export class WorldAssets {
-  constructor({loadEnvironment=loadVerifiedGLB}={}) { this.environmentLoader=loadEnvironment;this.templates = new Map(); this.animals = new Set(); this.enemyLoads = new Map(); this.equipmentLoads = new Map(); this.environmentLoads = new Map(); this.environmentQueue=[]; this.environmentActive=0; this.disposed = false; }
+  constructor({loadEnvironment=loadVerifiedGLB}={}) { this.environmentLoader=loadEnvironment;this.templates = new Map();this.surfaceTemplates=new Map(); this.animals = new Set(); this.enemyLoads = new Map(); this.equipmentLoads = new Map(); this.environmentLoads = new Map(); this.environmentQueue=[]; this.environmentActive=0; this.disposed = false; }
   async load() {
     const started = performance.now();
     const response = await fetch('/models/world-assets.json');
@@ -99,10 +96,35 @@ export class WorldAssets {
     this.loadMilliseconds = performance.now() - started;
     return this;
   }
-  get(key) {
+  get(key, surface = null) {
     const template = this.templates.get(key);
     if (!template) throw new Error(`Missing model ${key}`);
+    if(surface){
+      const id=`${key}:${surface}`;
+      if(!this.surfaceTemplates.has(id))this.surfaceTemplates.set(id,createSurfaceTemplate(template,surface));
+      return this.surfaceTemplates.get(id);
+    }
     return template;
+  }
+  releaseSurface(key,surface) {
+    const id=`${key}:${surface}`,template=this.surfaceTemplates.get(id);
+    if(template){template.dispose();this.surfaceTemplates.delete(id);}
+  }
+  surfaceDiagnostics() {
+    const sourceGeometry=new Set(),sourceTextures=new Set(),variantGeometry=new Set(),variantTextures=new Set();
+    const collect=(template,geometries,textures)=>{
+      for(const model of [template.gltf,...template.lods])model.scene.traverse(node=>{
+        if(node.geometry)geometries.add(node.geometry);
+        for(const material of [node.material].flat().filter(Boolean))for(const value of Object.values(material))if(value?.isTexture)textures.add(value);
+      });
+    };
+    const keys=new Set([...this.surfaceTemplates.values()].map(template=>template.asset.modelKey));
+    for(const key of keys)collect(this.templates.get(key),sourceGeometry,sourceTextures);
+    let materials=0;
+    for(const template of this.surfaceTemplates.values()){collect(template,variantGeometry,variantTextures);materials+=template.materials.size;}
+    return {variants:this.surfaceTemplates.size,materials,sourceGeometries:sourceGeometry.size,sourceTextures:sourceTextures.size,
+      extraGeometries:[...variantGeometry].filter(value=>!sourceGeometry.has(value)).length,
+      extraTextures:[...variantTextures].filter(value=>!sourceTextures.has(value)).length};
   }
   ensureEnvironment(key) {
     if(this.disposed)return Promise.reject(new Error('World assets disposed'));
@@ -139,21 +161,23 @@ export class WorldAssets {
     for(const model of [template.gltf,...template.lods])disposeTemplate(model.scene);
     this.templates.delete(key);
   }
-  create(key, level = 0) {
-    const template = this.get(key), model = level ? template.lods[level - 1] : template.gltf;
+  create(key, level = 0, surface = null) {
+    const template = this.get(key, surface), model = level ? template.lods[level - 1] : template.gltf;
     if (!model) throw new Error(`Missing verified LOD ${level} for ${key}`);
     const root = model.scene.clone(true);
     root.userData.assetKey = key;
+    root.userData.regionalSurface = surface;
     return root;
   }
-  createResource(key) {
-    const template = this.get(key);
-    if (!template.lods.length) return this.create(key);
+  createResource(key, surface = null) {
+    const template = this.get(key, surface);
+    if (!template.lods.length) return this.create(key, 0, surface);
     const root = new THREE.LOD();
     root.userData.assetKey = key;
-    root.addLevel(this.create(key), 0);
+    root.userData.regionalSurface = surface;
+    root.addLevel(this.create(key, 0, surface), 0);
     for (let index = 0; index < template.lods.length; index++) {
-      root.addLevel(this.create(key, index + 1), index === 0 ? 10 : 22, .15);
+      root.addLevel(this.create(key, index + 1, surface), index === 0 ? 10 : 22, .15);
     }
     return root;
   }
@@ -232,6 +256,7 @@ export class WorldAssets {
   }
   dispose() {
     this.disposed = true;
+    for(const template of this.surfaceTemplates.values())template.dispose();this.surfaceTemplates.clear();
     for (const actor of this.animals) actor.dispose();
     for (const { gltf, lods } of this.templates.values()) for (const model of [gltf, ...lods]) disposeTemplate(model.scene);
     this.templates.clear();
@@ -240,7 +265,7 @@ export class WorldAssets {
 
 // Far vegetation is a render of the actual GLB. The quad is only an impostor LOD;
 // nearby vegetation uses the reconstructed mesh, including its source UV/albedo.
-function renderImpostor(renderer, root) {
+function renderImpostor(renderer, root, resolution = 512) {
   const scene = new THREE.Scene(), subject = root.clone(true);
   scene.add(subject, new THREE.HemisphereLight('#e4e5cc', '#596044', 2.5));
   const sun = new THREE.DirectionalLight('#fff1d4', 2.1); sun.position.set(-4, 8, 5); scene.add(sun);
@@ -252,7 +277,7 @@ function renderImpostor(renderer, root) {
   // Retain HDR where supported and apply the game's tone mapping when displaying
   // the impostor, just as for nearby reconstructed geometry.
   const type = renderer.extensions.has('EXT_color_buffer_float') ? THREE.HalfFloatType : THREE.UnsignedByteType;
-  const target = new THREE.WebGLRenderTarget(512, 512, { depthBuffer: true, type });
+  const target = new THREE.WebGLRenderTarget(resolution, resolution, { depthBuffer: true, type });
   target.texture.colorSpace = THREE.LinearSRGBColorSpace;
   const previous = renderer.getRenderTarget(), clear = renderer.getClearColor(new THREE.Color()), alpha = renderer.getClearAlpha();
   renderer.setRenderTarget(target); renderer.setClearColor(0x000000, 0); renderer.clear(); renderer.render(scene, camera);
@@ -263,7 +288,7 @@ function renderImpostor(renderer, root) {
 }
 
 export class LandscapeInstances {
-  constructor({ assets, key, placements, renderer, scene, distances, foliage = false, generateCell = null }) {
+  constructor({ assets, key, surface = null, placements, renderer, scene, distances, foliage = false, generateCell = null }) {
     this.placements = placements; this.distances = distances; this.scene = scene; this.levels = []; this.nextUpdate = 0;
     this.grid=new PlacementGrid(placements);this.generateCell=generateCell;this.generated=new Map();
     this.castNearbyShadows=!foliage;
@@ -271,7 +296,8 @@ export class LandscapeInstances {
     this.sightLine=new THREE.Line3();this.sightPoint=new THREE.Vector3();
     const generatorCapacity=generateCell?250*(Math.ceil(distances[2]/32)*2+2)**2:0;
     this.capacity=this.grid.maximumNearby(distances[2])+generatorCapacity;
-    const template = assets.get(key);
+    this.key=key;this.surface=surface;
+    const template = assets.get(key,surface);
     for (const model of [template.gltf, template.lods[0]]) {
       if (!model) { this.levels.push([]); continue; }
       const meshes = []; model.scene.updateMatrixWorld(true);
@@ -283,7 +309,7 @@ export class LandscapeInstances {
       });
       this.levels.push(meshes);
     }
-    this.impostor = renderImpostor(renderer, template.gltf.scene);
+    this.impostor = renderImpostor(renderer, template.gltf.scene, surface ? 256 : 512);
     const billboard = new THREE.InstancedMesh(this.impostor.geometry, this.impostor.material, this.capacity);
     billboard.instanceMatrix.setUsage(THREE.DynamicDrawUsage); billboard.count = 0; billboard.frustumCulled = false; scene.add(billboard);
     this.levels.push([{ mesh: billboard, local: new THREE.Matrix4() }]);
@@ -318,7 +344,7 @@ export class LandscapeInstances {
       }
       this.sphere.center.copy(item.position); this.sphere.center.y += item.height * .5; this.sphere.radius = item.height * .75;
       if (!this.frustum.intersectsSphere(this.sphere) && !(this.castNearbyShadows&&distance<Math.min(24,this.distances[0]))) continue;
-      const level = distance < this.distances[0] ? 0 : distance < this.distances[1] ? 1 : 2;
+      const level = distance < this.distances[0] ? 0 : distance < this.distances[1] && this.levels[1].length ? 1 : 2;
       const yaw = level === 2 ? Math.atan2(camera.position.x - item.position.x, camera.position.z - item.position.z) : item.yaw;
       this.rotation.setFromAxisAngle(this.axis, yaw); this.matrix.compose(item.position, this.rotation, item.scale);
       for (const { mesh, local } of this.levels[level]) mesh.setMatrixAt(counts[level], this.composed.multiplyMatrices(this.matrix, local));

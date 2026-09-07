@@ -13,6 +13,17 @@ export class MovementCommands {
   }
 }
 
+// Key-up must resolve the same physical key even if Shift or the layout changed.
+export function movementKey(event) {
+  const physical = { KeyW: 'w', KeyA: 'a', KeyS: 's', KeyD: 'd', ShiftLeft: 'shift', ShiftRight: 'shift',
+    ArrowUp: 'arrowup', ArrowDown: 'arrowdown', ArrowLeft: 'arrowleft', ArrowRight: 'arrowright' };
+  return physical[event.code] ?? event.key?.toLowerCase();
+}
+
+export function acceptsGameShortcut(event) {
+  return !event.isComposing && !event.ctrlKey && !event.metaKey && !event.altKey;
+}
+
 // Physical KeyF also works when the keyboard layout reports another character.
 export function isAttackShortcut(event) {
   if (event.repeat || event.isComposing || event.ctrlKey || event.metaKey || event.altKey) return false;

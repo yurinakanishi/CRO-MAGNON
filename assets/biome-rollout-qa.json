@@ -1,0 +1,55 @@
+{
+  "status": "passed",
+  "timestamp": "2026-09-07T01:26:43.672Z",
+  "health": {
+    "ok": true,
+    "ridingVersion": 1,
+    "combatVersion": 3,
+    "characterVersion": 2,
+    "enemyVersion": 1,
+    "worldVersion": 2,
+    "worldSize": 640,
+    "rooms": 1,
+    "players": 1,
+    "maxPlayers": 5
+  },
+  "files": [
+    {
+      "path": "src/biome-surfaces.js",
+      "httpStatus": 200,
+      "sha256": "f01644032aca8c89b0e1b79bf2f51d05bce063af523c89f2639b7d514ff17d67"
+    },
+    {
+      "path": "src/regional-scenery.js",
+      "httpStatus": 200,
+      "sha256": "332330a4f968416603e4fde13c8b43695eb1468b06c3069cb667ea0c426b76c7"
+    },
+    {
+      "path": "shared/biome-scenery.mjs",
+      "httpStatus": 200,
+      "sha256": "fd58adc1aae34a41944e7ddb3d1931d374e6b59f42efee52ee120019b2dbdc4a"
+    },
+    {
+      "path": "shared/scenery-layout.mjs",
+      "httpStatus": 200,
+      "sha256": "a2005a052be4abed859709fb469daf68c103d38feff4177dea99abb1e2ec9c9e"
+    },
+    {
+      "path": "src/world-assets.js",
+      "httpStatus": 200,
+      "sha256": "43d5407fb217d0a1840b76d58d337d83672c29573809c092bfebad8ef3712eb1"
+    },
+    {
+      "path": "src/world3d.js",
+      "httpStatus": 200,
+      "sha256": "1101ae203c6b205e160d56c543eef5e210ae4d56284827459ec55b83da601feb"
+    },
+    {
+      "path": "public/biome-review.html",
+      "httpStatus": 200,
+      "sha256": "3bab56d20862680f490896a255526cdf9651e5c54191e66c3b9bbd0ba88f9132"
+    }
+  ],
+  "mainServerManualRestart": false,
+  "notes": "The existing port-3000 server serves the updated files. An already open game page needs a reload to receive changed client code. No persistence or reconnect restoration is added by this change."
+}

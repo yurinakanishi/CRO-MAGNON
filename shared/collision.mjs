@@ -3,8 +3,11 @@ import { MODEL_BOUNDS } from './model-bounds.mjs';
 import { LANDMARKS } from './landmarks.mjs';
 import { LANDMARK_BOUNDS } from './landmark-bounds.mjs';
 import { landmarkObstacles } from './landmark-collision.mjs';
+import { REGION_FEATURES } from './region-features.mjs';
+import { REGION_FEATURE_BOUNDS } from './region-feature-bounds.mjs';
 import { WORLD, worldClamp, INITIAL_RESOURCES, NPC } from './world.mjs';
 import { riverX, riverHalfWidth, terrainHeight } from './terrain.mjs';
+import { resourceAppearance } from './biome-scenery.mjs';
 
 const CELL=4,EPS=.0001;
 const clamp=(n,a,b)=>Math.max(a,Math.min(b,n));
@@ -19,7 +22,8 @@ function modelBox(item) {
 export function staticObstacles() {
   const result=[...SCENERY.trees,...SCENERY.rocks,...SCENERY.ridges,...SCENERY.tents,...SCENERY.props,...SCENERY.fires].map(modelBox);
   result.push(...landmarkObstacles(LANDMARKS,LANDMARK_BOUNDS));
-  for(const resource of INITIAL_RESOURCES) if(resource.type!=='berry') result.push(modelBox({key:resource.type==='stone'?'valley-boulder':'firewood-pile',x:resource.x,z:resource.z,yaw:resource.x*.2,scale:resource.type==='stone'?.55:1,resourceId:resource.id}));
+  result.push(...landmarkObstacles(REGION_FEATURES,REGION_FEATURE_BOUNDS));
+  for(const resource of INITIAL_RESOURCES) if(resource.type!=='berry') result.push(modelBox({...resourceAppearance(resource),x:resource.x,z:resource.z,resourceId:resource.id}));
   for(const z of [BRIDGE.z+BRIDGE.minZ-.08,BRIDGE.z+BRIDGE.maxZ+.08]) result.push({id:'bridge-rail',type:'box',x:BRIDGE.x,z,hx:5.35,hz:.10,c:1,s:0,height:1.1});
   result.push({id:'orl',type:'circle',x:NPC.x,z:NPC.z,radius:.36,height:1.72});
   return result;
@@ -47,7 +51,9 @@ function riverBlocked(point,radius) {
 }
 
 export class CollisionWorld {
-  constructor(obstacles=staticObstacles(),{active=()=>true,river=true}={}) {
+  // The shallow river is fordable, including by mounted mammoths.
+  // Clients and the authoritative server must use the same default.
+  constructor(obstacles=staticObstacles(),{active=()=>true,river=false}={}) {
     this.obstacles=obstacles;this.active=active;this.river=river;this.grid=new Map();
     for(const o of obstacles) {
       const rx=o.radius??(Math.abs(o.c)*o.hx+Math.abs(o.s)*o.hz),rz=o.radius??(Math.abs(o.s)*o.hx+Math.abs(o.c)*o.hz);
@@ -61,9 +67,9 @@ export class CollisionWorld {
     for(let x=Math.floor((point.x-radius)/CELL);x<=Math.floor((point.x+radius)/CELL);x++)for(let z=Math.floor((point.z-radius)/CELL);z<=Math.floor((point.z+radius)/CELL);z++)for(const o of this.grid.get(`${x},${z}`)||[])if(this.active(o))found.add(o);
     return found;
   }
-  free(point,radius,dynamic=[]) {
+  free(point,radius,dynamic=[],ignore=()=>false) {
     if(!Number.isFinite(point.x)||!Number.isFinite(point.z)||point.x!==worldClamp(point.x,'x')||point.z!==worldClamp(point.z,'z')||(this.river&&riverBlocked(point,radius)))return false;
-    for(const o of this.nearby(point,radius))if(overlap(point,radius,o))return false;
+    for(const o of this.nearby(point,radius))if(!ignore(o)&&overlap(point,radius,o))return false;
     for(const o of dynamic)if(overlap(point,radius,o))return false;
     return true;
   }
@@ -97,9 +103,9 @@ export class CollisionWorld {
     }
     return null;
   }
-  segmentFree(a,b,radius,dynamic=[]) {
+  segmentFree(a,b,radius,dynamic=[],ignore=()=>false) {
     const steps=Math.max(1,Math.ceil(Math.hypot(b.x-a.x,b.z-a.z)/.25));
-    for(let i=1;i<=steps;i++)if(!this.free({x:a.x+(b.x-a.x)*i/steps,z:a.z+(b.z-a.z)*i/steps},radius,dynamic))return false;
+    for(let i=1;i<=steps;i++)if(!this.free({x:a.x+(b.x-a.x)*i/steps,z:a.z+(b.z-a.z)*i/steps},radius,dynamic,ignore))return false;
     return true;
   }
   path(start,goal,radius,dynamic=[]) {

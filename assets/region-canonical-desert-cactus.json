@@ -1,0 +1,14 @@
+{
+  "schemaVersion": 1,
+  "modelKey": "desert-cactus",
+  "status": "copied-and-all-source-and-destination-hashes-verified",
+  "verifiedAt": "2026-09-07T02:48:32.514Z",
+  "planSha256": "a47444cb33dec662625a8a8cf4898441049ea46f196ae1a5a644fed866701d6e",
+  "sourceRoot": "C:\\Users\\yurin\\Desktop\\projects\\CRO-MAGNON\\output\\model-generation\\models\\desert-cactus",
+  "destinationRoot": "C:\\Users\\yurin\\Desktop\\projects\\threed-model-creation\\models\\desert-cactus",
+  "files": 302,
+  "bytes": 158386787,
+  "copied": 302,
+  "skippedEqual": 0,
+  "preflightExistingEqual": 0
+}

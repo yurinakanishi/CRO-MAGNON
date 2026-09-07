@@ -6,7 +6,7 @@ import { stat } from 'node:fs/promises';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { networkInterfaces } from 'node:os';
-import { randomUUID } from 'node:crypto';
+import { randomUUID, randomBytes } from 'node:crypto';
 import { WebSocket, WebSocketServer } from 'ws';
 import { WORLD, worldClamp, CAMP, NPC, INITIAL_RESOURCES } from './shared/world.mjs';
 import { movePlayer } from './shared/movement.mjs';
@@ -18,6 +18,7 @@ import { enemyIsSolid, stopActor } from './shared/combat.mjs';
 import { createEnemies, updateEnemies } from './shared/enemies.mjs';
 import { SCENERY } from './shared/scenery-layout.mjs';
 import { RIDING, mountedAnimal, handleRidingAction, releaseRider, ridingObstacles } from './shared/riding.mjs';
+import { interactionVisible } from './shared/interactions.mjs';
 
 const ROOT = path.dirname(fileURLToPath(import.meta.url));
 const COLORS = ['#e4ac65', '#87b899', '#b49cd2', '#76a7c3', '#ce8c8b'];
@@ -43,6 +44,7 @@ export function createGameServer({
   port = Number(process.env.PORT) || 3000,
   host = process.env.HOST || '0.0.0.0',
   tickMs = 50,
+  resumeGraceMs = 120000,
 } = {}) {
   const rooms = new Map();
   let interval;
@@ -98,7 +100,18 @@ export function createGameServer({
 
   function broadcast(room, payload) {
     const encoded = JSON.stringify(payload);
-    for (const player of room.players.values()) if(player.socket.readyState === WebSocket.OPEN && player.socket.bufferedAmount < 512 * 1024) player.socket.send(encoded);
+    let full;
+    for (const player of room.players.values()) {
+      if (player.socket.readyState !== WebSocket.OPEN) continue;
+      if (player.socket.bufferedAmount >= 512 * 1024) {
+        if (payload.type === 'state') player.needsWorld = true;
+        continue;
+      }
+      if (payload.type === 'state' && player.needsWorld) {
+        full ??= JSON.stringify(snapshot(room, true));
+        player.socket.send(full); player.needsWorld = false;
+      } else player.socket.send(encoded);
+    }
   }
 
   function snapshot(room, includeWorld = false) {
@@ -109,8 +122,8 @@ export function createGameServer({
       projectileImpacts: (room.projectileImpacts || []).map(effect=>({...effect})),
       animals: room.animals.map(({id,x,z,facing,speed,scale,radius,clip,phase,health,maxHealth,meatRemaining,phaseStartedAt,riderId})=>({id,x,z,facing,speed,scale,radius,clip,phase,health,maxHealth,meatRemaining,phaseStartedAt,riderId})),
       enemies: (room.enemies || []).map(({id,modelKey,name,hostile,x,z,scale,facing,speed,radius,clip,phase,health,maxHealth,phaseStartedAt,behavior,targetId,attackSequence,attackAt,hitSequence,hitAt})=>({id,modelKey,name,hostile,x,z,scale,facing,speed,radius,clip,phase,health,maxHealth,phaseStartedAt,behavior,targetId,attackSequence,attackAt,hitSequence,hitAt})),
-      players: [...room.players.values()].map(({ id, name, species, gender, x, z, radius, color, inventory, tool, ready, energy, facing, moving, running, speed, attackSequence, attackAt, cookingEndsAt, hurtSequence, hurtAt, defeatSequence, downedUntil, invulnerableUntil, mountId }) =>
-        ({ id, name, species, gender, x, z, radius, color, inventory: { ...inventory }, tool, ready, energy, facing, moving, running, speed, attackSequence, attackAt, cookingEndsAt, hurtSequence, hurtAt, defeatSequence, downedUntil, invulnerableUntil, mountId })),
+      players: [...room.players.values()].map(({ id, name, species, gender, x, z, radius, color, inventory, gathered, tool, ready, energy, facing, moving, running, speed, attackSequence, attackAt, cookingEndsAt, hurtSequence, hurtAt, defeatSequence, downedUntil, invulnerableUntil, mountId }) =>
+        ({ id, name, species, gender, x, z, radius, color, inventory: { ...inventory }, gathered: gathered ?? 0, tool, ready, energy, facing, moving, running, speed, attackSequence, attackAt, cookingEndsAt, hurtSequence, hurtAt, defeatSequence, downedUntil, invulnerableUntil, mountId })),
       ...(includeWorld ? {resources: room.resources.map(({ regeneratedAt, ...resource }) => ({ ...resource })), camp: { ...room.camp }, cookingFires:room.cookingFires, npc: { ...NPC }} : {}),
       day: 1 + Math.floor((now - room.createdAt) / 240000),
       dayProgress: ((now - room.createdAt) % 240000) / 240000,
@@ -141,21 +154,26 @@ export function createGameServer({
       if (hunting.changed) broadcast(room, snapshot(room));
       return;
     }
+    if (player.cookingEndsAt) return notice(player, '肉を焼いています。先に調理を終えるか中止しよう。');
+    if (player.attackSequence && now - player.attackAt < attackProfile(player).durationMs) return notice(player, '攻撃が終わってから行おう。');
     if (action === 'gather') {
-      const nearest = room.resources.filter((resource) => resource.amount > 0 && distance(resource, player) <= 8)
+      const candidates = room.resources.filter((resource) => resource.amount > 0 && distance(resource, player) <= 8 && interactionVisible(room.collision, player, resource));
+      const nearest = candidates.filter(resource => player.inventory[resource.type] < 99)
         .sort((a, b) => distance(a, player) - distance(b, player))[0];
-      if (!nearest) return notice(player, '資源に近づいてから採集しよう。', 'error');
+      if (!nearest) return notice(player, candidates.length ? '持ち物がいっぱいです。焚き火に届けよう。' : '資源に近づいてから採集しよう。遮られている場合は回り込もう。', 'error');
       const amount = Math.min(nearest.amount, player.tool && nearest.type !== 'berry' ? 2 : 1);
       if (player.inventory[nearest.type] >= 99) return notice(player, '持ち物がいっぱいです。焚き火に届けよう。', 'error');
       const collected = Math.min(amount, 99 - player.inventory[nearest.type]);
       nearest.amount -= collected;
       nearest.regeneratedAt = Date.now();
       player.inventory[nearest.type] += collected;
+      player.gathered = (player.gathered ?? 0) + collected;
       player.energy = Math.max(0, player.energy - 3);
       const label = { wood: '木材', stone: '石', berry: 'ベリー' }[nearest.type];
       notice(player, `${label} +${collected}`, 'success');
     } else if (action === 'contribute') {
       if (distance(player, room.camp) > 10) return notice(player, '焚き火に近づいてから届けよう。', 'error');
+      if (!interactionVisible(room.collision, player, room.camp)) return notice(player, '焚き火までの間がふさがれています。回り込もう。', 'error');
       const { wood, stone } = player.inventory;
       if (!wood && !stone) return notice(player, '木材や石を集めて持ってこよう。', 'error');
       room.camp.wood += wood;
@@ -178,6 +196,7 @@ export function createGameServer({
       notice(player, '石斧ができた！ 木材と石を一度に2つ採集できます。', 'success');
     } else if (action === 'trade') {
       if (distance(player, NPC) > 10) return notice(player, 'オルに近づいて話しかけよう。', 'error');
+      if (!interactionVisible(room.collision, player, NPC)) return notice(player, 'オルまでの間がふさがれています。回り込もう。', 'error');
       const material = player.inventory.wood >= 2 ? 'wood' : player.inventory.stone >= 2 ? 'stone' : null;
       if (!material) return notice(player, 'オル「木か石を2つ、ベリー3つと交換しよう」');
       if (player.inventory.berry > 96) return notice(player, 'ベリーを食べてから交換しよう。', 'error');
@@ -216,7 +235,7 @@ export function createGameServer({
     const roomName = cleanText(params.get('room'), 20).toUpperCase().replace(/[^A-Z0-9_-]/g, '') || 'EMBER';
     let room = rooms.get(roomName);
     if (!room) {
-      room = { name: roomName, createdAt: Date.now(), players: new Map(), enemies: [], resources: INITIAL_RESOURCES.map((resource) => ({ ...resource, regeneratedAt: Date.now() })), camp: { ...CAMP }, lastBroadcast: 0 };
+      room = { name: roomName, createdAt: Date.now(), players: new Map(), sessions: new Map(), enemies: [], resources: INITIAL_RESOURCES.map((resource) => ({ ...resource, regeneratedAt: Date.now() })), camp: { ...CAMP }, lastBroadcast: 0 };
       room.cookingFires=SCENERY.fires.map(({id,x,z})=>({id:id??`fire-${x}-${z}`,x,z}));
       room.resourceById=new Map(room.resources.map(r=>[r.id,r]));
       room.collision=new CollisionWorld(undefined,{active:o=>!o.resourceId||room.resourceById.get(o.resourceId).amount>0});
@@ -225,35 +244,55 @@ export function createGameServer({
       room.enemies=createEnemies(room.collision,room.animals);
       rooms.set(roomName, room);
     }
-    if (room.players.size >= WORLD.maxPlayers) {
+    const now=Date.now(),token=params.get('session'),resumable=params.get('resume')==='1';
+    for(const [key,entry] of room.sessions)if(now>=entry.expiresAt)room.sessions.delete(key);
+    const active=resumable&&token?[...room.players.values()].find(p=>p.sessionToken===token):null;
+    const saved=resumable&&token?room.sessions.get(token):null;
+    if (room.players.size >= WORLD.maxPlayers && !active) {
       send(socket, { type: 'error', code: 'ROOM_FULL', text: 'この谷は5人でいっぱいです。別の部屋の名前で参加してください。' });
       socket.close(4001, 'Room full');
       return;
     }
     const usedColors = new Set([...room.players.values()].map((player) => player.color));
-    const player = {
+    const resumed=!!(active||saved);
+    const player = active || saved?.player || {
       id: randomUUID(), name: cleanText(params.get('name'), 16) || '旅人',
       ...normalizeCharacter({ species: params.get('species'), gender: params.get('gender') }),
       x: 48 + room.players.size * 1.1, z: 57 + (room.players.size % 2),
       color: COLORS.find((color) => !usedColors.has(color)) || COLORS[0],
-      inventory: { wood: 0, stone: 0, berry: 0, rawMeat: 0, cookedMeat: 0 }, tool: false,
+      inventory: { wood: 0, stone: 0, berry: 0, rawMeat: 0, cookedMeat: 0 }, gathered: 0, tool: false,
       mountId: null, attackSequence: 0, attackAt: 0, pendingStrike: null, cookingEndsAt: 0,
       hurtSequence: 0, hurtAt: 0, defeatSequence: 0, downedUntil: 0, invulnerableUntil: 0,
       ready: room.camp.level > 0, energy: 100, facing: 0, moving: false, running: false, runningRequested: false, speed: 0,
       radius: WORLD.playerRadius, path: [], lastTarget: 0, dx: 0, dz: 0, target: null, lastInput: 0, lastAction: 0, lastChat: 0,
       tokens: 70, refillAt: Date.now(), alive: true, socket,
+      sessionToken: resumable ? randomBytes(32).toString('hex') : null,
     };
     player.radius=characterModel(player).radius ?? WORLD.playerRadius;
-    const spawn=room.collision.nearestFree(player,player.radius,[...room.players.values(),...room.animals.filter(animalIsSolid),...room.enemies.filter(enemyIsSolid)].map(actorObstacle));
+    const dynamic=[...room.players.values()].filter(p=>p!==player&&!p.mountId).concat(room.animals.filter(animalIsSolid),room.enemies.filter(enemyIsSolid)).map(actorObstacle);
+    const spawn=room.collision.nearestFree(player,player.radius,dynamic)
+      || (resumed&&room.collision.nearestFree({x:room.camp.x-1,z:room.camp.z+3},player.radius,dynamic));
     if(!spawn){send(socket,{type:'error',code:'NO_SPAWN',text:'安全な参加地点がありません。'});socket.close();return;}
+    if(active){
+      const oldSocket=player.socket;
+      releaseRider(room,player);player.pendingStrike=null;player.cookingEndsAt=0;
+      room.projectiles=(room.projectiles||[]).filter(projectile=>projectile.ownerId!==player.id);
+      player.socket=socket;
+      send(oldSocket,{type:'error',code:'SESSION_REPLACED',text:'同じプレイヤーが別の画面で再接続しました。この画面からは参加し直せます。'});
+      oldSocket.close(4004,'Session replaced');
+    }
+    if(saved)room.sessions.delete(token);
+    Object.assign(player,{socket,alive:true,tokens:70,refillAt:now,lastInput:0,lastTarget:0,lastAction:0,lastChat:0,runningRequested:false,needsWorld:false,ready:room.camp.level>0});
+    stopActor(player);
     Object.assign(player,spawn);room.players.set(player.id, player);
-    send(socket, { type: 'welcome', ridingVersion: RIDING.version, combatVersion: 3, characterVersion: 2, worldVersion: WORLD.version, id: player.id, room: roomName });
+    send(socket, { type: 'welcome', ridingVersion: RIDING.version, combatVersion: 3, characterVersion: 2, worldVersion: WORLD.version, id: player.id, room: roomName,
+      resumed, session:player.sessionToken, profile:{name:player.name,species:player.species,gender:player.gender} });
     broadcast(room, snapshot(room, true));
-    systemChat(room, `${player.name} が谷にやってきた。`);
-    socket.on('pong', () => { player.alive = true; });
+    systemChat(room, `${player.name} が谷に${resumed?'戻ってきた':'やってきた'}。`);
+    socket.on('pong', () => { if(player.socket===socket)player.alive = true; });
     socket.on('error', () => {});
     socket.on('message', (data, isBinary) => {
-      if (isBinary) return;
+      if (isBinary || player.socket!==socket) return;
       const now = Date.now();
       player.tokens = Math.min(70, player.tokens + (now - player.refillAt) * 0.035);
       player.refillAt = now;
@@ -262,6 +301,7 @@ export function createGameServer({
       let message;
       try { message = JSON.parse(data.toString()); } catch { return; }
       if (!message || typeof message !== 'object' || Array.isArray(message)) return;
+      if(message.type==='leave'){player.sessionToken=null;socket.close(1000,'Explicit leave');return;}
       const controlled = mountedAnimal(room, player) || player;
       if (player.downedUntil && ['move','gait','target','action'].includes(message.type)) {
         if (message.type === 'action') notice(player, '回復を待っています。間もなく焚き火へ戻ります。', 'info');
@@ -302,11 +342,13 @@ export function createGameServer({
       }
     });
     socket.on('close', () => {
+      if(player.socket!==socket)return;
       releaseRider(room, player);
-      player.pendingStrike = null;
+      player.pendingStrike = null;player.cookingEndsAt=0;
       room.projectiles=(room.projectiles || []).filter(projectile=>projectile.ownerId!==player.id);
       room.players.delete(player.id);
-      if (room.players.size === 0) rooms.delete(roomName);
+      if(!closing&&player.sessionToken&&resumeGraceMs>0)room.sessions.set(player.sessionToken,{player,expiresAt:Date.now()+resumeGraceMs});
+      if (room.players.size === 0 && !room.sessions.size) rooms.delete(roomName);
       else {
         systemChat(room, `${player.name} が谷をあとにした。`);
         broadcast(room, snapshot(room, true));
@@ -323,6 +365,8 @@ export function createGameServer({
     const heartbeat = now - lastHeartbeat > 15000;
     if (heartbeat) lastHeartbeat = now;
     for (const room of rooms.values()) {
+      for(const [token,entry] of room.sessions)if(now>=entry.expiresAt)room.sessions.delete(token);
+      if(!room.players.size){if(!room.sessions.size)rooms.delete(room.name);continue;}
       for (const player of room.players.values()) {
         if(!player.target)player.target=player.path.shift()||null;
         const dynamic=[...room.players.values()].filter(p=>p!==player).concat(room.animals.filter(animalIsSolid),room.enemies.filter(enemyIsSolid)).map(actorObstacle);

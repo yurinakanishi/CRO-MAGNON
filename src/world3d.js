@@ -3,7 +3,8 @@ import { terrainHeight, walkHeight, riverX, riverHalfWidth, WATER_LEVEL, clamp, 
 import { WORLD, worldClamp, CAMP, NPC, INITIAL_RESOURCES } from '/shared/world.mjs';
 import { WorldAssets } from './world-assets.js';
 import { WorldLandmarks } from './world-landmarks.js';
-import { buildTerrainAssets, buildForestAssets, buildCampAssets, buildAnimalAssets, resourceAssets } from './world-scenery.js';
+import { buildTerrainAssets, buildForestAssets, buildCampAssets, buildAnimalAssets } from './world-scenery.js';
+import { resourceAppearance } from '../shared/biome-scenery.mjs';
 import { CharacterAssets } from './character-assets.js';
 import { confirmedAction } from './character-animation.js';
 import { orientSpear } from './spear-pose.js';
@@ -46,7 +47,7 @@ export class WorldRenderer {
     this.atmosphere=new WorldAtmosphere(this);
     this.createNavigation();this.setupInput();
     this.resizeObserver=new ResizeObserver(()=>this.resize());this.resizeObserver.observe(canvas);this.resize();
-    this.contextLost=e=>{e.preventDefault();this.onError('3D描画が一時停止しました。ページを再読み込みしてください。');};
+    this.contextLost=e=>{e.preventDefault();this.failWorld('3D描画が一時停止しました。ページを再読み込みしてください。',new Error('WebGL context lost'));};
     canvas.addEventListener('webglcontextlost',this.contextLost);
     this.frameClock=new FrameClock(performance.now(),60);
     this.animate=(now)=>{if(this.disposed||this.failed)return;const dt=this.frameClock.advance(now,document.hidden);if(dt!==null)this.render(now/1000,dt);this.frame=requestAnimationFrame(this.animate);};
@@ -119,8 +120,10 @@ export class WorldRenderer {
     for(const resource of this.state.resources){
       let item=this.resources.get(resource.id);
       if(!item){
-        const model=this.worldAssets.createResource(resourceAssets[resource.type]);if(resource.type==='stone')model.scale.setScalar(.55);model.position.set(resource.x,walkHeight(resource.x,resource.z),resource.z);model.rotation.y=resource.x*.2;this.scene.add(model);
-        const label=this.createLabel({wood:'木材',stone:'石',berry:'ベリー'}[resource.type],'resource',new THREE.Vector3(resource.x,walkHeight(resource.x,resource.z)+1.7,resource.z));item={model,label};this.resources.set(resource.id,item);
+        const {key,surface,scale,yaw}=resourceAppearance(resource);
+        if(surface&&!this.regionalScenery?.wants(key,surface))continue;
+        const model=this.worldAssets.createResource(key,surface);model.scale.setScalar(scale);model.position.set(resource.x,walkHeight(resource.x,resource.z),resource.z);model.rotation.y=yaw;this.scene.add(model);
+        const label=this.createLabel({wood:'木材',stone:'石',berry:'ベリー'}[resource.type],'resource',new THREE.Vector3(resource.x,walkHeight(resource.x,resource.z)+1.7,resource.z));item={model,label,key,surface};this.resources.set(resource.id,item);
       }
       item.resource=resource;item.model.visible=resource.amount>0;item.label.active=resource.amount>0;
     }
@@ -349,6 +352,7 @@ export class WorldRenderer {
     this.camera.lookAt(aim);this.camera.updateMatrixWorld();this.sun.position.set(this.focus.x-32,48,this.focus.z-25);this.sun.target.position.set(this.focus.x,0,this.focus.z);
     this.openWorld?.update(this.camera,time);
     this.landmarks?.update(this.camera,time);
+    this.regionalScenery?.update(this.camera,time);
     this.atmosphere.update(this.focus,time,dt);
     if(time>=this.nextStaticCull){
       this.nextStaticCull=time+.2;
@@ -392,6 +396,11 @@ export class WorldRenderer {
     this.fpsFrames++;
     if(time-this.lastFpsTime>1){
       const data=this.canvas.dataset,info=this.renderer.info;
+      const regional=this.worldAssets.surfaceDiagnostics();
+      data.regionFeatures=JSON.stringify(this.landmarks?.diagnostics()??null);
+      data.regionalSharing=JSON.stringify(regional);data.regionalMaterials=String(regional.materials);
+      data.regionalBaseCopies=String(regional.extraGeometries+regional.extraTextures);
+      data.regionalLandscapes=JSON.stringify(this.landscapes.filter(item=>item.surface).map(item=>({key:item.key,surface:item.surface,instances:item.levels.map(meshes=>meshes[0]?.mesh.count??0)})));
       data.fps=String(Math.round(this.fpsFrames/(time-this.lastFpsTime)));
       data.cameraPosition=[this.camera.position.x,this.camera.position.y,this.camera.position.z].map(n=>n.toFixed(2)).join(',');
       data.resourceLods=JSON.stringify([...this.resources.entries()].filter(([,item])=>item.model.isLOD&&item.model.visible).map(([id,item])=>({id,level:item.model.getCurrentLevel(),distance:Number(item.model.position.distanceTo(this.camera.position).toFixed(2))})));
@@ -428,7 +437,7 @@ export class WorldRenderer {
   }
 
   destroy(){
-    this.disposed=true;this.landmarks?.dispose();this.openWorld?.dispose();this.releaseTerrainSampler?.();this.releaseBridgeSampler?.();cancelAnimationFrame(this.frame);this.resizeObserver.disconnect();this.labelLayer.remove();this.loadingLabel?.remove();
+    this.disposed=true;this.regionalScenery?.dispose();this.landmarks?.dispose();this.openWorld?.dispose();this.releaseTerrainSampler?.();this.releaseBridgeSampler?.();cancelAnimationFrame(this.frame);this.resizeObserver.disconnect();this.labelLayer.remove();this.loadingLabel?.remove();
     for(const entity of this.players.values())if(entity.actor)this.scene.remove(entity.model);
     for(const landscape of this.landscapes)landscape.dispose();
     for(const provider of this.humanAssets.values())provider.dispose();this.worldAssets.dispose();

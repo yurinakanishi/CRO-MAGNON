@@ -1,0 +1,20 @@
+{
+  "startedAt": "2026-09-07T02:26:19.220Z",
+  "mode": "Two actual Chromium browsers and three passive WebSocket peers, isolated port 3004 / WORLD-QA",
+  "snapshots": 7070,
+  "maxPlayers": 5,
+  "biomes": {
+    "grassland": 1836,
+    "desert": 14755,
+    "volcano": 13900,
+    "ice": 4850
+  },
+  "staticPenetrations": 0,
+  "dynamicPenetrations": 0,
+  "mountMismatches": 0,
+  "sixthRefused": true,
+  "errors": [],
+  "probed": true,
+  "finishedAt": "2026-09-07T02:39:30.666Z",
+  "status": "passed"
+}

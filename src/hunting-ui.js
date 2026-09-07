@@ -1,6 +1,8 @@
 import { HUNTING, huntingDistance, nearestHuntTarget, nearestCookingFire } from '../shared/hunting.mjs';
 import { WORLD } from '../shared/world.mjs';
 import { withinAttackReach } from '../shared/combat.mjs';
+import { attackProfile } from '../shared/combat-profiles.mjs';
+import { interactionVisible } from '../shared/interactions.mjs';
 
 export function inventoryCounts(inventory = {}) {
   return Object.fromEntries(['wood', 'stone', 'berry', 'rawMeat', 'cookedMeat'].map(key => [key, Math.max(0, Number(inventory[key]) || 0)]));
@@ -8,8 +10,10 @@ export function inventoryCounts(inventory = {}) {
 
 export function selectedHuntTarget(animals, player, selectedId) {
   if (!player) return null;
+  animals = animals.filter(animal => !animal.riderId);
   return animals.find(animal => animal.id === selectedId && animal.phase !== 'respawning')
-    || nearestHuntTarget(animals, player, 'alive') || nearestHuntTarget(animals, player, 'meat');
+    || animals.filter(animal => ['alive', 'dying', 'meat'].includes(animal.phase))
+      .reduce((nearest, animal) => !nearest || huntingDistance(player, animal) < huntingDistance(player, nearest) ? animal : nearest, null);
 }
 
 export function selectedCombatTarget(state, player, selectedId) {
@@ -22,26 +26,28 @@ export function selectedCombatTarget(state, player, selectedId) {
     || selectedHuntTarget(state.animals || [], player, selectedId);
 }
 
-export function huntInteraction(state, player) {
-  if (!player) return null;
+export function huntInteraction(state, player, collision) {
+  if (!player || player.mountId || player.downedUntil) return null;
   if (player.cookingEndsAt) return { action: 'cancelCook', label: '肉を焼くのを中止する' };
-  const meat = nearestHuntTarget(state.animals || [], player, 'meat');
+  const meat = nearestHuntTarget((state.animals || []).filter(animal => !collision || collision.segmentFree(player, animal, .12)), player, 'meat');
   if (meat && huntingDistance(player, meat) <= HUNTING.harvestRange) {
     return { action: 'harvest', targetId: meat.id, label: `生肉を採る（残り${meat.meatRemaining}個）` };
   }
-  if (inventoryCounts(player.inventory).rawMeat && huntingDistance(player, nearestCookingFire(state,player)) <= HUNTING.cookRange) {
+  const fire = nearestCookingFire(state,player);
+  if (inventoryCounts(player.inventory).rawMeat && huntingDistance(player, fire) <= HUNTING.cookRange && (!collision || interactionVisible(collision, player, fire))) {
     return { action: 'cook', label: '焚き火で生肉を焼く（3秒）' };
   }
   return null;
 }
 
 export function attackReady(player, animal) {
-  return !!player && animal?.phase === 'alive' && withinAttackReach({ ...player, radius: player.radius ?? WORLD.playerRadius }, animal);
+  return !!player && !player.mountId && !player.downedUntil && !animal?.riderId && animal?.phase === 'alive' && withinAttackReach({ ...player, radius: player.radius ?? WORLD.playerRadius }, animal);
 }
 
 export function approachAnimal(player, animal) {
   const dx = player.x - animal.x, dz = player.z - animal.z, length = Math.hypot(dx, dz);
-  const radius = animal.phase === 'meat' ? 1 : animal.radius + (player.radius ?? WORLD.playerRadius) + .9;
+  const gap = Math.min(.9, attackProfile(player).reach - .15);
+  const radius = animal.phase === 'meat' ? 1 : animal.radius + (player.radius ?? WORLD.playerRadius) + gap;
   return { x: animal.x + (length ? dx / length : 0) * radius, z: animal.z + (length ? dz / length : 1) * radius };
 }
 

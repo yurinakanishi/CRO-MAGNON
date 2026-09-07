@@ -1,7 +1,7 @@
 import * as THREE from 'three';
-import { WORLD } from '/shared/world.mjs';
-import { BIOMES, biomeById, nearbyChunks } from '/shared/biomes.mjs';
-import { installBiomeTerrain } from '/shared/terrain.mjs';
+import { WORLD } from '../shared/world.mjs';
+import { BIOMES, biomeById, nearbyChunks } from '../shared/biomes.mjs';
+import { installBiomeTerrain } from '../shared/terrain.mjs';
 import { fitSourceRiverBank } from './source-surface-fit.js';
 
 const RADIUS=128, CAPACITY=100;
@@ -129,7 +129,12 @@ export class OpenWorldTerrain {
       const level=Math.min(levels.length-1,distance<44?0:distance<82?1:2);matrix.makeRotationY(chunk.yaw).setPosition(chunk.x,0,chunk.z);
       for(const part of levels[level]){part.mesh.setMatrixAt(part.mesh.count,matrix);part.mesh.count++;}
     }
-    for(const levels of this.prepared.values())for(const parts of levels)for(const part of parts)part.mesh.instanceMatrix.needsUpdate=true;
+    for(const levels of this.prepared.values())for(const parts of levels)for(const part of parts){
+      part.mesh.instanceMatrix.needsUpdate=true;
+      // InstancedMesh caches this on its first raycast. Streaming changes both
+      // the count and positions, so the next ground click needs fresh bounds.
+      part.mesh.boundingSphere=null;part.mesh.boundingBox=null;
+    }
     Object.assign(this.world.canvas.dataset,{terrainChunks:String(this.chunks.size),terrainVisibleChunks:String(visible),terrainChunkLimit:String(CAPACITY),terrainRadius:String(RADIUS),terrainAssetTypes:String(this.prepared.size),terrainPending:String(this.pending.size)});
   }
   removeChunk(chunk) {for(const mesh of chunk.bankMeshes){this.root.remove(mesh);mesh.geometry.dispose();}}

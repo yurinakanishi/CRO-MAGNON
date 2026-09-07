@@ -1,0 +1,126 @@
+{
+  "schemaVersion": 1,
+  "status": "passed",
+  "at": "2026-09-07T02:51:06.809Z",
+  "url": "http://localhost:3000/biome-review.html",
+  "health": {
+    "ok": true,
+    "ridingVersion": 1,
+    "combatVersion": 3,
+    "characterVersion": 2,
+    "enemyVersion": 1,
+    "worldVersion": 2,
+    "worldSize": 640,
+    "rooms": 1,
+    "players": 1,
+    "maxPlayers": 5
+  },
+  "served": [
+    {
+      "url": "/models/desert-cactus/model.glb",
+      "bytes": 2122540,
+      "sha256": "df3e780323fd45808d92b2f7edcd2c7d9ee8000f1ea0c67b29baab73c939d7ed"
+    },
+    {
+      "url": "/models/desert-cactus/lod1.glb",
+      "bytes": 1662216,
+      "sha256": "d04e3a4dcab15ab00753fe26bf84a062c40c09d5ae3083174148e3bb6d19ed2d"
+    },
+    {
+      "url": "/models/desert-cactus/lod2.glb",
+      "bytes": 1424504,
+      "sha256": "1f1642cf62ce45665a5e326a0ef795a716a4397822c1fdc9ff0366e39fb13f8e"
+    },
+    {
+      "url": "/models/volcanic-basalt-columns/model.glb",
+      "bytes": 5454964,
+      "sha256": "a3cf5fa909494f4250e4cacd9bc9529b9780f9d7292fc1bfd6bf6235ae71c0fc"
+    },
+    {
+      "url": "/models/volcanic-basalt-columns/lod1.glb",
+      "bytes": 3088636,
+      "sha256": "2a3e890af2b0bf31f71fba58db39eff122f6b60c06cf341c86c85f80db665dde"
+    },
+    {
+      "url": "/src/world-landmarks.js",
+      "bytes": 4165,
+      "sha256": "c37a7044717e18b1ff85cf703a6c928f5c9d2a1c077a679f69bb65126986eb31"
+    },
+    {
+      "url": "/src/region-feature-diagnostics.js",
+      "bytes": 1595,
+      "sha256": "a2c279cbd0224b8f3728a475b5a1525f1023ef84b43d9a1ce16da2c38eef5dd9"
+    },
+    {
+      "url": "/shared/region-features.mjs",
+      "bytes": 14276,
+      "sha256": "bd3c7719d5140697965772707cb8255bc85c905f46673d034ba3db2b8b21848a"
+    },
+    {
+      "url": "/shared/region-feature-bounds.mjs",
+      "bytes": 7468,
+      "sha256": "d9baca1f945479959b5d8ac8e73669605244c36a803873c28e21344ca7f8b8e9"
+    }
+  ],
+  "startup": {
+    "action": "Started npm run dev on port 3000 after confirming the previously running server was already offline before this integration.",
+    "checkpointRestored": false,
+    "note": "No fresh live checkpoint was available. Old checkpoints were not replayed; this does not add persistence."
+  },
+  "browser": {
+    "page": "/biome-review.html",
+    "ready": true,
+    "links": [
+      "desert-cactus",
+      "volcanic-basalt-columns"
+    ],
+    "baseModel": "valley-pine",
+    "surfaceVariants": 5,
+    "geometries": 1,
+    "textures": 1,
+    "extraSourceObjects": 0,
+    "errors": 0,
+    "warnings": 0
+  },
+  "archives": {
+    "files": 452,
+    "bytes": 348036437,
+    "existingFilesOverwritten": 0,
+    "models": [
+      {
+        "schemaVersion": 1,
+        "modelKey": "desert-cactus",
+        "status": "copied-and-all-source-and-destination-hashes-verified",
+        "verifiedAt": "2026-09-07T02:48:32.514Z",
+        "planSha256": "a47444cb33dec662625a8a8cf4898441049ea46f196ae1a5a644fed866701d6e",
+        "sourceRoot": "C:\\Users\\yurin\\Desktop\\projects\\CRO-MAGNON\\output\\model-generation\\models\\desert-cactus",
+        "destinationRoot": "C:\\Users\\yurin\\Desktop\\projects\\threed-model-creation\\models\\desert-cactus",
+        "files": 302,
+        "bytes": 158386787,
+        "copied": 302,
+        "skippedEqual": 0,
+        "preflightExistingEqual": 0
+      },
+      {
+        "schemaVersion": 1,
+        "modelKey": "volcanic-basalt-columns",
+        "status": "copied-and-all-source-and-destination-hashes-verified",
+        "verifiedAt": "2026-09-07T02:48:45.831Z",
+        "planSha256": "b307d2ee9c50de6077f5769a8197784cb4fcc5bea69de4ca914dc128a9e3ab16",
+        "sourceRoot": "C:\\Users\\yurin\\Desktop\\projects\\CRO-MAGNON\\output\\model-generation\\models\\volcanic-basalt-columns",
+        "destinationRoot": "C:\\Users\\yurin\\Desktop\\projects\\threed-model-creation\\models\\volcanic-basalt-columns",
+        "files": 150,
+        "bytes": 189649650,
+        "copied": 150,
+        "skippedEqual": 0,
+        "preflightExistingEqual": 0
+      }
+    ]
+  },
+  "qaCleanup": {
+    "observer": "Stopped after recording final network QA.",
+    "server3004": "Stopped through its owned stdin shutdown command.",
+    "mobileBrowser": "Closed.",
+    "normalServer3000": "Running."
+  }
+}

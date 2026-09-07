@@ -1,0 +1,769 @@
+{
+  "date": "2026-09-07",
+  "status": "verified",
+  "scope": "Existing game behavior; no new or changed GLB models",
+  "baselineTests": 135,
+  "automated": {
+    "tests": 152,
+    "passed": 152,
+    "failed": 0,
+    "skipped": 0,
+    "syntaxFiles": 118,
+    "verifiedModelCount": 31,
+    "commands": [
+      "npm test",
+      "npm run check",
+      "npm run verify:assets",
+      "git diff --check"
+    ]
+  },
+  "environment": {
+    "browser": "Google Chrome via Playwright, headless",
+    "renderedBrowserContexts": 2,
+    "additionalWebSocketPeers": 3,
+    "maximumRoomPlayers": 5,
+    "fixtureMethod": "Isolated localhost QA server; positions and inventories staged through stdin. Gameplay then exercised through visible controls. Collision observations include staged states.",
+    "qaPorts": [
+      3004,
+      3005
+    ],
+    "testedViewports": [
+      {
+        "width": 1440,
+        "height": 900
+      },
+      {
+        "width": 390,
+        "height": 844
+      },
+      {
+        "width": 844,
+        "height": 390
+      },
+      {
+        "width": 360,
+        "height": 640
+      }
+    ],
+    "mobilePhysicalDevice": false,
+    "lanPhysicalDevice": false
+  },
+  "characters": [
+    {
+      "species": "cro",
+      "gender": "female",
+      "model": "cro-magnon-woman",
+      "attack": "F\n槍で攻撃"
+    },
+    {
+      "species": "cro",
+      "gender": "male",
+      "model": "cro-magnon-hunter",
+      "attack": "F\n槍で攻撃"
+    },
+    {
+      "species": "nea",
+      "gender": "female",
+      "model": "neanderthal-woman",
+      "attack": "F\n槍で攻撃"
+    },
+    {
+      "species": "nea",
+      "gender": "male",
+      "model": "neanderthal-hunter",
+      "attack": "F\n槍で攻撃"
+    },
+    {
+      "species": "cat",
+      "gender": "female",
+      "model": "cat-kunoichi",
+      "attack": "F\n刀で斬る"
+    },
+    {
+      "species": "bear",
+      "gender": "female",
+      "model": "bear-mage",
+      "attack": "F\n光の魔法"
+    }
+  ],
+  "worldBoundaries": [
+    {
+      "id": "snow",
+      "start": {
+        "x": -26.58571049722522,
+        "z": -15.99585023041599
+      },
+      "finish": {
+        "x": -30.045945270365607,
+        "z": -21.11124669156643
+      },
+      "serverRegion": "snow",
+      "biome": "snow",
+      "weather": "snow",
+      "chunks": 69,
+      "fps": 60,
+      "copies": 0,
+      "pending": "0"
+    },
+    {
+      "id": "ice",
+      "start": {
+        "x": 122.4934280949616,
+        "z": -21.74463568567645
+      },
+      "finish": {
+        "x": 126.73117240037574,
+        "z": -26.242024657283295
+      },
+      "serverRegion": "ice",
+      "biome": "ice",
+      "weather": "snow",
+      "chunks": 68,
+      "fps": 60,
+      "copies": 0,
+      "pending": "0"
+    },
+    {
+      "id": "volcano",
+      "start": {
+        "x": 127.72997341234478,
+        "z": 126.53331657957435
+      },
+      "finish": {
+        "x": 134.38334990290312,
+        "z": 127.71328823808372
+      },
+      "serverRegion": "volcano",
+      "biome": "volcano",
+      "weather": "ash",
+      "chunks": 68,
+      "fps": 60,
+      "copies": 0,
+      "pending": "0"
+    },
+    {
+      "id": "desert",
+      "start": {
+        "x": -19.109812481934384,
+        "z": 126.11885586279956
+      },
+      "finish": {
+        "x": -23.266282528499186,
+        "z": 130.51969763591708
+      },
+      "serverRegion": "desert",
+      "biome": "desert",
+      "weather": "sand",
+      "chunks": 69,
+      "fps": 60,
+      "copies": 0,
+      "pending": "0"
+    }
+  ],
+  "materialEvictionReload": [
+    {
+      "biome": "desert",
+      "keys": [
+        "firewood-pile:sand",
+        "hide-tent:sand",
+        "meadow-grass:sand",
+        "stone-firepit:sand",
+        "valley-boulder:sand"
+      ],
+      "features": {
+        "counts": {
+          "desert-cactus": 43,
+          "volcanic-basalt-columns": 0
+        },
+        "lodCounts": {
+          "desert-cactus": [
+            10,
+            23,
+            10
+          ],
+          "volcanic-basalt-columns": [
+            0,
+            0,
+            0
+          ]
+        },
+        "loaded": [
+          "desert-cactus"
+        ],
+        "sourceGeometries": 3,
+        "sourceTextures": 1,
+        "extraGeometries": 0,
+        "extraMaterials": 0,
+        "extraTextures": 0
+      },
+      "geometries": 56,
+      "textures": 43,
+      "copies": 0,
+      "chunks": 67,
+      "fps": 60
+    },
+    {
+      "biome": "volcano",
+      "keys": [
+        "firewood-pile:ash",
+        "hide-tent:ash",
+        "stone-firepit:ash",
+        "valley-boulder:ash"
+      ],
+      "features": {
+        "counts": {
+          "desert-cactus": 0,
+          "volcanic-basalt-columns": 12
+        },
+        "lodCounts": {
+          "desert-cactus": [
+            0,
+            0,
+            0
+          ],
+          "volcanic-basalt-columns": [
+            4,
+            8,
+            0
+          ]
+        },
+        "loaded": [
+          "volcanic-basalt-columns"
+        ],
+        "sourceGeometries": 2,
+        "sourceTextures": 1,
+        "extraGeometries": 0,
+        "extraMaterials": 0,
+        "extraTextures": 0
+      },
+      "geometries": 55,
+      "textures": 43,
+      "copies": 0,
+      "chunks": 69,
+      "fps": 60
+    },
+    {
+      "biome": "desert",
+      "keys": [
+        "firewood-pile:sand",
+        "hide-tent:sand",
+        "meadow-grass:sand",
+        "stone-firepit:sand",
+        "valley-boulder:sand"
+      ],
+      "features": {
+        "counts": {
+          "desert-cactus": 43,
+          "volcanic-basalt-columns": 0
+        },
+        "lodCounts": {
+          "desert-cactus": [
+            10,
+            23,
+            10
+          ],
+          "volcanic-basalt-columns": [
+            0,
+            0,
+            0
+          ]
+        },
+        "loaded": [
+          "desert-cactus"
+        ],
+        "sourceGeometries": 3,
+        "sourceTextures": 1,
+        "extraGeometries": 0,
+        "extraMaterials": 0,
+        "extraTextures": 0
+      },
+      "geometries": 56,
+      "textures": 42,
+      "copies": 0,
+      "chunks": 67,
+      "fps": 60
+    }
+  ],
+  "collision": {
+    "states": 28721,
+    "staticPenetrations": 0,
+    "dynamicPenetrations": 0,
+    "riderMismatch": 0
+  },
+  "unexpectedBrowserErrors": [],
+  "resume": {
+    "sameId": true,
+    "inventoryBefore": {
+      "wood": 8,
+      "stone": 3,
+      "berry": 2,
+      "rawMeat": 2,
+      "cookedMeat": 0
+    },
+    "inventoryAfter": {
+      "wood": 8,
+      "stone": 3,
+      "berry": 2,
+      "rawMeat": 2,
+      "cookedMeat": 0
+    },
+    "energy": 37,
+    "position": {
+      "x": 130,
+      "z": 50
+    },
+    "errors": []
+  },
+  "fullRoomRetry": {
+    "maximumActivePlayers": 5,
+    "retryButton": true,
+    "sameId": true,
+    "inventoryBefore": {
+      "wood": 8,
+      "stone": 3,
+      "berry": 2,
+      "rawMeat": 2,
+      "cookedMeat": 0
+    },
+    "inventoryAfter": {
+      "wood": 8,
+      "stone": 3,
+      "berry": 2,
+      "rawMeat": 2,
+      "cookedMeat": 0
+    }
+  },
+  "viewports": [
+    {
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "scroll": {
+        "width": 390,
+        "height": 844
+      },
+      "controls": [
+        {
+          "id": "chat-toggle",
+          "x": 75,
+          "y": 522,
+          "right": 261,
+          "bottom": 560
+        },
+        {
+          "id": "attack-button",
+          "x": 102.109375,
+          "y": 574,
+          "right": 184.109375,
+          "bottom": 608
+        },
+        {
+          "id": "ride-button",
+          "x": 133.734375,
+          "y": 633,
+          "right": 227.4375,
+          "bottom": 667
+        },
+        {
+          "id": "木材0",
+          "x": 91,
+          "y": 723,
+          "right": 122,
+          "bottom": 772
+        },
+        {
+          "id": "石0",
+          "x": 126,
+          "y": 723,
+          "right": 157,
+          "bottom": 772
+        },
+        {
+          "id": "eat-button",
+          "x": 161,
+          "y": 723,
+          "right": 192,
+          "bottom": 772
+        },
+        {
+          "id": "1採集",
+          "x": 199,
+          "y": 723,
+          "right": 229,
+          "bottom": 772
+        },
+        {
+          "id": "2つくる",
+          "x": 231,
+          "y": 723,
+          "right": 261,
+          "bottom": 772
+        },
+        {
+          "id": "3届ける",
+          "x": 263,
+          "y": 723,
+          "right": 293,
+          "bottom": 772
+        },
+        {
+          "id": "4交換",
+          "x": 295,
+          "y": 723,
+          "right": 325,
+          "bottom": 772
+        },
+        {
+          "id": "run-button",
+          "x": 327,
+          "y": 723,
+          "right": 357,
+          "bottom": 772
+        }
+      ]
+    },
+    {
+      "viewport": {
+        "width": 844,
+        "height": 390
+      },
+      "scroll": {
+        "width": 844,
+        "height": 390
+      },
+      "controls": [
+        {
+          "id": "chat-toggle",
+          "x": 87,
+          "y": 313,
+          "right": 275,
+          "bottom": 355
+        },
+        {
+          "id": "attack-button",
+          "x": 456.875,
+          "y": 188,
+          "right": 542.875,
+          "bottom": 218
+        },
+        {
+          "id": "ride-button",
+          "x": 540.125,
+          "y": 225,
+          "right": 625.859375,
+          "bottom": 255
+        },
+        {
+          "id": "木材0",
+          "x": 405,
+          "y": 295,
+          "right": 447,
+          "bottom": 349
+        },
+        {
+          "id": "石0",
+          "x": 451,
+          "y": 295,
+          "right": 493,
+          "bottom": 349
+        },
+        {
+          "id": "eat-button",
+          "x": 497,
+          "y": 295,
+          "right": 539,
+          "bottom": 349
+        },
+        {
+          "id": "1採集",
+          "x": 554,
+          "y": 295,
+          "right": 593,
+          "bottom": 349
+        },
+        {
+          "id": "2つくる",
+          "x": 596,
+          "y": 295,
+          "right": 635,
+          "bottom": 349
+        },
+        {
+          "id": "3届ける",
+          "x": 638,
+          "y": 295,
+          "right": 677,
+          "bottom": 349
+        },
+        {
+          "id": "4交換",
+          "x": 680,
+          "y": 295,
+          "right": 719,
+          "bottom": 349
+        },
+        {
+          "id": "run-button",
+          "x": 722,
+          "y": 295,
+          "right": 761,
+          "bottom": 349
+        }
+      ]
+    },
+    {
+      "viewport": {
+        "width": 360,
+        "height": 640
+      },
+      "scroll": {
+        "width": 360,
+        "height": 640
+      },
+      "controls": [
+        {
+          "id": "chat-toggle",
+          "x": 309,
+          "y": 569,
+          "right": 347,
+          "bottom": 601
+        },
+        {
+          "id": "attack-button",
+          "x": 87.109375,
+          "y": 367,
+          "right": 169.109375,
+          "bottom": 401
+        },
+        {
+          "id": "ride-button",
+          "x": 118.734375,
+          "y": 424,
+          "right": 212.4375,
+          "bottom": 458
+        },
+        {
+          "id": "木材0",
+          "x": 89.5,
+          "y": 509,
+          "right": 116.5,
+          "bottom": 558
+        },
+        {
+          "id": "石0",
+          "x": 120.5,
+          "y": 509,
+          "right": 147.5,
+          "bottom": 558
+        },
+        {
+          "id": "eat-button",
+          "x": 151.5,
+          "y": 509,
+          "right": 178.5,
+          "bottom": 558
+        },
+        {
+          "id": "1採集",
+          "x": 183.5,
+          "y": 509,
+          "right": 210.5,
+          "bottom": 558
+        },
+        {
+          "id": "2つくる",
+          "x": 211.5,
+          "y": 509,
+          "right": 238.5,
+          "bottom": 558
+        },
+        {
+          "id": "3届ける",
+          "x": 239.5,
+          "y": 509,
+          "right": 266.5,
+          "bottom": 558
+        },
+        {
+          "id": "4交換",
+          "x": 267.5,
+          "y": 509,
+          "right": 294.5,
+          "bottom": 558
+        },
+        {
+          "id": "run-button",
+          "x": 295.5,
+          "y": 509,
+          "right": 328.5,
+          "bottom": 558
+        }
+      ]
+    }
+  ],
+  "controls": {
+    "cameraBefore": {
+      "yaw": "-0.280",
+      "distance": "4.50"
+    },
+    "cameraChanged": {
+      "yaw": "-1.000",
+      "distance": "2.36"
+    },
+    "cameraReset": {
+      "yaw": "-0.280",
+      "distance": "4.51"
+    },
+    "nativeEnterClosesHelp": true,
+    "journalEntries": 3,
+    "soundOn": "環境音をオフ",
+    "fullscreen": true,
+    "invitationIncludesOnlyRoom": true,
+    "chat": {
+      "deliveredToOtherBrowser": true,
+      "expanded": "true",
+      "collapsed": "false"
+    }
+  },
+  "simulatedInsecureLAN": {
+    "subtle": "undefined",
+    "ready": "ready",
+    "textures": 33,
+    "sharing": {
+      "variants": 7,
+      "materials": 8,
+      "sourceGeometries": 4,
+      "sourceTextures": 3,
+      "extraGeometries": 0,
+      "extraTextures": 0
+    }
+  },
+  "modelReviewLAN": {
+    "status": "候補を表示中 — 形状、リグ、全動作を確認",
+    "hash": "SHA-256 8690d5563233614397c7cfad6af0e0b3d89273a29fa59bf421372ec1168ef1b7",
+    "errors": []
+  },
+  "modelFailure": {
+    "message": "3D画面を表示できません\n\n人物の3D素材を読み込めませんでした。再読み込みしてください。\n\n再読み込み",
+    "before": {
+      "x": 48,
+      "z": 57,
+      "attacks": 0
+    },
+    "after": {
+      "x": 48,
+      "z": 57,
+      "attacks": 0
+    },
+    "attackDisabled": true
+  },
+  "contextLoss": {
+    "message": "3D画面を表示できません\n\n3D描画が一時停止しました。ページを再読み込みしてください。\n\n再読み込み",
+    "disabled": true
+  },
+  "limits": [
+    "A finite audit does not prove that every possible bug is absent.",
+    "Resume data is in server memory for 120 seconds; server restarts and explicit profile rejoin are not persistent.",
+    "Browser viewport emulation and absent SubtleCrypto simulation do not replace tests on physical mobile devices or LAN peers.",
+    "FPS values are observed samples, not a guarantee."
+  ],
+  "screenshots": [
+    "output/playwright/audit-final-390x844.png",
+    "output/playwright/audit-final-844x390.png",
+    "output/playwright/audit-final-360x640.png",
+    "output/playwright/audit-final-five-players.png",
+    "output/playwright/audit-riding.png",
+    "output/playwright/audit-mobile-hunting.png",
+    "output/playwright/audit-desert-boundary.png",
+    "output/playwright/audit-model-failure.png",
+    "output/playwright/audit-final-rollout.png"
+  ],
+  "rollout": {
+    "server": "http://localhost:3000",
+    "existingServerAlreadyRunning": true,
+    "manualRestart": false,
+    "oldCheckpointReapplied": false,
+    "isolatedTestRoom": "BUG-AUDIT",
+    "healthBefore": {
+      "ok": true,
+      "ridingVersion": 1,
+      "combatVersion": 3,
+      "characterVersion": 2,
+      "enemyVersion": 1,
+      "worldVersion": 2,
+      "worldSize": 640,
+      "rooms": 1,
+      "players": 1,
+      "maxPlayers": 5
+    },
+    "welcome": {
+      "resumed": true,
+      "sessionSupported": true
+    },
+    "browser": {
+      "ready": "ready",
+      "characterReady": "ready",
+      "biome": "grassland",
+      "attackSequence": "1",
+      "fps": "57"
+    },
+    "tribeMembers": 1,
+    "servedSources": [
+      {
+        "file": "src/main.js",
+        "sha256": "ba3fc9b9cf378af3f833552a71ae108c1b75dc6619fb68918cdd14aa7832b9d9",
+        "matchesWorkspace": true
+      },
+      {
+        "file": "src/asset-hash.js",
+        "sha256": "bc3eb2f609fdec2579ce2b65243234de5f9909ca9909e1b00a4cc18b33fb6690",
+        "matchesWorkspace": true
+      },
+      {
+        "file": "src/style.css",
+        "sha256": "e7e69c4bdf1d5c8e4789ccf8740b0741f19c26e7caecf0798b6efc292764dd98",
+        "matchesWorkspace": true
+      },
+      {
+        "file": "src/open-world.js",
+        "sha256": "a007030342e9d8fabc7285e8a607c9849611a3078141261acb5caa8a918de8d8",
+        "matchesWorkspace": true
+      },
+      {
+        "file": "src/model-review.js",
+        "sha256": "8c885653e298d1e7e2b3dd40127a4b8af338459e2ec6c1c413f91f63ed133798",
+        "matchesWorkspace": true
+      },
+      {
+        "file": "shared/interactions.mjs",
+        "sha256": "7a6a9e73a1516844aee37ba42dbcabdda646fd06d8761b8a82dcea47986dc77f",
+        "matchesWorkspace": true
+      }
+    ]
+  },
+  "cleanup": {
+    "ownedBrowserClosed": true,
+    "ownedWebSocketPeersClosed": true,
+    "qaServer3005Stopped": true,
+    "normalServerKeptRunning": true,
+    "normalServerTestRoomExpiresAfterGrace": true,
+    "serverChecks": [
+      {
+        "port": 3000,
+        "running": true,
+        "players": 1,
+        "rooms": 2
+      },
+      {
+        "port": 3004,
+        "running": false
+      },
+      {
+        "port": 3005,
+        "running": false
+      }
+    ],
+    "qaServer3004Stopped": true
+  }
+}

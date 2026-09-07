@@ -2,5 +2,6 @@ node_modules/
 .pnpm-store/
 public/vendor/
 output/
+.playwright-cli/
 .env
 *.log

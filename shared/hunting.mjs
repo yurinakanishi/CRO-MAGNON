@@ -1,6 +1,7 @@
 import { CAMP } from './world.mjs';
 import { COMBAT, combatDistance, startAttack, resolveAttack, stopActor, enemyIsSolid, updateProjectiles } from './combat.mjs';
 import { attackProfile } from './combat-profiles.mjs';
+import { interactionVisible } from './interactions.mjs';
 export { withinSpearReach, stopActor } from './combat.mjs';
 
 // Distances use the same body radii as authoritative movement collision.
@@ -43,6 +44,7 @@ export function handleHuntingAction(room, player, message, now = Date.now()) {
     return response('調理を中止した。生肉は手元に残っています。', 'info', true);
   }
   if (player.cookingEndsAt) return response('肉を焼いています。火から離れると中止します。', 'info');
+  if (player.attackSequence && now - player.attackAt < attackProfile(player).durationMs) return response('攻撃が終わってから行おう。', 'info');
   if (action === 'harvest') {
     const animal = targetId === undefined ? nearestHuntTarget(room.animals, player, 'meat')
       : typeof targetId === 'string' ? room.animals.find(item => item.id === targetId && item.phase === 'meat') : null;
@@ -58,7 +60,9 @@ export function handleHuntingAction(room, player, message, now = Date.now()) {
     return response('生肉 +1。焚き火で焼くと食べられます。', 'success', true);
   }
   if (action === 'cook') {
-    if (huntingDistance(player, nearestCookingFire(room,player)) > HUNTING.cookRange) return response('焚き火に近づいて肉を焼こう。');
+    const fire = nearestCookingFire(room, player);
+    if (huntingDistance(player, fire) > HUNTING.cookRange) return response('焚き火に近づいて肉を焼こう。');
+    if (!interactionVisible(room.collision, player, fire)) return response('火までの間がふさがれています。回り込もう。');
     if (!player.inventory.rawMeat) return response('焼くための生肉を持っていません。');
     if (player.inventory.cookedMeat >= HUNTING.inventoryLimit) return response('焼いた肉の持ち物がいっぱいです。');
     stopActor(player);

@@ -1,0 +1,5487 @@
+{
+  "schemaVersion": 1,
+  "status": "passed",
+  "timestamp": "2026-09-07T01:25:19.188Z",
+  "models": 29,
+  "tests": 127,
+  "validation": {
+    "syntax": "npm run check",
+    "suite": "npm test",
+    "assets": "npm run verify:assets",
+    "browserConsole": {
+      "review": {
+        "errors": 0,
+        "warnings": 0
+      },
+      "desktop": {
+        "errors": 0,
+        "warnings": 0
+      },
+      "mobileWidth": {
+        "errors": 0,
+        "warnings": 0
+      }
+    }
+  },
+  "conditions": "Two real headless Chromium browsers on this workstation plus three passive WebSocket peers. Desktop viewport 1560x1080, second browser resized to 390x844. Region interiors were staged through isolated QA-server stdin; four boundary crossings and the mobile desert crossing used normal map buttons and authoritative movement.",
+  "memory": {
+    "extraSourceGeometries": 0,
+    "extraSourceTextures": 0,
+    "maximumSampledVariants": 12,
+    "maximumSampledMaterials": 14,
+    "residentChunksMaximum": 69,
+    "evictionObserved": "After snow -> ice, cached variants dropped from 10 to 3 and rendered texture count from 46 to 40 after the unused-material grace period. Snow was subsequently entered again with source sharing intact."
+  },
+  "fps": {
+    "minimum": 60,
+    "maximum": 60,
+    "samples": 130,
+    "note": "These are the recorded one-second observations after arrival and during short boundary walks on this workstation. They do not guarantee 60 FPS during every load or on other devices. Prior 43–60 FPS observations remain valid history."
+  },
+  "mobile": {
+    "viewport": [
+      390,
+      844
+    ],
+    "documentWidth": 390,
+    "attackSequenceAfterButton": 1,
+    "runModeToggle": "passed",
+    "map": "passed",
+    "normalDesertBoundaryCrossing": "passed",
+    "screenshots": [
+      "output/playwright/biome-mobile-controls.png",
+      "output/playwright/biome-mobile-map.png",
+      "output/playwright/biome-boundary-desert-mobile.png",
+      "output/playwright/biome-mobile-snow.png"
+    ]
+  },
+  "network": {
+    "path": "assets/biome-network-qa.json",
+    "snapshots": 8710,
+    "maxPlayers": 5,
+    "staticPenetrations": 0,
+    "dynamicPenetrations": 0,
+    "sixthRefused": true
+  },
+  "stations": [
+    {
+      "timestamp": "2026-09-07T01:13:30.236Z",
+      "biome": "grassland",
+      "errors": [],
+      "samples": [
+        {
+          "biome": "grassland",
+          "fps": 60,
+          "x": 47.6,
+          "z": 53.8,
+          "players": 5,
+          "chunks": 68,
+          "gpuGeometries": 69,
+          "gpuTextures": 47,
+          "regional": {
+            "variants": 7,
+            "materials": 8,
+            "sourceGeometries": 4,
+            "sourceTextures": 3,
+            "extraGeometries": 0,
+            "extraTextures": 0
+          },
+          "keys": [
+            "firewood-pile:ash",
+            "firewood-pile:sand",
+            "valley-boulder:ash",
+            "valley-boulder:ice",
+            "valley-boulder:sand",
+            "valley-boulder:snow",
+            "valley-pine:snow"
+          ],
+          "landscapes": [
+            {
+              "key": "valley-pine",
+              "surface": "snow",
+              "instances": [
+                0,
+                0,
+                0
+              ]
+            },
+            {
+              "key": "valley-boulder",
+              "surface": "sand",
+              "instances": [
+                0,
+                0,
+                0
+              ]
+            },
+            {
+              "key": "valley-boulder",
+              "surface": "ash",
+              "instances": [
+                0,
+                0,
+                0
+              ]
+            },
+            {
+              "key": "valley-boulder",
+              "surface": "snow",
+              "instances": [
+                0,
+                0,
+                0
+              ]
+            },
+            {
+              "key": "valley-boulder",
+              "surface": "ice",
+              "instances": [
+                0,
+                0,
+                0
+              ]
+            }
+          ]
+        },
+        {
+          "biome": "grassland",
+          "fps": 60,
+          "x": 47.6,
+          "z": 53.8,
+          "players": 5,
+          "chunks": 68,
+          "gpuGeometries": 69,
+          "gpuTextures": 47,
+          "regional": {
+            "variants": 7,
+            "materials": 8,
+            "sourceGeometries": 4,
+            "sourceTextures": 3,
+            "extraGeometries": 0,
+            "extraTextures": 0
+          },
+          "keys": [
+            "firewood-pile:ash",
+            "firewood-pile:sand",
+            "valley-boulder:ash",
+            "valley-boulder:ice",
+            "valley-boulder:sand",
+            "valley-boulder:snow",
+            "valley-pine:snow"
+          ],
+          "landscapes": [
+            {
+              "key": "valley-pine",
+              "surface": "snow",
+              "instances": [
+                0,
+                0,
+                0
+              ]
+            },
+            {
+              "key": "valley-boulder",
+              "surface": "sand",
+              "instances": [
+                0,
+                0,
+                0
+              ]
+            },
+            {
+              "key": "valley-boulder",
+              "surface": "ash",
+              "instances": [
+                0,
+                0,
+                0
+              ]
+            },
+            {
+              "key": "valley-boulder",
+              "surface": "snow",
+              "instances": [
+                0,
+                0,
+                0
+              ]
+            },
+            {
+              "key": "valley-boulder",
+              "surface": "ice",
+              "instances": [
+                0,
+                0,
+                0
+              ]
+            }
+          ]
+        },
+        {
+          "biome": "grassland",
+          "fps": 60,
+          "x": 47.6,
+          "z": 53.8,
+          "players": 5,
+          "chunks": 68,
+          "gpuGeometries": 70,
+          "gpuTextures": 49,
+          "regional": {
+            "variants": 7,
+            "materials": 8,
+            "sourceGeometries": 4,
+            "sourceTextures": 3,
+            "extraGeometries": 0,
+            "extraTextures": 0
+          },
+          "keys": [
+            "firewood-pile:ash",
+            "firewood-pile:sand",
+            "valley-boulder:ash",
+            "valley-boulder:ice",
+            "valley-boulder:sand",
+            "valley-boulder:snow",
+            "valley-pine:snow"
+          ],
+          "landscapes": [
+            {
+              "key": "valley-pine",
+              "surface": "snow",
+              "instances": [
+                0,
+                0,
+                0
+              ]
+            },
+            {
+              "key": "valley-boulder",
+              "surface": "sand",
+              "instances": [
+                0,
+                0,
+                0
+              ]
+            },
+            {
+              "key": "valley-boulder",
+              "surface": "ash",
+              "instances": [
+                0,
+                0,
+                0
+              ]
+            },
+            {
+              "key": "valley-boulder",
+              "surface": "snow",
+              "instances": [
+                0,
+                0,
+                0
+              ]
+            },
+            {
+              "key": "valley-boulder",
+              "surface": "ice",
+              "instances": [
+                0,
+                0,
+                0
+              ]
+            }
+          ]
+        },
+        {
+          "biome": "grassland",
+          "fps": 60,
+          "x": 47.6,
+          "z": 53.8,
+          "players": 5,
+          "chunks": 68,
+          "gpuGeometries": 70,
+          "gpuTextures": 49,
+          "regional": {
+            "variants": 7,
+            "materials": 8,
+            "sourceGeometries": 4,
+            "sourceTextures": 3,
+            "extraGeometries": 0,
+            "extraTextures": 0
+          },
+          "keys": [
+            "firewood-pile:ash",
+            "firewood-pile:sand",
+            "valley-boulder:ash",
+            "valley-boulder:ice",
+            "valley-boulder:sand",
+            "valley-boulder:snow",
+            "valley-pine:snow"
+          ],
+          "landscapes": [
+            {
+              "key": "valley-pine",
+              "surface": "snow",
+              "instances": [
+                0,
+                0,
+                0
+              ]
+            },
+            {
+              "key": "valley-boulder",
+              "surface": "sand",
+              "instances": [
+                0,
+                0,
+                0
+              ]
+            },
+            {
+              "key": "valley-boulder",
+              "surface": "ash",
+              "instances": [
+                0,
+                0,
+                0
+              ]
+            },
+            {
+              "key": "valley-boulder",
+              "surface": "snow",
+              "instances": [
+                0,
+                0,
+                0
+              ]
+            },
+            {
+              "key": "valley-boulder",
+              "surface": "ice",
+              "instances": [
+                0,
+                0,
+                0
+              ]
+            }
+          ]
+        },
+        {
+          "biome": "grassland",
+          "fps": 60,
+          "x": 47.6,
+          "z": 53.8,
+          "players": 5,
+          "chunks": 68,
+          "gpuGeometries": 70,
+          "gpuTextures": 49,
+          "regional": {
+            "variants": 7,
+            "materials": 8,
+            "sourceGeometries": 4,
+            "sourceTextures": 3,
+            "extraGeometries": 0,
+            "extraTextures": 0
+          },
+          "keys": [
+            "firewood-pile:ash",
+            "firewood-pile:sand",
+            "valley-boulder:ash",
+            "valley-boulder:ice",
+            "valley-boulder:sand",
+            "valley-boulder:snow",
+            "valley-pine:snow"
+          ],
+          "landscapes": [
+            {
+              "key": "valley-pine",
+              "surface": "snow",
+              "instances": [
+                0,
+                0,
+                0
+              ]
+            },
+            {
+              "key": "valley-boulder",
+              "surface": "sand",
+              "instances": [
+                0,
+                0,
+                0
+              ]
+            },
+            {
+              "key": "valley-boulder",
+              "surface": "ash",
+              "instances": [
+                0,
+                0,
+                0
+              ]
+            },
+            {
+              "key": "valley-boulder",
+              "surface": "snow",
+              "instances": [
+                0,
+                0,
+                0
+              ]
+            },
+            {
+              "key": "valley-boulder",
+              "surface": "ice",
+              "instances": [
+                0,
+                0,
+                0
+              ]
+            }
+          ]
+        },
+        {
+          "biome": "grassland",
+          "fps": 60,
+          "x": 47.6,
+          "z": 53.8,
+          "players": 5,
+          "chunks": 68,
+          "gpuGeometries": 70,
+          "gpuTextures": 49,
+          "regional": {
+            "variants": 7,
+            "materials": 8,
+            "sourceGeometries": 4,
+            "sourceTextures": 3,
+            "extraGeometries": 0,
+            "extraTextures": 0
+          },
+          "keys": [
+            "firewood-pile:ash",
+            "firewood-pile:sand",
+            "valley-boulder:ash",
+            "valley-boulder:ice",
+            "valley-boulder:sand",
+            "valley-boulder:snow",
+            "valley-pine:snow"
+          ],
+          "landscapes": [
+            {
+              "key": "valley-pine",
+              "surface": "snow",
+              "instances": [
+                0,
+                0,
+                0
+              ]
+            },
+            {
+              "key": "valley-boulder",
+              "surface": "sand",
+              "instances": [
+                0,
+                0,
+                0
+              ]
+            },
+            {
+              "key": "valley-boulder",
+              "surface": "ash",
+              "instances": [
+                0,
+                0,
+                0
+              ]
+            },
+            {
+              "key": "valley-boulder",
+              "surface": "snow",
+              "instances": [
+                0,
+                0,
+                0
+              ]
+            },
+            {
+              "key": "valley-boulder",
+              "surface": "ice",
+              "instances": [
+                0,
+                0,
+                0
+              ]
+            }
+          ]
+        },
+        {
+          "biome": "grassland",
+          "fps": 60,
+          "x": 47.6,
+          "z": 53.8,
+          "players": 5,
+          "chunks": 68,
+          "gpuGeometries": 70,
+          "gpuTextures": 49,
+          "regional": {
+            "variants": 7,
+            "materials": 8,
+            "sourceGeometries": 4,
+            "sourceTextures": 3,
+            "extraGeometries": 0,
+            "extraTextures": 0
+          },
+          "keys": [
+            "firewood-pile:ash",
+            "firewood-pile:sand",
+            "valley-boulder:ash",
+            "valley-boulder:ice",
+            "valley-boulder:sand",
+            "valley-boulder:snow",
+            "valley-pine:snow"
+          ],
+          "landscapes": [
+            {
+              "key": "valley-pine",
+              "surface": "snow",
+              "instances": [
+                0,
+                0,
+                0
+              ]
+            },
+            {
+              "key": "valley-boulder",
+              "surface": "sand",
+              "instances": [
+                0,
+                0,
+                0
+              ]
+            },
+            {
+              "key": "valley-boulder",
+              "surface": "ash",
+              "instances": [
+                0,
+                0,
+                0
+              ]
+            },
+            {
+              "key": "valley-boulder",
+              "surface": "snow",
+              "instances": [
+                0,
+                0,
+                0
+              ]
+            },
+            {
+              "key": "valley-boulder",
+              "surface": "ice",
+              "instances": [
+                0,
+                0,
+                0
+              ]
+            }
+          ]
+        },
+        {
+          "biome": "grassland",
+          "fps": 60,
+          "x": 47.6,
+          "z": 53.8,
+          "players": 5,
+          "chunks": 68,
+          "gpuGeometries": 70,
+          "gpuTextures": 49,
+          "regional": {
+            "variants": 7,
+            "materials": 8,
+            "sourceGeometries": 4,
+            "sourceTextures": 3,
+            "extraGeometries": 0,
+            "extraTextures": 0
+          },
+          "keys": [
+            "firewood-pile:ash",
+            "firewood-pile:sand",
+            "valley-boulder:ash",
+            "valley-boulder:ice",
+            "valley-boulder:sand",
+            "valley-boulder:snow",
+            "valley-pine:snow"
+          ],
+          "landscapes": [
+            {
+              "key": "valley-pine",
+              "surface": "snow",
+              "instances": [
+                0,
+                0,
+                0
+              ]
+            },
+            {
+              "key": "valley-boulder",
+              "surface": "sand",
+              "instances": [
+                0,
+                0,
+                0
+              ]
+            },
+            {
+              "key": "valley-boulder",
+              "surface": "ash",
+              "instances": [
+                0,
+                0,
+                0
+              ]
+            },
+            {
+              "key": "valley-boulder",
+              "surface": "snow",
+              "instances": [
+                0,
+                0,
+                0
+              ]
+            },
+            {
+              "key": "valley-boulder",
+              "surface": "ice",
+              "instances": [
+                0,
+                0,
+                0
+              ]
+            }
+          ]
+        },
+        {
+          "biome": "grassland",
+          "fps": 60,
+          "x": 47.6,
+          "z": 53.8,
+          "players": 5,
+          "chunks": 68,
+          "gpuGeometries": 70,
+          "gpuTextures": 49,
+          "regional": {
+            "variants": 7,
+            "materials": 8,
+            "sourceGeometries": 4,
+            "sourceTextures": 3,
+            "extraGeometries": 0,
+            "extraTextures": 0
+          },
+          "keys": [
+            "firewood-pile:ash",
+            "firewood-pile:sand",
+            "valley-boulder:ash",
+            "valley-boulder:ice",
+            "valley-boulder:sand",
+            "valley-boulder:snow",
+            "valley-pine:snow"
+          ],
+          "landscapes": [
+            {
+              "key": "valley-pine",
+              "surface": "snow",
+              "instances": [
+                0,
+                0,
+                0
+              ]
+            },
+            {
+              "key": "valley-boulder",
+              "surface": "sand",
+              "instances": [
+                0,
+                0,
+                0
+              ]
+            },
+            {
+              "key": "valley-boulder",
+              "surface": "ash",
+              "instances": [
+                0,
+                0,
+                0
+              ]
+            },
+            {
+              "key": "valley-boulder",
+              "surface": "snow",
+              "instances": [
+                0,
+                0,
+                0
+              ]
+            },
+            {
+              "key": "valley-boulder",
+              "surface": "ice",
+              "instances": [
+                0,
+                0,
+                0
+              ]
+            }
+          ]
+        },
+        {
+          "biome": "grassland",
+          "fps": 60,
+          "x": 47.6,
+          "z": 53.8,
+          "players": 5,
+          "chunks": 68,
+          "gpuGeometries": 70,
+          "gpuTextures": 49,
+          "regional": {
+            "variants": 7,
+            "materials": 8,
+            "sourceGeometries": 4,
+            "sourceTextures": 3,
+            "extraGeometries": 0,
+            "extraTextures": 0
+          },
+          "keys": [
+            "firewood-pile:ash",
+            "firewood-pile:sand",
+            "valley-boulder:ash",
+            "valley-boulder:ice",
+            "valley-boulder:sand",
+            "valley-boulder:snow",
+            "valley-pine:snow"
+          ],
+          "landscapes": [
+            {
+              "key": "valley-pine",
+              "surface": "snow",
+              "instances": [
+                0,
+                0,
+                0
+              ]
+            },
+            {
+              "key": "valley-boulder",
+              "surface": "sand",
+              "instances": [
+                0,
+                0,
+                0
+              ]
+            },
+            {
+              "key": "valley-boulder",
+              "surface": "ash",
+              "instances": [
+                0,
+                0,
+                0
+              ]
+            },
+            {
+              "key": "valley-boulder",
+              "surface": "snow",
+              "instances": [
+                0,
+                0,
+                0
+              ]
+            },
+            {
+              "key": "valley-boulder",
+              "surface": "ice",
+              "instances": [
+                0,
+                0,
+                0
+              ]
+            }
+          ]
+        },
+        {
+          "biome": "grassland",
+          "fps": 60,
+          "x": 47.6,
+          "z": 53.8,
+          "players": 5,
+          "chunks": 68,
+          "gpuGeometries": 70,
+          "gpuTextures": 49,
+          "regional": {
+            "variants": 7,
+            "materials": 8,
+            "sourceGeometries": 4,
+            "sourceTextures": 3,
+            "extraGeometries": 0,
+            "extraTextures": 0
+          },
+          "keys": [
+            "firewood-pile:ash",
+            "firewood-pile:sand",
+            "valley-boulder:ash",
+            "valley-boulder:ice",
+            "valley-boulder:sand",
+            "valley-boulder:snow",
+            "valley-pine:snow"
+          ],
+          "landscapes": [
+            {
+              "key": "valley-pine",
+              "surface": "snow",
+              "instances": [
+                0,
+                0,
+                0
+              ]
+            },
+            {
+              "key": "valley-boulder",
+              "surface": "sand",
+              "instances": [
+                0,
+                0,
+                0
+              ]
+            },
+            {
+              "key": "valley-boulder",
+              "surface": "ash",
+              "instances": [
+                0,
+                0,
+                0
+              ]
+            },
+            {
+              "key": "valley-boulder",
+              "surface": "snow",
+              "instances": [
+                0,
+                0,
+                0
+              ]
+            },
+            {
+              "key": "valley-boulder",
+              "surface": "ice",
+              "instances": [
+                0,
+                0,
+                0
+              ]
+            }
+          ]
+        },
+        {
+          "biome": "grassland",
+          "fps": 60,
+          "x": 47.6,
+          "z": 53.8,
+          "players": 5,
+          "chunks": 68,
+          "gpuGeometries": 70,
+          "gpuTextures": 49,
+          "regional": {
+            "variants": 7,
+            "materials": 8,
+            "sourceGeometries": 4,
+            "sourceTextures": 3,
+            "extraGeometries": 0,
+            "extraTextures": 0
+          },
+          "keys": [
+            "firewood-pile:ash",
+            "firewood-pile:sand",
+            "valley-boulder:ash",
+            "valley-boulder:ice",
+            "valley-boulder:sand",
+            "valley-boulder:snow",
+            "valley-pine:snow"
+          ],
+          "landscapes": [
+            {
+              "key": "valley-pine",
+              "surface": "snow",
+              "instances": [
+                0,
+                0,
+                0
+              ]
+            },
+            {
+              "key": "valley-boulder",
+              "surface": "sand",
+              "instances": [
+                0,
+                0,
+                0
+              ]
+            },
+            {
+              "key": "valley-boulder",
+              "surface": "ash",
+              "instances": [
+                0,
+                0,
+                0
+              ]
+            },
+            {
+              "key": "valley-boulder",
+              "surface": "snow",
+              "instances": [
+                0,
+                0,
+                0
+              ]
+            },
+            {
+              "key": "valley-boulder",
+              "surface": "ice",
+              "instances": [
+                0,
+                0,
+                0
+              ]
+            }
+          ]
+        },
+        {
+          "biome": "grassland",
+          "fps": 60,
+          "x": 47.6,
+          "z": 53.8,
+          "players": 5,
+          "chunks": 68,
+          "gpuGeometries": 70,
+          "gpuTextures": 49,
+          "regional": {
+            "variants": 7,
+            "materials": 8,
+            "sourceGeometries": 4,
+            "sourceTextures": 3,
+            "extraGeometries": 0,
+            "extraTextures": 0
+          },
+          "keys": [
+            "firewood-pile:ash",
+            "firewood-pile:sand",
+            "valley-boulder:ash",
+            "valley-boulder:ice",
+            "valley-boulder:sand",
+            "valley-boulder:snow",
+            "valley-pine:snow"
+          ],
+          "landscapes": [
+            {
+              "key": "valley-pine",
+              "surface": "snow",
+              "instances": [
+                0,
+                0,
+                0
+              ]
+            },
+            {
+              "key": "valley-boulder",
+              "surface": "sand",
+              "instances": [
+                0,
+                0,
+                0
+              ]
+            },
+            {
+              "key": "valley-boulder",
+              "surface": "ash",
+              "instances": [
+                0,
+                0,
+                0
+              ]
+            },
+            {
+              "key": "valley-boulder",
+              "surface": "snow",
+              "instances": [
+                0,
+                0,
+                0
+              ]
+            },
+            {
+              "key": "valley-boulder",
+              "surface": "ice",
+              "instances": [
+                0,
+                0,
+                0
+              ]
+            }
+          ]
+        },
+        {
+          "biome": "grassland",
+          "fps": 60,
+          "x": 47.6,
+          "z": 53.8,
+          "players": 5,
+          "chunks": 68,
+          "gpuGeometries": 70,
+          "gpuTextures": 49,
+          "regional": {
+            "variants": 7,
+            "materials": 8,
+            "sourceGeometries": 4,
+            "sourceTextures": 3,
+            "extraGeometries": 0,
+            "extraTextures": 0
+          },
+          "keys": [
+            "firewood-pile:ash",
+            "firewood-pile:sand",
+            "valley-boulder:ash",
+            "valley-boulder:ice",
+            "valley-boulder:sand",
+            "valley-boulder:snow",
+            "valley-pine:snow"
+          ],
+          "landscapes": [
+            {
+              "key": "valley-pine",
+              "surface": "snow",
+              "instances": [
+                0,
+                0,
+                0
+              ]
+            },
+            {
+              "key": "valley-boulder",
+              "surface": "sand",
+              "instances": [
+                0,
+                0,
+                0
+              ]
+            },
+            {
+              "key": "valley-boulder",
+              "surface": "ash",
+              "instances": [
+                0,
+                0,
+                0
+              ]
+            },
+            {
+              "key": "valley-boulder",
+              "surface": "snow",
+              "instances": [
+                0,
+                0,
+                0
+              ]
+            },
+            {
+              "key": "valley-boulder",
+              "surface": "ice",
+              "instances": [
+                0,
+                0,
+                0
+              ]
+            }
+          ]
+        },
+        {
+          "biome": "grassland",
+          "fps": 60,
+          "x": 47.6,
+          "z": 53.8,
+          "players": 5,
+          "chunks": 68,
+          "gpuGeometries": 70,
+          "gpuTextures": 49,
+          "regional": {
+            "variants": 7,
+            "materials": 8,
+            "sourceGeometries": 4,
+            "sourceTextures": 3,
+            "extraGeometries": 0,
+            "extraTextures": 0
+          },
+          "keys": [
+            "firewood-pile:ash",
+            "firewood-pile:sand",
+            "valley-boulder:ash",
+            "valley-boulder:ice",
+            "valley-boulder:sand",
+            "valley-boulder:snow",
+            "valley-pine:snow"
+          ],
+          "landscapes": [
+            {
+              "key": "valley-pine",
+              "surface": "snow",
+              "instances": [
+                0,
+                0,
+                0
+              ]
+            },
+            {
+              "key": "valley-boulder",
+              "surface": "sand",
+              "instances": [
+                0,
+                0,
+                0
+              ]
+            },
+            {
+              "key": "valley-boulder",
+              "surface": "ash",
+              "instances": [
+                0,
+                0,
+                0
+              ]
+            },
+            {
+              "key": "valley-boulder",
+              "surface": "snow",
+              "instances": [
+                0,
+                0,
+                0
+              ]
+            },
+            {
+              "key": "valley-boulder",
+              "surface": "ice",
+              "instances": [
+                0,
+                0,
+                0
+              ]
+            }
+          ]
+        },
+        {
+          "biome": "grassland",
+          "fps": 60,
+          "x": 47.6,
+          "z": 53.8,
+          "players": 5,
+          "chunks": 68,
+          "gpuGeometries": 70,
+          "gpuTextures": 49,
+          "regional": {
+            "variants": 7,
+            "materials": 8,
+            "sourceGeometries": 4,
+            "sourceTextures": 3,
+            "extraGeometries": 0,
+            "extraTextures": 0
+          },
+          "keys": [
+            "firewood-pile:ash",
+            "firewood-pile:sand",
+            "valley-boulder:ash",
+            "valley-boulder:ice",
+            "valley-boulder:sand",
+            "valley-boulder:snow",
+            "valley-pine:snow"
+          ],
+          "landscapes": [
+            {
+              "key": "valley-pine",
+              "surface": "snow",
+              "instances": [
+                0,
+                0,
+                0
+              ]
+            },
+            {
+              "key": "valley-boulder",
+              "surface": "sand",
+              "instances": [
+                0,
+                0,
+                0
+              ]
+            },
+            {
+              "key": "valley-boulder",
+              "surface": "ash",
+              "instances": [
+                0,
+                0,
+                0
+              ]
+            },
+            {
+              "key": "valley-boulder",
+              "surface": "snow",
+              "instances": [
+                0,
+                0,
+                0
+              ]
+            },
+            {
+              "key": "valley-boulder",
+              "surface": "ice",
+              "instances": [
+                0,
+                0,
+                0
+              ]
+            }
+          ]
+        },
+        {
+          "biome": "grassland",
+          "fps": 60,
+          "x": 47.6,
+          "z": 53.8,
+          "players": 5,
+          "chunks": 68,
+          "gpuGeometries": 70,
+          "gpuTextures": 49,
+          "regional": {
+            "variants": 7,
+            "materials": 8,
+            "sourceGeometries": 4,
+            "sourceTextures": 3,
+            "extraGeometries": 0,
+            "extraTextures": 0
+          },
+          "keys": [
+            "firewood-pile:ash",
+            "firewood-pile:sand",
+            "valley-boulder:ash",
+            "valley-boulder:ice",
+            "valley-boulder:sand",
+            "valley-boulder:snow",
+            "valley-pine:snow"
+          ],
+          "landscapes": [
+            {
+              "key": "valley-pine",
+              "surface": "snow",
+              "instances": [
+                0,
+                0,
+                0
+              ]
+            },
+            {
+              "key": "valley-boulder",
+              "surface": "sand",
+              "instances": [
+                0,
+                0,
+                0
+              ]
+            },
+            {
+              "key": "valley-boulder",
+              "surface": "ash",
+              "instances": [
+                0,
+                0,
+                0
+              ]
+            },
+            {
+              "key": "valley-boulder",
+              "surface": "snow",
+              "instances": [
+                0,
+                0,
+                0
+              ]
+            },
+            {
+              "key": "valley-boulder",
+              "surface": "ice",
+              "instances": [
+                0,
+                0,
+                0
+              ]
+            }
+          ]
+        }
+      ],
+      "screenshot": "output/playwright/biome-game-grassland.png"
+    },
+    {
+      "timestamp": "2026-09-07T01:20:53.892Z",
+      "biome": "snow",
+      "errors": [],
+      "samples": [
+        {
+          "biome": "snow",
+          "fps": 60,
+          "x": -116.4,
+          "z": -94.6,
+          "players": 5,
+          "chunks": 69,
+          "gpuGeometries": 66,
+          "gpuTextures": 51,
+          "regional": {
+            "variants": 12,
+            "materials": 14,
+            "sourceGeometries": 8,
+            "sourceTextures": 6,
+            "extraGeometries": 0,
+            "extraTextures": 0
+          },
+          "keys": [
+            "berry-bush:snow",
+            "firewood-pile:ash",
+            "firewood-pile:snow",
+            "hide-tent:ash",
+            "hide-tent:snow",
+            "stone-firepit:ash",
+            "stone-firepit:snow",
+            "valley-boulder:ash",
+            "valley-boulder:ice",
+            "valley-boulder:sand",
+            "valley-boulder:snow",
+            "valley-pine:snow"
+          ],
+          "landscapes": [
+            {
+              "key": "valley-boulder",
+              "surface": "ash",
+              "instances": [
+                0,
+                0,
+                0
+              ]
+            },
+            {
+              "key": "valley-boulder",
+              "surface": "ice",
+              "instances": [
+                0,
+                0,
+                0
+              ]
+            },
+            {
+              "key": "valley-pine",
+              "surface": "snow",
+              "instances": [
+                3,
+                0,
+                86
+              ]
+            },
+            {
+              "key": "valley-boulder",
+              "surface": "sand",
+              "instances": [
+                0,
+                0,
+                0
+              ]
+            },
+            {
+              "key": "valley-boulder",
+              "surface": "snow",
+              "instances": [
+                4,
+                0,
+                8
+              ]
+            },
+            {
+              "key": "berry-bush",
+              "surface": "snow",
+              "instances": [
+                0,
+                0,
+                7
+              ]
+            }
+          ]
+        },
+        {
+          "biome": "snow",
+          "fps": 60,
+          "x": -116.4,
+          "z": -94.6,
+          "players": 5,
+          "chunks": 69,
+          "gpuGeometries": 66,
+          "gpuTextures": 51,
+          "regional": {
+            "variants": 12,
+            "materials": 14,
+            "sourceGeometries": 8,
+            "sourceTextures": 6,
+            "extraGeometries": 0,
+            "extraTextures": 0
+          },
+          "keys": [
+            "berry-bush:snow",
+            "firewood-pile:ash",
+            "firewood-pile:snow",
+            "hide-tent:ash",
+            "hide-tent:snow",
+            "stone-firepit:ash",
+            "stone-firepit:snow",
+            "valley-boulder:ash",
+            "valley-boulder:ice",
+            "valley-boulder:sand",
+            "valley-boulder:snow",
+            "valley-pine:snow"
+          ],
+          "landscapes": [
+            {
+              "key": "valley-boulder",
+              "surface": "ash",
+              "instances": [
+                0,
+                0,
+                0
+              ]
+            },
+            {
+              "key": "valley-boulder",
+              "surface": "ice",
+              "instances": [
+                0,
+                0,
+                0
+              ]
+            },
+            {
+              "key": "valley-pine",
+              "surface": "snow",
+              "instances": [
+                3,
+                0,
+                86
+              ]
+            },
+            {
+              "key": "valley-boulder",
+              "surface": "sand",
+              "instances": [
+                0,
+                0,
+                0
+              ]
+            },
+            {
+              "key": "valley-boulder",
+              "surface": "snow",
+              "instances": [
+                4,
+                0,
+                8
+              ]
+            },
+            {
+              "key": "berry-bush",
+              "surface": "snow",
+              "instances": [
+                0,
+                0,
+                7
+              ]
+            }
+          ]
+        },
+        {
+          "biome": "snow",
+          "fps": 60,
+          "x": -116.4,
+          "z": -94.6,
+          "players": 5,
+          "chunks": 69,
+          "gpuGeometries": 66,
+          "gpuTextures": 51,
+          "regional": {
+            "variants": 12,
+            "materials": 14,
+            "sourceGeometries": 8,
+            "sourceTextures": 6,
+            "extraGeometries": 0,
+            "extraTextures": 0
+          },
+          "keys": [
+            "berry-bush:snow",
+            "firewood-pile:ash",
+            "firewood-pile:snow",
+            "hide-tent:ash",
+            "hide-tent:snow",
+            "stone-firepit:ash",
+            "stone-firepit:snow",
+            "valley-boulder:ash",
+            "valley-boulder:ice",
+            "valley-boulder:sand",
+            "valley-boulder:snow",
+            "valley-pine:snow"
+          ],
+          "landscapes": [
+            {
+              "key": "valley-boulder",
+              "surface": "ash",
+              "instances": [
+                0,
+                0,
+                0
+              ]
+            },
+            {
+              "key": "valley-boulder",
+              "surface": "ice",
+              "instances": [
+                0,
+                0,
+                0
+              ]
+            },
+            {
+              "key": "valley-pine",
+              "surface": "snow",
+              "instances": [
+                3,
+                0,
+                86
+              ]
+            },
+            {
+              "key": "valley-boulder",
+              "surface": "sand",
+              "instances": [
+                0,
+                0,
+                0
+              ]
+            },
+            {
+              "key": "valley-boulder",
+              "surface": "snow",
+              "instances": [
+                4,
+                0,
+                8
+              ]
+            },
+            {
+              "key": "berry-bush",
+              "surface": "snow",
+              "instances": [
+                0,
+                0,
+                7
+              ]
+            }
+          ]
+        },
+        {
+          "biome": "snow",
+          "fps": 60,
+          "x": -116.4,
+          "z": -94.6,
+          "players": 5,
+          "chunks": 69,
+          "gpuGeometries": 63,
+          "gpuTextures": 50,
+          "regional": {
+            "variants": 12,
+            "materials": 14,
+            "sourceGeometries": 8,
+            "sourceTextures": 6,
+            "extraGeometries": 0,
+            "extraTextures": 0
+          },
+          "keys": [
+            "berry-bush:snow",
+            "firewood-pile:ash",
+            "firewood-pile:snow",
+            "hide-tent:ash",
+            "hide-tent:snow",
+            "stone-firepit:ash",
+            "stone-firepit:snow",
+            "valley-boulder:ash",
+            "valley-boulder:ice",
+            "valley-boulder:sand",
+            "valley-boulder:snow",
+            "valley-pine:snow"
+          ],
+          "landscapes": [
+            {
+              "key": "valley-boulder",
+              "surface": "ash",
+              "instances": [
+                0,
+                0,
+                0
+              ]
+            },
+            {
+              "key": "valley-boulder",
+              "surface": "ice",
+              "instances": [
+                0,
+                0,
+                0
+              ]
+            },
+            {
+              "key": "valley-pine",
+              "surface": "snow",
+              "instances": [
+                3,
+                0,
+                86
+              ]
+            },
+            {
+              "key": "valley-boulder",
+              "surface": "sand",
+              "instances": [
+                0,
+                0,
+                0
+              ]
+            },
+            {
+              "key": "valley-boulder",
+              "surface": "snow",
+              "instances": [
+                4,
+                0,
+                8
+              ]
+            },
+            {
+              "key": "berry-bush",
+              "surface": "snow",
+              "instances": [
+                0,
+                0,
+                7
+              ]
+            }
+          ]
+        },
+        {
+          "biome": "snow",
+          "fps": 60,
+          "x": -116.4,
+          "z": -94.6,
+          "players": 5,
+          "chunks": 69,
+          "gpuGeometries": 63,
+          "gpuTextures": 50,
+          "regional": {
+            "variants": 12,
+            "materials": 14,
+            "sourceGeometries": 8,
+            "sourceTextures": 6,
+            "extraGeometries": 0,
+            "extraTextures": 0
+          },
+          "keys": [
+            "berry-bush:snow",
+            "firewood-pile:ash",
+            "firewood-pile:snow",
+            "hide-tent:ash",
+            "hide-tent:snow",
+            "stone-firepit:ash",
+            "stone-firepit:snow",
+            "valley-boulder:ash",
+            "valley-boulder:ice",
+            "valley-boulder:sand",
+            "valley-boulder:snow",
+            "valley-pine:snow"
+          ],
+          "landscapes": [
+            {
+              "key": "valley-boulder",
+              "surface": "ash",
+              "instances": [
+                0,
+                0,
+                0
+              ]
+            },
+            {
+              "key": "valley-boulder",
+              "surface": "ice",
+              "instances": [
+                0,
+                0,
+                0
+              ]
+            },
+            {
+              "key": "valley-pine",
+              "surface": "snow",
+              "instances": [
+                3,
+                0,
+                86
+              ]
+            },
+            {
+              "key": "valley-boulder",
+              "surface": "sand",
+              "instances": [
+                0,
+                0,
+                0
+              ]
+            },
+            {
+              "key": "valley-boulder",
+              "surface": "snow",
+              "instances": [
+                4,
+                0,
+                8
+              ]
+            },
+            {
+              "key": "berry-bush",
+              "surface": "snow",
+              "instances": [
+                0,
+                0,
+                7
+              ]
+            }
+          ]
+        },
+        {
+          "biome": "snow",
+          "fps": 60,
+          "x": -116.4,
+          "z": -94.6,
+          "players": 5,
+          "chunks": 69,
+          "gpuGeometries": 63,
+          "gpuTextures": 50,
+          "regional": {
+            "variants": 12,
+            "materials": 14,
+            "sourceGeometries": 8,
+            "sourceTextures": 6,
+            "extraGeometries": 0,
+            "extraTextures": 0
+          },
+          "keys": [
+            "berry-bush:snow",
+            "firewood-pile:ash",
+            "firewood-pile:snow",
+            "hide-tent:ash",
+            "hide-tent:snow",
+            "stone-firepit:ash",
+            "stone-firepit:snow",
+            "valley-boulder:ash",
+            "valley-boulder:ice",
+            "valley-boulder:sand",
+            "valley-boulder:snow",
+            "valley-pine:snow"
+          ],
+          "landscapes": [
+            {
+              "key": "valley-boulder",
+              "surface": "ash",
+              "instances": [
+                0,
+                0,
+                0
+              ]
+            },
+            {
+              "key": "valley-boulder",
+              "surface": "ice",
+              "instances": [
+                0,
+                0,
+                0
+              ]
+            },
+            {
+              "key": "valley-pine",
+              "surface": "snow",
+              "instances": [
+                3,
+                0,
+                86
+              ]
+            },
+            {
+              "key": "valley-boulder",
+              "surface": "sand",
+              "instances": [
+                0,
+                0,
+                0
+              ]
+            },
+            {
+              "key": "valley-boulder",
+              "surface": "snow",
+              "instances": [
+                4,
+                0,
+                8
+              ]
+            },
+            {
+              "key": "berry-bush",
+              "surface": "snow",
+              "instances": [
+                0,
+                0,
+                7
+              ]
+            }
+          ]
+        },
+        {
+          "biome": "snow",
+          "fps": 60,
+          "x": -116.4,
+          "z": -94.6,
+          "players": 5,
+          "chunks": 69,
+          "gpuGeometries": 62,
+          "gpuTextures": 49,
+          "regional": {
+            "variants": 11,
+            "materials": 13,
+            "sourceGeometries": 8,
+            "sourceTextures": 6,
+            "extraGeometries": 0,
+            "extraTextures": 0
+          },
+          "keys": [
+            "berry-bush:snow",
+            "firewood-pile:ash",
+            "firewood-pile:snow",
+            "hide-tent:ash",
+            "hide-tent:snow",
+            "stone-firepit:ash",
+            "stone-firepit:snow",
+            "valley-boulder:ash",
+            "valley-boulder:sand",
+            "valley-boulder:snow",
+            "valley-pine:snow"
+          ],
+          "landscapes": [
+            {
+              "key": "valley-boulder",
+              "surface": "ash",
+              "instances": [
+                0,
+                0,
+                0
+              ]
+            },
+            {
+              "key": "valley-pine",
+              "surface": "snow",
+              "instances": [
+                3,
+                0,
+                86
+              ]
+            },
+            {
+              "key": "valley-boulder",
+              "surface": "sand",
+              "instances": [
+                0,
+                0,
+                0
+              ]
+            },
+            {
+              "key": "valley-boulder",
+              "surface": "snow",
+              "instances": [
+                4,
+                0,
+                8
+              ]
+            },
+            {
+              "key": "berry-bush",
+              "surface": "snow",
+              "instances": [
+                0,
+                0,
+                7
+              ]
+            }
+          ]
+        },
+        {
+          "biome": "snow",
+          "fps": 60,
+          "x": -116.4,
+          "z": -94.6,
+          "players": 5,
+          "chunks": 69,
+          "gpuGeometries": 56,
+          "gpuTextures": 47,
+          "regional": {
+            "variants": 7,
+            "materials": 9,
+            "sourceGeometries": 8,
+            "sourceTextures": 6,
+            "extraGeometries": 0,
+            "extraTextures": 0
+          },
+          "keys": [
+            "berry-bush:snow",
+            "firewood-pile:snow",
+            "hide-tent:snow",
+            "stone-firepit:snow",
+            "valley-boulder:sand",
+            "valley-boulder:snow",
+            "valley-pine:snow"
+          ],
+          "landscapes": [
+            {
+              "key": "valley-pine",
+              "surface": "snow",
+              "instances": [
+                3,
+                0,
+                86
+              ]
+            },
+            {
+              "key": "valley-boulder",
+              "surface": "sand",
+              "instances": [
+                0,
+                0,
+                0
+              ]
+            },
+            {
+              "key": "valley-boulder",
+              "surface": "snow",
+              "instances": [
+                4,
+                0,
+                8
+              ]
+            },
+            {
+              "key": "berry-bush",
+              "surface": "snow",
+              "instances": [
+                0,
+                0,
+                7
+              ]
+            }
+          ]
+        },
+        {
+          "biome": "snow",
+          "fps": 60,
+          "x": -116.4,
+          "z": -94.6,
+          "players": 5,
+          "chunks": 69,
+          "gpuGeometries": 56,
+          "gpuTextures": 47,
+          "regional": {
+            "variants": 7,
+            "materials": 9,
+            "sourceGeometries": 8,
+            "sourceTextures": 6,
+            "extraGeometries": 0,
+            "extraTextures": 0
+          },
+          "keys": [
+            "berry-bush:snow",
+            "firewood-pile:snow",
+            "hide-tent:snow",
+            "stone-firepit:snow",
+            "valley-boulder:sand",
+            "valley-boulder:snow",
+            "valley-pine:snow"
+          ],
+          "landscapes": [
+            {
+              "key": "valley-pine",
+              "surface": "snow",
+              "instances": [
+                3,
+                0,
+                86
+              ]
+            },
+            {
+              "key": "valley-boulder",
+              "surface": "sand",
+              "instances": [
+                0,
+                0,
+                0
+              ]
+            },
+            {
+              "key": "valley-boulder",
+              "surface": "snow",
+              "instances": [
+                4,
+                0,
+                8
+              ]
+            },
+            {
+              "key": "berry-bush",
+              "surface": "snow",
+              "instances": [
+                0,
+                0,
+                7
+              ]
+            }
+          ]
+        },
+        {
+          "biome": "snow",
+          "fps": 60,
+          "x": -116.4,
+          "z": -94.6,
+          "players": 5,
+          "chunks": 69,
+          "gpuGeometries": 56,
+          "gpuTextures": 47,
+          "regional": {
+            "variants": 7,
+            "materials": 9,
+            "sourceGeometries": 8,
+            "sourceTextures": 6,
+            "extraGeometries": 0,
+            "extraTextures": 0
+          },
+          "keys": [
+            "berry-bush:snow",
+            "firewood-pile:snow",
+            "hide-tent:snow",
+            "stone-firepit:snow",
+            "valley-boulder:sand",
+            "valley-boulder:snow",
+            "valley-pine:snow"
+          ],
+          "landscapes": [
+            {
+              "key": "valley-pine",
+              "surface": "snow",
+              "instances": [
+                3,
+                0,
+                86
+              ]
+            },
+            {
+              "key": "valley-boulder",
+              "surface": "sand",
+              "instances": [
+                0,
+                0,
+                0
+              ]
+            },
+            {
+              "key": "valley-boulder",
+              "surface": "snow",
+              "instances": [
+                4,
+                0,
+                8
+              ]
+            },
+            {
+              "key": "berry-bush",
+              "surface": "snow",
+              "instances": [
+                0,
+                0,
+                7
+              ]
+            }
+          ]
+        },
+        {
+          "biome": "snow",
+          "fps": 60,
+          "x": -116.4,
+          "z": -94.6,
+          "players": 5,
+          "chunks": 69,
+          "gpuGeometries": 56,
+          "gpuTextures": 47,
+          "regional": {
+            "variants": 7,
+            "materials": 9,
+            "sourceGeometries": 8,
+            "sourceTextures": 6,
+            "extraGeometries": 0,
+            "extraTextures": 0
+          },
+          "keys": [
+            "berry-bush:snow",
+            "firewood-pile:snow",
+            "hide-tent:snow",
+            "stone-firepit:snow",
+            "valley-boulder:sand",
+            "valley-boulder:snow",
+            "valley-pine:snow"
+          ],
+          "landscapes": [
+            {
+              "key": "valley-pine",
+              "surface": "snow",
+              "instances": [
+                3,
+                0,
+                86
+              ]
+            },
+            {
+              "key": "valley-boulder",
+              "surface": "sand",
+              "instances": [
+                0,
+                0,
+                0
+              ]
+            },
+            {
+              "key": "valley-boulder",
+              "surface": "snow",
+              "instances": [
+                4,
+                0,
+                8
+              ]
+            },
+            {
+              "key": "berry-bush",
+              "surface": "snow",
+              "instances": [
+                0,
+                0,
+                7
+              ]
+            }
+          ]
+        },
+        {
+          "biome": "snow",
+          "fps": 60,
+          "x": -116.4,
+          "z": -94.6,
+          "players": 5,
+          "chunks": 69,
+          "gpuGeometries": 56,
+          "gpuTextures": 47,
+          "regional": {
+            "variants": 7,
+            "materials": 9,
+            "sourceGeometries": 8,
+            "sourceTextures": 6,
+            "extraGeometries": 0,
+            "extraTextures": 0
+          },
+          "keys": [
+            "berry-bush:snow",
+            "firewood-pile:snow",
+            "hide-tent:snow",
+            "stone-firepit:snow",
+            "valley-boulder:sand",
+            "valley-boulder:snow",
+            "valley-pine:snow"
+          ],
+          "landscapes": [
+            {
+              "key": "valley-pine",
+              "surface": "snow",
+              "instances": [
+                3,
+                0,
+                86
+              ]
+            },
+            {
+              "key": "valley-boulder",
+              "surface": "sand",
+              "instances": [
+                0,
+                0,
+                0
+              ]
+            },
+            {
+              "key": "valley-boulder",
+              "surface": "snow",
+              "instances": [
+                4,
+                0,
+                8
+              ]
+            },
+            {
+              "key": "berry-bush",
+              "surface": "snow",
+              "instances": [
+                0,
+                0,
+                7
+              ]
+            }
+          ]
+        },
+        {
+          "biome": "snow",
+          "fps": 60,
+          "x": -116.4,
+          "z": -94.6,
+          "players": 5,
+          "chunks": 69,
+          "gpuGeometries": 56,
+          "gpuTextures": 47,
+          "regional": {
+            "variants": 7,
+            "materials": 9,
+            "sourceGeometries": 8,
+            "sourceTextures": 6,
+            "extraGeometries": 0,
+            "extraTextures": 0
+          },
+          "keys": [
+            "berry-bush:snow",
+            "firewood-pile:snow",
+            "hide-tent:snow",
+            "stone-firepit:snow",
+            "valley-boulder:sand",
+            "valley-boulder:snow",
+            "valley-pine:snow"
+          ],
+          "landscapes": [
+            {
+              "key": "valley-pine",
+              "surface": "snow",
+              "instances": [
+                3,
+                0,
+                86
+              ]
+            },
+            {
+              "key": "valley-boulder",
+              "surface": "sand",
+              "instances": [
+                0,
+                0,
+                0
+              ]
+            },
+            {
+              "key": "valley-boulder",
+              "surface": "snow",
+              "instances": [
+                4,
+                0,
+                8
+              ]
+            },
+            {
+              "key": "berry-bush",
+              "surface": "snow",
+              "instances": [
+                0,
+                0,
+                7
+              ]
+            }
+          ]
+        },
+        {
+          "biome": "snow",
+          "fps": 60,
+          "x": -116.4,
+          "z": -94.6,
+          "players": 5,
+          "chunks": 69,
+          "gpuGeometries": 56,
+          "gpuTextures": 47,
+          "regional": {
+            "variants": 7,
+            "materials": 9,
+            "sourceGeometries": 8,
+            "sourceTextures": 6,
+            "extraGeometries": 0,
+            "extraTextures": 0
+          },
+          "keys": [
+            "berry-bush:snow",
+            "firewood-pile:snow",
+            "hide-tent:snow",
+            "stone-firepit:snow",
+            "valley-boulder:sand",
+            "valley-boulder:snow",
+            "valley-pine:snow"
+          ],
+          "landscapes": [
+            {
+              "key": "valley-pine",
+              "surface": "snow",
+              "instances": [
+                3,
+                0,
+                86
+              ]
+            },
+            {
+              "key": "valley-boulder",
+              "surface": "sand",
+              "instances": [
+                0,
+                0,
+                0
+              ]
+            },
+            {
+              "key": "valley-boulder",
+              "surface": "snow",
+              "instances": [
+                4,
+                0,
+                8
+              ]
+            },
+            {
+              "key": "berry-bush",
+              "surface": "snow",
+              "instances": [
+                0,
+                0,
+                7
+              ]
+            }
+          ]
+        },
+        {
+          "biome": "snow",
+          "fps": 60,
+          "x": -116.4,
+          "z": -94.6,
+          "players": 5,
+          "chunks": 69,
+          "gpuGeometries": 56,
+          "gpuTextures": 47,
+          "regional": {
+            "variants": 7,
+            "materials": 9,
+            "sourceGeometries": 8,
+            "sourceTextures": 6,
+            "extraGeometries": 0,
+            "extraTextures": 0
+          },
+          "keys": [
+            "berry-bush:snow",
+            "firewood-pile:snow",
+            "hide-tent:snow",
+            "stone-firepit:snow",
+            "valley-boulder:sand",
+            "valley-boulder:snow",
+            "valley-pine:snow"
+          ],
+          "landscapes": [
+            {
+              "key": "valley-pine",
+              "surface": "snow",
+              "instances": [
+                3,
+                0,
+                86
+              ]
+            },
+            {
+              "key": "valley-boulder",
+              "surface": "sand",
+              "instances": [
+                0,
+                0,
+                0
+              ]
+            },
+            {
+              "key": "valley-boulder",
+              "surface": "snow",
+              "instances": [
+                4,
+                0,
+                8
+              ]
+            },
+            {
+              "key": "berry-bush",
+              "surface": "snow",
+              "instances": [
+                0,
+                0,
+                7
+              ]
+            }
+          ]
+        },
+        {
+          "biome": "snow",
+          "fps": 60,
+          "x": -116.4,
+          "z": -94.6,
+          "players": 5,
+          "chunks": 69,
+          "gpuGeometries": 56,
+          "gpuTextures": 47,
+          "regional": {
+            "variants": 7,
+            "materials": 9,
+            "sourceGeometries": 8,
+            "sourceTextures": 6,
+            "extraGeometries": 0,
+            "extraTextures": 0
+          },
+          "keys": [
+            "berry-bush:snow",
+            "firewood-pile:snow",
+            "hide-tent:snow",
+            "stone-firepit:snow",
+            "valley-boulder:sand",
+            "valley-boulder:snow",
+            "valley-pine:snow"
+          ],
+          "landscapes": [
+            {
+              "key": "valley-pine",
+              "surface": "snow",
+              "instances": [
+                3,
+                0,
+                86
+              ]
+            },
+            {
+              "key": "valley-boulder",
+              "surface": "sand",
+              "instances": [
+                0,
+                0,
+                0
+              ]
+            },
+            {
+              "key": "valley-boulder",
+              "surface": "snow",
+              "instances": [
+                4,
+                0,
+                8
+              ]
+            },
+            {
+              "key": "berry-bush",
+              "surface": "snow",
+              "instances": [
+                0,
+                0,
+                7
+              ]
+            }
+          ]
+        },
+        {
+          "biome": "snow",
+          "fps": 60,
+          "x": -116.4,
+          "z": -94.6,
+          "players": 5,
+          "chunks": 69,
+          "gpuGeometries": 56,
+          "gpuTextures": 47,
+          "regional": {
+            "variants": 7,
+            "materials": 9,
+            "sourceGeometries": 8,
+            "sourceTextures": 6,
+            "extraGeometries": 0,
+            "extraTextures": 0
+          },
+          "keys": [
+            "berry-bush:snow",
+            "firewood-pile:snow",
+            "hide-tent:snow",
+            "stone-firepit:snow",
+            "valley-boulder:sand",
+            "valley-boulder:snow",
+            "valley-pine:snow"
+          ],
+          "landscapes": [
+            {
+              "key": "valley-pine",
+              "surface": "snow",
+              "instances": [
+                3,
+                0,
+                86
+              ]
+            },
+            {
+              "key": "valley-boulder",
+              "surface": "sand",
+              "instances": [
+                0,
+                0,
+                0
+              ]
+            },
+            {
+              "key": "valley-boulder",
+              "surface": "snow",
+              "instances": [
+                4,
+                0,
+                8
+              ]
+            },
+            {
+              "key": "berry-bush",
+              "surface": "snow",
+              "instances": [
+                0,
+                0,
+                7
+              ]
+            }
+          ]
+        }
+      ],
+      "screenshot": "output/playwright/biome-game-snow.png"
+    },
+    {
+      "timestamp": "2026-09-07T01:08:34.615Z",
+      "biome": "ice",
+      "errors": [],
+      "samples": [
+        {
+          "biome": "ice",
+          "fps": 60,
+          "x": 205.6,
+          "z": -105.6,
+          "players": 5,
+          "chunks": 68,
+          "gpuGeometries": 59,
+          "gpuTextures": 46,
+          "regional": {
+            "variants": 10,
+            "materials": 12,
+            "sourceGeometries": 8,
+            "sourceTextures": 6,
+            "extraGeometries": 0,
+            "extraTextures": 0
+          },
+          "keys": [
+            "berry-bush:snow",
+            "firewood-pile:snow",
+            "hide-tent:ice",
+            "hide-tent:snow",
+            "stone-firepit:ice",
+            "stone-firepit:snow",
+            "valley-boulder:ice",
+            "valley-boulder:sand",
+            "valley-boulder:snow",
+            "valley-pine:snow"
+          ],
+          "landscapes": [
+            {
+              "key": "valley-pine",
+              "surface": "snow",
+              "instances": [
+                0,
+                0,
+                0
+              ]
+            },
+            {
+              "key": "valley-boulder",
+              "surface": "sand",
+              "instances": [
+                0,
+                0,
+                0
+              ]
+            },
+            {
+              "key": "valley-boulder",
+              "surface": "snow",
+              "instances": [
+                0,
+                0,
+                0
+              ]
+            },
+            {
+              "key": "berry-bush",
+              "surface": "snow",
+              "instances": [
+                0,
+                0,
+                0
+              ]
+            },
+            {
+              "key": "valley-boulder",
+              "surface": "ice",
+              "instances": [
+                2,
+                0,
+                6
+              ]
+            }
+          ]
+        },
+        {
+          "biome": "ice",
+          "fps": 60,
+          "x": 205.6,
+          "z": -105.6,
+          "players": 5,
+          "chunks": 68,
+          "gpuGeometries": 59,
+          "gpuTextures": 46,
+          "regional": {
+            "variants": 10,
+            "materials": 12,
+            "sourceGeometries": 8,
+            "sourceTextures": 6,
+            "extraGeometries": 0,
+            "extraTextures": 0
+          },
+          "keys": [
+            "berry-bush:snow",
+            "firewood-pile:snow",
+            "hide-tent:ice",
+            "hide-tent:snow",
+            "stone-firepit:ice",
+            "stone-firepit:snow",
+            "valley-boulder:ice",
+            "valley-boulder:sand",
+            "valley-boulder:snow",
+            "valley-pine:snow"
+          ],
+          "landscapes": [
+            {
+              "key": "valley-pine",
+              "surface": "snow",
+              "instances": [
+                0,
+                0,
+                0
+              ]
+            },
+            {
+              "key": "valley-boulder",
+              "surface": "sand",
+              "instances": [
+                0,
+                0,
+                0
+              ]
+            },
+            {
+              "key": "valley-boulder",
+              "surface": "snow",
+              "instances": [
+                0,
+                0,
+                0
+              ]
+            },
+            {
+              "key": "berry-bush",
+              "surface": "snow",
+              "instances": [
+                0,
+                0,
+                0
+              ]
+            },
+            {
+              "key": "valley-boulder",
+              "surface": "ice",
+              "instances": [
+                2,
+                0,
+                6
+              ]
+            }
+          ]
+        },
+        {
+          "biome": "ice",
+          "fps": 60,
+          "x": 205.6,
+          "z": -105.6,
+          "players": 5,
+          "chunks": 68,
+          "gpuGeometries": 59,
+          "gpuTextures": 46,
+          "regional": {
+            "variants": 10,
+            "materials": 12,
+            "sourceGeometries": 8,
+            "sourceTextures": 6,
+            "extraGeometries": 0,
+            "extraTextures": 0
+          },
+          "keys": [
+            "berry-bush:snow",
+            "firewood-pile:snow",
+            "hide-tent:ice",
+            "hide-tent:snow",
+            "stone-firepit:ice",
+            "stone-firepit:snow",
+            "valley-boulder:ice",
+            "valley-boulder:sand",
+            "valley-boulder:snow",
+            "valley-pine:snow"
+          ],
+          "landscapes": [
+            {
+              "key": "valley-pine",
+              "surface": "snow",
+              "instances": [
+                0,
+                0,
+                0
+              ]
+            },
+            {
+              "key": "valley-boulder",
+              "surface": "sand",
+              "instances": [
+                0,
+                0,
+                0
+              ]
+            },
+            {
+              "key": "valley-boulder",
+              "surface": "snow",
+              "instances": [
+                0,
+                0,
+                0
+              ]
+            },
+            {
+              "key": "berry-bush",
+              "surface": "snow",
+              "instances": [
+                0,
+                0,
+                0
+              ]
+            },
+            {
+              "key": "valley-boulder",
+              "surface": "ice",
+              "instances": [
+                2,
+                0,
+                6
+              ]
+            }
+          ]
+        },
+        {
+          "biome": "ice",
+          "fps": 60,
+          "x": 205.6,
+          "z": -105.6,
+          "players": 5,
+          "chunks": 68,
+          "gpuGeometries": 59,
+          "gpuTextures": 46,
+          "regional": {
+            "variants": 10,
+            "materials": 12,
+            "sourceGeometries": 8,
+            "sourceTextures": 6,
+            "extraGeometries": 0,
+            "extraTextures": 0
+          },
+          "keys": [
+            "berry-bush:snow",
+            "firewood-pile:snow",
+            "hide-tent:ice",
+            "hide-tent:snow",
+            "stone-firepit:ice",
+            "stone-firepit:snow",
+            "valley-boulder:ice",
+            "valley-boulder:sand",
+            "valley-boulder:snow",
+            "valley-pine:snow"
+          ],
+          "landscapes": [
+            {
+              "key": "valley-pine",
+              "surface": "snow",
+              "instances": [
+                0,
+                0,
+                0
+              ]
+            },
+            {
+              "key": "valley-boulder",
+              "surface": "sand",
+              "instances": [
+                0,
+                0,
+                0
+              ]
+            },
+            {
+              "key": "valley-boulder",
+              "surface": "snow",
+              "instances": [
+                0,
+                0,
+                0
+              ]
+            },
+            {
+              "key": "berry-bush",
+              "surface": "snow",
+              "instances": [
+                0,
+                0,
+                0
+              ]
+            },
+            {
+              "key": "valley-boulder",
+              "surface": "ice",
+              "instances": [
+                2,
+                0,
+                6
+              ]
+            }
+          ]
+        },
+        {
+          "biome": "ice",
+          "fps": 60,
+          "x": 205.6,
+          "z": -105.6,
+          "players": 5,
+          "chunks": 68,
+          "gpuGeometries": 59,
+          "gpuTextures": 46,
+          "regional": {
+            "variants": 10,
+            "materials": 12,
+            "sourceGeometries": 8,
+            "sourceTextures": 6,
+            "extraGeometries": 0,
+            "extraTextures": 0
+          },
+          "keys": [
+            "berry-bush:snow",
+            "firewood-pile:snow",
+            "hide-tent:ice",
+            "hide-tent:snow",
+            "stone-firepit:ice",
+            "stone-firepit:snow",
+            "valley-boulder:ice",
+            "valley-boulder:sand",
+            "valley-boulder:snow",
+            "valley-pine:snow"
+          ],
+          "landscapes": [
+            {
+              "key": "valley-pine",
+              "surface": "snow",
+              "instances": [
+                0,
+                0,
+                0
+              ]
+            },
+            {
+              "key": "valley-boulder",
+              "surface": "sand",
+              "instances": [
+                0,
+                0,
+                0
+              ]
+            },
+            {
+              "key": "valley-boulder",
+              "surface": "snow",
+              "instances": [
+                0,
+                0,
+                0
+              ]
+            },
+            {
+              "key": "berry-bush",
+              "surface": "snow",
+              "instances": [
+                0,
+                0,
+                0
+              ]
+            },
+            {
+              "key": "valley-boulder",
+              "surface": "ice",
+              "instances": [
+                2,
+                0,
+                6
+              ]
+            }
+          ]
+        },
+        {
+          "biome": "ice",
+          "fps": 60,
+          "x": 205.6,
+          "z": -105.6,
+          "players": 5,
+          "chunks": 68,
+          "gpuGeometries": 59,
+          "gpuTextures": 46,
+          "regional": {
+            "variants": 10,
+            "materials": 12,
+            "sourceGeometries": 8,
+            "sourceTextures": 6,
+            "extraGeometries": 0,
+            "extraTextures": 0
+          },
+          "keys": [
+            "berry-bush:snow",
+            "firewood-pile:snow",
+            "hide-tent:ice",
+            "hide-tent:snow",
+            "stone-firepit:ice",
+            "stone-firepit:snow",
+            "valley-boulder:ice",
+            "valley-boulder:sand",
+            "valley-boulder:snow",
+            "valley-pine:snow"
+          ],
+          "landscapes": [
+            {
+              "key": "valley-pine",
+              "surface": "snow",
+              "instances": [
+                0,
+                0,
+                0
+              ]
+            },
+            {
+              "key": "valley-boulder",
+              "surface": "sand",
+              "instances": [
+                0,
+                0,
+                0
+              ]
+            },
+            {
+              "key": "valley-boulder",
+              "surface": "snow",
+              "instances": [
+                0,
+                0,
+                0
+              ]
+            },
+            {
+              "key": "berry-bush",
+              "surface": "snow",
+              "instances": [
+                0,
+                0,
+                0
+              ]
+            },
+            {
+              "key": "valley-boulder",
+              "surface": "ice",
+              "instances": [
+                2,
+                0,
+                6
+              ]
+            }
+          ]
+        },
+        {
+          "biome": "ice",
+          "fps": 60,
+          "x": 205.6,
+          "z": -105.6,
+          "players": 5,
+          "chunks": 68,
+          "gpuGeometries": 59,
+          "gpuTextures": 46,
+          "regional": {
+            "variants": 10,
+            "materials": 12,
+            "sourceGeometries": 8,
+            "sourceTextures": 6,
+            "extraGeometries": 0,
+            "extraTextures": 0
+          },
+          "keys": [
+            "berry-bush:snow",
+            "firewood-pile:snow",
+            "hide-tent:ice",
+            "hide-tent:snow",
+            "stone-firepit:ice",
+            "stone-firepit:snow",
+            "valley-boulder:ice",
+            "valley-boulder:sand",
+            "valley-boulder:snow",
+            "valley-pine:snow"
+          ],
+          "landscapes": [
+            {
+              "key": "valley-pine",
+              "surface": "snow",
+              "instances": [
+                0,
+                0,
+                0
+              ]
+            },
+            {
+              "key": "valley-boulder",
+              "surface": "sand",
+              "instances": [
+                0,
+                0,
+                0
+              ]
+            },
+            {
+              "key": "valley-boulder",
+              "surface": "snow",
+              "instances": [
+                0,
+                0,
+                0
+              ]
+            },
+            {
+              "key": "berry-bush",
+              "surface": "snow",
+              "instances": [
+                0,
+                0,
+                0
+              ]
+            },
+            {
+              "key": "valley-boulder",
+              "surface": "ice",
+              "instances": [
+                2,
+                0,
+                6
+              ]
+            }
+          ]
+        },
+        {
+          "biome": "ice",
+          "fps": 60,
+          "x": 205.6,
+          "z": -105.6,
+          "players": 5,
+          "chunks": 68,
+          "gpuGeometries": 48,
+          "gpuTextures": 40,
+          "regional": {
+            "variants": 3,
+            "materials": 3,
+            "sourceGeometries": 3,
+            "sourceTextures": 3,
+            "extraGeometries": 0,
+            "extraTextures": 0
+          },
+          "keys": [
+            "hide-tent:ice",
+            "stone-firepit:ice",
+            "valley-boulder:ice"
+          ],
+          "landscapes": [
+            {
+              "key": "valley-boulder",
+              "surface": "ice",
+              "instances": [
+                2,
+                0,
+                6
+              ]
+            }
+          ]
+        },
+        {
+          "biome": "ice",
+          "fps": 60,
+          "x": 205.6,
+          "z": -105.6,
+          "players": 5,
+          "chunks": 68,
+          "gpuGeometries": 48,
+          "gpuTextures": 40,
+          "regional": {
+            "variants": 3,
+            "materials": 3,
+            "sourceGeometries": 3,
+            "sourceTextures": 3,
+            "extraGeometries": 0,
+            "extraTextures": 0
+          },
+          "keys": [
+            "hide-tent:ice",
+            "stone-firepit:ice",
+            "valley-boulder:ice"
+          ],
+          "landscapes": [
+            {
+              "key": "valley-boulder",
+              "surface": "ice",
+              "instances": [
+                2,
+                0,
+                6
+              ]
+            }
+          ]
+        },
+        {
+          "biome": "ice",
+          "fps": 60,
+          "x": 205.6,
+          "z": -105.6,
+          "players": 5,
+          "chunks": 68,
+          "gpuGeometries": 48,
+          "gpuTextures": 40,
+          "regional": {
+            "variants": 3,
+            "materials": 3,
+            "sourceGeometries": 3,
+            "sourceTextures": 3,
+            "extraGeometries": 0,
+            "extraTextures": 0
+          },
+          "keys": [
+            "hide-tent:ice",
+            "stone-firepit:ice",
+            "valley-boulder:ice"
+          ],
+          "landscapes": [
+            {
+              "key": "valley-boulder",
+              "surface": "ice",
+              "instances": [
+                2,
+                0,
+                6
+              ]
+            }
+          ]
+        },
+        {
+          "biome": "ice",
+          "fps": 60,
+          "x": 205.6,
+          "z": -105.6,
+          "players": 5,
+          "chunks": 68,
+          "gpuGeometries": 48,
+          "gpuTextures": 40,
+          "regional": {
+            "variants": 3,
+            "materials": 3,
+            "sourceGeometries": 3,
+            "sourceTextures": 3,
+            "extraGeometries": 0,
+            "extraTextures": 0
+          },
+          "keys": [
+            "hide-tent:ice",
+            "stone-firepit:ice",
+            "valley-boulder:ice"
+          ],
+          "landscapes": [
+            {
+              "key": "valley-boulder",
+              "surface": "ice",
+              "instances": [
+                2,
+                0,
+                6
+              ]
+            }
+          ]
+        },
+        {
+          "biome": "ice",
+          "fps": 60,
+          "x": 205.6,
+          "z": -105.6,
+          "players": 5,
+          "chunks": 68,
+          "gpuGeometries": 48,
+          "gpuTextures": 40,
+          "regional": {
+            "variants": 3,
+            "materials": 3,
+            "sourceGeometries": 3,
+            "sourceTextures": 3,
+            "extraGeometries": 0,
+            "extraTextures": 0
+          },
+          "keys": [
+            "hide-tent:ice",
+            "stone-firepit:ice",
+            "valley-boulder:ice"
+          ],
+          "landscapes": [
+            {
+              "key": "valley-boulder",
+              "surface": "ice",
+              "instances": [
+                2,
+                0,
+                6
+              ]
+            }
+          ]
+        },
+        {
+          "biome": "ice",
+          "fps": 60,
+          "x": 205.6,
+          "z": -105.6,
+          "players": 5,
+          "chunks": 68,
+          "gpuGeometries": 48,
+          "gpuTextures": 40,
+          "regional": {
+            "variants": 3,
+            "materials": 3,
+            "sourceGeometries": 3,
+            "sourceTextures": 3,
+            "extraGeometries": 0,
+            "extraTextures": 0
+          },
+          "keys": [
+            "hide-tent:ice",
+            "stone-firepit:ice",
+            "valley-boulder:ice"
+          ],
+          "landscapes": [
+            {
+              "key": "valley-boulder",
+              "surface": "ice",
+              "instances": [
+                2,
+                0,
+                6
+              ]
+            }
+          ]
+        },
+        {
+          "biome": "ice",
+          "fps": 60,
+          "x": 205.6,
+          "z": -105.6,
+          "players": 5,
+          "chunks": 68,
+          "gpuGeometries": 48,
+          "gpuTextures": 40,
+          "regional": {
+            "variants": 3,
+            "materials": 3,
+            "sourceGeometries": 3,
+            "sourceTextures": 3,
+            "extraGeometries": 0,
+            "extraTextures": 0
+          },
+          "keys": [
+            "hide-tent:ice",
+            "stone-firepit:ice",
+            "valley-boulder:ice"
+          ],
+          "landscapes": [
+            {
+              "key": "valley-boulder",
+              "surface": "ice",
+              "instances": [
+                2,
+                0,
+                6
+              ]
+            }
+          ]
+        },
+        {
+          "biome": "ice",
+          "fps": 60,
+          "x": 205.6,
+          "z": -105.6,
+          "players": 5,
+          "chunks": 68,
+          "gpuGeometries": 48,
+          "gpuTextures": 40,
+          "regional": {
+            "variants": 3,
+            "materials": 3,
+            "sourceGeometries": 3,
+            "sourceTextures": 3,
+            "extraGeometries": 0,
+            "extraTextures": 0
+          },
+          "keys": [
+            "hide-tent:ice",
+            "stone-firepit:ice",
+            "valley-boulder:ice"
+          ],
+          "landscapes": [
+            {
+              "key": "valley-boulder",
+              "surface": "ice",
+              "instances": [
+                2,
+                0,
+                6
+              ]
+            }
+          ]
+        },
+        {
+          "biome": "ice",
+          "fps": 60,
+          "x": 205.6,
+          "z": -105.6,
+          "players": 5,
+          "chunks": 68,
+          "gpuGeometries": 48,
+          "gpuTextures": 40,
+          "regional": {
+            "variants": 3,
+            "materials": 3,
+            "sourceGeometries": 3,
+            "sourceTextures": 3,
+            "extraGeometries": 0,
+            "extraTextures": 0
+          },
+          "keys": [
+            "hide-tent:ice",
+            "stone-firepit:ice",
+            "valley-boulder:ice"
+          ],
+          "landscapes": [
+            {
+              "key": "valley-boulder",
+              "surface": "ice",
+              "instances": [
+                2,
+                0,
+                6
+              ]
+            }
+          ]
+        },
+        {
+          "biome": "ice",
+          "fps": 60,
+          "x": 205.6,
+          "z": -105.6,
+          "players": 5,
+          "chunks": 68,
+          "gpuGeometries": 48,
+          "gpuTextures": 40,
+          "regional": {
+            "variants": 3,
+            "materials": 3,
+            "sourceGeometries": 3,
+            "sourceTextures": 3,
+            "extraGeometries": 0,
+            "extraTextures": 0
+          },
+          "keys": [
+            "hide-tent:ice",
+            "stone-firepit:ice",
+            "valley-boulder:ice"
+          ],
+          "landscapes": [
+            {
+              "key": "valley-boulder",
+              "surface": "ice",
+              "instances": [
+                2,
+                0,
+                6
+              ]
+            }
+          ]
+        }
+      ],
+      "screenshot": "output/playwright/biome-game-ice.png"
+    },
+    {
+      "timestamp": "2026-09-07T01:10:44.109Z",
+      "biome": "volcano",
+      "errors": [],
+      "samples": [
+        {
+          "biome": "volcano",
+          "fps": 60,
+          "x": 208.6,
+          "z": 205.4,
+          "players": 5,
+          "chunks": 69,
+          "gpuGeometries": 54,
+          "gpuTextures": 43,
+          "regional": {
+            "variants": 7,
+            "materials": 7,
+            "sourceGeometries": 4,
+            "sourceTextures": 4,
+            "extraGeometries": 0,
+            "extraTextures": 0
+          },
+          "keys": [
+            "firewood-pile:ash",
+            "hide-tent:ash",
+            "hide-tent:ice",
+            "stone-firepit:ash",
+            "stone-firepit:ice",
+            "valley-boulder:ash",
+            "valley-boulder:ice"
+          ],
+          "landscapes": [
+            {
+              "key": "valley-boulder",
+              "surface": "ice",
+              "instances": [
+                0,
+                0,
+                0
+              ]
+            },
+            {
+              "key": "valley-boulder",
+              "surface": "ash",
+              "instances": [
+                2,
+                0,
+                16
+              ]
+            }
+          ]
+        },
+        {
+          "biome": "volcano",
+          "fps": 60,
+          "x": 208.6,
+          "z": 205.4,
+          "players": 5,
+          "chunks": 69,
+          "gpuGeometries": 54,
+          "gpuTextures": 43,
+          "regional": {
+            "variants": 7,
+            "materials": 7,
+            "sourceGeometries": 4,
+            "sourceTextures": 4,
+            "extraGeometries": 0,
+            "extraTextures": 0
+          },
+          "keys": [
+            "firewood-pile:ash",
+            "hide-tent:ash",
+            "hide-tent:ice",
+            "stone-firepit:ash",
+            "stone-firepit:ice",
+            "valley-boulder:ash",
+            "valley-boulder:ice"
+          ],
+          "landscapes": [
+            {
+              "key": "valley-boulder",
+              "surface": "ice",
+              "instances": [
+                0,
+                0,
+                0
+              ]
+            },
+            {
+              "key": "valley-boulder",
+              "surface": "ash",
+              "instances": [
+                2,
+                0,
+                16
+              ]
+            }
+          ]
+        },
+        {
+          "biome": "volcano",
+          "fps": 60,
+          "x": 208.6,
+          "z": 205.4,
+          "players": 5,
+          "chunks": 69,
+          "gpuGeometries": 54,
+          "gpuTextures": 43,
+          "regional": {
+            "variants": 7,
+            "materials": 7,
+            "sourceGeometries": 4,
+            "sourceTextures": 4,
+            "extraGeometries": 0,
+            "extraTextures": 0
+          },
+          "keys": [
+            "firewood-pile:ash",
+            "hide-tent:ash",
+            "hide-tent:ice",
+            "stone-firepit:ash",
+            "stone-firepit:ice",
+            "valley-boulder:ash",
+            "valley-boulder:ice"
+          ],
+          "landscapes": [
+            {
+              "key": "valley-boulder",
+              "surface": "ice",
+              "instances": [
+                0,
+                0,
+                0
+              ]
+            },
+            {
+              "key": "valley-boulder",
+              "surface": "ash",
+              "instances": [
+                2,
+                0,
+                16
+              ]
+            }
+          ]
+        },
+        {
+          "biome": "volcano",
+          "fps": 60,
+          "x": 208.6,
+          "z": 205.4,
+          "players": 5,
+          "chunks": 69,
+          "gpuGeometries": 46,
+          "gpuTextures": 40,
+          "regional": {
+            "variants": 4,
+            "materials": 4,
+            "sourceGeometries": 4,
+            "sourceTextures": 4,
+            "extraGeometries": 0,
+            "extraTextures": 0
+          },
+          "keys": [
+            "firewood-pile:ash",
+            "hide-tent:ash",
+            "stone-firepit:ash",
+            "valley-boulder:ash"
+          ],
+          "landscapes": [
+            {
+              "key": "valley-boulder",
+              "surface": "ash",
+              "instances": [
+                2,
+                0,
+                16
+              ]
+            }
+          ]
+        },
+        {
+          "biome": "volcano",
+          "fps": 60,
+          "x": 208.6,
+          "z": 205.4,
+          "players": 5,
+          "chunks": 69,
+          "gpuGeometries": 46,
+          "gpuTextures": 40,
+          "regional": {
+            "variants": 4,
+            "materials": 4,
+            "sourceGeometries": 4,
+            "sourceTextures": 4,
+            "extraGeometries": 0,
+            "extraTextures": 0
+          },
+          "keys": [
+            "firewood-pile:ash",
+            "hide-tent:ash",
+            "stone-firepit:ash",
+            "valley-boulder:ash"
+          ],
+          "landscapes": [
+            {
+              "key": "valley-boulder",
+              "surface": "ash",
+              "instances": [
+                2,
+                0,
+                16
+              ]
+            }
+          ]
+        },
+        {
+          "biome": "volcano",
+          "fps": 60,
+          "x": 208.6,
+          "z": 205.4,
+          "players": 5,
+          "chunks": 69,
+          "gpuGeometries": 46,
+          "gpuTextures": 40,
+          "regional": {
+            "variants": 4,
+            "materials": 4,
+            "sourceGeometries": 4,
+            "sourceTextures": 4,
+            "extraGeometries": 0,
+            "extraTextures": 0
+          },
+          "keys": [
+            "firewood-pile:ash",
+            "hide-tent:ash",
+            "stone-firepit:ash",
+            "valley-boulder:ash"
+          ],
+          "landscapes": [
+            {
+              "key": "valley-boulder",
+              "surface": "ash",
+              "instances": [
+                2,
+                0,
+                16
+              ]
+            }
+          ]
+        },
+        {
+          "biome": "volcano",
+          "fps": 60,
+          "x": 208.6,
+          "z": 205.4,
+          "players": 5,
+          "chunks": 69,
+          "gpuGeometries": 46,
+          "gpuTextures": 40,
+          "regional": {
+            "variants": 4,
+            "materials": 4,
+            "sourceGeometries": 4,
+            "sourceTextures": 4,
+            "extraGeometries": 0,
+            "extraTextures": 0
+          },
+          "keys": [
+            "firewood-pile:ash",
+            "hide-tent:ash",
+            "stone-firepit:ash",
+            "valley-boulder:ash"
+          ],
+          "landscapes": [
+            {
+              "key": "valley-boulder",
+              "surface": "ash",
+              "instances": [
+                2,
+                0,
+                16
+              ]
+            }
+          ]
+        },
+        {
+          "biome": "volcano",
+          "fps": 60,
+          "x": 208.6,
+          "z": 205.4,
+          "players": 5,
+          "chunks": 69,
+          "gpuGeometries": 46,
+          "gpuTextures": 40,
+          "regional": {
+            "variants": 4,
+            "materials": 4,
+            "sourceGeometries": 4,
+            "sourceTextures": 4,
+            "extraGeometries": 0,
+            "extraTextures": 0
+          },
+          "keys": [
+            "firewood-pile:ash",
+            "hide-tent:ash",
+            "stone-firepit:ash",
+            "valley-boulder:ash"
+          ],
+          "landscapes": [
+            {
+              "key": "valley-boulder",
+              "surface": "ash",
+              "instances": [
+                2,
+                0,
+                16
+              ]
+            }
+          ]
+        },
+        {
+          "biome": "volcano",
+          "fps": 60,
+          "x": 208.6,
+          "z": 205.4,
+          "players": 5,
+          "chunks": 69,
+          "gpuGeometries": 46,
+          "gpuTextures": 40,
+          "regional": {
+            "variants": 4,
+            "materials": 4,
+            "sourceGeometries": 4,
+            "sourceTextures": 4,
+            "extraGeometries": 0,
+            "extraTextures": 0
+          },
+          "keys": [
+            "firewood-pile:ash",
+            "hide-tent:ash",
+            "stone-firepit:ash",
+            "valley-boulder:ash"
+          ],
+          "landscapes": [
+            {
+              "key": "valley-boulder",
+              "surface": "ash",
+              "instances": [
+                2,
+                0,
+                16
+              ]
+            }
+          ]
+        },
+        {
+          "biome": "volcano",
+          "fps": 60,
+          "x": 208.6,
+          "z": 205.4,
+          "players": 5,
+          "chunks": 69,
+          "gpuGeometries": 46,
+          "gpuTextures": 40,
+          "regional": {
+            "variants": 4,
+            "materials": 4,
+            "sourceGeometries": 4,
+            "sourceTextures": 4,
+            "extraGeometries": 0,
+            "extraTextures": 0
+          },
+          "keys": [
+            "firewood-pile:ash",
+            "hide-tent:ash",
+            "stone-firepit:ash",
+            "valley-boulder:ash"
+          ],
+          "landscapes": [
+            {
+              "key": "valley-boulder",
+              "surface": "ash",
+              "instances": [
+                2,
+                0,
+                16
+              ]
+            }
+          ]
+        },
+        {
+          "biome": "volcano",
+          "fps": 60,
+          "x": 208.6,
+          "z": 205.4,
+          "players": 5,
+          "chunks": 69,
+          "gpuGeometries": 46,
+          "gpuTextures": 40,
+          "regional": {
+            "variants": 4,
+            "materials": 4,
+            "sourceGeometries": 4,
+            "sourceTextures": 4,
+            "extraGeometries": 0,
+            "extraTextures": 0
+          },
+          "keys": [
+            "firewood-pile:ash",
+            "hide-tent:ash",
+            "stone-firepit:ash",
+            "valley-boulder:ash"
+          ],
+          "landscapes": [
+            {
+              "key": "valley-boulder",
+              "surface": "ash",
+              "instances": [
+                2,
+                0,
+                16
+              ]
+            }
+          ]
+        },
+        {
+          "biome": "volcano",
+          "fps": 60,
+          "x": 208.6,
+          "z": 205.4,
+          "players": 5,
+          "chunks": 69,
+          "gpuGeometries": 46,
+          "gpuTextures": 40,
+          "regional": {
+            "variants": 4,
+            "materials": 4,
+            "sourceGeometries": 4,
+            "sourceTextures": 4,
+            "extraGeometries": 0,
+            "extraTextures": 0
+          },
+          "keys": [
+            "firewood-pile:ash",
+            "hide-tent:ash",
+            "stone-firepit:ash",
+            "valley-boulder:ash"
+          ],
+          "landscapes": [
+            {
+              "key": "valley-boulder",
+              "surface": "ash",
+              "instances": [
+                2,
+                0,
+                16
+              ]
+            }
+          ]
+        },
+        {
+          "biome": "volcano",
+          "fps": 60,
+          "x": 208.6,
+          "z": 205.4,
+          "players": 5,
+          "chunks": 69,
+          "gpuGeometries": 46,
+          "gpuTextures": 40,
+          "regional": {
+            "variants": 4,
+            "materials": 4,
+            "sourceGeometries": 4,
+            "sourceTextures": 4,
+            "extraGeometries": 0,
+            "extraTextures": 0
+          },
+          "keys": [
+            "firewood-pile:ash",
+            "hide-tent:ash",
+            "stone-firepit:ash",
+            "valley-boulder:ash"
+          ],
+          "landscapes": [
+            {
+              "key": "valley-boulder",
+              "surface": "ash",
+              "instances": [
+                2,
+                0,
+                16
+              ]
+            }
+          ]
+        },
+        {
+          "biome": "volcano",
+          "fps": 60,
+          "x": 208.6,
+          "z": 205.4,
+          "players": 5,
+          "chunks": 69,
+          "gpuGeometries": 46,
+          "gpuTextures": 40,
+          "regional": {
+            "variants": 4,
+            "materials": 4,
+            "sourceGeometries": 4,
+            "sourceTextures": 4,
+            "extraGeometries": 0,
+            "extraTextures": 0
+          },
+          "keys": [
+            "firewood-pile:ash",
+            "hide-tent:ash",
+            "stone-firepit:ash",
+            "valley-boulder:ash"
+          ],
+          "landscapes": [
+            {
+              "key": "valley-boulder",
+              "surface": "ash",
+              "instances": [
+                2,
+                0,
+                16
+              ]
+            }
+          ]
+        },
+        {
+          "biome": "volcano",
+          "fps": 60,
+          "x": 208.6,
+          "z": 205.4,
+          "players": 5,
+          "chunks": 69,
+          "gpuGeometries": 46,
+          "gpuTextures": 40,
+          "regional": {
+            "variants": 4,
+            "materials": 4,
+            "sourceGeometries": 4,
+            "sourceTextures": 4,
+            "extraGeometries": 0,
+            "extraTextures": 0
+          },
+          "keys": [
+            "firewood-pile:ash",
+            "hide-tent:ash",
+            "stone-firepit:ash",
+            "valley-boulder:ash"
+          ],
+          "landscapes": [
+            {
+              "key": "valley-boulder",
+              "surface": "ash",
+              "instances": [
+                2,
+                0,
+                16
+              ]
+            }
+          ]
+        },
+        {
+          "biome": "volcano",
+          "fps": 60,
+          "x": 208.6,
+          "z": 205.4,
+          "players": 5,
+          "chunks": 69,
+          "gpuGeometries": 46,
+          "gpuTextures": 40,
+          "regional": {
+            "variants": 4,
+            "materials": 4,
+            "sourceGeometries": 4,
+            "sourceTextures": 4,
+            "extraGeometries": 0,
+            "extraTextures": 0
+          },
+          "keys": [
+            "firewood-pile:ash",
+            "hide-tent:ash",
+            "stone-firepit:ash",
+            "valley-boulder:ash"
+          ],
+          "landscapes": [
+            {
+              "key": "valley-boulder",
+              "surface": "ash",
+              "instances": [
+                2,
+                0,
+                16
+              ]
+            }
+          ]
+        },
+        {
+          "biome": "volcano",
+          "fps": 60,
+          "x": 208.6,
+          "z": 205.4,
+          "players": 5,
+          "chunks": 69,
+          "gpuGeometries": 46,
+          "gpuTextures": 40,
+          "regional": {
+            "variants": 4,
+            "materials": 4,
+            "sourceGeometries": 4,
+            "sourceTextures": 4,
+            "extraGeometries": 0,
+            "extraTextures": 0
+          },
+          "keys": [
+            "firewood-pile:ash",
+            "hide-tent:ash",
+            "stone-firepit:ash",
+            "valley-boulder:ash"
+          ],
+          "landscapes": [
+            {
+              "key": "valley-boulder",
+              "surface": "ash",
+              "instances": [
+                2,
+                0,
+                16
+              ]
+            }
+          ]
+        }
+      ],
+      "screenshot": "output/playwright/biome-game-volcano.png"
+    },
+    {
+      "timestamp": "2026-09-07T01:12:13.688Z",
+      "biome": "desert",
+      "errors": [],
+      "samples": [
+        {
+          "biome": "desert",
+          "fps": 60,
+          "x": -105.4,
+          "z": 219.4,
+          "players": 5,
+          "chunks": 67,
+          "gpuGeometries": 55,
+          "gpuTextures": 43,
+          "regional": {
+            "variants": 9,
+            "materials": 9,
+            "sourceGeometries": 5,
+            "sourceTextures": 5,
+            "extraGeometries": 0,
+            "extraTextures": 0
+          },
+          "keys": [
+            "firewood-pile:ash",
+            "firewood-pile:sand",
+            "hide-tent:ash",
+            "hide-tent:sand",
+            "meadow-grass:sand",
+            "stone-firepit:ash",
+            "stone-firepit:sand",
+            "valley-boulder:ash",
+            "valley-boulder:sand"
+          ],
+          "landscapes": [
+            {
+              "key": "valley-boulder",
+              "surface": "ash",
+              "instances": [
+                0,
+                0,
+                0
+              ]
+            },
+            {
+              "key": "valley-boulder",
+              "surface": "sand",
+              "instances": [
+                2,
+                0,
+                12
+              ]
+            },
+            {
+              "key": "meadow-grass",
+              "surface": "sand",
+              "instances": [
+                0,
+                0,
+                28
+              ]
+            }
+          ]
+        },
+        {
+          "biome": "desert",
+          "fps": 60,
+          "x": -105.4,
+          "z": 219.4,
+          "players": 5,
+          "chunks": 67,
+          "gpuGeometries": 55,
+          "gpuTextures": 43,
+          "regional": {
+            "variants": 9,
+            "materials": 9,
+            "sourceGeometries": 5,
+            "sourceTextures": 5,
+            "extraGeometries": 0,
+            "extraTextures": 0
+          },
+          "keys": [
+            "firewood-pile:ash",
+            "firewood-pile:sand",
+            "hide-tent:ash",
+            "hide-tent:sand",
+            "meadow-grass:sand",
+            "stone-firepit:ash",
+            "stone-firepit:sand",
+            "valley-boulder:ash",
+            "valley-boulder:sand"
+          ],
+          "landscapes": [
+            {
+              "key": "valley-boulder",
+              "surface": "ash",
+              "instances": [
+                0,
+                0,
+                0
+              ]
+            },
+            {
+              "key": "valley-boulder",
+              "surface": "sand",
+              "instances": [
+                2,
+                0,
+                12
+              ]
+            },
+            {
+              "key": "meadow-grass",
+              "surface": "sand",
+              "instances": [
+                0,
+                0,
+                28
+              ]
+            }
+          ]
+        },
+        {
+          "biome": "desert",
+          "fps": 60,
+          "x": -105.4,
+          "z": 219.4,
+          "players": 5,
+          "chunks": 67,
+          "gpuGeometries": 55,
+          "gpuTextures": 43,
+          "regional": {
+            "variants": 9,
+            "materials": 9,
+            "sourceGeometries": 5,
+            "sourceTextures": 5,
+            "extraGeometries": 0,
+            "extraTextures": 0
+          },
+          "keys": [
+            "firewood-pile:ash",
+            "firewood-pile:sand",
+            "hide-tent:ash",
+            "hide-tent:sand",
+            "meadow-grass:sand",
+            "stone-firepit:ash",
+            "stone-firepit:sand",
+            "valley-boulder:ash",
+            "valley-boulder:sand"
+          ],
+          "landscapes": [
+            {
+              "key": "valley-boulder",
+              "surface": "ash",
+              "instances": [
+                0,
+                0,
+                0
+              ]
+            },
+            {
+              "key": "valley-boulder",
+              "surface": "sand",
+              "instances": [
+                2,
+                0,
+                12
+              ]
+            },
+            {
+              "key": "meadow-grass",
+              "surface": "sand",
+              "instances": [
+                0,
+                0,
+                28
+              ]
+            }
+          ]
+        },
+        {
+          "biome": "desert",
+          "fps": 60,
+          "x": -105.4,
+          "z": 219.4,
+          "players": 5,
+          "chunks": 67,
+          "gpuGeometries": 55,
+          "gpuTextures": 43,
+          "regional": {
+            "variants": 9,
+            "materials": 9,
+            "sourceGeometries": 5,
+            "sourceTextures": 5,
+            "extraGeometries": 0,
+            "extraTextures": 0
+          },
+          "keys": [
+            "firewood-pile:ash",
+            "firewood-pile:sand",
+            "hide-tent:ash",
+            "hide-tent:sand",
+            "meadow-grass:sand",
+            "stone-firepit:ash",
+            "stone-firepit:sand",
+            "valley-boulder:ash",
+            "valley-boulder:sand"
+          ],
+          "landscapes": [
+            {
+              "key": "valley-boulder",
+              "surface": "ash",
+              "instances": [
+                0,
+                0,
+                0
+              ]
+            },
+            {
+              "key": "valley-boulder",
+              "surface": "sand",
+              "instances": [
+                2,
+                0,
+                12
+              ]
+            },
+            {
+              "key": "meadow-grass",
+              "surface": "sand",
+              "instances": [
+                0,
+                0,
+                28
+              ]
+            }
+          ]
+        },
+        {
+          "biome": "desert",
+          "fps": 60,
+          "x": -105.4,
+          "z": 219.4,
+          "players": 5,
+          "chunks": 67,
+          "gpuGeometries": 55,
+          "gpuTextures": 43,
+          "regional": {
+            "variants": 9,
+            "materials": 9,
+            "sourceGeometries": 5,
+            "sourceTextures": 5,
+            "extraGeometries": 0,
+            "extraTextures": 0
+          },
+          "keys": [
+            "firewood-pile:ash",
+            "firewood-pile:sand",
+            "hide-tent:ash",
+            "hide-tent:sand",
+            "meadow-grass:sand",
+            "stone-firepit:ash",
+            "stone-firepit:sand",
+            "valley-boulder:ash",
+            "valley-boulder:sand"
+          ],
+          "landscapes": [
+            {
+              "key": "valley-boulder",
+              "surface": "ash",
+              "instances": [
+                0,
+                0,
+                0
+              ]
+            },
+            {
+              "key": "valley-boulder",
+              "surface": "sand",
+              "instances": [
+                2,
+                0,
+                12
+              ]
+            },
+            {
+              "key": "meadow-grass",
+              "surface": "sand",
+              "instances": [
+                0,
+                0,
+                28
+              ]
+            }
+          ]
+        },
+        {
+          "biome": "desert",
+          "fps": 60,
+          "x": -105.4,
+          "z": 219.4,
+          "players": 5,
+          "chunks": 67,
+          "gpuGeometries": 55,
+          "gpuTextures": 43,
+          "regional": {
+            "variants": 9,
+            "materials": 9,
+            "sourceGeometries": 5,
+            "sourceTextures": 5,
+            "extraGeometries": 0,
+            "extraTextures": 0
+          },
+          "keys": [
+            "firewood-pile:ash",
+            "firewood-pile:sand",
+            "hide-tent:ash",
+            "hide-tent:sand",
+            "meadow-grass:sand",
+            "stone-firepit:ash",
+            "stone-firepit:sand",
+            "valley-boulder:ash",
+            "valley-boulder:sand"
+          ],
+          "landscapes": [
+            {
+              "key": "valley-boulder",
+              "surface": "ash",
+              "instances": [
+                0,
+                0,
+                0
+              ]
+            },
+            {
+              "key": "valley-boulder",
+              "surface": "sand",
+              "instances": [
+                2,
+                0,
+                12
+              ]
+            },
+            {
+              "key": "meadow-grass",
+              "surface": "sand",
+              "instances": [
+                0,
+                0,
+                28
+              ]
+            }
+          ]
+        },
+        {
+          "biome": "desert",
+          "fps": 60,
+          "x": -105.4,
+          "z": 219.4,
+          "players": 5,
+          "chunks": 67,
+          "gpuGeometries": 49,
+          "gpuTextures": 40,
+          "regional": {
+            "variants": 5,
+            "materials": 5,
+            "sourceGeometries": 5,
+            "sourceTextures": 5,
+            "extraGeometries": 0,
+            "extraTextures": 0
+          },
+          "keys": [
+            "firewood-pile:sand",
+            "hide-tent:sand",
+            "meadow-grass:sand",
+            "stone-firepit:sand",
+            "valley-boulder:sand"
+          ],
+          "landscapes": [
+            {
+              "key": "valley-boulder",
+              "surface": "sand",
+              "instances": [
+                2,
+                0,
+                12
+              ]
+            },
+            {
+              "key": "meadow-grass",
+              "surface": "sand",
+              "instances": [
+                0,
+                0,
+                28
+              ]
+            }
+          ]
+        },
+        {
+          "biome": "desert",
+          "fps": 60,
+          "x": -105.4,
+          "z": 219.4,
+          "players": 5,
+          "chunks": 67,
+          "gpuGeometries": 49,
+          "gpuTextures": 40,
+          "regional": {
+            "variants": 5,
+            "materials": 5,
+            "sourceGeometries": 5,
+            "sourceTextures": 5,
+            "extraGeometries": 0,
+            "extraTextures": 0
+          },
+          "keys": [
+            "firewood-pile:sand",
+            "hide-tent:sand",
+            "meadow-grass:sand",
+            "stone-firepit:sand",
+            "valley-boulder:sand"
+          ],
+          "landscapes": [
+            {
+              "key": "valley-boulder",
+              "surface": "sand",
+              "instances": [
+                2,
+                0,
+                12
+              ]
+            },
+            {
+              "key": "meadow-grass",
+              "surface": "sand",
+              "instances": [
+                0,
+                0,
+                28
+              ]
+            }
+          ]
+        },
+        {
+          "biome": "desert",
+          "fps": 60,
+          "x": -105.4,
+          "z": 219.4,
+          "players": 5,
+          "chunks": 67,
+          "gpuGeometries": 49,
+          "gpuTextures": 40,
+          "regional": {
+            "variants": 5,
+            "materials": 5,
+            "sourceGeometries": 5,
+            "sourceTextures": 5,
+            "extraGeometries": 0,
+            "extraTextures": 0
+          },
+          "keys": [
+            "firewood-pile:sand",
+            "hide-tent:sand",
+            "meadow-grass:sand",
+            "stone-firepit:sand",
+            "valley-boulder:sand"
+          ],
+          "landscapes": [
+            {
+              "key": "valley-boulder",
+              "surface": "sand",
+              "instances": [
+                2,
+                0,
+                12
+              ]
+            },
+            {
+              "key": "meadow-grass",
+              "surface": "sand",
+              "instances": [
+                0,
+                0,
+                28
+              ]
+            }
+          ]
+        },
+        {
+          "biome": "desert",
+          "fps": 60,
+          "x": -105.4,
+          "z": 219.4,
+          "players": 5,
+          "chunks": 67,
+          "gpuGeometries": 49,
+          "gpuTextures": 40,
+          "regional": {
+            "variants": 5,
+            "materials": 5,
+            "sourceGeometries": 5,
+            "sourceTextures": 5,
+            "extraGeometries": 0,
+            "extraTextures": 0
+          },
+          "keys": [
+            "firewood-pile:sand",
+            "hide-tent:sand",
+            "meadow-grass:sand",
+            "stone-firepit:sand",
+            "valley-boulder:sand"
+          ],
+          "landscapes": [
+            {
+              "key": "valley-boulder",
+              "surface": "sand",
+              "instances": [
+                2,
+                0,
+                12
+              ]
+            },
+            {
+              "key": "meadow-grass",
+              "surface": "sand",
+              "instances": [
+                0,
+                0,
+                28
+              ]
+            }
+          ]
+        },
+        {
+          "biome": "desert",
+          "fps": 60,
+          "x": -105.4,
+          "z": 219.4,
+          "players": 5,
+          "chunks": 67,
+          "gpuGeometries": 49,
+          "gpuTextures": 40,
+          "regional": {
+            "variants": 5,
+            "materials": 5,
+            "sourceGeometries": 5,
+            "sourceTextures": 5,
+            "extraGeometries": 0,
+            "extraTextures": 0
+          },
+          "keys": [
+            "firewood-pile:sand",
+            "hide-tent:sand",
+            "meadow-grass:sand",
+            "stone-firepit:sand",
+            "valley-boulder:sand"
+          ],
+          "landscapes": [
+            {
+              "key": "valley-boulder",
+              "surface": "sand",
+              "instances": [
+                2,
+                0,
+                12
+              ]
+            },
+            {
+              "key": "meadow-grass",
+              "surface": "sand",
+              "instances": [
+                0,
+                0,
+                28
+              ]
+            }
+          ]
+        },
+        {
+          "biome": "desert",
+          "fps": 60,
+          "x": -105.4,
+          "z": 219.4,
+          "players": 5,
+          "chunks": 67,
+          "gpuGeometries": 49,
+          "gpuTextures": 40,
+          "regional": {
+            "variants": 5,
+            "materials": 5,
+            "sourceGeometries": 5,
+            "sourceTextures": 5,
+            "extraGeometries": 0,
+            "extraTextures": 0
+          },
+          "keys": [
+            "firewood-pile:sand",
+            "hide-tent:sand",
+            "meadow-grass:sand",
+            "stone-firepit:sand",
+            "valley-boulder:sand"
+          ],
+          "landscapes": [
+            {
+              "key": "valley-boulder",
+              "surface": "sand",
+              "instances": [
+                2,
+                0,
+                12
+              ]
+            },
+            {
+              "key": "meadow-grass",
+              "surface": "sand",
+              "instances": [
+                0,
+                0,
+                28
+              ]
+            }
+          ]
+        },
+        {
+          "biome": "desert",
+          "fps": 60,
+          "x": -105.4,
+          "z": 219.4,
+          "players": 5,
+          "chunks": 67,
+          "gpuGeometries": 49,
+          "gpuTextures": 40,
+          "regional": {
+            "variants": 5,
+            "materials": 5,
+            "sourceGeometries": 5,
+            "sourceTextures": 5,
+            "extraGeometries": 0,
+            "extraTextures": 0
+          },
+          "keys": [
+            "firewood-pile:sand",
+            "hide-tent:sand",
+            "meadow-grass:sand",
+            "stone-firepit:sand",
+            "valley-boulder:sand"
+          ],
+          "landscapes": [
+            {
+              "key": "valley-boulder",
+              "surface": "sand",
+              "instances": [
+                2,
+                0,
+                12
+              ]
+            },
+            {
+              "key": "meadow-grass",
+              "surface": "sand",
+              "instances": [
+                0,
+                0,
+                28
+              ]
+            }
+          ]
+        },
+        {
+          "biome": "desert",
+          "fps": 60,
+          "x": -105.4,
+          "z": 219.4,
+          "players": 5,
+          "chunks": 67,
+          "gpuGeometries": 49,
+          "gpuTextures": 40,
+          "regional": {
+            "variants": 5,
+            "materials": 5,
+            "sourceGeometries": 5,
+            "sourceTextures": 5,
+            "extraGeometries": 0,
+            "extraTextures": 0
+          },
+          "keys": [
+            "firewood-pile:sand",
+            "hide-tent:sand",
+            "meadow-grass:sand",
+            "stone-firepit:sand",
+            "valley-boulder:sand"
+          ],
+          "landscapes": [
+            {
+              "key": "valley-boulder",
+              "surface": "sand",
+              "instances": [
+                2,
+                0,
+                12
+              ]
+            },
+            {
+              "key": "meadow-grass",
+              "surface": "sand",
+              "instances": [
+                0,
+                0,
+                28
+              ]
+            }
+          ]
+        },
+        {
+          "biome": "desert",
+          "fps": 60,
+          "x": -105.4,
+          "z": 219.4,
+          "players": 5,
+          "chunks": 67,
+          "gpuGeometries": 49,
+          "gpuTextures": 40,
+          "regional": {
+            "variants": 5,
+            "materials": 5,
+            "sourceGeometries": 5,
+            "sourceTextures": 5,
+            "extraGeometries": 0,
+            "extraTextures": 0
+          },
+          "keys": [
+            "firewood-pile:sand",
+            "hide-tent:sand",
+            "meadow-grass:sand",
+            "stone-firepit:sand",
+            "valley-boulder:sand"
+          ],
+          "landscapes": [
+            {
+              "key": "valley-boulder",
+              "surface": "sand",
+              "instances": [
+                2,
+                0,
+                12
+              ]
+            },
+            {
+              "key": "meadow-grass",
+              "surface": "sand",
+              "instances": [
+                0,
+                0,
+                28
+              ]
+            }
+          ]
+        },
+        {
+          "biome": "desert",
+          "fps": 60,
+          "x": -105.4,
+          "z": 219.4,
+          "players": 5,
+          "chunks": 67,
+          "gpuGeometries": 49,
+          "gpuTextures": 40,
+          "regional": {
+            "variants": 5,
+            "materials": 5,
+            "sourceGeometries": 5,
+            "sourceTextures": 5,
+            "extraGeometries": 0,
+            "extraTextures": 0
+          },
+          "keys": [
+            "firewood-pile:sand",
+            "hide-tent:sand",
+            "meadow-grass:sand",
+            "stone-firepit:sand",
+            "valley-boulder:sand"
+          ],
+          "landscapes": [
+            {
+              "key": "valley-boulder",
+              "surface": "sand",
+              "instances": [
+                2,
+                0,
+                12
+              ]
+            },
+            {
+              "key": "meadow-grass",
+              "surface": "sand",
+              "instances": [
+                0,
+                0,
+                28
+              ]
+            }
+          ]
+        },
+        {
+          "biome": "desert",
+          "fps": 60,
+          "x": -105.4,
+          "z": 219.4,
+          "players": 5,
+          "chunks": 67,
+          "gpuGeometries": 49,
+          "gpuTextures": 40,
+          "regional": {
+            "variants": 5,
+            "materials": 5,
+            "sourceGeometries": 5,
+            "sourceTextures": 5,
+            "extraGeometries": 0,
+            "extraTextures": 0
+          },
+          "keys": [
+            "firewood-pile:sand",
+            "hide-tent:sand",
+            "meadow-grass:sand",
+            "stone-firepit:sand",
+            "valley-boulder:sand"
+          ],
+          "landscapes": [
+            {
+              "key": "valley-boulder",
+              "surface": "sand",
+              "instances": [
+                2,
+                0,
+                12
+              ]
+            },
+            {
+              "key": "meadow-grass",
+              "surface": "sand",
+              "instances": [
+                0,
+                0,
+                28
+              ]
+            }
+          ]
+        }
+      ],
+      "screenshot": "output/playwright/biome-game-desert.png"
+    }
+  ],
+  "boundaries": [
+    {
+      "name": "snow",
+      "timestamp": "2026-09-07T01:16:47.830Z",
+      "mode": "Stdin stages departure; normal world-map button and authoritative movement cross the boundary; W cancels the route.",
+      "metres": 29.04471724771993,
+      "from": {
+        "biome": "grassland",
+        "x": "-24.35",
+        "z": "-12.81"
+      },
+      "to": {
+        "biome": "snow",
+        "x": "-50.15",
+        "z": "-26.15"
+      },
+      "fps": [
+        60,
+        60,
+        60,
+        60,
+        60,
+        60,
+        60,
+        60,
+        60
+      ],
+      "sharing": [
+        {
+          "variants": 9,
+          "materials": 11,
+          "sourceGeometries": 8,
+          "sourceTextures": 6,
+          "extraGeometries": 0,
+          "extraTextures": 0
+        },
+        {
+          "variants": 9,
+          "materials": 11,
+          "sourceGeometries": 8,
+          "sourceTextures": 6,
+          "extraGeometries": 0,
+          "extraTextures": 0
+        },
+        {
+          "variants": 9,
+          "materials": 11,
+          "sourceGeometries": 8,
+          "sourceTextures": 6,
+          "extraGeometries": 0,
+          "extraTextures": 0
+        },
+        {
+          "variants": 9,
+          "materials": 11,
+          "sourceGeometries": 8,
+          "sourceTextures": 6,
+          "extraGeometries": 0,
+          "extraTextures": 0
+        },
+        {
+          "variants": 9,
+          "materials": 11,
+          "sourceGeometries": 8,
+          "sourceTextures": 6,
+          "extraGeometries": 0,
+          "extraTextures": 0
+        },
+        {
+          "variants": 9,
+          "materials": 11,
+          "sourceGeometries": 8,
+          "sourceTextures": 6,
+          "extraGeometries": 0,
+          "extraTextures": 0
+        },
+        {
+          "variants": 9,
+          "materials": 11,
+          "sourceGeometries": 8,
+          "sourceTextures": 6,
+          "extraGeometries": 0,
+          "extraTextures": 0
+        },
+        {
+          "variants": 9,
+          "materials": 11,
+          "sourceGeometries": 8,
+          "sourceTextures": 6,
+          "extraGeometries": 0,
+          "extraTextures": 0
+        },
+        {
+          "variants": 9,
+          "materials": 11,
+          "sourceGeometries": 8,
+          "sourceTextures": 6,
+          "extraGeometries": 0,
+          "extraTextures": 0
+        }
+      ],
+      "screenshot": "output/playwright/biome-boundary-snow.png"
+    },
+    {
+      "name": "ice",
+      "timestamp": "2026-09-07T01:19:22.786Z",
+      "mode": "Stdin stages departure; normal world-map button and authoritative movement cross the boundary; W cancels the route.",
+      "metres": 28.231303547657877,
+      "from": {
+        "biome": "grassland",
+        "x": "125.27",
+        "z": "-10.40"
+      },
+      "to": {
+        "biome": "ice",
+        "x": "137.15",
+        "z": "-36.01"
+      },
+      "fps": [
+        60,
+        60,
+        60,
+        60,
+        60,
+        60,
+        60,
+        60,
+        60
+      ],
+      "sharing": [
+        {
+          "variants": 12,
+          "materials": 13,
+          "sourceGeometries": 7,
+          "sourceTextures": 6,
+          "extraGeometries": 0,
+          "extraTextures": 0
+        },
+        {
+          "variants": 12,
+          "materials": 13,
+          "sourceGeometries": 7,
+          "sourceTextures": 6,
+          "extraGeometries": 0,
+          "extraTextures": 0
+        },
+        {
+          "variants": 12,
+          "materials": 13,
+          "sourceGeometries": 7,
+          "sourceTextures": 6,
+          "extraGeometries": 0,
+          "extraTextures": 0
+        },
+        {
+          "variants": 12,
+          "materials": 13,
+          "sourceGeometries": 7,
+          "sourceTextures": 6,
+          "extraGeometries": 0,
+          "extraTextures": 0
+        },
+        {
+          "variants": 12,
+          "materials": 13,
+          "sourceGeometries": 7,
+          "sourceTextures": 6,
+          "extraGeometries": 0,
+          "extraTextures": 0
+        },
+        {
+          "variants": 7,
+          "materials": 8,
+          "sourceGeometries": 6,
+          "sourceTextures": 5,
+          "extraGeometries": 0,
+          "extraTextures": 0
+        },
+        {
+          "variants": 7,
+          "materials": 8,
+          "sourceGeometries": 6,
+          "sourceTextures": 5,
+          "extraGeometries": 0,
+          "extraTextures": 0
+        },
+        {
+          "variants": 7,
+          "materials": 8,
+          "sourceGeometries": 6,
+          "sourceTextures": 5,
+          "extraGeometries": 0,
+          "extraTextures": 0
+        },
+        {
+          "variants": 7,
+          "materials": 8,
+          "sourceGeometries": 6,
+          "sourceTextures": 5,
+          "extraGeometries": 0,
+          "extraTextures": 0
+        }
+      ],
+      "screenshot": "output/playwright/biome-boundary-ice.png"
+    },
+    {
+      "name": "volcano",
+      "timestamp": "2026-09-07T01:20:07.548Z",
+      "mode": "Stdin stages departure; normal world-map button and authoritative movement cross the boundary; W cancels the route.",
+      "metres": 33.21806737304264,
+      "from": {
+        "biome": "grassland",
+        "x": "134.64",
+        "z": "114.09"
+      },
+      "to": {
+        "biome": "volcano",
+        "x": "158.76",
+        "z": "136.93"
+      },
+      "fps": [
+        60,
+        60,
+        60,
+        60,
+        60,
+        60,
+        60,
+        60,
+        60
+      ],
+      "sharing": [
+        {
+          "variants": 11,
+          "materials": 12,
+          "sourceGeometries": 6,
+          "sourceTextures": 5,
+          "extraGeometries": 0,
+          "extraTextures": 0
+        },
+        {
+          "variants": 10,
+          "materials": 11,
+          "sourceGeometries": 6,
+          "sourceTextures": 5,
+          "extraGeometries": 0,
+          "extraTextures": 0
+        },
+        {
+          "variants": 9,
+          "materials": 9,
+          "sourceGeometries": 4,
+          "sourceTextures": 4,
+          "extraGeometries": 0,
+          "extraTextures": 0
+        },
+        {
+          "variants": 9,
+          "materials": 9,
+          "sourceGeometries": 4,
+          "sourceTextures": 4,
+          "extraGeometries": 0,
+          "extraTextures": 0
+        },
+        {
+          "variants": 9,
+          "materials": 9,
+          "sourceGeometries": 4,
+          "sourceTextures": 4,
+          "extraGeometries": 0,
+          "extraTextures": 0
+        },
+        {
+          "variants": 7,
+          "materials": 7,
+          "sourceGeometries": 4,
+          "sourceTextures": 4,
+          "extraGeometries": 0,
+          "extraTextures": 0
+        },
+        {
+          "variants": 7,
+          "materials": 7,
+          "sourceGeometries": 4,
+          "sourceTextures": 4,
+          "extraGeometries": 0,
+          "extraTextures": 0
+        },
+        {
+          "variants": 7,
+          "materials": 7,
+          "sourceGeometries": 4,
+          "sourceTextures": 4,
+          "extraGeometries": 0,
+          "extraTextures": 0
+        },
+        {
+          "variants": 7,
+          "materials": 7,
+          "sourceGeometries": 4,
+          "sourceTextures": 4,
+          "extraGeometries": 0,
+          "extraTextures": 0
+        }
+      ],
+      "screenshot": "output/playwright/biome-boundary-volcano.png"
+    },
+    {
+      "name": "desert",
+      "timestamp": "2026-09-07T01:17:48.563Z",
+      "mode": "Stdin stages departure; normal world-map button and authoritative movement cross the boundary; W cancels the route.",
+      "metres": 34.637069737493675,
+      "from": {
+        "biome": "grassland",
+        "x": "-18.65",
+        "z": "125.12"
+      },
+      "to": {
+        "biome": "desert",
+        "x": "-42.36",
+        "z": "150.37"
+      },
+      "fps": [
+        60,
+        60,
+        60,
+        60,
+        60,
+        60,
+        60,
+        60,
+        60
+      ],
+      "sharing": [
+        {
+          "variants": 13,
+          "materials": 15,
+          "sourceGeometries": 9,
+          "sourceTextures": 7,
+          "extraGeometries": 0,
+          "extraTextures": 0
+        },
+        {
+          "variants": 13,
+          "materials": 15,
+          "sourceGeometries": 9,
+          "sourceTextures": 7,
+          "extraGeometries": 0,
+          "extraTextures": 0
+        },
+        {
+          "variants": 13,
+          "materials": 15,
+          "sourceGeometries": 9,
+          "sourceTextures": 7,
+          "extraGeometries": 0,
+          "extraTextures": 0
+        },
+        {
+          "variants": 9,
+          "materials": 10,
+          "sourceGeometries": 7,
+          "sourceTextures": 6,
+          "extraGeometries": 0,
+          "extraTextures": 0
+        },
+        {
+          "variants": 9,
+          "materials": 10,
+          "sourceGeometries": 7,
+          "sourceTextures": 6,
+          "extraGeometries": 0,
+          "extraTextures": 0
+        },
+        {
+          "variants": 9,
+          "materials": 10,
+          "sourceGeometries": 7,
+          "sourceTextures": 6,
+          "extraGeometries": 0,
+          "extraTextures": 0
+        },
+        {
+          "variants": 9,
+          "materials": 10,
+          "sourceGeometries": 7,
+          "sourceTextures": 6,
+          "extraGeometries": 0,
+          "extraTextures": 0
+        },
+        {
+          "variants": 9,
+          "materials": 10,
+          "sourceGeometries": 7,
+          "sourceTextures": 6,
+          "extraGeometries": 0,
+          "extraTextures": 0
+        },
+        {
+          "variants": 9,
+          "materials": 10,
+          "sourceGeometries": 7,
+          "sourceTextures": 6,
+          "extraGeometries": 0,
+          "extraTextures": 0
+        }
+      ],
+      "screenshot": "output/playwright/biome-boundary-desert.png"
+    },
+    {
+      "name": "desert-mobile",
+      "timestamp": "2026-09-07T01:18:32.764Z",
+      "mode": "Stdin stages departure; normal world-map button and authoritative movement cross the boundary; W cancels the route.",
+      "metres": 30.035480685349455,
+      "from": {
+        "biome": "grassland",
+        "x": "-16.47",
+        "z": "124.67"
+      },
+      "to": {
+        "biome": "desert",
+        "x": "-32.72",
+        "z": "149.93"
+      },
+      "fps": [
+        60,
+        60,
+        60,
+        60,
+        60,
+        60,
+        60,
+        60,
+        60
+      ],
+      "sharing": [
+        {
+          "variants": 9,
+          "materials": 10,
+          "sourceGeometries": 7,
+          "sourceTextures": 6,
+          "extraGeometries": 0,
+          "extraTextures": 0
+        },
+        {
+          "variants": 9,
+          "materials": 10,
+          "sourceGeometries": 7,
+          "sourceTextures": 6,
+          "extraGeometries": 0,
+          "extraTextures": 0
+        },
+        {
+          "variants": 9,
+          "materials": 10,
+          "sourceGeometries": 7,
+          "sourceTextures": 6,
+          "extraGeometries": 0,
+          "extraTextures": 0
+        },
+        {
+          "variants": 9,
+          "materials": 10,
+          "sourceGeometries": 7,
+          "sourceTextures": 6,
+          "extraGeometries": 0,
+          "extraTextures": 0
+        },
+        {
+          "variants": 9,
+          "materials": 10,
+          "sourceGeometries": 7,
+          "sourceTextures": 6,
+          "extraGeometries": 0,
+          "extraTextures": 0
+        },
+        {
+          "variants": 9,
+          "materials": 10,
+          "sourceGeometries": 7,
+          "sourceTextures": 6,
+          "extraGeometries": 0,
+          "extraTextures": 0
+        },
+        {
+          "variants": 9,
+          "materials": 10,
+          "sourceGeometries": 7,
+          "sourceTextures": 6,
+          "extraGeometries": 0,
+          "extraTextures": 0
+        },
+        {
+          "variants": 9,
+          "materials": 10,
+          "sourceGeometries": 7,
+          "sourceTextures": 6,
+          "extraGeometries": 0,
+          "extraTextures": 0
+        },
+        {
+          "variants": 9,
+          "materials": 10,
+          "sourceGeometries": 7,
+          "sourceTextures": 6,
+          "extraGeometries": 0,
+          "extraTextures": 0
+        }
+      ],
+      "screenshot": "output/playwright/biome-boundary-desert-mobile.png"
+    }
+  ]
+}

@@ -5,13 +5,13 @@ import { LandscapeInstances } from './world-assets.js';
 import { fitSourceRiverBank } from './source-surface-fit.js';
 import { SCENERY, seededRandom, grassForChunk } from '/shared/scenery-layout.mjs';
 import { OpenWorldTerrain } from './open-world.js';
+import { RegionalScenery } from './regional-scenery.js';
 
-export const resourceAssets = { wood: 'firewood-pile', stone: 'valley-boulder', berry: 'berry-bush' };
 const TAU = Math.PI * 2;
 const random=seededRandom;
 
-function addModel(world, key, x, z, yaw = 0, scale = 1) {
-  const model = world.worldAssets.create(key); model.position.set(x, walkHeight(x, z), z); model.rotation.y = yaw; model.scale.setScalar(scale); world.scene.add(model); return model;
+function addModel(world, key, x, z, yaw = 0, scale = 1, surface = null) {
+  const model = world.worldAssets.create(key,0,surface); model.position.set(x, walkHeight(x, z), z); model.rotation.y = yaw; Array.isArray(scale)?model.scale.set(...scale):model.scale.setScalar(scale); world.scene.add(model); return model;
 }
 
 function surfaceMeshes(root) {
@@ -53,15 +53,16 @@ export async function buildTerrainAssets(world) {
 
 export function buildForestAssets(world) {
   const grassPlacement=item=>({...item,position:new THREE.Vector3(item.x,terrainHeight(item.x,item.z)-.018,item.z),scale:new THREE.Vector3().setScalar(item.scale)});
-  const trees=SCENERY.trees.map(item=>({...item,position:new THREE.Vector3(item.x,terrainHeight(item.x,item.z),item.z),scale:new THREE.Vector3(...item.scale)}));
+  const trees=SCENERY.trees.filter(item=>!item.surface).map(item=>({...item,position:new THREE.Vector3(item.x,terrainHeight(item.x,item.z),item.z),scale:new THREE.Vector3(...item.scale)}));
   const grass=SCENERY.grass.map(grassPlacement);
-  const rocks=SCENERY.rocks.map(item=>({...item,height:1.7*item.scale,position:new THREE.Vector3(item.x,terrainHeight(item.x,item.z),item.z),scale:new THREE.Vector3().setScalar(item.scale)}));
+  const rocks=SCENERY.rocks.filter(item=>!item.surface).map(item=>({...item,height:1.7*item.scale,position:new THREE.Vector3(item.x,terrainHeight(item.x,item.z),item.z),scale:new THREE.Vector3().setScalar(item.scale)}));
   world.landscapes=[
     new LandscapeInstances({assets:world.worldAssets,key:'valley-pine',placements:trees,renderer:world.renderer,scene:world.scene,distances:[14,38,110]}),
-    new LandscapeInstances({assets:world.worldAssets,key:'meadow-grass',placements:grass,renderer:world.renderer,scene:world.scene,distances:[1.1,1.1,28],foliage:true,generateCell:(x,z)=>grassForChunk(x+8,z+8).map(grassPlacement)}),
+    new LandscapeInstances({assets:world.worldAssets,key:'meadow-grass',placements:grass,renderer:world.renderer,scene:world.scene,distances:[1.1,1.1,28],foliage:true,generateCell:(x,z)=>grassForChunk(x+8,z+8).filter(item=>!item.surface&&item.key==='meadow-grass').map(grassPlacement)}),
     new LandscapeInstances({assets:world.worldAssets,key:'valley-boulder',placements:rocks,renderer:world.renderer,scene:world.scene,distances:[28,28,110]}),
   ];
   for(const item of SCENERY.ridges) {
+    if(item.surface)continue;
     const rock=addModel(world,item.key,item.x,item.z,item.yaw,1);
     if(Array.isArray(item.scale)){rock.scale.set(...item.scale);rock.traverse(node=>{if(node.isMesh)node.castShadow=false;});}else rock.scale.setScalar(item.scale);
     freezeStatic(world,rock);
@@ -69,14 +70,15 @@ export function buildForestAssets(world) {
 }
 function freezeStatic(world,root) { root.updateMatrixWorld(true);root.traverse(node=>{node.matrixAutoUpdate=false;});const bounds=new THREE.Box3().setFromObject(root);world.staticScenery.push({root,radius:bounds.getSize(new THREE.Vector3()).length()*.5}); }
 export function buildCampAssets(world) {
-  for(const item of [...SCENERY.tents,...SCENERY.props])freezeStatic(world,addModel(world,item.key,item.x,item.z,item.yaw,item.scale));
-  for(const item of SCENERY.fires)buildFireEffect(world,item.x,item.z,item.scale);
+  for(const item of [...SCENERY.tents,...SCENERY.props].filter(item=>!item.surface))freezeStatic(world,addModel(world,item.key,item.x,item.z,item.yaw,item.scale));
+  for(const item of SCENERY.fires.filter(item=>!item.surface))buildFireEffect(world,item.x,item.z,item.scale);
   world.campLabel=world.createLabel('みんなの野営地','camp',new THREE.Vector3(50,3,50));
   world.npcLabel=world.createLabel('オル','npc',new THREE.Vector3(NPC.x,walkHeight(NPC.x,NPC.z)+2.17,NPC.z),'ネアンデルタール人 · 交易');
+  world.regionalScenery=new RegionalScenery(world,{buildFireEffect});world.regionalScenery.initialize(world.focus);
 }
 
-function buildFireEffect(world, x, z, size) {
-  const root = addModel(world, 'stone-firepit', x, z, 0, size);
+function buildFireEffect(world, x, z, size, key = 'stone-firepit', surface = null) {
+  const root = addModel(world, key, x, z, 0, size, surface);
   const geometry = new THREE.BufferGeometry(); geometry.setAttribute('position', new THREE.BufferAttribute(new Float32Array(36 * 3), 3));
   const material = new THREE.ShaderMaterial({ transparent: true, depthWrite: false, blending: THREE.AdditiveBlending,
     uniforms: { scale: { value: world.renderer.getPixelRatio() } },
@@ -85,7 +87,7 @@ function buildFireEffect(world, x, z, size) {
   });
   const sparks = new THREE.Points(geometry, material); root.add(sparks);
   const light = new THREE.PointLight('#ffad57', 4, 11, 1.6); light.position.set(x, terrainHeight(x, z) + 1.3, z); world.scene.add(light);
-  world.fires.push({ root, light, sparks, seed: x });
+  const fire={ root, light, sparks, seed: x };world.fires.push(fire);return fire;
 }
 
 export function buildAnimalAssets(world) {

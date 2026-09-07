@@ -5,6 +5,7 @@ import { clone } from 'three/addons/utils/SkeletonUtils.js';
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 import { handGripPlacement } from './character-assets.js';
 import { loadVerifiedGLB } from './world-assets.js';
+import { sha256 } from './asset-hash.js';
 import { HUMAN_CLIPS } from './character-animation.js';
 import { ENEMY_CLIPS } from './enemy-state.js';
 import { orientSpear } from './spear-pose.js';
@@ -183,7 +184,7 @@ async function openBuffer(buffer, name) {
   try {
     if (buffer.byteLength < 20 || new DataView(buffer).getUint32(0, true) !== 0x46546c67) throw new Error('GLB形式のファイルを選んでください。');
     loaded = await loader.parseAsync(buffer, '');
-    const digest = await crypto.subtle.digest('SHA-256', buffer);
+    const digest = await sha256(buffer);
     if (ownLoad !== loadId) { disposeModel(loaded); return; }
     clearActors();
     disposeModel(model);
@@ -210,7 +211,7 @@ async function openBuffer(buffer, name) {
     const missing = expected.filter(name => !model.animations.some(clip => clip.name === name));
     ui['clip-report'].textContent = missing.length ? `必要な動作の不足: ${missing.join('、')}` : expected.length ? `${expected.length}クリップを検出。動き・接地・貫通・ループの継ぎ目を確認してください。` : '静物モデル。形状、材質、裏側、原点と寸法を確認してください。';
     ui['model-info'].textContent = `${name} / ${(buffer.byteLength / 1048576).toFixed(2)} MB / ${Math.round(triangles).toLocaleString()} triangles / ${meshes} meshes / ${bones.size} bones / 寸法 ${size.x.toFixed(2)} × ${size.y.toFixed(2)} × ${size.z.toFixed(2)} m / 最下点 Y=${bounds.min.y.toFixed(3)} m`;
-    ui.hash.textContent = `SHA-256 ${Array.from(new Uint8Array(digest), byte => byte.toString(16).padStart(2, '0')).join('')}`;
+    ui.hash.textContent = `SHA-256 ${digest}`;
     populateActors();
     loadDuration = performance.now() - started;
     ui.status.textContent = '候補を表示中 — 形状、リグ、全動作を確認';

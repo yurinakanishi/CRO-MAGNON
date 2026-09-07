@@ -1,0 +1,56 @@
+{
+  "modelKey": "volcanic-basalt-columns",
+  "name": "火山の柱状玄武岩",
+  "kind": "static",
+  "candidate": 1,
+  "status": "reviewed-prototype",
+  "environment": true,
+  "onDemand": true,
+  "url": "/models/volcanic-basalt-columns/model.glb",
+  "sha256": "a3cf5fa909494f4250e4cacd9bc9529b9780f9d7292fc1bfd6bf6235ae71c0fc",
+  "bytes": 5454964,
+  "triangles": 62337,
+  "upAxis": "Y",
+  "forwardAxis": "+Z",
+  "heightMetres": 4.601902071153745,
+  "widthMetres": 3.85948383808136,
+  "placement": {
+    "pivot": "ground-centred",
+    "min": [
+      -1.9320671558380127,
+      -0.0026331578847020864,
+      -1.9733924865722656
+    ],
+    "max": [
+      1.9274166822433472,
+      4.599268913269043,
+      1.9806773662567139
+    ]
+  },
+  "clips": [],
+  "lods": [
+    {
+      "url": "/models/volcanic-basalt-columns/lod1.glb",
+      "sha256": "2a3e890af2b0bf31f71fba58db39eff122f6b60c06cf341c86c85f80db665dde",
+      "bytes": 3088636,
+      "triangles": 15460
+    }
+  ],
+  "notes": [
+    "Joined staggered columns retain broad vertical planes, broken tops, weathering, and the original common rubble foot.",
+    "Trimmed the bottom 2 percent of the dense reconstruction to remove folded underside artifacts and capped the existing intersection contour. Outer silhouette and column tops retained; no primitive replacement.",
+    "The reduced source is a visual game mesh, not a watertight fabrication solid. Seven exact neutral and clay views show no visible missing columns or open silhouette.",
+    "Accepted one 15,460-triangle distant LOD. The second generated LOD is byte-identical, so it remains in production history and is not loaded twice.",
+    "Original source UV/albedo retained; metallic 0 and roughness 0.91. Approximately 4.6 metres high. Static model without unnecessary rig or animation."
+  ],
+  "provenance": {
+    "provider": "Codex",
+    "claudeUsed": false,
+    "referenceGenerator": "Built-in imagegen",
+    "referenceImage": "output/model-generation/models/volcanic-basalt-columns/source/original/reference-v1.png",
+    "referenceSha256": "08d0f3e28effe14fe6fdbad52ee78ee9a71130075caaf541662ed61bb66e936a",
+    "reconstruction": "Local TRELLIS-2; preserved dense reconstruction, source-derived reduction and separate revisions.",
+    "candidateFile": "output/model-generation/models/volcanic-basalt-columns/work/low-poly/candidate-01/candidate.glb",
+    "visualReview": "output/model-generation/models/volcanic-basalt-columns/qa/adoption-review.json"
+  }
+}

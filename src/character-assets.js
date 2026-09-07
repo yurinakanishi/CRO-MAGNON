@@ -3,6 +3,7 @@ import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
 import { clone } from 'three/addons/utils/SkeletonUtils.js';
 import { CharacterAnimation } from './character-animation.js';
 import { RidingPose } from './riding-pose.js';
+import { sha256 } from './asset-hash.js';
 
 export function handGripPlacement(root) {
   root.updateMatrixWorld(true);
@@ -52,13 +53,7 @@ export class CharacterAssets {
     if (!file.ok) throw new Error(`Character GLB: HTTP ${file.status}`);
     const bytes = await file.arrayBuffer();
     if (bytes.byteLength !== asset.bytes) throw new Error('Character GLB length does not match its verified manifest');
-    // LAN play over HTTP has no SubtleCrypto. Delivery is also hashed offline;
-    // secure contexts additionally verify the exact bytes in the client.
-    if (crypto.subtle) {
-      const digest = await crypto.subtle.digest('SHA-256', bytes);
-      const hash = Array.from(new Uint8Array(digest), value => value.toString(16).padStart(2, '0')).join('');
-      if (hash !== asset.sha256) throw new Error('Character GLB hash does not match its verified manifest');
-    }
+    if (await sha256(bytes) !== asset.sha256) throw new Error('Character GLB hash does not match its verified manifest');
     const manager = new THREE.LoadingManager();
     manager.setURLModifier(resource => {
       if (!resource.startsWith('blob:') && !resource.startsWith('data:')) throw new Error('Character GLB has an external resource');

@@ -1,4 +1,5 @@
 import test from 'node:test';
+import { CollisionWorld } from '../shared/collision.mjs';
 import assert from 'node:assert/strict';
 import * as THREE from 'three';
 import { WorldAssets } from '../src/world-assets.js';
@@ -36,7 +37,7 @@ test('a failed region cannot substitute another asset or leave its partial LOD r
 });
 test('a region camp cooks real inventory and leaving its fire cancels without consuming raw meat',()=>{
   const fire=SCENERY.fires.find(f=>f.id==='fire-snow'),p={id:'p',x:fire.x,z:fire.z+2,inventory:{rawMeat:2,cookedMeat:0},energy:60,path:[],radius:.32};
-  const room={camp:{x:50,z:50},cookingFires:SCENERY.fires,players:new Map([['p',p]]),animals:[]};
+  const room={collision:new CollisionWorld(),camp:{x:50,z:50},cookingFires:SCENERY.fires,players:new Map([['p',p]]),animals:[]};
   assert.equal(nearestCookingFire(room,p),fire);handleHuntingAction(room,p,{action:'cook'},1000);assert.equal(p.cookingEndsAt,4000);assert.equal(p.inventory.rawMeat,2);
   updateHunting(room,4100);assert.equal(p.inventory.rawMeat,1);assert.equal(p.inventory.cookedMeat,1);
   handleHuntingAction(room,p,{action:'cook'},5000);p.z+=10;updateHunting(room,8200);

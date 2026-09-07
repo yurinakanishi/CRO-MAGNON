@@ -2,6 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { CollisionWorld, overlap } from '../shared/collision.mjs';
 import { BRIDGE } from '../shared/scenery-layout.mjs';
+import { riverX } from '../shared/terrain.mjs';
 import { createAnimals, updateAnimals, actorObstacle } from '../shared/animals.mjs';
 const box={id:'wall',type:'box',x:10,z:10,hx:1,hz:2,c:1,s:0,height:3};
 
@@ -22,8 +23,8 @@ test('rotated building corners and moving mammals use the same non-penetrating s
   assert.ok(human.x<=6.781);assert.equal(overlap(human,.32,mammoth),null);
 });
 
-test('click navigation routes around shelters and across the actual bridge, without corner cutting', () => {
-  const world=new CollisionWorld(),start={x:49,z:54},end={x:68,z:43};
+test('optional impassable river routes over the bridge without corner cutting', () => {
+  const world=new CollisionWorld(undefined,{river:true}),start={x:49,z:54},end={x:68,z:43};
   const path=world.path(start,end,.32);assert.ok(path.length>1);
   let previous=start,crossed=false;
   for(const point of path){assert.ok(world.segmentFree(previous,point,.32));if(previous.x<BRIDGE.x&&point.x>=BRIDGE.x)crossed=true;previous=point;}
@@ -31,6 +32,21 @@ test('click navigation routes around shelters and across the actual bridge, with
   const river=world.move({x:60,z:52},15,0,.32);assert.ok(river.x<65);
   const nearRail={x:BRIDGE.x,z:BRIDGE.z};const rail=world.move(nearRail,0,5,.32);
   assert.ok(Math.hypot(rail.x-nearRail.x,rail.z-nearRail.z)<1.1,'Walking into a rail cannot teleport to the bank');
+});
+
+test('default river allows walking and mounted movement in both directions and direct click routes', () => {
+  const world=new CollisionWorld();
+  for(const z of [-25,0,52,110,150])for(const radius of [.24,.32,2.9]) {
+    const x=riverX(z),west={x:x-4,z},east={x:x+4,z};
+    assert.ok(world.free({x,z},radius),`river centre at ${z}, radius ${radius}`);
+    for(const [start,end] of [[west,east],[east,west]]) {
+      assert.deepEqual(world.path(start,end,radius),[end]);
+      const moved=world.move(start,end.x-start.x,0,radius);
+      assert.ok(Math.hypot(moved.x-end.x,moved.z-end.z)<.001);
+    }
+  }
+  const nearRail={x:BRIDGE.x,z:BRIDGE.z},rail=world.move(nearRail,0,5,.32);
+  assert.ok(Math.hypot(rail.x-nearRail.x,rail.z-nearRail.z)<1.1,'bridge rails still block movement');
 });
 
 test('resource colliders disappear with depleted resources and return on regeneration', () => {

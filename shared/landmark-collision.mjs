@@ -7,7 +7,7 @@ export function landmarkObstacles(placements,bounds){
       const x=(box.minX+box.maxX)*.5*scale,z=(box.minZ+box.maxZ)*.5*scale;
       return {id:`${item.id}:${index}`,landmarkId:item.id,modelKey:item.key,type:'box',x:item.x+c*x+s*z,z:item.z-s*x+c*z,
         hx:(box.maxX-box.minX)*.5*scale,hz:(box.maxZ-box.minZ)*.5*scale,c,s,height:box.height*scale,
-        groundX:item.x,groundZ:item.z,groundOffset:-.08};
+        groundX:item.x,groundZ:item.z,groundOffset:item.groundOffset??-.08};
     });
   });
 }

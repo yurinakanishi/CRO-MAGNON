@@ -1,0 +1,14 @@
+{
+  "schemaVersion": 1,
+  "modelKey": "volcanic-basalt-columns",
+  "status": "copied-and-all-source-and-destination-hashes-verified",
+  "verifiedAt": "2026-09-07T02:48:45.831Z",
+  "planSha256": "b307d2ee9c50de6077f5769a8197784cb4fcc5bea69de4ca914dc128a9e3ab16",
+  "sourceRoot": "C:\\Users\\yurin\\Desktop\\projects\\CRO-MAGNON\\output\\model-generation\\models\\volcanic-basalt-columns",
+  "destinationRoot": "C:\\Users\\yurin\\Desktop\\projects\\threed-model-creation\\models\\volcanic-basalt-columns",
+  "files": 150,
+  "bytes": 189649650,
+  "copied": 150,
+  "skippedEqual": 0,
+  "preflightExistingEqual": 0
+}

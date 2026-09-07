@@ -345,6 +345,32 @@
       "sha256": "868c062028af62fedf491ed7391602991dbc76b1ddbbd09494ee958a7898cd5b",
       "delivery": "/models/volcanic-cone/model.glb",
       "gameQA": "assets/open-world-game-qa.json"
+    },
+    {
+      "key": "volcanic-basalt-columns",
+      "name": "火山の柱状玄武岩",
+      "kind": "static",
+      "height": 4.601902071153745,
+      "geometryResolution": 512,
+      "referenceVersion": 1,
+      "status": "integrated-and-game-qa-passed",
+      "sha256": "a3cf5fa909494f4250e4cacd9bc9529b9780f9d7292fc1bfd6bf6235ae71c0fc",
+      "delivery": "/models/volcanic-basalt-columns/model.glb",
+      "subject": "Use case: stylized-concept. Asset type: ONE isolated environment model reference for TRELLIS image-to-3D, a prehistoric fantasy third-person adventure game. Primary subject: one compact naturally joined outcrop of columnar volcanic basalt, a cluster of seven stout irregular hexagonal stone columns at staggered heights. Tallest column approximately 4.6 metres; total width approximately 4 metres. Uneven broken flat tops, broad vertical prism faces, believable cooling-joint seams, restrained horizontal fractures and a small amount of attached angular basalt at their common base. Clear stepped skyline; the columns stand mostly vertical with subtle natural irregularity and are solidly joined at the foot. The rock is matte charcoal slate-grey with slightly lighter weathered vertical faces and subtle warm ash in the cracks, fine natural texture, no bright veins. Readable large planes, no granular lumps, thin spikes or sharp crystal tips. Stylized realistic game asset with convincing natural stone detail, not a sculpture on a plinth. Entire object visible from ground contact to tallest top, generous 12 percent margin, three-quarter front view looking down slightly enough to see the tops. Neutral even studio lighting, plain medium grey background. No lava, red glow, snow, ice, plants, surrounding landscape, floor slab, pedestal, extra separate rocks, text, people, animals, metal or glossy crystal material.",
+      "gameQA": "assets/region-specific-game-qa.json"
+    },
+    {
+      "key": "desert-cactus",
+      "name": "砂漠のサボテン",
+      "kind": "static",
+      "height": 2.3997425960260443,
+      "geometryResolution": 1024,
+      "referenceVersion": 1,
+      "status": "integrated-and-game-qa-passed",
+      "sha256": "df3e780323fd45808d92b2f7edcd2c7d9ee8000f1ea0c67b29baab73c939d7ed",
+      "delivery": "/models/desert-cactus/model.glb",
+      "subject": "Use case: stylized-concept. Asset type: ONE isolated 3D game environment asset reference for image-to-3D reconstruction, CRO-MAGNON prehistoric fantasy third-person adventure. Primary subject: one mature desert candelabra cactus, approximately 2.4 metres tall, a stout gently tapered central ribbed green trunk rooted directly at the bottom and three asymmetrical thick upward-curving arms at different heights; the arms connect solidly to the trunk. Readable organic lobes and shallow vertical ribs, rounded growing tips, dusty muted sage-green skin with warm ochre weathering at the foot. Sparse tiny pale spine clusters visible as surface detail, not long needle geometry. Rounded natural shapes with continuous substantial surfaces, convincingly textured stylized realistic game quality matching hand-built natural terrain assets. Composition: entire cactus in frame with 12% clear margin, one three-quarter front view from slightly above eye level, strong readable silhouette with clear spaces between the arms. Neutral even studio lighting, natural nonmetallic matte material. Plain medium grey background. No separate plants, flowers, pots, pedestal, soil slab, terrain, loose stones, text, labels, frames, shadows of other objects, people, animals or modern items. This is a full cactus, not a landscape or collage.",
+      "gameQA": "assets/region-specific-game-qa.json"
     }
   ],
   "reuse": {

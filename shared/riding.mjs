@@ -34,7 +34,7 @@ export function dismountPoint(room, player, animal) {
   const dynamic = ridingObstacles(room, null, player);
   const radius = animal.radius + player.radius + .22;
   // Prefer the sides. Every candidate is outside the mammoth and in line of
-  // sight from it; dismounting cannot move someone through a wall or a river.
+  // sight from it; dismounting cannot move someone through a wall.
   for (let i = 0; i < 16; i++) {
     const angle = animal.facing + Math.PI / 2 + i * Math.PI / 8;
     const point = { x: animal.x + Math.sin(angle) * radius, z: animal.z + Math.cos(angle) * radius };
