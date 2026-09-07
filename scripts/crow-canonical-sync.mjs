@@ -94,7 +94,7 @@ const digestPlan = plan => createHash('sha256').update(JSON.stringify(plan)).dig
 export function createCrowSync(workspace = DEFAULT_WORKSPACE) { return createModelSync('crow-shaman', workspace); }
 
 export function createModelSync(modelKey, workspace = DEFAULT_WORKSPACE) {
-  if (!['crow-shaman','cat-kunoichi','bear-mage','kunoichi-katana','snow-ground','ice-ground','desert-ground','volcanic-ground','glacier-spires','volcanic-cone','desert-cactus','volcanic-basalt-columns'].includes(modelKey)) throw new Error('Unsupported canonical model key');
+  if (!['crow-shaman','cat-kunoichi','bear-mage','kunoichi-katana','snow-ground','ice-ground','desert-ground','volcanic-ground','glacier-spires','volcanic-cone','desert-cactus','volcanic-basalt-columns','valley-castle','floppy-ear-mage'].includes(modelKey)) throw new Error('Unsupported canonical model key');
   const KEY=modelKey;
   workspace = path.resolve(workspace);
   if (path.basename(workspace) !== 'CRO-MAGNON') throw new Error('Workspace must be CRO-MAGNON');

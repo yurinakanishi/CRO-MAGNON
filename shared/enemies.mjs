@@ -16,9 +16,9 @@ export const ENEMY_RULES = Object.freeze({
 const circle = actor => ({ id: actor.id, type: 'circle', x: actor.x, z: actor.z, radius: actor.radius });
 const solidAnimal = animal => animal.phase === 'alive' || animal.phase === 'dying';
 const dynamicActors = (room, except) => [...room.players.values(), ...(room.animals || []).filter(solidAnimal), ...(room.enemies || []).filter(enemyIsSolid)].filter(actor => actor !== except).map(circle);
-const withinStaffReach = (enemy, player) => combatDistance(enemy, player) <= enemy.radius + player.radius + ENEMY_RULES.attackReach;
+const withinStaffReach = (enemy, player) => combatDistance(enemy, player) <= enemy.radius + player.radius + ENEMY_RULES.attackReach + 1e-9;
 const eligiblePlayer = (room, player, now) => player && !player.mountId && !player.downedUntil && now >= (player.invulnerableUntil || 0) && combatDistance(player, room.camp || CAMP) > ENEMY_RULES.campSafeRadius;
-const clearLine = (room, a, b) => room.collision.segmentFree(a, b, .12);
+const clearLine = (room, a, b) => Math.abs((room.collision.surfaceHeight?.(a)??0)-(room.collision.surfaceHeight?.(b)??0))<=1.4&&room.collision.segmentFree(a, b, .12);
 
 export function createEnemies(collision, dynamic = [], now = Date.now()) {
   return ENEMY_GROUNDS.map(ground => {

@@ -1,0 +1,30 @@
+{
+  "status": "passed",
+  "states": 29730,
+  "actors": 232999,
+  "castleActors": 118935,
+  "projectiles": 30,
+  "maximumParticipants": 5,
+  "violations": 0,
+  "errors": [],
+  "maximumFloorHeightByPlayer": {
+    "白羽の呪術師": 17.596955156252815,
+    "城探索A": 17.72239474131962,
+    "城通信0": 17.70379914088992,
+    "城通信2": 17.78266229103417,
+    "城通信1": 17.60201673793234,
+    "城探索B": 17.818303237184168
+  },
+  "events": {
+    "katanaKills": true,
+    "magicKills": true,
+    "recovery": true,
+    "respawn": true,
+    "magicOnUpperFloor": true
+  },
+  "deathTimes": [
+    1788800091649,
+    1788800208390
+  ],
+  "method": "Two real browser clients and three WebSocket game participants. Normal UI path from camp through gate/stairs to hall for A; 390x844 map path to gate/hall and attack for B. Server-only stdin fixtures staged combat and the five-person visual lineup; fixture teleports are not navigation evidence. Body positions checked against shared coast, static and measured castle collision plus every solid dynamic pair."
+}

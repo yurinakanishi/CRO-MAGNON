@@ -1,0 +1,68 @@
+{
+  "status": "passed",
+  "modelKey": "floppy-ear-mage",
+  "candidate": 1,
+  "revision": "12",
+  "sha256": "60a247305f0b698654a9e61fd991470535128362e94be5d2b047be592e46e1ef",
+  "testedAt": "2026-09-07T17:18:51.115105+00:00",
+  "server": "http://localhost:3000",
+  "room": "MAGE-QA-0908",
+  "browserSetup": "Two actual Codex in-app browser WebGL tabs (1280x720 and 390x844), plus three WebSocket peers; five-model review tab also rendering during much of test. Chrome connector was unavailable at final QA.",
+  "visual": {
+    "exactGlb": true,
+    "nineClips": true,
+    "neutralClaySevenViews": "qa/final-surface-mesh",
+    "motionRenders": "work/rig/revision-12/qa/render-manifest.json",
+    "browserActorHashes": true
+  },
+  "gameplay": {
+    "selectionAndPortrait": true,
+    "freeMagicBothBrowserPlayers": true,
+    "gatherWood": true,
+    "walkAndRunDestinations": true,
+    "mountAndDismount": true,
+    "magicAfterDismount": true,
+    "wave": true,
+    "sameTabReconnect": {
+      "retainedModel": true,
+      "retainedWood": 1,
+      "retainedEnergy": 89,
+      "message": "Mage-Mobile-QA が谷に戻ってきた。"
+    },
+    "mobileSelectionMovementMagic": true
+  },
+  "network": {
+    "report": "assets/floppy-ear-mage-network-final-qa.json",
+    "players": 5,
+    "states": 3105,
+    "staticPenetrations": 0,
+    "sixthRefused": true,
+    "errors": [],
+    "uniqueProjectileIds": 2
+  },
+  "performance": {
+    "samples": "qa/browser-samples.json",
+    "multipleRenderingViewsObservedFPS": [
+      32,
+      35
+    ],
+    "singleRemainingGameViewObservedFPS": 60,
+    "modelReviewOneAndFiveObservedFPS": 60,
+    "constant60Claimed": false
+  },
+  "consoleErrorsAndWarnings": [],
+  "limitations": [
+    "Physical phone and long continuous running not tested.",
+    "60 FPS was a limited observation, not a guarantee.",
+    "Game movement was verified through normal controls and changed coordinates; fast dataset snapshots missed the intermediate Walk/Run clips, which were separately verified in exact GLB 60 Hz numeric and rendered animation QA.",
+    "Dynamic actor penetration was not separately counted in this replacement test; existing collision code and tests retained.",
+    "No server-restart persistence was added."
+  ],
+  "validation": {
+    "tests": 169,
+    "testsPassed": 169,
+    "syntaxFiles": 145,
+    "assetModels": 32,
+    "assetStatus": "passed"
+  }
+}

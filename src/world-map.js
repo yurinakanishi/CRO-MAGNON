@@ -2,6 +2,7 @@ import { WORLD, worldClamp, CAMP, NPC } from '/shared/world.mjs';
 import { BIOMES, biomeAt, biomeWeights } from '/shared/biomes.mjs';
 import { EARTH, coastDistance, CONTINENT_LABELS, EXPEDITION_STOPS, geoToWorld } from '/shared/paleo-geography.mjs';
 import { LANDMARKS } from '/shared/landmarks.mjs';
+import { CASTLE } from '/shared/castle-layout.mjs';
 
 let background,overview=true,selection=null;
 export function setWorldMapSelection(point){selection=point;}
@@ -43,6 +44,7 @@ export function drawWorldMap(canvas,state,selfId,big=false){
   if(big&&selection){const [x,y]=point(selection.x,selection.z);ctx.strokeStyle='#ffda88';ctx.lineWidth=2;ctx.beginPath();ctx.arc(x,y,11,0,Math.PI*2);ctx.stroke();}
   for(const item of LANDMARKS){const [x,y]=point(item.x,item.z),r=full?3:4;ctx.beginPath();ctx.moveTo(x,y-r);ctx.lineTo(x-r,y+r);ctx.lineTo(x+r,y+r);ctx.closePath();ctx.fillStyle=item.key==='volcanic-cone'?'#f19c73':'#caf1f2';ctx.fill();}
   if(big)for(const stop of EXPEDITION_STOPS){const [x,y]=point(stop.x,stop.z);ctx.strokeStyle='#ffe2a4';ctx.lineWidth=1.4;ctx.strokeRect(x-3,y-3,6,6);}
+  {const [x,y]=point(CASTLE.x,CASTLE.z);ctx.fillStyle='#d8cebc';ctx.fillRect(x-4,y-3,8,7);ctx.fillRect(x-5,y-6,3,3);ctx.fillRect(x+2,y-6,3,3);if(big&&!full){ctx.font='12px sans-serif';ctx.fillText(CASTLE.name,x+8,y+4);}}
   if(!full){for(const fire of state.cookingFires??[])dot(fire.x,fire.z,'#efb573',big?3:2);dot(CAMP.x,CAMP.z,'#efb573',4);dot(NPC.x,NPC.z,'#dad3a9',3);}
   for(const animal of state.animals??[])if(animal.phase!=='respawning')dot(animal.x,animal.z,animal.phase==='meat'?'#e5b6a9':'#d9c089',full?2:3);
   for(const enemy of state.enemies??[])if(enemy.hostile&&enemy.phase!=='respawning')dot(enemy.x,enemy.z,enemy.phase==='alive'?'#ff9183':'#926d6a',full?2:3);

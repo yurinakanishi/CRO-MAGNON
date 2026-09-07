@@ -2,6 +2,7 @@ import { WORLD, INITIAL_RESOURCES } from './world.mjs';
 import { riverX, riverHalfWidth } from './terrain.mjs';
 import { biomeAt, biomeWeights, chunkDescription, JOURNEY_STOPS, roadDistance } from './biomes.mjs';
 import { nearLandmark } from './landmarks.mjs';
+import { CASTLE_HALL, nearCastle } from './castle-layout.mjs';
 import { BIOME_SCENERY } from './biome-scenery.mjs';
 import { isLand, EXPEDITION_STOPS, worldToGeo } from './paleo-geography.mjs';
 // Body-sized animals need a continuous clearing, not just a free spawn point.
@@ -10,7 +11,7 @@ export const HUNTING_GROUNDS = Object.freeze([
   Object.freeze({ x: 25, z: 21, radius: 10, roamRadius: 5 }),
   Object.freeze({ x: 24, z: 85, radius: 10, roamRadius: 5 }),
 ]);
-export const ENEMY_GROUNDS = Object.freeze([Object.freeze({ id: 'crow-shaman-1', x: 45, z: 16, radius: 5, roamRadius: 3.2 })]);
+export const ENEMY_GROUNDS = Object.freeze([Object.freeze({ id: 'crow-shaman-1', x: CASTLE_HALL.x, z: CASTLE_HALL.z, radius: 5, roamRadius: 3.2 })]);
 const inHuntingGround = (x, z, margin = 0) => HUNTING_GROUNDS.some(ground => Math.hypot(x - ground.x, z - ground.z) < ground.radius + margin);
 const inEnemyGround = (x, z, margin = 0) => ENEMY_GROUNDS.some(ground => Math.hypot(x - ground.x, z - ground.z) < ground.radius + margin);
 export function seededRandom(seed) { return () => { seed|=0;seed=(seed+0x6d2b79f5)|0;let t=Math.imul(seed^(seed>>>15),1|seed);t=(t+Math.imul(t^(t>>>7),61|t))^t;return ((t^(t>>>14))>>>0)/4294967296; }; }
@@ -82,7 +83,7 @@ function layout() {
     props.push({key:'firewood-pile',x,z,yaw:dry()*TAU,scale:.65+dry()*.5,biome,surface:BIOME_SCENERY[biome].surface});
   }
   const animals=HUNTING_GROUNDS.map((ground,index)=>({id:`mammoth-${index+1}`,x:ground.x,z:ground.z,scale:index? .76:1,roamRadius:ground.roamRadius}));
-  return {trees,grass,rocks,ridges,tents,props,fires,animals};
+  return Object.fromEntries(Object.entries({trees,grass,rocks,ridges,tents,props,fires,animals}).map(([key,items])=>[key,items.filter(item=>!nearCastle(item.x,item.z,3))]));
 }
 // Renderer and authoritative server use precisely the same placements and scales.
 export const SCENERY=layout();
@@ -99,6 +100,6 @@ export function grassForChunk(ix,iz) {
     if(rng()>weight||roadDistance(x,z)<1.5||(riverHalfWidth(z)>.7&&Math.abs(x-riverX(z))<4))continue;
     const scale=.6+rng()*.65;grass.push({key:palette.groundcover,x,z,scale,height:(biome==='snow'?.9:.55)*scale,yaw:rng()*TAU,biome,surface:palette.surface??null});
   }
-  return grass;
+  return grass.filter(item=>!nearCastle(item.x,item.z,1));
 }
 export const BRIDGE={x:riverX(43.5),z:43.5,minX:-5.121252209981283,maxX:4.988082171758016,minZ:-1.2622603230953215,maxZ:1.3524676167488099};

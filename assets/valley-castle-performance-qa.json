@@ -1,0 +1,566 @@
+{
+  "renderer": "ANGLE Intel Iris Xe D3D11",
+  "conditions": "Two headless hardware-rendered browser pages (1440x1000 and 390x844), five network players, Blender stopped, no TRELLIS, 60 FPS cap. A in upper hall; B at gate. Earlier SwiftShader review measurements excluded.",
+  "samples": [
+    {
+      "at": "2026-09-07T17:03:21.476Z",
+      "A": {
+        "fps": 60,
+        "simulationMs": 0.77,
+        "submissionMs": 1.7,
+        "x": 148.42,
+        "y": 17.591,
+        "z": -9.44,
+        "players": 5,
+        "triangles": 530783,
+        "geometries": 74,
+        "textures": 49,
+        "heapMiB": 42.6,
+        "focus": "true"
+      },
+      "B": {
+        "fps": 57,
+        "simulationMs": 1.2,
+        "submissionMs": 1.51,
+        "x": 109.64,
+        "y": 0.005,
+        "z": 17.41,
+        "players": 5,
+        "triangles": 226639,
+        "focus": "true"
+      }
+    },
+    {
+      "at": "2026-09-07T17:03:22.000Z",
+      "A": {
+        "fps": 57,
+        "simulationMs": 0.93,
+        "submissionMs": 1.29,
+        "x": 148.42,
+        "y": 17.591,
+        "z": -9.44,
+        "players": 5,
+        "triangles": 530783,
+        "geometries": 74,
+        "textures": 49,
+        "heapMiB": 42.6,
+        "focus": "true"
+      },
+      "B": {
+        "fps": 57,
+        "simulationMs": 1.2,
+        "submissionMs": 1.51,
+        "x": 109.64,
+        "y": 0.005,
+        "z": 17.41,
+        "players": 5,
+        "triangles": 226639,
+        "focus": "true"
+      }
+    },
+    {
+      "at": "2026-09-07T17:03:22.527Z",
+      "A": {
+        "fps": 57,
+        "simulationMs": 0.93,
+        "submissionMs": 1.29,
+        "x": 148.42,
+        "y": 17.591,
+        "z": -9.44,
+        "players": 5,
+        "triangles": 530783,
+        "geometries": 74,
+        "textures": 49,
+        "heapMiB": 42.6,
+        "focus": "true"
+      },
+      "B": {
+        "fps": 56,
+        "simulationMs": 0.99,
+        "submissionMs": 1.32,
+        "x": 109.64,
+        "y": 0.005,
+        "z": 17.41,
+        "players": 5,
+        "triangles": 226639,
+        "focus": "true"
+      }
+    },
+    {
+      "at": "2026-09-07T17:03:23.059Z",
+      "A": {
+        "fps": 57,
+        "simulationMs": 0.98,
+        "submissionMs": 1.81,
+        "x": 148.42,
+        "y": 17.591,
+        "z": -9.44,
+        "players": 5,
+        "triangles": 530783,
+        "geometries": 74,
+        "textures": 49,
+        "heapMiB": 42.6,
+        "focus": "true"
+      },
+      "B": {
+        "fps": 56,
+        "simulationMs": 0.99,
+        "submissionMs": 1.32,
+        "x": 109.64,
+        "y": 0.005,
+        "z": 17.41,
+        "players": 5,
+        "triangles": 226639,
+        "focus": "true"
+      }
+    },
+    {
+      "at": "2026-09-07T17:03:23.584Z",
+      "A": {
+        "fps": 57,
+        "simulationMs": 0.98,
+        "submissionMs": 1.81,
+        "x": 148.42,
+        "y": 17.591,
+        "z": -9.44,
+        "players": 5,
+        "triangles": 530783,
+        "geometries": 74,
+        "textures": 49,
+        "heapMiB": 42.6,
+        "focus": "true"
+      },
+      "B": {
+        "fps": 59,
+        "simulationMs": 0.62,
+        "submissionMs": 0.85,
+        "x": 109.64,
+        "y": 0.005,
+        "z": 17.41,
+        "players": 5,
+        "triangles": 438285,
+        "focus": "true"
+      }
+    },
+    {
+      "at": "2026-09-07T17:03:24.110Z",
+      "A": {
+        "fps": 56,
+        "simulationMs": 0.83,
+        "submissionMs": 1.64,
+        "x": 148.42,
+        "y": 17.591,
+        "z": -9.44,
+        "players": 5,
+        "triangles": 530783,
+        "geometries": 74,
+        "textures": 49,
+        "heapMiB": 42.6,
+        "focus": "true"
+      },
+      "B": {
+        "fps": 59,
+        "simulationMs": 0.62,
+        "submissionMs": 0.85,
+        "x": 109.64,
+        "y": 0.005,
+        "z": 17.41,
+        "players": 5,
+        "triangles": 438285,
+        "focus": "true"
+      }
+    },
+    {
+      "at": "2026-09-07T17:03:24.646Z",
+      "A": {
+        "fps": 56,
+        "simulationMs": 0.83,
+        "submissionMs": 1.64,
+        "x": 148.42,
+        "y": 17.591,
+        "z": -9.44,
+        "players": 5,
+        "triangles": 530783,
+        "geometries": 74,
+        "textures": 49,
+        "heapMiB": 42.6,
+        "focus": "true"
+      },
+      "B": {
+        "fps": 55,
+        "simulationMs": 0.95,
+        "submissionMs": 1.29,
+        "x": 109.64,
+        "y": 0.005,
+        "z": 17.41,
+        "players": 5,
+        "triangles": 438285,
+        "focus": "true"
+      }
+    },
+    {
+      "at": "2026-09-07T17:03:25.168Z",
+      "A": {
+        "fps": 54,
+        "simulationMs": 0.67,
+        "submissionMs": 1.38,
+        "x": 148.42,
+        "y": 17.591,
+        "z": -9.44,
+        "players": 5,
+        "triangles": 530783,
+        "geometries": 74,
+        "textures": 49,
+        "heapMiB": 42.6,
+        "focus": "true"
+      },
+      "B": {
+        "fps": 55,
+        "simulationMs": 0.95,
+        "submissionMs": 1.29,
+        "x": 109.64,
+        "y": 0.005,
+        "z": 17.41,
+        "players": 5,
+        "triangles": 438285,
+        "focus": "true"
+      }
+    },
+    {
+      "at": "2026-09-07T17:03:25.709Z",
+      "A": {
+        "fps": 55,
+        "simulationMs": 0.8,
+        "submissionMs": 1.49,
+        "x": 148.42,
+        "y": 17.591,
+        "z": -9.44,
+        "players": 5,
+        "triangles": 530783,
+        "geometries": 74,
+        "textures": 49,
+        "heapMiB": 42.6,
+        "focus": "true"
+      },
+      "B": {
+        "fps": 54,
+        "simulationMs": 0.75,
+        "submissionMs": 1.08,
+        "x": 109.64,
+        "y": 0.005,
+        "z": 17.41,
+        "players": 5,
+        "triangles": 226639,
+        "focus": "true"
+      }
+    },
+    {
+      "at": "2026-09-07T17:03:26.242Z",
+      "A": {
+        "fps": 55,
+        "simulationMs": 0.8,
+        "submissionMs": 1.49,
+        "x": 148.42,
+        "y": 17.591,
+        "z": -9.44,
+        "players": 5,
+        "triangles": 530783,
+        "geometries": 74,
+        "textures": 49,
+        "heapMiB": 42.6,
+        "focus": "true"
+      },
+      "B": {
+        "fps": 54,
+        "simulationMs": 0.75,
+        "submissionMs": 1.08,
+        "x": 109.64,
+        "y": 0.005,
+        "z": 17.41,
+        "players": 5,
+        "triangles": 226639,
+        "focus": "true"
+      }
+    },
+    {
+      "at": "2026-09-07T17:03:26.773Z",
+      "A": {
+        "fps": 45,
+        "simulationMs": 0.69,
+        "submissionMs": 1.34,
+        "x": 148.42,
+        "y": 17.591,
+        "z": -9.44,
+        "players": 5,
+        "triangles": 1022419,
+        "geometries": 74,
+        "textures": 49,
+        "heapMiB": 42.6,
+        "focus": "true"
+      },
+      "B": {
+        "fps": 45,
+        "simulationMs": 1.03,
+        "submissionMs": 1.5,
+        "x": 109.64,
+        "y": 0.005,
+        "z": 17.41,
+        "players": 5,
+        "triangles": 438285,
+        "focus": "true"
+      }
+    },
+    {
+      "at": "2026-09-07T17:03:27.308Z",
+      "A": {
+        "fps": 45,
+        "simulationMs": 0.69,
+        "submissionMs": 1.34,
+        "x": 148.42,
+        "y": 17.591,
+        "z": -9.44,
+        "players": 5,
+        "triangles": 1022419,
+        "geometries": 74,
+        "textures": 49,
+        "heapMiB": 42.6,
+        "focus": "true"
+      },
+      "B": {
+        "fps": 45,
+        "simulationMs": 1.03,
+        "submissionMs": 1.5,
+        "x": 109.64,
+        "y": 0.005,
+        "z": 17.41,
+        "players": 5,
+        "triangles": 438285,
+        "focus": "true"
+      }
+    },
+    {
+      "at": "2026-09-07T17:03:27.859Z",
+      "A": {
+        "fps": 55,
+        "simulationMs": 0.91,
+        "submissionMs": 1.62,
+        "x": 148.42,
+        "y": 17.591,
+        "z": -9.44,
+        "players": 5,
+        "triangles": 1022419,
+        "geometries": 74,
+        "textures": 49,
+        "heapMiB": 42.6,
+        "focus": "true"
+      },
+      "B": {
+        "fps": 55,
+        "simulationMs": 0.81,
+        "submissionMs": 1.14,
+        "x": 109.64,
+        "y": 0.005,
+        "z": 17.41,
+        "players": 5,
+        "triangles": 226639,
+        "focus": "true"
+      }
+    },
+    {
+      "at": "2026-09-07T17:03:28.392Z",
+      "A": {
+        "fps": 55,
+        "simulationMs": 0.91,
+        "submissionMs": 1.62,
+        "x": 148.42,
+        "y": 17.591,
+        "z": -9.44,
+        "players": 5,
+        "triangles": 1022419,
+        "geometries": 74,
+        "textures": 49,
+        "heapMiB": 42.6,
+        "focus": "true"
+      },
+      "B": {
+        "fps": 55,
+        "simulationMs": 0.81,
+        "submissionMs": 1.14,
+        "x": 109.64,
+        "y": 0.005,
+        "z": 17.41,
+        "players": 5,
+        "triangles": 226639,
+        "focus": "true"
+      }
+    },
+    {
+      "at": "2026-09-07T17:03:28.926Z",
+      "A": {
+        "fps": 60,
+        "simulationMs": 0.79,
+        "submissionMs": 1.5,
+        "x": 148.42,
+        "y": 17.591,
+        "z": -9.44,
+        "players": 5,
+        "triangles": 530783,
+        "geometries": 74,
+        "textures": 49,
+        "heapMiB": 42.6,
+        "focus": "true"
+      },
+      "B": {
+        "fps": 60,
+        "simulationMs": 0.99,
+        "submissionMs": 1.12,
+        "x": 109.64,
+        "y": 0.005,
+        "z": 17.41,
+        "players": 5,
+        "triangles": 226639,
+        "focus": "true"
+      }
+    },
+    {
+      "at": "2026-09-07T17:03:29.458Z",
+      "A": {
+        "fps": 60,
+        "simulationMs": 0.79,
+        "submissionMs": 1.5,
+        "x": 148.42,
+        "y": 17.591,
+        "z": -9.44,
+        "players": 5,
+        "triangles": 530783,
+        "geometries": 74,
+        "textures": 49,
+        "heapMiB": 42.6,
+        "focus": "true"
+      },
+      "B": {
+        "fps": 60,
+        "simulationMs": 0.99,
+        "submissionMs": 1.12,
+        "x": 109.64,
+        "y": 0.005,
+        "z": 17.41,
+        "players": 5,
+        "triangles": 226639,
+        "focus": "true"
+      }
+    },
+    {
+      "at": "2026-09-07T17:03:30.058Z",
+      "A": {
+        "fps": 60,
+        "simulationMs": 0.8,
+        "submissionMs": 1.8,
+        "x": 148.42,
+        "y": 17.591,
+        "z": -9.44,
+        "players": 5,
+        "triangles": 530783,
+        "geometries": 74,
+        "textures": 49,
+        "heapMiB": 42.6,
+        "focus": "true"
+      },
+      "B": {
+        "fps": 59,
+        "simulationMs": 0.96,
+        "submissionMs": 1.45,
+        "x": 109.64,
+        "y": 0.005,
+        "z": 17.41,
+        "players": 5,
+        "triangles": 226639,
+        "focus": "true"
+      }
+    },
+    {
+      "at": "2026-09-07T17:03:30.577Z",
+      "A": {
+        "fps": 60,
+        "simulationMs": 0.8,
+        "submissionMs": 1.8,
+        "x": 148.42,
+        "y": 17.591,
+        "z": -9.44,
+        "players": 5,
+        "triangles": 530783,
+        "geometries": 74,
+        "textures": 49,
+        "heapMiB": 42.6,
+        "focus": "true"
+      },
+      "B": {
+        "fps": 59,
+        "simulationMs": 0.96,
+        "submissionMs": 1.45,
+        "x": 109.64,
+        "y": 0.005,
+        "z": 17.41,
+        "players": 5,
+        "triangles": 226639,
+        "focus": "true"
+      }
+    },
+    {
+      "at": "2026-09-07T17:03:31.109Z",
+      "A": {
+        "fps": 60,
+        "simulationMs": 0.74,
+        "submissionMs": 1.48,
+        "x": 148.42,
+        "y": 17.591,
+        "z": -9.44,
+        "players": 5,
+        "triangles": 1022419,
+        "geometries": 74,
+        "textures": 49,
+        "heapMiB": 42.6,
+        "focus": "true"
+      },
+      "B": {
+        "fps": 60,
+        "simulationMs": 0.98,
+        "submissionMs": 1.52,
+        "x": 109.64,
+        "y": 0.005,
+        "z": 17.41,
+        "players": 5,
+        "triangles": 226639,
+        "focus": "true"
+      }
+    },
+    {
+      "at": "2026-09-07T17:03:31.638Z",
+      "A": {
+        "fps": 60,
+        "simulationMs": 0.74,
+        "submissionMs": 1.48,
+        "x": 148.42,
+        "y": 17.591,
+        "z": -9.44,
+        "players": 5,
+        "triangles": 1022419,
+        "geometries": 74,
+        "textures": 49,
+        "heapMiB": 42.6,
+        "focus": "true"
+      },
+      "B": {
+        "fps": 60,
+        "simulationMs": 0.98,
+        "submissionMs": 1.52,
+        "x": 109.64,
+        "y": 0.005,
+        "z": 17.41,
+        "players": 5,
+        "triangles": 226639,
+        "focus": "true"
+      }
+    }
+  ]
+}

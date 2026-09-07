@@ -1,0 +1,44 @@
+{
+  "schemaVersion": 1,
+  "userRequest": "カラス人間の敵は、始まりの谷のそばの大きい大きい城の中にいる。さらに大きく、階層があり、階段が何個もある城。",
+  "modelKey": "valley-castle",
+  "candidate": 1,
+  "referenceVersion": 2,
+  "design": "幅約70 m、多段の広いテラス、左右から上階へつながる複数の石階段、城門、塔と城壁。既存の白羽の呪術師を城内へ移す。",
+  "lineage": "Built-in imagegen → local TRELLIS-2 → source-preserving processing → exact GLB QA → integration and game QA",
+  "generation": "completed",
+  "adoption": "exact-glb-reviewed-and-adopted",
+  "integration": "completed",
+  "gameQA": "passed",
+  "history": [
+    {
+      "referenceVersion": 1,
+      "status": "superseded-by-user-refinement",
+      "note": "単層中庭案の背景除去を中断。画像を保持し、生成した完成GLBはない。"
+    },
+    {
+      "referenceVersion": 2,
+      "status": "reconstructed-and-preserved",
+      "note": "多層・複数階段の参照画像。"
+    }
+  ],
+  "qaInventory": [
+    "Exact delivered mesh: multiple levels, stairs, front/rear/left/right/top/bottom/three-quarter, neutral and clay, dense comparison",
+    "Castle on land near starting valley, no overlap with camp/resources/mammoth grounds",
+    "Enter gate and climb connected stairs to upper floors using normal movement; return to ground",
+    "Walls and terrace edges block movement; no jumping from ground onto upper floor",
+    "Crow patrol and respawn remain inside castle; combat cannot hit through walls or between separated floors",
+    "5 participants including real browsers, mobile viewport, assets loading and runtime errors",
+    "Fresh player state capture before updating port 3000; preserve inventory and progress"
+  ],
+  "revision": "06",
+  "sha256": "d2259f674fd9737f08bb9b0db7a44976f786803943f9213cd01184681274351e",
+  "rollout": "verified-on-port-3000",
+  "canonicalArchive": {
+    "status": "verified",
+    "files": 92,
+    "bytes": 466595459,
+    "destination": "../threed-model-creation/models/valley-castle",
+    "qa": "assets/valley-castle-canonical-qa.json"
+  }
+}

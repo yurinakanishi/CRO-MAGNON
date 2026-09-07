@@ -1,4 +1,6 @@
 import { WORLD } from './world.mjs';
+import { CASTLE } from './castle-layout.mjs';
+import { CASTLE_SURFACE } from './castle-surface.mjs';
 import { BIOMES, biomeAt, chunkAt, chunkDescription } from './biomes.mjs';
 import { coastDistance } from './paleo-geography.mjs';
 export const WATER_LEVEL = -0.45;
@@ -61,12 +63,17 @@ export function terrainHeight(x, z) {
 }
 
 export function walkHeight(x,z) {
+  const castleHeight=CASTLE_SURFACE.height(x,z);
+  if(Number.isFinite(castleHeight))return terrainHeight(CASTLE.x,CASTLE.z)+CASTLE.groundOffset+castleHeight;
   if (sourceBridge) {
     const bridge = sourceBridge, lx = x - bridge.x, lz = z - bridge.z;
     if (lx >= bridge.bounds.minX && lx <= bridge.bounds.maxX && lz >= bridge.bounds.minZ && lz <= bridge.bounds.maxZ) return bridge.deckY;
     return terrainHeight(x,z);
   }
   return terrainHeight(x,z);
+}
+export function projectileHeight(x,z,elevation=0){
+  return (CASTLE_SURFACE.cell(x,z)?terrainHeight(CASTLE.x,CASTLE.z):terrainHeight(x,z))+elevation;
 }
 export function installSourceBridge(bounds, x = riverX(43.5), z = 43.5, deckY = .3) {
   if (![bounds.minX,bounds.maxX,bounds.minZ,bounds.maxZ,x,z,deckY].every(Number.isFinite) || bounds.minX >= bounds.maxX || bounds.minZ >= bounds.maxZ) throw new Error('Invalid source bridge bounds');

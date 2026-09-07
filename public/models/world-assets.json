@@ -22317,6 +22317,49 @@
         "candidateFile": "output/model-generation/models/desert-cactus/work/low-poly/candidate-03/candidate.glb",
         "visualReview": "output/model-generation/models/desert-cactus/qa/adoption-review.json"
       }
+    },
+    {
+      "modelKey": "valley-castle",
+      "name": "白羽の大城",
+      "kind": "static",
+      "candidate": 1,
+      "status": "reviewed-prototype",
+      "environment": true,
+      "onDemand": true,
+      "url": "/models/valley-castle/model.glb",
+      "sha256": "d2259f674fd9737f08bb9b0db7a44976f786803943f9213cd01184681274351e",
+      "bytes": 8226968,
+      "triangles": 134354,
+      "upAxis": "Y",
+      "forwardAxis": "+Z",
+      "heightMetres": 26.07665,
+      "widthMetres": 69.99084,
+      "placement": {
+        "pivot": "ground-centred",
+        "min": [
+          -35.000622,
+          -0.18375,
+          -32.494679
+        ],
+        "max": [
+          34.990219,
+          25.892897,
+          33
+        ]
+      },
+      "clips": [],
+      "lods": [],
+      "notes": "Three exposed terrace levels, paired stone staircases, source-derived entrance stair and upper hall doorway. No tower climbing or hidden intermediate rooms. Full mesh shared; unrepaired coarse LODs are not adopted.",
+      "provenance": {
+        "provider": "Codex",
+        "claudeUsed": false,
+        "referenceGenerator": "Built-in imagegen",
+        "referenceImage": "output/model-generation/models/valley-castle/source/original/reference-v2.png",
+        "referenceSha256": "11e4b9c769593f0b58e6e5ec77735cdda3a5fd5f74cb3ef77aa783e695516eb8",
+        "reconstruction": "Local TRELLIS-2 1024; shape-preserving reduction, source-triangle door clipping and reuse of the existing stair and floor; lossless buffer packing.",
+        "candidateFile": "output/model-generation/models/valley-castle/work/low-poly/candidate-06/candidate.glb",
+        "visualReview": "output/model-generation/models/valley-castle/qa/adoption-review.json"
+      }
     }
   ],
   "status": "ready"

@@ -1,0 +1,38 @@
+{
+  "status": "passed",
+  "checkedAt": "2026-09-07T17:21:46.894Z",
+  "health": {
+    "ok": true,
+    "ridingVersion": 1,
+    "combatVersion": 3,
+    "characterVersion": 2,
+    "enemyVersion": 1,
+    "worldVersion": 3,
+    "worldSize": 4096,
+    "worldWidth": 4096,
+    "worldDepth": 2048,
+    "epochYearsBP": 50000,
+    "rooms": 0,
+    "players": 0,
+    "maxPlayers": 5
+  },
+  "sha256": "60a247305f0b698654a9e61fd991470535128362e94be5d2b047be592e46e1ef",
+  "bytes": 14125456,
+  "characterMapping": true,
+  "selectionLabel": true,
+  "archive": {
+    "schemaVersion": 1,
+    "modelKey": "floppy-ear-mage",
+    "status": "copied-and-all-source-and-destination-hashes-verified",
+    "verifiedAt": "2026-09-07T17:20:40.751Z",
+    "planSha256": "e9f79466faae99d16a99841a7d107be6e29709b98f083c065be63d811398ce0d",
+    "sourceRoot": "C:\\Users\\yurin\\Desktop\\projects\\CRO-MAGNON\\output\\model-generation\\models\\floppy-ear-mage",
+    "destinationRoot": "C:\\Users\\yurin\\Desktop\\projects\\threed-model-creation\\models\\floppy-ear-mage",
+    "files": 594,
+    "bytes": 685873004,
+    "copied": 594,
+    "skippedEqual": 0,
+    "preflightExistingEqual": 0
+  },
+  "restart": "Coordinated with castle task after stopping our QA clients; new node server.mjs on port 3000. No old checkpoint applied, no normal persistence added."
+}

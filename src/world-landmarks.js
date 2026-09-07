@@ -1,10 +1,12 @@
 import * as THREE from 'three';
 import { LANDMARKS } from '../shared/landmarks.mjs';
+import { CASTLE } from '../shared/castle-layout.mjs';
+import { MeshRayGrid } from './mesh-ray-grid.js';
 import { REGION_FEATURES } from '../shared/region-features.mjs';
 import { terrainHeight } from '../shared/terrain.mjs';
 import { regionFeatureDiagnostics } from './region-feature-diagnostics.js';
 
-const PLACEMENTS=Object.freeze([...LANDMARKS,...REGION_FEATURES]);
+const PLACEMENTS=Object.freeze([...LANDMARKS,...REGION_FEATURES,CASTLE]);
 
 // Meshes and all LODs are verified image-to-3D files. Only nearby landmark types
 // are decoded; copies share geometries and materials, and inactive types expire.
@@ -15,7 +17,7 @@ export class WorldLandmarks {
     const desired=this.placements.filter(item=>Math.hypot(camera.position.x-item.x,camera.position.z-item.z)<125+item.clearance);
     let created=0;
     const ids=new Set(desired.map(item=>item.id));
-    for(const[id,root]of this.instances)if(!ids.has(id)){this.world.scene.remove(root);this.instances.delete(id);}
+    for(const[id,root]of this.instances)if(!ids.has(id)){this.world.scene.remove(root);this.instances.delete(id);if(id===CASTLE.id)this.castleCamera=null;}
     for(const item of desired){
       this.used.set(item.key,time);
       if(!this.assets.templates.has(item.key)){
@@ -50,6 +52,7 @@ export class WorldLandmarks {
         }
         root.updateMatrixWorld(true);root.traverse(node=>node.matrixAutoUpdate=false);
         this.instances.set(item.id,root);this.world.scene.add(root);
+        if(item.id===CASTLE.id)this.castleCamera=new MeshRayGrid(root);
       }
       this.instances.get(item.id).update(camera);
     }

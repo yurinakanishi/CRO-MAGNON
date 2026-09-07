@@ -50,7 +50,7 @@ export function createGameCore({ resumeGraceMs = 120000, keepEmptyRooms = false,
     const now = Date.now();
     return {
       type: 'state', ridingVersion: RIDING.version, combatVersion: 3, characterVersion: 2, enemyVersion: 1, worldVersion: WORLD.version, worldWidth: WORLD.width, worldDepth: WORLD.depth, epochYearsBP: EARTH.epochYearsBP, room: room.name, serverTime: now,
-      projectiles: (room.projectiles || []).map(({id,ownerId,x,z,dx,dz,createdAt,updatedAt,travelled,kind})=>({id,ownerId,x,z,dx,dz,createdAt,updatedAt,travelled,kind})),
+      projectiles: (room.projectiles || []).map(({id,ownerId,x,z,dx,dz,createdAt,updatedAt,travelled,kind,elevation})=>({id,ownerId,x,z,dx,dz,createdAt,updatedAt,travelled,kind,elevation})),
       projectileImpacts: (room.projectileImpacts || []).map(effect=>({...effect})),
       animals: room.animals.map(({id,x,z,facing,speed,scale,radius,clip,phase,health,maxHealth,meatRemaining,phaseStartedAt,riderId})=>({id,x,z,facing,speed,scale,radius,clip,phase,health,maxHealth,meatRemaining,phaseStartedAt,riderId})),
       enemies: (room.enemies || []).map(({id,modelKey,name,hostile,x,z,scale,facing,speed,radius,clip,phase,health,maxHealth,phaseStartedAt,behavior,targetId,attackSequence,attackAt,hitSequence,hitAt})=>({id,modelKey,name,hostile,x,z,scale,facing,speed,radius,clip,phase,health,maxHealth,phaseStartedAt,behavior,targetId,attackSequence,attackAt,hitSequence,hitAt})),

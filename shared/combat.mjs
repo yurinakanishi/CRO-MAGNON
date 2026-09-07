@@ -34,7 +34,8 @@ export function inAttackArc(player, target, facing = player.facing) {
   const delta = Math.atan2(Math.sin(angle - facing), Math.cos(angle - facing));
   return Math.abs(delta) <= attackProfile(player).halfAngle;
 }
-const clearLine = (room, player, target) => room.collision.segmentFree(player, target, .12);
+const sameReachableHeight = (room,a,b) => Math.abs((room.collision.surfaceHeight?.(a)??0)-(room.collision.surfaceHeight?.(b)??0))<=1.4;
+const clearLine = (room, player, target) => sameReachableHeight(room,player,target)&&room.collision.segmentFree(player, target, .12);
 
 export function startAttack(room, player, message = {}, now = Date.now()) {
   const profile = attackProfile(player);
@@ -67,6 +68,7 @@ export function resolveAttack(room, player, now = Date.now()) {
     room.projectiles ??= [];
     room.projectiles.push({ id: `${player.id}:${player.attackSequence}`, ownerId: player.id,
       x: player.x, z: player.z, dx: Math.sin(strike.facing), dz: Math.cos(strike.facing),
+      elevation: room.collision.surfaceHeight?.(player)??0,
       createdAt: strike.impactAt, updatedAt: strike.impactAt, travelled: 0, kind: 'magic' });
     return { hit: false, launched: true };
   }
@@ -123,6 +125,12 @@ function boxEntry(a, b, box, radius) {
 
 export function projectileWallEntry(collision, a, b, radius) {
   const middle={x:(a.x+b.x)/2,z:(a.z+b.z)/2};let first=Infinity;
+  // A horizontal orb cannot follow stairs upward or pass through a terrace.
+  const steps=Math.max(1,Math.ceil(combatDistance(a,b)/.1));
+  for(const surface of collision.walkSurfaces??[])for(let i=1;i<=steps;i++){
+    const t=i/steps,h=surface.height(a.x+(b.x-a.x)*t,a.z+(b.z-a.z)*t);
+    if(h===null||Number.isFinite(h)&&h>(a.elevation??0)+.4-radius){first=Math.min(first,(i-1)/steps);break;}
+  }
   for (const obstacle of collision.nearby(middle,combatDistance(a,b)/2+radius)) {
     first=Math.min(first,obstacle.type==='circle'?circleEntry(a,b,obstacle,obstacle.radius+radius):boxEntry(a,b,obstacle,radius));
   }
@@ -148,10 +156,10 @@ export function updateProjectiles(room, now=Date.now()) {
     const end={x:projectile.x+projectile.dx*travel,z:projectile.z+projectile.dz*travel};
     const wall=projectileWallEntry(room.collision,projectile,end,profile.projectileRadius);
     const hit=damageableTargets(room).map(target=>({...target,t:circleEntry(projectile,end,target.target,target.target.radius+profile.projectileRadius)}))
-      .filter(target=>Number.isFinite(target.t) && target.t<wall).sort((a,b)=>a.t-b.t)[0];
+      .filter(target=>Number.isFinite(target.t) && target.t<wall && Math.abs((projectile.elevation??0)-(room.collision.surfaceHeight?.(target.target)??0))<=1.4).sort((a,b)=>a.t-b.t)[0];
     const t=hit?.t ?? wall;
     if (Number.isFinite(t)) {
-      const impact={id:projectile.id,x:projectile.x+(end.x-projectile.x)*t,z:projectile.z+(end.z-projectile.z)*t,at:now,hit:!!hit};
+      const impact={id:projectile.id,x:projectile.x+(end.x-projectile.x)*t,z:projectile.z+(end.z-projectile.z)*t,elevation:projectile.elevation??0,at:now,hit:!!hit};
       room.projectileImpacts.push(impact);
       if(hit)events.push({...applyHit(hit,profile,now),owner});
       continue;

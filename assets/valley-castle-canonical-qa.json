@@ -1,0 +1,14 @@
+{
+  "schemaVersion": 1,
+  "modelKey": "valley-castle",
+  "status": "copied-and-all-source-and-destination-hashes-verified",
+  "verifiedAt": "2026-09-07T17:30:52.694Z",
+  "planSha256": "01ca07fda58f3f30e9f1cdeb6235bb159e7d894439ef8a22ed6f1985818d9c4f",
+  "sourceRoot": "C:\\Users\\yurin\\Desktop\\projects\\CRO-MAGNON\\output\\model-generation\\models\\valley-castle",
+  "destinationRoot": "C:\\Users\\yurin\\Desktop\\projects\\threed-model-creation\\models\\valley-castle",
+  "files": 92,
+  "bytes": 466595459,
+  "copied": 92,
+  "skippedEqual": 0,
+  "preflightExistingEqual": 0
+}

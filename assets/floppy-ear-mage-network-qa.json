@@ -1,0 +1,229 @@
+{
+  "startedAt": "2026-09-07T17:07:12.626Z",
+  "url": "ws://127.0.0.1:3000/ws",
+  "room": "MAGE-QA-0908",
+  "role": "three passive peers, two browser players",
+  "maxPlayers": 4,
+  "states": 700,
+  "characters": [
+    "bear/female",
+    "cat/female",
+    "cro/female",
+    "nea/male"
+  ],
+  "attacks": {
+    "bear": 0,
+    "cat": 0,
+    "cro": 0,
+    "nea": 0
+  },
+  "projectileIds": [],
+  "impactCount": 0,
+  "sixthClientRefused": false,
+  "staticPenetrations": 152,
+  "examples": [
+    {
+      "id": "crow-shaman-1",
+      "x": 42.4225818545682,
+      "z": 16.450615694793825
+    },
+    {
+      "id": "crow-shaman-1",
+      "x": 42.50186126809449,
+      "z": 16.473800487027695
+    },
+    {
+      "id": "crow-shaman-1",
+      "x": 42.576437665564136,
+      "z": 16.495609910230744
+    },
+    {
+      "id": "crow-shaman-1",
+      "x": 42.65168592247045,
+      "z": 16.51761581472391
+    },
+    {
+      "id": "crow-shaman-1",
+      "x": 42.72559046050343,
+      "z": 16.53922875663684
+    },
+    {
+      "id": "crow-shaman-1",
+      "x": 42.79546384191644,
+      "z": 16.55966281080907
+    },
+    {
+      "id": "crow-shaman-1",
+      "x": 42.86264978558278,
+      "z": 16.579310939820825
+    },
+    {
+      "id": "crow-shaman-1",
+      "x": 42.946632215165714,
+      "z": 16.60387110108552
+    }
+  ],
+  "changes": [],
+  "errors": [],
+  "lastPlayers": [
+    {
+      "id": "253330e6-123a-4d85-9dde-40a40a32f783",
+      "name": "Kunoichi-peer",
+      "species": "cat",
+      "gender": "female",
+      "x": 47,
+      "z": 56,
+      "radius": 0.32,
+      "color": "#87b899",
+      "inventory": {
+        "wood": 0,
+        "stone": 0,
+        "berry": 0,
+        "rawMeat": 0,
+        "cookedMeat": 0
+      },
+      "gathered": 0,
+      "tool": false,
+      "ready": false,
+      "energy": 100,
+      "facing": -1.892546881191539,
+      "moving": false,
+      "running": false,
+      "speed": 0,
+      "attackSequence": 0,
+      "attackAt": 0,
+      "cookingEndsAt": 0,
+      "hurtSequence": 0,
+      "hurtAt": 0,
+      "defeatSequence": 0,
+      "downedUntil": 0,
+      "invulnerableUntil": 0,
+      "mountId": null
+    },
+    {
+      "id": "cd37c5e7-e5e7-42d2-b8b4-1d812db5b59f",
+      "name": "Cro-peer",
+      "species": "cro",
+      "gender": "female",
+      "x": 49,
+      "z": 56,
+      "radius": 0.32,
+      "color": "#b49cd2",
+      "inventory": {
+        "wood": 0,
+        "stone": 0,
+        "berry": 0,
+        "rawMeat": 0,
+        "cookedMeat": 0
+      },
+      "gathered": 0,
+      "tool": false,
+      "ready": false,
+      "energy": 100,
+      "facing": -2.265534602991538,
+      "moving": false,
+      "running": false,
+      "speed": 0,
+      "attackSequence": 0,
+      "attackAt": 0,
+      "cookingEndsAt": 0,
+      "hurtSequence": 0,
+      "hurtAt": 0,
+      "defeatSequence": 0,
+      "downedUntil": 0,
+      "invulnerableUntil": 0,
+      "mountId": null
+    },
+    {
+      "id": "2870522a-2140-453d-abc6-2fb7ee4d500c",
+      "name": "Neanderthal-peer",
+      "species": "nea",
+      "gender": "male",
+      "x": 51,
+      "z": 56,
+      "radius": 0.32,
+      "color": "#76a7c3",
+      "inventory": {
+        "wood": 0,
+        "stone": 0,
+        "berry": 0,
+        "rawMeat": 0,
+        "cookedMeat": 0
+      },
+      "gathered": 0,
+      "tool": false,
+      "ready": false,
+      "energy": 100,
+      "facing": -2.9927027059803715,
+      "moving": false,
+      "running": false,
+      "speed": 0,
+      "attackSequence": 0,
+      "attackAt": 0,
+      "cookingEndsAt": 0,
+      "hurtSequence": 0,
+      "hurtAt": 0,
+      "defeatSequence": 0,
+      "downedUntil": 0,
+      "invulnerableUntil": 0,
+      "mountId": null
+    }
+  ],
+  "lastEnemies": [
+    {
+      "id": "crow-shaman-1",
+      "modelKey": "crow-shaman",
+      "name": "白羽の呪術師",
+      "hostile": true,
+      "x": 47.86362615803595,
+      "z": 16.806068373004596,
+      "scale": 1,
+      "facing": -2.2455902091030264,
+      "speed": 0.6999999999999736,
+      "radius": 0.48,
+      "clip": "Walk_Loop",
+      "phase": "alive",
+      "health": 75,
+      "maxHealth": 75,
+      "phaseStartedAt": 1788800820110,
+      "behavior": "roam",
+      "targetId": null,
+      "attackSequence": 0,
+      "attackAt": 0,
+      "hitSequence": 0,
+      "hitAt": 0
+    }
+  ],
+  "lastAnimals": [
+    {
+      "id": "mammoth-1",
+      "x": 28.49634164235289,
+      "z": 23.26581694666522,
+      "facing": -2.5957142875642445,
+      "speed": 0.3541667000000179,
+      "scale": 1,
+      "radius": 2.9473143603559735,
+      "clip": "Walk_Loop",
+      "phase": "alive",
+      "health": 100,
+      "maxHealth": 100,
+      "meatRemaining": 0,
+      "phaseStartedAt": 1788800820110
+    },
+    {
+      "id": "mammoth-2",
+      "x": 24.539450091446465,
+      "z": 86.84683529672289,
+      "facing": 2.203452105795662,
+      "speed": 0,
+      "scale": 0.76,
+      "radius": 2.25915891387054,
+      "clip": "Graze_Loop",
+      "phase": "alive",
+      "health": 100,
+      "maxHealth": 100,
+      "meatRemaining": 0,
+      "phaseStartedAt": 1788800820110
+    }
+  ]
+}

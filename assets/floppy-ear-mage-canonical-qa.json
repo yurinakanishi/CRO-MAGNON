@@ -1,0 +1,14 @@
+{
+  "schemaVersion": 1,
+  "modelKey": "floppy-ear-mage",
+  "status": "copied-and-all-source-and-destination-hashes-verified",
+  "verifiedAt": "2026-09-07T17:20:40.751Z",
+  "planSha256": "e9f79466faae99d16a99841a7d107be6e29709b98f083c065be63d811398ce0d",
+  "sourceRoot": "C:\\Users\\yurin\\Desktop\\projects\\CRO-MAGNON\\output\\model-generation\\models\\floppy-ear-mage",
+  "destinationRoot": "C:\\Users\\yurin\\Desktop\\projects\\threed-model-creation\\models\\floppy-ear-mage",
+  "files": 594,
+  "bytes": 685873004,
+  "copied": 594,
+  "skippedEqual": 0,
+  "preflightExistingEqual": 0
+}

@@ -1,4 +1,6 @@
 import { SCENERY, BRIDGE } from './scenery-layout.mjs';
+import { CASTLE_SURFACE } from './castle-surface.mjs';
+import { CASTLE_GATE, castleWorld } from './castle-layout.mjs';
 import { MODEL_BOUNDS } from './model-bounds.mjs';
 import { LANDMARKS } from './landmarks.mjs';
 import { LANDMARK_BOUNDS } from './landmark-bounds.mjs';
@@ -54,8 +56,8 @@ function riverBlocked(point,radius) {
 export class CollisionWorld {
   // The shallow river is fordable, including by mounted mammoths.
   // Clients and the authoritative server must use the same default.
-  constructor(obstacles=staticObstacles(),{active=()=>true,river=false,coast=true}={}) {
-    this.obstacles=obstacles;this.active=active;this.river=river;this.coast=coast;this.grid=new Map();
+  constructor(obstacles=staticObstacles(),{active=()=>true,river=false,coast=true,walkSurfaces=[CASTLE_SURFACE]}={}) {
+    this.obstacles=obstacles;this.active=active;this.river=river;this.coast=coast;this.walkSurfaces=walkSurfaces;this.grid=new Map();
     for(const o of obstacles) {
       const rx=o.radius??(Math.abs(o.c)*o.hx+Math.abs(o.s)*o.hz),rz=o.radius??(Math.abs(o.s)*o.hx+Math.abs(o.c)*o.hz);
       for(let x=Math.floor((o.x-rx)/CELL);x<=Math.floor((o.x+rx)/CELL);x++)for(let z=Math.floor((o.z-rz)/CELL);z<=Math.floor((o.z+rz)/CELL);z++){
@@ -71,6 +73,7 @@ export class CollisionWorld {
   free(point,radius,dynamic=[],ignore=()=>false) {
     if(!Number.isFinite(point.x)||!Number.isFinite(point.z)||point.x!==worldClamp(point.x,'x')||point.z!==worldClamp(point.z,'z')||(this.river&&riverBlocked(point,radius)))return false;
     if(this.coast&&!landBodyFree(point.x,point.z,radius))return false;
+    if(this.walkSurfaces.some(surface=>!surface.free(point.x,point.z,radius)))return false;
     for(const o of this.nearby(point,radius))if(!ignore(o)&&overlap(point,radius,o))return false;
     for(const o of dynamic)if(overlap(point,radius,o))return false;
     return true;
@@ -80,6 +83,12 @@ export class CollisionWorld {
     const steps=Math.max(1,Math.ceil(Math.hypot(dx,dz)/.1));
     for(let step=0;step<steps;step++) {
       const next={x:worldClamp(point.x+dx/steps,'x'),z:worldClamp(point.z+dz/steps,'z')};
+      if(!this.surfaceTransition(point,next)){
+        const alongX={x:next.x,z:point.z},alongZ={x:point.x,z:next.z};
+        if(this.surfaceTransition(point,alongX))next.z=point.z;
+        else if(this.surfaceTransition(point,alongZ))next.x=point.x;
+        else continue;
+      }
       if(this.coast&&!landBodyFree(next.x,next.z,radius)){
         if(landBodyFree(next.x,point.z,radius))next.z=point.z;
         else if(landBodyFree(point.x,next.z,radius))next.x=point.x;
@@ -98,7 +107,7 @@ export class CollisionWorld {
         }
         if(!adjusted)break;
       }
-      if(this.free(next,radius,dynamic))point=next;
+      if(this.free(next,radius,dynamic)&&this.surfaceTransition(point,next))point=next;
     }
     return point;
   }
@@ -111,11 +120,35 @@ export class CollisionWorld {
     return null;
   }
   segmentFree(a,b,radius,dynamic=[],ignore=()=>false) {
-    const steps=Math.max(1,Math.ceil(Math.hypot(b.x-a.x,b.z-a.z)/.25));
-    for(let i=1;i<=steps;i++)if(!this.free({x:a.x+(b.x-a.x)*i/steps,z:a.z+(b.z-a.z)*i/steps},radius,dynamic,ignore))return false;
+    const steps=Math.max(1,Math.ceil(Math.hypot(b.x-a.x,b.z-a.z)/(this.walkSurfaces.some(surface=>surface.cell?.(a.x,a.z)||surface.cell?.(b.x,b.z))?.05:.25)));
+    let previous=a;
+    for(let i=1;i<=steps;i++){
+      const point={x:a.x+(b.x-a.x)*i/steps,z:a.z+(b.z-a.z)*i/steps};
+      if(!this.free(point,radius,dynamic,ignore)||!this.surfaceTransition(previous,point))return false;
+      previous=point;
+    }
     return true;
   }
+  surfaceTransition(a,b){return this.walkSurfaces.every(surface=>surface.transition(a,b));}
+  surfaceHeight(point){
+    for(const surface of this.walkSurfaces){const h=surface.height(point.x,point.z);if(Number.isFinite(h))return h;}
+    return 0;
+  }
   path(start,goal,radius,dynamic=[]) {
+    if(this.walkSurfaces.includes(CASTLE_SURFACE)){
+      const level=p=>{const h=CASTLE_SURFACE.height(p.x,p.z)??0;return h>15?3:h>10?2:h>2?1:0;};
+      const from=level(start),to=level(goal),anchors=[CASTLE_GATE,castleWorld(0,19),castleWorld(0,11),castleWorld(0,4)];
+      if(from!==to){
+        const stops=[];if(from===0&&Math.hypot(start.x-CASTLE_GATE.x,start.z-CASTLE_GATE.z)>2)stops.push(CASTLE_GATE);
+        for(let n=from+(to>from?1:-1);to>from?n<=to:n>=to;n+=to>from?1:-1)stops.push(anchors[n]);
+        stops.push(goal);let point=start;const route=[];
+        for(const stop of stops){if(Math.hypot(point.x-stop.x,point.z-stop.z)<.02)continue;const leg=this.directPath(point,stop,radius,dynamic);if(!leg.length)return [];route.push(...leg);point=leg.at(-1);}
+        return route;
+      }
+    }
+    return this.directPath(start,goal,radius,dynamic);
+  }
+  directPath(start,goal,radius,dynamic=[]) {
     if(this.coast&&!isLand(goal.x,goal.z))return [];
     if(this.coast&&Math.hypot(start.x-goal.x,start.z-goal.z)>60){const a=landmassAt(start.x,start.z),b=landmassAt(goal.x,goal.z);if(a&&b&&a!==b)return [];}
     const end=this.nearestFree(goal,radius,dynamic);if(!end)return [];
@@ -128,7 +161,7 @@ export class CollisionWorld {
         if(route.length)return route;
       }
     }
-    return this.searchPath(start,end,radius,dynamic,dynamic.length?.5:1,12000);
+    return this.searchPath(start,end,radius,dynamic,dynamic.length||this.walkSurfaces.some(surface=>surface.cell?.(start.x,start.z)||surface.cell?.(end.x,end.z))?.5:1,12000);
   }
   searchPath(start,end,radius,dynamic,spacing,budget) {
     const nodes=new Map(),open=new MinHeap(),closed=new Set();

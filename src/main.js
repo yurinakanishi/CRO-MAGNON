@@ -12,6 +12,7 @@ import { canStartAttack, isAttackShortcut, MovementCommands, movementKey, accept
 import { inAttackArc } from '/shared/combat.mjs';
 import { interactionVisible } from '/shared/interactions.mjs';
 import { ENEMY_GROUNDS, SCENERY } from '/shared/scenery-layout.mjs';
+import { CASTLE_GATE } from '/shared/castle-layout.mjs';
 import { playerDamageEvent } from './enemy-state.js';
 import { BIOMES, biomeAt, JOURNEY_STOPS } from '/shared/biomes.mjs';
 import { drawWorldMap, mapProjection, setWorldMapMode, setWorldMapSelection } from './world-map.js';
@@ -289,7 +290,7 @@ function approachHunt(animal=huntTarget()){
 function approachEnemy(){
   const enemy=state.enemies?.find(item=>item.hostile===true&&item.phase==='alive');
   if(enemy)return approachHunt(enemy);
-  const ground=ENEMY_GROUNDS[0];if(ground)goTo(ground.x,ground.z,'北の呪術師の草地');
+  const ground=ENEMY_GROUNDS[0];if(ground)goTo(ground.x,ground.z,'白羽の大城の広間');
 }
 function attack(){action('attack');}
 function rideTarget(){
@@ -368,7 +369,7 @@ function goTo(x, z, label) { if(player()?.downedUntil)return;if(!sendMoveTarget(
 function drawMinimap(canvas = $('#minimap'), big = false) { drawWorldMap(canvas,state,selfId,big); }
 function openModal(content) { stopInput(); $('#modal-body').innerHTML = content; if (!$('#modal').open) $('#modal').showModal(); }
 function openRoom(error = '') {
-  openModal(`<h2>あなたの物語を、ここから。</h2><p class="modal-intro">キャラクターを選んで、同じ部屋の仲間と暮らそう。</p>${error?'<p class="form-error" id="room-error"></p>':''}<form id="join-form"><label>あなたの名前<input id="name-input" name="name" maxlength="16" required autocomplete="off"></label><label>部屋のコード <span>英数字・ハイフン・アンダースコア / 最大16文字</span><input id="room-input" name="room" maxlength="16" pattern="[A-Za-z0-9_-]+" required autocomplete="off"></label>${characterChoicesMarkup()}<p class="form-note">人間は槍、クノイチは刀、こぐまは光の魔法を使います。人間の男女で能力の差はありません。参加中に変更すると、もちものはリセットされます。</p><button class="button button-accent wide" type="submit">この谷で暮らす ${icon('arrow')}</button></form>`);
+  openModal(`<h2>あなたの物語を、ここから。</h2><p class="modal-intro">キャラクターを選んで、同じ部屋の仲間と暮らそう。</p>${error?'<p class="form-error" id="room-error"></p>':''}<form id="join-form"><label>あなたの名前<input id="name-input" name="name" maxlength="16" required autocomplete="off"></label><label>部屋のコード <span>英数字・ハイフン・アンダースコア / 最大16文字</span><input id="room-input" name="room" maxlength="16" pattern="[A-Za-z0-9_-]+" required autocomplete="off"></label>${characterChoicesMarkup()}<p class="form-note">人間は槍、クノイチは刀、魔法使いは光の魔法を使います。人間の男女で能力の差はありません。参加中に変更すると、もちものはリセットされます。</p><button class="button button-accent wide" type="submit">この谷で暮らす ${icon('arrow')}</button></form>`);
   if(error) $('#room-error').textContent = error;
   $('#name-input').value=profile.name;$('#room-input').value=profile.room;bindCharacterSelection($('#join-form'),profile);
   $('#join-form').onsubmit = e => { e.preventDefault(); const form = new FormData(e.currentTarget);manualLeave=true;saveSession(profile.room,null);send({type:'leave'});const previous=socket;socket=null;previous?.close();profile={name:String(form.get('name')).trim() || '旅人',room:String(form.get('room')).toUpperCase(),...normalizeCharacter({species:String(form.get('species')),gender:String(form.get('gender'))})};saveSession(profile.room,null);for(const [k,v] of Object.entries(profile))save(`cro-${k}`,v);history.replaceState({},'',`?room=${encodeURIComponent(profile.room)}`);$('#profile-name').textContent=profile.name;$('#modal').close();connect(); };
@@ -402,10 +403,10 @@ function openJournal() {
 function openHelp() {
   openModal(`<h2>今日の一歩から、はじめよう。</h2><p class="modal-intro">最初は、近くの木を集めてみましょう。</p><div class="help-grid"><div><kbd>W A S D</kbd><strong>歩く・走る</strong><p>通常は歩行。Shiftを押している間は走行。「走る」ボタンでも切り替えられます。クリック移動は障害物を避けます。</p></div><div><kbd>E</kbd><strong>近くでアクション</strong><p>採集、焚き火に届ける、オルと交換。</p></div><div><kbd>1 · 2 · 3 · 4</kbd><strong>アクションを選ぶ</strong><p>採集・道具づくり・資材を届ける・交換。</p></div><div><kbd>Enter</kbd><strong>仲間と話す</strong><p>チャットを開き、Enterで送信。</p></div></div><div class="help-tip">${icon('flame')} まずは木材3と石2で石斧を作ろう。<br>そのあと、仲間と拠点に木材12・石6を届けよう。</div><button id="help-start" class="button button-accent wide">探索をはじめる ${icon('arrow')}</button>`);
   $('.help-grid').insertAdjacentHTML('beforeend',`<div><kbd>DRAG</kbd><strong>肩越しカメラを回す</strong><p>マウス右・左ドラッグ、または指のドラッグで周囲を見渡せます。WASDはカメラの向きに合わせて動きます。</p></div><div><kbd>SCROLL</kbd><strong>カメラの距離を変える</strong><p>ホイールか＋・−ボタンで調整。「自分の位置へ」で初期のTPS視点に戻せます。</p></div>`);
-  $('.help-grid').insertAdjacentHTML('afterbegin',`<div><kbd>F / 5</kbd><strong>刀・魔法・槍で攻撃</strong><p>相手を向いて F か攻撃ボタン。クノイチは近くを刀で斬り、こぐまは両手から光弾を飛ばします。敵がいなくても発動でき、壁は通り抜けません。人間は槍を使います。</p></div><div><kbd>E</kbd><strong>肉を採って、焼いて食べる</strong><p>倒すと肉になります。近づいて E で採り、近くの焚き火で E か「焼く」。3秒待ったら「食べる」で元気を回復。火から離れると調理は中止され、生肉は残ります。</p></div>`);
+  $('.help-grid').insertAdjacentHTML('afterbegin',`<div><kbd>F / 5</kbd><strong>刀・魔法・槍で攻撃</strong><p>相手を向いて F か攻撃ボタン。クノイチは近くを刀で斬り、魔法使いは両手から光弾を飛ばします。敵がいなくても発動でき、壁は通り抜けません。人間は槍を使います。</p></div><div><kbd>E</kbd><strong>肉を採って、焼いて食べる</strong><p>倒すと肉になります。近づいて E で採り、近くの焚き火で E か「焼く」。3秒待ったら「食べる」で元気を回復。火から離れると調理は中止され、生肉は残ります。</p></div>`);
   $('.help-grid').insertAdjacentHTML('afterbegin',`<div><kbd>R</kbd><strong>マンモスに乗る・降りる</strong><p>生きているマンモスの横で R。1頭につき1人乗れます。WASD・地面クリックで移動し、Shiftか走行ボタンで走ります。攻撃や採集は開けた場所で降りてから。</p></div>`);
   $('#help-start').onclick=()=>$('#modal').close();
-  if(state.enemies?.length)$('.help-grid').insertAdjacentHTML('beforeend',`<div><kbd>北の赤い印</kbd><strong>白羽の呪術師</strong><p>地図から北の草地へ。近づくと追いかけて杖で襲ってきます。相手を向いて F で攻撃。力尽きても4秒後に焚き火で回復し、持ち物は残ります。</p></div>`);
+  if(state.enemies?.length)$('.help-grid').insertAdjacentHTML('beforeend',`<div><kbd>大城の赤い印</kbd><strong>白羽の呪術師</strong><p>始まりの谷の北東にある白羽の大城へ。城門の階段から入り、左右の階段を登ると上階の広間にいます。相手を向いて F で攻撃。力尽きても4秒後に焚き火で回復し、持ち物は残ります。</p></div>`);
 }
 function openMap() {
   setWorldMapMode('earth');setWorldMapSelection(null);
@@ -418,9 +419,11 @@ function openMap() {
   for(const [id,mode] of [['map-overview','earth'],['map-local','local']])$('#'+id).onclick=()=>{setWorldMapMode(mode);$('#map-overview').setAttribute('aria-pressed',String(mode==='earth'));$('#map-local').setAttribute('aria-pressed',String(mode==='local'));drawMinimap($('#big-map'),true);};
   drawMinimap($('#big-map'),true);$('#map-camp').onclick=()=>goTo(49,52.4,'野営地の焚き火');$('#map-npc').onclick=()=>goTo(NPC.x,NPC.z-2,'オルの集落');
   if(state.enemies?.some(enemy=>enemy.hostile===true)){
-    $('.map-locations').insertAdjacentHTML('beforeend',`<button class="button button-outline enemy-map-button" id="map-enemy">${icon('spear')} 北の白羽の呪術師</button>`);
+    $('.map-locations').insertAdjacentHTML('beforeend',`<button class="button button-outline enemy-map-button" id="map-enemy">${icon('spear')} 大城の広間の白羽の呪術師</button>`);
     $('#map-enemy').onclick=approachEnemy;
   }
+  $('.map-locations').insertAdjacentHTML('beforeend',`<button class="button button-outline" id="map-castle">白羽の大城の城門</button>`);
+  $('#map-castle').onclick=()=>goTo(CASTLE_GATE.x,CASTLE_GATE.z,CASTLE_GATE.name);
   for(const direction of ['north','south'])$(`#map-hunt-${direction}`).onclick=()=>{const clearing=SCENERY.animals[direction==='north'?0:1],animal=state.animals?.find(item=>item.id===clearing.id);if(player()?.mountId||!animal)goTo(clearing.x,clearing.z,'狩場の草原');else approachHunt(animal);};
   $('#big-map').onclick=event=>{const canvas=event.currentTarget,rect=canvas.getBoundingClientRect(),projection=mapProjection(canvas,true,player()),px=(event.clientX-rect.left)*canvas.width/rect.width,py=(event.clientY-rect.top)*canvas.height/rect.height;
     const stop=EXPEDITION_STOPS.find(s=>{const p=projection.point(s.x,s.z);return Math.hypot(p[0]-px,p[1]-py)<12;});

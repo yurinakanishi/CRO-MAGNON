@@ -1,5 +1,5 @@
 import * as THREE from 'three';
-import { walkHeight } from '/shared/terrain.mjs';
+import { projectileHeight } from '/shared/terrain.mjs';
 import { attackProfile } from '/shared/combat-profiles.mjs';
 
 const CAPACITY=768,point=new THREE.Vector3();
@@ -30,7 +30,7 @@ export class SpellEffects {
       active.add(orb.id);let p=this.positions.get(orb.id);
       if(!p){p={x:orb.x,z:orb.z};this.positions.set(orb.id,p);}
       const factor=1-Math.exp(-dt*28);p.x+=(orb.x-p.x)*factor;p.z+=(orb.z-p.z)*factor;
-      const y=walkHeight(p.x,p.z)+.40;
+      const y=projectileHeight(p.x,p.z,orb.elevation)+.40;
       this.add(p.x,y,p.z,.48,1);
       for(let i=1;i<=9;i++) {
         const d=i*.052,phase=now*.012+i*2.4;
@@ -40,7 +40,7 @@ export class SpellEffects {
     for(const id of this.positions.keys())if(!active.has(id))this.positions.delete(id);
     for(const impact of state.projectileImpacts || []) {
       const age=Math.max(0,(now-impact.at)/1000);if(age>.6)continue;
-      const y=walkHeight(impact.x,impact.z)+.40,fade=1-age/.6;
+      const y=projectileHeight(impact.x,impact.z,impact.elevation)+.40,fade=1-age/.6;
       this.add(impact.x,y,impact.z,.65+age*.7,fade*.6);
       for(let i=0;i<18;i++){
         const a=i*2.39996323,s=Math.sqrt((i+.5)/18),d=age*(.55+s);

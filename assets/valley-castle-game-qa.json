@@ -1,0 +1,97 @@
+{
+  "status": "passed",
+  "model": "valley-castle",
+  "candidate": 1,
+  "revision": "06",
+  "sha256": "d2259f674fd9737f08bb9b0db7a44976f786803943f9213cd01184681274351e",
+  "tests": {
+    "passed": 169,
+    "syntaxFilesAtIntegration": 140,
+    "verifiedModelsIncludingArchivedOriginal": 32
+  },
+  "existingDeliveryBytesPreserved": [
+    "neanderthal-hunter",
+    "woolly-mammoth",
+    "valley-pine",
+    "meadow-grass",
+    "valley-boulder",
+    "firewood-pile",
+    "berry-bush",
+    "hide-tent",
+    "drying-rack",
+    "stone-firepit",
+    "flint-spear",
+    "stone-axe",
+    "meadow-ground",
+    "river-water",
+    "wood-footbridge",
+    "cro-magnon-woman",
+    "neanderthal-woman",
+    "mammoth-meat",
+    "crow-shaman",
+    "cat-kunoichi",
+    "bear-mage",
+    "kunoichi-katana",
+    "snow-ground",
+    "ice-ground",
+    "desert-ground",
+    "volcanic-ground",
+    "glacier-spires",
+    "volcanic-cone",
+    "volcanic-basalt-columns",
+    "desert-cactus"
+  ],
+  "placement": {
+    "x": 140,
+    "z": 0,
+    "yaw": -1.05,
+    "dimensionsMetres": [
+      69.99,
+      26.08,
+      65.49
+    ],
+    "floorsMetres": [
+      7.475,
+      12.58,
+      17.594
+    ],
+    "enemy": "Existing crow-shaman, upper hall"
+  },
+  "navigation": [
+    "A: normal map UI from camp through gate and both upper staircase stages to the hall.",
+    "B: 390x844 map UI from camp to gate to upper hall and back to gate; attack button works.",
+    "Automated authoritative movement covers left and right staircases and return; exact triangle camera rays agree with full GLB raycasts at 96 poses."
+  ],
+  "network": {
+    "states": 29730,
+    "actors": 232999,
+    "castleActors": 118935,
+    "maximumParticipants": 5,
+    "violations": 0,
+    "events": {
+      "katanaKills": true,
+      "magicKills": true,
+      "recovery": true,
+      "respawn": true,
+      "magicOnUpperFloor": true
+    }
+  },
+  "combat": "Katana and magic each killed the crow in the upper hall, synchronized to both real browsers and all three WebSocket peers. Enemy respawn and death/recovery with cooked meat retained observed. Stdin fixtures staged combat aim/spacing and a protected five-player lineup, not ascent or descent.",
+  "performance": {
+    "renderer": "ANGLE Intel Iris Xe D3D11",
+    "fpsRange": [
+      45,
+      60
+    ],
+    "conditions": "Two headless hardware-rendered browser pages (1440x1000 and 390x844), five network players, Blender stopped, no TRELLIS, 60 FPS cap. A in upper hall; B at gate. Earlier SwiftShader review measurements excluded.",
+    "samples": "assets/valley-castle-performance-qa.json"
+  },
+  "errors": [],
+  "limits": [
+    "Physical smartphone and prolonged sessions untested. No claim of constant 60 FPS.",
+    "Three exposed terraces and upper hall are playable; enclosed reconstruction slabs and tower tops are not rooms or climbing routes.",
+    "Source-measured 0.35 m height grid; six entrance riser cells interpolate adjacent tread samples.",
+    "Full source-derived geometry is retained; unreviewed coarse LODs were not adopted."
+  ],
+  "rollout": "verified-on-port-3000"
+}

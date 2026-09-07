@@ -177,7 +177,7 @@ export class WorldRenderer {
         const animalRoots=[...this.mammoths.flatMap(animal=>[animal.model,animal.meat]),...[...this.enemies.values()].map(enemy=>enemy.model)].filter(root=>root.visible);
         const animalHit=this.raycaster.intersectObjects(animalRoots,true)[0];
         if(animalHit){let root=animalHit.object;while(root&&!root.userData.animalId)root=root.parent;if(root){this.onAnimal(root.userData.animalId);return;}}
-        const hits=this.raycaster.intersectObjects([this.terrain,this.bridge].filter(Boolean),true);const hit=hits.find(h=>isLand(h.point.x,h.point.z))?.point;if(hit){const x=worldClamp(hit.x,'x'),z=worldClamp(hit.z,'z');this.onMoveTarget(x,z);this.marker.position.set(x,walkHeight(x,z)+.065,z);this.marker.visible=true;this.markerUntil=performance.now()+6500;}}
+        const hits=this.raycaster.intersectObjects([this.terrain,this.bridge,this.landmarks?.instances.get("valley-castle")].filter(Boolean),true);const hit=hits.find(h=>isLand(h.point.x,h.point.z)&&Math.abs(h.point.y-walkHeight(h.point.x,h.point.z))<.8&&this.collision.free(h.point,.05))?.point;if(hit){const x=worldClamp(hit.x,'x'),z=worldClamp(hit.z,'z');this.onMoveTarget(x,z);this.marker.position.set(x,walkHeight(x,z)+.065,z);this.marker.visible=true;this.markerUntil=performance.now()+6500;}}
     };
     this.cancel=()=>{this.pointer=null;this.canvas.style.cursor='crosshair';};
     this.wheel=e=>{e.preventDefault();this.targetDistance=clamp(this.targetDistance+e.deltaY*.009,3.2,19);this.zoom=DEFAULT_DISTANCE/this.targetDistance;};this.context=e=>e.preventDefault();
@@ -349,6 +349,7 @@ export class WorldRenderer {
       cameraDistance=this.collision.cameraDistance(aim,offset,this.distance);
     }
     this.camera.position.copy(aim).addScaledVector(offset,cameraDistance);
+    if(this.landmarks?.castleCamera){cameraDistance=this.landmarks.castleCamera.distance(aim,offset,cameraDistance);this.camera.position.copy(aim).addScaledVector(offset,cameraDistance);}
     const aboveWater=riverHalfWidth(this.camera.position.z)>.7&&Math.abs(this.camera.position.x-riverX(this.camera.position.z))<riverHalfWidth(this.camera.position.z);
     this.camera.position.y=Math.max(this.camera.position.y,terrainHeight(this.camera.position.x,this.camera.position.z)+.55,aboveWater?WATER_LEVEL+.65:-Infinity);
     this.camera.lookAt(aim);this.camera.updateMatrixWorld();this.sun.position.set(this.focus.x-32,48,this.focus.z-25);this.sun.target.position.set(this.focus.x,0,this.focus.z);

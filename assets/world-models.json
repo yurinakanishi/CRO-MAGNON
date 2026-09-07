@@ -249,17 +249,18 @@
       "gameQA": "assets/fantasy-game-qa.json"
     },
     {
-      "key": "bear-mage",
-      "name": "こぐまの魔法使い",
+      "key": "floppy-ear-mage",
+      "name": "垂れ耳の魔法使い",
       "kind": "humanoid",
-      "height": 0.7799999798311026,
+      "height": 0.7799999443721845,
       "geometryResolution": 1024,
       "referenceVersion": 1,
       "status": "integrated-and-game-qa-passed",
-      "sha256": "3b58124a53297cf5974b340c941fb22ac9e7be1ed9eae6d0cd1362943f70aadf",
-      "delivery": "/models/bear-mage/model.glb",
-      "subject": "Original tiny round bear mage in a moss-green woven capelet and waistwrap.",
-      "gameQA": "assets/fantasy-game-qa.json"
+      "sha256": "60a247305f0b698654a9e61fd991470535128362e94be5d2b047be592e46e1ef",
+      "delivery": "/models/floppy-ear-mage/model.glb",
+      "subject": "Small cream-faced floppy-eared mage in the supplied red and cream adventurer outfit.",
+      "replaces": "bear-mage",
+      "gameQA": "assets/floppy-ear-mage-game-qa.json"
     },
     {
       "key": "kunoichi-katana",
@@ -371,6 +372,18 @@
       "delivery": "/models/desert-cactus/model.glb",
       "subject": "Use case: stylized-concept. Asset type: ONE isolated 3D game environment asset reference for image-to-3D reconstruction, CRO-MAGNON prehistoric fantasy third-person adventure. Primary subject: one mature desert candelabra cactus, approximately 2.4 metres tall, a stout gently tapered central ribbed green trunk rooted directly at the bottom and three asymmetrical thick upward-curving arms at different heights; the arms connect solidly to the trunk. Readable organic lobes and shallow vertical ribs, rounded growing tips, dusty muted sage-green skin with warm ochre weathering at the foot. Sparse tiny pale spine clusters visible as surface detail, not long needle geometry. Rounded natural shapes with continuous substantial surfaces, convincingly textured stylized realistic game quality matching hand-built natural terrain assets. Composition: entire cactus in frame with 12% clear margin, one three-quarter front view from slightly above eye level, strong readable silhouette with clear spaces between the arms. Neutral even studio lighting, natural nonmetallic matte material. Plain medium grey background. No separate plants, flowers, pots, pedestal, soil slab, terrain, loose stones, text, labels, frames, shadows of other objects, people, animals or modern items. This is a full cactus, not a landscape or collage.",
       "gameQA": "assets/region-specific-game-qa.json"
+    },
+    {
+      "key": "valley-castle",
+      "name": "白羽の大城",
+      "kind": "static",
+      "height": 26.07665,
+      "geometryResolution": 1024,
+      "referenceVersion": 2,
+      "status": "integrated-game-qa-passed",
+      "sha256": "d2259f674fd9737f08bb9b0db7a44976f786803943f9213cd01184681274351e",
+      "delivery": "/models/valley-castle/model.glb",
+      "subject": "Three exposed terrace levels, paired stone staircases, source-derived entrance stair and upper hall doorway. No tower climbing or hidden intermediate rooms. Full mesh shared; unrepaired coarse LODs are not adopted."
     }
   ],
   "reuse": {

@@ -75,7 +75,7 @@ progress::-moz-progress-bar { background:#d3ab79; border-radius:4px; }
 .character-choice:focus-within{outline:2px solid #e0b978;outline-offset:2px}
 .gender-options[hidden]{display:none!important}
 .portrait.cat{background:#515850 url('/models/cat-kunoichi/portrait.png') 50% 7%/420% auto no-repeat}
-.portrait.bear{background:#615942 url('/models/bear-mage/portrait.png') 50% 10%/220% auto no-repeat}
+.portrait.bear{background:#615942 url('/models/floppy-ear-mage/portrait.png') 50% 10%/220% auto no-repeat}
 .portrait.cat:before,.portrait.cat:after,.portrait.cat i,.portrait.bear:before,.portrait.bear:after,.portrait.bear i{display:none}
 .attack-button[data-style=magic]{border-color:#a7d9d8;color:#d5f7ec}
 .attack-button[data-style=katana]{border-color:#bdb6d9;color:#e5ddf1}
