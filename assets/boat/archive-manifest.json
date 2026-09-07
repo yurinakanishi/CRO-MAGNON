@@ -1,0 +1,235 @@
+{
+  "destination": "C:/Users/yurin/Desktop/projects/threed-model-creation/models/dugout-canoe",
+  "files": [
+    {
+      "path": "model.json",
+      "bytes": 1311,
+      "sha256": "97eed5569453c9af2aa3acc18d0d08e4ef08f68a8434ec2dfec7dbf57d244b4d"
+    },
+    {
+      "path": "qa\\adoption-review.json",
+      "bytes": 704,
+      "sha256": "5b850764f79a2837b2428f630ba7e4ff3ccb31007a3f655b7e21924456842277"
+    },
+    {
+      "path": "qa\\revision-01-bottom-clay.png",
+      "bytes": 86152,
+      "sha256": "4d015cc40cbfc6a44f5a3e849e28c4da9fe82e3891d252fe15643406dafe33a6"
+    },
+    {
+      "path": "qa\\revision-01-bottom.png",
+      "bytes": 142672,
+      "sha256": "6afcad65c6bcd03a0c1ba8151ab9dca94cfb92bb0cd7f901518c3a36d1bb435b"
+    },
+    {
+      "path": "qa\\revision-01-browser.json",
+      "bytes": 756,
+      "sha256": "97f9d98213dad4a10f2f21b1091bae59f1988851563254b267717be0744438d4"
+    },
+    {
+      "path": "qa\\revision-01-front-clay.png",
+      "bytes": 78379,
+      "sha256": "a459a4d375a8b567f9e0c87f467b575ef6bd36cf8cf16366e76e9f6e09d9afc3"
+    },
+    {
+      "path": "qa\\revision-01-front.png",
+      "bytes": 99126,
+      "sha256": "e62df5b9050777b0881768b37ae155f9d7c7b22c7419cf2b73dee8d90c462d48"
+    },
+    {
+      "path": "qa\\revision-01-left-clay.png",
+      "bytes": 93071,
+      "sha256": "61e9de5126ba4788a1f5c9871ff0046de3e80ee2fec59ab137689d9e29e544d7"
+    },
+    {
+      "path": "qa\\revision-01-left.png",
+      "bytes": 123979,
+      "sha256": "3f0d7db034b30a098a4fe4f0572d3fdadab215a0588a950ddb7afb03b958ceb9"
+    },
+    {
+      "path": "qa\\revision-01-quarter-clay.png",
+      "bytes": 134411,
+      "sha256": "e70adcc49fd91466842645419806bb9b2136163655101043e473d2de54720838"
+    },
+    {
+      "path": "qa\\revision-01-quarter.png",
+      "bytes": 200101,
+      "sha256": "9c6e83aa05660c70396e9feb58d09a10f05a909c42f2def82e8ef9e400f15e9d"
+    },
+    {
+      "path": "qa\\revision-01-rear-clay.png",
+      "bytes": 75516,
+      "sha256": "1a8d70ea5511f79c6c58894e4df66ca6ee7927a75c95a952e38f6bf648e6a8ee"
+    },
+    {
+      "path": "qa\\revision-01-rear.png",
+      "bytes": 103188,
+      "sha256": "155316ef2f7cdf09c59bc9955568d796a77812320871e6bac03fd1bead8319c2"
+    },
+    {
+      "path": "qa\\revision-01-right-clay.png",
+      "bytes": 77391,
+      "sha256": "3b27d47f4022c542dcadcc030d14b3b98c076a4af3ee3b8cb5c83693d424e14a"
+    },
+    {
+      "path": "qa\\revision-01-right.png",
+      "bytes": 114496,
+      "sha256": "01cd93094204905cbd9c689795fd35dfce0b736b0443665be1fcb8d753aee045"
+    },
+    {
+      "path": "qa\\revision-01-top-clay.png",
+      "bytes": 109529,
+      "sha256": "62924e249e218ceadd079de54b7766d39172a1330acd453ed6f1d1d1da3d050e"
+    },
+    {
+      "path": "qa\\revision-01-top.png",
+      "bytes": 208543,
+      "sha256": "904247eaefbc0fcd12b22cc6de4360f4d0401c9633f7787bafa65dc3d9020b9a"
+    },
+    {
+      "path": "qa\\revision-02-bottom-clay.png",
+      "bytes": 63399,
+      "sha256": "472d60285fb66019ab6e775f62c57fa73f25f57b9eab60ca8e457bfddb516027"
+    },
+    {
+      "path": "qa\\revision-02-bottom.png",
+      "bytes": 103913,
+      "sha256": "64bf4cd1f187f44c10677b44e7c8ab824f4ce6dea4e30630195b04f778da8198"
+    },
+    {
+      "path": "qa\\revision-02-browser.json",
+      "bytes": 756,
+      "sha256": "5a7ed6c61771d5e144aebb8f29ca101c69ac170da7e6a861b84a1151b3954ab5"
+    },
+    {
+      "path": "qa\\revision-02-front-clay.png",
+      "bytes": 55538,
+      "sha256": "6827c765730b2200c02a195bbb8e91e8f45e9469ebd5d70f0aa5d585cdafd9ed"
+    },
+    {
+      "path": "qa\\revision-02-front.png",
+      "bytes": 70148,
+      "sha256": "237740ac75ba4679aff59aa5eba2e951d0bad090489b40271d1d0102935e11f5"
+    },
+    {
+      "path": "qa\\revision-02-left-clay.png",
+      "bytes": 68150,
+      "sha256": "e7fc71425594e05954d3f80a108e4826cf73ab871228fd2c30f73667eed239c4"
+    },
+    {
+      "path": "qa\\revision-02-left.png",
+      "bytes": 88231,
+      "sha256": "8ad14b1586f1e8ff4be235637bb1cf16a1607d6c2c58f343b87019e5435799d1"
+    },
+    {
+      "path": "qa\\revision-02-quarter-clay.png",
+      "bytes": 92587,
+      "sha256": "698cef4a786cbef47d6b7ee6c3c3f3860c39c05f61c78426b528bd2381676e0b"
+    },
+    {
+      "path": "qa\\revision-02-quarter.png",
+      "bytes": 132750,
+      "sha256": "0cdf744f2b15df1eee535825cc558935274f1310875a969d0b991c6719dd38a9"
+    },
+    {
+      "path": "qa\\revision-02-rear-clay.png",
+      "bytes": 53082,
+      "sha256": "c096130cd84232a39556de77cef87d4877e52d5eaf6eb425b7a8680998feab02"
+    },
+    {
+      "path": "qa\\revision-02-rear.png",
+      "bytes": 72735,
+      "sha256": "ea96e59ae8c512688232b7b03a68406ca9d39c64f0f98e963ab0289f000d4de6"
+    },
+    {
+      "path": "qa\\revision-02-right-clay.png",
+      "bytes": 58114,
+      "sha256": "0ea1e9648754038e16b0fdeda0854322c12a1b04479c123f1fa33d4dfe4b26dd"
+    },
+    {
+      "path": "qa\\revision-02-right.png",
+      "bytes": 83903,
+      "sha256": "b0881d28f7a0508156ff5615e6d76a34b6f02eb7024a9767913feeac4ce8a206"
+    },
+    {
+      "path": "qa\\revision-02-top-clay.png",
+      "bytes": 78114,
+      "sha256": "78839aaf68ba7074e014e5ded20e6e8f794c9ec752243ca7ae37fab7561edaf6"
+    },
+    {
+      "path": "qa\\revision-02-top.png",
+      "bytes": 139367,
+      "sha256": "affea1b6de0ab65560a45330fb686133cdaf00e09c8d22cbc3798725fc60af83"
+    },
+    {
+      "path": "source\\prompt.txt",
+      "bytes": 886,
+      "sha256": "13b10db9391b1cec7f9b9c91bd0a81ddb7cd5b86ff2b49271d5136caf6098a63"
+    },
+    {
+      "path": "source\\reference-v1.png",
+      "bytes": 1153160,
+      "sha256": "06f319eb15d7daa924dde2f5f760c3480ffb0c4fb39ffecbce15a984e5e1d855"
+    },
+    {
+      "path": "work\\process.log",
+      "bytes": 1294,
+      "sha256": "39ead899daf06e3b159edbaec2cc51a8126f3ebea3490eb10b54f7ba1ca8eb53"
+    },
+    {
+      "path": "work\\revision-01\\candidate.glb",
+      "bytes": 10351284,
+      "sha256": "5ac678036a01dbc8329b927a7731a0d8bbcfd4e5df92b09638e99f6e5ea78a44"
+    },
+    {
+      "path": "work\\revision-01\\dense-normalized.glb",
+      "bytes": 16908808,
+      "sha256": "a18b3b563bcda1eeace3bb5fbdd7bc8a063700dfc641bf7545c26a83ead5bdb3"
+    },
+    {
+      "path": "work\\revision-01\\process.json",
+      "bytes": 310,
+      "sha256": "a5f77f3caa9121371682878cdd9e2f67950c81e3dae14a180c9df8156dbd126d"
+    },
+    {
+      "path": "work\\revision-02\\candidate.glb",
+      "bytes": 4732516,
+      "sha256": "6e77ae6df54f19a450d460b70ee35596e9703942d5d18bcdbf6b35f066e964e4"
+    },
+    {
+      "path": "work\\revision-02\\packaging.json",
+      "bytes": 1117,
+      "sha256": "be69c6ac85fb7ae5a6273296ea944d549050b296fcde702210076ac3aea7899c"
+    },
+    {
+      "path": "work\\trellis\\dense-res1024.glb",
+      "bytes": 16911748,
+      "sha256": "33fdbec8a03da198cc574e417fe930d505faeacf708f90721f1f3e216175f3de"
+    },
+    {
+      "path": "work\\trellis\\dense-res1024.log",
+      "bytes": 5906,
+      "sha256": "3e4ad820d9e4b154c516956d445e330a55b69b05e88d3abc97662f7d14d80025"
+    },
+    {
+      "path": "work\\trellis\\dense-res1024.ply",
+      "bytes": 40326151,
+      "sha256": "adb534a44ba21f4fee0dcae7a50d56aa96f0b2a152903c3be8f79285d3261ffa"
+    },
+    {
+      "path": "work\\trellis\\dense-res1024_base.png",
+      "bytes": 5749928,
+      "sha256": "e2d61142c5b98bda70b03bf7ace51f72633d61644f7902a2fca44f62943d3c2b"
+    },
+    {
+      "path": "workflow\\package.py",
+      "bytes": 1987,
+      "sha256": "88928d2630cc0169287f337d6ddac9302ea74839d1316d8073bcc165d86d235e"
+    },
+    {
+      "path": "workflow\\process.py",
+      "bytes": 2621,
+      "sha256": "6ad775ddc4b05e61847a04ff03d466584422f0ff5050789b31da0546f08bed0e"
+    }
+  ]
+}

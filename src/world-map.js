@@ -45,6 +45,7 @@ export function drawWorldMap(canvas,state,selfId,big=false){
   if(big)for(const stop of EXPEDITION_STOPS){const [x,y]=point(stop.x,stop.z);ctx.strokeStyle='#ffe2a4';ctx.lineWidth=1.4;ctx.strokeRect(x-3,y-3,6,6);}
   if(!full){for(const fire of state.cookingFires??[])dot(fire.x,fire.z,'#efb573',big?3:2);dot(CAMP.x,CAMP.z,'#efb573',4);dot(NPC.x,NPC.z,'#dad3a9',3);}
   for(const animal of state.animals??[])if(animal.phase!=='respawning')dot(animal.x,animal.z,animal.phase==='meat'?'#e5b6a9':'#d9c089',full?2:3);
+  for(const boat of state.boats??[]){const[x,y]=point(boat.x,boat.z);ctx.save();ctx.translate(x,y);ctx.rotate(-boat.facing);ctx.fillStyle=boat.riderId?'#ffde96':'#bcdddc';ctx.fillRect(-2,-5,4,10);ctx.restore();}
   for(const enemy of state.enemies??[])if(enemy.hostile&&enemy.phase!=='respawning')dot(enemy.x,enemy.z,enemy.phase==='alive'?'#ff9183':'#926d6a',full?2:3);
   for(const player of state.players){
     dot(player.x,player.z,player.id===selfId?'#fff8da':player.color,big?4:3);

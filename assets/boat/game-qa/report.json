@@ -1,0 +1,61 @@
+{
+  "status": "passed",
+  "at": "2026-09-07T15:27:49.150Z",
+  "realBrowsers": 2,
+  "protocolPeers": 3,
+  "skins": 6,
+  "offshore": {
+    "x": 20.91117177325726,
+    "z": 138.53849572110806
+  },
+  "arrival": {
+    "x": 17.948828065987676,
+    "z": 149.55094869187715
+  },
+  "samples": 663,
+  "fps": [
+    {
+      "fps": "58",
+      "drawCalls": "38",
+      "boats": "5"
+    },
+    {
+      "fps": "58",
+      "drawCalls": "38",
+      "boats": "5"
+    },
+    {
+      "fps": "60",
+      "drawCalls": "76",
+      "boats": "5"
+    },
+    {
+      "fps": "60",
+      "drawCalls": "76",
+      "boats": "5"
+    },
+    {
+      "fps": "60",
+      "drawCalls": "76",
+      "boats": "5"
+    },
+    {
+      "fps": "60",
+      "drawCalls": "76",
+      "boats": "5"
+    }
+  ],
+  "errors": [],
+  "checks": [
+    "craft cost",
+    "exclusive boarding",
+    "map sea navigation",
+    "offshore exit blocked",
+    "crossed sea and landed",
+    "six skins",
+    "390x844 touch buttons",
+    "same-tab reload",
+    "five hull limit",
+    "water body and rider synchronization"
+  ]
+}

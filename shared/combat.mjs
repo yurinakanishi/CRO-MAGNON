@@ -39,7 +39,7 @@ const clearLine = (room, player, target) => room.collision.segmentFree(player, t
 export function startAttack(room, player, message = {}, now = Date.now()) {
   const profile = attackProfile(player);
   if (player.downedUntil) return { accepted: false, reason: 'downed' };
-  if (player.mountId) return { accepted: false, reason: 'mounted' };
+  if (player.mountId || player.boatId) return { accepted: false, reason: 'mounted' };
   if (player.attackSequence && now - player.attackAt < profile.cooldownMs) return { accepted: false, reason: 'cooldown' };
   const aimed = typeof message.targetId === 'string' ? damageableTargets(room).find(({ target }) => target.id === message.targetId)?.target : null;
   // A nearby visible click target may turn the actor. F without a target, a stale

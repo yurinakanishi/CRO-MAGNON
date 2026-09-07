@@ -1,0 +1,41 @@
+{
+  "sourceSha256": "5ac678036a01dbc8329b927a7731a0d8bbcfd4e5df92b09638e99f6e5ea78a44",
+  "sha256": "6e77ae6df54f19a450d460b70ee35596e9703942d5d18bcdbf6b35f066e964e4",
+  "buffers": [
+    {
+      "view": 0,
+      "geometryPreserved": true,
+      "sha256": "4b450129ff8482569bc4adc9579176522f51cd1cb26ee1f8d7c04cffe3b37174"
+    },
+    {
+      "view": 1,
+      "geometryPreserved": true,
+      "sha256": "869aaa3866e59d9b9757799d9efad84a21e203a641fd31aa8894b2717953caf0"
+    },
+    {
+      "view": 2,
+      "geometryPreserved": true,
+      "sha256": "0a10d2433e545da5fc0469c79e0a223ff867fe119d19aba69c65a6f4da35230c"
+    },
+    {
+      "view": 3,
+      "geometryPreserved": true,
+      "sha256": "53aef2159e252ac02d2e05119aa9c12c3b1075403086c103a1aca4556da6dbb0"
+    },
+    {
+      "view": 4,
+      "psnr": 49.665805011871996,
+      "originalBytes": 5749928,
+      "bytes": 1613944,
+      "converted": true
+    },
+    {
+      "view": 5,
+      "psnr": 51.02836047320984,
+      "originalBytes": 2380517,
+      "bytes": 897716,
+      "converted": true
+    }
+  ],
+  "bytes": 4732516
+}

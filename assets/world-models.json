@@ -371,6 +371,18 @@
       "delivery": "/models/desert-cactus/model.glb",
       "subject": "Use case: stylized-concept. Asset type: ONE isolated 3D game environment asset reference for image-to-3D reconstruction, CRO-MAGNON prehistoric fantasy third-person adventure. Primary subject: one mature desert candelabra cactus, approximately 2.4 metres tall, a stout gently tapered central ribbed green trunk rooted directly at the bottom and three asymmetrical thick upward-curving arms at different heights; the arms connect solidly to the trunk. Readable organic lobes and shallow vertical ribs, rounded growing tips, dusty muted sage-green skin with warm ochre weathering at the foot. Sparse tiny pale spine clusters visible as surface detail, not long needle geometry. Rounded natural shapes with continuous substantial surfaces, convincingly textured stylized realistic game quality matching hand-built natural terrain assets. Composition: entire cactus in frame with 12% clear margin, one three-quarter front view from slightly above eye level, strong readable silhouette with clear spaces between the arms. Neutral even studio lighting, natural nonmetallic matte material. Plain medium grey background. No separate plants, flowers, pots, pedestal, soil slab, terrain, loose stones, text, labels, frames, shadows of other objects, people, animals or modern items. This is a full cactus, not a landscape or collage.",
       "gameQA": "assets/region-specific-game-qa.json"
+    },
+    {
+      "key": "dugout-canoe",
+      "name": "丸木舟",
+      "kind": "boat",
+      "height": 0.9070984612335451,
+      "status": "integrated-and-game-qa-passed",
+      "gameQA": "assets/boat/game-qa/r02/report.json",
+      "sha256": "6e77ae6df54f19a450d460b70ee35596e9703942d5d18bcdbf6b35f066e964e4",
+      "delivery": "/models/dugout-canoe/model.glb",
+      "geometryResolution": 1024,
+      "subject": "A wooden dugout canoe carved from a log with an open cockpit."
     }
   ],
   "reuse": {

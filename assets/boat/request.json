@@ -1,0 +1,15 @@
+{
+  "date": "2026-09-08",
+  "request": "木材を使って、船を作って、海を渡れるようにしたい",
+  "status": "implemented-and-verified-local",
+  "generated": "model/model.json",
+  "adopted": "model/qa/adoption-review.json",
+  "gameVerified": "game-qa/r02/report.json",
+  "normalSpawnRoute": "shore-route-qa.json",
+  "deliveredGLBs": "delivery-qa.json",
+  "scope": "One TRELLIS dugout canoe, wood recipe, shared boats, sea navigation on existing worldVersion 3 geography, safe landing and reconnect, all six existing skins",
+  "cloudflareDeployment": "not-performed",
+  "billingChanges": "none",
+  "tests": {"total": 176, "passed": 175, "failed": 1, "failure": "Existing open-world-restore test cannot load ignored output/open-world-restart/run.mjs", "boatAndInputRegressionPassed": 14, "syntaxFiles": 151},
+  "limitations": ["One pilot per hull, at most five shared hulls", "Offshore exit is blocked; disconnect returns to saved embarkation", "Bounded route search can require closer targets or manual steering", "No physical-phone or long-duration validation"]
+}

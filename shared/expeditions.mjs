@@ -9,6 +9,7 @@ export function takeExpedition(room,player,id,now=Date.now()){
   if(!stop)return {ok:false,text:'遠征先が見つかりません。'};
   if(player.downedUntil)return {ok:false,text:'回復してから遠征できます。'};
   if(player.mountId)return {ok:false,text:'マンモスから降りてから遠征しよう。'};
+  if(player.boatId)return {ok:false,text:'岸で船から降りてから遠征しよう。'};
   if(now-(player.lastExpeditionAt??-Infinity)<3000)return {ok:false,text:'次の遠征まで少し待ってください。'};
   const point=room.collision.nearestFree(stop,player.radius,ridingObstacles(room,null,player),12);
   if(!point)return {ok:false,text:'遠征先が混雑しています。少し待ってから試してください。'};

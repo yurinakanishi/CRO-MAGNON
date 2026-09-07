@@ -1,0 +1,21 @@
+{
+  "status": "passed",
+  "start": {
+    "x": 48,
+    "z": 57
+  },
+  "goal": {
+    "x": 28,
+    "z": -11
+  },
+  "shore": {
+    "x": 28.000000000000004,
+    "z": -11
+  },
+  "boat": {
+    "x": 27.35620193734678,
+    "z": -14.236591425330658
+  },
+  "fixture": "12 wood supplied; normal spawn and actual walking route via shore button",
+  "errors": []
+}

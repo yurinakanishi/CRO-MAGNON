@@ -36,7 +36,7 @@ export class RidingPose {
     bone.quaternion.copy(this.parentQ.multiply(this.delta));
     bone.updateMatrixWorld(true);
   }
-  update(animation, time, speed) {
+  update(animation, time, speed, boat=false) {
     if (!this.active) {
       animation.mixer.stopAllAction(); animation.retiring.clear(); animation.current = null;
       animation.oneShot = false; animation.finished = false; this.active = true;
@@ -47,13 +47,13 @@ export class RidingPose {
     this.aim('Chest', 0, 1, .08);
     this.aim('Neck', 0, 1, 0);
     for (const [side, sign] of [['L', 1], ['R', -1]]) {
-      this.aim(`UpperLeg${side}`, sign * .95, -.10, .38);
-      this.aim(`LowerLeg${side}`, sign * .24, -1, -.12);
+      this.aim(`UpperLeg${side}`, sign * (boat?.12:.95), boat?-.25:-.10, boat?1:.38);
+      this.aim(`LowerLeg${side}`, sign * (boat?.06:.24), boat?-.5:-1, boat?1:-.12);
       this.aim(`Foot${side}`, sign * .1, -.1, 1);
       this.aim(`UpperArm${side}`, sign * .24, -.8, .55);
       this.aim(`LowerArm${side}`, sign * -.12, -.22, 1);
     }
-    animation.name = speed > .025 ? 'Ride_Move' : 'Ride_Idle';
+    animation.name = boat?'Boat_Seat':speed > .025 ? 'Ride_Move' : 'Ride_Idle';
   }
   pelvisOffset(out) {
     this.root.updateMatrixWorld(true);

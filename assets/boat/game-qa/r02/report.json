@@ -1,0 +1,115 @@
+{
+  "status": "passed",
+  "at": "2026-09-07T15:33:38.282Z",
+  "realBrowsers": 2,
+  "protocolPeers": 3,
+  "skins": 6,
+  "skinModels": [
+    {
+      "id": "ab5724c0-ced7-45b3-b515-f91c1bda53a2",
+      "species": "cro",
+      "gender": "female",
+      "model": "cro-magnon-woman",
+      "sha256": "8690d5563233614397c7cfad6af0e0b3d89273a29fa59bf421372ec1168ef1b7"
+    },
+    {
+      "id": "ab5724c0-ced7-45b3-b515-f91c1bda53a2",
+      "species": "cro",
+      "gender": "male",
+      "model": "cro-magnon-hunter",
+      "sha256": "5a23c4abe7903466307bba7c2915276e0c431128771d7b7c612882ada89745eb"
+    },
+    {
+      "id": "ab5724c0-ced7-45b3-b515-f91c1bda53a2",
+      "species": "nea",
+      "gender": "female",
+      "model": "neanderthal-woman",
+      "sha256": "63ab98a62b2706e76b4cc551d2a0c8bd23363072258598b606d5129ad32a9ff9"
+    },
+    {
+      "id": "ab5724c0-ced7-45b3-b515-f91c1bda53a2",
+      "species": "nea",
+      "gender": "male",
+      "model": "neanderthal-hunter",
+      "sha256": "7ce4ff20eb1e2ca64df6b51d1c2060311e630394afdb38996eb7e34bbe5ca1e0"
+    },
+    {
+      "id": "ab5724c0-ced7-45b3-b515-f91c1bda53a2",
+      "species": "cat",
+      "gender": "female",
+      "model": "cat-kunoichi",
+      "sha256": "9ab72ce3d6e6a4a80b25bbb2de023c3a154b790cb1d1c5f1a4a7746d833f34aa"
+    },
+    {
+      "id": "ab5724c0-ced7-45b3-b515-f91c1bda53a2",
+      "species": "bear",
+      "gender": "female",
+      "model": "bear-mage",
+      "sha256": "3b58124a53297cf5974b340c941fb22ac9e7be1ed9eae6d0cd1362943f70aadf"
+    }
+  ],
+  "simultaneouslyOccupiedBoats": 5,
+  "offshore": {
+    "x": 20.911171773257266,
+    "z": 138.53849572110806
+  },
+  "arrival": {
+    "x": 17.82529984205007,
+    "z": 149.40006819041912
+  },
+  "samples": 1529,
+  "fps": [
+    {
+      "fps": "60",
+      "drawCalls": "40",
+      "triangles": "897543",
+      "boats": "5"
+    },
+    {
+      "fps": "60",
+      "drawCalls": "40",
+      "triangles": "897543",
+      "boats": "5"
+    },
+    {
+      "fps": "60",
+      "drawCalls": "69",
+      "triangles": "1268598",
+      "boats": "5"
+    },
+    {
+      "fps": "60",
+      "drawCalls": "69",
+      "triangles": "1268598",
+      "boats": "5"
+    },
+    {
+      "fps": "60",
+      "drawCalls": "69",
+      "triangles": "1268598",
+      "boats": "5"
+    },
+    {
+      "fps": "60",
+      "drawCalls": "69",
+      "triangles": "1268598",
+      "boats": "5"
+    }
+  ],
+  "errors": [],
+  "checks": [
+    "craft cost",
+    "exclusive boarding",
+    "map sea navigation",
+    "offshore exit blocked",
+    "crossed sea and landed",
+    "six exact GLB skins",
+    "keyboard steering",
+    "chat focus stops movement",
+    "five simultaneous helms",
+    "390x844 touch buttons",
+    "same-tab reload",
+    "five hull limit",
+    "water body and rider synchronization"
+  ]
+}

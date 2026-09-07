@@ -1,0 +1,1 @@
+The first report in this directory is retained as history. Its six-skin check changed the server profile without reloading the browser's actual GLB. It is not valid evidence for six distinct rendered models. The final `r02/report.json` reloads each model, verifies the model key and delivered SHA, and repeats all required game checks. Use r02 for completion evidence.
