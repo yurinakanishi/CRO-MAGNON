@@ -5,3 +5,7 @@ output/
 .playwright-cli/
 .env
 *.log
+dist-cloudflare/
+.wrangler/
+.dev.vars*
+worker-configuration.d.ts

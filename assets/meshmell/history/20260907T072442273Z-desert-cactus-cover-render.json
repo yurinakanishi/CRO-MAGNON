@@ -1,0 +1,28 @@
+{
+  "action": "cover-render",
+  "key": "desert-cactus",
+  "modelId": 174,
+  "url": "https://meshmell.com/ja/viewer/models/desert-cactus",
+  "source": "public/models/desert-cactus/model.glb",
+  "sourceSha256": "df3e780323fd45808d92b2f7edcd2c7d9ee8000f1ea0c67b29baab73c939d7ed",
+  "image": "output/meshmell-covers/desert-cactus/r01/cover-0000.jpg",
+  "imageSha256": "6eaafb690a0c73c51cb772cfbfc801fc64d059ddd5d0dd07621ce7d57cc65f70",
+  "imageBytes": 303500,
+  "width": 960,
+  "height": 960,
+  "background": "../threed-model-creation/models/standing-meerkat-on-rock-base/media/background.png",
+  "backgroundSha256": "cd759b39c34eb7e79ebda82c33acd9160e396c6ce8eb92a8be7904ec5392db92",
+  "camera": {
+    "canonicalFront": "+Z",
+    "side": "right-front",
+    "azimuthDegrees": 45,
+    "polarDegrees": 80,
+    "distance": "auto"
+  },
+  "animation": null,
+  "renderer": "../threed-model-creation/trellis.cpp/tools/mv_preview/render_composite_frames.mjs",
+  "revision": "r01",
+  "renderedAt": "2026-09-07T07:24:42.273Z",
+  "visuallyApproved": false,
+  "uploaded": false
+}

@@ -1,0 +1,28 @@
+{
+  "action": "cover-render",
+  "key": "wood-footbridge",
+  "modelId": 197,
+  "url": "https://meshmell.com/ja/viewer/models/wood-footbridge",
+  "source": "public/models/wood-footbridge/model.glb",
+  "sourceSha256": "629a8ec5db3dd16b7a126b1c8ea4877a5ec0bc4037017e0a2a53ec2f63e3a369",
+  "image": "output/meshmell-covers/wood-footbridge/r01/cover-0000.jpg",
+  "imageSha256": "ce1e1cbb2072153df09aad3cc65996d4e5f2fe235485792fba51cd41b90bcb1f",
+  "imageBytes": 448736,
+  "width": 960,
+  "height": 960,
+  "background": "../threed-model-creation/models/roaring-bear-on-rock-base-in-dark-bronze/media/background.png",
+  "backgroundSha256": "853d40b44eed726e0c401707126b91a9fe186d1b44c8032771575e75a44241cd",
+  "camera": {
+    "canonicalFront": "+Z",
+    "side": "right-front",
+    "azimuthDegrees": 45,
+    "polarDegrees": 80,
+    "distance": "auto"
+  },
+  "animation": null,
+  "renderer": "../threed-model-creation/trellis.cpp/tools/mv_preview/render_composite_frames.mjs",
+  "revision": "r01",
+  "renderedAt": "2026-09-07T07:26:28.992Z",
+  "visuallyApproved": false,
+  "uploaded": false
+}

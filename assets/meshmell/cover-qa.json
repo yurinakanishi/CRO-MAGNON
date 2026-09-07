@@ -1,0 +1,28 @@
+{
+  "verifiedAt": "2026-09-07T07:33:28.7592681Z",
+  "modelCount": 31,
+  "coverCount": 31,
+  "uniqueRemoteImageIds": 31,
+  "dimensions": "960x960",
+  "visualReview": "All 31 inspected in local contact sheets; spear and pine r03 reviewed full size after increasing margin.",
+  "exactIdReadback": "passed",
+  "preservedPublicMetadata": "passed",
+  "sourceGlbHashes": "31 unchanged",
+  "referenceRepository": "../threed-model-creation",
+  "imageGeneration": "Exact GLB rendering using reference renderer and existing landscape backgrounds",
+  "scope": "Cover images only",
+  "canonicalFullReleaseRunnerUsed": false,
+  "notes": [
+    "Full release runner requires video and unrelated packaging; cover-only helper and official models update used.",
+    "No public viewer browser tabs or post-update GLB downloads."
+  ],
+  "meatCoverCorrection": {
+    "modelId": 183,
+    "imageId": 260,
+    "revision": "r02",
+    "background": "Close stone tabletop with defocused forest",
+    "polarDegrees": 65,
+    "sourceGlbUnchanged": true,
+    "cliReadback": "passed"
+  }
+}

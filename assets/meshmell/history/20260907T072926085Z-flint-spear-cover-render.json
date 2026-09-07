@@ -1,0 +1,31 @@
+{
+  "action": "cover-render",
+  "key": "flint-spear",
+  "modelId": 178,
+  "url": "https://meshmell.com/ja/viewer/models/flint-spear",
+  "source": "public/models/flint-spear/model.glb",
+  "sourceSha256": "1a10db6d1b44da1e982f88e5ae9ef6be8fb74f5900ebd9258380ad200e53ed3d",
+  "image": "output/meshmell-covers/flint-spear/r03/cover-0000.jpg",
+  "imageSha256": "881012b6454bbeb2316d9c97ca47720b97ce0348760d4f8bdee389b24f79c4a8",
+  "imageBytes": 457766,
+  "width": 960,
+  "height": 960,
+  "background": "../threed-model-creation/models/roaring-bear-on-rock-base-in-dark-bronze/media/background.png",
+  "backgroundSha256": "853d40b44eed726e0c401707126b91a9fe186d1b44c8032771575e75a44241cd",
+  "camera": {
+    "canonicalFront": "+Z",
+    "side": "right-front",
+    "azimuthDegrees": 45,
+    "polarDegrees": 80,
+    "distance": "120%",
+    "maximumOrbit": "auto auto 1000m"
+  },
+  "animation": null,
+  "renderer": "output/meshmell-covers/renderer/render_composite_frames.mjs",
+  "referenceRenderer": "../threed-model-creation/trellis.cpp/tools/mv_preview/render_composite_frames.mjs",
+  "rendererSha256": "e94cd4e68034dcd85a5c16ccf81a381b40052197ddc6f69bc7a55d96552492f2",
+  "revision": "r03",
+  "renderedAt": "2026-09-07T07:29:26.085Z",
+  "visuallyApproved": false,
+  "uploaded": false
+}

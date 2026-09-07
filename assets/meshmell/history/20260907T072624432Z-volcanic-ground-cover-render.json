@@ -1,0 +1,28 @@
+{
+  "action": "cover-render",
+  "key": "volcanic-ground",
+  "modelId": 196,
+  "url": "https://meshmell.com/ja/viewer/models/volcanic-ground",
+  "source": "public/models/volcanic-ground/model.glb",
+  "sourceSha256": "2bca15ffc01cce6148f8569a60b3fbecd16ac0c7946014f7b48f267b5eaffb88",
+  "image": "output/meshmell-covers/volcanic-ground/r01/cover-0000.jpg",
+  "imageSha256": "5c4f6baf4192791470683a7a54491997cafb367c891123eb72cde53ef77bd154",
+  "imageBytes": 258574,
+  "width": 960,
+  "height": 960,
+  "background": "../threed-model-creation/models/spread-wing-eagle-on-rock-base-in-dark-bronze/media/background.png",
+  "backgroundSha256": "2ac3ca8cdecca72d128e912a8c9510cbc30511584eb161a1aa8e886aa34448f5",
+  "camera": {
+    "canonicalFront": "+Z",
+    "side": "right-front",
+    "azimuthDegrees": 45,
+    "polarDegrees": 65,
+    "distance": "auto"
+  },
+  "animation": null,
+  "renderer": "../threed-model-creation/trellis.cpp/tools/mv_preview/render_composite_frames.mjs",
+  "revision": "r01",
+  "renderedAt": "2026-09-07T07:26:24.432Z",
+  "visuallyApproved": false,
+  "uploaded": false
+}

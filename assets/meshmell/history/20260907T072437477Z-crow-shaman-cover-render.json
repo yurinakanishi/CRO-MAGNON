@@ -1,0 +1,28 @@
+{
+  "action": "cover-render",
+  "key": "crow-shaman",
+  "modelId": 173,
+  "url": "https://meshmell.com/ja/viewer/models/crow-shaman",
+  "source": "public/models/crow-shaman/model.glb",
+  "sourceSha256": "b0937988961c537fa4edb457c16baaa057d40b59e1393e4b493ec434684499a3",
+  "image": "output/meshmell-covers/crow-shaman/r01/cover-0000.jpg",
+  "imageSha256": "f72fda080414ea5ba8d147058d9d3451edfb6db2797b77409b538499930c562c",
+  "imageBytes": 438725,
+  "width": 960,
+  "height": 960,
+  "background": "../threed-model-creation/models/roaring-bear-on-rock-base-in-dark-bronze/media/background.png",
+  "backgroundSha256": "853d40b44eed726e0c401707126b91a9fe186d1b44c8032771575e75a44241cd",
+  "camera": {
+    "canonicalFront": "+Z",
+    "side": "right-front",
+    "azimuthDegrees": 45,
+    "polarDegrees": 80,
+    "distance": "auto"
+  },
+  "animation": "Idle_Loop",
+  "renderer": "../threed-model-creation/trellis.cpp/tools/mv_preview/render_composite_frames.mjs",
+  "revision": "r01",
+  "renderedAt": "2026-09-07T07:24:37.477Z",
+  "visuallyApproved": false,
+  "uploaded": false
+}

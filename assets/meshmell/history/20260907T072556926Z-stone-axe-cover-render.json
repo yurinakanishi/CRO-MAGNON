@@ -1,0 +1,28 @@
+{
+  "action": "cover-render",
+  "key": "stone-axe",
+  "modelId": 190,
+  "url": "https://meshmell.com/ja/viewer/models/stone-axe",
+  "source": "public/models/stone-axe/model.glb",
+  "sourceSha256": "12dc3f23f8ec2acfb9fb6f770ab05f59c21584be00795f9b8cf272a2f6cf5ac0",
+  "image": "output/meshmell-covers/stone-axe/r01/cover-0000.jpg",
+  "imageSha256": "80883e08acf8c73b69e132d51dae5f7264e7dbc7fcd8321487f686bc8c2c8a09",
+  "imageBytes": 441773,
+  "width": 960,
+  "height": 960,
+  "background": "../threed-model-creation/models/roaring-bear-on-rock-base-in-dark-bronze/media/background.png",
+  "backgroundSha256": "853d40b44eed726e0c401707126b91a9fe186d1b44c8032771575e75a44241cd",
+  "camera": {
+    "canonicalFront": "+Z",
+    "side": "right-front",
+    "azimuthDegrees": 45,
+    "polarDegrees": 80,
+    "distance": "auto"
+  },
+  "animation": null,
+  "renderer": "../threed-model-creation/trellis.cpp/tools/mv_preview/render_composite_frames.mjs",
+  "revision": "r01",
+  "renderedAt": "2026-09-07T07:25:56.926Z",
+  "visuallyApproved": false,
+  "uploaded": false
+}

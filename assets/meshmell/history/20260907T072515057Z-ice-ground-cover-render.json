@@ -1,0 +1,28 @@
+{
+  "action": "cover-render",
+  "key": "ice-ground",
+  "modelId": 181,
+  "url": "https://meshmell.com/ja/viewer/models/ice-ground",
+  "source": "public/models/ice-ground/model.glb",
+  "sourceSha256": "30eeb7ceea111e33576b497e8341f9f01bf232fc598c6bbefa79a9867df51cce",
+  "image": "output/meshmell-covers/ice-ground/r01/cover-0000.jpg",
+  "imageSha256": "61f83d5e1db5e26b1ee777b6e407f41f1d0f4efe45dc07fc8357bcbeee3739f0",
+  "imageBytes": 278464,
+  "width": 960,
+  "height": 960,
+  "background": "../threed-model-creation/models/spread-wing-eagle-on-rock-base-in-dark-bronze/media/background.png",
+  "backgroundSha256": "2ac3ca8cdecca72d128e912a8c9510cbc30511584eb161a1aa8e886aa34448f5",
+  "camera": {
+    "canonicalFront": "+Z",
+    "side": "right-front",
+    "azimuthDegrees": 45,
+    "polarDegrees": 65,
+    "distance": "auto"
+  },
+  "animation": null,
+  "renderer": "../threed-model-creation/trellis.cpp/tools/mv_preview/render_composite_frames.mjs",
+  "revision": "r01",
+  "renderedAt": "2026-09-07T07:25:15.057Z",
+  "visuallyApproved": false,
+  "uploaded": false
+}

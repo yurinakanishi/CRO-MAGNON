@@ -1,0 +1,28 @@
+{
+  "action": "cover-render",
+  "key": "volcanic-cone",
+  "modelId": 195,
+  "url": "https://meshmell.com/ja/viewer/models/volcanic-cone",
+  "source": "public/models/volcanic-cone/model.glb",
+  "sourceSha256": "868c062028af62fedf491ed7391602991dbc76b1ddbbd09494ee958a7898cd5b",
+  "image": "output/meshmell-covers/volcanic-cone/r01/cover-0000.jpg",
+  "imageSha256": "ecb3f7c33f51c917c673811d77e7b3f54722ee4e15ffeea0528d0c6c3751ceda",
+  "imageBytes": 258672,
+  "width": 960,
+  "height": 960,
+  "background": "../threed-model-creation/models/spread-wing-eagle-on-rock-base-in-dark-bronze/media/background.png",
+  "backgroundSha256": "2ac3ca8cdecca72d128e912a8c9510cbc30511584eb161a1aa8e886aa34448f5",
+  "camera": {
+    "canonicalFront": "+Z",
+    "side": "right-front",
+    "azimuthDegrees": 45,
+    "polarDegrees": 80,
+    "distance": "auto"
+  },
+  "animation": null,
+  "renderer": "../threed-model-creation/trellis.cpp/tools/mv_preview/render_composite_frames.mjs",
+  "revision": "r01",
+  "renderedAt": "2026-09-07T07:26:19.811Z",
+  "visuallyApproved": false,
+  "uploaded": false
+}

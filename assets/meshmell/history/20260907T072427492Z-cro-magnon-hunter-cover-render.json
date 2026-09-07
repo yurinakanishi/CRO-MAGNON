@@ -1,0 +1,28 @@
+{
+  "action": "cover-render",
+  "key": "cro-magnon-hunter",
+  "modelId": 171,
+  "url": "https://meshmell.com/ja/viewer/models/cro-magnon-hunter",
+  "source": "public/models/cro-magnon-hunter/model.glb",
+  "sourceSha256": "5a23c4abe7903466307bba7c2915276e0c431128771d7b7c612882ada89745eb",
+  "image": "output/meshmell-covers/cro-magnon-hunter/r01/cover-0000.jpg",
+  "imageSha256": "589b5d7a591a186de5a938a1514bd723b93672adc3908372a97eedd2b460f5e9",
+  "imageBytes": 350814,
+  "width": 960,
+  "height": 960,
+  "background": "../threed-model-creation/models/standing-ram-with-curled-fleece-and-spiral-horns/media/background.png",
+  "backgroundSha256": "754f78f441b954588cd844cb47d0e2bd4c78983caa52380d68492e2c7d0390db",
+  "camera": {
+    "canonicalFront": "+Z",
+    "side": "right-front",
+    "azimuthDegrees": 45,
+    "polarDegrees": 80,
+    "distance": "auto"
+  },
+  "animation": "Idle_Loop",
+  "renderer": "../threed-model-creation/trellis.cpp/tools/mv_preview/render_composite_frames.mjs",
+  "revision": "r01",
+  "renderedAt": "2026-09-07T07:24:27.492Z",
+  "visuallyApproved": false,
+  "uploaded": false
+}

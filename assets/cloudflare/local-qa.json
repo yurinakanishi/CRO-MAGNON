@@ -1,0 +1,13 @@
+{
+  "checkedAt": "2026-09-07T07:59:02.285Z",
+  "base": "http://127.0.0.1:8787",
+  "status": "passed",
+  "fiveClients": true,
+  "sixthRefused": true,
+  "movement": true,
+  "attack": true,
+  "reconnect": true,
+  "privateFilesNotServed": true,
+  "verifiedGLBs": 46,
+  "stateSamples": 149
+}

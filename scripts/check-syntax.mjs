@@ -5,7 +5,7 @@ import { fileURLToPath } from 'node:url';
 
 const root=path.dirname(path.dirname(fileURLToPath(import.meta.url)));
 const files=['server.mjs'];
-for(const directory of ['src','shared','scripts','tests']){
+for(const directory of ['src','shared','scripts','tests','cloudflare']){
   for(const entry of readdirSync(path.join(root,directory),{withFileTypes:true})){
     if(entry.isFile()&&/\.(mjs|js)$/.test(entry.name))files.push(`${directory}/${entry.name}`);
   }

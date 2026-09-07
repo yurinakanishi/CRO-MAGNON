@@ -1,0 +1,25 @@
+{
+  "date": "2026-09-07",
+  "account": "yurinakanishi@meshmell.com",
+  "authorization": "All 31 adopted model.glb files; public; CC-BY-4.0; Yuri Nakanishi.",
+  "cliVersion": "1.0.4",
+  "cliRepository": "../meshmell.com/packages/cli",
+  "localValidation": {
+    "modelCount": 31,
+    "manifestHashes": "passed",
+    "catalogHashesWherePresent": "passed",
+    "byteSizes": "passed",
+    "glbInspection": "passed",
+    "embeddedAnimationNames": "passed",
+    "historicalFullAssetCheck": "Unavailable: untracked production QA source files are absent on this checkout. Exact delivery GLBs were validated directly."
+  },
+  "cliDiagnostics": {
+    "builtCli": "Upload, read and download commands available; capabilities, doctor and actions commands absent in the stale local dist.",
+    "sourceCli": "Official current source invoked through the adjacent existing tsx runtime for action readback and doctor, without installing software or modifying the adjacent repository.",
+    "doctorStatus": "BLOCKED",
+    "passingChecks": ["RUNTIME", "PLATFORM", "PROFILE", "TLS_POLICY", "CREDENTIAL_STORE", "PACKAGE_PAIRING", "AUTHENTICATION", "SCOPES", "API_COMPATIBILITY"],
+    "failingCheck": "RELEASE_ENDPOINT: RELEASE_VERIFICATION_UNAVAILABLE",
+    "decision": "Continue the explicitly authorized upload with the existing local official CLI. No release installation or update was attempted."
+  },
+  "verification": "Read each exact model ID, metadata and action list, then download its display GLB through the official CLI and compare SHA-256 with the local delivery. Missing platform action entries are recorded separately from preservation of embedded GLB animations."
+}

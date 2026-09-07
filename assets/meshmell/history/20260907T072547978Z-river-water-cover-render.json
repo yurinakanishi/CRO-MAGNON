@@ -1,0 +1,28 @@
+{
+  "action": "cover-render",
+  "key": "river-water",
+  "modelId": 188,
+  "url": "https://meshmell.com/ja/viewer/models/river-water",
+  "source": "public/models/river-water/model.glb",
+  "sourceSha256": "8575faa5fd988da815d622ebbd03d49390339df5eeafd0eb794e1b0368ec0274",
+  "image": "output/meshmell-covers/river-water/r01/cover-0000.jpg",
+  "imageSha256": "816a81dbaff7e3021297b26a97aa1430d736713dc75d8a645a788dab68a0ca4c",
+  "imageBytes": 436488,
+  "width": 960,
+  "height": 960,
+  "background": "../threed-model-creation/models/roaring-bear-on-rock-base-in-dark-bronze/media/background.png",
+  "backgroundSha256": "853d40b44eed726e0c401707126b91a9fe186d1b44c8032771575e75a44241cd",
+  "camera": {
+    "canonicalFront": "+Z",
+    "side": "right-front",
+    "azimuthDegrees": 45,
+    "polarDegrees": 65,
+    "distance": "auto"
+  },
+  "animation": null,
+  "renderer": "../threed-model-creation/trellis.cpp/tools/mv_preview/render_composite_frames.mjs",
+  "revision": "r01",
+  "renderedAt": "2026-09-07T07:25:47.978Z",
+  "visuallyApproved": false,
+  "uploaded": false
+}

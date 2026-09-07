@@ -1,0 +1,28 @@
+{
+  "action": "cover-render",
+  "key": "glacier-spires",
+  "modelId": 179,
+  "url": "https://meshmell.com/ja/viewer/models/glacier-spires",
+  "source": "public/models/glacier-spires/model.glb",
+  "sourceSha256": "af945c2fec27252389a05ca2eabb6970003372a584a83cf18e2e6c34a42f6b53",
+  "image": "output/meshmell-covers/glacier-spires/r01/cover-0000.jpg",
+  "imageSha256": "f6db4967dc66871fe7f3a7e9c65303eb7e8f14617979c28b60ac1cae463b7b6e",
+  "imageBytes": 253043,
+  "width": 960,
+  "height": 960,
+  "background": "../threed-model-creation/models/spread-wing-eagle-on-rock-base-in-dark-bronze/media/background.png",
+  "backgroundSha256": "2ac3ca8cdecca72d128e912a8c9510cbc30511584eb161a1aa8e886aa34448f5",
+  "camera": {
+    "canonicalFront": "+Z",
+    "side": "right-front",
+    "azimuthDegrees": 45,
+    "polarDegrees": 80,
+    "distance": "auto"
+  },
+  "animation": null,
+  "renderer": "../threed-model-creation/trellis.cpp/tools/mv_preview/render_composite_frames.mjs",
+  "revision": "r01",
+  "renderedAt": "2026-09-07T07:25:06.222Z",
+  "visuallyApproved": false,
+  "uploaded": false
+}

@@ -1,5 +1,15 @@
 # Meshmell CLI アップロード手順
 
+## 2026-09-07 実行完了
+
+続くユーザー指示で、全31件へ背景付き960×960のカバー画像を追加した。`../threed-model-creation` の公開手順と描画ヘルパーを参照し、実GLBから撮影・全画像の目視検査・公式CLIによる既存IDの画像更新・画像ID229〜259の読み戻し確認を完了。`assets/meshmell/covers.json` と `assets/meshmell/cover-qa.json` を参照。
+
+ユーザーが全31件・public・CC-BY-4.0・Yuri Nakanishiを明示承認し、採用版GLB全31件を公式CLIで公開した。モデルIDは168〜198。公開URLと検証結果は [assets/meshmell/README.md](assets/meshmell/README.md)、正確な現在状態は `assets/meshmell/uploads.json`、追記専用履歴は `assets/meshmell/history/` を参照する。
+
+全31件をexact-IDで読み戻し、公開設定・名前・説明・ライセンス・クレジットを照合。表示用GLBをCLIでダウンロードし、元GLBとのSHA-256一致を全件確認した。アニメーション付き8件のGLB内の動作データは保持されているが、Meshmellのactions一覧は空で、サイトの動作選択への登録は未完了。ローカルCLIのdistとソースに差があり、actions照合は隣の公式ソースと既存tsxで実行した。doctorのリリース確認だけは利用できず、詳細を `assets/meshmell/preflight.json` に記録した。
+
+`node scripts/meshmell-upload.mjs` はローカル検証、`node scripts/meshmell-upload.mjs --upload` は成功記録をスキップして実行する。以下の16件・アップロード0件・実行待ちは2026-09-06時点の履歴であり、今回の31件の明示承認と実行結果を優先する。
+
 更新日: 2026-09-06
 
 ## 現在の方針

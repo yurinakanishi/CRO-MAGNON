@@ -1,0 +1,28 @@
+{
+  "action": "cover-render",
+  "key": "meadow-ground",
+  "modelId": 185,
+  "url": "https://meshmell.com/ja/viewer/models/meadow-ground",
+  "source": "public/models/meadow-ground/model.glb",
+  "sourceSha256": "6c6b41bdec1631236027c567635623aa9cdd1e0d92c0ae9e89f77764b52995e1",
+  "image": "output/meshmell-covers/meadow-ground/r01/cover-0000.jpg",
+  "imageSha256": "cba5087033015b87010077d7f531520112f618319c6ffee66d96550084dd52b9",
+  "imageBytes": 317773,
+  "width": 960,
+  "height": 960,
+  "background": "../threed-model-creation/models/standing-ram-with-curled-fleece-and-spiral-horns/media/background.png",
+  "backgroundSha256": "754f78f441b954588cd844cb47d0e2bd4c78983caa52380d68492e2c7d0390db",
+  "camera": {
+    "canonicalFront": "+Z",
+    "side": "right-front",
+    "azimuthDegrees": 45,
+    "polarDegrees": 65,
+    "distance": "auto"
+  },
+  "animation": null,
+  "renderer": "../threed-model-creation/trellis.cpp/tools/mv_preview/render_composite_frames.mjs",
+  "revision": "r01",
+  "renderedAt": "2026-09-07T07:25:33.553Z",
+  "visuallyApproved": false,
+  "uploaded": false
+}

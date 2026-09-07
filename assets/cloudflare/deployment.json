@@ -1,0 +1,21 @@
+{
+  "checkedAt": "2026-09-07T08:17:07.7616329Z",
+  "status": "deployed-and-live-verified",
+  "url": "https://cro-magnon-free.cro-magnon.workers.dev",
+  "accountId": "a211102818d484cb668c6b62bebff3f9",
+  "accountName": "CRO-MAGNON Free",
+  "workersPlan": "Free",
+  "versionId": "a3ae1674-f900-4d76-89ec-011467315915",
+  "newPaidSubscription": false,
+  "paymentMethodPresent": false,
+  "billingSubscription": "Workers Free / Active",
+  "browser": {
+    "worldMap": true,
+    "attackButton": true,
+    "rendered3D": true,
+    "consoleWarningsOrErrors": 0
+  },
+  "networkQA": "live-qa.json",
+  "localStorageAndQuotaQA": "persistence-qa.json",
+  "forcedProductionRestart": false
+}

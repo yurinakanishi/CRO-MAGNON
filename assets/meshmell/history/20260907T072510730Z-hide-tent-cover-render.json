@@ -1,0 +1,28 @@
+{
+  "action": "cover-render",
+  "key": "hide-tent",
+  "modelId": 180,
+  "url": "https://meshmell.com/ja/viewer/models/hide-tent",
+  "source": "public/models/hide-tent/model.glb",
+  "sourceSha256": "7c7aef410b4f8eee268cd32f75faa65f0b7ea3f2d8e4cf53b6d810e5a1e20de7",
+  "image": "output/meshmell-covers/hide-tent/r01/cover-0000.jpg",
+  "imageSha256": "a3befea9560ddf29e37a76f03f1e457afcdf52100b58174326c7f072bec6aeb8",
+  "imageBytes": 397381,
+  "width": 960,
+  "height": 960,
+  "background": "../threed-model-creation/models/roaring-bear-on-rock-base-in-dark-bronze/media/background.png",
+  "backgroundSha256": "853d40b44eed726e0c401707126b91a9fe186d1b44c8032771575e75a44241cd",
+  "camera": {
+    "canonicalFront": "+Z",
+    "side": "right-front",
+    "azimuthDegrees": 45,
+    "polarDegrees": 80,
+    "distance": "auto"
+  },
+  "animation": null,
+  "renderer": "../threed-model-creation/trellis.cpp/tools/mv_preview/render_composite_frames.mjs",
+  "revision": "r01",
+  "renderedAt": "2026-09-07T07:25:10.730Z",
+  "visuallyApproved": false,
+  "uploaded": false
+}

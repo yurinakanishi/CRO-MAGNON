@@ -1,0 +1,28 @@
+{
+  "action": "cover-render",
+  "key": "valley-boulder",
+  "modelId": 192,
+  "url": "https://meshmell.com/ja/viewer/models/valley-boulder",
+  "source": "public/models/valley-boulder/model.glb",
+  "sourceSha256": "f46449aa51814b9037c8ed3c43179845e63c6f9b48b94e02c7979266cb09bb1d",
+  "image": "output/meshmell-covers/valley-boulder/r01/cover-0000.jpg",
+  "imageSha256": "e1fff4420100446119a461b7b4223ccdacc37b0682b82d71f39ed52c934371f2",
+  "imageBytes": 374931,
+  "width": 960,
+  "height": 960,
+  "background": "../threed-model-creation/models/roaring-bear-on-rock-base-in-dark-bronze/media/background.png",
+  "backgroundSha256": "853d40b44eed726e0c401707126b91a9fe186d1b44c8032771575e75a44241cd",
+  "camera": {
+    "canonicalFront": "+Z",
+    "side": "right-front",
+    "azimuthDegrees": 45,
+    "polarDegrees": 80,
+    "distance": "auto"
+  },
+  "animation": null,
+  "renderer": "../threed-model-creation/trellis.cpp/tools/mv_preview/render_composite_frames.mjs",
+  "revision": "r01",
+  "renderedAt": "2026-09-07T07:26:05.754Z",
+  "visuallyApproved": false,
+  "uploaded": false
+}

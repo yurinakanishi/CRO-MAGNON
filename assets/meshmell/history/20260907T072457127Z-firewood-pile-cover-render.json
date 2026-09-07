@@ -1,0 +1,28 @@
+{
+  "action": "cover-render",
+  "key": "firewood-pile",
+  "modelId": 177,
+  "url": "https://meshmell.com/ja/viewer/models/firewood-pile",
+  "source": "public/models/firewood-pile/model.glb",
+  "sourceSha256": "88fdbe0514694b4b484e285dc6ffa85c8cebe134ea120d34f7486dc27d3d3d3a",
+  "image": "output/meshmell-covers/firewood-pile/r01/cover-0000.jpg",
+  "imageSha256": "392284cdfb484dff766305e216b6a8aa39a70c9f0c4568fa410eb6f8ffe5512e",
+  "imageBytes": 385389,
+  "width": 960,
+  "height": 960,
+  "background": "../threed-model-creation/models/roaring-bear-on-rock-base-in-dark-bronze/media/background.png",
+  "backgroundSha256": "853d40b44eed726e0c401707126b91a9fe186d1b44c8032771575e75a44241cd",
+  "camera": {
+    "canonicalFront": "+Z",
+    "side": "right-front",
+    "azimuthDegrees": 45,
+    "polarDegrees": 80,
+    "distance": "auto"
+  },
+  "animation": null,
+  "renderer": "../threed-model-creation/trellis.cpp/tools/mv_preview/render_composite_frames.mjs",
+  "revision": "r01",
+  "renderedAt": "2026-09-07T07:24:57.127Z",
+  "visuallyApproved": false,
+  "uploaded": false
+}

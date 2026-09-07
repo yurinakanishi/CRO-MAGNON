@@ -59,6 +59,7 @@ const query = new URLSearchParams(location.search);
 let profile = { name: readSaved('cro-name', `旅人${Math.floor(Math.random() * 900 + 100)}`), ...normalizeCharacter({ species: readSaved('cro-species', 'cro'), gender: readSaved('cro-gender', 'female') }), room: (query.get('room') || readSaved('cro-room', 'EMBER')).toUpperCase().replace(/[^A-Z0-9_-]/g, '').slice(0, 16) || 'EMBER' };
 let state = { players: [], resources: INITIAL_RESOURCES, camp: { ...CAMP }, npc: { ...NPC }, day: 1 };
 let selfId = null, socket, joined = false, retry = null, manualLeave = false, ping = 0;
+let connectAttempt = 0, retryCount = 0;
 let renderUnavailable = false;
 let audioContext = null, audioTimer = null, soundEnabled = false;
 const keys = new Set();
@@ -166,15 +167,35 @@ function addChat(message) {
 function connection(connected, label) {
   joined = connected; $('#connection-dot').classList.toggle('offline', !connected); $('#connection-label').textContent = label;
 }
-function connect() {
+async function connect() {
+  const attempt = ++connectAttempt;
   clearTimeout(retry); manualLeave = false; selfId = null; keys.clear();blockedMovementKeys.clear();movementCommands.reset();lastGait=null;connection(false, '接続中…');
   state = { players: [], resources: INITIAL_RESOURCES, camp: { ...CAMP }, npc: { ...NPC }, day: 1 };
   renderer.setState(state, selfId);updateHUD();
+  try {
+    const response = await fetch('/api/status', { cache: 'no-store', signal: AbortSignal.timeout(8000) });
+    if (attempt !== connectAttempt || manualLeave) return;
+    if (response.status !== 404) {
+      if (!response.ok) throw new Error('現在ゲームに接続できません。無料の利用上限または一時的な停止の可能性があります。時間をおいて再接続してください。');
+      const status = await response.json();
+      if (!status.ok) throw new Error(status.text || '現在ゲームは停止中です。');
+      if (status.room && profile.room !== status.room) {
+        profile.room = status.room;
+        notify('無料公開版では EMBER の谷に参加します。');
+      }
+    }
+  } catch (error) {
+    if (attempt !== connectAttempt) return;
+    manualLeave = true; connection(false, 'サービス停止中');
+    openRoom(error.name === 'Error' ? error.message : '通信できません。時間をおいて再接続してください。');
+    return;
+  }
+  if (attempt !== connectAttempt || manualLeave) return;
   const ws = new WebSocket(`${location.protocol === 'https:' ? 'wss:' : 'ws:'}//${location.host}/ws?${new URLSearchParams({...profile,resume:'1',session:savedSession(profile.room)})}`); socket = ws;
   ws.addEventListener('message', ({ data }) => {
     if (ws !== socket) return;
     let message; try { message = JSON.parse(data); } catch { return; }
-    if (message.type === 'welcome') { selfId = message.id;profile={...profile,...message.profile,room:message.room};saveSession(profile.room,message.session);for(const [key,value] of Object.entries(profile))save(`cro-${key}`,value);$('#profile-name').textContent=profile.name;$('#room-label').textContent=profile.room;connection(true,'オンライン');notify(message.resumed?'接続が戻りました。持ち物と進行を復元しました。':'谷へようこそ。近くの木や石を集めてみよう。','success'); }
+    if (message.type === 'welcome') { retryCount = 0; selfId = message.id;profile={...profile,...message.profile,room:message.room};saveSession(profile.room,message.session);for(const [key,value] of Object.entries(profile))save(`cro-${key}`,value);$('#profile-name').textContent=profile.name;$('#room-label').textContent=profile.room;connection(true,'オンライン');notify(message.resumed?'接続が戻りました。持ち物と進行を復元しました。':'谷へようこそ。近くの木や石を集めてみよう。','success'); }
     if (message.type === 'state') { const previous=player();state = { ...state, ...message }; stateReceivedAt=performance.now();if((previous?.mountId??null)!==(player()?.mountId??null)){movementCommands.reset();lastGait=null;}if(playerDamageEvent(previous,player()))hurtUntil=performance.now()+750;if(player()?.downedUntil){for(const key of keys)blockedMovementKeys.add(key);keys.clear();movementCommands.reset();}renderer.setState(state, selfId); updateHUD(); }
     if (message.type === 'emote') renderer.setEmote(message.id,message.emote);
     if (message.type === 'notice') { notify(message.text, message.tone); if (message.tone === 'success') playNote(); }
@@ -187,7 +208,7 @@ function connect() {
       }
     }
   });
-  ws.addEventListener('close', () => { if (ws !== socket) return; connection(false, manualLeave ? '未接続' : '再接続中…'); rideApproach.cancel();keys.clear(); movementCommands.reset(); if (!manualLeave) retry = setTimeout(connect, 2500); });
+  ws.addEventListener('close', () => { if (ws !== socket) return; connection(false, manualLeave ? '未接続' : '再接続中…'); rideApproach.cancel();keys.clear(); movementCommands.reset(); if (!manualLeave) retry = setTimeout(connect, Math.min(60000, 2500 * 2 ** Math.min(retryCount++, 5))); });
   ws.addEventListener('error', () => { if (ws === socket) $('#connection-label').textContent = 'サーバーを確認中…'; });
 }
 function player() { return state.players.find(p => p.id === selfId); }

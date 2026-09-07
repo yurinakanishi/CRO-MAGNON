@@ -1,0 +1,63 @@
+{
+  "createdAt": "2026-09-07T07:29:34.224Z",
+  "action": "cover-contact-sheets",
+  "width": 1280,
+  "height": 704,
+  "sheets": [
+    {
+      "path": "C:\\Users\\yurin\\Desktop\\projects\\CRO-MAGNON\\output\\meshmell-covers\\sheets\\sheet-1.png",
+      "keys": [
+        "bear-mage",
+        "berry-bush",
+        "cat-kunoichi",
+        "cro-magnon-hunter",
+        "cro-magnon-woman",
+        "crow-shaman",
+        "desert-cactus",
+        "desert-ground"
+      ],
+      "sha256": "eaf65c2b83bdbb9944842b78b2271b6cda5e1b9d99028b1bce5184d12bafed3f"
+    },
+    {
+      "path": "C:\\Users\\yurin\\Desktop\\projects\\CRO-MAGNON\\output\\meshmell-covers\\sheets\\sheet-2.png",
+      "keys": [
+        "drying-rack",
+        "firewood-pile",
+        "flint-spear",
+        "glacier-spires",
+        "hide-tent",
+        "ice-ground",
+        "kunoichi-katana",
+        "mammoth-meat"
+      ],
+      "sha256": "9551b4a84551f211be38a5bb5af828efb40adacac56aa3b0974237ce35422d9d"
+    },
+    {
+      "path": "C:\\Users\\yurin\\Desktop\\projects\\CRO-MAGNON\\output\\meshmell-covers\\sheets\\sheet-3.png",
+      "keys": [
+        "meadow-grass",
+        "meadow-ground",
+        "neanderthal-hunter",
+        "neanderthal-woman",
+        "river-water",
+        "snow-ground",
+        "stone-axe",
+        "stone-firepit"
+      ],
+      "sha256": "ad7d107d138fc8ec056f3996149183153c9f66b50ba20ffc17deb86441afcc00"
+    },
+    {
+      "path": "C:\\Users\\yurin\\Desktop\\projects\\CRO-MAGNON\\output\\meshmell-covers\\sheets\\sheet-4.png",
+      "keys": [
+        "valley-boulder",
+        "valley-pine",
+        "volcanic-basalt-columns",
+        "volcanic-cone",
+        "volcanic-ground",
+        "wood-footbridge",
+        "woolly-mammoth"
+      ],
+      "sha256": "078256c87f4d30f988be0498b3c25e18d8e9fc9575a0979303627e935975334e"
+    }
+  ]
+}

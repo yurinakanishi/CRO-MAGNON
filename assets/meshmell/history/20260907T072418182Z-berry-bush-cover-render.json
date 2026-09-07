@@ -1,0 +1,28 @@
+{
+  "action": "cover-render",
+  "key": "berry-bush",
+  "modelId": 169,
+  "url": "https://meshmell.com/ja/viewer/models/berry-bush",
+  "source": "public/models/berry-bush/model.glb",
+  "sourceSha256": "3d405ba99daa2d984810e9a2cf4418ad2008c0ee9279c0157fb68fc5a3008ee1",
+  "image": "output/meshmell-covers/berry-bush/r01/cover-0000.jpg",
+  "imageSha256": "d7833904cc2c0837c4e704456222e0437c0569698a1edc6dc9fa14333d6ca593",
+  "imageBytes": 462152,
+  "width": 960,
+  "height": 960,
+  "background": "../threed-model-creation/models/roaring-bear-on-rock-base-in-dark-bronze/media/background.png",
+  "backgroundSha256": "853d40b44eed726e0c401707126b91a9fe186d1b44c8032771575e75a44241cd",
+  "camera": {
+    "canonicalFront": "+Z",
+    "side": "right-front",
+    "azimuthDegrees": 45,
+    "polarDegrees": 80,
+    "distance": "auto"
+  },
+  "animation": null,
+  "renderer": "../threed-model-creation/trellis.cpp/tools/mv_preview/render_composite_frames.mjs",
+  "revision": "r01",
+  "renderedAt": "2026-09-07T07:24:18.182Z",
+  "visuallyApproved": false,
+  "uploaded": false
+}

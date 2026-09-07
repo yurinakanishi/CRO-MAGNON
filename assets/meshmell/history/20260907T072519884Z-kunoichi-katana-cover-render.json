@@ -1,0 +1,28 @@
+{
+  "action": "cover-render",
+  "key": "kunoichi-katana",
+  "modelId": 182,
+  "url": "https://meshmell.com/ja/viewer/models/kunoichi-katana",
+  "source": "public/models/kunoichi-katana/model.glb",
+  "sourceSha256": "3e6e061fc02779d3516d114b53629fa0d5b585e815d4683ce74dd7d9c2822e0e",
+  "image": "output/meshmell-covers/kunoichi-katana/r01/cover-0000.jpg",
+  "imageSha256": "610a5aee5b30c5cb7e26c9a9e8d3566eb00db9dfd9758ec8b3b2ba54bedff477",
+  "imageBytes": 456361,
+  "width": 960,
+  "height": 960,
+  "background": "../threed-model-creation/models/roaring-bear-on-rock-base-in-dark-bronze/media/background.png",
+  "backgroundSha256": "853d40b44eed726e0c401707126b91a9fe186d1b44c8032771575e75a44241cd",
+  "camera": {
+    "canonicalFront": "+Z",
+    "side": "right-front",
+    "azimuthDegrees": 45,
+    "polarDegrees": 80,
+    "distance": "auto"
+  },
+  "animation": null,
+  "renderer": "../threed-model-creation/trellis.cpp/tools/mv_preview/render_composite_frames.mjs",
+  "revision": "r01",
+  "renderedAt": "2026-09-07T07:25:19.884Z",
+  "visuallyApproved": false,
+  "uploaded": false
+}

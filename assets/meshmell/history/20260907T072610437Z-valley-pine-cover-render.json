@@ -1,0 +1,28 @@
+{
+  "action": "cover-render",
+  "key": "valley-pine",
+  "modelId": 193,
+  "url": "https://meshmell.com/ja/viewer/models/valley-pine",
+  "source": "public/models/valley-pine/model.glb",
+  "sourceSha256": "068c0253b58a13e096cb39a5f825a80de5cb7d129ef9351726cd40ee126551c5",
+  "image": "output/meshmell-covers/valley-pine/r01/cover-0000.jpg",
+  "imageSha256": "f8573ec0c2b876a14a67165ef07826ce4a26934fbfb3d821e84daa8993cc20d7",
+  "imageBytes": 443285,
+  "width": 960,
+  "height": 960,
+  "background": "../threed-model-creation/models/roaring-bear-on-rock-base-in-dark-bronze/media/background.png",
+  "backgroundSha256": "853d40b44eed726e0c401707126b91a9fe186d1b44c8032771575e75a44241cd",
+  "camera": {
+    "canonicalFront": "+Z",
+    "side": "right-front",
+    "azimuthDegrees": 45,
+    "polarDegrees": 80,
+    "distance": "auto"
+  },
+  "animation": null,
+  "renderer": "../threed-model-creation/trellis.cpp/tools/mv_preview/render_composite_frames.mjs",
+  "revision": "r01",
+  "renderedAt": "2026-09-07T07:26:10.437Z",
+  "visuallyApproved": false,
+  "uploaded": false
+}
