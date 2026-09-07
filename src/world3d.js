@@ -15,6 +15,7 @@ import { CHARACTER_MODELS, characterModel } from '/shared/characters.mjs';
 import { enemyAnimationState, playerRecovered } from './enemy-state.js';
 import { FrameClock } from './frame-clock.js';
 import { WorldAtmosphere } from './world-atmosphere.js';
+import { mammothSeat } from './riding-pose.js';
 
 const DEFAULT_DISTANCE=5.5;
 const tempPoint=new THREE.Vector3();
@@ -197,6 +198,11 @@ export class WorldRenderer {
       if(action==='Attack')entity.actor?.animation.playAttack(Math.max(0,(this.serverNow()-(p.attackAt??0))/1000));
       else if(action&&!p.moving)entity.actor?.animation.play(action);
       entity.state=p;if(p.id===selfId&&this.firstState){this.focus.set(p.x,walkHeight(p.x,p.z)+focusHeight(p),p.z);this.targetDistance=p.species==='bear'?4.5:DEFAULT_DISTANCE;this.distance=this.targetDistance;this.zoom=DEFAULT_DISTANCE/this.targetDistance;this.firstState=false;}
+      if(p.id===selfId&&this.cameraMount!==(p.mountId||null)){
+        this.cameraMount=p.mountId||null;
+        this.targetDistance=p.mountId?9:p.species==='bear'?4.5:DEFAULT_DISTANCE;
+        this.zoom=DEFAULT_DISTANCE/this.targetDistance;
+      }
     }
     for(const[id,entity]of this.players)if(!present.has(id)){this.scene.remove(entity.model);entity.actor?.dispose();entity.label.element.remove();this.labels.splice(this.labels.indexOf(entity.label),1);this.players.delete(id);}
     this.campLabel?.element.classList.toggle('complete',state.camp.level>0);
@@ -240,15 +246,64 @@ export class WorldRenderer {
   serverNow(){return this.serverTime===undefined?Date.now():this.serverTime+performance.now()-this.stateReceivedAt;}
   setZoom(value){this.zoom=clamp(Number(value)||1,DEFAULT_DISTANCE/19,DEFAULT_DISTANCE/3.2);this.targetDistance=clamp(DEFAULT_DISTANCE/this.zoom,3.2,19);}
   adjustZoom(delta){this.setZoom(this.zoom+delta);}
-  focusPlayer(){const me=this.players.get(this.selfId);if(me?.state.moving)this.yaw=me.state.facing+Math.PI;else this.yaw=-.28;this.pitch=.19;this.targetDistance=me?.state.species==='bear'?4.5:DEFAULT_DISTANCE;this.zoom=DEFAULT_DISTANCE/this.targetDistance;}
+  focusPlayer(){const me=this.players.get(this.selfId);if(me?.state.moving)this.yaw=me.state.facing+Math.PI;else this.yaw=-.28;this.pitch=.19;this.targetDistance=me?.state.mountId?9:me?.state.species==='bear'?4.5:DEFAULT_DISTANCE;this.zoom=DEFAULT_DISTANCE/this.targetDistance;}
   resize(){const r=this.canvas.getBoundingClientRect();this.width=Math.max(1,r.width);this.height=Math.max(1,r.height);this.renderer.setSize(this.width,this.height,false);this.camera.aspect=this.width/this.height;this.camera.updateProjectionMatrix();}
 
   render(time,dt) {
+    for(const animal of this.mammoths){
+      const state=this.state.animals?.find(item=>item.id===animal.id);
+      animal.seat??=mammothSeat(animal.actor.root);
+      const phase=state?.phase??'alive';
+      animal.model.visible=!!state&&(phase==='alive'||phase==='dying');animal.meat.visible=!!state&&phase==='meat';
+      animal.label.active=!!state&&state.riderId!==this.selfId&&(phase==='alive'||phase==='meat');
+      if(!state)continue;
+      if(Math.hypot(state.x-this.camera.position.x,state.z-this.camera.position.z)>90){animal.model.visible=false;animal.meat.visible=false;animal.label.active=false;animal.initialized=false;continue;}
+      if(phase!==animal.phase||(phase==='alive'&&state.phaseStartedAt!==animal.phaseStartedAt)){
+        if(phase==='meat'||phase==='respawning')animal.actor.stop();
+        // A background tab can miss the entire death / respawn cycle while its
+        // render loop is suspended. A new alive timestamp starts a new lifetime.
+        if(phase==='alive'&&animal.phase){animal.initialized=false;animal.actor.stop();}
+        animal.phase=phase;animal.phaseStartedAt=state.phaseStartedAt;
+      }
+      if(!animal.initialized){animal.model.position.set(state.x,walkHeight(state.x,state.z),state.z);animal.initialized=true;}
+      const factor=1-Math.exp(-dt*15),next=this.collision.move(animal.model.position,(state.x-animal.model.position.x)*factor,(state.z-animal.model.position.z)*factor,state.radius);
+      animal.model.position.set(next.x,walkHeight(next.x,next.z),next.z);
+      const diff=Math.atan2(Math.sin(state.facing-animal.model.rotation.y),Math.cos(state.facing-animal.model.rotation.y));animal.model.rotation.y+=diff*(1-Math.exp(-dt*10));
+      animal.meat.position.set(state.x,walkHeight(state.x,state.z),state.z);animal.meat.rotation.y=state.facing;
+      animal.label.position.set(animal.model.position.x,animal.model.position.y+(phase==='meat'?.8:state.scale*animal.actor.asset.heightMetres+.35),animal.model.position.z);
+      animal.label.element.querySelector('strong').textContent=phase==='meat'?'マンモスの肉':'マンモス';
+      animal.detail.textContent=phase==='meat'?`Eで採る · 残り${state.meatRemaining}個`:state.riderId?'仲間が騎乗中': 'Rで乗る · Fで攻撃';
+      animal.health.hidden=phase!=='alive';animal.health.max=state.maxHealth??100;animal.health.value=state.health??100;
+      if(phase==='dying')animal.actor.sampleOnce('Death',Math.max(0,(this.serverNow()-state.phaseStartedAt)/1000));
+      else if(phase==='alive'){animal.actor.play(state.clip,animal.actor.asset.locomotion?.[state.clip]?state.speed/(state.scale*animal.actor.asset.locomotion[state.clip].metresPerSecond):1);animal.actor.update(dt);}
+    }
     for(const entity of this.players.values()){
       const{model,state:p}=entity,factor=1-Math.exp(-dt*20);
       model.visible=p.id===this.selfId||Math.hypot(p.x-this.focus.x,p.z-this.focus.z)<95;
       if(!model.visible){model.position.set(p.x,walkHeight(p.x,p.z),p.z);model.rotation.y=p.facing;entity.label.active=false;continue;}
       entity.label.active=true;
+      const mount=p.mountId&&this.mammoths.find(a=>a.id===p.mountId&&a.model.visible);
+      if(p.mountId){
+        // Keep the rider hidden until the real mammoth and the real skin load.
+        // Never display a standing character inside an unloaded mount.
+        model.visible=!!mount&&!!entity.actor;entity.label.active=model.visible;
+        if(!model.visible)continue;
+        const pose=entity.actor.ridingPose;
+        model.rotation.y=mount.model.rotation.y;
+        pose.update(entity.actor.animation,time,p.speed||0);
+        mount.model.updateMatrixWorld(true);
+        mount.seat.position(tempPoint);
+        const offset=pose.pelvisOffset(this.riderOffset??=new THREE.Vector3()).applyAxisAngle(THREE.Object3D.DEFAULT_UP,model.rotation.y);
+        model.position.copy(tempPoint).sub(offset);
+        if(entity.weapon)entity.weapon.visible=false;if(entity.axe)entity.axe.visible=false;
+        entity.wasMounted=true;
+        entity.label.position.copy(model.position);entity.label.position.y+=entity.actor.asset.heightMetres+.3;
+        continue;
+      }
+      if(entity.wasMounted){
+        entity.actor?.ridingPose.leave(entity.actor.animation);entity.wasMounted=false;
+        model.position.set(p.x,walkHeight(p.x,p.z),p.z);model.rotation.y=p.facing;
+      }
       let remaining=Math.hypot(p.x-model.position.x,p.z-model.position.z);
       // A long suspension or server recovery can skip many movement snapshots.
       // Accept that authoritative correction instead of interpolating through a
@@ -302,37 +357,11 @@ export class WorldRenderer {
     for(const item of this.resources.values())item.model.visible=item.resource.amount>0&&item.model.position.distanceTo(this.camera.position)<this.scene.fog.far+5;
     if(this.waterMaterial)this.waterMaterial.userData.time.value=time;
     if(this.npc){this.npc.visible=this.npc.position.distanceTo(this.camera.position)<75;if(this.npc.visible)this.npcActor?.animation.update(dt,0);}
-    for(const landscape of this.landscapes)landscape.update(this.camera,time);
+    for(const landscape of this.landscapes)landscape.update(this.camera,time,self?.state.mountId?this.focus:null);
     for(const fire of this.fires){
       const visible=fire.root.position.distanceTo(this.camera.position)<65;fire.light.visible=visible;fire.sparks.visible=visible;if(!visible)continue;
       fire.light.intensity=4.1+Math.sin(time*9+fire.seed)*.5;
       const pos=fire.sparks.geometry.attributes.position;for(let i=0;i<pos.count;i++){const life=(time*.32+i/pos.count)%1;pos.setXYZ(i,Math.sin(i*51+time)*life*.45,.35+life*2.4,Math.cos(i*23+time*.5)*life*.45);}pos.needsUpdate=true;
-    }
-    for(const animal of this.mammoths){
-      const state=this.state.animals?.find(item=>item.id===animal.id);
-      const phase=state?.phase??'alive';
-      animal.model.visible=!!state&&(phase==='alive'||phase==='dying');animal.meat.visible=!!state&&phase==='meat';
-      animal.label.active=!!state&&(phase==='alive'||phase==='meat');
-      if(!state)continue;
-      if(Math.hypot(state.x-this.camera.position.x,state.z-this.camera.position.z)>90){animal.model.visible=false;animal.meat.visible=false;animal.label.active=false;animal.initialized=false;continue;}
-      if(phase!==animal.phase||(phase==='alive'&&state.phaseStartedAt!==animal.phaseStartedAt)){
-        if(phase==='meat'||phase==='respawning')animal.actor.stop();
-        // A background tab can miss the entire death / respawn cycle while its
-        // render loop is suspended. A new alive timestamp starts a new lifetime.
-        if(phase==='alive'&&animal.phase){animal.initialized=false;animal.actor.stop();}
-        animal.phase=phase;animal.phaseStartedAt=state.phaseStartedAt;
-      }
-      if(!animal.initialized){animal.model.position.set(state.x,walkHeight(state.x,state.z),state.z);animal.initialized=true;}
-      const factor=1-Math.exp(-dt*15),next=this.collision.move(animal.model.position,(state.x-animal.model.position.x)*factor,(state.z-animal.model.position.z)*factor,state.radius);
-      animal.model.position.set(next.x,walkHeight(next.x,next.z),next.z);
-      const diff=Math.atan2(Math.sin(state.facing-animal.model.rotation.y),Math.cos(state.facing-animal.model.rotation.y));animal.model.rotation.y+=diff*(1-Math.exp(-dt*10));
-      animal.meat.position.set(state.x,walkHeight(state.x,state.z),state.z);animal.meat.rotation.y=state.facing;
-      animal.label.position.set(animal.model.position.x,animal.model.position.y+(phase==='meat'?.8:state.scale*animal.actor.asset.heightMetres+.35),animal.model.position.z);
-      animal.label.element.querySelector('strong').textContent=phase==='meat'?'マンモスの肉':'マンモス';
-      animal.detail.textContent=phase==='meat'?`Eで採る · 残り${state.meatRemaining}個`:'F / クリックで攻撃';
-      animal.health.hidden=phase!=='alive';animal.health.max=state.maxHealth??100;animal.health.value=state.health??100;
-      if(phase==='dying')animal.actor.sampleOnce('Death',Math.max(0,(this.serverNow()-state.phaseStartedAt)/1000));
-      else if(phase==='alive'){animal.actor.play(state.clip,state.clip==='Walk_Loop'?state.speed/(state.scale*animal.actor.asset.locomotion.Walk_Loop.metresPerSecond):1);animal.actor.update(dt);}
     }
     for(const enemy of this.enemies.values()){
       const {state,model,actor}=enemy;if(!actor)continue;

@@ -14,9 +14,10 @@ import { planNavigation, updateNavigation } from './shared/navigation.mjs';
 import { CollisionWorld, overlap } from './shared/collision.mjs';
 import { createAnimals, updateAnimals, actorObstacle } from './shared/animals.mjs';
 import { animalIsSolid, handleHuntingAction, updateHunting } from './shared/hunting.mjs';
-import { enemyIsSolid } from './shared/combat.mjs';
+import { enemyIsSolid, stopActor } from './shared/combat.mjs';
 import { createEnemies, updateEnemies } from './shared/enemies.mjs';
 import { SCENERY } from './shared/scenery-layout.mjs';
+import { RIDING, mountedAnimal, handleRidingAction, releaseRider, ridingObstacles } from './shared/riding.mjs';
 
 const ROOT = path.dirname(fileURLToPath(import.meta.url));
 const COLORS = ['#e4ac65', '#87b899', '#b49cd2', '#76a7c3', '#ce8c8b'];
@@ -57,7 +58,7 @@ export function createGameServer({
       if (url.pathname === '/api/health' || url.pathname === '/api/network') {
         const activePort = server.address()?.port || port;
         const body = url.pathname === '/api/health'
-          ? { ok: true, combatVersion: 3, characterVersion: 2, enemyVersion: 1, worldVersion: WORLD.version, worldSize: WORLD.size, rooms: rooms.size, players: [...rooms.values()].reduce((sum, room) => sum + room.players.size, 0), maxPlayers: WORLD.maxPlayers }
+          ? { ok: true, ridingVersion: RIDING.version, combatVersion: 3, characterVersion: 2, enemyVersion: 1, worldVersion: WORLD.version, worldSize: WORLD.size, rooms: rooms.size, players: [...rooms.values()].reduce((sum, room) => sum + room.players.size, 0), maxPlayers: WORLD.maxPlayers }
           : {
             port: activePort,
             localUrl: `http://localhost:${activePort}`,
@@ -103,13 +104,13 @@ export function createGameServer({
   function snapshot(room, includeWorld = false) {
     const now = Date.now();
     return {
-      type: 'state', combatVersion: 3, characterVersion: 2, enemyVersion: 1, worldVersion: WORLD.version, room: room.name, serverTime: now,
+      type: 'state', ridingVersion: RIDING.version, combatVersion: 3, characterVersion: 2, enemyVersion: 1, worldVersion: WORLD.version, room: room.name, serverTime: now,
       projectiles: (room.projectiles || []).map(({id,ownerId,x,z,dx,dz,createdAt,updatedAt,travelled,kind})=>({id,ownerId,x,z,dx,dz,createdAt,updatedAt,travelled,kind})),
       projectileImpacts: (room.projectileImpacts || []).map(effect=>({...effect})),
-      animals: room.animals.map(({id,x,z,facing,speed,scale,radius,clip,phase,health,maxHealth,meatRemaining,phaseStartedAt})=>({id,x,z,facing,speed,scale,radius,clip,phase,health,maxHealth,meatRemaining,phaseStartedAt})),
+      animals: room.animals.map(({id,x,z,facing,speed,scale,radius,clip,phase,health,maxHealth,meatRemaining,phaseStartedAt,riderId})=>({id,x,z,facing,speed,scale,radius,clip,phase,health,maxHealth,meatRemaining,phaseStartedAt,riderId})),
       enemies: (room.enemies || []).map(({id,modelKey,name,hostile,x,z,scale,facing,speed,radius,clip,phase,health,maxHealth,phaseStartedAt,behavior,targetId,attackSequence,attackAt,hitSequence,hitAt})=>({id,modelKey,name,hostile,x,z,scale,facing,speed,radius,clip,phase,health,maxHealth,phaseStartedAt,behavior,targetId,attackSequence,attackAt,hitSequence,hitAt})),
-      players: [...room.players.values()].map(({ id, name, species, gender, x, z, radius, color, inventory, tool, ready, energy, facing, moving, running, speed, attackSequence, attackAt, cookingEndsAt, hurtSequence, hurtAt, defeatSequence, downedUntil, invulnerableUntil }) =>
-        ({ id, name, species, gender, x, z, radius, color, inventory: { ...inventory }, tool, ready, energy, facing, moving, running, speed, attackSequence, attackAt, cookingEndsAt, hurtSequence, hurtAt, defeatSequence, downedUntil, invulnerableUntil })),
+      players: [...room.players.values()].map(({ id, name, species, gender, x, z, radius, color, inventory, tool, ready, energy, facing, moving, running, speed, attackSequence, attackAt, cookingEndsAt, hurtSequence, hurtAt, defeatSequence, downedUntil, invulnerableUntil, mountId }) =>
+        ({ id, name, species, gender, x, z, radius, color, inventory: { ...inventory }, tool, ready, energy, facing, moving, running, speed, attackSequence, attackAt, cookingEndsAt, hurtSequence, hurtAt, defeatSequence, downedUntil, invulnerableUntil, mountId })),
       ...(includeWorld ? {resources: room.resources.map(({ regeneratedAt, ...resource }) => ({ ...resource })), camp: { ...room.camp }, cookingFires:room.cookingFires, npc: { ...NPC }} : {}),
       day: 1 + Math.floor((now - room.createdAt) / 240000),
       dayProgress: ((now - room.createdAt) % 240000) / 240000,
@@ -127,6 +128,13 @@ export function createGameServer({
 
   function act(room, player, message, now) {
     const action = message.action;
+    const riding = handleRidingAction(room, player, message, now);
+    if (riding) {
+      notice(player, riding.text, riding.tone);
+      if (riding.changed) broadcast(room, snapshot(room));
+      return;
+    }
+    if (player.mountId) return notice(player, '騎乗中です。攻撃・採集・食事は R で降りてから。');
     const hunting = handleHuntingAction(room, player, message, now);
     if (hunting) {
       notice(player, hunting.text, hunting.tone);
@@ -229,7 +237,7 @@ export function createGameServer({
       x: 48 + room.players.size * 1.1, z: 57 + (room.players.size % 2),
       color: COLORS.find((color) => !usedColors.has(color)) || COLORS[0],
       inventory: { wood: 0, stone: 0, berry: 0, rawMeat: 0, cookedMeat: 0 }, tool: false,
-      attackSequence: 0, attackAt: 0, pendingStrike: null, cookingEndsAt: 0,
+      mountId: null, attackSequence: 0, attackAt: 0, pendingStrike: null, cookingEndsAt: 0,
       hurtSequence: 0, hurtAt: 0, defeatSequence: 0, downedUntil: 0, invulnerableUntil: 0,
       ready: room.camp.level > 0, energy: 100, facing: 0, moving: false, running: false, runningRequested: false, speed: 0,
       radius: WORLD.playerRadius, path: [], lastTarget: 0, dx: 0, dz: 0, target: null, lastInput: 0, lastAction: 0, lastChat: 0,
@@ -239,7 +247,7 @@ export function createGameServer({
     const spawn=room.collision.nearestFree(player,player.radius,[...room.players.values(),...room.animals.filter(animalIsSolid),...room.enemies.filter(enemyIsSolid)].map(actorObstacle));
     if(!spawn){send(socket,{type:'error',code:'NO_SPAWN',text:'安全な参加地点がありません。'});socket.close();return;}
     Object.assign(player,spawn);room.players.set(player.id, player);
-    send(socket, { type: 'welcome', combatVersion: 3, characterVersion: 2, worldVersion: WORLD.version, id: player.id, room: roomName });
+    send(socket, { type: 'welcome', ridingVersion: RIDING.version, combatVersion: 3, characterVersion: 2, worldVersion: WORLD.version, id: player.id, room: roomName });
     broadcast(room, snapshot(room, true));
     systemChat(room, `${player.name} が谷にやってきた。`);
     socket.on('pong', () => { player.alive = true; });
@@ -254,6 +262,7 @@ export function createGameServer({
       let message;
       try { message = JSON.parse(data.toString()); } catch { return; }
       if (!message || typeof message !== 'object' || Array.isArray(message)) return;
+      const controlled = mountedAnimal(room, player) || player;
       if (player.downedUntil && ['move','gait','target','action'].includes(message.type)) {
         if (message.type === 'action') notice(player, '回復を待っています。間もなく焚き火へ戻ります。', 'info');
         return;
@@ -262,21 +271,24 @@ export function createGameServer({
         const dx = clamp(message.dx, -1, 1);
         const dz = clamp(message.dz, -1, 1);
         const length = Math.max(1, Math.hypot(dx, dz));
-        player.dx = dx / length;
-        player.dz = dz / length;
-        player.lastInput = now;
-        player.runningRequested = message.running === true;
-        player.target = null;player.path=[];player.navigationGoal=null;player.navigationEnd=null;
+        controlled.dx = dx / length;
+        controlled.dz = dz / length;
+        controlled.lastInput = now;
+        controlled.runningRequested = message.running === true;
+        controlled.target = null;controlled.path=[];controlled.navigationGoal=null;controlled.navigationEnd=null;
       } else if (message.type === 'gait' && typeof message.running === 'boolean') {
-        player.runningRequested = message.running;
+        controlled.runningRequested = message.running;
       } else if (message.type === 'target' && Number.isFinite(message.x) && Number.isFinite(message.z) && now-player.lastTarget>=180) {
         player.lastTarget=now;
-        player.runningRequested = message.running === true;
+        controlled.runningRequested = message.running === true;
         const goal={ x: worldClamp(message.x,'x'), z: worldClamp(message.z,'z') };
-        const dynamic=[...room.players.values()].filter(p=>p!==player).concat(room.animals.filter(animalIsSolid),room.enemies.filter(enemyIsSolid)).map(actorObstacle);
-        if(!planNavigation(player,goal,room.collision,dynamic,now))notice(player,'進路がふさがれています。空いたら移動します。');
-        player.dx = 0;
-        player.dz = 0;
+        const dynamic=ridingObstacles(room,controlled===player?null:controlled,player);
+        if(!planNavigation(controlled,goal,room.collision,dynamic,now)){
+          if(player.mountId){stopActor(controlled);notice(player,'マンモスが通れる道が見つかりません。広い道を選ぶか、Rで降りて進もう。');}
+          else notice(player,'進路がふさがれています。空いたら移動します。');
+        }
+        controlled.dx = 0;
+        controlled.dz = 0;
       } else if (message.type === 'action' && typeof message.action === 'string' && (message.action === 'attack' || message.action === 'cancelCook' || now - player.lastAction >= 450)) {
         player.lastAction = now;
         act(room, player, message, now);
@@ -290,6 +302,7 @@ export function createGameServer({
       }
     });
     socket.on('close', () => {
+      releaseRider(room, player);
       player.pendingStrike = null;
       room.projectiles=(room.projectiles || []).filter(projectile=>projectile.ownerId!==player.id);
       room.players.delete(player.id);
@@ -315,7 +328,7 @@ export function createGameServer({
         const dynamic=[...room.players.values()].filter(p=>p!==player).concat(room.animals.filter(animalIsSolid),room.enemies.filter(enemyIsSolid)).map(actorObstacle);
         if (player.downedUntil || (player.attackSequence && now - player.attackAt < attackProfile(player).durationMs)) {
           player.speed=0;player.moving=false;player.running=false;
-        } else {
+        } else if (!player.mountId) {
           updateNavigation(player,room.collision,dynamic,now);
           movePlayer(player,dt,now,(p,dx,dz)=>room.collision.move(p,dx,dz,player.radius,dynamic));
         }

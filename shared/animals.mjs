@@ -3,6 +3,7 @@ import { MODEL_BOUNDS } from './model-bounds.mjs';
 import { movePlayer } from './movement.mjs';
 import { animalIsSolid, initialHuntState, stopActor } from './hunting.mjs';
 import { enemyIsSolid } from './combat.mjs';
+import { updateRiddenAnimal } from './riding.mjs';
 
 export const animalRadius=scale=>MODEL_BOUNDS['woolly-mammoth'].radius*scale+.08;
 export const actorObstacle=actor=>({id:actor.id,type:'circle',x:actor.x,z:actor.z,radius:actor.radius});
@@ -20,6 +21,7 @@ export function updateAnimals(room,dt,now = Date.now()) {
   for(const animal of room.animals) {
     animal.age+=dt;
     if(animal.phase!=='alive') { stopActor(animal); animal.clip=animal.phase==='dying'?'Death':null; continue; }
+    if(updateRiddenAnimal(room,animal,dt,now))continue;
     if(now<animal.hitUntil) { stopActor(animal); animal.clip='Idle_Loop'; continue; }
     const grazing=animal.age%38>27;
     const dynamic=[...room.players.values(),...room.animals.filter(a=>a!==animal&&animalIsSolid(a)),...(room.enemies||[]).filter(enemyIsSolid)].map(actorObstacle);

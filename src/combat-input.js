@@ -21,5 +21,5 @@ export function isAttackShortcut(event) {
 
 // Having a target, its phase, and cooking never gate the attack control.
 export function canStartAttack(player, serverNow) {
-  return !!player && !player.downedUntil && (!(player.attackSequence > 0) || serverNow - player.attackAt >= attackProfile(player).cooldownMs);
+  return !!player && !player.downedUntil && !player.mountId && (!(player.attackSequence > 0) || serverNow - player.attackAt >= attackProfile(player).cooldownMs);
 }

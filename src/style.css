@@ -89,3 +89,13 @@ progress::-moz-progress-bar { background:#d3ab79; border-radius:4px; }
 @media(max-width:520px){.biome-destinations{grid-template-columns:repeat(3,minmax(0,1fr))}.biome-destination{padding:7px}.biome-destination span{font-size:10px}.location-title h1{font-size:22px}}
 @media(max-width:430px){.character-options .character-choice{min-height:116px;padding:10px 8px;gap:6px;flex-wrap:wrap}.character-choice .portrait{width:34px;height:40px;flex-basis:34px}.character-choice>span:last-child{flex-basis:100%}.character-choice strong{font-size:11px}.character-choice small{font-size:9px}}
 
+
+.riding-controls{display:flex;justify-content:center;align-items:center;gap:10px;margin-top:5px;padding:5px 9px;border:1px solid #ffffff20;border-radius:6px;background:#28372fe8;pointer-events:auto}
+.riding-controls small{font-size:10px;color:#c4cab8}.riding-controls .mounted{background:#556044;border-color:#d5bf87}
+.hotbar-wrap.riding{display:grid;grid-template-columns:minmax(0,1fr) auto;max-width:calc(100% - 24px);gap:7px}
+.hotbar-wrap.riding .hunt-controls,.hotbar-wrap.riding .interaction-hint,.hotbar-wrap.riding .resource-slots,.hotbar-wrap.riding .hotbar-divider,.hotbar-wrap.riding [data-action]{display:none}
+.hotbar-wrap.riding .riding-controls{margin:0;flex-direction:column;gap:3px;border:0;background:none;padding:0}
+.hotbar-wrap.riding .riding-controls small{font-size:9px;white-space:normal;text-align:center;line-height:1.5}
+.hotbar-wrap.riding .hotbar{padding:4px;width:auto;min-width:0}
+.hotbar-wrap.riding .controls-caption{grid-column:1/-1;justify-content:center}
+@media(max-width:520px){.riding-controls{gap:6px;padding:4px;flex-wrap:wrap}.riding-controls small{font-size:9px}.riding-controls .hunt-button{font-size:10px}}

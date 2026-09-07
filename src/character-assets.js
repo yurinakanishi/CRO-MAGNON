@@ -2,6 +2,7 @@ import * as THREE from 'three';
 import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
 import { clone } from 'three/addons/utils/SkeletonUtils.js';
 import { CharacterAnimation } from './character-animation.js';
+import { RidingPose } from './riding-pose.js';
 
 export function handGripPlacement(root) {
   root.updateMatrixWorld(true);
@@ -91,12 +92,13 @@ export class CharacterAssets {
       node.material = Array.isArray(node.material) ? node.material.map(tint) : tint(node.material);
     });
     const { rotation: gripUp } = handGripPlacement(root);
+    const ridingPose = new RidingPose(root);
     const animation = new CharacterAnimation(root, gltf.animations, {
       walkSpeed: asset.locomotion.Walk_Loop.metresPerSecond, runSpeed: asset.locomotion.Run_Loop.metresPerSecond,
     });
     animation.mixer.update(Math.random() * animation.current.getClip().duration);
     const instance = {
-      root, animation, asset, gripUp,
+      root, animation, asset, gripUp, ridingPose,
       dispose: () => {
         if (!this.instances.delete(instance)) return;
         animation.dispose();

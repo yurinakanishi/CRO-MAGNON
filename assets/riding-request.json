@@ -1,0 +1,7 @@
+{
+  "request": "マンモスに乗れるといい。",
+  "status": "integrated-and-game-qa-passed",
+  "modelGeneration": "not needed: existing approved TRELLIS meshes and rigs retained byte-for-byte",
+  "gameQa": "assets/riding-game-qa.json",
+  "networkQa": "assets/riding-network-qa.json"
+}

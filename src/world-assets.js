@@ -267,6 +267,8 @@ export class LandscapeInstances {
     this.placements = placements; this.distances = distances; this.scene = scene; this.levels = []; this.nextUpdate = 0;
     this.grid=new PlacementGrid(placements);this.generateCell=generateCell;this.generated=new Map();
     this.castNearbyShadows=!foliage;
+    this.canopyOcclusion=key==='valley-pine';
+    this.sightLine=new THREE.Line3();this.sightPoint=new THREE.Vector3();
     const generatorCapacity=generateCell?250*(Math.ceil(distances[2]/32)*2+2)**2:0;
     this.capacity=this.grid.maximumNearby(distances[2])+generatorCapacity;
     const template = assets.get(key);
@@ -288,10 +290,11 @@ export class LandscapeInstances {
     this.matrix = new THREE.Matrix4(); this.composed = new THREE.Matrix4(); this.rotation = new THREE.Quaternion(); this.axis = new THREE.Vector3(0, 1, 0); this.sphere = new THREE.Sphere();
     this.frustum = new THREE.Frustum(); this.projection = new THREE.Matrix4();
   }
-  update(camera, time) {
+  update(camera, time, riderFocus = null) {
     if (time < this.nextUpdate) return; this.nextUpdate = time + .18;
     this.projection.multiplyMatrices(camera.projectionMatrix, camera.matrixWorldInverse); this.frustum.setFromProjectionMatrix(this.projection);
     const counts = [0, 0, 0];
+    if(riderFocus)this.sightLine.set(camera.position,riderFocus);
     const nearby=[...this.grid.near(camera.position.x,camera.position.z,this.distances[2])];
     if(this.generateCell) {
       const active=new Set(),radius=this.distances[2];
@@ -306,6 +309,13 @@ export class LandscapeInstances {
     for (const item of nearby) {
       const distance = item.position.distanceTo(camera.position);
       if (distance > this.distances[2]) continue;
+      // A raised riding camera can enter a canopy. Cull only the trees blocking
+      // its short sight line; the body colliders and other players' views remain.
+      if(this.canopyOcclusion&&riderFocus&&distance<22){
+        this.sphere.center.copy(item.position);this.sphere.center.y+=item.height*.65;
+        this.sightLine.closestPointToPoint(this.sphere.center,true,this.sightPoint);
+        if(this.sightPoint.distanceToSquared(this.sphere.center)<(item.height*.34+.5)**2)continue;
+      }
       this.sphere.center.copy(item.position); this.sphere.center.y += item.height * .5; this.sphere.radius = item.height * .75;
       if (!this.frustum.intersectsSphere(this.sphere) && !(this.castNearbyShadows&&distance<Math.min(24,this.distances[0]))) continue;
       const level = distance < this.distances[0] ? 0 : distance < this.distances[1] ? 1 : 2;

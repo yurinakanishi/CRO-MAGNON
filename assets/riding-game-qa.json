@@ -1,0 +1,71 @@
+{
+  "status": "passed",
+  "updatedAt": "2026-09-07T00:09:36.712Z",
+  "request": "マンモスに乗れるといい。",
+  "implementation": {
+    "ridingVersion": 1,
+    "oneRiderPerAnimal": true,
+    "controls": [
+      "R / ride button: mount or dismount",
+      "WASD / click: steer",
+      "Shift / run button: run"
+    ],
+    "adultMammothSpeeds": {
+      "walk": 0.7,
+      "run": 2.25,
+      "smallScale": 0.76
+    },
+    "combat": "Dismount before attacking, gathering or eating. Occupied mammals cannot be hunted; staff attacks cannot reach riders.",
+    "collision": "Original body radius and swept solver, 16 tested exit directions; narrow routes may require dismounting.",
+    "render": "Original TRELLIS GLBs; runtime seated skin pose follows animated mammoth spine. Camera backs out to 9 m. Nearby canopies hiding the rider are culled per view. No new mesh, texture, GLB fallback or extra animation mixer.",
+    "approach": "Explicit request follows moving target at 1.2 s intervals; cancels with other input, disconnect, occupancy or a 10 s stall. Mount still requires server validation."
+  },
+  "validation": {
+    "unitTests": 121,
+    "assetsVerified": 29,
+    "network": "assets/riding-network-qa.json",
+    "modelSourceHashes": {
+      "cro-magnon-hunter": "5a23c4abe7903466307bba7c2915276e0c431128771d7b7c612882ada89745eb",
+      "cro-magnon-woman": "8690d5563233614397c7cfad6af0e0b3d89273a29fa59bf421372ec1168ef1b7",
+      "neanderthal-hunter": "7ce4ff20eb1e2ca64df6b51d1c2060311e630394afdb38996eb7e34bbe5ca1e0",
+      "neanderthal-woman": "63ab98a62b2706e76b4cc551d2a0c8bd23363072258598b606d5129ad32a9ff9",
+      "cat-kunoichi": "9ab72ce3d6e6a4a80b25bbb2de023c3a154b790cb1d1c5f1a4a7746d833f34aa",
+      "bear-mage": "3b58124a53297cf5974b340c941fb22ac9e7be1ed9eae6d0cd1362943f70aadf",
+      "woolly-mammoth": "f3ebbe7d55268affc715052dbd3c98e68577cd34298aeeb74f0ade94004c2f2d"
+    },
+    "allSixRiderSkinsPoseAndRestorationTested": true,
+    "actualBrowserCharacters": [
+      "cat-kunoichi",
+      "bear-mage"
+    ],
+    "browserConsole": "output/riding-qa/browser-console.json",
+    "mobile": {
+      "width": 390,
+      "height": 844,
+      "horizontalOverflow": false,
+      "autoApproachAndMount": true,
+      "dismountAndFreeAttack": true,
+      "screenshot": "output/riding-qa/live-mobile-riding.png",
+      "state": "output/riding-qa/live-mobile-riding.json"
+    },
+    "observedFps": {
+      "min": 43,
+      "max": 60,
+      "always60Claimed": false
+    }
+  },
+  "rollout": {
+    "port": 3000,
+    "room": "FANTASY-QA",
+    "ridingVersionObserved": 1,
+    "method": "Existing development server automatically restarted as code changed; frontend reloaded after restoring the original selected profile.",
+    "checkpoint": "output/open-world-restart/port-3000-2026-09-06T23-59-14-054Z.json",
+    "manualServerRestart": false,
+    "persistentStorageAdded": false,
+    "fullDayProgressRestorationClaimed": false
+  },
+  "limitations": [
+    "Mammoths retain their conservative full-body radius, so some forest passages, bridges and long routes are not traversable while riding. A rejected target gives a notice; dismount to continue.",
+    "This update adds riding, not permanent saves or reconnect recovery."
+  ]
+}

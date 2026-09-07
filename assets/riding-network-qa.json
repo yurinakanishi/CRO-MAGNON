@@ -1,0 +1,23 @@
+{
+  "startedAt": "2026-09-06T23:44:36.049Z",
+  "mode": "Two actual browser clients and three passive WebSocket peers on isolated port 3004",
+  "snapshots": 3233,
+  "maxPlayers": 5,
+  "staticPenetrations": 0,
+  "dynamicPenetrations": 0,
+  "mountMismatches": 0,
+  "mounts": [
+    "cat:mammoth-1",
+    "bear:mammoth-2"
+  ],
+  "clips": [
+    "Idle_Loop",
+    "Walk_Loop",
+    "Run_Loop"
+  ],
+  "sixthRefused": true,
+  "errors": [],
+  "probed": true,
+  "finishedAt": "2026-09-06T23:50:45.579Z",
+  "status": "passed"
+}

@@ -25,7 +25,7 @@ const actors = collection => collection instanceof Map ? [...collection.values()
 export function damageableTargets(room) {
   const playerIds = new Set(room.players.keys());
   return [
-    ...actors(room.animals).map(target => ({ target, kind: 'animal' })),
+    ...actors(room.animals).filter(target => !target.riderId).map(target => ({ target, kind: 'animal' })),
     ...actors(room.enemies).filter(target => target.hostile === true).map(target => ({ target, kind: 'enemy' })),
   ].filter(({ target }) => !playerIds.has(target.id) && alive(target) && Number.isFinite(target.x) && Number.isFinite(target.z) && Number.isFinite(target.radius) && target.radius >= 0);
 }
@@ -39,6 +39,7 @@ const clearLine = (room, player, target) => room.collision.segmentFree(player, t
 export function startAttack(room, player, message = {}, now = Date.now()) {
   const profile = attackProfile(player);
   if (player.downedUntil) return { accepted: false, reason: 'downed' };
+  if (player.mountId) return { accepted: false, reason: 'mounted' };
   if (player.attackSequence && now - player.attackAt < profile.cooldownMs) return { accepted: false, reason: 'cooldown' };
   const aimed = typeof message.targetId === 'string' ? damageableTargets(room).find(({ target }) => target.id === message.targetId)?.target : null;
   // A nearby visible click target may turn the actor. F without a target, a stale
