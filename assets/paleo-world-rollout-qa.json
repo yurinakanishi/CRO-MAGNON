@@ -1,0 +1,61 @@
+{
+  "checkedAt": "2026-09-07T06:19:16.868Z",
+  "health": {
+    "ok": true,
+    "ridingVersion": 1,
+    "combatVersion": 3,
+    "characterVersion": 2,
+    "enemyVersion": 1,
+    "worldVersion": 3,
+    "worldSize": 4096,
+    "worldWidth": 4096,
+    "worldDepth": 2048,
+    "epochYearsBP": 50000,
+    "rooms": 2,
+    "players": 2,
+    "maxPlayers": 5
+  },
+  "sources": [
+    {
+      "path": "shared/world.mjs",
+      "matching": true,
+      "sha256": "19084c09de9c1e97581065a58a0b01fd667c51335c8433af6811f9e2423a7b00"
+    },
+    {
+      "path": "shared/paleo-coast-data.mjs",
+      "matching": true,
+      "sha256": "59d58920fb3ebee620bf1a0972d63b1bf1b75a51fe52a55ca9a15e7dcf2e61a6"
+    },
+    {
+      "path": "shared/paleo-geography.mjs",
+      "matching": true,
+      "sha256": "7452355ebecf9d7e23ce7cfaaf2734874e0607a7cf8e726f21ed9a33915a1620"
+    },
+    {
+      "path": "src/world-map.js",
+      "matching": true,
+      "sha256": "cf36d894748809035e684e3d8f4e8851472322d74bda880243630c458dcf6993"
+    },
+    {
+      "path": "src/paleo-materials.js",
+      "matching": true,
+      "sha256": "756d0230ba088c8789c1cb25a60a89503de6c54caf43804e05c7b092c401a8c8"
+    }
+  ],
+  "checkpointCapturedAt": "2026-09-07T06:16:07.936Z",
+  "restored": [
+    {
+      "name": "旅人924",
+      "found": true,
+      "inventoryMatches": true,
+      "gatheredMatches": true,
+      "toolMatches": true,
+      "positionMetres": 0
+    }
+  ],
+  "campMaterialsMatch": true,
+  "dayBefore": 8,
+  "dayAfter": 9,
+  "serverCommand": "node output/open-world-restart/run.mjs 3000 <fresh-checkpoint>",
+  "persistence": "One-time rollout restoration. Existing two-minute reconnect grace remains; no general disk save."
+}

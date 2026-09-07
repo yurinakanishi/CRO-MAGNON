@@ -35,7 +35,8 @@ test('optional impassable river routes over the bridge without corner cutting', 
 });
 
 test('default river allows walking and mounted movement in both directions and direct click routes', () => {
-  const world=new CollisionWorld();
+  // This fixture tests the ford independently of the new Baltic coastline.
+  const world=new CollisionWorld(undefined,{coast:false});
   for(const z of [-25,0,52,110,150])for(const radius of [.24,.32,2.9]) {
     const x=riverX(z),west={x:x-4,z},east={x:x+4,z};
     assert.ok(world.free({x,z},radius),`river centre at ${z}, radius ${radius}`);

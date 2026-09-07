@@ -14,7 +14,8 @@ import { interactionVisible } from '/shared/interactions.mjs';
 import { ENEMY_GROUNDS, SCENERY } from '/shared/scenery-layout.mjs';
 import { playerDamageEvent } from './enemy-state.js';
 import { BIOMES, biomeAt, JOURNEY_STOPS } from '/shared/biomes.mjs';
-import { drawWorldMap, mapProjection } from './world-map.js';
+import { drawWorldMap, mapProjection, setWorldMapMode, setWorldMapSelection } from './world-map.js';
+import { EXPEDITION_STOPS, expeditionById, isLand, worldToGeo, locationName } from '/shared/paleo-geography.mjs';
 
 const icons = {
   katana: '<path d="m4 21 4-4m-2-3 4 4M8 15C15 10 20 5 21 2c-4 1-9 6-13 11Z"/>',
@@ -89,9 +90,9 @@ $('#app').innerHTML = `
     <div class="sidebar-bottom"><button id="help-button" class="help-link">${icon('help')} 遊びかた <kbd>?</kbd></button><button id="profile-button" class="profile-card"><span class="portrait cro" id="my-portrait"><i></i></span><span><strong id="profile-name"></strong><small id="profile-species">クロマニョン人</small></span><span class="profile-edit">•••</span></button><div class="build-label"><span>ALPHA 0.1</span><span>MADE FOR TOGETHER</span></div></div>
   </aside>
   <main class="main">
-    <header class="topbar"><div class="breadcrumb"><span>世界</span><span>/</span><strong>五つの大地</strong><span class="live-tag">LIVE</span></div><div class="topbar-actions"><button id="room-button" class="room-button">${icon('people')}<span id="room-label"></span><span id="online-count">0/5</span></button><button id="invite-button" class="button button-accent">${icon('plus')} 仲間を招待</button></div></header>
+    <header class="topbar"><div class="breadcrumb"><span>世界</span><span>/</span><strong>氷河時代の地球</strong><span class="live-tag">LIVE</span></div><div class="topbar-actions"><button id="room-button" class="room-button">${icon('people')}<span id="room-label"></span><span id="online-count">0/5</span></button><button id="invite-button" class="button button-accent">${icon('plus')} 仲間を招待</button></div></header>
     <section class="game-viewport" aria-label="${GAME_TITLE} ゲーム画面">
-      <canvas id="world" aria-label="五つの地域がつながる3Dワールド。WASDで歩行、Shiftで走行、ドラッグでカメラ回転、ホイールで距離を調整。地面クリックでも移動できます。" tabindex="0"></canvas>
+      <canvas id="world" aria-label="氷河時代の大陸が広がる3Dワールド。WASDで歩行、Shiftで走行、ドラッグでカメラ回転、ホイールで距離を調整。地面クリックでも移動できます。" tabindex="0"></canvas>
       <div class="tps-reticle" aria-hidden="true"><i></i></div>
       <div class="camera-badge"><span class="status-dot"></span> TPS <span>肩越し視点</span></div>
       <div class="scene-shade"></div>
@@ -217,7 +218,7 @@ function updateHUD() {
   $('#my-portrait').className = `portrait ${profile.species}`;
   updateHuntingHUD();
   const biome=biomeAt(me?.x??50,me?.z??50);
-  $('.location-title h1').textContent=biome.name;
+  $('.location-title h1').textContent=locationName(me?.x??50,me?.z??50);
   $('.location-title p').textContent=biome.description;
   $('.location-title .eyebrow').textContent='CRO-MAGNON · OPEN WORLD';
   $('.location-meta span:first-child').textContent=`${biome.short} · ${Math.round(me?.x??50)}, ${Math.round(me?.z??50)}`;
@@ -386,18 +387,27 @@ function openHelp() {
   if(state.enemies?.length)$('.help-grid').insertAdjacentHTML('beforeend',`<div><kbd>北の赤い印</kbd><strong>白羽の呪術師</strong><p>地図から北の草地へ。近づくと追いかけて杖で襲ってきます。相手を向いて F で攻撃。力尽きても4秒後に焚き火で回復し、持ち物は残ります。</p></div>`);
 }
 function openMap() {
-  openModal(`<h2>五つの大地を、歩いてつなぐ。</h2><p class="modal-intro">640 m四方のオープンワールド。地域を選ぶと、道をたどって走ります。WASDでいつでも移動を切り替えられます。</p><canvas id="big-map" width="580" height="450" class="big-map" aria-label="草原・雪原・氷原・火山・砂漠の世界地図"></canvas><div class="biome-destinations">${BIOMES.map(b=>`<button class="biome-destination" data-biome="${b.id}" style="--biome-color:${b.color}"><span>${b.name}</span><small>走って向かう</small></button>`).join('')}</div><div class="map-locations"><button class="button button-outline" id="map-camp">${icon('flame')} 焚き火・調理</button><button class="button button-outline" id="map-hunt-north">${icon('spear')} 北西の狩場</button><button class="button button-outline" id="map-hunt-south">${icon('spear')} 南西の狩場</button><button class="button button-outline" id="map-npc">${icon('people')} オルの集落</button></div>`);
+  setWorldMapMode('earth');setWorldMapSelection(null);
+  openModal(`<h2>氷河時代の地球を、旅する。</h2><p class="modal-intro">約5万年前の大陸を、4,096 × 2,048 mの世界へ。陸地を選んで歩くか、野営地への遠征で海の向こうを探索できます。</p><div class="earth-map-toolbar"><button class="button button-outline" id="map-overview" aria-pressed="true">世界全図</button><button class="button button-outline" id="map-local" aria-pressed="false">現在地の周辺</button><span>北が上 · 人物の大きさはそのまま</span></div><canvas id="big-map" width="960" height="480" class="big-map earth-map" aria-label="約5万年前の地球。大陸・海・雪原・氷床・火山・砂漠の世界地図"></canvas><div class="earth-map-legend">${BIOMES.map(b=>`<span><i style="background:${b.color}"></i>${b.short}</span>`).join('')}<span><i style="background:#285566"></i>海</span></div><div class="earth-travel"><label for="expedition-destination">野営地を選ぶ</label><select id="expedition-destination">${EXPEDITION_STOPS.map(s=>`<option value="${s.id}">${s.name}</option>`).join('')}</select><p id="map-selection" aria-live="polite"></p><div class="earth-travel-actions"><button class="button button-outline" id="map-walk">走って向かう</button><button class="button button-accent" id="map-expedition">野営地へ遠征</button></div><small>遠征は移動を省略します。もちものは保持されます。騎乗中は降りてから。</small></div><div class="map-locations"><button class="button button-outline" id="map-camp">${icon('flame')} はじまりの焚き火</button><button class="button button-outline" id="map-hunt-north">${icon('spear')} 北西の狩場</button><button class="button button-outline" id="map-hunt-south">${icon('spear')} 南西の狩場</button><button class="button button-outline" id="map-npc">${icon('people')} オルの集落</button></div><details class="earth-map-sources"><summary>この世界の時代と地図について</summary><p>ネアンデルタール人の生存期間内である約5万年前が基準です。NOAA ETOPO1の地形を海面 −68.3 mで区切り、正距円筒図法で縮小しています。細い海峡・小島、氷床と気候の範囲は簡略化しています。遠征先は探索用の配置です。</p><a href="https://www.ncei.noaa.gov/products/etopo-global-relief-model" target="_blank" rel="noreferrer">地形資料：NOAA</a> · <a href="https://cp.copernicus.org/articles/12/1079/2016/" target="_blank" rel="noreferrer">海面資料：Spratt & Lisiecki (2016)</a></details>`);
+  let selected=EXPEDITION_STOPS[0];
+  const selectTarget=target=>{selected=target;setWorldMapSelection(target);const geo=worldToGeo(target.x,target.z);$('#map-selection').textContent=`${target.name??biomeAt(target.x,target.z).short} · ${Math.round(distance(player()??CAMP,target))} m先 · ${Math.abs(geo.latitude).toFixed(1)}°${geo.latitude>=0?'N':'S'} ${Math.abs(geo.longitude).toFixed(1)}°${geo.longitude>=0?'E':'W'}`;drawMinimap($('#big-map'),true);};
+  $('#expedition-destination').onchange=event=>selectTarget(expeditionById(event.target.value));
+  $('#map-walk').onclick=()=>{if(!runMode)$('#run-button').click();goTo(selected.x,selected.z,selected.name??'選んだ陸地');};
+  $('#map-expedition').onclick=()=>{if(!joined||renderUnavailable)return;if(player()?.mountId)return notify('マンモスから降りてから遠征しよう。');stopInput();send({type:'expedition',destination:$('#expedition-destination').value});$('#modal').close();};
+  for(const [id,mode] of [['map-overview','earth'],['map-local','local']])$('#'+id).onclick=()=>{setWorldMapMode(mode);$('#map-overview').setAttribute('aria-pressed',String(mode==='earth'));$('#map-local').setAttribute('aria-pressed',String(mode==='local'));drawMinimap($('#big-map'),true);};
   drawMinimap($('#big-map'),true);$('#map-camp').onclick=()=>goTo(49,52.4,'野営地の焚き火');$('#map-npc').onclick=()=>goTo(NPC.x,NPC.z-2,'オルの集落');
   if(state.enemies?.some(enemy=>enemy.hostile===true)){
     $('.map-locations').insertAdjacentHTML('beforeend',`<button class="button button-outline enemy-map-button" id="map-enemy">${icon('spear')} 北の白羽の呪術師</button>`);
     $('#map-enemy').onclick=approachEnemy;
   }
   for(const direction of ['north','south'])$(`#map-hunt-${direction}`).onclick=()=>{const clearing=SCENERY.animals[direction==='north'?0:1],animal=state.animals?.find(item=>item.id===clearing.id);if(player()?.mountId||!animal)goTo(clearing.x,clearing.z,'狩場の草原');else approachHunt(animal);};
-  for(const button of document.querySelectorAll('[data-biome]'))button.onclick=()=>{
-    const stop=JOURNEY_STOPS.find(s=>s.id===button.dataset.biome),biome=BIOMES.find(b=>b.id===stop.id);
-    if(!runMode)$('#run-button').click();goTo(stop.x,stop.z,biome.name);
+  $('#big-map').onclick=event=>{const canvas=event.currentTarget,rect=canvas.getBoundingClientRect(),projection=mapProjection(canvas,true,player()),px=(event.clientX-rect.left)*canvas.width/rect.width,py=(event.clientY-rect.top)*canvas.height/rect.height;
+    const stop=EXPEDITION_STOPS.find(s=>{const p=projection.point(s.x,s.z);return Math.hypot(p[0]-px,p[1]-py)<12;});
+    if(stop){$('#expedition-destination').value=stop.id;selectTarget(stop);return;}
+    const target=projection.world(px,py);if(!isLand(target.x,target.z))return notify('そこは海です。野営地を選んで遠征できます。');
+    selectTarget(target);
   };
-  $('#big-map').onclick=event=>{const canvas=event.currentTarget,rect=canvas.getBoundingClientRect(),target=mapProjection(canvas,true,player()).world((event.clientX-rect.left)*canvas.width/rect.width,(event.clientY-rect.top)*canvas.height/rect.height);goTo(target.x,target.z,biomeAt(target.x,target.z).name);};
+  selectTarget(selected);
 }
 function cook(){const me=player();if(!me)return;const fire=nearestCookingFire(state,me);if(distance(me,fire)>HUNTING.cookRange){goTo(fire.x-1,fire.z+2.4,'近くの焚き火');notify('焚き火のそばで E または「焼く」を押そう。');}else action('cook');}
 function playNote() {

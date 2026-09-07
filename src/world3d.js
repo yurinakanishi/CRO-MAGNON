@@ -14,6 +14,7 @@ import { attackProfile } from '/shared/combat-profiles.mjs';
 import { CollisionWorld } from '/shared/collision.mjs';
 import { CHARACTER_MODELS, characterModel } from '/shared/characters.mjs';
 import { enemyAnimationState, playerRecovered } from './enemy-state.js';
+import { isLand } from '/shared/paleo-geography.mjs';
 import { FrameClock } from './frame-clock.js';
 import { WorldAtmosphere } from './world-atmosphere.js';
 import { mammothSeat } from './riding-pose.js';
@@ -176,7 +177,7 @@ export class WorldRenderer {
         const animalRoots=[...this.mammoths.flatMap(animal=>[animal.model,animal.meat]),...[...this.enemies.values()].map(enemy=>enemy.model)].filter(root=>root.visible);
         const animalHit=this.raycaster.intersectObjects(animalRoots,true)[0];
         if(animalHit){let root=animalHit.object;while(root&&!root.userData.animalId)root=root.parent;if(root){this.onAnimal(root.userData.animalId);return;}}
-        const hits=this.raycaster.intersectObjects([this.terrain,this.bridge].filter(Boolean),true);if(hits.length){const hit=hits[0].point,x=worldClamp(hit.x,'x'),z=worldClamp(hit.z,'z');this.onMoveTarget(x,z);this.marker.position.set(x,walkHeight(x,z)+.065,z);this.marker.visible=true;this.markerUntil=performance.now()+6500;}}
+        const hits=this.raycaster.intersectObjects([this.terrain,this.bridge].filter(Boolean),true);const hit=hits.find(h=>isLand(h.point.x,h.point.z))?.point;if(hit){const x=worldClamp(hit.x,'x'),z=worldClamp(hit.z,'z');this.onMoveTarget(x,z);this.marker.position.set(x,walkHeight(x,z)+.065,z);this.marker.visible=true;this.markerUntil=performance.now()+6500;}}
     };
     this.cancel=()=>{this.pointer=null;this.canvas.style.cursor='crosshair';};
     this.wheel=e=>{e.preventDefault();this.targetDistance=clamp(this.targetDistance+e.deltaY*.009,3.2,19);this.zoom=DEFAULT_DISTANCE/this.targetDistance;};this.context=e=>e.preventDefault();
@@ -253,6 +254,7 @@ export class WorldRenderer {
   resize(){const r=this.canvas.getBoundingClientRect();this.width=Math.max(1,r.width);this.height=Math.max(1,r.height);this.renderer.setSize(this.width,this.height,false);this.camera.aspect=this.width/this.height;this.camera.updateProjectionMatrix();}
 
   render(time,dt) {
+    const frameStarted=performance.now();
     for(const animal of this.mammoths){
       const state=this.state.animals?.find(item=>item.id===animal.id);
       animal.seat??=mammothSeat(animal.actor.root);
@@ -392,7 +394,9 @@ export class WorldRenderer {
     if(this.motes)this.motes.rotation.y=Math.sin(time*.02)*.03;if(this.marker.visible){this.marker.rotation.y=time*.25;this.marker.visible=performance.now()<this.markerUntil;}
     if(time>=this.nextShadowUpdate){this.renderer.shadowMap.needsUpdate=true;this.nextShadowUpdate=time+1/15;}
     this.spells.update(this.state,this.players,this.serverNow(),dt,this.height*this.renderer.getPixelRatio());
-    this.updateLabels();this.renderer.render(this.scene,this.camera);
+    this.updateLabels();const simulationEnded=performance.now();this.renderer.render(this.scene,this.camera);
+    this.simulationMs=(this.simulationMs??0)*.8+(simulationEnded-frameStarted)*.2;
+    this.submissionMs=(this.submissionMs??0)*.8+(performance.now()-simulationEnded)*.2;
     this.fpsFrames++;
     if(time-this.lastFpsTime>1){
       const data=this.canvas.dataset,info=this.renderer.info;
@@ -402,6 +406,8 @@ export class WorldRenderer {
       data.regionalBaseCopies=String(regional.extraGeometries+regional.extraTextures);
       data.regionalLandscapes=JSON.stringify(this.landscapes.filter(item=>item.surface).map(item=>({key:item.key,surface:item.surface,instances:item.levels.map(meshes=>meshes[0]?.mesh.count??0)})));
       data.fps=String(Math.round(this.fpsFrames/(time-this.lastFpsTime)));
+      data.frameSimulationMs=this.simulationMs.toFixed(2);data.frameSubmissionMs=this.submissionMs.toFixed(2);
+      data.documentFocus=String(document.hasFocus());
       data.cameraPosition=[this.camera.position.x,this.camera.position.y,this.camera.position.z].map(n=>n.toFixed(2)).join(',');
       data.resourceLods=JSON.stringify([...this.resources.entries()].filter(([,item])=>item.model.isLOD&&item.model.visible).map(([id,item])=>({id,level:item.model.getCurrentLevel(),distance:Number(item.model.position.distanceTo(this.camera.position).toFixed(2))})));
       data.vegetationInstances=JSON.stringify(this.landscapes.map(landscape=>landscape.levels.map(meshes=>meshes[0]?.mesh.count??0)));

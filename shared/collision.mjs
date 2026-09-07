@@ -8,6 +8,7 @@ import { REGION_FEATURE_BOUNDS } from './region-feature-bounds.mjs';
 import { WORLD, worldClamp, INITIAL_RESOURCES, NPC } from './world.mjs';
 import { riverX, riverHalfWidth, terrainHeight } from './terrain.mjs';
 import { resourceAppearance } from './biome-scenery.mjs';
+import { landBodyFree, isLand, landmassAt } from './paleo-geography.mjs';
 
 const CELL=4,EPS=.0001;
 const clamp=(n,a,b)=>Math.max(a,Math.min(b,n));
@@ -53,8 +54,8 @@ function riverBlocked(point,radius) {
 export class CollisionWorld {
   // The shallow river is fordable, including by mounted mammoths.
   // Clients and the authoritative server must use the same default.
-  constructor(obstacles=staticObstacles(),{active=()=>true,river=false}={}) {
-    this.obstacles=obstacles;this.active=active;this.river=river;this.grid=new Map();
+  constructor(obstacles=staticObstacles(),{active=()=>true,river=false,coast=true}={}) {
+    this.obstacles=obstacles;this.active=active;this.river=river;this.coast=coast;this.grid=new Map();
     for(const o of obstacles) {
       const rx=o.radius??(Math.abs(o.c)*o.hx+Math.abs(o.s)*o.hz),rz=o.radius??(Math.abs(o.s)*o.hx+Math.abs(o.c)*o.hz);
       for(let x=Math.floor((o.x-rx)/CELL);x<=Math.floor((o.x+rx)/CELL);x++)for(let z=Math.floor((o.z-rz)/CELL);z<=Math.floor((o.z+rz)/CELL);z++){
@@ -69,6 +70,7 @@ export class CollisionWorld {
   }
   free(point,radius,dynamic=[],ignore=()=>false) {
     if(!Number.isFinite(point.x)||!Number.isFinite(point.z)||point.x!==worldClamp(point.x,'x')||point.z!==worldClamp(point.z,'z')||(this.river&&riverBlocked(point,radius)))return false;
+    if(this.coast&&!landBodyFree(point.x,point.z,radius))return false;
     for(const o of this.nearby(point,radius))if(!ignore(o)&&overlap(point,radius,o))return false;
     for(const o of dynamic)if(overlap(point,radius,o))return false;
     return true;
@@ -78,6 +80,11 @@ export class CollisionWorld {
     const steps=Math.max(1,Math.ceil(Math.hypot(dx,dz)/.1));
     for(let step=0;step<steps;step++) {
       const next={x:worldClamp(point.x+dx/steps,'x'),z:worldClamp(point.z+dz/steps,'z')};
+      if(this.coast&&!landBodyFree(next.x,next.z,radius)){
+        if(landBodyFree(next.x,point.z,radius))next.z=point.z;
+        else if(landBodyFree(point.x,next.z,radius))next.x=point.x;
+        else continue;
+      }
       for(let iteration=0;iteration<6;iteration++) {
         let adjusted=false;
         if(this.river&&riverBlocked(next,radius)){
@@ -109,13 +116,15 @@ export class CollisionWorld {
     return true;
   }
   path(start,goal,radius,dynamic=[]) {
+    if(this.coast&&!isLand(goal.x,goal.z))return [];
+    if(this.coast&&Math.hypot(start.x-goal.x,start.z-goal.z)>60){const a=landmassAt(start.x,start.z),b=landmassAt(goal.x,goal.z);if(a&&b&&a!==b)return [];}
     const end=this.nearestFree(goal,radius,dynamic);if(!end)return [];
     if(this.segmentFree(start,end,radius,dynamic))return [end];
     // Far journeys use an eight-metre graph; only the crowded local approach
     // needs half-metre nodes. Every coarse edge still sweeps the actual colliders.
     if(Math.hypot(end.x-start.x,end.z-start.z)>48) {
-      for(const spacing of [8,4]) {
-        const route=this.searchPath(start,end,radius,dynamic,spacing,spacing===8?3500:7000);
+      for(const spacing of Math.hypot(end.x-start.x,end.z-start.z)>180?[16,8,4]:[8,4]) {
+        const route=this.searchPath(start,end,radius,dynamic,spacing,spacing>=8?6500:10000);
         if(route.length)return route;
       }
     }

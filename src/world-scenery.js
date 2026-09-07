@@ -1,10 +1,11 @@
 import * as THREE from 'three';
 import { terrainHeight, walkHeight, riverX, riverFade, WATER_LEVEL, clamp, installSourceBridge } from '/shared/terrain.mjs';
-import { NPC, INITIAL_RESOURCES } from '/shared/world.mjs';
+import { NPC, INITIAL_RESOURCES, WORLD } from '/shared/world.mjs';
 import { LandscapeInstances } from './world-assets.js';
 import { fitSourceRiverBank } from './source-surface-fit.js';
 import { SCENERY, seededRandom, grassForChunk } from '/shared/scenery-layout.mjs';
 import { OpenWorldTerrain } from './open-world.js';
+import { clipRiverAtCoast } from './paleo-materials.js';
 import { RegionalScenery } from './regional-scenery.js';
 
 const TAU = Math.PI * 2;
@@ -31,6 +32,7 @@ export async function buildTerrainAssets(world) {
   world.waterMaterial = new THREE.MeshStandardMaterial({ color: '#92babb', roughness: .27, metalness: 0, transparent: true, opacity: .88, side: THREE.DoubleSide });
   world.waterMaterial.userData.time = { value: 0 };
   world.waterMaterial.onBeforeCompile = shader => {
+    clipRiverAtCoast(shader,world.openWorld.earthTextures);
     shader.uniforms.flowTime = world.waterMaterial.userData.time;
     shader.fragmentShader = 'uniform float flowTime;\n' + shader.fragmentShader;
     shader.fragmentShader = shader.fragmentShader.replace('#include <color_fragment>', '#include <color_fragment>\n#ifdef USE_MAP\nfloat shimmer = pow(sin(vMapUv.y * 90.0 - flowTime * 1.5 + sin(vMapUv.x * 18.0)) * .5 + .5, 20.0); diffuseColor.rgb += shimmer * .035;\n#endif');
@@ -58,7 +60,7 @@ export function buildForestAssets(world) {
   const rocks=SCENERY.rocks.filter(item=>!item.surface).map(item=>({...item,height:1.7*item.scale,position:new THREE.Vector3(item.x,terrainHeight(item.x,item.z),item.z),scale:new THREE.Vector3().setScalar(item.scale)}));
   world.landscapes=[
     new LandscapeInstances({assets:world.worldAssets,key:'valley-pine',placements:trees,renderer:world.renderer,scene:world.scene,distances:[14,38,110]}),
-    new LandscapeInstances({assets:world.worldAssets,key:'meadow-grass',placements:grass,renderer:world.renderer,scene:world.scene,distances:[1.1,1.1,28],foliage:true,generateCell:(x,z)=>grassForChunk(x+8,z+8).filter(item=>!item.surface&&item.key==='meadow-grass').map(grassPlacement)}),
+    new LandscapeInstances({assets:world.worldAssets,key:'meadow-grass',placements:grass,renderer:world.renderer,scene:world.scene,distances:[1.1,1.1,28],foliage:true,generateCell:(x,z)=>grassForChunk(x-WORLD.minX/32,z-WORLD.minZ/32).filter(item=>!item.surface&&item.key==='meadow-grass').map(grassPlacement)}),
     new LandscapeInstances({assets:world.worldAssets,key:'valley-boulder',placements:rocks,renderer:world.renderer,scene:world.scene,distances:[28,28,110]}),
   ];
   for(const item of SCENERY.ridges) {

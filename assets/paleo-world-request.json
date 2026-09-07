@@ -1,0 +1,24 @@
+{
+  "date": "2026-09-07",
+  "request": "ネアンデルタール人の時代の大陸の形を保ち、氷・雪・砂漠・火山・平原を入れた遊べる世界へ縮小する",
+  "approvedSize": "約4 km × 2 km",
+  "implementedMetres": { "width": 4096, "depth": 2048 },
+  "epochYearsBP": 50000,
+  "worldVersion": 3,
+  "geography": "NOAA ETOPO1 and Spratt & Lisiecki 2016 sea-level stack, -68.3 m; equirectangular approximation",
+  "dataDocumentation": "geography/README.md",
+  "newModels": 0,
+  "existingGlbsPreserved": 31,
+  "modelPolicy": "Reuse the accepted TRELLIS geometry, textures and LODs. Runtime clipping and water shaders use the same shoreline field as the map and server.",
+  "expeditionStops": 13,
+  "cookingFires": 14,
+  "status": { "geographicData": "verified", "implementation": "adopted", "tests": "passed", "browserQA": "passed within recorded scope", "localPort3000": "verified" },
+  "qa": ["paleo-world-game-qa.json", "paleo-world-network-qa.json", "paleo-world-rollout-qa.json"],
+  "limitations": [
+    "Approximate coastlines from modern relief and uniform sea-level change; not an exact palaeogeographic or palaeoclimate reconstruction.",
+    "Small islands and straits can be lost at the two-metre game grid. The finite world does not wrap at the dateline.",
+    "Land, people and buildings do not share one physical scale. People and existing models retain their playable sizes.",
+    "Expeditions are game travel shortcuts, not a claim about the prehistoric distribution of Neanderthals. No boats or swimming are implemented.",
+    "Physical phones, long continuous play and a constant 60 FPS are not verified."
+  ]
+}

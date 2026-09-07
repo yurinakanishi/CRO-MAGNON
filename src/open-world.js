@@ -3,46 +3,11 @@ import { WORLD } from '../shared/world.mjs';
 import { BIOMES, biomeById, nearbyChunks } from '../shared/biomes.mjs';
 import { installBiomeTerrain } from '../shared/terrain.mjs';
 import { fitSourceRiverBank } from './source-surface-fit.js';
+import { coastDistance } from '../shared/paleo-geography.mjs';
 
 const RADIUS=128, CAPACITY=100;
-const palettes=BIOMES.map(b=>new THREE.Color(b.color));
+import { createEarthTextures, earthTerrainMaterial, EarthOcean } from './paleo-materials.js';
 const matrix=new THREE.Matrix4(),sphere=new THREE.Sphere();
-
-function terrainMaterial(original,biome) {
-  const material=original.clone();material.roughness=biome.id==='ice'?.28:.94;material.side=THREE.FrontSide;
-  material.onBeforeCompile=shader=>{
-    shader.vertexShader='varying vec3 vTerrainWorld;\n'+shader.vertexShader;
-    shader.vertexShader=shader.vertexShader.replace('#include <project_vertex>',`#include <project_vertex>
-      vec4 terrainPoint=vec4(transformed,1.0);
-      #ifdef USE_INSTANCING
-      terrainPoint=instanceMatrix*terrainPoint;
-      #endif
-      vTerrainWorld=(modelMatrix*terrainPoint).xyz;`);
-    const points=BIOMES.map((b,i)=>`float d${i}=length(vTerrainWorld.xz-vec2(${b.x.toFixed(1)},${b.z.toFixed(1)}))-${b.radius.toFixed(1)};`).join('\n');
-    const min=BIOMES.map((_,i)=>`d${i}`).reduce((a,b)=>`min(${a},${b})`);
-    const weights=BIOMES.map((_,i)=>`float w${i}=pow(max(0.0,1.0-(d${i}-nearest)/36.0),2.0);`).join('\n');
-    const total=BIOMES.map((_,i)=>`w${i}`).join('+');
-    const colors=palettes.map((color,i)=>`vec3(${color.r.toFixed(5)},${color.g.toFixed(5)},${color.b.toFixed(5)})*w${i}`).join('+');
-    const index=BIOMES.indexOf(biome),base=palettes[index],baseLuma=Math.max(.05,base.r*.2126+base.g*.7152+base.b*.0722);
-    shader.fragmentShader='varying vec3 vTerrainWorld;\n'+shader.fragmentShader;
-    shader.fragmentShader=shader.fragmentShader.replace('#include <color_fragment>',`#include <color_fragment>
-      ${points} float nearest=${min}; ${weights} float total=${total};
-      float boundary=clamp((1.0-w${index}/total)*2.0,0.0,1.0);
-      float reliefColor=clamp(dot(diffuseColor.rgb,vec3(.2126,.7152,.0722))/${baseLuma.toFixed(5)},.55,1.55);
-      reliefColor=mix(reliefColor,1.0,boundary);
-      diffuseColor.rgb=mix(diffuseColor.rgb,(${colors})/total*reliefColor,boundary);
-      float clearing=max(clamp((10.0-length(vTerrainWorld.xz-vec2(50.0,50.0)))/3.0,0.0,1.0),clamp((5.0-length(vTerrainWorld.xz-vec2(70.0,41.0)))/2.0,0.0,1.0));
-      float trail=exp(-pow(vTerrainWorld.x-49.0-sin(vTerrainWorld.z*.16)*2.0,2.0)/1.8)*.5;
-      trail*=step(-40.0,vTerrainWorld.z)*step(vTerrainWorld.z,140.0);
-      float dirt=max(clearing,trail)*w0/total;
-      diffuseColor.rgb*=vec3(1.0+dirt*.55,1.0+dirt*.2,1.0-dirt*.08);`);
-    if(biome.id==='volcano')shader.fragmentShader=shader.fragmentShader.replace('#include <emissivemap_fragment>',`#include <emissivemap_fragment>
-      float lava=clamp((diffuseColor.r-max(diffuseColor.g,diffuseColor.b)*1.6)*8.0,0.0,1.0);
-      totalEmissiveRadiance+=vec3(1.0,.16,.018)*lava*.7;`);
-  };
-  material.customProgramCacheKey=()=>`terrain-biome-${biome.id}-2`;
-  return material;
-}
 
 export class OpenWorldTerrain {
   constructor(world) {
@@ -53,6 +18,7 @@ export class OpenWorldTerrain {
     this.world.scene.add(this.root);world.terrain=this.root;
   }
   async initialize(position) {
+    this.earthTextures=createEarthTextures();this.ocean=new EarthOcean(this.world,this.earthTextures,CAPACITY);
     const fields=Object.fromEntries(BIOMES.map(b=>[b.id,this.assets.catalog.assets.find(a=>a.modelKey===b.ground)?.placement?.heightField]));
     this.world.releaseTerrainSampler=installBiomeTerrain(fields);
     this.plan(position.x,position.z,0);
@@ -63,7 +29,7 @@ export class OpenWorldTerrain {
     for(const chunk of this.desired.filter(c=>c.distance<55))this.admit(chunk);
   }
   plan(x,z,time) {
-    this.desired=nearbyChunks(x,z,RADIUS);this.desiredKeys=new Set(this.desired.map(c=>c.key));
+    this.surroundings=nearbyChunks(x,z,RADIUS);this.desired=this.surroundings.filter(c=>c.land);this.desiredKeys=new Set(this.desired.map(c=>c.key));
     if(this.desired.length>CAPACITY)throw new Error('Terrain working set exceeded its allocation');
     for(const [key,chunk]of this.chunks)if(!this.desiredKeys.has(key)){this.removeChunk(chunk);this.chunks.delete(key);}
     for(const chunk of this.desired) {
@@ -89,7 +55,8 @@ export class OpenWorldTerrain {
         const geometry=node.geometry.clone().applyMatrix4(node.matrixWorld)
           .translate(-centre.x,-(template.asset.placement.surfaceHeightMetres??0),-centre.z).scale(32/size.x,1,32/size.z);
         geometry.computeBoundingSphere();
-        const material=terrainMaterial(node.material,biome),mesh=new THREE.InstancedMesh(geometry,material,CAPACITY);
+        geometry.setAttribute('earthCoastal',new THREE.InstancedBufferAttribute(new Float32Array(CAPACITY),1));
+        const material=earthTerrainMaterial(node.material,biome,this.earthTextures),mesh=new THREE.InstancedMesh(geometry,material,CAPACITY);
         mesh.count=0;mesh.instanceMatrix.setUsage(THREE.DynamicDrawUsage);mesh.frustumCulled=false;mesh.matrixAutoUpdate=false;mesh.receiveShadow=true;
         this.root.add(mesh);parts.push({geometry,material,mesh});
       });
@@ -103,7 +70,9 @@ export class OpenWorldTerrain {
     const levels=this.prepare(key),bank=chunk.x+16>=57&&chunk.x-16<=73&&chunk.z+16>=-64&&chunk.z-16<=184;
     const record={...chunk,assetKey:key,bankMeshes:[]};
     if(bank)for(const part of levels[0]) {
-      const source=part.geometry.clone().rotateY(chunk.yaw).translate(chunk.x,0,chunk.z),geometry=fitSourceRiverBank(source);
+      const source=part.geometry.clone().rotateY(chunk.yaw).translate(chunk.x,0,chunk.z);
+      source.deleteAttribute('earthCoastal');
+      const geometry=fitSourceRiverBank(source);
       if(source!==geometry)source.dispose();
       const mesh=new THREE.Mesh(geometry,part.material);mesh.matrixAutoUpdate=false;mesh.receiveShadow=true;this.root.add(mesh);record.bankMeshes.push(mesh);
     }
@@ -112,12 +81,14 @@ export class OpenWorldTerrain {
   update(camera,time) {
     if(this.disposed)return;
     if(time>=this.nextPlan){this.plan(camera.position.x,camera.position.z,time);this.nextPlan=time+.3;}
+    if(this.ocean)this.ocean.time.value=time;
     const started=performance.now();let admitted=0;
     for(const chunk of this.desired)if(!this.chunks.has(chunk.key)&&this.assets.templates.has(biomeById(chunk.biome).ground)) {
       this.admit(chunk);if(++admitted>=2||performance.now()-started>3)break;
     }
     if(time<this.nextCull&&!admitted)return;this.nextCull=time+.10;
     this.projection.multiplyMatrices(camera.projectionMatrix,camera.matrixWorldInverse);this.frustum.setFromProjectionMatrix(this.projection);
+    this.ocean?.update(this.surroundings.filter(c=>{sphere.center.set(c.x,-.52,c.z);sphere.radius=25;return coastDistance(c.x,c.z)<26&&this.frustum.intersectsSphere(sphere);}),time);
     for(const levels of this.prepared.values())for(const parts of levels)for(const part of parts)part.mesh.count=0;
     let visible=0;
     for(const chunk of this.chunks.values()) {
@@ -127,10 +98,11 @@ export class OpenWorldTerrain {
       if(chunk.bankMeshes.length){for(const mesh of chunk.bankMeshes)mesh.visible=true;continue;}
       const distance=Math.hypot(camera.position.x-chunk.x,camera.position.z-chunk.z),levels=this.prepared.get(chunk.assetKey);
       const level=Math.min(levels.length-1,distance<44?0:distance<82?1:2);matrix.makeRotationY(chunk.yaw).setPosition(chunk.x,0,chunk.z);
-      for(const part of levels[level]){part.mesh.setMatrixAt(part.mesh.count,matrix);part.mesh.count++;}
+      for(const part of levels[level]){part.mesh.setMatrixAt(part.mesh.count,matrix);part.geometry?.attributes.earthCoastal?.setX(part.mesh.count,coastDistance(chunk.x,chunk.z)<26?1:0);part.mesh.count++;}
     }
     for(const levels of this.prepared.values())for(const parts of levels)for(const part of parts){
       part.mesh.instanceMatrix.needsUpdate=true;
+      if(part.geometry?.attributes.earthCoastal)part.geometry.attributes.earthCoastal.needsUpdate=true;
       // InstancedMesh caches this on its first raycast. Streaming changes both
       // the count and positions, so the next ground click needs fresh bounds.
       part.mesh.boundingSphere=null;part.mesh.boundingBox=null;
@@ -145,6 +117,6 @@ export class OpenWorldTerrain {
   }
   dispose() {
     this.disposed=true;for(const chunk of this.chunks.values())this.removeChunk(chunk);this.chunks.clear();
-    for(const key of [...this.prepared.keys()])this.releasePrepared(key);this.world.scene.remove(this.root);
+    for(const key of [...this.prepared.keys()])this.releasePrepared(key);this.ocean?.dispose();this.earthTextures?.dispose();this.world.scene.remove(this.root);
   }
 }

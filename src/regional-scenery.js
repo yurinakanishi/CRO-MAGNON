@@ -5,6 +5,7 @@ import { nearbyChunks } from '../shared/biomes.mjs';
 import { PlacementGrid } from '../shared/spatial-grid.mjs';
 import { terrainHeight, walkHeight } from '../shared/terrain.mjs';
 import { LandscapeInstances } from './world-assets.js';
+import { WORLD } from '../shared/world.mjs';
 
 export const regionalId = (key, surface) => `${key}:${surface}`;
 const RADIUS = 125;
@@ -81,7 +82,7 @@ export class RegionalScenery {
         // Snow exposes large facets in the tree's coarse LOD. At mid-distance
         // use the render of its accepted detailed GLB, retaining the same buffers.
         distances: foliage ? [5, 14, 42] : asset.kind === 'tree' ? [14, 14, 110] : [28, 50, 110], foliage,
-        generateCell: foliage ? (x, z) => grassForChunk(x + 8, z + 8).filter(item => item.key === key && item.surface === surface).map(place) : null });
+        generateCell: foliage ? (x, z) => grassForChunk(x-WORLD.minX/32,z-WORLD.minZ/32).filter(item => item.key === key && item.surface === surface).map(place) : null });
       this.landscapes.set(id, landscape); this.world.landscapes.push(landscape);
     }
     for (const item of group.props) {

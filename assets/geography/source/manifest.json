@@ -1,0 +1,23 @@
+[
+  {
+    "file": "etopo1-6min.nc",
+    "url": "https://oceanwatch.aoml.noaa.gov/erddap/griddap/etopo180.nc?altitude[0:6:10800][0:6:21600]",
+    "bytes": 13018380,
+    "sha256": "8d2c5fd716a4feb53a6b93610f1156b0809c53db1af13359d36d1dac05ed5454",
+    "retrievedAt": "2026-09-07T05:17:06.271Z"
+  },
+  {
+    "file": "etopo1-metadata.txt",
+    "url": "https://oceanwatch.aoml.noaa.gov/erddap/griddap/etopo180.das",
+    "bytes": 4315,
+    "sha256": "966cbdebd21574c1c80b72fb7191d2ffd1a442fef24d234f321384857f715f88",
+    "retrievedAt": "2026-09-07T05:16:53.974Z"
+  },
+  {
+    "file": "spratt2016-noaa.txt",
+    "url": "https://www.ncei.noaa.gov/pub/data/paleo/contributions_by_author/spratt2016/spratt2016-noaa.txt",
+    "bytes": 51519,
+    "sha256": "02f56f02f709b70ac70fe5e403326272e19b42bf34ee9b1bba3b8322e1375dc1",
+    "retrievedAt": "2026-09-07T05:16:54.280Z"
+  }
+]

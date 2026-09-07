@@ -1,0 +1,22 @@
+{
+  "epochYearsBP": 50000,
+  "seaLevelMetres": -68.3,
+  "seaLevel95PercentMetres": [
+    -84.91,
+    -58.55
+  ],
+  "width": 2048,
+  "height": 1024,
+  "cellMetres": 2,
+  "distanceEncoding": "(byte - 128) / 4 metres; bilinear, cell-centred",
+  "projection": "equirectangular, 360 by 180 degrees; not an equal-distance globe",
+  "sourceSha256": "8d2c5fd716a4feb53a6b93610f1156b0809c53db1af13359d36d1dac05ed5454",
+  "fieldSha256": "2c77bfcb09c620cae01ba6e23ba8347d51edaf1f2b6dd13eaf5a5fc2dfa648f0",
+  "landFractionOfProjectedMap": 0.3729248046875,
+  "runCount": 473929,
+  "limitations": [
+    "Uniform sea-level cut of modern relief; no glacial isostatic or tectonic correction.",
+    "Small islands and narrow straits below the two-metre game grid can disappear.",
+    "Climate, glacier extents and volcano locations are a simplified game interpretation, not a dated global palaeoclimate reconstruction."
+  ]
+}

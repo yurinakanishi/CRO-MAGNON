@@ -1,5 +1,6 @@
 import { WORLD } from './world.mjs';
 import { BIOMES, biomeAt, chunkAt, chunkDescription } from './biomes.mjs';
+import { coastDistance } from './paleo-geography.mjs';
 export const WATER_LEVEL = -0.45;
 export const riverX = z => 65 + Math.sin(z * .065) * 3.5;
 export const clamp = (n, min, max) => Math.max(min, Math.min(max, n));
@@ -9,6 +10,7 @@ export const riverHalfWidth = z => 3.05 * riverFade(z);
 let sourceSurface = null;
 let sourceBridge = null;
 export const riverBankDrop = (x, z) => clamp((3.8 * riverFade(z) - Math.abs(x - riverX(z))) / 1.25, 0, 1) * .72;
+export const coastBankDrop=(x,z)=>.55*(1-smooth(coastDistance(x,z)/4));
 
 // The height samples come from ray queries against the exact reconstructed GLB.
 // Only a shallow river-bank fitting offset is applied when placing the tiles.
@@ -53,7 +55,7 @@ export function installBiomeTerrain(fields) {
 }
 
 export function terrainHeight(x, z) {
-  if (sourceSurface) return sourceSurface(x, z) - riverBankDrop(x, z);
+  if (sourceSurface) return sourceSurface(x, z) - riverBankDrop(x, z) - coastBankDrop(x,z);
   // Neutral height is used only by unloaded/invisible actors; no legacy terrain is drawn.
   return 0;
 }

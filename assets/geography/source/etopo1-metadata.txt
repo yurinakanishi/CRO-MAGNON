@@ -1,0 +1,82 @@
+Attributes {
+  latitude {
+    String _CoordinateAxisType "Lat";
+    Float64 actual_range -90.0, 90.0;
+    String axis "Y";
+    String ioos_category "Location";
+    String long_name "Latitude";
+    String standard_name "latitude";
+    String units "degrees_north";
+  }
+  longitude {
+    String _CoordinateAxisType "Lon";
+    Float64 actual_range -180.0, 180.0;
+    String axis "X";
+    String ioos_category "Location";
+    String long_name "Longitude";
+    String standard_name "longitude";
+    String units "degrees_east";
+  }
+  altitude {
+    Int16 _FillValue 32767;
+    Int16 actual_range -10898, 8271;
+    Float64 colorBarMaximum 8000.0;
+    Float64 colorBarMinimum -8000.0;
+    String colorBarPalette "Topography";
+    String coordsys "geographic";
+    String ioos_category "Location";
+    String long_name "Altitude";
+    Int16 missing_value 32767;
+    String positive "up";
+    String standard_name "altitude";
+    String units "m";
+  }
+  NC_GLOBAL {
+    String acknowledgement "NOAA NGDC";
+    String cdm_data_type "Grid";
+    String contributor_name "GLOBE, SRTM30, Baltic Sea Bathymetry, Caspian Sea Bathymetry, Great Lakes Bathymetry, Gulf of California Bathymetry, IBCAO, JODC Bathymetry, Mediterranean Sea Bathymetry, U.S. Coastal Relief Model (CRM), Antarctica RAMP Topography, Antarctic Digital Database, GSHHS";
+    String contributor_role "source data";
+    String Conventions "COARDS, CF-1.6, ACDD-1.3";
+    String creator_email "Barry.Eakins@noaa.gov ";
+    String creator_name "NOAA NGDC";
+    String creator_url "https://www.ngdc.noaa.gov/mgg/global/global.html";
+    String data_source "NOAA NGDC ETOPO1";
+    String drawLandMask "under";
+    Float64 Easternmost_Easting 180.0;
+    Float64 geospatial_lat_max 90.0;
+    Float64 geospatial_lat_min -90.0;
+    Float64 geospatial_lat_resolution 0.016666666666666666;
+    String geospatial_lat_units "degrees_north";
+    Float64 geospatial_lon_max 180.0;
+    Float64 geospatial_lon_min -180.0;
+    Float64 geospatial_lon_resolution 0.016666666666666666;
+    String geospatial_lon_units "degrees_east";
+    String history "2011-03-14 Downloaded https://www.ngdc.noaa.gov/mgg/global/relief/ETOPO1/data/ice_surface/grid_registered/binary/etopo1_ice_g_i2.zip
+2026-09-07T05:16:53Z (local file)
+2026-09-07T05:16:53Z https://oceanwatch.aoml.noaa.gov/erddap/griddap/etopo180.das";
+    String id "etopo180";
+    String infoUrl "https://www.ngdc.noaa.gov/mgg/global/global.html";
+    String institution "NOAA NGDC";
+    String keywords "Earth Science > Oceans > Bathymetry/Seafloor Topography > Bathymetry";
+    String keywords_vocabulary "GCMD Science Keywords";
+    String license "The data may be used and redistributed for free but is not intended
+for legal use, since it may contain inaccuracies. Neither the data
+Contributor, ERD, NOAA, nor the United States Government, nor any
+of their employees or contractors, makes any warranty, express or
+implied, including warranties of merchantability and fitness for a
+particular purpose, or assumes any legal liability for the accuracy,
+completeness, or usefulness, of this information.";
+    String naming_authority "gov.noaa.pfeg.coastwatch";
+    Float64 Northernmost_Northing 90.0;
+    String project "NOAA NGDC ETOPO";
+    String projection "geographic";
+    String projection_type "mapped";
+    String references "Amante, C. and B. W. Eakins, ETOPO1 1 Arc-Minute Global Relief Model: Procedures, Data Sources and Analysis. NOAA Technical Memorandum NESDIS NGDC-24, 19 pp, March 2009.";
+    String sourceUrl "(local file)";
+    Float64 Southernmost_Northing -90.0;
+    String standard_name_vocabulary "CF Standard Name Table v70";
+    String summary "ETOPO1 is a 1 arc-minute global relief model of Earth's surface that integrates land topography and ocean bathymetry. It was built from numerous global and regional data sets. This is the 'Ice Surface' version, with the top of the Antarctic and Greenland ice sheets. The horizontal datum is WGS-84, the vertical datum is Mean Sea Level. Keywords: Bathymetry, Digital Elevation. This is the grid/node-registered version: the dataset's latitude and longitude values mark the centers of the cells.";
+    String title "Topography, ETOPO1, 0.0166667 degrees, Global (longitude -180 to 180), (Ice Sheet Surface)";
+    Float64 Westernmost_Easting -180.0;
+  }
+}

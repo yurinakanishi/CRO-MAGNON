@@ -1,0 +1,345 @@
+{
+  "startedAt": "2026-09-07T06:04:01.012Z",
+  "room": "EARTH-QA",
+  "browserClients": 2,
+  "protocolClients": 3,
+  "states": 3795,
+  "playerObservations": 30327,
+  "maxPlayers": 5,
+  "landViolations": 0,
+  "staticViolations": 0,
+  "dynamicViolations": 0,
+  "samples": [],
+  "destinations": [
+    {
+      "id": "grassland",
+      "arrivals": [
+        {
+          "species": "nea",
+          "x": 49,
+          "z": 52.4,
+          "distance": 0
+        },
+        {
+          "species": "cat",
+          "x": 49.9,
+          "z": 52.4,
+          "distance": 0.8999999999999986
+        },
+        {
+          "species": "bear",
+          "x": 49.42426406871193,
+          "z": 52.824264068711926,
+          "distance": 0.5999999999999989
+        }
+      ],
+      "allArrived": true
+    },
+    {
+      "id": "snow",
+      "arrivals": [
+        {
+          "species": "nea",
+          "x": 490.6666666666665,
+          "z": -63.28888888888889,
+          "distance": 0
+        },
+        {
+          "species": "cat",
+          "x": 491.5666666666665,
+          "z": -63.28888888888889,
+          "distance": 0.8999999999999773
+        },
+        {
+          "species": "bear",
+          "x": 491.09093073537844,
+          "z": -62.864624820176964,
+          "distance": 0.5999999999999938
+        }
+      ],
+      "allArrived": true
+    },
+    {
+      "id": "ice",
+      "arrivals": [
+        {
+          "species": "nea",
+          "x": 12.800000000000182,
+          "z": -154.31111111111113,
+          "distance": 0
+        },
+        {
+          "species": "cat",
+          "x": 13.700000000000182,
+          "z": -154.31111111111113,
+          "distance": 0.9000000000000004
+        },
+        {
+          "species": "bear",
+          "x": 13.22426406871211,
+          "z": -153.8868470423992,
+          "distance": 0.5999999999999938
+        }
+      ],
+      "allArrived": true
+    },
+    {
+      "id": "volcano",
+      "arrivals": [
+        {
+          "species": "nea",
+          "x": 297.2444444444445,
+          "z": 158.57777777777778,
+          "distance": 0
+        },
+        {
+          "species": "cat",
+          "x": 298.1444444444445,
+          "z": 158.57777777777778,
+          "distance": 0.8999999999999773
+        },
+        {
+          "species": "bear",
+          "x": 297.66870851315645,
+          "z": 159.0020418464897,
+          "distance": 0.5999999999999888
+        }
+      ],
+      "allArrived": true
+    },
+    {
+      "id": "desert",
+      "arrivals": [
+        {
+          "species": "nea",
+          "x": -21.333333333333485,
+          "z": 323.55555555555554,
+          "distance": 0
+        },
+        {
+          "species": "cat",
+          "x": -20.433333333333486,
+          "z": 323.55555555555554,
+          "distance": 0.8999999999999986
+        },
+        {
+          "species": "bear",
+          "x": -20.909069264621557,
+          "z": 323.97981962426746,
+          "distance": 0.5999999999999938
+        }
+      ],
+      "allArrived": true
+    },
+    {
+      "id": "africa",
+      "arrivals": [
+        {
+          "species": "nea",
+          "x": 149.33333333333348,
+          "z": 664.8888888888889,
+          "distance": 0
+        },
+        {
+          "species": "cat",
+          "x": 150.2333333333335,
+          "z": 664.8888888888889,
+          "distance": 0.9000000000000057
+        },
+        {
+          "species": "bear",
+          "x": 149.7575974020454,
+          "z": 665.3131529576009,
+          "distance": 0.600000000000029
+        }
+      ],
+      "allArrived": true
+    },
+    {
+      "id": "east-asia",
+      "arrivals": [
+        {
+          "species": "nea",
+          "x": 1082.3111111111111,
+          "z": 221.15555555555557,
+          "distance": 0
+        },
+        {
+          "species": "cat",
+          "x": 1083.2111111111112,
+          "z": 221.15555555555557,
+          "distance": 0.900000000000091
+        },
+        {
+          "species": "bear",
+          "x": 1082.735375179823,
+          "z": 221.5798196242675,
+          "distance": 0.5999999999999486
+        }
+      ],
+      "allArrived": true
+    },
+    {
+      "id": "sunda",
+      "arrivals": [
+        {
+          "species": "nea",
+          "x": 1059.5555555555557,
+          "z": 596.6222222222223,
+          "distance": 0
+        },
+        {
+          "species": "cat",
+          "x": 1060.4555555555557,
+          "z": 596.6222222222223,
+          "distance": 0.900000000000091
+        },
+        {
+          "species": "bear",
+          "x": 1059.9798196242675,
+          "z": 597.0464862909342,
+          "distance": 0.5999999999999888
+        }
+      ],
+      "allArrived": true
+    },
+    {
+      "id": "north-america",
+      "arrivals": [
+        {
+          "species": "nea",
+          "x": -1363.911111111111,
+          "z": 152.8888888888889,
+          "distance": 0
+        },
+        {
+          "species": "cat",
+          "x": -1363.011111111111,
+          "z": 152.8888888888889,
+          "distance": 0.900000000000091
+        },
+        {
+          "species": "bear",
+          "x": -1363.4868470423992,
+          "z": 153.31315295760083,
+          "distance": 0.5999999999999486
+        }
+      ],
+      "allArrived": true
+    },
+    {
+      "id": "south-america",
+      "arrivals": [
+        {
+          "species": "nea",
+          "x": -829.1555555555556,
+          "z": 744.5333333333333,
+          "distance": 0
+        },
+        {
+          "species": "cat",
+          "x": -828.2555555555556,
+          "z": 744.5333333333333,
+          "distance": 0.8999999999999773
+        },
+        {
+          "species": "bear",
+          "x": -828.7312914868436,
+          "z": 744.9575974020453,
+          "distance": 0.6000000000000691
+        }
+      ],
+      "allArrived": true
+    },
+    {
+      "id": "sahul",
+      "arrivals": [
+        {
+          "species": "nea",
+          "x": 1332.6222222222223,
+          "z": 903.8222222222223,
+          "distance": 0
+        },
+        {
+          "species": "cat",
+          "x": 1333.5222222222224,
+          "z": 903.8222222222223,
+          "distance": 0.900000000000091
+        },
+        {
+          "species": "bear",
+          "x": 1333.0464862909341,
+          "z": 904.2464862909343,
+          "distance": 0.5999999999999888
+        }
+      ],
+      "allArrived": true
+    },
+    {
+      "id": "greenland",
+      "arrivals": [
+        {
+          "species": "nea",
+          "x": -669.8666666666666,
+          "z": -222.57777777777778,
+          "distance": 0
+        },
+        {
+          "species": "cat",
+          "x": -668.9666666666666,
+          "z": -222.57777777777778,
+          "distance": 0.8999999999999773
+        },
+        {
+          "species": "bear",
+          "x": -669.4424025979546,
+          "z": -222.15351370906586,
+          "distance": 0.600000000000029
+        }
+      ],
+      "allArrived": true
+    },
+    {
+      "id": "antarctica",
+      "arrivals": [
+        {
+          "species": "nea",
+          "x": 35.55555555555566,
+          "z": 1495.4666666666667,
+          "distance": 0
+        },
+        {
+          "species": "cat",
+          "x": 36.455555555555655,
+          "z": 1495.4666666666667,
+          "distance": 0.8999999999999986
+        },
+        {
+          "species": "bear",
+          "x": 35.979819624267584,
+          "z": 1495.8909307353786,
+          "distance": 0.5999999999999536
+        }
+      ],
+      "allArrived": true
+    }
+  ],
+  "errors": [],
+  "completed": true,
+  "rejectedCommands": {
+    "disconnectedLandAndForgedStationary": true,
+    "target": {
+      "x": -1000,
+      "z": 500
+    },
+    "notices": [
+      "槍を突き出した。",
+      "歩ける経路が見つかりません。近くの陸地を選ぶか、世界地図から遠征しよう。",
+      "遠征先が見つかりません。"
+    ],
+    "note": "The South American target is land separated from Antarctica by sea. Direct ocean rejection was separately verified by paleo-server.test.mjs and an Atlantic map click."
+  },
+  "finishedAt": "2026-09-07T06:11:03.972Z",
+  "lastSampleAt": "2026-09-07T06:11:03.973Z",
+  "playerObservationsMeaning": "Observations of all solid players, mammoths and living enemies, despite the legacy field name."
+}

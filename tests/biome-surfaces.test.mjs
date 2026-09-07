@@ -73,7 +73,7 @@ test('the biome map controls every tree, rock, camp and resource without adding 
 
 test('regional ground cover is deterministic, sparse and absent on bare ice and volcanic ground',()=>{
   let snow=0,desert=0;
-  for(let x=0;x<20;x++)for(let z=0;z<20;z++){
+  for(let x=0;x<128;x+=3)for(let z=0;z<64;z+=3){
     const cover=grassForChunk(x,z);assert.ok(cover.length<=250);assert.deepEqual(cover,grassForChunk(x,z));
     for(const item of cover){
       assert.ok(!['ice','volcano'].includes(item.biome));

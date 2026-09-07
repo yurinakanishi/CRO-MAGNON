@@ -10,7 +10,7 @@ import { PlacementGrid } from '../shared/spatial-grid.mjs';
 import { SCENERY, grassForChunk } from '../shared/scenery-layout.mjs';
 
 test('five distinct regions share one continuous bounded world and normalized transitions',()=>{
-  assert.equal(WORLD.maxX-WORLD.minX,640);assert.equal(WORLD.maxZ-WORLD.minZ,640);
+  assert.equal(WORLD.maxX-WORLD.minX,4096);assert.equal(WORLD.maxZ-WORLD.minZ,2048);
   for(const b of BIOMES)assert.equal(biomeAt(b.x,b.z).id,b.id);
   for(let x=-250;x<380;x+=11)for(let z=-250;z<380;z+=13) {
     const w=biomeWeights(x,z);assert.ok(w.every(n=>n>=0&&Number.isFinite(n)));
@@ -20,22 +20,22 @@ test('five distinct regions share one continuous bounded world and normalized tr
 });
 test('moving the camera across the complete world keeps the chunk working set bounded',()=>{
   const explored=new Set();let max=0;
-  for(let x=-252;x<380;x+=16)for(let z=-252;z<380;z+=16) {
+  for(let x=WORLD.minX+4;x<WORLD.maxX;x+=96)for(let z=WORLD.minZ+4;z<WORLD.maxZ;z+=96) {
     const chunks=nearbyChunks(x,z,128);max=Math.max(max,chunks.length);
     assert.equal(new Set(chunks.map(c=>c.key)).size,chunks.length);
-    assert.ok(chunks.every(c=>c.ix>=0&&c.ix<20&&c.iz>=0&&c.iz<20));
+    assert.ok(chunks.every(c=>c.ix>=0&&c.ix<128&&c.iz>=0&&c.iz<64));
     for(const c of chunks)explored.add(c.key);
   }
-  assert.equal(explored.size,400);assert.ok(max<=70,`Resident chunks grew to ${max}`);
+  assert.equal(explored.size,8192);assert.ok(max<=70,`Resident chunks grew to ${max}`);
 });
 test('negative coordinates, the former valley border, and actual outer borders agree for movement and magic',()=>{
-  const collision=new CollisionWorld([],{river:false}),p={x:-120,z:180,dx:1,dz:0,lastInput:100,runningRequested:true,species:'cat'};
+  const collision=new CollisionWorld([],{river:false,coast:false}),p={x:-120,z:180,dx:1,dz:0,lastInput:100,runningRequested:true,species:'cat'};
   movePlayer(p,1,100,(a,dx,dz)=>collision.move(a,dx,dz,.32));assert.ok(p.x>-120&&p.x<-116);
   assert.equal(collision.free({x:110,z:110},.32),true);
   assert.equal(collision.free({x:WORLD.minX-1,z:110},.32),false);
-  assert.equal(worldClamp(-999,'x'),WORLD.minX+2);
+  assert.equal(worldClamp(-9999,'x'),WORLD.minX+2);
   assert.equal(projectileWallEntry(collision,{x:96,z:110},{x:105,z:110},.1),Infinity);
-  const hit=projectileWallEntry(collision,{x:380,z:110},{x:390,z:110},.1);assert.equal(hit,.2);
+  const hit=projectileWallEntry(collision,{x:WORLD.maxX-4,z:110},{x:WORLD.maxX+6,z:110},.1);assert.equal(hit,.2);
 });
 test('every regional route is physically walkable in both directions, including a five-person camp',()=>{
   const collision=new CollisionWorld(),start={x:49,z:57},crowd=[{type:'circle',x:50,z:57,radius:.32},{type:'circle',x:48,z:57,radius:.32},{type:'circle',x:49,z:56,radius:.32},{type:'circle',x:50.5,z:58,radius:.32}];

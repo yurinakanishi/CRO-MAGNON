@@ -1,0 +1,46 @@
+{
+  "date": "2026-09-07",
+  "status": "passed within recorded scope",
+  "tests": { "command": "npm test", "passed": 162, "failed": 0, "log": "../output/paleo-world/staging/output/tests-final.txt" },
+  "syntax": { "stagedJavaScriptFiles": 126, "passed": true },
+  "assets": { "command": "npm run verify:assets", "models": 31, "passed": true, "glbChanges": 0, "log": "../output/paleo-world/asset-verification.txt" },
+  "sourceRebuild": { "byteIdentical": true, "distanceFieldSha256": "2c77bfcb09c620cae01ba6e23ba8347d51edaf1f2b6dd13eaf5a5fc2dfa648f0" },
+  "desktop": {
+    "browser": "Chrome",
+    "viewport": [1536, 720],
+    "checks": [
+      "Recognizable global continent map, matching 4096 by 2048 m world extent and the physics shoreline field.",
+      "Overview and local map switch, 13 destination choices, explicit expedition button.",
+      "In-game Greenland ice sheet, Sahara desert, West Asian volcano and basalt columns, Scandinavian ice coast.",
+      "Normal running from the Scandinavian camp (12.8, -154.31) to a map-selected shoreline point (-5.37, -166.48), then stopped on dry ice.",
+      "Atlantic Ocean click displays the ocean/expedition notice and leaves the map open.",
+      "Two rendered browser clients with three WebSocket participants share one five-person room; see network report.",
+      "No browser error or warning entries observed in the QA tab.",
+      "Original port 3000 tab reloaded successfully with the new world map and original profile."
+    ]
+  },
+  "smallScreen": {
+    "browser": "Codex in-app browser",
+    "viewport": [390, 844],
+    "measuredCssBodyWidth": 390.4,
+    "checks": ["World map, legend, destination select and travel buttons fit the modal.", "Expedition to Siberian snow camp at (490.67, -63.29).", "Cat character attack button increments the attack sequence to 1."],
+    "physicalPhone": false,
+    "temporaryViewportReset": true
+  },
+  "performance": {
+    "runtimeLandChunksMaximumObserved": 68,
+    "terrainRadiusMetres": 128,
+    "frameRateCap": 60,
+    "observations": [
+      {"scene": "Staged grassland with other game tabs open", "fps": 33},
+      {"scene": "Staged Sahara with other game tabs open", "fps": 9},
+      {"scene": "Later Sahara sample", "fps": 43, "simulationMs": 0.74, "submissionMs": 6.30},
+      {"scene": "Siberian snow, 390px in-app browser", "fps": 20},
+      {"scene": "Scandinavian shore after the protocol tour ended", "fps": 58, "terrainChunks": 51},
+      {"scene": "Port 3000, new world map after temporary test tabs were closed", "fps": 52, "terrainChunks": 68}
+    ],
+    "qualification": "Samples vary with concurrent rendered tabs, focus, loading and device scheduling. The original unmodified world also fell to 3 FPS during the simultaneous comparison. These are observations, not a controlled device benchmark or a constant-FPS guarantee."
+  },
+  "screenshots": ["../output/paleo-world/screenshots/world-map.png", "../output/paleo-world/screenshots/map-390.png", "../output/paleo-world/screenshots/snow-390.png", "../output/paleo-world/screenshots/volcano.png", "../output/paleo-world/screenshots/coast.png", "../output/paleo-world/screenshots/live-world-map.png"],
+  "limitations": ["No physical phone test or long continuous play test.", "Climate boundaries and coastlines are approximations documented in geography/README.md."]
+}

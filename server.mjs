@@ -19,6 +19,8 @@ import { createEnemies, updateEnemies } from './shared/enemies.mjs';
 import { SCENERY } from './shared/scenery-layout.mjs';
 import { RIDING, mountedAnimal, handleRidingAction, releaseRider, ridingObstacles } from './shared/riding.mjs';
 import { interactionVisible } from './shared/interactions.mjs';
+import { takeExpedition } from './shared/expeditions.mjs';
+import { isLand, EARTH } from './shared/paleo-geography.mjs';
 
 const ROOT = path.dirname(fileURLToPath(import.meta.url));
 const COLORS = ['#e4ac65', '#87b899', '#b49cd2', '#76a7c3', '#ce8c8b'];
@@ -60,7 +62,7 @@ export function createGameServer({
       if (url.pathname === '/api/health' || url.pathname === '/api/network') {
         const activePort = server.address()?.port || port;
         const body = url.pathname === '/api/health'
-          ? { ok: true, ridingVersion: RIDING.version, combatVersion: 3, characterVersion: 2, enemyVersion: 1, worldVersion: WORLD.version, worldSize: WORLD.size, rooms: rooms.size, players: [...rooms.values()].reduce((sum, room) => sum + room.players.size, 0), maxPlayers: WORLD.maxPlayers }
+          ? { ok: true, ridingVersion: RIDING.version, combatVersion: 3, characterVersion: 2, enemyVersion: 1, worldVersion: WORLD.version, worldSize: WORLD.size, worldWidth: WORLD.width, worldDepth: WORLD.depth, epochYearsBP: EARTH.epochYearsBP, rooms: rooms.size, players: [...rooms.values()].reduce((sum, room) => sum + room.players.size, 0), maxPlayers: WORLD.maxPlayers }
           : {
             port: activePort,
             localUrl: `http://localhost:${activePort}`,
@@ -117,7 +119,7 @@ export function createGameServer({
   function snapshot(room, includeWorld = false) {
     const now = Date.now();
     return {
-      type: 'state', ridingVersion: RIDING.version, combatVersion: 3, characterVersion: 2, enemyVersion: 1, worldVersion: WORLD.version, room: room.name, serverTime: now,
+      type: 'state', ridingVersion: RIDING.version, combatVersion: 3, characterVersion: 2, enemyVersion: 1, worldVersion: WORLD.version, worldWidth:WORLD.width, worldDepth:WORLD.depth, epochYearsBP:EARTH.epochYearsBP, room: room.name, serverTime: now,
       projectiles: (room.projectiles || []).map(({id,ownerId,x,z,dx,dz,createdAt,updatedAt,travelled,kind})=>({id,ownerId,x,z,dx,dz,createdAt,updatedAt,travelled,kind})),
       projectileImpacts: (room.projectileImpacts || []).map(effect=>({...effect})),
       animals: room.animals.map(({id,x,z,facing,speed,scale,radius,clip,phase,health,maxHealth,meatRemaining,phaseStartedAt,riderId})=>({id,x,z,facing,speed,scale,radius,clip,phase,health,maxHealth,meatRemaining,phaseStartedAt,riderId})),
@@ -322,13 +324,17 @@ export function createGameServer({
         player.lastTarget=now;
         controlled.runningRequested = message.running === true;
         const goal={ x: worldClamp(message.x,'x'), z: worldClamp(message.z,'z') };
+        if(!isLand(goal.x,goal.z)){stopActor(controlled);notice(player,'そこは海です。海の向こうへは世界地図の「遠征」を使おう。');return;}
         const dynamic=ridingObstacles(room,controlled===player?null:controlled,player);
         if(!planNavigation(controlled,goal,room.collision,dynamic,now)){
           if(player.mountId){stopActor(controlled);notice(player,'マンモスが通れる道が見つかりません。広い道を選ぶか、Rで降りて進もう。');}
-          else notice(player,'進路がふさがれています。空いたら移動します。');
+          else {stopActor(controlled);notice(player,'歩ける経路が見つかりません。近くの陸地を選ぶか、世界地図から遠征しよう。');}
         }
         controlled.dx = 0;
         controlled.dz = 0;
+      } else if (message.type === 'expedition' && typeof message.destination === 'string') {
+        const result=takeExpedition(room,player,message.destination,now);notice(player,result.text,result.ok?'success':'info');
+        if(result.ok)broadcast(room,snapshot(room,true));
       } else if (message.type === 'action' && typeof message.action === 'string' && (message.action === 'attack' || message.action === 'cancelCook' || now - player.lastAction >= 450)) {
         player.lastAction = now;
         act(room, player, message, now);
