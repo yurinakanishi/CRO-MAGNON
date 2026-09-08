@@ -44,7 +44,7 @@ try{
     const context=await browser.newContext({viewport:{width:1440,height:1000}});
     await context.addInitScript(({name,species})=>{localStorage.setItem('cro-name',name);localStorage.setItem('cro-species',species);localStorage.setItem('cro-gender','female');},{name:`Explorer ${i+1}`,species:i?'bear':'cat'});
     const page=await context.newPage();pages.push(page);page.on('pageerror',e=>errors.push(String(e)));page.on('console',m=>{if(m.type()==='error')errors.push(m.text());});
-    await page.goto(`${base}/?room=${roomName}`);
+    await page.goto(`${base}/?autostart=1&room=${roomName}`);
   }
   for(let i=0;i<3;i++){
     const ws=new WebSocket(base.replace('http','ws')+`/ws?room=${roomName}&name=Peer${i}&resume=1`);peers.push(ws);ws.on('error',e=>networkErrors.push(String(e)));

@@ -31,6 +31,10 @@ export const gamepadHelp = `
 interface GamepadUIOptions {
   dialog: HTMLDialogElement;
   canvas: HTMLCanvasElement;
+  /** The container whose buttons the controller navigates: an open dialog or a full-screen game screen. */
+  menu: () => HTMLElement | null;
+  /** ○ / OPTIONS while a menu is shown: close the dialog or step back from the screen. */
+  closeMenu: () => void;
   canPlay: () => boolean;
   onAction: (action: PadAction) => void;
   onLook: (x: number, y: number, dt: number) => void;
@@ -97,7 +101,7 @@ export class GamepadControls {
 
   private mode(): InputMode {
     if (document.hidden || !document.hasFocus()) return 'blocked';
-    if (this.options.dialog.open) return 'menu';
+    if (this.options.menu()) return 'menu';
     if (
       !this.options.canPlay() ||
       document.activeElement?.closest('input,textarea,select,[contenteditable]')
@@ -146,9 +150,12 @@ export class GamepadControls {
     if (mode === 'menu' && this.active) {
       this.ensureFocus();
       if (frame.navigation) this.navigate(frame.navigation);
-      if (frame.look.y) this.options.dialog.scrollTop += frame.look.y * dt * 600;
+      if (frame.look.y) {
+        const root = this.options.menu();
+        if (root) root.scrollTop += frame.look.y * dt * 600;
+      }
       // Closing wins over confirming when two buttons arrive in the same frame.
-      if (frame.actions.some((a) => a === 'cancel' || a === 'menu')) this.options.dialog.close();
+      if (frame.actions.some((a) => a === 'cancel' || a === 'menu')) this.options.closeMenu();
       else if (frame.actions.includes('confirm')) this.activate();
     } else if (mode === 'game') {
       if (frame.look.x || frame.look.y) this.options.onLook(frame.look.x, frame.look.y, dt);
@@ -161,8 +168,10 @@ export class GamepadControls {
   };
 
   private items() {
+    const root = this.options.menu();
+    if (!root) return [];
     return [
-      ...this.options.dialog.querySelectorAll<HTMLElement>(
+      ...root.querySelectorAll<HTMLElement>(
         'button,a[href],input,select,textarea,summary,[role="button"],[tabindex="0"]',
       ),
     ].filter(

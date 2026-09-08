@@ -64,7 +64,7 @@ try {
       },
     });
   });
-  await page.goto(`${base}/?room=PAD-QA`);
+  await page.goto(`${base}/?autostart=1&room=PAD-QA`);
   await page.waitForSelector('#world[data-world-asset="ready"][data-character-asset="ready"]', {
     timeout: 60000,
   });

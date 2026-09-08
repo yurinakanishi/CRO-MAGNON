@@ -29,3 +29,7 @@
 仕様参照: [MDN: Using the Gamepad API](https://developer.mozilla.org/en-US/docs/Web/API/Gamepad_API/Using_the_Gamepad_API)、[W3C: Standard Gamepad mapping](https://w3c.github.io/gamepad/#remapping)。Context7の `/mdn/content` でも仕様を確認した。
 
 検証結果は[gamepad-qa.json](gamepad-qa.json)。実Chromeとローカルサーバーを動かし、`navigator.getGamepads()`の値だけを模擬している。実物のDUALSHOCK 4、USB/Bluetoothごとの実機接続、PS4本体のブラウザー、物理スマートフォンは未検証。PS4本体用アプリの制作ではない。
+
+## タイトル画面とメニュー（2026-09-08）
+
+タイトル画面・旅支度・「旅のはじめに」もダイアログと同じ操作です。十字キーか左スティックで項目を選び、×で決定、○で戻る（旅支度はタイトルへ、ガイドは冒険開始）。ゲーム中の OPTIONS はポーズメニューを開き、設定（環境音・全画面・視点）とタイトルへ戻るもここから選べます。

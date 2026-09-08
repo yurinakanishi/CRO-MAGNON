@@ -14,7 +14,7 @@ async function until(fn,ms=20000){const end=Date.now()+ms;while(!fn()){if(Date.n
 let browser;const peers=[],errors=[],samples=[],fps=[],contexts=[],pages=[];let timer;
 try{
   browser=await chromium.launch({channel:'chrome',headless:true});
-  for(let i=0;i<2;i++){const context=await browser.newContext({viewport:{width:1440,height:1000}});await context.addInitScript(({name})=>{localStorage.setItem('cro-name',name);localStorage.setItem('cro-species','cro');localStorage.setItem('cro-gender','female');},{name:`Boat browser ${i+1}`});const page=await context.newPage();page.on('pageerror',e=>errors.push(String(e)));await page.goto(base+'/?room=BOAT-QA');contexts.push(context);pages.push(page);}
+  for(let i=0;i<2;i++){const context=await browser.newContext({viewport:{width:1440,height:1000}});await context.addInitScript(({name})=>{localStorage.setItem('cro-name',name);localStorage.setItem('cro-species','cro');localStorage.setItem('cro-gender','female');},{name:`Boat browser ${i+1}`});const page=await context.newPage();page.on('pageerror',e=>errors.push(String(e)));await page.goto(base+'/?autostart=1&room=BOAT-QA');contexts.push(context);pages.push(page);}
   for(let i=0;i<3;i++){const ws=new WebSocket(base.replace('http','ws')+`/ws?room=BOAT-QA&name=Peer${i}&resume=1`),peer={ws,messages:[]};ws.on('message',b=>{peer.messages.push(JSON.parse(b));});peers.push(peer);await until(()=>peer.messages.some(m=>m.type==='welcome'));}
   const room=game.rooms.get('BOAT-QA');await until(()=>room?.players.size===5);
   const first=()=>[...room.players.values()].find(p=>p.name==='Boat browser 1'),second=()=>[...room.players.values()].find(p=>p.name==='Boat browser 2');

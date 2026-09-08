@@ -10,7 +10,7 @@ const sleep=ms=>new Promise(r=>setTimeout(r,ms));
 try{
   browser=await chromium.launch({channel:'chrome',headless:true});const page=await browser.newPage({viewport:{width:1440,height:1000}});
   page.on('pageerror',e=>errors.push(String(e)));page.on('console',m=>{if(m.type()==='error')errors.push(m.text());});
-  await page.goto(`http://127.0.0.1:${game.address().port}/?room=VISUAL-QA`);await page.waitForSelector('#world[data-world-asset="ready"][data-character-asset="ready"]',{timeout:60000});
+  await page.goto(`http://127.0.0.1:${game.address().port}/?autostart=1&room=VISUAL-QA`);await page.waitForSelector('#world[data-world-asset="ready"][data-character-asset="ready"]',{timeout:60000});
   const room=game.rooms.get('VISUAL-QA'),p=[...room.players.values()][0];
   Object.assign(p,{x:-157,z:429});await sleep(6500);await page.screenshot({path:out+'/oasis-spring.png'});
   p.adventure={regions:Object.fromEntries(['high-pass','echo-valley','amber-oasis'].map(id=>[id,{claimed:true,visited:[],gathered:0,kills:0}]))};

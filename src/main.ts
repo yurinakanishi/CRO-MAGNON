@@ -45,6 +45,7 @@ import { ADVENTURE_STOPS, regionAt } from '../shared/adventure-regions.mjs';
 import { installAdventureUI, adventureInteraction } from './adventure-ui.js';
 import { installGulfUI, gulfInteraction } from './gulf-ui.js';
 import { GULF_ENTRY, inGulf } from '../shared/gulf-region.mjs';
+import { ScreenManager, AreaBanner, guideMarkup, keyPrompts } from './screens.js';
 const EXPEDITION_STOPS = [...EARTH_STOPS, ...ADVENTURE_STOPS, GULF_ENTRY];
 const expeditionById = (id) =>
   (id === GULF_ENTRY.id ? GULF_ENTRY : null) ??
@@ -85,6 +86,7 @@ const icons = {
   link: '<path d="m10 14 4-4m-6 6-2 2a4 4 0 0 1-6-6l5-5a4 4 0 0 1 6 0m2 1 2-2a4 4 0 0 1 6 6l-5 5a4 4 0 0 1-6 0" transform="translate(1 -1)"/>',
   help: '<circle cx="12" cy="12" r="9"/><path d="M9 9a3 3 0 0 1 6 0c0 2-3 2-3 5m0 3v.1"/>',
   exchange: '<path d="M3 7h17l-4-4m4 14H3l4 4M20 7l-4 4M3 17l4-4"/>',
+  menu: '<path d="M4 7h16M4 12h16M4 17h16"/>',
   wave: '<path d="M5 12V8a2 2 0 0 1 3 0V4a2 2 0 0 1 3 0v7-8a2 2 0 0 1 3 0v8-6a2 2 0 0 1 3 0v8l2-3c2-2 4 0 3 2l-4 8c-4 4-13 1-13-4v-4Z"/>',
 };
 const icon = (name, cls = '') =>
@@ -133,6 +135,8 @@ let selectedAnimalId = null,
   hurtUntil = 0;
 const rideApproach = new RideApproach();
 
+const joinFields = () =>
+  `<label>あなたの名前<input name="name" maxlength="16" required autocomplete="off" autofocus></label><label>部屋のコード <span>英数字・ハイフン・アンダースコア / 最大16文字</span><input name="room" maxlength="16" pattern="[A-Za-z0-9_\\-]+" required autocomplete="off"></label>${characterChoicesMarkup()}<p class="form-note">人間は槍、クノイチは刀、魔法使いは光の魔法を使います。人間の男女で能力の差はありません。参加中に変更すると、もちものはリセットされます。</p>`;
 $('#app').innerHTML = `
   <section class="game-viewport" aria-label="${GAME_TITLE} ゲーム画面">
     <canvas id="world" aria-label="氷河時代の大陸が広がる3Dワールド。WASDまたは左スティックで移動。左スティックを浅く倒すと歩き、深く倒すと走ります。右スティックまたはドラッグでカメラ回転。地面クリックでも移動できます。" tabindex="0"></canvas>
@@ -140,26 +144,11 @@ $('#app').innerHTML = `
     <div class="scene-shade"></div>
     <div id="damage-flash" class="damage-flash" aria-hidden="true" hidden></div>
     <div id="combat-status" class="combat-status" role="status" hidden></div>
-    <header class="hud-place">
-      <a class="brand" href="/" aria-label="${GAME_TITLE} ホーム"><span class="brand-mark">${icon('flame')}</span><span>${GAME_TITLE}<small>MULTIPLAYER · ALPHA 0.1</small></span></a>
-      <div class="location-title"><div class="eyebrow"><span></span> はじまりの谷</div><h1>${GAME_TITLE}</h1><p>まだ名前のない世界で、今日を生きよう。</p><div class="location-meta"><span>${icon('leaf')} 針葉樹の森</span><span class="meta-divider"></span><span>${icon('sun')} <b id="day-label">1日目</b> · 穏やかな朝</span></div></div>
-      <div class="camera-badge"><span class="status-dot"></span> TPS <span>肩越し視点</span></div>
-    </header>
-    <nav class="dock" aria-label="メインメニュー">
-      <button class="dock-item active" data-panel="explore" title="世界を探索">${icon('compass')}<span>探索</span></button>
-      <button class="dock-item" data-panel="inventory" title="もちもの">${icon('bag')}<span>もちもの</span><b id="bag-count" class="dock-count">0</b></button>
-      <button class="dock-item" data-panel="tribe" title="部族の仲間">${icon('people')}<span>部族</span><b id="tribe-count" class="dock-count">0 / 5</b></button>
-      <button class="dock-item" data-panel="journal" title="旅の手帳">${icon('book')}<span>手帳</span></button>
-    </nav>
-    <div class="hud-actions">
-      <button id="profile-button" class="chip chip-profile" title="部屋とプロフィール"><span class="portrait cro" id="my-portrait"><i></i></span><span class="chip-text"><strong id="profile-name"></strong><small><span id="room-label"></span> · <span id="profile-species">クロマニョン人</span></small></span><b id="online-count">0/5</b></button>
-      <button id="help-button" class="chip chip-icon" aria-label="遊びかた" title="遊びかた">${icon('help')}<kbd>?</kbd></button>
-      <button id="wave-button" class="chip" title="手をふる">${icon('wave')}<span class="wave-label">手をふる</span></button>
-      <button id="invite-button" class="button button-accent">${icon('plus')} 仲間を招待</button>
-    </div>
-    <div class="map-hud"><button id="map-button" class="minimap-button" aria-label="世界地図を開く"><canvas id="minimap" width="160" height="115"></canvas><span class="map-north">N</span><span class="map-caption">VALLEY 01 ${icon('expand')}</span></button><div class="connection"><i class="status-dot" id="connection-dot"></i><span id="connection-label">接続中…</span><span id="ping-label">— ms</span></div><div class="discovery-card hunting-card" id="discovery-card"><div><small>OPEN MEADOW · みんなで狩る</small><strong id="hunt-target-name">草原のマンモス</strong><progress id="hunt-health" max="100" value="100" aria-label="マンモスの体力"></progress><p id="hunt-target-note">開けた草原でマンモスを探そう。</p></div><button id="go-hunt" title="マンモスの近くへ移動" aria-label="マンモスの近くへ移動">${icon('arrow')}</button></div></div>
+    <div id="area-banner" class="area-banner" aria-live="polite" hidden><small></small><strong></strong></div>
+    <button id="status-plate" class="status-plate" title="部族の仲間・招待"><span class="portrait cro" id="my-portrait"><i></i></span><span class="status-text"><strong id="profile-name"></strong><small><span id="room-label"></span><i>·</i><b id="online-count">0/5</b><i>·</i><span id="day-label">1日目</span></small><span class="energy-track" aria-hidden="true"><span id="energy-bar"></span></span><em class="energy-label">${icon('leaf')}<span id="energy-label">100 / 100</span></em></span></button>
+    <div class="map-hud"><button id="menu-button" class="menu-chip" title="メニュー [ESC]">${icon('menu')}<span>メニュー</span><kbd>ESC</kbd></button><button id="map-button" class="minimap-button" aria-label="世界地図を開く" title="世界地図 [M]"><canvas id="minimap" width="160" height="115"></canvas><span class="map-north">N</span><span class="map-area" id="map-area">はじまりの谷</span><kbd class="map-key">M</kbd></button><div class="connection"><i class="status-dot" id="connection-dot"></i><span id="connection-label">未接続</span><span id="ping-label">— ms</span></div><div class="discovery-card hunting-card" id="discovery-card"><div><small>OPEN MEADOW · みんなで狩る</small><strong id="hunt-target-name">草原のマンモス</strong><progress id="hunt-health" max="100" value="100" aria-label="マンモスの体力"></progress><p id="hunt-target-note">開けた草原でマンモスを探そう。</p></div><button id="go-hunt" title="マンモスの近くへ移動" aria-label="マンモスの近くへ移動">${icon('arrow')}</button></div></div>
     <details class="journey" id="journey" open>
-      <summary><span class="journey-head"><span class="eyebrow">OUR FIRST FIRE</span><strong>ここから、暮らしが始まる。</strong></span><span id="quest-count" class="journey-count">0 / 3</span><span class="journey-chevron">${icon('arrow')}</span></summary>
+      <summary><span class="journey-head"><span class="eyebrow">目標</span><strong>はじめての火を育てる</strong></span><span id="quest-count" class="journey-count">0 / 3</span><span class="journey-chevron">${icon('arrow')}</span></summary>
       <div class="quest-list">
         <div class="quest" id="quest-gather"><span class="quest-check">1</span><div><strong>森の恵みを集める</strong><p>木や石、ベリーを3つ採集</p><div class="progress-track"><span id="gather-progress"></span></div></div></div>
         <div class="quest" id="quest-craft"><span class="quest-check">2</span><div><strong>はじめての道具</strong><p>木材3・石2で石斧をつくる</p></div></div>
@@ -168,16 +157,42 @@ $('#app').innerHTML = `
       <div class="camp-row"><span class="camp-icon">${icon('flame')}</span><div><strong id="camp-name">小さな野営地</strong><small id="camp-level">CAMP LEVEL 0</small></div><div class="camp-stats"><span>${icon('wood')} <b id="camp-wood">0</b><em>/ 12</em></span><span>${icon('stone')} <b id="camp-stone">0</b><em>/ 6</em></span></div></div>
       <button id="go-camp" class="camp-link">焚き火のそばへ ${icon('arrow')}</button>
     </details>
-    <div class="scene-tools"><button id="sound-button" class="icon-button" aria-label="環境音をオン" title="環境音">${icon('muted')}</button><button id="zoom-out" class="icon-button" aria-label="縮小">−</button><button id="zoom-in" class="icon-button" aria-label="拡大">+</button><button id="focus-button" class="icon-button" aria-label="自分の位置へ">${icon('target')}</button><button id="fullscreen-button" class="icon-button" aria-label="全画面表示">${icon('expand')}</button></div>
     <div id="toast-stack" class="toast-stack" aria-live="polite"></div>
-    <div class="chat-panel"><button class="chat-heading" id="chat-toggle">${icon('chat')}<strong>焚き火の会話</strong><span>部族</span><span class="chat-collapse">−</span></button><div id="chat-content"><div id="chat-messages" class="chat-messages" role="log" aria-live="polite"><p class="chat-system">この谷での物語が、ここから始まります。</p></div><form id="chat-form"><input id="chat-input" maxlength="180" placeholder="仲間に話しかける…" aria-label="チャットメッセージ" autocomplete="off"><button aria-label="メッセージを送信" type="submit">${icon('arrow')}</button></form></div></div>
-    <div class="player-hud"><div class="energy-label"><span>${icon('leaf')} 元気</span><span id="energy-label">100 / 100</span></div><div class="energy-track"><span id="energy-bar"></span></div></div>
-    <div class="hotbar-wrap"><div class="interaction-hint" id="interaction-hint"><kbd>E</kbd><span>近くのものを調べる</span></div><div class="hotbar"><div class="resource-slots"><button class="resource-slot" data-inventory="wood" aria-label="木材のもちもの"><kbd>木材</kbd><span class="resource-icon wood">${icon('wood')}</span><b id="wood-count">0</b></button><button class="resource-slot" data-inventory="stone" aria-label="石のもちもの"><kbd>石</kbd><span class="resource-icon stone">${icon('stone')}</span><b id="stone-count">0</b></button><button class="resource-slot" id="eat-button" aria-label="ベリーを食べて元気を回復"><kbd>ベリー</kbd><span class="resource-icon berry">${icon('berry')}</span><b id="berry-count">0</b></button></div><div class="hotbar-divider"></div><button class="action-slot selected" data-action="gather" title="採集する [1]"><kbd>1</kbd>${icon('leaf')}<span>採集</span></button><button class="action-slot" data-action="craft" title="木材3・石2で石斧を作る [2]"><kbd>2</kbd>${icon('axe')}<span>つくる</span></button><button class="action-slot" data-action="contribute" title="焚き火の近くで資材を届ける [3]"><kbd>3</kbd>${icon('flame')}<span>届ける</span></button><button class="action-slot" data-action="trade" title="オルの近くで物々交換 [4]"><kbd>4</kbd>${icon('exchange')}<span>交換</span></button><button id="run-button" class="action-slot" aria-label="走行モード" aria-pressed="false" title="走る／歩く（方向キーを素早く2回押しても走る）"><kbd>2回</kbd>${icon('arrow')}<span>走る</span></button></div><div class="controls-caption"><span><kbd>W</kbd><kbd>A</kbd><kbd>S</kbd><kbd>D</kbd> 移動</span><i>·</i><span>地面をクリックしても移動できます</span></div></div>
+    <div class="chat-panel"><button class="chat-heading" id="chat-toggle">${icon('chat')}<strong>焚き火の会話</strong><kbd>Enter</kbd><span class="chat-collapse">−</span></button><div id="chat-content"><div id="chat-messages" class="chat-messages" role="log" aria-live="polite"><p class="chat-system">この谷での物語が、ここから始まります。</p></div><form id="chat-form"><input id="chat-input" maxlength="180" placeholder="仲間に話しかける…" aria-label="チャットメッセージ" autocomplete="off"><button aria-label="メッセージを送信" type="submit">${icon('arrow')}</button></form></div></div>
+    <div class="hotbar-wrap"><div class="interaction-hint" id="interaction-hint"><kbd>E</kbd><span>近くのものを調べる</span></div><div class="hotbar"><div class="resource-slots"><button class="resource-slot" data-inventory="wood" aria-label="木材のもちもの"><kbd>木材</kbd><span class="resource-icon wood">${icon('wood')}</span><b id="wood-count">0</b></button><button class="resource-slot" data-inventory="stone" aria-label="石のもちもの"><kbd>石</kbd><span class="resource-icon stone">${icon('stone')}</span><b id="stone-count">0</b></button><button class="resource-slot" id="eat-button" aria-label="ベリーを食べて元気を回復"><kbd>ベリー</kbd><span class="resource-icon berry">${icon('berry')}</span><b id="berry-count">0</b></button></div><div class="hotbar-divider"></div><button class="action-slot selected" data-action="gather" title="採集する [1]"><kbd>1</kbd>${icon('leaf')}<span>採集</span></button><button class="action-slot" data-action="craft" title="木材3・石2で石斧を作る [2]"><kbd>2</kbd>${icon('axe')}<span>つくる</span></button><button class="action-slot" data-action="contribute" title="焚き火の近くで資材を届ける [3]"><kbd>3</kbd>${icon('flame')}<span>届ける</span></button><button class="action-slot" data-action="trade" title="オルの近くで物々交換 [4]"><kbd>4</kbd>${icon('exchange')}<span>交換</span></button><button id="run-button" class="action-slot" aria-label="走行モード" aria-pressed="false" title="走る／歩く（方向キーを素早く2回押しても走る）"><kbd>2回</kbd>${icon('arrow')}<span>走る</span></button></div></div>
+    <div id="prompt-bar" class="prompt-bar" aria-label="操作の案内"></div>
+    <div id="screens" class="screens">
+      <section id="screen-title" class="screen title-screen" hidden>
+        <div class="title-content">
+          <p class="screen-eyebrow">A PREHISTORIC ONLINE ADVENTURE</p>
+          <div class="title-logo"><h1>${GAME_TITLE}</h1><span>氷河時代の大陸で、仲間と火を囲む。</span></div>
+          <nav class="title-menu" aria-label="タイトルメニュー">
+            <button id="title-continue" class="menu-item" hidden>つづきから<small id="title-continue-room"></small></button>
+            <button id="title-start" class="menu-item">はじめる</button>
+            <button id="title-howto" class="menu-item">あそびかた</button>
+            <button id="title-fullscreen" class="menu-item">全画面表示</button>
+          </nav>
+          <p class="title-hint"><kbd>↑</kbd><kbd>↓</kbd> 選ぶ <kbd>Enter</kbd> 決定 · コントローラー対応</p>
+        </div>
+        <div class="title-footer"><span id="title-status">ワールドを準備中…</span><span>MULTIPLAYER · ALPHA 0.1</span></div>
+      </section>
+      <section id="screen-setup" class="screen setup-screen" hidden>
+        <form id="setup-form" class="setup-card"><p class="screen-eyebrow">旅支度</p><h2>あなたの物語を、ここから。</h2><p class="setup-intro">名前とキャラクターを選び、同じ部屋のコードを持つ仲間と暮らそう。</p><p class="form-error" id="setup-error" hidden></p>${joinFields()}<div class="setup-actions"><button type="button" id="setup-back" class="button button-outline">戻る</button><button class="button button-accent" id="setup-submit" type="submit">この谷へ出発する ${icon('arrow')}</button></div></form>
+      </section>
+      <section id="screen-guide" class="screen guide-screen" hidden></section>
+    </div>
   </section>
-  <dialog id="modal"><div class="modal-top"><span class="eyebrow">${GAME_TITLE} · FIELD NOTES</span><button id="modal-close" class="icon-button" aria-label="閉じる">${icon('close')}</button></div><div id="modal-body"></div></dialog>`;
+  <dialog id="modal"><div class="modal-top"><span class="eyebrow">${GAME_TITLE}</span><button id="modal-close" class="icon-button" aria-label="閉じる">${icon('close')}</button></div><div id="modal-body"></div></dialog>`;
 
 if (matchMedia('(max-width:1000px), (max-height:700px)').matches)
   $('#journey').removeAttribute('open');
+const areaBanner = new AreaBanner($('#area-banner'));
+let guidePending = false;
+const screens = new ScreenManager($('#screens'), (id) => {
+  if (id) stopInput();
+  else $('#world').focus({ preventScroll: true });
+});
+$('#journey').removeAttribute('open');
 
 function showRenderError(text) {
   renderUnavailable = true;
@@ -234,7 +249,6 @@ try {
     },
   };
 }
-document.body.classList.add('tps-mode');
 $('.hotbar-wrap').insertAdjacentHTML(
   'afterbegin',
   `<div class="riding-controls"><button id="ride-button" class="hunt-button"><kbd>R</kbd><span>マンモスへ</span></button><small id="riding-hint">1頭に1人 · 近づいて R で乗る</small></div>`,
@@ -275,15 +289,12 @@ $('.hotbar-wrap').insertAdjacentHTML(
   'afterbegin',
   `<div class="hunt-controls"><button id="attack-button" class="hunt-button attack-button" title="槍で攻撃 [F / 5]">${icon('spear')}<kbd>F</kbd><span>槍で攻撃</span></button><button id="meat-inventory" class="hunt-button meat-counts" title="生肉は焚き火で焼いてから食べられます">${icon('meat')}<span>生 <b id="rawMeat-count">0</b> / 焼 <b id="cookedMeat-count">0</b></span></button><button id="cook-button" class="hunt-button" title="近くの焚き火で肉を焼く">${icon('flame')}<span>焼く</span></button><button id="eat-meat-button" class="hunt-button" title="焼き肉で元気を45回復">食べる</button></div><div id="cooking-status" class="cooking-status" hidden><span id="cooking-label">肉を焼いています…</span><progress id="cooking-progress" max="1" value="0" aria-label="肉を焼く進み具合"></progress><button id="cancel-cook">中止</button></div>`,
 );
-$('.controls-caption>span:last-child').textContent = '方向キー2回押しで走る · ドラッグで視点回転';
 $('#discovery-card').insertAdjacentHTML(
   'beforeend',
   `<button id="go-enemy" class="enemy-link" hidden>白羽の呪術師へ ${icon('arrow')}</button>`,
 );
-if (matchMedia('(max-width: 760px)').matches) {
-  $('#chat-content').hidden = true;
-  $('.chat-collapse').textContent = '+';
-}
+$('#chat-content').hidden = true;
+$('.chat-collapse').textContent = '+';
 renderer.setState(state, selfId);
 $('#profile-name').textContent = profile.name;
 $('#room-label').textContent = profile.room;
@@ -375,7 +386,7 @@ async function connect() {
     if (attempt !== connectAttempt) return;
     manualLeave = true;
     connection(false, 'サービス停止中');
-    openRoom(
+    showSetup(
       error.name === 'Error' ? error.message : '通信できません。時間をおいて再接続してください。',
     );
     return;
@@ -402,6 +413,9 @@ async function connect() {
       $('#profile-name').textContent = profile.name;
       $('#room-label').textContent = profile.room;
       connection(true, 'オンライン');
+      renderer.focusPlayer();
+      if (guidePending && !message.resumed && readSaved('cro-skip-guide', '') !== '1') showGuide();
+      guidePending = false;
       notify(
         message.resumed
           ? '接続が戻りました。持ち物と進行を復元しました。'
@@ -443,16 +457,13 @@ async function connect() {
       manualLeave = true;
       notify(message.text, 'error');
       connection(false, '参加できません');
-      openRoom(message.text);
+      showSetup(message.text);
       if (message.code === 'ROOM_FULL' && savedSession(profile.room)) {
-        $('#room-error').insertAdjacentHTML(
+        $('#setup-error').insertAdjacentHTML(
           'afterend',
           '<button id="retry-session" class="button button-outline wide" type="button">保存した持ち物で再接続する</button>',
         );
-        $('#retry-session').onclick = () => {
-          $('#modal').close();
-          connect();
-        };
+        $('#retry-session').onclick = () => enterGame();
       }
     }
   });
@@ -510,13 +521,9 @@ function nearby(): { action: string; label: string; targetId?: string } | null {
 function updateHUD() {
   const me = player(),
     inv = inventoryCounts(me?.inventory);
-  const gathered = me?.gathered ?? 0,
-    count = Object.values(inv).reduce((a, b) => a + b, 0);
+  const gathered = me?.gathered ?? 0;
   for (const key of ['wood', 'stone', 'berry', 'rawMeat', 'cookedMeat'])
     $(`#${key}-count`).textContent = inv[key];
-  $('#bag-count').textContent = count;
-  $('#tribe-count').textContent =
-    `${state.players.length} / ${state.playerLimit ?? WORLD.maxPlayers}`;
   $('#online-count').textContent =
     `${state.players.length}/${state.playerLimit ?? WORLD.maxPlayers}`;
   $('#camp-wood').textContent = state.camp.wood;
@@ -540,26 +547,18 @@ function updateHUD() {
   $('#quest-count').textContent = `${done} / 3`;
   $('#interaction-hint span').textContent = nearby()?.label || '近くのものを調べる';
   $('#interaction-hint').classList.toggle('available', !!nearby());
-  $('#profile-species').textContent = characterModel(profile).name;
   $('#my-portrait').className = `portrait ${profile.species}`;
+  $('#status-plate').title = `${characterModel(profile).name} · 部族の仲間と招待`;
   updateHuntingHUD();
   const biome = biomeAt(me?.x ?? 50, me?.z ?? 50);
   const region = regionAt(me?.x ?? 50, me?.z ?? 50);
-  $('.location-meta>span:last-child').lastChild.textContent = region?.realm
-    ? ' · 時のない夜'
-    : ' · 穏やかな朝';
-  $('.location-title h1').textContent = region?.name ?? locationName(me?.x ?? 50, me?.z ?? 50);
-  $('.location-title p').textContent = inGulf(me?.x ?? 50, me?.z ?? 50)
-    ? '三つの国を訪ね、畑を育て、舟で湾を渡ろう。'
-    : (region?.description ?? biome.description);
-  $('.location-title .eyebrow').textContent = 'CRO-MAGNON · OPEN WORLD';
-  $('.location-meta span:first-child').textContent =
-    `${region?.kind ?? biome.short} · ${Math.round(me?.x ?? 50)}, ${Math.round(me?.z ?? 50)}`;
-  const caption = $('.map-caption');
-  if (caption.dataset.biome !== biome.id) {
-    caption.dataset.biome = biome.id;
-    caption.innerHTML = `WORLD · ${biome.short} ${icon('expand')}`;
-  }
+  const areaName = region?.name ?? locationName(me?.x ?? 50, me?.z ?? 50);
+  $('#map-area').textContent = areaName;
+  if (me && joined && !screens.active)
+    areaBanner.update(
+      inGulf(me.x, me.z) ? '三つの岸の湾' : (region?.kind ?? biome.short),
+      areaName,
+    );
   drawMinimap();
   updateModalHUD();
   adventureUI.update();
@@ -762,6 +761,7 @@ function updateHuntingHUD() {
         : '1頭に1人 · △ で乗る';
     if (me?.boatId) $('#boat-hint').textContent = '左スティックで操船 · 深く倒すと速く · 岸で △';
   }
+  updatePromptBar();
   Object.assign($('#world').dataset, {
     ridingVersion: String(state.ridingVersion ?? 0),
     mountId: me?.mountId ?? '',
@@ -900,38 +900,80 @@ function openModal(content) {
   $('#modal-body').innerHTML = content;
   if (!$('#modal').open) $('#modal').showModal();
 }
-function openRoom(error = '') {
-  openModal(
-    `<h2>あなたの物語を、ここから。</h2><p class="modal-intro">キャラクターを選んで、同じ部屋の仲間と暮らそう。</p>${error ? '<p class="form-error" id="room-error"></p>' : ''}<form id="join-form"><label>あなたの名前<input id="name-input" name="name" maxlength="16" required autocomplete="off"></label><label>部屋のコード <span>英数字・ハイフン・アンダースコア / 最大16文字</span><input id="room-input" name="room" maxlength="16" pattern="[A-Za-z0-9_-]+" required autocomplete="off"></label>${characterChoicesMarkup()}<p class="form-note">人間は槍、クノイチは刀、魔法使いは光の魔法を使います。人間の男女で能力の差はありません。参加中に変更すると、もちものはリセットされます。</p><button class="button button-accent wide" type="submit">この谷で暮らす ${icon('arrow')}</button></form>`,
-  );
-  if (error) $('#room-error').textContent = error;
-  $('#name-input').value = profile.name;
-  $('#room-input').value = profile.room;
-  bindCharacterSelection($('#join-form'), profile);
-  $('#join-form').onsubmit = (e) => {
-    e.preventDefault();
-    const form = new FormData(e.currentTarget);
-    manualLeave = true;
-    saveSession(profile.room, null);
-    send({ type: 'leave' });
-    const previous = socket;
-    socket = null;
-    previous?.close();
-    profile = {
-      name: String(form.get('name')).trim() || '旅人',
-      room: String(form.get('room')).toUpperCase(),
-      ...normalizeCharacter({
-        species: String(form.get('species')),
-        gender: String(form.get('gender')),
-      }),
-    };
-    saveSession(profile.room, null);
-    for (const [k, v] of Object.entries(profile)) save(`cro-${k}`, v);
-    history.replaceState({}, '', `?room=${encodeURIComponent(profile.room)}`);
-    $('#profile-name').textContent = profile.name;
-    $('#modal').close();
-    connect();
+function applyProfileForm(form: HTMLFormElement) {
+  const data = new FormData(form);
+  manualLeave = true;
+  saveSession(profile.room, null);
+  send({ type: 'leave' });
+  const previous = socket;
+  socket = null;
+  previous?.close();
+  profile = {
+    name: String(data.get('name')).trim() || '旅人',
+    room: String(data.get('room')).toUpperCase(),
+    ...normalizeCharacter({
+      species: String(data.get('species')),
+      gender: String(data.get('gender')),
+    }),
   };
+  saveSession(profile.room, null);
+  for (const [k, v] of Object.entries(profile)) save(`cro-${k}`, v);
+  history.replaceState({}, '', `?room=${encodeURIComponent(profile.room)}`);
+  $('#profile-name').textContent = profile.name;
+}
+function showTitle() {
+  $('#modal').close();
+  const resumable = !!savedSession(profile.room);
+  $('#title-continue').hidden = !resumable;
+  $('#title-continue-room').textContent = `${profile.name} · ${profile.room}`;
+  screens.show('title');
+}
+function showSetup(error = '') {
+  $('#modal').close();
+  $('#retry-session')?.remove();
+  const form = $('#setup-form');
+  form.name.value = profile.name;
+  form.room.value = profile.room;
+  bindCharacterSelection(form, profile);
+  $('#setup-error').hidden = !error;
+  $('#setup-error').textContent = error;
+  $('#setup-back').textContent = joined ? '探索に戻る' : '戻る';
+  screens.show('setup');
+}
+function showGuide() {
+  $('#screen-guide').innerHTML = guideMarkup({ gamepad: usingGamepad, skipChecked: false });
+  screens.show('guide');
+  $('#guide-start').onclick = finishGuide;
+}
+function finishGuide() {
+  if (screens.active !== 'guide') return;
+  save('cro-skip-guide', $('#guide-skip')?.checked ? '1' : '');
+  screens.hide();
+  areaBanner.reset();
+}
+function enterGame() {
+  $('#retry-session')?.remove();
+  guidePending = true;
+  screens.hide();
+  document.body.classList.add('in-game');
+  areaBanner.reset();
+  connect();
+}
+function leaveToTitle() {
+  manualLeave = true;
+  clearTimeout(retry);
+  send({ type: 'leave' });
+  saveSession(profile.room, null);
+  const previous = socket;
+  socket = null;
+  previous?.close();
+  selfId = null;
+  state = { players: [], resources: INITIAL_RESOURCES, camp: { ...CAMP }, npc: { ...NPC }, day: 1 };
+  renderer.setState(state, selfId);
+  connection(false, '未接続');
+  updateHUD();
+  document.body.classList.remove('in-game');
+  showTitle();
 }
 async function openInvite() {
   openModal(
@@ -956,7 +998,7 @@ async function openInvite() {
       notify('リンクを選択しました。Ctrl+C でコピーできます。');
     }
   };
-  $('#change-room').onclick = () => openRoom();
+  $('#change-room').onclick = () => showSetup();
 }
 function openInventory() {
   const me = player(),
@@ -1037,7 +1079,7 @@ function openJournal() {
 }
 function openHelp() {
   openModal(
-    `<h2>今日の一歩から、はじめよう。</h2><p class="modal-intro">最初は、近くの木を集めてみましょう。</p><div class="help-grid"><div><kbd>W A S D</kbd><strong>歩く・走る</strong><p>通常は歩行。方向キーを素早く2回押すと走行（離すまで続く）。「走る」ボタンでも切り替えられます。クリック移動は障害物を避けます。</p></div><div><kbd>E</kbd><strong>近くでアクション</strong><p>採集、焚き火に届ける、オルと交換。</p></div><div><kbd>1 · 2 · 3 · 4</kbd><strong>アクションを選ぶ</strong><p>採集・道具づくり・資材を届ける・交換。</p></div><div><kbd>Enter</kbd><strong>仲間と話す</strong><p>チャットを開き、Enterで送信。</p></div></div><div class="help-tip">${icon('flame')} まずは木材3と石2で石斧を作ろう。<br>そのあと、仲間と拠点に木材12・石6を届けよう。</div><button id="help-start" class="button button-accent wide">探索をはじめる ${icon('arrow')}</button>`,
+    `<h2>あそびかた</h2><p class="modal-intro">最初は、近くの木や石を集めてみましょう。目標は画面左の「目標」に表示されます。</p><div class="help-grid"><div><kbd>W A S D</kbd><strong>歩く・走る</strong><p>通常は歩行。方向キーを素早く2回押すと走行（離すまで続く）。「走る」ボタンでも切り替えられます。クリック移動は障害物を避けます。</p></div><div><kbd>E</kbd><strong>近くでアクション</strong><p>採集、焚き火に届ける、オルと交換。</p></div><div><kbd>1 · 2 · 3 · 4</kbd><strong>アクションを選ぶ</strong><p>採集・道具づくり・資材を届ける・交換。</p></div><div><kbd>Enter</kbd><strong>仲間と話す</strong><p>チャットを開き、Enterで送信。</p></div><div><kbd>ESC · M · I · J</kbd><strong>メニュー・地図・もちもの・手帳</strong><p>ESCでメニュー。M で世界地図、I でもちもの、J で探索手帳を直接開けます。G で手をふる。</p></div></div><div class="help-tip">${icon('flame')} まずは木材3と石2で石斧を作ろう。<br>そのあと、仲間と拠点に木材12・石6を届けよう。</div><button id="help-start" class="button button-accent wide">${joined ? '探索に戻る' : '閉じる'} ${icon('arrow')}</button>`,
   );
   $('#modal-body .modal-intro').insertAdjacentHTML('afterend', gamepadHelp);
   $('.help-grid').insertAdjacentHTML(
@@ -1070,12 +1112,26 @@ function updateGamepadHints(active: boolean) {
     ['#attack-button kbd', active ? '□ / R2' : 'F'],
     ['#ride-button kbd', active ? '△' : 'R'],
     ['#boat-board kbd', active ? '△' : 'B'],
+    ['#chat-toggle kbd', active ? '⌨' : 'Enter'],
+    ['#menu-button kbd', active ? 'OPTIONS' : 'ESC'],
   ])
     $(selector).textContent = label;
-  $('.controls-caption').innerHTML = active
-    ? '<span>左スティック <b>浅く歩く · 深く走る</b></span><i>·</i><span>右スティック 視点 · OPTIONS メニュー</span>'
-    : '<span><kbd>W</kbd><kbd>A</kbd><kbd>S</kbd><kbd>D</kbd> 移動</span><i>·</i><span>方向キー2回押しで走る · ドラッグで視点回転</span>';
+  updatePromptBar();
   updateHuntingHUD();
+}
+let promptSignature = '';
+function updatePromptBar() {
+  const me = player();
+  const prompts = keyPrompts(usingGamepad, {
+    ride: !$('#ride-button').disabled || !!me?.mountId,
+    boat: !$('#boat-board').disabled || !!me?.boatId,
+  });
+  const signature = JSON.stringify(prompts);
+  if (signature === promptSignature) return;
+  promptSignature = signature;
+  $('#prompt-bar').innerHTML = prompts
+    .map((p) => `<span><kbd>${p.key}</kbd>${p.label}</span>`)
+    .join('');
 }
 
 function controllerRide() {
@@ -1085,29 +1141,43 @@ function controllerRide() {
   else ride();
 }
 
-function openControllerMenu() {
-  const entries = [
-    ['resume', '探索に戻る', () => $('#modal').close()],
-    ['inventory', 'もちもの・道具・船をつくる', openInventory],
-    ['map', '世界地図・遠征', openMap],
-    ['journal', '探索手帳', openJournal],
-    ['gulf', '三つの国・共同の畑', () => gulfUI.open()],
-    ['tribe', '部族の仲間', openTribe],
-    ['shore', '船を作れる海岸へ', () => $('#boat-shore').click()],
-    ['ride', '船・マンモスに乗る／降りる', controllerRide],
-    ['wave', '手をふる', () => action('wave')],
-    ['help', '遊びかた・コントローラー操作', openHelp],
-    ['profile', '部屋・プロフィール', () => openRoom()],
-  ] as const;
+function openPauseMenu() {
+  if (screens.active) return;
+  const entries: [string, string, string, () => void][] = [
+    ['resume', 'compass', '探索に戻る', () => $('#modal').close()],
+    ['inventory', 'bag', 'もちもの・道具', openInventory],
+    ['map', 'expand', '世界地図・遠征', openMap],
+    ['journal', 'book', '探索手帳', openJournal],
+    ['gulf', 'wave', '三つの国・共同の畑', () => gulfUI.open()],
+    ['tribe', 'people', '部族の仲間・招待', openTribe],
+    ['help', 'help', 'あそびかた', openHelp],
+    ['shore', 'arrow', '船を作れる海岸へ', () => $('#boat-shore').click()],
+    ['ride', 'target', '船・マンモスに乗る／降りる', controllerRide],
+    ['wave', 'wave', '手をふる', () => action('wave')],
+    ['profile', 'people', '部屋・キャラクターを変える', () => showSetup()],
+    ['title', 'close', 'タイトルへ戻る', leaveToTitle],
+  ];
   openModal(
-    `<h2>旅のメニュー</h2><p class="modal-intro">十字キーで選ぶ · × 決定 · ○ 戻る</p><div class="controller-menu">${entries.map(([id, label]) => `<button class="button button-outline" data-controller-menu="${id}">${label}</button>`).join('')}</div>${gamepadHelp}`,
+    `<div class="pause-menu"><p class="screen-eyebrow">PAUSE</p><h2>メニュー</h2><p class="modal-intro">${usingGamepad ? '十字キーで選ぶ · × 決定 · ○ 戻る' : 'ESC で閉じる · ↑↓ で選ぶ · Enter で決定'}</p><div class="controller-menu">${entries
+      .map(
+        ([id, glyph, label]) =>
+          `<button class="button button-outline" data-controller-menu="${id}">${icon(glyph)}<span>${label}</span></button>`,
+      )
+      .join(
+        '',
+      )}</div><div class="settings-row"><span class="settings-label">設定</span><button class="button button-outline" data-setting="sound" aria-pressed="${soundEnabled}">${icon(soundEnabled ? 'sound' : 'muted')} 環境音 ${soundEnabled ? 'オン' : 'オフ'}</button><button class="button button-outline" data-setting="fullscreen">${icon('expand')} 全画面表示</button><button class="button button-outline" data-setting="camera">${icon('target')} 視点を戻す</button><button class="button button-outline" data-setting="zoom-out">− 遠く</button><button class="button button-outline" data-setting="zoom-in">+ 近く</button></div>${usingGamepad ? gamepadHelp : ''}</div>`,
   );
-  for (const [id, , handler] of entries) {
+  for (const [id, , , handler] of entries) {
     $(`[data-controller-menu="${id}"]`).onclick = () => {
-      if (['shore', 'ride', 'wave'].includes(id)) $('#modal').close();
+      if (['shore', 'ride', 'wave', 'title'].includes(id)) $('#modal').close();
       handler();
     };
   }
+  $('[data-setting="sound"]').onclick = toggleSound;
+  $('[data-setting="fullscreen"]').onclick = toggleFullscreen;
+  $('[data-setting="camera"]').onclick = () => renderer.focusPlayer();
+  $('[data-setting="zoom-out"]').onclick = () => renderer.adjustZoom(-0.15);
+  $('[data-setting="zoom-in"]').onclick = () => renderer.adjustZoom(0.15);
 }
 
 function openMap() {
@@ -1226,36 +1296,24 @@ async function toggleSound() {
       playNote();
       audioTimer = setInterval(playNote, 3200);
     }
-    $('#sound-button').innerHTML = icon(soundEnabled ? 'sound' : 'muted');
-    $('#sound-button').setAttribute('aria-label', `環境音を${soundEnabled ? 'オフ' : 'オン'}`);
-    $('#sound-button').classList.toggle('enabled', soundEnabled);
+    const button = $('[data-setting="sound"]');
+    if (button) {
+      button.innerHTML = `${icon(soundEnabled ? 'sound' : 'muted')} 環境音 ${soundEnabled ? 'オン' : 'オフ'}`;
+      button.setAttribute('aria-pressed', String(soundEnabled));
+    }
   } catch {
     notify('このブラウザでは環境音を再生できません。');
   }
 }
 
-document.querySelectorAll<HTMLElement>('[data-panel]').forEach(
-  (b) =>
-    (b.onclick = () =>
-      ({
-        explore: () => {
-          renderer.focusPlayer();
-          $('#modal').close();
-        },
-        inventory: openInventory,
-        tribe: openTribe,
-        journal: openJournal,
-      })[b.dataset.panel]()),
-);
 document
   .querySelectorAll<HTMLElement>('[data-action]')
   .forEach((b) => (b.onclick = () => action(b.dataset.action)));
 document
   .querySelectorAll<HTMLElement>('[data-inventory]')
   .forEach((b) => (b.onclick = openInventory));
-$('#profile-button').onclick = () => openRoom();
-$('#invite-button').onclick = openInvite;
-$('#help-button').onclick = openHelp;
+$('#status-plate').onclick = openTribe;
+$('#menu-button').onclick = openPauseMenu;
 $('#map-button').onclick = openMap;
 $('#go-camp').onclick = () => goTo(49, 52.4, '野営地の焚き火');
 $('#go-hunt').onclick = () => approachHunt();
@@ -1279,23 +1337,28 @@ $('#interaction-hint').onkeydown = (e) => {
   }
 };
 $('#eat-button').onclick = () => action('eat');
-$('#wave-button').onclick = () => action('wave');
-$('#zoom-in').onclick = () => renderer.adjustZoom(0.15);
-$('#zoom-out').onclick = () => renderer.adjustZoom(-0.15);
-$('#focus-button').onclick = () => renderer.focusPlayer();
 $('#run-button').onclick = () => {
   runMode = !runMode;
   $('#run-button').setAttribute('aria-pressed', String(runMode));
   $('#run-button span').textContent = runMode ? '歩く' : '走る';
 };
-$('#sound-button').onclick = toggleSound;
-$('#fullscreen-button').onclick = async () => {
+async function toggleFullscreen() {
   try {
     if (document.fullscreenElement) await document.exitFullscreen();
     else await document.documentElement.requestFullscreen();
   } catch {
     notify('この画面では全画面表示を利用できません。');
   }
+}
+$('#title-start').onclick = () => showSetup();
+$('#title-continue').onclick = () => enterGame();
+$('#title-howto').onclick = openHelp;
+$('#title-fullscreen').onclick = toggleFullscreen;
+$('#setup-back').onclick = () => (joined ? screens.hide() : showTitle());
+$('#setup-form').onsubmit = (e) => {
+  e.preventDefault();
+  applyProfileForm(e.currentTarget);
+  enterGame();
 };
 $('#modal-close').onclick = () => $('#modal').close();
 $('#modal').addEventListener('click', (e) => {
@@ -1330,9 +1393,15 @@ document.addEventListener('keydown', (e) => {
     (e.target as Element)?.closest<HTMLElement>('input,textarea,select,[contenteditable]') ||
     !acceptsGameShortcut(e) ||
     $('#modal').open ||
+    screens.active ||
     renderUnavailable
   )
     return;
+  if (e.key === 'Escape' && joined) {
+    e.preventDefault();
+    openPauseMenu();
+    return;
+  }
   if (
     ['Enter', ' '].includes(e.key) &&
     (e.target as Element)?.closest<HTMLElement>('button,a,[role="button"]')
@@ -1379,6 +1448,10 @@ document.addEventListener('keydown', (e) => {
     $('#chat-input').focus();
   }
   if (k === '?' || k === 'h') openHelp();
+  if (k === 'm') openMap();
+  if (k === 'i') openInventory();
+  if (k === 'j') openJournal();
+  if (k === 'g') action('wave');
 });
 document.addEventListener('keyup', (e) => {
   const key = movementKey(e);
@@ -1393,7 +1466,14 @@ document.addEventListener('visibilitychange', () => {
 gamepadControls = new GamepadControls({
   dialog: $('#modal'),
   canvas: $('#world'),
-  canPlay: () => joined && !renderUnavailable && !!player() && !player()?.downedUntil,
+  menu: () => ($('#modal').open ? $('#modal') : screens.activeElement()),
+  closeMenu: () => {
+    if ($('#modal').open) $('#modal').close();
+    else if (screens.active === 'guide') finishGuide();
+    else if (screens.active === 'setup') $('#setup-back').click();
+  },
+  canPlay: () =>
+    joined && !renderUnavailable && !screens.active && !!player() && !player()?.downedUntil,
   onStop: stopInput,
   onActivity: updateGamepadHints,
   onLook: (x, y, dt) => renderer.rotateCamera(x * dt * 2.4, y * dt * 1.5),
@@ -1422,7 +1502,7 @@ gamepadControls = new GamepadControls({
         openMap();
         break;
       case 'menu':
-        openControllerMenu();
+        openPauseMenu();
         break;
       case 'inventory':
         openInventory();
@@ -1454,6 +1534,7 @@ setInterval(() => {
     !document.hidden &&
     document.hasFocus() &&
     !$('#modal').open &&
+    !screens.active &&
     !document.activeElement?.closest('input,textarea,select,[contenteditable]');
   if (canMove) {
     if (keys.has('w') || keys.has('arrowup')) sy--;
@@ -1482,17 +1563,33 @@ setInterval(updateHuntingHUD, 100);
 const hudObserver = new ResizeObserver((entries) => {
   for (const entry of entries)
     $('.game-viewport').style.setProperty(
-      entry.target.classList.contains('hud-place') ? '--place-height' : '--hud-height',
+      '--hud-height',
       `${entry.target.getBoundingClientRect().height}px`,
     );
 });
 hudObserver.observe($('.hotbar-wrap'));
-hudObserver.observe($('.hud-place'));
 window.addEventListener('beforeunload', () => {
   manualLeave = true;
   socket?.close();
   hudObserver.disconnect();
   gamepadControls.destroy();
+  screens.destroy();
   renderer.destroy();
 });
-connect();
+// The title screen slowly pans the camera around the world until play begins.
+let titleClock = 0;
+function titleIdle(now: number) {
+  if (screens.active === 'title')
+    renderer.rotateCamera(Math.min(0.05, (now - titleClock) / 1000) * 0.05, 0);
+  titleClock = now;
+  requestAnimationFrame(titleIdle);
+}
+requestAnimationFrame(titleIdle);
+renderer.assetsPromise
+  ?.then(() => ($('#title-status').textContent = '準備完了'))
+  .catch(() => ($('#title-status').textContent = '3D画面を表示できません'));
+if (query.get('autostart') === '1') {
+  // QA scripts and local shortcuts skip the title, setup and guide screens.
+  enterGame();
+  guidePending = false;
+} else showTitle();

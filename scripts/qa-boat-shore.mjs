@@ -11,7 +11,7 @@ try{
   const page=await browser.newPage({viewport:{width:1440,height:1000}}),errors=[];
   page.on('pageerror',e=>errors.push(String(e)));
   await page.addInitScript(()=>{localStorage.setItem('cro-name','Shore route QA');localStorage.setItem('cro-species','cro');localStorage.setItem('cro-gender','female');});
-  await page.goto(`http://127.0.0.1:${address.port}/?room=SHORE-QA`);
+  await page.goto(`http://127.0.0.1:${address.port}/?autostart=1&room=SHORE-QA`);
   await page.waitForSelector('#world[data-world-asset="ready"][data-character-asset="ready"]',{timeout:60000});
   const room=game.rooms.get('SHORE-QA'),p=[...room.players.values()][0],start={x:p.x,z:p.z};
   // Only inventory is supplied by the fixture; the start and complete route are normal gameplay.
