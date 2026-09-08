@@ -1,0 +1,19 @@
+✔ barter wire commands reject malformed IDs, revisions and quantities and ignore forged consent fields (1.669ms)
+✔ only the invited partner may join; no self, remote, busy, cross-room or overlapping trade (250.7885ms)
+✔ each changed offer revokes both approvals; old consent and repeat delivery cannot transfer items (119.3792ms)
+✔ same-revision concurrent edits cannot replace an unseen offer and private simulation data is not broadcast (103.5421ms)
+✔ inventory and quantity failures preserve every item, and final consent revalidates both sides (111.7311ms)
+✔ same-item exchange checks net capacity and conserves total amounts (100.1831ms)
+✔ moving, targets, expeditions, other actions and cancellation stop pending barter without escrow (723.7119ms)
+✔ server tick cancels on injury, work, movement, distance, missing partner and obstruction (945.6867ms)
+✔ expiry, cooldown and bounded terminal results prevent old invitations remaining actionable (99.9298ms)
+✔ four pairs among eight players exchange independently with authoritative snapshots (119.2733ms)
+✔ disconnect/replacement/restore remove agreements, while completed inventories survive and received blades remain usable (198.0246ms)
+ℹ tests 11
+ℹ suites 0
+ℹ pass 11
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 3370.9408

@@ -7,12 +7,14 @@ import { residentSnapshots } from '../shared/village-life.mjs';
 import { householdSnapshots } from '../shared/household-life.mjs';
 import { VILLAGE, villageDay } from '../shared/village-sites.mjs';
 import { maritimeWeather } from '../shared/maritime-weather.mjs';
+import { barterSnapshots } from '../shared/barter.mjs';
 export function snapshot(
   room,
   includeWorld = false,
   now = Date.now(),
 ): import('../shared/snapshots.mjs').GameSnapshot {
   return {
+    barters: barterSnapshots(room),
     residents: residentSnapshots(room),
     households: householdSnapshots(room),
     boatingVersion: BOATING.version,

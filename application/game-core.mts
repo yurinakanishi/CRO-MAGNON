@@ -24,6 +24,7 @@ import {
 import { characterModel, normalizeCharacter } from '../shared/characters.mjs';
 import { CollisionWorld, overlap } from '../shared/collision.mjs';
 import { attackProfile } from '../shared/combat-profiles.mjs';
+import { handleBarterCommand, cancelBarter, updateBarters } from '../shared/barter.mjs';
 import { enemyIsSolid, stopActor } from '../shared/combat.mjs';
 import { createEnemies, updateEnemies } from '../shared/enemies.mjs';
 import { takeExpedition } from '../shared/expeditions.mjs';
@@ -126,6 +127,7 @@ export function createGameCore({
         })),
         camp: { ...CAMP },
         gulf: createGulfState(),
+        barters: [],
         lastBroadcast: 0,
       };
       room.cookingFires = SCENERY.fires.map(({ id, x, z }) => ({
@@ -224,6 +226,7 @@ export function createGameCore({
     ensureAdventure(player);
     ensureGulfPlayer(player);
     ensureVillageProgress(player);
+    if (active) cancelBarter(room, player.id, now, '接続が切り替わったので、交換を中止しました。');
     if (active?.boatId) releaseBoat(room, player);
     const dynamic = [...room.players.values()]
       .filter((p) => p !== player && !p.mountId)
@@ -309,6 +312,14 @@ export function createGameCore({
         socket.close(1000, 'Explicit leave');
         return;
       }
+      if (message.type === 'barter') {
+        if (message.kind !== 'cancel' && now - player.lastAction < 450) return;
+        if (message.kind !== 'cancel') player.lastAction = now;
+        const result = handleBarterCommand(room, player, message, now, runtime.id);
+        if (result.text) notice(player, result.text, result.ok ? 'success' : 'info');
+        if (result.changed) broadcast(room, snapshot(room));
+        return;
+      }
       const controlled = boardedBoat(room, player) || mountedAnimal(room, player) || player;
       if (player.downedUntil && ['move', 'gait', 'target', 'action'].includes(message.type)) {
         if (message.type === 'action')
@@ -317,6 +328,7 @@ export function createGameCore({
       }
       if (message.type === 'move' && Number.isFinite(message.dx) && Number.isFinite(message.dz)) {
         if (Math.hypot(message.dx, message.dz) > 0.01) {
+          cancelBarter(room, player.id, now, '移動を始めたので、交換を中止しました。');
           cancelFishing(player);
           cancelCoastal(player);
         }
@@ -341,6 +353,7 @@ export function createGameCore({
       ) {
         cancelFishing(player);
         cancelCoastal(player);
+        cancelBarter(room, player.id, now, '移動を始めたので、交換を中止しました。');
         player.lastTarget = now;
         controlled.runningRequested = message.running === true;
         const goal = { x: worldClamp(message.x, 'x'), z: worldClamp(message.z, 'z') };
@@ -381,6 +394,7 @@ export function createGameCore({
         controlled.dx = 0;
         controlled.dz = 0;
       } else if (message.type === 'expedition' && typeof message.destination === 'string') {
+        cancelBarter(room, player.id, now, '遠征を始めたので、交換を中止しました。');
         cancelFishing(player);
         cancelCoastal(player);
         const result = takeExpedition(room, player, message.destination, now);
@@ -396,6 +410,8 @@ export function createGameCore({
           message.action === 'rift' ||
           now - player.lastAction >= 450)
       ) {
+        if (!['cancelFishing', 'cancelCoastal', 'cancelCook', 'wave'].includes(message.action))
+          cancelBarter(room, player.id, now, '別の作業を始めたので、交換を中止しました。');
         if (!['cancelFishing', 'cancelCoastal'].includes(message.action)) player.lastAction = now;
         act(room, player, message, now);
       } else if (message.type === 'chat' && now - player.lastChat >= 600) {
@@ -421,6 +437,7 @@ export function createGameCore({
     });
     socket.on('close', () => {
       if (player.socket !== socket) return;
+      cancelBarter(room, player.id, runtime.now(), '相手が接続を離れたので、交換を中止しました。');
       releaseBoat(room, player);
       releaseRider(room, player);
       player.pendingStrike = null;
@@ -458,6 +475,7 @@ export function createGameCore({
       for (const [token, entry] of room.sessions)
         if (now >= entry.expiresAt) room.sessions.delete(token);
       if (!room.players.size) {
+        updateBarters(room, now);
         if (!keepEmptyRooms && !room.sessions.size) rooms.delete(room.name);
         continue;
       }
@@ -502,6 +520,7 @@ export function createGameCore({
       const gulfChanged = updateGulf(room, now);
       const fishingChanged = updateFishing(room, now, notice);
       const coastalChanged = updateCoastal(room, now, notice);
+      const barterChanged = updateBarters(room, now);
       let resourcesChanged = false;
       for (const resource of room.resources) {
         if (resource.amount < resource.maxAmount && now - resource.regeneratedAt >= 20000) {
@@ -529,6 +548,7 @@ export function createGameCore({
         huntingChanged ||
         enemiesChanged ||
         fishingChanged ||
+        barterChanged ||
         coastalChanged
       ) {
         broadcast(

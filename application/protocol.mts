@@ -1,4 +1,6 @@
+import type { BarterCommand } from '../shared/barter-types.mjs';
 export type ClientCommand =
+  | BarterCommand
   | { type: 'leave' }
   | { type: 'move'; dx: number; dz: number; running?: boolean }
   | { type: 'gait'; running: boolean }
@@ -23,6 +25,54 @@ export function decodeCommand(text: string): ClientCommand | null {
   if (!value || typeof value !== 'object' || Array.isArray(value)) return null;
   const message = value as Record<string, unknown>;
   switch (message.type) {
+    case 'barter': {
+      const id = (v: unknown): v is string =>
+        typeof v === 'string' && v.length > 0 && v.length <= 80;
+      if (message.kind === 'invite')
+        return id(message.targetId)
+          ? { type: 'barter', kind: 'invite', targetId: message.targetId }
+          : null;
+      if (message.kind === 'cancel')
+        return message.tradeId === undefined || id(message.tradeId)
+          ? {
+              type: 'barter',
+              kind: 'cancel',
+              ...(message.tradeId === undefined ? {} : { tradeId: message.tradeId as string }),
+            }
+          : null;
+      if (
+        !id(message.tradeId) ||
+        !finite(message.revision) ||
+        !Number.isSafeInteger(message.revision) ||
+        message.revision < 0
+      )
+        return null;
+      if (message.kind === 'join' || message.kind === 'accept')
+        return {
+          type: 'barter',
+          kind: message.kind,
+          tradeId: message.tradeId,
+          revision: message.revision,
+        };
+      if (
+        message.kind === 'offer' &&
+        typeof message.item === 'string' &&
+        message.item.length <= 24 &&
+        finite(message.quantity) &&
+        Number.isSafeInteger(message.quantity) &&
+        message.quantity >= 1 &&
+        message.quantity <= 20
+      )
+        return {
+          type: 'barter',
+          kind: 'offer',
+          tradeId: message.tradeId,
+          revision: message.revision,
+          item: message.item,
+          quantity: message.quantity,
+        };
+      return null;
+    }
     case 'leave':
       return { type: 'leave' };
     case 'move':

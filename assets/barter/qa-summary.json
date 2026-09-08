@@ -1,0 +1,313 @@
+{
+  "at": "2026-09-08T23:09:46.545Z",
+  "status": "passed",
+  "tests": {
+    "all": 313,
+    "barter": 11,
+    "failures": 0,
+    "corePlayerCount": 8,
+    "simultaneousPairs": 4
+  },
+  "build": {
+    "isolated": "passed",
+    "normal": "passed",
+    "strict": "passed",
+    "node": "passed",
+    "cloudflareModules": "passed",
+    "syntax": "Syntax checked 156 JavaScript files.",
+    "architecture": "Architecture boundaries passed: domain → application → host adapters; browser → domain.",
+    "changedCodeFormatting": "passed"
+  },
+  "assets": {
+    "models": 39,
+    "deliveredGLBs": 54,
+    "newGLBs": 0,
+    "newDependencies": 0,
+    "previousGLBsUnchanged": true
+  },
+  "browser": {
+    "at": "2026-09-08T23:03:15.019Z",
+    "base": "http://127.0.0.1:52434",
+    "errors": [],
+    "fixtures": [
+      {
+        "kind": "position",
+        "player": "交換A",
+        "purpose": "two stopped players beside the gathering hearth",
+        "x": -2277,
+        "z": 460
+      },
+      {
+        "kind": "position",
+        "player": "交換B",
+        "purpose": "partner within four metres",
+        "x": -2275.4,
+        "z": 460
+      },
+      {
+        "kind": "supplies-and-energy",
+        "a": {
+          "wood": 2,
+          "stone": 0,
+          "berry": 2,
+          "rawMeat": 0,
+          "cookedMeat": 0,
+          "rootSeed": 0,
+          "herbSeed": 0,
+          "rawRoot": 0,
+          "herb": 0,
+          "cookedRoot": 0,
+          "herbRoot": 0,
+          "rawShellfish": 0,
+          "cookedShellfish": 0,
+          "shells": 0,
+          "obsidianBlade": 0,
+          "rawFish": 0,
+          "cookedFish": 0,
+          "obsidian": 6,
+          "seed": 0,
+          "water": 0
+        },
+        "b": {
+          "wood": 0,
+          "stone": 0,
+          "berry": 8,
+          "rawMeat": 0,
+          "cookedMeat": 0,
+          "rootSeed": 0,
+          "herbSeed": 0,
+          "rawRoot": 0,
+          "herb": 0,
+          "cookedRoot": 0,
+          "herbRoot": 0,
+          "rawShellfish": 0,
+          "cookedShellfish": 2,
+          "shells": 0,
+          "obsidianBlade": 1,
+          "rawFish": 0,
+          "cookedFish": 0,
+          "obsidian": 0,
+          "seed": 0,
+          "water": 0
+        },
+        "energyA": 40,
+        "purpose": "barter inputs; no claim that this QA gathered or cooked them"
+      },
+      {
+        "kind": "position",
+        "player": "交換A",
+        "purpose": "use the received blade at the existing stone worksite",
+        "x": -2258,
+        "z": 459.5
+      },
+      {
+        "kind": "position",
+        "player": "交換A",
+        "purpose": "return to the partner after worksite use",
+        "x": -2277,
+        "z": 460
+      }
+    ],
+    "completed": [
+      "invitation appears without opening recipient modal; both offers visible; changing berry quantity revokes existing consent",
+      "controller selects quantity; unposted draft cannot accept; opponent edit and snapshots preserve draft and focus",
+      "explicit withdraw-and-review resets consent; both final consents transfer once; all item totals conserved",
+      "received blade attaches to human wooden spear through existing worksite UI; mage participant retains species",
+      "received cooked shellfish is eaten through existing UI, restoring energy and leaving a shell",
+      "390x844 and 844x390 fit with scroll and 44px buttons; simulated controller right-face confirm on Back cancels without losing items",
+      "simulated window focus loss cancels the pending exchange without item loss",
+      "same-tab reload cancels unfinished agreement while retaining exchanged inventory and upgraded spear"
+    ],
+    "viewports": [
+      {
+        "width": 390,
+        "scrollWidth": 390,
+        "modalOverflow": false,
+        "buttons": [
+          {
+            "id": "barter-offer",
+            "height": 44,
+            "width": 320
+          },
+          {
+            "id": "barter-revise",
+            "height": 44,
+            "width": 320
+          },
+          {
+            "id": "barter-accept",
+            "height": 44,
+            "width": 320
+          },
+          {
+            "id": "barter-cancel",
+            "height": 44,
+            "width": 320
+          },
+          {
+            "id": "barter-back",
+            "height": 44,
+            "width": 320
+          }
+        ]
+      },
+      {
+        "width": 844,
+        "scrollWidth": 844,
+        "modalOverflow": false,
+        "buttons": [
+          {
+            "id": "barter-offer",
+            "height": 44,
+            "width": 370.390625
+          },
+          {
+            "id": "barter-revise",
+            "height": 44,
+            "width": 370.40625
+          },
+          {
+            "id": "barter-accept",
+            "height": 44,
+            "width": 370.390625
+          },
+          {
+            "id": "barter-cancel",
+            "height": 44,
+            "width": 370.40625
+          },
+          {
+            "id": "barter-back",
+            "height": 44,
+            "width": 747.796875
+          }
+        ]
+      }
+    ],
+    "screenshots": [
+      {
+        "name": "01-loaded",
+        "fps": "16",
+        "chunks": "68"
+      },
+      {
+        "name": "02-two-offers",
+        "fps": "60",
+        "chunks": "62"
+      },
+      {
+        "name": "03-complete",
+        "fps": "60",
+        "chunks": "62"
+      },
+      {
+        "name": "04-barter-390",
+        "fps": "56",
+        "chunks": "62"
+      },
+      {
+        "name": "04-barter-844",
+        "fps": "60",
+        "chunks": "62"
+      },
+      {
+        "name": "05-reconnected",
+        "fps": "34",
+        "chunks": "62"
+      }
+    ],
+    "observations": 151,
+    "maxPlayers": 5,
+    "violations": [],
+    "scope": "Two real Chrome views and three network peers. Proximity, supplies and initial energy are explicit fixtures. Window blur and Gamepad API inputs are simulated. No claim of physical controllers/mobile hardware, all gathering/cooking, long-distance travel, long-duration load or constant 60FPS."
+  },
+  "normal": {
+    "at": "2026-09-08T23:07:19.294Z",
+    "base": "http://127.0.0.1:3000",
+    "errors": [],
+    "checks": [
+      {
+        "path": "src/main.js",
+        "sha256": "c04497f74b20d6657b8ad29ef35db9f86f6cbd0b4dbc4d6d50e4ff79fe27846b"
+      },
+      {
+        "path": "src/gulf-ui.js",
+        "sha256": "9cafe56259c82dcf2f71de05a31cbf9af89265027a2ccb533d34dcebe94f5d2b"
+      },
+      {
+        "path": "src/barter-ui.js",
+        "sha256": "a229764cf2eb290dbe3a09335291850ec3f210e2ba43fadcbe75c011be885995"
+      },
+      {
+        "path": "src/gulf.css",
+        "sha256": "b88e63cf7e1092d6f2e772fbd63bd316ec9dca01ca660a01b797c020a27878a0"
+      },
+      {
+        "path": "shared/barter.mjs",
+        "sha256": "9636000432538517adb219b1d3d69218f62823b941f5325c7dec879fc42c7ae8"
+      },
+      {
+        "path": "shared/pantry.mjs",
+        "sha256": "7312af185a7c4f0b2996401a1cc79a5672982907b19b0d7b787f8928ec46adcb"
+      }
+    ],
+    "completed": [
+      "Two normal Chrome players take the standard gulf expedition, receive welcome berries, and exchange 1 for 2 at the gathering hearth; no inventory/position/time fixture.",
+      "Normal same-tab reload retains exchanged inventory and player identity.",
+      "Normal build portrait/landscape pane remains within screen; both QA players explicitly leave through title menu."
+    ],
+    "fixture": "Dedicated QA room. Standard expedition and welcome berries only; no direct state mutations and no entry into any user room.",
+    "rollout": {
+      "at": "2026-09-08T23:06:45.1097022Z",
+      "previousPid": 31372,
+      "pid": 18104,
+      "before": {
+        "ok": true,
+        "ridingVersion": 1,
+        "combatVersion": 3,
+        "characterVersion": 2,
+        "enemyVersion": 1,
+        "worldVersion": 4,
+        "worldSize": 8192,
+        "worldWidth": 8192,
+        "worldDepth": 4096,
+        "epochYearsBP": 50000,
+        "rooms": 0,
+        "players": 0,
+        "maxPlayers": 5
+      },
+      "after": {
+        "ok": true,
+        "ridingVersion": 1,
+        "combatVersion": 3,
+        "characterVersion": 2,
+        "enemyVersion": 1,
+        "worldVersion": 4,
+        "worldSize": 8192,
+        "worldWidth": 8192,
+        "worldDepth": 4096,
+        "epochYearsBP": 50000,
+        "rooms": 0,
+        "players": 0,
+        "maxPlayers": 5
+      },
+      "startup": "node server.mjs",
+      "restorationApplied": false,
+      "reason": "Immediately before restart, zero rooms and players; no reconnect sessions outside rooms.",
+      "automaticDiskPersistence": false,
+      "publicDeployment": false
+    }
+  },
+  "screenshots": [
+    "two-offers.png",
+    "complete.png",
+    "portrait.png",
+    "landscape.png"
+  ],
+  "limits": [
+    "No physical mobile device or controller. Gamepad input and blur event simulated.",
+    "Dedicated browser QA has explicit proximity, inventory and energy fixtures; ordinary local rollout uses only standard expedition and welcome items.",
+    "No large-room stress, long-duration testing or constant 60FPS claim.",
+    "No automatic Node disk persistence, public deployment or billing changes."
+  ]
+}

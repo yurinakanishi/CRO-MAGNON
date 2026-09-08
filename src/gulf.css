@@ -282,6 +282,31 @@ dialog:has(.gulf-panel) .modal-top {
   gap: 8px;
   margin: 16px 0;
 }
+.barter-offers,
+.barter-draft {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+}
+.barter-value,
+.barter-result {
+  color: #f0d397;
+  font-size: 18px;
+  font-weight: 700;
+}
+#barter-panel .gulf-actions .button {
+  flex: 1 1 180px;
+  min-height: 44px;
+  white-space: normal;
+}
+@media (max-width: 560px) {
+  .barter-offers {
+    grid-template-columns: 1fr;
+  }
+  .barter-draft {
+    grid-template-columns: minmax(0, 2fr) minmax(80px, 1fr);
+  }
+}
 .pantry-select select {
   width: 100%;
   min-height: 44px;

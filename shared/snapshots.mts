@@ -5,6 +5,7 @@ import type { GulfState, GulfProgress } from './gulf-types.mjs';
 import type { ResidentSnapshot } from './village-types.mjs';
 import type { MaritimeWeather } from './maritime-types.mjs';
 import type { HouseholdState } from './household-types.mjs';
+import type { BarterSnapshot } from './barter-types.mjs';
 
 /** Public wire data. Connections, session tokens and simulation paths never belong here. */
 export interface AdventureProgress {
@@ -142,6 +143,7 @@ export interface GameSnapshot {
   players: PlayerSnapshot[];
   residents?: ResidentSnapshot[];
   households?: HouseholdState[];
+  barters?: BarterSnapshot[];
   animals: AnimalSnapshot[];
   enemies: EnemySnapshot[];
   boats: BoatSnapshot[];

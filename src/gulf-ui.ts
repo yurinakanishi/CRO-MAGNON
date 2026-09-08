@@ -15,6 +15,7 @@ import { GATHERING_NEEDS, SEASONS } from '../shared/gulf-life.mjs';
 import { interactionVisible } from '../shared/interactions.mjs';
 import { CROPS, cropById, plotCrop, cropGrowMs, cropHarvestText } from '../shared/crops.mjs';
 import { installPantryUI } from './pantry-ui.js';
+import { installBarterUI } from './barter-ui.js';
 
 const distance = (a, b) => (a && b ? Math.hypot(a.x - b.x, a.z - b.z) : Infinity);
 const stageName = { empty: '空き畑', planted: '水が必要', growing: '成長中', ripe: '収穫できる' };
@@ -55,6 +56,7 @@ export function gulfInteraction(state, me, collision) {
 export function installGulfUI(api) {
   const { player, state, available, action, goTo, notify, openModal, send, stopInput } = api;
   const pantry = installPantryUI(api, () => open());
+  const barter = installBarterUI(api, () => open());
   let selected: string = MANY_HEARTHS.id,
     plotId = FARM_PLOTS[0].id,
     chosenCrop = 'berry',
@@ -100,10 +102,11 @@ export function installGulfUI(api) {
   }
   function update() {
     pantry.update();
+    barter.update();
     const me = player(),
       world = state(),
       country = COUNTRIES.find((c) => c.id === me?.gulf?.countryId);
-    $('#gulf-status').textContent = country?.name ?? '国・畑・魚場';
+    $('#gulf-status').textContent = barter.hint() || country?.name || '国・畑・魚場';
     if (!$('#gulf-detail')) return;
     const settlement = SETTLEMENTS.find((s) => s.id === selected),
       spec = FARM_PLOTS.find((p) => p.id === plotId);
@@ -212,6 +215,13 @@ export function installGulfUI(api) {
     bind('gulf-coastal', () => action('coastalOpen'));
     bind('gulf-residents', () => action('residentOpen'));
     bind('gulf-pantry', () => pantry.open(selected));
+    $('#gulf-detail')
+      .querySelector('#gulf-pantry')
+      .insertAdjacentHTML(
+        'afterend',
+        '<button id="gulf-barter" class="button button-outline">旅人と物々交換</button>',
+      );
+    bind('gulf-barter', () => barter.open());
     bind('gulf-travel', () => {
       if (local) goTo(settlement.x, settlement.z + 5, settlement.name);
       else {
