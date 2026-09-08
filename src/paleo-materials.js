@@ -1,6 +1,8 @@
 import * as THREE from 'three';
 import { EARTH, coastTextureData, geographicWeights } from '../shared/paleo-geography.mjs';
 import { BIOMES } from '../shared/biomes.mjs';
+import { regionById } from '../shared/adventure-regions.mjs';
+const shadow=regionById('shadow-realm');
 
 export function createEarthTextures(){
   const source=coastTextureData();
@@ -52,12 +54,14 @@ export function earthTerrainMaterial(original,biome,textures){
       float relief=clamp(dot(diffuseColor.rgb,vec3(.2126,.7152,.0722))/max(.04,dot(sourceClimate,vec3(.2126,.7152,.0722))),.65,1.45);
       diffuseColor.rgb=mix(diffuseColor.rgb,climate*relief,transition);
       float beach=1.0-smoothstep(0.0,5.0,coast);
-      diffuseColor.rgb=mix(diffuseColor.rgb,${biome.id==='ice'||biome.id==='snow'?'climate*.8':'vec3(.38,.32,.20)'},beach*.55);`);
+      diffuseColor.rgb=mix(diffuseColor.rgb,${biome.id==='ice'||biome.id==='snow'?'climate*.8':'vec3(.38,.32,.20)'},beach*.55);
+      float shadowGarden=1.0-smoothstep(${(shadow.radius-18).toFixed(1)},${shadow.radius.toFixed(1)},distance(vTerrainWorld.xz,vec2(${shadow.x.toFixed(1)},${shadow.z.toFixed(1)})));
+      diffuseColor.rgb=mix(diffuseColor.rgb,vec3(.045,.038,.09)*relief,shadowGarden);`);
     if(biome.id==='volcano')shader.fragmentShader=shader.fragmentShader.replace('#include <emissivemap_fragment>',`#include <emissivemap_fragment>
       float lava=clamp((diffuseColor.r-max(diffuseColor.g,diffuseColor.b)*1.6)*8.0,0.0,1.0);
       totalEmissiveRadiance+=vec3(1.0,.16,.018)*lava*.7;`);
   };
-  material.customProgramCacheKey=()=>`paleo-terrain-${biome.id}-2`;return material;
+  material.customProgramCacheKey=()=>`paleo-terrain-${biome.id}-adventure-1`;return material;
 }
 
 // The ocean reuses the accepted river-water GLB, scaled as overlapping tiles.

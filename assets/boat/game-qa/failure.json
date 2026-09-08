@@ -1,0 +1,15 @@
+{
+  "error": "Error: Timed out waiting for condition\n    at until (file:///C:/Users/yurin/Desktop/projects/CRO-MAGNON/scripts/qa-boats.mjs:12:96)\n    at async file:///C:/Users/yurin/Desktop/projects/CRO-MAGNON/scripts/qa-boats.mjs:18:40",
+  "errors": [],
+  "rooms": [
+    {
+      "name": "BOAT-QA",
+      "players": [
+        "Peer0",
+        "Peer1",
+        "Peer2"
+      ]
+    }
+  ],
+  "samples": []
+}

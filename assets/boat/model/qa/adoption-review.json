@@ -1,0 +1,9 @@
+{
+  "candidate": 1,
+  "revision": "02",
+  "decision": "adopt",
+  "sha256": "6e77ae6df54f19a450d460b70ee35596e9703942d5d18bcdbf6b35f066e964e4",
+  "visualGate": "passed",
+  "browserGate": "passed",
+  "notes": "Open dugout cavity, raised stern seating ledge, bow/stern silhouette and wood texture retained against the source and normalized dense reconstruction. Seven directions in textured and neutral clay Chrome renders; no browser errors. 282486 to 62145 triangles. Revision 02 preserves every non-image buffer from revision 01; embedded JPEG PSNR 49.66/51.02 dB. Rigid hull with runtime buoyancy; no unnecessary rig. Shared geometry and textures for up to five boats. Game QA is tracked separately."
+}

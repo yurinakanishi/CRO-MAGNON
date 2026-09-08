@@ -92,6 +92,12 @@ progress::-moz-progress-bar { background:#d3ab79; border-radius:4px; }
 
 .riding-controls{display:flex;justify-content:center;align-items:center;gap:10px;margin-top:5px;padding:5px 9px;border:1px solid #ffffff20;border-radius:6px;background:#28372fe8;pointer-events:auto}
 .riding-controls small{font-size:10px;color:#c4cab8}.riding-controls .mounted{background:#556044;border-color:#d5bf87}
+.boat-controls{display:flex;justify-content:center;align-items:center;gap:8px;padding:4px 8px;margin-bottom:4px;background:#203b43ed;border:1px solid #97c4d030;border-radius:6px;pointer-events:auto}
+.boat-controls small{font-size:10px;color:#c0d5d7}.boat-controls .hunt-button{white-space:nowrap}
+.hotbar-wrap.boating .hunt-controls,.hotbar-wrap.boating .riding-controls,.hotbar-wrap.boating .interaction-hint,.hotbar-wrap.boating .resource-slots,.hotbar-wrap.boating .hotbar-divider,.hotbar-wrap.boating [data-action],.hotbar-wrap.boating #boat-craft,.hotbar-wrap.boating #boat-shore,.hotbar-wrap.riding .boat-controls{display:none}
+.hotbar-wrap.boating .hotbar{width:auto;justify-content:center}.hotbar-wrap.boating .controls-caption{display:none}
+@media(max-width:760px){.boat-controls{gap:5px;flex-wrap:wrap;padding:3px}.boat-controls #boat-hint{flex-basis:100%;text-align:center}.boat-controls .hunt-button{font-size:10px;padding:5px}}
+@media(max-height:500px){.boat-controls #boat-hint{display:none}.boat-controls{margin:0;padding:2px}}
 .hotbar-wrap.riding{display:grid;grid-template-columns:minmax(0,1fr) auto;max-width:calc(100% - 24px);gap:7px}
 .hotbar-wrap.riding .hunt-controls,.hotbar-wrap.riding .interaction-hint,.hotbar-wrap.riding .resource-slots,.hotbar-wrap.riding .hotbar-divider,.hotbar-wrap.riding [data-action]{display:none}
 .hotbar-wrap.riding .riding-controls{margin:0;flex-direction:column;gap:3px;border:0;background:none;padding:0}

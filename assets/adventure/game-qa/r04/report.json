@@ -1,0 +1,154 @@
+{
+  "status": "passed",
+  "at": "2026-09-07T17:36:58.378Z",
+  "realBrowsers": 2,
+  "protocolPeers": 3,
+  "samples": 1818,
+  "collisionViolations": 0,
+  "visits": [
+    {
+      "id": "high-pass",
+      "progress": {
+        "visited": [
+          "high-pass-1",
+          "high-pass-2",
+          "high-pass-3"
+        ],
+        "gathered": 4,
+        "kills": 0,
+        "defeated": [],
+        "claimed": true
+      }
+    },
+    {
+      "id": "echo-valley",
+      "progress": {
+        "visited": [
+          "echo-valley-1",
+          "echo-valley-2",
+          "echo-valley-3"
+        ],
+        "gathered": 4,
+        "kills": 0,
+        "defeated": [],
+        "claimed": true
+      }
+    },
+    {
+      "id": "amber-oasis",
+      "progress": {
+        "visited": [
+          "amber-oasis-1",
+          "amber-oasis-2",
+          "amber-oasis-3"
+        ],
+        "gathered": 3,
+        "kills": 0,
+        "defeated": [],
+        "claimed": true
+      }
+    },
+    {
+      "id": "stone-forest",
+      "progress": {
+        "visited": [
+          "stone-forest-1",
+          "stone-forest-2",
+          "stone-forest-3"
+        ],
+        "gathered": 0,
+        "kills": 1,
+        "defeated": [
+          "guardian-stone-forest-1"
+        ],
+        "claimed": true
+      }
+    },
+    {
+      "id": "blue-chasm",
+      "progress": {
+        "visited": [
+          "blue-chasm-1",
+          "blue-chasm-2",
+          "blue-chasm-3"
+        ],
+        "gathered": 5,
+        "kills": 1,
+        "defeated": [
+          "guardian-blue-chasm-1"
+        ],
+        "claimed": true
+      }
+    }
+  ],
+  "shadow": {
+    "visited": [
+      "shadow-realm-1",
+      "shadow-realm-2",
+      "shadow-realm-3"
+    ],
+    "gathered": 0,
+    "kills": 2,
+    "defeated": [
+      "guardian-shadow-realm-1",
+      "guardian-shadow-realm-2"
+    ],
+    "claimed": true
+  },
+  "fps": [
+    {
+      "region": "high-pass",
+      "fps": "60",
+      "drawCalls": "31",
+      "triangles": "473497",
+      "materials": "1",
+      "chunks": "68"
+    },
+    {
+      "region": "echo-valley",
+      "fps": "60",
+      "drawCalls": "35",
+      "triangles": "1092010",
+      "materials": "4",
+      "chunks": "68"
+    },
+    {
+      "region": "amber-oasis",
+      "fps": "60",
+      "drawCalls": "47",
+      "triangles": "1414196",
+      "materials": "2",
+      "chunks": "64"
+    },
+    {
+      "region": "stone-forest",
+      "fps": "46",
+      "drawCalls": "37",
+      "triangles": "869264",
+      "materials": "6",
+      "chunks": "69"
+    },
+    {
+      "region": "blue-chasm",
+      "fps": "60",
+      "drawCalls": "59",
+      "triangles": "1029031",
+      "materials": "0",
+      "chunks": "67"
+    }
+  ],
+  "errors": [],
+  "checks": [
+    "six actual walking routes",
+    "18 waypoints",
+    "local collection",
+    "four guardian fights",
+    "atomic quest rewards",
+    "five-player arrival",
+    "three-seal rift unlock",
+    "return portal",
+    "same-tab resume",
+    "390x844 journal and map",
+    "844x390 layout"
+  ]
+}

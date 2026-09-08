@@ -7,6 +7,7 @@ import { WORLD, CAMP, NPC, INITIAL_RESOURCES } from '/shared/world.mjs';
 import { HUNTING, nearestCookingFire } from '/shared/hunting.mjs';
 import { RIDING, ridingDistance } from '/shared/riding.mjs';
 import { RideApproach } from './riding-input.js';
+import { installBoatControls } from './boat-ui.js';
 import { inventoryCounts, selectedCombatTarget, huntInteraction, attackReady, approachAnimal, approachEnemyGround } from './hunting-ui.js';
 import { canStartAttack, isAttackShortcut, MovementCommands, movementKey, acceptsGameShortcut } from './combat-input.js';
 import { inAttackArc } from '/shared/combat.mjs';
@@ -16,7 +17,11 @@ import { CASTLE_GATE } from '/shared/castle-layout.mjs';
 import { playerDamageEvent } from './enemy-state.js';
 import { BIOMES, biomeAt, JOURNEY_STOPS } from '/shared/biomes.mjs';
 import { drawWorldMap, mapProjection, setWorldMapMode, setWorldMapSelection } from './world-map.js';
-import { EXPEDITION_STOPS, expeditionById, isLand, worldToGeo, locationName } from '/shared/paleo-geography.mjs';
+import { EXPEDITION_STOPS as EARTH_STOPS, expeditionById as earthExpeditionById, isLand, worldToGeo, locationName } from '/shared/paleo-geography.mjs';
+import { ADVENTURE_STOPS, regionAt } from '/shared/adventure-regions.mjs';
+import { installAdventureUI, adventureInteraction } from './adventure-ui.js';
+const EXPEDITION_STOPS=[...EARTH_STOPS,...ADVENTURE_STOPS];
+const expeditionById=id=>earthExpeditionById(id)??ADVENTURE_STOPS.find(s=>s.id===id);
 
 const icons = {
   katana: '<path d="m4 21 4-4m-2-3 4 4M8 15C15 10 20 5 21 2c-4 1-9 6-13 11Z"/>',
@@ -136,6 +141,8 @@ try {
 document.body.classList.add('tps-mode');
 $('.hotbar-wrap').insertAdjacentHTML('afterbegin', `<div class="riding-controls"><button id="ride-button" class="hunt-button"><kbd>R</kbd><span>マンモスへ</span></button><small id="riding-hint">1頭に1人 · 近づいて R で乗る</small></div>`);
 $('#ride-button').onclick=ride;
+const boatUI=installBoatControls({player,state:()=>state,available:()=>joined&&!renderUnavailable,action,goTo,notify,renderer});
+const adventureUI=installAdventureUI({player,state:()=>state,available:()=>joined&&!renderUnavailable,action,goTo,notify,openModal,send,stopInput});
 $('.hotbar-wrap').insertAdjacentHTML('afterbegin', `<div class="hunt-controls"><button id="attack-button" class="hunt-button attack-button" title="槍で攻撃 [F / 5]">${icon('spear')}<kbd>F</kbd><span>槍で攻撃</span></button><button id="meat-inventory" class="hunt-button meat-counts" title="生肉は焚き火で焼いてから食べられます">${icon('meat')}<span>生 <b id="rawMeat-count">0</b> / 焼 <b id="cookedMeat-count">0</b></span></button><button id="cook-button" class="hunt-button" title="近くの焚き火で肉を焼く">${icon('flame')}<span>焼く</span></button><button id="eat-meat-button" class="hunt-button" title="焼き肉で元気を45回復">食べる</button></div><div id="cooking-status" class="cooking-status" hidden><span id="cooking-label">肉を焼いています…</span><progress id="cooking-progress" max="1" value="0" aria-label="肉を焼く進み具合"></progress><button id="cancel-cook">中止</button></div>`);
 $('.controls-caption>span:last-child').textContent='Shiftで走る · ドラッグで視点回転';
 $('#discovery-card').insertAdjacentHTML('beforeend', `<button id="go-enemy" class="enemy-link" hidden>白羽の呪術師へ ${icon('arrow')}</button>`);
@@ -197,7 +204,7 @@ async function connect() {
     if (ws !== socket) return;
     let message; try { message = JSON.parse(data); } catch { return; }
     if (message.type === 'welcome') { retryCount = 0; selfId = message.id;profile={...profile,...message.profile,room:message.room};saveSession(profile.room,message.session);for(const [key,value] of Object.entries(profile))save(`cro-${key}`,value);$('#profile-name').textContent=profile.name;$('#room-label').textContent=profile.room;connection(true,'オンライン');notify(message.resumed?'接続が戻りました。持ち物と進行を復元しました。':'谷へようこそ。近くの木や石を集めてみよう。','success'); }
-    if (message.type === 'state') { const previous=player();state = { ...state, ...message }; stateReceivedAt=performance.now();if((previous?.mountId??null)!==(player()?.mountId??null)){movementCommands.reset();lastGait=null;}if(playerDamageEvent(previous,player()))hurtUntil=performance.now()+750;if(player()?.downedUntil){for(const key of keys)blockedMovementKeys.add(key);keys.clear();movementCommands.reset();}renderer.setState(state, selfId); updateHUD(); }
+    if (message.type === 'state') { const previous=player();state = { ...state, ...message }; stateReceivedAt=performance.now();if((previous?.mountId??previous?.boatId??null)!==(player()?.mountId??player()?.boatId??null)){movementCommands.reset();lastGait=null;}if(playerDamageEvent(previous,player()))hurtUntil=performance.now()+750;if(player()?.downedUntil){for(const key of keys)blockedMovementKeys.add(key);keys.clear();movementCommands.reset();}renderer.setState(state, selfId); updateHUD(); }
     if (message.type === 'emote') renderer.setEmote(message.id,message.emote);
     if (message.type === 'notice') { notify(message.text, message.tone); if (message.tone === 'success') playNote(); }
     if (message.type === 'chat') addChat(message);
@@ -215,8 +222,9 @@ async function connect() {
 function player() { return state.players.find(p => p.id === selfId); }
 function distance(a, b) { return Math.hypot(a.x - b.x, a.z - b.z); }
 function nearby() {
-  const me = player(); if (!me||me.downedUntil||me.mountId) return null;
+  const me = player(); if (!me||me.downedUntil||me.mountId||me.boatId) return null;
   const hunting=huntInteraction(state,me,renderer.collision);if(hunting)return hunting;
+  const adventure=adventureInteraction(me,renderer.collision);if(adventure)return adventure;
   const objects = state.resources.filter(r => r.amount > 0 && me.inventory[r.type] < 99).map(r => ({ ...r, action: 'gather', label: `${{wood:'木材',stone:'石',berry:'ベリー'}[r.type]}を採集する`, range: 8 }));
   objects.push({ ...state.camp, action: 'contribute', label: '焚き火に資材を届ける', range: 10 }, { ...state.npc, action: 'trade', label: 'オルと物々交換する', range: 10 });
   return objects.filter(o => distance(me, o) <= o.range && (!renderer.collision || interactionVisible(renderer.collision, me, o))).sort((a, b) => distance(me, a) - distance(me, b))[0];
@@ -240,22 +248,26 @@ function updateHUD() {
   $('#my-portrait').className = `portrait ${profile.species}`;
   updateHuntingHUD();
   const biome=biomeAt(me?.x??50,me?.z??50);
-  $('.location-title h1').textContent=locationName(me?.x??50,me?.z??50);
-  $('.location-title p').textContent=biome.description;
+  const region=regionAt(me?.x??50,me?.z??50);
+  $('.location-meta>span:last-child').lastChild.textContent=region?.realm?' · 時のない夜':' · 穏やかな朝';
+  $('.location-title h1').textContent=region?.name??locationName(me?.x??50,me?.z??50);
+  $('.location-title p').textContent=region?.description??biome.description;
   $('.location-title .eyebrow').textContent='CRO-MAGNON · OPEN WORLD';
-  $('.location-meta span:first-child').textContent=`${biome.short} · ${Math.round(me?.x??50)}, ${Math.round(me?.z??50)}`;
+  $('.location-meta span:first-child').textContent=`${region?.kind??biome.short} · ${Math.round(me?.x??50)}, ${Math.round(me?.z??50)}`;
   $('.map-caption').innerHTML=`WORLD · ${biome.short} ${icon('expand')}`;
   drawMinimap();
   updateModalHUD();
+  adventureUI.update();
   if ($('#modal').open && $('#big-map')) drawMinimap($('#big-map'), true);
 }
 function updateModalHUD() {
   const me=player(),inv=inventoryCounts(me?.inventory);
-  const unavailable=!joined||renderUnavailable||!me||!!me.downedUntil||!!me.mountId||!!me.cookingEndsAt;
+  const unavailable=!joined||renderUnavailable||!me||!!me.downedUntil||!!me.mountId||!!me.boatId||!!me.cookingEndsAt;
   for(const count of document.querySelectorAll('[data-modal-count]'))count.textContent=inv[count.dataset.modalCount];
   if($('#modal-eat'))$('#modal-eat').disabled=unavailable||!inv.berry||me.energy>=100;
   if($('#modal-cook'))$('#modal-cook').disabled=unavailable||!inv.rawMeat||inv.cookedMeat>=99;
   if($('#modal-eat-meat'))$('#modal-eat-meat').disabled=unavailable||!inv.cookedMeat||me.energy>=100;
+  if($('#modal-boat-craft'))$('#modal-boat-craft').disabled=unavailable||inv.wood<12;
   if($('#modal-craft')){
     $('#modal-craft').disabled=unavailable||me.tool||inv.wood<3||inv.stone<2;
     $('#modal-craft').textContent=me?.tool?'装備中':'つくる';
@@ -277,6 +289,7 @@ function action(type, targetId) {
   if (!joined) return notify('サーバーへの接続を待っています。', 'error');
   if (renderUnavailable) return;
   if(player()?.downedUntil)return;
+  if(player()?.boatId&&type!=='boardBoat')return notify('乗船中です。岸で B を押して降りてから行おう。');
   if(player()?.mountId&&type!=='ride')return notify('騎乗中です。攻撃・採集・食事は R で降りてから。');
   send({ type: 'action', action: type, ...(targetId?{targetId}:{}) });
   document.querySelectorAll('[data-action]').forEach(el => el.classList.toggle('selected', el.dataset.action === type));
@@ -301,6 +314,7 @@ function ride(){
   if(!joined||renderUnavailable||player()?.downedUntil)return;
   const me=player(),animal=rideTarget();
   if(rideApproach.targetId){stopInput();return;}
+  if(me?.boatId)return notify('船から降りるには岸で B。');
   if(me?.mountId)return action('ride');
   if(animal&&ridingDistance(me,animal)>RIDING.reach){rideApproach.begin(animal.id);selectedAnimalId=animal.id;return notify('マンモスへ近づいて乗ります。WASD または R で中止。');}
   action('ride',animal?.id);
@@ -317,6 +331,7 @@ function interactAnimal(id){
   }
 }
 function updateHuntingHUD(){
+  boatUI.update();
   const me=player(),animal=me?.mountId?(state.animals||[]).find(a=>a.id===me.mountId):huntTarget(),inv=inventoryCounts(me?.inventory),serverNow=(state.serverTime??Date.now())+performance.now()-stateReceivedAt;
   const cooking=!!me?.cookingEndsAt&&me.cookingEndsAt>serverNow;
   if(joined&&!renderUnavailable&&!$('#modal').open&&!document.activeElement?.closest('input,textarea,select,[contenteditable]')){
@@ -328,7 +343,7 @@ function updateHuntingHUD(){
   const rideAnimal=rideTarget(),mounted=!!me?.mountId,nearRide=rideAnimal&&me&&ridingDistance(me,rideAnimal)<=RIDING.reach;
   $('.hotbar-wrap').classList.toggle('riding',mounted);
   const rideButton=$('#ride-button');
-  rideButton.disabled=!joined||renderUnavailable||!!me?.downedUntil||(!mounted&&!rideAnimal);
+  rideButton.disabled=!joined||renderUnavailable||!!me?.boatId||!!me?.downedUntil||(!mounted&&!rideAnimal);
   rideButton.classList.toggle('mounted',mounted);
   rideButton.querySelector('span').textContent=mounted?'マンモスから降りる':rideApproach.targetId?'向かうのを中止':nearRide?'マンモスに乗る':rideAnimal?'近づいて乗る':'空いているマンモスを待つ';
   $('#riding-hint').textContent=mounted?'WASD 移動 · Shift 走る · 攻撃・採集は降りてから':rideApproach.targetId?'WASD / R で中止 · 1頭に1人':'1頭に1人 · R で乗る';
@@ -338,6 +353,7 @@ function updateHuntingHUD(){
   const targetInFront=attackReady(me,animal)&&inAttackArc(me,animal);
   $('#hunt-target-name').textContent=animal?.hostile?animal.name:animal?.phase==='meat'?'マンモスの肉':animal?.phase==='dying'?'マンモスを倒した':'草原のマンモス';
   $('#discovery-card').classList.toggle('hostile',animal?.hostile===true);
+  $('#discovery-card').hidden=!animal||!me||distance(me,animal)>60;
   $('#discovery-card small').textContent=animal?.hostile?'HOSTILE · 杖の攻撃に注意':'OPEN MEADOW · みんなで狩る';
   $('#hunt-health').setAttribute('aria-label',`${animal?.hostile?animal.name:'マンモス'}の体力`);
   $('#hunt-health').hidden=animal?.phase!=='alive';$('#hunt-health').max=animal?.maxHealth??100;$('#hunt-health').value=animal?.health??100;
@@ -350,7 +366,7 @@ function updateHuntingHUD(){
     $('#discovery-card small').textContent='MAMMOTH RIDE · 草原の旅';
     $('#go-hunt').disabled=true;
   }else if(animal?.riderId){$('#hunt-target-note').textContent='仲間が騎乗中 · このマンモスには攻撃できません。';}
-  const attackAvailable=joined&&!renderUnavailable&&canStartAttack(me,serverNow);
+  const attackAvailable=joined&&!renderUnavailable&&!me?.boatId&&canStartAttack(me,serverNow);
   $('#attack-button').disabled=!attackAvailable;$('#attack-button').classList.toggle('in-range',targetInFront);
   const combat=attackProfile(me??profile),attackButton=$('#attack-button');
   if(attackButton.dataset.style!==combat.key){attackButton.dataset.style=combat.key;attackButton.innerHTML=`${icon(combat.key)}<kbd>F</kbd><span>${combat.label}</span>`;}
@@ -390,22 +406,23 @@ function openInventory() {
   $('#modal-eat').onclick=()=>{action('eat');$('#modal').close();}; $('#modal-craft').onclick=()=>{action('craft');$('#modal').close();};
   $('#modal-cook').onclick=()=>{$('#modal').close();cook();};$('#modal-eat-meat').onclick=()=>{action('eatMeat');$('#modal').close();};
   document.querySelectorAll('.inventory-card strong b').forEach((count,index)=>count.dataset.modalCount=['wood','stone','berry','rawMeat','cookedMeat'][index]);
-  $('.recipe strong').id='modal-axe-label';updateModalHUD();
+  $('.recipe strong').id='modal-axe-label';
+  $('.recipe').insertAdjacentHTML('afterend','<div class="recipe"><span class="resource-icon wood">'+icon('wood')+'</span><div><strong>丸木舟をつくる</strong><p>木材12 · 海岸で制作 · Bで乗船</p></div><button id="modal-boat-craft" class="button button-accent">船をつくる</button></div>');
+  $('#modal-boat-craft').onclick=()=>{action('craftBoat');$('#modal').close();};updateModalHUD();
 }
 function openTribe() {
   openModal(`<h2>同じ火を囲む仲間。</h2><p class="modal-intro">いま、この谷で暮らしている ${state.players.length} 人。</p><div id="tribe-list" class="tribe-list"></div><button id="tribe-invite" class="button button-accent wide">${icon('plus')} 仲間を招待する</button><p class="form-note">NPCのオルは参加人数に含まれません。ひとりでも採集や拠点づくりを楽しめます。</p>`);
   $('#modal-body .modal-intro').id='tribe-summary';updateModalHUD();
   $('#tribe-invite').onclick=openInvite;
 }
-function openJournal() {
-  openModal(`<span class="eyebrow">CHAPTER 01</span><h2>まだ、歴史のない日々。</h2><p class="modal-intro">ここは、氷河期をイメージした小さな谷。<br>あなたと仲間の手で、最初の野営地を育てましょう。</p><div class="journal-entry"><span>01</span><div><h3>森の恵みを分け合おう</h3><p>木、石、ベリーのそばまで歩き、Eキーか「採集」を押します。石斧があれば、いちどに多く採集できます。採り尽くした資源は、しばらくすると戻ります。</p></div></div><div class="journal-entry"><span>02</span><div><h3>小さな火から、みんなの家へ</h3><p>木材12と石6を、仲間と協力して集めましょう。焚き火のそばで「届ける」を押すと、持っている資材を拠点に使います。</p></div></div><div class="journal-entry"><span>03</span><div><h3>谷の隣人、オル</h3><p>ネアンデルタール人のオルは、物々交換ができる隣人です。集落へ歩いて「交換」を押してみましょう。自分自身もネアンデルタール人として遊べます。</p></div></div><p class="form-note">この世界の暮らしや地形は、遊びのためのフィクションです。部屋の進行はサーバーのメモリ上に保存されます。</p>`);
-}
+function openJournal() { adventureUI.open(); }
 function openHelp() {
   openModal(`<h2>今日の一歩から、はじめよう。</h2><p class="modal-intro">最初は、近くの木を集めてみましょう。</p><div class="help-grid"><div><kbd>W A S D</kbd><strong>歩く・走る</strong><p>通常は歩行。Shiftを押している間は走行。「走る」ボタンでも切り替えられます。クリック移動は障害物を避けます。</p></div><div><kbd>E</kbd><strong>近くでアクション</strong><p>採集、焚き火に届ける、オルと交換。</p></div><div><kbd>1 · 2 · 3 · 4</kbd><strong>アクションを選ぶ</strong><p>採集・道具づくり・資材を届ける・交換。</p></div><div><kbd>Enter</kbd><strong>仲間と話す</strong><p>チャットを開き、Enterで送信。</p></div></div><div class="help-tip">${icon('flame')} まずは木材3と石2で石斧を作ろう。<br>そのあと、仲間と拠点に木材12・石6を届けよう。</div><button id="help-start" class="button button-accent wide">探索をはじめる ${icon('arrow')}</button>`);
   $('.help-grid').insertAdjacentHTML('beforeend',`<div><kbd>DRAG</kbd><strong>肩越しカメラを回す</strong><p>マウス右・左ドラッグ、または指のドラッグで周囲を見渡せます。WASDはカメラの向きに合わせて動きます。</p></div><div><kbd>SCROLL</kbd><strong>カメラの距離を変える</strong><p>ホイールか＋・−ボタンで調整。「自分の位置へ」で初期のTPS視点に戻せます。</p></div>`);
   $('.help-grid').insertAdjacentHTML('afterbegin',`<div><kbd>F / 5</kbd><strong>刀・魔法・槍で攻撃</strong><p>相手を向いて F か攻撃ボタン。クノイチは近くを刀で斬り、魔法使いは両手から光弾を飛ばします。敵がいなくても発動でき、壁は通り抜けません。人間は槍を使います。</p></div><div><kbd>E</kbd><strong>肉を採って、焼いて食べる</strong><p>倒すと肉になります。近づいて E で採り、近くの焚き火で E か「焼く」。3秒待ったら「食べる」で元気を回復。火から離れると調理は中止され、生肉は残ります。</p></div>`);
   $('.help-grid').insertAdjacentHTML('afterbegin',`<div><kbd>R</kbd><strong>マンモスに乗る・降りる</strong><p>生きているマンモスの横で R。1頭につき1人乗れます。WASD・地面クリックで移動し、Shiftか走行ボタンで走ります。攻撃や採集は開けた場所で降りてから。</p></div>`);
   $('#help-start').onclick=()=>$('#modal').close();
+  $('.help-grid').insertAdjacentHTML('afterbegin',`<div><kbd>B</kbd><strong>船を作って海を渡る</strong><p>木材12個を集め、「海岸へ」で岸に向かい「船をつくる」。Bで乗り、WASD・海面クリックで操船。Shiftで速く進み、岸でBを押すと降ります。1隻1人、部屋で5隻まで共有できます。</p></div>`);
   if(state.enemies?.length)$('.help-grid').insertAdjacentHTML('beforeend',`<div><kbd>大城の赤い印</kbd><strong>白羽の呪術師</strong><p>始まりの谷の北東にある白羽の大城へ。城門の階段から入り、左右の階段を登ると上階の広間にいます。相手を向いて F で攻撃。力尽きても4秒後に焚き火で回復し、持ち物は残ります。</p></div>`);
 }
 function openMap() {
@@ -414,7 +431,7 @@ function openMap() {
   let selected=EXPEDITION_STOPS[0];
   const selectTarget=target=>{selected=target;setWorldMapSelection(target);const geo=worldToGeo(target.x,target.z);$('#map-selection').textContent=`${target.name??biomeAt(target.x,target.z).short} · ${Math.round(distance(player()??CAMP,target))} m先 · ${Math.abs(geo.latitude).toFixed(1)}°${geo.latitude>=0?'N':'S'} ${Math.abs(geo.longitude).toFixed(1)}°${geo.longitude>=0?'E':'W'}`;drawMinimap($('#big-map'),true);};
   $('#expedition-destination').onchange=event=>selectTarget(expeditionById(event.target.value));
-  $('#map-walk').onclick=()=>{if(!runMode)$('#run-button').click();goTo(selected.x,selected.z,selected.name??'選んだ陸地');};
+  $('#map-walk').onclick=()=>{if(!runMode)$('#run-button').click();goTo(selected.x,selected.z,selected.name??(player()?.boatId?'選んだ海面':'選んだ陸地'));};
   $('#map-expedition').onclick=()=>{if(!joined||renderUnavailable)return;if(player()?.mountId)return notify('マンモスから降りてから遠征しよう。');stopInput();send({type:'expedition',destination:$('#expedition-destination').value});$('#modal').close();};
   for(const [id,mode] of [['map-overview','earth'],['map-local','local']])$('#'+id).onclick=()=>{setWorldMapMode(mode);$('#map-overview').setAttribute('aria-pressed',String(mode==='earth'));$('#map-local').setAttribute('aria-pressed',String(mode==='local'));drawMinimap($('#big-map'),true);};
   drawMinimap($('#big-map'),true);$('#map-camp').onclick=()=>goTo(49,52.4,'野営地の焚き火');$('#map-npc').onclick=()=>goTo(NPC.x,NPC.z-2,'オルの集落');
@@ -428,9 +445,10 @@ function openMap() {
   $('#big-map').onclick=event=>{const canvas=event.currentTarget,rect=canvas.getBoundingClientRect(),projection=mapProjection(canvas,true,player()),px=(event.clientX-rect.left)*canvas.width/rect.width,py=(event.clientY-rect.top)*canvas.height/rect.height;
     const stop=EXPEDITION_STOPS.find(s=>{const p=projection.point(s.x,s.z);return Math.hypot(p[0]-px,p[1]-py)<12;});
     if(stop){$('#expedition-destination').value=stop.id;selectTarget(stop);return;}
-    const target=projection.world(px,py);if(!isLand(target.x,target.z))return notify('そこは海です。野営地を選んで遠征できます。');
+    const target=projection.world(px,py);if(!player()?.boatId&&!isLand(target.x,target.z))return notify('海岸で船を作って乗ると、海面を選んで操船できます。');
     selectTarget(target);
   };
+  $('#map-walk').textContent=player()?.boatId?'操船して向かう':'走って向かう';
   selectTarget(selected);
 }
 function cook(){const me=player();if(!me)return;const fire=nearestCookingFire(state,me);if(distance(me,fire)>HUNTING.cookRange){goTo(fire.x-1,fire.z+2.4,'近くの焚き火');notify('焚き火のそばで E または「焼く」を押そう。');}else action('cook');}
@@ -472,6 +490,7 @@ document.addEventListener('keydown',e=>{
   if(['Enter',' '].includes(e.key)&&e.target.closest('button,a,[role="button"]'))return;
   const k=movementKey(e);if(['w','a','s','d','arrowup','arrowdown','arrowleft','arrowright','shift'].includes(k)){e.preventDefault();if(k!=='shift')rideApproach.cancel();if(player()?.downedUntil)blockedMovementKeys.add(k);else if(!blockedMovementKeys.has(k))keys.add(k);return;}
   if(e.repeat)return;
+  if(e.code==='KeyB'||k==='b'){e.preventDefault();action('boardBoat');}
   if((e.code==='KeyR'||k==='r')&&!e.ctrlKey&&!e.metaKey&&!e.altKey){e.preventDefault();ride();}
   if(k==='e'){e.preventDefault();const next=nearby();action(next?.action||'gather',next?.targetId);}
   if(isAttackShortcut(e)){e.preventDefault();attack();}

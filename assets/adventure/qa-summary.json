@@ -1,0 +1,64 @@
+{
+  "dateLocal": "2026-09-08",
+  "branch": "codex/imp-world-expansion",
+  "implementation": "complete",
+  "localDelivery": {
+    "url": "http://localhost:3000",
+    "httpStatus": 200,
+    "adventureVersion": 1,
+    "springRevision": 2,
+    "manualServerRestart": false,
+    "checkpointApplied": false,
+    "publicDeployment": false
+  },
+  "content": {
+    "regions": 6,
+    "waypoints": 18,
+    "resourceSites": 18,
+    "guardians": 4,
+    "landmarkPlacements": 66,
+    "sceneryPlacements": 48,
+    "newGLBs": 0
+  },
+  "tests": {
+    "total": 187,
+    "passed": 186,
+    "failed": 1,
+    "existingFailure": "tests/open-world-restore.test.mjs cannot import missing ignored output/open-world-restart/run.mjs",
+    "relatedPassed": 24,
+    "syntaxFiles": 161,
+    "diffWhitespace": "passed",
+    "evidence": ["tests-full.txt", "tests-related.txt", "syntax.txt"]
+  },
+  "assets": {
+    "models": 32,
+    "files": 47,
+    "delivery": "passed; all delivered GLB bytes match existing manifest SHA-256",
+    "report": "delivery-qa.json",
+    "historicalProvenanceCheck": "incomplete: missing output/model-generation/models/neanderthal-hunter/qa/adoption-review.json"
+  },
+  "playthrough": {
+    "status": "passed",
+    "report": "game-qa/r04/report.json",
+    "realChromePages": 2,
+    "protocolPeers": 3,
+    "samples": 1818,
+    "collisionViolations": 0,
+    "browserErrors": 0,
+    "completedRegions": 6,
+    "checks": ["normal walking and gathering", "four guardian defeats", "all six rewards", "three-seal rift entry", "return portal immediately after claim", "same-tab resume", "390x844 journal and maps", "844x390 journal"]
+  },
+  "visuals": {
+    "status": "passed",
+    "report": "visual-qa/r03/report.json",
+    "fixture": "Separate server fixture with seeded positions and three seals, used only for appearance checks",
+    "checks": ["revised spring shoreline and subtle waves", "shadow sky and pillars", "mobile journal and maps", "landscape layout", "zero browser errors and horizontal overflow"]
+  },
+  "limits": [
+    "Existing five-player room limit retained",
+    "Shadow garden is a remote pocket in the same world, not a separate instance or underground simulation",
+    "Mountain routes run at the foot of solid landmarks; free slope climbing is not implemented",
+    "Observed regional FPS samples 46-60; maximum observed terrain chunks 69",
+    "Physical phones, long-duration play, all terrain and constant 60 FPS not verified"
+  ]
+}

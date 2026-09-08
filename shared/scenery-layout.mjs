@@ -5,13 +5,15 @@ import { nearLandmark } from './landmarks.mjs';
 import { CASTLE_HALL, nearCastle } from './castle-layout.mjs';
 import { BIOME_SCENERY } from './biome-scenery.mjs';
 import { isLand, EXPEDITION_STOPS, worldToGeo } from './paleo-geography.mjs';
+import { ADVENTURE_ENEMIES, adventureReserved } from './adventure-regions.mjs';
+import { ADVENTURE_SCENERY } from './adventure-layout.mjs';
 // Body-sized animals need a continuous clearing, not just a free spawn point.
 // Existing harvestable resources sit outside the five-metre roaming footprint.
 export const HUNTING_GROUNDS = Object.freeze([
   Object.freeze({ x: 25, z: 21, radius: 10, roamRadius: 5 }),
   Object.freeze({ x: 24, z: 85, radius: 10, roamRadius: 5 }),
 ]);
-export const ENEMY_GROUNDS = Object.freeze([Object.freeze({ id: 'crow-shaman-1', x: CASTLE_HALL.x, z: CASTLE_HALL.z, radius: 5, roamRadius: 3.2 })]);
+export const ENEMY_GROUNDS = Object.freeze([Object.freeze({ id: 'crow-shaman-1', x: CASTLE_HALL.x, z: CASTLE_HALL.z, radius: 5, roamRadius: 3.2 }),...ADVENTURE_ENEMIES]);
 const inHuntingGround = (x, z, margin = 0) => HUNTING_GROUNDS.some(ground => Math.hypot(x - ground.x, z - ground.z) < ground.radius + margin);
 const inEnemyGround = (x, z, margin = 0) => ENEMY_GROUNDS.some(ground => Math.hypot(x - ground.x, z - ground.z) < ground.radius + margin);
 export function seededRandom(seed) { return () => { seed|=0;seed=(seed+0x6d2b79f5)|0;let t=Math.imul(seed^(seed>>>15),1|seed);t=(t+Math.imul(t^(t>>>7),61|t))^t;return ((t^(t>>>14))>>>0)/4294967296; }; }
@@ -50,7 +52,7 @@ function layout() {
     const x=WORLD.minX+12+distant()*(WORLD.width-24),z=WORLD.minZ+12+distant()*(WORLD.depth-24);
     if(!isLand(x,z,5))continue;
     if(x>-36&&x<136&&z>-36&&z<136)continue;
-    if(nearLandmark(x,z,2))continue;
+    if(nearLandmark(x,z,2)||adventureReserved(x,z,4))continue;
     const biome=biomeAt(x,z),roll=distant();
     if(roadDistance(x,z)<5||EXPEDITION_STOPS.some(stop=>Math.hypot(x-stop.x,z-stop.z)<16))continue;
     if(INITIAL_RESOURCES.some(r=>Math.hypot(x-r.x,z-r.z)<3))continue;
@@ -76,13 +78,14 @@ function layout() {
   const dry=seededRandom(6090701);
   for(let i=0;i<360;i++) {
     const x=WORLD.minX+40+dry()*(WORLD.width-80),z=WORLD.minZ+40+dry()*(WORLD.depth-80),biome=biomeAt(x,z).id;
-    if(!isLand(x,z,3))continue;
+    if(!isLand(x,z,3)||adventureReserved(x,z,4))continue;
     if(!['desert','volcano'].includes(biome)||roadDistance(x,z)<4||nearLandmark(x,z,3))continue;
     if(EXPEDITION_STOPS.some(p=>Math.hypot(x-p.x,z-p.z)<16)||INITIAL_RESOURCES.some(p=>Math.hypot(x-p.x,z-p.z)<4))continue;
     if(rocks.some(p=>Math.hypot(x-p.x,z-p.z)<3+2.5*p.scale)||props.some(p=>Math.hypot(x-p.x,z-p.z)<4))continue;
     props.push({key:'firewood-pile',x,z,yaw:dry()*TAU,scale:.65+dry()*.5,biome,surface:BIOME_SCENERY[biome].surface});
   }
   const animals=HUNTING_GROUNDS.map((ground,index)=>({id:`mammoth-${index+1}`,x:ground.x,z:ground.z,scale:index? .76:1,roamRadius:ground.roamRadius}));
+  trees.push(...ADVENTURE_SCENERY.trees);props.push(...ADVENTURE_SCENERY.props);fires.push(...ADVENTURE_SCENERY.fires);
   return Object.fromEntries(Object.entries({trees,grass,rocks,ridges,tents,props,fires,animals}).map(([key,items])=>[key,items.filter(item=>!nearCastle(item.x,item.z,3))]));
 }
 // Renderer and authoritative server use precisely the same placements and scales.
@@ -96,7 +99,7 @@ export function grassForChunk(ix,iz) {
     const biome=biomeAt(x,z).id,palette=BIOME_SCENERY[biome];
     const weight=biome==='grassland'?biomeWeights(x,z)[0]:biome==='snow'?.025:biome==='desert'?.10:0;
     if(!palette.groundcover)continue;
-    if(nearLandmark(x,z,1))continue;
+    if(nearLandmark(x,z,1)||adventureReserved(x,z,0))continue;
     if(rng()>weight||roadDistance(x,z)<1.5||(riverHalfWidth(z)>.7&&Math.abs(x-riverX(z))<4))continue;
     const scale=.6+rng()*.65;grass.push({key:palette.groundcover,x,z,scale,height:(biome==='snow'?.9:.55)*scale,yaw:rng()*TAU,biome,surface:palette.surface??null});
   }

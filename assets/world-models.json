@@ -384,6 +384,18 @@
       "sha256": "d2259f674fd9737f08bb9b0db7a44976f786803943f9213cd01184681274351e",
       "delivery": "/models/valley-castle/model.glb",
       "subject": "Three exposed terrace levels, paired stone staircases, source-derived entrance stair and upper hall doorway. No tower climbing or hidden intermediate rooms. Full mesh shared; unrepaired coarse LODs are not adopted."
+    },
+    {
+      "key": "dugout-canoe",
+      "name": "丸木舟",
+      "kind": "boat",
+      "height": 0.9070984612335451,
+      "status": "integrated-and-game-qa-passed",
+      "gameQA": "assets/boat/game-qa/r02/report.json",
+      "sha256": "6e77ae6df54f19a450d460b70ee35596e9703942d5d18bcdbf6b35f066e964e4",
+      "delivery": "/models/dugout-canoe/model.glb",
+      "geometryResolution": 1024,
+      "subject": "A wooden dugout canoe carved from a log with an open cockpit."
     }
   ],
   "reuse": {

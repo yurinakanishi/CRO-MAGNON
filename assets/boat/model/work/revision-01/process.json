@@ -1,0 +1,10 @@
+{
+  "candidate": 1,
+  "revision": 1,
+  "denseFaces": 282486,
+  "faces": 62145,
+  "scale": 3.7885761571399237,
+  "rotation": 0.006118113203295028,
+  "method": "Uniform axis/scale transform and conservative Blender QEM collapse; source UV and texture retained",
+  "rig": "Static hull, no bones needed"
+}

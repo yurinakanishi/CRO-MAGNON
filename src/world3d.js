@@ -17,7 +17,10 @@ import { enemyAnimationState, playerRecovered } from './enemy-state.js';
 import { isLand } from '/shared/paleo-geography.mjs';
 import { FrameClock } from './frame-clock.js';
 import { WorldAtmosphere } from './world-atmosphere.js';
+import { AdventureEffects } from './adventure-effects.js';
 import { mammothSeat } from './riding-pose.js';
+import { BoatRenderer } from './boat-renderer.js';
+import { BOATING } from '../shared/boats.mjs';
 
 const DEFAULT_DISTANCE=5.5;
 const tempPoint=new THREE.Vector3();
@@ -58,17 +61,17 @@ export class WorldRenderer {
   }
 
   setupLighting() {
-    this.scene.add(new THREE.HemisphereLight('#dce7d7','#546047',2.0));
+    this.hemisphere=new THREE.HemisphereLight('#dce7d7','#546047',2.0);this.scene.add(this.hemisphere);
     this.sun=new THREE.DirectionalLight('#ffe4b5',2.65);this.sun.position.set(5,47,18);this.sun.castShadow=true;
     this.sun.shadow.mapSize.set(1024,1024);this.sun.shadow.camera.left=-22;this.sun.shadow.camera.right=22;
     this.sun.shadow.camera.top=22;this.sun.shadow.camera.bottom=-22;this.sun.shadow.camera.near=.5;this.sun.shadow.camera.far=135;
     this.sun.shadow.bias=-.00025;this.sun.shadow.normalBias=.055;
     this.sun.target.position.set(50,0,50);this.scene.add(this.sun,this.sun.target);
     // Full-screen atmospheric shader: sky, sun and clouds are runtime effects.
-    this.skyUniforms={cameraWorld:{value:this.camera.matrixWorld},inverseProjection:{value:this.camera.projectionMatrixInverse},biomeSky:{value:new THREE.Color('#bfd3cb')},biomeFog:{value:new THREE.Color('#b5c4b2')}};
+    this.skyUniforms={cameraWorld:{value:this.camera.matrixWorld},inverseProjection:{value:this.camera.projectionMatrixInverse},biomeSky:{value:new THREE.Color('#bfd3cb')},biomeFog:{value:new THREE.Color('#b5c4b2')},shadowRealm:{value:0}};
     const skyMaterial=new THREE.ShaderMaterial({depthWrite:false,depthTest:false,uniforms:this.skyUniforms,
       vertexShader:'varying vec2 vUv;void main(){vUv=uv;gl_Position=vec4(position.xy,1.0,1.0);}',
-      fragmentShader:'varying vec2 vUv;uniform mat4 cameraWorld;uniform mat4 inverseProjection;uniform vec3 biomeSky;uniform vec3 biomeFog;void main(){vec4 eye=inverseProjection*vec4(vUv*2.0-1.0,1.0,1.0);vec3 d=normalize(mat3(cameraWorld)*eye.xyz);float h=clamp(d.y*1.7,0.0,1.0);vec3 color=mix(vec3(.72,.75,.65),vec3(.29,.49,.58),pow(h,.7));float sun=pow(max(0.0,dot(d,normalize(vec3(-.65,.55,-.85)))),850.0);color+=vec3(.9,.72,.42)*sun;vec2 p=d.xz/max(.12,d.y)*3.0;float noise=sin(p.x*.7+sin(p.y))*.25+sin(p.y*.5-p.x*.3)*.2+sin(p.x*1.3+p.y*.8)*.1;float cloud=smoothstep(.15,.43,noise)*smoothstep(.03,.23,d.y);color=mix(color,vec3(.83,.84,.75),cloud*.65);color=mix(color,biomeSky,.65);color=mix(biomeFog,color,smoothstep(-.04,.18,d.y));gl_FragColor=vec4(color,1.0);\n#include <colorspace_fragment>\n}'});
+      fragmentShader: /* Shared linear sky and rift colors. */ 'varying vec2 vUv;uniform mat4 cameraWorld;uniform mat4 inverseProjection;uniform vec3 biomeSky;uniform vec3 biomeFog;uniform float shadowRealm;void main(){vec4 eye=inverseProjection*vec4(vUv*2.0-1.0,1.0,1.0);vec3 d=normalize(mat3(cameraWorld)*eye.xyz);float h=clamp(d.y*1.7,0.0,1.0);vec3 color=mix(vec3(.72,.75,.65),vec3(.29,.49,.58),pow(h,.7));float sun=pow(max(0.0,dot(d,normalize(vec3(-.65,.55,-.85)))),850.0);color+=vec3(.9,.72,.42)*sun;vec2 p=d.xz/max(.12,d.y)*3.0;float noise=sin(p.x*.7+sin(p.y))*.25+sin(p.y*.5-p.x*.3)*.2+sin(p.x*1.3+p.y*.8)*.1;float cloud=smoothstep(.15,.43,noise)*smoothstep(.03,.23,d.y);color=mix(color,vec3(.83,.84,.75),cloud*.65);color=mix(color,biomeSky,mix(.65,.98,shadowRealm));color=mix(biomeFog,color,smoothstep(-.04,.18,d.y));gl_FragColor=vec4(color,1.0);\n#include <colorspace_fragment>\n}'});
     const sky=new THREE.Mesh(new THREE.PlaneGeometry(2,2),skyMaterial);sky.frustumCulled=false;sky.renderOrder=-1000;this.scene.add(sky);
   }
 
@@ -79,6 +82,8 @@ export class WorldRenderer {
       if(this.disposed)return;
       await buildTerrainAssets(this);if(this.disposed)return;buildForestAssets(this);buildCampAssets(this);buildAnimalAssets(this);this.landmarks=new WorldLandmarks(this);
       this.assetsReady=true;this.syncResources();this.syncEnemies();this.campLabel.element.classList.toggle('complete',this.state.camp.level>0);
+      this.boatRenderer=new BoatRenderer(this);
+      this.adventureEffects=new AdventureEffects(this);
       this.npcActor=await this.npcAssets.create({color:'#ad9d79',});
       if(this.disposed){this.npcActor?.dispose();return;}
       this.npc=this.npcActor.root;this.npc.position.set(NPC.x,walkHeight(NPC.x,NPC.z),NPC.z);this.npc.rotation.y=-1.9;this.scene.add(this.npc);
@@ -174,6 +179,13 @@ export class WorldRenderer {
       if(!this.pointer||this.pointer.id!==e.pointerId)return;const click=!this.pointer.dragged&&this.pointer.button===0;this.pointer=null;this.canvas.style.cursor='crosshair';
       if(this.canvas.hasPointerCapture(e.pointerId))this.canvas.releasePointerCapture(e.pointerId);
       if(click){const rect=this.canvas.getBoundingClientRect();this.raycaster.setFromCamera(new THREE.Vector2((e.clientX-rect.left)/rect.width*2-1,-(e.clientY-rect.top)/rect.height*2+1),this.camera);
+        if(this.players.get(this.selfId)?.state.boatId){
+          const sea=new THREE.Plane(new THREE.Vector3(0,1,0),-BOATING.waterY),point=new THREE.Vector3();
+          if(this.raycaster.ray.intersectPlane(sea,point)&&!isLand(point.x,point.z)){
+            const x=worldClamp(point.x,'x'),z=worldClamp(point.z,'z');this.onMoveTarget(x,z);this.marker.position.set(x,BOATING.waterY+.065,z);this.marker.visible=true;this.markerUntil=performance.now()+6500;
+          }
+          return;
+        }
         const animalRoots=[...this.mammoths.flatMap(animal=>[animal.model,animal.meat]),...[...this.enemies.values()].map(enemy=>enemy.model)].filter(root=>root.visible);
         const animalHit=this.raycaster.intersectObjects(animalRoots,true)[0];
         if(animalHit){let root=animalHit.object;while(root&&!root.userData.animalId)root=root.parent;if(root){this.onAnimal(root.userData.animalId);return;}}
@@ -202,9 +214,9 @@ export class WorldRenderer {
       if(action==='Attack')entity.actor?.animation.playAttack(Math.max(0,(this.serverNow()-(p.attackAt??0))/1000));
       else if(action&&!p.moving)entity.actor?.animation.play(action);
       entity.state=p;if(p.id===selfId&&this.firstState){this.focus.set(p.x,walkHeight(p.x,p.z)+focusHeight(p),p.z);this.targetDistance=p.species==='bear'?4.5:DEFAULT_DISTANCE;this.distance=this.targetDistance;this.zoom=DEFAULT_DISTANCE/this.targetDistance;this.firstState=false;}
-      if(p.id===selfId&&this.cameraMount!==(p.mountId||null)){
-        this.cameraMount=p.mountId||null;
-        this.targetDistance=p.mountId?9:p.species==='bear'?4.5:DEFAULT_DISTANCE;
+      if(p.id===selfId&&this.cameraMount!==(p.mountId||p.boatId||null)){
+        this.cameraMount=p.mountId||p.boatId||null;
+        this.targetDistance=p.mountId?9:p.boatId?7:p.species==='bear'?4.5:DEFAULT_DISTANCE;
         this.zoom=DEFAULT_DISTANCE/this.targetDistance;
       }
     }
@@ -250,7 +262,7 @@ export class WorldRenderer {
   serverNow(){return this.serverTime===undefined?Date.now():this.serverTime+performance.now()-this.stateReceivedAt;}
   setZoom(value){this.zoom=clamp(Number(value)||1,DEFAULT_DISTANCE/19,DEFAULT_DISTANCE/3.2);this.targetDistance=clamp(DEFAULT_DISTANCE/this.zoom,3.2,19);}
   adjustZoom(delta){this.setZoom(this.zoom+delta);}
-  focusPlayer(){const me=this.players.get(this.selfId);if(me?.state.moving)this.yaw=me.state.facing+Math.PI;else this.yaw=-.28;this.pitch=.19;this.targetDistance=me?.state.mountId?9:me?.state.species==='bear'?4.5:DEFAULT_DISTANCE;this.zoom=DEFAULT_DISTANCE/this.targetDistance;}
+  focusPlayer(){const me=this.players.get(this.selfId);if(me?.state.moving)this.yaw=me.state.facing+Math.PI;else this.yaw=-.28;this.pitch=.19;this.targetDistance=me?.state.mountId?9:me?.state.boatId?7:me?.state.species==='bear'?4.5:DEFAULT_DISTANCE;this.zoom=DEFAULT_DISTANCE/this.targetDistance;}
   resize(){const r=this.canvas.getBoundingClientRect();this.width=Math.max(1,r.width);this.height=Math.max(1,r.height);this.renderer.setSize(this.width,this.height,false);this.camera.aspect=this.width/this.height;this.camera.updateProjectionMatrix();}
 
   render(time,dt) {
@@ -282,11 +294,20 @@ export class WorldRenderer {
       if(phase==='dying')animal.actor.sampleOnce('Death',Math.max(0,(this.serverNow()-state.phaseStartedAt)/1000));
       else if(phase==='alive'){animal.actor.play(state.clip,animal.actor.asset.locomotion?.[state.clip]?state.speed/(state.scale*animal.actor.asset.locomotion[state.clip].metresPerSecond):1);animal.actor.update(dt);}
     }
+    this.boatRenderer?.update(time,dt);
     for(const entity of this.players.values()){
       const{model,state:p}=entity,factor=1-Math.exp(-dt*20);
       model.visible=p.id===this.selfId||Math.hypot(p.x-this.focus.x,p.z-this.focus.z)<95;
       if(!model.visible){model.position.set(p.x,walkHeight(p.x,p.z),p.z);model.rotation.y=p.facing;entity.label.active=false;continue;}
       entity.label.active=true;
+      if(p.boatId){
+        const boat=this.boatRenderer?.boats.get(p.boatId);model.visible=!!boat?.model.visible&&!!entity.actor;entity.label.active=model.visible;if(!model.visible)continue;
+        const pose=entity.actor.ridingPose;model.rotation.y=boat.model.rotation.y;pose.update(entity.actor.animation,time,p.speed||0,true);
+        this.boatRenderer.seat(p.boatId,tempPoint);
+        const offset=pose.pelvisOffset(this.riderOffset??=new THREE.Vector3()).applyAxisAngle(THREE.Object3D.DEFAULT_UP,model.rotation.y);
+        model.position.copy(tempPoint).sub(offset);if(entity.weapon)entity.weapon.visible=false;if(entity.axe)entity.axe.visible=false;
+        entity.wasMounted=true;entity.label.position.copy(model.position);entity.label.position.y+=entity.actor.asset.heightMetres+.3;continue;
+      }
       const mount=p.mountId&&this.mammoths.find(a=>a.id===p.mountId&&a.model.visible);
       if(p.mountId){
         // Keep the rider hidden until the real mammoth and the real skin load.
@@ -350,13 +371,14 @@ export class WorldRenderer {
     }
     this.camera.position.copy(aim).addScaledVector(offset,cameraDistance);
     if(this.landmarks?.castleCamera){cameraDistance=this.landmarks.castleCamera.distance(aim,offset,cameraDistance);this.camera.position.copy(aim).addScaledVector(offset,cameraDistance);}
-    const aboveWater=riverHalfWidth(this.camera.position.z)>.7&&Math.abs(this.camera.position.x-riverX(this.camera.position.z))<riverHalfWidth(this.camera.position.z);
+    const aboveWater=!isLand(this.camera.position.x,this.camera.position.z)||(riverHalfWidth(this.camera.position.z)>.7&&Math.abs(this.camera.position.x-riverX(this.camera.position.z))<riverHalfWidth(this.camera.position.z));
     this.camera.position.y=Math.max(this.camera.position.y,terrainHeight(this.camera.position.x,this.camera.position.z)+.55,aboveWater?WATER_LEVEL+.65:-Infinity);
     this.camera.lookAt(aim);this.camera.updateMatrixWorld();this.sun.position.set(this.focus.x-32,48,this.focus.z-25);this.sun.target.position.set(this.focus.x,0,this.focus.z);
     this.openWorld?.update(this.camera,time);
     this.landmarks?.update(this.camera,time);
     this.regionalScenery?.update(this.camera,time);
     this.atmosphere.update(this.focus,time,dt);
+    this.adventureEffects?.update(time);
     if(time>=this.nextStaticCull){
       this.nextStaticCull=time+.2;
       for(const {root,radius} of this.staticScenery)root.visible=Math.hypot(root.position.x-this.camera.position.x,root.position.z-this.camera.position.z)<this.scene.fog.far+radius;
@@ -444,12 +466,14 @@ export class WorldRenderer {
   }
 
   destroy(){
+    this.boatRenderer?.dispose();
     this.disposed=true;this.regionalScenery?.dispose();this.landmarks?.dispose();this.openWorld?.dispose();this.releaseTerrainSampler?.();this.releaseBridgeSampler?.();cancelAnimationFrame(this.frame);this.resizeObserver.disconnect();this.labelLayer.remove();this.loadingLabel?.remove();
     for(const entity of this.players.values())if(entity.actor)this.scene.remove(entity.model);
     for(const landscape of this.landscapes)landscape.dispose();
     for(const provider of this.humanAssets.values())provider.dispose();this.worldAssets.dispose();
     this.spells.dispose();
     this.atmosphere.dispose();
+    this.adventureEffects?.dispose();
     for(const[event,handler]of[['pointerdown',this.down],['pointermove',this.move],['pointerup',this.up],['pointercancel',this.cancel],['lostpointercapture',this.cancel],['wheel',this.wheel],['contextmenu',this.context],['webglcontextlost',this.contextLost]])this.canvas.removeEventListener(event,handler);
     const geometries=new Set(),mats=new Set();this.scene.traverse(o=>{if(o.geometry)geometries.add(o.geometry);if(o.material){for(const m of Array.isArray(o.material)?o.material:[o.material])mats.add(m);}if(o.isInstancedMesh)o.dispose();});geometries.forEach(g=>g.dispose());mats.forEach(m=>m.dispose());this.disposables.forEach(d=>d.dispose());this.renderer.dispose();
   }

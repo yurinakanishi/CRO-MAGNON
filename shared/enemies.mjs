@@ -17,7 +17,7 @@ const circle = actor => ({ id: actor.id, type: 'circle', x: actor.x, z: actor.z,
 const solidAnimal = animal => animal.phase === 'alive' || animal.phase === 'dying';
 const dynamicActors = (room, except) => [...room.players.values(), ...(room.animals || []).filter(solidAnimal), ...(room.enemies || []).filter(enemyIsSolid)].filter(actor => actor !== except).map(circle);
 const withinStaffReach = (enemy, player) => combatDistance(enemy, player) <= enemy.radius + player.radius + ENEMY_RULES.attackReach + 1e-9;
-const eligiblePlayer = (room, player, now) => player && !player.mountId && !player.downedUntil && now >= (player.invulnerableUntil || 0) && combatDistance(player, room.camp || CAMP) > ENEMY_RULES.campSafeRadius;
+const eligiblePlayer = (room, player, now) => player && !player.mountId && !player.boatId && !player.downedUntil && now >= (player.invulnerableUntil || 0) && combatDistance(player, room.camp || CAMP) > ENEMY_RULES.campSafeRadius;
 const clearLine = (room, a, b) => Math.abs((room.collision.surfaceHeight?.(a)??0)-(room.collision.surfaceHeight?.(b)??0))<=1.4&&room.collision.segmentFree(a, b, .12);
 
 export function createEnemies(collision, dynamic = [], now = Date.now()) {
@@ -25,9 +25,9 @@ export function createEnemies(collision, dynamic = [], now = Date.now()) {
     const position = collision.nearestFree(ground, ENEMY_RULES.radius, dynamic.map(circle), ground.roamRadius);
     if (!position) throw new Error(`No safe enemy spawn for ${ground.id}`);
     return {
-      id: ground.id, modelKey: ENEMY_RULES.modelKey, name: '白羽の呪術師', hostile: true,
+      id: ground.id, modelKey: ENEMY_RULES.modelKey, name: ground.name??'白羽の呪術師', regionId:ground.regionId, hostile: true,
       ...position, home: { ...position }, radius: ENEMY_RULES.radius, scale: 1,
-      phase: 'alive', phaseStartedAt: now, alive: true, health: ENEMY_RULES.maxHealth, maxHealth: ENEMY_RULES.maxHealth,
+      phase: 'alive', phaseStartedAt: now, alive: true, health: ground.maxHealth??ENEMY_RULES.maxHealth, maxHealth: ground.maxHealth??ENEMY_RULES.maxHealth,
       facing: 0, speed: 0, moving: false, running: false, runningRequested: false, clip: 'Idle_Loop', behavior: 'roam',
       dx: 0, dz: 0, lastInput: 0, target: null, path: [], targetId: null, roamRadius: ground.roamRadius, roamIndex: 0,
       nextRoamAt: now + 1000, nextPathAt: 0, pathGoal: null, returning: false,

@@ -30,4 +30,5 @@ test('attack control works without a target, during cooking and after cooldown',
   assert.equal(canStartAttack(player,1000+HUNTING.attackCooldownMs-1),false);
   assert.equal(canStartAttack(player,1000+HUNTING.attackCooldownMs),true);
   assert.equal(canStartAttack(null,2000),false);
+  assert.equal(canStartAttack({...player,boatId:'boat-1'},3000),false);
 });

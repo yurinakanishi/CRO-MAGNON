@@ -1,7 +1,9 @@
 import { createGameCore } from './shared/game-core.mjs';
 import { WORLD } from './shared/world.mjs';
 import { RIDING } from './shared/riding.mjs';
+import { BOATING } from './shared/boats.mjs';
 import { EARTH } from './shared/paleo-geography.mjs';
+import { ADVENTURE_VERSION } from './shared/adventure-regions.mjs';
 import http from 'node:http';
 import { createReadStream } from 'node:fs';
 import { stat } from 'node:fs/promises';
@@ -37,9 +39,9 @@ export function createGameServer({
         response.writeHead(405, { Allow: 'GET, HEAD' }).end('Method not allowed');
         return;
       }
-      if (url.pathname === '/api/health' || url.pathname === '/api/network') {
+      if (url.pathname === '/api/health' || url.pathname === '/api/network' || url.pathname === '/api/status') {
         const activePort = server.address()?.port || port;
-        const body = url.pathname === '/api/health'
+        const body = url.pathname === '/api/status' ? {ok:true,boatingVersion:BOATING.version,adventureVersion:ADVENTURE_VERSION} : url.pathname === '/api/health'
           ? { ok: true, ridingVersion: RIDING.version, combatVersion: 3, characterVersion: 2, enemyVersion: 1, worldVersion: WORLD.version, worldSize: WORLD.size, worldWidth: WORLD.width, worldDepth: WORLD.depth, epochYearsBP: EARTH.epochYearsBP, rooms: rooms.size, players: [...rooms.values()].reduce((sum, room) => sum + room.players.size, 0), maxPlayers: WORLD.maxPlayers }
           : {
             port: activePort,
