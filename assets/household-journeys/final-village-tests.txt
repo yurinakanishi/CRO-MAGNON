@@ -1,0 +1,18 @@
+✔ eight residents span four camps and both human populations without fixed economic classes (7.3721ms)
+✔ two full days of routines reach all workplaces without static or resident overlap (1754.9933ms)
+✔ conversation holds a nearby resident then releases on departure or disconnect (161.8733ms)
+✔ every request consumes its stated bundle and gives exactly its stated reward (1.7519ms)
+✔ missing supplies, full rewards, remote/occluded and invalid targets never spend materials (0.491ms)
+✔ day boundary is authoritative and each player has an independent daily allowance (0.5425ms)
+✔ busy states refuse both talk and delivery; residents are not attack targets (0.7236ms)
+✔ eight active players coexist with residents; wire state excludes navigation and conversation internals (187.7454ms)
+✔ save, reconnect and legacy records preserve progress without restoring an old conversation (432.8911ms)
+✔ player movement respects a resident body, while live proximity UI selects that person (196.1951ms)
+ℹ tests 10
+ℹ suites 0
+ℹ pass 10
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 3793.9247

@@ -1,0 +1,394 @@
+{
+  "description": "Full physical simulation: 0.1-second steps, all three departures at t=0, two-day stays and all returns. Position and clock jumps are absent. Collision checks every second.",
+  "states": [
+    {
+      "second": 0.1,
+      "id": "valley-hearth",
+      "stage": "assembling",
+      "visit": 1,
+      "leg": 0,
+      "stayUntil": 0,
+      "readyAt": 0
+    },
+    {
+      "second": 0.1,
+      "id": "ridge-hearth",
+      "stage": "assembling",
+      "visit": 1,
+      "leg": 0,
+      "stayUntil": 0,
+      "readyAt": 0
+    },
+    {
+      "second": 0.1,
+      "id": "reed-hearth",
+      "stage": "assembling",
+      "visit": 1,
+      "leg": 0,
+      "stayUntil": 0,
+      "readyAt": 0
+    },
+    {
+      "second": 31.5,
+      "id": "valley-hearth",
+      "stage": "outbound",
+      "visit": 1,
+      "leg": 1,
+      "stayUntil": 0,
+      "readyAt": 0
+    },
+    {
+      "second": 31.5,
+      "id": "ridge-hearth",
+      "stage": "outbound",
+      "visit": 1,
+      "leg": 1,
+      "stayUntil": 0,
+      "readyAt": 0
+    },
+    {
+      "second": 31.5,
+      "id": "reed-hearth",
+      "stage": "outbound",
+      "visit": 1,
+      "leg": 1,
+      "stayUntil": 0,
+      "readyAt": 0
+    },
+    {
+      "second": 127.2,
+      "id": "valley-hearth",
+      "stage": "outbound",
+      "visit": 1,
+      "leg": 2,
+      "stayUntil": 0,
+      "readyAt": 0
+    },
+    {
+      "second": 142.6,
+      "id": "reed-hearth",
+      "stage": "outbound",
+      "visit": 1,
+      "leg": 2,
+      "stayUntil": 0,
+      "readyAt": 0
+    },
+    {
+      "second": 161.9,
+      "id": "ridge-hearth",
+      "stage": "outbound",
+      "visit": 1,
+      "leg": 2,
+      "stayUntil": 0,
+      "readyAt": 0
+    },
+    {
+      "second": 216.6,
+      "id": "valley-hearth",
+      "stage": "outbound",
+      "visit": 1,
+      "leg": 3,
+      "stayUntil": 0,
+      "readyAt": 0
+    },
+    {
+      "second": 296.1,
+      "id": "ridge-hearth",
+      "stage": "outbound",
+      "visit": 1,
+      "leg": 3,
+      "stayUntil": 0,
+      "readyAt": 0
+    },
+    {
+      "second": 303.8,
+      "id": "reed-hearth",
+      "stage": "outbound",
+      "visit": 1,
+      "leg": 3,
+      "stayUntil": 0,
+      "readyAt": 0
+    },
+    {
+      "second": 317,
+      "id": "valley-hearth",
+      "stage": "visiting",
+      "visit": 1,
+      "leg": 3,
+      "stayUntil": 897000,
+      "readyAt": 0
+    },
+    {
+      "second": 449.1,
+      "id": "ridge-hearth",
+      "stage": "outbound",
+      "visit": 1,
+      "leg": 4,
+      "stayUntil": 0,
+      "readyAt": 0
+    },
+    {
+      "second": 525.7,
+      "id": "reed-hearth",
+      "stage": "outbound",
+      "visit": 1,
+      "leg": 4,
+      "stayUntil": 0,
+      "readyAt": 0
+    },
+    {
+      "second": 599.1,
+      "id": "ridge-hearth",
+      "stage": "outbound",
+      "visit": 1,
+      "leg": 5,
+      "stayUntil": 0,
+      "readyAt": 0
+    },
+    {
+      "second": 685.8,
+      "id": "reed-hearth",
+      "stage": "outbound",
+      "visit": 1,
+      "leg": 5,
+      "stayUntil": 0,
+      "readyAt": 0
+    },
+    {
+      "second": 699.2,
+      "id": "ridge-hearth",
+      "stage": "outbound",
+      "visit": 1,
+      "leg": 6,
+      "stayUntil": 0,
+      "readyAt": 0
+    },
+    {
+      "second": 770.7,
+      "id": "ridge-hearth",
+      "stage": "visiting",
+      "visit": 1,
+      "leg": 6,
+      "stayUntil": 1350700,
+      "readyAt": 0
+    },
+    {
+      "second": 797,
+      "id": "valley-hearth",
+      "stage": "returning",
+      "visit": 1,
+      "leg": 3,
+      "stayUntil": 0,
+      "readyAt": 0
+    },
+    {
+      "second": 803.9,
+      "id": "valley-hearth",
+      "stage": "returning",
+      "visit": 1,
+      "leg": 2,
+      "stayUntil": 0,
+      "readyAt": 0
+    },
+    {
+      "second": 806.2,
+      "id": "reed-hearth",
+      "stage": "outbound",
+      "visit": 1,
+      "leg": 6,
+      "stayUntil": 0,
+      "readyAt": 0
+    },
+    {
+      "second": 873.6,
+      "id": "reed-hearth",
+      "stage": "visiting",
+      "visit": 1,
+      "leg": 6,
+      "stayUntil": 1453600,
+      "readyAt": 0
+    },
+    {
+      "second": 903.9,
+      "id": "valley-hearth",
+      "stage": "returning",
+      "visit": 1,
+      "leg": 1,
+      "stayUntil": 0,
+      "readyAt": 0
+    },
+    {
+      "second": 993.3,
+      "id": "valley-hearth",
+      "stage": "returning",
+      "visit": 1,
+      "leg": 0,
+      "stayUntil": 0,
+      "readyAt": 0
+    },
+    {
+      "second": 1086.4,
+      "id": "valley-hearth",
+      "stage": "home",
+      "visit": 1,
+      "leg": 0,
+      "stayUntil": 0,
+      "readyAt": 1426400
+    },
+    {
+      "second": 1250.7,
+      "id": "ridge-hearth",
+      "stage": "returning",
+      "visit": 1,
+      "leg": 6,
+      "stayUntil": 0,
+      "readyAt": 0
+    },
+    {
+      "second": 1253.7,
+      "id": "ridge-hearth",
+      "stage": "returning",
+      "visit": 1,
+      "leg": 5,
+      "stayUntil": 0,
+      "readyAt": 0
+    },
+    {
+      "second": 1327.9,
+      "id": "ridge-hearth",
+      "stage": "returning",
+      "visit": 1,
+      "leg": 4,
+      "stayUntil": 0,
+      "readyAt": 0
+    },
+    {
+      "second": 1353.6,
+      "id": "reed-hearth",
+      "stage": "returning",
+      "visit": 1,
+      "leg": 6,
+      "stayUntil": 0,
+      "readyAt": 0
+    },
+    {
+      "second": 1368.2,
+      "id": "reed-hearth",
+      "stage": "returning",
+      "visit": 1,
+      "leg": 5,
+      "stayUntil": 0,
+      "readyAt": 0
+    },
+    {
+      "second": 1428.1,
+      "id": "ridge-hearth",
+      "stage": "returning",
+      "visit": 1,
+      "leg": 3,
+      "stayUntil": 0,
+      "readyAt": 0
+    },
+    {
+      "second": 1446,
+      "id": "reed-hearth",
+      "stage": "returning",
+      "visit": 1,
+      "leg": 4,
+      "stayUntil": 0,
+      "readyAt": 0
+    },
+    {
+      "second": 1566.4,
+      "id": "reed-hearth",
+      "stage": "returning",
+      "visit": 1,
+      "leg": 3,
+      "stayUntil": 0,
+      "readyAt": 0
+    },
+    {
+      "second": 1576.4,
+      "id": "ridge-hearth",
+      "stage": "returning",
+      "visit": 1,
+      "leg": 2,
+      "stayUntil": 0,
+      "readyAt": 0
+    },
+    {
+      "second": 1726.5,
+      "id": "reed-hearth",
+      "stage": "returning",
+      "visit": 1,
+      "leg": 2,
+      "stayUntil": 0,
+      "readyAt": 0
+    },
+    {
+      "second": 1729.5,
+      "id": "ridge-hearth",
+      "stage": "returning",
+      "visit": 1,
+      "leg": 1,
+      "stayUntil": 0,
+      "readyAt": 0
+    },
+    {
+      "second": 1863.6,
+      "id": "ridge-hearth",
+      "stage": "returning",
+      "visit": 1,
+      "leg": 0,
+      "stayUntil": 0,
+      "readyAt": 0
+    },
+    {
+      "second": 1949.5,
+      "id": "reed-hearth",
+      "stage": "returning",
+      "visit": 1,
+      "leg": 1,
+      "stayUntil": 0,
+      "readyAt": 0
+    },
+    {
+      "second": 1991.6,
+      "id": "ridge-hearth",
+      "stage": "home",
+      "visit": 1,
+      "leg": 0,
+      "stayUntil": 0,
+      "readyAt": 2331600
+    },
+    {
+      "second": 2100.7,
+      "id": "reed-hearth",
+      "stage": "returning",
+      "visit": 1,
+      "leg": 0,
+      "stayUntil": 0,
+      "readyAt": 0
+    },
+    {
+      "second": 2211.8,
+      "id": "reed-hearth",
+      "stage": "home",
+      "visit": 1,
+      "leg": 0,
+      "stayUntil": 0,
+      "readyAt": 2551800
+    }
+  ],
+  "collisions": 0,
+  "arrived": [
+    "valley-hearth",
+    "ridge-hearth",
+    "reed-hearth"
+  ],
+  "returned": [
+    "valley-hearth",
+    "ridge-hearth",
+    "reed-hearth"
+  ]
+}

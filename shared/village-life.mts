@@ -1,16 +1,24 @@
 import { RESIDENTS, VILLAGE, villageDay, villagePhase, bundleLabel } from './village-sites.mjs';
 import { SETTLEMENTS } from './gulf-region.mjs';
-import { ensureGulfPlayer } from './gulf-life.mjs';
 import { interactionVisible } from './interactions.mjs';
 import { stopActor } from './combat.mjs';
 import { ridingObstacles } from './riding.mjs';
 import { movePlayer } from './movement.mjs';
 import { planNavigation, updateNavigation } from './navigation.mjs';
 import type { Resident, ResidentSnapshot } from './village-types.mjs';
+import {
+  createHouseholds,
+  ensureHouseholdProgress,
+  householdAssignment,
+  householdWaiting,
+  updateHouseholds,
+  householdRestorePosition,
+  handleHouseholdAction,
+} from './household-life.mjs';
 
 const distance = (a, b) => Math.hypot(a.x - b.x, a.z - b.z);
 export function ensureVillageProgress(player) {
-  const progress = ensureGulfPlayer(player);
+  const progress = ensureHouseholdProgress(player);
   const met = Array.isArray(progress.metResidents) ? progress.metResidents : [];
   progress.metResidents = RESIDENTS.filter((d) => met.includes(d.id)).map((d) => d.id);
   progress.residentHelp = Object.fromEntries(
@@ -23,14 +31,16 @@ export function ensureVillageProgress(player) {
 }
 
 export function createResidents(room, saved = []): Resident[] {
+  room.households ??= createHouseholds();
   room.residents = [];
   for (const definition of RESIDENTS) {
     const old = Array.isArray(saved) ? saved.find((r) => r?.id === definition.id) : null;
     const home = SETTLEMENTS.find((s) => s.id === definition.settlementId)!;
-    const position =
+    const homePosition =
       old && Number.isFinite(old.x) && Number.isFinite(old.z) && distance(old, home) < 65
         ? old
         : definition.routine[0];
+    const position = householdRestorePosition(room, definition.id, old, homePosition);
     const free = room.collision.nearestFree(position, 0.32, ridingObstacles(room, null, null), 8);
     if (!free) throw new Error(`No safe resident position: ${definition.id}`);
     const resident: Resident = {
@@ -50,6 +60,7 @@ export function createResidents(room, saved = []): Resident[] {
       path: [],
       target: null,
       phase: -1,
+      routineKey: '',
       destination: null,
       activity: '集落で過ごしている',
       clip: 'Idle_Loop',
@@ -76,6 +87,7 @@ export const residentSnapshots = (room): ResidentSnapshot[] =>
 
 export function updateResidents(room, dt: number, now: number) {
   const phase = villagePhase(now, room.createdAt);
+  updateHouseholds(room, now);
   for (const resident of (room.residents ?? []) as Resident[]) {
     const definition = RESIDENTS.find((d) => d.id === resident.id)!;
     const talker = room.players.get(resident.talkerId);
@@ -93,10 +105,13 @@ export function updateResidents(room, dt: number, now: number) {
     }
     resident.talkerId = null;
     const dynamic = ridingObstacles(room, null, resident);
-    if (resident.phase !== phase || !resident.destination) {
+    const assignment = householdAssignment(room, resident.id, phase);
+    const routineKey = assignment?.key ?? `home:${phase}`;
+    if (resident.routineKey !== routineKey || !resident.destination) {
       stopActor(resident);
       resident.phase = phase;
-      const target = definition.routine[phase];
+      resident.routineKey = routineKey;
+      const target = assignment?.target ?? definition.routine[phase];
       const free = room.collision.nearestFree(target, resident.radius, dynamic, 4);
       resident.destination = free ? { ...target, ...free } : null;
     }
@@ -107,6 +122,12 @@ export function updateResidents(room, dt: number, now: number) {
       continue;
     }
     if (distance(resident, destination) > 0.12) {
+      if (householdWaiting(room, resident)) {
+        stopActor(resident);
+        resident.activity = '旅の仲間を待っている';
+        resident.clip = 'Idle_Loop';
+        continue;
+      }
       if (!resident.navigationGoal)
         planNavigation(resident, destination, room.collision, dynamic, now);
       else updateNavigation(resident, room.collision, dynamic, now);
@@ -118,9 +139,11 @@ export function updateResidents(room, dt: number, now: number) {
         VILLAGE.walkSpeed,
       );
       resident.activity = resident.moving
-        ? ['採集場所へ歩いている', '仕事場へ歩いている', '炉へ歩いている', '天幕へ歩いている'][
-            phase
-          ]
+        ? assignment?.travelling
+          ? '世帯の仲間と道を歩いている'
+          : ['採集場所へ歩いている', '仕事場へ歩いている', '炉へ歩いている', '天幕へ歩いている'][
+              phase
+            ]
         : '道が空くのを待っている';
       resident.clip = resident.moving ? 'Walk_Loop' : 'Idle_Loop';
     } else {
@@ -133,6 +156,8 @@ export function updateResidents(room, dt: number, now: number) {
 }
 
 export function handleVillageAction(room, player, message, now: number) {
+  const household = handleHouseholdAction(room, player, message, now);
+  if (household) return household;
   if (!['residentTalk', 'residentHelp'].includes(message.action)) return null;
   const fail = (text) => ({ ok: false, text });
   const resident = room.residents?.find((r) => r.id === message.targetId);

@@ -4,6 +4,7 @@ import { EARTH } from '../shared/paleo-geography.mjs';
 import { RIDING } from '../shared/riding.mjs';
 import { NPC, WORLD } from '../shared/world.mjs';
 import { residentSnapshots } from '../shared/village-life.mjs';
+import { householdSnapshots } from '../shared/household-life.mjs';
 import { VILLAGE, villageDay } from '../shared/village-sites.mjs';
 import { maritimeWeather } from '../shared/maritime-weather.mjs';
 export function snapshot(
@@ -13,6 +14,7 @@ export function snapshot(
 ): import('../shared/snapshots.mjs').GameSnapshot {
   return {
     residents: residentSnapshots(room),
+    households: householdSnapshots(room),
     boatingVersion: BOATING.version,
     adventureVersion: ADVENTURE_VERSION,
     boats: room.boats.map(({ id, x, z, facing, radius, riderId, speed, moving, running }) => ({

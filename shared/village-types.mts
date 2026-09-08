@@ -32,6 +32,7 @@ export interface Resident extends MovableActor {
   activity: string;
   clip: string;
   phase: number;
+  routineKey: string;
   destination: ResidentRoutine | null;
   talkUntil: number;
   talkerId: string | null;

@@ -1,4 +1,5 @@
 import { FISHING_SITES } from '../shared/fishing-sites.mjs';
+import { HOUSEHOLDS } from '../shared/household-sites.mjs';
 import { SEA_WEATHER, currentDirection, seaConditions } from '../shared/maritime-weather.mjs';
 import { SHELL_BEDS, MIDDEN_SITES, KNAPPING_SITES } from '../shared/coastal-sites.mjs';
 import { WORLD, worldClamp, CAMP, NPC } from '../shared/world.mjs';
@@ -225,6 +226,47 @@ export function drawWorldMap(canvas, state, selfId, big = false) {
           }
         }
     }
+    ctx.restore();
+  }
+  if (big && (!full || gulfView)) {
+    ctx.save();
+    ctx.font = '12px sans-serif';
+    let travelling = 0;
+    for (const d of HOUSEHOLDS) {
+      const h = state.households?.find((h) => h.id === d.id);
+      if (!h || h.stage === 'home') continue;
+      const members = (state.residents ?? []).filter((r) => d.members.includes(r.id));
+      if (!members.length) continue;
+      const center = {
+        x: members.reduce((n, r) => n + r.x, 0) / members.length,
+        z: members.reduce((n, r) => n + r.z, 0) / members.length,
+      };
+      const color = COUNTRIES.find((c) => c.id === d.homeId)?.color ?? '#ffdc8d';
+      if (h.stage !== 'visiting') {
+        travelling++;
+        ctx.strokeStyle = color;
+        ctx.setLineDash([3, 5]);
+        ctx.beginPath();
+        ctx.moveTo(...point(center.x, center.z));
+        const remaining =
+          h.stage === 'returning' ? d.route.slice(0, h.leg + 1).reverse() : d.route.slice(h.leg);
+        for (const p of remaining) ctx.lineTo(...point(p.x, p.z));
+        ctx.stroke();
+        ctx.setLineDash([]);
+      }
+      for (const r of members) dot(r.x, r.z, color, 3);
+      const label =
+        d.name +
+        (h.stage === 'returning' ? ' → 国へ' : h.stage === 'visiting' ? ' · 滞在' : ' → 集い場');
+      const [labelX, labelY] = point(center.x + 8, center.z);
+      ctx.fillStyle = '#f2e4bd';
+      ctx.strokeStyle = '#142820';
+      ctx.lineWidth = 3;
+      ctx.lineJoin = 'round';
+      ctx.strokeText(label, labelX, labelY + 18);
+      ctx.fillText(label, labelX, labelY + 18);
+    }
+    canvas.dataset.travellingHouseholds = String(travelling);
     ctx.restore();
   }
   if (big && gulfView && full && state.maritime) {

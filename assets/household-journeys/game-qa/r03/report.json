@@ -1,0 +1,364 @@
+{
+  "at": "2026-09-08T13:13:15.960Z",
+  "base": "http://127.0.0.1:60419",
+  "errors": [],
+  "fixtures": [
+    {
+      "kind": "position",
+      "player": "旅支度A",
+      "purpose": "prepare at country hearth",
+      "x": -2530,
+      "z": 355
+    },
+    {
+      "kind": "supplies",
+      "player": "旅支度A",
+      "wood": 10,
+      "berry": 10,
+      "water": 6
+    },
+    {
+      "kind": "position",
+      "player": "旅支度B",
+      "purpose": "prepare at country hearth",
+      "x": -2529.4,
+      "z": 355
+    },
+    {
+      "kind": "supplies",
+      "player": "旅支度B",
+      "wood": 10,
+      "berry": 10,
+      "water": 6
+    },
+    {
+      "kind": "resident-last-leg",
+      "id": "mira",
+      "x": -2308,
+      "z": 476,
+      "leg": 3
+    },
+    {
+      "kind": "resident-last-leg",
+      "id": "tovan",
+      "x": -2306,
+      "z": 478,
+      "leg": 3
+    },
+    {
+      "kind": "position",
+      "player": "旅支度A",
+      "purpose": "watch final arrival",
+      "x": -2290,
+      "z": 478
+    },
+    {
+      "kind": "position",
+      "player": "旅支度B",
+      "purpose": "watch final arrival",
+      "x": -2289.4,
+      "z": 478
+    },
+    {
+      "kind": "position",
+      "player": "旅支度A",
+      "purpose": "welcome proximity",
+      "x": -2294.785322897149,
+      "z": 467.2581825858172
+    },
+    {
+      "kind": "position",
+      "player": "旅支度B",
+      "purpose": "welcome proximity",
+      "x": -2294.1125635567264,
+      "z": 466.7502023993206
+    },
+    {
+      "kind": "clock-forward",
+      "milliseconds": 471333,
+      "purpose": "finish eight-minute visit, without teleporting"
+    }
+  ],
+  "completed": [
+    "ordinary UI preparation consumes once; both residents assemble and walk from country; five players see shared departure",
+    "route map shows travelling household; reload retains identity, inventory and shared journey",
+    "actual final arrival; both players including mage welcome once; guest directory and unchanged daily help work at destination",
+    "welcome and daily progress survive reload; portrait/landscape journey dialog, scroll and back navigation",
+    "clock expires stay; both residents gather and physically depart on return route"
+  ],
+  "screenshots": [
+    {
+      "name": "01-loaded",
+      "fps": "20",
+      "residents": "0",
+      "actors": "0",
+      "chunks": "68"
+    },
+    {
+      "name": "02-prepared",
+      "fps": "39",
+      "residents": "2",
+      "actors": "2",
+      "chunks": "66"
+    },
+    {
+      "name": "03-walking-from-country",
+      "fps": "60",
+      "residents": "2",
+      "actors": "2",
+      "chunks": "66"
+    },
+    {
+      "name": "04-route-map",
+      "fps": "60",
+      "residents": "2",
+      "actors": "2",
+      "chunks": "66"
+    },
+    {
+      "name": "05-arrival",
+      "fps": "60",
+      "residents": "4",
+      "actors": "4",
+      "chunks": "59"
+    },
+    {
+      "name": "06-welcomed",
+      "fps": "60",
+      "residents": "4",
+      "actors": "4",
+      "chunks": "63"
+    },
+    {
+      "name": "07-hosts-and-guests",
+      "fps": "60",
+      "residents": "4",
+      "actors": "4",
+      "chunks": "63"
+    },
+    {
+      "name": "08-journeys-390",
+      "fps": "21",
+      "residents": "4",
+      "actors": "4",
+      "chunks": "63"
+    },
+    {
+      "name": "08-journeys-844",
+      "fps": "53",
+      "residents": "4",
+      "actors": "4",
+      "chunks": "63"
+    },
+    {
+      "name": "09-returning",
+      "fps": "60",
+      "residents": "4",
+      "actors": "4",
+      "chunks": "63"
+    }
+  ],
+  "viewports": [
+    {
+      "width": 390,
+      "scrollWidth": 390,
+      "modal": {
+        "x": 16,
+        "y": 33.765625,
+        "width": 358,
+        "height": 776.46875,
+        "top": 33.765625,
+        "right": 374,
+        "bottom": 810.234375,
+        "left": 16
+      },
+      "buttons": [
+        {
+          "id": "journey-prepare-valley-hearth",
+          "width": 143.5,
+          "height": 44
+        },
+        {
+          "id": "journey-welcome-valley-hearth",
+          "width": 143.5,
+          "height": 44
+        },
+        {
+          "id": "journey-go-valley-hearth",
+          "width": 294,
+          "height": 44
+        },
+        {
+          "id": "journey-prepare-ridge-hearth",
+          "width": 143.5,
+          "height": 44
+        },
+        {
+          "id": "journey-welcome-ridge-hearth",
+          "width": 143.5,
+          "height": 44
+        },
+        {
+          "id": "journey-go-ridge-hearth",
+          "width": 294,
+          "height": 44
+        },
+        {
+          "id": "journey-prepare-reed-hearth",
+          "width": 143.5,
+          "height": 44
+        },
+        {
+          "id": "journey-welcome-reed-hearth",
+          "width": 143.5,
+          "height": 44
+        },
+        {
+          "id": "journey-go-reed-hearth",
+          "width": 294,
+          "height": 44
+        },
+        {
+          "id": "journey-back",
+          "width": 320,
+          "height": 44
+        }
+      ]
+    },
+    {
+      "width": 844,
+      "scrollWidth": 844,
+      "modal": {
+        "x": 21.09375,
+        "y": 15.59375,
+        "width": 801.796875,
+        "height": 358.796875,
+        "top": 15.59375,
+        "right": 822.890625,
+        "bottom": 374.390625,
+        "left": 21.09375
+      },
+      "buttons": [
+        {
+          "id": "journey-prepare-valley-hearth",
+          "width": 162.9375,
+          "height": 44
+        },
+        {
+          "id": "journey-welcome-valley-hearth",
+          "width": 162.953125,
+          "height": 44
+        },
+        {
+          "id": "journey-go-valley-hearth",
+          "width": 332.890625,
+          "height": 44
+        },
+        {
+          "id": "journey-prepare-ridge-hearth",
+          "width": 162.953125,
+          "height": 44
+        },
+        {
+          "id": "journey-welcome-ridge-hearth",
+          "width": 162.953125,
+          "height": 44
+        },
+        {
+          "id": "journey-go-ridge-hearth",
+          "width": 332.90625,
+          "height": 44
+        },
+        {
+          "id": "journey-prepare-reed-hearth",
+          "width": 162.9375,
+          "height": 44
+        },
+        {
+          "id": "journey-welcome-reed-hearth",
+          "width": 162.953125,
+          "height": 44
+        },
+        {
+          "id": "journey-go-reed-hearth",
+          "width": 332.890625,
+          "height": 44
+        },
+        {
+          "id": "journey-back",
+          "width": 747.796875,
+          "height": 44
+        }
+      ]
+    }
+  ],
+  "transitions": [
+    {
+      "at": 1788873108817,
+      "id": "valley-hearth",
+      "stage": "home",
+      "visit": 0,
+      "leg": 0,
+      "stayUntil": 0,
+      "readyAt": 0
+    },
+    {
+      "at": 1788873118521,
+      "id": "valley-hearth",
+      "stage": "assembling",
+      "visit": 1,
+      "leg": 0,
+      "stayUntil": 0,
+      "readyAt": 0
+    },
+    {
+      "at": 1788873149497,
+      "id": "valley-hearth",
+      "stage": "outbound",
+      "visit": 1,
+      "leg": 1,
+      "stayUntil": 0,
+      "readyAt": 0
+    },
+    {
+      "at": 1788873159747,
+      "id": "valley-hearth",
+      "stage": "outbound",
+      "visit": 1,
+      "leg": 3,
+      "stayUntil": 0,
+      "readyAt": 0
+    },
+    {
+      "at": 1788873176208,
+      "id": "valley-hearth",
+      "stage": "visiting",
+      "visit": 1,
+      "leg": 3,
+      "stayUntil": 1788873656100,
+      "readyAt": 0
+    },
+    {
+      "at": 1788873656208,
+      "id": "valley-hearth",
+      "stage": "returning",
+      "visit": 1,
+      "leg": 3,
+      "stayUntil": 0,
+      "readyAt": 0
+    },
+    {
+      "at": 1788873663135,
+      "id": "valley-hearth",
+      "stage": "returning",
+      "visit": 1,
+      "leg": 2,
+      "stayUntil": 0,
+      "readyAt": 0
+    }
+  ],
+  "observations": 341,
+  "maxPlayers": 5,
+  "violations": [],
+  "scope": "Two actual Chrome contexts plus three WebSocket peers. Supplies, proximity, last-leg positions and stay clock are explicit fixtures. All three uninterrupted full round trips are covered by domain simulation, not claimed as full browser walks. No physical controller or mobile device."
+}

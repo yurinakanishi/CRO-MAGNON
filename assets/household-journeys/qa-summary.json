@@ -1,0 +1,132 @@
+{
+  "at": "2026-09-08T13:19:25.913Z",
+  "status": "passed",
+  "fullSuite": {
+    "passed": 294,
+    "failed": 0,
+    "record": "all-tests.txt",
+    "note": "Includes three existing uncommitted controller/menu tests from separate work. Subsequent view-only changes checked by final ten resident tests and r03 Chrome."
+  },
+  "finalResidentTests": {
+    "passed": 10,
+    "failed": 0
+  },
+  "build": "Browser/domain/application/Node/Cloudflare and strict TypeScript passed; isolated build before local rollout.",
+  "architecture": "passed",
+  "syntax": {
+    "files": 145,
+    "status": "passed"
+  },
+  "format": "passed",
+  "assets": {
+    "models": 38,
+    "deliveredGLBs": 53,
+    "newGLBs": 0,
+    "unchanged": true,
+    "record": "assets-qa.json"
+  },
+  "domain": {
+    "newTests": 9,
+    "fullRoundTrips": 3,
+    "allGuestDailyPhases": true,
+    "players": 8,
+    "record": "simulation.json",
+    "verified": [
+      "optional departure and no idle resource consumption",
+      "exact preparation cost and duplicate requests",
+      "all route legs and real collisions",
+      "companion waiting, conversation and temporary crowd recovery",
+      "day/season clock changes do not teleport or cancel a journey",
+      "personal welcome reward, caps, expiry and independent daily help",
+      "mid-route save, guest and return positions, reconnect, legacy records",
+      "rest before repeat departure"
+    ]
+  },
+  "browser": {
+    "record": "game-qa/r03/report.json",
+    "chromeContexts": 2,
+    "networkPeers": 3,
+    "maxPlayers": 5,
+    "observations": 341,
+    "collisions": 0,
+    "errors": 0,
+    "viewports": [
+      {
+        "width": 1440,
+        "height": 900
+      },
+      {
+        "width": 390,
+        "height": 844
+      },
+      {
+        "width": 844,
+        "height": 390
+      }
+    ],
+    "fpsAtScreenshots": [
+      {
+        "name": "01-loaded",
+        "fps": 20
+      },
+      {
+        "name": "02-prepared",
+        "fps": 39
+      },
+      {
+        "name": "03-walking-from-country",
+        "fps": 60
+      },
+      {
+        "name": "04-route-map",
+        "fps": 60
+      },
+      {
+        "name": "05-arrival",
+        "fps": 60
+      },
+      {
+        "name": "06-welcomed",
+        "fps": 60
+      },
+      {
+        "name": "07-hosts-and-guests",
+        "fps": 60
+      },
+      {
+        "name": "08-journeys-390",
+        "fps": 21
+      },
+      {
+        "name": "08-journeys-844",
+        "fps": 53
+      },
+      {
+        "name": "09-returning",
+        "fps": 60
+      }
+    ],
+    "scope": "Two actual Chrome contexts plus three WebSocket peers. Supplies, proximity, last-leg positions and stay clock are explicit fixtures. All three uninterrupted full round trips are covered by domain simulation, not claimed as full browser walks. No physical controller or mobile device."
+  },
+  "fixes": [
+    "Delay delivery for 500 ms after auto-opening conversation so it does not race the existing 450 ms server action limit.",
+    "Outline travelling household labels for contrast on the map."
+  ],
+  "local": {
+    "status": "passed",
+    "oldPid": 7768,
+    "newPid": 49044,
+    "roomsBeforeRestart": 0,
+    "playersBeforeRestart": 0,
+    "checkpointApplied": false,
+    "modules": 8,
+    "record": "rollout/report.json",
+    "qaHarnessFix": "Use a room code no longer than 16 characters for both browser and network observer; the earlier 17-character code put them in separate rooms."
+  },
+  "limitations": [
+    "Temporary visits, not permanent migration or population growth.",
+    "No NPC boating, political simulation or automatic shared food/resource consumption.",
+    "No physical controller/mobile device, high-player-load or long-duration performance claim.",
+    "No ordinary Node disk persistence, public deployment or billing change."
+  ]
+}

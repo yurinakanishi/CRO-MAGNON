@@ -1,4 +1,5 @@
 import { updateFishing, cancelFishing } from '../shared/fishing.mjs';
+import { createHouseholds, householdSnapshots } from '../shared/household-life.mjs';
 import {
   createResidents,
   updateResidents,
@@ -563,6 +564,7 @@ export function createGameCore({
               boats: room.boats,
               gulf: room.gulf,
               residents: residentSnapshots(room),
+              households: householdSnapshots(room),
               sessions: sessions.slice(-100),
             },
             (key, value) => (key === 'socket' ? undefined : value),
@@ -642,6 +644,7 @@ export function createGameCore({
           }
           room.sessions.set(entry.token, { expiresAt: entry.expiresAt, player });
         }
+      room.households = createHouseholds(record.households, runtime.now());
       createResidents(room, record.residents);
     }
   }

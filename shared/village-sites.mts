@@ -14,6 +14,8 @@ export const ITEM_NAMES = {
   berry: 'ベリー',
   water: '水',
   seed: '種',
+  rootSeed: '根菜の種',
+  herbSeed: '薬草の種',
   obsidian: '黒曜石',
   cookedShellfish: '焼いた貝',
   cookedFish: '焼き魚',

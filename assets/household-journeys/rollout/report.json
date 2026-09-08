@@ -1,0 +1,352 @@
+{
+  "at": "2026-09-08T13:17:39.494Z",
+  "base": "http://127.0.0.1:3000",
+  "health": {
+    "ok": true,
+    "ridingVersion": 1,
+    "combatVersion": 3,
+    "characterVersion": 2,
+    "enemyVersion": 1,
+    "worldVersion": 4,
+    "worldSize": 8192,
+    "worldWidth": 8192,
+    "worldDepth": 4096,
+    "epochYearsBP": 50000,
+    "rooms": 1,
+    "players": 0,
+    "maxPlayers": 5
+  },
+  "checks": [
+    {
+      "path": "src/household-ui.js",
+      "sha256": "745868d80cb9fb4688cb0336eda00ee477a9d63893aa598c4cfe4581e192a9a1"
+    },
+    {
+      "path": "src/village-ui.js",
+      "sha256": "407b500491ea2fefc2024e9ddad5b5ab569c363a491dbe28b3f490f4bfb1e492"
+    },
+    {
+      "path": "src/world-map.js",
+      "sha256": "4e04b3dd6a0031e51ade8bb523065aa6a0bb87e32ecc08315ffc24f2bcf4113e"
+    },
+    {
+      "path": "src/gulf.css",
+      "sha256": "09a9cbc7bc6e6f1ba8be1383a0746bc103e35f68afec97aae9cc53120cbf9b63"
+    },
+    {
+      "path": "shared/household-sites.mjs",
+      "sha256": "9aba21335291918047d1ceb2658040b6328772aec6464efdad4ac60d7c7102da"
+    },
+    {
+      "path": "shared/household-life.mjs",
+      "sha256": "3024896588a6044ceba90b69cd492cdbc68b66c7cb8e3a3a16239ad060913eb5"
+    },
+    {
+      "path": "shared/village-sites.mjs",
+      "sha256": "a6502cd5bbe6eee76287c6cf1d9591a5a2c892b7e2d749bc40c62318b577f2c7"
+    },
+    {
+      "path": "shared/village-life.mjs",
+      "sha256": "c3fd1fa41743c8b617a77fcf3175051794520073a586dc49f298e8bdadd338ab"
+    }
+  ],
+  "errors": [],
+  "diagnostics": {
+    "fps": "57",
+    "residents": "2",
+    "chunks": "64"
+  },
+  "movement": [
+    {
+      "at": 1788873456863,
+      "player": {
+        "id": "140a7e82-16b5-4d21-99a6-4f04cc902741",
+        "name": "世帯の旅・反映確認",
+        "species": "cro",
+        "gender": "female",
+        "x": -2270,
+        "z": 455,
+        "radius": 0.32,
+        "color": "#e4ac65",
+        "inventory": {
+          "wood": 0,
+          "stone": 0,
+          "berry": 0,
+          "rawMeat": 0,
+          "cookedMeat": 0,
+          "rootSeed": 0,
+          "herbSeed": 0,
+          "rawRoot": 0,
+          "herb": 0,
+          "cookedRoot": 0,
+          "herbRoot": 0,
+          "rawShellfish": 0,
+          "cookedShellfish": 0,
+          "shells": 0,
+          "obsidianBlade": 0,
+          "rawFish": 0,
+          "cookedFish": 0,
+          "obsidian": 0,
+          "seed": 0,
+          "water": 0
+        },
+        "gathered": 0,
+        "tool": false,
+        "ready": false,
+        "energy": 100,
+        "facing": 0,
+        "moving": false,
+        "running": false,
+        "speed": 0,
+        "attackSequence": 0,
+        "attackAt": 0,
+        "cookingEndsAt": 0,
+        "fishing": null,
+        "coastalActivity": null,
+        "spearHead": "wood",
+        "hurtSequence": 0,
+        "hurtAt": 0,
+        "defeatSequence": 0,
+        "downedUntil": 0,
+        "invulnerableUntil": 0,
+        "mountId": null,
+        "boatId": null,
+        "adventure": {
+          "regions": {}
+        },
+        "gulf": {
+          "countryId": null,
+          "welcomed": false,
+          "visited": [
+            "many-hearths"
+          ],
+          "harvested": 0,
+          "procured": 0,
+          "delivered": 0,
+          "lastFeast": 0,
+          "fishingKit": false,
+          "shellfishGathered": 0,
+          "shellsReturned": 0,
+          "bladesKnapped": 0,
+          "fishCaught": 0,
+          "fishShared": 0,
+          "waymarks": [],
+          "trailRewarded": false,
+          "householdWelcomes": {},
+          "metResidents": [],
+          "residentHelp": {}
+        }
+      },
+      "others": [
+        "世帯の旅・反映確認",
+        "CHECK"
+      ]
+    },
+    {
+      "at": 1788873457019,
+      "player": {
+        "id": "140a7e82-16b5-4d21-99a6-4f04cc902741",
+        "name": "世帯の旅・反映確認",
+        "species": "cro",
+        "gender": "female",
+        "x": -2270.2313967264695,
+        "z": 454.9523594974916,
+        "radius": 0.32,
+        "color": "#e4ac65",
+        "inventory": {
+          "wood": 0,
+          "stone": 0,
+          "berry": 0,
+          "rawMeat": 0,
+          "cookedMeat": 0,
+          "rootSeed": 0,
+          "herbSeed": 0,
+          "rawRoot": 0,
+          "herb": 0,
+          "cookedRoot": 0,
+          "herbRoot": 0,
+          "rawShellfish": 0,
+          "cookedShellfish": 0,
+          "shells": 0,
+          "obsidianBlade": 0,
+          "rawFish": 0,
+          "cookedFish": 0,
+          "obsidian": 0,
+          "seed": 0,
+          "water": 0
+        },
+        "gathered": 0,
+        "tool": false,
+        "ready": false,
+        "energy": 100,
+        "facing": -1.773841544048573,
+        "moving": true,
+        "running": false,
+        "speed": 1.2499999999999998,
+        "attackSequence": 0,
+        "attackAt": 0,
+        "cookingEndsAt": 0,
+        "fishing": null,
+        "coastalActivity": null,
+        "spearHead": "wood",
+        "hurtSequence": 0,
+        "hurtAt": 0,
+        "defeatSequence": 0,
+        "downedUntil": 0,
+        "invulnerableUntil": 0,
+        "mountId": null,
+        "boatId": null,
+        "adventure": {
+          "regions": {}
+        },
+        "gulf": {
+          "countryId": null,
+          "welcomed": false,
+          "visited": [
+            "many-hearths"
+          ],
+          "harvested": 0,
+          "procured": 0,
+          "delivered": 0,
+          "lastFeast": 0,
+          "fishingKit": false,
+          "shellfishGathered": 0,
+          "shellsReturned": 0,
+          "bladesKnapped": 0,
+          "fishCaught": 0,
+          "fishShared": 0,
+          "waymarks": [],
+          "trailRewarded": false,
+          "householdWelcomes": {},
+          "metResidents": [],
+          "residentHelp": {}
+        }
+      },
+      "others": [
+        "世帯の旅・反映確認",
+        "CHECK"
+      ]
+    },
+    {
+      "at": 1788873457179,
+      "player": {
+        "id": "140a7e82-16b5-4d21-99a6-4f04cc902741",
+        "name": "世帯の旅・反映確認",
+        "species": "cro",
+        "gender": "female",
+        "x": -2270.3832125681743,
+        "z": 454.92110329478766,
+        "radius": 0.32,
+        "color": "#e4ac65",
+        "inventory": {
+          "wood": 0,
+          "stone": 0,
+          "berry": 0,
+          "rawMeat": 0,
+          "cookedMeat": 0,
+          "rootSeed": 0,
+          "herbSeed": 0,
+          "rawRoot": 0,
+          "herb": 0,
+          "cookedRoot": 0,
+          "herbRoot": 0,
+          "rawShellfish": 0,
+          "cookedShellfish": 0,
+          "shells": 0,
+          "obsidianBlade": 0,
+          "rawFish": 0,
+          "cookedFish": 0,
+          "obsidian": 0,
+          "seed": 0,
+          "water": 0
+        },
+        "gathered": 0,
+        "tool": false,
+        "ready": false,
+        "energy": 100,
+        "facing": -1.7738415440487054,
+        "moving": true,
+        "running": false,
+        "speed": 1.24999999999942,
+        "attackSequence": 0,
+        "attackAt": 0,
+        "cookingEndsAt": 0,
+        "fishing": null,
+        "coastalActivity": null,
+        "spearHead": "wood",
+        "hurtSequence": 0,
+        "hurtAt": 0,
+        "defeatSequence": 0,
+        "downedUntil": 0,
+        "invulnerableUntil": 0,
+        "mountId": null,
+        "boatId": null,
+        "adventure": {
+          "regions": {}
+        },
+        "gulf": {
+          "countryId": null,
+          "welcomed": false,
+          "visited": [
+            "many-hearths"
+          ],
+          "harvested": 0,
+          "procured": 0,
+          "delivered": 0,
+          "lastFeast": 0,
+          "fishingKit": false,
+          "shellfishGathered": 0,
+          "shellsReturned": 0,
+          "bladesKnapped": 0,
+          "fishCaught": 0,
+          "fishShared": 0,
+          "waymarks": [],
+          "trailRewarded": false,
+          "householdWelcomes": {},
+          "metResidents": [],
+          "residentHelp": {}
+        }
+      },
+      "others": [
+        "世帯の旅・反映確認",
+        "CHECK"
+      ]
+    }
+  ],
+  "notices": [],
+  "flows": [
+    "ordinary gulf expedition, resident directory, all three households; remote preparation disabled",
+    "country hearth button starts ordinary navigation; gulf map opens",
+    "390x844 last household scrolling and back navigation"
+  ],
+  "snapshot": {
+    "playerLimit": 5,
+    "households": [
+      {
+        "id": "valley-hearth",
+        "stage": "home",
+        "visit": 0,
+        "leg": 0,
+        "stayUntil": 0,
+        "readyAt": 0
+      },
+      {
+        "id": "ridge-hearth",
+        "stage": "home",
+        "visit": 0,
+        "leg": 0,
+        "stayUntil": 0,
+        "readyAt": 0
+      },
+      {
+        "id": "reed-hearth",
+        "stage": "home",
+        "visit": 0,
+        "leg": 0,
+        "stayUntil": 0,
+        "readyAt": 0
+      }
+    ],
+    "residents": 8
+  }
+}

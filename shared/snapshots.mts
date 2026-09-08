@@ -4,6 +4,7 @@ import type { CoastalActivity } from './coastal-types.mjs';
 import type { GulfState, GulfProgress } from './gulf-types.mjs';
 import type { ResidentSnapshot } from './village-types.mjs';
 import type { MaritimeWeather } from './maritime-types.mjs';
+import type { HouseholdState } from './household-types.mjs';
 
 /** Public wire data. Connections, session tokens and simulation paths never belong here. */
 export interface AdventureProgress {
@@ -140,6 +141,7 @@ export interface GameSnapshot {
   epochYearsBP: number;
   players: PlayerSnapshot[];
   residents?: ResidentSnapshot[];
+  households?: HouseholdState[];
   animals: AnimalSnapshot[];
   enemies: EnemySnapshot[];
   boats: BoatSnapshot[];

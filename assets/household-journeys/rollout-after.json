@@ -1,0 +1,21 @@
+{
+  "at": "2026-09-08T13:14:29.5682297Z",
+  "pid": 49044,
+  "health": {
+    "ok": true,
+    "ridingVersion": 1,
+    "combatVersion": 3,
+    "characterVersion": 2,
+    "enemyVersion": 1,
+    "worldVersion": 4,
+    "worldSize": 8192,
+    "worldWidth": 8192,
+    "worldDepth": 4096,
+    "epochYearsBP": 50000,
+    "rooms": 0,
+    "players": 0,
+    "maxPlayers": 5
+  },
+  "checkpointApplied": false,
+  "reason": "Previous server had no rooms or players immediately before restart."
+}

@@ -1,0 +1,193 @@
+{
+  "at": "2026-09-08T13:05:04.430Z",
+  "base": "http://127.0.0.1:51894",
+  "errors": [
+    "Error: Timeout: daily request at guest camp"
+  ],
+  "fixtures": [
+    {
+      "kind": "position",
+      "player": "旅支度A",
+      "purpose": "prepare at country hearth",
+      "x": -2530,
+      "z": 355
+    },
+    {
+      "kind": "supplies",
+      "player": "旅支度A",
+      "wood": 10,
+      "berry": 10,
+      "water": 6
+    },
+    {
+      "kind": "position",
+      "player": "旅支度B",
+      "purpose": "prepare at country hearth",
+      "x": -2529.4,
+      "z": 355
+    },
+    {
+      "kind": "supplies",
+      "player": "旅支度B",
+      "wood": 10,
+      "berry": 10,
+      "water": 6
+    },
+    {
+      "kind": "resident-last-leg",
+      "id": "mira",
+      "x": -2308,
+      "z": 476,
+      "leg": 3
+    },
+    {
+      "kind": "resident-last-leg",
+      "id": "tovan",
+      "x": -2306,
+      "z": 478,
+      "leg": 3
+    },
+    {
+      "kind": "position",
+      "player": "旅支度A",
+      "purpose": "watch final arrival",
+      "x": -2290,
+      "z": 478
+    },
+    {
+      "kind": "position",
+      "player": "旅支度B",
+      "purpose": "watch final arrival",
+      "x": -2289.4,
+      "z": 478
+    },
+    {
+      "kind": "position",
+      "player": "旅支度A",
+      "purpose": "welcome proximity",
+      "x": -2294.7818455462766,
+      "z": 467.2553589129602
+    },
+    {
+      "kind": "position",
+      "player": "旅支度B",
+      "purpose": "welcome proximity",
+      "x": -2294.041232984912,
+      "z": 466.69618359702815
+    }
+  ],
+  "completed": [
+    "ordinary UI preparation consumes once; both residents assemble and walk from country; five players see shared departure",
+    "route map shows travelling household; reload retains identity, inventory and shared journey"
+  ],
+  "screenshots": [
+    {
+      "name": "01-loaded",
+      "fps": "16",
+      "residents": "0",
+      "actors": "0",
+      "chunks": "68"
+    },
+    {
+      "name": "02-prepared",
+      "fps": "36",
+      "residents": "2",
+      "actors": "2",
+      "chunks": "66"
+    },
+    {
+      "name": "03-walking-from-country",
+      "fps": "60",
+      "residents": "2",
+      "actors": "2",
+      "chunks": "66"
+    },
+    {
+      "name": "04-route-map",
+      "fps": "60",
+      "residents": "2",
+      "actors": "2",
+      "chunks": "66"
+    },
+    {
+      "name": "05-arrival",
+      "fps": "60",
+      "residents": "4",
+      "actors": "4",
+      "chunks": "59"
+    },
+    {
+      "name": "06-welcomed",
+      "fps": "59",
+      "residents": "4",
+      "actors": "4",
+      "chunks": "63"
+    },
+    {
+      "name": "07-hosts-and-guests",
+      "fps": "59",
+      "residents": "4",
+      "actors": "4",
+      "chunks": "63"
+    },
+    {
+      "name": "failure",
+      "fps": "60",
+      "residents": "4",
+      "actors": "4",
+      "chunks": "63"
+    }
+  ],
+  "viewports": [],
+  "transitions": [
+    {
+      "at": 1788872571322,
+      "id": "valley-hearth",
+      "stage": "home",
+      "visit": 0,
+      "leg": 0,
+      "stayUntil": 0,
+      "readyAt": 0
+    },
+    {
+      "at": 1788872580555,
+      "id": "valley-hearth",
+      "stage": "assembling",
+      "visit": 1,
+      "leg": 0,
+      "stayUntil": 0,
+      "readyAt": 0
+    },
+    {
+      "at": 1788872611592,
+      "id": "valley-hearth",
+      "stage": "outbound",
+      "visit": 1,
+      "leg": 1,
+      "stayUntil": 0,
+      "readyAt": 0
+    },
+    {
+      "at": 1788872625321,
+      "id": "valley-hearth",
+      "stage": "outbound",
+      "visit": 1,
+      "leg": 3,
+      "stayUntil": 0,
+      "readyAt": 0
+    },
+    {
+      "at": 1788872641629,
+      "id": "valley-hearth",
+      "stage": "visiting",
+      "visit": 1,
+      "leg": 3,
+      "stayUntil": 1788873121499,
+      "readyAt": 0
+    }
+  ],
+  "observations": 515,
+  "maxPlayers": 5,
+  "violations": [],
+  "scope": "Two actual Chrome contexts plus three WebSocket peers. Supplies, proximity, last-leg positions and stay clock are explicit fixtures. All three uninterrupted full round trips are covered by domain simulation, not claimed as full browser walks. No physical controller or mobile device."
+}

@@ -5,6 +5,7 @@ import type { CropId } from './crops.mjs';
 export interface GulfProgress {
   metResidents?: string[];
   residentHelp?: Record<string, number>;
+  householdWelcomes?: Record<string, number>;
   shellfishGathered?: number;
   shellsReturned?: number;
   bladesKnapped?: number;
