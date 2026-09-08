@@ -1,5 +1,6 @@
 import { FISHING } from './fishing-sites.mjs';
 import { COASTAL } from './coastal-sites.mjs';
+import { ROOT_RECIPES } from './crops.mjs';
 import { CAMP } from './world.mjs';
 import {
   COMBAT,
@@ -83,16 +84,31 @@ export function handleHuntingAction(room, player, message, now = Date.now()) {
       'eatFish',
       'cookShellfish',
       'eatShellfish',
+      ...ROOT_RECIPES.flatMap((recipe) => [recipe.action, recipe.eatAction]),
       'cancelCook',
     ].includes(action)
   )
     return null;
   const fish = action === 'cookFish' || action === 'eatFish';
   const shellfish = action === 'cookShellfish' || action === 'eatShellfish';
-  const raw = shellfish ? 'rawShellfish' : fish ? 'rawFish' : 'rawMeat',
-    cooked = shellfish ? 'cookedShellfish' : fish ? 'cookedFish' : 'cookedMeat';
-  const label = shellfish ? '貝' : fish ? '魚' : '肉',
-    energy = shellfish ? COASTAL.shellEnergy : fish ? FISHING.energy : HUNTING.cookedMeatEnergy;
+  const recipe = ROOT_RECIPES.find((r) => r.action === action || r.eatAction === action);
+  const raw = recipe ? 'rawRoot' : shellfish ? 'rawShellfish' : fish ? 'rawFish' : 'rawMeat',
+    cooked = recipe
+      ? recipe.output
+      : shellfish
+        ? 'cookedShellfish'
+        : fish
+          ? 'cookedFish'
+          : 'cookedMeat';
+  const label = recipe ? '火根' : shellfish ? '貝' : fish ? '魚' : '肉',
+    foodName = recipe ? recipe.name : `焼いた${label}`,
+    energy = recipe
+      ? recipe.energy
+      : shellfish
+        ? COASTAL.shellEnergy
+        : fish
+          ? FISHING.energy
+          : HUNTING.cookedMeatEnergy;
   if (action === 'attack') {
     const result = startAttack(room, player, message, now);
     const profile = attackProfile(player);
@@ -141,22 +157,35 @@ export function handleHuntingAction(room, player, message, now = Date.now()) {
     }
     return response('生肉 +1。焚き火で焼くと食べられます。', 'success', true);
   }
-  if (action === 'cook' || action === 'cookFish' || action === 'cookShellfish') {
+  if (
+    action === 'cook' ||
+    action === 'cookFish' ||
+    action === 'cookShellfish' ||
+    recipe?.action === action
+  ) {
     const fire = nearestCookingFire(room, player);
     if (huntingDistance(player, fire) > HUNTING.cookRange)
       return response(`焚き火に近づいて${label}を焼こう。`);
     if (!interactionVisible(room.collision, player, fire))
       return response('火までの間がふさがれています。回り込もう。');
     if (!player.inventory[raw]) return response(`焼くための生${label}を持っていません。`);
+    if (
+      recipe &&
+      Object.entries(recipe.ingredients).some(([key, n]) => (player.inventory[key] ?? 0) < n)
+    )
+      return response(`${recipe.name}には${recipe.costText}が必要です。`);
     if ((player.inventory[cooked] ?? 0) >= HUNTING.inventoryLimit)
-      return response(`焼いた${label}の持ち物がいっぱいです。`);
+      return response(`${foodName}の持ち物がいっぱいです。`);
     stopActor(player);
-    player.cookingKind = shellfish ? 'shellfish' : fish ? 'fish' : 'meat';
+    player.cookingKind = recipe ? recipe.kind : shellfish ? 'shellfish' : fish ? 'fish' : 'meat';
     player.cookingEndsAt = now + HUNTING.cookDurationMs;
-    return response(`${label}を焼いています。火のそばで3秒待とう。`, 'info', true);
+    return response(
+      `${recipe ? recipe.name : label}を${recipe ? '作って' : '焼いて'}います。火のそばで3秒待とう。`,
+      'info',
+      true,
+    );
   }
-  if (!player.inventory[cooked])
-    return response(`焼いた${label}を持っていません。焚き火で焼こう。`);
+  if (!player.inventory[cooked]) return response(`${foodName}を持っていません。焚き火で焼こう。`);
   if (player.energy >= 100) return response('元気いっぱいです。', 'info');
   if (shellfish && (player.inventory.shells ?? 0) >= HUNTING.inventoryLimit)
     return response('貝殻の持ち物がいっぱいです。集落の貝塚へ殻を積んでから食べよう。');
@@ -165,7 +194,7 @@ export function handleHuntingAction(room, player, message, now = Date.now()) {
   const restored = Math.min(energy, 100 - player.energy);
   player.energy += restored;
   return response(
-    `焼いた${label}を食べた。元気 +${restored}${shellfish ? '・貝殻 +1' : ''}`,
+    `${foodName}を食べた。元気 +${restored}${shellfish ? '・貝殻 +1' : ''}`,
     'success',
     true,
   );
@@ -220,18 +249,33 @@ export function updateHunting(
       changed = true;
       const fish = player.cookingKind === 'fish';
       const shellfish = player.cookingKind === 'shellfish';
-      const raw = shellfish ? 'rawShellfish' : fish ? 'rawFish' : 'rawMeat',
-        cooked = shellfish ? 'cookedShellfish' : fish ? 'cookedFish' : 'cookedMeat';
-      if (player.inventory[raw] > 0 && (player.inventory[cooked] ?? 0) < HUNTING.inventoryLimit) {
+      const recipe = ROOT_RECIPES.find((r) => r.kind === player.cookingKind);
+      const raw = recipe ? 'rawRoot' : shellfish ? 'rawShellfish' : fish ? 'rawFish' : 'rawMeat',
+        cooked = recipe
+          ? recipe.output
+          : shellfish
+            ? 'cookedShellfish'
+            : fish
+              ? 'cookedFish'
+              : 'cookedMeat';
+      if (
+        player.inventory[raw] > 0 &&
+        (player.inventory[cooked] ?? 0) < HUNTING.inventoryLimit &&
+        (!recipe ||
+          Object.entries(recipe.ingredients).every(([key, n]) => (player.inventory[key] ?? 0) >= n))
+      ) {
         player.inventory[raw] -= 1;
+        if (recipe?.ingredients.herb) player.inventory.herb -= recipe.ingredients.herb;
         player.inventory[cooked] = (player.inventory[cooked] ?? 0) + 1;
         notify(
           player,
-          shellfish
-            ? '焼いた貝 +1。食べると元気+20、残った殻は貝塚へ持ち帰ろう。'
-            : fish
-              ? '焼き魚 +1。食べると元気+30。宴へも持ち寄れます。'
-              : '焼いた肉 +1。食べると元気が45回復します。',
+          recipe
+            ? `${recipe.name} +1。食べると元気+${recipe.energy}。宴へも持ち寄れます。`
+            : shellfish
+              ? '焼いた貝 +1。食べると元気+20、残った殻は貝塚へ持ち帰ろう。'
+              : fish
+                ? '焼き魚 +1。食べると元気+30。宴へも持ち寄れます。'
+                : '焼いた肉 +1。食べると元気が45回復します。',
           'success',
         );
       } else notify(player, '調理を中止した。持ち物を確認してください。', 'error');

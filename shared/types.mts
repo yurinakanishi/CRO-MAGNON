@@ -32,6 +32,12 @@ export interface Resource extends Point {
   appearanceBiome?: string;
 }
 export interface Inventory {
+  rootSeed?: number;
+  herbSeed?: number;
+  rawRoot?: number;
+  herb?: number;
+  cookedRoot?: number;
+  herbRoot?: number;
   rawShellfish?: number;
   cookedShellfish?: number;
   shells?: number;

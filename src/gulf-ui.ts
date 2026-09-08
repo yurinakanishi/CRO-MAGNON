@@ -13,6 +13,7 @@ import {
 } from '../shared/gulf-region.mjs';
 import { GATHERING_NEEDS, SEASONS } from '../shared/gulf-life.mjs';
 import { interactionVisible } from '../shared/interactions.mjs';
+import { CROPS, cropById, plotCrop, cropGrowMs, cropHarvestText } from '../shared/crops.mjs';
 
 const distance = (a, b) => (a && b ? Math.hypot(a.x - b.x, a.z - b.z) : Infinity);
 const stageName = { empty: '空き畑', planted: '水が必要', growing: '成長中', ripe: '収穫できる' };
@@ -32,16 +33,18 @@ export function gulfInteraction(state, me, collision) {
     (a, b) => distance(me, a) - distance(me, b),
   )[0];
   const plot = spec && state.gulf?.plots.find((p) => p.id === spec.id);
-  if (plot && plot.stage !== 'growing')
+  if (plot && plot.stage !== 'growing') {
+    const crop = plotCrop(plot);
     return {
-      action: { empty: 'gulfPlant', planted: 'gulfTend', ripe: 'gulfHarvest' }[plot.stage],
+      action: { empty: 'gulfOpen', planted: 'gulfTend', ripe: 'gulfHarvest' }[plot.stage],
       targetId: spec.id,
       label: {
-        empty: '種を植える（種1）',
-        planted: '畑に水をやる（水1）',
-        ripe: 'ベリー4・種2を収穫する',
+        empty: '育てる作物を選ぶ',
+        planted: `${crop.name}に水をやる（水${crop.water}）`,
+        ripe: `${cropHarvestText(crop)}を収穫する`,
       }[plot.stage],
     };
+  }
   if (distance(me, MANY_HEARTHS) <= 9 && visible(MANY_HEARTHS) && !me.gulf?.welcomed)
     return { action: 'gulfWelcome', label: '湾の旅支度を受け取る（種6・ベリー3）' };
   const settlement = SETTLEMENTS.find((s) => distance(me, s) <= 9 && visible(s));
@@ -52,6 +55,7 @@ export function installGulfUI(api) {
   const { player, state, available, action, goTo, notify, openModal, send, stopInput } = api;
   let selected: string = MANY_HEARTHS.id,
     plotId = FARM_PLOTS[0].id,
+    chosenCrop = 'berry',
     signature = '';
   $('#adventure-button').insertAdjacentHTML(
     'afterend',
@@ -59,7 +63,7 @@ export function installGulfUI(api) {
   );
   const close = () => document.querySelector<HTMLDialogElement>('#modal').close();
   const at = (point, range = 9) => distance(player(), point) <= range;
-  function open() {
+  function open(requestedPlot?: string) {
     if (player() && inGulf(player().x, player().z)) {
       const nearest = [...SETTLEMENTS].sort(
         (a, b) => distance(player(), a) - distance(player(), b),
@@ -70,6 +74,11 @@ export function installGulfUI(api) {
           (a, b) => distance(player(), a) - distance(player(), b),
         )[0].id;
       }
+    }
+    const requested = FARM_PLOTS.find((p) => p.id === requestedPlot);
+    if (requested) {
+      selected = requested.settlementId;
+      plotId = requested.id;
     }
     signature = '';
     openModal(
@@ -85,6 +94,7 @@ export function installGulfUI(api) {
         }),
     );
     update();
+    if (requested) $('#gulf-crop-choice')?.focus();
   }
   function update() {
     const me = player(),
@@ -97,6 +107,7 @@ export function installGulfUI(api) {
     const plots = world.gulf?.plots ?? [],
       plot = plots.find((p) => p.id === plotId),
       inv = me?.inventory ?? {};
+    const crop = plot && plot.stage !== 'empty' ? plotCrop(plot) : cropById(chosenCrop);
     const local = !!me && inGulf(me.x, me.z),
       nearCamp = at(settlement),
       nearHearth = at(MANY_HEARTHS);
@@ -106,10 +117,18 @@ export function installGulfUI(api) {
         ? Math.max(0, Math.ceil((plot.readyAt - (world.serverTime ?? Date.now())) / 1000))
         : 0;
     const blocked =
-      !available() || !me || !!me.downedUntil || !!me.boatId || !!me.mountId || !!me.cookingEndsAt;
+      !available() ||
+      !me ||
+      !!me.downedUntil ||
+      !!me.boatId ||
+      !!me.mountId ||
+      !!me.cookingEndsAt ||
+      !!me.fishing ||
+      !!me.coastalActivity;
     const sig = JSON.stringify([
       selected,
       plotId,
+      chosenCrop,
       plots,
       inv,
       me?.gulf,
@@ -126,6 +145,11 @@ export function installGulfUI(api) {
     ]);
     if (sig === signature) return;
     signature = sig;
+    const active = document.activeElement as HTMLElement;
+    const focusId = $('#gulf-detail').contains(active) ? active.id : '';
+    const focusedPlot = active?.dataset.plot;
+    const wasPad = active?.classList.contains('gamepad-focus');
+    const scrollTop = $<HTMLDialogElement>('#modal').scrollTop;
     $('#gulf-summary').textContent =
       `${season.name} · ${country?.name ?? '旅人（所属なし）'}　｜　訪問 ${me?.gulf?.visited.length ?? 0}/4 · 収穫 ${me?.gulf?.harvested ?? 0} · 黒曜石の採集 ${me?.gulf?.procured ?? 0}　｜　種 ${inv.seed ?? 0} · 水 ${inv.water ?? 0}/6 · 黒曜石 ${inv.obsidian ?? 0}`;
     document
@@ -136,17 +160,21 @@ export function installGulfUI(api) {
     const btn = (id, label, disabled = false, target = '') =>
       `<button class="button button-outline" id="${id}" ${blocked || disabled ? 'disabled' : ''} ${target ? `data-target="${target}"` : ''}>${label}</button>`;
     $('#gulf-detail').innerHTML =
-      `<div class="gulf-banner" style="--gulf-color:${c?.color ?? '#d8ba78'}"><small>${c?.motto ?? '誰の旅も、ここで交わる'}</small><h3>${settlement.name}</h3><p>${c?.environment ?? '湾奥の浜と水場に近い共同の集い場。訪問者の天幕、作業の炉、畑、舟を引き上げる浜が集まる。'}</p></div>${c ? `<p class="gulf-story">${c.craft} ${c.custom}</p>` : '<p class="gulf-story">木材、実り、黒曜石を持ち寄り、宴を開こう。品を渡すだけでなく、種や技を教え合う場所。</p>'}<div class="gulf-actions">${btn('gulf-travel', local ? 'ここへ歩く' : '湾の集い場へ遠征')}${c ? btn('gulf-join', me?.gulf?.countryId === c.id ? 'この国に所属中' : 'この国の仲間になる', !nearCamp || me?.gulf?.countryId === c.id) : btn('gulf-welcome', me?.gulf?.welcomed ? '旅支度は受取済み' : '旅支度を受け取る', !nearHearth || !!me?.gulf?.welcomed)}${btn('gulf-seeds', 'ベリー2 → 種2', !nearCamp || (inv.berry ?? 0) < 2)}</div>
-      <div class="gulf-columns"><section class="gulf-card"><h4>共同のベリー畑 <small>12区画</small></h4><p>種を植える → 水を運ぶ → 手入れ → 収穫。実るまで${season.growMs / 60000}分。誰でも使えます。</p><div class="gulf-plots" role="group" aria-label="共同の畑">${FARM_PLOTS.filter(
+      `<div class="gulf-banner" style="--gulf-color:${c?.color ?? '#d8ba78'}"><small>${c?.motto ?? '誰の旅も、ここで交わる'}</small><h3>${settlement.name}</h3><p>${c?.environment ?? '湾奥の浜と水場に近い共同の集い場。訪問者の天幕、作業の炉、畑、舟を引き上げる浜が集まる。'}</p></div>${c ? `<p class="gulf-story">${c.craft} ${c.custom}</p>` : '<p class="gulf-story">木材、実り、黒曜石を持ち寄り、宴を開こう。品を渡すだけでなく、種や技を教え合う場所。</p>'}<div class="gulf-actions">${btn('gulf-travel', local ? 'ここへ歩く' : '湾の集い場へ遠征')}${c ? btn('gulf-join', me?.gulf?.countryId === c.id ? 'この国に所属中' : 'この国の仲間になる', !nearCamp || me?.gulf?.countryId === c.id) : btn('gulf-welcome', me?.gulf?.welcomed ? '旅支度は受取済み' : '旅支度を受け取る', !nearHearth || !!me?.gulf?.welcomed)}${btn('gulf-seeds', `ベリー2 → ${cropById(chosenCrop).seedName}2`, !nearCamp || (inv.berry ?? 0) < 2 || (inv[cropById(chosenCrop).seed] ?? 0) > 97)}</div>
+      <div class="gulf-columns"><section class="gulf-card" id="gulf-farm-card"><h4>共同の畑 <small>12区画</small></h4><p>誰でも植え、育て、収穫できます。種は上の交換ボタンから、各集落の炉で用意できます。</p>
+      <label class="crop-choice" for="gulf-crop-choice">次に植える作物・交換する種<select id="gulf-crop-choice">${CROPS.map((c) => `<option value="${c.id}" ${c.id === chosenCrop ? 'selected' : ''}>${c.name} · 種 ${inv[c.seed] ?? 0}</option>`).join('')}</select></label><p id="gulf-crop-guide">${cropById(chosenCrop).use} 水${cropById(chosenCrop).water} · 今の季節は${cropGrowMs(cropById(chosenCrop), season.growMs) / 1000}秒。</p>
+      <div class="gulf-plots" role="group" aria-label="共同の畑">${FARM_PLOTS.filter(
         (p) => p.settlementId === selected,
       )
         .map((p, i) => {
-          const stage = plots.find((v) => v.id === p.id)?.stage ?? 'empty';
-          return `<button data-plot="${p.id}" class="stage-${stage}" aria-pressed="${p.id === plotId}" aria-label="畑${i + 1} ${stageName[stage]}"><b>${i + 1}</b><small>${stageName[stage]}</small></button>`;
+          const stored = plots.find((v) => v.id === p.id),
+            stage = stored?.stage ?? 'empty';
+          const title = stage === 'empty' ? '空き畑' : plotCrop(stored).name;
+          return `<button data-plot="${p.id}" class="stage-${stage}" aria-pressed="${p.id === plotId}" aria-label="畑${i + 1} ${title} ${stageName[stage]}"><b>${i + 1}</b><small>${title}</small><small>${stage === 'empty' ? '植えられる' : stageName[stage]}</small></button>`;
         })
         .join(
           '',
-        )}</div><p id="gulf-plot-state">${stageName[plot?.stage ?? 'empty']}${remaining ? ` · あと ${remaining}秒` : ''} · ベリー4と種2を収穫</p><div class="gulf-actions">${btn('gulf-plot-go', 'この畑へ', !local)}${btn('gulf-farm', plot?.stage === 'planted' ? '水をやる（水1）' : plot?.stage === 'ripe' ? '収穫する' : '植える（種1）', !at(spec, 5) || plot?.stage === 'growing')}${btn('gulf-spring-go', '水場へ', !local)}${btn('gulf-water', '水袋を満たす', !at(spring, 5))}</div></section>
+        )}</div><p id="gulf-plot-state">${crop.name} · ${stageName[plot?.stage ?? 'empty']}${remaining ? ` · あと ${remaining}秒` : ''}<br>収穫：${cropHarvestText(crop)}<br>${crop.seedName} ${inv[crop.seed] ?? 0} · 水 ${inv.water ?? 0}/6</p><div class="gulf-actions">${btn('gulf-plot-go', 'この畑へ', !local)}${btn('gulf-farm', plot?.stage === 'planted' ? `水をやる（水${crop.water}）` : plot?.stage === 'ripe' ? `${crop.name}を収穫する` : `${crop.name}を植える（種1）`, !at(spec, 5) || plot?.stage === 'growing' || (plot?.stage === 'planted' ? (inv.water ?? 0) < crop.water : plot?.stage === 'ripe' ? (inv[crop.harvest] ?? 0) > 99 - crop.yield || (inv[crop.seed] ?? 0) > 97 : (inv[crop.seed] ?? 0) < 1))}${btn('gulf-spring-go', '水場へ', !local)}${btn('gulf-water', '水袋を満たす', !at(spring, 5))}${btn('gulf-crop-food', '火根と香草の食事')}</div></section>
       <section class="gulf-card"><h4>持ち寄りと交換 <small>宴 ${world.gulf?.festivals ?? 0}回</small></h4><p>集い場の炉で交換・寄付できます。人数にかかわらず少しずつ準備できます。</p><div class="gulf-stores">${Object.entries(
         GATHERING_NEEDS,
       )
@@ -190,7 +218,12 @@ export function installGulfUI(api) {
     });
     bind('gulf-join', () => action('gulfJoin', selected));
     bind('gulf-welcome', () => action('gulfWelcome'));
-    bind('gulf-seeds', () => action('gulfSeeds'));
+    bind('gulf-seeds', () => action('gulfSeeds', undefined, chosenCrop));
+    bind('gulf-crop-food', () => action('cropFoodOpen'));
+    $<HTMLSelectElement>('#gulf-crop-choice').onchange = (event) => {
+      chosenCrop = (event.target as HTMLSelectElement).value;
+      update();
+    };
     bind('gulf-plot-go', () => goTo(spec.x, spec.z + 1.3, '選んだ畑'));
     bind('gulf-spring-go', () => goTo(spring.x, spring.z + 2, spring.name));
     bind('gulf-water', () => action('gulfWater', spring.id));
@@ -202,6 +235,7 @@ export function installGulfUI(api) {
             ? 'gulfHarvest'
             : 'gulfPlant',
         plotId,
+        chosenCrop,
       ),
     );
     for (const key of Object.keys(GATHERING_NEEDS))
@@ -226,7 +260,17 @@ export function installGulfUI(api) {
           update();
         }),
     );
+    const replacement = focusId
+      ? document.getElementById(focusId)
+      : focusedPlot
+        ? document.querySelector<HTMLElement>(`[data-plot="${focusedPlot}"]`)
+        : null;
+    if (replacement && !replacement.matches(':disabled')) {
+      replacement.focus({ preventScroll: true });
+      if (wasPad) replacement.classList.add('gamepad-focus');
+    }
+    $<HTMLDialogElement>('#modal').scrollTop = scrollTop;
   }
-  $('#gulf-button').onclick = open;
+  $('#gulf-button').onclick = () => open();
   return { open, update };
 }

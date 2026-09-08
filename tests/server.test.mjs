@@ -165,7 +165,7 @@ test('crafting, trading, and regeneration enforce resource costs and proximity',
   player.lastAction = 0;
   client.send({ type: 'action', action: 'craft' });
   await client.wait((message) => message.type === 'state' && message.players[0].tool);
-  assert.deepEqual(player.inventory, { wood: 2, stone: 0, berry: 0, rawMeat: 0, cookedMeat: 0, obsidian: 0, seed: 0, water: 0, rawFish: 0, cookedFish: 0, rawShellfish: 0, cookedShellfish: 0, shells: 0, obsidianBlade: 0 });
+  assert.deepEqual(player.inventory, { wood: 2, stone: 0, berry: 0, rawMeat: 0, cookedMeat: 0, obsidian: 0, seed: 0, water: 0, rawFish: 0, cookedFish: 0, rawShellfish: 0, cookedShellfish: 0, shells: 0, obsidianBlade:0,rootSeed:0,herbSeed:0,rawRoot:0,herb:0,cookedRoot:0,herbRoot:0 });
   player.lastAction = 0;
   client.send({ type: 'action', action: 'trade' });
   await client.wait((message) => message.type === 'notice' && message.text.startsWith('オルに近づいて'));
@@ -175,7 +175,7 @@ test('crafting, trading, and regeneration enforce resource costs and proximity',
   player.lastAction = 0;
   client.send({ type: 'action', action: 'trade' });
   await client.wait((message) => message.type === 'notice' && message.text.includes('ベリー +3'));
-  assert.deepEqual(player.inventory, { wood: 0, stone: 0, berry: 3, rawMeat: 0, cookedMeat: 0, obsidian: 0, seed: 0, water: 0, rawFish: 0, cookedFish: 0, rawShellfish: 0, cookedShellfish: 0, shells: 0, obsidianBlade: 0 });
+  assert.deepEqual(player.inventory, { wood: 0, stone: 0, berry: 3, rawMeat: 0, cookedMeat: 0, obsidian: 0, seed: 0, water: 0, rawFish: 0, cookedFish: 0, rawShellfish: 0, cookedShellfish: 0, shells: 0, obsidianBlade:0,rootSeed:0,herbSeed:0,rawRoot:0,herb:0,cookedRoot:0,herbRoot:0 });
   const resource = room.resources[0];
   resource.amount = 0;
   resource.regeneratedAt = Date.now() - 21000;

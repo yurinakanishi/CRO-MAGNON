@@ -522,6 +522,7 @@ export function createGameCore({
       if (
         now - room.lastBroadcast >= 90 ||
         resourcesChanged ||
+        gulfChanged ||
         huntingChanged ||
         enemiesChanged ||
         fishingChanged ||

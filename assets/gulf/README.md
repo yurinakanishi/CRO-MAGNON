@@ -50,7 +50,7 @@ No new GLB was generated or adopted. Shelters, trees, rock outcrops, crops and w
 
 The earlier source-backed comparison and bibliography remain in [WORLD_SETTING_PLAN.md](../../WORLD_SETTING_PLAN.md). The implementation follows the user's later, broader fantasy direction. Archaeology informs the combination of regional mobility, gathering places, useful stone, varied subsistence and small watercraft. The three countries, their names and customs, agriculture, persistent Neanderthal communities, the added gulf and rapidly growing crops are deliberate fiction. They are not archaeological claims. The base Earth map's approximate 50,000 BP framing and the research plan's later Upper Paleolithic reference are not presented as a single historical reconstruction.
 
-Seasons currently change crop duration. Water sources remain available throughout the year. Fishing now uses shared stocks and timed catches as described in the fishing increment. Weather, currents, sailing rigs, differentiated crop species, monumental towns and political simulation remain outside the current implementation.
+Seasons change crop duration. Water sources remain available throughout the year. Fishing uses shared stocks and timed catches as described in the fishing increment. The [crop expansion](../crop-expansion/README.md) adds fictional fire-root grass and aromatic grass alongside berries, with different water costs, growth durations, seeds and hearth meals. All countries can grow every crop. Weather, currents, sailing rigs, monumental towns and political simulation remain outside the current implementation.
 
 ## State and verification
 

@@ -1,0 +1,7 @@
+{
+  "at": "2026-09-08T11:31:30.4460692Z",
+  "pid": 19656,
+  "command": "node server.mjs",
+  "checkpointApplied": false,
+  "publicDeployment": false
+}

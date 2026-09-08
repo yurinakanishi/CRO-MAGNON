@@ -1,5 +1,6 @@
 import type { ShoalState } from './fishing-types.mjs';
 import type { ShellBedState, MiddenState } from './coastal-types.mjs';
+import type { CropId } from './crops.mjs';
 /** Public, serializable gulf data; no renderer or simulation dependencies. */
 export interface GulfProgress {
   metResidents?: string[];
@@ -22,6 +23,7 @@ export interface GulfProgress {
 }
 export interface PlotState {
   id: string;
+  cropId: CropId;
   stage: 'empty' | 'planted' | 'growing' | 'ripe';
   readyAt: number;
 }

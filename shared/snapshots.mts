@@ -32,7 +32,7 @@ export interface PlayerSnapshot extends Point {
   attackSequence: number;
   attackAt: number;
   cookingEndsAt: number;
-  cookingKind?: 'fish' | 'meat' | 'shellfish';
+  cookingKind?: 'fish' | 'meat' | 'shellfish' | 'root' | 'herbRoot';
   coastalActivity?: CoastalActivity | null;
   spearHead?: 'wood' | 'obsidian';
   fishing?: FishingActivity | null;

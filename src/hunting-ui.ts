@@ -8,10 +8,12 @@ import { WORLD } from '../shared/world.mjs';
 import { withinAttackReach } from '../shared/combat.mjs';
 import { attackProfile } from '../shared/combat-profiles.mjs';
 import { interactionVisible } from '../shared/interactions.mjs';
+import { CROP_INVENTORY } from '../shared/crops.mjs';
 
 export function inventoryCounts(inventory = {}) {
   return Object.fromEntries(
     [
+      ...CROP_INVENTORY,
       'wood',
       'stone',
       'berry',
@@ -81,6 +83,13 @@ export function huntInteraction(state, player, collision) {
     };
   }
   const fire = nearestCookingFire(state, player);
+  const inv = inventoryCounts(player.inventory);
+  if (
+    inv.rawRoot &&
+    huntingDistance(player, fire) <= HUNTING.cookRange &&
+    (!collision || interactionVisible(collision, player, fire))
+  )
+    return { action: 'cropFoodOpen', label: '火根の焼き方を選ぶ' };
   if (
     (inventoryCounts(player.inventory).rawMeat ||
       inventoryCounts(player.inventory).rawFish ||

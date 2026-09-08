@@ -4,7 +4,7 @@ export type ClientCommand =
   | { type: 'gait'; running: boolean }
   | { type: 'target'; x: number; z: number; running?: boolean }
   | { type: 'expedition'; destination: string }
-  | { type: 'action'; action: string; targetId?: string; regionId?: string }
+  | { type: 'action'; action: string; targetId?: string; regionId?: string; cropId?: string }
   | { type: 'chat'; text: string }
   | { type: 'ping'; at: number | string };
 
@@ -42,12 +42,18 @@ export function decodeCommand(text: string): ClientCommand | null {
         ? { type: 'expedition', destination: message.destination }
         : null;
     case 'action':
+      if (
+        message.cropId !== undefined &&
+        (typeof message.cropId !== 'string' || message.cropId.length > 24)
+      )
+        return null;
       return typeof message.action === 'string'
         ? {
             type: 'action',
             action: message.action,
             targetId: typeof message.targetId === 'string' ? message.targetId : undefined,
             regionId: typeof message.regionId === 'string' ? message.regionId : undefined,
+            ...(message.cropId === undefined ? {} : { cropId: message.cropId as string }),
           }
         : null;
     case 'chat':

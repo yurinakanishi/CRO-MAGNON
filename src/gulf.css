@@ -3,6 +3,38 @@
   background: #383a2aee;
   color: #ffe0a2;
 }
+.crop-choice {
+  display: grid;
+  gap: 8px;
+  font-size: 13px;
+}
+.crop-choice select {
+  width: 100%;
+  min-width: 0;
+  padding: 10px;
+  color: #f3e6bd;
+  background: #25332b;
+  border: 1px solid #b8bc9455;
+  border-radius: 5px;
+}
+.crop-recipes {
+  display: grid;
+  gap: 16px;
+}
+.crop-recipes .gulf-card {
+  border: 1px solid #b8bc9455;
+  border-radius: 8px;
+  padding: 16px;
+}
+.crop-recipes .gulf-actions {
+  flex-wrap: wrap;
+}
+#crop-food-panel p {
+  line-height: 1.8;
+}
+#crop-food-panel h3 {
+  margin-top: 0;
+}
 dialog:has(.gulf-panel) {
   width: min(960px, 95vw);
   max-height: 92dvh;

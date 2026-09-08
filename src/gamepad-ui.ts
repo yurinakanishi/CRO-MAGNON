@@ -200,7 +200,13 @@ export class GamepadControls {
   private ensureFocus() {
     const items = this.items();
     if (!this.focused || !items.includes(this.focused))
-      this.focus(items.find((el) => el.id !== 'modal-close') ?? items[0]);
+      this.focus(
+        items.find(
+          (el) => el.classList.contains('gamepad-focus') || el === document.activeElement,
+        ) ??
+          items.find((el) => el.id !== 'modal-close') ??
+          items[0],
+      );
   }
 
   private navigate(direction: Direction) {

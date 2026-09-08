@@ -7,6 +7,8 @@ import { WorldRenderer } from './world3d.js';
 import { riverX } from '../shared/terrain.mjs';
 import { WORLD, CAMP, NPC, INITIAL_RESOURCES } from '../shared/world.mjs';
 import { HUNTING, nearestCookingFire } from '../shared/hunting.mjs';
+import { CROP_INVENTORY, ROOT_RECIPES } from '../shared/crops.mjs';
+import { installCropFoodUI } from './crop-food-ui.js';
 import { RIDING, ridingDistance } from '../shared/riding.mjs';
 import { RideApproach } from './riding-input.js';
 import { GamepadControls, gamepadHelp } from './gamepad-ui.js';
@@ -310,6 +312,15 @@ const gulfUI = installGulfUI({
   send,
   stopInput,
 });
+const cropFoodUI = installCropFoodUI({
+  player,
+  state: () => state,
+  available: () => joined && !renderUnavailable,
+  action,
+  goTo,
+  openModal,
+  collision: renderer.collision,
+});
 const villageUI = installVillageUI({
   player,
   state: () => state,
@@ -612,6 +623,7 @@ function updateHUD() {
   updateModalHUD();
   adventureUI.update();
   gulfUI.update();
+  cropFoodUI.update();
   fishingUI.update();
   coastalUI.update();
   villageUI.update();
@@ -675,12 +687,16 @@ function updateModalHUD() {
     }
   }
 }
-function action(type, targetId?) {
+function action(type, targetId?, cropId?) {
   if (rideApproach.targetId) stopInput();
   rideApproach.cancel();
   if (!joined) return notify('サーバーへの接続を待っています。', 'error');
   if (renderUnavailable) return;
   if (player()?.downedUntil) return;
+  if (type === 'cropFoodOpen') {
+    cropFoodUI.open();
+    return;
+  }
   if (type === 'fishingOpen') {
     fishingUI.open();
     return;
@@ -701,10 +717,15 @@ function action(type, targetId?) {
     type === 'gulfOpen' ||
     (inGulf(player()?.x, player()?.z) && ['contribute', 'trade'].includes(type))
   ) {
-    gulfUI.open();
+    gulfUI.open(targetId);
     return;
   }
-  send({ type: 'action', action: type, ...(targetId ? { targetId } : {}) });
+  send({
+    type: 'action',
+    action: type,
+    ...(targetId ? { targetId } : {}),
+    ...(cropId ? { cropId } : {}),
+  });
   document
     .querySelectorAll<HTMLElement>('[data-action]')
     .forEach((el) => el.classList.toggle('selected', el.dataset.action === type));
@@ -936,11 +957,13 @@ function updateHuntingHUD() {
         : '黒曜石を削っています…'
       : fishing
         ? '魚を待っています'
-        : me.cookingKind === 'shellfish'
-          ? '貝を焼いています…'
-          : me.cookingKind === 'fish'
-            ? '魚を焼いています'
-            : '肉を焼いています';
+        : ROOT_RECIPES.some((r) => r.kind === me.cookingKind)
+          ? `${ROOT_RECIPES.find((r) => r.kind === me.cookingKind).name}を作っています…`
+          : me.cookingKind === 'shellfish'
+            ? '貝を焼いています…'
+            : me.cookingKind === 'fish'
+              ? '魚を焼いています'
+              : '肉を焼いています';
     $('#cooking-label').textContent = label + ' · ' + (remaining / 1000).toFixed(1) + '秒';
     $('#cooking-progress').value =
       1 -
@@ -1123,14 +1146,20 @@ function openInventory() {
       ['rawMeat', '生肉', 'そのままでは食べられません。焚き火で3秒焼こう。'],
       ['cookedMeat', '焼き肉', '1個で元気を45回復します。'],
       ['obsidian', '黒曜石', '湾の西の露頭で採掘。石器作業場で削って刃を作ろう。'],
-      ['seed', '種', '共同の畑に植え、水をやって育てよう。'],
-      ['water', '水袋', '湾の水場で6回分を補給。畑1区画に水1。'],
+      ['seed', 'ベリーの種', '共同の畑に植え、水をやって育てよう。'],
+      ['water', '水袋', '湾の水場で水6を補給。火根草は水2、ほかの作物は水1。'],
       ['rawFish', '生魚', '湾の魚場で釣る。焚き火で3秒焼こう。'],
       ['cookedFish', '焼き魚', '元気+30。集い場の食料にも持ち寄れます。'],
       ['rawShellfish', '生の貝', '浜の貝場で採集。焚き火で3秒焼こう。'],
       ['cookedShellfish', '焼いた貝', '元気+20。食べると貝殻1個が残ります。'],
       ['shells', '貝殻', '集落へ持ち帰り、みんなで貝塚を築こう。'],
       ['obsidianBlade', '黒曜石の刃', '原石2個から作る。刃1・木材1で木槍の先へ。'],
+      ['rootSeed', '火根草の種', '集落の炉でベリー2と種2を交換。畑に植えて水2。'],
+      ['herbSeed', '香り草の種', '集落の炉で種を交換。水1で早く育つ。'],
+      ['rawRoot', '火根', '火根草の根。炉で焼いてから食べよう。'],
+      ['herb', '香草', '火根と一緒に焼くと、回復量が増えます。'],
+      ['cookedRoot', '焼き根', '元気+35。宴にも持ち寄れます。'],
+      ['herbRoot', '香草焼き根', '元気+50。火根1・香草1で料理。'],
     ]
       .map(
         ([key, label, note]) =>
@@ -1175,6 +1204,7 @@ function openInventory() {
           'cookedShellfish',
           'shells',
           'obsidianBlade',
+          ...CROP_INVENTORY,
         ][index]),
     );
   $('#modal-cook-fish').onclick = () => {
@@ -1198,6 +1228,12 @@ function openInventory() {
     action('cookShellfish');
   };
   $('#modal-eat-shellfish').onclick = () => action('eatShellfish');
+  $('#modal-body').insertAdjacentHTML(
+    'afterbegin',
+    '<div class="gulf-actions"><button id="modal-crop-food" class="button button-outline">火根と香草の食事</button><button id="modal-crop-farms" class="button button-outline">共同の畑と種</button></div>',
+  );
+  $('#modal-crop-food').onclick = () => cropFoodUI.open();
+  $('#modal-crop-farms').onclick = () => gulfUI.open();
   $('.recipe strong').id = 'modal-axe-label';
   $('.recipe').insertAdjacentHTML(
     'afterend',

@@ -4,9 +4,10 @@ import * as THREE from 'three';
 import { isMesh } from './three-types.js';
 import { FARM_PLOTS, SPRINGS, SETTLEMENTS, LANDINGS, GULF_STOPS } from '../shared/gulf-region.mjs';
 import { walkHeight } from '../shared/terrain.mjs';
+import { plotCrop } from '../shared/crops.mjs';
 
 // Farm markers reuse the accepted boulder mesh, instanced below ankle height.
-// Crops and spring water reuse the accepted bush and water GLBs. No new geometry.
+// Crops reuse the accepted bush/grass GLBs; fictional root crops show only their leaves.
 export class GulfRenderer {
   world: any;
   crops = new Map<string, any>();
@@ -15,6 +16,8 @@ export class GulfRenderer {
   borders: THREE.InstancedMesh[] = [];
   nextUpdate = 0;
   plotLabel: any;
+  cropMaterials = new Map<string, { material: THREE.Material; cropId: string }>();
+  cropLastUsed = new Map<string, number>();
   constructor(world) {
     this.world = world;
     const template = world.worldAssets.get('valley-boulder').gltf.scene;
@@ -85,24 +88,57 @@ export class GulfRenderer {
           index++;
         }
         if (plot && plot.stage !== 'empty') {
+          const variety = plotCrop(plot);
+          if (crop && crop.userData.cropId !== variety.id) {
+            world.scene.remove(crop);
+            this.crops.delete(spec.id);
+            crop = null;
+          }
           if (!crop) {
-            crop = world.worldAssets.createResource('berry-bush');
+            crop = world.worldAssets.createResource(variety.model);
+            crop.userData.cropId = variety.id;
+            if (variety.id !== 'berry')
+              crop.traverse((node) => {
+                if (!isMesh(node)) return;
+                const tint = (source) => {
+                  const key = `${variety.id}:${source.uuid}`;
+                  if (!this.cropMaterials.has(key)) {
+                    const material = source.clone();
+                    material.color?.multiply(new THREE.Color(variety.tint));
+                    this.cropMaterials.set(key, { material, cropId: variety.id });
+                  }
+                  return this.cropMaterials.get(key).material;
+                };
+                node.material = Array.isArray(node.material)
+                  ? node.material.map(tint)
+                  : tint(node.material);
+              });
             this.crops.set(spec.id, crop);
             world.scene.add(crop);
           }
-          const scale = { planted: 0.2, growing: 0.55, ripe: 1 }[plot.stage];
+          this.cropLastUsed.set(variety.id, time);
+          const scale = variety.scale * { planted: 0.2, growing: 0.55, ripe: 1 }[plot.stage];
           crop.scale.setScalar(scale);
           crop.position.set(spec.x, walkHeight(spec.x, spec.z), spec.z);
           crop.visible = true;
-        } else if (crop) crop.visible = false;
+        } else if (crop) {
+          world.scene.remove(crop);
+          this.crops.delete(spec.id);
+        }
         const d = Math.hypot(spec.x - focus.x, spec.z - focus.z);
         if (d < nearestDistance) {
-          nearest = { ...spec, stage: plot?.stage ?? 'empty' };
+          nearest = { ...spec, cropId: plot?.cropId, stage: plot?.stage ?? 'empty' };
           nearestDistance = d;
         }
       } else if (crop) {
         world.scene.remove(crop);
         this.crops.delete(spec.id);
+      }
+    }
+    for (const [key, entry] of this.cropMaterials) {
+      if (time - (this.cropLastUsed.get(entry.cropId) ?? time) > 12) {
+        entry.material.dispose();
+        this.cropMaterials.delete(key);
       }
     }
     for (const mesh of this.borders) {
@@ -137,11 +173,17 @@ export class GulfRenderer {
     for (const label of this.labels) label.active = near(label.position, 60);
     this.plotLabel.active = !!nearest;
     if (nearest) {
-      this.plotLabel.title.textContent = `共同の畑 · ${{ empty: '種を植える', planted: '水が必要', growing: '成長中', ripe: '収穫できる' }[nearest.stage]}`;
+      this.plotLabel.title.textContent = `${nearest.stage === 'empty' ? '共同の畑' : plotCrop(nearest).name} · ${{ empty: '作物を選んで植える', planted: '水が必要', growing: '成長中', ripe: '収穫できる' }[nearest.stage]}`;
       this.plotLabel.position.set(nearest.x, walkHeight(nearest.x, nearest.z) + 1.7, nearest.z);
     }
     world.canvas.dataset.gulfPlots = String(index / 4);
     world.canvas.dataset.gulfCrops = String(this.crops.size);
+    world.canvas.dataset.cropVarieties = [
+      ...new Set([...this.crops.values()].map((c) => c.userData.cropId)),
+    ]
+      .sort()
+      .join(',');
+    world.canvas.dataset.cropMaterials = String(this.cropMaterials.size);
   }
   dispose() {
     for (const root of [...this.crops.values(), ...this.springs.values(), ...this.borders])
@@ -154,5 +196,8 @@ export class GulfRenderer {
     }
     this.crops.clear();
     this.springs.clear();
+    for (const { material } of this.cropMaterials.values()) material.dispose();
+    this.cropMaterials.clear();
+    this.cropLastUsed.clear();
   }
 }

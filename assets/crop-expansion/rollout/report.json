@@ -1,0 +1,162 @@
+{
+  "at": "2026-09-08T11:32:23.683Z",
+  "base": "http://127.0.0.1:3000",
+  "health": {
+    "ok": true,
+    "ridingVersion": 1,
+    "combatVersion": 3,
+    "characterVersion": 2,
+    "enemyVersion": 1,
+    "worldVersion": 4,
+    "worldSize": 8192,
+    "worldWidth": 8192,
+    "worldDepth": 4096,
+    "epochYearsBP": 50000,
+    "rooms": 0,
+    "players": 0,
+    "maxPlayers": 5
+  },
+  "checks": [
+    {
+      "path": "src/main.js",
+      "sha256": "f54a6d7f8ca75a64617bae2a5bd6a09573d953f0b2dce58dbb540de0987ba7a8"
+    },
+    {
+      "path": "src/gulf-ui.js",
+      "sha256": "683616a9779f17ca6da4371bbfd82108dce92e7b7c2e72e6841200bcfab42416"
+    },
+    {
+      "path": "src/gulf-renderer.js",
+      "sha256": "234c547a91c130cf019e47e6e363ea36a5c52a1a605619fe96b6d706fdf609e4"
+    },
+    {
+      "path": "src/crop-food-ui.js",
+      "sha256": "edb5200a8da757c802f060f087b5eb5fc62291d046f4522a16e0119f99981e4b"
+    },
+    {
+      "path": "src/gamepad-ui.js",
+      "sha256": "691650862060446d9890110b10a14f5ec261d8dc5c4adcbe6b616b92e0ba95ec"
+    },
+    {
+      "path": "src/gulf.css",
+      "sha256": "0c73efd094c9fc917a4c6a02e23d0e54f5084dba94fc95873b95b7a354b5e15e"
+    },
+    {
+      "path": "shared/crops.mjs",
+      "sha256": "a91c1b7ded37b04ebd7805bdcc7e650bc0ed735fa1d5bdf61df292a11c00af23"
+    },
+    {
+      "path": "shared/gulf-life.mjs",
+      "sha256": "2e95e8b56ab29be157f5b3d82c93d008691248a0317b47ee7f5e804b785299d7"
+    },
+    {
+      "path": "shared/hunting.mjs",
+      "sha256": "d8abea53105de605ff3a93eb2d47796d8a0c6da7f79dce5987f9a17b5576a50b"
+    }
+  ],
+  "views": [
+    {
+      "width": 390,
+      "scrollWidth": 390,
+      "recipes": 2
+    },
+    {
+      "width": 844,
+      "scrollWidth": 844,
+      "recipes": 2
+    }
+  ],
+  "errors": [],
+  "residents": [
+    {
+      "id": "aru",
+      "x": -2293,
+      "z": 433,
+      "facing": 3.141592653589793,
+      "radius": 0.32,
+      "speed": 0,
+      "moving": false,
+      "activity": "食べられる実を選んでいる",
+      "clip": "Gather"
+    },
+    {
+      "id": "seno",
+      "x": -2292,
+      "z": 469,
+      "facing": 0,
+      "radius": 0.32,
+      "speed": 0,
+      "moving": false,
+      "activity": "薪を選んでいる",
+      "clip": "Gather"
+    },
+    {
+      "id": "mira",
+      "x": -2553,
+      "z": 333,
+      "facing": 3.141592653589793,
+      "radius": 0.32,
+      "speed": 0,
+      "moving": false,
+      "activity": "食べられる実を選んでいる",
+      "clip": "Gather"
+    },
+    {
+      "id": "tovan",
+      "x": -2552,
+      "z": 369,
+      "facing": 0,
+      "radius": 0.32,
+      "speed": 0,
+      "moving": false,
+      "activity": "薪を選んでいる",
+      "clip": "Gather"
+    },
+    {
+      "id": "ena",
+      "x": -2733,
+      "z": 813,
+      "facing": 3.141592653589793,
+      "radius": 0.32,
+      "speed": 0,
+      "moving": false,
+      "activity": "食べられる実を選んでいる",
+      "clip": "Gather"
+    },
+    {
+      "id": "rok",
+      "x": -2732,
+      "z": 849,
+      "facing": 0,
+      "radius": 0.32,
+      "speed": 0,
+      "moving": false,
+      "activity": "薪を選んでいる",
+      "clip": "Gather"
+    },
+    {
+      "id": "neri",
+      "x": -1753,
+      "z": 833,
+      "facing": 3.141592653589793,
+      "radius": 0.32,
+      "speed": 0,
+      "moving": false,
+      "activity": "食べられる実を選んでいる",
+      "clip": "Gather"
+    },
+    {
+      "id": "daro",
+      "x": -1752,
+      "z": 869,
+      "facing": 0,
+      "radius": 0.32,
+      "speed": 0,
+      "moving": false,
+      "activity": "薪を選んでいる",
+      "clip": "Gather"
+    }
+  ],
+  "playerLimit": 5,
+  "publicDeployment": false
+}

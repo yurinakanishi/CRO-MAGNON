@@ -11,6 +11,14 @@ import { interactionVisible } from './interactions.mjs';
 import type { GulfProgress, GulfState } from './gulf-types.mjs';
 import { createShoals } from './fishing-sites.mjs';
 import { createShellBeds, createMiddens } from './coastal-sites.mjs';
+import {
+  CROP_INVENTORY,
+  cropById,
+  plotCrop,
+  cropGrowMs,
+  cropHarvestText,
+  ROOT_RECIPES,
+} from './crops.mjs';
 export const GATHERING_NEEDS = Object.freeze({ wood: 8, berry: 12, obsidian: 4 });
 export const SEASONS = [
   { name: '芽吹き', growMs: 180000 },
@@ -32,7 +40,12 @@ export function createGulfState(saved?): GulfState {
     plots: FARM_PLOTS.map((p) => {
       const old = saved?.plots?.find?.((s) => s.id === p.id);
       const stage = ['planted', 'growing', 'ripe'].includes(old?.stage) ? old.stage : 'empty';
-      return { id: p.id, stage, readyAt: count(old?.readyAt, Number.MAX_SAFE_INTEGER) };
+      return {
+        id: p.id,
+        stage,
+        cropId: plotCrop(old).id,
+        readyAt: count(old?.readyAt, Number.MAX_SAFE_INTEGER),
+      };
     }),
     stores: {
       wood: count(saved?.stores?.wood, 8),
@@ -43,7 +56,13 @@ export function createGulfState(saved?): GulfState {
   };
 }
 export function ensureGulfPlayer(player): GulfProgress {
-  for (const key of ['rawShellfish', 'cookedShellfish', 'shells', 'obsidianBlade'])
+  for (const key of [
+    ...CROP_INVENTORY,
+    'rawShellfish',
+    'cookedShellfish',
+    'shells',
+    'obsidianBlade',
+  ])
     player.inventory[key] = count(player.inventory[key], 99);
   player.spearHead = player.spearHead === 'obsidian' ? 'obsidian' : 'wood';
   player.inventory.rawFish ??= 0;
@@ -142,48 +161,61 @@ export function handleGulfAction(room, player, message, now = Date.now()) {
   }
   if (action === 'gulfSeeds') {
     if (!settlement) return fail('どの国でも、炉のそばで種を取り分けられます。');
-    if (inv.berry < 2 || inv.seed > 97) return fail('ベリー2個と、種2個分の空きが必要です。');
+    const crop = cropById(message.cropId === undefined ? 'berry' : message.cropId);
+    if (!crop) return fail('その作物の種はありません。');
+    if (inv.berry < 2 || inv[crop.seed] > 97)
+      return fail(`ベリー2個と、${crop.seedName}2個分の空きが必要です。`);
     inv.berry -= 2;
-    inv.seed += 2;
-    return ok('ベリー2個から、植える種を2個取り分けた。');
+    inv[crop.seed] += 2;
+    return ok(
+      crop.id === 'berry'
+        ? 'ベリー2個から、植える種を2個取り分けた。'
+        : `ベリー2を渡し、${crop.seedName}2と交換した。どの集落の畑でも育てられます。`,
+    );
   }
   if (action === 'gulfWater') {
     if (!SPRINGS.some((s) => near(s, 5))) return fail('石で囲った水場に近づこう。');
     if (inv.water >= 6) return fail('水袋はいっぱいです。畑に水をやろう。');
     inv.water = 6;
-    return ok('水袋を満たした。6区画に水をやれます。');
+    return ok('水袋を満たした（水6）。火根草には水2、ベリーと香り草には水1。');
   }
   if (['gulfPlant', 'gulfTend', 'gulfHarvest'].includes(action)) {
     const spec = FARM_PLOTS.find((p) => p.id === message.targetId);
     if (!near(spec)) return fail('手入れする畑に近づこう。');
     const plot = room.gulf.plots.find((p) => p.id === spec.id);
+    const crop = plotCrop(plot);
     if (plot.stage === 'growing' && now >= plot.readyAt) plot.stage = 'ripe';
     if (action === 'gulfPlant') {
       if (plot.stage !== 'empty') return fail('この区画にはすでに植えられています。');
-      if (inv.seed < 1)
-        return fail('種が必要です。集い場で旅支度を受け取るか、炉でベリーから種を取ろう。');
-      inv.seed--;
+      const chosen = cropById(message.cropId === undefined ? 'berry' : message.cropId);
+      if (!chosen) return fail('その作物は植えられません。');
+      if (inv[chosen.seed] < 1)
+        return fail(`${chosen.seedName}が必要です。集落の炉で種を用意しよう。`);
+      inv[chosen.seed]--;
+      plot.cropId = chosen.id;
       plot.stage = 'planted';
       plot.readyAt = 0;
-      return ok('種を植えた。水場で水袋を満たして、この畑に水をやろう。');
+      return ok(`${chosen.name}を植えた。水${chosen.water}を運んで、この畑に水をやろう。`);
     }
     if (action === 'gulfTend') {
       if (plot.stage !== 'planted') return fail('種を植えた区画に一度、水をやれます。');
-      if (inv.water < 1) return fail('水袋が空です。近くの水場で水を汲もう。');
-      inv.water--;
+      if (inv.water < crop.water)
+        return fail(`${crop.name}には水${crop.water}が必要です。近くの水場で水を汲もう。`);
+      inv.water -= crop.water;
       plot.stage = 'growing';
-      plot.readyAt = now + gulfSeason(now, room.createdAt).growMs;
-      return ok('水をやった。季節に応じて2分半〜4分で実ります。仲間も収穫できます。');
+      const duration = cropGrowMs(crop, gulfSeason(now, room.createdAt).growMs);
+      plot.readyAt = now + duration;
+      return ok(`${crop.name}に水をやった。${duration / 1000}秒で実ります。仲間も収穫できます。`);
     }
     if (plot.stage !== 'ripe') return fail('まだ実っていません。水をやり、成長を待とう。');
-    if (inv.berry > 95 || inv.seed > 97)
-      return fail('ベリー4・種2を入れる空きを作ろう。畑はそのまま残ります。');
-    inv.berry += 4;
-    inv.seed += 2;
+    if (inv[crop.harvest] > 99 - crop.yield || inv[crop.seed] > 97)
+      return fail(`${cropHarvestText(crop)}を入れる空きを作ろう。畑はそのまま残ります。`);
+    inv[crop.harvest] += crop.yield;
+    inv[crop.seed] += 2;
     progress.harvested++;
     plot.stage = 'empty';
     plot.readyAt = 0;
-    return ok('収穫：ベリー4・種2。空いた畑へ植え直せます。');
+    return ok(`収穫：${cropHarvestText(crop)}。空いた畑へ植え直せます。`);
   }
   if (action === 'gulfExchange') {
     if (!atHearth) return fail('集い場の炉で交換しよう。');
@@ -194,16 +226,17 @@ export function handleGulfAction(room, player, message, now = Date.now()) {
     inv.seed += 2;
     return ok('黒曜石2を渡し、舟や道具に使える木材6・種2と交換した。');
   }
-  if (action === 'gulfOffer' || action === 'gulfOfferFish') {
+  const rootFood = ROOT_RECIPES.find((recipe) => recipe.offerAction === action);
+  if (action === 'gulfOffer' || action === 'gulfOfferFish' || rootFood) {
     if (!atHearth) return fail('集い場の炉へ持ち寄ろう。');
     const fish = action === 'gulfOfferFish';
-    const key = fish ? 'berry' : message.targetId;
+    const key = fish || rootFood ? 'berry' : message.targetId;
     if (!Object.hasOwn(GATHERING_NEEDS, key)) return fail('持ち寄る品が見つかりません。');
     const amount = { wood: 2, berry: 3, obsidian: 1 }[key];
     if (room.gulf.stores[key] >= GATHERING_NEEDS[key])
       return fail('この品はそろいました。他の品を持ち寄ろう。');
-    const item = fish ? 'cookedFish' : key,
-      cost = fish ? 1 : amount;
+    const item = rootFood ? rootFood.output : fish ? 'cookedFish' : key,
+      cost = fish || rootFood ? 1 : amount;
     if (inv[item] < cost) return fail('持ち寄る品が足りません。');
     inv[item] -= cost;
     room.gulf.stores[key] = Math.min(GATHERING_NEEDS[key], room.gulf.stores[key] + amount);
@@ -219,7 +252,7 @@ export function handleGulfAction(room, player, message, now = Date.now()) {
   if (action === 'gulfFeast') {
     if (!atHearth) return fail('集い場の炉へ戻ろう。');
     if (room.gulf.festivals <= progress.lastFeast)
-      return fail('次の宴へ、木材・食料（ベリーや焼き魚）・黒曜石を持ち寄ろう。');
+      return fail('次の宴へ、木材・食料（ベリー・焼き魚・焼き根）・黒曜石を持ち寄ろう。');
     if (inv.seed > 97 || inv.berry > 96) return fail('ベリー3・種2の空きを作ろう。');
     inv.seed += 2;
     inv.berry += 3;

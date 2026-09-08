@@ -1,0 +1,222 @@
+{
+  "at": "2026-09-08T11:32:33.939Z",
+  "status": "passed-and-reflected-locally",
+  "tests": 272,
+  "passed": 272,
+  "failed": 0,
+  "strictBuild": true,
+  "architecture": true,
+  "formatting": true,
+  "syntaxFiles": 137,
+  "browser": {
+    "report": "assets/crop-expansion/game-qa/r03/report.json",
+    "renderedChromePages": 2,
+    "additionalWebSocketPeers": 3,
+    "maxPlayers": 5,
+    "observations": 717,
+    "collisionViolations": 0,
+    "errors": [],
+    "completed": [
+      "ordinary expedition, welcome and two seed exchanges; one berry supplied as fixture",
+      "walk to spring, carry water, walk among plots and plant/water all three crops",
+      "second browser sees crop kind and harvests first player crop once",
+      "harvested food/seeds and plot progress survive same-tab reload",
+      "walk to furnace; cancel preserves ingredients; both recipes consume correct materials",
+      "both meals eaten; cultivated herb meal completes a feast with other supplies prepared",
+      "portrait/landscape recipe and plot UI; simulated controller crop selection remains focused across updates",
+      "crop-specific materials released beyond range and recreated on return with shared original geometry/textures"
+    ],
+    "viewports": [
+      {
+        "width": 390,
+        "scrollWidth": 390,
+        "modal": {
+          "x": 16,
+          "y": 42.203125,
+          "width": 358,
+          "height": 759.59375,
+          "top": 42.203125,
+          "right": 374,
+          "bottom": 801.796875,
+          "left": 16
+        },
+        "buttons": [
+          {
+            "id": "crop-cook-root",
+            "width": 90.65625,
+            "height": 54
+          },
+          {
+            "id": "crop-eat-root",
+            "width": 90.671875,
+            "height": 54
+          },
+          {
+            "id": "crop-offer-root",
+            "width": 90.671875,
+            "height": 54
+          },
+          {
+            "id": "crop-cook-herbRoot",
+            "width": 90.65625,
+            "height": 54
+          },
+          {
+            "id": "crop-eat-herbRoot",
+            "width": 90.671875,
+            "height": 54
+          },
+          {
+            "id": "crop-offer-herbRoot",
+            "width": 90.671875,
+            "height": 54
+          },
+          {
+            "id": "crop-food-fire",
+            "width": 156.5,
+            "height": 42
+          },
+          {
+            "id": "crop-food-farms",
+            "width": 156.5,
+            "height": 42
+          }
+        ]
+      },
+      {
+        "width": 844,
+        "scrollWidth": 844,
+        "modal": {
+          "x": 102,
+          "y": 19.5,
+          "width": 640,
+          "height": 351,
+          "top": 19.5,
+          "right": 742,
+          "bottom": 370.5,
+          "left": 102
+        },
+        "buttons": [
+          {
+            "id": "crop-cook-root",
+            "width": 93.8125,
+            "height": 42
+          },
+          {
+            "id": "crop-eat-root",
+            "width": 105.109375,
+            "height": 42
+          },
+          {
+            "id": "crop-offer-root",
+            "width": 123.203125,
+            "height": 42
+          },
+          {
+            "id": "crop-cook-herbRoot",
+            "width": 116.40625,
+            "height": 42
+          },
+          {
+            "id": "crop-eat-herbRoot",
+            "width": 127.703125,
+            "height": 42
+          },
+          {
+            "id": "crop-offer-herbRoot",
+            "width": 123.203125,
+            "height": 42
+          },
+          {
+            "id": "crop-food-fire",
+            "width": 105.109375,
+            "height": 42
+          },
+          {
+            "id": "crop-food-farms",
+            "width": 93.8125,
+            "height": 42
+          }
+        ]
+      }
+    ],
+    "recordedFps": [
+      {
+        "capture": "01-loaded",
+        "fps": 24
+      },
+      {
+        "capture": "02-growing-crops",
+        "fps": 60
+      },
+      {
+        "capture": "03-shared-plot",
+        "fps": 60
+      },
+      {
+        "capture": "04-ripe-crops",
+        "fps": 60
+      },
+      {
+        "capture": "05-crop-meals",
+        "fps": 60
+      },
+      {
+        "capture": "06-meals-390",
+        "fps": 55
+      },
+      {
+        "capture": "07-farms-390",
+        "fps": 55
+      },
+      {
+        "capture": "06-meals-844",
+        "fps": 55
+      },
+      {
+        "capture": "07-farms-844",
+        "fps": 59
+      },
+      {
+        "capture": "08-returned-crop",
+        "fps": 56
+      }
+    ]
+  },
+  "assets": "assets/crop-expansion/assets-qa.json",
+  "resolvedFindings": [
+    {
+      "finding": "Legacy inventory expectations omitted the six new keys.",
+      "resolution": "Updated zero-stock expectations and kept the full inventory in the restore fixture."
+    },
+    {
+      "finding": "First eviction fixture created a ripe crop without a world update.",
+      "resolution": "Changed the isolated setup to an expiring growth timer."
+    },
+    {
+      "finding": "An expiring growth timer exposed the existing missing gulfChanged condition in the broadcast throttle.",
+      "resolution": "Broadcast full state on crop maturation; regression completes a crop 20 ms after the last send. Final r03 passes."
+    }
+  ],
+  "limitations": [
+    "Fictional plant species, growth, farming and recipes; no archaeological identification.",
+    "Source GLBs shared; roots and dishes have no new visible 3D mesh.",
+    "Server clock, one berry, eating energy, other feast ingredients and eviction positions are QA fixtures.",
+    "Gamepad API was simulated; physical controller and physical phones untested.",
+    "Large player loads, long runs and continuous 60 FPS untested.",
+    "No public deployment or billing change.",
+    "Node ordinary disk persistence not added."
+  ],
+  "localRollout": {
+    "report": "assets/crop-expansion/rollout/report.json",
+    "at": "2026-09-08T11:31:30.4460692Z",
+    "pid": 19656,
+    "command": "node server.mjs",
+    "checkpointApplied": false,
+    "publicDeployment": false,
+    "before": "assets/crop-expansion/rollout-before.json",
+    "servedModules": 9,
+    "errors": [],
+    "flow": "Ordinary expedition, root seed exchange, walking to water/plot, planting/tending, rendered root leaves and two recipe layouts."
+  }
+}
