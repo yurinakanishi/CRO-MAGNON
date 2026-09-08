@@ -17,7 +17,7 @@ test('all six explicit choices resolve to distinct models and retain male choice
 
 test('new fantasy choices normalize to their one supplied appearance', () => {
   assert.equal(characterModel({species:'cat',gender:'male'}).key,'cat-kunoichi');
-  assert.equal(characterModel({species:'bear'}).key,'floppy-ear-mage');
+  assert.equal(characterModel({species:'bear'}).key,'desert-fennec-mage');
   assert.equal(characterModel({species:'bear'}).weapon,'magic');
   assert.deepEqual(normalizeCharacter({species:'cat',gender:'invalid'}),{species:'cat',gender:'female'});
 });

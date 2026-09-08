@@ -1,0 +1,14 @@
+{
+  "schemaVersion": 1,
+  "modelKey": "desert-fennec-mage",
+  "status": "copied-and-all-source-and-destination-hashes-verified",
+  "verifiedAt": "2026-09-08T10:13:24.465Z",
+  "planSha256": "37d8943c8804e154bddfb73b47ef49d81359c0b6bbea5659c0e2a5a49f865a1c",
+  "sourceRoot": "C:\\Users\\yurin\\Desktop\\projects\\CRO-MAGNON\\output\\model-generation\\models\\desert-fennec-mage",
+  "destinationRoot": "C:\\Users\\yurin\\Desktop\\projects\\threed-model-creation\\models\\desert-fennec-mage",
+  "files": 426,
+  "bytes": 371454202,
+  "copied": 426,
+  "skippedEqual": 0,
+  "preflightExistingEqual": 0
+}

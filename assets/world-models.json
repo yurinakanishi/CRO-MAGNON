@@ -249,18 +249,17 @@
       "gameQA": "assets/fantasy-game-qa.json"
     },
     {
-      "key": "floppy-ear-mage",
-      "name": "垂れ耳の魔法使い",
+      "key": "desert-fennec-mage",
+      "name": "砂耳の魔法使い",
       "kind": "humanoid",
-      "height": 0.7799999443721845,
+      "height": 0.7799997875884851,
       "geometryResolution": 1024,
       "referenceVersion": 1,
       "status": "integrated-and-game-qa-passed",
-      "sha256": "60a247305f0b698654a9e61fd991470535128362e94be5d2b047be592e46e1ef",
-      "delivery": "/models/floppy-ear-mage/model.glb",
-      "subject": "Small cream-faced floppy-eared mage in the supplied red and cream adventurer outfit.",
-      "replaces": "bear-mage",
-      "gameQA": "assets/floppy-ear-mage-game-qa.json"
+      "sha256": "06d14d55aa779ac1bbccbfa91bd36b8e175309abcdf6cf5deafbcea103890bdd",
+      "delivery": "/models/desert-fennec-mage/model.glb",
+      "subject": "Small sandy-furred fennec mage with upright triangular ears, green eyes, fox muzzle, primitive hide/fur clothes, bare hands and feet, and a tail.",
+      "replaces": "floppy-ear-mage"
     },
     {
       "key": "kunoichi-katana",

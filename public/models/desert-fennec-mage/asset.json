@@ -1,0 +1,112 @@
+{
+  "modelKey": "desert-fennec-mage",
+  "name": "砂耳の魔法使い",
+  "kind": "humanoid",
+  "candidate": 1,
+  "status": "reviewed-prototype",
+  "url": "/models/desert-fennec-mage/model.glb",
+  "sha256": "06d14d55aa779ac1bbccbfa91bd36b8e175309abcdf6cf5deafbcea103890bdd",
+  "bytes": 15370112,
+  "triangles": 103314,
+  "upAxis": "Y",
+  "forwardAxis": "+Z",
+  "heightMetres": 0.7799997875884851,
+  "widthMetres": 0.3915809282854757,
+  "placement": {
+    "pivot": "ground-centred",
+    "min": [
+      -0.21255625186896718,
+      5.5505816141005146e-8,
+      -0.26347975874488405
+    ],
+    "max": [
+      0.17902467641650852,
+      0.7799998430943013,
+      0.1191401584168565
+    ]
+  },
+  "clips": [
+    {
+      "name": "Attack",
+      "seconds": 0.800000011920929,
+      "loop": false
+    },
+    {
+      "name": "Craft",
+      "seconds": 2,
+      "loop": false
+    },
+    {
+      "name": "Eat",
+      "seconds": 1.7999999523162842,
+      "loop": false
+    },
+    {
+      "name": "Gather",
+      "seconds": 1.5,
+      "loop": false
+    },
+    {
+      "name": "Give",
+      "seconds": 1.2000000476837158,
+      "loop": false
+    },
+    {
+      "name": "Idle_Loop",
+      "seconds": 4,
+      "loop": true
+    },
+    {
+      "name": "Run_Loop",
+      "seconds": 0.699999988079071,
+      "loop": true
+    },
+    {
+      "name": "Walk_Loop",
+      "seconds": 1,
+      "loop": true
+    },
+    {
+      "name": "Wave",
+      "seconds": 2,
+      "loop": false
+    }
+  ],
+  "lods": [],
+  "species": "bear",
+  "gender": "female",
+  "bones": 25,
+  "locomotion": {
+    "Walk_Loop": {
+      "metresPerSecond": 0.31219478171365117,
+      "strideMetres": 0.31219478171365117,
+      "dutyFactor": 0.58
+    },
+    "Run_Loop": {
+      "metresPerSecond": 0.9923619294515033,
+      "strideMetres": 0.6946533506160523,
+      "dutyFactor": 0.34
+    }
+  },
+  "notes": [
+    "User selected image candidate 2, 砂耳の旅人: sandy fennec fur, upright triangular ears, green irises, projecting muzzle, hide/fur clothes, bare paws and tail retained.",
+    "Local TRELLIS-2 1024; measured source-preserving reduction to 103314 triangles. No visible primitive substitution.",
+    "Source-specific 25-bone rig with three tail bones; all nine clips pass independent 60 Hz skin evaluation. 270 frames in six directions and nine 30 fps video files generated. All contact sheets inspected.",
+    "Source roughness atlas preserved with metallic factor zero; base color JPEG only, PSNR 44.0 dB, channel error P95 3.",
+    "Exact GLB SHA checked in actual IAB; magic impact pose and five-model run displayed, with no console warnings/errors. Observed 60 FPS for one, 43 FPS for five while Blender rendered; not a constant-FPS claim.",
+    "Game QA pending separately; species bear, magic and movement speeds retained. Collision radius .32 m provides extra tail clearance."
+  ],
+  "provenance": {
+    "provider": "Codex",
+    "claudeUsed": false,
+    "referenceGenerator": "Built-in imagegen original concept; image candidate 2 selected by user",
+    "originalImage": "output/model-generation/models/desert-fennec-mage/source/original/user-original.png",
+    "originalSha256": "aa89e5f3e32de72d75709596719bf65371efc2e70bc7c863911225375391be57",
+    "referenceImage": "output/model-generation/models/desert-fennec-mage/source/original/reference-v1.png",
+    "referenceSha256": "aa89e5f3e32de72d75709596719bf65371efc2e70bc7c863911225375391be57",
+    "reconstruction": "Local TRELLIS-2; preserved dense reconstruction and measured reduction.",
+    "candidateFile": "output/model-generation/models/desert-fennec-mage/work/rig/revision-04/candidate.glb",
+    "visualReview": "output/model-generation/models/desert-fennec-mage/qa/adoption-review.json",
+    "replaces": "floppy-ear-mage"
+  }
+}
