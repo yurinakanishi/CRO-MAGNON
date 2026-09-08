@@ -148,14 +148,14 @@ function hitPlayer(room, enemy, player, now, notify) {
   player.hurtAt = now;
   player.cookingEndsAt = 0;
   if (player.energy > 0) {
-    notify(player, `${enemy.name}の杖が命中。元気 -${ENEMY_RULES.attackDamage}`, 'error');
+    notify(player, `${enemy.name}の杖が命中。元気 -${ENEMY_RULES.attackDamage}`, 'error', false);
     return;
   }
   stopActor(player);
   player.pendingStrike = null;
   player.downedUntil = now + ENEMY_RULES.recoveryMs;
   player.defeatSequence = (player.defeatSequence || 0) + 1;
-  notify(player, '力尽きました。4秒後に焚き火で回復します。持ち物は失いません。', 'error');
+  notify(player, '力尽きました。4秒後に焚き火で回復します。持ち物は失いません。', 'error', false);
 }
 
 function plan(enemy, room, goal, now) {
@@ -182,7 +182,7 @@ export function updateEnemies(
   room,
   dt,
   now = Date.now(),
-  notify = (_player, _text: string, _tone?: string) => {},
+  notify = (_player, _text: string, _tone?: string, _popup?: boolean) => {},
 ) {
   let changed = recoverPlayers(room, now, notify);
   for (const enemy of room.enemies || []) {

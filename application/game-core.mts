@@ -102,8 +102,10 @@ export function createGameCore({
     });
   }
 
-  function notice(player, text, tone = 'info') {
-    send(player.socket, { type: 'notice', text, tone });
+  function notice(player, text, tone = 'info', popup = tone !== 'success') {
+    // Completed actions are visible in animations, meters, inventory and journals.
+    // Keep their sound feedback; reserve popups for information the player needs to act on.
+    send(player.socket, { type: 'notice', text, tone, popup });
   }
 
   const act = createActionHandler({ notice, broadcast, snapshot, systemChat, runtime });

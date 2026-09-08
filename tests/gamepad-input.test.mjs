@@ -123,6 +123,52 @@ test('mapped buttons fire once per press and simultaneous attack buttons produce
   assert.deepEqual(sample().actions, ['attack']);
 });
 
+test('each face button confirms menus once per press without gameplay actions', () => {
+  const { sample, press } = setup('menu');
+  for (const button of [PAD.cross, PAD.circle, PAD.square, PAD.triangle]) {
+    press(button);
+    assert.deepEqual(sample().actions, ['confirm']);
+    assert.deepEqual(sample('menu', 1000).actions, [], 'holding does not repeat a decision');
+    press(button, false);
+    sample();
+  }
+  for (const button of [PAD.r2, PAD.share, PAD.touchpad, PAD.l1, PAD.r1, PAD.r3]) {
+    press(button);
+    assert.deepEqual(sample().actions, [], 'other gameplay buttons do not activate a menu item');
+    press(button, false);
+    sample();
+  }
+  press(PAD.options);
+  assert.deepEqual(sample().actions, ['menu']);
+});
+
+test('simultaneous face buttons produce one decision, including circle', () => {
+  const { sample, press } = setup('menu');
+  for (const button of [PAD.cross, PAD.circle, PAD.square, PAD.triangle]) press(button);
+  assert.deepEqual(sample().actions, ['confirm']);
+  assert.deepEqual(sample('menu', 1000).actions, []);
+});
+
+test('a held menu decision cannot activate the next screen or leak into gameplay', () => {
+  for (const [button, gameplayAction] of [
+    [PAD.cross, 'confirm'],
+    [PAD.circle, 'cancel'],
+    [PAD.square, 'attack'],
+    [PAD.triangle, 'ride'],
+  ]) {
+    const { input, sample, press } = setup('menu');
+    press(button);
+    assert.deepEqual(sample().actions, ['confirm']);
+    input.suspend(); // A second screen can have the same input mode.
+    assert.deepEqual(sample().actions, []);
+    assert.deepEqual(sample('game').actions, []);
+    press(button, false);
+    sample('game');
+    press(button);
+    assert.deepEqual(sample('game').actions, [gameplayAction]);
+  }
+});
+
 test('menu and focus transitions consume held controls until neutral and never leak movement or attack', () => {
   const { pad, sample, press } = setup();
   pad.axes[0] = 1;

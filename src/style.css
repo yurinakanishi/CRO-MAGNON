@@ -103,7 +103,8 @@ body[data-screen] .world-loading,body[data-screen] .tps-reticle,body[data-screen
 .menu-item:hover,.menu-item:focus-visible,.menu-item.gamepad-focus{color:#fff4dc;background:#ffffff0c;outline:none;box-shadow:none!important}
 .menu-item:hover:before,.menu-item:hover:after,.menu-item:focus-visible:before,.menu-item:focus-visible:after,.menu-item.gamepad-focus:before,.menu-item.gamepad-focus:after{opacity:1;transform:translate(0,-50%)}
 .menu-item[hidden]{display:none}
-.title-hint{margin:34px 0 0;font-size:10px;letter-spacing:1px;color:#9fa892;display:flex;align-items:center;gap:6px}
+.title-hint{margin:34px 0 0;font-size:10px;letter-spacing:1px;color:#9fa892;display:flex;align-items:center;justify-content:center;flex-wrap:wrap;gap:6px 12px}
+.title-hint>span{display:inline-flex;align-items:center;gap:6px}
 .title-hint kbd{height:18px;min-width:18px;font-size:9px}
 .title-footer{position:absolute;left:28px;right:28px;bottom:22px;display:flex;justify-content:space-between;font-size:9px;letter-spacing:2px;color:#8d9b88;text-transform:uppercase}
 .setup-screen,.guide-screen{background:#07100cb8;backdrop-filter:blur(4px);-webkit-backdrop-filter:blur(4px);padding:24px}
@@ -313,9 +314,11 @@ body[data-screen] .world-loading,body[data-screen] .tps-reticle,body[data-screen
 /* ---- Dialogs (pause menu, inventory, map, tribe, help) ---- */
 dialog{width:min(640px,calc(100vw - 32px));max-height:90dvh;overflow-y:auto;background:var(--panel-solid);color:#e4e9d9;border:1px solid var(--line);border-radius:14px;box-shadow:0 30px 140px #000c;padding:22px 30px 30px;scrollbar-width:thin;scrollbar-color:#677759 transparent}
 dialog::backdrop{background:#07100caa;backdrop-filter:blur(5px)}
-.modal-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:18px}
+.modal-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:18px;position:sticky;top:-1px;z-index:2;background:var(--panel-solid);padding:6px 0}
+.modal-top:before{content:'';position:absolute;inset:-30px -30px 0;background:var(--panel-solid);z-index:-1;pointer-events:none}
 .modal-top .eyebrow{font-size:8px;color:#d6c79a;letter-spacing:4px}
-.modal-top .icon-button{background:none;border-color:#cbd5b21a;width:28px;height:28px}
+.modal-top .modal-back{min-height:40px;min-width:76px;padding:8px 16px;font-size:12px;flex-shrink:0}
+#modal-body :is(button,a,input,select,textarea,summary,[role="button"],[tabindex="0"]){scroll-margin-top:96px;scroll-margin-bottom:8px}
 #modal-body h2{font:600 24px/1.5 var(--display);letter-spacing:.06em;margin:0 0 12px;color:#f2ead4}
 .modal-intro{color:#a3b298;font-size:12px;line-height:1.9;margin:0 0 24px}
 .modal-illustration{display:grid;place-items:center;background:#abc08b10;color:#b7c995;border:1px solid #abc08b21;width:55px;height:55px;border-radius:12px;margin-bottom:20px}

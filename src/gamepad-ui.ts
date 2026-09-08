@@ -14,16 +14,16 @@ export const gamepadHelp = `
     <dl class="gamepad-bindings">
       <div><dt>左スティック</dt><dd>浅く倒すと歩く、深く倒すと走る</dd></div>
       <div><dt>右スティック</dt><dd>カメラを回す</dd></div>
-      <div><dt>×</dt><dd>採集・調べる ／ メニューの決定</dd></div>
+      <div><dt>×</dt><dd>採集・調べる</dd></div>
       <div><dt>□ / R2</dt><dd>刀・魔法・槍で攻撃</dd></div>
       <div><dt>△</dt><dd>船・マンモスに乗る／降りる</dd></div>
-      <div><dt>○</dt><dd>移動・調理を中止 ／ メニューを閉じる</dd></div>
+      <div><dt>○</dt><dd>移動・調理を中止</dd></div>
       <div><dt>十字キー</dt><dd>↑ 地図 · ← もちもの · → 手帳 · ↓ メニュー</dd></div>
       <div><dt>OPTIONS</dt><dd>メニューを開く／閉じる</dd></div>
       <div><dt>タッチパッド / SHARE</dt><dd>地図</dd></div>
       <div><dt>L1 / R1 · R3</dt><dd>カメラを遠く／近く · 視点を戻す</dd></div>
     </dl>
-    <p>メニューは十字キーか左スティックで項目を選び、×で決定。選択欄は左右で切り替え、右スティックで説明をスクロールできます。名前・チャットの文字入力はキーボードを使います。</p>
+    <p>メニューは十字キーか左スティックで項目を選び、右側の4ボタン（×・○・□・△）のどれでも決定できます。戻るときは画面内の「戻る」ボタンを選んで決定してください。選択欄は左右で切り替え、右スティックで説明をスクロールできます。名前・チャットの文字入力はキーボードを使います。</p>
     <p class="form-note">走るための2回倒し・スティック押し込みは不要です。画面に戻ったときはスティックとボタンを一度離してください。</p>
     <p class="form-note">認識しない場合は接続を確認し、最新のChrome / EdgeでHTTPSまたはlocalhostのゲームを開いてください。</p>
   </section>`;
@@ -33,7 +33,7 @@ interface GamepadUIOptions {
   canvas: HTMLCanvasElement;
   /** The container whose buttons the controller navigates: an open dialog or a full-screen game screen. */
   menu: () => HTMLElement | null;
-  /** ○ / OPTIONS while a menu is shown: close the dialog or step back from the screen. */
+  /** OPTIONS while a menu is shown: close the dialog or step back from the screen. */
   closeMenu: () => void;
   canPlay: () => boolean;
   onAction: (action: PadAction) => void;
@@ -155,7 +155,7 @@ export class GamepadControls {
         if (root) root.scrollTop += frame.look.y * dt * 600;
       }
       // Closing wins over confirming when two buttons arrive in the same frame.
-      if (frame.actions.some((a) => a === 'cancel' || a === 'menu')) this.options.closeMenu();
+      if (frame.actions.includes('menu')) this.options.closeMenu();
       else if (frame.actions.includes('confirm')) this.activate();
     } else if (mode === 'game') {
       if (frame.look.x || frame.look.y) this.options.onLook(frame.look.x, frame.look.y, dt);

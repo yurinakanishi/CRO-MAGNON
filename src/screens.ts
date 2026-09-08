@@ -73,7 +73,7 @@ export function guideMarkup({ gamepad, skipChecked }: GuideOptions): string {
     )
     .join(
       '',
-    )}</div><div class="guide-objective"><span class="guide-step">1</span><div><strong>最初の目標</strong><p>木・石・ベリーを3つ採集 → 木材3と石2で石斧 → 焚き火に木材12・石6を届ける</p></div></div><div class="guide-actions"><label class="guide-skip"><input type="checkbox" id="guide-skip" ${skipChecked ? 'checked' : ''}> 次回から表示しない</label><button id="guide-start" class="button button-accent">冒険をはじめる</button></div><p class="guide-footnote">${gamepad ? 'OPTIONS のメニュー「あそびかた」' : 'H キー'}でいつでも見直せます。${gamepad ? '' : 'コントローラー（DUALSHOCK 4）にも対応しています。'}</p></div>`;
+    )}</div><div class="guide-objective"><span class="guide-step">1</span><div><strong>最初の目標</strong><p>木・石・ベリーを3つ採集 → 木材3と石2で石斧 → 焚き火に木材12・石6を届ける</p></div></div><div class="guide-actions"><label class="guide-skip"><input type="checkbox" id="guide-skip" ${skipChecked ? 'checked' : ''}> 次回から表示しない</label><button id="guide-back" class="button button-outline" type="button">戻る</button><button id="guide-start" class="button button-accent">冒険をはじめる</button></div><p class="guide-footnote">${gamepad ? '×・○・□・△のどれでも決定。「戻る」で旅支度へ戻れます。OPTIONS のメニュー「あそびかた」' : 'H キー'}でいつでも見直せます。${gamepad ? '' : 'コントローラー（DUALSHOCK 4）にも対応しています。'}</p></div>`;
 }
 
 /** Shows and hides the full-screen game screens; one screen is visible at a time. */

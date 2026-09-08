@@ -203,7 +203,7 @@ export function handleHuntingAction(room, player, message, now = Date.now()) {
 export function updateHunting(
   room,
   now = Date.now(),
-  notify = (_player, _text: string, _tone?: string) => {},
+  notify = (_player, _text: string, _tone?: string, _popup?: boolean) => {},
 ) {
   let changed = false;
   const reportHit = (player, strike) => {
@@ -243,6 +243,7 @@ export function updateHunting(
         player,
         '火から離れたか、火を使えなくなったので調理を中止した。食材は手元に残っています。',
         'info',
+        false,
       );
     } else if (now >= player.cookingEndsAt) {
       player.cookingEndsAt = 0;

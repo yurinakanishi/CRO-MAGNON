@@ -525,8 +525,7 @@ export class WorldRenderer {
         dy = e.clientY - p.lastY;
       if (Math.hypot(e.clientX - p.x, e.clientY - p.y) > 4) p.dragged = true;
       if (p.dragged) {
-        this.yaw -= dx * 0.006;
-        this.pitch = clamp(this.pitch + dy * 0.0045, 0.06, 1.05);
+        this.rotateCamera(dx * 0.006, dy * 0.0045);
         this.canvas.style.cursor = 'grabbing';
       }
       p.lastX = e.clientX;
@@ -772,7 +771,8 @@ export class WorldRenderer {
   }
   rotateCamera(horizontal: number, vertical: number) {
     this.yaw -= horizontal;
-    this.pitch = clamp(this.pitch + vertical, 0.06, 1.05);
+    // Orbit below the look target; ground and water clearance keep the camera above the surface.
+    this.pitch = clamp(this.pitch + vertical, -0.5, 1.05);
   }
   serverNow() {
     return this.serverTime === undefined
@@ -1038,10 +1038,7 @@ export class WorldRenderer {
       this.focus.lerp(tempPoint, 1 - Math.exp(-dt * 11));
     }
     this.distance += (this.targetDistance - this.distance) * (1 - Math.exp(-dt * 10));
-    const shoulder = new THREE.Vector3(Math.cos(this.yaw), 0, -Math.sin(this.yaw)).multiplyScalar(
-        0.75,
-      ),
-      aim = this.focus.clone().add(shoulder);
+    const aim = this.focus.clone();
     const offset = new THREE.Vector3(
       Math.sin(this.yaw) * Math.cos(this.pitch),
       Math.sin(this.pitch),
@@ -1049,10 +1046,6 @@ export class WorldRenderer {
     );
     let cameraDistance = this.distance;
     cameraDistance = this.collision.cameraDistance(aim, offset, this.distance);
-    if (cameraDistance < 2.8) {
-      aim.copy(this.focus).addScaledVector(shoulder, clamp((cameraDistance - 0.8) / 2, 0, 1));
-      cameraDistance = this.collision.cameraDistance(aim, offset, this.distance);
-    }
     this.camera.position.copy(aim).addScaledVector(offset, cameraDistance);
     if (this.landmarks?.castleCamera) {
       cameraDistance = this.landmarks.castleCamera.distance(aim, offset, cameraDistance);
@@ -1065,8 +1058,8 @@ export class WorldRenderer {
           riverHalfWidth(this.camera.position.z));
     this.camera.position.y = Math.max(
       this.camera.position.y,
-      terrainHeight(this.camera.position.x, this.camera.position.z) + 0.55,
-      aboveWater ? WATER_LEVEL + 0.65 : -Infinity,
+      terrainHeight(this.camera.position.x, this.camera.position.z) + 0.25,
+      aboveWater ? WATER_LEVEL + 0.3 : -Infinity,
     );
     this.camera.lookAt(aim);
     this.camera.updateMatrixWorld();

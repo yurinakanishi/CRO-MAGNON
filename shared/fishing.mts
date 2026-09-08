@@ -72,7 +72,11 @@ export function handleFishingAction(room, player, message, now) {
   return response('魚を待っています。6秒静かに待とう。移動・E／×で中止。', true);
 }
 
-export function updateFishing(room, now, notify = (_player, _text: string, _tone?: string) => {}) {
+export function updateFishing(
+  room,
+  now,
+  notify = (_player, _text: string, _tone?: string, _popup?: boolean) => {},
+) {
   let changed = false;
   for (const site of FISHING_SITES) {
     const stock = room.gulf.shoals.find((s) => s.id === site.id);
@@ -107,7 +111,7 @@ export function updateFishing(room, now, notify = (_player, _text: string, _tone
     ) {
       cancelFishing(player);
       changed = true;
-      notify(player, '魚を待つのを中止した。道具は手元にあります。', 'info');
+      notify(player, '魚を待つのを中止した。道具は手元にあります。', 'info', false);
       continue;
     }
     if (now < cast.endsAt) continue;

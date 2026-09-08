@@ -52,7 +52,7 @@ export interface PadFrame {
   active: boolean;
 }
 
-const bindings: [number, PadAction][] = [
+const gameBindings: [number, PadAction][] = [
   [PAD.cross, 'confirm'],
   [PAD.circle, 'cancel'],
   [PAD.square, 'attack'],
@@ -65,9 +65,16 @@ const bindings: [number, PadAction][] = [
   [PAD.l1, 'zoomOut'],
   [PAD.r1, 'zoomIn'],
 ];
+const menuBindings: [number, PadAction][] = [
+  [PAD.cross, 'confirm'],
+  [PAD.circle, 'confirm'],
+  [PAD.square, 'confirm'],
+  [PAD.triangle, 'confirm'],
+  [PAD.options, 'menu'],
+];
 const directions: Direction[] = ['up', 'down', 'left', 'right'];
 const usedButtons = [
-  ...new Set([...bindings.map(([index]) => index), ...directions.map((d) => PAD[d])]),
+  ...new Set([...gameBindings.map(([index]) => index), ...directions.map((d) => PAD[d])]),
 ];
 const finiteAxis = (value: number | undefined) =>
   Number.isFinite(value) ? Math.max(-1, Math.min(1, value!)) : 0;
@@ -138,7 +145,7 @@ export class GamepadInput {
     }
     const pressed = (index: number) => held.has(index) && !this.previous.has(index);
     frame.active = !!(left.magnitude || right.magnitude || held.size);
-    for (const [index, action] of bindings) {
+    for (const [index, action] of mode === 'menu' ? menuBindings : gameBindings) {
       if (pressed(index) && !frame.actions.includes(action)) frame.actions.push(action);
     }
     if (mode === 'game') {

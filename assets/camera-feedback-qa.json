@@ -1,0 +1,171 @@
+{
+  "date": "2026-09-08",
+  "request": "Center the player camera and remove redundant action popups",
+  "testsPassed": 68,
+  "build": "browser, Node, Cloudflare, strict",
+  "syntaxFiles": 151,
+  "architecture": "passed",
+  "format": "passed",
+  "browserChecks": [
+    "cro: desktop/portrait/landscape centered; orbit and actual attack produce no popup",
+    "Eating, crafting, cooking start/completion/cancellation update inventory and progress without popups",
+    "Actual gathering and destination navigation have no action popups",
+    "Failure reason remains visible when the requested food is missing",
+    "Real enemy hit keeps damage flash and energy change without toast or repeated central text",
+    "cat: desktop/portrait/landscape centered; orbit and actual attack produce no popup",
+    "bear: desktop/portrait/landscape centered; orbit and actual attack produce no popup",
+    "No browser console or page errors"
+  ],
+  "framing": [
+    {
+      "species": "cro",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "focusX": 0,
+      "playerX": 0,
+      "cameraDistance": 5.5
+    },
+    {
+      "species": "cro",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "focusX": 0,
+      "playerX": 0,
+      "cameraDistance": 5.5
+    },
+    {
+      "species": "cro",
+      "viewport": {
+        "width": 844,
+        "height": 390
+      },
+      "focusX": 0,
+      "playerX": 0,
+      "cameraDistance": 5.5
+    },
+    {
+      "species": "cat",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "focusX": 0,
+      "playerX": 0,
+      "cameraDistance": 5.5
+    },
+    {
+      "species": "cat",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "focusX": 0,
+      "playerX": 0,
+      "cameraDistance": 5.5
+    },
+    {
+      "species": "cat",
+      "viewport": {
+        "width": 844,
+        "height": 390
+      },
+      "focusX": 0,
+      "playerX": 0,
+      "cameraDistance": 5.5
+    },
+    {
+      "species": "bear",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "focusX": 0,
+      "playerX": 0,
+      "cameraDistance": 4.5
+    },
+    {
+      "species": "bear",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "focusX": -6.29348401060203E-15,
+      "playerX": -6.1288631644231614E-15,
+      "cameraDistance": 4.5
+    },
+    {
+      "species": "bear",
+      "viewport": {
+        "width": 844,
+        "height": 390
+      },
+      "focusX": -1.343802528599662E-15,
+      "playerX": -1.3086522193301517E-15,
+      "cameraDistance": 4.5
+    }
+  ],
+  "browserErrors": [],
+  "qaPreparation": "Dedicated server and rooms; camp supplies and proximity for gather/combat were QA preparation. Keyboard, pointer, attacks, inventory actions and damage ran normally.",
+  "delivery": {
+    "delivered": [
+      {
+        "file": "src/main.js",
+        "sha256": "3edfe85771cd00c0ad4dcc74368936378516954a3a5189de8cf7d1b934ce7e4b"
+      },
+      {
+        "file": "src/world3d.js",
+        "sha256": "792154774cb41d2710a25342e399d67101c3cb835c134a285c6c4212a91172f8"
+      },
+      {
+        "file": "shared/enemies.mjs",
+        "sha256": "1d3f4faebd311fb5c7e533d8a50d42a2b08dc74c90342176e5ea724553ec3a49"
+      },
+      {
+        "file": "shared/hunting.mjs",
+        "sha256": "8954376576430487fc999dc3f849e5786715910a899c4742d83b668fdc3ee259"
+      },
+      {
+        "file": "shared/fishing.mjs",
+        "sha256": "32047a993fe12f484152cde226c0ff3b56fa0acd039d05ba4a96255a720f9105"
+      },
+      {
+        "file": "shared/coastal-craft.mjs",
+        "sha256": "ce467e44ab6898b258c01bdc4a7b64d28a607dd5446ea1f5e3fc1b4cd083a083"
+      }
+    ],
+    "notices": [
+      {
+        "type": "notice",
+        "text": "木槍を突き出した。",
+        "tone": "info",
+        "popup": false
+      }
+    ],
+    "errors": [],
+    "ordinaryTitleSetupGuideAndAttack": true
+  },
+  "restoration": {
+    "at": "2026-09-08T14:05:42.793Z",
+    "savedAt": 1788876341981,
+    "checkpointAgeMs": 813,
+    "rooms": [
+      {
+        "name": "EMBER",
+        "sessions": 1,
+        "households": 3,
+        "residents": 8
+      }
+    ],
+    "preserved": "player identity, inventory, equipment, progress, position, resources, camp, crops, households and resident positions",
+    "automaticDiskPersistence": false
+  },
+  "evidenceDirectory": "output/playwright/camera-feedback-20260908",
+  "unverified": [
+    "physical phone",
+    "physical controller"
+  ]
+}

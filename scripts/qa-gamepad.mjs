@@ -116,6 +116,11 @@ try {
     }
     throw new Error(`Menu item unreachable: ${selector}`);
   };
+  const back = async () => {
+    await select('#modal-close');
+    assert.equal(await page.locator('#modal-close').innerText(), '戻る');
+    await tap(PAD.circle);
+  };
   const position = () => ({ x: player().x, z: player().z });
   const delta = (point) => Math.hypot(player().x - point.x, player().z - point.z);
   const stage = async (point, label) => {
@@ -210,14 +215,14 @@ try {
   await select('[data-controller-menu="inventory"]');
   await tap(PAD.cross);
   assert.equal(await page.locator('#modal-craft').count(), 1);
-  await tap(PAD.circle);
+  await back();
   await axes(1);
   await tap(PAD.options);
   await axes();
-  await tap(PAD.circle);
+  await back();
   await axes();
   passed(
-    'OPTIONS stops movement; menus consume held axes and attack; D-pad/X opens inventory; circle closes',
+    'OPTIONS stops movement; menus consume held axes and attack; D-pad/X opens inventory; selected Back closes',
   );
 
   current = 'inventory and map';
@@ -241,10 +246,10 @@ try {
     await page.locator('.gamepad-focus').getAttribute('id'),
     'expedition-destination',
   );
-  await tap(PAD.circle);
+  await back();
   await tap(PAD.right);
   assert.equal(await page.locator('#modal').evaluate((d) => d.open), true);
-  await tap(PAD.circle);
+  await back();
   passed('inventory crafting uses server costs; map select changes with left/right; journal opens');
 
   current = 'disconnect and focus';
@@ -366,7 +371,7 @@ try {
     await axes(0, 0, 0, 1, 500);
     await axes();
     assert.ok((await page.locator('#modal').evaluate((d) => d.scrollTop)) > scrollBefore);
-    await tap(PAD.circle);
+    await back();
   }
   await page.evaluate(() => {
     window.qaPad.mapping = '';

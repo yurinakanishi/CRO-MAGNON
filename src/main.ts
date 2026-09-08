@@ -183,7 +183,7 @@ $('#app').innerHTML = `
             <button id="title-howto" class="menu-item">あそびかた</button>
             <button id="title-fullscreen" class="menu-item">全画面表示</button>
           </nav>
-          <p class="title-hint"><kbd>↑</kbd><kbd>↓</kbd> 選ぶ <kbd>Enter</kbd> 決定 · コントローラー対応</p>
+          <p class="title-hint"><span><kbd>↑</kbd> <kbd>↓</kbd> 選ぶ</span><span><kbd>Enter</kbd> / <kbd>× ○ □ △</kbd> どれでも決定</span></p>
         </div>
         <div class="title-footer"><span id="title-status">ワールドを準備中…</span><span>MULTIPLAYER · ALPHA 0.1</span></div>
       </section>
@@ -193,7 +193,7 @@ $('#app').innerHTML = `
       <section id="screen-guide" class="screen guide-screen" hidden></section>
     </div>
   </section>
-  <dialog id="modal"><div class="modal-top"><span class="eyebrow">${GAME_TITLE}</span><button id="modal-close" class="icon-button" aria-label="閉じる">${icon('close')}</button></div><div id="modal-body"></div></dialog>`;
+  <dialog id="modal"><div class="modal-top"><span class="eyebrow">${GAME_TITLE}</span><button id="modal-close" class="button button-outline modal-back" type="button">戻る</button></div><div id="modal-body"></div></dialog>`;
 
 if (matchMedia('(max-width:1000px), (max-height:700px)').matches)
   $('#journey').removeAttribute('open');
@@ -468,12 +468,7 @@ async function connect() {
       renderer.focusPlayer();
       if (guidePending && !message.resumed && readSaved('cro-skip-guide', '') !== '1') showGuide();
       guidePending = false;
-      notify(
-        message.resumed
-          ? '接続が戻りました。持ち物と進行を復元しました。'
-          : '谷へようこそ。近くの木や石を集めてみよう。',
-        'success',
-      );
+      if (message.resumed) notify('接続が戻りました。持ち物と進行を復元しました。', 'success');
     }
     if (message.type === 'state') {
       const previous = player();
@@ -497,7 +492,7 @@ async function connect() {
     }
     if (message.type === 'emote') renderer.setEmote(message.id, message.emote);
     if (message.type === 'notice') {
-      notify(message.text, message.tone);
+      if (message.popup !== false) notify(message.text, message.tone);
       if (message.tone === 'success') playNote();
     }
     if (message.type === 'chat') addChat(message);
@@ -804,7 +799,6 @@ function interactAnimal(id) {
     if (attackReady(me, animal)) action('attack', id);
     else {
       approachHunt(animal);
-      notify(`相手を向いて F または「${attackProfile(me).label}」。`);
     }
   } else if (animal.phase === 'meat') {
     if (distance(me, animal) <= HUNTING.harvestRange) action('harvest', id);
@@ -987,13 +981,13 @@ function updateHuntingHUD() {
     cookedFish: String(inv.cookedFish),
   });
   $('#damage-flash').hidden = performance.now() > hurtUntil && !downed;
-  $('#combat-status').hidden = !downed && !protectedNow && performance.now() > hurtUntil;
+  $('#combat-status').hidden = !downed && !protectedNow;
   $('#combat-status').classList.toggle('downed', downed);
   $('#combat-status').textContent = downed
     ? `力尽きました · ${Math.max(0, Math.ceil((me.downedUntil - serverNow) / 1000))}秒後に焚き火で回復\n持ち物は失いません`
     : protectedNow
       ? `焚き火で回復 · 元気 ${me.energy} / 100 · あと${Math.ceil((me.invulnerableUntil - serverNow) / 1000)}秒保護中`
-      : `敵の攻撃を受けた · 元気 ${me?.energy ?? 100} / 100`;
+      : '';
   Object.assign($('#world').dataset, {
     combatVersion: String(state.combatVersion ?? 0),
     huntTarget: animal?.id ?? '',
@@ -1023,10 +1017,9 @@ function updateHuntingHUD() {
     invulnerable: String(protectedNow),
   });
 }
-function goTo(x, z, label) {
+function goTo(x, z, _label) {
   if (player()?.downedUntil) return;
   if (!sendMoveTarget(x, z)) return notify('サーバーへの接続と3D画面を確認してください。', 'error');
-  notify(`${label}へ向かいます。`);
   $('#modal').close();
 }
 function drawMinimap(canvas = $('#minimap'), big = false) {
@@ -1081,6 +1074,7 @@ function showGuide() {
   $('#screen-guide').innerHTML = guideMarkup({ gamepad: usingGamepad, skipChecked: false });
   screens.show('guide');
   $('#guide-start').onclick = finishGuide;
+  $('#guide-back').onclick = () => showSetup();
 }
 function finishGuide() {
   if (screens.active !== 'guide') return;
@@ -1344,7 +1338,7 @@ function openPauseMenu() {
     ['title', 'close', 'タイトルへ戻る', leaveToTitle],
   ];
   openModal(
-    `<div class="pause-menu"><p class="screen-eyebrow">PAUSE</p><h2>メニュー</h2><p class="modal-intro">${usingGamepad ? '十字キーで選ぶ · × 決定 · ○ 戻る' : 'ESC で閉じる · ↑↓ で選ぶ · Enter で決定'}</p><div class="controller-menu">${entries
+    `<div class="pause-menu"><p class="screen-eyebrow">PAUSE</p><h2>メニュー</h2><p class="modal-intro">${usingGamepad ? '十字キーで選ぶ · × ○ □ △ どれでも決定 · 戻るときは画面内の「戻る」を選ぶ' : 'ESC で閉じる · ↑↓ で選ぶ · Enter で決定'}</p><div class="controller-menu">${entries
       .map(
         ([id, glyph, label]) =>
           `<button class="button button-outline" data-controller-menu="${id}">${icon(glyph)}<span>${label}</span></button>`,
@@ -1467,7 +1461,6 @@ function cook() {
   const fire = nearestCookingFire(state, me);
   if (distance(me, fire) > HUNTING.cookRange) {
     goTo(fire.x - 1, fire.z + 2.4, '近くの焚き火');
-    notify('焚き火のそばで E または「焼く」を押そう。');
   } else action('cook');
 }
 function playNote() {

@@ -1,0 +1,58 @@
+{
+  "date": "2026-09-08",
+  "request": "メニューでは右側の4ボタンすべてで決定。戻るは画面内のボタンで選ぶ。",
+  "build": "node scripts/build.mjs passed, including strict TypeScript",
+  "tests": {
+    "command": "node --test tests/gamepad-input.test.mjs tests/screens.test.mjs",
+    "passed": 17,
+    "failed": 0
+  },
+  "browser": {
+    "checks": [
+      "All four face buttons open Start and activate the visible setup Back button",
+      "Holding all four face buttons advances one screen and does not join automatically",
+      "Guide Back returns to setup, and circle starts the adventure",
+      "All four buttons open inventory and confirm Back; held presses do not attack or mount",
+      "Pointer and keyboard can activate the visible Back button",
+      "Back and focused menu items stay visible while help scrolls at 390×844 and 844×390",
+      "Title prompts fit both mobile sizes; browser reports no errors"
+    ],
+    "errors": [],
+    "physicalController": false,
+    "evidence": "output/playwright/gamepad-menus-20260908/r05",
+    "command": "node scripts/qa-gamepad-menus.mjs output/playwright/gamepad-menus-20260908/r05",
+    "engine": "Chrome",
+    "viewports": [
+      "1440x900",
+      "390x844",
+      "844x390"
+    ]
+  },
+  "local": {
+    "origin": "http://localhost:3000",
+    "served": [
+      {
+        "path": "/src/gamepad-input.js",
+        "sha256": "d6b36eebdbf84da8ec6e2572bfe4eaf49075b665d49d66bcd2240e6e3690173d"
+      },
+      {
+        "path": "/src/gamepad-ui.js",
+        "sha256": "b4765ebee968c92851167116ef484fbe1ced38e449294d10d447393f5b1bf3a2"
+      },
+      {
+        "path": "/src/main.js",
+        "sha256": "db77763cac6261fe8f9afd8d10057f03b576bd5f3c6cb87d8cb46cf40d4a056d"
+      },
+      {
+        "path": "/src/screens.js",
+        "sha256": "d7d389b52b170f38a47a14adc87567c460e73b9ff4a32448c7830805b59869bc"
+      },
+      {
+        "path": "/src/style.css",
+        "sha256": "82c3e99d2ce74dbd1900d327dcdaaa721503f5162b3cf5a72f1f6b9f93baf855"
+      }
+    ],
+    "serverRestart": false
+  },
+  "publicDeployment": false
+}

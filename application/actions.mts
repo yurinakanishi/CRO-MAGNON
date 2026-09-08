@@ -19,7 +19,7 @@ export function createActionHandler({ notice, broadcast, snapshot, systemChat, r
     }
     const coastal = handleCoastalAction(room, player, message, now);
     if (coastal) {
-      if (coastal.text) notice(player, coastal.text, coastal.tone);
+      if (coastal.text) notice(player, coastal.text, coastal.tone, !coastal.changed);
       if (coastal.changed) broadcast(room, snapshot(room, true));
       return;
     }
@@ -27,28 +27,28 @@ export function createActionHandler({ notice, broadcast, snapshot, systemChat, r
       return notice(player, '作業中です。先にE／×で中止しよう。');
     const fishing = handleFishingAction(room, player, message, now);
     if (fishing) {
-      if (fishing.text) notice(player, fishing.text, fishing.tone);
+      if (fishing.text) notice(player, fishing.text, fishing.tone, !fishing.changed);
       if (fishing.changed) broadcast(room, snapshot(room, true));
       return;
     }
     if (player.fishing) return notice(player, '魚を待っています。先にE／×で中止しよう。');
     const boating = handleBoatAction(room, player, message, now);
     if (boating) {
-      notice(player, boating.text, boating.tone);
+      notice(player, boating.text, boating.tone, !boating.changed);
       if (boating.changed) broadcast(room, snapshot(room, true));
       return;
     }
     if (player.boatId) return notice(player, '乗船中です。岸で B を押して降りてから行おう。');
     const riding = handleRidingAction(room, player, message, now);
     if (riding) {
-      notice(player, riding.text, riding.tone);
+      notice(player, riding.text, riding.tone, !riding.changed);
       if (riding.changed) broadcast(room, snapshot(room));
       return;
     }
     if (player.mountId) return notice(player, '騎乗中です。攻撃・採集・食事は R で降りてから。');
     const hunting = handleHuntingAction(room, player, message, now);
     if (hunting) {
-      notice(player, hunting.text, hunting.tone);
+      notice(player, hunting.text, hunting.tone, action !== 'attack' && !hunting.changed);
       if (hunting.changed) broadcast(room, snapshot(room));
       return;
     }

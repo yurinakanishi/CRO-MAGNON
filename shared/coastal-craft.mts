@@ -120,7 +120,11 @@ export function handleCoastalAction(room, player, message, now) {
   );
 }
 
-export function updateCoastal(room, now, notify = (_p, _text: string, _tone?: string) => {}) {
+export function updateCoastal(
+  room,
+  now,
+  notify = (_p, _text: string, _tone?: string, _popup?: boolean) => {},
+) {
   let changed = false;
   for (const bed of room.gulf.shellBeds) {
     if (bed.amount >= COASTAL.bedCapacity) {
@@ -155,7 +159,7 @@ export function updateCoastal(room, now, notify = (_p, _text: string, _tone?: st
     ) {
       cancelCoastal(p);
       changed = true;
-      notify(p, '作業を中止した。材料は手元に残っています。', 'info');
+      notify(p, '作業を中止した。材料は手元に残っています。', 'info', false);
       continue;
     }
     if (now < work.endsAt) continue;

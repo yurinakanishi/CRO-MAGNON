@@ -1,0 +1,477 @@
+{
+  "date": "2026-09-08",
+  "request": "Allow a lower camera angle",
+  "pitchRangeRadians": [
+    -0.5,
+    1.05
+  ],
+  "groundClearanceMetres": 0.25,
+  "waterClearanceMetres": 0.3,
+  "testsPassed": 15,
+  "build": "browser, Node, Cloudflare, strict",
+  "syntax": "world3d.js passed",
+  "architecture": "passed",
+  "format": "passed",
+  "browser": {
+    "checks": [
+      "cro: mouse reaches a view from below; ground clearance and horizontal center hold",
+      "cro: View Reset works and simulated right stick reaches the low angle",
+      "cro: portrait, landscape, full low orbit and existing overhead limit pass",
+      "bear: mouse reaches a view from below; ground clearance and horizontal center hold",
+      "bear: View Reset works and simulated right stick reaches the low angle",
+      "bear: portrait, landscape, full low orbit and existing overhead limit pass",
+      "Updated world3d.js is served on port 3000; no browser errors"
+    ],
+    "views": [
+      {
+        "species": "cro",
+        "label": "mouse-low",
+        "pitch": -0.5,
+        "effectivePitch": -0.2344094035477289,
+        "groundClearance": 0.25,
+        "water": false,
+        "waterClearance": 0.6985462474303344,
+        "centerX": 0,
+        "camera": [
+          46.666113060671265,
+          0.2485462474303344,
+          61.63873021519293
+        ],
+        "distance": 4.962417842027044,
+        "clearDistance": 4.962417842027044
+      },
+      {
+        "species": "cro",
+        "label": "gamepad-low",
+        "pitch": -0.5,
+        "effectivePitch": -0.23440940354772896,
+        "groundClearance": 0.25,
+        "water": false,
+        "waterClearance": 0.6985462474303344,
+        "centerX": -1.6482098113071199E-15,
+        "camera": [
+          46.666113060671265,
+          0.2485462474303344,
+          61.63873021519293
+        ],
+        "distance": 4.962417842027044,
+        "clearDistance": 4.962417842027044
+      },
+      {
+        "species": "cro",
+        "label": "390x844",
+        "pitch": -0.5,
+        "effectivePitch": -0.23440940354772896,
+        "groundClearance": 0.25,
+        "water": false,
+        "waterClearance": 0.6985462474303344,
+        "centerX": -5.707032126125987E-15,
+        "camera": [
+          46.666113060671265,
+          0.2485462474303344,
+          61.63873021519293
+        ],
+        "distance": 4.962417842027044,
+        "clearDistance": 4.962417842027044
+      },
+      {
+        "species": "cro",
+        "label": "844x390",
+        "pitch": -0.5,
+        "effectivePitch": -0.23440940354772896,
+        "groundClearance": 0.25,
+        "water": false,
+        "waterClearance": 0.6985462474303344,
+        "centerX": -1.2185816614403354E-15,
+        "camera": [
+          46.666113060671265,
+          0.2485462474303344,
+          61.63873021519293
+        ],
+        "distance": 4.962417842027044,
+        "clearDistance": 4.962417842027044
+      },
+      {
+        "species": "cro",
+        "label": "low-orbit-0",
+        "pitch": -0.5,
+        "effectivePitch": -0.23409651311727145,
+        "groundClearance": 0.25,
+        "water": false,
+        "waterClearance": 0.700142478762775,
+        "centerX": 0,
+        "camera": [
+          43.776717274384524,
+          0.25014247876277496,
+          59.336868715990164
+        ],
+        "distance": 4.962047330533102,
+        "clearDistance": 4.962047330533102
+      },
+      {
+        "species": "cro",
+        "label": "low-orbit-1",
+        "pitch": -0.5,
+        "effectivePitch": -0.2337080354070757,
+        "groundClearance": 0.25,
+        "water": false,
+        "waterClearance": 0.7021239922215927,
+        "centerX": 1.6484854583724075E-15,
+        "camera": [
+          43.36127507527106,
+          0.2521239922215927,
+          55.666094662671256
+        ],
+        "distance": 4.9615880646650785,
+        "clearDistance": 4.9615880646650785
+      },
+      {
+        "species": "cro",
+        "label": "low-orbit-2",
+        "pitch": -0.5,
+        "effectivePitch": -0.23337165696707965,
+        "groundClearance": 0.24999999999999997,
+        "water": false,
+        "waterClearance": 0.7038394661676659,
+        "centerX": 8.2430868594311E-16,
+        "camera": [
+          45.663148034301734,
+          0.25383946616766584,
+          52.776708005990145
+        ],
+        "distance": 4.9611910650174424,
+        "clearDistance": 4.9611910650174424
+      },
+      {
+        "species": "cro",
+        "label": "low-orbit-3",
+        "pitch": -0.5,
+        "effectivePitch": -0.2333840011231363,
+        "groundClearance": 0.25,
+        "water": false,
+        "waterClearance": 0.7037765178816906,
+        "centerX": 0,
+        "camera": [
+          49.33392373530775,
+          0.2537765178816906,
+          52.361280365808014
+        ],
+        "distance": 4.9612056227588015,
+        "clearDistance": 4.9612056227588015
+      },
+      {
+        "species": "cro",
+        "label": "low-orbit-4",
+        "pitch": -0.5,
+        "effectivePitch": -0.233738405341787,
+        "groundClearance": 0.25,
+        "water": false,
+        "waterClearance": 0.7019690971027497,
+        "centerX": 0,
+        "camera": [
+          52.2233012623378,
+          0.2519690971027497,
+          54.66316478463039
+        ],
+        "distance": 4.961623938546469,
+        "clearDistance": 4.961623938546469
+      },
+      {
+        "species": "cro",
+        "label": "low-orbit-5",
+        "pitch": -0.5,
+        "effectivePitch": -0.23413668683705138,
+        "groundClearance": 0.25,
+        "water": false,
+        "waterClearance": 0.6999375431959343,
+        "centerX": 0,
+        "camera": [
+          52.63871434358206,
+          0.24993754319593428,
+          58.333942133265786
+        ],
+        "distance": 4.962094872259659,
+        "clearDistance": 4.962094872259659
+      },
+      {
+        "species": "cro",
+        "label": "low-orbit-6",
+        "pitch": -0.5,
+        "effectivePitch": -0.23442169548747732,
+        "groundClearance": 0.25,
+        "water": false,
+        "waterClearance": 0.6984835344150521,
+        "centerX": -8.241024865903183E-16,
+        "camera": [
+          50.336818465004185,
+          0.24848353441505205,
+          61.22331053059932
+        ],
+        "distance": 4.962432408665033,
+        "clearDistance": 4.962432408665033
+      },
+      {
+        "species": "cro",
+        "label": "low-orbit-7",
+        "pitch": -0.5,
+        "effectivePitch": -0.23440939998801383,
+        "groundClearance": 0.25,
+        "water": false,
+        "waterClearance": 0.6985462655918148,
+        "centerX": -3.296419625416388E-15,
+        "camera": [
+          46.66603946879715,
+          0.24854626559181472,
+          61.63870905289916
+        ],
+        "distance": 4.962417837808701,
+        "clearDistance": 4.962417837808701
+      },
+      {
+        "species": "cro",
+        "label": "overhead",
+        "pitch": 1.05,
+        "effectivePitch": 1.0263999999999978,
+        "groundClearance": 6.106462259917322,
+        "water": false,
+        "waterClearance": 6.55608049532169,
+        "centerX": 0,
+        "camera": [
+          47.21276861944448,
+          6.10608049532169,
+          59.73751527597027
+        ],
+        "distance": 5.500000000000001,
+        "clearDistance": 5.500000000000001
+      },
+      {
+        "species": "bear",
+        "label": "mouse-low",
+        "pitch": -0.5,
+        "effectivePitch": -0.09897328825813444,
+        "groundClearance": 0.25,
+        "water": false,
+        "waterClearance": 0.6990211933891645,
+        "centerX": 0,
+        "camera": [
+          46.908637958731035,
+          0.24902119338916445,
+          60.79532472152149
+        ],
+        "distance": 3.968543018610871,
+        "clearDistance": 3.968543018610871
+      },
+      {
+        "species": "bear",
+        "label": "gamepad-low",
+        "pitch": -0.5,
+        "effectivePitch": -0.0989732882581395,
+        "groundClearance": 0.25,
+        "water": false,
+        "waterClearance": 0.6990211933891645,
+        "centerX": 0,
+        "camera": [
+          46.908637958731035,
+          0.24902119338916445,
+          60.79532472152149
+        ],
+        "distance": 3.9685430186108728,
+        "clearDistance": 3.9685430186108728
+      },
+      {
+        "species": "bear",
+        "label": "390x844",
+        "pitch": -0.5,
+        "effectivePitch": -0.0989732882581395,
+        "groundClearance": 0.25,
+        "water": false,
+        "waterClearance": 0.6990211933891645,
+        "centerX": 0,
+        "camera": [
+          46.908637958731035,
+          0.24902119338916445,
+          60.79532472152149
+        ],
+        "distance": 3.9685430186108728,
+        "clearDistance": 3.9685430186108728
+      },
+      {
+        "species": "bear",
+        "label": "844x390",
+        "pitch": -0.5,
+        "effectivePitch": -0.0989732882581395,
+        "groundClearance": 0.25,
+        "water": false,
+        "waterClearance": 0.6990211933891645,
+        "centerX": 0,
+        "camera": [
+          46.908637958731035,
+          0.24902119338916445,
+          60.79532472152149
+        ],
+        "distance": 3.9685430186108728,
+        "clearDistance": 3.9685430186108728
+      },
+      {
+        "species": "bear",
+        "label": "low-orbit-0",
+        "pitch": -0.5,
+        "effectivePitch": -0.09864572757215546,
+        "groundClearance": 0.25,
+        "water": false,
+        "waterClearance": 0.7003274826240886,
+        "centerX": 0,
+        "camera": [
+          44.544586860860065,
+          0.2503274826240886,
+          58.911983494901044
+        ],
+        "distance": 3.968414154741577,
+        "clearDistance": 3.968414154741577
+      },
+      {
+        "species": "bear",
+        "label": "low-orbit-1",
+        "pitch": -0.5,
+        "effectivePitch": -0.09819659564791502,
+        "groundClearance": 0.25,
+        "water": false,
+        "waterClearance": 0.7021184518879436,
+        "centerX": 0,
+        "camera": [
+          44.20467960703996,
+          0.25211845188794363,
+          55.908622905821936
+        ],
+        "distance": 3.968238169902653,
+        "clearDistance": 3.968238169902653
+      },
+      {
+        "species": "bear",
+        "label": "low-orbit-2",
+        "pitch": -0.5,
+        "effectivePitch": -0.09788657469891353,
+        "groundClearance": 0.25,
+        "water": false,
+        "waterClearance": 0.7033546063853613,
+        "centerX": 1.0306028559425926E-15,
+        "camera": [
+          46.088030209883236,
+          0.25335460638536134,
+          53.544579277628294
+        ],
+        "distance": 3.968117169418205,
+        "clearDistance": 3.968117169418205
+      },
+      {
+        "species": "bear",
+        "label": "low-orbit-3",
+        "pitch": -0.5,
+        "effectivePitch": -0.09789946158220891,
+        "groundClearance": 0.25,
+        "water": false,
+        "waterClearance": 0.7033032236853769,
+        "centerX": 0,
+        "camera": [
+          49.09139214706998,
+          0.25330322368537694,
+          53.2046839356611
+        ],
+        "distance": 3.968122191395837,
+        "clearDistance": 3.968122191395837
+      },
+      {
+        "species": "bear",
+        "label": "low-orbit-4",
+        "pitch": -0.5,
+        "effectivePitch": -0.09822611632831901,
+        "groundClearance": 0.25,
+        "water": false,
+        "waterClearance": 0.7020007393867376,
+        "centerX": 0,
+        "camera": [
+          51.45542830554911,
+          0.2520007393867375,
+          55.08804391469759
+        ],
+        "distance": 3.9682497120312346,
+        "clearDistance": 3.9682497120312346
+      },
+      {
+        "species": "bear",
+        "label": "low-orbit-5",
+        "pitch": -0.5,
+        "effectivePitch": -0.0986768533368428,
+        "groundClearance": 0.25,
+        "water": false,
+        "waterClearance": 0.7002033588851795,
+        "centerX": -2.0610451069483842E-15,
+        "camera": [
+          51.795311735658046,
+          0.2502033588851794,
+          58.09140719994473
+        ],
+        "distance": 3.968426381091966,
+        "clearDistance": 3.968426381091966
+      },
+      {
+        "species": "bear",
+        "label": "low-orbit-6",
+        "pitch": -0.5,
+        "effectivePitch": -0.09898539979524537,
+        "groundClearance": 0.25,
+        "water": false,
+        "waterClearance": 0.6989728917941336,
+        "centerX": 1.0304910264915192E-15,
+        "camera": [
+          49.911942380457965,
+          0.2489728917941335,
+          60.45543588867217
+        ],
+        "distance": 3.9685477916686076,
+        "clearDistance": 3.9685477916686076
+      },
+      {
+        "species": "bear",
+        "label": "low-orbit-7",
+        "pitch": -0.5,
+        "effectivePitch": -0.09897328428286198,
+        "groundClearance": 0.25,
+        "water": false,
+        "waterClearance": 0.6990212092428101,
+        "centerX": -4.121969065173974E-15,
+        "camera": [
+          46.90857774719767,
+          0.24902120924281007,
+          60.795307406917495
+        ],
+        "distance": 3.968543017044344,
+        "clearDistance": 3.968543017044344
+      },
+      {
+        "species": "bear",
+        "label": "overhead",
+        "pitch": 1.05,
+        "effectivePitch": 1.0260999999999998,
+        "groundClearance": 4.490042656657853,
+        "water": false,
+        "waterClearance": 4.939941064645908,
+        "centerX": 0,
+        "camera": [
+          47.35558246141261,
+          4.489941064645908,
+          59.24089498914699
+        ],
+        "distance": 4.5,
+        "clearDistance": 4.5
+      }
+    ],
+    "errors": [],
+    "deliveredSha256": "e67f5db223c2089c7f441975760fdf45857b374f56bf9dd70667220f9633b56d",
+    "preparation": "Dedicated rooms on normal local server; only Gamepad API input was simulated. No player position, inventory or server time was staged."
+  },
+  "serverRestarted": false,
+  "checkpointApplied": false,
+  "physicalControllerTested": false,
+  "evidenceDirectory": "output/playwright/low-angle-20260908"
+}
