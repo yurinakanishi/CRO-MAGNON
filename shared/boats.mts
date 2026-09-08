@@ -209,7 +209,7 @@ export function handleBoatAction(room, player, message, now) {
   return {
     changed: true,
     tone: 'success',
-    text: '丸木舟に乗りました！ WASDで操船・Shiftで速く進む・岸でBを押すと降ります。',
+    text: '丸木舟に乗りました！ WASDで操船・方向キー2回押しで速く進む・岸でBを押すと降ります。',
   };
 }
 export function copyBoatPosition(player, boat) {

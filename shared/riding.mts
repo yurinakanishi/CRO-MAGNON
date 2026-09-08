@@ -106,7 +106,7 @@ export function handleRidingAction(room, player, message, now) {
   return {
     changed: true,
     tone: 'success',
-    text: 'マンモスに乗りました！ WASDで移動・Shiftで走る・Rで降りる。',
+    text: 'マンモスに乗りました！ WASDで移動・方向キー2回押しで走る・Rで降りる。',
   };
 }
 export function updateRiddenAnimal(room, animal, dt, now) {

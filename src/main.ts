@@ -126,7 +126,7 @@ const rideApproach = new RideApproach();
 
 $('#app').innerHTML = `
   <section class="game-viewport" aria-label="${GAME_TITLE} ゲーム画面">
-    <canvas id="world" aria-label="氷河時代の大陸が広がる3Dワールド。WASDで歩行、Shiftで走行、ドラッグでカメラ回転、ホイールで距離を調整。地面クリックでも移動できます。" tabindex="0"></canvas>
+    <canvas id="world" aria-label="氷河時代の大陸が広がる3Dワールド。WASDで歩行、方向キー2回押しで走行、ドラッグでカメラ回転、ホイールで距離を調整。地面クリックでも移動できます。" tabindex="0"></canvas>
     <div class="tps-reticle" aria-hidden="true"><i></i></div>
     <div class="scene-shade"></div>
     <div id="damage-flash" class="damage-flash" aria-hidden="true" hidden></div>
@@ -163,7 +163,7 @@ $('#app').innerHTML = `
     <div id="toast-stack" class="toast-stack" aria-live="polite"></div>
     <div class="chat-panel"><button class="chat-heading" id="chat-toggle">${icon('chat')}<strong>焚き火の会話</strong><span>部族</span><span class="chat-collapse">−</span></button><div id="chat-content"><div id="chat-messages" class="chat-messages" role="log" aria-live="polite"><p class="chat-system">この谷での物語が、ここから始まります。</p></div><form id="chat-form"><input id="chat-input" maxlength="180" placeholder="仲間に話しかける…" aria-label="チャットメッセージ" autocomplete="off"><button aria-label="メッセージを送信" type="submit">${icon('arrow')}</button></form></div></div>
     <div class="player-hud"><div class="energy-label"><span>${icon('leaf')} 元気</span><span id="energy-label">100 / 100</span></div><div class="energy-track"><span id="energy-bar"></span></div></div>
-    <div class="hotbar-wrap"><div class="interaction-hint" id="interaction-hint"><kbd>E</kbd><span>近くのものを調べる</span></div><div class="hotbar"><div class="resource-slots"><button class="resource-slot" data-inventory="wood" aria-label="木材のもちもの"><kbd>木材</kbd><span class="resource-icon wood">${icon('wood')}</span><b id="wood-count">0</b></button><button class="resource-slot" data-inventory="stone" aria-label="石のもちもの"><kbd>石</kbd><span class="resource-icon stone">${icon('stone')}</span><b id="stone-count">0</b></button><button class="resource-slot" id="eat-button" aria-label="ベリーを食べて元気を回復"><kbd>ベリー</kbd><span class="resource-icon berry">${icon('berry')}</span><b id="berry-count">0</b></button></div><div class="hotbar-divider"></div><button class="action-slot selected" data-action="gather" title="採集する [1]"><kbd>1</kbd>${icon('leaf')}<span>採集</span></button><button class="action-slot" data-action="craft" title="木材3・石2で石斧を作る [2]"><kbd>2</kbd>${icon('axe')}<span>つくる</span></button><button class="action-slot" data-action="contribute" title="焚き火の近くで資材を届ける [3]"><kbd>3</kbd>${icon('flame')}<span>届ける</span></button><button class="action-slot" data-action="trade" title="オルの近くで物々交換 [4]"><kbd>4</kbd>${icon('exchange')}<span>交換</span></button><button id="run-button" class="action-slot" aria-label="走行モード" aria-pressed="false" title="走る／歩く（Shiftを押している間も走る）"><kbd>Shift</kbd>${icon('arrow')}<span>走る</span></button></div><div class="controls-caption"><span><kbd>W</kbd><kbd>A</kbd><kbd>S</kbd><kbd>D</kbd> 移動</span><i>·</i><span>地面をクリックしても移動できます</span></div></div>
+    <div class="hotbar-wrap"><div class="interaction-hint" id="interaction-hint"><kbd>E</kbd><span>近くのものを調べる</span></div><div class="hotbar"><div class="resource-slots"><button class="resource-slot" data-inventory="wood" aria-label="木材のもちもの"><kbd>木材</kbd><span class="resource-icon wood">${icon('wood')}</span><b id="wood-count">0</b></button><button class="resource-slot" data-inventory="stone" aria-label="石のもちもの"><kbd>石</kbd><span class="resource-icon stone">${icon('stone')}</span><b id="stone-count">0</b></button><button class="resource-slot" id="eat-button" aria-label="ベリーを食べて元気を回復"><kbd>ベリー</kbd><span class="resource-icon berry">${icon('berry')}</span><b id="berry-count">0</b></button></div><div class="hotbar-divider"></div><button class="action-slot selected" data-action="gather" title="採集する [1]"><kbd>1</kbd>${icon('leaf')}<span>採集</span></button><button class="action-slot" data-action="craft" title="木材3・石2で石斧を作る [2]"><kbd>2</kbd>${icon('axe')}<span>つくる</span></button><button class="action-slot" data-action="contribute" title="焚き火の近くで資材を届ける [3]"><kbd>3</kbd>${icon('flame')}<span>届ける</span></button><button class="action-slot" data-action="trade" title="オルの近くで物々交換 [4]"><kbd>4</kbd>${icon('exchange')}<span>交換</span></button><button id="run-button" class="action-slot" aria-label="走行モード" aria-pressed="false" title="走る／歩く（方向キーを素早く2回押しても走る）"><kbd>2回</kbd>${icon('arrow')}<span>走る</span></button></div><div class="controls-caption"><span><kbd>W</kbd><kbd>A</kbd><kbd>S</kbd><kbd>D</kbd> 移動</span><i>·</i><span>地面をクリックしても移動できます</span></div></div>
   </section>
   <dialog id="modal"><div class="modal-top"><span class="eyebrow">${GAME_TITLE} · FIELD NOTES</span><button id="modal-close" class="icon-button" aria-label="閉じる">${icon('close')}</button></div><div id="modal-body"></div></dialog>`;
 
@@ -189,7 +189,13 @@ function showRenderError(text) {
   $('.game-viewport').append(message);
 }
 let runMode = false;
-const wantsToRun = () => runMode || keys.has('shift');
+// Double-tapping a direction key (within DOUBLE_TAP_MS) starts a dash that lasts
+// until every movement key is released.
+const DOUBLE_TAP_MS = 300;
+const DIRECTION_KEYS = ['w', 'a', 's', 'd', 'arrowup', 'arrowdown', 'arrowleft', 'arrowright'];
+const lastTapAt = new Map<string, number>();
+let dashing = false;
+const wantsToRun = () => runMode || dashing;
 let lastGait = false;
 let renderer;
 try {
@@ -248,7 +254,7 @@ $('.hotbar-wrap').insertAdjacentHTML(
   'afterbegin',
   `<div class="hunt-controls"><button id="attack-button" class="hunt-button attack-button" title="槍で攻撃 [F / 5]">${icon('spear')}<kbd>F</kbd><span>槍で攻撃</span></button><button id="meat-inventory" class="hunt-button meat-counts" title="生肉は焚き火で焼いてから食べられます">${icon('meat')}<span>生 <b id="rawMeat-count">0</b> / 焼 <b id="cookedMeat-count">0</b></span></button><button id="cook-button" class="hunt-button" title="近くの焚き火で肉を焼く">${icon('flame')}<span>焼く</span></button><button id="eat-meat-button" class="hunt-button" title="焼き肉で元気を45回復">食べる</button></div><div id="cooking-status" class="cooking-status" hidden><span id="cooking-label">肉を焼いています…</span><progress id="cooking-progress" max="1" value="0" aria-label="肉を焼く進み具合"></progress><button id="cancel-cook">中止</button></div>`,
 );
-$('.controls-caption>span:last-child').textContent = 'Shiftで走る · ドラッグで視点回転';
+$('.controls-caption>span:last-child').textContent = '方向キー2回押しで走る · ドラッグで視点回転';
 $('#discovery-card').insertAdjacentHTML(
   'beforeend',
   `<button id="go-enemy" class="enemy-link" hidden>白羽の呪術師へ ${icon('arrow')}</button>`,
@@ -268,6 +274,7 @@ function stopInput() {
   rideApproach.cancel();
   for (const key of keys) blockedMovementKeys.add(key);
   keys.clear();
+  dashing = false;
   movementCommands.reset();
   send({ type: 'move', dx: 0, dz: 0, running: false });
 }
@@ -698,7 +705,7 @@ function updateHuntingHUD() {
           ? '近づいて乗る'
           : '空いているマンモスを待つ';
   $('#riding-hint').textContent = mounted
-    ? 'WASD 移動 · Shift 走る · 攻撃・採集は降りてから'
+    ? 'WASD 移動 · 2回押しで走る · 攻撃・採集は降りてから'
     : rideApproach.targetId
       ? 'WASD / R で中止 · 1頭に1人'
       : '1頭に1人 · R で乗る';
@@ -964,7 +971,7 @@ function openJournal() {
 }
 function openHelp() {
   openModal(
-    `<h2>今日の一歩から、はじめよう。</h2><p class="modal-intro">最初は、近くの木を集めてみましょう。</p><div class="help-grid"><div><kbd>W A S D</kbd><strong>歩く・走る</strong><p>通常は歩行。Shiftを押している間は走行。「走る」ボタンでも切り替えられます。クリック移動は障害物を避けます。</p></div><div><kbd>E</kbd><strong>近くでアクション</strong><p>採集、焚き火に届ける、オルと交換。</p></div><div><kbd>1 · 2 · 3 · 4</kbd><strong>アクションを選ぶ</strong><p>採集・道具づくり・資材を届ける・交換。</p></div><div><kbd>Enter</kbd><strong>仲間と話す</strong><p>チャットを開き、Enterで送信。</p></div></div><div class="help-tip">${icon('flame')} まずは木材3と石2で石斧を作ろう。<br>そのあと、仲間と拠点に木材12・石6を届けよう。</div><button id="help-start" class="button button-accent wide">探索をはじめる ${icon('arrow')}</button>`,
+    `<h2>今日の一歩から、はじめよう。</h2><p class="modal-intro">最初は、近くの木を集めてみましょう。</p><div class="help-grid"><div><kbd>W A S D</kbd><strong>歩く・走る</strong><p>通常は歩行。方向キーを素早く2回押すと走行（離すまで続く）。「走る」ボタンでも切り替えられます。クリック移動は障害物を避けます。</p></div><div><kbd>E</kbd><strong>近くでアクション</strong><p>採集、焚き火に届ける、オルと交換。</p></div><div><kbd>1 · 2 · 3 · 4</kbd><strong>アクションを選ぶ</strong><p>採集・道具づくり・資材を届ける・交換。</p></div><div><kbd>Enter</kbd><strong>仲間と話す</strong><p>チャットを開き、Enterで送信。</p></div></div><div class="help-tip">${icon('flame')} まずは木材3と石2で石斧を作ろう。<br>そのあと、仲間と拠点に木材12・石6を届けよう。</div><button id="help-start" class="button button-accent wide">探索をはじめる ${icon('arrow')}</button>`,
   );
   $('.help-grid').insertAdjacentHTML(
     'beforeend',
@@ -976,12 +983,12 @@ function openHelp() {
   );
   $('.help-grid').insertAdjacentHTML(
     'afterbegin',
-    `<div><kbd>R</kbd><strong>マンモスに乗る・降りる</strong><p>生きているマンモスの横で R。1頭につき1人乗れます。WASD・地面クリックで移動し、Shiftか走行ボタンで走ります。攻撃や採集は開けた場所で降りてから。</p></div>`,
+    `<div><kbd>R</kbd><strong>マンモスに乗る・降りる</strong><p>生きているマンモスの横で R。1頭につき1人乗れます。WASD・地面クリックで移動し、方向キー2回押しか走行ボタンで走ります。攻撃や採集は開けた場所で降りてから。</p></div>`,
   );
   $('#help-start').onclick = () => $('#modal').close();
   $('.help-grid').insertAdjacentHTML(
     'afterbegin',
-    `<div><kbd>B</kbd><strong>船を作って海を渡る</strong><p>木材12個を集め、「海岸へ」で岸に向かい「船をつくる」。Bで乗り、WASD・海面クリックで操船。Shiftで速く進み、岸でBを押すと降ります。1隻1人、部屋で5隻まで共有できます。</p></div>`,
+    `<div><kbd>B</kbd><strong>船を作って海を渡る</strong><p>木材12個を集め、「海岸へ」で岸に向かい「船をつくる」。Bで乗り、WASD・海面クリックで操船。方向キー2回押しで速く進み、岸でBを押すと降ります。1隻1人、部屋で5隻まで共有できます。</p></div>`,
   );
   if (state.enemies?.length)
     $('.help-grid').insertAdjacentHTML(
@@ -1218,13 +1225,18 @@ document.addEventListener('keydown', (e) => {
   )
     return;
   const k = movementKey(e);
-  if (
-    ['w', 'a', 's', 'd', 'arrowup', 'arrowdown', 'arrowleft', 'arrowright', 'shift'].includes(k)
-  ) {
+  if (DIRECTION_KEYS.includes(k)) {
     e.preventDefault();
-    if (k !== 'shift') rideApproach.cancel();
+    rideApproach.cancel();
     if (player()?.downedUntil) blockedMovementKeys.add(k);
-    else if (!blockedMovementKeys.has(k)) keys.add(k);
+    else if (!blockedMovementKeys.has(k)) {
+      if (!e.repeat) {
+        const now = performance.now();
+        if (now - (lastTapAt.get(k) ?? -Infinity) < DOUBLE_TAP_MS) dashing = true;
+        lastTapAt.set(k, now);
+      }
+      keys.add(k);
+    }
     return;
   }
   if (e.repeat) return;
@@ -1258,6 +1270,7 @@ document.addEventListener('keyup', (e) => {
   const key = movementKey(e);
   keys.delete(key);
   blockedMovementKeys.delete(key);
+  if (!DIRECTION_KEYS.some((k) => keys.has(k))) dashing = false;
 });
 window.addEventListener('blur', stopInput);
 document.addEventListener('visibilitychange', () => {
