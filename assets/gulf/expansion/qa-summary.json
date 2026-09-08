@@ -1,0 +1,135 @@
+{
+  "feature": "Three Shores four-area expansion",
+  "at": "2026-09-08T07:42:05.735Z",
+  "status": "passed",
+  "scope": {
+    "world": "8192 × 4096 m bounds; original 4096 × 2048 m Earth projection unchanged",
+    "gulf": "1480 × 1340 m; four times the original rectangular area",
+    "newStops": 6,
+    "newRockFormations": 19,
+    "boatLandings": 5,
+    "existingFarmPlots": 48,
+    "defaultPlayers": 5,
+    "newGLBs": 0
+  },
+  "automated": {
+    "tests": 230,
+    "passed": 230,
+    "failed": 0,
+    "durationMs": 15007.283,
+    "typeScript": "normal, Cloudflare and strict configurations passed",
+    "architecture": "passed",
+    "syntax": "passed",
+    "formatting": "passed",
+    "newRegressionCoverage": [
+      "original continental corner preserved",
+      "four-area bounds without resizing existing Earth",
+      "all five launch beaches and six water connections",
+      "all stops and springs accessible",
+      "authoritative journey records and once-only capacity-checked reward",
+      "version-three gulf migration, immutable checkpoint, old inventory/crops/stores/boats and idempotent restore"
+    ]
+  },
+  "preservation": {
+    "scenery": {
+      "trees": {
+        "original": 2104,
+        "missing": 0
+      },
+      "grass": {
+        "original": 10997,
+        "missing": 0
+      },
+      "rocks": {
+        "original": 1503,
+        "missing": 0
+      },
+      "ridges": {
+        "original": 0,
+        "missing": 0
+      },
+      "tents": {
+        "original": 16,
+        "missing": 0
+      },
+      "props": {
+        "original": 43,
+        "missing": 0
+      },
+      "fires": {
+        "original": 20,
+        "missing": 0
+      },
+      "animals": {
+        "original": 2,
+        "missing": 0
+      }
+    },
+    "originalPlacements": 14685,
+    "sampledTerrainOrientation": "unchanged",
+    "shorelineGridCellMetres": 2,
+    "maximumNearbyTerrainChunks": 69
+  },
+  "browser": {
+    "renderedContexts": 2,
+    "webSocketPeers": 3,
+    "maxPlayers": 5,
+    "sampledStates": 4732,
+    "collisionViolations": 0,
+    "errors": [],
+    "viewports": [
+      "1440×900",
+      "390×844",
+      "844×390"
+    ],
+    "fixtures": [
+      "Two real headless Chrome contexts plus three WebSocket peers; maximum five connected.",
+      "Actual UI travel: Many Hearths to Terrace Rest to Spring Grove, then records with E.",
+      "Remaining four stop positions and return to Many Hearths were explicit QA placement fixtures; records and once-only reward used normal UI.",
+      "Boat start at western landing and 12 wood were explicit QA fixtures; crafting, boarding, approximately 646 m travel, landing, walking to Reed Shore and affiliation used ordinary controls.",
+      "Farming used ordinary UI planting, walking to water, filling, walking back, watering, real elapsed growth and harvest. Return after quarry visit was a position fixture.",
+      "Quarry approach from Quarry Camp and obsidian procurement used ordinary controls; fixture placed player at the starting camp.",
+      "Reload retained six records, claimed reward, inventory and the growing crop.",
+      "1440x900, 390x844 and 844x390 checked. Physical mobile, large player loads and sustained 60 FPS not tested."
+    ],
+    "record": "game-qa.json"
+  },
+  "performance": {
+    "snapshotCount": 16,
+    "fps": [
+      60,
+      60,
+      60,
+      60,
+      60,
+      60,
+      60,
+      60,
+      58,
+      60,
+      60,
+      60,
+      8,
+      60,
+      60,
+      60
+    ],
+    "interpretation": "Fifteen snapshots at 58–60 FPS and one 8 FPS snapshot immediately after reload; not sustained performance evidence.",
+    "coastGridBytes": 8388608,
+    "notes": "Terrain streaming radius is unchanged; geography grid memory grows with extent. Original scatter input grid and lazy landmass labels also use memory."
+  },
+  "assets": {
+    "models": 33,
+    "deliveredGLBs": 48,
+    "sha256AndStructure": "passed",
+    "fullProductionHistory": "pre-existing neanderthal-hunter adoption-review.json remains missing; no missing provenance fabricated",
+    "record": "delivery-qa.json"
+  },
+  "limits": [
+    "NPC household movement, fishing, detailed politics, more crop species and maritime weather remain unimplemented",
+    "Physical devices, larger-player load and sustained frame rate not tested",
+    "New outer world extent is not four times as much completed continental content",
+    "Public Cloudflare deployment and billing unchanged"
+  ],
+  "rollout": "rollout-qa.json"
+}

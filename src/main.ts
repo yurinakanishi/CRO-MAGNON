@@ -36,6 +36,7 @@ import { BIOMES, biomeAt, JOURNEY_STOPS } from '../shared/biomes.mjs';
 import { drawWorldMap, mapProjection, setWorldMapMode, setWorldMapSelection } from './world-map.js';
 import {
   EXPEDITION_STOPS as EARTH_STOPS,
+  EARTH,
   expeditionById as earthExpeditionById,
   isLand,
   worldToGeo,
@@ -1181,18 +1182,26 @@ function openPauseMenu() {
 }
 
 function openMap() {
-  setWorldMapMode('earth');
+  setWorldMapMode(inGulf(player()?.x, player()?.z) ? 'gulf' : 'earth');
   setWorldMapSelection(null);
   openModal(
-    `<h2>氷河時代の地球を、旅する。</h2><p class="modal-intro">約5万年前の大陸を、4,096 × 2,048 mの世界へ。陸地を選んで歩くか、野営地への遠征で海の向こうを探索できます。</p><div class="earth-map-toolbar"><button class="button button-outline" id="map-overview" aria-pressed="true">世界全図</button><button class="button button-outline" id="map-local" aria-pressed="false">現在地の周辺</button><span>北が上 · 人物の大きさはそのまま</span></div><canvas id="big-map" width="960" height="480" class="big-map earth-map" aria-label="約5万年前の地球。大陸・海・雪原・氷床・火山・砂漠の世界地図"></canvas><div class="earth-map-legend">${BIOMES.map((b) => `<span><i style="background:${b.color}"></i>${b.short}</span>`).join('')}<span><i style="background:#285566"></i>海</span></div><div class="earth-travel"><label for="expedition-destination">野営地を選ぶ</label><select id="expedition-destination">${EXPEDITION_STOPS.map((s) => `<option value="${s.id}">${s.name}</option>`).join('')}</select><p id="map-selection" aria-live="polite"></p><div class="earth-travel-actions"><button class="button button-outline" id="map-walk">走って向かう</button><button class="button button-accent" id="map-expedition">野営地へ遠征</button></div><small>遠征は移動を省略します。もちものは保持されます。騎乗中は降りてから。</small></div><div class="map-locations"><button class="button button-outline" id="map-camp">${icon('flame')} はじまりの焚き火</button><button class="button button-outline" id="map-hunt-north">${icon('spear')} 北西の狩場</button><button class="button button-outline" id="map-hunt-south">${icon('spear')} 南西の狩場</button><button class="button button-outline" id="map-npc">${icon('people')} オルの集落</button></div><details class="earth-map-sources"><summary>この世界の時代と地図について</summary><p>ネアンデルタール人の生存期間内である約5万年前が基準です。NOAA ETOPO1の地形を海面 −68.3 mで区切り、正距円筒図法で縮小しています。細い海峡・小島、氷床と気候の範囲は簡略化しています。三つの岸の湾は太平洋上に加えた創作地域で、国・農耕・異なる時代の人々の共存はファンタジーです。遠征先は探索用の配置です。</p><a href="https://www.ncei.noaa.gov/products/etopo-global-relief-model" target="_blank" rel="noreferrer">地形資料：NOAA</a> · <a href="https://cp.copernicus.org/articles/12/1079/2016/" target="_blank" rel="noreferrer">海面資料：Spratt & Lisiecki (2016)</a></details>`,
+    `<h2>大陸と、三つの岸を旅する。</h2><p class="modal-intro">8,192 × 4,096 mの世界。大陸と、1,480 × 1,340 mの創作の湾へ。陸地を選んで歩くか、野営地への遠征で海の向こうを探索できます。</p><div class="earth-map-toolbar"><button class="button button-outline" id="map-overview" aria-pressed="true">世界全図</button><button class="button button-outline" id="map-gulf" aria-pressed="false">三つの岸の全図</button><button class="button button-outline" id="map-local" aria-pressed="false">現在地の周辺</button><span>北が上 · 人物の大きさはそのまま</span></div><canvas id="big-map" width="960" height="480" class="big-map earth-map" aria-label="氷河時代を参考にした大陸と、創作地域の三つの岸の湾の地図"></canvas><div class="earth-map-legend">${BIOMES.map((b) => `<span><i style="background:${b.color}"></i>${b.short}</span>`).join('')}<span><i style="background:#285566"></i>海</span></div><div class="earth-travel"><label for="expedition-destination">野営地を選ぶ</label><select id="expedition-destination">${EXPEDITION_STOPS.map((s) => `<option value="${s.id}">${s.name}</option>`).join('')}</select><p id="map-selection" aria-live="polite"></p><div class="earth-travel-actions"><button class="button button-outline" id="map-walk">走って向かう</button><button class="button button-accent" id="map-expedition">野営地へ遠征</button></div><small>遠征は移動を省略します。もちものは保持されます。騎乗中は降りてから。</small></div><div class="map-locations"><button class="button button-outline" id="map-camp">${icon('flame')} はじまりの焚き火</button><button class="button button-outline" id="map-hunt-north">${icon('spear')} 北西の狩場</button><button class="button button-outline" id="map-hunt-south">${icon('spear')} 南西の狩場</button><button class="button button-outline" id="map-npc">${icon('people')} オルの集落</button></div><details class="earth-map-sources"><summary>この世界の時代と地図について</summary><p>ネアンデルタール人の生存期間内である約5万年前が基準です。NOAA ETOPO1の地形を海面 −68.3 mで区切り、正距円筒図法で縮小しています。細い海峡・小島、氷床と気候の範囲は簡略化しています。元の大陸の位置を保ち、西へ広げた三つの岸の湾は創作地域で、国・農耕・異なる時代の人々の共存はファンタジーです。遠征先は探索用の配置です。</p><a href="https://www.ncei.noaa.gov/products/etopo-global-relief-model" target="_blank" rel="noreferrer">地形資料：NOAA</a> · <a href="https://cp.copernicus.org/articles/12/1079/2016/" target="_blank" rel="noreferrer">海面資料：Spratt & Lisiecki (2016)</a></details>`,
   );
   let selected = EXPEDITION_STOPS[0];
   const selectTarget = (target) => {
     selected = target;
     setWorldMapSelection(target);
     const geo = worldToGeo(target.x, target.z);
+    const location = inGulf(target.x, target.z)
+      ? '三つの岸 · 創作地域'
+      : target.x < EARTH.minX ||
+          target.x > EARTH.maxX ||
+          target.z < EARTH.minZ ||
+          target.z > EARTH.maxZ
+        ? '外海'
+        : `${Math.abs(geo.latitude).toFixed(1)}°${geo.latitude >= 0 ? 'N' : 'S'} ${Math.abs(geo.longitude).toFixed(1)}°${geo.longitude >= 0 ? 'E' : 'W'}`;
     $('#map-selection').textContent =
-      `${target.name ?? biomeAt(target.x, target.z).short} · ${Math.round(distance(player() ?? CAMP, target))} m先 · ${Math.abs(geo.latitude).toFixed(1)}°${geo.latitude >= 0 ? 'N' : 'S'} ${Math.abs(geo.longitude).toFixed(1)}°${geo.longitude >= 0 ? 'E' : 'W'}`;
+      `${target.name ?? biomeAt(target.x, target.z).short} · ${Math.round(distance(player() ?? CAMP, target))} m先 · ${location}`;
     drawMinimap($('#big-map'), true);
   };
   $('#expedition-destination').onchange = (event) =>
@@ -1211,13 +1220,17 @@ function openMap() {
   for (const [id, mode] of [
     ['map-overview', 'earth'],
     ['map-local', 'local'],
+    ['map-gulf', 'gulf'],
   ])
     $('#' + id).onclick = () => {
       setWorldMapMode(mode);
       $('#map-overview').setAttribute('aria-pressed', String(mode === 'earth'));
       $('#map-local').setAttribute('aria-pressed', String(mode === 'local'));
+      $('#map-gulf').setAttribute('aria-pressed', String(mode === 'gulf'));
       drawMinimap($('#big-map'), true);
     };
+  $('#map-overview').setAttribute('aria-pressed', String(!inGulf(player()?.x, player()?.z)));
+  $('#map-gulf').setAttribute('aria-pressed', String(inGulf(player()?.x, player()?.z)));
   drawMinimap($('#big-map'), true);
   $('#map-camp').onclick = () => goTo(49, 52.4, '野営地の焚き火');
   $('#map-npc').onclick = () => goTo(NPC.x, NPC.z - 2, 'オルの集落');

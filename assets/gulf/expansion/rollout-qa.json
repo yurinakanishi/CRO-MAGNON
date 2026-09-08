@@ -1,0 +1,94 @@
+{
+  "at": "2026-09-08T07:42:05.732Z",
+  "url": "http://localhost:3000",
+  "pid": 49108,
+  "health": {
+    "ok": true,
+    "ridingVersion": 1,
+    "combatVersion": 3,
+    "characterVersion": 2,
+    "enemyVersion": 1,
+    "worldVersion": 4,
+    "worldSize": 8192,
+    "worldWidth": 8192,
+    "worldDepth": 4096,
+    "epochYearsBP": 50000,
+    "rooms": 1,
+    "players": 1,
+    "maxPlayers": 5
+  },
+  "status": {
+    "ok": true,
+    "boatingVersion": 1,
+    "adventureVersion": 1,
+    "gulfVersion": 2
+  },
+  "served": [
+    {
+      "url": "src/main.js",
+      "sha256": "f0f5cd8099b774f7fa34747e32f81bbcbc615210221ba4a9b2e0fd5813449cb1"
+    },
+    {
+      "url": "src/gulf-ui.js",
+      "sha256": "0fa47395f4b04634142160d928748c1026af807e822868ba3b5703512e6909e4"
+    },
+    {
+      "url": "src/world-map.js",
+      "sha256": "dbeeac5afed5ea811cbc188c5751a8109d56124c39b1ead93d902318b0d38db4"
+    },
+    {
+      "url": "shared/world.mjs",
+      "sha256": "b985f25951bf5256628ad378e2d05020f62d106e24bd03023d719e7af35e016d"
+    },
+    {
+      "url": "shared/world-bounds.mjs",
+      "sha256": "660bb6df5f3266e03cc0fb7be85fd5be3b803c5cbc17c83540162f023e2ca635"
+    },
+    {
+      "url": "shared/gulf-region.mjs",
+      "sha256": "72dfea228f5befeaf3f50a390f999e9c97d58ceafa6ea1181974377ab2e8cda2"
+    },
+    {
+      "url": "shared/gulf-migration.mjs",
+      "sha256": "a38216424f54cb806bca47f490ac9ba3ea4716ad88c955a9b8166bf71f14c1d7"
+    },
+    {
+      "url": "shared/paleo-geography.mjs",
+      "sha256": "78436d481da04e122bb8b1f49de2d01bdc5617b9a589730bb0fd431ecc9363e3"
+    }
+  ],
+  "initialCheckpoint": {
+    "at": "2026-09-08T07:28:53.609Z",
+    "sourceWorldVersion": 3,
+    "worldVersion": 4,
+    "checkpointAgeMs": 21866,
+    "rooms": []
+  },
+  "finalCheckpoint": {
+    "at": "2026-09-08T07:38:33.103Z",
+    "sourceWorldVersion": 4,
+    "worldVersion": 4,
+    "checkpointAgeMs": 20559,
+    "rooms": [
+      {
+        "name": "SCALE-ROLLOUT",
+        "preservedSessions": 1,
+        "preservedBoats": 0,
+        "crops": 48,
+        "inventoryProgressPositionAndStores": "exact match"
+      }
+    ]
+  },
+  "verification": {
+    "browser": "Codex in-app browser, dedicated SCALE-ROLLOUT room",
+    "flows": [
+      "gulf entry",
+      "welcome supplies: six seeds and three berries",
+      "reload and resume after final boundary correction"
+    ],
+    "consoleErrors": [],
+    "worldAsset": "ready",
+    "resumedSessions": 1
+  },
+  "statePolicy": "Fresh checkpoints only. Initial version-3 server had no active or resumable sessions at rollout. An earlier occupied checkpoint remains ignored as a backup and was not reinstated. Final version-4 checkpoint preserved the QA session. No automatic Node disk persistence or public deployment."
+}

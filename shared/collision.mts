@@ -9,6 +9,7 @@ import { landmarkObstacles } from './landmark-collision.mjs';
 import { REGION_FEATURES } from './region-features.mjs';
 import { REGION_FEATURE_BOUNDS } from './region-feature-bounds.mjs';
 import { ADVENTURE_LANDMARKS } from './adventure-layout.mjs';
+import { GULF_LANDMARKS } from './gulf-region.mjs';
 import { WORLD, worldClamp, INITIAL_RESOURCES, NPC } from './world.mjs';
 import { riverX, riverHalfWidth, terrainHeight } from './terrain.mjs';
 import { resourceAppearance } from './biome-scenery.mjs';
@@ -57,6 +58,7 @@ export function staticObstacles(): Obstacle[] {
   result.push(...landmarkObstacles(REGION_FEATURES, REGION_FEATURE_BOUNDS));
   result.push(
     ...landmarkObstacles(ADVENTURE_LANDMARKS, { ...LANDMARK_BOUNDS, ...REGION_FEATURE_BOUNDS }),
+    ...landmarkObstacles(GULF_LANDMARKS, { ...LANDMARK_BOUNDS, ...REGION_FEATURE_BOUNDS }),
   );
   // The shallow oasis spring is surrounded by a walkable bank.
   result.push({ id: 'oasis-spring', type: 'circle', x: -153, z: 416, radius: 5.5, height: 0 });

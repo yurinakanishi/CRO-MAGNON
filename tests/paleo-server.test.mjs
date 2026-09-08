@@ -21,8 +21,8 @@ test('actual protocol rejects ocean routes and forged travel, then shares a safe
   const stop=expeditionById('sahul'),state=await wait(m=>m.type==='state'&&m.players.some(q=>q.id===id&&Math.hypot(q.x-stop.x,q.z-stop.z)<12));
   const arrived=state.players.find(q=>q.id===id);
   assert.deepEqual(arrived.inventory,{wood:3,stone:2,berry:1,rawMeat:2,cookedMeat:1,obsidian:0,seed:0,water:0});assert.equal(arrived.gathered,8);assert.equal(arrived.tool,true);assert.equal(arrived.cookingEndsAt,0);
-  assert.equal(state.worldWidth,4096);assert.equal(state.worldDepth,2048);assert.equal(state.resources.length>29,true);
+  assert.equal(state.worldWidth,8192);assert.equal(state.worldDepth,4096);assert.equal(state.resources.length>29,true);
   send({type:'expedition',destination:'grassland'});await wait(m=>m.type==='notice'&&m.text.includes('少し待って'));
   assert.equal(p.x,arrived.x);assert.equal(p.z,arrived.z);
-  const health=await(await fetch(`http://127.0.0.1:${game.address().port}/api/health`)).json();assert.equal(health.worldWidth,4096);assert.equal(health.epochYearsBP,50000);
+  const health=await(await fetch(`http://127.0.0.1:${game.address().port}/api/health`)).json();assert.equal(health.worldWidth,8192);assert.equal(health.epochYearsBP,50000);
 });

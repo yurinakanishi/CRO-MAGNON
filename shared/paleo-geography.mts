@@ -1,5 +1,7 @@
 import { COAST_GRID, COAST_RUNS } from './paleo-coast-data.mjs';
 import { GULF, GULF_ENTRY, inGulf, gulfLandDistance } from './gulf-region.mjs';
+import { WORLD_BOUNDS } from './world-bounds.mjs';
+import { LEGACY_GULF, legacyGulfDistance, inLegacyGulf } from './gulf-legacy.mjs';
 
 export const EARTH = Object.freeze({
   width: 4096,
@@ -19,34 +21,91 @@ export const worldToGeo = (x, z) => ({
   longitude: ((x - EARTH.minX) / EARTH.width) * 360 - 180,
   latitude: 90 - ((z - EARTH.minZ) / EARTH.height) * 180,
 });
-const { width, height, cell } = COAST_GRID;
-const coast = new Uint8Array(width * height);
+const { cell } = COAST_GRID;
+const width = WORLD_BOUNDS.width / cell,
+  height = WORLD_BOUNDS.depth / cell;
+const base = new Uint8Array(COAST_GRID.width * COAST_GRID.height);
 let cursor = 0;
 for (let i = 0; i < COAST_RUNS.length; i += 2) {
-  coast.fill(COAST_RUNS[i + 1], cursor, cursor + COAST_RUNS[i]);
+  base.fill(COAST_RUNS[i + 1], cursor, cursor + COAST_RUNS[i]);
   cursor += COAST_RUNS[i];
 }
-if (cursor !== coast.length) throw new Error('Incomplete verified Earth shoreline');
+if (cursor !== base.length) throw new Error('Incomplete verified Earth shoreline');
 COAST_RUNS.length = 0;
-// Apply the fictional gulf once to the same distance grid used by the server,
-// map, land rendering and boat collision. Original cells elsewhere are untouched.
+const coast = new Uint8Array(width * height);
+const baseX = (EARTH.minX - WORLD_BOUNDS.minX) / cell,
+  baseZ = (EARTH.minZ - WORLD_BOUNDS.minZ) / cell;
+for (let row = 0; row < COAST_GRID.height; row++)
+  coast.set(
+    base.subarray(row * COAST_GRID.width, (row + 1) * COAST_GRID.width),
+    (row + baseZ) * width + baseX,
+  );
+// Preserve the old global scatter's exact inputs while the playable gulf moves.
 for (
-  let iz = Math.floor((GULF.minZ - EARTH.minZ) / cell);
-  iz < Math.ceil((GULF.maxZ - EARTH.minZ) / cell);
+  let iz = (LEGACY_GULF.minZ - EARTH.minZ) / cell;
+  iz < (LEGACY_GULF.maxZ - EARTH.minZ) / cell;
   iz++
 )
   for (
-    let ix = Math.floor((GULF.minX - EARTH.minX) / cell);
-    ix < Math.ceil((GULF.maxX - EARTH.minX) / cell);
+    let ix = (LEGACY_GULF.minX - EARTH.minX) / cell;
+    ix < (LEGACY_GULF.maxX - EARTH.minX) / cell;
     ix++
   ) {
-    const x = EARTH.minX + (ix + 0.5) * cell,
-      z = EARTH.minZ + (iz + 0.5) * cell;
+    const i = iz * COAST_GRID.width + ix;
+    const value = Math.max(
+      0,
+      Math.min(
+        255,
+        Math.round(
+          128 +
+            4 * legacyGulfDistance(EARTH.minX + (ix + 0.5) * cell, EARTH.minZ + (iz + 0.5) * cell),
+        ),
+      ),
+    );
+    if (base[i] <= 128) base[i] = Math.max(base[i], value);
+  }
+export function legacySceneryLand(x, z, margin = 0) {
+  const u = Math.max(0, Math.min(COAST_GRID.width - 1, (x - EARTH.minX) / cell - 0.5));
+  const v = Math.max(0, Math.min(COAST_GRID.height - 1, (z - EARTH.minZ) / cell - 0.5));
+  const ix = Math.min(COAST_GRID.width - 2, Math.floor(u)),
+    iz = Math.min(COAST_GRID.height - 2, Math.floor(v)),
+    fx = u - ix,
+    fz = v - iz,
+    i = iz * COAST_GRID.width + ix;
+  return (
+    ((base[i] * (1 - fx) + base[i + 1] * fx) * (1 - fz) +
+      (base[i + COAST_GRID.width] * (1 - fx) + base[i + COAST_GRID.width + 1] * fx) * fz -
+      128) /
+      4 >
+    margin
+  );
+}
+// Apply the fictional gulf once to the same distance grid used by the server,
+// map, land rendering and boat collision. Original cells elsewhere are untouched.
+for (
+  let iz = Math.floor((GULF.minZ - WORLD_BOUNDS.minZ) / cell);
+  iz < Math.ceil((GULF.maxZ - WORLD_BOUNDS.minZ) / cell);
+  iz++
+)
+  for (
+    let ix = Math.floor((GULF.minX - WORLD_BOUNDS.minX) / cell);
+    ix < Math.ceil((GULF.maxX - WORLD_BOUNDS.minX) / cell);
+    ix++
+  ) {
+    const x = WORLD_BOUNDS.minX + (ix + 0.5) * cell,
+      z = WORLD_BOUNDS.minZ + (iz + 0.5) * cell;
     const encoded = Math.max(0, Math.min(255, Math.round(128 + 4 * gulfLandDistance(x, z))));
     if (coast[iz * width + ix] <= 128)
       coast[iz * width + ix] = Math.max(coast[iz * width + ix], encoded);
   }
-export const coastTextureData = () => ({ data: coast, width, height });
+export const coastTextureData = () => ({
+  data: coast,
+  width,
+  height,
+  cell,
+  minX: WORLD_BOUNDS.minX,
+  minZ: WORLD_BOUNDS.minZ,
+});
 let components;
 function buildComponents() {
   const labels = new Uint16Array(coast.length),
@@ -78,8 +137,15 @@ function buildComponents() {
 }
 export function landmassAt(x, z) {
   if (!components) buildComponents();
-  const ix = Math.max(0, Math.min(width - 1, Math.floor((x - EARTH.minX) / cell))),
-    iz = Math.max(0, Math.min(height - 1, Math.floor((z - EARTH.minZ) / cell)));
+  if (
+    x < WORLD_BOUNDS.minX ||
+    x > WORLD_BOUNDS.maxX ||
+    z < WORLD_BOUNDS.minZ ||
+    z > WORLD_BOUNDS.maxZ
+  )
+    return 0;
+  const ix = Math.max(0, Math.min(width - 1, Math.floor((x - WORLD_BOUNDS.minX) / cell))),
+    iz = Math.max(0, Math.min(height - 1, Math.floor((z - WORLD_BOUNDS.minZ) / cell)));
   return components[iz * width + ix];
 }
 const clamp = (n, a, b) => Math.max(a, Math.min(b, n));
@@ -87,14 +153,14 @@ export function coastDistance(x, z) {
   if (
     !Number.isFinite(x) ||
     !Number.isFinite(z) ||
-    x < EARTH.minX ||
-    x > EARTH.maxX ||
-    z < EARTH.minZ ||
-    z > EARTH.maxZ
+    x < WORLD_BOUNDS.minX ||
+    x > WORLD_BOUNDS.maxX ||
+    z < WORLD_BOUNDS.minZ ||
+    z > WORLD_BOUNDS.maxZ
   )
     return -32;
-  const u = clamp((x - EARTH.minX) / cell - 0.5, 0, width - 1),
-    v = clamp((z - EARTH.minZ) / cell - 0.5, 0, height - 1);
+  const u = clamp((x - WORLD_BOUNDS.minX) / cell - 0.5, 0, width - 1),
+    v = clamp((z - WORLD_BOUNDS.minZ) / cell - 0.5, 0, height - 1);
   const ix = Math.min(width - 2, Math.floor(u)),
     iz = Math.min(height - 2, Math.floor(v)),
     fx = u - ix,
@@ -153,7 +219,15 @@ export const CLIMATE_ZONES = Object.freeze(
 export const BIOME_IDS = Object.freeze(['grassland', 'snow', 'ice', 'volcano', 'desert']);
 const smooth = (t) => ((t = clamp(t, 0, 1)), t * t * (3 - 2 * t));
 export function geographicWeights(x, z) {
-  if (inGulf(x, z)) return [1, 0, 0, 0, 0];
+  if (inGulf(x, z) && gulfLandDistance(x, z) > 0) return [1, 0, 0, 0, 0];
+  return earthWeights(x, z);
+}
+export function legacySceneryBiome(x, z) {
+  if (inLegacyGulf(x, z)) return 'grassland';
+  const w = earthWeights(x, z);
+  return BIOME_IDS[w.indexOf(Math.max(...w))];
+}
+function earthWeights(x, z) {
   const { longitude: lon, latitude: lat } = worldToGeo(x, z),
     w = [1, 0, 0, 0, 0];
   const snow = smooth((lat - 51) / 7);

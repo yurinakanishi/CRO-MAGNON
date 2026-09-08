@@ -2,15 +2,11 @@ import type { Resource, ResourceKind } from './types.mjs';
 import { EARTH, EXPEDITION_STOPS, geographicBiome } from './paleo-geography.mjs';
 import { ADVENTURE_RESOURCES } from './adventure-regions.mjs';
 import { GULF_RESOURCES, OBSIDIAN_OUTCROPS } from './gulf-region.mjs';
+import { WORLD_BOUNDS } from './world-bounds.mjs';
 export const WORLD = Object.freeze({
-  version: 3,
-  size: EARTH.width,
-  width: EARTH.width,
-  depth: EARTH.height,
-  minX: EARTH.minX,
-  minZ: EARTH.minZ,
-  maxX: EARTH.maxX,
-  maxZ: EARTH.maxZ,
+  version: 4,
+  size: WORLD_BOUNDS.width,
+  ...WORLD_BOUNDS,
   chunkSize: 32,
   edgeMargin: 2,
   walkSpeed: 1.25,

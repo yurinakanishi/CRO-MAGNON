@@ -19,6 +19,9 @@ import {
   SPRINGS,
   FARM_PLOTS,
   LANDINGS,
+  GULF_STOPS,
+  GULF_LANDMARKS,
+  inGulf,
 } from '../shared/gulf-region.mjs';
 import {
   ADVENTURE_REGIONS,
@@ -29,17 +32,19 @@ import {
 
 let background,
   overview = true,
+  gulfView = false,
   selection = null;
 export function setWorldMapSelection(point) {
   selection = point;
 }
 export function setWorldMapMode(mode) {
   overview = mode !== 'local';
+  gulfView = mode === 'gulf';
 }
 function baseMap() {
   if (background) return background;
-  const width = 1024,
-    height = 512,
+  const width = 2048,
+    height = 1024,
     canvas = document.createElement('canvas');
   canvas.width = width;
   canvas.height = height;
@@ -53,8 +58,8 @@ function baseMap() {
     );
   for (let z = 0; z < height; z++)
     for (let x = 0; x < width; x++) {
-      const wx = EARTH.minX + ((x + 0.5) / width) * EARTH.width,
-        wz = EARTH.minZ + ((z + 0.5) / height) * EARTH.height,
+      const wx = WORLD.minX + ((x + 0.5) / width) * WORLD.width,
+        wz = WORLD.minZ + ((z + 0.5) / height) * WORLD.depth,
         d = coastDistance(wx, wz),
         i = (z * width + x) * 4;
       if (d > 0) {
@@ -76,11 +81,14 @@ function baseMap() {
 }
 export function mapProjection(canvas, big, self = { x: 50, z: 50 }) {
   const full = big && overview;
+  const bounds = gulfView
+    ? { ...GULF, width: GULF.maxX - GULF.minX, depth: GULF.maxZ - GULF.minZ }
+    : WORLD;
   const scale = full
-    ? Math.min((canvas.width - 24) / WORLD.width, (canvas.height - 28) / WORLD.depth)
+    ? Math.min((canvas.width - 24) / bounds.width, (canvas.height - 28) / bounds.depth)
     : canvas.width / (big ? 600 : 180);
-  const cx = full ? (WORLD.minX + WORLD.maxX) / 2 : self.x,
-    cz = full ? (WORLD.minZ + WORLD.maxZ) / 2 : self.z;
+  const cx = full ? (bounds.minX + bounds.maxX) / 2 : self.x,
+    cz = full ? (bounds.minZ + bounds.maxZ) / 2 : self.z;
   const point = (x, z) => [
     canvas.width / 2 + (x - cx) * scale,
     canvas.height / 2 + (z - cz) * scale,
@@ -105,7 +113,7 @@ export function drawWorldMap(canvas, state, selfId, big = false) {
   ctx.fillRect(0, 0, w, h);
   const [left, top] = point(WORLD.minX, WORLD.minZ);
   ctx.drawImage(baseMap(), left, top, WORLD.width * scale, WORLD.depth * scale);
-  if (full) {
+  if (full && !gulfView) {
     ctx.strokeStyle = '#c2d0c51a';
     ctx.lineWidth = 1;
     for (let lon = -150; lon <= 150; lon += 30) {
@@ -169,12 +177,19 @@ export function drawWorldMap(canvas, state, selfId, big = false) {
     for (const s of SETTLEMENTS) {
       const color = COUNTRIES.find((c) => c.id === s.id)?.color ?? '#ffdc8d';
       dot(s.x, s.z, color, full ? 4 : 5);
-      if (!full) {
+      if (!full || gulfView) {
         ctx.fillStyle = color;
         ctx.fillText(s.name, ...point(s.x + 6, s.z - 7));
       }
     }
-    if (!full) {
+    if (!full || gulfView) {
+      for (const s of GULF_STOPS) {
+        dot(s.x, s.z, '#e8c879', 3);
+        ctx.fillStyle = '#ead9af';
+        ctx.fillText(s.name, ...point(s.x + 7, s.z - 5));
+      }
+      for (const p of GULF_LANDMARKS)
+        dot(p.x, p.z, '#81786a', Math.max(2, p.clearance * scale * 0.6));
       for (const p of OBSIDIAN_OUTCROPS) dot(p.x, p.z, '#dcb8e2', 2);
       for (const p of SPRINGS) dot(p.x, p.z, '#8ed7df', 3);
       for (const p of FARM_PLOTS) dot(p.x, p.z, '#c6c081', 1.5);
@@ -301,18 +316,22 @@ export function drawWorldMap(canvas, state, selfId, big = false) {
   ctx.font = big ? '12px sans-serif' : '10px sans-serif';
   ctx.fillText(
     full
-      ? '50,000年前 · □ 野営地 · ○ 探索地域'
-      : (regionAt(self.x, self.z)?.name ?? biomeAt(self.x, self.z).short),
+      ? gulfView
+        ? '三つの岸 · 六つの休み場 · 1,480 × 1,340 m'
+        : '氷河時代と創作の世界 · □ 野営地 · ○ 探索地域'
+      : inGulf(self.x, self.z)
+        ? GULF.name
+        : (regionAt(self.x, self.z)?.name ?? biomeAt(self.x, self.z).short),
     10,
     18,
   );
-  const metres = full ? 500 : big ? 100 : 25,
+  const metres = full ? (gulfView ? 200 : 1000) : big ? 100 : 25,
     pixels = metres * scale;
   ctx.fillRect(w - pixels - 12, h - 12, pixels, 1);
   ctx.textAlign = 'right';
   ctx.fillText(`${metres} m`, w - 12, h - 18);
   ctx.textAlign = 'start';
-  canvas.dataset.mapMode = full ? 'earth' : 'local';
+  canvas.dataset.mapMode = full ? (gulfView ? 'gulf' : 'earth') : 'local';
   canvas.dataset.worldWidth = String(WORLD.width);
   canvas.dataset.worldDepth = String(WORLD.depth);
 }

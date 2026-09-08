@@ -203,3 +203,14 @@ dialog:has(.gulf-panel) .modal-top {
     padding: 12px;
   }
 }
+.gulf-stop-list {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+  margin: 16px 0;
+}
+@media (max-width: 600px) {
+  .gulf-stop-list {
+    grid-template-columns: 1fr;
+  }
+}

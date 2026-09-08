@@ -1,11 +1,26 @@
 import type { SceneryPlacement, EnemyGround } from './types.mjs';
 import { WORLD, INITIAL_RESOURCES } from './world.mjs';
 import { riverX, riverHalfWidth } from './terrain.mjs';
-import { biomeAt, biomeWeights, chunkDescription, JOURNEY_STOPS, roadDistance } from './biomes.mjs';
+import {
+  biomeAt,
+  biomeById,
+  biomeWeights,
+  chunkDescription,
+  JOURNEY_STOPS,
+  roadDistance,
+} from './biomes.mjs';
 import { nearLandmark } from './landmarks.mjs';
 import { CASTLE_HALL, nearCastle } from './castle-layout.mjs';
 import { BIOME_SCENERY } from './biome-scenery.mjs';
-import { isLand, EXPEDITION_STOPS, worldToGeo } from './paleo-geography.mjs';
+import {
+  isLand,
+  legacySceneryLand,
+  legacySceneryBiome,
+  EARTH,
+  EXPEDITION_STOPS,
+  worldToGeo,
+} from './paleo-geography.mjs';
+import { inLegacyGulf, LEGACY_RESOURCE_POINTS } from './gulf-legacy.mjs';
 import { ADVENTURE_ENEMIES, adventureReserved } from './adventure-regions.mjs';
 import { ADVENTURE_SCENERY } from './adventure-layout.mjs';
 import { inGulf, GULF_SCENERY, gulfLandDistance, gulfActivitySpace } from './gulf-region.mjs';
@@ -39,6 +54,11 @@ export function seededRandom(seed) {
   };
 }
 const TAU = Math.PI * 2;
+const SCATTER_RESOURCES = [
+  ...INITIAL_RESOURCES.filter((r) => !r.id.startsWith('gulf-')),
+  ...LEGACY_RESOURCE_POINTS,
+];
+const scatterBiomeAt = (x, z) => biomeById(legacySceneryBiome(x, z));
 function layout() {
   const rng = seededRandom(404),
     trees = [],
@@ -48,7 +68,7 @@ function layout() {
   for (let i = 0; i < 840; i++) {
     const x = -35 + rng() * 170,
       z = -35 + rng() * 170;
-    if (!isLand(x, z, 3)) continue;
+    if (!legacySceneryLand(x, z, 3)) continue;
     if (
       Math.hypot(x - 50, z - 50) < 14 ||
       Math.hypot(x - 70, z - 41) < 7 ||
@@ -57,12 +77,12 @@ function layout() {
       (x > 43 && x < 80 && Math.abs(z - 43.5) < 2.8)
     )
       continue;
-    if (INITIAL_RESOURCES.some((r) => Math.hypot(r.x - x, r.z - z) < 2)) continue;
+    if (SCATTER_RESOURCES.some((r) => Math.hypot(r.x - x, r.z - z) < 2)) continue;
     const height = 6 + rng() * 7,
       width = 0.75 + rng() * 0.5,
       yaw = rng() * TAU;
     if (inHuntingGround(x, z, 1.5) || inEnemyGround(x, z, 1.5)) continue;
-    const biome = biomeAt(x, z).id,
+    const biome = scatterBiomeAt(x, z).id,
       palette = BIOME_SCENERY[biome];
     if (palette.tree)
       trees.push({
@@ -119,19 +139,19 @@ function layout() {
   // connected, with deterministic colliders shared by server and client.
   const distant = seededRandom(902107);
   for (let i = 0; i < 38000; i++) {
-    const x = WORLD.minX + 12 + distant() * (WORLD.width - 24),
-      z = WORLD.minZ + 12 + distant() * (WORLD.depth - 24);
-    if (!isLand(x, z, 5)) continue;
+    const x = EARTH.minX + 12 + distant() * (EARTH.width - 24),
+      z = EARTH.minZ + 12 + distant() * (EARTH.height - 24);
+    if (!legacySceneryLand(x, z, 5)) continue;
     if (x > -36 && x < 136 && z > -36 && z < 136) continue;
     if (nearLandmark(x, z, 2) || adventureReserved(x, z, 4)) continue;
-    const biome = biomeAt(x, z),
+    const biome = scatterBiomeAt(x, z),
       roll = distant();
     if (
       roadDistance(x, z) < 5 ||
       EXPEDITION_STOPS.some((stop) => Math.hypot(x - stop.x, z - stop.z) < 16)
     )
       continue;
-    if (INITIAL_RESOURCES.some((r) => Math.hypot(x - r.x, z - r.z) < 3)) continue;
+    if (SCATTER_RESOURCES.some((r) => Math.hypot(x - r.x, z - r.z) < 3)) continue;
     if (riverHalfWidth(z) > 0.7 && Math.abs(x - riverX(z)) < 9) continue;
     const lat = worldToGeo(x, z).latitude;
     if (
@@ -203,15 +223,15 @@ function layout() {
   // The dry regions use weathered fallen wood, not living valley conifers.
   const dry = seededRandom(6090701);
   for (let i = 0; i < 360; i++) {
-    const x = WORLD.minX + 40 + dry() * (WORLD.width - 80),
-      z = WORLD.minZ + 40 + dry() * (WORLD.depth - 80),
-      biome = biomeAt(x, z).id;
-    if (!isLand(x, z, 3) || adventureReserved(x, z, 4)) continue;
+    const x = EARTH.minX + 40 + dry() * (EARTH.width - 80),
+      z = EARTH.minZ + 40 + dry() * (EARTH.height - 80),
+      biome = scatterBiomeAt(x, z).id;
+    if (!legacySceneryLand(x, z, 3) || adventureReserved(x, z, 4)) continue;
     if (!['desert', 'volcano'].includes(biome) || roadDistance(x, z) < 4 || nearLandmark(x, z, 3))
       continue;
     if (
       EXPEDITION_STOPS.some((p) => Math.hypot(x - p.x, z - p.z) < 16) ||
-      INITIAL_RESOURCES.some((p) => Math.hypot(x - p.x, z - p.z) < 4)
+      SCATTER_RESOURCES.some((p) => Math.hypot(x - p.x, z - p.z) < 4)
     )
       continue;
     if (
@@ -242,7 +262,8 @@ function layout() {
   // Reserve the authored settlement and footpaths from global random scenery.
   for (const items of [trees, grass, rocks, ridges, tents, props, fires])
     for (let i = items.length - 1; i >= 0; i--)
-      if (inGulf(items[i].x, items[i].z)) items.splice(i, 1);
+      if (inGulf(items[i].x, items[i].z) || inLegacyGulf(items[i].x, items[i].z))
+        items.splice(i, 1);
   for (const [category, items] of Object.entries(GULF_SCENERY)) {
     const target = { trees, props, fires }[category];
     target.push(...items.filter((item) => gulfLandDistance(item.x, item.z) > 8));
@@ -257,7 +278,10 @@ function layout() {
 export const SCENERY = layout();
 export function grassForChunk(ix, iz) {
   const chunk = chunkDescription(ix, iz),
-    rng = seededRandom(Math.imul(ix + 31, 73856093) ^ Math.imul(iz + 31, 19349663)),
+    rng = seededRandom(
+      Math.imul(Math.floor((chunk.x - EARTH.minX) / 32) + 31, 73856093) ^
+        Math.imul(Math.floor((chunk.z - EARTH.minZ) / 32) + 31, 19349663),
+    ),
     grass = [];
   for (let i = 0; i < 250; i++) {
     const x = chunk.x + (rng() - 0.5) * 32,

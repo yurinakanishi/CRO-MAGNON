@@ -5,6 +5,7 @@ import {
   expeditionById,
   EXPEDITION_STOPS,
   chunkHasLand,
+  EARTH,
 } from './paleo-geography.mjs';
 export const BIOMES = Object.freeze(
   [
@@ -85,7 +86,9 @@ export function chunkDescription(x, z) {
   const size = WORLD.chunkSize,
     cx = WORLD.minX + (x + 0.5) * size,
     cz = WORLD.minZ + (z + 0.5) * size;
-  const quarterTurns = (Math.imul(x + 71, 73856093) ^ Math.imul(z + 91, 19349663)) >>> 0;
+  const oldX = Math.floor((cx - EARTH.minX) / size),
+    oldZ = Math.floor((cz - EARTH.minZ) / size);
+  const quarterTurns = (Math.imul(oldX + 71, 73856093) ^ Math.imul(oldZ + 91, 19349663)) >>> 0;
   const result = {
     key,
     ix: x,

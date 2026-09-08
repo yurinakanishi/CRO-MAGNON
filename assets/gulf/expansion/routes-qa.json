@@ -1,0 +1,222 @@
+{
+  "at": "2026-09-08T07:36:50.593Z",
+  "world": {
+    "version": 4,
+    "size": 8192,
+    "width": 8192,
+    "depth": 4096,
+    "minX": -4288,
+    "maxX": 3904,
+    "minZ": -1440,
+    "maxZ": 2656,
+    "chunkSize": 32,
+    "edgeMargin": 2,
+    "walkSpeed": 1.25,
+    "runSpeed": 3.5,
+    "playerRadius": 0.32,
+    "maxPlayers": 5
+  },
+  "gulf": {
+    "id": "three-shores",
+    "name": "三つの岸の湾",
+    "version": 2,
+    "minX": -2950,
+    "maxX": -1470,
+    "minZ": 70,
+    "maxZ": 1410
+  },
+  "problems": [],
+  "routes": [
+    {
+      "id": "many-hearths",
+      "metres": 0,
+      "runMinutes": 0
+    },
+    {
+      "id": "long-valley",
+      "metres": 280,
+      "runMinutes": 1.33
+    },
+    {
+      "id": "pale-ridge",
+      "metres": 586,
+      "runMinutes": 2.79
+    },
+    {
+      "id": "reed-shore",
+      "metres": 672,
+      "runMinutes": 3.2
+    },
+    {
+      "id": "headland-path",
+      "metres": 222,
+      "runMinutes": 1.06
+    },
+    {
+      "id": "ridge-path",
+      "metres": 395,
+      "runMinutes": 1.88
+    },
+    {
+      "id": "shore-path",
+      "metres": 481,
+      "runMinutes": 2.29
+    },
+    {
+      "id": "obsidian-path",
+      "metres": 541,
+      "runMinutes": 2.57
+    },
+    {
+      "id": "terrace-rest",
+      "metres": 192,
+      "runMinutes": 0.92
+    },
+    {
+      "id": "spring-grove",
+      "metres": 236,
+      "runMinutes": 1.13
+    },
+    {
+      "id": "quarry-camp",
+      "metres": 584,
+      "runMinutes": 2.78
+    },
+    {
+      "id": "west-cove",
+      "metres": 828,
+      "runMinutes": 3.94
+    },
+    {
+      "id": "reed-lookout",
+      "metres": 406,
+      "runMinutes": 1.93
+    },
+    {
+      "id": "south-cove",
+      "metres": 881,
+      "runMinutes": 4.2
+    },
+    {
+      "id": "hearth-landing",
+      "metres": 84,
+      "runMinutes": 0.4
+    },
+    {
+      "id": "ridge-landing",
+      "metres": 514,
+      "runMinutes": 2.45
+    },
+    {
+      "id": "reed-landing",
+      "metres": 569,
+      "runMinutes": 2.71
+    },
+    {
+      "id": "west-outer-landing",
+      "metres": 813,
+      "runMinutes": 3.87
+    },
+    {
+      "id": "east-outer-landing",
+      "metres": 859,
+      "runMinutes": 4.09
+    }
+  ],
+  "launches": [
+    {
+      "id": "hearth-landing",
+      "x": -2270.6437980626533,
+      "z": 541.7365914253306
+    },
+    {
+      "id": "ridge-landing",
+      "x": -2527.6,
+      "z": 850
+    },
+    {
+      "id": "reed-landing",
+      "x": -1884.2,
+      "z": 850
+    },
+    {
+      "id": "west-outer-landing",
+      "x": -2512.6,
+      "z": 1150
+    },
+    {
+      "id": "east-outer-landing",
+      "x": -1868.7,
+      "z": 1145
+    }
+  ],
+  "boatRoutes": [
+    {
+      "from": "ridge-landing",
+      "to": "reed-landing",
+      "metres": 646
+    },
+    {
+      "from": "west-outer-landing",
+      "to": "east-outer-landing",
+      "metres": 644
+    },
+    {
+      "from": "hearth-landing",
+      "to": "ridge-landing",
+      "metres": 401
+    },
+    {
+      "from": "hearth-landing",
+      "to": "reed-landing",
+      "metres": 494
+    }
+  ],
+  "sceneryMatches": {
+    "trees": true,
+    "grass": true,
+    "rocks": true,
+    "ridges": true,
+    "tents": true,
+    "props": true,
+    "fires": true,
+    "animals": true
+  },
+  "originalSceneryPreserved": {
+    "trees": {
+      "original": 2104,
+      "missing": 0
+    },
+    "grass": {
+      "original": 10997,
+      "missing": 0
+    },
+    "rocks": {
+      "original": 1503,
+      "missing": 0
+    },
+    "ridges": {
+      "original": 0,
+      "missing": 0
+    },
+    "tents": {
+      "original": 16,
+      "missing": 0
+    },
+    "props": {
+      "original": 43,
+      "missing": 0
+    },
+    "fires": {
+      "original": 20,
+      "missing": 0
+    },
+    "animals": {
+      "original": 2,
+      "missing": 0
+    }
+  },
+  "tileMatches": true,
+  "landmarks": 19,
+  "stops": 6
+}

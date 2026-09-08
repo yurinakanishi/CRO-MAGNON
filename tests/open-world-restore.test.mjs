@@ -99,7 +99,7 @@ test('a restored application core preserves inventories, resources and hunting p
     assert.equal(after.z, before.z);
     assert.equal(after.species, before.species);
   }
-  assert.equal(cat.state.worldVersion, 3);
+  assert.equal(cat.state.worldVersion, 4);
   assert.equal(cat.state.combatVersion, 3);
   assert.equal(cat.state.characterVersion, 2);
   assert.equal(cat.state.players.find((p) => p.name === '旅人猫').gathered, 7);

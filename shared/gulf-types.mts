@@ -7,6 +7,8 @@ export interface GulfProgress {
   procured: number;
   delivered: number;
   lastFeast: number;
+  waymarks?: string[];
+  trailRewarded?: boolean;
 }
 export interface PlotState {
   id: string;

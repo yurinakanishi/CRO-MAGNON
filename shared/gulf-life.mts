@@ -1,4 +1,12 @@
-import { COUNTRIES, FARM_PLOTS, MANY_HEARTHS, SETTLEMENTS, SPRINGS } from './gulf-region.mjs';
+import {
+  GULF,
+  GULF_STOPS,
+  COUNTRIES,
+  FARM_PLOTS,
+  MANY_HEARTHS,
+  SETTLEMENTS,
+  SPRINGS,
+} from './gulf-region.mjs';
 import { interactionVisible } from './interactions.mjs';
 import type { GulfProgress, GulfState } from './gulf-types.mjs';
 export const GATHERING_NEEDS = Object.freeze({ wood: 8, berry: 12, obsidian: 4 });
@@ -15,7 +23,7 @@ const count = (n, max = 999999) =>
   Number.isFinite(n) ? Math.max(0, Math.min(max, Math.floor(n))) : 0;
 export function createGulfState(saved?): GulfState {
   return {
-    version: 1,
+    version: GULF.version,
     plots: FARM_PLOTS.map((p) => {
       const old = saved?.plots?.find?.((s) => s.id === p.id);
       const stage = ['planted', 'growing', 'ripe'].includes(old?.stage) ? old.stage : 'empty';
@@ -43,6 +51,8 @@ export function ensureGulfPlayer(player): GulfProgress {
       delivered: 0,
       lastFeast: 0,
     };
+  player.gulf.waymarks ??= [];
+  player.gulf.trailRewarded ??= false;
   return player.gulf;
 }
 export function updateGulf(room, now): boolean {
@@ -78,6 +88,26 @@ export function handleGulfAction(room, player, message, now = Date.now()) {
   const atHearth = near(MANY_HEARTHS, 9);
   const settlement = SETTLEMENTS.find((s) => near(s, 9));
   const action = message.action;
+  if (action === 'gulfSurvey') {
+    const stop = GULF_STOPS.find((s) => s.id === message.targetId);
+    if (!stop || !near(stop, 8)) return fail('道の休み場の炉へ近づこう。');
+    if (progress.waymarks.includes(stop.id)) return fail('この休み場は記録済みです。');
+    progress.waymarks.push(stop.id);
+    return ok(
+      `${stop.name}を旅路に記録した。${progress.waymarks.length}/${GULF_STOPS.length}か所。`,
+    );
+  }
+  if (action === 'gulfTrailReward') {
+    if (!atHearth) return fail('集い場の炉へ戻って、旅路を伝えよう。');
+    if (progress.trailRewarded) return fail('旅路のお礼は受け取り済みです。');
+    if (!GULF_STOPS.every((s) => progress.waymarks.includes(s.id)))
+      return fail('六つの休み場を訪れ、炉のそばで記録しよう。');
+    if (inv.wood > 93 || inv.seed > 95) return fail('木材6・種4を入れる空きを作ろう。');
+    inv.wood += 6;
+    inv.seed += 4;
+    progress.trailRewarded = true;
+    return ok('六つの旅路を伝えた。次の旅のために、木材6・種4を受け取った。');
+  }
   if (action === 'gulfWelcome') {
     if (!atHearth) return fail('集い場の大きな炉に近づこう。');
     if (progress.welcomed) return fail('旅支度は受け取り済み。ベリー2個から種を取り分けられます。');

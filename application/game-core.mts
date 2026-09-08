@@ -1,5 +1,7 @@
 import { ensureAdventure, updateAdventures } from '../shared/adventures.mjs';
 import { createGulfState, ensureGulfPlayer, updateGulf } from '../shared/gulf-life.mjs';
+import { migrateGulfRecord } from '../shared/gulf-migration.mjs';
+import { GULF, MANY_HEARTHS } from '../shared/gulf-region.mjs';
 import { actorObstacle, createAnimals, updateAnimals } from '../shared/animals.mjs';
 import {
   BOATING,
@@ -526,7 +528,7 @@ export function createGameCore({
     if (
       !saved ||
       saved.version !== 1 ||
-      saved.worldVersion !== WORLD.version ||
+      ![3, WORLD.version].includes(saved.worldVersion) ||
       !Array.isArray(saved.rooms)
     ) {
       throw new Error('Unsupported saved world; refusing to overwrite it');
@@ -535,6 +537,8 @@ export function createGameCore({
     // Restoring must not attach sockets or live mutations to the caller's saved
     // checkpoint; it may also be retained for verification or another restore.
     for (const record of JSON.parse(JSON.stringify(saved.rooms))) {
+      if (record.gulf?.version > GULF.version) throw new Error('Unsupported saved gulf version');
+      const movedGulfPlayers = migrateGulfRecord(record);
       const room = ensureRoom(record.name);
       room.createdAt = record.createdAt;
       Object.assign(room.camp, record.camp);
@@ -546,8 +550,14 @@ export function createGameCore({
         Object.assign(boat, boat.mooring);
         return boat;
       });
-      for (const resource of record.resources)
-        Object.assign(room.resourceById.get(resource.id), resource);
+      for (const resource of record.resources) {
+        const current = room.resourceById.get(resource.id);
+        if (current)
+          Object.assign(current, {
+            amount: Math.max(0, Math.min(current.maxAmount, resource.amount)),
+            regeneratedAt: resource.regeneratedAt,
+          });
+      }
       for (const name of ['animals', 'enemies'])
         for (const actor of room[name]) {
           const previous = record[name].find((item) => item.id === actor.id);
@@ -568,6 +578,16 @@ export function createGameCore({
           player.mountId = null;
           player.pendingStrike = null;
           player.cookingEndsAt = 0;
+          if (movedGulfPlayers.has(player) && !room.collision.free(player, player.radius ?? 0.32)) {
+            const safe =
+              room.collision.nearestFree(player, player.radius ?? 0.32, [], 80) ??
+              room.collision.nearestFree(
+                { ...MANY_HEARTHS, z: MANY_HEARTHS.z + 5 },
+                player.radius ?? 0.32,
+              );
+            if (!safe) throw new Error('No safe arrival for migrated player');
+            Object.assign(player, safe);
+          }
           room.sessions.set(entry.token, { expiresAt: entry.expiresAt, player });
         }
     }

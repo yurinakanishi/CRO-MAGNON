@@ -1,6 +1,6 @@
 import * as THREE from 'three';
 import { isMesh } from './three-types.js';
-import { FARM_PLOTS, SPRINGS, SETTLEMENTS, LANDINGS } from '../shared/gulf-region.mjs';
+import { FARM_PLOTS, SPRINGS, SETTLEMENTS, LANDINGS, GULF_STOPS } from '../shared/gulf-region.mjs';
 import { walkHeight } from '../shared/terrain.mjs';
 
 // Farm markers reuse the accepted boulder mesh, instanced below ankle height.
@@ -25,7 +25,7 @@ export class GulfRenderer {
       world.scene.add(mesh);
       this.borders.push(mesh);
     });
-    for (const s of [...SETTLEMENTS, ...SPRINGS, ...LANDINGS]) {
+    for (const s of [...SETTLEMENTS, ...GULF_STOPS, ...SPRINGS, ...LANDINGS]) {
       const label = world.createLabel(
         s.name,
         'gulf',

@@ -10,6 +10,7 @@ import { BOATING } from './shared/boats.mjs';
 import { EARTH } from './shared/paleo-geography.mjs';
 import { RIDING } from './shared/riding.mjs';
 import { WORLD } from './shared/world.mjs';
+import { GULF } from './shared/gulf-region.mjs';
 
 const ROOT = path.dirname(path.dirname(fileURLToPath(import.meta.url)));
 
@@ -44,7 +45,7 @@ export function createGameServer({
                 ok: true,
                 boatingVersion: BOATING.version,
                 adventureVersion: ADVENTURE_VERSION,
-                gulfVersion: 1,
+                gulfVersion: GULF.version,
               }
             : url.pathname === '/api/health'
               ? {

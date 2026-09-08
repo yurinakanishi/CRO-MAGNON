@@ -10,7 +10,7 @@ import { PlacementGrid } from '../dist/shared/spatial-grid.mjs';
 import { SCENERY, grassForChunk } from '../dist/shared/scenery-layout.mjs';
 
 test('five distinct regions share one continuous bounded world and normalized transitions',()=>{
-  assert.equal(WORLD.maxX-WORLD.minX,4096);assert.equal(WORLD.maxZ-WORLD.minZ,2048);
+  assert.equal(WORLD.maxX-WORLD.minX,8192);assert.equal(WORLD.maxZ-WORLD.minZ,4096);
   for(const b of BIOMES)assert.equal(biomeAt(b.x,b.z).id,b.id);
   for(let x=-250;x<380;x+=11)for(let z=-250;z<380;z+=13) {
     const w=biomeWeights(x,z);assert.ok(w.every(n=>n>=0&&Number.isFinite(n)));
@@ -23,10 +23,10 @@ test('moving the camera across the complete world keeps the chunk working set bo
   for(let x=WORLD.minX+4;x<WORLD.maxX;x+=96)for(let z=WORLD.minZ+4;z<WORLD.maxZ;z+=96) {
     const chunks=nearbyChunks(x,z,128);max=Math.max(max,chunks.length);
     assert.equal(new Set(chunks.map(c=>c.key)).size,chunks.length);
-    assert.ok(chunks.every(c=>c.ix>=0&&c.ix<128&&c.iz>=0&&c.iz<64));
+    assert.ok(chunks.every(c=>c.ix>=0&&c.ix<WORLD.width/WORLD.chunkSize&&c.iz>=0&&c.iz<WORLD.depth/WORLD.chunkSize));
     for(const c of chunks)explored.add(c.key);
   }
-  assert.equal(explored.size,8192);assert.ok(max<=70,`Resident chunks grew to ${max}`);
+  assert.equal(explored.size,32768);assert.ok(max<=70,`Resident chunks grew to ${max}`);
 });
 test('negative coordinates, the former valley border, and actual outer borders agree for movement and magic',()=>{
   const collision=new CollisionWorld([],{river:false,coast:false}),p={x:-120,z:180,dx:1,dz:0,lastInput:100,runningRequested:true,species:'cat'};

@@ -2,6 +2,7 @@ import { isMesh } from './three-types.js';
 import { markActiveInstances } from './instance-updates.js';
 import * as THREE from 'three';
 import { EARTH, coastTextureData, geographicWeights } from '../shared/paleo-geography.mjs';
+import { WORLD_BOUNDS } from '../shared/world-bounds.mjs';
 import { BIOMES } from '../shared/biomes.mjs';
 import { regionById } from '../shared/adventure-regions.mjs';
 const shadow = regionById('shadow-realm');
@@ -19,8 +20,8 @@ export function createEarthTextures() {
   for (let z = 0; z < height; z++)
     for (let x = 0; x < width; x++) {
       const w = geographicWeights(
-          EARTH.minX + ((x + 0.5) / width) * EARTH.width,
-          EARTH.minZ + ((z + 0.5) / height) * EARTH.height,
+          WORLD_BOUNDS.minX + ((x + 0.5) / width) * WORLD_BOUNDS.width,
+          WORLD_BOUNDS.minZ + ((z + 0.5) / height) * WORLD_BOUNDS.depth,
         ),
         index = (z * width + x) * 4;
       for (let c = 0; c < 3; c++)
@@ -44,7 +45,7 @@ export function createEarthTextures() {
 }
 const earthShader = `
 uniform sampler2D earthCoast;
-vec2 earthUV(vec2 p){return (p-vec2(${EARTH.minX.toFixed(1)},${EARTH.minZ.toFixed(1)}))/vec2(${EARTH.width.toFixed(1)},${EARTH.height.toFixed(1)});}
+vec2 earthUV(vec2 p){return (p-vec2(${WORLD_BOUNDS.minX.toFixed(1)},${WORLD_BOUNDS.minZ.toFixed(1)}))/vec2(${WORLD_BOUNDS.width.toFixed(1)},${WORLD_BOUNDS.depth.toFixed(1)});}
 float shoreline(vec2 p){return (texture2D(earthCoast,earthUV(p)).r*255.0-128.0)/4.0;}
 `;
 export function clipRiverAtCoast(shader, textures) {

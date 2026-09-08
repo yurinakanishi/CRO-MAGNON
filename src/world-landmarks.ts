@@ -8,12 +8,14 @@ import { terrainHeight } from '../shared/terrain.mjs';
 import { regionFeatureDiagnostics } from './region-feature-diagnostics.js';
 import { ADVENTURE_LANDMARKS } from '../shared/adventure-layout.mjs';
 import { AdventureMaterials } from './adventure-materials.js';
+import { GULF_LANDMARKS } from '../shared/gulf-region.mjs';
 
 const PLACEMENTS = Object.freeze([
   ...LANDMARKS,
   ...REGION_FEATURES,
   CASTLE,
   ...ADVENTURE_LANDMARKS,
+  ...GULF_LANDMARKS,
 ]);
 
 // Meshes and all LODs are verified image-to-3D files. Only nearby landmark types

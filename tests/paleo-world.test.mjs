@@ -17,15 +17,15 @@ test('Earth coordinates round-trip at equator, poles, dateline and the existing 
     const p=geoToWorld(longitude,latitude),geo=worldToGeo(p.x,p.z);assert.ok(Math.abs(geo.longitude-longitude)<1e-10);assert.ok(Math.abs(geo.latitude-latitude)<1e-10);
   }
   const camp=worldToGeo(50,50);assert.ok(camp.longitude>15&&camp.longitude<25&&camp.latitude>45&&camp.latitude<53);
-  assert.equal(WORLD.width,4096);assert.equal(WORLD.depth,2048);assert.equal(EARTH.epochYearsBP,50000);
+  assert.equal(WORLD.width,8192);assert.equal(WORLD.depth,4096);assert.equal(EARTH.epochYearsBP,50000);
 });
 test('archived NOAA base field retains its hash; runtime samples include the explicitly authored gulf',async()=>{
   const meta=JSON.parse(await readFile(new URL('../assets/geography/build.json',import.meta.url))),source=coastTextureData();
   const base=new Uint8Array(COAST_GRID.width*COAST_GRID.height);let cursor=0;
   for(let i=0;i<COAST_RUNS.length;i+=2){base.fill(COAST_RUNS[i+1],cursor,cursor+COAST_RUNS[i]);cursor+=COAST_RUNS[i];}
   assert.equal(createHash('sha256').update(base).digest('hex'),meta.fieldSha256);
-  assert.equal(source.data.byteLength,2097152);assert.equal(meta.seaLevelMetres,-68.3);
-  for(let z=0;z<source.height;z+=37)for(let x=0;x<source.width;x+=41){const d=coastDistance(EARTH.minX+(x+.5)*2,EARTH.minZ+(z+.5)*2);assert.equal(d,(source.data[z*source.width+x]-128)/4);}
+  assert.equal(source.data.byteLength,8388608);assert.equal(meta.seaLevelMetres,-68.3);
+  for(let z=0;z<source.height;z+=37)for(let x=0;x<source.width;x+=41){const d=coastDistance(source.minX+(x+.5)*source.cell,source.minZ+(z+.5)*source.cell);assert.equal(d,(source.data[z*source.width+x]-128)/4);}
 });
 test('major continents and exposed Sunda/Sahul shelves retain their geographic positions',()=>{
   for(const [lon,lat] of [[20,49],[-103,40],[-56,-12],[20,5],[90,45],[134,-26],[-42,73],[20,-78],[112,-3],[137,-10]]){const p=geoToWorld(lon,lat);assert.ok(isLand(p.x,p.z),`${lon}, ${lat} should be land`);}
@@ -34,7 +34,7 @@ test('major continents and exposed Sunda/Sahul shelves retain their geographic p
 test('body sweeps stop on coastlines in multiple continents for people and mammoths',()=>{
   const c=new CollisionWorld([]),source=coastTextureData();let cases=0;
   for(let z=40;z<source.height-40;z+=23)for(let x=40;x<source.width-40;x+=7){
-    const start={x:EARTH.minX+(x+.5)*2,z:EARTH.minZ+(z+.5)*2};if(coastDistance(start.x,start.z)<4)continue;
+    const start={x:source.minX+(x+.5)*source.cell,z:source.minZ+(z+.5)*source.cell};if(coastDistance(start.x,start.z)<4)continue;
     const sea={x:start.x+12,z:start.z};if(isLand(sea.x,sea.z))continue;
     for(const radius of [.24,.32,2.95]){assert.ok(c.free(start,radius));const end=c.move(start,12,0,radius);assert.ok(c.free(end,radius));assert.ok(end.x<sea.x-1);}
     cases++;
@@ -80,6 +80,6 @@ test('expeditions refuse forged coordinates, mounted players, downed players and
 });
 test('ocean, island and polar cameras retain a bounded rectangular working set',()=>{
   for(const point of [...EXPEDITION_STOPS,geoToWorld(-140,0),geoToWorld(179,0),geoToWorld(0,-89)]){
-    const chunks=nearbyChunks(point.x,point.z,128);assert.ok(chunks.length<=70);assert.ok(chunks.every(c=>c.ix<128&&c.iz<64));
+    const chunks=nearbyChunks(point.x,point.z,128);assert.ok(chunks.length<=70);assert.ok(chunks.every(c=>c.ix<WORLD.width/WORLD.chunkSize&&c.iz<WORLD.depth/WORLD.chunkSize));
   }
 });

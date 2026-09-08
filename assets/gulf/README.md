@@ -4,7 +4,9 @@ Implemented in the existing CRO-MAGNON game on 2026-09-08. Open **「三つの�
 
 ## Place and people
 
-The new gulf occupies a reserved **740 × 670 m** rectangle at x −2110…−1370, z 460…1130 inside the existing 4096 × 2048 m world. It adds a horseshoe of land in the Pacific portion of the map. This is explicitly fictional geography, not a reconstruction of an Aegean coastline. The shoreline overlay feeds the same distance grid used by rendering, the map, pedestrian collision and boat collision. Cells outside the rectangle, and pre-existing land cells inside it, retain their original values.
+The expanded gulf occupies **1,480 × 1,340 m** at x −2950…−1470, z 70…1410: four times the original gulf's rectangular area. World bounds are now **8,192 × 4,096 m**, also four times the earlier area. The original Earth projection remains 4,096 × 2,048 m at its existing coordinates; people, structures, boats and continental journeys keep their scale. The extra world extent accommodates the gulf and future exploration; it is not four times as much finished continental content.
+
+This is explicitly fictional geography, not a reconstruction of an Aegean coastline. The original small gulf is replaced by the expanded horseshoe west of the continents. Its shoreline feeds the same **2 m** distance grid used by rendering, the map, pedestrian collision and boat collision. Original continental land cells, scenery and terrain orientation are preserved. World version 4 and gulf version 2 identify this expansion.
 
 | Place | Role in this expansion |
 |---|---|
@@ -26,12 +28,17 @@ The culture descriptions are invented lore. They do not imply that fishing, teac
 5. Walk to the western obsidian outcrops. Gather with **E** or the gathering action. Obsidian enters inventory and personal procurement progress; the stone axe also improves its gathering yield.
 6. Return to Many Hearths. Exchange two obsidian for six wood and two seeds, or prepare a shared gathering by donating eight wood, twelve berries and four obsidian in total. Donations are made in batches of two wood, three berries or one obsidian.
 7. Completing the shared supplies opens a feast. Each character can claim the current feast once at the hearth: three berries, two seeds and up to 35 energy. The supply counters reset for the next gathering.
+8. Visit the six new stopping places and use **E / controller ×** near each hearth to record it. Return to Many Hearths after all six to receive **six wood and four seeds** once. The regional panel tracks the journey and provides walking destinations.
 
 The regional panel also records visits to the four places, harvests and obsidian procurement. Nearby plots and water sources participate in the existing **E** interaction hint. The inventory panel includes obsidian, seeds and carried water. Selected plots remain selected when the panel is reopened after fetching water.
 
 ## Routes, capacity and visuals
 
-The continuous land route rounds the head of the gulf. The three marked beaches support the existing dugout craft/boarding controls, and the western/eastern beaches have a usable water route across the gulf. Within the gulf, the entry expedition cannot be used to skip the return journey; walk or sail back. The panel provides an expedition back to the original starting region.
+The continuous land route rounds the head of the gulf. Five marked beaches support the existing dugout craft/boarding controls. The main western/eastern crossing is approximately **646 m**, with a second crossing between the two outer beaches. At the existing fast boat speed, the main crossing takes about 92 seconds before boarding and landing; walking from the hub to each country follows routes of roughly 280, 586 and 672 m. These are unobstructed route measurements, not promises of actual journey duration.
+
+Six smaller camps provide a hearth, two shelters, wild berries, wood, stone and water: **谷道の休み場**, **泉の林**, **石割りの野営地**, **西の舟待ち浜**, **海岸林の見晴らし**, and **葦の外湾**. Nineteen reused rock formations and sparse groves mark the longer paths. The formations have measured ground collision; they do not add free climbing or a continuous mountain heightfield. The main four settlements retain their 48 farming plots, settlement IDs and local building spacing.
+
+Open the map with **M** and select **「三つの岸の全図」** to inspect the region, or **「現在地の周辺」** for precise shore approaches. Within the gulf, the entry expedition cannot skip the return journey; walk or sail back. The panel provides an expedition back to the original starting region.
 
 The current connection default remains five. `createGameCore({ playerLimit })` now accepts a separate operational limit; the UI displays the server's limit. An eight-player core is tested using the same region and 48 plots. This is functional capacity verification, not a large-server performance claim. The shared boat cap is now 24, independent of connected players. Raising the public service's player cap or changing its billing is outside this change.
 
@@ -46,6 +53,12 @@ Seasons currently change crop duration. Water sources remain available throughou
 ## State and verification
 
 Farm stages and deadlines, gathering supplies, feast cycles and personal progress are server-owned. Proximity, obstruction, inventory capacity and incompatible actions are checked before rewards or costs are applied. Existing saves acquire the new fields and resources without discarding their old content. Reconnection and the existing export/import persistence path preserve the new state; elapsed growing time catches up on return. This does not add automatic disk persistence to the local Node server.
+
+Version 3 saves migrate gulf positions into the enlarged region once. Players near the original four camps retain their local camp offsets; travelling players and boat moorings follow the enlarged coast. An obstructed migrated arrival is moved to safe ground. Original continental player coordinates remain unchanged. Resource IDs restore depletion onto the new authored positions; crops, supplies, affiliation, items and achievements persist. Journey records and their once-only reward are included in future saves.
+
+Current expansion checks and local rollout are recorded in [expansion/qa-summary.json](expansion/qa-summary.json) and [expansion/rollout-qa.json](expansion/rollout-qa.json). The [expansion plan](../../WORLD_EXPANSION_PLAN.md) lists the completed scope and remaining worldbuilding work.
+
+### Original gulf verification (version 1, retained history)
 
 The full suite passed **211/211 tests**, and 34 focused tests passed after the final interface changes. Real Chrome verification covered farming, obsidian procurement and exchange, a crossing of approximately 318 m with landing, and the communal feast. Two Chrome contexts plus three WebSocket peers connected together. Crop time and the initial boat/feast supplies were explicit QA fixtures, as recorded in [qa-summary.json](qa-summary.json).
 

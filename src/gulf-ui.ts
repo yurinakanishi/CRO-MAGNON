@@ -4,6 +4,7 @@ import {
   GULF,
   GULF_ENTRY,
   GULF_WAYPOINTS,
+  GULF_STOPS,
   inGulf,
   LANDINGS,
   MANY_HEARTHS,
@@ -19,6 +20,11 @@ const $ = <T extends HTMLElement = HTMLElement>(s: string) => document.querySele
 export function gulfInteraction(state, me, collision) {
   if (!me || !inGulf(me.x, me.z)) return null;
   const visible = (p) => !collision || interactionVisible(collision, me, p);
+  const stop = GULF_STOPS.find(
+    (s) => distance(me, s) <= 8 && visible(s) && !me.gulf?.waymarks?.includes(s.id),
+  );
+  if (stop)
+    return { action: 'gulfSurvey', targetId: stop.id, label: `${stop.name}を旅路に記録する` };
   const spring = SPRINGS.find((s) => distance(me, s) <= 5 && visible(s));
   if (spring && (me.inventory.water ?? 0) < 6)
     return { action: 'gulfWater', targetId: spring.id, label: '水袋を満たす（6回分）' };
@@ -116,6 +122,7 @@ export function installGulfUI(api) {
       remaining,
       blocked,
       season.name,
+      GULF_STOPS.map((s) => at(s, 8)),
     ]);
     if (sig === signature) return;
     signature = sig;
@@ -151,6 +158,10 @@ export function installGulfUI(api) {
           '',
         )}</div><div class="gulf-actions">${btn('gulf-offer-wood', '木材2を届ける', !nearHearth)}${btn('gulf-offer-berry', 'ベリー3を届ける', !nearHearth)}${btn('gulf-offer-obsidian', '黒曜石1を届ける', !nearHearth)}${btn('gulf-exchange', '黒曜石2 → 木材6・種2', !nearHearth)}${btn('gulf-feast', '宴を囲む', !nearHearth || (world.gulf?.festivals ?? 0) <= (me?.gulf?.lastFeast ?? 0))}</div><p>黒曜石は西の尾根の露頭で採集。木材は舟や道具へ、種は次の畑へ。</p>${btn('gulf-quarry', '黒曜石の露頭へ歩く', !local)}</section></div>
       <section class="gulf-routes"><h4>湾を巡る道</h4><p>湾奥を回る陸路はいつでも使えます。浜で木材12から小舟を作り、Bで乗降。対岸への短い航路も使えます。</p><div class="gulf-actions">${LANDINGS.map((l) => btn(`go-${l.id}`, l.name, !local)).join('')}${btn('gulf-return', 'はじまりの谷へ遠征')}</div></section>`;
+    $('#gulf-detail').insertAdjacentHTML(
+      'beforeend',
+      `<section class="gulf-routes"><h4>六つの休み場を巡る <small>${me?.gulf?.waymarks?.length ?? 0}/${GULF_STOPS.length}</small></h4><p>湾は1,480 × 1,340 m。炉のそばでE／×を使い、道を記録しよう。各地で水と採集資源を補給できます。</p><div class="gulf-stop-list">${GULF_STOPS.map((s) => `<article class="gulf-card"><h4>${s.name}${me?.gulf?.waymarks?.includes(s.id) ? ' · 記録済み' : ''}</h4><p>${s.description}</p><div class="gulf-actions">${btn(`trail-go-${s.id}`, 'ここへ歩く', !local)}${btn(`trail-record-${s.id}`, '旅路を記録する', !at(s, 8) || me?.gulf?.waymarks?.includes(s.id))}</div></article>`).join('')}</div><p>すべて巡って集い場へ戻ると、次の旅の木材6・種4を一度受け取れます。</p>${btn('gulf-trail-reward', me?.gulf?.trailRewarded ? '旅路のお礼は受取済み' : '集い場で旅路を伝える', !nearHearth || !!me?.gulf?.trailRewarded || !GULF_STOPS.every((s) => me?.gulf?.waymarks?.includes(s.id)))}</section>`,
+    );
     const bind = (id, fn) => {
       const node = $<HTMLButtonElement>('#' + id);
       if (node) node.onclick = fn;
@@ -188,6 +199,11 @@ export function installGulfUI(api) {
       bind(`gulf-offer-${key}`, () => action('gulfOffer', key));
     bind('gulf-exchange', () => action('gulfExchange'));
     bind('gulf-feast', () => action('gulfFeast'));
+    bind('gulf-trail-reward', () => action('gulfTrailReward'));
+    for (const stop of GULF_STOPS) {
+      bind(`trail-go-${stop.id}`, () => goTo(stop.x, stop.z + 5, stop.name));
+      bind(`trail-record-${stop.id}`, () => action('gulfSurvey', stop.id));
+    }
     bind('gulf-quarry', () => {
       const p = GULF_WAYPOINTS.find((p) => p.id === 'obsidian-path');
       goTo(p.x, p.z, p.name);

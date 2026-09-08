@@ -57,7 +57,7 @@ test('the biome map controls every tree, rock, camp and resource without adding 
   assert.ok(SCENERY.trees.some(item=>item.surface==='snow'));
   for(const item of SCENERY.trees)assert.ok(['grassland','snow'].includes(biomeAt(item.x,item.z).id));
   for(const item of [...SCENERY.trees,...SCENERY.rocks,...SCENERY.ridges]){
-    const biome=biomeAt(item.x,item.z).id;assert.equal(item.surface??null,BIOME_SCENERY[biome].surface??null);
+    const biome=biomeAt(item.x,item.z).id;assert.equal(item.surface??null,item.id?.startsWith('gulf-grove-')?'valley':BIOME_SCENERY[biome].surface??null);
   }
   for(const stop of JOURNEY_STOPS.filter(stop=>stop.id!=='grassland')){
     const fire=SCENERY.fires.find(item=>item.id===`fire-${stop.id}`);
