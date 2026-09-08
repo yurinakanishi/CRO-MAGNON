@@ -359,3 +359,18 @@ dialog:has(.gulf-panel) .modal-top {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 }
+.supper-residents {
+  padding-left: 1.3rem;
+}
+.supper-residents li {
+  margin: 0.8rem 0;
+}
+.supper-residents span {
+  display: block;
+  line-height: 1.6;
+}
+#supper-panel .gulf-actions button {
+  min-height: 44px;
+  white-space: normal;
+  flex: 1 1 180px;
+}

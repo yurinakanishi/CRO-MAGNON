@@ -63,18 +63,23 @@ export function createPantries(saved?: unknown): PantryState[] {
   return SETTLEMENTS.map((s) => {
     const old = Array.isArray(saved) ? saved.find((p) => p?.settlementId === s.id) : null;
     let remaining = PANTRY.capacity;
-    const food = Object.fromEntries(
-      PANTRY_FOODS.map(({ id }) => {
-        const n = bounded(old?.food?.[id], remaining);
-        remaining -= n;
-        return [id, n];
-      }),
-    ) as PantryState['food'];
-    return { settlementId: s.id, food };
+    const portion = (savedFood) =>
+      Object.fromEntries(
+        PANTRY_FOODS.map(({ id }) => {
+          const n = bounded(savedFood?.[id], remaining);
+          remaining -= n;
+          return [id, n];
+        }),
+      ) as PantryState['food'];
+    const food = portion(old?.food),
+      supper = portion(old?.supper);
+    return { settlementId: s.id, food, supper, supperShells: bounded(old?.supperShells, 99) };
   });
 }
 export const pantryTotal = (pantry?: PantryState) =>
-  PANTRY_FOODS.reduce((n, f) => n + (pantry?.food[f.id] ?? 0), 0);
+  PANTRY_FOODS.reduce((n, f) => n + (pantry?.food[f.id] ?? 0) + (pantry?.supper?.[f.id] ?? 0), 0);
+export const supperTotal = (pantry?: PantryState) =>
+  PANTRY_FOODS.reduce((n, f) => n + (pantry?.supper?.[f.id] ?? 0), 0);
 export function normalizePantryAllowance(value): PantryAllowance {
   return {
     day: bounded(value?.day, Number.MAX_SAFE_INTEGER),

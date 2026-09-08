@@ -1,0 +1,456 @@
+{
+  "at": "2026-09-08T23:46:03.613Z",
+  "status": "passed",
+  "tests": {
+    "all": 324,
+    "related": 21,
+    "residentSupper": 11,
+    "failures": 0,
+    "corePlayerCount": 8,
+    "rotationDays": 8
+  },
+  "build": {
+    "isolated": "passed",
+    "normal": "passed",
+    "strict": "passed",
+    "node": "passed",
+    "cloudflareModules": "passed",
+    "syntax": "Syntax checked 158 JavaScript files.",
+    "architecture": "Architecture boundaries passed: domain → application → host adapters; browser → domain.",
+    "format": "Checking formatting...\r\nAll matched files use Prettier code style!"
+  },
+  "assets": {
+    "models": 39,
+    "deliveredGLBs": 54,
+    "newGLBs": 0,
+    "newDependencies": 0,
+    "previousGLBsUnchanged": true
+  },
+  "browser": {
+    "at": "2026-09-08T23:36:41.053Z",
+    "base": "http://127.0.0.1:55495",
+    "errors": [],
+    "fixtures": [
+      {
+        "kind": "position",
+        "id": "c68b1f99-64eb-4b51-9691-9aed80692324",
+        "purpose": "prepare supper beside the main hearth",
+        "x": -2272,
+        "z": 455
+      },
+      {
+        "kind": "position",
+        "id": "6d9005d7-cabb-4b5b-b128-f5b9dcfafffb",
+        "purpose": "other player beside same food store",
+        "x": -2268,
+        "z": 455
+      },
+      {
+        "kind": "inventory",
+        "a": {
+          "wood": 0,
+          "stone": 0,
+          "berry": 4,
+          "rawMeat": 0,
+          "cookedMeat": 4,
+          "rootSeed": 0,
+          "herbSeed": 0,
+          "rawRoot": 0,
+          "herb": 0,
+          "cookedRoot": 4,
+          "herbRoot": 4,
+          "rawShellfish": 0,
+          "cookedShellfish": 4,
+          "shells": 0,
+          "obsidianBlade": 0,
+          "rawFish": 0,
+          "cookedFish": 4,
+          "obsidian": 0,
+          "seed": 0,
+          "water": 0
+        },
+        "b": {
+          "wood": 0,
+          "stone": 0,
+          "berry": 0,
+          "rawMeat": 0,
+          "cookedMeat": 0,
+          "rootSeed": 0,
+          "herbSeed": 0,
+          "rawRoot": 0,
+          "herb": 0,
+          "cookedRoot": 0,
+          "herbRoot": 0,
+          "rawShellfish": 0,
+          "cookedShellfish": 0,
+          "shells": 0,
+          "obsidianBlade": 0,
+          "rawFish": 0,
+          "cookedFish": 0,
+          "obsidian": 0,
+          "seed": 0,
+          "water": 0
+        },
+        "purpose": "food source for serving; no claim of gathering/cooking this stock"
+      },
+      {
+        "kind": "clock",
+        "elapsed": 70000,
+        "purpose": "afternoon preparation"
+      },
+      {
+        "kind": "household-visits",
+        "purpose": "all three visiting households; full journeys were not walked in this browser test"
+      },
+      {
+        "kind": "position",
+        "id": "aru",
+        "purpose": "afternoon work position before ordinary evening walk",
+        "x": -2256,
+        "z": 443
+      },
+      {
+        "kind": "position",
+        "id": "seno",
+        "purpose": "afternoon work position before ordinary evening walk",
+        "x": -2258,
+        "z": 455.5
+      },
+      {
+        "kind": "position",
+        "id": "mira",
+        "purpose": "afternoon work position before ordinary evening walk",
+        "x": -2291,
+        "z": 463
+      },
+      {
+        "kind": "position",
+        "id": "tovan",
+        "purpose": "afternoon work position before ordinary evening walk",
+        "x": -2286,
+        "z": 467
+      },
+      {
+        "kind": "position",
+        "id": "ena",
+        "purpose": "afternoon work position before ordinary evening walk",
+        "x": -2289,
+        "z": 428
+      },
+      {
+        "kind": "position",
+        "id": "rok",
+        "purpose": "afternoon work position before ordinary evening walk",
+        "x": -2284,
+        "z": 432
+      },
+      {
+        "kind": "position",
+        "id": "neri",
+        "purpose": "afternoon work position before ordinary evening walk",
+        "x": -2243,
+        "z": 463
+      },
+      {
+        "kind": "position",
+        "id": "daro",
+        "purpose": "afternoon work position before ordinary evening walk",
+        "x": -2238,
+        "z": 467
+      },
+      {
+        "kind": "clock",
+        "elapsed": 117000,
+        "purpose": "evening begins in three seconds; subsequent resident walking and eating use real elapsed time"
+      },
+      {
+        "kind": "position",
+        "id": "6d9005d7-cabb-4b5b-b128-f5b9dcfafffb",
+        "purpose": "carry actual meal shells to existing midden from a prepared nearby position",
+        "x": -2282,
+        "z": 464
+      },
+      {
+        "kind": "clock",
+        "elapsed": 355000,
+        "purpose": "next day just before evening; one remaining portion for the next daily meal"
+      }
+    ],
+    "completed": [
+      "six foods explicitly reserved through normal UI; second Chrome sees stock; common berry remains separate",
+      "unused supper returns to common food; another player receives it under the daily allowance and reserves it again",
+      "all eight residents follow actual evening walks from prepared afternoon positions, then consume exactly eight reserved portions; three shells remain and common food is preserved",
+      "simulated Gamepad food selection survives shell stock updates; 390x844 and 844x390 scroll, 44px targets and controller Back work",
+      "player receives three meal shells and deposits them into existing growing midden; food allowance is unchanged by shells",
+      "same-tab reconnect keeps portions, returned shells, meal records and inventory without another meal",
+      "next day permits one fresh meal, without backfilling missed days or taking common food"
+    ],
+    "observations": 235,
+    "maxPlayers": 5,
+    "violations": [],
+    "screenshots": [
+      {
+        "name": "01-loaded",
+        "fps": "15",
+        "chunks": "68"
+      },
+      {
+        "name": "02-eight-suppers",
+        "fps": "60",
+        "chunks": "64"
+      },
+      {
+        "name": "03-evening-walk",
+        "fps": "60",
+        "chunks": "64"
+      },
+      {
+        "name": "04-everyone-fed",
+        "fps": "60",
+        "chunks": "64"
+      },
+      {
+        "name": "05-supper-390",
+        "fps": "60",
+        "chunks": "64"
+      },
+      {
+        "name": "05-supper-844",
+        "fps": "60",
+        "chunks": "64"
+      },
+      {
+        "name": "06-next-evening",
+        "fps": "60",
+        "chunks": "64"
+      }
+    ],
+    "viewports": [
+      {
+        "width": 390,
+        "scrollWidth": 390,
+        "overflow": false,
+        "buttons": [
+          {
+            "id": "supper-food-berry",
+            "height": 68,
+            "width": 156
+          },
+          {
+            "id": "supper-food-cookedMeat",
+            "height": 68,
+            "width": 156
+          },
+          {
+            "id": "supper-food-cookedFish",
+            "height": 68,
+            "width": 156
+          },
+          {
+            "id": "supper-food-cookedShellfish",
+            "height": 68,
+            "width": 156
+          },
+          {
+            "id": "supper-food-cookedRoot",
+            "height": 68,
+            "width": 156
+          },
+          {
+            "id": "supper-food-herbRoot",
+            "height": 68,
+            "width": 156
+          },
+          {
+            "id": "supper-give",
+            "height": 44,
+            "width": 294
+          },
+          {
+            "id": "supper-release",
+            "height": 44,
+            "width": 294
+          },
+          {
+            "id": "supper-shell-take",
+            "height": 44,
+            "width": 294
+          },
+          {
+            "id": "supper-go",
+            "height": 44,
+            "width": 320
+          },
+          {
+            "id": "supper-back",
+            "height": 44,
+            "width": 320
+          }
+        ]
+      },
+      {
+        "width": 844,
+        "scrollWidth": 844,
+        "overflow": false,
+        "buttons": [
+          {
+            "id": "supper-food-berry",
+            "height": 68,
+            "width": 243.921875
+          },
+          {
+            "id": "supper-food-cookedMeat",
+            "height": 68,
+            "width": 243.9375
+          },
+          {
+            "id": "supper-food-cookedFish",
+            "height": 68,
+            "width": 243.9375
+          },
+          {
+            "id": "supper-food-cookedShellfish",
+            "height": 68,
+            "width": 243.921875
+          },
+          {
+            "id": "supper-food-cookedRoot",
+            "height": 68,
+            "width": 243.9375
+          },
+          {
+            "id": "supper-food-herbRoot",
+            "height": 68,
+            "width": 243.9375
+          },
+          {
+            "id": "supper-give",
+            "height": 44,
+            "width": 353.390625
+          },
+          {
+            "id": "supper-release",
+            "height": 44,
+            "width": 353.40625
+          },
+          {
+            "id": "supper-shell-take",
+            "height": 44,
+            "width": 713.796875
+          },
+          {
+            "id": "supper-go",
+            "height": 44,
+            "width": 370.390625
+          },
+          {
+            "id": "supper-back",
+            "height": 44,
+            "width": 370.40625
+          }
+        ]
+      }
+    ],
+    "scope": "Two real Chrome views and three network peers. Inventory, player proximity, visiting household state, afternoon resident positions and three clock changes are explicit fixtures. Evening walks and food consumption follow actual elapsed time. Gamepad API input only is simulated. No physical controller/mobile device, full gathering/cooking or complete journey, large-room load, long-duration or constant 60FPS claim."
+  },
+  "normal": {
+    "at": "2026-09-08T23:43:24.231Z",
+    "base": "http://127.0.0.1:3000",
+    "errors": [],
+    "checks": [
+      {
+        "path": "src/supper-ui.js",
+        "sha256": "9a6dd03e1cd62e444c56869a0f3f0d960548a2650b817f6550887fde6667a5fc"
+      },
+      {
+        "path": "src/pantry-ui.js",
+        "sha256": "13725ab51d6d0751807d642b7ede8bedfafdabbcd7fe734fa00ba0cc34428358"
+      },
+      {
+        "path": "src/village-ui.js",
+        "sha256": "85809711ae1098185bcfabb62790fe113240aec68b14605cf8bf73454c263652"
+      },
+      {
+        "path": "src/gulf.css",
+        "sha256": "c5572e97a09882088db07ed4a3f2afd13516c3136015c3f2d41f55b72d1f583a"
+      },
+      {
+        "path": "shared/supper.mjs",
+        "sha256": "30df726de59948055614a8b6ff192109678e4fb604b1d036d0b896ca70541c87"
+      },
+      {
+        "path": "shared/pantry.mjs",
+        "sha256": "1141d3ec5918dde72d3f6c504d2ff76d951a05db88ab85d2a5c62569e5ffa324"
+      },
+      {
+        "path": "shared/gulf-life.mjs",
+        "sha256": "166bda237e8303714b291a313044dfa9f2f82945c823d65f9dcec4b4225d1871"
+      },
+      {
+        "path": "shared/village-life.mjs",
+        "sha256": "58de89f6d354d2b8db27feafb738df9b2dce81a25cf923b44c6c431da489b1c4"
+      }
+    ],
+    "completed": [
+      "Standard expedition and three welcome berries only: one berry moved back to common food and two reserved for resident supper; no position/inventory/time mutations.",
+      "Without advancing the clock, both gathering residents follow their evening routine and eat exactly two reserved berries; the common berry remains.",
+      "Reload preserves inventory and meal records; existing resident directory displays both meals; portrait and landscape remain usable."
+    ],
+    "fixture": "Separate QA room, standard expedition and welcome berries only. No inventory/position/clock fixtures or user-room access. Evening elapsed in real time.",
+    "rollout": {
+      "at": "2026-09-08T23:40:54.5046310Z",
+      "previousPid": 18104,
+      "pid": 20716,
+      "before": {
+        "ok": true,
+        "ridingVersion": 1,
+        "combatVersion": 3,
+        "characterVersion": 2,
+        "enemyVersion": 1,
+        "worldVersion": 4,
+        "worldSize": 8192,
+        "worldWidth": 8192,
+        "worldDepth": 4096,
+        "epochYearsBP": 50000,
+        "rooms": 0,
+        "players": 0,
+        "maxPlayers": 5
+      },
+      "after": {
+        "ok": true,
+        "ridingVersion": 1,
+        "combatVersion": 3,
+        "characterVersion": 2,
+        "enemyVersion": 1,
+        "worldVersion": 4,
+        "worldSize": 8192,
+        "worldWidth": 8192,
+        "worldDepth": 4096,
+        "epochYearsBP": 50000,
+        "rooms": 0,
+        "players": 0,
+        "maxPlayers": 5
+      },
+      "startup": "node server.mjs",
+      "restorationApplied": false,
+      "reason": "Immediately before restart, zero rooms and players; reconnect sessions are retained within rooms.",
+      "automaticDiskPersistence": false,
+      "publicDeployment": false
+    }
+  },
+  "validationSequence": "Eight-guest browser run completed on r02. The final ordering refinement uses each settlement population rather than all eight world residents; 21 related tests (including eight-day alternation), the entire 324-test suite, and ordinary local Chrome supper were run after that refinement.",
+  "screenshots": [
+    "prepared.png",
+    "evening-walk.png",
+    "meals.png",
+    "portrait.png",
+    "landscape.png",
+    "next-evening.png"
+  ],
+  "limits": [
+    "No physical controller/mobile device or large-room/long-duration performance verification.",
+    "Prepared browser fixture inventory and positions, visits and clock are distinct from the ordinary local test with unmodified inventory/positions/time.",
+    "Existing Idle_Loop used for meal activity; no dedicated eating animation or plate model.",
+    "No full subsistence/food production/spoilage/population/politics simulation, automatic Node disk persistence, public deployment or billing changes."
+  ]
+}

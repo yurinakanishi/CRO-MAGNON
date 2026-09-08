@@ -1,4 +1,5 @@
 import type { Gender, Inventory, Point, Species, MovableActor } from './types.mjs';
+import type { ResidentSupper } from './supper-types.mjs';
 
 export interface ResidentRoutine extends Point {
   label: string;
@@ -26,6 +27,7 @@ export interface ResidentSnapshot extends Point {
   moving: boolean;
   activity: string;
   clip: string;
+  supper?: ResidentSupper | null;
 }
 export interface Resident extends MovableActor {
   id: string;
@@ -36,4 +38,6 @@ export interface Resident extends MovableActor {
   destination: ResidentRoutine | null;
   talkUntil: number;
   talkerId: string | null;
+  supper: ResidentSupper | null;
+  supperUntil: number;
 }

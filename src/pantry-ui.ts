@@ -5,14 +5,15 @@ import {
   pantryTotal,
   pantryRemaining,
   pantryAvailable,
+  supperTotal,
 } from '../shared/pantry.mjs';
+import { installSupperUI } from './supper-ui.js';
 import { interactionVisible } from '../shared/interactions.mjs';
 
 const distance = (a, b) => (a && b ? Math.hypot(a.x - b.x, a.z - b.z) : Infinity);
-export function installPantryUI(
-  { player, state, available, action, goTo, openModal, collision },
-  back,
-) {
+export function installPantryUI(api, back) {
+  const { player, state, available, action, goTo, openModal, collision } = api;
+  const supper = installSupperUI(api, (id) => open(id));
   let settlementId: string = MANY_HEARTHS.id,
     foodId = PANTRY_FOODS[0].id,
     readyAt = 0;
@@ -55,9 +56,15 @@ export function installPantryUI(
       goTo(s.x, s.z + 5, s.name);
     };
     $('pantry-back').onclick = back;
+    $('pantry-back').insertAdjacentHTML(
+      'beforebegin',
+      '<button id="pantry-supper" class="button button-outline">住人の夕食</button>',
+    );
+    $('pantry-supper').onclick = () => supper.open(settlementId);
     update();
   }
   function update() {
+    supper.update();
     if (!$('pantry-panel') || !document.querySelector<HTMLDialogElement>('#modal')?.open) return;
     const world = state(),
       me = player(),
@@ -73,7 +80,10 @@ export function installPantryUI(
       near =
         distance(me, s) <= PANTRY.reach && (!collision || interactionVisible(collision, me, s)),
       ready = Date.now() >= readyAt;
-    text('pantry-capacity', `置き場の食料 ${total} / ${PANTRY.capacity}`);
+    text(
+      'pantry-capacity',
+      `置き場の食料 ${total} / ${PANTRY.capacity} · うち住人の夕食 ${supperTotal(pantry)}`,
+    );
     text('pantry-allowance', `${day}日目 · 今日あと${remaining}個受け取れます`);
     for (const item of PANTRY_FOODS) {
       $('pantry-food-' + item.id).setAttribute('aria-pressed', String(item.id === foodId));

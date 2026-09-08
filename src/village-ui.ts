@@ -10,6 +10,7 @@ import { interactionVisible } from '../shared/interactions.mjs';
 import { attackProfile } from '../shared/combat-profiles.mjs';
 import { householdFor, householdLabel } from '../shared/household-sites.mjs';
 import { installHouseholdUI } from './household-ui.js';
+import { supperLabel } from '../shared/supper.mjs';
 
 const distance = (a, b) => (a && b ? Math.hypot(a.x - b.x, a.z - b.z) : Infinity);
 export function residentAvailable(me, now = Date.now()) {
@@ -77,6 +78,10 @@ export function installVillageUI({ player, state, available, action, goTo, openM
         `<div id="village-panel" data-person="${d.id}"><p class="screen-eyebrow">炉のそばの話</p><h2>${d.name}</h2><p class="modal-intro">${SETTLEMENTS.find((s) => s.id === d.settlementId).name} · <span id="village-clock"></span></p><p id="resident-activity-${d.id}"></p><blockquote class="resident-speech">${d.introduction}</blockquote><section class="gulf-card"><h3>今日の手伝い</h3><p>${d.request}</p><p id="resident-supplies"></p><p>お礼：${bundleLabel(d.reward)}</p><p id="resident-result" role="status"></p><div class="gulf-actions">${button('resident-help', '材料を渡して手伝う')}${button('resident-talk', 'もう少し話す')}</div></section><div class="gulf-actions">${button('resident-back', '集落の人びとへ')}</div></div>`,
       );
       bind('resident-help', () => action('residentHelp', d.id));
+      $('resident-activity-' + d.id).insertAdjacentHTML(
+        'afterend',
+        `<p id="resident-supper-${d.id}"></p>`,
+      );
       bind('resident-talk', () => talk(d.id));
       bind('resident-back', () => directory());
       const back = $('resident-back');
@@ -106,6 +111,10 @@ export function installVillageUI({ player, state, available, action, goTo, openM
       directory();
     };
     for (const d of RESIDENTS) {
+      $('resident-activity-' + d.id).insertAdjacentHTML(
+        'afterend',
+        `<p id="resident-supper-${d.id}"></p>`,
+      );
       bind('resident-open-' + d.id, () => open(d.id));
       bind('resident-near-' + d.id, () => {
         const r = state().residents?.find((p) => p.id === d.id);
@@ -139,6 +148,7 @@ export function installVillageUI({ player, state, available, action, goTo, openM
     for (const d of RESIDENTS) {
       const r = world.residents?.find((p) => p.id === d.id);
       const done = (me?.gulf?.residentHelp?.[d.id] ?? 0) >= day;
+      text('resident-supper-' + d.id, supperLabel(r?.supper, day));
       const household = householdFor(d.id);
       const journey = world.households?.find((h) => h.id === household?.id);
       const card = $('resident-card-' + d.id);

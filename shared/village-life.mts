@@ -6,6 +6,8 @@ import { ridingObstacles } from './riding.mjs';
 import { movePlayer } from './movement.mjs';
 import { planNavigation, updateNavigation } from './navigation.mjs';
 import type { Resident, ResidentSnapshot } from './village-types.mjs';
+import { normalizeResidentSupper, restingAfterSupper } from './supper.mjs';
+import { PANTRY_FOODS } from './pantry.mjs';
 import {
   createHouseholds,
   ensureHouseholdProgress,
@@ -30,7 +32,7 @@ export function ensureVillageProgress(player) {
   return progress;
 }
 
-export function createResidents(room, saved = []): Resident[] {
+export function createResidents(room, saved = [], now = Date.now()): Resident[] {
   room.households ??= createHouseholds();
   room.residents = [];
   for (const definition of RESIDENTS) {
@@ -66,6 +68,8 @@ export function createResidents(room, saved = []): Resident[] {
       clip: 'Idle_Loop',
       talkUntil: 0,
       talkerId: null,
+      supper: normalizeResidentSupper(old?.supper, villageDay(now, room.createdAt)),
+      supperUntil: 0,
     };
     room.residents.push(resident);
   }
@@ -73,17 +77,20 @@ export function createResidents(room, saved = []): Resident[] {
 }
 
 export const residentSnapshots = (room): ResidentSnapshot[] =>
-  (room.residents ?? []).map(({ id, x, z, facing, radius, speed, moving, activity, clip }) => ({
-    id,
-    x,
-    z,
-    facing,
-    radius,
-    speed,
-    moving,
-    activity,
-    clip,
-  }));
+  (room.residents ?? []).map(
+    ({ id, x, z, facing, radius, speed, moving, activity, clip, supper }) => ({
+      id,
+      x,
+      z,
+      facing,
+      radius,
+      speed,
+      moving,
+      activity,
+      clip,
+      supper: supper ? { ...supper } : null,
+    }),
+  );
 
 export function updateResidents(room, dt: number, now: number) {
   const phase = villagePhase(now, room.createdAt);
@@ -104,6 +111,12 @@ export function updateResidents(room, dt: number, now: number) {
       continue;
     }
     resident.talkerId = null;
+    if (restingAfterSupper(room, resident, now)) {
+      stopActor(resident);
+      resident.activity = `炉で${PANTRY_FOODS.find((f) => f.id === resident.supper.foodId).name}を分け合っている`;
+      resident.clip = 'Idle_Loop';
+      continue;
+    }
     const dynamic = ridingObstacles(room, null, resident);
     const assignment = householdAssignment(room, resident.id, phase);
     const routineKey = assignment?.key ?? `home:${phase}`;

@@ -1,0 +1,85 @@
+{
+  "at": "2026-09-08T23:40:54.5046310Z",
+  "previousPid": 18104,
+  "pid": 20716,
+  "before": {
+    "ok": true,
+    "ridingVersion": 1,
+    "combatVersion": 3,
+    "characterVersion": 2,
+    "enemyVersion": 1,
+    "worldVersion": 4,
+    "worldSize": 8192,
+    "worldWidth": 8192,
+    "worldDepth": 4096,
+    "epochYearsBP": 50000,
+    "rooms": 0,
+    "players": 0,
+    "maxPlayers": 5
+  },
+  "after": {
+    "ok": true,
+    "ridingVersion": 1,
+    "combatVersion": 3,
+    "characterVersion": 2,
+    "enemyVersion": 1,
+    "worldVersion": 4,
+    "worldSize": 8192,
+    "worldWidth": 8192,
+    "worldDepth": 4096,
+    "epochYearsBP": 50000,
+    "rooms": 0,
+    "players": 0,
+    "maxPlayers": 5
+  },
+  "startup": "node server.mjs",
+  "restorationApplied": false,
+  "reason": "Immediately before restart, zero rooms and players; reconnect sessions are retained within rooms.",
+  "automaticDiskPersistence": false,
+  "publicDeployment": false,
+  "browser": {
+    "at": "2026-09-08T23:43:24.231Z",
+    "base": "http://127.0.0.1:3000",
+    "errors": [],
+    "checks": [
+      {
+        "path": "src/supper-ui.js",
+        "sha256": "9a6dd03e1cd62e444c56869a0f3f0d960548a2650b817f6550887fde6667a5fc"
+      },
+      {
+        "path": "src/pantry-ui.js",
+        "sha256": "13725ab51d6d0751807d642b7ede8bedfafdabbcd7fe734fa00ba0cc34428358"
+      },
+      {
+        "path": "src/village-ui.js",
+        "sha256": "85809711ae1098185bcfabb62790fe113240aec68b14605cf8bf73454c263652"
+      },
+      {
+        "path": "src/gulf.css",
+        "sha256": "c5572e97a09882088db07ed4a3f2afd13516c3136015c3f2d41f55b72d1f583a"
+      },
+      {
+        "path": "shared/supper.mjs",
+        "sha256": "30df726de59948055614a8b6ff192109678e4fb604b1d036d0b896ca70541c87"
+      },
+      {
+        "path": "shared/pantry.mjs",
+        "sha256": "1141d3ec5918dde72d3f6c504d2ff76d951a05db88ab85d2a5c62569e5ffa324"
+      },
+      {
+        "path": "shared/gulf-life.mjs",
+        "sha256": "166bda237e8303714b291a313044dfa9f2f82945c823d65f9dcec4b4225d1871"
+      },
+      {
+        "path": "shared/village-life.mjs",
+        "sha256": "58de89f6d354d2b8db27feafb738df9b2dce81a25cf923b44c6c431da489b1c4"
+      }
+    ],
+    "completed": [
+      "Standard expedition and three welcome berries only: one berry moved back to common food and two reserved for resident supper; no position/inventory/time mutations.",
+      "Without advancing the clock, both gathering residents follow their evening routine and eat exactly two reserved berries; the common berry remains.",
+      "Reload preserves inventory and meal records; existing resident directory displays both meals; portrait and landscape remain usable."
+    ],
+    "fixture": "Separate QA room, standard expedition and welcome berries only. No inventory/position/clock fixtures or user-room access. Evening elapsed in real time."
+  }
+}

@@ -1,0 +1,29 @@
+✔ legacy pantry food is preserved before supper capacity, and malformed meal records grant no food or future meals (2.0964ms)
+✔ six foods can be earmarked and released at all four hearths; returns do not bypass the player daily allowance (14.4594ms)
+✔ invalid, distant, obstructed, busy and full storage actions leave all possessions and portions unchanged (0.9849ms)
+✔ all eight residents walk their ordinary evening routes and consume one reserved meal each, preserving common food (263.2897ms)
+✔ meal timing does not eat common stock, duplicate a day, backfill missed days, or consume in an empty room (0.9138ms)
+✔ meal waits for arrival, conversation and a clear hearth; eight-second rest yields to conversation, night and departure (1.4658ms)
+✔ visiting households eat at the gathering place and never twice across relocation; travellers do not eat (135.2085ms)
+✔ a scarce meal rotates between the two home residents across days (1.6131ms)
+✔ shellfish leaves exactly one recoverable shell; full shell stock keeps shellfish and chooses other food (0.5423ms)
+✔ eight-player wire races preserve the last space, portion and shell; meal changes broadcast inside the usual interval (156.3862ms)
+✔ completed meals, portions and shells survive export, reconnect and restore without replaying a meal or persisting its animation (323.5407ms)
+✔ eight residents span four camps and both human populations without fixed economic classes (2.6429ms)
+✔ two full days of routines reach all workplaces without static or resident overlap (1199.5485ms)
+✔ conversation holds a nearby resident then releases on departure or disconnect (91.1724ms)
+✔ every request consumes its stated bundle and gives exactly its stated reward (1.595ms)
+✔ missing supplies, full rewards, remote/occluded and invalid targets never spend materials (0.3878ms)
+✔ day boundary is authoritative and each player has an independent daily allowance (0.4183ms)
+✔ busy states refuse both talk and delivery; residents are not attack targets (0.6842ms)
+✔ eight active players coexist with residents; wire state excludes navigation and conversation internals (125.3107ms)
+✔ save, reconnect and legacy records preserve progress without restoring an old conversation (325.5677ms)
+✔ player movement respects a resident body, while live proximity UI selects that person (131.3914ms)
+ℹ tests 21
+ℹ suites 0
+ℹ pass 21
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 2612.589

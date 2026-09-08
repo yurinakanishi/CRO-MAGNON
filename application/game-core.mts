@@ -25,6 +25,7 @@ import { characterModel, normalizeCharacter } from '../shared/characters.mjs';
 import { CollisionWorld, overlap } from '../shared/collision.mjs';
 import { attackProfile } from '../shared/combat-profiles.mjs';
 import { handleBarterCommand, cancelBarter, updateBarters } from '../shared/barter.mjs';
+import { updateSuppers } from '../shared/supper.mjs';
 import { enemyIsSolid, stopActor } from '../shared/combat.mjs';
 import { createEnemies, updateEnemies } from '../shared/enemies.mjs';
 import { takeExpedition } from '../shared/expeditions.mjs';
@@ -148,7 +149,7 @@ export function createGameCore({
       );
       room.animals = createAnimals(room.collision);
       room.enemies = createEnemies(room.collision, room.animals);
-      createResidents(room);
+      createResidents(room, [], runtime.now());
       rooms.set(roomName, room);
     }
     return room;
@@ -513,11 +514,12 @@ export function createGameCore({
       }
       updateBoats(room, dt, now);
       updateResidents(room, dt, now);
+      const supperChanged = updateSuppers(room, now);
       const huntingChanged = updateHunting(room, now, notice);
       updateAnimals(room, dt, now);
       const enemiesChanged = updateEnemies(room, dt, now, notice);
       updateAdventures(room, now, notice);
-      const gulfChanged = updateGulf(room, now);
+      const gulfChanged = updateGulf(room, now) || supperChanged;
       const fishingChanged = updateFishing(room, now, notice);
       const coastalChanged = updateCoastal(room, now, notice);
       const barterChanged = updateBarters(room, now);
@@ -667,7 +669,7 @@ export function createGameCore({
           room.sessions.set(entry.token, { expiresAt: entry.expiresAt, player });
         }
       room.households = createHouseholds(record.households, runtime.now());
-      createResidents(room, record.residents);
+      createResidents(room, record.residents, runtime.now());
     }
   }
 

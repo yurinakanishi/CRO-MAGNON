@@ -254,7 +254,7 @@ test('eight active players coexist with residents; wire state excludes navigatio
     assert.ok(sockets.every((s) => s.messages.some((m) => m.type === 'welcome')));
     assert.deepEqual(
       Object.keys(snap.residents[0]).sort(),
-      ['id', 'x', 'z', 'facing', 'radius', 'speed', 'moving', 'activity', 'clip'].sort(),
+      ['id', 'x', 'z', 'facing', 'radius', 'speed', 'moving', 'activity', 'clip', 'supper'].sort(),
     );
     assert.ok(snap.residents.every((n) => !snap.players.some((p) => p.id === n.id)));
   } finally {

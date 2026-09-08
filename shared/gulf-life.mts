@@ -9,6 +9,7 @@ import {
 } from './gulf-region.mjs';
 import { interactionVisible } from './interactions.mjs';
 import { createPantries, normalizePantryAllowance, handlePantryAction } from './pantry.mjs';
+import { handleSupperAction } from './supper.mjs';
 import type { GulfProgress, GulfState } from './gulf-types.mjs';
 import { createShoals } from './fishing-sites.mjs';
 import { createShellBeds, createMiddens } from './coastal-sites.mjs';
@@ -126,6 +127,8 @@ export function handleGulfAction(room, player, message, now = Date.now()) {
   const atHearth = near(MANY_HEARTHS, 9);
   const settlement = SETTLEMENTS.find((s) => near(s, 9));
   const action = message.action;
+  const supper = handleSupperAction(room, player, message, now);
+  if (supper) return supper;
   const pantry = handlePantryAction(room, player, message, now);
   if (pantry) return pantry;
   if (action === 'gulfSurvey') {
