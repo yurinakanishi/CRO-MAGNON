@@ -23,6 +23,7 @@ export function ridingObstacles(room, animal, rider) {
     .concat(
       room.animals.filter((a) => a !== animal && ['alive', 'dying'].includes(a.phase)),
       (room.enemies || []).filter(enemyIsSolid),
+      (room.residents || []).filter((r) => r !== rider),
     )
     .map(circle);
 }

@@ -250,6 +250,7 @@ export function updateHunting(
         ...room.players.values(),
         ...room.animals.filter((other) => other !== animal && animalIsSolid(other)),
         ...(room.enemies || []).filter(enemyIsSolid),
+        ...(room.residents || []),
       ]);
       const spawn = room.collision.nearestFree(
         animal.home,

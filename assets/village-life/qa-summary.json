@@ -1,0 +1,206 @@
+{
+  "at": "2026-09-08T10:46:21.771Z",
+  "status": "complete-local",
+  "scope": {
+    "settlements": 4,
+    "residents": 8,
+    "routinesPerResident": 4,
+    "dayMs": 240000,
+    "defaultPlayerLimit": 5,
+    "coreTestPlayerLimit": 8,
+    "newGLBs": 0,
+    "newDependencies": 0
+  },
+  "tests": {
+    "passed": 262,
+    "failed": 0,
+    "finalRelevant": 11,
+    "typeScript": "normal, Cloudflare and strict build passed",
+    "architecture": "passed",
+    "syntax": "134 JavaScript files passed",
+    "format": "source check passed"
+  },
+  "browser": {
+    "renderedPages": 2,
+    "communicationPeers": 3,
+    "maxPlayers": 5,
+    "samples": 321,
+    "collisionViolations": 0,
+    "errors": [],
+    "completed": [
+      "ordinary expedition, welcome, approach button, E conversation and first delivery",
+      "reload preserves identity, daily progress and inventory",
+      "conversation and exact delivery: seno",
+      "conversation and exact delivery: mira",
+      "conversation and exact delivery: tovan",
+      "conversation and exact delivery: ena",
+      "conversation and exact delivery: rok",
+      "conversation and exact delivery: neri",
+      "conversation and exact delivery: daro",
+      "second player receives same resident daily request independently",
+      "next-day reset, visible walking, simulated gamepad confirmation, portrait and landscape dialogs",
+      "distant resident actors released and same shared models loaded on return"
+    ],
+    "viewports": [
+      {
+        "width": 390,
+        "scrollWidth": 390,
+        "buttons": [
+          {
+            "id": "resident-help",
+            "width": 141,
+            "height": 44
+          },
+          {
+            "id": "resident-talk",
+            "width": 141,
+            "height": 44
+          },
+          {
+            "id": "resident-back",
+            "width": 320,
+            "height": 44
+          }
+        ],
+        "modal": {
+          "x": 16,
+          "y": 42.203125,
+          "width": 358,
+          "height": 759.59375,
+          "top": 42.203125,
+          "right": 374,
+          "bottom": 801.796875,
+          "left": 16
+        }
+      },
+      {
+        "width": 844,
+        "scrollWidth": 844,
+        "buttons": [
+          {
+            "id": "resident-help",
+            "width": 131.375,
+            "height": 44
+          },
+          {
+            "id": "resident-talk",
+            "width": 97.484375,
+            "height": 44
+          },
+          {
+            "id": "resident-back",
+            "width": 108.5625,
+            "height": 44
+          }
+        ],
+        "modal": {
+          "x": 102,
+          "y": 19.5,
+          "width": 640,
+          "height": 351,
+          "top": 19.5,
+          "right": 742,
+          "bottom": 370.5,
+          "left": 102
+        }
+      }
+    ],
+    "notes": [
+      "Circle-body and static-collider observations; not a triangle-to-triangle body overlap proof.",
+      "First expedition, welcome, approach, conversation and Aru help used ordinary UI.",
+      "Other country arrivals and supplies, and next-day clock advance are recorded fixtures.",
+      "Gamepad API simulated; physical controller not tested."
+    ],
+    "fps": [
+      {
+        "screenshot": "01-loaded",
+        "value": "18"
+      },
+      {
+        "screenshot": "02-first-conversation",
+        "value": "60"
+      },
+      {
+        "screenshot": "03-resident-in-world",
+        "value": "60"
+      },
+      {
+        "screenshot": "04-conversation-mira",
+        "value": "60"
+      },
+      {
+        "screenshot": "05-world-mira",
+        "value": "60"
+      },
+      {
+        "screenshot": "04-conversation-rok",
+        "value": "60"
+      },
+      {
+        "screenshot": "05-world-rok",
+        "value": "60"
+      },
+      {
+        "screenshot": "04-conversation-neri",
+        "value": "58"
+      },
+      {
+        "screenshot": "05-world-neri",
+        "value": "60"
+      },
+      {
+        "screenshot": "06-new-day-walking",
+        "value": "60"
+      },
+      {
+        "screenshot": "07-dialog-390",
+        "value": "60"
+      },
+      {
+        "screenshot": "08-directory-390",
+        "value": "60"
+      },
+      {
+        "screenshot": "07-dialog-844",
+        "value": "57"
+      },
+      {
+        "screenshot": "08-directory-844",
+        "value": "57"
+      },
+      {
+        "screenshot": "09-returned-residents",
+        "value": "60"
+      }
+    ],
+    "report": "game-qa/r03/report.json"
+  },
+  "assets": {
+    "models": 38,
+    "GLBs": 53,
+    "preserved": true,
+    "report": "assets-qa.json"
+  },
+  "rollout": {
+    "errors": [],
+    "modules": 7,
+    "residents": 8,
+    "report": "rollout/report.json"
+  },
+  "earlierAttempts": [
+    {
+      "report": "game-qa/attempts/r01-report.json",
+      "reason": "QA assertion read disabled state before the browser received its authoritative acknowledgement; added a DOM wait."
+    },
+    {
+      "report": "game-qa/attempts/r02-report.json",
+      "reason": "QA attempted the intentionally hidden gulf HUD button in compact landscape layout; use the ordinary pause-menu route."
+    }
+  ],
+  "limits": [
+    "No household migration or population/food production simulation.",
+    "No new crop species, maritime weather, currents or complex politics.",
+    "No physical mobile hardware, large-player load or long-duration performance validation.",
+    "No public deployment, billing change or automatic Node disk persistence."
+  ]
+}

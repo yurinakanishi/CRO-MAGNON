@@ -49,6 +49,7 @@ import { FISHING } from '../shared/fishing-sites.mjs';
 import { COASTAL } from '../shared/coastal-sites.mjs';
 import { installCoastalUI, coastalInteraction } from './coastal-ui.js';
 import { installGulfUI, gulfInteraction } from './gulf-ui.js';
+import { installVillageUI, residentInteraction } from './village-ui.js';
 import { GULF_ENTRY, inGulf } from '../shared/gulf-region.mjs';
 import { ScreenManager, AreaBanner, guideMarkup, keyPrompts } from './screens.js';
 const EXPEDITION_STOPS = [...EARTH_STOPS, ...ADVENTURE_STOPS, GULF_ENTRY];
@@ -309,6 +310,15 @@ const gulfUI = installGulfUI({
   send,
   stopInput,
 });
+const villageUI = installVillageUI({
+  player,
+  state: () => state,
+  available: () => joined && !renderUnavailable,
+  action,
+  goTo,
+  openModal,
+  collision: renderer.collision,
+});
 $('.hotbar-wrap').insertAdjacentHTML(
   'afterbegin',
   `<div class="hunt-controls"><button id="attack-button" class="hunt-button attack-button" title="槍で攻撃 [F / 5]">${icon('spear')}<kbd>F</kbd><span>槍で攻撃</span></button><button id="meat-inventory" class="hunt-button meat-counts" title="生肉は焚き火で焼いてから食べられます">${icon('meat')}<span>生 <b id="rawMeat-count">0</b> / 焼 <b id="cookedMeat-count">0</b></span></button><button id="cook-button" class="hunt-button" title="近くの焚き火で肉を焼く">${icon('flame')}<span>焼く</span></button><button id="eat-meat-button" class="hunt-button" title="焼き肉で元気を45回復">食べる</button></div><div id="cooking-status" class="cooking-status" hidden><span id="cooking-label">肉を焼いています…</span><progress id="cooking-progress" max="1" value="0" aria-label="肉を焼く進み具合"></progress><button id="cancel-cook">中止</button></div>`,
@@ -528,6 +538,8 @@ function nearby(): { action: string; label: string; targetId?: string } | null {
   if (hunting) return hunting;
   const adventure = adventureInteraction(me, renderer.collision);
   if (adventure) return adventure;
+  const resident = residentInteraction(state, me, renderer.collision);
+  if (resident) return resident;
   const gulf = gulfInteraction(state, me, renderer.collision);
   if (gulf) return gulf;
   const objects: { x: number; z: number; action: string; label: string; range: number }[] =
@@ -602,6 +614,7 @@ function updateHUD() {
   gulfUI.update();
   fishingUI.update();
   coastalUI.update();
+  villageUI.update();
   if ($('#modal').open && $('#big-map')) drawMinimap($('#big-map'), true);
 }
 function updateModalHUD() {
@@ -674,6 +687,10 @@ function action(type, targetId?) {
   }
   if (type === 'coastalOpen') {
     coastalUI.open();
+    return;
+  }
+  if (type === 'residentOpen') {
+    villageUI.open(targetId);
     return;
   }
   if (player()?.boatId && !['boardBoat', 'fish', 'cancelFishing'].includes(type))
@@ -1279,6 +1296,7 @@ function openPauseMenu() {
     ['gulf', 'wave', '三つの国・共同の畑', () => gulfUI.open()],
     ['fishing', 'wave', '魚場と釣り方', () => fishingUI.open()],
     ['coastal', 'stone', '貝塚・黒曜石の道具', () => coastalUI.open()],
+    ['residents', 'wave', '集落の人びと・今日の手伝い', () => villageUI.open()],
     ['tribe', 'people', '部族の仲間・招待', openTribe],
     ['help', 'help', 'あそびかた', openHelp],
     ['shore', 'arrow', '船を作れる海岸へ', () => $('#boat-shore').click()],

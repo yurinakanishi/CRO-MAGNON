@@ -28,6 +28,6 @@ The earlier live session had expired before rollout; the first fresh checkpoint 
 
 ## Limits
 
-The subsequent user-requested addition is complete locally and tracked in [COASTAL_CRAFT_PLAN.md](COASTAL_CRAFT_PLAN.md): collect and eat shellfish, build shared shell middens, start the four human appearances with a bare wooden spear, and knap mined obsidian into a blade that can be mounted on the spear. Cat and mage retain their weapons. NPC life and country-specific activities remain on the broader roadmap.
+The subsequent user-requested addition is complete locally and tracked in [COASTAL_CRAFT_PLAN.md](COASTAL_CRAFT_PLAN.md): collect and eat shellfish, build shared shell middens, start the four human appearances with a bare wooden spear, and knap mined obsidian into a blade that can be mounted on the spear. Cat and mage retain their weapons. The next incremental work, eight named residents with local daily routines, conversations and country-specific help requests, is tracked in [VILLAGE_LIFE_PLAN.md](VILLAGE_LIFE_PLAN.md).
 
 This expansion does not claim to finish every worldbuilding proposal. Fishing was subsequently completed, tracked in [FISHING_PLAN.md](FISHING_PLAN.md). NPC household migration, complex politics, additional crop species and simulated maritime weather remain separate work. The scale expansion itself added no GLBs; the later shellfish/tool increment adds five. No public deployment or billing changes were made.

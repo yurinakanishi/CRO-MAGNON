@@ -41,6 +41,7 @@ const dynamicActors = (room, except) =>
     ...room.players.values(),
     ...(room.animals || []).filter(solidAnimal),
     ...(room.enemies || []).filter(enemyIsSolid),
+    ...(room.residents || []),
   ]
     .filter((actor) => actor !== except)
     .map(circle);

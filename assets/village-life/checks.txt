@@ -1,0 +1,32 @@
+2026-09-08 verification
+
+Full suite: node --test output/village-life/preview/tests/*.test.mjs
+262 tests, 262 passed, 0 failed. Actual output retained in test-results.txt.
+
+Final relevant checks after shortening conversation notices:
+node --test output/village-life/preview/tests/village-life.test.mjs output/village-life/preview/tests/paleo-server.test.mjs
+11 tests, 11 passed, 0 failed.
+
+node scripts/build.mjs
+Built browser, shared domain, application, Node and Cloudflare modules.
+This build includes tsconfig.json, tsconfig.cloudflare.json and tsconfig.strict.json.
+
+node scripts/check-architecture.mjs
+Architecture boundaries passed: domain -> application -> host adapters; browser -> domain.
+
+prettier --check all TypeScript source
+All matched files use Prettier code style!
+
+node scripts/check-syntax.mjs
+Syntax checked 134 JavaScript files.
+
+git diff --check
+No whitespace errors. Git's CRLF-to-LF notices are normalization warnings.
+
+Real Chrome: scripts/qa-village-life.mjs (isolated preview)
+Final r03: 2 Chrome contexts plus 3 communication peers, 321 samples, 0 errors, 0 collision violations.
+Actual report: game-qa/r03/report.json. Earlier QA-harness failures are retained under game-qa/attempts/.
+
+Normal local server: scripts/qa-village-rollout.mjs
+7 served modules match the final build; 8 residents; 390x844 and 844x390; no browser errors.
+Actual report: rollout/report.json.

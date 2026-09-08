@@ -441,3 +441,15 @@ dialog:has(.earth-map){width:min(1040px,94vw);max-width:1040px}
 /* Portrait phones: chat expands over the hotbar so the input stays reachable. */
 @media(max-height:700px) and (max-width:599px){.hotbar-wrap{bottom:46px;gap:6px}.chat-panel{bottom:46px;left:12px;right:12px;width:auto;z-index:5}.chat-panel:has(#chat-content[hidden]){bottom:8px;left:12px;right:auto;width:auto}.chat-panel:has(#chat-content[hidden]) .chat-heading strong{display:none}.chat-panel:has(#chat-content[hidden]) .chat-heading{padding:6px 8px;gap:4px}.game-viewport:has(#chat-content:not([hidden])) .hotbar-wrap{visibility:hidden}.game-viewport:has(#cooking-status:not([hidden])) .hunting-card{display:none}}
 @media(prefers-reduced-motion:reduce){*,*:before,*:after{animation:none!important;transition:none!important}.area-banner.visible{opacity:1}}
+
+/* Village conversations keep controller focus while live activities update. */
+.resident-cards{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;margin:18px 0}
+.resident-select{display:grid;gap:8px;margin:18px 0}
+.resident-select select{width:100%;min-height:44px;padding:10px;color:inherit;background:#263b32;border:1px solid #c4b58e70;border-radius:6px;font:inherit}
+.resident-speech{margin:20px 0;padding:14px 18px;border-left:3px solid #c6ad76;background:#263b3260;line-height:1.9}
+#village-panel p{line-height:1.8;overflow-wrap:anywhere}
+#village-panel .gulf-actions{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px}
+#village-panel .button{white-space:normal;height:auto;min-height:44px;line-height:1.6;padding:10px 14px}
+#village-panel .gulf-card{padding:14px;border:1px solid #c4b58e40;border-radius:8px}
+.world-label.resident{background:#182a25b8;padding:6px 10px;border-radius:6px;max-width:220px;white-space:normal}
+@media(max-width:560px){.resident-cards{grid-template-columns:1fr}#village-panel .gulf-actions .button{flex:1 1 140px}}

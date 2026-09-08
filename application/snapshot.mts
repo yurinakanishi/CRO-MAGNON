@@ -3,12 +3,15 @@ import { BOATING } from '../shared/boats.mjs';
 import { EARTH } from '../shared/paleo-geography.mjs';
 import { RIDING } from '../shared/riding.mjs';
 import { NPC, WORLD } from '../shared/world.mjs';
+import { residentSnapshots } from '../shared/village-life.mjs';
+import { VILLAGE, villageDay } from '../shared/village-sites.mjs';
 export function snapshot(
   room,
   includeWorld = false,
   now = Date.now(),
 ): import('../shared/snapshots.mjs').GameSnapshot {
   return {
+    residents: residentSnapshots(room),
     boatingVersion: BOATING.version,
     adventureVersion: ADVENTURE_VERSION,
     boats: room.boats.map(({ id, x, z, facing, radius, riderId, speed, moving, running }) => ({
@@ -219,8 +222,8 @@ export function snapshot(
           gulf: structuredClone(room.gulf),
         }
       : {}),
-    day: 1 + Math.floor((now - room.createdAt) / 240000),
-    dayProgress: ((now - room.createdAt) % 240000) / 240000,
+    day: villageDay(now, room.createdAt),
+    dayProgress: (Math.max(0, now - room.createdAt) % VILLAGE.dayMs) / VILLAGE.dayMs,
     completed: room.camp.level >= 1,
   };
 }

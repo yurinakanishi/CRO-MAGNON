@@ -2,6 +2,7 @@ import type { Gender, Inventory, Point, Resource, Species } from './types.mjs';
 import type { FishingActivity } from './fishing-types.mjs';
 import type { CoastalActivity } from './coastal-types.mjs';
 import type { GulfState, GulfProgress } from './gulf-types.mjs';
+import type { ResidentSnapshot } from './village-types.mjs';
 
 /** Public wire data. Connections, session tokens and simulation paths never belong here. */
 export interface AdventureProgress {
@@ -136,6 +137,7 @@ export interface GameSnapshot {
   worldDepth: number;
   epochYearsBP: number;
   players: PlayerSnapshot[];
+  residents?: ResidentSnapshot[];
   animals: AnimalSnapshot[];
   enemies: EnemySnapshot[];
   boats: BoatSnapshot[];

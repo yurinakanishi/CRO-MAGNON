@@ -1,4 +1,10 @@
 import { updateFishing, cancelFishing } from '../shared/fishing.mjs';
+import {
+  createResidents,
+  updateResidents,
+  ensureVillageProgress,
+  residentSnapshots,
+} from '../shared/village-life.mjs';
 import { updateCoastal, cancelCoastal } from '../shared/coastal-craft.mjs';
 import { activateMiddenObstacle } from '../shared/coastal-sites.mjs';
 import { ensureAdventure, updateAdventures } from '../shared/adventures.mjs';
@@ -137,6 +143,7 @@ export function createGameCore({
       );
       room.animals = createAnimals(room.collision);
       room.enemies = createEnemies(room.collision, room.animals);
+      createResidents(room);
       rooms.set(roomName, room);
     }
     return room;
@@ -213,10 +220,11 @@ export function createGameCore({
     player.radius = characterModel(player).radius ?? WORLD.playerRadius;
     ensureAdventure(player);
     ensureGulfPlayer(player);
+    ensureVillageProgress(player);
     if (active?.boatId) releaseBoat(room, player);
     const dynamic = [...room.players.values()]
       .filter((p) => p !== player && !p.mountId)
-      .concat(room.animals.filter(animalIsSolid), room.enemies.filter(enemyIsSolid))
+      .concat(room.animals.filter(animalIsSolid), room.enemies.filter(enemyIsSolid), room.residents)
       .map(actorObstacle);
     const spawn =
       room.collision.nearestFree(player, player.radius, dynamic) ||
@@ -454,7 +462,11 @@ export function createGameCore({
         if (!player.target) player.target = player.path.shift() || null;
         const dynamic = [...room.players.values()]
           .filter((p) => p !== player)
-          .concat(room.animals.filter(animalIsSolid), room.enemies.filter(enemyIsSolid))
+          .concat(
+            room.animals.filter(animalIsSolid),
+            room.enemies.filter(enemyIsSolid),
+            room.residents,
+          )
           .map(actorObstacle);
         if (
           player.downedUntil ||
@@ -479,6 +491,7 @@ export function createGameCore({
         }
       }
       updateBoats(room, dt, now);
+      updateResidents(room, dt, now);
       const huntingChanged = updateHunting(room, now, notice);
       updateAnimals(room, dt, now);
       const enemiesChanged = updateEnemies(room, dt, now, notice);
@@ -497,6 +510,7 @@ export function createGameCore({
               ...room.players.values(),
               ...room.animals.filter(animalIsSolid),
               ...room.enemies.filter(enemyIsSolid),
+              ...room.residents,
             ].some((actor) => overlap(actor, actor.radius, obstacle))
           )
             continue;
@@ -547,6 +561,7 @@ export function createGameCore({
               enemies: room.enemies,
               boats: room.boats,
               gulf: room.gulf,
+              residents: residentSnapshots(room),
               sessions: sessions.slice(-100),
             },
             (key, value) => (key === 'socket' ? undefined : value),
@@ -613,6 +628,7 @@ export function createGameCore({
           cancelFishing(player);
           cancelCoastal(player);
           ensureGulfPlayer(player);
+          ensureVillageProgress(player);
           if (movedGulfPlayers.has(player) && !room.collision.free(player, player.radius ?? 0.32)) {
             const safe =
               room.collision.nearestFree(player, player.radius ?? 0.32, [], 80) ??
@@ -625,6 +641,7 @@ export function createGameCore({
           }
           room.sessions.set(entry.token, { expiresAt: entry.expiresAt, player });
         }
+      createResidents(room, record.residents);
     }
   }
 

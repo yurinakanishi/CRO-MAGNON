@@ -1,0 +1,6 @@
+{
+  "startedAt": "2026-09-08T10:42:24.6443697Z",
+  "checkpointRestored": false,
+  "command": "node server.mjs",
+  "pid": 31344
+}

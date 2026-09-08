@@ -1,0 +1,2659 @@
+{
+  "at": "2026-09-08T10:30:33.412Z",
+  "base": "http://127.0.0.1:57485",
+  "errors": [
+    "AssertionError [ERR_ASSERTION]: The expression evaluated to a falsy value:\n\n  assert.ok(await a.locator('#resident-help').isDisabled())\n"
+  ],
+  "fixtures": [],
+  "completed": [],
+  "screenshots": [
+    {
+      "name": "01-loaded",
+      "diagnostics": {
+        "fps": "33",
+        "residents": "0",
+        "chunks": "68",
+        "models": "23"
+      }
+    },
+    {
+      "name": "failure",
+      "diagnostics": {
+        "fps": "60",
+        "residents": "2",
+        "chunks": "68",
+        "models": "22"
+      }
+    }
+  ],
+  "viewports": [],
+  "observations": 137,
+  "maxPlayers": 5,
+  "renderedPages": 2,
+  "peers": 3,
+  "collisionViolations": [],
+  "state": {
+    "residents": [
+      {
+        "id": "aru",
+        "x": -2293,
+        "z": 433,
+        "facing": 0.46050527594604646,
+        "radius": 0.32,
+        "speed": 0,
+        "moving": false,
+        "activity": "旅人と話している",
+        "clip": "Idle_Loop"
+      },
+      {
+        "id": "seno",
+        "x": -2292,
+        "z": 469,
+        "facing": 0,
+        "radius": 0.32,
+        "speed": 0,
+        "moving": false,
+        "activity": "薪を選んでいる",
+        "clip": "Gather"
+      },
+      {
+        "id": "mira",
+        "x": -2553,
+        "z": 333,
+        "facing": 3.141592653589793,
+        "radius": 0.32,
+        "speed": 0,
+        "moving": false,
+        "activity": "食べられる実を選んでいる",
+        "clip": "Gather"
+      },
+      {
+        "id": "tovan",
+        "x": -2552,
+        "z": 369,
+        "facing": 0,
+        "radius": 0.32,
+        "speed": 0,
+        "moving": false,
+        "activity": "薪を選んでいる",
+        "clip": "Gather"
+      },
+      {
+        "id": "ena",
+        "x": -2733,
+        "z": 813,
+        "facing": 3.141592653589793,
+        "radius": 0.32,
+        "speed": 0,
+        "moving": false,
+        "activity": "食べられる実を選んでいる",
+        "clip": "Gather"
+      },
+      {
+        "id": "rok",
+        "x": -2732,
+        "z": 849,
+        "facing": 0,
+        "radius": 0.32,
+        "speed": 0,
+        "moving": false,
+        "activity": "薪を選んでいる",
+        "clip": "Gather"
+      },
+      {
+        "id": "neri",
+        "x": -1753,
+        "z": 833,
+        "facing": 3.141592653589793,
+        "radius": 0.32,
+        "speed": 0,
+        "moving": false,
+        "activity": "食べられる実を選んでいる",
+        "clip": "Gather"
+      },
+      {
+        "id": "daro",
+        "x": -1752,
+        "z": 869,
+        "facing": 0,
+        "radius": 0.32,
+        "speed": 0,
+        "moving": false,
+        "activity": "薪を選んでいる",
+        "clip": "Gather"
+      }
+    ],
+    "boatingVersion": 1,
+    "adventureVersion": 1,
+    "boats": [],
+    "type": "state",
+    "ridingVersion": 1,
+    "combatVersion": 3,
+    "characterVersion": 2,
+    "enemyVersion": 1,
+    "worldVersion": 4,
+    "playerLimit": 5,
+    "worldWidth": 8192,
+    "worldDepth": 4096,
+    "epochYearsBP": 50000,
+    "room": "VILLAGE-QA",
+    "serverTime": 1788863433412,
+    "projectiles": [],
+    "projectileImpacts": [],
+    "animals": [
+      {
+        "id": "mammoth-1",
+        "x": 21.134178946150524,
+        "z": 20.886977413285695,
+        "facing": -1.112471643562524,
+        "speed": 0.3541667000000216,
+        "scale": 1,
+        "radius": 2.9473143603559735,
+        "clip": "Walk_Loop",
+        "phase": "alive",
+        "health": 100,
+        "maxHealth": 100,
+        "meatRemaining": 0,
+        "phaseStartedAt": 1788863385604
+      },
+      {
+        "id": "mammoth-2",
+        "x": 22.166180651175637,
+        "z": 84.94278304211883,
+        "facing": -0.1962032384762781,
+        "speed": 0.2691666920000269,
+        "scale": 0.76,
+        "radius": 2.25915891387054,
+        "clip": "Walk_Loop",
+        "phase": "alive",
+        "health": 100,
+        "maxHealth": 100,
+        "meatRemaining": 0,
+        "phaseStartedAt": 1788863385604
+      }
+    ],
+    "enemies": [
+      {
+        "id": "crow-shaman-1",
+        "modelKey": "crow-shaman",
+        "name": "白羽の呪術師",
+        "hostile": true,
+        "x": 153.26104160914127,
+        "z": -6.626500527593456,
+        "scale": 1,
+        "facing": 2.204205712436026,
+        "speed": 0.699999999999979,
+        "radius": 0.48,
+        "clip": "Walk_Loop",
+        "phase": "alive",
+        "health": 75,
+        "maxHealth": 75,
+        "phaseStartedAt": 1788863385606,
+        "behavior": "roam",
+        "targetId": null,
+        "attackSequence": 0,
+        "attackAt": 0,
+        "hitSequence": 0,
+        "hitAt": 0
+      },
+      {
+        "id": "guardian-stone-forest-1",
+        "modelKey": "crow-shaman",
+        "name": "石の森の番人",
+        "hostile": true,
+        "x": 1000.7912249953582,
+        "z": 91.18108481333928,
+        "scale": 1,
+        "facing": 3.1198053656424283,
+        "speed": 0.69999999999988,
+        "radius": 0.48,
+        "clip": "Walk_Loop",
+        "phase": "alive",
+        "health": 75,
+        "maxHealth": 75,
+        "phaseStartedAt": 1788863385606,
+        "behavior": "roam",
+        "targetId": null,
+        "attackSequence": 0,
+        "attackAt": 0,
+        "hitSequence": 0,
+        "hitAt": 0
+      },
+      {
+        "id": "guardian-blue-chasm-1",
+        "modelKey": "crow-shaman",
+        "name": "氷の峡谷の番人",
+        "hostile": true,
+        "x": -1575.1649992417301,
+        "z": -102.81694211032843,
+        "scale": 1,
+        "facing": 3.1209004052557177,
+        "speed": 0.6999999999999712,
+        "radius": 0.48,
+        "clip": "Walk_Loop",
+        "phase": "alive",
+        "health": 100,
+        "maxHealth": 100,
+        "phaseStartedAt": 1788863385606,
+        "behavior": "roam",
+        "targetId": null,
+        "attackSequence": 0,
+        "attackAt": 0,
+        "hitSequence": 0,
+        "hitAt": 0
+      },
+      {
+        "id": "guardian-shadow-realm-1",
+        "modelKey": "crow-shaman",
+        "name": "裏世界の番人・1",
+        "hostile": true,
+        "x": 1000.7912249953583,
+        "z": 1531.1810848133384,
+        "scale": 1,
+        "facing": 3.1198053656424545,
+        "speed": 0.7000000000007157,
+        "radius": 0.48,
+        "clip": "Walk_Loop",
+        "phase": "alive",
+        "health": 125,
+        "maxHealth": 125,
+        "phaseStartedAt": 1788863385606,
+        "behavior": "roam",
+        "targetId": null,
+        "attackSequence": 0,
+        "attackAt": 0,
+        "hitSequence": 0,
+        "hitAt": 0
+      },
+      {
+        "id": "guardian-shadow-realm-2",
+        "modelKey": "crow-shaman",
+        "name": "裏世界の番人・2",
+        "hostile": true,
+        "x": 1016.7912249953583,
+        "z": 1512.1810848133384,
+        "scale": 1,
+        "facing": 3.1198053656424545,
+        "speed": 0.7000000000007157,
+        "radius": 0.48,
+        "clip": "Walk_Loop",
+        "phase": "alive",
+        "health": 125,
+        "maxHealth": 125,
+        "phaseStartedAt": 1788863385606,
+        "behavior": "roam",
+        "targetId": null,
+        "attackSequence": 0,
+        "attackAt": 0,
+        "hitSequence": 0,
+        "hitAt": 0
+      }
+    ],
+    "players": [
+      {
+        "id": "cf0b6731-4b31-4c51-af3f-0bef5b4ce814",
+        "name": "暮らしA",
+        "species": "cro",
+        "gender": "female",
+        "x": -2291.7083232724895,
+        "z": 435.60377626516856,
+        "radius": 0.32,
+        "color": "#e4ac65",
+        "inventory": {
+          "wood": 2,
+          "stone": 0,
+          "berry": 1,
+          "rawMeat": 0,
+          "cookedMeat": 0,
+          "rawShellfish": 0,
+          "cookedShellfish": 0,
+          "shells": 0,
+          "obsidianBlade": 0,
+          "rawFish": 0,
+          "cookedFish": 0,
+          "obsidian": 0,
+          "seed": 6,
+          "water": 0
+        },
+        "gathered": 0,
+        "tool": false,
+        "ready": false,
+        "energy": 100,
+        "facing": -2.3608562775747446,
+        "moving": false,
+        "running": false,
+        "speed": 0,
+        "attackSequence": 0,
+        "attackAt": 0,
+        "cookingEndsAt": 0,
+        "fishing": null,
+        "coastalActivity": null,
+        "spearHead": "wood",
+        "hurtSequence": 0,
+        "hurtAt": 0,
+        "defeatSequence": 0,
+        "downedUntil": 0,
+        "invulnerableUntil": 0,
+        "mountId": null,
+        "boatId": null,
+        "adventure": {
+          "regions": {}
+        },
+        "gulf": {
+          "countryId": null,
+          "welcomed": true,
+          "visited": [
+            "many-hearths"
+          ],
+          "harvested": 0,
+          "procured": 0,
+          "delivered": 0,
+          "lastFeast": 0,
+          "fishingKit": false,
+          "shellfishGathered": 0,
+          "shellsReturned": 0,
+          "bladesKnapped": 0,
+          "fishCaught": 0,
+          "fishShared": 0,
+          "waymarks": [],
+          "trailRewarded": false,
+          "metResidents": [
+            "aru"
+          ],
+          "residentHelp": {
+            "aru": 1
+          }
+        }
+      },
+      {
+        "id": "5161634c-0345-4d6b-9cce-2f382cd8eb58",
+        "name": "暮らしB",
+        "species": "nea",
+        "gender": "male",
+        "x": -2270.636396103068,
+        "z": 455.6363961030679,
+        "radius": 0.32,
+        "color": "#87b899",
+        "inventory": {
+          "wood": 0,
+          "stone": 0,
+          "berry": 0,
+          "rawMeat": 0,
+          "cookedMeat": 0,
+          "rawShellfish": 0,
+          "cookedShellfish": 0,
+          "shells": 0,
+          "obsidianBlade": 0,
+          "rawFish": 0,
+          "cookedFish": 0,
+          "obsidian": 0,
+          "seed": 0,
+          "water": 0
+        },
+        "gathered": 0,
+        "tool": false,
+        "ready": false,
+        "energy": 100,
+        "facing": 0,
+        "moving": false,
+        "running": false,
+        "speed": 0,
+        "attackSequence": 0,
+        "attackAt": 0,
+        "cookingEndsAt": 0,
+        "fishing": null,
+        "coastalActivity": null,
+        "spearHead": "wood",
+        "hurtSequence": 0,
+        "hurtAt": 0,
+        "defeatSequence": 0,
+        "downedUntil": 0,
+        "invulnerableUntil": 0,
+        "mountId": null,
+        "boatId": null,
+        "adventure": {
+          "regions": {}
+        },
+        "gulf": {
+          "countryId": null,
+          "welcomed": false,
+          "visited": [
+            "many-hearths"
+          ],
+          "harvested": 0,
+          "procured": 0,
+          "delivered": 0,
+          "lastFeast": 0,
+          "fishingKit": false,
+          "shellfishGathered": 0,
+          "shellsReturned": 0,
+          "bladesKnapped": 0,
+          "fishCaught": 0,
+          "fishShared": 0,
+          "waymarks": [],
+          "trailRewarded": false,
+          "metResidents": [],
+          "residentHelp": {}
+        }
+      },
+      {
+        "id": "e75d390f-b985-48bb-b639-16c9ed69f455",
+        "name": "Peer0",
+        "species": "cro",
+        "gender": "female",
+        "x": -2270,
+        "z": 455,
+        "radius": 0.32,
+        "color": "#b49cd2",
+        "inventory": {
+          "wood": 0,
+          "stone": 0,
+          "berry": 0,
+          "rawMeat": 0,
+          "cookedMeat": 0,
+          "rawShellfish": 0,
+          "cookedShellfish": 0,
+          "shells": 0,
+          "obsidianBlade": 0,
+          "rawFish": 0,
+          "cookedFish": 0,
+          "obsidian": 0,
+          "seed": 0,
+          "water": 0
+        },
+        "gathered": 0,
+        "tool": false,
+        "ready": false,
+        "energy": 100,
+        "facing": 0,
+        "moving": false,
+        "running": false,
+        "speed": 0,
+        "attackSequence": 0,
+        "attackAt": 0,
+        "cookingEndsAt": 0,
+        "fishing": null,
+        "coastalActivity": null,
+        "spearHead": "wood",
+        "hurtSequence": 0,
+        "hurtAt": 0,
+        "defeatSequence": 0,
+        "downedUntil": 0,
+        "invulnerableUntil": 0,
+        "mountId": null,
+        "boatId": null,
+        "adventure": {
+          "regions": {}
+        },
+        "gulf": {
+          "countryId": null,
+          "welcomed": false,
+          "visited": [
+            "many-hearths"
+          ],
+          "harvested": 0,
+          "procured": 0,
+          "delivered": 0,
+          "lastFeast": 0,
+          "fishingKit": false,
+          "shellfishGathered": 0,
+          "shellsReturned": 0,
+          "bladesKnapped": 0,
+          "fishCaught": 0,
+          "fishShared": 0,
+          "waymarks": [],
+          "trailRewarded": false,
+          "metResidents": [],
+          "residentHelp": {}
+        }
+      },
+      {
+        "id": "8a6dfff1-a610-43eb-965f-331b8f5a15a6",
+        "name": "Peer1",
+        "species": "cro",
+        "gender": "female",
+        "x": -2269.1,
+        "z": 455,
+        "radius": 0.32,
+        "color": "#76a7c3",
+        "inventory": {
+          "wood": 0,
+          "stone": 0,
+          "berry": 0,
+          "rawMeat": 0,
+          "cookedMeat": 0,
+          "rawShellfish": 0,
+          "cookedShellfish": 0,
+          "shells": 0,
+          "obsidianBlade": 0,
+          "rawFish": 0,
+          "cookedFish": 0,
+          "obsidian": 0,
+          "seed": 0,
+          "water": 0
+        },
+        "gathered": 0,
+        "tool": false,
+        "ready": false,
+        "energy": 100,
+        "facing": 0,
+        "moving": false,
+        "running": false,
+        "speed": 0,
+        "attackSequence": 0,
+        "attackAt": 0,
+        "cookingEndsAt": 0,
+        "fishing": null,
+        "coastalActivity": null,
+        "spearHead": "wood",
+        "hurtSequence": 0,
+        "hurtAt": 0,
+        "defeatSequence": 0,
+        "downedUntil": 0,
+        "invulnerableUntil": 0,
+        "mountId": null,
+        "boatId": null,
+        "adventure": {
+          "regions": {}
+        },
+        "gulf": {
+          "countryId": null,
+          "welcomed": false,
+          "visited": [
+            "many-hearths"
+          ],
+          "harvested": 0,
+          "procured": 0,
+          "delivered": 0,
+          "lastFeast": 0,
+          "fishingKit": false,
+          "shellfishGathered": 0,
+          "shellsReturned": 0,
+          "bladesKnapped": 0,
+          "fishCaught": 0,
+          "fishShared": 0,
+          "waymarks": [],
+          "trailRewarded": false,
+          "metResidents": [],
+          "residentHelp": {}
+        }
+      },
+      {
+        "id": "51a1a58e-370a-4194-b4f4-a00e96c03ba8",
+        "name": "Peer2",
+        "species": "cro",
+        "gender": "female",
+        "x": -2269.363603896932,
+        "z": 455.6363961030679,
+        "radius": 0.32,
+        "color": "#ce8c8b",
+        "inventory": {
+          "wood": 0,
+          "stone": 0,
+          "berry": 0,
+          "rawMeat": 0,
+          "cookedMeat": 0,
+          "rawShellfish": 0,
+          "cookedShellfish": 0,
+          "shells": 0,
+          "obsidianBlade": 0,
+          "rawFish": 0,
+          "cookedFish": 0,
+          "obsidian": 0,
+          "seed": 0,
+          "water": 0
+        },
+        "gathered": 0,
+        "tool": false,
+        "ready": false,
+        "energy": 100,
+        "facing": 0,
+        "moving": false,
+        "running": false,
+        "speed": 0,
+        "attackSequence": 0,
+        "attackAt": 0,
+        "cookingEndsAt": 0,
+        "fishing": null,
+        "coastalActivity": null,
+        "spearHead": "wood",
+        "hurtSequence": 0,
+        "hurtAt": 0,
+        "defeatSequence": 0,
+        "downedUntil": 0,
+        "invulnerableUntil": 0,
+        "mountId": null,
+        "boatId": null,
+        "adventure": {
+          "regions": {}
+        },
+        "gulf": {
+          "countryId": null,
+          "welcomed": false,
+          "visited": [
+            "many-hearths"
+          ],
+          "harvested": 0,
+          "procured": 0,
+          "delivered": 0,
+          "lastFeast": 0,
+          "fishingKit": false,
+          "shellfishGathered": 0,
+          "shellsReturned": 0,
+          "bladesKnapped": 0,
+          "fishCaught": 0,
+          "fishShared": 0,
+          "waymarks": [],
+          "trailRewarded": false,
+          "metResidents": [],
+          "residentHelp": {}
+        }
+      }
+    ],
+    "resources": [
+      {
+        "id": "wood-1",
+        "type": "wood",
+        "x": 56,
+        "z": 62,
+        "amount": 7,
+        "maxAmount": 7
+      },
+      {
+        "id": "wood-2",
+        "type": "wood",
+        "x": 62,
+        "z": 66,
+        "amount": 7,
+        "maxAmount": 7
+      },
+      {
+        "id": "wood-3",
+        "type": "wood",
+        "x": 68,
+        "z": 58,
+        "amount": 6,
+        "maxAmount": 6
+      },
+      {
+        "id": "wood-4",
+        "type": "wood",
+        "x": 30,
+        "z": 54,
+        "amount": 7,
+        "maxAmount": 7
+      },
+      {
+        "id": "wood-5",
+        "type": "wood",
+        "x": 26,
+        "z": 60,
+        "amount": 6,
+        "maxAmount": 6
+      },
+      {
+        "id": "wood-6",
+        "type": "wood",
+        "x": 25,
+        "z": 42,
+        "amount": 8,
+        "maxAmount": 8
+      },
+      {
+        "id": "wood-7",
+        "type": "wood",
+        "x": 32,
+        "z": 32,
+        "amount": 6,
+        "maxAmount": 6
+      },
+      {
+        "id": "wood-8",
+        "type": "wood",
+        "x": 39,
+        "z": 23,
+        "amount": 7,
+        "maxAmount": 7
+      },
+      {
+        "id": "wood-9",
+        "type": "wood",
+        "x": 57,
+        "z": 24,
+        "amount": 7,
+        "maxAmount": 7
+      },
+      {
+        "id": "wood-10",
+        "type": "wood",
+        "x": 77,
+        "z": 29,
+        "amount": 6,
+        "maxAmount": 6
+      },
+      {
+        "id": "wood-11",
+        "type": "wood",
+        "x": 82,
+        "z": 54,
+        "amount": 8,
+        "maxAmount": 8
+      },
+      {
+        "id": "wood-12",
+        "type": "wood",
+        "x": 68,
+        "z": 79,
+        "amount": 6,
+        "maxAmount": 6
+      },
+      {
+        "id": "wood-13",
+        "type": "wood",
+        "x": 39,
+        "z": 77,
+        "amount": 7,
+        "maxAmount": 7
+      },
+      {
+        "id": "wood-14",
+        "type": "wood",
+        "x": 17,
+        "z": 75,
+        "amount": 8,
+        "maxAmount": 8
+      },
+      {
+        "id": "wood-15",
+        "type": "wood",
+        "x": 86,
+        "z": 75,
+        "amount": 7,
+        "maxAmount": 7
+      },
+      {
+        "id": "stone-16",
+        "type": "stone",
+        "x": 43,
+        "z": 63,
+        "amount": 6,
+        "maxAmount": 6
+      },
+      {
+        "id": "stone-17",
+        "type": "stone",
+        "x": 37,
+        "z": 60,
+        "amount": 6,
+        "maxAmount": 6
+      },
+      {
+        "id": "stone-18",
+        "type": "stone",
+        "x": 60,
+        "z": 37,
+        "amount": 7,
+        "maxAmount": 7
+      },
+      {
+        "id": "stone-19",
+        "type": "stone",
+        "x": 20,
+        "z": 33,
+        "amount": 8,
+        "maxAmount": 8
+      },
+      {
+        "id": "stone-20",
+        "type": "stone",
+        "x": 79,
+        "z": 68,
+        "amount": 6,
+        "maxAmount": 6
+      },
+      {
+        "id": "stone-21",
+        "type": "stone",
+        "x": 52,
+        "z": 83,
+        "amount": 7,
+        "maxAmount": 7
+      },
+      {
+        "id": "stone-22",
+        "type": "stone",
+        "x": 82,
+        "z": 19,
+        "amount": 8,
+        "maxAmount": 8
+      },
+      {
+        "id": "stone-23",
+        "type": "stone",
+        "x": 16,
+        "z": 51,
+        "amount": 6,
+        "maxAmount": 6
+      },
+      {
+        "id": "berry-24",
+        "type": "berry",
+        "x": 60,
+        "z": 53,
+        "amount": 5,
+        "maxAmount": 5
+      },
+      {
+        "id": "berry-25",
+        "type": "berry",
+        "x": 40,
+        "z": 41,
+        "amount": 5,
+        "maxAmount": 5
+      },
+      {
+        "id": "berry-26",
+        "type": "berry",
+        "x": 32,
+        "z": 69,
+        "amount": 5,
+        "maxAmount": 5
+      },
+      {
+        "id": "berry-27",
+        "type": "berry",
+        "x": 72,
+        "z": 49,
+        "amount": 5,
+        "maxAmount": 5
+      },
+      {
+        "id": "berry-28",
+        "type": "berry",
+        "x": 49,
+        "z": 28,
+        "amount": 5,
+        "maxAmount": 5
+      },
+      {
+        "id": "berry-29",
+        "type": "berry",
+        "x": 78,
+        "z": 83,
+        "amount": 5,
+        "maxAmount": 5
+      },
+      {
+        "id": "stone-30",
+        "type": "stone",
+        "x": 497.6666666666665,
+        "z": -57.28888888888889,
+        "amount": 8,
+        "maxAmount": 8
+      },
+      {
+        "id": "wood-31",
+        "type": "wood",
+        "x": 482.6666666666665,
+        "z": -58.28888888888889,
+        "amount": 7,
+        "maxAmount": 7
+      },
+      {
+        "id": "berry-32",
+        "type": "berry",
+        "x": 486.6666666666665,
+        "z": -55.28888888888889,
+        "amount": 5,
+        "maxAmount": 5
+      },
+      {
+        "id": "stone-33",
+        "type": "stone",
+        "x": 19.800000000000182,
+        "z": -148.31111111111113,
+        "amount": 8,
+        "maxAmount": 8
+      },
+      {
+        "id": "stone-34",
+        "type": "stone",
+        "x": 304.2444444444445,
+        "z": 164.57777777777778,
+        "amount": 8,
+        "maxAmount": 8
+      },
+      {
+        "id": "wood-35",
+        "type": "wood",
+        "x": 289.2444444444445,
+        "z": 163.57777777777778,
+        "amount": 7,
+        "maxAmount": 7
+      },
+      {
+        "id": "stone-36",
+        "type": "stone",
+        "x": -14.333333333333485,
+        "z": 329.55555555555554,
+        "amount": 8,
+        "maxAmount": 8
+      },
+      {
+        "id": "wood-37",
+        "type": "wood",
+        "x": -29.333333333333485,
+        "z": 328.55555555555554,
+        "amount": 7,
+        "maxAmount": 7
+      },
+      {
+        "id": "stone-38",
+        "type": "stone",
+        "x": 156.33333333333348,
+        "z": 670.8888888888889,
+        "amount": 8,
+        "maxAmount": 8
+      },
+      {
+        "id": "wood-39",
+        "type": "wood",
+        "x": 141.33333333333348,
+        "z": 669.8888888888889,
+        "amount": 7,
+        "maxAmount": 7
+      },
+      {
+        "id": "berry-40",
+        "type": "berry",
+        "x": 145.33333333333348,
+        "z": 672.8888888888889,
+        "amount": 5,
+        "maxAmount": 5
+      },
+      {
+        "id": "stone-41",
+        "type": "stone",
+        "x": 1089.3111111111111,
+        "z": 227.15555555555557,
+        "amount": 8,
+        "maxAmount": 8
+      },
+      {
+        "id": "wood-42",
+        "type": "wood",
+        "x": 1074.3111111111111,
+        "z": 226.15555555555557,
+        "amount": 7,
+        "maxAmount": 7
+      },
+      {
+        "id": "berry-43",
+        "type": "berry",
+        "x": 1078.3111111111111,
+        "z": 229.15555555555557,
+        "amount": 5,
+        "maxAmount": 5
+      },
+      {
+        "id": "stone-44",
+        "type": "stone",
+        "x": 1066.5555555555557,
+        "z": 602.6222222222223,
+        "amount": 8,
+        "maxAmount": 8
+      },
+      {
+        "id": "wood-45",
+        "type": "wood",
+        "x": 1051.5555555555557,
+        "z": 601.6222222222223,
+        "amount": 7,
+        "maxAmount": 7
+      },
+      {
+        "id": "berry-46",
+        "type": "berry",
+        "x": 1055.5555555555557,
+        "z": 604.6222222222223,
+        "amount": 5,
+        "maxAmount": 5
+      },
+      {
+        "id": "stone-47",
+        "type": "stone",
+        "x": -1356.911111111111,
+        "z": 158.8888888888889,
+        "amount": 8,
+        "maxAmount": 8
+      },
+      {
+        "id": "wood-48",
+        "type": "wood",
+        "x": -1371.911111111111,
+        "z": 157.8888888888889,
+        "amount": 7,
+        "maxAmount": 7
+      },
+      {
+        "id": "berry-49",
+        "type": "berry",
+        "x": -1367.911111111111,
+        "z": 160.8888888888889,
+        "amount": 5,
+        "maxAmount": 5
+      },
+      {
+        "id": "stone-50",
+        "type": "stone",
+        "x": -822.1555555555556,
+        "z": 750.5333333333333,
+        "amount": 8,
+        "maxAmount": 8
+      },
+      {
+        "id": "wood-51",
+        "type": "wood",
+        "x": -837.1555555555556,
+        "z": 749.5333333333333,
+        "amount": 7,
+        "maxAmount": 7
+      },
+      {
+        "id": "berry-52",
+        "type": "berry",
+        "x": -833.1555555555556,
+        "z": 752.5333333333333,
+        "amount": 5,
+        "maxAmount": 5
+      },
+      {
+        "id": "stone-53",
+        "type": "stone",
+        "x": 1339.6222222222223,
+        "z": 909.8222222222223,
+        "amount": 8,
+        "maxAmount": 8
+      },
+      {
+        "id": "wood-54",
+        "type": "wood",
+        "x": 1324.6222222222223,
+        "z": 908.8222222222223,
+        "amount": 7,
+        "maxAmount": 7
+      },
+      {
+        "id": "stone-55",
+        "type": "stone",
+        "x": -662.8666666666666,
+        "z": -216.57777777777778,
+        "amount": 8,
+        "maxAmount": 8
+      },
+      {
+        "id": "stone-56",
+        "type": "stone",
+        "x": 42.55555555555566,
+        "z": 1501.4666666666667,
+        "amount": 8,
+        "maxAmount": 8
+      },
+      {
+        "id": "adventure-high-pass-0",
+        "regionId": "high-pass",
+        "type": "stone",
+        "x": 728,
+        "z": 248,
+        "amount": 9,
+        "maxAmount": 9
+      },
+      {
+        "id": "adventure-high-pass-1",
+        "regionId": "high-pass",
+        "type": "stone",
+        "x": 744,
+        "z": 227,
+        "amount": 9,
+        "maxAmount": 9
+      },
+      {
+        "id": "adventure-high-pass-2",
+        "regionId": "high-pass",
+        "type": "wood",
+        "x": 743,
+        "z": 259,
+        "amount": 9,
+        "maxAmount": 9
+      },
+      {
+        "id": "adventure-echo-valley-0",
+        "regionId": "echo-valley",
+        "type": "wood",
+        "x": 88,
+        "z": 632,
+        "amount": 9,
+        "maxAmount": 9
+      },
+      {
+        "id": "adventure-echo-valley-1",
+        "regionId": "echo-valley",
+        "type": "wood",
+        "x": 104,
+        "z": 611,
+        "amount": 9,
+        "maxAmount": 9
+      },
+      {
+        "id": "adventure-echo-valley-2",
+        "regionId": "echo-valley",
+        "type": "wood",
+        "x": 103,
+        "z": 643,
+        "amount": 9,
+        "maxAmount": 9
+      },
+      {
+        "id": "adventure-stone-forest-0",
+        "regionId": "stone-forest",
+        "type": "stone",
+        "x": 1000,
+        "z": 120,
+        "amount": 9,
+        "maxAmount": 9
+      },
+      {
+        "id": "adventure-stone-forest-1",
+        "regionId": "stone-forest",
+        "type": "stone",
+        "x": 1016,
+        "z": 99,
+        "amount": 9,
+        "maxAmount": 9
+      },
+      {
+        "id": "adventure-stone-forest-2",
+        "regionId": "stone-forest",
+        "type": "wood",
+        "x": 1015,
+        "z": 131,
+        "amount": 9,
+        "maxAmount": 9
+      },
+      {
+        "id": "adventure-amber-oasis-0",
+        "regionId": "amber-oasis",
+        "type": "berry",
+        "x": -168,
+        "z": 440,
+        "amount": 9,
+        "maxAmount": 9,
+        "appearanceBiome": "grassland"
+      },
+      {
+        "id": "adventure-amber-oasis-1",
+        "regionId": "amber-oasis",
+        "type": "berry",
+        "x": -168,
+        "z": 419,
+        "amount": 9,
+        "maxAmount": 9,
+        "appearanceBiome": "grassland"
+      },
+      {
+        "id": "adventure-amber-oasis-2",
+        "regionId": "amber-oasis",
+        "type": "wood",
+        "x": -153,
+        "z": 451,
+        "amount": 9,
+        "maxAmount": 9
+      },
+      {
+        "id": "adventure-blue-chasm-0",
+        "regionId": "blue-chasm",
+        "type": "stone",
+        "x": -1576,
+        "z": -72,
+        "amount": 9,
+        "maxAmount": 9
+      },
+      {
+        "id": "adventure-blue-chasm-1",
+        "regionId": "blue-chasm",
+        "type": "stone",
+        "x": -1560,
+        "z": -93,
+        "amount": 9,
+        "maxAmount": 9
+      },
+      {
+        "id": "adventure-blue-chasm-2",
+        "regionId": "blue-chasm",
+        "type": "wood",
+        "x": -1561,
+        "z": -61,
+        "amount": 9,
+        "maxAmount": 9,
+        "appearanceBiome": "volcano"
+      },
+      {
+        "id": "adventure-shadow-realm-0",
+        "regionId": "shadow-realm",
+        "type": "stone",
+        "x": 1000,
+        "z": 1560,
+        "amount": 9,
+        "maxAmount": 9,
+        "appearanceBiome": "volcano"
+      },
+      {
+        "id": "adventure-shadow-realm-1",
+        "regionId": "shadow-realm",
+        "type": "stone",
+        "x": 1016,
+        "z": 1539,
+        "amount": 9,
+        "maxAmount": 9,
+        "appearanceBiome": "volcano"
+      },
+      {
+        "id": "adventure-shadow-realm-2",
+        "regionId": "shadow-realm",
+        "type": "berry",
+        "x": 996,
+        "z": 1550,
+        "amount": 9,
+        "maxAmount": 9,
+        "appearanceBiome": "grassland"
+      },
+      {
+        "type": "wood",
+        "x": -2298,
+        "z": 473,
+        "amount": 12,
+        "id": "gulf-many-hearths-0",
+        "maxAmount": 12,
+        "appearanceBiome": "grassland"
+      },
+      {
+        "type": "wood",
+        "x": -2294,
+        "z": 473,
+        "amount": 12,
+        "id": "gulf-many-hearths-1",
+        "maxAmount": 12,
+        "appearanceBiome": "grassland"
+      },
+      {
+        "type": "wood",
+        "x": -2290,
+        "z": 473,
+        "amount": 12,
+        "id": "gulf-many-hearths-2",
+        "maxAmount": 12,
+        "appearanceBiome": "grassland"
+      },
+      {
+        "type": "wood",
+        "x": -2286,
+        "z": 473,
+        "amount": 12,
+        "id": "gulf-many-hearths-3",
+        "maxAmount": 12,
+        "appearanceBiome": "grassland"
+      },
+      {
+        "type": "stone",
+        "x": -2245,
+        "z": 467,
+        "amount": 10,
+        "id": "gulf-many-hearths-4",
+        "maxAmount": 10,
+        "appearanceBiome": "grassland"
+      },
+      {
+        "type": "stone",
+        "x": -2241,
+        "z": 467,
+        "amount": 10,
+        "id": "gulf-many-hearths-5",
+        "maxAmount": 10,
+        "appearanceBiome": "grassland"
+      },
+      {
+        "type": "berry",
+        "x": -2297,
+        "z": 430,
+        "amount": 8,
+        "id": "gulf-many-hearths-6",
+        "maxAmount": 8,
+        "appearanceBiome": "grassland"
+      },
+      {
+        "type": "berry",
+        "x": -2293,
+        "z": 430,
+        "amount": 8,
+        "id": "gulf-many-hearths-7",
+        "maxAmount": 8,
+        "appearanceBiome": "grassland"
+      },
+      {
+        "type": "berry",
+        "x": -2289,
+        "z": 430,
+        "amount": 8,
+        "id": "gulf-many-hearths-8",
+        "maxAmount": 8,
+        "appearanceBiome": "grassland"
+      },
+      {
+        "type": "wood",
+        "x": -2558,
+        "z": 373,
+        "amount": 12,
+        "id": "gulf-long-valley-0",
+        "maxAmount": 12,
+        "appearanceBiome": "grassland"
+      },
+      {
+        "type": "wood",
+        "x": -2554,
+        "z": 373,
+        "amount": 12,
+        "id": "gulf-long-valley-1",
+        "maxAmount": 12,
+        "appearanceBiome": "grassland"
+      },
+      {
+        "type": "wood",
+        "x": -2550,
+        "z": 373,
+        "amount": 12,
+        "id": "gulf-long-valley-2",
+        "maxAmount": 12,
+        "appearanceBiome": "grassland"
+      },
+      {
+        "type": "wood",
+        "x": -2546,
+        "z": 373,
+        "amount": 12,
+        "id": "gulf-long-valley-3",
+        "maxAmount": 12,
+        "appearanceBiome": "grassland"
+      },
+      {
+        "type": "stone",
+        "x": -2505,
+        "z": 367,
+        "amount": 10,
+        "id": "gulf-long-valley-4",
+        "maxAmount": 10,
+        "appearanceBiome": "grassland"
+      },
+      {
+        "type": "stone",
+        "x": -2501,
+        "z": 367,
+        "amount": 10,
+        "id": "gulf-long-valley-5",
+        "maxAmount": 10,
+        "appearanceBiome": "grassland"
+      },
+      {
+        "type": "berry",
+        "x": -2557,
+        "z": 330,
+        "amount": 8,
+        "id": "gulf-long-valley-6",
+        "maxAmount": 8,
+        "appearanceBiome": "grassland"
+      },
+      {
+        "type": "berry",
+        "x": -2553,
+        "z": 330,
+        "amount": 8,
+        "id": "gulf-long-valley-7",
+        "maxAmount": 8,
+        "appearanceBiome": "grassland"
+      },
+      {
+        "type": "berry",
+        "x": -2549,
+        "z": 330,
+        "amount": 8,
+        "id": "gulf-long-valley-8",
+        "maxAmount": 8,
+        "appearanceBiome": "grassland"
+      },
+      {
+        "type": "wood",
+        "x": -2738,
+        "z": 853,
+        "amount": 12,
+        "id": "gulf-pale-ridge-0",
+        "maxAmount": 12,
+        "appearanceBiome": "grassland"
+      },
+      {
+        "type": "wood",
+        "x": -2734,
+        "z": 853,
+        "amount": 12,
+        "id": "gulf-pale-ridge-1",
+        "maxAmount": 12,
+        "appearanceBiome": "grassland"
+      },
+      {
+        "type": "wood",
+        "x": -2730,
+        "z": 853,
+        "amount": 12,
+        "id": "gulf-pale-ridge-2",
+        "maxAmount": 12,
+        "appearanceBiome": "grassland"
+      },
+      {
+        "type": "wood",
+        "x": -2726,
+        "z": 853,
+        "amount": 12,
+        "id": "gulf-pale-ridge-3",
+        "maxAmount": 12,
+        "appearanceBiome": "grassland"
+      },
+      {
+        "type": "stone",
+        "x": -2685,
+        "z": 847,
+        "amount": 10,
+        "id": "gulf-pale-ridge-4",
+        "maxAmount": 10,
+        "appearanceBiome": "grassland"
+      },
+      {
+        "type": "stone",
+        "x": -2681,
+        "z": 847,
+        "amount": 10,
+        "id": "gulf-pale-ridge-5",
+        "maxAmount": 10,
+        "appearanceBiome": "grassland"
+      },
+      {
+        "type": "berry",
+        "x": -2737,
+        "z": 810,
+        "amount": 8,
+        "id": "gulf-pale-ridge-6",
+        "maxAmount": 8,
+        "appearanceBiome": "grassland"
+      },
+      {
+        "type": "berry",
+        "x": -2733,
+        "z": 810,
+        "amount": 8,
+        "id": "gulf-pale-ridge-7",
+        "maxAmount": 8,
+        "appearanceBiome": "grassland"
+      },
+      {
+        "type": "berry",
+        "x": -2729,
+        "z": 810,
+        "amount": 8,
+        "id": "gulf-pale-ridge-8",
+        "maxAmount": 8,
+        "appearanceBiome": "grassland"
+      },
+      {
+        "type": "wood",
+        "x": -1758,
+        "z": 873,
+        "amount": 12,
+        "id": "gulf-reed-shore-0",
+        "maxAmount": 12,
+        "appearanceBiome": "grassland"
+      },
+      {
+        "type": "wood",
+        "x": -1754,
+        "z": 873,
+        "amount": 12,
+        "id": "gulf-reed-shore-1",
+        "maxAmount": 12,
+        "appearanceBiome": "grassland"
+      },
+      {
+        "type": "wood",
+        "x": -1750,
+        "z": 873,
+        "amount": 12,
+        "id": "gulf-reed-shore-2",
+        "maxAmount": 12,
+        "appearanceBiome": "grassland"
+      },
+      {
+        "type": "wood",
+        "x": -1746,
+        "z": 873,
+        "amount": 12,
+        "id": "gulf-reed-shore-3",
+        "maxAmount": 12,
+        "appearanceBiome": "grassland"
+      },
+      {
+        "type": "stone",
+        "x": -1705,
+        "z": 867,
+        "amount": 10,
+        "id": "gulf-reed-shore-4",
+        "maxAmount": 10,
+        "appearanceBiome": "grassland"
+      },
+      {
+        "type": "stone",
+        "x": -1701,
+        "z": 867,
+        "amount": 10,
+        "id": "gulf-reed-shore-5",
+        "maxAmount": 10,
+        "appearanceBiome": "grassland"
+      },
+      {
+        "type": "berry",
+        "x": -1757,
+        "z": 830,
+        "amount": 8,
+        "id": "gulf-reed-shore-6",
+        "maxAmount": 8,
+        "appearanceBiome": "grassland"
+      },
+      {
+        "type": "berry",
+        "x": -1753,
+        "z": 830,
+        "amount": 8,
+        "id": "gulf-reed-shore-7",
+        "maxAmount": 8,
+        "appearanceBiome": "grassland"
+      },
+      {
+        "type": "berry",
+        "x": -1749,
+        "z": 830,
+        "amount": 8,
+        "id": "gulf-reed-shore-8",
+        "maxAmount": 8,
+        "appearanceBiome": "grassland"
+      },
+      {
+        "type": "wood",
+        "x": -2448,
+        "z": 353,
+        "amount": 12,
+        "id": "gulf-terrace-rest-0",
+        "maxAmount": 12,
+        "appearanceBiome": "grassland"
+      },
+      {
+        "type": "wood",
+        "x": -2444,
+        "z": 353,
+        "amount": 12,
+        "id": "gulf-terrace-rest-1",
+        "maxAmount": 12,
+        "appearanceBiome": "grassland"
+      },
+      {
+        "type": "wood",
+        "x": -2440,
+        "z": 353,
+        "amount": 12,
+        "id": "gulf-terrace-rest-2",
+        "maxAmount": 12,
+        "appearanceBiome": "grassland"
+      },
+      {
+        "type": "wood",
+        "x": -2436,
+        "z": 353,
+        "amount": 12,
+        "id": "gulf-terrace-rest-3",
+        "maxAmount": 12,
+        "appearanceBiome": "grassland"
+      },
+      {
+        "type": "stone",
+        "x": -2395,
+        "z": 347,
+        "amount": 10,
+        "id": "gulf-terrace-rest-4",
+        "maxAmount": 10,
+        "appearanceBiome": "grassland"
+      },
+      {
+        "type": "stone",
+        "x": -2391,
+        "z": 347,
+        "amount": 10,
+        "id": "gulf-terrace-rest-5",
+        "maxAmount": 10,
+        "appearanceBiome": "grassland"
+      },
+      {
+        "type": "berry",
+        "x": -2447,
+        "z": 310,
+        "amount": 8,
+        "id": "gulf-terrace-rest-6",
+        "maxAmount": 8,
+        "appearanceBiome": "grassland"
+      },
+      {
+        "type": "berry",
+        "x": -2443,
+        "z": 310,
+        "amount": 8,
+        "id": "gulf-terrace-rest-7",
+        "maxAmount": 8,
+        "appearanceBiome": "grassland"
+      },
+      {
+        "type": "berry",
+        "x": -2439,
+        "z": 310,
+        "amount": 8,
+        "id": "gulf-terrace-rest-8",
+        "maxAmount": 8,
+        "appearanceBiome": "grassland"
+      },
+      {
+        "type": "wood",
+        "x": -2278,
+        "z": 243,
+        "amount": 12,
+        "id": "gulf-spring-grove-0",
+        "maxAmount": 12,
+        "appearanceBiome": "grassland"
+      },
+      {
+        "type": "wood",
+        "x": -2274,
+        "z": 243,
+        "amount": 12,
+        "id": "gulf-spring-grove-1",
+        "maxAmount": 12,
+        "appearanceBiome": "grassland"
+      },
+      {
+        "type": "wood",
+        "x": -2270,
+        "z": 243,
+        "amount": 12,
+        "id": "gulf-spring-grove-2",
+        "maxAmount": 12,
+        "appearanceBiome": "grassland"
+      },
+      {
+        "type": "wood",
+        "x": -2266,
+        "z": 243,
+        "amount": 12,
+        "id": "gulf-spring-grove-3",
+        "maxAmount": 12,
+        "appearanceBiome": "grassland"
+      },
+      {
+        "type": "stone",
+        "x": -2225,
+        "z": 237,
+        "amount": 10,
+        "id": "gulf-spring-grove-4",
+        "maxAmount": 10,
+        "appearanceBiome": "grassland"
+      },
+      {
+        "type": "stone",
+        "x": -2221,
+        "z": 237,
+        "amount": 10,
+        "id": "gulf-spring-grove-5",
+        "maxAmount": 10,
+        "appearanceBiome": "grassland"
+      },
+      {
+        "type": "berry",
+        "x": -2277,
+        "z": 200,
+        "amount": 8,
+        "id": "gulf-spring-grove-6",
+        "maxAmount": 8,
+        "appearanceBiome": "grassland"
+      },
+      {
+        "type": "berry",
+        "x": -2273,
+        "z": 200,
+        "amount": 8,
+        "id": "gulf-spring-grove-7",
+        "maxAmount": 8,
+        "appearanceBiome": "grassland"
+      },
+      {
+        "type": "berry",
+        "x": -2269,
+        "z": 200,
+        "amount": 8,
+        "id": "gulf-spring-grove-8",
+        "maxAmount": 8,
+        "appearanceBiome": "grassland"
+      },
+      {
+        "type": "wood",
+        "x": -2808,
+        "z": 758,
+        "amount": 12,
+        "id": "gulf-quarry-camp-0",
+        "maxAmount": 12,
+        "appearanceBiome": "grassland"
+      },
+      {
+        "type": "wood",
+        "x": -2804,
+        "z": 758,
+        "amount": 12,
+        "id": "gulf-quarry-camp-1",
+        "maxAmount": 12,
+        "appearanceBiome": "grassland"
+      },
+      {
+        "type": "wood",
+        "x": -2800,
+        "z": 758,
+        "amount": 12,
+        "id": "gulf-quarry-camp-2",
+        "maxAmount": 12,
+        "appearanceBiome": "grassland"
+      },
+      {
+        "type": "wood",
+        "x": -2796,
+        "z": 758,
+        "amount": 12,
+        "id": "gulf-quarry-camp-3",
+        "maxAmount": 12,
+        "appearanceBiome": "grassland"
+      },
+      {
+        "type": "stone",
+        "x": -2755,
+        "z": 752,
+        "amount": 10,
+        "id": "gulf-quarry-camp-4",
+        "maxAmount": 10,
+        "appearanceBiome": "grassland"
+      },
+      {
+        "type": "stone",
+        "x": -2751,
+        "z": 752,
+        "amount": 10,
+        "id": "gulf-quarry-camp-5",
+        "maxAmount": 10,
+        "appearanceBiome": "grassland"
+      },
+      {
+        "type": "berry",
+        "x": -2807,
+        "z": 715,
+        "amount": 8,
+        "id": "gulf-quarry-camp-6",
+        "maxAmount": 8,
+        "appearanceBiome": "grassland"
+      },
+      {
+        "type": "berry",
+        "x": -2803,
+        "z": 715,
+        "amount": 8,
+        "id": "gulf-quarry-camp-7",
+        "maxAmount": 8,
+        "appearanceBiome": "grassland"
+      },
+      {
+        "type": "berry",
+        "x": -2799,
+        "z": 715,
+        "amount": 8,
+        "id": "gulf-quarry-camp-8",
+        "maxAmount": 8,
+        "appearanceBiome": "grassland"
+      },
+      {
+        "type": "wood",
+        "x": -2718,
+        "z": 1153,
+        "amount": 12,
+        "id": "gulf-west-cove-0",
+        "maxAmount": 12,
+        "appearanceBiome": "grassland"
+      },
+      {
+        "type": "wood",
+        "x": -2714,
+        "z": 1153,
+        "amount": 12,
+        "id": "gulf-west-cove-1",
+        "maxAmount": 12,
+        "appearanceBiome": "grassland"
+      },
+      {
+        "type": "wood",
+        "x": -2710,
+        "z": 1153,
+        "amount": 12,
+        "id": "gulf-west-cove-2",
+        "maxAmount": 12,
+        "appearanceBiome": "grassland"
+      },
+      {
+        "type": "wood",
+        "x": -2706,
+        "z": 1153,
+        "amount": 12,
+        "id": "gulf-west-cove-3",
+        "maxAmount": 12,
+        "appearanceBiome": "grassland"
+      },
+      {
+        "type": "stone",
+        "x": -2665,
+        "z": 1147,
+        "amount": 10,
+        "id": "gulf-west-cove-4",
+        "maxAmount": 10,
+        "appearanceBiome": "grassland"
+      },
+      {
+        "type": "stone",
+        "x": -2661,
+        "z": 1147,
+        "amount": 10,
+        "id": "gulf-west-cove-5",
+        "maxAmount": 10,
+        "appearanceBiome": "grassland"
+      },
+      {
+        "type": "berry",
+        "x": -2717,
+        "z": 1110,
+        "amount": 8,
+        "id": "gulf-west-cove-6",
+        "maxAmount": 8,
+        "appearanceBiome": "grassland"
+      },
+      {
+        "type": "berry",
+        "x": -2713,
+        "z": 1110,
+        "amount": 8,
+        "id": "gulf-west-cove-7",
+        "maxAmount": 8,
+        "appearanceBiome": "grassland"
+      },
+      {
+        "type": "berry",
+        "x": -2709,
+        "z": 1110,
+        "amount": 8,
+        "id": "gulf-west-cove-8",
+        "maxAmount": 8,
+        "appearanceBiome": "grassland"
+      },
+      {
+        "type": "wood",
+        "x": -1928,
+        "z": 623,
+        "amount": 12,
+        "id": "gulf-reed-lookout-0",
+        "maxAmount": 12,
+        "appearanceBiome": "grassland"
+      },
+      {
+        "type": "wood",
+        "x": -1924,
+        "z": 623,
+        "amount": 12,
+        "id": "gulf-reed-lookout-1",
+        "maxAmount": 12,
+        "appearanceBiome": "grassland"
+      },
+      {
+        "type": "wood",
+        "x": -1920,
+        "z": 623,
+        "amount": 12,
+        "id": "gulf-reed-lookout-2",
+        "maxAmount": 12,
+        "appearanceBiome": "grassland"
+      },
+      {
+        "type": "wood",
+        "x": -1916,
+        "z": 623,
+        "amount": 12,
+        "id": "gulf-reed-lookout-3",
+        "maxAmount": 12,
+        "appearanceBiome": "grassland"
+      },
+      {
+        "type": "stone",
+        "x": -1875,
+        "z": 617,
+        "amount": 10,
+        "id": "gulf-reed-lookout-4",
+        "maxAmount": 10,
+        "appearanceBiome": "grassland"
+      },
+      {
+        "type": "stone",
+        "x": -1871,
+        "z": 617,
+        "amount": 10,
+        "id": "gulf-reed-lookout-5",
+        "maxAmount": 10,
+        "appearanceBiome": "grassland"
+      },
+      {
+        "type": "berry",
+        "x": -1927,
+        "z": 580,
+        "amount": 8,
+        "id": "gulf-reed-lookout-6",
+        "maxAmount": 8,
+        "appearanceBiome": "grassland"
+      },
+      {
+        "type": "berry",
+        "x": -1923,
+        "z": 580,
+        "amount": 8,
+        "id": "gulf-reed-lookout-7",
+        "maxAmount": 8,
+        "appearanceBiome": "grassland"
+      },
+      {
+        "type": "berry",
+        "x": -1919,
+        "z": 580,
+        "amount": 8,
+        "id": "gulf-reed-lookout-8",
+        "maxAmount": 8,
+        "appearanceBiome": "grassland"
+      },
+      {
+        "type": "wood",
+        "x": -1763,
+        "z": 1153,
+        "amount": 12,
+        "id": "gulf-south-cove-0",
+        "maxAmount": 12,
+        "appearanceBiome": "grassland"
+      },
+      {
+        "type": "wood",
+        "x": -1759,
+        "z": 1153,
+        "amount": 12,
+        "id": "gulf-south-cove-1",
+        "maxAmount": 12,
+        "appearanceBiome": "grassland"
+      },
+      {
+        "type": "wood",
+        "x": -1755,
+        "z": 1153,
+        "amount": 12,
+        "id": "gulf-south-cove-2",
+        "maxAmount": 12,
+        "appearanceBiome": "grassland"
+      },
+      {
+        "type": "wood",
+        "x": -1751,
+        "z": 1153,
+        "amount": 12,
+        "id": "gulf-south-cove-3",
+        "maxAmount": 12,
+        "appearanceBiome": "grassland"
+      },
+      {
+        "type": "stone",
+        "x": -1710,
+        "z": 1147,
+        "amount": 10,
+        "id": "gulf-south-cove-4",
+        "maxAmount": 10,
+        "appearanceBiome": "grassland"
+      },
+      {
+        "type": "stone",
+        "x": -1706,
+        "z": 1147,
+        "amount": 10,
+        "id": "gulf-south-cove-5",
+        "maxAmount": 10,
+        "appearanceBiome": "grassland"
+      },
+      {
+        "type": "berry",
+        "x": -1762,
+        "z": 1110,
+        "amount": 8,
+        "id": "gulf-south-cove-6",
+        "maxAmount": 8,
+        "appearanceBiome": "grassland"
+      },
+      {
+        "type": "berry",
+        "x": -1758,
+        "z": 1110,
+        "amount": 8,
+        "id": "gulf-south-cove-7",
+        "maxAmount": 8,
+        "appearanceBiome": "grassland"
+      },
+      {
+        "type": "berry",
+        "x": -1754,
+        "z": 1110,
+        "amount": 8,
+        "id": "gulf-south-cove-8",
+        "maxAmount": 8,
+        "appearanceBiome": "grassland"
+      },
+      {
+        "id": "gulf-obsidian-1",
+        "type": "obsidian",
+        "x": -2770,
+        "z": 680,
+        "amount": 8,
+        "maxAmount": 8,
+        "appearanceBiome": "grassland"
+      },
+      {
+        "id": "gulf-obsidian-2",
+        "type": "obsidian",
+        "x": -2765,
+        "z": 680,
+        "amount": 8,
+        "maxAmount": 8,
+        "appearanceBiome": "grassland"
+      },
+      {
+        "id": "gulf-obsidian-3",
+        "type": "obsidian",
+        "x": -2760,
+        "z": 680,
+        "amount": 8,
+        "maxAmount": 8,
+        "appearanceBiome": "grassland"
+      },
+      {
+        "id": "gulf-obsidian-4",
+        "type": "obsidian",
+        "x": -2755,
+        "z": 680,
+        "amount": 8,
+        "maxAmount": 8,
+        "appearanceBiome": "grassland"
+      },
+      {
+        "id": "gulf-obsidian-5",
+        "type": "obsidian",
+        "x": -2770,
+        "z": 686,
+        "amount": 8,
+        "maxAmount": 8,
+        "appearanceBiome": "grassland"
+      },
+      {
+        "id": "gulf-obsidian-6",
+        "type": "obsidian",
+        "x": -2765,
+        "z": 686,
+        "amount": 8,
+        "maxAmount": 8,
+        "appearanceBiome": "grassland"
+      },
+      {
+        "id": "gulf-obsidian-7",
+        "type": "obsidian",
+        "x": -2760,
+        "z": 686,
+        "amount": 8,
+        "maxAmount": 8,
+        "appearanceBiome": "grassland"
+      },
+      {
+        "id": "gulf-obsidian-8",
+        "type": "obsidian",
+        "x": -2755,
+        "z": 686,
+        "amount": 8,
+        "maxAmount": 8,
+        "appearanceBiome": "grassland"
+      }
+    ],
+    "camp": {
+      "x": 50,
+      "z": 50,
+      "wood": 0,
+      "stone": 0,
+      "level": 0,
+      "goalWood": 12,
+      "goalStone": 6
+    },
+    "cookingFires": [
+      {
+        "id": "fire-50-50",
+        "x": 50,
+        "z": 50
+      },
+      {
+        "id": "fire-72-43",
+        "x": 72,
+        "z": 43
+      },
+      {
+        "id": "fire-snow",
+        "x": 492.6666666666665,
+        "z": -64.28888888888889
+      },
+      {
+        "id": "fire-ice",
+        "x": 14.800000000000182,
+        "z": -155.31111111111113
+      },
+      {
+        "id": "fire-volcano",
+        "x": 299.2444444444445,
+        "z": 157.57777777777778
+      },
+      {
+        "id": "fire-desert",
+        "x": -19.333333333333485,
+        "z": 322.55555555555554
+      },
+      {
+        "id": "fire-africa",
+        "x": 151.33333333333348,
+        "z": 663.8888888888889
+      },
+      {
+        "id": "fire-east-asia",
+        "x": 1084.3111111111111,
+        "z": 220.15555555555557
+      },
+      {
+        "id": "fire-sunda",
+        "x": 1061.5555555555557,
+        "z": 595.6222222222223
+      },
+      {
+        "id": "fire-north-america",
+        "x": -1361.911111111111,
+        "z": 151.8888888888889
+      },
+      {
+        "id": "fire-south-america",
+        "x": -827.1555555555556,
+        "z": 743.5333333333333
+      },
+      {
+        "id": "fire-sahul",
+        "x": 1334.6222222222223,
+        "z": 902.8222222222223
+      },
+      {
+        "id": "fire-greenland",
+        "x": -667.8666666666666,
+        "z": -223.57777777777778
+      },
+      {
+        "id": "fire-antarctica",
+        "x": 37.55555555555566,
+        "z": 1494.4666666666667
+      },
+      {
+        "id": "adventure-fire-high-pass",
+        "x": 739,
+        "z": 262
+      },
+      {
+        "id": "adventure-fire-echo-valley",
+        "x": 99,
+        "z": 646
+      },
+      {
+        "id": "adventure-fire-stone-forest",
+        "x": 1011,
+        "z": 134
+      },
+      {
+        "id": "adventure-fire-amber-oasis",
+        "x": -157,
+        "z": 454
+      },
+      {
+        "id": "adventure-fire-blue-chasm",
+        "x": -1565,
+        "z": -58
+      },
+      {
+        "id": "adventure-fire-shadow-realm",
+        "x": 1011,
+        "z": 1574
+      },
+      {
+        "id": "gulf-fire-many-hearths",
+        "x": -2270,
+        "z": 450
+      },
+      {
+        "id": "gulf-fire-long-valley",
+        "x": -2530,
+        "z": 350
+      },
+      {
+        "id": "gulf-fire-pale-ridge",
+        "x": -2710,
+        "z": 830
+      },
+      {
+        "id": "gulf-fire-reed-shore",
+        "x": -1730,
+        "z": 850
+      },
+      {
+        "id": "gulf-fire-terrace-rest",
+        "x": -2420,
+        "z": 330
+      },
+      {
+        "id": "gulf-fire-spring-grove",
+        "x": -2250,
+        "z": 220
+      },
+      {
+        "id": "gulf-fire-quarry-camp",
+        "x": -2780,
+        "z": 735
+      },
+      {
+        "id": "gulf-fire-west-cove",
+        "x": -2690,
+        "z": 1130
+      },
+      {
+        "id": "gulf-fire-reed-lookout",
+        "x": -1900,
+        "z": 600
+      },
+      {
+        "id": "gulf-fire-south-cove",
+        "x": -1735,
+        "z": 1130
+      }
+    ],
+    "npc": {
+      "x": 70,
+      "z": 41,
+      "name": "オル",
+      "species": "nea",
+      "gender": "male",
+      "greeting": "火は、ひとりでは守れない。木か石を2つ、ベリー3つと交換しよう。"
+    },
+    "gulf": {
+      "shellBeds": [
+        {
+          "id": "shell-hearth",
+          "amount": 12,
+          "recoveredAt": 1788863433406
+        },
+        {
+          "id": "shell-ridge",
+          "amount": 12,
+          "recoveredAt": 1788863433406
+        },
+        {
+          "id": "shell-reed",
+          "amount": 12,
+          "recoveredAt": 1788863433406
+        },
+        {
+          "id": "shell-west",
+          "amount": 12,
+          "recoveredAt": 1788863433406
+        },
+        {
+          "id": "shell-east",
+          "amount": 12,
+          "recoveredAt": 1788863433406
+        }
+      ],
+      "middens": [
+        {
+          "id": "midden-many-hearths",
+          "shells": 0
+        },
+        {
+          "id": "midden-long-valley",
+          "shells": 0
+        },
+        {
+          "id": "midden-pale-ridge",
+          "shells": 0
+        },
+        {
+          "id": "midden-reed-shore",
+          "shells": 0
+        }
+      ],
+      "shoals": [
+        {
+          "id": "fish-hearth-landing",
+          "amount": 6,
+          "recoveredAt": 1788863433406
+        },
+        {
+          "id": "fish-ridge-landing",
+          "amount": 6,
+          "recoveredAt": 1788863433406
+        },
+        {
+          "id": "fish-reed-landing",
+          "amount": 6,
+          "recoveredAt": 1788863433406
+        },
+        {
+          "id": "fish-west-outer-landing",
+          "amount": 6,
+          "recoveredAt": 1788863433406
+        },
+        {
+          "id": "fish-east-outer-landing",
+          "amount": 6,
+          "recoveredAt": 1788863433406
+        },
+        {
+          "id": "fish-inner-water",
+          "amount": 10,
+          "recoveredAt": 1788863433406
+        },
+        {
+          "id": "fish-outer-water",
+          "amount": 10,
+          "recoveredAt": 1788863433406
+        }
+      ],
+      "version": 2,
+      "plots": [
+        {
+          "id": "plot-many-hearths-1",
+          "stage": "empty",
+          "readyAt": 0
+        },
+        {
+          "id": "plot-many-hearths-2",
+          "stage": "empty",
+          "readyAt": 0
+        },
+        {
+          "id": "plot-many-hearths-3",
+          "stage": "empty",
+          "readyAt": 0
+        },
+        {
+          "id": "plot-many-hearths-4",
+          "stage": "empty",
+          "readyAt": 0
+        },
+        {
+          "id": "plot-many-hearths-5",
+          "stage": "empty",
+          "readyAt": 0
+        },
+        {
+          "id": "plot-many-hearths-6",
+          "stage": "empty",
+          "readyAt": 0
+        },
+        {
+          "id": "plot-many-hearths-7",
+          "stage": "empty",
+          "readyAt": 0
+        },
+        {
+          "id": "plot-many-hearths-8",
+          "stage": "empty",
+          "readyAt": 0
+        },
+        {
+          "id": "plot-many-hearths-9",
+          "stage": "empty",
+          "readyAt": 0
+        },
+        {
+          "id": "plot-many-hearths-10",
+          "stage": "empty",
+          "readyAt": 0
+        },
+        {
+          "id": "plot-many-hearths-11",
+          "stage": "empty",
+          "readyAt": 0
+        },
+        {
+          "id": "plot-many-hearths-12",
+          "stage": "empty",
+          "readyAt": 0
+        },
+        {
+          "id": "plot-long-valley-1",
+          "stage": "empty",
+          "readyAt": 0
+        },
+        {
+          "id": "plot-long-valley-2",
+          "stage": "empty",
+          "readyAt": 0
+        },
+        {
+          "id": "plot-long-valley-3",
+          "stage": "empty",
+          "readyAt": 0
+        },
+        {
+          "id": "plot-long-valley-4",
+          "stage": "empty",
+          "readyAt": 0
+        },
+        {
+          "id": "plot-long-valley-5",
+          "stage": "empty",
+          "readyAt": 0
+        },
+        {
+          "id": "plot-long-valley-6",
+          "stage": "empty",
+          "readyAt": 0
+        },
+        {
+          "id": "plot-long-valley-7",
+          "stage": "empty",
+          "readyAt": 0
+        },
+        {
+          "id": "plot-long-valley-8",
+          "stage": "empty",
+          "readyAt": 0
+        },
+        {
+          "id": "plot-long-valley-9",
+          "stage": "empty",
+          "readyAt": 0
+        },
+        {
+          "id": "plot-long-valley-10",
+          "stage": "empty",
+          "readyAt": 0
+        },
+        {
+          "id": "plot-long-valley-11",
+          "stage": "empty",
+          "readyAt": 0
+        },
+        {
+          "id": "plot-long-valley-12",
+          "stage": "empty",
+          "readyAt": 0
+        },
+        {
+          "id": "plot-pale-ridge-1",
+          "stage": "empty",
+          "readyAt": 0
+        },
+        {
+          "id": "plot-pale-ridge-2",
+          "stage": "empty",
+          "readyAt": 0
+        },
+        {
+          "id": "plot-pale-ridge-3",
+          "stage": "empty",
+          "readyAt": 0
+        },
+        {
+          "id": "plot-pale-ridge-4",
+          "stage": "empty",
+          "readyAt": 0
+        },
+        {
+          "id": "plot-pale-ridge-5",
+          "stage": "empty",
+          "readyAt": 0
+        },
+        {
+          "id": "plot-pale-ridge-6",
+          "stage": "empty",
+          "readyAt": 0
+        },
+        {
+          "id": "plot-pale-ridge-7",
+          "stage": "empty",
+          "readyAt": 0
+        },
+        {
+          "id": "plot-pale-ridge-8",
+          "stage": "empty",
+          "readyAt": 0
+        },
+        {
+          "id": "plot-pale-ridge-9",
+          "stage": "empty",
+          "readyAt": 0
+        },
+        {
+          "id": "plot-pale-ridge-10",
+          "stage": "empty",
+          "readyAt": 0
+        },
+        {
+          "id": "plot-pale-ridge-11",
+          "stage": "empty",
+          "readyAt": 0
+        },
+        {
+          "id": "plot-pale-ridge-12",
+          "stage": "empty",
+          "readyAt": 0
+        },
+        {
+          "id": "plot-reed-shore-1",
+          "stage": "empty",
+          "readyAt": 0
+        },
+        {
+          "id": "plot-reed-shore-2",
+          "stage": "empty",
+          "readyAt": 0
+        },
+        {
+          "id": "plot-reed-shore-3",
+          "stage": "empty",
+          "readyAt": 0
+        },
+        {
+          "id": "plot-reed-shore-4",
+          "stage": "empty",
+          "readyAt": 0
+        },
+        {
+          "id": "plot-reed-shore-5",
+          "stage": "empty",
+          "readyAt": 0
+        },
+        {
+          "id": "plot-reed-shore-6",
+          "stage": "empty",
+          "readyAt": 0
+        },
+        {
+          "id": "plot-reed-shore-7",
+          "stage": "empty",
+          "readyAt": 0
+        },
+        {
+          "id": "plot-reed-shore-8",
+          "stage": "empty",
+          "readyAt": 0
+        },
+        {
+          "id": "plot-reed-shore-9",
+          "stage": "empty",
+          "readyAt": 0
+        },
+        {
+          "id": "plot-reed-shore-10",
+          "stage": "empty",
+          "readyAt": 0
+        },
+        {
+          "id": "plot-reed-shore-11",
+          "stage": "empty",
+          "readyAt": 0
+        },
+        {
+          "id": "plot-reed-shore-12",
+          "stage": "empty",
+          "readyAt": 0
+        }
+      ],
+      "stores": {
+        "wood": 0,
+        "berry": 0,
+        "obsidian": 0
+      },
+      "festivals": 0
+    },
+    "day": 1,
+    "dayProgress": 0.20154583333333334,
+    "completed": false
+  }
+}

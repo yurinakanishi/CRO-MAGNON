@@ -63,6 +63,7 @@ export function updateAnimals(room, dt, now = Date.now()) {
       ...room.players.values(),
       ...room.animals.filter((a) => a !== animal && animalIsSolid(a)),
       ...(room.enemies || []).filter(enemyIsSolid),
+      ...(room.residents || []),
     ].map(actorObstacle);
     if (grazing) {
       animal.speed = 0;

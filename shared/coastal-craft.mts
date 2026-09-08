@@ -69,6 +69,7 @@ export function handleCoastalAction(room, player, message, now) {
         ...room.players.values(),
         ...(room.animals || []).filter((a) => ['alive', 'dying'].includes(a.phase)),
         ...(room.enemies || []).filter((a) => ['alive', 'dead'].includes(a.phase)),
+        ...(room.residents || []),
       ].some((a) => distance(a, site) < nextRadius + (a.radius ?? 0.32) + 0.05)
     )
       return response('貝塚の場所から少し離れて、積むための場所を空けよう。');

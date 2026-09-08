@@ -79,6 +79,7 @@ function landObstacles(room, player) {
     .concat(
       room.animals.filter((a) => ['alive', 'dying'].includes(a.phase)),
       room.enemies.filter((e) => ['alive', 'dying'].includes(e.phase)),
+      room.residents || [],
     )
     .map((a) => ({ id: a.id, type: 'circle', x: a.x, z: a.z, radius: a.radius }));
 }

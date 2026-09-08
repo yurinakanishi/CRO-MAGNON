@@ -16,11 +16,12 @@ test('actual protocol rejects ocean routes and forged travel, then shares a safe
   assert.equal(p.target,null);assert.deepEqual({x:p.x,z:p.z},origin);
   send({type:'expedition',destination:'anywhere',x:777,z:888});await wait(m=>m.type==='notice'&&m.text.includes('見つかりません'));
   assert.deepEqual({x:p.x,z:p.z},origin);
-  Object.assign(p,{gathered:8,tool:true,inventory:{wood:3,stone:2,berry:1,rawMeat:2,cookedMeat:1,obsidian:0,seed:0,water:0},cookingEndsAt:Date.now()+10000});
+  const expectedInventory={...p.inventory,wood:3,stone:2,berry:1,rawMeat:2,cookedMeat:1,obsidian:0,seed:0,water:0};
+  Object.assign(p,{gathered:8,tool:true,inventory:{...expectedInventory},cookingEndsAt:Date.now()+10000});
   send({type:'expedition',destination:'sahul',inventory:{wood:999},x:777,z:888});
   const stop=expeditionById('sahul'),state=await wait(m=>m.type==='state'&&m.players.some(q=>q.id===id&&Math.hypot(q.x-stop.x,q.z-stop.z)<12));
   const arrived=state.players.find(q=>q.id===id);
-  assert.deepEqual(arrived.inventory,{wood:3,stone:2,berry:1,rawMeat:2,cookedMeat:1,obsidian:0,seed:0,water:0});assert.equal(arrived.gathered,8);assert.equal(arrived.tool,true);assert.equal(arrived.cookingEndsAt,0);
+  assert.deepEqual(arrived.inventory,expectedInventory);assert.equal(arrived.gathered,8);assert.equal(arrived.tool,true);assert.equal(arrived.cookingEndsAt,0);
   assert.equal(state.worldWidth,8192);assert.equal(state.worldDepth,4096);assert.equal(state.resources.length>29,true);
   send({type:'expedition',destination:'grassland'});await wait(m=>m.type==='notice'&&m.text.includes('少し待って'));
   assert.equal(p.x,arrived.x);assert.equal(p.z,arrived.z);

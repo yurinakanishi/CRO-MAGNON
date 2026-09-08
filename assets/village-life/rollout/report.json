@@ -1,0 +1,154 @@
+{
+  "at": "2026-09-08T10:43:36.493Z",
+  "base": "http://127.0.0.1:3000",
+  "health": {
+    "ok": true,
+    "ridingVersion": 1,
+    "combatVersion": 3,
+    "characterVersion": 2,
+    "enemyVersion": 1,
+    "worldVersion": 4,
+    "worldSize": 8192,
+    "worldWidth": 8192,
+    "worldDepth": 4096,
+    "epochYearsBP": 50000,
+    "rooms": 0,
+    "players": 0,
+    "maxPlayers": 5
+  },
+  "checks": [
+    {
+      "path": "src/main.js",
+      "sha256": "1f56c3f51ab963f53d20ddd7684925fe6ac1c12e0d5199a3efc3f8a8337878f2"
+    },
+    {
+      "path": "src/world3d.js",
+      "sha256": "dbe588c76a2762f6ae76deee18050098be82bbffde519cfc209e84c18fc721a5"
+    },
+    {
+      "path": "src/village-ui.js",
+      "sha256": "6483b818b1df9d3b1a965eed98d0604f097d49aca944f366294a77189d858feb"
+    },
+    {
+      "path": "src/village-renderer.js",
+      "sha256": "30cd333ff0570c69ec2b6355ec153306b91d15a37c1da9dc0b04855d6a6df98f"
+    },
+    {
+      "path": "src/style.css",
+      "sha256": "4bc685c39c2373691c845535e92ae6c1623b04f9864ef3d320b37e1d0ba2d3a4"
+    },
+    {
+      "path": "shared/village-sites.mjs",
+      "sha256": "de97d15f222ac6c30b1011ceb22efc059dfa4a3363adf8b61bac2947a58d7c0e"
+    },
+    {
+      "path": "shared/village-life.mjs",
+      "sha256": "4220fd2c91d1df50da0f1723870c6a204bc623902cbdcd45e6ee04913e08fe40"
+    }
+  ],
+  "views": [
+    {
+      "width": 390,
+      "scrollWidth": 390,
+      "residents": "2"
+    },
+    {
+      "width": 844,
+      "scrollWidth": 844,
+      "residents": "2"
+    }
+  ],
+  "errors": [],
+  "residents": [
+    {
+      "id": "aru",
+      "x": -2293,
+      "z": 433,
+      "facing": 3.141592653589793,
+      "radius": 0.32,
+      "speed": 0,
+      "moving": false,
+      "activity": "食べられる実を選んでいる",
+      "clip": "Gather"
+    },
+    {
+      "id": "seno",
+      "x": -2292,
+      "z": 469,
+      "facing": 0,
+      "radius": 0.32,
+      "speed": 0,
+      "moving": false,
+      "activity": "薪を選んでいる",
+      "clip": "Gather"
+    },
+    {
+      "id": "mira",
+      "x": -2553,
+      "z": 333,
+      "facing": 3.141592653589793,
+      "radius": 0.32,
+      "speed": 0,
+      "moving": false,
+      "activity": "食べられる実を選んでいる",
+      "clip": "Gather"
+    },
+    {
+      "id": "tovan",
+      "x": -2552,
+      "z": 369,
+      "facing": 0,
+      "radius": 0.32,
+      "speed": 0,
+      "moving": false,
+      "activity": "薪を選んでいる",
+      "clip": "Gather"
+    },
+    {
+      "id": "ena",
+      "x": -2733,
+      "z": 813,
+      "facing": 3.141592653589793,
+      "radius": 0.32,
+      "speed": 0,
+      "moving": false,
+      "activity": "食べられる実を選んでいる",
+      "clip": "Gather"
+    },
+    {
+      "id": "rok",
+      "x": -2732,
+      "z": 849,
+      "facing": 0,
+      "radius": 0.32,
+      "speed": 0,
+      "moving": false,
+      "activity": "薪を選んでいる",
+      "clip": "Gather"
+    },
+    {
+      "id": "neri",
+      "x": -1753,
+      "z": 833,
+      "facing": 3.141592653589793,
+      "radius": 0.32,
+      "speed": 0,
+      "moving": false,
+      "activity": "食べられる実を選んでいる",
+      "clip": "Gather"
+    },
+    {
+      "id": "daro",
+      "x": -1752,
+      "z": 869,
+      "facing": 0,
+      "radius": 0.32,
+      "speed": 0,
+      "moving": false,
+      "activity": "薪を選んでいる",
+      "clip": "Gather"
+    }
+  ],
+  "playerLimit": 5,
+  "publicDeployment": false
+}

@@ -1,6 +1,7 @@
 import type { ViewState } from './view-state.js';
 import { activateMiddenObstacle } from '../shared/coastal-sites.mjs';
 import { CoastalRenderer } from './coastal-renderer.js';
+import { VillageRenderer } from './village-renderer.js';
 import { isMesh } from './three-types.js';
 import { setText } from './dom-updates.js';
 import type { RegionalScenery } from './regional-scenery.js';
@@ -139,6 +140,7 @@ export class WorldRenderer {
   declare adventureEffects: AdventureEffects | undefined;
   declare gulfRenderer: GulfRenderer | undefined;
   declare coastalRenderer: CoastalRenderer | undefined;
+  declare villageRenderer: VillageRenderer | undefined;
   declare npcActor: any;
   declare npc: any;
   declare failed: boolean | undefined;
@@ -336,6 +338,7 @@ export class WorldRenderer {
       this.adventureEffects = new AdventureEffects(this);
       this.gulfRenderer = new GulfRenderer(this);
       this.coastalRenderer = new CoastalRenderer(this);
+      this.villageRenderer = new VillageRenderer(this);
       this.npcActor = await this.npcAssets.create({ color: '#ad9d79' });
       if (this.disposed) {
         this.npcActor?.dispose();
@@ -972,6 +975,7 @@ export class WorldRenderer {
         (p.x - model.position.x) * (remaining < 0.012 ? 1 : factor),
         (p.z - model.position.z) * (remaining < 0.012 ? 1 : factor),
         p.radius ?? WORLD.playerRadius,
+        this.villageRenderer?.obstacles() ?? [],
       );
       const mx = next.x - model.position.x,
         mz = next.z - model.position.z;
@@ -1075,6 +1079,7 @@ export class WorldRenderer {
     this.adventureEffects?.update(time);
     this.gulfRenderer?.update(time);
     this.coastalRenderer?.update(time);
+    this.villageRenderer?.update(dt, time);
     if (time >= this.nextStaticCull) {
       this.nextStaticCull = time + 0.2;
       for (const { root, radius } of this.staticScenery)
@@ -1342,6 +1347,7 @@ export class WorldRenderer {
     this.disposed = true;
     this.gulfRenderer?.dispose();
     this.coastalRenderer?.dispose();
+    this.villageRenderer?.dispose();
     this.regionalScenery?.dispose();
     this.landmarks?.dispose();
     this.openWorld?.dispose();

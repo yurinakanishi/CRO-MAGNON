@@ -18,6 +18,8 @@ The new **Three Shores gulf** is a fictional land addition in unused ocean space
 
 Five concurrent players remains the current operational default, not a settlement population or a permanent design limit. The first region uses room for visiting camps and 48 public crop plots. Reuse verified GLB geometry and textures with regional materials; do not replace existing models. Public deployment and paid services are not requested.
 
+Later increments are tracked separately: [fishing](FISHING_PLAN.md), [shellfish, middens and obsidian spears](COASTAL_CRAFT_PLAN.md), and [eight named residents with daily routines and help requests](VILLAGE_LIFE_PLAN.md). The residents' names, dialogue, daily exchanges and year-round presence are authored fantasy. Household migration, wider politics, additional crops and maritime weather remain separate work.
+
 ## Brief
 
 Develop three culturally distinct Homo sapiens regional networks around a sea or large gulf, connected by coastal boats and overland travel. The region's largest shared place should be a convincing hunter-gatherer gathering camp, with recurrent exchange and communal activities. Consider a fourth group only if it adds a distinct function. Distinguish archaeological evidence, plausible inference, and deliberate fiction throughout.

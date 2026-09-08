@@ -2,6 +2,8 @@ import type { ShoalState } from './fishing-types.mjs';
 import type { ShellBedState, MiddenState } from './coastal-types.mjs';
 /** Public, serializable gulf data; no renderer or simulation dependencies. */
 export interface GulfProgress {
+  metResidents?: string[];
+  residentHelp?: Record<string, number>;
   shellfishGathered?: number;
   shellsReturned?: number;
   bladesKnapped?: number;

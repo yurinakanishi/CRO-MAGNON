@@ -8,6 +8,7 @@ import { NPC } from '../shared/world.mjs';
 import { handleGulfAction, ensureGulfPlayer } from '../shared/gulf-life.mjs';
 import { handleFishingAction, cancelFishing } from '../shared/fishing.mjs';
 import { handleCoastalAction, cancelCoastal } from '../shared/coastal-craft.mjs';
+import { handleVillageAction } from '../shared/village-life.mjs';
 const distance = (a, b) => Math.hypot(a.x - b.x, a.z - b.z);
 export function createActionHandler({ notice, broadcast, snapshot, systemChat, runtime }) {
   return function act(room, player, message, now) {
@@ -54,6 +55,12 @@ export function createActionHandler({ notice, broadcast, snapshot, systemChat, r
     if (player.cookingEndsAt) return notice(player, '調理中です。先に調理を終えるか中止しよう。');
     if (player.attackSequence && now - player.attackAt < attackProfile(player).durationMs)
       return notice(player, '攻撃が終わってから行おう。');
+    const village = handleVillageAction(room, player, message, now);
+    if (village) {
+      notice(player, village.text, village.ok ? 'success' : 'info');
+      if (village.ok) broadcast(room, snapshot(room));
+      return;
+    }
     const gulf = handleGulfAction(room, player, message, now);
     if (gulf) {
       notice(player, gulf.text, gulf.ok ? 'success' : 'info');

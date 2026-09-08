@@ -171,9 +171,10 @@ export function installGulfUI(api) {
       .querySelector('#gulf-fishing')
       .insertAdjacentHTML(
         'afterend',
-        '<button id="gulf-coastal" class="button button-outline">貝と石器の作り方</button>',
+        '<button id="gulf-coastal" class="button button-outline">貝と石器の作り方</button><button id="gulf-residents" class="button button-outline">集落の人びと・今日の手伝い</button>',
       );
     bind('gulf-coastal', () => action('coastalOpen'));
+    bind('gulf-residents', () => action('residentOpen'));
     bind('gulf-travel', () => {
       if (local) goTo(settlement.x, settlement.z + 5, settlement.name);
       else {

@@ -32,6 +32,8 @@ The culture descriptions are invented lore. The [fishing increment](../fishing/R
 
 The regional panel also records visits to the four places, harvests and obsidian procurement. Nearby plots and water sources participate in the existing **E** interaction hint. The inventory panel includes obsidian, seeds and carried water. Selected plots remain selected when the panel is reopened after fetching water.
 
+The [village-life increment](../village-life/README.md) adds two named residents at each settlement. They walk between local work areas, hearths and shelters during the four-minute game day. Visit them for conversation and a small daily help request; each player's rewards are independent. Names, customs, schedules and rewards are fiction, and the background routines do not consume shared crops or resources.
+
 ## Routes, capacity and visuals
 
 The continuous land route rounds the head of the gulf. Five marked beaches support the existing dugout craft/boarding controls. The main western/eastern crossing is approximately **646 m**, with a second crossing between the two outer beaches. At the existing fast boat speed, the main crossing takes about 92 seconds before boarding and landing; walking from the hub to each country follows routes of roughly 280, 586 and 672 m. These are unobstructed route measurements, not promises of actual journey duration.
