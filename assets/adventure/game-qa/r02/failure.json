@@ -1,0 +1,164 @@
+{
+  "error": "AssertionError [ERR_ASSERTION]: guardian-blue-chasm-1 defeated\n    at battle (file:///C:/Users/yurin/Desktop/projects/CRO-MAGNON/scripts/qa-adventures.mjs:35:12)\n    at async file:///C:/Users/yurin/Desktop/projects/CRO-MAGNON/scripts/qa-adventures.mjs:69:16",
+  "errors": [],
+  "networkErrors": [],
+  "visits": [
+    {
+      "id": "high-pass",
+      "progress": {
+        "visited": [
+          "high-pass-1",
+          "high-pass-2",
+          "high-pass-3"
+        ],
+        "gathered": 4,
+        "kills": 0,
+        "defeated": [],
+        "claimed": true
+      }
+    },
+    {
+      "id": "echo-valley",
+      "progress": {
+        "visited": [
+          "echo-valley-1",
+          "echo-valley-2",
+          "echo-valley-3"
+        ],
+        "gathered": 4,
+        "kills": 0,
+        "defeated": [],
+        "claimed": true
+      }
+    },
+    {
+      "id": "amber-oasis",
+      "progress": {
+        "visited": [
+          "amber-oasis-1",
+          "amber-oasis-2",
+          "amber-oasis-3"
+        ],
+        "gathered": 3,
+        "kills": 0,
+        "defeated": [],
+        "claimed": true
+      }
+    },
+    {
+      "id": "stone-forest",
+      "progress": {
+        "visited": [
+          "stone-forest-1",
+          "stone-forest-2",
+          "stone-forest-3"
+        ],
+        "gathered": 0,
+        "kills": 1,
+        "defeated": [
+          "guardian-stone-forest-1"
+        ],
+        "claimed": true
+      }
+    }
+  ],
+  "fps": [
+    {
+      "region": "high-pass",
+      "fps": "60",
+      "drawCalls": "35",
+      "triangles": "498751",
+      "materials": "1",
+      "chunks": "68"
+    },
+    {
+      "region": "echo-valley",
+      "fps": "59",
+      "drawCalls": "34",
+      "triangles": "1067314",
+      "materials": "4",
+      "chunks": "68"
+    },
+    {
+      "region": "amber-oasis",
+      "fps": "55",
+      "drawCalls": "46",
+      "triangles": "1391701",
+      "materials": "2",
+      "chunks": "64"
+    },
+    {
+      "region": "stone-forest",
+      "fps": "60",
+      "drawCalls": "35",
+      "triangles": "844372",
+      "materials": "6",
+      "chunks": "69"
+    }
+  ],
+  "last": {
+    "x": 49,
+    "z": 53,
+    "adventure": {
+      "regions": {
+        "high-pass": {
+          "visited": [
+            "high-pass-1",
+            "high-pass-2",
+            "high-pass-3"
+          ],
+          "gathered": 4,
+          "kills": 0,
+          "defeated": [],
+          "claimed": true
+        },
+        "echo-valley": {
+          "visited": [
+            "echo-valley-1",
+            "echo-valley-2",
+            "echo-valley-3"
+          ],
+          "gathered": 4,
+          "kills": 0,
+          "defeated": [],
+          "claimed": true
+        },
+        "amber-oasis": {
+          "visited": [
+            "amber-oasis-1",
+            "amber-oasis-2",
+            "amber-oasis-3"
+          ],
+          "gathered": 3,
+          "kills": 0,
+          "defeated": [],
+          "claimed": true
+        },
+        "stone-forest": {
+          "visited": [
+            "stone-forest-1",
+            "stone-forest-2",
+            "stone-forest-3"
+          ],
+          "gathered": 0,
+          "kills": 1,
+          "defeated": [
+            "guardian-stone-forest-1"
+          ],
+          "claimed": true
+        },
+        "blue-chasm": {
+          "visited": [
+            "blue-chasm-1",
+            "blue-chasm-2",
+            "blue-chasm-3"
+          ],
+          "gathered": 5,
+          "kills": 0,
+          "defeated": [],
+          "claimed": false
+        }
+      }
+    }
+  }
+}

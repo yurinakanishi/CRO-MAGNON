@@ -2,6 +2,7 @@ import { WORLD, worldClamp, CAMP, NPC } from '/shared/world.mjs';
 import { BIOMES, biomeAt, biomeWeights } from '/shared/biomes.mjs';
 import { EARTH, coastDistance, CONTINENT_LABELS, EXPEDITION_STOPS, geoToWorld } from '/shared/paleo-geography.mjs';
 import { LANDMARKS } from '/shared/landmarks.mjs';
+import { ADVENTURE_REGIONS, regionAt, RIFTS, adventureProgress } from '/shared/adventure-regions.mjs';
 
 let background,overview=true,selection=null;
 export function setWorldMapSelection(point){selection=point;}
@@ -43,6 +44,17 @@ export function drawWorldMap(canvas,state,selfId,big=false){
   if(big&&selection){const [x,y]=point(selection.x,selection.z);ctx.strokeStyle='#ffda88';ctx.lineWidth=2;ctx.beginPath();ctx.arc(x,y,11,0,Math.PI*2);ctx.stroke();}
   for(const item of LANDMARKS){const [x,y]=point(item.x,item.z),r=full?3:4;ctx.beginPath();ctx.moveTo(x,y-r);ctx.lineTo(x-r,y+r);ctx.lineTo(x+r,y+r);ctx.closePath();ctx.fillStyle=item.key==='volcanic-cone'?'#f19c73':'#caf1f2';ctx.fill();}
   if(big)for(const stop of EXPEDITION_STOPS){const [x,y]=point(stop.x,stop.z);ctx.strokeStyle='#ffe2a4';ctx.lineWidth=1.4;ctx.strokeRect(x-3,y-3,6,6);}
+  for(const region of ADVENTURE_REGIONS){
+    const [x,y]=point(region.x,region.z),r=full?6:region.radius*scale;
+    ctx.strokeStyle=region.color;ctx.lineWidth=1;ctx.beginPath();ctx.arc(x,y,r,0,Math.PI*2);ctx.stroke();
+    if(big&&full){ctx.font='11px sans-serif';ctx.fillStyle=region.color;ctx.fillText(region.kind,x+8,y+4);}
+    if(!full){
+      const progress=adventureProgress(self,region.id);
+      for(const c of region.checkpoints){dot(c.x,c.z,progress.visited.includes(c.id)?'#9cce9b':'#ffe3a3',3);if(big){ctx.fillStyle='#fff1cf';ctx.font='11px sans-serif';ctx.fillText(c.name,...point(c.x+4,c.z));}}
+      dot(region.camp.x,region.camp.z,'#ffb971',4);
+    }
+  }
+  if(!full)for(const rift of RIFTS){const[x,y]=point(rift.x,rift.z);ctx.fillStyle='#b9a2ff';ctx.font='17px sans-serif';ctx.fillText('✧',x-6,y+5);}
   if(!full){for(const fire of state.cookingFires??[])dot(fire.x,fire.z,'#efb573',big?3:2);dot(CAMP.x,CAMP.z,'#efb573',4);dot(NPC.x,NPC.z,'#dad3a9',3);}
   for(const animal of state.animals??[])if(animal.phase!=='respawning')dot(animal.x,animal.z,animal.phase==='meat'?'#e5b6a9':'#d9c089',full?2:3);
   for(const boat of state.boats??[]){const[x,y]=point(boat.x,boat.z);ctx.save();ctx.translate(x,y);ctx.rotate(-boat.facing);ctx.fillStyle=boat.riderId?'#ffde96':'#bcdddc';ctx.fillRect(-2,-5,4,10);ctx.restore();}
@@ -51,7 +63,7 @@ export function drawWorldMap(canvas,state,selfId,big=false){
     dot(player.x,player.z,player.id===selfId?'#fff8da':player.color,big?4:3);
     if(player.id===selfId){const [x,y]=point(player.x,player.z);ctx.save();ctx.translate(x,y);ctx.rotate(-player.facing);ctx.beginPath();ctx.moveTo(0,10);ctx.lineTo(-3,3);ctx.lineTo(3,3);ctx.fillStyle='#fff8da';ctx.fill();ctx.restore();ctx.strokeStyle='#fff8daaa';ctx.lineWidth=1;ctx.beginPath();ctx.arc(x,y,7,0,Math.PI*2);ctx.stroke();}
   }
-  ctx.fillStyle='#fff0d3';ctx.font=big?'12px sans-serif':'10px sans-serif';ctx.fillText(full?'50,000年前 · □ 野営地':biomeAt(self.x,self.z).short,10,18);
+  ctx.fillStyle='#fff0d3';ctx.font=big?'12px sans-serif':'10px sans-serif';ctx.fillText(full?'50,000年前 · □ 野営地 · ○ 探索地域':regionAt(self.x,self.z)?.name??biomeAt(self.x,self.z).short,10,18);
   const metres=full?500:big?100:25,pixels=metres*scale;ctx.fillRect(w-pixels-12,h-12,pixels,1);ctx.textAlign='right';ctx.fillText(`${metres} m`,w-12,h-18);ctx.textAlign='start';
   canvas.dataset.mapMode=full?'earth':'local';canvas.dataset.worldWidth=String(WORLD.width);canvas.dataset.worldDepth=String(WORLD.depth);
 }

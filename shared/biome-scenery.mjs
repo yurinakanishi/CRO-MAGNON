@@ -19,7 +19,7 @@ export function sceneryFor(x, z) { return BIOME_SCENERY[biomeAt(x, z).id]; }
 
 // Client meshes and authoritative resource colliders must resolve identically.
 export function resourceAppearance(resource) {
-  const biome = biomeAt(resource.x, resource.z).id, palette = BIOME_SCENERY[biome];
+  const biome = resource.appearanceBiome ?? biomeAt(resource.x, resource.z).id, palette = BIOME_SCENERY[biome];
   const key = resource.type === 'stone' ? palette.rock : palette[resource.type];
   if (!key) throw new Error(`No ${resource.type} resource model for ${biome}`);
   return { key, biome, surface: palette.surface ?? null, scale: resource.type === 'stone' ? .935 / palette.rockHeight : 1, yaw: resource.x * .2 };

@@ -14,6 +14,8 @@ import { interactionVisible } from './interactions.mjs';
 import { BOATING, initializeBoats, boardedBoat, handleBoatAction, releaseBoat, updateBoats, boatObstacles } from './boats.mjs';
 import { takeExpedition } from './expeditions.mjs';
 import { isLand, EARTH } from './paleo-geography.mjs';
+import { ADVENTURE_VERSION } from './adventure-regions.mjs';
+import { ensureAdventure, updateAdventures, recordAdventureGather, handleAdventureAction } from './adventures.mjs';
 const randomUUID = () => crypto.randomUUID();
 const randomToken = () => Array.from(crypto.getRandomValues(new Uint8Array(32)), n => n.toString(16).padStart(2, '0')).join('');
 const COLORS = ['#e4ac65', '#87b899', '#b49cd2', '#76a7c3', '#ce8c8b'];
@@ -50,15 +52,15 @@ export function createGameCore({ resumeGraceMs = 120000, keepEmptyRooms = false,
   function snapshot(room, includeWorld = false) {
     const now = Date.now();
     return {
-      boatingVersion: BOATING.version,
+      boatingVersion: BOATING.version, adventureVersion:ADVENTURE_VERSION,
       boats: room.boats.map(({id,x,z,facing,radius,riderId,speed,moving,running})=>({id,x,z,facing,radius,riderId,speed,moving,running})),
       type: 'state', ridingVersion: RIDING.version, combatVersion: 3, characterVersion: 2, enemyVersion: 1, worldVersion: WORLD.version, worldWidth: WORLD.width, worldDepth: WORLD.depth, epochYearsBP: EARTH.epochYearsBP, room: room.name, serverTime: now,
       projectiles: (room.projectiles || []).map(({id,ownerId,x,z,dx,dz,createdAt,updatedAt,travelled,kind})=>({id,ownerId,x,z,dx,dz,createdAt,updatedAt,travelled,kind})),
       projectileImpacts: (room.projectileImpacts || []).map(effect=>({...effect})),
       animals: room.animals.map(({id,x,z,facing,speed,scale,radius,clip,phase,health,maxHealth,meatRemaining,phaseStartedAt,riderId})=>({id,x,z,facing,speed,scale,radius,clip,phase,health,maxHealth,meatRemaining,phaseStartedAt,riderId})),
       enemies: (room.enemies || []).map(({id,modelKey,name,hostile,x,z,scale,facing,speed,radius,clip,phase,health,maxHealth,phaseStartedAt,behavior,targetId,attackSequence,attackAt,hitSequence,hitAt})=>({id,modelKey,name,hostile,x,z,scale,facing,speed,radius,clip,phase,health,maxHealth,phaseStartedAt,behavior,targetId,attackSequence,attackAt,hitSequence,hitAt})),
-      players: [...room.players.values()].map(({ id, name, species, gender, x, z, radius, color, inventory, gathered, tool, ready, energy, facing, moving, running, speed, attackSequence, attackAt, cookingEndsAt, hurtSequence, hurtAt, defeatSequence, downedUntil, invulnerableUntil, mountId, boatId }) =>
-        ({ id, name, species, gender, x, z, radius, color, inventory: { ...inventory }, gathered: gathered ?? 0, tool, ready, energy, facing, moving, running, speed, attackSequence, attackAt, cookingEndsAt, hurtSequence, hurtAt, defeatSequence, downedUntil, invulnerableUntil, mountId, boatId })),
+      players: [...room.players.values()].map(({ id, name, species, gender, x, z, radius, color, inventory, gathered, tool, ready, energy, facing, moving, running, speed, attackSequence, attackAt, cookingEndsAt, hurtSequence, hurtAt, defeatSequence, downedUntil, invulnerableUntil, mountId, boatId, adventure }) =>
+        ({ id, name, species, gender, x, z, radius, color, inventory: { ...inventory }, gathered: gathered ?? 0, tool, ready, energy, facing, moving, running, speed, attackSequence, attackAt, cookingEndsAt, hurtSequence, hurtAt, defeatSequence, downedUntil, invulnerableUntil, mountId, boatId, adventure:JSON.parse(JSON.stringify(adventure??{regions:{}})) })),
       ...(includeWorld ? {resources: room.resources.map(({ regeneratedAt, ...resource }) => ({ ...resource })), camp: { ...room.camp }, cookingFires:room.cookingFires, npc: { ...NPC }} : {}),
       day: 1 + Math.floor((now - room.createdAt) / 240000),
       dayProgress: ((now - room.createdAt) % 240000) / 240000,
@@ -94,6 +96,8 @@ export function createGameCore({ resumeGraceMs = 120000, keepEmptyRooms = false,
     }
     if (player.cookingEndsAt) return notice(player, '肉を焼いています。先に調理を終えるか中止しよう。');
     if (player.attackSequence && now - player.attackAt < attackProfile(player).durationMs) return notice(player, '攻撃が終わってから行おう。');
+    const adventure=handleAdventureAction(room,player,message,now);
+    if(adventure){notice(player,adventure.text,adventure.ok?'success':'info');if(adventure.ok)broadcast(room,snapshot(room,true));return;}
     if (action === 'gather') {
       const candidates = room.resources.filter((resource) => resource.amount > 0 && distance(resource, player) <= 8 && interactionVisible(room.collision, player, resource));
       const nearest = candidates.filter(resource => player.inventory[resource.type] < 99)
@@ -106,6 +110,7 @@ export function createGameCore({ resumeGraceMs = 120000, keepEmptyRooms = false,
       nearest.regeneratedAt = Date.now();
       player.inventory[nearest.type] += collected;
       player.gathered = (player.gathered ?? 0) + collected;
+      recordAdventureGather(player,nearest,collected);
       player.energy = Math.max(0, player.energy - 3);
       const label = { wood: '木材', stone: '石', berry: 'ベリー' }[nearest.type];
       notice(player, `${label} +${collected}`, 'success');
@@ -199,6 +204,7 @@ export function createGameCore({ resumeGraceMs = 120000, keepEmptyRooms = false,
       sessionToken: resumable ? randomToken() : null,
     };
     player.radius=characterModel(player).radius ?? WORLD.playerRadius;
+    ensureAdventure(player);
     if(active?.boatId)releaseBoat(room,player);
     const dynamic=[...room.players.values()].filter(p=>p!==player&&!p.mountId).concat(room.animals.filter(animalIsSolid),room.enemies.filter(enemyIsSolid)).map(actorObstacle);
     const spawn=room.collision.nearestFree(player,player.radius,dynamic)
@@ -265,7 +271,7 @@ export function createGameCore({ resumeGraceMs = 120000, keepEmptyRooms = false,
       } else if (message.type === 'expedition' && typeof message.destination === 'string') {
         const result=takeExpedition(room,player,message.destination,now);notice(player,result.text,result.ok?'success':'info');
         if(result.ok)broadcast(room,snapshot(room,true));
-      } else if (message.type === 'action' && typeof message.action === 'string' && (message.action === 'attack' || message.action === 'cancelCook' || now - player.lastAction >= 450)) {
+      } else if (message.type === 'action' && typeof message.action === 'string' && (message.action === 'attack' || message.action === 'cancelCook' || message.action === 'rift' || now - player.lastAction >= 450)) {
         player.lastAction = now;
         act(room, player, message, now);
       } else if (message.type === 'chat' && now - player.lastChat >= 600) {
@@ -324,6 +330,7 @@ export function createGameCore({ resumeGraceMs = 120000, keepEmptyRooms = false,
       const huntingChanged=updateHunting(room,now,notice);
       updateAnimals(room,dt,now);
       const enemiesChanged=updateEnemies(room,dt,now,notice);
+      updateAdventures(room,now,notice);
       let resourcesChanged=false;
       for (const resource of room.resources) {
         if (resource.amount < resource.maxAmount && now - resource.regeneratedAt >= 20000) {
@@ -359,7 +366,9 @@ export function createGameCore({ resumeGraceMs = 120000, keepEmptyRooms = false,
       throw new Error('Unsupported saved world; refusing to overwrite it');
     }
     if (rooms.size) throw new Error('Restore requires an empty game');
-    for (const record of saved.rooms) {
+    // Restoring must not attach sockets or live mutations to the caller's saved
+    // checkpoint; it may also be retained for verification or another restore.
+    for (const record of JSON.parse(JSON.stringify(saved.rooms))) {
       const room = ensureRoom(record.name);
       room.createdAt = record.createdAt;
       Object.assign(room.camp, record.camp);

@@ -17,6 +17,7 @@ import { enemyAnimationState, playerRecovered } from './enemy-state.js';
 import { isLand } from '/shared/paleo-geography.mjs';
 import { FrameClock } from './frame-clock.js';
 import { WorldAtmosphere } from './world-atmosphere.js';
+import { AdventureEffects } from './adventure-effects.js';
 import { mammothSeat } from './riding-pose.js';
 import { BoatRenderer } from './boat-renderer.js';
 import { BOATING } from '../shared/boats.mjs';
@@ -60,17 +61,17 @@ export class WorldRenderer {
   }
 
   setupLighting() {
-    this.scene.add(new THREE.HemisphereLight('#dce7d7','#546047',2.0));
+    this.hemisphere=new THREE.HemisphereLight('#dce7d7','#546047',2.0);this.scene.add(this.hemisphere);
     this.sun=new THREE.DirectionalLight('#ffe4b5',2.65);this.sun.position.set(5,47,18);this.sun.castShadow=true;
     this.sun.shadow.mapSize.set(1024,1024);this.sun.shadow.camera.left=-22;this.sun.shadow.camera.right=22;
     this.sun.shadow.camera.top=22;this.sun.shadow.camera.bottom=-22;this.sun.shadow.camera.near=.5;this.sun.shadow.camera.far=135;
     this.sun.shadow.bias=-.00025;this.sun.shadow.normalBias=.055;
     this.sun.target.position.set(50,0,50);this.scene.add(this.sun,this.sun.target);
     // Full-screen atmospheric shader: sky, sun and clouds are runtime effects.
-    this.skyUniforms={cameraWorld:{value:this.camera.matrixWorld},inverseProjection:{value:this.camera.projectionMatrixInverse},biomeSky:{value:new THREE.Color('#bfd3cb')},biomeFog:{value:new THREE.Color('#b5c4b2')}};
+    this.skyUniforms={cameraWorld:{value:this.camera.matrixWorld},inverseProjection:{value:this.camera.projectionMatrixInverse},biomeSky:{value:new THREE.Color('#bfd3cb')},biomeFog:{value:new THREE.Color('#b5c4b2')},shadowRealm:{value:0}};
     const skyMaterial=new THREE.ShaderMaterial({depthWrite:false,depthTest:false,uniforms:this.skyUniforms,
       vertexShader:'varying vec2 vUv;void main(){vUv=uv;gl_Position=vec4(position.xy,1.0,1.0);}',
-      fragmentShader:'varying vec2 vUv;uniform mat4 cameraWorld;uniform mat4 inverseProjection;uniform vec3 biomeSky;uniform vec3 biomeFog;void main(){vec4 eye=inverseProjection*vec4(vUv*2.0-1.0,1.0,1.0);vec3 d=normalize(mat3(cameraWorld)*eye.xyz);float h=clamp(d.y*1.7,0.0,1.0);vec3 color=mix(vec3(.72,.75,.65),vec3(.29,.49,.58),pow(h,.7));float sun=pow(max(0.0,dot(d,normalize(vec3(-.65,.55,-.85)))),850.0);color+=vec3(.9,.72,.42)*sun;vec2 p=d.xz/max(.12,d.y)*3.0;float noise=sin(p.x*.7+sin(p.y))*.25+sin(p.y*.5-p.x*.3)*.2+sin(p.x*1.3+p.y*.8)*.1;float cloud=smoothstep(.15,.43,noise)*smoothstep(.03,.23,d.y);color=mix(color,vec3(.83,.84,.75),cloud*.65);color=mix(color,biomeSky,.65);color=mix(biomeFog,color,smoothstep(-.04,.18,d.y));gl_FragColor=vec4(color,1.0);\n#include <colorspace_fragment>\n}'});
+      fragmentShader: /* Shared linear sky and rift colors. */ 'varying vec2 vUv;uniform mat4 cameraWorld;uniform mat4 inverseProjection;uniform vec3 biomeSky;uniform vec3 biomeFog;uniform float shadowRealm;void main(){vec4 eye=inverseProjection*vec4(vUv*2.0-1.0,1.0,1.0);vec3 d=normalize(mat3(cameraWorld)*eye.xyz);float h=clamp(d.y*1.7,0.0,1.0);vec3 color=mix(vec3(.72,.75,.65),vec3(.29,.49,.58),pow(h,.7));float sun=pow(max(0.0,dot(d,normalize(vec3(-.65,.55,-.85)))),850.0);color+=vec3(.9,.72,.42)*sun;vec2 p=d.xz/max(.12,d.y)*3.0;float noise=sin(p.x*.7+sin(p.y))*.25+sin(p.y*.5-p.x*.3)*.2+sin(p.x*1.3+p.y*.8)*.1;float cloud=smoothstep(.15,.43,noise)*smoothstep(.03,.23,d.y);color=mix(color,vec3(.83,.84,.75),cloud*.65);color=mix(color,biomeSky,mix(.65,.98,shadowRealm));color=mix(biomeFog,color,smoothstep(-.04,.18,d.y));gl_FragColor=vec4(color,1.0);\n#include <colorspace_fragment>\n}'});
     const sky=new THREE.Mesh(new THREE.PlaneGeometry(2,2),skyMaterial);sky.frustumCulled=false;sky.renderOrder=-1000;this.scene.add(sky);
   }
 
@@ -82,6 +83,7 @@ export class WorldRenderer {
       await buildTerrainAssets(this);if(this.disposed)return;buildForestAssets(this);buildCampAssets(this);buildAnimalAssets(this);this.landmarks=new WorldLandmarks(this);
       this.assetsReady=true;this.syncResources();this.syncEnemies();this.campLabel.element.classList.toggle('complete',this.state.camp.level>0);
       this.boatRenderer=new BoatRenderer(this);
+      this.adventureEffects=new AdventureEffects(this);
       this.npcActor=await this.npcAssets.create({color:'#ad9d79',});
       if(this.disposed){this.npcActor?.dispose();return;}
       this.npc=this.npcActor.root;this.npc.position.set(NPC.x,walkHeight(NPC.x,NPC.z),NPC.z);this.npc.rotation.y=-1.9;this.scene.add(this.npc);
@@ -375,6 +377,7 @@ export class WorldRenderer {
     this.landmarks?.update(this.camera,time);
     this.regionalScenery?.update(this.camera,time);
     this.atmosphere.update(this.focus,time,dt);
+    this.adventureEffects?.update(time);
     if(time>=this.nextStaticCull){
       this.nextStaticCull=time+.2;
       for(const {root,radius} of this.staticScenery)root.visible=Math.hypot(root.position.x-this.camera.position.x,root.position.z-this.camera.position.z)<this.scene.fog.far+radius;
@@ -469,6 +472,7 @@ export class WorldRenderer {
     for(const provider of this.humanAssets.values())provider.dispose();this.worldAssets.dispose();
     this.spells.dispose();
     this.atmosphere.dispose();
+    this.adventureEffects?.dispose();
     for(const[event,handler]of[['pointerdown',this.down],['pointermove',this.move],['pointerup',this.up],['pointercancel',this.cancel],['lostpointercapture',this.cancel],['wheel',this.wheel],['contextmenu',this.context],['webglcontextlost',this.contextLost]])this.canvas.removeEventListener(event,handler);
     const geometries=new Set(),mats=new Set();this.scene.traverse(o=>{if(o.geometry)geometries.add(o.geometry);if(o.material){for(const m of Array.isArray(o.material)?o.material:[o.material])mats.add(m);}if(o.isInstancedMesh)o.dispose();});geometries.forEach(g=>g.dispose());mats.forEach(m=>m.dispose());this.disposables.forEach(d=>d.dispose());this.renderer.dispose();
   }

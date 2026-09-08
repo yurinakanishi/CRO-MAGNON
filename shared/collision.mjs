@@ -5,6 +5,7 @@ import { LANDMARK_BOUNDS } from './landmark-bounds.mjs';
 import { landmarkObstacles } from './landmark-collision.mjs';
 import { REGION_FEATURES } from './region-features.mjs';
 import { REGION_FEATURE_BOUNDS } from './region-feature-bounds.mjs';
+import { ADVENTURE_LANDMARKS } from './adventure-layout.mjs';
 import { WORLD, worldClamp, INITIAL_RESOURCES, NPC } from './world.mjs';
 import { riverX, riverHalfWidth, terrainHeight } from './terrain.mjs';
 import { resourceAppearance } from './biome-scenery.mjs';
@@ -21,9 +22,12 @@ function modelBox(item) {
     height:source.max[1]*sy,groundX:item.x,groundZ:item.z};
 }
 export function staticObstacles() {
-  const result=[...SCENERY.trees,...SCENERY.rocks,...SCENERY.ridges,...SCENERY.tents,...SCENERY.props,...SCENERY.fires].map(modelBox);
+  const result=[...SCENERY.trees,...SCENERY.rocks,...SCENERY.ridges,...SCENERY.tents,...SCENERY.props,...SCENERY.fires].filter(item=>item.key!=='berry-bush').map(modelBox);
   result.push(...landmarkObstacles(LANDMARKS,LANDMARK_BOUNDS));
   result.push(...landmarkObstacles(REGION_FEATURES,REGION_FEATURE_BOUNDS));
+  result.push(...landmarkObstacles(ADVENTURE_LANDMARKS,{...LANDMARK_BOUNDS,...REGION_FEATURE_BOUNDS}));
+  // The shallow oasis spring is surrounded by a walkable bank.
+  result.push({id:'oasis-spring',type:'circle',x:-153,z:416,radius:5.5,height:0});
   for(const resource of INITIAL_RESOURCES) if(resource.type!=='berry') result.push(modelBox({...resourceAppearance(resource),x:resource.x,z:resource.z,resourceId:resource.id}));
   for(const z of [BRIDGE.z+BRIDGE.minZ-.08,BRIDGE.z+BRIDGE.maxZ+.08]) result.push({id:'bridge-rail',type:'box',x:BRIDGE.x,z,hx:5.35,hz:.10,c:1,s:0,height:1.1});
   result.push({id:'orl',type:'circle',x:NPC.x,z:NPC.z,radius:.36,height:1.72});

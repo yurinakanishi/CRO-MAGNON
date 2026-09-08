@@ -1,4 +1,5 @@
 import { EARTH, EXPEDITION_STOPS, geographicBiome } from './paleo-geography.mjs';
+import { ADVENTURE_RESOURCES } from './adventure-regions.mjs';
 export const WORLD = Object.freeze({ version: 3, size: EARTH.width, width:EARTH.width, depth:EARTH.height, minX:EARTH.minX, minZ:EARTH.minZ, maxX:EARTH.maxX, maxZ:EARTH.maxZ,
   chunkSize: 32, edgeMargin: 2, walkSpeed: 1.25, runSpeed: 3.5, playerRadius: .32, maxPlayers: 5 });
 export const worldClamp = (value, axis = 'x') => Math.max(WORLD[axis === 'x' ? 'minX' : 'minZ'] + WORLD.edgeMargin,
@@ -32,6 +33,6 @@ for(const stop of EXPEDITION_STOPS.slice(1)) {
   if(biome==='grassland'||biome==='snow')nodes.push(['berry',stop.x-4,stop.z+8,5]);
 }
 
-export const INITIAL_RESOURCES = Object.freeze(nodes.map(([type, x, z, amount], index) =>
+export const INITIAL_RESOURCES = Object.freeze([...nodes.map(([type, x, z, amount], index) =>
   Object.freeze({ id: `${type}-${index + 1}`, type, x, z, amount, maxAmount: amount }),
-));
+),...ADVENTURE_RESOURCES]);

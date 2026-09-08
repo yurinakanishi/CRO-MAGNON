@@ -25,9 +25,9 @@ export function createEnemies(collision, dynamic = [], now = Date.now()) {
     const position = collision.nearestFree(ground, ENEMY_RULES.radius, dynamic.map(circle), ground.roamRadius);
     if (!position) throw new Error(`No safe enemy spawn for ${ground.id}`);
     return {
-      id: ground.id, modelKey: ENEMY_RULES.modelKey, name: '白羽の呪術師', hostile: true,
+      id: ground.id, modelKey: ENEMY_RULES.modelKey, name: ground.name??'白羽の呪術師', regionId:ground.regionId, hostile: true,
       ...position, home: { ...position }, radius: ENEMY_RULES.radius, scale: 1,
-      phase: 'alive', phaseStartedAt: now, alive: true, health: ENEMY_RULES.maxHealth, maxHealth: ENEMY_RULES.maxHealth,
+      phase: 'alive', phaseStartedAt: now, alive: true, health: ground.maxHealth??ENEMY_RULES.maxHealth, maxHealth: ground.maxHealth??ENEMY_RULES.maxHealth,
       facing: 0, speed: 0, moving: false, running: false, runningRequested: false, clip: 'Idle_Loop', behavior: 'roam',
       dx: 0, dz: 0, lastInput: 0, target: null, path: [], targetId: null, roamRadius: ground.roamRadius, roamIndex: 0,
       nextRoamAt: now + 1000, nextPathAt: 0, pathGoal: null, returning: false,

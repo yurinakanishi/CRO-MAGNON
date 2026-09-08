@@ -16,7 +16,11 @@ import { ENEMY_GROUNDS, SCENERY } from '/shared/scenery-layout.mjs';
 import { playerDamageEvent } from './enemy-state.js';
 import { BIOMES, biomeAt, JOURNEY_STOPS } from '/shared/biomes.mjs';
 import { drawWorldMap, mapProjection, setWorldMapMode, setWorldMapSelection } from './world-map.js';
-import { EXPEDITION_STOPS, expeditionById, isLand, worldToGeo, locationName } from '/shared/paleo-geography.mjs';
+import { EXPEDITION_STOPS as EARTH_STOPS, expeditionById as earthExpeditionById, isLand, worldToGeo, locationName } from '/shared/paleo-geography.mjs';
+import { ADVENTURE_STOPS, regionAt } from '/shared/adventure-regions.mjs';
+import { installAdventureUI, adventureInteraction } from './adventure-ui.js';
+const EXPEDITION_STOPS=[...EARTH_STOPS,...ADVENTURE_STOPS];
+const expeditionById=id=>earthExpeditionById(id)??ADVENTURE_STOPS.find(s=>s.id===id);
 
 const icons = {
   katana: '<path d="m4 21 4-4m-2-3 4 4M8 15C15 10 20 5 21 2c-4 1-9 6-13 11Z"/>',
@@ -137,6 +141,7 @@ document.body.classList.add('tps-mode');
 $('.hotbar-wrap').insertAdjacentHTML('afterbegin', `<div class="riding-controls"><button id="ride-button" class="hunt-button"><kbd>R</kbd><span>マンモスへ</span></button><small id="riding-hint">1頭に1人 · 近づいて R で乗る</small></div>`);
 $('#ride-button').onclick=ride;
 const boatUI=installBoatControls({player,state:()=>state,available:()=>joined&&!renderUnavailable,action,goTo,notify,renderer});
+const adventureUI=installAdventureUI({player,state:()=>state,available:()=>joined&&!renderUnavailable,action,goTo,notify,openModal,send,stopInput});
 $('.hotbar-wrap').insertAdjacentHTML('afterbegin', `<div class="hunt-controls"><button id="attack-button" class="hunt-button attack-button" title="槍で攻撃 [F / 5]">${icon('spear')}<kbd>F</kbd><span>槍で攻撃</span></button><button id="meat-inventory" class="hunt-button meat-counts" title="生肉は焚き火で焼いてから食べられます">${icon('meat')}<span>生 <b id="rawMeat-count">0</b> / 焼 <b id="cookedMeat-count">0</b></span></button><button id="cook-button" class="hunt-button" title="近くの焚き火で肉を焼く">${icon('flame')}<span>焼く</span></button><button id="eat-meat-button" class="hunt-button" title="焼き肉で元気を45回復">食べる</button></div><div id="cooking-status" class="cooking-status" hidden><span id="cooking-label">肉を焼いています…</span><progress id="cooking-progress" max="1" value="0" aria-label="肉を焼く進み具合"></progress><button id="cancel-cook">中止</button></div>`);
 $('.controls-caption>span:last-child').textContent='Shiftで走る · ドラッグで視点回転';
 $('#discovery-card').insertAdjacentHTML('beforeend', `<button id="go-enemy" class="enemy-link" hidden>白羽の呪術師へ ${icon('arrow')}</button>`);
@@ -218,6 +223,7 @@ function distance(a, b) { return Math.hypot(a.x - b.x, a.z - b.z); }
 function nearby() {
   const me = player(); if (!me||me.downedUntil||me.mountId||me.boatId) return null;
   const hunting=huntInteraction(state,me,renderer.collision);if(hunting)return hunting;
+  const adventure=adventureInteraction(me,renderer.collision);if(adventure)return adventure;
   const objects = state.resources.filter(r => r.amount > 0 && me.inventory[r.type] < 99).map(r => ({ ...r, action: 'gather', label: `${{wood:'木材',stone:'石',berry:'ベリー'}[r.type]}を採集する`, range: 8 }));
   objects.push({ ...state.camp, action: 'contribute', label: '焚き火に資材を届ける', range: 10 }, { ...state.npc, action: 'trade', label: 'オルと物々交換する', range: 10 });
   return objects.filter(o => distance(me, o) <= o.range && (!renderer.collision || interactionVisible(renderer.collision, me, o))).sort((a, b) => distance(me, a) - distance(me, b))[0];
@@ -241,13 +247,16 @@ function updateHUD() {
   $('#my-portrait').className = `portrait ${profile.species}`;
   updateHuntingHUD();
   const biome=biomeAt(me?.x??50,me?.z??50);
-  $('.location-title h1').textContent=locationName(me?.x??50,me?.z??50);
-  $('.location-title p').textContent=biome.description;
+  const region=regionAt(me?.x??50,me?.z??50);
+  $('.location-meta>span:last-child').lastChild.textContent=region?.realm?' · 時のない夜':' · 穏やかな朝';
+  $('.location-title h1').textContent=region?.name??locationName(me?.x??50,me?.z??50);
+  $('.location-title p').textContent=region?.description??biome.description;
   $('.location-title .eyebrow').textContent='CRO-MAGNON · OPEN WORLD';
-  $('.location-meta span:first-child').textContent=`${biome.short} · ${Math.round(me?.x??50)}, ${Math.round(me?.z??50)}`;
+  $('.location-meta span:first-child').textContent=`${region?.kind??biome.short} · ${Math.round(me?.x??50)}, ${Math.round(me?.z??50)}`;
   $('.map-caption').innerHTML=`WORLD · ${biome.short} ${icon('expand')}`;
   drawMinimap();
   updateModalHUD();
+  adventureUI.update();
   if ($('#modal').open && $('#big-map')) drawMinimap($('#big-map'), true);
 }
 function updateModalHUD() {
@@ -343,6 +352,7 @@ function updateHuntingHUD(){
   const targetInFront=attackReady(me,animal)&&inAttackArc(me,animal);
   $('#hunt-target-name').textContent=animal?.hostile?animal.name:animal?.phase==='meat'?'マンモスの肉':animal?.phase==='dying'?'マンモスを倒した':'草原のマンモス';
   $('#discovery-card').classList.toggle('hostile',animal?.hostile===true);
+  $('#discovery-card').hidden=!animal||!me||distance(me,animal)>60;
   $('#discovery-card small').textContent=animal?.hostile?'HOSTILE · 杖の攻撃に注意':'OPEN MEADOW · みんなで狩る';
   $('#hunt-health').setAttribute('aria-label',`${animal?.hostile?animal.name:'マンモス'}の体力`);
   $('#hunt-health').hidden=animal?.phase!=='alive';$('#hunt-health').max=animal?.maxHealth??100;$('#hunt-health').value=animal?.health??100;
@@ -404,9 +414,7 @@ function openTribe() {
   $('#modal-body .modal-intro').id='tribe-summary';updateModalHUD();
   $('#tribe-invite').onclick=openInvite;
 }
-function openJournal() {
-  openModal(`<span class="eyebrow">CHAPTER 01</span><h2>まだ、歴史のない日々。</h2><p class="modal-intro">ここは、氷河期をイメージした小さな谷。<br>あなたと仲間の手で、最初の野営地を育てましょう。</p><div class="journal-entry"><span>01</span><div><h3>森の恵みを分け合おう</h3><p>木、石、ベリーのそばまで歩き、Eキーか「採集」を押します。石斧があれば、いちどに多く採集できます。採り尽くした資源は、しばらくすると戻ります。</p></div></div><div class="journal-entry"><span>02</span><div><h3>小さな火から、みんなの家へ</h3><p>木材12と石6を、仲間と協力して集めましょう。焚き火のそばで「届ける」を押すと、持っている資材を拠点に使います。</p></div></div><div class="journal-entry"><span>03</span><div><h3>谷の隣人、オル</h3><p>ネアンデルタール人のオルは、物々交換ができる隣人です。集落へ歩いて「交換」を押してみましょう。自分自身もネアンデルタール人として遊べます。</p></div></div><p class="form-note">この世界の暮らしや地形は、遊びのためのフィクションです。部屋の進行はサーバーのメモリ上に保存されます。</p>`);
-}
+function openJournal() { adventureUI.open(); }
 function openHelp() {
   openModal(`<h2>今日の一歩から、はじめよう。</h2><p class="modal-intro">最初は、近くの木を集めてみましょう。</p><div class="help-grid"><div><kbd>W A S D</kbd><strong>歩く・走る</strong><p>通常は歩行。Shiftを押している間は走行。「走る」ボタンでも切り替えられます。クリック移動は障害物を避けます。</p></div><div><kbd>E</kbd><strong>近くでアクション</strong><p>採集、焚き火に届ける、オルと交換。</p></div><div><kbd>1 · 2 · 3 · 4</kbd><strong>アクションを選ぶ</strong><p>採集・道具づくり・資材を届ける・交換。</p></div><div><kbd>Enter</kbd><strong>仲間と話す</strong><p>チャットを開き、Enterで送信。</p></div></div><div class="help-tip">${icon('flame')} まずは木材3と石2で石斧を作ろう。<br>そのあと、仲間と拠点に木材12・石6を届けよう。</div><button id="help-start" class="button button-accent wide">探索をはじめる ${icon('arrow')}</button>`);
   $('.help-grid').insertAdjacentHTML('beforeend',`<div><kbd>DRAG</kbd><strong>肩越しカメラを回す</strong><p>マウス右・左ドラッグ、または指のドラッグで周囲を見渡せます。WASDはカメラの向きに合わせて動きます。</p></div><div><kbd>SCROLL</kbd><strong>カメラの距離を変える</strong><p>ホイールか＋・−ボタンで調整。「自分の位置へ」で初期のTPS視点に戻せます。</p></div>`);

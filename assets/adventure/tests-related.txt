@@ -1,0 +1,32 @@
+✔ all six authored routes, resources and rifts stay on land with reachable approaches (132.2548ms)
+✔ discovery and waypoints are server-position based, once only, and blocked by walls (1.2786ms)
+✔ regional collection counts only actual matching local resources and caps at the requirement (0.2637ms)
+✔ claim requires complete goals at that camp, gives atomic rewards and cannot be repeated (0.6414ms)
+✔ rifts enforce seals, proximity, cooldown and safe occupancy, preserving inventory and clearing attacks (0.6005ms)
+✔ raw expedition IDs cannot bypass the locked rift; downed and mounted actors cannot claim or travel (0.2879ms)
+✔ real lethal attacks share distinct guardian credit with nearby allies, including spell kills (1.9401ms)
+✔ rest heals only at local camp and is bounded by threat and cooldown (0.3247ms)
+✔ reporting a quest then immediately using its return rift is accepted by the real message handler (129.9797ms)
+✔ saved worlds and same-session reconnect retain exploration and append new content to older saves (238.1613ms)
+✔ landmark coatings share actual geometry and textures, and release only their own materials (2.3343ms)
+✔ five clients see the same crafted hull and occupancy; input controls hull and mounted actions are rejected (174.2048ms)
+✔ active replacement, disconnect and durable restart restore possessions at the safe shore (217.3729ms)
+✔ pre-boat world saves load without losing existing world progress (149.8699ms)
+✔ native server exposes the status preflight used before browser WebSocket connection (43.8836ms)
+✔ cloud save restores private sessions, inventory and world after a fresh process (292.7142ms)
+✔ free quotas refuse excess usage and reserved usage survives restart (1.441ms)
+✔ unknown saved schema fails closed instead of silently resetting progress (0.4894ms)
+✔ actual protocol rejects ocean routes and forged travel, then shares a safe expedition and retained progress (295.374ms)
+✔ a transient disconnect restores identity, position, inventory and the sole-player room (222.0974ms)
+✔ disconnect releases a mount and reconnect places the rider safely beside it (154.0836ms)
+✔ a reload replaces its old connection once without deleting the resumed player (124.744ms)
+✔ resuming cannot exceed five players and a full-room refusal retains saved items (219.6914ms)
+✔ explicit profile leave discards the old player, while abandoned sessions expire (303.3025ms)
+ℹ tests 24
+ℹ suites 0
+ℹ pass 24
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 1757.4046
