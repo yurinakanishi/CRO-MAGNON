@@ -1,0 +1,61 @@
+{
+  "at": "2026-09-08T03:12:36.261Z",
+  "status": "passed",
+  "url": "http://localhost:3000",
+  "room": "GULF-ROLLOUT",
+  "health": {
+    "ok": true,
+    "ridingVersion": 1,
+    "combatVersion": 3,
+    "characterVersion": 2,
+    "enemyVersion": 1,
+    "worldVersion": 3,
+    "worldSize": 4096,
+    "worldWidth": 4096,
+    "worldDepth": 2048,
+    "epochYearsBP": 50000,
+    "rooms": 0,
+    "players": 0,
+    "maxPlayers": 5
+  },
+  "statusEndpoint": {
+    "ok": true,
+    "boatingVersion": 1,
+    "adventureVersion": 1,
+    "gulfVersion": 1
+  },
+  "errors": [],
+  "checks": [
+    "Fresh Chrome context",
+    "Delivered 3D assets ready",
+    "Gulf entry via normal UI",
+    "Welcome supplies via normal UI"
+  ],
+  "player": {
+    "x": -1770,
+    "z": 655,
+    "inventory": {
+      "wood": 0,
+      "stone": 0,
+      "berry": 3,
+      "rawMeat": 0,
+      "cookedMeat": 0,
+      "obsidian": 0,
+      "seed": 6,
+      "water": 0
+    },
+    "gulf": {
+      "countryId": null,
+      "welcomed": true,
+      "visited": [
+        "many-hearths"
+      ],
+      "harvested": 0,
+      "procured": 0,
+      "delivered": 0,
+      "lastFeast": 0
+    }
+  },
+  "screenshot": "qa/local-rollout.png",
+  "publicDeployment": false
+}

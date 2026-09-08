@@ -10,7 +10,7 @@ test('building consumes wood only after capacity, coast and free launch space pa
   r.p.inventory.wood=24;r.p.x=50;r.p.z=50;assert.equal(act(r,'craftBoat').changed,false);assert.equal(r.p.inventory.wood,24);
   Object.assign(r.p,shore);assert.equal(act(r,'craftBoat').changed,true);assert.equal(r.p.inventory.wood,12);assert.equal(r.boats.length,1);
   assert.ok(waterBodyFree(r.boats[0].x,r.boats[0].z,BOATING.radius));
-  r.boats=Array.from({length:5},(_,i)=>({...r.boats[0],id:`boat-${i+1}`}));assert.equal(act(r,'craftBoat').changed,false);assert.equal(r.p.inventory.wood,12);
+  r.boats=Array.from({length:BOATING.maxBoats},(_,i)=>({...r.boats[0],id:`boat-${i+1}`}));assert.equal(act(r,'craftBoat').changed,false);assert.equal(r.p.inventory.wood,12);
 });
 test('boarding is exclusive, validates range and action conflicts, and cannot fabricate IDs',()=>{
   const r=fixture();act(r,'craftBoat');assert.equal(act(r,'boardBoat',r.p,'fake').changed,false);

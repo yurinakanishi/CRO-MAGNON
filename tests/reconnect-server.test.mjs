@@ -27,7 +27,7 @@ test('a transient disconnect restores identity, position, inventory and the sole
   assert.equal(game.rooms.get('RESUME'),room);assert.equal(room.sessions.size,1);
   const second=connect({session:welcome.session,name:'違う名前',species:'cat'}),resumed=await second.welcome();
   assert.equal(resumed.id,welcome.id);assert.equal(resumed.resumed,true);assert.equal(resumed.profile.name,'旅人');
-  assert.deepEqual(p.inventory,{wood:8,stone:3,berry:0,rawMeat:2,cookedMeat:0});
+  assert.deepEqual(p.inventory,{wood:8,stone:3,berry:0,rawMeat:2,cookedMeat:0,obsidian:0,seed:0,water:0});
   assert.equal(p.energy,37);assert.equal(p.gathered,7);assert.equal(p.tool,true);assert.equal(p.ready,true);
   assert.deepEqual([p.x,p.z],[130,50]);assert.equal(p.pendingStrike,null);assert.equal(p.cookingEndsAt,0);assert.equal(p.speed,0);
   assert.equal(room.sessions.size,0);assert.equal(room.players.size,1);

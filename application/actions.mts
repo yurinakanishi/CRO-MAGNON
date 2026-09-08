@@ -5,6 +5,7 @@ import { handleHuntingAction } from '../shared/hunting.mjs';
 import { interactionVisible } from '../shared/interactions.mjs';
 import { handleRidingAction } from '../shared/riding.mjs';
 import { NPC } from '../shared/world.mjs';
+import { handleGulfAction, ensureGulfPlayer } from '../shared/gulf-life.mjs';
 const distance = (a, b) => Math.hypot(a.x - b.x, a.z - b.z);
 export function createActionHandler({ notice, broadcast, snapshot, systemChat, runtime }) {
   return function act(room, player, message, now) {
@@ -33,6 +34,12 @@ export function createActionHandler({ notice, broadcast, snapshot, systemChat, r
       return notice(player, '肉を焼いています。先に調理を終えるか中止しよう。');
     if (player.attackSequence && now - player.attackAt < attackProfile(player).durationMs)
       return notice(player, '攻撃が終わってから行おう。');
+    const gulf = handleGulfAction(room, player, message, now);
+    if (gulf) {
+      notice(player, gulf.text, gulf.ok ? 'success' : 'info');
+      if (gulf.ok) broadcast(room, snapshot(room, true));
+      return;
+    }
     const adventure = handleAdventureAction(room, player, message, now);
     if (adventure) {
       notice(player, adventure.text, adventure.ok ? 'success' : 'info');
@@ -43,6 +50,7 @@ export function createActionHandler({ notice, broadcast, snapshot, systemChat, r
       const candidates = room.resources.filter(
         (resource) =>
           resource.amount > 0 &&
+          (!message.targetId || resource.id === message.targetId) &&
           distance(resource, player) <= 8 &&
           interactionVisible(room.collision, player, resource),
       );
@@ -66,8 +74,11 @@ export function createActionHandler({ notice, broadcast, snapshot, systemChat, r
       player.inventory[nearest.type] += collected;
       player.gathered = (player.gathered ?? 0) + collected;
       recordAdventureGather(player, nearest, collected);
+      if (nearest.type === 'obsidian') ensureGulfPlayer(player).procured += collected;
       player.energy = Math.max(0, player.energy - 3);
-      const label = { wood: '木材', stone: '石', berry: 'ベリー' }[nearest.type];
+      const label = { wood: '木材', stone: '石', berry: 'ベリー', obsidian: '黒曜石' }[
+        nearest.type
+      ];
       notice(player, `${label} +${collected}`, 'success');
     } else if (action === 'contribute') {
       if (distance(player, room.camp) > 10)

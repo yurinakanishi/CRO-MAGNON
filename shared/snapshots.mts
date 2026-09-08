@@ -1,4 +1,5 @@
 import type { Gender, Inventory, Point, Resource, Species } from './types.mjs';
+import type { GulfState, GulfProgress } from './gulf-types.mjs';
 
 /** Public wire data. Connections, session tokens and simulation paths never belong here. */
 export interface AdventureProgress {
@@ -36,6 +37,7 @@ export interface PlayerSnapshot extends Point {
   mountId: string | null;
   boatId: string | null;
   adventure: { regions: Record<string, AdventureProgress> };
+  gulf?: GulfProgress;
 }
 export interface AnimalSnapshot extends Point {
   id: string;
@@ -123,6 +125,7 @@ export interface GameSnapshot {
   characterVersion: number;
   enemyVersion: number;
   worldVersion: number;
+  playerLimit?: number;
   worldWidth: number;
   worldDepth: number;
   epochYearsBP: number;
@@ -136,6 +139,7 @@ export interface GameSnapshot {
   camp?: CampSnapshot;
   cookingFires?: (Point & { id: string })[];
   npc?: NpcSnapshot;
+  gulf?: GulfState;
   day: number;
   dayProgress: number;
   completed: boolean;

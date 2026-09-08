@@ -56,7 +56,7 @@ export function installBoatControls({ player, state, available, action, goTo, no
       $('#boat-shore').disabled = disabled || aboard || !!p?.mountId;
       $('#boat-hint').textContent = aboard
         ? 'WASD / 海面クリックで操船 · 2回押しで速く · 岸で B'
-        : `部屋で共有 ${(state().boats || []).length}/5隻 · 岸でつくろう`;
+        : `部屋で共有 ${(state().boats || []).length}/${BOATING.maxBoats}隻 · 岸でつくろう`;
       wrap.classList.toggle('boating', aboard);
       const canvas = $('#world');
       canvas.dataset.boatId = p?.boatId || '';

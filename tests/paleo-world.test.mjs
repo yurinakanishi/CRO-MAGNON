@@ -10,6 +10,7 @@ import {LANDMARKS} from '../dist/shared/landmarks.mjs';
 import {REGION_FEATURES} from '../dist/shared/region-features.mjs';
 import {takeExpedition} from '../dist/shared/expeditions.mjs';
 import {nearbyChunks} from '../dist/shared/biomes.mjs';
+import {COAST_RUNS,COAST_GRID} from '../dist/shared/paleo-coast-data.mjs?baseline';
 
 test('Earth coordinates round-trip at equator, poles, dateline and the existing camp',()=>{
   for(const [longitude,latitude] of [[-180,90],[180,-90],[0,0],[138,37],[-103,40]]){
@@ -18,15 +19,17 @@ test('Earth coordinates round-trip at equator, poles, dateline and the existing 
   const camp=worldToGeo(50,50);assert.ok(camp.longitude>15&&camp.longitude<25&&camp.latitude>45&&camp.latitude<53);
   assert.equal(WORLD.width,4096);assert.equal(WORLD.depth,2048);assert.equal(EARTH.epochYearsBP,50000);
 });
-test('runtime shoreline is the exact field built from the archived NOAA input',async()=>{
+test('archived NOAA base field retains its hash; runtime samples include the explicitly authored gulf',async()=>{
   const meta=JSON.parse(await readFile(new URL('../assets/geography/build.json',import.meta.url))),source=coastTextureData();
-  assert.equal(createHash('sha256').update(source.data).digest('hex'),meta.fieldSha256);
+  const base=new Uint8Array(COAST_GRID.width*COAST_GRID.height);let cursor=0;
+  for(let i=0;i<COAST_RUNS.length;i+=2){base.fill(COAST_RUNS[i+1],cursor,cursor+COAST_RUNS[i]);cursor+=COAST_RUNS[i];}
+  assert.equal(createHash('sha256').update(base).digest('hex'),meta.fieldSha256);
   assert.equal(source.data.byteLength,2097152);assert.equal(meta.seaLevelMetres,-68.3);
   for(let z=0;z<source.height;z+=37)for(let x=0;x<source.width;x+=41){const d=coastDistance(EARTH.minX+(x+.5)*2,EARTH.minZ+(z+.5)*2);assert.equal(d,(source.data[z*source.width+x]-128)/4);}
 });
 test('major continents and exposed Sunda/Sahul shelves retain their geographic positions',()=>{
   for(const [lon,lat] of [[20,49],[-103,40],[-56,-12],[20,5],[90,45],[134,-26],[-42,73],[20,-78],[112,-3],[137,-10]]){const p=geoToWorld(lon,lat);assert.ok(isLand(p.x,p.z),`${lon}, ${lat} should be land`);}
-  for(const [lon,lat] of [[-140,0],[-30,0],[80,-30],[0,0],[170,-30]]){const p=geoToWorld(lon,lat);assert.ok(!isLand(p.x,p.z),`${lon}, ${lat} should be ocean`);}
+  for(const [lon,lat] of [[-100,0],[-30,0],[80,-30],[0,0],[170,-30]]){const p=geoToWorld(lon,lat);assert.ok(!isLand(p.x,p.z),`${lon}, ${lat} should be ocean`);}
 });
 test('body sweeps stop on coastlines in multiple continents for people and mammoths',()=>{
   const c=new CollisionWorld([]),source=coastTextureData();let cases=0;

@@ -1,0 +1,181 @@
+import { COUNTRIES, FARM_PLOTS, MANY_HEARTHS, SETTLEMENTS, SPRINGS } from './gulf-region.mjs';
+import { interactionVisible } from './interactions.mjs';
+import type { GulfProgress, GulfState } from './gulf-types.mjs';
+export const GATHERING_NEEDS = Object.freeze({ wood: 8, berry: 12, obsidian: 4 });
+export const SEASONS = [
+  { name: '芽吹き', growMs: 180000 },
+  { name: '夏の集い', growMs: 150000 },
+  { name: '実り', growMs: 180000 },
+  { name: '冬の炉', growMs: 240000 },
+];
+export const gulfSeason = (now: number, createdAt: number) =>
+  SEASONS[Math.floor(Math.max(0, now - createdAt) / 720000) % 4];
+const distance = (a, b) => Math.hypot(a.x - b.x, a.z - b.z);
+const count = (n, max = 999999) =>
+  Number.isFinite(n) ? Math.max(0, Math.min(max, Math.floor(n))) : 0;
+export function createGulfState(saved?): GulfState {
+  return {
+    version: 1,
+    plots: FARM_PLOTS.map((p) => {
+      const old = saved?.plots?.find?.((s) => s.id === p.id);
+      const stage = ['planted', 'growing', 'ripe'].includes(old?.stage) ? old.stage : 'empty';
+      return { id: p.id, stage, readyAt: count(old?.readyAt, Number.MAX_SAFE_INTEGER) };
+    }),
+    stores: {
+      wood: count(saved?.stores?.wood, 8),
+      berry: count(saved?.stores?.berry, 12),
+      obsidian: count(saved?.stores?.obsidian, 4),
+    },
+    festivals: count(saved?.festivals),
+  };
+}
+export function ensureGulfPlayer(player): GulfProgress {
+  player.inventory.obsidian ??= 0;
+  player.inventory.seed ??= 0;
+  player.inventory.water ??= 0;
+  if (!player.gulf)
+    player.gulf = {
+      countryId: null,
+      welcomed: false,
+      visited: [],
+      harvested: 0,
+      procured: 0,
+      delivered: 0,
+      lastFeast: 0,
+    };
+  return player.gulf;
+}
+export function updateGulf(room, now): boolean {
+  room.gulf ??= createGulfState();
+  let changed = false;
+  for (const plot of room.gulf.plots)
+    if (plot.stage === 'growing' && now >= plot.readyAt) {
+      plot.stage = 'ripe';
+      changed = true;
+    }
+  for (const player of room.players.values()) {
+    const progress = ensureGulfPlayer(player);
+    for (const s of SETTLEMENTS)
+      if (!progress.visited.includes(s.id) && distance(player, s) <= 12) {
+        progress.visited.push(s.id);
+        changed = true;
+      }
+  }
+  return changed;
+}
+export function handleGulfAction(room, player, message, now = Date.now()) {
+  if (!message.action.startsWith('gulf')) return null;
+  const fail = (text) => ({ ok: false, text });
+  const ok = (text) => ({ ok: true, text });
+  if (player.downedUntil || player.mountId || player.boatId)
+    return fail('地上で動ける状態になってから行おう。');
+  if (player.cookingEndsAt) return fail('調理を終えてから行おう。');
+  const progress = ensureGulfPlayer(player),
+    inv = player.inventory;
+  room.gulf ??= createGulfState();
+  const near = (point, range = 5) =>
+    point && distance(player, point) <= range && interactionVisible(room.collision, player, point);
+  const atHearth = near(MANY_HEARTHS, 9);
+  const settlement = SETTLEMENTS.find((s) => near(s, 9));
+  const action = message.action;
+  if (action === 'gulfWelcome') {
+    if (!atHearth) return fail('集い場の大きな炉に近づこう。');
+    if (progress.welcomed) return fail('旅支度は受け取り済み。ベリー2個から種を取り分けられます。');
+    if (inv.seed > 93 || inv.berry > 96) return fail('種とベリーを入れる空きを作ろう。');
+    progress.welcomed = true;
+    inv.seed += 6;
+    inv.berry += 3;
+    return ok('湾へようこそ。種6・ベリー3を受け取った。畑、水場、三つの国を訪ねよう。');
+  }
+  if (action === 'gulfJoin') {
+    const country = COUNTRIES.find((c) => c.id === message.targetId);
+    if (!country || !near(country, 9)) return fail('その国の炉を訪ねて、仲間入りしよう。');
+    if (progress.countryId === country.id) return fail('すでにこの国の仲間です。');
+    progress.countryId = country.id;
+    return ok(`${country.name}の仲間になった。種族を問わず、三つの国と集い場を訪ねられます。`);
+  }
+  if (action === 'gulfSeeds') {
+    if (!settlement) return fail('どの国でも、炉のそばで種を取り分けられます。');
+    if (inv.berry < 2 || inv.seed > 97) return fail('ベリー2個と、種2個分の空きが必要です。');
+    inv.berry -= 2;
+    inv.seed += 2;
+    return ok('ベリー2個から、植える種を2個取り分けた。');
+  }
+  if (action === 'gulfWater') {
+    if (!SPRINGS.some((s) => near(s, 5))) return fail('石で囲った水場に近づこう。');
+    if (inv.water >= 6) return fail('水袋はいっぱいです。畑に水をやろう。');
+    inv.water = 6;
+    return ok('水袋を満たした。6区画に水をやれます。');
+  }
+  if (['gulfPlant', 'gulfTend', 'gulfHarvest'].includes(action)) {
+    const spec = FARM_PLOTS.find((p) => p.id === message.targetId);
+    if (!near(spec)) return fail('手入れする畑に近づこう。');
+    const plot = room.gulf.plots.find((p) => p.id === spec.id);
+    if (plot.stage === 'growing' && now >= plot.readyAt) plot.stage = 'ripe';
+    if (action === 'gulfPlant') {
+      if (plot.stage !== 'empty') return fail('この区画にはすでに植えられています。');
+      if (inv.seed < 1)
+        return fail('種が必要です。集い場で旅支度を受け取るか、炉でベリーから種を取ろう。');
+      inv.seed--;
+      plot.stage = 'planted';
+      plot.readyAt = 0;
+      return ok('種を植えた。水場で水袋を満たして、この畑に水をやろう。');
+    }
+    if (action === 'gulfTend') {
+      if (plot.stage !== 'planted') return fail('種を植えた区画に一度、水をやれます。');
+      if (inv.water < 1) return fail('水袋が空です。近くの水場で水を汲もう。');
+      inv.water--;
+      plot.stage = 'growing';
+      plot.readyAt = now + gulfSeason(now, room.createdAt).growMs;
+      return ok('水をやった。季節に応じて2分半〜4分で実ります。仲間も収穫できます。');
+    }
+    if (plot.stage !== 'ripe') return fail('まだ実っていません。水をやり、成長を待とう。');
+    if (inv.berry > 95 || inv.seed > 97)
+      return fail('ベリー4・種2を入れる空きを作ろう。畑はそのまま残ります。');
+    inv.berry += 4;
+    inv.seed += 2;
+    progress.harvested++;
+    plot.stage = 'empty';
+    plot.readyAt = 0;
+    return ok('収穫：ベリー4・種2。空いた畑へ植え直せます。');
+  }
+  if (action === 'gulfExchange') {
+    if (!atHearth) return fail('集い場の炉で交換しよう。');
+    if (inv.obsidian < 2 || inv.wood > 93 || inv.seed > 97)
+      return fail('黒曜石2個と、木材6・種2の空きが必要です。');
+    inv.obsidian -= 2;
+    inv.wood += 6;
+    inv.seed += 2;
+    return ok('黒曜石2を渡し、舟や道具に使える木材6・種2と交換した。');
+  }
+  if (action === 'gulfOffer') {
+    if (!atHearth) return fail('集い場の炉へ持ち寄ろう。');
+    const key = message.targetId;
+    if (!Object.hasOwn(GATHERING_NEEDS, key)) return fail('持ち寄る品が見つかりません。');
+    const amount = { wood: 2, berry: 3, obsidian: 1 }[key];
+    if (room.gulf.stores[key] >= GATHERING_NEEDS[key])
+      return fail('この品はそろいました。他の品を持ち寄ろう。');
+    if (inv[key] < amount) return fail('持ち寄る品が足りません。');
+    inv[key] -= amount;
+    room.gulf.stores[key] += amount;
+    progress.delivered++;
+    if (Object.entries(GATHERING_NEEDS).every(([k, n]) => room.gulf.stores[k] >= n)) {
+      room.gulf.festivals++;
+      room.gulf.stores = { wood: 0, berry: 0, obsidian: 0 };
+      return ok('みんなの品がそろい、集いの宴が始まった！ 炉で食事と次の種を受け取ろう。');
+    }
+    return ok('集いの炉へ品を届けた。三つの国の誰でも、宴を準備できます。');
+  }
+  if (action === 'gulfFeast') {
+    if (!atHearth) return fail('集い場の炉へ戻ろう。');
+    if (room.gulf.festivals <= progress.lastFeast)
+      return fail('次の宴へ、木材・ベリー・黒曜石を持ち寄ろう。');
+    if (inv.seed > 97 || inv.berry > 96) return fail('ベリー3・種2の空きを作ろう。');
+    inv.seed += 2;
+    inv.berry += 3;
+    player.energy = Math.min(100, player.energy + 35);
+    progress.lastFeast = room.gulf.festivals;
+    return ok('宴を囲んだ。元気+35・ベリー3・種2。次の旅と畑へ。');
+  }
+  return fail('その湾の行動は使えません。');
+}

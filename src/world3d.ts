@@ -36,6 +36,8 @@ import { isLand } from '../shared/paleo-geography.mjs';
 import { FrameClock } from './frame-clock.js';
 import { WorldAtmosphere } from './world-atmosphere.js';
 import { AdventureEffects } from './adventure-effects.js';
+import { GulfRenderer } from './gulf-renderer.js';
+import { COUNTRIES } from '../shared/gulf-region.mjs';
 import { mammothSeat } from './riding-pose.js';
 import { BoatRenderer } from './boat-renderer.js';
 import { BOATING } from '../shared/boats.mjs';
@@ -133,6 +135,7 @@ export class WorldRenderer {
   declare assetsReady: boolean | undefined;
   declare boatRenderer: BoatRenderer | undefined;
   declare adventureEffects: AdventureEffects | undefined;
+  declare gulfRenderer: GulfRenderer | undefined;
   declare npcActor: any;
   declare npc: any;
   declare failed: boolean | undefined;
@@ -325,6 +328,7 @@ export class WorldRenderer {
       this.campLabel.element.classList.toggle('complete', this.state.camp.level > 0);
       this.boatRenderer = new BoatRenderer(this);
       this.adventureEffects = new AdventureEffects(this);
+      this.gulfRenderer = new GulfRenderer(this);
       this.npcActor = await this.npcAssets.create({ color: '#ad9d79' });
       if (this.disposed) {
         this.npcActor?.dispose();
@@ -418,7 +422,7 @@ export class WorldRenderer {
         model.rotation.y = yaw;
         this.scene.add(model);
         const label = this.createLabel(
-          { wood: '木材', stone: '石', berry: 'ベリー' }[resource.type],
+          { wood: '木材', stone: '石', berry: 'ベリー', obsidian: '黒曜石' }[resource.type],
           'resource',
           new THREE.Vector3(resource.x, walkHeight(resource.x, resource.z) + 1.7, resource.z),
         );
@@ -626,7 +630,9 @@ export class WorldRenderer {
           p.id === selfId ? 'self' : 'player',
           new THREE.Vector3(p.x, 0, p.z),
         );
-        entity = { model, label, state: p };
+        const countryLabel = document.createElement('small');
+        label.element.append(countryLabel);
+        entity = { model, label, countryLabel, state: p };
         this.players.set(p.id, entity);
         this.loadHuman(entity, p.id);
       }
@@ -642,6 +648,12 @@ export class WorldRenderer {
         );
       else if (action && !p.moving) entity.actor?.animation.play(action);
       entity.state = p;
+      if (entity.countryLabel) {
+        const country = COUNTRIES.find((c) => c.id === p.gulf?.countryId);
+        setText(entity.countryLabel, country?.name ?? '');
+        entity.countryLabel.hidden = !country;
+        if (country) entity.countryLabel.style.color = country.color;
+      }
       if (p.id === selfId && this.firstState) {
         this.focus.set(p.x, walkHeight(p.x, p.z) + focusHeight(p), p.z);
         this.targetDistance = p.species === 'bear' ? 4.5 : DEFAULT_DISTANCE;
@@ -1024,6 +1036,7 @@ export class WorldRenderer {
     this.regionalScenery?.update(this.camera, time);
     this.atmosphere.update(this.focus, time, dt);
     this.adventureEffects?.update(time);
+    this.gulfRenderer?.update(time);
     if (time >= this.nextStaticCull) {
       this.nextStaticCull = time + 0.2;
       for (const { root, radius } of this.staticScenery)
@@ -1289,6 +1302,7 @@ export class WorldRenderer {
   destroy() {
     this.boatRenderer?.dispose();
     this.disposed = true;
+    this.gulfRenderer?.dispose();
     this.regionalScenery?.dispose();
     this.landmarks?.dispose();
     this.openWorld?.dispose();

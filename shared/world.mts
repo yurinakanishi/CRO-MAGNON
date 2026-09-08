@@ -1,6 +1,7 @@
 import type { Resource, ResourceKind } from './types.mjs';
 import { EARTH, EXPEDITION_STOPS, geographicBiome } from './paleo-geography.mjs';
 import { ADVENTURE_RESOURCES } from './adventure-regions.mjs';
+import { GULF_RESOURCES, OBSIDIAN_OUTCROPS } from './gulf-region.mjs';
 export const WORLD = Object.freeze({
   version: 3,
   size: EARTH.width,
@@ -85,4 +86,6 @@ export const INITIAL_RESOURCES: readonly Resource[] = Object.freeze([
     Object.freeze({ id: `${type}-${index + 1}`, type, x, z, amount, maxAmount: amount }),
   ),
   ...ADVENTURE_RESOURCES,
+  ...GULF_RESOURCES,
+  ...OBSIDIAN_OUTCROPS,
 ]);

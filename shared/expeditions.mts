@@ -2,15 +2,21 @@ import { expeditionById } from './paleo-geography.mjs';
 import { ADVENTURE_STOPS } from './adventure-regions.mjs';
 import { stopActor } from './combat.mjs';
 import { ridingObstacles } from './riding.mjs';
+import { GULF_ENTRY, inGulf } from './gulf-region.mjs';
 
 // Explicit map expeditions are a game travel shortcut, never an arbitrary
 // client coordinate teleport or an assertion about prehistoric human migration.
 export function takeExpedition(room, player, id, now = Date.now()) {
-  const stop = expeditionById(id) ?? ADVENTURE_STOPS.find((s) => s.id === id);
+  const stop =
+    (id === GULF_ENTRY.id ? GULF_ENTRY : null) ??
+    expeditionById(id) ??
+    ADVENTURE_STOPS.find((s) => s.id === id);
   if (!stop) return { ok: false, text: '遠征先が見つかりません。' };
   if (player.downedUntil) return { ok: false, text: '回復してから遠征できます。' };
   if (player.mountId) return { ok: false, text: 'マンモスから降りてから遠征しよう。' };
   if (player.boatId) return { ok: false, text: '岸で船から降りてから遠征しよう。' };
+  if (id === GULF_ENTRY.id && inGulf(player.x, player.z))
+    return { ok: false, text: '湾の中は徒歩か船で旅しよう。「集い場へ歩く」で戻れます。' };
   if (now - (player.lastExpeditionAt ?? -Infinity) < 3000)
     return { ok: false, text: '次の遠征まで少し待ってください。' };
   const point = room.collision.nearestFree(

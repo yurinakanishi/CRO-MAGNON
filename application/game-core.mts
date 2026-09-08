@@ -1,4 +1,5 @@
 import { ensureAdventure, updateAdventures } from '../shared/adventures.mjs';
+import { createGulfState, ensureGulfPlayer, updateGulf } from '../shared/gulf-life.mjs';
 import { actorObstacle, createAnimals, updateAnimals } from '../shared/animals.mjs';
 import {
   BOATING,
@@ -44,13 +45,17 @@ export function createGameCore({
   resumeGraceMs = 120000,
   keepEmptyRooms = false,
   maxSavedSessions = Infinity,
+  playerLimit = WORLD.maxPlayers,
   runtime = defaultRuntime,
 }: {
   resumeGraceMs?: number;
   keepEmptyRooms?: boolean;
   maxSavedSessions?: number;
+  playerLimit?: number;
   runtime?: Runtime;
 } = {}) {
+  if (!Number.isInteger(playerLimit) || playerLimit < 1 || playerLimit > 64)
+    throw new Error('playerLimit must be an integer from 1 to 64');
   const rooms = new Map();
   let closing = false;
   function broadcast(room, payload) {
@@ -96,6 +101,7 @@ export function createGameCore({
     if (!room) {
       room = {
         name: roomName,
+        playerLimit,
         createdAt: runtime.now(),
         players: new Map(),
         sessions: new Map(),
@@ -105,6 +111,7 @@ export function createGameCore({
           regeneratedAt: runtime.now(),
         })),
         camp: { ...CAMP },
+        gulf: createGulfState(),
         lastBroadcast: 0,
       };
       room.cookingFires = SCENERY.fires.map(({ id, x, z }) => ({
@@ -140,11 +147,11 @@ export function createGameCore({
     const active =
       resumable && token ? [...room.players.values()].find((p) => p.sessionToken === token) : null;
     const saved = resumable && token ? room.sessions.get(token) : null;
-    if (room.players.size >= WORLD.maxPlayers && !active) {
+    if (room.players.size >= playerLimit && !active) {
       send(socket, {
         type: 'error',
         code: 'ROOM_FULL',
-        text: 'この谷は5人でいっぱいです。別の部屋の名前で参加してください。',
+        text: `この部屋は現在の上限${playerLimit}人に達しました。別の部屋の名前で参加してください。`,
       });
       socket.close(4001, 'Room full');
       return;
@@ -197,6 +204,7 @@ export function createGameCore({
       };
     player.radius = characterModel(player).radius ?? WORLD.playerRadius;
     ensureAdventure(player);
+    ensureGulfPlayer(player);
     if (active?.boatId) releaseBoat(room, player);
     const dynamic = [...room.players.values()]
       .filter((p) => p !== player && !p.mountId)
@@ -453,6 +461,7 @@ export function createGameCore({
       updateAnimals(room, dt, now);
       const enemiesChanged = updateEnemies(room, dt, now, notice);
       updateAdventures(room, now, notice);
+      const gulfChanged = updateGulf(room, now);
       let resourcesChanged = false;
       for (const resource of room.resources) {
         if (resource.amount < resource.maxAmount && now - resource.regeneratedAt >= 20000) {
@@ -473,7 +482,7 @@ export function createGameCore({
         }
       }
       if (now - room.lastBroadcast >= 90 || resourcesChanged || huntingChanged || enemiesChanged) {
-        broadcast(room, snapshot(room, resourcesChanged));
+        broadcast(room, snapshot(room, resourcesChanged || gulfChanged));
         room.lastBroadcast = now;
       }
     }
@@ -503,6 +512,7 @@ export function createGameCore({
               animals: room.animals,
               enemies: room.enemies,
               boats: room.boats,
+              gulf: room.gulf,
               sessions: sessions.slice(-100),
             },
             (key, value) => (key === 'socket' ? undefined : value),
@@ -528,6 +538,7 @@ export function createGameCore({
       const room = ensureRoom(record.name);
       room.createdAt = record.createdAt;
       Object.assign(room.camp, record.camp);
+      room.gulf = createGulfState(record.gulf);
       room.boats = (record.boats || []).slice(0, BOATING.maxBoats).map((b) => {
         const boat = { ...b };
         stopActor(boat);
@@ -563,6 +574,7 @@ export function createGameCore({
   }
 
   return {
+    playerLimit,
     rooms,
     snapshot,
     connect,

@@ -11,7 +11,7 @@ import { interactionVisible } from '../shared/interactions.mjs';
 
 export function inventoryCounts(inventory = {}) {
   return Object.fromEntries(
-    ['wood', 'stone', 'berry', 'rawMeat', 'cookedMeat'].map((key) => [
+    ['wood', 'stone', 'berry', 'rawMeat', 'cookedMeat', 'obsidian', 'seed', 'water'].map((key) => [
       key,
       Math.max(0, Number(inventory[key]) || 0),
     ]),

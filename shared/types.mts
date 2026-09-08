@@ -5,7 +5,7 @@ export interface Point {
 }
 export type Species = 'cro' | 'nea' | 'cat' | 'bear';
 export type Gender = 'female' | 'male';
-export type ResourceKind = 'wood' | 'stone' | 'berry';
+export type ResourceKind = 'wood' | 'stone' | 'berry' | 'obsidian';
 export interface CharacterProfile {
   species?: unknown;
   gender?: unknown;
@@ -31,6 +31,9 @@ export interface Resource extends Point {
   appearanceBiome?: string;
 }
 export interface Inventory {
+  obsidian?: number;
+  seed?: number;
+  water?: number;
   wood: number;
   stone: number;
   berry: number;

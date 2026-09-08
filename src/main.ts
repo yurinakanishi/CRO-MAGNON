@@ -41,8 +41,13 @@ import {
 } from '../shared/paleo-geography.mjs';
 import { ADVENTURE_STOPS, regionAt } from '../shared/adventure-regions.mjs';
 import { installAdventureUI, adventureInteraction } from './adventure-ui.js';
-const EXPEDITION_STOPS = [...EARTH_STOPS, ...ADVENTURE_STOPS];
-const expeditionById = (id) => earthExpeditionById(id) ?? ADVENTURE_STOPS.find((s) => s.id === id);
+import { installGulfUI, gulfInteraction } from './gulf-ui.js';
+import { GULF_ENTRY, inGulf } from '../shared/gulf-region.mjs';
+const EXPEDITION_STOPS = [...EARTH_STOPS, ...ADVENTURE_STOPS, GULF_ENTRY];
+const expeditionById = (id) =>
+  (id === GULF_ENTRY.id ? GULF_ENTRY : null) ??
+  earthExpeditionById(id) ??
+  ADVENTURE_STOPS.find((s) => s.id === id);
 
 const icons = {
   katana: '<path d="m4 21 4-4m-2-3 4 4M8 15C15 10 20 5 21 2c-4 1-9 6-13 11Z"/>',
@@ -240,6 +245,17 @@ const boatUI = installBoatControls({
   renderer,
 });
 const adventureUI = installAdventureUI({
+  player,
+  state: () => state,
+  available: () => joined && !renderUnavailable,
+  action,
+  goTo,
+  notify,
+  openModal,
+  send,
+  stopInput,
+});
+const gulfUI = installGulfUI({
   player,
   state: () => state,
   available: () => joined && !renderUnavailable,
@@ -459,13 +475,16 @@ function nearby(): { action: string; label: string; targetId?: string } | null {
   if (hunting) return hunting;
   const adventure = adventureInteraction(me, renderer.collision);
   if (adventure) return adventure;
+  const gulf = gulfInteraction(state, me, renderer.collision);
+  if (gulf) return gulf;
   const objects: { x: number; z: number; action: string; label: string; range: number }[] =
     state.resources
       .filter((r) => r.amount > 0 && me.inventory[r.type] < 99)
       .map((r) => ({
         ...r,
         action: 'gather',
-        label: `${{ wood: '木材', stone: '石', berry: 'ベリー' }[r.type]}を採集する`,
+        targetId: r.id,
+        label: `${{ wood: '木材', stone: '石', berry: 'ベリー', obsidian: '黒曜石' }[r.type]}を採集する`,
         range: 8,
       }));
   objects.push(
@@ -485,10 +504,13 @@ function updateHUD() {
     inv = inventoryCounts(me?.inventory);
   const gathered = me?.gathered ?? 0,
     count = Object.values(inv).reduce((a, b) => a + b, 0);
-  for (const key of Object.keys(inv)) $(`#${key}-count`).textContent = inv[key];
+  for (const key of ['wood', 'stone', 'berry', 'rawMeat', 'cookedMeat'])
+    $(`#${key}-count`).textContent = inv[key];
   $('#bag-count').textContent = count;
-  $('#tribe-count').textContent = `${state.players.length} / 5`;
-  $('#online-count').textContent = `${state.players.length}/5`;
+  $('#tribe-count').textContent =
+    `${state.players.length} / ${state.playerLimit ?? WORLD.maxPlayers}`;
+  $('#online-count').textContent =
+    `${state.players.length}/${state.playerLimit ?? WORLD.maxPlayers}`;
   $('#camp-wood').textContent = state.camp.wood;
   $('#camp-stone').textContent = state.camp.stone;
   $('#camp-level').textContent = `CAMP LEVEL ${state.camp.level}`;
@@ -519,7 +541,9 @@ function updateHUD() {
     ? ' · 時のない夜'
     : ' · 穏やかな朝';
   $('.location-title h1').textContent = region?.name ?? locationName(me?.x ?? 50, me?.z ?? 50);
-  $('.location-title p').textContent = region?.description ?? biome.description;
+  $('.location-title p').textContent = inGulf(me?.x ?? 50, me?.z ?? 50)
+    ? '三つの国を訪ね、畑を育て、舟で湾を渡ろう。'
+    : (region?.description ?? biome.description);
   $('.location-title .eyebrow').textContent = 'CRO-MAGNON · OPEN WORLD';
   $('.location-meta span:first-child').textContent =
     `${region?.kind ?? biome.short} · ${Math.round(me?.x ?? 50)}, ${Math.round(me?.z ?? 50)}`;
@@ -531,6 +555,7 @@ function updateHUD() {
   drawMinimap();
   updateModalHUD();
   adventureUI.update();
+  gulfUI.update();
   if ($('#modal').open && $('#big-map')) drawMinimap($('#big-map'), true);
 }
 function updateModalHUD() {
@@ -586,6 +611,13 @@ function action(type, targetId?) {
     return notify('乗船中です。岸で B を押して降りてから行おう。');
   if (player()?.mountId && type !== 'ride')
     return notify('騎乗中です。攻撃・採集・食事は R で降りてから。');
+  if (
+    type === 'gulfOpen' ||
+    (inGulf(player()?.x, player()?.z) && ['contribute', 'trade'].includes(type))
+  ) {
+    gulfUI.open();
+    return;
+  }
   send({ type: 'action', action: type, ...(targetId ? { targetId } : {}) });
   document
     .querySelectorAll<HTMLElement>('[data-action]')
@@ -881,7 +913,7 @@ function openRoom(error = '') {
 }
 async function openInvite() {
   openModal(
-    `<span class="modal-illustration">${icon('people')}</span><h2>ひとつの火を、5人で。</h2><p class="modal-intro">同じ部屋のリンクを仲間に渡して、一緒に谷を探索しよう。</p><div class="invite-code"><small>ROOM CODE</small><strong id="invite-code"></strong><span>最大5人でプレイ</span></div><label>招待リンク<input id="invite-url" readonly aria-label="招待リンク"></label><button id="copy-invite" class="button button-accent wide">${icon('link')} 招待リンクをコピー</button><p id="invite-note" class="form-note">このPCと同じWi-Fi・LANにいる仲間が参加できます。インターネット越しの参加には、サーバーの公開が必要です。</p><button id="change-room" class="text-button">別の部屋に参加する ${icon('arrow')}</button>`,
+    `<span class="modal-illustration">${icon('people')}</span><h2>ひとつの火を、仲間と。</h2><p class="modal-intro">同じ部屋のリンクを仲間に渡して、一緒に谷を探索しよう。</p><div class="invite-code"><small>ROOM CODE</small><strong id="invite-code"></strong><span>現在の部屋の接続上限は ${state.playerLimit ?? WORLD.maxPlayers}人</span></div><label>招待リンク<input id="invite-url" readonly aria-label="招待リンク"></label><button id="copy-invite" class="button button-accent wide">${icon('link')} 招待リンクをコピー</button><p id="invite-note" class="form-note">このPCと同じWi-Fi・LANにいる仲間が参加できます。インターネット越しの参加には、サーバーの公開が必要です。</p><button id="change-room" class="text-button">別の部屋に参加する ${icon('arrow')}</button>`,
   );
   $('#invite-code').textContent = profile.room;
   let base = location.origin;
@@ -914,6 +946,9 @@ function openInventory() {
       ['berry', 'ベリー', '食べると元気が回復。'],
       ['rawMeat', '生肉', 'そのままでは食べられません。焚き火で3秒焼こう。'],
       ['cookedMeat', '焼き肉', '1個で元気を45回復します。'],
+      ['obsidian', '黒曜石', '湾の西の尾根で採集。集い場で交換や宴の準備に。'],
+      ['seed', '種', '共同の畑に植え、水をやって育てよう。'],
+      ['water', '水袋', '湾の水場で6回分を補給。畑1区画に水1。'],
     ]
       .map(
         ([key, label, note]) =>
@@ -943,7 +978,16 @@ function openInventory() {
     .querySelectorAll<HTMLElement>('.inventory-card strong b')
     .forEach(
       (count, index) =>
-        (count.dataset.modalCount = ['wood', 'stone', 'berry', 'rawMeat', 'cookedMeat'][index]),
+        (count.dataset.modalCount = [
+          'wood',
+          'stone',
+          'berry',
+          'rawMeat',
+          'cookedMeat',
+          'obsidian',
+          'seed',
+          'water',
+        ][index]),
     );
   $('.recipe strong').id = 'modal-axe-label';
   $('.recipe').insertAdjacentHTML(
@@ -1000,7 +1044,7 @@ function openMap() {
   setWorldMapMode('earth');
   setWorldMapSelection(null);
   openModal(
-    `<h2>氷河時代の地球を、旅する。</h2><p class="modal-intro">約5万年前の大陸を、4,096 × 2,048 mの世界へ。陸地を選んで歩くか、野営地への遠征で海の向こうを探索できます。</p><div class="earth-map-toolbar"><button class="button button-outline" id="map-overview" aria-pressed="true">世界全図</button><button class="button button-outline" id="map-local" aria-pressed="false">現在地の周辺</button><span>北が上 · 人物の大きさはそのまま</span></div><canvas id="big-map" width="960" height="480" class="big-map earth-map" aria-label="約5万年前の地球。大陸・海・雪原・氷床・火山・砂漠の世界地図"></canvas><div class="earth-map-legend">${BIOMES.map((b) => `<span><i style="background:${b.color}"></i>${b.short}</span>`).join('')}<span><i style="background:#285566"></i>海</span></div><div class="earth-travel"><label for="expedition-destination">野営地を選ぶ</label><select id="expedition-destination">${EXPEDITION_STOPS.map((s) => `<option value="${s.id}">${s.name}</option>`).join('')}</select><p id="map-selection" aria-live="polite"></p><div class="earth-travel-actions"><button class="button button-outline" id="map-walk">走って向かう</button><button class="button button-accent" id="map-expedition">野営地へ遠征</button></div><small>遠征は移動を省略します。もちものは保持されます。騎乗中は降りてから。</small></div><div class="map-locations"><button class="button button-outline" id="map-camp">${icon('flame')} はじまりの焚き火</button><button class="button button-outline" id="map-hunt-north">${icon('spear')} 北西の狩場</button><button class="button button-outline" id="map-hunt-south">${icon('spear')} 南西の狩場</button><button class="button button-outline" id="map-npc">${icon('people')} オルの集落</button></div><details class="earth-map-sources"><summary>この世界の時代と地図について</summary><p>ネアンデルタール人の生存期間内である約5万年前が基準です。NOAA ETOPO1の地形を海面 −68.3 mで区切り、正距円筒図法で縮小しています。細い海峡・小島、氷床と気候の範囲は簡略化しています。遠征先は探索用の配置です。</p><a href="https://www.ncei.noaa.gov/products/etopo-global-relief-model" target="_blank" rel="noreferrer">地形資料：NOAA</a> · <a href="https://cp.copernicus.org/articles/12/1079/2016/" target="_blank" rel="noreferrer">海面資料：Spratt & Lisiecki (2016)</a></details>`,
+    `<h2>氷河時代の地球を、旅する。</h2><p class="modal-intro">約5万年前の大陸を、4,096 × 2,048 mの世界へ。陸地を選んで歩くか、野営地への遠征で海の向こうを探索できます。</p><div class="earth-map-toolbar"><button class="button button-outline" id="map-overview" aria-pressed="true">世界全図</button><button class="button button-outline" id="map-local" aria-pressed="false">現在地の周辺</button><span>北が上 · 人物の大きさはそのまま</span></div><canvas id="big-map" width="960" height="480" class="big-map earth-map" aria-label="約5万年前の地球。大陸・海・雪原・氷床・火山・砂漠の世界地図"></canvas><div class="earth-map-legend">${BIOMES.map((b) => `<span><i style="background:${b.color}"></i>${b.short}</span>`).join('')}<span><i style="background:#285566"></i>海</span></div><div class="earth-travel"><label for="expedition-destination">野営地を選ぶ</label><select id="expedition-destination">${EXPEDITION_STOPS.map((s) => `<option value="${s.id}">${s.name}</option>`).join('')}</select><p id="map-selection" aria-live="polite"></p><div class="earth-travel-actions"><button class="button button-outline" id="map-walk">走って向かう</button><button class="button button-accent" id="map-expedition">野営地へ遠征</button></div><small>遠征は移動を省略します。もちものは保持されます。騎乗中は降りてから。</small></div><div class="map-locations"><button class="button button-outline" id="map-camp">${icon('flame')} はじまりの焚き火</button><button class="button button-outline" id="map-hunt-north">${icon('spear')} 北西の狩場</button><button class="button button-outline" id="map-hunt-south">${icon('spear')} 南西の狩場</button><button class="button button-outline" id="map-npc">${icon('people')} オルの集落</button></div><details class="earth-map-sources"><summary>この世界の時代と地図について</summary><p>ネアンデルタール人の生存期間内である約5万年前が基準です。NOAA ETOPO1の地形を海面 −68.3 mで区切り、正距円筒図法で縮小しています。細い海峡・小島、氷床と気候の範囲は簡略化しています。三つの岸の湾は太平洋上に加えた創作地域で、国・農耕・異なる時代の人々の共存はファンタジーです。遠征先は探索用の配置です。</p><a href="https://www.ncei.noaa.gov/products/etopo-global-relief-model" target="_blank" rel="noreferrer">地形資料：NOAA</a> · <a href="https://cp.copernicus.org/articles/12/1079/2016/" target="_blank" rel="noreferrer">海面資料：Spratt & Lisiecki (2016)</a></details>`,
   );
   let selected = EXPEDITION_STOPS[0];
   const selectTarget = (target) => {

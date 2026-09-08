@@ -1,8 +1,16 @@
 import { isMesh } from './three-types.js';
 import * as THREE from 'three';
 
-export const SURFACES = Object.freeze(['snow', 'ice', 'ash', 'sand']);
-const modes = { snow: 0, ice: 1, ash: 2, sand: 3 };
+export const SURFACES = Object.freeze([
+  'snow',
+  'ice',
+  'ash',
+  'sand',
+  'obsidian',
+  'valley',
+  'shore',
+]);
+const modes = { snow: 0, ice: 1, ash: 2, sand: 3, obsidian: 4, valley: 5, shore: 6 };
 const profiles = {
   'valley-pine': { low: 0.13, rock: 0, plant: 1, hearth: 0 },
   'valley-boulder': { low: 0.27, rock: 1, plant: 0, hearth: 0 },
@@ -50,7 +58,7 @@ if (regionalMode < .5) {
   vec3 burntWood = diffuseColor.rgb * vec3(.32, .27, .23);
   diffuseColor.rgb = mix(burntWood, darkRock, regionalProfile.y * regionalOuter);
   diffuseColor.rgb = mix(diffuseColor.rgb, vec3(.17, .145, .125) * regionalDetail, regionalCover * .35);
-} else {
+} else if (regionalMode < 3.5) {
   float stratum = sin(vRegionalPosition.y * 9.0 + sin(vRegionalPosition.x * .8) * .28 + sin(vRegionalPosition.z) * .16);
   vec3 sandstone = mix(vec3(.40, .20, .075), vec3(.65, .40, .17), smoothstep(-.7, .7, stratum)) * regionalDetail;
   vec3 dryPlant = vec3(.42, .32, .14) * regionalDetail;
@@ -58,6 +66,11 @@ if (regionalMode < .5) {
   diffuseColor.rgb = mix(dryHideWood, sandstone, regionalProfile.y * regionalOuter);
   diffuseColor.rgb = mix(diffuseColor.rgb, dryPlant, regionalProfile.z);
   diffuseColor.rgb = mix(diffuseColor.rgb, vec3(.64, .46, .25) * regionalDetail, regionalCover * .22);
+} else if (regionalMode < 4.5) {
+  diffuseColor.rgb = vec3(.018, .024, .038) * regionalDetail;
+} else {
+  vec3 hideTint = regionalMode < 5.5 ? vec3(.29, .40, .24) : vec3(.18, .42, .45);
+  diffuseColor.rgb = mix(diffuseColor.rgb, hideTint * regionalDetail, (1.0-regionalProfile.z) * .55);
 }
 `;
 
@@ -113,7 +126,7 @@ export function createSurfaceTemplate(template, surface) {
           shader.fragmentShader = shader.fragmentShader.replace(
             '#include <roughnessmap_fragment>',
             `#include <roughnessmap_fragment>
-            roughnessFactor = regionalMode > .5 && regionalMode < 1.5
+            roughnessFactor = regionalMode > 3.5 && regionalMode < 4.5 ? .16 : regionalMode > .5 && regionalMode < 1.5
               ? mix(roughnessFactor, .40, regionalProfile.y * (1.0 - regionalTop()))
               : mix(roughnessFactor, .96, regionalTop());`,
           );

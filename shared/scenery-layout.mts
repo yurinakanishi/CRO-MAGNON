@@ -8,6 +8,7 @@ import { BIOME_SCENERY } from './biome-scenery.mjs';
 import { isLand, EXPEDITION_STOPS, worldToGeo } from './paleo-geography.mjs';
 import { ADVENTURE_ENEMIES, adventureReserved } from './adventure-regions.mjs';
 import { ADVENTURE_SCENERY } from './adventure-layout.mjs';
+import { inGulf, GULF_SCENERY, gulfLandDistance, gulfActivitySpace } from './gulf-region.mjs';
 // Body-sized animals need a continuous clearing, not just a free spawn point.
 // Existing harvestable resources sit outside the five-metre roaming footprint.
 export const HUNTING_GROUNDS = Object.freeze([
@@ -238,6 +239,14 @@ function layout() {
   trees.push(...ADVENTURE_SCENERY.trees);
   props.push(...ADVENTURE_SCENERY.props);
   fires.push(...ADVENTURE_SCENERY.fires);
+  // Reserve the authored settlement and footpaths from global random scenery.
+  for (const items of [trees, grass, rocks, ridges, tents, props, fires])
+    for (let i = items.length - 1; i >= 0; i--)
+      if (inGulf(items[i].x, items[i].z)) items.splice(i, 1);
+  for (const [category, items] of Object.entries(GULF_SCENERY)) {
+    const target = { trees, props, fires }[category];
+    target.push(...items.filter((item) => gulfLandDistance(item.x, item.z) > 8));
+  }
   return Object.fromEntries(
     Object.entries({ trees, grass, rocks, ridges, tents, props, fires, animals }).map(
       ([key, items]) => [key, items.filter((item) => !nearCastle(item.x, item.z, 3))],
@@ -254,6 +263,7 @@ export function grassForChunk(ix, iz) {
     const x = chunk.x + (rng() - 0.5) * 32,
       z = chunk.z + (rng() - 0.5) * 32;
     if (!isLand(x, z, 0.8)) continue;
+    if (gulfActivitySpace(x, z)) continue;
     if (x >= -7 && x <= 108 && z >= -7 && z <= 108) continue;
     const biome = biomeAt(x, z).id,
       palette = BIOME_SCENERY[biome];

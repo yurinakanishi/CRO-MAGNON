@@ -40,7 +40,12 @@ export function createGameServer({
           (server.address() as import('node:net').AddressInfo | null)?.port || port;
         const body =
           url.pathname === '/api/status'
-            ? { ok: true, boatingVersion: BOATING.version, adventureVersion: ADVENTURE_VERSION }
+            ? {
+                ok: true,
+                boatingVersion: BOATING.version,
+                adventureVersion: ADVENTURE_VERSION,
+                gulfVersion: 1,
+              }
             : url.pathname === '/api/health'
               ? {
                   ok: true,
@@ -55,7 +60,7 @@ export function createGameServer({
                   epochYearsBP: EARTH.epochYearsBP,
                   rooms: rooms.size,
                   players: [...rooms.values()].reduce((sum, room) => sum + room.players.size, 0),
-                  maxPlayers: WORLD.maxPlayers,
+                  maxPlayers: core.playerLimit,
                 }
               : {
                   port: activePort,

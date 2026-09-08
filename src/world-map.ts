@@ -10,6 +10,17 @@ import {
 import { LANDMARKS } from '../shared/landmarks.mjs';
 import { CASTLE } from '../shared/castle-layout.mjs';
 import {
+  COUNTRIES,
+  GULF,
+  SETTLEMENTS,
+  GULF_SPINE,
+  MANY_HEARTHS,
+  OBSIDIAN_OUTCROPS,
+  SPRINGS,
+  FARM_PLOTS,
+  LANDINGS,
+} from '../shared/gulf-region.mjs';
+import {
   ADVENTURE_REGIONS,
   regionAt,
   RIFTS,
@@ -141,6 +152,40 @@ export function drawWorldMap(canvas, state, selfId, big = false) {
     ctx.arc(...point(x, z), r, 0, Math.PI * 2);
     ctx.fill();
   };
+  if (big) {
+    ctx.save();
+    ctx.strokeStyle = '#d3c19b88';
+    ctx.lineWidth = 1.5;
+    ctx.setLineDash([4, 4]);
+    ctx.beginPath();
+    GULF_SPINE.forEach((p, i) =>
+      i ? ctx.lineTo(...point(p.x, p.z)) : ctx.moveTo(...point(p.x, p.z)),
+    );
+    ctx.stroke();
+    ctx.setLineDash([]);
+    ctx.font = '12px sans-serif';
+    ctx.fillStyle = '#ead5a5';
+    if (full) ctx.fillText(`${GULF.name}（創作）`, ...point(MANY_HEARTHS.x - 160, GULF.minZ - 25));
+    for (const s of SETTLEMENTS) {
+      const color = COUNTRIES.find((c) => c.id === s.id)?.color ?? '#ffdc8d';
+      dot(s.x, s.z, color, full ? 4 : 5);
+      if (!full) {
+        ctx.fillStyle = color;
+        ctx.fillText(s.name, ...point(s.x + 6, s.z - 7));
+      }
+    }
+    if (!full) {
+      for (const p of OBSIDIAN_OUTCROPS) dot(p.x, p.z, '#dcb8e2', 2);
+      for (const p of SPRINGS) dot(p.x, p.z, '#8ed7df', 3);
+      for (const p of FARM_PLOTS) dot(p.x, p.z, '#c6c081', 1.5);
+      for (const l of LANDINGS) {
+        dot(l.x, l.z, '#aacddd', 3);
+        ctx.fillStyle = '#aacddd';
+        ctx.fillText(l.name, ...point(l.x + 4, l.z + 10));
+      }
+    }
+    ctx.restore();
+  }
   if (big && selection) {
     const [x, y] = point(selection.x, selection.z);
     ctx.strokeStyle = '#ffda88';

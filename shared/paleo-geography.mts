@@ -1,4 +1,5 @@
 import { COAST_GRID, COAST_RUNS } from './paleo-coast-data.mjs';
+import { GULF, GULF_ENTRY, inGulf, gulfLandDistance } from './gulf-region.mjs';
 
 export const EARTH = Object.freeze({
   width: 4096,
@@ -27,6 +28,24 @@ for (let i = 0; i < COAST_RUNS.length; i += 2) {
 }
 if (cursor !== coast.length) throw new Error('Incomplete verified Earth shoreline');
 COAST_RUNS.length = 0;
+// Apply the fictional gulf once to the same distance grid used by the server,
+// map, land rendering and boat collision. Original cells elsewhere are untouched.
+for (
+  let iz = Math.floor((GULF.minZ - EARTH.minZ) / cell);
+  iz < Math.ceil((GULF.maxZ - EARTH.minZ) / cell);
+  iz++
+)
+  for (
+    let ix = Math.floor((GULF.minX - EARTH.minX) / cell);
+    ix < Math.ceil((GULF.maxX - EARTH.minX) / cell);
+    ix++
+  ) {
+    const x = EARTH.minX + (ix + 0.5) * cell,
+      z = EARTH.minZ + (iz + 0.5) * cell;
+    const encoded = Math.max(0, Math.min(255, Math.round(128 + 4 * gulfLandDistance(x, z))));
+    if (coast[iz * width + ix] <= 128)
+      coast[iz * width + ix] = Math.max(coast[iz * width + ix], encoded);
+  }
 export const coastTextureData = () => ({ data: coast, width, height });
 let components;
 function buildComponents() {
@@ -134,6 +153,7 @@ export const CLIMATE_ZONES = Object.freeze(
 export const BIOME_IDS = Object.freeze(['grassland', 'snow', 'ice', 'volcano', 'desert']);
 const smooth = (t) => ((t = clamp(t, 0, 1)), t * t * (3 - 2 * t));
 export function geographicWeights(x, z) {
+  if (inGulf(x, z)) return [1, 0, 0, 0, 0];
   const { longitude: lon, latitude: lat } = worldToGeo(x, z),
     w = [1, 0, 0, 0, 0];
   const snow = smooth((lat - 51) / 7);
@@ -182,6 +202,7 @@ export const EXPEDITION_STOPS = Object.freeze([
 ]);
 export const expeditionById = (id) => EXPEDITION_STOPS.find((s) => s.id === id);
 export function locationName(x, z) {
+  if (inGulf(x, z)) return GULF.name;
   const nearest = EXPEDITION_STOPS.reduce((best, s) =>
     Math.hypot(s.x - x, s.z - z) < Math.hypot(best.x - x, best.z - z) ? s : best,
   );

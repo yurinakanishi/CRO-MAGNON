@@ -1,0 +1,82 @@
+{
+  "feature": "Three Shores fantasy expansion",
+  "date": "2026-09-08",
+  "status": "passed_with_documented_provenance_limitation",
+  "scope": "Additive changes to the existing local game; no public deployment or billing changes.",
+  "automated": {
+    "fullSuite": { "tests": 211, "passed": 211, "failed": 0, "durationMs": 13163.1578 },
+    "finalFocusedSuite": { "tests": 34, "passed": 34, "failed": 0, "durationMs": 2173.9013 },
+    "buildAndTypecheck": "passed after final source changes",
+    "architecture": "passed",
+    "javascriptSyntax": { "files": 115, "status": "passed" },
+    "checks": [
+      "Original coastline values retained outside the authored gulf and in original land cells",
+      "Reachable plots, water sources, obsidian approaches and three boat landings",
+      "Atomic planting, tending, harvesting, donation, exchange and feast rewards",
+      "Invalid, obstructed, distant, full-inventory and incompatible actions rejected",
+      "Affiliation independent of species; local expedition shortcut rejected",
+      "Socket-level obsidian gathering rejects client-authored reward counts",
+      "Save/import migration, reconnect and elapsed crop growth",
+      "Default five-player limit and eight-player core share the same 48 plots"
+    ]
+  },
+  "assets": {
+    "models": 33,
+    "deliveredGLBs": 48,
+    "newGLBs": 0,
+    "sha256AndStructure": "passed",
+    "record": "delivery-qa.json",
+    "recordScope": "The reused delivery verifier also records the pre-existing adventure's 66 landmarks and 48 scenery placements; those are not gulf placement counts.",
+    "fullProductionHistory": "incomplete: pre-existing output/model-generation/models/neanderthal-hunter/qa/adoption-review.json is missing"
+  },
+  "browser": {
+    "runtime": "Bundled Playwright controlling real headless Chrome with D3D11",
+    "isolatedServer": "http://127.0.0.1:3110",
+    "room": "GULF-QA",
+    "multiplayer": {
+      "renderedChromeContexts": 2,
+      "additionalWebSocketPeers": 3,
+      "players": 5,
+      "observedStateMessages": 11070,
+      "consoleOrPageErrors": [],
+      "record": "game-qa.json"
+    },
+    "normalUiFlows": [
+      "Enter gulf, collect welcome supplies, walk to a plot, plant, fetch water, return and tend, harvest, reload and resume",
+      "Walk to Pale Ridge and obsidian outcrops, join the country, gather obsidian, return on foot and exchange",
+      "Craft and board a boat, select the eastern shore on the map, travel about 318 metres, disembark onto land, walk to Reed Shore and join",
+      "Donate all three supplies, complete a gathering and claim the feast",
+      "Reload final source and open the local contribution panel with key 3"
+    ],
+    "explicitFixtures": [
+      "The isolated QA server clock advanced 240 seconds for crop ripening; movement ran in real time.",
+      "Boat verification started at the western beach with 12 wood supplied by the QA helper; subsequent crafting, sailing and landing used the ordinary UI.",
+      "Feast verification supplied 8 wood, 12 berries and 4 obsidian and positioned the character at Many Hearths; all donation and reward actions used the ordinary UI."
+    ],
+    "boatLanding": {
+      "player": { "x": -1575.3257, "z": 854.0613, "onLand": true },
+      "boat": { "x": -1579.6454, "z": 854.0068, "riderId": null }
+    },
+    "viewportsInspected": [
+      { "width": 1440, "height": 1000 },
+      { "width": 390, "height": 844 },
+      { "width": 844, "height": 390 }
+    ],
+    "finalErrors": [],
+    "finalRecord": "final-browser-qa.json",
+    "screenshots": ["qa/many-hearths.png", "qa/obsidian.png", "qa/mobile-panel.png", "qa/boat-crossing.png", "qa/landscape-panel.png"]
+  },
+  "localRollout": {
+    "status": "passed",
+    "url": "http://localhost:3000",
+    "serverProcessId": 19076,
+    "record": "rollout-qa.json",
+    "notes": "Port 3000 was not running. Started node server.mjs in a hidden process, then verified a fresh Chrome session, gulf entry and welcome supplies in a dedicated QA room. No previous checkpoint was applied. The isolated QA server on 3110 was closed."
+  },
+  "limitations": [
+    "No physical smartphone, large-player-count load, long-duration soak or constant 60 FPS verification.",
+    "Local Node restart persistence is unchanged; the existing save/export path and short reconnect restoration include the new state.",
+    "Countries, farming, accelerated crops, the gulf and coexistence of different-era characters are deliberate fiction.",
+    "Regional fishing and craft traditions are lore, not new fishing or political simulation."
+  ]
+}

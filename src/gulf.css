@@ -1,0 +1,205 @@
+.gulf-launch {
+  border-color: #dab47777;
+  background: #383a2aee;
+  color: #ffe0a2;
+}
+dialog:has(.gulf-panel) {
+  width: min(960px, 95vw);
+  max-height: 92dvh;
+  padding: 26px;
+}
+dialog:has(.gulf-panel) .modal-top {
+  position: sticky;
+  top: 0;
+  z-index: 2;
+  background: #25332b;
+  padding: 8px 0;
+}
+.gulf-panel h2 {
+  font-size: 30px;
+  margin: 12px 0;
+}
+.gulf-panel p {
+  line-height: 1.8;
+}
+.gulf-summary {
+  background: #adbc8e12;
+  border: 1px solid #b5c89233;
+  border-radius: 6px;
+  padding: 12px;
+  font-size: 12px;
+  line-height: 1.9;
+  color: #d5dcbb;
+}
+.gulf-tabs {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 8px;
+  margin: 20px 0 14px;
+}
+.gulf-tabs button {
+  padding: 13px 8px;
+  border: 1px solid #b8bc9455;
+  border-radius: 5px;
+  font-size: 12px;
+  background: #ffffff05;
+}
+.gulf-tabs button[aria-pressed='true'] {
+  color: #ffdf9e;
+  background: #b69c6233;
+  border-color: #d2b36f;
+}
+.gulf-banner {
+  border-left: 4px solid var(--gulf-color);
+  padding: 16px 20px;
+  background: linear-gradient(115deg, #bacfbb15, #8aa7b811);
+  border-radius: 5px;
+}
+.gulf-banner small {
+  color: var(--gulf-color);
+  letter-spacing: 2px;
+  font-size: 11px;
+}
+.gulf-banner h3 {
+  font-size: 24px;
+  margin: 8px 0;
+}
+.gulf-banner p,
+.gulf-story {
+  font-size: 12px;
+  color: #b7c2b2;
+  margin: 6px 0;
+}
+.gulf-story {
+  margin: 14px 0;
+}
+.gulf-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 7px;
+  margin: 12px 0;
+}
+.gulf-actions .button {
+  min-height: 42px;
+  padding: 10px 12px;
+  font-size: 11px;
+}
+.gulf-columns {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  margin: 20px 0;
+}
+.gulf-card {
+  padding: 16px;
+  border: 1px solid #adba9426;
+  border-radius: 7px;
+  background: #e0e6c305;
+}
+.gulf-panel h4 {
+  font-size: 15px;
+  margin: 0 0 10px;
+  color: #e7ddba;
+}
+.gulf-panel h4 small {
+  font-size: 10px;
+  color: #9dac93;
+  margin-left: 10px;
+}
+.gulf-card p,
+.gulf-routes p,
+.gulf-lore {
+  font-size: 11px;
+  color: #a5b29f;
+}
+.gulf-plots {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 6px;
+  margin-top: 14px;
+}
+.gulf-plots button {
+  display: grid;
+  gap: 4px;
+  padding: 8px 4px;
+  min-height: 52px;
+  border: 1px solid #ae9b6966;
+  border-radius: 5px;
+  background: #81633b22;
+}
+.gulf-plots small {
+  font-size: 9px;
+}
+.gulf-plots button[aria-pressed='true'] {
+  outline: 2px solid #e3c987;
+  outline-offset: 1px;
+}
+.gulf-plots .stage-planted {
+  background: #98765044;
+}
+.gulf-plots .stage-growing {
+  background: #6b995d44;
+}
+.gulf-plots .stage-ripe {
+  background: #ad677744;
+  color: #f2cfcd;
+}
+.gulf-stores > div {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 7px;
+  padding: 6px 0;
+  font-size: 12px;
+}
+.gulf-stores progress {
+  grid-column: 1/-1;
+  width: 100%;
+  height: 5px;
+  accent-color: #c6bc7f;
+}
+.gulf-routes {
+  border-top: 1px solid #adc08c30;
+  padding-top: 16px;
+}
+.gulf-lore {
+  padding-top: 12px;
+  line-height: 1.8;
+}
+.gulf-lore summary {
+  cursor: pointer;
+  color: #c6b888;
+}
+.world-label.gulf {
+  color: #e9ddaf;
+  border: 1px solid #d0bb8066;
+  background: #29372cdd;
+  border-radius: 4px;
+  padding: 5px 9px;
+  font-size: 11px;
+}
+@media (max-width: 680px) {
+  dialog:has(.gulf-panel) {
+    padding: 18px;
+  }
+  .gulf-panel h2 {
+    font-size: 24px;
+  }
+  .gulf-columns {
+    grid-template-columns: 1fr;
+  }
+  .gulf-tabs {
+    grid-template-columns: 1fr 1fr;
+  }
+  .gulf-summary {
+    font-size: 10px;
+  }
+  .gulf-banner {
+    padding: 13px;
+  }
+  .gulf-actions .button {
+    flex: 1;
+  }
+  .gulf-card {
+    padding: 12px;
+  }
+}

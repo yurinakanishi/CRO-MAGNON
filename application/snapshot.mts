@@ -28,6 +28,7 @@ export function snapshot(
     characterVersion: 2,
     enemyVersion: 1,
     worldVersion: WORLD.version,
+    playerLimit: room.playerLimit ?? WORLD.maxPlayers,
     worldWidth: WORLD.width,
     worldDepth: WORLD.depth,
     epochYearsBP: EARTH.epochYearsBP,
@@ -159,6 +160,7 @@ export function snapshot(
         mountId,
         boatId,
         adventure,
+        gulf,
       }) => ({
         id,
         name,
@@ -188,6 +190,7 @@ export function snapshot(
         mountId,
         boatId,
         adventure: JSON.parse(JSON.stringify(adventure ?? { regions: {} })),
+        gulf: gulf ? structuredClone(gulf) : undefined,
       }),
     ),
     ...(includeWorld
@@ -196,6 +199,7 @@ export function snapshot(
           camp: { ...room.camp },
           cookingFires: room.cookingFires,
           npc: { ...NPC },
+          gulf: structuredClone(room.gulf),
         }
       : {}),
     day: 1 + Math.floor((now - room.createdAt) / 240000),

@@ -8,7 +8,7 @@ import { updateNavigation } from './navigation.mjs';
 export const BOATING = Object.freeze({
   version: 1,
   wood: 12,
-  maxBoats: 5,
+  maxBoats: 24,
   radius: 2,
   reach: 4.8,
   speed: 4,
@@ -151,7 +151,7 @@ export function handleBoatAction(room, player, message, now) {
     if (player.inventory.wood < BOATING.wood)
       return fail(`丸木舟には木材 ${BOATING.wood} が必要です。`);
     if (room.boats.length >= BOATING.maxBoats)
-      return fail('船は部屋に5隻までです。岸にある空いた船を使おう。');
+      return fail(`船は部屋に${BOATING.maxBoats}隻までです。岸にある空いた船を使おう。`);
     const point = launchPoint(room, player);
     if (!point) return fail('船を浮かべられる、障害物のない海岸に近づこう。');
     const id = Array.from({ length: BOATING.maxBoats }, (_, i) => `boat-${i + 1}`).find(
