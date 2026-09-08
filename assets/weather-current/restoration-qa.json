@@ -1,0 +1,26 @@
+{
+  "at": "2026-09-08T12:33:45.628Z",
+  "restored": {
+    "at": "2026-09-08T12:31:34.605Z",
+    "sourceWorldVersion": 4,
+    "worldVersion": 4,
+    "checkpointAgeMs": 869,
+    "rooms": [
+      {
+        "name": "EMBER",
+        "preservedSessions": 1,
+        "preservedBoats": 0,
+        "crops": 48,
+        "inventoryProgressPositionAndStores": "exact match"
+      }
+    ]
+  },
+  "automaticReconnect": [
+    {
+      "samePlayer": true,
+      "inventoryMatches": true,
+      "connected": true
+    }
+  ],
+  "personalData": "Session tokens and player details remain only in the ignored local checkpoint."
+}

@@ -1,0 +1,17 @@
+{
+  "attempts": [
+    {
+      "stage": "freshness guard",
+      "result": "No server stopped. A pending timeout in the capture helper kept Node alive for five seconds; unref allowed prompt completion and a new live checkpoint was captured."
+    },
+    {
+      "stage": "delivery check",
+      "result": "Fresh state restored. QA incorrectly requested the non-public application/snapshot.mjs URL and received 404. Removed the server-only module from public delivery checks and reran browser QA; no second server restart."
+    },
+    {
+      "stage": "walking timeout",
+      "result": "The QA character was still walking, around 10 m short of the landing after 60 seconds. Allow 90 seconds for the existing walking speed. No gameplay code or server restart was needed.",
+      "record": "rollout-walking-timeout.json"
+    }
+  ]
+}

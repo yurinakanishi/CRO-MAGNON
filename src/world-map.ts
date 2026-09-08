@@ -1,4 +1,5 @@
 import { FISHING_SITES } from '../shared/fishing-sites.mjs';
+import { SEA_WEATHER, currentDirection, seaConditions } from '../shared/maritime-weather.mjs';
 import { SHELL_BEDS, MIDDEN_SITES, KNAPPING_SITES } from '../shared/coastal-sites.mjs';
 import { WORLD, worldClamp, CAMP, NPC } from '../shared/world.mjs';
 import { BIOMES, biomeAt, biomeWeights } from '../shared/biomes.mjs';
@@ -226,6 +227,38 @@ export function drawWorldMap(canvas, state, selfId, big = false) {
     }
     ctx.restore();
   }
+  if (big && gulfView && full && state.maritime) {
+    ctx.save();
+    ctx.strokeStyle = '#94e1e6';
+    ctx.lineWidth = 2;
+    for (const z of [650, 850, 1050, 1250])
+      for (const x of [-2420, -2210, -2000]) {
+        const flow = seaConditions(state.maritime, x, z);
+        const length = Math.hypot(flow.currentX, flow.currentZ);
+        if (length < 0.04 || coastDistance(x, z) > -6) continue;
+        const [px, py] = point(x, z),
+          size = 7 + 9 * flow.exposure;
+        ctx.save();
+        ctx.translate(px, py);
+        ctx.rotate(Math.atan2(flow.currentZ, flow.currentX));
+        ctx.beginPath();
+        ctx.moveTo(-size / 2, 0);
+        ctx.lineTo(size / 2, 0);
+        ctx.moveTo(size / 2 - 4, -4);
+        ctx.lineTo(size / 2, 0);
+        ctx.lineTo(size / 2 - 4, 4);
+        ctx.stroke();
+        ctx.restore();
+      }
+    ctx.fillStyle = '#bcebef';
+    ctx.font = '12px sans-serif';
+    ctx.fillText(
+      `${SEA_WEATHER[state.maritime.kind].name} · ${currentDirection(state.maritime)} · 矢印に沿うと速く進む`,
+      10,
+      36,
+    );
+    ctx.restore();
+  }
   if (big && selection) {
     const [x, y] = point(selection.x, selection.z);
     ctx.strokeStyle = '#ffda88';
@@ -357,6 +390,7 @@ export function drawWorldMap(canvas, state, selfId, big = false) {
   ctx.fillText(`${metres} m`, w - 12, h - 18);
   ctx.textAlign = 'start';
   canvas.dataset.mapMode = full ? (gulfView ? 'gulf' : 'earth') : 'local';
+  canvas.dataset.seaWeather = state.maritime?.kind ?? '';
   canvas.dataset.worldWidth = String(WORLD.width);
   canvas.dataset.worldDepth = String(WORLD.depth);
 }

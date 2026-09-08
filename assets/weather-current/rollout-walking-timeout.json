@@ -1,0 +1,83 @@
+{
+  "at": "2026-09-08T12:33:34.924Z",
+  "base": "http://127.0.0.1:3000",
+  "health": {
+    "ok": true,
+    "ridingVersion": 1,
+    "combatVersion": 3,
+    "characterVersion": 2,
+    "enemyVersion": 1,
+    "worldVersion": 4,
+    "worldSize": 8192,
+    "worldWidth": 8192,
+    "worldDepth": 4096,
+    "epochYearsBP": 50000,
+    "rooms": 1,
+    "players": 1,
+    "maxPlayers": 5
+  },
+  "checks": [
+    {
+      "path": "src/main.js",
+      "sha256": "e23141689383810428b2f5ad0509b78d6c160ff2dabe441e8246bee526dfaa37"
+    },
+    {
+      "path": "src/maritime-ui.js",
+      "sha256": "95860718dca8cf760fb6dfd0e4cc1029b446fef56d4d69277d1fa892a83d5379"
+    },
+    {
+      "path": "src/boat-ui.js",
+      "sha256": "fd8e4eee5c8e0dd3eeae11ec6aadf5d2e502602e4b4535c90b7c1d643a9be441"
+    },
+    {
+      "path": "src/boat-renderer.js",
+      "sha256": "c56c4622c9cce941ae9e54548546d12f8ad401a3097b8ca1d049ef8e435e0d5e"
+    },
+    {
+      "path": "src/world-map.js",
+      "sha256": "2edf907a2e4afa6f374e56e7f344571dee664a91a3cd4ae22eaf18f6b0c321fc"
+    },
+    {
+      "path": "src/world-atmosphere.js",
+      "sha256": "40b2667150433cdbb1c88a21419f1508a2d0aabd19cb99b21c0be4d72e472117"
+    },
+    {
+      "path": "src/gulf-ui.js",
+      "sha256": "e89e046cc7da995a0aea2f242cc4599d4a5252413fe1630f6f27047ec6c7b43b"
+    },
+    {
+      "path": "src/gulf.css",
+      "sha256": "ae27453580e197e373ced26abc9d4f7bdebc9275379d6d33ccc101a06a3151d4"
+    },
+    {
+      "path": "shared/maritime-weather.mjs",
+      "sha256": "bbd229016c4acffea7ac6c6a979d2b4811028acae592319adfc8780ba3fa0e4d"
+    },
+    {
+      "path": "shared/boats.mjs",
+      "sha256": "c69a45df285252d1beba9480854eac50f6c1f365cb435c1875b7516698251745"
+    }
+  ],
+  "errors": [
+    "Error: Did not reach landing by normal walking"
+  ],
+  "flows": [
+    "gulf expedition",
+    "forecast via gulf panel",
+    "gulf map",
+    "normal walking to hearth landing",
+    "390x844 scrolling"
+  ],
+  "snapshot": {
+    "playerLimit": 5,
+    "maritime": {
+      "version": 1,
+      "phase": 0,
+      "kind": "calm",
+      "next": "breeze",
+      "changesAt": 1788870924915,
+      "currentX": 0,
+      "currentZ": 0
+    }
+  }
+}

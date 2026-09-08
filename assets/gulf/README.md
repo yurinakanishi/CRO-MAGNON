@@ -67,3 +67,7 @@ The full suite passed **211/211 tests**, and 34 focused tests passed after the f
 The local server is running at **http://localhost:3000**. It was stopped before this update, so a new `node server.mjs` process was started; no old checkpoint was restored. A fresh browser verified entry into the gulf and receipt of welcome supplies in a dedicated QA room. See [rollout-qa.json](rollout-qa.json).
 
 See [delivery-qa.json](delivery-qa.json) for the 48 delivered GLBs' SHA and structure checks. The full historical asset-provenance verifier still cannot complete because the pre-existing `output/model-generation/models/neanderthal-hunter/qa/adoption-review.json` is missing. The delivered model checks are separate; no missing production history has been invented.
+
+## Subsequent maritime increment
+
+[Weather and currents](../weather-current/README.md) add shared calm, breeze, rain and mist; current-dependent paddling speed; sheltered shoreline routes; a forecast panel; and map arrows. All weather timings, flows, forecasts and station keeping are deliberate fantasy. The same boats, shores and overland alternatives remain usable. See [plan and verification](../../WEATHER_CURRENT_PLAN.md).

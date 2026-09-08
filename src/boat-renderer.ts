@@ -38,7 +38,11 @@ export class BoatRenderer {
           Math.sin(state.facing - model.rotation.y),
           Math.cos(state.facing - model.rotation.y),
         ) * factor;
-      model.visible = Math.hypot(state.x - world.focus.x, state.z - world.focus.z) < 125;
+      // The camera follows the rider, whose position follows this hull. Culling
+      // our hull after a large server correction would lock all three in place.
+      model.visible =
+        state.riderId === world.selfId ||
+        Math.hypot(state.x - world.focus.x, state.z - world.focus.z) < 125;
       model.updateMatrixWorld(true);
     }
     for (const [id, entry] of this.boats)

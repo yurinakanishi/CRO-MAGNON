@@ -5,6 +5,7 @@ import { RIDING } from '../shared/riding.mjs';
 import { NPC, WORLD } from '../shared/world.mjs';
 import { residentSnapshots } from '../shared/village-life.mjs';
 import { VILLAGE, villageDay } from '../shared/village-sites.mjs';
+import { maritimeWeather } from '../shared/maritime-weather.mjs';
 export function snapshot(
   room,
   includeWorld = false,
@@ -37,6 +38,7 @@ export function snapshot(
     epochYearsBP: EARTH.epochYearsBP,
     room: room.name,
     serverTime: now,
+    maritime: maritimeWeather(now, room.createdAt ?? now),
     projectiles: (room.projectiles || []).map(
       ({ id, ownerId, x, z, dx, dz, createdAt, updatedAt, travelled, kind, elevation }) => ({
         id,

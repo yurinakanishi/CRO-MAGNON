@@ -1,0 +1,8 @@
+{
+  "at": "2026-09-08T12:31:33.8425587Z",
+  "pid": 7768,
+  "command": "node output/weather-current/run-local.mjs",
+  "checkpoint": "freshly captured immediately before this restart",
+  "automaticDiskPersistence": false,
+  "publicDeployment": false
+}

@@ -273,6 +273,7 @@ const boatUI = installBoatControls({
   goTo,
   notify,
   renderer,
+  openModal,
 });
 const adventureUI = installAdventureUI({
   player,

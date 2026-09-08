@@ -1,0 +1,21 @@
+{
+  "at": "2026-09-08T12:31:17.7591772Z",
+  "health": {
+    "ok": true,
+    "ridingVersion": 1,
+    "combatVersion": 3,
+    "characterVersion": 2,
+    "enemyVersion": 1,
+    "worldVersion": 4,
+    "worldSize": 8192,
+    "worldWidth": 8192,
+    "worldDepth": 4096,
+    "epochYearsBP": 50000,
+    "rooms": 1,
+    "players": 1,
+    "maxPlayers": 5
+  },
+  "pid": 19656,
+  "path": "C:\\Program Files\\nodejs\\node.exe",
+  "started": "2026-09-08T11:31:30.4353505Z"
+}

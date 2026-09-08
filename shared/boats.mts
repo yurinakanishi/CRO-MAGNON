@@ -3,6 +3,7 @@ import { coastDistance } from './paleo-geography.mjs';
 import { stopActor } from './combat.mjs';
 import { attackProfile } from './combat-profiles.mjs';
 import { movePlayer } from './movement.mjs';
+import { maritimeWeather, seaBoatSpeed } from './maritime-weather.mjs';
 import { updateNavigation } from './navigation.mjs';
 
 export const BOATING = Object.freeze({
@@ -217,6 +218,7 @@ export function copyBoatPosition(player, boat) {
   for (const k of ['x', 'z', 'facing', 'speed', 'moving', 'running']) player[k] = boat[k];
 }
 export function updateBoats(room, dt, now) {
+  const weather = maritimeWeather(now, room.createdAt ?? now);
   for (const boat of room.boats) {
     if (!boat.riderId) continue;
     const player = room.players.get(boat.riderId);
@@ -233,7 +235,7 @@ export function updateBoats(room, dt, now) {
       dt,
       now,
       (p, dx, dz) => room.seaCollision.move(p, dx, dz, boat.radius, dynamic),
-      boat.runningRequested ? BOATING.fastSpeed : BOATING.speed,
+      seaBoatSpeed(boat, boat.runningRequested ? BOATING.fastSpeed : BOATING.speed, weather),
     );
     copyBoatPosition(player, boat);
   }

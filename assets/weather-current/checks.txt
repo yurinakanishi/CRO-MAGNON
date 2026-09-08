@@ -1,0 +1,13 @@
+Architecture boundaries passed: domain → application → host adapters; browser → domain.
+Syntax checked 142 JavaScript files.
+Checking formatting...
+All matched files use Prettier code style!
+ℹ tests 285
+ℹ suites 0
+ℹ pass 285
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 23437.9137
+Final normal/Cloudflare/strict build and local rollout: passed. Ten served modules matched; ordinary browser flows passed.

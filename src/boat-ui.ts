@@ -1,13 +1,16 @@
 import { BOATING, launchPoint, initializeBoats } from '../shared/boats.mjs';
 import { coastDistance, landmassAt } from '../shared/paleo-geography.mjs';
+import { installMaritimeUI } from './maritime-ui.js';
 
-export function installBoatControls({ player, state, available, action, goTo, notify, renderer }) {
+export function installBoatControls(api) {
+  const { player, state, available, action, goTo, notify, renderer } = api;
   const wrap = document.querySelector('.hotbar-wrap');
   wrap.insertAdjacentHTML(
     'afterbegin',
     `<div class="boat-controls"><button id="boat-shore" class="hunt-button">海岸へ</button><button id="boat-craft" class="hunt-button">船をつくる <small>木材12</small></button><button id="boat-board" class="hunt-button"><kbd>B</kbd><span>船に乗る</span></button><small id="boat-hint">1隻に1人 · 海岸でつくろう</small></div>`,
   );
   const $ = (s) => document.querySelector(s);
+  const maritimeUI = installMaritimeUI(api);
   $('#boat-craft').onclick = () => action('craftBoat');
   $('#boat-board').onclick = () => action('boardBoat');
   $('#boat-shore').onclick = () => {
@@ -37,6 +40,7 @@ export function installBoatControls({ player, state, available, action, goTo, no
   };
   return {
     update() {
+      maritimeUI.update();
       const p = player(),
         aboard = !!p?.boatId,
         disabled = !available() || !p || !!p.downedUntil;

@@ -36,9 +36,14 @@
   margin-top: 0;
 }
 dialog:has(.gulf-panel) {
+  --gulf-dialog-padding: 26px;
   width: min(960px, 95vw);
   max-height: 92dvh;
-  padding: 26px;
+  padding: var(--gulf-dialog-padding);
+}
+/* The sticky header's background must match the dialog's responsive padding. */
+dialog:has(.gulf-panel) .modal-top::before {
+  inset: calc(-1 * var(--gulf-dialog-padding)) calc(-1 * var(--gulf-dialog-padding)) 0;
 }
 dialog:has(.gulf-panel) .modal-top {
   position: sticky;
@@ -115,6 +120,9 @@ dialog:has(.gulf-panel) .modal-top {
   min-height: 42px;
   padding: 10px 12px;
   font-size: 11px;
+}
+#sea-panel .gulf-actions .button {
+  flex: 1 1 140px;
 }
 .gulf-columns {
   display: grid;
@@ -211,7 +219,7 @@ dialog:has(.gulf-panel) .modal-top {
 }
 @media (max-width: 680px) {
   dialog:has(.gulf-panel) {
-    padding: 18px;
+    --gulf-dialog-padding: 18px;
   }
   .gulf-panel h2 {
     font-size: 24px;

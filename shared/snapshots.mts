@@ -3,6 +3,7 @@ import type { FishingActivity } from './fishing-types.mjs';
 import type { CoastalActivity } from './coastal-types.mjs';
 import type { GulfState, GulfProgress } from './gulf-types.mjs';
 import type { ResidentSnapshot } from './village-types.mjs';
+import type { MaritimeWeather } from './maritime-types.mjs';
 
 /** Public wire data. Connections, session tokens and simulation paths never belong here. */
 export interface AdventureProgress {
@@ -125,6 +126,7 @@ export interface GameSnapshot {
   type: 'state';
   room: string;
   serverTime: number;
+  maritime?: MaritimeWeather;
   boatingVersion: number;
   adventureVersion: number;
   ridingVersion: number;

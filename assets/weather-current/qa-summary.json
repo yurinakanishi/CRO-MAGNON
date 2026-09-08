@@ -1,0 +1,202 @@
+{
+  "at": "2026-09-08T12:36:47.889Z",
+  "status": "passed",
+  "scope": "Three Shores maritime weather and assisted small-boat travel",
+  "automated": {
+    "tests": 285,
+    "passed": 285,
+    "failed": 0,
+    "configurations": [
+      "normal",
+      "Cloudflare",
+      "strict"
+    ],
+    "architecture": "passed",
+    "syntaxFiles": 142,
+    "formatting": "passed",
+    "record": "checks.txt"
+  },
+  "browser": {
+    "record": "game-qa/r03/report.json",
+    "renderedPages": 2,
+    "webSocketPeers": 3,
+    "maxPlayers": 5,
+    "maxMovingBoats": 5,
+    "observations": 731,
+    "collisionViolations": 0,
+    "errors": [],
+    "viewports": [
+      "1440x900",
+      "390x844",
+      "844x390"
+    ],
+    "measurements": [
+      {
+        "label": "rain-with-current",
+        "speed": 5.869288670172822,
+        "x": -2191.190215813507,
+        "z": 1145.0178618458067,
+        "weather": "rain"
+      },
+      {
+        "label": "rain-against-current",
+        "speed": 4.209284531029535,
+        "x": -2205.6951500131345,
+        "z": 1145.0116703893689,
+        "weather": "rain"
+      },
+      {
+        "viewport": [
+          390,
+          844
+        ],
+        "overflow": false
+      },
+      {
+        "viewport": [
+          844,
+          390
+        ],
+        "overflow": false
+      }
+    ],
+    "completed": [
+      "two UI-built boats, five simultaneous movements, west-to-east route and landing through ordinary controls",
+      "rain: direction changes speed; opening forecast stops and holds the hull",
+      "stationary offshore fishing across a shared weather change",
+      "portrait/landscape forecast scrolling and simulated analog controller paddling/release",
+      "same-tab reconnect keeps inventory, weather, and safe embarkation return"
+    ],
+    "fixtures": [
+      {
+        "kind": "position",
+        "name": "舟A",
+        "x": -2531.5,
+        "z": 850,
+        "aboard": false
+      },
+      {
+        "kind": "materials",
+        "name": "舟A",
+        "wood": 12,
+        "purpose": "boat crafting"
+      },
+      {
+        "kind": "position",
+        "name": "舟B",
+        "x": -2270,
+        "z": 538.5,
+        "aboard": false
+      },
+      {
+        "kind": "materials",
+        "name": "舟B",
+        "wood": 12,
+        "purpose": "boat crafting"
+      },
+      {
+        "kind": "clock",
+        "phase": 1,
+        "purpose": "observe forecast and navigation in every weather"
+      },
+      {
+        "kind": "peer-boat",
+        "name": "Peer0",
+        "x": -2320,
+        "z": 1200,
+        "purpose": "five simultaneous boat movements"
+      },
+      {
+        "kind": "peer-boat",
+        "name": "Peer1",
+        "x": -2280,
+        "z": 1200,
+        "purpose": "five simultaneous boat movements"
+      },
+      {
+        "kind": "peer-boat",
+        "name": "Peer2",
+        "x": -2240,
+        "z": 1200,
+        "purpose": "five simultaneous boat movements"
+      },
+      {
+        "kind": "clock",
+        "phase": 2,
+        "purpose": "observe forecast and navigation in every weather"
+      },
+      {
+        "kind": "position",
+        "name": "舟A",
+        "x": -2200,
+        "z": 1145,
+        "aboard": true
+      },
+      {
+        "kind": "position",
+        "name": "舟A",
+        "x": -2200,
+        "z": 1145,
+        "aboard": true
+      },
+      {
+        "kind": "position",
+        "name": "舟B",
+        "x": -2190,
+        "z": 1145,
+        "aboard": true
+      },
+      {
+        "kind": "fishing-kit",
+        "name": "舟B",
+        "purpose": "weather does not cancel stationary fishing"
+      },
+      {
+        "kind": "clock",
+        "phase": 3,
+        "purpose": "observe forecast and navigation in every weather"
+      },
+      {
+        "kind": "clock",
+        "phase": 4,
+        "purpose": "observe forecast and navigation in every weather"
+      },
+      {
+        "kind": "clock",
+        "phase": 6,
+        "purpose": "observe forecast and navigation in every weather"
+      }
+    ]
+  },
+  "fixes": [
+    "responsive sticky-header background overflow",
+    "local boat distance culling locked the rider and camera after large server position correction",
+    "landing buttons wrap into readable rows on narrow screens",
+    "decorrelated rain positions using the existing particle buffer"
+  ],
+  "history": [
+    {
+      "record": "initial-failure.json",
+      "result": "failed on mobile horizontal overflow; camera issue found by inspecting screenshots"
+    },
+    {
+      "record": "intermediate-pass.json",
+      "result": "passed after functional fixes; final visual pass improves landing button wrapping and rain distribution"
+    }
+  ],
+  "assets": "assets-qa.json",
+  "rollout": {
+    "record": "rollout/report.json",
+    "newPid": 7768,
+    "preservedSessions": 1,
+    "preservedRoomCount": 1,
+    "checkpointAgeMs": 869,
+    "verification": "Fresh live state restored; original inventory, progress, position (or safe embarkation), farm plots and stores compared before listening. Public records omit personal session tokens."
+  },
+  "limits": [
+    "Authored weather/current cycle and forecast, not paleoclimate or tide reconstruction",
+    "Current modifies forward speed; no lateral drift or idle drift",
+    "Physical devices, physical controller, large-player load and sustained FPS unverified",
+    "No public deployment, billing changes, automatic Node disk persistence, farm weather damage or household migration"
+  ]
+}
