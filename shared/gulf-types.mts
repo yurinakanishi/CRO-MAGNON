@@ -1,8 +1,10 @@
 import type { ShoalState } from './fishing-types.mjs';
 import type { ShellBedState, MiddenState } from './coastal-types.mjs';
 import type { CropId } from './crops.mjs';
+import type { PantryState, PantryAllowance } from './pantry-types.mjs';
 /** Public, serializable gulf data; no renderer or simulation dependencies. */
 export interface GulfProgress {
+  pantryAllowance?: PantryAllowance;
   metResidents?: string[];
   residentHelp?: Record<string, number>;
   householdWelcomes?: Record<string, number>;
@@ -29,6 +31,7 @@ export interface PlotState {
   readyAt: number;
 }
 export interface GulfState {
+  pantries: PantryState[];
   shellBeds: ShellBedState[];
   middens: MiddenState[];
   shoals: ShoalState[];

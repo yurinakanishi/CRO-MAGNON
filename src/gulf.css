@@ -277,3 +277,60 @@ dialog:has(.gulf-panel) .modal-top {
 .coastal-recipe > div {
   flex: 1 1 220px;
 }
+.pantry-select {
+  display: grid;
+  gap: 8px;
+  margin: 16px 0;
+}
+.pantry-select select {
+  width: 100%;
+  min-height: 44px;
+  padding: 10px;
+  background: #263b32;
+  color: inherit;
+  border: 1px solid #c4b58e70;
+  border-radius: 6px;
+  font: inherit;
+}
+.pantry-totals {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 0 16px;
+}
+.pantry-foods {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 8px;
+  margin: 12px 0 18px;
+}
+.pantry-foods .button {
+  height: auto;
+  min-height: 68px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 6px;
+  padding: 12px;
+  white-space: normal;
+  text-align: left;
+}
+.pantry-foods .button span {
+  font-size: 12px;
+  font-weight: normal;
+  color: #b7c8b9;
+}
+.pantry-foods .button[aria-pressed='true'] {
+  border-color: #e2c489;
+  background: #e2c48918;
+}
+#pantry-panel .gulf-actions .button {
+  flex: 1 1 145px;
+  min-height: 44px;
+  white-space: normal;
+}
+@media (max-width: 560px) {
+  .pantry-foods {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}

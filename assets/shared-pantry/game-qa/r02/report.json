@@ -1,0 +1,264 @@
+{
+  "at": "2026-09-08T14:47:07.573Z",
+  "base": "http://127.0.0.1:59698",
+  "errors": [],
+  "fixtures": [
+    {
+      "kind": "position",
+      "player": "分け合いA",
+      "purpose": "donor beside shared hearth",
+      "x": -2272,
+      "z": 455
+    },
+    {
+      "kind": "position",
+      "player": "分け合いB",
+      "purpose": "recipient beside shared hearth",
+      "x": -2268,
+      "z": 455
+    },
+    {
+      "kind": "supplies",
+      "player": "分け合いA",
+      "food": {
+        "berry": 4,
+        "cookedMeat": 4,
+        "cookedFish": 4,
+        "cookedShellfish": 4,
+        "cookedRoot": 4,
+        "herbRoot": 4
+      },
+      "purpose": "prepared six-food donor; gathering/cooking is not claimed"
+    },
+    {
+      "kind": "supplies",
+      "player": "分け合いB",
+      "food": 0,
+      "energy": 25,
+      "shells": 0,
+      "purpose": "empty recipient and measurable meal"
+    },
+    {
+      "kind": "position",
+      "player": "分け合いB",
+      "purpose": "reach Neri for food handover",
+      "x": -1753,
+      "z": 834.5
+    },
+    {
+      "kind": "clock-forward",
+      "day": 2,
+      "purpose": "daily allowance boundary"
+    },
+    {
+      "kind": "position",
+      "player": "分け合いB",
+      "purpose": "return recipient to pantry for feast",
+      "x": -2268,
+      "z": 455
+    },
+    {
+      "kind": "feast-stores",
+      "stores": {
+        "wood": 8,
+        "berry": 9,
+        "obsidian": 4
+      },
+      "purpose": "prepare remaining contribution; pantry supplies final fish"
+    },
+    {
+      "kind": "clock-forward",
+      "day": 3,
+      "purpose": "daily allowance boundary"
+    },
+    {
+      "kind": "position",
+      "player": "分け合いA",
+      "purpose": "country pantry donor",
+      "x": -2532,
+      "z": 355
+    },
+    {
+      "kind": "position",
+      "player": "分け合いB",
+      "purpose": "country pantry recipient",
+      "x": -2528,
+      "z": 355
+    },
+    {
+      "kind": "supplies",
+      "player": "分け合いB",
+      "berry": 0,
+      "wood": 2,
+      "water": 1,
+      "purpose": "household preparation remainder; all three berries received through pantry"
+    }
+  ],
+  "completed": [
+    "six food types donated through UI; second Chrome sees shared quantities; five simultaneous players",
+    "recipient eats donated shellfish and gains shell; three-item cap follows locations and same-tab reload",
+    "received shellfish completes Neri daily help through conversation UI",
+    "next server day restores allowance; received fish completes shared feast through UI",
+    "three player-donated berries at country pantry start existing two-person household journey",
+    "D-pad reaches food and settlement selector, confirm chooses food, focus survives live snapshots",
+    "390x844 and 844x390 pane scroll, target sizes, visible back navigation with controller",
+    "selected hearth starts ordinary walking; map stops travel and opens gulf map"
+  ],
+  "viewports": [
+    {
+      "width": 390,
+      "scrollWidth": 390,
+      "modalOverflow": false,
+      "buttons": [
+        {
+          "id": "pantry-food-berry",
+          "height": 68,
+          "width": 156
+        },
+        {
+          "id": "pantry-food-cookedMeat",
+          "height": 68,
+          "width": 156
+        },
+        {
+          "id": "pantry-food-cookedFish",
+          "height": 68,
+          "width": 156
+        },
+        {
+          "id": "pantry-food-cookedShellfish",
+          "height": 68,
+          "width": 156
+        },
+        {
+          "id": "pantry-food-cookedRoot",
+          "height": 68,
+          "width": 156
+        },
+        {
+          "id": "pantry-food-herbRoot",
+          "height": 68,
+          "width": 156
+        },
+        {
+          "id": "pantry-give",
+          "height": 44,
+          "width": 294
+        },
+        {
+          "id": "pantry-take",
+          "height": 44,
+          "width": 294
+        },
+        {
+          "id": "pantry-eat",
+          "height": 44,
+          "width": 294
+        },
+        {
+          "id": "pantry-go",
+          "height": 44,
+          "width": 156.5
+        },
+        {
+          "id": "pantry-back",
+          "height": 44,
+          "width": 156.5
+        }
+      ]
+    },
+    {
+      "width": 844,
+      "scrollWidth": 844,
+      "modalOverflow": false,
+      "buttons": [
+        {
+          "id": "pantry-food-berry",
+          "height": 68,
+          "width": 243.921875
+        },
+        {
+          "id": "pantry-food-cookedMeat",
+          "height": 68,
+          "width": 243.9375
+        },
+        {
+          "id": "pantry-food-cookedFish",
+          "height": 68,
+          "width": 243.9375
+        },
+        {
+          "id": "pantry-food-cookedShellfish",
+          "height": 68,
+          "width": 243.921875
+        },
+        {
+          "id": "pantry-food-cookedRoot",
+          "height": 68,
+          "width": 243.9375
+        },
+        {
+          "id": "pantry-food-herbRoot",
+          "height": 68,
+          "width": 243.9375
+        },
+        {
+          "id": "pantry-give",
+          "height": 44,
+          "width": 233.265625
+        },
+        {
+          "id": "pantry-take",
+          "height": 44,
+          "width": 233.265625
+        },
+        {
+          "id": "pantry-eat",
+          "height": 44,
+          "width": 233.265625
+        },
+        {
+          "id": "pantry-go",
+          "height": 44,
+          "width": 370.390625
+        },
+        {
+          "id": "pantry-back",
+          "height": 44,
+          "width": 370.40625
+        }
+      ]
+    }
+  ],
+  "screenshots": [
+    {
+      "name": "01-loaded",
+      "fps": "19",
+      "chunks": "68"
+    },
+    {
+      "name": "02-shared-food",
+      "fps": "60",
+      "chunks": "64"
+    },
+    {
+      "name": "03-daily-limit",
+      "fps": "35",
+      "chunks": "64"
+    },
+    {
+      "name": "04-pantry-390",
+      "fps": "56",
+      "chunks": "67"
+    },
+    {
+      "name": "04-pantry-844",
+      "fps": "60",
+      "chunks": "67"
+    }
+  ],
+  "observations": 128,
+  "maxPlayers": 5,
+  "violations": [],
+  "scope": "Two real Chrome views plus three network peers. Proximity, six-food supply, two day boundaries, feast remainder and household wood/water are explicit fixtures. No claims of full harvest/cooking/long-distance walks, physical controller, mobile device, or permanent 60 FPS."
+}

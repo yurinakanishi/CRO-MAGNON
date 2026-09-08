@@ -303,6 +303,7 @@ const coastalUI = installCoastalUI({
   openModal,
 });
 const gulfUI = installGulfUI({
+  collision: renderer.collision,
   player,
   state: () => state,
   available: () => joined && !renderUnavailable,

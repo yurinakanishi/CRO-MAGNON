@@ -14,6 +14,7 @@ import {
 import { GATHERING_NEEDS, SEASONS } from '../shared/gulf-life.mjs';
 import { interactionVisible } from '../shared/interactions.mjs';
 import { CROPS, cropById, plotCrop, cropGrowMs, cropHarvestText } from '../shared/crops.mjs';
+import { installPantryUI } from './pantry-ui.js';
 
 const distance = (a, b) => (a && b ? Math.hypot(a.x - b.x, a.z - b.z) : Infinity);
 const stageName = { empty: '空き畑', planted: '水が必要', growing: '成長中', ripe: '収穫できる' };
@@ -53,6 +54,7 @@ export function gulfInteraction(state, me, collision) {
 }
 export function installGulfUI(api) {
   const { player, state, available, action, goTo, notify, openModal, send, stopInput } = api;
+  const pantry = installPantryUI(api, () => open());
   let selected: string = MANY_HEARTHS.id,
     plotId = FARM_PLOTS[0].id,
     chosenCrop = 'berry',
@@ -97,6 +99,7 @@ export function installGulfUI(api) {
     if (requested) $('#gulf-crop-choice')?.focus();
   }
   function update() {
+    pantry.update();
     const me = player(),
       world = state(),
       country = COUNTRIES.find((c) => c.id === me?.gulf?.countryId);
@@ -204,10 +207,11 @@ export function installGulfUI(api) {
       .querySelector('#gulf-fishing')
       .insertAdjacentHTML(
         'afterend',
-        '<button id="gulf-coastal" class="button button-outline">貝と石器の作り方</button><button id="gulf-residents" class="button button-outline">集落の人びと・今日の手伝い</button>',
+        '<button id="gulf-coastal" class="button button-outline">貝と石器の作り方</button><button id="gulf-residents" class="button button-outline">集落の人びと・今日の手伝い</button><button id="gulf-pantry" class="button button-outline">共同の食料置き場</button>',
       );
     bind('gulf-coastal', () => action('coastalOpen'));
     bind('gulf-residents', () => action('residentOpen'));
+    bind('gulf-pantry', () => pantry.open(selected));
     bind('gulf-travel', () => {
       if (local) goTo(settlement.x, settlement.z + 5, settlement.name);
       else {

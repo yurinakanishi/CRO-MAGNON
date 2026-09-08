@@ -1,0 +1,19 @@
+✔ new and legacy profiles default to female in either species (1.3657ms)
+✔ all six explicit choices resolve to distinct models and retain male choices (0.1934ms)
+✔ new fantasy choices normalize to their one supplied appearance (0.1426ms)
+✔ four separate empty pantries preserve bounded food-only data and legacy worlds gain no free food (1.9764ms)
+✔ all six foods move unchanged between players at all four hearths, independently of affiliation or species (6.8149ms)
+✔ one daily allowance covers every pantry, resets only by server day and belongs to each player (0.8071ms)
+✔ bad places/items, busy actors, occlusion, missing food, total capacity and inventory limits are atomic failures (2.5925ms)
+✔ time, crops, household routines and seasons never consume a shared pantry automatically (2.4071ms)
+✔ received food retains cooking effects, shells, daily help, household preparation and feast uses (3.5822ms)
+✔ eight clients serialize the final item and final slot, preserve total food, and all receive full pantry state (149.3277ms)
+✔ save/reconnect carries stock and daily use; legacy saves and malformed allowance normalize without mutating checkpoints (305.0942ms)
+ℹ tests 11
+ℹ suites 0
+ℹ pass 11
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 1135.9321

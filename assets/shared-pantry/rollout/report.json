@@ -1,0 +1,74 @@
+{
+  "at": "2026-09-08T14:51:52.270Z",
+  "base": "http://127.0.0.1:3000",
+  "health": {
+    "ok": true,
+    "ridingVersion": 1,
+    "combatVersion": 3,
+    "characterVersion": 2,
+    "enemyVersion": 1,
+    "worldVersion": 4,
+    "worldSize": 8192,
+    "worldWidth": 8192,
+    "worldDepth": 4096,
+    "epochYearsBP": 50000,
+    "rooms": 2,
+    "players": 1,
+    "maxPlayers": 5
+  },
+  "checks": [
+    {
+      "path": "src/main.js",
+      "sha256": "c04497f74b20d6657b8ad29ef35db9f86f6cbd0b4dbc4d6d50e4ff79fe27846b"
+    },
+    {
+      "path": "src/gulf-ui.js",
+      "sha256": "5d00d815cb61b428d5b5d2e81416c0c32e62b4ecb2e046773997116ba788dcb4"
+    },
+    {
+      "path": "src/pantry-ui.js",
+      "sha256": "b759eb129c7eacabe648dc33fd2620a92b0b07f58c701d78cfad1119a567f1a2"
+    },
+    {
+      "path": "src/gulf.css",
+      "sha256": "558ea93faf11b8f31958f787ad401c311a229f6cb04689fc90b3abd11cbc482a"
+    },
+    {
+      "path": "shared/gulf-life.mjs",
+      "sha256": "b9f870e57e012599940a3c343c0ecc65b772b178b56bc76dda1eb685742b1d8a"
+    },
+    {
+      "path": "shared/pantry.mjs",
+      "sha256": "7312af185a7c4f0b2996401a1cc79a5672982907b19b0d7b787f8928ec46adcb"
+    }
+  ],
+  "errors": [],
+  "completed": [
+    "ordinary gulf expedition and welcome; donate and receive berry; both server quantities and quiet success feedback verified",
+    "same-tab reload preserves inventory and daily use; remote country storage cannot transfer food",
+    "normal local build portrait/landscape scrolling and back navigation"
+  ],
+  "notices": [
+    {
+      "text": "多くの炉の集い場の野営地に到着しました。",
+      "popup": false
+    },
+    {
+      "text": "湾へようこそ。種6・ベリー3を受け取った。畑、水場、三つの国を訪ねよう。",
+      "popup": false
+    },
+    {
+      "text": "ベリーを1つ、みんなの食料置き場へ預けた。",
+      "popup": false
+    },
+    {
+      "text": "ベリーを1つ受け取った。今日あと2つ。",
+      "popup": false
+    }
+  ],
+  "diagnostic": {
+    "fps": "42",
+    "chunks": "65"
+  },
+  "fixture": "Separate QA room only. Standard welcome berries; no position, inventory or clock mutations. Existing user room was not entered."
+}

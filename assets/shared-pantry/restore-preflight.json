@@ -1,0 +1,17 @@
+{
+  "at": "2026-09-08T14:50:22.736Z",
+  "savedAt": 1788879021971,
+  "checkpointAgeMs": 766,
+  "rooms": [
+    {
+      "name": "EMBER",
+      "sessions": 1,
+      "households": 3,
+      "residents": 8,
+      "pantries": 4
+    }
+  ],
+  "preserved": "player identity, inventory, equipment, progress, position, resources, camp, crops, households and resident positions",
+  "migration": "Four empty pantries and zero personal pantry use added to the immediate pre-update checkpoint only.",
+  "automaticDiskPersistence": false
+}

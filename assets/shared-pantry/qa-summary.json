@@ -1,0 +1,179 @@
+{
+  "at": "2026-09-08T14:58:39.985Z",
+  "status": "passed",
+  "plan": "SHARED_PANTRY_PLAN.md",
+  "implementation": {
+    "settlements": 4,
+    "foods": 6,
+    "capacityPerPlace": 48,
+    "receivedPerDayAcrossAllPlaces": 3,
+    "dayMilliseconds": 240000,
+    "defaultPlayerLimit": 5,
+    "networkRaceTestPlayers": 8
+  },
+  "tests": {
+    "all": {
+      "passed": 302,
+      "failed": 0
+    },
+    "targeted": {
+      "passed": 27,
+      "failed": 0
+    },
+    "finalCharactersAndPantry": {
+      "passed": 11,
+      "failed": 0
+    },
+    "strictBuild": "passed",
+    "architecture": "passed",
+    "formatting": "passed",
+    "syntax": "Syntax checked 154 JavaScript files."
+  },
+  "browser": {
+    "actualChromeViews": 2,
+    "networkPeers": 3,
+    "maxPlayers": 5,
+    "observations": 128,
+    "errors": [],
+    "collisionViolations": [],
+    "flows": [
+      "six food types donated through UI; second Chrome sees shared quantities; five simultaneous players",
+      "recipient eats donated shellfish and gains shell; three-item cap follows locations and same-tab reload",
+      "received shellfish completes Neri daily help through conversation UI",
+      "next server day restores allowance; received fish completes shared feast through UI",
+      "three player-donated berries at country pantry start existing two-person household journey",
+      "D-pad reaches food and settlement selector, confirm chooses food, focus survives live snapshots",
+      "390x844 and 844x390 pane scroll, target sizes, visible back navigation with controller",
+      "selected hearth starts ordinary walking; map stops travel and opens gulf map"
+    ],
+    "viewports": [
+      390,
+      844
+    ],
+    "fixtures": [
+      {
+        "kind": "position",
+        "player": "分け合いA",
+        "purpose": "donor beside shared hearth",
+        "x": -2272,
+        "z": 455
+      },
+      {
+        "kind": "position",
+        "player": "分け合いB",
+        "purpose": "recipient beside shared hearth",
+        "x": -2268,
+        "z": 455
+      },
+      {
+        "kind": "supplies",
+        "player": "分け合いA",
+        "food": {
+          "berry": 4,
+          "cookedMeat": 4,
+          "cookedFish": 4,
+          "cookedShellfish": 4,
+          "cookedRoot": 4,
+          "herbRoot": 4
+        },
+        "purpose": "prepared six-food donor; gathering/cooking is not claimed"
+      },
+      {
+        "kind": "supplies",
+        "player": "分け合いB",
+        "food": 0,
+        "energy": 25,
+        "shells": 0,
+        "purpose": "empty recipient and measurable meal"
+      },
+      {
+        "kind": "position",
+        "player": "分け合いB",
+        "purpose": "reach Neri for food handover",
+        "x": -1753,
+        "z": 834.5
+      },
+      {
+        "kind": "clock-forward",
+        "day": 2,
+        "purpose": "daily allowance boundary"
+      },
+      {
+        "kind": "position",
+        "player": "分け合いB",
+        "purpose": "return recipient to pantry for feast",
+        "x": -2268,
+        "z": 455
+      },
+      {
+        "kind": "feast-stores",
+        "stores": {
+          "wood": 8,
+          "berry": 9,
+          "obsidian": 4
+        },
+        "purpose": "prepare remaining contribution; pantry supplies final fish"
+      },
+      {
+        "kind": "clock-forward",
+        "day": 3,
+        "purpose": "daily allowance boundary"
+      },
+      {
+        "kind": "position",
+        "player": "分け合いA",
+        "purpose": "country pantry donor",
+        "x": -2532,
+        "z": 355
+      },
+      {
+        "kind": "position",
+        "player": "分け合いB",
+        "purpose": "country pantry recipient",
+        "x": -2528,
+        "z": 355
+      },
+      {
+        "kind": "supplies",
+        "player": "分け合いB",
+        "berry": 0,
+        "wood": 2,
+        "water": 1,
+        "purpose": "household preparation remainder; all three berries received through pantry"
+      }
+    ],
+    "scope": "Two real Chrome views plus three network peers. Proximity, six-food supply, two day boundaries, feast remainder and household wood/water are explicit fixtures. No claims of full harvest/cooking/long-distance walks, physical controller, mobile device, or permanent 60 FPS."
+  },
+  "assets": {
+    "modelsIncludingRetained": 39,
+    "verifiedGLBsIncludingRetained": 54,
+    "preservedBaselineGLBs": 53,
+    "newGLBs": 0,
+    "newDependencies": 0,
+    "additionalExistingAsset": "The separately merged desert-fennec-mage is included alongside the retained previous mage; no asset adoption by this pantry increment."
+  },
+  "rollout": {
+    "port": 3000,
+    "previousPid": 13304,
+    "pid": 31372,
+    "restoration": "Immediate current checkpoint, verified player/camp/gulf/household/resident preservation and pantry-only migration",
+    "modules": 6,
+    "errors": [],
+    "flows": [
+      "ordinary gulf expedition and welcome; donate and receive berry; both server quantities and quiet success feedback verified",
+      "same-tab reload preserves inventory and daily use; remote country storage cannot transfer food",
+      "normal local build portrait/landscape scrolling and back navigation"
+    ],
+    "fixtures": "Separate QA room only. Standard welcome berries; no position, inventory or clock mutations. Existing user room was not entered."
+  },
+  "harnessCorrections": [
+    "Existing fish contribution lives in the fishing pane; corrected QA selector.",
+    "Observer must retain full gulf data across incremental snapshots; corrected QA state merge."
+  ],
+  "concurrentWork": "Existing camera, menu and quiet-feedback edits remain in the worktree; pantry changes are committed separately. Existing merged desert mage remains selected.",
+  "limitations": [
+    "No physical phone or controller verification.",
+    "No large-player load test, long continuous run, or constant 60 FPS claim.",
+    "No ordinary Node disk persistence, public deployment, billing change, NPC food consumption, spoilage, population growth or political simulation."
+  ]
+}

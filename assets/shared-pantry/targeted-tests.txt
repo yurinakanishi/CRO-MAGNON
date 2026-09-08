@@ -1,0 +1,35 @@
+✔ every settlement supplies all crop seeds; invalid choices, distance, walls and capacity preserve payment (5.4757ms)
+✔ three crops use authoritative species, water and seasonal growth with repeatable seed returns (5.3689ms)
+✔ crop failures keep seeds, water and a ripe shared harvest intact; only one of eight visitors collects it (2.0041ms)
+✔ old plots remain berries; missing or malformed new stocks are bounded and water remains shared (1.3273ms)
+✔ both root recipes complete once, consume every ingredient together and restore capped energy (2.7449ms)
+✔ root cooking cannot bypass ingredient/capacity/visibility checks and cancellation loses no food (1.4335ms)
+✔ root meals fill the existing feast food requirement and are never spent on an already full store (1.3172ms)
+✔ crop maturation broadcasts full world state even between ordinary 90 ms sends (206.1647ms)
+✔ eight-player commands, reconnect and save/restore retain crop species, growth and inventories (325.4492ms)
+✔ invalid crop payloads do not become default berry planting, and nearby controls identify planted varieties (2.0658ms)
+✔ fantasy gulf changes only its reserved ocean; original land cells and other coasts are preserved (55.5411ms)
+✔ countries, all 48 crop plots, spring approaches and quarry have safe connected walking routes (2224.0476ms)
+✔ all three beaches launch real boats, with an unobstructed cross-gulf water route and a land alternative (475.7712ms)
+✔ farming requires local planting and carried water; concurrent tending and harvest resolve once (62.0746ms)
+✔ crop failures preserve inventory, growth and ripe harvests; walls and invalid IDs cannot be bypassed (65.2161ms)
+✔ country affiliation is independent of species, requires visiting and does not close access to other communities (62.2816ms)
+✔ obsidian exchange and shared feast account for costs and issue each reward at most once per feast (56.1867ms)
+✔ real commands gather obsidian; reconnect and save/restore preserve crops, affiliation and all inventory (451.3919ms)
+✔ five remains the default connection cap; an eight-player core uses the same 48 plots and countries (272.7248ms)
+✔ four separate empty pantries preserve bounded food-only data and legacy worlds gain no free food (3.2479ms)
+✔ all six foods move unchanged between players at all four hearths, independently of affiliation or species (10.0687ms)
+✔ one daily allowance covers every pantry, resets only by server day and belongs to each player (9.6902ms)
+✔ bad places/items, busy actors, occlusion, missing food, total capacity and inventory limits are atomic failures (4.3509ms)
+✔ time, crops, household routines and seasons never consume a shared pantry automatically (3.2083ms)
+✔ received food retains cooking effects, shells, daily help, household preparation and feast uses (4.922ms)
+✔ eight clients serialize the final item and final slot, preserve total food, and all receive full pantry state (203.9434ms)
+✔ save/reconnect carries stock and daily use; legacy saves and malformed allowance normalize without mutating checkpoints (440.6153ms)
+ℹ tests 27
+ℹ suites 0
+ℹ pass 27
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 4661.957

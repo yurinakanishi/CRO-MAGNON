@@ -8,6 +8,7 @@ import {
   SPRINGS,
 } from './gulf-region.mjs';
 import { interactionVisible } from './interactions.mjs';
+import { createPantries, normalizePantryAllowance, handlePantryAction } from './pantry.mjs';
 import type { GulfProgress, GulfState } from './gulf-types.mjs';
 import { createShoals } from './fishing-sites.mjs';
 import { createShellBeds, createMiddens } from './coastal-sites.mjs';
@@ -33,6 +34,7 @@ const count = (n, max = 999999) =>
   Number.isFinite(n) ? Math.max(0, Math.min(max, Math.floor(n))) : 0;
 export function createGulfState(saved?): GulfState {
   return {
+    pantries: createPantries(saved?.pantries),
     shellBeds: createShellBeds(saved?.shellBeds),
     middens: createMiddens(saved?.middens),
     shoals: createShoals(saved?.shoals),
@@ -88,6 +90,7 @@ export function ensureGulfPlayer(player): GulfProgress {
   player.gulf.fishShared ??= 0;
   player.gulf.waymarks ??= [];
   player.gulf.trailRewarded ??= false;
+  player.gulf.pantryAllowance = normalizePantryAllowance(player.gulf.pantryAllowance);
   return player.gulf;
 }
 export function updateGulf(room, now): boolean {
@@ -123,6 +126,8 @@ export function handleGulfAction(room, player, message, now = Date.now()) {
   const atHearth = near(MANY_HEARTHS, 9);
   const settlement = SETTLEMENTS.find((s) => near(s, 9));
   const action = message.action;
+  const pantry = handlePantryAction(room, player, message, now);
+  if (pantry) return pantry;
   if (action === 'gulfSurvey') {
     const stop = GULF_STOPS.find((s) => s.id === message.targetId);
     if (!stop || !near(stop, 8)) return fail('道の休み場の炉へ近づこう。');
