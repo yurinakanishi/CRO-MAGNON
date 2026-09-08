@@ -1,4 +1,5 @@
 import { isMesh } from './three-types.js';
+import { markActiveInstances, markActiveAttribute } from './instance-updates.js';
 import * as THREE from 'three';
 import { WORLD } from '../shared/world.mjs';
 import { BIOMES, biomeById, nearbyChunks } from '../shared/biomes.mjs';
@@ -231,9 +232,9 @@ export class OpenWorldTerrain {
     for (const levels of this.prepared.values())
       for (const parts of levels)
         for (const part of parts) {
-          part.mesh.instanceMatrix.needsUpdate = true;
+          markActiveInstances(part.mesh);
           if (part.geometry?.attributes.earthCoastal)
-            part.geometry.attributes.earthCoastal.needsUpdate = true;
+            markActiveAttribute(part.geometry.attributes.earthCoastal, part.mesh.count);
           // InstancedMesh caches this on its first raycast. Streaming changes both
           // the count and positions, so the next ground click needs fresh bounds.
           part.mesh.boundingSphere = null;

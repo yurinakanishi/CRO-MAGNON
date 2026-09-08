@@ -1,5 +1,6 @@
 import type { ViewState } from './view-state.js';
 import { isMesh } from './three-types.js';
+import { setText } from './dom-updates.js';
 import type { RegionalScenery } from './regional-scenery.js';
 import type { OpenWorldTerrain } from './open-world.js';
 import * as THREE from 'three';
@@ -399,7 +400,7 @@ export class WorldRenderer {
       element.append(sub);
     }
     this.labelLayer.append(element);
-    const label = { element, position, kind, active: true };
+    const label = { element, title, position, kind, active: true };
     this.labels.push(label);
     return label;
   }
@@ -826,17 +827,19 @@ export class WorldRenderer {
           (phase === 'meat' ? 0.8 : state.scale * animal.actor.asset.heightMetres + 0.35),
         animal.model.position.z,
       );
-      animal.label.element.querySelector('strong').textContent =
-        phase === 'meat' ? 'マンモスの肉' : 'マンモス';
-      animal.detail.textContent =
+      setText(animal.label.title, phase === 'meat' ? 'マンモスの肉' : 'マンモス');
+      setText(
+        animal.detail,
         phase === 'meat'
           ? `Eで採る · 残り${state.meatRemaining}個`
           : state.riderId
             ? '仲間が騎乗中'
-            : 'Rで乗る · Fで攻撃';
-      animal.health.hidden = phase !== 'alive';
-      animal.health.max = state.maxHealth ?? 100;
-      animal.health.value = state.health ?? 100;
+            : 'Rで乗る · Fで攻撃',
+      );
+      if (animal.health.hidden !== (phase !== 'alive')) animal.health.hidden = phase !== 'alive';
+      if (animal.health.max !== (state.maxHealth ?? 100))
+        animal.health.max = state.maxHealth ?? 100;
+      if (animal.health.value !== (state.health ?? 100)) animal.health.value = state.health ?? 100;
       if (phase === 'dying')
         animal.actor.sampleOnce(
           'Death',
@@ -1101,9 +1104,9 @@ export class WorldRenderer {
         model.position.y + (actor.asset.heightMetres ?? 1.85) * (state.scale ?? 1) + 0.3,
         model.position.z,
       );
-      enemy.label.element.querySelector('strong').textContent = state.name;
-      enemy.health.max = state.maxHealth;
-      enemy.health.value = state.health;
+      setText(enemy.label.title, state.name);
+      if (enemy.health.max !== state.maxHealth) enemy.health.max = state.maxHealth;
+      if (enemy.health.value !== state.health) enemy.health.value = state.health;
       const animation = enemyAnimationState(state, this.serverNow());
       if (animation && animation.elapsed !== null)
         actor.sampleOnce(animation.clip, animation.elapsed);
@@ -1228,6 +1231,10 @@ export class WorldRenderer {
       data.vegetationExamined = String(
         this.landscapes.reduce((sum, item) => sum + (item.examined ?? 0), 0),
       );
+      data.vegetationUpdates = String(this.landscapes.reduce((sum, item) => sum + item.updates, 0));
+      data.vegetationUploadBytes = String(
+        this.landscapes.reduce((sum, item) => sum + item.matrixUploadBytes, 0),
+      );
       data.geometries = String(info.memory.geometries);
       data.textures = String(info.memory.textures);
       data.glbPlayers = String([...this.players.values()].filter((entity) => entity.actor).length);
@@ -1275,7 +1282,7 @@ export class WorldRenderer {
           clamp((label.kind === 'resource' ? 18 : 65) - distance, 0, 10) / 10,
         );
       }
-      label.element.hidden = !visible;
+      if (label.element.hidden !== !visible) label.element.hidden = !visible;
     }
   }
 

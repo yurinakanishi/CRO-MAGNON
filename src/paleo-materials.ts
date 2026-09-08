@@ -1,4 +1,5 @@
 import { isMesh } from './three-types.js';
+import { markActiveInstances } from './instance-updates.js';
 import * as THREE from 'three';
 import { EARTH, coastTextureData, geographicWeights } from '../shared/paleo-geography.mjs';
 import { BIOMES } from '../shared/biomes.mjs';
@@ -194,7 +195,7 @@ export class EarthOcean {
     }
     for (const p of this.parts) {
       p.mesh.count = count;
-      p.mesh.instanceMatrix.needsUpdate = true;
+      markActiveInstances(p.mesh);
       p.mesh.boundingSphere = null;
     }
   }

@@ -101,7 +101,7 @@ test('a source without a middle LOD remains visible through the regional distanc
     matrix:new THREE.Matrix4(),composed:new THREE.Matrix4(),rotation:new THREE.Quaternion(),axis:new THREE.Vector3(0,1,0),
     sphere:new THREE.Sphere(),frustum:new THREE.Frustum(),projection:new THREE.Matrix4()});
   for(const [distance,expectedLevel] of [[27,0],[29,2],[49,2],[51,2]]){
-    placement.position.z=-distance;landscape.update(camera,distance);
+    camera.position.z=distance-35;camera.updateMatrixWorld(true);landscape.update(camera,distance);
     assert.equal(landscape.levels[expectedLevel][0].mesh.count,1,`source visible at ${distance} m`);
     assert.equal(landscape.levels[expectedLevel===0?2:0][0].mesh.count,0);
   }

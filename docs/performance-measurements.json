@@ -1,0 +1,135 @@
+{
+  "date": "2026-09-08",
+  "baselineCommit": "ff34e6ff3b5f1ac1c175a8a7b46d5881c5f4adfd",
+  "scope": "CPU placement microbenchmark and requested update bytes, excluding first GPU allocation; not GPU timing or whole-game speedup",
+  "benchmark": {
+    "current": [
+      {
+        "scenario": "stationary",
+        "ticks": 300,
+        "rounds": 7,
+        "milliseconds": 4.81880000000001,
+        "requestedBytes": 17600,
+        "updates": 3,
+        "examined": 5849
+      },
+      {
+        "scenario": "moving",
+        "ticks": 300,
+        "rounds": 7,
+        "milliseconds": 302.0403,
+        "requestedBytes": 7803776,
+        "updates": 900,
+        "examined": 1944909
+      }
+    ],
+    "baseline": [
+      {
+        "scenario": "stationary",
+        "ticks": 300,
+        "rounds": 7,
+        "milliseconds": 338.4204,
+        "requestedBytes": 899424000,
+        "updates": 900,
+        "examined": 1754700
+      },
+      {
+        "scenario": "moving",
+        "ticks": 300,
+        "rounds": 7,
+        "milliseconds": 445.60139999999956,
+        "requestedBytes": 899424000,
+        "updates": 900,
+        "examined": 1944909
+      }
+    ],
+    "equivalence": {
+      "views": 120,
+      "sameVisibleMatrices": true
+    }
+  },
+  "browser": {
+    "surface": "Codex in-app browser on Windows; one rendering client",
+    "canvas": {
+      "width": 1035,
+      "height": 618
+    },
+    "room": "PERF-QA",
+    "port": 3112,
+    "baseline": [
+      {
+        "fps": 60,
+        "simulationMs": 0.83,
+        "submissionMs": 1.72
+      },
+      {
+        "fps": 60,
+        "simulationMs": 0.94,
+        "submissionMs": 1.95
+      },
+      {
+        "fps": 60,
+        "simulationMs": 1.19,
+        "submissionMs": 2.09
+      }
+    ],
+    "after": [
+      {
+        "fps": 60,
+        "simulationMs": 0.58,
+        "submissionMs": 2.02,
+        "vegetationUpdates": 5,
+        "vegetationUploadBytes": 19904
+      },
+      {
+        "fps": 60,
+        "simulationMs": 0.59,
+        "submissionMs": 2.12,
+        "vegetationUpdates": 5,
+        "vegetationUploadBytes": 19904
+      }
+    ],
+    "cameraPosition": [
+      47.23,
+      2.44,
+      62.4
+    ],
+    "zoom": {
+      "fps": 60,
+      "vegetationUpdates": 45,
+      "vegetationUploadBytes": 177600,
+      "terrainChunks": 69
+    },
+    "walk": {
+      "position": [
+        49,
+        52.4
+      ],
+      "fps": 60,
+      "vegetationUpdates": 185
+    },
+    "snow": {
+      "position": [
+        490.67,
+        -63.29
+      ],
+      "fps": 60,
+      "simulationMs": 0.4,
+      "terrainChunks": 69,
+      "regionalBaseCopies": 0,
+      "attackSequence": 1
+    },
+    "returnToGrassland": {
+      "position": [49, 52.4],
+      "fps": 60,
+      "terrainChunks": 67,
+      "worldAsset": "ready"
+    },
+    "warnings": 0,
+    "errors": 0
+  },
+  "tests": {
+    "passed": 202,
+    "failed": 0
+  }
+}

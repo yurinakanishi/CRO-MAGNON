@@ -514,7 +514,11 @@ function updateHUD() {
   $('.location-title .eyebrow').textContent = 'CRO-MAGNON · OPEN WORLD';
   $('.location-meta span:first-child').textContent =
     `${region?.kind ?? biome.short} · ${Math.round(me?.x ?? 50)}, ${Math.round(me?.z ?? 50)}`;
-  $('.map-caption').innerHTML = `WORLD · ${biome.short} ${icon('expand')}`;
+  const caption = $('.map-caption');
+  if (caption.dataset.biome !== biome.id) {
+    caption.dataset.biome = biome.id;
+    caption.innerHTML = `WORLD · ${biome.short} ${icon('expand')}`;
+  }
   drawMinimap();
   updateModalHUD();
   adventureUI.update();

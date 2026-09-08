@@ -6,6 +6,8 @@ import { requireEnemyClips } from './enemy-state.js';
 import { PlacementGrid } from '../shared/spatial-grid.mjs';
 import { createSurfaceTemplate } from './biome-surfaces.js';
 import { sha256 } from './asset-hash.js';
+import { ViewUpdateGate } from './view-update-gate.js';
+import { markActiveInstances } from './instance-updates.js';
 
 function disposeTemplate(root) {
   const resources = new Set<THREE.BufferGeometry | THREE.Material | THREE.Texture>();
@@ -523,11 +525,13 @@ interface LandscapePlacement {
 }
 
 export class LandscapeInstances {
+  private viewUpdate = new ViewUpdateGate();
+  updates = 0;
+  matrixUploadBytes = 0;
   declare placements: any;
   declare distances: any;
   declare scene: any;
   declare levels: any[][];
-  declare nextUpdate: number;
   declare grid: PlacementGrid<LandscapePlacement>;
   declare generateCell: any;
   declare generated: Map<any, any>;
@@ -567,7 +571,6 @@ export class LandscapeInstances {
     this.distances = distances;
     this.scene = scene;
     this.levels = [];
-    this.nextUpdate = 0;
     this.grid = new PlacementGrid<LandscapePlacement>(placements);
     this.generateCell = generateCell;
     this.generated = new Map();
@@ -621,8 +624,8 @@ export class LandscapeInstances {
     this.projection = new THREE.Matrix4();
   }
   update(camera, time, riderFocus = null) {
-    if (time < this.nextUpdate) return;
-    this.nextUpdate = time + 0.18;
+    if (!(this.viewUpdate ??= new ViewUpdateGate()).shouldUpdate(camera, time, riderFocus)) return;
+    this.updates = (this.updates ?? 0) + 1;
     this.projection.multiplyMatrices(camera.projectionMatrix, camera.matrixWorldInverse);
     this.frustum.setFromProjectionMatrix(this.projection);
     const counts = [0, 0, 0];
@@ -688,7 +691,7 @@ export class LandscapeInstances {
     for (const [level, meshes] of this.levels.entries())
       for (const { mesh } of meshes) {
         mesh.count = counts[level];
-        mesh.instanceMatrix.needsUpdate = true;
+        this.matrixUploadBytes = (this.matrixUploadBytes ?? 0) + markActiveInstances(mesh);
       }
   }
   dispose() {
