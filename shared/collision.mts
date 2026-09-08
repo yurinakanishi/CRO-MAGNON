@@ -10,6 +10,7 @@ import { REGION_FEATURES } from './region-features.mjs';
 import { REGION_FEATURE_BOUNDS } from './region-feature-bounds.mjs';
 import { ADVENTURE_LANDMARKS } from './adventure-layout.mjs';
 import { GULF_LANDMARKS } from './gulf-region.mjs';
+import { COASTAL, MIDDEN_SITES, KNAPPING_SITES } from './coastal-sites.mjs';
 import { WORLD, worldClamp, INITIAL_RESOURCES, NPC } from './world.mjs';
 import { riverX, riverHalfWidth, terrainHeight } from './terrain.mjs';
 import { resourceAppearance } from './biome-scenery.mjs';
@@ -62,6 +63,19 @@ export function staticObstacles(): Obstacle[] {
   );
   // The shallow oasis spring is surrounded by a walkable bank.
   result.push({ id: 'oasis-spring', type: 'circle', x: -153, z: 416, radius: 5.5, height: 0 });
+  // Indexed at the largest footprint; each room activates the occupied mound's current size.
+  for (const s of MIDDEN_SITES)
+    result.push({
+      ...s,
+      middenId: s.id,
+      type: 'circle',
+      radius: COASTAL.middenRadius,
+      height: 0.45,
+      groundX: s.x,
+      groundZ: s.z,
+    });
+  for (const s of KNAPPING_SITES)
+    result.push(modelBox({ ...s, key: 'valley-boulder', scale: [0.3, 0.16, 0.3], yaw: 0 }));
   for (const resource of INITIAL_RESOURCES)
     if (resource.type !== 'berry')
       result.push(

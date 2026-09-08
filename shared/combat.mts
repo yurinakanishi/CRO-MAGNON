@@ -2,7 +2,7 @@ import { WORLD } from './world.mjs';
 import { attackProfile, ATTACK_PROFILES } from './combat-profiles.mjs';
 
 export const COMBAT = Object.freeze({
-  attackDamage: 25,
+  attackDamage: 15,
   attackCooldownMs: 850,
   attackDurationMs: 700,
   attackImpactMs: 333,
@@ -13,8 +13,7 @@ export const combatDistance = (a, b) => Math.hypot(a.x - b.x, a.z - b.z);
 export const withinSpearReach = (player, target) =>
   combatDistance(player, target) <=
   (player.radius ?? WORLD.playerRadius) + target.radius + COMBAT.spearReach;
-export const withinAttackReach = (player, target) => {
-  const profile = attackProfile(player);
+export const withinAttackReach = (player, target, profile = attackProfile(player)) => {
   return (
     combatDistance(player, target) <=
     target.radius +
@@ -64,10 +63,15 @@ export function damageableTargets(room) {
       target.radius >= 0,
   );
 }
-export function inAttackArc(player, target, facing = player.facing) {
+export function inAttackArc(
+  player,
+  target,
+  facing = player.facing,
+  profile = attackProfile(player),
+) {
   const angle = Math.atan2(target.x - player.x, target.z - player.z);
   const delta = Math.atan2(Math.sin(angle - facing), Math.cos(angle - facing));
-  return Math.abs(delta) <= attackProfile(player).halfAngle;
+  return Math.abs(delta) <= profile.halfAngle;
 }
 const sameReachableHeight = (room, a, b) =>
   Math.abs((room.collision.surfaceHeight?.(a) ?? 0) - (room.collision.surfaceHeight?.(b) ?? 0)) <=
@@ -98,7 +102,7 @@ export function startAttack(room, player, message: { targetId?: string } = {}, n
   player.pendingStrike = {
     facing: player.facing,
     impactAt: now + profile.impactMs,
-    kind: profile.key,
+    kind: profile.id,
   };
   player.energy = Math.max(0, player.energy - profile.energy);
   return { accepted: true, interruptedCooking };
@@ -133,8 +137,8 @@ export function resolveAttack(room, player, now = Date.now()) {
   const hit = damageableTargets(room)
     .filter(
       ({ target }) =>
-        withinAttackReach(player, target) &&
-        inAttackArc(player, target, strike.facing) &&
+        withinAttackReach(player, target, profile) &&
+        inAttackArc(player, target, strike.facing, profile) &&
         clearLine(room, player, target),
     )
     .sort((a, b) => combatDistance(player, a.target) - combatDistance(player, b.target))[0];

@@ -48,12 +48,12 @@ test('a restored application core preserves inventories, resources and hunting p
     tool: true,
     gathered: 7,
     energy: 63,
-    inventory: { wood: 12, stone: 9, berry: 4, rawMeat: 2, cookedMeat: 3, obsidian: 0, seed: 0, water: 0 },
+    inventory: { wood: 12, stone: 9, berry: 4, rawMeat: 2, cookedMeat: 3, obsidian: 0, seed: 0, water: 0, rawFish: 0, cookedFish: 0, rawShellfish: 0, cookedShellfish: 0, shells: 0, obsidianBlade: 0 },
   });
   Object.assign(players[1], {
     x: 207,
     z: -107,
-    inventory: { wood: 3, stone: 8, berry: 2, rawMeat: 1, cookedMeat: 4, obsidian: 0, seed: 0, water: 0 },
+    inventory: { wood: 3, stone: 8, berry: 2, rawMeat: 1, cookedMeat: 4, obsidian: 0, seed: 0, water: 0, rawFish: 0, cookedFish: 0, rawShellfish: 0, cookedShellfish: 0, shells: 0, obsidianBlade: 0 },
   });
   room.resources[0].amount = 1;
   room.camp.wood = 8;

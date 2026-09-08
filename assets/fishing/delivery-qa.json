@@ -1,0 +1,427 @@
+{
+  "status": "passed",
+  "at": "2026-09-08T08:11:03.482Z",
+  "models": 33,
+  "files": 48,
+  "newGLBs": 0,
+  "landmarkPlacements": 66,
+  "sceneryPlacements": 48,
+  "checks": [
+    "delivered GLB SHA-256",
+    "GLB headers and payload length",
+    "parsed meshes and clips",
+    "static assets have no rig",
+    "all new placements use accepted models"
+  ],
+  "delivery": [
+    {
+      "url": "/models/woolly-mammoth/model.glb",
+      "bytes": 4286096,
+      "sha256": "f3ebbe7d55268affc715052dbd3c98e68577cd34298aeeb74f0ade94004c2f2d",
+      "meshes": 1,
+      "animations": [
+        "Graze_Loop",
+        "Idle_Loop",
+        "Run_Loop",
+        "Walk_Loop",
+        "Death"
+      ]
+    },
+    {
+      "url": "/models/valley-pine/model.glb",
+      "bytes": 3544400,
+      "sha256": "068c0253b58a13e096cb39a5f825a80de5cb7d129ef9351726cd40ee126551c5",
+      "meshes": 1,
+      "animations": []
+    },
+    {
+      "url": "/models/valley-pine/lod1.glb",
+      "bytes": 1577712,
+      "sha256": "b971cfcc68caa553f5a5298fed4e42aa32015f916321851acff826bfead8761c",
+      "meshes": 1,
+      "animations": []
+    },
+    {
+      "url": "/models/meadow-grass/model.glb",
+      "bytes": 10436008,
+      "sha256": "23e834c851fc6cfd1e091edf11e9be093802f047ccb33a2af3b579e2dbb0bb48",
+      "meshes": 1,
+      "animations": []
+    },
+    {
+      "url": "/models/valley-boulder/model.glb",
+      "bytes": 2443928,
+      "sha256": "f46449aa51814b9037c8ed3c43179845e63c6f9b48b94e02c7979266cb09bb1d",
+      "meshes": 1,
+      "animations": []
+    },
+    {
+      "url": "/models/firewood-pile/model.glb",
+      "bytes": 2566200,
+      "sha256": "88fdbe0514694b4b484e285dc6ffa85c8cebe134ea120d34f7486dc27d3d3d3a",
+      "meshes": 1,
+      "animations": []
+    },
+    {
+      "url": "/models/berry-bush/model.glb",
+      "bytes": 9032376,
+      "sha256": "3d405ba99daa2d984810e9a2cf4418ad2008c0ee9279c0157fb68fc5a3008ee1",
+      "meshes": 1,
+      "animations": []
+    },
+    {
+      "url": "/models/berry-bush/lod1.glb",
+      "bytes": 6009448,
+      "sha256": "a5073cf0717125339f6baea01ac415a91b87db8fada01dada236863eda89e0c2",
+      "meshes": 1,
+      "animations": []
+    },
+    {
+      "url": "/models/hide-tent/model.glb",
+      "bytes": 3426740,
+      "sha256": "7c7aef410b4f8eee268cd32f75faa65f0b7ea3f2d8e4cf53b6d810e5a1e20de7",
+      "meshes": 1,
+      "animations": []
+    },
+    {
+      "url": "/models/drying-rack/model.glb",
+      "bytes": 3022452,
+      "sha256": "b106d53d89e9fa51ee38d3baa2c3a0b898fd39658f5718728ef12844b9f1d65d",
+      "meshes": 1,
+      "animations": []
+    },
+    {
+      "url": "/models/stone-firepit/model.glb",
+      "bytes": 4326524,
+      "sha256": "d47aa67f9987cacd61d523d53622e33ebf0778c9a03f9e68559ad3f6db20f65a",
+      "meshes": 1,
+      "animations": []
+    },
+    {
+      "url": "/models/flint-spear/model.glb",
+      "bytes": 2816964,
+      "sha256": "1a10db6d1b44da1e982f88e5ae9ef6be8fb74f5900ebd9258380ad200e53ed3d",
+      "meshes": 1,
+      "animations": []
+    },
+    {
+      "url": "/models/stone-axe/model.glb",
+      "bytes": 743996,
+      "sha256": "12dc3f23f8ec2acfb9fb6f770ab05f59c21584be00795f9b8cf272a2f6cf5ac0",
+      "meshes": 1,
+      "animations": []
+    },
+    {
+      "url": "/models/meadow-ground/model.glb",
+      "bytes": 2126388,
+      "sha256": "6c6b41bdec1631236027c567635623aa9cdd1e0d92c0ae9e89f77764b52995e1",
+      "meshes": 1,
+      "animations": []
+    },
+    {
+      "url": "/models/river-water/model.glb",
+      "bytes": 1905036,
+      "sha256": "8575faa5fd988da815d622ebbd03d49390339df5eeafd0eb794e1b0368ec0274",
+      "meshes": 1,
+      "animations": []
+    },
+    {
+      "url": "/models/wood-footbridge/model.glb",
+      "bytes": 1821888,
+      "sha256": "629a8ec5db3dd16b7a126b1c8ea4877a5ec0bc4037017e0a2a53ec2f63e3a369",
+      "meshes": 1,
+      "animations": []
+    },
+    {
+      "url": "/models/mammoth-meat/model.glb",
+      "bytes": 579220,
+      "sha256": "50bf72d1dc5ff23b7eb206e7d0c6535d9a4ac1559190e6c4f5bbb94cd0ffaf2d",
+      "meshes": 1,
+      "animations": []
+    },
+    {
+      "url": "/models/crow-shaman/model.glb",
+      "bytes": 8194344,
+      "sha256": "b0937988961c537fa4edb457c16baaa057d40b59e1393e4b493ec434684499a3",
+      "meshes": 1,
+      "animations": [
+        "Attack",
+        "Death",
+        "Hit",
+        "Idle_Loop",
+        "Run_Loop",
+        "Walk_Loop"
+      ]
+    },
+    {
+      "url": "/models/kunoichi-katana/model.glb",
+      "bytes": 2019308,
+      "sha256": "3e6e061fc02779d3516d114b53629fa0d5b585e815d4683ce74dd7d9c2822e0e",
+      "meshes": 1,
+      "animations": []
+    },
+    {
+      "url": "/models/snow-ground/model.glb",
+      "bytes": 3092188,
+      "sha256": "ddf7037c1cd52801d7c5f1a71492c496d7885f407372edb275e445ce0e009f44",
+      "meshes": 1,
+      "animations": []
+    },
+    {
+      "url": "/models/snow-ground/lod1.glb",
+      "bytes": 2907308,
+      "sha256": "e822a8dd99fb95c3589b161a5ac95a931a7bb04edff30d8571ea8973a34fb412",
+      "meshes": 1,
+      "animations": []
+    },
+    {
+      "url": "/models/snow-ground/lod2.glb",
+      "bytes": 2877800,
+      "sha256": "8173f329c3fef54d0cf60cbfc61b5e9326bec395d9a002d6c118eb8fcd70fad3",
+      "meshes": 1,
+      "animations": []
+    },
+    {
+      "url": "/models/ice-ground/model.glb",
+      "bytes": 2151736,
+      "sha256": "30eeb7ceea111e33576b497e8341f9f01bf232fc598c6bbefa79a9867df51cce",
+      "meshes": 1,
+      "animations": []
+    },
+    {
+      "url": "/models/ice-ground/lod1.glb",
+      "bytes": 2016248,
+      "sha256": "239f235f9df4e4ab55f41668b9dfd3b7eba920e06a7cc53db2a1740365228707",
+      "meshes": 1,
+      "animations": []
+    },
+    {
+      "url": "/models/ice-ground/lod2.glb",
+      "bytes": 1998100,
+      "sha256": "58932f8b217650af1a596c8de6863e373d6b76bf2671a81f282cbdb8fc74c5c4",
+      "meshes": 1,
+      "animations": []
+    },
+    {
+      "url": "/models/desert-ground/model.glb",
+      "bytes": 2082132,
+      "sha256": "fcf25dfc8bed6ce7ecfbdf445674e3c092f36d353462685cb5730ba3ef00005e",
+      "meshes": 1,
+      "animations": []
+    },
+    {
+      "url": "/models/desert-ground/lod1.glb",
+      "bytes": 1654188,
+      "sha256": "fb7f7b45c67bf8c1e62b0bf77a6ac52b57b8917aed3e1c6956461cd939e34882",
+      "meshes": 1,
+      "animations": []
+    },
+    {
+      "url": "/models/desert-ground/lod2.glb",
+      "bytes": 1542504,
+      "sha256": "733979092eeedff1984acdf3395576b616db477f580ec708bbfe0a27b7fe87df",
+      "meshes": 1,
+      "animations": []
+    },
+    {
+      "url": "/models/volcanic-ground/model.glb",
+      "bytes": 1506956,
+      "sha256": "2bca15ffc01cce6148f8569a60b3fbecd16ac0c7946014f7b48f267b5eaffb88",
+      "meshes": 1,
+      "animations": []
+    },
+    {
+      "url": "/models/volcanic-ground/lod1.glb",
+      "bytes": 1354216,
+      "sha256": "dd46d5d0bd30c0d98f8c4aff2fbb907d91585e1e11dda60a6f1ff08000c207f2",
+      "meshes": 1,
+      "animations": []
+    },
+    {
+      "url": "/models/volcanic-ground/lod2.glb",
+      "bytes": 1332664,
+      "sha256": "ff9d0530565596a465f6dbf8d17f4d2788e541df44d09e017ef8f499805ef2ac",
+      "meshes": 1,
+      "animations": []
+    },
+    {
+      "url": "/models/glacier-spires/model.glb",
+      "bytes": 2190204,
+      "sha256": "af945c2fec27252389a05ca2eabb6970003372a584a83cf18e2e6c34a42f6b53",
+      "meshes": 1,
+      "animations": []
+    },
+    {
+      "url": "/models/glacier-spires/lod1.glb",
+      "bytes": 1833232,
+      "sha256": "763d759cf19ed420903233d58051a2d9c619071a8c748f72fc29f6c525e4f1a2",
+      "meshes": 1,
+      "animations": []
+    },
+    {
+      "url": "/models/glacier-spires/lod2.glb",
+      "bytes": 1770552,
+      "sha256": "3a6fa1607b3a778910797750dedfe6e1dd285871c10bb25ee70ec2514dd07caf",
+      "meshes": 1,
+      "animations": []
+    },
+    {
+      "url": "/models/volcanic-cone/model.glb",
+      "bytes": 2081908,
+      "sha256": "868c062028af62fedf491ed7391602991dbc76b1ddbbd09494ee958a7898cd5b",
+      "meshes": 1,
+      "animations": []
+    },
+    {
+      "url": "/models/volcanic-basalt-columns/model.glb",
+      "bytes": 5454964,
+      "sha256": "a3cf5fa909494f4250e4cacd9bc9529b9780f9d7292fc1bfd6bf6235ae71c0fc",
+      "meshes": 1,
+      "animations": []
+    },
+    {
+      "url": "/models/volcanic-basalt-columns/lod1.glb",
+      "bytes": 3088636,
+      "sha256": "2a3e890af2b0bf31f71fba58db39eff122f6b60c06cf341c86c85f80db665dde",
+      "meshes": 1,
+      "animations": []
+    },
+    {
+      "url": "/models/desert-cactus/model.glb",
+      "bytes": 2122540,
+      "sha256": "df3e780323fd45808d92b2f7edcd2c7d9ee8000f1ea0c67b29baab73c939d7ed",
+      "meshes": 1,
+      "animations": []
+    },
+    {
+      "url": "/models/desert-cactus/lod1.glb",
+      "bytes": 1662216,
+      "sha256": "d04e3a4dcab15ab00753fe26bf84a062c40c09d5ae3083174148e3bb6d19ed2d",
+      "meshes": 1,
+      "animations": []
+    },
+    {
+      "url": "/models/desert-cactus/lod2.glb",
+      "bytes": 1424504,
+      "sha256": "1f1642cf62ce45665a5e326a0ef795a716a4397822c1fdc9ff0366e39fb13f8e",
+      "meshes": 1,
+      "animations": []
+    },
+    {
+      "url": "/models/valley-castle/model.glb",
+      "bytes": 8226968,
+      "sha256": "d2259f674fd9737f08bb9b0db7a44976f786803943f9213cd01184681274351e",
+      "meshes": 1,
+      "animations": []
+    },
+    {
+      "url": "/models/dugout-canoe/model.glb",
+      "bytes": 4732516,
+      "sha256": "6e77ae6df54f19a450d460b70ee35596e9703942d5d18bcdbf6b35f066e964e4",
+      "meshes": 1,
+      "animations": []
+    },
+    {
+      "url": "/models/cro-magnon-woman/model.glb",
+      "bytes": 13859220,
+      "sha256": "8690d5563233614397c7cfad6af0e0b3d89273a29fa59bf421372ec1168ef1b7",
+      "meshes": 1,
+      "animations": [
+        "Craft",
+        "Eat",
+        "Gather",
+        "Give",
+        "Idle_Loop",
+        "Run_Loop",
+        "Walk_Loop",
+        "Wave",
+        "Attack"
+      ]
+    },
+    {
+      "url": "/models/cro-magnon-hunter/model.glb",
+      "bytes": 10014340,
+      "sha256": "5a23c4abe7903466307bba7c2915276e0c431128771d7b7c612882ada89745eb",
+      "meshes": 1,
+      "animations": [
+        "Craft",
+        "Eat",
+        "Gather",
+        "Give",
+        "Idle_Loop",
+        "Run_Loop",
+        "Walk_Loop",
+        "Wave",
+        "Attack"
+      ]
+    },
+    {
+      "url": "/models/neanderthal-woman/model.glb",
+      "bytes": 13484804,
+      "sha256": "63ab98a62b2706e76b4cc551d2a0c8bd23363072258598b606d5129ad32a9ff9",
+      "meshes": 1,
+      "animations": [
+        "Craft",
+        "Eat",
+        "Gather",
+        "Give",
+        "Idle_Loop",
+        "Run_Loop",
+        "Walk_Loop",
+        "Wave",
+        "Attack"
+      ]
+    },
+    {
+      "url": "/models/neanderthal-hunter/model.glb",
+      "bytes": 10562780,
+      "sha256": "7ce4ff20eb1e2ca64df6b51d1c2060311e630394afdb38996eb7e34bbe5ca1e0",
+      "meshes": 1,
+      "animations": [
+        "Craft",
+        "Eat",
+        "Gather",
+        "Give",
+        "Idle_Loop",
+        "Run_Loop",
+        "Walk_Loop",
+        "Wave",
+        "Attack"
+      ]
+    },
+    {
+      "url": "/models/cat-kunoichi/model.glb",
+      "bytes": 7340180,
+      "sha256": "9ab72ce3d6e6a4a80b25bbb2de023c3a154b790cb1d1c5f1a4a7746d833f34aa",
+      "meshes": 1,
+      "animations": [
+        "Attack",
+        "Craft",
+        "Eat",
+        "Gather",
+        "Give",
+        "Idle_Loop",
+        "Run_Loop",
+        "Walk_Loop",
+        "Wave"
+      ]
+    },
+    {
+      "url": "/models/floppy-ear-mage/model.glb",
+      "bytes": 14125456,
+      "sha256": "60a247305f0b698654a9e61fd991470535128362e94be5d2b047be592e46e1ef",
+      "meshes": 1,
+      "animations": [
+        "Attack",
+        "Craft",
+        "Eat",
+        "Gather",
+        "Give",
+        "Idle_Loop",
+        "Run_Loop",
+        "Walk_Loop",
+        "Wave"
+      ]
+    }
+  ]
+}

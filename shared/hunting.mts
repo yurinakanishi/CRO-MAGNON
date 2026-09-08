@@ -1,3 +1,5 @@
+import { FISHING } from './fishing-sites.mjs';
+import { COASTAL } from './coastal-sites.mjs';
 import { CAMP } from './world.mjs';
 import {
   COMBAT,
@@ -71,7 +73,26 @@ const obstacles = (actors) =>
 // never damage, inventory, phase, position, or completion time.
 export function handleHuntingAction(room, player, message, now = Date.now()) {
   const { action, targetId } = message;
-  if (!['attack', 'harvest', 'cook', 'eatMeat', 'cancelCook'].includes(action)) return null;
+  if (
+    ![
+      'attack',
+      'harvest',
+      'cook',
+      'eatMeat',
+      'cookFish',
+      'eatFish',
+      'cookShellfish',
+      'eatShellfish',
+      'cancelCook',
+    ].includes(action)
+  )
+    return null;
+  const fish = action === 'cookFish' || action === 'eatFish';
+  const shellfish = action === 'cookShellfish' || action === 'eatShellfish';
+  const raw = shellfish ? 'rawShellfish' : fish ? 'rawFish' : 'rawMeat',
+    cooked = shellfish ? 'cookedShellfish' : fish ? 'cookedFish' : 'cookedMeat';
+  const label = shellfish ? '貝' : fish ? '魚' : '肉',
+    energy = shellfish ? COASTAL.shellEnergy : fish ? FISHING.energy : HUNTING.cookedMeatEnergy;
   if (action === 'attack') {
     const result = startAttack(room, player, message, now);
     const profile = attackProfile(player);
@@ -82,18 +103,18 @@ export function handleHuntingAction(room, player, message, now = Date.now()) {
       );
     return response(
       result.interruptedCooking
-        ? `調理を中止。${profile.startText}生肉は手元に残っています。`
+        ? `調理を中止。${profile.startText}食材は手元に残っています。`
         : profile.startText,
       'info',
       true,
     );
   }
   if (action === 'cancelCook') {
-    if (!player.cookingEndsAt) return response('今は肉を焼いていません。', 'info');
+    if (!player.cookingEndsAt) return response('今は調理していません。', 'info');
     player.cookingEndsAt = 0;
-    return response('調理を中止した。生肉は手元に残っています。', 'info', true);
+    return response('調理を中止した。食材は手元に残っています。', 'info', true);
   }
-  if (player.cookingEndsAt) return response('肉を焼いています。火から離れると中止します。', 'info');
+  if (player.cookingEndsAt) return response('調理中です。火から離れると中止します。', 'info');
   if (player.attackSequence && now - player.attackAt < attackProfile(player).durationMs)
     return response('攻撃が終わってから行おう。', 'info');
   if (action === 'harvest') {
@@ -120,26 +141,34 @@ export function handleHuntingAction(room, player, message, now = Date.now()) {
     }
     return response('生肉 +1。焚き火で焼くと食べられます。', 'success', true);
   }
-  if (action === 'cook') {
+  if (action === 'cook' || action === 'cookFish' || action === 'cookShellfish') {
     const fire = nearestCookingFire(room, player);
     if (huntingDistance(player, fire) > HUNTING.cookRange)
-      return response('焚き火に近づいて肉を焼こう。');
+      return response(`焚き火に近づいて${label}を焼こう。`);
     if (!interactionVisible(room.collision, player, fire))
       return response('火までの間がふさがれています。回り込もう。');
-    if (!player.inventory.rawMeat) return response('焼くための生肉を持っていません。');
-    if (player.inventory.cookedMeat >= HUNTING.inventoryLimit)
-      return response('焼いた肉の持ち物がいっぱいです。');
+    if (!player.inventory[raw]) return response(`焼くための生${label}を持っていません。`);
+    if ((player.inventory[cooked] ?? 0) >= HUNTING.inventoryLimit)
+      return response(`焼いた${label}の持ち物がいっぱいです。`);
     stopActor(player);
+    player.cookingKind = shellfish ? 'shellfish' : fish ? 'fish' : 'meat';
     player.cookingEndsAt = now + HUNTING.cookDurationMs;
-    return response('肉を焼いています。火のそばで3秒待とう。', 'info', true);
+    return response(`${label}を焼いています。火のそばで3秒待とう。`, 'info', true);
   }
-  if (!player.inventory.cookedMeat)
-    return response('焼いた肉を持っていません。生肉は焚き火で焼こう。');
+  if (!player.inventory[cooked])
+    return response(`焼いた${label}を持っていません。焚き火で焼こう。`);
   if (player.energy >= 100) return response('元気いっぱいです。', 'info');
-  player.inventory.cookedMeat -= 1;
-  const restored = Math.min(HUNTING.cookedMeatEnergy, 100 - player.energy);
+  if (shellfish && (player.inventory.shells ?? 0) >= HUNTING.inventoryLimit)
+    return response('貝殻の持ち物がいっぱいです。集落の貝塚へ殻を積んでから食べよう。');
+  player.inventory[cooked] -= 1;
+  if (shellfish) player.inventory.shells = (player.inventory.shells ?? 0) + 1;
+  const restored = Math.min(energy, 100 - player.energy);
   player.energy += restored;
-  return response(`焼いた肉を食べた。元気 +${restored}`, 'success', true);
+  return response(
+    `焼いた${label}を食べた。元気 +${restored}${shellfish ? '・貝殻 +1' : ''}`,
+    'success',
+    true,
+  );
 }
 
 export function updateHunting(
@@ -171,17 +200,40 @@ export function updateHunting(
     if (strike?.hit) reportHit(player, strike);
     if (strike && 'launched' in strike && strike.launched) changed = true;
     if (!player.cookingEndsAt) continue;
-    if (huntingDistance(player, nearestCookingFire(room, player)) > HUNTING.cookRange) {
+    const fire = nearestCookingFire(room, player);
+    if (
+      player.downedUntil ||
+      player.boatId ||
+      player.mountId ||
+      huntingDistance(player, fire) > HUNTING.cookRange ||
+      !interactionVisible(room.collision, player, fire)
+    ) {
       player.cookingEndsAt = 0;
       changed = true;
-      notify(player, '火から離れたので調理を中止した。生肉は手元に残っています。', 'info');
+      notify(
+        player,
+        '火から離れたか、火を使えなくなったので調理を中止した。食材は手元に残っています。',
+        'info',
+      );
     } else if (now >= player.cookingEndsAt) {
       player.cookingEndsAt = 0;
       changed = true;
-      if (player.inventory.rawMeat > 0 && player.inventory.cookedMeat < HUNTING.inventoryLimit) {
-        player.inventory.rawMeat -= 1;
-        player.inventory.cookedMeat += 1;
-        notify(player, '焼いた肉 +1。食べると元気が45回復します。', 'success');
+      const fish = player.cookingKind === 'fish';
+      const shellfish = player.cookingKind === 'shellfish';
+      const raw = shellfish ? 'rawShellfish' : fish ? 'rawFish' : 'rawMeat',
+        cooked = shellfish ? 'cookedShellfish' : fish ? 'cookedFish' : 'cookedMeat';
+      if (player.inventory[raw] > 0 && (player.inventory[cooked] ?? 0) < HUNTING.inventoryLimit) {
+        player.inventory[raw] -= 1;
+        player.inventory[cooked] = (player.inventory[cooked] ?? 0) + 1;
+        notify(
+          player,
+          shellfish
+            ? '焼いた貝 +1。食べると元気+20、残った殻は貝塚へ持ち帰ろう。'
+            : fish
+              ? '焼き魚 +1。食べると元気+30。宴へも持ち寄れます。'
+              : '焼いた肉 +1。食べると元気が45回復します。',
+          'success',
+        );
       } else notify(player, '調理を中止した。持ち物を確認してください。', 'error');
     }
   }

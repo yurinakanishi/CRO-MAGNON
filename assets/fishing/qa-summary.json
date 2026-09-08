@@ -1,0 +1,57 @@
+{
+  "date": "2026-09-08",
+  "scope": "Fishing added to the existing expanded Three Shores world",
+  "world": { "version": 4, "width": 8192, "depth": 4096, "gulfVersion": 2, "fishingGrounds": 7 },
+  "tests": {
+    "fullSuite": { "passed": 240, "failed": 0 },
+    "finalRelevantChecks": { "passed": 17, "failed": 0 },
+    "typeScript": "normal, Cloudflare and strict checks passed",
+    "architecture": "passed",
+    "javascriptSyntaxFiles": 122,
+    "prettier": "all source files passed",
+    "assetDelivery": { "models": 33, "glbs": 48, "newGLBs": 0, "checks": "SHA-256, structure and clips passed" }
+  },
+  "browser": {
+    "realChromeContexts": 2,
+    "webSocketPeers": 3,
+    "maxConnectedPlayers": 5,
+    "observations": 3106,
+    "staticOrCoastCollisionViolations": 0,
+    "consoleOrPageErrors": 0,
+    "flows": [
+      "Craft kit through inventory with actual recipe deduction",
+      "Use UI expedition, then walk from Many Hearths to fishing beach",
+      "Catch on shore, interrupt by movement, carry back, cook and donate",
+      "Build canoe, board, navigate about 306m to offshore ground, catch, return and disembark",
+      "Cook and eat fish for 30 energy",
+      "Catch with simulated standard gamepad input and reconnect during another cast",
+      "Preserve completed catches and kit; discard unfinished cast",
+      "390x844 and 844x390 layouts after fixing narrow buttons and inherited scroll position"
+    ],
+    "fixtures": "A received wood15/stone1 and energy45. B received wood3/stone1 and a safe beach position. No fish inventory, catch timers or stock replenishment were advanced.",
+    "measuredFPSRange": [27, 60],
+    "performanceNote": "Sparse samples with two rendering contexts and reloads; not a sustained performance guarantee.",
+    "record": "game-qa.json",
+    "finalBuildCheck": { "record": "final-build-qa.json", "observations": 476, "errors": 0, "collisionViolations": 0, "scope": "Real catch, work pose, hidden weapons and menu cancellation on final server/client code" }
+  },
+  "persistence": "Existing reconnect and explicit export/import only; no automatic Node disk persistence",
+  "localRollout": {
+    "url": "http://localhost:3000",
+    "previousPID": 49108,
+    "newPID": 40220,
+    "roomsBeforeRestart": 0,
+    "playersBeforeRestart": 0,
+    "oldCheckpointRestored": false,
+    "servedFilesMatchFinalBuild": 6,
+    "record": "rollout-qa.json"
+  },
+  "limits": [
+    "Physical controllers, physical phones and high-player-count performance are untested",
+    "Eight-way stock contention is a domain test, not a load test",
+    "No visible fish, fishing-line or tackle meshes; existing work animation and boat pose are used",
+    "Fishing locations, recipe, timers, replenishment and meal conversion are fictional",
+    "NPC household routines and simulated maritime weather remain future work",
+    "Public deployment and billing are unchanged",
+    "Historical asset provenance still has the previously missing neanderthal-hunter adoption-review file; no history was fabricated"
+  ]
+}

@@ -1,5 +1,6 @@
 import type { CharacterProfile } from './types.mjs';
 interface AttackProfile {
+  id: string;
   key: string;
   label: string;
   noun: string;
@@ -21,20 +22,37 @@ import { characterModel } from './characters.mjs';
 // normalized character, never from a weapon/damage field supplied by a client.
 export const ATTACK_PROFILES = Object.freeze({
   spear: Object.freeze({
+    id: 'spear',
     key: 'spear',
-    label: '槍で攻撃',
-    noun: '槍',
-    startText: '槍を突き出した。',
-    damage: 25,
+    label: '木槍で攻撃',
+    noun: '木槍',
+    startText: '木槍を突き出した。',
+    damage: 15,
     cooldownMs: 850,
     durationMs: 700,
     impactMs: 333,
     reach: 1.65,
     halfAngle: (55 * Math.PI) / 180,
     energy: 2,
-    modelKey: 'flint-spear',
+    modelKey: 'wooden-spear',
+  }),
+  obsidianSpear: Object.freeze({
+    id: 'obsidianSpear',
+    key: 'spear',
+    label: '黒曜石の槍で攻撃',
+    noun: '黒曜石の槍',
+    startText: '黒曜石の槍を突き出した。',
+    damage: 30,
+    cooldownMs: 850,
+    durationMs: 700,
+    impactMs: 333,
+    reach: 1.65,
+    halfAngle: (55 * Math.PI) / 180,
+    energy: 2,
+    modelKey: 'obsidian-spear',
   }),
   katana: Object.freeze({
+    id: 'katana',
     key: 'katana',
     label: '刀で斬る',
     noun: '刀',
@@ -49,6 +67,7 @@ export const ATTACK_PROFILES = Object.freeze({
     modelKey: 'kunoichi-katana',
   }),
   magic: Object.freeze({
+    id: 'magic',
     key: 'magic',
     label: '光の魔法',
     noun: '光弾',
@@ -66,5 +85,8 @@ export const ATTACK_PROFILES = Object.freeze({
 });
 
 export function attackProfile(character: CharacterProfile): Readonly<AttackProfile> {
-  return ATTACK_PROFILES[characterModel(character).weapon || 'spear'];
+  return ATTACK_PROFILES[
+    characterModel(character).weapon ||
+      (character.spearHead === 'obsidian' ? 'obsidianSpear' : 'spear')
+  ];
 }

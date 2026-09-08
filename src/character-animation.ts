@@ -18,10 +18,25 @@ export function confirmedAction(before, after) {
   if (!before || before.id !== after.id) return null;
   if ((after.attackSequence ?? 0) > (before.attackSequence ?? 0)) return 'Attack';
   if (after.cookingEndsAt && after.cookingEndsAt !== before.cookingEndsAt) return 'Craft';
+  if (
+    after.coastalActivity &&
+    after.coastalActivity.startedAt !== before.coastalActivity?.startedAt
+  )
+    return after.coastalActivity.kind === 'shells' ? 'Gather' : 'Craft';
+  if (after.spearHead === 'obsidian' && before.spearHead !== 'obsidian') return 'Craft';
   const a = before.inventory,
     b = after.inventory;
   if (!a || !b) return null;
   if (!before.tool && after.tool) return 'Craft';
+  if ((b.obsidianBlade ?? 0) > (a.obsidianBlade ?? 0)) return 'Craft';
+  if ((b.shells ?? 0) < (a.shells ?? 0)) return 'Give';
+  if (
+    ['cookedFish', 'cookedShellfish'].some((k) => (b[k] ?? 0) < (a[k] ?? 0)) &&
+    after.energy > before.energy
+  )
+    return 'Eat';
+  if (['rawFish', 'rawShellfish', 'obsidian'].some((k) => (b[k] ?? 0) > (a[k] ?? 0)))
+    return 'Gather';
   const wood = b.wood - a.wood,
     stone = b.stone - a.stone,
     berry = b.berry - a.berry;

@@ -55,7 +55,7 @@ export function installGulfUI(api) {
     signature = '';
   $('#adventure-button').insertAdjacentHTML(
     'afterend',
-    '<button id="gulf-button" class="adventure-launch gulf-launch"><span>◈ 三つの岸の湾</span><small id="gulf-status">国・畑・黒曜石</small></button>',
+    '<button id="gulf-button" class="adventure-launch gulf-launch"><span>◈ 三つの岸の湾</span><small id="gulf-status">国・畑・魚場</small></button>',
   );
   const close = () => document.querySelector<HTMLDialogElement>('#modal').close();
   const at = (point, range = 9) => distance(player(), point) <= range;
@@ -90,7 +90,7 @@ export function installGulfUI(api) {
     const me = player(),
       world = state(),
       country = COUNTRIES.find((c) => c.id === me?.gulf?.countryId);
-    $('#gulf-status').textContent = country?.name ?? '国・畑・黒曜石';
+    $('#gulf-status').textContent = country?.name ?? '国・畑・魚場';
     if (!$('#gulf-detail')) return;
     const settlement = SETTLEMENTS.find((s) => s.id === selected),
       spec = FARM_PLOTS.find((p) => p.id === plotId);
@@ -152,12 +152,12 @@ export function installGulfUI(api) {
       )
         .map(
           ([k, n]) =>
-            `<div><span>${{ wood: '木材', berry: 'ベリー', obsidian: '黒曜石' }[k]}</span><b>${world.gulf?.stores[k] ?? 0} / ${n}</b><progress max="${n}" value="${world.gulf?.stores[k] ?? 0}"></progress></div>`,
+            `<div><span>${{ wood: '木材', berry: '食料', obsidian: '黒曜石' }[k]}</span><b>${world.gulf?.stores[k] ?? 0} / ${n}</b><progress max="${n}" value="${world.gulf?.stores[k] ?? 0}"></progress></div>`,
         )
         .join(
           '',
         )}</div><div class="gulf-actions">${btn('gulf-offer-wood', '木材2を届ける', !nearHearth)}${btn('gulf-offer-berry', 'ベリー3を届ける', !nearHearth)}${btn('gulf-offer-obsidian', '黒曜石1を届ける', !nearHearth)}${btn('gulf-exchange', '黒曜石2 → 木材6・種2', !nearHearth)}${btn('gulf-feast', '宴を囲む', !nearHearth || (world.gulf?.festivals ?? 0) <= (me?.gulf?.lastFeast ?? 0))}</div><p>黒曜石は西の尾根の露頭で採集。木材は舟や道具へ、種は次の畑へ。</p>${btn('gulf-quarry', '黒曜石の露頭へ歩く', !local)}</section></div>
-      <section class="gulf-routes"><h4>湾を巡る道</h4><p>湾奥を回る陸路はいつでも使えます。浜で木材12から小舟を作り、Bで乗降。対岸への短い航路も使えます。</p><div class="gulf-actions">${LANDINGS.map((l) => btn(`go-${l.id}`, l.name, !local)).join('')}${btn('gulf-return', 'はじまりの谷へ遠征')}</div></section>`;
+      <section class="gulf-routes"><h4>湾を巡る道</h4><p>五つの浜と二つの沖の魚場で釣ろう。焼き魚1を食料3として宴に持ち寄れます。</p><button id="gulf-fishing" class="button button-outline">魚場と釣り方</button><p>湾奥を回る陸路はいつでも使えます。浜で木材12から小舟を作り、Bで乗降。対岸への短い航路も使えます。</p><div class="gulf-actions">${LANDINGS.map((l) => btn(`go-${l.id}`, l.name, !local)).join('')}${btn('gulf-return', 'はじまりの谷へ遠征')}</div></section>`;
     $('#gulf-detail').insertAdjacentHTML(
       'beforeend',
       `<section class="gulf-routes"><h4>六つの休み場を巡る <small>${me?.gulf?.waymarks?.length ?? 0}/${GULF_STOPS.length}</small></h4><p>湾は1,480 × 1,340 m。炉のそばでE／×を使い、道を記録しよう。各地で水と採集資源を補給できます。</p><div class="gulf-stop-list">${GULF_STOPS.map((s) => `<article class="gulf-card"><h4>${s.name}${me?.gulf?.waymarks?.includes(s.id) ? ' · 記録済み' : ''}</h4><p>${s.description}</p><div class="gulf-actions">${btn(`trail-go-${s.id}`, 'ここへ歩く', !local)}${btn(`trail-record-${s.id}`, '旅路を記録する', !at(s, 8) || me?.gulf?.waymarks?.includes(s.id))}</div></article>`).join('')}</div><p>すべて巡って集い場へ戻ると、次の旅の木材6・種4を一度受け取れます。</p>${btn('gulf-trail-reward', me?.gulf?.trailRewarded ? '旅路のお礼は受取済み' : '集い場で旅路を伝える', !nearHearth || !!me?.gulf?.trailRewarded || !GULF_STOPS.every((s) => me?.gulf?.waymarks?.includes(s.id)))}</section>`,
@@ -166,6 +166,14 @@ export function installGulfUI(api) {
       const node = $<HTMLButtonElement>('#' + id);
       if (node) node.onclick = fn;
     };
+    bind('gulf-fishing', () => action('fishingOpen'));
+    document
+      .querySelector('#gulf-fishing')
+      .insertAdjacentHTML(
+        'afterend',
+        '<button id="gulf-coastal" class="button button-outline">貝と石器の作り方</button>',
+      );
+    bind('gulf-coastal', () => action('coastalOpen'));
     bind('gulf-travel', () => {
       if (local) goTo(settlement.x, settlement.z + 5, settlement.name);
       else {

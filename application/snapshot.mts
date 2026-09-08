@@ -152,6 +152,10 @@ export function snapshot(
         attackSequence,
         attackAt,
         cookingEndsAt,
+        cookingKind,
+        fishing,
+        coastalActivity,
+        spearHead,
         hurtSequence,
         hurtAt,
         defeatSequence,
@@ -182,6 +186,19 @@ export function snapshot(
         attackSequence,
         attackAt,
         cookingEndsAt,
+        cookingKind,
+        fishing: fishing
+          ? { spotId: fishing.spotId, startedAt: fishing.startedAt, endsAt: fishing.endsAt }
+          : null,
+        coastalActivity: coastalActivity
+          ? {
+              kind: coastalActivity.kind,
+              siteId: coastalActivity.siteId,
+              startedAt: coastalActivity.startedAt,
+              endsAt: coastalActivity.endsAt,
+            }
+          : null,
+        spearHead: spearHead === 'obsidian' ? 'obsidian' : 'wood',
         hurtSequence,
         hurtAt,
         defeatSequence,

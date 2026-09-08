@@ -44,6 +44,10 @@ import {
 } from '../shared/paleo-geography.mjs';
 import { ADVENTURE_STOPS, regionAt } from '../shared/adventure-regions.mjs';
 import { installAdventureUI, adventureInteraction } from './adventure-ui.js';
+import { installFishingUI, fishingInteraction } from './fishing-ui.js';
+import { FISHING } from '../shared/fishing-sites.mjs';
+import { COASTAL } from '../shared/coastal-sites.mjs';
+import { installCoastalUI, coastalInteraction } from './coastal-ui.js';
 import { installGulfUI, gulfInteraction } from './gulf-ui.js';
 import { GULF_ENTRY, inGulf } from '../shared/gulf-region.mjs';
 import { ScreenManager, AreaBanner, guideMarkup, keyPrompts } from './screens.js';
@@ -54,6 +58,9 @@ const expeditionById = (id) =>
   ADVENTURE_STOPS.find((s) => s.id === id);
 
 const icons = {
+  shell:
+    '<path d="M12 3C5 3 2 8 3 13l5 7h8l5-7c1-5-2-10-9-10Z"/><path d="m8 20-3-9m7 9V7m4 13 3-9M9 20h6"/>',
+  blade: '<path d="m12 2 6 9-2 10H8L6 11l6-9Zm0 0v19m0-10 6 0m-6 4-5-4"/>',
   katana: '<path d="m4 21 4-4m-2-3 4 4M8 15C15 10 20 5 21 2c-4 1-9 6-13 11Z"/>',
   magic:
     '<path d="m12 2 2.5 7.5L22 12l-7.5 2.5L12 22l-2.5-7.5L2 12l7.5-2.5L12 2Z"/><path d="m20 3 1 1M3 20l1 1"/>',
@@ -275,6 +282,22 @@ const adventureUI = installAdventureUI({
   send,
   stopInput,
 });
+const fishingUI = installFishingUI({
+  player,
+  state: () => state,
+  available: () => joined && !renderUnavailable,
+  action,
+  goTo,
+  openModal,
+});
+const coastalUI = installCoastalUI({
+  player,
+  state: () => state,
+  available: () => joined && !renderUnavailable,
+  action,
+  goTo,
+  openModal,
+});
 const gulfUI = installGulfUI({
   player,
   state: () => state,
@@ -304,6 +327,11 @@ function send(message) {
   if (socket?.readyState === WebSocket.OPEN) socket.send(JSON.stringify(message));
 }
 function stopInput() {
+  // Also cancels a cast sent just before a menu/blur, before its snapshot arrives.
+  if (joined) {
+    send({ type: 'action', action: 'cancelFishing' });
+    send({ type: 'action', action: 'cancelCoastal' });
+  }
   gamepadControls?.suspend();
   rideApproach.cancel();
   for (const key of keys) blockedMovementKeys.add(key);
@@ -490,7 +518,12 @@ function distance(a, b) {
 }
 function nearby(): { action: string; label: string; targetId?: string } | null {
   const me = player();
-  if (!me || me.downedUntil || me.mountId || me.boatId) return null;
+  if (!me || me.downedUntil || me.mountId) return null;
+  const coastal = coastalInteraction(state, me, renderer.collision);
+  if (coastal) return coastal;
+  const fishing = fishingInteraction(me);
+  if (fishing) return fishing;
+  if (me.boatId) return null;
   const hunting = huntInteraction(state, me, renderer.collision);
   if (hunting) return hunting;
   const adventure = adventureInteraction(me, renderer.collision);
@@ -504,7 +537,10 @@ function nearby(): { action: string; label: string; targetId?: string } | null {
         ...r,
         action: 'gather',
         targetId: r.id,
-        label: `${{ wood: '木材', stone: '石', berry: 'ベリー', obsidian: '黒曜石' }[r.type]}を採集する`,
+        label:
+          r.type === 'obsidian'
+            ? '黒曜石を採掘する'
+            : `${{ wood: '木材', stone: '石', berry: 'ベリー' }[r.type]}を採集する`,
         range: 8,
       }));
   objects.push(
@@ -564,6 +600,8 @@ function updateHUD() {
   updateModalHUD();
   adventureUI.update();
   gulfUI.update();
+  fishingUI.update();
+  coastalUI.update();
   if ($('#modal').open && $('#big-map')) drawMinimap($('#big-map'), true);
 }
 function updateModalHUD() {
@@ -576,7 +614,9 @@ function updateModalHUD() {
     !!me.downedUntil ||
     !!me.mountId ||
     !!me.boatId ||
-    !!me.cookingEndsAt;
+    !!me.cookingEndsAt ||
+    !!me.fishing ||
+    !!me.coastalActivity;
   for (const count of document.querySelectorAll<HTMLElement>('[data-modal-count]'))
     count.textContent = String(inv[count.dataset.modalCount]);
   if ($('#modal-eat')) $('#modal-eat').disabled = unavailable || !inv.berry || me.energy >= 100;
@@ -584,6 +624,19 @@ function updateModalHUD() {
     $('#modal-cook').disabled = unavailable || !inv.rawMeat || inv.cookedMeat >= 99;
   if ($('#modal-eat-meat'))
     $('#modal-eat-meat').disabled = unavailable || !inv.cookedMeat || me.energy >= 100;
+  if ($('#modal-fishing-kit'))
+    $('#modal-fishing-kit').disabled =
+      unavailable || !!me?.gulf?.fishingKit || inv.wood < 3 || inv.stone < 1;
+  if ($('#modal-cook-fish'))
+    $('#modal-cook-fish').disabled = unavailable || !inv.rawFish || inv.cookedFish >= 99;
+  if ($('#modal-eat-fish'))
+    $('#modal-eat-fish').disabled = unavailable || !inv.cookedFish || me?.energy >= 100;
+  if ($('#modal-cook-shellfish'))
+    $('#modal-cook-shellfish').disabled =
+      unavailable || !inv.rawShellfish || inv.cookedShellfish >= 99;
+  if ($('#modal-eat-shellfish'))
+    $('#modal-eat-shellfish').disabled =
+      unavailable || !inv.cookedShellfish || inv.shells >= 99 || me?.energy >= 100;
   if ($('#modal-boat-craft')) $('#modal-boat-craft').disabled = unavailable || inv.wood < 12;
   if ($('#modal-craft')) {
     $('#modal-craft').disabled = unavailable || me.tool || inv.wood < 3 || inv.stone < 2;
@@ -615,7 +668,15 @@ function action(type, targetId?) {
   if (!joined) return notify('サーバーへの接続を待っています。', 'error');
   if (renderUnavailable) return;
   if (player()?.downedUntil) return;
-  if (player()?.boatId && type !== 'boardBoat')
+  if (type === 'fishingOpen') {
+    fishingUI.open();
+    return;
+  }
+  if (type === 'coastalOpen') {
+    coastalUI.open();
+    return;
+  }
+  if (player()?.boatId && !['boardBoat', 'fish', 'cancelFishing'].includes(type))
     return notify(`乗船中です。岸で ${usingGamepad ? '△' : 'B'} を押して降りてから行おう。`);
   if (player()?.mountId && type !== 'ride')
     return notify(`騎乗中です。攻撃・採集・食事は ${usingGamepad ? '△' : 'R'} で降りてから。`);
@@ -718,6 +779,8 @@ function updateHuntingHUD() {
     inv = inventoryCounts(me?.inventory),
     serverNow = (state.serverTime ?? Date.now()) + performance.now() - stateReceivedAt;
   const cooking = !!me?.cookingEndsAt && me.cookingEndsAt > serverNow;
+  const fishing = !!me?.fishing;
+  const coastal = me?.coastalActivity;
   if (
     joined &&
     !renderUnavailable &&
@@ -825,8 +888,8 @@ function updateHuntingHUD() {
   $('#attack-button').classList.toggle('in-range', targetInFront);
   const combat = attackProfile(me ?? profile),
     attackButton = $('#attack-button');
-  if (attackButton.dataset.style !== combat.key) {
-    attackButton.dataset.style = combat.key;
+  if (attackButton.dataset.style !== combat.id) {
+    attackButton.dataset.style = combat.id;
     attackButton.innerHTML = `${icon(combat.key)}<kbd>${usingGamepad ? '□ / R2' : 'F'}</kbd><span>${combat.label}</span>`;
   }
   attackButton.title = mounted
@@ -844,12 +907,43 @@ function updateHuntingHUD() {
     cooking ||
     !inv.cookedMeat ||
     me?.energy >= 100;
-  $('#cooking-status').hidden = !cooking;
-  if (cooking) {
-    const remaining = Math.max(0, me.cookingEndsAt - serverNow);
-    $('#cooking-label').textContent = `肉を焼いています · ${(remaining / 1000).toFixed(1)}秒`;
-    $('#cooking-progress').value = 1 - remaining / HUNTING.cookDurationMs;
+  $('#cooking-status').hidden = !cooking && !fishing && !coastal;
+  if (cooking || fishing || coastal) {
+    const remaining = Math.max(
+      0,
+      (coastal ? coastal.endsAt : fishing ? me.fishing.endsAt : me.cookingEndsAt) - serverNow,
+    );
+    const label = coastal
+      ? coastal.kind === 'shells'
+        ? '貝を探しています…'
+        : '黒曜石を削っています…'
+      : fishing
+        ? '魚を待っています'
+        : me.cookingKind === 'shellfish'
+          ? '貝を焼いています…'
+          : me.cookingKind === 'fish'
+            ? '魚を焼いています'
+            : '肉を焼いています';
+    $('#cooking-label').textContent = label + ' · ' + (remaining / 1000).toFixed(1) + '秒';
+    $('#cooking-progress').value =
+      1 -
+      remaining /
+        (coastal
+          ? coastal.kind === 'shells'
+            ? COASTAL.gatherMs
+            : COASTAL.knapMs
+          : fishing
+            ? FISHING.durationMs
+            : HUNTING.cookDurationMs);
+    $('#cooking-progress').setAttribute('aria-label', label + '進み具合');
   }
+  Object.assign($('#world').dataset, {
+    fishing: me?.fishing?.spotId ?? '',
+    coastal: coastal?.kind ?? '',
+    weapon: combat.id,
+    rawFish: String(inv.rawFish),
+    cookedFish: String(inv.cookedFish),
+  });
   $('#damage-flash').hidden = performance.now() > hurtUntil && !downed;
   $('#combat-status').hidden = !downed && !protectedNow && performance.now() > hurtUntil;
   $('#combat-status').classList.toggle('downed', downed);
@@ -1005,23 +1099,29 @@ function openInventory() {
   const me = player(),
     inv = inventoryCounts(me?.inventory);
   openModal(
-    `<h2>旅に持っていくもの。</h2><p class="modal-intro">狩りで得た生肉は、各地の焚き火で焼いてから食べよう。</p><div class="inventory-grid">${[
+    `<h2>旅に持っていくもの。</h2><p class="modal-intro">生肉・魚・貝は、各地の焚き火で焼いてから食べよう。黒曜石の原石は石器作業場で刃にできます。</p><div class="inventory-grid">${[
       ['wood', '木材', '採集して、道具や拠点に。'],
       ['stone', '石', '丈夫な道具と火の囲いに。'],
       ['berry', 'ベリー', '食べると元気が回復。'],
       ['rawMeat', '生肉', 'そのままでは食べられません。焚き火で3秒焼こう。'],
       ['cookedMeat', '焼き肉', '1個で元気を45回復します。'],
-      ['obsidian', '黒曜石', '湾の西の尾根で採集。集い場で交換や宴の準備に。'],
+      ['obsidian', '黒曜石', '湾の西の露頭で採掘。石器作業場で削って刃を作ろう。'],
       ['seed', '種', '共同の畑に植え、水をやって育てよう。'],
       ['water', '水袋', '湾の水場で6回分を補給。畑1区画に水1。'],
+      ['rawFish', '生魚', '湾の魚場で釣る。焚き火で3秒焼こう。'],
+      ['cookedFish', '焼き魚', '元気+30。集い場の食料にも持ち寄れます。'],
+      ['rawShellfish', '生の貝', '浜の貝場で採集。焚き火で3秒焼こう。'],
+      ['cookedShellfish', '焼いた貝', '元気+20。食べると貝殻1個が残ります。'],
+      ['shells', '貝殻', '集落へ持ち帰り、みんなで貝塚を築こう。'],
+      ['obsidianBlade', '黒曜石の刃', '原石2個から作る。刃1・木材1で木槍の先へ。'],
     ]
       .map(
         ([key, label, note]) =>
-          `<div class="inventory-card"><span class="resource-icon ${key}">${icon(key.endsWith('Meat') ? 'meat' : key)}</span><strong>${label}<b>${inv[key]}</b></strong><p>${note}</p>${key === 'berry' ? '<button id="modal-eat" class="button button-outline">食べる</button>' : key === 'rawMeat' ? `<button id="modal-cook" class="button button-outline" ${inv.rawMeat ? '' : 'disabled'}>焚き火で焼く</button>` : key === 'cookedMeat' ? `<button id="modal-eat-meat" class="button button-outline" ${inv.cookedMeat ? '' : 'disabled'}>焼き肉を食べる</button>` : ''}</div>`,
+          `<div class="inventory-card"><span class="resource-icon ${key}">${icon(key.endsWith('Meat') ? 'meat' : key.endsWith('Fish') ? 'wave' : key.toLowerCase().includes('shell') ? 'shell' : key === 'obsidianBlade' ? 'blade' : key === 'obsidian' ? 'stone' : key)}</span><strong>${label}<b>${inv[key]}</b></strong><p>${note}</p>${key === 'berry' ? '<button id="modal-eat" class="button button-outline">食べる</button>' : key === 'rawMeat' ? `<button id="modal-cook" class="button button-outline" ${inv.rawMeat ? '' : 'disabled'}>焚き火で焼く</button>` : key === 'cookedMeat' ? `<button id="modal-eat-meat" class="button button-outline" ${inv.cookedMeat ? '' : 'disabled'}>焼き肉を食べる</button>` : key === 'rawFish' ? '<button id="modal-cook-fish" class="button button-outline">焚き火で焼く</button>' : key === 'cookedFish' ? '<button id="modal-eat-fish" class="button button-outline">魚を食べる</button>' : ''}</div>`,
       )
       .join(
         '',
-      )}</div><div class="recipe"><span class="resource-icon stone">${icon('axe')}</span><div><strong>${me?.tool ? '石斧を装備中' : '石斧をつくる'}</strong><p>木材3 + 石2 ・ 採集量が増えます</p></div><button id="modal-craft" class="button button-accent" ${me?.tool ? 'disabled' : ''}>${me?.tool ? '装備中' : 'つくる'}</button></div><p class="form-note">${attackProfile(me ?? profile).label}は最初から使えます。相手を向いて F。敵がいない場所でも発動できます。</p>`,
+      )}</div><div class="recipe"><span class="resource-icon stone">${icon('axe')}</span><div><strong>${me?.tool ? '石斧を装備中' : '石斧をつくる'}</strong><p>木材3 + 石2 ・ 採集量が増えます</p></div><button id="modal-craft" class="button button-accent" ${me?.tool ? 'disabled' : ''}>${me?.tool ? '装備中' : 'つくる'}</button></div><p class="form-note">今の武器：${attackProfile(me ?? profile).noun}。人間系は木槍で出発し、黒曜石の刃で強化できます。相手を向いて F。</p>`,
   );
   $('#modal-eat').onclick = () => {
     action('eat');
@@ -1052,8 +1152,35 @@ function openInventory() {
           'obsidian',
           'seed',
           'water',
+          'rawFish',
+          'cookedFish',
+          'rawShellfish',
+          'cookedShellfish',
+          'shells',
+          'obsidianBlade',
         ][index]),
     );
+  $('#modal-cook-fish').onclick = () => {
+    $('#modal').close();
+    action('cookFish');
+  };
+  $('#modal-eat-fish').onclick = () => action('eatFish');
+  $('#modal-body').insertAdjacentHTML(
+    'beforeend',
+    '<div class="recipe"><div><strong>湾の釣り道具</strong><p>木材3・石1 · 繰り返し使えます</p></div><button id="modal-fishing-kit" class="button button-accent">道具を作る</button><button id="modal-fishing" class="button button-outline">魚場と釣り方</button></div>',
+  );
+  $('#modal-fishing-kit').onclick = () => action('craftFishingKit');
+  $('#modal-fishing').onclick = () => fishingUI.open();
+  $('#modal-body').insertAdjacentHTML(
+    'beforeend',
+    '<div class="recipe coastal-recipe"><div><strong>貝の食事と黒曜石の道具</strong><p>貝殻を持ち帰って貝塚へ。原石を削って木槍の先へ。</p></div><button id="modal-coastal" class="button button-outline">貝と石器の作り方</button><button id="modal-cook-shellfish" class="button button-outline">貝を焼く</button><button id="modal-eat-shellfish" class="button button-outline">焼いた貝を食べる</button></div>',
+  );
+  $('#modal-coastal').onclick = () => coastalUI.open();
+  $('#modal-cook-shellfish').onclick = () => {
+    $('#modal').close();
+    action('cookShellfish');
+  };
+  $('#modal-eat-shellfish').onclick = () => action('eatShellfish');
   $('.recipe strong').id = 'modal-axe-label';
   $('.recipe').insertAdjacentHTML(
     'afterend',
@@ -1150,6 +1277,8 @@ function openPauseMenu() {
     ['map', 'expand', '世界地図・遠征', openMap],
     ['journal', 'book', '探索手帳', openJournal],
     ['gulf', 'wave', '三つの国・共同の畑', () => gulfUI.open()],
+    ['fishing', 'wave', '魚場と釣り方', () => fishingUI.open()],
+    ['coastal', 'stone', '貝塚・黒曜石の道具', () => coastalUI.open()],
     ['tribe', 'people', '部族の仲間・招待', openTribe],
     ['help', 'help', 'あそびかた', openHelp],
     ['shore', 'arrow', '船を作れる海岸へ', () => $('#boat-shore').click()],
@@ -1335,7 +1464,14 @@ $('#attack-button').onclick = attack;
 $('#meat-inventory').onclick = openInventory;
 $('#cook-button').onclick = cook;
 $('#eat-meat-button').onclick = () => action('eatMeat');
-$('#cancel-cook').onclick = () => action('cancelCook');
+$('#cancel-cook').onclick = () =>
+  action(
+    player()?.coastalActivity
+      ? 'cancelCoastal'
+      : player()?.fishing
+        ? 'cancelFishing'
+        : 'cancelCook',
+  );
 $('#interaction-hint').setAttribute('role', 'button');
 $('#interaction-hint').tabIndex = 0;
 $('#interaction-hint').onclick = () => {

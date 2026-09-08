@@ -1,0 +1,24 @@
+{
+  "imagegen": true,
+  "promptRecord": "Summary of the generation request, not a verbatim prompt transcript.",
+  "summary": "One closed ribbed cockle, cream and brown shell, isolated three-quarter view on white, no extra objects.",
+  "referenceSha256": "b00df78d86e6d7d9f7b72a4540d9ff5e1c7d3dc2f79a0ef30ef0f01fc978086f",
+  "trellis": {
+    "executable": "../threed-model-creation/trellis-studio/runtime/trellis-cli.exe",
+    "models": "../threed-model-creation/trellis-studio/models",
+    "resolution": 1024,
+    "seed": 42,
+    "textureResolution": 512,
+    "atlas": 2048,
+    "webp": false,
+    "dumpBackground": true,
+    "requireGPU": true,
+    "actualDeviceFromLog": "NVIDIA GeForce RTX 3070 Laptop GPU, 8191 MiB",
+    "source": "source/reference-v1.png",
+    "output": "work/trellis/dense-1024.glb"
+  },
+  "denseSha256": "32c227435572a5185b268a9e76b273647c4658628406fde0414d531c6e6ddafa",
+  "static": true,
+  "rig": "Not required",
+  "proceduralVisibleReplacement": false
+}

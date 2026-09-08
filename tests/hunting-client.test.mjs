@@ -7,7 +7,7 @@ import { orientSpear } from '../dist/src/spear-pose.js';
 import { WorldAssets } from '../dist/src/world-assets.js';
 
 test('hunting controls normalize legacy inventory and prioritize harvest or cooking', () => {
-  assert.deepEqual(inventoryCounts({wood:2}), {wood:2,stone:0,berry:0,rawMeat:0,cookedMeat:0,obsidian:0,seed:0,water:0});
+  assert.deepEqual(inventoryCounts({wood:2}), {wood:2,stone:0,berry:0,rawMeat:0,cookedMeat:0,obsidian:0,seed:0,water:0,rawFish:0,cookedFish:0,rawShellfish:0,cookedShellfish:0,shells:0,obsidianBlade:0});
   const me={x:50,z:52,inventory:{rawMeat:1}},meat={id:'m',phase:'meat',x:50,z:52,meatRemaining:3},state={camp:{x:50,z:50},animals:[meat]};
   assert.deepEqual(huntInteraction(state,me), {action:'harvest',targetId:'m',label:'生肉を採る（残り3個）'});
   assert.equal(huntInteraction({...state,animals:[]},me).action,'cook');

@@ -1,0 +1,33 @@
+{
+  "modelKey": "cockle-shell",
+  "name": "浜の貝",
+  "kind": "static",
+  "candidate": 1,
+  "status": "reviewed-local",
+  "url": "/models/cockle-shell/model.glb",
+  "sha256": "7e4f448274b346dd8a3705901cccf0e7e4d49be2bc09b683cd85cdc740122a81",
+  "bytes": 10177512,
+  "triangles": 35645,
+  "upAxis": "Y",
+  "forwardAxis": "+Z",
+  "heightMetres": 0.118,
+  "widthMetres": 0.16,
+  "onDemand": true,
+  "environment": true,
+  "placement": {
+    "pivot": "ground-centred"
+  },
+  "clips": [],
+  "lods": [],
+  "provenance": {
+    "provider": "Codex",
+    "claudeUsed": false,
+    "referenceGenerator": "Built-in imagegen",
+    "referenceImage": "assets/coastal-craft/models/cockle-shell/source/reference-v1.png",
+    "reconstruction": "Local TRELLIS-2, resolution 1024, seed 42",
+    "candidateFile": "assets/coastal-craft/models/cockle-shell/work/revision-02/candidate.glb",
+    "visualReview": "assets/coastal-craft/models/cockle-shell/qa/adoption-review.json",
+    "referenceSha256": "b00df78d86e6d7d9f7b72a4540d9ff5e1c7d3dc2f79a0ef30ef0f01fc978086f",
+    "denseSha256": "32c227435572a5185b268a9e76b273647c4658628406fde0414d531c6e6ddafa"
+  }
+}

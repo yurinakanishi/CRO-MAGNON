@@ -9,6 +9,7 @@ export type ResourceKind = 'wood' | 'stone' | 'berry' | 'obsidian';
 export interface CharacterProfile {
   species?: unknown;
   gender?: unknown;
+  spearHead?: 'wood' | 'obsidian';
 }
 export interface CharacterModel {
   species: Species;
@@ -31,6 +32,12 @@ export interface Resource extends Point {
   appearanceBiome?: string;
 }
 export interface Inventory {
+  rawShellfish?: number;
+  cookedShellfish?: number;
+  shells?: number;
+  obsidianBlade?: number;
+  rawFish?: number;
+  cookedFish?: number;
   obsidian?: number;
   seed?: number;
   water?: number;
@@ -51,6 +58,7 @@ export interface SceneryPlacement extends Point {
 }
 export interface Obstacle extends Point {
   id?: string;
+  middenId?: string;
   resourceId?: string;
   type: string;
   radius?: number;

@@ -1,3 +1,5 @@
+import { FISHING_SITES } from '../shared/fishing-sites.mjs';
+import { BOATING } from '../shared/boats.mjs';
 import * as THREE from 'three';
 import { isMesh } from './three-types.js';
 import { FARM_PLOTS, SPRINGS, SETTLEMENTS, LANDINGS, GULF_STOPS } from '../shared/gulf-region.mjs';
@@ -25,13 +27,27 @@ export class GulfRenderer {
       world.scene.add(mesh);
       this.borders.push(mesh);
     });
-    for (const s of [...SETTLEMENTS, ...GULF_STOPS, ...SPRINGS, ...LANDINGS]) {
+    for (const s of [
+      ...SETTLEMENTS,
+      ...GULF_STOPS,
+      ...SPRINGS,
+      ...LANDINGS.map((l) => ({ ...l, name: l.name + '・魚場' })),
+    ]) {
       const label = world.createLabel(
         s.name,
         'gulf',
         new THREE.Vector3(s.x, walkHeight(s.x, s.z) + 2.3, s.z),
       );
       this.labels.push(label);
+    }
+    for (const site of FISHING_SITES.filter((s) => s.boatOnly)) {
+      this.labels.push(
+        world.createLabel(
+          site.name,
+          'gulf',
+          new THREE.Vector3(site.x, BOATING.waterY + 2.3, site.z),
+        ),
+      );
     }
     this.plotLabel = world.createLabel('共同の畑', 'resource', new THREE.Vector3());
     this.labels.push(this.plotLabel);

@@ -17,7 +17,7 @@ This is explicitly fictional geography, not a reconstruction of an Aegean coastl
 
 Each country has its own camp, twelve public growing plots, a water source, wild berries, wood and ordinary stone. All can support basic gathering, farming and tool/boat construction. Affiliation is chosen at a country's hearth and can be changed by visiting another. It is independent of character species and is shown beneath player names. Countries do not lock access, allocate exclusive professions or introduce mandatory PvP.
 
-The culture descriptions are invented lore. They do not imply that fishing, teaching AI, languages, diplomacy or historical political institutions have been simulated. The existing friendly-player combat rules support a peaceful gathering place; the lore's shared rules and dispute discussions are fictional social arrangements.
+The culture descriptions are invented lore. The [fishing increment](../fishing/README.md) adds actual fishing gameplay at five beaches and two offshore grounds. Teaching AI, languages, diplomacy and historical political institutions have not been simulated. The existing friendly-player combat rules support a peaceful gathering place; the lore's shared rules and dispute discussions are fictional social arrangements.
 
 ## Play loop
 
@@ -26,7 +26,7 @@ The culture descriptions are invented lore. They do not imply that fishing, teac
 3. Tend once, then wait for ripening: spring/autumn three minutes, summer two and a half, winter four. Harvest four berries and two seeds. Plots are public: another player can tend or harvest them. Harvest resolves once, and a full inventory leaves the crop available.
 4. At any of the four hearths, two berries can be separated into two seeds. Wild gathering remains available, so cultivation is not a prerequisite for survival.
 5. Walk to the western obsidian outcrops. Gather with **E** or the gathering action. Obsidian enters inventory and personal procurement progress; the stone axe also improves its gathering yield.
-6. Return to Many Hearths. Exchange two obsidian for six wood and two seeds, or prepare a shared gathering by donating eight wood, twelve berries and four obsidian in total. Donations are made in batches of two wood, three berries or one obsidian.
+6. Return to Many Hearths. Exchange two obsidian for six wood and two seeds, or prepare a shared gathering by donating eight wood, twelve food and four obsidian in total. Donations are made in batches of two wood, three berries or one obsidian. One cooked fish can replace three berries toward the food total.
 7. Completing the shared supplies opens a feast. Each character can claim the current feast once at the hearth: three berries, two seeds and up to 35 energy. The supply counters reset for the next gathering.
 8. Visit the six new stopping places and use **E / controller ×** near each hearth to record it. Return to Many Hearths after all six to receive **six wood and four seeds** once. The regional panel tracks the journey and provides walking destinations.
 
@@ -48,7 +48,7 @@ No new GLB was generated or adopted. Shelters, trees, rock outcrops, crops and w
 
 The earlier source-backed comparison and bibliography remain in [WORLD_SETTING_PLAN.md](../../WORLD_SETTING_PLAN.md). The implementation follows the user's later, broader fantasy direction. Archaeology informs the combination of regional mobility, gathering places, useful stone, varied subsistence and small watercraft. The three countries, their names and customs, agriculture, persistent Neanderthal communities, the added gulf and rapidly growing crops are deliberate fiction. They are not archaeological claims. The base Earth map's approximate 50,000 BP framing and the research plan's later Upper Paleolithic reference are not presented as a single historical reconstruction.
 
-Seasons currently change crop duration. Water sources remain available throughout the year. Weather, currents, sailing rigs, fishing mechanics, differentiated crop species, monumental towns and political simulation are not part of this initial expansion.
+Seasons currently change crop duration. Water sources remain available throughout the year. Fishing now uses shared stocks and timed catches as described in the fishing increment. Weather, currents, sailing rigs, differentiated crop species, monumental towns and political simulation remain outside the current implementation.
 
 ## State and verification
 

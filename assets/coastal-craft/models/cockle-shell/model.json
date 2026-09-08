@@ -1,0 +1,26 @@
+{
+  "key": "cockle-shell",
+  "name": "浜の貝",
+  "candidate": 1,
+  "adoptedRevision": "02",
+  "generation": "complete",
+  "adoption": "adopted",
+  "gameIntegration": "passed-local",
+  "candidateFile": "assets/coastal-craft/models/cockle-shell/work/revision-02/candidate.glb",
+  "sha256": "7e4f448274b346dd8a3705901cccf0e7e4d49be2bc09b683cd85cdc740122a81",
+  "triangles": 35645,
+  "bytes": 10177512,
+  "provenance": {
+    "provider": "Codex",
+    "claudeUsed": false,
+    "referenceGenerator": "Built-in imagegen",
+    "referenceImage": "assets/coastal-craft/models/cockle-shell/source/reference-v1.png",
+    "reconstruction": "Local TRELLIS-2, resolution 1024, seed 42",
+    "candidateFile": "assets/coastal-craft/models/cockle-shell/work/revision-02/candidate.glb",
+    "visualReview": "assets/coastal-craft/models/cockle-shell/qa/adoption-review.json",
+    "referenceSha256": "b00df78d86e6d7d9f7b72a4540d9ff5e1c7d3dc2f79a0ef30ef0f01fc978086f",
+    "denseSha256": "32c227435572a5185b268a9e76b273647c4658628406fde0414d531c6e6ddafa"
+  },
+  "gameQA": "assets/coastal-craft/game-qa/r01/report.json",
+  "appearanceQA": "assets/coastal-craft/appearance-qa/r02/report.json"
+}

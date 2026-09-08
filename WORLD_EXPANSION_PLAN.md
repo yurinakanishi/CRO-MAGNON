@@ -28,4 +28,6 @@ The earlier live session had expired before rollout; the first fresh checkpoint 
 
 ## Limits
 
-This expansion does not claim to finish every worldbuilding proposal. NPC household migration, fishing, complex politics, additional crop species and simulated maritime weather remain separate work. No new GLBs, public deployment or billing changes are part of this task.
+The subsequent user-requested addition is complete locally and tracked in [COASTAL_CRAFT_PLAN.md](COASTAL_CRAFT_PLAN.md): collect and eat shellfish, build shared shell middens, start the four human appearances with a bare wooden spear, and knap mined obsidian into a blade that can be mounted on the spear. Cat and mage retain their weapons. NPC life and country-specific activities remain on the broader roadmap.
+
+This expansion does not claim to finish every worldbuilding proposal. Fishing was subsequently completed, tracked in [FISHING_PLAN.md](FISHING_PLAN.md). NPC household migration, complex politics, additional crop species and simulated maritime weather remain separate work. The scale expansion itself added no GLBs; the later shellfish/tool increment adds five. No public deployment or billing changes were made.

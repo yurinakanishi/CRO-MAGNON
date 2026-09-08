@@ -1,3 +1,9 @@
+## 2026-09-08 貝・貝塚・木槍と黒曜石
+
+ユーザーの貝の採集・食事・貝塚と、木槍→黒曜石の刃→装着の指定を実装。貝 `cockle-shell` revision02、貝塚 `shell-midden` revision01はimagegen→ローカルTRELLIS-2 1024→形状を保つ軽量化と補修→exact GLBの7方向neutral/clay QA。ログ上の実GPUはRTX3070 Laptop 8 GB、重い処理は直列。木槍revision02、黒曜石の槍revision01、刃revision01は保持済みの石槍GLBからの派生で、旧石槍は変更しない。初回の貝のUV継ぎ目割れと木槍の裏面の隙間を修正し、不採用revisionを保持した。
+
+新規5GLB、全38モデル／53GLBのSHAを確認。人物4種の握りと攻撃・装備変更、猫耳と魔法使いの既存武器、5人接続、貝塚の段階表示と衝突、再読込・モバイル寸法を実Chromeで確認。制作資料は `assets/coastal-craft/models/`、検証は `assets/coastal-craft/README.md`。旧石槍の歴史的な原画像・denseなどの不在は記録し、捏造しない。新しい可視プリミティブ、読込フォールバック、静物の不要なリグはない。
+
 ## 2026-09-08 小さい魔法使いを指定画像から交換
 
 ダウンロードの `ChatGPT Image Sep 8, 2026, 12_13_47 AM.png` 左の大きな主役から、`floppy-ear-mage` Candidate 1を制作・採用。元画像→imagegenでAポーズへ整理→ローカルTRELLIS-2 1024→形を保った軽量化→22骨・9動作→exact GLB QAを完了した。垂れ耳、クリーム色の顔、赤と生成りの服、革のかばん・手袋・ブーツを保持。旧こぐまの制作物とGLBは履歴として保存し、可視プリミティブやフォールバックは追加しない。

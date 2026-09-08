@@ -1,0 +1,24 @@
+{
+  "imagegen": true,
+  "promptRecord": "Summary of the generation request, not a verbatim prompt transcript.",
+  "summary": "A low broad mound of empty overlapping cockle shell valves and dark earth, isolated on white; approximately 1.5 m wide and 0.3 m high as the visual target.",
+  "referenceSha256": "e7de83392920365a2260b3e720f240bceb33ffd88fd2d50b41fae44a7ad66b99",
+  "trellis": {
+    "executable": "../threed-model-creation/trellis-studio/runtime/trellis-cli.exe",
+    "models": "../threed-model-creation/trellis-studio/models",
+    "resolution": 1024,
+    "seed": 42,
+    "textureResolution": 512,
+    "atlas": 2048,
+    "webp": false,
+    "dumpBackground": true,
+    "requireGPU": true,
+    "actualDeviceFromLog": "NVIDIA GeForce RTX 3070 Laptop GPU, 8191 MiB",
+    "source": "source/reference-v1.png",
+    "output": "work/trellis/dense-1024.glb"
+  },
+  "denseSha256": "4c9f5954ff854dd3b130b62c93e6dfc754951d601a46c822706257b7e6c2007b",
+  "static": true,
+  "rig": "Not required",
+  "proceduralVisibleReplacement": false
+}

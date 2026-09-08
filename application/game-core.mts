@@ -1,3 +1,6 @@
+import { updateFishing, cancelFishing } from '../shared/fishing.mjs';
+import { updateCoastal, cancelCoastal } from '../shared/coastal-craft.mjs';
+import { activateMiddenObstacle } from '../shared/coastal-sites.mjs';
 import { ensureAdventure, updateAdventures } from '../shared/adventures.mjs';
 import { createGulfState, ensureGulfPlayer, updateGulf } from '../shared/gulf-life.mjs';
 import { migrateGulfRecord } from '../shared/gulf-migration.mjs';
@@ -123,7 +126,10 @@ export function createGameCore({
       }));
       room.resourceById = new Map(room.resources.map((r) => [r.id, r]));
       room.collision = new CollisionWorld(undefined, {
-        active: (o) => !o.resourceId || room.resourceById.get(o.resourceId).amount > 0,
+        active: (o) =>
+          o.middenId
+            ? activateMiddenObstacle(o, room.gulf)
+            : !o.resourceId || room.resourceById.get(o.resourceId).amount > 0,
       });
       initializeBoats(room);
       room.resourceObstacles = new Map(
@@ -230,6 +236,8 @@ export function createGameCore({
       releaseRider(room, player);
       player.pendingStrike = null;
       player.cookingEndsAt = 0;
+      cancelFishing(player);
+      cancelCoastal(player);
       room.projectiles = (room.projectiles || []).filter(
         (projectile) => projectile.ownerId !== player.id,
       );
@@ -297,6 +305,10 @@ export function createGameCore({
         return;
       }
       if (message.type === 'move' && Number.isFinite(message.dx) && Number.isFinite(message.dz)) {
+        if (Math.hypot(message.dx, message.dz) > 0.01) {
+          cancelFishing(player);
+          cancelCoastal(player);
+        }
         const dx = clamp(message.dx, -1, 1);
         const dz = clamp(message.dz, -1, 1);
         const length = Math.max(1, Math.hypot(dx, dz));
@@ -316,6 +328,8 @@ export function createGameCore({
         Number.isFinite(message.z) &&
         now - player.lastTarget >= 180
       ) {
+        cancelFishing(player);
+        cancelCoastal(player);
         player.lastTarget = now;
         controlled.runningRequested = message.running === true;
         const goal = { x: worldClamp(message.x, 'x'), z: worldClamp(message.z, 'z') };
@@ -356,6 +370,8 @@ export function createGameCore({
         controlled.dx = 0;
         controlled.dz = 0;
       } else if (message.type === 'expedition' && typeof message.destination === 'string') {
+        cancelFishing(player);
+        cancelCoastal(player);
         const result = takeExpedition(room, player, message.destination, now);
         notice(player, result.text, result.ok ? 'success' : 'info');
         if (result.ok) broadcast(room, snapshot(room, true));
@@ -364,10 +380,12 @@ export function createGameCore({
         typeof message.action === 'string' &&
         (message.action === 'attack' ||
           message.action === 'cancelCook' ||
+          message.action === 'cancelFishing' ||
+          message.action === 'cancelCoastal' ||
           message.action === 'rift' ||
           now - player.lastAction >= 450)
       ) {
-        player.lastAction = now;
+        if (!['cancelFishing', 'cancelCoastal'].includes(message.action)) player.lastAction = now;
         act(room, player, message, now);
       } else if (message.type === 'chat' && now - player.lastChat >= 600) {
         const chatText = cleanText(message.text, 180);
@@ -396,6 +414,8 @@ export function createGameCore({
       releaseRider(room, player);
       player.pendingStrike = null;
       player.cookingEndsAt = 0;
+      cancelFishing(player);
+      cancelCoastal(player);
       room.projectiles = (room.projectiles || []).filter(
         (projectile) => projectile.ownerId !== player.id,
       );
@@ -464,6 +484,8 @@ export function createGameCore({
       const enemiesChanged = updateEnemies(room, dt, now, notice);
       updateAdventures(room, now, notice);
       const gulfChanged = updateGulf(room, now);
+      const fishingChanged = updateFishing(room, now, notice);
+      const coastalChanged = updateCoastal(room, now, notice);
       let resourcesChanged = false;
       for (const resource of room.resources) {
         if (resource.amount < resource.maxAmount && now - resource.regeneratedAt >= 20000) {
@@ -483,8 +505,18 @@ export function createGameCore({
           resource.regeneratedAt = now;
         }
       }
-      if (now - room.lastBroadcast >= 90 || resourcesChanged || huntingChanged || enemiesChanged) {
-        broadcast(room, snapshot(room, resourcesChanged || gulfChanged));
+      if (
+        now - room.lastBroadcast >= 90 ||
+        resourcesChanged ||
+        huntingChanged ||
+        enemiesChanged ||
+        fishingChanged ||
+        coastalChanged
+      ) {
+        broadcast(
+          room,
+          snapshot(room, resourcesChanged || gulfChanged || fishingChanged || coastalChanged),
+        );
         room.lastBroadcast = now;
       }
     }
@@ -578,6 +610,9 @@ export function createGameCore({
           player.mountId = null;
           player.pendingStrike = null;
           player.cookingEndsAt = 0;
+          cancelFishing(player);
+          cancelCoastal(player);
+          ensureGulfPlayer(player);
           if (movedGulfPlayers.has(player) && !room.collision.free(player, player.radius ?? 0.32)) {
             const safe =
               room.collision.nearestFree(player, player.radius ?? 0.32, [], 80) ??

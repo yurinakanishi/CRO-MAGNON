@@ -1,0 +1,43 @@
+{
+  "at": "2026-09-08T09:25:27.957Z",
+  "existingGLBs": "retained unchanged",
+  "newReferenceReconstructions": 2,
+  "sourceDerivedEquipmentVariants": 3,
+  "adopted": [
+    {
+      "key": "cockle-shell",
+      "revision": "02",
+      "sha256": "7e4f448274b346dd8a3705901cccf0e7e4d49be2bc09b683cd85cdc740122a81",
+      "triangles": 35645,
+      "bytes": 10177512
+    },
+    {
+      "key": "shell-midden",
+      "revision": "01",
+      "sha256": "494844840a1ac461837e73874bf3858d5a5f73baf8655769b6cd590d048e07cd",
+      "triangles": 92239,
+      "bytes": 15209472
+    },
+    {
+      "key": "wooden-spear",
+      "revision": "02",
+      "sha256": "ac2b1a3c8100b38a7753749fd6578b5f355247478cf9f44ea642c06eb858ee5d",
+      "triangles": 2837,
+      "bytes": 1462776
+    },
+    {
+      "key": "obsidian-spear",
+      "revision": "01",
+      "sha256": "d89b680a1519081cb5725ae543ebf1ce7e81c1fdf7f844e060eb17b4f42ca7bc",
+      "triangles": 5679,
+      "bytes": 2816996
+    },
+    {
+      "key": "obsidian-blade",
+      "revision": "01",
+      "sha256": "3319075637b3714f836a59d9381fa23f0fb943ed8969a6c193f11e5152590f60",
+      "triangles": 1501,
+      "bytes": 2816960
+    }
+  ]
+}

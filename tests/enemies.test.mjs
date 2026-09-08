@@ -67,7 +67,7 @@ test('staff impacts recheck range and walls; hitting the crow interrupts its win
   room.collision = new CollisionWorld([], { river: false }); updateEnemies(room, 0, 5600);
   startAttack(room, player, { targetId: enemy.id }, 5650);
   const hit = resolveAttack(room, player, 5650 + COMBAT.attackImpactMs);
-  assert.equal(hit.target, enemy); assert.equal(enemy.health, 50); assert.equal(enemy.pendingAttack, null); assert.equal(enemy.hitSequence, 1);
+  assert.equal(hit.target, enemy); assert.equal(enemy.health, 75 - COMBAT.attackDamage); assert.equal(enemy.pendingAttack, null); assert.equal(enemy.hitSequence, 1);
   updateEnemies(room, 0, 5650 + COMBAT.attackImpactMs); assert.equal(enemy.clip, 'Hit');
   updateEnemies(room, 0, 6050); assert.equal(player.energy, 98); assert.equal(player.hurtSequence, 0);
 });
@@ -111,9 +111,9 @@ test('lethal staff damage pauses play then safely returns to camp, preserving ev
   assert.ok(room.collision.free(player, player.radius, [actorObstacle(enemy)]));
 });
 
-test('three spear hits kill the crow; death remains briefly solid, then safe respawn restores health without loot', () => {
+test('wooden spear hits kill the crow; death remains briefly solid, then safe respawn restores health without loot', () => {
   const { room, enemy, player } = fixture();
-  for (let i = 0; i < 3; i++) {
+  for (let i = 0; i < Math.ceil(75 / COMBAT.attackDamage); i++) {
     const now = 2000 + i * COMBAT.attackCooldownMs; startAttack(room, player, { targetId: enemy.id }, now); resolveAttack(room, player, now + COMBAT.attackImpactMs);
   }
   assert.equal(enemy.health, 0); assert.equal(enemy.phase, 'dead'); assert.equal(enemyIsSolid(enemy), true); assert.equal(enemy.meatRemaining, undefined);
@@ -125,6 +125,6 @@ test('three spear hits kill the crow; death remains briefly solid, then safe res
   updateEnemies(room, 0, respawnAt); assert.equal(enemy.phase, 'respawning');
   player.radius = .32; updateEnemies(room, 0, respawnAt + 1);
   assert.equal(enemy.phase, 'alive'); assert.equal(enemy.alive, true); assert.equal(enemy.health, 75);
-  assert.equal(enemy.hitSequence, 3); assert.ok(room.collision.free(enemy, enemy.radius, [actorObstacle(player)]));
+  assert.equal(enemy.hitSequence, Math.ceil(75 / COMBAT.attackDamage)); assert.ok(room.collision.free(enemy, enemy.radius, [actorObstacle(player)]));
   assert.equal(player.inventory.rawMeat, 2);
 });

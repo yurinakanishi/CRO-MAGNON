@@ -396,6 +396,56 @@
       "delivery": "/models/dugout-canoe/model.glb",
       "geometryResolution": 1024,
       "subject": "A wooden dugout canoe carved from a log with an open cockpit."
+    },
+    {
+      "key": "cockle-shell",
+      "name": "浜の貝",
+      "kind": "static",
+      "height": 0.118,
+      "status": "reviewed-local",
+      "sha256": "7e4f448274b346dd8a3705901cccf0e7e4d49be2bc09b683cd85cdc740122a81",
+      "delivery": "/models/cockle-shell/model.glb",
+      "modelWorkspace": "assets/coastal-craft/models/cockle-shell"
+    },
+    {
+      "key": "shell-midden",
+      "name": "貝塚",
+      "kind": "static",
+      "height": 0.392,
+      "status": "reviewed-local",
+      "sha256": "494844840a1ac461837e73874bf3858d5a5f73baf8655769b6cd590d048e07cd",
+      "delivery": "/models/shell-midden/model.glb",
+      "modelWorkspace": "assets/coastal-craft/models/shell-midden"
+    },
+    {
+      "key": "wooden-spear",
+      "name": "木槍",
+      "kind": "equipment",
+      "height": 1.613626,
+      "status": "reviewed-local",
+      "sha256": "ac2b1a3c8100b38a7753749fd6578b5f355247478cf9f44ea642c06eb858ee5d",
+      "delivery": "/models/wooden-spear/model.glb",
+      "modelWorkspace": "assets/coastal-craft/models/wooden-spear"
+    },
+    {
+      "key": "obsidian-spear",
+      "name": "黒曜石の槍",
+      "kind": "equipment",
+      "height": 2.099005,
+      "status": "reviewed-local",
+      "sha256": "d89b680a1519081cb5725ae543ebf1ce7e81c1fdf7f844e060eb17b4f42ca7bc",
+      "delivery": "/models/obsidian-spear/model.glb",
+      "modelWorkspace": "assets/coastal-craft/models/obsidian-spear"
+    },
+    {
+      "key": "obsidian-blade",
+      "name": "黒曜石の刃",
+      "kind": "static",
+      "height": 0.290929,
+      "status": "reviewed-local",
+      "sha256": "3319075637b3714f836a59d9381fa23f0fb943ed8969a6c193f11e5152590f60",
+      "delivery": "/models/obsidian-blade/model.glb",
+      "modelWorkspace": "assets/coastal-craft/models/obsidian-blade"
     }
   ],
   "reuse": {

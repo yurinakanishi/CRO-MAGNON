@@ -1,0 +1,16 @@
+{
+  "candidate": 1,
+  "adoptedRevision": "01",
+  "staticReview": "passed",
+  "gameIntegration": "passed-local",
+  "evidence": "revision-01/browser.json",
+  "observations": [
+    "Dense and simplified GLBs retain the low irregular mound, overlapping hollow valves, ribbed exteriors and soil fragments in matched neutral and clay views.",
+    "All mound geometry comes from the reference image and TRELLIS. Maximum measured horizontal radius is 0.7925 m; the gameplay footprint uses 0.86 m before stage scaling.",
+    "The pile contains irregular gaps between shell fragments; it is a static outdoor mound, not a watertight manufactured object."
+  ],
+  "decision": "adopt",
+  "sha256": "494844840a1ac461837e73874bf3858d5a5f73baf8655769b6cd590d048e07cd",
+  "gameQA": "assets/coastal-craft/game-qa/r01/report.json",
+  "appearanceQA": "assets/coastal-craft/appearance-qa/r02/report.json"
+}

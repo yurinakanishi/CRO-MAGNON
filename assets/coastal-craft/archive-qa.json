@@ -1,0 +1,1872 @@
+{
+  "at": "2026-09-08T09:57:48.9416111Z",
+  "models": [
+    "cockle-shell",
+    "shell-midden",
+    "wooden-spear",
+    "obsidian-spear",
+    "obsidian-blade"
+  ],
+  "status": "passed",
+  "deleted": 0,
+  "overwritten": 0,
+  "bytes": 659421513.0,
+  "copies": [
+    {
+      "source": "C:\\Users\\yurin\\Desktop\\projects\\CRO-MAGNON\\assets\\coastal-craft\\models\\cockle-shell\\model.json",
+      "destination": "C:\\Users\\yurin\\Desktop\\projects\\threed-model-creation\\models\\cockle-shell\\model.json",
+      "bytes": 1173,
+      "sha256": "495cbe44f44e21bb219d23b9c7e4c244af25f5d80cea3247ce42be00bddef0e8"
+    },
+    {
+      "source": "C:\\Users\\yurin\\Desktop\\projects\\CRO-MAGNON\\assets\\coastal-craft\\models\\cockle-shell\\README.md",
+      "destination": "C:\\Users\\yurin\\Desktop\\projects\\threed-model-creation\\models\\cockle-shell\\README.md",
+      "bytes": 591,
+      "sha256": "4d90cb570a5fbedf206deab0bc0b705e6a4fcc53f0f422797651ca7a17469f0e"
+    },
+    {
+      "source": "C:\\Users\\yurin\\Desktop\\projects\\CRO-MAGNON\\assets\\coastal-craft\\models\\cockle-shell\\geometry\\accepted.glb",
+      "destination": "C:\\Users\\yurin\\Desktop\\projects\\threed-model-creation\\models\\cockle-shell\\geometry\\accepted.glb",
+      "bytes": 10177512,
+      "sha256": "7e4f448274b346dd8a3705901cccf0e7e4d49be2bc09b683cd85cdc740122a81"
+    },
+    {
+      "source": "C:\\Users\\yurin\\Desktop\\projects\\CRO-MAGNON\\assets\\coastal-craft\\models\\cockle-shell\\qa\\adoption-review.json",
+      "destination": "C:\\Users\\yurin\\Desktop\\projects\\threed-model-creation\\models\\cockle-shell\\qa\\adoption-review.json",
+      "bytes": 860,
+      "sha256": "ce461256eb31209cff3c68800b428f61a6fbaa71464d481d82d547f36684d522"
+    },
+    {
+      "source": "C:\\Users\\yurin\\Desktop\\projects\\CRO-MAGNON\\assets\\coastal-craft\\models\\cockle-shell\\qa\\game-report.json",
+      "destination": "C:\\Users\\yurin\\Desktop\\projects\\threed-model-creation\\models\\cockle-shell\\qa\\game-report.json",
+      "bytes": 65924,
+      "sha256": "a83b33653fb8830030afcfc3a424daded2e304b95f73d1db2d47192301379a1a"
+    },
+    {
+      "source": "C:\\Users\\yurin\\Desktop\\projects\\CRO-MAGNON\\assets\\coastal-craft\\models\\cockle-shell\\qa\\revision-01-config.json",
+      "destination": "C:\\Users\\yurin\\Desktop\\projects\\threed-model-creation\\models\\cockle-shell\\qa\\revision-01-config.json",
+      "bytes": 347,
+      "sha256": "781d91a9ace8856fd2f542733fc8aa67f652de2581750a3bf268a64918ad4288"
+    },
+    {
+      "source": "C:\\Users\\yurin\\Desktop\\projects\\CRO-MAGNON\\assets\\coastal-craft\\models\\cockle-shell\\qa\\revision-02-config.json",
+      "destination": "C:\\Users\\yurin\\Desktop\\projects\\threed-model-creation\\models\\cockle-shell\\qa\\revision-02-config.json",
+      "bytes": 359,
+      "sha256": "11632065dab5b28bd3d06370d3f3ed7769b8cb1510bb151395487bc481dfb576"
+    },
+    {
+      "source": "C:\\Users\\yurin\\Desktop\\projects\\CRO-MAGNON\\assets\\coastal-craft\\models\\cockle-shell\\qa\\game-views\\01-ready.png",
+      "destination": "C:\\Users\\yurin\\Desktop\\projects\\threed-model-creation\\models\\cockle-shell\\qa\\game-views\\01-ready.png",
+      "bytes": 1205251,
+      "sha256": "62f9fa3d54a116d6e3426e2ce666c952727fcaabec791ad6dc8c889a071dd328"
+    },
+    {
+      "source": "C:\\Users\\yurin\\Desktop\\projects\\CRO-MAGNON\\assets\\coastal-craft\\models\\cockle-shell\\qa\\game-views\\02-gulf-arrival.png",
+      "destination": "C:\\Users\\yurin\\Desktop\\projects\\threed-model-creation\\models\\cockle-shell\\qa\\game-views\\02-gulf-arrival.png",
+      "bytes": 183542,
+      "sha256": "2f890b3414f35409b100f976f1dd17172ebe1f1a54a397b652e1218361b3707f"
+    },
+    {
+      "source": "C:\\Users\\yurin\\Desktop\\projects\\CRO-MAGNON\\assets\\coastal-craft\\models\\cockle-shell\\qa\\game-views\\03-shell-gather.png",
+      "destination": "C:\\Users\\yurin\\Desktop\\projects\\threed-model-creation\\models\\cockle-shell\\qa\\game-views\\03-shell-gather.png",
+      "bytes": 1009045,
+      "sha256": "e76ad40549d112f9322ca465bc588d6c7af72149c7aa9205ecd9b6032fbb300c"
+    },
+    {
+      "source": "C:\\Users\\yurin\\Desktop\\projects\\CRO-MAGNON\\assets\\coastal-craft\\models\\cockle-shell\\qa\\game-views\\04-shell-gather-active.png",
+      "destination": "C:\\Users\\yurin\\Desktop\\projects\\threed-model-creation\\models\\cockle-shell\\qa\\game-views\\04-shell-gather-active.png",
+      "bytes": 939955,
+      "sha256": "6e19d26e34684beec2d53efdab670f9c8023f74cd2644df06b91cdb0464f67b8"
+    },
+    {
+      "source": "C:\\Users\\yurin\\Desktop\\projects\\CRO-MAGNON\\assets\\coastal-craft\\models\\cockle-shell\\qa\\game-views\\05-shell-cook.png",
+      "destination": "C:\\Users\\yurin\\Desktop\\projects\\threed-model-creation\\models\\cockle-shell\\qa\\game-views\\05-shell-cook.png",
+      "bytes": 808924,
+      "sha256": "fd30faa1bb19abc8a01e6354f0671ca4655cf4bb8b3748737bcbd3e09e188cdf"
+    },
+    {
+      "source": "C:\\Users\\yurin\\Desktop\\projects\\CRO-MAGNON\\assets\\coastal-craft\\models\\cockle-shell\\qa\\game-views\\06-first-midden.png",
+      "destination": "C:\\Users\\yurin\\Desktop\\projects\\threed-model-creation\\models\\cockle-shell\\qa\\game-views\\06-first-midden.png",
+      "bytes": 933582,
+      "sha256": "6fe06e9a27f72dc34caad9485cd56e809e4dd5185e22240fecfd541e54058403"
+    },
+    {
+      "source": "C:\\Users\\yurin\\Desktop\\projects\\CRO-MAGNON\\assets\\coastal-craft\\models\\cockle-shell\\qa\\game-views\\07-midden-stage2.png",
+      "destination": "C:\\Users\\yurin\\Desktop\\projects\\threed-model-creation\\models\\cockle-shell\\qa\\game-views\\07-midden-stage2.png",
+      "bytes": 959703,
+      "sha256": "e74dcb5162ae80222a27c66f18044296d128ebca65e555d1a81acfd375437980"
+    },
+    {
+      "source": "C:\\Users\\yurin\\Desktop\\projects\\CRO-MAGNON\\assets\\coastal-craft\\models\\cockle-shell\\qa\\game-views\\08-midden-stage3.png",
+      "destination": "C:\\Users\\yurin\\Desktop\\projects\\threed-model-creation\\models\\cockle-shell\\qa\\game-views\\08-midden-stage3.png",
+      "bytes": 968798,
+      "sha256": "4cce40e3f5c760939c51d4440d2af67e053e723e2e4eb3582e7ede444ccd5113"
+    },
+    {
+      "source": "C:\\Users\\yurin\\Desktop\\projects\\CRO-MAGNON\\assets\\coastal-craft\\models\\cockle-shell\\qa\\game-views\\09-midden-observer.png",
+      "destination": "C:\\Users\\yurin\\Desktop\\projects\\threed-model-creation\\models\\cockle-shell\\qa\\game-views\\09-midden-observer.png",
+      "bytes": 988076,
+      "sha256": "ae984804a2a24f90fa7dd4de2fa26ed570a4668e6664f26f52a3ae468d187df3"
+    },
+    {
+      "source": "C:\\Users\\yurin\\Desktop\\projects\\CRO-MAGNON\\assets\\coastal-craft\\models\\cockle-shell\\qa\\game-views\\10-obsidian-mining.png",
+      "destination": "C:\\Users\\yurin\\Desktop\\projects\\threed-model-creation\\models\\cockle-shell\\qa\\game-views\\10-obsidian-mining.png",
+      "bytes": 977682,
+      "sha256": "2c353b07d8b47d78218373277d13cbed6b628e4958d204e9b1712b05cb9ece3a"
+    },
+    {
+      "source": "C:\\Users\\yurin\\Desktop\\projects\\CRO-MAGNON\\assets\\coastal-craft\\models\\cockle-shell\\qa\\game-views\\11-knapping-active.png",
+      "destination": "C:\\Users\\yurin\\Desktop\\projects\\threed-model-creation\\models\\cockle-shell\\qa\\game-views\\11-knapping-active.png",
+      "bytes": 891276,
+      "sha256": "c9706313ae446f7454f502a374f540c290d62304ce3dd2eea6274499531352f3"
+    },
+    {
+      "source": "C:\\Users\\yurin\\Desktop\\projects\\CRO-MAGNON\\assets\\coastal-craft\\models\\cockle-shell\\qa\\game-views\\12-hafted-recipe.png",
+      "destination": "C:\\Users\\yurin\\Desktop\\projects\\threed-model-creation\\models\\cockle-shell\\qa\\game-views\\12-hafted-recipe.png",
+      "bytes": 249852,
+      "sha256": "5ea08c8348aecc46e61be52335958c115c55998234dd8da08a9c2e96918fd9bb"
+    },
+    {
+      "source": "C:\\Users\\yurin\\Desktop\\projects\\CRO-MAGNON\\assets\\coastal-craft\\models\\cockle-shell\\qa\\game-views\\13-obsidian-spear.png",
+      "destination": "C:\\Users\\yurin\\Desktop\\projects\\threed-model-creation\\models\\cockle-shell\\qa\\game-views\\13-obsidian-spear.png",
+      "bytes": 914679,
+      "sha256": "f8df3f1cceaa87c62b7c6adc8e184ec5ddca2fcfecab942ba6b0778ae308eccb"
+    },
+    {
+      "source": "C:\\Users\\yurin\\Desktop\\projects\\CRO-MAGNON\\assets\\coastal-craft\\models\\cockle-shell\\qa\\game-views\\14-mobile-portrait.png",
+      "destination": "C:\\Users\\yurin\\Desktop\\projects\\threed-model-creation\\models\\cockle-shell\\qa\\game-views\\14-mobile-portrait.png",
+      "bytes": 95331,
+      "sha256": "49cbdd36bb5a5447aa78b1f4f38e700a0056682ad5d6297678a832f2e3f18629"
+    },
+    {
+      "source": "C:\\Users\\yurin\\Desktop\\projects\\CRO-MAGNON\\assets\\coastal-craft\\models\\cockle-shell\\qa\\game-views\\15-mobile-landscape.png",
+      "destination": "C:\\Users\\yurin\\Desktop\\projects\\threed-model-creation\\models\\cockle-shell\\qa\\game-views\\15-mobile-landscape.png",
+      "bytes": 50537,
+      "sha256": "9182d746d8a248831b954e3e99a34debde560ff183752df07ab817659e2cfa9a"
+    },
+    {
+      "source": "C:\\Users\\yurin\\Desktop\\projects\\CRO-MAGNON\\assets\\coastal-craft\\models\\cockle-shell\\qa\\game-views\\16-obsidian-after-reload.png",
+      "destination": "C:\\Users\\yurin\\Desktop\\projects\\threed-model-creation\\models\\cockle-shell\\qa\\game-views\\16-obsidian-after-reload.png",
+      "bytes": 792568,
+      "sha256": "f817ec0b4caf24177b67cd9f77f583c3068fd57fa98854e2af298aae5ad371eb"
+    },
+    {
+      "source": "C:\\Users\\yurin\\Desktop\\projects\\CRO-MAGNON\\assets\\coastal-craft\\models\\cockle-shell\\qa\\game-views\\report.json",
+      "destination": "C:\\Users\\yurin\\Desktop\\projects\\threed-model-creation\\models\\cockle-shell\\qa\\game-views\\report.json",
+      "bytes": 65924,
+      "sha256": "a83b33653fb8830030afcfc3a424daded2e304b95f73d1db2d47192301379a1a"
+    },
+    {
+      "source": "C:\\Users\\yurin\\Desktop\\projects\\CRO-MAGNON\\assets\\coastal-craft\\models\\cockle-shell\\qa\\revision-01\\bottom-clay.png",
+      "destination": "C:\\Users\\yurin\\Desktop\\projects\\threed-model-creation\\models\\cockle-shell\\qa\\revision-01\\bottom-clay.png",
+      "bytes": 238645,
+      "sha256": "24a92e410847d77fee1b614bd1ca984d4be4dc30523772ca30ad0e88cc53969b"
+    },
+    {
+      "source": "C:\\Users\\yurin\\Desktop\\projects\\CRO-MAGNON\\assets\\coastal-craft\\models\\cockle-shell\\qa\\revision-01\\bottom.png",
+      "destination": "C:\\Users\\yurin\\Desktop\\projects\\threed-model-creation\\models\\cockle-shell\\qa\\revision-01\\bottom.png",
+      "bytes": 402426,
+      "sha256": "3f9d6623088eaa9d80697b55e3e65a092c5e7ae7bd8c81f7f9318a323fea2159"
+    },
+    {
+      "source": "C:\\Users\\yurin\\Desktop\\projects\\CRO-MAGNON\\assets\\coastal-craft\\models\\cockle-shell\\qa\\revision-01\\browser.json",
+      "destination": "C:\\Users\\yurin\\Desktop\\projects\\threed-model-creation\\models\\cockle-shell\\qa\\revision-01\\browser.json",
+      "bytes": 1466,
+      "sha256": "f60471dd0e1d0b5ccb5640282d5ec257dc8c51532822c0fbc4feec7d5c9896c4"
+    },
+    {
+      "source": "C:\\Users\\yurin\\Desktop\\projects\\CRO-MAGNON\\assets\\coastal-craft\\models\\cockle-shell\\qa\\revision-01\\front-clay.png",
+      "destination": "C:\\Users\\yurin\\Desktop\\projects\\threed-model-creation\\models\\cockle-shell\\qa\\revision-01\\front-clay.png",
+      "bytes": 203899,
+      "sha256": "220cf88e29ee764d433e3fb24fd89c7e26cffb29e4743a9ef63890f90739dfb0"
+    },
+    {
+      "source": "C:\\Users\\yurin\\Desktop\\projects\\CRO-MAGNON\\assets\\coastal-craft\\models\\cockle-shell\\qa\\revision-01\\front.png",
+      "destination": "C:\\Users\\yurin\\Desktop\\projects\\threed-model-creation\\models\\cockle-shell\\qa\\revision-01\\front.png",
+      "bytes": 342590,
+      "sha256": "abc4d58bb879f78dcc0f3328054b6eeee7d9759ad38803c55c7fb5c23527089e"
+    },
+    {
+      "source": "C:\\Users\\yurin\\Desktop\\projects\\CRO-MAGNON\\assets\\coastal-craft\\models\\cockle-shell\\qa\\revision-01\\left-clay.png",
+      "destination": "C:\\Users\\yurin\\Desktop\\projects\\threed-model-creation\\models\\cockle-shell\\qa\\revision-01\\left-clay.png",
+      "bytes": 222009,
+      "sha256": "ea5fb35dea53136a70697e2f90c2884beb0a969c44b73ce67e9fa65309335e33"
+    },
+    {
+      "source": "C:\\Users\\yurin\\Desktop\\projects\\CRO-MAGNON\\assets\\coastal-craft\\models\\cockle-shell\\qa\\revision-01\\left.png",
+      "destination": "C:\\Users\\yurin\\Desktop\\projects\\threed-model-creation\\models\\cockle-shell\\qa\\revision-01\\left.png",
+      "bytes": 342917,
+      "sha256": "141c50fac2b919b11756eeb5e2098a5fc5cda06109d3ce643b9ee51a1477ff21"
+    },
+    {
+      "source": "C:\\Users\\yurin\\Desktop\\projects\\CRO-MAGNON\\assets\\coastal-craft\\models\\cockle-shell\\qa\\revision-01\\quarter-clay.png",
+      "destination": "C:\\Users\\yurin\\Desktop\\projects\\threed-model-creation\\models\\cockle-shell\\qa\\revision-01\\quarter-clay.png",
+      "bytes": 224529,
+      "sha256": "b5a7e7b80a729d24d2d73fef8b6be7046b4638172b86f20b6680fea52d6cb4ea"
+    },
+    {
+      "source": "C:\\Users\\yurin\\Desktop\\projects\\CRO-MAGNON\\assets\\coastal-craft\\models\\cockle-shell\\qa\\revision-01\\quarter.png",
+      "destination": "C:\\Users\\yurin\\Desktop\\projects\\threed-model-creation\\models\\cockle-shell\\qa\\revision-01\\quarter.png",
+      "bytes": 383119,
+      "sha256": "a80078712844f950028c32c4bb9c6056efc5a5fc05f837b2959560e11a4f8301"
+    },
+    {
+      "source": "C:\\Users\\yurin\\Desktop\\projects\\CRO-MAGNON\\assets\\coastal-craft\\models\\cockle-shell\\qa\\revision-01\\rear-clay.png",
+      "destination": "C:\\Users\\yurin\\Desktop\\projects\\threed-model-creation\\models\\cockle-shell\\qa\\revision-01\\rear-clay.png",
+      "bytes": 217870,
+      "sha256": "5bfb7fca6a47e77ef77d5483c866f71f1e1edaef240cbc6adaa278fed47d7bfa"
+    },
+    {
+      "source": "C:\\Users\\yurin\\Desktop\\projects\\CRO-MAGNON\\assets\\coastal-craft\\models\\cockle-shell\\qa\\revision-01\\rear.png",
+      "destination": "C:\\Users\\yurin\\Desktop\\projects\\threed-model-creation\\models\\cockle-shell\\qa\\revision-01\\rear.png",
+      "bytes": 339195,
+      "sha256": "08421f92b8d516540dced2ebeb34bf46d091757a5c7c45f589d79f9216fc2f09"
+    },
+    {
+      "source": "C:\\Users\\yurin\\Desktop\\projects\\CRO-MAGNON\\assets\\coastal-craft\\models\\cockle-shell\\qa\\revision-01\\right-clay.png",
+      "destination": "C:\\Users\\yurin\\Desktop\\projects\\threed-model-creation\\models\\cockle-shell\\qa\\revision-01\\right-clay.png",
+      "bytes": 208286,
+      "sha256": "701bf425cbf54aa8325df9cd432a64e016f68b1de642818796c0dd89d81acb3a"
+    },
+    {
+      "source": "C:\\Users\\yurin\\Desktop\\projects\\CRO-MAGNON\\assets\\coastal-craft\\models\\cockle-shell\\qa\\revision-01\\right.png",
+      "destination": "C:\\Users\\yurin\\Desktop\\projects\\threed-model-creation\\models\\cockle-shell\\qa\\revision-01\\right.png",
+      "bytes": 335194,
+      "sha256": "6bbb57cad4b60487d4790778b08ef46123350160eca9d74e812869bbf3ece95e"
+    },
+    {
+      "source": "C:\\Users\\yurin\\Desktop\\projects\\CRO-MAGNON\\assets\\coastal-craft\\models\\cockle-shell\\qa\\revision-01\\top-clay.png",
+      "destination": "C:\\Users\\yurin\\Desktop\\projects\\threed-model-creation\\models\\cockle-shell\\qa\\revision-01\\top-clay.png",
+      "bytes": 267407,
+      "sha256": "bcc212c5daeffd37432d9a57b86b16f1871463d5112176e82e55f41576245c47"
+    },
+    {
+      "source": "C:\\Users\\yurin\\Desktop\\projects\\CRO-MAGNON\\assets\\coastal-craft\\models\\cockle-shell\\qa\\revision-01\\top.png",
+      "destination": "C:\\Users\\yurin\\Desktop\\projects\\threed-model-creation\\models\\cockle-shell\\qa\\revision-01\\top.png",
+      "bytes": 467863,
+      "sha256": "5a6cb78c241b87da57328ee5bb7bc103848e5de59bd280f0c21e34dda754673a"
+    },
+    {
+      "source": "C:\\Users\\yurin\\Desktop\\projects\\CRO-MAGNON\\assets\\coastal-craft\\models\\cockle-shell\\qa\\revision-02\\bottom-clay.png",
+      "destination": "C:\\Users\\yurin\\Desktop\\projects\\threed-model-creation\\models\\cockle-shell\\qa\\revision-02\\bottom-clay.png",
+      "bytes": 218880,
+      "sha256": "33f0dbd45dc370ff8300dbbee37725f4176841a014e2e6de6c75dfad47f4ed5c"
+    },
+    {
+      "source": "C:\\Users\\yurin\\Desktop\\projects\\CRO-MAGNON\\assets\\coastal-craft\\models\\cockle-shell\\qa\\revision-02\\bottom.png",
+      "destination": "C:\\Users\\yurin\\Desktop\\projects\\threed-model-creation\\models\\cockle-shell\\qa\\revision-02\\bottom.png",
+      "bytes": 382306,
+      "sha256": "e0bf3ad1386d2279eb96cc84a26bad89362caa7b0112e2c5bebbe6718e2591b8"
+    },
+    {
+      "source": "C:\\Users\\yurin\\Desktop\\projects\\CRO-MAGNON\\assets\\coastal-craft\\models\\cockle-shell\\qa\\revision-02\\browser.json",
+      "destination": "C:\\Users\\yurin\\Desktop\\projects\\threed-model-creation\\models\\cockle-shell\\qa\\revision-02\\browser.json",
+      "bytes": 1477,
+      "sha256": "dec783342c1ea6c8a6d3a4551c25f313951eae47625e6a0019d845b18da4060c"
+    },
+    {
+      "source": "C:\\Users\\yurin\\Desktop\\projects\\CRO-MAGNON\\assets\\coastal-craft\\models\\cockle-shell\\qa\\revision-02\\front-clay.png",
+      "destination": "C:\\Users\\yurin\\Desktop\\projects\\threed-model-creation\\models\\cockle-shell\\qa\\revision-02\\front-clay.png",
+      "bytes": 187539,
+      "sha256": "5b224c87dcca55d121057be47d02fe3d7386d4d1dad11dd65e70b83d301c4fef"
+    },
+    {
+      "source": "C:\\Users\\yurin\\Desktop\\projects\\CRO-MAGNON\\assets\\coastal-craft\\models\\cockle-shell\\qa\\revision-02\\front.png",
+      "destination": "C:\\Users\\yurin\\Desktop\\projects\\threed-model-creation\\models\\cockle-shell\\qa\\revision-02\\front.png",
+      "bytes": 329791,
+      "sha256": "62f2df2d34e7f2e30f37e98e482becc4ff547cbfe78bc76765da2c7892fe4440"
+    },
+    {
+      "source": "C:\\Users\\yurin\\Desktop\\projects\\CRO-MAGNON\\assets\\coastal-craft\\models\\cockle-shell\\qa\\revision-02\\left-clay.png",
+      "destination": "C:\\Users\\yurin\\Desktop\\projects\\threed-model-creation\\models\\cockle-shell\\qa\\revision-02\\left-clay.png",
+      "bytes": 209152,
+      "sha256": "b28b7c081000f89fe9a9c110c0036d5ddebc9497a778d1f283b134bd020ee661"
+    },
+    {
+      "source": "C:\\Users\\yurin\\Desktop\\projects\\CRO-MAGNON\\assets\\coastal-craft\\models\\cockle-shell\\qa\\revision-02\\left.png",
+      "destination": "C:\\Users\\yurin\\Desktop\\projects\\threed-model-creation\\models\\cockle-shell\\qa\\revision-02\\left.png",
+      "bytes": 333600,
+      "sha256": "8f650a74a57e15d5e7427f6fd2e8641ee651a079e4be930082c05d8846bb5554"
+    },
+    {
+      "source": "C:\\Users\\yurin\\Desktop\\projects\\CRO-MAGNON\\assets\\coastal-craft\\models\\cockle-shell\\qa\\revision-02\\quarter-clay.png",
+      "destination": "C:\\Users\\yurin\\Desktop\\projects\\threed-model-creation\\models\\cockle-shell\\qa\\revision-02\\quarter-clay.png",
+      "bytes": 216086,
+      "sha256": "18577a22a1e13406f6b585c7dad2d04dc6e680653612ae3bd9c8bc6c8aa2bea3"
+    },
+    {
+      "source": "C:\\Users\\yurin\\Desktop\\projects\\CRO-MAGNON\\assets\\coastal-craft\\models\\cockle-shell\\qa\\revision-02\\quarter.png",
+      "destination": "C:\\Users\\yurin\\Desktop\\projects\\threed-model-creation\\models\\cockle-shell\\qa\\revision-02\\quarter.png",
+      "bytes": 371483,
+      "sha256": "5c43199eb9cb76c4c21a0f3cd235e6d1b10a348b4a54db108dab0c6c79d5375a"
+    },
+    {
+      "source": "C:\\Users\\yurin\\Desktop\\projects\\CRO-MAGNON\\assets\\coastal-craft\\models\\cockle-shell\\qa\\revision-02\\rear-clay.png",
+      "destination": "C:\\Users\\yurin\\Desktop\\projects\\threed-model-creation\\models\\cockle-shell\\qa\\revision-02\\rear-clay.png",
+      "bytes": 206522,
+      "sha256": "23e918d0ad649f227f4cacd6083ec0e251fefa1d3da1680c88ffc3e8a47a8bbd"
+    },
+    {
+      "source": "C:\\Users\\yurin\\Desktop\\projects\\CRO-MAGNON\\assets\\coastal-craft\\models\\cockle-shell\\qa\\revision-02\\rear.png",
+      "destination": "C:\\Users\\yurin\\Desktop\\projects\\threed-model-creation\\models\\cockle-shell\\qa\\revision-02\\rear.png",
+      "bytes": 327842,
+      "sha256": "5a0496074d9189365522ab8403597c6276d80ac9062bfec9e549bcc5aa6a2555"
+    },
+    {
+      "source": "C:\\Users\\yurin\\Desktop\\projects\\CRO-MAGNON\\assets\\coastal-craft\\models\\cockle-shell\\qa\\revision-02\\right-clay.png",
+      "destination": "C:\\Users\\yurin\\Desktop\\projects\\threed-model-creation\\models\\cockle-shell\\qa\\revision-02\\right-clay.png",
+      "bytes": 199218,
+      "sha256": "5a2c111d47f1b35b625fc4cb944862228824083fd9e98710a0b8517947bff9a7"
+    },
+    {
+      "source": "C:\\Users\\yurin\\Desktop\\projects\\CRO-MAGNON\\assets\\coastal-craft\\models\\cockle-shell\\qa\\revision-02\\right.png",
+      "destination": "C:\\Users\\yurin\\Desktop\\projects\\threed-model-creation\\models\\cockle-shell\\qa\\revision-02\\right.png",
+      "bytes": 323038,
+      "sha256": "295f130e219c805156ff2bcc3fc7c7cd6c57ab87eb723f6142da31cf6b0f2fe9"
+    },
+    {
+      "source": "C:\\Users\\yurin\\Desktop\\projects\\CRO-MAGNON\\assets\\coastal-craft\\models\\cockle-shell\\qa\\revision-02\\top-clay.png",
+      "destination": "C:\\Users\\yurin\\Desktop\\projects\\threed-model-creation\\models\\cockle-shell\\qa\\revision-02\\top-clay.png",
+      "bytes": 254052,
+      "sha256": "fdcb40b9cd55790b830d82d3ad91327856c41c671c95ff3751864cc7664c8315"
+    },
+    {
+      "source": "C:\\Users\\yurin\\Desktop\\projects\\CRO-MAGNON\\assets\\coastal-craft\\models\\cockle-shell\\qa\\revision-02\\top.png",
+      "destination": "C:\\Users\\yurin\\Desktop\\projects\\threed-model-creation\\models\\cockle-shell\\qa\\revision-02\\top.png",
+      "bytes": 452833,
+      "sha256": "13b18958412679d270e8c216878eac9357f1e1a428029a86ca9ed204fe98e4cb"
+    },
+    {
+      "source": "C:\\Users\\yurin\\Desktop\\projects\\CRO-MAGNON\\assets\\coastal-craft\\models\\cockle-shell\\source\\reference-v1.png",
+      "destination": "C:\\Users\\yurin\\Desktop\\projects\\threed-model-creation\\models\\cockle-shell\\source\\reference-v1.png",
+      "bytes": 1734606,
+      "sha256": "b00df78d86e6d7d9f7b72a4540d9ff5e1c7d3dc2f79a0ef30ef0f01fc978086f"
+    },
+    {
+      "source": "C:\\Users\\yurin\\Desktop\\projects\\CRO-MAGNON\\assets\\coastal-craft\\models\\cockle-shell\\source\\request.json",
+      "destination": "C:\\Users\\yurin\\Desktop\\projects\\threed-model-creation\\models\\cockle-shell\\source\\request.json",
+      "bytes": 981,
+      "sha256": "f86da3c6bc83455759bad356550036fbcf3215e0d1eb200cc96c351cf81e7bfb"
+    },
+    {
+      "source": "C:\\Users\\yurin\\Desktop\\projects\\CRO-MAGNON\\assets\\coastal-craft\\models\\cockle-shell\\work\\process.log",
+      "destination": "C:\\Users\\yurin\\Desktop\\projects\\threed-model-creation\\models\\cockle-shell\\work\\process.log",
+      "bytes": 1293,
+      "sha256": "a4c88412c6bd1c3cfa9ad043060345b0893896d02d56f9fcbe51a82f3c0eb16b"
+    },
+    {
+      "source": "C:\\Users\\yurin\\Desktop\\projects\\CRO-MAGNON\\assets\\coastal-craft\\models\\cockle-shell\\work\\revision-02.log",
+      "destination": "C:\\Users\\yurin\\Desktop\\projects\\threed-model-creation\\models\\cockle-shell\\work\\revision-02.log",
+      "bytes": 775,
+      "sha256": "40f6e1471be238efb9f0b04117ccf42bd509d01f1f0a6341aa2fe77406a63d2f"
+    },
+    {
+      "source": "C:\\Users\\yurin\\Desktop\\projects\\CRO-MAGNON\\assets\\coastal-craft\\models\\cockle-shell\\work\\revision-01\\candidate.glb",
+      "destination": "C:\\Users\\yurin\\Desktop\\projects\\threed-model-creation\\models\\cockle-shell\\work\\revision-01\\candidate.glb",
+      "bytes": 9678968,
+      "sha256": "eeb4114621bafb8d7e55cbeff73390788f7b4bd45085fe21307c107b809252e4"
+    },
+    {
+      "source": "C:\\Users\\yurin\\Desktop\\projects\\CRO-MAGNON\\assets\\coastal-craft\\models\\cockle-shell\\work\\revision-01\\dense-normalized.glb",
+      "destination": "C:\\Users\\yurin\\Desktop\\projects\\threed-model-creation\\models\\cockle-shell\\work\\revision-01\\dense-normalized.glb",
+      "bytes": 18472472,
+      "sha256": "9eafd9e71e2ff734f5b876bc956569e6be82c6ef2bc90aec35cf75c28f523ba8"
+    },
+    {
+      "source": "C:\\Users\\yurin\\Desktop\\projects\\CRO-MAGNON\\assets\\coastal-craft\\models\\cockle-shell\\work\\revision-01\\process.json",
+      "destination": "C:\\Users\\yurin\\Desktop\\projects\\threed-model-creation\\models\\cockle-shell\\work\\revision-01\\process.json",
+      "bytes": 293,
+      "sha256": "834745cdef0ba482f7a7e009e3ce4b049759f16827f5fb951c83c2a27b46a227"
+    },
+    {
+      "source": "C:\\Users\\yurin\\Desktop\\projects\\CRO-MAGNON\\assets\\coastal-craft\\models\\cockle-shell\\work\\revision-02\\candidate.glb",
+      "destination": "C:\\Users\\yurin\\Desktop\\projects\\threed-model-creation\\models\\cockle-shell\\work\\revision-02\\candidate.glb",
+      "bytes": 10177512,
+      "sha256": "7e4f448274b346dd8a3705901cccf0e7e4d49be2bc09b683cd85cdc740122a81"
+    },
+    {
+      "source": "C:\\Users\\yurin\\Desktop\\projects\\CRO-MAGNON\\assets\\coastal-craft\\models\\cockle-shell\\work\\revision-02\\process.json",
+      "destination": "C:\\Users\\yurin\\Desktop\\projects\\threed-model-creation\\models\\cockle-shell\\work\\revision-02\\process.json",
+      "bytes": 399,
+      "sha256": "7b41e08e839ad5c3282c30bd97b435a50b5b4839e3f6d7cbc54ae83b50d1cf74"
+    },
+    {
+      "source": "C:\\Users\\yurin\\Desktop\\projects\\CRO-MAGNON\\assets\\coastal-craft\\models\\cockle-shell\\work\\trellis\\dense-1024_base.png",
+      "destination": "C:\\Users\\yurin\\Desktop\\projects\\threed-model-creation\\models\\cockle-shell\\work\\trellis\\dense-1024_base.png",
+      "bytes": 8772278,
+      "sha256": "d92d6f244ae3c0461dab33b76f13b016cc4570105501eb6e8f2ed83689353292"
+    },
+    {
+      "source": "C:\\Users\\yurin\\Desktop\\projects\\CRO-MAGNON\\assets\\coastal-craft\\models\\cockle-shell\\work\\trellis\\dense-1024_cutout.png",
+      "destination": "C:\\Users\\yurin\\Desktop\\projects\\threed-model-creation\\models\\cockle-shell\\work\\trellis\\dense-1024_cutout.png",
+      "bytes": 2245684,
+      "sha256": "4c559adc881062945980d7f4c81078dce3c9483a8eaa5bf575fdcbbfd63177d8"
+    },
+    {
+      "source": "C:\\Users\\yurin\\Desktop\\projects\\CRO-MAGNON\\assets\\coastal-craft\\models\\cockle-shell\\work\\trellis\\dense-1024.glb",
+      "destination": "C:\\Users\\yurin\\Desktop\\projects\\threed-model-creation\\models\\cockle-shell\\work\\trellis\\dense-1024.glb",
+      "bytes": 18465396,
+      "sha256": "32c227435572a5185b268a9e76b273647c4658628406fde0414d531c6e6ddafa"
+    },
+    {
+      "source": "C:\\Users\\yurin\\Desktop\\projects\\CRO-MAGNON\\assets\\coastal-craft\\models\\cockle-shell\\work\\trellis\\dense-1024.log",
+      "destination": "C:\\Users\\yurin\\Desktop\\projects\\threed-model-creation\\models\\cockle-shell\\work\\trellis\\dense-1024.log",
+      "bytes": 6070,
+      "sha256": "432f0e1bf2f1d15d680f4902df05bc064d83408121b46ed72591b361158c4803"
+    },
+    {
+      "source": "C:\\Users\\yurin\\Desktop\\projects\\CRO-MAGNON\\assets\\coastal-craft\\models\\cockle-shell\\work\\trellis\\dense-1024.ply",
+      "destination": "C:\\Users\\yurin\\Desktop\\projects\\threed-model-creation\\models\\cockle-shell\\work\\trellis\\dense-1024.ply",
+      "bytes": 275711221,
+      "sha256": "bbce7cebe6931feb192d7db93401bacb2aa89f28bb89b498c28decc4b1d7c7f6"
+    },
+    {
+      "source": "C:\\Users\\yurin\\Desktop\\projects\\CRO-MAGNON\\assets\\coastal-craft\\models\\cockle-shell\\workflow\\process.py",
+      "destination": "C:\\Users\\yurin\\Desktop\\projects\\threed-model-creation\\models\\cockle-shell\\workflow\\process.py",
+      "bytes": 2058,
+      "sha256": "8b92923e6c41003630a5f1a9388a3c87318bbf7145969bd5457e21b533f4a068"
+    },
+    {
+      "source": "C:\\Users\\yurin\\Desktop\\projects\\CRO-MAGNON\\assets\\coastal-craft\\models\\cockle-shell\\workflow\\revision-02.py",
+      "destination": "C:\\Users\\yurin\\Desktop\\projects\\threed-model-creation\\models\\cockle-shell\\workflow\\revision-02.py",
+      "bytes": 1648,
+      "sha256": "cd9d43e915b9ff7eb208650b16c35de59b678aaa6e97480fcf8b9f7ed5217479"
+    },
+    {
+      "source": "C:\\Users\\yurin\\Desktop\\projects\\CRO-MAGNON\\assets\\coastal-craft\\models\\shell-midden\\model.json",
+      "destination": "C:\\Users\\yurin\\Desktop\\projects\\threed-model-creation\\models\\shell-midden\\model.json",
+      "bytes": 1170,
+      "sha256": "969ead872682f4259978b72cedfce49192580270451112631f56f9ce95eb9cb5"
+    },
+    {
+      "source": "C:\\Users\\yurin\\Desktop\\projects\\CRO-MAGNON\\assets\\coastal-craft\\models\\shell-midden\\README.md",
+      "destination": "C:\\Users\\yurin\\Desktop\\projects\\threed-model-creation\\models\\shell-midden\\README.md",
+      "bytes": 588,
+      "sha256": "ab00265b92f25f37b271a8002d7eb11a018ff6c377c6ea61d85d0c2066836553"
+    },
+    {
+      "source": "C:\\Users\\yurin\\Desktop\\projects\\CRO-MAGNON\\assets\\coastal-craft\\models\\shell-midden\\geometry\\accepted.glb",
+      "destination": "C:\\Users\\yurin\\Desktop\\projects\\threed-model-creation\\models\\shell-midden\\geometry\\accepted.glb",
+      "bytes": 15209472,
+      "sha256": "494844840a1ac461837e73874bf3858d5a5f73baf8655769b6cd590d048e07cd"
+    },
+    {
+      "source": "C:\\Users\\yurin\\Desktop\\projects\\CRO-MAGNON\\assets\\coastal-craft\\models\\shell-midden\\qa\\adoption-review.json",
+      "destination": "C:\\Users\\yurin\\Desktop\\projects\\threed-model-creation\\models\\shell-midden\\qa\\adoption-review.json",
+      "bytes": 885,
+      "sha256": "808ee9e196551a2914f77406deaaab73ede8ed3b8060090a8ddd704dd0d52c31"
+    },
+    {
+      "source": "C:\\Users\\yurin\\Desktop\\projects\\CRO-MAGNON\\assets\\coastal-craft\\models\\shell-midden\\qa\\game-report.json",
+      "destination": "C:\\Users\\yurin\\Desktop\\projects\\threed-model-creation\\models\\shell-midden\\qa\\game-report.json",
+      "bytes": 65924,
+      "sha256": "a83b33653fb8830030afcfc3a424daded2e304b95f73d1db2d47192301379a1a"
+    },
+    {
+      "source": "C:\\Users\\yurin\\Desktop\\projects\\CRO-MAGNON\\assets\\coastal-craft\\models\\shell-midden\\qa\\revision-01-config.json",
+      "destination": "C:\\Users\\yurin\\Desktop\\projects\\threed-model-creation\\models\\shell-midden\\qa\\revision-01-config.json",
+      "bytes": 338,
+      "sha256": "f8e1d1e437bf455196c0330d56922f05ba1062b3f4db787798937cc6bd4b55e0"
+    },
+    {
+      "source": "C:\\Users\\yurin\\Desktop\\projects\\CRO-MAGNON\\assets\\coastal-craft\\models\\shell-midden\\qa\\game-views\\01-ready.png",
+      "destination": "C:\\Users\\yurin\\Desktop\\projects\\threed-model-creation\\models\\shell-midden\\qa\\game-views\\01-ready.png",
+      "bytes": 1205251,
+      "sha256": "62f9fa3d54a116d6e3426e2ce666c952727fcaabec791ad6dc8c889a071dd328"
+    },
+    {
+      "source": "C:\\Users\\yurin\\Desktop\\projects\\CRO-MAGNON\\assets\\coastal-craft\\models\\shell-midden\\qa\\game-views\\02-gulf-arrival.png",
+      "destination": "C:\\Users\\yurin\\Desktop\\projects\\threed-model-creation\\models\\shell-midden\\qa\\game-views\\02-gulf-arrival.png",
+      "bytes": 183542,
+      "sha256": "2f890b3414f35409b100f976f1dd17172ebe1f1a54a397b652e1218361b3707f"
+    },
+    {
+      "source": "C:\\Users\\yurin\\Desktop\\projects\\CRO-MAGNON\\assets\\coastal-craft\\models\\shell-midden\\qa\\game-views\\03-shell-gather.png",
+      "destination": "C:\\Users\\yurin\\Desktop\\projects\\threed-model-creation\\models\\shell-midden\\qa\\game-views\\03-shell-gather.png",
+      "bytes": 1009045,
+      "sha256": "e76ad40549d112f9322ca465bc588d6c7af72149c7aa9205ecd9b6032fbb300c"
+    },
+    {
+      "source": "C:\\Users\\yurin\\Desktop\\projects\\CRO-MAGNON\\assets\\coastal-craft\\models\\shell-midden\\qa\\game-views\\04-shell-gather-active.png",
+      "destination": "C:\\Users\\yurin\\Desktop\\projects\\threed-model-creation\\models\\shell-midden\\qa\\game-views\\04-shell-gather-active.png",
+      "bytes": 939955,
+      "sha256": "6e19d26e34684beec2d53efdab670f9c8023f74cd2644df06b91cdb0464f67b8"
+    },
+    {
+      "source": "C:\\Users\\yurin\\Desktop\\projects\\CRO-MAGNON\\assets\\coastal-craft\\models\\shell-midden\\qa\\game-views\\05-shell-cook.png",
+      "destination": "C:\\Users\\yurin\\Desktop\\projects\\threed-model-creation\\models\\shell-midden\\qa\\game-views\\05-shell-cook.png",
+      "bytes": 808924,
+      "sha256": "fd30faa1bb19abc8a01e6354f0671ca4655cf4bb8b3748737bcbd3e09e188cdf"
+    },
+    {
+      "source": "C:\\Users\\yurin\\Desktop\\projects\\CRO-MAGNON\\assets\\coastal-craft\\models\\shell-midden\\qa\\game-views\\06-first-midden.png",
+      "destination": "C:\\Users\\yurin\\Desktop\\projects\\threed-model-creation\\models\\shell-midden\\qa\\game-views\\06-first-midden.png",
+      "bytes": 933582,
+      "sha256": "6fe06e9a27f72dc34caad9485cd56e809e4dd5185e22240fecfd541e54058403"
+    },
+    {
+      "source": "C:\\Users\\yurin\\Desktop\\projects\\CRO-MAGNON\\assets\\coastal-craft\\models\\shell-midden\\qa\\game-views\\07-midden-stage2.png",
+      "destination": "C:\\Users\\yurin\\Desktop\\projects\\threed-model-creation\\models\\shell-midden\\qa\\game-views\\07-midden-stage2.png",
+      "bytes": 959703,
+      "sha256": "e74dcb5162ae80222a27c66f18044296d128ebca65e555d1a81acfd375437980"
+    },
+    {
+      "source": "C:\\Users\\yurin\\Desktop\\projects\\CRO-MAGNON\\assets\\coastal-craft\\models\\shell-midden\\qa\\game-views\\08-midden-stage3.png",
+      "destination": "C:\\Users\\yurin\\Desktop\\projects\\threed-model-creation\\models\\shell-midden\\qa\\game-views\\08-midden-stage3.png",
+      "bytes": 968798,
+      "sha256": "4cce40e3f5c760939c51d4440d2af67e053e723e2e4eb3582e7ede444ccd5113"
+    },
+    {
+      "source": "C:\\Users\\yurin\\Desktop\\projects\\CRO-MAGNON\\assets\\coastal-craft\\models\\shell-midden\\qa\\game-views\\09-midden-observer.png",
+      "destination": "C:\\Users\\yurin\\Desktop\\projects\\threed-model-creation\\models\\shell-midden\\qa\\game-views\\09-midden-observer.png",
+      "bytes": 988076,
+      "sha256": "ae984804a2a24f90fa7dd4de2fa26ed570a4668e6664f26f52a3ae468d187df3"
+    },
+    {
+      "source": "C:\\Users\\yurin\\Desktop\\projects\\CRO-MAGNON\\assets\\coastal-craft\\models\\shell-midden\\qa\\game-views\\10-obsidian-mining.png",
+      "destination": "C:\\Users\\yurin\\Desktop\\projects\\threed-model-creation\\models\\shell-midden\\qa\\game-views\\10-obsidian-mining.png",
+      "bytes": 977682,
+      "sha256": "2c353b07d8b47d78218373277d13cbed6b628e4958d204e9b1712b05cb9ece3a"
+    },
+    {
+      "source": "C:\\Users\\yurin\\Desktop\\projects\\CRO-MAGNON\\assets\\coastal-craft\\models\\shell-midden\\qa\\game-views\\11-knapping-active.png",
+      "destination": "C:\\Users\\yurin\\Desktop\\projects\\threed-model-creation\\models\\shell-midden\\qa\\game-views\\11-knapping-active.png",
+      "bytes": 891276,
+      "sha256": "c9706313ae446f7454f502a374f540c290d62304ce3dd2eea6274499531352f3"
+    },
+    {
+      "source": "C:\\Users\\yurin\\Desktop\\projects\\CRO-MAGNON\\assets\\coastal-craft\\models\\shell-midden\\qa\\game-views\\12-hafted-recipe.png",
+      "destination": "C:\\Users\\yurin\\Desktop\\projects\\threed-model-creation\\models\\shell-midden\\qa\\game-views\\12-hafted-recipe.png",
+      "bytes": 249852,
+      "sha256": "5ea08c8348aecc46e61be52335958c115c55998234dd8da08a9c2e96918fd9bb"
+    },
+    {
+      "source": "C:\\Users\\yurin\\Desktop\\projects\\CRO-MAGNON\\assets\\coastal-craft\\models\\shell-midden\\qa\\game-views\\13-obsidian-spear.png",
+      "destination": "C:\\Users\\yurin\\Desktop\\projects\\threed-model-creation\\models\\shell-midden\\qa\\game-views\\13-obsidian-spear.png",
+      "bytes": 914679,
+      "sha256": "f8df3f1cceaa87c62b7c6adc8e184ec5ddca2fcfecab942ba6b0778ae308eccb"
+    },
+    {
+      "source": "C:\\Users\\yurin\\Desktop\\projects\\CRO-MAGNON\\assets\\coastal-craft\\models\\shell-midden\\qa\\game-views\\14-mobile-portrait.png",
+      "destination": "C:\\Users\\yurin\\Desktop\\projects\\threed-model-creation\\models\\shell-midden\\qa\\game-views\\14-mobile-portrait.png",
+      "bytes": 95331,
+      "sha256": "49cbdd36bb5a5447aa78b1f4f38e700a0056682ad5d6297678a832f2e3f18629"
+    },
+    {
+      "source": "C:\\Users\\yurin\\Desktop\\projects\\CRO-MAGNON\\assets\\coastal-craft\\models\\shell-midden\\qa\\game-views\\15-mobile-landscape.png",
+      "destination": "C:\\Users\\yurin\\Desktop\\projects\\threed-model-creation\\models\\shell-midden\\qa\\game-views\\15-mobile-landscape.png",
+      "bytes": 50537,
+      "sha256": "9182d746d8a248831b954e3e99a34debde560ff183752df07ab817659e2cfa9a"
+    },
+    {
+      "source": "C:\\Users\\yurin\\Desktop\\projects\\CRO-MAGNON\\assets\\coastal-craft\\models\\shell-midden\\qa\\game-views\\16-obsidian-after-reload.png",
+      "destination": "C:\\Users\\yurin\\Desktop\\projects\\threed-model-creation\\models\\shell-midden\\qa\\game-views\\16-obsidian-after-reload.png",
+      "bytes": 792568,
+      "sha256": "f817ec0b4caf24177b67cd9f77f583c3068fd57fa98854e2af298aae5ad371eb"
+    },
+    {
+      "source": "C:\\Users\\yurin\\Desktop\\projects\\CRO-MAGNON\\assets\\coastal-craft\\models\\shell-midden\\qa\\game-views\\report.json",
+      "destination": "C:\\Users\\yurin\\Desktop\\projects\\threed-model-creation\\models\\shell-midden\\qa\\game-views\\report.json",
+      "bytes": 65924,
+      "sha256": "a83b33653fb8830030afcfc3a424daded2e304b95f73d1db2d47192301379a1a"
+    },
+    {
+      "source": "C:\\Users\\yurin\\Desktop\\projects\\CRO-MAGNON\\assets\\coastal-craft\\models\\shell-midden\\qa\\revision-01\\bottom-clay.png",
+      "destination": "C:\\Users\\yurin\\Desktop\\projects\\threed-model-creation\\models\\shell-midden\\qa\\revision-01\\bottom-clay.png",
+      "bytes": 337349,
+      "sha256": "7016495dde1fbdb071cf031927b9ced96514c67140a02ab56270142f0670ff24"
+    },
+    {
+      "source": "C:\\Users\\yurin\\Desktop\\projects\\CRO-MAGNON\\assets\\coastal-craft\\models\\shell-midden\\qa\\revision-01\\bottom.png",
+      "destination": "C:\\Users\\yurin\\Desktop\\projects\\threed-model-creation\\models\\shell-midden\\qa\\revision-01\\bottom.png",
+      "bytes": 457441,
+      "sha256": "408f27b3f59142ed29fe5a169e483ab9cbf7aa0f0f3f86555a445cd004500ac8"
+    },
+    {
+      "source": "C:\\Users\\yurin\\Desktop\\projects\\CRO-MAGNON\\assets\\coastal-craft\\models\\shell-midden\\qa\\revision-01\\browser.json",
+      "destination": "C:\\Users\\yurin\\Desktop\\projects\\threed-model-creation\\models\\shell-midden\\qa\\revision-01\\browser.json",
+      "bytes": 1425,
+      "sha256": "07d25fa0b1bad4c4d6bbe8fda9049d771ace7811492b30bdfa323f82ff3c209f"
+    },
+    {
+      "source": "C:\\Users\\yurin\\Desktop\\projects\\CRO-MAGNON\\assets\\coastal-craft\\models\\shell-midden\\qa\\revision-01\\front-clay.png",
+      "destination": "C:\\Users\\yurin\\Desktop\\projects\\threed-model-creation\\models\\shell-midden\\qa\\revision-01\\front-clay.png",
+      "bytes": 183280,
+      "sha256": "05b5fd0fce184b2efd223204d595c16cb96c91eb047c139459f0a0e09b870201"
+    },
+    {
+      "source": "C:\\Users\\yurin\\Desktop\\projects\\CRO-MAGNON\\assets\\coastal-craft\\models\\shell-midden\\qa\\revision-01\\front.png",
+      "destination": "C:\\Users\\yurin\\Desktop\\projects\\threed-model-creation\\models\\shell-midden\\qa\\revision-01\\front.png",
+      "bytes": 292449,
+      "sha256": "6345ecdc73eaee666b9341db4bde650341d61c481956ff690b975e95352230f4"
+    },
+    {
+      "source": "C:\\Users\\yurin\\Desktop\\projects\\CRO-MAGNON\\assets\\coastal-craft\\models\\shell-midden\\qa\\revision-01\\left-clay.png",
+      "destination": "C:\\Users\\yurin\\Desktop\\projects\\threed-model-creation\\models\\shell-midden\\qa\\revision-01\\left-clay.png",
+      "bytes": 173023,
+      "sha256": "fd3bc04aa92244392a2257ecefb93a97823f475c91e03bd0816497af5a025452"
+    },
+    {
+      "source": "C:\\Users\\yurin\\Desktop\\projects\\CRO-MAGNON\\assets\\coastal-craft\\models\\shell-midden\\qa\\revision-01\\left.png",
+      "destination": "C:\\Users\\yurin\\Desktop\\projects\\threed-model-creation\\models\\shell-midden\\qa\\revision-01\\left.png",
+      "bytes": 258943,
+      "sha256": "cfdb7c582c3e9ece012f4e3e71a63b3cdbc769c73107fa47eec04abf862229e1"
+    },
+    {
+      "source": "C:\\Users\\yurin\\Desktop\\projects\\CRO-MAGNON\\assets\\coastal-craft\\models\\shell-midden\\qa\\revision-01\\quarter-clay.png",
+      "destination": "C:\\Users\\yurin\\Desktop\\projects\\threed-model-creation\\models\\shell-midden\\qa\\revision-01\\quarter-clay.png",
+      "bytes": 255460,
+      "sha256": "dc7fa360ba443b327f4d96f5e0ba8397f9b9fef9abaeff9e467098208c6147e4"
+    },
+    {
+      "source": "C:\\Users\\yurin\\Desktop\\projects\\CRO-MAGNON\\assets\\coastal-craft\\models\\shell-midden\\qa\\revision-01\\quarter.png",
+      "destination": "C:\\Users\\yurin\\Desktop\\projects\\threed-model-creation\\models\\shell-midden\\qa\\revision-01\\quarter.png",
+      "bytes": 383617,
+      "sha256": "8da8af761b506896a544470a2418b86db39c04d3e3fae31b7ce3f43a3f02dee4"
+    },
+    {
+      "source": "C:\\Users\\yurin\\Desktop\\projects\\CRO-MAGNON\\assets\\coastal-craft\\models\\shell-midden\\qa\\revision-01\\rear-clay.png",
+      "destination": "C:\\Users\\yurin\\Desktop\\projects\\threed-model-creation\\models\\shell-midden\\qa\\revision-01\\rear-clay.png",
+      "bytes": 164483,
+      "sha256": "adc607e8cadeb03fa506ba85a7cc564abfd2ba0332c08e3a87f6782a9c2321cd"
+    },
+    {
+      "source": "C:\\Users\\yurin\\Desktop\\projects\\CRO-MAGNON\\assets\\coastal-craft\\models\\shell-midden\\qa\\revision-01\\rear.png",
+      "destination": "C:\\Users\\yurin\\Desktop\\projects\\threed-model-creation\\models\\shell-midden\\qa\\revision-01\\rear.png",
+      "bytes": 251132,
+      "sha256": "a8d8ce8fb052d99d407eb47e367e0b4564cef38204bb53372e02b425dfe684a9"
+    },
+    {
+      "source": "C:\\Users\\yurin\\Desktop\\projects\\CRO-MAGNON\\assets\\coastal-craft\\models\\shell-midden\\qa\\revision-01\\right-clay.png",
+      "destination": "C:\\Users\\yurin\\Desktop\\projects\\threed-model-creation\\models\\shell-midden\\qa\\revision-01\\right-clay.png",
+      "bytes": 161532,
+      "sha256": "d32eb8739d00496f9e3d95feba1fde130d1d03d36a985d5ee6935052b704fec3"
+    },
+    {
+      "source": "C:\\Users\\yurin\\Desktop\\projects\\CRO-MAGNON\\assets\\coastal-craft\\models\\shell-midden\\qa\\revision-01\\right.png",
+      "destination": "C:\\Users\\yurin\\Desktop\\projects\\threed-model-creation\\models\\shell-midden\\qa\\revision-01\\right.png",
+      "bytes": 251141,
+      "sha256": "e9f37371f36059afd086d614657e8dae3e78630fee878cd3b35a75ea4ed124c9"
+    },
+    {
+      "source": "C:\\Users\\yurin\\Desktop\\projects\\CRO-MAGNON\\assets\\coastal-craft\\models\\shell-midden\\qa\\revision-01\\top-clay.png",
+      "destination": "C:\\Users\\yurin\\Desktop\\projects\\threed-model-creation\\models\\shell-midden\\qa\\revision-01\\top-clay.png",
+      "bytes": 332559,
+      "sha256": "dc872aac915a44586dd81756a1d05bcefd6576d6c14483dd451b88d16d0d8a58"
+    },
+    {
+      "source": "C:\\Users\\yurin\\Desktop\\projects\\CRO-MAGNON\\assets\\coastal-craft\\models\\shell-midden\\qa\\revision-01\\top.png",
+      "destination": "C:\\Users\\yurin\\Desktop\\projects\\threed-model-creation\\models\\shell-midden\\qa\\revision-01\\top.png",
+      "bytes": 499223,
+      "sha256": "17eb2e25d0165d2ef8f7d0cebd06f068273cf2937eb906a1c1b708793e03c0ff"
+    },
+    {
+      "source": "C:\\Users\\yurin\\Desktop\\projects\\CRO-MAGNON\\assets\\coastal-craft\\models\\shell-midden\\source\\reference-v1.png",
+      "destination": "C:\\Users\\yurin\\Desktop\\projects\\threed-model-creation\\models\\shell-midden\\source\\reference-v1.png",
+      "bytes": 1648702,
+      "sha256": "e7de83392920365a2260b3e720f240bceb33ffd88fd2d50b41fae44a7ad66b99"
+    },
+    {
+      "source": "C:\\Users\\yurin\\Desktop\\projects\\CRO-MAGNON\\assets\\coastal-craft\\models\\shell-midden\\source\\request.json",
+      "destination": "C:\\Users\\yurin\\Desktop\\projects\\threed-model-creation\\models\\shell-midden\\source\\request.json",
+      "bytes": 1032,
+      "sha256": "4c08cd78c0d7f725ff69b588fc55e6c5f541454c60ba5b6bae0c9a5b6653c71f"
+    },
+    {
+      "source": "C:\\Users\\yurin\\Desktop\\projects\\CRO-MAGNON\\assets\\coastal-craft\\models\\shell-midden\\work\\process.log",
+      "destination": "C:\\Users\\yurin\\Desktop\\projects\\threed-model-creation\\models\\shell-midden\\work\\process.log",
+      "bytes": 1290,
+      "sha256": "1d52026fd5df7d69b48a4861fb4cdb3862a202aaf4135b4d52b3dfad68b85966"
+    },
+    {
+      "source": "C:\\Users\\yurin\\Desktop\\projects\\CRO-MAGNON\\assets\\coastal-craft\\models\\shell-midden\\work\\revision-01\\candidate.glb",
+      "destination": "C:\\Users\\yurin\\Desktop\\projects\\threed-model-creation\\models\\shell-midden\\work\\revision-01\\candidate.glb",
+      "bytes": 15209472,
+      "sha256": "494844840a1ac461837e73874bf3858d5a5f73baf8655769b6cd590d048e07cd"
+    },
+    {
+      "source": "C:\\Users\\yurin\\Desktop\\projects\\CRO-MAGNON\\assets\\coastal-craft\\models\\shell-midden\\work\\revision-01\\dense-normalized.glb",
+      "destination": "C:\\Users\\yurin\\Desktop\\projects\\threed-model-creation\\models\\shell-midden\\work\\revision-01\\dense-normalized.glb",
+      "bytes": 21574760,
+      "sha256": "0bd18ff71fdfd52f73e9177a57f72bc1a939f1a3c49f084b5249801a9bb81090"
+    },
+    {
+      "source": "C:\\Users\\yurin\\Desktop\\projects\\CRO-MAGNON\\assets\\coastal-craft\\models\\shell-midden\\work\\revision-01\\process.json",
+      "destination": "C:\\Users\\yurin\\Desktop\\projects\\threed-model-creation\\models\\shell-midden\\work\\revision-01\\process.json",
+      "bytes": 506,
+      "sha256": "b6f815b9cd1fdc32612606ce06c2a2a8e92eb3b0d3676ef41a3b9ac70863b4ad"
+    },
+    {
+      "source": "C:\\Users\\yurin\\Desktop\\projects\\CRO-MAGNON\\assets\\coastal-craft\\models\\shell-midden\\work\\trellis\\dense-1024_base.png",
+      "destination": "C:\\Users\\yurin\\Desktop\\projects\\threed-model-creation\\models\\shell-midden\\work\\trellis\\dense-1024_base.png",
+      "bytes": 9941376,
+      "sha256": "dce1f45794df91e8e923d2ce85dc4d66531d7c046555b6cd72b413c17e3b9f3b"
+    },
+    {
+      "source": "C:\\Users\\yurin\\Desktop\\projects\\CRO-MAGNON\\assets\\coastal-craft\\models\\shell-midden\\work\\trellis\\dense-1024_cutout.png",
+      "destination": "C:\\Users\\yurin\\Desktop\\projects\\threed-model-creation\\models\\shell-midden\\work\\trellis\\dense-1024_cutout.png",
+      "bytes": 1765397,
+      "sha256": "1b3017cf91e3ae89254e479cd8b76e62d35b16ab3da644117454a02b5b798f32"
+    },
+    {
+      "source": "C:\\Users\\yurin\\Desktop\\projects\\CRO-MAGNON\\assets\\coastal-craft\\models\\shell-midden\\work\\trellis\\dense-1024.glb",
+      "destination": "C:\\Users\\yurin\\Desktop\\projects\\threed-model-creation\\models\\shell-midden\\work\\trellis\\dense-1024.glb",
+      "bytes": 21565220,
+      "sha256": "4c9f5954ff854dd3b130b62c93e6dfc754951d601a46c822706257b7e6c2007b"
+    },
+    {
+      "source": "C:\\Users\\yurin\\Desktop\\projects\\CRO-MAGNON\\assets\\coastal-craft\\models\\shell-midden\\work\\trellis\\dense-1024.log",
+      "destination": "C:\\Users\\yurin\\Desktop\\projects\\threed-model-creation\\models\\shell-midden\\work\\trellis\\dense-1024.log",
+      "bytes": 6111,
+      "sha256": "54e1a4a13ecc1ea528a0cc04462b280fa6f6613952217d4ba3de0a0bff1d99d1"
+    },
+    {
+      "source": "C:\\Users\\yurin\\Desktop\\projects\\CRO-MAGNON\\assets\\coastal-craft\\models\\shell-midden\\work\\trellis\\dense-1024.ply",
+      "destination": "C:\\Users\\yurin\\Desktop\\projects\\threed-model-creation\\models\\shell-midden\\work\\trellis\\dense-1024.ply",
+      "bytes": 74340202,
+      "sha256": "2e08f23c1ed129acfb8698eb4913aeb1e49ccbe67d2e0f92da311615f25b77a0"
+    },
+    {
+      "source": "C:\\Users\\yurin\\Desktop\\projects\\CRO-MAGNON\\assets\\coastal-craft\\models\\shell-midden\\workflow\\process.py",
+      "destination": "C:\\Users\\yurin\\Desktop\\projects\\threed-model-creation\\models\\shell-midden\\workflow\\process.py",
+      "bytes": 2687,
+      "sha256": "8d26a45042c3911242140ccefb81c0520b02076c4072068941df38359c9a1dcf"
+    },
+    {
+      "source": "C:\\Users\\yurin\\Desktop\\projects\\CRO-MAGNON\\assets\\coastal-craft\\models\\wooden-spear\\model.json",
+      "destination": "C:\\Users\\yurin\\Desktop\\projects\\threed-model-creation\\models\\wooden-spear\\model.json",
+      "bytes": 1231,
+      "sha256": "b440a4890fe86330fe5bdddb24aff16214dd634d8dba3118096b591e99f652b3"
+    },
+    {
+      "source": "C:\\Users\\yurin\\Desktop\\projects\\CRO-MAGNON\\assets\\coastal-craft\\models\\wooden-spear\\README.md",
+      "destination": "C:\\Users\\yurin\\Desktop\\projects\\threed-model-creation\\models\\wooden-spear\\README.md",
+      "bytes": 588,
+      "sha256": "1ace8132eae4524c087a70b185ab5d209866265a2364ceaa103443ce8ebe817e"
+    },
+    {
+      "source": "C:\\Users\\yurin\\Desktop\\projects\\CRO-MAGNON\\assets\\coastal-craft\\models\\wooden-spear\\geometry\\accepted.glb",
+      "destination": "C:\\Users\\yurin\\Desktop\\projects\\threed-model-creation\\models\\wooden-spear\\geometry\\accepted.glb",
+      "bytes": 1462776,
+      "sha256": "ac2b1a3c8100b38a7753749fd6578b5f355247478cf9f44ea642c06eb858ee5d"
+    },
+    {
+      "source": "C:\\Users\\yurin\\Desktop\\projects\\CRO-MAGNON\\assets\\coastal-craft\\models\\wooden-spear\\qa\\adoption-review.json",
+      "destination": "C:\\Users\\yurin\\Desktop\\projects\\threed-model-creation\\models\\wooden-spear\\qa\\adoption-review.json",
+      "bytes": 1209,
+      "sha256": "fb12f859ee15553d896f31b85412a016d05e74c94a821519569cc923e3215f5b"
+    },
+    {
+      "source": "C:\\Users\\yurin\\Desktop\\projects\\CRO-MAGNON\\assets\\coastal-craft\\models\\wooden-spear\\qa\\appearance-report.json",
+      "destination": "C:\\Users\\yurin\\Desktop\\projects\\threed-model-creation\\models\\wooden-spear\\qa\\appearance-report.json",
+      "bytes": 5421,
+      "sha256": "a79bb22c29b763685a08b9141cbb492f2ce8bd57212051e074ccdd93652cdc88"
+    },
+    {
+      "source": "C:\\Users\\yurin\\Desktop\\projects\\CRO-MAGNON\\assets\\coastal-craft\\models\\wooden-spear\\qa\\game-report.json",
+      "destination": "C:\\Users\\yurin\\Desktop\\projects\\threed-model-creation\\models\\wooden-spear\\qa\\game-report.json",
+      "bytes": 65924,
+      "sha256": "a83b33653fb8830030afcfc3a424daded2e304b95f73d1db2d47192301379a1a"
+    },
+    {
+      "source": "C:\\Users\\yurin\\Desktop\\projects\\CRO-MAGNON\\assets\\coastal-craft\\models\\wooden-spear\\qa\\static-config.json",
+      "destination": "C:\\Users\\yurin\\Desktop\\projects\\threed-model-creation\\models\\wooden-spear\\qa\\static-config.json",
+      "bytes": 436,
+      "sha256": "9f857681b4d1dfd704569da414741a37492e0d0e0209857b1c954eb71e37a1b9"
+    },
+    {
+      "source": "C:\\Users\\yurin\\Desktop\\projects\\CRO-MAGNON\\assets\\coastal-craft\\models\\wooden-spear\\qa\\appearance-views\\cat-kunoichi-attack.png",
+      "destination": "C:\\Users\\yurin\\Desktop\\projects\\threed-model-creation\\models\\wooden-spear\\qa\\appearance-views\\cat-kunoichi-attack.png",
+      "bytes": 917899,
+      "sha256": "d551a4f3145e8b3ca744c65f88e3fe7287e07323ba755645ff5674abb588a6dc"
+    },
+    {
+      "source": "C:\\Users\\yurin\\Desktop\\projects\\CRO-MAGNON\\assets\\coastal-craft\\models\\wooden-spear\\qa\\appearance-views\\cat-kunoichi-initial.png",
+      "destination": "C:\\Users\\yurin\\Desktop\\projects\\threed-model-creation\\models\\wooden-spear\\qa\\appearance-views\\cat-kunoichi-initial.png",
+      "bytes": 907633,
+      "sha256": "5c71cc7f53ac70326550e9cfaadac300d93be18c9b8cecd17f6089b3731c7973"
+    },
+    {
+      "source": "C:\\Users\\yurin\\Desktop\\projects\\CRO-MAGNON\\assets\\coastal-craft\\models\\wooden-spear\\qa\\appearance-views\\cro-magnon-hunter-attack.png",
+      "destination": "C:\\Users\\yurin\\Desktop\\projects\\threed-model-creation\\models\\wooden-spear\\qa\\appearance-views\\cro-magnon-hunter-attack.png",
+      "bytes": 928674,
+      "sha256": "38ed3b08ccc33f707ab7e07f9179be24aff63c47872c074d03b8e68c4bd3d609"
+    },
+    {
+      "source": "C:\\Users\\yurin\\Desktop\\projects\\CRO-MAGNON\\assets\\coastal-craft\\models\\wooden-spear\\qa\\appearance-views\\cro-magnon-hunter-initial.png",
+      "destination": "C:\\Users\\yurin\\Desktop\\projects\\threed-model-creation\\models\\wooden-spear\\qa\\appearance-views\\cro-magnon-hunter-initial.png",
+      "bytes": 906653,
+      "sha256": "3768371b2be552be4bbbfcf7474f21d9c918359c7db32c3511a805399cba2942"
+    },
+    {
+      "source": "C:\\Users\\yurin\\Desktop\\projects\\CRO-MAGNON\\assets\\coastal-craft\\models\\wooden-spear\\qa\\appearance-views\\cro-magnon-hunter-obsidian.png",
+      "destination": "C:\\Users\\yurin\\Desktop\\projects\\threed-model-creation\\models\\wooden-spear\\qa\\appearance-views\\cro-magnon-hunter-obsidian.png",
+      "bytes": 920868,
+      "sha256": "c714911469f96276b536e4144162b5d9abcebd5ccc9bbecb51cd258298584cd8"
+    },
+    {
+      "source": "C:\\Users\\yurin\\Desktop\\projects\\CRO-MAGNON\\assets\\coastal-craft\\models\\wooden-spear\\qa\\appearance-views\\cro-magnon-woman-attack.png",
+      "destination": "C:\\Users\\yurin\\Desktop\\projects\\threed-model-creation\\models\\wooden-spear\\qa\\appearance-views\\cro-magnon-woman-attack.png",
+      "bytes": 930925,
+      "sha256": "4c601ff6ab57cc155c9ecfaf47513ea98b7ead07f734e93cb2d9029aad72df02"
+    },
+    {
+      "source": "C:\\Users\\yurin\\Desktop\\projects\\CRO-MAGNON\\assets\\coastal-craft\\models\\wooden-spear\\qa\\appearance-views\\cro-magnon-woman-initial.png",
+      "destination": "C:\\Users\\yurin\\Desktop\\projects\\threed-model-creation\\models\\wooden-spear\\qa\\appearance-views\\cro-magnon-woman-initial.png",
+      "bytes": 907928,
+      "sha256": "543b18adc7af934cb7b043a0ab6ea098b592a2514959314cc358ab9af692749f"
+    },
+    {
+      "source": "C:\\Users\\yurin\\Desktop\\projects\\CRO-MAGNON\\assets\\coastal-craft\\models\\wooden-spear\\qa\\appearance-views\\cro-magnon-woman-obsidian.png",
+      "destination": "C:\\Users\\yurin\\Desktop\\projects\\threed-model-creation\\models\\wooden-spear\\qa\\appearance-views\\cro-magnon-woman-obsidian.png",
+      "bytes": 921365,
+      "sha256": "4556f8f8ababd056b603d34af6985c3384d150e0e110794dddf2291453e46b98"
+    },
+    {
+      "source": "C:\\Users\\yurin\\Desktop\\projects\\CRO-MAGNON\\assets\\coastal-craft\\models\\wooden-spear\\qa\\appearance-views\\floppy-ear-mage-attack.png",
+      "destination": "C:\\Users\\yurin\\Desktop\\projects\\threed-model-creation\\models\\wooden-spear\\qa\\appearance-views\\floppy-ear-mage-attack.png",
+      "bytes": 871028,
+      "sha256": "d8ab1065a4d7e69fff5b160a773e981f2ac0db4d30f6aac6c4c71a06f1ac9980"
+    },
+    {
+      "source": "C:\\Users\\yurin\\Desktop\\projects\\CRO-MAGNON\\assets\\coastal-craft\\models\\wooden-spear\\qa\\appearance-views\\floppy-ear-mage-initial.png",
+      "destination": "C:\\Users\\yurin\\Desktop\\projects\\threed-model-creation\\models\\wooden-spear\\qa\\appearance-views\\floppy-ear-mage-initial.png",
+      "bytes": 860917,
+      "sha256": "82e4c2e9352ac1c41379ec337166cca66580099c0cc718e18fe37c92cd3578fe"
+    },
+    {
+      "source": "C:\\Users\\yurin\\Desktop\\projects\\CRO-MAGNON\\assets\\coastal-craft\\models\\wooden-spear\\qa\\appearance-views\\neanderthal-hunter-attack.png",
+      "destination": "C:\\Users\\yurin\\Desktop\\projects\\threed-model-creation\\models\\wooden-spear\\qa\\appearance-views\\neanderthal-hunter-attack.png",
+      "bytes": 930047,
+      "sha256": "752ecf2dbed20d7141f37cfda5b72a2f93d8dee61fbeb9c43768e80ee8d6a809"
+    },
+    {
+      "source": "C:\\Users\\yurin\\Desktop\\projects\\CRO-MAGNON\\assets\\coastal-craft\\models\\wooden-spear\\qa\\appearance-views\\neanderthal-hunter-initial.png",
+      "destination": "C:\\Users\\yurin\\Desktop\\projects\\threed-model-creation\\models\\wooden-spear\\qa\\appearance-views\\neanderthal-hunter-initial.png",
+      "bytes": 908642,
+      "sha256": "62bde86b1c9faea3c56a212e2decea1a8db59533af0262f19ac19aca4073517a"
+    },
+    {
+      "source": "C:\\Users\\yurin\\Desktop\\projects\\CRO-MAGNON\\assets\\coastal-craft\\models\\wooden-spear\\qa\\appearance-views\\neanderthal-hunter-obsidian.png",
+      "destination": "C:\\Users\\yurin\\Desktop\\projects\\threed-model-creation\\models\\wooden-spear\\qa\\appearance-views\\neanderthal-hunter-obsidian.png",
+      "bytes": 921435,
+      "sha256": "5d9471331f82c2c9d4b085fe4f6b7b0960232dec02a0d778aeb5f96d41195dab"
+    },
+    {
+      "source": "C:\\Users\\yurin\\Desktop\\projects\\CRO-MAGNON\\assets\\coastal-craft\\models\\wooden-spear\\qa\\appearance-views\\neanderthal-woman-attack.png",
+      "destination": "C:\\Users\\yurin\\Desktop\\projects\\threed-model-creation\\models\\wooden-spear\\qa\\appearance-views\\neanderthal-woman-attack.png",
+      "bytes": 930014,
+      "sha256": "899113d84bef11b80753bcedc6caca976b50f0dff480e4a59e5a0c3d420ecacb"
+    },
+    {
+      "source": "C:\\Users\\yurin\\Desktop\\projects\\CRO-MAGNON\\assets\\coastal-craft\\models\\wooden-spear\\qa\\appearance-views\\neanderthal-woman-initial.png",
+      "destination": "C:\\Users\\yurin\\Desktop\\projects\\threed-model-creation\\models\\wooden-spear\\qa\\appearance-views\\neanderthal-woman-initial.png",
+      "bytes": 906974,
+      "sha256": "ecea3680e7c4f83e516f99741239d3a392d476a411fe296fee5422f5e9899edb"
+    },
+    {
+      "source": "C:\\Users\\yurin\\Desktop\\projects\\CRO-MAGNON\\assets\\coastal-craft\\models\\wooden-spear\\qa\\appearance-views\\neanderthal-woman-obsidian.png",
+      "destination": "C:\\Users\\yurin\\Desktop\\projects\\threed-model-creation\\models\\wooden-spear\\qa\\appearance-views\\neanderthal-woman-obsidian.png",
+      "bytes": 920635,
+      "sha256": "6390ead36f3adc5259c447a46887922d1f6ef1896f013315ed48497d0fb362b1"
+    },
+    {
+      "source": "C:\\Users\\yurin\\Desktop\\projects\\CRO-MAGNON\\assets\\coastal-craft\\models\\wooden-spear\\qa\\appearance-views\\report.json",
+      "destination": "C:\\Users\\yurin\\Desktop\\projects\\threed-model-creation\\models\\wooden-spear\\qa\\appearance-views\\report.json",
+      "bytes": 5421,
+      "sha256": "a79bb22c29b763685a08b9141cbb492f2ce8bd57212051e074ccdd93652cdc88"
+    },
+    {
+      "source": "C:\\Users\\yurin\\Desktop\\projects\\CRO-MAGNON\\assets\\coastal-craft\\models\\wooden-spear\\qa\\game-views\\01-ready.png",
+      "destination": "C:\\Users\\yurin\\Desktop\\projects\\threed-model-creation\\models\\wooden-spear\\qa\\game-views\\01-ready.png",
+      "bytes": 1205251,
+      "sha256": "62f9fa3d54a116d6e3426e2ce666c952727fcaabec791ad6dc8c889a071dd328"
+    },
+    {
+      "source": "C:\\Users\\yurin\\Desktop\\projects\\CRO-MAGNON\\assets\\coastal-craft\\models\\wooden-spear\\qa\\game-views\\02-gulf-arrival.png",
+      "destination": "C:\\Users\\yurin\\Desktop\\projects\\threed-model-creation\\models\\wooden-spear\\qa\\game-views\\02-gulf-arrival.png",
+      "bytes": 183542,
+      "sha256": "2f890b3414f35409b100f976f1dd17172ebe1f1a54a397b652e1218361b3707f"
+    },
+    {
+      "source": "C:\\Users\\yurin\\Desktop\\projects\\CRO-MAGNON\\assets\\coastal-craft\\models\\wooden-spear\\qa\\game-views\\03-shell-gather.png",
+      "destination": "C:\\Users\\yurin\\Desktop\\projects\\threed-model-creation\\models\\wooden-spear\\qa\\game-views\\03-shell-gather.png",
+      "bytes": 1009045,
+      "sha256": "e76ad40549d112f9322ca465bc588d6c7af72149c7aa9205ecd9b6032fbb300c"
+    },
+    {
+      "source": "C:\\Users\\yurin\\Desktop\\projects\\CRO-MAGNON\\assets\\coastal-craft\\models\\wooden-spear\\qa\\game-views\\04-shell-gather-active.png",
+      "destination": "C:\\Users\\yurin\\Desktop\\projects\\threed-model-creation\\models\\wooden-spear\\qa\\game-views\\04-shell-gather-active.png",
+      "bytes": 939955,
+      "sha256": "6e19d26e34684beec2d53efdab670f9c8023f74cd2644df06b91cdb0464f67b8"
+    },
+    {
+      "source": "C:\\Users\\yurin\\Desktop\\projects\\CRO-MAGNON\\assets\\coastal-craft\\models\\wooden-spear\\qa\\game-views\\05-shell-cook.png",
+      "destination": "C:\\Users\\yurin\\Desktop\\projects\\threed-model-creation\\models\\wooden-spear\\qa\\game-views\\05-shell-cook.png",
+      "bytes": 808924,
+      "sha256": "fd30faa1bb19abc8a01e6354f0671ca4655cf4bb8b3748737bcbd3e09e188cdf"
+    },
+    {
+      "source": "C:\\Users\\yurin\\Desktop\\projects\\CRO-MAGNON\\assets\\coastal-craft\\models\\wooden-spear\\qa\\game-views\\06-first-midden.png",
+      "destination": "C:\\Users\\yurin\\Desktop\\projects\\threed-model-creation\\models\\wooden-spear\\qa\\game-views\\06-first-midden.png",
+      "bytes": 933582,
+      "sha256": "6fe06e9a27f72dc34caad9485cd56e809e4dd5185e22240fecfd541e54058403"
+    },
+    {
+      "source": "C:\\Users\\yurin\\Desktop\\projects\\CRO-MAGNON\\assets\\coastal-craft\\models\\wooden-spear\\qa\\game-views\\07-midden-stage2.png",
+      "destination": "C:\\Users\\yurin\\Desktop\\projects\\threed-model-creation\\models\\wooden-spear\\qa\\game-views\\07-midden-stage2.png",
+      "bytes": 959703,
+      "sha256": "e74dcb5162ae80222a27c66f18044296d128ebca65e555d1a81acfd375437980"
+    },
+    {
+      "source": "C:\\Users\\yurin\\Desktop\\projects\\CRO-MAGNON\\assets\\coastal-craft\\models\\wooden-spear\\qa\\game-views\\08-midden-stage3.png",
+      "destination": "C:\\Users\\yurin\\Desktop\\projects\\threed-model-creation\\models\\wooden-spear\\qa\\game-views\\08-midden-stage3.png",
+      "bytes": 968798,
+      "sha256": "4cce40e3f5c760939c51d4440d2af67e053e723e2e4eb3582e7ede444ccd5113"
+    },
+    {
+      "source": "C:\\Users\\yurin\\Desktop\\projects\\CRO-MAGNON\\assets\\coastal-craft\\models\\wooden-spear\\qa\\game-views\\09-midden-observer.png",
+      "destination": "C:\\Users\\yurin\\Desktop\\projects\\threed-model-creation\\models\\wooden-spear\\qa\\game-views\\09-midden-observer.png",
+      "bytes": 988076,
+      "sha256": "ae984804a2a24f90fa7dd4de2fa26ed570a4668e6664f26f52a3ae468d187df3"
+    },
+    {
+      "source": "C:\\Users\\yurin\\Desktop\\projects\\CRO-MAGNON\\assets\\coastal-craft\\models\\wooden-spear\\qa\\game-views\\10-obsidian-mining.png",
+      "destination": "C:\\Users\\yurin\\Desktop\\projects\\threed-model-creation\\models\\wooden-spear\\qa\\game-views\\10-obsidian-mining.png",
+      "bytes": 977682,
+      "sha256": "2c353b07d8b47d78218373277d13cbed6b628e4958d204e9b1712b05cb9ece3a"
+    },
+    {
+      "source": "C:\\Users\\yurin\\Desktop\\projects\\CRO-MAGNON\\assets\\coastal-craft\\models\\wooden-spear\\qa\\game-views\\11-knapping-active.png",
+      "destination": "C:\\Users\\yurin\\Desktop\\projects\\threed-model-creation\\models\\wooden-spear\\qa\\game-views\\11-knapping-active.png",
+      "bytes": 891276,
+      "sha256": "c9706313ae446f7454f502a374f540c290d62304ce3dd2eea6274499531352f3"
+    },
+    {
+      "source": "C:\\Users\\yurin\\Desktop\\projects\\CRO-MAGNON\\assets\\coastal-craft\\models\\wooden-spear\\qa\\game-views\\12-hafted-recipe.png",
+      "destination": "C:\\Users\\yurin\\Desktop\\projects\\threed-model-creation\\models\\wooden-spear\\qa\\game-views\\12-hafted-recipe.png",
+      "bytes": 249852,
+      "sha256": "5ea08c8348aecc46e61be52335958c115c55998234dd8da08a9c2e96918fd9bb"
+    },
+    {
+      "source": "C:\\Users\\yurin\\Desktop\\projects\\CRO-MAGNON\\assets\\coastal-craft\\models\\wooden-spear\\qa\\game-views\\13-obsidian-spear.png",
+      "destination": "C:\\Users\\yurin\\Desktop\\projects\\threed-model-creation\\models\\wooden-spear\\qa\\game-views\\13-obsidian-spear.png",
+      "bytes": 914679,
+      "sha256": "f8df3f1cceaa87c62b7c6adc8e184ec5ddca2fcfecab942ba6b0778ae308eccb"
+    },
+    {
+      "source": "C:\\Users\\yurin\\Desktop\\projects\\CRO-MAGNON\\assets\\coastal-craft\\models\\wooden-spear\\qa\\game-views\\14-mobile-portrait.png",
+      "destination": "C:\\Users\\yurin\\Desktop\\projects\\threed-model-creation\\models\\wooden-spear\\qa\\game-views\\14-mobile-portrait.png",
+      "bytes": 95331,
+      "sha256": "49cbdd36bb5a5447aa78b1f4f38e700a0056682ad5d6297678a832f2e3f18629"
+    },
+    {
+      "source": "C:\\Users\\yurin\\Desktop\\projects\\CRO-MAGNON\\assets\\coastal-craft\\models\\wooden-spear\\qa\\game-views\\15-mobile-landscape.png",
+      "destination": "C:\\Users\\yurin\\Desktop\\projects\\threed-model-creation\\models\\wooden-spear\\qa\\game-views\\15-mobile-landscape.png",
+      "bytes": 50537,
+      "sha256": "9182d746d8a248831b954e3e99a34debde560ff183752df07ab817659e2cfa9a"
+    },
+    {
+      "source": "C:\\Users\\yurin\\Desktop\\projects\\CRO-MAGNON\\assets\\coastal-craft\\models\\wooden-spear\\qa\\game-views\\16-obsidian-after-reload.png",
+      "destination": "C:\\Users\\yurin\\Desktop\\projects\\threed-model-creation\\models\\wooden-spear\\qa\\game-views\\16-obsidian-after-reload.png",
+      "bytes": 792568,
+      "sha256": "f817ec0b4caf24177b67cd9f77f583c3068fd57fa98854e2af298aae5ad371eb"
+    },
+    {
+      "source": "C:\\Users\\yurin\\Desktop\\projects\\CRO-MAGNON\\assets\\coastal-craft\\models\\wooden-spear\\qa\\game-views\\report.json",
+      "destination": "C:\\Users\\yurin\\Desktop\\projects\\threed-model-creation\\models\\wooden-spear\\qa\\game-views\\report.json",
+      "bytes": 65924,
+      "sha256": "a83b33653fb8830030afcfc3a424daded2e304b95f73d1db2d47192301379a1a"
+    },
+    {
+      "source": "C:\\Users\\yurin\\Desktop\\projects\\CRO-MAGNON\\assets\\coastal-craft\\models\\wooden-spear\\qa\\static-comparison\\bottom-clay.png",
+      "destination": "C:\\Users\\yurin\\Desktop\\projects\\threed-model-creation\\models\\wooden-spear\\qa\\static-comparison\\bottom-clay.png",
+      "bytes": 43599,
+      "sha256": "9abe089ac96ace591f4f4f13edeb376b56748dff5a6b4c29160c77d30cc230f8"
+    },
+    {
+      "source": "C:\\Users\\yurin\\Desktop\\projects\\CRO-MAGNON\\assets\\coastal-craft\\models\\wooden-spear\\qa\\static-comparison\\bottom.png",
+      "destination": "C:\\Users\\yurin\\Desktop\\projects\\threed-model-creation\\models\\wooden-spear\\qa\\static-comparison\\bottom.png",
+      "bytes": 42920,
+      "sha256": "3df0b6230c5b1e45a8f0ce6bd960f3e8e324c33e71be786124f8231f0b7dbbb4"
+    },
+    {
+      "source": "C:\\Users\\yurin\\Desktop\\projects\\CRO-MAGNON\\assets\\coastal-craft\\models\\wooden-spear\\qa\\static-comparison\\browser.json",
+      "destination": "C:\\Users\\yurin\\Desktop\\projects\\threed-model-creation\\models\\wooden-spear\\qa\\static-comparison\\browser.json",
+      "bytes": 1943,
+      "sha256": "107134ddd3ffb5128f105a46f0eaec159cadce1adeab39cb4bb55b05930e3863"
+    },
+    {
+      "source": "C:\\Users\\yurin\\Desktop\\projects\\CRO-MAGNON\\assets\\coastal-craft\\models\\wooden-spear\\qa\\static-comparison\\front-clay.png",
+      "destination": "C:\\Users\\yurin\\Desktop\\projects\\threed-model-creation\\models\\wooden-spear\\qa\\static-comparison\\front-clay.png",
+      "bytes": 55420,
+      "sha256": "091872bc4e7fa8a521b3ff186c0e79e719597216542b1537f6fe61d143494c9b"
+    },
+    {
+      "source": "C:\\Users\\yurin\\Desktop\\projects\\CRO-MAGNON\\assets\\coastal-craft\\models\\wooden-spear\\qa\\static-comparison\\front.png",
+      "destination": "C:\\Users\\yurin\\Desktop\\projects\\threed-model-creation\\models\\wooden-spear\\qa\\static-comparison\\front.png",
+      "bytes": 61469,
+      "sha256": "d6f9471de5b98ae5528f532770c4a796753b45a21e06e1aecd6425744f082dba"
+    },
+    {
+      "source": "C:\\Users\\yurin\\Desktop\\projects\\CRO-MAGNON\\assets\\coastal-craft\\models\\wooden-spear\\qa\\static-comparison\\left-clay.png",
+      "destination": "C:\\Users\\yurin\\Desktop\\projects\\threed-model-creation\\models\\wooden-spear\\qa\\static-comparison\\left-clay.png",
+      "bytes": 52682,
+      "sha256": "33fbe97ff83deeb9691db6d72e85a62e1b7f7903bb25e97e127b8b78363b541c"
+    },
+    {
+      "source": "C:\\Users\\yurin\\Desktop\\projects\\CRO-MAGNON\\assets\\coastal-craft\\models\\wooden-spear\\qa\\static-comparison\\left.png",
+      "destination": "C:\\Users\\yurin\\Desktop\\projects\\threed-model-creation\\models\\wooden-spear\\qa\\static-comparison\\left.png",
+      "bytes": 59098,
+      "sha256": "14fed0bbc5a5a890d2c1d02e113a8a626471ef1362ca4cbee62f6bd2ef1e8a97"
+    },
+    {
+      "source": "C:\\Users\\yurin\\Desktop\\projects\\CRO-MAGNON\\assets\\coastal-craft\\models\\wooden-spear\\qa\\static-comparison\\quarter-clay.png",
+      "destination": "C:\\Users\\yurin\\Desktop\\projects\\threed-model-creation\\models\\wooden-spear\\qa\\static-comparison\\quarter-clay.png",
+      "bytes": 46838,
+      "sha256": "a19880c350eaa8cb5ad3b352e32467cc61ba273f0655f1d5fa2258a78c5280d2"
+    },
+    {
+      "source": "C:\\Users\\yurin\\Desktop\\projects\\CRO-MAGNON\\assets\\coastal-craft\\models\\wooden-spear\\qa\\static-comparison\\quarter.png",
+      "destination": "C:\\Users\\yurin\\Desktop\\projects\\threed-model-creation\\models\\wooden-spear\\qa\\static-comparison\\quarter.png",
+      "bytes": 51954,
+      "sha256": "e55e77a5444fb3802a58d3aeb33577424dddd5323772462f8165a5370753809b"
+    },
+    {
+      "source": "C:\\Users\\yurin\\Desktop\\projects\\CRO-MAGNON\\assets\\coastal-craft\\models\\wooden-spear\\qa\\static-comparison\\rear-clay.png",
+      "destination": "C:\\Users\\yurin\\Desktop\\projects\\threed-model-creation\\models\\wooden-spear\\qa\\static-comparison\\rear-clay.png",
+      "bytes": 46505,
+      "sha256": "e351730252d3202ac479087673424647be6fec726794177baa11204f3418dc7c"
+    },
+    {
+      "source": "C:\\Users\\yurin\\Desktop\\projects\\CRO-MAGNON\\assets\\coastal-craft\\models\\wooden-spear\\qa\\static-comparison\\rear.png",
+      "destination": "C:\\Users\\yurin\\Desktop\\projects\\threed-model-creation\\models\\wooden-spear\\qa\\static-comparison\\rear.png",
+      "bytes": 53464,
+      "sha256": "4e40e3e17a0133cd685f1c7424a69ef7ee13f1b9e918b93a3cdaec9505c47458"
+    },
+    {
+      "source": "C:\\Users\\yurin\\Desktop\\projects\\CRO-MAGNON\\assets\\coastal-craft\\models\\wooden-spear\\qa\\static-comparison\\right-clay.png",
+      "destination": "C:\\Users\\yurin\\Desktop\\projects\\threed-model-creation\\models\\wooden-spear\\qa\\static-comparison\\right-clay.png",
+      "bytes": 50477,
+      "sha256": "48e17b236e0fe3523aea0087cd04b290bbb30c7ab44aed618567d0664b7d6177"
+    },
+    {
+      "source": "C:\\Users\\yurin\\Desktop\\projects\\CRO-MAGNON\\assets\\coastal-craft\\models\\wooden-spear\\qa\\static-comparison\\right.png",
+      "destination": "C:\\Users\\yurin\\Desktop\\projects\\threed-model-creation\\models\\wooden-spear\\qa\\static-comparison\\right.png",
+      "bytes": 56598,
+      "sha256": "a322bdab1cde7528b8c60d79f013313904c2481644bb5af20323a7d3d8919caa"
+    },
+    {
+      "source": "C:\\Users\\yurin\\Desktop\\projects\\CRO-MAGNON\\assets\\coastal-craft\\models\\wooden-spear\\qa\\static-comparison\\top-clay.png",
+      "destination": "C:\\Users\\yurin\\Desktop\\projects\\threed-model-creation\\models\\wooden-spear\\qa\\static-comparison\\top-clay.png",
+      "bytes": 29096,
+      "sha256": "033dc0e830ba89e4b5ef4103312e5164aaa8a6fb4cea3cbc6a3f04de124c815c"
+    },
+    {
+      "source": "C:\\Users\\yurin\\Desktop\\projects\\CRO-MAGNON\\assets\\coastal-craft\\models\\wooden-spear\\qa\\static-comparison\\top.png",
+      "destination": "C:\\Users\\yurin\\Desktop\\projects\\threed-model-creation\\models\\wooden-spear\\qa\\static-comparison\\top.png",
+      "bytes": 29236,
+      "sha256": "ca90d8978b5a845cad1282da46a10199836877496b82349f27db95dc870a08ff"
+    },
+    {
+      "source": "C:\\Users\\yurin\\Desktop\\projects\\CRO-MAGNON\\assets\\coastal-craft\\models\\wooden-spear\\source\\flint-spear.asset.json",
+      "destination": "C:\\Users\\yurin\\Desktop\\projects\\threed-model-creation\\models\\wooden-spear\\source\\flint-spear.asset.json",
+      "bytes": 1737,
+      "sha256": "c34bc76c3d48b91160d4d23d6d222780550d00b847daa6dbf8f5a5d1e3a72630"
+    },
+    {
+      "source": "C:\\Users\\yurin\\Desktop\\projects\\CRO-MAGNON\\assets\\coastal-craft\\models\\wooden-spear\\source\\flint-spear.glb",
+      "destination": "C:\\Users\\yurin\\Desktop\\projects\\threed-model-creation\\models\\wooden-spear\\source\\flint-spear.glb",
+      "bytes": 2816964,
+      "sha256": "1a10db6d1b44da1e982f88e5ae9ef6be8fb74f5900ebd9258380ad200e53ed3d"
+    },
+    {
+      "source": "C:\\Users\\yurin\\Desktop\\projects\\CRO-MAGNON\\assets\\coastal-craft\\models\\wooden-spear\\source\\request.json",
+      "destination": "C:\\Users\\yurin\\Desktop\\projects\\threed-model-creation\\models\\wooden-spear\\source\\request.json",
+      "bytes": 688,
+      "sha256": "cb5a56e216ec81b7082ff12948a0d1fbffdf816c4bebe4ce787322719322cc21"
+    },
+    {
+      "source": "C:\\Users\\yurin\\Desktop\\projects\\CRO-MAGNON\\assets\\coastal-craft\\models\\wooden-spear\\work\\revision-02.log",
+      "destination": "C:\\Users\\yurin\\Desktop\\projects\\threed-model-creation\\models\\wooden-spear\\work\\revision-02.log",
+      "bytes": 636,
+      "sha256": "16d507b4a110f2837934eb4b10986d9b0250b614bb5d306bc03ba1d425a37181"
+    },
+    {
+      "source": "C:\\Users\\yurin\\Desktop\\projects\\CRO-MAGNON\\assets\\coastal-craft\\models\\wooden-spear\\work\\revision-01\\candidate.glb",
+      "destination": "C:\\Users\\yurin\\Desktop\\projects\\threed-model-creation\\models\\wooden-spear\\work\\revision-01\\candidate.glb",
+      "bytes": 1460256,
+      "sha256": "837a21d011f2e832b65d739c29e6ae5572c56b15abc9d73c8b68e8588ae0d494"
+    },
+    {
+      "source": "C:\\Users\\yurin\\Desktop\\projects\\CRO-MAGNON\\assets\\coastal-craft\\models\\wooden-spear\\work\\revision-01\\process.json",
+      "destination": "C:\\Users\\yurin\\Desktop\\projects\\threed-model-creation\\models\\wooden-spear\\work\\revision-01\\process.json",
+      "bytes": 501,
+      "sha256": "51120fd87c716c12c445a5d8c41339572fe4c31cd66e8128c80460628abe7ab6"
+    },
+    {
+      "source": "C:\\Users\\yurin\\Desktop\\projects\\CRO-MAGNON\\assets\\coastal-craft\\models\\wooden-spear\\work\\revision-02\\candidate.glb",
+      "destination": "C:\\Users\\yurin\\Desktop\\projects\\threed-model-creation\\models\\wooden-spear\\work\\revision-02\\candidate.glb",
+      "bytes": 1462776,
+      "sha256": "ac2b1a3c8100b38a7753749fd6578b5f355247478cf9f44ea642c06eb858ee5d"
+    },
+    {
+      "source": "C:\\Users\\yurin\\Desktop\\projects\\CRO-MAGNON\\assets\\coastal-craft\\models\\wooden-spear\\work\\revision-02\\process.json",
+      "destination": "C:\\Users\\yurin\\Desktop\\projects\\threed-model-creation\\models\\wooden-spear\\work\\revision-02\\process.json",
+      "bytes": 592,
+      "sha256": "a2c57d240159c4d1a77767428cc26a3dfadf69a25b8c43a5bf98b1abd4479cf6"
+    },
+    {
+      "source": "C:\\Users\\yurin\\Desktop\\projects\\CRO-MAGNON\\assets\\coastal-craft\\models\\wooden-spear\\workflow\\derive.py",
+      "destination": "C:\\Users\\yurin\\Desktop\\projects\\threed-model-creation\\models\\wooden-spear\\workflow\\derive.py",
+      "bytes": 2059,
+      "sha256": "f311dd5a79b2b6b3ca4369636ca287e285d5b6592f16c249289f310d54b41a19"
+    },
+    {
+      "source": "C:\\Users\\yurin\\Desktop\\projects\\CRO-MAGNON\\assets\\coastal-craft\\models\\wooden-spear\\workflow\\revision-02.py",
+      "destination": "C:\\Users\\yurin\\Desktop\\projects\\threed-model-creation\\models\\wooden-spear\\workflow\\revision-02.py",
+      "bytes": 2195,
+      "sha256": "3c0cec488f1eff22b12b6f85cd6a247a2e5e29261573a2cb8a9df68f4c2b5806"
+    },
+    {
+      "source": "C:\\Users\\yurin\\Desktop\\projects\\CRO-MAGNON\\assets\\coastal-craft\\models\\obsidian-spear\\model.json",
+      "destination": "C:\\Users\\yurin\\Desktop\\projects\\threed-model-creation\\models\\obsidian-spear\\model.json",
+      "bytes": 1248,
+      "sha256": "0f82782bdf458a447e2845eeef2a6a1c9c38d8fb7a156147dc969c2cde65be59"
+    },
+    {
+      "source": "C:\\Users\\yurin\\Desktop\\projects\\CRO-MAGNON\\assets\\coastal-craft\\models\\obsidian-spear\\README.md",
+      "destination": "C:\\Users\\yurin\\Desktop\\projects\\threed-model-creation\\models\\obsidian-spear\\README.md",
+      "bytes": 597,
+      "sha256": "30d5c1cbdd409747544dfb4203bfe65703d0ce2e4a2f4ed6ef080a5e87588c88"
+    },
+    {
+      "source": "C:\\Users\\yurin\\Desktop\\projects\\CRO-MAGNON\\assets\\coastal-craft\\models\\obsidian-spear\\geometry\\accepted.glb",
+      "destination": "C:\\Users\\yurin\\Desktop\\projects\\threed-model-creation\\models\\obsidian-spear\\geometry\\accepted.glb",
+      "bytes": 2816996,
+      "sha256": "d89b680a1519081cb5725ae543ebf1ce7e81c1fdf7f844e060eb17b4f42ca7bc"
+    },
+    {
+      "source": "C:\\Users\\yurin\\Desktop\\projects\\CRO-MAGNON\\assets\\coastal-craft\\models\\obsidian-spear\\qa\\adoption-review.json",
+      "destination": "C:\\Users\\yurin\\Desktop\\projects\\threed-model-creation\\models\\obsidian-spear\\qa\\adoption-review.json",
+      "bytes": 1209,
+      "sha256": "20747b8411fa4501c25700f6312e8c023b0296a181251f54e93df1c7bef1a95f"
+    },
+    {
+      "source": "C:\\Users\\yurin\\Desktop\\projects\\CRO-MAGNON\\assets\\coastal-craft\\models\\obsidian-spear\\qa\\appearance-report.json",
+      "destination": "C:\\Users\\yurin\\Desktop\\projects\\threed-model-creation\\models\\obsidian-spear\\qa\\appearance-report.json",
+      "bytes": 5421,
+      "sha256": "a79bb22c29b763685a08b9141cbb492f2ce8bd57212051e074ccdd93652cdc88"
+    },
+    {
+      "source": "C:\\Users\\yurin\\Desktop\\projects\\CRO-MAGNON\\assets\\coastal-craft\\models\\obsidian-spear\\qa\\game-report.json",
+      "destination": "C:\\Users\\yurin\\Desktop\\projects\\threed-model-creation\\models\\obsidian-spear\\qa\\game-report.json",
+      "bytes": 65924,
+      "sha256": "a83b33653fb8830030afcfc3a424daded2e304b95f73d1db2d47192301379a1a"
+    },
+    {
+      "source": "C:\\Users\\yurin\\Desktop\\projects\\CRO-MAGNON\\assets\\coastal-craft\\models\\obsidian-spear\\qa\\static-config.json",
+      "destination": "C:\\Users\\yurin\\Desktop\\projects\\threed-model-creation\\models\\obsidian-spear\\qa\\static-config.json",
+      "bytes": 436,
+      "sha256": "9f857681b4d1dfd704569da414741a37492e0d0e0209857b1c954eb71e37a1b9"
+    },
+    {
+      "source": "C:\\Users\\yurin\\Desktop\\projects\\CRO-MAGNON\\assets\\coastal-craft\\models\\obsidian-spear\\qa\\appearance-views\\cat-kunoichi-attack.png",
+      "destination": "C:\\Users\\yurin\\Desktop\\projects\\threed-model-creation\\models\\obsidian-spear\\qa\\appearance-views\\cat-kunoichi-attack.png",
+      "bytes": 917899,
+      "sha256": "d551a4f3145e8b3ca744c65f88e3fe7287e07323ba755645ff5674abb588a6dc"
+    },
+    {
+      "source": "C:\\Users\\yurin\\Desktop\\projects\\CRO-MAGNON\\assets\\coastal-craft\\models\\obsidian-spear\\qa\\appearance-views\\cat-kunoichi-initial.png",
+      "destination": "C:\\Users\\yurin\\Desktop\\projects\\threed-model-creation\\models\\obsidian-spear\\qa\\appearance-views\\cat-kunoichi-initial.png",
+      "bytes": 907633,
+      "sha256": "5c71cc7f53ac70326550e9cfaadac300d93be18c9b8cecd17f6089b3731c7973"
+    },
+    {
+      "source": "C:\\Users\\yurin\\Desktop\\projects\\CRO-MAGNON\\assets\\coastal-craft\\models\\obsidian-spear\\qa\\appearance-views\\cro-magnon-hunter-attack.png",
+      "destination": "C:\\Users\\yurin\\Desktop\\projects\\threed-model-creation\\models\\obsidian-spear\\qa\\appearance-views\\cro-magnon-hunter-attack.png",
+      "bytes": 928674,
+      "sha256": "38ed3b08ccc33f707ab7e07f9179be24aff63c47872c074d03b8e68c4bd3d609"
+    },
+    {
+      "source": "C:\\Users\\yurin\\Desktop\\projects\\CRO-MAGNON\\assets\\coastal-craft\\models\\obsidian-spear\\qa\\appearance-views\\cro-magnon-hunter-initial.png",
+      "destination": "C:\\Users\\yurin\\Desktop\\projects\\threed-model-creation\\models\\obsidian-spear\\qa\\appearance-views\\cro-magnon-hunter-initial.png",
+      "bytes": 906653,
+      "sha256": "3768371b2be552be4bbbfcf7474f21d9c918359c7db32c3511a805399cba2942"
+    },
+    {
+      "source": "C:\\Users\\yurin\\Desktop\\projects\\CRO-MAGNON\\assets\\coastal-craft\\models\\obsidian-spear\\qa\\appearance-views\\cro-magnon-hunter-obsidian.png",
+      "destination": "C:\\Users\\yurin\\Desktop\\projects\\threed-model-creation\\models\\obsidian-spear\\qa\\appearance-views\\cro-magnon-hunter-obsidian.png",
+      "bytes": 920868,
+      "sha256": "c714911469f96276b536e4144162b5d9abcebd5ccc9bbecb51cd258298584cd8"
+    },
+    {
+      "source": "C:\\Users\\yurin\\Desktop\\projects\\CRO-MAGNON\\assets\\coastal-craft\\models\\obsidian-spear\\qa\\appearance-views\\cro-magnon-woman-attack.png",
+      "destination": "C:\\Users\\yurin\\Desktop\\projects\\threed-model-creation\\models\\obsidian-spear\\qa\\appearance-views\\cro-magnon-woman-attack.png",
+      "bytes": 930925,
+      "sha256": "4c601ff6ab57cc155c9ecfaf47513ea98b7ead07f734e93cb2d9029aad72df02"
+    },
+    {
+      "source": "C:\\Users\\yurin\\Desktop\\projects\\CRO-MAGNON\\assets\\coastal-craft\\models\\obsidian-spear\\qa\\appearance-views\\cro-magnon-woman-initial.png",
+      "destination": "C:\\Users\\yurin\\Desktop\\projects\\threed-model-creation\\models\\obsidian-spear\\qa\\appearance-views\\cro-magnon-woman-initial.png",
+      "bytes": 907928,
+      "sha256": "543b18adc7af934cb7b043a0ab6ea098b592a2514959314cc358ab9af692749f"
+    },
+    {
+      "source": "C:\\Users\\yurin\\Desktop\\projects\\CRO-MAGNON\\assets\\coastal-craft\\models\\obsidian-spear\\qa\\appearance-views\\cro-magnon-woman-obsidian.png",
+      "destination": "C:\\Users\\yurin\\Desktop\\projects\\threed-model-creation\\models\\obsidian-spear\\qa\\appearance-views\\cro-magnon-woman-obsidian.png",
+      "bytes": 921365,
+      "sha256": "4556f8f8ababd056b603d34af6985c3384d150e0e110794dddf2291453e46b98"
+    },
+    {
+      "source": "C:\\Users\\yurin\\Desktop\\projects\\CRO-MAGNON\\assets\\coastal-craft\\models\\obsidian-spear\\qa\\appearance-views\\floppy-ear-mage-attack.png",
+      "destination": "C:\\Users\\yurin\\Desktop\\projects\\threed-model-creation\\models\\obsidian-spear\\qa\\appearance-views\\floppy-ear-mage-attack.png",
+      "bytes": 871028,
+      "sha256": "d8ab1065a4d7e69fff5b160a773e981f2ac0db4d30f6aac6c4c71a06f1ac9980"
+    },
+    {
+      "source": "C:\\Users\\yurin\\Desktop\\projects\\CRO-MAGNON\\assets\\coastal-craft\\models\\obsidian-spear\\qa\\appearance-views\\floppy-ear-mage-initial.png",
+      "destination": "C:\\Users\\yurin\\Desktop\\projects\\threed-model-creation\\models\\obsidian-spear\\qa\\appearance-views\\floppy-ear-mage-initial.png",
+      "bytes": 860917,
+      "sha256": "82e4c2e9352ac1c41379ec337166cca66580099c0cc718e18fe37c92cd3578fe"
+    },
+    {
+      "source": "C:\\Users\\yurin\\Desktop\\projects\\CRO-MAGNON\\assets\\coastal-craft\\models\\obsidian-spear\\qa\\appearance-views\\neanderthal-hunter-attack.png",
+      "destination": "C:\\Users\\yurin\\Desktop\\projects\\threed-model-creation\\models\\obsidian-spear\\qa\\appearance-views\\neanderthal-hunter-attack.png",
+      "bytes": 930047,
+      "sha256": "752ecf2dbed20d7141f37cfda5b72a2f93d8dee61fbeb9c43768e80ee8d6a809"
+    },
+    {
+      "source": "C:\\Users\\yurin\\Desktop\\projects\\CRO-MAGNON\\assets\\coastal-craft\\models\\obsidian-spear\\qa\\appearance-views\\neanderthal-hunter-initial.png",
+      "destination": "C:\\Users\\yurin\\Desktop\\projects\\threed-model-creation\\models\\obsidian-spear\\qa\\appearance-views\\neanderthal-hunter-initial.png",
+      "bytes": 908642,
+      "sha256": "62bde86b1c9faea3c56a212e2decea1a8db59533af0262f19ac19aca4073517a"
+    },
+    {
+      "source": "C:\\Users\\yurin\\Desktop\\projects\\CRO-MAGNON\\assets\\coastal-craft\\models\\obsidian-spear\\qa\\appearance-views\\neanderthal-hunter-obsidian.png",
+      "destination": "C:\\Users\\yurin\\Desktop\\projects\\threed-model-creation\\models\\obsidian-spear\\qa\\appearance-views\\neanderthal-hunter-obsidian.png",
+      "bytes": 921435,
+      "sha256": "5d9471331f82c2c9d4b085fe4f6b7b0960232dec02a0d778aeb5f96d41195dab"
+    },
+    {
+      "source": "C:\\Users\\yurin\\Desktop\\projects\\CRO-MAGNON\\assets\\coastal-craft\\models\\obsidian-spear\\qa\\appearance-views\\neanderthal-woman-attack.png",
+      "destination": "C:\\Users\\yurin\\Desktop\\projects\\threed-model-creation\\models\\obsidian-spear\\qa\\appearance-views\\neanderthal-woman-attack.png",
+      "bytes": 930014,
+      "sha256": "899113d84bef11b80753bcedc6caca976b50f0dff480e4a59e5a0c3d420ecacb"
+    },
+    {
+      "source": "C:\\Users\\yurin\\Desktop\\projects\\CRO-MAGNON\\assets\\coastal-craft\\models\\obsidian-spear\\qa\\appearance-views\\neanderthal-woman-initial.png",
+      "destination": "C:\\Users\\yurin\\Desktop\\projects\\threed-model-creation\\models\\obsidian-spear\\qa\\appearance-views\\neanderthal-woman-initial.png",
+      "bytes": 906974,
+      "sha256": "ecea3680e7c4f83e516f99741239d3a392d476a411fe296fee5422f5e9899edb"
+    },
+    {
+      "source": "C:\\Users\\yurin\\Desktop\\projects\\CRO-MAGNON\\assets\\coastal-craft\\models\\obsidian-spear\\qa\\appearance-views\\neanderthal-woman-obsidian.png",
+      "destination": "C:\\Users\\yurin\\Desktop\\projects\\threed-model-creation\\models\\obsidian-spear\\qa\\appearance-views\\neanderthal-woman-obsidian.png",
+      "bytes": 920635,
+      "sha256": "6390ead36f3adc5259c447a46887922d1f6ef1896f013315ed48497d0fb362b1"
+    },
+    {
+      "source": "C:\\Users\\yurin\\Desktop\\projects\\CRO-MAGNON\\assets\\coastal-craft\\models\\obsidian-spear\\qa\\appearance-views\\report.json",
+      "destination": "C:\\Users\\yurin\\Desktop\\projects\\threed-model-creation\\models\\obsidian-spear\\qa\\appearance-views\\report.json",
+      "bytes": 5421,
+      "sha256": "a79bb22c29b763685a08b9141cbb492f2ce8bd57212051e074ccdd93652cdc88"
+    },
+    {
+      "source": "C:\\Users\\yurin\\Desktop\\projects\\CRO-MAGNON\\assets\\coastal-craft\\models\\obsidian-spear\\qa\\game-views\\01-ready.png",
+      "destination": "C:\\Users\\yurin\\Desktop\\projects\\threed-model-creation\\models\\obsidian-spear\\qa\\game-views\\01-ready.png",
+      "bytes": 1205251,
+      "sha256": "62f9fa3d54a116d6e3426e2ce666c952727fcaabec791ad6dc8c889a071dd328"
+    },
+    {
+      "source": "C:\\Users\\yurin\\Desktop\\projects\\CRO-MAGNON\\assets\\coastal-craft\\models\\obsidian-spear\\qa\\game-views\\02-gulf-arrival.png",
+      "destination": "C:\\Users\\yurin\\Desktop\\projects\\threed-model-creation\\models\\obsidian-spear\\qa\\game-views\\02-gulf-arrival.png",
+      "bytes": 183542,
+      "sha256": "2f890b3414f35409b100f976f1dd17172ebe1f1a54a397b652e1218361b3707f"
+    },
+    {
+      "source": "C:\\Users\\yurin\\Desktop\\projects\\CRO-MAGNON\\assets\\coastal-craft\\models\\obsidian-spear\\qa\\game-views\\03-shell-gather.png",
+      "destination": "C:\\Users\\yurin\\Desktop\\projects\\threed-model-creation\\models\\obsidian-spear\\qa\\game-views\\03-shell-gather.png",
+      "bytes": 1009045,
+      "sha256": "e76ad40549d112f9322ca465bc588d6c7af72149c7aa9205ecd9b6032fbb300c"
+    },
+    {
+      "source": "C:\\Users\\yurin\\Desktop\\projects\\CRO-MAGNON\\assets\\coastal-craft\\models\\obsidian-spear\\qa\\game-views\\04-shell-gather-active.png",
+      "destination": "C:\\Users\\yurin\\Desktop\\projects\\threed-model-creation\\models\\obsidian-spear\\qa\\game-views\\04-shell-gather-active.png",
+      "bytes": 939955,
+      "sha256": "6e19d26e34684beec2d53efdab670f9c8023f74cd2644df06b91cdb0464f67b8"
+    },
+    {
+      "source": "C:\\Users\\yurin\\Desktop\\projects\\CRO-MAGNON\\assets\\coastal-craft\\models\\obsidian-spear\\qa\\game-views\\05-shell-cook.png",
+      "destination": "C:\\Users\\yurin\\Desktop\\projects\\threed-model-creation\\models\\obsidian-spear\\qa\\game-views\\05-shell-cook.png",
+      "bytes": 808924,
+      "sha256": "fd30faa1bb19abc8a01e6354f0671ca4655cf4bb8b3748737bcbd3e09e188cdf"
+    },
+    {
+      "source": "C:\\Users\\yurin\\Desktop\\projects\\CRO-MAGNON\\assets\\coastal-craft\\models\\obsidian-spear\\qa\\game-views\\06-first-midden.png",
+      "destination": "C:\\Users\\yurin\\Desktop\\projects\\threed-model-creation\\models\\obsidian-spear\\qa\\game-views\\06-first-midden.png",
+      "bytes": 933582,
+      "sha256": "6fe06e9a27f72dc34caad9485cd56e809e4dd5185e22240fecfd541e54058403"
+    },
+    {
+      "source": "C:\\Users\\yurin\\Desktop\\projects\\CRO-MAGNON\\assets\\coastal-craft\\models\\obsidian-spear\\qa\\game-views\\07-midden-stage2.png",
+      "destination": "C:\\Users\\yurin\\Desktop\\projects\\threed-model-creation\\models\\obsidian-spear\\qa\\game-views\\07-midden-stage2.png",
+      "bytes": 959703,
+      "sha256": "e74dcb5162ae80222a27c66f18044296d128ebca65e555d1a81acfd375437980"
+    },
+    {
+      "source": "C:\\Users\\yurin\\Desktop\\projects\\CRO-MAGNON\\assets\\coastal-craft\\models\\obsidian-spear\\qa\\game-views\\08-midden-stage3.png",
+      "destination": "C:\\Users\\yurin\\Desktop\\projects\\threed-model-creation\\models\\obsidian-spear\\qa\\game-views\\08-midden-stage3.png",
+      "bytes": 968798,
+      "sha256": "4cce40e3f5c760939c51d4440d2af67e053e723e2e4eb3582e7ede444ccd5113"
+    },
+    {
+      "source": "C:\\Users\\yurin\\Desktop\\projects\\CRO-MAGNON\\assets\\coastal-craft\\models\\obsidian-spear\\qa\\game-views\\09-midden-observer.png",
+      "destination": "C:\\Users\\yurin\\Desktop\\projects\\threed-model-creation\\models\\obsidian-spear\\qa\\game-views\\09-midden-observer.png",
+      "bytes": 988076,
+      "sha256": "ae984804a2a24f90fa7dd4de2fa26ed570a4668e6664f26f52a3ae468d187df3"
+    },
+    {
+      "source": "C:\\Users\\yurin\\Desktop\\projects\\CRO-MAGNON\\assets\\coastal-craft\\models\\obsidian-spear\\qa\\game-views\\10-obsidian-mining.png",
+      "destination": "C:\\Users\\yurin\\Desktop\\projects\\threed-model-creation\\models\\obsidian-spear\\qa\\game-views\\10-obsidian-mining.png",
+      "bytes": 977682,
+      "sha256": "2c353b07d8b47d78218373277d13cbed6b628e4958d204e9b1712b05cb9ece3a"
+    },
+    {
+      "source": "C:\\Users\\yurin\\Desktop\\projects\\CRO-MAGNON\\assets\\coastal-craft\\models\\obsidian-spear\\qa\\game-views\\11-knapping-active.png",
+      "destination": "C:\\Users\\yurin\\Desktop\\projects\\threed-model-creation\\models\\obsidian-spear\\qa\\game-views\\11-knapping-active.png",
+      "bytes": 891276,
+      "sha256": "c9706313ae446f7454f502a374f540c290d62304ce3dd2eea6274499531352f3"
+    },
+    {
+      "source": "C:\\Users\\yurin\\Desktop\\projects\\CRO-MAGNON\\assets\\coastal-craft\\models\\obsidian-spear\\qa\\game-views\\12-hafted-recipe.png",
+      "destination": "C:\\Users\\yurin\\Desktop\\projects\\threed-model-creation\\models\\obsidian-spear\\qa\\game-views\\12-hafted-recipe.png",
+      "bytes": 249852,
+      "sha256": "5ea08c8348aecc46e61be52335958c115c55998234dd8da08a9c2e96918fd9bb"
+    },
+    {
+      "source": "C:\\Users\\yurin\\Desktop\\projects\\CRO-MAGNON\\assets\\coastal-craft\\models\\obsidian-spear\\qa\\game-views\\13-obsidian-spear.png",
+      "destination": "C:\\Users\\yurin\\Desktop\\projects\\threed-model-creation\\models\\obsidian-spear\\qa\\game-views\\13-obsidian-spear.png",
+      "bytes": 914679,
+      "sha256": "f8df3f1cceaa87c62b7c6adc8e184ec5ddca2fcfecab942ba6b0778ae308eccb"
+    },
+    {
+      "source": "C:\\Users\\yurin\\Desktop\\projects\\CRO-MAGNON\\assets\\coastal-craft\\models\\obsidian-spear\\qa\\game-views\\14-mobile-portrait.png",
+      "destination": "C:\\Users\\yurin\\Desktop\\projects\\threed-model-creation\\models\\obsidian-spear\\qa\\game-views\\14-mobile-portrait.png",
+      "bytes": 95331,
+      "sha256": "49cbdd36bb5a5447aa78b1f4f38e700a0056682ad5d6297678a832f2e3f18629"
+    },
+    {
+      "source": "C:\\Users\\yurin\\Desktop\\projects\\CRO-MAGNON\\assets\\coastal-craft\\models\\obsidian-spear\\qa\\game-views\\15-mobile-landscape.png",
+      "destination": "C:\\Users\\yurin\\Desktop\\projects\\threed-model-creation\\models\\obsidian-spear\\qa\\game-views\\15-mobile-landscape.png",
+      "bytes": 50537,
+      "sha256": "9182d746d8a248831b954e3e99a34debde560ff183752df07ab817659e2cfa9a"
+    },
+    {
+      "source": "C:\\Users\\yurin\\Desktop\\projects\\CRO-MAGNON\\assets\\coastal-craft\\models\\obsidian-spear\\qa\\game-views\\16-obsidian-after-reload.png",
+      "destination": "C:\\Users\\yurin\\Desktop\\projects\\threed-model-creation\\models\\obsidian-spear\\qa\\game-views\\16-obsidian-after-reload.png",
+      "bytes": 792568,
+      "sha256": "f817ec0b4caf24177b67cd9f77f583c3068fd57fa98854e2af298aae5ad371eb"
+    },
+    {
+      "source": "C:\\Users\\yurin\\Desktop\\projects\\CRO-MAGNON\\assets\\coastal-craft\\models\\obsidian-spear\\qa\\game-views\\report.json",
+      "destination": "C:\\Users\\yurin\\Desktop\\projects\\threed-model-creation\\models\\obsidian-spear\\qa\\game-views\\report.json",
+      "bytes": 65924,
+      "sha256": "a83b33653fb8830030afcfc3a424daded2e304b95f73d1db2d47192301379a1a"
+    },
+    {
+      "source": "C:\\Users\\yurin\\Desktop\\projects\\CRO-MAGNON\\assets\\coastal-craft\\models\\obsidian-spear\\qa\\static-comparison\\bottom-clay.png",
+      "destination": "C:\\Users\\yurin\\Desktop\\projects\\threed-model-creation\\models\\obsidian-spear\\qa\\static-comparison\\bottom-clay.png",
+      "bytes": 43599,
+      "sha256": "9abe089ac96ace591f4f4f13edeb376b56748dff5a6b4c29160c77d30cc230f8"
+    },
+    {
+      "source": "C:\\Users\\yurin\\Desktop\\projects\\CRO-MAGNON\\assets\\coastal-craft\\models\\obsidian-spear\\qa\\static-comparison\\bottom.png",
+      "destination": "C:\\Users\\yurin\\Desktop\\projects\\threed-model-creation\\models\\obsidian-spear\\qa\\static-comparison\\bottom.png",
+      "bytes": 42920,
+      "sha256": "3df0b6230c5b1e45a8f0ce6bd960f3e8e324c33e71be786124f8231f0b7dbbb4"
+    },
+    {
+      "source": "C:\\Users\\yurin\\Desktop\\projects\\CRO-MAGNON\\assets\\coastal-craft\\models\\obsidian-spear\\qa\\static-comparison\\browser.json",
+      "destination": "C:\\Users\\yurin\\Desktop\\projects\\threed-model-creation\\models\\obsidian-spear\\qa\\static-comparison\\browser.json",
+      "bytes": 1943,
+      "sha256": "107134ddd3ffb5128f105a46f0eaec159cadce1adeab39cb4bb55b05930e3863"
+    },
+    {
+      "source": "C:\\Users\\yurin\\Desktop\\projects\\CRO-MAGNON\\assets\\coastal-craft\\models\\obsidian-spear\\qa\\static-comparison\\front-clay.png",
+      "destination": "C:\\Users\\yurin\\Desktop\\projects\\threed-model-creation\\models\\obsidian-spear\\qa\\static-comparison\\front-clay.png",
+      "bytes": 55420,
+      "sha256": "091872bc4e7fa8a521b3ff186c0e79e719597216542b1537f6fe61d143494c9b"
+    },
+    {
+      "source": "C:\\Users\\yurin\\Desktop\\projects\\CRO-MAGNON\\assets\\coastal-craft\\models\\obsidian-spear\\qa\\static-comparison\\front.png",
+      "destination": "C:\\Users\\yurin\\Desktop\\projects\\threed-model-creation\\models\\obsidian-spear\\qa\\static-comparison\\front.png",
+      "bytes": 61469,
+      "sha256": "d6f9471de5b98ae5528f532770c4a796753b45a21e06e1aecd6425744f082dba"
+    },
+    {
+      "source": "C:\\Users\\yurin\\Desktop\\projects\\CRO-MAGNON\\assets\\coastal-craft\\models\\obsidian-spear\\qa\\static-comparison\\left-clay.png",
+      "destination": "C:\\Users\\yurin\\Desktop\\projects\\threed-model-creation\\models\\obsidian-spear\\qa\\static-comparison\\left-clay.png",
+      "bytes": 52682,
+      "sha256": "33fbe97ff83deeb9691db6d72e85a62e1b7f7903bb25e97e127b8b78363b541c"
+    },
+    {
+      "source": "C:\\Users\\yurin\\Desktop\\projects\\CRO-MAGNON\\assets\\coastal-craft\\models\\obsidian-spear\\qa\\static-comparison\\left.png",
+      "destination": "C:\\Users\\yurin\\Desktop\\projects\\threed-model-creation\\models\\obsidian-spear\\qa\\static-comparison\\left.png",
+      "bytes": 59098,
+      "sha256": "14fed0bbc5a5a890d2c1d02e113a8a626471ef1362ca4cbee62f6bd2ef1e8a97"
+    },
+    {
+      "source": "C:\\Users\\yurin\\Desktop\\projects\\CRO-MAGNON\\assets\\coastal-craft\\models\\obsidian-spear\\qa\\static-comparison\\quarter-clay.png",
+      "destination": "C:\\Users\\yurin\\Desktop\\projects\\threed-model-creation\\models\\obsidian-spear\\qa\\static-comparison\\quarter-clay.png",
+      "bytes": 46838,
+      "sha256": "a19880c350eaa8cb5ad3b352e32467cc61ba273f0655f1d5fa2258a78c5280d2"
+    },
+    {
+      "source": "C:\\Users\\yurin\\Desktop\\projects\\CRO-MAGNON\\assets\\coastal-craft\\models\\obsidian-spear\\qa\\static-comparison\\quarter.png",
+      "destination": "C:\\Users\\yurin\\Desktop\\projects\\threed-model-creation\\models\\obsidian-spear\\qa\\static-comparison\\quarter.png",
+      "bytes": 51954,
+      "sha256": "e55e77a5444fb3802a58d3aeb33577424dddd5323772462f8165a5370753809b"
+    },
+    {
+      "source": "C:\\Users\\yurin\\Desktop\\projects\\CRO-MAGNON\\assets\\coastal-craft\\models\\obsidian-spear\\qa\\static-comparison\\rear-clay.png",
+      "destination": "C:\\Users\\yurin\\Desktop\\projects\\threed-model-creation\\models\\obsidian-spear\\qa\\static-comparison\\rear-clay.png",
+      "bytes": 46505,
+      "sha256": "e351730252d3202ac479087673424647be6fec726794177baa11204f3418dc7c"
+    },
+    {
+      "source": "C:\\Users\\yurin\\Desktop\\projects\\CRO-MAGNON\\assets\\coastal-craft\\models\\obsidian-spear\\qa\\static-comparison\\rear.png",
+      "destination": "C:\\Users\\yurin\\Desktop\\projects\\threed-model-creation\\models\\obsidian-spear\\qa\\static-comparison\\rear.png",
+      "bytes": 53464,
+      "sha256": "4e40e3e17a0133cd685f1c7424a69ef7ee13f1b9e918b93a3cdaec9505c47458"
+    },
+    {
+      "source": "C:\\Users\\yurin\\Desktop\\projects\\CRO-MAGNON\\assets\\coastal-craft\\models\\obsidian-spear\\qa\\static-comparison\\right-clay.png",
+      "destination": "C:\\Users\\yurin\\Desktop\\projects\\threed-model-creation\\models\\obsidian-spear\\qa\\static-comparison\\right-clay.png",
+      "bytes": 50477,
+      "sha256": "48e17b236e0fe3523aea0087cd04b290bbb30c7ab44aed618567d0664b7d6177"
+    },
+    {
+      "source": "C:\\Users\\yurin\\Desktop\\projects\\CRO-MAGNON\\assets\\coastal-craft\\models\\obsidian-spear\\qa\\static-comparison\\right.png",
+      "destination": "C:\\Users\\yurin\\Desktop\\projects\\threed-model-creation\\models\\obsidian-spear\\qa\\static-comparison\\right.png",
+      "bytes": 56598,
+      "sha256": "a322bdab1cde7528b8c60d79f013313904c2481644bb5af20323a7d3d8919caa"
+    },
+    {
+      "source": "C:\\Users\\yurin\\Desktop\\projects\\CRO-MAGNON\\assets\\coastal-craft\\models\\obsidian-spear\\qa\\static-comparison\\top-clay.png",
+      "destination": "C:\\Users\\yurin\\Desktop\\projects\\threed-model-creation\\models\\obsidian-spear\\qa\\static-comparison\\top-clay.png",
+      "bytes": 29096,
+      "sha256": "033dc0e830ba89e4b5ef4103312e5164aaa8a6fb4cea3cbc6a3f04de124c815c"
+    },
+    {
+      "source": "C:\\Users\\yurin\\Desktop\\projects\\CRO-MAGNON\\assets\\coastal-craft\\models\\obsidian-spear\\qa\\static-comparison\\top.png",
+      "destination": "C:\\Users\\yurin\\Desktop\\projects\\threed-model-creation\\models\\obsidian-spear\\qa\\static-comparison\\top.png",
+      "bytes": 29236,
+      "sha256": "ca90d8978b5a845cad1282da46a10199836877496b82349f27db95dc870a08ff"
+    },
+    {
+      "source": "C:\\Users\\yurin\\Desktop\\projects\\CRO-MAGNON\\assets\\coastal-craft\\models\\obsidian-spear\\source\\flint-spear.asset.json",
+      "destination": "C:\\Users\\yurin\\Desktop\\projects\\threed-model-creation\\models\\obsidian-spear\\source\\flint-spear.asset.json",
+      "bytes": 1737,
+      "sha256": "c34bc76c3d48b91160d4d23d6d222780550d00b847daa6dbf8f5a5d1e3a72630"
+    },
+    {
+      "source": "C:\\Users\\yurin\\Desktop\\projects\\CRO-MAGNON\\assets\\coastal-craft\\models\\obsidian-spear\\source\\flint-spear.glb",
+      "destination": "C:\\Users\\yurin\\Desktop\\projects\\threed-model-creation\\models\\obsidian-spear\\source\\flint-spear.glb",
+      "bytes": 2816964,
+      "sha256": "1a10db6d1b44da1e982f88e5ae9ef6be8fb74f5900ebd9258380ad200e53ed3d"
+    },
+    {
+      "source": "C:\\Users\\yurin\\Desktop\\projects\\CRO-MAGNON\\assets\\coastal-craft\\models\\obsidian-spear\\source\\request.json",
+      "destination": "C:\\Users\\yurin\\Desktop\\projects\\threed-model-creation\\models\\obsidian-spear\\source\\request.json",
+      "bytes": 651,
+      "sha256": "9f4bacce640120cc2f4ce1676c3d35f88a5b4d48d05e596644a20ae090fd828f"
+    },
+    {
+      "source": "C:\\Users\\yurin\\Desktop\\projects\\CRO-MAGNON\\assets\\coastal-craft\\models\\obsidian-spear\\work\\revision-01\\candidate.glb",
+      "destination": "C:\\Users\\yurin\\Desktop\\projects\\threed-model-creation\\models\\obsidian-spear\\work\\revision-01\\candidate.glb",
+      "bytes": 2816996,
+      "sha256": "d89b680a1519081cb5725ae543ebf1ce7e81c1fdf7f844e060eb17b4f42ca7bc"
+    },
+    {
+      "source": "C:\\Users\\yurin\\Desktop\\projects\\CRO-MAGNON\\assets\\coastal-craft\\models\\obsidian-spear\\work\\revision-01\\process.json",
+      "destination": "C:\\Users\\yurin\\Desktop\\projects\\threed-model-creation\\models\\obsidian-spear\\work\\revision-01\\process.json",
+      "bytes": 416,
+      "sha256": "2889b61431215e6045d1a51d89b6a74d7db63a4cfbc33a162e15261a22497a4a"
+    },
+    {
+      "source": "C:\\Users\\yurin\\Desktop\\projects\\CRO-MAGNON\\assets\\coastal-craft\\models\\obsidian-spear\\workflow\\derive.mjs",
+      "destination": "C:\\Users\\yurin\\Desktop\\projects\\threed-model-creation\\models\\obsidian-spear\\workflow\\derive.mjs",
+      "bytes": 1861,
+      "sha256": "412150a83c36de40e7406e4b50ac3a555ce4d2e37a94da3801f5f428916dca1b"
+    },
+    {
+      "source": "C:\\Users\\yurin\\Desktop\\projects\\CRO-MAGNON\\assets\\coastal-craft\\models\\obsidian-blade\\model.json",
+      "destination": "C:\\Users\\yurin\\Desktop\\projects\\threed-model-creation\\models\\obsidian-blade\\model.json",
+      "bytes": 1248,
+      "sha256": "e4efec820efe7e1802954a2d40716c40d3ccd75ff759039df6d094beb0b7e036"
+    },
+    {
+      "source": "C:\\Users\\yurin\\Desktop\\projects\\CRO-MAGNON\\assets\\coastal-craft\\models\\obsidian-blade\\README.md",
+      "destination": "C:\\Users\\yurin\\Desktop\\projects\\threed-model-creation\\models\\obsidian-blade\\README.md",
+      "bytes": 597,
+      "sha256": "221021af5d75be8f0086021bd29ba0d25da90feb8d903651e9b7b36dffa48f09"
+    },
+    {
+      "source": "C:\\Users\\yurin\\Desktop\\projects\\CRO-MAGNON\\assets\\coastal-craft\\models\\obsidian-blade\\geometry\\accepted.glb",
+      "destination": "C:\\Users\\yurin\\Desktop\\projects\\threed-model-creation\\models\\obsidian-blade\\geometry\\accepted.glb",
+      "bytes": 2816960,
+      "sha256": "3319075637b3714f836a59d9381fa23f0fb943ed8969a6c193f11e5152590f60"
+    },
+    {
+      "source": "C:\\Users\\yurin\\Desktop\\projects\\CRO-MAGNON\\assets\\coastal-craft\\models\\obsidian-blade\\qa\\adoption-review.json",
+      "destination": "C:\\Users\\yurin\\Desktop\\projects\\threed-model-creation\\models\\obsidian-blade\\qa\\adoption-review.json",
+      "bytes": 1209,
+      "sha256": "d854679f0f0b325cd8a70653e81c04ff377dd0029307ea0f2febc4415ddd752e"
+    },
+    {
+      "source": "C:\\Users\\yurin\\Desktop\\projects\\CRO-MAGNON\\assets\\coastal-craft\\models\\obsidian-blade\\qa\\appearance-report.json",
+      "destination": "C:\\Users\\yurin\\Desktop\\projects\\threed-model-creation\\models\\obsidian-blade\\qa\\appearance-report.json",
+      "bytes": 5421,
+      "sha256": "a79bb22c29b763685a08b9141cbb492f2ce8bd57212051e074ccdd93652cdc88"
+    },
+    {
+      "source": "C:\\Users\\yurin\\Desktop\\projects\\CRO-MAGNON\\assets\\coastal-craft\\models\\obsidian-blade\\qa\\game-report.json",
+      "destination": "C:\\Users\\yurin\\Desktop\\projects\\threed-model-creation\\models\\obsidian-blade\\qa\\game-report.json",
+      "bytes": 65924,
+      "sha256": "a83b33653fb8830030afcfc3a424daded2e304b95f73d1db2d47192301379a1a"
+    },
+    {
+      "source": "C:\\Users\\yurin\\Desktop\\projects\\CRO-MAGNON\\assets\\coastal-craft\\models\\obsidian-blade\\qa\\static-config.json",
+      "destination": "C:\\Users\\yurin\\Desktop\\projects\\threed-model-creation\\models\\obsidian-blade\\qa\\static-config.json",
+      "bytes": 436,
+      "sha256": "9f857681b4d1dfd704569da414741a37492e0d0e0209857b1c954eb71e37a1b9"
+    },
+    {
+      "source": "C:\\Users\\yurin\\Desktop\\projects\\CRO-MAGNON\\assets\\coastal-craft\\models\\obsidian-blade\\qa\\appearance-views\\cat-kunoichi-attack.png",
+      "destination": "C:\\Users\\yurin\\Desktop\\projects\\threed-model-creation\\models\\obsidian-blade\\qa\\appearance-views\\cat-kunoichi-attack.png",
+      "bytes": 917899,
+      "sha256": "d551a4f3145e8b3ca744c65f88e3fe7287e07323ba755645ff5674abb588a6dc"
+    },
+    {
+      "source": "C:\\Users\\yurin\\Desktop\\projects\\CRO-MAGNON\\assets\\coastal-craft\\models\\obsidian-blade\\qa\\appearance-views\\cat-kunoichi-initial.png",
+      "destination": "C:\\Users\\yurin\\Desktop\\projects\\threed-model-creation\\models\\obsidian-blade\\qa\\appearance-views\\cat-kunoichi-initial.png",
+      "bytes": 907633,
+      "sha256": "5c71cc7f53ac70326550e9cfaadac300d93be18c9b8cecd17f6089b3731c7973"
+    },
+    {
+      "source": "C:\\Users\\yurin\\Desktop\\projects\\CRO-MAGNON\\assets\\coastal-craft\\models\\obsidian-blade\\qa\\appearance-views\\cro-magnon-hunter-attack.png",
+      "destination": "C:\\Users\\yurin\\Desktop\\projects\\threed-model-creation\\models\\obsidian-blade\\qa\\appearance-views\\cro-magnon-hunter-attack.png",
+      "bytes": 928674,
+      "sha256": "38ed3b08ccc33f707ab7e07f9179be24aff63c47872c074d03b8e68c4bd3d609"
+    },
+    {
+      "source": "C:\\Users\\yurin\\Desktop\\projects\\CRO-MAGNON\\assets\\coastal-craft\\models\\obsidian-blade\\qa\\appearance-views\\cro-magnon-hunter-initial.png",
+      "destination": "C:\\Users\\yurin\\Desktop\\projects\\threed-model-creation\\models\\obsidian-blade\\qa\\appearance-views\\cro-magnon-hunter-initial.png",
+      "bytes": 906653,
+      "sha256": "3768371b2be552be4bbbfcf7474f21d9c918359c7db32c3511a805399cba2942"
+    },
+    {
+      "source": "C:\\Users\\yurin\\Desktop\\projects\\CRO-MAGNON\\assets\\coastal-craft\\models\\obsidian-blade\\qa\\appearance-views\\cro-magnon-hunter-obsidian.png",
+      "destination": "C:\\Users\\yurin\\Desktop\\projects\\threed-model-creation\\models\\obsidian-blade\\qa\\appearance-views\\cro-magnon-hunter-obsidian.png",
+      "bytes": 920868,
+      "sha256": "c714911469f96276b536e4144162b5d9abcebd5ccc9bbecb51cd258298584cd8"
+    },
+    {
+      "source": "C:\\Users\\yurin\\Desktop\\projects\\CRO-MAGNON\\assets\\coastal-craft\\models\\obsidian-blade\\qa\\appearance-views\\cro-magnon-woman-attack.png",
+      "destination": "C:\\Users\\yurin\\Desktop\\projects\\threed-model-creation\\models\\obsidian-blade\\qa\\appearance-views\\cro-magnon-woman-attack.png",
+      "bytes": 930925,
+      "sha256": "4c601ff6ab57cc155c9ecfaf47513ea98b7ead07f734e93cb2d9029aad72df02"
+    },
+    {
+      "source": "C:\\Users\\yurin\\Desktop\\projects\\CRO-MAGNON\\assets\\coastal-craft\\models\\obsidian-blade\\qa\\appearance-views\\cro-magnon-woman-initial.png",
+      "destination": "C:\\Users\\yurin\\Desktop\\projects\\threed-model-creation\\models\\obsidian-blade\\qa\\appearance-views\\cro-magnon-woman-initial.png",
+      "bytes": 907928,
+      "sha256": "543b18adc7af934cb7b043a0ab6ea098b592a2514959314cc358ab9af692749f"
+    },
+    {
+      "source": "C:\\Users\\yurin\\Desktop\\projects\\CRO-MAGNON\\assets\\coastal-craft\\models\\obsidian-blade\\qa\\appearance-views\\cro-magnon-woman-obsidian.png",
+      "destination": "C:\\Users\\yurin\\Desktop\\projects\\threed-model-creation\\models\\obsidian-blade\\qa\\appearance-views\\cro-magnon-woman-obsidian.png",
+      "bytes": 921365,
+      "sha256": "4556f8f8ababd056b603d34af6985c3384d150e0e110794dddf2291453e46b98"
+    },
+    {
+      "source": "C:\\Users\\yurin\\Desktop\\projects\\CRO-MAGNON\\assets\\coastal-craft\\models\\obsidian-blade\\qa\\appearance-views\\floppy-ear-mage-attack.png",
+      "destination": "C:\\Users\\yurin\\Desktop\\projects\\threed-model-creation\\models\\obsidian-blade\\qa\\appearance-views\\floppy-ear-mage-attack.png",
+      "bytes": 871028,
+      "sha256": "d8ab1065a4d7e69fff5b160a773e981f2ac0db4d30f6aac6c4c71a06f1ac9980"
+    },
+    {
+      "source": "C:\\Users\\yurin\\Desktop\\projects\\CRO-MAGNON\\assets\\coastal-craft\\models\\obsidian-blade\\qa\\appearance-views\\floppy-ear-mage-initial.png",
+      "destination": "C:\\Users\\yurin\\Desktop\\projects\\threed-model-creation\\models\\obsidian-blade\\qa\\appearance-views\\floppy-ear-mage-initial.png",
+      "bytes": 860917,
+      "sha256": "82e4c2e9352ac1c41379ec337166cca66580099c0cc718e18fe37c92cd3578fe"
+    },
+    {
+      "source": "C:\\Users\\yurin\\Desktop\\projects\\CRO-MAGNON\\assets\\coastal-craft\\models\\obsidian-blade\\qa\\appearance-views\\neanderthal-hunter-attack.png",
+      "destination": "C:\\Users\\yurin\\Desktop\\projects\\threed-model-creation\\models\\obsidian-blade\\qa\\appearance-views\\neanderthal-hunter-attack.png",
+      "bytes": 930047,
+      "sha256": "752ecf2dbed20d7141f37cfda5b72a2f93d8dee61fbeb9c43768e80ee8d6a809"
+    },
+    {
+      "source": "C:\\Users\\yurin\\Desktop\\projects\\CRO-MAGNON\\assets\\coastal-craft\\models\\obsidian-blade\\qa\\appearance-views\\neanderthal-hunter-initial.png",
+      "destination": "C:\\Users\\yurin\\Desktop\\projects\\threed-model-creation\\models\\obsidian-blade\\qa\\appearance-views\\neanderthal-hunter-initial.png",
+      "bytes": 908642,
+      "sha256": "62bde86b1c9faea3c56a212e2decea1a8db59533af0262f19ac19aca4073517a"
+    },
+    {
+      "source": "C:\\Users\\yurin\\Desktop\\projects\\CRO-MAGNON\\assets\\coastal-craft\\models\\obsidian-blade\\qa\\appearance-views\\neanderthal-hunter-obsidian.png",
+      "destination": "C:\\Users\\yurin\\Desktop\\projects\\threed-model-creation\\models\\obsidian-blade\\qa\\appearance-views\\neanderthal-hunter-obsidian.png",
+      "bytes": 921435,
+      "sha256": "5d9471331f82c2c9d4b085fe4f6b7b0960232dec02a0d778aeb5f96d41195dab"
+    },
+    {
+      "source": "C:\\Users\\yurin\\Desktop\\projects\\CRO-MAGNON\\assets\\coastal-craft\\models\\obsidian-blade\\qa\\appearance-views\\neanderthal-woman-attack.png",
+      "destination": "C:\\Users\\yurin\\Desktop\\projects\\threed-model-creation\\models\\obsidian-blade\\qa\\appearance-views\\neanderthal-woman-attack.png",
+      "bytes": 930014,
+      "sha256": "899113d84bef11b80753bcedc6caca976b50f0dff480e4a59e5a0c3d420ecacb"
+    },
+    {
+      "source": "C:\\Users\\yurin\\Desktop\\projects\\CRO-MAGNON\\assets\\coastal-craft\\models\\obsidian-blade\\qa\\appearance-views\\neanderthal-woman-initial.png",
+      "destination": "C:\\Users\\yurin\\Desktop\\projects\\threed-model-creation\\models\\obsidian-blade\\qa\\appearance-views\\neanderthal-woman-initial.png",
+      "bytes": 906974,
+      "sha256": "ecea3680e7c4f83e516f99741239d3a392d476a411fe296fee5422f5e9899edb"
+    },
+    {
+      "source": "C:\\Users\\yurin\\Desktop\\projects\\CRO-MAGNON\\assets\\coastal-craft\\models\\obsidian-blade\\qa\\appearance-views\\neanderthal-woman-obsidian.png",
+      "destination": "C:\\Users\\yurin\\Desktop\\projects\\threed-model-creation\\models\\obsidian-blade\\qa\\appearance-views\\neanderthal-woman-obsidian.png",
+      "bytes": 920635,
+      "sha256": "6390ead36f3adc5259c447a46887922d1f6ef1896f013315ed48497d0fb362b1"
+    },
+    {
+      "source": "C:\\Users\\yurin\\Desktop\\projects\\CRO-MAGNON\\assets\\coastal-craft\\models\\obsidian-blade\\qa\\appearance-views\\report.json",
+      "destination": "C:\\Users\\yurin\\Desktop\\projects\\threed-model-creation\\models\\obsidian-blade\\qa\\appearance-views\\report.json",
+      "bytes": 5421,
+      "sha256": "a79bb22c29b763685a08b9141cbb492f2ce8bd57212051e074ccdd93652cdc88"
+    },
+    {
+      "source": "C:\\Users\\yurin\\Desktop\\projects\\CRO-MAGNON\\assets\\coastal-craft\\models\\obsidian-blade\\qa\\game-views\\01-ready.png",
+      "destination": "C:\\Users\\yurin\\Desktop\\projects\\threed-model-creation\\models\\obsidian-blade\\qa\\game-views\\01-ready.png",
+      "bytes": 1205251,
+      "sha256": "62f9fa3d54a116d6e3426e2ce666c952727fcaabec791ad6dc8c889a071dd328"
+    },
+    {
+      "source": "C:\\Users\\yurin\\Desktop\\projects\\CRO-MAGNON\\assets\\coastal-craft\\models\\obsidian-blade\\qa\\game-views\\02-gulf-arrival.png",
+      "destination": "C:\\Users\\yurin\\Desktop\\projects\\threed-model-creation\\models\\obsidian-blade\\qa\\game-views\\02-gulf-arrival.png",
+      "bytes": 183542,
+      "sha256": "2f890b3414f35409b100f976f1dd17172ebe1f1a54a397b652e1218361b3707f"
+    },
+    {
+      "source": "C:\\Users\\yurin\\Desktop\\projects\\CRO-MAGNON\\assets\\coastal-craft\\models\\obsidian-blade\\qa\\game-views\\03-shell-gather.png",
+      "destination": "C:\\Users\\yurin\\Desktop\\projects\\threed-model-creation\\models\\obsidian-blade\\qa\\game-views\\03-shell-gather.png",
+      "bytes": 1009045,
+      "sha256": "e76ad40549d112f9322ca465bc588d6c7af72149c7aa9205ecd9b6032fbb300c"
+    },
+    {
+      "source": "C:\\Users\\yurin\\Desktop\\projects\\CRO-MAGNON\\assets\\coastal-craft\\models\\obsidian-blade\\qa\\game-views\\04-shell-gather-active.png",
+      "destination": "C:\\Users\\yurin\\Desktop\\projects\\threed-model-creation\\models\\obsidian-blade\\qa\\game-views\\04-shell-gather-active.png",
+      "bytes": 939955,
+      "sha256": "6e19d26e34684beec2d53efdab670f9c8023f74cd2644df06b91cdb0464f67b8"
+    },
+    {
+      "source": "C:\\Users\\yurin\\Desktop\\projects\\CRO-MAGNON\\assets\\coastal-craft\\models\\obsidian-blade\\qa\\game-views\\05-shell-cook.png",
+      "destination": "C:\\Users\\yurin\\Desktop\\projects\\threed-model-creation\\models\\obsidian-blade\\qa\\game-views\\05-shell-cook.png",
+      "bytes": 808924,
+      "sha256": "fd30faa1bb19abc8a01e6354f0671ca4655cf4bb8b3748737bcbd3e09e188cdf"
+    },
+    {
+      "source": "C:\\Users\\yurin\\Desktop\\projects\\CRO-MAGNON\\assets\\coastal-craft\\models\\obsidian-blade\\qa\\game-views\\06-first-midden.png",
+      "destination": "C:\\Users\\yurin\\Desktop\\projects\\threed-model-creation\\models\\obsidian-blade\\qa\\game-views\\06-first-midden.png",
+      "bytes": 933582,
+      "sha256": "6fe06e9a27f72dc34caad9485cd56e809e4dd5185e22240fecfd541e54058403"
+    },
+    {
+      "source": "C:\\Users\\yurin\\Desktop\\projects\\CRO-MAGNON\\assets\\coastal-craft\\models\\obsidian-blade\\qa\\game-views\\07-midden-stage2.png",
+      "destination": "C:\\Users\\yurin\\Desktop\\projects\\threed-model-creation\\models\\obsidian-blade\\qa\\game-views\\07-midden-stage2.png",
+      "bytes": 959703,
+      "sha256": "e74dcb5162ae80222a27c66f18044296d128ebca65e555d1a81acfd375437980"
+    },
+    {
+      "source": "C:\\Users\\yurin\\Desktop\\projects\\CRO-MAGNON\\assets\\coastal-craft\\models\\obsidian-blade\\qa\\game-views\\08-midden-stage3.png",
+      "destination": "C:\\Users\\yurin\\Desktop\\projects\\threed-model-creation\\models\\obsidian-blade\\qa\\game-views\\08-midden-stage3.png",
+      "bytes": 968798,
+      "sha256": "4cce40e3f5c760939c51d4440d2af67e053e723e2e4eb3582e7ede444ccd5113"
+    },
+    {
+      "source": "C:\\Users\\yurin\\Desktop\\projects\\CRO-MAGNON\\assets\\coastal-craft\\models\\obsidian-blade\\qa\\game-views\\09-midden-observer.png",
+      "destination": "C:\\Users\\yurin\\Desktop\\projects\\threed-model-creation\\models\\obsidian-blade\\qa\\game-views\\09-midden-observer.png",
+      "bytes": 988076,
+      "sha256": "ae984804a2a24f90fa7dd4de2fa26ed570a4668e6664f26f52a3ae468d187df3"
+    },
+    {
+      "source": "C:\\Users\\yurin\\Desktop\\projects\\CRO-MAGNON\\assets\\coastal-craft\\models\\obsidian-blade\\qa\\game-views\\10-obsidian-mining.png",
+      "destination": "C:\\Users\\yurin\\Desktop\\projects\\threed-model-creation\\models\\obsidian-blade\\qa\\game-views\\10-obsidian-mining.png",
+      "bytes": 977682,
+      "sha256": "2c353b07d8b47d78218373277d13cbed6b628e4958d204e9b1712b05cb9ece3a"
+    },
+    {
+      "source": "C:\\Users\\yurin\\Desktop\\projects\\CRO-MAGNON\\assets\\coastal-craft\\models\\obsidian-blade\\qa\\game-views\\11-knapping-active.png",
+      "destination": "C:\\Users\\yurin\\Desktop\\projects\\threed-model-creation\\models\\obsidian-blade\\qa\\game-views\\11-knapping-active.png",
+      "bytes": 891276,
+      "sha256": "c9706313ae446f7454f502a374f540c290d62304ce3dd2eea6274499531352f3"
+    },
+    {
+      "source": "C:\\Users\\yurin\\Desktop\\projects\\CRO-MAGNON\\assets\\coastal-craft\\models\\obsidian-blade\\qa\\game-views\\12-hafted-recipe.png",
+      "destination": "C:\\Users\\yurin\\Desktop\\projects\\threed-model-creation\\models\\obsidian-blade\\qa\\game-views\\12-hafted-recipe.png",
+      "bytes": 249852,
+      "sha256": "5ea08c8348aecc46e61be52335958c115c55998234dd8da08a9c2e96918fd9bb"
+    },
+    {
+      "source": "C:\\Users\\yurin\\Desktop\\projects\\CRO-MAGNON\\assets\\coastal-craft\\models\\obsidian-blade\\qa\\game-views\\13-obsidian-spear.png",
+      "destination": "C:\\Users\\yurin\\Desktop\\projects\\threed-model-creation\\models\\obsidian-blade\\qa\\game-views\\13-obsidian-spear.png",
+      "bytes": 914679,
+      "sha256": "f8df3f1cceaa87c62b7c6adc8e184ec5ddca2fcfecab942ba6b0778ae308eccb"
+    },
+    {
+      "source": "C:\\Users\\yurin\\Desktop\\projects\\CRO-MAGNON\\assets\\coastal-craft\\models\\obsidian-blade\\qa\\game-views\\14-mobile-portrait.png",
+      "destination": "C:\\Users\\yurin\\Desktop\\projects\\threed-model-creation\\models\\obsidian-blade\\qa\\game-views\\14-mobile-portrait.png",
+      "bytes": 95331,
+      "sha256": "49cbdd36bb5a5447aa78b1f4f38e700a0056682ad5d6297678a832f2e3f18629"
+    },
+    {
+      "source": "C:\\Users\\yurin\\Desktop\\projects\\CRO-MAGNON\\assets\\coastal-craft\\models\\obsidian-blade\\qa\\game-views\\15-mobile-landscape.png",
+      "destination": "C:\\Users\\yurin\\Desktop\\projects\\threed-model-creation\\models\\obsidian-blade\\qa\\game-views\\15-mobile-landscape.png",
+      "bytes": 50537,
+      "sha256": "9182d746d8a248831b954e3e99a34debde560ff183752df07ab817659e2cfa9a"
+    },
+    {
+      "source": "C:\\Users\\yurin\\Desktop\\projects\\CRO-MAGNON\\assets\\coastal-craft\\models\\obsidian-blade\\qa\\game-views\\16-obsidian-after-reload.png",
+      "destination": "C:\\Users\\yurin\\Desktop\\projects\\threed-model-creation\\models\\obsidian-blade\\qa\\game-views\\16-obsidian-after-reload.png",
+      "bytes": 792568,
+      "sha256": "f817ec0b4caf24177b67cd9f77f583c3068fd57fa98854e2af298aae5ad371eb"
+    },
+    {
+      "source": "C:\\Users\\yurin\\Desktop\\projects\\CRO-MAGNON\\assets\\coastal-craft\\models\\obsidian-blade\\qa\\game-views\\report.json",
+      "destination": "C:\\Users\\yurin\\Desktop\\projects\\threed-model-creation\\models\\obsidian-blade\\qa\\game-views\\report.json",
+      "bytes": 65924,
+      "sha256": "a83b33653fb8830030afcfc3a424daded2e304b95f73d1db2d47192301379a1a"
+    },
+    {
+      "source": "C:\\Users\\yurin\\Desktop\\projects\\CRO-MAGNON\\assets\\coastal-craft\\models\\obsidian-blade\\qa\\static-comparison\\bottom-clay.png",
+      "destination": "C:\\Users\\yurin\\Desktop\\projects\\threed-model-creation\\models\\obsidian-blade\\qa\\static-comparison\\bottom-clay.png",
+      "bytes": 43599,
+      "sha256": "9abe089ac96ace591f4f4f13edeb376b56748dff5a6b4c29160c77d30cc230f8"
+    },
+    {
+      "source": "C:\\Users\\yurin\\Desktop\\projects\\CRO-MAGNON\\assets\\coastal-craft\\models\\obsidian-blade\\qa\\static-comparison\\bottom.png",
+      "destination": "C:\\Users\\yurin\\Desktop\\projects\\threed-model-creation\\models\\obsidian-blade\\qa\\static-comparison\\bottom.png",
+      "bytes": 42920,
+      "sha256": "3df0b6230c5b1e45a8f0ce6bd960f3e8e324c33e71be786124f8231f0b7dbbb4"
+    },
+    {
+      "source": "C:\\Users\\yurin\\Desktop\\projects\\CRO-MAGNON\\assets\\coastal-craft\\models\\obsidian-blade\\qa\\static-comparison\\browser.json",
+      "destination": "C:\\Users\\yurin\\Desktop\\projects\\threed-model-creation\\models\\obsidian-blade\\qa\\static-comparison\\browser.json",
+      "bytes": 1943,
+      "sha256": "107134ddd3ffb5128f105a46f0eaec159cadce1adeab39cb4bb55b05930e3863"
+    },
+    {
+      "source": "C:\\Users\\yurin\\Desktop\\projects\\CRO-MAGNON\\assets\\coastal-craft\\models\\obsidian-blade\\qa\\static-comparison\\front-clay.png",
+      "destination": "C:\\Users\\yurin\\Desktop\\projects\\threed-model-creation\\models\\obsidian-blade\\qa\\static-comparison\\front-clay.png",
+      "bytes": 55420,
+      "sha256": "091872bc4e7fa8a521b3ff186c0e79e719597216542b1537f6fe61d143494c9b"
+    },
+    {
+      "source": "C:\\Users\\yurin\\Desktop\\projects\\CRO-MAGNON\\assets\\coastal-craft\\models\\obsidian-blade\\qa\\static-comparison\\front.png",
+      "destination": "C:\\Users\\yurin\\Desktop\\projects\\threed-model-creation\\models\\obsidian-blade\\qa\\static-comparison\\front.png",
+      "bytes": 61469,
+      "sha256": "d6f9471de5b98ae5528f532770c4a796753b45a21e06e1aecd6425744f082dba"
+    },
+    {
+      "source": "C:\\Users\\yurin\\Desktop\\projects\\CRO-MAGNON\\assets\\coastal-craft\\models\\obsidian-blade\\qa\\static-comparison\\left-clay.png",
+      "destination": "C:\\Users\\yurin\\Desktop\\projects\\threed-model-creation\\models\\obsidian-blade\\qa\\static-comparison\\left-clay.png",
+      "bytes": 52682,
+      "sha256": "33fbe97ff83deeb9691db6d72e85a62e1b7f7903bb25e97e127b8b78363b541c"
+    },
+    {
+      "source": "C:\\Users\\yurin\\Desktop\\projects\\CRO-MAGNON\\assets\\coastal-craft\\models\\obsidian-blade\\qa\\static-comparison\\left.png",
+      "destination": "C:\\Users\\yurin\\Desktop\\projects\\threed-model-creation\\models\\obsidian-blade\\qa\\static-comparison\\left.png",
+      "bytes": 59098,
+      "sha256": "14fed0bbc5a5a890d2c1d02e113a8a626471ef1362ca4cbee62f6bd2ef1e8a97"
+    },
+    {
+      "source": "C:\\Users\\yurin\\Desktop\\projects\\CRO-MAGNON\\assets\\coastal-craft\\models\\obsidian-blade\\qa\\static-comparison\\quarter-clay.png",
+      "destination": "C:\\Users\\yurin\\Desktop\\projects\\threed-model-creation\\models\\obsidian-blade\\qa\\static-comparison\\quarter-clay.png",
+      "bytes": 46838,
+      "sha256": "a19880c350eaa8cb5ad3b352e32467cc61ba273f0655f1d5fa2258a78c5280d2"
+    },
+    {
+      "source": "C:\\Users\\yurin\\Desktop\\projects\\CRO-MAGNON\\assets\\coastal-craft\\models\\obsidian-blade\\qa\\static-comparison\\quarter.png",
+      "destination": "C:\\Users\\yurin\\Desktop\\projects\\threed-model-creation\\models\\obsidian-blade\\qa\\static-comparison\\quarter.png",
+      "bytes": 51954,
+      "sha256": "e55e77a5444fb3802a58d3aeb33577424dddd5323772462f8165a5370753809b"
+    },
+    {
+      "source": "C:\\Users\\yurin\\Desktop\\projects\\CRO-MAGNON\\assets\\coastal-craft\\models\\obsidian-blade\\qa\\static-comparison\\rear-clay.png",
+      "destination": "C:\\Users\\yurin\\Desktop\\projects\\threed-model-creation\\models\\obsidian-blade\\qa\\static-comparison\\rear-clay.png",
+      "bytes": 46505,
+      "sha256": "e351730252d3202ac479087673424647be6fec726794177baa11204f3418dc7c"
+    },
+    {
+      "source": "C:\\Users\\yurin\\Desktop\\projects\\CRO-MAGNON\\assets\\coastal-craft\\models\\obsidian-blade\\qa\\static-comparison\\rear.png",
+      "destination": "C:\\Users\\yurin\\Desktop\\projects\\threed-model-creation\\models\\obsidian-blade\\qa\\static-comparison\\rear.png",
+      "bytes": 53464,
+      "sha256": "4e40e3e17a0133cd685f1c7424a69ef7ee13f1b9e918b93a3cdaec9505c47458"
+    },
+    {
+      "source": "C:\\Users\\yurin\\Desktop\\projects\\CRO-MAGNON\\assets\\coastal-craft\\models\\obsidian-blade\\qa\\static-comparison\\right-clay.png",
+      "destination": "C:\\Users\\yurin\\Desktop\\projects\\threed-model-creation\\models\\obsidian-blade\\qa\\static-comparison\\right-clay.png",
+      "bytes": 50477,
+      "sha256": "48e17b236e0fe3523aea0087cd04b290bbb30c7ab44aed618567d0664b7d6177"
+    },
+    {
+      "source": "C:\\Users\\yurin\\Desktop\\projects\\CRO-MAGNON\\assets\\coastal-craft\\models\\obsidian-blade\\qa\\static-comparison\\right.png",
+      "destination": "C:\\Users\\yurin\\Desktop\\projects\\threed-model-creation\\models\\obsidian-blade\\qa\\static-comparison\\right.png",
+      "bytes": 56598,
+      "sha256": "a322bdab1cde7528b8c60d79f013313904c2481644bb5af20323a7d3d8919caa"
+    },
+    {
+      "source": "C:\\Users\\yurin\\Desktop\\projects\\CRO-MAGNON\\assets\\coastal-craft\\models\\obsidian-blade\\qa\\static-comparison\\top-clay.png",
+      "destination": "C:\\Users\\yurin\\Desktop\\projects\\threed-model-creation\\models\\obsidian-blade\\qa\\static-comparison\\top-clay.png",
+      "bytes": 29096,
+      "sha256": "033dc0e830ba89e4b5ef4103312e5164aaa8a6fb4cea3cbc6a3f04de124c815c"
+    },
+    {
+      "source": "C:\\Users\\yurin\\Desktop\\projects\\CRO-MAGNON\\assets\\coastal-craft\\models\\obsidian-blade\\qa\\static-comparison\\top.png",
+      "destination": "C:\\Users\\yurin\\Desktop\\projects\\threed-model-creation\\models\\obsidian-blade\\qa\\static-comparison\\top.png",
+      "bytes": 29236,
+      "sha256": "ca90d8978b5a845cad1282da46a10199836877496b82349f27db95dc870a08ff"
+    },
+    {
+      "source": "C:\\Users\\yurin\\Desktop\\projects\\CRO-MAGNON\\assets\\coastal-craft\\models\\obsidian-blade\\source\\flint-spear.asset.json",
+      "destination": "C:\\Users\\yurin\\Desktop\\projects\\threed-model-creation\\models\\obsidian-blade\\source\\flint-spear.asset.json",
+      "bytes": 1737,
+      "sha256": "c34bc76c3d48b91160d4d23d6d222780550d00b847daa6dbf8f5a5d1e3a72630"
+    },
+    {
+      "source": "C:\\Users\\yurin\\Desktop\\projects\\CRO-MAGNON\\assets\\coastal-craft\\models\\obsidian-blade\\source\\flint-spear.glb",
+      "destination": "C:\\Users\\yurin\\Desktop\\projects\\threed-model-creation\\models\\obsidian-blade\\source\\flint-spear.glb",
+      "bytes": 2816964,
+      "sha256": "1a10db6d1b44da1e982f88e5ae9ef6be8fb74f5900ebd9258380ad200e53ed3d"
+    },
+    {
+      "source": "C:\\Users\\yurin\\Desktop\\projects\\CRO-MAGNON\\assets\\coastal-craft\\models\\obsidian-blade\\source\\request.json",
+      "destination": "C:\\Users\\yurin\\Desktop\\projects\\threed-model-creation\\models\\obsidian-blade\\source\\request.json",
+      "bytes": 686,
+      "sha256": "242635e6579ec8c4d1fb654998c7364a94ee110d5d77657c4c777a02822384b7"
+    },
+    {
+      "source": "C:\\Users\\yurin\\Desktop\\projects\\CRO-MAGNON\\assets\\coastal-craft\\models\\obsidian-blade\\work\\revision-01\\candidate.glb",
+      "destination": "C:\\Users\\yurin\\Desktop\\projects\\threed-model-creation\\models\\obsidian-blade\\work\\revision-01\\candidate.glb",
+      "bytes": 2816960,
+      "sha256": "3319075637b3714f836a59d9381fa23f0fb943ed8969a6c193f11e5152590f60"
+    },
+    {
+      "source": "C:\\Users\\yurin\\Desktop\\projects\\CRO-MAGNON\\assets\\coastal-craft\\models\\obsidian-blade\\work\\revision-01\\process.json",
+      "destination": "C:\\Users\\yurin\\Desktop\\projects\\threed-model-creation\\models\\obsidian-blade\\work\\revision-01\\process.json",
+      "bytes": 387,
+      "sha256": "095683cb1c570855fc0410733b64411f6cc4784c400b55b8d6e0fae278d320ac"
+    }
+  ],
+  "files": 309,
+  "root": "C:\\Users\\yurin\\Desktop\\projects\\threed-model-creation\\models"
+}

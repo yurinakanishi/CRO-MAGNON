@@ -1,0 +1,12 @@
+{
+  "staticReview": "passed",
+  "gameIntegration": "passed-local",
+  "evidence": "revision-02/browser.json",
+  "observations": [
+    "Wooden spear revision 02 retains only the original bare wooden shaft. The stone head and leather tip binding are removed above Y=0.90 m; the measured cut is closed. Source mesh and UV seams are welded before normal recalculation.",
+    "Revision 01 had backface gaps after recalculating normals on disconnected UV islands and is retained as rejected. Revision 02 removes those gaps in the exact export.",
+    "Obsidian spear revision 01 retains every original mesh/UV/texture byte and changes only the old knapped head to a dark, nonmetallic glossy material. Blade revision 01 exposes that same head primitive with its base at the origin.",
+    "The shaft measures 1.614 m; the complete obsidian spear measures 2.099 m. Attack timings and reach are deliberately shared gameplay values; wooden damage is 15 and obsidian damage is 30."
+  ],
+  "appearanceQA": "assets/coastal-craft/appearance-qa/r02/report.json"
+}

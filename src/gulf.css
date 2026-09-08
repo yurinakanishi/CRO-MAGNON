@@ -214,3 +214,21 @@ dialog:has(.gulf-panel) .modal-top {
     grid-template-columns: 1fr;
   }
 }
+.gulf-panel #fishing-detail .gulf-actions .button,
+.gulf-panel #coastal-detail .gulf-actions .button {
+  flex: 1 1 145px;
+  min-width: 120px;
+  line-height: 1.7;
+  white-space: normal;
+}
+
+/* A boat still has a nearby action at a fishing ground, including touch input. */
+.hotbar-wrap.boating .interaction-hint.available {
+  display: flex;
+}
+.coastal-recipe {
+  flex-wrap: wrap;
+}
+.coastal-recipe > div {
+  flex: 1 1 220px;
+}

@@ -1,0 +1,38 @@
+{
+  "modelKey": "flint-spear",
+  "name": "石槍",
+  "kind": "equipment",
+  "candidate": 1,
+  "status": "reviewed-prototype",
+  "url": "/models/flint-spear/model.glb",
+  "sha256": "1a10db6d1b44da1e982f88e5ae9ef6be8fb74f5900ebd9258380ad200e53ed3d",
+  "bytes": 2816964,
+  "triangles": 5679,
+  "upAxis": "Y",
+  "forwardAxis": "+Z",
+  "heightMetres": 2.1,
+  "widthMetres": null,
+  "placement": {
+    "pivot": "grip",
+    "gripNode": "Grip.R",
+    "shaftAxis": "+Y",
+    "gripToButtMetres": 0.7136262059211731,
+    "gripToTipMetres": 1.3853787183761597,
+    "attachment": "Rigid child of the character hand grip; the mesh already carries its grip-relative offset."
+  },
+  "clips": [],
+  "notes": [
+    "Inspected exact GLB renders against source: continuous straight wooden shaft, retained wrapping and flaked pointed head in every side view. Stone-only source texture desaturation separates grey flint from the brown shaft without replacing geometry. Grip-relative bounds measured by GLB reimport; full height 2.099 m, hand at shaft origin. Candidate 1 accepted for in-game attachment QA."
+  ],
+  "provenance": {
+    "provider": "Codex",
+    "claudeUsed": false,
+    "referenceGenerator": "Built-in imagegen",
+    "referenceImage": "output/model-generation/models/flint-spear/source/original/reference-v1.png",
+    "referenceSha256": "285c5759c379628da85d7d399373260447b913e3e6d942677608b522c386629e",
+    "reconstruction": "Local TRELLIS-2; settings and dense SHA in model workspace",
+    "candidateFile": "output/model-generation/models/flint-spear/work/low-poly/candidate-01/candidate.glb",
+    "visualReview": "output/model-generation/models/flint-spear/qa/adoption-review.json"
+  },
+  "lods": []
+}

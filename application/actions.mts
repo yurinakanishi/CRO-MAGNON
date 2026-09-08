@@ -6,10 +6,31 @@ import { interactionVisible } from '../shared/interactions.mjs';
 import { handleRidingAction } from '../shared/riding.mjs';
 import { NPC } from '../shared/world.mjs';
 import { handleGulfAction, ensureGulfPlayer } from '../shared/gulf-life.mjs';
+import { handleFishingAction, cancelFishing } from '../shared/fishing.mjs';
+import { handleCoastalAction, cancelCoastal } from '../shared/coastal-craft.mjs';
 const distance = (a, b) => Math.hypot(a.x - b.x, a.z - b.z);
 export function createActionHandler({ notice, broadcast, snapshot, systemChat, runtime }) {
   return function act(room, player, message, now) {
     const action = message.action;
+    if (['attack', 'boardBoat', 'ride'].includes(action)) {
+      cancelFishing(player);
+      cancelCoastal(player);
+    }
+    const coastal = handleCoastalAction(room, player, message, now);
+    if (coastal) {
+      if (coastal.text) notice(player, coastal.text, coastal.tone);
+      if (coastal.changed) broadcast(room, snapshot(room, true));
+      return;
+    }
+    if (player.coastalActivity && action !== 'cancelFishing')
+      return notice(player, '作業中です。先にE／×で中止しよう。');
+    const fishing = handleFishingAction(room, player, message, now);
+    if (fishing) {
+      if (fishing.text) notice(player, fishing.text, fishing.tone);
+      if (fishing.changed) broadcast(room, snapshot(room, true));
+      return;
+    }
+    if (player.fishing) return notice(player, '魚を待っています。先にE／×で中止しよう。');
     const boating = handleBoatAction(room, player, message, now);
     if (boating) {
       notice(player, boating.text, boating.tone);
@@ -30,8 +51,7 @@ export function createActionHandler({ notice, broadcast, snapshot, systemChat, r
       if (hunting.changed) broadcast(room, snapshot(room));
       return;
     }
-    if (player.cookingEndsAt)
-      return notice(player, '肉を焼いています。先に調理を終えるか中止しよう。');
+    if (player.cookingEndsAt) return notice(player, '調理中です。先に調理を終えるか中止しよう。');
     if (player.attackSequence && now - player.attackAt < attackProfile(player).durationMs)
       return notice(player, '攻撃が終わってから行おう。');
     const gulf = handleGulfAction(room, player, message, now);

@@ -1,0 +1,16 @@
+{
+  "candidate": 1,
+  "adoptedRevision": "02",
+  "staticReview": "passed",
+  "gameIntegration": "passed-local",
+  "evidence": "revision-02/browser.json",
+  "observations": [
+    "The ribbed joined valves and cream/brown source texture remain readable in matched neutral and clay views.",
+    "Revision 01 broke apart at UV seams during decimation. It is retained as rejected; revision 02 welds coincident positions before reduction.",
+    "The retained revision preserves the broad shell profile and hollow hinge contour, with no added primitive source geometry. Finer back-side rib crests are softer after reduction."
+  ],
+  "decision": "adopt",
+  "sha256": "7e4f448274b346dd8a3705901cccf0e7e4d49be2bc09b683cd85cdc740122a81",
+  "gameQA": "assets/coastal-craft/game-qa/r01/report.json",
+  "appearanceQA": "assets/coastal-craft/appearance-qa/r02/report.json"
+}

@@ -10,3 +10,12 @@ dist-cloudflare/
 .wrangler/
 .dev.vars*
 worker-configuration.d.ts
+
+# Full coastal reconstruction intermediates are SHA-verified in the model archive.
+# Keep source references, workflows, accepted geometry and QA in this repository.
+assets/coastal-craft/models/*/work/
+# Per-model archive copies of QA already retained under assets/coastal-craft.
+assets/coastal-craft/models/*/qa/game-views/
+assets/coastal-craft/models/*/qa/appearance-views/
+assets/coastal-craft/models/*/qa/static-comparison/
+assets/coastal-craft/models/*/qa/static-config.json

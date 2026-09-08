@@ -233,7 +233,9 @@ function setClip() {
         !selected ||
         selected.name.endsWith('_Loop') ||
         (selected.name === 'Attack' &&
-          ['flint-spear', 'kunoichi-katana'].includes(ui.equipment.value)) ||
+          ['flint-spear', 'wooden-spear', 'obsidian-spear', 'kunoichi-katana'].includes(
+            ui.equipment.value,
+          )) ||
         (selected.name === 'Gather' && ui.equipment.value === 'stone-axe');
     actor.mixer.stopAllAction();
     actor.root.traverse((object) => {
@@ -480,7 +482,8 @@ renderer.setAnimationLoop((now) => {
         orientSpear(
           actor.gear,
           actor.root,
-          selected?.name === 'Attack' && ui.equipment.value === 'flint-spear',
+          selected?.name === 'Attack' &&
+            ['flint-spear', 'wooden-spear', 'obsidian-spear'].includes(ui.equipment.value),
           actor.gripUp,
         );
     }

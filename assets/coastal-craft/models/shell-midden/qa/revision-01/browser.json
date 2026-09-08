@@ -1,0 +1,62 @@
+{
+  "bounds": [
+    {
+      "min": [
+        -0.7499999403953552,
+        0,
+        -0.7479053139686584
+      ],
+      "max": [
+        0.7499999403953552,
+        0.391580730676651,
+        0.7479053139686584
+      ]
+    },
+    {
+      "min": [
+        -0.750535249710083,
+        0,
+        -0.748606264591217
+      ],
+      "max": [
+        0.7496426105499268,
+        0.39123067259788513,
+        0.7474287748336792
+      ]
+    },
+    {
+      "min": [
+        -1.434012532234192,
+        -0.0009190840646624565,
+        -1.1048712730407715
+      ],
+      "max": [
+        1.4333792924880981,
+        1.6992368698120117,
+        1.1040600538253784
+      ]
+    }
+  ],
+  "errors": [],
+  "views": 14,
+  "files": [
+    {
+      "label": "TRELLISの元形状",
+      "url": "/assets/coastal-craft/models/shell-midden/work/revision-01/dense-normalized.glb",
+      "sha256": "0bd18ff71fdfd52f73e9177a57f72bc1a939f1a3c49f084b5249801a9bb81090",
+      "bytes": 21574760
+    },
+    {
+      "label": "共有の貝塚",
+      "url": "/assets/coastal-craft/models/shell-midden/work/revision-01/candidate.glb",
+      "sha256": "494844840a1ac461837e73874bf3858d5a5f73baf8655769b6cd590d048e07cd",
+      "bytes": 15209472
+    },
+    {
+      "label": "既存の石",
+      "url": "/public/models/valley-boulder/model.glb",
+      "sha256": "f46449aa51814b9037c8ed3c43179845e63c6f9b48b94e02c7979266cb09bb1d",
+      "bytes": 2443928
+    }
+  ]
+}

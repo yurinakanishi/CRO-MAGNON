@@ -1,0 +1,62 @@
+{
+  "bounds": [
+    {
+      "min": [
+        -0.07844096422195435,
+        0,
+        -0.07999999821186066
+      ],
+      "max": [
+        0.07844096422195435,
+        0.1177753284573555,
+        0.07999999821186066
+      ]
+    },
+    {
+      "min": [
+        -0.07866035401821136,
+        -0.00036202947376295924,
+        -0.08014284819364548
+      ],
+      "max": [
+        0.07884752005338669,
+        0.11790449172258377,
+        0.08040910959243774
+      ]
+    },
+    {
+      "min": [
+        -1.434012532234192,
+        -0.0009190840646624565,
+        -1.1048712730407715
+      ],
+      "max": [
+        1.4333792924880981,
+        1.6992368698120117,
+        1.1040600538253784
+      ]
+    }
+  ],
+  "errors": [],
+  "views": 14,
+  "files": [
+    {
+      "label": "TRELLISの元形状",
+      "url": "/assets/coastal-craft/models/cockle-shell/work/revision-01/dense-normalized.glb",
+      "sha256": "9eafd9e71e2ff734f5b876bc956569e6be82c6ef2bc90aec35cf75c28f523ba8",
+      "bytes": 18472472
+    },
+    {
+      "label": "採集用の貝",
+      "url": "/assets/coastal-craft/models/cockle-shell/work/revision-01/candidate.glb",
+      "sha256": "eeb4114621bafb8d7e55cbeff73390788f7b4bd45085fe21307c107b809252e4",
+      "bytes": 9678968
+    },
+    {
+      "label": "既存の採集資源",
+      "url": "/public/models/valley-boulder/model.glb",
+      "sha256": "f46449aa51814b9037c8ed3c43179845e63c6f9b48b94e02c7979266cb09bb1d",
+      "bytes": 2443928
+    }
+  ]
+}

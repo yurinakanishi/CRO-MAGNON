@@ -11,10 +11,22 @@ import { interactionVisible } from '../shared/interactions.mjs';
 
 export function inventoryCounts(inventory = {}) {
   return Object.fromEntries(
-    ['wood', 'stone', 'berry', 'rawMeat', 'cookedMeat', 'obsidian', 'seed', 'water'].map((key) => [
-      key,
-      Math.max(0, Number(inventory[key]) || 0),
-    ]),
+    [
+      'wood',
+      'stone',
+      'berry',
+      'rawMeat',
+      'cookedMeat',
+      'obsidian',
+      'seed',
+      'water',
+      'rawFish',
+      'cookedFish',
+      'rawShellfish',
+      'cookedShellfish',
+      'shells',
+      'obsidianBlade',
+    ].map((key) => [key, Math.max(0, Number(inventory[key]) || 0)]),
   );
 }
 
@@ -53,7 +65,7 @@ export function selectedCombatTarget(state, player, selectedId) {
 
 export function huntInteraction(state, player, collision) {
   if (!player || player.mountId || player.downedUntil) return null;
-  if (player.cookingEndsAt) return { action: 'cancelCook', label: '肉を焼くのを中止する' };
+  if (player.cookingEndsAt) return { action: 'cancelCook', label: '調理を中止する' };
   const meat = nearestHuntTarget(
     (state.animals || []).filter(
       (animal) => !collision || collision.segmentFree(player, animal, 0.12),
@@ -70,11 +82,17 @@ export function huntInteraction(state, player, collision) {
   }
   const fire = nearestCookingFire(state, player);
   if (
-    inventoryCounts(player.inventory).rawMeat &&
+    (inventoryCounts(player.inventory).rawMeat ||
+      inventoryCounts(player.inventory).rawFish ||
+      inventoryCounts(player.inventory).rawShellfish) &&
     huntingDistance(player, fire) <= HUNTING.cookRange &&
     (!collision || interactionVisible(collision, player, fire))
   ) {
-    return { action: 'cook', label: '焚き火で生肉を焼く（3秒）' };
+    return inventoryCounts(player.inventory).rawMeat
+      ? { action: 'cook', label: '焚き火で生肉を焼く（3秒）' }
+      : inventoryCounts(player.inventory).rawFish
+        ? { action: 'cookFish', label: '焚き火で生魚を焼く（3秒）' }
+        : { action: 'cookShellfish', label: '焚き火で貝を焼く（3秒）' };
   }
   return null;
 }

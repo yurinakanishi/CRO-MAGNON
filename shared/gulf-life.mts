@@ -9,6 +9,8 @@ import {
 } from './gulf-region.mjs';
 import { interactionVisible } from './interactions.mjs';
 import type { GulfProgress, GulfState } from './gulf-types.mjs';
+import { createShoals } from './fishing-sites.mjs';
+import { createShellBeds, createMiddens } from './coastal-sites.mjs';
 export const GATHERING_NEEDS = Object.freeze({ wood: 8, berry: 12, obsidian: 4 });
 export const SEASONS = [
   { name: '芽吹き', growMs: 180000 },
@@ -23,6 +25,9 @@ const count = (n, max = 999999) =>
   Number.isFinite(n) ? Math.max(0, Math.min(max, Math.floor(n))) : 0;
 export function createGulfState(saved?): GulfState {
   return {
+    shellBeds: createShellBeds(saved?.shellBeds),
+    middens: createMiddens(saved?.middens),
+    shoals: createShoals(saved?.shoals),
     version: GULF.version,
     plots: FARM_PLOTS.map((p) => {
       const old = saved?.plots?.find?.((s) => s.id === p.id);
@@ -38,6 +43,11 @@ export function createGulfState(saved?): GulfState {
   };
 }
 export function ensureGulfPlayer(player): GulfProgress {
+  for (const key of ['rawShellfish', 'cookedShellfish', 'shells', 'obsidianBlade'])
+    player.inventory[key] = count(player.inventory[key], 99);
+  player.spearHead = player.spearHead === 'obsidian' ? 'obsidian' : 'wood';
+  player.inventory.rawFish ??= 0;
+  player.inventory.cookedFish ??= 0;
   player.inventory.obsidian ??= 0;
   player.inventory.seed ??= 0;
   player.inventory.water ??= 0;
@@ -51,6 +61,12 @@ export function ensureGulfPlayer(player): GulfProgress {
       delivered: 0,
       lastFeast: 0,
     };
+  player.gulf.fishingKit ??= false;
+  player.gulf.shellfishGathered ??= 0;
+  player.gulf.shellsReturned ??= 0;
+  player.gulf.bladesKnapped ??= 0;
+  player.gulf.fishCaught ??= 0;
+  player.gulf.fishShared ??= 0;
   player.gulf.waymarks ??= [];
   player.gulf.trailRewarded ??= false;
   return player.gulf;
@@ -178,16 +194,20 @@ export function handleGulfAction(room, player, message, now = Date.now()) {
     inv.seed += 2;
     return ok('黒曜石2を渡し、舟や道具に使える木材6・種2と交換した。');
   }
-  if (action === 'gulfOffer') {
+  if (action === 'gulfOffer' || action === 'gulfOfferFish') {
     if (!atHearth) return fail('集い場の炉へ持ち寄ろう。');
-    const key = message.targetId;
+    const fish = action === 'gulfOfferFish';
+    const key = fish ? 'berry' : message.targetId;
     if (!Object.hasOwn(GATHERING_NEEDS, key)) return fail('持ち寄る品が見つかりません。');
     const amount = { wood: 2, berry: 3, obsidian: 1 }[key];
     if (room.gulf.stores[key] >= GATHERING_NEEDS[key])
       return fail('この品はそろいました。他の品を持ち寄ろう。');
-    if (inv[key] < amount) return fail('持ち寄る品が足りません。');
-    inv[key] -= amount;
-    room.gulf.stores[key] += amount;
+    const item = fish ? 'cookedFish' : key,
+      cost = fish ? 1 : amount;
+    if (inv[item] < cost) return fail('持ち寄る品が足りません。');
+    inv[item] -= cost;
+    room.gulf.stores[key] = Math.min(GATHERING_NEEDS[key], room.gulf.stores[key] + amount);
+    if (fish) progress.fishShared++;
     progress.delivered++;
     if (Object.entries(GATHERING_NEEDS).every(([k, n]) => room.gulf.stores[k] >= n)) {
       room.gulf.festivals++;
@@ -199,7 +219,7 @@ export function handleGulfAction(room, player, message, now = Date.now()) {
   if (action === 'gulfFeast') {
     if (!atHearth) return fail('集い場の炉へ戻ろう。');
     if (room.gulf.festivals <= progress.lastFeast)
-      return fail('次の宴へ、木材・ベリー・黒曜石を持ち寄ろう。');
+      return fail('次の宴へ、木材・食料（ベリーや焼き魚）・黒曜石を持ち寄ろう。');
     if (inv.seed > 97 || inv.berry > 96) return fail('ベリー3・種2の空きを作ろう。');
     inv.seed += 2;
     inv.berry += 3;

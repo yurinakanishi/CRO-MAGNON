@@ -1,0 +1,212 @@
+{
+  "at": "2026-09-08T09:59:18.364Z",
+  "status": "complete-local",
+  "world": {
+    "version": 4,
+    "width": 8192,
+    "depth": 4096,
+    "gulfVersion": 2,
+    "beds": 5,
+    "middens": 4,
+    "workshops": 4,
+    "existingObsidianOutcrops": 8
+  },
+  "tests": {
+    "passed": 252,
+    "failed": 0,
+    "typeScript": "normal, Cloudflare and strict build passed",
+    "architecture": "passed",
+    "syntax": "passed",
+    "prettier": "all TypeScript source passed",
+    "whitespace": "git diff --check passed"
+  },
+  "browser": {
+    "renderedPages": 2,
+    "communicationPeers": 3,
+    "maxPlayers": 5,
+    "samples": 3448,
+    "staticOrCoastCollisionViolations": 0,
+    "errors": [],
+    "allSixAppearances": "passed",
+    "gearAndReload": [
+      {
+        "key": "cro-magnon-woman",
+        "spearHead": "obsidian",
+        "weapon": "obsidianSpear",
+        "sameSession": true
+      },
+      {
+        "key": "cro-magnon-hunter",
+        "spearHead": "obsidian",
+        "weapon": "obsidianSpear",
+        "sameSession": true
+      },
+      {
+        "key": "neanderthal-woman",
+        "spearHead": "obsidian",
+        "weapon": "obsidianSpear",
+        "sameSession": true
+      },
+      {
+        "key": "neanderthal-hunter",
+        "spearHead": "obsidian",
+        "weapon": "obsidianSpear",
+        "sameSession": true
+      },
+      {
+        "key": "cat-kunoichi",
+        "spearHead": "wood",
+        "weapon": "katana",
+        "sameSession": true
+      },
+      {
+        "key": "floppy-ear-mage",
+        "spearHead": "wood",
+        "weapon": "magic",
+        "sameSession": true
+      }
+    ],
+    "viewports": [
+      {
+        "width": 390,
+        "scrollWidth": 390,
+        "gatherButtonWidth": 294,
+        "modal": {
+          "x": 16,
+          "y": 33.765625,
+          "width": 358,
+          "height": 776.46875,
+          "top": 33.765625,
+          "right": 374,
+          "bottom": 810.234375,
+          "left": 16
+        }
+      },
+      {
+        "width": 844,
+        "scrollWidth": 844,
+        "gatherButtonWidth": 173.1875,
+        "modal": {
+          "x": 21.09375,
+          "y": 15.59375,
+          "width": 801.796875,
+          "height": 358.796875,
+          "top": 15.59375,
+          "right": 822.890625,
+          "bottom": 374.390625,
+          "left": 21.09375
+        }
+      },
+      {
+        "width": 1440,
+        "scrollWidth": 1440,
+        "gatherButtonWidth": 212.75,
+        "modal": {
+          "x": 240,
+          "y": 36,
+          "width": 960,
+          "height": 828,
+          "top": 36,
+          "right": 1200,
+          "bottom": 864,
+          "left": 240
+        }
+      }
+    ],
+    "observationsFPS": [
+      8,
+      60,
+      60,
+      60,
+      60,
+      60,
+      60,
+      60,
+      60,
+      60,
+      60,
+      60,
+      60,
+      60,
+      60
+    ],
+    "fixtures": [
+      {
+        "type": "fixture",
+        "name": "貝場B",
+        "x": -2277,
+        "z": 466
+      },
+      {
+        "type": "fixture",
+        "name": "貝場A",
+        "inventory": {
+          "shells": 40
+        }
+      },
+      {
+        "type": "fixture",
+        "name": "貝場A",
+        "x": -2768.5,
+        "z": 681.5
+      },
+      {
+        "type": "fixture",
+        "name": "貝場A",
+        "x": -2243.5,
+        "z": 468.5
+      },
+      {
+        "type": "fixture",
+        "name": "貝場A",
+        "x": -2296.5,
+        "z": 474.5
+      },
+      {
+        "type": "fixture",
+        "name": "貝場A",
+        "x": -2258,
+        "z": 460
+      }
+    ],
+    "notes": [
+      "Normal UI expedition and walk from Many Hearths to shell bed, gather one, walk back to cook/eat, then walk to build first midden.",
+      "Midden stage growth uses 40 fixture shells; gamepad input is simulated, no physical controller.",
+      "Obsidian x2, stone x1, wood x1 gathered through normal E actions; travel positions between outcrop/resources/workshop are explicit fixtures.",
+      "Opening inventory cancels knapping with all materials retained. Second knap completes and hafting consumes the blade and wood, leaving hammerstone.",
+      "Two Chrome renderers plus three WebSocket peers; portrait/landscape browser viewports; physical mobile untested."
+    ]
+  },
+  "assets": {
+    "models": 38,
+    "deliveredGLBs": 53,
+    "newGLBs": 5,
+    "originalModelsPreserved": 33,
+    "archive": {
+      "status": "passed",
+      "files": 309,
+      "bytes": 659421513,
+      "overwritten": 0,
+      "deleted": 0
+    }
+  },
+  "rollout": {
+    "status": "passed",
+    "url": "http://127.0.0.1:3000",
+    "previousPid": 40220,
+    "pid": 27060,
+    "roomsBefore": 0,
+    "playersBefore": 0,
+    "servedGLBs": 53,
+    "oldCheckpointApplied": false,
+    "publicDeployed": false,
+    "billingChanged": false
+  },
+  "limitations": [
+    "Physical mobile devices and physical gamepads untested; standard Gamepad API input simulated.",
+    "Eight-player core inventory contention is not a large-player performance test.",
+    "Observed FPS includes initial loading and is not a continuous performance guarantee.",
+    "Original missing flint-spear reference/dense and older neanderthal adoption history are recorded as missing, not reconstructed.",
+    "NPC daily routines, additional crops, maritime weather/currents and larger-player load testing remain on the broader roadmap."
+  ]
+}

@@ -1,4 +1,6 @@
 import type { ViewState } from './view-state.js';
+import { activateMiddenObstacle } from '../shared/coastal-sites.mjs';
+import { CoastalRenderer } from './coastal-renderer.js';
 import { isMesh } from './three-types.js';
 import { setText } from './dom-updates.js';
 import type { RegionalScenery } from './regional-scenery.js';
@@ -136,6 +138,7 @@ export class WorldRenderer {
   declare boatRenderer: BoatRenderer | undefined;
   declare adventureEffects: AdventureEffects | undefined;
   declare gulfRenderer: GulfRenderer | undefined;
+  declare coastalRenderer: CoastalRenderer | undefined;
   declare npcActor: any;
   declare npc: any;
   declare failed: boolean | undefined;
@@ -190,7 +193,10 @@ export class WorldRenderer {
     this.firstState = true;
     this.collision = new CollisionWorld(undefined, {
       active: (o) =>
-        !o.resourceId || this.state.resources.some((r) => r.id === o.resourceId && r.amount > 0),
+        o.middenId
+          ? activateMiddenObstacle(o, this.state.gulf)
+          : !o.resourceId ||
+            this.state.resources.some((r) => r.id === o.resourceId && r.amount > 0),
     });
     this.players = new Map();
     this.resources = new Map();
@@ -329,6 +335,7 @@ export class WorldRenderer {
       this.boatRenderer = new BoatRenderer(this);
       this.adventureEffects = new AdventureEffects(this);
       this.gulfRenderer = new GulfRenderer(this);
+      this.coastalRenderer = new CoastalRenderer(this);
       this.npcActor = await this.npcAssets.create({ color: '#ad9d79' });
       if (this.disposed) {
         this.npcActor?.dispose();
@@ -709,6 +716,19 @@ export class WorldRenderer {
         entity.weapon = profile.modelKey
           ? await this.worldAssets.createEquipment(profile.modelKey)
           : null;
+        if (profile.key === 'spear') {
+          const otherKey = profile.modelKey === 'wooden-spear' ? 'obsidian-spear' : 'wooden-spear';
+          const other = await this.worldAssets.createEquipment(otherKey);
+          entity.spears = new Map([
+            [profile.modelKey, entity.weapon],
+            [otherKey, other],
+          ]);
+          if (other) {
+            grip.add(other);
+            other.quaternion.copy(actor.gripUp);
+            other.visible = false;
+          }
+        }
         if (this.disposed || this.players.get(id) !== entity) {
           actor.dispose();
           return;
@@ -885,6 +905,10 @@ export class WorldRenderer {
         continue;
       }
       entity.label.active = true;
+      if (entity.spears) {
+        for (const spear of entity.spears.values()) spear.visible = false;
+        entity.weapon = entity.spears.get(attackProfile(p).modelKey);
+      }
       if (p.boatId) {
         const boat = this.boatRenderer?.boats.get(p.boatId);
         model.visible = !!boat?.model.visible && !!entity.actor;
@@ -962,20 +986,29 @@ export class WorldRenderer {
       );
       model.rotation.y += diff * (1 - Math.exp(-dt * 24));
       if (entity.actor) {
-        if (p.cookingEndsAt > this.serverNow() && !p.moving && !entity.actor.animation.oneShot)
-          entity.actor.animation.play('Craft');
+        if (
+          (p.cookingEndsAt > this.serverNow() || p.fishing || p.coastalActivity) &&
+          !p.moving &&
+          !entity.actor.animation.oneShot
+        )
+          entity.actor.animation.play(p.coastalActivity?.kind === 'shells' ? 'Gather' : 'Craft');
         entity.actor.animation.update(dt, visualSpeed, entity.running);
         if (entity.axe) {
           const attack = entity.actor.animation.name === 'Attack';
           const profile = attackProfile(p);
           entity.axe.visible =
+            !p.fishing &&
+            !p.coastalActivity &&
             p.tool &&
             (profile.key === 'spear'
               ? !entity.actor.animation.oneShot
               : entity.actor.animation.name === 'Gather');
           if (entity.weapon) {
             entity.weapon.visible =
-              attack || (!entity.actor.animation.oneShot && (profile.key === 'katana' || !p.tool));
+              !p.fishing &&
+              !p.coastalActivity &&
+              (attack ||
+                (!entity.actor.animation.oneShot && (profile.key === 'katana' || !p.tool)));
             if (profile.key === 'katana')
               orientKatana(
                 entity.weapon,
@@ -1041,6 +1074,7 @@ export class WorldRenderer {
     this.atmosphere.update(this.focus, time, dt);
     this.adventureEffects?.update(time);
     this.gulfRenderer?.update(time);
+    this.coastalRenderer?.update(time);
     if (time >= this.nextStaticCull) {
       this.nextStaticCull = time + 0.2;
       for (const { root, radius } of this.staticScenery)
@@ -1307,6 +1341,7 @@ export class WorldRenderer {
     this.boatRenderer?.dispose();
     this.disposed = true;
     this.gulfRenderer?.dispose();
+    this.coastalRenderer?.dispose();
     this.regionalScenery?.dispose();
     this.landmarks?.dispose();
     this.openWorld?.dispose();

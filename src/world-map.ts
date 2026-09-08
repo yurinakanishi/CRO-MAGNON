@@ -1,3 +1,5 @@
+import { FISHING_SITES } from '../shared/fishing-sites.mjs';
+import { SHELL_BEDS, MIDDEN_SITES, KNAPPING_SITES } from '../shared/coastal-sites.mjs';
 import { WORLD, worldClamp, CAMP, NPC } from '../shared/world.mjs';
 import { BIOMES, biomeAt, biomeWeights } from '../shared/biomes.mjs';
 import {
@@ -193,11 +195,34 @@ export function drawWorldMap(canvas, state, selfId, big = false) {
       for (const p of OBSIDIAN_OUTCROPS) dot(p.x, p.z, '#dcb8e2', 2);
       for (const p of SPRINGS) dot(p.x, p.z, '#8ed7df', 3);
       for (const p of FARM_PLOTS) dot(p.x, p.z, '#c6c081', 1.5);
+      for (const s of FISHING_SITES) {
+        dot(s.x, s.z, '#8be0d7', 4);
+        if (s.boatOnly) {
+          ctx.fillStyle = '#8be0d7';
+          ctx.fillText(s.name, ...point(s.x + 6, s.z - 7));
+        }
+      }
       for (const l of LANDINGS) {
         dot(l.x, l.z, '#aacddd', 3);
         ctx.fillStyle = '#aacddd';
         ctx.fillText(l.name, ...point(l.x + 4, l.z + 10));
       }
+      for (const s of SHELL_BEDS) {
+        dot(s.x, s.z, '#f2dfbc', 4);
+        ctx.fillStyle = '#f2dfbc';
+        ctx.fillText('貝場', ...point(s.x + 5, s.z - 10));
+      }
+      if (!full)
+        for (const [sites, color, label] of [
+          [MIDDEN_SITES, '#e3d0ad', '貝塚'],
+          [KNAPPING_SITES, '#c8a8df', '石器作業場'],
+        ] as const) {
+          for (const s of sites) {
+            dot(s.x, s.z, color, 3);
+            ctx.fillStyle = color;
+            ctx.fillText(label, ...point(s.x + 4, s.z + 4));
+          }
+        }
     }
     ctx.restore();
   }

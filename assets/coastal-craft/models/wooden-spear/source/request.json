@@ -1,0 +1,11 @@
+{
+  "generatedFromExistingAsset": true,
+  "sourceAsset": "source/flint-spear.glb",
+  "sourceManifest": "source/flint-spear.asset.json",
+  "sourceSha256": "1a10db6d1b44da1e982f88e5ae9ef6be8fb74f5900ebd9258380ad200e53ed3d",
+  "missingHistory": "The historical flint-spear reference/dense paths are recorded in the original manifest but are absent from this checkout. No new historical reference or dense was fabricated.",
+  "method": "Retain source shaft below Y=0.90 m; remove head and binding, weld coincident positions, close the measured cut and recalculate normals.",
+  "static": true,
+  "rig": "Parented to existing Grip.R; no separate rig",
+  "proceduralVisibleReplacement": false
+}

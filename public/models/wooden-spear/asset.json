@@ -1,0 +1,34 @@
+{
+  "modelKey": "wooden-spear",
+  "name": "木槍",
+  "kind": "equipment",
+  "candidate": 1,
+  "status": "reviewed-local",
+  "url": "/models/wooden-spear/model.glb",
+  "sha256": "ac2b1a3c8100b38a7753749fd6578b5f355247478cf9f44ea642c06eb858ee5d",
+  "bytes": 1462776,
+  "triangles": 2837,
+  "upAxis": "Y",
+  "forwardAxis": "+Z",
+  "heightMetres": 1.613626,
+  "widthMetres": 0.081,
+  "onDemand": true,
+  "placement": {
+    "pivot": "grip",
+    "gripNode": "Grip.R",
+    "shaftAxis": "+Y"
+  },
+  "clips": [],
+  "lods": [],
+  "provenance": {
+    "provider": "Codex",
+    "claudeUsed": false,
+    "referenceGenerator": "Existing imagegen → TRELLIS flint-spear lineage",
+    "referenceImage": "Retained public/models/flint-spear/model.glb (historical reference recorded in its asset.json)",
+    "reconstruction": "Source-derived variant of the retained flint-spear GLB",
+    "candidateFile": "assets/coastal-craft/models/wooden-spear/work/revision-02/candidate.glb",
+    "visualReview": "assets/coastal-craft/weapon-qa/adoption-review.json",
+    "sourceAsset": "assets/coastal-craft/models/wooden-spear/source/flint-spear.glb",
+    "sourceAssetSha256": "1a10db6d1b44da1e982f88e5ae9ef6be8fb74f5900ebd9258380ad200e53ed3d"
+  }
+}

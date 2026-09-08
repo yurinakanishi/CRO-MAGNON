@@ -1,0 +1,26 @@
+{
+  "key": "shell-midden",
+  "name": "貝塚",
+  "candidate": 1,
+  "adoptedRevision": "01",
+  "generation": "complete",
+  "adoption": "adopted",
+  "gameIntegration": "passed-local",
+  "candidateFile": "assets/coastal-craft/models/shell-midden/work/revision-01/candidate.glb",
+  "sha256": "494844840a1ac461837e73874bf3858d5a5f73baf8655769b6cd590d048e07cd",
+  "triangles": 92239,
+  "bytes": 15209472,
+  "provenance": {
+    "provider": "Codex",
+    "claudeUsed": false,
+    "referenceGenerator": "Built-in imagegen",
+    "referenceImage": "assets/coastal-craft/models/shell-midden/source/reference-v1.png",
+    "reconstruction": "Local TRELLIS-2, resolution 1024, seed 42",
+    "candidateFile": "assets/coastal-craft/models/shell-midden/work/revision-01/candidate.glb",
+    "visualReview": "assets/coastal-craft/models/shell-midden/qa/adoption-review.json",
+    "referenceSha256": "e7de83392920365a2260b3e720f240bceb33ffd88fd2d50b41fae44a7ad66b99",
+    "denseSha256": "4c9f5954ff854dd3b130b62c93e6dfc754951d601a46c822706257b7e6c2007b"
+  },
+  "gameQA": "assets/coastal-craft/game-qa/r01/report.json",
+  "appearanceQA": "assets/coastal-craft/appearance-qa/r02/report.json"
+}

@@ -38,24 +38,24 @@ test('spear damage, body reach, cooldown and solid-obstacle occlusion are author
   const hit = handleHuntingAction(room, player, { action: 'attack', damage: 9000 }, 1000);
   assert.equal(hit.changed, true); assert.equal(animal.health, 100); assert.equal(player.attackSequence, 1);
   updateHunting(room, 1000 + HUNTING.attackImpactMs - 1); assert.equal(animal.health, 100);
-  updateHunting(room, 1000 + HUNTING.attackImpactMs); assert.equal(animal.health, 75);
+  updateHunting(room, 1000 + HUNTING.attackImpactMs); assert.equal(animal.health,  100 - HUNTING.attackDamage);
   assert.equal(Math.abs(player.facing), Math.PI); assert.equal(player.energy, 48);
   handleHuntingAction(room, player, { action: 'attack' }, 1400);
-  assert.equal(animal.health, 75); assert.equal(player.attackSequence, 1);
+  assert.equal(animal.health,  100 - HUNTING.attackDamage); assert.equal(player.attackSequence, 1);
   player.z = 30;
   handleHuntingAction(room, player, { action: 'attack', x: 20, z: 20 }, 2000);
   updateHunting(room, 2000 + HUNTING.attackImpactMs);
-  assert.equal(animal.health, 75);
+  assert.equal(animal.health,  100 - HUNTING.attackDamage);
   player.z = 24;
   room.collision = new CollisionWorld([{ id: 'rock', type: 'box', x: 20, z: 22, hx: 1, hz: .1, c: 1, s: 0, height: 3 }], { river: false });
   assert.equal(handleHuntingAction(room, player, { action: 'attack' }, 3000).changed, true);
   updateHunting(room, 3000 + HUNTING.attackImpactMs);
-  assert.equal(animal.health, 75);
+  assert.equal(animal.health,  100 - HUNTING.attackDamage);
 });
 
 test('death completes once, loot is finite, and full inventories cannot destroy shared meat', () => {
   const { room, player, animal } = fixture();
-  for (let i = 0; i < 4; i++) {
+  for (let i = 0; i < Math.ceil(100 / HUNTING.attackDamage); i++) {
     const now = 1000 + i * HUNTING.attackCooldownMs;
     handleHuntingAction(room, player, { action: 'attack' }, now);
     assert.equal(animal.phase, 'alive');
@@ -67,11 +67,12 @@ test('death completes once, loot is finite, and full inventories cannot destroy 
   assert.equal(animal.phase, 'dying');
   updateHunting(room, diedAt + HUNTING.deathDurationMs);
   assert.equal(animal.phase, 'meat'); assert.equal(animal.meatRemaining, 4); assert.equal(animalIsSolid(animal), false);
+  const harvestAt = diedAt + HUNTING.deathDurationMs + 1;
   player.x = 20; player.z = 21; player.inventory.rawMeat = 99;
-  handleHuntingAction(room, player, { action: 'harvest' }, 6000);
+  handleHuntingAction(room, player, { action: 'harvest' }, harvestAt);
   assert.equal(animal.meatRemaining, 4);
   player.inventory.rawMeat = 0;
-  for (let i = 0; i < 8; i++) handleHuntingAction(room, player, { action: 'harvest', amount: 99 }, 6000 + i * 500);
+  for (let i = 0; i < 8; i++) handleHuntingAction(room, player, { action: 'harvest', amount: 99 }, harvestAt + i * 500);
   assert.equal(player.inventory.rawMeat, 4); assert.equal(animal.meatRemaining, 0); assert.equal(animal.phase, 'respawning');
   updateHunting(room, animal.phaseStartedAt + 1);
   assert.equal(animal.meatRemaining, 0);
@@ -86,6 +87,7 @@ test('windup strikes recheck range and occlusion, while concurrent lethal strike
   room.collision = new CollisionWorld([{ id: 'wall', type: 'box', x: 20, z: 22, hx: 1, hz: .1, c: 1, s: 0, height: 3 }], { river: false });
   updateHunting(room, 2000 + HUNTING.attackImpactMs); assert.equal(animal.health, 100);
   room.collision = new CollisionWorld([], { river: false });
+  animal.health = HUNTING.attackDamage * 4;
   for (let i = 0; i < 5; i++) {
     const hunter = { ...player, id: `hunter-${i}`, attackSequence: 0, pendingStrike: null, inventory: { ...player.inventory } };
     room.players.set(hunter.id, hunter); handleHuntingAction(room, hunter, { action: 'attack' }, 3000);

@@ -1,4 +1,6 @@
 import type { Gender, Inventory, Point, Resource, Species } from './types.mjs';
+import type { FishingActivity } from './fishing-types.mjs';
+import type { CoastalActivity } from './coastal-types.mjs';
 import type { GulfState, GulfProgress } from './gulf-types.mjs';
 
 /** Public wire data. Connections, session tokens and simulation paths never belong here. */
@@ -29,6 +31,10 @@ export interface PlayerSnapshot extends Point {
   attackSequence: number;
   attackAt: number;
   cookingEndsAt: number;
+  cookingKind?: 'fish' | 'meat' | 'shellfish';
+  coastalActivity?: CoastalActivity | null;
+  spearHead?: 'wood' | 'obsidian';
+  fishing?: FishingActivity | null;
   hurtSequence: number;
   hurtAt: number;
   defeatSequence: number;

@@ -33,6 +33,7 @@ test('five sockets share damage and exactly four meat; meat cooks at the level-z
   const welcomes = await Promise.all(clients.map(client => client.wait(message => message.type === 'welcome')));
   const room = game.rooms.get('TEAM'), mammoth = room.animals[0]; mammoth.age = 30;
   const players = welcomes.map(({ id }) => room.players.get(id));
+  mammoth.health = HUNTING.attackDamage * 4;
   for (const [i, player] of players.entries()) Object.assign(player, { x: mammoth.x + Math.sin(i * Math.PI * 2 / 5) * 4.3, z: mammoth.z + Math.cos(i * Math.PI * 2 / 5) * 4.3 });
   for (const client of clients.slice(0, 4)) client.send({ type: 'action', action: 'attack', targetId: mammoth.id, damage: 10000, health: 0, inventory: { rawMeat: 99 } });
   const dying = await Promise.all(clients.map(client => client.wait(message => message.type === 'state' && message.animals[0].phase === 'dying')));
@@ -82,13 +83,13 @@ test('socket swings ignore forged range and IDs, enforce impact collision and co
   client.send({ type: 'action', action: 'attack', targetId: mammoth.id });
   const windup = await client.wait(message => message.type === 'state' && message.players[0].attackSequence === 2, 4000, mark);
   assert.equal(windup.animals[0].health, 100); assert.equal(windup.animals[0].phase, 'alive');
-  await client.wait(message => message.type === 'state' && message.animals[0].health === 75, 4000, mark);
+  await client.wait(message => message.type === 'state' && message.animals[0].health === 100 - HUNTING.attackDamage, 4000, mark);
   const origin = { x: player.x, z: player.z }; player.lastAction = 0; mark = client.messages.length;
   client.send({ type: 'move', dx: 1, dz: 0, running: true });
   client.send({ type: 'action', action: 'attack', targetId: mammoth.id });
   await client.wait(message => message.type === 'notice' && message.text.includes('構え直'), 4000, mark);
   await sleep(150);
-  assert.equal(mammoth.health, 75); assert.equal(player.attackSequence, 2);
+  assert.equal(mammoth.health, 100 - HUNTING.attackDamage); assert.equal(player.attackSequence, 2);
   assert.equal(player.x, origin.x); assert.equal(player.z, origin.z); assert.equal(player.moving, false);
   player.attackAt = Date.now() - HUNTING.attackCooldownMs - 1; player.lastInput = 0; player.lastAction = 0;
   room.collision = new CollisionWorld([{ id: 'wall', type: 'box', x: mammoth.x, z: mammoth.z + 2, hx: 1, hz: .1, c: 1, s: 0, height: 3 }], { river: false });
@@ -96,12 +97,12 @@ test('socket swings ignore forged range and IDs, enforce impact collision and co
   client.send({ type: 'action', action: 'attack', targetId: mammoth.id });
   await client.wait(message => message.type === 'state' && message.players[0].attackSequence === 3, 4000, mark);
   await sleep(HUNTING.attackImpactMs + 30);
-  assert.equal(mammoth.health, 75);
+  assert.equal(mammoth.health, 100 - HUNTING.attackDamage);
   player.attackAt = Date.now() - HUNTING.attackCooldownMs - 1; player.lastAction = Date.now(); mark = client.messages.length;
   client.send({ type: 'action', action: 'attack', targetId: { id: mammoth.id } });
   await client.wait(message => message.type === 'state' && message.players[0].attackSequence === 4, 4000, mark);
   await sleep(HUNTING.attackImpactMs + 30);
-  assert.equal(mammoth.health, 75);
+  assert.equal(mammoth.health, 100 - HUNTING.attackDamage);
 });
 
 test('five sockets see an empty-air attack and attack immediately interrupts cooking independently of action cooldown', async t => {
@@ -127,7 +128,7 @@ test('server snapshots synchronize generic hostile enemy damage and death withou
   const { game, url } = await start(t), client = connect(url, 'ENEMY');
   const { id } = await client.wait(message => message.type === 'welcome'), room = game.rooms.get('ENEMY'), player = room.players.get(id);
   room.animals = []; Object.assign(player, { x: 25, z: 21, facing: 0 });
-  const enemy = { id: 'hostile-test', name: '敵', hostile: true, x: 25, z: 23, radius: .6, health: 25, maxHealth: 25, phase: 'alive' }; room.enemies.push(enemy);
+  const enemy = { id: 'hostile-test', name: '敵', hostile: true, x: 25, z: 23, radius: .6, health: HUNTING.attackDamage, maxHealth: HUNTING.attackDamage, phase: 'alive' }; room.enemies.push(enemy);
   client.send({ type: 'action', action: 'attack' });
   const state = await client.wait(message => message.type === 'state' && message.enemies?.some(item => item.id === enemy.id && item.phase === 'dead'));
   const defeated = state.enemies.find(item => item.id === enemy.id);
