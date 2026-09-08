@@ -41,7 +41,7 @@ button kbd{pointer-events:none}
 .portrait.nea:before{background:#c69f7b;width:18px;left:7px;box-shadow:0 -5px #4b3b2e,-3px -2px #4b3b2e,4px -2px #4b3b2e}
 .portrait.nea:after{background:#9f8d6d}
 .portrait.cat{background:#515850 url('/models/cat-kunoichi/portrait.png') 50% 7%/420% auto no-repeat}
-.portrait.bear{background:#615942 url('/models/floppy-ear-mage/portrait.png') 50% 10%/220% auto no-repeat}
+.portrait.bear{background:#95714d url('/models/desert-fennec-mage/portrait.png') 50% 28%/220% auto no-repeat}
 .portrait.cat:before,.portrait.cat:after,.portrait.cat i,.portrait.bear:before,.portrait.bear:after,.portrait.bear i{display:none}
 
 /* ---- World viewport ---- */

@@ -1,0 +1,96 @@
+{
+  "key": "desert-fennec-mage",
+  "candidate": 1,
+  "revision": "04",
+  "sha256": "06d14d55aa779ac1bbccbfa91bd36b8e175309abcdf6cf5deafbcea103890bdd",
+  "status": "passed",
+  "branch": "codex/mage-prehistoric-clothing",
+  "delivery": {
+    "scope": "local branch",
+    "url": "http://127.0.0.1:57023/?room=DESERT-QA",
+    "publicDeployment": false,
+    "normalPort3000Rollout": false
+  },
+  "model": {
+    "triangles": 103314,
+    "bytes": 15370112,
+    "heightMetres": 0.78,
+    "bones": 25,
+    "clips": 9,
+    "source": "selected original image candidate 2 → local TRELLIS-2 1024 → measured source-preserving reduction → rig revisions 01–04"
+  },
+  "exactGlb": {
+    "numeric60Hz": "all 9 clips passed",
+    "visual": "270 frames / 9 clips inspected; neutral and clay surface views; actual browser GLB hash checked",
+    "browserErrors": 0
+  },
+  "game": {
+    "browsers": [
+      "Chrome desktop",
+      "IAB 390x844"
+    ],
+    "players": "2 real browser players + 3 WebSocket observers",
+    "checks": [
+      "selection name and portrait",
+      "both mages load exact accepted SHA",
+      "free light magic from both browser players",
+      "wood gathering 0→1",
+      "walking toward mammoth",
+      "run toggle during approach",
+      "normal automatic approach and mount mammoth-2",
+      "dismount and light magic",
+      "same-tab reload → Continue preserves wood 1"
+    ],
+    "screenshots": [
+      "game-five-desktop.png",
+      "game-mobile-mounted.png",
+      "game-mobile-after-dismount.png",
+      "game-reloaded-desktop.png"
+    ],
+    "consoleErrors": [],
+    "consoleWarnings": []
+  },
+  "network": {
+    "states": 1735,
+    "maxPlayers": 5,
+    "sixthClientRefused": true,
+    "projectiles": 4,
+    "staticPenetrations": 0,
+    "errors": []
+  },
+  "validation": {
+    "tests": 230,
+    "passed": 230,
+    "typeScript": "passed",
+    "syntaxFiles": 126,
+    "architecture": "passed",
+    "assetModels": 33,
+    "cloudflareLocalBuild": {
+      "files": 185,
+      "MiB": 200.1,
+      "verifiedGlbs": 48
+    }
+  },
+  "performance": {
+    "gameObservedFps": [
+      51,
+      55,
+      57,
+      58,
+      60
+    ],
+    "conditions": "Two real browser surfaces during game checks; changing desktop/mobile viewport. Sampling only.",
+    "exactReviewFiveModelFps": 43,
+    "exactReviewCondition": "Blender animation rendering concurrently active"
+  },
+  "limitations": [
+    "No physical smartphone or long-duration testing; no constant-60-FPS claim.",
+    "Network check covers CollisionWorld static solids, not exhaustive mesh-level or dynamic-pair overlap.",
+    "Free spell emission verified; no new combat damage-balancing change or enemy-kill QA.",
+    "Original visual design is a creative direction, not a legal clearance guarantee."
+  ],
+  "harnessNotes": [
+    "First observer invocation omitted /ws and received 404; corrected endpoint before the successful run.",
+    "Static build initially rejected stale floppy-ear files; moved only that output folder into output/desert-mage-previous-build-floppy, then build passed."
+  ]
+}

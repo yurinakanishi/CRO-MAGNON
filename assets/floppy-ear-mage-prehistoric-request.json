@@ -1,0 +1,50 @@
+{
+  "key": "floppy-ear-mage",
+  "candidate": 2,
+  "branch": "codex/mage-prehistoric-clothing",
+  "userRequest": "クロマニョン人の時代の服装に変えて. cut branch and start",
+  "status": "cancelled-by-user-before-adoption",
+  "source": "output/model-generation/models/floppy-ear-mage/work/candidate-02/source/original/reference-v2.png",
+  "referenceSHA256": "4c925f8ea1aa34b784859ef9b5d26bfa038c460e45b88f92771e219c7a8dd16d",
+  "priorCandidate": {
+    "candidate": 1,
+    "revision": 12,
+    "sha256": "60a247305f0b698654a9e61fd991470535128362e94be5d2b047be592e46e1ef"
+  },
+  "historicalBasis": [
+    {
+      "url": "https://humanorigins.si.edu/evidence/behavior/making-clothing",
+      "use": "Animal hides, pierced holes and sewn clothing; the exact character outfit is a stylized inference."
+    }
+  ],
+  "claudeUsed": false,
+  "generation": "draft reconstruction and rig retained; work stopped",
+  "adoption": "not-performed",
+  "gameQa": "not-performed",
+  "cloudflareDeployment": "not-performed; branch work",
+  "baseline": {
+    "verificationCorrection": "Read provenance.visualReview instead of assuming an output/ path; existing dugout-canoe review and SHA match.",
+    "cloudflareBuild": "local only, passed",
+    "testsPassed": 230,
+    "typeSyntaxArchitecture": "passed",
+    "modelsVerified": 33,
+    "packagedGLBs": 48
+  },
+  "additionalRequest": "手袋と足袋ないのも作れる？",
+  "references": [
+    {
+      "path": "output/model-generation/models/floppy-ear-mage/work/candidate-02/source/original/reference-v1.png",
+      "wardrobe": "hide mittens and footwear",
+      "version": 1
+    },
+    {
+      "sha256": "4c925f8ea1aa34b784859ef9b5d26bfa038c460e45b88f92771e219c7a8dd16d",
+      "path": "output/model-generation/models/floppy-ear-mage/work/candidate-02/source/original/reference-v2.png",
+      "wardrobe": "bare cream-furred hands and feet",
+      "version": 2
+    }
+  ],
+  "selectedReferenceVersion": 2,
+  "selectionBasis": "Latest request for uncovered hands and feet; recommended variant proceeded after optional question remained unanswered.",
+  "cancellation": "User stopped the current 3D work and requested five redesigned cute image candidates with a more distinct identity."
+}

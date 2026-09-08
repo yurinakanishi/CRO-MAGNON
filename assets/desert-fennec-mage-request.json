@@ -1,0 +1,21 @@
+{
+  "key": "desert-fennec-mage",
+  "candidate": 1,
+  "branch": "codex/mage-prehistoric-clothing",
+  "userSelection": "砂漠の動物 を採用",
+  "referenceImage": "output/model-generation/models/desert-fennec-mage/source/original/reference-v1.png",
+  "referenceSHA256": "aa89e5f3e32de72d75709596719bf65371efc2e70bc7c863911225375391be57",
+  "generation": "completed",
+  "adoption": "exact-glb-reviewed-and-adopted",
+  "gameQa": "completed",
+  "claudeUsed": false,
+  "cloudflareDeployment": "not-performed; branch work",
+  "previous3DWork": "cancelled by user; retained as unused draft",
+  "sha256": "06d14d55aa779ac1bbccbfa91bd36b8e175309abcdf6cf5deafbcea103890bdd",
+  "gameQaReport": "assets/desert-fennec-mage-game-qa.json",
+  "canonicalArchive": {
+    "report": "assets/desert-mage-canonical-sync.json",
+    "files": 426,
+    "allSha256Verified": true
+  }
+}

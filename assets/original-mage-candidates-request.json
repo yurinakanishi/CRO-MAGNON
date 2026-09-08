@@ -1,0 +1,40 @@
+{
+  "status": "candidate-2-selected",
+  "userRequest": "かわいさは残しつつ、変えて。画像候補5つ下さい。今の作業はやめて",
+  "generator": "Codex built-in imagegen",
+  "previous3DWork": "cancelled-before-adoption; draft files retained; dedicated QA server stopped",
+  "threeDGenerationStartedForTheseCandidates": true,
+  "candidates": [
+    {
+      "key": "01-forest-sprout",
+      "title": "1｜芽角の森の子",
+      "image": "output/imagegen/original-mage-candidates-20260908/01-forest-sprout.png",
+      "prompt": "output/imagegen/original-mage-candidates-20260908/01-forest-sprout.prompt.txt"
+    },
+    {
+      "key": "02-desert-ear",
+      "title": "2｜砂耳の旅人",
+      "image": "output/imagegen/original-mage-candidates-20260908/02-desert-ear.png",
+      "prompt": "output/imagegen/original-mage-candidates-20260908/02-desert-ear.prompt.txt"
+    },
+    {
+      "key": "03-night-feather",
+      "title": "3｜夜羽の祈り手",
+      "image": "output/imagegen/original-mage-candidates-20260908/03-night-feather.png",
+      "prompt": "output/imagegen/original-mage-candidates-20260908/03-night-feather.prompt.txt"
+    },
+    {
+      "key": "04-moss-shell",
+      "title": "4｜苔甲羅の精",
+      "image": "output/imagegen/original-mage-candidates-20260908/04-moss-shell.png",
+      "prompt": "output/imagegen/original-mage-candidates-20260908/04-moss-shell.prompt.txt"
+    },
+    {
+      "key": "05-river-otter",
+      "title": "5｜川辺のカワウソ",
+      "image": "output/imagegen/original-mage-candidates-20260908/05-river-otter.png",
+      "prompt": "output/imagegen/original-mage-candidates-20260908/05-river-otter.prompt.txt"
+    }
+  ],
+  "selected": "02-desert-ear"
+}

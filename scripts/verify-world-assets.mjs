@@ -24,7 +24,7 @@ for (const spec of catalog.assets) {
   assert.equal(manifest.modelKey, spec.key); assert.equal(manifest.kind, spec.kind); assert.equal(manifest.provenance.claudeUsed, false);
   assert.equal(manifest.sha256, spec.sha256);
   if (spec.kind !== 'humanoid') assert.deepEqual(canonicalizeZero(world.assets.find(asset => asset.modelKey === spec.key)), canonicalizeZero(manifest));
-  const review = await json(`output/model-generation/models/${spec.key}/qa/adoption-review.json`);
+  const review = await json(manifest.provenance.visualReview);
   assert.equal(review.decision, 'adopt'); assert.equal(review.sha256, manifest.sha256);
   const reference = await readFile(resolve(root, manifest.provenance.referenceImage));
   assert.equal(hash(reference), manifest.provenance.referenceSha256);
