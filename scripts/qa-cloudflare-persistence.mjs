@@ -1,10 +1,10 @@
 import { Miniflare, convertV4MiniflareOptions } from 'miniflare';
 import assert from 'node:assert/strict';
 import { mkdir, writeFile } from 'node:fs/promises';
-import { freshBudget } from '../cloudflare/free-budget.mjs';
+import { freshBudget } from '../dist/cloudflare/free-budget.mjs';
 
 const mf = new Miniflare({ ...convertV4MiniflareOptions({ name: 'game-test', modules: true,
-  scriptPath: 'output/cloudflare-dry-run/worker.js', compatibilityDate: '2026-09-07',
+  scriptPath: process.argv[2] || 'output/cloudflare-dry-run/worker.js', compatibilityDate: '2026-09-07',
   compatibilityFlags: ['nodejs_compat'], bindings: { SERVICE_ENABLED: 'true' },
   durableObjects: { GAME: { className: 'FreeGameRoom', useSQLite: true } } }), unsafeInspectDurableObjects: true });
 const pause = ms => new Promise(r => setTimeout(r, ms));
@@ -57,6 +57,6 @@ try {
     inventoryAndCampRestored: true, activeTimeLimit: true, connectionLimit: true, writeLimit: true,
     messageLimit: true, storageFailureStopsPlay: true, priorCheckpointPreserved: true };
   await mkdir('assets/cloudflare', { recursive: true });
-  await writeFile('assets/cloudflare/persistence-qa.json', JSON.stringify(result, null, 2));
+  await writeFile(process.argv[3] || 'assets/cloudflare/persistence-qa.json', JSON.stringify(result, null, 2));
   console.log(JSON.stringify(result));
 } finally { await mf.dispose(); }

@@ -2,8 +2,8 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import * as THREE from 'three';
 import { geometryScene } from '../scripts/measure-collision-bounds.mjs';
-import { CharacterAnimation } from '../src/character-animation.js';
-import { CHARACTER_MODELS } from '../shared/characters.mjs';
+import { CharacterAnimation } from '../dist/src/character-animation.js';
+import { CHARACTER_MODELS } from '../dist/shared/characters.mjs';
 
 test('actual exported humanoid clips cannot overwrite the world heading',async()=>{
   for(const {key} of CHARACTER_MODELS) {

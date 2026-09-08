@@ -2,7 +2,7 @@ import {createGameServer} from '../server.mjs';
 import {chromium} from 'file:///C:/Users/yurin/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/node_modules/playwright/index.mjs';
 import {writeFile} from 'node:fs/promises';
 import assert from 'node:assert/strict';
-import {launchPoint} from '../shared/boats.mjs';
+import {launchPoint} from '../dist/shared/boats.mjs';
 const game=createGameServer({port:0,host:'127.0.0.1'}),address=await game.listen();
 const sleep=ms=>new Promise(r=>setTimeout(r,ms));
 let browser;

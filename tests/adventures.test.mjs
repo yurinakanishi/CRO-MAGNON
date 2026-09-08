@@ -1,16 +1,16 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { EventEmitter } from 'node:events';
-import { ADVENTURE_REGIONS, ADVENTURE_RESOURCES, ADVENTURE_ENEMIES, RIFTS, regionById, adventureProgress, travelSeals } from '../shared/adventure-regions.mjs';
-import { ensureAdventure, updateAdventures, handleAdventureAction, recordAdventureGather } from '../shared/adventures.mjs';
-import { CollisionWorld, overlap } from '../shared/collision.mjs';
-import { isLand } from '../shared/paleo-geography.mjs';
-import { createGameCore } from '../shared/game-core.mjs';
-import { takeExpedition } from '../shared/expeditions.mjs';
-import { startAttack, resolveAttack, updateProjectiles } from '../shared/combat.mjs';
-import { createEnemies } from '../shared/enemies.mjs';
-import { SCENERY } from '../shared/scenery-layout.mjs';
-import { AdventureMaterials } from '../src/adventure-materials.js';
+import { ADVENTURE_REGIONS, ADVENTURE_RESOURCES, ADVENTURE_ENEMIES, RIFTS, regionById, adventureProgress, travelSeals } from '../dist/shared/adventure-regions.mjs';
+import { ensureAdventure, updateAdventures, handleAdventureAction, recordAdventureGather } from '../dist/shared/adventures.mjs';
+import { CollisionWorld, overlap } from '../dist/shared/collision.mjs';
+import { isLand } from '../dist/shared/paleo-geography.mjs';
+import { createGameCore } from '../dist/shared/game-core.mjs';
+import { takeExpedition } from '../dist/shared/expeditions.mjs';
+import { startAttack, resolveAttack, updateProjectiles } from '../dist/shared/combat.mjs';
+import { createEnemies } from '../dist/shared/enemies.mjs';
+import { SCENERY } from '../dist/shared/scenery-layout.mjs';
+import { AdventureMaterials } from '../dist/src/adventure-materials.js';
 import * as THREE from 'three';
 
 const collision=new CollisionWorld();

@@ -1,9 +1,9 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { CollisionWorld } from '../shared/collision.mjs';
-import { createAnimals, updateAnimals, actorObstacle } from '../shared/animals.mjs';
-import { HUNTING_GROUNDS } from '../shared/scenery-layout.mjs';
-import { HUNTING, handleHuntingAction, updateHunting, initialHuntState, animalIsSolid, withinSpearReach } from '../shared/hunting.mjs';
+import { CollisionWorld } from '../dist/shared/collision.mjs';
+import { createAnimals, updateAnimals, actorObstacle } from '../dist/shared/animals.mjs';
+import { HUNTING_GROUNDS } from '../dist/shared/scenery-layout.mjs';
+import { HUNTING, handleHuntingAction, updateHunting, initialHuntState, animalIsSolid, withinSpearReach } from '../dist/shared/hunting.mjs';
 
 function fixture() {
   const animal = { id: 'mammoth', x: 20, z: 20, radius: 2.9, home: { x: 20, z: 20 }, roamRadius: 5, age: 0, ...initialHuntState(1000) };

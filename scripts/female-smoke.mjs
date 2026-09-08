@@ -1,6 +1,6 @@
 import {WebSocket} from 'ws';
 import {writeFile} from 'node:fs/promises';
-import {CollisionWorld,overlap} from '../shared/collision.mjs';
+import {CollisionWorld,overlap} from '../dist/shared/collision.mjs';
 const url=process.argv[2]||'ws://127.0.0.1:3002/ws',room='FEMALE-QA';
 const sockets=[],timers=[],collision=new CollisionWorld();
 const report={room,checks:[],maxPlayers:0,states:0,staticPenetrations:0,dynamicPenetrations:0,fullSnapshotBytes:[],movementSnapshotBytes:[],animalClips:[],species:[],characters:[]};

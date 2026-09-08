@@ -1,10 +1,10 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { CollisionWorld, overlap } from '../shared/collision.mjs';
-import { createAnimals, updateAnimals } from '../shared/animals.mjs';
-import { RIDING, handleRidingAction, dismountPoint, releaseRider, mountedAnimal } from '../shared/riding.mjs';
-import { startAttack, damageableTargets } from '../shared/combat.mjs';
-import { planNavigation } from '../shared/navigation.mjs';
+import { CollisionWorld, overlap } from '../dist/shared/collision.mjs';
+import { createAnimals, updateAnimals } from '../dist/shared/animals.mjs';
+import { RIDING, handleRidingAction, dismountPoint, releaseRider, mountedAnimal } from '../dist/shared/riding.mjs';
+import { startAttack, damageableTargets } from '../dist/shared/combat.mjs';
+import { planNavigation } from '../dist/shared/navigation.mjs';
 
 function fixture(obstacles=[]) {
   const collision=new CollisionWorld(obstacles,{river:false}),animals=createAnimals(collision,0),animal=animals[0];

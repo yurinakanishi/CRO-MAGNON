@@ -7,7 +7,7 @@ const root = new URL('../', import.meta.url);
 test('the public game title matches the repository name', async () => {
   const [html, main, review] = await Promise.all([
     readFile(new URL('public/index.html', root), 'utf8'),
-    readFile(new URL('src/main.js', root), 'utf8'),
+    readFile(new URL('src/main.ts', root), 'utf8'),
     readFile(new URL('public/model-review.html', root), 'utf8'),
   ]);
 

@@ -1,0 +1,18 @@
+{
+  "compilerOptions": {
+    "target": "ES2022",
+    "module": "NodeNext",
+    "moduleResolution": "NodeNext",
+    "lib": ["ES2022", "DOM", "DOM.Iterable"],
+    "types": ["node"],
+    "rootDir": ".",
+    "outDir": "dist",
+    "strict": false,
+    "noEmitOnError": true,
+    "sourceMap": true,
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true
+  },
+  "include": ["shared/**/*.mts", "src/**/*.ts", "application/**/*.mts", "infrastructure/**/*.mts", "server.mts"],
+  "exclude": ["node_modules", "dist", "output"]
+}

@@ -40,6 +40,6 @@ if (process.argv[1]?.endsWith('measure-collision-bounds.mjs')) {
     bounds[key]={min:box.min.toArray(),max:box.max.toArray(),radius,sha256:createHash('sha256').update(await readFile(file)).digest('hex')};
     if(key==='valley-pine')bounds[key].trunk={min:trunk.min.toArray(),max:trunk.max.toArray()};
   }
-  await writeFile('shared/model-bounds.mjs','// Measured from the delivered TRELLIS GLBs by scripts/measure-collision-bounds.mjs.\nexport const MODEL_BOUNDS = '+JSON.stringify(bounds,null,2)+';\n');
+  await writeFile('shared/model-bounds.mts','// Measured from the delivered TRELLIS GLBs by scripts/measure-collision-bounds.mjs.\nexport const MODEL_BOUNDS = '+JSON.stringify(bounds,null,2)+';\n');
   console.log(JSON.stringify(bounds,null,2));
 }

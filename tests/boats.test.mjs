@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { CollisionWorld } from '../shared/collision.mjs';
-import { BOATING,initializeBoats,handleBoatAction,updateBoats,releaseBoat,launchPoint,waterBodyFree,landingPoint } from '../shared/boats.mjs';
+import { CollisionWorld } from '../dist/shared/collision.mjs';
+import { BOATING,initializeBoats,handleBoatAction,updateBoats,releaseBoat,launchPoint,waterBodyFree,landingPoint } from '../dist/shared/boats.mjs';
 const shore={x:21,z:125};
 function fixture(){const p={id:'p',species:'cro',gender:'female',...shore,radius:.32,inventory:{wood:24},path:[],energy:100};const r={collision:new CollisionWorld(),players:new Map([[p.id,p]]),animals:[],enemies:[],p};initializeBoats(r);return r;}
 const act=(r,action,p=r.p,targetId)=>handleBoatAction(r,p,{action,targetId},10000);

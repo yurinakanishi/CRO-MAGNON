@@ -2,11 +2,11 @@
 // cannot relocate players or modify inventory. Never used as the normal server.
 import { createInterface } from 'node:readline';
 import { createGameServer } from '../server.mjs';
-import { JOURNEY_STOPS } from '../shared/biomes.mjs';
-import { WORLD } from '../shared/world.mjs';
-import { stopActor, enemyIsSolid } from '../shared/combat.mjs';
-import { actorObstacle } from '../shared/animals.mjs';
-import { animalIsSolid } from '../shared/hunting.mjs';
+import { JOURNEY_STOPS } from '../dist/shared/biomes.mjs';
+import { WORLD } from '../dist/shared/world.mjs';
+import { stopActor, enemyIsSolid } from '../dist/shared/combat.mjs';
+import { actorObstacle } from '../dist/shared/animals.mjs';
+import { animalIsSolid } from '../dist/shared/hunting.mjs';
 const game=createGameServer({port:3004,host:'127.0.0.1'});
 await game.listen();console.log(JSON.stringify({status:'ready',port:3004,room:'WORLD-QA'}));
 const input=createInterface({input:process.stdin});

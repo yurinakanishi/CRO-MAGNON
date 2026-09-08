@@ -1,9 +1,9 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { CollisionWorld, overlap } from '../shared/collision.mjs';
-import { createEnemies, updateEnemies, ENEMY_RULES, ENEMY_GROUNDS } from '../shared/enemies.mjs';
-import { createAnimals, updateAnimals, actorObstacle } from '../shared/animals.mjs';
-import { COMBAT, enemyIsSolid, startAttack, resolveAttack } from '../shared/combat.mjs';
+import { CollisionWorld, overlap } from '../dist/shared/collision.mjs';
+import { createEnemies, updateEnemies, ENEMY_RULES, ENEMY_GROUNDS } from '../dist/shared/enemies.mjs';
+import { createAnimals, updateAnimals, actorObstacle } from '../dist/shared/animals.mjs';
+import { COMBAT, enemyIsSolid, startAttack, resolveAttack } from '../dist/shared/combat.mjs';
 
 function fixture(collision = new CollisionWorld([], { river: false })) {
   const enemy = createEnemies(collision, [], 1000)[0];

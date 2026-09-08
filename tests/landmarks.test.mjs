@@ -2,10 +2,10 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { readFile } from 'node:fs/promises';
 import { createHash } from 'node:crypto';
-import { LANDMARKS } from '../shared/landmarks.mjs';
-import { LANDMARK_BOUNDS } from '../shared/landmark-bounds.mjs';
-import { landmarkObstacles } from '../shared/landmark-collision.mjs';
-import { CollisionWorld } from '../shared/collision.mjs';
+import { LANDMARKS } from '../dist/shared/landmarks.mjs';
+import { LANDMARK_BOUNDS } from '../dist/shared/landmark-bounds.mjs';
+import { landmarkObstacles } from '../dist/shared/landmark-collision.mjs';
+import { CollisionWorld } from '../dist/shared/collision.mjs';
 
 test('ice and volcano collision footprints are tied to the exact delivered geometry',async()=>{
   for(const [key,footprint] of Object.entries(LANDMARK_BOUNDS)){

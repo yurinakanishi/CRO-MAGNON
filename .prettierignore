@@ -1,0 +1,8 @@
+node_modules
+dist
+dist-cloudflare
+output
+public/vendor
+shared/paleo-coast-data.mts
+shared/castle-surface-data.mts
+shared/landmark-bounds.mts

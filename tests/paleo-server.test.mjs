@@ -2,7 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { WebSocket } from 'ws';
 import { createGameServer } from '../server.mjs';
-import { geoToWorld, expeditionById, isLand } from '../shared/paleo-geography.mjs';
+import { geoToWorld, expeditionById, isLand } from '../dist/shared/paleo-geography.mjs';
 const delay=ms=>new Promise(r=>setTimeout(r,ms));
 test('actual protocol rejects ocean routes and forged travel, then shares a safe expedition and retained progress',async t=>{
   const game=createGameServer({port:0,host:'127.0.0.1',tickMs:20});await game.listen();t.after(()=>game.close());

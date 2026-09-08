@@ -2,12 +2,12 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import {readFile} from 'node:fs/promises';
 import * as THREE from 'three';
-import {REGION_FEATURES} from '../shared/region-features.mjs';
-import {REGION_FEATURE_BOUNDS} from '../shared/region-feature-bounds.mjs';
-import {CollisionWorld,staticObstacles} from '../shared/collision.mjs';
-import {biomeAt,roadDistance,JOURNEY_STOPS} from '../shared/biomes.mjs';
-import {WorldAssets} from '../src/world-assets.js';
-import {WorldLandmarks} from '../src/world-landmarks.js';
+import {REGION_FEATURES} from '../dist/shared/region-features.mjs';
+import {REGION_FEATURE_BOUNDS} from '../dist/shared/region-feature-bounds.mjs';
+import {CollisionWorld,staticObstacles} from '../dist/shared/collision.mjs';
+import {biomeAt,roadDistance,JOURNEY_STOPS} from '../dist/shared/biomes.mjs';
+import {WorldAssets} from '../dist/src/world-assets.js';
+import {WorldLandmarks} from '../dist/src/world-landmarks.js';
 
 test('new regional shapes match delivered GLBs and leave original scenery and roads clear',async()=>{
   const keys=new Set(REGION_FEATURES.map(p=>p.key)),base=new CollisionWorld(staticObstacles().filter(o=>!keys.has(o.modelKey)));

@@ -1,8 +1,8 @@
 // Local QA fixtures are accepted only on stdin, never from the game protocol.
 import { createInterface } from 'node:readline';
 import { createGameServer } from '../server.mjs';
-import { stopActor } from '../shared/combat.mjs';
-import { releaseRider, ridingObstacles } from '../shared/riding.mjs';
+import { stopActor } from '../dist/shared/combat.mjs';
+import { releaseRider, ridingObstacles } from '../dist/shared/riding.mjs';
 const game = createGameServer({ port: Number(process.env.AUDIT_PORT) || 3005, host: '127.0.0.1' });
 await game.listen();
 console.log(JSON.stringify({ ready: true, port: game.address().port }));

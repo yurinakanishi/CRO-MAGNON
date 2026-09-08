@@ -2,8 +2,8 @@
 import { WebSocket } from 'ws';
 import { writeFile } from 'node:fs/promises';
 import { createInterface } from 'node:readline';
-import { CollisionWorld, overlap } from '../shared/collision.mjs';
-import { biomeAt } from '../shared/biomes.mjs';
+import { CollisionWorld, overlap } from '../dist/shared/collision.mjs';
+import { biomeAt } from '../dist/shared/biomes.mjs';
 
 const peers=[],amounts=new Map(),collision=new CollisionWorld(undefined,{active:o=>!o.resourceId||(amounts.get(o.resourceId)??1)>0});
 const report={startedAt:new Date().toISOString(),mode:'Two actual Chromium browsers and three passive WebSocket peers, isolated port 3004 / WORLD-QA',snapshots:0,maxPlayers:0,biomes:{},staticPenetrations:0,dynamicPenetrations:0,mountMismatches:0,sixthRefused:false,errors:[]};

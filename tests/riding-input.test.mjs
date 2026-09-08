@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { RideApproach } from '../src/riding-input.js';
+import { RideApproach } from '../dist/src/riding-input.js';
 const player={id:'p',x:20,z:0,radius:.32},animal={id:'m',x:0,z:0,radius:2.9,phase:'alive'};
 test('an explicit ride request follows the moving animal, throttles paths, then mounts once in reach',()=>{
   const input=new RideApproach();assert.equal(input.update(player,[animal],0),null);input.begin('m');

@@ -1,10 +1,10 @@
 import test from 'node:test';
-import { CollisionWorld } from '../shared/collision.mjs';
+import { CollisionWorld } from '../dist/shared/collision.mjs';
 import assert from 'node:assert/strict';
 import * as THREE from 'three';
-import { WorldAssets } from '../src/world-assets.js';
-import { nearestCookingFire,handleHuntingAction,updateHunting } from '../shared/hunting.mjs';
-import { SCENERY } from '../shared/scenery-layout.mjs';
+import { WorldAssets } from '../dist/src/world-assets.js';
+import { nearestCookingFire,handleHuntingAction,updateHunting } from '../dist/shared/hunting.mjs';
+import { SCENERY } from '../dist/shared/scenery-layout.mjs';
 
 const record=key=>({modelKey:key,environment:true,onDemand:true,lods:[],url:key});
 const fixture=()=>{const scene=new THREE.Group(),geometry=new THREE.BufferGeometry(),material=new THREE.MeshStandardMaterial();scene.add(new THREE.Mesh(geometry,material));return{scene,geometry,material};};

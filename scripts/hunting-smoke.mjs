@@ -1,10 +1,10 @@
 import { WebSocket } from 'ws';
 import { writeFile } from 'node:fs/promises';
 import { resolve } from 'node:path';
-import { CollisionWorld, overlap } from '../shared/collision.mjs';
-import { HUNTING_GROUNDS } from '../shared/scenery-layout.mjs';
-import { animalIsSolid } from '../shared/hunting.mjs';
-import { CHARACTER_MODELS } from '../shared/characters.mjs';
+import { CollisionWorld, overlap } from '../dist/shared/collision.mjs';
+import { HUNTING_GROUNDS } from '../dist/shared/scenery-layout.mjs';
+import { animalIsSolid } from '../dist/shared/hunting.mjs';
+import { CHARACTER_MODELS } from '../dist/shared/characters.mjs';
 
 const url = process.argv[2] || 'ws://127.0.0.1:3003/ws';
 const roomName = process.argv[3] || 'HUNT-QA';

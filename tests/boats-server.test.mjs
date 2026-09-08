@@ -1,8 +1,8 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import {createGameCore} from '../shared/game-core.mjs';
+import {createGameCore} from '../dist/shared/game-core.mjs';
 import {createGameServer} from '../server.mjs';
-import {handleBoatAction,updateBoats} from '../shared/boats.mjs';
+import {handleBoatAction,updateBoats} from '../dist/shared/boats.mjs';
 class Socket{readyState=1;bufferedAmount=0;handlers={};messages=[];on(k,f){this.handlers[k]=f;}send(s){this.messages.push(JSON.parse(s));}close(){this.readyState=3;this.handlers.close?.();}input(m){this.handlers.message(Buffer.from(JSON.stringify(m)),false);}}
 function setup(){const core=createGameCore({keepEmptyRooms:true}),peers=[];for(let i=0;i<5;i++){const s=new Socket();core.connect(s,new URLSearchParams({room:'BOAT-QA',name:`P${i}`,resume:'1'}));peers.push(s);}const room=core.rooms.get('BOAT-QA'),p=[...room.players.values()][0];Object.assign(p,{x:21,z:125});p.inventory.wood=24;return {core,peers,room,p};}
 const action=(s,p,action)=>{p.lastAction=0;s.input({type:'action',action});};

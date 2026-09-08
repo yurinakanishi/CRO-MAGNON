@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { createGameCore } from '../shared/game-core.mjs';
-import { freshBudget, reserve, nextDay } from '../cloudflare/free-budget.mjs';
+import { createGameCore } from '../dist/shared/game-core.mjs';
+import { freshBudget, reserve, nextDay } from '../dist/cloudflare/free-budget.mjs';
 class Socket {
   readyState = 1; bufferedAmount = 0; handlers = {}; messages = [];
   on(name, fn) { this.handlers[name] = fn; }

@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import * as THREE from 'three';
-import { CharacterAnimation, HUMAN_CLIPS, confirmedAction } from '../src/character-animation.js';
+import { CharacterAnimation, HUMAN_CLIPS, confirmedAction } from '../dist/src/character-animation.js';
 
 test('animations follow confirmed server changes, including trade versus gathering', () => {
   const before = { id: 'one', tool: false, energy: 60, inventory: { wood: 3, stone: 2, berry: 2 } };

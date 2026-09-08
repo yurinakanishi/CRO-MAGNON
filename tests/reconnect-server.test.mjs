@@ -2,7 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { WebSocket } from 'ws';
 import { createGameServer } from '../server.mjs';
-import { actorObstacle } from '../shared/animals.mjs';
+import { actorObstacle } from '../dist/shared/animals.mjs';
 const sleep=ms=>new Promise(resolve=>setTimeout(resolve,ms));
 async function until(predicate){for(let i=0;i<300;i++){if(predicate())return;await sleep(10);}assert.fail('Reconnect condition timed out');}
 async function setup(t,options={}){

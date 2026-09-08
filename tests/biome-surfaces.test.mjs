@@ -1,12 +1,12 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import * as THREE from 'three';
-import { createSurfaceTemplate, SURFACES } from '../src/biome-surfaces.js';
-import { WorldAssets, LandscapeInstances } from '../src/world-assets.js';
-import { SCENERY, grassForChunk } from '../shared/scenery-layout.mjs';
-import { biomeAt, JOURNEY_STOPS } from '../shared/biomes.mjs';
-import { resourceAppearance, BIOME_SCENERY } from '../shared/biome-scenery.mjs';
-import { INITIAL_RESOURCES } from '../shared/world.mjs';
+import { createSurfaceTemplate, SURFACES } from '../dist/src/biome-surfaces.js';
+import { WorldAssets, LandscapeInstances } from '../dist/src/world-assets.js';
+import { SCENERY, grassForChunk } from '../dist/shared/scenery-layout.mjs';
+import { biomeAt, JOURNEY_STOPS } from '../dist/shared/biomes.mjs';
+import { resourceAppearance, BIOME_SCENERY } from '../dist/shared/biome-scenery.mjs';
+import { INITIAL_RESOURCES } from '../dist/shared/world.mjs';
 
 function fixture() {
   const geometry = new THREE.BufferGeometry();

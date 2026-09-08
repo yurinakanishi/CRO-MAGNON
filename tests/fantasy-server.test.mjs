@@ -2,8 +2,8 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { WebSocket } from 'ws';
 import { createGameServer } from '../server.mjs';
-import { CollisionWorld } from '../shared/collision.mjs';
-import { stopActor } from '../shared/combat.mjs';
+import { CollisionWorld } from '../dist/shared/collision.mjs';
+import { stopActor } from '../dist/shared/combat.mjs';
 
 const sleep=ms=>new Promise(resolve=>setTimeout(resolve,ms));
 function client(url,character,room='FANTASY') {

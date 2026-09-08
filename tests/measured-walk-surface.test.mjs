@@ -1,8 +1,8 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import {measuredWalkSurface} from '../shared/measured-walk-surface.mjs';
-import {CollisionWorld} from '../shared/collision.mjs';
-import {startAttack,resolveAttack,updateProjectiles} from '../shared/combat.mjs';
+import {measuredWalkSurface} from '../dist/shared/measured-walk-surface.mjs';
+import {CollisionWorld} from '../dist/shared/collision.mjs';
+import {startAttack,resolveAttack,updateProjectiles} from '../dist/shared/combat.mjs';
 
 test('measured floors use the same rotated coordinates for height and body clearance',()=>{
   const surface=measuredWalkSurface({step:1,minX:0,minZ:0,nx:3,nz:3,heights:[0,0,0,0,2,null,0,2,null]},{x:10,z:20,yaw:Math.PI/2,scale:2});

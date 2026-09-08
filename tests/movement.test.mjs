@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { movePlayer } from '../shared/movement.mjs';
-import { WORLD } from '../shared/world.mjs';
+import { movePlayer } from '../dist/shared/movement.mjs';
+import { WORLD } from '../dist/shared/world.mjs';
 const player = () => ({ x:40,z:50,dx:1,dz:0,lastInput:1000,target:null,facing:0,runningRequested:false });
 
 test('walk and run cover their configured distance; diagonal input cannot boost speed', () => {

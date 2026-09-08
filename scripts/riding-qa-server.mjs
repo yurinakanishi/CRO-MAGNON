@@ -2,9 +2,9 @@
 // and normal WebSocket actions. Never start this server on the user's port.
 import { createInterface } from 'node:readline';
 import { createGameServer } from '../server.mjs';
-import { actorObstacle } from '../shared/animals.mjs';
-import { stopActor } from '../shared/combat.mjs';
-import { releaseRider } from '../shared/riding.mjs';
+import { actorObstacle } from '../dist/shared/animals.mjs';
+import { stopActor } from '../dist/shared/combat.mjs';
+import { releaseRider } from '../dist/shared/riding.mjs';
 const game=createGameServer({port:3004,host:'127.0.0.1'});
 await game.listen();console.log('Riding QA ready on 3004, RIDING-QA');
 const input=createInterface({input:process.stdin});

@@ -1,11 +1,11 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import * as THREE from 'three';
-import { ENEMY_CLIPS, enemyAnimationState, requireEnemyClips, playerDamageEvent, playerRecovered } from '../src/enemy-state.js';
-import { selectedCombatTarget, approachAnimal, approachEnemyGround, attackReady, huntInteraction } from '../src/hunting-ui.js';
-import { canStartAttack } from '../src/combat-input.js';
-import { WorldAssets } from '../src/world-assets.js';
-import { FrameClock } from '../src/frame-clock.js';
+import { ENEMY_CLIPS, enemyAnimationState, requireEnemyClips, playerDamageEvent, playerRecovered } from '../dist/src/enemy-state.js';
+import { selectedCombatTarget, approachAnimal, approachEnemyGround, attackReady, huntInteraction } from '../dist/src/hunting-ui.js';
+import { canStartAttack } from '../dist/src/combat-input.js';
+import { WorldAssets } from '../dist/src/world-assets.js';
+import { FrameClock } from '../dist/src/frame-clock.js';
 
 test('hostile threat replaces a distant mammoth selection without targeting friendly NPCs', () => {
   const player={id:'p',x:0,z:0,radius:.32},animal={id:'m',x:20,z:0,radius:1.9,phase:'alive'};

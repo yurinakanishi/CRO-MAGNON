@@ -1,13 +1,13 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { WORLD, worldClamp } from '../shared/world.mjs';
-import { BIOMES, biomeAt, biomeWeights, nearbyChunks, JOURNEY_STOPS } from '../shared/biomes.mjs';
-import { CollisionWorld } from '../shared/collision.mjs';
-import { movePlayer } from '../shared/movement.mjs';
-import { projectileWallEntry } from '../shared/combat.mjs';
-import { installBiomeTerrain, terrainHeight } from '../shared/terrain.mjs';
-import { PlacementGrid } from '../shared/spatial-grid.mjs';
-import { SCENERY, grassForChunk } from '../shared/scenery-layout.mjs';
+import { WORLD, worldClamp } from '../dist/shared/world.mjs';
+import { BIOMES, biomeAt, biomeWeights, nearbyChunks, JOURNEY_STOPS } from '../dist/shared/biomes.mjs';
+import { CollisionWorld } from '../dist/shared/collision.mjs';
+import { movePlayer } from '../dist/shared/movement.mjs';
+import { projectileWallEntry } from '../dist/shared/combat.mjs';
+import { installBiomeTerrain, terrainHeight } from '../dist/shared/terrain.mjs';
+import { PlacementGrid } from '../dist/shared/spatial-grid.mjs';
+import { SCENERY, grassForChunk } from '../dist/shared/scenery-layout.mjs';
 
 test('five distinct regions share one continuous bounded world and normalized transitions',()=>{
   assert.equal(WORLD.maxX-WORLD.minX,4096);assert.equal(WORLD.maxZ-WORLD.minZ,2048);

@@ -1,12 +1,12 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { WebSocket } from 'ws';
-import { CollisionWorld } from '../shared/collision.mjs';
-import { updateEnemies } from '../shared/enemies.mjs';
-import { actorObstacle } from '../shared/animals.mjs';
-import { movePlayer } from '../shared/movement.mjs';
-import { planNavigation, updateNavigation } from '../shared/navigation.mjs';
-import { stopActor } from '../shared/combat.mjs';
+import { CollisionWorld } from '../dist/shared/collision.mjs';
+import { updateEnemies } from '../dist/shared/enemies.mjs';
+import { actorObstacle } from '../dist/shared/animals.mjs';
+import { movePlayer } from '../dist/shared/movement.mjs';
+import { planNavigation, updateNavigation } from '../dist/shared/navigation.mjs';
+import { stopActor } from '../dist/shared/combat.mjs';
 import { createGameServer } from '../server.mjs';
 
 const actor=(id,x,z)=>({id,x,z,radius:.32,path:[],lastInput:0,energy:0,inventory:{},downedUntil:100});

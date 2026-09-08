@@ -4,11 +4,11 @@ import { dirname, resolve } from 'node:path';
 import { setTimeout as delay } from 'node:timers/promises';
 import { WebSocket } from 'ws';
 import { createGameServer } from '../server.mjs';
-import { CollisionWorld, overlap } from '../shared/collision.mjs';
-import { withinSpearReach, inAttackArc, enemyIsSolid } from '../shared/combat.mjs';
-import { animalIsSolid } from '../shared/hunting.mjs';
-import { CHARACTER_MODELS } from '../shared/characters.mjs';
-import { ENEMY_RULES } from '../shared/enemies.mjs';
+import { CollisionWorld, overlap } from '../dist/shared/collision.mjs';
+import { withinSpearReach, inAttackArc, enemyIsSolid } from '../dist/shared/combat.mjs';
+import { animalIsSolid } from '../dist/shared/hunting.mjs';
+import { CHARACTER_MODELS } from '../dist/shared/characters.mjs';
+import { ENEMY_RULES } from '../dist/shared/enemies.mjs';
 
 // Real-clock, public-protocol integration check. The room and actors are never
 // modified directly; navigation and attacks use the same messages as the UI.

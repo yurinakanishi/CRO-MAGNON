@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { movementFromCamera, terrainHeight, walkHeight, riverX, installSourceTerrain, installSourceBridge } from '../shared/terrain.mjs';
+import { movementFromCamera, terrainHeight, walkHeight, riverX, installSourceTerrain, installSourceBridge } from '../dist/shared/terrain.mjs';
 test('forward and strafe follow the orbit camera without a diagonal speed advantage',()=>{
   for(const yaw of [0,Math.PI/2,Math.PI,Math.PI*1.5,.73]){
     const forward=movementFromCamera(0,-1,yaw),right=movementFromCamera(1,0,yaw);

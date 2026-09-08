@@ -2,14 +2,14 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import {createHash} from 'node:crypto';
 import {readFile} from 'node:fs/promises';
-import {EARTH,geoToWorld,worldToGeo,isLand,coastDistance,coastTextureData,EXPEDITION_STOPS,geographicBiome,landmassAt} from '../shared/paleo-geography.mjs';
-import {WORLD,INITIAL_RESOURCES} from '../shared/world.mjs';
-import {CollisionWorld,staticObstacles} from '../shared/collision.mjs';
-import {SCENERY} from '../shared/scenery-layout.mjs';
-import {LANDMARKS} from '../shared/landmarks.mjs';
-import {REGION_FEATURES} from '../shared/region-features.mjs';
-import {takeExpedition} from '../shared/expeditions.mjs';
-import {nearbyChunks} from '../shared/biomes.mjs';
+import {EARTH,geoToWorld,worldToGeo,isLand,coastDistance,coastTextureData,EXPEDITION_STOPS,geographicBiome,landmassAt} from '../dist/shared/paleo-geography.mjs';
+import {WORLD,INITIAL_RESOURCES} from '../dist/shared/world.mjs';
+import {CollisionWorld,staticObstacles} from '../dist/shared/collision.mjs';
+import {SCENERY} from '../dist/shared/scenery-layout.mjs';
+import {LANDMARKS} from '../dist/shared/landmarks.mjs';
+import {REGION_FEATURES} from '../dist/shared/region-features.mjs';
+import {takeExpedition} from '../dist/shared/expeditions.mjs';
+import {nearbyChunks} from '../dist/shared/biomes.mjs';
 
 test('Earth coordinates round-trip at equator, poles, dateline and the existing camp',()=>{
   for(const [longitude,latitude] of [[-180,90],[180,-90],[0,0],[138,37],[-103,40]]){

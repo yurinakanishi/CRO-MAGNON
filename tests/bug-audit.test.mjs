@@ -4,14 +4,14 @@ import { createHash, randomBytes } from 'node:crypto';
 import * as THREE from 'three';
 import { WebSocket } from 'ws';
 import { createGameServer } from '../server.mjs';
-import { CollisionWorld } from '../shared/collision.mjs';
-import { interactionVisible } from '../shared/interactions.mjs';
-import { handleHuntingAction } from '../shared/hunting.mjs';
-import { acceptsGameShortcut, movementKey } from '../src/combat-input.js';
-import { selectedHuntTarget, attackReady, huntInteraction, approachAnimal } from '../src/hunting-ui.js';
-import { sha256 } from '../src/asset-hash.js';
-import { OpenWorldTerrain } from '../src/open-world.js';
-import { NPC } from '../shared/world.mjs';
+import { CollisionWorld } from '../dist/shared/collision.mjs';
+import { interactionVisible } from '../dist/shared/interactions.mjs';
+import { handleHuntingAction } from '../dist/shared/hunting.mjs';
+import { acceptsGameShortcut, movementKey } from '../dist/src/combat-input.js';
+import { selectedHuntTarget, attackReady, huntInteraction, approachAnimal } from '../dist/src/hunting-ui.js';
+import { sha256 } from '../dist/src/asset-hash.js';
+import { OpenWorldTerrain } from '../dist/src/open-world.js';
+import { NPC } from '../dist/shared/world.mjs';
 
 const sleep = ms => new Promise(resolve => setTimeout(resolve, ms));
 async function until(predicate) {

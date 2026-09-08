@@ -1,6 +1,6 @@
 // Visual fixture only. The full unseeded playthrough is qa-adventures.mjs.
 import {createGameServer} from '../server.mjs';
-import {regionById,RIFTS} from '../shared/adventure-regions.mjs';
+import {regionById,RIFTS} from '../dist/shared/adventure-regions.mjs';
 import {mkdir,writeFile} from 'node:fs/promises';
 import assert from 'node:assert/strict';
 const {chromium}=await import(process.env.PLAYWRIGHT_MODULE??'playwright');

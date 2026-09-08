@@ -1,10 +1,10 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import * as THREE from 'three';
-import { HUNTING } from '../shared/hunting.mjs';
-import { inventoryCounts, selectedHuntTarget, huntInteraction, attackReady, approachAnimal } from '../src/hunting-ui.js';
-import { orientSpear } from '../src/spear-pose.js';
-import { WorldAssets } from '../src/world-assets.js';
+import { HUNTING } from '../dist/shared/hunting.mjs';
+import { inventoryCounts, selectedHuntTarget, huntInteraction, attackReady, approachAnimal } from '../dist/src/hunting-ui.js';
+import { orientSpear } from '../dist/src/spear-pose.js';
+import { WorldAssets } from '../dist/src/world-assets.js';
 
 test('hunting controls normalize legacy inventory and prioritize harvest or cooking', () => {
   assert.deepEqual(inventoryCounts({wood:2}), {wood:2,stone:0,berry:0,rawMeat:0,cookedMeat:0});

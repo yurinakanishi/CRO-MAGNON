@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import * as THREE from 'three';
-import {regionFeatureDiagnostics} from '../src/region-feature-diagnostics.js';
+import {regionFeatureDiagnostics} from '../dist/src/region-feature-diagnostics.js';
 
 test('regional feature diagnostics verify real sharing and expose accidental copies',()=>{
   const geometry=new THREE.BufferGeometry(),texture=new THREE.Texture(),material=new THREE.MeshStandardMaterial({map:texture});

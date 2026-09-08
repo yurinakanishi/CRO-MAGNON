@@ -1,0 +1,21 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "strict": true,
+    "noEmit": true
+  },
+  "include": [
+    "shared/types.mts",
+    "shared/characters.mts",
+    "application/ports.mts",
+    "application/protocol.mts",
+    "src/three-types.ts",
+    "shared/snapshots.mts",
+    "shared/spatial-grid.mts",
+    "src/frame-clock.ts",
+    "src/session-storage.ts",
+    "cloudflare/free-budget.mts",
+    "cloudflare/socket-adapter.mts",
+    "infrastructure/node/static-files.mts"
+  ]
+}

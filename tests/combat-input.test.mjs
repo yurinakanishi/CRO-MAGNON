@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { isAttackShortcut, canStartAttack, MovementCommands } from '../src/combat-input.js';
-import { HUNTING } from '../shared/hunting.mjs';
+import { isAttackShortcut, canStartAttack, MovementCommands } from '../dist/src/combat-input.js';
+import { HUNTING } from '../dist/shared/hunting.mjs';
 
 test('F uses the physical key across layouts and accepts the alternate attack keys', () => {
   for (const event of [{code:'KeyF',key:'f'},{code:'KeyF',key:'は'},{code:'KeyF',key:'F',shiftKey:true},{code:'Digit5',key:'5'},{code:'Numpad5',key:'5'},{key:'F'}]) assert.equal(isAttackShortcut(event),true);

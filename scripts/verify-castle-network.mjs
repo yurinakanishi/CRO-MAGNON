@@ -1,6 +1,6 @@
 import {readFile,writeFile} from 'node:fs/promises';
-import {CollisionWorld,overlap} from '../shared/collision.mjs';
-import {CASTLE_SURFACE} from '../shared/castle-surface.mjs';
+import {CollisionWorld,overlap} from '../dist/shared/collision.mjs';
+import {CASTLE_SURFACE} from '../dist/shared/castle-surface.mjs';
 const states=JSON.parse(await readFile('output/castle-network-observations.json','utf8')),collision=new CollisionWorld();
 const errors=[],counts={states:states.length,actors:0,castleActors:0,projectiles:0,maximumParticipants:0},heights={},events={katanaKills:false,magicKills:false,recovery:false,respawn:false};
 const deadTimes=[];let previousAlive=true;

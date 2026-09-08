@@ -1,7 +1,7 @@
 import { WebSocket } from 'ws';
 import { writeFile, mkdir } from 'node:fs/promises';
 import { dirname, resolve } from 'node:path';
-import { CHARACTER_MODELS } from '../shared/characters.mjs';
+import { CHARACTER_MODELS } from '../dist/shared/characters.mjs';
 
 // Four passive peers for a fifth human-driven browser. They navigate once to
 // the clearing perimeter and never issue attacks or inventory actions.

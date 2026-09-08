@@ -1,8 +1,8 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { CollisionWorld } from '../shared/collision.mjs';
-import { COMBAT, startAttack, resolveAttack, inAttackArc, withinSpearReach } from '../shared/combat.mjs';
-import { handleHuntingAction, updateHunting, HUNTING } from '../shared/hunting.mjs';
+import { CollisionWorld } from '../dist/shared/collision.mjs';
+import { COMBAT, startAttack, resolveAttack, inAttackArc, withinSpearReach } from '../dist/shared/combat.mjs';
+import { handleHuntingAction, updateHunting, HUNTING } from '../dist/shared/hunting.mjs';
 
 const creature = (id, x = 20, z = 22) => ({ id, x, z, radius: .7, phase: 'alive', health: 100, maxHealth: 100 });
 function fixture() {

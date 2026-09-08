@@ -3,10 +3,10 @@ import {chromium} from 'file:///C:/Users/yurin/.cache/codex-runtimes/codex-prima
 import WebSocket from 'ws';
 import {mkdir,writeFile} from 'node:fs/promises';
 import assert from 'node:assert/strict';
-import {waterBodyFree,landingPoint,launchPoint,releaseBoat} from '../shared/boats.mjs';
-import {characterModel} from '../shared/characters.mjs';
-import {stopActor} from '../shared/combat.mjs';
-import {coastDistance} from '../shared/paleo-geography.mjs';
+import {waterBodyFree,landingPoint,launchPoint,releaseBoat} from '../dist/shared/boats.mjs';
+import {characterModel} from '../dist/shared/characters.mjs';
+import {stopActor} from '../dist/shared/combat.mjs';
+import {coastDistance} from '../dist/shared/paleo-geography.mjs';
 const out=process.argv[2]||'assets/boat/game-qa/r02';await mkdir(out,{recursive:true});
 const game=createGameServer({port:0,host:'127.0.0.1'}),address=await game.listen(),base=`http://127.0.0.1:${address.port}`;
 const sleep=ms=>new Promise(r=>setTimeout(r,ms));

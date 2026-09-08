@@ -1,7 +1,7 @@
 // Verify the running server in a separate room without touching the player's game.
 import assert from 'node:assert/strict';
 import { WebSocket } from 'ws';
-import { riverX } from '../shared/terrain.mjs';
+import { riverX } from '../dist/shared/terrain.mjs';
 
 const socket=new WebSocket(`ws://127.0.0.1:3000/ws?room=RIVER-QA-${Date.now()}&name=RiverQA`);
 const z=52,x=riverX(z),targets=[{x:x-4,z},{x:x+4,z}];

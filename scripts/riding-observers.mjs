@@ -1,7 +1,7 @@
 import { WebSocket } from 'ws';
 import { writeFile } from 'node:fs/promises';
 import { createInterface } from 'node:readline';
-import { CollisionWorld, overlap } from '../shared/collision.mjs';
+import { CollisionWorld, overlap } from '../dist/shared/collision.mjs';
 const peers=[],amounts=new Map(),collision=new CollisionWorld(undefined,{active:o=>!o.resourceId||(amounts.get(o.resourceId)??1)>0});
 const report={startedAt:new Date().toISOString(),mode:'Two actual browser clients and three passive WebSocket peers on isolated port 3004',snapshots:0,maxPlayers:0,staticPenetrations:0,dynamicPenetrations:0,mountMismatches:0,mounts:new Set(),clips:new Set(),sixthRefused:false,errors:[]};
 for(let i=0;i<3;i++){

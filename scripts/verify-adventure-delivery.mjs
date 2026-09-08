@@ -1,8 +1,8 @@
 import {readFile,writeFile,mkdir} from 'node:fs/promises';
 import {createHash} from 'node:crypto';
 import assert from 'node:assert/strict';
-import {ADVENTURE_LANDMARKS,ADVENTURE_SCENERY} from '../shared/adventure-layout.mjs';
-import {CHARACTER_MODELS} from '../shared/characters.mjs';
+import {ADVENTURE_LANDMARKS,ADVENTURE_SCENERY} from '../dist/shared/adventure-layout.mjs';
+import {CHARACTER_MODELS} from '../dist/shared/characters.mjs';
 const out=process.argv[2]??'assets/adventure/delivery-qa.json';
 const world=JSON.parse(await readFile('public/models/world-assets.json','utf8'));
 const assets=[...world.assets];

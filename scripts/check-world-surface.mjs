@@ -1,10 +1,10 @@
 import * as THREE from 'three';
 import {readFile,writeFile} from 'node:fs/promises';
 import assert from 'node:assert/strict';
-import {BIOMES,chunkDescription} from '../shared/biomes.mjs';
-import {installBiomeTerrain,terrainHeight,riverBankDrop} from '../shared/terrain.mjs';
+import {BIOMES,chunkDescription} from '../dist/shared/biomes.mjs';
+import {installBiomeTerrain,terrainHeight,riverBankDrop} from '../dist/shared/terrain.mjs';
 import {geometryScene} from './measure-collision-bounds.mjs';
-import {seededRandom} from '../shared/scenery-layout.mjs';
+import {seededRandom} from '../dist/shared/scenery-layout.mjs';
 const records=Object.fromEntries(await Promise.all(BIOMES.map(async b=>[b.id,JSON.parse(await readFile(`public/models/${b.ground}/asset.json`))])));
 const release=installBiomeTerrain(Object.fromEntries(BIOMES.map(b=>[b.id,records[b.id].placement.heightField])));
 const report={createdAt:new Date().toISOString(),method:'Ray hits on delivered GLBs transformed exactly as the streaming renderer, compared against walking-height samples at four actual chunk rotations.',regions:[]};

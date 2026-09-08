@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { CHARACTER_MODELS, normalizeCharacter, characterModel } from '../shared/characters.mjs';
+import { CHARACTER_MODELS, normalizeCharacter, characterModel } from '../dist/shared/characters.mjs';
 
 test('new and legacy profiles default to female in either species', () => {
   assert.deepEqual(normalizeCharacter(), { species: 'cro', gender: 'female' });

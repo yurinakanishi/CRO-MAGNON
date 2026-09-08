@@ -1,9 +1,9 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { CollisionWorld, overlap } from '../shared/collision.mjs';
-import { BRIDGE } from '../shared/scenery-layout.mjs';
-import { riverX } from '../shared/terrain.mjs';
-import { createAnimals, updateAnimals, actorObstacle } from '../shared/animals.mjs';
+import { CollisionWorld, overlap } from '../dist/shared/collision.mjs';
+import { BRIDGE } from '../dist/shared/scenery-layout.mjs';
+import { riverX } from '../dist/shared/terrain.mjs';
+import { createAnimals, updateAnimals, actorObstacle } from '../dist/shared/animals.mjs';
 const box={id:'wall',type:'box',x:10,z:10,hx:1,hz:2,c:1,s:0,height:3};
 
 test('swept movement blocks high-speed tunnelling and slides along a wall', () => {

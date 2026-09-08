@@ -1,8 +1,8 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import * as THREE from 'three';
-import { fitSourceRiverBank } from '../src/source-surface-fit.js';
-import { riverBankDrop, riverX } from '../shared/terrain.mjs';
+import { fitSourceRiverBank } from '../dist/src/source-surface-fit.js';
+import { riverBankDrop, riverX } from '../dist/shared/terrain.mjs';
 
 test('a source triangle spanning both banks still exposes the lowered riverbed', () => {
   const source = new THREE.BufferGeometry();

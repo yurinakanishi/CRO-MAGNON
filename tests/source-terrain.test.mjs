@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { installSourceTerrain, terrainHeight, riverBankDrop, installSourceBridge, walkHeight } from '../shared/terrain.mjs';
+import { installSourceTerrain, terrainHeight, riverBankDrop, installSourceBridge, walkHeight } from '../dist/shared/terrain.mjs';
 
 test('reconstructed terrain samples repeat at tile placements and fit the river bank', () => {
   const restore = installSourceTerrain({ resolution: 2, heights: [0, 1, 1, 2], tileSize: 20, origin: 50 });

@@ -2,9 +2,9 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import * as THREE from 'three';
 import { geometryScene } from '../scripts/measure-collision-bounds.mjs';
-import { RidingPose, mammothSeat } from '../src/riding-pose.js';
-import { CharacterAnimation } from '../src/character-animation.js';
-import { CHARACTER_MODELS } from '../shared/characters.mjs';
+import { RidingPose, mammothSeat } from '../dist/src/riding-pose.js';
+import { CharacterAnimation } from '../dist/src/character-animation.js';
+import { CHARACTER_MODELS } from '../dist/shared/characters.mjs';
 test('all six delivered skins seat at the animated spine, restore their bind transforms and resume walking',async()=>{
   const mammoth=await geometryScene('public/models/woolly-mammoth/model.glb'),socket=mammothSeat(mammoth.scene),mixer=new THREE.AnimationMixer(mammoth.scene);
   const run=mixer.clipAction(mammoth.animations.find(c=>c.name==='Run_Loop'));run.play();

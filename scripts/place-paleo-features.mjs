@@ -1,9 +1,9 @@
 import { writeFile } from 'node:fs/promises';
-import { CollisionWorld, staticObstacles } from '../shared/collision.mjs';
-import { geoToWorld, EXPEDITION_STOPS, isLand } from '../shared/paleo-geography.mjs';
-import { seededRandom } from '../shared/scenery-layout.mjs';
-import { biomeAt, roadDistance } from '../shared/biomes.mjs';
-import { nearLandmark } from '../shared/landmarks.mjs';
+import { CollisionWorld, staticObstacles } from '../dist/shared/collision.mjs';
+import { geoToWorld, EXPEDITION_STOPS, isLand } from '../dist/shared/paleo-geography.mjs';
+import { seededRandom } from '../dist/shared/scenery-layout.mjs';
+import { biomeAt, roadDistance } from '../dist/shared/biomes.mjs';
+import { nearLandmark } from '../dist/shared/landmarks.mjs';
 const keys=new Set(['desert-cactus','volcanic-basalt-columns']);
 const collision=new CollisionWorld(staticObstacles().filter(o=>!keys.has(o.modelKey)));
 const random=seededRandom(50000907),placed=[];
@@ -22,5 +22,5 @@ for(const [key,biome,count,centres,spread] of [
   }
   if(total!==count)throw new Error(`Only ${total}/${count} clear ${key} placements`);
 }
-await writeFile(new URL('../shared/region-features.mjs',import.meta.url),'// Shared Earth placements. Cacti stay in the Americas. Original GLBs and measured footprints are unchanged.\nexport const REGION_FEATURES=Object.freeze('+JSON.stringify(placed,null,2)+'.map(Object.freeze));\n');
+await writeFile(new URL('../shared/region-features.mts',import.meta.url),'// Shared Earth placements. Cacti stay in the Americas. Original GLBs and measured footprints are unchanged.\nexport const REGION_FEATURES=Object.freeze('+JSON.stringify(placed,null,2)+'.map(item => Object.freeze(item)));\n');
 console.log(JSON.stringify({placed:placed.length,keys:[...keys]}));

@@ -1,9 +1,9 @@
 import {WebSocket} from 'ws';
 import {writeFile,mkdir,access} from 'node:fs/promises';
 import {dirname,resolve} from 'node:path';
-import {CollisionWorld} from '../shared/collision.mjs';
-import {animalIsSolid} from '../shared/hunting.mjs';
-import {enemyIsSolid} from '../shared/combat.mjs';
+import {CollisionWorld} from '../dist/shared/collision.mjs';
+import {animalIsSolid} from '../dist/shared/hunting.mjs';
+import {enemyIsSolid} from '../dist/shared/combat.mjs';
 
 // Three passive peers leave two seats for the actual kunoichi and mage browsers.
 const [url='ws://127.0.0.1:3000/ws',room='FANTASY-BROWSER-QA',file='assets/fantasy-network-qa.json']=process.argv.slice(2);

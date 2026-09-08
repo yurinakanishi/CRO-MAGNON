@@ -1,10 +1,10 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { CollisionWorld } from '../shared/collision.mjs';
-import { attackProfile } from '../shared/combat-profiles.mjs';
-import { startAttack, resolveAttack, updateProjectiles, withinAttackReach } from '../shared/combat.mjs';
-import { canStartAttack } from '../src/combat-input.js';
-import { updateHunting } from '../shared/hunting.mjs';
+import { CollisionWorld } from '../dist/shared/collision.mjs';
+import { attackProfile } from '../dist/shared/combat-profiles.mjs';
+import { startAttack, resolveAttack, updateProjectiles, withinAttackReach } from '../dist/shared/combat.mjs';
+import { canStartAttack } from '../dist/src/combat-input.js';
+import { updateHunting } from '../dist/shared/hunting.mjs';
 
 const target=(id='crow',x=20,z=25)=>({id,x,z,radius:.4,health:75,maxHealth:75,hostile:true,phase:'alive',name:'呪術師'});
 function scene(species='bear',obstacles=[]) {
