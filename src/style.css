@@ -639,3 +639,20 @@ dialog:has(.earth-map){width:96vw;padding:18px}
 @media(max-width:1000px){.tps-mode .scene-tools{flex-direction:row;bottom:26px;right:24px;gap:5px}.scene-tools #sound-button{margin:0 5px 0 0}.dock{top:auto;bottom:118px;left:24px;transform:none;flex-direction:column;padding:4px}.dock-item{position:relative;padding:10px}.dock-item>span{display:none}.dock-count{position:absolute;top:2px;right:2px;font-size:7px;padding:1px 4px;min-width:0}.journey{display:none}.chat-panel{left:76px;width:220px}.chip-profile .chip-text{display:none}.chip-profile{padding:0 8px 0 5px}}
 @media(max-width:760px){.tps-mode .scene-tools{bottom:calc(var(--hud-height,240px) + 10px);right:14px}.hud-place{left:18px;top:16px}.brand{font-size:11px}.brand small{display:none}.brand-mark{width:22px;height:22px}.brand-mark .icon{width:20px;height:20px}.hud-actions{right:14px;top:14px;gap:5px}.chip{height:32px;font-size:8px;padding:0 8px}.chip .icon{width:13px;height:13px}.chip kbd{display:none}.chip-profile .portrait{width:24px;height:26px}.chip-profile #online-count{margin-left:0;font-size:7px}.hud-actions .button{height:32px;font-size:9px;padding:0 10px}.map-hud{top:56px;right:14px}.map-hud .discovery-card{width:183px}.scene-tools{right:14px;bottom:162px}.chat-panel{left:16px;bottom:163px;width:210px}.dock{bottom:auto;top:calc(var(--place-height,130px) + 30px);left:18px;flex-direction:row;transform:none}.dock-item{padding:9px 11px}.player-hud{display:none}.hotbar-wrap{bottom:18px}.camera-badge{display:none}.location-title{margin-top:0}}
 @media(max-width:520px){.map-hud .discovery-card{width:145px}.chat-panel{width:188px;bottom:153px}.scene-tools{right:11px;bottom:153px}.hud-actions .chip:not(.chip-profile){display:none}.map-hud{width:90px}}
+
+.gamepad-help{margin:20px 0;padding:16px;border:1px solid #b6c79d38;border-radius:8px;background:#b6c79d08}
+.gamepad-help h3{margin:0 0 10px;font-size:14px}
+.gamepad-help p{font-size:11px;line-height:1.8}
+.gamepad-connection{color:#d2dcae}
+.gamepad-bindings{margin:14px 0}
+.gamepad-bindings>div{display:grid;grid-template-columns:145px 1fr;gap:10px;padding:7px 0;border-bottom:1px solid #b6c79d18;font-size:11px;line-height:1.7}
+.gamepad-bindings dt{font-weight:600;color:#e0d8b7}
+.gamepad-bindings dd{margin:0}
+.controller-menu{display:grid;grid-template-columns:1fr 1fr;gap:9px}
+.controller-menu .button{white-space:normal;min-height:44px;text-align:left}
+.gamepad-focus{outline:3px solid #efd18c!important;outline-offset:3px!important;box-shadow:0 0 0 6px #efd18c24!important}
+label:has(.gamepad-focus){outline:3px solid #efd18c;outline-offset:2px}
+.using-gamepad #run-button{display:none}
+.using-gamepad .hunt-button kbd{width:auto;min-width:20px;white-space:nowrap}
+.using-gamepad .controls-caption{display:flex;flex-wrap:wrap;justify-content:center;gap:5px;line-height:1.6;white-space:normal}
+@media(max-width:520px){.gamepad-bindings>div{grid-template-columns:108px 1fr;font-size:10px}.controller-menu{grid-template-columns:1fr}.gamepad-help{padding:12px}.using-gamepad .controls-caption{font-size:8px}}

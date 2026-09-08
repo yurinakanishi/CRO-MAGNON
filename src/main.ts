@@ -9,6 +9,8 @@ import { WORLD, CAMP, NPC, INITIAL_RESOURCES } from '../shared/world.mjs';
 import { HUNTING, nearestCookingFire } from '../shared/hunting.mjs';
 import { RIDING, ridingDistance } from '../shared/riding.mjs';
 import { RideApproach } from './riding-input.js';
+import { GamepadControls, gamepadHelp } from './gamepad-ui.js';
+import { combineMovement } from './gamepad-input.js';
 import { installBoatControls } from './boat-ui.js';
 import {
   inventoryCounts,
@@ -124,6 +126,8 @@ let audioContext = null,
 const keys = new Set();
 const blockedMovementKeys = new Set();
 const movementCommands = new MovementCommands();
+let gamepadControls: GamepadControls | undefined;
+let usingGamepad = false;
 let selectedAnimalId = null,
   stateReceivedAt = performance.now(),
   hurtUntil = 0;
@@ -131,7 +135,7 @@ const rideApproach = new RideApproach();
 
 $('#app').innerHTML = `
   <section class="game-viewport" aria-label="${GAME_TITLE} ゲーム画面">
-    <canvas id="world" aria-label="氷河時代の大陸が広がる3Dワールド。WASDで歩行、方向キー2回押しで走行、ドラッグでカメラ回転、ホイールで距離を調整。地面クリックでも移動できます。" tabindex="0"></canvas>
+    <canvas id="world" aria-label="氷河時代の大陸が広がる3Dワールド。WASDまたは左スティックで移動。左スティックを浅く倒すと歩き、深く倒すと走ります。右スティックまたはドラッグでカメラ回転。地面クリックでも移動できます。" tabindex="0"></canvas>
     <div class="tps-reticle" aria-hidden="true"><i></i></div>
     <div class="scene-shade"></div>
     <div id="damage-flash" class="damage-flash" aria-hidden="true" hidden></div>
@@ -223,6 +227,7 @@ try {
     setEmote() {},
     focusPlayer() {},
     adjustZoom() {},
+    rotateCamera() {},
     destroy() {},
     getMovementDirection() {
       return { dx: 0, dz: 0 };
@@ -287,6 +292,7 @@ function send(message) {
   if (socket?.readyState === WebSocket.OPEN) socket.send(JSON.stringify(message));
 }
 function stopInput() {
+  gamepadControls?.suspend();
   rideApproach.cancel();
   for (const key of keys) blockedMovementKeys.add(key);
   keys.clear();
@@ -334,6 +340,7 @@ function connection(connected, label) {
   $('#connection-label').textContent = label;
 }
 async function connect() {
+  gamepadControls?.suspend();
   const attempt = ++connectAttempt;
   clearTimeout(retry);
   manualLeave = false;
@@ -453,6 +460,7 @@ async function connect() {
     if (ws !== socket) return;
     connection(false, manualLeave ? '未接続' : '再接続中…');
     rideApproach.cancel();
+    gamepadControls?.suspend();
     keys.clear();
     movementCommands.reset();
     if (!manualLeave)
@@ -608,9 +616,9 @@ function action(type, targetId?) {
   if (renderUnavailable) return;
   if (player()?.downedUntil) return;
   if (player()?.boatId && type !== 'boardBoat')
-    return notify('乗船中です。岸で B を押して降りてから行おう。');
+    return notify(`乗船中です。岸で ${usingGamepad ? '△' : 'B'} を押して降りてから行おう。`);
   if (player()?.mountId && type !== 'ride')
-    return notify('騎乗中です。攻撃・採集・食事は R で降りてから。');
+    return notify(`騎乗中です。攻撃・採集・食事は ${usingGamepad ? '△' : 'R'} で降りてから。`);
   if (
     type === 'gulfOpen' ||
     (inGulf(player()?.x, player()?.z) && ['contribute', 'trade'].includes(type))
@@ -667,12 +675,16 @@ function ride() {
     stopInput();
     return;
   }
-  if (me?.boatId) return notify('船から降りるには岸で B。');
+  if (me?.boatId) return notify(`船から降りるには岸で ${usingGamepad ? '△' : 'B'}。`);
   if (me?.mountId) return action('ride');
   if (animal && ridingDistance(me, animal) > RIDING.reach) {
     rideApproach.begin(animal.id);
     selectedAnimalId = animal.id;
-    return notify('マンモスへ近づいて乗ります。WASD または R で中止。');
+    return notify(
+      usingGamepad
+        ? 'マンモスへ近づいて乗ります。左スティック・△・○で中止。'
+        : 'マンモスへ近づいて乗ります。WASD または R で中止。',
+    );
   }
   action('ride', animal?.id);
 }
@@ -700,6 +712,7 @@ function interactAnimal(id) {
 }
 function updateHuntingHUD() {
   boatUI.update();
+  const attackKey = usingGamepad ? '□ / R2' : 'F';
   const me = player(),
     animal = me?.mountId ? (state.animals || []).find((a) => a.id === me.mountId) : huntTarget(),
     inv = inventoryCounts(me?.inventory),
@@ -741,6 +754,14 @@ function updateHuntingHUD() {
     : rideApproach.targetId
       ? 'WASD / R で中止 · 1頭に1人'
       : '1頭に1人 · R で乗る';
+  if (usingGamepad) {
+    $('#riding-hint').textContent = mounted
+      ? '左スティックを深く倒すと走る · △ 降りる'
+      : rideApproach.targetId
+        ? '左スティック / △ / ○ で中止'
+        : '1頭に1人 · △ で乗る';
+    if (me?.boatId) $('#boat-hint').textContent = '左スティックで操船 · 深く倒すと速く · 岸で △';
+  }
   Object.assign($('#world').dataset, {
     ridingVersion: String(state.ridingVersion ?? 0),
     mountId: me?.mountId ?? '',
@@ -781,7 +802,7 @@ function updateHuntingHUD() {
         ? '呪術師を倒しました。しばらくすると戻ります。'
         : animal.phase === 'dying'
           ? '肉になったら近づいて採ろう。'
-          : `${animal.health} / ${animal.maxHealth} · ${Math.round(distance(me, animal))}m · ${targetInFront ? '前方へ F で攻撃' : attackReady(me, animal) ? '相手を向いて F' : '近づいて、相手を向いて F'}`;
+          : `${animal.health} / ${animal.maxHealth} · ${Math.round(distance(me, animal))}m · ${targetInFront ? `前方へ ${attackKey} で攻撃` : attackReady(me, animal) ? `相手を向いて ${attackKey}` : `近づいて、相手を向いて ${attackKey}`}`;
   $('#go-hunt').disabled = !animal || downed || animal.phase === 'dead';
   $('#go-hunt').title = $('#go-hunt').ariaLabel = animal?.hostile
     ? `${animal.name}の近くへ移動`
@@ -790,7 +811,8 @@ function updateHuntingHUD() {
   $('#go-enemy').disabled = downed;
   if (mounted) {
     $('#hunt-target-name').textContent = '騎乗中のマンモス';
-    $('#hunt-target-note').textContent = '開けた場所で R を押すと降りられます。';
+    $('#hunt-target-note').textContent =
+      `開けた場所で ${usingGamepad ? '△' : 'R'} を押すと降りられます。`;
     $('#discovery-card small').textContent = 'MAMMOTH RIDE · 草原の旅';
     $('#go-hunt').disabled = true;
   } else if (animal?.riderId) {
@@ -804,12 +826,12 @@ function updateHuntingHUD() {
     attackButton = $('#attack-button');
   if (attackButton.dataset.style !== combat.key) {
     attackButton.dataset.style = combat.key;
-    attackButton.innerHTML = `${icon(combat.key)}<kbd>F</kbd><span>${combat.label}</span>`;
+    attackButton.innerHTML = `${icon(combat.key)}<kbd>${usingGamepad ? '□ / R2' : 'F'}</kbd><span>${combat.label}</span>`;
   }
   attackButton.title = mounted
-    ? 'Rで降りてから攻撃できます。'
+    ? `${usingGamepad ? '△' : 'R'}で降りてから攻撃できます。`
     : attackAvailable
-      ? `前方へ${combat.label} [F / 5]。相手がいなくても発動できます。`
+      ? `前方へ${combat.label} [${usingGamepad ? attackKey : 'F / 5'}]。相手がいなくても発動できます。`
       : '次の攻撃を準備しています。';
   $('#cook-button').disabled =
     !joined || renderUnavailable || downed || mounted || cooking || !inv.rawMeat;
@@ -1017,6 +1039,7 @@ function openHelp() {
   openModal(
     `<h2>今日の一歩から、はじめよう。</h2><p class="modal-intro">最初は、近くの木を集めてみましょう。</p><div class="help-grid"><div><kbd>W A S D</kbd><strong>歩く・走る</strong><p>通常は歩行。方向キーを素早く2回押すと走行（離すまで続く）。「走る」ボタンでも切り替えられます。クリック移動は障害物を避けます。</p></div><div><kbd>E</kbd><strong>近くでアクション</strong><p>採集、焚き火に届ける、オルと交換。</p></div><div><kbd>1 · 2 · 3 · 4</kbd><strong>アクションを選ぶ</strong><p>採集・道具づくり・資材を届ける・交換。</p></div><div><kbd>Enter</kbd><strong>仲間と話す</strong><p>チャットを開き、Enterで送信。</p></div></div><div class="help-tip">${icon('flame')} まずは木材3と石2で石斧を作ろう。<br>そのあと、仲間と拠点に木材12・石6を届けよう。</div><button id="help-start" class="button button-accent wide">探索をはじめる ${icon('arrow')}</button>`,
   );
+  $('#modal-body .modal-intro').insertAdjacentHTML('afterend', gamepadHelp);
   $('.help-grid').insertAdjacentHTML(
     'beforeend',
     `<div><kbd>DRAG</kbd><strong>肩越しカメラを回す</strong><p>マウス右・左ドラッグ、または指のドラッグで周囲を見渡せます。WASDはカメラの向きに合わせて動きます。</p></div><div><kbd>SCROLL</kbd><strong>カメラの距離を変える</strong><p>ホイールか＋・−ボタンで調整。「自分の位置へ」で初期のTPS視点に戻せます。</p></div>`,
@@ -1040,6 +1063,53 @@ function openHelp() {
       `<div><kbd>大城の赤い印</kbd><strong>白羽の呪術師</strong><p>始まりの谷の北東にある白羽の大城へ。城門の階段から入り、左右の階段を登ると上階の広間にいます。相手を向いて F で攻撃。力尽きても4秒後に焚き火で回復し、持ち物は残ります。</p></div>`,
     );
 }
+function updateGamepadHints(active: boolean) {
+  usingGamepad = active;
+  for (const [selector, label] of [
+    ['#interaction-hint kbd', active ? '×' : 'E'],
+    ['#attack-button kbd', active ? '□ / R2' : 'F'],
+    ['#ride-button kbd', active ? '△' : 'R'],
+    ['#boat-board kbd', active ? '△' : 'B'],
+  ])
+    $(selector).textContent = label;
+  $('.controls-caption').innerHTML = active
+    ? '<span>左スティック <b>浅く歩く · 深く走る</b></span><i>·</i><span>右スティック 視点 · OPTIONS メニュー</span>'
+    : '<span><kbd>W</kbd><kbd>A</kbd><kbd>S</kbd><kbd>D</kbd> 移動</span><i>·</i><span>方向キー2回押しで走る · ドラッグで視点回転</span>';
+  updateHuntingHUD();
+}
+
+function controllerRide() {
+  if (player()?.boatId) action('boardBoat');
+  else if (player()?.mountId || rideApproach.targetId) ride();
+  else if (!$('#boat-board').disabled) action('boardBoat');
+  else ride();
+}
+
+function openControllerMenu() {
+  const entries = [
+    ['resume', '探索に戻る', () => $('#modal').close()],
+    ['inventory', 'もちもの・道具・船をつくる', openInventory],
+    ['map', '世界地図・遠征', openMap],
+    ['journal', '探索手帳', openJournal],
+    ['gulf', '三つの国・共同の畑', () => gulfUI.open()],
+    ['tribe', '部族の仲間', openTribe],
+    ['shore', '船を作れる海岸へ', () => $('#boat-shore').click()],
+    ['ride', '船・マンモスに乗る／降りる', controllerRide],
+    ['wave', '手をふる', () => action('wave')],
+    ['help', '遊びかた・コントローラー操作', openHelp],
+    ['profile', '部屋・プロフィール', () => openRoom()],
+  ] as const;
+  openModal(
+    `<h2>旅のメニュー</h2><p class="modal-intro">十字キーで選ぶ · × 決定 · ○ 戻る</p><div class="controller-menu">${entries.map(([id, label]) => `<button class="button button-outline" data-controller-menu="${id}">${label}</button>`).join('')}</div>${gamepadHelp}`,
+  );
+  for (const [id, , handler] of entries) {
+    $(`[data-controller-menu="${id}"]`).onclick = () => {
+      if (['shore', 'ride', 'wave'].includes(id)) $('#modal').close();
+      handler();
+    };
+  }
+}
+
 function openMap() {
   setWorldMapMode('earth');
   setWorldMapSelection(null);
@@ -1320,6 +1390,58 @@ window.addEventListener('blur', stopInput);
 document.addEventListener('visibilitychange', () => {
   if (document.hidden) stopInput();
 });
+gamepadControls = new GamepadControls({
+  dialog: $('#modal'),
+  canvas: $('#world'),
+  canPlay: () => joined && !renderUnavailable && !!player() && !player()?.downedUntil,
+  onStop: stopInput,
+  onActivity: updateGamepadHints,
+  onLook: (x, y, dt) => renderer.rotateCamera(x * dt * 2.4, y * dt * 1.5),
+  onAction: (command) => {
+    switch (command) {
+      case 'confirm':
+        $('#interaction-hint').click();
+        break;
+      case 'attack':
+        if (
+          canStartAttack(
+            player(),
+            (state.serverTime ?? Date.now()) + performance.now() - stateReceivedAt,
+          )
+        )
+          attack();
+        break;
+      case 'ride':
+        controllerRide();
+        break;
+      case 'cancel':
+        stopInput();
+        if (player()?.cookingEndsAt) action('cancelCook');
+        break;
+      case 'map':
+        openMap();
+        break;
+      case 'menu':
+        openControllerMenu();
+        break;
+      case 'inventory':
+        openInventory();
+        break;
+      case 'journal':
+        openJournal();
+        break;
+      case 'center':
+        renderer.focusPlayer();
+        break;
+      case 'zoomIn':
+        renderer.adjustZoom(0.15);
+        break;
+      case 'zoomOut':
+        renderer.adjustZoom(-0.15);
+        break;
+    }
+  },
+});
 setInterval(() => {
   if (player()?.downedUntil || !joined || renderUnavailable) {
     keys.clear();
@@ -1328,18 +1450,30 @@ setInterval(() => {
   }
   let sx = 0,
     sy = 0;
-  if (!$('#modal').open && !document.activeElement.matches('input,textarea')) {
+  const canMove =
+    !document.hidden &&
+    document.hasFocus() &&
+    !$('#modal').open &&
+    !document.activeElement?.closest('input,textarea,select,[contenteditable]');
+  if (canMove) {
     if (keys.has('w') || keys.has('arrowup')) sy--;
     if (keys.has('s') || keys.has('arrowdown')) sy++;
     if (keys.has('a') || keys.has('arrowleft')) sx--;
     if (keys.has('d') || keys.has('arrowright')) sx++;
   }
-  const running = wantsToRun();
+  const motion = combineMovement(
+    sx,
+    sy,
+    wantsToRun(),
+    canMove ? gamepadControls.movement : { x: 0, y: 0, running: false },
+  );
+  const running = motion.running;
+  if (motion.x || motion.y) rideApproach.cancel();
   if (running !== lastGait) {
     send({ type: 'gait', running });
     lastGait = running;
   }
-  const { dx, dz } = renderer.getMovementDirection(sx, sy),
+  const { dx, dz } = renderer.getMovementDirection(motion.x, motion.y),
     command = movementCommands.next({ dx, dz, running });
   if (command) send(command);
 }, 70);
@@ -1358,6 +1492,7 @@ window.addEventListener('beforeunload', () => {
   manualLeave = true;
   socket?.close();
   hudObserver.disconnect();
+  gamepadControls.destroy();
   renderer.destroy();
 });
 connect();

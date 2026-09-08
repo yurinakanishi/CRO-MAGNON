@@ -13,6 +13,8 @@
     "shared/snapshots.mts",
     "shared/spatial-grid.mts",
     "src/frame-clock.ts",
+    "src/gamepad-input.ts",
+    "src/gamepad-ui.ts",
     "src/view-update-gate.ts",
     "src/instance-updates.ts",
     "src/dom-updates.ts",

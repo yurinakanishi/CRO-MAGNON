@@ -1,0 +1,145 @@
+{
+  "status": "passed",
+  "at": "2026-09-08T04:58:52.298Z",
+  "browser": "Chrome headless, real WebGL",
+  "input": "navigator.getGamepads simulated standard DualShock 4; physical controller untested",
+  "realBrowsers": 1,
+  "protocolObservers": 4,
+  "checks": [
+    "analog walk/run, threshold hysteresis and neutral stop on real server",
+    "five participants receive the controller-driven movement",
+    "right-stick camera, square and R2 attack, held button fires once",
+    "cross gathers a real nearby resource through the existing action handler",
+    "OPTIONS stops movement; menus consume held axes and attack; D-pad/X opens inventory; circle closes",
+    "inventory crafting uses server costs; map select changes with left/right; journal opens",
+    "disconnect, reconnect with held stick, blur and chat focus stop and require neutral",
+    "keyboard run mode cannot override analog gait; keyboard remains usable",
+    "triangle mounts/dismounts existing mammoth; analog gait controls the mount",
+    "inventory builds a boat; triangle boards/lands; stick controls boat gait",
+    "portrait/landscape controller help fits; unmapped and blocked API fail safely",
+    "same-tab reload preserves player inventory and re-arms the connected controller"
+  ],
+  "fixtures": [
+    {
+      "label": "clear ground near normal spawn",
+      "x": 36,
+      "z": 53
+    },
+    {
+      "label": "craft supplies",
+      "wood": 15,
+      "stone": 2
+    },
+    {
+      "label": "beside existing mammoth",
+      "x": 28.75534970012148,
+      "z": 19.03829881498049
+    },
+    {
+      "label": "known usable shore; remaining 12 wood from craft fixture",
+      "x": 21,
+      "z": 125
+    }
+  ],
+  "speeds": [
+    {
+      "mode": "shallow walk",
+      "speed": 0.5059523809523758
+    },
+    {
+      "mode": "deep run",
+      "speed": 3.5000000000001434
+    },
+    {
+      "mode": "mammoth shallow",
+      "speed": 0.2833333333333481
+    },
+    {
+      "mode": "mammoth deep",
+      "speed": 2.249999999999995
+    },
+    {
+      "mode": "boat shallow",
+      "speed": 1.6190476190480054
+    },
+    {
+      "mode": "boat deep",
+      "speed": 7.000000000000476
+    }
+  ],
+  "errors": [],
+  "snapshots": [
+    356,
+    355,
+    353,
+    352
+  ],
+  "automatedTests": {
+    "fullSuite": {
+      "passed": 221,
+      "failed": 0
+    },
+    "finalRelated": {
+      "passed": 15,
+      "failed": 0
+    },
+    "typeScriptBuild": "passed including strict input modules",
+    "architecture": "passed",
+    "syntax": "117 JavaScript files passed",
+    "format": "passed"
+  },
+  "artifacts": "output/playwright/gamepad-20260908/r03",
+  "physicalControllerValidated": false,
+  "history": [
+    {
+      "revision": "r01",
+      "result": "base browser flow passed; visual review found help needed scroll access"
+    },
+    {
+      "revision": "r02",
+      "result": "QA pressed gather during an active attack; server correctly rejected it; fixture corrected to wait for animation"
+    },
+    {
+      "revision": "r03",
+      "result": "all final browser flows passed including scroll, gathering and reload"
+    }
+  ],
+  "localServing": [
+    {
+      "file": "main.js",
+      "status": 200,
+      "sha256": "5f20879dba850bfdaad7842629a297c8ce3420e658c63b9fe69dec216ee1e7c7",
+      "identical": true
+    },
+    {
+      "file": "gamepad-input.js",
+      "status": 200,
+      "sha256": "aed87058efa4f9502ceeae25fb9cf6cffb48e330828b56d6e16ca43e9dc60ec3",
+      "identical": true
+    },
+    {
+      "file": "gamepad-ui.js",
+      "status": 200,
+      "sha256": "9dca45963445b970f1d7832f65d34f59e6f4628e94cee4229674af2eb7cdcf55",
+      "identical": true
+    },
+    {
+      "file": "world3d.js",
+      "status": 200,
+      "sha256": "632c0cf5067640c1c16ad4e7bded9019d41530b43a330ac2d9c34ab11e284aac",
+      "identical": true
+    },
+    {
+      "file": "style.css",
+      "status": 200,
+      "sha256": "3176902361367a79f083b159445e9813331a05f77995092a5567e34001c6288b",
+      "identical": true
+    }
+  ],
+  "rollout": {
+    "server": "http://localhost:3000",
+    "restart": false,
+    "oldCheckpointRestored": false,
+    "publicDeployment": false
+  }
+}

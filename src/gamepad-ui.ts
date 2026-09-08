@@ -1,0 +1,235 @@
+import {
+  GamepadInput,
+  type Direction,
+  type InputMode,
+  type PadAction,
+  type PadMovement,
+} from './gamepad-input.js';
+
+export const gamepadHelp = `
+  <section class="gamepad-help" aria-label="PS4コントローラーの操作">
+    <h3 tabindex="0">PS4コントローラー（DUALSHOCK 4）</h3>
+    <p class="gamepad-connection" role="status"></p>
+    <p>USBまたはBluetoothで端末につなぎ、この画面でボタンを一度押してください。</p>
+    <dl class="gamepad-bindings">
+      <div><dt>左スティック</dt><dd>浅く倒すと歩く、深く倒すと走る</dd></div>
+      <div><dt>右スティック</dt><dd>カメラを回す</dd></div>
+      <div><dt>×</dt><dd>採集・調べる ／ メニューの決定</dd></div>
+      <div><dt>□ / R2</dt><dd>刀・魔法・槍で攻撃</dd></div>
+      <div><dt>△</dt><dd>船・マンモスに乗る／降りる</dd></div>
+      <div><dt>○</dt><dd>移動・調理を中止 ／ メニューを閉じる</dd></div>
+      <div><dt>十字キー</dt><dd>↑ 地図 · ← もちもの · → 手帳 · ↓ メニュー</dd></div>
+      <div><dt>OPTIONS</dt><dd>メニューを開く／閉じる</dd></div>
+      <div><dt>タッチパッド / SHARE</dt><dd>地図</dd></div>
+      <div><dt>L1 / R1 · R3</dt><dd>カメラを遠く／近く · 視点を戻す</dd></div>
+    </dl>
+    <p>メニューは十字キーか左スティックで項目を選び、×で決定。選択欄は左右で切り替え、右スティックで説明をスクロールできます。名前・チャットの文字入力はキーボードを使います。</p>
+    <p class="form-note">走るための2回倒し・スティック押し込みは不要です。画面に戻ったときはスティックとボタンを一度離してください。</p>
+    <p class="form-note">認識しない場合は接続を確認し、最新のChrome / EdgeでHTTPSまたはlocalhostのゲームを開いてください。</p>
+  </section>`;
+
+interface GamepadUIOptions {
+  dialog: HTMLDialogElement;
+  canvas: HTMLCanvasElement;
+  canPlay: () => boolean;
+  onAction: (action: PadAction) => void;
+  onLook: (x: number, y: number, dt: number) => void;
+  onStop: () => void;
+  onActivity: (active: boolean) => void;
+}
+
+/** Uses real DOM focus/click handlers so every existing dialog keeps its game rules. */
+export class GamepadControls {
+  movement: PadMovement = { x: 0, y: 0, running: false };
+  private input = new GamepadInput();
+  private frameId = 0;
+  private lastTime = 0;
+  private connectedIndex: number | null = null;
+  private previousMode: InputMode = 'blocked';
+  private active = false;
+  private focused: HTMLElement | null = null;
+
+  constructor(private options: GamepadUIOptions) {
+    window.addEventListener('gamepaddisconnected', this.disconnected);
+    document.addEventListener('pointerdown', this.otherInput);
+    document.addEventListener('keydown', this.otherInput);
+    options.dialog.addEventListener('close', this.closed);
+    this.frameId = requestAnimationFrame(this.tick);
+  }
+
+  suspend() {
+    this.input.suspend();
+    this.movement = { x: 0, y: 0, running: false };
+  }
+
+  private otherInput = () => {
+    if (this.active) {
+      this.suspend();
+      this.setActive(false);
+    }
+  };
+
+  private setActive(active: boolean) {
+    if (this.active === active) return;
+    this.active = active;
+    document.body.classList.toggle('using-gamepad', active);
+    if (!active) this.clearFocus();
+    this.options.onActivity(active);
+  }
+
+  private disconnected = (event: GamepadEvent) => {
+    if (event.gamepad.index === this.connectedIndex) this.loseConnection();
+  };
+
+  private loseConnection() {
+    this.connectedIndex = null;
+    this.suspend();
+    this.setActive(false);
+    this.options.onStop();
+  }
+
+  private closed = () => {
+    // Do not stop here: a dialog may have just submitted a walking destination.
+    this.suspend();
+    this.clearFocus();
+    this.options.canvas.focus({ preventScroll: true });
+  };
+
+  private mode(): InputMode {
+    if (document.hidden || !document.hasFocus()) return 'blocked';
+    if (this.options.dialog.open) return 'menu';
+    if (
+      !this.options.canPlay() ||
+      document.activeElement?.closest('input,textarea,select,[contenteditable]')
+    )
+      return 'blocked';
+    return 'game';
+  }
+
+  private tick = (time: number) => {
+    const dt = Math.min(0.05, Math.max(0, (time - (this.lastTime || time)) / 1000));
+    this.lastTime = time;
+    let devices: (Gamepad | null)[] = [],
+      status = '';
+    try {
+      if (!navigator.getGamepads) status = 'unavailable';
+      else devices = navigator.getGamepads();
+    } catch {
+      status = 'unavailable';
+    }
+    const mode = this.mode(),
+      frame = this.input.sample(devices, mode, time);
+    if (this.connectedIndex !== null && frame.index !== this.connectedIndex) this.loseConnection();
+    if (mode === 'blocked' && this.previousMode !== 'blocked') {
+      this.suspend();
+      this.options.onStop();
+    }
+    this.previousMode = mode;
+    this.connectedIndex = frame.index;
+    this.movement = frame.move;
+    const data = this.options.canvas.dataset;
+    data.gamepadStatus = status || frame.status;
+    data.gamepadRunning = String(frame.move.running);
+    const connection = document.querySelector('.gamepad-connection');
+    if (connection) {
+      const label = (
+        {
+          connected: 'コントローラー接続済み',
+          disconnected: '接続待ち · コントローラーのボタンを押してください',
+          unsupported: 'ボタン配列を認識できません。Chrome / Edgeで接続し直してください。',
+          unavailable: 'この画面では利用できません。HTTPSまたはlocalhostで開いてください。',
+        } as Record<string, string>
+      )[data.gamepadStatus];
+      if (connection.textContent !== label) connection.textContent = label;
+    }
+    if (frame.active) this.setActive(true);
+    if (mode === 'menu' && this.active) {
+      this.ensureFocus();
+      if (frame.navigation) this.navigate(frame.navigation);
+      if (frame.look.y) this.options.dialog.scrollTop += frame.look.y * dt * 600;
+      // Closing wins over confirming when two buttons arrive in the same frame.
+      if (frame.actions.some((a) => a === 'cancel' || a === 'menu')) this.options.dialog.close();
+      else if (frame.actions.includes('confirm')) this.activate();
+    } else if (mode === 'game') {
+      if (frame.look.x || frame.look.y) this.options.onLook(frame.look.x, frame.look.y, dt);
+      for (const action of frame.actions) {
+        this.options.onAction(action);
+        if (this.mode() !== 'game' || action === 'cancel') break;
+      }
+    }
+    this.frameId = requestAnimationFrame(this.tick);
+  };
+
+  private items() {
+    return [
+      ...this.options.dialog.querySelectorAll<HTMLElement>(
+        'button,a[href],input,select,textarea,summary,[role="button"],[tabindex="0"]',
+      ),
+    ].filter(
+      (el) =>
+        !el.matches(':disabled,[type="hidden"]') &&
+        !el.closest('[hidden],[inert]') &&
+        !!el.getClientRects().length &&
+        getComputedStyle(el).visibility !== 'hidden',
+    );
+  }
+
+  private clearFocus() {
+    this.focused?.classList.remove('gamepad-focus');
+    this.focused = null;
+  }
+
+  private focus(el: HTMLElement | undefined) {
+    this.clearFocus();
+    if (!el) return;
+    this.focused = el;
+    el.classList.add('gamepad-focus');
+    el.focus({ preventScroll: true });
+    el.scrollIntoView({ block: 'nearest', inline: 'nearest' });
+  }
+
+  private ensureFocus() {
+    const items = this.items();
+    if (!this.focused || !items.includes(this.focused))
+      this.focus(items.find((el) => el.id !== 'modal-close') ?? items[0]);
+  }
+
+  private navigate(direction: Direction) {
+    const el = this.focused;
+    if ((direction === 'left' || direction === 'right') && el instanceof HTMLSelectElement) {
+      const options = [...el.options].filter(
+        (o) => !o.disabled && !o.parentElement?.matches('optgroup:disabled'),
+      );
+      const index = options.findIndex((o) => o.selected),
+        step = direction === 'left' ? -1 : 1;
+      const next = options[(index + step + options.length) % options.length];
+      if (next) {
+        el.value = next.value;
+        el.dispatchEvent(new Event('input', { bubbles: true }));
+        el.dispatchEvent(new Event('change', { bubbles: true }));
+      }
+      return;
+    }
+    const items = this.items(),
+      index = el ? items.indexOf(el) : -1;
+    const step = direction === 'left' || direction === 'up' ? -1 : 1;
+    this.focus(items[(index + step + items.length) % items.length]);
+  }
+
+  private activate() {
+    const el = this.focused;
+    if (!el || el.matches(':disabled')) return;
+    if (el instanceof HTMLSelectElement) this.navigate('down');
+    else el.click();
+  }
+
+  destroy() {
+    cancelAnimationFrame(this.frameId);
+    window.removeEventListener('gamepaddisconnected', this.disconnected);
+    document.removeEventListener('pointerdown', this.otherInput);
+    document.removeEventListener('keydown', this.otherInput);
+    this.options.dialog.removeEventListener('close', this.closed);
+    this.suspend();
+    this.clearFocus();
+  }
+}

@@ -747,6 +747,10 @@ export class WorldRenderer {
   getMovementDirection(sx, sy) {
     return movementFromCamera(sx, sy, this.yaw);
   }
+  rotateCamera(horizontal: number, vertical: number) {
+    this.yaw -= horizontal;
+    this.pitch = clamp(this.pitch + vertical, 0.06, 1.05);
+  }
   serverNow() {
     return this.serverTime === undefined
       ? Date.now()
