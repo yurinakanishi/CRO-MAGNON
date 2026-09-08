@@ -40,9 +40,9 @@ export function installAdventureUI(api) {
   let selected = 'high-pass',
     signature = '';
   document
-    .querySelector<HTMLButtonElement>('.map-hud')
+    .querySelector<HTMLElement>('.map-hud .connection')
     .insertAdjacentHTML(
-      'beforeend',
+      'afterend',
       '<button id="adventure-button" class="adventure-launch"><span>✧ 探索手帳</span><small id="adventure-count">6つの新しい旅</small></button>',
     );
   const close = () => document.querySelector<HTMLDialogElement>('#modal').close();

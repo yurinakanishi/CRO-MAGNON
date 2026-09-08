@@ -1,7 +1,7 @@
 .adventure-launch{display:flex;align-items:center;justify-content:space-between;gap:12px;width:100%;margin-top:10px;padding:10px 12px;border:1px solid #c5b89655;border-radius:7px;background:#25322bef;color:#f1dfb3;text-align:left;box-shadow:0 4px 18px #101b1530}
-.tps-mode .hunting-card{top:270px}.hunting-card[hidden]{display:none}
+.tps-mode .hunting-card{top:250px}.hunting-card[hidden]{display:none}
 dialog:has(.adventure-browser) .modal-top{position:sticky;top:0;z-index:2;background:#24322b;padding:8px 0}
-.tps-mode .hunting-card{top:270px}.hunting-card[hidden]{display:none}
+.tps-mode .hunting-card{top:250px}.hunting-card[hidden]{display:none}
 .adventure-launch span{font-size:12px;font-weight:600;white-space:nowrap}.adventure-launch small{font-size:9px;color:#b8c2ac}.adventure-launch:hover{background:#394638}
 dialog:has(.adventure-browser){width:min(900px,95vw);max-height:92dvh;padding:28px}.adventure-heading h2{margin:10px 0;font-size:32px}.adventure-heading .modal-intro{margin-bottom:16px;max-width:610px}.adventure-summary{padding:12px 14px;border:1px solid #d5bd7633;background:#d5bd760a;border-radius:6px;color:#d9cfae;font-size:12px;line-height:1.8}
 .adventure-browser{display:grid;grid-template-columns:210px minmax(0,1fr);gap:24px;margin-top:22px}.adventure-regions{display:flex;flex-direction:column;gap:8px}.adventure-regions button{text-align:left;padding:13px 15px;border:1px solid #98af861e;border-left:3px solid var(--region-color);border-radius:5px;background:#d5dfbf04;display:grid;gap:5px}.adventure-regions button:hover,.adventure-regions button[aria-pressed=true]{background:#b5c59a13;border-color:var(--region-color)}.adventure-regions small{font-size:9px;letter-spacing:1px;color:var(--region-color)}.adventure-regions strong{font-size:13px}.adventure-regions span{font-size:10px;color:#9ba58e}

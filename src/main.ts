@@ -125,48 +125,50 @@ let selectedAnimalId = null,
 const rideApproach = new RideApproach();
 
 $('#app').innerHTML = `
-  <aside class="sidebar">
-    <a class="brand" href="/" aria-label="${GAME_TITLE} ホーム"><span class="brand-mark">${icon('flame')}</span><span>${GAME_TITLE}<small>MULTIPLAYER</small></span></a>
-    <div class="world-selector"><span class="world-symbol">Ⅰ</span><div>はじまりの世界<small><i class="status-dot"></i> 5人で紡ぐ、小さな物語</small></div><span class="tiny-tag">α</span></div>
-    <p class="section-label">YOUR JOURNEY</p>
-    <nav class="navigation" aria-label="メインメニュー">
-      <button class="nav-item active" data-panel="explore">${icon('compass')}<span>世界を探索</span><span class="nav-dot"></span></button>
-      <button class="nav-item" data-panel="inventory">${icon('bag')}<span>もちもの</span><span id="bag-count" class="nav-count">0</span></button>
-      <button class="nav-item" data-panel="tribe">${icon('people')}<span>部族の仲間</span><span id="tribe-count" class="nav-count">0 / 5</span></button>
-      <button class="nav-item" data-panel="journal">${icon('book')}<span>旅の手帳</span></button>
-    </nav>
-    <div class="sidebar-divider"></div>
-    <div class="section-heading"><p class="section-label">OUR FIRST FIRE</p><span id="quest-count">0 / 3</span></div>
-    <h2 class="quest-title">ここから、暮らしが始まる。</h2>
-    <div class="quest-list">
-      <div class="quest" id="quest-gather"><span class="quest-check">1</span><div><strong>森の恵みを集める</strong><p>木や石、ベリーを3つ採集</p><div class="progress-track"><span id="gather-progress"></span></div></div></div>
-      <div class="quest" id="quest-craft"><span class="quest-check">2</span><div><strong>はじめての道具</strong><p>木材3・石2で石斧をつくる</p></div></div>
-      <div class="quest" id="quest-camp"><span class="quest-check">3</span><div><strong>みんなの火を育てる</strong><p>拠点に木材12・石6を届ける</p></div></div>
-    </div>
-    <div class="camp-card"><div class="camp-card-top"><span class="camp-icon">${icon('flame')}</span><div><strong id="camp-name">小さな野営地</strong><small id="camp-level">CAMP LEVEL 0</small></div><span class="camp-spark">✦</span></div><div class="camp-stats"><span>${icon('wood')} <b id="camp-wood">0</b><em>/ 12</em></span><span>${icon('stone')} <b id="camp-stone">0</b><em>/ 6</em></span></div><button id="go-camp" class="camp-link">焚き火のそばへ ${icon('arrow')}</button></div>
-    <div class="sidebar-bottom"><button id="help-button" class="help-link">${icon('help')} 遊びかた <kbd>?</kbd></button><button id="profile-button" class="profile-card"><span class="portrait cro" id="my-portrait"><i></i></span><span><strong id="profile-name"></strong><small id="profile-species">クロマニョン人</small></span><span class="profile-edit">•••</span></button><div class="build-label"><span>ALPHA 0.1</span><span>MADE FOR TOGETHER</span></div></div>
-  </aside>
-  <main class="main">
-    <header class="topbar"><div class="breadcrumb"><span>世界</span><span>/</span><strong>氷河時代の地球</strong><span class="live-tag">LIVE</span></div><div class="topbar-actions"><button id="room-button" class="room-button">${icon('people')}<span id="room-label"></span><span id="online-count">0/5</span></button><button id="invite-button" class="button button-accent">${icon('plus')} 仲間を招待</button></div></header>
-    <section class="game-viewport" aria-label="${GAME_TITLE} ゲーム画面">
-      <canvas id="world" aria-label="氷河時代の大陸が広がる3Dワールド。WASDで歩行、Shiftで走行、ドラッグでカメラ回転、ホイールで距離を調整。地面クリックでも移動できます。" tabindex="0"></canvas>
-      <div class="tps-reticle" aria-hidden="true"><i></i></div>
-      <div class="camera-badge"><span class="status-dot"></span> TPS <span>肩越し視点</span></div>
-      <div class="scene-shade"></div>
-      <div id="damage-flash" class="damage-flash" aria-hidden="true" hidden></div>
-      <div id="combat-status" class="combat-status" role="status" hidden></div>
+  <section class="game-viewport" aria-label="${GAME_TITLE} ゲーム画面">
+    <canvas id="world" aria-label="氷河時代の大陸が広がる3Dワールド。WASDで歩行、Shiftで走行、ドラッグでカメラ回転、ホイールで距離を調整。地面クリックでも移動できます。" tabindex="0"></canvas>
+    <div class="tps-reticle" aria-hidden="true"><i></i></div>
+    <div class="scene-shade"></div>
+    <div id="damage-flash" class="damage-flash" aria-hidden="true" hidden></div>
+    <div id="combat-status" class="combat-status" role="status" hidden></div>
+    <header class="hud-place">
+      <a class="brand" href="/" aria-label="${GAME_TITLE} ホーム"><span class="brand-mark">${icon('flame')}</span><span>${GAME_TITLE}<small>MULTIPLAYER · ALPHA 0.1</small></span></a>
       <div class="location-title"><div class="eyebrow"><span></span> はじまりの谷</div><h1>${GAME_TITLE}</h1><p>まだ名前のない世界で、今日を生きよう。</p><div class="location-meta"><span>${icon('leaf')} 針葉樹の森</span><span class="meta-divider"></span><span>${icon('sun')} <b id="day-label">1日目</b> · 穏やかな朝</span></div></div>
-      <div class="map-hud"><button id="map-button" class="minimap-button" aria-label="世界地図を開く"><canvas id="minimap" width="160" height="115"></canvas><span class="map-north">N</span><span class="map-caption">VALLEY 01 ${icon('expand')}</span></button><div class="connection"><i class="status-dot" id="connection-dot"></i><span id="connection-label">接続中…</span><span id="ping-label">— ms</span></div></div>
-      <div class="discovery-card hunting-card" id="discovery-card"><div><small>OPEN MEADOW · みんなで狩る</small><strong id="hunt-target-name">草原のマンモス</strong><progress id="hunt-health" max="100" value="100" aria-label="マンモスの体力"></progress><p id="hunt-target-note">開けた草原でマンモスを探そう。</p></div><button id="go-hunt" title="マンモスの近くへ移動" aria-label="マンモスの近くへ移動">${icon('arrow')}</button></div>
-      <div class="scene-tools"><button id="sound-button" class="icon-button" aria-label="環境音をオン" title="環境音">${icon('muted')}</button><button id="zoom-out" class="icon-button" aria-label="縮小">−</button><button id="zoom-in" class="icon-button" aria-label="拡大">+</button><button id="focus-button" class="icon-button" aria-label="自分の位置へ">${icon('target')}</button><button id="fullscreen-button" class="icon-button" aria-label="全画面表示">${icon('expand')}</button></div>
-      <div id="toast-stack" class="toast-stack" aria-live="polite"></div>
-      <div class="chat-panel"><button class="chat-heading" id="chat-toggle">${icon('chat')}<strong>焚き火の会話</strong><span>部族</span><span class="chat-collapse">−</span></button><div id="chat-content"><div id="chat-messages" class="chat-messages" role="log" aria-live="polite"><p class="chat-system">この谷での物語が、ここから始まります。</p></div><form id="chat-form"><input id="chat-input" maxlength="180" placeholder="仲間に話しかける…" aria-label="チャットメッセージ" autocomplete="off"><button aria-label="メッセージを送信" type="submit">${icon('arrow')}</button></form></div></div>
-      <div class="player-hud"><div class="energy-label"><span>${icon('leaf')} 元気</span><span id="energy-label">100 / 100</span></div><div class="energy-track"><span id="energy-bar"></span></div></div>
-      <div class="hotbar-wrap"><div class="interaction-hint" id="interaction-hint"><kbd>E</kbd><span>近くのものを調べる</span></div><div class="hotbar"><div class="resource-slots"><button class="resource-slot" data-inventory="wood" aria-label="木材のもちもの"><kbd>木材</kbd><span class="resource-icon wood">${icon('wood')}</span><b id="wood-count">0</b></button><button class="resource-slot" data-inventory="stone" aria-label="石のもちもの"><kbd>石</kbd><span class="resource-icon stone">${icon('stone')}</span><b id="stone-count">0</b></button><button class="resource-slot" id="eat-button" aria-label="ベリーを食べて元気を回復"><kbd>ベリー</kbd><span class="resource-icon berry">${icon('berry')}</span><b id="berry-count">0</b></button></div><div class="hotbar-divider"></div><button class="action-slot selected" data-action="gather" title="採集する [1]"><kbd>1</kbd>${icon('leaf')}<span>採集</span></button><button class="action-slot" data-action="craft" title="木材3・石2で石斧を作る [2]"><kbd>2</kbd>${icon('axe')}<span>つくる</span></button><button class="action-slot" data-action="contribute" title="焚き火の近くで資材を届ける [3]"><kbd>3</kbd>${icon('flame')}<span>届ける</span></button><button class="action-slot" data-action="trade" title="オルの近くで物々交換 [4]"><kbd>4</kbd>${icon('exchange')}<span>交換</span></button><button id="run-button" class="action-slot" aria-label="走行モード" aria-pressed="false" title="走る／歩く（Shiftを押している間も走る）"><kbd>Shift</kbd>${icon('arrow')}<span>走る</span></button></div><div class="controls-caption"><span><kbd>W</kbd><kbd>A</kbd><kbd>S</kbd><kbd>D</kbd> 移動</span><i>·</i><span>地面をクリックしても移動できます</span></div></div>
-    </section>
-    <footer class="statusbar"><span><i class="status-dot"></i> 同じ火を囲む、同じ世界。</span><span id="status-tip">ひとりでも、仲間とでも。あなたのペースで。</span><button id="wave-button">${icon('wave')} 手をふる</button></footer>
-  </main>
+      <div class="camera-badge"><span class="status-dot"></span> TPS <span>肩越し視点</span></div>
+    </header>
+    <nav class="dock" aria-label="メインメニュー">
+      <button class="dock-item active" data-panel="explore" title="世界を探索">${icon('compass')}<span>探索</span></button>
+      <button class="dock-item" data-panel="inventory" title="もちもの">${icon('bag')}<span>もちもの</span><b id="bag-count" class="dock-count">0</b></button>
+      <button class="dock-item" data-panel="tribe" title="部族の仲間">${icon('people')}<span>部族</span><b id="tribe-count" class="dock-count">0 / 5</b></button>
+      <button class="dock-item" data-panel="journal" title="旅の手帳">${icon('book')}<span>手帳</span></button>
+    </nav>
+    <div class="hud-actions">
+      <button id="profile-button" class="chip chip-profile" title="部屋とプロフィール"><span class="portrait cro" id="my-portrait"><i></i></span><span class="chip-text"><strong id="profile-name"></strong><small><span id="room-label"></span> · <span id="profile-species">クロマニョン人</span></small></span><b id="online-count">0/5</b></button>
+      <button id="help-button" class="chip chip-icon" aria-label="遊びかた" title="遊びかた">${icon('help')}<kbd>?</kbd></button>
+      <button id="wave-button" class="chip" title="手をふる">${icon('wave')}<span class="wave-label">手をふる</span></button>
+      <button id="invite-button" class="button button-accent">${icon('plus')} 仲間を招待</button>
+    </div>
+    <div class="map-hud"><button id="map-button" class="minimap-button" aria-label="世界地図を開く"><canvas id="minimap" width="160" height="115"></canvas><span class="map-north">N</span><span class="map-caption">VALLEY 01 ${icon('expand')}</span></button><div class="connection"><i class="status-dot" id="connection-dot"></i><span id="connection-label">接続中…</span><span id="ping-label">— ms</span></div><div class="discovery-card hunting-card" id="discovery-card"><div><small>OPEN MEADOW · みんなで狩る</small><strong id="hunt-target-name">草原のマンモス</strong><progress id="hunt-health" max="100" value="100" aria-label="マンモスの体力"></progress><p id="hunt-target-note">開けた草原でマンモスを探そう。</p></div><button id="go-hunt" title="マンモスの近くへ移動" aria-label="マンモスの近くへ移動">${icon('arrow')}</button></div></div>
+    <details class="journey" id="journey" open>
+      <summary><span class="journey-head"><span class="eyebrow">OUR FIRST FIRE</span><strong>ここから、暮らしが始まる。</strong></span><span id="quest-count" class="journey-count">0 / 3</span><span class="journey-chevron">${icon('arrow')}</span></summary>
+      <div class="quest-list">
+        <div class="quest" id="quest-gather"><span class="quest-check">1</span><div><strong>森の恵みを集める</strong><p>木や石、ベリーを3つ採集</p><div class="progress-track"><span id="gather-progress"></span></div></div></div>
+        <div class="quest" id="quest-craft"><span class="quest-check">2</span><div><strong>はじめての道具</strong><p>木材3・石2で石斧をつくる</p></div></div>
+        <div class="quest" id="quest-camp"><span class="quest-check">3</span><div><strong>みんなの火を育てる</strong><p>拠点に木材12・石6を届ける</p></div></div>
+      </div>
+      <div class="camp-row"><span class="camp-icon">${icon('flame')}</span><div><strong id="camp-name">小さな野営地</strong><small id="camp-level">CAMP LEVEL 0</small></div><div class="camp-stats"><span>${icon('wood')} <b id="camp-wood">0</b><em>/ 12</em></span><span>${icon('stone')} <b id="camp-stone">0</b><em>/ 6</em></span></div></div>
+      <button id="go-camp" class="camp-link">焚き火のそばへ ${icon('arrow')}</button>
+    </details>
+    <div class="scene-tools"><button id="sound-button" class="icon-button" aria-label="環境音をオン" title="環境音">${icon('muted')}</button><button id="zoom-out" class="icon-button" aria-label="縮小">−</button><button id="zoom-in" class="icon-button" aria-label="拡大">+</button><button id="focus-button" class="icon-button" aria-label="自分の位置へ">${icon('target')}</button><button id="fullscreen-button" class="icon-button" aria-label="全画面表示">${icon('expand')}</button></div>
+    <div id="toast-stack" class="toast-stack" aria-live="polite"></div>
+    <div class="chat-panel"><button class="chat-heading" id="chat-toggle">${icon('chat')}<strong>焚き火の会話</strong><span>部族</span><span class="chat-collapse">−</span></button><div id="chat-content"><div id="chat-messages" class="chat-messages" role="log" aria-live="polite"><p class="chat-system">この谷での物語が、ここから始まります。</p></div><form id="chat-form"><input id="chat-input" maxlength="180" placeholder="仲間に話しかける…" aria-label="チャットメッセージ" autocomplete="off"><button aria-label="メッセージを送信" type="submit">${icon('arrow')}</button></form></div></div>
+    <div class="player-hud"><div class="energy-label"><span>${icon('leaf')} 元気</span><span id="energy-label">100 / 100</span></div><div class="energy-track"><span id="energy-bar"></span></div></div>
+    <div class="hotbar-wrap"><div class="interaction-hint" id="interaction-hint"><kbd>E</kbd><span>近くのものを調べる</span></div><div class="hotbar"><div class="resource-slots"><button class="resource-slot" data-inventory="wood" aria-label="木材のもちもの"><kbd>木材</kbd><span class="resource-icon wood">${icon('wood')}</span><b id="wood-count">0</b></button><button class="resource-slot" data-inventory="stone" aria-label="石のもちもの"><kbd>石</kbd><span class="resource-icon stone">${icon('stone')}</span><b id="stone-count">0</b></button><button class="resource-slot" id="eat-button" aria-label="ベリーを食べて元気を回復"><kbd>ベリー</kbd><span class="resource-icon berry">${icon('berry')}</span><b id="berry-count">0</b></button></div><div class="hotbar-divider"></div><button class="action-slot selected" data-action="gather" title="採集する [1]"><kbd>1</kbd>${icon('leaf')}<span>採集</span></button><button class="action-slot" data-action="craft" title="木材3・石2で石斧を作る [2]"><kbd>2</kbd>${icon('axe')}<span>つくる</span></button><button class="action-slot" data-action="contribute" title="焚き火の近くで資材を届ける [3]"><kbd>3</kbd>${icon('flame')}<span>届ける</span></button><button class="action-slot" data-action="trade" title="オルの近くで物々交換 [4]"><kbd>4</kbd>${icon('exchange')}<span>交換</span></button><button id="run-button" class="action-slot" aria-label="走行モード" aria-pressed="false" title="走る／歩く（Shiftを押している間も走る）"><kbd>Shift</kbd>${icon('arrow')}<span>走る</span></button></div><div class="controls-caption"><span><kbd>W</kbd><kbd>A</kbd><kbd>S</kbd><kbd>D</kbd> 移動</span><i>·</i><span>地面をクリックしても移動できます</span></div></div>
+  </section>
   <dialog id="modal"><div class="modal-top"><span class="eyebrow">${GAME_TITLE} · FIELD NOTES</span><button id="modal-close" class="icon-button" aria-label="閉じる">${icon('close')}</button></div><div id="modal-body"></div></dialog>`;
+
+if (matchMedia('(max-width:1000px), (max-height:700px)').matches)
+  $('#journey').removeAttribute('open');
 
 function showRenderError(text) {
   renderUnavailable = true;
@@ -1131,7 +1133,6 @@ document
   .querySelectorAll<HTMLElement>('[data-inventory]')
   .forEach((b) => (b.onclick = openInventory));
 $('#profile-button').onclick = () => openRoom();
-$('#room-button').onclick = () => openRoom();
 $('#invite-button').onclick = openInvite;
 $('#help-button').onclick = openHelp;
 $('#map-button').onclick = openMap;
@@ -1287,13 +1288,15 @@ setInterval(() => {
 }, 70);
 setInterval(() => send({ type: 'ping', at: Date.now() }), 3000);
 setInterval(updateHuntingHUD, 100);
-const hudObserver = new ResizeObserver(([entry]) =>
-  $('.game-viewport').style.setProperty(
-    '--hud-height',
-    `${entry.target.getBoundingClientRect().height}px`,
-  ),
-);
+const hudObserver = new ResizeObserver((entries) => {
+  for (const entry of entries)
+    $('.game-viewport').style.setProperty(
+      entry.target.classList.contains('hud-place') ? '--place-height' : '--hud-height',
+      `${entry.target.getBoundingClientRect().height}px`,
+    );
+});
 hudObserver.observe($('.hotbar-wrap'));
+hudObserver.observe($('.hud-place'));
 window.addEventListener('beforeunload', () => {
   manualLeave = true;
   socket?.close();
