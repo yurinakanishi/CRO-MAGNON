@@ -1039,8 +1039,8 @@ export class WorldRenderer {
         next.z,
       );
       if (p.moving) entity.running = p.running;
-      const attacking = entity.actor?.animation.name === 'Attack';
-      const facing = attacking ? p.facing : visualSpeed > 0.025 ? Math.atan2(mx, mz) : p.facing;
+      // Position smoothing and collision correction must not turn the character.
+      const facing = p.facing;
       const diff = Math.atan2(
         Math.sin(facing - model.rotation.y),
         Math.cos(facing - model.rotation.y),
