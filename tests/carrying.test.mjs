@@ -4,6 +4,8 @@ import { createGameCore } from '../dist/application/game-core.mjs';
 import { CollisionWorld, overlap } from '../dist/shared/collision.mjs';
 import { canCarry, carryExit } from '../dist/shared/carrying.mjs';
 import { LocalPrediction } from '../dist/src/local-prediction.js';
+import { canStartAttack } from '../dist/src/combat-input.js';
+import { startAttack } from '../dist/shared/combat.mjs';
 
 class Socket {
   readyState = 1;
@@ -171,12 +173,20 @@ test('carrier walks and runs at doubled speed with one body; passenger input can
   assert.equal(prediction.actor.x, before);
 });
 
-test('carrying blocks attack, jump, work, barter and mounts for both participants', () => {
+test('carrying blocks jump, work, barter and mounts for both participants and carrier attacks', () => {
   const f = fixture();
   f.board();
   const inventories = f.peers.slice(0, 2).map(({ p }) => structuredClone(p.inventory));
   for (const i of [0, 1])
-    for (const action of ['attack', 'jump', 'craft', 'gather', 'ride', 'boardBoat', 'rift']) {
+    for (const action of [
+      'jump',
+      'craft',
+      'gather',
+      'ride',
+      'boardBoat',
+      'rift',
+      ...(i === 0 ? ['attack'] : []),
+    ]) {
       f.advance();
       f.action(i, action);
     }
@@ -189,6 +199,97 @@ test('carrying blocks attack, jump, work, barter and mounts for both participant
     assert.deepEqual(p.inventory, inventories[i]);
   }
   assert.equal(f.b.carrierId, f.a.id);
+});
+
+test('shoulder mage casts while the ape runs, damages once and synchronizes the attached attack', () => {
+  const f = fixture();
+  f.board();
+  const target = {
+    id: 'target',
+    x: 0,
+    z: 4,
+    radius: 0.4,
+    health: 100,
+    phase: 'alive',
+    path: [],
+    nextRoam: Infinity,
+    age: 0,
+    scale: 1,
+  };
+  f.room.animals = [target];
+  f.peers[0].socket.command({ type: 'move', dx: 0, dz: 1, running: true });
+  assert.equal(canStartAttack(f.b, f.now()), true);
+  const energy = f.b.energy;
+  f.action(1, 'attack', target.id);
+  assert.equal(f.b.attackSequence, 1);
+  assert.equal(f.b.energy, energy - 4);
+  assert.equal(canStartAttack(f.b, f.now()), false);
+  for (let i = 0; i < 8; i++) {
+    f.peers[0].socket.command({ type: 'move', dx: 1, dz: 0, running: true });
+    f.advance(100);
+    assert.equal(f.b.carrierId, f.a.id);
+    assert.equal(f.b.x, f.a.x);
+    if (i < 7) assert.equal(f.b.facing, 0, 'casting aim survives carrier turns');
+    if (i === 3) {
+      assert.equal(f.room.projectiles.length, 1);
+      const orb = f.room.projectiles[0];
+      assert.equal(orb.ownerId, f.b.id);
+      assert.equal(orb.x, f.a.x, 'launch follows current carrier position');
+      target.x = orb.x;
+      for (const { socket } of f.peers) {
+        const state = socket.messages.filter((m) => m.type === 'state').at(-1);
+        assert.equal(state.players.find((p) => p.id === f.b.id).attackSequence, 1);
+        assert.equal(state.players.find((p) => p.id === f.b.id).carrierId, f.a.id);
+      }
+    }
+  }
+  assert.ok(f.a.x > 4, 'carrier keeps running during cast');
+  f.advance(300);
+  assert.equal(target.health, 75);
+  assert.equal(f.room.projectiles.length, 0);
+  assert.equal(canStartAttack(f.b, f.now()), true);
+  f.action(1, 'attack');
+  assert.equal(f.b.attackSequence, 2);
+});
+
+test('shoulder magic retains wall, cooldown and canonical appearance restrictions', () => {
+  const f = fixture();
+  f.board();
+  for (const change of [
+    { species: 'cro' },
+    { species: 'ape' },
+    { downedUntil: 123456 },
+    { mountId: 'm' },
+    { boatId: 'b' },
+  ]) {
+    const p = { ...f.b, ...change };
+    assert.equal(canStartAttack(p, f.now()), false);
+    assert.equal(startAttack(f.room, p, { weapon: 'magic' }, f.now()).accepted, false);
+  }
+  assert.equal(startAttack(f.room, { ...f.b, carrierId: 'forged' }, {}, f.now()).accepted, false);
+  f.room.collision = new CollisionWorld(
+    [{ type: 'box', x: 0, z: 1, hx: 4, hz: 0.05, c: 1, s: 0 }],
+    { river: false },
+  );
+  const target = {
+    id: 'behind-wall',
+    x: 0,
+    z: 3,
+    radius: 0.4,
+    health: 100,
+    phase: 'alive',
+    path: [],
+    nextRoam: Infinity,
+    age: 0,
+    scale: 1,
+  };
+  f.room.animals = [target];
+  f.action(1, 'attack', target.id);
+  assert.equal(f.b.attackSequence, 1);
+  assert.equal(startAttack(f.room, f.b, {}, f.now() + 100).reason, 'cooldown');
+  f.advance(1000);
+  assert.equal(target.health, 100);
+  assert.equal(f.room.projectiles.length, 0);
 });
 
 test('either participant can dismount safely; blocked exits keep the pair and do not cross walls', () => {

@@ -298,6 +298,8 @@ body[data-screen] .world-loading,body[data-screen] .tps-reticle,body[data-screen
 .hotbar-wrap.boating .hotbar{width:auto;justify-content:center}
 .hotbar-wrap.riding{display:grid;grid-template-columns:minmax(0,1fr) auto;max-width:calc(100% - 24px);gap:7px}
 .hotbar-wrap.riding .hunt-controls,.hotbar-wrap.riding .interaction-hint,.hotbar-wrap.riding .resource-slots,.hotbar-wrap.riding .hotbar-divider,.hotbar-wrap.riding [data-action]{display:none}
+.hotbar-wrap.riding.shoulder-magic .hunt-controls{display:flex;grid-column:1 / -1;justify-content:center}
+.hotbar-wrap.riding.shoulder-magic .hunt-controls>:not(#attack-button){display:none}
 .hotbar-wrap.riding .riding-controls{margin:0;flex-direction:column;gap:3px;border:0;background:none;padding:0}
 .hotbar-wrap.riding .riding-controls small{font-size:9px;white-space:normal;text-align:center;line-height:1.5}
 .hotbar-wrap.riding .hotbar{padding:4px;width:auto;min-width:0}

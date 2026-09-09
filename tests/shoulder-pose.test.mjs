@@ -32,6 +32,7 @@ test('real mage skin follows the animated ape shoulder through walk, run, turns 
       mixer.update(0);
       carrier.updateMatrixWorld(true);
       passenger.rotation.y = carrier.rotation.y;
+      passenger.updateMatrixWorld(true);
       pose.updateShoulder(animation, i * 0.05, clip.name === 'Idle_Loop' ? 0 : 5.4);
       const target = seat.position(new THREE.Vector3());
       passenger.position
@@ -47,6 +48,26 @@ test('real mage skin follows the animated ape shoulder through walk, run, turns 
       assert.ok(bounds.min.y > 1, 'passenger remains above ground');
       assert.ok(bounds.max.y < 2.8, 'passenger stays on the shoulder, not above the head');
       assert.ok(Math.abs(target.y - 1.8) < 0.4, 'shoulder height follows the torso');
+      const hips = pose.hips.getWorldPosition(new THREE.Vector3());
+      const knees = ['UpperLegL', 'LowerLegL', 'UpperLegR', 'LowerLegR'].map((name) =>
+        pose.bones.get(name).bone.quaternion.clone(),
+      );
+      const hand = mage.scene.getObjectByName('LowerArmR').quaternion.clone();
+      pose.updateShoulder(animation, i * 0.05, 5.4, 0.5);
+      passenger.updateMatrixWorld(true);
+      assert.equal(animation.name, 'Carry_Cast');
+      assert.ok(pose.hips.getWorldPosition(new THREE.Vector3()).distanceTo(hips) < 1e-6);
+      ['UpperLegL', 'LowerLegL', 'UpperLegR', 'LowerLegR'].forEach((name, index) =>
+        assert.ok(
+          pose.bones
+            .get(name)
+            .bone.quaternion.clone()
+            .normalize()
+            .angleTo(knees[index].clone().normalize()) < 1e-6,
+          name,
+        ),
+      );
+      assert.ok(mage.scene.getObjectByName('LowerArmR').quaternion.angleTo(hand) > 0.1);
     }
   }
   pose.leave(animation);

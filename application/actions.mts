@@ -1,6 +1,6 @@
 import { handleAdventureAction, recordAdventureGather } from '../shared/adventures.mjs';
 import { handleBoatAction } from '../shared/boats.mjs';
-import { attackProfile } from '../shared/combat-profiles.mjs';
+import { attackProfile, shoulderMagic } from '../shared/combat-profiles.mjs';
 import { handleHuntingAction } from '../shared/hunting.mjs';
 import { interactionVisible } from '../shared/interactions.mjs';
 import { handleRidingAction } from '../shared/riding.mjs';
@@ -27,7 +27,7 @@ export function createActionHandler({ notice, broadcast, snapshot, systemChat, r
       if (carry.text) notice(player, carry.text, carry.tone, !carry.changed);
       return;
     }
-    if (carrying(player)) {
+    if (carrying(player) && !(action === 'attack' && shoulderMagic(player))) {
       if (['cancelCook', 'cancelFishing', 'cancelCoastal'].includes(action)) return;
       return notice(player, '肩から降りてから行おう。R／△で降ろせます。');
     }

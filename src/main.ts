@@ -833,6 +833,10 @@ function updateHuntingHUD() {
     nearRide =
       joined && !renderUnavailable && canMount(me, rideAnimal, renderer.collision, serverNow);
   $('.hotbar-wrap').classList.toggle('riding', mounted || carrying(me));
+  $('.hotbar-wrap').classList.toggle(
+    'shoulder-magic',
+    !!me?.carrierId && attackProfile(me).key === 'magic',
+  );
   const rideButton = $('#ride-button');
   rideButton.disabled =
     !joined || renderUnavailable || !!me?.boatId || !!me?.downedUntil || (!mounted && !nearRide);
@@ -864,7 +868,7 @@ function updateHuntingHUD() {
             ? '誘いを取り消す'
             : `${partnerName}を担ぐ`;
     $('#riding-hint').textContent = me.carrierId
-      ? `${partnerName}が移動します · R／△で降りる`
+      ? `${partnerName}が移動します${attackProfile(me).key === 'magic' ? ' · F／□／R2で魔法' : ''} · R／△で降りる`
       : me.passengerId
         ? '歩行・走行できます · R／△で降ろす'
         : me.carryOfferFromId
@@ -932,8 +936,7 @@ function updateHuntingHUD() {
   } else if (animal?.riderId) {
     $('#hunt-target-note').textContent = '仲間が騎乗中 · このマンモスには攻撃できません。';
   }
-  const attackAvailable =
-    joined && !renderUnavailable && !me?.boatId && !carrying(me) && canStartAttack(me, serverNow);
+  const attackAvailable = joined && !renderUnavailable && canStartAttack(me, serverNow);
   $('#attack-button').disabled = !attackAvailable;
   $('#jump-button').disabled = !joined || renderUnavailable || !canStartJump(me, serverNow);
   $('#attack-button').classList.toggle('in-range', targetInFront);

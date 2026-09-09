@@ -98,6 +98,7 @@ export class SpellEffects {
           forward,
           lateral: (point.x - originX) * orb.dz - (point.z - originZ) * orb.dx,
           handHeight: point.y - baseY,
+          handBlendDistance: owner?.state.carrierId ? 2 : 0.35,
         };
         this.positions.set(orb.id, p);
       }
@@ -111,7 +112,7 @@ export class SpellEffects {
       // Rejoin the authoritative centre line smoothly after leaving the hands.
       // Until then, never move the visible head or trail behind the emitter.
       const flightPoint = (distance) => {
-        const blend = Math.max(0, 1 - distance / 0.35),
+        const blend = Math.max(0, 1 - distance / p.handBlendDistance),
           forward = p.forward + distance,
           lateral = p.lateral * blend;
         point.set(

@@ -1,5 +1,5 @@
 import { WORLD } from './world.mjs';
-import { attackProfile, ATTACK_PROFILES } from './combat-profiles.mjs';
+import { attackProfile, ATTACK_PROFILES, shoulderMagic } from './combat-profiles.mjs';
 
 export const COMBAT = Object.freeze({
   attackDamage: 15,
@@ -82,10 +82,23 @@ const clearLine = (room, player, target) =>
 export function startAttack(room, player, message: { targetId?: string } = {}, now = Date.now()) {
   const profile = attackProfile(player);
   if (player.downedUntil) return { accepted: false, reason: 'downed' };
-  if (player.mountId || player.boatId || player.carrierId || player.passengerId)
+  const carrier = player.carrierId && room.players.get(player.carrierId);
+  const seatedMagic =
+    shoulderMagic(player) &&
+    carrier?.species === 'ape' &&
+    carrier.passengerId === player.id &&
+    !carrier.downedUntil &&
+    !carrier.mountId &&
+    !carrier.boatId;
+  if (player.mountId || player.boatId || (player.carrierId && !seatedMagic) || player.passengerId)
     return { accepted: false, reason: 'mounted' };
   if (player.attackSequence && now - player.attackAt < profile.cooldownMs)
     return { accepted: false, reason: 'cooldown' };
+  if (seatedMagic) {
+    player.x = carrier.x;
+    player.z = carrier.z;
+    player.facing = carrier.facing;
+  }
   const aimed =
     typeof message.targetId === 'string'
       ? damageableTargets(room).find(({ target }) => target.id === message.targetId)?.target

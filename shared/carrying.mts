@@ -132,7 +132,7 @@ export function handleCarryAction(room, player, message, now) {
     player.carrierId = ape.id;
     ape.carryHurtSequence = ape.hurtSequence ?? 0;
     player.carryHurtSequence = player.hurtSequence ?? 0;
-    copyPassenger(ape, player);
+    copyPassenger(ape, player, now);
     return done('肩に乗りました。R／△で降りられます。');
   }
   const mage = room.players.get(message.targetId);
@@ -145,8 +145,11 @@ export function handleCarryAction(room, player, message, now) {
   return done('肩乗りに誘いました。相手が「肩に乗る」を押すと担ぎます。');
 }
 
-function copyPassenger(ape, mage) {
-  for (const key of ['x', 'z', 'facing', 'moving', 'running', 'speed']) mage[key] = ape[key];
+function copyPassenger(ape, mage, now) {
+  for (const key of ['x', 'z', 'moving', 'running', 'speed']) mage[key] = ape[key];
+  // Keep the confirmed spell direction while the carrier can still turn and move.
+  if (!(mage.attackSequence && now - mage.attackAt < attackProfile(mage).durationMs))
+    mage.facing = ape.facing;
 }
 
 export function updateCarrying(room, now) {
@@ -175,6 +178,6 @@ export function updateCarrying(room, now) {
     }
     const exit = carryExit(room, ape, mage);
     if (exit) mage.carrySafePoint = exit;
-    copyPassenger(ape, mage);
+    copyPassenger(ape, mage, now);
   }
 }

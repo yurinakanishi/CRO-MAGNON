@@ -1,4 +1,4 @@
-import { attackProfile } from '../shared/combat-profiles.mjs';
+import { attackProfile, shoulderMagic } from '../shared/combat-profiles.mjs';
 import { jumpProgress } from '../shared/jumping.mjs';
 
 // The server starts neutral and clears movement on defeat. A target command also
@@ -58,7 +58,7 @@ export function canStartAttack(player, serverNow) {
     !player.downedUntil &&
     !player.mountId &&
     !player.boatId &&
-    !player.carrierId &&
+    (!player.carrierId || shoulderMagic(player)) &&
     !player.passengerId &&
     jumpProgress(player, serverNow) === null &&
     (!(player.attackSequence > 0) ||

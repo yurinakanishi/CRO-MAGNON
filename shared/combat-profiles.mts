@@ -104,3 +104,6 @@ export function attackProfile(character: CharacterProfile): Readonly<AttackProfi
       (character.spearHead === 'obsidian' ? 'obsidianSpear' : 'spear')
   ];
 }
+
+export const shoulderMagic = (player) =>
+  !!player?.carrierId && !player.passengerId && attackProfile(player).key === 'magic';

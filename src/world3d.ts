@@ -626,11 +626,11 @@ export class WorldRenderer {
       const action = confirmedAction(entity.state, p);
       if (jumpProgress(p, this.serverNow()) === null)
         entity.actor?.jumpPose.leave(entity.actor.animation);
-      if (action === 'Attack')
+      if (action === 'Attack' && !p.carrierId)
         entity.actor?.animation.playAttack(
           Math.max(0, (this.serverNow() - (p.attackAt ?? 0)) / 1000),
         );
-      else if (action && !p.moving) entity.actor?.animation.play(action);
+      else if (action && action !== 'Attack' && !p.moving) entity.actor?.animation.play(action);
       entity.state = p;
       if (entity.countryLabel) {
         const country = COUNTRIES.find((c) => c.id === p.gulf?.countryId);
@@ -723,7 +723,7 @@ export class WorldRenderer {
       entity.actor = actor;
       pendingActor = null;
       this.updateAssetDiagnostics();
-      if (entity.state.attackAt)
+      if (entity.state.attackAt && !entity.state.carrierId)
         actor.animation.playAttack(Math.max(0, (this.serverNow() - entity.state.attackAt) / 1000));
       this.canvas.dataset.characterAsset = 'ready';
       this.canvas.dataset.characterHash = actor.asset.sha256;
@@ -950,8 +950,20 @@ export class WorldRenderer {
         entity.label.active = model.visible;
         if (!model.visible) continue;
         const pose = entity.actor.ridingPose;
-        model.rotation.y = carrier.model.rotation.y;
-        pose.updateShoulder(entity.actor.animation, time, carrier.state.speed || 0);
+        const profile = attackProfile(p);
+        const castAge = this.serverNow() - (p.attackAt ?? 0);
+        const casting =
+          profile.key === 'magic' &&
+          p.attackSequence > 0 &&
+          castAge >= 0 &&
+          castAge < profile.durationMs;
+        model.rotation.y = casting ? p.facing : carrier.model.rotation.y;
+        pose.updateShoulder(
+          entity.actor.animation,
+          time,
+          carrier.state.speed || 0,
+          casting ? castAge / profile.durationMs : null,
+        );
         carrier.model.updateMatrixWorld(true);
         carrier.actor.shoulderSeat.position(tempPoint);
         const offset = pose

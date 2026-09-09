@@ -134,7 +134,7 @@ export class RidingPose {
     this.root.updateMatrixWorld(true);
     return this.root.worldToLocal(this.hips.getWorldPosition(out));
   }
-  updateShoulder(animation, time, speed) {
+  updateShoulder(animation, time, speed, castProgress: number | null = null) {
     this.update(animation, time, speed, true);
     this.aim('Spine', 0, 1, 0.08);
     this.aim('Chest', 0, 1, 0.03);
@@ -150,6 +150,18 @@ export class RidingPose {
       this.aim(`LowerArm${side}`, sign * -0.2, -0.4, 0.7);
     }
     animation.name = speed > 0.025 ? 'Carry_Move' : 'Carry_Idle';
+    if (castProgress !== null && castProgress >= 0 && castProgress < 1) {
+      const phase = castProgress < 0.5 ? castProgress * 2 : (1 - castProgress) * 2;
+      const reach = phase * phase * (3 - 2 * phase);
+      for (const [side, sign] of [
+        ['L', 1],
+        ['R', -1],
+      ] as const) {
+        this.aim(`UpperArm${side}`, sign * 0.25, -1 + reach * 1.1, 0.1 + reach * 0.9);
+        this.aim(`LowerArm${side}`, sign * -0.2, -0.4 + reach * 0.5, 0.7 + reach * 0.3);
+      }
+      animation.name = 'Carry_Cast';
+    }
   }
   leave(animation) {
     if (!this.active) return;
