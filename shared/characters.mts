@@ -4,30 +4,35 @@ export const CHARACTER_MODELS: readonly Readonly<CharacterModel>[] = Object.free
     species: 'cro',
     gender: 'female',
     key: 'cro-magnon-woman',
+    carryable: false,
     name: 'クロマニョン人 女性',
   }),
   Object.freeze({
     species: 'cro',
     gender: 'male',
     key: 'cro-magnon-hunter',
+    carryable: false,
     name: 'クロマニョン人 男性',
   }),
   Object.freeze({
     species: 'nea',
     gender: 'female',
     key: 'neanderthal-woman',
+    carryable: false,
     name: 'ネアンデルタール人 女性',
   }),
   Object.freeze({
     species: 'nea',
     gender: 'male',
     key: 'neanderthal-hunter',
+    carryable: false,
     name: 'ネアンデルタール人 男性',
   }),
   Object.freeze({
     species: 'cat',
     gender: 'female',
     key: 'cat-kunoichi',
+    carryable: false,
     name: '猫耳のクノイチ',
     weapon: 'katana',
     height: 1.68,
@@ -37,6 +42,7 @@ export const CHARACTER_MODELS: readonly Readonly<CharacterModel>[] = Object.free
     species: 'bear',
     gender: 'female',
     key: 'desert-fennec-mage',
+    carryable: true,
     name: '砂耳の魔法使い',
     weapon: 'magic',
     height: 0.78,
@@ -48,6 +54,7 @@ export const CHARACTER_MODELS: readonly Readonly<CharacterModel>[] = Object.free
     species: 'ape',
     gender: 'male',
     key: 'giant-ape',
+    carryable: false,
     name: '巨腕の大猿',
     weapon: 'unarmed',
     height: 2,
@@ -73,4 +80,8 @@ export function normalizeCharacter({ species, gender }: CharacterProfile = {}): 
 export function characterModel(profile: CharacterProfile): Readonly<CharacterModel> {
   const { species, gender } = normalizeCharacter(profile);
   return CHARACTER_MODELS.find((model) => model.species === species && model.gender === gender)!;
+}
+
+export function isCarryable(profile: CharacterProfile | null | undefined): boolean {
+  return !!profile && characterModel(profile).carryable;
 }

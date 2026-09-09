@@ -848,27 +848,27 @@ function updateHuntingHUD() {
       : 'R を押すとマンモスに乗れます';
   const carryChoice = joined && !renderUnavailable && hasCarryChoice();
   if (carryChoice) {
+    const partnerId = me.carryOfferFromId || me.carryOfferToId || me.carrierId || me.passengerId;
+    const partner = partnerId ? state.players.find((p) => p.id === partnerId) : carryTarget();
+    const partnerName = partner?.name ?? '相手';
     $('.riding-controls').hidden = false;
     rideButton.disabled = false;
     rideButton.classList.toggle('mounted', carrying(me));
     rideButton.querySelector('span').textContent = me.carrierId
       ? '肩から降りる'
       : me.passengerId
-        ? '魔法使いを降ろす'
+        ? `${partnerName}を降ろす`
         : me.carryOfferFromId
           ? '肩に乗る'
           : me.carryOfferToId
             ? '誘いを取り消す'
-            : '魔法使いを担ぐ';
-    const partner = state.players.find(
-      (p) => p.id === (me.carryOfferFromId || me.carryOfferToId || me.carrierId || me.passengerId),
-    );
+            : `${partnerName}を担ぐ`;
     $('#riding-hint').textContent = me.carrierId
-      ? '大猿が移動します · R／△で降りる'
+      ? `${partnerName}が移動します · R／△で降りる`
       : me.passengerId
         ? '歩行・走行できます · R／△で降ろす'
         : me.carryOfferFromId
-          ? `${partner?.name ?? '大猿'}からの誘い · R／△で肩に乗る`
+          ? `${partnerName}からの誘い · R／△で肩に乗る`
           : me.carryOfferToId
             ? '相手の返事を待っています · 動くと取消'
             : '相手が「肩に乗る」を押すと担ぎます';

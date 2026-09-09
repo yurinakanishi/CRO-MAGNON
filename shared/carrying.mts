@@ -1,6 +1,7 @@
 import { attackProfile } from './combat-profiles.mjs';
 import { stopActor, enemyIsSolid } from './combat.mjs';
 import { jumpProgress } from './jumping.mjs';
+import { isCarryable } from './characters.mjs';
 
 export const CARRY = Object.freeze({ reach: 0.85, offerMs: 15000 });
 export const carrying = (p) => !!(p?.carrierId || p?.passengerId);
@@ -21,7 +22,7 @@ const stationary = (p, now) =>
 export function canCarry(ape, mage, collision, now) {
   return !!(
     ape?.species === 'ape' &&
-    mage?.species === 'bear' &&
+    isCarryable(mage) &&
     ape.id !== mage.id &&
     stationary(ape, now) &&
     stationary(mage, now) &&
@@ -111,7 +112,7 @@ export function handleCarryAction(room, player, message, now) {
     clearCarryOffer(room, player);
     return done('肩乗りの誘いを取り消しました。');
   }
-  if (player.species === 'bear') {
+  if (isCarryable(player)) {
     const ape = room.players.get(player.carryOfferFromId);
     if (
       !ape ||
@@ -136,8 +137,8 @@ export function handleCarryAction(room, player, message, now) {
   }
   const mage = room.players.get(message.targetId);
   if (!canCarry(player, mage, room.collision, now))
-    return fail('小さな魔法使いのそばで、二人とも止まってから担ごう。');
-  if (mage.carryOfferFromId) return fail('この魔法使いは別の誘いを確認しています。');
+    return fail('担げる相手のそばで、二人とも止まってから担ごう。');
+  if (mage.carryOfferFromId) return fail('相手は別の誘いを確認しています。');
   player.carryOfferToId = mage.id;
   mage.carryOfferFromId = player.id;
   player.carryOfferUntil = mage.carryOfferUntil = now + CARRY.offerMs;

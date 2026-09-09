@@ -18,7 +18,7 @@ export function mammothSeat(root) {
 }
 
 // Left shoulder of the delivered 2 m ape, in root-space metres. The chest
-// socket follows body sway while the swinging arm remains free below it.
+// socket follows body sway; CarrySupportPose places the left hand beside it.
 export function apeShoulderSeat(root) {
   root.updateMatrixWorld(true);
   const bone = root.getObjectByName('Chest');

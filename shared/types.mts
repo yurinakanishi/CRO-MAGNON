@@ -12,6 +12,7 @@ export interface CharacterProfile {
   spearHead?: 'wood' | 'obsidian';
 }
 export interface CharacterModel {
+  carryable: boolean;
   species: Species;
   gender: Gender;
   key: string;

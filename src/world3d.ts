@@ -925,6 +925,9 @@ export class WorldRenderer {
       const { model } = entity,
         p = entity.state.id === this.selfId && predicted ? predicted : entity.state,
         factor = 1 - Math.exp(-dt * 20);
+      entity.actor?.carrySupportPose?.restore();
+      if (p.mountId || p.boatId || p.carrierId || p.downedUntil)
+        entity.actor?.carrySupportPose?.reset();
       model.visible =
         p.id === this.selfId || Math.hypot(p.x - this.focus.x, p.z - this.focus.z) < 95;
       if (!model.visible) {
@@ -1051,6 +1054,7 @@ export class WorldRenderer {
           entity.actor.animation.play(p.coastalActivity?.kind === 'shells' ? 'Gather' : 'Craft');
         if (airborne !== null) entity.actor.jumpPose.update(entity.actor.animation, airborne);
         else entity.actor.animation.update(dt, visualSpeed, entity.running);
+        entity.actor.carrySupportPose?.update(dt, !!p.passengerId);
         if (entity.axe) {
           const attack = entity.actor.animation.name === 'Attack';
           const profile = attackProfile(p);
