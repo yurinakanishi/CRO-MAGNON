@@ -9,7 +9,7 @@ const { CHARACTER_MODELS } = await import('../dist/shared/characters.mjs');
 
 const root = path.dirname(path.dirname(fileURLToPath(import.meta.url)));
 const destination = path.join(root, 'dist-cloudflare');
-const files = new Set(['public/index.html', 'public/favicon.svg', 'public/models/world-assets.json']);
+const files = new Set(['public/index.html', 'public/favicon.svg', 'public/models/world-assets.json', 'public/multiplayer-config.json']);
 async function collect(directory) {
   for (const entry of await readdir(path.join(root, directory), { withFileTypes: true })) {
     if (entry.name.startsWith('.')) continue;

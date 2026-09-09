@@ -1,0 +1,38 @@
+{
+  "clientUrl": "http://localhost:4173/?room=EXHIBITION",
+  "networkSetup": {
+    "at": "2026-09-09T09:36:14.5759173+09:00",
+    "profile": "Private",
+    "ok": true,
+    "interfaceIndex": 15,
+    "serverPort": 8081,
+    "prefixLength": 24,
+    "role": "host",
+    "address": "10.10.10.1"
+  },
+  "websocket": "ws://10.10.10.1:8081",
+  "hostBrowserConnected": true,
+  "pc2Copied": false,
+  "wifiDisabledTestVerified": false,
+  "host": "YuriAlienware",
+  "physicalTwoPcVerified": false,
+  "health": {
+    "ok": true,
+    "mode": "lan",
+    "buildId": "6c04efc06f7fe2f52d9ed91f3e7c1efb4806ffedde377087fbc912e089ff2a94",
+    "ridingVersion": 1,
+    "combatVersion": 3,
+    "characterVersion": 2,
+    "enemyVersion": 1,
+    "worldVersion": 4,
+    "worldSize": 8192,
+    "worldWidth": 8192,
+    "worldDepth": 4096,
+    "epochYearsBP": 50000,
+    "rooms": 1,
+    "players": 1,
+    "maxPlayers": 5
+  },
+  "hostProcessId": 45372,
+  "checkedAt": "2026-09-09T09:41:03.3357421+09:00"
+}

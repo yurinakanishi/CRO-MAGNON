@@ -1,0 +1,14 @@
+{
+  "at": "2026-09-09T11:17:42.9443168+09:00",
+  "clientUrl": "http://localhost:4173/",
+  "allowedSourceIps": [
+    "169.254.141.230",
+    "10.10.10.1"
+  ],
+  "keepSshKey": true,
+  "pc2KeyLoginVerified": false,
+  "userInstruction": "鍵は残す",
+  "websocket": "ws://10.10.10.1:8081",
+  "physicalTwoPcOfflineVerified": false,
+  "wifiRequiredForLanGame": false
+}

@@ -1,0 +1,23 @@
+{
+  "process": {
+    "archiveSha256": "aa11b8c2e656f6bbc6165322dbf6c63e49cf76c34ffb18c5c73f1b496932a071",
+    "started": "2026-09-09T09:49:20.1882223+09:00",
+    "expiresAfterHours": 2,
+    "outsideSandbox": true,
+    "id": 35724
+  },
+  "pc2Ping": "less than 1 ms",
+  "downloadPageStatus": 200,
+  "pc2SshPort22": "no response via IPv4 and IPv6",
+  "copiedToPc2Verified": false,
+  "archiveBytes": [
+    "216432621"
+  ],
+  "downloadUrl": "http://169.254.141.230:8082/",
+  "pc2CurrentIp": "169.254.232.213",
+  "cleanupScript": "output/exhibition-transfer/network.ps1 -Action Remove",
+  "checkedAt": "2026-09-09T09:49:54.4725915+09:00",
+  "temporaryFirewall": "CRO-MAGNON-Exhibition-Transfer",
+  "archiveSha256": "aa11b8c2e656f6bbc6165322dbf6c63e49cf76c34ffb18c5c73f1b496932a071",
+  "downloadArchiveStatus": 200
+}

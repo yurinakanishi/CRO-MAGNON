@@ -1,0 +1,112 @@
+# 展示LAN：この2台の起動手順と確認記録
+
+更新日: 2026-09-09。同じ手順書をPC1・PC2の `Desktop\projects\CRO-MAGNON` に配置。
+
+普段使うPCを来場者に操作してもらう際の専用ユーザー・キオスク制限・Home/Proの違いは
+[展示用の安全対策](README-EXHIBITION-SECURITY.md) を参照。安全対策は検討段階で未設定。
+
+## 毎回の起動
+
+1. PC1とPC2をEthernet LANケーブルで直接つなぐ。
+2. Ethernetの設定を下表で確認する。今回の2台は設定済み。
+3. PC1で次のファイルをダブルクリックする。
+   `C:\Users\yurin\Desktop\projects\CRO-MAGNON\output\exhibition\start-exhibition-host.bat`
+4. PC2で次のファイルをダブルクリックする。
+   `C:\Users\fee1i\Desktop\projects\CRO-MAGNON\start-exhibition-client.bat`
+5. 各PCのブラウザーで [展示ゲームを開く](http://localhost:4173/?room=EXHIBITION)。
+   両PCで同じURLを使う。`localhost` はそれぞれのPC自身を指す。
+   すでにサーバーが動いていれば、BATを重複実行せずこのリンクを開けばよい。
+6. 「スタート」（開始）から旅支度へ進み、名前をPC1は `Player 1`、PC2は `Player 2` にする。
+   **部屋のコードは両方とも下の文字列をコピーして貼り付ける。**
+
+   ```text
+   EXHIBITION
+   ```
+
+7. 両PCで「この谷へ出発する」を押す。操作ガイドが出たら案内に従ってゲームへ進む。
+8. **右上の小さな地図のすぐ下**に `LAN: Connected` があることを確認する。
+9. **左上のプレイヤー名の下**で、部屋名が両方とも `EXHIBITION`、人数が **2/5** になっていることを確認する。
+10. 交互に移動・向きを変更・攻撃・採集し、相手の画面にも反映されることを確認する。
+
+| 項目 | PC1 | PC2 |
+| --- | --- | --- |
+| Ethernet IPv4 | 10.10.10.1 | 10.10.10.2 |
+| Subnet mask | 255.255.255.0 | 255.255.255.0 |
+| プレフィックス長 | 24 | 24 |
+| Gateway / DNS | 空欄 | 空欄 |
+| ネットワーク | Private | Private |
+| ゲームのURL | http://localhost:4173/?room=EXHIBITION | http://localhost:4173/?room=EXHIBITION |
+| 同期サーバー | ws://10.10.10.1:8081 | ws://10.10.10.1:8081 |
+
+このPC1では8080番を別のアプリが使っているため、展示サーバーは **8081番**。
+サーバーはPC1の `0.0.0.0:8081` で待ち受ける。
+通常開発用の3000番と確認用の3011番は、この展示接続には使わない。
+
+## Connectedなのに両方1/5の場合
+
+`LAN: Connected` はサーバーとの接続成功を表す。同じ部屋への参加は人数と部屋名でも確認する。
+
+1. 両画面の左上にある部屋コードを一文字ずつ比較する。
+2. 左上のプレイヤー名をクリックし、「別の部屋に参加する」を選ぶ。
+3. 部屋のコードを全選択して、上記の **EXHIBITION** をコピー・貼り付けする。
+4. 「この谷へ出発する」を押す。両方が同じ部屋名・ **2/5** になれば合流成功。
+
+**今回の原因は部屋名の入力間違い。** PC1のURLに `EXIHIBITION`（余分なI）が含まれていた。
+正しいコードは `EXHIBITION`。見た目が似ていても別の部屋になる。
+URLの `?room=` や旅支度の入力が設定ファイルの既定値より優先されるため、
+設定ファイルだけが一致していても部屋は分かれることがある。
+部屋変更で新しく出発すると持ち物・進行がリセットされる場合がある。
+
+## 配置済みのゲームと停止方法
+
+- PC1のゲーム: `C:\Users\yurin\Desktop\projects\CRO-MAGNON\output\exhibition`
+- PC2のゲーム: `C:\Users\fee1i\Desktop\projects\CRO-MAGNON\game\6c04efc0\exhibition`
+- PC2の受取ZIP: `C:\Users\fee1i\Desktop\projects\CRO-MAGNON\incoming\exhibition-6c04efc0.zip`
+- ビルドID: `6c04efc06f7fe2f52d9ed91f3e7c1efb4806ffedde377087fbc912e089ff2a94`
+- ZIP SHA-256: `AA11B8C2E656F6BBC6165322DBF6C63E49CF76C34FFB18C5C73F1B496932A071`
+
+PC1からPC2へ直結EthernetのSSH/SCPで転送し、PC2で269ファイル・53 GLBとZIPのハッシュを検証済み。
+Node.jsと必要な依存を同梱済みで、展示当日のインストールは不要。
+3Dモデル・テクスチャ・JavaScriptは各PCのローカルから読み、各PCのGPUで描画する。
+
+PC1をBATから起動したときは、その起動ウィンドウを開いたままにする。
+終了はそのウィンドウで `Ctrl+C`。**ホストを終了するとメモリー上の共有ワールドがリセットされる。**
+今回のテストではPC1を非表示で起動済みなので、見える起動ウィンドウがなくても稼働している。
+
+PC2のルートBATは手動実行用タスク `CRO-MAGNON-Exhibition-Client-6c04efc0` を使い、
+ログイン中のYURIのデスクトップでクライアントを起動する。自動起動トリガーはない。
+動作中の再実行ではブラウザーを開く。停止はルートの `stop-exhibition-client.bat`。
+PC2のログはルートの `client-live.log` と `client-live-error.log`。
+
+## 接続診断とFirewall
+
+PC1のPrivateネットワークでTCP **8081** の受信を許可する。今回の規則は設定済み。
+対象はPC1の `10.10.10.1` と直結サブネット `10.10.10.0/24`。
+詳細な設定方法は配布フォルダーの `README-EXHIBITION.md` を参照する。
+
+起動ログの `Server reachable at ws://10.10.10.1:8081/` はサーバーへの到達成功を示す。
+[サーバーの状態](http://10.10.10.1:8081/api/health) も両PCで開ける。
+診断の `rooms` には退出後に残っている部屋も含まれ得るため、
+合流の判断にはゲーム画面の **部屋コードと2/5** を使う。
+
+## SSH鍵を残す運用
+
+ユーザーの指示により **SSH鍵は削除せず残す**。
+以前の `SSH-LAN-SETUP.md` にある作業後の一時鍵削除手順は適用しない。
+PC2の接続先は **YURI@10.10.10.2**。ユーザー名はYURIだがプロファイルのパスは `C:\Users\fee1i`。
+PC2で有効な登録先は `C:\ProgramData\ssh\administrators_authorized_keys`。
+秘密鍵はPC1の `C:\Users\yurin\.ssh\cro-exhibition-pc2-20260909` に保持し、PC2へコピーしない。
+接続元はPC1の直結IP（10.10.10.1、初期転送用169.254.141.230）に限定している。
+鍵でのSSH接続を確認済み。展示ゲームの起動・参加にSSHやWindowsのPIN入力は不要。
+
+## 今回の結果とWi-Fi OFF確認
+
+2026-09-09、両PCがLANサーバーへ接続した後、部屋名の誤入力でそれぞれ1/5になった。
+ユーザーが部屋名を修正し、**「room 名間違ってた！できた！」と合流成功を報告した**。
+この記録はユーザーによる物理2台の合流確認。移動・戦闘・採集の全項目やWi-Fi OFFの完了を意味しない。
+
+展示モードのゲーム本体・同期サーバー・ゲスト参加はインターネットに依存しない。
+最終確認は、両PCのWi-FiをOFFにし、直結Ethernetを残して、ローカルゲームを開き直す。
+両画面の `LAN: Connected`・同じ部屋名・ `2/5` と相互の操作反映を確認する。
+**両PCのWi-FiをOFFにした実機試験は、この記録時点では未確認。**
+Wi-Fi OFF中はCodexなどインターネットを使うアプリとの会話が途切れることがある。

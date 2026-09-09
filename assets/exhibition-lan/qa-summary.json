@@ -1,0 +1,78 @@
+{
+  "date": "2026-09-09",
+  "feature": "Exhibition LAN mode with independent local asset servers",
+  "automatedTests": { "total": 343, "passed": 343, "relatedFinal": 14 },
+  "checks": {
+    "typescriptIncludingExistingStrictAndCloudflareConfigs": "passed",
+    "syntax": "passed",
+    "architecture": "passed",
+    "changedRuntimeFormatting": "passed",
+    "diffWhitespace": "passed",
+    "offlineLauncherChecks": 4
+  },
+  "browser": {
+    "engine": "Real Chrome with D3D11 WebGL, two independent contexts on one physical Windows PC",
+    "report": "output/playwright/exhibition-lan/packaged-r03/report.json",
+    "assetOrigins": "Different localhost ports, each serving the packaged local files",
+    "webSocketEndpoint": "Both use the same numeric Ethernet IP, 169.254.141.230, with an isolated ephemeral server port",
+    "externalRequests": 0,
+    "browserErrors": 0,
+    "verified": [
+      "Normal title, setup, guest Player 1 / Player 2, LAN: Connected",
+      "Both players visible, bidirectional walk/run/rotation/attack synchronization",
+      "180ms delayed outgoing input: rendered local player moves before server receives it",
+      "Normal E gathering shares resource depletion and player inventory",
+      "Normal F attack shares enemy damage and combat state",
+      "Reload and socket disconnect/reconnect preserve guest inventory",
+      "390x844 and 844x390, LAN status and no horizontal overflow",
+      "Every HTTP asset request goes to its own loopback origin",
+      "Online regression: same-origin /ws, existing status probe, normal 3D rendering"
+    ],
+    "fixtures": [
+      "Outgoing input delay of 180ms for prediction proof",
+      "Player proximity positions for gather and enemy combat"
+    ],
+    "notVerified": [
+      "Physical PC2 browser, physical Wi-Fi OFF and cable-only game acceptance",
+      "Physical controller, extended soak, sustained 60FPS or high player count",
+      "Mounted/boat prediction has code and unit coverage; the two-browser scenario exercises on-foot prediction"
+    ]
+  },
+  "initialNetwork": {
+    "host": "YuriAlienware",
+    "ethernetInterfaceIndex": 15,
+    "ethernetStatus": "Up",
+    "linkSpeed": "100 Mbps",
+    "hostEthernetIPv4": "169.254.141.230/16",
+    "peerObserved": "169.254.232.213",
+    "peerPing": "2 replies, <1ms, 0% loss",
+    "ethernetProfile": "Public",
+    "wifi": "Connected",
+    "targetStaticIPConfigured": false,
+    "port8080": "Occupied by Docker, PID 5252, loopback only"
+  },
+  "delivery": {
+    "folder": "output/exhibition",
+    "hostLauncher": "start-exhibition-host.bat",
+    "clientLauncher": "start-exhibition-client.bat",
+    "defaultServerURL": "ws://10.10.10.1:8081",
+    "clientURL": "http://localhost:4173",
+    "settings": "exhibition.env (optional exhibition.local.env or environment override)",
+    "runtime": "Bundled Windows x64 Node.js v24.15.0 and ws; no npm/network required at launch",
+    "integrity": "SHA-256 per packaged code/asset/runtime file; matching build required by server",
+    "persistentWorld": false,
+    "publicDeployment": false,
+    "windowsIPOrFirewallChanged": false,
+    "existingServersStopped": false
+  },
+  "remainingPhysicalSetup": [
+    "Set PC1 Ethernet to 10.10.10.1/24 and PC2 to 10.10.10.2/24; leave Gateway and DNS blank",
+    "PC1 Ethernet Private profile and inbound TCP 8081 from 10.10.10.0/24",
+    "Copy the same full exhibition folder to PC2, then run host/client launchers",
+    "Turn Wi-Fi off on both PCs and confirm LAN: Connected and mutual movement"
+  ],
+  "initialQaFixes": [
+    "CSP connect-src now permits GLB embedded textures via local blob URLs",
+    "QA uses the actual run-mode button, because Shift is not the current run control"
+  ]
+}

@@ -20,6 +20,10 @@ export function createGameServer({
   tickMs = 50,
   resumeGraceMs = 120000,
   core = createGameCore({ resumeGraceMs }),
+  serveAssets = true,
+  expectedBuild = '',
+  allowedOrigins = [] as string[],
+  wsPaths = ['/ws'],
 } = {}) {
   const { rooms, snapshot, tick } = core;
   let interval;
@@ -50,6 +54,7 @@ export function createGameServer({
             : url.pathname === '/api/health'
               ? {
                   ok: true,
+                  ...(expectedBuild ? { mode: 'lan', buildId: expectedBuild } : {}),
                   ridingVersion: RIDING.version,
                   combatVersion: 3,
                   characterVersion: 2,
@@ -79,7 +84,8 @@ export function createGameServer({
         response.end(request.method === 'HEAD' ? undefined : JSON.stringify(body));
         return;
       }
-      await serveStatic(request, response, url.pathname, ROOT);
+      if (serveAssets) await serveStatic(request, response, url.pathname, ROOT);
+      else response.writeHead(404).end('Multiplayer synchronization only. Use your local client.');
     } catch (error) {
       response
         .writeHead(error.code === 'ENOENT' || error.code === 'ENOTDIR' ? 404 : 400)
@@ -91,8 +97,13 @@ export function createGameServer({
   server.on('upgrade', (request, socket, head) => {
     try {
       const url = new URL(request.url, 'http://localhost');
-      if (url.pathname !== '/ws' || closing) {
+      if (!wsPaths.includes(url.pathname) || closing) {
         socket.write('HTTP/1.1 404 Not Found\r\nConnection: close\r\n\r\n');
+        socket.destroy();
+        return;
+      }
+      if (allowedOrigins.length && !allowedOrigins.includes(request.headers.origin || '')) {
+        socket.write('HTTP/1.1 403 Forbidden\r\nConnection: close\r\n\r\n');
         socket.destroy();
         return;
       }
@@ -104,9 +115,21 @@ export function createGameServer({
     }
   });
 
-  wss.on('connection', (socket, request) =>
-    core.connect(socket, new URL(request.url, 'http://localhost').searchParams),
-  );
+  wss.on('connection', (socket, request) => {
+    const params = new URL(request.url, 'http://localhost').searchParams;
+    if (expectedBuild && params.get('build') !== expectedBuild) {
+      socket.send(
+        JSON.stringify({
+          type: 'error',
+          code: 'BUILD_MISMATCH',
+          text: '展示ビルドが一致しません。両PCへ同じ展示フォルダーをコピーしてください。',
+        }),
+      );
+      socket.close(4009, 'Build mismatch');
+      return;
+    }
+    core.connect(socket, params);
+  });
 
   return {
     server,

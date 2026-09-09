@@ -1,0 +1,21 @@
+{
+  "at": "2026-09-09T00:31:07.463Z",
+  "folder": "output/exhibition",
+  "buildId": "6c04efc06f7fe2f52d9ed91f3e7c1efb4806ffedde377087fbc912e089ff2a94",
+  "files": 269,
+  "bytes": 334701611,
+  "glbs": 53,
+  "browserTestedBuild": "3d1bdd160f6377ce6f5c9f1b41c06b950066956875534db5ed1b7d40acfdb9e5",
+  "browserReport": "output/playwright/exhibition-lan/packaged-r03/report.json",
+  "changesSinceBrowserBuild": [
+    "assets/exhibition-lan/qa-summary.json",
+    "README-EXHIBITION.md"
+  ],
+  "allExecutableAndAssetHashesUnchanged": true,
+  "defaultServerURL": "ws://10.10.10.1:8081",
+  "hostLauncher": "output/exhibition/start-exhibition-host.bat",
+  "clientLauncher": "output/exhibition/start-exhibition-client.bat",
+  "launchTest": "assets/exhibition-lan/launch-qa.json",
+  "physicalTwoPCAcceptance": false,
+  "networkSettingsChanged": false
+}

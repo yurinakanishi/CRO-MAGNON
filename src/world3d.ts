@@ -1,4 +1,6 @@
 import type { ViewState } from './view-state.js';
+import { LocalPrediction } from './local-prediction.js';
+import { enemyIsSolid } from '../shared/combat.mjs';
 import { activateMiddenObstacle } from '../shared/coastal-sites.mjs';
 import { CoastalRenderer } from './coastal-renderer.js';
 import { VillageRenderer } from './village-renderer.js';
@@ -43,7 +45,9 @@ import { GulfRenderer } from './gulf-renderer.js';
 import { COUNTRIES } from '../shared/gulf-region.mjs';
 import { mammothSeat } from './riding-pose.js';
 import { BoatRenderer } from './boat-renderer.js';
-import { BOATING } from '../shared/boats.mjs';
+import { BOATING, SeaCollision } from '../shared/boats.mjs';
+import { RIDING } from '../shared/riding.mjs';
+import { seaBoatSpeed } from '../shared/maritime-weather.mjs';
 
 const DEFAULT_DISTANCE = 5.5;
 const tempPoint = new THREE.Vector3();
@@ -57,6 +61,10 @@ function mesh(geometry, material, parent, position: [number, number, number] = [
 }
 
 export class WorldRenderer {
+  prediction = new LocalPrediction();
+  predictionObstacles = [];
+  predictionSeaCollision: SeaCollision | undefined;
+  predictedMotion: any = null;
   declare campLabel: ReturnType<WorldRenderer['createLabel']>;
   declare regionalScenery: RegionalScenery;
   declare openWorld: OpenWorldTerrain;
@@ -615,6 +623,31 @@ export class WorldRenderer {
   }
 
   setState(state, selfId) {
+    const local = state.players.find((p) => p.id === selfId);
+    const controlled = local?.boatId
+      ? state.boats?.find((b) => b.id === local.boatId)
+      : local?.mountId
+        ? state.animals?.find((a) => a.id === local.mountId)
+        : null;
+    this.prediction.receive(
+      controlled
+        ? { ...local, x: controlled.x, z: controlled.z, radius: controlled.radius }
+        : local,
+      performance.now(),
+    );
+    if (this.prediction.enabled)
+      this.predictionObstacles = (
+        local?.boatId
+          ? (state.boats ?? []).filter((b) => b.id !== local.boatId)
+          : [
+              ...state.players.filter((p) => p.id !== selfId && !p.mountId && !p.boatId),
+              ...(state.animals ?? []).filter(
+                (p) => p.id !== local?.mountId && ['alive', 'dying'].includes(p.phase),
+              ),
+              ...(state.enemies ?? []).filter(enemyIsSolid),
+              ...(state.residents ?? []),
+            ]
+      ).map((p) => ({ type: 'circle', x: p.x, z: p.z, radius: p.radius ?? WORLD.playerRadius }));
     if (Number.isFinite(state.serverTime)) {
       this.serverTime = state.serverTime;
       this.stateReceivedAt = performance.now();
@@ -811,8 +844,46 @@ export class WorldRenderer {
 
   render(time, dt) {
     const frameStarted = performance.now();
+    let predicted = null;
+    if (this.prediction.enabled && this.prediction.actor) {
+      const p = this.prediction.actor,
+        running = this.prediction.input.running;
+      let collision = this.collision,
+        speed;
+      if (p.boatId) {
+        collision = this.predictionSeaCollision ??= new SeaCollision(this.collision);
+        const weather = this.state.maritime;
+        const boat = { ...p, ...this.prediction.input, runningRequested: running };
+        speed = weather
+          ? seaBoatSpeed(boat, running ? BOATING.fastSpeed : BOATING.speed, weather)
+          : running
+            ? BOATING.fastSpeed
+            : BOATING.speed;
+      } else if (p.mountId) {
+        const scale = this.state.animals?.find((a) => a.id === p.mountId)?.scale ?? 1;
+        speed = (running ? RIDING.runSpeed : RIDING.walkSpeed) * scale;
+      }
+      predicted = this.prediction.step(
+        dt,
+        performance.now(),
+        this.serverNow(),
+        collision,
+        this.predictionObstacles,
+        speed,
+      );
+    }
+    this.predictedMotion = predicted;
     for (const animal of this.mammoths) {
-      const state = this.state.animals?.find((item) => item.id === animal.id);
+      const raw = this.state.animals?.find((item) => item.id === animal.id);
+      const state =
+        raw && predicted?.mountId === raw.id
+          ? {
+              ...raw,
+              ...predicted,
+              id: raw.id,
+              clip: predicted.moving ? (predicted.running ? 'Run_Loop' : 'Walk_Loop') : 'Idle_Loop',
+            }
+          : raw;
       animal.seat ??= mammothSeat(animal.actor.root);
       const phase = state?.phase ?? 'alive';
       animal.model.visible = !!state && (phase === 'alive' || phase === 'dying');
@@ -845,7 +916,7 @@ export class WorldRenderer {
         animal.model.position.set(state.x, walkHeight(state.x, state.z), state.z);
         animal.initialized = true;
       }
-      const factor = 1 - Math.exp(-dt * 15),
+      const factor = predicted?.mountId === state.id ? 1 : 1 - Math.exp(-dt * 15),
         next = this.collision.move(
           animal.model.position,
           (state.x - animal.model.position.x) * factor,
@@ -897,7 +968,8 @@ export class WorldRenderer {
     }
     this.boatRenderer?.update(time, dt);
     for (const entity of this.players.values()) {
-      const { model, state: p } = entity,
+      const { model } = entity,
+        p = entity.state.id === this.selfId && predicted ? predicted : entity.state,
         factor = 1 - Math.exp(-dt * 20);
       model.visible =
         p.id === this.selfId || Math.hypot(p.x - this.focus.x, p.z - this.focus.z) < 95;
@@ -972,8 +1044,8 @@ export class WorldRenderer {
       }
       const next = this.collision.move(
         model.position,
-        (p.x - model.position.x) * (remaining < 0.012 ? 1 : factor),
-        (p.z - model.position.z) * (remaining < 0.012 ? 1 : factor),
+        (p.x - model.position.x) * (p === predicted || remaining < 0.012 ? 1 : factor),
+        (p.z - model.position.z) * (p === predicted || remaining < 0.012 ? 1 : factor),
         p.radius ?? WORLD.playerRadius,
         this.villageRenderer?.obstacles() ?? [],
       );

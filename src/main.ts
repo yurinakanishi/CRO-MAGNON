@@ -1,4 +1,9 @@
 import { readSaved, save, savedSession, saveSession } from './session-storage.js';
+import {
+  loadMultiplayerConfig,
+  multiplayerUrl,
+  multiplayerSessionKey,
+} from './multiplayer-config.js';
 import type { ViewState } from './view-state.js';
 import { normalizeCharacter, characterModel } from '../shared/characters.mjs';
 import { attackProfile } from '../shared/combat-profiles.mjs';
@@ -105,14 +110,20 @@ const icon = (name, cls = '') =>
 const GAME_TITLE = 'CRO-MAGNON';
 const $ = (s) => document.querySelector(s);
 const query = new URLSearchParams(location.search);
+const multiplayer = await loadMultiplayerConfig().catch((error) => {
+  $('#app').textContent = error.message;
+  throw error;
+});
+const sessionKey = (room: string) => multiplayerSessionKey(multiplayer, room);
 let profile = {
-  name: readSaved('cro-name', `旅人${Math.floor(Math.random() * 900 + 100)}`),
+  name:
+    multiplayer.guestName || readSaved('cro-name', `旅人${Math.floor(Math.random() * 900 + 100)}`),
   ...normalizeCharacter({
     species: readSaved('cro-species', 'cro'),
     gender: readSaved('cro-gender', 'female'),
   }),
   room:
-    (query.get('room') || readSaved('cro-room', 'EMBER'))
+    (query.get('room') || multiplayer.room || readSaved('cro-room', 'EMBER'))
       .toUpperCase()
       .replace(/[^A-Z0-9_-]/g, '')
       .slice(0, 16) || 'EMBER',
@@ -243,6 +254,7 @@ try {
     onAnimal: interactAnimal,
     onError: showRenderError,
   });
+  renderer.prediction.enabled = multiplayer.mode === 'lan';
 } catch (error) {
   console.error('3D renderer could not initialize:', error);
   showRenderError(
@@ -350,6 +362,7 @@ function send(message) {
   if (socket?.readyState === WebSocket.OPEN) socket.send(JSON.stringify(message));
 }
 function stopInput() {
+  renderer.prediction?.stop();
   // Also cancels a cast sent just before a menu/blur, before its snapshot arrives.
   if (joined) {
     send({ type: 'action', action: 'cancelFishing' });
@@ -368,6 +381,7 @@ function sendMoveTarget(x, z, followingRide = false) {
   if (!followingRide) rideApproach.cancel();
   movementCommands.reset();
   send({ type: 'target', x, z, running: wantsToRun() });
+  if (renderer.prediction?.enabled) renderer.prediction.target = { x, z };
   return true;
 }
 function notify(text, tone = 'info') {
@@ -399,8 +413,11 @@ function addChat(message) {
 }
 function connection(connected, label) {
   joined = connected;
+  if (!connected) renderer.prediction?.reset();
   $('#connection-dot').classList.toggle('offline', !connected);
-  $('#connection-label').textContent = label;
+  $('#connection-label').textContent =
+    multiplayer.mode === 'lan' ? (connected ? 'LAN: Connected' : `LAN: ${label}`) : label;
+  $('#connection-label').title = multiplayer.serverUrl || location.origin;
 }
 async function connect() {
   gamepadControls?.suspend();
@@ -445,7 +462,11 @@ async function connect() {
   }
   if (attempt !== connectAttempt || manualLeave) return;
   const ws = new WebSocket(
-    `${location.protocol === 'https:' ? 'wss:' : 'ws:'}//${location.host}/ws?${new URLSearchParams({ ...profile, resume: '1', session: savedSession(profile.room) })}`,
+    multiplayerUrl(multiplayer, location.origin, {
+      ...profile,
+      resume: '1',
+      session: savedSession(sessionKey(profile.room)),
+    }),
   );
   socket = ws;
   ws.addEventListener('message', ({ data }) => {
@@ -460,7 +481,7 @@ async function connect() {
       retryCount = 0;
       selfId = message.id;
       profile = { ...profile, ...message.profile, room: message.room };
-      saveSession(profile.room, message.session);
+      saveSession(sessionKey(profile.room), message.session);
       for (const [key, value] of Object.entries(profile)) save(`cro-${key}`, value);
       $('#profile-name').textContent = profile.name;
       $('#room-label').textContent = profile.room;
@@ -498,6 +519,7 @@ async function connect() {
     if (message.type === 'chat') addChat(message);
     if (message.type === 'pong') {
       ping = Math.max(0, Date.now() - message.at);
+      if (renderer.prediction) renderer.prediction.latencyMs = ping;
       $('#ping-label').textContent = `${ping} ms`;
     }
     if (message.type === 'error') {
@@ -505,7 +527,7 @@ async function connect() {
       notify(message.text, 'error');
       connection(false, '参加できません');
       showSetup(message.text);
-      if (message.code === 'ROOM_FULL' && savedSession(profile.room)) {
+      if (message.code === 'ROOM_FULL' && savedSession(sessionKey(profile.room))) {
         $('#setup-error').insertAdjacentHTML(
           'afterend',
           '<button id="retry-session" class="button button-outline wide" type="button">保存した持ち物で再接続する</button>',
@@ -525,7 +547,7 @@ async function connect() {
       retry = setTimeout(connect, Math.min(60000, 2500 * 2 ** Math.min(retryCount++, 5)));
   });
   ws.addEventListener('error', () => {
-    if (ws === socket) $('#connection-label').textContent = 'サーバーを確認中…';
+    if (ws === socket) connection(false, 'サーバーを確認中…');
   });
 }
 function player() {
@@ -1033,7 +1055,7 @@ function openModal(content) {
 function applyProfileForm(form: HTMLFormElement) {
   const data = new FormData(form);
   manualLeave = true;
-  saveSession(profile.room, null);
+  saveSession(sessionKey(profile.room), null);
   send({ type: 'leave' });
   const previous = socket;
   socket = null;
@@ -1046,14 +1068,14 @@ function applyProfileForm(form: HTMLFormElement) {
       gender: String(data.get('gender')),
     }),
   };
-  saveSession(profile.room, null);
+  saveSession(sessionKey(profile.room), null);
   for (const [k, v] of Object.entries(profile)) save(`cro-${k}`, v);
   history.replaceState({}, '', `?room=${encodeURIComponent(profile.room)}`);
   $('#profile-name').textContent = profile.name;
 }
 function showTitle() {
   $('#modal').close();
-  const resumable = !!savedSession(profile.room);
+  const resumable = !!savedSession(sessionKey(profile.room));
   $('#title-continue').hidden = !resumable;
   $('#title-continue-room').textContent = `${profile.name} · ${profile.room}`;
   screens.show('title');
@@ -1094,7 +1116,7 @@ function leaveToTitle() {
   manualLeave = true;
   clearTimeout(retry);
   send({ type: 'leave' });
-  saveSession(profile.room, null);
+  saveSession(sessionKey(profile.room), null);
   const previous = socket;
   socket = null;
   previous?.close();
@@ -1113,11 +1135,19 @@ async function openInvite() {
   $('#invite-code').textContent = profile.room;
   let base = location.origin;
   try {
-    const network = await fetch('/api/network').then((r) => r.json());
-    if (['localhost', '127.0.0.1', '[::1]'].includes(location.hostname) && network.urls?.length)
+    const network =
+      multiplayer.mode === 'lan' ? {} : await fetch('/api/network').then((r) => r.json());
+    if (
+      multiplayer.mode !== 'lan' &&
+      ['localhost', '127.0.0.1', '[::1]'].includes(location.hostname) &&
+      network.urls?.length
+    )
       base = network.urls[0];
   } catch {}
   if (!$('#invite-url')) return;
+  if (multiplayer.mode === 'lan')
+    $('#invite-note').textContent =
+      '展示LAN：相手のPCでも展示フォルダーの start-exhibition-client.bat を起動し、同じ部屋に参加してください。ゲーム本体は各PCのlocalhostから読み込みます。';
   $('#invite-url').value = `${base}/?room=${encodeURIComponent(profile.room)}`;
   $('#copy-invite').onclick = async () => {
     const input = $('#invite-url');
@@ -1720,7 +1750,8 @@ gamepadControls = new GamepadControls({
     }
   },
 });
-setInterval(() => {
+let lastMoveSent = 0;
+function updateMovementInput() {
   if (player()?.downedUntil || !joined || renderUnavailable) {
     keys.clear();
     movementCommands.reset();
@@ -1753,9 +1784,22 @@ setInterval(() => {
     lastGait = running;
   }
   const { dx, dz } = renderer.getMovementDirection(motion.x, motion.y),
+    changed = movementCommands.direction !== `${dx},${dz}`,
     command = movementCommands.next({ dx, dz, running });
-  if (command) send(command);
-}, 70);
+  const now = performance.now();
+  if (renderer.prediction?.enabled) renderer.prediction.setInput(dx, dz, running, now);
+  if (command && (multiplayer.mode !== 'lan' || changed || now - lastMoveSent >= 70)) {
+    send(command);
+    lastMoveSent = now;
+  }
+}
+if (multiplayer.mode === 'lan') {
+  const localInputFrame = () => {
+    updateMovementInput();
+    requestAnimationFrame(localInputFrame);
+  };
+  requestAnimationFrame(localInputFrame);
+} else setInterval(updateMovementInput, 70);
 setInterval(() => send({ type: 'ping', at: Date.now() }), 3000);
 setInterval(updateHuntingHUD, 100);
 const hudObserver = new ResizeObserver((entries) => {

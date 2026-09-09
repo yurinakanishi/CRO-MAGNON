@@ -1,0 +1,23 @@
+{
+  "at": "2026-09-09T00:30:15.857Z",
+  "root": "C:\\Users\\yurin\\Desktop\\projects\\CRO-MAGNON\\output\\exhibition",
+  "checks": [
+    {
+      "check": "missing host IP is explicit",
+      "output": "CRO-MAGNON Exhibition / LAN - PC1 Host\nVerifying local game assets and offline runtime...\nBuild: 6c04efc06f7fe2f5 | Local IPv4: 169.254.141.230, 192.168.10.105, 127.0.0.1, 172.24.144.1\nMultiplayer: ws://10.254.254.254:56134/ | Room: EXHIBITION\n\nLAN startup failed: PC1 Ethernet does not have 10.254.254.254. Configure the static Ethernet IP first (README-EXHIBITION.md). No server was started.\n"
+    },
+    {
+      "check": "bundled runtime host binds and passes WebSocket probe",
+      "output": "CRO-MAGNON Exhibition / LAN - PC1 Host\nVerifying local game assets and offline runtime...\nBuild: 6c04efc06f7fe2f5 | Local IPv4: 169.254.141.230, 192.168.10.105, 127.0.0.1, 172.24.144.1\nMultiplayer: ws://127.0.0.1:56134/ | Room: EXHIBITION\nServer listening on 0.0.0.0:56134 (synchronization only)\nLocal game: http://localhost:56135/ (assets rendered on this PC)\nServer reachable at ws://127.0.0.1:56134/ | Players: 0 | Rooms: 0\nWebSocket endpoint verified locally. Confirm LAN: Connected on PC2 to verify the cable/firewall path.\nChoose Start, then depart into the valley on BOTH screens. Look for LAN: Connected.\nKeep this window open. Ctrl+C stops this launcher and its own servers. Host stop resets the in-memory exhibition world.\n"
+    },
+    {
+      "check": "duplicate host refuses occupied port and preserves first server",
+      "output": "CRO-MAGNON Exhibition / LAN - PC1 Host\nVerifying local game assets and offline runtime...\nBuild: 6c04efc06f7fe2f5 | Local IPv4: 169.254.141.230, 192.168.10.105, 127.0.0.1, 172.24.144.1\nMultiplayer: ws://127.0.0.1:56134/ | Room: EXHIBITION\n\nLAN startup failed: listen EADDRINUSE: address already in use 0.0.0.0:56134\nPort already in use. Close the previous exhibition launcher or edit MULTIPLAYER_SERVER_URL / CLIENT_PORT on BOTH PCs. Other processes were not stopped.\n"
+    },
+    {
+      "check": "PC2 launcher serves local client and finds PC1",
+      "output": "CRO-MAGNON Exhibition / LAN - PC2 Client\nVerifying local game assets and offline runtime...\nBuild: 6c04efc06f7fe2f5 | Local IPv4: 169.254.141.230, 192.168.10.105, 127.0.0.1, 172.24.144.1\nMultiplayer: ws://127.0.0.1:56134/ | Room: EXHIBITION\nLocal game: http://localhost:56136/ (assets rendered on this PC)\nServer reachable at ws://127.0.0.1:56134/ | Players: 0 | Rooms: 0\nChoose Start, then depart into the valley on BOTH screens. Look for LAN: Connected.\nKeep this window open. Ctrl+C stops this launcher and its own servers. Host stop resets the in-memory exhibition world.\n"
+    }
+  ],
+  "physicalPC2": false
+}

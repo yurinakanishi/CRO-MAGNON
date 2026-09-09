@@ -1,5 +1,7 @@
 # CRO-MAGNON
 
+**展示会のPC2台・Ethernet直結:** [LAN展示モードの準備・起動・固定IP・Firewall](README-EXHIBITION.md)。各PCに同じオフラインビルドを配置し、PC1は `start-exhibition-host.bat`、PC2は `start-exhibition-client.bat` を実行します。通常のオンライン起動は以下の手順を継続します。
+
 TypeScript開発・ビルド手順と責務の分離は [ARCHITECTURE.md](ARCHITECTURE.md) を参照してください。`npm start` / `npm test` は先にビルドし、`npm run dev` はTypeScriptとCSSを監視します。直接 `node server.mjs` を使う場合は先に `npm run build` を実行してください。
 
 クロマニョン人とネアンデルタール人が、草原・雪原・氷原・火山・砂漠を探索する3Dブラウザゲームの試作です。約5万年前の地球の大陸を近似した4,096 × 2,048 mの世界を探索できます。猫耳の女性クノイチと、小さなこぐまの魔法使いも選択できます。キャラクターの後ろ・肩越しから見るTPS視点で探索し、1部屋あたり最大5人で、採集・物々交換・チャット・野営地づくり、マンモスの狩猟と肉の採取を共有します。

@@ -11,7 +11,9 @@ export class BoatRenderer {
   update(time, dt) {
     const world = this.world,
       present = new Set();
-    for (const state of world.state.boats || []) {
+    for (const raw of world.state.boats || []) {
+      const predicted = world.predictedMotion?.boatId === raw.id ? world.predictedMotion : null;
+      const state = predicted ? { ...raw, ...predicted, id: raw.id } : raw;
       present.add(state.id);
       let entry = this.boats.get(state.id);
       if (!entry) {
@@ -27,7 +29,7 @@ export class BoatRenderer {
       entry.state = state;
       const model = entry.model;
       const factor =
-        Math.hypot(model.position.x - state.x, model.position.z - state.z) > 6
+        predicted || Math.hypot(model.position.x - state.x, model.position.z - state.z) > 6
           ? 1
           : 1 - Math.exp(-dt * 20);
       model.position.x += (state.x - model.position.x) * factor;

@@ -1,0 +1,22 @@
+✔ a large position correction keeps the local hull and seat available for camera following (2.2427ms)
+✔ LAN config changes endpoint without changing production same-origin URLs or sessions (2.2974ms)
+✔ settings preserve explicit port and reject WAN/DNS endpoints without executing shell syntax (11.2604ms)
+✔ two independent loopback asset servers share one LAN game server, movement, actions, world and resume (3317.3873ms)
+✔ LAN rejects wrong build and browser origin before allowing a player (17.3434ms)
+✔ local prediction moves before another packet, bounds loss, reconciles and stops on damage/menu (1.0155ms)
+✔ prediction obeys collision and authoritative attack lock (0.2067ms)
+✔ riding and boat prediction use configured speed, control radius and reset at dismount (0.3289ms)
+✔ offline package integrity catches a partial or modified copy (12.4876ms)
+✔ walk and run cover their configured distance; diagonal input cannot boost speed (1.6835ms)
+✔ a short click target updates facing, arrives without overshoot and retains heading on stop (1.0606ms)
+✔ the short bear uses a measured smaller gait while the kunoichi keeps human speeds (0.2951ms)
+✔ an explicit ride request follows the moving animal, throttles paths, then mounts once in reach (3.6613ms)
+✔ cancelled, occupied, missing or stalled targets stop approach and cannot cause an unwanted mount (0.4699ms)
+ℹ tests 14
+ℹ suites 0
+ℹ pass 14
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 4311.9947

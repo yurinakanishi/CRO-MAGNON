@@ -5,6 +5,7 @@ public/vendor/
 output/
 .playwright-cli/
 .env
+exhibition.local.env
 *.log
 dist-cloudflare/
 .wrangler/
