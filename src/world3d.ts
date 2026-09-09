@@ -38,7 +38,7 @@ import { SpellEffects } from './spell-effects.js';
 import { attackProfile } from '../shared/combat-profiles.mjs';
 import { CollisionWorld } from '../shared/collision.mjs';
 import { CHARACTER_MODELS, characterModel } from '../shared/characters.mjs';
-import { enemyAnimationState, playerRecovered } from './enemy-state.js';
+import { enemyAnimationState, enemyStatusLabel, playerRecovered } from './enemy-state.js';
 import { isLand } from '../shared/paleo-geography.mjs';
 import { FrameClock } from './frame-clock.js';
 import { WorldAtmosphere } from './world-atmosphere.js';
@@ -1207,7 +1207,7 @@ export class WorldRenderer {
         model.position.y + (actor.asset.heightMetres ?? 1.85) * (state.scale ?? 1) + 0.3,
         model.position.z,
       );
-      setText(enemy.label.title, state.name);
+      setText(enemy.label.title, enemyStatusLabel(state));
       if (enemy.health.max !== state.maxHealth) enemy.health.max = state.maxHealth;
       if (enemy.health.value !== state.health) enemy.health.value = state.health;
       const animation = enemyAnimationState(state, this.serverNow());

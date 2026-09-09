@@ -1,0 +1,25 @@
+{
+  "key": "violet-behemoth",
+  "name": "紫尾の巨獣",
+  "kind": "quadruped",
+  "lengthMetres": 6,
+  "bodyHeightMetres": 2.06411314,
+  "lengthRevision": "Keep existing torso and forearms; extend tail by 2 metres from the 4 m draft.",
+  "hindLegs": "vestigial; forearms and tail propel the low body",
+  "candidate": 1,
+  "geometryResolution": 1024,
+  "referenceVersion": 2,
+  "clips": [
+    "Idle_Loop",
+    "Walk_Loop",
+    "Run_Loop",
+    "Alert",
+    "Charge",
+    "Attack",
+    "TailSpin",
+    "Hit",
+    "Death"
+  ],
+  "selection": "User supplied purple monster image, explicitly requested creation as an enemy with territorial charge, bite and spinning tail.",
+  "bodyDraftLengthMetres": 4
+}

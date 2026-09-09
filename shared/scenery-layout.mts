@@ -24,6 +24,7 @@ import { inLegacyGulf, LEGACY_RESOURCE_POINTS } from './gulf-legacy.mjs';
 import { ADVENTURE_ENEMIES, adventureReserved } from './adventure-regions.mjs';
 import { ADVENTURE_SCENERY } from './adventure-layout.mjs';
 import { inGulf, GULF_SCENERY, gulfLandDistance, gulfActivitySpace } from './gulf-region.mjs';
+import { inBehemothClearing } from './behemoth-rules.mjs';
 // Body-sized animals need a continuous clearing, not just a free spawn point.
 // Existing harvestable resources sit outside the five-metre roaming footprint.
 export const HUNTING_GROUNDS = Object.freeze([
@@ -268,6 +269,13 @@ function layout() {
     const target = { trees, props, fires }[category];
     target.push(...items.filter((item) => gulfLandDistance(item.x, item.z) > 8));
   }
+  // A continuous open territory near the European camp. Preserve deterministic
+  // placements outside it; sparse existing grass remains within the clearing.
+  for (const items of [trees, rocks, ridges])
+    for (let i = items.length - 1; i >= 0; i--)
+      if (inBehemothClearing(items[i].x, items[i].z, 3)) items.splice(i, 1);
+  for (let i = grass.length - 1; i >= 0; i--)
+    if (inBehemothClearing(grass[i].x, grass[i].z) && i % 12 !== 0) grass.splice(i, 1);
   return Object.fromEntries(
     Object.entries({ trees, grass, rocks, ridges, tents, props, fires, animals }).map(
       ([key, items]) => [key, items.filter((item) => !nearCastle(item.x, item.z, 3))],
@@ -319,7 +327,10 @@ export function grassForChunk(ix, iz) {
       surface: palette.surface ?? null,
     });
   }
-  return grass.filter((item) => !nearCastle(item.x, item.z, 1));
+  return grass.filter(
+    (item, i) =>
+      !nearCastle(item.x, item.z, 1) && (!inBehemothClearing(item.x, item.z) || i % 12 === 0),
+  );
 }
 export const BRIDGE = {
   x: riverX(43.5),

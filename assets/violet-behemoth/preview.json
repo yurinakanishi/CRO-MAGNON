@@ -1,0 +1,66 @@
+{
+  "url": "http://127.0.0.1:3022/",
+  "port": 3022,
+  "pid": 33380,
+  "saveDirectory": "output/violet-behemoth/preview-save",
+  "launcher": "output/violet-behemoth/run-preview.mjs",
+  "sha256": "32f2f5032f1f896cdb0922ea897f84022b6d971894a9e1f7187a33a726a8a16d",
+  "checks": [
+    "Normal title, setup, world loading and keyboard movement",
+    "Served GLB and manifest match final adoption"
+  ],
+  "diagnostics": [
+    {
+      "id": "crow-shaman-1",
+      "phase": "alive",
+      "clip": "loading",
+      "visible": false,
+      "x": 151.58,
+      "z": -7.25
+    },
+    {
+      "id": "guardian-stone-forest-1",
+      "phase": "alive",
+      "clip": "loading",
+      "visible": false,
+      "x": 1001.18,
+      "z": 89.72
+    },
+    {
+      "id": "guardian-blue-chasm-1",
+      "phase": "alive",
+      "clip": "loading",
+      "visible": false,
+      "x": -1574.82,
+      "z": -102.28
+    },
+    {
+      "id": "guardian-shadow-realm-1",
+      "phase": "alive",
+      "clip": "loading",
+      "visible": false,
+      "x": 1001.18,
+      "z": 1529.72
+    },
+    {
+      "id": "guardian-shadow-realm-2",
+      "phase": "alive",
+      "clip": "loading",
+      "visible": false,
+      "x": 1017.18,
+      "z": 1510.72
+    },
+    {
+      "id": "violet-behemoth-1",
+      "phase": "alive",
+      "clip": "Idle_Loop",
+      "visible": true,
+      "x": 95,
+      "z": 110
+    }
+  ],
+  "errors": [],
+  "fixtures": "Only chosen profile. No injected renderer, position, inventory, clock or world state.",
+  "originalServer": "Port 3000 remained listening; no stop, restart or save restore was issued.",
+  "verifiedAt": "2026-09-09T13:24:57.939Z"
+}

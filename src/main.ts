@@ -904,7 +904,9 @@ function updateHuntingHUD() {
   $('#discovery-card').classList.toggle('hostile', animal?.hostile === true);
   $('#discovery-card').hidden = !animal || !me || distance(me, animal) > 60;
   $('#discovery-card small').textContent = animal?.hostile
-    ? 'HOSTILE · 杖の攻撃に注意'
+    ? animal.modelKey === 'violet-behemoth'
+      ? 'HOSTILE · 突進・噛みつき・尾に注意'
+      : 'HOSTILE · 杖の攻撃に注意'
     : 'OPEN MEADOW · みんなで狩る';
   $('#hunt-health').setAttribute(
     'aria-label',
@@ -918,7 +920,7 @@ function updateHuntingHUD() {
     : animal.phase === 'meat'
       ? `近づいて E · 残り${animal.meatRemaining}個`
       : animal.phase === 'dead'
-        ? '呪術師を倒しました。しばらくすると戻ります。'
+        ? `${animal.name}を倒しました。しばらくすると戻ります。`
         : animal.phase === 'dying'
           ? '肉になったら近づいて採ろう。'
           : `${animal.health} / ${animal.maxHealth} · ${Math.round(distance(me, animal))}m · ${targetInFront ? `前方へ ${attackKey} で攻撃` : attackReady(me, animal) ? `相手を向いて ${attackKey}` : `近づいて、相手を向いて ${attackKey}`}`;

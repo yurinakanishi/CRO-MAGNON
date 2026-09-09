@@ -632,6 +632,14 @@ export function createGameCore({
           stopActor(actor);
           actor.riderId = null;
           actor.pendingAttack = null;
+          if (name === 'enemies' && actor.modelKey === 'violet-behemoth') {
+            actor.attackLockUntil = 0;
+            actor.targetId = null;
+            actor.returning = actor.phase === 'alive';
+            actor.nextPathAt = 0;
+            actor.nextAttackAt = 0;
+            actor.clip = actor.phase === 'alive' ? 'Idle_Loop' : actor.clip;
+          }
         }
       for (const entry of record.sessions)
         if (entry.expiresAt > runtime.now()) {

@@ -458,6 +458,19 @@
       "delivery": "/models/giant-ape/model-stride-r13.glb",
       "gameQA": "assets/shoulder-carry/adoption.json",
       "subject": "Large red-furred ape with broad shoulders, round belly, massive arms and hands, hide loincloth and rawhide wrist wraps; approved image candidate 4."
+    },
+    {
+      "key": "violet-behemoth",
+      "name": "紫尾の巨獣",
+      "kind": "enemy",
+      "height": 2.064113140106201,
+      "length": 6,
+      "status": "integrated-and-game-qa-passed",
+      "geometryResolution": 1024,
+      "sha256": "32f2f5032f1f896cdb0922ea897f84022b6d971894a9e1f7187a33a726a8a16d",
+      "delivery": "/models/violet-behemoth/model-r03.glb",
+      "gameQA": "assets/violet-behemoth/game-qa.json",
+      "subject": "User reference: massive purple forearms, tiny vestigial hind legs, many eyes and a long tail; territorial grassland monster."
     }
   ],
   "reuse": {

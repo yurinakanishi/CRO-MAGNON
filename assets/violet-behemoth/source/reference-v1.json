@@ -1,0 +1,10 @@
+{
+  "generator": "Codex built-in imagegen",
+  "prompt": "Built-in imagegen identity-preserving model reference from user-reference.png. Keep the purple warty heavy amphibian body, enormous forearms, small hind limbs, multiple eyes, barbels, dorsal bumps and long thick tail. One uncropped creature in neutral quadrupedal stance, slightly elevated front three-quarter view, all four limbs distinct, entire tail visible, plain white studio background without scenery or props. Soft neutral light. Preserve proportions and realistic materials.",
+  "source": "source/original/reference-v1.png",
+  "sha256": "c907ec61a5eddbafca80b21e3618ecc84ae0de8b7234e3f5cfc7c6f066c8bedf",
+  "bytes": 1531206,
+  "fallback": "ZImage unavailable in the established local toolchain; permitted equivalent generator.",
+  "author": "Codex",
+  "claude_used": false
+}

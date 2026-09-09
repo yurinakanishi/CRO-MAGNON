@@ -1,0 +1,1050 @@
+{
+  "source": "C:\\Users\\yurin\\Desktop\\projects\\CRO-MAGNON\\output\\model-generation\\models\\violet-behemoth\\work\\rig\\revision-02\\candidate.glb",
+  "sha256": "3213f91f899f3ad73e50fb5161df7179de3ac1a88c7f19730d6ff6adb5f1dedb",
+  "fps": 30,
+  "fpsSetBeforeImport": true,
+  "renderEngine": "Blender EEVEE",
+  "dimensions": [
+    420,
+    480
+  ],
+  "clips": [
+    {
+      "clip": "Idle_Loop",
+      "durationSeconds": 3.0,
+      "loop": true,
+      "views": [
+        {
+          "view": "front",
+          "frames": [
+            0,
+            22,
+            45,
+            68,
+            89
+          ],
+          "direction": [
+            0,
+            -1,
+            0.12
+          ],
+          "orthographicScale": 7.750165997500512
+        },
+        {
+          "view": "right",
+          "frames": [
+            0,
+            22,
+            45,
+            68,
+            89
+          ],
+          "direction": [
+            1,
+            0,
+            0.12
+          ],
+          "orthographicScale": 7.750165997500512
+        },
+        {
+          "view": "rear",
+          "frames": [
+            0,
+            22,
+            45,
+            68,
+            89
+          ],
+          "direction": [
+            0,
+            1,
+            0.12
+          ],
+          "orthographicScale": 7.750165997500512
+        },
+        {
+          "view": "threequarter",
+          "frames": [
+            0,
+            22,
+            45,
+            68,
+            89
+          ],
+          "direction": [
+            0.7,
+            -1,
+            0.17
+          ],
+          "orthographicScale": 7.750165997500512
+        },
+        {
+          "view": "left",
+          "frames": [
+            0,
+            22,
+            45,
+            68,
+            89
+          ],
+          "direction": [
+            -1,
+            0,
+            0.12
+          ],
+          "orthographicScale": 7.750165997500512
+        },
+        {
+          "view": "tps",
+          "frames": [
+            0,
+            22,
+            45,
+            68,
+            89
+          ],
+          "direction": [
+            0.22,
+            1,
+            0.28
+          ],
+          "orthographicScale": 7.750165997500512
+        }
+      ],
+      "boundsBlender": {
+        "min": [
+          -1.2159717082977295,
+          -2.0080084800720215,
+          0.001999336527660489
+        ],
+        "max": [
+          1.4385772943496704,
+          3.999584197998047,
+          2.0740199089050293
+        ]
+      }
+    },
+    {
+      "clip": "Walk_Loop",
+      "durationSeconds": 1.2,
+      "loop": true,
+      "views": [
+        {
+          "view": "front",
+          "frames": [
+            0,
+            9,
+            18,
+            27,
+            35
+          ],
+          "direction": [
+            0,
+            -1,
+            0.12
+          ],
+          "orthographicScale": 7.922047812892547
+        },
+        {
+          "view": "right",
+          "frames": [
+            0,
+            9,
+            18,
+            27,
+            35
+          ],
+          "direction": [
+            1,
+            0,
+            0.12
+          ],
+          "orthographicScale": 7.922047812892547
+        },
+        {
+          "view": "rear",
+          "frames": [
+            0,
+            9,
+            18,
+            27,
+            35
+          ],
+          "direction": [
+            0,
+            1,
+            0.12
+          ],
+          "orthographicScale": 7.922047812892547
+        },
+        {
+          "view": "threequarter",
+          "frames": [
+            0,
+            9,
+            18,
+            27,
+            35
+          ],
+          "direction": [
+            0.7,
+            -1,
+            0.17
+          ],
+          "orthographicScale": 7.922047812892547
+        },
+        {
+          "view": "left",
+          "frames": [
+            0,
+            9,
+            18,
+            27,
+            35
+          ],
+          "direction": [
+            -1,
+            0,
+            0.12
+          ],
+          "orthographicScale": 7.922047812892547
+        },
+        {
+          "view": "tps",
+          "frames": [
+            0,
+            9,
+            18,
+            27,
+            35
+          ],
+          "direction": [
+            0.22,
+            1,
+            0.28
+          ],
+          "orthographicScale": 7.922047812892547
+        }
+      ],
+      "boundsBlender": {
+        "min": [
+          -1.4716092348098755,
+          -2.019685745239258,
+          0.0019941218197345734
+        ],
+        "max": [
+          1.5157021284103394,
+          3.9926676750183105,
+          2.101137161254883
+        ]
+      }
+    },
+    {
+      "clip": "Run_Loop",
+      "durationSeconds": 0.8,
+      "loop": true,
+      "views": [
+        {
+          "view": "front",
+          "frames": [
+            0,
+            6,
+            12,
+            18,
+            23
+          ],
+          "direction": [
+            0,
+            -1,
+            0.12
+          ],
+          "orthographicScale": 7.884240956557381
+        },
+        {
+          "view": "right",
+          "frames": [
+            0,
+            6,
+            12,
+            18,
+            23
+          ],
+          "direction": [
+            1,
+            0,
+            0.12
+          ],
+          "orthographicScale": 7.884240956557381
+        },
+        {
+          "view": "rear",
+          "frames": [
+            0,
+            6,
+            12,
+            18,
+            23
+          ],
+          "direction": [
+            0,
+            1,
+            0.12
+          ],
+          "orthographicScale": 7.884240956557381
+        },
+        {
+          "view": "threequarter",
+          "frames": [
+            0,
+            6,
+            12,
+            18,
+            23
+          ],
+          "direction": [
+            0.7,
+            -1,
+            0.17
+          ],
+          "orthographicScale": 7.884240956557381
+        },
+        {
+          "view": "left",
+          "frames": [
+            0,
+            6,
+            12,
+            18,
+            23
+          ],
+          "direction": [
+            -1,
+            0,
+            0.12
+          ],
+          "orthographicScale": 7.884240956557381
+        },
+        {
+          "view": "tps",
+          "frames": [
+            0,
+            6,
+            12,
+            18,
+            23
+          ],
+          "direction": [
+            0.22,
+            1,
+            0.28
+          ],
+          "orthographicScale": 7.884240956557381
+        }
+      ],
+      "boundsBlender": {
+        "min": [
+          -1.4690070152282715,
+          -2.019685745239258,
+          0.001997247338294983
+        ],
+        "max": [
+          1.5145479440689087,
+          3.9587459564208984,
+          2.105341911315918
+        ]
+      }
+    },
+    {
+      "clip": "Alert",
+      "durationSeconds": 0.7,
+      "loop": false,
+      "views": [
+        {
+          "view": "front",
+          "frames": [
+            0,
+            5,
+            10,
+            16,
+            21
+          ],
+          "direction": [
+            0,
+            -1,
+            0.12
+          ],
+          "orthographicScale": 8.390262232535973
+        },
+        {
+          "view": "right",
+          "frames": [
+            0,
+            5,
+            10,
+            16,
+            21
+          ],
+          "direction": [
+            1,
+            0,
+            0.12
+          ],
+          "orthographicScale": 8.390262232535973
+        },
+        {
+          "view": "rear",
+          "frames": [
+            0,
+            5,
+            10,
+            16,
+            21
+          ],
+          "direction": [
+            0,
+            1,
+            0.12
+          ],
+          "orthographicScale": 8.390262232535973
+        },
+        {
+          "view": "threequarter",
+          "frames": [
+            0,
+            5,
+            10,
+            16,
+            21
+          ],
+          "direction": [
+            0.7,
+            -1,
+            0.17
+          ],
+          "orthographicScale": 8.390262232535973
+        },
+        {
+          "view": "left",
+          "frames": [
+            0,
+            5,
+            10,
+            16,
+            21
+          ],
+          "direction": [
+            -1,
+            0,
+            0.12
+          ],
+          "orthographicScale": 8.390262232535973
+        },
+        {
+          "view": "tps",
+          "frames": [
+            0,
+            5,
+            10,
+            16,
+            21
+          ],
+          "direction": [
+            0.22,
+            1,
+            0.28
+          ],
+          "orthographicScale": 8.390262232535973
+        }
+      ],
+      "boundsBlender": {
+        "min": [
+          -1.7452765703201294,
+          -2.032007932662964,
+          0.0019999942742288113
+        ],
+        "max": [
+          2.0193686485290527,
+          3.999999761581421,
+          2.109422206878662
+        ]
+      }
+    },
+    {
+      "clip": "Charge",
+      "durationSeconds": 2.4,
+      "loop": false,
+      "views": [
+        {
+          "view": "front",
+          "frames": [
+            0,
+            18,
+            36,
+            54,
+            72
+          ],
+          "direction": [
+            0,
+            -1,
+            0.12
+          ],
+          "orthographicScale": 7.884918195458433
+        },
+        {
+          "view": "right",
+          "frames": [
+            0,
+            18,
+            36,
+            54,
+            72
+          ],
+          "direction": [
+            1,
+            0,
+            0.12
+          ],
+          "orthographicScale": 7.884918195458433
+        },
+        {
+          "view": "rear",
+          "frames": [
+            0,
+            18,
+            36,
+            54,
+            72
+          ],
+          "direction": [
+            0,
+            1,
+            0.12
+          ],
+          "orthographicScale": 7.884918195458433
+        },
+        {
+          "view": "threequarter",
+          "frames": [
+            0,
+            18,
+            36,
+            54,
+            72
+          ],
+          "direction": [
+            0.7,
+            -1,
+            0.17
+          ],
+          "orthographicScale": 7.884918195458433
+        },
+        {
+          "view": "left",
+          "frames": [
+            0,
+            18,
+            36,
+            54,
+            72
+          ],
+          "direction": [
+            -1,
+            0,
+            0.12
+          ],
+          "orthographicScale": 7.884918195458433
+        },
+        {
+          "view": "tps",
+          "frames": [
+            0,
+            18,
+            36,
+            54,
+            72
+          ],
+          "direction": [
+            0.22,
+            1,
+            0.28
+          ],
+          "orthographicScale": 7.884918195458433
+        }
+      ],
+      "boundsBlender": {
+        "min": [
+          -1.470324993133545,
+          -2.019685745239258,
+          0.0019970759749412537
+        ],
+        "max": [
+          1.5145150423049927,
+          3.9587459564208984,
+          2.105384588241577
+        ]
+      }
+    },
+    {
+      "clip": "Attack",
+      "durationSeconds": 1.0,
+      "loop": false,
+      "views": [
+        {
+          "view": "front",
+          "frames": [
+            0,
+            7,
+            15,
+            21,
+            30
+          ],
+          "direction": [
+            0,
+            -1,
+            0.12
+          ],
+          "orthographicScale": 7.842851797216089
+        },
+        {
+          "view": "right",
+          "frames": [
+            0,
+            7,
+            15,
+            21,
+            30
+          ],
+          "direction": [
+            1,
+            0,
+            0.12
+          ],
+          "orthographicScale": 7.842851797216089
+        },
+        {
+          "view": "rear",
+          "frames": [
+            0,
+            7,
+            15,
+            21,
+            30
+          ],
+          "direction": [
+            0,
+            1,
+            0.12
+          ],
+          "orthographicScale": 7.842851797216089
+        },
+        {
+          "view": "threequarter",
+          "frames": [
+            0,
+            7,
+            15,
+            21,
+            30
+          ],
+          "direction": [
+            0.7,
+            -1,
+            0.17
+          ],
+          "orthographicScale": 7.842851797216089
+        },
+        {
+          "view": "left",
+          "frames": [
+            0,
+            7,
+            15,
+            21,
+            30
+          ],
+          "direction": [
+            -1,
+            0,
+            0.12
+          ],
+          "orthographicScale": 7.842851797216089
+        },
+        {
+          "view": "tps",
+          "frames": [
+            0,
+            7,
+            15,
+            21,
+            30
+          ],
+          "direction": [
+            0.22,
+            1,
+            0.28
+          ],
+          "orthographicScale": 7.842851797216089
+        }
+      ],
+      "boundsBlender": {
+        "min": [
+          -1.215971827507019,
+          -2.093367576599121,
+          0.0020000168588012457
+        ],
+        "max": [
+          1.43857741355896,
+          3.999999761581421,
+          2.2160887718200684
+        ]
+      }
+    },
+    {
+      "clip": "TailSpin",
+      "durationSeconds": 1.5,
+      "loop": false,
+      "views": [
+        {
+          "view": "front",
+          "frames": [
+            0,
+            11,
+            22,
+            34,
+            45
+          ],
+          "direction": [
+            0,
+            -1,
+            0.12
+          ],
+          "orthographicScale": 12.529812297941762
+        },
+        {
+          "view": "right",
+          "frames": [
+            0,
+            11,
+            22,
+            34,
+            45
+          ],
+          "direction": [
+            1,
+            0,
+            0.12
+          ],
+          "orthographicScale": 12.529812297941762
+        },
+        {
+          "view": "rear",
+          "frames": [
+            0,
+            11,
+            22,
+            34,
+            45
+          ],
+          "direction": [
+            0,
+            1,
+            0.12
+          ],
+          "orthographicScale": 12.529812297941762
+        },
+        {
+          "view": "threequarter",
+          "frames": [
+            0,
+            11,
+            22,
+            34,
+            45
+          ],
+          "direction": [
+            0.7,
+            -1,
+            0.17
+          ],
+          "orthographicScale": 12.529812297941762
+        },
+        {
+          "view": "left",
+          "frames": [
+            0,
+            11,
+            22,
+            34,
+            45
+          ],
+          "direction": [
+            -1,
+            0,
+            0.12
+          ],
+          "orthographicScale": 12.529812297941762
+        },
+        {
+          "view": "tps",
+          "frames": [
+            0,
+            11,
+            22,
+            34,
+            45
+          ],
+          "direction": [
+            0.22,
+            1,
+            0.28
+          ],
+          "orthographicScale": 12.529812297941762
+        }
+      ],
+      "boundsBlender": {
+        "min": [
+          -3.7067387104034424,
+          -3.557516574859619,
+          0.001998201012611389
+        ],
+        "max": [
+          3.7522270679473877,
+          3.999999761581421,
+          2.4522998332977295
+        ]
+      }
+    },
+    {
+      "clip": "Hit",
+      "durationSeconds": 0.3,
+      "loop": false,
+      "views": [
+        {
+          "view": "front",
+          "frames": [
+            0,
+            2,
+            4,
+            7,
+            9
+          ],
+          "direction": [
+            0,
+            -1,
+            0.12
+          ],
+          "orthographicScale": 7.829267393774089
+        },
+        {
+          "view": "right",
+          "frames": [
+            0,
+            2,
+            4,
+            7,
+            9
+          ],
+          "direction": [
+            1,
+            0,
+            0.12
+          ],
+          "orthographicScale": 7.829267393774089
+        },
+        {
+          "view": "rear",
+          "frames": [
+            0,
+            2,
+            4,
+            7,
+            9
+          ],
+          "direction": [
+            0,
+            1,
+            0.12
+          ],
+          "orthographicScale": 7.829267393774089
+        },
+        {
+          "view": "threequarter",
+          "frames": [
+            0,
+            2,
+            4,
+            7,
+            9
+          ],
+          "direction": [
+            0.7,
+            -1,
+            0.17
+          ],
+          "orthographicScale": 7.829267393774089
+        },
+        {
+          "view": "left",
+          "frames": [
+            0,
+            2,
+            4,
+            7,
+            9
+          ],
+          "direction": [
+            -1,
+            0,
+            0.12
+          ],
+          "orthographicScale": 7.829267393774089
+        },
+        {
+          "view": "tps",
+          "frames": [
+            0,
+            2,
+            4,
+            7,
+            9
+          ],
+          "direction": [
+            0.22,
+            1,
+            0.28
+          ],
+          "orthographicScale": 7.829267393774089
+        }
+      ],
+      "boundsBlender": {
+        "min": [
+          -1.215971827507019,
+          -2.080808162689209,
+          0.0020000168588012457
+        ],
+        "max": [
+          1.4385771751403809,
+          4.0,
+          2.115467071533203
+        ]
+      }
+    },
+    {
+      "clip": "Death",
+      "durationSeconds": 1.6,
+      "loop": false,
+      "views": [
+        {
+          "view": "front",
+          "frames": [
+            0,
+            9,
+            18,
+            27,
+            36
+          ],
+          "direction": [
+            0,
+            -1,
+            0.12
+          ],
+          "orthographicScale": 7.794606504716488
+        },
+        {
+          "view": "right",
+          "frames": [
+            0,
+            9,
+            18,
+            27,
+            36
+          ],
+          "direction": [
+            1,
+            0,
+            0.12
+          ],
+          "orthographicScale": 7.794606504716488
+        },
+        {
+          "view": "rear",
+          "frames": [
+            0,
+            9,
+            18,
+            27,
+            36
+          ],
+          "direction": [
+            0,
+            1,
+            0.12
+          ],
+          "orthographicScale": 7.794606504716488
+        },
+        {
+          "view": "threequarter",
+          "frames": [
+            0,
+            9,
+            18,
+            27,
+            36
+          ],
+          "direction": [
+            0.7,
+            -1,
+            0.17
+          ],
+          "orthographicScale": 7.794606504716488
+        },
+        {
+          "view": "left",
+          "frames": [
+            0,
+            9,
+            18,
+            27,
+            36
+          ],
+          "direction": [
+            -1,
+            0,
+            0.12
+          ],
+          "orthographicScale": 7.794606504716488
+        },
+        {
+          "view": "tps",
+          "frames": [
+            0,
+            9,
+            18,
+            27,
+            36
+          ],
+          "direction": [
+            0.22,
+            1,
+            0.28
+          ],
+          "orthographicScale": 7.794606504716488
+        }
+      ],
+      "boundsBlender": {
+        "min": [
+          -1.2292081117630005,
+          -2.0429165363311768,
+          0.001999296247959137
+        ],
+        "max": [
+          1.4385769367218018,
+          4.000001430511475,
+          2.6404471397399902
+        ]
+      }
+    }
+  ],
+  "geometryLineage": "Exact original TRELLIS-derived skinned surface; no placeholders",
+  "videos": true
+}

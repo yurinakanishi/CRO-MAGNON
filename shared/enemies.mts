@@ -3,6 +3,7 @@ import { ENEMY_GROUNDS } from './scenery-layout.mjs';
 export { ENEMY_GROUNDS } from './scenery-layout.mjs';
 import { combatDistance, enemyIsSolid, inAttackArc, stopActor } from './combat.mjs';
 import { moveActor } from './movement.mjs';
+import { createBehemoth, updateBehemoths } from './violet-behemoth.mjs';
 
 export const ENEMY_RULES = Object.freeze({
   modelKey: 'crow-shaman',
@@ -60,7 +61,7 @@ const clearLine = (room, a, b) =>
     1.4 && room.collision.segmentFree(a, b, 0.12);
 
 export function createEnemies(collision, dynamic = [], now = Date.now()) {
-  return ENEMY_GROUNDS.map((ground) => {
+  const enemies = ENEMY_GROUNDS.map((ground) => {
     const position = collision.nearestFree(
       ground,
       ENEMY_RULES.radius,
@@ -113,6 +114,7 @@ export function createEnemies(collision, dynamic = [], now = Date.now()) {
       aggroAfter: now + 1000,
     };
   });
+  return [...enemies, createBehemoth(collision, [...dynamic, ...enemies], now)];
 }
 
 function recoverPlayers(room, now, notify) {
@@ -143,13 +145,21 @@ function recoverPlayers(room, now, notify) {
   return changed;
 }
 
-function hitPlayer(room, enemy, player, now, notify) {
-  player.energy = Math.max(0, player.energy - ENEMY_RULES.attackDamage);
+function hitPlayer(
+  room,
+  enemy,
+  player,
+  now,
+  notify,
+  damage = ENEMY_RULES.attackDamage,
+  label = '杖',
+) {
+  player.energy = Math.max(0, player.energy - damage);
   player.hurtSequence = (player.hurtSequence || 0) + 1;
   player.hurtAt = now;
   player.cookingEndsAt = 0;
   if (player.energy > 0) {
-    notify(player, `${enemy.name}の杖が命中。元気 -${ENEMY_RULES.attackDamage}`, 'error', false);
+    notify(player, `${enemy.name}の${label}が命中。元気 -${damage}`, 'error', false);
     return;
   }
   stopActor(player);
@@ -343,5 +353,9 @@ export function updateEnemies(
     }
     moveEnemy(enemy, room, dt, now, ENEMY_RULES.roamSpeed);
   }
-  return changed;
+  return (
+    updateBehemoths(room, dt, now, (enemy, player, time, damage, label) =>
+      hitPlayer(room, enemy, player, time, notify, damage, label),
+    ) || changed
+  );
 }

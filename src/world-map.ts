@@ -1,4 +1,5 @@
 import { FISHING_SITES } from '../shared/fishing-sites.mjs';
+import { BEHEMOTH, BEHEMOTH_GROUND } from '../shared/behemoth-rules.mjs';
 import { HOUSEHOLDS } from '../shared/household-sites.mjs';
 import { SEA_WEATHER, currentDirection, seaConditions } from '../shared/maritime-weather.mjs';
 import { SHELL_BEDS, MIDDEN_SITES, KNAPPING_SITES } from '../shared/coastal-sites.mjs';
@@ -387,6 +388,19 @@ export function drawWorldMap(canvas, state, selfId, big = false) {
     ctx.fillStyle = boat.riderId ? '#ffde96' : '#bcdddc';
     ctx.fillRect(-2, -5, 4, 10);
     ctx.restore();
+  }
+  if (!full && (state.enemies ?? []).some((e) => e.modelKey === BEHEMOTH.modelKey)) {
+    const [x, y] = point(BEHEMOTH_GROUND.x, BEHEMOTH_GROUND.z);
+    ctx.strokeStyle = '#d193e9';
+    ctx.lineWidth = 1;
+    ctx.beginPath();
+    ctx.arc(x, y, BEHEMOTH.territoryRadius * scale, 0, Math.PI * 2);
+    ctx.stroke();
+    if (big) {
+      ctx.font = '12px sans-serif';
+      ctx.fillStyle = '#ebc4ff';
+      ctx.fillText('紫尾の巨獣の縄張り', x + 8, y + 4);
+    }
   }
   for (const enemy of state.enemies ?? [])
     if (enemy.hostile && enemy.phase !== 'respawning')

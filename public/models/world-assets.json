@@ -22646,6 +22646,110 @@
         "sourceAsset": "assets/coastal-craft/models/obsidian-blade/source/flint-spear.glb",
         "sourceAssetSha256": "1a10db6d1b44da1e982f88e5ae9ef6be8fb74f5900ebd9258380ad200e53ed3d"
       }
+    },
+    {
+      "modelKey": "violet-behemoth",
+      "name": "紫尾の巨獣",
+      "kind": "enemy",
+      "candidate": 1,
+      "revision": "03",
+      "status": "integrated-and-game-qa-passed",
+      "url": "/models/violet-behemoth/model-r03.glb",
+      "sha256": "32f2f5032f1f896cdb0922ea897f84022b6d971894a9e1f7187a33a726a8a16d",
+      "bytes": 14805624,
+      "triangles": 67223,
+      "upAxis": "Y",
+      "forwardAxis": "+Z",
+      "heightMetres": 2.064113140106201,
+      "widthMetres": 2.6545490026474,
+      "lengthMetres": 6,
+      "bones": 20,
+      "clips": [
+        {
+          "name": "Idle_Loop",
+          "loop": true,
+          "seconds": 3,
+          "rootMotion": "in-place"
+        },
+        {
+          "name": "Walk_Loop",
+          "loop": true,
+          "seconds": 1.2,
+          "rootMotion": "in-place"
+        },
+        {
+          "name": "Run_Loop",
+          "loop": true,
+          "seconds": 0.8,
+          "rootMotion": "in-place"
+        },
+        {
+          "name": "Alert",
+          "loop": false,
+          "seconds": 0.7,
+          "rootMotion": "in-place"
+        },
+        {
+          "name": "Charge",
+          "loop": false,
+          "seconds": 2.4,
+          "rootMotion": "in-place"
+        },
+        {
+          "name": "Attack",
+          "loop": false,
+          "seconds": 1,
+          "rootMotion": "in-place"
+        },
+        {
+          "name": "TailSpin",
+          "loop": false,
+          "seconds": 1.5,
+          "rootMotion": "in-place"
+        },
+        {
+          "name": "Hit",
+          "loop": false,
+          "seconds": 0.3,
+          "rootMotion": "in-place"
+        },
+        {
+          "name": "Death",
+          "loop": false,
+          "seconds": 1.6,
+          "rootMotion": "in-place"
+        }
+      ],
+      "locomotion": {
+        "Walk_Loop": {
+          "metresPerSecond": 1.35,
+          "cycleSeconds": 1.2,
+          "dutyFactor": 0.62
+        },
+        "Run_Loop": {
+          "metresPerSecond": 4.9,
+          "cycleSeconds": 0.4,
+          "dutyFactor": 0.48
+        }
+      },
+      "placement": {
+        "pivot": "ground-body-centred",
+        "min": [
+          -1.2159718550237413,
+          2.940193993597767e-8,
+          -3.9999992352940628
+        ],
+        "max": [
+          1.438577103536168,
+          2.0641133972291863,
+          2.0000002239146806
+        ]
+      },
+      "source": "output/model-generation/models/violet-behemoth/work/rig/revision-03/candidate.glb",
+      "notes": [
+        "User-supplied reference, vestigial hind legs, forearm/tail propulsion. Local TRELLIS-2 reconstruction; no visible replacement geometry.",
+        "Total length 6 m: retained body, extended tail. Revision 03 improves the final death pose; surface, material and eight other clips match revision 02."
+      ]
     }
   ],
   "status": "ready"

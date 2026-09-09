@@ -1,0 +1,10 @@
+{
+  "generator": "Codex built-in imagegen",
+  "prompt": "Built-in imagegen from user original. Preserve original creature; hind legs are tiny degenerated vestigial stubs, belly stays low, massive forearms and thick tail propel it. Original proportions, purple warty body, many eyes, barbels, dorsal bumps. Front three-quarter view, uncropped entire tail and limbs, plain white background, neutral light. Corrects rejected reference v1.",
+  "source": "source/original/reference-v2.png",
+  "sha256": "2f433fec0060ca3f5834044e8da5741dd6ee83bb876600f9c0c3e14e9e94ccc9",
+  "bytes": 1556660,
+  "fallback": "ZImage unavailable in the established local toolchain; permitted equivalent generator.",
+  "author": "Codex",
+  "claude_used": false
+}

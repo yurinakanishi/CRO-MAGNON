@@ -1,0 +1,130 @@
+{
+  "source": "C:\\Users\\yurin\\Desktop\\projects\\CRO-MAGNON\\output\\model-generation\\models\\violet-behemoth\\work\\rig\\revision-03\\candidate.glb",
+  "sha256": "32f2f5032f1f896cdb0922ea897f84022b6d971894a9e1f7187a33a726a8a16d",
+  "fps": 30,
+  "fpsSetBeforeImport": true,
+  "renderEngine": "Blender EEVEE",
+  "dimensions": [
+    420,
+    480
+  ],
+  "clips": [
+    {
+      "clip": "Death",
+      "durationSeconds": 1.6,
+      "loop": false,
+      "views": [
+        {
+          "view": "front",
+          "frames": [
+            0,
+            12,
+            24,
+            36,
+            48
+          ],
+          "direction": [
+            0,
+            -1,
+            0.12
+          ],
+          "orthographicScale": 7.800797231839785
+        },
+        {
+          "view": "right",
+          "frames": [
+            0,
+            12,
+            24,
+            36,
+            48
+          ],
+          "direction": [
+            1,
+            0,
+            0.12
+          ],
+          "orthographicScale": 7.800797231839785
+        },
+        {
+          "view": "rear",
+          "frames": [
+            0,
+            12,
+            24,
+            36,
+            48
+          ],
+          "direction": [
+            0,
+            1,
+            0.12
+          ],
+          "orthographicScale": 7.800797231839785
+        },
+        {
+          "view": "threequarter",
+          "frames": [
+            0,
+            12,
+            24,
+            36,
+            48
+          ],
+          "direction": [
+            0.7,
+            -1,
+            0.17
+          ],
+          "orthographicScale": 7.800797231839785
+        },
+        {
+          "view": "left",
+          "frames": [
+            0,
+            12,
+            24,
+            36,
+            48
+          ],
+          "direction": [
+            -1,
+            0,
+            0.12
+          ],
+          "orthographicScale": 7.800797231839785
+        },
+        {
+          "view": "tps",
+          "frames": [
+            0,
+            12,
+            24,
+            36,
+            48
+          ],
+          "direction": [
+            0.22,
+            1,
+            0.28
+          ],
+          "orthographicScale": 7.800797231839785
+        }
+      ],
+      "boundsBlender": {
+        "min": [
+          -1.2294211387634277,
+          -2.0429165363311768,
+          0.0019992126617580652
+        ],
+        "max": [
+          1.45132577419281,
+          4.000002384185791,
+          2.960068702697754
+        ]
+      }
+    }
+  ],
+  "geometryLineage": "Exact original TRELLIS-derived skinned surface; no placeholders",
+  "videos": true
+}
