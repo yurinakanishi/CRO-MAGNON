@@ -5,6 +5,7 @@ import {
   type PadAction,
   type PadMovement,
 } from './gamepad-input.js';
+import { adjacentMenuItem, menuItems, menuKeyDirection } from './menu-navigation.js';
 
 export const gamepadHelp = `
   <section class="gamepad-help" aria-label="PS4コントローラーの操作">
@@ -24,7 +25,7 @@ export const gamepadHelp = `
       <div><dt>タッチパッド / SHARE</dt><dd>地図</dd></div>
       <div><dt>L1 / R1 · R3</dt><dd>カメラを遠く／近く · 視点を戻す</dd></div>
     </dl>
-    <p>メニューは十字キーか左スティックで項目を選び、右側の4ボタン（×・○・□・△）のどれでも決定できます。戻るときは画面内の「戻る」ボタンを選んで決定してください。選択欄は左右で切り替え、右スティックで説明をスクロールできます。名前・チャットの文字入力はキーボードを使います。</p>
+    <p>メニューは十字キーか左スティックで、押した方向にある項目を選びます。右側の4ボタン（×・○・□・△）のどれでも決定できます。戻るときは画面内の「戻る」ボタンを選んで決定してください。選択欄は左右で切り替え、右スティックで説明をスクロールできます。名前・チャットの文字入力はキーボードを使います。</p>
     <p class="form-note">走るための2回倒し・スティック押し込みは不要です。画面に戻ったときはスティックとボタンを一度離してください。</p>
     <p class="form-note">認識しない場合は接続を確認し、最新のChrome / EdgeでHTTPSまたはlocalhostのゲームを開いてください。</p>
   </section>`;
@@ -58,6 +59,7 @@ export class GamepadControls {
     window.addEventListener('gamepaddisconnected', this.disconnected);
     document.addEventListener('pointerdown', this.otherInput);
     document.addEventListener('keydown', this.otherInput);
+    document.addEventListener('keydown', this.keydown);
     options.dialog.addEventListener('close', this.closed);
     this.frameId = requestAnimationFrame(this.tick);
   }
@@ -72,6 +74,17 @@ export class GamepadControls {
       this.suspend();
       this.setActive(false);
     }
+  };
+
+  private keydown = (event: KeyboardEvent) => {
+    // Full-screen menus are handled by ScreenManager. Native text/select editing stays native.
+    if (!this.options.dialog.open || this.options.menu() !== this.options.dialog) return;
+    const direction = menuKeyDirection(event);
+    if (!direction) return;
+    event.preventDefault();
+    const el = adjacentMenuItem(this.items(), document.activeElement as HTMLElement, direction);
+    el?.focus({ preventScroll: true });
+    el?.scrollIntoView({ block: 'nearest', inline: 'nearest' });
   };
 
   private setActive(active: boolean) {
@@ -170,18 +183,7 @@ export class GamepadControls {
 
   private items() {
     const root = this.options.menu();
-    if (!root) return [];
-    return [
-      ...root.querySelectorAll<HTMLElement>(
-        'button,a[href],input,select,textarea,summary,[role="button"],[tabindex="0"]',
-      ),
-    ].filter(
-      (el) =>
-        !el.matches(':disabled,[type="hidden"]') &&
-        !el.closest('[hidden],[inert]') &&
-        !!el.getClientRects().length &&
-        getComputedStyle(el).visibility !== 'hidden',
-    );
+    return root ? menuItems(root) : [];
   }
 
   private clearFocus() {
@@ -226,10 +228,8 @@ export class GamepadControls {
       }
       return;
     }
-    const items = this.items(),
-      index = el ? items.indexOf(el) : -1;
-    const step = direction === 'left' || direction === 'up' ? -1 : 1;
-    this.focus(items[(index + step + items.length) % items.length]);
+    const next = adjacentMenuItem(this.items(), el, direction);
+    if (next !== el) this.focus(next);
   }
 
   private activate() {
@@ -244,6 +244,7 @@ export class GamepadControls {
     window.removeEventListener('gamepaddisconnected', this.disconnected);
     document.removeEventListener('pointerdown', this.otherInput);
     document.removeEventListener('keydown', this.otherInput);
+    document.removeEventListener('keydown', this.keydown);
     this.options.dialog.removeEventListener('close', this.closed);
     this.suspend();
     this.clearFocus();

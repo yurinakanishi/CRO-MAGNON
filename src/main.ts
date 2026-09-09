@@ -1394,7 +1394,7 @@ function openPauseMenu() {
     ['title', 'close', 'タイトルへ戻る', leaveToTitle],
   ];
   openModal(
-    `<div class="pause-menu"><p class="screen-eyebrow">PAUSE</p><h2>メニュー</h2><p class="modal-intro">${usingGamepad ? '十字キーで選ぶ · × ○ □ △ どれでも決定 · 戻るときは画面内の「戻る」を選ぶ' : 'ESC で閉じる · ↑↓ で選ぶ · Enter で決定'}</p><div class="controller-menu">${entries
+    `<div class="pause-menu"><p class="screen-eyebrow">PAUSE</p><h2>メニュー</h2><p class="modal-intro">${usingGamepad ? '十字キー・左スティックで上下左右に選ぶ · × ○ □ △ どれでも決定 · 戻るときは画面内の「戻る」を選ぶ' : 'ESC で閉じる · ↑↓←→ で選ぶ · Enter で決定'}</p><div class="controller-menu">${entries
       .map(
         ([id, glyph, label]) =>
           `<button class="button button-outline" data-controller-menu="${id}">${icon(glyph)}<span>${label}</span></button>`,

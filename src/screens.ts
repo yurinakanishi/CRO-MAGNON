@@ -3,23 +3,9 @@
  * plus the small pieces that make the HUD feel like a game: the area banner
  * shown when the player enters a new place and the button-prompt bar.
  */
+import { adjacentMenuItem, menuItems, menuKeyDirection } from './menu-navigation.js';
+
 export type ScreenId = 'title' | 'setup' | 'guide';
-
-const MENU_ITEMS = 'button:not([disabled]),input:not([type="hidden"]),select,a[href]';
-
-/** Vertical menu navigation: returns the next focused index or null when the key is not a menu key. */
-export function nextMenuIndex(index: number, key: string, count: number): number | null {
-  if (count <= 0) return null;
-  const step =
-    key === 'ArrowDown' || key === 's' || key === 'S'
-      ? 1
-      : key === 'ArrowUp' || key === 'w' || key === 'W'
-        ? -1
-        : 0;
-  if (!step) return null;
-  if (index < 0) return step > 0 ? 0 : count - 1;
-  return (index + step + count) % count;
-}
 
 export interface KeyPrompt {
   key: string;
@@ -124,25 +110,21 @@ export class ScreenManager {
   /** Focusable controls of a screen, skipping hidden ones such as an unavailable "continue". */
   private items(id: ScreenId): HTMLElement[] {
     const screen = this.element(id);
-    if (!screen) return [];
-    return [...screen.querySelectorAll<HTMLElement>(MENU_ITEMS)].filter(
-      (el) => !el.closest('[hidden]') && el.getClientRects().length,
-    );
+    return screen ? menuItems(screen) : [];
   }
 
   private keydown = (event: KeyboardEvent) => {
-    if (!this.current) return;
-    const target = event.target;
-    if (target instanceof Element && target.matches('input,select,textarea')) return;
-    const items = this.items(this.current);
-    const next = nextMenuIndex(
-      items.indexOf(document.activeElement as HTMLElement),
-      event.key,
-      items.length,
-    );
-    if (next === null) return;
+    if (!this.current || document.querySelector('dialog[open]')) return;
+    const direction = menuKeyDirection(event);
+    if (!direction) return;
     event.preventDefault();
-    items[next]?.focus();
+    const next = adjacentMenuItem(
+      this.items(this.current),
+      document.activeElement as HTMLElement,
+      direction,
+    );
+    next?.focus({ preventScroll: true });
+    next?.scrollIntoView({ block: 'nearest', inline: 'nearest' });
   };
 
   destroy(): void {

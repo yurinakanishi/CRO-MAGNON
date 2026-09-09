@@ -1,20 +1,9 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { readFile } from 'node:fs/promises';
-import { nextMenuIndex, keyPrompts, guideMarkup } from '../dist/src/screens.js';
+import { keyPrompts, guideMarkup } from '../dist/src/screens.js';
 
 const root = new URL('../', import.meta.url);
-
-test('title menus wrap with arrow keys and W/S and ignore other keys', () => {
-  assert.equal(nextMenuIndex(0, 'ArrowDown', 3), 1);
-  assert.equal(nextMenuIndex(2, 'ArrowDown', 3), 0);
-  assert.equal(nextMenuIndex(0, 'ArrowUp', 3), 2);
-  assert.equal(nextMenuIndex(1, 's', 3), 2);
-  assert.equal(nextMenuIndex(-1, 'ArrowDown', 3), 0);
-  assert.equal(nextMenuIndex(-1, 'ArrowUp', 3), 2);
-  assert.equal(nextMenuIndex(1, 'Enter', 3), null);
-  assert.equal(nextMenuIndex(0, 'ArrowDown', 0), null);
-});
 
 test('button prompts follow the input device and the current mount options', () => {
   const keyboard = keyPrompts(false, { ride: false, boat: false });
