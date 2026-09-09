@@ -1,5 +1,7 @@
 # CRO-MAGNON: researched setting improvement plan
 
+**Closure, 2026-09-09:** The user has ended this round of changes after local autosave. All remaining implementation, verification and operational work is deferred to [FUTURE_WORK.md](FUTURE_WORK.md). Earlier priorities below are historical proposals, including items implemented by later increments; they are not instructions to continue now. Keep the recorded evidence, fantasy distinctions and current design decisions.
+
 Created: 2026-09-08
 Status: first playable fantasy expansion implemented and verified; its four-area enlargement is described in WORLD_EXPANSION_PLAN.md and assets/gulf/README.md. This is not completion of every cultural or simulation proposal below.
 

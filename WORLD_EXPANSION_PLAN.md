@@ -1,5 +1,7 @@
 # Four-area expansion of Three Shores
 
+**Closure, 2026-09-09:** This expansion and the subsequent changes through local autosave are complete for the current round. All outstanding extensions and verification are deferred to [FUTURE_WORK.md](FUTURE_WORK.md), to resume only on the user's instruction. Earlier rollout and scope statements below remain historical records.
+
 Started 2026-09-08, following the user's instruction to continue the recommended scale expansion. This is an incremental change to the existing game.
 
 ## Scope
