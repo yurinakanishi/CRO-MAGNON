@@ -35,6 +35,8 @@ export function canStartJump(player, now: number): boolean {
     !player.downedUntil &&
     !player.mountId &&
     !player.boatId &&
+    !player.carrierId &&
+    !player.passengerId &&
     (!player.jumpSequence || now - player.jumpAt >= JUMP.cooldownMs) &&
     (!player.attackSequence || now - player.attackAt >= attackProfile(player).durationMs)
   );

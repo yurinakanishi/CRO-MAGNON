@@ -1,3 +1,4 @@
+import { carrying, canCarry } from '../shared/carrying.mjs';
 import { readSaved, save, savedSession, saveSession } from './session-storage.js';
 import {
   loadMultiplayerConfig,
@@ -63,6 +64,8 @@ const locationById = (id) =>
   ADVENTURE_STOPS.find((s) => s.id === id);
 
 const icons = {
+  unarmed:
+    '<path d="M5 12V8a2 2 0 0 1 4 0V6a2 2 0 0 1 4 0v1a2 2 0 0 1 4 0v2a2 2 0 0 1 4 0v7l-4 5H9l-6-7a2 2 0 0 1 2-2Z"/>',
   shell:
     '<path d="M12 3C5 3 2 8 3 13l5 7h8l5-7c1-5-2-10-9-10Z"/><path d="m8 20-3-9m7 9V7m4 13 3-9M9 20h6"/>',
   blade: '<path d="m12 2 6 9-2 10H8L6 11l6-9Zm0 0v19m0-10 6 0m-6 4-5-4"/>',
@@ -155,7 +158,7 @@ let selectedAnimalId = null,
   hurtUntil = 0;
 
 const joinFields = () =>
-  `<label>あなたの名前<input name="name" maxlength="16" required autocomplete="off" autofocus></label><label>部屋のコード <span>英数字・ハイフン・アンダースコア / 最大16文字</span><input name="room" maxlength="16" pattern="[A-Za-z0-9_\\-]+" required autocomplete="off"></label>${characterChoicesMarkup()}<p class="form-note">人間は槍、クノイチは刀、魔法使いは光の魔法を使います。人間の男女で能力の差はありません。参加中に変更すると、もちものはリセットされます。</p>`;
+  `<label>あなたの名前<input name="name" maxlength="16" required autocomplete="off" autofocus></label><label>部屋のコード <span>英数字・ハイフン・アンダースコア / 最大16文字</span><input name="room" maxlength="16" pattern="[A-Za-z0-9_\\-]+" required autocomplete="off"></label>${characterChoicesMarkup()}<p class="form-note">人間は槍、クノイチは刀、魔法使いは光の魔法、大猿は大きな手で戦います。人間の男女で能力の差はありません。参加中に変更すると、もちものはリセットされます。</p>`;
 $('#app').innerHTML = `
   <section class="game-viewport" aria-label="${GAME_TITLE} ゲーム画面">
     <canvas id="world" aria-label="氷河時代の大陸が広がる3Dワールド。WASDまたは左スティックで移動。左スティックを浅く倒すと歩き、深く倒すと走ります。右スティックまたはドラッグでカメラ回転。" tabindex="0"></canvas>
@@ -268,9 +271,10 @@ try {
 }
 $('.hotbar-wrap').insertAdjacentHTML(
   'afterbegin',
-  `<div class="riding-controls" hidden><button id="ride-button" class="hunt-button"><kbd>R</kbd><span>マンモスに乗る</span></button><small id="riding-hint">1頭に1人 · 近づいて R で乗る</small></div>`,
+  `<div class="riding-controls" hidden><button id="ride-button" class="hunt-button"><kbd>R</kbd><span>マンモスに乗る</span></button><button id="carry-decline" class="hunt-button" hidden>断る</button><small id="riding-hint">1頭に1人 · 近づいて R で乗る</small></div>`,
 );
 $('#ride-button').onclick = ride;
+$('#carry-decline').onclick = () => action('carryDecline');
 const boatUI = installBoatControls({
   player,
   state: () => state,
@@ -758,6 +762,20 @@ function jump() {
   send({ type: 'action', action: 'jump' });
   $('#world').focus({ preventScroll: true });
 }
+function carryTarget() {
+  const me = player();
+  if (!me || me.species !== 'ape') return null;
+  const now = (state.serverTime ?? Date.now()) + performance.now() - stateReceivedAt;
+  return (
+    state.players
+      .filter((p) => canCarry(me, p, renderer.collision, now))
+      .sort((a, b) => distance(me, a) - distance(me, b))[0] ?? null
+  );
+}
+function hasCarryChoice() {
+  const me = player();
+  return carrying(me) || !!me?.carryOfferFromId || !!me?.carryOfferToId || !!carryTarget();
+}
 function rideTarget() {
   const me = player();
   if (!me) return null;
@@ -771,6 +789,7 @@ function ride() {
   if (!joined || renderUnavailable || player()?.downedUntil) return;
   const me = player(),
     animal = rideTarget();
+  if (hasCarryChoice()) return action('carry', me?.carryOfferFromId || carryTarget()?.id);
   if (me?.boatId) return notify(`船から降りるには岸で ${usingGamepad ? '△' : 'B'}。`);
   if (me?.mountId) return action('ride');
   const now = (state.serverTime ?? Date.now()) + performance.now() - stateReceivedAt;
@@ -813,7 +832,7 @@ function updateHuntingHUD() {
     rideAnimal = rideTarget(),
     nearRide =
       joined && !renderUnavailable && canMount(me, rideAnimal, renderer.collision, serverNow);
-  $('.hotbar-wrap').classList.toggle('riding', mounted);
+  $('.hotbar-wrap').classList.toggle('riding', mounted || carrying(me));
   const rideButton = $('#ride-button');
   rideButton.disabled =
     !joined || renderUnavailable || !!me?.boatId || !!me?.downedUntil || (!mounted && !nearRide);
@@ -827,6 +846,38 @@ function updateHuntingHUD() {
     : usingGamepad
       ? '△ を押すとマンモスに乗れます'
       : 'R を押すとマンモスに乗れます';
+  const carryChoice = joined && !renderUnavailable && hasCarryChoice();
+  if (carryChoice) {
+    $('.riding-controls').hidden = false;
+    rideButton.disabled = false;
+    rideButton.classList.toggle('mounted', carrying(me));
+    rideButton.querySelector('span').textContent = me.carrierId
+      ? '肩から降りる'
+      : me.passengerId
+        ? '魔法使いを降ろす'
+        : me.carryOfferFromId
+          ? '肩に乗る'
+          : me.carryOfferToId
+            ? '誘いを取り消す'
+            : '魔法使いを担ぐ';
+    const partner = state.players.find(
+      (p) => p.id === (me.carryOfferFromId || me.carryOfferToId || me.carrierId || me.passengerId),
+    );
+    $('#riding-hint').textContent = me.carrierId
+      ? '大猿が移動します · R／△で降りる'
+      : me.passengerId
+        ? '歩行・走行できます · R／△で降ろす'
+        : me.carryOfferFromId
+          ? `${partner?.name ?? '大猿'}からの誘い · R／△で肩に乗る`
+          : me.carryOfferToId
+            ? '相手の返事を待っています · 動くと取消'
+            : '相手が「肩に乗る」を押すと担ぎます';
+  }
+  $('#carry-decline').hidden = !me?.carryOfferFromId;
+  Object.assign($('#world').dataset, {
+    carrierId: me?.carrierId ?? '',
+    passengerId: me?.passengerId ?? '',
+  });
   if (usingGamepad && me?.boatId)
     $('#boat-hint').textContent = '左スティックで操船 · 深く倒すと速く · 岸で △';
   updatePromptBar();
@@ -880,7 +931,7 @@ function updateHuntingHUD() {
     $('#hunt-target-note').textContent = '仲間が騎乗中 · このマンモスには攻撃できません。';
   }
   const attackAvailable =
-    joined && !renderUnavailable && !me?.boatId && canStartAttack(me, serverNow);
+    joined && !renderUnavailable && !me?.boatId && !carrying(me) && canStartAttack(me, serverNow);
   $('#attack-button').disabled = !attackAvailable;
   $('#jump-button').disabled = !joined || renderUnavailable || !canStartJump(me, serverNow);
   $('#attack-button').classList.toggle('in-range', targetInFront);
@@ -1233,7 +1284,7 @@ function openHelp() {
   );
   $('.help-grid').insertAdjacentHTML(
     'afterbegin',
-    `<div><kbd>F / 5</kbd><strong>刀・魔法・槍で攻撃</strong><p>相手を向いて F か攻撃ボタン。クノイチは近くを刀で斬り、魔法使いは両手から光弾を飛ばします。敵がいなくても発動でき、壁は通り抜けません。人間は槍を使います。</p></div><div><kbd>E</kbd><strong>肉を採って、焼いて食べる</strong><p>倒すと肉になります。近づいて E で採り、近くの焚き火で E か「焼く」。3秒待ったら「食べる」で元気を回復。火から離れると調理は中止され、生肉は残ります。</p></div>`,
+    `<div><kbd>F / 5</kbd><strong>刀・魔法・槍・大きな手で攻撃</strong><p>相手を向いて F か攻撃ボタン。クノイチは近くを刀で斬り、魔法使いは両手から光弾を飛ばします。敵がいなくても発動でき、壁は通り抜けません。人間は槍、大猿は大きな手で打撃します。</p></div><div><kbd>E</kbd><strong>肉を採って、焼いて食べる</strong><p>倒すと肉になります。近づいて E で採り、近くの焚き火で E か「焼く」。3秒待ったら「食べる」で元気を回復。火から離れると調理は中止され、生肉は残ります。</p></div>`,
   );
   $('.help-grid').insertAdjacentHTML(
     'afterbegin',
@@ -1270,7 +1321,9 @@ function updatePromptBar() {
   const me = player();
   const prompts = keyPrompts(usingGamepad, {
     ride: !$('#ride-button').disabled || !!me?.mountId,
-    boat: !$('#boat-board').disabled || !!me?.boatId,
+    boat: !carrying(me) && (!$('#boat-board').disabled || !!me?.boatId),
+    carry: hasCarryChoice(),
+    carrying: carrying(me),
   });
   const signature = JSON.stringify(prompts);
   if (signature === promptSignature) return;
@@ -1282,7 +1335,7 @@ function updatePromptBar() {
 
 function controllerRide() {
   if (player()?.boatId) action('boardBoat');
-  else if (player()?.mountId) ride();
+  else if (player()?.mountId || hasCarryChoice()) ride();
   else if (!$('#boat-board').disabled) action('boardBoat');
   else ride();
 }
@@ -1315,7 +1368,7 @@ function openPauseMenu() {
     ['residents', 'wave', '集落の人びと・今日の手伝い', () => villageUI.open()],
     ['tribe', 'people', '部族の仲間・招待', openTribe],
     ['help', 'help', 'あそびかた', openHelp],
-    ['ride', 'target', '船・マンモスに乗る／降りる', controllerRide],
+    ['ride', 'target', '船・マンモス・肩に乗る／降りる', controllerRide],
     ['wave', 'wave', '手をふる', () => action('wave')],
     ['profile', 'people', '部屋・キャラクターを変える', () => showSetup()],
     ['title', 'close', 'タイトルへ戻る', leaveToTitle],

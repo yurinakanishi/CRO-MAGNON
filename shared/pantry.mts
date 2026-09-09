@@ -95,6 +95,8 @@ export function pantryAvailable(player, now = Date.now()) {
     !player.downedUntil &&
     !player.mountId &&
     !player.boatId &&
+    !player.carrierId &&
+    !player.passengerId &&
     !player.cookingEndsAt &&
     !player.coastalActivity &&
     !player.fishing &&

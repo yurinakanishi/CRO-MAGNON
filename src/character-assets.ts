@@ -3,7 +3,7 @@ import * as THREE from 'three';
 import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
 import { clone } from 'three/addons/utils/SkeletonUtils.js';
 import { CharacterAnimation } from './character-animation.js';
-import { RidingPose } from './riding-pose.js';
+import { RidingPose, apeShoulderSeat } from './riding-pose.js';
 import { JumpPose } from './jump-pose.js';
 import { sha256 } from './asset-hash.js';
 
@@ -120,6 +120,7 @@ export class CharacterAssets {
     const { rotation: gripUp } = handGripPlacement(root);
     const ridingPose = new RidingPose(root);
     const jumpPose = new JumpPose(root);
+    const shoulderSeat = asset.modelKey === 'giant-ape' ? apeShoulderSeat(root) : null;
     const animation = new CharacterAnimation(root, gltf.animations, {
       walkSpeed: asset.locomotion.Walk_Loop.metresPerSecond,
       runSpeed: asset.locomotion.Run_Loop.metresPerSecond,
@@ -131,6 +132,7 @@ export class CharacterAssets {
       asset,
       gripUp,
       ridingPose,
+      shoulderSeat,
       jumpPose,
       dispose: () => {
         if (!this.instances.delete(instance)) return;

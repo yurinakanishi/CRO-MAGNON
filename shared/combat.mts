@@ -82,7 +82,8 @@ const clearLine = (room, player, target) =>
 export function startAttack(room, player, message: { targetId?: string } = {}, now = Date.now()) {
   const profile = attackProfile(player);
   if (player.downedUntil) return { accepted: false, reason: 'downed' };
-  if (player.mountId || player.boatId) return { accepted: false, reason: 'mounted' };
+  if (player.mountId || player.boatId || player.carrierId || player.passengerId)
+    return { accepted: false, reason: 'mounted' };
   if (player.attackSequence && now - player.attackAt < profile.cooldownMs)
     return { accepted: false, reason: 'cooldown' };
   const aimed =

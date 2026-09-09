@@ -1,0 +1,31 @@
+{
+  "sha256": "c962b573855a2dcc68444bacd8be493bb87f43f775222aa9b7176e89fe47fa07",
+  "bytes": 16447136,
+  "revision": "13",
+  "source": "output/model-generation/models/giant-ape/work/rig/revision-13/candidate.glb",
+  "url": "/models/giant-ape/model-stride-r13.glb",
+  "previousGLBPreserved": true,
+  "unchangedClips": 10,
+  "unchangedGeometryMaterialsSkin": true,
+  "walkSpeed": 1.8,
+  "runSpeed": 5.4,
+  "locomotion": {
+    "Walk_Loop": {
+      "metresPerSecond": 0.7325261013807649,
+      "strideMetres": 1.0255365244682877,
+      "dutyFactor": 0.66,
+      "method": "Fixed sole support and continuous swing; two-segment IK using delivered bone lengths, refined against skinned sole samples",
+      "swingLiftMetres": 0.08407545998793546
+    },
+    "Run_Loop": {
+      "metresPerSecond": 1.7834995079348375,
+      "strideMetres": 1.7834995079348375,
+      "dutyFactor": 0.42,
+      "method": "Fixed sole support and continuous swing; two-segment IK using delivered bone lengths, refined against skinned sole samples",
+      "swingLiftMetres": 0.1616835768998759
+    }
+  },
+  "visualFramesReviewed": 60,
+  "numericPass": true,
+  "publicDeployment": false
+}

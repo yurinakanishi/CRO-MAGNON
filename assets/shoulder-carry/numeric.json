@@ -1,0 +1,408 @@
+{
+  "source": "work/rig/revision-13/candidate.glb",
+  "sha256": "c962b573855a2dcc68444bacd8be493bb87f43f775222aa9b7176e89fe47fa07",
+  "bytes": 16447136,
+  "triangles": 106357,
+  "renderVertices": 132324,
+  "skinJoints": 22,
+  "restBounds": {
+    "min": [
+      -0.7510207323956336,
+      -8.732114386140612e-08,
+      -0.4904356744698057
+    ],
+    "max": [
+      0.7523635021124205,
+      1.9999997764552127,
+      0.23679804369431223
+    ]
+  },
+  "weights": {
+    "sumMin": 0.99999995296821,
+    "sumMax": 1.0000000447034836,
+    "maxInfluences": 4
+  },
+  "clips": [
+    {
+      "clip": "Attack",
+      "seconds": 0.8999999761581421,
+      "samples": 55,
+      "minimumGroundMetres": 4.180937656337547e-08,
+      "bounds": {
+        "min": [
+          -0.7582343321333966,
+          4.180937656337547e-08,
+          -0.5103399816396847
+        ],
+        "max": [
+          0.8110382569539768,
+          2.011854817453208,
+          0.9398939529894932
+        ]
+      },
+      "rootMatrixMaxDelta": 6.845708311331578e-08,
+      "maximumEdgeElongation": 4.518670633662877,
+      "minimumTotalAreaRatio": 0.9934776680497822,
+      "maximumCollapsedMeaningfulTriangles": 2,
+      "meaningfulTriangles": 106172,
+      "loopClosureMetres": null,
+      "handSamples": [
+        {
+          "seconds": 0.0,
+          "left": [
+            0.7056874012372761,
+            0.6193671277788774,
+            -0.016614172591627757
+          ],
+          "right": [
+            -0.7056875747194461,
+            0.6193595041853333,
+            -0.01608641524366593
+          ]
+        },
+        {
+          "seconds": 0.13333332980120624,
+          "left": [
+            0.6361892215802566,
+            0.7435542535690334,
+            0.3318030784146391
+          ],
+          "right": [
+            -0.6994611673439652,
+            0.8168094831495273,
+            0.0725339255068816
+          ]
+        },
+        {
+          "seconds": 0.2666666596024125,
+          "left": [
+            0.6865179726263336,
+            0.7594835598044033,
+            0.2720649919615721
+          ],
+          "right": [
+            -0.6683348346028237,
+            0.9632152670640807,
+            0.3985885295414202
+          ]
+        },
+        {
+          "seconds": 0.3999999894036187,
+          "left": [
+            0.765177920799133,
+            0.7643857719687955,
+            0.11123584403468251
+          ],
+          "right": [
+            -0.5064447647106093,
+            1.3195954860694017,
+            0.7424964985774296
+          ]
+        },
+        {
+          "seconds": 0.5999999841054281,
+          "left": [
+            0.737103946821904,
+            0.6991257097832702,
+            0.07581494381557763
+          ],
+          "right": [
+            -0.5900186980068702,
+            0.9837970963082373,
+            0.5891892541744002
+          ]
+        },
+        {
+          "seconds": 0.7999999788072374,
+          "left": [
+            0.708534073727352,
+            0.6283778456991448,
+            -6.500582147544575e-05
+          ],
+          "right": [
+            -0.6953711774532498,
+            0.6470681494646734,
+            0.09931704794927033
+          ]
+        }
+      ]
+    },
+    {
+      "clip": "Craft",
+      "seconds": 2.0,
+      "samples": 121,
+      "minimumGroundMetres": -4.452876633325127e-06,
+      "bounds": {
+        "min": [
+          -0.7582343321333966,
+          -4.452876633325127e-06,
+          -0.48209648511761716
+        ],
+        "max": [
+          0.7596723584141989,
+          2.003064293526133,
+          0.6777464744255854
+        ]
+      },
+      "rootMatrixMaxDelta": 6.845708311331578e-08,
+      "maximumEdgeElongation": 5.266608528547599,
+      "minimumTotalAreaRatio": 0.9903042540443495,
+      "maximumCollapsedMeaningfulTriangles": 4,
+      "meaningfulTriangles": 106172,
+      "loopClosureMetres": null
+    },
+    {
+      "clip": "Eat",
+      "seconds": 1.7999999523162842,
+      "samples": 109,
+      "minimumGroundMetres": 4.180937656337547e-08,
+      "bounds": {
+        "min": [
+          -0.7582457449935393,
+          4.180937656337547e-08,
+          -0.4898557091959031
+        ],
+        "max": [
+          0.7698361049889143,
+          2.003175268763019,
+          0.5645439781067629
+        ]
+      },
+      "rootMatrixMaxDelta": 6.845708311331578e-08,
+      "maximumEdgeElongation": 6.164142217797296,
+      "minimumTotalAreaRatio": 0.989089825709407,
+      "maximumCollapsedMeaningfulTriangles": 3,
+      "meaningfulTriangles": 106172,
+      "loopClosureMetres": null
+    },
+    {
+      "clip": "Gather",
+      "seconds": 1.5,
+      "samples": 91,
+      "minimumGroundMetres": -0.0001886657606986135,
+      "bounds": {
+        "min": [
+          -0.7516659678011675,
+          -0.0001886657606986135,
+          -0.48612578315596483
+        ],
+        "max": [
+          0.7530586926928244,
+          2.0050841732284908,
+          0.7017511641191851
+        ]
+      },
+      "rootMatrixMaxDelta": 6.845708311331578e-08,
+      "maximumEdgeElongation": 5.740012627204205,
+      "minimumTotalAreaRatio": 0.9923760910208116,
+      "maximumCollapsedMeaningfulTriangles": 7,
+      "meaningfulTriangles": 106172,
+      "loopClosureMetres": null
+    },
+    {
+      "clip": "Give",
+      "seconds": 1.2000000476837158,
+      "samples": 73,
+      "minimumGroundMetres": 4.180937656337547e-08,
+      "bounds": {
+        "min": [
+          -0.7582343321333966,
+          4.180937656337547e-08,
+          -0.48209648511761716
+        ],
+        "max": [
+          0.7596723584141989,
+          2.003064293526133,
+          0.8358938721977714
+        ]
+      },
+      "rootMatrixMaxDelta": 6.845708311331578e-08,
+      "maximumEdgeElongation": 3.8980523146618204,
+      "minimumTotalAreaRatio": 0.9998588168923497,
+      "maximumCollapsedMeaningfulTriangles": 2,
+      "meaningfulTriangles": 106172,
+      "loopClosureMetres": null
+    },
+    {
+      "clip": "Idle_Loop",
+      "seconds": 4.0,
+      "samples": 241,
+      "minimumGroundMetres": -6.832527401821527e-07,
+      "bounds": {
+        "min": [
+          -0.7608541492598505,
+          -6.832527401821527e-07,
+          -0.48209648511761716
+        ],
+        "max": [
+          0.7596723584141989,
+          2.023878574531047,
+          0.2351778593527191
+        ]
+      },
+      "rootMatrixMaxDelta": 6.845708311331578e-08,
+      "maximumEdgeElongation": 1.1967891833348323,
+      "minimumTotalAreaRatio": 1,
+      "maximumCollapsedMeaningfulTriangles": 0,
+      "meaningfulTriangles": 106172,
+      "loopClosureMetres": 0.0
+    },
+    {
+      "clip": "Run_Loop",
+      "seconds": 1.0,
+      "samples": 61,
+      "minimumGroundMetres": -0.0053933918785947065,
+      "bounds": {
+        "min": [
+          -0.7647925083107903,
+          -0.0053933918785947065,
+          -0.7516292611279765
+        ],
+        "max": [
+          0.7662203048381956,
+          1.9741980414374631,
+          0.6688442124690255
+        ]
+      },
+      "rootMatrixMaxDelta": 6.845708311331578e-08,
+      "maximumEdgeElongation": 7.871507312357238,
+      "minimumTotalAreaRatio": 0.9583495546565791,
+      "maximumCollapsedMeaningfulTriangles": 6,
+      "meaningfulTriangles": 106172,
+      "loopClosureMetres": 0.0,
+      "measuredStanceMetresPerSecond": {
+        "median": 1.5688097168353674,
+        "min": 1.4788437071791536,
+        "max": 1.8663679023200397
+      }
+    },
+    {
+      "clip": "Sit_Down",
+      "seconds": 1.399999976158142,
+      "samples": 85,
+      "minimumGroundMetres": -0.0003150361834103418,
+      "bounds": {
+        "min": [
+          -0.8434920658500907,
+          -0.0003150361834103418,
+          -0.5128159696490131
+        ],
+        "max": [
+          0.8448729052463668,
+          2.008023359332338,
+          0.7112822771975437
+        ]
+      },
+      "rootMatrixMaxDelta": 6.845708311331578e-08,
+      "maximumEdgeElongation": 6.023436655579051,
+      "minimumTotalAreaRatio": 1,
+      "maximumCollapsedMeaningfulTriangles": 6,
+      "meaningfulTriangles": 106172,
+      "loopClosureMetres": null
+    },
+    {
+      "clip": "Sit_Loop",
+      "seconds": 3.0,
+      "samples": 181,
+      "minimumGroundMetres": -8.866813205540836e-09,
+      "bounds": {
+        "min": [
+          -0.8434920950630436,
+          -8.866813205540836e-09,
+          -0.513649112722867
+        ],
+        "max": [
+          0.8448729052463668,
+          1.3783594665004344,
+          0.6505285398743531
+        ]
+      },
+      "rootMatrixMaxDelta": 6.845708311331578e-08,
+      "maximumEdgeElongation": 6.023436655579051,
+      "minimumTotalAreaRatio": 0.9997364633020094,
+      "maximumCollapsedMeaningfulTriangles": 3,
+      "meaningfulTriangles": 106172,
+      "loopClosureMetres": 0.0
+    },
+    {
+      "clip": "Stand_Up",
+      "seconds": 1.399999976158142,
+      "samples": 85,
+      "minimumGroundMetres": -0.00031502745337775304,
+      "bounds": {
+        "min": [
+          -0.8434921550655814,
+          -0.00031502745337775304,
+          -0.5128159696490147
+        ],
+        "max": [
+          0.8448729052463668,
+          2.008023358033749,
+          0.7112822771975412
+        ]
+      },
+      "rootMatrixMaxDelta": 6.845708311331578e-08,
+      "maximumEdgeElongation": 6.023436621838103,
+      "minimumTotalAreaRatio": 1,
+      "maximumCollapsedMeaningfulTriangles": 6,
+      "meaningfulTriangles": 106172,
+      "loopClosureMetres": null
+    },
+    {
+      "clip": "Walk_Loop",
+      "seconds": 1.399999976158142,
+      "samples": 85,
+      "minimumGroundMetres": -0.004855925427418266,
+      "bounds": {
+        "min": [
+          -0.7637431461317301,
+          -0.004855925427418266,
+          -0.6746648062223446
+        ],
+        "max": [
+          0.7652084428388253,
+          1.9728048595681367,
+          0.4918828204167926
+        ]
+      },
+      "rootMatrixMaxDelta": 6.845708311331578e-08,
+      "maximumEdgeElongation": 6.270260023528648,
+      "minimumTotalAreaRatio": 0.9793004569461531,
+      "maximumCollapsedMeaningfulTriangles": 4,
+      "meaningfulTriangles": 106172,
+      "loopClosureMetres": 0.0,
+      "measuredStanceMetresPerSecond": {
+        "median": 0.6327945203762824,
+        "min": 0.4425790326590479,
+        "max": 0.9314553588479837
+      }
+    },
+    {
+      "clip": "Wave",
+      "seconds": 2.0,
+      "samples": 121,
+      "minimumGroundMetres": 4.180937656337547e-08,
+      "bounds": {
+        "min": [
+          -1.4778144108154236,
+          4.180937656337547e-08,
+          -0.5016747425407894
+        ],
+        "max": [
+          0.7596723584141989,
+          2.080241236966677,
+          0.26728843734175944
+        ]
+      },
+      "rootMatrixMaxDelta": 6.845708311331578e-08,
+      "maximumEdgeElongation": 6.17030696986943,
+      "minimumTotalAreaRatio": 0.9997971514547923,
+      "maximumCollapsedMeaningfulTriangles": 3,
+      "meaningfulTriangles": 106172,
+      "loopClosureMetres": null
+    }
+  ],
+  "errors": [],
+  "numericPass": true,
+  "visualReviewRequired": true
+}

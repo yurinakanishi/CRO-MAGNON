@@ -15,14 +15,17 @@ export interface KeyPrompt {
 /** Contextual button prompts, in the order a player scans them (main action first). */
 export function keyPrompts(
   gamepad: boolean,
-  options: { ride: boolean; boat: boolean },
+  options: { ride: boolean; boat: boolean; carry?: boolean; carrying?: boolean },
 ): KeyPrompt[] {
-  const prompts: KeyPrompt[] = [
-    { key: gamepad ? '×' : 'E', label: '調べる' },
-    { key: gamepad ? '□' : 'F', label: '攻撃' },
-    { key: gamepad ? 'L2' : 'Space', label: 'ジャンプ' },
-  ];
-  if (options.ride) prompts.push({ key: gamepad ? '△' : 'R', label: 'マンモス' });
+  const prompts: KeyPrompt[] = options.carrying
+    ? []
+    : [
+        { key: gamepad ? '×' : 'E', label: '調べる' },
+        { key: gamepad ? '□' : 'F', label: '攻撃' },
+        { key: gamepad ? 'L2' : 'Space', label: 'ジャンプ' },
+      ];
+  if (options.ride)
+    prompts.push({ key: gamepad ? '△' : 'R', label: options.carry ? '肩乗り' : 'マンモス' });
   if (options.boat) prompts.push({ key: gamepad ? '△' : 'B', label: '船' });
   if (!gamepad) prompts.push({ key: 'Enter', label: '話す' });
   prompts.push({ key: gamepad ? 'OPTIONS' : 'ESC', label: 'メニュー' });
@@ -42,7 +45,7 @@ export function guideMarkup({ gamepad, skipChecked }: GuideOptions): string {
         ['右スティック', '視点', 'カメラを回します。L1 / R1 で距離、R3 で戻す。'],
         ['×', '調べる・採集', '木や石、焚き火、仲間に近づいて押します。'],
         ['L2', 'ジャンプ', '歩きながら、走りながらも跳べます。着地してからもう一度。'],
-        ['□ / R2', '攻撃', '相手を向いて。槍・刀・魔法はキャラクターで変わります。'],
+        ['□ / R2', '攻撃', '相手を向いて。槍・刀・魔法・大きな手はキャラクターで変わります。'],
         ['△', '乗る・降りる', 'マンモスや船のそばで。'],
         ['OPTIONS', 'メニュー', 'もちもの・地図・手帳・設定。十字キーでも開けます。'],
       ]
@@ -51,8 +54,12 @@ export function guideMarkup({ gamepad, skipChecked }: GuideOptions): string {
         ['ドラッグ', '視点', 'マウスや指でドラッグして周囲を見渡します。ホイールで距離。'],
         ['E', '調べる・採集', '木や石、焚き火、仲間に近づいて押します。'],
         ['Space', 'ジャンプ', '画面の「ジャンプ」も使えます。着地してからもう一度。'],
-        ['F', '攻撃', '相手を向いて。槍・刀・魔法はキャラクターで変わります。'],
-        ['R / B', '乗る・降りる', 'R でマンモス、B で船。'],
+        ['F', '攻撃', '相手を向いて。槍・刀・魔法・大きな手はキャラクターで変わります。'],
+        [
+          'R / B',
+          '乗る・降りる',
+          'R でマンモスや肩乗り、B で船。大猿が誘い、魔法使いが応じると肩に乗れます。',
+        ],
         ['ESC', 'メニュー', 'もちもの (I)・地図 (M)・手帳 (J)・設定。Enter でチャット。'],
       ];
   return `<div class="guide-card" role="document"><p class="screen-eyebrow">HOW TO PLAY</p><h2>旅のはじめに</h2><p class="guide-intro">まずは近くの木や石を3つ集めて、石斧をつくろう。</p><div class="guide-grid">${rows

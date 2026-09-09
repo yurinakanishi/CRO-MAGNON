@@ -457,3 +457,13 @@ dialog:has(.earth-map){width:min(1040px,94vw);max-width:1040px}
 #village-panel .gulf-card{padding:14px;border:1px solid #c4b58e40;border-radius:8px}
 .world-label.resident{background:#182a25b8;padding:6px 10px;border-radius:6px;max-width:220px;white-space:normal}
 @media(max-width:560px){.resident-cards{grid-template-columns:1fr}#village-panel .gulf-actions .button{flex:1 1 140px}}
+
+.portrait.ape {
+  background: #74432e url('/models/giant-ape/portrait.png') 50% 15%/230% auto no-repeat;
+}
+.portrait.ape:before,
+.portrait.ape:after,
+.portrait.ape i {
+  display: none;
+}
+#carry-decline[hidden] { display: none; }

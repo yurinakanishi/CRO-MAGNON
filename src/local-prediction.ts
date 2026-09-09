@@ -40,6 +40,8 @@ export class LocalPrediction {
       this.latest.id !== player.id ||
       this.latest.mountId !== player.mountId ||
       this.latest.boatId !== player.boatId ||
+      this.latest.carrierId !== player.carrierId ||
+      this.latest.passengerId !== player.passengerId ||
       this.latest.hurtSequence !== player.hurtSequence ||
       this.latest.defeatSequence !== player.defeatSequence ||
       Math.hypot(player.x - this.latest.x, player.z - this.latest.z) > 6;
@@ -66,6 +68,7 @@ export class LocalPrediction {
     if (
       now - this.receivedAt > 250 ||
       p.downedUntil ||
+      p.carrierId ||
       (p.attackSequence && serverNow - p.attackAt < attackProfile(p).durationMs)
     ) {
       p.moving = false;

@@ -3,7 +3,7 @@ export interface Point {
   x: number;
   z: number;
 }
-export type Species = 'cro' | 'nea' | 'cat' | 'bear';
+export type Species = 'cro' | 'nea' | 'cat' | 'bear' | 'ape';
 export type Gender = 'female' | 'male';
 export type ResourceKind = 'wood' | 'stone' | 'berry' | 'obsidian';
 export interface CharacterProfile {
@@ -16,7 +16,7 @@ export interface CharacterModel {
   gender: Gender;
   key: string;
   name: string;
-  weapon?: 'katana' | 'magic';
+  weapon?: 'katana' | 'magic' | 'unarmed';
   height?: number;
   radius?: number;
   walkSpeed?: number;

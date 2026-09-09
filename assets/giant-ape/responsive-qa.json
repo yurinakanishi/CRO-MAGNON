@@ -1,0 +1,14 @@
+{
+  "date": "2026-09-09",
+  "surface": "Actual game inside browser iframe; dimensions measured from its DOM",
+  "room": "APE-MOBILE",
+  "viewports": [
+    {"width": 390, "height": 844, "checks": ["title", "character selection", "selected ape portrait", "guide", "game HUD", "jump"]},
+    {"width": 844, "height": 390, "checks": ["game HUD", "strike", "menu", "return"]}
+  ],
+  "reload": "Reloaded page, clicked ordinary Continue button, rejoined same room as giant ape",
+  "browserErrorsAndWarnings": [],
+  "physicalTouchDevice": false,
+  "nativeViewportOverrideUsed": false,
+  "result": "passed"
+}

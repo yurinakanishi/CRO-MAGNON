@@ -1,0 +1,23 @@
+{
+  "date": "2026-09-09",
+  "desktop": {
+    "players": 2,
+    "dimensions": [1280, 720],
+    "actions": ["invite", "decline", "accept", "walk", "run", "passenger dismount", "carrier dismount", "disconnect", "rejoin"],
+    "measuredSpeeds": [1.8, 5.4],
+    "gameErrors": 0,
+    "reports": ["output/shoulder-carry/reports/a.json", "output/shoulder-carry/reports/b-desktop.json"]
+  },
+  "responsive": {
+    "surface": "actual iframe viewport, measured from DOM",
+    "dimensions": [[390, 844], [844, 390]],
+    "actions": ["character selection", "join", "invite", "accept", "passenger dismount"],
+    "gameFrameErrors": 0,
+    "harnessIssue": "The parent-only responsive wrapper logs an uncaught MutationObserver.observe non-Node error. Keeping the app element did not resolve this. The ordinary page and the game iframe log no errors; all listed UI actions were completed.",
+    "report": "output/shoulder-carry/reports/b-mobile.json"
+  },
+  "normalServer": {"port": 3000, "pid": 23432, "ordinaryUI": true, "gameErrors": 0, "verifiedDeliveryFiles": 16},
+  "fixtures": ["QA profiles", "nearby starting positions", "keyboard sequence for sustained movement"],
+  "physicalControllerOrTouchDevice": false,
+  "publicDeployment": false
+}

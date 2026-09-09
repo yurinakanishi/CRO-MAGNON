@@ -37,7 +37,7 @@ for (const asset of manifest.assets) {
     files.add(file); models.push({ url: record.url, sha256: hash, bytes: bytes.length });
   }
 }
-for (const key of ['cat-kunoichi', 'desert-fennec-mage']) files.add(`public/models/${key}/portrait.png`);
+for (const key of ['cat-kunoichi', 'desert-fennec-mage', 'giant-ape']) files.add(`public/models/${key}/portrait.png`);
 await mkdir(destination, { recursive: true });
 // Refuse stale output instead of accidentally publishing unrelated files.
 const allowed = new Set([...files].map(file => file.replace(/^(public|dist)\//, '')));

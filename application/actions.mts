@@ -10,10 +10,27 @@ import { handleFishingAction, cancelFishing } from '../shared/fishing.mjs';
 import { handleCoastalAction, cancelCoastal } from '../shared/coastal-craft.mjs';
 import { handleVillageAction } from '../shared/village-life.mjs';
 import { canStartJump, jumpProgress } from '../shared/jumping.mjs';
+import { cancelBarter } from '../shared/barter.mjs';
+import { carrying, handleCarryAction } from '../shared/carrying.mjs';
 const distance = (a, b) => Math.hypot(a.x - b.x, a.z - b.z);
 export function createActionHandler({ notice, broadcast, snapshot, systemChat, runtime }) {
   return function act(room, player, message, now) {
     const action = message.action;
+    const carry = handleCarryAction(room, player, message, now);
+    if (carry) {
+      if (carry.changed) {
+        // Neither party can keep a trade open while being picked up.
+        if (player.carrierId)
+          cancelBarter(room, player.carrierId, now, '肩に担いだので交換を中止しました。');
+        broadcast(room, snapshot(room));
+      }
+      if (carry.text) notice(player, carry.text, carry.tone, !carry.changed);
+      return;
+    }
+    if (carrying(player)) {
+      if (['cancelCook', 'cancelFishing', 'cancelCoastal'].includes(action)) return;
+      return notice(player, '肩から降りてから行おう。R／△で降ろせます。');
+    }
     if (action === 'jump') {
       if (!canStartJump(player, now)) return;
       cancelFishing(player);

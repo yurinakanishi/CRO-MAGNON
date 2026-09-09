@@ -33,6 +33,7 @@ import { animalIsSolid, updateHunting } from '../shared/hunting.mjs';
 import { movePlayer } from '../shared/movement.mjs';
 import { canStartJump, jumpProgress } from '../shared/jumping.mjs';
 
+import { carrying, updateCarrying, releaseCarry, clearCarryOffer } from '../shared/carrying.mjs';
 import { RIDING, mountedAnimal, releaseRider } from '../shared/riding.mjs';
 import { SCENERY } from '../shared/scenery-layout.mjs';
 import { CAMP, INITIAL_RESOURCES, WORLD } from '../shared/world.mjs';
@@ -323,8 +324,8 @@ export function createGameCore({
         return;
       }
       if (message.type === 'barter') {
-        if (message.kind !== 'cancel' && jumpProgress(player, now) !== null) {
-          notice(player, '着地してから交換しよう。');
+        if (message.kind !== 'cancel' && (carrying(player) || jumpProgress(player, now) !== null)) {
+          notice(player, '地面に降りてから交換しよう。');
           return;
         }
         if (message.kind !== 'cancel' && now - player.lastAction < 450) return;
@@ -334,6 +335,7 @@ export function createGameCore({
         if (result.changed) broadcast(room, snapshot(room));
         return;
       }
+      if (player.carrierId && ['move', 'gait'].includes(message.type)) return;
       const controlled = boardedBoat(room, player) || mountedAnimal(room, player) || player;
       if (player.downedUntil && ['move', 'gait', 'action'].includes(message.type)) {
         if (message.type === 'action')
@@ -400,6 +402,8 @@ export function createGameCore({
     socket.on('close', () => {
       if (player.socket !== socket) return;
       cancelBarter(room, player.id, runtime.now(), '相手が接続を離れたので、交換を中止しました。');
+      clearCarryOffer(room, player);
+      releaseCarry(room, player, true);
       releaseBoat(room, player);
       releaseRider(room, player);
       player.pendingStrike = null;
@@ -455,7 +459,7 @@ export function createGameCore({
       }
       for (const player of room.players.values()) {
         const dynamic = [...room.players.values()]
-          .filter((p) => p !== player)
+          .filter((p) => p !== player && !p.carrierId)
           .concat(
             room.animals.filter(animalIsSolid),
             room.enemies.filter(enemyIsSolid),
@@ -469,7 +473,7 @@ export function createGameCore({
           player.speed = 0;
           player.moving = false;
           player.running = false;
-        } else if (!player.mountId && !player.boatId) {
+        } else if (!player.mountId && !player.boatId && !player.carrierId) {
           movePlayer(player, dt, now, (p, dx, dz) =>
             room.collision.move(p, dx, dz, player.radius, dynamic),
           );
@@ -483,6 +487,7 @@ export function createGameCore({
           player.socket.ping();
         }
       }
+      updateCarrying(room, now);
       updateBoats(room, dt, now);
       updateResidents(room, dt, now);
       const foragingChanged = updateForaging(room, dt, now);
@@ -491,6 +496,7 @@ export function createGameCore({
       const huntingChanged = updateHunting(room, now, notice);
       updateAnimals(room, dt, now);
       const enemiesChanged = updateEnemies(room, dt, now, notice);
+      updateCarrying(room, now);
       updateAdventures(room, now, notice);
       const gulfChanged = updateGulf(room, now) || supperChanged || wateringChanged;
       const fishingChanged = updateFishing(room, now, notice);
@@ -565,7 +571,20 @@ export function createGameCore({
               sessions: persistentSessions ? sessions : sessions.slice(-100),
             },
             (key, value) =>
-              ['socket', 'jumpAt', 'jumpSequence'].includes(key) ? undefined : value,
+              [
+                'socket',
+                'jumpAt',
+                'jumpSequence',
+                'carrierId',
+                'passengerId',
+                'carryOfferFromId',
+                'carryOfferToId',
+                'carryOfferUntil',
+                'carrySafePoint',
+                'carryHurtSequence',
+              ].includes(key)
+                ? undefined
+                : value,
           ),
         );
       }),
@@ -623,6 +642,11 @@ export function createGameCore({
           }
           player.boatId = null;
           stopActor(player);
+          player.carrierId = null;
+          player.passengerId = null;
+          player.carryOfferFromId = null;
+          player.carryOfferToId = null;
+          player.carryOfferUntil = 0;
           player.mountId = null;
           player.jumpAt = 0;
           player.jumpSequence = 0;

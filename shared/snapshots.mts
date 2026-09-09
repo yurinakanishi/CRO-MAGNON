@@ -46,6 +46,11 @@ export interface PlayerSnapshot extends Point {
   defeatSequence: number;
   downedUntil: number;
   invulnerableUntil: number;
+  carrierId?: string | null;
+  passengerId?: string | null;
+  carryOfferFromId?: string | null;
+  carryOfferToId?: string | null;
+  carryOfferUntil?: number;
   mountId: string | null;
   boatId: string | null;
   adventure: { regions: Record<string, AdventureProgress> };

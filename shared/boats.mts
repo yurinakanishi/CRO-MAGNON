@@ -127,7 +127,7 @@ export function releaseBoat(room, player) {
 export function handleBoatAction(room, player, message, now) {
   if (!['craftBoat', 'boardBoat'].includes(message.action)) return null;
   const fail = (text) => ({ changed: false, tone: 'info', text });
-  if (player.downedUntil || player.mountId)
+  if (player.downedUntil || player.mountId || player.carrierId || player.passengerId)
     return fail('地上で元気なときに船を使おう。マンモスからは R で降りられます。');
   const boat = boardedBoat(room, player);
   if (boat) {

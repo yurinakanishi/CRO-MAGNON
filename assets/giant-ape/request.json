@@ -1,0 +1,15 @@
+{
+  "key": "giant-ape",
+  "name": "巨腕の大猿",
+  "candidate": 1,
+  "concept": "output/imagegen/gorilla-candidates-20260909/selected-04.png",
+  "reference": "output/model-generation/models/giant-ape/source/original/reference-v1.png",
+  "generation": "completed-local-trellis2",
+  "rig": "completed-12-clips",
+  "adoption": "revision-12-adopted",
+  "gameQa": "two-browser-five-player-verified",
+  "claudeUsed": false,
+  "sha256": "0192c6868abd8be07451340326bcb229ce45755693962fb417fd55dbab53e290",
+  "lapInteraction": "size-comparison-only",
+  "publicDeployment": false
+}

@@ -6,7 +6,7 @@ import { geometryScene } from '../scripts/measure-collision-bounds.mjs';
 import { RidingPose } from '../dist/src/riding-pose.js';
 import { CharacterAnimation } from '../dist/src/character-animation.js';
 import { CHARACTER_MODELS } from '../dist/shared/characters.mjs';
-test('six exact delivered skins sit on the canoe socket with feet inside its cockpit and restore walking', async () => {
+test('all delivered skins sit on the canoe socket with feet inside its cockpit and restore walking', async () => {
   const hull = await geometryScene('public/models/dugout-canoe/model.glb'),
     bounds = new THREE.Box3().setFromObject(hull.scene),
     seat = new THREE.Vector3(0, 0.67, -1.3);

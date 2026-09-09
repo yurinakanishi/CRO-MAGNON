@@ -21,6 +21,20 @@ import { characterModel } from './characters.mjs';
 // This is shared presentation data; the server always selects it from the
 // normalized character, never from a weapon/damage field supplied by a client.
 export const ATTACK_PROFILES = Object.freeze({
+  unarmed: Object.freeze({
+    id: 'unarmed',
+    key: 'unarmed',
+    label: '大きな手で打つ',
+    noun: '大きな手',
+    startText: '大きな手を振り出した。',
+    damage: 25,
+    cooldownMs: 1000,
+    durationMs: 900,
+    impactMs: 400,
+    reach: 0.24,
+    halfAngle: (55 * Math.PI) / 180,
+    energy: 3,
+  }),
   spear: Object.freeze({
     id: 'spear',
     key: 'spear',

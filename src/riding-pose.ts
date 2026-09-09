@@ -17,6 +17,19 @@ export function mammothSeat(root) {
   };
 }
 
+// Left shoulder of the delivered 2 m ape, in root-space metres. The chest
+// socket follows body sway while the swinging arm remains free below it.
+export function apeShoulderSeat(root) {
+  root.updateMatrixWorld(true);
+  const bone = root.getObjectByName('Chest');
+  const local = bone.worldToLocal(root.localToWorld(new THREE.Vector3(0.43, 1.65, -0.16)));
+  return {
+    position(out) {
+      return bone.localToWorld(out.copy(local));
+    },
+  };
+}
+
 // A runtime pose of the delivered skin, with no replacement geometry or extra
 // mixer. Bone transforms are captured before any clip runs and restored on exit.
 export class RidingPose {
@@ -30,6 +43,7 @@ export class RidingPose {
   declare worldQ: THREE.Quaternion;
   declare parentQ: THREE.Quaternion;
   declare delta: THREE.Quaternion;
+  declare hipWidth: number;
 
   constructor(root) {
     this.root = root;
@@ -46,6 +60,11 @@ export class RidingPose {
     });
     this.hips = this.bones.get('Hips')?.bone;
     if (!this.hips) throw new Error('The verified rider is missing its hips');
+    this.root.updateMatrixWorld(true);
+    this.hipWidth = this.bones
+      .get('UpperLegL')
+      .bone.getWorldPosition(new THREE.Vector3())
+      .distanceTo(this.bones.get('UpperLegR').bone.getWorldPosition(new THREE.Vector3()));
     this.point = new THREE.Vector3();
     this.direction = new THREE.Vector3();
     this.rootQ = new THREE.Quaternion();
@@ -84,6 +103,8 @@ export class RidingPose {
     this.root.updateMatrixWorld(true);
     this.root.getWorldQuaternion(this.rootQ);
     const sway = Math.sin(time * 3) * Math.min(speed, 1) * 0.025;
+    // Broad hips need the knees slightly inward to keep both feet in the canoe.
+    const broadBoatSeat = boat && this.hipWidth > 0.45;
     this.aim('Spine', sway, 1, 0.14 + Math.min(speed, 2.25) * 0.045);
     this.aim('Chest', 0, 1, 0.08);
     this.aim('Neck', 0, 1, 0);
@@ -93,11 +114,16 @@ export class RidingPose {
     ] as const) {
       this.aim(
         `UpperLeg${side}`,
-        sign * (boat ? 0.12 : 0.95),
+        sign * (boat ? (broadBoatSeat ? -0.08 : 0.12) : 0.95),
         boat ? -0.25 : -0.1,
         boat ? 1 : 0.38,
       );
-      this.aim(`LowerLeg${side}`, sign * (boat ? 0.06 : 0.24), boat ? -0.5 : -1, boat ? 1 : -0.12);
+      this.aim(
+        `LowerLeg${side}`,
+        sign * (boat ? (broadBoatSeat ? 0 : 0.06) : 0.24),
+        boat ? -0.5 : -1,
+        boat ? 1 : -0.12,
+      );
       this.aim(`Foot${side}`, sign * 0.1, -0.1, 1);
       this.aim(`UpperArm${side}`, sign * 0.24, -0.8, 0.55);
       this.aim(`LowerArm${side}`, sign * -0.12, -0.22, 1);
@@ -107,6 +133,23 @@ export class RidingPose {
   pelvisOffset(out) {
     this.root.updateMatrixWorld(true);
     return this.root.worldToLocal(this.hips.getWorldPosition(out));
+  }
+  updateShoulder(animation, time, speed) {
+    this.update(animation, time, speed, true);
+    this.aim('Spine', 0, 1, 0.08);
+    this.aim('Chest', 0, 1, 0.03);
+    this.aim('Neck', 0, 1, 0);
+    for (const [side, sign] of [
+      ['L', 1],
+      ['R', -1],
+    ] as const) {
+      this.aim(`UpperLeg${side}`, sign * 0.1, -0.3, 1);
+      this.aim(`LowerLeg${side}`, sign * 0.05, -1, 0.1);
+      this.aim(`Foot${side}`, 0, -0.1, 1);
+      this.aim(`UpperArm${side}`, sign * 0.25, -1, 0.1);
+      this.aim(`LowerArm${side}`, sign * -0.2, -0.4, 0.7);
+    }
+    animation.name = speed > 0.025 ? 'Carry_Move' : 'Carry_Idle';
   }
   leave(animation) {
     if (!this.active) return;

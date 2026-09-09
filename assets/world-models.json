@@ -446,6 +446,18 @@
       "sha256": "3319075637b3714f836a59d9381fa23f0fb943ed8969a6c193f11e5152590f60",
       "delivery": "/models/obsidian-blade/model.glb",
       "modelWorkspace": "assets/coastal-craft/models/obsidian-blade"
+    },
+    {
+      "key": "giant-ape",
+      "name": "巨腕の大猿",
+      "kind": "humanoid",
+      "height": 2,
+      "status": "locally-integrated-and-game-qa-passed",
+      "geometryResolution": 1024,
+      "sha256": "c962b573855a2dcc68444bacd8be493bb87f43f775222aa9b7176e89fe47fa07",
+      "delivery": "/models/giant-ape/model-stride-r13.glb",
+      "gameQA": "assets/shoulder-carry/adoption.json",
+      "subject": "Large red-furred ape with broad shoulders, round belly, massive arms and hands, hide loincloth and rawhide wrist wraps; approved image candidate 4."
     }
   ],
   "reuse": {

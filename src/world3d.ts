@@ -53,7 +53,8 @@ import { seaBoatSpeed } from '../shared/maritime-weather.mjs';
 
 const DEFAULT_DISTANCE = 5.5;
 const tempPoint = new THREE.Vector3();
-const focusHeight = (profile) => (profile.species === 'bear' ? 0.64 : 1.4);
+const focusHeight = (profile) =>
+  profile.species === 'bear' ? 0.64 : profile.species === 'ape' ? 1.55 : 1.4;
 
 function mesh(geometry, material, parent, position: [number, number, number] = [0, 0, 0]) {
   const object = new THREE.Mesh(geometry, material);
@@ -577,7 +578,9 @@ export class WorldRenderer {
         local?.boatId
           ? (state.boats ?? []).filter((b) => b.id !== local.boatId)
           : [
-              ...state.players.filter((p) => p.id !== selfId && !p.mountId && !p.boatId),
+              ...state.players.filter(
+                (p) => p.id !== selfId && !p.mountId && !p.boatId && !p.carrierId,
+              ),
               ...(state.animals ?? []).filter(
                 (p) => p.id !== local?.mountId && ['alive', 'dying'].includes(p.phase),
               ),
@@ -915,7 +918,10 @@ export class WorldRenderer {
       }
     }
     this.boatRenderer?.update(time, dt);
-    for (const entity of this.players.values()) {
+    // Update the carrier's animated shoulder before its passenger, regardless of join order.
+    for (const entity of [...this.players.values()].sort(
+      (a, b) => Number(!!a.state.carrierId) - Number(!!b.state.carrierId),
+    )) {
       const { model } = entity,
         p = entity.state.id === this.selfId && predicted ? predicted : entity.state,
         factor = 1 - Math.exp(-dt * 20);
@@ -933,6 +939,27 @@ export class WorldRenderer {
       if (entity.spears) {
         for (const spear of entity.spears.values()) spear.visible = false;
         entity.weapon = entity.spears.get(attackProfile(p).modelKey);
+      }
+      if (p.carrierId) {
+        const carrier = this.players.get(p.carrierId);
+        model.visible = !!carrier?.model.visible && !!carrier.actor?.shoulderSeat && !!entity.actor;
+        entity.label.active = model.visible;
+        if (!model.visible) continue;
+        const pose = entity.actor.ridingPose;
+        model.rotation.y = carrier.model.rotation.y;
+        pose.updateShoulder(entity.actor.animation, time, carrier.state.speed || 0);
+        carrier.model.updateMatrixWorld(true);
+        carrier.actor.shoulderSeat.position(tempPoint);
+        const offset = pose
+          .pelvisOffset((this.riderOffset ??= new THREE.Vector3()))
+          .applyAxisAngle(THREE.Object3D.DEFAULT_UP, model.rotation.y);
+        model.position.copy(tempPoint).sub(offset);
+        if (entity.weapon) entity.weapon.visible = false;
+        if (entity.axe) entity.axe.visible = false;
+        entity.wasMounted = true;
+        entity.label.position.copy(model.position);
+        entity.label.position.y += entity.actor.asset.heightMetres + 0.3;
+        continue;
       }
       if (p.boatId) {
         const boat = this.boatRenderer?.boats.get(p.boatId);

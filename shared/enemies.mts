@@ -43,7 +43,7 @@ const dynamicActors = (room, except) =>
     ...(room.enemies || []).filter(enemyIsSolid),
     ...(room.residents || []),
   ]
-    .filter((actor) => actor !== except)
+    .filter((actor) => actor !== except && !actor.carrierId)
     .map(circle);
 const withinStaffReach = (enemy, player) =>
   combatDistance(enemy, player) <= enemy.radius + player.radius + ENEMY_RULES.attackReach + 1e-9;
@@ -51,6 +51,7 @@ const eligiblePlayer = (room, player, now) =>
   player &&
   !player.mountId &&
   !player.boatId &&
+  !player.carrierId &&
   !player.downedUntil &&
   now >= (player.invulnerableUntil || 0) &&
   combatDistance(player, room.camp || CAMP) > ENEMY_RULES.campSafeRadius;

@@ -25,11 +25,12 @@ test('actual exported humanoid clips cannot overwrite the world heading', async 
         assert.ok(forward.dot(new THREE.Vector3(Math.sin(heading), 0, Math.cos(heading))) > 0.999);
         assert.deepEqual(placement.position.toArray(), [30, 0, 40]);
       }
-    // Spear attacks rotate the rig's arms, while the actor keeps its world heading.
+    // Each character's full attack rotates its arms without changing its heading.
     for (const heading of [0, Math.PI / 2, Math.PI, -Math.PI / 2]) {
       placement.rotation.y = heading;
       assert.equal(animation.playAttack(), true);
-      for (let frame = 0; frame < 26; frame++) {
+      const attackFrames = Math.ceil(animation.actions.get('Attack').getClip().duration * 30) + 2;
+      for (let frame = 0; frame < attackFrames; frame++) {
         animation.update(1 / 30, 0, false);
         placement.updateMatrixWorld(true);
         const forward = new THREE.Vector3(0, 0, 1).transformDirection(gltf.scene.matrixWorld);

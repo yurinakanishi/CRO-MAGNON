@@ -58,6 +58,8 @@ export function canStartAttack(player, serverNow) {
     !player.downedUntil &&
     !player.mountId &&
     !player.boatId &&
+    !player.carrierId &&
+    !player.passengerId &&
     jumpProgress(player, serverNow) === null &&
     (!(player.attackSequence > 0) ||
       serverNow - player.attackAt >= attackProfile(player).cooldownMs)

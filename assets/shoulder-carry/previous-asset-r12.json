@@ -1,0 +1,129 @@
+{
+  "modelKey": "giant-ape",
+  "name": "巨腕の大猿",
+  "kind": "humanoid",
+  "candidate": 1,
+  "status": "locally-integrated-and-game-qa-passed",
+  "url": "/models/giant-ape/model.glb",
+  "sha256": "0192c6868abd8be07451340326bcb229ce45755693962fb417fd55dbab53e290",
+  "bytes": 16301868,
+  "triangles": 106357,
+  "upAxis": "Y",
+  "forwardAxis": "+Z",
+  "heightMetres": 1.9999998637763565,
+  "widthMetres": 1.5033842345080541,
+  "placement": {
+    "pivot": "ground-centred",
+    "min": [
+      -0.7510207323956336,
+      -8.732114386140612e-8,
+      -0.4904356744698057
+    ],
+    "max": [
+      0.7523635021124205,
+      1.9999997764552127,
+      0.23679804369431223
+    ]
+  },
+  "clips": [
+    {
+      "name": "Attack",
+      "seconds": 0.8999999761581421,
+      "loop": false
+    },
+    {
+      "name": "Craft",
+      "seconds": 2,
+      "loop": false
+    },
+    {
+      "name": "Eat",
+      "seconds": 1.7999999523162842,
+      "loop": false
+    },
+    {
+      "name": "Gather",
+      "seconds": 1.5,
+      "loop": false
+    },
+    {
+      "name": "Give",
+      "seconds": 1.2000000476837158,
+      "loop": false
+    },
+    {
+      "name": "Idle_Loop",
+      "seconds": 4,
+      "loop": true
+    },
+    {
+      "name": "Run_Loop",
+      "seconds": 1,
+      "loop": true
+    },
+    {
+      "name": "Sit_Down",
+      "seconds": 1.399999976158142,
+      "loop": false
+    },
+    {
+      "name": "Sit_Loop",
+      "seconds": 3,
+      "loop": true
+    },
+    {
+      "name": "Stand_Up",
+      "seconds": 1.399999976158142,
+      "loop": false
+    },
+    {
+      "name": "Walk_Loop",
+      "seconds": 1.399999976158142,
+      "loop": true
+    },
+    {
+      "name": "Wave",
+      "seconds": 2,
+      "loop": false
+    }
+  ],
+  "lods": [],
+  "species": "ape",
+  "gender": "male",
+  "bones": 22,
+  "locomotion": {
+    "Walk_Loop": {
+      "metresPerSecond": 0.4725974847617838,
+      "strideMetres": 0.6616364673988953,
+      "dutyFactor": 0.66,
+      "method": "Fixed sole support and continuous swing; two-segment IK using delivered bone lengths, refined against skinned sole samples",
+      "swingLiftMetres": 0.08407545998793546
+    },
+    "Run_Loop": {
+      "metresPerSecond": 1.3719226984114135,
+      "strideMetres": 1.3719226984114135,
+      "dutyFactor": 0.42,
+      "method": "Fixed sole support and continuous swing; two-segment IK using delivered bone lengths, refined against skinned sole samples",
+      "swingLiftMetres": 0.1616835768998759
+    }
+  },
+  "provenance": {
+    "provider": "Codex",
+    "claudeUsed": false,
+    "referenceGenerator": "Built-in imagegen; user selected candidate 4",
+    "originalImage": "output/model-generation/models/giant-ape/source/original/user-selected-04.png",
+    "originalSha256": "a7e4a2b0cbaec007868147092ff68acaf3ec2a4ac42da133764fac49439c129b",
+    "referenceImage": "output/model-generation/models/giant-ape/source/original/reference-v1.png",
+    "referenceSha256": "71d710a68a80caec0ab0c76b9cd7cff0221373cec7afbb7bb0246b892abd0053",
+    "reconstruction": "Local TRELLIS-2 1024 seed 42; source-preserving measured reduction.",
+    "candidateFile": "output/model-generation/models/giant-ape/work/rig/revision-12/candidate.glb",
+    "visualReview": "output/model-generation/models/giant-ape/qa/adoption-review.json"
+  },
+  "notes": [
+    "User selected image candidate 4 and the name 巨腕の大猿. Candidate 1, local TRELLIS-2 1024 seed 42, measured source-preserving reduction; original and all revisions retained.",
+    "2 m red-furred broad biped; 106357 triangles. Original source roughness restored with non-metallic fur/hide, base-color JPEG PSNR 43.34 dB; geometry and other buffers retained during packing.",
+    "Source-specific skin and 12 clips. All 360 frames reviewed as 6-direction/5-time contact sheets, selected full-size views and real-browser playback; 12 video files generated. Independent 60 Hz full-skin validation passed.",
+    "Existing 0.78 m mage used unchanged for a measured lap comparison. This is a size fixture, not a networked lap-sitting feature.",
+    "Actual two-screen/three-socket-peer game QA: five players, walking/running, jump, strike, wave, riding and dismount. Profiles, keyboard sequence and mammoth proximity/wait are fixtures. Physical devices, long-duration load, and all-terrain mesh contact are not verified."
+  ]
+}

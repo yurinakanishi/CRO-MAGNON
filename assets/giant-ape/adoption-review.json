@@ -1,0 +1,53 @@
+{
+  "decision": "adopt",
+  "candidate": 1,
+  "revision": "12",
+  "sha256": "0192c6868abd8be07451340326bcb229ce45755693962fb417fd55dbab53e290",
+  "candidateFile": "work/rig/revision-12/candidate.glb",
+  "visualGate": "passed",
+  "browserGate": "passed",
+  "portraitRender": "work/rig/revision-12/qa/Idle_Loop-front-00.png",
+  "notes": [
+    "User selected image candidate 4 and the name 巨腕の大猿. Candidate 1, local TRELLIS-2 1024 seed 42, measured source-preserving reduction; original and all revisions retained.",
+    "2 m red-furred broad biped; 106357 triangles. Original source roughness restored with non-metallic fur/hide, base-color JPEG PSNR 43.34 dB; geometry and other buffers retained during packing.",
+    "Source-specific skin and 12 clips. All 360 frames reviewed as 6-direction/5-time contact sheets, selected full-size views and real-browser playback; 12 video files generated. Independent 60 Hz full-skin validation passed.",
+    "Existing 0.78 m mage used unchanged for a measured lap comparison. This is a size fixture, not a networked lap-sitting feature.",
+    "Actual two-screen/three-socket-peer game QA: five players, walking/running, jump, strike, wave, riding and dismount. Profiles, keyboard sequence and mammoth proximity/wait are fixtures. Physical devices, long-duration load, and all-terrain mesh contact are not verified."
+  ],
+  "game": [
+    {
+      "slot": "a",
+      "samples": 4000,
+      "clips": [
+        "Ride_Idle",
+        "Idle_Loop",
+        "Walk_Loop",
+        "Run_Loop",
+        "Jump",
+        "Attack",
+        "Wave",
+        "Ride_Move"
+      ],
+      "maximumDisplayedPlayers": 5,
+      "errors": 0
+    },
+    {
+      "slot": "b",
+      "samples": 4000,
+      "clips": [
+        "Ride_Idle",
+        "Idle_Loop",
+        "Walk_Loop",
+        "Run_Loop",
+        "Jump",
+        "Attack",
+        "Wave",
+        "Ride_Move"
+      ],
+      "maximumDisplayedPlayers": 5,
+      "errors": 0
+    }
+  ],
+  "lapComparison": "output/giant-ape/lap-comparison.png",
+  "numeric": "assets/giant-ape/numeric.json"
+}

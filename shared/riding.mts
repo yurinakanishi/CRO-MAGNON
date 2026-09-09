@@ -25,6 +25,8 @@ export function canMount(player, animal, collision, now) {
     collision &&
     !player.mountId &&
     !player.boatId &&
+    !player.carrierId &&
+    !player.passengerId &&
     !player.downedUntil &&
     jumpProgress(player, now) === null &&
     !(player.attackSequence && now - player.attackAt < attackProfile(player).durationMs) &&
@@ -38,7 +40,7 @@ export function canMount(player, animal, collision, now) {
 }
 export function ridingObstacles(room, animal, rider) {
   return [...room.players.values()]
-    .filter((p) => p !== rider && !p.mountId)
+    .filter((p) => p !== rider && !p.mountId && !p.carrierId)
     .concat(
       room.animals.filter((a) => a !== animal && ['alive', 'dying'].includes(a.phase)),
       (room.enemies || []).filter(enemyIsSolid),

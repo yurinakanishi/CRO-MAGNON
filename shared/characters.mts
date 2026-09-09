@@ -44,6 +44,17 @@ export const CHARACTER_MODELS: readonly Readonly<CharacterModel>[] = Object.free
     walkSpeed: 0.6,
     runSpeed: 1.8,
   }),
+  Object.freeze({
+    species: 'ape',
+    gender: 'male',
+    key: 'giant-ape',
+    name: '巨腕の大猿',
+    weapon: 'unarmed',
+    height: 2,
+    radius: 0.76,
+    walkSpeed: 1.8,
+    runSpeed: 5.4,
+  }),
 ]);
 
 // Missing choices (including profiles saved before gender existed) start female.
@@ -52,6 +63,7 @@ export function normalizeCharacter({ species, gender }: CharacterProfile = {}): 
   gender: Gender;
 } {
   if (species === 'cat' || species === 'bear') return { species, gender: 'female' };
+  if (species === 'ape') return { species, gender: 'male' };
   return {
     species: species === 'nea' ? 'nea' : 'cro',
     gender: gender === 'male' ? 'male' : 'female',
