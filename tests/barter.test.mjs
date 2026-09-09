@@ -282,11 +282,9 @@ test('same-item exchange checks net capacity and conserves total amounts', () =>
   }
 });
 
-test('moving, targets, expeditions, other actions and cancellation stop pending barter without escrow', () => {
+test('moving, other actions and cancellation stop pending barter without escrow', () => {
   for (const command of [
     { type: 'move', dx: 1, dz: 0 },
-    { type: 'target', x: MANY_HEARTHS.x, z: MANY_HEARTHS.z + 15 },
-    { type: 'expedition', destination: 'invalid' },
     { type: 'action', action: 'attack' },
     { type: 'action', action: 'gulfPantryTake', targetId: 'many-hearths:berry' },
     { type: 'barter', kind: 'cancel' },

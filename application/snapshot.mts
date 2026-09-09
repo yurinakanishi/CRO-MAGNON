@@ -74,6 +74,7 @@ export function snapshot(
         maxHealth,
         meatRemaining,
         phaseStartedAt,
+        hitUntil,
         riderId,
       }) => ({
         id,
@@ -89,6 +90,7 @@ export function snapshot(
         maxHealth,
         meatRemaining,
         phaseStartedAt,
+        hitUntil,
         riderId,
       }),
     ),

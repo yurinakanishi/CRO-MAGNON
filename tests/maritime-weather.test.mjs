@@ -131,13 +131,15 @@ test('assisted paddling preserves analog input and stops after release or stale 
   updateBoats(r, 0.1, atPhase(3));
   assert.deepEqual({ x: b.x, z: b.z }, point);
 });
-test('targeted travel arrives without overshoot or lateral drift across a weather change', () => {
+test('obsolete boat targets cannot move or drift across a weather change', () => {
   const r = fixture(),
     b = r.boats[0],
     goal = { x: b.x + 8, z: b.z };
+  const origin = { x: b.x, z: b.z };
   b.target = { ...goal };
   for (let t = 0; t < 100; t++) updateBoats(r, 0.1, atPhase(2) - 500 + t * 100);
-  assert.ok(Math.hypot(b.x - goal.x, b.z - goal.z) < 0.02);
+  assert.deepEqual({ x: b.x, z: b.z }, origin);
+  assert.equal(b.target, null);
   assert.equal(b.moving, false);
 });
 test('eight opposing hulls and riders remain synchronized without overlap in rain and current', () => {

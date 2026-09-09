@@ -9,7 +9,6 @@ import { COUNTRIES, FARM_PLOTS, GULF, GULF_ENTRY, GULF_RESOURCES, GULF_WAYPOINTS
 import { createGulfState, ensureGulfPlayer, handleGulfAction, updateGulf } from '../dist/shared/gulf-life.mjs';
 import { initializeBoats, launchPoint, waterBodyFree, handleBoatAction, BOATING } from '../dist/shared/boats.mjs';
 import { interactionVisible } from '../dist/shared/interactions.mjs';
-import { takeExpedition } from '../dist/shared/expeditions.mjs';
 
 const collision = new CollisionWorld();
 const makePlayer = (id = 'p') => ({id, species:'nea', radius:.32, x:MANY_HEARTHS.x, z:MANY_HEARTHS.z+5, energy:40, inventory:{wood:0,stone:0,berry:0,rawMeat:0,cookedMeat:0}, path:[]});
@@ -85,10 +84,17 @@ test('crop failures preserve inventory, growth and ripe harvests; walls and inva
 });
 
 test('country affiliation is independent of species, requires visiting and does not close access to other communities', () => {
-  const p=makePlayer(),r=makeRoom(p);assert.equal(act(r,p,'gulfJoin',COUNTRIES[0].id).ok,false);
-  for(const c of COUNTRIES){Object.assign(p,c,{id:'p',z:c.z+5});assert.equal(act(r,p,'gulfJoin',c.id).ok,true);updateGulf(r,10000);assert.equal(p.species,'nea');}
-  assert.equal(p.gulf.visited.length,3);assert.equal(p.gulf.countryId,COUNTRIES[2].id);
-  assert.equal(takeExpedition(r,p,GULF_ENTRY.id,10000).ok,false,'local return is by land or boat');
+  const p = makePlayer(),
+    r = makeRoom(p);
+  assert.equal(act(r, p, 'gulfJoin', COUNTRIES[0].id).ok, false);
+  for (const c of COUNTRIES) {
+    Object.assign(p, c, { id: 'p', z: c.z + 5 });
+    assert.equal(act(r, p, 'gulfJoin', c.id).ok, true);
+    updateGulf(r, 10000);
+    assert.equal(p.species, 'nea');
+  }
+  assert.equal(p.gulf.visited.length, 3);
+  assert.equal(p.gulf.countryId, COUNTRIES[2].id);
 });
 
 test('obsidian exchange and shared feast account for costs and issue each reward at most once per feast', () => {

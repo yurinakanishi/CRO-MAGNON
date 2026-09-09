@@ -2,31 +2,36 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import * as THREE from 'three';
 import { ENEMY_CLIPS, enemyAnimationState, requireEnemyClips, playerDamageEvent, playerRecovered } from '../dist/src/enemy-state.js';
-import { selectedCombatTarget, approachAnimal, approachEnemyGround, attackReady, huntInteraction } from '../dist/src/hunting-ui.js';
+import { selectedCombatTarget, attackReady, huntInteraction } from '../dist/src/hunting-ui.js';
 import { canStartAttack } from '../dist/src/combat-input.js';
 import { WorldAssets } from '../dist/src/world-assets.js';
 import { FrameClock } from '../dist/src/frame-clock.js';
 
 test('hostile threat replaces a distant mammoth selection without targeting friendly NPCs', () => {
-  const player={id:'p',x:0,z:0,radius:.32},animal={id:'m',x:20,z:0,radius:1.9,phase:'alive'};
-  const enemy={id:'e',hostile:true,x:6,z:0,radius:.48,phase:'alive'};
-  const state={animals:[animal],enemies:[{id:'npc',hostile:false,x:1,z:0,phase:'alive'},enemy]};
-  assert.equal(selectedCombatTarget(state,player,'m'),enemy);
-  assert.equal(selectedCombatTarget({...state,enemies:[{...enemy,phase:'respawning'}]},player,'e'),animal);
-  const dead={...enemy,phase:'dead'};
-  assert.equal(selectedCombatTarget({...state,enemies:[dead]},player,'e'),dead);
-  const point=approachAnimal(player,enemy);
-  assert.ok(Math.hypot(point.x-enemy.x,point.z-enemy.z)>enemy.radius+player.radius);
-  assert.equal(attackReady({...player,...point},enemy),true);
-  assert.equal(huntInteraction({camp:{x:50,z:50},enemies:[dead],animals:[]},{...player,inventory:{}}),null);
-  const ground={x:45,z:16};
-  for(const offset of [[0,30],[30,0],[-30,0],[0,-30],[0,0]]){
-    const goal=approachEnemyGround({x:ground.x+offset[0],z:ground.z+offset[1]},ground);
-    for(let angle=0;angle<Math.PI*2;angle+=.2){
-      const roaming={x:ground.x+Math.sin(angle)*3.2,z:ground.z+Math.cos(angle)*3.2};
-      assert.ok(Math.hypot(goal.x-roaming.x,goal.z-roaming.z)<8);
-    }
-  }
+  const player = { id: 'p', x: 0, z: 0, radius: 0.32 },
+    animal = { id: 'm', x: 20, z: 0, radius: 1.9, phase: 'alive' };
+  const enemy = { id: 'e', hostile: true, x: 6, z: 0, radius: 0.48, phase: 'alive' };
+  const state = {
+    animals: [animal],
+    enemies: [{ id: 'npc', hostile: false, x: 1, z: 0, phase: 'alive' }, enemy],
+  };
+  assert.equal(selectedCombatTarget(state, player, 'm'), enemy);
+  assert.equal(
+    selectedCombatTarget({ ...state, enemies: [{ ...enemy, phase: 'respawning' }] }, player, 'e'),
+    animal,
+  );
+  const dead = { ...enemy, phase: 'dead' };
+  assert.equal(selectedCombatTarget({ ...state, enemies: [dead] }, player, 'e'), dead);
+  const point = { x: enemy.x - 1.3, z: enemy.z };
+  assert.ok(Math.hypot(point.x - enemy.x, point.z - enemy.z) > enemy.radius + player.radius);
+  assert.equal(attackReady({ ...player, ...point }, enemy), true);
+  assert.equal(
+    huntInteraction(
+      { camp: { x: 50, z: 50 }, enemies: [dead], animals: [] },
+      { ...player, inventory: {} },
+    ),
+    null,
+  );
 });
 
 test('enemy one-shots seek authoritative attack, hit and death times, while hidden phases stop', () => {

@@ -1,9 +1,6 @@
 import {
   COUNTRIES,
   FARM_PLOTS,
-  GULF,
-  GULF_ENTRY,
-  GULF_WAYPOINTS,
   GULF_STOPS,
   inGulf,
   LANDINGS,
@@ -54,7 +51,7 @@ export function gulfInteraction(state, me, collision) {
   return null;
 }
 export function installGulfUI(api) {
-  const { player, state, available, action, goTo, notify, openModal, send, stopInput } = api;
+  const { player, state, available, action, openModal } = api;
   const pantry = installPantryUI(api, () => open());
   const barter = installBarterUI(api, () => open());
   let selected: string = MANY_HEARTHS.id,
@@ -65,7 +62,6 @@ export function installGulfUI(api) {
     'afterend',
     '<button id="gulf-button" class="adventure-launch gulf-launch"><span>◈ 三つの岸の湾</span><small id="gulf-status">国・畑・魚場</small></button>',
   );
-  const close = () => document.querySelector<HTMLDialogElement>('#modal').close();
   const at = (point, range = 9) => distance(player(), point) <= range;
   function open(requestedPlot?: string) {
     if (player() && inGulf(player().x, player().z)) {
@@ -166,7 +162,7 @@ export function installGulfUI(api) {
     const btn = (id, label, disabled = false, target = '') =>
       `<button class="button button-outline" id="${id}" ${blocked || disabled ? 'disabled' : ''} ${target ? `data-target="${target}"` : ''}>${label}</button>`;
     $('#gulf-detail').innerHTML =
-      `<div class="gulf-banner" style="--gulf-color:${c?.color ?? '#d8ba78'}"><small>${c?.motto ?? '誰の旅も、ここで交わる'}</small><h3>${settlement.name}</h3><p>${c?.environment ?? '湾奥の浜と水場に近い共同の集い場。訪問者の天幕、作業の炉、畑、舟を引き上げる浜が集まる。'}</p></div>${c ? `<p class="gulf-story">${c.craft} ${c.custom}</p>` : '<p class="gulf-story">木材、実り、黒曜石を持ち寄り、宴を開こう。品を渡すだけでなく、種や技を教え合う場所。</p>'}<div class="gulf-actions">${btn('gulf-travel', local ? 'ここへ歩く' : '湾の集い場へ遠征')}${c ? btn('gulf-join', me?.gulf?.countryId === c.id ? 'この国に所属中' : 'この国の仲間になる', !nearCamp || me?.gulf?.countryId === c.id) : btn('gulf-welcome', me?.gulf?.welcomed ? '旅支度は受取済み' : '旅支度を受け取る', !nearHearth || !!me?.gulf?.welcomed)}${btn('gulf-seeds', `ベリー2 → ${cropById(chosenCrop).seedName}2`, !nearCamp || (inv.berry ?? 0) < 2 || (inv[cropById(chosenCrop).seed] ?? 0) > 97)}</div>
+      `<div class="gulf-banner" style="--gulf-color:${c?.color ?? '#d8ba78'}"><small>${c?.motto ?? '誰の旅も、ここで交わる'}</small><h3>${settlement.name}</h3><p>${c?.environment ?? '湾奥の浜と水場に近い共同の集い場。訪問者の天幕、作業の炉、畑、舟を引き上げる浜が集まる。'}</p></div>${c ? `<p class="gulf-story">${c.craft} ${c.custom}</p>` : '<p class="gulf-story">木材、実り、黒曜石を持ち寄り、宴を開こう。品を渡すだけでなく、種や技を教え合う場所。</p>'}<div class="gulf-actions">${c ? btn('gulf-join', me?.gulf?.countryId === c.id ? 'この国に所属中' : 'この国の仲間になる', !nearCamp || me?.gulf?.countryId === c.id) : btn('gulf-welcome', me?.gulf?.welcomed ? '旅支度は受取済み' : '旅支度を受け取る', !nearHearth || !!me?.gulf?.welcomed)}${btn('gulf-seeds', `ベリー2 → ${cropById(chosenCrop).seedName}2`, !nearCamp || (inv.berry ?? 0) < 2 || (inv[cropById(chosenCrop).seed] ?? 0) > 97)}</div>
       <div class="gulf-columns"><section class="gulf-card" id="gulf-farm-card"><h4>共同の畑 <small>12区画</small></h4><p>誰でも植え、育て、収穫できます。種は上の交換ボタンから、各集落の炉で用意できます。</p>
       <label class="crop-choice" for="gulf-crop-choice">次に植える作物・交換する種<select id="gulf-crop-choice">${CROPS.map((c) => `<option value="${c.id}" ${c.id === chosenCrop ? 'selected' : ''}>${c.name} · 種 ${inv[c.seed] ?? 0}</option>`).join('')}</select></label><p id="gulf-crop-guide">${cropById(chosenCrop).use} 水${cropById(chosenCrop).water} · 今の季節は${cropGrowMs(cropById(chosenCrop), season.growMs) / 1000}秒。</p>
       <div class="gulf-plots" role="group" aria-label="共同の畑">${FARM_PLOTS.filter(
@@ -180,7 +176,7 @@ export function installGulfUI(api) {
         })
         .join(
           '',
-        )}</div><p id="gulf-plot-state">${crop.name} · ${stageName[plot?.stage ?? 'empty']}${remaining ? ` · あと ${remaining}秒` : ''}<br>収穫：${cropHarvestText(crop)}<br>${crop.seedName} ${inv[crop.seed] ?? 0} · 水 ${inv.water ?? 0}/6</p><div class="gulf-actions">${btn('gulf-plot-go', 'この畑へ', !local)}${btn('gulf-farm', plot?.stage === 'planted' ? `水をやる（水${crop.water}）` : plot?.stage === 'ripe' ? `${crop.name}を収穫する` : `${crop.name}を植える（種1）`, !at(spec, 5) || plot?.stage === 'growing' || (plot?.stage === 'planted' ? (inv.water ?? 0) < crop.water : plot?.stage === 'ripe' ? (inv[crop.harvest] ?? 0) > 99 - crop.yield || (inv[crop.seed] ?? 0) > 97 : (inv[crop.seed] ?? 0) < 1))}${btn('gulf-spring-go', '水場へ', !local)}${btn('gulf-water', '水袋を満たす', !at(spring, 5))}${btn('gulf-crop-food', '火根と香草の食事')}</div></section>
+        )}</div><p id="gulf-plot-state">${crop.name} · ${stageName[plot?.stage ?? 'empty']}${remaining ? ` · あと ${remaining}秒` : ''}<br>収穫：${cropHarvestText(crop)}<br>${crop.seedName} ${inv[crop.seed] ?? 0} · 水 ${inv.water ?? 0}/6</p><div class="gulf-actions">${btn('gulf-farm', plot?.stage === 'planted' ? `水をやる（水${crop.water}）` : plot?.stage === 'ripe' ? `${crop.name}を収穫する` : `${crop.name}を植える（種1）`, !at(spec, 5) || plot?.stage === 'growing' || (plot?.stage === 'planted' ? (inv.water ?? 0) < crop.water : plot?.stage === 'ripe' ? (inv[crop.harvest] ?? 0) > 99 - crop.yield || (inv[crop.seed] ?? 0) > 97 : (inv[crop.seed] ?? 0) < 1))}${btn('gulf-water', '水袋を満たす', !at(spring, 5))}${btn('gulf-crop-food', '火根と香草の食事')}</div></section>
       <section class="gulf-card"><h4>持ち寄りと交換 <small>宴 ${world.gulf?.festivals ?? 0}回</small></h4><p>集い場の炉で交換・寄付できます。人数にかかわらず少しずつ準備できます。</p><div class="gulf-stores">${Object.entries(
         GATHERING_NEEDS,
       )
@@ -190,11 +186,11 @@ export function installGulfUI(api) {
         )
         .join(
           '',
-        )}</div><div class="gulf-actions">${btn('gulf-offer-wood', '木材2を届ける', !nearHearth)}${btn('gulf-offer-berry', 'ベリー3を届ける', !nearHearth)}${btn('gulf-offer-obsidian', '黒曜石1を届ける', !nearHearth)}${btn('gulf-exchange', '黒曜石2 → 木材6・種2', !nearHearth)}${btn('gulf-feast', '宴を囲む', !nearHearth || (world.gulf?.festivals ?? 0) <= (me?.gulf?.lastFeast ?? 0))}</div><p>黒曜石は西の尾根の露頭で採集。木材は舟や道具へ、種は次の畑へ。</p>${btn('gulf-quarry', '黒曜石の露頭へ歩く', !local)}</section></div>
-      <section class="gulf-routes"><h4>湾を巡る道</h4><p>五つの浜と二つの沖の魚場で釣ろう。焼き魚1を食料3として宴に持ち寄れます。</p><button id="gulf-fishing" class="button button-outline">魚場と釣り方</button><p>湾奥を回る陸路はいつでも使えます。浜で木材12から小舟を作り、Bで乗降。対岸への短い航路も使えます。</p><div class="gulf-actions">${LANDINGS.map((l) => btn(`go-${l.id}`, l.name, !local)).join('')}${btn('gulf-return', 'はじまりの谷へ遠征')}</div></section>`;
+        )}</div><div class="gulf-actions">${btn('gulf-offer-wood', '木材2を届ける', !nearHearth)}${btn('gulf-offer-berry', 'ベリー3を届ける', !nearHearth)}${btn('gulf-offer-obsidian', '黒曜石1を届ける', !nearHearth)}${btn('gulf-exchange', '黒曜石2 → 木材6・種2', !nearHearth)}${btn('gulf-feast', '宴を囲む', !nearHearth || (world.gulf?.festivals ?? 0) <= (me?.gulf?.lastFeast ?? 0))}</div><p>黒曜石は西の尾根の露頭で採集。木材は舟や道具へ、種は次の畑へ。</p></section></div>
+      <section class="gulf-routes"><h4>湾を巡る道</h4><p>五つの浜と二つの沖の魚場で釣ろう。焼き魚1を食料3として宴に持ち寄れます。</p><button id="gulf-fishing" class="button button-outline">魚場と釣り方</button><p>湾奥を回る陸路はいつでも使えます。浜で木材12から小舟を作り、Bで乗降。対岸への短い航路も使えます。</p><div class="gulf-actions">${LANDINGS.map((l) => `<span class="gulf-card">${l.name}</span>`).join('')}</div></section>`;
     $('#gulf-detail').insertAdjacentHTML(
       'beforeend',
-      `<section class="gulf-routes"><h4>六つの休み場を巡る <small>${me?.gulf?.waymarks?.length ?? 0}/${GULF_STOPS.length}</small></h4><p>湾は1,480 × 1,340 m。炉のそばでE／×を使い、道を記録しよう。各地で水と採集資源を補給できます。</p><div class="gulf-stop-list">${GULF_STOPS.map((s) => `<article class="gulf-card"><h4>${s.name}${me?.gulf?.waymarks?.includes(s.id) ? ' · 記録済み' : ''}</h4><p>${s.description}</p><div class="gulf-actions">${btn(`trail-go-${s.id}`, 'ここへ歩く', !local)}${btn(`trail-record-${s.id}`, '旅路を記録する', !at(s, 8) || me?.gulf?.waymarks?.includes(s.id))}</div></article>`).join('')}</div><p>すべて巡って集い場へ戻ると、次の旅の木材6・種4を一度受け取れます。</p>${btn('gulf-trail-reward', me?.gulf?.trailRewarded ? '旅路のお礼は受取済み' : '集い場で旅路を伝える', !nearHearth || !!me?.gulf?.trailRewarded || !GULF_STOPS.every((s) => me?.gulf?.waymarks?.includes(s.id)))}</section>`,
+      `<section class="gulf-routes"><h4>六つの休み場を巡る <small>${me?.gulf?.waymarks?.length ?? 0}/${GULF_STOPS.length}</small></h4><p>湾は1,480 × 1,340 m。炉のそばでE／×を使い、道を記録しよう。各地で水と採集資源を補給できます。</p><div class="gulf-stop-list">${GULF_STOPS.map((s) => `<article class="gulf-card"><h4>${s.name}${me?.gulf?.waymarks?.includes(s.id) ? ' · 記録済み' : ''}</h4><p>${s.description}</p><div class="gulf-actions">${btn(`trail-record-${s.id}`, '旅路を記録する', !at(s, 8) || me?.gulf?.waymarks?.includes(s.id))}</div></article>`).join('')}</div><p>すべて巡って集い場へ戻ると、次の旅の木材6・種4を一度受け取れます。</p>${btn('gulf-trail-reward', me?.gulf?.trailRewarded ? '旅路のお礼は受取済み' : '集い場で旅路を伝える', !nearHearth || !!me?.gulf?.trailRewarded || !GULF_STOPS.every((s) => me?.gulf?.waymarks?.includes(s.id)))}</section>`,
     );
     $('#gulf-fishing').insertAdjacentHTML(
       'afterend',
@@ -222,19 +218,7 @@ export function installGulfUI(api) {
         '<button id="gulf-barter" class="button button-outline">旅人と物々交換</button>',
       );
     bind('gulf-barter', () => barter.open());
-    bind('gulf-travel', () => {
-      if (local) goTo(settlement.x, settlement.z + 5, settlement.name);
-      else {
-        stopInput();
-        send({ type: 'expedition', destination: GULF_ENTRY.id });
-        close();
-      }
-    });
-    bind('gulf-return', () => {
-      stopInput();
-      send({ type: 'expedition', destination: 'grassland' });
-      close();
-    });
+
     bind('gulf-join', () => action('gulfJoin', selected));
     bind('gulf-welcome', () => action('gulfWelcome'));
     bind('gulf-seeds', () => action('gulfSeeds', undefined, chosenCrop));
@@ -243,8 +227,7 @@ export function installGulfUI(api) {
       chosenCrop = (event.target as HTMLSelectElement).value;
       update();
     };
-    bind('gulf-plot-go', () => goTo(spec.x, spec.z + 1.3, '選んだ畑'));
-    bind('gulf-spring-go', () => goTo(spring.x, spring.z + 2, spring.name));
+
     bind('gulf-water', () => action('gulfWater', spring.id));
     bind('gulf-farm', () =>
       action(
@@ -263,14 +246,9 @@ export function installGulfUI(api) {
     bind('gulf-feast', () => action('gulfFeast'));
     bind('gulf-trail-reward', () => action('gulfTrailReward'));
     for (const stop of GULF_STOPS) {
-      bind(`trail-go-${stop.id}`, () => goTo(stop.x, stop.z + 5, stop.name));
       bind(`trail-record-${stop.id}`, () => action('gulfSurvey', stop.id));
     }
-    bind('gulf-quarry', () => {
-      const p = GULF_WAYPOINTS.find((p) => p.id === 'obsidian-path');
-      goTo(p.x, p.z, p.name);
-    });
-    for (const l of LANDINGS) bind(`go-${l.id}`, () => goTo(l.x, l.z, l.name));
+
     document.querySelectorAll<HTMLButtonElement>('[data-plot]').forEach(
       (b) =>
         (b.onclick = () => {

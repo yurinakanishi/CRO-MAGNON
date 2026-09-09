@@ -1,6 +1,5 @@
 import { movePlayer } from '../shared/movement.mjs';
 import { attackProfile } from '../shared/combat-profiles.mjs';
-import { planNavigation, updateNavigation } from '../shared/navigation.mjs';
 
 /** Display-only simulation. Inventory, combat outcomes and world state stay authoritative. */
 export class LocalPrediction {
@@ -9,7 +8,6 @@ export class LocalPrediction {
   receivedAt = -Infinity;
   input = { dx: 0, dz: 0, running: false };
   inputAt = -Infinity;
-  target: { x: number; z: number } | null = null;
   enabled = false;
   latencyMs = 0;
 
@@ -19,17 +17,14 @@ export class LocalPrediction {
     this.receivedAt = -Infinity;
     this.input = { dx: 0, dz: 0, running: false };
     this.inputAt = -Infinity;
-    this.target = null;
   }
   setInput(dx: number, dz: number, running: boolean, now: number) {
     this.input = { dx, dz, running };
     this.inputAt = now;
-    if (dx || dz) this.target = null;
   }
   stop() {
     this.input = { dx: 0, dz: 0, running: false };
     this.inputAt = -Infinity;
-    this.target = null;
     if (this.actor) {
       this.actor.target = null;
       this.actor.navigationGoal = null;
@@ -85,14 +80,6 @@ export class LocalPrediction {
       lastInput: now,
       runningRequested: input.running,
     });
-    if (this.target) {
-      if (!p.navigationGoal) planNavigation(p, this.target, collision, obstacles, now);
-      updateNavigation(p, collision, obstacles, now);
-      if (!p.navigationGoal) this.target = null;
-    } else {
-      p.target = null;
-      p.navigationGoal = null;
-    }
     // A small, bounded RTT estimate covers the packet's trip; the next snapshot
     // still corrects the position. No client clock is trusted by the server.
     const age = Math.min(100, Math.max(0, this.latencyMs / 2));

@@ -51,7 +51,8 @@ test('the kunoichi uses a katana over the public action protocol and holds posit
   stopActor(animal);Object.assign(animal,{x:20,z:22,radius:.5,health:100,age:40,nextRoam:200});Object.assign(p,{x:20,z:20.55,facing:0});
   c.send({type:'action',action:'attack',targetId:animal.id,damage:999,weapon:'magic'});
   await c.wait(m=>m.type==='state'&&m.players[0].attackSequence===1);assert.equal(p.radius,.32);
-  c.send({type:'target',x:24,z:20.55,running:true});
+  const heldInput=setInterval(()=>c.send({type:'move',dx:1,dz:0,running:true}),100);
+  t.after(()=>clearInterval(heldInput));
   await c.wait(m=>m.type==='state'&&m.animals[0].health===75);assert.equal(p.x,20);assert.equal(room.projectiles.length,0);
   const attackAt=p.attackAt,afterHit=c.messages.length;await c.wait(m=>m.type==='state'&&m.players[0].x>20.04,afterHit);
   assert.ok(Date.now()-attackAt>=600);assert.equal(p.attackSequence,1);assert.equal(animal.health,75);

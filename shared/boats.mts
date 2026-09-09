@@ -4,7 +4,6 @@ import { stopActor } from './combat.mjs';
 import { attackProfile } from './combat-profiles.mjs';
 import { movePlayer } from './movement.mjs';
 import { maritimeWeather, seaBoatSpeed } from './maritime-weather.mjs';
-import { updateNavigation } from './navigation.mjs';
 
 export const BOATING = Object.freeze({
   version: 1,
@@ -229,7 +228,6 @@ export function updateBoats(room, dt, now) {
       continue;
     }
     const dynamic = boatObstacles(room, boat);
-    updateNavigation(boat, room.seaCollision, dynamic, now);
     movePlayer(
       boat,
       dt,

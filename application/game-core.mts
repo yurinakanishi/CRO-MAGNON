@@ -16,7 +16,6 @@ import { actorObstacle, createAnimals, updateAnimals } from '../shared/animals.m
 import {
   BOATING,
   boardedBoat,
-  boatObstacles,
   initializeBoats,
   releaseBoat,
   updateBoats,
@@ -29,15 +28,13 @@ import { updateSuppers } from '../shared/supper.mjs';
 import { updateForaging } from '../shared/foraging.mjs';
 import { enemyIsSolid, stopActor } from '../shared/combat.mjs';
 import { createEnemies, updateEnemies } from '../shared/enemies.mjs';
-import { takeExpedition } from '../shared/expeditions.mjs';
 import { animalIsSolid, updateHunting } from '../shared/hunting.mjs';
 import { movePlayer } from '../shared/movement.mjs';
 import { canStartJump, jumpProgress } from '../shared/jumping.mjs';
-import { planNavigation, updateNavigation } from '../shared/navigation.mjs';
-import { isLand } from '../shared/paleo-geography.mjs';
-import { RIDING, mountedAnimal, releaseRider, ridingObstacles } from '../shared/riding.mjs';
+
+import { RIDING, mountedAnimal, releaseRider } from '../shared/riding.mjs';
 import { SCENERY } from '../shared/scenery-layout.mjs';
-import { CAMP, INITIAL_RESOURCES, WORLD, worldClamp } from '../shared/world.mjs';
+import { CAMP, INITIAL_RESOURCES, WORLD } from '../shared/world.mjs';
 import { createActionHandler } from './actions.mjs';
 import { defaultRuntime, type GameConnection, type Runtime } from './ports.mjs';
 import { decodeCommand } from './protocol.mjs';
@@ -212,7 +209,6 @@ export function createGameCore({
         speed: 0,
         radius: WORLD.playerRadius,
         path: [],
-        lastTarget: 0,
         dx: 0,
         dz: 0,
         target: null,
@@ -273,7 +269,6 @@ export function createGameCore({
       tokens: 70,
       refillAt: now,
       lastInput: 0,
-      lastTarget: 0,
       lastAction: 0,
       lastChat: 0,
       jumpAt: 0,
@@ -330,7 +325,7 @@ export function createGameCore({
         return;
       }
       const controlled = boardedBoat(room, player) || mountedAnimal(room, player) || player;
-      if (player.downedUntil && ['move', 'gait', 'target', 'action'].includes(message.type)) {
+      if (player.downedUntil && ['move', 'gait', 'action'].includes(message.type)) {
         if (message.type === 'action')
           notice(player, '回復を待っています。間もなく焚き火へ戻ります。', 'info');
         return;
@@ -354,65 +349,6 @@ export function createGameCore({
         controlled.navigationEnd = null;
       } else if (message.type === 'gait' && typeof message.running === 'boolean') {
         controlled.runningRequested = message.running;
-      } else if (
-        message.type === 'target' &&
-        Number.isFinite(message.x) &&
-        Number.isFinite(message.z) &&
-        now - player.lastTarget >= 180
-      ) {
-        cancelFishing(player);
-        cancelCoastal(player);
-        cancelBarter(room, player.id, now, '移動を始めたので、交換を中止しました。');
-        player.lastTarget = now;
-        controlled.runningRequested = message.running === true;
-        const goal = { x: worldClamp(message.x, 'x'), z: worldClamp(message.z, 'z') };
-        if (!player.boatId && !isLand(goal.x, goal.z)) {
-          stopActor(controlled);
-          notice(player, 'そこは海です。海岸で木材12個から船を作り、Bで乗って渡ろう。');
-          return;
-        }
-        const dynamic = player.boatId
-          ? boatObstacles(room, controlled)
-          : ridingObstacles(room, controlled === player ? null : controlled, player);
-        if (
-          !planNavigation(
-            controlled,
-            goal,
-            player.boatId ? room.seaCollision : room.collision,
-            dynamic,
-            now,
-          )
-        ) {
-          if (player.boatId) {
-            stopActor(controlled);
-            notice(
-              player,
-              '船が通れる航路が見つかりません。近くの海面を選ぶか、WASDで操船しよう。',
-            );
-          } else if (player.mountId) {
-            stopActor(controlled);
-            notice(player, 'マンモスが通れる道が見つかりません。広い道を選ぶか、Rで降りて進もう。');
-          } else {
-            stopActor(controlled);
-            notice(
-              player,
-              '歩ける経路が見つかりません。近くの陸地を選ぶか、世界地図から遠征しよう。',
-            );
-          }
-        }
-        controlled.dx = 0;
-        controlled.dz = 0;
-      } else if (message.type === 'expedition' && typeof message.destination === 'string') {
-        if (jumpProgress(player, now) !== null) {
-          notice(player, '着地してから遠征しよう。');
-          return;
-        }
-        cancelBarter(room, player.id, now, '遠征を始めたので、交換を中止しました。');
-        cancelFishing(player);
-        cancelCoastal(player);
-        const result = takeExpedition(room, player, message.destination, now);
-        notice(player, result.text, result.ok ? 'success' : 'info');
-        if (result.ok) broadcast(room, snapshot(room, true));
       } else if (
         message.type === 'action' &&
         typeof message.action === 'string' &&
@@ -498,7 +434,6 @@ export function createGameCore({
         continue;
       }
       for (const player of room.players.values()) {
-        if (!player.target) player.target = player.path.shift() || null;
         const dynamic = [...room.players.values()]
           .filter((p) => p !== player)
           .concat(
@@ -515,7 +450,6 @@ export function createGameCore({
           player.moving = false;
           player.running = false;
         } else if (!player.mountId && !player.boatId) {
-          updateNavigation(player, room.collision, dynamic, now);
           movePlayer(player, dt, now, (p, dx, dz) =>
             room.collision.move(p, dx, dz, player.radius, dynamic),
           );

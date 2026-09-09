@@ -288,6 +288,7 @@ body[data-screen] .world-loading,body[data-screen] .tps-reticle,body[data-screen
 .cooking-status button{color:#e4c5a3;background:none;padding:2px 6px;font-size:10px}
 .cooking-status[hidden]{display:none}
 .riding-controls{display:flex;justify-content:center;align-items:center;gap:10px;padding:4px 9px;border:1px solid #e8dcb524;border-radius:8px;background:#141d18e0;pointer-events:auto}
+.riding-controls[hidden],#boat-board[hidden]{display:none}
 .riding-controls small{font-size:10px;color:#c4cab8}
 .riding-controls .mounted{background:#556044;border-color:#d5bf87}
 .boat-controls{display:flex;justify-content:center;align-items:center;gap:8px;padding:4px 8px;background:#183038ee;border:1px solid #97c4d030;border-radius:8px;pointer-events:auto}

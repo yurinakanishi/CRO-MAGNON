@@ -1,5 +1,6 @@
 import type { ViewState } from './view-state.js';
 import { LocalPrediction } from './local-prediction.js';
+import { canMount } from '../shared/riding.mjs';
 import { enemyIsSolid } from '../shared/combat.mjs';
 import { activateMiddenObstacle } from '../shared/coastal-sites.mjs';
 import { CoastalRenderer } from './coastal-renderer.js';
@@ -18,7 +19,7 @@ import {
   clamp,
   movementFromCamera,
 } from '../shared/terrain.mjs';
-import { WORLD, worldClamp, CAMP, NPC, INITIAL_RESOURCES } from '../shared/world.mjs';
+import { WORLD, CAMP, NPC, INITIAL_RESOURCES } from '../shared/world.mjs';
 import { WorldAssets } from './world-assets.js';
 import { WorldLandmarks } from './world-landmarks.js';
 import {
@@ -78,7 +79,6 @@ export class WorldRenderer {
   declare releaseBridgeSampler: () => void;
 
   declare canvas: any;
-  declare onMoveTarget: (x: number, z: number) => void;
   declare onAnimal: (id: string) => void;
   declare onError: (text: string) => void;
   declare state: ViewState;
@@ -153,7 +153,6 @@ export class WorldRenderer {
   declare npcActor: any;
   declare npc: any;
   declare failed: boolean | undefined;
-  declare marker: THREE.Group<THREE.Object3DEventMap> | undefined;
   declare down: ((e: any) => void) | undefined;
   declare pointer:
     | {
@@ -169,7 +168,6 @@ export class WorldRenderer {
     | undefined;
   declare move: ((e: any) => void) | undefined;
   declare up: ((e: any) => void) | undefined;
-  declare markerUntil: number | undefined;
   declare cancel: (() => void) | undefined;
   declare wheel: ((e: any) => void) | undefined;
   declare context: ((e: any) => any) | undefined;
@@ -181,16 +179,8 @@ export class WorldRenderer {
   declare simulationMs: any;
   declare submissionMs: any;
 
-  constructor(
-    canvas,
-    {
-      onMoveTarget = (_x: number, _z: number) => {},
-      onAnimal = (_id: string) => {},
-      onError = (_text: string) => {},
-    } = {},
-  ) {
+  constructor(canvas, { onAnimal = (_id: string) => {}, onError = (_text: string) => {} } = {}) {
     this.canvas = canvas;
-    this.onMoveTarget = onMoveTarget;
     this.onAnimal = onAnimal;
     this.onError = onError;
     this.state = { players: [], resources: INITIAL_RESOURCES, camp: CAMP, npc: NPC };
@@ -258,7 +248,6 @@ export class WorldRenderer {
     canvas.parentElement.append(this.labelLayer);
     this.setupLighting();
     this.atmosphere = new WorldAtmosphere(this);
-    this.createNavigation();
     this.setupInput();
     this.resizeObserver = new ResizeObserver(() => this.resize());
     this.resizeObserver.observe(canvas);
@@ -389,26 +378,6 @@ export class WorldRenderer {
     this.loadingLabel?.remove();
     this.onError(message);
     console.error(message, error);
-  }
-
-  createNavigation() {
-    this.marker = new THREE.Group();
-    const ring = mesh(
-      new THREE.RingGeometry(0.43, 0.5, 36),
-      new THREE.MeshBasicMaterial({
-        color: '#d7ca8d',
-        transparent: true,
-        opacity: 0.85,
-        side: THREE.DoubleSide,
-        depthWrite: false,
-      }),
-      this.marker,
-    );
-    ring.rotation.x = -Math.PI / 2;
-    const dot = mesh(new THREE.CircleGeometry(0.09, 12), ring.material, this.marker, [0, 0.008, 0]);
-    dot.rotation.x = -Math.PI / 2;
-    this.marker.visible = false;
-    this.scene.add(this.marker);
   }
 
   createLabel(text, kind, position, subtitle = '') {
@@ -556,19 +525,6 @@ export class WorldRenderer {
           ),
           this.camera,
         );
-        if (this.players.get(this.selfId)?.state.boatId) {
-          const sea = new THREE.Plane(new THREE.Vector3(0, 1, 0), -BOATING.waterY),
-            point = new THREE.Vector3();
-          if (this.raycaster.ray.intersectPlane(sea, point) && !isLand(point.x, point.z)) {
-            const x = worldClamp(point.x, 'x'),
-              z = worldClamp(point.z, 'z');
-            this.onMoveTarget(x, z);
-            this.marker.position.set(x, BOATING.waterY + 0.065, z);
-            this.marker.visible = true;
-            this.markerUntil = performance.now() + 6500;
-          }
-          return;
-        }
         const animalRoots = [
           ...this.mammoths.flatMap((animal) => [animal.model, animal.meat]),
           ...[...this.enemies.values()].map((enemy) => enemy.model),
@@ -581,26 +537,6 @@ export class WorldRenderer {
             this.onAnimal(root.userData.animalId);
             return;
           }
-        }
-        const hits = this.raycaster.intersectObjects(
-          [this.terrain, this.bridge, this.landmarks?.instances.get('valley-castle')].filter(
-            Boolean,
-          ),
-          true,
-        );
-        const hit = hits.find(
-          (h) =>
-            isLand(h.point.x, h.point.z) &&
-            Math.abs(h.point.y - walkHeight(h.point.x, h.point.z)) < 0.8 &&
-            this.collision.free(h.point, 0.05),
-        )?.point;
-        if (hit) {
-          const x = worldClamp(hit.x, 'x'),
-            z = worldClamp(hit.z, 'z');
-          this.onMoveTarget(x, z);
-          this.marker.position.set(x, walkHeight(x, z) + 0.065, z);
-          this.marker.visible = true;
-          this.markerUntil = performance.now() + 6500;
         }
       }
     };
@@ -947,7 +883,16 @@ export class WorldRenderer {
           ? `Eで採る · 残り${state.meatRemaining}個`
           : state.riderId
             ? '仲間が騎乗中'
-            : 'Rで乗る · Fで攻撃',
+            : canMount(
+                  this.players.get(this.selfId)?.state,
+                  state,
+                  this.collision,
+                  this.serverNow(),
+                )
+              ? document.body.classList.contains('using-gamepad')
+                ? '△ で乗る'
+                : 'R で乗る'
+              : '自分で近づいて調べよう',
       );
       if (animal.health.hidden !== (phase !== 'alive')) animal.health.hidden = phase !== 'alive';
       if (animal.health.max !== (state.maxHealth ?? 100))
@@ -1248,10 +1193,6 @@ export class WorldRenderer {
       }
     }
     if (this.motes) this.motes.rotation.y = Math.sin(time * 0.02) * 0.03;
-    if (this.marker.visible) {
-      this.marker.rotation.y = time * 0.25;
-      this.marker.visible = performance.now() < this.markerUntil;
-    }
     if (time >= this.nextShadowUpdate) {
       this.renderer.shadowMap.needsUpdate = true;
       this.nextShadowUpdate = time + 1 / 15;

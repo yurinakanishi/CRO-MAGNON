@@ -6,7 +6,7 @@ import {
 } from '../shared/hunting.mjs';
 import { WORLD } from '../shared/world.mjs';
 import { withinAttackReach } from '../shared/combat.mjs';
-import { attackProfile } from '../shared/combat-profiles.mjs';
+
 import { interactionVisible } from '../shared/interactions.mjs';
 import { CROP_INVENTORY } from '../shared/crops.mjs';
 
@@ -115,29 +115,4 @@ export function attackReady(player, animal) {
     animal?.phase === 'alive' &&
     withinAttackReach({ ...player, radius: player.radius ?? WORLD.playerRadius }, animal)
   );
-}
-
-export function approachAnimal(player, animal) {
-  const dx = player.x - animal.x,
-    dz = player.z - animal.z,
-    length = Math.hypot(dx, dz);
-  const gap = Math.min(0.9, attackProfile(player).reach - 0.15);
-  const radius =
-    animal.phase === 'meat' ? 1 : animal.radius + (player.radius ?? WORLD.playerRadius) + gap;
-  return {
-    x: animal.x + (length ? dx / length : 0) * radius,
-    z: animal.z + (length ? dz / length : 1) * radius,
-  };
-}
-
-export function approachEnemyGround(player, ground) {
-  const dx = player.x - ground.x,
-    dz = player.z - ground.z,
-    length = Math.hypot(dx, dz);
-  // Three metres from home stays inside aggro even if the enemy completes its
-  // full 3.2 m roam while the player is walking from camp.
-  return {
-    x: ground.x + (length ? dx / length : 0) * 3,
-    z: ground.z + (length ? dz / length : 1) * 3,
-  };
 }

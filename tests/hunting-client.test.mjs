@@ -2,7 +2,12 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import * as THREE from 'three';
 import { HUNTING } from '../dist/shared/hunting.mjs';
-import { inventoryCounts, selectedHuntTarget, huntInteraction, attackReady, approachAnimal } from '../dist/src/hunting-ui.js';
+import {
+  inventoryCounts,
+  selectedHuntTarget,
+  huntInteraction,
+  attackReady,
+} from '../dist/src/hunting-ui.js';
 import { orientSpear } from '../dist/src/spear-pose.js';
 import { WorldAssets } from '../dist/src/world-assets.js';
 
@@ -15,19 +20,16 @@ test('hunting controls normalize legacy inventory and prioritize harvest or cook
   assert.equal(huntInteraction(state,{...me,cookingEndsAt:1000}).action,'cancelCook');
 });
 
-test('target selection and approach keep the player outside the animal but in spear reach', () => {
-  const me={x:0,z:0,radius:.32},a={id:'a',x:10,z:12,radius:1.9,phase:'alive'},b={id:'b',x:20,z:20,radius:2,phase:'alive'};
-  assert.equal(selectedHuntTarget([a,b],me).id,'a');
-  assert.equal(selectedHuntTarget([a,b],me,'b').id,'b');
-  assert.equal(selectedHuntTarget([a,{...b,phase:'respawning'}],me,'b').id,'a');
-  assert.equal(attackReady(me,a),false);
-  const point=approachAnimal(me,a),d=Math.hypot(point.x-a.x,point.z-a.z);
-  assert.ok(d>a.radius+me.radius);assert.ok(d<a.radius+me.radius+HUNTING.spearReach);
-  assert.equal(attackReady({...me,...point},a),true);
-  for(const offset of [[0,5],[5,0],[0,-5],[-5,0],[0,0]]){
-    const target=approachAnimal({...me,x:a.x+offset[0],z:a.z+offset[1]},a);
-    assert.ok(Math.abs(Math.hypot(target.x-a.x,target.z-a.z)-(a.radius+me.radius+.9))<1e-6);
-  }
+test('target selection and nearby attack readiness never change the player position', () => {
+  const me = { x: 0, z: 0, radius: 0.32 },
+    a = { id: 'a', x: 10, z: 12, radius: 1.9, phase: 'alive' },
+    b = { id: 'b', x: 20, z: 20, radius: 2, phase: 'alive' };
+  assert.equal(selectedHuntTarget([a, b], me).id, 'a');
+  assert.equal(selectedHuntTarget([a, b], me, 'b').id, 'b');
+  assert.equal(selectedHuntTarget([a, { ...b, phase: 'respawning' }], me, 'b').id, 'a');
+  assert.equal(attackReady(me, a), false);
+  assert.equal(attackReady({ ...me, x: 10, z: 15 }, a), true);
+  assert.deepEqual(me, { x: 0, z: 0, radius: 0.32 });
 });
 
 test('spear stays at animated grip and aims forward at every character heading', () => {

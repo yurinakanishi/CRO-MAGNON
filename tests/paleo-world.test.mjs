@@ -8,7 +8,6 @@ import {CollisionWorld,staticObstacles} from '../dist/shared/collision.mjs';
 import {SCENERY} from '../dist/shared/scenery-layout.mjs';
 import {LANDMARKS} from '../dist/shared/landmarks.mjs';
 import {REGION_FEATURES} from '../dist/shared/region-features.mjs';
-import {takeExpedition} from '../dist/shared/expeditions.mjs';
 import {nearbyChunks} from '../dist/shared/biomes.mjs';
 import {COAST_RUNS,COAST_GRID} from '../dist/shared/paleo-coast-data.mjs?baseline';
 
@@ -55,28 +54,6 @@ test('every exploration camp and resource is dry; measured landmark and feature 
   for(const o of staticObstacles().filter(o=>o.landmarkId))assert.ok(isLand(o.x,o.z),`${o.landmarkId}: footprint is at sea`);
   assert.ok(LANDMARKS.length>=10);assert.equal(REGION_FEATURES.filter(p=>p.key==='desert-cactus').length,48);
   for(const p of REGION_FEATURES.filter(p=>p.key==='desert-cactus'))assert.ok(worldToGeo(p.x,p.z).longitude< -90);
-});
-test('thirteen expeditions retain inventory and progress, cancel incompatible actions and select five distinct arrivals',()=>{
-  const c=new CollisionWorld(),room={collision:c,players:new Map(),animals:[],enemies:[],projectiles:[]};
-  for(let i=0;i<5;i++)room.players.set(String(i),{id:String(i),x:49+i,z:57,radius:.32,inventory:{wood:12,rawMeat:3},tool:true,gathered:19,energy:63,attackSequence:2});
-  let now=1000;
-  for(const stop of EXPEDITION_STOPS){now+=4000;
-    for(const p of room.players.values()){
-      p.cookingEndsAt=now+3000;p.pendingStrike={impactAt:now+200};p.navigationGoal={x:50,z:60};
-      const result=takeExpedition(room,p,stop.id,now);assert.equal(result.ok,true,stop.id);
-      assert.deepEqual(p.inventory,{wood:12,rawMeat:3});assert.equal(p.tool,true);assert.equal(p.gathered,19);assert.equal(p.energy,63);
-      assert.equal(p.cookingEndsAt,0);assert.equal(p.pendingStrike,null);assert.equal(p.navigationGoal,null);assert.ok(c.free(p,p.radius));
-    }
-    const people=[...room.players.values()];for(let i=0;i<5;i++)for(let j=i+1;j<5;j++)assert.ok(Math.hypot(people[i].x-people[j].x,people[i].z-people[j].z)>=.64);
-  }
-});
-test('expeditions refuse forged coordinates, mounted players, downed players and cooldown spam',()=>{
-  const room={collision:new CollisionWorld(),players:new Map(),animals:[],enemies:[]},p={id:'a',x:49,z:57,radius:.32};room.players.set(p.id,p);
-  for(const id of [null,'forged',{x:30,z:40},'__proto__'])assert.equal(takeExpedition(room,p,id,1000).ok,false);
-  p.mountId='mammoth-1';assert.equal(takeExpedition(room,p,'snow',1000).ok,false);p.mountId=null;
-  p.downedUntil=2000;assert.equal(takeExpedition(room,p,'snow',1000).ok,false);p.downedUntil=0;
-  assert.equal(takeExpedition(room,p,'snow',1000).ok,true);assert.equal(takeExpedition(room,p,'desert',1100).ok,false);
-  assert.equal(geographicBiome(p.x,p.z),'snow');
 });
 test('ocean, island and polar cameras retain a bounded rectangular working set',()=>{
   for(const point of [...EXPEDITION_STOPS,geoToWorld(-140,0),geoToWorld(179,0),geoToWorld(0,-89)]){

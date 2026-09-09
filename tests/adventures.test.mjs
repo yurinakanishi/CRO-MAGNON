@@ -6,7 +6,6 @@ import { ensureAdventure, updateAdventures, handleAdventureAction, recordAdventu
 import { CollisionWorld, overlap } from '../dist/shared/collision.mjs';
 import { isLand } from '../dist/shared/paleo-geography.mjs';
 import { createGameCore } from '../dist/shared/game-core.mjs';
-import { takeExpedition } from '../dist/shared/expeditions.mjs';
 import { startAttack, resolveAttack, updateProjectiles } from '../dist/shared/combat.mjs';
 import { createEnemies } from '../dist/shared/enemies.mjs';
 import { SCENERY } from '../dist/shared/scenery-layout.mjs';
@@ -69,9 +68,17 @@ test('rifts enforce seals, proximity, cooldown and safe occupancy, preserving in
   for(const r of ADVENTURE_REGIONS.slice(0,3)){complete(p,r);p.adventure.regions[r.id].claimed=true;}
   assert.equal(handleAdventureAction(room,p,msg,18000).ok,false);assert.deepEqual({x:p.x,z:p.z},before);
 });
-test('raw expedition IDs cannot bypass the locked rift; downed and mounted actors cannot claim or travel',()=>{
-  const p=makePlayer(),room=makeRoom([p]);assert.equal(takeExpedition(room,p,'shadow-realm',10000).ok,false);
-  for(const key of ['downedUntil','mountId','boatId']){p[key]=1;assert.equal(handleAdventureAction(room,p,{action:'rift',targetId:RIFTS[0].id}).ok,false);assert.equal(takeExpedition(room,p,'high-pass',10000).ok,false);p[key]=null;}
+test('downed and mounted actors cannot enter the rift', () => {
+  const p = makePlayer(),
+    room = makeRoom([p]);
+  for (const key of ['downedUntil', 'mountId', 'boatId']) {
+    p[key] = 1;
+    assert.equal(
+      handleAdventureAction(room, p, { action: 'rift', targetId: RIFTS[0].id }).ok,
+      false,
+    );
+    p[key] = null;
+  }
 });
 test('real lethal attacks share distinct guardian credit with nearby allies, including spell kills',()=>{
   const r=regionById('shadow-realm'),p=makePlayer(),ally=makePlayer('ally'),distant=makePlayer('distant'),room=makeRoom([p,ally,distant]);

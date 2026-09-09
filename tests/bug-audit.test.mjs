@@ -8,7 +8,7 @@ import { CollisionWorld } from '../dist/shared/collision.mjs';
 import { interactionVisible } from '../dist/shared/interactions.mjs';
 import { handleHuntingAction } from '../dist/shared/hunting.mjs';
 import { acceptsGameShortcut, movementKey } from '../dist/src/combat-input.js';
-import { selectedHuntTarget, attackReady, huntInteraction, approachAnimal } from '../dist/src/hunting-ui.js';
+import { selectedHuntTarget, attackReady, huntInteraction } from '../dist/src/hunting-ui.js';
 import { sha256 } from '../dist/src/asset-hash.js';
 import { OpenWorldTerrain } from '../dist/src/open-world.js';
 import { NPC } from '../dist/shared/world.mjs';
@@ -54,12 +54,13 @@ test('occupied mammoths and mounted or downed players do not expose hunting acti
   assert.equal(huntInteraction({camp:player,animals:[]},{...player,mountId:'m'}),null);
 });
 
-test('click approach stops within katana reach as well as spear and magic reach',()=>{
-  const animal={id:'m',x:10,z:10,radius:2.94,phase:'alive'};
-  for(const species of ['cro','nea','cat','bear']){
-    const player={species,x:10,z:20,radius:.32},point=approachAnimal(player,animal);
-    assert.equal(attackReady({...player,...point},animal),true,species);
-    assert.ok(Math.hypot(point.x-animal.x,point.z-animal.z)>animal.radius+player.radius);
+test('nearby attacks work for katana, spear and magic without moving the player', () => {
+  const animal = { id: 'm', x: 10, z: 10, radius: 2.94, phase: 'alive' };
+  for (const species of ['cro', 'nea', 'cat', 'bear']) {
+    const player = { species, x: 10, z: 20, radius: 0.32 },
+      point = { x: 10, z: animal.z + animal.radius + 0.32 + 0.4 };
+    assert.equal(attackReady({ ...player, ...point }, animal), true, species);
+    assert.ok(Math.hypot(point.x - animal.x, point.z - animal.z) > animal.radius + player.radius);
   }
 });
 

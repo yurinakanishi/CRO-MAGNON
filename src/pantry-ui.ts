@@ -1,4 +1,4 @@
-import { SETTLEMENTS, MANY_HEARTHS, inGulf } from '../shared/gulf-region.mjs';
+import { SETTLEMENTS, MANY_HEARTHS } from '../shared/gulf-region.mjs';
 import {
   PANTRY,
   PANTRY_FOODS,
@@ -12,7 +12,7 @@ import { interactionVisible } from '../shared/interactions.mjs';
 
 const distance = (a, b) => (a && b ? Math.hypot(a.x - b.x, a.z - b.z) : Infinity);
 export function installPantryUI(api, back) {
-  const { player, state, available, action, goTo, openModal, collision } = api;
+  const { player, state, available, action, openModal, collision } = api;
   const supper = installSupperUI(api, (id) => open(id));
   let settlementId: string = MANY_HEARTHS.id,
     foodId = PANTRY_FOODS[0].id,
@@ -37,7 +37,7 @@ export function installPantryUI(api, back) {
       SETTLEMENTS.find((s) => s.id === requested)?.id ??
       [...SETTLEMENTS].sort((a, b) => distance(player(), a) - distance(player(), b))[0].id;
     openModal(
-      `<div id="pantry-panel" class="gulf-panel"><p class="screen-eyebrow">次の旅人に、ひと口を</p><h2>共同の食料置き場</h2><p class="modal-intro">食料を炉のそばで分け合おう。預けたものはみんなの食料になります。受け取りは四つの集落を合わせて、一人一日3個まで。</p><label class="pantry-select">食料を分ける場所<select id="pantry-settlement">${SETTLEMENTS.map((s) => `<option value="${s.id}" ${s.id === settlementId ? 'selected' : ''}>${s.name}</option>`).join('')}</select></label><div class="pantry-totals"><p id="pantry-capacity"></p><p id="pantry-allowance" role="status"></p></div><div class="pantry-foods" role="group" aria-label="食べ物を選ぶ">${PANTRY_FOODS.map((f) => `<button id="pantry-food-${f.id}" class="button button-outline" aria-pressed="false"><strong>${f.name}</strong><span id="pantry-count-${f.id}"></span></button>`).join('')}</div><section class="gulf-card pantry-detail"><h3 id="pantry-selected"></h3><p id="pantry-use"></p><p id="pantry-amounts" role="status"></p><p id="pantry-give-hint"></p><p id="pantry-take-hint"></p><div class="gulf-actions"><button id="pantry-give" class="button button-outline">1つ預ける</button><button id="pantry-take" class="button button-outline">1つ受け取る</button><button id="pantry-eat" class="button button-outline">もちものから食べる</button></div><p id="pantry-eat-hint"></p></section><p>生の肉・魚・貝・火根は、焼いてから持ってこよう。置き場はそれぞれ合計48個まで。食料が空の場所には、収穫や旅の帰りに少し分けておこう。</p><div class="gulf-actions"><button id="pantry-go" class="button button-outline">この炉へ歩く</button><button id="pantry-back" class="button button-outline">湾の旅の案内へ</button></div></div>`,
+      `<div id="pantry-panel" class="gulf-panel"><p class="screen-eyebrow">次の旅人に、ひと口を</p><h2>共同の食料置き場</h2><p class="modal-intro">食料を炉のそばで分け合おう。預けたものはみんなの食料になります。受け取りは四つの集落を合わせて、一人一日3個まで。</p><label class="pantry-select">食料を分ける場所<select id="pantry-settlement">${SETTLEMENTS.map((s) => `<option value="${s.id}" ${s.id === settlementId ? 'selected' : ''}>${s.name}</option>`).join('')}</select></label><div class="pantry-totals"><p id="pantry-capacity"></p><p id="pantry-allowance" role="status"></p></div><div class="pantry-foods" role="group" aria-label="食べ物を選ぶ">${PANTRY_FOODS.map((f) => `<button id="pantry-food-${f.id}" class="button button-outline" aria-pressed="false"><strong>${f.name}</strong><span id="pantry-count-${f.id}"></span></button>`).join('')}</div><section class="gulf-card pantry-detail"><h3 id="pantry-selected"></h3><p id="pantry-use"></p><p id="pantry-amounts" role="status"></p><p id="pantry-give-hint"></p><p id="pantry-take-hint"></p><div class="gulf-actions"><button id="pantry-give" class="button button-outline">1つ預ける</button><button id="pantry-take" class="button button-outline">1つ受け取る</button><button id="pantry-eat" class="button button-outline">もちものから食べる</button></div><p id="pantry-eat-hint"></p></section><p>生の肉・魚・貝・火根は、焼いてから持ってこよう。置き場はそれぞれ合計48個まで。食料が空の場所には、収穫や旅の帰りに少し分けておこう。</p><div class="gulf-actions"><button id="pantry-back" class="button button-outline">湾の旅の案内へ</button></div></div>`,
     );
     ($('pantry-settlement') as HTMLSelectElement).onchange = (e) => {
       settlementId = (e.target as HTMLSelectElement).value;
@@ -51,10 +51,7 @@ export function installPantryUI(api, back) {
     $('pantry-give').onclick = () => perform('gulfPantryGive');
     $('pantry-take').onclick = () => perform('gulfPantryTake');
     $('pantry-eat').onclick = () => perform(PANTRY_FOODS.find((f) => f.id === foodId).eatAction);
-    $('pantry-go').onclick = () => {
-      const s = SETTLEMENTS.find((s) => s.id === settlementId);
-      goTo(s.x, s.z + 5, s.name);
-    };
+
     $('pantry-back').onclick = back;
     $('pantry-back').insertAdjacentHTML(
       'beforebegin',
@@ -143,7 +140,6 @@ export function installPantryUI(api, back) {
       usable && ready && !!pantry && near && remaining > 0 && stock > 0 && owned < 99,
     );
     enable('pantry-eat', usable && ready && owned > 0 && me.energy < 100 && !shellsFull);
-    enable('pantry-go', usable && inGulf(me?.x, me?.z));
   }
   return { open, update };
 }

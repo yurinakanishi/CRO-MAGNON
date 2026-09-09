@@ -116,18 +116,25 @@ test('movement is normalized, times out, and ignores client-authored position', 
   assert.equal(player.z, stopped.z);
 });
 
-test('run requests use the server speed and gait changes keep the planned destination', async t => {
-  const {game,url}=await start(t),client=connect(url,'GAIT');
-  const {id}=await client.wait(m=>m.type==='welcome');
-  const p=game.rooms.get('GAIT').players.get(id);
-  client.send({type:'target',x:58,z:46,running:false,speed:900});
-  await client.wait(m=>m.type==='state'&&m.players[0].moving);
-  assert.ok(p.target);assert.ok(p.speed<=1.25001);
-  client.send({type:'gait',running:true});
-  const run=await client.wait(m=>m.type==='state'&&m.players[0].running);
-  assert.ok(Math.abs(run.players[0].speed-3.5)<.001);assert.ok(p.target);
-  client.send({type:'move',dx:0,dz:0,running:false});await sleep(60);
-  assert.equal(p.running,false);assert.equal(p.moving,false);assert.equal(p.target,null);assert.deepEqual(p.path,[]);
+test('run requests use the server speed and gait changes affect only live directional input', async (t) => {
+  const { game, url } = await start(t),
+    client = connect(url, 'GAIT');
+  const { id } = await client.wait((m) => m.type === 'welcome');
+  const p = game.rooms.get('GAIT').players.get(id);
+  client.send({ type: 'move', dx: 1, dz: 0, running: false, speed: 900 });
+  await client.wait((m) => m.type === 'state' && m.players[0].moving);
+  assert.equal(p.target, null);
+  assert.ok(p.speed <= 1.25001);
+  client.send({ type: 'gait', running: true });
+  const run = await client.wait((m) => m.type === 'state' && m.players[0].running);
+  assert.ok(Math.abs(run.players[0].speed - 3.5) < 0.001);
+  assert.equal(p.target, null);
+  client.send({ type: 'move', dx: 0, dz: 0, running: false });
+  await sleep(60);
+  assert.equal(p.running, false);
+  assert.equal(p.moving, false);
+  assert.equal(p.target, null);
+  assert.deepEqual(p.path, []);
 });
 
 test('unchanged world resources are not resent on movement ticks and static files revalidate from cache', async t => {

@@ -4,8 +4,6 @@ export type ClientCommand =
   | { type: 'leave' }
   | { type: 'move'; dx: number; dz: number; running?: boolean }
   | { type: 'gait'; running: boolean }
-  | { type: 'target'; x: number; z: number; running?: boolean }
-  | { type: 'expedition'; destination: string }
   | { type: 'action'; action: string; targetId?: string; regionId?: string; cropId?: string }
   | { type: 'chat'; text: string }
   | { type: 'ping'; at: number | string };
@@ -82,14 +80,6 @@ export function decodeCommand(text: string): ClientCommand | null {
     case 'gait':
       return typeof message.running === 'boolean'
         ? { type: 'gait', running: message.running }
-        : null;
-    case 'target':
-      return finite(message.x) && finite(message.z)
-        ? { type: 'target', x: message.x, z: message.z, running: message.running === true }
-        : null;
-    case 'expedition':
-      return typeof message.destination === 'string'
-        ? { type: 'expedition', destination: message.destination }
         : null;
     case 'action':
       if (

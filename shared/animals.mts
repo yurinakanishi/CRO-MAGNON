@@ -1,6 +1,6 @@
 import { SCENERY } from './scenery-layout.mjs';
 import { MODEL_BOUNDS } from './model-bounds.mjs';
-import { movePlayer } from './movement.mjs';
+import { moveActor } from './movement.mjs';
 import { animalIsSolid, initialHuntState, stopActor } from './hunting.mjs';
 import { enemyIsSolid } from './combat.mjs';
 import { updateRiddenAnimal } from './riding.mjs';
@@ -83,7 +83,7 @@ export function updateAnimals(room, dt, now = Date.now()) {
     if (!animal.target) animal.target = animal.path.shift() || null;
     // Use the same swept collision solver as players, with a body-sized radius.
     const targetSpeed = 0.3541667 * animal.scale;
-    movePlayer(
+    moveActor(
       animal,
       dt,
       Infinity,

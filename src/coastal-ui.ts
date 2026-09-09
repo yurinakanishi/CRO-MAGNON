@@ -33,7 +33,7 @@ export function coastalInteraction(state, me, collision?) {
   return null;
 }
 
-export function installCoastalUI({ player, state, available, action, goTo, openModal }) {
+export function installCoastalUI({ player, state, available, action, openModal }) {
   let signature = '';
   function open() {
     signature = '';
@@ -90,10 +90,10 @@ export function installCoastalUI({ player, state, available, action, goTo, openM
     signature = sig;
     const btn = (id, label, disabled = false) =>
       `<button id="${id}" class="button button-outline" ${disabled ? 'disabled' : ''}>${label}</button>`;
-    root.innerHTML = `<section class="gulf-card"><h4>採って、焼いて、食べる</h4><p>生の貝 <b>${inv.rawShellfish ?? 0}</b> · 焼いた貝 <b>${inv.cookedShellfish ?? 0}</b> · 貝殻 <b>${inv.shells ?? 0}</b></p><p>貝場で2.4秒採集し、焚き火で3秒焼こう。食べると元気+20、貝殻1個が残ります。</p><div class="gulf-actions">${btn('shell-gather', 'ここで貝を採る', blocked || !nearBed || !!me?.moving || inv.rawShellfish >= 99 || !world.gulf?.shellBeds?.find((s) => s.id === bed.id)?.amount)}${btn('shell-cook', '焚き火で貝を焼く', blocked || !nearFire || !inv.rawShellfish || inv.cookedShellfish >= 99)}${btn('shell-eat', '焼いた貝を食べる', blocked || !inv.cookedShellfish || inv.shells >= 99 || me?.energy >= 100)}${btn('shell-fire', '近くの焚き火へ', blocked)}</div></section>
-    <section class="gulf-card"><h4>みんなで貝塚を作る</h4><p>殻を持ち寄って積み重ねよう。最初の1個から形が現れ、12個・40個で大きくなります。どの国の旅人も参加できます。</p><p>${midden.name} · ${world.gulf?.middens?.find((s) => s.id === midden.id)?.shells ?? 0}個</p><div class="gulf-actions">${btn('shell-deposit', '殻を最大10個積む', blocked || !nearMidden || !inv.shells)}${btn('shell-midden', '近くの貝塚へ歩く', blocked || !local)}</div></section>
-    <section class="gulf-card"><h4>原石から、槍の刃へ</h4><p>黒曜石 <b>${inv.obsidian ?? 0}</b> · 黒曜石の刃 <b>${inv.obsidianBlade ?? 0}</b><br>今の武器：${weapon.noun} · 威力${weapon.damage}</p><p>西の露頭で黒曜石を採掘。石器作業場で黒曜石2個を4秒削ると刃1個。打ち石として石1個が必要で、打ち石は消費しません。刃1・木材1で木槍に装着できます。</p><p>${spear ? '木槍の威力15 → 黒曜石の槍の威力30。槍先は使い続けられます。' : 'この人物の刀・魔法はそのまま。刃の製作には参加できます。'}</p><div class="gulf-actions">${btn('stone-knap', '原石を削る（4秒）', blocked || !nearWorkshop || !!me?.moving || (inv.obsidian ?? 0) < 2 || !inv.stone || inv.obsidianBlade >= 99)}${btn('stone-haft', me?.spearHead === 'obsidian' && spear ? '槍先を装着済み' : '刃を槍先に取り付ける', blocked || !nearWorkshop || !spear || me?.spearHead === 'obsidian' || !inv.obsidianBlade || !inv.wood)}${btn('stone-workshop', '近くの石器作業場へ', blocked || !local)}${btn('stone-outcrop', '西の黒曜石露頭へ', blocked || !local)}</div></section>
-    <section class="gulf-routes"><h4>浜の貝場</h4><p>1分ごとに貝1個が戻ります。別の浜へ歩いたり、舟で巡ろう。</p><div class="gulf-stop-list">${SHELL_BEDS.map((s) => `<article class="gulf-card"><h4>${s.name}</h4><p>貝 ${world.gulf?.shellBeds?.find((b) => b.id === s.id)?.amount ?? COASTAL.bedCapacity}/${COASTAL.bedCapacity}</p>${btn('shell-go-' + s.id, 'この貝場へ歩く', blocked || !local)}</article>`).join('')}</div></section>
+    root.innerHTML = `<section class="gulf-card"><h4>採って、焼いて、食べる</h4><p>生の貝 <b>${inv.rawShellfish ?? 0}</b> · 焼いた貝 <b>${inv.cookedShellfish ?? 0}</b> · 貝殻 <b>${inv.shells ?? 0}</b></p><p>貝場で2.4秒採集し、焚き火で3秒焼こう。食べると元気+20、貝殻1個が残ります。</p><div class="gulf-actions">${btn('shell-gather', 'ここで貝を採る', blocked || !nearBed || !!me?.moving || inv.rawShellfish >= 99 || !world.gulf?.shellBeds?.find((s) => s.id === bed.id)?.amount)}${btn('shell-cook', '焚き火で貝を焼く', blocked || !nearFire || !inv.rawShellfish || inv.cookedShellfish >= 99)}${btn('shell-eat', '焼いた貝を食べる', blocked || !inv.cookedShellfish || inv.shells >= 99 || me?.energy >= 100)}</div></section>
+    <section class="gulf-card"><h4>みんなで貝塚を作る</h4><p>殻を持ち寄って積み重ねよう。最初の1個から形が現れ、12個・40個で大きくなります。どの国の旅人も参加できます。</p><p>${midden.name} · ${world.gulf?.middens?.find((s) => s.id === midden.id)?.shells ?? 0}個</p><div class="gulf-actions">${btn('shell-deposit', '殻を最大10個積む', blocked || !nearMidden || !inv.shells)}</div></section>
+    <section class="gulf-card"><h4>原石から、槍の刃へ</h4><p>黒曜石 <b>${inv.obsidian ?? 0}</b> · 黒曜石の刃 <b>${inv.obsidianBlade ?? 0}</b><br>今の武器：${weapon.noun} · 威力${weapon.damage}</p><p>西の露頭で黒曜石を採掘。石器作業場で黒曜石2個を4秒削ると刃1個。打ち石として石1個が必要で、打ち石は消費しません。刃1・木材1で木槍に装着できます。</p><p>${spear ? '木槍の威力15 → 黒曜石の槍の威力30。槍先は使い続けられます。' : 'この人物の刀・魔法はそのまま。刃の製作には参加できます。'}</p><div class="gulf-actions">${btn('stone-knap', '原石を削る（4秒）', blocked || !nearWorkshop || !!me?.moving || (inv.obsidian ?? 0) < 2 || !inv.stone || inv.obsidianBlade >= 99)}${btn('stone-haft', me?.spearHead === 'obsidian' && spear ? '槍先を装着済み' : '刃を槍先に取り付ける', blocked || !nearWorkshop || !spear || me?.spearHead === 'obsidian' || !inv.obsidianBlade || !inv.wood)}</div></section>
+    <section class="gulf-routes"><h4>浜の貝場</h4><p>1分ごとに貝1個が戻ります。別の浜へ歩いたり、舟で巡ろう。</p><div class="gulf-stop-list">${SHELL_BEDS.map((s) => `<article class="gulf-card"><h4>${s.name}</h4><p>貝 ${world.gulf?.shellBeds?.find((b) => b.id === s.id)?.amount ?? COASTAL.bedCapacity}/${COASTAL.bedCapacity}</p></article>`).join('')}</div></section>
     <details class="gulf-lore"><summary>この湾の暮らしについて</summary><p>貝や石の利用を土台にした創作です。この貝塚の場所・大きさ、レシピ、作業時間、回復速度、武器の威力はゲームの設定です。</p></details>`;
     const bind = (id, fn) => {
       root.querySelector<HTMLButtonElement>('#' + id).onclick = fn;
@@ -108,11 +108,6 @@ export function installCoastalUI({ player, state, available, action, goTo, openM
     bind('shell-deposit', () => action('depositShells', midden.id));
     bind('stone-knap', () => perform('knapObsidian', workshop.id));
     bind('stone-haft', () => action('haftSpear', workshop.id));
-    bind('shell-fire', () => goTo(fire.x, fire.z + 2.4, '近くの焚き火'));
-    bind('shell-midden', () => goTo(midden.x, midden.z + 2, midden.name));
-    bind('stone-workshop', () => goTo(workshop.x, workshop.z + 2, workshop.name));
-    bind('stone-outcrop', () => goTo(-2753, 693, '黒曜石の露頭'));
-    for (const s of SHELL_BEDS) bind('shell-go-' + s.id, () => goTo(s.x, s.z + 1.5, s.name));
   }
   return { open, update };
 }

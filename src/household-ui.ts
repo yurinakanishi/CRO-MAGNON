@@ -1,11 +1,11 @@
 import { HOUSEHOLDS, JOURNEYS, householdLabel } from '../shared/household-sites.mjs';
 import { RESIDENTS, VILLAGE, bundleLabel } from '../shared/village-sites.mjs';
-import { SETTLEMENTS, MANY_HEARTHS, inGulf } from '../shared/gulf-region.mjs';
+import { SETTLEMENTS, MANY_HEARTHS } from '../shared/gulf-region.mjs';
 import { interactionVisible } from '../shared/interactions.mjs';
 
 const distance = (a, b) => (a && b ? Math.hypot(a.x - b.x, a.z - b.z) : Infinity);
 export function installHouseholdUI(
-  { player, state, available, canAct, action, goTo, openModal, collision },
+  { player, state, available, canAct, action, openModal, collision },
   back,
 ) {
   const $ = (id: string) => document.getElementById(id);
@@ -13,15 +13,11 @@ export function installHouseholdUI(
     `<button id="${id}" class="button button-outline">${label}</button>`;
   function open() {
     openModal(
-      `<div id="household-panel" class="gulf-panel"><p class="screen-eyebrow">同じ炉から、次の炉へ</p><h2>世帯の旅</h2><p class="modal-intro">国の炉で旅支度を手伝うと、二人が集い場まで歩きます。到着後は二日（8分）滞在して帰ります。道中は地図で確かめよう。</p><div class="resident-cards">${HOUSEHOLDS.map((d) => `<section class="gulf-card"><h3>${d.name}</h3><p>${d.members.map((id) => RESIDENTS.find((r) => r.id === id).name).join('と')} · ${SETTLEMENTS.find((s) => s.id === d.homeId).name}</p><p id="journey-state-${d.id}" role="status"></p><p>旅支度：${bundleLabel(JOURNEYS.cost)}<br>お迎えのお礼：${bundleLabel(JOURNEYS.reward)}</p><p id="journey-hint-${d.id}"></p><div class="gulf-actions">${button('journey-prepare-' + d.id, '旅支度を手伝う')}${button('journey-welcome-' + d.id, '集い場で迎える')}${button('journey-go-' + d.id, 'この国の炉へ歩く')}</div></section>`).join('')}</div><p>お迎えは二人のどちらかのそばで、各訪問につき一人一回。どの国の旅人でも参加できます。旅支度は世帯ごとに一人が渡せば十分です。帰着後は一日（4分）休みます。</p><div class="gulf-actions">${button('journey-back', '集落の人びとへ')}</div></div>`,
+      `<div id="household-panel" class="gulf-panel"><p class="screen-eyebrow">同じ炉から、次の炉へ</p><h2>世帯の旅</h2><p class="modal-intro">国の炉で旅支度を手伝うと、二人が集い場まで歩きます。到着後は二日（8分）滞在して帰ります。道中は地図で確かめよう。</p><div class="resident-cards">${HOUSEHOLDS.map((d) => `<section class="gulf-card"><h3>${d.name}</h3><p>${d.members.map((id) => RESIDENTS.find((r) => r.id === id).name).join('と')} · ${SETTLEMENTS.find((s) => s.id === d.homeId).name}</p><p id="journey-state-${d.id}" role="status"></p><p>旅支度：${bundleLabel(JOURNEYS.cost)}<br>お迎えのお礼：${bundleLabel(JOURNEYS.reward)}</p><p id="journey-hint-${d.id}"></p><div class="gulf-actions">${button('journey-prepare-' + d.id, '旅支度を手伝う')}${button('journey-welcome-' + d.id, '集い場で迎える')}</div></section>`).join('')}</div><p>お迎えは二人のどちらかのそばで、各訪問につき一人一回。どの国の旅人でも参加できます。旅支度は世帯ごとに一人が渡せば十分です。帰着後は一日（4分）休みます。</p><div class="gulf-actions">${button('journey-back', '集落の人びとへ')}</div></div>`,
     );
     for (const d of HOUSEHOLDS) {
       $('journey-prepare-' + d.id).onclick = () => action('householdPrepare', d.id);
       $('journey-welcome-' + d.id).onclick = () => action('householdWelcome', d.id);
-      $('journey-go-' + d.id).onclick = () => {
-        const home = SETTLEMENTS.find((s) => s.id === d.homeId);
-        goTo(home.x, home.z + 5, home.name);
-      };
     }
     $('journey-back').onclick = back;
     update();
@@ -99,7 +95,6 @@ export function installHouseholdUI(
         !done &&
         !full
       );
-      ($('journey-go-' + d.id) as HTMLButtonElement).disabled = !(ready && inGulf(me?.x, me?.z));
     }
   }
   return { open, update };

@@ -3,7 +3,7 @@ import { SETTLEMENTS } from './gulf-region.mjs';
 import { interactionVisible } from './interactions.mjs';
 import { stopActor } from './combat.mjs';
 import { ridingObstacles } from './riding.mjs';
-import { movePlayer } from './movement.mjs';
+import { moveActor } from './movement.mjs';
 import { planNavigation, updateNavigation } from './navigation.mjs';
 import type { Resident, ResidentSnapshot } from './village-types.mjs';
 import { normalizeResidentSupper, restingAfterSupper } from './supper.mjs';
@@ -153,7 +153,7 @@ export function updateResidents(room, dt: number, now: number) {
       if (!resident.navigationGoal)
         planNavigation(resident, destination, room.collision, dynamic, now);
       else updateNavigation(resident, room.collision, dynamic, now);
-      movePlayer(
+      moveActor(
         resident,
         dt,
         now,

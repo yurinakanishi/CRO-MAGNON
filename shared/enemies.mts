@@ -2,7 +2,7 @@ import { CAMP } from './world.mjs';
 import { ENEMY_GROUNDS } from './scenery-layout.mjs';
 export { ENEMY_GROUNDS } from './scenery-layout.mjs';
 import { combatDistance, enemyIsSolid, inAttackArc, stopActor } from './combat.mjs';
-import { movePlayer } from './movement.mjs';
+import { moveActor } from './movement.mjs';
 
 export const ENEMY_RULES = Object.freeze({
   modelKey: 'crow-shaman',
@@ -168,7 +168,7 @@ function plan(enemy, room, goal, now) {
 function moveEnemy(enemy, room, dt, now, speed) {
   if (!enemy.target) enemy.target = enemy.path.shift() || null;
   enemy.runningRequested = speed > ENEMY_RULES.roamSpeed;
-  movePlayer(
+  moveActor(
     enemy,
     dt,
     Infinity,

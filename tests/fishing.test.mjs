@@ -299,7 +299,8 @@ test('core commands cancel fishing on travel, attack and disconnect; snapshots a
   stopActor(p);
   cast();
   s.command({ type: 'target', x: p.x, z: p.z + 1 });
-  assert.equal(p.fishing, null);
+  assert.ok(p.fishing, 'retired target commands cannot interrupt an ongoing activity');
+  s.command({ type: 'action', action: 'cancelFishing' });
   stopActor(p);
   cast();
   s.command({ type: 'action', action: 'attack' });

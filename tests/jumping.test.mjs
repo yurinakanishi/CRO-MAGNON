@@ -187,7 +187,7 @@ test('moving jump preserves run speed, follows terrain collision and stops at wa
   }
 });
 
-test('jump does not cancel a click route and menu stop still lands', () => {
+test('jump ignores an obsolete click route and menu stop still lands', () => {
   const f = fixture();
   f.player.target = { x: f.player.x + 0.5, z: f.player.z };
   f.player.path = [];
@@ -199,7 +199,8 @@ test('jump does not cancel a click route and menu stop still lands', () => {
     f.socket.command({ type: 'action', action });
   assert.equal(f.socket.messages.filter((m) => m.type === 'notice').length, notices);
   f.advance(50);
-  assert.ok(f.player.x > target.x - 0.5);
+  assert.equal(f.player.x, target.x - 0.5);
+  assert.equal(f.player.target, null);
   f.socket.command({ type: 'move', dx: 0, dz: 0 });
   f.advance(50);
   assert.equal(f.player.target, null);

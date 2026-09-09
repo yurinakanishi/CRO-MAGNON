@@ -2,28 +2,47 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { WebSocket } from 'ws';
 import { createGameServer } from '../server.mjs';
-import { geoToWorld, expeditionById, isLand } from '../dist/shared/paleo-geography.mjs';
 const delay=ms=>new Promise(r=>setTimeout(r,ms));
-test('actual protocol rejects ocean routes and forged travel, then shares a safe expedition and retained progress',async t=>{
-  const game=createGameServer({port:0,host:'127.0.0.1',tickMs:20});await game.listen();t.after(()=>game.close());
-  const socket=new WebSocket(`ws://127.0.0.1:${game.address().port}/ws?room=PALEO&name=Explorer`),messages=[];
-  socket.on('message',data=>messages.push(JSON.parse(data)));
-  const wait=async predicate=>{const start=Date.now();while(Date.now()-start<3000){const found=messages.find(predicate);if(found)return found;await delay(10);}throw new Error('Expected protocol event missing');};
-  const {id}=await wait(m=>m.type==='welcome'),p=game.rooms.get('PALEO').players.get(id),origin={x:p.x,z:p.z};
-  const send=m=>socket.send(JSON.stringify(m));
-  const ocean=geoToWorld(-30,0);assert.equal(isLand(ocean.x,ocean.z),false);
-  send({type:'target',...ocean,running:true});await wait(m=>m.type==='notice'&&m.text.includes('海'));
-  assert.equal(p.target,null);assert.deepEqual({x:p.x,z:p.z},origin);
-  send({type:'expedition',destination:'anywhere',x:777,z:888});await wait(m=>m.type==='notice'&&m.text.includes('見つかりません'));
-  assert.deepEqual({x:p.x,z:p.z},origin);
-  const expectedInventory={...p.inventory,wood:3,stone:2,berry:1,rawMeat:2,cookedMeat:1,obsidian:0,seed:0,water:0};
-  Object.assign(p,{gathered:8,tool:true,inventory:{...expectedInventory},cookingEndsAt:Date.now()+10000});
-  send({type:'expedition',destination:'sahul',inventory:{wood:999},x:777,z:888});
-  const stop=expeditionById('sahul'),state=await wait(m=>m.type==='state'&&m.players.some(q=>q.id===id&&Math.hypot(q.x-stop.x,q.z-stop.z)<12));
-  const arrived=state.players.find(q=>q.id===id);
-  assert.deepEqual(arrived.inventory,expectedInventory);assert.equal(arrived.gathered,8);assert.equal(arrived.tool,true);assert.equal(arrived.cookingEndsAt,0);
-  assert.equal(state.worldWidth,8192);assert.equal(state.worldDepth,4096);assert.equal(state.resources.length>29,true);
-  send({type:'expedition',destination:'grassland'});await wait(m=>m.type==='notice'&&m.text.includes('少し待って'));
-  assert.equal(p.x,arrived.x);assert.equal(p.z,arrived.z);
-  const health=await(await fetch(`http://127.0.0.1:${game.address().port}/api/health`)).json();assert.equal(health.worldWidth,8192);assert.equal(health.epochYearsBP,50000);
+test('actual protocol ignores retired travel and preserves position and inventory', async (t) => {
+  const game = createGameServer({ port: 0, host: '127.0.0.1', tickMs: 20 });
+  await game.listen();
+  const socket = new WebSocket(
+      'ws://127.0.0.1:' + game.address().port + '/ws?room=PALEO&name=Explorer',
+    ),
+    messages = [];
+  t.after(async () => {
+    socket.terminate();
+    await game.close();
+  });
+  socket.on('message', (data) => messages.push(JSON.parse(data)));
+  const wait = async (predicate) => {
+    for (let i = 0; i < 300; i++) {
+      const found = messages.find(predicate);
+      if (found) return found;
+      await delay(10);
+    }
+    throw Error('Expected protocol event missing');
+  };
+  const { id } = await wait((m) => m.type === 'welcome'),
+    p = game.rooms.get('PALEO').players.get(id);
+  const original = structuredClone({ x: p.x, z: p.z, inventory: p.inventory });
+  const send = (m) => socket.send(JSON.stringify(m));
+  for (const command of [
+    { type: 'target', x: 58, z: 46, running: true },
+    { type: 'target', x: -999, z: -999 },
+    { type: 'expedition', destination: 'sahul', inventory: { wood: 999 } },
+    { type: 'expedition', destination: 'gulf-hearth' },
+    { type: 'expedition', destination: 'anywhere' },
+  ])
+    send(command);
+  send({ type: 'ping', at: 'travel-rejected' });
+  await wait((m) => m.type === 'pong' && m.at === 'travel-rejected');
+  await delay(200);
+  assert.deepEqual({ x: p.x, z: p.z, inventory: p.inventory }, original);
+  assert.equal(p.target, null);
+  const health = await (
+    await fetch('http://127.0.0.1:' + game.address().port + '/api/health')
+  ).json();
+  assert.equal(health.worldWidth, 8192);
+  assert.equal(health.epochYearsBP, 50000);
 });

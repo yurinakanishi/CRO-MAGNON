@@ -6,12 +6,9 @@ import {
   barterProblem,
   barterOfferLabel,
 } from '../shared/barter.mjs';
-import { MANY_HEARTHS, inGulf } from '../shared/gulf-region.mjs';
+import { MANY_HEARTHS } from '../shared/gulf-region.mjs';
 
-export function installBarterUI(
-  { player, state, available, send, goTo, openModal, collision },
-  back,
-) {
+export function installBarterUI({ player, state, available, send, openModal, collision }, back) {
   const $ = (id: string) => document.getElementById(id);
   const text = (id: string, value: string) => {
     const n = $(id);
@@ -73,16 +70,12 @@ export function installBarterUI(
       own = t?.players.indexOf(me?.id);
     if (!t) {
       $('barter-body').innerHTML =
-        `<label class="pantry-select">相手を選ぶ<select id="barter-partner" aria-label="交換する旅人"></select></label><p id="barter-nearby" role="status"></p><p>集い場の中心から22m以内で、相手から4m以内へ。相手も地上で止まっている時に誘えます。所属する国や種族は問いません。</p><div class="gulf-actions">${button('barter-invite', 'この人を交換に誘う')}${button('barter-go', '集い場の炉へ歩く')}</div>`;
+        `<label class="pantry-select">相手を選ぶ<select id="barter-partner" aria-label="交換する旅人"></select></label><p id="barter-nearby" role="status"></p><p>集い場の中心から22m以内で、相手から4m以内へ。相手も地上で止まっている時に誘えます。所属する国や種族は問いません。</p><div class="gulf-actions">${button('barter-invite', 'この人を交換に誘う')}</div>`;
       ($('barter-partner') as HTMLSelectElement).onchange = (e) => {
         partnerId = (e.target as HTMLSelectElement).value;
         update();
       };
       $('barter-invite').onclick = () => request({ kind: 'invite', targetId: partnerId });
-      $('barter-go').onclick = () => {
-        leave();
-        goTo(MANY_HEARTHS.x, MANY_HEARTHS.z + 5, MANY_HEARTHS.name);
-      };
       return;
     }
     const cards = `<div class="barter-offers"><section class="gulf-card"><h3>あなたが渡すもの</h3><p id="barter-my-offer" class="barter-value"></p><p id="barter-my-ready"></p></section><section class="gulf-card"><h3>あなたが受け取るもの</h3><p id="barter-other-offer" class="barter-value"></p><p id="barter-other-ready"></p></section></div>`;
@@ -198,7 +191,6 @@ export function installBarterUI(
             : barterProblem(me, other, world.serverTime, collision);
       text('barter-nearby', problem || '相手を誘い、返事を待とう。');
       enabled('barter-invite', ready && !problem);
-      enabled('barter-go', ready && inGulf(me?.x, me?.z));
       return;
     }
     const own = t.players.indexOf(me?.id),

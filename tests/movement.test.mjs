@@ -15,17 +15,6 @@ test('walk and run cover their configured distance; diagonal input cannot boost 
   }
 });
 
-test('a short click target updates facing, arrives without overshoot and retains heading on stop', () => {
-  const p = {...player(),target:{x:39.99,z:50.02}};
-  movePlayer(p,.1,1000);
-  assert.deepEqual([p.x,p.z],[39.99,50.02]);
-  assert.equal(p.target,null);
-  assert.ok(Math.abs(p.facing-Math.atan2(-.01,.02))<1e-10);
-  const facing=p.facing;
-  movePlayer(p,.1,2000);
-  assert.equal(p.moving,false);assert.equal(p.speed,0);assert.equal(p.facing,facing);
-});
-
 test('the short bear uses a measured smaller gait while the kunoichi keeps human speeds', () => {
   for (const [species,walk,run] of [['bear',.6,1.8],['cat',1.25,3.5]]) {
     for (const runningRequested of [false,true]) {

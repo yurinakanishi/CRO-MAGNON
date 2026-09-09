@@ -9,13 +9,12 @@ import { normalizeCharacter, characterModel } from '../shared/characters.mjs';
 import { attackProfile } from '../shared/combat-profiles.mjs';
 import { characterChoicesMarkup, bindCharacterSelection } from './character-selection.js';
 import { WorldRenderer } from './world3d.js';
-import { riverX } from '../shared/terrain.mjs';
+
 import { WORLD, CAMP, NPC, INITIAL_RESOURCES } from '../shared/world.mjs';
 import { HUNTING, nearestCookingFire } from '../shared/hunting.mjs';
 import { CROP_INVENTORY, ROOT_RECIPES } from '../shared/crops.mjs';
 import { installCropFoodUI } from './crop-food-ui.js';
-import { RIDING, ridingDistance } from '../shared/riding.mjs';
-import { RideApproach } from './riding-input.js';
+import { canMount, ridingDistance } from '../shared/riding.mjs';
 import { GamepadControls, gamepadHelp } from './gamepad-ui.js';
 import { combineMovement } from './gamepad-input.js';
 import { canStartJump } from '../shared/jumping.mjs';
@@ -25,8 +24,6 @@ import {
   selectedCombatTarget,
   huntInteraction,
   attackReady,
-  approachAnimal,
-  approachEnemyGround,
 } from './hunting-ui.js';
 import {
   canStartAttack,
@@ -40,13 +37,11 @@ import { interactionVisible } from '../shared/interactions.mjs';
 import { ENEMY_GROUNDS, SCENERY } from '../shared/scenery-layout.mjs';
 import { CASTLE_GATE } from '../shared/castle-layout.mjs';
 import { playerDamageEvent } from './enemy-state.js';
-import { BIOMES, biomeAt, JOURNEY_STOPS } from '../shared/biomes.mjs';
+import { BIOMES, biomeAt } from '../shared/biomes.mjs';
 import { drawWorldMap, mapProjection, setWorldMapMode, setWorldMapSelection } from './world-map.js';
 import {
   EXPEDITION_STOPS as EARTH_STOPS,
   EARTH,
-  expeditionById as earthExpeditionById,
-  isLand,
   worldToGeo,
   locationName,
 } from '../shared/paleo-geography.mjs';
@@ -61,9 +56,9 @@ import { installVillageUI, residentInteraction } from './village-ui.js';
 import { GULF_ENTRY, inGulf } from '../shared/gulf-region.mjs';
 import { ScreenManager, AreaBanner, guideMarkup, keyPrompts } from './screens.js';
 const EXPEDITION_STOPS = [...EARTH_STOPS, ...ADVENTURE_STOPS, GULF_ENTRY];
-const expeditionById = (id) =>
+const locationById = (id) =>
   (id === GULF_ENTRY.id ? GULF_ENTRY : null) ??
-  earthExpeditionById(id) ??
+  EARTH_STOPS.find((stop) => stop.id === id) ??
   ADVENTURE_STOPS.find((s) => s.id === id);
 
 const icons = {
@@ -157,20 +152,19 @@ let usingGamepad = false;
 let selectedAnimalId = null,
   stateReceivedAt = performance.now(),
   hurtUntil = 0;
-const rideApproach = new RideApproach();
 
 const joinFields = () =>
   `<label>あなたの名前<input name="name" maxlength="16" required autocomplete="off" autofocus></label><label>部屋のコード <span>英数字・ハイフン・アンダースコア / 最大16文字</span><input name="room" maxlength="16" pattern="[A-Za-z0-9_\\-]+" required autocomplete="off"></label>${characterChoicesMarkup()}<p class="form-note">人間は槍、クノイチは刀、魔法使いは光の魔法を使います。人間の男女で能力の差はありません。参加中に変更すると、もちものはリセットされます。</p>`;
 $('#app').innerHTML = `
   <section class="game-viewport" aria-label="${GAME_TITLE} ゲーム画面">
-    <canvas id="world" aria-label="氷河時代の大陸が広がる3Dワールド。WASDまたは左スティックで移動。左スティックを浅く倒すと歩き、深く倒すと走ります。右スティックまたはドラッグでカメラ回転。地面クリックでも移動できます。" tabindex="0"></canvas>
+    <canvas id="world" aria-label="氷河時代の大陸が広がる3Dワールド。WASDまたは左スティックで移動。左スティックを浅く倒すと歩き、深く倒すと走ります。右スティックまたはドラッグでカメラ回転。" tabindex="0"></canvas>
     <div class="tps-reticle" aria-hidden="true"><i></i></div>
     <div class="scene-shade"></div>
     <div id="damage-flash" class="damage-flash" aria-hidden="true" hidden></div>
     <div id="combat-status" class="combat-status" role="status" hidden></div>
     <div id="area-banner" class="area-banner" aria-live="polite" hidden><small></small><strong></strong></div>
     <button id="status-plate" class="status-plate" title="部族の仲間・招待"><span class="portrait cro" id="my-portrait"><i></i></span><span class="status-text"><strong id="profile-name"></strong><small><span id="room-label"></span><i>·</i><b id="online-count">0/5</b><i>·</i><span id="day-label">1日目</span></small><span class="energy-track" aria-hidden="true"><span id="energy-bar"></span></span><em class="energy-label">${icon('leaf')}<span id="energy-label">100 / 100</span></em></span></button>
-    <div class="map-hud"><button id="menu-button" class="menu-chip" title="メニュー [ESC]">${icon('menu')}<span>メニュー</span><kbd>ESC</kbd></button><button id="map-button" class="minimap-button" aria-label="世界地図を開く" title="世界地図 [M]"><canvas id="minimap" width="160" height="115"></canvas><span class="map-north">N</span><span class="map-area" id="map-area">はじまりの谷</span><kbd class="map-key">M</kbd></button><div class="connection"><i class="status-dot" id="connection-dot"></i><span id="connection-label">未接続</span><span id="ping-label">— ms</span></div><div class="discovery-card hunting-card" id="discovery-card"><div><small>OPEN MEADOW · みんなで狩る</small><strong id="hunt-target-name">草原のマンモス</strong><progress id="hunt-health" max="100" value="100" aria-label="マンモスの体力"></progress><p id="hunt-target-note">開けた草原でマンモスを探そう。</p></div><button id="go-hunt" title="マンモスの近くへ移動" aria-label="マンモスの近くへ移動">${icon('arrow')}</button></div></div>
+    <div class="map-hud"><button id="menu-button" class="menu-chip" title="メニュー [ESC]">${icon('menu')}<span>メニュー</span><kbd>ESC</kbd></button><button id="map-button" class="minimap-button" aria-label="世界地図を開く" title="世界地図 [M]"><canvas id="minimap" width="160" height="115"></canvas><span class="map-north">N</span><span class="map-area" id="map-area">はじまりの谷</span><kbd class="map-key">M</kbd></button><div class="connection"><i class="status-dot" id="connection-dot"></i><span id="connection-label">未接続</span><span id="ping-label">— ms</span></div><div class="discovery-card hunting-card" id="discovery-card"><div><small>OPEN MEADOW · みんなで狩る</small><strong id="hunt-target-name">草原のマンモス</strong><progress id="hunt-health" max="100" value="100" aria-label="マンモスの体力"></progress><p id="hunt-target-note">開けた草原でマンモスを探そう。</p></div></div></div>
     <details class="journey" id="journey" open>
       <summary><span class="journey-head"><span class="eyebrow">目標</span><strong>はじめての火を育てる</strong></span><span id="quest-count" class="journey-count">0 / 3</span><span class="journey-chevron">${icon('arrow')}</span></summary>
       <div class="quest-list">
@@ -179,7 +173,7 @@ $('#app').innerHTML = `
         <div class="quest" id="quest-camp"><span class="quest-check">3</span><div><strong>みんなの火を育てる</strong><p>拠点に木材12・石6を届ける</p></div></div>
       </div>
       <div class="camp-row"><span class="camp-icon">${icon('flame')}</span><div><strong id="camp-name">小さな野営地</strong><small id="camp-level">CAMP LEVEL 0</small></div><div class="camp-stats"><span>${icon('wood')} <b id="camp-wood">0</b><em>/ 12</em></span><span>${icon('stone')} <b id="camp-stone">0</b><em>/ 6</em></span></div></div>
-      <button id="go-camp" class="camp-link">焚き火のそばへ ${icon('arrow')}</button>
+
     </details>
     <div id="toast-stack" class="toast-stack" aria-live="polite"></div>
     <div class="chat-panel"><button class="chat-heading" id="chat-toggle">${icon('chat')}<strong>焚き火の会話</strong><kbd>Enter</kbd><span class="chat-collapse">−</span></button><div id="chat-content"><div id="chat-messages" class="chat-messages" role="log" aria-live="polite"><p class="chat-system">この谷での物語が、ここから始まります。</p></div><form id="chat-form"><input id="chat-input" maxlength="180" placeholder="仲間に話しかける…" aria-label="チャットメッセージ" autocomplete="off"><button aria-label="メッセージを送信" type="submit">${icon('arrow')}</button></form></div></div>
@@ -248,11 +242,6 @@ let lastGait = false;
 let renderer;
 try {
   renderer = new WorldRenderer($('#world'), {
-    onMoveTarget: (x, z) => {
-      if (!joined) return notify('接続を確認してください。', 'error');
-      if (player()?.downedUntil) return;
-      sendMoveTarget(x, z);
-    },
     onAnimal: interactAnimal,
     onError: showRenderError,
   });
@@ -276,7 +265,7 @@ try {
 }
 $('.hotbar-wrap').insertAdjacentHTML(
   'afterbegin',
-  `<div class="riding-controls"><button id="ride-button" class="hunt-button"><kbd>R</kbd><span>マンモスへ</span></button><small id="riding-hint">1頭に1人 · 近づいて R で乗る</small></div>`,
+  `<div class="riding-controls" hidden><button id="ride-button" class="hunt-button"><kbd>R</kbd><span>マンモスに乗る</span></button><small id="riding-hint">1頭に1人 · 近づいて R で乗る</small></div>`,
 );
 $('#ride-button').onclick = ride;
 const boatUI = installBoatControls({
@@ -284,7 +273,6 @@ const boatUI = installBoatControls({
   state: () => state,
   available: () => joined && !renderUnavailable,
   action,
-  goTo,
   notify,
   renderer,
   openModal,
@@ -294,7 +282,6 @@ const adventureUI = installAdventureUI({
   state: () => state,
   available: () => joined && !renderUnavailable,
   action,
-  goTo,
   notify,
   openModal,
   send,
@@ -305,7 +292,6 @@ const fishingUI = installFishingUI({
   state: () => state,
   available: () => joined && !renderUnavailable,
   action,
-  goTo,
   openModal,
 });
 const coastalUI = installCoastalUI({
@@ -313,7 +299,6 @@ const coastalUI = installCoastalUI({
   state: () => state,
   available: () => joined && !renderUnavailable,
   action,
-  goTo,
   openModal,
 });
 const gulfUI = installGulfUI({
@@ -322,7 +307,6 @@ const gulfUI = installGulfUI({
   state: () => state,
   available: () => joined && !renderUnavailable,
   action,
-  goTo,
   notify,
   openModal,
   send,
@@ -333,7 +317,6 @@ const cropFoodUI = installCropFoodUI({
   state: () => state,
   available: () => joined && !renderUnavailable,
   action,
-  goTo,
   openModal,
   collision: renderer.collision,
 });
@@ -342,7 +325,6 @@ const villageUI = installVillageUI({
   state: () => state,
   available: () => joined && !renderUnavailable,
   action,
-  goTo,
   openModal,
   collision: renderer.collision,
 });
@@ -353,10 +335,6 @@ $('.hotbar-wrap').insertAdjacentHTML(
 $('#attack-button').insertAdjacentHTML(
   'afterend',
   `<button id="jump-button" class="hunt-button" title="ジャンプ [Space / L2]" aria-label="ジャンプ">${icon('jump')}<kbd>Space</kbd><span>ジャンプ</span></button>`,
-);
-$('#discovery-card').insertAdjacentHTML(
-  'beforeend',
-  `<button id="go-enemy" class="enemy-link" hidden>白羽の呪術師へ ${icon('arrow')}</button>`,
 );
 $('#chat-content').hidden = true;
 $('.chat-collapse').textContent = '+';
@@ -375,20 +353,11 @@ function stopInput() {
     send({ type: 'action', action: 'cancelCoastal' });
   }
   gamepadControls?.suspend();
-  rideApproach.cancel();
   for (const key of keys) blockedMovementKeys.add(key);
   keys.clear();
   dashing = false;
   movementCommands.reset();
   send({ type: 'move', dx: 0, dz: 0, running: false });
-}
-function sendMoveTarget(x, z, followingRide = false) {
-  if (!joined || renderUnavailable) return false;
-  if (!followingRide) rideApproach.cancel();
-  movementCommands.reset();
-  send({ type: 'target', x, z, running: wantsToRun() });
-  if (renderer.prediction?.enabled) renderer.prediction.target = { x, z };
-  return true;
 }
 function notify(text, tone = 'info') {
   const toast = document.createElement('div');
@@ -545,7 +514,6 @@ async function connect() {
   ws.addEventListener('close', () => {
     if (ws !== socket) return;
     connection(false, manualLeave ? '未接続' : '再接続中…');
-    rideApproach.cancel();
     gamepadControls?.suspend();
     keys.clear();
     movementCommands.reset();
@@ -713,8 +681,6 @@ function updateModalHUD() {
   }
 }
 function action(type, targetId?, cropId?) {
-  if (rideApproach.targetId) stopInput();
-  rideApproach.cancel();
   if (!joined) return notify('サーバーへの接続を待っています。', 'error');
   if (renderUnavailable) return;
   if (player()?.downedUntil) return;
@@ -758,27 +724,6 @@ function action(type, targetId?, cropId?) {
 function huntTarget() {
   return selectedCombatTarget(state, player(), selectedAnimalId);
 }
-function approachHunt(animal = huntTarget()) {
-  const me = player();
-  if (!me || !animal) return notify('マンモスが草原に戻るのを待とう。');
-  selectedAnimalId = animal.id;
-  const ground =
-    animal.hostile && distance(me, animal) > 10
-      ? ENEMY_GROUNDS.find((item) => item.id === animal.id)
-      : null;
-  const target = ground ? approachEnemyGround(me, ground) : approachAnimal(me, animal);
-  goTo(
-    target.x,
-    target.z,
-    animal.hostile ? animal.name : animal.phase === 'meat' ? '肉の近く' : 'マンモスの近く',
-  );
-}
-function approachEnemy() {
-  const enemy = state.enemies?.find((item) => item.hostile === true && item.phase === 'alive');
-  if (enemy) return approachHunt(enemy);
-  const ground = ENEMY_GROUNDS[0];
-  if (ground) goTo(ground.x, ground.z, '白羽の大城の広間');
-}
 function attack() {
   action('attack');
 }
@@ -792,39 +737,30 @@ function jump() {
     !canStartJump(player(), now)
   )
     return;
-  rideApproach.cancel();
   send({ type: 'action', action: 'jump' });
   $('#world').focus({ preventScroll: true });
 }
 function rideTarget() {
   const me = player();
   if (!me) return null;
-  return (
-    (state.animals || [])
-      .filter((a) => a.phase === 'alive' && !a.riderId)
-      .sort((a, b) => ridingDistance(me, a) - ridingDistance(me, b))[0] ?? null
-  );
+  const now = (state.serverTime ?? Date.now()) + performance.now() - stateReceivedAt;
+  const candidates = (state.animals || [])
+    .filter((a) => a.phase === 'alive' && a.health > 0 && !a.riderId)
+    .sort((a, b) => ridingDistance(me, a) - ridingDistance(me, b));
+  return candidates.find((a) => canMount(me, a, renderer.collision, now)) ?? candidates[0] ?? null;
 }
 function ride() {
   if (!joined || renderUnavailable || player()?.downedUntil) return;
   const me = player(),
     animal = rideTarget();
-  if (rideApproach.targetId) {
-    stopInput();
-    return;
-  }
   if (me?.boatId) return notify(`船から降りるには岸で ${usingGamepad ? '△' : 'B'}。`);
   if (me?.mountId) return action('ride');
-  if (animal && ridingDistance(me, animal) > RIDING.reach) {
-    rideApproach.begin(animal.id);
-    selectedAnimalId = animal.id;
+  const now = (state.serverTime ?? Date.now()) + performance.now() - stateReceivedAt;
+  if (!canMount(me, animal, renderer.collision, now))
     return notify(
-      usingGamepad
-        ? 'マンモスへ近づいて乗ります。左スティック・△・○で中止。'
-        : 'マンモスへ近づいて乗ります。WASD または R で中止。',
+      `マンモスの横まで自分で近づき、乗れる案内が出たら ${usingGamepad ? '△' : 'R'} を押そう。`,
     );
-  }
-  action('ride', animal?.id);
+  action('ride', animal.id);
 }
 function interactAnimal(id) {
   const animal = [
@@ -839,12 +775,10 @@ function interactAnimal(id) {
   updateHuntingHUD();
   if (animal.phase === 'alive') {
     if (attackReady(me, animal)) action('attack', id);
-    else {
-      approachHunt(animal);
-    }
+    else notify(`自分で近づき、相手を向いて ${usingGamepad ? '□ / R2' : 'F'} で攻撃しよう。`);
   } else if (animal.phase === 'meat') {
     if (distance(me, animal) <= HUNTING.harvestRange) action('harvest', id);
-    else approachHunt(animal);
+    else notify('肉のそばまで自分で近づいて採ろう。');
   }
 }
 function updateHuntingHUD() {
@@ -857,50 +791,26 @@ function updateHuntingHUD() {
   const cooking = !!me?.cookingEndsAt && me.cookingEndsAt > serverNow;
   const fishing = !!me?.fishing;
   const coastal = me?.coastalActivity;
-  if (
-    joined &&
-    !renderUnavailable &&
-    !$('#modal').open &&
-    !document.activeElement?.closest<HTMLElement>('input,textarea,select,[contenteditable]')
-  ) {
-    const command = rideApproach.update(me, state.animals || [], performance.now());
-    if (command?.kind === 'target') sendMoveTarget(command.x, command.z, true);
-    if (command?.kind === 'mount') action('ride', command.id);
-    if (command?.kind === 'cancel') {
-      send({ type: 'move', dx: 0, dz: 0 });
-      notify(command.text);
-    }
-  }
-  const rideAnimal = rideTarget(),
-    mounted = !!me?.mountId,
-    nearRide = rideAnimal && me && ridingDistance(me, rideAnimal) <= RIDING.reach;
+  const mounted = !!me?.mountId,
+    rideAnimal = rideTarget(),
+    nearRide =
+      joined && !renderUnavailable && canMount(me, rideAnimal, renderer.collision, serverNow);
   $('.hotbar-wrap').classList.toggle('riding', mounted);
   const rideButton = $('#ride-button');
   rideButton.disabled =
-    !joined || renderUnavailable || !!me?.boatId || !!me?.downedUntil || (!mounted && !rideAnimal);
+    !joined || renderUnavailable || !!me?.boatId || !!me?.downedUntil || (!mounted && !nearRide);
   rideButton.classList.toggle('mounted', mounted);
-  rideButton.querySelector('span').textContent = mounted
-    ? 'マンモスから降りる'
-    : rideApproach.targetId
-      ? '向かうのを中止'
-      : nearRide
-        ? 'マンモスに乗る'
-        : rideAnimal
-          ? '近づいて乗る'
-          : '空いているマンモスを待つ';
+  rideButton.querySelector('span').textContent = mounted ? 'マンモスから降りる' : 'マンモスに乗る';
+  $('.riding-controls').hidden = !mounted && !nearRide;
   $('#riding-hint').textContent = mounted
-    ? 'WASD 移動 · 2回押しで走る · 攻撃・採集は降りてから'
-    : rideApproach.targetId
-      ? 'WASD / R で中止 · 1頭に1人'
-      : '1頭に1人 · R で乗る';
-  if (usingGamepad) {
-    $('#riding-hint').textContent = mounted
-      ? '左スティックを深く倒すと走る · △ 降りる'
-      : rideApproach.targetId
-        ? '左スティック / △ / ○ で中止'
-        : '1頭に1人 · △ で乗る';
-    if (me?.boatId) $('#boat-hint').textContent = '左スティックで操船 · 深く倒すと速く · 岸で △';
-  }
+    ? usingGamepad
+      ? '左スティックで移動 · △ で降りる'
+      : 'WASDで移動 · R で降りる'
+    : usingGamepad
+      ? '△ を押すとマンモスに乗れます'
+      : 'R を押すとマンモスに乗れます';
+  if (usingGamepad && me?.boatId)
+    $('#boat-hint').textContent = '左スティックで操船 · 深く倒すと速く · 岸で △';
   updatePromptBar();
   Object.assign($('#world').dataset, {
     ridingVersion: String(state.ridingVersion ?? 0),
@@ -943,18 +853,11 @@ function updateHuntingHUD() {
         : animal.phase === 'dying'
           ? '肉になったら近づいて採ろう。'
           : `${animal.health} / ${animal.maxHealth} · ${Math.round(distance(me, animal))}m · ${targetInFront ? `前方へ ${attackKey} で攻撃` : attackReady(me, animal) ? `相手を向いて ${attackKey}` : `近づいて、相手を向いて ${attackKey}`}`;
-  $('#go-hunt').disabled = !animal || downed || animal.phase === 'dead';
-  $('#go-hunt').title = $('#go-hunt').ariaLabel = animal?.hostile
-    ? `${animal.name}の近くへ移動`
-    : 'マンモスの近くへ移動';
-  $('#go-enemy').hidden = !enemies.length || animal?.hostile === true;
-  $('#go-enemy').disabled = downed;
   if (mounted) {
     $('#hunt-target-name').textContent = '騎乗中のマンモス';
     $('#hunt-target-note').textContent =
       `開けた場所で ${usingGamepad ? '△' : 'R'} を押すと降りられます。`;
     $('#discovery-card small').textContent = 'MAMMOTH RIDE · 草原の旅';
-    $('#go-hunt').disabled = true;
   } else if (animal?.riderId) {
     $('#hunt-target-note').textContent = '仲間が騎乗中 · このマンモスには攻撃できません。';
   }
@@ -1059,11 +962,6 @@ function updateHuntingHUD() {
     downed: String(downed),
     invulnerable: String(protectedNow),
   });
-}
-function goTo(x, z, _label) {
-  if (player()?.downedUntil) return;
-  if (!sendMoveTarget(x, z)) return notify('サーバーへの接続と3D画面を確認してください。', 'error');
-  $('#modal').close();
 }
 function drawMinimap(canvas = $('#minimap'), big = false) {
   drawWorldMap(canvas, state, selfId, big);
@@ -1307,7 +1205,7 @@ function openJournal() {
 }
 function openHelp() {
   openModal(
-    `<h2>あそびかた</h2><p class="modal-intro">最初は、近くの木や石を集めてみましょう。目標は画面左の「目標」に表示されます。</p><div class="help-grid"><div><kbd>W A S D</kbd><strong>歩く・走る</strong><p>通常は歩行。方向キーを素早く2回押すと走行（離すまで続く）。「走る」ボタンでも切り替えられます。クリック移動は障害物を避けます。</p></div><div><kbd>E</kbd><strong>近くでアクション</strong><p>採集、焚き火に届ける、オルと交換。</p></div><div><kbd>1 · 2 · 3 · 4</kbd><strong>アクションを選ぶ</strong><p>採集・道具づくり・資材を届ける・交換。</p></div><div><kbd>Enter</kbd><strong>仲間と話す</strong><p>チャットを開き、Enterで送信。</p></div><div><kbd>ESC · M · I · J</kbd><strong>メニュー・地図・もちもの・手帳</strong><p>ESCでメニュー。M で世界地図、I でもちもの、J で探索手帳を直接開けます。G で手をふる。</p></div></div><div class="help-tip">${icon('flame')} まずは木材3と石2で石斧を作ろう。<br>そのあと、仲間と拠点に木材12・石6を届けよう。</div><button id="help-start" class="button button-accent wide">${joined ? '探索に戻る' : '閉じる'} ${icon('arrow')}</button>`,
+    `<h2>あそびかた</h2><p class="modal-intro">最初は、近くの木や石を集めてみましょう。目標は画面左の「目標」に表示されます。</p><div class="help-grid"><div><kbd>W A S D</kbd><strong>歩く・走る</strong><p>通常は歩行。方向キーを素早く2回押すと走行（離すまで続く）。「走る」ボタンでも切り替えられます。近くまで自分で移動してから操作しよう。</p></div><div><kbd>E</kbd><strong>近くでアクション</strong><p>採集、焚き火に届ける、オルと交換。</p></div><div><kbd>1 · 2 · 3 · 4</kbd><strong>アクションを選ぶ</strong><p>採集・道具づくり・資材を届ける・交換。</p></div><div><kbd>Enter</kbd><strong>仲間と話す</strong><p>チャットを開き、Enterで送信。</p></div><div><kbd>ESC · M · I · J</kbd><strong>メニュー・地図・もちもの・手帳</strong><p>ESCでメニュー。M で世界地図、I でもちもの、J で探索手帳を直接開けます。G で手をふる。</p></div></div><div class="help-tip">${icon('flame')} まずは木材3と石2で石斧を作ろう。<br>そのあと、仲間と拠点に木材12・石6を届けよう。</div><button id="help-start" class="button button-accent wide">${joined ? '探索に戻る' : '閉じる'} ${icon('arrow')}</button>`,
   );
   $('#modal-body .modal-intro').insertAdjacentHTML('afterend', gamepadHelp);
   $('#modal-body .help-grid').insertAdjacentHTML(
@@ -1324,12 +1222,12 @@ function openHelp() {
   );
   $('.help-grid').insertAdjacentHTML(
     'afterbegin',
-    `<div><kbd>R</kbd><strong>マンモスに乗る・降りる</strong><p>生きているマンモスの横で R。1頭につき1人乗れます。WASD・地面クリックで移動し、方向キー2回押しか走行ボタンで走ります。攻撃や採集は開けた場所で降りてから。</p></div>`,
+    `<div><kbd>R</kbd><strong>マンモスに乗る・降りる</strong><p>生きているマンモスの横で R。1頭につき1人乗れます。WASDで移動し、方向キー2回押しか走行ボタンで走ります。攻撃や採集は開けた場所で降りてから。</p></div>`,
   );
   $('#help-start').onclick = () => $('#modal').close();
   $('.help-grid').insertAdjacentHTML(
     'afterbegin',
-    `<div><kbd>B</kbd><strong>船を作って海を渡る</strong><p>木材12個を集め、「海岸へ」で岸に向かい「船をつくる」。Bで乗り、WASD・海面クリックで操船。方向キー2回押しで速く進み、岸でBを押すと降ります。1隻1人、部屋で5隻まで共有できます。</p></div>`,
+    `<div><kbd>B</kbd><strong>船を作って海を渡る</strong><p>木材12個を集め、自分で岸まで歩いて「船をつくる」。Bで乗り、WASDで操船。方向キー2回押しで速く進み、岸でBを押すと降ります。1隻1人、部屋で5隻まで共有できます。</p></div>`,
   );
   if (state.enemies?.length)
     $('.help-grid').insertAdjacentHTML(
@@ -1369,7 +1267,7 @@ function updatePromptBar() {
 
 function controllerRide() {
   if (player()?.boatId) action('boardBoat');
-  else if (player()?.mountId || rideApproach.targetId) ride();
+  else if (player()?.mountId) ride();
   else if (!$('#boat-board').disabled) action('boardBoat');
   else ride();
 }
@@ -1379,7 +1277,7 @@ function openPauseMenu() {
   const entries: [string, string, string, () => void][] = [
     ['resume', 'compass', '探索に戻る', () => $('#modal').close()],
     ['inventory', 'bag', 'もちもの・道具', openInventory],
-    ['map', 'expand', '世界地図・遠征', openMap],
+    ['map', 'expand', '世界地図', openMap],
     ['journal', 'book', '探索手帳', openJournal],
     ['gulf', 'wave', '三つの国・共同の畑', () => gulfUI.open()],
     ['fishing', 'wave', '魚場と釣り方', () => fishingUI.open()],
@@ -1387,7 +1285,6 @@ function openPauseMenu() {
     ['residents', 'wave', '集落の人びと・今日の手伝い', () => villageUI.open()],
     ['tribe', 'people', '部族の仲間・招待', openTribe],
     ['help', 'help', 'あそびかた', openHelp],
-    ['shore', 'arrow', '船を作れる海岸へ', () => $('#boat-shore').click()],
     ['ride', 'target', '船・マンモスに乗る／降りる', controllerRide],
     ['wave', 'wave', '手をふる', () => action('wave')],
     ['profile', 'people', '部屋・キャラクターを変える', () => showSetup()],
@@ -1405,7 +1302,6 @@ function openPauseMenu() {
   );
   for (const [id, , , handler] of entries) {
     $(`[data-controller-menu="${id}"]`).onclick = () => {
-      if (['shore', 'ride', 'wave', 'title'].includes(id)) $('#modal').close();
       handler();
     };
   }
@@ -1420,7 +1316,7 @@ function openMap() {
   setWorldMapMode(inGulf(player()?.x, player()?.z) ? 'gulf' : 'earth');
   setWorldMapSelection(null);
   openModal(
-    `<h2>大陸と、三つの岸を旅する。</h2><p class="modal-intro">8,192 × 4,096 mの世界。大陸と、1,480 × 1,340 mの創作の湾へ。陸地を選んで歩くか、野営地への遠征で海の向こうを探索できます。</p><div class="earth-map-toolbar"><button class="button button-outline" id="map-overview" aria-pressed="true">世界全図</button><button class="button button-outline" id="map-gulf" aria-pressed="false">三つの岸の全図</button><button class="button button-outline" id="map-local" aria-pressed="false">現在地の周辺</button><span>北が上 · 人物の大きさはそのまま</span></div><canvas id="big-map" width="960" height="480" class="big-map earth-map" aria-label="氷河時代を参考にした大陸と、創作地域の三つの岸の湾の地図"></canvas><div class="earth-map-legend">${BIOMES.map((b) => `<span><i style="background:${b.color}"></i>${b.short}</span>`).join('')}<span><i style="background:#285566"></i>海</span></div><div class="earth-travel"><label for="expedition-destination">野営地を選ぶ</label><select id="expedition-destination">${EXPEDITION_STOPS.map((s) => `<option value="${s.id}">${s.name}</option>`).join('')}</select><p id="map-selection" aria-live="polite"></p><div class="earth-travel-actions"><button class="button button-outline" id="map-walk">走って向かう</button><button class="button button-accent" id="map-expedition">野営地へ遠征</button></div><small>遠征は移動を省略します。もちものは保持されます。騎乗中は降りてから。</small></div><div class="map-locations"><button class="button button-outline" id="map-camp">${icon('flame')} はじまりの焚き火</button><button class="button button-outline" id="map-hunt-north">${icon('spear')} 北西の狩場</button><button class="button button-outline" id="map-hunt-south">${icon('spear')} 南西の狩場</button><button class="button button-outline" id="map-npc">${icon('people')} オルの集落</button></div><details class="earth-map-sources"><summary>この世界の時代と地図について</summary><p>ネアンデルタール人の生存期間内である約5万年前が基準です。NOAA ETOPO1の地形を海面 −68.3 mで区切り、正距円筒図法で縮小しています。細い海峡・小島、氷床と気候の範囲は簡略化しています。元の大陸の位置を保ち、西へ広げた三つの岸の湾は創作地域で、国・農耕・異なる時代の人々の共存はファンタジーです。遠征先は探索用の配置です。</p><a href="https://www.ncei.noaa.gov/products/etopo-global-relief-model" target="_blank" rel="noreferrer">地形資料：NOAA</a> · <a href="https://cp.copernicus.org/articles/12/1079/2016/" target="_blank" rel="noreferrer">海面資料：Spratt & Lisiecki (2016)</a></details>`,
+    `<h2>大陸と、三つの岸を旅する。</h2><p class="modal-intro">8,192 × 4,096 mの世界。大陸と、1,480 × 1,340 mの創作の湾へ。地図で場所と距離を確認し、自分で歩いたり、船を漕いで探索しよう。</p><div class="earth-map-toolbar"><button class="button button-outline" id="map-overview" aria-pressed="true">世界全図</button><button class="button button-outline" id="map-gulf" aria-pressed="false">三つの岸の全図</button><button class="button button-outline" id="map-local" aria-pressed="false">現在地の周辺</button><span>北が上 · 人物の大きさはそのまま</span></div><canvas id="big-map" width="960" height="480" class="big-map earth-map" aria-label="氷河時代を参考にした大陸と、創作地域の三つの岸の湾の地図"></canvas><div class="earth-map-legend">${BIOMES.map((b) => `<span><i style="background:${b.color}"></i>${b.short}</span>`).join('')}<span><i style="background:#285566"></i>海</span></div><div class="earth-travel"><label for="map-location">野営地を選ぶ</label><select id="map-location">${EXPEDITION_STOPS.map((s) => `<option value="${s.id}">${s.name}</option>`).join('')}</select><p id="map-selection" aria-live="polite"></p><small>地図の選択では移動しません。地図を閉じ、自分で移動しよう。</small></div><div class="map-locations"><button class="button button-outline" id="map-camp">${icon('flame')} はじまりの焚き火</button><button class="button button-outline" id="map-hunt-north">${icon('spear')} 北西の狩場</button><button class="button button-outline" id="map-hunt-south">${icon('spear')} 南西の狩場</button><button class="button button-outline" id="map-npc">${icon('people')} オルの集落</button></div><details class="earth-map-sources"><summary>この世界の時代と地図について</summary><p>ネアンデルタール人の生存期間内である約5万年前が基準です。NOAA ETOPO1の地形を海面 −68.3 mで区切り、正距円筒図法で縮小しています。細い海峡・小島、氷床と気候の範囲は簡略化しています。元の大陸の位置を保ち、西へ広げた三つの岸の湾は創作地域で、国・農耕・異なる時代の人々の共存はファンタジーです。野営地は探索用の配置です。</p><a href="https://www.ncei.noaa.gov/products/etopo-global-relief-model" target="_blank" rel="noreferrer">地形資料：NOAA</a> · <a href="https://cp.copernicus.org/articles/12/1079/2016/" target="_blank" rel="noreferrer">海面資料：Spratt & Lisiecki (2016)</a></details>`,
   );
   let selected = EXPEDITION_STOPS[0];
   const selectTarget = (target) => {
@@ -1439,19 +1335,7 @@ function openMap() {
       `${target.name ?? biomeAt(target.x, target.z).short} · ${Math.round(distance(player() ?? CAMP, target))} m先 · ${location}`;
     drawMinimap($('#big-map'), true);
   };
-  $('#expedition-destination').onchange = (event) =>
-    selectTarget(expeditionById(event.target.value));
-  $('#map-walk').onclick = () => {
-    if (!runMode) $('#run-button').click();
-    goTo(selected.x, selected.z, selected.name ?? (player()?.boatId ? '選んだ海面' : '選んだ陸地'));
-  };
-  $('#map-expedition').onclick = () => {
-    if (!joined || renderUnavailable) return;
-    if (player()?.mountId) return notify('マンモスから降りてから遠征しよう。');
-    stopInput();
-    send({ type: 'expedition', destination: $('#expedition-destination').value });
-    $('#modal').close();
-  };
+  $('#map-location').onchange = (event) => selectTarget(locationById(event.target.value));
   for (const [id, mode] of [
     ['map-overview', 'earth'],
     ['map-local', 'local'],
@@ -1467,26 +1351,25 @@ function openMap() {
   $('#map-overview').setAttribute('aria-pressed', String(!inGulf(player()?.x, player()?.z)));
   $('#map-gulf').setAttribute('aria-pressed', String(inGulf(player()?.x, player()?.z)));
   drawMinimap($('#big-map'), true);
-  $('#map-camp').onclick = () => goTo(49, 52.4, '野営地の焚き火');
-  $('#map-npc').onclick = () => goTo(NPC.x, NPC.z - 2, 'オルの集落');
+  $('#map-camp').onclick = () => selectTarget({ x: 49, z: 52.4, name: '野営地の焚き火' });
+  $('#map-npc').onclick = () => selectTarget({ ...NPC, name: 'オルの集落' });
   if (state.enemies?.some((enemy) => enemy.hostile === true)) {
     $('.map-locations').insertAdjacentHTML(
       'beforeend',
       `<button class="button button-outline enemy-map-button" id="map-enemy">${icon('spear')} 大城の広間の白羽の呪術師</button>`,
     );
-    $('#map-enemy').onclick = approachEnemy;
+    $('#map-enemy').onclick = () => selectTarget({ ...ENEMY_GROUNDS[0], name: '白羽の呪術師' });
   }
   $('.map-locations').insertAdjacentHTML(
     'beforeend',
     `<button class="button button-outline" id="map-castle">白羽の大城の城門</button>`,
   );
-  $('#map-castle').onclick = () => goTo(CASTLE_GATE.x, CASTLE_GATE.z, CASTLE_GATE.name);
+  $('#map-castle').onclick = () => selectTarget(CASTLE_GATE);
   for (const direction of ['north', 'south'])
     $(`#map-hunt-${direction}`).onclick = () => {
       const clearing = SCENERY.animals[direction === 'north' ? 0 : 1],
         animal = state.animals?.find((item) => item.id === clearing.id);
-      if (player()?.mountId || !animal) goTo(clearing.x, clearing.z, '狩場の草原');
-      else approachHunt(animal);
+      selectTarget({ ...(animal ?? clearing), name: '狩場の草原' });
     };
   $('#big-map').onclick = (event) => {
     const canvas = event.currentTarget,
@@ -1499,16 +1382,13 @@ function openMap() {
       return Math.hypot(p[0] - px, p[1] - py) < 12;
     });
     if (stop) {
-      $('#expedition-destination').value = stop.id;
+      $('#map-location').value = stop.id;
       selectTarget(stop);
       return;
     }
     const target = projection.world(px, py);
-    if (!player()?.boatId && !isLand(target.x, target.z))
-      return notify('海岸で船を作って乗ると、海面を選んで操船できます。');
     selectTarget(target);
   };
-  $('#map-walk').textContent = player()?.boatId ? '操船して向かう' : '走って向かう';
   selectTarget(selected);
 }
 function cook() {
@@ -1516,7 +1396,7 @@ function cook() {
   if (!me) return;
   const fire = nearestCookingFire(state, me);
   if (distance(me, fire) > HUNTING.cookRange) {
-    goTo(fire.x - 1, fire.z + 2.4, '近くの焚き火');
+    notify('焚き火のそばまで自分で近づくと、調理できます。');
   } else action('cook');
 }
 function playNote() {
@@ -1562,9 +1442,6 @@ document
 $('#status-plate').onclick = openTribe;
 $('#menu-button').onclick = openPauseMenu;
 $('#map-button').onclick = openMap;
-$('#go-camp').onclick = () => goTo(49, 52.4, '野営地の焚き火');
-$('#go-hunt').onclick = () => approachHunt();
-$('#go-enemy').onclick = approachEnemy;
 $('#attack-button').onclick = attack;
 $('#jump-button').onclick = jump;
 $('#meat-inventory').onclick = openInventory;
@@ -1665,7 +1542,6 @@ document.addEventListener('keydown', (e) => {
   const k = movementKey(e);
   if (DIRECTION_KEYS.includes(k)) {
     e.preventDefault();
-    rideApproach.cancel();
     if (player()?.downedUntil) blockedMovementKeys.add(k);
     else if (!blockedMovementKeys.has(k)) {
       if (!e.repeat) {
@@ -1813,7 +1689,6 @@ function updateMovementInput() {
     canMove ? gamepadControls.movement : { x: 0, y: 0, running: false },
   );
   const running = motion.running;
-  if (motion.x || motion.y) rideApproach.cancel();
   if (running !== lastGait) {
     send({ type: 'gait', running });
     lastGait = running;

@@ -1,9 +1,8 @@
 import { LANDINGS, inGulf } from '../shared/gulf-region.mjs';
 import { SEA_WEATHER, currentDirection, seaConditions } from '../shared/maritime-weather.mjs';
-import { initializeBoats, launchPoint } from '../shared/boats.mjs';
 
 const $ = <T extends HTMLElement = HTMLElement>(s: string) => document.querySelector<T>(s);
-export function installMaritimeUI({ player, state, available, openModal, goTo, renderer, notify }) {
+export function installMaritimeUI({ player, state, available, openModal }) {
   $('.boat-controls').insertAdjacentHTML(
     'beforeend',
     '<button id="boat-weather" class="hunt-button">空と航路</button>',
@@ -15,32 +14,13 @@ export function installMaritimeUI({ player, state, available, openModal, goTo, r
       <section class="gulf-card"><h4>対岸と外湾</h4><p>対岸への横断は近道。沖へ出るほど流れの向きで速さが変わる。雨風では遅く、海霧では遠い岸が見えにくい。</p></section></div>
       <p id="sea-local"></p><p>漕ぐのをやめると、その場で留まります。メニューや釣りの間も漂流しません。陸にいるときは湾奥を回る道も使えます。</p>
       <div class="gulf-actions"><button class="button button-accent" id="sea-map">湾の地図を見る</button></div>
-      <h3>次の上陸地</h3><p id="sea-landing-help"></p><div class="gulf-actions">${LANDINGS.map((l) => `<button class="button button-outline" id="sea-go-${l.id}">${l.name}</button>`).join('')}</div>
+      <h3>次の上陸地</h3><p id="sea-landing-help"></p><div class="gulf-actions">${LANDINGS.map((l) => `<span class="gulf-card">${l.name}</span>`).join('')}</div>
       <details class="gulf-lore"><summary>この世界について</summary><p>天候の周期、流れ、次の空模様の見通しは創作です。漕ぎ手が舟をその場に保つ操作を省略しています。</p></details></div>`);
     $('#sea-map').onclick = () => {
       $<HTMLDialogElement>('#modal').close();
       $('#map-button').click();
       $('#map-gulf').click();
     };
-    for (const landing of LANDINGS)
-      $(`#sea-go-${landing.id}`).onclick = () => {
-        const p = player();
-        if (!p || !available() || !inGulf(p.x, p.z) || p.downedUntil || p.mountId) return;
-        let destination = { x: landing.x, z: landing.z };
-        if (p.boatId) {
-          const room = { collision: renderer.collision, boats: state().boats ?? [] };
-          initializeBoats(room);
-          room.boats = state().boats ?? [];
-          const afloat = launchPoint(room, { ...landing, radius: p.radius });
-          if (!afloat) {
-            notify('この浜には今、舟を寄せられません。別の上陸地を選ぼう。');
-            return;
-          }
-          destination = afloat;
-        }
-        $<HTMLDialogElement>('#modal').close();
-        goTo(destination.x, destination.z, landing.name);
-      };
     update();
   }
   function update() {
@@ -69,12 +49,8 @@ export function installMaritimeUI({ player, state, available, openModal, goTo, r
         : exposure < 0.35
           ? '今の場所：波と流れの影響が小さい水面。'
           : '今の場所：沖の流れの影響を受ける水面。';
-    $('#sea-landing-help').textContent = p?.boatId
-      ? '選んだ浜の水際へ漕いで向かいます。到着したら乗降操作で岸へ降りよう。'
-      : '選んだ浜へ、陸を歩いて向かいます。';
-    for (const landing of LANDINGS)
-      $<HTMLButtonElement>(`#sea-go-${landing.id}`).disabled =
-        !available() || !local || !!p?.downedUntil || !!p?.mountId;
+    $('#sea-landing-help').textContent =
+      '地図で浜の位置を確認し、自分で移動しよう。岸に近づいたら乗降操作で降りられます。';
   }
   $('#boat-weather').onclick = open;
   return { open, update };

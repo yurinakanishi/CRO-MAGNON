@@ -55,10 +55,11 @@ test('occupied animals cannot be hunted; dismount restores free attacks and ordi
   const r=fixture();ride(r);assert.equal(startAttack(r,r.player,{},2000).reason,'mounted');assert.ok(!damageableTargets(r).some(t=>t.target===r.animal));
   ride(r);assert.equal(startAttack(r,r.player,{},2000).accepted,true);assert.ok(damageableTargets(r).some(t=>t.target===r.animal));
 });
-test('disconnect releases control and click navigation uses the mount radius',()=>{
+test('disconnect releases control and retired click navigation cannot move an occupied mount',()=>{
   const r=fixture();ride(r);assert.equal(mountedAnimal(r,r.player),r.animal);
   assert.ok(planNavigation(r.animal,{x:-12,z:0},r.collision,[],2000));
+  const origin={x:r.animal.x,z:r.animal.z};
   for(let i=0;i<200;i++)updateAnimals(r,.1,2000+i*100);
-  assert.ok(Math.abs(r.animal.x+12)<.1);assert.equal(r.player.x,r.animal.x);
+  assert.deepEqual({x:r.animal.x,z:r.animal.z},origin);assert.equal(r.player.x,r.animal.x);
   releaseRider(r,r.player);assert.equal(mountedAnimal(r,r.player),undefined);assert.equal(r.animal.target,null);assert.equal(r.animal.home.x,r.animal.x);
 });

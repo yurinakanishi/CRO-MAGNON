@@ -1,7 +1,7 @@
 import { combatDistance, stopActor, enemyIsSolid } from './combat.mjs';
 import { attackProfile } from './combat-profiles.mjs';
 import { movePlayer } from './movement.mjs';
-import { updateNavigation } from './navigation.mjs';
+import { jumpProgress } from './jumping.mjs';
 
 export const RIDING = Object.freeze({ version: 1, reach: 1.35, walkSpeed: 0.7, runSpeed: 2.25 });
 const circle = (actor) => ({
@@ -17,6 +17,25 @@ export const mountedAnimal = (room, player) =>
   );
 export const ridingDistance = (player, animal) =>
   combatDistance(player, animal) - animal.radius - player.radius;
+/** The same eligibility check drives the nearby prompt and the server action. */
+export function canMount(player, animal, collision, now) {
+  return !!(
+    player &&
+    animal &&
+    collision &&
+    !player.mountId &&
+    !player.boatId &&
+    !player.downedUntil &&
+    jumpProgress(player, now) === null &&
+    !(player.attackSequence && now - player.attackAt < attackProfile(player).durationMs) &&
+    animal.phase === 'alive' &&
+    animal.health > 0 &&
+    !animal.riderId &&
+    !(now < animal.hitUntil) &&
+    ridingDistance(player, animal) <= RIDING.reach &&
+    collision.segmentFree(player, animal, 0.12)
+  );
+}
 export function ridingObstacles(room, animal, rider) {
   return [...room.players.values()]
     .filter((p) => p !== rider && !p.mountId)
@@ -94,6 +113,8 @@ export function handleRidingAction(room, player, message, now) {
   )
     return fail('マンモスの横まで近づいて R を押そう。');
   if (now < animal.hitUntil) return fail('マンモスが落ち着いてから乗ろう。');
+  if (!canMount(player, animal, room.collision, now))
+    return fail('マンモスの横で、着地してから △／R を押そう。');
   stopActor(player);
   stopActor(animal);
   player.pendingStrike = null;
@@ -118,7 +139,6 @@ export function updateRiddenAnimal(room, animal, dt, now) {
     return false;
   }
   const dynamic = ridingObstacles(room, animal, rider);
-  updateNavigation(animal, room.collision, dynamic, now);
   const speed = (animal.runningRequested ? RIDING.runSpeed : RIDING.walkSpeed) * animal.scale;
   movePlayer(
     animal,

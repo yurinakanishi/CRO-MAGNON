@@ -1,4 +1,4 @@
-import { SETTLEMENTS, MANY_HEARTHS, inGulf } from '../shared/gulf-region.mjs';
+import { SETTLEMENTS, MANY_HEARTHS } from '../shared/gulf-region.mjs';
 import {
   PANTRY,
   PANTRY_FOODS,
@@ -11,10 +11,7 @@ import { RESIDENTS, DAY_PHASES } from '../shared/village-sites.mjs';
 import { interactionVisible } from '../shared/interactions.mjs';
 import { forageLabel } from '../shared/foraging.mjs';
 
-export function installSupperUI(
-  { player, state, available, action, goTo, openModal, collision },
-  back,
-) {
+export function installSupperUI({ player, state, available, action, openModal, collision }, back) {
   let settlementId: string = MANY_HEARTHS.id,
     foodId = PANTRY_FOODS[0].id,
     readyAt = 0;
@@ -38,7 +35,7 @@ export function installSupperUI(
   function open(requested?: string) {
     settlementId = SETTLEMENTS.find((s) => s.id === requested)?.id ?? MANY_HEARTHS.id;
     openModal(
-      `<div id="supper-panel" class="gulf-panel"><p class="screen-eyebrow">帰ってくる人に、一皿を</p><h2>住人の夕食</h2><p class="modal-intro">ここへ取り分けた食料は、夕べに炉へ戻った住人が一人一日ひとつ食べます。共同食料は旅人のために残ります。</p><label class="pantry-select">夕食を用意する場所<select id="supper-settlement">${SETTLEMENTS.map((s) => `<option value="${s.id}" ${s.id === settlementId ? 'selected' : ''}>${s.name}</option>`).join('')}</select></label><p id="supper-clock"></p><p id="supper-capacity" role="status"></p><div class="pantry-foods" role="group" aria-label="夕食を選ぶ">${PANTRY_FOODS.map((f) => `<button id="supper-food-${f.id}" class="button button-outline" aria-pressed="false"><strong>${f.name}</strong><span id="supper-count-${f.id}"></span></button>`).join('')}</div><section class="gulf-card pantry-detail"><h3 id="supper-selected"></h3><p id="supper-amounts"></p><p id="supper-hint" role="status"></p><div class="gulf-actions">${button('supper-give', 'もちものから夕食へ1つ')}${button('supper-release', '夕食から共同食料へ1つ戻す')}</div><p>共同食料と夕食を合わせて48個まで。戻した食料を受け取る時は、従来の一日3個に従います。</p></section><section class="gulf-card"><h3>炉を囲む人びと</h3><p id="supper-attendance"></p><ul class="supper-residents">${RESIDENTS.map((r) => `<li id="supper-resident-${r.id}"><strong>${r.name}</strong><span id="supper-meal-${r.id}"></span></li>`).join('')}</ul><p>道中や会話中の人は待ち、旅先の世帯は滞在先で食べます。食料が足りなくても、仕事や旅は続きます。</p></section><section class="gulf-card"><h3>食べ終えた貝の殻</h3><p id="supper-shells" role="status"></p><div class="gulf-actions">${button('supper-shell-take', '貝塚へ運ぶ殻を1つ受け取る')}</div><p id="supper-shell-hint"></p></section><div class="gulf-actions">${button('supper-go', 'この炉へ歩く')}${button('supper-back', '共同の食料置き場へ')}</div></div>`,
+      `<div id="supper-panel" class="gulf-panel"><p class="screen-eyebrow">帰ってくる人に、一皿を</p><h2>住人の夕食</h2><p class="modal-intro">ここへ取り分けた食料は、夕べに炉へ戻った住人が一人一日ひとつ食べます。共同食料は旅人のために残ります。</p><label class="pantry-select">夕食を用意する場所<select id="supper-settlement">${SETTLEMENTS.map((s) => `<option value="${s.id}" ${s.id === settlementId ? 'selected' : ''}>${s.name}</option>`).join('')}</select></label><p id="supper-clock"></p><p id="supper-capacity" role="status"></p><div class="pantry-foods" role="group" aria-label="夕食を選ぶ">${PANTRY_FOODS.map((f) => `<button id="supper-food-${f.id}" class="button button-outline" aria-pressed="false"><strong>${f.name}</strong><span id="supper-count-${f.id}"></span></button>`).join('')}</div><section class="gulf-card pantry-detail"><h3 id="supper-selected"></h3><p id="supper-amounts"></p><p id="supper-hint" role="status"></p><div class="gulf-actions">${button('supper-give', 'もちものから夕食へ1つ')}${button('supper-release', '夕食から共同食料へ1つ戻す')}</div><p>共同食料と夕食を合わせて48個まで。戻した食料を受け取る時は、従来の一日3個に従います。</p></section><section class="gulf-card"><h3>炉を囲む人びと</h3><p id="supper-attendance"></p><ul class="supper-residents">${RESIDENTS.map((r) => `<li id="supper-resident-${r.id}"><strong>${r.name}</strong><span id="supper-meal-${r.id}"></span></li>`).join('')}</ul><p>道中や会話中の人は待ち、旅先の世帯は滞在先で食べます。食料が足りなくても、仕事や旅は続きます。</p></section><section class="gulf-card"><h3>食べ終えた貝の殻</h3><p id="supper-shells" role="status"></p><div class="gulf-actions">${button('supper-shell-take', '貝塚へ運ぶ殻を1つ受け取る')}</div><p id="supper-shell-hint"></p></section><div class="gulf-actions">${button('supper-back', '共同の食料置き場へ')}</div></div>`,
     );
     $('supper-panel')
       .querySelector('.modal-intro')
@@ -63,10 +60,7 @@ export function installSupperUI(
     $('supper-give').onclick = () => perform('gulfSupperGive');
     $('supper-release').onclick = () => perform('gulfSupperRelease');
     $('supper-shell-take').onclick = () => perform('gulfSupperShells');
-    $('supper-go').onclick = () => {
-      const s = SETTLEMENTS.find((s) => s.id === settlementId);
-      goTo(s.x, s.z + 5, s.name);
-    };
+
     $('supper-back').onclick = () => back(settlementId);
     update();
   }
@@ -164,7 +158,6 @@ export function installSupperUI(
     );
     enable('supper-release', usable && near && ready && portion > 0);
     enable('supper-shell-take', usable && near && ready && shells > 0 && carried < 99);
-    enable('supper-go', usable && inGulf(me?.x, me?.z));
   }
   return { open, update };
 }

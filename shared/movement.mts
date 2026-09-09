@@ -1,8 +1,8 @@
-import type { MovableActor, Point } from './types.mjs';
+import type { MovableActor } from './types.mjs';
 import { WORLD, worldClamp } from './world.mjs';
 import { characterModel } from './characters.mjs';
 
-export function movePlayer(
+export function moveActor(
   player: MovableActor,
   dt: number,
   now: number,
@@ -52,4 +52,14 @@ export function movePlayer(
   if (player.moving) player.facing = Math.atan2(actualX, actualZ);
   if (player.target && Math.hypot(player.x - player.target.x, player.z - player.target.z) < 0.015)
     player.target = null;
+}
+
+/** A player or occupied vehicle only moves from current directional input. */
+export function movePlayer(...args: Parameters<typeof moveActor>) {
+  const [player] = args;
+  player.target = null;
+  player.path = [];
+  player.navigationGoal = null;
+  player.navigationEnd = null;
+  moveActor(...args);
 }

@@ -4,19 +4,25 @@ import { WebSocket } from 'ws';
 import { CollisionWorld } from '../dist/shared/collision.mjs';
 import { updateEnemies } from '../dist/shared/enemies.mjs';
 import { actorObstacle } from '../dist/shared/animals.mjs';
-import { movePlayer } from '../dist/shared/movement.mjs';
+import { moveActor } from '../dist/shared/movement.mjs';
 import { planNavigation, updateNavigation } from '../dist/shared/navigation.mjs';
 import { stopActor } from '../dist/shared/combat.mjs';
 import { createGameServer } from '../server.mjs';
 
 const actor=(id,x,z)=>({id,x,z,radius:.32,path:[],lastInput:0,energy:0,inventory:{},downedUntil:100});
 const obstacles=(players,player)=>players.filter(other=>other!==player).map(actorObstacle);
-function step(player,collision,dynamic,now) {
-  const before={x:player.x,z:player.z};
-  updateNavigation(player,collision,dynamic,now);
-  movePlayer(player,.05,now,(p,dx,dz)=>collision.move(p,dx,dz,p.radius,dynamic));
-  assert.ok(collision.free(player,player.radius,dynamic),'Every movement step must remain body-clear');
-  assert.ok(Math.hypot(player.x-before.x,player.z-before.z)<=.066,'Navigation must walk without teleporting');
+function step(player, collision, dynamic, now) {
+  const before = { x: player.x, z: player.z };
+  updateNavigation(player, collision, dynamic, now);
+  moveActor(player, 0.05, now, (p, dx, dz) => collision.move(p, dx, dz, p.radius, dynamic));
+  assert.ok(
+    collision.free(player, player.radius, dynamic),
+    'Every movement step must remain body-clear',
+  );
+  assert.ok(
+    Math.hypot(player.x - before.x, player.z - before.z) <= 0.066,
+    'Navigation must walk without teleporting',
+  );
 }
 
 test('each member of the actual five-player recovery cluster can walk north to the enemy clearing',()=>{
@@ -63,28 +69,52 @@ test('stopping an actor cancels its retained navigation request',()=>{
   assert.equal(player.target,null);assert.deepEqual(player.path,[]);assert.equal(player.navigationGoal,null);
 });
 
-test('server target messages leave a recovered five-client crowd and manual input cancels replanning',async t=>{
-  const game=createGameServer({port:0,host:'127.0.0.1',tickMs:20}),address=await game.listen(),clients=[];
-  t.after(async()=>{for(const client of clients)client.socket.terminate();await game.close();});
-  const sleep=ms=>new Promise(resolve=>setTimeout(resolve,ms));
-  async function until(predicate,timeout=6000) {
-    const end=Date.now()+timeout;while(Date.now()<end){if(predicate())return;await sleep(10);}assert.fail('Server navigation condition timed out');
+test('legacy target messages cannot move a recovered five-client crowd', async (t) => {
+  const game = createGameServer({ port: 0, host: '127.0.0.1', tickMs: 20 }),
+    address = await game.listen(),
+    clients = [];
+  t.after(async () => {
+    for (const client of clients) client.socket.terminate();
+    await game.close();
+  });
+  const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+  async function until(predicate, timeout = 6000) {
+    const end = Date.now() + timeout;
+    while (Date.now() < end) {
+      if (predicate()) return;
+      await sleep(10);
+    }
+    assert.fail('Server navigation condition timed out');
   }
-  for(let i=0;i<5;i++) {
-    const client={socket:new WebSocket(`ws://127.0.0.1:${address.port}/ws?room=RECOVERY-PATH&name=P${i}`)};clients.push(client);
-    client.socket.on('message',bytes=>{const message=JSON.parse(bytes);if(message.type==='welcome')client.id=message.id;});
-    await until(()=>client.id);
+  for (let i = 0; i < 5; i++) {
+    const client = {
+      socket: new WebSocket(`ws://127.0.0.1:${address.port}/ws?room=RECOVERY-PATH&name=P${i}`),
+    };
+    clients.push(client);
+    client.socket.on('message', (bytes) => {
+      const message = JSON.parse(bytes);
+      if (message.type === 'welcome') client.id = message.id;
+    });
+    await until(() => client.id);
   }
-  const room=game.rooms.get('RECOVERY-PATH'),players=[...room.players.values()],recoverAt=Date.now()+100;
-  for(const [i,player] of players.entries())Object.assign(player,{x:43+i*1.2,z:19,energy:0,downedUntil:recoverAt});
-  await until(()=>players.every(player=>!player.downedUntil));
-  const client=clients[2],player=room.players.get(client.id);
-  client.socket.send(JSON.stringify({type:'target',x:45,z:20,running:true}));
-  await until(()=>player.z<50);
-  assert.ok(room.collision.free(player,player.radius,obstacles(players,player)));
-  assert.ok(player.navigationGoal);
-  client.socket.send(JSON.stringify({type:'move',dx:0,dz:0}));
-  await until(()=>!player.navigationGoal&&!player.moving);
-  const stopped={x:player.x,z:player.z};await sleep(600);
-  assert.deepEqual({x:player.x,z:player.z},stopped);assert.equal(player.target,null);
+  const room = game.rooms.get('RECOVERY-PATH'),
+    players = [...room.players.values()],
+    recoverAt = Date.now() + 100;
+  for (const [i, player] of players.entries())
+    Object.assign(player, { x: 43 + i * 1.2, z: 19, energy: 0, downedUntil: recoverAt });
+  await until(() => players.every((player) => !player.downedUntil));
+  const client = clients[2],
+    player = room.players.get(client.id);
+  const origin = { x: player.x, z: player.z };
+  client.socket.send(JSON.stringify({ type: 'target', x: 45, z: 20, running: true }));
+  await sleep(250);
+  assert.deepEqual({ x: player.x, z: player.z }, origin);
+  assert.ok(room.collision.free(player, player.radius, obstacles(players, player)));
+  assert.ok(!player.navigationGoal);
+  client.socket.send(JSON.stringify({ type: 'move', dx: 0, dz: 0 }));
+  await until(() => !player.navigationGoal && !player.moving);
+  const stopped = { x: player.x, z: player.z };
+  await sleep(600);
+  assert.deepEqual({ x: player.x, z: player.z }, stopped);
+  assert.equal(player.target, null);
 });
