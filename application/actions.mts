@@ -9,10 +9,26 @@ import { handleGulfAction, ensureGulfPlayer } from '../shared/gulf-life.mjs';
 import { handleFishingAction, cancelFishing } from '../shared/fishing.mjs';
 import { handleCoastalAction, cancelCoastal } from '../shared/coastal-craft.mjs';
 import { handleVillageAction } from '../shared/village-life.mjs';
+import { canStartJump, jumpProgress } from '../shared/jumping.mjs';
 const distance = (a, b) => Math.hypot(a.x - b.x, a.z - b.z);
 export function createActionHandler({ notice, broadcast, snapshot, systemChat, runtime }) {
   return function act(room, player, message, now) {
     const action = message.action;
+    if (action === 'jump') {
+      if (!canStartJump(player, now)) return;
+      cancelFishing(player);
+      cancelCoastal(player);
+      player.cookingEndsAt = 0;
+      player.jumpAt = now;
+      player.jumpSequence = (player.jumpSequence ?? 0) + 1;
+      broadcast(room, snapshot(room));
+      return;
+    }
+    if (jumpProgress(player, now) !== null) {
+      // Opening a menu sends these defensively. Jump already canceled all work.
+      if (['cancelFishing', 'cancelCoastal', 'cancelCook'].includes(action)) return;
+      return notice(player, '着地してから行おう。');
+    }
     if (['attack', 'boardBoat', 'ride'].includes(action)) {
       cancelFishing(player);
       cancelCoastal(player);

@@ -18,6 +18,7 @@ import { RIDING, ridingDistance } from '../shared/riding.mjs';
 import { RideApproach } from './riding-input.js';
 import { GamepadControls, gamepadHelp } from './gamepad-ui.js';
 import { combineMovement } from './gamepad-input.js';
+import { canStartJump } from '../shared/jumping.mjs';
 import { installBoatControls } from './boat-ui.js';
 import {
   inventoryCounts,
@@ -98,6 +99,7 @@ const icons = {
     '<circle cx="12" cy="12" r="7"/><circle cx="12" cy="12" r="2"/><path d="M12 1v4m0 14v4M1 12h4m14 0h4"/>',
   chat: '<path d="M21 15a3 3 0 0 1-3 3H9l-6 4V6a3 3 0 0 1 3-3h12a3 3 0 0 1 3 3v9Z"/><path d="M7 8h10M7 12h7"/>',
   check: '<path d="m5 12 4 4L19 6"/>',
+  jump: '<path d="M12 17V3m-5 5 5-5 5 5M5 20h14"/>',
   leaf: '<path d="M20 3C4 1 1 13 8 17c7 5 14-4 12-14Z"/><path d="M4 22 16 8"/>',
   link: '<path d="m10 14 4-4m-6 6-2 2a4 4 0 0 1-6-6l5-5a4 4 0 0 1 6 0m2 1 2-2a4 4 0 0 1 6 6l-5 5a4 4 0 0 1-6 0" transform="translate(1 -1)"/>',
   help: '<circle cx="12" cy="12" r="9"/><path d="M9 9a3 3 0 0 1 6 0c0 2-3 2-3 5m0 3v.1"/>',
@@ -347,6 +349,10 @@ const villageUI = installVillageUI({
 $('.hotbar-wrap').insertAdjacentHTML(
   'afterbegin',
   `<div class="hunt-controls"><button id="attack-button" class="hunt-button attack-button" title="槍で攻撃 [F / 5]">${icon('spear')}<kbd>F</kbd><span>槍で攻撃</span></button><button id="meat-inventory" class="hunt-button meat-counts" title="生肉は焚き火で焼いてから食べられます">${icon('meat')}<span>生 <b id="rawMeat-count">0</b> / 焼 <b id="cookedMeat-count">0</b></span></button><button id="cook-button" class="hunt-button" title="近くの焚き火で肉を焼く">${icon('flame')}<span>焼く</span></button><button id="eat-meat-button" class="hunt-button" title="焼き肉で元気を45回復">食べる</button></div><div id="cooking-status" class="cooking-status" hidden><span id="cooking-label">肉を焼いています…</span><progress id="cooking-progress" max="1" value="0" aria-label="肉を焼く進み具合"></progress><button id="cancel-cook">中止</button></div>`,
+);
+$('#attack-button').insertAdjacentHTML(
+  'afterend',
+  `<button id="jump-button" class="hunt-button" title="ジャンプ [Space / L2]" aria-label="ジャンプ">${icon('jump')}<kbd>Space</kbd><span>ジャンプ</span></button>`,
 );
 $('#discovery-card').insertAdjacentHTML(
   'beforeend',
@@ -776,6 +782,20 @@ function approachEnemy() {
 function attack() {
   action('attack');
 }
+function jump() {
+  const now = (state.serverTime ?? Date.now()) + performance.now() - stateReceivedAt;
+  if (
+    !joined ||
+    renderUnavailable ||
+    screens.active ||
+    $('#modal').open ||
+    !canStartJump(player(), now)
+  )
+    return;
+  rideApproach.cancel();
+  send({ type: 'action', action: 'jump' });
+  $('#world').focus({ preventScroll: true });
+}
 function rideTarget() {
   const me = player();
   if (!me) return null;
@@ -941,6 +961,7 @@ function updateHuntingHUD() {
   const attackAvailable =
     joined && !renderUnavailable && !me?.boatId && canStartAttack(me, serverNow);
   $('#attack-button').disabled = !attackAvailable;
+  $('#jump-button').disabled = !joined || renderUnavailable || !canStartJump(me, serverNow);
   $('#attack-button').classList.toggle('in-range', targetInFront);
   const combat = attackProfile(me ?? profile),
     attackButton = $('#attack-button');
@@ -1289,6 +1310,10 @@ function openHelp() {
     `<h2>あそびかた</h2><p class="modal-intro">最初は、近くの木や石を集めてみましょう。目標は画面左の「目標」に表示されます。</p><div class="help-grid"><div><kbd>W A S D</kbd><strong>歩く・走る</strong><p>通常は歩行。方向キーを素早く2回押すと走行（離すまで続く）。「走る」ボタンでも切り替えられます。クリック移動は障害物を避けます。</p></div><div><kbd>E</kbd><strong>近くでアクション</strong><p>採集、焚き火に届ける、オルと交換。</p></div><div><kbd>1 · 2 · 3 · 4</kbd><strong>アクションを選ぶ</strong><p>採集・道具づくり・資材を届ける・交換。</p></div><div><kbd>Enter</kbd><strong>仲間と話す</strong><p>チャットを開き、Enterで送信。</p></div><div><kbd>ESC · M · I · J</kbd><strong>メニュー・地図・もちもの・手帳</strong><p>ESCでメニュー。M で世界地図、I でもちもの、J で探索手帳を直接開けます。G で手をふる。</p></div></div><div class="help-tip">${icon('flame')} まずは木材3と石2で石斧を作ろう。<br>そのあと、仲間と拠点に木材12・石6を届けよう。</div><button id="help-start" class="button button-accent wide">${joined ? '探索に戻る' : '閉じる'} ${icon('arrow')}</button>`,
   );
   $('#modal-body .modal-intro').insertAdjacentHTML('afterend', gamepadHelp);
+  $('#modal-body .help-grid').insertAdjacentHTML(
+    'beforeend',
+    '<div><kbd>Space / L2</kbd><strong>ジャンプ</strong><p>画面の「ジャンプ」でも跳べます。歩行・走行中にも使えます。着地してからもう一度。採集や調理の途中なら作業を中止します。</p></div>',
+  );
   $('.help-grid').insertAdjacentHTML(
     'beforeend',
     `<div><kbd>DRAG</kbd><strong>肩越しカメラを回す</strong><p>マウス右・左ドラッグ、または指のドラッグで周囲を見渡せます。WASDはカメラの向きに合わせて動きます。</p></div><div><kbd>SCROLL</kbd><strong>カメラの距離を変える</strong><p>ホイールか＋・−ボタンで調整。「自分の位置へ」で初期のTPS視点に戻せます。</p></div>`,
@@ -1317,6 +1342,7 @@ function updateGamepadHints(active: boolean) {
   for (const [selector, label] of [
     ['#interaction-hint kbd', active ? '×' : 'E'],
     ['#attack-button kbd', active ? '□ / R2' : 'F'],
+    ['#jump-button kbd', active ? 'L2' : 'Space'],
     ['#ride-button kbd', active ? '△' : 'R'],
     ['#boat-board kbd', active ? '△' : 'B'],
     ['#chat-toggle kbd', active ? '⌨' : 'Enter'],
@@ -1540,6 +1566,7 @@ $('#go-camp').onclick = () => goTo(49, 52.4, '野営地の焚き火');
 $('#go-hunt').onclick = () => approachHunt();
 $('#go-enemy').onclick = approachEnemy;
 $('#attack-button').onclick = attack;
+$('#jump-button').onclick = jump;
 $('#meat-inventory').onclick = openInventory;
 $('#cook-button').onclick = cook;
 $('#eat-meat-button').onclick = () => action('eatMeat');
@@ -1650,6 +1677,11 @@ document.addEventListener('keydown', (e) => {
     }
     return;
   }
+  if (e.code === 'Space' || e.key === ' ') {
+    e.preventDefault();
+    if (!e.repeat) jump();
+    return;
+  }
   if (e.repeat) return;
   if (e.code === 'KeyB' || k === 'b') {
     e.preventDefault();
@@ -1721,6 +1753,9 @@ gamepadControls = new GamepadControls({
         break;
       case 'ride':
         controllerRide();
+        break;
+      case 'jump':
+        jump();
         break;
       case 'cancel':
         stopInput();

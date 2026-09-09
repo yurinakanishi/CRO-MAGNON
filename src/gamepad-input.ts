@@ -7,6 +7,7 @@ export const PAD = {
   triangle: 3,
   l1: 4,
   r1: 5,
+  l2: 6,
   r2: 7,
   share: 8,
   options: 9,
@@ -25,6 +26,7 @@ export type PadAction =
   | 'confirm'
   | 'cancel'
   | 'attack'
+  | 'jump'
   | 'ride'
   | 'map'
   | 'menu'
@@ -57,6 +59,7 @@ const gameBindings: [number, PadAction][] = [
   [PAD.circle, 'cancel'],
   [PAD.square, 'attack'],
   [PAD.r2, 'attack'],
+  [PAD.l2, 'jump'],
   [PAD.triangle, 'ride'],
   [PAD.share, 'map'],
   [PAD.touchpad, 'map'],

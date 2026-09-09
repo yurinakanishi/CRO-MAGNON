@@ -34,6 +34,7 @@ export function keyPrompts(
   const prompts: KeyPrompt[] = [
     { key: gamepad ? '×' : 'E', label: '調べる' },
     { key: gamepad ? '□' : 'F', label: '攻撃' },
+    { key: gamepad ? 'L2' : 'Space', label: 'ジャンプ' },
   ];
   if (options.ride) prompts.push({ key: gamepad ? '△' : 'R', label: 'マンモス' });
   if (options.boat) prompts.push({ key: gamepad ? '△' : 'B', label: '船' });
@@ -54,6 +55,7 @@ export function guideMarkup({ gamepad, skipChecked }: GuideOptions): string {
         ['左スティック', '移動', '浅く倒すと歩き、深く倒すと走ります。'],
         ['右スティック', '視点', 'カメラを回します。L1 / R1 で距離、R3 で戻す。'],
         ['×', '調べる・採集', '木や石、焚き火、仲間に近づいて押します。'],
+        ['L2', 'ジャンプ', '歩きながら、走りながらも跳べます。着地してからもう一度。'],
         ['□ / R2', '攻撃', '相手を向いて。槍・刀・魔法はキャラクターで変わります。'],
         ['△', '乗る・降りる', 'マンモスや船のそばで。'],
         ['OPTIONS', 'メニュー', 'もちもの・地図・手帳・設定。十字キーでも開けます。'],
@@ -62,6 +64,7 @@ export function guideMarkup({ gamepad, skipChecked }: GuideOptions): string {
         ['W A S D', '移動', '同じ方向を素早く2回押すと走ります。地面クリックでも移動。'],
         ['ドラッグ', '視点', 'マウスや指でドラッグして周囲を見渡します。ホイールで距離。'],
         ['E', '調べる・採集', '木や石、焚き火、仲間に近づいて押します。'],
+        ['Space', 'ジャンプ', '画面の「ジャンプ」も使えます。着地してからもう一度。'],
         ['F', '攻撃', '相手を向いて。槍・刀・魔法はキャラクターで変わります。'],
         ['R / B', '乗る・降りる', 'R でマンモス、B で船。'],
         ['ESC', 'メニュー', 'もちもの (I)・地図 (M)・手帳 (J)・設定。Enter でチャット。'],

@@ -16,6 +16,7 @@ export const gamepadHelp = `
       <div><dt>右スティック</dt><dd>カメラを回す</dd></div>
       <div><dt>×</dt><dd>採集・調べる</dd></div>
       <div><dt>□ / R2</dt><dd>刀・魔法・槍で攻撃</dd></div>
+      <div><dt>L2</dt><dd>ジャンプ（着地してからもう一度）</dd></div>
       <div><dt>△</dt><dd>船・マンモスに乗る／降りる</dd></div>
       <div><dt>○</dt><dd>移動・調理を中止</dd></div>
       <div><dt>十字キー</dt><dd>↑ 地図 · ← もちもの · → 手帳 · ↓ メニュー</dd></div>

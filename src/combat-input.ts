@@ -1,4 +1,5 @@
 import { attackProfile } from '../shared/combat-profiles.mjs';
+import { jumpProgress } from '../shared/jumping.mjs';
 
 // The server starts neutral and clears movement on defeat. A target command also
 // replaces keyboard motion, so the next idle pulse must not cancel that path.
@@ -57,6 +58,7 @@ export function canStartAttack(player, serverNow) {
     !player.downedUntil &&
     !player.mountId &&
     !player.boatId &&
+    jumpProgress(player, serverNow) === null &&
     (!(player.attackSequence > 0) ||
       serverNow - player.attackAt >= attackProfile(player).cooldownMs)
   );

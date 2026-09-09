@@ -32,6 +32,7 @@ import { createEnemies, updateEnemies } from '../shared/enemies.mjs';
 import { takeExpedition } from '../shared/expeditions.mjs';
 import { animalIsSolid, updateHunting } from '../shared/hunting.mjs';
 import { movePlayer } from '../shared/movement.mjs';
+import { canStartJump, jumpProgress } from '../shared/jumping.mjs';
 import { planNavigation, updateNavigation } from '../shared/navigation.mjs';
 import { isLand } from '../shared/paleo-geography.mjs';
 import { RIDING, mountedAnimal, releaseRider, ridingObstacles } from '../shared/riding.mjs';
@@ -275,6 +276,8 @@ export function createGameCore({
       lastTarget: 0,
       lastAction: 0,
       lastChat: 0,
+      jumpAt: 0,
+      jumpSequence: 0,
       runningRequested: false,
       needsWorld: false,
       ready: room.camp.level > 0,
@@ -315,6 +318,10 @@ export function createGameCore({
         return;
       }
       if (message.type === 'barter') {
+        if (message.kind !== 'cancel' && jumpProgress(player, now) !== null) {
+          notice(player, '着地してから交換しよう。');
+          return;
+        }
         if (message.kind !== 'cancel' && now - player.lastAction < 450) return;
         if (message.kind !== 'cancel') player.lastAction = now;
         const result = handleBarterCommand(room, player, message, now, runtime.id);
@@ -396,6 +403,10 @@ export function createGameCore({
         controlled.dx = 0;
         controlled.dz = 0;
       } else if (message.type === 'expedition' && typeof message.destination === 'string') {
+        if (jumpProgress(player, now) !== null) {
+          notice(player, '着地してから遠征しよう。');
+          return;
+        }
         cancelBarter(room, player.id, now, '遠征を始めたので、交換を中止しました。');
         cancelFishing(player);
         cancelCoastal(player);
@@ -406,15 +417,18 @@ export function createGameCore({
         message.type === 'action' &&
         typeof message.action === 'string' &&
         (message.action === 'attack' ||
+          message.action === 'jump' ||
           message.action === 'cancelCook' ||
           message.action === 'cancelFishing' ||
           message.action === 'cancelCoastal' ||
           message.action === 'rift' ||
           now - player.lastAction >= 450)
       ) {
+        if (message.action === 'jump' && !canStartJump(player, now)) return;
         if (!['cancelFishing', 'cancelCoastal', 'cancelCook', 'wave'].includes(message.action))
           cancelBarter(room, player.id, now, '別の作業を始めたので、交換を中止しました。');
-        if (!['cancelFishing', 'cancelCoastal'].includes(message.action)) player.lastAction = now;
+        if (!['cancelFishing', 'cancelCoastal', 'jump'].includes(message.action))
+          player.lastAction = now;
         act(room, player, message, now);
       } else if (message.type === 'chat' && now - player.lastChat >= 600) {
         const chatText = cleanText(message.text, 180);
@@ -595,7 +609,8 @@ export function createGameCore({
               households: householdSnapshots(room),
               sessions: sessions.slice(-100),
             },
-            (key, value) => (key === 'socket' ? undefined : value),
+            (key, value) =>
+              ['socket', 'jumpAt', 'jumpSequence'].includes(key) ? undefined : value,
           ),
         );
       }),
@@ -654,6 +669,8 @@ export function createGameCore({
           player.boatId = null;
           stopActor(player);
           player.mountId = null;
+          player.jumpAt = 0;
+          player.jumpSequence = 0;
           player.pendingStrike = null;
           player.cookingEndsAt = 0;
           cancelFishing(player);

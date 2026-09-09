@@ -30,6 +30,7 @@ import {
 import { resourceAppearance } from '../shared/biome-scenery.mjs';
 import { CharacterAssets } from './character-assets.js';
 import { confirmedAction } from './character-animation.js';
+import { jumpHeight, jumpProgress } from '../shared/jumping.mjs';
 import { orientSpear } from './spear-pose.js';
 import { orientKatana } from './katana-pose.js';
 import { SpellEffects } from './spell-effects.js';
@@ -684,6 +685,8 @@ export class WorldRenderer {
         if (p.id === selfId) this.focus.set(p.x, walkHeight(p.x, p.z) + focusHeight(p), p.z);
       }
       const action = confirmedAction(entity.state, p);
+      if (jumpProgress(p, this.serverNow()) === null)
+        entity.actor?.jumpPose.leave(entity.actor.animation);
       if (action === 'Attack')
         entity.actor?.animation.playAttack(
           Math.max(0, (this.serverNow() - (p.attackAt ?? 0)) / 1000),
@@ -980,6 +983,8 @@ export class WorldRenderer {
         continue;
       }
       entity.label.active = true;
+      const airborne = jumpProgress(p, this.serverNow());
+      if (airborne === null) entity.actor?.jumpPose.leave(entity.actor.animation);
       if (entity.spears) {
         for (const spear of entity.spears.values()) spear.visible = false;
         entity.weapon = entity.spears.get(attackProfile(p).modelKey);
@@ -1052,7 +1057,11 @@ export class WorldRenderer {
       const mx = next.x - model.position.x,
         mz = next.z - model.position.z;
       const visualSpeed = remaining < 0.012 ? 0 : Math.hypot(mx, mz) / Math.max(dt, 0.001);
-      model.position.set(next.x, walkHeight(next.x, next.z), next.z);
+      model.position.set(
+        next.x,
+        walkHeight(next.x, next.z) + jumpHeight(p, this.serverNow()),
+        next.z,
+      );
       if (p.moving) entity.running = p.running;
       const attacking = entity.actor?.animation.name === 'Attack';
       const facing = attacking ? p.facing : visualSpeed > 0.025 ? Math.atan2(mx, mz) : p.facing;
@@ -1068,7 +1077,8 @@ export class WorldRenderer {
           !entity.actor.animation.oneShot
         )
           entity.actor.animation.play(p.coastalActivity?.kind === 'shells' ? 'Gather' : 'Craft');
-        entity.actor.animation.update(dt, visualSpeed, entity.running);
+        if (airborne !== null) entity.actor.jumpPose.update(entity.actor.animation, airborne);
+        else entity.actor.animation.update(dt, visualSpeed, entity.running);
         if (entity.axe) {
           const attack = entity.actor.animation.name === 'Attack';
           const profile = attackProfile(p);
@@ -1090,7 +1100,7 @@ export class WorldRenderer {
                 entity.weapon,
                 entity.model,
                 attack,
-                entity.actor.animation.current.time,
+                entity.actor.animation.current?.time ?? 0,
                 entity.actor.gripUp,
               );
             else orientSpear(entity.weapon, entity.model, attack, entity.actor.gripUp);
@@ -1334,6 +1344,10 @@ export class WorldRenderer {
             gender: entity.state.gender,
             model: entity.actor.asset.modelKey,
             sha256: entity.actor.asset.sha256,
+            y: Number(entity.model.position.y.toFixed(3)),
+            jumpHeight: Number(jumpHeight(entity.state, this.serverNow()).toFixed(3)),
+            jumpSequence: entity.state.jumpSequence ?? 0,
+            animation: entity.actor.animation.name,
           })),
       );
       data.actorSpecies = [...this.players.values()]
@@ -1367,6 +1381,8 @@ export class WorldRenderer {
         data.playerModel = self.actor?.asset.modelKey || 'loading';
         data.playerGender = self.state.gender;
         data.playerY = self.model.position.y.toFixed(3);
+        data.playerJumpHeight = jumpHeight(self.state, this.serverNow()).toFixed(3);
+        data.playerJumpSequence = String(self.state.jumpSequence ?? 0);
         data.playerX = self.model.position.x.toFixed(2);
         data.playerZ = self.model.position.z.toFixed(2);
         data.playerAnimation = self.actor?.animation.name || 'loading';

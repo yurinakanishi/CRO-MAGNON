@@ -1,0 +1,100 @@
+{
+  "evidence": "output/playwright/jump-20260909/final/report.json",
+  "fullTests": 354,
+  "preview": {
+    "base": "http://localhost:3012",
+    "host": {
+      "existing": [
+        {
+          "Id": 20716,
+          "StartTime": "2026-09-09T08:40:53.4829645+09:00",
+          "ProcessName": "node"
+        },
+        {
+          "Id": 39092,
+          "StartTime": "2026-09-09T11:09:46.0682361+09:00",
+          "ProcessName": "node"
+        }
+      ],
+      "url": "http://localhost:3012/",
+      "startedAt": "2026-09-09T12:48:04.225442+09:00",
+      "pid": 30592
+    },
+    "health": {
+      "ok": true,
+      "ridingVersion": 1,
+      "combatVersion": 3,
+      "characterVersion": 2,
+      "enemyVersion": 1,
+      "worldVersion": 4,
+      "worldSize": 8192,
+      "worldWidth": 8192,
+      "worldDepth": 4096,
+      "epochYearsBP": 50000,
+      "rooms": 0,
+      "players": 0,
+      "maxPlayers": 5
+    },
+    "files": [
+      {
+        "file": "src/main.js",
+        "sha256": "7e02137b311682e6f4077bc7c6830b1a03b0316f301b412f8d1a1a07d6645163"
+      },
+      {
+        "file": "src/world3d.js",
+        "sha256": "e854eed282acc73553af0fc5656e0cc1238661d4169c13989d4329cf94f0bedd"
+      },
+      {
+        "file": "src/character-assets.js",
+        "sha256": "05a4da5f7f691d6895c1498d1387eca834cca97a91333d4f85369b997f01b59c"
+      },
+      {
+        "file": "src/jump-pose.js",
+        "sha256": "83ed5436fb509817cf7dddda2a88271792887768c9fd9f3d67f91da6b8133630"
+      },
+      {
+        "file": "src/combat-input.js",
+        "sha256": "7092741fb15553aec8ff4771d0969040bae77658d979210bfc45c98bfe6a0253"
+      },
+      {
+        "file": "src/gamepad-input.js",
+        "sha256": "44f1d2d02deefa0ee73f4e57cb8faeb10099931355579af795d2fa09b67464a1"
+      },
+      {
+        "file": "src/gamepad-ui.js",
+        "sha256": "e12c6207842ddc5ba337437213bd2a645fe4f1810a63a7d51f521c6a3531cbc9"
+      },
+      {
+        "file": "src/screens.js",
+        "sha256": "92c0741e90cad469bc4353ca2055353794f5a74186585446d3f7289b53b7cbd8"
+      },
+      {
+        "file": "shared/jumping.mjs",
+        "sha256": "468423034426d9686df3240c83589cd5a4c1de8c06cf7151e587bb28f541b5da"
+      }
+    ]
+  },
+  "physics": {
+    "height": 1,
+    "durationMs": 720,
+    "cooldownMs": 820
+  },
+  "physicalController": false,
+  "errors": [],
+  "physicalTouchscreen": false,
+  "fixtures": [
+    "Profile selections",
+    "navigator.getGamepads input"
+  ],
+  "checks": [
+    "Normal title/setup/guide start; Space arc visible on both real clients; held key jumps once and lands",
+    "Walking and running retain horizontal movement throughout jumping",
+    "Simulated L2 jumps once; menu/focus release gate holds, and opening a menu midair still lands",
+    "Typing a space in chat never jumps",
+    "Touch button works and remains inside portrait and landscape mobile viewports",
+    "Reload during jump resumes the same player on the ground",
+    "All six model choices visibly jump, land and can attack after landing"
+  ],
+  "finalRelatedTests": 28,
+  "syntaxFiles": 171
+}

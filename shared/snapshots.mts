@@ -34,6 +34,8 @@ export interface PlayerSnapshot extends Point {
   speed: number;
   attackSequence: number;
   attackAt: number;
+  jumpAt?: number;
+  jumpSequence?: number;
   cookingEndsAt: number;
   cookingKind?: 'fish' | 'meat' | 'shellfish' | 'root' | 'herbRoot';
   coastalActivity?: CoastalActivity | null;
