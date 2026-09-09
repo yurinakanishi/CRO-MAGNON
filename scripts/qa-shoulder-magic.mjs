@@ -7,7 +7,7 @@ const { chromium } = await import(
   process.env.PLAYWRIGHT_MODULE ||
     'file:///C:/Users/yurin/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/node_modules/playwright/index.mjs'
 );
-const folder = 'output/playwright/shoulder-magic';
+const folder = 'output/playwright/shoulder-inertia';
 await mkdir(folder, { recursive: true });
 const game = createGameServer({ port: 0, host: '127.0.0.1' });
 const { port } = await game.listen();
@@ -98,6 +98,53 @@ try {
   assert.equal(mage.carrierId, ape.id);
   assert.equal(mage.attackSequence, 2);
   reports.push({ step: 'keyboard and button, carrier walking', casts });
+  await sleep(1200);
+  await a.locator('#run-button').click();
+  await a.keyboard.down('w');
+  await sleep(300);
+  await m.locator('#attack-button').click();
+  const flightSequence = mage.attackSequence;
+  await m.waitForFunction(() =>
+    window.qaWorld.state.projectiles.some((p) => p.ownerId === window.qaWorld.selfId),
+  );
+  const orb = room.projectiles.find((p) => p.ownerId === mage.id);
+  assert.ok(orb);
+  assert.ok(Math.abs(orb.speed - 12.4) < 0.02, `running release speed: ${orb.speed}`);
+  const flight = { speed: orb.speed, dx: orb.dx, dz: orb.dz, sequence: flightSequence };
+  const samples = [];
+  for (let i = 0; i < 6; i++) {
+    await sleep(65);
+    samples.push({ x: orb.x - ape.x, z: orb.z - ape.z, travelled: orb.travelled });
+    if (i === 2) {
+      for (const page of pages) {
+        const visible = await page.evaluate(() => {
+          const w = window.qaWorld;
+          const carrier = [...w.players.values()].find((e) => e.state.species === 'ape');
+          const p = w.state.projectiles[0];
+          return (
+            p && {
+              count: w.spells.count,
+              ahead:
+                (w.spells.xyz[0] - carrier.model.position.x) * p.dx +
+                (w.spells.xyz[2] - carrier.model.position.z) * p.dz,
+              speed: p.speed,
+            }
+          );
+        });
+        assert.ok(visible?.count > 0 && visible.ahead > 0, 'both browsers draw the orb ahead');
+        reports.push({ step: 'rendered flight ahead of carrier', visible });
+      }
+      await m.screenshot({ path: `${folder}/visible-flight.png` });
+    }
+  }
+  assert.ok(
+    samples.at(-1).x * orb.dx + samples.at(-1).z * orb.dz > 2,
+    'orb pulls ahead of running carrier',
+  );
+  await a.keyboard.up('w');
+  await a.locator('#run-button').click();
+  await m.screenshot({ path: `${folder}/running-flight.png` });
+  reports.push({ step: 'real running release inherits carrier velocity', flight, samples });
   for (const viewport of [
     { width: 390, height: 844 },
     { width: 844, height: 390 },
@@ -125,7 +172,7 @@ try {
   await m.waitForFunction(() => !window.qaWorld.players.get(window.qaWorld.selfId).state.carrierId);
   await m.keyboard.press('f');
   await sleep(500);
-  assert.equal(mage.attackSequence, 5);
+  assert.equal(mage.attackSequence, 6);
   assert.deepEqual(errors, []);
   await writeFile(
     `${folder}/summary.json`,
@@ -142,6 +189,9 @@ try {
     ),
   );
   console.log(JSON.stringify({ reports, errors }));
+} catch (error) {
+  console.error(JSON.stringify({ errors }));
+  throw error;
 } finally {
   await browser.close();
   await game.close();

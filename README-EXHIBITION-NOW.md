@@ -1,6 +1,6 @@
 # 展示LAN：この2台の起動手順と確認記録
 
-更新日: 2026-09-09。同じ手順書をPC1・PC2の `Desktop\projects\CRO-MAGNON` に配置。
+更新日: 2026-09-10。同じ手順書をPC1・PC2の `Desktop\projects\CRO-MAGNON` に配置。
 
 普段使うPCを来場者に操作してもらう際の専用ユーザー・キオスク制限・Home/Proの違いは
 [展示用の安全対策](README-EXHIBITION-SECURITY.md) を参照。安全対策は検討段階で未設定。
@@ -10,7 +10,7 @@
 1. PC1とPC2をEthernet LANケーブルで直接つなぐ。
 2. Ethernetの設定を下表で確認する。今回の2台は設定済み。
 3. PC1で次のファイルをダブルクリックする。
-   `C:\Users\yurin\Desktop\projects\CRO-MAGNON\output\exhibition-a2a0148c\start-exhibition-host.bat`
+   `C:\Users\yurin\Desktop\projects\CRO-MAGNON\output\exhibition-23720e92\start-exhibition-host.bat`
 4. PC2で次のファイルをダブルクリックする。
    `C:\Users\fee1i\Desktop\projects\CRO-MAGNON\start-exhibition-client.bat`
 5. 各PCのブラウザーで [展示ゲームを開く](http://localhost:4173/?room=EXHIBITION)。
@@ -60,11 +60,11 @@ URLの `?room=` や旅支度の入力が設定ファイルの既定値より優�
 
 ## 配置済みのゲームと停止方法
 
-- PC1のゲーム: `C:\Users\yurin\Desktop\projects\CRO-MAGNON\output\exhibition-a2a0148c`
-- PC2のゲーム: `C:\Users\fee1i\Desktop\projects\CRO-MAGNON\game\exhibition-a2a0148c`
-- PC2の受取ZIP: `C:\Users\fee1i\Desktop\projects\CRO-MAGNON\incoming\exhibition-a2a0148c.zip`
-- ビルドID: `a2a0148c66e49c0ec76dfafead947167a932fcbd26792f1571c410c5f17c4b53`
-- ZIP SHA-256: `F836FA2561D843E80941C06E15F4BD734CA55851EFB659C161417DC19568AD39`
+- PC1のゲーム: `C:\Users\yurin\Desktop\projects\CRO-MAGNON\output\exhibition-23720e92`
+- PC2のゲーム: `C:\Users\fee1i\Desktop\projects\CRO-MAGNON\game\exhibition-23720e92`
+- PC2の受取ZIP: `C:\Users\fee1i\Desktop\projects\CRO-MAGNON\incoming\exhibition-23720e92.zip`
+- ビルドID: `23720e924a84af5c6b1f6e77899531bb9015612cd0ca4545ea3f37e07fe1596f`
+- ZIP SHA-256: `966E4D67C055E9859D1E5E813E0BB6CE676A81083733F5287058F107758B6DAB`
 
 PC1からPC2へ直結EthernetのSSH/SCPで転送し、PC2で293ファイル・55 GLBとZIPのハッシュを検証済み。
 Node.jsと必要な依存を同梱済みで、展示当日のインストールは不要。
@@ -76,7 +76,7 @@ PC1をBATから起動したときは、その起動ウィンドウを開いた�
 
 PC2のルートBATは手動実行用タスク `CRO-MAGNON-Exhibition-Client-6c04efc0` を使い、
 ログイン中のYURIのデスクトップでクライアントを起動する。自動起動トリガーはない。
-タスク名の末尾は初回の識別子のままだが、起動先は最新の `game/exhibition-a2a0148c` に更新済み。
+タスク名の末尾は初回の識別子のままだが、起動先は最新の `game/exhibition-23720e92` に更新済み。
 動作中の再実行ではブラウザーを開く。停止はルートの `stop-exhibition-client.bat`。
 PC2のログはルートの `client-live.log` と `client-live-error.log`。
 
@@ -102,6 +102,12 @@ PC2で有効な登録先は `C:\ProgramData\ssh\administrators_authorized_keys`�
 鍵でのSSH接続を確認済み。展示ゲームの起動・参加にSSHやWindowsのPIN入力は不要。
 
 ## 今回の結果とWi-Fi OFF確認
+
+2026-09-10朝、再更新の依頼により、歩行のかくつき・衝突時の向き修正、全7外見の
+倒れる動作、大猿の肩に乗ったままの魔法攻撃を含む最新版を両PCへ配布した。
+上記の起動先は今回の `exhibition-23720e92`。旧配布フォルダーは保持している。
+更新開始時点で展示ホストは停止していたため、新しく開始し、古いスナップショットは復元していない。
+以下の9月9日の合流成功は以前の試験記録で、今回のビルドでの物理2台の操作試験とは区別する。
 
 2026-09-09夜、更新依頼により `b5d866b` 時点のゲームを両PCへ配布して再起動した。
 ジャンプ、手動移動、動作見直し、大猿・肩乗り、水やり、紫尾の巨獣、最新タイトル素材を含む。

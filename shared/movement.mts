@@ -56,7 +56,9 @@ export function moveActor(
 
 /** A player or occupied vehicle only moves from current directional input. */
 export function movePlayer(...args: Parameters<typeof moveActor>) {
-  const [player, , now] = args;
+  const [player, dt, now] = args;
+  const beforeX = player.x,
+    beforeZ = player.z;
   // Collision sliding and depenetration change position, not the player's intent.
   // Keep the last direction when idle, including when another actor pushes us.
   const facing =
@@ -68,5 +70,8 @@ export function movePlayer(...args: Parameters<typeof moveActor>) {
   player.navigationGoal = null;
   player.navigationEnd = null;
   moveActor(...args);
+  // Keep the collision-resolved velocity separate from the intended facing.
+  player.velocityX = dt > 0 ? (player.x - beforeX) / dt : 0;
+  player.velocityZ = dt > 0 ? (player.z - beforeZ) / dt : 0;
   player.facing = facing;
 }

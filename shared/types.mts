@@ -97,6 +97,8 @@ export interface MovableActor extends Point, CharacterProfile {
   dx: number;
   dz: number;
   speed: number;
+  velocityX?: number;
+  velocityZ?: number;
   facing: number;
   target: Point | null;
   path: Point[];

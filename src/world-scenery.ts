@@ -222,21 +222,19 @@ export function buildAnimalAssets(world) {
     meat.visible = false;
     meat.userData.animalId = spec.id;
     world.scene.add(meat);
-    const label = world.createLabel('マンモス', 'animal', new THREE.Vector3(), '');
+    const label = world.createLabel('', 'animal', new THREE.Vector3());
     label.active = false;
-    const detail = document.createElement('small'),
-      health = document.createElement('progress');
+    const health = document.createElement('progress');
     health.max = 100;
     health.value = 100;
     health.setAttribute('aria-label', 'マンモスの体力');
-    label.element.append(detail, health);
+    label.element.append(health);
     world.mammoths.push({
       id: spec.id,
       model,
       meat,
       label,
       health,
-      detail,
       actor,
       initialized: false,
     });

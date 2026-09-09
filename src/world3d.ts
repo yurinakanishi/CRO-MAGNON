@@ -1,6 +1,5 @@
 import type { ViewState } from './view-state.js';
 import { LocalPrediction } from './local-prediction.js';
-import { canMount } from '../shared/riding.mjs';
 import { enemyIsSolid } from '../shared/combat.mjs';
 import { activateMiddenObstacle } from '../shared/coastal-sites.mjs';
 import { CoastalRenderer } from './coastal-renderer.js';
@@ -38,7 +37,7 @@ import { SpellEffects } from './spell-effects.js';
 import { attackProfile } from '../shared/combat-profiles.mjs';
 import { CollisionWorld } from '../shared/collision.mjs';
 import { CHARACTER_MODELS, characterModel } from '../shared/characters.mjs';
-import { enemyAnimationState, enemyStatusLabel, playerRecovered } from './enemy-state.js';
+import { enemyAnimationState, playerRecovered } from './enemy-state.js';
 import { isLand } from '../shared/paleo-geography.mjs';
 import { FrameClock } from './frame-clock.js';
 import { WorldAtmosphere } from './world-atmosphere.js';
@@ -384,9 +383,10 @@ export class WorldRenderer {
   createLabel(text, kind, position, subtitle = '') {
     const element = document.createElement('div');
     element.className = `world-label ${kind}`;
+    element.hidden = true;
     const title = document.createElement('strong');
     title.textContent = text;
-    element.append(title);
+    if (text) element.append(title);
     if (subtitle) {
       const sub = document.createElement('small');
       sub.textContent = subtitle;
@@ -410,17 +410,11 @@ export class WorldRenderer {
         model.position.set(resource.x, walkHeight(resource.x, resource.z), resource.z);
         model.rotation.y = yaw;
         this.scene.add(model);
-        const label = this.createLabel(
-          { wood: '木材', stone: '石', berry: 'ベリー', obsidian: '黒曜石' }[resource.type],
-          'resource',
-          new THREE.Vector3(resource.x, walkHeight(resource.x, resource.z) + 1.7, resource.z),
-        );
-        item = { model, label, key, surface };
+        item = { model, key, surface };
         this.resources.set(resource.id, item);
       }
       item.resource = resource;
       item.model.visible = resource.amount > 0;
-      item.label.active = resource.amount > 0;
     }
   }
 
@@ -439,7 +433,7 @@ export class WorldRenderer {
         model.visible = false;
         model.userData.animalId = state.id;
         this.scene.add(model);
-        const label = this.createLabel(state.name, 'enemy', new THREE.Vector3());
+        const label = this.createLabel('', 'enemy', new THREE.Vector3());
         label.active = false;
         const health = document.createElement('progress');
         health.setAttribute('aria-label', `${state.name}の体力`);
@@ -784,6 +778,18 @@ export class WorldRenderer {
     this.camera.updateProjectionMatrix();
   }
 
+  showCombatHealth(target) {
+    const me = this.predictedMotion ?? this.players.get(this.selfId)?.state;
+    return (
+      !!me &&
+      target?.phase === 'alive' &&
+      !target.riderId &&
+      target.health > 0 &&
+      target.health < target.maxHealth &&
+      Math.hypot(target.x - me.x, target.z - me.z) <= 20
+    );
+  }
+
   render(time, dt) {
     const frameStarted = performance.now();
     let predicted = null;
@@ -830,8 +836,7 @@ export class WorldRenderer {
       const phase = state?.phase ?? 'alive';
       animal.model.visible = !!state && (phase === 'alive' || phase === 'dying');
       animal.meat.visible = !!state && phase === 'meat';
-      animal.label.active =
-        !!state && state.riderId !== this.selfId && (phase === 'alive' || phase === 'meat');
+      animal.label.active = this.showCombatHealth(state);
       if (!state) continue;
       if (Math.hypot(state.x - this.camera.position.x, state.z - this.camera.position.z) > 90) {
         animal.model.visible = false;
@@ -879,25 +884,6 @@ export class WorldRenderer {
           (phase === 'meat' ? 0.8 : state.scale * animal.actor.asset.heightMetres + 0.35),
         animal.model.position.z,
       );
-      setText(animal.label.title, phase === 'meat' ? 'マンモスの肉' : 'マンモス');
-      setText(
-        animal.detail,
-        phase === 'meat'
-          ? `Eで採る · 残り${state.meatRemaining}個`
-          : state.riderId
-            ? '仲間が騎乗中'
-            : canMount(
-                  this.players.get(this.selfId)?.state,
-                  state,
-                  this.collision,
-                  this.serverNow(),
-                )
-              ? document.body.classList.contains('using-gamepad')
-                ? '△ で乗る'
-                : 'R で乗る'
-              : '自分で近づいて調べよう',
-      );
-      if (animal.health.hidden !== (phase !== 'alive')) animal.health.hidden = phase !== 'alive';
       if (animal.health.max !== (state.maxHealth ?? 100))
         animal.health.max = state.maxHealth ?? 100;
       if (animal.health.value !== (state.health ?? 100)) animal.health.value = state.health ?? 100;
@@ -1207,7 +1193,7 @@ export class WorldRenderer {
       const visible =
         state.phase !== 'respawning' && model.position.distanceTo(this.camera.position) < 75;
       model.visible = visible;
-      enemy.label.active = visible && state.phase === 'alive';
+      enemy.label.active = visible && this.showCombatHealth(state);
       if (!visible) {
         model.position.set(state.x, walkHeight(state.x, state.z), state.z);
         continue;
@@ -1230,7 +1216,6 @@ export class WorldRenderer {
         model.position.y + (actor.asset.heightMetres ?? 1.85) * (state.scale ?? 1) + 0.3,
         model.position.z,
       );
-      setText(enemy.label.title, enemyStatusLabel(state));
       if (enemy.health.max !== state.maxHealth) enemy.health.max = state.maxHealth;
       if (enemy.health.value !== state.health) enemy.health.value = state.health;
       const animation = enemyAnimationState(state, this.serverNow());

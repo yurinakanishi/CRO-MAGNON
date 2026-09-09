@@ -235,9 +235,13 @@ test('shoulder mage casts while the ape runs, damages once and synchronizes the 
       const orb = f.room.projectiles[0];
       assert.equal(orb.ownerId, f.b.id);
       assert.equal(orb.x, f.a.x, 'launch follows current carrier position');
-      target.x = orb.x;
+      target.x = orb.x + ((target.z - orb.z) * orb.dx) / orb.dz;
+      assert.ok(Math.abs(orb.dx * orb.speed - 5.4) < 1e-8);
+      assert.ok(Math.abs(orb.dz * orb.speed - 7) < 1e-8);
       for (const { socket } of f.peers) {
         const state = socket.messages.filter((m) => m.type === 'state').at(-1);
+        assert.equal(state.projectiles[0].speed, orb.speed);
+        assert.equal(state.projectiles[0].dx, orb.dx);
         assert.equal(state.players.find((p) => p.id === f.b.id).attackSequence, 1);
         assert.equal(state.players.find((p) => p.id === f.b.id).carrierId, f.a.id);
       }

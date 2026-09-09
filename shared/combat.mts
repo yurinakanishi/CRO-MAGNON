@@ -33,6 +33,8 @@ export function stopActor(actor) {
   actor.moving = false;
   actor.running = false;
   actor.speed = 0;
+  actor.velocityX = 0;
+  actor.velocityZ = 0;
 }
 const alive = (actor) =>
   Number.isFinite(actor.health) &&
@@ -130,14 +132,28 @@ export function resolveAttack(room, player, now = Date.now()) {
   if (profile.key === 'magic') {
     // Start at the body centre and sweep the first segment too, so casting next
     // to a wall cannot spawn the orb on the wall's far side.
+    const carrier = player.carrierId && room.players.get(player.carrierId);
+    const inherit =
+      shoulderMagic(player) &&
+      carrier?.species === 'ape' &&
+      carrier.passengerId === player.id &&
+      !carrier.downedUntil;
+    // Capture the carrier's actual movement on the release frame. Later turns
+    // and stops must not steer a projectile that has already left the hands.
+    const vx =
+      Math.sin(strike.facing) * profile.projectileSpeed + (inherit ? (carrier.velocityX ?? 0) : 0);
+    const vz =
+      Math.cos(strike.facing) * profile.projectileSpeed + (inherit ? (carrier.velocityZ ?? 0) : 0);
+    const speed = Math.hypot(vx, vz);
     room.projectiles ??= [];
     room.projectiles.push({
       id: `${player.id}:${player.attackSequence}`,
       ownerId: player.id,
       x: player.x,
       z: player.z,
-      dx: Math.sin(strike.facing),
-      dz: Math.cos(strike.facing),
+      dx: speed > 0 ? vx / speed : Math.sin(strike.facing),
+      dz: speed > 0 ? vz / speed : Math.cos(strike.facing),
+      speed,
       elevation: room.collision.surfaceHeight?.(player) ?? 0,
       createdAt: strike.impactAt,
       updatedAt: strike.impactAt,
@@ -264,9 +280,13 @@ export function updateProjectiles(room, now = Date.now()) {
     const owner = room.players.get(projectile.ownerId);
     if (!owner || owner.downedUntil) continue;
     const profile = ATTACK_PROFILES.magic;
+    const speed = projectile.speed ?? profile.projectileSpeed;
+    // Retain the spell's original lifetime (8 / 7 seconds). Inherited motion
+    // adds world distance without reducing its forward travel relative to the ape.
+    const range = (profile.reach * speed) / profile.projectileSpeed;
     const travel = Math.min(
-      profile.reach - projectile.travelled,
-      (Math.max(0, now - projectile.updatedAt) * profile.projectileSpeed) / 1000,
+      range - projectile.travelled,
+      (Math.max(0, now - projectile.updatedAt) * speed) / 1000,
     );
     const end = {
       x: projectile.x + projectile.dx * travel,
@@ -307,7 +327,7 @@ export function updateProjectiles(room, now = Date.now()) {
       continue;
     }
     Object.assign(projectile, end, { updatedAt: now, travelled: projectile.travelled + travel });
-    if (projectile.travelled < profile.reach) remaining.push(projectile);
+    if (projectile.travelled < range) remaining.push(projectile);
   }
   room.projectiles = remaining;
   return events;

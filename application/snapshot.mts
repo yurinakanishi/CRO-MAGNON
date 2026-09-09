@@ -44,13 +44,14 @@ export function snapshot(
     serverTime: now,
     maritime: maritimeWeather(now, room.createdAt ?? now),
     projectiles: (room.projectiles || []).map(
-      ({ id, ownerId, x, z, dx, dz, createdAt, updatedAt, travelled, kind, elevation }) => ({
+      ({ id, ownerId, x, z, dx, dz, speed, createdAt, updatedAt, travelled, kind, elevation }) => ({
         id,
         ownerId,
         x,
         z,
         dx,
         dz,
+        speed,
         createdAt,
         updatedAt,
         travelled,

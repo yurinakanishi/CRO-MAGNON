@@ -106,6 +106,7 @@ export interface ProjectileSnapshot extends Point {
   ownerId: string;
   dx: number;
   dz: number;
+  speed?: number;
   createdAt: number;
   updatedAt: number;
   travelled: number;
