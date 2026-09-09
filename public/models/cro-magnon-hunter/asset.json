@@ -1,6 +1,6 @@
 {
   "bones": 22,
-  "bytes": 10014340,
+  "bytes": 10121844,
   "candidate": 1,
   "clips": [
     {
@@ -53,10 +53,18 @@
   "heightMetres": 1.8,
   "locomotion": {
     "Run_Loop": {
-      "metresPerSecond": 2.775
+      "metresPerSecond": 2.775,
+      "strideMetres": 1.942499966919422,
+      "dutyFactor": 0.34,
+      "method": "Fixed sole support and continuous swing; two-segment IK using delivered bone lengths, refined against skinned sole samples",
+      "swingLiftMetres": 0.21243500178042712
     },
     "Walk_Loop": {
-      "metresPerSecond": 0.9296
+      "metresPerSecond": 0.9296,
+      "strideMetres": 0.9296,
+      "dutyFactor": 0.62,
+      "method": "Fixed sole support and continuous swing; two-segment IK using delivered bone lengths, refined against skinned sole samples",
+      "swingLiftMetres": 0.11046620092582211
     }
   },
   "modelKey": "cro-magnon-hunter",
@@ -69,7 +77,7 @@
     "Hunting revision 03 adds Attack; original mesh, rig, textures and earlier clips retained byte-for-byte. Previous delivery archived."
   ],
   "provenance": {
-    "candidateFile": "output/model-generation/models/cro-magnon-hunter/work/hunting/revision-03/candidate.glb",
+    "candidateFile": "output/creature-motion/revision-04/cro-magnon-hunter/model.glb",
     "completedBy": "Codex",
     "denseSha256": "e2b7cf95f07d081ed0a972bd3a1c56d045a8a983d40dd1f3aebad49a13cac840",
     "frozenRequestSha256": "5a745b4aa8e37fead622b7d498c74e92fe339acc441853bc0b34886d8140e8db",
@@ -81,14 +89,15 @@
     "referenceImageSha256": "dd4a7997bbe953880157ba81cd240db389282191f60d674616f5c237d3e107f2",
     "repair": "Central torso skin weights; geometry/materials/rig/animations preserved.",
     "previousDeliverySha256": "8f92a0086c7aa3f44d4120c48c1c2ac70672c5febdb162e4b6156f361d0fc805",
-    "visualReview": "output/model-generation/models/cro-magnon-hunter/qa/adoption-review.json",
-    "huntingAnimationAuthor": "Codex; appended keyframes, previous surface/rig/materials/animation bytes preserved"
+    "visualReview": "assets/creature-motion/models/cro-magnon-hunter-review.json",
+    "huntingAnimationAuthor": "Codex; appended keyframes, previous surface/rig/materials/animation bytes preserved",
+    "previousMotionVisualReview": "output/model-generation/models/cro-magnon-hunter/qa/adoption-review.json"
   },
-  "sha256": "5a23c4abe7903466307bba7c2915276e0c431128771d7b7c612882ada89745eb",
+  "sha256": "44e3fa7da9c3be7a19d619ab1b343c69919eb951673e15e928f13d23b100cf40",
   "status": "completed-prototype-candidate",
   "triangles": 69990,
   "upAxis": "Y",
-  "url": "/models/cro-magnon-hunter/model.glb",
+  "url": "/models/cro-magnon-hunter/model-motion-r04.glb",
   "hunting": {
     "clip": {
       "name": "Attack",
@@ -102,5 +111,32 @@
       "contact": "fixed reviewed idle legs and hips"
     },
     "visualReview": "output/model-generation/models/cro-magnon-hunter/work/hunting/revision-03/qa/visual-review.json"
+  },
+  "motionReview": {
+    "revision": "revision-04",
+    "sourceSha256": "5a23c4abe7903466307bba7c2915276e0c431128771d7b7c612882ada89745eb",
+    "changes": [
+      {
+        "clip": "Run_Loop",
+        "frames": 43,
+        "sampleRate": 60.00000102179393,
+        "stride": 1.942499966919422,
+        "duty": 0.34,
+        "lift": 0.21243500178042712,
+        "bodyClearance": 0.11646785929045822
+      },
+      {
+        "clip": "Walk_Loop",
+        "frames": 61,
+        "sampleRate": 60,
+        "stride": 0.9296,
+        "duty": 0.62,
+        "lift": 0.11046620092582211,
+        "bodyClearance": 0.07406076571398001
+      }
+    ],
+    "status": "adopted",
+    "sourceDelivery": "output/creature-motion/baseline/cro-magnon-hunter/model.glb",
+    "review": "assets/creature-motion/models/cro-magnon-hunter-review.json"
   }
 }

@@ -1,0 +1,18 @@
+{
+  "decision": "adopt",
+  "at": "2026-09-09T05:30:04.128Z",
+  "key": "desert-fennec-mage",
+  "revision": "revision-04",
+  "sha256": "9e02e1d7ac81a349012d5de080c95c80dc0a9bad41d2c621fb99953e5d5edbed",
+  "sourceSha256": "06d14d55aa779ac1bbccbfa91bd36b8e175309abcdf6cf5deafbcea103890bdd",
+  "sourceKind": "Previously delivered TRELLIS-derived GLB; original generation workspace unavailable on this host.",
+  "modifiedClips": [
+    "Walk_Loop",
+    "Run_Loop"
+  ],
+  "preserved": "Original binary prefix, meshes, skins, bones, UVs, materials, textures and all other clips.",
+  "evidence": "output/playwright/creature-motion-20260909/exact-glb/revision-04/desert-fennec-mage-angle.png",
+  "measurement": "output/creature-motion/revision-04/validation.json",
+  "skinMeasurement": "output/creature-motion/revision-04/skin-validation.json",
+  "scope": "All embedded clips sampled in four views and video; six player skins additionally checked with runtime Jump/Ride/Boat poses. Detailed review and limitations: assets/creature-motion/README.md."
+}

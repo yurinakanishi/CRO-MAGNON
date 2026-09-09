@@ -1,0 +1,18 @@
+{
+  "decision": "adopt",
+  "at": "2026-09-09T05:30:04.064Z",
+  "key": "neanderthal-hunter",
+  "revision": "revision-04",
+  "sha256": "883ddd1465fd103efaaa4d9bd6d8f1e00fd01d0177c667e927a14e7a14c475db",
+  "sourceSha256": "7ce4ff20eb1e2ca64df6b51d1c2060311e630394afdb38996eb7e34bbe5ca1e0",
+  "sourceKind": "Previously delivered TRELLIS-derived GLB; original generation workspace unavailable on this host.",
+  "modifiedClips": [
+    "Walk_Loop",
+    "Run_Loop"
+  ],
+  "preserved": "Original binary prefix, meshes, skins, bones, UVs, materials, textures and all other clips.",
+  "evidence": "output/playwright/creature-motion-20260909/exact-glb/revision-04/neanderthal-hunter-angle.png",
+  "measurement": "output/creature-motion/revision-04/validation.json",
+  "skinMeasurement": "output/creature-motion/revision-04/skin-validation.json",
+  "scope": "All embedded clips sampled in four views and video; six player skins additionally checked with runtime Jump/Ride/Boat poses. Detailed review and limitations: assets/creature-motion/README.md."
+}

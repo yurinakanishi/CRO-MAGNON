@@ -1,0 +1,18 @@
+{
+  "decision": "adopt",
+  "at": "2026-09-09T05:30:03.949Z",
+  "key": "cro-magnon-woman",
+  "revision": "revision-04",
+  "sha256": "e89a53faf2141e6b57b52c3656ec31bcde616333c7bacd82c5fa31ba86aeeaf9",
+  "sourceSha256": "8690d5563233614397c7cfad6af0e0b3d89273a29fa59bf421372ec1168ef1b7",
+  "sourceKind": "Previously delivered TRELLIS-derived GLB; original generation workspace unavailable on this host.",
+  "modifiedClips": [
+    "Walk_Loop",
+    "Run_Loop"
+  ],
+  "preserved": "Original binary prefix, meshes, skins, bones, UVs, materials, textures and all other clips.",
+  "evidence": "output/playwright/creature-motion-20260909/exact-glb/revision-04/cro-magnon-woman-angle.png",
+  "measurement": "output/creature-motion/revision-04/validation.json",
+  "skinMeasurement": "output/creature-motion/revision-04/skin-validation.json",
+  "scope": "All embedded clips sampled in four views and video; six player skins additionally checked with runtime Jump/Ride/Boat poses. Detailed review and limitations: assets/creature-motion/README.md."
+}

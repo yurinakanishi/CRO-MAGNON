@@ -8,6 +8,7 @@ import { createSurfaceTemplate } from './biome-surfaces.js';
 import { sha256 } from './asset-hash.js';
 import { ViewUpdateGate } from './view-update-gate.js';
 import { markActiveInstances } from './instance-updates.js';
+import { ActionBlender, gaitPhase } from './action-blender.js';
 
 function disposeTemplate(root) {
   const resources = new Set<THREE.BufferGeometry | THREE.Material | THREE.Texture>();
@@ -350,6 +351,8 @@ export class WorldAssets {
       gltf.animations.map((clip) => [clip.name, mixer.clipAction(clip)]),
     );
     let current = null;
+    let sampledElapsed = 0;
+    const blender = new ActionBlender(actions);
     const retiring = new Map();
     const actor = {
       root,
@@ -359,32 +362,28 @@ export class WorldAssets {
       play(name, speed = 1) {
         const next = actions.get(name);
         if (!next) throw new Error(`${key}: missing clip ${name}`);
-        next.timeScale = speed;
+        next.setEffectiveTimeScale(speed);
         if (next === current) return;
+        const phase = gaitPhase(current, next);
         retiring.delete(next);
-        next.reset().setEffectiveWeight(1).setLoop(THREE.LoopRepeat, Infinity);
-        next.clampWhenFinished = false;
-        next.play();
-        if (current) {
-          next.crossFadeFrom(current, 0.45, false);
-          retiring.set(current, 0.45);
-        }
+        blender.start(next, 0.2, false, speed);
+        next.time = phase;
         current = next;
         actor.name = name;
       },
       sampleOnce(name, elapsed) {
         const next = actions.get(name);
         if (!next) throw new Error(`${key}: missing clip ${name}`);
-        if (next !== current) {
-          mixer.stopAllAction();
+        if (next !== current || elapsed < sampledElapsed) {
           retiring.clear();
-          next.reset().setEffectiveWeight(1).setEffectiveTimeScale(1).setLoop(THREE.LoopOnce, 1);
-          next.clampWhenFinished = true;
-          next.play();
+          blender.start(next, elapsed > 0.15 ? 0 : 0.08, true);
+          sampledElapsed = elapsed;
           current = next;
           actor.name = name;
         }
         next.time = Math.min(next.getClip().duration, Math.max(0, elapsed));
+        blender.update(Math.max(0, elapsed - sampledElapsed));
+        sampledElapsed = elapsed;
         mixer.update(0);
       },
       stop() {
@@ -394,6 +393,7 @@ export class WorldAssets {
         actor.name = null;
       },
       update(dt) {
+        blender.update(dt);
         mixer.update(dt);
         for (const [action, remaining] of retiring) {
           if (remaining <= dt) {

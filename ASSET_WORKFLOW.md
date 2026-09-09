@@ -145,6 +145,8 @@ BlenderはTRELLIS由来モデルの補修・軽量化・UV・ベイク・骨格�
 
 ## リギングとアニメーション
 
+生き物の動作は、2026-09-09のユーザー指定により [Lystrosaurus in Motion](https://lystrosaurus-motion-study.pages.dev/) と [紹介投稿](https://x.com/shinboson/status/2096390580594995519) を参考にする。接地・体重移動・関節と皮膚・動作切替・二次動作の制作基準、体格ごとの適用、検証方法は [CREATURE_MOTION_GUIDE.md](CREATURE_MOTION_GUIDE.md) を参照する。後続指示で既存8モデル・65クリップを見直し、16個の歩行・走行と動作切替を改善した。旧GLBを保持した別URLで revision-04 を採用し、[採用記録](assets/creature-motion/README.md) に実施した検証と残る制約を記録している。
+
 | 対象 | リグ・構造 | 狩猟追加後に必要な動作 |
 | --- | --- | --- |
 | クロマニョン人、ネアンデルタール人、オル | 共通命名の人型骨格。骨盤・脊椎・頭・肩・腕・手・脚・足。体型ごとにウェイトを確認 | `Idle_Loop`、`Walk_Loop`、`Run_Loop`、`Gather`、`Craft`、`Give`、`Eat`、`Wave`、`Attack` |

@@ -1,4 +1,5 @@
 import * as THREE from 'three';
+import { ActionBlender, gaitPhase } from './action-blender.js';
 
 export const HUMAN_CLIPS = [
   'Idle_Loop',
@@ -31,7 +32,9 @@ export function confirmedAction(before, after) {
   if ((b.obsidianBlade ?? 0) > (a.obsidianBlade ?? 0)) return 'Craft';
   if ((b.shells ?? 0) < (a.shells ?? 0)) return 'Give';
   if (
-    ['cookedFish', 'cookedShellfish'].some((k) => (b[k] ?? 0) < (a[k] ?? 0)) &&
+    ['cookedFish', 'cookedShellfish', 'cookedRoot', 'herbRoot'].some(
+      (k) => (b[k] ?? 0) < (a[k] ?? 0),
+    ) &&
     after.energy > before.energy
   )
     return 'Eat';
@@ -66,6 +69,7 @@ export class CharacterAnimation {
   declare finished: boolean;
   declare current: any;
   declare name: any;
+  private blender: ActionBlender;
 
   constructor(root, clips, { walkSpeed, runSpeed }) {
     if (!(runSpeed > 0) || !(walkSpeed > 0))
@@ -78,6 +82,7 @@ export class CharacterAnimation {
       HUMAN_CLIPS.map((name) => [name, this.mixer.clipAction(byName.get(name))]),
     );
     this.root = root;
+    this.blender = new ActionBlender(this.actions);
     this.clipSpeeds = { Walk_Loop: walkSpeed, Run_Loop: runSpeed };
     this.speed = 0;
     this.moving = false;
@@ -94,22 +99,20 @@ export class CharacterAnimation {
     const next = this.actions.get(name);
     if (next === this.current && !this.oneShot) return;
     const previous = this.current;
+    if (!next) throw new Error(`Missing animation: ${name}`);
+    const phase = gaitPhase(previous, next);
     this.current = next;
     this.name = name;
     this.oneShot = !name.endsWith('_Loop');
     this.finished = false;
     this.retiring.delete(next);
-    next
-      .reset()
-      .setEffectiveWeight(1)
-      .setEffectiveTimeScale(this.clipSpeeds[name] ? this.speed / this.clipSpeeds[name] : 1);
-    next.setLoop(this.oneShot ? THREE.LoopOnce : THREE.LoopRepeat, this.oneShot ? 1 : Infinity);
-    next.clampWhenFinished = this.oneShot;
-    next.play();
-    if (previous && previous !== next && fade > 0) {
-      next.crossFadeFrom(previous, fade, false);
-      this.retiring.set(previous, fade);
-    }
+    this.blender.start(
+      next,
+      fade,
+      this.oneShot,
+      this.clipSpeeds[name] ? this.speed / this.clipSpeeds[name] : 1,
+    );
+    next.time = phase;
   }
 
   play(name) {
@@ -137,6 +140,7 @@ export class CharacterAnimation {
     else if (!this.moving && !this.oneShot && this.name !== 'Idle_Loop') this.change('Idle_Loop');
     if (this.clipSpeeds[this.name])
       this.current.setEffectiveTimeScale(this.speed / this.clipSpeeds[this.name]);
+    this.blender.update(dt);
     this.mixer.update(dt);
     for (const [action, remaining] of this.retiring) {
       if (remaining <= dt) {

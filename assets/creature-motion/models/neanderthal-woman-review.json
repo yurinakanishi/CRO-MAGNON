@@ -1,0 +1,18 @@
+{
+  "decision": "adopt",
+  "at": "2026-09-09T05:30:04.031Z",
+  "key": "neanderthal-woman",
+  "revision": "revision-04",
+  "sha256": "037e1c9ba7181ca94fba97d59f85d4a39326f043b8be4ccdfd8ccedefaa97038",
+  "sourceSha256": "63ab98a62b2706e76b4cc551d2a0c8bd23363072258598b606d5129ad32a9ff9",
+  "sourceKind": "Previously delivered TRELLIS-derived GLB; original generation workspace unavailable on this host.",
+  "modifiedClips": [
+    "Walk_Loop",
+    "Run_Loop"
+  ],
+  "preserved": "Original binary prefix, meshes, skins, bones, UVs, materials, textures and all other clips.",
+  "evidence": "output/playwright/creature-motion-20260909/exact-glb/revision-04/neanderthal-woman-angle.png",
+  "measurement": "output/creature-motion/revision-04/validation.json",
+  "skinMeasurement": "output/creature-motion/revision-04/skin-validation.json",
+  "scope": "All embedded clips sampled in four views and video; six player skins additionally checked with runtime Jump/Ride/Boat poses. Detailed review and limitations: assets/creature-motion/README.md."
+}

@@ -4,9 +4,9 @@
   "kind": "humanoid",
   "candidate": 1,
   "status": "reviewed-prototype",
-  "url": "/models/desert-fennec-mage/model.glb",
-  "sha256": "06d14d55aa779ac1bbccbfa91bd36b8e175309abcdf6cf5deafbcea103890bdd",
-  "bytes": 15370112,
+  "url": "/models/desert-fennec-mage/model-motion-r04.glb",
+  "sha256": "9e02e1d7ac81a349012d5de080c95c80dc0a9bad41d2c621fb99953e5d5edbed",
+  "bytes": 15492328,
   "triangles": 103314,
   "upAxis": "Y",
   "forwardAxis": "+Z",
@@ -80,12 +80,16 @@
     "Walk_Loop": {
       "metresPerSecond": 0.31219478171365117,
       "strideMetres": 0.31219478171365117,
-      "dutyFactor": 0.58
+      "dutyFactor": 0.62,
+      "method": "Fixed sole support and continuous swing; two-segment IK using delivered bone lengths, refined against skinned sole samples",
+      "swingLiftMetres": 0.02669408936294517
     },
     "Run_Loop": {
       "metresPerSecond": 0.9923619294515033,
-      "strideMetres": 0.6946533506160523,
-      "dutyFactor": 0.34
+      "strideMetres": 0.6946533387861762,
+      "dutyFactor": 0.34,
+      "method": "Fixed sole support and continuous swing; two-segment IK using delivered bone lengths, refined against skinned sole samples",
+      "swingLiftMetres": 0.03080087234185981
     }
   },
   "notes": [
@@ -105,8 +109,36 @@
     "referenceImage": "output/model-generation/models/desert-fennec-mage/source/original/reference-v1.png",
     "referenceSha256": "aa89e5f3e32de72d75709596719bf65371efc2e70bc7c863911225375391be57",
     "reconstruction": "Local TRELLIS-2; preserved dense reconstruction and measured reduction.",
-    "candidateFile": "output/model-generation/models/desert-fennec-mage/work/rig/revision-04/candidate.glb",
-    "visualReview": "output/model-generation/models/desert-fennec-mage/qa/adoption-review.json",
-    "replaces": "floppy-ear-mage"
+    "candidateFile": "output/creature-motion/revision-04/desert-fennec-mage/model.glb",
+    "visualReview": "assets/creature-motion/models/desert-fennec-mage-review.json",
+    "replaces": "floppy-ear-mage",
+    "previousMotionVisualReview": "output/model-generation/models/desert-fennec-mage/qa/adoption-review.json"
+  },
+  "motionReview": {
+    "revision": "revision-04",
+    "sourceSha256": "06d14d55aa779ac1bbccbfa91bd36b8e175309abcdf6cf5deafbcea103890bdd",
+    "changes": [
+      {
+        "clip": "Run_Loop",
+        "frames": 43,
+        "sampleRate": 60.00000102179393,
+        "stride": 0.6946533387861762,
+        "duty": 0.34,
+        "lift": 0.03080087234185981,
+        "bodyClearance": 0.09867810229550956
+      },
+      {
+        "clip": "Walk_Loop",
+        "frames": 61,
+        "sampleRate": 60,
+        "stride": 0.31219478171365117,
+        "duty": 0.62,
+        "lift": 0.02669408936294517,
+        "bodyClearance": 0.021266523162787487
+      }
+    ],
+    "status": "adopted",
+    "sourceDelivery": "output/creature-motion/baseline/desert-fennec-mage/model.glb",
+    "review": "assets/creature-motion/models/desert-fennec-mage-review.json"
   }
 }

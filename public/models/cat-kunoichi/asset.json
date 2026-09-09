@@ -4,9 +4,9 @@
   "kind": "humanoid",
   "candidate": 1,
   "status": "reviewed-prototype",
-  "url": "/models/cat-kunoichi/model.glb",
-  "sha256": "9ab72ce3d6e6a4a80b25bbb2de023c3a154b790cb1d1c5f1a4a7746d833f34aa",
-  "bytes": 7340180,
+  "url": "/models/cat-kunoichi/model-motion-r04.glb",
+  "sha256": "1ee3cdd69c251bb04b8ac8a9bac73c8fc400b005d5128b614b3d9d845aa64507",
+  "bytes": 7447684,
   "triangles": 66766,
   "upAxis": "Y",
   "forwardAxis": "+Z",
@@ -87,8 +87,9 @@
     "referenceImage": "output/model-generation/models/cat-kunoichi/source/original/reference-v1.png",
     "referenceSha256": "0d7f257c0094c75a270682002a3a0cb492728f494e95e10fa12636d64e55607a",
     "reconstruction": "Local TRELLIS-2; preserved dense reconstruction and measured reduction.",
-    "candidateFile": "output/model-generation/models/cat-kunoichi/work/rig/revision-06/candidate.glb",
-    "visualReview": "output/model-generation/models/cat-kunoichi/qa/adoption-review.json"
+    "candidateFile": "output/creature-motion/revision-04/cat-kunoichi/model.glb",
+    "visualReview": "assets/creature-motion/models/cat-kunoichi-review.json",
+    "previousMotionVisualReview": "output/model-generation/models/cat-kunoichi/qa/adoption-review.json"
   },
   "species": "cat",
   "gender": "female",
@@ -96,13 +97,44 @@
   "locomotion": {
     "Run_Loop": {
       "metresPerSecond": 2.248109365207167,
-      "method": "Median planted-ankle speed measured from exported skin at 60 Hz",
-      "dutyFactor": 0.34
+      "method": "Fixed sole support and continuous swing; two-segment IK using delivered bone lengths, refined against skinned sole samples",
+      "dutyFactor": 0.34,
+      "strideMetres": 1.5736765288454648,
+      "swingLiftMetres": 0.18568255684833462
     },
     "Walk_Loop": {
       "metresPerSecond": 0.7448879013400558,
-      "method": "Median planted-ankle speed measured from exported skin at 60 Hz",
-      "dutyFactor": 0.58
+      "method": "Fixed sole support and continuous swing; two-segment IK using delivered bone lengths, refined against skinned sole samples",
+      "dutyFactor": 0.62,
+      "strideMetres": 0.7448879013400558,
+      "swingLiftMetres": 0.09655492956113401
     }
+  },
+  "motionReview": {
+    "revision": "revision-04",
+    "sourceSha256": "9ab72ce3d6e6a4a80b25bbb2de023c3a154b790cb1d1c5f1a4a7746d833f34aa",
+    "changes": [
+      {
+        "clip": "Run_Loop",
+        "frames": 43,
+        "sampleRate": 60.00000102179393,
+        "stride": 1.5736765288454648,
+        "duty": 0.34,
+        "lift": 0.18568255684833462,
+        "bodyClearance": 0.13367933037940305
+      },
+      {
+        "clip": "Walk_Loop",
+        "frames": 61,
+        "sampleRate": 60,
+        "stride": 0.7448879013400558,
+        "duty": 0.62,
+        "lift": 0.09655492956113401,
+        "bodyClearance": 0.0661646520525273
+      }
+    ],
+    "status": "adopted",
+    "sourceDelivery": "output/creature-motion/baseline/cat-kunoichi/model.glb",
+    "review": "assets/creature-motion/models/cat-kunoichi-review.json"
   }
 }

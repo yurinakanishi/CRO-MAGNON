@@ -1,4 +1,5 @@
 import test from 'node:test';
+import { deliveredModel } from './delivered-model.mjs';
 import assert from 'node:assert/strict';
 import * as THREE from 'three';
 import { geometryScene } from '../scripts/measure-collision-bounds.mjs';
@@ -8,7 +9,7 @@ import { CHARACTER_MODELS } from '../dist/shared/characters.mjs';
 
 test('all six delivered skins bend both knees in air and restore their original bones and locomotion', async () => {
   for (const profile of CHARACTER_MODELS) {
-    const gltf = await geometryScene(`public/models/${profile.key}/model.glb`);
+    const gltf = await geometryScene(await deliveredModel(profile.key));
     const pose = new JumpPose(gltf.scene),
       animation = new CharacterAnimation(gltf.scene, gltf.animations, {
         walkSpeed: 1,

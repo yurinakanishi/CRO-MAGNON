@@ -1,0 +1,60 @@
+{
+  "status": "passed",
+  "at": "2026-09-09T05:37:56.776Z",
+  "origin": "http://localhost:3000",
+  "records": [
+    {
+      "key": "cro-magnon-woman",
+      "url": "/models/cro-magnon-woman/model-motion-r04.glb",
+      "sha256": "e89a53faf2141e6b57b52c3656ec31bcde616333c7bacd82c5fa31ba86aeeaf9"
+    },
+    {
+      "key": "cro-magnon-hunter",
+      "url": "/models/cro-magnon-hunter/model-motion-r04.glb",
+      "sha256": "44e3fa7da9c3be7a19d619ab1b343c69919eb951673e15e928f13d23b100cf40"
+    },
+    {
+      "key": "neanderthal-woman",
+      "url": "/models/neanderthal-woman/model-motion-r04.glb",
+      "sha256": "037e1c9ba7181ca94fba97d59f85d4a39326f043b8be4ccdfd8ccedefaa97038"
+    },
+    {
+      "key": "neanderthal-hunter",
+      "url": "/models/neanderthal-hunter/model-motion-r04.glb",
+      "sha256": "883ddd1465fd103efaaa4d9bd6d8f1e00fd01d0177c667e927a14e7a14c475db"
+    },
+    {
+      "key": "cat-kunoichi",
+      "url": "/models/cat-kunoichi/model-motion-r04.glb",
+      "sha256": "1ee3cdd69c251bb04b8ac8a9bac73c8fc400b005d5128b614b3d9d845aa64507"
+    },
+    {
+      "key": "desert-fennec-mage",
+      "url": "/models/desert-fennec-mage/model-motion-r04.glb",
+      "sha256": "9e02e1d7ac81a349012d5de080c95c80dc0a9bad41d2c621fb99953e5d5edbed"
+    },
+    {
+      "key": "crow-shaman",
+      "url": "/models/crow-shaman/model-motion-r04.glb",
+      "sha256": "0fdb13ce4ace078b93694a898e58aa4fc05ac64eb11d128ac83e7935a5a55e63"
+    },
+    {
+      "key": "woolly-mammoth",
+      "url": "/models/woolly-mammoth/model-motion-r04.glb",
+      "sha256": "f54643731a621d903728ea29bf0b713cd930536122c9aeb70f60a4d05c9a28f7"
+    },
+    {
+      "module": "action-blender",
+      "sha256": "89c67d038c30c91bc9adc1e40c6f309a7e660a038d49adff06bf1575fe8248f9"
+    },
+    {
+      "module": "character-animation",
+      "sha256": "1cfa881b141c3843632affad9a58c9eae35bba7976c1670ed6c25ee3731fd0d5"
+    },
+    {
+      "module": "world-assets",
+      "sha256": "72a4d911e762be5db5b9074b0f32662073327fd3aefad786f7387f1c2cfddd97"
+    }
+  ],
+  "serverRestart": false
+}

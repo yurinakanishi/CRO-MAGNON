@@ -4,9 +4,9 @@
   "kind": "humanoid",
   "candidate": 1,
   "status": "reviewed-prototype",
-  "url": "/models/neanderthal-woman/model.glb",
-  "sha256": "63ab98a62b2706e76b4cc551d2a0c8bd23363072258598b606d5129ad32a9ff9",
-  "bytes": 13484804,
+  "url": "/models/neanderthal-woman/model-motion-r04.glb",
+  "sha256": "037e1c9ba7181ca94fba97d59f85d4a39326f043b8be4ccdfd8ccedefaa97038",
+  "bytes": 13592440,
   "triangles": 68090,
   "upAxis": "Y",
   "forwardAxis": "+Z",
@@ -83,19 +83,28 @@
     "referenceImage": "output/model-generation/models/neanderthal-woman/source/original/reference-v4.png",
     "referenceSha256": "34cc4d5fa6b4ca64fbef85cf1560011d705ab11d582883bc3955fe3e6d305222",
     "reconstruction": "Local TRELLIS-2; settings and dense SHA in model workspace",
-    "candidateFile": "output/model-generation/models/neanderthal-woman/work/hunting/revision-03/candidate.glb",
-    "visualReview": "output/model-generation/models/neanderthal-woman/qa/adoption-review.json",
+    "candidateFile": "output/creature-motion/revision-04/neanderthal-woman/model.glb",
+    "visualReview": "assets/creature-motion/models/neanderthal-woman-review.json",
     "previousDeliverySha256": "ea63762e435024d4f907fdca86946e48b449d1d3a9d0e07856fc77395f0ba1ea",
-    "huntingAnimationAuthor": "Codex; appended keyframes, previous surface/rig/materials/animation bytes preserved"
+    "huntingAnimationAuthor": "Codex; appended keyframes, previous surface/rig/materials/animation bytes preserved",
+    "previousMotionVisualReview": "output/model-generation/models/neanderthal-woman/qa/adoption-review.json"
   },
   "lods": [],
   "bones": 22,
   "locomotion": {
     "Walk_Loop": {
-      "metresPerSecond": 0.8264
+      "metresPerSecond": 0.8264,
+      "strideMetres": 0.8264,
+      "dutyFactor": 0.62,
+      "method": "Fixed sole support and continuous swing; two-segment IK using delivered bone lengths, refined against skinned sole samples",
+      "swingLiftMetres": 0.09766209069365632
     },
     "Run_Loop": {
-      "metresPerSecond": 2.4669
+      "metresPerSecond": 2.4669,
+      "strideMetres": 1.7268299705922603,
+      "dutyFactor": 0.34,
+      "method": "Fixed sole support and continuous swing; two-segment IK using delivered bone lengths, refined against skinned sole samples",
+      "swingLiftMetres": 0.187811712872416
     }
   },
   "hunting": {
@@ -111,5 +120,32 @@
       "contact": "fixed reviewed idle legs and hips"
     },
     "visualReview": "output/model-generation/models/neanderthal-woman/work/hunting/revision-03/qa/visual-review.json"
+  },
+  "motionReview": {
+    "revision": "revision-04",
+    "sourceSha256": "63ab98a62b2706e76b4cc551d2a0c8bd23363072258598b606d5129ad32a9ff9",
+    "changes": [
+      {
+        "clip": "Run_Loop",
+        "frames": 43,
+        "sampleRate": 60.00000102179393,
+        "stride": 1.7268299705922603,
+        "duty": 0.34,
+        "lift": 0.187811712872416,
+        "bodyClearance": 0.12092101333803829
+      },
+      {
+        "clip": "Walk_Loop",
+        "frames": 61,
+        "sampleRate": 60,
+        "stride": 0.8264,
+        "duty": 0.62,
+        "lift": 0.09766209069365632,
+        "bodyClearance": 0.06367924782741097
+      }
+    ],
+    "status": "adopted",
+    "sourceDelivery": "output/creature-motion/baseline/neanderthal-woman/model.glb",
+    "review": "assets/creature-motion/models/neanderthal-woman-review.json"
   }
 }

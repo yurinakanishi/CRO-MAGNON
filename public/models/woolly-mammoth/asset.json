@@ -4,9 +4,9 @@
   "kind": "quadruped",
   "candidate": 1,
   "status": "reviewed-prototype",
-  "url": "/models/woolly-mammoth/model.glb",
-  "sha256": "f3ebbe7d55268affc715052dbd3c98e68577cd34298aeeb74f0ade94004c2f2d",
-  "bytes": 4286096,
+  "url": "/models/woolly-mammoth/model-motion-r04.glb",
+  "sha256": "f54643731a621d903728ea29bf0b713cd930536122c9aeb70f60a4d05c9a28f7",
+  "bytes": 4513636,
   "triangles": 24173,
   "upAxis": "Y",
   "forwardAxis": "+Z",
@@ -53,19 +53,28 @@
     "referenceImage": "output/model-generation/models/woolly-mammoth/source/original/reference-v1.png",
     "referenceSha256": "306a8308bf2de33664feee4ab1e697729e195881857b47b85526ea0e41169f87",
     "reconstruction": "Local TRELLIS-2; settings and dense SHA in model workspace",
-    "candidateFile": "output/model-generation/models/woolly-mammoth/work/hunting/revision-03/candidate.glb",
-    "visualReview": "output/model-generation/models/woolly-mammoth/qa/adoption-review.json",
+    "candidateFile": "output/creature-motion/revision-04/woolly-mammoth/model.glb",
+    "visualReview": "assets/creature-motion/models/woolly-mammoth-review.json",
     "previousDeliverySha256": "6d675f895bb26cad7f62b5a7161b442e04a07f1582562498d6033a85cf977abf",
-    "huntingAnimationAuthor": "Codex; appended keyframes, previous surface/rig/materials/animation bytes preserved"
+    "huntingAnimationAuthor": "Codex; appended keyframes, previous surface/rig/materials/animation bytes preserved",
+    "previousMotionVisualReview": "output/model-generation/models/woolly-mammoth/qa/adoption-review.json"
   },
   "lods": [],
   "bones": 24,
   "locomotion": {
     "Walk_Loop": {
-      "metresPerSecond": 0.3541666666666667
+      "metresPerSecond": 0.3541666666666667,
+      "strideMetres": 0.8500000337759654,
+      "dutyFactor": 0.72,
+      "method": "Fixed sole support and continuous swing; two-segment IK using delivered bone lengths, refined against skinned sole samples",
+      "swingLiftMetres": 0.08863120852401368
     },
     "Run_Loop": {
-      "metresPerSecond": 1.1250000000000002
+      "metresPerSecond": 1.1250000000000002,
+      "strideMetres": 1.3500000536441805,
+      "dutyFactor": 0.6,
+      "method": "Fixed sole support and continuous swing; two-segment IK using delivered bone lengths, refined against skinned sole samples",
+      "swingLiftMetres": 0.15953617534322462
     }
   },
   "hunting": {
@@ -119,5 +128,32 @@
       "groundClearanceMetres": 0.003
     },
     "visualReview": "output/model-generation/models/woolly-mammoth/work/hunting/revision-03/qa/visual-review.json"
+  },
+  "motionReview": {
+    "revision": "revision-04",
+    "sourceSha256": "f3ebbe7d55268affc715052dbd3c98e68577cd34298aeeb74f0ade94004c2f2d",
+    "changes": [
+      {
+        "clip": "Run_Loop",
+        "frames": 73,
+        "sampleRate": 59.9999976158143,
+        "stride": 1.3500000536441805,
+        "duty": 0.6,
+        "lift": 0.15953617534322462,
+        "bodyClearance": 0
+      },
+      {
+        "clip": "Walk_Loop",
+        "frames": 145,
+        "sampleRate": 59.9999976158143,
+        "stride": 0.8500000337759654,
+        "duty": 0.72,
+        "lift": 0.08863120852401368,
+        "bodyClearance": 0.0028108041100425307
+      }
+    ],
+    "status": "adopted",
+    "sourceDelivery": "output/creature-motion/baseline/woolly-mammoth/model.glb",
+    "review": "assets/creature-motion/models/woolly-mammoth-review.json"
   }
 }

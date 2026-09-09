@@ -1,0 +1,18 @@
+{
+  "decision": "adopt",
+  "at": "2026-09-09T05:30:04.176Z",
+  "key": "woolly-mammoth",
+  "revision": "revision-04",
+  "sha256": "f54643731a621d903728ea29bf0b713cd930536122c9aeb70f60a4d05c9a28f7",
+  "sourceSha256": "f3ebbe7d55268affc715052dbd3c98e68577cd34298aeeb74f0ade94004c2f2d",
+  "sourceKind": "Previously delivered TRELLIS-derived GLB; original generation workspace unavailable on this host.",
+  "modifiedClips": [
+    "Walk_Loop",
+    "Run_Loop"
+  ],
+  "preserved": "Original binary prefix, meshes, skins, bones, UVs, materials, textures and all other clips.",
+  "evidence": "output/playwright/creature-motion-20260909/exact-glb/revision-04/woolly-mammoth-angle.png",
+  "measurement": "output/creature-motion/revision-04/validation.json",
+  "skinMeasurement": "output/creature-motion/revision-04/skin-validation.json",
+  "scope": "All embedded clips sampled in four views and video; six player skins additionally checked with runtime Jump/Ride/Boat poses. Detailed review and limitations: assets/creature-motion/README.md."
+}

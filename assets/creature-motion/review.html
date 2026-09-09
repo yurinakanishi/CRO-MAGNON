@@ -1,0 +1,381 @@
+<!doctype html>
+<html lang="ja">
+  <meta charset="UTF-8" /><title>既存キャラクター 動作比較</title>
+  <style>
+    body {
+      margin: 0;
+      background: #e4e8e9;
+      color: #17222a;
+      font: 14px system-ui;
+    }
+    header {
+      padding: 16px;
+      position: sticky;
+      top: 0;
+      background: #fff;
+      z-index: 1;
+    }
+    select,
+    button,
+    input {
+      margin: 4px;
+      padding: 6px;
+    }
+    main {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 4px;
+      padding: 8px;
+    }
+    .cell {
+      background: #cdd3d6;
+    }
+    canvas {
+      width: 100%;
+      display: block;
+    }
+    .caption {
+      padding: 5px;
+      background: #fff;
+    }
+    #status {
+      padding: 8px;
+    }
+  </style>
+  <script type="importmap">
+    {
+      "imports": {
+        "three": "/node_modules/three/build/three.module.js",
+        "three/addons/": "/node_modules/three/examples/jsm/"
+      }
+    }
+  </script>
+  <header>
+    <b>既存キャラクター 全動作比較</b><br /><label
+      >モデル
+      <select id="model"></select></label
+    ><label
+      >版
+      <select id="revision">
+        <option value="baseline">修正前</option>
+        <option value="revision-01">修正候補01</option>
+        <option value="revision-02">修正候補02</option>
+        <option value="revision-03">修正候補03</option>
+      </select></label
+    ><label
+      >方向
+      <select id="view">
+        <option value="side">横</option>
+        <option value="front">正面</option>
+        <option value="back">背面</option>
+        <option value="angle">斜め</option>
+      </select></label
+    ><label
+      >姿勢
+      <select id="sample">
+        <option value="0.25">25%</option>
+        <option value="0.5">50%</option>
+        <option value="0.75">75%</option>
+        <option value="0">開始</option>
+        <option value="0.999">終端</option>
+      </select></label
+    ><button id="play">再生／停止</button><span id="status">読み込み中</span>
+  </header>
+  <main></main>
+  <button id="capture">全モデルの画像・動画を記録</button>
+  <script type="module">
+    import * as THREE from 'three';
+    import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
+    import { clone } from 'three/addons/utils/SkeletonUtils.js';
+    import { CharacterAnimation } from '/output/creature-motion/preview/dist/src/character-animation.js';
+    import { JumpPose } from '/output/creature-motion/preview/dist/src/jump-pose.js';
+    import { RidingPose } from '/output/creature-motion/preview/dist/src/riding-pose.js';
+    const runtimeReview = new URLSearchParams(location.search).has('runtime');
+    const keys = [
+      'cro-magnon-woman',
+      'cro-magnon-hunter',
+      'neanderthal-woman',
+      'neanderthal-hunter',
+      'cat-kunoichi',
+      'desert-fennec-mage',
+      ...(runtimeReview ? [] : ['crow-shaman', 'woolly-mammoth']),
+    ];
+    const model = document.querySelector('#model'),
+      revision = document.querySelector('#revision'),
+      view = document.querySelector('#view'),
+      sample = document.querySelector('#sample'),
+      main = document.querySelector('main'),
+      status = document.querySelector('#status');
+    for (const k of keys) model.add(new Option(k, k));
+    revision.add(new Option('修正候補04', 'revision-04'));
+    let cells = [],
+      loaded,
+      playing = false,
+      stamp = 0,
+      loadVersion = 0;
+    const renderer = new THREE.WebGLRenderer({ antialias: true, preserveDrawingBuffer: true });
+    renderer.setSize(480, 310);
+    renderer.setPixelRatio(1);
+    renderer.outputColorSpace = THREE.SRGBColorSpace;
+    renderer.toneMapping = THREE.ACESFilmicToneMapping;
+    renderer.toneMappingExposure = 1.2;
+    async function load() {
+      const version = ++loadVersion;
+      playing = false;
+      status.textContent = '読み込み中';
+      main.replaceChildren();
+      cells = [];
+      if (loaded) {
+        loaded.scene.traverse((n) => {
+          if (n.isMesh) {
+            n.geometry.dispose();
+            for (const m of [n.material].flat()) {
+              for (const v of Object.values(m)) if (v?.isTexture) v.dispose();
+              m.dispose();
+            }
+          }
+        });
+      }
+      const key = model.value,
+        base = `/output/creature-motion/${revision.value}/`;
+      const result = await new GLTFLoader().loadAsync(`${base}${key}/model.glb`);
+      if (version !== loadVersion) return;
+      loaded = result;
+      main.replaceChildren();
+      cells = [];
+      const bounds = new THREE.Box3().setFromObject(loaded.scene),
+        size = bounds.getSize(new THREE.Vector3()),
+        h = size.y;
+      const reviewClips = runtimeReview
+        ? ['Jump', 'Ride_Idle', 'Ride_Move', 'Boat_Seat'].map((name) => ({
+            name,
+            duration: name === 'Jump' ? 0.72 : 2,
+          }))
+        : loaded.animations;
+      for (const clip of reviewClips) {
+        const scene = new THREE.Scene();
+        scene.background = new THREE.Color('#cdd3d6');
+        scene.add(new THREE.HemisphereLight(0xffffff, 0x566d55, 2.2));
+        const sun = new THREE.DirectionalLight(0xffffff, 3);
+        sun.position.set(3, 5, 4);
+        scene.add(sun);
+        const root = clone(loaded.scene);
+        scene.add(root);
+        scene.add(new THREE.GridHelper(h * 3, 12, 0x71808a, 0xa1adb3));
+        const camera = new THREE.PerspectiveCamera(32, 480 / 310, 0.01, 100);
+        const runtimePose = runtimeReview
+          ? clip.name === 'Jump'
+            ? new JumpPose(root)
+            : new RidingPose(root)
+          : null;
+        const runtimeAnimation = runtimeReview
+          ? new CharacterAnimation(root, loaded.animations, { walkSpeed: 1, runSpeed: 3 })
+          : null;
+        const mixer = runtimeAnimation?.mixer ?? new THREE.AnimationMixer(root),
+          action = runtimeReview ? { time: 0 } : mixer.clipAction(clip);
+        if (!runtimeReview) {
+          action.setLoop(THREE.LoopOnce, 1);
+          action.clampWhenFinished = true;
+          action.play();
+        }
+        const wrap = document.createElement('div');
+        wrap.className = 'cell';
+        const caption = document.createElement('div');
+        caption.className = 'caption';
+        caption.textContent = `${runtimeReview ? '実行時姿勢 / ' : ''}${clip.name} / ${clip.duration.toFixed(2)}s`;
+        const canvas = document.createElement('canvas');
+        canvas.width = 480;
+        canvas.height = 310;
+        wrap.append(caption, canvas);
+        main.append(wrap);
+        cells.push({
+          scene,
+          root,
+          camera,
+          mixer,
+          action,
+          clip,
+          h,
+          size,
+          canvas,
+          runtimePose,
+          runtimeAnimation,
+        });
+      }
+      draw(0);
+      status.textContent = `${key}: ${cells.length}動作 / ${revision.options[revision.selectedIndex].text}`;
+    }
+    function draw(dt) {
+      for (const c of cells) {
+        const { h, size, camera, action, clip, mixer, scene, canvas } = c;
+        const reach = Math.max(h + (clip.name === 'Jump' ? 1 : 0), size.z) * 2.8;
+        const dirs = {
+          side: [reach, h * 0.75, 0.1 * reach],
+          front: [0, h * 0.75, reach],
+          back: [0, h * 0.75, -reach],
+          angle: [reach * 0.68, h * 0.95, reach * 0.74],
+        };
+        camera.position.set(...dirs[view.value]);
+        camera.lookAt(0, h * 0.46 + (clip.name === 'Jump' ? 0.5 : 0), 0);
+        if (!playing) action.time = clip.duration * Number(sample.value);
+        else action.time = (action.time + dt) % clip.duration;
+        if (c.runtimePose) {
+          const t = action.time / clip.duration;
+          if (clip.name === 'Jump') {
+            c.root.position.y = Math.sin(Math.PI * t);
+            c.runtimePose.update(c.runtimeAnimation, t);
+          } else
+            c.runtimePose.update(
+              c.runtimeAnimation,
+              action.time,
+              clip.name === 'Ride_Move' ? 2 : 0,
+              clip.name === 'Boat_Seat',
+            );
+        } else mixer.update(0);
+        renderer.render(scene, camera);
+        canvas.getContext('2d').drawImage(renderer.domElement, 0, 0);
+      }
+    }
+    for (const e of [model, revision])
+      e.onchange = () => load().catch((e) => (status.textContent = 'ERROR ' + e.message));
+    for (const e of [view, sample])
+      e.onchange = () => {
+        playing = false;
+        draw(0);
+      };
+    document.querySelector('#play').onclick = () => {
+      playing = !playing;
+      stamp = performance.now();
+    };
+    function frame(t) {
+      if (playing) {
+        draw(Math.min((t - stamp) / 1000, 0.05));
+        stamp = t;
+      }
+      requestAnimationFrame(frame);
+    }
+    requestAnimationFrame(frame);
+    const capture = document.querySelector('#capture');
+    capture.onclick = async () => {
+      capture.disabled = true;
+      playing = false;
+      const records = [];
+      try {
+        const save = async (name, blob) => {
+          const response = await fetch(
+            `/capture/${revision.value}/${runtimeReview ? 'runtime-' : ''}${name}`,
+            { method: 'POST', body: blob },
+          );
+          if (!response.ok) throw Error('capture save failed');
+        };
+        for (const key of keys) {
+          model.value = key;
+          await load();
+          for (const direction of ['side', 'front', 'back', 'angle']) {
+            view.value = direction;
+            const sheet = document.createElement('canvas');
+            sheet.width = 1500;
+            sheet.height = cells.length * 214;
+            const ctx = sheet.getContext('2d');
+            ctx.fillStyle = '#e4e8e9';
+            ctx.fillRect(0, 0, sheet.width, sheet.height);
+            for (let column = 0; column < 5; column++) {
+              const phase = [0, 0.25, 0.5, 0.75, 0.999][column];
+              sample.value = String(phase);
+              draw(0);
+              cells.forEach((c, row) => {
+                ctx.drawImage(c.canvas, column * 300, row * 214 + 20, 300, 194);
+                ctx.fillStyle = '#17222a';
+                ctx.font = '13px sans-serif';
+                ctx.fillText(
+                  `${c.clip.name} ${Math.round(phase * 100)}%`,
+                  column * 300 + 5,
+                  row * 214 + 15,
+                );
+              });
+            }
+            await save(
+              `${key}-${direction}.png`,
+              await new Promise((resolve) => sheet.toBlob(resolve, 'image/png')),
+            );
+          }
+          view.value = 'angle';
+          const film = document.createElement('canvas');
+          film.width = 960;
+          film.height = Math.ceil(cells.length / 3) * 220;
+          const ctx = film.getContext('2d'),
+            stream = film.captureStream(30),
+            chunks = [];
+          const recorder = new MediaRecorder(stream, {
+            mimeType: 'video/webm;codecs=vp9',
+            videoBitsPerSecond: 3000000,
+          });
+          recorder.ondataavailable = (e) => {
+            if (e.data.size) chunks.push(e.data);
+          };
+          const stopped = new Promise((resolve) => (recorder.onstop = resolve));
+          recorder.start();
+          const start = performance.now();
+          let frames = 0;
+          const seconds = Math.max(...cells.map((c) => c.clip.duration));
+          while (performance.now() - start < seconds * 1000) {
+            const time = (performance.now() - start) / 1000;
+            for (const c of cells) {
+              c.action.time = time % c.clip.duration;
+            }
+            playing = true;
+            draw(0);
+            playing = false;
+            ctx.fillStyle = '#e4e8e9';
+            ctx.fillRect(0, 0, film.width, film.height);
+            cells.forEach((c, i) => {
+              const x = (i % 3) * 320,
+                y = Math.floor(i / 3) * 220;
+              ctx.drawImage(c.canvas, x, y + 14, 320, 206);
+              ctx.fillStyle = '#17222a';
+              ctx.font = '12px sans-serif';
+              ctx.fillText(c.clip.name, x + 4, y + 12);
+            });
+            frames++;
+            await new Promise((resolve) => setTimeout(resolve, 1000 / 30));
+          }
+          recorder.stop();
+          await stopped;
+          stream.getTracks().forEach((t) => t.stop());
+          await save(`${key}.webm`, new Blob(chunks, { type: 'video/webm' }));
+          records.push({
+            key,
+            clips: cells.map((c) => c.clip.name),
+            views: 4,
+            posesPerClipPerView: 5,
+            videoSeconds: seconds,
+            renderedVideoFrames: frames,
+            requestedVideoFps: 30,
+            observedCanvasUpdatesPerSecond: frames / seconds,
+          });
+          status.textContent = `記録中 ${key}`;
+        }
+        await save(
+          'capture-report.json',
+          new Blob(
+            [
+              JSON.stringify(
+                { at: new Date().toISOString(), revision: revision.value, records },
+                null,
+                2,
+              ),
+            ],
+            { type: 'application/json' },
+          ),
+        );
+        status.textContent = `記録完了 ${records.length}モデル`;
+      } catch (error) {
+        status.textContent = 'ERROR ' + error.message;
+      } finally {
+        playing = false;
+        capture.disabled = false;
+      }
+    };
+    await load();
+  </script>
+</html>
