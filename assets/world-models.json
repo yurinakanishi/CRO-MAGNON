@@ -12,8 +12,8 @@
       "status": "integrated-and-game-qa-passed",
       "subject": "One original fully clothed adult Neanderthal hunter, natural stocky powerful human anatomy, broad chest, short robust lower limbs, subtle broad nose and brow, upright dignified posture, short dark beard, brown hair tied compactly. Fitted grey-brown hide tunic ending above the knees, compact fur shoulders, belt, ankle boots, small cream shoulder cloth accent. Empty hands. Symmetrical relaxed A-pose with both arms separated 35 degrees from torso, fingers readable, knees and elbows visible, legs apart. Full body, near-frontal view with at most 10 degrees three-quarter turn, both feet visible.",
       "geometryResolution": 1024,
-      "sha256": "883ddd1465fd103efaaa4d9bd6d8f1e00fd01d0177c667e927a14e7a14c475db",
-      "delivery": "/models/neanderthal-hunter/model-motion-r04.glb",
+      "sha256": "5d94557d3161dd4cde3ed4b2dee19e6dabf3a153659e42ed8e19a8ec148497fb",
+      "delivery": "/models/neanderthal-hunter/model-downed-r01.glb",
       "gameQA": "assets/creature-motion/models/neanderthal-hunter-review.json"
     },
     {
@@ -190,8 +190,8 @@
       "geometryResolution": 1024,
       "subject": "Edit this image for a prehistoric MMORPG image-to-3D character reference. Preserve this exact ADULT 24-year-old woman's beautiful idol-like face, hairstyle, skin, feminine hourglass body proportions, pose, camera, full-body framing and neutral background. Change ONLY her entire costume to unmistakably primitive prehistoric hunter-gatherer clothing. Replace the tailored shirt and trousers completely. She wears a naturally irregular tawny animal-hide wrap across the torso, fastened over one shoulder by a simple rawhide tie, with a modest fully covered chest; the edge of the other shoulder is visible. The hide conforms lightly to her slender waist and feminine shape without modern tailoring. A narrow simple twisted rawhide cord ties around the waist. A separate short layered animal-hide wrap skirt / fur waist wrap reaches mid-thigh, with rough naturally irregular edges and a little dark brown fur at its hem, overlapping panels closed securely across front and back, legs separate and visible below. Bare knees and calves. Feet have simple soft rawhide foot coverings folded around the feet and ankles, held by a few thin leather ties, no manufactured soles or boot shafts. Natural irregular hide, rough edges, subtle primitive hand-pierced lacing only where necessary; NO tailored shirt, NO trousers or leggings, NO modern leather jacket, NO fabric buttons, NO metal buckle or zipper, NO denim-like seams, NO modern stitching grids, NO corset, NO armor, NO jewelry, NO tools, NO weapons. It should read immediately as a beautiful adult prehistoric woman wearing a small number of raw animal hides, not modern leather fashion. Keep costume practical and securely covering her bust and pelvis; neither sexualized nor glamorous modern clothing. Maintain empty hands in the same relaxed A-pose, unobscured arms and hands, clear gaps between arms and waist and between both legs, flat feet, whole figure in frame. Premium realistic Japanese fantasy MMORPG character render with soft neutral light. No scenery or text.",
       "referenceVersion": 3,
-      "sha256": "e89a53faf2141e6b57b52c3656ec31bcde616333c7bacd82c5fa31ba86aeeaf9",
-      "delivery": "/models/cro-magnon-woman/model-motion-r04.glb",
+      "sha256": "539c3e1aeb063389a2b5cd4c2ae947655ded07ecafd7ae6c97c05f1cf8481a7c",
+      "delivery": "/models/cro-magnon-woman/model-downed-r01.glb",
       "gameQA": "assets/creature-motion/models/cro-magnon-woman-review.json"
     },
     {
@@ -205,8 +205,8 @@
       "geometryResolution": 1024,
       "subject": "Precise edit of the attached adult prehistoric woman character reference for image-to-3D reconstruction. Keep her exact beautiful ADULT 25-year-old idol-like facial identity, eyes, nose, lips, slight smile, face shape, feminine figure, skin, primitive one-shoulder grey-brown fur wrap, dark fur waist wrap, rawhide ties and foot wraps, pose, background, lighting and framing unchanged. Change ONLY the hairstyle near the forehead: sweep and tuck ALL front hair neatly back behind both ears into the existing compact low bun. Both eyebrows, BOTH complete eyes, forehead, cheeks and ears must be clearly visible with absolutely no hair overlapping the face or hanging beside the eyes. No bangs, no fringe and no long loose strands. A pretty neat swept-back idol hairstyle, naturally soft and elegant. Retain the same compact bun at the back. This small hairstyle clarification is necessary because image-to-3D mistakenly turned the original fringe into a thick flap covering an eye. Do not change the costume, body, face identity, expression, stance or camera. Single complete figure, full head and feet visible, neutral grey studio background, no text.",
       "referenceVersion": 4,
-      "sha256": "037e1c9ba7181ca94fba97d59f85d4a39326f043b8be4ccdfd8ccedefaa97038",
-      "delivery": "/models/neanderthal-woman/model-motion-r04.glb",
+      "sha256": "58156f4088fba4740a03b2a71428a5d9cc5cabf8262a848e2667b3fd840a05d7",
+      "delivery": "/models/neanderthal-woman/model-downed-r01.glb",
       "gameQA": "assets/creature-motion/models/neanderthal-woman-review.json"
     },
     {
@@ -243,8 +243,8 @@
       "geometryResolution": 1024,
       "referenceVersion": 1,
       "status": "integrated-and-game-qa-passed",
-      "sha256": "1ee3cdd69c251bb04b8ac8a9bac73c8fc400b005d5128b614b3d9d845aa64507",
-      "delivery": "/models/cat-kunoichi/model-motion-r04.glb",
+      "sha256": "4913ff14f6f052356f4ce95a70ff0f23a87a0ed3eda6d1ec565af9d1cc347793",
+      "delivery": "/models/cat-kunoichi/model-downed-r01.glb",
       "subject": "Adult female cat-eared kunoichi in a covered primitive dark outfit.",
       "gameQA": "assets/creature-motion/models/cat-kunoichi-review.json"
     },
@@ -256,8 +256,8 @@
       "geometryResolution": 1024,
       "referenceVersion": 1,
       "status": "integrated-and-game-qa-passed",
-      "sha256": "9e02e1d7ac81a349012d5de080c95c80dc0a9bad41d2c621fb99953e5d5edbed",
-      "delivery": "/models/desert-fennec-mage/model-motion-r04.glb",
+      "sha256": "34ff0f203944fade432484dd7d385e5bc68a105f8d3ac9a0dbd87d6f740126a4",
+      "delivery": "/models/desert-fennec-mage/model-downed-r01.glb",
       "subject": "Small sandy-furred fennec mage with upright triangular ears, green eyes, fox muzzle, primitive hide/fur clothes, bare hands and feet, and a tail.",
       "replaces": "floppy-ear-mage",
       "gameQA": "assets/creature-motion/models/desert-fennec-mage-review.json"
@@ -454,8 +454,8 @@
       "height": 2,
       "status": "locally-integrated-and-game-qa-passed",
       "geometryResolution": 1024,
-      "sha256": "c962b573855a2dcc68444bacd8be493bb87f43f775222aa9b7176e89fe47fa07",
-      "delivery": "/models/giant-ape/model-stride-r13.glb",
+      "sha256": "4ed3c6997957bb39e82bcb300853b9b90598da1237aeb8bfd1ec73d17a546c59",
+      "delivery": "/models/giant-ape/model-downed-r01.glb",
       "gameQA": "assets/shoulder-carry/adoption.json",
       "subject": "Large red-furred ape with broad shoulders, round belly, massive arms and hands, hide loincloth and rawhide wrist wraps; approved image candidate 4."
     },

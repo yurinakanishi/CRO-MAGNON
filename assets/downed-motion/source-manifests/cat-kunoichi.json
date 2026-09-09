@@ -4,9 +4,9 @@
   "kind": "humanoid",
   "candidate": 1,
   "status": "reviewed-prototype",
-  "url": "/models/cat-kunoichi/model-downed-r01.glb",
-  "sha256": "4913ff14f6f052356f4ce95a70ff0f23a87a0ed3eda6d1ec565af9d1cc347793",
-  "bytes": 7525344,
+  "url": "/models/cat-kunoichi/model-motion-r04.glb",
+  "sha256": "1ee3cdd69c251bb04b8ac8a9bac73c8fc400b005d5128b614b3d9d845aa64507",
+  "bytes": 7447684,
   "triangles": 66766,
   "upAxis": "Y",
   "forwardAxis": "+Z",
@@ -69,11 +69,6 @@
     {
       "name": "Wave",
       "seconds": 2,
-      "loop": false
-    },
-    {
-      "name": "Downed",
-      "seconds": 1.8,
       "loop": false
     }
   ],
@@ -141,14 +136,5 @@
     "status": "adopted",
     "sourceDelivery": "output/creature-motion/baseline/cat-kunoichi/model.glb",
     "review": "assets/creature-motion/models/cat-kunoichi-review.json"
-  },
-  "downedMotion": {
-    "revision": "revision-01",
-    "sourceUrl": "/models/cat-kunoichi/model-motion-r04.glb",
-    "sourceSha256": "1ee3cdd69c251bb04b8ac8a9bac73c8fc400b005d5128b614b3d9d845aa64507",
-    "clip": "Downed",
-    "seconds": 1.8,
-    "fps": 60,
-    "review": "assets/downed-motion/README.md"
   }
 }

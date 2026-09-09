@@ -1,0 +1,61 @@
+{
+  "at": "2026-09-09T13:53:37.314Z",
+  "records": [
+    {
+      "key": "cro-magnon-woman",
+      "url": "/models/cro-magnon-woman/model-downed-r01.glb",
+      "sha256": "539c3e1aeb063389a2b5cd4c2ae947655ded07ecafd7ae6c97c05f1cf8481a7c",
+      "sourceUrl": "/models/cro-magnon-woman/model-motion-r04.glb",
+      "sourceSha256": "e89a53faf2141e6b57b52c3656ec31bcde616333c7bacd82c5fa31ba86aeeaf9",
+      "bytes": 14044564
+    },
+    {
+      "key": "cro-magnon-hunter",
+      "url": "/models/cro-magnon-hunter/model-downed-r01.glb",
+      "sha256": "a2b20605563def0ec5ca4eb0cb89de22c6279ee95b9514f87808b2af6e6a402e",
+      "sourceUrl": "/models/cro-magnon-hunter/model-motion-r04.glb",
+      "sourceSha256": "44e3fa7da9c3be7a19d619ab1b343c69919eb951673e15e928f13d23b100cf40",
+      "bytes": 10199532
+    },
+    {
+      "key": "neanderthal-woman",
+      "url": "/models/neanderthal-woman/model-downed-r01.glb",
+      "sha256": "58156f4088fba4740a03b2a71428a5d9cc5cabf8262a848e2667b3fd840a05d7",
+      "sourceUrl": "/models/neanderthal-woman/model-motion-r04.glb",
+      "sourceSha256": "037e1c9ba7181ca94fba97d59f85d4a39326f043b8be4ccdfd8ccedefaa97038",
+      "bytes": 13670144
+    },
+    {
+      "key": "neanderthal-hunter",
+      "url": "/models/neanderthal-hunter/model-downed-r01.glb",
+      "sha256": "5d94557d3161dd4cde3ed4b2dee19e6dabf3a153659e42ed8e19a8ec148497fb",
+      "sourceUrl": "/models/neanderthal-hunter/model-motion-r04.glb",
+      "sourceSha256": "883ddd1465fd103efaaa4d9bd6d8f1e00fd01d0177c667e927a14e7a14c475db",
+      "bytes": 10748124
+    },
+    {
+      "key": "cat-kunoichi",
+      "url": "/models/cat-kunoichi/model-downed-r01.glb",
+      "sha256": "4913ff14f6f052356f4ce95a70ff0f23a87a0ed3eda6d1ec565af9d1cc347793",
+      "sourceUrl": "/models/cat-kunoichi/model-motion-r04.glb",
+      "sourceSha256": "1ee3cdd69c251bb04b8ac8a9bac73c8fc400b005d5128b614b3d9d845aa64507",
+      "bytes": 7525344
+    },
+    {
+      "key": "desert-fennec-mage",
+      "url": "/models/desert-fennec-mage/model-downed-r01.glb",
+      "sha256": "34ff0f203944fade432484dd7d385e5bc68a105f8d3ac9a0dbd87d6f740126a4",
+      "sourceUrl": "/models/desert-fennec-mage/model-motion-r04.glb",
+      "sourceSha256": "9e02e1d7ac81a349012d5de080c95c80dc0a9bad41d2c621fb99953e5d5edbed",
+      "bytes": 15580552
+    },
+    {
+      "key": "giant-ape",
+      "url": "/models/giant-ape/model-downed-r01.glb",
+      "sha256": "4ed3c6997957bb39e82bcb300853b9b90598da1237aeb8bfd1ec73d17a546c59",
+      "sourceUrl": "/models/giant-ape/model-stride-r13.glb",
+      "sourceSha256": "c962b573855a2dcc68444bacd8be493bb87f43f775222aa9b7176e89fe47fa07",
+      "bytes": 16524976
+    }
+  ]
+}

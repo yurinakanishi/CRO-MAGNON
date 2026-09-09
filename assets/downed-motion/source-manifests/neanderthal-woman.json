@@ -4,9 +4,9 @@
   "kind": "humanoid",
   "candidate": 1,
   "status": "reviewed-prototype",
-  "url": "/models/neanderthal-woman/model-downed-r01.glb",
-  "sha256": "58156f4088fba4740a03b2a71428a5d9cc5cabf8262a848e2667b3fd840a05d7",
-  "bytes": 13670144,
+  "url": "/models/neanderthal-woman/model-motion-r04.glb",
+  "sha256": "037e1c9ba7181ca94fba97d59f85d4a39326f043b8be4ccdfd8ccedefaa97038",
+  "bytes": 13592440,
   "triangles": 68090,
   "upAxis": "Y",
   "forwardAxis": "+Z",
@@ -61,11 +61,6 @@
     {
       "name": "Attack",
       "seconds": 0.699999988079071,
-      "loop": false
-    },
-    {
-      "name": "Downed",
-      "seconds": 1.8,
       "loop": false
     }
   ],
@@ -152,14 +147,5 @@
     "status": "adopted",
     "sourceDelivery": "output/creature-motion/baseline/neanderthal-woman/model.glb",
     "review": "assets/creature-motion/models/neanderthal-woman-review.json"
-  },
-  "downedMotion": {
-    "revision": "revision-01",
-    "sourceUrl": "/models/neanderthal-woman/model-motion-r04.glb",
-    "sourceSha256": "037e1c9ba7181ca94fba97d59f85d4a39326f043b8be4ccdfd8ccedefaa97038",
-    "clip": "Downed",
-    "seconds": 1.8,
-    "fps": 60,
-    "review": "assets/downed-motion/README.md"
   }
 }

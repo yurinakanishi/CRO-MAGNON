@@ -1,6 +1,6 @@
 {
   "bones": 22,
-  "bytes": 10199532,
+  "bytes": 10121844,
   "candidate": 1,
   "clips": [
     {
@@ -46,11 +46,6 @@
     {
       "name": "Attack",
       "seconds": 0.699999988079071,
-      "loop": false
-    },
-    {
-      "name": "Downed",
-      "seconds": 1.8,
       "loop": false
     }
   ],
@@ -98,11 +93,11 @@
     "huntingAnimationAuthor": "Codex; appended keyframes, previous surface/rig/materials/animation bytes preserved",
     "previousMotionVisualReview": "output/model-generation/models/cro-magnon-hunter/qa/adoption-review.json"
   },
-  "sha256": "a2b20605563def0ec5ca4eb0cb89de22c6279ee95b9514f87808b2af6e6a402e",
+  "sha256": "44e3fa7da9c3be7a19d619ab1b343c69919eb951673e15e928f13d23b100cf40",
   "status": "completed-prototype-candidate",
   "triangles": 69990,
   "upAxis": "Y",
-  "url": "/models/cro-magnon-hunter/model-downed-r01.glb",
+  "url": "/models/cro-magnon-hunter/model-motion-r04.glb",
   "hunting": {
     "clip": {
       "name": "Attack",
@@ -143,14 +138,5 @@
     "status": "adopted",
     "sourceDelivery": "output/creature-motion/baseline/cro-magnon-hunter/model.glb",
     "review": "assets/creature-motion/models/cro-magnon-hunter-review.json"
-  },
-  "downedMotion": {
-    "revision": "revision-01",
-    "sourceUrl": "/models/cro-magnon-hunter/model-motion-r04.glb",
-    "sourceSha256": "44e3fa7da9c3be7a19d619ab1b343c69919eb951673e15e928f13d23b100cf40",
-    "clip": "Downed",
-    "seconds": 1.8,
-    "fps": 60,
-    "review": "assets/downed-motion/README.md"
   }
 }

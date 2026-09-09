@@ -4,9 +4,9 @@
   "kind": "humanoid",
   "candidate": 1,
   "status": "reviewed-prototype",
-  "url": "/models/cro-magnon-woman/model-motion-r04.glb",
-  "sha256": "e89a53faf2141e6b57b52c3656ec31bcde616333c7bacd82c5fa31ba86aeeaf9",
-  "bytes": 13966860,
+  "url": "/models/cro-magnon-woman/model-downed-r01.glb",
+  "sha256": "539c3e1aeb063389a2b5cd4c2ae947655ded07ecafd7ae6c97c05f1cf8481a7c",
+  "bytes": 14044564,
   "triangles": 65707,
   "upAxis": "Y",
   "forwardAxis": "+Z",
@@ -61,6 +61,11 @@
     {
       "name": "Attack",
       "seconds": 0.699999988079071,
+      "loop": false
+    },
+    {
+      "name": "Downed",
+      "seconds": 1.8,
       "loop": false
     }
   ],
@@ -147,5 +152,14 @@
     "status": "adopted",
     "sourceDelivery": "output/creature-motion/baseline/cro-magnon-woman/model.glb",
     "review": "assets/creature-motion/models/cro-magnon-woman-review.json"
+  },
+  "downedMotion": {
+    "revision": "revision-01",
+    "sourceUrl": "/models/cro-magnon-woman/model-motion-r04.glb",
+    "sourceSha256": "e89a53faf2141e6b57b52c3656ec31bcde616333c7bacd82c5fa31ba86aeeaf9",
+    "clip": "Downed",
+    "seconds": 1.8,
+    "fps": 60,
+    "review": "assets/downed-motion/README.md"
   }
 }

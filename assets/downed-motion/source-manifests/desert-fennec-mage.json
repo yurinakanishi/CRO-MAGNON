@@ -4,9 +4,9 @@
   "kind": "humanoid",
   "candidate": 1,
   "status": "reviewed-prototype",
-  "url": "/models/desert-fennec-mage/model-downed-r01.glb",
-  "sha256": "34ff0f203944fade432484dd7d385e5bc68a105f8d3ac9a0dbd87d6f740126a4",
-  "bytes": 15580552,
+  "url": "/models/desert-fennec-mage/model-motion-r04.glb",
+  "sha256": "9e02e1d7ac81a349012d5de080c95c80dc0a9bad41d2c621fb99953e5d5edbed",
+  "bytes": 15492328,
   "triangles": 103314,
   "upAxis": "Y",
   "forwardAxis": "+Z",
@@ -69,11 +69,6 @@
     {
       "name": "Wave",
       "seconds": 2,
-      "loop": false
-    },
-    {
-      "name": "Downed",
-      "seconds": 1.8,
       "loop": false
     }
   ],
@@ -145,14 +140,5 @@
     "status": "adopted",
     "sourceDelivery": "output/creature-motion/baseline/desert-fennec-mage/model.glb",
     "review": "assets/creature-motion/models/desert-fennec-mage-review.json"
-  },
-  "downedMotion": {
-    "revision": "revision-01",
-    "sourceUrl": "/models/desert-fennec-mage/model-motion-r04.glb",
-    "sourceSha256": "9e02e1d7ac81a349012d5de080c95c80dc0a9bad41d2c621fb99953e5d5edbed",
-    "clip": "Downed",
-    "seconds": 1.8,
-    "fps": 60,
-    "review": "assets/downed-motion/README.md"
   }
 }

@@ -4,9 +4,9 @@
   "kind": "humanoid",
   "candidate": 1,
   "status": "locally-integrated-and-game-qa-passed",
-  "url": "/models/giant-ape/model-downed-r01.glb",
-  "sha256": "4ed3c6997957bb39e82bcb300853b9b90598da1237aeb8bfd1ec73d17a546c59",
-  "bytes": 16524976,
+  "url": "/models/giant-ape/model-stride-r13.glb",
+  "sha256": "c962b573855a2dcc68444bacd8be493bb87f43f775222aa9b7176e89fe47fa07",
+  "bytes": 16447136,
   "triangles": 106357,
   "upAxis": "Y",
   "forwardAxis": "+Z",
@@ -85,11 +85,6 @@
       "name": "Wave",
       "seconds": 2,
       "loop": false
-    },
-    {
-      "name": "Downed",
-      "seconds": 1.8,
-      "loop": false
     }
   ],
   "lods": [],
@@ -131,14 +126,5 @@
     "Existing 0.78 m mage used unchanged for a measured lap comparison. This is a size fixture, not a networked lap-sitting feature.",
     "Actual two-screen/three-socket-peer game QA: five players, walking/running, jump, strike, wave, riding and dismount. Profiles, keyboard sequence and mammoth proximity/wait are fixtures. Physical devices, long-duration load, and all-terrain mesh contact are not verified.",
     "2026-09-09 stride revision 13: walking stride +55%, running stride +30%; actual movement speeds 1.8 and 5.4 m/s. Both gaits validated at 60 Hz and reviewed in 60 images; other 10 clips and original geometry/materials/skin unchanged. Shoulder carrying added through server-authoritative mutual acceptance and the real animated shoulder socket."
-  ],
-  "downedMotion": {
-    "revision": "revision-01",
-    "sourceUrl": "/models/giant-ape/model-stride-r13.glb",
-    "sourceSha256": "c962b573855a2dcc68444bacd8be493bb87f43f775222aa9b7176e89fe47fa07",
-    "clip": "Downed",
-    "seconds": 1.8,
-    "fps": 60,
-    "review": "assets/downed-motion/README.md"
-  }
+  ]
 }

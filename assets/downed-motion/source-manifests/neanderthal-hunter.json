@@ -4,9 +4,9 @@
   "kind": "humanoid",
   "candidate": 1,
   "status": "reviewed-prototype",
-  "url": "/models/neanderthal-hunter/model-downed-r01.glb",
-  "sha256": "5d94557d3161dd4cde3ed4b2dee19e6dabf3a153659e42ed8e19a8ec148497fb",
-  "bytes": 10748124,
+  "url": "/models/neanderthal-hunter/model-motion-r04.glb",
+  "sha256": "883ddd1465fd103efaaa4d9bd6d8f1e00fd01d0177c667e927a14e7a14c475db",
+  "bytes": 10670416,
   "triangles": 54422,
   "upAxis": "Y",
   "forwardAxis": "+Z",
@@ -59,11 +59,6 @@
     {
       "name": "Attack",
       "seconds": 0.699999988079071,
-      "loop": false
-    },
-    {
-      "name": "Downed",
-      "seconds": 1.8,
       "loop": false
     }
   ],
@@ -142,14 +137,5 @@
     "status": "adopted",
     "sourceDelivery": "output/creature-motion/baseline/neanderthal-hunter/model.glb",
     "review": "assets/creature-motion/models/neanderthal-hunter-review.json"
-  },
-  "downedMotion": {
-    "revision": "revision-01",
-    "sourceUrl": "/models/neanderthal-hunter/model-motion-r04.glb",
-    "sourceSha256": "883ddd1465fd103efaaa4d9bd6d8f1e00fd01d0177c667e927a14e7a14c475db",
-    "clip": "Downed",
-    "seconds": 1.8,
-    "fps": 60,
-    "review": "assets/downed-motion/README.md"
   }
 }

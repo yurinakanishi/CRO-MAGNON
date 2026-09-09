@@ -1,0 +1,53 @@
+{
+  "tests": 423,
+  "browserErrors": [],
+  "viewsPerModel": 4,
+  "poseSamplesPerView": 6,
+  "videos": 7,
+  "observers": [
+    {
+      "slot": "A",
+      "downedSamples": {
+        "Downed A": 5,
+        "Downed B": 4
+      },
+      "maximumVisibleActors": 5,
+      "fixtures": [
+        {
+          "name": "Downed A",
+          "at": 1788962263325,
+          "kind": "Initial proximity, energy 10, pending enemy strike; damage/recovery use real server ticks",
+          "players": 5
+        },
+        {
+          "name": "Downed B",
+          "at": 1788962285924,
+          "kind": "Initial proximity, energy 10, pending enemy strike; damage/recovery use real server ticks",
+          "players": 5
+        }
+      ]
+    },
+    {
+      "slot": "B",
+      "downedSamples": {
+        "Downed A": 4,
+        "Downed B": 3
+      },
+      "maximumVisibleActors": 5,
+      "fixtures": [
+        {
+          "name": "Downed A",
+          "at": 1788962263325,
+          "kind": "Initial proximity, energy 10, pending enemy strike; damage/recovery use real server ticks",
+          "players": 5
+        },
+        {
+          "name": "Downed B",
+          "at": 1788962285924,
+          "kind": "Initial proximity, energy 10, pending enemy strike; damage/recovery use real server ticks",
+          "players": 5
+        }
+      ]
+    }
+  ]
+}

@@ -81,6 +81,9 @@ export class CharacterAnimation {
     this.actions = new Map(
       HUMAN_CLIPS.map((name) => [name, this.mixer.clipAction(byName.get(name))]),
     );
+    // Extra player clip; old review fixtures and non-player humanoids remain usable.
+    if (byName.has('Downed'))
+      this.actions.set('Downed', this.mixer.clipAction(byName.get('Downed')));
     this.root = root;
     this.blender = new ActionBlender(this.actions);
     this.clipSpeeds = { Walk_Loop: walkSpeed, Run_Loop: runSpeed };
@@ -116,7 +119,8 @@ export class CharacterAnimation {
   }
 
   play(name) {
-    if (this.moving || !this.actions.has(name) || name.endsWith('_Loop')) return false;
+    if (this.name === 'Downed' || this.moving || !this.actions.has(name) || name.endsWith('_Loop'))
+      return false;
     this.change(name);
     return true;
   }
@@ -124,6 +128,7 @@ export class CharacterAnimation {
   // The attack starts only from an authoritative sequence. Seeking accounts for
   // loading or network latency instead of replaying an old strike after joining.
   playAttack(elapsedSeconds = 0) {
+    if (this.name === 'Downed') return false;
     const duration = this.actions.get('Attack').getClip().duration;
     if (elapsedSeconds >= duration) return false;
     this.change('Attack', 0.06);
@@ -132,7 +137,26 @@ export class CharacterAnimation {
     return true;
   }
 
+  /** Seek from the fatal hit timestamp; hold the last frame until server recovery. */
+  updateDowned(dt: number, elapsedSeconds: number) {
+    const action = this.actions.get('Downed');
+    if (!action) return;
+    if (this.name !== 'Downed' || this.current !== action)
+      this.change('Downed', elapsedSeconds < 0.15 ? 0.1 : 0);
+    this.speed = 0;
+    this.moving = false;
+    this.finished = false;
+    action.time = Math.max(0, Math.min(action.getClip().duration, elapsedSeconds));
+    this.blender.update(dt);
+    this.mixer.update(0);
+  }
+
+  leaveDowned() {
+    if (this.name === 'Downed') this.change('Idle_Loop', 0);
+  }
+
   update(dt, speed = 0, running = false) {
+    if (this.name === 'Downed') return;
     this.speed = Number.isFinite(speed) ? Math.max(0, speed) : 0;
     this.moving = this.speed > 0.025;
     const locomotion = this.moving ? (running ? 'Run_Loop' : 'Walk_Loop') : 'Idle_Loop';

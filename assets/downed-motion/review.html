@@ -1,0 +1,249 @@
+<!doctype html>
+<html lang="ja">
+  <meta charset="utf-8" /><title>膝から崩れる動作</title>
+  <style>
+    body {
+      margin: 0;
+      background: #e6e9e8;
+      color: #18252b;
+      font: 15px system-ui;
+    }
+    header {
+      padding: 12px;
+      background: white;
+    }
+    button,
+    select,
+    input {
+      margin: 5px;
+      padding: 6px;
+    }
+    canvas {
+      display: block;
+      max-width: 100%;
+    }
+    #status {
+      padding: 8px;
+    }
+  </style>
+  <script type="importmap">
+    {
+      "imports": {
+        "three": "/node_modules/three/build/three.module.js",
+        "three/addons/": "/node_modules/three/examples/jsm/"
+      }
+    }
+  </script>
+  <header>
+    <b>膝から崩れる動作</b
+    ><select id="model"></select
+    ><button id="play">再生／停止</button
+    ><label>時刻<input id="time" type="range" min="0" max="4" step="0.01" value="0" /></label
+    ><select id="view">
+      <option value="side">右</option>
+      <option value="front">正面</option>
+      <option value="back">背面</option>
+      <option value="left">左</option>
+      <option value="angle">斜め</option></select
+    ><button id="capture">全7外見を記録</button><span id="status">読込中</span>
+  </header>
+  <canvas id="canvas"></canvas>
+  <script type="module">
+    import * as THREE from 'three';
+    import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
+    import { CharacterAnimation } from '/dist/src/character-animation.js';
+    import { CHARACTER_MODELS } from '/dist/shared/characters.mjs';
+    const ui = Object.fromEntries(
+      ['model', 'play', 'time', 'view', 'capture', 'status', 'canvas'].map((k) => [
+        k,
+        document.getElementById(k),
+      ]),
+    );
+    const renderer = new THREE.WebGLRenderer({
+      canvas: ui.canvas,
+      antialias: true,
+      preserveDrawingBuffer: true,
+    });
+    renderer.setSize(1100, 620);
+    renderer.setPixelRatio(1);
+    renderer.outputColorSpace = THREE.SRGBColorSpace;
+    const scene = new THREE.Scene();
+    scene.background = new THREE.Color('#d9e0df');
+    scene.add(new THREE.HemisphereLight(0xffffff, 0x667568, 2.5));
+    const light = new THREE.DirectionalLight(0xffffff, 3);
+    light.position.set(3, 6, 5);
+    scene.add(light);
+    const ground = new THREE.Mesh(
+      new THREE.PlaneGeometry(30, 30),
+      new THREE.MeshStandardMaterial({ color: 0xb8c2b4, roughness: 1 }),
+    );
+    ground.rotation.x = -Math.PI / 2;
+    ground.position.y = -0.003;
+    scene.add(ground);
+    scene.add(new THREE.GridHelper(20, 40, 0x809184, 0xa8b6ac));
+    const camera = new THREE.PerspectiveCamera(36, 1100 / 620, 0.01, 100);
+    let root,
+      animation,
+      asset,
+      playing = false,
+      t = 0,
+      last = performance.now(),
+      capturing = false;
+    const errors = [];
+    addEventListener('error', (e) => errors.push(String(e.message)));
+    addEventListener('unhandledrejection', (e) => errors.push(String(e.reason)));
+    for (const m of CHARACTER_MODELS) ui.model.add(new Option(m.name, m.key));
+    function view() {
+      const h = asset.heightMetres;
+      const direction = {
+        side: [1, 0, 0],
+        left: [-1, 0, 0],
+        front: [0, 0, 1],
+        back: [0, 0, -1],
+        angle: [0.8, 0.0, 0.7],
+      }[ui.view.value];
+      camera.position.set(direction[0] * h * 3.4, h * 1.05, direction[2] * h * 3.4 + 0.2 * h);
+      camera.lookAt(0, h * 0.5, h * 0.24);
+    }
+    async function load(key) {
+      if (animation) animation.dispose();
+      if (root) {
+        scene.remove(root);
+        root.traverse((n) => {
+          if (n.isMesh) {
+            n.geometry.dispose();
+            for (const m of [n.material].flat()) {
+              for (const v of Object.values(m)) if (v?.isTexture) v.dispose();
+              m.dispose();
+            }
+            if (n.isSkinnedMesh) n.skeleton.dispose();
+          }
+        });
+      }
+      asset = await (await fetch('/output/downed-motion/' + key + '/asset.json')).json();
+      const gltf = await new GLTFLoader().loadAsync(
+        '/output/downed-motion/' + key + '/model-downed-r01.glb',
+      );
+      root = gltf.scene;
+      scene.add(root);
+      animation = new CharacterAnimation(root, gltf.animations, { walkSpeed: 1, runSpeed: 3 });
+      view();
+      sample(0);
+      ui.status.textContent = key + ' 読込完了';
+    }
+    function sample(time) {
+      t = time;
+      animation.updateDowned(1, time);
+      scene.updateMatrixWorld(true);
+      renderer.render(scene, camera);
+      ui.time.value = String(time);
+    }
+    ui.model.onchange = () => load(ui.model.value);
+    ui.view.onchange = () => {
+      view();
+      sample(t);
+    };
+    ui.time.oninput = () => {
+      playing = false;
+      sample(Number(ui.time.value));
+    };
+    ui.play.onclick = () => {
+      playing = !playing;
+      if (playing) t = 0;
+    };
+    async function save(name, blob) {
+      const r = await fetch('/capture/' + name, { method: 'POST', body: blob });
+      if (!r.ok) throw Error('capture failed');
+    }
+    ui.capture.onclick = async () => {
+      capturing = true;
+      playing = false;
+      try {
+        for (const m of CHARACTER_MODELS) {
+          ui.model.value = m.key;
+          await load(m.key);
+          const sheet = document.createElement('canvas');
+          sheet.width = 1650;
+          sheet.height = 1120;
+          const ctx = sheet.getContext('2d');
+          for (const [row, v] of ['side', 'front', 'back', 'angle'].entries()) {
+            ui.view.value = v;
+            view();
+            for (const [col, time] of [0, 0.3, 0.65, 0.86, 1.35, 1.8].entries()) {
+              sample(time);
+              ctx.drawImage(ui.canvas, col * 275, row * 280, 275, 255);
+              ctx.fillStyle = 'white';
+              ctx.fillRect(col * 275, row * 280 + 255, 275, 25);
+              ctx.fillStyle = '#18252b';
+              ctx.font = '16px sans-serif';
+              ctx.fillText(m.key + ' ' + v + ' ' + time + 's', col * 275 + 5, row * 280 + 273);
+            }
+          }
+          await save(m.key + '.png', await new Promise((r) => sheet.toBlob(r)));
+          ui.view.value = 'angle';
+          view();
+          const stream = ui.canvas.captureStream(30),
+            rec = new MediaRecorder(stream, { mimeType: 'video/webm' }),
+            chunks = [];
+          rec.ondataavailable = (e) => {
+            if (e.data.size) chunks.push(e.data);
+          };
+          const done = new Promise((r) => (rec.onstop = r));
+          sample(0);
+          rec.start();
+          const start = performance.now();
+          await new Promise((resolve) => {
+            function frame() {
+              sample(Math.min(4, (performance.now() - start) / 1000));
+              if (performance.now() - start < 4000) requestAnimationFrame(frame);
+              else resolve();
+            }
+            frame();
+          });
+          rec.stop();
+          await done;
+          stream.getTracks().forEach((t) => t.stop());
+          await save(m.key + '.webm', new Blob(chunks, { type: 'video/webm' }));
+          ui.status.textContent = m.key + ' 保存完了';
+        }
+        await save(
+          'report.json',
+          new Blob(
+            [
+              JSON.stringify(
+                {
+                  models: CHARACTER_MODELS.map((m) => m.key),
+                  errors,
+                  views: 4,
+                  samples: [0, 0.3, 0.65, 0.86, 1.35, 1.8],
+                  videoFps: 30,
+                },
+                null,
+                2,
+              ),
+            ],
+            { type: 'application/json' },
+          ),
+        );
+        ui.status.textContent = '全7外見の画像・動画を保存しました';
+      } catch (e) {
+        ui.status.textContent = String(e);
+        throw e;
+      } finally {
+        capturing = false;
+      }
+    };
+    function frame(now) {
+      const dt = Math.min(0.1, (now - last) / 1000);
+      last = now;
+      if (playing && !capturing) {
+        t += dt;
+        if (t > 4) t = 0;
+        sample(t);
+      }
+      requestAnimationFrame(frame);
+    }
+    await load(ui.model.value);
+    requestAnimationFrame(frame);
+  </script>
+</html>

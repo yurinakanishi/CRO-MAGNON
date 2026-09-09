@@ -939,6 +939,7 @@ export class WorldRenderer {
       entity.label.active = true;
       const airborne = jumpProgress(p, this.serverNow());
       if (airborne === null) entity.actor?.jumpPose.leave(entity.actor.animation);
+      if (!p.downedUntil) entity.actor?.animation.leaveDowned();
       if (entity.spears) {
         for (const spear of entity.spears.values()) spear.visible = false;
         entity.weapon = entity.spears.get(attackProfile(p).modelKey);
@@ -1052,7 +1053,14 @@ export class WorldRenderer {
           !entity.actor.animation.oneShot
         )
           entity.actor.animation.play(p.coastalActivity?.kind === 'shells' ? 'Gather' : 'Craft');
-        if (airborne !== null) entity.actor.jumpPose.update(entity.actor.animation, airborne);
+        if (p.downedUntil) {
+          entity.actor.jumpPose.leave(entity.actor.animation);
+          entity.actor.animation.updateDowned(
+            dt,
+            p.hurtAt > 0 ? Math.max(0, (this.serverNow() - p.hurtAt) / 1000) : Infinity,
+          );
+        } else if (airborne !== null)
+          entity.actor.jumpPose.update(entity.actor.animation, airborne);
         else entity.actor.animation.update(dt, visualSpeed, entity.running);
         entity.actor.carrySupportPose?.update(dt, !!p.passengerId);
         if (entity.axe) {
