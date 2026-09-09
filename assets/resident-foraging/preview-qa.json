@@ -1,0 +1,48 @@
+{
+  "at": "2026-09-09T00:15:35.137Z",
+  "base": "http://127.0.0.1:3011",
+  "errors": [],
+  "checks": [
+    {
+      "path": "src/supper-ui.js",
+      "sha256": "55d9a9c42f8e1e3a0a4f17f98a09d846f8bbb1c863dc706e07831a51a41cdbdc"
+    },
+    {
+      "path": "src/pantry-ui.js",
+      "sha256": "13725ab51d6d0751807d642b7ede8bedfafdabbcd7fe734fa00ba0cc34428358"
+    },
+    {
+      "path": "src/village-ui.js",
+      "sha256": "8bf3a6ca195c41477c24b374fa400044230a437ca187a9dadb0a25bc0a7c3794"
+    },
+    {
+      "path": "shared/foraging.mjs",
+      "sha256": "a7d85715d9e530f36b5f936bb4606a6bf9c94f2269c34eb056d559c53f1db530"
+    },
+    {
+      "path": "shared/foraging-types.mjs",
+      "sha256": "8eea9c3a7a456a546529e336fed4c761fd04006c852e0b7e9a7834d8283ae163"
+    },
+    {
+      "path": "shared/village-types.mjs",
+      "sha256": "2957df12679126efbc3d6a8cc16ffa09c9574e9f43843c8fd582aa7562f7c266"
+    },
+    {
+      "path": "shared/supper.mjs",
+      "sha256": "337adbc4fffa3b4b998607d23ea2e6d7379781d2741f99c7682f2bbde02f0805"
+    },
+    {
+      "path": "shared/pantry.mjs",
+      "sha256": "1141d3ec5918dde72d3f6c504d2ff76d951a05db88ab85d2a5c62569e5ffa324"
+    },
+    {
+      "path": "shared/village-life.mjs",
+      "sha256": "a50a4a75d82497872678838707ac35bed7a313ca5f0f487355b9767aa1b35b4e"
+    }
+  ],
+  "completed": [
+    "Standard expedition and welcome berries only: one donated common berry; all eight native residents gathered from their actual local resources, holding food until evening. No state or clock fixtures.",
+    "All four settlements receive their own two harvested berries and eight residents eat once at real evening. Reload and portrait/landscape retain state and legible records; the player common berry remains."
+  ],
+  "fixture": "Separate QA room on preview 3011, standard expedition and welcome berries only. No inventory/position/clock/household mutations or user-room access. Daytime foraging and evening elapsed in real time."
+}

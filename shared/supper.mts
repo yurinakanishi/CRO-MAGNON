@@ -53,6 +53,23 @@ export function restingAfterSupper(room, resident: Resident, now: number) {
     resident.supper.settlementId === supperPlace(room, resident.id)
   );
 }
+export function atSupperHearth(room, resident: Resident, now: number) {
+  const placeId = supperPlace(room, resident.id),
+    place = SETTLEMENTS.find((s) => s.id === placeId);
+  return (
+    !!place &&
+    villagePhase(now, room.createdAt) === 2 &&
+    resident.phase === 2 &&
+    !resident.moving &&
+    !!resident.destination &&
+    distance(resident, resident.destination) <= 0.15 &&
+    distance(resident, place) <= SUPPER.reach &&
+    !(resident.talkerId && resident.talkUntil > now && room.players.has(resident.talkerId)) &&
+    supperHearths
+      .get(placeId)
+      .some((hearth) => interactionVisible(room.collision, resident, hearth))
+  );
+}
 export function updateSuppers(room, now: number) {
   if (!room.players.size || villagePhase(now, room.createdAt) !== 2) return false;
   const day = villageDay(now, room.createdAt);
@@ -65,23 +82,8 @@ export function updateSuppers(room, now: number) {
   let changed = false;
   for (const definition of order) {
     const resident: Resident = room.residents?.find((r) => r.id === definition.id),
-      placeId = supperPlace(room, definition.id),
-      place = SETTLEMENTS.find((s) => s.id === placeId);
-    if (
-      !resident ||
-      !place ||
-      resident.supper?.day >= day ||
-      resident.phase !== 2 ||
-      resident.moving ||
-      !resident.destination ||
-      distance(resident, resident.destination) > 0.15 ||
-      distance(resident, place) > SUPPER.reach ||
-      (resident.talkerId && resident.talkUntil > now && room.players.has(resident.talkerId)) ||
-      !supperHearths
-        .get(placeId)
-        .some((hearth) => interactionVisible(room.collision, resident, hearth))
-    )
-      continue;
+      placeId = supperPlace(room, definition.id);
+    if (!resident || resident.supper?.day >= day || !atSupperHearth(room, resident, now)) continue;
     const pantry: PantryState = room.gulf.pantries.find((p) => p.settlementId === placeId);
     const firstFood = (day - 1 + RESIDENTS.indexOf(definition)) % PANTRY_FOODS.length;
     const food = Array.from(

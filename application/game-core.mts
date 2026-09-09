@@ -26,6 +26,7 @@ import { CollisionWorld, overlap } from '../shared/collision.mjs';
 import { attackProfile } from '../shared/combat-profiles.mjs';
 import { handleBarterCommand, cancelBarter, updateBarters } from '../shared/barter.mjs';
 import { updateSuppers } from '../shared/supper.mjs';
+import { updateForaging } from '../shared/foraging.mjs';
 import { enemyIsSolid, stopActor } from '../shared/combat.mjs';
 import { createEnemies, updateEnemies } from '../shared/enemies.mjs';
 import { takeExpedition } from '../shared/expeditions.mjs';
@@ -449,6 +450,7 @@ export function createGameCore({
         (projectile) => projectile.ownerId !== player.id,
       );
       room.players.delete(player.id);
+      if (!room.players.size) for (const resident of room.residents) resident.forageWork = null;
       if (!closing && player.sessionToken && resumeGraceMs > 0)
         room.sessions.set(player.sessionToken, {
           player,
@@ -477,6 +479,7 @@ export function createGameCore({
         if (now >= entry.expiresAt) room.sessions.delete(token);
       if (!room.players.size) {
         updateBarters(room, now);
+        for (const resident of room.residents) resident.forageWork = null;
         if (!keepEmptyRooms && !room.sessions.size) rooms.delete(room.name);
         continue;
       }
@@ -514,6 +517,7 @@ export function createGameCore({
       }
       updateBoats(room, dt, now);
       updateResidents(room, dt, now);
+      const foragingChanged = updateForaging(room, dt, now);
       const supperChanged = updateSuppers(room, now);
       const huntingChanged = updateHunting(room, now, notice);
       updateAnimals(room, dt, now);
@@ -523,7 +527,7 @@ export function createGameCore({
       const fishingChanged = updateFishing(room, now, notice);
       const coastalChanged = updateCoastal(room, now, notice);
       const barterChanged = updateBarters(room, now);
-      let resourcesChanged = false;
+      let resourcesChanged = foragingChanged;
       for (const resource of room.resources) {
         if (resource.amount < resource.maxAmount && now - resource.regeneratedAt >= 20000) {
           const obstacle = room.resourceObstacles.get(resource.id);

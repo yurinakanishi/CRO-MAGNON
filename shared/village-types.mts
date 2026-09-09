@@ -1,5 +1,6 @@
 import type { Gender, Inventory, Point, Species, MovableActor } from './types.mjs';
 import type { ResidentSupper } from './supper-types.mjs';
+import type { ResidentForage } from './foraging-types.mjs';
 
 export interface ResidentRoutine extends Point {
   label: string;
@@ -28,6 +29,7 @@ export interface ResidentSnapshot extends Point {
   activity: string;
   clip: string;
   supper?: ResidentSupper | null;
+  forage?: ResidentForage | null;
 }
 export interface Resident extends MovableActor {
   id: string;
@@ -40,4 +42,6 @@ export interface Resident extends MovableActor {
   talkerId: string | null;
   supper: ResidentSupper | null;
   supperUntil: number;
+  forage: ResidentForage | null;
+  forageWork: { key: string; elapsedMs: number } | null;
 }

@@ -1,0 +1,335 @@
+{
+  "at": "2026-09-09T00:19:35.231Z",
+  "status": "passed",
+  "plan": "RESIDENT_FORAGING_PLAN.md",
+  "tests": {
+    "passed": 335,
+    "failed": 0,
+    "addedForagingTests": 11,
+    "fixtureCorrection": "Initial save test attempted import into a populated game. It was corrected to restore into fresh cores; the game correctly rejected the invalid test operation."
+  },
+  "checks": {
+    "isolatedBuild": [
+      "browser",
+      "shared",
+      "application",
+      "Node",
+      "Cloudflare",
+      "strict"
+    ],
+    "currentWorktreeTypecheck": true,
+    "syntaxJavaScriptFiles": 164,
+    "architecture": true,
+    "changedCodeFormat": true,
+    "normalDistWrittenByThisTask": false
+  },
+  "browser": {
+    "at": "2026-09-09T00:10:44.000Z",
+    "base": "http://127.0.0.1:58546",
+    "errors": [],
+    "fixtures": [
+      {
+        "kind": "position",
+        "id": "55213b6f-9965-4f71-bee1-7e0d504e279f",
+        "purpose": "second view at hearth",
+        "x": -2268,
+        "z": 455
+      },
+      {
+        "kind": "household-visits",
+        "purpose": "all three households start visiting; complete journeys not walked in this browser test"
+      },
+      {
+        "kind": "position",
+        "id": "aru",
+        "purpose": "rest position before actual daytime foraging and evening return",
+        "x": -2284,
+        "z": 424
+      },
+      {
+        "kind": "position",
+        "id": "seno",
+        "purpose": "rest position before actual daytime foraging and evening return",
+        "x": -2266,
+        "z": 421
+      },
+      {
+        "kind": "position",
+        "id": "mira",
+        "purpose": "rest position before actual daytime foraging and evening return",
+        "x": -2294,
+        "z": 467
+      },
+      {
+        "kind": "position",
+        "id": "tovan",
+        "purpose": "rest position before actual daytime foraging and evening return",
+        "x": -2289,
+        "z": 471
+      },
+      {
+        "kind": "position",
+        "id": "ena",
+        "purpose": "rest position before actual daytime foraging and evening return",
+        "x": -2292,
+        "z": 432
+      },
+      {
+        "kind": "position",
+        "id": "rok",
+        "purpose": "rest position before actual daytime foraging and evening return",
+        "x": -2287,
+        "z": 436
+      },
+      {
+        "kind": "position",
+        "id": "neri",
+        "purpose": "rest position before actual daytime foraging and evening return",
+        "x": -2246.0776457135307,
+        "z": 467.2897777478867
+      },
+      {
+        "kind": "position",
+        "id": "daro",
+        "purpose": "rest position before actual daytime foraging and evening return",
+        "x": -2241,
+        "z": 471
+      },
+      {
+        "kind": "fresh-day",
+        "purpose": "clear resident daily records and refill existing berry sources after loading both clients"
+      },
+      {
+        "kind": "clock",
+        "elapsed": 0,
+        "purpose": "day one starts; the entire foraging and return route now runs on real elapsed time"
+      },
+      {
+        "kind": "position",
+        "id": "3a01fb83-4c68-4b57-a030-8b79639e495b",
+        "purpose": "return QA view to hearth for capacity test",
+        "x": -2272,
+        "z": 455
+      },
+      {
+        "kind": "pantry-capacity",
+        "food": "cookedRoot",
+        "amount": 47,
+        "purpose": "fill remaining capacity beside the real donated common berry; retain carried harvest at evening"
+      },
+      {
+        "kind": "clock",
+        "elapsed": 240000,
+        "purpose": "next day; actual resident harvesting continues"
+      },
+      {
+        "kind": "clock",
+        "elapsed": 355000,
+        "purpose": "just before second evening after actual second harvest; avoid idle wait"
+      }
+    ],
+    "completed": [
+      "All eight residents walked from rest places to actual shrubs and gathered one berry each; all three observers and second Chrome see carrying records; no supper credited before return; Gamepad focus survived updates.",
+      "Same-tab reconnect retains berries being carried, source records and shared stock.",
+      "Unmodified day-one clock reached evening: eight real return walks, deliveries and meals; common food and player inventory retained.",
+      "Resident directory and nearby conversation show delivered food; portrait/landscape layouts, simulated Gamepad selection, scrolling and Back remain usable.",
+      "Day two permits one new harvest each. At a full pantry all eight retain their food; a normal player withdrawal opens space, then each delivers and eats once without taking common food."
+    ],
+    "observations": 953,
+    "maxPlayers": 5,
+    "violations": [],
+    "screenshots": [
+      {
+        "name": "01-loaded",
+        "fps": "16",
+        "chunks": "68"
+      },
+      {
+        "name": "02-carrying",
+        "fps": "60",
+        "chunks": "65"
+      },
+      {
+        "name": "03-delivered-and-eaten",
+        "fps": "60",
+        "chunks": "65"
+      },
+      {
+        "name": "04-layout-390",
+        "fps": "60",
+        "chunks": "65"
+      },
+      {
+        "name": "04-layout-844",
+        "fps": "54",
+        "chunks": "65"
+      },
+      {
+        "name": "05-conversation",
+        "fps": "60",
+        "chunks": "64"
+      },
+      {
+        "name": "06-full-pantry",
+        "fps": "60",
+        "chunks": "64"
+      }
+    ],
+    "viewports": [
+      {
+        "width": 390,
+        "scrollWidth": 390,
+        "overflow": false,
+        "buttons": [
+          {
+            "id": "supper-food-berry",
+            "height": 68,
+            "width": 156
+          },
+          {
+            "id": "supper-food-cookedMeat",
+            "height": 68,
+            "width": 156
+          },
+          {
+            "id": "supper-food-cookedFish",
+            "height": 68,
+            "width": 156
+          },
+          {
+            "id": "supper-food-cookedShellfish",
+            "height": 68,
+            "width": 156
+          },
+          {
+            "id": "supper-food-cookedRoot",
+            "height": 68,
+            "width": 156
+          },
+          {
+            "id": "supper-food-herbRoot",
+            "height": 68,
+            "width": 156
+          },
+          {
+            "id": "supper-give",
+            "height": 44,
+            "width": 294
+          },
+          {
+            "id": "supper-release",
+            "height": 44,
+            "width": 294
+          },
+          {
+            "id": "supper-shell-take",
+            "height": 44,
+            "width": 294
+          },
+          {
+            "id": "supper-go",
+            "height": 44,
+            "width": 320
+          },
+          {
+            "id": "supper-back",
+            "height": 44,
+            "width": 320
+          }
+        ]
+      },
+      {
+        "width": 844,
+        "scrollWidth": 844,
+        "overflow": false,
+        "buttons": [
+          {
+            "id": "supper-food-berry",
+            "height": 68,
+            "width": 243.921875
+          },
+          {
+            "id": "supper-food-cookedMeat",
+            "height": 68,
+            "width": 243.9375
+          },
+          {
+            "id": "supper-food-cookedFish",
+            "height": 68,
+            "width": 243.9375
+          },
+          {
+            "id": "supper-food-cookedShellfish",
+            "height": 68,
+            "width": 243.921875
+          },
+          {
+            "id": "supper-food-cookedRoot",
+            "height": 68,
+            "width": 243.9375
+          },
+          {
+            "id": "supper-food-herbRoot",
+            "height": 68,
+            "width": 243.9375
+          },
+          {
+            "id": "supper-give",
+            "height": 44,
+            "width": 353.390625
+          },
+          {
+            "id": "supper-release",
+            "height": 44,
+            "width": 353.40625
+          },
+          {
+            "id": "supper-shell-take",
+            "height": 44,
+            "width": 713.796875
+          },
+          {
+            "id": "supper-go",
+            "height": 44,
+            "width": 370.390625
+          },
+          {
+            "id": "supper-back",
+            "height": 44,
+            "width": 370.40625
+          }
+        ]
+      }
+    ],
+    "scope": "Two real Chrome views plus three network peers. Guest visits, resident rest positions, cleared initial daily records, replenished source stock, a second-view position, 47 roots filling the pantry and three clock changes are explicit fixtures. All foraging walks, 4-second work, carrying, evening return, delivery and consumption run in real time. Player A uses ordinary expedition/welcome berries to contribute one common berry. Gamepad API input is simulated; no physical controller/device, large-room load, long-duration or constant 60FPS claim."
+  },
+  "preview": {
+    "path": "preview-qa.json",
+    "passed": true,
+    "servedModules": 9,
+    "fixtures": false
+  },
+  "assets": {
+    "path": "assets-qa.json",
+    "models": 39,
+    "deliveredGLBs": 54,
+    "newGLBs": 0,
+    "newDependencies": 0
+  },
+  "finalWording": "After the two-client run, clarified that a full pantry accepts carried food once space is available; verified final wording in the fixture-free preview.",
+  "retainedPictures": [
+    "02-carrying.png",
+    "03-delivered-and-eaten.png",
+    "04-layout-390.png",
+    "04-layout-844.png",
+    "05-conversation.png",
+    "06-full-pantry.png",
+    "07-native-preview.png"
+  ],
+  "limits": [
+    "Normal 3000 server retained during parallel LAN work; foraging only running on dedicated 3011 preview.",
+    "No physical controller or mobile hardware verification.",
+    "No large-player load, long-duration or constant 60FPS claim.",
+    "No automatic farming/fishing/hunting, spoilage, long-term nutrition or population model."
+  ]
+}

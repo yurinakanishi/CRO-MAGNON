@@ -1,0 +1,38 @@
+{
+  "at": "2026-09-09T00:13:11.228Z",
+  "files": [
+    {
+      "file": "shared/foraging.mts",
+      "sha256": "ecc93c6e710cec2aeb2da3fe942d9a98e403f38f2e992018738e45949870a6ba"
+    },
+    {
+      "file": "shared/foraging-types.mts",
+      "sha256": "0a7568b72d76ba72b408af952f23f352af414823bdbfd1aab87f09f3539a5253"
+    },
+    {
+      "file": "shared/village-life.mts",
+      "sha256": "3c5f79c4ccd146222eab15a6a5df71410f4ead666928dcc9de169de72f3fa408"
+    },
+    {
+      "file": "shared/village-types.mts",
+      "sha256": "34082ce84e4ff7fea03e6e50adf9b8f9967553a8d10890d06f659169127f78bd"
+    },
+    {
+      "file": "shared/supper.mts",
+      "sha256": "486594aabd9462dc9522bdd8acc367f07504b1ee1ff16372f7f602ae6dc13165"
+    },
+    {
+      "file": "src/village-ui.ts",
+      "sha256": "71c20488a53240fff410de313beabfc830ae1bdf533456b2bf48183e2d7f5879"
+    },
+    {
+      "file": "src/supper-ui.ts",
+      "sha256": "663f6cd4b7995e1a27e6ec8f62bbd2aed290b4e75f25b03b70e8600eecb470e1"
+    },
+    {
+      "file": "application/game-core.mts",
+      "sha256": "6eb8a5dda856d12dc5b40cceb4f51d172687f3efc2d4402e09b933959bb9b7fa"
+    }
+  ],
+  "note": "Isolated preview compiled before concurrent LAN edits; final wording emitted only for supper-ui. Normal dist was not written by this task."
+}

@@ -296,6 +296,8 @@ Research is sufficient for this worldbuilding proposal because the period, popul
 
 ## 8. Incremental improvement sequence
 
+**Implementation update, 2026-09-09:** The existing game now includes the expanded Three Shores region, fantasy countries and farming, obsidian spear crafting, fishing and shell middens, resident routines and household visits, weather/current advice, shared food, player barter and resident suppers. [RESIDENT_FORAGING_PLAN.md](RESIDENT_FORAGING_PLAN.md) adds a small production loop: residents take one berry from an actual local shrub, carry it, and deliver it to supper on returning to a hearth. Quantities, regeneration, daily limits and sharing rules are deliberate fiction. This does not complete automatic farming, long-term nutrition, population change or politics. The new foraging build is available on local preview port 3011; the normal 3000 server is retained during the separate LAN task.
+
 **Build a more connected regional experience with the systems already present.** The following are future priorities, not completed implementation or authorization to replace the world.
 
 | Priority | Improvement | Existing foundation | Reviewable outcome |

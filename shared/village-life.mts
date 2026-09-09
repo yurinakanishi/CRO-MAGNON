@@ -8,6 +8,7 @@ import { planNavigation, updateNavigation } from './navigation.mjs';
 import type { Resident, ResidentSnapshot } from './village-types.mjs';
 import { normalizeResidentSupper, restingAfterSupper } from './supper.mjs';
 import { PANTRY_FOODS } from './pantry.mjs';
+import { foragingAssignment, normalizeResidentForage } from './foraging.mjs';
 import {
   createHouseholds,
   ensureHouseholdProgress,
@@ -70,6 +71,8 @@ export function createResidents(room, saved = [], now = Date.now()): Resident[] 
       talkerId: null,
       supper: normalizeResidentSupper(old?.supper, villageDay(now, room.createdAt)),
       supperUntil: 0,
+      forage: normalizeResidentForage(old?.forage, villageDay(now, room.createdAt)),
+      forageWork: null,
     };
     room.residents.push(resident);
   }
@@ -78,7 +81,7 @@ export function createResidents(room, saved = [], now = Date.now()): Resident[] 
 
 export const residentSnapshots = (room): ResidentSnapshot[] =>
   (room.residents ?? []).map(
-    ({ id, x, z, facing, radius, speed, moving, activity, clip, supper }) => ({
+    ({ id, x, z, facing, radius, speed, moving, activity, clip, supper, forage }) => ({
       id,
       x,
       z,
@@ -89,6 +92,7 @@ export const residentSnapshots = (room): ResidentSnapshot[] =>
       activity,
       clip,
       supper: supper ? { ...supper } : null,
+      forage: forage ? { ...forage } : null,
     }),
   );
 
@@ -118,14 +122,19 @@ export function updateResidents(room, dt: number, now: number) {
       continue;
     }
     const dynamic = ridingObstacles(room, null, resident);
-    const assignment = householdAssignment(room, resident.id, phase);
+    const assignment =
+      foragingAssignment(room, resident, phase, now, dynamic) ??
+      householdAssignment(room, resident.id, phase);
     const routineKey = assignment?.key ?? `home:${phase}`;
     if (resident.routineKey !== routineKey || !resident.destination) {
       stopActor(resident);
       resident.phase = phase;
       resident.routineKey = routineKey;
+      resident.forageWork = null;
       const target = assignment?.target ?? definition.routine[phase];
-      const free = room.collision.nearestFree(target, resident.radius, dynamic, 4);
+      const free = routineKey.startsWith('forage:')
+        ? target
+        : room.collision.nearestFree(target, resident.radius, dynamic, 4);
       resident.destination = free ? { ...target, ...free } : null;
     }
     const destination = resident.destination;
@@ -154,9 +163,11 @@ export function updateResidents(room, dt: number, now: number) {
       resident.activity = resident.moving
         ? assignment?.travelling
           ? '世帯の仲間と道を歩いている'
-          : ['採集場所へ歩いている', '仕事場へ歩いている', '炉へ歩いている', '天幕へ歩いている'][
-              phase
-            ]
+          : routineKey.startsWith('forage:')
+            ? '夕食の実を採りに歩いている'
+            : ['採集場所へ歩いている', '仕事場へ歩いている', '炉へ歩いている', '天幕へ歩いている'][
+                phase
+              ]
         : '道が空くのを待っている';
       resident.clip = resident.moving ? 'Walk_Loop' : 'Idle_Loop';
     } else {
