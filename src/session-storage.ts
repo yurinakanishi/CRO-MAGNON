@@ -24,28 +24,48 @@ export function createPreferences(storage: () => StoragePort) {
   };
 }
 
-export function createSessionStore(storage: () => StoragePort) {
+export function createSessionStore(
+  storage: () => StoragePort,
+  persistentStorage?: () => StoragePort,
+) {
   const tokens = new Map<string, string>();
   return {
     read(room: string): string {
+      if (tokens.has(room)) return tokens.get(room)!;
+      let token = '';
       try {
-        return tokens.get(room) || storage().getItem(`cro-session:${room}`) || '';
-      } catch {
-        return tokens.get(room) || '';
-      }
+        token = storage().getItem(`cro-session:${room}`) || '';
+      } catch {}
+      if (!token)
+        try {
+          token = persistentStorage?.().getItem(`cro-resume:${room}`) || '';
+        } catch {}
+      return token;
     },
-    write(room: string, token: string | null | undefined): void {
-      if (token) tokens.set(room, token);
-      else tokens.delete(room);
+    write(room: string, token: string | null | undefined, durable = false): boolean {
+      // An empty entry also masks inaccessible stale storage during an explicit reset.
+      tokens.set(room, token || '');
       try {
         if (token) storage().setItem(`cro-session:${room}`, token);
         else storage().removeItem(`cro-session:${room}`);
       } catch {
         /* The current page can still reconnect using the in-memory token. */
       }
+      try {
+        if (durable && token) {
+          if (!persistentStorage) return false;
+          persistentStorage().setItem(`cro-resume:${room}`, token);
+        } else persistentStorage?.().removeItem(`cro-resume:${room}`);
+      } catch {
+        return false;
+      }
+      return true;
     },
   };
 }
 
 export const { read: readSaved, write: save } = createPreferences(() => localStorage);
-export const { read: savedSession, write: saveSession } = createSessionStore(() => sessionStorage);
+export const { read: savedSession, write: saveSession } = createSessionStore(
+  () => sessionStorage,
+  () => localStorage,
+);

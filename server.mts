@@ -2,6 +2,7 @@ import http from 'node:http';
 import { networkInterfaces } from 'node:os';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { mkdir, realpath } from 'node:fs/promises';
 import { WebSocketServer } from 'ws';
 import { createGameCore } from './application/game-core.mjs';
 import { MIME, serveStatic } from './infrastructure/node/static-files.mjs';
@@ -11,6 +12,11 @@ import { EARTH } from './shared/paleo-geography.mjs';
 import { RIDING } from './shared/riding.mjs';
 import { WORLD } from './shared/world.mjs';
 import { GULF } from './shared/gulf-region.mjs';
+import {
+  openLocalSave,
+  UnsupportedSaveError,
+  type SaveStatus,
+} from './infrastructure/node/local-save.mjs';
 
 const ROOT = path.dirname(path.dirname(fileURLToPath(import.meta.url)));
 
@@ -24,10 +30,14 @@ export function createGameServer({
   expectedBuild = '',
   allowedOrigins = [] as string[],
   wsPaths = ['/ws'],
+  saveStatus = null as null | (() => SaveStatus),
+  onSessionChange = () => {},
+  beforeClose = async () => {},
 } = {}) {
   const { rooms, snapshot, tick } = core;
   let interval;
   let closing = false;
+  let closePromise: Promise<void> | undefined;
   const server = http.createServer(async (request, response) => {
     try {
       const url = new URL(request.url ?? '/', 'http://localhost');
@@ -50,6 +60,7 @@ export function createGameServer({
                 boatingVersion: BOATING.version,
                 adventureVersion: ADVENTURE_VERSION,
                 gulfVersion: GULF.version,
+                ...(saveStatus ? { save: saveStatus() } : {}),
               }
             : url.pathname === '/api/health'
               ? {
@@ -67,6 +78,7 @@ export function createGameServer({
                   rooms: rooms.size,
                   players: [...rooms.values()].reduce((sum, room) => sum + room.players.size, 0),
                   maxPlayers: core.playerLimit,
+                  ...(saveStatus ? { save: saveStatus() } : {}),
                 }
               : {
                   port: activePort,
@@ -129,6 +141,12 @@ export function createGameServer({
       return;
     }
     core.connect(socket, params);
+    if (saveStatus && socket.readyState === 1)
+      socket.send(JSON.stringify({ type: 'saveStatus', ...saveStatus() }));
+    onSessionChange();
+    socket.on('close', () => {
+      if (!closing) onSessionChange();
+    });
   });
 
   return {
@@ -147,31 +165,222 @@ export function createGameServer({
         });
       });
     },
-    async close() {
-      closing = true;
-      clearInterval(interval);
-      for (const client of wss.clients) client.terminate();
-      await new Promise((resolve) => wss.close(resolve));
-      await new Promise((resolve) => server.close(resolve));
-      core.close();
+    close() {
+      return (closePromise ??= (async () => {
+        closing = true;
+        clearInterval(interval);
+        core.pause();
+        try {
+          await beforeClose();
+        } finally {
+          for (const client of wss.clients) client.terminate();
+          await new Promise((resolve) => wss.close(resolve));
+          if (server.listening) await new Promise((resolve) => server.close(resolve));
+          core.close();
+        }
+      })());
     },
   };
 }
 
-export function startServer() {
-  const game = createGameServer();
-  game
-    .listen()
-    .then(({ port }) => {
-      console.log(`CRO-MAGNON running at http://localhost:${port}`);
-      const shutdown = () => game.close().then(() => process.exit(0));
-      process.once('SIGINT', shutdown);
-      process.once('SIGTERM', shutdown);
-    })
-    .catch((error) => {
-      console.error('Could not start CRO-MAGNON:', error.message);
-      process.exitCode = 1;
+/** Opt-in for other hosts; the normal executable uses this factory by default. */
+export async function createPersistentGameServer({
+  saveDirectory = path.join(ROOT, '.cro-magnon-save'),
+  saveIntervalMs = 10000,
+  onSaveError = (error: Error) =>
+    console.error('Local save failed; previous save retained:', error.message),
+  ...options
+}: Omit<
+  Parameters<typeof createGameServer>[0],
+  'core' | 'saveStatus' | 'beforeClose' | 'onSessionChange'
+> & {
+  saveDirectory?: string;
+  saveIntervalMs?: number;
+  onSaveError?: (error: Error) => void;
+} = {}) {
+  if (!Number.isFinite(saveIntervalMs) || saveIntervalMs < 20)
+    throw new Error('Invalid save interval');
+  // The save contains private resume credentials. Never put it under a served directory.
+  await mkdir(saveDirectory, { recursive: true, mode: 0o700 });
+  const canonical = await realpath(saveDirectory);
+  for (const base of ['public', 'dist']) {
+    const served = await realpath(path.join(ROOT, base));
+    const relative = path.relative(served, canonical);
+    if (
+      !relative ||
+      (!relative.startsWith(`..${path.sep}`) && relative !== '..' && !path.isAbsolute(relative))
+    )
+      throw new Error('Save directory must be outside public and dist');
+  }
+  const makeCore = () => createGameCore({ persistentSessions: true, keepEmptyRooms: true });
+  let core = makeCore();
+  const store = await openLocalSave(canonical, (state: any) => {
+    if (
+      state &&
+      ((Number.isFinite(state.version) && state.version !== 1) ||
+        (Number.isFinite(state.worldVersion) && ![3, WORLD.version].includes(state.worldVersion)) ||
+        state.rooms?.some?.((room) => room.gulf?.version > GULF.version))
+    )
+      throw new UnsupportedSaveError('Unsupported saved world version; original files retained');
+    if (
+      !state ||
+      state.version !== 1 ||
+      !Array.isArray(state.rooms) ||
+      !Number.isFinite(state.savedAt)
+    )
+      throw new Error('Invalid saved world');
+    const names = new Set();
+    for (const room of state.rooms) {
+      if (
+        !room ||
+        typeof room.name !== 'string' ||
+        !room.name ||
+        names.has(room.name) ||
+        !Number.isFinite(room.createdAt) ||
+        !room.camp ||
+        !Array.isArray(room.resources) ||
+        !Array.isArray(room.animals) ||
+        !Array.isArray(room.enemies) ||
+        !Array.isArray(room.sessions)
+      )
+        throw new Error('Invalid saved room');
+      names.add(room.name);
+      const tokens = new Set(),
+        ids = new Set();
+      for (const entry of room.sessions) {
+        if (
+          !entry ||
+          typeof entry.token !== 'string' ||
+          !entry.token ||
+          tokens.has(entry.token) ||
+          !Number.isFinite(entry.expiresAt) ||
+          !entry.player?.id ||
+          ids.has(entry.player.id) ||
+          !Number.isFinite(entry.player.x) ||
+          !Number.isFinite(entry.player.z) ||
+          !entry.player.inventory
+        )
+          throw new Error('Invalid saved player');
+        tokens.add(entry.token);
+        ids.add(entry.player.id);
+      }
+    }
+    const candidate = makeCore();
+    try {
+      candidate.importState(state);
+    } catch (error) {
+      candidate.close();
+      throw error;
+    }
+    core.close();
+    core = candidate;
+  });
+  let timer: ReturnType<typeof setInterval> | undefined;
+  let sessionTimer: ReturnType<typeof setTimeout> | undefined;
+  let saving: Promise<void> | null = null,
+    stopping = false,
+    failedToListen = false;
+  function announce() {
+    const message = JSON.stringify({ type: 'saveStatus', ...store.status() });
+    for (const socket of game.wss.clients) if (socket.readyState === 1) socket.send(message);
+  }
+  function saveNow() {
+    if (saving) return saving;
+    saving = store
+      .save(core.exportState())
+      .then(announce)
+      .catch((error) => {
+        announce();
+        onSaveError(error);
+        throw error;
+      })
+      .finally(() => {
+        saving = null;
+      });
+    return saving;
+  }
+  const backgroundSave = () => {
+    if (!stopping) void saveNow().catch(() => {});
+  };
+  const game = createGameServer({
+    ...options,
+    core,
+    saveStatus: store.status,
+    onSessionChange() {
+      // Coalesce joins/leaves without delaying the regular checkpoint.
+      if (!stopping && !sessionTimer)
+        sessionTimer = setTimeout(() => {
+          sessionTimer = undefined;
+          backgroundSave();
+        }, 100);
+    },
+    async beforeClose() {
+      stopping = true;
+      clearInterval(timer);
+      clearTimeout(sessionTimer);
+      try {
+        if (failedToListen) return;
+        await saving?.catch(() => {});
+        await saveNow();
+      } finally {
+        await store.close();
+      }
+    },
+  });
+  return {
+    ...game,
+    core,
+    saveNow,
+    saveStatus: store.status,
+    async listen() {
+      try {
+        const address = await game.listen();
+        timer = setInterval(backgroundSave, saveIntervalMs);
+        if (store.status().recovered)
+          console.warn('Recovered the previous local save from backup.');
+        return address;
+      } catch (error) {
+        // Failed binding must not rewrite a save the user has not played.
+        stopping = true;
+        failedToListen = true;
+        core.close();
+        await store.close();
+        throw error;
+      }
+    },
+  };
+}
+
+export async function startServer() {
+  try {
+    const game = await createPersistentGameServer({
+      saveDirectory: process.env.CRO_SAVE_DIR || undefined,
     });
+    const { port } = await game.listen();
+    console.log(`CRO-MAGNON running at http://localhost:${port} (local autosave every 10s)`);
+    let shuttingDown = false;
+    const shutdown = () => {
+      if (shuttingDown) return;
+      shuttingDown = true;
+      void game.close().then(
+        () => process.exit(0),
+        (error) => {
+          console.error('Final save failed:', error.message);
+          process.exit(1);
+        },
+      );
+    };
+    process.once('SIGINT', shutdown);
+    process.once('SIGTERM', shutdown);
+    // Parent-only IPC lets the Windows development watcher save before restarting.
+    process.on('message', (message) => {
+      if (message === 'cro-shutdown') shutdown();
+    });
+    if (process.connected) process.once('disconnect', shutdown);
+  } catch (error) {
+    console.error('Could not start CRO-MAGNON:', error.message);
+    process.exitCode = 1;
+  }
 }
 
 if (process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.meta.url)) {

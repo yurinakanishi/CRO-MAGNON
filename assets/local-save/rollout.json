@@ -1,0 +1,95 @@
+{
+  "at": "2026-09-09T11:39:58.0977873Z",
+  "previousPid": 15972,
+  "exhibitionUpdated": false,
+  "newStart": "2026-09-09T11:39:58.1527728Z",
+  "restoredCheckpoints": 0,
+  "publicDeployment": false,
+  "savedRoomsBefore": 0,
+  "command": "node server.mjs",
+  "healthBefore": {
+    "ok": true,
+    "ridingVersion": 1,
+    "combatVersion": 3,
+    "characterVersion": 2,
+    "enemyVersion": 1,
+    "worldVersion": 4,
+    "worldSize": 8192,
+    "worldWidth": 8192,
+    "worldDepth": 4096,
+    "epochYearsBP": 50000,
+    "rooms": 0,
+    "players": 0,
+    "maxPlayers": 5
+  },
+  "newPid": 5884,
+  "previousStart": "2026-09-09T09:14:16.6893960Z",
+  "normalDiskPersistence": true,
+  "verifiedAt": "2026-09-09T11:42:12.393Z",
+  "healthAfter": {
+    "ok": true,
+    "ridingVersion": 1,
+    "combatVersion": 3,
+    "characterVersion": 2,
+    "enemyVersion": 1,
+    "worldVersion": 4,
+    "worldSize": 8192,
+    "worldWidth": 8192,
+    "worldDepth": 4096,
+    "epochYearsBP": 50000,
+    "rooms": 1,
+    "players": 0,
+    "maxPlayers": 5,
+    "save": {
+      "enabled": true,
+      "state": "saved",
+      "savedAt": 1788954128974,
+      "recovered": false
+    }
+  },
+  "normalBrowser": {
+    "at": "2026-09-09T11:40:25.701Z",
+    "checks": [
+      "Ordinary title/setup, manual walking and stop, save status, title resume, real Chrome close/reopen, page reload, desktop/portrait/landscape; no supply, location or clock fixtures",
+      "Normal private disk checkpoint contains the same person and supplies with permanent resume; served modules match final build"
+    ],
+    "errors": [],
+    "delivery": [
+      {
+        "file": "src/main.js",
+        "sha256": "a42600567b74319a2a7f6e58cb27b9b291dd053ab81155fc169dfdc1a5bcc770"
+      },
+      {
+        "file": "src/session-storage.js",
+        "sha256": "c03a8ea80ec71171b8e5a3f32a84242ee455141ed58766bde30f43b859105163"
+      }
+    ],
+    "health": {
+      "ok": true,
+      "ridingVersion": 1,
+      "combatVersion": 3,
+      "characterVersion": 2,
+      "enemyVersion": 1,
+      "worldVersion": 4,
+      "worldSize": 8192,
+      "worldWidth": 8192,
+      "worldDepth": 4096,
+      "epochYearsBP": 50000,
+      "rooms": 1,
+      "players": 1,
+      "maxPlayers": 5,
+      "save": {
+        "enabled": true,
+        "state": "saved",
+        "savedAt": 1788954022695,
+        "recovered": false
+      }
+    },
+    "fixtures": [],
+    "room": "SAVE-LOCAL",
+    "publicDeployment": false,
+    "exhibitionUpdated": false
+  },
+  "compiledModulesMatchPreview": 147,
+  "sourceMaps": "Rebuilt in normal dist with original source paths"
+}

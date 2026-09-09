@@ -1,0 +1,62 @@
+{
+  "at": "2026-09-09T11:39:09.555Z",
+  "tests": {
+    "all": 391,
+    "passed": 391,
+    "failed": 0,
+    "command": "node --test --test-concurrency=2 --test-reporter=tap tests/*.test.mjs",
+    "newPersistenceTests": 13,
+    "firstFullRun": "One boats-server test process exited without a detailed diagnostic while Chrome QA was running. All four boat tests passed alone; the final entire suite passed after Chrome closed."
+  },
+  "build": {
+    "isolated": true,
+    "typescript": true,
+    "cloudflareTypes": true,
+    "strict": true,
+    "architecture": true,
+    "normal": true,
+    "syntaxFiles": 209,
+    "format": true,
+    "compiledModulesMatchPreview": 147
+  },
+  "browser": {
+    "checks": [
+      "Two actual Chrome profiles share manual movement; title still has two entries and static credits",
+      "Save updates preserve menu selection; title exit and Start retain identity and supplies",
+      "Closing Chrome and the server process, then reopening both, restores both identities, equipment, inventory, plots, middens and shared food from disk",
+      "A real disk write failure is shown; the old checkpoint remains and a successful retry clears the error",
+      "Desktop, portrait and landscape menus remain usable; simulated Gamepad confirmation and focus survive save notifications",
+      "A damaged primary recovers its backup and the running UI explicitly discloses the recovery"
+    ],
+    "errors": [],
+    "screenshots": [
+      "C:\\Users\\yurin\\Desktop\\projects\\CRO-MAGNON\\output\\playwright\\local-save-20260909\\final\\01-ready.png",
+      "C:\\Users\\yurin\\Desktop\\projects\\CRO-MAGNON\\output\\playwright\\local-save-20260909\\final\\02-save-error.png",
+      "C:\\Users\\yurin\\Desktop\\projects\\CRO-MAGNON\\output\\playwright\\local-save-20260909\\final\\03-menu-1440.png",
+      "C:\\Users\\yurin\\Desktop\\projects\\CRO-MAGNON\\output\\playwright\\local-save-20260909\\final\\03-menu-390.png",
+      "C:\\Users\\yurin\\Desktop\\projects\\CRO-MAGNON\\output\\playwright\\local-save-20260909\\final\\03-menu-844.png",
+      "C:\\Users\\yurin\\Desktop\\projects\\CRO-MAGNON\\output\\playwright\\local-save-20260909\\final\\04-backup-recovery.png"
+    ],
+    "players": 2,
+    "fixtures": [
+      "Obsidian/blades/shellfish/shells/water and spear heads",
+      "One planted root with a watering request, one resident carrying water, pantry and midden quantities, one resource amount",
+      "QA backup path obstructed for a real write failure; primary deliberately corrupted after shutdown"
+    ],
+    "realActions": [
+      "Manual walking",
+      "Title leave/Start",
+      "Chrome profile close/reopen",
+      "Separate server process restart and disk restore",
+      "Responsive menus and simulated Gamepad"
+    ],
+    "clockChanges": 0
+  },
+  "notes": [
+    "111 saved profiles were checked sequentially; not 111 concurrent players",
+    "Year-long absence was a controlled clock test; no year-long wall-time run",
+    "Normal executable IPC shutdown and forced process termination use actual child processes",
+    "Private save contents and browser profiles stay outside Git",
+    "Initial new-test failures were fixture mistakes (mock runtime token/bufferedAmount and a request on an empty crop), corrected before final checks"
+  ]
+}

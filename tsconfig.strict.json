@@ -22,6 +22,7 @@
     "src/session-storage.ts",
     "cloudflare/free-budget.mts",
     "cloudflare/socket-adapter.mts",
-    "infrastructure/node/static-files.mts"
+    "infrastructure/node/static-files.mts",
+    "infrastructure/node/local-save.mts"
   ]
 }

@@ -459,7 +459,13 @@ async function connect() {
       retryCount = 0;
       selfId = message.id;
       profile = { ...profile, ...message.profile, room: message.room };
-      saveSession(sessionKey(profile.room), message.session);
+      persistentSession = message.persistentSession === true;
+      resumeStored = saveSession(sessionKey(profile.room), message.session, persistentSession);
+      if (persistentSession && !resumeStored)
+        notify(
+          'このブラウザーに再開情報を保存できません。閉じると同じ人物へ戻れない場合があります。',
+          'error',
+        );
       for (const [key, value] of Object.entries(profile)) save(`cro-${key}`, value);
       $('#profile-name').textContent = profile.name;
       $('#room-label').textContent = profile.room;
@@ -488,6 +494,15 @@ async function connect() {
       }
       renderer.setState(state, selfId);
       updateHUD();
+    }
+    if (message.type === 'saveStatus' && message.enabled === true) {
+      const previous = localSaveStatus;
+      localSaveStatus = message;
+      updateSaveStatus();
+      if (message.state === 'error' && previous?.state !== 'error')
+        notify('自動保存に失敗しています。最後に成功した保存は残っています。', 'error');
+      if (message.recovered && !previous?.recovered)
+        notify('予備の保存から再開しました。直前の進行の一部は戻っていない場合があります。');
     }
     if (message.type === 'emote') renderer.setEmote(message.id, message.emote);
     if (message.type === 'notice') {
@@ -1034,8 +1049,8 @@ function enterGame() {
 function leaveToTitle() {
   manualLeave = true;
   clearTimeout(retry);
-  send({ type: 'leave' });
-  saveSession(sessionKey(profile.room), null);
+  send({ type: 'leave', ...(persistentSession ? { keepSession: true } : {}) });
+  if (!persistentSession) saveSession(sessionKey(profile.room), null);
   const previous = socket;
   socket = null;
   previous?.close();
@@ -1272,6 +1287,21 @@ function controllerRide() {
   else ride();
 }
 
+let persistentSession = false,
+  resumeStored = true;
+let localSaveStatus: { state: string; savedAt?: number; recovered?: boolean } | null = null;
+function updateSaveStatus() {
+  const element = $('#local-save-status');
+  if (!element) return;
+  element.hidden = !persistentSession;
+  element.textContent = !resumeStored
+    ? 'このブラウザーには再開情報を保存できていません。'
+    : localSaveStatus?.state === 'error'
+      ? '自動保存に失敗しています。最後に成功した保存は保持しています。'
+      : localSaveStatus?.savedAt
+        ? `自動保存済み ${new Date(localSaveStatus.savedAt).toLocaleTimeString()} · タイトルへ戻っても続きから再開できます。${localSaveStatus.recovered ? ' 予備の保存から復元しました。' : ''}`
+        : '自動保存を準備しています。';
+}
 function openPauseMenu() {
   if (screens.active) return;
   const entries: [string, string, string, () => void][] = [
@@ -1298,8 +1328,9 @@ function openPauseMenu() {
       )
       .join(
         '',
-      )}</div><div class="settings-row"><span class="settings-label">設定</span><button class="button button-outline" data-setting="sound" aria-pressed="${soundEnabled}">${icon(soundEnabled ? 'sound' : 'muted')} 環境音 ${soundEnabled ? 'オン' : 'オフ'}</button><button class="button button-outline" data-setting="fullscreen">${icon('expand')} 全画面表示</button><button class="button button-outline" data-setting="camera">${icon('target')} 視点を戻す</button><button class="button button-outline" data-setting="zoom-out">− 遠く</button><button class="button button-outline" data-setting="zoom-in">+ 近く</button></div>${usingGamepad ? gamepadHelp : ''}</div>`,
+      )}</div><p id="local-save-status" class="form-note" role="status" hidden></p><div class="settings-row"><span class="settings-label">設定</span><button class="button button-outline" data-setting="sound" aria-pressed="${soundEnabled}">${icon(soundEnabled ? 'sound' : 'muted')} 環境音 ${soundEnabled ? 'オン' : 'オフ'}</button><button class="button button-outline" data-setting="fullscreen">${icon('expand')} 全画面表示</button><button class="button button-outline" data-setting="camera">${icon('target')} 視点を戻す</button><button class="button button-outline" data-setting="zoom-out">− 遠く</button><button class="button button-outline" data-setting="zoom-in">+ 近く</button></div>${usingGamepad ? gamepadHelp : ''}</div>`,
   );
+  updateSaveStatus();
   for (const [id, , , handler] of entries) {
     $(`[data-controller-menu="${id}"]`).onclick = () => {
       handler();

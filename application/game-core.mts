@@ -59,12 +59,14 @@ export function createGameCore({
   resumeGraceMs = 120000,
   keepEmptyRooms = false,
   maxSavedSessions = Infinity,
+  persistentSessions = false,
   playerLimit = WORLD.maxPlayers,
   runtime = defaultRuntime,
 }: {
   resumeGraceMs?: number;
   keepEmptyRooms?: boolean;
   maxSavedSessions?: number;
+  persistentSessions?: boolean;
   playerLimit?: number;
   runtime?: Runtime;
 } = {}) {
@@ -72,6 +74,8 @@ export function createGameCore({
     throw new Error('playerLimit must be an integer from 1 to 64');
   const rooms = new Map();
   let closing = false;
+  const sessionExpiry = (now: number) =>
+    persistentSessions ? Number.MAX_SAFE_INTEGER : now + resumeGraceMs;
   function broadcast(room, payload) {
     const encoded = JSON.stringify(payload);
     let full;
@@ -156,6 +160,10 @@ export function createGameCore({
   }
 
   function connect(socket: GameConnection, params: URLSearchParams) {
+    if (closing) {
+      socket.close(1012, 'Server restarting');
+      return;
+    }
     const roomName =
       cleanText(params.get('room'), 20)
         .toUpperCase()
@@ -283,6 +291,7 @@ export function createGameCore({
     room.players.set(player.id, player);
     send(socket, {
       type: 'welcome',
+      persistentSession: persistentSessions,
       ridingVersion: RIDING.version,
       combatVersion: 3,
       characterVersion: 2,
@@ -300,7 +309,7 @@ export function createGameCore({
     });
     socket.on('error', () => {});
     socket.on('message', (data, isBinary) => {
-      if (isBinary || player.socket !== socket) return;
+      if (closing || isBinary || player.socket !== socket) return;
       const now = runtime.now();
       player.tokens = Math.min(70, player.tokens + (now - player.refillAt) * 0.035);
       player.refillAt = now;
@@ -309,7 +318,7 @@ export function createGameCore({
       const message = decodeCommand(data.toString());
       if (!message) return;
       if (message.type === 'leave') {
-        player.sessionToken = null;
+        if (!persistentSessions || !message.keepSession) player.sessionToken = null;
         socket.close(1000, 'Explicit leave');
         return;
       }
@@ -410,7 +419,7 @@ export function createGameCore({
       if (!closing && player.sessionToken && resumeGraceMs > 0)
         room.sessions.set(player.sessionToken, {
           player,
-          expiresAt: runtime.now() + resumeGraceMs,
+          expiresAt: sessionExpiry(runtime.now()),
         });
       while (room.sessions.size > maxSavedSessions)
         room.sessions.delete(room.sessions.keys().next().value);
@@ -425,6 +434,7 @@ export function createGameCore({
   let previousTick = runtime.now();
   let lastHeartbeat = runtime.now();
   function tick() {
+    if (closing) return;
     const now = runtime.now();
     const dt = Math.min((now - previousTick) / 1000, 0.15);
     previousTick = now;
@@ -537,7 +547,7 @@ export function createGameCore({
           .map(([token, entry]) => ({ token, expiresAt: entry.expiresAt, player: entry.player }));
         for (const player of room.players.values())
           if (player.sessionToken) {
-            sessions.push({ token: player.sessionToken, expiresAt: now + resumeGraceMs, player });
+            sessions.push({ token: player.sessionToken, expiresAt: sessionExpiry(now), player });
           }
         return JSON.parse(
           JSON.stringify(
@@ -552,7 +562,7 @@ export function createGameCore({
               gulf: room.gulf,
               residents: residentSnapshots(room),
               households: householdSnapshots(room),
-              sessions: sessions.slice(-100),
+              sessions: persistentSessions ? sessions : sessions.slice(-100),
             },
             (key, value) =>
               ['socket', 'jumpAt', 'jumpSequence'].includes(key) ? undefined : value,
@@ -632,7 +642,10 @@ export function createGameCore({
             if (!safe) throw new Error('No safe arrival for migrated player');
             Object.assign(player, safe);
           }
-          room.sessions.set(entry.token, { expiresAt: entry.expiresAt, player });
+          room.sessions.set(entry.token, {
+            expiresAt: persistentSessions ? Number.MAX_SAFE_INTEGER : entry.expiresAt,
+            player,
+          });
         }
       room.households = createHouseholds(record.households, runtime.now());
       createResidents(room, record.residents, runtime.now());
@@ -647,6 +660,9 @@ export function createGameCore({
     tick,
     exportState,
     importState,
+    pause() {
+      closing = true;
+    },
     close() {
       closing = true;
       rooms.clear();

@@ -1,4 +1,5 @@
 node_modules/
+.cro-magnon-save/
 dist/
 .pnpm-store/
 public/vendor/

@@ -1,7 +1,7 @@
 import type { BarterCommand } from '../shared/barter-types.mjs';
 export type ClientCommand =
   | BarterCommand
-  | { type: 'leave' }
+  | { type: 'leave'; keepSession?: boolean }
   | { type: 'move'; dx: number; dz: number; running?: boolean }
   | { type: 'gait'; running: boolean }
   | { type: 'action'; action: string; targetId?: string; regionId?: string; cropId?: string }
@@ -72,7 +72,7 @@ export function decodeCommand(text: string): ClientCommand | null {
       return null;
     }
     case 'leave':
-      return { type: 'leave' };
+      return { type: 'leave', ...(message.keepSession === true ? { keepSession: true } : {}) };
     case 'move':
       return finite(message.dx) && finite(message.dz)
         ? { type: 'move', dx: message.dx, dz: message.dz, running: message.running === true }
