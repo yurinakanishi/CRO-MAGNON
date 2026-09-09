@@ -1,0 +1,27 @@
+{
+  "method": "built-in image edit, then protected-alpha paper extraction",
+  "variant": "duo",
+  "revision": 4,
+  "originalRgbPreservedExactly": false,
+  "cleanedSourceRgbPreservedExactly": true,
+  "surfaceEditRecord": "assets/title-credits/duo-variant.json",
+  "userAuthorizedProgrammaticExtraction": true,
+  "source": "assets/title-credits/cro-magnon-duo-clean-source.png",
+  "sourceSha256": "ab09c98434258f52ebab8a59159d6d778595da0a22ec2eb9e8cee04238a4406e",
+  "output": "public/title/cro-magnon-duo-transparent.png",
+  "outputSha256": "c50484b6b561d227380610ff75d7e21cd70b44a19f769118ce340b9771b94540",
+  "mode": "RGBA",
+  "size": [
+    1536,
+    1024
+  ],
+  "estimatedPaperRgb": [
+    250.0,
+    248.0,
+    244.0
+  ],
+  "transparentPixels": 755862,
+  "partialAlphaPixels": 7085,
+  "opaquePixels": 809917,
+  "generatedCheckerboardUsed": false
+}

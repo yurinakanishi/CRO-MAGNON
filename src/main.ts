@@ -55,6 +55,7 @@ import { installGulfUI, gulfInteraction } from './gulf-ui.js';
 import { installVillageUI, residentInteraction } from './village-ui.js';
 import { GULF_ENTRY, inGulf } from '../shared/gulf-region.mjs';
 import { ScreenManager, AreaBanner, guideMarkup, keyPrompts } from './screens.js';
+import { titleCreditsMarkup } from './title-credits.js';
 const EXPEDITION_STOPS = [...EARTH_STOPS, ...ADVENTURE_STOPS, GULF_ENTRY];
 const locationById = (id) =>
   (id === GULF_ENTRY.id ? GULF_ENTRY : null) ??
@@ -182,17 +183,19 @@ $('#app').innerHTML = `
     <div id="screens" class="screens">
       <section id="screen-title" class="screen title-screen" hidden>
         <div class="title-content">
-          <p class="screen-eyebrow">A PREHISTORIC ONLINE ADVENTURE</p>
-          <div class="title-logo"><h1>${GAME_TITLE}</h1><span>氷河時代の大陸で、仲間と火を囲む。</span></div>
+          <div class="title-hero">
+          <div class="title-logo"><h1>${GAME_TITLE}</h1><img class="title-art" src="/title/cro-magnon-xi-transparent.png" width="1536" height="1024" alt="CRO-MAGNON XI — 氷河時代の旅人たちとマンモス" fetchpriority="high"></div>
+          <div class="title-welcome">
           <nav class="title-menu" aria-label="タイトルメニュー">
-            <button id="title-continue" class="menu-item" hidden>つづきから<small id="title-continue-room"></small></button>
             <button id="title-start" class="menu-item">はじめる</button>
             <button id="title-howto" class="menu-item">あそびかた</button>
-            <button id="title-fullscreen" class="menu-item">全画面表示</button>
           </nav>
-          <p class="title-hint"><span><kbd>↑</kbd> <kbd>↓</kbd> 選ぶ</span><span><kbd>Enter</kbd> / <kbd>× ○ □ △</kbd> どれでも決定</span></p>
+          </div>
+          </div>
+          ${titleCreditsMarkup()}
         </div>
-        <div class="title-footer"><span id="title-status">ワールドを準備中…</span><span>MULTIPLAYER · ALPHA 0.1</span></div>
+        <button id="title-fullscreen" class="title-fullscreen" type="button" aria-label="全画面表示" aria-pressed="false">${icon('expand')}</button>
+        <div class="title-footer"><span>v0.1</span></div>
       </section>
       <section id="screen-setup" class="screen setup-screen" hidden>
         <form id="setup-form" class="setup-card"><p class="screen-eyebrow">旅支度</p><h2>あなたの物語を、ここから。</h2><p class="setup-intro">名前とキャラクターを選び、同じ部屋のコードを持つ仲間と暮らそう。</p><p class="form-error" id="setup-error" hidden></p>${joinFields()}<div class="setup-actions"><button type="button" id="setup-back" class="button button-outline">戻る</button><button class="button button-accent" id="setup-submit" type="submit">この谷へ出発する ${icon('arrow')}</button></div></form>
@@ -994,9 +997,6 @@ function applyProfileForm(form: HTMLFormElement) {
 }
 function showTitle() {
   $('#modal').close();
-  const resumable = !!savedSession(sessionKey(profile.room));
-  $('#title-continue').hidden = !resumable;
-  $('#title-continue-room').textContent = `${profile.name} · ${profile.room}`;
   screens.show('title');
 }
 function showSetup(error = '') {
@@ -1482,10 +1482,15 @@ async function toggleFullscreen() {
     notify('この画面では全画面表示を利用できません。');
   }
 }
-$('#title-start').onclick = () => showSetup();
-$('#title-continue').onclick = () => enterGame();
+$('#title-start').onclick = () =>
+  savedSession(sessionKey(profile.room)) ? enterGame() : showSetup();
 $('#title-howto').onclick = openHelp;
 $('#title-fullscreen').onclick = toggleFullscreen;
+document.addEventListener('fullscreenchange', () => {
+  const active = !!document.fullscreenElement;
+  $('#title-fullscreen').setAttribute('aria-pressed', String(active));
+  $('#title-fullscreen').setAttribute('aria-label', active ? '全画面表示を終了' : '全画面表示');
+});
 $('#setup-back').onclick = () => (joined ? screens.hide() : showTitle());
 $('#setup-form').onsubmit = (e) => {
   e.preventDefault();
@@ -1737,9 +1742,6 @@ function titleIdle(now: number) {
   requestAnimationFrame(titleIdle);
 }
 requestAnimationFrame(titleIdle);
-renderer.assetsPromise
-  ?.then(() => ($('#title-status').textContent = '準備完了'))
-  .catch(() => ($('#title-status').textContent = '3D画面を表示できません'));
 if (query.get('autostart') === '1') {
   // QA scripts and local shortcuts skip the title, setup and guide screens.
   enterGame();

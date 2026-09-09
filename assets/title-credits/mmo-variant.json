@@ -1,0 +1,9 @@
+{
+  "mode": "built-in image_gen",
+  "prompt": "Use case: text-localization. Edit target: the supplied clean CRO-MAGNON XI game-title illustration. Create an alternate version with exact title text 'CRO-MAGNON MMO' instead of 'CRO-MAGNON XI'. Replace ONLY the final XI with MMO: M M O, three uppercase letters. Match the existing tall condensed slab-serif letterforms, dark brown/black rock texture, baseline and cap height. Fit the complete single-line title naturally across the existing title area; modest horizontal compression of the lettering is acceptable if needed. Preserve the top illustration exactly: four prehistoric people, their faces and poses, spears, saber-toothed cat, mammoth with clean continuous brown fur, birds, mountains, red-orange sun, foreground rocks, and the underline. Preserve the clean restored surface finish: absolutely no white speckles, paint splashes or distressed white dots on the illustrated people, animals and rocks. Preserve the original off-white paper background and 1536x1024 framing. Do not add a checkerboard, a glow, new objects, extra text, or a new design. This is a lettering variant of the same image, not a redesign.",
+  "input": "assets/title-credits/cro-magnon-xi-clean-source.png",
+  "output": "assets/title-credits/cro-magnon-mmo-clean-source.png",
+  "transparent": "public/title/cro-magnon-mmo-transparent.png",
+  "existingTitleChanged": false,
+  "reproduction": "python scripts/extract-title-art.py --variant mmo"
+}

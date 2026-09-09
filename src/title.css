@@ -1,0 +1,230 @@
+/* Keep the original 3D title backdrop and centered game menu. */
+#screen-title {
+  display: flex;
+  flex-direction: column;
+  color: #e8e9df;
+  background:
+    radial-gradient(ellipse at 50% 42%, #0000 0%, #0a130f55 65%, #07100cb0 100%),
+    linear-gradient(180deg, #0b161255, transparent 35%, #07100c88 100%);
+}
+#screen-title[hidden] {
+  display: none;
+}
+#screen-title .title-content {
+  width: 100%;
+  margin: 0 auto;
+  padding: 16px 40px 0;
+  gap: 16px;
+  flex: 1 0 auto;
+  justify-content: space-between;
+}
+.title-hero {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  width: 100%;
+  flex: 1 0 auto;
+  justify-content: center;
+}
+#screen-title .title-logo {
+  position: relative;
+  isolation: isolate;
+  margin: 0;
+  min-width: 0;
+  max-width: 100%;
+}
+#screen-title .title-logo::before {
+  content: '';
+  position: absolute;
+  z-index: -1;
+  inset: 0;
+  pointer-events: none;
+  background: url('/title/cro-magnon-xi-transparent.png') center / 100% 100% no-repeat;
+  opacity: 0.95;
+  filter: brightness(0) invert(1) blur(clamp(8px, 1.4vw, 18px));
+}
+#screen-title .title-logo h1 {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+.title-art {
+  display: block;
+  width: auto;
+  max-width: 100%;
+  height: clamp(220px, 54dvh, 600px);
+  object-fit: contain;
+  filter: drop-shadow(0 8px 18px #0009);
+}
+.title-welcome {
+  width: min(280px, 100%);
+}
+.title-fullscreen {
+  position: absolute;
+  top: 16px;
+  right: 20px;
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  border: 1px solid #dbc89555;
+  border-radius: 4px;
+  background: #14211bd9;
+  color: #f0dfb6;
+}
+.title-fullscreen:hover,
+.title-fullscreen:focus-visible,
+.title-fullscreen.gamepad-focus {
+  background: #364438;
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+#screen-title .title-menu {
+  min-width: 0;
+  gap: 6px;
+}
+#screen-title .menu-item {
+  min-height: 44px;
+}
+.title-credits {
+  display: grid;
+  grid-template-columns: minmax(135px, 0.85fr) minmax(0, 4fr);
+  gap: 12px 24px;
+  width: 100%;
+  max-width: 1180px;
+  margin-top: auto;
+  flex-shrink: 0;
+  padding: 14px 24px 0;
+  border-top: 1px solid #dbc89540;
+}
+.title-credits h2 {
+  margin: 0 0 13px;
+  color: #d6c79a;
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.18em;
+}
+.credit-production {
+  border-right: 1px solid #dbc89533;
+  padding-right: 24px;
+}
+.credit-people {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 16px;
+}
+.credit-person {
+  display: flex;
+  margin: 0;
+  align-items: center;
+  flex-direction: column;
+  gap: 10px;
+  min-width: 0;
+}
+.credit-person img {
+  display: block;
+  flex-shrink: 0;
+  width: 111px;
+  height: 111px;
+  background: white;
+  image-rendering: pixelated;
+  box-shadow: 0 2px 10px #513a260c;
+}
+.credit-name {
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 1.65;
+  overflow-wrap: anywhere;
+  color: #f1ead8;
+}
+#screen-title .title-footer {
+  position: static;
+  flex-shrink: 0;
+  width: 100%;
+  padding: 8px 24px 10px;
+  justify-content: flex-end;
+  gap: 10px;
+  flex-wrap: wrap;
+  color: #a8b49b;
+  font-size: 8px;
+  letter-spacing: 0.1em;
+}
+@media (max-width: 1000px) {
+  #screen-title .title-content {
+    padding: 16px 24px 0;
+  }
+  .title-credits {
+    padding: 14px 16px 0;
+    gap: 12px 16px;
+  }
+  .credit-production {
+    padding-right: 16px;
+  }
+  .credit-people {
+    gap: 12px;
+  }
+  .credit-name {
+    font-size: 11px;
+  }
+}
+@media (max-width: 700px) {
+  #screen-title .title-content {
+    padding: 66px 18px 0;
+    gap: 32px;
+  }
+  .title-art {
+    width: min(620px, 100%);
+    height: auto;
+  }
+  .title-credits {
+    grid-template-columns: 1fr;
+    gap: 24px;
+    padding: 20px 12px 0;
+  }
+  .credit-production {
+    padding: 0;
+    border: 0;
+  }
+  .credit-production .credit-person {
+    flex-direction: row;
+    justify-content: center;
+    gap: 20px;
+  }
+  .credit-production .credit-name {
+    font-size: 18px;
+  }
+  .credit-people {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 24px 18px;
+  }
+  .credit-name {
+    font-size: 12px;
+  }
+  #screen-title .title-footer {
+    padding: 8px 18px 10px;
+    font-size: 7px;
+  }
+}
+@media (max-height: 600px) and (min-width: 701px) {
+  #screen-title .title-content {
+    padding-top: 16px;
+  }
+  .title-art {
+    height: 240px;
+  }
+  .title-welcome {
+    padding: 0;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  #screen-title,
+  #screen-title .title-content {
+    animation: none;
+  }
+}

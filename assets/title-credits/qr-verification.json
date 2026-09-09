@@ -1,0 +1,52 @@
+[
+  {
+    "file": "public/title/qr-yuri.png",
+    "url": "https://x.com/yurinakanishi33",
+    "sha256": "d4d66516d07b921bc9ec62bf2c29ad5c30ffde667bd12a87ca125c9becfd59e2",
+    "decodedAtPixels": [
+      296,
+      111
+    ],
+    "quietZoneModules": 4
+  },
+  {
+    "file": "public/title/qr-ryuichi.png",
+    "url": "https://x.com/WabisukeTyper",
+    "sha256": "20f5a583332e0365650ad970e41b4e3bd942c4b348e460b6c90f18b86811b5ed",
+    "decodedAtPixels": [
+      296,
+      111
+    ],
+    "quietZoneModules": 4
+  },
+  {
+    "file": "public/title/qr-otani.png",
+    "url": "https://x.com/otani_ai_memo",
+    "sha256": "28253a6610560b142d7c2ba2f52db9f72e2cf9e5a1bededdb629c55808f962cf",
+    "decodedAtPixels": [
+      296,
+      111
+    ],
+    "quietZoneModules": 4
+  },
+  {
+    "file": "public/title/qr-urata.png",
+    "url": "https://x.com/yuki_urata",
+    "sha256": "f00def28241a54d4f13646d64996f514f1226508e8d49d2adde004b4e26f914a",
+    "decodedAtPixels": [
+      296,
+      111
+    ],
+    "quietZoneModules": 4
+  },
+  {
+    "file": "public/title/qr-nukonuko.png",
+    "url": "https://x.com/nukonuko",
+    "sha256": "a71b1303fba1c60c0a6deb72200d0869f660fffb1aaf0d5a8de443fb0cf31e06",
+    "decodedAtPixels": [
+      296,
+      111
+    ],
+    "quietZoneModules": 4
+  }
+]

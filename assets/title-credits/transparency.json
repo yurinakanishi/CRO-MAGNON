@@ -1,0 +1,26 @@
+{
+  "method": "built-in image edit removing interior white splatter, then protected-alpha paper extraction",
+  "revision": 4,
+  "originalRgbPreservedExactly": false,
+  "cleanedSourceRgbPreservedExactly": true,
+  "surfaceEditRecord": "assets/title-credits/surface-cleanup.json",
+  "userAuthorizedProgrammaticExtraction": true,
+  "source": "assets/title-credits/cro-magnon-xi-clean-source.png",
+  "sourceSha256": "1a63f860809485e4029f2c020c313926ffd44b396a9f3daef32a8f513713c743",
+  "output": "public/title/cro-magnon-xi-transparent.png",
+  "outputSha256": "c26daa2a8d092fb323dc24e0924313711e47cca24699ed98720850283c93feda",
+  "mode": "RGBA",
+  "size": [
+    1536,
+    1024
+  ],
+  "estimatedPaperRgb": [
+    250.0,
+    248.0,
+    243.0
+  ],
+  "transparentPixels": 772095,
+  "partialAlphaPixels": 6942,
+  "opaquePixels": 793827,
+  "generatedCheckerboardUsed": false
+}

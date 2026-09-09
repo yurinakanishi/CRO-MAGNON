@@ -1,0 +1,10 @@
+{
+  "revision": 4,
+  "mode": "built-in image_gen",
+  "prompt": "Use case: precise-object-edit. Edit target: the supplied original CRO-MAGNON XI title illustration. Remove ALL the distracting white/off-white speckles, paint splashes, distressed holes and scattered white blotches INSIDE the illustrated subjects across the entire image. In particular restore continuous natural brown fur over the mammoth's forehead, back and body, restore continuous tan/brown leather and fur on all four people's clothing, natural golden sabretooth fur and solid natural rock colors on the foreground. The user explicitly dislikes the white dots scattered over these surfaces; removing detached particles outside the illustration is NOT sufficient. Inpaint the white flecks and larger white splatter patches with the local underlying fur, cloth, rock or orange sun, preserving fine material details and strong sharp image quality. No white snowflakes or paint flecks on animals, people or rocks. Keep recognizable snow on distant mountain peaks, ivory tusks, teeth and natural highlights, without scattered spotting. Preserve precisely the original composition, all four people and their identities, poses, weapons, mammoth, sabretooth, four birds, mountains, red-orange sun, exact dark lettering 'CRO-MAGNON XI', underline, original framing and 1536x1024 aspect. Keep the plain off-white outer paper background: this edit is surface cleanup, not background removal. Do not add transparency/checkerboard, glow, blur, new objects, new words or a redesign. Produce one clean restored version of this same illustration.",
+  "input": "public/title/cro-magnon-xi.png",
+  "output": "assets/title-credits/cro-magnon-xi-clean-source.png",
+  "gameAsset": "public/title/cro-magnon-xi-transparent.png",
+  "purpose": "Remove interior white splatter across mammoth fur, clothing, animals, rocks and sun; retain current white silhouette backdrop and layout",
+  "extraction": "scripts/extract-title-art.py"
+}

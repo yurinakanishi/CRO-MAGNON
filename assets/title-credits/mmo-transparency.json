@@ -1,0 +1,27 @@
+{
+  "method": "built-in image edit, then protected-alpha paper extraction",
+  "variant": "mmo",
+  "revision": 4,
+  "originalRgbPreservedExactly": false,
+  "cleanedSourceRgbPreservedExactly": true,
+  "surfaceEditRecord": "assets/title-credits/mmo-variant.json",
+  "userAuthorizedProgrammaticExtraction": true,
+  "source": "assets/title-credits/cro-magnon-mmo-clean-source.png",
+  "sourceSha256": "5b6cd0e7dd207aaaa678c030d8d2e5b233014d108d722075c50cbe7928c3e909",
+  "output": "public/title/cro-magnon-mmo-transparent.png",
+  "outputSha256": "74f97d00b9db805edbd35d25f86a299a8f387148e71737ecde753a104fe02876",
+  "mode": "RGBA",
+  "size": [
+    1536,
+    1024
+  ],
+  "estimatedPaperRgb": [
+    250.0,
+    249.0,
+    244.0
+  ],
+  "transparentPixels": 752277,
+  "partialAlphaPixels": 6996,
+  "opaquePixels": 813591,
+  "generatedCheckerboardUsed": false
+}

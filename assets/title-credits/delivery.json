@@ -1,0 +1,97 @@
+{
+  "verifiedAt": "2026-09-09T07:05:44.279Z",
+  "origin": "http://localhost:3000",
+  "files": [
+    {
+      "url": "/",
+      "file": "public/index.html",
+      "sha256": "4afa38c8b4ae596785480476ad537f6b71c6dee9eac153ad98200ffcfe19ffca"
+    },
+    {
+      "url": "/src/main.js",
+      "file": "dist/src/main.js",
+      "sha256": "80cbbce67f977dd43838a6c7124a4f363e7bd5194425662771a9a921bce1d17d"
+    },
+    {
+      "url": "/src/title.css",
+      "file": "dist/src/title.css",
+      "sha256": "34a7d8018740d914881c273372752deae0b81ecdf624e2a6bf63c6820c65a8cc"
+    },
+    {
+      "url": "/src/title-credits.js",
+      "file": "dist/src/title-credits.js",
+      "sha256": "9ba3c65d2f722c74a580ae717c0b60a6555a157ff1ba0c33af34d64f506fe6a3"
+    },
+    {
+      "url": "/title/cro-magnon-xi.png",
+      "file": "public/title/cro-magnon-xi.png",
+      "sha256": "11e35b792b481eb2e922b1a0c220317f99f189898fbb6c5c6befae3cfc4b18c0"
+    },
+    {
+      "url": "/title/qr-yuri.png",
+      "file": "public/title/qr-yuri.png",
+      "sha256": "d4d66516d07b921bc9ec62bf2c29ad5c30ffde667bd12a87ca125c9becfd59e2"
+    },
+    {
+      "url": "/title/qr-ryuichi.png",
+      "file": "public/title/qr-ryuichi.png",
+      "sha256": "20f5a583332e0365650ad970e41b4e3bd942c4b348e460b6c90f18b86811b5ed"
+    },
+    {
+      "url": "/title/qr-otani.png",
+      "file": "public/title/qr-otani.png",
+      "sha256": "28253a6610560b142d7c2ba2f52db9f72e2cf9e5a1bededdb629c55808f962cf"
+    },
+    {
+      "url": "/title/qr-urata.png",
+      "file": "public/title/qr-urata.png",
+      "sha256": "f00def28241a54d4f13646d64996f514f1226508e8d49d2adde004b4e26f914a"
+    },
+    {
+      "url": "/title/qr-nukonuko.png",
+      "file": "public/title/qr-nukonuko.png",
+      "sha256": "a71b1303fba1c60c0a6deb72200d0869f660fffb1aaf0d5a8de443fb0cf31e06"
+    },
+    {
+      "url": "/title/cro-magnon-xi-transparent.png",
+      "file": "public/title/cro-magnon-xi-transparent.png",
+      "sha256": "c26daa2a8d092fb323dc24e0924313711e47cca24699ed98720850283c93feda"
+    }
+  ],
+  "creditLinks": 0,
+  "titleLayout": "large-transparent-art-over-3d-world-bottom-credits",
+  "menu": [
+    "はじめる",
+    "あそびかた"
+  ],
+  "production": "yuri",
+  "supervision": "監修",
+  "artwork": "/title/cro-magnon-xi-transparent.png",
+  "footer": [
+    "v0.1"
+  ],
+  "readyStatus": false,
+  "multiplayerLabel": false,
+  "viewportChecks": [
+    {
+      "width": 1440,
+      "height": 900,
+      "scrollHeight": 900
+    },
+    {
+      "width": 390,
+      "height": 844,
+      "scrollHeight": 1015
+    },
+    {
+      "width": 844,
+      "height": 390,
+      "scrollHeight": 620
+    }
+  ],
+  "artworkRevision": 4,
+  "originalRgbPreservedExactly": false,
+  "artworkBackdrop": "translucent-white-artwork-silhouette-blurred-8-to-18px",
+  "surfaceCleanupRecord": "assets/title-credits/surface-cleanup.json",
+  "cleanedSourceRgbPreservedExactly": true
+}

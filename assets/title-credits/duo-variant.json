@@ -1,0 +1,9 @@
+{
+  "mode": "built-in image_gen",
+  "prompt": "Use case: text-localization. Edit target: supplied clean CRO-MAGNON MMO title artwork. Create the additional exhibition title variant with exact text 'CRO-MAGNON DUO'. Replace ONLY the suffix MMO with DUO, spelled D U O. Keep the one-line title's tall condensed slab-serif lettering, dark rock-like brown/black texture, baseline, cap height and total title area. Preserve the illustration composition, all four people, faces and poses, spears, clean brown mammoth fur, sabertooth, birds, mountains, orange sun, rocks and colored underline. Retain the cleaned artwork with no scattered white dots, splashes or distressed holes on the people, animals and rocks. Preserve original 1536x1024 framing, off-white paper background and quality. No extra subtitles, instructions, objects, logos, checkerboard, glow, blur or redesign. Only the title suffix changes to DUO.",
+  "input": "assets/title-credits/cro-magnon-mmo-clean-source.png",
+  "output": "assets/title-credits/cro-magnon-duo-clean-source.png",
+  "transparent": "public/title/cro-magnon-duo-transparent.png",
+  "existingTitleChanged": false,
+  "reproduction": "python scripts/extract-title-art.py --variant duo"
+}
