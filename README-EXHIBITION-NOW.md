@@ -10,13 +10,14 @@
 1. PC1とPC2をEthernet LANケーブルで直接つなぐ。
 2. Ethernetの設定を下表で確認する。今回の2台は設定済み。
 3. PC1で次のファイルをダブルクリックする。
-   `C:\Users\yurin\Desktop\projects\CRO-MAGNON\output\exhibition\start-exhibition-host.bat`
+   `C:\Users\yurin\Desktop\projects\CRO-MAGNON\output\exhibition-a2a0148c\start-exhibition-host.bat`
 4. PC2で次のファイルをダブルクリックする。
    `C:\Users\fee1i\Desktop\projects\CRO-MAGNON\start-exhibition-client.bat`
 5. 各PCのブラウザーで [展示ゲームを開く](http://localhost:4173/?room=EXHIBITION)。
    両PCで同じURLを使う。`localhost` はそれぞれのPC自身を指す。
    すでにサーバーが動いていれば、BATを重複実行せずこのリンクを開けばよい。
-6. 「スタート」（開始）から旅支度へ進み、名前をPC1は `Player 1`、PC2は `Player 2` にする。
+6. 「はじめる」から旅支度へ進み、名前をPC1は `Player 1`、PC2は `Player 2` にする。
+   保存済みの参加情報があると直接ゲームへ進む。その場合も左上の部屋名を確認する。
    **部屋のコードは両方とも下の文字列をコピーして貼り付ける。**
 
    ```text
@@ -59,13 +60,13 @@ URLの `?room=` や旅支度の入力が設定ファイルの既定値より優�
 
 ## 配置済みのゲームと停止方法
 
-- PC1のゲーム: `C:\Users\yurin\Desktop\projects\CRO-MAGNON\output\exhibition`
-- PC2のゲーム: `C:\Users\fee1i\Desktop\projects\CRO-MAGNON\game\6c04efc0\exhibition`
-- PC2の受取ZIP: `C:\Users\fee1i\Desktop\projects\CRO-MAGNON\incoming\exhibition-6c04efc0.zip`
-- ビルドID: `6c04efc06f7fe2f52d9ed91f3e7c1efb4806ffedde377087fbc912e089ff2a94`
-- ZIP SHA-256: `AA11B8C2E656F6BBC6165322DBF6C63E49CF76C34FFB18C5C73F1B496932A071`
+- PC1のゲーム: `C:\Users\yurin\Desktop\projects\CRO-MAGNON\output\exhibition-a2a0148c`
+- PC2のゲーム: `C:\Users\fee1i\Desktop\projects\CRO-MAGNON\game\exhibition-a2a0148c`
+- PC2の受取ZIP: `C:\Users\fee1i\Desktop\projects\CRO-MAGNON\incoming\exhibition-a2a0148c.zip`
+- ビルドID: `a2a0148c66e49c0ec76dfafead947167a932fcbd26792f1571c410c5f17c4b53`
+- ZIP SHA-256: `F836FA2561D843E80941C06E15F4BD734CA55851EFB659C161417DC19568AD39`
 
-PC1からPC2へ直結EthernetのSSH/SCPで転送し、PC2で269ファイル・53 GLBとZIPのハッシュを検証済み。
+PC1からPC2へ直結EthernetのSSH/SCPで転送し、PC2で293ファイル・55 GLBとZIPのハッシュを検証済み。
 Node.jsと必要な依存を同梱済みで、展示当日のインストールは不要。
 3Dモデル・テクスチャ・JavaScriptは各PCのローカルから読み、各PCのGPUで描画する。
 
@@ -75,6 +76,7 @@ PC1をBATから起動したときは、その起動ウィンドウを開いた�
 
 PC2のルートBATは手動実行用タスク `CRO-MAGNON-Exhibition-Client-6c04efc0` を使い、
 ログイン中のYURIのデスクトップでクライアントを起動する。自動起動トリガーはない。
+タスク名の末尾は初回の識別子のままだが、起動先は最新の `game/exhibition-a2a0148c` に更新済み。
 動作中の再実行ではブラウザーを開く。停止はルートの `stop-exhibition-client.bat`。
 PC2のログはルートの `client-live.log` と `client-live-error.log`。
 
@@ -100,6 +102,13 @@ PC2で有効な登録先は `C:\ProgramData\ssh\administrators_authorized_keys`�
 鍵でのSSH接続を確認済み。展示ゲームの起動・参加にSSHやWindowsのPIN入力は不要。
 
 ## 今回の結果とWi-Fi OFF確認
+
+2026-09-09夜、更新依頼により `b5d866b` 時点のゲームを両PCへ配布して再起動した。
+ジャンプ、手動移動、動作見直し、大猿・肩乗り、水やり、紫尾の巨獣、最新タイトル素材を含む。
+更新前の配布フォルダーは両PCに保持。通常版のサーバーと保存は変更していない。
+通常サーバー用の自動保存実装もコードに含まれるが、展示ランチャーの共有ワールドは
+従来どおりメモリー上で動く。展示ホスト終了後の進行保存を保証するものではない。
+この更新ビルドでの物理2台の合流・操作確認は別途行う。
 
 2026-09-09、両PCがLANサーバーへ接続した後、部屋名の誤入力でそれぞれ1/5になった。
 ユーザーが部屋名を修正し、**「room 名間違ってた！できた！」と合流成功を報告した**。

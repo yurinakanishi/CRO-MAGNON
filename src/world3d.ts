@@ -109,7 +109,6 @@ export class WorldRenderer {
   declare fpsFrames: number;
   declare lastFpsTime: number;
   declare renderer: THREE.WebGLRenderer;
-  declare nextShadowUpdate: number;
   declare scene: THREE.Scene<THREE.Object3DEventMap>;
   declare spells: SpellEffects;
   declare camera: THREE.PerspectiveCamera;
@@ -231,8 +230,9 @@ export class WorldRenderer {
     });
     this.renderer.setPixelRatio(Math.min(devicePixelRatio, 1.25));
     this.renderer.shadowMap.enabled = true;
-    this.renderer.shadowMap.autoUpdate = false;
-    this.nextShadowUpdate = 0;
+    // Animated skins and their shadow depth must describe the same frame.
+    // Reusing a 15 Hz shadow on a moving 60 Hz character makes its surface flash.
+    this.renderer.shadowMap.autoUpdate = true;
     this.renderer.shadowMap.type = THREE.PCFShadowMap;
     this.renderer.outputColorSpace = THREE.SRGBColorSpace;
     this.renderer.toneMapping = THREE.ACESFilmicToneMapping;
@@ -1030,16 +1030,15 @@ export class WorldRenderer {
         p.radius ?? WORLD.playerRadius,
         this.villageRenderer?.obstacles() ?? [],
       );
-      const mx = next.x - model.position.x,
-        mz = next.z - model.position.z;
-      const visualSpeed = remaining < 0.012 ? 0 : Math.hypot(mx, mz) / Math.max(dt, 0.001);
       model.position.set(
         next.x,
         walkHeight(next.x, next.z) + jumpHeight(p, this.serverNow()),
         next.z,
       );
       if (p.moving) entity.running = p.running;
-      // Position smoothing and collision correction must not turn the character.
+      // Position reconciliation can move a model backwards by a few centimetres.
+      // It is not a turn or a step: use the collision-checked simulation motion.
+      const motionSpeed = p.moving ? p.speed : 0;
       const facing = p.facing;
       const diff = Math.atan2(
         Math.sin(facing - model.rotation.y),
@@ -1061,7 +1060,7 @@ export class WorldRenderer {
           );
         } else if (airborne !== null)
           entity.actor.jumpPose.update(entity.actor.animation, airborne);
-        else entity.actor.animation.update(dt, visualSpeed, entity.running);
+        else entity.actor.animation.update(dt, motionSpeed, entity.running);
         entity.actor.carrySupportPose?.update(dt, !!p.passengerId);
         if (entity.axe) {
           const attack = entity.actor.animation.name === 'Attack';
@@ -1232,10 +1231,6 @@ export class WorldRenderer {
       }
     }
     if (this.motes) this.motes.rotation.y = Math.sin(time * 0.02) * 0.03;
-    if (time >= this.nextShadowUpdate) {
-      this.renderer.shadowMap.needsUpdate = true;
-      this.nextShadowUpdate = time + 1 / 15;
-    }
     this.spells.update(
       this.state,
       this.players,

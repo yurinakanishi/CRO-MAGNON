@@ -64,7 +64,7 @@ let glbs = 0;
 for (const asset of manifest.assets) {
   add(`public/models/${asset.modelKey}/asset.json`);
   for (const model of [asset, ...(asset.lods || [])]) {
-    if (!/^\/models\/[a-z0-9-]+\/(model|lod\d+)\.glb$/.test(model.url))
+    if (!/^\/models\/[a-z0-9-]+\/(model(?:-[a-z0-9]+)*|lod\d+)\.glb$/.test(model.url))
       throw new Error(`Unexpected model: ${model.url}`);
     const file = `public${model.url}`;
     if (
