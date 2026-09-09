@@ -1,0 +1,114 @@
+{
+  "checkedAt": "2026-09-08T14:37:38.836Z",
+  "scope": "investigation only; no model or publication mutations",
+  "game": {
+    "file": "public/models/desert-fennec-mage/model.glb",
+    "sha256": "06d14d55aa779ac1bbccbfa91bd36b8e175309abcdf6cf5deafbcea103890bdd",
+    "clip": "Attack",
+    "duration": 0.800000011920929,
+    "releaseSeconds": 0.4,
+    "projectileHeightAboveSurface": 0.4,
+    "projectileSpeedMetresPerSecond": 7,
+    "chargeAttachment": "Grip.L / Grip.R",
+    "releasePose": {
+      "hands": [
+        [
+          0.05945997728737257,
+          0.41031165760900573,
+          0.13263151082083569
+        ],
+        [
+          -0.10012028020806153,
+          0.4073286102683293,
+          0.10430401713513644
+        ]
+      ],
+      "grips": [
+        [
+          0.0534985993576062,
+          0.41084875571052937,
+          0.15319130200386546
+        ],
+        [
+          -0.09738872441010313,
+          0.40649584440911735,
+          0.12699244959033928
+        ]
+      ]
+    }
+  },
+  "meshmell": {
+    "modelId": 199,
+    "slug": "desert-fennec-mage",
+    "isPublic": true,
+    "defaultActionId": 98,
+    "defaultAction": "Magic_Loop",
+    "file": "output/desert-mage-parity-audit/meshmell-199.glb",
+    "sha256": "477e64d38bf74faefa39ac906ecdd8f04e3ba52fc357a66c0382996c1d5af8a0",
+    "clip": "Magic_Loop",
+    "duration": 2.4000000953674316,
+    "bodyMotionEndSeconds": 1.8,
+    "releaseSeconds": 0.9,
+    "projectileSpeedMetresPerSecond": 1.0625,
+    "chargeAttachment": "Hand.L / Hand.R + 0.025 m forward",
+    "orbOriginAtRelease": [
+      -0.020330151543021202,
+      0.4688201272035651,
+      0.1784677907823824
+    ],
+    "orbHeightAboveHandMidpoint": 0.06,
+    "orbArcAdditionalHeight": 0.025
+  },
+  "identity": {
+    "sameSourceBinaryPrefix": true,
+    "sameCharacterMeshes": true,
+    "sameCharacterNodes": true,
+    "sameSkins": true,
+    "sameOriginalMaterials": true,
+    "sameOriginalNineAnimations": true
+  },
+  "differences": {
+    "bodyTimeMapping": [
+      {
+        "game": 0,
+        "meshmell": 0
+      },
+      {
+        "game": 0.24,
+        "meshmell": 0.6
+      },
+      {
+        "game": 0.4,
+        "meshmell": 0.9
+      },
+      {
+        "game": 0.64,
+        "meshmell": 1.4
+      },
+      {
+        "game": 0.8,
+        "meshmell": 1.8
+      }
+    ],
+    "loopRecoveryEndsAt": 2.4,
+    "orbHeightDifferenceAtRelease": 0.06882012720356506,
+    "handMidpointAtGameRelease": [
+      -0.020330151460344482,
+      0.4088201339386675,
+      0.11846776397798606
+    ],
+    "effectImplementation": "Game: runtime additive particle shader and authoritative 7m/s projectile; Meshmell: separately authored alpha-blended animated sprites and 1.0625m/s display path."
+  },
+  "servedGameFiles": [
+    {
+      "port": 3000,
+      "status": "unavailable"
+    },
+    {
+      "url": "http://127.0.0.1:50882/models/desert-fennec-mage/model.glb",
+      "sha256": "06d14d55aa779ac1bbccbfa91bd36b8e175309abcdf6cf5deafbcea103890bdd",
+      "bytes": 15370112
+    }
+  ],
+  "conclusion": "The same character geometry and original animations are included, but Meshmell defaults to an extra retimed clip and independently authored effects introduced by the export script. Previous verification proved uploaded/exported bytes match, not parity with game behavior."
+}

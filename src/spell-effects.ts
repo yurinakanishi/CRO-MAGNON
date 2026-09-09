@@ -3,7 +3,8 @@ import { projectileHeight } from '../shared/terrain.mjs';
 import { attackProfile } from '../shared/combat-profiles.mjs';
 
 const CAPACITY = 768,
-  point = new THREE.Vector3();
+  point = new THREE.Vector3(),
+  otherHand = new THREE.Vector3();
 
 // Light is a runtime particle effect, with a single reusable GPU buffer and draw
 // call. Damage, flight positions and impacts all come from server snapshots.
@@ -75,21 +76,63 @@ export class SpellEffects {
       active.add(orb.id);
       let p = this.positions.get(orb.id);
       if (!p) {
-        p = { x: orb.x, z: orb.z };
+        // The server sweeps from the body centre to prevent firing through an
+        // adjacent wall. Draw from the hands while retaining that collision path.
+        const originX = orb.x - orb.dx * orb.travelled,
+          originZ = orb.z - orb.dz * orb.travelled,
+          baseY = projectileHeight(originX, originZ, orb.elevation) + 0.4;
+        point.set(originX + orb.dx * 0.16, baseY, originZ + orb.dz * 0.16);
+        const owner = players.get(orb.ownerId);
+        if (owner?.gripLeft && owner?.gripRight) {
+          owner.model.updateMatrixWorld(true);
+          owner.gripLeft.getWorldPosition(point);
+          owner.gripRight.getWorldPosition(otherHand);
+          point.add(otherHand).multiplyScalar(0.5);
+        }
+        const forward = Math.max(0, (point.x - originX) * orb.dx + (point.z - originZ) * orb.dz);
+        p = {
+          x: orb.x,
+          z: orb.z,
+          originX,
+          originZ,
+          forward,
+          lateral: (point.x - originX) * orb.dz - (point.z - originZ) * orb.dx,
+          handHeight: point.y - baseY,
+        };
         this.positions.set(orb.id, p);
       }
       const factor = 1 - Math.exp(-dt * 28);
       p.x += (orb.x - p.x) * factor;
       p.z += (orb.z - p.z) * factor;
-      const y = projectileHeight(p.x, p.z, orb.elevation) + 0.4;
-      this.add(p.x, y, p.z, 0.48, 1);
+      const travelled = Math.max(
+        0,
+        (p.x - p.originX) * orb.dx + (p.z - p.originZ) * orb.dz - p.forward,
+      );
+      // Rejoin the authoritative centre line smoothly after leaving the hands.
+      // Until then, never move the visible head or trail behind the emitter.
+      const flightPoint = (distance) => {
+        const blend = Math.max(0, 1 - distance / 0.35),
+          forward = p.forward + distance,
+          lateral = p.lateral * blend;
+        point.set(
+          p.originX + orb.dx * forward + orb.dz * lateral,
+          0,
+          p.originZ + orb.dz * forward - orb.dx * lateral,
+        );
+        point.y = projectileHeight(point.x, point.z, orb.elevation) + 0.4 + p.handHeight * blend;
+      };
+      flightPoint(travelled);
+      this.add(point.x, point.y, point.z, 0.48, 1);
       for (let i = 1; i <= 9; i++) {
         const d = i * 0.052,
           phase = now * 0.012 + i * 2.4;
+        if (d > travelled) break;
+        flightPoint(travelled - d);
+        const sideways = Math.cos(phase) * 0.025;
         this.add(
-          p.x - orb.dx * d + Math.cos(phase) * 0.025,
-          y + Math.sin(phase) * 0.032,
-          p.z - orb.dz * d,
+          point.x + orb.dz * sideways,
+          point.y + Math.sin(phase) * 0.032,
+          point.z - orb.dx * sideways,
           0.18 * (1 - i / 12),
           0.7 * (1 - i / 11),
         );

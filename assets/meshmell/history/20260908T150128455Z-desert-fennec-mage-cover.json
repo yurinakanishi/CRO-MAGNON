@@ -1,0 +1,31 @@
+{
+  "action": "photograph-cover",
+  "createdAt": "2026-09-08T15:01:28.455Z",
+  "source": "output/desert-mage-magic/revision-04/desert-fennec-mage-magic.glb",
+  "sourceSHA256": "c092d5e5bfd237e3bdb15effab69d41142a315c9e5b5da6023ae9dfab9535d1b",
+  "output": {
+    "path": "output/desert-mage-magic/revision-04/desert-fennec-mage-cover.jpg",
+    "sha256": "4a945adcaaafed06341ba48f9ab504630adf363fa78c01b7ff3a1f3ea0e95d31",
+    "bytes": 26658,
+    "height": 960,
+    "width": 960,
+    "poseSeconds": 0.5,
+    "canonicalFront": "+Z",
+    "heroSide": "negative-X front, character facing image right",
+    "cameraPosition": [
+      -1.28,
+      0.79,
+      1.9
+    ],
+    "cameraTarget": [
+      0,
+      0.43,
+      0.25
+    ],
+    "cameraAzimuthDegrees": -37.80279245093853,
+    "cameraPolarDegrees": 80.21886458101575,
+    "cameraDistance": 2.1190799890518526,
+    "fovDegrees": 36,
+    "method": "Unedited screenshot of exact GLB in local Three.js showcase"
+  }
+}
