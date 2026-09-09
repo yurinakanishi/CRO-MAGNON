@@ -1,0 +1,130 @@
+{
+  "action": "update-existing-model",
+  "modelId": 199,
+  "modelKey": "desert-fennec-mage",
+  "slug": "desert-fennec-mage",
+  "name": "Desert Fennec Mage",
+  "revision": "06",
+  "file": "output/desert-mage-magic/revision-06/desert-fennec-mage-magic.glb",
+  "sha256": "4584cd7e2a432d58404e353e8cfa570656fb6eb18798f100b3320503baffb471",
+  "cover": "output/desert-mage-magic/revision-06/desert-fennec-mage-cover.jpg",
+  "coverSHA256": "ac17b3fddc963000954123235bd018b0784d8151c99dcbc26b8a3562b48418ad",
+  "defaultAnimation": "Magic_Loop",
+  "license": "CC-BY-4.0",
+  "credit": "Yuri Nakanishi",
+  "visibility": "public",
+  "description": "An original fennec mage from CRO-MAGNON, with upright ears, a fluffy tail, primitive hide and fur clothing, and bare paws. Created from an original concept image using local TRELLIS-2 reconstruction. The default animation casts a spell in 0.8 seconds and releases it after 0.4 seconds, matching the game. The spell leaves the hands, with a trail that grows along its flight. The 1.6-second display loop includes the spell flight and return to idle. Nine additional game animations are included. Cover photographed from this model in a right-facing pose.",
+  "idempotencyKey": "desert-mage-199-parity-4584cd7e2a432d58404e",
+  "status": "verified",
+  "account": "yurinakanishi@meshmell.com",
+  "uploadedAt": "2026-09-08T14:20:44.482Z",
+  "updatedAt": "2026-09-08T15:15:34.192Z",
+  "verifiedAt": "2026-09-08T15:15:34.192Z",
+  "url": "https://meshmell.com/ja/viewer/models/desert-fennec-mage",
+  "defaultActionId": 98,
+  "actions": [
+    {
+      "id": 98,
+      "name": "Magic_Loop",
+      "slug": "magic-loop",
+      "isDefault": true
+    },
+    {
+      "id": 99,
+      "name": "Attack",
+      "slug": "attack",
+      "isDefault": false
+    },
+    {
+      "id": 100,
+      "name": "Craft",
+      "slug": "craft",
+      "isDefault": false
+    },
+    {
+      "id": 101,
+      "name": "Eat",
+      "slug": "eat",
+      "isDefault": false
+    },
+    {
+      "id": 102,
+      "name": "Gather",
+      "slug": "gather",
+      "isDefault": false
+    },
+    {
+      "id": 103,
+      "name": "Give",
+      "slug": "give",
+      "isDefault": false
+    },
+    {
+      "id": 104,
+      "name": "Idle_Loop",
+      "slug": "idle-loop-1",
+      "isDefault": false
+    },
+    {
+      "id": 105,
+      "name": "Run_Loop",
+      "slug": "run-loop-1",
+      "isDefault": false
+    },
+    {
+      "id": 106,
+      "name": "Walk_Loop",
+      "slug": "walk-loop-1",
+      "isDefault": false
+    },
+    {
+      "id": 107,
+      "name": "Wave",
+      "slug": "wave-1",
+      "isDefault": false
+    }
+  ],
+  "coverImageId": 263,
+  "readback": {
+    "id": 199,
+    "name": "Desert Fennec Mage",
+    "slug": "desert-fennec-mage",
+    "description": "An original fennec mage from CRO-MAGNON, with upright ears, a fluffy tail, primitive hide and fur clothing, and bare paws. Created from an original concept image using local TRELLIS-2 reconstruction. The default animation casts a spell in 0.8 seconds and releases it after 0.4 seconds, matching the game. The spell leaves the hands, with a trail that grows along its flight. The 1.6-second display loop includes the spell flight and return to idle. Nine additional game animations are included. Cover photographed from this model in a right-facing pose.",
+    "scale": 1,
+    "x": 0,
+    "y": 0,
+    "z": 0,
+    "rotationDegreesX": 0,
+    "rotationDegreesY": 0,
+    "rotationDegreesZ": 0,
+    "license": "CC-BY-4.0",
+    "credit": "Yuri Nakanishi",
+    "requiresCreditForCommercialUse": true,
+    "requiresCreditForPersonalUse": true,
+    "isPublic": true,
+    "downloadSiteUrl": null,
+    "sourceSiteUrl": null,
+    "sourceVideoSiteUrl": null,
+    "defaultGround": null,
+    "defaultLightIntensity": 2,
+    "defaultEnvironment": null,
+    "defaultCameraDistance": 2.2,
+    "minCameraDistance": null,
+    "maxCameraDistance": null,
+    "defaultActionId": 98,
+    "image": {
+      "id": 263,
+      "storageKey": "ad9d793d-0b0f-44db-b31f-a501889e82b6",
+      "format": "webp"
+    },
+    "owner": {
+      "id": "cmgqajcr500002qja26jl84jx",
+      "name": "Yuri Nakanishi",
+      "slug": "yuri-nakanishi"
+    },
+    "createdAt": "2026-09-08T14:20:41.391Z",
+    "updatedAt": "2026-09-08T15:15:27.165Z"
+  },
+  "downloadSHA256": "4584cd7e2a432d58404e353e8cfa570656fb6eb18798f100b3320503baffb471",
+  "doctorStatus": "READY"
+}
