@@ -1,4 +1,5 @@
 import type { Inventory } from './types.mjs';
+import type { PlotState } from './gulf-types.mjs';
 
 /** Fictional crops, recipes and accelerated growth; not reconstructed ancient agriculture. */
 export type CropId = 'berry' | 'root' | 'herb';
@@ -67,6 +68,13 @@ export const CROPS: readonly Crop[] = Object.freeze([
 export const cropById = (id: unknown) => CROPS.find((crop) => crop.id === id);
 export const plotCrop = (plot?: { cropId?: unknown }) => cropById(plot?.cropId) ?? CROPS[0];
 export const cropGrowMs = (crop: Crop, seasonMs: number) => Math.round(seasonMs * crop.growFactor);
+export function startCropGrowth(plot: PlotState, now: number, seasonMs: number) {
+  const duration = cropGrowMs(plotCrop(plot), seasonMs);
+  plot.stage = 'growing';
+  plot.readyAt = now + duration;
+  plot.waterRequestAt = 0;
+  return duration;
+}
 export const cropHarvestText = (crop: Crop) =>
   `${crop.harvestName}${crop.yield}・${crop.seedName}2`;
 export const CROP_INVENTORY = [

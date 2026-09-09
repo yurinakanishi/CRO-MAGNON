@@ -17,19 +17,13 @@ import {
   CROP_INVENTORY,
   cropById,
   plotCrop,
-  cropGrowMs,
+  startCropGrowth,
   cropHarvestText,
   ROOT_RECIPES,
 } from './crops.mjs';
 export const GATHERING_NEEDS = Object.freeze({ wood: 8, berry: 12, obsidian: 4 });
-export const SEASONS = [
-  { name: '芽吹き', growMs: 180000 },
-  { name: '夏の集い', growMs: 150000 },
-  { name: '実り', growMs: 180000 },
-  { name: '冬の炉', growMs: 240000 },
-];
-export const gulfSeason = (now: number, createdAt: number) =>
-  SEASONS[Math.floor(Math.max(0, now - createdAt) / 720000) % 4];
+import { gulfSeason } from './gulf-season.mjs';
+export { SEASONS, gulfSeason } from './gulf-season.mjs';
 const distance = (a, b) => Math.hypot(a.x - b.x, a.z - b.z);
 const count = (n, max = 999999) =>
   Number.isFinite(n) ? Math.max(0, Math.min(max, Math.floor(n))) : 0;
@@ -48,6 +42,10 @@ export function createGulfState(saved?): GulfState {
         stage,
         cropId: plotCrop(old).id,
         readyAt: count(old?.readyAt, Number.MAX_SAFE_INTEGER),
+        waterRequestAt:
+          stage === 'planted' && Number.isSafeInteger(old?.waterRequestAt) && old.waterRequestAt > 0
+            ? old.waterRequestAt
+            : 0,
       };
     }),
     stores: {
@@ -111,6 +109,13 @@ export function updateGulf(room, now): boolean {
       }
   }
   return changed;
+}
+function releasePlotWatering(room, plotId: string) {
+  for (const resident of room.residents ?? []) {
+    if (resident.wateringTarget?.plotId !== plotId) continue;
+    resident.wateringTarget = null;
+    resident.wateringWork = null;
+  }
 }
 export function handleGulfAction(room, player, message, now = Date.now()) {
   if (!message.action.startsWith('gulf')) return null;
@@ -187,12 +192,27 @@ export function handleGulfAction(room, player, message, now = Date.now()) {
     inv.water = 6;
     return ok('水袋を満たした（水6）。火根草には水2、ベリーと香り草には水1。');
   }
-  if (['gulfPlant', 'gulfTend', 'gulfHarvest'].includes(action)) {
+  if (
+    ['gulfPlant', 'gulfTend', 'gulfHarvest', 'gulfWaterRequest', 'gulfWaterCancel'].includes(action)
+  ) {
     const spec = FARM_PLOTS.find((p) => p.id === message.targetId);
     if (!near(spec)) return fail('手入れする畑に近づこう。');
     const plot = room.gulf.plots.find((p) => p.id === spec.id);
     const crop = plotCrop(plot);
     if (plot.stage === 'growing' && now >= plot.readyAt) plot.stage = 'ripe';
+    if (action === 'gulfWaterRequest' || action === 'gulfWaterCancel') {
+      if (plot.stage !== 'planted') return fail('水が必要な、種を植えた畑で頼もう。');
+      if (action === 'gulfWaterRequest') {
+        if (plot.waterRequestAt > 0) return fail('この畑の水やりは、もう頼んでいます。');
+        releasePlotWatering(room, plot.id);
+        plot.waterRequestAt = Math.max(1, Math.trunc(now));
+        return ok('住人に水やりを頼んだ。朝と昼、手が空いた住人が泉から水を運びます。');
+      }
+      if (!(plot.waterRequestAt > 0)) return fail('この畑の水やりは頼んでいません。');
+      releasePlotWatering(room, plot.id);
+      plot.waterRequestAt = 0;
+      return ok('水やりの頼みを取り消した。作物はそのまま残ります。');
+    }
     if (action === 'gulfPlant') {
       if (plot.stage !== 'empty') return fail('この区画にはすでに植えられています。');
       const chosen = cropById(message.cropId === undefined ? 'berry' : message.cropId);
@@ -203,6 +223,7 @@ export function handleGulfAction(room, player, message, now = Date.now()) {
       plot.cropId = chosen.id;
       plot.stage = 'planted';
       plot.readyAt = 0;
+      plot.waterRequestAt = 0;
       return ok(`${chosen.name}を植えた。水${chosen.water}を運んで、この畑に水をやろう。`);
     }
     if (action === 'gulfTend') {
@@ -210,9 +231,8 @@ export function handleGulfAction(room, player, message, now = Date.now()) {
       if (inv.water < crop.water)
         return fail(`${crop.name}には水${crop.water}が必要です。近くの水場で水を汲もう。`);
       inv.water -= crop.water;
-      plot.stage = 'growing';
-      const duration = cropGrowMs(crop, gulfSeason(now, room.createdAt).growMs);
-      plot.readyAt = now + duration;
+      releasePlotWatering(room, plot.id);
+      const duration = startCropGrowth(plot, now, gulfSeason(now, room.createdAt).growMs);
       return ok(`${crop.name}に水をやった。${duration / 1000}秒で実ります。仲間も収穫できます。`);
     }
     if (plot.stage !== 'ripe') return fail('まだ実っていません。水をやり、成長を待とう。');
@@ -223,6 +243,7 @@ export function handleGulfAction(room, player, message, now = Date.now()) {
     progress.harvested++;
     plot.stage = 'empty';
     plot.readyAt = 0;
+    plot.waterRequestAt = 0;
     return ok(`収穫：${cropHarvestText(crop)}。空いた畑へ植え直せます。`);
   }
   if (action === 'gulfExchange') {

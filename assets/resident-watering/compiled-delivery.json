@@ -1,0 +1,586 @@
+[
+  {
+    "file": "application/actions.mjs",
+    "sha256": "8ab562803e6646af36bda166b8d9e1e0d27ec86a049f69dac66e0299939e3535"
+  },
+  {
+    "file": "application/game-core.mjs",
+    "sha256": "0cca17b1b764d016f5d467c71c4b50eda6301ea4783ff82174b7324bcfc6c304"
+  },
+  {
+    "file": "application/ports.mjs",
+    "sha256": "c66c2a1370cd9fef6707ca3c5ca1ed67bf83bf0327250a85a4a60e03cb50e2a2"
+  },
+  {
+    "file": "application/protocol.mjs",
+    "sha256": "8fe9b3646e6dea9d6521564ca0afaf727c4d7bd616ddca7da75fd1d2a360267b"
+  },
+  {
+    "file": "application/snapshot.mjs",
+    "sha256": "dc7b4a4d9210a016b32cbb959230ef35c9fb8f40f4f61ae305970acad2d1d8ce"
+  },
+  {
+    "file": "cloudflare/free-budget.mjs",
+    "sha256": "b4e809542a16b7c913cd6ee00dfa50e0871a7cf8efd55a685a2110878ff52c2d"
+  },
+  {
+    "file": "cloudflare/socket-adapter.mjs",
+    "sha256": "b51c7035b9147afe82bfa040b25bf362b8695f7bf476e0ed0d3b2a172b57db70"
+  },
+  {
+    "file": "cloudflare/worker.mjs",
+    "sha256": "4af664b23c2364b4e6c52dd1f533ced370bb5fa551a3ace398f40af7dd030323"
+  },
+  {
+    "file": "infrastructure/node/exhibition-client.mjs",
+    "sha256": "2d33d1f68f4e830e8482366a3a5c95c29d7b4fefe874f8c0cda5e7e1a80b933c"
+  },
+  {
+    "file": "infrastructure/node/static-files.mjs",
+    "sha256": "161a8456fc5aeac1ad49f1a647d3f59eba000b1730b3a970bb77809816fba0a8"
+  },
+  {
+    "file": "server.mjs",
+    "sha256": "a0284bc3aaaf370e70e482d5cd35eb5f9c69435e90796f3251a2a7128a2853e5"
+  },
+  {
+    "file": "shared/adventure-layout.mjs",
+    "sha256": "278695391467ba211a19e2a6a8bb6bbc43ff63d44ad104e20df87e3cf711e3fd"
+  },
+  {
+    "file": "shared/adventure-regions.mjs",
+    "sha256": "7350d4f20fd0492ea5d91235e3c3e0d8b08e3b5a2d541cd3552f0f6446c20c91"
+  },
+  {
+    "file": "shared/adventures.mjs",
+    "sha256": "475ccc5dce1a0f1825a553e133d6b8619770a20436def423a05ef09984e4705c"
+  },
+  {
+    "file": "shared/animals.mjs",
+    "sha256": "c3ea94858441c1219b221c3ed97c9818e6cf04a12fd01c99c8c0fd3596919b14"
+  },
+  {
+    "file": "shared/barter-types.mjs",
+    "sha256": "ec5fd6d7feaa679f3142fb3bd0a7bc9dd49a9ff40b1908f9815df8ef377a3799"
+  },
+  {
+    "file": "shared/barter.mjs",
+    "sha256": "9636000432538517adb219b1d3d69218f62823b941f5325c7dec879fc42c7ae8"
+  },
+  {
+    "file": "shared/biome-scenery.mjs",
+    "sha256": "57a5de6b4670c2b43458d4cb2b255c4a377556baf433e4e8ce640c1448680a4a"
+  },
+  {
+    "file": "shared/biomes.mjs",
+    "sha256": "0a9d34bfd5f354f352e3f4ed741081eb65eac00dd4532932ad6bd2dafb731f24"
+  },
+  {
+    "file": "shared/boats.mjs",
+    "sha256": "6be599a25f2e5851d81a2ef9914fd9a77dc380134865b16d185fd97686f9f0f2"
+  },
+  {
+    "file": "shared/castle-layout.mjs",
+    "sha256": "6068405e0f26b4f710a745e3a0d9de778b161f9092c64a4306ce36ab47fa3035"
+  },
+  {
+    "file": "shared/castle-surface-data.mjs",
+    "sha256": "890fab2f673ffa10826c4188cf514bf631798af7bb395ce27bd7035343bffd48"
+  },
+  {
+    "file": "shared/castle-surface.mjs",
+    "sha256": "067aeec5bdcbcf027a1c9a90c8f48625e16887e77659d3841dbdea5f51ea3d1d"
+  },
+  {
+    "file": "shared/characters.mjs",
+    "sha256": "b4643bfdb8c30c941d0022da3fbd79b9477bac149b1d84d3c20daa7f54e78327"
+  },
+  {
+    "file": "shared/coastal-craft.mjs",
+    "sha256": "ce467e44ab6898b258c01bdc4a7b64d28a607dd5446ea1f5e3fc1b4cd083a083"
+  },
+  {
+    "file": "shared/coastal-sites.mjs",
+    "sha256": "d56c1fe3c62528832bf703fa225984c03d9c2ddc3e3ab8bc80df618371b18a1b"
+  },
+  {
+    "file": "shared/coastal-types.mjs",
+    "sha256": "d8fb0e2d95de7240cf9183ce9ea0a129466625fef1c34c8cd8104fc16c100660"
+  },
+  {
+    "file": "shared/collision.mjs",
+    "sha256": "b136f8f39dc5458b798f4fa7e26b0b5026daeeead6bcc597ca7509af41f39c36"
+  },
+  {
+    "file": "shared/combat-profiles.mjs",
+    "sha256": "7bad58228082b609fd896bf5711935d4bc3238c1bc0755a99844efeddaba67fe"
+  },
+  {
+    "file": "shared/combat.mjs",
+    "sha256": "852898dde3af9b3e0b3b60da5c7ee4f16fc61604b38322501d5ec376bceccd4e"
+  },
+  {
+    "file": "shared/crops.mjs",
+    "sha256": "ec202dd78cce31e915ca202a3d3b6b2c58d5645397622ca0053571d1a87ac911"
+  },
+  {
+    "file": "shared/enemies.mjs",
+    "sha256": "5abbdd8ac733fda3b9a7e593f3f5c13079788c7a43b0db8418300118fee9dd73"
+  },
+  {
+    "file": "shared/fishing-sites.mjs",
+    "sha256": "48a442378f683bde1e456079151f735c28a4ff3c1ebe8465807d099cbdea3313"
+  },
+  {
+    "file": "shared/fishing-types.mjs",
+    "sha256": "fd7f4f625b2948e9843ff4836d3cc09dcf53b7a363cd140d607bc0d859a586e6"
+  },
+  {
+    "file": "shared/fishing.mjs",
+    "sha256": "32047a993fe12f484152cde226c0ff3b56fa0acd039d05ba4a96255a720f9105"
+  },
+  {
+    "file": "shared/foraging-types.mjs",
+    "sha256": "8eea9c3a7a456a546529e336fed4c761fd04006c852e0b7e9a7834d8283ae163"
+  },
+  {
+    "file": "shared/foraging.mjs",
+    "sha256": "a7d85715d9e530f36b5f936bb4606a6bf9c94f2269c34eb056d559c53f1db530"
+  },
+  {
+    "file": "shared/game-core.mjs",
+    "sha256": "3beab983c151cfdbd24f9bb04b2d01f5a1faa21a56be8117ff84b83924056879"
+  },
+  {
+    "file": "shared/gulf-legacy.mjs",
+    "sha256": "ff970eae88c4556ffbca5e571698780bb581cf5b86fd203af9d6f5f8c4ed8b12"
+  },
+  {
+    "file": "shared/gulf-life.mjs",
+    "sha256": "2a9bc45e074219c2785086589b332cfd1cc5b332299789cd92c16d9778788601"
+  },
+  {
+    "file": "shared/gulf-migration.mjs",
+    "sha256": "a38216424f54cb806bca47f490ac9ba3ea4716ad88c955a9b8166bf71f14c1d7"
+  },
+  {
+    "file": "shared/gulf-region.mjs",
+    "sha256": "72dfea228f5befeaf3f50a390f999e9c97d58ceafa6ea1181974377ab2e8cda2"
+  },
+  {
+    "file": "shared/gulf-season.mjs",
+    "sha256": "a02da40fc436a63db683cd1645c4087ef9ac5ef99ebe8c2159c7a3892669a2e5"
+  },
+  {
+    "file": "shared/gulf-types.mjs",
+    "sha256": "bbcb8dc8d1683a52ca0cb68b54c176c0c42bf4b408d1721a9e416ca3488d9709"
+  },
+  {
+    "file": "shared/household-life.mjs",
+    "sha256": "3024896588a6044ceba90b69cd492cdbc68b66c7cb8e3a3a16239ad060913eb5"
+  },
+  {
+    "file": "shared/household-sites.mjs",
+    "sha256": "9aba21335291918047d1ceb2658040b6328772aec6464efdad4ac60d7c7102da"
+  },
+  {
+    "file": "shared/household-types.mjs",
+    "sha256": "edb46a5aeb7a775d518fddeff626732fe22660e9b72b748dd8f9bc8361200b49"
+  },
+  {
+    "file": "shared/hunting.mjs",
+    "sha256": "8954376576430487fc999dc3f849e5786715910a899c4742d83b668fdc3ee259"
+  },
+  {
+    "file": "shared/interactions.mjs",
+    "sha256": "1da4a6ea955e107ca4faf9a6d46f82cc4656d91e840df2cdda06277017b023f7"
+  },
+  {
+    "file": "shared/jumping.mjs",
+    "sha256": "468423034426d9686df3240c83589cd5a4c1de8c06cf7151e587bb28f541b5da"
+  },
+  {
+    "file": "shared/landmark-bounds.mjs",
+    "sha256": "90dcba0fb9b47971ad8500d1ac229304117954eed9f8acff02f60302675223ec"
+  },
+  {
+    "file": "shared/landmark-collision.mjs",
+    "sha256": "81435aa01dd8453da03ccad63d46ee4b299efb2ee4c130fe227f73292a2d22cd"
+  },
+  {
+    "file": "shared/landmarks.mjs",
+    "sha256": "c767bd80b686b3b14390b531fe040ade31e42931c30ad0c43b440d4d60d6b83e"
+  },
+  {
+    "file": "shared/maritime-types.mjs",
+    "sha256": "dd7543b1f839a28bb2d1ce8bba72a1b57eb3e4075c671d34671611db64e3ff93"
+  },
+  {
+    "file": "shared/maritime-weather.mjs",
+    "sha256": "bbd229016c4acffea7ac6c6a979d2b4811028acae592319adfc8780ba3fa0e4d"
+  },
+  {
+    "file": "shared/measured-walk-surface.mjs",
+    "sha256": "3cc70f0a9f0a6c9a5e83e61119edb1f6e0e90f071cf38c5da805d00e0149b67b"
+  },
+  {
+    "file": "shared/model-bounds.mjs",
+    "sha256": "7b63c874e4fdac09ad6e57b66d4867f24904b8430109c0282a52e2d756947760"
+  },
+  {
+    "file": "shared/movement.mjs",
+    "sha256": "35383c59394854a0ac90376651bfdbc6030459d1b3fecadcea192972b9909174"
+  },
+  {
+    "file": "shared/navigation.mjs",
+    "sha256": "59ca90d99c00eacddc549b4b31ff923f9059860342305d3cd994f5549b9dacb6"
+  },
+  {
+    "file": "shared/paleo-coast-data.mjs",
+    "sha256": "2270347efc0330bcddd7d17ff390564924461f9feb68d098908ad5247eb08966"
+  },
+  {
+    "file": "shared/paleo-geography.mjs",
+    "sha256": "78436d481da04e122bb8b1f49de2d01bdc5617b9a589730bb0fd431ecc9363e3"
+  },
+  {
+    "file": "shared/pantry-types.mjs",
+    "sha256": "a7a15e6e1998dce3215a73d223d009d4d371a9ca4314fba555b3ed473d221a80"
+  },
+  {
+    "file": "shared/pantry.mjs",
+    "sha256": "1141d3ec5918dde72d3f6c504d2ff76d951a05db88ab85d2a5c62569e5ffa324"
+  },
+  {
+    "file": "shared/region-feature-bounds.mjs",
+    "sha256": "dccb04b0427b7f237d0b30ca9b84b7c93630e28a87494f1ac522f87ebbb9e914"
+  },
+  {
+    "file": "shared/region-features.mjs",
+    "sha256": "0180f75472cf583d63713bf367b0a77878da918cd1bad64e71cc6c5d89e6c3eb"
+  },
+  {
+    "file": "shared/riding.mjs",
+    "sha256": "8ea85962acd7dcdcf0f0087440f6ca3ffa6e6078a1cbd90c262894eeeef87914"
+  },
+  {
+    "file": "shared/scenery-layout.mjs",
+    "sha256": "7a0f480dbfd7683bad793b66888c44b2f100d3464a68789473d66891601787af"
+  },
+  {
+    "file": "shared/snapshots.mjs",
+    "sha256": "45e311f73a3da6dab00ac700988cd8f30fea2370d74e700ccaf97bfaafadbc06"
+  },
+  {
+    "file": "shared/spatial-grid.mjs",
+    "sha256": "a26045902814cbebbba72ecf50b9e42e996b470299eaeb74dd1173ef580b835f"
+  },
+  {
+    "file": "shared/supper-types.mjs",
+    "sha256": "3a87e48bd00e517f86f3321f33c4634141012cc910675d6888673b21746d4bfa"
+  },
+  {
+    "file": "shared/supper.mjs",
+    "sha256": "337adbc4fffa3b4b998607d23ea2e6d7379781d2741f99c7682f2bbde02f0805"
+  },
+  {
+    "file": "shared/terrain.mjs",
+    "sha256": "45e4ffbc1c5afcaae046c5f72bf0c3f0b97934217d11479ef76079bfe01e2fc9"
+  },
+  {
+    "file": "shared/types.mjs",
+    "sha256": "9b82fb3f1d6951aa6c53f66cb5f3d4dfaf8ada16fae844012836d0afa4c3fd88"
+  },
+  {
+    "file": "shared/village-life.mjs",
+    "sha256": "3b086f56215c89825ce1e4bb26659f21bb37e384e3fc05da12e76c6fca69b4cb"
+  },
+  {
+    "file": "shared/village-sites.mjs",
+    "sha256": "a6502cd5bbe6eee76287c6cf1d9591a5a2c892b7e2d749bc40c62318b577f2c7"
+  },
+  {
+    "file": "shared/village-types.mjs",
+    "sha256": "2957df12679126efbc3d6a8cc16ffa09c9574e9f43843c8fd582aa7562f7c266"
+  },
+  {
+    "file": "shared/watering-types.mjs",
+    "sha256": "d8c219df784ed2150ddce04a398592f41e4a1fe22203ee90df24a419e862d508"
+  },
+  {
+    "file": "shared/watering.mjs",
+    "sha256": "a17266e20b1a81490826d87c855a9383c0b08cf53963bf1e37e4e2e4716f201d"
+  },
+  {
+    "file": "shared/world-bounds.mjs",
+    "sha256": "660bb6df5f3266e03cc0fb7be85fd5be3b803c5cbc17c83540162f023e2ca635"
+  },
+  {
+    "file": "shared/world.mjs",
+    "sha256": "b985f25951bf5256628ad378e2d05020f62d106e24bd03023d719e7af35e016d"
+  },
+  {
+    "file": "src/action-blender.js",
+    "sha256": "89c67d038c30c91bc9adc1e40c6f309a7e660a038d49adff06bf1575fe8248f9"
+  },
+  {
+    "file": "src/adventure-effects.js",
+    "sha256": "344cd3c9ec93c26f9ff9d0b11efaf9c36043bd232a81e095778c89696416de40"
+  },
+  {
+    "file": "src/adventure-materials.js",
+    "sha256": "024591aed426ec05a236a12c3bc3a7c0e12499da0214400e2a03e945ec9e9a16"
+  },
+  {
+    "file": "src/adventure-ui.js",
+    "sha256": "b982c818b0ae196b9effb419093fe433f85fbc57912c79ef91d64d31a78d7dcf"
+  },
+  {
+    "file": "src/adventure.css",
+    "sha256": "94137fe31b1829e2b577058be9b3e0598181f19bcda39520717b1d05f7c3bb90"
+  },
+  {
+    "file": "src/asset-hash.js",
+    "sha256": "d313d41731c0946c07d6e0d0d9531ddb8a7f35ac8c5d70576093736ef82c9ef8"
+  },
+  {
+    "file": "src/barter-ui.js",
+    "sha256": "927ae1644c398a11c07f77f368f44fd20f3d058e3478fc215dad05e57f7ded8b"
+  },
+  {
+    "file": "src/biome-review.js",
+    "sha256": "35f29820e707defce323900e9f945b8f3190d6751f7ce85e0002a690aa4f34df"
+  },
+  {
+    "file": "src/biome-surfaces.js",
+    "sha256": "57e86e3e66aa6e0e8d02ff0516b23d575a5aea185e02e8c3e3151d1966aa6911"
+  },
+  {
+    "file": "src/boat-renderer.js",
+    "sha256": "3660eaf9df7500faa2b88bbeed9507410bf8dd8af7f35fb3a594c873af24dbfb"
+  },
+  {
+    "file": "src/boat-ui.js",
+    "sha256": "c240956e40fd1f0b9f03739eed7716dcb7eb685a2e61ae82f34e9a73c0c89bee"
+  },
+  {
+    "file": "src/character-animation.js",
+    "sha256": "1cfa881b141c3843632affad9a58c9eae35bba7976c1670ed6c25ee3731fd0d5"
+  },
+  {
+    "file": "src/character-assets.js",
+    "sha256": "05a4da5f7f691d6895c1498d1387eca834cca97a91333d4f85369b997f01b59c"
+  },
+  {
+    "file": "src/character-selection.js",
+    "sha256": "1e659357b3f57cae63711936065ad03ff7772effe1c362c8b924ff698bccc82c"
+  },
+  {
+    "file": "src/coastal-renderer.js",
+    "sha256": "a3badc15b605d762a49e943046a7b6657e8d16d39220b97f2bd544dc0fe5fbc9"
+  },
+  {
+    "file": "src/coastal-ui.js",
+    "sha256": "9dc5d1b1ab058f40b651dcc682c2f04fecae23a78a9dff39151f0a28f7180aa2"
+  },
+  {
+    "file": "src/combat-input.js",
+    "sha256": "7092741fb15553aec8ff4771d0969040bae77658d979210bfc45c98bfe6a0253"
+  },
+  {
+    "file": "src/crop-food-ui.js",
+    "sha256": "3f1c013d7e75c7784e193a6138c8739ce7072f73b3fb8f6320c05ba75e3acfca"
+  },
+  {
+    "file": "src/dom-updates.js",
+    "sha256": "026b162c745fb152c38c792d81b4fc75f7d4aec0cbb9ccd60d68ec1db8e3c521"
+  },
+  {
+    "file": "src/enemy-state.js",
+    "sha256": "3cbcd9753852416200be81477a2a76e56c446e04dba276b723d979607d696bb4"
+  },
+  {
+    "file": "src/fishing-ui.js",
+    "sha256": "df72b3fd281f880db29386745ff246ced958e54404b1353d7acde1bcc6489047"
+  },
+  {
+    "file": "src/frame-clock.js",
+    "sha256": "3da123d9713c63011d020c9d1a5ac625682b5891cf95d2addd49b1a34e1d6dfa"
+  },
+  {
+    "file": "src/gamepad-input.js",
+    "sha256": "44f1d2d02deefa0ee73f4e57cb8faeb10099931355579af795d2fa09b67464a1"
+  },
+  {
+    "file": "src/gamepad-ui.js",
+    "sha256": "3f8b84f3084c5e26e41d7291519837bcd866c7cc62640820b91e050fe5b6c224"
+  },
+  {
+    "file": "src/gulf-renderer.js",
+    "sha256": "234c547a91c130cf019e47e6e363ea36a5c52a1a605619fe96b6d706fdf609e4"
+  },
+  {
+    "file": "src/gulf-ui.js",
+    "sha256": "7e394817bfa192cce6f057d035130d21322394268610620d7e35594f684fee64"
+  },
+  {
+    "file": "src/gulf.css",
+    "sha256": "c5572e97a09882088db07ed4a3f2afd13516c3136015c3f2d41f55b72d1f583a"
+  },
+  {
+    "file": "src/household-ui.js",
+    "sha256": "dab1a33950dcc09ea9dc61f78ad0c6feb4782a500cb9c15a826acce2eff7d34d"
+  },
+  {
+    "file": "src/hunting-ui.js",
+    "sha256": "f9b4acdd1997273cd879c45829211ba01f4cc28c975cff36a9d2068eb67626b3"
+  },
+  {
+    "file": "src/instance-updates.js",
+    "sha256": "b9d1684ddfb131dadac8b10ba07ee15a8fb033af80746abdbb7eb07ccd4fb4c0"
+  },
+  {
+    "file": "src/jump-pose.js",
+    "sha256": "83ed5436fb509817cf7dddda2a88271792887768c9fd9f3d67f91da6b8133630"
+  },
+  {
+    "file": "src/katana-pose.js",
+    "sha256": "2a8d997c236b31e23d14e1650d3311cd6fa760e09cef677cf18e9e9f6c992c61"
+  },
+  {
+    "file": "src/local-prediction.js",
+    "sha256": "54dc7df540122b0fa4b8f3043bb79d5313efe17f9246efbfcf7a0cffa6a81b9e"
+  },
+  {
+    "file": "src/main.js",
+    "sha256": "80cbbce67f977dd43838a6c7124a4f363e7bd5194425662771a9a921bce1d17d"
+  },
+  {
+    "file": "src/maritime-ui.js",
+    "sha256": "9f2e37417f7e3c07b0d9f4ba4cc5cdd7e00c9660734e530edd8993d910997a7b"
+  },
+  {
+    "file": "src/menu-navigation.js",
+    "sha256": "16ad0db7b0daaaa5cded9928eb442674b3faf0b697d7e2223fc47907a60ce07f"
+  },
+  {
+    "file": "src/mesh-ray-grid.js",
+    "sha256": "a423a9942f36936d1be1ee0ec4e6c09022843984601730d527b636712f4d1f83"
+  },
+  {
+    "file": "src/model-review.css",
+    "sha256": "99fa3fcf849ac1b1cdd7e87cecbdaf35ab443cac674417fb5691c4ec17ac92ad"
+  },
+  {
+    "file": "src/model-review.js",
+    "sha256": "21d8c0a7a18d3fce742e411398e793ffb1bb0b8489ce08185dfef75fc00c4596"
+  },
+  {
+    "file": "src/multiplayer-config.js",
+    "sha256": "990c159989e1fcb154b94683639d934650aafd3ae2a42b47d384685bc6504d51"
+  },
+  {
+    "file": "src/open-world.js",
+    "sha256": "87cb43a53162d9b5d9f2d22063ca35e7a876b371c3eb54164c37fb06cc3742c4"
+  },
+  {
+    "file": "src/paleo-materials.js",
+    "sha256": "41c5ba6c3f782870c1f00a70d89542d1b166917d641bd08ab6588b379566214c"
+  },
+  {
+    "file": "src/pantry-ui.js",
+    "sha256": "86f2efd9b9b044500746ac57b5fc36997922884652596f7fe18c0e343c0b5fb1"
+  },
+  {
+    "file": "src/region-feature-diagnostics.js",
+    "sha256": "f3c7248d333f9a6d6df0049d0588d131110cdc3bda58e2c2e073295b19d178e3"
+  },
+  {
+    "file": "src/regional-scenery.js",
+    "sha256": "4b77bc8e19f3acfd06f7621762f6ee27f083bfb50fe4adb37acb67285b19c6e4"
+  },
+  {
+    "file": "src/riding-pose.js",
+    "sha256": "6d33958b7802f25416bade9471410dd8095c2787b34451924702616346074f2d"
+  },
+  {
+    "file": "src/screens.js",
+    "sha256": "7e60769fbedaee4934b9b7fc91813d3e5a1f403747fc68a0f0f9683bc831efce"
+  },
+  {
+    "file": "src/session-storage.js",
+    "sha256": "ee3052a3201d810705459313ac96eb729691c2d26b664a637ed03ca9758ae2c7"
+  },
+  {
+    "file": "src/source-surface-fit.js",
+    "sha256": "45ff1ff67bcb4dbb18b945be948d0d90af7a0d049ec16366331479a7b71db96c"
+  },
+  {
+    "file": "src/spear-pose.js",
+    "sha256": "3bfedc8cf3fcb6a552116278fa63de0fd1ffa2df7d3bc87b80578b5c567f9b3a"
+  },
+  {
+    "file": "src/spell-effects.js",
+    "sha256": "1eb97712e0647247c75c494d1dd668b36d2f06ceaf5985835074a02aa969aa4c"
+  },
+  {
+    "file": "src/style.css",
+    "sha256": "d2a6531ae99acb366710a4795378747975473245a9a5554599d108bbd48b2153"
+  },
+  {
+    "file": "src/supper-ui.js",
+    "sha256": "09763af9e895e30b866c8159471f26dd081f0c501db10827bdeb05d34054366d"
+  },
+  {
+    "file": "src/three-types.js",
+    "sha256": "c58b646bdcff227dcdde3a2b71f2a92bf7c49c7ec7d229aa88f1739d2786596b"
+  },
+  {
+    "file": "src/title-credits.js",
+    "sha256": "9ba3c65d2f722c74a580ae717c0b60a6555a157ff1ba0c33af34d64f506fe6a3"
+  },
+  {
+    "file": "src/title.css",
+    "sha256": "34a7d8018740d914881c273372752deae0b81ecdf624e2a6bf63c6820c65a8cc"
+  },
+  {
+    "file": "src/view-state.js",
+    "sha256": "ec49ed47415ebe8bfde082f65a892b0ae70d119438adc404e5b9dc7eb48a6495"
+  },
+  {
+    "file": "src/view-update-gate.js",
+    "sha256": "0017ad930172791089ce8c7d4e7f4b1cecbdf540ab23cb918faba91b77e99e88"
+  },
+  {
+    "file": "src/village-renderer.js",
+    "sha256": "30cd333ff0570c69ec2b6355ec153306b91d15a37c1da9dc0b04855d6a6df98f"
+  },
+  {
+    "file": "src/village-ui.js",
+    "sha256": "78d7db0ce0bab8101dda06f765647b37d84a12fd5529642ba44e712e8ea0c397"
+  },
+  {
+    "file": "src/world-assets.js",
+    "sha256": "72a4d911e762be5db5b9074b0f32662073327fd3aefad786f7387f1c2cfddd97"
+  },
+  {
+    "file": "src/world-atmosphere.js",
+    "sha256": "40b2667150433cdbb1c88a21419f1508a2d0aabd19cb99b21c0be4d72e472117"
+  },
+  {
+    "file": "src/world-landmarks.js",
+    "sha256": "128ca3684df74ca4de6c0286f0f4886953f6be90ce463ab48c7dff50c44e95b5"
+  },
+  {
+    "file": "src/world-map.js",
+    "sha256": "4e04b3dd6a0031e51ade8bb523065aa6a0bb87e32ecc08315ffc24f2bcf4113e"
+  },
+  {
+    "file": "src/world-scenery.js",
+    "sha256": "4fe5b9bd841d7b8e0eed7bfa52b73205c3eec628580abb7ee9786a06a852a70c"
+  },
+  {
+    "file": "src/world3d.js",
+    "sha256": "c1aef78b6e72aaa1a329f58759578457f83e1e890c6904b8992399c6e8a96a36"
+  }
+]

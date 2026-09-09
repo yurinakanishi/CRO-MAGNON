@@ -12,6 +12,7 @@ import { householdFor, householdLabel } from '../shared/household-sites.mjs';
 import { installHouseholdUI } from './household-ui.js';
 import { supperLabel } from '../shared/supper.mjs';
 import { forageLabel } from '../shared/foraging.mjs';
+import { wateringLabel } from '../shared/watering.mjs';
 
 const distance = (a, b) => (a && b ? Math.hypot(a.x - b.x, a.z - b.z) : Infinity);
 export function residentAvailable(me, now = Date.now()) {
@@ -81,7 +82,7 @@ export function installVillageUI({ player, state, available, action, openModal, 
       bind('resident-help', () => action('residentHelp', d.id));
       $('resident-activity-' + d.id).insertAdjacentHTML(
         'afterend',
-        `<p id="resident-supper-${d.id}"></p><p id="resident-forage-${d.id}"></p>`,
+        `<p id="resident-supper-${d.id}"></p><p id="resident-forage-${d.id}"></p><p id="resident-watering-${d.id}"></p>`,
       );
       bind('resident-talk', () => talk(d.id));
       bind('resident-back', () => directory());
@@ -114,7 +115,7 @@ export function installVillageUI({ player, state, available, action, openModal, 
     for (const d of RESIDENTS) {
       $('resident-activity-' + d.id).insertAdjacentHTML(
         'afterend',
-        `<p id="resident-supper-${d.id}"></p><p id="resident-forage-${d.id}"></p>`,
+        `<p id="resident-supper-${d.id}"></p><p id="resident-forage-${d.id}"></p><p id="resident-watering-${d.id}"></p>`,
       );
       bind('resident-open-' + d.id, () => open(d.id));
     }
@@ -139,6 +140,7 @@ export function installVillageUI({ player, state, available, action, openModal, 
       const done = (me?.gulf?.residentHelp?.[d.id] ?? 0) >= day;
       text('resident-supper-' + d.id, supperLabel(r?.supper, day));
       text('resident-forage-' + d.id, forageLabel(r?.forage, day));
+      text('resident-watering-' + d.id, wateringLabel(r?.watering, day));
       const household = householdFor(d.id);
       const journey = world.households?.find((h) => h.id === household?.id);
       const card = $('resident-card-' + d.id);

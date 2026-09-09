@@ -29,6 +29,7 @@ export interface PlotState {
   cropId: CropId;
   stage: 'empty' | 'planted' | 'growing' | 'ripe';
   readyAt: number;
+  waterRequestAt?: number;
 }
 export interface GulfState {
   pantries: PantryState[];

@@ -266,6 +266,8 @@ test('eight active players coexist with residents; wire state excludes navigatio
         'clip',
         'supper',
         'forage',
+        'watering',
+        'wateringPlotId',
       ].sort(),
     );
     assert.ok(snap.residents.every((n) => !snap.players.some((p) => p.id === n.id)));

@@ -1,0 +1,29 @@
+✔ a nearby player requests only a planted crop; distance, walls, busy state and duplicates preserve supplies (7.6364ms)
+✔ all three crops require three seconds at the spring and three at the plot, with exact seasonal water costs and growth (172.6172ms)
+✔ all eight native residents forage, walk to springs and requested farms, water and return to supper without collisions (1131.5851ms)
+✔ all eight visiting residents forage, walk to springs and requested farms, water and return to supper without collisions (3768.2834ms)
+✔ one plot per resident per day, rotating local priority and water carried into the following day and another settlement (2.2905ms)
+✔ cancel/re-request in the same clock tick and manual watering discard old work without losing a resident’s carried water (2.0038ms)
+✔ movement, conversation, obstruction, departure, evening and cancelled work reset both fill and pour progress (8.9768ms)
+✔ legacy and malformed saved records cannot grant excess water, future work or requests on empty or growing fields (1.4218ms)
+✔ eight players contest the same request and manual watering once; all receive the completed plot immediately (343.1675ms)
+✔ carried water, requests and daily records survive save/reconnect; transient work is discarded and legacy saves start empty (644.0869ms)
+✔ no occupants or a long clock gap never fill old work or produce missed daily watering (188.198ms)
+✔ wire requests respect jump and unfinished player activities (770.7623ms)
+✔ five actual clients synchronize, sixth is refused, and rooms are isolated (652.257ms)
+✔ female is the server default and all four appearances synchronize to peers (234.7471ms)
+✔ resource gathering and camp completion are decided by the server (246.7495ms)
+✔ movement is normalized, times out, and ignores client-authored position (1061.5615ms)
+✔ run requests use the server speed and gait changes affect only live directional input (498.2419ms)
+✔ unchanged world resources are not resent on movement ticks and static files revalidate from cache (287.6509ms)
+✔ depleted solid resources cannot regenerate inside a player (415.0369ms)
+✔ crafting, trading, and regeneration enforce resource costs and proximity (340.1491ms)
+✔ chat uses the authenticated player name and is confined to its room (463.5189ms)
+ℹ tests 21
+ℹ suites 0
+ℹ pass 21
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 8347.11

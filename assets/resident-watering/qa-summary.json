@@ -1,0 +1,243 @@
+{
+  "at": "2026-09-09T09:12:07.732Z",
+  "base": "http://127.0.0.1:56406",
+  "checks": [
+    "Manual approach, root planting, request and cancellation are shared between two Chrome views",
+    "All four simulated face buttons confirm request/cancel and retain focus through state updates",
+    "All guests gather and eat; real spring filling and field delivery use no player supplies or unrequested crops",
+    "All eight visiting residents finish across two days; one helper per plot, five connections synchronized",
+    "Reload resumes requests, carried water and watering records",
+    "Player harvests the resident-watered root crop; residents leave ripe harvests in place",
+    "Portrait and landscape farm controls scroll, keep selection, navigate spatially, confirm and return"
+  ],
+  "errors": [],
+  "fixtures": [
+    {
+      "kind": "clock",
+      "elapsed": 180000,
+      "purpose": "night while players plant and request; all watering itself uses elapsed real time"
+    },
+    {
+      "kind": "inventory",
+      "player": "水やりA",
+      "seed": 10,
+      "rootSeed": 4,
+      "herbSeed": 4,
+      "water": 6
+    },
+    {
+      "kind": "position",
+      "id": "8d09db89-47d5-4e6b-8acb-51f006f9c9b3",
+      "purpose": "just outside farm range before manual approach",
+      "x": -2254,
+      "z": 446.7
+    },
+    {
+      "kind": "position",
+      "id": "8b8ddbd6-1603-4cea-bbae-de1e6ac0054a",
+      "purpose": "second viewer beside farms",
+      "x": -2251,
+      "z": 444
+    },
+    {
+      "kind": "position",
+      "id": "8d09db89-47d5-4e6b-8acb-51f006f9c9b3",
+      "purpose": "within five metres of the first eight fields for UI planting",
+      "x": -2249.5,
+      "z": 441.5
+    },
+    {
+      "kind": "position",
+      "id": "8d09db89-47d5-4e6b-8acb-51f006f9c9b3",
+      "purpose": "plant the unrequested control field",
+      "x": -2248,
+      "z": 447.4
+    },
+    {
+      "kind": "position",
+      "id": "aru",
+      "purpose": "guest/home night position before walking",
+      "x": -2284,
+      "z": 424
+    },
+    {
+      "kind": "position",
+      "id": "seno",
+      "purpose": "guest/home night position before walking",
+      "x": -2266,
+      "z": 421
+    },
+    {
+      "kind": "position",
+      "id": "mira",
+      "purpose": "guest/home night position before walking",
+      "x": -2294,
+      "z": 467
+    },
+    {
+      "kind": "position",
+      "id": "tovan",
+      "purpose": "guest/home night position before walking",
+      "x": -2289,
+      "z": 471
+    },
+    {
+      "kind": "position",
+      "id": "ena",
+      "purpose": "guest/home night position before walking",
+      "x": -2292,
+      "z": 432
+    },
+    {
+      "kind": "position",
+      "id": "rok",
+      "purpose": "guest/home night position before walking",
+      "x": -2287,
+      "z": 436
+    },
+    {
+      "kind": "position",
+      "id": "neri",
+      "purpose": "guest/home night position before walking",
+      "x": -2246.0776457135307,
+      "z": 467.2897777478867
+    },
+    {
+      "kind": "position",
+      "id": "daro",
+      "purpose": "guest/home night position before walking",
+      "x": -2241,
+      "z": 471
+    },
+    {
+      "kind": "visits-and-daily-records",
+      "purpose": "three households already visiting, fresh daily records and replenished existing berry stock"
+    },
+    {
+      "kind": "pantry-control",
+      "cookedRoot": 1,
+      "purpose": "common food must not be taken automatically"
+    },
+    {
+      "kind": "position",
+      "id": "8d09db89-47d5-4e6b-8acb-51f006f9c9b3",
+      "purpose": "observe and select first field",
+      "x": -2257,
+      "z": 443
+    },
+    {
+      "kind": "clock",
+      "elapsed": 240000,
+      "purpose": "morning: foraging, filling, delivery and watering now run in real time"
+    },
+    {
+      "kind": "clock",
+      "elapsed": 480000,
+      "purpose": "next morning skips only rest; pending deliveries and new foraging run in real time"
+    },
+    {
+      "kind": "position",
+      "id": "8d09db89-47d5-4e6b-8acb-51f006f9c9b3",
+      "purpose": "harvest the completed first root field",
+      "x": -2256,
+      "z": 442
+    },
+    {
+      "kind": "position",
+      "id": "8d09db89-47d5-4e6b-8acb-51f006f9c9b3",
+      "purpose": "near control field for small-screen UI",
+      "x": -2249.5,
+      "z": 447.5
+    },
+    {
+      "kind": "position",
+      "id": "8d09db89-47d5-4e6b-8acb-51f006f9c9b3",
+      "purpose": "near control field for small-screen UI",
+      "x": -2249.5,
+      "z": 447.5
+    }
+  ],
+  "observations": 882,
+  "maxPlayers": 5,
+  "violations": [],
+  "shots": [
+    {
+      "name": "01-ready",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "fps": "40",
+      "chunks": "68"
+    },
+    {
+      "name": "02-first-watered",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "fps": "60",
+      "chunks": "66"
+    },
+    {
+      "name": "03-second-view",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "fps": "59",
+      "chunks": "65"
+    },
+    {
+      "name": "04-resident-records",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "fps": "56",
+      "chunks": "66"
+    },
+    {
+      "name": "farm-390x844",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "fps": "60",
+      "chunks": "65"
+    },
+    {
+      "name": "farm-844x390",
+      "viewport": {
+        "width": 844,
+        "height": 390
+      },
+      "fps": "60",
+      "chunks": "65"
+    }
+  ],
+  "scope": "Two real Chrome views and three network peers. Profile, manual-approach starting point, nearby UI positions, seed/water supplies, initial visiting households/daily records/source stock, one common root and three forward clock settings are fixtures. All work durations and walks use real elapsed time. Forward clock steps also advance crop growth during skipped rest; readyAt is never overridden. Physical controllers/touch devices, full household travel, large-player loads and long sessions are not tested.",
+  "tests": {
+    "total": 378,
+    "added": 12,
+    "focused": 21,
+    "failed": 0,
+    "concurrency": 4
+  },
+  "build": {
+    "isolated": true,
+    "normal": true,
+    "strict": true,
+    "syntaxFiles": 205,
+    "architecture": true,
+    "format": true
+  },
+  "assetPreservation": {
+    "glbs": 68,
+    "titlePNGs": 9,
+    "newGLBs": 0,
+    "newDependencies": 0
+  },
+  "firstRun": "The first full test run hit the existing 40ms disconnect cleanup assertion. The test now waits for actual removal with a 3s bound; all 378 passed. The first browser run selected a hidden HUD button in landscape; the harness now uses the visible pause-menu Gulf entry and the full flow passed. A harness assertion was also corrected to permit ordinary directional move commands.",
+  "evidenceDirectory": "output/playwright/resident-watering-20260909/r02/"
+}

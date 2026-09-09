@@ -9,6 +9,7 @@ import type { Resident, ResidentSnapshot } from './village-types.mjs';
 import { normalizeResidentSupper, restingAfterSupper } from './supper.mjs';
 import { PANTRY_FOODS } from './pantry.mjs';
 import { foragingAssignment, normalizeResidentForage } from './foraging.mjs';
+import { assignWatering, normalizeWatering, wateringAssignment } from './watering.mjs';
 import {
   createHouseholds,
   ensureHouseholdProgress,
@@ -73,6 +74,9 @@ export function createResidents(room, saved = [], now = Date.now()): Resident[] 
       supperUntil: 0,
       forage: normalizeResidentForage(old?.forage, villageDay(now, room.createdAt)),
       forageWork: null,
+      watering: normalizeWatering(old?.watering, villageDay(now, room.createdAt)),
+      wateringTarget: null,
+      wateringWork: null,
     };
     room.residents.push(resident);
   }
@@ -81,7 +85,21 @@ export function createResidents(room, saved = [], now = Date.now()): Resident[] 
 
 export const residentSnapshots = (room): ResidentSnapshot[] =>
   (room.residents ?? []).map(
-    ({ id, x, z, facing, radius, speed, moving, activity, clip, supper, forage }) => ({
+    ({
+      id,
+      x,
+      z,
+      facing,
+      radius,
+      speed,
+      moving,
+      activity,
+      clip,
+      supper,
+      forage,
+      watering,
+      wateringTarget,
+    }) => ({
       id,
       x,
       z,
@@ -93,12 +111,15 @@ export const residentSnapshots = (room): ResidentSnapshot[] =>
       clip,
       supper: supper ? { ...supper } : null,
       forage: forage ? { ...forage } : null,
+      watering: { water: watering.water, last: watering.last ? { ...watering.last } : null },
+      wateringPlotId: wateringTarget?.plotId ?? null,
     }),
   );
 
 export function updateResidents(room, dt: number, now: number) {
   const phase = villagePhase(now, room.createdAt);
   updateHouseholds(room, now);
+  assignWatering(room, now);
   for (const resident of (room.residents ?? []) as Resident[]) {
     const definition = RESIDENTS.find((d) => d.id === resident.id)!;
     const talker = room.players.get(resident.talkerId);
@@ -124,6 +145,7 @@ export function updateResidents(room, dt: number, now: number) {
     const dynamic = ridingObstacles(room, null, resident);
     const assignment =
       foragingAssignment(room, resident, phase, now, dynamic) ??
+      wateringAssignment(room, resident, phase, now, dynamic) ??
       householdAssignment(room, resident.id, phase);
     const routineKey = assignment?.key ?? `home:${phase}`;
     if (resident.routineKey !== routineKey || !resident.destination) {
@@ -131,10 +153,12 @@ export function updateResidents(room, dt: number, now: number) {
       resident.phase = phase;
       resident.routineKey = routineKey;
       resident.forageWork = null;
+      resident.wateringWork = null;
       const target = assignment?.target ?? definition.routine[phase];
-      const free = routineKey.startsWith('forage:')
-        ? target
-        : room.collision.nearestFree(target, resident.radius, dynamic, 4);
+      const free =
+        routineKey.startsWith('forage:') || routineKey.startsWith('watering:')
+          ? target
+          : room.collision.nearestFree(target, resident.radius, dynamic, 4);
       resident.destination = free ? { ...target, ...free } : null;
     }
     const destination = resident.destination;
@@ -165,9 +189,16 @@ export function updateResidents(room, dt: number, now: number) {
           ? '世帯の仲間と道を歩いている'
           : routineKey.startsWith('forage:')
             ? '夕食の実を採りに歩いている'
-            : ['採集場所へ歩いている', '仕事場へ歩いている', '炉へ歩いている', '天幕へ歩いている'][
-                phase
-              ]
+            : routineKey.startsWith('watering:')
+              ? routineKey.endsWith(':spring')
+                ? '畑の水を汲みに泉へ歩いている'
+                : '水を持って頼まれた畑へ歩いている'
+              : [
+                  '採集場所へ歩いている',
+                  '仕事場へ歩いている',
+                  '炉へ歩いている',
+                  '天幕へ歩いている',
+                ][phase]
         : '道が空くのを待っている';
       resident.clip = resident.moving ? 'Walk_Loop' : 'Idle_Loop';
     } else {

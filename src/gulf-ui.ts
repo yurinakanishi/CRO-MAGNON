@@ -13,6 +13,7 @@ import { interactionVisible } from '../shared/interactions.mjs';
 import { CROPS, cropById, plotCrop, cropGrowMs, cropHarvestText } from '../shared/crops.mjs';
 import { installPantryUI } from './pantry-ui.js';
 import { installBarterUI } from './barter-ui.js';
+import { RESIDENTS } from '../shared/village-sites.mjs';
 
 const distance = (a, b) => (a && b ? Math.hypot(a.x - b.x, a.z - b.z) : Infinity);
 const stageName = { empty: '空き畑', planted: '水が必要', growing: '成長中', ripe: '収穫できる' };
@@ -57,7 +58,8 @@ export function installGulfUI(api) {
   let selected: string = MANY_HEARTHS.id,
     plotId = FARM_PLOTS[0].id,
     chosenCrop = 'berry',
-    signature = '';
+    signature = '',
+    wateringReadyAt = 0;
   $('#adventure-button').insertAdjacentHTML(
     'afterend',
     '<button id="gulf-button" class="adventure-launch gulf-launch"><span>◈ 三つの岸の湾</span><small id="gulf-status">国・畑・魚場</small></button>',
@@ -127,6 +129,7 @@ export function installGulfUI(api) {
       !!me.cookingEndsAt ||
       !!me.fishing ||
       !!me.coastalActivity;
+    const helper = world.residents?.find((n) => n.wateringPlotId === plotId);
     const sig = JSON.stringify([
       selected,
       plotId,
@@ -143,6 +146,7 @@ export function installGulfUI(api) {
       remaining,
       blocked,
       season.name,
+      helper && [helper.id, helper.activity],
       GULF_STOPS.map((s) => at(s, 8)),
     ]);
     if (sig === signature) return;
@@ -201,6 +205,24 @@ export function installGulfUI(api) {
       const node = $<HTMLButtonElement>('#' + id);
       if (node) node.onclick = fn;
     };
+    $('#gulf-farm-card').insertAdjacentHTML(
+      'beforeend',
+      `<section class="gulf-watering"><h4>住人の水やり</h4><p id="gulf-watering-status">${
+        plot?.stage !== 'planted'
+          ? '種を植え、水が必要な時に頼めます。'
+          : plot.waterRequestAt > 0
+            ? helper
+              ? `担当：${RESIDENTS.find((d) => d.id === helper.id)?.name} · ${helper.activity}`
+              : '頼みを受け付けました。朝と昼、住人の手が空くのを待ちます。'
+            : 'この畑の水やりは、まだ頼んでいません。'
+      }</p><p>住人が泉で水を汲み、ここへ歩いて戻ります。一人一日ひと区画。種まきと収穫は自分たちで。訪問中の住人も手伝います。</p><div class="gulf-actions">${btn('gulf-resident-water', plot?.waterRequestAt > 0 ? '水やりの頼みを取り消す' : '住人に水やりを頼む', !at(spec, 5) || plot?.stage !== 'planted')}</div><p>${!at(spec, 5) ? '頼む・取り消す時は、選んだ畑のそばへ。' : '頼んだ後も、自分で水をやれます。取り消しても作物と住人の持ち水は残ります。'}</p></section>`,
+    );
+    bind('gulf-resident-water', () => {
+      if (Date.now() < wateringReadyAt) return;
+      wateringReadyAt = Date.now() + 500;
+      action(plot.waterRequestAt > 0 ? 'gulfWaterCancel' : 'gulfWaterRequest', plotId);
+      update();
+    });
     bind('gulf-fishing', () => action('fishingOpen'));
     document
       .querySelector('#gulf-fishing')
@@ -257,11 +279,17 @@ export function installGulfUI(api) {
           update();
         }),
     );
-    const replacement = focusId
+    let replacement = focusId
       ? document.getElementById(focusId)
       : focusedPlot
         ? document.querySelector<HTMLElement>(`[data-plot="${focusedPlot}"]`)
         : null;
+    if (
+      focusId === 'gulf-resident-water' &&
+      replacement?.matches(':disabled') &&
+      plot?.stage !== 'planted'
+    )
+      replacement = document.querySelector<HTMLElement>(`[data-plot="${plotId}"]`);
     if (replacement && !replacement.matches(':disabled')) {
       replacement.focus({ preventScroll: true });
       if (wasPad) replacement.classList.add('gamepad-focus');

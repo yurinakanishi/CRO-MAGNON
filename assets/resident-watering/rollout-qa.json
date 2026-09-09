@@ -1,0 +1,58 @@
+{
+  "at": "2026-09-09T09:15:03.183Z",
+  "base": "http://localhost:3000",
+  "checks": [
+    "Current two-entry XI title, static credits, setup and world assets load without errors",
+    "Ground click remains stationary; keyboard movement and release still work",
+    "Desktop/portrait/landscape show watering and resident records; distant or empty fields cannot request assistance",
+    "Ordinary resume preserves player position and new resident state",
+    "All ten delivered modules match the verified build; retired destination commands stay absent"
+  ],
+  "errors": [],
+  "delivery": [
+    {
+      "path": "src/gulf-ui.js",
+      "sha256": "7e394817bfa192cce6f057d035130d21322394268610620d7e35594f684fee64"
+    },
+    {
+      "path": "src/village-ui.js",
+      "sha256": "78d7db0ce0bab8101dda06f765647b37d84a12fd5529642ba44e712e8ea0c397"
+    },
+    {
+      "path": "shared/watering.mjs",
+      "sha256": "a17266e20b1a81490826d87c855a9383c0b08cf53963bf1e37e4e2e4716f201d"
+    },
+    {
+      "path": "shared/watering-types.mjs",
+      "sha256": "d8c219df784ed2150ddce04a398592f41e4a1fe22203ee90df24a419e862d508"
+    },
+    {
+      "path": "shared/gulf-season.mjs",
+      "sha256": "a02da40fc436a63db683cd1645c4087ef9ac5ef99ebe8c2159c7a3892669a2e5"
+    },
+    {
+      "path": "shared/gulf-life.mjs",
+      "sha256": "2a9bc45e074219c2785086589b332cfd1cc5b332299789cd92c16d9778788601"
+    },
+    {
+      "path": "shared/gulf-types.mjs",
+      "sha256": "bbcb8dc8d1683a52ca0cb68b54c176c0c42bf4b408d1721a9e416ca3488d9709"
+    },
+    {
+      "path": "shared/crops.mjs",
+      "sha256": "ec202dd78cce31e915ca202a3d3b6b2c58d5645397622ca0053571d1a87ac911"
+    },
+    {
+      "path": "shared/village-life.mjs",
+      "sha256": "3b086f56215c89825ce1e4bb26659f21bb37e384e3fc05da12e76c6fca69b4cb"
+    },
+    {
+      "path": "shared/village-types.mjs",
+      "sha256": "2957df12679126efbc3d6a8cc16ffa09c9574e9f43843c8fd582aa7562f7c266"
+    }
+  ],
+  "scope": "Ordinary setup and UI in a new local QA room. No position/inventory/clock/world fixtures. Checks delivery, controls, disabled distant farming and resume; nearby full watering is covered by the isolated browser QA.",
+  "finalDeliveryCheckedAt": "2026-09-09T09:20:14.767Z",
+  "compiledModules": 146,
+  "compiledBytesMatchIsolatedPreview": true
+}

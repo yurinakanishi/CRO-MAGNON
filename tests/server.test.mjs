@@ -49,7 +49,8 @@ test('five actual clients synchronize, sixth is refused, and rooms are isolated'
   clients[4].socket.close();
   await clients[0].wait((message) => message.type === 'state' && message.players.length === 4 && !message.players.some((player) => player.id === disconnectId));
   separate.socket.close();
-  await sleep(40);
+  const closedAt = Date.now();
+  while (game.rooms.has('OTHER') && Date.now() - closedAt < 3000) await sleep(10);
   assert.equal(game.rooms.has('OTHER'), false);
 });
 
