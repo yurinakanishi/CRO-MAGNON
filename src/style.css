@@ -345,6 +345,13 @@ legend{font-size:11px;margin-bottom:10px;color:#c1cbb2}
 .species-option small{display:block;margin-top:6px;font-size:10px;color:#95a286}
 /* Character cards: full-body portrait, name below, one row of seven on a PC. */
 .character-options{border:0;padding:0;margin:0;min-width:0}
+dialog:has(.character-switch){width:min(1200px,calc(100vw - 32px))}
+.character-switch .character-legend{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%)}
+.character-switch .character-art{height:auto;aspect-ratio:7/8;object-fit:contain}
+.character-switch-footer{position:sticky;bottom:-1px;background:var(--panel-solid);padding-top:10px;margin-top:14px;z-index:3}
+#character-switch-status{min-height:18px;margin:0 0 8px;font-size:11px;color:#a3b298;text-align:center}
+#character-switch-submit{min-height:48px;font-size:14px}
+@media(max-width:760px){dialog:has(.character-switch) .modal-top:before{inset:-18px -18px 0}}
 .character-legend{padding:0;margin:0 0 12px;font-size:10px;letter-spacing:4px;color:#d6c79a;text-transform:uppercase}
 .character-choice-grid{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:12px}
 .character-choice{position:relative;display:flex;flex-direction:column;margin:0;border-radius:10px;border:1px solid #a3b58b26;background:#0d1712;overflow:hidden;cursor:pointer;transition:transform .18s,border-color .18s,box-shadow .18s}

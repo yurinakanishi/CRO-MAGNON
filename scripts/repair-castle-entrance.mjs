@@ -29,7 +29,8 @@ function split(poly,axis,value,sign){
 const planes=box=>[[0,box[0],1],[0,box[1],-1],[1,box[2],1],[1,box[3],-1],[2,box[4],1],[2,box[5],-1]];
 function intersection(poly,box){for(const [axis,value,sign]of planes(box)){poly=split(poly,axis,value,sign).inside;if(poly.length<3)return [];}return poly;}
 const output=[],add=poly=>{for(let i=1;i+1<poly.length;i++)output.push([poly[0],poly[i],poly[i+1]]);};
-const opening=[-1.65,1.65,1.4,8.05,revision==='02'?18.35:19.1,26.1];let edited=0,removedArea=0,cloned=0;
+// Keep more of the source terrace at the stair head so the ape can turn.
+const opening=[-1.65,1.65,1.4,8.05,revision==='02'?18.35:Number(revision)>=7?19.9:19.1,26.1];let edited=0,removedArea=0,cloned=0;
 const openings=[opening,...(Number(revision)>=4?[[-1.6,1.6,17.8,20.8,-2.3,3.5]]:[])];
 for(const triangle of triangles){
   let pieces=[triangle],changed=false;

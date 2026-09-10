@@ -381,7 +381,7 @@
       "geometryResolution": 1024,
       "referenceVersion": 2,
       "status": "integrated-game-qa-passed",
-      "sha256": "d2259f674fd9737f08bb9b0db7a44976f786803943f9213cd01184681274351e",
+      "sha256": "637a6fa0aa4a3734419f8161bbfa3e320565453023d7a18c6f3047d4d7a4b241",
       "delivery": "/models/valley-castle/model.glb",
       "subject": "Three exposed terrace levels, paired stone staircases, source-derived entrance stair and upper hall doorway. No tower climbing or hidden intermediate rooms. Full mesh shared; unrepaired coarse LODs are not adopted."
     },

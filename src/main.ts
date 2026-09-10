@@ -1,4 +1,5 @@
 import { installMapWarp, updateMapWarp } from './map-warp-ui.js';
+import { openCharacterSwitch, updateCharacterSwitch } from './character-switch-ui.js';
 import { WARP_POINTS, warpPointById } from '../shared/warp-sites.mjs';
 import { carrying, canCarry } from '../shared/carrying.mjs';
 import { readSaved, save, savedSession, saveSession } from './session-storage.js';
@@ -393,6 +394,7 @@ function addChat(message) {
 }
 function connection(connected, label) {
   joined = connected;
+  updateCharacterSwitch(player(), renderer.serverNow(), connected);
   if (!connected) renderer.prediction?.reset();
   $('#connection-dot').classList.toggle('offline', !connected);
   $('#connection-label').textContent =
@@ -495,11 +497,21 @@ async function connect() {
         movementCommands.reset();
       }
       const warped = previous && (previous.warpSequence ?? 0) !== (player()?.warpSequence ?? 0);
+      const changedCharacter =
+        previous && player() && characterModel(previous).key !== characterModel(player()).key;
+      if (changedCharacter) {
+        profile = { ...profile, species: player().species, gender: player().gender };
+        save('cro-species', profile.species);
+        save('cro-gender', profile.gender);
+        stopInput();
+        if ($('#character-switch-form')) $('#modal').close();
+      }
       if (warped) {
         stopInput();
         if ($('#big-map')) $('#modal').close();
       }
       renderer.setState(state, selfId);
+      updateCharacterSwitch(player(), renderer.serverNow(), joined);
       if ($('#big-map'))
         updateMapWarp(
           player(),
@@ -1321,6 +1333,19 @@ function openPauseMenu() {
   const entries: [string, string, string, () => void][] = [
     ['resume', 'compass', '探索に戻る', () => $('#modal').close()],
     ['inventory', 'bag', 'もちもの・道具', openInventory],
+    [
+      'character',
+      'people',
+      'キャラクターを変える',
+      () =>
+        openCharacterSwitch({
+          openModal,
+          player,
+          now: () => renderer.serverNow(),
+          connected: () => joined,
+          action,
+        }),
+    ],
     ['objectives', 'check', '目標と野営地', openObjectives],
     ['map', 'expand', '世界地図', openMap],
     ['journal', 'book', '探索手帳', openJournal],
@@ -1332,7 +1357,16 @@ function openPauseMenu() {
     ['help', 'help', 'あそびかた', openHelp],
     ['ride', 'target', '船・マンモス・肩に乗る／降りる', controllerRide],
     ['wave', 'wave', '手をふる', () => action('wave')],
-    ['profile', 'people', '部屋・キャラクターを変える', () => showSetup()],
+    ...(!fixedIdentity
+      ? [
+          ['profile', 'people', '部屋を変える（参加し直す）', () => showSetup()] as [
+            string,
+            string,
+            string,
+            () => void,
+          ],
+        ]
+      : []),
     ['title', 'close', 'タイトルへ戻る', leaveToTitle],
   ];
   openModal(

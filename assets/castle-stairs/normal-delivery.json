@@ -1,0 +1,40 @@
+{
+  "pid": 35152,
+  "started": "2026-09-10T12:21:27+09:00",
+  "health": {
+    "ok": true,
+    "boatingVersion": 1,
+    "adventureVersion": 1,
+    "gulfVersion": 2,
+    "save": {
+      "enabled": true,
+      "state": "saved",
+      "savedAt": 1789010578008,
+      "recovered": false
+    }
+  },
+  "revision": 2484,
+  "delivery": [
+    {
+      "url": "/shared/collision.mjs",
+      "sha256": "e68dd87cd5dddf1457c8dd790a979c0f7675e5ebbc916f911b86bf148f315446"
+    },
+    {
+      "url": "/shared/castle-surface-data.mjs",
+      "sha256": "5227caa8ee936a5a11ca0356aba750d5c5fd382fc822e6d0cf060248fc9da505"
+    },
+    {
+      "url": "/models/world-assets.json",
+      "sha256": "ce39842aca26a53de6ef91220c1bbfe0072da5775f7855410002d77af0a77858"
+    },
+    {
+      "url": "/models/valley-castle/asset.json",
+      "sha256": "2760aaf63a1e131dde9551cb14556d7d20fdc796170039ff629ce1aadd36a3a5"
+    },
+    {
+      "url": "/models/valley-castle/model.glb",
+      "sha256": "637a6fa0aa4a3734419f8161bbfa3e320565453023d7a18c6f3047d4d7a4b241"
+    }
+  ],
+  "worldAssetsVerified": 48
+}

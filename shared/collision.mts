@@ -255,12 +255,19 @@ export class CollisionWorld {
         x: worldClamp(point.x + dx / steps, 'x'),
         z: worldClamp(point.z + dz / steps, 'z'),
       };
-      if (!this.surfaceTransition(point, next)) {
-        const alongX = { x: next.x, z: point.z },
-          alongZ = { x: point.x, z: next.z };
-        if (this.surfaceTransition(point, alongX)) next.z = point.z;
-        else if (this.surfaceTransition(point, alongZ)) next.x = point.x;
-        else continue;
+      for (const surface of this.walkSurfaces) {
+        if (surface.free(next.x, next.z, radius) && surface.transition(point, next)) continue;
+        // Raster walls and stairwell edges must slide the whole body, not just
+        // its centre. Use the atlas axes: the castle is rotated in world space.
+        const a = surface.local(point.x, point.z),
+          b = surface.local(next.x, next.z),
+          candidates = [surface.world(b.x, a.z), surface.world(a.x, b.z)]
+            .filter((p) => this.free(p, radius, dynamic) && this.surfaceTransition(point, p))
+            .sort(
+              (a, b) =>
+                Math.hypot(b.x - point.x, b.z - point.z) - Math.hypot(a.x - point.x, a.z - point.z),
+            );
+        Object.assign(next, candidates[0] ?? point);
       }
       if (this.coast && !landBodyFree(next.x, next.z, radius)) {
         if (landBodyFree(next.x, point.z, radius)) next.z = point.z;
