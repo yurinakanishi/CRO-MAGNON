@@ -174,7 +174,7 @@ export class GamepadControls {
       if (frame.navigation) this.navigate(frame.navigation);
       if (frame.look.y) {
         const root = this.options.menu();
-        if (root) root.scrollTop += frame.look.y * dt * 600;
+        if (root) this.scrollTarget(root).scrollTop += frame.look.y * dt * 600;
       }
       // Closing wins over confirming when two buttons arrive in the same frame.
       if (frame.actions.includes('menu')) this.options.closeMenu();
@@ -197,6 +197,20 @@ export class GamepadControls {
   private clearFocus() {
     this.focused?.classList.remove('gamepad-focus');
     this.focused = null;
+  }
+
+  /**
+   * The pause menu scrolls its right-hand panel, not the dialog: prefer a scrollable
+   * ancestor of the selection, then any scrollable panel inside the menu, then the dialog.
+   */
+  private scrollTarget(root: HTMLElement): HTMLElement {
+    const scrollable = (el: Element) =>
+      el.scrollHeight > el.clientHeight + 1 && /auto|scroll/.test(getComputedStyle(el).overflowY);
+    for (let el = this.focused?.parentElement; el && el !== root; el = el.parentElement)
+      if (scrollable(el)) return el;
+    for (const el of root.querySelectorAll<HTMLElement>('[role="tabpanel"],section,div'))
+      if (!el.closest('[hidden]') && scrollable(el)) return el;
+    return root;
   }
 
   private focus(el: HTMLElement | undefined) {

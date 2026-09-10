@@ -8,7 +8,7 @@ const { chromium } = await import(
     'file:///C:/Users/yurin/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/node_modules/playwright/index.mjs'
 );
 
-const output = process.argv[2] || 'output/playwright/gamepad-menus-20260908';
+const output = process.argv[2] || 'output/playwright/gamepad-menus-20260910';
 await mkdir(output, { recursive: true });
 const game = createGameServer({ port: 0, host: '127.0.0.1' });
 const address = await game.listen();
@@ -61,16 +61,29 @@ try {
     await input([button]);
     await input();
   };
+  // Edges never wrap, so walk in one direction until the selection stops moving, then turn.
   const select = async (selector) => {
-    for (let i = 0; i < 70; i++) {
-      if (
-        await page
-          .locator(selector)
-          .evaluateAll((els) => els.some((el) => el.classList.contains('gamepad-focus')))
-      )
-        return;
-      await tap(PAD.down);
+    const reached = () =>
+      page
+        .locator(selector)
+        .evaluateAll((els) => els.some((el) => el.classList.contains('gamepad-focus')));
+    const focusedId = () =>
+      page.evaluate(() => {
+        const el = document.querySelector('.gamepad-focus') ?? document.activeElement;
+        return el ? el.id || el.dataset?.controllerMenu || el.getAttribute('value') || el.className : '';
+      });
+    const walk = [PAD.down, PAD.left, PAD.up, PAD.right, PAD.down, PAD.right, PAD.up, PAD.left];
+    for (const direction of walk) {
+      let previous = '';
+      for (let i = 0; i < 30; i++) {
+        if (await reached()) return;
+        const current = await focusedId();
+        if (current === previous && i > 0) break;
+        previous = current;
+        await tap(direction);
+      }
     }
+    if (await reached()) return;
     throw new Error(`Controller cannot reach ${selector}`);
   };
   const screen = () => page.locator('body').getAttribute('data-screen');
@@ -153,7 +166,7 @@ try {
     await input([], [0, 0, 0, 1]);
     await page.waitForTimeout(1200);
     await input();
-    assert.ok(await page.locator('#modal').evaluate((el) => el.scrollTop > 0));
+    assert.ok(await page.locator('.pause-panels').evaluate((el) => el.scrollTop > 0));
     const back = await page.locator('#modal-close').evaluate((el) => {
       const box = el.getBoundingClientRect();
       return {
@@ -198,7 +211,8 @@ try {
     { width: 844, height: 390 },
   ]) {
     await page.setViewportSize(viewport);
-    const hint = await page.locator('.title-hint').boundingBox();
+    // The title screen no longer prints key hints; the menu itself must fit instead.
+    const hint = await page.locator('.title-menu').boundingBox();
     assert.ok(hint.x >= 0 && hint.x + hint.width <= viewport.width);
     assert.ok(hint.y >= 0 && hint.y + hint.height <= viewport.height);
     await page.screenshot({
@@ -207,7 +221,7 @@ try {
     });
   }
   assert.deepEqual(errors, []);
-  passed('Title prompts fit both mobile sizes; browser reports no errors');
+  passed('Title menu fits both mobile sizes; browser reports no errors');
   await writeFile(
     `${output}/report.json`,
     JSON.stringify({ checks, errors, physicalController: false }, null, 2),

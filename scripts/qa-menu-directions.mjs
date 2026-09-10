@@ -10,7 +10,7 @@ const { chromium } = await import(
   process.env.PLAYWRIGHT_MODULE ||
     'file:///C:/Users/yurin/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/node_modules/playwright/index.mjs'
 );
-const output = process.argv[2] || 'output/playwright/menu-directions-20260909';
+const output = process.argv[2] || 'output/playwright/menu-directions-20260910';
 await mkdir(output, { recursive: true });
 const game = process.env.GAME_QA_URL ? null : createGameServer({ port: 0, host: '127.0.0.1' });
 const address = await game?.listen();
@@ -86,42 +86,59 @@ try {
   await input();
   await arm('#title-start');
   await tap(PAD.up);
-  await focused('#title-start');
+  await focused('#title-fullscreen');
+  await tap(PAD.up);
+  await focused('#title-fullscreen');
+  await arm('#title-start');
   await tap(PAD.circle);
   await page.waitForSelector('#setup-submit', { state: 'visible' });
-  passed('Title top edge stays put; circle confirms Start');
+  passed('Title: Up reaches the fullscreen toggle and stops at the top edge; circle confirms Start');
 
+  // Character cards: seven in a row on a PC, four columns at 1000px and below, two at 430px and below.
+  const card = (value) => `#setup-form input[name="character"][value="${value}"]`;
+  const field = (name) => `#setup-form input[name="${name}"]`;
   for (const viewport of [
     { width: 1440, height: 900 },
     { width: 390, height: 844 },
     { width: 844, height: 390 },
   ]) {
     await page.setViewportSize(viewport);
-    const single = viewport.width <= 520;
-    await arm(species('cro'));
+    const columns = viewport.width <= 430 ? 2 : viewport.width <= 1000 ? 4 : 7;
+    // Below the first card: the next row, or the Back button once the row holds every card.
+    const belowFirst = columns === 7 ? '#setup-back' : card(columns === 4 ? 'cat-female' : 'nea-female');
+    const belowSecond =
+      columns === 7 ? '#setup-submit' : card(columns === 4 ? 'bear-female' : 'nea-male');
+    // The identity fields stack at phone width, so the room field sits right above the cards.
+    const above = field(viewport.width <= 640 ? 'room' : 'name');
+    await arm(card('cro-female'));
     await tap(PAD.down);
-    await focused(species(single ? 'nea' : 'cat'));
+    await focused(belowFirst);
     await tap(PAD.up);
-    await focused(species('cro'));
+    await focused(card('cro-female'));
+    await tap(PAD.up);
+    await focused(above);
+    await arm(card('cro-female'));
     await tap(PAD.right);
-    await focused(species(single ? 'cro' : 'nea'));
-    if (!single) {
-      await tap(PAD.down);
-      await focused(species('bear'));
-      await tap(PAD.left);
-      await focused(species('cat'));
-    }
-    await arm(species('cro'));
+    await focused(card('cro-male'));
+    await tap(PAD.down);
+    await focused(belowSecond);
+    await tap(PAD.up);
+    // The wide launch button climbs back to the card nearest its centre.
+    await focused(card(columns === 7 ? 'nea-male' : 'cro-male'));
+    await arm(card('cro-male'));
+    await tap(PAD.left);
+    await focused(card('cro-female'));
+    await arm(card('cro-female'));
     await stick(0, 1);
-    await focused(species(single ? 'nea' : 'cat'));
-    await page.locator(species('cro')).focus();
+    await focused(belowFirst);
+    await page.locator(card('cro-female')).focus();
     await page.keyboard.press('ArrowDown');
-    await focused(species(single ? 'nea' : 'cat'));
+    await focused(belowFirst);
     await page.keyboard.press('ArrowUp');
-    await focused(species('cro'));
+    await focused(card('cro-female'));
     await page.screenshot({ path: `${output}/setup-${viewport.width}x${viewport.height}.png` });
     passed(
-      `Character cards: D-pad, left stick and keyboard follow the visible ${single ? 'one' : 'two'} columns at ${viewport.width}x${viewport.height}`,
+      `Character cards: D-pad, left stick and keyboard follow the visible ${columns} columns at ${viewport.width}x${viewport.height}`,
     );
   }
   await page.setViewportSize({ width: 1440, height: 900 });
@@ -150,6 +167,7 @@ try {
     'Name editing remains native; guide buttons move horizontally, Back and all four decision buttons work',
   );
 
+  // Pause menu: a vertical tab rail on a PC, a horizontal tab strip at 860px and below.
   for (const viewport of [
     { width: 1440, height: 900 },
     { width: 390, height: 844 },
@@ -157,68 +175,132 @@ try {
   ]) {
     await page.setViewportSize(viewport);
     await tap(PAD.options);
-    const single = viewport.width <= 520;
+    const rail = viewport.width > 860;
     await arm(item('inventory'));
     await tap(PAD.down);
-    await focused(item(single ? 'map' : 'journal'));
+    await focused(item(rail ? 'world' : 'resume'));
     await tap(PAD.up);
-    await focused(item('inventory'));
-    await tap(PAD.right);
-    await focused(item(single ? 'inventory' : 'map'));
-    if (!single) {
+    // The wide Resume button climbs to the tab nearest its centre: the first tab on a tablet strip.
+    await focused(item(rail || viewport.width <= 520 ? 'inventory' : 'objectives'));
+    await arm(item('inventory'));
+    if (rail) {
       await tap(PAD.down);
-      await focused(item('gulf'));
+      await tap(PAD.down);
+      await focused(item('settings'));
+      await tap(PAD.up);
+      await focused(item('world'));
+    } else {
+      await tap(PAD.right);
+      await focused(item('world'));
       await tap(PAD.left);
-      await focused(item('journal'));
+      await focused(item('inventory'));
     }
     await arm(item('inventory'));
     await stick(0, 1);
-    await focused(item(single ? 'map' : 'journal'));
+    await focused(item(rail ? 'world' : 'resume'));
     await page.keyboard.press('Tab');
     await page.locator(item('inventory')).focus();
     await page.keyboard.press('ArrowDown');
-    await focused(item(single ? 'map' : 'journal'));
+    await focused(item(rail ? 'world' : 'resume'));
     await page.keyboard.press('ArrowUp');
-    await focused(item('inventory'));
-    await page.keyboard.press('ArrowRight');
-    await focused(item(single ? 'inventory' : 'map'));
-    await arm(item('inventory'));
-    await tap(PAD.down);
+    await focused(item(rail || viewport.width <= 520 ? 'inventory' : 'objectives'));
+    if (!rail) {
+      await page.locator(item('inventory')).focus();
+      await page.keyboard.press('ArrowRight');
+      await focused(item('world'));
+    }
     await page.screenshot({ path: `${output}/menu-${viewport.width}x${viewport.height}.png` });
     passed(
-      `Pause menu: Down stays in its column, all four directions/left stick/keyboard work at ${viewport.width}x${viewport.height}`,
+      `Pause menu: tabs follow the ${rail ? 'vertical rail' : 'horizontal strip'}; D-pad, left stick and keyboard agree at ${viewport.width}x${viewport.height}`,
     );
+    // Selecting the inventory tab shows its panel; the panel's buttons become reachable.
     await arm(item('inventory'));
     await tap(PAD.square);
-    await page.waitForSelector('#modal-craft');
+    assert.equal(
+      await page.locator('[data-pause-panel="inventory"]').evaluate((el) => !el.hidden),
+      true,
+    );
+    await page.waitForSelector('#modal-craft', { state: 'visible' });
     await arm('#modal-close');
     await tap(PAD.circle);
     assert.equal(await page.locator('#modal').evaluate((el) => el.open), false);
     await input();
   }
 
+  // Keyboard: Enter selects a tab, ESC closes the menu, and the closed dialog leaves the screen.
+  await page.setViewportSize({ width: 1440, height: 900 });
+  await page.keyboard.press('Escape');
+  assert.equal(await page.locator('#modal').evaluate((el) => el.open), true);
+  await page.locator(item('settings')).focus();
+  await page.keyboard.press('Enter');
+  assert.equal(
+    await page.locator('[data-pause-panel="settings"]').evaluate((el) => !el.hidden),
+    true,
+  );
+  await page.keyboard.press('ArrowRight');
+  assert.ok(
+    await page.evaluate(() =>
+      document.querySelector('[data-pause-panel="settings"]').contains(document.activeElement),
+    ),
+    'Right from the settings tab enters the settings panel',
+  );
+  await page.locator(item('world')).focus();
+  await page.keyboard.press('Enter');
+  assert.equal(
+    await page.locator('[data-pause-panel="world"]').evaluate((el) => !el.hidden),
+    true,
+  );
+  await page.locator(item('journal')).focus();
+  await page.keyboard.press('Enter');
+  assert.equal(await page.locator('.pause-menu').count(), 0, 'Enter opens the journal');
+  assert.equal(await page.locator('#modal').evaluate((el) => el.open), true);
+  await page.keyboard.press('Escape');
+  assert.equal(await page.locator('#modal').evaluate((el) => el.open), false);
+  assert.equal(
+    await page.locator('#modal').evaluate((el) => getComputedStyle(el).display),
+    'none',
+  );
+  await page.keyboard.press('Escape');
+  assert.equal(
+    await page.locator('.pause-tab[aria-selected="true"]').getAttribute('data-pause-tab'),
+    'world',
+  );
+  await page.locator('#modal-close').focus();
+  await page.keyboard.press('Enter');
+  assert.equal(await page.locator('#modal').evaluate((el) => el.open), false);
+  passed(
+    'Keyboard: Enter picks a tab and a panel button, ESC/Enter on Back close and hide the dialog, last tab is remembered',
+  );
+
+  // Held Down repeats through the rail and the right stick scrolls the panel, keeping Back visible.
   await page.setViewportSize({ width: 844, height: 390 });
+  // A dialog closed by keyboard waits for a neutral controller frame before new presses count.
+  await input();
   await tap(PAD.options);
-  await arm(item('inventory'));
+  await arm(item('help'));
+  await tap(PAD.square);
+  await input([], [0, 0, 0, 1]);
+  await page.waitForTimeout(1200);
+  await input();
+  assert.ok(await page.locator('.pause-panels').evaluate((el) => el.scrollTop > 0));
+  await arm(item('objectives'));
   await input([PAD.down]);
   await page.waitForTimeout(780);
   await input();
   assert.equal(await page.locator('#modal').evaluate((el) => el.open), true);
   const held = await page.evaluate(() => ({
-    item: document.activeElement.dataset.controllerMenu,
+    item: document.activeElement.dataset.controllerMenu ?? document.activeElement.className,
     box: document.activeElement.getBoundingClientRect().toJSON(),
-    headerBottom: document.querySelector('.modal-top').getBoundingClientRect().bottom,
+    back: document.querySelector('#modal-close').getBoundingClientRect().toJSON(),
   }));
-  assert.ok(
-    ['fishing', 'residents', 'help', 'ride', 'profile'].includes(held.item),
-    JSON.stringify(held),
-  );
-  assert.ok(held.box.top >= held.headerBottom - 1 && held.box.bottom <= 390);
+  assert.notEqual(held.item, 'objectives', JSON.stringify(held));
+  assert.ok(held.box.top >= 0 && held.box.bottom <= 390, JSON.stringify(held));
+  assert.ok(held.back.top >= 0 && held.back.bottom <= 390 && held.back.right <= 844);
   await page.screenshot({ path: `${output}/held-down-scroll.png` });
   await arm('#modal-close');
   await tap(PAD.triangle);
   assert.equal(await page.locator('#modal').evaluate((el) => el.open), false);
-  passed('Held Down repeats vertically and scrolls the selected item into view below Back');
+  passed('Held Down repeats, the right stick scrolls the panel, and Back stays on screen at 844x390');
   await page.reload();
   await page.waitForSelector('#title-start', { state: 'visible' });
   await arm('#title-start');

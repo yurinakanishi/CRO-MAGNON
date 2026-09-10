@@ -666,10 +666,6 @@ function updateObjectives() {
   $('#camp-level').textContent = `CAMP LEVEL ${state.camp.level}`;
   $('#camp-name').textContent = state.camp.level ? 'みんなの野営地' : '小さな野営地';
 }
-function openObjectives() {
-  openModal(objectivesMarkup());
-  updateObjectives();
-}
 function updateModalHUD() {
   const me = player(),
     inv = inventoryCounts(me?.inventory);
