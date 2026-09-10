@@ -10,7 +10,7 @@
 1. PC1とPC2をEthernet LANケーブルで直接つなぐ。
 2. Ethernetの設定を下表で確認する。今回の2台は設定済み。
 3. PC1で次のファイルをダブルクリックする。
-   `C:\Users\yurin\Desktop\projects\CRO-MAGNON\output\exhibition-23720e92\start-exhibition-host.bat`
+   `C:\Users\yurin\Desktop\projects\CRO-MAGNON\output\exhibition-4f9c9199\start-exhibition-host.bat`
 4. PC2で次のファイルをダブルクリックする。
    `C:\Users\fee1i\Desktop\projects\CRO-MAGNON\start-exhibition-client.bat`
 5. 各PCのブラウザーで [展示ゲームを開く](http://localhost:4173/?room=EXHIBITION)。
@@ -60,11 +60,11 @@ URLの `?room=` や旅支度の入力が設定ファイルの既定値より優�
 
 ## 配置済みのゲームと停止方法
 
-- PC1のゲーム: `C:\Users\yurin\Desktop\projects\CRO-MAGNON\output\exhibition-23720e92`
-- PC2のゲーム: `C:\Users\fee1i\Desktop\projects\CRO-MAGNON\game\exhibition-23720e92`
-- PC2の受取ZIP: `C:\Users\fee1i\Desktop\projects\CRO-MAGNON\incoming\exhibition-23720e92.zip`
-- ビルドID: `23720e924a84af5c6b1f6e77899531bb9015612cd0ca4545ea3f37e07fe1596f`
-- ZIP SHA-256: `966E4D67C055E9859D1E5E813E0BB6CE676A81083733F5287058F107758B6DAB`
+- PC1のゲーム: `C:\Users\yurin\Desktop\projects\CRO-MAGNON\output\exhibition-4f9c9199`
+- PC2のゲーム: `C:\Users\fee1i\Desktop\projects\CRO-MAGNON\game\exhibition-4f9c9199`
+- PC2の受取ZIP: `C:\Users\fee1i\Desktop\projects\CRO-MAGNON\incoming\exhibition-4f9c9199.zip`
+- ビルドID: `4f9c91998f327d1e627bd469f8b19879975bdfbbe4d25dc28b4251edd6086701`
+- ZIP SHA-256: `0D7526410BEA66C55FE90529C2601C887AAD47B83474C3B30E61473F6FE94FEC`
 
 PC1からPC2へ直結EthernetのSSH/SCPで転送し、PC2で293ファイル・55 GLBとZIPのハッシュを検証済み。
 Node.jsと必要な依存を同梱済みで、展示当日のインストールは不要。
@@ -76,7 +76,7 @@ PC1をBATから起動したときは、その起動ウィンドウを開いた�
 
 PC2のルートBATは手動実行用タスク `CRO-MAGNON-Exhibition-Client-6c04efc0` を使い、
 ログイン中のYURIのデスクトップでクライアントを起動する。自動起動トリガーはない。
-タスク名の末尾は初回の識別子のままだが、起動先は最新の `game/exhibition-23720e92` に更新済み。
+タスク名の末尾は初回の識別子のままだが、起動先は最新の `game/exhibition-4f9c9199` に更新済み。
 動作中の再実行ではブラウザーを開く。停止はルートの `stop-exhibition-client.bat`。
 PC2のログはルートの `client-live.log` と `client-live-error.log`。
 
@@ -102,6 +102,10 @@ PC2で有効な登録先は `C:\ProgramData\ssh\administrators_authorized_keys`�
 鍵でのSSH接続を確認済み。展示ゲームの起動・参加にSSHやWindowsのPIN入力は不要。
 
 ## 今回の結果とWi-Fi OFF確認
+
+2026-09-10 09:12、再更新の依頼で最新版 `4f9c9199` を両PCへ反映。肩の魔法の移動慣性と直近の操作改善を含む。全440テスト・展示起動4チェック合格。切替直前の1部屋・2人分を新しく一時停止して保存し、持ち物・位置等の復元一致を照合した。古い保存は再利用していない。PC1 PID30756、PC2 PID10528。PC2からLANサーバーへの到達と両PCの配信ビルド一致を確認。
+
+更新前から開いているタブは再読み込みし、「はじめる」を押す。部屋は `EXHIBITION`。最終確認では新版サーバーに1部屋・2人の再接続を確認。相互の動きの画面確認は利用者が行う。今回の引き継ぎは一回限りで、通常の展示BATでの終了後の世界保存を追加したわけではない。Wi-Fiを両方OFFにした物理試験は未確認。SSH鍵と旧配布版を保持し、通常3000番には手を加えていない。
 
 2026-09-10朝、再更新の依頼により、歩行のかくつき・衝突時の向き修正、全7外見の
 倒れる動作、大猿の肩に乗ったままの魔法攻撃を含む最新版を両PCへ配布した。
