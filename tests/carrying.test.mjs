@@ -95,7 +95,6 @@ test('shoulder invitation requires the mage to accept; identities, range, walls,
     { mountId: 'm' },
     { boatId: 'b' },
     { jumpAt: f.now(), jumpSequence: 1 },
-    { moving: true },
     { cookingEndsAt: f.now() + 1 },
     { attackSequence: 1, attackAt: f.now() },
   ]) {
@@ -123,20 +122,73 @@ test('shoulder invitation requires the mage to accept; identities, range, walls,
   );
 });
 
-test('invitations decline, expire and cancel on movement without picking up another player', () => {
-  for (const mode of ['decline', 'expire', 'move']) {
+test('invitations decline, expire and cancel outside reach without picking up another player', () => {
+  for (const mode of ['decline', 'expire', 'leave']) {
     const f = fixture();
     f.action(0);
     if (mode === 'decline') f.action(1, 'carryDecline');
     if (mode === 'expire') f.advance(15000);
-    if (mode === 'move') {
-      f.peers[0].socket.command({ type: 'move', dx: 1, dz: 0 });
+    if (mode === 'leave') {
+      f.b.x = 10;
       f.advance(100);
     }
     assert.ok(!f.a.carryOfferToId);
     assert.ok(!f.b.carryOfferFromId);
     assert.ok(!f.b.carrierId);
   }
+});
+
+test('moving players can invite and board from a step apart without stopping the carrier', () => {
+  const f = fixture();
+  f.b.x = f.a.radius + f.b.radius + 1.8;
+  for (const peer of f.peers.slice(0, 2)) peer.socket.command({ type: 'move', dx: 0, dz: 1 });
+  f.advance(100);
+  assert.ok(f.a.moving && f.b.moving);
+  f.action(0);
+  assert.equal(f.b.carryOfferFromId, f.a.id);
+  f.advance(100);
+  assert.equal(f.b.carryOfferFromId, f.a.id);
+  const before = f.a.z;
+  f.action(1);
+  assert.equal(f.b.carrierId, f.a.id);
+  assert.equal(f.a.passengerId, f.b.id);
+  assert.equal(f.a.dz, 1);
+  assert.equal(f.a.moving, true);
+  assert.equal(f.b.dx, 0);
+  assert.equal(f.b.dz, 0);
+  f.advance(100);
+  assert.ok(f.a.z > before);
+  assert.equal(f.b.z, f.a.z);
+  assert.equal(f.b.x, f.a.x);
+});
+
+test('unavailable world actions return quiet notices without changing inventory or mounting', () => {
+  const f = fixture();
+  f.room.resources = [];
+  f.a.x = f.a.z = -100;
+  const inventory = structuredClone(f.a.inventory);
+  for (const action of [
+    'gather',
+    'ride',
+    'boardBoat',
+    'harvest',
+    'cook',
+    'contribute',
+    'trade',
+    'carry',
+  ]) {
+    const start = f.peers[0].socket.messages.length;
+    f.action(0, action, 'missing');
+    const notices = f.peers[0].socket.messages.slice(start).filter((m) => m.type === 'notice');
+    assert.ok(notices.length > 0, action);
+    assert.ok(
+      notices.every((m) => m.popup === false),
+      action,
+    );
+    f.advance();
+  }
+  assert.deepEqual(f.a.inventory, inventory);
+  assert.ok(!f.a.mountId && !f.a.boatId && !f.a.passengerId);
 });
 
 test('carrier walks and runs at doubled speed with one body; passenger input cannot move it; all peers see attachment', () => {

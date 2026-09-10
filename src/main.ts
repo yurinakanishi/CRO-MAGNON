@@ -722,10 +722,8 @@ function action(type, targetId?, cropId?) {
     villageUI.open(targetId);
     return;
   }
-  if (player()?.boatId && !['boardBoat', 'fish', 'cancelFishing'].includes(type))
-    return notify(`乗船中です。岸で ${usingGamepad ? '△' : 'B'} を押して降りてから行おう。`);
-  if (player()?.mountId && type !== 'ride')
-    return notify(`騎乗中です。攻撃・採集・食事は ${usingGamepad ? '△' : 'R'} で降りてから。`);
+  if (player()?.boatId && !['boardBoat', 'fish', 'cancelFishing'].includes(type)) return;
+  if (player()?.mountId && type !== 'ride') return;
   if (
     type === 'gulfOpen' ||
     (inGulf(player()?.x, player()?.z) && ['contribute', 'trade'].includes(type))
@@ -790,13 +788,10 @@ function ride() {
   const me = player(),
     animal = rideTarget();
   if (hasCarryChoice()) return action('carry', me?.carryOfferFromId || carryTarget()?.id);
-  if (me?.boatId) return notify(`船から降りるには岸で ${usingGamepad ? '△' : 'B'}。`);
+  if (me?.boatId) return;
   if (me?.mountId) return action('ride');
   const now = (state.serverTime ?? Date.now()) + performance.now() - stateReceivedAt;
-  if (!canMount(me, animal, renderer.collision, now))
-    return notify(
-      `マンモスの横まで自分で近づき、乗れる案内が出たら ${usingGamepad ? '△' : 'R'} を押そう。`,
-    );
+  if (!canMount(me, animal, renderer.collision, now)) return;
   action('ride', animal.id);
 }
 function interactAnimal(id) {
@@ -806,16 +801,14 @@ function interactAnimal(id) {
     ].find((item) => item.id === id),
     me = player();
   if (!animal || !me) return;
-  if (animal.riderId) return notify('このマンモスには仲間が乗っています。');
+  if (animal.riderId) return;
   if (me.mountId || me.downedUntil || renderUnavailable) return;
   selectedAnimalId = id;
   updateHuntingHUD();
   if (animal.phase === 'alive') {
     if (attackReady(me, animal)) action('attack', id);
-    else notify(`自分で近づき、相手を向いて ${usingGamepad ? '□ / R2' : 'F'} で攻撃しよう。`);
   } else if (animal.phase === 'meat') {
     if (distance(me, animal) <= HUNTING.harvestRange) action('harvest', id);
-    else notify('肉のそばまで自分で近づいて採ろう。');
   }
 }
 function updateHuntingHUD() {
@@ -1484,9 +1477,7 @@ function cook() {
   const me = player();
   if (!me) return;
   const fire = nearestCookingFire(state, me);
-  if (distance(me, fire) > HUNTING.cookRange) {
-    notify('焚き火のそばまで自分で近づくと、調理できます。');
-  } else action('cook');
+  if (distance(me, fire) <= HUNTING.cookRange) action('cook');
 }
 function playNote() {
   if (!soundEnabled || !audioContext) return;

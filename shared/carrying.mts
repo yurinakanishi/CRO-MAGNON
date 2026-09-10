@@ -3,16 +3,14 @@ import { stopActor, enemyIsSolid } from './combat.mjs';
 import { jumpProgress } from './jumping.mjs';
 import { isCarryable } from './characters.mjs';
 
-export const CARRY = Object.freeze({ reach: 0.85, offerMs: 15000 });
+export const CARRY = Object.freeze({ reach: 2, offerMs: 15000 });
 export const carrying = (p) => !!(p?.carrierId || p?.passengerId);
-const stationary = (p, now) =>
+const available = (p, now) =>
   p &&
   !carrying(p) &&
   !p.mountId &&
   !p.boatId &&
   !p.downedUntil &&
-  !p.moving &&
-  Math.hypot(p.dx ?? 0, p.dz ?? 0) < 0.01 &&
   !p.cookingEndsAt &&
   !p.fishing &&
   !p.coastalActivity &&
@@ -24,8 +22,8 @@ export function canCarry(ape, mage, collision, now) {
     ape?.species === 'ape' &&
     isCarryable(mage) &&
     ape.id !== mage.id &&
-    stationary(ape, now) &&
-    stationary(mage, now) &&
+    available(ape, now) &&
+    available(mage, now) &&
     Math.hypot(ape.x - mage.x, ape.z - mage.z) <= ape.radius + mage.radius + CARRY.reach &&
     collision?.segmentFree(ape, mage, 0.12)
   );
@@ -125,7 +123,6 @@ export function handleCarryAction(room, player, message, now) {
       return fail('近くの大猿に、もう一度誘ってもらおう。');
     }
     clearCarryOffer(room, player);
-    stopActor(ape);
     stopActor(player);
     player.carrySafePoint = { x: player.x, z: player.z };
     ape.passengerId = player.id;
@@ -137,7 +134,7 @@ export function handleCarryAction(room, player, message, now) {
   }
   const mage = room.players.get(message.targetId);
   if (!canCarry(player, mage, room.collision, now))
-    return fail('担げる相手のそばで、二人とも止まってから担ごう。');
+    return fail('肩乗りできる相手が近くにいません。');
   if (mage.carryOfferFromId) return fail('相手は別の誘いを確認しています。');
   player.carryOfferToId = mage.id;
   mage.carryOfferFromId = player.id;

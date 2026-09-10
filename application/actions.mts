@@ -13,7 +13,17 @@ import { canStartJump, jumpProgress } from '../shared/jumping.mjs';
 import { cancelBarter } from '../shared/barter.mjs';
 import { carrying, handleCarryAction } from '../shared/carrying.mjs';
 const distance = (a, b) => Math.hypot(a.x - b.x, a.z - b.z);
-export function createActionHandler({ notice, broadcast, snapshot, systemChat, runtime }) {
+export function createActionHandler({
+  notice: sendNotice,
+  broadcast,
+  snapshot,
+  systemChat,
+  runtime,
+}) {
+  // Unavailable world actions are quiet no-ops. Keep results and sound feedback on
+  // the wire, without interrupting play with proximity or busy-state instructions.
+  const notice = (player, text, tone = 'info', _popup = false) =>
+    sendNotice(player, text, tone, false);
   return function act(room, player, message, now) {
     const action = message.action;
     const carry = handleCarryAction(room, player, message, now);
