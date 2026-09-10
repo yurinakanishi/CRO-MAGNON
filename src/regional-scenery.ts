@@ -213,8 +213,7 @@ export class RegionalScenery {
     for (const [resourceId, item] of this.world.resources) {
       if (regionalId(item.key, item.surface) !== id) continue;
       this.world.scene.remove(item.model);
-      item.label.element.remove();
-      this.world.labels.splice(this.world.labels.indexOf(item.label), 1);
+      // Resource instances have no labels; only their scene object belongs here.
       this.world.resources.delete(resourceId);
     }
   }

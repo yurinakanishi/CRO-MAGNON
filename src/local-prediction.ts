@@ -50,6 +50,7 @@ export class LocalPrediction {
       this.latest.passengerId !== player.passengerId ||
       this.latest.hurtSequence !== player.hurtSequence ||
       this.latest.defeatSequence !== player.defeatSequence ||
+      (this.latest.warpSequence ?? 0) !== (player.warpSequence ?? 0) ||
       Math.hypot(player.x - this.latest.x, player.z - this.latest.z) > 6;
     if (reset || player.downedUntil) {
       this.stop();

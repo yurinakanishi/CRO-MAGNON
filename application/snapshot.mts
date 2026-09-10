@@ -166,6 +166,8 @@ export function snapshot(
         cookingEndsAt,
         jumpAt,
         jumpSequence,
+        warpSequence,
+        lastExpeditionAt,
         cookingKind,
         fishing,
         coastalActivity,
@@ -207,6 +209,8 @@ export function snapshot(
         cookingEndsAt,
         jumpAt: jumpAt ?? 0,
         jumpSequence: jumpSequence ?? 0,
+        warpSequence: warpSequence ?? 0,
+        lastExpeditionAt: lastExpeditionAt ?? 0,
         cookingKind,
         fishing: fishing
           ? { spotId: fishing.spotId, startedAt: fishing.startedAt, endsAt: fishing.endsAt }

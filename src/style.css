@@ -517,3 +517,17 @@ dialog:has(.earth-map){width:min(1040px,94vw);max-width:1040px}
 .portrait.neanderthal-woman:before,.portrait.neanderthal-woman:after,.portrait.neanderthal-woman i,
 .portrait.neanderthal-hunter:before,.portrait.neanderthal-hunter:after,.portrait.neanderthal-hunter i{display:none}
 #carry-decline[hidden] { display: none; }
+
+/* Native fire buttons share the canvas projection. */
+.warp-map-wrap{position:relative;margin:14px 0}
+.warp-map-wrap .big-map{display:block;margin:0;width:100%}
+.warp-map-points{position:absolute;inset:0;pointer-events:none}
+.warp-map-point{position:absolute;transform:translate(-50%,-50%);width:26px;height:26px;display:grid;place-items:center;padding:3px;border:1px solid #ffe1a0;border-radius:50%;background:#472b18;color:#ffd581;box-shadow:0 1px 5px #000a;pointer-events:auto;cursor:pointer}
+.warp-map-point[hidden]{display:none}
+.warp-map-point svg{width:18px;height:18px;pointer-events:none}
+.warp-map-point:hover,.warp-map-point:focus-visible,.warp-map-point[aria-pressed=true]{background:#995c26;outline:2px solid #ffe9b5;outline-offset:2px;z-index:2}
+#map-warp{max-width:300px;white-space:normal;min-height:44px}
+#map-warp-status{font-size:12px}
+@media(max-width:650px){.warp-map-point{width:24px;height:24px}.earth-travel select{max-width:100%;min-width:0}#map-warp{max-width:none;width:100%}}
+.earth-map-toolbar{flex-wrap:wrap}.earth-travel{margin-bottom:12px}.warp-map-wrap{max-width:880px;margin-inline:auto}@media(max-width:650px){.earth-map-toolbar .button{flex:1;padding-inline:8px}.earth-travel{grid-template-columns:minmax(0,1fr)}.earth-travel>*{min-width:0}}
+@media(max-width:760px){dialog:has(.earth-map) .modal-top:before{inset:-18px -18px 0}}

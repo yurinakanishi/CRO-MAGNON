@@ -88,7 +88,14 @@ export function mapProjection(canvas, big, self = { x: 50, z: 50 }) {
   const full = big && overview;
   const bounds = gulfView
     ? { ...GULF, width: GULF.maxX - GULF.minX, depth: GULF.maxZ - GULF.minZ }
-    : WORLD;
+    : {
+        minX: Math.min(EARTH.minX, GULF.minX),
+        maxX: Math.max(EARTH.maxX, GULF.maxX),
+        minZ: Math.min(EARTH.minZ, GULF.minZ),
+        maxZ: Math.max(EARTH.maxZ, GULF.maxZ),
+        width: Math.max(EARTH.maxX, GULF.maxX) - Math.min(EARTH.minX, GULF.minX),
+        depth: Math.max(EARTH.maxZ, GULF.maxZ) - Math.min(EARTH.minZ, GULF.minZ),
+      };
   const scale = full
     ? Math.min((canvas.width - 24) / bounds.width, (canvas.height - 28) / bounds.depth)
     : canvas.width / (big ? 600 : 180);
@@ -432,7 +439,7 @@ export function drawWorldMap(canvas, state, selfId, big = false) {
     full
       ? gulfView
         ? '三つの岸 · 六つの休み場 · 1,480 × 1,340 m'
-        : '氷河時代と創作の世界 · □ 野営地 · ○ 探索地域'
+        : '炎マーク：焚き火ワープ · ○ 探索地域'
       : inGulf(self.x, self.z)
         ? GULF.name
         : (regionAt(self.x, self.z)?.name ?? biomeAt(self.x, self.z).short),

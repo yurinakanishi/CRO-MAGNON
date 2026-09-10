@@ -1,3 +1,4 @@
+import { handleWarpAction } from '../shared/warping.mjs';
 import { handleAdventureAction, recordAdventureGather } from '../shared/adventures.mjs';
 import { handleBoatAction } from '../shared/boats.mjs';
 import { attackProfile, shoulderMagic } from '../shared/combat-profiles.mjs';
@@ -26,6 +27,12 @@ export function createActionHandler({
     sendNotice(player, text, tone, false);
   return function act(room, player, message, now) {
     const action = message.action;
+    if (action === 'warp') {
+      const result = handleWarpAction(room, player, message, now);
+      sendNotice(player, result.text, result.ok ? 'success' : 'error', true);
+      if (result.ok) broadcast(room, snapshot(room, true));
+      return;
+    }
     const carry = handleCarryAction(room, player, message, now);
     if (carry) {
       if (carry.changed) {

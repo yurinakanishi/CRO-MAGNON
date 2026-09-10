@@ -60,7 +60,7 @@ export const PC_HELP: readonly HelpCard[] = [
   {
     key: 'ESC · M · I · J',
     title: 'メニュー・地図・もちもの・手帳',
-    note: 'G で手をふる。H でこの画面を開きます。',
+    note: 'M の地図で焚き火を選び「ワープ」で移動。G で手をふる。H でこの画面。',
   },
 ];
 
@@ -101,7 +101,7 @@ export const PAD_HELP: readonly HelpCard[] = [
   {
     key: 'タッチパッド / SHARE',
     title: '地図',
-    note: '名前やチャットの文字入力はキーボードを使います。',
+    note: '地図の一覧を左右で選び、ワープボタンで決定。文字入力はキーボード。',
   },
 ];
 

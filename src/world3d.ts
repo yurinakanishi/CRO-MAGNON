@@ -612,7 +612,10 @@ export class WorldRenderer {
         this.players.set(p.id, entity);
         this.loadHuman(entity, p.id);
       }
-      if (playerRecovered(entity.state, p)) {
+      if (
+        playerRecovered(entity.state, p) ||
+        (entity.state.warpSequence ?? 0) !== (p.warpSequence ?? 0)
+      ) {
         entity.model.position.set(p.x, walkHeight(p.x, p.z), p.z);
         entity.model.rotation.y = p.facing ?? 0;
         if (p.id === selfId) this.focus.set(p.x, walkHeight(p.x, p.z) + focusHeight(p), p.z);
