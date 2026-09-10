@@ -538,7 +538,10 @@ async function connect() {
       if (message.popup !== false) notify(message.text, message.tone);
       if (message.tone === 'success') playNote();
     }
-    if (message.type === 'chat') addChat(message);
+    if (message.type === 'chat') {
+      addChat(message);
+      if (message.mapPin) notify(`${message.name}：${message.text}`);
+    }
     if (message.type === 'pong') {
       ping = Math.max(0, Date.now() - message.at);
       if (renderer.prediction) renderer.prediction.latencyMs = ping;
@@ -1421,6 +1424,9 @@ function openMap() {
   openModal(mapScreen(icon));
   installMapWarp({
     player,
+    pins: () => state.mapPins ?? [],
+    pinEnabled: () => Array.isArray(state.mapPins),
+    send,
     action,
     icon,
     connected: () => joined,

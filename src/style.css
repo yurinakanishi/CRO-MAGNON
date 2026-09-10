@@ -4615,3 +4615,68 @@ dialog:has(.atlas) #modal-body {
 #map-self.is-crowded b {
   display: none;
 }
+
+/* Shared invitations use the existing player colors. */
+.atlas [hidden] {
+  display: none !important;
+}
+.map-crosshair {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  color: #e1ece3aa;
+  text-shadow: 0 1px 3px #071f26;
+  pointer-events: none;
+  font-size: 24px;
+}
+.map-pan {
+  position: absolute;
+  left: 12px;
+  bottom: 38px;
+  display: flex;
+  gap: 4px;
+}
+.map-pan button {
+  width: 36px;
+  height: 36px;
+  border: 1px solid #95b5ad80;
+  border-radius: 6px;
+  background: #10252aee;
+  color: #e1ece3;
+  cursor: pointer;
+}
+.map-pin-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  grid-column: 1/-1;
+}
+.map-pin-actions .button {
+  flex: 1 1 110px;
+  min-width: 0;
+  min-height: 38px;
+  font-size: 12px;
+  padding: 6px;
+}
+#map-pin-send {
+  border-color: #87c4ce;
+  color: #b5edf2;
+}
+#map-pin-status {
+  grid-column: 1/-1;
+  color: #a8c2b8;
+  font-size: 10px;
+}
+#map-pin-list .atlas-item {
+  overflow-wrap: anywhere;
+  display: block;
+}
+@media (max-height: 520px) and (orientation: landscape) {
+  .atlas .earth-travel {
+    overflow-y: auto;
+  }
+  .map-pan {
+    bottom: 12px;
+  }
+}

@@ -1,4 +1,5 @@
 import type { BarterCommand } from '../shared/barter-types.mjs';
+import { validMapPinPoint } from '../shared/map-pins.mjs';
 export type ClientCommand =
   | BarterCommand
   | { type: 'leave'; keepSession?: boolean }
@@ -6,6 +7,8 @@ export type ClientCommand =
   | { type: 'gait'; running: boolean }
   | { type: 'action'; action: string; targetId?: string; regionId?: string; cropId?: string }
   | { type: 'chat'; text: string }
+  | { type: 'mapPin'; x: number; z: number }
+  | { type: 'clearMapPin' }
   | { type: 'ping'; at: number | string };
 
 function finite(value: unknown): value is number {
@@ -23,6 +26,12 @@ export function decodeCommand(text: string): ClientCommand | null {
   if (!value || typeof value !== 'object' || Array.isArray(value)) return null;
   const message = value as Record<string, unknown>;
   switch (message.type) {
+    case 'mapPin':
+      return validMapPinPoint(message.x, message.z)
+        ? { type: 'mapPin', x: message.x as number, z: message.z as number }
+        : null;
+    case 'clearMapPin':
+      return { type: 'clearMapPin' };
     case 'barter': {
       const id = (v: unknown): v is string =>
         typeof v === 'string' && v.length > 0 && v.length <= 80;

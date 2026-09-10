@@ -39,6 +39,7 @@ export function mapScreen(icon) {
       <button class="button button-outline" id="map-gulf" aria-pressed="false">${GULF.name}</button>
       <button class="button button-outline" id="map-local" aria-pressed="false">${icon('target')} 現在地</button>
       <button class="button button-outline" id="map-details" aria-pressed="false">探索の情報</button>
+      <button class="button button-outline" id="map-pin-center">中央にピンを打つ</button>
     </nav>
     <div class="atlas-body">
       <div class="atlas-map-area">
@@ -46,6 +47,13 @@ export function mapScreen(icon) {
           <canvas id="big-map" width="960" height="600" class="big-map earth-map" aria-label="ドラッグで動かせる世界地図。焚き火のボタンか名前の一覧で行き先を選べます。"></canvas>
           <div id="warp-map-points" class="warp-map-points" aria-label="焚き火のワープ地点"></div>
           <div id="map-clusters" class="warp-map-points" aria-label="近くに集まった焚き火"></div>
+          <div class="map-crosshair" aria-hidden="true">＋</div>
+          <div class="map-pan" aria-label="地図を動かす">
+            <button data-map-pan="left" aria-label="地図を西へ">←</button>
+            <button data-map-pan="up" aria-label="地図を北へ">↑</button>
+            <button data-map-pan="down" aria-label="地図を南へ">↓</button>
+            <button data-map-pan="right" aria-label="地図を東へ">→</button>
+          </div>
           <div id="map-self" aria-label="現在地"><i></i><span>▲</span><b>現在地</b></div>
           <div class="atlas-compass" aria-label="北が上">N<span>↑</span></div>
           <div class="atlas-legend"><span class="atlas-legend-fire">${icon('flame')} 焚き火</span><span class="atlas-legend-self">▲ 現在地</span></div>
@@ -60,14 +68,20 @@ export function mapScreen(icon) {
             <div class="atlas-selection-icon">${icon('flame')}</div>
             <div class="atlas-card-text">
               <small id="map-region"></small>
-              <h3 id="map-destination" aria-live="polite">焚き火を選ぼう</h3>
-              <p id="map-selection">地図の炎か、下の一覧から</p>
+              <h3 id="map-destination" aria-live="polite">場所を選ぼう</h3>
+              <p id="map-selection">地図を押してピンを打つ</p>
             </div>
           </div>
           <button id="map-warp" class="button button-accent" disabled>ここへワープ<kbd>Enter</kbd></button>
+          <div class="map-pin-actions">
+            <button id="map-pin-send" class="button button-outline" disabled>ここへ行こう</button>
+            <button id="map-pin-clear" class="button button-outline" disabled>自分のピンを消す</button>
+          </div>
+          <small id="map-pin-status" role="status">場所を選んで仲間に知らせる · 5分間</small>
           <small id="map-warp-status" role="status"></small>
         </div>
         <div class="atlas-list" id="map-list" role="listbox" aria-label="行き先の一覧">
+          <div class="atlas-group" id="map-pin-list" aria-label="仲間のピン"></div>
           ${warpGroups()
             .map(
               (group) =>

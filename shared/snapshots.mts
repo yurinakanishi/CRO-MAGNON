@@ -135,6 +135,7 @@ export interface NpcSnapshot extends Point {
   greeting: string;
 }
 export interface GameSnapshot {
+  mapPins?: import('./map-pins.mjs').MapPin[];
   type: 'state';
   room: string;
   serverTime: number;

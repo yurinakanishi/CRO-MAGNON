@@ -40,6 +40,8 @@ import { CAMP, INITIAL_RESOURCES, WORLD } from '../shared/world.mjs';
 import { createActionHandler } from './actions.mjs';
 import { defaultRuntime, type GameConnection, type Runtime } from './ports.mjs';
 import { decodeCommand } from './protocol.mjs';
+import { activeMapPins, MAP_PIN_COOLDOWN_MS, MAP_PIN_LIFETIME_MS } from '../shared/map-pins.mjs';
+import { locationName } from '../shared/paleo-geography.mjs';
 import { snapshot as createSnapshot } from './snapshot.mjs';
 const COLORS = ['#e4ac65', '#87b899', '#b49cd2', '#76a7c3', '#ce8c8b'];
 const cleanText = (value, max) =>
@@ -318,6 +320,38 @@ export function createGameCore({
       player.tokens -= 1;
       const message = decodeCommand(data.toString());
       if (!message) return;
+      if (message.type === 'mapPin' || message.type === 'clearMapPin') {
+        room.mapPins = activeMapPins(room, now);
+        if (
+          message.type === 'mapPin' &&
+          now - (player.lastMapPinAt ?? -Infinity) < MAP_PIN_COOLDOWN_MS
+        )
+          return;
+        room.mapPins = room.mapPins.filter((pin) => pin.ownerId !== player.id);
+        if (message.type === 'mapPin') {
+          player.lastMapPinAt = now;
+          const pin = {
+            id: runtime.id(),
+            ownerId: player.id,
+            name: player.name,
+            color: player.color,
+            x: message.x,
+            z: message.z,
+            expiresAt: now + MAP_PIN_LIFETIME_MS,
+          };
+          room.mapPins.push(pin);
+          broadcast(room, {
+            type: 'chat',
+            id: pin.id,
+            name: player.name,
+            text: `ここへ行こう！ ${locationName(pin.x, pin.z)}（地図にピン）`,
+            at: now,
+            mapPin: true,
+          });
+        }
+        broadcast(room, snapshot(room));
+        return;
+      }
       if (message.type === 'leave') {
         if (!persistentSessions || !message.keepSession) player.sessionToken = null;
         socket.close(1000, 'Explicit leave');
@@ -416,6 +450,7 @@ export function createGameCore({
         (projectile) => projectile.ownerId !== player.id,
       );
       room.players.delete(player.id);
+      room.mapPins = activeMapPins(room, runtime.now());
       if (!room.players.size)
         for (const resident of room.residents) {
           resident.forageWork = null;
@@ -575,6 +610,7 @@ export function createGameCore({
             (key, value) =>
               [
                 'socket',
+                'lastMapPinAt',
                 'jumpAt',
                 'jumpSequence',
                 'carrierId',

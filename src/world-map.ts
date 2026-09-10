@@ -507,6 +507,42 @@ export function drawWorldMap(canvas, state, selfId, big = false) {
       ctx.stroke();
     }
   }
+  const pins = (state.mapPins ?? []).filter((pin) => pin.expiresAt > state.serverTime);
+  for (const pin of pins) {
+    let [x, y] = point(pin.x, pin.z);
+    if (big && (x < 10 || y < 10 || x > w - 10 || y > h - 10)) continue;
+    ctx.save();
+    if (!big) {
+      // Keep distant invitations on the minimap edge, in the actual direction of travel.
+      const dx = x - w / 2,
+        dy = y - h / 2;
+      const ratio = Math.max(1, Math.abs(dx) / (w / 2 - 12), Math.abs(dy) / (h / 2 - 26));
+      x = w / 2 + dx / ratio;
+      y = h / 2 + dy / ratio;
+    }
+    ctx.strokeStyle = '#10252a';
+    ctx.fillStyle = pin.color;
+    ctx.lineWidth = 3;
+    ctx.beginPath();
+    ctx.moveTo(x, y - 9);
+    ctx.lineTo(x + 7, y - 2);
+    ctx.lineTo(x, y + 7);
+    ctx.lineTo(x - 7, y - 2);
+    ctx.closePath();
+    ctx.stroke();
+    ctx.fill();
+    if (big) {
+      const label = `${pin.name}：ここへ行こう`;
+      ctx.font = '600 12px sans-serif';
+      ctx.textAlign = 'center';
+      const half = ctx.measureText(label).width / 2 + 4;
+      const labelX = Math.max(half, Math.min(w - half, x));
+      ctx.strokeText(label, labelX, y + 23);
+      ctx.fillText(label, labelX, y + 23);
+    }
+    ctx.restore();
+  }
+  canvas.dataset.mapPinCount = String(pins.length);
   ctx.fillStyle = '#fff0d3';
   ctx.font = big ? '12px sans-serif' : '10px sans-serif';
   if (!big)

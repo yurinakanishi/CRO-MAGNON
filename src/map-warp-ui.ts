@@ -1,6 +1,7 @@
 import { WARP_POINTS, warpPointById, warpUnavailable } from '../shared/warp-sites.mjs';
 import { inGulf } from '../shared/gulf-region.mjs';
 import { locationName } from '../shared/paleo-geography.mjs';
+import { MAP_PIN_COOLDOWN_MS } from '../shared/map-pins.mjs';
 import { groupMapPoints } from './map-layout.js';
 import { warpRegionName } from './map-screen.js';
 import {
@@ -36,7 +37,17 @@ export function updateMapWarp(player, now, connected = true) {
   card.dataset.state = !point ? 'empty' : reason || !connected ? 'blocked' : 'ready';
 }
 
-export function installMapWarp({ player, now, action, icon, redraw, connected }) {
+export function installMapWarp({
+  player,
+  pins,
+  pinEnabled,
+  send,
+  now,
+  action,
+  icon,
+  redraw,
+  connected,
+}) {
   const canvas = document.querySelector<HTMLCanvasElement>('#big-map');
   const wrap = canvas.parentElement;
   const root = document.querySelector<HTMLElement>('#warp-map-points');
@@ -44,7 +55,17 @@ export function installMapWarp({ player, now, action, icon, redraw, connected })
   const card = document.querySelector<HTMLElement>('#map-card');
   const list = document.querySelector<HTMLElement>('#map-list');
   const warp = document.querySelector<HTMLButtonElement>('#map-warp');
+  const pinSend = document.querySelector<HTMLButtonElement>('#map-pin-send');
+  const pinClear = document.querySelector<HTMLButtonElement>('#map-pin-clear');
+  const pinList = document.querySelector<HTMLElement>('#map-pin-list');
+  let chosen = null,
+    sentAt = -Infinity,
+    pinListKey = '';
   const items = [...list.querySelectorAll<HTMLButtonElement>('[data-warp-item]')];
+  if (!pinEnabled()) {
+    document.querySelector('#map-destination').textContent = '焚き火を選ぼう';
+    document.querySelector('#map-selection').textContent = '地図の炎か、下の一覧から';
+  }
   let mode = inGulf(player()?.x, player()?.z) ? 'gulf' : 'earth';
   let clusterKey = '',
     details = false,
@@ -61,13 +82,18 @@ export function installMapWarp({ player, now, action, icon, redraw, connected })
     }
   };
   const choose = (point, { focus = true, reveal = false } = {}) => {
-    card.dataset.warpId = point?.id ?? '';
+    chosen = point;
+    card.dataset.warpId = warpPointById(point?.id)?.id ?? '';
     setWorldMapSelection(point);
-    document.querySelector('#map-region').textContent = point ? warpRegionName(point) : '';
-    document.querySelector('#map-destination').textContent = point?.name ?? '焚き火を選ぼう';
+    document.querySelector('#map-region').textContent = point
+      ? card.dataset.warpId
+        ? warpRegionName(point)
+        : locationName(point.x, point.z)
+      : '';
+    document.querySelector('#map-destination').textContent = point?.name ?? '場所を選ぼう';
     document.querySelector('#map-selection').textContent = point
       ? `現在地から ${metres(point, me())}`
-      : '地図の炎か、下の一覧から';
+      : '地図を押してピンを打つ';
     if (point) {
       const [x, y] = mapProjection(canvas, true, player()).point(point.x, point.z);
       const offscreen = x < 40 || y < 40 || x > canvas.width - 40 || y > canvas.height - 40;
@@ -81,7 +107,10 @@ export function installMapWarp({ player, now, action, icon, redraw, connected })
     }
     redraw();
     updateMapWarp(player(), now(), connected());
-    if (focus && !warp.disabled) warp.focus({ preventScroll: true });
+    if (focus) {
+      const target = !warp.disabled ? warp : pinSend;
+      if (!target.disabled) target.focus({ preventScroll: true });
+    }
   };
   root.innerHTML = WARP_POINTS.map(
     (p) =>
@@ -97,6 +126,37 @@ export function installMapWarp({ player, now, action, icon, redraw, connected })
     el.style.top = `${y}px`;
   };
   const update = () => {
+    // Older running hosts must not offer a command they cannot receive yet.
+    const enabled = pinEnabled();
+    for (const element of document.querySelectorAll<HTMLElement>(
+      '#map-pin-center,.map-pin-actions,#map-pin-status,.map-crosshair,.map-pan',
+    ))
+      element.hidden = !enabled;
+    const activePins = pins().filter((pin) => pin.expiresAt > now());
+    pinSend.disabled = !enabled || !chosen || !connected() || now() - sentAt < MAP_PIN_COOLDOWN_MS;
+    pinClear.disabled = !connected() || !activePins.some((pin) => pin.ownerId === player()?.id);
+    const nextPinKey = activePins.map((pin) => pin.id).join(',');
+    if (nextPinKey !== pinListKey) {
+      pinListKey = nextPinKey;
+      pinList.replaceChildren();
+      if (activePins.length) {
+        const heading = document.createElement('h4');
+        heading.textContent = '仲間のピン';
+        pinList.append(heading);
+      }
+      for (const pin of activePins) {
+        const item = document.createElement('button');
+        item.className = 'atlas-item';
+        item.dataset.mapPinId = pin.id;
+        item.style.color = pin.color;
+        item.textContent = `◆ ${pin.name}：ここへ行こう`;
+        item.onclick = () => {
+          centerWorldMap(pin);
+          choose({ x: pin.x, z: pin.z, name: `${pin.name}のピン` });
+        };
+        pinList.append(item);
+      }
+    }
     const projection = mapProjection(canvas, true, player());
     const self = player();
     const [selfX, selfY] = projection.point(self?.x ?? 50, self?.z ?? 50);
@@ -251,6 +311,28 @@ export function installMapWarp({ player, now, action, icon, redraw, connected })
     refreshList();
   };
   canvas.addEventListener('mapdraw', update);
+  pinSend.onclick = () => {
+    if (!chosen || pinSend.disabled) return;
+    send({ type: 'mapPin', x: chosen.x, z: chosen.z });
+    sentAt = now();
+    redraw();
+  };
+  pinClear.onclick = () => {
+    if (!pinClear.disabled) send({ type: 'clearMapPin' });
+  };
+  const chooseCenter = () =>
+    choose({
+      ...mapProjection(canvas, true, player()).world(canvas.width / 2, canvas.height / 2),
+      name: 'ここへ行こう',
+    });
+  document.getElementById('map-pin-center').onclick = chooseCenter;
+  const directions = { left: [60, 0], right: [-60, 0], up: [0, 60], down: [0, -60] };
+  for (const button of document.querySelectorAll<HTMLButtonElement>('[data-map-pan]'))
+    button.onclick = () => {
+      const [dx, dy] = directions[button.dataset.mapPan];
+      panWorldMap(canvas, player(), dx, dy);
+      redraw();
+    };
   warp.onclick = () => {
     const point = warpPointById(card.dataset.warpId);
     if (connected() && point && !warpUnavailable(player(), point, now())) action('warp', point.id);
@@ -280,7 +362,10 @@ export function installMapWarp({ player, now, action, icon, redraw, connected })
   document.getElementById('map-zoom-out').onclick = () => zoom(1 / 1.5);
   const pointerAnchor = (event: MouseEvent) => {
     const rect = canvas.getBoundingClientRect();
-    return { x: event.clientX - rect.left, y: event.clientY - rect.top };
+    return {
+      x: ((event.clientX - rect.left) * canvas.width) / rect.width,
+      y: ((event.clientY - rect.top) * canvas.height) / rect.height,
+    };
   };
   canvas.onwheel = (event) => {
     event.preventDefault();
@@ -290,25 +375,42 @@ export function installMapWarp({ player, now, action, icon, redraw, connected })
   let drag = null;
   canvas.onpointerdown = (event) => {
     if (event.button !== 0) return;
-    drag = { id: event.pointerId, x: event.clientX, y: event.clientY };
+    drag = {
+      id: event.pointerId,
+      x: event.clientX,
+      y: event.clientY,
+      startX: event.clientX,
+      startY: event.clientY,
+      moved: false,
+    };
     canvas.focus({ preventScroll: true });
     canvas.setPointerCapture(event.pointerId);
     canvas.classList.add('dragging');
   };
   canvas.onpointermove = (event) => {
     if (!drag || drag.id !== event.pointerId) return;
+    if (Math.hypot(event.clientX - drag.startX, event.clientY - drag.startY) > 6) drag.moved = true;
+    if (!drag.moved) return;
     panWorldMap(canvas, player(), event.clientX - drag.x, event.clientY - drag.y);
     drag.x = event.clientX;
     drag.y = event.clientY;
     redraw();
   };
-  canvas.onpointerup =
-    canvas.onpointercancel =
-    canvas.onlostpointercapture =
-      () => {
-        drag = null;
-        canvas.classList.remove('dragging');
-      };
+  canvas.onpointerup = (event) => {
+    if (pinEnabled() && drag && drag.id === event.pointerId && !drag.moved) {
+      const anchor = pointerAnchor(event);
+      choose({
+        ...mapProjection(canvas, true, player()).world(anchor.x, anchor.y),
+        name: 'ここへ行こう',
+      });
+    }
+    drag = null;
+    canvas.classList.remove('dragging');
+  };
+  canvas.onpointercancel = canvas.onlostpointercapture = () => {
+    drag = null;
+    canvas.classList.remove('dragging');
+  };
   const dialog = canvas.closest('dialog');
   const keys = (event: KeyboardEvent) => {
     if (
@@ -321,6 +423,11 @@ export function installMapWarp({ player, now, action, icon, redraw, connected })
     if (['+', '=', '-'].includes(event.key)) {
       event.preventDefault();
       zoom(event.key === '-' ? 1 / 1.5 : 1.5);
+      return;
+    }
+    if (pinEnabled() && event.key === 'Enter' && event.target === canvas) {
+      event.preventDefault();
+      chooseCenter();
       return;
     }
     // Arrow keys pan the map only while the map itself (not a list or button) has focus.
