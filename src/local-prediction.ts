@@ -44,6 +44,8 @@ export class LocalPrediction {
     const reset =
       !this.latest ||
       this.latest.id !== player.id ||
+      this.latest.species !== player.species ||
+      this.latest.gender !== player.gender ||
       this.latest.mountId !== player.mountId ||
       this.latest.boatId !== player.boatId ||
       this.latest.carrierId !== player.carrierId ||

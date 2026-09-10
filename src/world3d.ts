@@ -596,6 +596,20 @@ export class WorldRenderer {
     for (const p of state.players) {
       present.add(p.id);
       let entity = this.players.get(p.id);
+      const changedCharacter = entity && characterModel(entity.state).key !== characterModel(p).key;
+      if (changedCharacter) {
+        this.scene.remove(entity.model);
+        entity.actor?.dispose();
+        entity.label.element.remove();
+        this.labels.splice(this.labels.indexOf(entity.label), 1);
+        this.players.delete(p.id);
+        entity = null;
+        if (p.id === selfId) {
+          this.focus.set(p.x, walkHeight(p.x, p.z) + focusHeight(p), p.z);
+          this.targetDistance = p.species === 'bear' ? 4.5 : DEFAULT_DISTANCE;
+          this.zoom = DEFAULT_DISTANCE / this.targetDistance;
+        }
+      }
       if (!entity) {
         const model = new THREE.Group();
         model.position.set(p.x, walkHeight(p.x, p.z), p.z);
@@ -727,7 +741,7 @@ export class WorldRenderer {
       this.canvas.dataset.modelLoadMs = provider.loadMilliseconds.toFixed(0);
     } catch (error) {
       pendingActor?.dispose();
-      if (this.disposed) return;
+      if (this.disposed || this.players.get(id) !== entity) return;
       this.canvas.dataset.characterAsset = 'error';
       this.failWorld('人物の3D素材を読み込めませんでした。再読み込みしてください。', error);
     }

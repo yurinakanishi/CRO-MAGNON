@@ -4,11 +4,13 @@ if(!output)throw new Error('Usage: build-castle-walk-atlas.mjs columns.json outp
 const source=JSON.parse(await readFile(input,'utf8'));
 const {step,minX,minZ,nx,nz,columns}=source;
 const rise=Number(process.env.CASTLE_STEP_RISE)||.55;
+const entranceLandingZ=Number(process.argv[4]??19.1);
+if(!Number.isFinite(entranceLandingZ))throw new Error('Invalid entrance landing');
 let riserInterpolations=0;
 const choices=columns.map((col,index)=>{
   const x=minX+(index%nx+.5)*step,z=minZ+(Math.floor(index/nx)+.5)*step;
   // Only the exposed terraces are playable; hidden reconstruction slabs are not rooms.
-  if(Math.abs(x)<1.105&&z>=19.1&&z<=33){
+  if(Math.abs(x)<1.105&&z>=entranceLandingZ&&z<=33){
     const expected=(33-z)*.53;
     let floor=col.filter((h,i)=>(i===col.length-1||col[i+1]-h>1.8)&&Math.abs(h-expected)<1.0).sort((a,b)=>Math.abs(a-expected)-Math.abs(b-expected))[0];
     if(floor===undefined){
@@ -34,4 +36,5 @@ for(let cursor=0;cursor<queue.length;cursor++){
 const heights=choices.map((col,i)=>col.find((h,j)=>visited[i][j])??null);
 const buckets={};for(const h of heights)if(h!==null){const bucket=Math.round(h);buckets[bucket]=(buckets[bucket]??0)+1;}
 const result={schemaVersion:1,sourceSha256:source.sha256,step,minX,minZ,nx,nz,heights,measurement:{method:'Exposed terraces rasterized from exact GLB; two measured door passages; head clearance and connected step graph from outer ground. Single-cell vertical risers in the reused entrance stair interpolate the measured treads immediately before and after.',maxStepRise:rise,bodyHeadroom:1.8,riserInterpolations,reachable:heights.filter(h=>h!==null).length,blocked:heights.filter(h=>h===null).length,heightBuckets:buckets}};
+result.measurement.entranceLandingZ=entranceLandingZ;
 await writeFile(output,JSON.stringify(result));console.log(JSON.stringify(result.measurement));

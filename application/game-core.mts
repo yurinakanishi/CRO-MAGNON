@@ -371,6 +371,7 @@ export function createGameCore({
           message.action === 'cancelCoastal' ||
           message.action === 'rift' ||
           message.action === 'warp' ||
+          message.action === 'changeCharacter' ||
           now - player.lastAction >= 450)
       ) {
         if (message.action === 'jump' && !canStartJump(player, now)) return;

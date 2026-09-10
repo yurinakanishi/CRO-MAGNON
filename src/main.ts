@@ -1,5 +1,6 @@
 import { mapScreen } from './map-screen.js';
 import { installMapWarp, updateMapWarp } from './map-warp-ui.js';
+import { openCharacterSwitch, updateCharacterSwitch } from './character-switch-ui.js';
 import { carrying, canCarry } from '../shared/carrying.mjs';
 import { readSaved, save, savedSession, saveSession } from './session-storage.js';
 import {
@@ -392,6 +393,7 @@ function addChat(message) {
 }
 function connection(connected, label) {
   joined = connected;
+  updateCharacterSwitch(player(), renderer.serverNow(), connected);
   if (!connected) renderer.prediction?.reset();
   $('#connection-dot').classList.toggle('offline', !connected);
   $('#connection-label').textContent =
@@ -499,11 +501,21 @@ async function connect() {
         movementCommands.reset();
       }
       const warped = previous && (previous.warpSequence ?? 0) !== (player()?.warpSequence ?? 0);
+      const changedCharacter =
+        previous && player() && characterModel(previous).key !== characterModel(player()).key;
+      if (changedCharacter) {
+        profile = { ...profile, species: player().species, gender: player().gender };
+        save('cro-species', profile.species);
+        save('cro-gender', profile.gender);
+        stopInput();
+        if ($('#character-switch-form')) $('#modal').close();
+      }
       if (warped) {
         stopInput();
         if ($('#big-map')) $('#modal').close();
       }
       renderer.setState(state, selfId);
+      updateCharacterSwitch(player(), renderer.serverNow(), joined);
       if ($('#big-map'))
         updateMapWarp(
           player(),
@@ -1130,34 +1142,34 @@ function inventoryMarkup() {
   const me = player(),
     inv = inventoryCounts(me?.inventory);
   return `<div class="gulf-actions"><button id="modal-crop-food" class="button button-outline">火根と香草の食事</button><button id="modal-crop-farms" class="button button-outline">共同の畑と種</button></div><h2>旅に持っていくもの。</h2><p class="modal-intro">生肉・魚・貝は、各地の焚き火で焼いてから食べよう。黒曜石の原石は石器作業場で刃にできます。</p><div class="inventory-grid">${[
-      ['wood', '木材', '採集して、道具や拠点に。'],
-      ['stone', '石', '丈夫な道具と火の囲いに。'],
-      ['berry', 'ベリー', '食べると元気が回復。'],
-      ['rawMeat', '生肉', 'そのままでは食べられません。焚き火で3秒焼こう。'],
-      ['cookedMeat', '焼き肉', '1個で元気を45回復します。'],
-      ['obsidian', '黒曜石', '湾の西の露頭で採掘。石器作業場で削って刃を作ろう。'],
-      ['seed', 'ベリーの種', '共同の畑に植え、水をやって育てよう。'],
-      ['water', '水袋', '湾の水場で水6を補給。火根草は水2、ほかの作物は水1。'],
-      ['rawFish', '生魚', '湾の魚場で釣る。焚き火で3秒焼こう。'],
-      ['cookedFish', '焼き魚', '元気+30。集い場の食料にも持ち寄れます。'],
-      ['rawShellfish', '生の貝', '浜の貝場で採集。焚き火で3秒焼こう。'],
-      ['cookedShellfish', '焼いた貝', '元気+20。食べると貝殻1個が残ります。'],
-      ['shells', '貝殻', '集落へ持ち帰り、みんなで貝塚を築こう。'],
-      ['obsidianBlade', '黒曜石の刃', '原石2個から作る。刃1・木材1で木槍の先へ。'],
-      ['rootSeed', '火根草の種', '集落の炉でベリー2と種2を交換。畑に植えて水2。'],
-      ['herbSeed', '香り草の種', '集落の炉で種を交換。水1で早く育つ。'],
-      ['rawRoot', '火根', '火根草の根。炉で焼いてから食べよう。'],
-      ['herb', '香草', '火根と一緒に焼くと、回復量が増えます。'],
-      ['cookedRoot', '焼き根', '元気+35。宴にも持ち寄れます。'],
-      ['herbRoot', '香草焼き根', '元気+50。火根1・香草1で料理。'],
-    ]
-      .map(
-        ([key, label, note]) =>
-          `<div class="inventory-card"><span class="resource-icon ${key}">${icon(key.endsWith('Meat') ? 'meat' : key.endsWith('Fish') ? 'wave' : key.toLowerCase().includes('shell') ? 'shell' : key === 'obsidianBlade' ? 'blade' : key === 'obsidian' ? 'stone' : key)}</span><strong>${label}<b>${inv[key]}</b></strong><p>${note}</p>${key === 'berry' ? '<button id="modal-eat" class="button button-outline">食べる</button>' : key === 'rawMeat' ? `<button id="modal-cook" class="button button-outline" ${inv.rawMeat ? '' : 'disabled'}>焚き火で焼く</button>` : key === 'cookedMeat' ? `<button id="modal-eat-meat" class="button button-outline" ${inv.cookedMeat ? '' : 'disabled'}>焼き肉を食べる</button>` : key === 'rawFish' ? '<button id="modal-cook-fish" class="button button-outline">焚き火で焼く</button>' : key === 'cookedFish' ? '<button id="modal-eat-fish" class="button button-outline">魚を食べる</button>' : ''}</div>`,
-      )
-      .join(
-        '',
-      )}</div><div class="recipe"><span class="resource-icon stone">${icon('axe')}</span><div><strong id="modal-axe-label">${me?.tool ? '石斧を装備中' : '石斧をつくる'}</strong><p>木材3 + 石2 ・ 採集量が増えます</p></div><button id="modal-craft" class="button button-accent" ${me?.tool ? 'disabled' : ''}>${me?.tool ? '装備中' : 'つくる'}</button></div><div class="recipe"><span class="resource-icon wood">${icon('wood')}</span><div><strong>丸木舟をつくる</strong><p>木材12 · 海岸で制作 · Bで乗船</p></div><button id="modal-boat-craft" class="button button-accent">船をつくる</button></div><p class="form-note">今の武器：${attackProfile(me ?? profile).noun}。人間系は木槍で出発し、黒曜石の刃で強化できます。相手を向いて F。</p><div class="recipe"><div><strong>湾の釣り道具</strong><p>木材3・石1 · 繰り返し使えます</p></div><button id="modal-fishing-kit" class="button button-accent">道具を作る</button><button id="modal-fishing" class="button button-outline">魚場と釣り方</button></div><div class="recipe coastal-recipe"><div><strong>貝の食事と黒曜石の道具</strong><p>貝殻を持ち帰って貝塚へ。原石を削って木槍の先へ。</p></div><button id="modal-coastal" class="button button-outline">貝と石器の作り方</button><button id="modal-cook-shellfish" class="button button-outline">貝を焼く</button><button id="modal-eat-shellfish" class="button button-outline">焼いた貝を食べる</button></div>`;
+    ['wood', '木材', '採集して、道具や拠点に。'],
+    ['stone', '石', '丈夫な道具と火の囲いに。'],
+    ['berry', 'ベリー', '食べると元気が回復。'],
+    ['rawMeat', '生肉', 'そのままでは食べられません。焚き火で3秒焼こう。'],
+    ['cookedMeat', '焼き肉', '1個で元気を45回復します。'],
+    ['obsidian', '黒曜石', '湾の西の露頭で採掘。石器作業場で削って刃を作ろう。'],
+    ['seed', 'ベリーの種', '共同の畑に植え、水をやって育てよう。'],
+    ['water', '水袋', '湾の水場で水6を補給。火根草は水2、ほかの作物は水1。'],
+    ['rawFish', '生魚', '湾の魚場で釣る。焚き火で3秒焼こう。'],
+    ['cookedFish', '焼き魚', '元気+30。集い場の食料にも持ち寄れます。'],
+    ['rawShellfish', '生の貝', '浜の貝場で採集。焚き火で3秒焼こう。'],
+    ['cookedShellfish', '焼いた貝', '元気+20。食べると貝殻1個が残ります。'],
+    ['shells', '貝殻', '集落へ持ち帰り、みんなで貝塚を築こう。'],
+    ['obsidianBlade', '黒曜石の刃', '原石2個から作る。刃1・木材1で木槍の先へ。'],
+    ['rootSeed', '火根草の種', '集落の炉でベリー2と種2を交換。畑に植えて水2。'],
+    ['herbSeed', '香り草の種', '集落の炉で種を交換。水1で早く育つ。'],
+    ['rawRoot', '火根', '火根草の根。炉で焼いてから食べよう。'],
+    ['herb', '香草', '火根と一緒に焼くと、回復量が増えます。'],
+    ['cookedRoot', '焼き根', '元気+35。宴にも持ち寄れます。'],
+    ['herbRoot', '香草焼き根', '元気+50。火根1・香草1で料理。'],
+  ]
+    .map(
+      ([key, label, note]) =>
+        `<div class="inventory-card"><span class="resource-icon ${key}">${icon(key.endsWith('Meat') ? 'meat' : key.endsWith('Fish') ? 'wave' : key.toLowerCase().includes('shell') ? 'shell' : key === 'obsidianBlade' ? 'blade' : key === 'obsidian' ? 'stone' : key)}</span><strong>${label}<b>${inv[key]}</b></strong><p>${note}</p>${key === 'berry' ? '<button id="modal-eat" class="button button-outline">食べる</button>' : key === 'rawMeat' ? `<button id="modal-cook" class="button button-outline" ${inv.rawMeat ? '' : 'disabled'}>焚き火で焼く</button>` : key === 'cookedMeat' ? `<button id="modal-eat-meat" class="button button-outline" ${inv.cookedMeat ? '' : 'disabled'}>焼き肉を食べる</button>` : key === 'rawFish' ? '<button id="modal-cook-fish" class="button button-outline">焚き火で焼く</button>' : key === 'cookedFish' ? '<button id="modal-eat-fish" class="button button-outline">魚を食べる</button>' : ''}</div>`,
+    )
+    .join(
+      '',
+    )}</div><div class="recipe"><span class="resource-icon stone">${icon('axe')}</span><div><strong id="modal-axe-label">${me?.tool ? '石斧を装備中' : '石斧をつくる'}</strong><p>木材3 + 石2 ・ 採集量が増えます</p></div><button id="modal-craft" class="button button-accent" ${me?.tool ? 'disabled' : ''}>${me?.tool ? '装備中' : 'つくる'}</button></div><div class="recipe"><span class="resource-icon wood">${icon('wood')}</span><div><strong>丸木舟をつくる</strong><p>木材12 · 海岸で制作 · Bで乗船</p></div><button id="modal-boat-craft" class="button button-accent">船をつくる</button></div><p class="form-note">今の武器：${attackProfile(me ?? profile).noun}。人間系は木槍で出発し、黒曜石の刃で強化できます。相手を向いて F。</p><div class="recipe"><div><strong>湾の釣り道具</strong><p>木材3・石1 · 繰り返し使えます</p></div><button id="modal-fishing-kit" class="button button-accent">道具を作る</button><button id="modal-fishing" class="button button-outline">魚場と釣り方</button></div><div class="recipe coastal-recipe"><div><strong>貝の食事と黒曜石の道具</strong><p>貝殻を持ち帰って貝塚へ。原石を削って木槍の先へ。</p></div><button id="modal-coastal" class="button button-outline">貝と石器の作り方</button><button id="modal-cook-shellfish" class="button button-outline">貝を焼く</button><button id="modal-eat-shellfish" class="button button-outline">焼いた貝を食べる</button></div>`;
 }
 /** Wires the inventory buttons after `inventoryMarkup()` is in the document. */
 function bindInventory() {
@@ -1319,6 +1331,19 @@ function openPauseMenu() {
     ['help', 'help', '操作説明'],
   ];
   const links: [string, string, string, () => void][] = [
+    [
+      'character',
+      'people',
+      'キャラクターを変える',
+      () =>
+        openCharacterSwitch({
+          openModal,
+          player,
+          now: () => renderer.serverNow(),
+          connected: () => joined,
+          action,
+        }),
+    ],
     ['map', 'expand', '世界地図', openMap],
     ['journal', 'book', '探索手帳', openJournal],
     ['gulf', 'wave', '三つの国・共同の畑', () => gulfUI.open()],
@@ -1331,7 +1356,16 @@ function openPauseMenu() {
   ];
   const exits: [string, string, string, () => void][] = [
     ['resume', 'compass', '探索に戻る', () => $('#modal').close()],
-    ['profile', 'people', '部屋・キャラクターを変える', () => showSetup()],
+    ...(!fixedIdentity
+      ? [
+          ['profile', 'people', '部屋を変える（参加し直す）', () => showSetup()] as [
+            string,
+            string,
+            string,
+            () => void,
+          ],
+        ]
+      : []),
     ['title', 'close', 'タイトルへ戻る', leaveToTitle],
   ];
   if (!tabs.some(([id]) => id === pauseTab)) pauseTab = 'objectives';
@@ -1345,7 +1379,9 @@ function openPauseMenu() {
         ([id, glyph, label]) =>
           `<button type="button" class="pause-tab" role="tab" data-pause-tab="${id}" data-controller-menu="${id}" aria-selected="${pauseTab === id}" aria-controls="pause-panel-${id}">${icon(glyph)}<span>${label}</span></button>`,
       )
-      .join('')}</nav><div class="pause-exits">${exits.map(menuButton).join('')}</div></aside><div class="pause-panels">${panel(
+      .join(
+        '',
+      )}</nav><div class="pause-exits">${exits.map(menuButton).join('')}</div></aside><div class="pause-panels">${panel(
       'objectives',
       objectivesMarkup(),
     )}${panel('inventory', inventoryMarkup())}${panel(
