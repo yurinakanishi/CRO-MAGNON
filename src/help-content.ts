@@ -101,7 +101,7 @@ export const PAD_HELP: readonly HelpCard[] = [
   {
     key: 'タッチパッド / SHARE',
     title: '地図',
-    note: '地図の一覧を左右で選び、ワープボタンで決定。文字入力はキーボード。',
+    note: '地図の炎か行き先の一覧を方向で選び、ワープボタンで決定。文字入力はキーボード。',
   },
 ];
 

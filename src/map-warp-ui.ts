@@ -1,6 +1,8 @@
 import { WARP_POINTS, warpPointById, warpUnavailable } from '../shared/warp-sites.mjs';
 import { inGulf } from '../shared/gulf-region.mjs';
+import { locationName } from '../shared/paleo-geography.mjs';
 import { groupMapPoints } from './map-layout.js';
+import { warpRegionName } from './map-screen.js';
 import {
   mapProjection,
   setWorldMapSelection,
@@ -11,10 +13,17 @@ import {
   panWorldMap,
 } from './world-map.js';
 
+/** The chosen destination id lives on the travel card so the HUD and controller can read it. */
+export function selectedWarpId(): string {
+  return document.querySelector<HTMLElement>('#map-card')?.dataset.warpId ?? '';
+}
+
+const metres = (a, b) => `${Math.round(Math.hypot(a.x - b.x, a.z - b.z))} m`;
+
 export function updateMapWarp(player, now, connected = true) {
   const button = document.querySelector<HTMLButtonElement>('#map-warp');
   if (!button) return;
-  const point = warpPointById(document.querySelector<HTMLSelectElement>('#map-location').value);
+  const point = warpPointById(selectedWarpId());
   const reason = warpUnavailable(player, point, now);
   button.disabled = !!reason || !connected;
   button.setAttribute('aria-label', point ? `${point.name}へワープ` : 'ここへワープ');
@@ -23,6 +32,8 @@ export function updateMapWarp(player, now, connected = true) {
     : !point
       ? ''
       : reason || '';
+  const card = document.querySelector<HTMLElement>('#map-card');
+  card.dataset.state = !point ? 'empty' : reason || !connected ? 'blocked' : 'ready';
 }
 
 export function installMapWarp({ player, now, action, icon, redraw, connected }) {
@@ -30,23 +41,43 @@ export function installMapWarp({ player, now, action, icon, redraw, connected })
   const wrap = canvas.parentElement;
   const root = document.querySelector<HTMLElement>('#warp-map-points');
   const clusters = document.querySelector<HTMLElement>('#map-clusters');
-  const select = document.querySelector<HTMLSelectElement>('#map-location');
+  const card = document.querySelector<HTMLElement>('#map-card');
+  const list = document.querySelector<HTMLElement>('#map-list');
   const warp = document.querySelector<HTMLButtonElement>('#map-warp');
+  const items = [...list.querySelectorAll<HTMLButtonElement>('[data-warp-item]')];
   let mode = inGulf(player()?.x, player()?.z) ? 'gulf' : 'earth';
   let clusterKey = '',
-    details = false;
+    details = false,
+    grouped = new Set<string>();
   setWorldMapDetails(false);
-  const choose = (point, focus = true) => {
-    select.value = point?.id ?? '';
+  const me = () => player() ?? { x: 50, z: 50 };
+  const refreshList = () => {
+    for (const item of items) {
+      const point = warpPointById(item.dataset.warpItem);
+      const locked = !!point.requiredSeals && !!warpUnavailable(player(), point, now());
+      item.querySelector('small').textContent = locked ? '旅の証が必要' : metres(point, me());
+      item.classList.toggle('is-locked', locked);
+      item.setAttribute('aria-selected', String(item.dataset.warpItem === card.dataset.warpId));
+    }
+  };
+  const choose = (point, { focus = true, reveal = false } = {}) => {
+    card.dataset.warpId = point?.id ?? '';
     setWorldMapSelection(point);
-    document.querySelector('#map-destination').textContent = point?.name ?? '';
+    document.querySelector('#map-region').textContent = point ? warpRegionName(point) : '';
+    document.querySelector('#map-destination').textContent = point?.name ?? '焚き火を選ぼう';
     document.querySelector('#map-selection').textContent = point
-      ? `${Math.round(Math.hypot(point.x - (player()?.x ?? 50), point.z - (player()?.z ?? 50)))} m`
-      : '';
+      ? `現在地から ${metres(point, me())}`
+      : '地図の炎か、下の一覧から';
     if (point) {
       const [x, y] = mapProjection(canvas, true, player()).point(point.x, point.z);
-      if (x < 40 || y < 40 || x > canvas.width - 40 || y > canvas.height - 40)
+      const offscreen = x < 40 || y < 40 || x > canvas.width - 40 || y > canvas.height - 40;
+      if (reveal && grouped.has(point.id)) {
+        // Chosen by name while hidden inside a cluster: open the cluster around it.
         centerWorldMap(point);
+        zoomWorldMap(canvas, player(), Math.max(1, 3 / mapProjection(canvas, true, player()).zoom));
+      } else if (offscreen) centerWorldMap(point);
+      const item = items.find((i) => i.dataset.warpItem === point.id);
+      item?.scrollIntoView({ block: 'nearest' });
     }
     redraw();
     updateMapWarp(player(), now(), connected());
@@ -59,19 +90,21 @@ export function installMapWarp({ player, now, action, icon, redraw, connected })
   const buttons = [...root.querySelectorAll<HTMLButtonElement>('[data-warp-point]')];
   for (const button of buttons)
     button.onclick = () => choose(warpPointById(button.dataset.warpPoint));
+  for (const item of items)
+    item.onclick = () => choose(warpPointById(item.dataset.warpItem), { reveal: true });
   const position = (el, x, y) => {
     el.style.left = `${x}px`;
     el.style.top = `${y}px`;
   };
   const update = () => {
     const projection = mapProjection(canvas, true, player());
-    const me = player();
-    const [selfX, selfY] = projection.point(me?.x ?? 50, me?.z ?? 50);
+    const self = player();
+    const [selfX, selfY] = projection.point(self?.x ?? 50, self?.z ?? 50);
     const selfMarker = document.querySelector<HTMLElement>('#map-self');
     selfMarker.hidden =
-      !me || selfX < 12 || selfY < 12 || selfX > canvas.width - 12 || selfY > canvas.height - 12;
+      !self || selfX < 12 || selfY < 12 || selfX > canvas.width - 12 || selfY > canvas.height - 12;
     position(selfMarker, selfX, selfY);
-    selfMarker.style.setProperty('--facing', `${Math.PI - (me?.facing ?? 0)}rad`);
+    selfMarker.style.setProperty('--facing', `${Math.PI - (self?.facing ?? 0)}rad`);
     const points = WARP_POINTS.map((point) => {
       const [x, y] = projection.point(point.x, point.z);
       return { point, x, y };
@@ -80,13 +113,24 @@ export function installMapWarp({ player, now, action, icon, redraw, connected })
     );
     const groups = groupMapPoints(points);
     const singles = groups.filter((g) => g.length === 1).map((g) => g[0]);
-    const selected = points.find((p) => p.point.id === select.value);
+    const selectedId = card.dataset.warpId;
+    const selected = points.find((p) => p.point.id === selectedId);
     if (selected && !singles.includes(selected)) singles.push(selected);
+    grouped = new Set(
+      groups
+        .filter((g) => g.length > 1)
+        .flat()
+        .map((p) => p.point.id),
+    );
+    selfMarker.classList.toggle(
+      'is-crowded',
+      points.some((p) => Math.hypot(p.x - selfX, p.y - selfY) < 34),
+    );
     const labels: { x: number; y: number; width: number }[] = [];
     for (const button of buttons) {
       const p = singles.find((p) => p.point.id === button.dataset.warpPoint);
       button.hidden = !p;
-      button.setAttribute('aria-pressed', String(select.value === button.dataset.warpPoint));
+      button.setAttribute('aria-pressed', String(selectedId === button.dataset.warpPoint));
       if (!p) continue;
       position(button, p.x, p.y);
       const width = Math.min(180, p.point.name.length * 12 + 16);
@@ -104,7 +148,7 @@ export function installMapWarp({ player, now, action, icon, redraw, connected })
           (l) => Math.abs(l.y - p.y) < 27 && labelX < l.x + l.width + 8 && labelX + width + 8 > l.x,
         );
       button.classList.toggle('show-label', showLabel);
-      button.style.setProperty('--label-x', `${labelX - p.x + 20}px`);
+      button.style.setProperty('--label-x', `${labelX - p.x + 17}px`);
       button.style.setProperty('--label-width', `${width}px`);
       if (showLabel) labels.push({ x: labelX, y: p.y, width });
       button.classList.toggle(
@@ -130,26 +174,22 @@ export function installMapWarp({ player, now, action, icon, redraw, connected })
         button.innerHTML = `${icon('flame')}<b>${group.length}</b>`;
         button.setAttribute(
           'aria-label',
-          `近くの焚き火${group.length}か所を選ぶ：${group.map((p) => p.point.name).join('、')}`,
+          `近くの焚き火${group.length}か所を広げる：${group.map((p) => p.point.name).join('、')}`,
         );
         button.onclick = () => {
-          document.querySelector<HTMLElement>('#map-nearby').hidden = false;
-          const list = document.querySelector('#map-nearby-list');
-          list.replaceChildren();
-          for (const p of group) {
-            const item = document.createElement('button');
-            item.className = 'button button-outline';
-            item.textContent = p.point.name;
-            item.onclick = () => choose(p.point);
-            list.append(item);
-          }
+          // Open the cluster on the map and hand focus to its first name in the list.
           centerWorldMap({
             x: group.reduce((s, p) => s + p.point.x, 0) / group.length,
             z: group.reduce((s, p) => s + p.point.z, 0) / group.length,
           });
-          zoomWorldMap(canvas, player(), 2);
+          zoomWorldMap(canvas, player(), 2.5);
           redraw();
-          list.querySelector<HTMLButtonElement>('button')?.focus({ preventScroll: true });
+          const ids = group.map((p) => p.point.id);
+          for (const item of items)
+            item.classList.toggle('is-nearby', ids.includes(item.dataset.warpItem));
+          const first = items.find((i) => i.dataset.warpItem === ids[0]);
+          first?.scrollIntoView({ block: 'center' });
+          first?.focus({ preventScroll: true });
         };
         clusters.append(button);
       }
@@ -206,11 +246,13 @@ export function installMapWarp({ player, now, action, icon, redraw, connected })
       ['map-local', 'local'],
     ])
       document.getElementById(id).setAttribute('aria-pressed', String(mode === value));
+    const here = document.querySelector<HTMLElement>('#map-self b');
+    if (self) here.textContent = locationName(self.x, self.z);
+    refreshList();
   };
   canvas.addEventListener('mapdraw', update);
-  select.onchange = () => choose(warpPointById(select.value), false);
   warp.onclick = () => {
-    const point = warpPointById(select.value);
+    const point = warpPointById(card.dataset.warpId);
     if (connected() && point && !warpUnavailable(player(), point, now())) action('warp', point.id);
   };
   for (const [id, value] of [
@@ -221,7 +263,7 @@ export function installMapWarp({ player, now, action, icon, redraw, connected })
     document.getElementById(id).onclick = () => {
       mode = value;
       setWorldMapMode(mode);
-      document.querySelector<HTMLElement>('#map-nearby').hidden = true;
+      for (const item of items) item.classList.remove('is-nearby');
       redraw();
     };
   document.getElementById('map-details').onclick = () => {
@@ -236,18 +278,20 @@ export function installMapWarp({ player, now, action, icon, redraw, connected })
   };
   document.getElementById('map-zoom-in').onclick = () => zoom(1.5);
   document.getElementById('map-zoom-out').onclick = () => zoom(1 / 1.5);
+  const pointerAnchor = (event: MouseEvent) => {
+    const rect = canvas.getBoundingClientRect();
+    return { x: event.clientX - rect.left, y: event.clientY - rect.top };
+  };
   canvas.onwheel = (event) => {
     event.preventDefault();
-    const rect = canvas.getBoundingClientRect();
-    zoom(event.deltaY < 0 ? 1.2 : 1 / 1.2, {
-      x: event.clientX - rect.left,
-      y: event.clientY - rect.top,
-    });
+    zoom(event.deltaY < 0 ? 1.2 : 1 / 1.2, pointerAnchor(event));
   };
+  canvas.ondblclick = (event) => zoom(2, pointerAnchor(event));
   let drag = null;
   canvas.onpointerdown = (event) => {
     if (event.button !== 0) return;
     drag = { id: event.pointerId, x: event.clientX, y: event.clientY };
+    canvas.focus({ preventScroll: true });
     canvas.setPointerCapture(event.pointerId);
     canvas.classList.add('dragging');
   };
@@ -277,6 +321,16 @@ export function installMapWarp({ player, now, action, icon, redraw, connected })
     if (['+', '=', '-'].includes(event.key)) {
       event.preventDefault();
       zoom(event.key === '-' ? 1 / 1.5 : 1.5);
+      return;
+    }
+    // Arrow keys pan the map only while the map itself (not a list or button) has focus.
+    const pan = { ArrowLeft: [60, 0], ArrowRight: [-60, 0], ArrowUp: [0, 60], ArrowDown: [0, -60] }[
+      event.key
+    ];
+    if (pan && event.target === canvas) {
+      event.preventDefault();
+      panWorldMap(canvas, player(), pan[0], pan[1]);
+      redraw();
     }
   };
   dialog.addEventListener('keydown', keys);
@@ -296,6 +350,7 @@ export function installMapWarp({ player, now, action, icon, redraw, connected })
   };
   dialog.addEventListener('close', cleanup);
   resize.observe(wrap);
+  canvas.tabIndex = -1; // Focusable by click for arrow-key panning, without joining the controller's item list.
   redraw();
   updateMapWarp(player(), now(), connected());
 }

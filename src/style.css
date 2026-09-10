@@ -513,72 +513,108 @@ dialog:has(.earth-map){width:min(1040px,94vw);max-width:1040px}
 .earth-map-toolbar{flex-wrap:wrap}.earth-travel{margin-bottom:12px}.warp-map-wrap{max-width:880px;margin-inline:auto}@media(max-width:650px){.earth-map-toolbar .button{flex:1;padding-inline:8px}.earth-travel{grid-template-columns:minmax(0,1fr)}.earth-travel>*{min-width:0}}
 @media(max-width:760px){dialog:has(.earth-map) .modal-top:before{inset:-18px -18px 0}}
 /* Full-screen atlas. Its controls stay outside the pannable map. */
-dialog:has(.atlas){width:100vw;max-width:none;height:100dvh;max-height:none;margin:0;padding:0;border:0;border-radius:0;overflow:hidden;background:#11292e}
-dialog:has(.atlas)::backdrop{background:#11292e}
+dialog:has(.atlas){width:100vw;max-width:none;height:100dvh;max-height:none;margin:0;padding:0;border:0;border-radius:0;overflow:hidden;background:#0f2429}
+dialog:has(.atlas)::backdrop{background:#0f2429}
 dialog:has(.atlas) .modal-top{position:absolute;right:16px;top:12px;margin:0;padding:0;background:none;z-index:10}
 dialog:has(.atlas) .modal-top:before,dialog:has(.atlas) .modal-top .eyebrow{display:none}
 dialog:has(.atlas) #modal-body{height:100%;min-height:0}
-.atlas{height:100%;display:grid;grid-template-rows:auto minmax(0,1fr);gap:12px;padding:12px 16px 16px;color:#f0e6c9}
-.atlas .earth-map-toolbar{margin:0;min-height:42px;gap:6px;padding-right:100px;flex-wrap:nowrap}
-.atlas .earth-map-toolbar .button{min-height:42px;background:transparent;border-color:transparent;color:#b9c9c6;white-space:nowrap}
-.atlas .earth-map-toolbar .button[aria-pressed=true]{color:#ffdf9a;background:#e3c18112;border-color:#dcc08765}
-.atlas-body{display:grid;grid-template-columns:minmax(0,1fr) 268px;gap:16px;min-height:0}
-.atlas-map-area{display:grid;grid-template-rows:minmax(0,1fr) auto;min-width:0;min-height:0;gap:10px}
-.atlas .warp-map-wrap{width:100%;height:100%;min-height:0;max-width:none;margin:0;overflow:hidden;border:1px solid #95b5ad45;border-radius:8px;background:#193948}
-.atlas .big-map.earth-map{width:100%;height:100%;max-width:none;aspect-ratio:auto;border:0;border-radius:0;cursor:grab;touch-action:none}
+.atlas{height:100%;display:grid;grid-template-rows:auto minmax(0,1fr);gap:10px;padding:12px 16px 16px;color:#f0e6c9}
+.atlas .earth-map-toolbar{margin:0;min-height:42px;gap:4px;padding-right:100px;flex-wrap:nowrap}
+.atlas .earth-map-toolbar .button{min-height:40px;background:transparent;border-color:transparent;color:#a9bcb8;white-space:nowrap;letter-spacing:.4px}
+.atlas .earth-map-toolbar .button:hover{color:#e8dfc0;background:#ffffff08}
+.atlas .earth-map-toolbar .button[aria-pressed=true]{color:#ffdf9a;background:#e3c18114;border-color:#dcc08760}
+.atlas-body{display:grid;grid-template-columns:minmax(0,1fr) 300px;gap:14px;min-height:0}
+.atlas-map-area{display:grid;grid-template-rows:minmax(0,1fr);min-width:0;min-height:0}
+.atlas .warp-map-wrap{width:100%;height:100%;min-height:0;max-width:none;margin:0;overflow:hidden;border:1px solid #95b5ad40;border-radius:10px;background:#112d34;box-shadow:inset 0 0 80px #061418aa}
+.atlas .big-map.earth-map{width:100%;height:100%;max-width:none;aspect-ratio:auto;border:0;border-radius:0;cursor:grab;touch-action:none;outline:none}
 .atlas .big-map.dragging{cursor:grabbing}
 .atlas .warp-map-points{pointer-events:none}
-.atlas .warp-map-point,.atlas .warp-map-cluster{position:absolute;transform:translate(-50%,-50%);width:40px;height:40px;border:1px solid #b4ecdfaa;border-radius:50%;background:#123d43ee;color:#baf8e7;display:flex;align-items:center;justify-content:center;gap:0;box-shadow:0 2px 9px #071c24aa;pointer-events:auto;cursor:pointer;padding:8px;transition:background .15s,box-shadow .15s;z-index:1}
+/* Bright travel points on quiet terrain: warm flames, a gold ring for the choice. */
+.atlas .warp-map-point,.atlas .warp-map-cluster{position:absolute;transform:translate(-50%,-50%);width:34px;height:34px;border:1.5px solid #f2c67a;border-radius:50%;background:radial-gradient(circle at 50% 35%,#5a3a1a,#2b1a0c);color:#ffd98d;display:flex;align-items:center;justify-content:center;gap:0;box-shadow:0 2px 8px #04121aaa,0 0 0 3px #0f242966;pointer-events:auto;cursor:pointer;padding:6px;transition:transform .12s,box-shadow .15s;z-index:1}
 .atlas .warp-map-point[hidden]{display:none}
-.atlas .warp-map-point svg,.atlas .warp-map-cluster svg{width:22px;height:22px;pointer-events:none}
-.atlas .warp-map-point[aria-pressed=true]{border:2px solid #fff0b0;background:#e0b775;color:#2c3325;outline:2px solid #e9d69a88;outline-offset:5px;z-index:4;box-shadow:0 0 24px #ffdb8560}
-.atlas .warp-map-point:hover,.atlas .warp-map-point:focus-visible,.atlas .warp-map-cluster:hover,.atlas .warp-map-cluster:focus-visible{outline:2px solid #fff0b0;outline-offset:4px;z-index:5}
-.atlas .warp-map-point.is-locked{border-style:dashed;color:#bec5c6;background:#333f48}
-.atlas .warp-map-cluster{border-radius:13px;width:46px;color:#cef8e7;background:#214c4f;border-color:#b4ecdfaa;z-index:2}
-.atlas .warp-map-cluster b{position:absolute;right:-5px;top:-6px;min-width:21px;height:21px;border-radius:11px;background:#d7eee1;color:#173a36;display:grid;place-items:center;font-size:12px;box-shadow:0 2px 4px #0006}
-.warp-point-label{display:none;position:absolute;top:45px;left:var(--label-x);width:var(--label-width);font-size:12px;line-height:1.5;padding:3px 6px;border-radius:4px;color:#e0efe1;background:#102b31e8;pointer-events:none;white-space:nowrap;text-align:center}
+.atlas .warp-map-point svg,.atlas .warp-map-cluster svg{width:20px;height:20px;pointer-events:none}
+.atlas .warp-map-point:hover,.atlas .warp-map-cluster:hover{transform:translate(-50%,-50%) scale(1.12);z-index:5}
+.atlas .warp-map-point:focus-visible,.atlas .warp-map-cluster:focus-visible,.atlas .warp-map-point.gamepad-focus,.atlas .warp-map-cluster.gamepad-focus{outline:2px solid #fff0b0;outline-offset:3px;z-index:5}
+.atlas .warp-map-point[aria-pressed=true]{border-color:#fff3c4;background:radial-gradient(circle at 50% 35%,#f4cf88,#d9a75c);color:#3a2610;z-index:4;box-shadow:0 0 0 3px #0f2429,0 0 0 5px #f2c67a,0 0 28px #ffd27a80}
+.atlas .warp-map-point[aria-pressed=true]:before{content:"";position:absolute;inset:-12px;border:2px solid #f2c67a;border-radius:50%;animation:atlas-pulse 1.6s ease-out infinite;pointer-events:none}
+@keyframes atlas-pulse{0%{transform:scale(.7);opacity:.9}100%{transform:scale(1.35);opacity:0}}
+.atlas .warp-map-point.is-locked{border-style:dashed;border-color:#8f9a9c;color:#aab3b3;background:#2a3438}
+.atlas .warp-map-cluster{border-radius:17px;width:44px;color:#ffd98d}
+.atlas .warp-map-cluster b{position:absolute;right:-6px;top:-7px;min-width:20px;height:20px;padding:0 5px;border-radius:10px;background:#f2c67a;color:#2b1a0c;display:grid;place-items:center;font-size:11px;font-weight:700;box-shadow:0 2px 4px #0006}
+.warp-point-label{display:none;position:absolute;top:40px;left:var(--label-x);width:var(--label-width);font-size:12px;line-height:1.5;padding:3px 6px;border-radius:4px;color:#e8efe2;background:#0c2126e6;pointer-events:none;white-space:nowrap;text-align:center;letter-spacing:.3px}
 .show-label .warp-point-label,.warp-map-point:hover .warp-point-label,.warp-map-point:focus-visible .warp-point-label,.warp-map-point[aria-pressed=true] .warp-point-label{display:block}
-.warp-map-point[aria-pressed=true] .warp-point-label{color:#ffdf9a;background:#142c2ef2}
-.atlas-compass{position:absolute;top:15px;right:18px;text-align:center;line-height:1;font:12px Georgia,serif;color:#ebddaf;pointer-events:none;text-shadow:0 1px 5px #000}
-.atlas-compass span{display:block;font-size:27px;margin-top:5px}
-.atlas-zoom{position:absolute;right:14px;bottom:48px;display:grid;gap:5px;z-index:6;justify-items:center;padding:5px;border:1px solid #89ada050;background:#112c30eb;border-radius:8px}
-.atlas-zoom button{width:40px;height:40px;font-size:25px;border-radius:5px;background:#ffffff0a;color:#f9e4af}
+.warp-map-point[aria-pressed=true] .warp-point-label{color:#ffe8b4;background:#1a1006f0;font-weight:600}
+.warp-map-point.is-locked .warp-point-label{color:#b7c0c0}
+.atlas-compass{position:absolute;top:12px;right:16px;text-align:center;line-height:1;font:12px Georgia,serif;color:#ebddaf;pointer-events:none;text-shadow:0 1px 5px #000}
+.atlas-compass span{display:block;font-size:24px;margin-top:4px}
+.atlas-zoom{position:absolute;right:12px;bottom:40px;display:grid;gap:4px;z-index:6;justify-items:center;padding:4px;border:1px solid #89ada050;background:#0f2429e6;border-radius:8px}
+.atlas-zoom button{width:38px;height:38px;font-size:24px;border-radius:5px;background:#ffffff0a;color:#f9e4af}
+.atlas-zoom button:hover:not(:disabled){background:#ffffff18}
+.atlas-zoom button:disabled{opacity:.35}
 .atlas-zoom output{font-size:11px;color:#bacfc8}
-.atlas-legend{display:flex;justify-content:center;align-items:center;gap:24px;font-size:11px;color:#bdd4cb}
-.atlas-legend .icon{width:14px;height:14px}.atlas-legend-self{color:#ffdf92}
-.atlas .earth-travel{display:flex;flex-direction:column;align-items:stretch;justify-content:center;gap:14px;min-width:0;min-height:0;padding:24px 18px;margin:0;border:1px solid #a8c7b52d;border-radius:8px;background:linear-gradient(160deg,#223936,#162c2d);overflow-y:auto;scrollbar-width:thin}
-.atlas-selection-icon{display:grid;place-items:center;color:#efd096;margin:0 auto 5px;width:62px;height:62px;border:1px solid #d1bc8544;border-radius:50%;background:#c4a5690b}
-.atlas-selection-icon .icon{width:31px;height:31px}
-.atlas #map-destination{font-size:22px;line-height:1.6;font-weight:600;text-align:center;margin:0;overflow-wrap:anywhere;color:#ffe4a8}
-.atlas #map-selection{font-size:12px;text-align:center;color:#a8c2b8;margin:0}
-.atlas #map-destination:empty,.atlas #map-selection:empty,.atlas #map-warp-status:empty{display:none}
-.atlas #map-warp{width:100%;max-width:none;min-height:52px;font-size:16px;margin-top:6px}
-.atlas #map-warp:disabled{background:#70877c30;color:#a7b9ae;box-shadow:none;opacity:1;border:1px solid #a1b7a330}
-.atlas #map-warp-status{font-size:12px;color:#edc991;line-height:1.7}
-.atlas-location-picker{border-top:1px solid #a1b7a32a;padding-top:18px;margin-top:12px;display:grid;gap:8px}
-.atlas-location-picker label{font-size:11px;color:#b2c5ba}
-.atlas-location-picker select{width:100%;min-width:0;padding:11px 8px;min-height:44px;border:1px solid #9bbcaa66;border-radius:5px;color:#ede6cc;background:#193432;font-size:12px}
-#map-nearby[hidden]{display:none}#map-nearby>p{font-size:11px;color:#b9c8ba;margin:4px 0 8px}
-#map-nearby-list{display:grid;gap:6px;max-height:190px;overflow:auto;scrollbar-width:thin}
-#map-nearby-list .button{font-size:12px;min-height:44px;white-space:normal;flex-shrink:0;text-align:left;justify-content:flex-start}
+.atlas-legend{position:absolute;left:12px;bottom:12px;display:flex;align-items:center;gap:14px;font-size:11px;color:#c6d8d0;padding:5px 10px;border-radius:6px;background:#0f2429c8;pointer-events:none}
+.atlas-legend span{display:flex;align-items:center;gap:5px}
+.atlas-legend .icon{width:14px;height:14px;color:#ffd98d}.atlas-legend-self{color:#ffe591}
+/* Travel panel: the chosen destination and its confirmation stay together at the top. */
+.atlas .earth-travel{display:grid;grid-template-columns:minmax(0,1fr);grid-template-rows:auto minmax(0,1fr);align-items:stretch;gap:10px;min-width:0;min-height:0;margin:0;padding:0;border:0;background:none}
+.atlas-card{display:grid;gap:12px;padding:18px 16px 16px;border:1px solid #d1bc8540;border-radius:10px;background:linear-gradient(165deg,#25403b,#152a2b);box-shadow:0 8px 24px #04101266}
+.atlas-card[data-state=ready]{border-color:#e6c27f88;box-shadow:0 8px 24px #04101266,0 0 32px #e0b07022}
+.atlas-card-head{display:flex;align-items:center;gap:12px;min-width:0}
+.atlas-card-text{display:grid;gap:2px;min-width:0}
+.atlas-selection-icon{flex-shrink:0;display:grid;place-items:center;color:#c9b58a;width:46px;height:46px;border:1px solid #d1bc8544;border-radius:50%;background:#c4a5690b;transition:background .2s,color .2s}
+.atlas-selection-icon .icon{width:24px;height:24px}
+.atlas-card[data-state=ready] .atlas-selection-icon,.atlas-card[data-state=blocked] .atlas-selection-icon{color:#ffd98d;background:radial-gradient(circle at 50% 35%,#5a3a1a,#2b1a0c);border-color:#f2c67a}
+.atlas #map-region{font-size:10px;letter-spacing:2px;color:#a5bfb3}
+.atlas #map-region:empty{display:none}
+.atlas #map-destination{font-size:19px;line-height:1.35;font-weight:600;margin:0;overflow-wrap:anywhere;color:#ffe4a8}
+.atlas-card[data-state=empty] #map-destination{color:#d9d2b8;font-weight:500}
+.atlas #map-selection{font-size:11.5px;color:#a8c2b8;margin:0}
+.atlas #map-warp{width:100%;max-width:none;min-height:50px;font-size:15px;margin:0;position:relative}
+.atlas #map-warp kbd{position:absolute;right:12px;top:50%;transform:translateY(-50%);font:600 10px/1 var(--display);padding:4px 6px;border:1px solid #6b4a2666;border-radius:4px;color:#5a3f1e;background:#ffffff33}
+.atlas #map-warp:disabled{background:#70877c22;color:#8fa199;box-shadow:none;opacity:1;border:1px solid #a1b7a326}
+.atlas #map-warp:disabled kbd{display:none}
+.atlas #map-warp-status{font-size:11.5px;color:#edc991;line-height:1.6}
+.atlas #map-warp-status:empty{display:none}
+/* All destinations by region, always reachable by name. */
+.atlas-list{min-height:0;overflow-y:auto;scrollbar-width:thin;border:1px solid #a8c7b52a;border-radius:10px;background:#10252a;padding:4px 6px 8px}
+.atlas-group h4{position:sticky;top:0;z-index:1;margin:0;padding:10px 8px 5px;font-size:10px;font-weight:600;letter-spacing:2px;color:#9db5ab;background:linear-gradient(#10252a 80%,#10252a00)}
+.atlas-item{width:100%;background:transparent;font:inherit;cursor:pointer;display:flex;align-items:center;justify-content:space-between;gap:8px;min-height:38px;padding:7px 10px 7px 12px;border-radius:6px;border:1px solid transparent;color:#dfe6d6;text-align:left;font-size:12.5px;position:relative}
+.atlas-item:before{content:"";position:absolute;left:4px;top:50%;width:3px;height:0;border-radius:2px;background:#f2c67a;transform:translateY(-50%);transition:height .15s}
+.atlas-item span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.atlas-item small{flex-shrink:0;font-size:10.5px;color:#8fa79f;font-variant-numeric:tabular-nums}
+.atlas-item:hover{background:#ffffff0a;color:#fff2d2}
+.atlas-item:focus-visible,.atlas-item.gamepad-focus{outline:none;background:#ffffff0f;border-color:#e0b07080;color:#fff2d2}
+.atlas-item[aria-selected=true]{color:#ffe4a8;background:#e0b07018;border-color:#e0b0704a}
+.atlas-item[aria-selected=true]:before{height:60%}
+.atlas-item[aria-selected=true] small{color:#d8bd88}
+.atlas-item.is-nearby{background:#e0b0700d}
+.atlas-item.is-locked{color:#8fa199}.atlas-item.is-locked small{color:#7c8d88}
 @media(max-width:700px) and (orientation:portrait){
-  .atlas{padding:8px;gap:8px}.atlas .earth-map-toolbar{padding-right:74px;gap:2px;min-height:40px;flex-wrap:wrap}
+  .atlas{padding:8px;gap:6px}.atlas .earth-map-toolbar{padding-right:74px;gap:2px;min-height:40px;flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none}
   .atlas .earth-map-toolbar .button{padding:7px 9px;font-size:11px;min-height:36px;flex:none}.atlas .earth-map-toolbar .icon{display:none}
   dialog:has(.atlas) .modal-top{right:8px;top:8px}dialog:has(.atlas) .modal-top .modal-back{min-width:62px;padding:7px 10px}
   .atlas-body{grid-template-columns:minmax(0,1fr);grid-template-rows:minmax(180px,1fr) auto;gap:8px}
-  .atlas-map-area{gap:5px}.atlas-legend{font-size:10px;gap:20px}
-  .atlas .earth-travel{padding:12px;gap:8px;display:grid;grid-template-columns:minmax(0,1fr) 140px;max-height:42dvh;align-items:center;justify-content:normal}
-  .atlas-selection-icon{display:none}.atlas #map-destination{font-size:17px;text-align:left;grid-column:1;grid-row:1}
-  .atlas #map-selection{grid-column:1;text-align:left;font-size:11px}.atlas #map-warp{grid-column:2;grid-row:1/3;margin:0;min-height:46px;font-size:14px}
-  .atlas #map-warp-status{grid-column:1/-1;font-size:11px}.atlas-location-picker{grid-column:1/-1;margin:0;padding:0;border:0;grid-template-columns:auto minmax(0,1fr);align-items:center;gap:12px}
-  #map-nearby{grid-column:1/-1;max-height:140px;overflow:auto}#map-nearby-list{grid-template-columns:1fr 1fr;max-height:none}
+  .atlas .earth-travel{max-height:46dvh;grid-template-rows:auto minmax(0,1fr)}
+  .atlas-card{padding:10px 12px;gap:8px;grid-template-columns:minmax(0,1fr) 132px;align-items:center}
+  .atlas-card-head{grid-column:1}.atlas-selection-icon{display:none}
+  .atlas #map-destination{font-size:16px}.atlas #map-selection{font-size:11px}
+  .atlas #map-warp{grid-column:2;grid-row:1;min-height:46px;font-size:14px}.atlas #map-warp kbd{display:none}
+  .atlas #map-warp-status{grid-column:1/-1;font-size:11px}
+  .atlas-list{min-height:96px}.atlas-item{min-height:36px}
+  .atlas-legend{display:none}.atlas-zoom{bottom:12px}
 }
 @media(max-height:520px) and (orientation:landscape){
-  .atlas{padding:8px;gap:6px}.atlas-body{grid-template-columns:minmax(0,1fr) 220px;gap:8px}
+  .atlas{padding:8px;gap:6px}.atlas-body{grid-template-columns:minmax(0,1fr) 240px;gap:8px}
   .atlas .earth-map-toolbar .button{min-height:36px;padding:6px 12px;font-size:11px}
-  .atlas .earth-travel{padding:12px;gap:8px;justify-content:flex-start}.atlas-selection-icon{display:none}.atlas #map-destination{font-size:18px}
-  .atlas-location-picker{margin-top:4px;padding-top:8px}.atlas #map-warp{min-height:44px;font-size:14px}
-  dialog:has(.atlas) .modal-top{right:8px;top:8px}
+  .atlas-card{padding:10px 12px;gap:8px}.atlas-selection-icon{display:none}.atlas #map-destination{font-size:16px}
+  .atlas #map-warp{min-height:42px;font-size:13px}.atlas #map-warp kbd{display:none}
+  .atlas-item{min-height:34px;font-size:12px}
+  dialog:has(.atlas) .modal-top{right:8px;top:8px}.atlas-legend{display:none}
 }
-#map-self{position:absolute;transform:translate(-50%,-50%);z-index:6;pointer-events:none;width:22px;height:22px;display:grid;place-items:center;filter:drop-shadow(0 1px 2px #000) drop-shadow(0 0 4px #ffe6a4)}
-#map-self[hidden]{display:none}#map-self span{font-size:23px;color:#ffe591;-webkit-text-stroke:1px #493f28;transform:rotate(var(--facing))}
+/* The player: a bright arrow with a soft ring, and the area name beneath it. */
+#map-self{position:absolute;transform:translate(-50%,-50%);z-index:6;pointer-events:none;width:26px;height:26px;display:grid;place-items:center}
+#map-self[hidden]{display:none}
+#map-self i{position:absolute;inset:-9px;border-radius:50%;border:2px solid #ffe59180;animation:atlas-pulse 2.2s ease-out infinite}
+#map-self span{font-size:24px;color:#ffe591;-webkit-text-stroke:1px #493f28;transform:rotate(var(--facing));filter:drop-shadow(0 1px 2px #000) drop-shadow(0 0 5px #ffe6a4)}
+#map-self b{position:absolute;top:100%;left:50%;transform:translate(-50%,8px);font-size:11px;font-weight:600;letter-spacing:.3px;white-space:nowrap;color:#ffe591;padding:2px 7px;border-radius:4px;background:#1a1006e6}
+#map-self.is-crowded b{display:none}
