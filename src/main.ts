@@ -22,7 +22,7 @@ import { HUNTING, nearestCookingFire } from '../shared/hunting.mjs';
 import { CROP_INVENTORY, ROOT_RECIPES } from '../shared/crops.mjs';
 import { installCropFoodUI } from './crop-food-ui.js';
 import { canMount, ridingDistance } from '../shared/riding.mjs';
-import { GamepadControls, gamepadHelp } from './gamepad-ui.js';
+import { GamepadControls } from './gamepad-ui.js';
 import { combineMovement } from './gamepad-input.js';
 import { canStartJump } from '../shared/jumping.mjs';
 import { installBoatControls } from './boat-ui.js';
@@ -1130,11 +1130,11 @@ async function openInvite() {
   };
   $('#change-room').onclick = () => showSetup();
 }
-function openInventory() {
+/** Inventory content shared by the I key dialog and the pause menu tab. */
+function inventoryMarkup() {
   const me = player(),
     inv = inventoryCounts(me?.inventory);
-  openModal(
-    `<h2>旅に持っていくもの。</h2><p class="modal-intro">生肉・魚・貝は、各地の焚き火で焼いてから食べよう。黒曜石の原石は石器作業場で刃にできます。</p><div class="inventory-grid">${[
+  return `<div class="gulf-actions"><button id="modal-crop-food" class="button button-outline">火根と香草の食事</button><button id="modal-crop-farms" class="button button-outline">共同の畑と種</button></div><h2>旅に持っていくもの。</h2><p class="modal-intro">生肉・魚・貝は、各地の焚き火で焼いてから食べよう。黒曜石の原石は石器作業場で刃にできます。</p><div class="inventory-grid">${[
       ['wood', '木材', '採集して、道具や拠点に。'],
       ['stone', '石', '丈夫な道具と火の囲いに。'],
       ['berry', 'ベリー', '食べると元気が回復。'],
@@ -1162,8 +1162,10 @@ function openInventory() {
       )
       .join(
         '',
-      )}</div><div class="recipe"><span class="resource-icon stone">${icon('axe')}</span><div><strong>${me?.tool ? '石斧を装備中' : '石斧をつくる'}</strong><p>木材3 + 石2 ・ 採集量が増えます</p></div><button id="modal-craft" class="button button-accent" ${me?.tool ? 'disabled' : ''}>${me?.tool ? '装備中' : 'つくる'}</button></div><p class="form-note">今の武器：${attackProfile(me ?? profile).noun}。人間系は木槍で出発し、黒曜石の刃で強化できます。相手を向いて F。</p>`,
-  );
+      )}</div><div class="recipe"><span class="resource-icon stone">${icon('axe')}</span><div><strong id="modal-axe-label">${me?.tool ? '石斧を装備中' : '石斧をつくる'}</strong><p>木材3 + 石2 ・ 採集量が増えます</p></div><button id="modal-craft" class="button button-accent" ${me?.tool ? 'disabled' : ''}>${me?.tool ? '装備中' : 'つくる'}</button></div><div class="recipe"><span class="resource-icon wood">${icon('wood')}</span><div><strong>丸木舟をつくる</strong><p>木材12 · 海岸で制作 · Bで乗船</p></div><button id="modal-boat-craft" class="button button-accent">船をつくる</button></div><p class="form-note">今の武器：${attackProfile(me ?? profile).noun}。人間系は木槍で出発し、黒曜石の刃で強化できます。相手を向いて F。</p><div class="recipe"><div><strong>湾の釣り道具</strong><p>木材3・石1 · 繰り返し使えます</p></div><button id="modal-fishing-kit" class="button button-accent">道具を作る</button><button id="modal-fishing" class="button button-outline">魚場と釣り方</button></div><div class="recipe coastal-recipe"><div><strong>貝の食事と黒曜石の道具</strong><p>貝殻を持ち帰って貝塚へ。原石を削って木槍の先へ。</p></div><button id="modal-coastal" class="button button-outline">貝と石器の作り方</button><button id="modal-cook-shellfish" class="button button-outline">貝を焼く</button><button id="modal-eat-shellfish" class="button button-outline">焼いた貝を食べる</button></div>`;
+}
+/** Wires the inventory buttons after `inventoryMarkup()` is in the document. */
+function bindInventory() {
   $('#modal-eat').onclick = () => {
     action('eat');
     $('#modal').close();
@@ -1207,40 +1209,25 @@ function openInventory() {
     action('cookFish');
   };
   $('#modal-eat-fish').onclick = () => action('eatFish');
-  $('#modal-body').insertAdjacentHTML(
-    'beforeend',
-    '<div class="recipe"><div><strong>湾の釣り道具</strong><p>木材3・石1 · 繰り返し使えます</p></div><button id="modal-fishing-kit" class="button button-accent">道具を作る</button><button id="modal-fishing" class="button button-outline">魚場と釣り方</button></div>',
-  );
   $('#modal-fishing-kit').onclick = () => action('craftFishingKit');
   $('#modal-fishing').onclick = () => fishingUI.open();
-  $('#modal-body').insertAdjacentHTML(
-    'beforeend',
-    '<div class="recipe coastal-recipe"><div><strong>貝の食事と黒曜石の道具</strong><p>貝殻を持ち帰って貝塚へ。原石を削って木槍の先へ。</p></div><button id="modal-coastal" class="button button-outline">貝と石器の作り方</button><button id="modal-cook-shellfish" class="button button-outline">貝を焼く</button><button id="modal-eat-shellfish" class="button button-outline">焼いた貝を食べる</button></div>',
-  );
   $('#modal-coastal').onclick = () => coastalUI.open();
   $('#modal-cook-shellfish').onclick = () => {
     $('#modal').close();
     action('cookShellfish');
   };
   $('#modal-eat-shellfish').onclick = () => action('eatShellfish');
-  $('#modal-body').insertAdjacentHTML(
-    'afterbegin',
-    '<div class="gulf-actions"><button id="modal-crop-food" class="button button-outline">火根と香草の食事</button><button id="modal-crop-farms" class="button button-outline">共同の畑と種</button></div>',
-  );
   $('#modal-crop-food').onclick = () => cropFoodUI.open();
   $('#modal-crop-farms').onclick = () => gulfUI.open();
-  $('.recipe strong').id = 'modal-axe-label';
-  $('.recipe').insertAdjacentHTML(
-    'afterend',
-    '<div class="recipe"><span class="resource-icon wood">' +
-      icon('wood') +
-      '</span><div><strong>丸木舟をつくる</strong><p>木材12 · 海岸で制作 · Bで乗船</p></div><button id="modal-boat-craft" class="button button-accent">船をつくる</button></div>',
-  );
   $('#modal-boat-craft').onclick = () => {
     action('craftBoat');
     $('#modal').close();
   };
   updateModalHUD();
+}
+function openInventory() {
+  openModal(inventoryMarkup());
+  bindInventory();
 }
 function openTribe() {
   openModal(
@@ -1253,7 +1240,8 @@ function openTribe() {
 function openJournal() {
   adventureUI.open();
 }
-function openHelp() {
+/** The PC / controller card tabs, with the enemy card once the sorcerer exists. */
+function helpMarkup() {
   const extra = state.enemies?.length
     ? [
         {
@@ -1263,8 +1251,11 @@ function openHelp() {
         },
       ]
     : [];
+  return helpTabsMarkup(usingGamepad ? 'pad' : 'pc', extra);
+}
+function openHelp() {
   openModal(
-    `<div class="help-dialog"><h2>あそびかた</h2>${helpTabsMarkup(usingGamepad ? 'pad' : 'pc', extra)}<button id="help-start" class="button button-accent wide">${joined ? '探索に戻る' : '閉じる'} ${icon('arrow')}</button></div>`,
+    `<div class="help-dialog"><h2>あそびかた</h2>${helpMarkup()}<button id="help-start" class="button button-accent wide">${joined ? '探索に戻る' : '閉じる'} ${icon('arrow')}</button></div>`,
   );
   bindHelpTabs($('#modal-body'));
   $('#help-start').onclick = () => $('#modal').close();
@@ -1321,12 +1312,18 @@ function updateSaveStatus() {
         ? `自動保存済み ${new Date(localSaveStatus.savedAt).toLocaleTimeString()} · タイトルへ戻っても続きから再開できます。${localSaveStatus.recovered ? ' 予備の保存から復元しました。' : ''}`
         : '自動保存を準備しています。';
 }
+let pauseTab = 'objectives';
+/** Game-style pause menu: a tab rail on the left, one panel on the right, exits as buttons below the tabs. */
 function openPauseMenu() {
   if (screens.active) return;
-  const entries: [string, string, string, () => void][] = [
-    ['resume', 'compass', '探索に戻る', () => $('#modal').close()],
-    ['inventory', 'bag', 'もちもの・道具', openInventory],
-    ['objectives', 'check', '目標と野営地', openObjectives],
+  const tabs: [string, string, string][] = [
+    ['objectives', 'check', '目標と野営地'],
+    ['inventory', 'bag', 'もちもの・道具'],
+    ['world', 'compass', '世界と仲間'],
+    ['settings', 'sound', '設定'],
+    ['help', 'help', '操作説明'],
+  ];
+  const links: [string, string, string, () => void][] = [
     ['map', 'expand', '世界地図', openMap],
     ['journal', 'book', '探索手帳', openJournal],
     ['gulf', 'wave', '三つの国・共同の畑', () => gulfUI.open()],
@@ -1334,28 +1331,52 @@ function openPauseMenu() {
     ['coastal', 'stone', '貝塚・黒曜石の道具', () => coastalUI.open()],
     ['residents', 'wave', '集落の人びと・今日の手伝い', () => villageUI.open()],
     ['tribe', 'people', '部族の仲間・招待', openTribe],
-    ['help', 'help', 'あそびかた', openHelp],
     ['ride', 'target', '船・マンモス・肩に乗る／降りる', controllerRide],
     ['wave', 'wave', '手をふる', () => action('wave')],
+  ];
+  const exits: [string, string, string, () => void][] = [
+    ['resume', 'compass', '探索に戻る', () => $('#modal').close()],
     ['profile', 'people', '部屋・キャラクターを変える', () => showSetup()],
     ['title', 'close', 'タイトルへ戻る', leaveToTitle],
   ];
+  if (!tabs.some(([id]) => id === pauseTab)) pauseTab = 'objectives';
+  const menuButton = ([id, glyph, label]: readonly [string, string, string, ...unknown[]]) =>
+    `<button class="button button-outline" data-controller-menu="${id}">${icon(glyph)}<span>${label}</span></button>`;
+  const panel = (id: string, body: string) =>
+    `<section class="pause-panel" data-pause-panel="${id}" role="tabpanel" id="pause-panel-${id}" ${pauseTab === id ? '' : 'hidden'}>${body}</section>`;
   openModal(
-    `<div class="pause-menu"><p class="screen-eyebrow">PAUSE</p><h2>メニュー</h2><p class="modal-intro">${usingGamepad ? '十字キー・左スティックで上下左右に選ぶ · × ○ □ △ どれでも決定 · 戻るときは画面内の「戻る」を選ぶ' : 'ESC で閉じる · ↑↓←→ で選ぶ · Enter で決定'}</p><div class="controller-menu">${entries
+    `<div class="pause-menu"><aside class="pause-rail"><p class="screen-eyebrow">PAUSE</p><h2>メニュー</h2><nav class="pause-tabs" role="tablist" aria-label="メニューの項目">${tabs
       .map(
         ([id, glyph, label]) =>
-          `<button class="button button-outline" data-controller-menu="${id}">${icon(glyph)}<span>${label}</span></button>`,
+          `<button type="button" class="pause-tab" role="tab" data-pause-tab="${id}" data-controller-menu="${id}" aria-selected="${pauseTab === id}" aria-controls="pause-panel-${id}">${icon(glyph)}<span>${label}</span></button>`,
       )
-      .join(
-        '',
-      )}</div><p id="local-save-status" class="form-note" role="status" hidden></p><div class="settings-row"><span class="settings-label">設定</span><button class="button button-outline" data-setting="sound" aria-pressed="${soundEnabled}">${icon(soundEnabled ? 'sound' : 'muted')} 環境音 ${soundEnabled ? 'オン' : 'オフ'}</button><button class="button button-outline" data-setting="fullscreen">${icon('expand')} 全画面表示</button><button class="button button-outline" data-setting="camera">${icon('target')} 視点を戻す</button><button class="button button-outline" data-setting="zoom-out">− 遠く</button><button class="button button-outline" data-setting="zoom-in">+ 近く</button></div>${usingGamepad ? gamepadHelp : ''}</div>`,
+      .join('')}</nav><div class="pause-exits">${exits.map(menuButton).join('')}</div></aside><div class="pause-panels">${panel(
+      'objectives',
+      objectivesMarkup(),
+    )}${panel('inventory', inventoryMarkup())}${panel(
+      'world',
+      `<h2>世界と仲間</h2><p class="modal-intro">地図・記録・各地の暮らしと、いまできる行動。</p><div class="controller-menu">${links.map(menuButton).join('')}</div>`,
+    )}${panel(
+      'settings',
+      `<h2>設定</h2><p class="modal-intro">音・画面・視点の調整。</p><div class="settings-list"><div class="settings-item"><div><strong>環境音</strong><p>谷の音を鳴らします。</p></div><button class="button button-outline" data-setting="sound" aria-pressed="${soundEnabled}">${icon(soundEnabled ? 'sound' : 'muted')} ${soundEnabled ? 'オン' : 'オフ'}</button></div><div class="settings-item"><div><strong>全画面表示</strong><p>ブラウザーの枠を隠して表示します。</p></div><button class="button button-outline" data-setting="fullscreen">${icon('expand')} 切り替え</button></div><div class="settings-item"><div><strong>視点</strong><p>カメラの距離を変え、キャラクターの後ろへ戻します。</p></div><div class="settings-buttons"><button class="button button-outline" data-setting="zoom-out">− 遠く</button><button class="button button-outline" data-setting="zoom-in">+ 近く</button><button class="button button-outline" data-setting="camera">${icon('target')} 視点を戻す</button></div></div><div class="settings-item"><div><strong>コントローラー</strong><p class="gamepad-connection" role="status">${usingGamepad ? '' : '未使用 · DUALSHOCK 4 をつないでボタンを押すと切り替わります。'}</p></div></div></div><p id="local-save-status" class="form-note" role="status" hidden></p>`,
+    )}${panel('help', `<h2>操作説明</h2>${helpMarkup()}`)}<p class="pause-hint">${usingGamepad ? '十字キー・左スティックで選ぶ · × ○ □ △ で決定 · 「戻る」または OPTIONS で閉じる' : 'ESC で閉じる · ↑↓←→ で選ぶ · Enter で決定'}</p></div></div>`,
   );
+  const root = $('#modal-body') as HTMLElement;
+  const tabButtons = [...root.querySelectorAll<HTMLButtonElement>('.pause-tab')];
+  const showTab = (id: string) => {
+    pauseTab = id;
+    for (const tab of tabButtons)
+      tab.setAttribute('aria-selected', String(tab.dataset.pauseTab === id));
+    for (const section of root.querySelectorAll<HTMLElement>('.pause-panel'))
+      section.hidden = section.dataset.pausePanel !== id;
+  };
+  for (const tab of tabButtons) tab.onclick = () => showTab(tab.dataset.pauseTab!);
+  for (const [id, , , handler] of [...links, ...exits])
+    $(`[data-controller-menu="${id}"]`).onclick = () => handler();
+  updateObjectives();
+  bindInventory();
+  bindHelpTabs($('[data-pause-panel="help"]'));
   updateSaveStatus();
-  for (const [id, , , handler] of entries) {
-    $(`[data-controller-menu="${id}"]`).onclick = () => {
-      handler();
-    };
-  }
   $('[data-setting="sound"]').onclick = toggleSound;
   $('[data-setting="fullscreen"]').onclick = toggleFullscreen;
   $('[data-setting="camera"]').onclick = () => renderer.focusPlayer();
@@ -1408,7 +1429,7 @@ async function toggleSound() {
     }
     const button = $('[data-setting="sound"]');
     if (button) {
-      button.innerHTML = `${icon(soundEnabled ? 'sound' : 'muted')} 環境音 ${soundEnabled ? 'オン' : 'オフ'}`;
+      button.innerHTML = `${icon(soundEnabled ? 'sound' : 'muted')} ${soundEnabled ? 'オン' : 'オフ'}`;
       button.setAttribute('aria-pressed', String(soundEnabled));
     }
   } catch {

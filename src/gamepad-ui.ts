@@ -152,18 +152,17 @@ export class GamepadControls {
     const data = this.options.canvas.dataset;
     data.gamepadStatus = status || frame.status;
     data.gamepadRunning = String(frame.move.running);
-    const connection = document.querySelector('.gamepad-connection');
-    if (connection) {
-      const label = (
-        {
-          connected: 'コントローラー接続済み',
-          disconnected: '接続待ち · コントローラーのボタンを押してください',
-          unsupported: 'ボタン配列を認識できません。Chrome / Edgeで接続し直してください。',
-          unavailable: 'この画面では利用できません。HTTPSまたはlocalhostで開いてください。',
-        } as Record<string, string>
-      )[data.gamepadStatus];
+    const label = (
+      {
+        connected: 'コントローラー接続済み',
+        disconnected: '接続待ち · コントローラーのボタンを押してください',
+        unsupported: 'ボタン配列を認識できません。Chrome / Edgeで接続し直してください。',
+        unavailable: 'この画面では利用できません。HTTPSまたはlocalhostで開いてください。',
+      } as Record<string, string>
+    )[data.gamepadStatus];
+    // The pause menu shows the status in both its settings and help tabs.
+    for (const connection of document.querySelectorAll('.gamepad-connection'))
       if (connection.textContent !== label) connection.textContent = label;
-    }
     if (frame.active) this.setActive(true);
     const hotbar = mode === 'game' && frame.hotbar;
     if (hotbar !== this.hotbarHeld) {
