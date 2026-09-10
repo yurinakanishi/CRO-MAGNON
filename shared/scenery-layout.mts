@@ -55,12 +55,25 @@ export function seededRandom(seed) {
   };
 }
 const TAU = Math.PI * 2;
+// 2026-09-10: keep 60% of the previous ground-cover spots; of those, 35 points
+// stay tufts and 25 points become sparse sprigs (grassland only).
+const GRASS_KEEP = 0.6,
+  GRASS_TUFT = 0.35,
+  GROUNDCOVER_HEIGHT = { 'meadow-grass': 0.55, 'meadow-sprig': 0.45 };
 const SCATTER_RESOURCES = [
   ...INITIAL_RESOURCES.filter((r) => !r.id.startsWith('gulf-')),
   ...LEGACY_RESOURCE_POINTS,
 ];
 const scatterBiomeAt = (x, z) => biomeById(legacySceneryBiome(x, z));
 function layout() {
+  // 2026-09-10: the user asked for a much sparser forest. Thinning draws from
+  // its own seeded stream so grass, rocks and every other placement keep their
+  // previous positions.
+  const TREE_KEEP = 0.4,
+    thin = seededRandom(20260910);
+  // Ground cover is thinned the same way; some surviving spots become a lone
+  // one-or-two-blade sprig instead of a tuft so the meadow reads as scattered.
+  const grassThin = seededRandom(20260911);
   const rng = seededRandom(404),
     trees = [],
     grass = [],
@@ -85,7 +98,7 @@ function layout() {
     if (inHuntingGround(x, z, 1.5) || inEnemyGround(x, z, 1.5)) continue;
     const biome = scatterBiomeAt(x, z).id,
       palette = BIOME_SCENERY[biome];
-    if (palette.tree)
+    if (palette.tree && thin() < TREE_KEEP)
       trees.push({
         key: palette.tree,
         x,
@@ -109,8 +122,12 @@ function layout() {
       (x > 45 && x < 78 && Math.abs(z - 43.5) < 1.9)
     )
       continue;
-    const scale = 0.65 + rng() * 0.65;
-    grass.push({ x, z, scale, height: 0.55 * scale, yaw: rng() * TAU });
+    const scale = 0.65 + rng() * 0.65,
+      yaw = rng() * TAU,
+      roll = grassThin();
+    if (roll >= GRASS_KEEP) continue;
+    const key = roll < GRASS_TUFT ? 'meadow-grass' : 'meadow-sprig';
+    grass.push({ key, x, z, scale, height: GROUNDCOVER_HEIGHT[key] * scale, yaw });
   }
   for (let i = 0; i < 65; i++) {
     const x = rng() * 140 - 20,
@@ -161,6 +178,7 @@ function layout() {
     ) {
       const height = 5 + distant() * 7,
         width = 0.75 + distant() * 0.45;
+      if (thin() >= TREE_KEEP) continue;
       trees.push({
         key: 'valley-pine',
         x,
@@ -292,7 +310,11 @@ export function grassForChunk(ix, iz) {
       Math.imul(Math.floor((chunk.x - EARTH.minX) / 32) + 31, 73856093) ^
         Math.imul(Math.floor((chunk.z - EARTH.minZ) / 32) + 31, 19349663),
     ),
-    grass = [];
+    grass = [],
+    thin = seededRandom(
+      Math.imul(Math.floor((chunk.x - EARTH.minX) / 32) + 7, 83492791) ^
+        Math.imul(Math.floor((chunk.z - EARTH.minZ) / 32) + 7, 2654435761),
+    );
   for (let i = 0; i < 250; i++) {
     const x = chunk.x + (rng() - 0.5) * 32,
       z = chunk.z + (rng() - 0.5) * 32;
@@ -317,14 +339,21 @@ export function grassForChunk(ix, iz) {
       (riverHalfWidth(z) > 0.7 && Math.abs(x - riverX(z)) < 4)
     )
       continue;
-    const scale = 0.6 + rng() * 0.65;
+    const scale = 0.6 + rng() * 0.65,
+      yaw = rng() * TAU,
+      roll = thin();
+    if (roll >= GRASS_KEEP) continue;
+    const key =
+      palette.groundcover === 'meadow-grass' && biome === 'grassland' && roll >= GRASS_TUFT
+        ? 'meadow-sprig'
+        : palette.groundcover;
     grass.push({
-      key: palette.groundcover,
+      key,
       x,
       z,
       scale,
-      height: (biome === 'snow' ? 0.9 : 0.55) * scale,
-      yaw: rng() * TAU,
+      height: (biome === 'snow' ? 0.9 : GROUNDCOVER_HEIGHT[key] ?? 0.55) * scale,
+      yaw,
       biome,
       surface: palette.surface ?? null,
     });

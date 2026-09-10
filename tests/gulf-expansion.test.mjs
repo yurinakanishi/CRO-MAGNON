@@ -21,9 +21,9 @@ test('four-area bounds retain the original Earth projection and bounded near-cam
   assert.equal(WORLD.width*WORLD.depth,4*4096*2048);
   assert.equal((GULF.maxX-GULF.minX)*(GULF.maxZ-GULF.minZ),4*740*670);
   assert.equal(EARTH.width,4096);assert.equal(EARTH.height,2048);
-  const continentalCorner={x:-1539.234003070742,z:72.73924321308732};
-  assert.equal(inGulf(continentalCorner.x,continentalCorner.z),false,'original continental corner is not part of the fantasy gulf');
-  assert.ok(SCENERY.trees.some(p=>p.x===continentalCorner.x&&p.z===continentalCorner.z),'original continental tree retained');
+  // Continental scatter trees west of the gulf survive the 2026-09-10 thinning and stay outside the fantasy gulf.
+  const continental=SCENERY.trees.filter(p=>!p.id&&p.x<-1500&&!inGulf(p.x,p.z));
+  assert.ok(continental.length>0,'original continental trees outside the fantasy gulf retained');
   assert.equal(FARM_PLOTS.length,48);assert.equal(GULF_STOPS.length,6);
   const grid=coastTextureData();assert.equal(grid.cell,2);assert.equal(grid.width,4096);assert.equal(grid.height,2048);
   for(const p of [...SETTLEMENTS,...GULF_STOPS]) {

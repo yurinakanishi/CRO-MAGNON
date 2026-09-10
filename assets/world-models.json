@@ -34,10 +34,11 @@
       "kind": "tree",
       "height": 10,
       "status": "integrated-reviewed-prototype",
-      "subject": "One complete mature evergreen Scots pine tree, tall slightly tapering textured brown trunk, naturally irregular dense green needle boughs arranged in readable compact masses, clear lower trunk and grounded root collar, asymmetrical natural silhouette, upright. Broad branch tiers taper toward the tip without looking like geometric cones. Clean believable MMORPG environment asset. Full tree visible from root to highest tip; no terrain, pot, pedestal, grass, other tree or falling needles.",
+      "subject": "Stylised evergreen conifer with smooth, rounded foliage tiers on a tapering brown trunk; soft readable masses instead of granular needle clumps.",
       "geometryResolution": 1024,
-      "sha256": "068c0253b58a13e096cb39a5f825a80de5cb7d129ef9351726cd40ee126551c5",
-      "delivery": "/models/valley-pine/model.glb"
+      "sha256": "659a8624253f383bd40ca4b8461427e695a91e97a747d9507c949342b18e0dd8",
+      "delivery": "/models/valley-pine/model.glb",
+      "referenceVersion": 2
     },
     {
       "key": "meadow-grass",
@@ -49,6 +50,18 @@
       "geometryResolution": 1024,
       "sha256": "23e834c851fc6cfd1e091edf11e9be093802f047ccb33a2af3b579e2dbb0bb48",
       "delivery": "/models/meadow-grass/model.glb"
+    },
+    {
+      "key": "meadow-sprig",
+      "name": "ぱらぱら草",
+      "kind": "foliage",
+      "height": 0.45,
+      "status": "pending",
+      "subject": "One or two broad smooth grass blades rising from a tiny root crown; sparse scattered ground cover for the grassland.",
+      "geometryResolution": 1024,
+      "sha256": "pending",
+      "delivery": "/models/meadow-sprig/model.glb",
+      "referenceVersion": 1
     },
     {
       "key": "valley-boulder",

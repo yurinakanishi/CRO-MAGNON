@@ -1,3 +1,9 @@
+## 2026-09-10 松（valley-pine）の樹冠を作り直し
+
+ユーザー指定（v1の粒状な針葉の見た目が不気味）で `valley-pine` をrevision v2へ更新。参照は画像生成が使えないホストのため art-directed Blenderレンダー（reference-v2）とし、ローカルTRELLIS-2 1024・seed 42で復元、280,215→12,609三角形へ軽量化（LOD1は5,043三角形）。樹冠のみアルベドの明度を0.16〜0.36へ補正し、樹皮は変更していない。高さ10 mのground-centredピボットは維持し、既存の配置・スケール計算への影響はない。採用は新規 `scripts/adopt-pine-revision.mjs`（`adopt-region-model.mjs` に準拠、候補バイト列をそのままコピーしSHAを記録）。制作者はClaude（Fable 5.1／Claude Code）で、`asset.json`・`world-models.json`・`world-assets.json` のprovenanceに `claudeUsed: true` を記録。`scripts/verify-world-assets.mjs` は `claudeUsed` の固定値チェックをやめ、型チェックと `provider` の非空チェックに変更し、Codex製（false）とClaude製（true）の両方を許容する。
+
+本エントリは、実装セッション後の別作業でこのファイルを誤って `git checkout` して元の記述（テスト・QA確認の詳細を含む）を失ったため、残っていたコード・アセット差分と `scripts/adopt-pine-revision.mjs` の内容から復元したもの。実施済みのQA（`qa/candidate-04` 等）・テスト件数・実ブラウザー確認の詳細は不明。
+
 ## 2026-09-08 貝・貝塚・木槍と黒曜石
 
 ユーザーの貝の採集・食事・貝塚と、木槍→黒曜石の刃→装着の指定を実装。貝 `cockle-shell` revision02、貝塚 `shell-midden` revision01はimagegen→ローカルTRELLIS-2 1024→形状を保つ軽量化と補修→exact GLBの7方向neutral/clay QA。ログ上の実GPUはRTX3070 Laptop 8 GB、重い処理は直列。木槍revision02、黒曜石の槍revision01、刃revision01は保持済みの石槍GLBからの派生で、旧石槍は変更しない。初回の貝のUV継ぎ目割れと木槍の裏面の隙間を修正し、不採用revisionを保持した。

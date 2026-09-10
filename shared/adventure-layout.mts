@@ -86,8 +86,9 @@ for (const r of ADVENTURE_REGIONS) {
         'moss',
       );
     }
-    for (let i = 0; i < 12; i++) {
-      const a = (i * Math.PI) / 6;
+    // Sparser grove ring (was 12) per the 2026-09-10 request.
+    for (let i = 0; i < 6; i++) {
+      const a = (i * Math.PI) / 3;
       trees.push({
         id: `grove-${i}`,
         key: 'valley-pine',

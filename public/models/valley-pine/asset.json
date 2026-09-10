@@ -5,36 +5,49 @@
   "candidate": 1,
   "status": "reviewed-prototype",
   "url": "/models/valley-pine/model.glb",
-  "sha256": "068c0253b58a13e096cb39a5f825a80de5cb7d129ef9351726cd40ee126551c5",
-  "bytes": 3544400,
-  "triangles": 26131,
+  "sha256": "659a8624253f383bd40ca4b8461427e695a91e97a747d9507c949342b18e0dd8",
+  "bytes": 1127004,
+  "triangles": 12609,
   "upAxis": "Y",
   "forwardAxis": "+Z",
-  "heightMetres": 10,
-  "widthMetres": null,
+  "heightMetres": 9.998863366548903,
+  "widthMetres": 4.752252817153931,
   "placement": {
-    "pivot": "ground-centred"
+    "pivot": "ground-centred",
+    "min": [
+      -2.3789968490600586,
+      0.0010679689003154635,
+      -2.3513903617858887
+    ],
+    "max": [
+      2.373255968093872,
+      9.999931335449219,
+      2.3438239097595215
+    ]
   },
   "clips": [],
   "notes": [
-    "Reviewed source-derived branch tiers, complete trunk, green needle masses and brown bark. 3.5 cm voxel cleanup avoids non-manifold QEM stall; near mesh 26131 triangles, medium LOD 4180 triangles. The reconstructed foliage is stylized and clumped at close range; no individual needle geometry is claimed. Medium LOD is intended beyond 18 metres, with exact-model impostors beyond 48 metres."
+    "2026-09-10 rework requested by the user: the v1 reconstruction's granular needle clumps looked unsettling. v2 uses smooth rounded foliage tiers.",
+    "Reference v2 is an art-directed Blender render (no imagegen available); the delivered mesh is TRELLIS-2 derived and reduced from the dense source (280,215 -> 12,609 triangles, p95 1.2 cm both directions).",
+    "Foliage texels were brought into a 0.16-0.36 luminance band so the lit crown tip no longer glows; bark texels untouched. Height 10 m, ground-centred pivot, so existing placements and scale rules are unchanged.",
+    "Views: qa/candidate-04 (6 directions), qa/lod1-04. LOD1 5,043 triangles used beyond 38 m; lod2 kept in work/ but not delivered (existing renderer uses one LOD)."
   ],
   "provenance": {
-    "provider": "Codex",
-    "claudeUsed": false,
-    "referenceGenerator": "Built-in imagegen",
-    "referenceImage": "output/model-generation/models/valley-pine/source/original/reference-v1.png",
-    "referenceSha256": "be22c40a16f270da881fdc5b27bd24b0da740a0c5a53d61bb4690edd0a8aa10d",
-    "reconstruction": "Local TRELLIS-2; settings and dense SHA in model workspace",
-    "candidateFile": "output/model-generation/models/valley-pine/work/low-poly/candidate-02/candidate.glb",
-    "visualReview": "output/model-generation/models/valley-pine/qa/adoption-review.json"
+    "provider": "Claude Fable 5.1 (Claude Code)",
+    "claudeUsed": true,
+    "referenceGenerator": "Art-directed Blender 5.2 render (no local image generator on this host); see source/original/reference-v2.json",
+    "referenceImage": "output/model-generation/models/valley-pine/source/original/reference-v2.png",
+    "referenceSha256": "6b0496c2f5012d6ae1997645ba857ae35a836c614c63dc1cf21b9bd1f107cbf8",
+    "reconstruction": "Local TRELLIS-2 1024, seed 42 (work/trellis/dense-v2-res1024-seed0042.glb); source-derived weld + quadric reduction with retained UV/albedo; foliage-only albedo luminance calibration; no replacement geometry.",
+    "candidateFile": "output/model-generation/models/valley-pine/work/low-poly/candidate-04/candidate.glb",
+    "visualReview": "output/model-generation/models/valley-pine/qa/adoption-review-rev04.json"
   },
   "lods": [
     {
       "url": "/models/valley-pine/lod1.glb",
-      "sha256": "b971cfcc68caa553f5a5298fed4e42aa32015f916321851acff826bfead8761c",
-      "bytes": 1577712,
-      "triangles": 4180
+      "sha256": "a3927a386890f6a9e3ce71d2a0c42be2e864a83487abc13f8a01b6b69a16bff1",
+      "bytes": 842952,
+      "triangles": 5043
     }
   ]
 }

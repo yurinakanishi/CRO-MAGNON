@@ -232,10 +232,11 @@ for (const s of [...SETTLEMENTS, ...GULF_STOPS]) {
   }
   add('firewood-pile', -9, 5, 0.85);
   add('stone-firepit', 8, 8, 0.55);
-  for (let i = 0; i < 7; i++)
+  // Sparser settlement tree line (was 7 at 8 m) per the 2026-09-10 request.
+  for (let i = 0; i < 4; i++)
     GULF_SCENERY.trees.push({
       key: 'valley-pine',
-      x: s.x - 47 + i * 8,
+      x: s.x - 47 + i * 16,
       z: s.z - 45,
       yaw: i,
       scale: [0.65, 0.6 + (i % 3) * 0.06, 0.65],
@@ -356,6 +357,7 @@ for (let i = 0; i < 240; i++) {
   const t = ((i * 73) % 239) / 239;
   const x = a.x + (b.x - a.x) * t + Math.sin(i * 2.39996) * 125;
   const z = a.z + (b.z - a.z) * t + Math.cos(i * 2.39996) * 100;
+  if (i % 5 >= 2) continue; // keep two in five grove samples (2026-09-10 thinning)
   if (gulfLandDistance(x, z) < 18 || gulfActivitySpace(x, z)) continue;
   if (
     [...SETTLEMENTS, ...GULF_STOPS, ...GULF_WAYPOINTS].some(

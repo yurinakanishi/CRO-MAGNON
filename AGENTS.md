@@ -1,3 +1,11 @@
+## 2026-09-10 松の木を丸みのある樹冠へ作り直し、森を間引き
+
+ユーザー指定で `valley-pine` をrevision v2へ更新した。粒状で不気味に見えていた針葉の見た目を、滑らかな丸い樹冠層へ作り直した（`scripts/adopt-pine-revision.mjs`、参照 reference-v2、ローカルTRELLIS-2 1024 seed42、280,215→12,609三角形、LOD1は5,043三角形）。高さ10 mは維持し既存の配置・スケール計算に変更はない。`assets/world-models.json`・`public/models/valley-pine/asset.json`・`public/models/world-assets.json` のSHA・寸法・provenanceを更新し、今回はClaude（Fable 5.1／Claude Code）が制作したため `claudeUsed: true` を記録（旧Codex製資産は引き続き `false`）。`scripts/verify-world-assets.mjs` の検証を、`claudeUsed` の固定値チェックから型チェック（boolean）＋`provider` の非空文字列チェックへ変更し、両方の由来を許容する。
+
+同じ指定で森全体を大きく間引いた。`shared/scenery-layout.mts` のランダム散布と遠景の `valley-pine` 配置に、既存の乱数列とは独立した `seededRandom(20260910)` による間引き判定（保持率0.4）を追加し、他の草・岩などの配置は変えない。`shared/adventure-layout.mts` の冒険地域の林は12本→6本、`shared/gulf-region.mts` の集落の並木は7本（8 m間隔）→4本（16 m間隔）、湾の240本のグローブ散布は5個中2個のみ保持に変更。`tests/gulf-expansion.test.mjs` は座標固定の1本を見るアサーションから、間引き後も残る大陸側の木の存在チェックへ更新した。
+
+本エントリは、実装セッション終了後の別作業でこのファイルを誤って `git checkout` し、当時の検証記録（テスト件数・実ブラウザー確認など）を含む元の記述を失ったため、残っていたコード・アセット差分から事実のみを復元して書き直したもの。上記以外の検証状況は不明。
+
 ## 2026-09-10 橋のたもとの焚き火を集落側へ移動
 
 ユーザー指摘（橋のすぐそばの焚き火が邪魔で通りにくい）で、`shared/scenery-layout.mts` のオルの集落の焚き火を (72, 43) → (75, 40) に移した。旧位置は木橋の東端（x≈71.07、床 z 42.2〜44.9）から1.06 mで渡り口をふさいでいた。新位置は橋端から5.3 m、オル (70, 41) から5.1 m、テント (73, 37) から3.6 mで、オルとテントの間に収まる。座標由来のワープIDは `fire-72-43` → `fire-75-40` になるため `shared/warp-sites.mts` の名前表を更新（表示名「オルの集落」は同じ）。料理は最寄りの焚き火を探すので影響なし。

@@ -33,7 +33,11 @@ for (const spec of catalog.assets) {
   const manifest = await json(`public/models/${spec.key}/asset.json`);
   assert.equal(manifest.modelKey, spec.key);
   assert.equal(manifest.kind, spec.kind);
-  assert.equal(manifest.provenance.claudeUsed, false);
+  // Provenance must state honestly which agent produced the asset. Codex-era
+  // assets record false; the 2026-09-10 valley-pine rework was made by Claude
+  // at the user's request and records true.
+  assert.equal(typeof manifest.provenance.claudeUsed, 'boolean');
+  assert.ok(typeof manifest.provenance.provider === 'string' && manifest.provenance.provider.length > 0);
   assert.equal(manifest.sha256, spec.sha256);
   if (spec.kind !== 'humanoid')
     assert.deepEqual(
