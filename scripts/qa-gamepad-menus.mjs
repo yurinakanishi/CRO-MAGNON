@@ -131,8 +131,8 @@ try {
   }
   passed('All four buttons open inventory and confirm Back; held presses do not attack or mount');
 
-  // Pointer and keyboard users use the same visible Back button.
-  await page.locator('#menu-button').click();
+  // Keyboard users open the menu; pointer and keyboard users use the same visible Back button.
+  await page.keyboard.press('Escape');
   await page.locator('#modal-close').click();
   assert.equal(await page.locator('#modal').evaluate((el) => el.open), false);
   await page.keyboard.press('Escape');
@@ -140,7 +140,7 @@ try {
   await page.keyboard.press('Enter');
   assert.equal(await page.locator('#modal').evaluate((el) => el.open), false);
   await input();
-  passed('Pointer and keyboard can activate the visible Back button');
+  passed('Keyboard can open the menu and activate the visible Back button');
 
   for (const viewport of [
     { width: 390, height: 844 },
