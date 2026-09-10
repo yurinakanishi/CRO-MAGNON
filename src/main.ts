@@ -1,5 +1,5 @@
+import { mapScreen } from './map-screen.js';
 import { installMapWarp, updateMapWarp } from './map-warp-ui.js';
-import { WARP_POINTS, warpPointById } from '../shared/warp-sites.mjs';
 import { carrying, canCarry } from '../shared/carrying.mjs';
 import { readSaved, save, savedSession, saveSession } from './session-storage.js';
 import {
@@ -44,9 +44,9 @@ import { interactionVisible } from '../shared/interactions.mjs';
 import { ENEMY_GROUNDS, SCENERY } from '../shared/scenery-layout.mjs';
 import { CASTLE_GATE } from '../shared/castle-layout.mjs';
 import { playerDamageEvent } from './enemy-state.js';
-import { BIOMES, biomeAt } from '../shared/biomes.mjs';
-import { drawWorldMap, mapProjection, setWorldMapMode, setWorldMapSelection } from './world-map.js';
-import { EARTH, worldToGeo, locationName } from '../shared/paleo-geography.mjs';
+import { biomeAt } from '../shared/biomes.mjs';
+import { drawWorldMap, setWorldMapMode, setWorldMapSelection } from './world-map.js';
+import { locationName } from '../shared/paleo-geography.mjs';
 import { regionAt } from '../shared/adventure-regions.mjs';
 import { installAdventureUI, adventureInteraction } from './adventure-ui.js';
 import { installFishingUI, fishingInteraction } from './fishing-ui.js';
@@ -398,6 +398,11 @@ function connection(connected, label) {
   $('#connection-label').textContent =
     multiplayer.mode === 'lan' ? (connected ? 'LAN: Connected' : `LAN: ${label}`) : label;
   $('#connection-label').title = multiplayer.serverUrl || location.origin;
+  updateMapWarp(
+    player(),
+    (state.serverTime ?? Date.now()) + performance.now() - stateReceivedAt,
+    connected,
+  );
 }
 async function connect() {
   gamepadControls?.suspend();
@@ -1267,7 +1272,7 @@ function openHelp() {
 function updateGamepadHints(active: boolean) {
   usingGamepad = active;
   for (const [selector, label] of [
-    ['#interaction-hint kbd', active ? '×' : 'E'],
+    ['#interaction-hint kbd', active ? '○' : 'E'],
     ['#attack-button kbd', active ? '□ / R2' : 'F'],
     ['#ride-button kbd', active ? '△' : 'R'],
     ['#boat-board kbd', active ? '△' : 'B'],
@@ -1361,100 +1366,15 @@ function openPauseMenu() {
 function openMap() {
   setWorldMapMode(inGulf(player()?.x, player()?.z) ? 'gulf' : 'earth');
   setWorldMapSelection(null);
-  openModal(
-    `<h2>大陸と、三つの岸を旅する。</h2><p class="modal-intro">炎マークを選んで「ここへワープ」。各地の焚き火へ、どこからでも移動できます。</p><div class="earth-map-toolbar"><button class="button button-outline" id="map-overview" aria-pressed="true">世界全図</button><button class="button button-outline" id="map-gulf" aria-pressed="false">三つの岸の全図</button><button class="button button-outline" id="map-local" aria-pressed="false">現在地の周辺</button><span>北が上 · 人物の大きさはそのまま</span></div><div class="warp-map-wrap"><canvas id="big-map" width="960" height="480" class="big-map earth-map" aria-label="氷河時代を参考にした大陸と、創作地域の三つの岸の湾の地図"></canvas><div id="warp-map-points" class="warp-map-points" aria-label="焚き火のワープ地点"></div></div><div class="earth-map-legend">${BIOMES.map((b) => `<span><i style="background:${b.color}"></i>${b.short}</span>`).join('')}<span><i style="background:#285566"></i>海</span></div><div class="earth-travel"><label for="map-location">焚き火を選ぶ</label><select id="map-location"><option value="">行き先を選ぶ…</option>${WARP_POINTS.map((s) => `<option value="${s.id}">${s.name}</option>`).join('')}</select><p id="map-selection" aria-live="polite"></p><div class="earth-travel-actions"><button id="map-warp" class="button button-accent" disabled>ここへワープ</button></div><small id="map-warp-status" role="status"></small></div><div class="map-locations"><button class="button button-outline" id="map-camp">${icon('flame')} はじまりの焚き火</button><button class="button button-outline" id="map-hunt-north">${icon('spear')} 北西の狩場</button><button class="button button-outline" id="map-hunt-south">${icon('spear')} 南西の狩場</button><button class="button button-outline" id="map-npc">${icon('people')} オルの集落</button></div><details class="earth-map-sources"><summary>この世界の時代と地図について</summary><p>ネアンデルタール人の生存期間内である約5万年前が基準です。NOAA ETOPO1の地形を海面 −68.3 mで区切り、正距円筒図法で縮小しています。細い海峡・小島、氷床と気候の範囲は簡略化しています。元の大陸の位置を保ち、西へ広げた三つの岸の湾は創作地域で、国・農耕・異なる時代の人々の共存はファンタジーです。野営地は探索用の配置です。</p><a href="https://www.ncei.noaa.gov/products/etopo-global-relief-model" target="_blank" rel="noreferrer">地形資料：NOAA</a> · <a href="https://cp.copernicus.org/articles/12/1079/2016/" target="_blank" rel="noreferrer">海面資料：Spratt & Lisiecki (2016)</a></details>`,
-  );
-  let updateMarkers = () => {};
-  const selectTarget = (target) => {
-    $('#map-location').value = warpPointById(target?.id)?.id ?? '';
-    setWorldMapSelection(target);
-    const geo = worldToGeo(target.x, target.z);
-    const location = inGulf(target.x, target.z)
-      ? '三つの岸 · 創作地域'
-      : target.x < EARTH.minX ||
-          target.x > EARTH.maxX ||
-          target.z < EARTH.minZ ||
-          target.z > EARTH.maxZ
-        ? '外海'
-        : `${Math.abs(geo.latitude).toFixed(1)}°${geo.latitude >= 0 ? 'N' : 'S'} ${Math.abs(geo.longitude).toFixed(1)}°${geo.longitude >= 0 ? 'E' : 'W'}`;
-    $('#map-selection').textContent =
-      `${target.name ?? biomeAt(target.x, target.z).short} · ${Math.round(distance(player() ?? CAMP, target))} m先 · ${location}`;
-    drawMinimap($('#big-map'), true);
-    updateMarkers();
-    updateMapWarp(
-      player(),
-      (state.serverTime ?? Date.now()) + performance.now() - stateReceivedAt,
-      joined,
-    );
-  };
-  updateMarkers = installMapWarp({
+  openModal(mapScreen(icon));
+  installMapWarp({
     player,
     action,
-    selectTarget,
     icon,
+    connected: () => joined,
+    redraw: () => drawMinimap($('#big-map'), true),
     now: () => (state.serverTime ?? Date.now()) + performance.now() - stateReceivedAt,
   });
-  for (const [id, mode] of [
-    ['map-overview', 'earth'],
-    ['map-local', 'local'],
-    ['map-gulf', 'gulf'],
-  ])
-    $('#' + id).onclick = () => {
-      setWorldMapMode(mode);
-      $('#map-overview').setAttribute('aria-pressed', String(mode === 'earth'));
-      $('#map-local').setAttribute('aria-pressed', String(mode === 'local'));
-      $('#map-gulf').setAttribute('aria-pressed', String(mode === 'gulf'));
-      drawMinimap($('#big-map'), true);
-      updateMarkers();
-    };
-  $('#map-overview').setAttribute('aria-pressed', String(!inGulf(player()?.x, player()?.z)));
-  $('#map-gulf').setAttribute('aria-pressed', String(inGulf(player()?.x, player()?.z)));
-  drawMinimap($('#big-map'), true);
-  $('#map-camp').onclick = () => selectTarget(warpPointById('fire-50-50'));
-  $('#map-npc').onclick = () => selectTarget(warpPointById('fire-72-43'));
-  if (state.enemies?.some((enemy) => enemy.hostile === true)) {
-    $('.map-locations').insertAdjacentHTML(
-      'beforeend',
-      `<button class="button button-outline enemy-map-button" id="map-enemy">${icon('spear')} 大城の広間の白羽の呪術師</button>`,
-    );
-    $('#map-enemy').onclick = () => selectTarget({ ...ENEMY_GROUNDS[0], name: '白羽の呪術師' });
-  }
-  $('.map-locations').insertAdjacentHTML(
-    'beforeend',
-    `<button class="button button-outline" id="map-castle">白羽の大城の城門</button>`,
-  );
-  $('#map-castle').onclick = () => selectTarget(CASTLE_GATE);
-  for (const direction of ['north', 'south'])
-    $(`#map-hunt-${direction}`).onclick = () => {
-      const clearing = SCENERY.animals[direction === 'north' ? 0 : 1],
-        animal = state.animals?.find((item) => item.id === clearing.id);
-      selectTarget({ ...(animal ?? clearing), name: '狩場の草原' });
-    };
-  $('#big-map').onclick = (event) => {
-    const canvas = event.currentTarget,
-      rect = canvas.getBoundingClientRect(),
-      projection = mapProjection(canvas, true, player()),
-      px = ((event.clientX - rect.left) * canvas.width) / rect.width,
-      py = ((event.clientY - rect.top) * canvas.height) / rect.height;
-    const stop = WARP_POINTS.find((s) => {
-      const p = projection.point(s.x, s.z);
-      return Math.hypot(p[0] - px, p[1] - py) < 12;
-    });
-    if (stop) {
-      $('#map-location').value = stop.id;
-      selectTarget(stop);
-      return;
-    }
-    const target = projection.world(px, py);
-    selectTarget(target);
-  };
-  $('#map-selection').textContent = '炎マークか一覧から行き先を選ぼう。';
-  updateMarkers();
-  updateMapWarp(
-    player(),
-    (state.serverTime ?? Date.now()) + performance.now() - stateReceivedAt,
-    joined,
-  );
 }
 function cook() {
   const me = player();

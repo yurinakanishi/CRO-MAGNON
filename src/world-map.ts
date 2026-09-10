@@ -36,18 +36,50 @@ import {
 } from '../shared/adventure-regions.mjs';
 
 let background,
+  atlasBackground,
   overview = true,
   gulfView = false,
   selection = null;
+let mapZoom = 1,
+  mapCenter = null,
+  mapDetails = false;
+export function setWorldMapDetails(value) {
+  mapDetails = value;
+}
+export function centerWorldMap(point) {
+  mapCenter = { x: point.x, z: point.z };
+}
+export function zoomWorldMap(
+  canvas,
+  self,
+  factor,
+  anchor = { x: canvas.width / 2, y: canvas.height / 2 },
+) {
+  const before = mapProjection(canvas, true, self);
+  const world = before.world(anchor.x, anchor.y);
+  mapZoom = Math.max(1, Math.min(32, mapZoom * factor));
+  const after = mapProjection(canvas, true, self);
+  mapCenter = {
+    x: worldClamp(world.x - (anchor.x - canvas.width / 2) / after.scale, 'x'),
+    z: worldClamp(world.z - (anchor.y - canvas.height / 2) / after.scale, 'z'),
+  };
+}
+export function panWorldMap(canvas, self, dx, dy) {
+  const projection = mapProjection(canvas, true, self);
+  const center = projection.world(canvas.width / 2 - dx, canvas.height / 2 - dy);
+  centerWorldMap(center);
+}
 export function setWorldMapSelection(point) {
   selection = point;
 }
 export function setWorldMapMode(mode) {
   overview = mode !== 'local';
   gulfView = mode === 'gulf';
+  mapZoom = 1;
+  mapCenter = null;
 }
-function baseMap() {
-  if (background) return background;
+function baseMap(atlas = false) {
+  if (background) return atlas ? atlasBackground : background;
   const width = 2048,
     height = 1024,
     canvas = document.createElement('canvas');
@@ -55,6 +87,7 @@ function baseMap() {
   canvas.height = height;
   const ctx = canvas.getContext('2d'),
     pixels = ctx.createImageData(width, height),
+    landMask = new Uint8Array(width * height),
     colors = BIOMES.map((b) =>
       b.color
         .slice(1)
@@ -68,6 +101,7 @@ function baseMap() {
         d = coastDistance(wx, wz),
         i = (z * width + x) * 4;
       if (d > 0) {
+        landMask[z * width + x] = 1;
         const weights = biomeWeights(wx, wz);
         for (let c = 0; c < 3; c++)
           pixels.data[i + c] =
@@ -82,7 +116,33 @@ function baseMap() {
     }
   ctx.putImageData(pixels, 0, 0);
   background = canvas;
-  return canvas;
+  // A quieter printed-map palette and a crisp shoreline make travel icons readable.
+  // The geography is identical to the minimap; no invented terrain is added.
+  atlasBackground = document.createElement('canvas');
+  atlasBackground.width = width;
+  atlasBackground.height = height;
+  for (let i = 0; i < landMask.length; i++) {
+    const k = i * 4;
+    if (landMask[i]) {
+      const shore =
+        i % width > 0 &&
+        i % width < width - 1 &&
+        (!landMask[i - 1] ||
+          !landMask[i + 1] ||
+          (i >= width && !landMask[i - width]) ||
+          (i < landMask.length - width && !landMask[i + width]));
+      for (let c = 0; c < 3; c++)
+        pixels.data[k + c] = shore
+          ? [170, 175, 137][c]
+          : pixels.data[k + c] * 0.66 + [35, 37, 22][c];
+    } else {
+      pixels.data[k] = 17 + (pixels.data[k] - 25) * 0.5;
+      pixels.data[k + 1] = 45 + (pixels.data[k + 1] - 57) * 0.65;
+      pixels.data[k + 2] = 52 + (pixels.data[k + 2] - 72) * 0.6;
+    }
+  }
+  atlasBackground.getContext('2d').putImageData(pixels, 0, 0);
+  return atlas ? atlasBackground : canvas;
 }
 export function mapProjection(canvas, big, self = { x: 50, z: 50 }) {
   const full = big && overview;
@@ -96,11 +156,14 @@ export function mapProjection(canvas, big, self = { x: 50, z: 50 }) {
         width: Math.max(EARTH.maxX, GULF.maxX) - Math.min(EARTH.minX, GULF.minX),
         depth: Math.max(EARTH.maxZ, GULF.maxZ) - Math.min(EARTH.minZ, GULF.minZ),
       };
-  const scale = full
-    ? Math.min((canvas.width - 24) / bounds.width, (canvas.height - 28) / bounds.depth)
-    : canvas.width / (big ? 600 : 180);
-  const cx = full ? (bounds.minX + bounds.maxX) / 2 : self.x,
-    cz = full ? (bounds.minZ + bounds.maxZ) / 2 : self.z;
+  const scale =
+    (full
+      ? Math.min((canvas.width - 64) / bounds.width, (canvas.height - 80) / bounds.depth)
+      : big
+        ? Math.min(canvas.width, canvas.height) / 440
+        : canvas.width / 180) * (big ? mapZoom : 1);
+  const cx = big && mapCenter ? mapCenter.x : full ? (bounds.minX + bounds.maxX) / 2 : self.x,
+    cz = big && mapCenter ? mapCenter.z : full ? (bounds.minZ + bounds.maxZ) / 2 : self.z;
   const point = (x, z) => [
     canvas.width / 2 + (x - cx) * scale,
     canvas.height / 2 + (z - cz) * scale,
@@ -108,6 +171,7 @@ export function mapProjection(canvas, big, self = { x: 50, z: 50 }) {
   return {
     scale,
     full,
+    zoom: big ? mapZoom : 1,
     point,
     world: (x, y) => ({
       x: worldClamp(cx + (x - canvas.width / 2) / scale, 'x'),
@@ -121,10 +185,11 @@ export function drawWorldMap(canvas, state, selfId, big = false) {
     h = canvas.height,
     self = state.players.find((p) => p.id === selfId) ?? { x: 50, z: 50 };
   const { point, scale, full } = mapProjection(canvas, big, self);
-  ctx.fillStyle = '#193948';
+  const detailed = !big || mapDetails;
+  ctx.fillStyle = big ? '#112d34' : '#193948';
   ctx.fillRect(0, 0, w, h);
   const [left, top] = point(WORLD.minX, WORLD.minZ);
-  ctx.drawImage(baseMap(), left, top, WORLD.width * scale, WORLD.depth * scale);
+  ctx.drawImage(baseMap(big), left, top, WORLD.width * scale, WORLD.depth * scale);
   if (full && !gulfView) {
     ctx.strokeStyle = '#c2d0c51a';
     ctx.lineWidth = 1;
@@ -150,7 +215,10 @@ export function drawWorldMap(canvas, state, selfId, big = false) {
     ctx.shadowBlur = 4;
     for (const label of CONTINENT_LABELS) {
       const [x, y] = point(label.x, label.z);
-      ctx.fillStyle = '#fff4d7';
+      ctx.fillStyle = '#ede1bcaa';
+      ctx.strokeStyle = '#18313a';
+      ctx.lineWidth = 4;
+      ctx.strokeText(label.name, x, y);
       ctx.fillText(label.name, x, y);
     }
     ctx.shadowBlur = 0;
@@ -189,12 +257,12 @@ export function drawWorldMap(canvas, state, selfId, big = false) {
     for (const s of SETTLEMENTS) {
       const color = COUNTRIES.find((c) => c.id === s.id)?.color ?? '#ffdc8d';
       dot(s.x, s.z, color, full ? 4 : 5);
-      if (!full || gulfView) {
+      if (detailed && (!full || gulfView)) {
         ctx.fillStyle = color;
         ctx.fillText(s.name, ...point(s.x + 6, s.z - 7));
       }
     }
-    if (!full || gulfView) {
+    if (detailed && (!full || gulfView)) {
       for (const s of GULF_STOPS) {
         dot(s.x, s.z, '#e8c879', 3);
         ctx.fillStyle = '#ead9af';
@@ -236,7 +304,7 @@ export function drawWorldMap(canvas, state, selfId, big = false) {
     }
     ctx.restore();
   }
-  if (big && (!full || gulfView)) {
+  if (big && detailed && (!full || gulfView)) {
     ctx.save();
     ctx.font = '12px sans-serif';
     let travelling = 0;
@@ -277,7 +345,7 @@ export function drawWorldMap(canvas, state, selfId, big = false) {
     canvas.dataset.travellingHouseholds = String(travelling);
     ctx.restore();
   }
-  if (big && gulfView && full && state.maritime) {
+  if (big && detailed && gulfView && full && state.maritime) {
     ctx.save();
     ctx.strokeStyle = '#94e1e6';
     ctx.lineWidth = 2;
@@ -317,25 +385,26 @@ export function drawWorldMap(canvas, state, selfId, big = false) {
     ctx.arc(x, y, 11, 0, Math.PI * 2);
     ctx.stroke();
   }
-  for (const item of LANDMARKS) {
-    const [x, y] = point(item.x, item.z),
-      r = full ? 3 : 4;
-    ctx.beginPath();
-    ctx.moveTo(x, y - r);
-    ctx.lineTo(x - r, y + r);
-    ctx.lineTo(x + r, y + r);
-    ctx.closePath();
-    ctx.fillStyle = item.key === 'volcanic-cone' ? '#f19c73' : '#caf1f2';
-    ctx.fill();
-  }
-  if (big)
+  if (detailed)
+    for (const item of LANDMARKS) {
+      const [x, y] = point(item.x, item.z),
+        r = full ? 3 : 4;
+      ctx.beginPath();
+      ctx.moveTo(x, y - r);
+      ctx.lineTo(x - r, y + r);
+      ctx.lineTo(x + r, y + r);
+      ctx.closePath();
+      ctx.fillStyle = item.key === 'volcanic-cone' ? '#f19c73' : '#caf1f2';
+      ctx.fill();
+    }
+  if (big && detailed)
     for (const stop of EXPEDITION_STOPS) {
       const [x, y] = point(stop.x, stop.z);
       ctx.strokeStyle = '#ffe2a4';
       ctx.lineWidth = 1.4;
       ctx.strokeRect(x - 3, y - 3, 6, 6);
     }
-  {
+  if (detailed) {
     const [x, y] = point(CASTLE.x, CASTLE.z);
     ctx.fillStyle = '#d8cebc';
     ctx.fillRect(x - 4, y - 3, 8, 7);
@@ -346,57 +415,60 @@ export function drawWorldMap(canvas, state, selfId, big = false) {
       ctx.fillText(CASTLE.name, x + 8, y + 4);
     }
   }
-  for (const region of ADVENTURE_REGIONS) {
-    const [x, y] = point(region.x, region.z),
-      r = full ? 6 : region.radius * scale;
-    ctx.strokeStyle = region.color;
-    ctx.lineWidth = 1;
-    ctx.beginPath();
-    ctx.arc(x, y, r, 0, Math.PI * 2);
-    ctx.stroke();
-    if (big && full) {
-      ctx.font = '11px sans-serif';
-      ctx.fillStyle = region.color;
-      ctx.fillText(region.kind, x + 8, y + 4);
-    }
-    if (!full) {
-      const progress = adventureProgress(self, region.id);
-      for (const c of region.checkpoints) {
-        dot(c.x, c.z, progress.visited.includes(c.id) ? '#9cce9b' : '#ffe3a3', 3);
-        if (big) {
-          ctx.fillStyle = '#fff1cf';
-          ctx.font = '11px sans-serif';
-          ctx.fillText(c.name, ...point(c.x + 4, c.z));
-        }
+  if (detailed)
+    for (const region of ADVENTURE_REGIONS) {
+      const [x, y] = point(region.x, region.z),
+        r = full ? 6 : region.radius * scale;
+      ctx.strokeStyle = region.color;
+      ctx.lineWidth = 1;
+      ctx.beginPath();
+      ctx.arc(x, y, r, 0, Math.PI * 2);
+      ctx.stroke();
+      if (big && full) {
+        ctx.font = '11px sans-serif';
+        ctx.fillStyle = region.color;
+        ctx.fillText(region.kind, x + 8, y + 4);
       }
-      dot(region.camp.x, region.camp.z, '#ffb971', 4);
+      if (!full) {
+        const progress = adventureProgress(self, region.id);
+        for (const c of region.checkpoints) {
+          dot(c.x, c.z, progress.visited.includes(c.id) ? '#9cce9b' : '#ffe3a3', 3);
+          if (big) {
+            ctx.fillStyle = '#fff1cf';
+            ctx.font = '11px sans-serif';
+            ctx.fillText(c.name, ...point(c.x + 4, c.z));
+          }
+        }
+        dot(region.camp.x, region.camp.z, '#ffb971', 4);
+      }
     }
-  }
-  if (!full)
+  if (!full && detailed)
     for (const rift of RIFTS) {
       const [x, y] = point(rift.x, rift.z);
       ctx.fillStyle = '#b9a2ff';
       ctx.font = '17px sans-serif';
       ctx.fillText('✧', x - 6, y + 5);
     }
-  if (!full) {
+  if (!full && detailed) {
     for (const fire of state.cookingFires ?? []) dot(fire.x, fire.z, '#efb573', big ? 3 : 2);
     dot(CAMP.x, CAMP.z, '#efb573', 4);
     dot(NPC.x, NPC.z, '#dad3a9', 3);
   }
-  for (const animal of state.animals ?? [])
-    if (animal.phase !== 'respawning')
-      dot(animal.x, animal.z, animal.phase === 'meat' ? '#e5b6a9' : '#d9c089', full ? 2 : 3);
-  for (const boat of state.boats ?? []) {
-    const [x, y] = point(boat.x, boat.z);
-    ctx.save();
-    ctx.translate(x, y);
-    ctx.rotate(-boat.facing);
-    ctx.fillStyle = boat.riderId ? '#ffde96' : '#bcdddc';
-    ctx.fillRect(-2, -5, 4, 10);
-    ctx.restore();
-  }
-  if (!full && (state.enemies ?? []).some((e) => e.modelKey === BEHEMOTH.modelKey)) {
+  if (detailed)
+    for (const animal of state.animals ?? [])
+      if (animal.phase !== 'respawning')
+        dot(animal.x, animal.z, animal.phase === 'meat' ? '#e5b6a9' : '#d9c089', full ? 2 : 3);
+  if (detailed)
+    for (const boat of state.boats ?? []) {
+      const [x, y] = point(boat.x, boat.z);
+      ctx.save();
+      ctx.translate(x, y);
+      ctx.rotate(-boat.facing);
+      ctx.fillStyle = boat.riderId ? '#ffde96' : '#bcdddc';
+      ctx.fillRect(-2, -5, 4, 10);
+      ctx.restore();
+    }
+  if (detailed && !full && (state.enemies ?? []).some((e) => e.modelKey === BEHEMOTH.modelKey)) {
     const [x, y] = point(BEHEMOTH_GROUND.x, BEHEMOTH_GROUND.z);
     ctx.strokeStyle = '#d193e9';
     ctx.lineWidth = 1;
@@ -409,10 +481,12 @@ export function drawWorldMap(canvas, state, selfId, big = false) {
       ctx.fillText('紫尾の巨獣の縄張り', x + 8, y + 4);
     }
   }
-  for (const enemy of state.enemies ?? [])
-    if (enemy.hostile && enemy.phase !== 'respawning')
-      dot(enemy.x, enemy.z, enemy.phase === 'alive' ? '#ff9183' : '#926d6a', full ? 2 : 3);
+  if (detailed)
+    for (const enemy of state.enemies ?? [])
+      if (enemy.hostile && enemy.phase !== 'respawning')
+        dot(enemy.x, enemy.z, enemy.phase === 'alive' ? '#ff9183' : '#926d6a', full ? 2 : 3);
   for (const player of state.players) {
+    if (big && player.id === selfId) continue; // The atlas uses a high-contrast DOM arrow above its fire markers.
     dot(player.x, player.z, player.id === selfId ? '#fff8da' : player.color, big ? 4 : 3);
     if (player.id === selfId) {
       const [x, y] = point(player.x, player.z);
@@ -435,18 +509,21 @@ export function drawWorldMap(canvas, state, selfId, big = false) {
   }
   ctx.fillStyle = '#fff0d3';
   ctx.font = big ? '12px sans-serif' : '10px sans-serif';
-  ctx.fillText(
-    full
-      ? gulfView
-        ? '三つの岸 · 六つの休み場 · 1,480 × 1,340 m'
-        : '炎マーク：焚き火ワープ · ○ 探索地域'
-      : inGulf(self.x, self.z)
-        ? GULF.name
-        : (regionAt(self.x, self.z)?.name ?? biomeAt(self.x, self.z).short),
-    10,
-    18,
-  );
-  const metres = full ? (gulfView ? 200 : 1000) : big ? 100 : 25,
+  if (!big)
+    ctx.fillText(
+      full
+        ? gulfView
+          ? '三つの岸 · 六つの休み場 · 1,480 × 1,340 m'
+          : '炎マーク：焚き火ワープ · ○ 探索地域'
+        : inGulf(self.x, self.z)
+          ? GULF.name
+          : (regionAt(self.x, self.z)?.name ?? biomeAt(self.x, self.z).short),
+      10,
+      18,
+    );
+  const metres = big
+      ? ([10, 25, 50, 100, 200, 500, 1000].filter((m) => m * scale < w / 5).at(-1) ?? 10)
+      : 25,
     pixels = metres * scale;
   ctx.fillRect(w - pixels - 12, h - 12, pixels, 1);
   ctx.textAlign = 'right';
@@ -456,4 +533,5 @@ export function drawWorldMap(canvas, state, selfId, big = false) {
   canvas.dataset.seaWeather = state.maritime?.kind ?? '';
   canvas.dataset.worldWidth = String(WORLD.width);
   canvas.dataset.worldDepth = String(WORLD.depth);
+  if (big) canvas.dispatchEvent(new Event('mapdraw'));
 }

@@ -15,11 +15,11 @@ export const gamepadHelp = `
     <dl class="gamepad-bindings">
       <div><dt>左スティック</dt><dd>浅く倒すと歩く、深く倒すと走る</dd></div>
       <div><dt>右スティック</dt><dd>カメラを回す</dd></div>
-      <div><dt>×</dt><dd>採集・調べる</dd></div>
+      <div><dt>○</dt><dd>採集・調べる</dd></div>
       <div><dt>□ / R2</dt><dd>刀・魔法・槍で攻撃</dd></div>
-      <div><dt>L2</dt><dd>ジャンプ（着地してからもう一度）</dd></div>
+      <div><dt>×</dt><dd>ジャンプ（着地してからもう一度）</dd></div>
       <div><dt>△</dt><dd>近くの船・マンモスに乗る／降りる</dd></div>
-      <div><dt>○</dt><dd>作業を中止</dd></div>
+      <div><dt>L2</dt><dd>作業を中止</dd></div>
       <div><dt>十字キー</dt><dd>↑ 地図 · ← もちもの · → 手帳 · ↓ メニュー</dd></div>
       <div><dt>OPTIONS</dt><dd>メニューを開く／閉じる</dd></div>
       <div><dt>タッチパッド / SHARE</dt><dd>地図</dd></div>
@@ -245,7 +245,19 @@ export class GamepadControls {
     const el = this.focused;
     if (!el || el.matches(':disabled')) return;
     if (el instanceof HTMLSelectElement) this.navigate('down');
-    else el.click();
+    else {
+      el.click();
+      // Selecting an atlas fire moves native focus to its confirmation button.
+      // Follow that focus so the next press confirms the selected destination.
+      const next = document.activeElement;
+      if (
+        next instanceof HTMLElement &&
+        next !== el &&
+        next.closest('.atlas') &&
+        this.items().includes(next)
+      )
+        this.focus(next);
+    }
   }
 
   destroy() {

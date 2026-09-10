@@ -21,9 +21,9 @@ export function keyPrompts(
   const prompts: KeyPrompt[] = options.carrying
     ? []
     : [
-        { key: gamepad ? '×' : 'E', label: '調べる' },
+        { key: gamepad ? '○' : 'E', label: '調べる' },
         { key: gamepad ? '□' : 'F', label: '攻撃' },
-        { key: gamepad ? 'L2' : 'Space', label: 'ジャンプ' },
+        { key: gamepad ? '×' : 'Space', label: 'ジャンプ' },
       ];
   if (options.ride)
     prompts.push({ key: gamepad ? '△' : 'R', label: options.carry ? '肩乗り' : 'マンモス' });

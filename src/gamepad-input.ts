@@ -58,11 +58,11 @@ export interface PadFrame {
 }
 
 const gameBindings: [number, PadAction][] = [
-  [PAD.cross, 'confirm'],
-  [PAD.circle, 'cancel'],
+  [PAD.cross, 'jump'],
+  [PAD.circle, 'confirm'],
   [PAD.square, 'attack'],
   [PAD.r2, 'attack'],
-  [PAD.l2, 'jump'],
+  [PAD.l2, 'cancel'],
   [PAD.triangle, 'ride'],
   [PAD.share, 'map'],
   [PAD.touchpad, 'map'],

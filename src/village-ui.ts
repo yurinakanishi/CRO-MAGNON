@@ -101,7 +101,7 @@ export function installVillageUI({ player, state, available, action, openModal, 
         (a, b) => distance(player(), a) - distance(player(), b),
       )[0].id;
     openModal(
-      `<div id="village-panel"><p class="screen-eyebrow">三つの岸の暮らし</p><h2>集落の人びと</h2><p class="modal-intro">朝と昼は仕事場へ、夕べは炉へ。そばに来たらE／×で話しかけよう。<br><span id="village-clock"></span></p><div class="gulf-actions">${button('resident-journeys', '世帯の旅')}</div><label class="resident-select">訪ねる集落<select id="village-settlement">${SETTLEMENTS.map((s) => `<option value="${s.id}" ${s.id === settlementId ? 'selected' : ''}>${s.name}</option>`).join('')}</select></label><div class="resident-cards">${RESIDENTS.map(
+      `<div id="village-panel"><p class="screen-eyebrow">三つの岸の暮らし</p><h2>集落の人びと</h2><p class="modal-intro">朝と昼は仕事場へ、夕べは炉へ。そばに来たらE／○で話しかけよう。<br><span id="village-clock"></span></p><div class="gulf-actions">${button('resident-journeys', '世帯の旅')}</div><label class="resident-select">訪ねる集落<select id="village-settlement">${SETTLEMENTS.map((s) => `<option value="${s.id}" ${s.id === settlementId ? 'selected' : ''}>${s.name}</option>`).join('')}</select></label><div class="resident-cards">${RESIDENTS.map(
         (d) =>
           `<section id="resident-card-${d.id}" class="gulf-card"><h3>${d.name}</h3><p>出身：${SETTLEMENTS.find((s) => s.id === d.settlementId).name}</p><p id="resident-activity-${d.id}"></p><p id="resident-met-${d.id}"></p><p>${d.request}</p><p>渡す：${bundleLabel(d.cost)}<br>お礼：${bundleLabel(d.reward)}</p><div class="gulf-actions">${button('resident-open-' + d.id, '話しかける')}</div></section>`,
       ).join(

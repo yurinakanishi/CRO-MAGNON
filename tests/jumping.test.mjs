@@ -252,7 +252,7 @@ test('reconnect and export/import restore on the ground without mutating live ju
   assert.equal(f.player.jumpSequence, 0);
 });
 
-test('L2 jumps once per press, ignores menus and requires release across focus changes', () => {
+test('cross jumps once per press and requires release across menu and focus changes', () => {
   const input = new GamepadInput(),
     pad = {
       id: 'standard',
@@ -264,7 +264,7 @@ test('L2 jumps once per press, ignores menus and requires release across focus c
     };
   const sample = (mode = 'game') => input.sample([pad], mode, 0).actions;
   const press = (value) => {
-    pad.buttons[PAD.l2] = { pressed: value, value: value ? 1 : 0 };
+    pad.buttons[PAD.cross] = { pressed: value, value: value ? 1 : 0 };
   };
   sample();
   press(true);

@@ -14,7 +14,7 @@ test('button prompts follow the input device and the current mount options', () 
   const pad = keyPrompts(true, { ride: true, boat: true });
   assert.deepEqual(
     pad.map((p) => p.key),
-    ['×', '□', 'L2', '△', '△', 'L3', 'OPTIONS'],
+    ['○', '□', '×', '△', '△', 'L3', 'OPTIONS'],
   );
   assert.ok(!pad.some((p) => p.label === '話す'), 'chat needs a keyboard');
 });

@@ -102,8 +102,9 @@ test('diagonals are capped, including over-range device axes, and right stick ne
 test('mapped buttons fire once per press and simultaneous attack buttons produce one attack', () => {
   const { sample, press } = setup();
   for (const [button, action] of [
-    [PAD.cross, 'confirm'],
-    [PAD.circle, 'cancel'],
+    [PAD.cross, 'jump'],
+    [PAD.circle, 'confirm'],
+    [PAD.l2, 'cancel'],
     [PAD.triangle, 'ride'],
     [PAD.options, 'menu'],
     [PAD.touchpad, 'map'],
@@ -147,7 +148,7 @@ test('each face button confirms menus once per press without gameplay actions', 
     press(button, false);
     sample();
   }
-  for (const button of [PAD.r2, PAD.share, PAD.touchpad, PAD.l1, PAD.r1, PAD.r3]) {
+  for (const button of [PAD.l2, PAD.r2, PAD.share, PAD.touchpad, PAD.l1, PAD.r1, PAD.r3]) {
     press(button);
     assert.deepEqual(sample().actions, [], 'other gameplay buttons do not activate a menu item');
     press(button, false);
@@ -166,8 +167,8 @@ test('simultaneous face buttons produce one decision, including circle', () => {
 
 test('a held menu decision cannot activate the next screen or leak into gameplay', () => {
   for (const [button, gameplayAction] of [
-    [PAD.cross, 'confirm'],
-    [PAD.circle, 'cancel'],
+    [PAD.cross, 'jump'],
+    [PAD.circle, 'confirm'],
     [PAD.square, 'attack'],
     [PAD.triangle, 'ride'],
   ]) {
