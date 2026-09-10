@@ -4,6 +4,7 @@
  * shown when the player enters a new place and the button-prompt bar.
  */
 import { adjacentMenuItem, menuItems, menuKeyDirection } from './menu-navigation.js';
+import { helpTabsMarkup } from './help-content.js';
 
 export type ScreenId = 'title' | 'setup' | 'guide';
 
@@ -37,39 +38,9 @@ interface GuideOptions {
   skipChecked: boolean;
 }
 
-/** The pre-play "how to play" card: bindings for the device in use plus the first objective. */
+/** The pre-play "how to play" card: the same tabbed bindings as the in-game help. */
 export function guideMarkup({ gamepad, skipChecked }: GuideOptions): string {
-  const rows: [string, string, string][] = gamepad
-    ? [
-        ['左スティック', '移動', '浅く倒すと歩き、深く倒すと走ります。'],
-        ['右スティック', '視点', 'カメラを回します。L1 / R1 で距離、R3 で戻す。'],
-        ['×', '調べる・採集', '木や石、焚き火、仲間に近づいて押します。'],
-        ['L2', 'ジャンプ', '歩きながら、走りながらも跳べます。着地してからもう一度。'],
-        ['□ / R2', '攻撃', '相手を向いて。槍・刀・魔法・大きな手はキャラクターで変わります。'],
-        ['△', '乗る・降りる', 'マンモスや船のそばで。'],
-        ['OPTIONS', 'メニュー', 'もちもの・地図・手帳・設定。十字キーでも開けます。'],
-      ]
-    : [
-        ['W A S D', '移動', '同じ方向を素早く2回押すと走ります。近くまで自分で移動して調べよう。'],
-        ['ドラッグ', '視点', 'マウスや指でドラッグして周囲を見渡します。ホイールで距離。'],
-        ['E', '調べる・採集', '木や石、焚き火、仲間に近づいて押します。'],
-        ['Space', 'ジャンプ', '画面の「ジャンプ」も使えます。着地してからもう一度。'],
-        ['F', '攻撃', '相手を向いて。槍・刀・魔法・大きな手はキャラクターで変わります。'],
-        [
-          'R / B',
-          '乗る・降りる',
-          'R でマンモスや肩乗り、B で船。大猿が誘い、魔法使いが応じると肩に乗れます。',
-        ],
-        ['ESC', 'メニュー', 'もちもの (I)・地図 (M)・手帳 (J)・設定。Enter でチャット。'],
-      ];
-  return `<div class="guide-card" role="document"><p class="screen-eyebrow">HOW TO PLAY</p><h2>旅のはじめに</h2><p class="guide-intro">まずは近くの木や石を3つ集めて、石斧をつくろう。</p><div class="guide-grid">${rows
-    .map(
-      ([key, title, note]) =>
-        `<div class="guide-row"><kbd>${key}</kbd><div><strong>${title}</strong><p>${note}</p></div></div>`,
-    )
-    .join(
-      '',
-    )}</div><div class="guide-objective"><span class="guide-step">1</span><div><strong>最初の目標</strong><p>木・石・ベリーを3つ採集 → 木材3と石2で石斧 → 焚き火に木材12・石6を届ける</p></div></div><div class="guide-actions"><label class="guide-skip"><input type="checkbox" id="guide-skip" ${skipChecked ? 'checked' : ''}> 次回から表示しない</label><button id="guide-back" class="button button-outline" type="button">戻る</button><button id="guide-start" class="button button-accent">冒険をはじめる</button></div><p class="guide-footnote">${gamepad ? '×・○・□・△のどれでも決定。「戻る」で旅支度へ戻れます。OPTIONS のメニュー「あそびかた」' : 'H キー'}でいつでも見直せます。${gamepad ? '' : 'コントローラー（DUALSHOCK 4）にも対応しています。'}</p></div>`;
+  return `<div class="guide-card" role="document"><p class="screen-eyebrow">HOW TO PLAY</p><h2>あそびかた</h2>${helpTabsMarkup(gamepad ? 'pad' : 'pc')}<div class="guide-actions"><label class="guide-skip"><input type="checkbox" id="guide-skip" ${skipChecked ? 'checked' : ''}> 次回から表示しない</label><button id="guide-back" class="button button-outline" type="button">戻る</button><button id="guide-start" class="button button-accent">冒険をはじめる</button></div></div>`;
 }
 
 /** Shows and hides the full-screen game screens; one screen is visible at a time. */

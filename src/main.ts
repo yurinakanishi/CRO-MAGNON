@@ -60,6 +60,7 @@ import { installGulfUI, gulfInteraction } from './gulf-ui.js';
 import { installVillageUI, residentInteraction } from './village-ui.js';
 import { GULF_ENTRY, inGulf } from '../shared/gulf-region.mjs';
 import { ScreenManager, AreaBanner, guideMarkup, keyPrompts } from './screens.js';
+import { helpTabsMarkup, bindHelpTabs } from './help-content.js';
 import { titleCreditsMarkup } from './title-credits.js';
 const EXPEDITION_STOPS = [...EARTH_STOPS, ...ADVENTURE_STOPS, GULF_ENTRY];
 const locationById = (id) =>
@@ -1091,6 +1092,7 @@ function showSetup(error = '') {
 }
 function showGuide() {
   $('#screen-guide').innerHTML = guideMarkup({ gamepad: usingGamepad, skipChecked: false });
+  bindHelpTabs($('#screen-guide'));
   screens.show('guide');
   $('#guide-start').onclick = finishGuide;
   $('#guide-back').onclick = () => showSetup();
@@ -1282,36 +1284,20 @@ function openJournal() {
   adventureUI.open();
 }
 function openHelp() {
+  const extra = state.enemies?.length
+    ? [
+        {
+          key: '大城の赤い印',
+          title: '白羽の呪術師',
+          note: '始まりの谷の北東、白羽の大城の上階の広間にいます。力尽きても4秒後に焚き火で回復し、持ち物は残ります。',
+        },
+      ]
+    : [];
   openModal(
-    `<h2>あそびかた</h2><p class="modal-intro">最初は、近くの木や石を集めてみましょう。目標は画面左の「目標」に表示されます。</p><div class="help-grid"><div><kbd>W A S D</kbd><strong>歩く・走る</strong><p>通常は歩行。方向キーを素早く2回押すと走行（離すまで続く）。「走る」ボタンでも切り替えられます。近くまで自分で移動してから操作しよう。</p></div><div><kbd>E</kbd><strong>近くでアクション</strong><p>採集、焚き火に届ける、オルと交換。</p></div><div><kbd>1 · 2 · 3 · 4</kbd><strong>アクションを選ぶ</strong><p>採集・道具づくり・資材を届ける・交換。</p></div><div><kbd>Enter</kbd><strong>仲間と話す</strong><p>チャットを開き、Enterで送信。</p></div><div><kbd>ESC · M · I · J</kbd><strong>メニュー・地図・もちもの・手帳</strong><p>ESCでメニュー。M で世界地図、I でもちもの、J で探索手帳を直接開けます。G で手をふる。</p></div></div><div class="help-tip">${icon('flame')} まずは木材3と石2で石斧を作ろう。<br>そのあと、仲間と拠点に木材12・石6を届けよう。</div><button id="help-start" class="button button-accent wide">${joined ? '探索に戻る' : '閉じる'} ${icon('arrow')}</button>`,
+    `<div class="help-dialog"><h2>あそびかた</h2>${helpTabsMarkup(usingGamepad ? 'pad' : 'pc', extra)}<button id="help-start" class="button button-accent wide">${joined ? '探索に戻る' : '閉じる'} ${icon('arrow')}</button></div>`,
   );
-  $('#modal-body .modal-intro').insertAdjacentHTML('afterend', gamepadHelp);
-  $('#modal-body .help-grid').insertAdjacentHTML(
-    'beforeend',
-    '<div><kbd>Space / L2</kbd><strong>ジャンプ</strong><p>画面の「ジャンプ」でも跳べます。歩行・走行中にも使えます。着地してからもう一度。採集や調理の途中なら作業を中止します。</p></div>',
-  );
-  $('.help-grid').insertAdjacentHTML(
-    'beforeend',
-    `<div><kbd>DRAG</kbd><strong>肩越しカメラを回す</strong><p>マウス右・左ドラッグ、または指のドラッグで周囲を見渡せます。WASDはカメラの向きに合わせて動きます。</p></div><div><kbd>SCROLL</kbd><strong>カメラの距離を変える</strong><p>ホイールか＋・−ボタンで調整。「自分の位置へ」で初期のTPS視点に戻せます。</p></div>`,
-  );
-  $('.help-grid').insertAdjacentHTML(
-    'afterbegin',
-    `<div><kbd>F / 5</kbd><strong>刀・魔法・槍・大きな手で攻撃</strong><p>相手を向いて F か攻撃ボタン。クノイチは近くを刀で斬り、魔法使いは両手から光弾を飛ばします。敵がいなくても発動でき、壁は通り抜けません。人間は槍、大猿は大きな手で打撃します。</p></div><div><kbd>E</kbd><strong>肉を採って、焼いて食べる</strong><p>倒すと肉になります。近づいて E で採り、近くの焚き火で E か「焼く」。3秒待ったら「食べる」で元気を回復。火から離れると調理は中止され、生肉は残ります。</p></div>`,
-  );
-  $('.help-grid').insertAdjacentHTML(
-    'afterbegin',
-    `<div><kbd>R</kbd><strong>マンモスに乗る・降りる</strong><p>生きているマンモスの横で R。1頭につき1人乗れます。WASDで移動し、方向キー2回押しか走行ボタンで走ります。攻撃や採集は開けた場所で降りてから。</p></div>`,
-  );
+  bindHelpTabs($('#modal-body'));
   $('#help-start').onclick = () => $('#modal').close();
-  $('.help-grid').insertAdjacentHTML(
-    'afterbegin',
-    `<div><kbd>B</kbd><strong>船を作って海を渡る</strong><p>木材12個を集め、自分で岸まで歩いて「船をつくる」。Bで乗り、WASDで操船。方向キー2回押しで速く進み、岸でBを押すと降ります。1隻1人、部屋で5隻まで共有できます。</p></div>`,
-  );
-  if (state.enemies?.length)
-    $('.help-grid').insertAdjacentHTML(
-      'beforeend',
-      `<div><kbd>大城の赤い印</kbd><strong>白羽の呪術師</strong><p>始まりの谷の北東にある白羽の大城へ。城門の階段から入り、左右の階段を登ると上階の広間にいます。相手を向いて F で攻撃。力尽きても4秒後に焚き火で回復し、持ち物は残ります。</p></div>`,
-    );
 }
 function updateGamepadHints(active: boolean) {
   usingGamepad = active;

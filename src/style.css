@@ -126,7 +126,8 @@ body[data-screen] .world-loading,body[data-screen] .tps-reticle,body[data-screen
 .setup-launch:hover:before,.setup-launch:focus-visible:before,.setup-launch.gamepad-focus:before{transform:translateX(120%)}
 .setup-launch:hover .icon,.setup-launch:focus-visible .icon,.setup-launch.gamepad-focus .icon{transform:translateX(5px)}
 .setup-launch:active{transform:translateY(2px);box-shadow:0 0 0 1px #6f4d2a,0 1px 0 #6f4d2a,0 6px 18px #000a}
-.guide-card{width:min(720px,100%)}
+.guide-card{width:min(1120px,100%);padding:24px 30px 26px}
+.guide-card h2{margin-bottom:14px}
 .guide-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px 22px}
 .guide-row{display:flex;gap:14px;align-items:flex-start;padding:10px 0;border-bottom:1px solid #ffffff0a}
 .guide-row kbd{flex-shrink:0;min-width:64px;height:30px;font-size:11px;font-weight:600;letter-spacing:.5px;color:#f0dfb6;border-color:#f0dfb640}
@@ -412,11 +413,24 @@ legend{font-size:11px;margin-bottom:10px;color:#c1cbb2}
 .journal-entry>span{font:italic 25px Georgia,serif;color:#b9ad7f;opacity:.7}
 .journal-entry h3{font-size:13px;font-weight:600;margin:2px 0 10px;color:#d7dfc5}
 .journal-entry p{font-size:11px;line-height:2;color:#a0af94;margin:0}
-.help-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.help-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:10px}
 .help-grid>div{background:#abc78d06;border:1px solid #abc78d1f;border-radius:8px;padding:14px}
 .help-grid kbd{font-size:10px;font-weight:600;width:auto;padding:5px 9px;height:26px;color:#f0dfb6;border-color:#f0dfb640;margin-bottom:12px}
 .help-grid strong{display:block;font-size:12px;font-weight:600}
 .help-grid p{font-size:10px;line-height:1.85;color:#92a382;margin:8px 0 0}
+/* Help tabs shared by the pre-play guide and the in-game help dialog. */
+.help-tabs{display:flex;gap:6px;margin:0 0 14px;padding:4px;border-radius:9px;background:#0d1712;border:1px solid #a3b58b22}
+.help-tab{flex:1;min-height:40px;padding:8px 14px;border-radius:6px;background:none;font-size:12px;font-weight:600;letter-spacing:.06em;color:#93a08f;transition:background .16s,color .16s}
+.help-tab:hover{color:#d8dcc9;background:#ffffff08}
+.help-tab[aria-selected=true]{background:linear-gradient(180deg,#eabf83,#d5a069);color:var(--accent-ink);box-shadow:0 2px 0 #7a5530,0 6px 18px #0004}
+.help-tab.gamepad-focus,.help-tab:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.help-panel[hidden]{display:none}
+.help-status{margin:0 0 10px;font-size:11px;color:#c3d3b0;min-height:1em}
+.help-status:empty{display:none}
+.help-dialog #help-start{margin-top:18px}
+dialog:has(.help-dialog){width:min(1120px,calc(100vw - 32px));max-width:1120px}
+@media(max-width:640px){.help-tab{font-size:11px;padding:8px 6px;letter-spacing:0}.help-grid{grid-template-columns:1fr 1fr;gap:8px}.help-grid>div{padding:11px}}
+@media(max-width:430px){.help-grid{grid-template-columns:1fr}}
 .help-tip{background:#e0b07012;color:#d9cfae;font-size:11px;line-height:2;border-radius:8px;padding:14px;margin:20px 0}
 .help-tip .icon{width:17px;height:17px;margin-right:5px;color:#e0b070}
 .gamepad-help{margin:20px 0;padding:16px;border:1px solid #b6c79d38;border-radius:8px;background:#b6c79d08}

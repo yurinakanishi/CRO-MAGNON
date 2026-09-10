@@ -19,17 +19,20 @@ test('button prompts follow the input device and the current mount options', () 
   assert.ok(!pad.some((p) => p.label === '話す'), 'chat needs a keyboard');
 });
 
-test('the pre-play guide explains the device in use and the first objective', () => {
+test('the pre-play guide shows PC and controller tabs, opening on the device in use', () => {
   const keyboard = guideMarkup({ gamepad: false, skipChecked: false });
   assert.match(keyboard, /W A S D/);
+  assert.match(keyboard, /左スティック/);
+  assert.match(keyboard, /data-help-tab="pc" aria-selected="true"/);
+  assert.match(keyboard, /data-help-panel="pad" hidden/);
   assert.match(keyboard, /id="guide-start"/);
   assert.match(keyboard, /id="guide-skip"(?! checked)/);
-  assert.match(keyboard, /石斧/);
+  assert.doesNotMatch(keyboard, /石斧|最初の目標/, 'no starter objective in the guide');
   const pad = guideMarkup({ gamepad: true, skipChecked: true });
-  assert.match(pad, /左スティック/);
   assert.match(pad, /OPTIONS/);
+  assert.match(pad, /data-help-tab="pad" aria-selected="true"/);
+  assert.match(pad, /data-help-panel="pc" hidden/);
   assert.match(pad, /id="guide-skip" checked/);
-  assert.doesNotMatch(pad, /W A S D/);
 });
 
 test('the game opens on a title screen and only joins after Start or ?autostart=1', async () => {
