@@ -8,7 +8,11 @@ import {
 import type { ViewState } from './view-state.js';
 import { normalizeCharacter, characterModel } from '../shared/characters.mjs';
 import { attackProfile } from '../shared/combat-profiles.mjs';
-import { characterChoicesMarkup, bindCharacterSelection } from './character-selection.js';
+import {
+  characterChoicesMarkup,
+  bindCharacterSelection,
+  parseCharacterValue,
+} from './character-selection.js';
 import { WorldRenderer } from './world3d.js';
 
 import { WORLD, CAMP, NPC, INITIAL_RESOURCES } from '../shared/world.mjs';
@@ -116,18 +120,28 @@ const multiplayer = await loadMultiplayerConfig().catch((error) => {
   throw error;
 });
 const sessionKey = (room: string) => multiplayerSessionKey(multiplayer, room);
+// The exhibition LAN build never asks for a name or room: each PC is a fixed
+// player in the fixed exhibition room, and only the character is chosen.
+const fixedIdentity = multiplayer.mode === 'lan';
+const titleEdition = multiplayer.mode === 'lan' ? 'DUO' : 'XI';
+const titleArtPath = `/title/cro-magnon-${titleEdition.toLowerCase()}-transparent.png`;
+const cleanRoom = (value: string) =>
+  value
+    .toUpperCase()
+    .replace(/[^A-Z0-9_-]/g, '')
+    .slice(0, 16);
 let profile = {
-  name:
-    multiplayer.guestName || readSaved('cro-name', `旅人${Math.floor(Math.random() * 900 + 100)}`),
+  name: fixedIdentity
+    ? multiplayer.guestName || 'プレイヤー'
+    : multiplayer.guestName ||
+      readSaved('cro-name', `旅人${Math.floor(Math.random() * 900 + 100)}`),
   ...normalizeCharacter({
     species: readSaved('cro-species', 'cro'),
     gender: readSaved('cro-gender', 'female'),
   }),
-  room:
-    (query.get('room') || multiplayer.room || readSaved('cro-room', 'EMBER'))
-      .toUpperCase()
-      .replace(/[^A-Z0-9_-]/g, '')
-      .slice(0, 16) || 'EMBER',
+  room: fixedIdentity
+    ? cleanRoom(multiplayer.room || '') || 'EXHIBITION'
+    : cleanRoom(query.get('room') || multiplayer.room || readSaved('cro-room', 'EMBER')) || 'EMBER',
 };
 let state: ViewState = {
   players: [],
@@ -158,7 +172,10 @@ let selectedAnimalId = null,
   hurtUntil = 0;
 
 const joinFields = () =>
-  `<label>あなたの名前<input name="name" maxlength="16" required autocomplete="off" autofocus></label><label>部屋のコード <span>英数字・ハイフン・アンダースコア / 最大16文字</span><input name="room" maxlength="16" pattern="[A-Za-z0-9_\\-]+" required autocomplete="off"></label>${characterChoicesMarkup()}<p class="form-note">人間は槍、クノイチは刀、魔法使いは光の魔法、大猿は大きな手で戦います。人間の男女で能力の差はありません。参加中に変更すると、もちものはリセットされます。</p>`;
+  (fixedIdentity
+    ? `<input type="hidden" name="name"><input type="hidden" name="room">`
+    : `<div class="setup-identity"><label>あなたの名前<input name="name" maxlength="16" required autocomplete="off" autofocus></label><label>部屋のコード <span>英数字・ハイフン・アンダースコア / 最大16文字</span><input name="room" maxlength="16" pattern="[A-Za-z0-9_\\-]+" required autocomplete="off"></label></div>`) +
+  characterChoicesMarkup();
 $('#app').innerHTML = `
   <section class="game-viewport" aria-label="${GAME_TITLE} ゲーム画面">
     <canvas id="world" aria-label="氷河時代の大陸が広がる3Dワールド。WASDまたは左スティックで移動。左スティックを浅く倒すと歩き、深く倒すと走ります。右スティックまたはドラッグでカメラ回転。" tabindex="0"></canvas>
@@ -167,7 +184,7 @@ $('#app').innerHTML = `
     <div id="damage-flash" class="damage-flash" aria-hidden="true" hidden></div>
     <div id="combat-status" class="combat-status" role="status" hidden></div>
     <div id="area-banner" class="area-banner" aria-live="polite" hidden><small></small><strong></strong></div>
-    <button id="status-plate" class="status-plate" title="部族の仲間・招待"><span class="portrait cro" id="my-portrait"><i></i></span><span class="status-text"><strong id="profile-name"></strong><small><span id="room-label"></span><i>·</i><b id="online-count">0/5</b><i>·</i><span id="day-label">1日目</span></small><span class="energy-track" aria-hidden="true"><span id="energy-bar"></span></span><em class="energy-label">${icon('leaf')}<span id="energy-label">100 / 100</span></em></span></button>
+    <button id="status-plate" class="status-plate" title="部族の仲間・招待"><span class="portrait cro cro-magnon-woman" id="my-portrait"><i></i></span><span class="status-text"><strong id="profile-name"></strong><small><span id="room-label"></span><i>·</i><b id="online-count">0/5</b><i>·</i><span id="day-label">1日目</span></small><span class="energy-track" aria-hidden="true"><span id="energy-bar"></span></span><em class="energy-label">${icon('leaf')}<span id="energy-label">100 / 100</span></em></span></button>
     <div class="map-hud"><button id="menu-button" class="menu-chip" title="メニュー [ESC]">${icon('menu')}<span>メニュー</span><kbd>ESC</kbd></button><button id="map-button" class="minimap-button" aria-label="世界地図を開く" title="世界地図 [M]"><canvas id="minimap" width="160" height="115"></canvas><span class="map-north">N</span><span class="map-area" id="map-area">はじまりの谷</span><kbd class="map-key">M</kbd></button><div class="connection"><i class="status-dot" id="connection-dot"></i><span id="connection-label">未接続</span><span id="ping-label">— ms</span></div><div class="discovery-card hunting-card" id="discovery-card"><div><small>OPEN MEADOW · みんなで狩る</small><strong id="hunt-target-name">草原のマンモス</strong><progress id="hunt-health" max="100" value="100" aria-label="マンモスの体力"></progress><p id="hunt-target-note">開けた草原でマンモスを探そう。</p></div></div></div>
     <details class="journey" id="journey" open>
       <summary><span class="journey-head"><span class="eyebrow">目標</span><strong>はじめての火を育てる</strong></span><span id="quest-count" class="journey-count">0 / 3</span><span class="journey-chevron">${icon('arrow')}</span></summary>
@@ -187,7 +204,7 @@ $('#app').innerHTML = `
       <section id="screen-title" class="screen title-screen" hidden>
         <div class="title-content">
           <div class="title-hero">
-          <div class="title-logo"><h1>${GAME_TITLE}</h1><img class="title-art" src="/title/cro-magnon-xi-transparent.png" width="1536" height="1024" alt="CRO-MAGNON XI — 氷河時代の旅人たちとマンモス" fetchpriority="high"></div>
+          <div class="title-logo" style="--title-art: url('${titleArtPath}')"><h1>${GAME_TITLE}</h1><img class="title-art" src="${titleArtPath}" width="1536" height="1024" alt="CRO-MAGNON ${titleEdition} — 氷河時代の旅人たちとマンモス" fetchpriority="high"></div>
           <div class="title-welcome">
           <nav class="title-menu" aria-label="タイトルメニュー">
             <button id="title-start" class="menu-item">はじめる</button>
@@ -201,7 +218,7 @@ $('#app').innerHTML = `
         <div class="title-footer"><span>v0.1</span></div>
       </section>
       <section id="screen-setup" class="screen setup-screen" hidden>
-        <form id="setup-form" class="setup-card"><p class="screen-eyebrow">旅支度</p><h2>あなたの物語を、ここから。</h2><p class="setup-intro">名前とキャラクターを選び、同じ部屋のコードを持つ仲間と暮らそう。</p><p class="form-error" id="setup-error" hidden></p>${joinFields()}<div class="setup-actions"><button type="button" id="setup-back" class="button button-outline">戻る</button><button class="button button-accent" id="setup-submit" type="submit">この谷へ出発する ${icon('arrow')}</button></div></form>
+        <form id="setup-form" class="setup-card"><p class="form-error" id="setup-error" hidden></p>${joinFields()}<div class="setup-actions"><button type="button" id="setup-back" class="button button-outline setup-back">戻る</button><button class="setup-launch" id="setup-submit" type="submit"><span class="setup-launch-text">この谷へ出発する</span>${icon('arrow')}</button></div></form>
       </section>
       <section id="screen-guide" class="screen guide-screen" hidden></section>
     </div>
@@ -622,7 +639,7 @@ function updateHUD() {
   $('#quest-count').textContent = `${done} / 3`;
   $('#interaction-hint span').textContent = nearby()?.label || '近くのものを調べる';
   $('#interaction-hint').classList.toggle('available', !!nearby());
-  $('#my-portrait').className = `portrait ${profile.species}`;
+  $('#my-portrait').className = `portrait ${profile.species} ${characterModel(profile).key}`;
   $('#status-plate').title = `${characterModel(profile).name} · 部族の仲間と招待`;
   updateHuntingHUD();
   const biome = biomeAt(me?.x ?? 50, me?.z ?? 50);
@@ -695,7 +712,7 @@ function updateModalHUD() {
       for (const p of state.players) {
         const row = document.createElement('div');
         row.className = 'tribe-member';
-        row.innerHTML = `<span class="portrait ${normalizeCharacter(p).species}"><i></i></span><div><strong></strong><small>${characterModel(p).name}</small></div><span class="member-status"><i class="status-dot"></i> ${p.id === selfId ? 'あなた' : 'オンライン'}</span>`;
+        row.innerHTML = `<span class="portrait ${normalizeCharacter(p).species} ${characterModel(p).key}"><i></i></span><div><strong></strong><small>${characterModel(p).name}</small></div><span class="member-status"><i class="status-dot"></i> ${p.id === selfId ? 'あなた' : 'オンライン'}</span>`;
         row.querySelector('strong').textContent = p.name;
         list.append(row);
       }
@@ -1047,12 +1064,9 @@ function applyProfileForm(form: HTMLFormElement) {
   socket = null;
   previous?.close();
   profile = {
-    name: String(data.get('name')).trim() || '旅人',
-    room: String(data.get('room')).toUpperCase(),
-    ...normalizeCharacter({
-      species: String(data.get('species')),
-      gender: String(data.get('gender')),
-    }),
+    name: fixedIdentity ? profile.name : String(data.get('name')).trim() || '旅人',
+    room: fixedIdentity ? profile.room : String(data.get('room')).toUpperCase(),
+    ...parseCharacterValue(data.get('character')),
   };
   saveSession(sessionKey(profile.room), null);
   for (const [k, v] of Object.entries(profile)) save(`cro-${k}`, v);

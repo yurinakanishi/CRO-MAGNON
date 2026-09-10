@@ -76,7 +76,7 @@ for (const asset of manifest.assets) {
     glbs++;
   }
 }
-for (const key of ['cat-kunoichi', 'desert-fennec-mage']) add(`public/models/${key}/portrait.png`);
+for (const key of ['cro-magnon-woman', 'cro-magnon-hunter', 'neanderthal-woman', 'neanderthal-hunter', 'cat-kunoichi', 'desert-fennec-mage', 'giant-ape']) add(`public/models/${key}/portrait.png`);
 sources.set('runtime/node.exe', process.execPath);
 // Keep the license for the exact bundled runtime. New Node versions need their
 // matching license added during preparation, never fetched at exhibition startup.

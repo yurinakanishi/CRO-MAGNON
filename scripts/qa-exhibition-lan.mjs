@@ -41,7 +41,7 @@ const clients = [],
   evidence = {};
 const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 const room = () => game.rooms.get('EXHIBITION');
-const actor = (index) => [...room().players.values()].find((p) => p.name === `Player ${index + 1}`);
+const actor = (index) => [...room().players.values()].find((p) => p.name === `プレイヤー${index + 1}`);
 async function until(fn, label, limit = 12000) {
   const deadline = Date.now() + limit;
   while (!(await fn())) {
@@ -81,7 +81,7 @@ try {
         serverUrl,
         buildId,
         room: 'EXHIBITION',
-        guestName: `Player ${index + 1}`,
+        guestName: `プレイヤー${index + 1}`,
       },
     });
     clients.push(client);

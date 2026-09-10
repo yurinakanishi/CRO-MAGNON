@@ -1,29 +1,29 @@
-import { normalizeCharacter } from '../shared/characters.mjs';
+import { CHARACTER_MODELS, normalizeCharacter } from '../shared/characters.mjs';
 
-const choices = [
-  ['cro', 'クロマニョン人', 'この谷へやってきた、槍を使う旅人。'],
-  ['nea', 'ネアンデルタール人', '森と暮らす、槍を使う隣人。'],
-  ['cat', '猫耳のクノイチ', '素早く斬り込む、刀の使い手。'],
-  ['bear', '砂耳の魔法使い', '小さな両手から、光の魔法を放つ。'],
-  ['ape', '巨腕の大猿', '分厚い体と大きな手を持つ、穏やかな大猿。'],
-];
+// One card per playable look. Humans are listed as separate female/male cards so
+// the player never has to pick a species first and a gender second.
+export const characterValue = (profile) => {
+  const { species, gender } = normalizeCharacter(profile);
+  return `${species}-${gender}`;
+};
+
+export function parseCharacterValue(value: unknown) {
+  const [species, gender] = String(value ?? '').split('-');
+  return normalizeCharacter({ species, gender });
+}
 
 export function characterChoicesMarkup() {
-  return `<fieldset class="character-options"><legend>キャラクター</legend><div class="character-choice-grid">${choices.map(([key, name, description]) => `<label class="species-option character-choice"><input type="radio" name="species" value="${key}" required><span class="portrait ${key}"><i></i></span><span><strong>${name}</strong><small>${description}</small></span></label>`).join('')}</div></fieldset><fieldset id="gender-choice" class="gender-options"><legend>人間の姿</legend><label class="species-option"><input type="radio" name="gender" value="female"><span><strong>女性</strong></span></label><label class="species-option"><input type="radio" name="gender" value="male"><span><strong>男性</strong></span></label></fieldset>`;
+  return `<fieldset class="character-options"><legend class="character-legend">キャラクターを選ぶ</legend><div class="character-choice-grid">${CHARACTER_MODELS.map(
+    (model) => {
+      const [name, variant] = model.name.split(' ');
+      return `<label class="character-choice"><input type="radio" name="character" value="${model.species}-${model.gender}" required><img class="character-art" src="/models/${model.key}/portrait.png" width="420" height="480" alt="" draggable="false"><span class="character-name"><strong>${name}</strong>${variant ? `<small>${variant}</small>` : ''}</span><i class="character-check" aria-hidden="true"></i></label>`;
+    },
+  ).join('')}</div></fieldset>`;
 }
 
 export function bindCharacterSelection(form, profile) {
-  const normalized = normalizeCharacter(profile);
-  form.querySelector(`input[name="species"][value="${normalized.species}"]`).checked = true;
-  form.querySelector(`input[name="gender"][value="${normalized.gender}"]`).checked = true;
-  const update = () => {
-    const choice = form.querySelector('input[name="species"]:checked').value,
-      humanoid = choice === 'cro' || choice === 'nea';
-    const gender = form.querySelector('#gender-choice');
-    gender.hidden = !humanoid;
-    gender.disabled = !humanoid;
-  };
-  for (const input of form.querySelectorAll('input[name="species"]'))
-    input.addEventListener('change', update);
-  update();
+  const input = form.querySelector(
+    `input[name="character"][value="${characterValue(profile)}"]`,
+  ) as HTMLInputElement | null;
+  if (input) input.checked = true;
 }

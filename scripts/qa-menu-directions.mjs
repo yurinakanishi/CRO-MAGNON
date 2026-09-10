@@ -22,7 +22,7 @@ const passed = (message) => {
   checks.push(message);
   console.log('PASS ' + message);
 };
-const species = (value) => `#setup-form input[name="species"][value="${value}"]`;
+const species = (value) => `#setup-form input[name="character"][value="${value}-${value === 'ape' ? 'male' : 'female'}"]`;
 const item = (value) => `[data-controller-menu="${value}"]`;
 try {
   browser = await chromium.launch({ channel: 'chrome', headless: true });

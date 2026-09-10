@@ -76,7 +76,7 @@ async function main() {
       mode: settings.mode,
       serverUrl: settings.serverUrl,
       room: settings.room,
-      guestName: role === 'host' ? 'Player 1' : 'Player 2',
+      guestName: role === 'host' ? 'プレイヤー1' : 'プレイヤー2',
       buildId: manifest.buildId,
     },
   });

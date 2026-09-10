@@ -73,7 +73,7 @@ try {
   const config = await (
     await fetch(`http://127.0.0.1:${clientPort}/multiplayer-config.json`)
   ).json();
-  assert.equal(config.guestName, 'Player 2');
+  assert.equal(config.guestName, 'プレイヤー2');
   assert.equal(config.serverUrl, url + '/');
   checks.push({ check: 'PC2 launcher serves local client and finds PC1', output: client.output });
 } finally {
