@@ -27,9 +27,9 @@ test('mount selection checks distance, walls, alive state, occupancy and action 
 test('rider and mount move together, face displacement, run faster, stop after input timeout',()=>{
   const r=fixture();ride(r);const a=r.animal,p=r.player;
   a.dx=1;a.dz=0;a.lastInput=1100;updateAnimals(r,.1,1100);
-  assert.ok(Math.abs(a.x-RIDING.walkSpeed*.1)<1e-6);assert.equal(p.x,a.x);assert.equal(p.facing,Math.PI/2);assert.equal(a.clip,'Walk_Loop');
+  assert.ok(Math.abs(a.x-RIDING.walkSpeed*a.scale*.1)<1e-6);assert.equal(p.x,a.x);assert.equal(p.facing,Math.PI/2);assert.equal(a.clip,'Walk_Loop');
   a.runningRequested=true;a.lastInput=1200;updateAnimals(r,.1,1200);
-  assert.equal(a.clip,'Run_Loop');assert.ok(Math.abs(a.speed-RIDING.runSpeed)<1e-6);assert.equal(p.running,true);
+  assert.equal(a.clip,'Run_Loop');assert.ok(Math.abs(a.speed-RIDING.runSpeed*a.scale)<1e-6);assert.equal(p.running,true);
   const x=a.x;updateAnimals(r,.1,1800);assert.equal(a.x,x);assert.equal(p.moving,false);assert.equal(a.clip,'Idle_Loop');
 });
 test('body-sized sweep blocks buildings and other players without pushing the rider out',()=>{

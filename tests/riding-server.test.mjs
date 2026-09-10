@@ -4,6 +4,7 @@ import { WebSocket } from 'ws';
 import { createGameServer } from '../server.mjs';
 import { CollisionWorld } from '../dist/shared/collision.mjs';
 import { stopActor } from '../dist/shared/combat.mjs';
+import { RIDING } from '../dist/shared/riding.mjs';
 const sleep=ms=>new Promise(resolve=>setTimeout(resolve,ms));
 function client(url,name){
   const socket=new WebSocket(`${url}?room=RIDE-TEST&name=${name}`),messages=[];
@@ -29,7 +30,7 @@ test('five peers see exclusive mounts, controlled movement, late joins, safe exi
   const rider=ps[winner],before=a.z;
   clients[winner].send({type:'move',dx:0,dz:-1,running:true,targetId:b.id,speed:999,x:999});
   const moved=await clients[winner].wait(m=>m.type==='state'&&m.animals[0].z<before-.15,marks[winner]);
-  assert.equal(moved.ridingVersion,1);assert.ok(moved.animals[0].speed<=2.251);assert.equal(moved.animals[0].clip,'Run_Loop');
+  assert.equal(moved.ridingVersion,1);assert.ok(moved.animals[0].speed<=RIDING.runSpeed*a.scale+.001);assert.equal(moved.animals[0].clip,'Run_Loop');
   const rp=moved.players.find(p=>p.id===rider.id);assert.equal(rp.x,moved.animals[0].x);assert.equal(rp.facing,moved.animals[0].facing);
   const mark=clients[winner].messages.length;clients[winner].send({type:'action',action:'attack'});
   await clients[winner].wait(m=>m.type==='notice'&&m.text.includes('騎乗中'),mark);assert.equal(rider.attackSequence,0);

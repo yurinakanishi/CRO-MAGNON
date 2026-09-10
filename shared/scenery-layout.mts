@@ -250,11 +250,12 @@ function layout() {
       surface: BIOME_SCENERY[biome].surface,
     });
   }
+  // One size up from the delivered 3.6 m GLB; collision radius and speed follow the scale.
   const animals = HUNTING_GROUNDS.map((ground, index) => ({
     id: `mammoth-${index + 1}`,
     x: ground.x,
     z: ground.z,
-    scale: index ? 0.76 : 1,
+    scale: (index ? 0.76 : 1) * 1.25,
     roamRadius: ground.roamRadius,
   }));
   trees.push(...ADVENTURE_SCENERY.trees);

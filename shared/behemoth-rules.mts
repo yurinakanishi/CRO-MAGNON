@@ -1,9 +1,12 @@
 // Fictional creature tuning. Hind legs are vestigial; locomotion is forearm-driven.
+// Rendered one size up from the delivered 6 m GLB; body radius and tail reach follow.
+const SCALE = 1.25;
 export const BEHEMOTH = Object.freeze({
   modelKey: 'violet-behemoth',
   name: '紫尾の巨獣',
   maxHealth: 300,
-  radius: 2.1,
+  scale: SCALE,
+  radius: 2.1 * SCALE,
   walkSpeed: 1.35,
   chaseSpeed: 4.9,
   chargeSpeed: 5.15,
@@ -19,7 +22,7 @@ export const BEHEMOTH = Object.freeze({
   spinMs: 1500,
   spinWindupMs: 450,
   spinSweepMs: 850,
-  tailReach: 4.35,
+  tailReach: 4.35 * SCALE,
   chargeDamage: 25,
   biteDamage: 22,
   tailDamage: 20,

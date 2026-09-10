@@ -38,7 +38,7 @@ export function createBehemoth(collision, dynamic = [], now = Date.now()) {
     ...position,
     home: { ...position },
     radius: R.radius,
-    scale: 1,
+    scale: R.scale,
     facing: Math.PI,
     health: R.maxHealth,
     maxHealth: R.maxHealth,
