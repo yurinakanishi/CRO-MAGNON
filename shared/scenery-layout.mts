@@ -196,7 +196,8 @@ function layout() {
   ];
   const fires: SceneryPlacement[] = [
     { key: 'stone-firepit', x: 50, z: 50, yaw: 0, scale: 1 },
-    { key: 'stone-firepit', x: 72, z: 43, yaw: 0, scale: 0.65 },
+    // Kept clear of the footbridge's east landing (x≈71, z 42–45) so the crossing stays open.
+    { key: 'stone-firepit', x: 75, z: 40, yaw: 0, scale: 0.65 },
   ];
   for (const stop of EXPEDITION_STOPS.filter((s) => s.id !== 'grassland')) {
     const biome = biomeAt(stop.x, stop.z).id,

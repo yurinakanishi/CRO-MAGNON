@@ -7,7 +7,7 @@ import { attackProfile } from './combat-profiles.mjs';
 
 const names = new Map([
   ['fire-50-50', 'はじまりの焚き火'],
-  ['fire-72-43', 'オルの集落'],
+  ['fire-75-40', 'オルの集落'],
   ...EXPEDITION_STOPS.map((s) => [`fire-${s.id}`, s.name]),
   ...ADVENTURE_REGIONS.map((s) => [`adventure-fire-${s.id}`, s.name]),
   ...[...SETTLEMENTS, ...GULF_STOPS].map((s) => [`gulf-fire-${s.id}`, s.name]),
