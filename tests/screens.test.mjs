@@ -9,12 +9,12 @@ test('button prompts follow the input device and the current mount options', () 
   const keyboard = keyPrompts(false, { ride: false, boat: false });
   assert.deepEqual(
     keyboard.map((p) => p.key),
-    ['E', 'F', 'Space', 'Enter', 'ESC'],
+    ['E', 'F', 'Space', 'Enter', 'Tab', 'ESC'],
   );
   const pad = keyPrompts(true, { ride: true, boat: true });
   assert.deepEqual(
     pad.map((p) => p.key),
-    ['×', '□', 'L2', '△', '△', 'OPTIONS'],
+    ['×', '□', 'L2', '△', '△', 'L3', 'OPTIONS'],
   );
   assert.ok(!pad.some((p) => p.label === '話す'), 'chat needs a keyboard');
 });

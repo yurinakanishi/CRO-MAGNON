@@ -123,6 +123,21 @@ test('mapped buttons fire once per press and simultaneous attack buttons produce
   assert.deepEqual(sample().actions, ['attack']);
 });
 
+test('holding L3 keeps the item bar flag raised during play only, without firing an action', () => {
+  const { sample, press } = setup();
+  assert.equal(sample().hotbar, false);
+  press(PAD.l3);
+  let frame = sample();
+  assert.equal(frame.hotbar, true);
+  assert.deepEqual(frame.actions, []);
+  frame = sample('game', 1000);
+  assert.equal(frame.hotbar, true, 'stays raised while held');
+  assert.equal(sample('menu').hotbar, false, 'menus never show the item bar');
+  press(PAD.l3, false);
+  sample('game');
+  assert.equal(sample().hotbar, false);
+});
+
 test('each face button confirms menus once per press without gameplay actions', () => {
   const { sample, press } = setup('menu');
   for (const button of [PAD.cross, PAD.circle, PAD.square, PAD.triangle]) {

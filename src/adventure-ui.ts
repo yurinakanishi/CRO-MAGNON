@@ -38,12 +38,6 @@ export function installAdventureUI(api) {
   const { player, state, openModal, action, available } = api;
   let selected = 'high-pass',
     signature = '';
-  document
-    .querySelector<HTMLElement>('.map-hud .connection')
-    .insertAdjacentHTML(
-      'afterend',
-      '<button id="adventure-button" class="adventure-launch"><span>✧ 探索手帳</span><small id="adventure-count">6つの新しい旅</small></button>',
-    );
   const close = () => document.querySelector<HTMLDialogElement>('#modal').close();
   function nextObjective(region) {
     const p = adventureProgress(player(), region.id);
@@ -90,8 +84,6 @@ export function installAdventureUI(api) {
       seals = travelSeals(me),
       found = Object.keys(me?.adventure?.regions ?? {}).length,
       region = regionById(selected);
-    document.querySelector<HTMLButtonElement>('#adventure-count').textContent =
-      `発見 ${found}/6 · 旅の証 ${seals}/5`;
     if (!document.querySelector<HTMLButtonElement>('#adventure-detail')) return;
     document.querySelector<HTMLButtonElement>('#adventure-summary').textContent = adventureProgress(
       me,
@@ -154,6 +146,5 @@ export function installAdventureUI(api) {
       root.querySelector<HTMLButtonElement>('.adventure-actions').append(exit);
     }
   }
-  document.querySelector<HTMLButtonElement>('#adventure-button').onclick = () => open();
   return { open, update };
 }

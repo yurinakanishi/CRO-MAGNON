@@ -60,10 +60,6 @@ export function installGulfUI(api) {
     chosenCrop = 'berry',
     signature = '',
     wateringReadyAt = 0;
-  $('#adventure-button').insertAdjacentHTML(
-    'afterend',
-    '<button id="gulf-button" class="adventure-launch gulf-launch"><span>◈ 三つの岸の湾</span><small id="gulf-status">国・畑・魚場</small></button>',
-  );
   const at = (point, range = 9) => distance(player(), point) <= range;
   function open(requestedPlot?: string) {
     if (player() && inGulf(player().x, player().z)) {
@@ -101,11 +97,10 @@ export function installGulfUI(api) {
   function update() {
     pantry.update();
     barter.update();
+    if (!$('#gulf-detail')) return;
     const me = player(),
       world = state(),
       country = COUNTRIES.find((c) => c.id === me?.gulf?.countryId);
-    $('#gulf-status').textContent = barter.hint() || country?.name || '国・畑・魚場';
-    if (!$('#gulf-detail')) return;
     const settlement = SETTLEMENTS.find((s) => s.id === selected),
       spec = FARM_PLOTS.find((p) => p.id === plotId);
     const plots = world.gulf?.plots ?? [],
@@ -296,6 +291,5 @@ export function installGulfUI(api) {
     }
     $<HTMLDialogElement>('#modal').scrollTop = scrollTop;
   }
-  $('#gulf-button').onclick = () => open();
   return { open, update };
 }

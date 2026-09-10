@@ -24,6 +24,7 @@ export const gamepadHelp = `
       <div><dt>OPTIONS</dt><dd>メニューを開く／閉じる</dd></div>
       <div><dt>タッチパッド / SHARE</dt><dd>地図</dd></div>
       <div><dt>L1 / R1 · R3</dt><dd>カメラを遠く／近く · 視点を戻す</dd></div>
+      <div><dt>L3（左スティック押し込み）</dt><dd>押している間、もちものと行動の欄を表示</dd></div>
     </dl>
     <p>メニューは十字キーか左スティックで、押した方向にある項目を選びます。右側の4ボタン（×・○・□・△）のどれでも決定できます。戻るときは画面内の「戻る」ボタンを選んで決定してください。選択欄は左右で切り替え、右スティックで説明をスクロールできます。名前・チャットの文字入力はキーボードを使います。</p>
     <p class="form-note">走るための2回倒し・スティック押し込みは不要です。画面に戻ったときはスティックとボタンを一度離してください。</p>
@@ -42,6 +43,8 @@ interface GamepadUIOptions {
   onLook: (x: number, y: number, dt: number) => void;
   onStop: () => void;
   onActivity: (active: boolean) => void;
+  /** L3 held or released during play. */
+  onHotbar?: (held: boolean) => void;
 }
 
 /** Uses real DOM focus/click handlers so every existing dialog keeps its game rules. */
@@ -53,6 +56,7 @@ export class GamepadControls {
   private connectedIndex: number | null = null;
   private previousMode: InputMode = 'blocked';
   private active = false;
+  private hotbarHeld = false;
   private focused: HTMLElement | null = null;
 
   constructor(private options: GamepadUIOptions) {
@@ -161,6 +165,11 @@ export class GamepadControls {
       if (connection.textContent !== label) connection.textContent = label;
     }
     if (frame.active) this.setActive(true);
+    const hotbar = mode === 'game' && frame.hotbar;
+    if (hotbar !== this.hotbarHeld) {
+      this.hotbarHeld = hotbar;
+      this.options.onHotbar?.(hotbar);
+    }
     if (mode === 'menu' && this.active) {
       this.ensureFocus();
       if (frame.navigation) this.navigate(frame.navigation);

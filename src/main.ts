@@ -178,17 +178,7 @@ $('#app').innerHTML = `
     <div id="combat-status" class="combat-status" role="status" hidden></div>
     <div id="area-banner" class="area-banner" aria-live="polite" hidden><small></small><strong></strong></div>
     <button id="status-plate" class="status-plate" title="部族の仲間・招待"><span class="portrait cro cro-magnon-woman" id="my-portrait"><i></i></span><span class="status-text"><strong id="profile-name"></strong><small><span id="room-label"></span><i>·</i><b id="online-count">0/5</b><i>·</i><span id="day-label">1日目</span></small><span class="energy-track" aria-hidden="true"><span id="energy-bar"></span></span><em class="energy-label">${icon('leaf')}<span id="energy-label">100 / 100</span></em></span></button>
-    <div class="map-hud"><button id="menu-button" class="menu-chip" title="メニュー [ESC]">${icon('menu')}<span>メニュー</span><kbd>ESC</kbd></button><button id="map-button" class="minimap-button" aria-label="世界地図を開く" title="世界地図 [M]"><canvas id="minimap" width="160" height="115"></canvas><span class="map-north">N</span><span class="map-area" id="map-area">はじまりの谷</span><kbd class="map-key">M</kbd></button><div class="connection"><i class="status-dot" id="connection-dot"></i><span id="connection-label">未接続</span><span id="ping-label">— ms</span></div><div class="discovery-card hunting-card" id="discovery-card"><div><small>OPEN MEADOW · みんなで狩る</small><strong id="hunt-target-name">草原のマンモス</strong><progress id="hunt-health" max="100" value="100" aria-label="マンモスの体力"></progress><p id="hunt-target-note">開けた草原でマンモスを探そう。</p></div></div></div>
-    <details class="journey" id="journey" open>
-      <summary><span class="journey-head"><span class="eyebrow">目標</span><strong>はじめての火を育てる</strong></span><span id="quest-count" class="journey-count">0 / 3</span><span class="journey-chevron">${icon('arrow')}</span></summary>
-      <div class="quest-list">
-        <div class="quest" id="quest-gather"><span class="quest-check">1</span><div><strong>森の恵みを集める</strong><p>木や石、ベリーを3つ採集</p><div class="progress-track"><span id="gather-progress"></span></div></div></div>
-        <div class="quest" id="quest-craft"><span class="quest-check">2</span><div><strong>はじめての道具</strong><p>木材3・石2で石斧をつくる</p></div></div>
-        <div class="quest" id="quest-camp"><span class="quest-check">3</span><div><strong>みんなの火を育てる</strong><p>拠点に木材12・石6を届ける</p></div></div>
-      </div>
-      <div class="camp-row"><span class="camp-icon">${icon('flame')}</span><div><strong id="camp-name">小さな野営地</strong><small id="camp-level">CAMP LEVEL 0</small></div><div class="camp-stats"><span>${icon('wood')} <b id="camp-wood">0</b><em>/ 12</em></span><span>${icon('stone')} <b id="camp-stone">0</b><em>/ 6</em></span></div></div>
-
-    </details>
+    <div class="map-hud"><button id="menu-button" class="menu-chip" aria-label="メニュー" title="メニュー [ESC / OPTIONS]">${icon('menu')}</button><button id="map-button" class="minimap-button" aria-label="世界地図を開く" title="世界地図 [M]"><canvas id="minimap" width="160" height="115"></canvas><span class="map-north">N</span><span class="map-area" id="map-area">はじまりの谷</span><kbd class="map-key">M</kbd></button><div class="connection"><i class="status-dot" id="connection-dot"></i><span id="connection-label">未接続</span><span id="ping-label">— ms</span></div></div>
     <div id="toast-stack" class="toast-stack" aria-live="polite"></div>
     <div class="chat-panel"><button class="chat-heading" id="chat-toggle">${icon('chat')}<strong>焚き火の会話</strong><kbd>Enter</kbd><span class="chat-collapse">−</span></button><div id="chat-content"><div id="chat-messages" class="chat-messages" role="log" aria-live="polite"><p class="chat-system">この谷での物語が、ここから始まります。</p></div><form id="chat-form"><input id="chat-input" maxlength="180" placeholder="仲間に話しかける…" aria-label="チャットメッセージ" autocomplete="off"><button aria-label="メッセージを送信" type="submit">${icon('arrow')}</button></form></div></div>
     <div class="hotbar-wrap"><div class="interaction-hint" id="interaction-hint"><kbd>E</kbd><span>近くのものを調べる</span></div><div class="hotbar"><div class="resource-slots"><button class="resource-slot" data-inventory="wood" aria-label="木材のもちもの"><kbd>木材</kbd><span class="resource-icon wood">${icon('wood')}</span><b id="wood-count">0</b></button><button class="resource-slot" data-inventory="stone" aria-label="石のもちもの"><kbd>石</kbd><span class="resource-icon stone">${icon('stone')}</span><b id="stone-count">0</b></button><button class="resource-slot" id="eat-button" aria-label="ベリーを食べて元気を回復"><kbd>ベリー</kbd><span class="resource-icon berry">${icon('berry')}</span><b id="berry-count">0</b></button></div><div class="hotbar-divider"></div><button class="action-slot selected" data-action="gather" title="採集する [1]"><kbd>1</kbd>${icon('leaf')}<span>採集</span></button><button class="action-slot" data-action="craft" title="木材3・石2で石斧を作る [2]"><kbd>2</kbd>${icon('axe')}<span>つくる</span></button><button class="action-slot" data-action="contribute" title="焚き火の近くで資材を届ける [3]"><kbd>3</kbd>${icon('flame')}<span>届ける</span></button><button class="action-slot" data-action="trade" title="オルの近くで物々交換 [4]"><kbd>4</kbd>${icon('exchange')}<span>交換</span></button><button id="run-button" class="action-slot" aria-label="走行モード" aria-pressed="false" title="走る／歩く（方向キーを素早く2回押しても走る）"><kbd>2回</kbd>${icon('arrow')}<span>走る</span></button></div></div>
@@ -218,15 +208,12 @@ $('#app').innerHTML = `
   </section>
   <dialog id="modal"><div class="modal-top"><span class="eyebrow">${GAME_TITLE}</span><button id="modal-close" class="button button-outline modal-back" type="button">戻る</button></div><div id="modal-body"></div></dialog>`;
 
-if (matchMedia('(max-width:1000px), (max-height:700px)').matches)
-  $('#journey').removeAttribute('open');
 const areaBanner = new AreaBanner($('#area-banner'));
 let guidePending = false;
 const screens = new ScreenManager($('#screens'), (id) => {
   if (id) stopInput();
   else $('#world').focus({ preventScroll: true });
 });
-$('#journey').removeAttribute('open');
 
 function showRenderError(text) {
   renderUnavailable = true;
@@ -347,11 +334,7 @@ const villageUI = installVillageUI({
 });
 $('.hotbar-wrap').insertAdjacentHTML(
   'afterbegin',
-  `<div class="hunt-controls"><button id="attack-button" class="hunt-button attack-button" title="槍で攻撃 [F / 5]">${icon('spear')}<kbd>F</kbd><span>槍で攻撃</span></button><button id="meat-inventory" class="hunt-button meat-counts" title="生肉は焚き火で焼いてから食べられます">${icon('meat')}<span>生 <b id="rawMeat-count">0</b> / 焼 <b id="cookedMeat-count">0</b></span></button><button id="cook-button" class="hunt-button" title="近くの焚き火で肉を焼く">${icon('flame')}<span>焼く</span></button><button id="eat-meat-button" class="hunt-button" title="焼き肉で元気を45回復">食べる</button></div><div id="cooking-status" class="cooking-status" hidden><span id="cooking-label">肉を焼いています…</span><progress id="cooking-progress" max="1" value="0" aria-label="肉を焼く進み具合"></progress><button id="cancel-cook">中止</button></div>`,
-);
-$('#attack-button').insertAdjacentHTML(
-  'afterend',
-  `<button id="jump-button" class="hunt-button" title="ジャンプ [Space / L2]" aria-label="ジャンプ">${icon('jump')}<kbd>Space</kbd><span>ジャンプ</span></button>`,
+  `<div class="hunt-controls"><button id="attack-button" class="hunt-button attack-button" title="槍で攻撃 [F / 5]">${icon('spear')}<kbd>F</kbd><span>槍で攻撃</span></button><button id="cook-button" class="hunt-button" title="近くの焚き火で肉を焼く">${icon('flame')}<span>焼く</span></button><button id="eat-meat-button" class="hunt-button" title="焼き肉で元気を45回復">食べる</button></div><div id="cooking-status" class="cooking-status" hidden><span id="cooking-label">肉を焼いています…</span><progress id="cooking-progress" max="1" value="0" aria-label="肉を焼く進み具合"></progress><button id="cancel-cook">中止</button></div>`,
 );
 $('#chat-content').hidden = true;
 $('.chat-collapse').textContent = '+';
@@ -362,7 +345,12 @@ $('#room-label').textContent = profile.room;
 function send(message) {
   if (socket?.readyState === WebSocket.OPEN) socket.send(JSON.stringify(message));
 }
+/** The item and action bar shows only while Tab (keyboard) or L3 (controller) is held. */
+function setHotbarShown(shown: boolean) {
+  $('.game-viewport').classList.toggle('hotbar-open', shown);
+}
 function stopInput() {
+  setHotbarShown(false);
   renderer.prediction?.stop();
   // Also cancels a cast sent just before a menu/blur, before its snapshot arrives.
   if (joined) {
@@ -617,30 +605,14 @@ function nearby(): { action: string; label: string; targetId?: string } | null {
 function updateHUD() {
   const me = player(),
     inv = inventoryCounts(me?.inventory);
-  const gathered = me?.gathered ?? 0;
-  for (const key of ['wood', 'stone', 'berry', 'rawMeat', 'cookedMeat'])
-    $(`#${key}-count`).textContent = inv[key];
+  for (const key of ['wood', 'stone', 'berry']) $(`#${key}-count`).textContent = inv[key];
   $('#online-count').textContent =
     `${state.players.length}/${state.playerLimit ?? WORLD.maxPlayers}`;
-  $('#camp-wood').textContent = state.camp.wood;
-  $('#camp-stone').textContent = state.camp.stone;
-  $('#camp-level').textContent = `CAMP LEVEL ${state.camp.level}`;
-  $('#camp-name').textContent = state.camp.level ? 'みんなの野営地' : '小さな野営地';
   $('#day-label').textContent = `${state.day || 1}日目`;
   const energy = Math.round(me?.energy ?? 100);
   $('#energy-label').textContent = `${energy} / 100`;
   $('#energy-bar').style.width = `${energy}%`;
-  $('#gather-progress').style.width = `${Math.min(gathered / 3, 1) * 100}%`;
-  let done = 0;
-  for (const [id, complete] of [
-    ['gather', gathered >= 3],
-    ['craft', !!me?.tool],
-    ['camp', state.camp.level > 0],
-  ]) {
-    $(`#quest-${id}`).classList.toggle('done', complete);
-    if (complete) done++;
-  }
-  $('#quest-count').textContent = `${done} / 3`;
+  updateObjectives();
   $('#interaction-hint span').textContent = nearby()?.label || '近くのものを調べる';
   $('#interaction-hint').classList.toggle('available', !!nearby());
   $('#my-portrait').className = `portrait ${profile.species} ${characterModel(profile).key}`;
@@ -664,6 +636,35 @@ function updateHUD() {
   coastalUI.update();
   villageUI.update();
   if ($('#modal').open && $('#big-map')) drawMinimap($('#big-map'), true);
+}
+/** The starter objectives live in the pause menu, not on the HUD. */
+function questStatus() {
+  const me = player(),
+    gathered = me?.gathered ?? 0;
+  const quests: [string, boolean][] = [
+    ['gather', gathered >= 3],
+    ['craft', !!me?.tool],
+    ['camp', state.camp.level > 0],
+  ];
+  return { gathered, quests, done: quests.filter(([, complete]) => complete).length };
+}
+function objectivesMarkup() {
+  return `<div class="objectives"><h2>目標</h2><p class="modal-intro">はじめての火を育てる · <span id="quest-count">0 / 3</span></p><div class="quest-list" id="quest-list"><div class="quest" id="quest-gather"><span class="quest-check">1</span><div><strong>森の恵みを集める</strong><p>木や石、ベリーを3つ採集</p><div class="progress-track"><span id="gather-progress"></span></div></div></div><div class="quest" id="quest-craft"><span class="quest-check">2</span><div><strong>はじめての道具</strong><p>木材3・石2で石斧をつくる</p></div></div><div class="quest" id="quest-camp"><span class="quest-check">3</span><div><strong>みんなの火を育てる</strong><p>拠点に木材12・石6を届ける</p></div></div></div><div class="camp-row"><span class="camp-icon">${icon('flame')}</span><div><strong id="camp-name">小さな野営地</strong><small id="camp-level">CAMP LEVEL 0</small></div><div class="camp-stats"><span>${icon('wood')} <b id="camp-wood">0</b><em>/ 12</em></span><span>${icon('stone')} <b id="camp-stone">0</b><em>/ 6</em></span></div></div></div>`;
+}
+function updateObjectives() {
+  if (!$('#quest-list')) return;
+  const { gathered, quests, done } = questStatus();
+  $('#gather-progress').style.width = `${Math.min(gathered / 3, 1) * 100}%`;
+  for (const [id, complete] of quests) $(`#quest-${id}`).classList.toggle('done', complete);
+  $('#quest-count').textContent = `${done} / 3`;
+  $('#camp-wood').textContent = state.camp.wood;
+  $('#camp-stone').textContent = state.camp.stone;
+  $('#camp-level').textContent = `CAMP LEVEL ${state.camp.level}`;
+  $('#camp-name').textContent = state.camp.level ? 'みんなの野営地' : '小さな野営地';
+}
+function openObjectives() {
+  openModal(objectivesMarkup());
+  updateObjectives();
 }
 function updateModalHUD() {
   const me = player(),
@@ -912,47 +913,8 @@ function updateHuntingHUD() {
   const enemies = (state.enemies || []).filter((enemy) => enemy.hostile === true),
     nearestEnemy = me ? [...enemies].sort((a, b) => distance(me, a) - distance(me, b))[0] : null;
   const targetInFront = attackReady(me, animal) && inAttackArc(me, animal);
-  $('#hunt-target-name').textContent = animal?.hostile
-    ? animal.name
-    : animal?.phase === 'meat'
-      ? 'マンモスの肉'
-      : animal?.phase === 'dying'
-        ? 'マンモスを倒した'
-        : '草原のマンモス';
-  $('#discovery-card').classList.toggle('hostile', animal?.hostile === true);
-  $('#discovery-card').hidden = !animal || !me || distance(me, animal) > 60;
-  $('#discovery-card small').textContent = animal?.hostile
-    ? animal.modelKey === 'violet-behemoth'
-      ? 'HOSTILE · 突進・噛みつき・尾に注意'
-      : 'HOSTILE · 杖の攻撃に注意'
-    : 'OPEN MEADOW · みんなで狩る';
-  $('#hunt-health').setAttribute(
-    'aria-label',
-    `${animal?.hostile ? animal.name : 'マンモス'}の体力`,
-  );
-  $('#hunt-health').hidden = animal?.phase !== 'alive';
-  $('#hunt-health').max = animal?.maxHealth ?? 100;
-  $('#hunt-health').value = animal?.health ?? 100;
-  $('#hunt-target-note').textContent = !animal
-    ? 'Fで前方へ攻撃できます。'
-    : animal.phase === 'meat'
-      ? `近づいて E · 残り${animal.meatRemaining}個`
-      : animal.phase === 'dead'
-        ? `${animal.name}を倒しました。しばらくすると戻ります。`
-        : animal.phase === 'dying'
-          ? '肉になったら近づいて採ろう。'
-          : `${animal.health} / ${animal.maxHealth} · ${Math.round(distance(me, animal))}m · ${targetInFront ? `前方へ ${attackKey} で攻撃` : attackReady(me, animal) ? `相手を向いて ${attackKey}` : `近づいて、相手を向いて ${attackKey}`}`;
-  if (mounted) {
-    $('#hunt-target-name').textContent = '騎乗中のマンモス';
-    $('#hunt-target-note').textContent =
-      `開けた場所で ${usingGamepad ? '△' : 'R'} を押すと降りられます。`;
-    $('#discovery-card small').textContent = 'MAMMOTH RIDE · 草原の旅';
-  } else if (animal?.riderId) {
-    $('#hunt-target-note').textContent = '仲間が騎乗中 · このマンモスには攻撃できません。';
-  }
   const attackAvailable = joined && !renderUnavailable && canStartAttack(me, serverNow);
   $('#attack-button').disabled = !attackAvailable;
-  $('#jump-button').disabled = !joined || renderUnavailable || !canStartJump(me, serverNow);
   $('#attack-button').classList.toggle('in-range', targetInFront);
   const combat = attackProfile(me ?? profile),
     attackButton = $('#attack-button');
@@ -1307,11 +1269,9 @@ function updateGamepadHints(active: boolean) {
   for (const [selector, label] of [
     ['#interaction-hint kbd', active ? '×' : 'E'],
     ['#attack-button kbd', active ? '□ / R2' : 'F'],
-    ['#jump-button kbd', active ? 'L2' : 'Space'],
     ['#ride-button kbd', active ? '△' : 'R'],
     ['#boat-board kbd', active ? '△' : 'B'],
     ['#chat-toggle kbd', active ? '⌨' : 'Enter'],
-    ['#menu-button kbd', active ? 'OPTIONS' : 'ESC'],
   ])
     $(selector).textContent = label;
   updatePromptBar();
@@ -1361,6 +1321,7 @@ function openPauseMenu() {
   const entries: [string, string, string, () => void][] = [
     ['resume', 'compass', '探索に戻る', () => $('#modal').close()],
     ['inventory', 'bag', 'もちもの・道具', openInventory],
+    ['objectives', 'check', '目標と野営地', openObjectives],
     ['map', 'expand', '世界地図', openMap],
     ['journal', 'book', '探索手帳', openJournal],
     ['gulf', 'wave', '三つの国・共同の畑', () => gulfUI.open()],
@@ -1545,8 +1506,6 @@ $('#status-plate').onclick = openTribe;
 $('#menu-button').onclick = openPauseMenu;
 $('#map-button').onclick = openMap;
 $('#attack-button').onclick = attack;
-$('#jump-button').onclick = jump;
-$('#meat-inventory').onclick = openInventory;
 $('#cook-button').onclick = cook;
 $('#eat-meat-button').onclick = () => action('eatMeat');
 $('#cancel-cook').onclick = () =>
@@ -1641,6 +1600,11 @@ document.addEventListener('keydown', (e) => {
     openPauseMenu();
     return;
   }
+  if (e.key === 'Tab') {
+    e.preventDefault();
+    if (joined) setHotbarShown(true);
+    return;
+  }
   if (
     ['Enter', ' '].includes(e.key) &&
     (e.target as Element)?.closest<HTMLElement>('button,a,[role="button"]')
@@ -1697,6 +1661,7 @@ document.addEventListener('keydown', (e) => {
   if (k === 'g') action('wave');
 });
 document.addEventListener('keyup', (e) => {
+  if (e.key === 'Tab') setHotbarShown(false);
   const key = movementKey(e);
   keys.delete(key);
   blockedMovementKeys.delete(key);
@@ -1719,6 +1684,7 @@ gamepadControls = new GamepadControls({
     joined && !renderUnavailable && !screens.active && !!player() && !player()?.downedUntil,
   onStop: stopInput,
   onActivity: updateGamepadHints,
+  onHotbar: setHotbarShown,
   onLook: (x, y, dt) => renderer.rotateCamera(x * dt * 2.4, y * dt * 1.5),
   onAction: (command) => {
     switch (command) {

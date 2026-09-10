@@ -29,6 +29,7 @@ export function keyPrompts(
     prompts.push({ key: gamepad ? '△' : 'R', label: options.carry ? '肩乗り' : 'マンモス' });
   if (options.boat) prompts.push({ key: gamepad ? '△' : 'B', label: '船' });
   if (!gamepad) prompts.push({ key: 'Enter', label: '話す' });
+  prompts.push({ key: gamepad ? 'L3' : 'Tab', label: 'もちもの' });
   prompts.push({ key: gamepad ? 'OPTIONS' : 'ESC', label: 'メニュー' });
   return prompts;
 }

@@ -60,7 +60,7 @@ export const PC_HELP: readonly HelpCard[] = [
   {
     key: 'ESC · M · I · J',
     title: 'メニュー・地図・もちもの・手帳',
-    note: 'M の地図で焚き火を選び「ワープ」で移動。G で手をふる。H でこの画面。',
+    note: 'M の地図で焚き火を選び「ワープ」で移動。Tab を押している間、もちものと行動の欄を表示。G で手をふる。H でこの画面。',
   },
 ];
 
@@ -91,7 +91,7 @@ export const PAD_HELP: readonly HelpCard[] = [
   {
     key: '十字キー',
     title: '地図・もちもの・手帳・メニュー',
-    note: '↑ 地図 · ← もちもの · → 手帳 · ↓ メニュー。',
+    note: '↑ 地図 · ← もちもの · → 手帳 · ↓ メニュー。L3 を押している間、もちもの欄を表示。',
   },
   {
     key: 'OPTIONS',

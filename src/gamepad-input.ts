@@ -11,6 +11,7 @@ export const PAD = {
   r2: 7,
   share: 8,
   options: 9,
+  l3: 10,
   r3: 11,
   up: 12,
   down: 13,
@@ -51,6 +52,8 @@ export interface PadFrame {
   look: { x: number; y: number };
   actions: PadAction[];
   navigation: Direction | null;
+  /** L3 held during play: the item and action bar stays visible while true. */
+  hotbar: boolean;
   active: boolean;
 }
 
@@ -77,7 +80,7 @@ const menuBindings: [number, PadAction][] = [
 ];
 const directions: Direction[] = ['up', 'down', 'left', 'right'];
 const usedButtons = [
-  ...new Set([...gameBindings.map(([index]) => index), ...directions.map((d) => PAD[d])]),
+  ...new Set([...gameBindings.map(([index]) => index), ...directions.map((d) => PAD[d]), PAD.l3]),
 ];
 const finiteAxis = (value: number | undefined) =>
   Number.isFinite(value) ? Math.max(-1, Math.min(1, value!)) : 0;
@@ -129,6 +132,7 @@ export class GamepadInput {
       look: { x: 0, y: 0 },
       actions: [],
       navigation: null,
+      hotbar: false,
       active: false,
     };
     if (!pad) return frame;
@@ -155,6 +159,7 @@ export class GamepadInput {
       this.running = left.magnitude >= (this.running ? STICK.runExit : STICK.runEnter);
       frame.move = { x: left.x, y: left.y, running: this.running };
       frame.look = { x: right.x, y: right.y };
+      frame.hotbar = held.has(PAD.l3);
       for (const [dir, action] of [
         ['up', 'map'],
         ['down', 'menu'],
