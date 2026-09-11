@@ -42,13 +42,16 @@ export const SABERTOOTH = Object.freeze({
   deathMs: 1500,
   respawnMs: 90000,
 });
-// North of the Siberian snow-plain fire, far enough that arriving by warp is safe.
+// On the snow plain just south of the starting camp (85 m), east of the river
+// that runs south through it: the nearest snow post whose pounce ground (14 m)
+// stays dry, clear of the coast and outside the castle grounds. No warp fire
+// lands inside its territory.
 export const SABERTOOTH_GROUND = Object.freeze({
   id: 'sabertooth-tiger-1',
   modelKey: SABERTOOTH.modelKey,
   name: SABERTOOTH.name,
-  x: 493,
-  z: -19,
+  x: 80,
+  z: -30,
   radius: 4,
   roamRadius: 6,
 });

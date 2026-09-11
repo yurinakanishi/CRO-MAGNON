@@ -177,7 +177,7 @@ try {
   await shot(a, '01-guard');
   await shot(b, '01-guard-ape');
   assert.equal((await request('state')).count, 5);
-  checks.push('Five connected players, two actual Chrome pages render the sabertooth on the snow plain');
+  checks.push('Five connected players, two actual Chrome pages render the sabertooth on the snow plain south of the camp');
   await request('prepare', { mode: 'rear' });
   await sleep(1500);
   assert.equal((await request('state')).enemy.targetId, null);
@@ -189,6 +189,8 @@ try {
   await sample(a, 'hunt');
   await look(a, 11);
   await sleep(150);
+  // Sample before each screenshot: one can take ~0.5 s, as long as the roar.
+  await sample(a, 'hunt');
   await shot(a, '02-alert');
   await watch(a, b, 'hunt', 22);
   assert.ok((await energyA()) < 100, 'hunt damage');
@@ -197,8 +199,10 @@ try {
   await sleep(200);
   await look(a, 10);
   await sleep(300);
+  await sample(a, 'pounce');
   await shot(a, '03-crouch');
   await sleep(450);
+  await sample(a, 'pounce');
   await shot(a, '03-leap');
   await watch(a, b, 'pounce', 8);
   assert.ok((await energyA()) < 100, 'pounce damage');

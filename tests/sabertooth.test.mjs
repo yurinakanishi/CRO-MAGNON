@@ -76,6 +76,31 @@ test('the snow-plain cat is added to new and old worlds; restore cancels its str
   assert.equal(after.pendingAttack, null);
   assert.equal(after.superArmor, false);
   assert.equal(after.targetId, null);
+  // A save from before the move records the Siberian body and home; it resumes
+  // on the current post with its health, not guarding or walking from the old one.
+  const moved = structuredClone(saved);
+  Object.assign(
+    moved.rooms[0].enemies.find((e) => e.modelKey === R.modelKey),
+    { x: 497.8, z: -19.3, home: { x: 493, z: -19 }, returning: true },
+  );
+  const rehomed = createGameCore();
+  rehomed.importState(moved);
+  const back = rehomed.rooms.get('CAT-SAVE').enemies.find((e) => e.modelKey === R.modelKey);
+  assert.ok(Math.hypot(back.x - SABERTOOTH_GROUND.x, back.z - SABERTOOTH_GROUND.z) < 4);
+  assert.ok(Math.hypot(back.home.x - SABERTOOTH_GROUND.x, back.home.z - SABERTOOTH_GROUND.z) < 4);
+  assert.equal(back.health, 111);
+  // Inside the current territory the saved body position is kept.
+  const near = structuredClone(saved);
+  Object.assign(near.rooms[0].enemies.find((e) => e.modelKey === R.modelKey), {
+    x: SABERTOOTH_GROUND.x + 10,
+    z: SABERTOOTH_GROUND.z,
+    home: { x: 493, z: -19 },
+  });
+  const kept = createGameCore();
+  kept.importState(near);
+  const stay = kept.rooms.get('CAT-SAVE').enemies.find((e) => e.modelKey === R.modelKey);
+  assert.equal(stay.x, SABERTOOTH_GROUND.x + 10);
+  assert.ok(Math.hypot(stay.home.x - SABERTOOTH_GROUND.x, stay.home.z - SABERTOOTH_GROUND.z) < 4);
   saved.rooms[0].enemies = saved.rooms[0].enemies.filter((e) => e.modelKey !== R.modelKey);
   const legacy = createGameCore();
   legacy.importState(saved);
@@ -267,10 +292,49 @@ test('client requires the cat clips and samples one-shots from the server clock'
     );
 });
 
-test('the hunting ground is cleared of trees and rocks around the post', async () => {
-  const { SCENERY, inSabertoothClearing } = await import('../dist/shared/scenery-layout.mjs');
+test('the post is on the snow plain just south of the starting camp', async () => {
+  const { CAMP } = await import('../dist/shared/world.mjs');
+  const { nearCastle } = await import('../dist/shared/castle-layout.mjs');
+  const { BEHEMOTH_GROUND } = await import('../dist/shared/behemoth-rules.mjs');
+  const { WARP_POINTS } = await import('../dist/shared/warp-sites.mjs');
+  const { geographicBiome, isLand, locationName } = await import('../dist/shared/paleo-geography.mjs');
+  const { riverX, riverHalfWidth } = await import('../dist/shared/terrain.mjs');
+  const d = (a, b) => Math.hypot(a.x - b.x, a.z - b.z);
+  const fromCamp = d(SABERTOOTH_GROUND, CAMP);
+  assert.equal(locationName(SABERTOOTH_GROUND.x, SABERTOOTH_GROUND.z), 'ヨーロッパの雪原');
+  assert.ok(isLand(SABERTOOTH_GROUND.x, SABERTOOTH_GROUND.z, R.territoryRadius));
+  for (let k = 0; k < 8; k++) {
+    const a = (k * Math.PI) / 4;
+    const x = SABERTOOTH_GROUND.x + 16 * Math.cos(a),
+      z = SABERTOOTH_GROUND.z + 16 * Math.sin(a);
+    assert.equal(geographicBiome(x, z), 'snow', `${x},${z}`);
+  }
+  assert.ok(fromCamp < 90, `camp ${fromCamp}`);
+  // The river runs south through this snow plain; the pounce ground stays dry.
+  for (let z = -64; z <= 184; z += 0.5)
+    if (riverHalfWidth(z) > 0.7)
+      assert.ok(
+        Math.hypot(SABERTOOTH_GROUND.x - riverX(z), SABERTOOTH_GROUND.z - z) - riverHalfWidth(z) > 14,
+        `river at z ${z}`,
+      );
+  // The territory overlaps neither the camp's safe radius, the marsh, the castle nor a warp fire.
+  assert.ok(fromCamp > R.territoryRadius + 12);
+  assert.ok(d(SABERTOOTH_GROUND, BEHEMOTH_GROUND) > R.territoryRadius + BEHEMOTH_GROUND.radius);
+  assert.equal(nearCastle(SABERTOOTH_GROUND.x, SABERTOOTH_GROUND.z, 10), false);
+  for (const fire of WARP_POINTS) assert.ok(d(SABERTOOTH_GROUND, fire) > R.territoryRadius + 8, fire.id);
+});
+
+test('the hunting ground has no tree in the territory and no rock around the post', async () => {
+  const { SCENERY, inSabertoothClearing, inSabertoothTreeClearing } = await import(
+    '../dist/shared/scenery-layout.mjs'
+  );
   for (const kind of ['trees', 'rocks', 'ridges'])
     assert.equal(SCENERY[kind].filter((i) => inSabertoothClearing(i.x, i.z)).length, 0, kind);
+  const near = (i) => Math.hypot(i.x - SABERTOOTH_GROUND.x, i.z - SABERTOOTH_GROUND.z);
+  assert.equal(SCENERY.trees.filter((t) => near(t) < R.territoryRadius + 4).length, 0);
+  assert.ok(inSabertoothTreeClearing(SABERTOOTH_GROUND.x + R.territoryRadius, SABERTOOTH_GROUND.z));
+  // Trees just beyond the cleared ring are kept.
+  assert.ok(SCENERY.trees.some((t) => near(t) < R.territoryRadius + 20));
   assert.ok(inSabertoothClearing(SABERTOOTH_GROUND.x, SABERTOOTH_GROUND.z, -13));
   assert.equal(inSabertoothClearing(SABERTOOTH_GROUND.x + 40, SABERTOOTH_GROUND.z), false);
 });

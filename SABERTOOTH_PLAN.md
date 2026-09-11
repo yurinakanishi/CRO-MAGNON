@@ -14,7 +14,7 @@ Clips (in-place; the server moves the body): `Idle_Loop` 3 s, `Walk_Loop` 0.8 s 
 
 ## Gameplay
 
-- One cat north of the Siberian snow-plain fire at `(493, −19)`, territory radius 24 m; trees and rocks are cleared within ~14 m of its post and kept further out. The map draws an amber territory ring and label.
+- One cat on the snow plain just south of the starting camp at `(80, −30)`, 85 m from the camp fire, east of the river that runs south through the plain — the nearest snow post whose 14 m pounce ground stays dry (river 15 m away), clear of the coast (32 m) and outside the castle grounds (14 m beyond their clearance); the territory's western edge reaches the fordable river. It first stood north of the Siberian snow-plain fire at `(493, −19)`; on 2026-09-11 the user moved it to the European grassland at `(−25, 50)` and then to this snow plain. Territory radius 24 m; no tree stands within 28 m of the post (the whole territory), and rocks are cleared within ~14 m. The map draws an amber territory ring and label.
 - 340 health. Chase 6.2 m/s — faster than the great ape's 5.4 m/s sprint — so the territory edge is the only escape. Walks home at 1.5 m/s.
 - Detection: 24 m forward cone (±75°) with line of sight, plus 7 m hearing all round.
 - Pounce (30): from 3.5–10 m, a still 450 ms crouch (interruptible by a hit) then a 600 ms leap toward the target's led position with super armour (damage counts, no flinch), one hit on body contact after 45 % of the leap, then a 500 ms landing opening. 2.6 s cooldown.

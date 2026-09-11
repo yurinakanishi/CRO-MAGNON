@@ -29,6 +29,8 @@ import { updateForaging } from '../shared/foraging.mjs';
 import { updateWatering } from '../shared/watering.mjs';
 import { enemyIsSolid, stopActor } from '../shared/combat.mjs';
 import { createEnemies, updateEnemies } from '../shared/enemies.mjs';
+import { BEHEMOTH } from '../shared/behemoth-rules.mjs';
+import { SABERTOOTH } from '../shared/sabertooth-rules.mjs';
 import { animalIsSolid, updateHunting } from '../shared/hunting.mjs';
 import { movePlayer } from '../shared/movement.mjs';
 import { canStartJump, jumpProgress } from '../shared/jumping.mjs';
@@ -666,6 +668,7 @@ export function createGameCore({
       for (const name of ['animals', 'enemies'])
         for (const actor of room[name]) {
           const previous = record[name].find((item) => item.id === actor.id);
+          const post = { x: actor.x, z: actor.z };
           if (previous) Object.assign(actor, previous);
           stopActor(actor);
           actor.riderId = null;
@@ -684,6 +687,16 @@ export function createGameCore({
             actor.nextPathAt = 0;
             actor.nextAttackAt = 0;
             actor.clip = actor.phase === 'alive' ? 'Idle_Loop' : actor.clip;
+            // The post comes from the current rules, not the save: a save made
+            // before the post moved (the cat left the Siberian snow plain for the
+            // European grassland on 2026-09-11) records the old home. A body left
+            // outside the current territory starts on the post instead of walking
+            // across the world.
+            actor.home = { ...post };
+            const territory = (actor.modelKey === 'violet-behemoth' ? BEHEMOTH : SABERTOOTH)
+              .territoryRadius;
+            if (Math.hypot(actor.x - post.x, actor.z - post.z) > territory)
+              Object.assign(actor, post);
           }
         }
       for (const entry of record.sessions)
