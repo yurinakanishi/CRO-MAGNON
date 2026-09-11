@@ -6,6 +6,7 @@ import { WORLD_BOUNDS } from '../shared/world-bounds.mjs';
 import { BIOMES } from '../shared/biomes.mjs';
 import { regionById } from '../shared/adventure-regions.mjs';
 import { BEHEMOTH_MARSH } from '../shared/behemoth-rules.mjs';
+import { GROUNDCOVER_TUFT_SHARE } from '../shared/scenery-layout.mjs';
 const shadow = regionById('shadow-realm');
 // GLSL twin of marshDrop in behemoth-rules.mts: the drawn floor equals the walked floor.
 const marshShader = (() => {
@@ -78,15 +79,60 @@ export function clipRiverAtCoast(shader, textures) {
     '#include <color_fragment>\nif(shoreline(vRiverWorld)<=0.0)discard;',
   );
 }
+// Measured 2026-09-11 from the delivered grass GLBs (meadow-grass sha256
+// 60a6005e…, meadow-sprig sha256 8faafb56…): the mean linear albedo of each
+// texture's green-dominant blade texels (tests/meadow-ground-tint.test.mjs
+// re-measures them). The meadow-ground tile bakes as ochre instead
+// (area-weighted mean 0.153/0.122/0.042; 76% dirt texels at G/R≈0.72, 24% olive
+// turf at G/R≈0.94, the same luminance as the blades), so the grassland material
+// re-hues every ground texel to the placement-weighted blade green at the
+// texel's own luminance. Turf texels go all the way, dirt texels keep a trace of
+// their warmth. The texture's relief, biome transitions, beaches, the shadow
+// garden and the marsh still apply on top. Runtime material only; the GLBs are
+// unchanged.
+export const BLADE_ALBEDO = Object.freeze({
+  'meadow-grass': Object.freeze({ r: 0.0442, g: 0.1503, b: 0.0205 }),
+  'meadow-sprig': Object.freeze({ r: 0.0221, g: 0.1717, b: 0.0087 }),
+});
+const blend = (channel) =>
+  BLADE_ALBEDO['meadow-grass'][channel] * GROUNDCOVER_TUFT_SHARE +
+  BLADE_ALBEDO['meadow-sprig'][channel] * (1 - GROUNDCOVER_TUFT_SHARE);
+export const MEADOW_BLADE_ALBEDO = Object.freeze({ r: blend('r'), g: blend('g'), b: blend('b') });
+export const MEADOW_MATCH = Object.freeze({ dirt: 0.9, turf: 1 });
+const meadowShader = `
+uniform vec3 meadowBlade;
+uniform vec2 meadowMatch;
+vec3 meadowGreen(vec3 albedo){
+  const vec3 luma=vec3(.2126,.7152,.0722);
+  vec3 blade=meadowBlade*(dot(albedo,luma)/max(.001,dot(meadowBlade,luma)));
+  float turf=smoothstep(.78,.90,albedo.g/max(albedo.r,.001));
+  return mix(albedo,blade,mix(meadowMatch.x,meadowMatch.y,turf));
+}
+`;
 export function earthTerrainMaterial(original, biome, textures) {
   const material = original.clone(),
     base = new THREE.Color(biome.color);
   material.roughness = biome.id === 'ice' ? 0.28 : 0.94;
   material.side = THREE.FrontSide;
-  const marsh = biome.id === 'grassland';
+  const marsh = biome.id === 'grassland',
+    meadow = biome.id === 'grassland';
+  const meadowUniforms = meadow
+    ? {
+        meadowBlade: {
+          value: new THREE.Vector3(
+            MEADOW_BLADE_ALBEDO.r,
+            MEADOW_BLADE_ALBEDO.g,
+            MEADOW_BLADE_ALBEDO.b,
+          ),
+        },
+        meadowMatch: { value: new THREE.Vector2(MEADOW_MATCH.dirt, MEADOW_MATCH.turf) },
+      }
+    : null;
+  if (meadowUniforms) material.userData.meadow = meadowUniforms;
   material.onBeforeCompile = (shader) => {
     shader.uniforms.earthCoast = { value: textures.coast };
     shader.uniforms.earthBiomes = { value: textures.biomes };
+    if (meadowUniforms) Object.assign(shader.uniforms, meadowUniforms);
     shader.vertexShader =
       earthShader +
       (marsh ? marshShader : '') +
@@ -109,12 +155,14 @@ export function earthTerrainMaterial(original, biome, textures) {
     shader.fragmentShader =
       earthShader +
       (marsh ? marshShader : '') +
+      (meadow ? meadowShader : '') +
       'uniform sampler2D earthBiomes;\nvarying vec3 vTerrainWorld;\nvarying float vCoastal;\n' +
       shader.fragmentShader;
     shader.fragmentShader = shader.fragmentShader.replace(
       '#include <color_fragment>',
       `#include <color_fragment>
       float coast=32.0;if(vCoastal>.5)coast=shoreline(vTerrainWorld.xz);if(coast<=0.0)discard;
+      ${meadow ? 'diffuseColor.rgb=meadowGreen(diffuseColor.rgb);' : ''}
       vec3 climate=texture2D(earthBiomes,earthUV(vTerrainWorld.xz)).rgb;
       vec3 sourceClimate=vec3(${base.r.toFixed(5)},${base.g.toFixed(5)},${base.b.toFixed(5)});
       float transition=clamp(length(climate-sourceClimate)*8.0,0.0,1.0);
@@ -149,7 +197,7 @@ export function earthTerrainMaterial(original, biome, textures) {
       totalEmissiveRadiance+=vec3(1.0,.16,.018)*lava*.7;`,
       );
   };
-  material.customProgramCacheKey = () => `paleo-terrain-${biome.id}-marsh-1`;
+  material.customProgramCacheKey = () => `paleo-terrain-${biome.id}-marsh-1-meadow-1`;
   return material;
 }
 

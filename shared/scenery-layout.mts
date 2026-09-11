@@ -64,6 +64,9 @@ const TAU = Math.PI * 2;
 const GRASS_KEEP = 0.6,
   GRASS_TUFT = 0.35,
   GROUNDCOVER_HEIGHT = { 'meadow-grass': 0.55, 'meadow-sprig': 0.45 };
+// Share of grassland cover spots that are tufts (the rest are sprigs); the
+// ground colour match in src/paleo-materials.ts weights the two blade greens by it.
+export const GROUNDCOVER_TUFT_SHARE = GRASS_TUFT / GRASS_KEEP;
 const SCATTER_RESOURCES = [
   ...INITIAL_RESOURCES.filter((r) => !r.id.startsWith('gulf-')),
   ...LEGACY_RESOURCE_POINTS,

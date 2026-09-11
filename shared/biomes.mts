@@ -13,7 +13,10 @@ export const BIOMES = Object.freeze(
       id: 'grassland',
       short: '草原',
       ground: 'meadow-ground',
-      color: '#889063',
+      // 2026-09-11: the grassland ground is re-hued to the meadow-grass blade
+      // green (src/paleo-materials.ts); this is that ground's mean colour at the
+      // previous olive's luminance, so biome transitions and the map follow it.
+      color: '#559c37',
       fog: '#b5c4b2',
       sky: '#bfd3cb',
       light: '#ffe4b5',
