@@ -928,9 +928,10 @@ body[data-screen] .world-labels {
   top: 22px;
   left: 24px;
   display: flex;
-  align-items: center;
-  gap: 11px;
-  padding: 8px 14px 8px 8px;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 8px;
+  padding: 9px 10px 8px;
   background: var(--panel);
   border: 1px solid var(--line);
   border-radius: 12px;
@@ -942,9 +943,14 @@ body[data-screen] .world-labels {
 .status-plate:hover {
   background: #1c2a23e6;
 }
+.status-main {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
 .status-plate .portrait {
-  width: 42px;
-  height: 46px;
+  width: 36px;
+  height: 40px;
   border-radius: 8px;
 }
 .status-text {
@@ -974,33 +980,73 @@ body[data-screen] .world-labels {
   font-weight: 600;
   color: #c7d3b5;
 }
+/* The health bar leads the plate: long, tall, and colour-coded as it drains. */
 .energy-track {
+  position: relative;
   display: block;
-  height: 6px;
-  background: #ffffff14;
-  border-radius: 5px;
-  margin-top: 3px;
+  width: min(340px, 42vw);
+  height: 22px;
+  background: #0b110ecc;
+  border: 1px solid #ffffff2e;
+  border-radius: 6px;
+  box-shadow: inset 0 2px 4px #0008;
   overflow: hidden;
 }
-.energy-track span {
-  height: 100%;
+#energy-bar {
+  position: absolute;
+  inset: 0 auto 0 0;
   display: block;
-  background: linear-gradient(90deg, #8fb87a, #c3d88f);
-  transition: width 0.3s;
-  border-radius: 5px;
   width: 100%;
+  background: linear-gradient(180deg, #b7e08f, #6fa651 55%, #4e8a3c);
+  box-shadow: inset 0 1px #ffffff55;
+  transition:
+    width 0.3s,
+    background 0.3s;
+}
+.energy-track[data-level='low'] #energy-bar {
+  background: linear-gradient(180deg, #f3d27a, #d39a3a 55%, #b37a26);
+}
+.energy-track[data-level='critical'] #energy-bar {
+  background: linear-gradient(180deg, #f59a86, #d0493a 55%, #a8302a);
+}
+.energy-track[data-level='critical'] {
+  border-color: #ff8a7a99;
+  animation: energy-critical 0.9s ease-in-out infinite alternate;
+}
+@keyframes energy-critical {
+  to {
+    box-shadow:
+      inset 0 2px 4px #0008,
+      0 0 12px #ff5a4a88;
+  }
 }
 .energy-label {
+  position: absolute;
+  inset: 0;
   display: flex;
   align-items: center;
-  gap: 4px;
+  gap: 5px;
+  padding: 0 9px;
   font-style: normal;
-  font-size: 9px;
-  color: #a9bd98;
+  font-size: 12px;
+  font-weight: 600;
+  color: #fbfaf0;
+  text-shadow:
+    0 1px 2px #000c,
+    0 0 3px #0009;
+  font-variant-numeric: tabular-nums;
+}
+.energy-label b {
+  font-weight: 700;
+  letter-spacing: 1px;
+}
+.energy-label span {
+  margin-left: auto;
 }
 .energy-label .icon {
-  width: 11px;
-  height: 11px;
+  width: 13px;
+  height: 13px;
+  filter: drop-shadow(0 1px 1px #000a);
 }
 
 /* ---- objectives (pause menu) ---- */
@@ -1715,6 +1761,8 @@ body[data-screen] .world-labels {
   overflow: hidden;
   isolation: isolate;
 }
+/* Magic recharge: the button fills left to right over a dark track, with a
+   bright gauge along the bottom and a big countdown; a flash marks "ready". */
 .attack-button .cooldown-meter {
   display: none;
   position: absolute;
@@ -1723,21 +1771,61 @@ body[data-screen] .world-labels {
   pointer-events: none;
   transform-origin: left;
   transform: scaleX(var(--cooldown, 1));
-  background: linear-gradient(90deg, #4fb3ad88, #a7f0e0cc);
+  background: linear-gradient(0deg, #b4fff0 0 6px, #2aa69cd9 6px, #1d7f78d9);
+  box-shadow: inset -3px 0 #eafffa;
   transition: transform 0.1s linear;
 }
 .attack-button.cooling .cooldown-meter {
   display: block;
 }
+.attack-button.cooling::before {
+  content: '';
+  position: absolute;
+  inset: auto 0 0;
+  height: 6px;
+  z-index: -2;
+  background: #ffffff26;
+}
+.attack-button[data-style='magic'] {
+  min-width: 180px;
+  min-height: 40px;
+  font-size: 11px;
+}
 .attack-button.cooling:disabled {
-  opacity: 0.85;
-  background: #10201de0;
+  opacity: 1;
+  background: #0a1412f0;
+  border-color: #5f9f9a88;
+}
+.attack-button.cooling > .icon,
+.attack-button.cooling > span {
+  opacity: 0.75;
 }
 .attack-button .cooldown-left {
-  font-size: 9px;
-  font-weight: 600;
-  color: #d5f7ec;
+  min-width: 34px;
+  font-size: 13px;
+  font-weight: 700;
+  color: #effffa;
+  text-shadow: 0 1px 2px #000c;
   font-variant-numeric: tabular-nums;
+}
+.attack-button[data-style='magic']:not(.cooling):not(:disabled) {
+  box-shadow:
+    var(--shadow),
+    0 0 10px #7fe6d855;
+}
+.attack-button.charged {
+  animation: magic-charged 0.7s ease-out;
+}
+@keyframes magic-charged {
+  0% {
+    background: #7fe6d8;
+    box-shadow: 0 0 0 0 #a7f0e0cc;
+    transform: scale(1.08);
+  }
+  100% {
+    box-shadow: 0 0 0 16px #a7f0e000;
+    transform: scale(1);
+  }
 }
 .attack-button[data-style='katana'] {
   border-color: #bdb6d9;
@@ -3158,12 +3246,12 @@ dialog:has(.earth-map) {
   .status-plate {
     top: 14px;
     left: 14px;
-    padding: 5px 10px 5px 5px;
-    gap: 8px;
+    padding: 6px 7px 5px;
+    gap: 5px;
   }
   .status-plate .portrait {
-    width: 32px;
-    height: 36px;
+    width: 28px;
+    height: 32px;
   }
   .status-text {
     min-width: 96px;
@@ -3175,8 +3263,17 @@ dialog:has(.earth-map) {
   .status-text small {
     font-size: 8px;
   }
+  .energy-track {
+    width: min(230px, 52vw);
+    height: 17px;
+  }
+  .attack-button[data-style='magic'] {
+    min-width: 130px;
+    min-height: 34px;
+  }
   .energy-label {
-    display: none;
+    font-size: 10px;
+    padding: 0 7px;
   }
   .map-hud {
     top: 10px;
@@ -3569,12 +3666,12 @@ dialog:has(.earth-map) {
   .status-plate {
     top: 10px;
     left: 10px;
-    padding: 4px 9px 4px 4px;
-    gap: 7px;
+    padding: 5px 6px 4px;
+    gap: 4px;
   }
   .status-plate .portrait {
-    width: 28px;
-    height: 32px;
+    width: 24px;
+    height: 28px;
   }
   .status-text {
     min-width: 90px;
@@ -3586,8 +3683,13 @@ dialog:has(.earth-map) {
   .status-text small {
     font-size: 7px;
   }
+  .energy-track {
+    width: min(260px, 36vw);
+    height: 16px;
+  }
   .energy-label {
-    display: none;
+    font-size: 10px;
+    padding: 0 7px;
   }
   .map-hud {
     top: 8px;
