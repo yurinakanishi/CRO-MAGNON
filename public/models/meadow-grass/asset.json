@@ -5,29 +5,41 @@
   "candidate": 1,
   "status": "reviewed-prototype",
   "url": "/models/meadow-grass/model.glb",
-  "sha256": "23e834c851fc6cfd1e091edf11e9be093802f047ccb33a2af3b579e2dbb0bb48",
-  "bytes": 10436008,
-  "triangles": 134051,
+  "sha256": "60a6005e1c3fac579d48cb508599c81eb1a6cce10936f69c1cb223afc964087a",
+  "bytes": 3451784,
+  "triangles": 44457,
   "upAxis": "Y",
   "forwardAxis": "+Z",
-  "heightMetres": 0.55,
-  "widthMetres": null,
+  "heightMetres": 0.5501837610190705,
+  "widthMetres": 0.7221716642379761,
   "placement": {
-    "pivot": "ground-centred"
+    "pivot": "ground-centred",
+    "min": [
+      -0.3611329197883606,
+      -0.000024902719815145247,
+      -0.3530409634113312
+    ],
+    "max": [
+      0.3610387444496155,
+      0.5501588582992554,
+      0.353342741727829
+    ]
   },
   "clips": [],
   "notes": [
-    "Curved blades, rooted clump, source-green albedo and matte dielectric material reviewed. Direct QEM LODs are still too dense: use exact-GLB rendered impostors beyond 2.4 metres, full source-derived mesh only at close range; final game performance review remains required."
+    "2026-09-11 rework requested by the user: the v1 dense needle-blade tuft looked unsettling. v2 has nine broad smooth blades.",
+    "Dense 296,779 -> 44,457 triangles; quadric collapse stalls at 35k on the open blade edges, so the 44k probe (p95 0.3 mm) is delivered. Full mesh is only drawn within 1.1 m; impostors beyond, as before (was 134,051 triangles).",
+    "Height 0.55 m, ground-centred pivot; crops (fire-root, herb) reuse this model with their tints. No LOD delivered (same as v1)."
   ],
+  "lods": [],
   "provenance": {
-    "provider": "Codex",
-    "claudeUsed": false,
-    "referenceGenerator": "Built-in imagegen",
-    "referenceImage": "output/model-generation/models/meadow-grass/source/original/reference-v1.png",
-    "referenceSha256": "2c000bf50446ec4c3a6d11fff811943c7219e3e7870f28e8ffe3d776d8bc8c47",
-    "reconstruction": "Local TRELLIS-2; settings and dense SHA in model workspace",
-    "candidateFile": "output/model-generation/models/meadow-grass/work/low-poly/candidate-01/candidate.glb",
-    "visualReview": "output/model-generation/models/meadow-grass/qa/adoption-review.json"
-  },
-  "lods": []
+    "provider": "Claude Fable 5.1 (Claude Code)",
+    "claudeUsed": true,
+    "referenceGenerator": "Art-directed Blender 5.2 render (no local image generator on this host); see source/original/*.json",
+    "referenceImage": "output/model-generation/models/meadow-grass/source/original/reference-v2.png",
+    "referenceSha256": "ecfc6aa427b736702b66bce22100fde6dac129941d6bbc97be81abbb6d19cf52",
+    "reconstruction": "Local TRELLIS-2 1024, seed 42 (work/trellis/dense-v2-res1024-seed0042.glb, first attempt hit a CUDA launch error and was rerun); source-derived weld + quadric reduction with retained UV/albedo, foliage-only albedo luminance calibration; no replacement geometry.",
+    "candidateFile": "output/model-generation/models/meadow-grass/work/low-poly/candidate-02/candidate.glb",
+    "visualReview": "output/model-generation/models/meadow-grass/qa/adoption-review-rev02.json"
+  }
 }

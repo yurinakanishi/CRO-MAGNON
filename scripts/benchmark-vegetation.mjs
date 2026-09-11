@@ -33,7 +33,7 @@ export function landscapeFixtures(Type = LandscapeInstances) {
       key: 'meadow-grass',
       distances: [1.1, 1.1, 28],
       foliage: true,
-      placements: SCENERY.grass.map(grassPlacement),
+      placements: SCENERY.grass.filter((p) => (p.key ?? 'meadow-grass') === 'meadow-grass').map(grassPlacement),
       generateCell: (x, z) =>
         grassForChunk(x - WORLD.minX / 32, z - WORLD.minZ / 32)
           .filter((p) => !p.surface && p.key === 'meadow-grass')

@@ -110,7 +110,10 @@ export function buildForestAssets(world) {
       position: new THREE.Vector3(item.x, terrainHeight(item.x, item.z), item.z),
       scale: new THREE.Vector3(...item.scale),
     }));
-  const grass = SCENERY.grass.map(grassPlacement);
+  const groundcover = (key) =>
+    SCENERY.grass.filter((item) => (item.key ?? 'meadow-grass') === key).map(grassPlacement);
+  const grass = groundcover('meadow-grass'),
+    sprigs = groundcover('meadow-sprig');
   const rocks = SCENERY.rocks
     .filter((item) => !item.surface)
     .map((item) => ({
@@ -139,6 +142,19 @@ export function buildForestAssets(world) {
       generateCell: (x, z) =>
         grassForChunk(x - WORLD.minX / 32, z - WORLD.minZ / 32)
           .filter((item) => !item.surface && item.key === 'meadow-grass')
+          .map(grassPlacement),
+    }),
+    new LandscapeInstances({
+      assets: world.worldAssets,
+      key: 'meadow-sprig',
+      placements: sprigs,
+      renderer: world.renderer,
+      scene: world.scene,
+      distances: [1.1, 1.1, 24],
+      foliage: true,
+      generateCell: (x, z) =>
+        grassForChunk(x - WORLD.minX / 32, z - WORLD.minZ / 32)
+          .filter((item) => !item.surface && item.key === 'meadow-sprig')
           .map(grassPlacement),
     }),
     new LandscapeInstances({

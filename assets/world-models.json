@@ -46,9 +46,9 @@
       "kind": "foliage",
       "height": 0.55,
       "status": "integrated-reviewed-prototype",
-      "subject": "One compact rooted tuft of wild meadow grass, many gently bending medium-width grass blades with believable thickness, muted olive green and straw-yellow tips, clean grouped leaf masses and small dense root crown. Low irregular rounded tuft suitable for repeating on a game meadow. Complete object with open readable silhouette. No flower, soil slab, pot, rocks, surrounding field or pedestal. Three-quarter view slightly above ground.",
+      "subject": "One small rounded clump of nine broad, smooth grass blades on a low root crown; clean readable ground cover.",
       "geometryResolution": 1024,
-      "sha256": "23e834c851fc6cfd1e091edf11e9be093802f047ccb33a2af3b579e2dbb0bb48",
+      "sha256": "60a6005e1c3fac579d48cb508599c81eb1a6cce10936f69c1cb223afc964087a",
       "delivery": "/models/meadow-grass/model.glb"
     },
     {
@@ -56,10 +56,10 @@
       "name": "ぱらぱら草",
       "kind": "foliage",
       "height": 0.45,
-      "status": "pending",
+      "status": "integrated-reviewed-prototype",
       "subject": "One or two broad smooth grass blades rising from a tiny root crown; sparse scattered ground cover for the grassland.",
       "geometryResolution": 1024,
-      "sha256": "pending",
+      "sha256": "8faafb56623903e1f8cfd26a807a76c5bf1855114d44ae285d070f2e2a82cb72",
       "delivery": "/models/meadow-sprig/model.glb",
       "referenceVersion": 1
     },

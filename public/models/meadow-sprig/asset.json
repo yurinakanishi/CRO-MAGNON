@@ -1,0 +1,44 @@
+{
+  "modelKey": "meadow-sprig",
+  "name": "ぱらぱら草",
+  "kind": "foliage",
+  "candidate": 1,
+  "status": "reviewed-prototype",
+  "url": "/models/meadow-sprig/model.glb",
+  "sha256": "8faafb56623903e1f8cfd26a807a76c5bf1855114d44ae285d070f2e2a82cb72",
+  "bytes": 941100,
+  "triangles": 12550,
+  "upAxis": "Y",
+  "forwardAxis": "+Z",
+  "heightMetres": 0.45013082993318676,
+  "widthMetres": 0.5930159986019135,
+  "placement": {
+    "pivot": "ground-centred",
+    "min": [
+      -0.29650697112083435,
+      -0.00003288162042736076,
+      -0.04897920787334442
+    ],
+    "max": [
+      0.2965090274810791,
+      0.4500979483127594,
+      0.04895041882991791
+    ]
+  },
+  "clips": [],
+  "notes": [
+    "New 2026-09-11 model for the user's 'a blade or two here and there' request; used for 25 of every 60 kept ground-cover spots in the grassland.",
+    "Dense 278,972 -> 12,550 triangles (p95 0.1 mm). Height 0.45 m, ground-centred pivot. Drawn within 1.1 m, impostor beyond 1.1 m to 24 m."
+  ],
+  "lods": [],
+  "provenance": {
+    "provider": "Claude Fable 5.1 (Claude Code)",
+    "claudeUsed": true,
+    "referenceGenerator": "Art-directed Blender 5.2 render (no local image generator on this host); see source/original/*.json",
+    "referenceImage": "output/model-generation/models/meadow-sprig/source/original/reference-v1.png",
+    "referenceSha256": "9e6c3c093a576e132f2e27bb63a447ca1557823431bed64caa03baea4d5987dc",
+    "reconstruction": "Local TRELLIS-2 1024, seed 42 (work/trellis/dense-res1024-seed0042.glb); source-derived weld + quadric reduction with retained UV/albedo, foliage-only albedo luminance calibration; no replacement geometry.",
+    "candidateFile": "output/model-generation/models/meadow-sprig/work/low-poly/candidate-01/candidate.glb",
+    "visualReview": "output/model-generation/models/meadow-sprig/qa/adoption-review-rev01.json"
+  }
+}
