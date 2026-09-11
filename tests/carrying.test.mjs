@@ -301,8 +301,11 @@ test('shoulder mage casts while the ape runs, damages once and synchronizes the 
   }
   assert.ok(f.a.x > 4, 'carrier keeps running during cast');
   f.advance(300);
-  assert.equal(target.health, 75);
+  assert.equal(target.health, 40);
   assert.equal(f.room.projectiles.length, 0);
+  // The heavy bolt keeps the caster on a long recharge before the next cast.
+  assert.equal(canStartAttack(f.b, f.now()), false);
+  f.advance(4000);
   assert.equal(canStartAttack(f.b, f.now()), true);
   f.action(1, 'attack');
   assert.equal(f.b.attackSequence, 2);

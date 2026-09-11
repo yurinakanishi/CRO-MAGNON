@@ -37,10 +37,10 @@ test('magic launches without a target, flies with elapsed time, hits once and ig
   assert.equal(result.launched,true);assert.equal(room.projectiles.length,1);assert.equal(enemy.health,75);
   assert.equal(updateProjectiles(room,impact+200).length,0);assert.ok(Math.abs(room.projectiles[0].z-21.4)<1e-8);
   const hits=updateProjectiles(room,impact+800);
-  assert.equal(hits.length,1);assert.equal(hits[0].target,enemy);assert.equal(enemy.health,50);assert.equal(far.health,75);
+  assert.equal(hits.length,1);assert.equal(hits[0].target,enemy);assert.equal(enemy.health,15);assert.equal(far.health,75);
   assert.equal(room.projectiles.length,0);assert.equal(room.projectileImpacts[0].hit,true);
   assert.equal(updateProjectiles(room,impact+1600).length,0);assert.equal(room.projectileImpacts.length,0);
-  assert.equal(player.energy,96);assert.equal(canStartAttack(player,2099),false);assert.equal(canStartAttack(player,2100),true);
+  assert.equal(player.energy,96);assert.equal(canStartAttack(player,5999),false);assert.equal(canStartAttack(player,6000),true);
 });
 
 test('a target can dodge a flying orb, while a target entering its path can be hit',()=>{
@@ -48,7 +48,7 @@ test('a target can dodge a flying orb, while a target entering its path can be h
   const {impact}=cast(room,player);updateProjectiles(room,impact+150);enemy.x=22;
   assert.equal(updateProjectiles(room,impact+900).length,0);assert.equal(enemy.health,75);
   enemy.x=20;enemy.z=27.5;
-  assert.equal(updateProjectiles(room,impact+1100)[0].target,enemy);assert.equal(enemy.health,50);
+  assert.equal(updateProjectiles(room,impact+1100)[0].target,enemy);assert.equal(enemy.health,15);
 });
 
 test('thin and rotated walls stop magic even on a long tick, including immediately beside the caster',()=>{
@@ -70,7 +70,7 @@ test('a near target in front of a wall takes a hit; the rear target and other pl
   const front=target(),behind=target('behind',20,27),friend=target('orl',20,22);friend.hostile=false;
   const peer={...target('peer',20,23),energy:100};room.players.set(peer.id,peer);room.enemies.push(front,behind,friend);
   const {impact}=cast(room,player);assert.equal(updateProjectiles(room,impact+1300)[0].target,front);
-  assert.equal(front.health,50);assert.equal(behind.health,75);assert.equal(friend.health,75);assert.equal(peer.health,75);
+  assert.equal(front.health,15);assert.equal(behind.health,75);assert.equal(friend.health,75);assert.equal(peer.health,75);
 });
 
 test('range expiration, defeat, disconnect and missing targets cannot leave harmful or accumulating projectiles',()=>{

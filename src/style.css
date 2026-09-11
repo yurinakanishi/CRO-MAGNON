@@ -1710,6 +1710,35 @@ body[data-screen] .world-labels {
   border-color: #a7d9d8;
   color: #d5f7ec;
 }
+.attack-button {
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+}
+.attack-button .cooldown-meter {
+  display: none;
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  transform-origin: left;
+  transform: scaleX(var(--cooldown, 1));
+  background: linear-gradient(90deg, #4fb3ad88, #a7f0e0cc);
+  transition: transform 0.1s linear;
+}
+.attack-button.cooling .cooldown-meter {
+  display: block;
+}
+.attack-button.cooling:disabled {
+  opacity: 0.85;
+  background: #10201de0;
+}
+.attack-button .cooldown-left {
+  font-size: 9px;
+  font-weight: 600;
+  color: #d5f7ec;
+  font-variant-numeric: tabular-nums;
+}
 .attack-button[data-style='katana'] {
   border-color: #bdb6d9;
   color: #e5ddf1;

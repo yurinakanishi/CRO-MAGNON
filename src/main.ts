@@ -935,13 +935,28 @@ function updateHuntingHUD() {
     attackButton = $('#attack-button');
   if (attackButton.dataset.style !== combat.id) {
     attackButton.dataset.style = combat.id;
-    attackButton.innerHTML = `${icon(combat.key)}<kbd>${usingGamepad ? '□ / R2' : 'F'}</kbd><span>${combat.label}</span>`;
+    attackButton.innerHTML = `<i class="cooldown-meter" aria-hidden="true"></i>${icon(combat.key)}<kbd>${usingGamepad ? '□ / R2' : 'F'}</kbd><span>${combat.label}</span><b class="cooldown-left" hidden></b>`;
   }
+  // Magic has a long recharge, so the button doubles as its meter. Melee
+  // recharges too quickly for a meter to read, so it stays a plain button.
+  const cooldownLeft =
+    me?.attackSequence > 0 ? Math.max(0, combat.cooldownMs - (serverNow - me.attackAt)) : 0;
+  const metered = combat.key === 'magic' && cooldownLeft > 0;
+  attackButton.classList.toggle('cooling', metered);
+  attackButton.style.setProperty(
+    '--cooldown',
+    metered ? (1 - cooldownLeft / combat.cooldownMs).toFixed(3) : '1',
+  );
+  const cooldownLabel = attackButton.querySelector('.cooldown-left');
+  cooldownLabel.hidden = !metered;
+  if (metered) cooldownLabel.textContent = `${(cooldownLeft / 1000).toFixed(1)}s`;
   attackButton.title = mounted
     ? `${usingGamepad ? '△' : 'R'}で降りてから攻撃できます。`
     : attackAvailable
       ? `前方へ${combat.label} [${usingGamepad ? attackKey : 'F / 5'}]。相手がいなくても発動できます。`
-      : '次の攻撃を準備しています。';
+      : metered
+        ? `${combat.label}を充填中 · あと${(cooldownLeft / 1000).toFixed(1)}秒`
+        : '次の攻撃を準備しています。';
   $('#cook-button').disabled =
     !joined || renderUnavailable || downed || mounted || cooking || !inv.rawMeat;
   $('#eat-meat-button').disabled =
@@ -1008,6 +1023,7 @@ function updateHuntingHUD() {
     attackAvailable: String(attackAvailable),
     attackSequence: String(me?.attackSequence ?? 0),
     attackAt: String(me?.attackAt ?? 0),
+    attackCooldownLeft: String(cooldownLeft),
     cooking: String(cooking),
     rawMeat: String(inv.rawMeat),
     cookedMeat: String(inv.cookedMeat),

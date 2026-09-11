@@ -86,8 +86,9 @@ export const ATTACK_PROFILES = Object.freeze({
     label: '光の魔法',
     noun: '光弾',
     startText: '光の魔法を放った。',
-    damage: 25,
-    cooldownMs: 1100,
+    // Powerful but with a long recharge; the HUD shows the recharge meter.
+    damage: 60,
+    cooldownMs: 5000,
     durationMs: 800,
     impactMs: 400,
     reach: 8,

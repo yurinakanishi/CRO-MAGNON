@@ -147,7 +147,7 @@ test('boosted flight sweeps walls and hits once even when a long tick crosses th
       );
     const hits = updateProjectiles(f.room, 2400);
     assert.equal(hits.length, wall ? 0 : 1);
-    assert.equal(target.health, wall ? 75 : 50);
+    assert.equal(target.health, wall ? 75 : 15);
     assert.equal(updateProjectiles(f.room, 2500).length, 0);
   }
 });
