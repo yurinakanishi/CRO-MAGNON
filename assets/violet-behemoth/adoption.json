@@ -3,10 +3,10 @@
   "name": "紫尾の巨獣",
   "kind": "enemy",
   "candidate": 1,
-  "revision": "03",
+  "revision": "04",
   "status": "integrated-and-game-qa-passed",
-  "url": "/models/violet-behemoth/model-r03.glb",
-  "sha256": "32f2f5032f1f896cdb0922ea897f84022b6d971894a9e1f7187a33a726a8a16d",
+  "url": "/models/violet-behemoth/model-r04.glb",
+  "sha256": "f45bf9fd25da5c623e5572091fbd4f1c8d783fe8bf743abd590937ccef0c6c49",
   "bytes": 14805624,
   "triangles": 67223,
   "upAxis": "Y",
@@ -96,23 +96,20 @@
       2.0000002239146806
     ]
   },
-  "source": "output/model-generation/models/violet-behemoth/work/rig/revision-03/candidate.glb",
+  "source": "output/model-generation/models/violet-behemoth/work/rig/revision-04/candidate.glb",
   "notes": [
     "User-supplied reference, vestigial hind legs, forearm/tail propulsion. Local TRELLIS-2 reconstruction; no visible replacement geometry.",
-    "Total length 6 m: retained body, extended tail. Revision 03 improves the final death pose; surface, material and eight other clips match revision 02."
+    "Total length 6 m: retained body, extended tail. Revision 04 makes the tail a damped chain that undulates in Walk/Run/Charge and coils, lags and cracks through TailSpin; surface, material and the other five clips match revision 03."
   ],
-  "adoptedAt": "2026-09-09T13:22:48.377Z",
-  "browserSource": "output/playwright/violet-behemoth-r03-final/summary.json",
-  "visualReview": "Six directions across nine clips, selected full-size poses and actual game playback. Death end pose corrected to a grounded side fall.",
+  "adoptedAt": "2026-09-11T01:10:43.267Z",
+  "browserSource": "output/playwright/violet-behemoth-r04/summary.json",
+  "visualReview": "Revision 04: six-direction sheets and videos of Walk_Loop, Run_Loop and TailSpin plus top-down strips of the tail chain, then actual game playback. Earlier revisions reviewed nine clips in six directions with the death pose corrected to a grounded side fall.",
   "preservedClips": [
     "Alert",
     "Attack",
-    "Charge",
+    "Death",
     "Hit",
-    "Idle_Loop",
-    "Run_Loop",
-    "TailSpin",
-    "Walk_Loop"
+    "Idle_Loop"
   ],
-  "productionFileCount": 488
+  "productionFileCount": 620
 }

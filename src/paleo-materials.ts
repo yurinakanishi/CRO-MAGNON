@@ -5,7 +5,24 @@ import { EARTH, coastTextureData, geographicWeights } from '../shared/paleo-geog
 import { WORLD_BOUNDS } from '../shared/world-bounds.mjs';
 import { BIOMES } from '../shared/biomes.mjs';
 import { regionById } from '../shared/adventure-regions.mjs';
+import { BEHEMOTH_MARSH } from '../shared/behemoth-rules.mjs';
 const shadow = regionById('shadow-realm');
+// GLSL twin of marshDrop in behemoth-rules.mts: the drawn floor equals the walked floor.
+const marshShader = (() => {
+  const f = (n) => n.toFixed(3),
+    M = BEHEMOTH_MARSH;
+  return `
+float marshEase(float t){t=clamp(t,0.0,1.0);return t*t*(3.0-2.0*t);}
+float marshBasin(vec2 p){return marshEase((${f(M.radius)}-distance(p,vec2(${f(M.x)},${f(M.z)})))/${f(M.edge)});}
+float marshPool(vec2 p){float fill=0.0;${M.pools
+    .map(
+      (pool) =>
+        `fill=max(fill,marshEase((${f(pool.radius)}-distance(p,vec2(${f(pool.x)},${f(pool.z)})))/${f(pool.radius * 0.55)}));`,
+    )
+    .join('')}return fill;}
+float marshDrop(vec2 p){return ${f(M.basinDepth)}*marshBasin(p);}
+`;
+})();
 
 export function createEarthTextures() {
   const source = coastTextureData();
@@ -66,11 +83,13 @@ export function earthTerrainMaterial(original, biome, textures) {
     base = new THREE.Color(biome.color);
   material.roughness = biome.id === 'ice' ? 0.28 : 0.94;
   material.side = THREE.FrontSide;
+  const marsh = biome.id === 'grassland';
   material.onBeforeCompile = (shader) => {
     shader.uniforms.earthCoast = { value: textures.coast };
     shader.uniforms.earthBiomes = { value: textures.biomes };
     shader.vertexShader =
       earthShader +
+      (marsh ? marshShader : '') +
       'varying vec3 vTerrainWorld;\nvarying float vCoastal;\n#ifdef USE_INSTANCING\nattribute float earthCoastal;\n#endif\n' +
       shader.vertexShader;
     shader.vertexShader = shader.vertexShader.replace(
@@ -84,10 +103,12 @@ export function earthTerrainMaterial(original, biome, textures) {
       #endif
       earthPoint=modelMatrix*earthPoint;
       if(vCoastal>.5)transformed.y-=.55*(1.0-smoothstep(0.0,4.0,shoreline(earthPoint.xz)));
+      ${marsh ? 'transformed.y-=marshDrop(earthPoint.xz);' : ''}
       vTerrainWorld=earthPoint.xyz;`,
     );
     shader.fragmentShader =
       earthShader +
+      (marsh ? marshShader : '') +
       'uniform sampler2D earthBiomes;\nvarying vec3 vTerrainWorld;\nvarying float vCoastal;\n' +
       shader.fragmentShader;
     shader.fragmentShader = shader.fragmentShader.replace(
@@ -102,8 +123,24 @@ export function earthTerrainMaterial(original, biome, textures) {
       float beach=1.0-smoothstep(0.0,5.0,coast);
       diffuseColor.rgb=mix(diffuseColor.rgb,${biome.id === 'ice' || biome.id === 'snow' ? 'climate*.8' : 'vec3(.38,.32,.20)'},beach*.55);
       float shadowGarden=1.0-smoothstep(${(shadow.radius - 18).toFixed(1)},${shadow.radius.toFixed(1)},distance(vTerrainWorld.xz,vec2(${shadow.x.toFixed(1)},${shadow.z.toFixed(1)})));
-      diffuseColor.rgb=mix(diffuseColor.rgb,vec3(.045,.038,.09)*relief,shadowGarden);`,
+      diffuseColor.rgb=mix(diffuseColor.rgb,vec3(.045,.038,.09)*relief,shadowGarden);
+      ${
+        marsh
+          ? `float marsh=marshBasin(vTerrainWorld.xz);
+      float marshWet=marshPool(vTerrainWorld.xz);
+      float marshMottle=sin(vTerrainWorld.x*1.7+sin(vTerrainWorld.z*2.3))*.5+.5;
+      diffuseColor.rgb=mix(diffuseColor.rgb,vec3(.19,.16,.095)*relief,marsh*.72);
+      diffuseColor.rgb=mix(diffuseColor.rgb,vec3(.21,.24,.10)*relief,marsh*marshMottle*.28);
+      diffuseColor.rgb=mix(diffuseColor.rgb,vec3(.13,.12,.07)*relief,marsh*smoothstep(0.0,.6,marshWet)*.45);`
+          : ''
+      }`,
     );
+    if (marsh)
+      shader.fragmentShader = shader.fragmentShader.replace(
+        '#include <roughnessmap_fragment>',
+        `#include <roughnessmap_fragment>
+      roughnessFactor=mix(roughnessFactor,.42,marshBasin(vTerrainWorld.xz)*(.35+.65*marshPool(vTerrainWorld.xz)));`,
+      );
     if (biome.id === 'volcano')
       shader.fragmentShader = shader.fragmentShader.replace(
         '#include <emissivemap_fragment>',
@@ -112,7 +149,7 @@ export function earthTerrainMaterial(original, biome, textures) {
       totalEmissiveRadiance+=vec3(1.0,.16,.018)*lava*.7;`,
       );
   };
-  material.customProgramCacheKey = () => `paleo-terrain-${biome.id}-adventure-1`;
+  material.customProgramCacheKey = () => `paleo-terrain-${biome.id}-marsh-1`;
   return material;
 }
 

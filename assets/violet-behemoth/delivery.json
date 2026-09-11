@@ -1,18 +1,21 @@
 {
-  "sha256": "32f2f5032f1f896cdb0922ea897f84022b6d971894a9e1f7187a33a726a8a16d",
-  "revision": "03",
+  "sha256": "f45bf9fd25da5c623e5572091fbd4f1c8d783fe8bf743abd590937ccef0c6c49",
+  "revision": "04",
   "lengthMetres": 6,
   "numericPass": true,
   "retainedSurfaceAndMaterials": true,
   "retainedClips": [
     "Alert",
     "Attack",
-    "Charge",
+    "Death",
     "Hit",
-    "Idle_Loop",
+    "Idle_Loop"
+  ],
+  "reworkedClips": [
+    "Walk_Loop",
     "Run_Loop",
-    "TailSpin",
-    "Walk_Loop"
+    "Charge",
+    "TailSpin"
   ],
   "existingAssetsUnchanged": [
     {
@@ -31,6 +34,11 @@
       "bytes": 9032376
     },
     {
+      "path": "public/models/cat-kunoichi/model-downed-r01.glb",
+      "sha256": "4913ff14f6f052356f4ce95a70ff0f23a87a0ed3eda6d1ec565af9d1cc347793",
+      "bytes": 7525344
+    },
+    {
       "path": "public/models/cat-kunoichi/model-motion-r04.glb",
       "sha256": "1ee3cdd69c251bb04b8ac8a9bac73c8fc400b005d5128b614b3d9d845aa64507",
       "bytes": 7447684
@@ -44,6 +52,11 @@
       "path": "public/models/cockle-shell/model.glb",
       "sha256": "7e4f448274b346dd8a3705901cccf0e7e4d49be2bc09b683cd85cdc740122a81",
       "bytes": 10177512
+    },
+    {
+      "path": "public/models/cro-magnon-hunter/model-downed-r01.glb",
+      "sha256": "a2b20605563def0ec5ca4eb0cb89de22c6279ee95b9514f87808b2af6e6a402e",
+      "bytes": 10199532
     },
     {
       "path": "public/models/cro-magnon-hunter/model-motion-r04.glb",
@@ -64,6 +77,11 @@
       "path": "public/models/cro-magnon-hunter/review-v2.glb",
       "sha256": "8f92a0086c7aa3f44d4120c48c1c2ac70672c5febdb162e4b6156f361d0fc805",
       "bytes": 9991448
+    },
+    {
+      "path": "public/models/cro-magnon-woman/model-downed-r01.glb",
+      "sha256": "539c3e1aeb063389a2b5cd4c2ae947655ded07ecafd7ae6c97c05f1cf8481a7c",
+      "bytes": 14044564
     },
     {
       "path": "public/models/cro-magnon-woman/model-motion-r04.glb",
@@ -99,6 +117,11 @@
       "path": "public/models/desert-cactus/model.glb",
       "sha256": "df3e780323fd45808d92b2f7edcd2c7d9ee8000f1ea0c67b29baab73c939d7ed",
       "bytes": 2122540
+    },
+    {
+      "path": "public/models/desert-fennec-mage/model-downed-r01.glb",
+      "sha256": "34ff0f203944fade432484dd7d385e5bc68a105f8d3ac9a0dbd87d6f740126a4",
+      "bytes": 15580552
     },
     {
       "path": "public/models/desert-fennec-mage/model-motion-r04.glb",
@@ -166,6 +189,11 @@
       "bytes": 14125456
     },
     {
+      "path": "public/models/giant-ape/model-downed-r01.glb",
+      "sha256": "4ed3c6997957bb39e82bcb300853b9b90598da1237aeb8bfd1ec73d17a546c59",
+      "bytes": 16524976
+    },
+    {
       "path": "public/models/giant-ape/model-stride-r13.glb",
       "sha256": "c962b573855a2dcc68444bacd8be493bb87f43f775222aa9b7176e89fe47fa07",
       "bytes": 16447136
@@ -222,13 +250,23 @@
     },
     {
       "path": "public/models/meadow-grass/model.glb",
-      "sha256": "23e834c851fc6cfd1e091edf11e9be093802f047ccb33a2af3b579e2dbb0bb48",
-      "bytes": 10436008
+      "sha256": "60a6005e1c3fac579d48cb508599c81eb1a6cce10936f69c1cb223afc964087a",
+      "bytes": 3451784
     },
     {
       "path": "public/models/meadow-ground/model.glb",
       "sha256": "6c6b41bdec1631236027c567635623aa9cdd1e0d92c0ae9e89f77764b52995e1",
       "bytes": 2126388
+    },
+    {
+      "path": "public/models/meadow-sprig/model.glb",
+      "sha256": "8faafb56623903e1f8cfd26a807a76c5bf1855114d44ae285d070f2e2a82cb72",
+      "bytes": 941100
+    },
+    {
+      "path": "public/models/neanderthal-hunter/model-downed-r01.glb",
+      "sha256": "5d94557d3161dd4cde3ed4b2dee19e6dabf3a153659e42ed8e19a8ec148497fb",
+      "bytes": 10748124
     },
     {
       "path": "public/models/neanderthal-hunter/model-motion-r04.glb",
@@ -239,6 +277,11 @@
       "path": "public/models/neanderthal-hunter/model.glb",
       "sha256": "7ce4ff20eb1e2ca64df6b51d1c2060311e630394afdb38996eb7e34bbe5ca1e0",
       "bytes": 10562780
+    },
+    {
+      "path": "public/models/neanderthal-woman/model-downed-r01.glb",
+      "sha256": "58156f4088fba4740a03b2a71428a5d9cc5cabf8262a848e2667b3fd840a05d7",
+      "bytes": 13670144
     },
     {
       "path": "public/models/neanderthal-woman/model-motion-r04.glb",
@@ -302,18 +345,28 @@
     },
     {
       "path": "public/models/valley-castle/model.glb",
-      "sha256": "d2259f674fd9737f08bb9b0db7a44976f786803943f9213cd01184681274351e",
-      "bytes": 8226968
+      "sha256": "637a6fa0aa4a3734419f8161bbfa3e320565453023d7a18c6f3047d4d7a4b241",
+      "bytes": 8226700
     },
     {
       "path": "public/models/valley-pine/lod1.glb",
-      "sha256": "b971cfcc68caa553f5a5298fed4e42aa32015f916321851acff826bfead8761c",
-      "bytes": 1577712
+      "sha256": "a3927a386890f6a9e3ce71d2a0c42be2e864a83487abc13f8a01b6b69a16bff1",
+      "bytes": 842952
     },
     {
       "path": "public/models/valley-pine/model.glb",
-      "sha256": "068c0253b58a13e096cb39a5f825a80de5cb7d129ef9351726cd40ee126551c5",
-      "bytes": 3544400
+      "sha256": "659a8624253f383bd40ca4b8461427e695a91e97a747d9507c949342b18e0dd8",
+      "bytes": 1127004
+    },
+    {
+      "path": "public/models/violet-behemoth/model-r02.glb",
+      "sha256": "3213f91f899f3ad73e50fb5161df7179de3ac1a88c7f19730d6ff6adb5f1dedb",
+      "bytes": 14805624
+    },
+    {
+      "path": "public/models/violet-behemoth/model-r03.glb",
+      "sha256": "32f2f5032f1f896cdb0922ea897f84022b6d971894a9e1f7187a33a726a8a16d",
+      "bytes": 14805624
     },
     {
       "path": "public/models/volcanic-basalt-columns/lod1.glb",
@@ -411,5 +464,5 @@
       "bytes": 524
     }
   ],
-  "generatedAt": "2026-09-09T13:24:58.985Z"
+  "generatedAt": "2026-09-11T00:52:31.487Z"
 }

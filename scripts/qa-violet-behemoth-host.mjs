@@ -81,6 +81,13 @@ process.on('message', async (m) => {
         e.alive = false;
       }
     }
+    if (m.kind === 'place') {
+      // Marsh QA: stand the reviewer exactly where the sheet and floor must agree.
+      const p = [...room.players.values()].find((p) => p.name === 'Monster A');
+      if (!p) throw Error('Missing Monster A');
+      stopActor(p);
+      Object.assign(p, { x: m.x, z: m.z });
+    }
     if (m.kind === 'escape') {
       const e = room.enemies.find((e) => e.modelKey === R.modelKey);
       for (const p of room.players.values()) p.z = e.home.z + R.territoryRadius + 5;

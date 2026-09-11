@@ -12,7 +12,7 @@ Working name: 紫尾の巨獣 (Violet-tailed Behemoth), model key `violet-behemo
 
 ## Gameplay
 
-- One monster in a broad clearing near a European grassland settlement, with sparse trees and grass. Keep a safe separation from homes and player spawn.
+- One monster in a broad low marsh near a European grassland settlement: a shallow basin (0.22 m, shared walk surface) with ankle-deep tea-coloured pool sheets, mud, thinned tufts and a drifting mist; no trees or rocks. Keep a safe separation from homes and player spawn.
 - Forward vision with line of sight; approaching from behind does not trigger detection. Tracked intruders can be pursued after turning behind it.
 - Tail sways side to side before charging. Running uses sweeping, rotating forearms and fish-like lateral tail motion.
 - Initial tuning: 300 health, 5.15 m/s charge (great ape sprint is 5.4 m/s), bounded territory. Tune timing and reach against the actual mesh and play tests.

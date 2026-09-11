@@ -929,8 +929,11 @@ export class WorldRenderer {
         p = entity.state.id === this.selfId && predicted ? predicted : entity.state,
         factor = 1 - Math.exp(-dt * 20);
       entity.actor?.carrySupportPose?.restore();
-      if (p.mountId || p.boatId || p.carrierId || p.downedUntil)
+      entity.actor?.leanPose?.restore();
+      if (p.mountId || p.boatId || p.carrierId || p.downedUntil) {
         entity.actor?.carrySupportPose?.reset();
+        entity.actor?.leanPose?.reset();
+      }
       model.visible =
         p.id === this.selfId || Math.hypot(p.x - this.focus.x, p.z - this.focus.z) < 95;
       if (!model.visible) {
@@ -1077,6 +1080,11 @@ export class WorldRenderer {
           entity.actor.jumpPose.update(entity.actor.animation, airborne);
         else entity.actor.animation.update(dt, motionSpeed, entity.running);
         entity.actor.carrySupportPose?.update(dt, !!p.passengerId);
+        entity.actor.leanPose?.update(
+          dt,
+          airborne === null && !p.downedUntil ? motionSpeed : null,
+          entity.running,
+        );
         if (entity.axe) {
           const attack = entity.actor.animation.name === 'Attack';
           const profile = attackProfile(p);

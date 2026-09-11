@@ -6,6 +6,7 @@ import { CharacterAnimation } from './character-animation.js';
 import { RidingPose, apeShoulderSeat } from './riding-pose.js';
 import { JumpPose } from './jump-pose.js';
 import { CarrySupportPose } from './carry-support-pose.js';
+import { LeanPose } from './lean-pose.js';
 import { sha256 } from './asset-hash.js';
 
 export function handGripPlacement(root) {
@@ -123,6 +124,7 @@ export class CharacterAssets {
     const jumpPose = new JumpPose(root);
     const shoulderSeat = asset.modelKey === 'giant-ape' ? apeShoulderSeat(root) : null;
     const carrySupportPose = shoulderSeat ? new CarrySupportPose(root) : null;
+    const leanPose = asset.modelKey === 'cat-kunoichi' ? new LeanPose(root) : null;
     const animation = new CharacterAnimation(root, gltf.animations, {
       walkSpeed: asset.locomotion.Walk_Loop.metresPerSecond,
       runSpeed: asset.locomotion.Run_Loop.metresPerSecond,
@@ -136,6 +138,7 @@ export class CharacterAssets {
       ridingPose,
       shoulderSeat,
       carrySupportPose,
+      leanPose,
       jumpPose,
       dispose: () => {
         if (!this.instances.delete(instance)) return;

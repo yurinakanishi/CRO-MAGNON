@@ -12,7 +12,7 @@ const qa = await json(qaFile),
   asset = await json('public/models/violet-behemoth/asset.json');
 const delivery = await json(`${destination}/delivery.json`);
 assert.equal(delivery.sha256, asset.sha256);
-assert.equal(asset.revision, '03');
+assert.equal(asset.revision, '04');
 assert.deepEqual(qa.errors, []);
 assert.ok(qa.checks.length >= 9);
 assert.ok(qa.samples.length > 50);
@@ -33,7 +33,7 @@ assert.deepEqual(
 asset.status = 'integrated-and-game-qa-passed';
 asset.notes = [
   'User-supplied reference, vestigial hind legs, forearm/tail propulsion. Local TRELLIS-2 reconstruction; no visible replacement geometry.',
-  'Total length 6 m: retained body, extended tail. Revision 03 improves the final death pose; surface, material and eight other clips match revision 02.',
+  'Total length 6 m: retained body, extended tail. Revision 04 makes the tail a damped chain that undulates in Walk/Run/Charge and coils, lags and cracks through TailSpin; surface, material and the other five clips match revision 03.',
 ];
 await save('public/models/violet-behemoth/asset.json', asset);
 const catalog = await json('public/models/world-assets.json');
@@ -64,7 +64,11 @@ await copyFile(
   `${model}/work/rig/revision-02/qa/render-manifest.json`,
   `${destination}/render-r02.json`,
 );
-await copyFile(`${folder}/qa/render-manifest.json`, `${destination}/render-r03-death.json`);
+await copyFile(
+  `${model}/work/rig/revision-03/qa/render-manifest.json`,
+  `${destination}/render-r03-death.json`,
+);
+await copyFile(`${folder}/qa/render-manifest.json`, `${destination}/render-r04-tail.json`);
 await copyFile(`${model}/request-spec.json`, `${destination}/request-spec.json`);
 async function archive(from, to) {
   await mkdir(to, { recursive: true });
@@ -99,7 +103,7 @@ await save(`${destination}/adoption.json`, {
   adoptedAt: new Date().toISOString(),
   browserSource: qaFile,
   visualReview:
-    'Six directions across nine clips, selected full-size poses and actual game playback. Death end pose corrected to a grounded side fall.',
+    'Revision 04: six-direction sheets and videos of Walk_Loop, Run_Loop and TailSpin plus top-down strips of the tail chain, then actual game playback. Earlier revisions reviewed nine clips in six directions with the death pose corrected to a grounded side fall.',
   preservedClips: delivery.retainedClips,
   productionFileCount: lineage.length,
 });

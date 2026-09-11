@@ -480,8 +480,8 @@
       "length": 6,
       "status": "integrated-and-game-qa-passed",
       "geometryResolution": 1024,
-      "sha256": "32f2f5032f1f896cdb0922ea897f84022b6d971894a9e1f7187a33a726a8a16d",
-      "delivery": "/models/violet-behemoth/model-r03.glb",
+      "sha256": "f45bf9fd25da5c623e5572091fbd4f1c8d783fe8bf743abd590937ccef0c6c49",
+      "delivery": "/models/violet-behemoth/model-r04.glb",
       "gameQA": "assets/violet-behemoth/game-qa.json",
       "subject": "User reference: massive purple forearms, tiny vestigial hind legs, many eyes and a long tail; territorial grassland monster."
     }

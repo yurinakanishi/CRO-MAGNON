@@ -30,7 +30,7 @@ test('moving the camera across the complete world keeps the chunk working set bo
 });
 test('negative coordinates, the former valley border, and actual outer borders agree for movement and magic',()=>{
   const collision=new CollisionWorld([],{river:false,coast:false}),p={x:-120,z:180,dx:1,dz:0,lastInput:100,runningRequested:true,species:'cat'};
-  movePlayer(p,1,100,(a,dx,dz)=>collision.move(a,dx,dz,.32));assert.ok(p.x>-120&&p.x<-116);
+  movePlayer(p,1,100,(a,dx,dz)=>collision.move(a,dx,dz,.32));assert.ok(p.x>-120&&p.x<-115);
   assert.equal(collision.free({x:110,z:110},.32),true);
   assert.equal(collision.free({x:WORLD.minX-1,z:110},.32),false);
   assert.equal(worldClamp(-9999,'x'),WORLD.minX+2);

@@ -65,13 +65,25 @@ function glb(b) {
     images: g.images.map((i) => ({ ...i, bufferView: view(i.bufferView) })),
   };
 }
-const old = glb(await readFile(`${model}/work/rig/revision-02/candidate.glb`)),
+// Revision 04 reworks only the tail motion of the gait and spin clips; the
+// surface, textures, materials and the other five clips are byte-identical to
+// the adopted revision 03.
+const old = glb(await readFile(`${model}/work/rig/revision-03/candidate.glb`)),
   current = glb(source);
 assert.deepEqual(current.surface, old.surface);
 assert.deepEqual(current.images, old.images);
 assert.deepEqual(current.g.materials, old.g.materials);
-const retainedClips = Object.keys(old.clips).filter((n) => n !== 'Death');
+const reworkedClips = ['Walk_Loop', 'Run_Loop', 'Charge', 'TailSpin'];
+const retainedClips = Object.keys(old.clips).filter((n) => !reworkedClips.includes(n));
 for (const name of retainedClips) assert.deepEqual(current.clips[name], old.clips[name], name);
+for (const name of reworkedClips) {
+  assert.notDeepEqual(current.clips[name], old.clips[name], name);
+  assert.deepEqual(
+    current.clips[name].map((c) => [c.node, c.path, c.interpolation, c.input.count]),
+    old.clips[name].map((c) => [c.node, c.path, c.interpolation, c.input.count]),
+    name + ' keeps the same bones, channels and timing',
+  );
+}
 
 const existing = [];
 const tree = execFileSync('git', ['ls-tree', '-r', 'HEAD', '--', 'public'], { encoding: 'utf8' });
@@ -94,6 +106,7 @@ const report = {
   numericPass: true,
   retainedSurfaceAndMaterials: true,
   retainedClips,
+  reworkedClips,
   existingAssetsUnchanged: existing,
   generatedAt: new Date().toISOString(),
 };

@@ -16,6 +16,7 @@ import { SCENERY, seededRandom, grassForChunk } from '../shared/scenery-layout.m
 import { OpenWorldTerrain } from './open-world.js';
 import { clipRiverAtCoast } from './paleo-materials.js';
 import { RegionalScenery } from './regional-scenery.js';
+import { BEHEMOTH_MARSH } from '../shared/behemoth-rules.mjs';
 
 const TAU = Math.PI * 2;
 const random = seededRandom;
@@ -91,10 +92,111 @@ export async function buildTerrainAssets(world) {
       world.water.add(new THREE.Mesh(geometry, world.waterMaterial));
     }
   world.scene.add(world.water);
+  buildMarshAssets(world);
   world.bridge = addModel(world, 'wood-footbridge', riverX(43.5), 43.5);
   const bridgeAsset = world.worldAssets.get('wood-footbridge').asset;
   world.bridge.position.y = 0.3 - bridgeAsset.placement.deckHeightMetres;
   world.releaseBridgeSampler = installSourceBridge(bridgeAsset.placement.walkBounds);
+}
+
+// The behemoth's marsh: each pool reuses the accepted river-water GLB as a flat
+// tile with an irregular shore, floating ankle-deep above the shared basin
+// floor, and a low mist drifts over the whole basin. Runtime effects only; no
+// substitute geometry or new model assets.
+function buildMarshAssets(world) {
+  const M = BEHEMOTH_MARSH,
+    time = world.waterMaterial.userData.time;
+  const template = world.worldAssets.get('river-water').gltf.scene;
+  template.updateMatrixWorld(true);
+  const box = new THREE.Box3().setFromObject(template),
+    size = box.getSize(new THREE.Vector3()),
+    centre = box.getCenter(new THREE.Vector3());
+  const pools = new THREE.Group();
+  pools.name = 'behemoth marsh pools';
+  for (const pool of M.pools) {
+    // The river tile's own ripple texture, tinted toward still tea-coloured water.
+    const material = new THREE.MeshStandardMaterial({
+      color: '#93ad94',
+      map: world.waterMaterial.map,
+      roughness: 0.16,
+      metalness: 0.05,
+      transparent: true,
+      opacity: 0.82,
+      side: THREE.DoubleSide,
+    });
+    material.onBeforeCompile = (shader) => {
+      shader.uniforms.marshTime = time;
+      shader.uniforms.marshPool = { value: new THREE.Vector3(pool.x, pool.z, pool.radius) };
+      shader.vertexShader = 'varying vec3 marshWorld;\n' + shader.vertexShader;
+      shader.vertexShader = shader.vertexShader.replace(
+        '#include <begin_vertex>',
+        '#include <begin_vertex>\nmarshWorld=(modelMatrix*vec4(transformed,1.0)).xyz;',
+      );
+      shader.fragmentShader =
+        'uniform float marshTime;uniform vec3 marshPool;varying vec3 marshWorld;\n' +
+        shader.fragmentShader;
+      shader.fragmentShader = shader.fragmentShader.replace(
+        '#include <color_fragment>',
+        `#include <color_fragment>
+        vec2 shore=(marshWorld.xz-marshPool.xy)/marshPool.z;
+        float edge=length(shore)+sin(shore.x*7.0+shore.y*5.0)*.05+cos(shore.y*9.0-shore.x*3.0)*.035;
+        if(edge>.97)discard;
+        float ripple=sin(marshWorld.x*4.0+marshWorld.z*2.2-marshTime*.7)*sin(marshWorld.z*3.1+marshTime*.5);
+        diffuseColor.rgb=mix(diffuseColor.rgb,vec3(.42,.46,.30),.35)+ripple*.02;
+        diffuseColor.rgb=mix(diffuseColor.rgb,vec3(.24,.21,.12),smoothstep(.70,.97,edge)*.7);`,
+      );
+    };
+    material.customProgramCacheKey = () => 'behemoth-marsh-pool-3';
+    const root = world.worldAssets.create('river-water');
+    root.traverse((node) => {
+      if (!isMesh(node)) return;
+      node.material = material;
+      // The shore is cut in the colour pass only; the square tile must not shadow the floor.
+      node.castShadow = false;
+      node.receiveShadow = false;
+    });
+    const span = pool.radius * 2.08;
+    root.scale.set(span / size.x, 0.008, span / size.z);
+    root.position.set(
+      pool.x - centre.x * root.scale.x,
+      terrainHeight(pool.x, pool.z) + M.waterLift - box.max.y * 0.008,
+      pool.z - centre.z * root.scale.z,
+    );
+    pools.add(root);
+  }
+  world.scene.add(pools);
+  const rng = random(95110),
+    count = 260,
+    positions = new Float32Array(count * 3),
+    seeds = new Float32Array(count);
+  for (let i = 0; i < count; i++) {
+    let x, z;
+    do {
+      x = M.x + (rng() * 2 - 1) * M.radius * 0.85;
+      z = M.z + (rng() * 2 - 1) * M.radius * 0.85;
+    } while (Math.hypot(x - M.x, z - M.z) > M.radius * 0.85);
+    positions.set([x, terrainHeight(x, z) + 0.12 + rng() * 0.5, z], i * 3);
+    seeds[i] = rng();
+  }
+  const geometry = new THREE.BufferGeometry();
+  geometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+  geometry.setAttribute('seed', new THREE.BufferAttribute(seeds, 1));
+  const mist = new THREE.Points(
+    geometry,
+    new THREE.ShaderMaterial({
+      transparent: true,
+      depthWrite: false,
+      uniforms: { time, pixelScale: { value: world.renderer.getPixelRatio() } },
+      vertexShader:
+        'uniform float time;uniform float pixelScale;attribute float seed;varying float fade;void main(){vec3 drift=vec3(sin(time*.11+seed*6.28)*1.6,sin(time*.23+seed*9.0)*.06,cos(time*.09+seed*4.0)*1.6);vec4 mv=modelViewMatrix*vec4(position+drift,1.0);gl_PointSize=clamp(110.0*pixelScale/max(1.0,-mv.z),1.0,44.0);fade=smoothstep(80.0,30.0,length(mv.xyz))*smoothstep(1.5,4.0,length(mv.xyz));gl_Position=projectionMatrix*mv;}',
+      fragmentShader:
+        'varying float fade;void main(){vec2 p=gl_PointCoord*2.0-1.0;float d=dot(p,p);if(d>1.0)discard;gl_FragColor=vec4(vec3(.80,.84,.74),pow(1.0-d,2.0)*.06*fade);}',
+    }),
+  );
+  mist.name = 'behemoth marsh mist';
+  mist.frustumCulled = false;
+  world.scene.add(mist);
+  world.marsh = { pools, mist };
 }
 
 export function buildForestAssets(world) {

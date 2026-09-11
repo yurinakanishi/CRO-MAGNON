@@ -24,7 +24,7 @@ import { inLegacyGulf, LEGACY_RESOURCE_POINTS } from './gulf-legacy.mjs';
 import { ADVENTURE_ENEMIES, adventureReserved } from './adventure-regions.mjs';
 import { ADVENTURE_SCENERY } from './adventure-layout.mjs';
 import { inGulf, GULF_SCENERY, gulfLandDistance, gulfActivitySpace } from './gulf-region.mjs';
-import { inBehemothClearing } from './behemoth-rules.mjs';
+import { inBehemothClearing, inBehemothPool } from './behemoth-rules.mjs';
 // Body-sized animals need a continuous clearing, not just a free spawn point.
 // Existing harvestable resources sit outside the five-metre roaming footprint.
 export const HUNTING_GROUNDS = Object.freeze([
@@ -289,13 +289,18 @@ function layout() {
     const target = { trees, props, fires }[category];
     target.push(...items.filter((item) => gulfLandDistance(item.x, item.z) > 8));
   }
-  // A continuous open territory near the European camp. Preserve deterministic
-  // placements outside it; sparse existing grass remains within the clearing.
+  // A continuous open marsh near the European camp. Preserve deterministic
+  // placements outside it; existing tufts stay inside as marsh grass, thinned
+  // and never standing in a pool.
   for (const items of [trees, rocks, ridges])
     for (let i = items.length - 1; i >= 0; i--)
       if (inBehemothClearing(items[i].x, items[i].z, 3)) items.splice(i, 1);
   for (let i = grass.length - 1; i >= 0; i--)
-    if (inBehemothClearing(grass[i].x, grass[i].z) && i % 12 !== 0) grass.splice(i, 1);
+    if (
+      inBehemothClearing(grass[i].x, grass[i].z) &&
+      (i % 4 !== 0 || inBehemothPool(grass[i].x, grass[i].z, 0.6))
+    )
+      grass.splice(i, 1);
   return Object.fromEntries(
     Object.entries({ trees, grass, rocks, ridges, tents, props, fires, animals }).map(
       ([key, items]) => [key, items.filter((item) => !nearCastle(item.x, item.z, 3))],
@@ -352,7 +357,7 @@ export function grassForChunk(ix, iz) {
       x,
       z,
       scale,
-      height: (biome === 'snow' ? 0.9 : GROUNDCOVER_HEIGHT[key] ?? 0.55) * scale,
+      height: (biome === 'snow' ? 0.9 : (GROUNDCOVER_HEIGHT[key] ?? 0.55)) * scale,
       yaw,
       biome,
       surface: palette.surface ?? null,
@@ -360,7 +365,9 @@ export function grassForChunk(ix, iz) {
   }
   return grass.filter(
     (item, i) =>
-      !nearCastle(item.x, item.z, 1) && (!inBehemothClearing(item.x, item.z) || i % 12 === 0),
+      !nearCastle(item.x, item.z, 1) &&
+      (!inBehemothClearing(item.x, item.z) ||
+        (i % 4 === 0 && !inBehemothPool(item.x, item.z, 0.6))),
   );
 }
 export const BRIDGE = {

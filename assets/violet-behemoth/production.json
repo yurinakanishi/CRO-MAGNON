@@ -2307,6 +2307,651 @@
       "sha256": "04a33c6dc99cf40b6aad31a40c8dd4f90322232bd14a7e1c05306b236eaa0fb2"
     },
     {
+      "path": "output/model-generation/models/violet-behemoth/work/rig/revision-04/candidate.glb",
+      "bytes": 14805624,
+      "sha256": "f45bf9fd25da5c623e5572091fbd4f1c8d783fe8bf743abd590937ccef0c6c49"
+    },
+    {
+      "path": "output/model-generation/models/violet-behemoth/work/rig/revision-04/process.json",
+      "bytes": 12899,
+      "sha256": "229dfa27c49ac341c56cf227f21813e1273adc92c93ee23bda4c633fd5f10c71"
+    },
+    {
+      "path": "output/model-generation/models/violet-behemoth/work/rig/revision-04/qa/numeric.json",
+      "bytes": 12323,
+      "sha256": "fb8b9754e815bfaa21c1daed84967e81e63f6c0a9be6f44183929d7d0ec9055d"
+    },
+    {
+      "path": "output/model-generation/models/violet-behemoth/work/rig/revision-04/qa/render-manifest.json",
+      "bytes": 7328,
+      "sha256": "c3e5bad07ab306959eb248e56607e31c43dc850b9a7ac8725bf8700ba546280f"
+    },
+    {
+      "path": "output/model-generation/models/violet-behemoth/work/rig/revision-04/qa/Run_Loop-front-00.png",
+      "bytes": 189501,
+      "sha256": "e222587876b4b2f303a9b380a9fde00f8be5e583c913c9f45dfc806d08942206"
+    },
+    {
+      "path": "output/model-generation/models/violet-behemoth/work/rig/revision-04/qa/Run_Loop-front-01.png",
+      "bytes": 188783,
+      "sha256": "26f666ec8672c823203d01dc78f4e80cf0b15b3571cbde1682215b9a2412e7c8"
+    },
+    {
+      "path": "output/model-generation/models/violet-behemoth/work/rig/revision-04/qa/Run_Loop-front-02.png",
+      "bytes": 189501,
+      "sha256": "5c9f37b67a3868a89da086ff077dd06b16fd38c777632cd6b4154b0e99fc0f74"
+    },
+    {
+      "path": "output/model-generation/models/violet-behemoth/work/rig/revision-04/qa/Run_Loop-front-03.png",
+      "bytes": 188783,
+      "sha256": "71a9a11cefd404d9813056c562c8bd3355c5b8139edd182d7865a5e0b9e216f8"
+    },
+    {
+      "path": "output/model-generation/models/violet-behemoth/work/rig/revision-04/qa/Run_Loop-front-04.png",
+      "bytes": 189239,
+      "sha256": "ea4f7a48df377c3fb268803d496d78ed89569144f7b06b0579e118f26e9a7991"
+    },
+    {
+      "path": "output/model-generation/models/violet-behemoth/work/rig/revision-04/qa/Run_Loop-left-00.png",
+      "bytes": 201931,
+      "sha256": "18a72c5416dda50ab70585bf8654f8c6e1bb167712f5c6e3bd02aba80f6cc2fd"
+    },
+    {
+      "path": "output/model-generation/models/violet-behemoth/work/rig/revision-04/qa/Run_Loop-left-01.png",
+      "bytes": 201534,
+      "sha256": "e3a19b63f4318a23c832b4ca7e9b4a702d3bbf94439c6f2ca08ad84f6ab56a71"
+    },
+    {
+      "path": "output/model-generation/models/violet-behemoth/work/rig/revision-04/qa/Run_Loop-left-02.png",
+      "bytes": 201931,
+      "sha256": "9d6f84d58b7b59482592a5214373ebadc5a99b6467b14a51264e59a8fdbb4f9b"
+    },
+    {
+      "path": "output/model-generation/models/violet-behemoth/work/rig/revision-04/qa/Run_Loop-left-03.png",
+      "bytes": 201534,
+      "sha256": "9c7c8e57a35405b264fe41c74dcc1ae1ce8a5b1b201acf0769123dd75698bffc"
+    },
+    {
+      "path": "output/model-generation/models/violet-behemoth/work/rig/revision-04/qa/Run_Loop-left-04.png",
+      "bytes": 201432,
+      "sha256": "d5e7044a7060cf92a3d6aedea89d8bc5afa54fa9eb1b3ad7bf1904ca133101ce"
+    },
+    {
+      "path": "output/model-generation/models/violet-behemoth/work/rig/revision-04/qa/Run_Loop-rear-00.png",
+      "bytes": 193120,
+      "sha256": "83065911da26efdf9418d998e2f2ee33738ffa0e0d80112e79e61c590300643d"
+    },
+    {
+      "path": "output/model-generation/models/violet-behemoth/work/rig/revision-04/qa/Run_Loop-rear-01.png",
+      "bytes": 193936,
+      "sha256": "de0d55355854aaa6393a3007406ccada6768eb1d31d7e407d583ca967646e6b9"
+    },
+    {
+      "path": "output/model-generation/models/violet-behemoth/work/rig/revision-04/qa/Run_Loop-rear-02.png",
+      "bytes": 193120,
+      "sha256": "33d9fdf859133c730db629d7747c45a45fcc59e2ebb17a2b0c0ac6be25ebdfd5"
+    },
+    {
+      "path": "output/model-generation/models/violet-behemoth/work/rig/revision-04/qa/Run_Loop-rear-03.png",
+      "bytes": 193936,
+      "sha256": "76c8917906947930578fffe50938fa2f290f759903a8c7db4091bf341be40bce"
+    },
+    {
+      "path": "output/model-generation/models/violet-behemoth/work/rig/revision-04/qa/Run_Loop-rear-04.png",
+      "bytes": 193497,
+      "sha256": "e41ebc232a802b3332195bafb6062f3a63d092c6a47dc693ddb9504a100a84ff"
+    },
+    {
+      "path": "output/model-generation/models/violet-behemoth/work/rig/revision-04/qa/Run_Loop-right-00.png",
+      "bytes": 201452,
+      "sha256": "c07f595e7d5e1f075ba7945e68af840a10fa8bd671af2ebbb4625525f5716b6a"
+    },
+    {
+      "path": "output/model-generation/models/violet-behemoth/work/rig/revision-04/qa/Run_Loop-right-01.png",
+      "bytes": 201060,
+      "sha256": "7a2daa74ae6c31836e193aadaec8883fc3e928f51f8d0eacc13de37b1a3e691a"
+    },
+    {
+      "path": "output/model-generation/models/violet-behemoth/work/rig/revision-04/qa/Run_Loop-right-02.png",
+      "bytes": 201452,
+      "sha256": "476435cebf712e506ee8fcdfbfdaa4ba255c5f375cd309ac68a0db97d3c712cc"
+    },
+    {
+      "path": "output/model-generation/models/violet-behemoth/work/rig/revision-04/qa/Run_Loop-right-03.png",
+      "bytes": 201060,
+      "sha256": "e6ae4cbd98633ec6e413c3e617fcbebf78ed093e05d689a59d598a7d9eac0ede"
+    },
+    {
+      "path": "output/model-generation/models/violet-behemoth/work/rig/revision-04/qa/Run_Loop-right-04.png",
+      "bytes": 200680,
+      "sha256": "4ac8ba7e58faf085a901a9ff16e17eb6549314cf4777f1e466ceb68d601dae7f"
+    },
+    {
+      "path": "output/model-generation/models/violet-behemoth/work/rig/revision-04/qa/Run_Loop-threequarter-00.png",
+      "bytes": 194501,
+      "sha256": "f8c7b8e94c97e1d3408a9d851b7379c04f837d856bb62af636b10bc8b78ac9f9"
+    },
+    {
+      "path": "output/model-generation/models/violet-behemoth/work/rig/revision-04/qa/Run_Loop-threequarter-01.png",
+      "bytes": 194723,
+      "sha256": "0fce317e64ca492b7f6e5972dabccd7bd0ccc09b003b59ba0e47b034382315a2"
+    },
+    {
+      "path": "output/model-generation/models/violet-behemoth/work/rig/revision-04/qa/Run_Loop-threequarter-02.png",
+      "bytes": 194501,
+      "sha256": "51616ec849257cd286c7b4a3458ada7b9ceb0804736195515b5276cdbd2a2ad5"
+    },
+    {
+      "path": "output/model-generation/models/violet-behemoth/work/rig/revision-04/qa/Run_Loop-threequarter-03.png",
+      "bytes": 194723,
+      "sha256": "85f88a236b95c5d0d87ecbddfacc73483895622b3d7ab09747c62b080c64b9b0"
+    },
+    {
+      "path": "output/model-generation/models/violet-behemoth/work/rig/revision-04/qa/Run_Loop-threequarter-04.png",
+      "bytes": 193744,
+      "sha256": "d78b41e25ceecd46c8d03b2f9daaa686ec8c048d69c6e06683c3cacf14bd4b90"
+    },
+    {
+      "path": "output/model-generation/models/violet-behemoth/work/rig/revision-04/qa/Run_Loop-top.png",
+      "bytes": 289682,
+      "sha256": "5eafc670c7786fd5a396cf62b61f098c682e7a6faad2513a518e0b8ca8027bf0"
+    },
+    {
+      "path": "output/model-generation/models/violet-behemoth/work/rig/revision-04/qa/Run_Loop-tps-00.png",
+      "bytes": 201129,
+      "sha256": "f5b07a19dcb8aaf73454b820472d32587eb359365ff26d7b020deb0d274984d0"
+    },
+    {
+      "path": "output/model-generation/models/violet-behemoth/work/rig/revision-04/qa/Run_Loop-tps-01.png",
+      "bytes": 199728,
+      "sha256": "8234c699f9c53e7f7f48f88b521f01ec78a70c595655c6ae568402cab40b55f6"
+    },
+    {
+      "path": "output/model-generation/models/violet-behemoth/work/rig/revision-04/qa/Run_Loop-tps-02.png",
+      "bytes": 201129,
+      "sha256": "f79f1d9e40e7592be60e2211346d46953f751fbb1f1a7fae18a1efce86702996"
+    },
+    {
+      "path": "output/model-generation/models/violet-behemoth/work/rig/revision-04/qa/Run_Loop-tps-03.png",
+      "bytes": 199728,
+      "sha256": "31de6ff5e11f9e4db8afd96278df8510d97f7df1ab42a2bf6f8ea9f1a8e8aae6"
+    },
+    {
+      "path": "output/model-generation/models/violet-behemoth/work/rig/revision-04/qa/Run_Loop-tps-04.png",
+      "bytes": 200681,
+      "sha256": "70c2c7dd5c9f465c001fd89bcef742088d4f07f1b75faa5288d0f91386c75f1d"
+    },
+    {
+      "path": "output/model-generation/models/violet-behemoth/work/rig/revision-04/qa/Run_Loop.mp4",
+      "bytes": 55738,
+      "sha256": "051450ae703bf73468b7172f78e88d08cccd0a1c4fb16a86827b475c3979b328"
+    },
+    {
+      "path": "output/model-generation/models/violet-behemoth/work/rig/revision-04/qa/TailSpin-front-00.png",
+      "bytes": 173853,
+      "sha256": "fdf9aeb5b8cedb8145f448567038885cab0275ea73347daa6aca1a411c7d069e"
+    },
+    {
+      "path": "output/model-generation/models/violet-behemoth/work/rig/revision-04/qa/TailSpin-front-01.png",
+      "bytes": 174314,
+      "sha256": "6f8216014e4aa4950f193c48b2b6785e60d033fc864e48011f59cea425da63f5"
+    },
+    {
+      "path": "output/model-generation/models/violet-behemoth/work/rig/revision-04/qa/TailSpin-front-02.png",
+      "bytes": 175266,
+      "sha256": "d6af29185afeb8aa96d8ed2a5f5d48feb26c5ffd01b83c3d8b5bfd0c71230303"
+    },
+    {
+      "path": "output/model-generation/models/violet-behemoth/work/rig/revision-04/qa/TailSpin-front-03.png",
+      "bytes": 176357,
+      "sha256": "88e6abddcef3752bacc0d3bf4898fd8b35a8b0f1141a38dc39f768284eb3f7b3"
+    },
+    {
+      "path": "output/model-generation/models/violet-behemoth/work/rig/revision-04/qa/TailSpin-front-04.png",
+      "bytes": 173748,
+      "sha256": "2351067269133ac57576a49ebaec93ec076eabcc971f9a500de4b22e25343292"
+    },
+    {
+      "path": "output/model-generation/models/violet-behemoth/work/rig/revision-04/qa/TailSpin-left-00.png",
+      "bytes": 179885,
+      "sha256": "f5a3bd18a1669232caf4c1b839c7752ae43ee3177ed3a45da57c8bafac56de65"
+    },
+    {
+      "path": "output/model-generation/models/violet-behemoth/work/rig/revision-04/qa/TailSpin-left-01.png",
+      "bytes": 179850,
+      "sha256": "8bb0636644541351925042c05ac893f87341a7d087346d1296dd10ae3062c59e"
+    },
+    {
+      "path": "output/model-generation/models/violet-behemoth/work/rig/revision-04/qa/TailSpin-left-02.png",
+      "bytes": 180307,
+      "sha256": "ba993f282b1551abec4c356a05f3989cc1b15fc94a198ce4d036d17a4efaba82"
+    },
+    {
+      "path": "output/model-generation/models/violet-behemoth/work/rig/revision-04/qa/TailSpin-left-03.png",
+      "bytes": 179735,
+      "sha256": "03be1c53845a16f91e3f892382ff177a013a9f1b1bb31e6fd81bb19f7d2addac"
+    },
+    {
+      "path": "output/model-generation/models/violet-behemoth/work/rig/revision-04/qa/TailSpin-left-04.png",
+      "bytes": 179927,
+      "sha256": "22e2e59283b3b1ce670aed6198543fd390a1243ec6e688aad40c496982f2b0f8"
+    },
+    {
+      "path": "output/model-generation/models/violet-behemoth/work/rig/revision-04/qa/TailSpin-rear-00.png",
+      "bytes": 175473,
+      "sha256": "cdb2d46a7b17c19a8635b0ced0684b30f0d9c7c8155d32d500294e5b2dfff906"
+    },
+    {
+      "path": "output/model-generation/models/violet-behemoth/work/rig/revision-04/qa/TailSpin-rear-01.png",
+      "bytes": 175982,
+      "sha256": "7237b557c673422a50c684ace203d2646d4f8805099dc20fa7b8c57d9ef7ab1e"
+    },
+    {
+      "path": "output/model-generation/models/violet-behemoth/work/rig/revision-04/qa/TailSpin-rear-02.png",
+      "bytes": 174718,
+      "sha256": "d6343a74d732f51c325e592a8dc38758cf72e5efeffe5006ad09e2c494fbeb88"
+    },
+    {
+      "path": "output/model-generation/models/violet-behemoth/work/rig/revision-04/qa/TailSpin-rear-03.png",
+      "bytes": 176516,
+      "sha256": "6354f730e9c435d700fed71caba4a0739ae598e3d38ed8bf2c2692ba91396ebc"
+    },
+    {
+      "path": "output/model-generation/models/violet-behemoth/work/rig/revision-04/qa/TailSpin-rear-04.png",
+      "bytes": 175754,
+      "sha256": "32a6b376d7e7ba6ed193876b708335a0eda4ec477ae75e662a508c6ab9c45202"
+    },
+    {
+      "path": "output/model-generation/models/violet-behemoth/work/rig/revision-04/qa/TailSpin-right-00.png",
+      "bytes": 179572,
+      "sha256": "1c1515c106f9665a7bee5475afff74063f2b6313cecdbc558411de1a941940d3"
+    },
+    {
+      "path": "output/model-generation/models/violet-behemoth/work/rig/revision-04/qa/TailSpin-right-01.png",
+      "bytes": 180320,
+      "sha256": "9528c1d647fcaf08532cc42319827e09d220f72be233b40a288e25336c08afdf"
+    },
+    {
+      "path": "output/model-generation/models/violet-behemoth/work/rig/revision-04/qa/TailSpin-right-02.png",
+      "bytes": 180330,
+      "sha256": "ea1e175475c1a276aee8cffb618be5702ee20cf9c0f0b67140b3c6dd0415ba26"
+    },
+    {
+      "path": "output/model-generation/models/violet-behemoth/work/rig/revision-04/qa/TailSpin-right-03.png",
+      "bytes": 179845,
+      "sha256": "b0d75aa3e8864c39530432f3b1ebe97cb7bf7306d7b4492059ab5d1deeab46a7"
+    },
+    {
+      "path": "output/model-generation/models/violet-behemoth/work/rig/revision-04/qa/TailSpin-right-04.png",
+      "bytes": 179803,
+      "sha256": "a3aff4b3d5b47a0369fd8c6d943c4d238ca9ef8ec703fe559c1964700c6430d4"
+    },
+    {
+      "path": "output/model-generation/models/violet-behemoth/work/rig/revision-04/qa/TailSpin-threequarter-00.png",
+      "bytes": 177082,
+      "sha256": "35d4d0a7ef01028711c8c3f1b6ebc2c19e080b93ad75d6ab26d024948d4930b6"
+    },
+    {
+      "path": "output/model-generation/models/violet-behemoth/work/rig/revision-04/qa/TailSpin-threequarter-01.png",
+      "bytes": 175425,
+      "sha256": "93b9de20819e10f44b5dde89604847f8084fd664000ec27dd508f92564ada2a5"
+    },
+    {
+      "path": "output/model-generation/models/violet-behemoth/work/rig/revision-04/qa/TailSpin-threequarter-02.png",
+      "bytes": 179344,
+      "sha256": "b59dc31f94f229b91238bcd50b950af0be447910c838293fc177eeb819aa865b"
+    },
+    {
+      "path": "output/model-generation/models/violet-behemoth/work/rig/revision-04/qa/TailSpin-threequarter-03.png",
+      "bytes": 180673,
+      "sha256": "5f5cce03ad51d83edda6649fd8cfc7f40535e533f00529fa6ae2144f45fc6100"
+    },
+    {
+      "path": "output/model-generation/models/violet-behemoth/work/rig/revision-04/qa/TailSpin-threequarter-04.png",
+      "bytes": 177225,
+      "sha256": "5116c007ea6c876701c9226a451cbc129157a1de97a9f36edf954db680d4a310"
+    },
+    {
+      "path": "output/model-generation/models/violet-behemoth/work/rig/revision-04/qa/TailSpin-top.png",
+      "bytes": 824422,
+      "sha256": "b72a0256559541ec6b753d255d9529c0d20702bbf121fcc3aab83415cd667cc2"
+    },
+    {
+      "path": "output/model-generation/models/violet-behemoth/work/rig/revision-04/qa/TailSpin-tps-00.png",
+      "bytes": 179408,
+      "sha256": "76baed979806407fde5a536e4247db0086b662378c9591878bfe5611aa26126c"
+    },
+    {
+      "path": "output/model-generation/models/violet-behemoth/work/rig/revision-04/qa/TailSpin-tps-01.png",
+      "bytes": 180099,
+      "sha256": "3040aaeab27519d0d7972138350344649f496ffd674acdb26c95bafcd770bb4b"
+    },
+    {
+      "path": "output/model-generation/models/violet-behemoth/work/rig/revision-04/qa/TailSpin-tps-02.png",
+      "bytes": 175813,
+      "sha256": "f05b87c5b91c978023da128a75970cc159046b89f802378504f5dac3b38a9347"
+    },
+    {
+      "path": "output/model-generation/models/violet-behemoth/work/rig/revision-04/qa/TailSpin-tps-03.png",
+      "bytes": 180075,
+      "sha256": "4ce1bd739995e6609c4b7a596481affbeae79e02809b56e32caa3c9873110d73"
+    },
+    {
+      "path": "output/model-generation/models/violet-behemoth/work/rig/revision-04/qa/TailSpin-tps-04.png",
+      "bytes": 179528,
+      "sha256": "b07330a9fa84087048d34f75176379f2862c71d6037dca48598173fd742a2e10"
+    },
+    {
+      "path": "output/model-generation/models/violet-behemoth/work/rig/revision-04/qa/TailSpin.mp4",
+      "bytes": 61885,
+      "sha256": "15bc23127cf4acbbcd8107e84fa3cfdef3df066510688fbebe1ff485db9dacf5"
+    },
+    {
+      "path": "output/model-generation/models/violet-behemoth/work/rig/revision-04/qa/topdown/Run_Loop-00.png",
+      "bytes": 244050,
+      "sha256": "51ec0f1b12e07efa37aeca4c5b0f8e5a5243cbad6830ea50565dd142efcc33c3"
+    },
+    {
+      "path": "output/model-generation/models/violet-behemoth/work/rig/revision-04/qa/topdown/Run_Loop-03.png",
+      "bytes": 244034,
+      "sha256": "f888a1e606c14aee3861693b40fbd44b60561f67c2a98a8c47b43d65dec95a29"
+    },
+    {
+      "path": "output/model-generation/models/violet-behemoth/work/rig/revision-04/qa/topdown/Run_Loop-06.png",
+      "bytes": 242884,
+      "sha256": "eb5d20a5cafb79579c87c316ca6867b40a538954b69294d6454d7780457045f5"
+    },
+    {
+      "path": "output/model-generation/models/violet-behemoth/work/rig/revision-04/qa/topdown/Run_Loop-09.png",
+      "bytes": 243134,
+      "sha256": "da3c778705d2ea4524efe910bbfe640645f1880354942894d1ac9233c52947c2"
+    },
+    {
+      "path": "output/model-generation/models/violet-behemoth/work/rig/revision-04/qa/topdown/Run_Loop-12.png",
+      "bytes": 244050,
+      "sha256": "9615f1aa8e77e2e316fc99855503c20b741235d35bf94088b214d6e5e4f8f504"
+    },
+    {
+      "path": "output/model-generation/models/violet-behemoth/work/rig/revision-04/qa/topdown/Run_Loop-15.png",
+      "bytes": 244034,
+      "sha256": "4d150d95482553045e6ac2615ecbca115ca3f6483d8be5c96eb585939577c2b1"
+    },
+    {
+      "path": "output/model-generation/models/violet-behemoth/work/rig/revision-04/qa/topdown/Run_Loop-18.png",
+      "bytes": 242884,
+      "sha256": "284fb44384b7a79bb87cc4b355ead3eea5ab39c7a3965aff16c767e26631f78a"
+    },
+    {
+      "path": "output/model-generation/models/violet-behemoth/work/rig/revision-04/qa/topdown/Run_Loop-21.png",
+      "bytes": 243134,
+      "sha256": "2cb748ec27c1f59745de762b3733d0eeb178d56ec63d683f0960807fb569e7eb"
+    },
+    {
+      "path": "output/model-generation/models/violet-behemoth/work/rig/revision-04/qa/topdown/TailSpin-00.png",
+      "bytes": 243877,
+      "sha256": "6b034b9b666cd053659771d8184b2acd50757673bfaac9928113e99e351df01b"
+    },
+    {
+      "path": "output/model-generation/models/violet-behemoth/work/rig/revision-04/qa/topdown/TailSpin-06.png",
+      "bytes": 243892,
+      "sha256": "9bdde340906901c75c16b89b3b76a3bf11b36be736033ee56cf55d9abcbfa1d9"
+    },
+    {
+      "path": "output/model-generation/models/violet-behemoth/work/rig/revision-04/qa/topdown/TailSpin-10.png",
+      "bytes": 245038,
+      "sha256": "e89f93e5b4ede206028f2f9da1bd176faf31231ac6083deabbc4d5773afbf0a1"
+    },
+    {
+      "path": "output/model-generation/models/violet-behemoth/work/rig/revision-04/qa/topdown/TailSpin-13.png",
+      "bytes": 240909,
+      "sha256": "67331d92a68f3218c56b6c498023564bc544eee6aa4c31b12f18d5207e4c9e38"
+    },
+    {
+      "path": "output/model-generation/models/violet-behemoth/work/rig/revision-04/qa/topdown/TailSpin-16.png",
+      "bytes": 240499,
+      "sha256": "3c35776070c75e7ea017f94559e596cb85f6b60316d4b44fadc85daf303ec4a2"
+    },
+    {
+      "path": "output/model-generation/models/violet-behemoth/work/rig/revision-04/qa/topdown/TailSpin-20.png",
+      "bytes": 248850,
+      "sha256": "1172d1eba1c42fa0eb797926bb9a9bb4ef68f020a80211a1b8531f5853d5e050"
+    },
+    {
+      "path": "output/model-generation/models/violet-behemoth/work/rig/revision-04/qa/topdown/TailSpin-24.png",
+      "bytes": 243963,
+      "sha256": "5ab8378851b90562787da54d11b60f2947ab1314a3b1a2ca72a05726b1416a76"
+    },
+    {
+      "path": "output/model-generation/models/violet-behemoth/work/rig/revision-04/qa/topdown/TailSpin-28.png",
+      "bytes": 233125,
+      "sha256": "ceccd5eb3ed2b0bbe1534be7f7186905cc56f64b61ac043c26099901cebb9a1f"
+    },
+    {
+      "path": "output/model-generation/models/violet-behemoth/work/rig/revision-04/qa/topdown/TailSpin-33.png",
+      "bytes": 253890,
+      "sha256": "fa20f2c19f380aa5b6b7f350907e926be9c42d9bf907f78d87d24e4196043f68"
+    },
+    {
+      "path": "output/model-generation/models/violet-behemoth/work/rig/revision-04/qa/topdown/TailSpin-36.png",
+      "bytes": 246842,
+      "sha256": "e36ad5f44f6bb883043c3991741d72a58c999c7ed98ac7950d20bd076599da11"
+    },
+    {
+      "path": "output/model-generation/models/violet-behemoth/work/rig/revision-04/qa/topdown/TailSpin-40.png",
+      "bytes": 243845,
+      "sha256": "a5182b9c9f5ca477f52dc073d040a2d1f66b1c013638aac913a7cd6e5d1d477b"
+    },
+    {
+      "path": "output/model-generation/models/violet-behemoth/work/rig/revision-04/qa/topdown/TailSpin-45.png",
+      "bytes": 244471,
+      "sha256": "70849f4032429710d83f45c4cee43f12d3c3ea1b9f204273e02082d4399b2dba"
+    },
+    {
+      "path": "output/model-generation/models/violet-behemoth/work/rig/revision-04/qa/topdown/Walk_Loop-00.png",
+      "bytes": 244796,
+      "sha256": "4da83ec5ff719c34f034a54312e4420e9b7866dc6335a2a0983b89f2772e0db6"
+    },
+    {
+      "path": "output/model-generation/models/violet-behemoth/work/rig/revision-04/qa/topdown/Walk_Loop-05.png",
+      "bytes": 242430,
+      "sha256": "3d217e468881ae32954d90f42c827081bfc20905b6ac40a1ac945d8c8afa6bf9"
+    },
+    {
+      "path": "output/model-generation/models/violet-behemoth/work/rig/revision-04/qa/topdown/Walk_Loop-09.png",
+      "bytes": 241779,
+      "sha256": "4b8f412f7479d1ec17f480d8498169693127ca60a2127f3022c6dc5d2919a7d5"
+    },
+    {
+      "path": "output/model-generation/models/violet-behemoth/work/rig/revision-04/qa/topdown/Walk_Loop-14.png",
+      "bytes": 242439,
+      "sha256": "40e77b00eeb274bd5beaddebbc29a6ced564aa782ef758a8dbfec0bc2a9d217b"
+    },
+    {
+      "path": "output/model-generation/models/violet-behemoth/work/rig/revision-04/qa/topdown/Walk_Loop-18.png",
+      "bytes": 243364,
+      "sha256": "f6a62dcddca1f8a74e0f25b321ab959aade3a2da33ba5f9af4b7d929c21088fc"
+    },
+    {
+      "path": "output/model-generation/models/violet-behemoth/work/rig/revision-04/qa/topdown/Walk_Loop-23.png",
+      "bytes": 243342,
+      "sha256": "4d6d41ba0872e15741cdae3b5bb58235baa636ec270743808932237b5f18b51f"
+    },
+    {
+      "path": "output/model-generation/models/violet-behemoth/work/rig/revision-04/qa/topdown/Walk_Loop-27.png",
+      "bytes": 243894,
+      "sha256": "393bf3ec98180f8138dce587d53d980e163dc2e0de4620f7fa422395b79331b1"
+    },
+    {
+      "path": "output/model-generation/models/violet-behemoth/work/rig/revision-04/qa/topdown/Walk_Loop-32.png",
+      "bytes": 244752,
+      "sha256": "10d1ed9876ca7c7657fb13baaf0df1c2d52393cc546e5fec899aedd7886a348d"
+    },
+    {
+      "path": "output/model-generation/models/violet-behemoth/work/rig/revision-04/qa/Walk_Loop-front-00.png",
+      "bytes": 219194,
+      "sha256": "0c5e9a75962cf01c7f41c4faabefe2bad5cd751ae36c30d1b0158f66b61e42ac"
+    },
+    {
+      "path": "output/model-generation/models/violet-behemoth/work/rig/revision-04/qa/Walk_Loop-front-01.png",
+      "bytes": 219158,
+      "sha256": "cf52d3193cd3101de0c9dc75c2787dbd31b6d1d0fa3e718888efdfe732ef3a14"
+    },
+    {
+      "path": "output/model-generation/models/violet-behemoth/work/rig/revision-04/qa/Walk_Loop-front-02.png",
+      "bytes": 218500,
+      "sha256": "988d833be4ee4f8d0fe461a6ce3876d6318cb8fb9cbf1e6cdcef58b837c12c7a"
+    },
+    {
+      "path": "output/model-generation/models/violet-behemoth/work/rig/revision-04/qa/Walk_Loop-front-03.png",
+      "bytes": 218249,
+      "sha256": "30416630cafc1f91ff5e34d11e6c3350cbbbe7f30fc3ac897345a7f95cbabaa6"
+    },
+    {
+      "path": "output/model-generation/models/violet-behemoth/work/rig/revision-04/qa/Walk_Loop-front-04.png",
+      "bytes": 218915,
+      "sha256": "f17c6635eab3981fd58f6e3ef971d8c29eef5ca750f86cbcc4901f829fc00780"
+    },
+    {
+      "path": "output/model-generation/models/violet-behemoth/work/rig/revision-04/qa/Walk_Loop-left-00.png",
+      "bytes": 232870,
+      "sha256": "c5131fd9dcc313a1b7c1c8fdccc83c91c71c93bee4823a2eb0535a628407adf5"
+    },
+    {
+      "path": "output/model-generation/models/violet-behemoth/work/rig/revision-04/qa/Walk_Loop-left-01.png",
+      "bytes": 231408,
+      "sha256": "b2c0776e9e7c033424fa528741edf5d87e0e6f7dc262c37009b20d1569a1c82f"
+    },
+    {
+      "path": "output/model-generation/models/violet-behemoth/work/rig/revision-04/qa/Walk_Loop-left-02.png",
+      "bytes": 233002,
+      "sha256": "ebb29770d6950386845dec06549ad3356ef1cab816174beff930c3091c88c40f"
+    },
+    {
+      "path": "output/model-generation/models/violet-behemoth/work/rig/revision-04/qa/Walk_Loop-left-03.png",
+      "bytes": 231041,
+      "sha256": "e88556a5efd0c6d830e4e03be9f4db44cc8c5434f3f3d0d93755768fe9473e28"
+    },
+    {
+      "path": "output/model-generation/models/violet-behemoth/work/rig/revision-04/qa/Walk_Loop-left-04.png",
+      "bytes": 232861,
+      "sha256": "2d45386fe53381b252f3c58beffc6e87bdba4d72842bc78676ddc975a593ece9"
+    },
+    {
+      "path": "output/model-generation/models/violet-behemoth/work/rig/revision-04/qa/Walk_Loop-rear-00.png",
+      "bytes": 223704,
+      "sha256": "fb32b35cc4762081e01c193af902b70efae6b592bb8fee5a3a85d88500a99374"
+    },
+    {
+      "path": "output/model-generation/models/violet-behemoth/work/rig/revision-04/qa/Walk_Loop-rear-01.png",
+      "bytes": 223966,
+      "sha256": "e7dfb87d47658f38ec97762be08e253e0ab431594a8dde2e062a75182d981632"
+    },
+    {
+      "path": "output/model-generation/models/violet-behemoth/work/rig/revision-04/qa/Walk_Loop-rear-02.png",
+      "bytes": 223299,
+      "sha256": "e61de07f78b04ba16ab52e2ae24d1af75d7eda9e959d1fdfe8eb0a1bb0dd985b"
+    },
+    {
+      "path": "output/model-generation/models/violet-behemoth/work/rig/revision-04/qa/Walk_Loop-rear-03.png",
+      "bytes": 224165,
+      "sha256": "c1fa50875d6a6fb238e39f541866360fc3855168d02ec1a47d7ec6c75b282fcd"
+    },
+    {
+      "path": "output/model-generation/models/violet-behemoth/work/rig/revision-04/qa/Walk_Loop-rear-04.png",
+      "bytes": 224386,
+      "sha256": "9aca6ce73cffc70e91976abe375bfa4cb999ed5f170d259bda8634fe584e2919"
+    },
+    {
+      "path": "output/model-generation/models/violet-behemoth/work/rig/revision-04/qa/Walk_Loop-right-00.png",
+      "bytes": 233878,
+      "sha256": "78899b1699227c3b3fd7f44e6e81d8f18ef8a76d2228b65a2fd99bd568cb02e3"
+    },
+    {
+      "path": "output/model-generation/models/violet-behemoth/work/rig/revision-04/qa/Walk_Loop-right-01.png",
+      "bytes": 231891,
+      "sha256": "b12cf2a2e8e3297c26ccec5316157f53f7cac1c18a39dc837dfcd11eb31064f7"
+    },
+    {
+      "path": "output/model-generation/models/violet-behemoth/work/rig/revision-04/qa/Walk_Loop-right-02.png",
+      "bytes": 232895,
+      "sha256": "588af5f52c52beee7aaabc1bef1920a9555a68aec31073ffd5c9fe40a22e8b32"
+    },
+    {
+      "path": "output/model-generation/models/violet-behemoth/work/rig/revision-04/qa/Walk_Loop-right-03.png",
+      "bytes": 230213,
+      "sha256": "c63080bc2be23bb7e760c1822d2615c6c9f55d8801f43101e795805df49ef767"
+    },
+    {
+      "path": "output/model-generation/models/violet-behemoth/work/rig/revision-04/qa/Walk_Loop-right-04.png",
+      "bytes": 233457,
+      "sha256": "08cc840277f6f7cf848612189ca8cb6cf74f9cc266ebe8fe42128c27001306bd"
+    },
+    {
+      "path": "output/model-generation/models/violet-behemoth/work/rig/revision-04/qa/Walk_Loop-threequarter-00.png",
+      "bytes": 226039,
+      "sha256": "be56a8f10bbedd2468b25f9cd9772b034a224e3c38c080c72921f3634b0c82cb"
+    },
+    {
+      "path": "output/model-generation/models/violet-behemoth/work/rig/revision-04/qa/Walk_Loop-threequarter-01.png",
+      "bytes": 222765,
+      "sha256": "63162a10429bb91199565c3b7c1cb6e78d6fe2a3ee1877da76f7aac7b84a8e37"
+    },
+    {
+      "path": "output/model-generation/models/violet-behemoth/work/rig/revision-04/qa/Walk_Loop-threequarter-02.png",
+      "bytes": 224001,
+      "sha256": "b91138333b5c0b9402a3794c6ebc25c1064fd697a8676c00d1a4cfb14eddb875"
+    },
+    {
+      "path": "output/model-generation/models/violet-behemoth/work/rig/revision-04/qa/Walk_Loop-threequarter-03.png",
+      "bytes": 224040,
+      "sha256": "3cbc4707b2418ac50fd0fac76b94d7881da3612f20c3573a93ab13c0e96cb8e8"
+    },
+    {
+      "path": "output/model-generation/models/violet-behemoth/work/rig/revision-04/qa/Walk_Loop-threequarter-04.png",
+      "bytes": 225575,
+      "sha256": "37feb8a2b61f9cb8898a844b3251828354a9a7d2dcde0e3bffe9c86daef82dbc"
+    },
+    {
+      "path": "output/model-generation/models/violet-behemoth/work/rig/revision-04/qa/Walk_Loop-top.png",
+      "bytes": 502148,
+      "sha256": "796a9451c38cf74f4db1e7d7272a9a1d32b38bdfff275676f6bffaae42eb5126"
+    },
+    {
+      "path": "output/model-generation/models/violet-behemoth/work/rig/revision-04/qa/Walk_Loop-tps-00.png",
+      "bytes": 233267,
+      "sha256": "6cd192b56c5844c7e63886e53135e1ba46e1e4d4960f72bd42b5b8be7ddcdbb8"
+    },
+    {
+      "path": "output/model-generation/models/violet-behemoth/work/rig/revision-04/qa/Walk_Loop-tps-01.png",
+      "bytes": 233537,
+      "sha256": "73603a9356b85ca058c6b49eddd84603b14651894bbdfb26923d25ec5a4c789f"
+    },
+    {
+      "path": "output/model-generation/models/violet-behemoth/work/rig/revision-04/qa/Walk_Loop-tps-02.png",
+      "bytes": 231349,
+      "sha256": "ab39fc04b5c8af992f0620322cfbf18bafc10a359799030ac63bf3937f9d2d8e"
+    },
+    {
+      "path": "output/model-generation/models/violet-behemoth/work/rig/revision-04/qa/Walk_Loop-tps-03.png",
+      "bytes": 232555,
+      "sha256": "f4bd13ae9c6ce38b44ee810523cb1575acd79e8d7f1297be82c9abfc8eb05ad7"
+    },
+    {
+      "path": "output/model-generation/models/violet-behemoth/work/rig/revision-04/qa/Walk_Loop-tps-04.png",
+      "bytes": 233204,
+      "sha256": "c77d833ad8a068a30203b719ce0ad33071c684c312613df42b113e9872339f3d"
+    },
+    {
+      "path": "output/model-generation/models/violet-behemoth/work/rig/revision-04/qa/Walk_Loop.mp4",
+      "bytes": 69311,
+      "sha256": "fa72ad07425deae5cf07544dd0231c088d04855db68670aed504918039ecac90"
+    },
+    {
+      "path": "output/model-generation/models/violet-behemoth/work/rig/revision-04/source.blend",
+      "bytes": 13924026,
+      "sha256": "fa773ae2e86097d78e3a20841d90d4b48a809b487f65a4e0fa2e8fa728f7a913"
+    },
+    {
       "path": "output/model-generation/models/violet-behemoth/work/trellis/dense-res1024-seed0042-ref02.glb",
       "bytes": 27972460,
       "sha256": "15bcf73a1bc5a9ba69ee0b9945eb40489001328265dca93549e4b33f340eb9a0"
@@ -2407,6 +3052,11 @@
       "sha256": "4740b8ab7e262c276e0621f0b7e9de538682a5e39ecfd04f18699b800218c495"
     },
     {
+      "path": "output/model-generation/models/violet-behemoth/workflow/current/render-tail-topdown.py",
+      "bytes": 1369,
+      "sha256": "5e5d095d218c8d938042f64d1a26381f9482619d90b32aa0fb68a23451e8e485"
+    },
+    {
       "path": "output/model-generation/models/violet-behemoth/workflow/current/repair-tail-r03.py",
       "bytes": 2443,
       "sha256": "5c4430469560a178ac759707a727e270599ba72f6aae85361a7c427ff7d2dd82"
@@ -2427,6 +3077,11 @@
       "sha256": "60c0270a67a4b876407bbea558e6846b868ad708bff3827853f6b4ab03955d9d"
     },
     {
+      "path": "output/model-generation/models/violet-behemoth/workflow/current/rig-behemoth-r04.py",
+      "bytes": 11427,
+      "sha256": "90d48edcc4ce1359e3b6c20be2fa09a3e322bc61bca474f18701377c36ccf781"
+    },
+    {
       "path": "output/model-generation/models/violet-behemoth/workflow/current/rig-behemoth.py",
       "bytes": 10738,
       "sha256": "7fa6aaec62ca542f6185c08dc2eab6ea6398a91b6cec6d7f1ba4cd269370d669"
@@ -2435,6 +3090,11 @@
       "path": "output/model-generation/models/violet-behemoth/workflow/current/rigscript-r02.py",
       "bytes": 10737,
       "sha256": "0052ffc698b3bc320330136befd8572e883048c94d3ecc02ad09f74607b732ca"
+    },
+    {
+      "path": "output/model-generation/models/violet-behemoth/workflow/current/tail_whip.py",
+      "bytes": 5455,
+      "sha256": "ae6cd16c6405562f4772106d4d6b6c9d4c02d428f64060b63ebad6460e1af0b9"
     },
     {
       "path": "output/model-generation/models/violet-behemoth/workflow/current/validate-glb.py",

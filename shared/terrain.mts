@@ -3,6 +3,7 @@ import { CASTLE } from './castle-layout.mjs';
 import { CASTLE_SURFACE } from './castle-surface.mjs';
 import { BIOMES, biomeAt, chunkAt, chunkDescription } from './biomes.mjs';
 import { coastDistance } from './paleo-geography.mjs';
+import { marshDrop } from './behemoth-rules.mjs';
 export const WATER_LEVEL = -0.45;
 export const riverX = (z) => 65 + Math.sin(z * 0.065) * 3.5;
 export const clamp = (n, min, max) => Math.max(min, Math.min(max, n));
@@ -93,7 +94,8 @@ export function installBiomeTerrain(fields) {
 }
 
 export function terrainHeight(x, z) {
-  if (sourceSurface) return sourceSurface(x, z) - riverBankDrop(x, z) - coastBankDrop(x, z);
+  if (sourceSurface)
+    return sourceSurface(x, z) - riverBankDrop(x, z) - coastBankDrop(x, z) - marshDrop(x, z);
   // Neutral height is used only by unloaded/invisible actors; no legacy terrain is drawn.
   return 0;
 }

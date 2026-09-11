@@ -178,7 +178,10 @@ try {
   await sample(a, 'rear');
   for (const mode of ['charge', 'bite', 'tail']) {
     await request('prepare', { mode });
-    await sleep(250);
+    // The 0.7 s telegraph is sampled before framing the shot, which takes longer than that.
+    await sleep(120);
+    await sample(a, mode);
+    await sleep(130);
     await look(a);
     await look(b);
     await sleep(mode === 'charge' ? 400 : 150);
@@ -200,11 +203,13 @@ try {
       clip + ' rendered',
     );
   }
+  // The HUD discovery card was retired; the telegraph and charge cues are
+  // checked on the authoritative state the pages rendered from.
   assert.ok(
-    await a
-      .locator('#discovery-card small')
-      .textContent()
-      .then((t) => t.includes('突進')),
+    samples.some(
+      (s) => s.stage === 'charge' && ['alert', 'charge'].includes(s.enemy?.state.behavior),
+    ),
+    'charge telegraph observed',
   );
   await request('escape');
   await sleep(200);
@@ -253,6 +258,16 @@ try {
   await sleep(800);
   await sample(a, 'reload');
   checks.push('Reload resumes and mobile viewport dimensions render');
+  // The reloaded page must have the enemy model back before the death fixture starts.
+  await until(
+    () =>
+      a.evaluate(() =>
+        [...window.monsterReview.enemies.values()].some(
+          (e) => e.state.modelKey === 'violet-behemoth' && e.actor && e.model.visible,
+        ),
+      ),
+    'enemy asset after reload',
+  );
   await request('prepare', { mode: 'death' });
   await sleep(500);
   await sample(a, 'death');

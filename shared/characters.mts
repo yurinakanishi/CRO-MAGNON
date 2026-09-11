@@ -37,6 +37,9 @@ export const CHARACTER_MODELS: readonly Readonly<CharacterModel>[] = Object.free
     weapon: 'katana',
     height: 1.68,
     radius: 0.32,
+    // A light-footed ninja: quicker than the human tribes, slower than the ape's sprint.
+    walkSpeed: 1.6,
+    runSpeed: 4.6,
   }),
   Object.freeze({
     species: 'bear',

@@ -15,8 +15,8 @@ test('walk and run cover their configured distance; diagonal input cannot boost 
   }
 });
 
-test('the short bear uses a measured smaller gait while the kunoichi keeps human speeds', () => {
-  for (const [species,walk,run] of [['bear',.6,1.8],['cat',1.25,3.5]]) {
+test('the short bear uses a measured smaller gait and the kunoichi outpaces the human tribes', () => {
+  for (const [species,walk,run] of [['bear',.6,1.8],['cat',1.6,4.6]]) {
     for (const runningRequested of [false,true]) {
       const p={...player(),species,runningRequested,dx:-1,dz:1};
       movePlayer(p,.1,1000);
