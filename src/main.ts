@@ -405,20 +405,38 @@ function connection(connected, label) {
     connected,
   );
 }
-async function connect() {
+/** Waits with the usual backoff, then reconnects automatically. */
+function scheduleReconnect() {
+  clearTimeout(retry);
+  retry = setTimeout(() => connect(true), Math.min(60000, 2500 * 2 ** Math.min(retryCount++, 5)));
+}
+/**
+ * `automatic` marks a reconnect after a dropped connection: the last known world stays on
+ * screen, and a server that is briefly unreachable (restart, rebuild) keeps the backoff going
+ * instead of sending the player back to the setup screen.
+ */
+async function connect(automatic = false) {
   gamepadControls?.suspend();
   const attempt = ++connectAttempt;
   clearTimeout(retry);
   manualLeave = false;
-  selfId = null;
   keys.clear();
   blockedMovementKeys.clear();
   movementCommands.reset();
   lastGait = null;
-  connection(false, '接続中…');
-  state = { players: [], resources: INITIAL_RESOURCES, camp: { ...CAMP }, npc: { ...NPC }, day: 1 };
-  renderer.setState(state, selfId);
-  updateHUD();
+  connection(false, automatic ? '再接続中…' : '接続中…');
+  if (!automatic) {
+    selfId = null;
+    state = {
+      players: [],
+      resources: INITIAL_RESOURCES,
+      camp: { ...CAMP },
+      npc: { ...NPC },
+      day: 1,
+    };
+    renderer.setState(state, selfId);
+    updateHUD();
+  }
   try {
     const response = await fetch('/api/status', {
       cache: 'no-store',
@@ -438,12 +456,16 @@ async function connect() {
       }
     }
   } catch (error) {
-    if (attempt !== connectAttempt) return;
+    if (attempt !== connectAttempt || manualLeave) return;
+    // Our own Error messages describe a stopped service; anything else is a failed request.
+    const stopped = error.name === 'Error';
+    if (automatic && !stopped) {
+      scheduleReconnect();
+      return;
+    }
     manualLeave = true;
     connection(false, 'サービス停止中');
-    showSetup(
-      error.name === 'Error' ? error.message : '通信できません。時間をおいて再接続してください。',
-    );
+    showSetup(stopped ? error.message : '通信できません。時間をおいて再接続してください。');
     return;
   }
   if (attempt !== connectAttempt || manualLeave) return;
@@ -567,8 +589,7 @@ async function connect() {
     gamepadControls?.suspend();
     keys.clear();
     movementCommands.reset();
-    if (!manualLeave)
-      retry = setTimeout(connect, Math.min(60000, 2500 * 2 ** Math.min(retryCount++, 5)));
+    if (!manualLeave) scheduleReconnect();
   });
   ws.addEventListener('error', () => {
     if (ws === socket) connection(false, 'サーバーを確認中…');

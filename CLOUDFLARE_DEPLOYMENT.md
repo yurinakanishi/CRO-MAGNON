@@ -27,7 +27,7 @@ SQLite stores the world, camp, resources, animals/enemies and resume sessions. I
 
 Same-tab session tokens are retained in sessionStorage. Server-side sessions last up to 7 days, with the most recent 100 disconnected sessions retained. This is not cross-device account login. Closing the browser tab may discard the token, and explicit profile re-entry resets personal progress. The world checkpoint remains.
 
-On application quota/storage failures the server stops simulation, discards uncommitted outgoing updates, closes sockets, and returns a service-paused response. Clients check status before joining; failed checks stop automatic retry. Ordinary interrupted connections use backoff up to 60 seconds. Platform-enforced quota failures can prevent a tailored message; the static page still explains connection failure. Capacity limits do not reset daily.
+On application quota/storage failures the server stops simulation, discards uncommitted outgoing updates, closes sockets, and returns a service-paused response. Clients check status before joining; a service-paused or quota response stops automatic retry, while a status check that cannot reach the server at all keeps the reconnect backoff. Ordinary interrupted connections use backoff up to 60 seconds. Platform-enforced quota failures can prevent a tailored message; the static page still explains connection failure. Capacity limits do not reset daily.
 
 To pause manually: set `SERVICE_ENABLED` to `false` and deploy the same Free account; keep the Durable Object binding/class/migration so saves are retained. A rollout closes existing sockets, and further joins receive 503. Never delete the namespace or deploy a deleted_classes migration to pause service.
 
