@@ -1,0 +1,10 @@
+{
+  "generator": "Codex CLI built-in image_gen (gpt-5.6-sol, reasoning medium), run from Claude Code at user request",
+  "prompt": "Use case: 3D reconstruction reference. ONE single full-body saber-toothed cat (Smilodon-inspired) enemy creature for a prehistoric fantasy game, stylized sculpted 3D game art matching a friendly-but-dangerous game look, rich but readable short fur clumps. Powerful, heavy, muscular apex predator about 1.2 m at the shoulder and 2.4 m long: massive forelimbs and shoulders, deep chest, slightly sloping back, short bobbed tail, big paws with claws retracted. Two very long curved ivory saber fangs hanging well below the closed lower jaw, fierce amber eyes, small ears, strong jaw. Standing neutral four-legged stance with all four legs clearly separated and visible, head level and looking forward, mouth closed. Front three-quarter view from the left, slightly above, entire body uncropped including all paws and tail, centered with generous margin. Plain pure white background, soft neutral even studio lighting, very soft contact shadow only. No scenery, no rider, no text, no logo, no watermark, no second animal.\n\nTawny golden-ochre coat with faint darker brown tiger stripes on the back and flanks, cream belly and muzzle, dark rim around the eyes.",
+  "source": "source/original/reference-v1.png",
+  "sha256": "2affce6595a797c07686821e73dfd87c6364917f803532d1d857cf1185bc0de9",
+  "bytes": 2010353,
+  "fallback": "ZImage unavailable in the established local toolchain; permitted equivalent generator.",
+  "author": "Codex image_gen; pipeline run by Claude Code",
+  "claude_used": true
+}

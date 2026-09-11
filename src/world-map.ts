@@ -1,5 +1,6 @@
 import { FISHING_SITES } from '../shared/fishing-sites.mjs';
 import { BEHEMOTH, BEHEMOTH_GROUND, BEHEMOTH_MARSH } from '../shared/behemoth-rules.mjs';
+import { SABERTOOTH, SABERTOOTH_GROUND } from '../shared/sabertooth-rules.mjs';
 import { HOUSEHOLDS } from '../shared/household-sites.mjs';
 import { SEA_WEATHER, currentDirection, seaConditions } from '../shared/maritime-weather.mjs';
 import { SHELL_BEDS, MIDDEN_SITES, KNAPPING_SITES } from '../shared/coastal-sites.mjs';
@@ -493,6 +494,19 @@ export function drawWorldMap(canvas, state, selfId, big = false) {
       ctx.font = '12px sans-serif';
       ctx.fillStyle = '#ebc4ff';
       ctx.fillText('紫尾の巨獣の沼地', x + 8, y + 4);
+    }
+  }
+  if (detailed && !full && (state.enemies ?? []).some((e) => e.modelKey === SABERTOOTH.modelKey)) {
+    const [x, y] = point(SABERTOOTH_GROUND.x, SABERTOOTH_GROUND.z);
+    ctx.strokeStyle = '#f0b25a';
+    ctx.lineWidth = 1;
+    ctx.beginPath();
+    ctx.arc(x, y, SABERTOOTH.territoryRadius * scale, 0, Math.PI * 2);
+    ctx.stroke();
+    if (big) {
+      ctx.font = '12px sans-serif';
+      ctx.fillStyle = '#ffd9a0';
+      ctx.fillText('剣牙の大虎の狩り場', x + 8, y + 4);
     }
   }
   if (detailed)

@@ -4,6 +4,7 @@ export { ENEMY_GROUNDS } from './scenery-layout.mjs';
 import { combatDistance, enemyIsSolid, inAttackArc, stopActor } from './combat.mjs';
 import { moveActor } from './movement.mjs';
 import { createBehemoth, updateBehemoths } from './violet-behemoth.mjs';
+import { createSabertooth, updateSabertooths } from './sabertooth.mjs';
 
 export const ENEMY_RULES = Object.freeze({
   modelKey: 'crow-shaman',
@@ -114,7 +115,12 @@ export function createEnemies(collision, dynamic = [], now = Date.now()) {
       aggroAfter: now + 1000,
     };
   });
-  return [...enemies, createBehemoth(collision, [...dynamic, ...enemies], now)];
+  const behemoth = createBehemoth(collision, [...dynamic, ...enemies], now);
+  return [
+    ...enemies,
+    behemoth,
+    createSabertooth(collision, [...dynamic, ...enemies, behemoth], now),
+  ];
 }
 
 function recoverPlayers(room, now, notify) {
@@ -353,9 +359,8 @@ export function updateEnemies(
     }
     moveEnemy(enemy, room, dt, now, ENEMY_RULES.roamSpeed);
   }
-  return (
-    updateBehemoths(room, dt, now, (enemy, player, time, damage, label) =>
-      hitPlayer(room, enemy, player, time, notify, damage, label),
-    ) || changed
-  );
+  const strike = (enemy, player, time, damage, label) =>
+    hitPlayer(room, enemy, player, time, notify, damage, label);
+  const behemoths = updateBehemoths(room, dt, now, strike);
+  return updateSabertooths(room, dt, now, strike) || behemoths || changed;
 }

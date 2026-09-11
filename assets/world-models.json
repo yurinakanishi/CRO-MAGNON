@@ -484,6 +484,19 @@
       "delivery": "/models/violet-behemoth/model-r04.glb",
       "gameQA": "assets/violet-behemoth/game-qa.json",
       "subject": "User reference: massive purple forearms, tiny vestigial hind legs, many eyes and a long tail; territorial grassland monster."
+    },
+    {
+      "key": "sabertooth-tiger",
+      "name": "剣牙の大虎",
+      "kind": "enemy",
+      "height": 1.6476876735687256,
+      "length": 2.601785659790039,
+      "status": "integrated-and-game-qa-passed",
+      "geometryResolution": 1024,
+      "sha256": "6c4c5301071c1d69add3b357a14b8ba6af62a47a79089657928ab6424bde045d",
+      "delivery": "/models/sabertooth-tiger/model-r11.glb",
+      "gameQA": "assets/sabertooth-tiger/game-qa.json",
+      "subject": "Sabre-toothed cat enemy on the Siberian snow plain: fast pursuit, side-steps telegraphed attacks, pounces from mid range, two-swipe claw combo."
     }
   ],
   "reuse": {

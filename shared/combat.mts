@@ -53,7 +53,8 @@ export function damageableTargets(room) {
       .filter((target) => !target.riderId)
       .map((target) => ({ target, kind: 'animal' })),
     ...actors(room.enemies)
-      .filter((target) => target.hostile === true)
+      // An enemy mid-evasion (the sabertooth's step) cannot be struck.
+      .filter((target) => target.hostile === true && target.evading !== true)
       .map((target) => ({ target, kind: 'enemy' })),
   ].filter(
     ({ target }) =>
@@ -178,15 +179,21 @@ export function resolveAttack(room, player, now = Date.now()) {
 
 function applyHit({ target, kind }, profile, now) {
   target.health = Math.max(0, target.health - profile.damage);
-  target.hitUntil = now + (target.hitDurationMs ?? profile.durationMs - profile.impactMs);
-  stopActor(target);
   const killed = target.health === 0;
-  target.clip = killed ? 'Death' : kind === 'enemy' ? 'Hit' : 'Idle_Loop';
+  // Super armour (a sabertooth in mid-leap) takes the damage without flinching.
+  const armoured = kind === 'enemy' && target.superArmor === true && !killed;
+  if (!armoured) {
+    target.hitUntil = now + (target.hitDurationMs ?? profile.durationMs - profile.impactMs);
+    stopActor(target);
+    target.clip = killed ? 'Death' : kind === 'enemy' ? 'Hit' : 'Idle_Loop';
+  }
   if (kind === 'enemy') {
     target.hitSequence = (target.hitSequence || 0) + 1;
     target.hitAt = now;
-    target.pendingAttack = null;
-    target.attackLockUntil = 0;
+    if (!armoured) {
+      target.pendingAttack = null;
+      target.attackLockUntil = 0;
+    }
   }
   if (killed) {
     target.phase = kind === 'animal' ? 'dying' : 'dead';

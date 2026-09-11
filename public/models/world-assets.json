@@ -22820,6 +22820,119 @@
         "candidateFile": "output/model-generation/models/meadow-sprig/work/low-poly/candidate-01/candidate.glb",
         "visualReview": "output/model-generation/models/meadow-sprig/qa/adoption-review-rev01.json"
       }
+    },
+    {
+      "modelKey": "sabertooth-tiger",
+      "name": "剣牙の大虎",
+      "kind": "enemy",
+      "candidate": 1,
+      "revision": "11",
+      "status": "integrated-and-game-qa-passed",
+      "url": "/models/sabertooth-tiger/model-r11.glb",
+      "sha256": "6c4c5301071c1d69add3b357a14b8ba6af62a47a79089657928ab6424bde045d",
+      "bytes": 20120956,
+      "triangles": 72892,
+      "upAxis": "Y",
+      "forwardAxis": "+Z",
+      "heightMetres": 1.6476876735687256,
+      "widthMetres": 0.981932520866394,
+      "lengthMetres": 2.601785659790039,
+      "bones": 24,
+      "clips": [
+        {
+          "name": "Idle_Loop",
+          "loop": true,
+          "seconds": 3,
+          "rootMotion": "in-place"
+        },
+        {
+          "name": "Walk_Loop",
+          "loop": true,
+          "seconds": 0.8,
+          "rootMotion": "in-place"
+        },
+        {
+          "name": "Run_Loop",
+          "loop": true,
+          "seconds": 0.4,
+          "rootMotion": "in-place"
+        },
+        {
+          "name": "Alert",
+          "loop": false,
+          "seconds": 0.6,
+          "rootMotion": "in-place"
+        },
+        {
+          "name": "Pounce",
+          "loop": false,
+          "seconds": 1.55,
+          "rootMotion": "in-place"
+        },
+        {
+          "name": "Step",
+          "loop": false,
+          "seconds": 0.35,
+          "rootMotion": "in-place"
+        },
+        {
+          "name": "Attack",
+          "loop": false,
+          "seconds": 1,
+          "rootMotion": "in-place"
+        },
+        {
+          "name": "Hit",
+          "loop": false,
+          "seconds": 0.3,
+          "rootMotion": "in-place"
+        },
+        {
+          "name": "Death",
+          "loop": false,
+          "seconds": 1.5,
+          "rootMotion": "in-place"
+        }
+      ],
+      "locomotion": {
+        "Walk_Loop": {
+          "metresPerSecond": 1.3,
+          "cycleSeconds": 0.8,
+          "dutyFactor": 0.6
+        },
+        "Run_Loop": {
+          "metresPerSecond": 6.2,
+          "cycleSeconds": 0.4,
+          "dutyFactor": 0.27
+        }
+      },
+      "placement": {
+        "pivot": "ground-body-centred",
+        "min": [
+          -0.490966260433197,
+          0,
+          -1.3008928298950195
+        ],
+        "max": [
+          0.490966260433197,
+          1.6476876735687256,
+          1.3008928298950195
+        ]
+      },
+      "lods": [],
+      "source": "output/model-generation/models/sabertooth-tiger/work/rig/revision-11/candidate.glb",
+      "provenance": {
+        "provider": "Codex CLI image_gen reference (gpt-5.6-sol, medium) and local TRELLIS-2; rig and clips by Claude Code",
+        "claudeUsed": true,
+        "referenceGenerator": "Codex CLI built-in image_gen (gpt-5.6-sol, reasoning medium), run from Claude Code at user request",
+        "referenceImage": "output/model-generation/models/sabertooth-tiger/source/original/reference-v1.png",
+        "referenceSha256": "2affce6595a797c07686821e73dfd87c6364917f803532d1d857cf1185bc0de9",
+        "visualReview": "assets/sabertooth-tiger/visual-review.json"
+      },
+      "notes": [
+        "User-selected candidate 01 of three Codex image_gen references (tawny, faint stripes). Local TRELLIS-2 1024 reconstruction, source-preserving QEM to 72,892 triangles; no visible replacement geometry.",
+        "Quadruped rig of 26 bones with two-bone IK planted paws and a gliding scapula; 60 fps keys. Pounce and Step bake body height only: the server moves the body horizontally."
+      ]
     }
   ],
   "status": "ready"

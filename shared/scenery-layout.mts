@@ -25,6 +25,7 @@ import { ADVENTURE_ENEMIES, adventureReserved } from './adventure-regions.mjs';
 import { ADVENTURE_SCENERY } from './adventure-layout.mjs';
 import { inGulf, GULF_SCENERY, gulfLandDistance, gulfActivitySpace } from './gulf-region.mjs';
 import { inBehemothClearing, inBehemothPool } from './behemoth-rules.mjs';
+import { SABERTOOTH_GROUND } from './sabertooth-rules.mjs';
 // Body-sized animals need a continuous clearing, not just a free spawn point.
 // Existing harvestable resources sit outside the five-metre roaming footprint.
 export const HUNTING_GROUNDS = Object.freeze([
@@ -43,6 +44,9 @@ export const ENEMY_GROUNDS: readonly EnemyGround[] = Object.freeze([
 ]);
 const inHuntingGround = (x, z, margin = 0) =>
   HUNTING_GROUNDS.some((ground) => Math.hypot(x - ground.x, z - ground.z) < ground.radius + margin);
+export const inSabertoothClearing = (x, z, margin = 0) =>
+  Math.hypot(x - SABERTOOTH_GROUND.x, z - SABERTOOTH_GROUND.z) <
+  SABERTOOTH_GROUND.radius + SABERTOOTH_GROUND.roamRadius + 4 + margin;
 const inEnemyGround = (x, z, margin = 0) =>
   ENEMY_GROUNDS.some((ground) => Math.hypot(x - ground.x, z - ground.z) < ground.radius + margin);
 export function seededRandom(seed) {
@@ -295,6 +299,11 @@ function layout() {
   for (const items of [trees, rocks, ridges])
     for (let i = items.length - 1; i >= 0; i--)
       if (inBehemothClearing(items[i].x, items[i].z, 3)) items.splice(i, 1);
+  // The sabertooth's snow-plain hunting ground stays open around its post so a
+  // pounce has room to land; trees further out in the territory are kept.
+  for (const items of [trees, rocks, ridges])
+    for (let i = items.length - 1; i >= 0; i--)
+      if (inSabertoothClearing(items[i].x, items[i].z, 2)) items.splice(i, 1);
   for (let i = grass.length - 1; i >= 0; i--)
     if (
       inBehemothClearing(grass[i].x, grass[i].z) &&

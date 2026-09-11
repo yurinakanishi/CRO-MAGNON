@@ -1,0 +1,750 @@
+{
+  "revision": "11",
+  "sha256": "6c4c5301071c1d69add3b357a14b8ba6af62a47a79089657928ab6424bde045d",
+  "bytes": 20120956,
+  "reference": {
+    "generator": "Codex CLI built-in image_gen (gpt-5.6-sol, reasoning medium), run from Claude Code at user request",
+    "prompt": "Use case: 3D reconstruction reference. ONE single full-body saber-toothed cat (Smilodon-inspired) enemy creature for a prehistoric fantasy game, stylized sculpted 3D game art matching a friendly-but-dangerous game look, rich but readable short fur clumps. Powerful, heavy, muscular apex predator about 1.2 m at the shoulder and 2.4 m long: massive forelimbs and shoulders, deep chest, slightly sloping back, short bobbed tail, big paws with claws retracted. Two very long curved ivory saber fangs hanging well below the closed lower jaw, fierce amber eyes, small ears, strong jaw. Standing neutral four-legged stance with all four legs clearly separated and visible, head level and looking forward, mouth closed. Front three-quarter view from the left, slightly above, entire body uncropped including all paws and tail, centered with generous margin. Plain pure white background, soft neutral even studio lighting, very soft contact shadow only. No scenery, no rider, no text, no logo, no watermark, no second animal.\n\nTawny golden-ochre coat with faint darker brown tiger stripes on the back and flanks, cream belly and muzzle, dark rim around the eyes.",
+    "source": "source/original/reference-v1.png",
+    "sha256": "2affce6595a797c07686821e73dfd87c6364917f803532d1d857cf1185bc0de9",
+    "bytes": 2010353,
+    "fallback": "ZImage unavailable in the established local toolchain; permitted equivalent generator.",
+    "author": "Codex image_gen; pipeline run by Claude Code",
+    "claude_used": true
+  },
+  "dense": {
+    "path": "work/trellis/dense-res1024-seed0042.glb",
+    "sha256": "d1867955795f08357d7a60e078dea80a2ba3a0d8aa72db6dd19353d52c0b69f0",
+    "resolution": 1024,
+    "seed": 42,
+    "status": "reconstruction-only; visual review required"
+  },
+  "lowPoly": {
+    "candidate": 1,
+    "revision": "02",
+    "source": {
+      "path": "work/trellis/dense-res1024-seed0042.glb",
+      "sha256": "d1867955795f08357d7a60e078dea80a2ba3a0d8aa72db6dd19353d52c0b69f0",
+      "resolution": 1024,
+      "seed": 42,
+      "status": "reconstruction-only; visual review required"
+    },
+    "sha256": "7ff55f9264c8eee2dbfcacd866e0661b7e2f0eacb56867b5095af064c167f7c8",
+    "denseTriangles": 291637,
+    "triangles": 72892,
+    "weld": {
+      "weld_distance": 0.00001,
+      "vertices_before": 253526,
+      "vertices_after": 140511,
+      "faces_before": 294342,
+      "faces_after": 292954
+    },
+    "islands": {
+      "components": 39,
+      "largest_faces": 291637,
+      "removed_components": 38,
+      "removed_faces": 1317,
+      "keep_fraction": 0.02
+    },
+    "topology": {
+      "vertices_before": 30567,
+      "vertices_after": 30567,
+      "faces": 72892,
+      "weld_distance": 0.00001,
+      "shading": "angle-limited crease-aware smooth normals",
+      "crease_angle_degrees": 50,
+      "sharp_edges": 41554,
+      "boundary_edges": 1947,
+      "non_manifold_edges": 4701
+    },
+    "denoise": {
+      "method": "feature-weighted Taubin lambda/mu smoothing with a hard displacement clamp",
+      "iterations": 4,
+      "lam": 0.55,
+      "mu": -0.56,
+      "sigma_edge_lengths": 0.16,
+      "mean_edge_length": 0.004894985863334969,
+      "sigma": 0.0007831977381335951,
+      "clamp_model_height_fraction": 0.0007,
+      "clamp_mm_at_1p80m": 1.26,
+      "max_displacement_units": 0.00043533087810996034,
+      "rms_displacement_units": 0.0001017744823370624,
+      "mean_displacement_units": 0.00007452772583115341,
+      "max_displacement_mm_at_1p80m": 1.2334,
+      "rms_displacement_mm_at_1p80m": 0.2883,
+      "clamped_vertices": 0,
+      "laplacian_quantiles_in_edge_lengths": {
+        "p50": 0.20331,
+        "p75": 0.30831,
+        "p90": 0.42587,
+        "p95": 0.50723,
+        "p99": 0.67629,
+        "max": 1.31446
+      }
+    },
+    "tolerances": {
+      "surfaceP95": 0.001975117821972653,
+      "surfaceMax": 0.009875589109863265
+    },
+    "trials": [
+      {
+        "ratio": 0.06,
+        "triangles": 41991,
+        "denseToReduced": {
+          "p95": 0.11502245287108732,
+          "rms": 0.049702144597298915,
+          "max": 0.27578045975744214
+        },
+        "reducedToDense": {
+          "p95": 0.10249373934597446,
+          "rms": 0.04477415684628985,
+          "max": 0.24561782730106932
+        },
+        "passed": false
+      },
+      {
+        "ratio": 0.1,
+        "triangles": 41991,
+        "denseToReduced": {
+          "p95": 0.11502245287108732,
+          "rms": 0.049702144597298915,
+          "max": 0.27578045975744214
+        },
+        "reducedToDense": {
+          "p95": 0.10249373934597446,
+          "rms": 0.04477415684628985,
+          "max": 0.24561782730106932
+        },
+        "passed": false
+      },
+      {
+        "ratio": 0.16,
+        "triangles": 46643,
+        "denseToReduced": {
+          "p95": 0.006501486307377526,
+          "rms": 0.0032022057349242834,
+          "max": 0.02082469643787613
+        },
+        "reducedToDense": {
+          "p95": 0.005458389394345717,
+          "rms": 0.002906774900261394,
+          "max": 0.015649064471450314
+        },
+        "passed": false
+      },
+      {
+        "ratio": 0.25,
+        "triangles": 72892,
+        "denseToReduced": {
+          "p95": 0.0014820271806556425,
+          "rms": 0.0007133466334356762,
+          "max": 0.005037622605661702
+        },
+        "reducedToDense": {
+          "p95": 0.0014578807224534583,
+          "rms": 0.0007018455164440664,
+          "max": 0.003969984881037338
+        },
+        "passed": true
+      }
+    ],
+    "alignment": {
+      "pcaYawDegrees": -1.2721112553310852,
+      "spineYawDegrees": -2.722152145950804,
+      "symmetryScore": 0.05918234912394549,
+      "headSlabSpan": [
+        0.6048262715339661,
+        0.47285255789756775
+      ],
+      "headAtHighYBeforeTurn": false,
+      "manualFlip": false,
+      "totalYawDegrees": -3.9942634012818887,
+      "metresPerUnit": 2.590700033976505
+    },
+    "heightMetres": 1.647687711440943,
+    "lengthMetres": 2.6017856282553113,
+    "widthMetres": 0.9819325468693306,
+    "boundsBlender": {
+      "min": [
+        -0.4909662734346653,
+        -1.3008928141276557,
+        0
+      ],
+      "max": [
+        0.4909662734346653,
+        1.3008928141276557,
+        1.647687711440943
+      ]
+    },
+    "forward": "-Y (glTF +Z)",
+    "visualReviewRequired": true
+  },
+  "rig": {
+    "candidate": 1,
+    "revision": "11",
+    "source": "work\\low-poly\\revision-02\\candidate.glb",
+    "sha256": "6c4c5301071c1d69add3b357a14b8ba6af62a47a79089657928ab6424bde045d",
+    "bytes": 20120956,
+    "heightMetres": 1.6476876735687256,
+    "lengthMetres": 2.601785659790039,
+    "widthMetres": 0.981932520866394,
+    "boundsBlender": {
+      "min": [
+        -0.490966260433197,
+        -1.3008928298950195,
+        0
+      ],
+      "max": [
+        0.490966260433197,
+        1.3008928298950195,
+        1.6476876735687256
+      ]
+    },
+    "upAxis": "Y",
+    "forwardAxis": "+Z",
+    "triangles": 72892,
+    "topology": {
+      "vertices_before": 117918,
+      "vertices_after": 30567,
+      "faces": 72892,
+      "weld_distance": 0.00001,
+      "shading": "angle-limited crease-aware smooth normals",
+      "crease_angle_degrees": 50,
+      "sharp_edges": 41554,
+      "boundary_edges": 1947,
+      "non_manifold_edges": 4701
+    },
+    "weights": {
+      "method": "geodesic surface skinning: fitted per-bone capsule radii, Euclidean-nearest cores, Dijkstra distance over the welded surface graph, compact quadratic falloff, smooth opposite-side limb gate and surface Laplacian weight smoothing",
+      "falloff_radius_m": 0.1,
+      "falloff_power": 1.6,
+      "core_quantile": 0.5,
+      "core_floor_m": 0.01,
+      "smoothing": {
+        "iterations": 40,
+        "factor": 0.55,
+        "domain": "mesh surface graph only"
+      },
+      "surface_graph": {
+        "vertices": 30567,
+        "edges": 106570,
+        "components_before": 1,
+        "bridges": 0,
+        "forced_bridges": 0,
+        "max_bridge_m": 0
+      },
+      "geodesic_cap_m": 0.64871,
+      "max_distance_to_any_core_m": 0.54371,
+      "opposite_side_gate": {
+        "full_influence_below_m": 0.03,
+        "zero_influence_above_m": 0.09
+      },
+      "max_influences": 4,
+      "vertices_clipped_to_max": 9099,
+      "influence_histogram": {
+        "1": 4,
+        "2": 2437,
+        "3": 6936,
+        "4": 21190
+      },
+      "weight_sum_min": 1,
+      "weight_sum_max": 1,
+      "bones": [
+        {
+          "bone": "Hips",
+          "capsule_radius_m": 0.13835,
+          "owned": 4780,
+          "core": 2390,
+          "core_limit_m": 0.10717
+        },
+        {
+          "bone": "Spine",
+          "capsule_radius_m": 0.14,
+          "owned": 1782,
+          "core": 891,
+          "core_limit_m": 0.18439
+        },
+        {
+          "bone": "Chest",
+          "capsule_radius_m": 0.09764,
+          "owned": 634,
+          "core": 317,
+          "core_limit_m": 0.06194
+        },
+        {
+          "bone": "Neck",
+          "capsule_radius_m": 0.09878,
+          "owned": 13388,
+          "core": 6694,
+          "core_limit_m": 0.22706
+        },
+        {
+          "bone": "Head",
+          "capsule_radius_m": 0.08053,
+          "owned": 1420,
+          "core": 710,
+          "core_limit_m": 0.06476
+        },
+        {
+          "bone": "Shoulder.L",
+          "capsule_radius_m": 0.09124,
+          "owned": 641,
+          "core": 321,
+          "core_limit_m": 0.05056
+        },
+        {
+          "bone": "UpperArm.L",
+          "capsule_radius_m": 0.06121,
+          "owned": 627,
+          "core": 314,
+          "core_limit_m": 0.10825
+        },
+        {
+          "bone": "LowerArm.L",
+          "capsule_radius_m": 0.09301,
+          "owned": 1156,
+          "core": 578,
+          "core_limit_m": 0.1117
+        },
+        {
+          "bone": "Hand.L",
+          "capsule_radius_m": 0.07142,
+          "owned": 285,
+          "core": 143,
+          "core_limit_m": 0.01179
+        },
+        {
+          "bone": "Shoulder.R",
+          "capsule_radius_m": 0.12614,
+          "owned": 2156,
+          "core": 1078,
+          "core_limit_m": 0.27266
+        },
+        {
+          "bone": "UpperArm.R",
+          "capsule_radius_m": 0.07916,
+          "owned": 469,
+          "core": 235,
+          "core_limit_m": 0.0645
+        },
+        {
+          "bone": "LowerArm.R",
+          "capsule_radius_m": 0.07803,
+          "owned": 624,
+          "core": 312,
+          "core_limit_m": 0.0809
+        },
+        {
+          "bone": "Hand.R",
+          "capsule_radius_m": 0.07696,
+          "owned": 245,
+          "core": 133,
+          "core_limit_m": 0.01
+        },
+        {
+          "bone": "Tail1",
+          "capsule_radius_m": 0.09325,
+          "owned": 361,
+          "core": 181,
+          "core_limit_m": 0.02105
+        },
+        {
+          "bone": "Tail2",
+          "capsule_radius_m": 0.08321,
+          "owned": 301,
+          "core": 160,
+          "core_limit_m": 0.01
+        },
+        {
+          "bone": "UpperLeg.L",
+          "capsule_radius_m": 0.14,
+          "owned": 233,
+          "core": 117,
+          "core_limit_m": 0.02208
+        },
+        {
+          "bone": "LowerLeg.L",
+          "capsule_radius_m": 0.12344,
+          "owned": 220,
+          "core": 154,
+          "core_limit_m": 0.01
+        },
+        {
+          "bone": "Foot.L",
+          "capsule_radius_m": 0.07288,
+          "owned": 192,
+          "core": 96,
+          "core_limit_m": 0.01742
+        },
+        {
+          "bone": "Toe.L",
+          "capsule_radius_m": 0.07884,
+          "owned": 219,
+          "core": 150,
+          "core_limit_m": 0.01
+        },
+        {
+          "bone": "UpperLeg.R",
+          "capsule_radius_m": 0.14,
+          "owned": 225,
+          "core": 113,
+          "core_limit_m": 0.01962
+        },
+        {
+          "bone": "LowerLeg.R",
+          "capsule_radius_m": 0.12743,
+          "owned": 176,
+          "core": 156,
+          "core_limit_m": 0.01
+        },
+        {
+          "bone": "Foot.R",
+          "capsule_radius_m": 0.08145,
+          "owned": 201,
+          "core": 101,
+          "core_limit_m": 0.02839
+        },
+        {
+          "bone": "Toe.R",
+          "capsule_radius_m": 0.08691,
+          "owned": 232,
+          "core": 163,
+          "core_limit_m": 0.01
+        }
+      ],
+      "proximitySmoothing": {
+        "radiusMetres": 0.012,
+        "extraPairs": 121959,
+        "iterations": 36
+      },
+      "vertices": 30567,
+      "repaired_unweighted": 0,
+      "clipped_to_four": 0
+    },
+    "bones": [
+      "Root",
+      "Hips",
+      "Spine",
+      "Chest",
+      "Neck",
+      "Head",
+      "Tail1",
+      "Tail2",
+      "Shoulder.L",
+      "UpperArm.L",
+      "LowerArm.L",
+      "Hand.L",
+      "UpperLeg.L",
+      "LowerLeg.L",
+      "Foot.L",
+      "Toe.L",
+      "Shoulder.R",
+      "UpperArm.R",
+      "LowerArm.R",
+      "Hand.R",
+      "UpperLeg.R",
+      "LowerLeg.R",
+      "Foot.R",
+      "Toe.R"
+    ],
+    "landmarks": {
+      "H": 1.6476876735687256,
+      "L": 2.601785659790039,
+      "W": 0.981932520866394,
+      "paws": {
+        "FL": {
+          "x": 0.22137291742078327,
+          "y": -0.6524947055315568,
+          "toe": -0.788610577583313,
+          "heel": -0.42166608572006226
+        },
+        "BL": {
+          "x": 0.35536616208652655,
+          "y": 1.0264680129786332,
+          "toe": 0.9054509401321411,
+          "heel": 1.2386596202850342
+        },
+        "FR": {
+          "x": -0.288861705771377,
+          "y": -0.8684176240236529,
+          "toe": -0.9883634448051453,
+          "heel": -0.6762040257453918
+        },
+        "BR": {
+          "x": -0.2927367544254741,
+          "y": 0.6046760595059609,
+          "toe": 0.47884684801101685,
+          "heel": 0.8242371678352356
+        }
+      },
+      "nose": [
+        0.14652995765209198,
+        -1.3008928298950195,
+        1.1819347143173218
+      ],
+      "tailTip": [
+        0.18124817311763763,
+        1.3008928298950195,
+        1.0655077695846558
+      ],
+      "shoulderY": -0.7604561647776048,
+      "hipY": 0.8155720362422971,
+      "midline": {
+        "-1.10": 0.009469449520111084,
+        "-0.83": -0.0009035319089889526,
+        "-0.55": -0.08208511769771576,
+        "-0.28": -0.0380476713180542,
+        "0.00": -0.06900976598262787,
+        "0.28": -0.04729459434747696,
+        "0.55": 0.0008812695741653442,
+        "0.83": 0.053263790905475616,
+        "1.10": 0.11847210140695097
+      }
+    },
+    "ikPlantedShortfall": {
+      "Idle_Loop": {
+        "FL": {
+          "maxShortfall": 0
+        },
+        "FR": {
+          "maxShortfall": 0
+        },
+        "BL": {
+          "maxShortfall": 0
+        },
+        "BR": {
+          "maxShortfall": 0
+        }
+      },
+      "Walk_Loop": {
+        "FL": {
+          "maxShortfall": 0.08948558825181785
+        },
+        "FR": {
+          "maxShortfall": 0
+        },
+        "BL": {
+          "maxShortfall": 0
+        },
+        "BR": {
+          "maxShortfall": 0
+        }
+      },
+      "Run_Loop": {
+        "FL": {
+          "maxShortfall": 0.09288636988612342
+        },
+        "FR": {
+          "maxShortfall": 0
+        },
+        "BL": {
+          "maxShortfall": 0
+        },
+        "BR": {
+          "maxShortfall": 0.03730170435009894
+        }
+      },
+      "Alert": {
+        "FL": {
+          "maxShortfall": 0
+        },
+        "FR": {
+          "maxShortfall": 0
+        },
+        "BL": {
+          "maxShortfall": 0
+        },
+        "BR": {
+          "maxShortfall": 0
+        }
+      },
+      "Pounce": {
+        "FL": {
+          "maxShortfall": 0.03769450496337323
+        },
+        "FR": {
+          "maxShortfall": 0
+        },
+        "BL": {
+          "maxShortfall": 0
+        },
+        "BR": {
+          "maxShortfall": 0
+        }
+      },
+      "Step": {
+        "FL": {
+          "maxShortfall": 0
+        },
+        "FR": {
+          "maxShortfall": 0
+        },
+        "BL": {
+          "maxShortfall": 0
+        },
+        "BR": {
+          "maxShortfall": 0
+        }
+      },
+      "Attack": {
+        "FL": {
+          "maxShortfall": 0
+        },
+        "FR": {
+          "maxShortfall": 0
+        },
+        "BL": {
+          "maxShortfall": 0
+        },
+        "BR": {
+          "maxShortfall": 0
+        }
+      },
+      "Hit": {
+        "FL": {
+          "maxShortfall": 0
+        },
+        "FR": {
+          "maxShortfall": 0
+        },
+        "BL": {
+          "maxShortfall": 0
+        },
+        "BR": {
+          "maxShortfall": 0
+        }
+      },
+      "Death": {
+        "FL": {
+          "maxShortfall": 0
+        },
+        "FR": {
+          "maxShortfall": 0
+        },
+        "BL": {
+          "maxShortfall": 0
+        },
+        "BR": {
+          "maxShortfall": 0
+        }
+      }
+    },
+    "groundCheck": [
+      {
+        "clip": "Idle_Loop",
+        "minimumBeforeLock": -0.003757262136787176,
+        "maximumMinimum": -0.003167718183249235
+      },
+      {
+        "clip": "Walk_Loop",
+        "minimumBeforeLock": -0.005760281812399626,
+        "maximumMinimum": 0.0042194039560854435
+      },
+      {
+        "clip": "Run_Loop",
+        "minimumBeforeLock": -0.014661043882369995,
+        "maximumMinimum": 0.10258784890174866
+      },
+      {
+        "clip": "Alert",
+        "minimumBeforeLock": -0.00543932942673564,
+        "maximumMinimum": -0.0029527517035603523
+      },
+      {
+        "clip": "Pounce",
+        "minimumBeforeLock": -0.053937073796987534,
+        "maximumMinimum": 0.9730734825134277
+      },
+      {
+        "clip": "Step",
+        "minimumBeforeLock": -0.04503002390265465,
+        "maximumMinimum": 0.14110930263996124
+      },
+      {
+        "clip": "Attack",
+        "minimumBeforeLock": -0.005077071022242308,
+        "maximumMinimum": -0.001254659378901124
+      },
+      {
+        "clip": "Hit",
+        "minimumBeforeLock": -0.0058426633477211,
+        "maximumMinimum": -0.0029527517035603523
+      },
+      {
+        "clip": "Death",
+        "minimumBeforeLock": -0.032610855996608734,
+        "maximumMinimum": 0.13041941821575165
+      }
+    ],
+    "clips": [
+      {
+        "name": "Idle_Loop",
+        "loop": true,
+        "seconds": 3,
+        "rootMotion": "in-place"
+      },
+      {
+        "name": "Walk_Loop",
+        "loop": true,
+        "seconds": 0.8,
+        "rootMotion": "in-place"
+      },
+      {
+        "name": "Run_Loop",
+        "loop": true,
+        "seconds": 0.4,
+        "rootMotion": "in-place"
+      },
+      {
+        "name": "Alert",
+        "loop": false,
+        "seconds": 0.6,
+        "rootMotion": "in-place"
+      },
+      {
+        "name": "Pounce",
+        "loop": false,
+        "seconds": 1.55,
+        "rootMotion": "in-place"
+      },
+      {
+        "name": "Step",
+        "loop": false,
+        "seconds": 0.35,
+        "rootMotion": "in-place"
+      },
+      {
+        "name": "Attack",
+        "loop": false,
+        "seconds": 1,
+        "rootMotion": "in-place"
+      },
+      {
+        "name": "Hit",
+        "loop": false,
+        "seconds": 0.3,
+        "rootMotion": "in-place"
+      },
+      {
+        "name": "Death",
+        "loop": false,
+        "seconds": 1.5,
+        "rootMotion": "in-place"
+      }
+    ],
+    "locomotion": {
+      "Walk_Loop": {
+        "metresPerSecond": 1.3,
+        "cycleSeconds": 0.8,
+        "dutyFactor": 0.6
+      },
+      "Run_Loop": {
+        "metresPerSecond": 6.2,
+        "cycleSeconds": 0.4,
+        "dutyFactor": 0.27
+      }
+    },
+    "geometryOrigin": "Original TRELLIS surface only; no visible geometry added.",
+    "visualReviewRequired": true
+  }
+}

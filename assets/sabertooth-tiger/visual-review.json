@@ -1,0 +1,13 @@
+{
+  "decision": "adopt",
+  "sha256": "6c4c5301071c1d69add3b357a14b8ba6af62a47a79089657928ab6424bde045d",
+  "revision": "11",
+  "reviewedAt": "2026-09-11T04:46:57.926Z",
+  "sheets": [
+    "output/model-generation/models/sabertooth-tiger/work/rig/revision-11/qa/sheet-left-a.png",
+    "output/model-generation/models/sabertooth-tiger/work/rig/revision-11/qa/sheet-left-b.png",
+    "output/model-generation/models/sabertooth-tiger/work/rig/revision-11/qa/sheet-tq.png",
+    "output/model-generation/models/sabertooth-tiger/work/rig/revision-11/qa/sheet-front.png"
+  ],
+  "notes": "Nine pose sheets (left, three-quarter, front) reviewed: lateral walk, rotary gallop, crouch-leap-land pounce with reaching forelegs, two-swipe claw, tucked side-step hop, side collapse death. Fur tufts and sabers stay attached; no limb tearing at the belly."
+}

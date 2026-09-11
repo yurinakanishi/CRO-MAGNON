@@ -1,4 +1,5 @@
 import { BEHEMOTH } from '../shared/behemoth-rules.mjs';
+import { SABERTOOTH } from '../shared/sabertooth-rules.mjs';
 export const ENEMY_CLIPS = Object.freeze([
   'Idle_Loop',
   'Walk_Loop',
@@ -8,7 +9,13 @@ export const ENEMY_CLIPS = Object.freeze([
   'Death',
 ]);
 export const BEHEMOTH_CLIPS = Object.freeze([...ENEMY_CLIPS, 'Alert', 'Charge', 'TailSpin']);
-const clipsFor = (key) => (key === BEHEMOTH.modelKey ? BEHEMOTH_CLIPS : ENEMY_CLIPS);
+export const SABERTOOTH_CLIPS = Object.freeze([...ENEMY_CLIPS, 'Alert', 'Pounce', 'Step']);
+const clipsFor = (key) =>
+  key === BEHEMOTH.modelKey
+    ? BEHEMOTH_CLIPS
+    : key === SABERTOOTH.modelKey
+      ? SABERTOOTH_CLIPS
+      : ENEMY_CLIPS;
 
 export function requireEnemyClips(animations, key) {
   const names = new Set(animations.map((clip) => clip.name));
@@ -25,7 +32,7 @@ export function enemyAnimationState(enemy, now) {
   const started =
     clip === 'Death'
       ? enemy.phaseStartedAt
-      : ['Attack', 'Alert', 'TailSpin'].includes(clip)
+      : ['Attack', 'Alert', 'TailSpin', 'Pounce', 'Step'].includes(clip)
         ? enemy.attackAt
         : clip === 'Charge'
           ? enemy.attackAt + BEHEMOTH.alertMs
@@ -35,7 +42,24 @@ export function enemyAnimationState(enemy, now) {
   return { clip, elapsed: started === null ? null : Math.max(0, (now - started) / 1000) };
 }
 
+const SABERTOOTH_CUES = {
+  guard: '縄張りを見回る',
+  alert: '咆哮！',
+  chase: '疾走',
+  crouch: '身を沈めた…飛びかかり！',
+  pounce: '飛びかかり',
+  land: '着地の隙',
+  claw: '爪の連撃',
+  step: 'ステップでかわす',
+  return: '縄張りへ戻る',
+  recover: '身構える',
+};
+
 export function enemyStatusLabel(enemy) {
+  if (enemy.modelKey === SABERTOOTH.modelKey) {
+    const cue = SABERTOOTH_CUES[enemy.behavior];
+    return cue ? `${enemy.name} · ${cue}` : enemy.name;
+  }
   if (enemy.modelKey !== BEHEMOTH.modelKey) return enemy.name;
   const cue = {
     guard: '縄張りを警戒',

@@ -670,7 +670,14 @@ export function createGameCore({
           stopActor(actor);
           actor.riderId = null;
           actor.pendingAttack = null;
-          if (name === 'enemies' && actor.modelKey === 'violet-behemoth') {
+          if (
+            name === 'enemies' &&
+            ['violet-behemoth', 'sabertooth-tiger'].includes(actor.modelKey)
+          ) {
+            actor.evading = false;
+            actor.superArmor = false;
+            actor.nextPounceAt = 0;
+            actor.nextStepAt = 0;
             actor.attackLockUntil = 0;
             actor.targetId = null;
             actor.returning = actor.phase === 'alive';
