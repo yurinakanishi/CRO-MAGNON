@@ -150,6 +150,8 @@ let selfId = null,
   ping = 0;
 let connectAttempt = 0,
   retryCount = 0;
+let localRoomReset = false,
+  roomResetVersion = 0;
 let renderUnavailable = false;
 let audioContext = null,
   audioTimer = null,
@@ -432,6 +434,7 @@ async function connect(automatic = false) {
     updateHUD();
   }
   try {
+    localRoomReset = false;
     const response = await fetch('/api/status', {
       cache: 'no-store',
       signal: AbortSignal.timeout(8000),
@@ -443,6 +446,7 @@ async function connect(automatic = false) {
           '現在ゲームに接続できません。無料の利用上限または一時的な停止の可能性があります。時間をおいて再接続してください。',
         );
       const status = await response.json();
+      localRoomReset = status.localRoomReset === true && !multiplayer.serverUrl;
       if (!status.ok) throw new Error(status.text || '現在ゲームは停止中です。');
       if (status.room && profile.room !== status.room) {
         profile.room = status.room;
@@ -496,6 +500,10 @@ async function connect(automatic = false) {
       connection(true, 'オンライン');
       renderer.focusPlayer();
       if (message.resumed) notify('接続が戻りました。持ち物と進行を復元しました。', 'success');
+    }
+    if (message.type === 'roomReset') {
+      restartAfterRoomReset();
+      return;
     }
     if (message.type === 'state') {
       const previous = player();
@@ -1456,6 +1464,69 @@ function openCharacterSwitchMenu() {
  * food card focused; the guide, world and companions share one tab with sub-tabs;
  * the character change sits just above "back to exploring".
  */
+function localResetMarkup() {
+  return localRoomReset
+    ? '<div class="settings-item local-reset-setting"><div><strong>部屋の進行をリセット</strong><p>この部屋を最初からやり直します。</p></div><button type="button" class="button button-outline" data-setting="reset-room">リセット</button></div>'
+    : '';
+}
+
+function restartAfterRoomReset() {
+  roomResetVersion++;
+  stopInput();
+  saveSession(sessionKey(profile.room), null);
+  const previous = socket;
+  socket = null;
+  previous?.close();
+  $('#modal').close();
+  $('#chat-messages').replaceChildren();
+  selectedAnimalId = null;
+  enterGame();
+  notify('部屋の進行をリセットしました。', 'success');
+}
+
+function openRoomReset() {
+  if (!localRoomReset || !joined) return;
+  openModal(
+    '<section id="local-reset-confirm"><h2>部屋の進行をリセットしますか？</h2><p class="modal-intro">この部屋の全員の持ち物・探索・野営地の進行を消して、最初からやり直します。</p><p id="local-reset-error" role="status" class="form-note"></p><div class="gulf-actions"><button id="local-reset-cancel" type="button" class="button button-outline">やめる</button><button id="local-reset-accept" type="button" class="button button-accent">リセットする</button></div></section>',
+  );
+  $('#local-reset-cancel').onclick = () => openPauseMenu('settings');
+  $('#local-reset-cancel').focus();
+  $('#local-reset-accept').onclick = async () => {
+    const version = roomResetVersion;
+    const button = $('#local-reset-accept');
+    button.disabled = true;
+    button.textContent = 'リセット中…';
+    try {
+      const response = await fetch('/api/reset-room', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          room: profile.room,
+          session: savedSession(sessionKey(profile.room)),
+        }),
+      });
+      if (!response.ok)
+        throw new Error(
+          'リセットできませんでした。接続と保存状態を確認して、もう一度お試しください。',
+        );
+      if (version === roomResetVersion) restartAfterRoomReset();
+    } catch {
+      if (version !== roomResetVersion || !$('#local-reset-error')) return;
+      $('#local-reset-error').textContent =
+        'リセットできませんでした。接続と保存状態を確認して、もう一度お試しください。';
+      button.disabled = false;
+      button.textContent = 'リセットする';
+      button.focus();
+    }
+  };
+}
+
+function cancelRoomReset() {
+  if (!$('#local-reset-confirm')) return false;
+  openPauseMenu('settings');
+  return true;
+}
+
 function openPauseMenu(tab = 'inventory') {
   if (screens.active) return;
   const tabs: [string, string, string][] = [
@@ -1527,7 +1598,7 @@ function openPauseMenu(tab = 'inventory') {
       )}${subPanel('tribe', tribeMarkup())}${subPanel('objectives', objectivesMarkup())}`,
     )}${panel(
       'settings',
-      `<h2>設定</h2><p class="modal-intro">音・画面・視点の調整。</p><div class="settings-list"><div class="settings-item"><div><strong>環境音</strong><p>谷の音を鳴らします。</p></div><button class="button button-outline" data-setting="sound" aria-pressed="${soundEnabled}">${icon(soundEnabled ? 'sound' : 'muted')} ${soundEnabled ? 'オン' : 'オフ'}</button></div><div class="settings-item"><div><strong>全画面表示</strong><p>ブラウザーの枠を隠して表示します。</p></div><button class="button button-outline" data-setting="fullscreen">${icon('expand')} 切り替え</button></div><div class="settings-item"><div><strong>視点</strong><p>カメラの距離を変え、キャラクターの後ろへ戻します。</p></div><div class="settings-buttons"><button class="button button-outline" data-setting="zoom-out">− 遠く</button><button class="button button-outline" data-setting="zoom-in">+ 近く</button><button class="button button-outline" data-setting="camera">${icon('target')} 視点を戻す</button></div></div><div class="settings-item"><div><strong>コントローラー</strong><p class="gamepad-connection" role="status">${usingGamepad ? '' : '未使用 · コントローラーをつないでボタンを押すと切り替わります。'}</p></div></div></div><p id="local-save-status" class="form-note" role="status" hidden></p>`,
+      `<h2>設定</h2><p class="modal-intro">音・画面・視点の調整。</p><div class="settings-list"><div class="settings-item"><div><strong>環境音</strong><p>谷の音を鳴らします。</p></div><button class="button button-outline" data-setting="sound" aria-pressed="${soundEnabled}">${icon(soundEnabled ? 'sound' : 'muted')} ${soundEnabled ? 'オン' : 'オフ'}</button></div><div class="settings-item"><div><strong>全画面表示</strong><p>ブラウザーの枠を隠して表示します。</p></div><button class="button button-outline" data-setting="fullscreen">${icon('expand')} 切り替え</button></div><div class="settings-item"><div><strong>視点</strong><p>カメラの距離を変え、キャラクターの後ろへ戻します。</p></div><div class="settings-buttons"><button class="button button-outline" data-setting="zoom-out">− 遠く</button><button class="button button-outline" data-setting="zoom-in">+ 近く</button><button class="button button-outline" data-setting="camera">${icon('target')} 視点を戻す</button></div></div><div class="settings-item"><div><strong>コントローラー</strong><p class="gamepad-connection" role="status">${usingGamepad ? '' : '未使用 · コントローラーをつないでボタンを押すと切り替わります。'}</p></div></div></div><p id="local-save-status" class="form-note" role="status" hidden></p>${localResetMarkup()}`,
     )}<p class="pause-hint">${usingGamepad ? '十字キー・左スティックで選ぶ · ○ で決定 · ×（下のボタン）か OPTIONS で閉じる' : 'ESC で閉じる · ↑↓←→ で選ぶ · Enter で決定'}</p></div></div>`,
   );
   const root = $('#modal-body') as HTMLElement;
@@ -1564,6 +1635,7 @@ function openPauseMenu(tab = 'inventory') {
   $('[data-setting="camera"]').onclick = () => renderer.focusPlayer();
   $('[data-setting="zoom-out"]').onclick = () => renderer.adjustZoom(-0.15);
   $('[data-setting="zoom-in"]').onclick = () => renderer.adjustZoom(0.15);
+  if ($('[data-setting="reset-room"]')) $('[data-setting="reset-room"]').onclick = openRoomReset;
   // The bag opens ready to use: the first (top-left) food card holds focus.
   if (pauseTab === 'inventory')
     root
@@ -1681,7 +1753,12 @@ $('#setup-form').onsubmit = (e) => {
   applyProfileForm(e.currentTarget);
   enterGame();
 };
-$('#modal-close').onclick = () => $('#modal').close();
+$('#modal-close').onclick = () => {
+  if (!cancelRoomReset()) $('#modal').close();
+};
+$('#modal').addEventListener('cancel', (event) => {
+  if (cancelRoomReset()) event.preventDefault();
+});
 $('#modal').addEventListener('click', (e) => {
   if (e.target === $('#modal')) {
     const r = e.target.getBoundingClientRect();
@@ -1815,6 +1892,7 @@ gamepadControls = new GamepadControls({
     else if (screens.active === 'setup') $('#setup-back').click();
   },
   cancelMenu: () => {
+    if (cancelRoomReset()) return;
     if (closeItemActions()) return;
     if ($('#modal').open) $('#modal').close();
     else if (screens.active === 'setup') $('#setup-back').click();

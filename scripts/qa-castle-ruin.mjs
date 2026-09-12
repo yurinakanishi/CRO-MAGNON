@@ -66,6 +66,16 @@ async function sample(page, stage) {
             hash: e.actor?.asset.sha256,
           }
         : null,
+      castleCrows: [...r.enemies.values()]
+        .filter((e) => /^crow-shaman-[123]$/.test(e.state.id))
+        .map((e) => ({
+          id: e.state.id,
+          x: e.state.x,
+          z: e.state.z,
+          y: e.model.position.y,
+          visible: e.model.visible,
+          clip: e.actor?.name,
+        })),
       hexBursts: (r.state.hexBursts || []).length,
       hexBolts: (r.state.projectiles || []).filter((p) => p.kind === 'hex').length,
       landmarks: document.querySelector('#world').dataset.landmarks,
@@ -179,14 +189,19 @@ try {
   checks.push('Forecourt at valley level, the central stair climbs toward the hall');
   // The great hall: wide open floor, the sorcerer ahead.
   await place(page, castleWorld(0, -4));
-  await lookAt(page, CASTLE_SORCERER_POST, 11, 0.35);
+  await lookAt(page, CASTLE_SORCERER_POST, 20, 0.35);
   await sleep(1000);
   const hall = await sample(page, 'hall');
   await shot(page, '04-great-hall');
   assert.ok(hall.me.y > forecourt.me.y + 5, `hall floor is a storey up (${hall.me.y - forecourt.me.y})`);
   assert.ok(hall.enemy?.visible, 'the sorcerer is drawn in the hall');
   assert.ok(Math.abs(hall.enemy.y - hall.me.y) < 1.5, 'the sorcerer stands on the same floor');
-  checks.push('The roofless great hall is one storey up and the sorcerer waits on it');
+  assert.equal(hall.castleCrows.length, 3, 'three castle sorcerers are synchronized');
+  for (const crow of hall.castleCrows) {
+    assert.ok(crow.visible && crow.clip, `${crow.id} has a visible animated model`);
+    assert.ok(Math.abs(crow.y - hall.me.y) < 1.5, `${crow.id} stands on the hall floor`);
+  }
+  checks.push('The roofless great hall is one storey up with three visible animated sorcerers');
   // Approach to bolt range and watch the red spells in server time.
   await place(page, {
     x: CASTLE_SORCERER_POST.x + 8,

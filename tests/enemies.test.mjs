@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { CollisionWorld, overlap } from '../dist/shared/collision.mjs';
-import { createEnemies, updateEnemies, ENEMY_RULES, ENEMY_GROUNDS, inSorcererHall } from '../dist/shared/enemies.mjs';
+import { createEnemies, updateEnemies, ENEMY_RULES, inSorcererHall } from '../dist/shared/enemies.mjs';
 import { CASTLE_SURFACE } from '../dist/shared/castle-surface.mjs';
 import { createAnimals, updateAnimals, actorObstacle } from '../dist/shared/animals.mjs';
 import { COMBAT, enemyIsSolid, startAttack, resolveAttack } from '../dist/shared/combat.mjs';
@@ -17,15 +17,21 @@ function fixture(collision = new CollisionWorld([], { river: false })) {
 
 test('crow clearing is body-clear, away from camp, and patrols use real static collision', () => {
   const collision = new CollisionWorld(), animals = createAnimals(collision, 1000), enemies = createEnemies(collision, animals, 1000);
-  const room = { collision, animals, enemies, players: new Map(), camp: { x: 50, z: 50 } }, enemy = enemies[0], ground = ENEMY_GROUNDS[0];
+  const room = { collision, animals, enemies, players: new Map(), camp: { x: 50, z: 50 } }, enemy = enemies[0];
   assert.ok(Math.hypot(enemy.x - 50, enemy.z - 50) > ENEMY_RULES.leashRadius + ENEMY_RULES.campSafeRadius);
-  for (let x = -3.2; x <= 3.2; x += .4) for (let z = -3.2; z <= 3.2; z += .4) if (Math.hypot(x, z) <= 3.2) assert.ok(collision.free({ x: ground.x + x, z: ground.z + z }, enemy.radius));
+  const castleEnemies = enemies.filter(e => e.castle);
+  assert.equal(castleEnemies.length, 3);
+  assert.equal(new Set(enemies.map(e => e.id)).size, enemies.length);
+  for (const crow of castleEnemies) for (let x = -3.2; x <= 3.2; x += .4) for (let z = -3.2; z <= 3.2; z += .4) if (Math.hypot(x, z) <= 3.2) {
+    const point = { x: crow.home.x + x, z: crow.home.z + z };
+    assert.ok(collision.free(point, crow.radius)); assert.ok(inSorcererHall(point));
+  }
   let minX = enemy.x, maxX = enemy.x, minZ = enemy.z, maxZ = enemy.z;
   for (let i = 0; i < 2400; i++) {
     const now = 1000 + i * 50; updateAnimals(room, .05, now); updateEnemies(room, .05, now);
     for (const actor of [...animals, ...enemies]) assert.ok(collision.free(actor, actor.radius, [...animals, ...enemies].filter(other => other !== actor).map(actorObstacle)));
     minX = Math.min(minX, enemy.x); maxX = Math.max(maxX, enemy.x); minZ = Math.min(minZ, enemy.z); maxZ = Math.max(maxZ, enemy.z);
-    assert.ok(inSorcererHall(enemy), 'the sorcerer patrols only the great hall floor');
+    for (const crow of castleEnemies) assert.ok(inSorcererHall(crow), `${crow.id} patrols only the great hall floor`);
   }
   assert.ok(maxX - minX > 5 && maxZ - minZ > 5); assert.equal(enemy.attackSequence, 0);
 });
@@ -34,7 +40,7 @@ test('crow clearing is body-clear, away from camp, and patrols use real static c
 test('the castle sorcerer ignores players below the hall, drops a target that leaves it, and never steps off the floor', () => {
   const { room, enemy, player } = fixture();
   assert.equal(enemy.castle, true); assert.ok(inSorcererHall(enemy));
-  assert.ok(createEnemies(new CollisionWorld([], { river: false }), [], 1000).filter(e => e.modelKey === ENEMY_RULES.modelKey && e.id !== enemy.id).every(e => !e.castle), 'adventure guardians keep their own grounds');
+  assert.ok(createEnemies(new CollisionWorld([], { river: false }), [], 1000).filter(e => e.modelKey === ENEMY_RULES.modelKey && e.regionId).every(e => !e.castle), 'adventure guardians keep their own grounds');
   // Castle floor cells within the leash disc that are not the hall: the stairs and the forecourt.
   const below = [];
   for (let dx = -22; dx <= 22; dx += 0.5) for (let dz = -22; dz <= 22; dz += 0.5) {

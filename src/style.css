@@ -2470,6 +2470,15 @@ dialog:has(.character-switch) {
   grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
   gap: 10px;
 }
+.local-reset-setting {
+  margin-top: 24px;
+  padding-top: 20px;
+  border-top: 1px solid #d8b5a830;
+}
+.local-reset-setting > .button {
+  color: #efb2a4;
+  border-color: #efb2a466;
+}
 .inventory-card {
   border: 1px solid #b7c89d22;
   background: #b7c89d06;

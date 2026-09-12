@@ -6,6 +6,7 @@ import { mkdir, realpath } from 'node:fs/promises';
 import { WebSocketServer } from 'ws';
 import { createGameCore } from './application/game-core.mjs';
 import { MIME, serveStatic } from './infrastructure/node/static-files.mjs';
+import { handleRoomReset, localResetRequest } from './infrastructure/node/room-reset.mjs';
 import { ADVENTURE_VERSION } from './shared/adventure-regions.mjs';
 import { BOATING } from './shared/boats.mjs';
 import { EARTH } from './shared/paleo-geography.mjs';
@@ -34,6 +35,7 @@ export function createGameServer({
   saveStatus = null as null | (() => SaveStatus),
   onSessionChange = () => {},
   beforeClose = async () => {},
+  resetRoom = null as null | ((room: string, session: string) => Promise<void>),
 } = {}) {
   const { rooms, snapshot, tick } = core;
   let interval;
@@ -43,6 +45,10 @@ export function createGameServer({
     try {
       const url = new URL(request.url ?? '/', 'http://localhost');
       response.setHeader('X-Content-Type-Options', 'nosniff');
+      if (url.pathname === '/api/reset-room') {
+        await handleRoomReset(request, response, resetRoom);
+        return;
+      }
       if (request.method !== 'GET' && request.method !== 'HEAD') {
         response.writeHead(405, { Allow: 'GET, HEAD' }).end('Method not allowed');
         return;
@@ -61,6 +67,7 @@ export function createGameServer({
                 boatingVersion: BOATING.version,
                 adventureVersion: ADVENTURE_VERSION,
                 gulfVersion: GULF.version,
+                localRoomReset: !!resetRoom && localResetRequest(request),
                 ...(saveStatus ? { save: saveStatus() } : {}),
               }
             : url.pathname === '/api/health'
@@ -195,15 +202,17 @@ export function createGameServer({
 export async function createPersistentGameServer({
   saveDirectory = path.join(ROOT, '.cro-magnon-save'),
   saveIntervalMs = 10000,
+  enableRoomReset,
   onSaveError = (error: Error) =>
     console.error('Local save failed; previous save retained:', error.message),
   ...options
 }: Omit<
   Parameters<typeof createGameServer>[0],
-  'core' | 'saveStatus' | 'beforeClose' | 'onSessionChange'
+  'core' | 'saveStatus' | 'beforeClose' | 'onSessionChange' | 'resetRoom'
 > & {
   saveDirectory?: string;
   saveIntervalMs?: number;
+  enableRoomReset?: boolean;
   onSaveError?: (error: Error) => void;
 } = {}) {
   if (!Number.isFinite(saveIntervalMs) || saveIntervalMs < 20)
@@ -288,6 +297,12 @@ export async function createPersistentGameServer({
   let saving: Promise<void> | null = null,
     stopping = false,
     failedToListen = false;
+  let resetting: Promise<void> | null = null;
+  const resetEnabled =
+    (enableRoomReset ?? (options.port ?? (Number(process.env.PORT) || 3000)) === 3000) &&
+    !options.expectedBuild &&
+    !options.exhibition &&
+    process.env.EXHIBITION_RULES !== '1';
   function announce() {
     const message = JSON.stringify({ type: 'saveStatus', ...store.status() });
     for (const socket of game.wss.clients) if (socket.readyState === 1) socket.send(message);
@@ -308,12 +323,37 @@ export async function createPersistentGameServer({
     return saving;
   }
   const backgroundSave = () => {
-    if (!stopping) void saveNow().catch(() => {});
+    if (!stopping && !resetting) void saveNow().catch(() => {});
   };
   const game = createGameServer({
     ...options,
     core,
     saveStatus: store.status,
+    resetRoom: resetEnabled
+      ? async (roomName, session) => {
+          const room = core.rooms.get(roomName);
+          const active =
+            room &&
+            [...room.players.values()].some(
+              (player) => player.sessionToken === session && player.socket.readyState === 1,
+            );
+          if (stopping || resetting || !active) throw new Error('Room reset unavailable');
+          resetting = (async () => {
+            await saving?.catch(() => {});
+            await core.resetRoom(roomName, (checkpoint) => store.save(checkpoint));
+            announce();
+          })()
+            .catch((error) => {
+              announce();
+              onSaveError(error);
+              throw error;
+            })
+            .finally(() => {
+              resetting = null;
+            });
+          await resetting;
+        }
+      : null,
     onSessionChange() {
       // Coalesce joins/leaves without delaying the regular checkpoint.
       if (!stopping && !sessionTimer)
@@ -328,6 +368,7 @@ export async function createPersistentGameServer({
       clearTimeout(sessionTimer);
       try {
         if (failedToListen) return;
+        await resetting?.catch(() => {});
         await saving?.catch(() => {});
         await saveNow();
       } finally {

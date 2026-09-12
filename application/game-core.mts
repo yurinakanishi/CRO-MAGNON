@@ -81,6 +81,7 @@ export function createGameCore({
   if (!Number.isInteger(playerLimit) || playerLimit < 1 || playerLimit > 64)
     throw new Error('playerLimit must be an integer from 1 to 64');
   const rooms = new Map();
+  const resettingRooms = new Set<string>();
   let closing = false;
   const sessionExpiry = (now: number) =>
     persistentSessions ? Number.MAX_SAFE_INTEGER : now + resumeGraceMs;
@@ -177,6 +178,10 @@ export function createGameCore({
       cleanText(params.get('room'), 20)
         .toUpperCase()
         .replace(/[^A-Z0-9_-]/g, '') || 'EMBER';
+    if (resettingRooms.has(roomName)) {
+      socket.close(1013, 'Room reset in progress');
+      return;
+    }
     const room = ensureRoom(roomName);
     const now = runtime.now(),
       token = params.get('session'),
@@ -318,7 +323,14 @@ export function createGameCore({
     });
     socket.on('error', () => {});
     socket.on('message', (data, isBinary) => {
-      if (closing || isBinary || player.socket !== socket) return;
+      if (
+        closing ||
+        isBinary ||
+        player.socket !== socket ||
+        resettingRooms.has(roomName) ||
+        rooms.get(roomName) !== room
+      )
+        return;
       const now = runtime.now();
       player.tokens = Math.min(70, player.tokens + (now - player.refillAt) * 0.035);
       player.refillAt = now;
@@ -442,7 +454,7 @@ export function createGameCore({
       }
     });
     socket.on('close', () => {
-      if (player.socket !== socket) return;
+      if (player.socket !== socket || rooms.get(roomName) !== room) return;
       cancelBarter(room, player.id, runtime.now(), '相手が接続を離れたので、交換を中止しました。');
       clearCarryOffer(room, player);
       releaseCarry(room, player, true);
@@ -488,6 +500,7 @@ export function createGameCore({
     const heartbeat = now - lastHeartbeat > 15000;
     if (heartbeat) lastHeartbeat = now;
     for (const room of rooms.values()) {
+      if (resettingRooms.has(room.name)) continue;
       for (const [token, entry] of room.sessions)
         if (now >= entry.expiresAt) room.sessions.delete(token);
       if (!room.players.size) {
@@ -581,6 +594,26 @@ export function createGameCore({
         );
         room.lastBroadcast = now;
       }
+    }
+  }
+
+  async function resetRoom(
+    roomName: string,
+    persist: (state: ReturnType<typeof exportState>) => Promise<unknown>,
+  ) {
+    const room = rooms.get(roomName);
+    if (closing || !room || resettingRooms.has(roomName)) throw new Error('Room unavailable');
+    resettingRooms.add(roomName);
+    try {
+      // Commit the reset on disk first. Failure leaves the current room and its sessions intact.
+      const checkpoint = exportState();
+      checkpoint.rooms = checkpoint.rooms.filter((record) => record.name !== roomName);
+      await persist(checkpoint);
+      rooms.delete(roomName);
+      broadcast(room, { type: 'roomReset' });
+      for (const player of room.players.values()) player.socket.close(1012, 'Room reset');
+    } finally {
+      resettingRooms.delete(roomName);
     }
   }
 
@@ -754,6 +787,7 @@ export function createGameCore({
     tick,
     exportState,
     importState,
+    resetRoom,
     pause() {
       closing = true;
     },
