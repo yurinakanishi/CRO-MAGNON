@@ -4,9 +4,9 @@
   "kind": "humanoid",
   "candidate": 1,
   "status": "reviewed-prototype",
-  "url": "/models/cro-magnon-woman/model-thrust-r02.glb",
-  "sha256": "078eb40117062f087ece99966616dcba952f71b66b8c376587ad1b5d6bc8263e",
-  "bytes": 14244552,
+  "url": "/models/cro-magnon-woman/model-gaits-r02.glb",
+  "sha256": "1726a36d75e5fe9fd765abf650844c98b67eb480b6dd8ddc4537593d802bab9c",
+  "bytes": 14158436,
   "triangles": 65707,
   "upAxis": "Y",
   "forwardAxis": "+Z",
@@ -60,7 +60,7 @@
     },
     {
       "name": "Attack",
-      "seconds": 0.7,
+      "seconds": 0.699999988079071,
       "loop": false
     },
     {
@@ -197,21 +197,5 @@
     "review": "assets/player-gaits/README.md",
     "sourceDelivery": "/models/cro-magnon-woman/model-downed-r01.glb",
     "author": "Codex"
-  },
-  "spearThrust": {
-    "revision": "revision-02",
-    "status": "adopted",
-    "sourceSha256": "1726a36d75e5fe9fd765abf650844c98b67eb480b6dd8ddc4537593d802bab9c",
-    "sourceDelivery": "/models/cro-magnon-woman/model-gaits-r02.glb",
-    "clip": "Attack",
-    "seconds": 0.7,
-    "impactSeconds": 0.333,
-    "frames": 86,
-    "sampleRate": 120,
-    "leftStepMetres": 0.4676,
-    "handSpacingMetres": 0.334,
-    "attachment": "authored-grip",
-    "author": "Codex",
-    "review": "assets/spear-thrusts/README.md"
   }
 }

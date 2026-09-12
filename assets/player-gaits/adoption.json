@@ -1,0 +1,55 @@
+{
+  "revision": "revision-02",
+  "at": "2026-09-12T10:48:46.740Z",
+  "records": [
+    {
+      "key": "cro-magnon-woman",
+      "url": "/models/cro-magnon-woman/model-gaits-r02.glb",
+      "sha256": "1726a36d75e5fe9fd765abf650844c98b67eb480b6dd8ddc4537593d802bab9c",
+      "sourceSha256": "539c3e1aeb063389a2b5cd4c2ae947655ded07ecafd7ae6c97c05f1cf8481a7c",
+      "bytes": 14158436
+    },
+    {
+      "key": "cro-magnon-hunter",
+      "url": "/models/cro-magnon-hunter/model-gaits-r02.glb",
+      "sha256": "12bfbb405a46ab2c64c2c3a197d085e20a9b27c4c16a728719206befc96d085e",
+      "sourceSha256": "a2b20605563def0ec5ca4eb0cb89de22c6279ee95b9514f87808b2af6e6a402e",
+      "bytes": 10313404
+    },
+    {
+      "key": "neanderthal-woman",
+      "url": "/models/neanderthal-woman/model-gaits-r02.glb",
+      "sha256": "a89fc69b6c03588fa520a806d762a8156c6ba1dae0b61a998f792b9599aa7559",
+      "sourceSha256": "58156f4088fba4740a03b2a71428a5d9cc5cabf8262a848e2667b3fd840a05d7",
+      "bytes": 13784016
+    },
+    {
+      "key": "neanderthal-hunter",
+      "url": "/models/neanderthal-hunter/model-gaits-r02.glb",
+      "sha256": "e475072a87ffbcfc2501a03c4cdb2517fef912358e935753fde4ce61cfe78b0c",
+      "sourceSha256": "5d94557d3161dd4cde3ed4b2dee19e6dabf3a153659e42ed8e19a8ec148497fb",
+      "bytes": 10861996
+    },
+    {
+      "key": "cat-kunoichi",
+      "url": "/models/cat-kunoichi/model-gaits-r02.glb",
+      "sha256": "d9004c15adf306659239d6a818609a2f11d4f0e0f4a482436ea76f83bbb9eec8",
+      "sourceSha256": "4913ff14f6f052356f4ce95a70ff0f23a87a0ed3eda6d1ec565af9d1cc347793",
+      "bytes": 7639084
+    },
+    {
+      "key": "desert-fennec-mage",
+      "url": "/models/desert-fennec-mage/model-gaits-r02.glb",
+      "sha256": "402f60a6182e1204ce33ac643556bc3d5118a63f0490b1be97f2124e5207f174",
+      "sourceSha256": "34ff0f203944fade432484dd7d385e5bc68a105f8d3ac9a0dbd87d6f740126a4",
+      "bytes": 15690832
+    },
+    {
+      "key": "giant-ape",
+      "url": "/models/giant-ape/model-gaits-r02.glb",
+      "sha256": "c41f3aab0cdc27f7decfd6e3111c37c2961d7a8a8827daf3f4f9dc61874e76d2",
+      "sourceSha256": "4ed3c6997957bb39e82bcb300853b9b90598da1237aeb8bfd1ec73d17a546c59",
+      "bytes": 16646936
+    }
+  ]
+}

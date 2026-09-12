@@ -1,0 +1,179 @@
+<!doctype html> <meta charset="utf-8" /><title>歩行と走行の比較</title>
+<style>
+  body {
+    margin: 0;
+    background: #dde3e5;
+    font: 16px system-ui;
+    color: #20303b;
+  }
+  header {
+    padding: 12px;
+  }
+  button,
+  select {
+    font: inherit;
+    margin: 0 8px;
+  }
+  main {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    gap: 2px;
+  }
+  canvas {
+    width: 100%;
+    display: block;
+  }
+  p {
+    margin: 5px;
+  }
+  #status {
+    padding: 8px;
+  }
+</style>
+<script type="importmap">
+  {
+    "imports": {
+      "three": "/node_modules/three/build/three.module.js",
+      "three/addons/": "/node_modules/three/examples/jsm/"
+    }
+  }
+</script>
+<header>
+  歩き／走り
+  <select id="model"></select
+  ><select id="version">
+    <option>revision-02</option>
+    <option>revision-01</option>
+    <option>baseline</option></select
+  ><select id="view">
+    <option>side</option>
+    <option>front</option>
+    <option>back</option>
+    <option>left</option>
+    <option>angle</option></select
+  ><button id="play">再生／停止</button><span id="status"></span>
+</header>
+<main></main>
+<script type="module">
+  import * as T from 'three';
+  import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
+  import { clone } from 'three/addons/utils/SkeletonUtils.js';
+  const keys = [
+    'cro-magnon-woman',
+    'cro-magnon-hunter',
+    'neanderthal-woman',
+    'neanderthal-hunter',
+    'cat-kunoichi',
+    'desert-fennec-mage',
+    'giant-ape',
+  ];
+  const model = document.querySelector('#model'),
+    version = document.querySelector('#version'),
+    view = document.querySelector('#view'),
+    main = document.querySelector('main'),
+    status = document.querySelector('#status');
+  keys.forEach((k) => model.add(new Option(k, k)));
+  const renderer = new T.WebGLRenderer({ antialias: true, preserveDrawingBuffer: true });
+  renderer.setSize(300, 340);
+  renderer.setPixelRatio(1);
+  renderer.toneMapping = T.ACESFilmicToneMapping;
+  renderer.toneMappingExposure = 1.2;
+  let cells = [],
+    loaded,
+    playing = false,
+    clock = 0,
+    last = 0;
+  async function load() {
+    status.textContent = '読込中';
+    playing = false;
+    cells = [];
+    main.replaceChildren();
+    if (loaded)
+      loaded.scene.traverse((n) => {
+        if (n.isMesh) {
+          n.geometry.dispose();
+          for (const m of [n.material].flat()) {
+            for (const v of Object.values(m)) if (v?.isTexture) v.dispose();
+            m.dispose();
+          }
+        }
+      });
+    loaded = await new GLTFLoader().loadAsync(
+      `/output/player-gaits/${version.value}/${model.value}/model.glb`,
+    );
+    const asset = await (
+      await fetch(`/output/player-gaits/${version.value}/${model.value}/asset.json`)
+    ).json();
+    const h = asset.heightMetres;
+    for (const name of ['Walk_Loop', 'Run_Loop'])
+      for (let i = 0; i < 6; i++) {
+        const clip = loaded.animations.find((c) => c.name === name),
+          scene = new T.Scene();
+        scene.background = new T.Color('#d0d9de');
+        scene.add(new T.HemisphereLight(0xffffff, 0x526548, 2));
+        const sun = new T.DirectionalLight(0xffffff, 3);
+        sun.position.set(3, 5, 4);
+        scene.add(sun);
+        const root = clone(loaded.scene);
+        scene.add(root);
+        scene.add(new T.GridHelper(h * 3, 12, 0x556976, 0xa0b1ba));
+        const camera = new T.PerspectiveCamera(32, 300 / 340, 0.01, 100);
+        const mixer = new T.AnimationMixer(root),
+          action = mixer.clipAction(clip).play();
+        const div = document.createElement('div'),
+          canvas = document.createElement('canvas');
+        canvas.width = 300;
+        canvas.height = 340;
+        div.append(canvas);
+        const p = document.createElement('p');
+        p.textContent = `${name === 'Walk_Loop' ? '歩き' : '走り'} · ${Math.round((i / 6) * 100)}%`;
+        div.append(p);
+        main.append(div);
+        cells.push({ scene, root, camera, mixer, action, clip, canvas, h, phase: i / 6 });
+      }
+    clock = 0;
+    render();
+    status.textContent = `${model.value} · ${version.value} · 完了`;
+  }
+  function render() {
+    for (const c of cells) {
+      const { camera, h } = c;
+      const dirs = {
+        side: [3, 0.7, 0],
+        left: [-3, 0.7, 0],
+        front: [0, 0.7, 3],
+        back: [0, 0.7, -3],
+        angle: [2.2, 0.9, 2.2],
+      };
+      camera.position.fromArray(dirs[view.value]).multiplyScalar(h);
+      camera.lookAt(0, h * 0.47, 0);
+      c.action.time = ((c.phase + (playing ? clock / c.clip.duration : 0)) % 1) * c.clip.duration;
+      c.mixer.update(0);
+      renderer.render(c.scene, camera);
+      c.canvas.getContext('2d').drawImage(renderer.domElement, 0, 0);
+    }
+  }
+  model.onchange = version.onchange = load;
+  view.onchange = render;
+  document.querySelector('#play').onclick = () => {
+    playing = !playing;
+    clock = 0;
+  };
+  function tick(t) {
+    if (playing) {
+      clock += (t - last) / 1000;
+      render();
+    }
+    last = t;
+    requestAnimationFrame(tick);
+  }
+  requestAnimationFrame(tick);
+  window.gaitReview = {
+    load,
+    render,
+    get cells() {
+      return cells;
+    },
+  };
+  await load();
+</script>

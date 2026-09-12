@@ -4,9 +4,9 @@
   "kind": "humanoid",
   "candidate": 1,
   "status": "reviewed-prototype",
-  "url": "/models/neanderthal-hunter/model-thrust-r02.glb",
-  "sha256": "8530fa2b979cb19653409d2daf88d9c1bc918f2751cf756ce5f7678afad4e60d",
-  "bytes": 10948112,
+  "url": "/models/neanderthal-hunter/model-downed-r01.glb",
+  "sha256": "5d94557d3161dd4cde3ed4b2dee19e6dabf3a153659e42ed8e19a8ec148497fb",
+  "bytes": 10748124,
   "triangles": 54422,
   "upAxis": "Y",
   "forwardAxis": "+Z",
@@ -43,12 +43,12 @@
     },
     {
       "name": "Run_Loop",
-      "seconds": 0.72,
+      "seconds": 0.699999988079071,
       "loop": true
     },
     {
       "name": "Walk_Loop",
-      "seconds": 1.1,
+      "seconds": 1,
       "loop": true
     },
     {
@@ -58,7 +58,7 @@
     },
     {
       "name": "Attack",
-      "seconds": 0.7,
+      "seconds": 0.699999988079071,
       "loop": false
     },
     {
@@ -88,20 +88,18 @@
   "bones": 22,
   "locomotion": {
     "Walk_Loop": {
-      "metresPerSecond": 0.933147736562522,
-      "strideMetres": 1.0264625102187743,
-      "dutyFactor": 0.6,
-      "method": "Distinct upright low-step walk and bent-elbow high-recovery run; limb-length IK refined against skinned soles",
-      "swingLiftMetres": 0.04927020049050117,
-      "cycleSeconds": 1.1
+      "metresPerSecond": 0.8921,
+      "strideMetres": 0.8921,
+      "dutyFactor": 0.62,
+      "method": "Fixed sole support and continuous swing; two-segment IK using delivered bone lengths, refined against skinned sole samples",
+      "swingLiftMetres": 0.10675210106275254
     },
     "Run_Loop": {
-      "metresPerSecond": 3.5926187857657106,
-      "strideMetres": 2.5866855257513115,
-      "dutyFactor": 0.36,
-      "method": "Distinct upright low-step walk and bent-elbow high-recovery run; limb-length IK refined against skinned soles",
-      "swingLiftMetres": 0.39416160392400934,
-      "cycleSeconds": 0.72
+      "metresPerSecond": 2.6632,
+      "strideMetres": 1.864239968252182,
+      "dutyFactor": 0.34,
+      "method": "Fixed sole support and continuous swing; two-segment IK using delivered bone lengths, refined against skinned sole samples",
+      "swingLiftMetres": 0.20529250204375488
     }
   },
   "hunting": {
@@ -153,55 +151,5 @@
     "seconds": 1.8,
     "fps": 60,
     "review": "assets/downed-motion/README.md"
-  },
-  "playerGaits": {
-    "revision": "revision-02",
-    "sourceSha256": "5d94557d3161dd4cde3ed4b2dee19e6dabf3a153659e42ed8e19a8ec148497fb",
-    "changes": [
-      {
-        "clip": "Run_Loop",
-        "frames": 44,
-        "sampleRate": 59.72222222222222,
-        "stride": 2.5866855257513115,
-        "duty": 0.36,
-        "lift": 0.39416160392400934,
-        "bodyClearance": 0.47662084355415946,
-        "armSwingRadians": 0.68,
-        "elbowBendRadians": 1.3,
-        "forwardLeanRadians": 0.16
-      },
-      {
-        "clip": "Walk_Loop",
-        "frames": 67,
-        "sampleRate": 59.99999999999999,
-        "stride": 1.0264625102187743,
-        "duty": 0.6,
-        "lift": 0.04927020049050117,
-        "bodyClearance": 0.11454028140495809,
-        "armSwingRadians": 0.27,
-        "elbowBendRadians": 0.2,
-        "forwardLeanRadians": 0.015
-      }
-    ],
-    "status": "adopted",
-    "review": "assets/player-gaits/README.md",
-    "sourceDelivery": "/models/neanderthal-hunter/model-downed-r01.glb",
-    "author": "Codex"
-  },
-  "spearThrust": {
-    "revision": "revision-02",
-    "status": "adopted",
-    "sourceSha256": "e475072a87ffbcfc2501a03c4cdb2517fef912358e935753fde4ce61cfe78b0c",
-    "sourceDelivery": "/models/neanderthal-hunter/model-gaits-r02.glb",
-    "clip": "Attack",
-    "seconds": 0.7,
-    "impactSeconds": 0.333,
-    "frames": 86,
-    "sampleRate": 120,
-    "leftStepMetres": 0.48160000000000003,
-    "handSpacingMetres": 0.34400000000000003,
-    "attachment": "authored-grip",
-    "author": "Codex",
-    "review": "assets/spear-thrusts/README.md"
   }
 }

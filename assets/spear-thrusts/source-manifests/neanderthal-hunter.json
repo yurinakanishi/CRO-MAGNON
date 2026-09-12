@@ -4,9 +4,9 @@
   "kind": "humanoid",
   "candidate": 1,
   "status": "reviewed-prototype",
-  "url": "/models/neanderthal-hunter/model-thrust-r02.glb",
-  "sha256": "8530fa2b979cb19653409d2daf88d9c1bc918f2751cf756ce5f7678afad4e60d",
-  "bytes": 10948112,
+  "url": "/models/neanderthal-hunter/model-gaits-r02.glb",
+  "sha256": "e475072a87ffbcfc2501a03c4cdb2517fef912358e935753fde4ce61cfe78b0c",
+  "bytes": 10861996,
   "triangles": 54422,
   "upAxis": "Y",
   "forwardAxis": "+Z",
@@ -58,7 +58,7 @@
     },
     {
       "name": "Attack",
-      "seconds": 0.7,
+      "seconds": 0.699999988079071,
       "loop": false
     },
     {
@@ -187,21 +187,5 @@
     "review": "assets/player-gaits/README.md",
     "sourceDelivery": "/models/neanderthal-hunter/model-downed-r01.glb",
     "author": "Codex"
-  },
-  "spearThrust": {
-    "revision": "revision-02",
-    "status": "adopted",
-    "sourceSha256": "e475072a87ffbcfc2501a03c4cdb2517fef912358e935753fde4ce61cfe78b0c",
-    "sourceDelivery": "/models/neanderthal-hunter/model-gaits-r02.glb",
-    "clip": "Attack",
-    "seconds": 0.7,
-    "impactSeconds": 0.333,
-    "frames": 86,
-    "sampleRate": 120,
-    "leftStepMetres": 0.48160000000000003,
-    "handSpacingMetres": 0.34400000000000003,
-    "attachment": "authored-grip",
-    "author": "Codex",
-    "review": "assets/spear-thrusts/README.md"
   }
 }

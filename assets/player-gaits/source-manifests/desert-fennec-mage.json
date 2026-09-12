@@ -4,9 +4,9 @@
   "kind": "humanoid",
   "candidate": 1,
   "status": "reviewed-prototype",
-  "url": "/models/desert-fennec-mage/model-gaits-r02.glb",
-  "sha256": "402f60a6182e1204ce33ac643556bc3d5118a63f0490b1be97f2124e5207f174",
-  "bytes": 15690832,
+  "url": "/models/desert-fennec-mage/model-downed-r01.glb",
+  "sha256": "34ff0f203944fade432484dd7d385e5bc68a105f8d3ac9a0dbd87d6f740126a4",
+  "bytes": 15580552,
   "triangles": 103314,
   "upAxis": "Y",
   "forwardAxis": "+Z",
@@ -58,12 +58,12 @@
     },
     {
       "name": "Run_Loop",
-      "seconds": 0.6,
+      "seconds": 0.699999988079071,
       "loop": true
     },
     {
       "name": "Walk_Loop",
-      "seconds": 0.9,
+      "seconds": 1,
       "loop": true
     },
     {
@@ -83,20 +83,18 @@
   "bones": 25,
   "locomotion": {
     "Walk_Loop": {
-      "metresPerSecond": 0.2851932624246279,
-      "strideMetres": 0.2566739361821651,
-      "dutyFactor": 0.6,
-      "method": "Distinct upright low-step walk and bent-elbow high-recovery run; limb-length IK refined against skinned soles",
-      "swingLiftMetres": 0.012320348936743924,
-      "cycleSeconds": 0.9
+      "metresPerSecond": 0.31219478171365117,
+      "strideMetres": 0.31219478171365117,
+      "dutyFactor": 0.62,
+      "method": "Fixed sole support and continuous swing; two-segment IK using delivered bone lengths, refined against skinned sole samples",
+      "swingLiftMetres": 0.02669408936294517
     },
     "Run_Loop": {
-      "metresPerSecond": 1.0780305319650934,
-      "strideMetres": 0.646818319179056,
-      "dutyFactor": 0.36,
-      "method": "Distinct upright low-step walk and bent-elbow high-recovery run; limb-length IK refined against skinned soles",
-      "swingLiftMetres": 0.09856279149395139,
-      "cycleSeconds": 0.6
+      "metresPerSecond": 0.9923619294515033,
+      "strideMetres": 0.6946533387861762,
+      "dutyFactor": 0.34,
+      "method": "Fixed sole support and continuous swing; two-segment IK using delivered bone lengths, refined against skinned sole samples",
+      "swingLiftMetres": 0.03080087234185981
     }
   },
   "notes": [
@@ -156,39 +154,5 @@
     "seconds": 1.8,
     "fps": 60,
     "review": "assets/downed-motion/README.md"
-  },
-  "playerGaits": {
-    "revision": "revision-02",
-    "sourceSha256": "34ff0f203944fade432484dd7d385e5bc68a105f8d3ac9a0dbd87d6f740126a4",
-    "changes": [
-      {
-        "clip": "Run_Loop",
-        "frames": 37,
-        "sampleRate": 60,
-        "stride": 0.646818319179056,
-        "duty": 0.36,
-        "lift": 0.09856279149395139,
-        "bodyClearance": 0.083655243355362,
-        "armSwingRadians": 0.68,
-        "elbowBendRadians": 1.3,
-        "forwardLeanRadians": 0.16
-      },
-      {
-        "clip": "Walk_Loop",
-        "frames": 55,
-        "sampleRate": 60,
-        "stride": 0.2566739361821651,
-        "duty": 0.6,
-        "lift": 0.012320348936743924,
-        "bodyClearance": 0.01632578853180347,
-        "armSwingRadians": 0.27,
-        "elbowBendRadians": 0.2,
-        "forwardLeanRadians": 0.015
-      }
-    ],
-    "status": "adopted",
-    "review": "assets/player-gaits/README.md",
-    "sourceDelivery": "/models/desert-fennec-mage/model-downed-r01.glb",
-    "author": "Codex"
   }
 }

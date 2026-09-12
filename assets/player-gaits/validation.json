@@ -1,0 +1,188 @@
+{
+  "revision": "revision-02",
+  "method": "Exact GLB at 120 Hz; sole skin, loop closure, elbow/knee angles, buffers and unrelated clips",
+  "results": [
+    {
+      "key": "cro-magnon-woman",
+      "sha256": "1726a36d75e5fe9fd765abf650844c98b67eb480b6dd8ddc4537593d802bab9c",
+      "metrics": [
+        {
+          "name": "Walk_Loop",
+          "duration": 1.100000023841858,
+          "minimumSoleY": 0.0027350101142703566,
+          "maximumSoleY": 0.050016728598422586,
+          "flightFraction": 0,
+          "meanElbowBend": 0.2746494080517802,
+          "maximumKneeBend": 0.9823337933647105,
+          "loopError": 1.5636140667536803e-7
+        },
+        {
+          "name": "Run_Loop",
+          "duration": 0.7200000286102295,
+          "minimumSoleY": 0.002275889277479571,
+          "maximumSoleY": 0.378608932678873,
+          "flightFraction": 0.2159090909090909,
+          "meanElbowBend": 1.3093928532418568,
+          "maximumKneeBend": 2.4825044524797124,
+          "loopError": 7.150059847537274e-8
+        }
+      ]
+    },
+    {
+      "key": "cro-magnon-hunter",
+      "sha256": "12bfbb405a46ab2c64c2c3a197d085e20a9b27c4c16a728719206befc96d085e",
+      "metrics": [
+        {
+          "name": "Walk_Loop",
+          "duration": 1.100000023841858,
+          "minimumSoleY": 0.002781203169854859,
+          "maximumSoleY": 0.05504738924646748,
+          "flightFraction": 0,
+          "meanElbowBend": 0.27464938590509796,
+          "maximumKneeBend": 0.9888215886875988,
+          "loopError": 2.7191121097985804e-7
+        },
+        {
+          "name": "Run_Loop",
+          "duration": 0.7200000286102295,
+          "minimumSoleY": 0.0024516906359668468,
+          "maximumSoleY": 0.40783803284582615,
+          "flightFraction": 0.17045454545454544,
+          "meanElbowBend": 1.3094002495350896,
+          "maximumKneeBend": 2.486984241790299,
+          "loopError": 3.0662560376318703e-7
+        }
+      ]
+    },
+    {
+      "key": "neanderthal-woman",
+      "sha256": "a89fc69b6c03588fa520a806d762a8156c6ba1dae0b61a998f792b9599aa7559",
+      "metrics": [
+        {
+          "name": "Walk_Loop",
+          "duration": 1.100000023841858,
+          "minimumSoleY": 0.0028143740223790185,
+          "maximumSoleY": 0.047785827738708785,
+          "flightFraction": 0,
+          "meanElbowBend": 0.2746493857521494,
+          "maximumKneeBend": 1.0010320506876367,
+          "loopError": 6.7188539194729e-8
+        },
+        {
+          "name": "Run_Loop",
+          "duration": 0.7200000286102295,
+          "minimumSoleY": 0.0024508186800752977,
+          "maximumSoleY": 0.3621927140080725,
+          "flightFraction": 0.20454545454545456,
+          "meanElbowBend": 1.3093837317839299,
+          "maximumKneeBend": 2.475482109069552,
+          "loopError": 9.64123674445592e-8
+        }
+      ]
+    },
+    {
+      "key": "neanderthal-hunter",
+      "sha256": "e475072a87ffbcfc2501a03c4cdb2517fef912358e935753fde4ce61cfe78b0c",
+      "metrics": [
+        {
+          "name": "Walk_Loop",
+          "duration": 1.100000023841858,
+          "minimumSoleY": 0.002827847149184088,
+          "maximumSoleY": 0.05206099940195918,
+          "flightFraction": 0,
+          "meanElbowBend": 0.27464953515793616,
+          "maximumKneeBend": 1.0773591462675087,
+          "loopError": 9.069137758116718e-8
+        },
+        {
+          "name": "Run_Loop",
+          "duration": 0.7200000286102295,
+          "minimumSoleY": 0.002171502396536188,
+          "maximumSoleY": 0.3947107942203184,
+          "flightFraction": 0.17045454545454544,
+          "meanElbowBend": 1.3094031819459855,
+          "maximumKneeBend": 2.4704897139877215,
+          "loopError": 1.1030160818333724e-7
+        }
+      ]
+    },
+    {
+      "key": "cat-kunoichi",
+      "sha256": "d9004c15adf306659239d6a818609a2f11d4f0e0f4a482436ea76f83bbb9eec8",
+      "metrics": [
+        {
+          "name": "Walk_Loop",
+          "duration": 1.100000023841858,
+          "minimumSoleY": 0.0027498286612092694,
+          "maximumSoleY": 0.04827588689806946,
+          "flightFraction": 0,
+          "meanElbowBend": 0.27464908632026724,
+          "maximumKneeBend": 1.0456044071466244,
+          "loopError": 1.5148380125023458e-7
+        },
+        {
+          "name": "Run_Loop",
+          "duration": 0.7200000286102295,
+          "minimumSoleY": 0.0020737074645794324,
+          "maximumSoleY": 0.35717570950149324,
+          "flightFraction": 0.17045454545454544,
+          "meanElbowBend": 1.3093772881767847,
+          "maximumKneeBend": 2.49072691592492,
+          "loopError": 1.636719783974445e-8
+        }
+      ]
+    },
+    {
+      "key": "desert-fennec-mage",
+      "sha256": "402f60a6182e1204ce33ac643556bc3d5118a63f0490b1be97f2124e5207f174",
+      "metrics": [
+        {
+          "name": "Walk_Loop",
+          "duration": 0.8999999761581421,
+          "minimumSoleY": 0.002982616668949092,
+          "maximumSoleY": 0.015570362700062484,
+          "flightFraction": 0,
+          "meanElbowBend": 0.2746494302953818,
+          "maximumKneeBend": 1.24509313128407,
+          "loopError": 4.085950138035191e-8
+        },
+        {
+          "name": "Run_Loop",
+          "duration": 0.6000000238418579,
+          "minimumSoleY": 0.0026249444982150666,
+          "maximumSoleY": 0.10171928696043693,
+          "flightFraction": 0.14864864864864866,
+          "meanElbowBend": 1.3093953749910119,
+          "maximumKneeBend": 2.5267659284428,
+          "loopError": 2.4099494391616748e-8
+        }
+      ]
+    },
+    {
+      "key": "giant-ape",
+      "sha256": "c41f3aab0cdc27f7decfd6e3111c37c2961d7a8a8827daf3f4f9dc61874e76d2",
+      "metrics": [
+        {
+          "name": "Walk_Loop",
+          "duration": 1.2000000476837158,
+          "minimumSoleY": 0.002935548754126903,
+          "maximumSoleY": 0.04368062009606571,
+          "flightFraction": 0,
+          "meanElbowBend": 0.44726519802960263,
+          "maximumKneeBend": 1.307656677555646,
+          "loopError": 1.4763538192750737e-7
+        },
+        {
+          "name": "Run_Loop",
+          "duration": 0.7599999904632568,
+          "minimumSoleY": 0.002463290322863074,
+          "maximumSoleY": 0.3136343797120592,
+          "flightFraction": 0.25806451612903225,
+          "meanElbowBend": 0.985462779936204,
+          "maximumKneeBend": 2.774147197631912,
+          "loopError": 5.8863351675584597e-8
+        }
+      ]
+    }
+  ]
+}

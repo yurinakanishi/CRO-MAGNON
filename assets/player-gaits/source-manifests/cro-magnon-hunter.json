@@ -1,6 +1,6 @@
 {
   "bones": 22,
-  "bytes": 10399520,
+  "bytes": 10199532,
   "candidate": 1,
   "clips": [
     {
@@ -30,12 +30,12 @@
     },
     {
       "name": "Run_Loop",
-      "seconds": 0.72,
+      "seconds": 0.699999988079071,
       "loop": true
     },
     {
       "name": "Walk_Loop",
-      "seconds": 1.1,
+      "seconds": 1,
       "loop": true
     },
     {
@@ -45,7 +45,7 @@
     },
     {
       "name": "Attack",
-      "seconds": 0.7,
+      "seconds": 0.699999988079071,
       "loop": false
     },
     {
@@ -58,20 +58,18 @@
   "heightMetres": 1.8,
   "locomotion": {
     "Run_Loop": {
-      "metresPerSecond": 3.717612531157475,
-      "strideMetres": 2.6766810224333817,
-      "dutyFactor": 0.36,
-      "method": "Distinct upright low-step walk and bent-elbow high-recovery run; limb-length IK refined against skinned soles",
-      "swingLiftMetres": 0.40787520341842004,
-      "cycleSeconds": 0.72
+      "metresPerSecond": 2.775,
+      "strideMetres": 1.942499966919422,
+      "dutyFactor": 0.34,
+      "method": "Fixed sole support and continuous swing; two-segment IK using delivered bone lengths, refined against skinned sole samples",
+      "swingLiftMetres": 0.21243500178042712
     },
     "Walk_Loop": {
-      "metresPerSecond": 0.9656136444564868,
-      "strideMetres": 1.0621750089021356,
-      "dutyFactor": 0.6,
-      "method": "Distinct upright low-step walk and bent-elbow high-recovery run; limb-length IK refined against skinned soles",
-      "swingLiftMetres": 0.050984400427302505,
-      "cycleSeconds": 1.1
+      "metresPerSecond": 0.9296,
+      "strideMetres": 0.9296,
+      "dutyFactor": 0.62,
+      "method": "Fixed sole support and continuous swing; two-segment IK using delivered bone lengths, refined against skinned sole samples",
+      "swingLiftMetres": 0.11046620092582211
     }
   },
   "modelKey": "cro-magnon-hunter",
@@ -100,11 +98,11 @@
     "huntingAnimationAuthor": "Codex; appended keyframes, previous surface/rig/materials/animation bytes preserved",
     "previousMotionVisualReview": "output/model-generation/models/cro-magnon-hunter/qa/adoption-review.json"
   },
-  "sha256": "9246ef3ee00afffeec9d675a6574bfce0eb57b84f2431b71e524914197161b52",
+  "sha256": "a2b20605563def0ec5ca4eb0cb89de22c6279ee95b9514f87808b2af6e6a402e",
   "status": "completed-prototype-candidate",
   "triangles": 69990,
   "upAxis": "Y",
-  "url": "/models/cro-magnon-hunter/model-thrust-r02.glb",
+  "url": "/models/cro-magnon-hunter/model-downed-r01.glb",
   "hunting": {
     "clip": {
       "name": "Attack",
@@ -154,55 +152,5 @@
     "seconds": 1.8,
     "fps": 60,
     "review": "assets/downed-motion/README.md"
-  },
-  "playerGaits": {
-    "revision": "revision-02",
-    "sourceSha256": "a2b20605563def0ec5ca4eb0cb89de22c6279ee95b9514f87808b2af6e6a402e",
-    "changes": [
-      {
-        "clip": "Run_Loop",
-        "frames": 44,
-        "sampleRate": 59.72222222222222,
-        "stride": 2.6766810224333817,
-        "duty": 0.36,
-        "lift": 0.40787520341842004,
-        "bodyClearance": 0.34049189636445265,
-        "armSwingRadians": 0.68,
-        "elbowBendRadians": 1.3,
-        "forwardLeanRadians": 0.16
-      },
-      {
-        "clip": "Walk_Loop",
-        "frames": 67,
-        "sampleRate": 59.99999999999999,
-        "stride": 1.0621750089021356,
-        "duty": 0.6,
-        "lift": 0.050984400427302505,
-        "bodyClearance": 0.08355867151757435,
-        "armSwingRadians": 0.27,
-        "elbowBendRadians": 0.2,
-        "forwardLeanRadians": 0.015
-      }
-    ],
-    "status": "adopted",
-    "review": "assets/player-gaits/README.md",
-    "sourceDelivery": "/models/cro-magnon-hunter/model-downed-r01.glb",
-    "author": "Codex"
-  },
-  "spearThrust": {
-    "revision": "revision-02",
-    "status": "adopted",
-    "sourceSha256": "12bfbb405a46ab2c64c2c3a197d085e20a9b27c4c16a728719206befc96d085e",
-    "sourceDelivery": "/models/cro-magnon-hunter/model-gaits-r02.glb",
-    "clip": "Attack",
-    "seconds": 0.7,
-    "impactSeconds": 0.333,
-    "frames": 86,
-    "sampleRate": 120,
-    "leftStepMetres": 0.5040000000000001,
-    "handSpacingMetres": 0.36000000000000004,
-    "attachment": "authored-grip",
-    "author": "Codex",
-    "review": "assets/spear-thrusts/README.md"
   }
 }

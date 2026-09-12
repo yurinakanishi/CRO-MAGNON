@@ -1,0 +1,62 @@
+{
+  "revision": "revision-02",
+  "method": "Exact exported GLB at 240 Hz, source buffer identity, other clips, actual sole skin, shaft alignment, foot lead and root recovery",
+  "results": [
+    {
+      "key": "cro-magnon-woman",
+      "sha256": "078eb40117062f087ece99966616dcba952f71b66b8c376587ad1b5d6bc8263e",
+      "metrics": {
+        "minimumSoleY": 0.002773413624252965,
+        "maxGripError": 0.00003704751330501134,
+        "returnSurfaceError": 1.8585299418771605e-7,
+        "leftStep": 0.4680768454505843,
+        "rightStep": -0.022060201835041593,
+        "thrustTravel": 0.36380851110599366,
+        "impactVerticalAim": 3.0481544732730015e-8,
+        "supportMaximumY": 0.003923121737282408
+      }
+    },
+    {
+      "key": "cro-magnon-hunter",
+      "sha256": "9246ef3ee00afffeec9d675a6574bfce0eb57b84f2431b71e524914197161b52",
+      "metrics": {
+        "minimumSoleY": 0.0029033423571364183,
+        "maxGripError": 0.00007335105648905074,
+        "returnSurfaceError": 2.5028691128237004e-7,
+        "leftStep": 0.5039619283865114,
+        "rightStep": -0.032432442878067784,
+        "thrustTravel": 0.3734697095291753,
+        "impactVerticalAim": 3.09854131241849e-9,
+        "supportMaximumY": 0.0032822180796031487
+      }
+    },
+    {
+      "key": "neanderthal-woman",
+      "sha256": "9792b2d0b5cfff406b8341759c5a36c720139c467bcccdd5e6bbb3e48c2e8ad4",
+      "metrics": {
+        "minimumSoleY": 0.002744514425492752,
+        "maxGripError": 0.00003251681279423312,
+        "returnSurfaceError": 1.7085170419720686e-7,
+        "leftStep": 0.44895327007614555,
+        "rightStep": -0.021974453515783587,
+        "thrustTravel": 0.33379163508760823,
+        "impactVerticalAim": 6.145282416269993e-8,
+        "supportMaximumY": 0.003011033090474652
+      }
+    },
+    {
+      "key": "neanderthal-hunter",
+      "sha256": "8530fa2b979cb19653409d2daf88d9c1bc918f2751cf756ce5f7678afad4e60d",
+      "metrics": {
+        "minimumSoleY": 0.0026440767051922626,
+        "maxGripError": 0.0001156605896619599,
+        "returnSurfaceError": 7.817741787411703e-8,
+        "leftStep": 0.4817256857287881,
+        "rightStep": -0.030619774225523193,
+        "thrustTravel": 0.35415418795611164,
+        "impactVerticalAim": 2.5472728593101124e-8,
+        "supportMaximumY": 0.003340390625592533
+      }
+    }
+  ]
+}

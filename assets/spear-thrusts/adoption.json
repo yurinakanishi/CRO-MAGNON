@@ -1,0 +1,34 @@
+{
+  "revision": "revision-02",
+  "at": "2026-09-12T11:19:19.199Z",
+  "records": [
+    {
+      "key": "cro-magnon-woman",
+      "url": "/models/cro-magnon-woman/model-thrust-r02.glb",
+      "sha256": "078eb40117062f087ece99966616dcba952f71b66b8c376587ad1b5d6bc8263e",
+      "bytes": 14244552,
+      "sourceSha256": "1726a36d75e5fe9fd765abf650844c98b67eb480b6dd8ddc4537593d802bab9c"
+    },
+    {
+      "key": "cro-magnon-hunter",
+      "url": "/models/cro-magnon-hunter/model-thrust-r02.glb",
+      "sha256": "9246ef3ee00afffeec9d675a6574bfce0eb57b84f2431b71e524914197161b52",
+      "bytes": 10399520,
+      "sourceSha256": "12bfbb405a46ab2c64c2c3a197d085e20a9b27c4c16a728719206befc96d085e"
+    },
+    {
+      "key": "neanderthal-woman",
+      "url": "/models/neanderthal-woman/model-thrust-r02.glb",
+      "sha256": "9792b2d0b5cfff406b8341759c5a36c720139c467bcccdd5e6bbb3e48c2e8ad4",
+      "bytes": 13870132,
+      "sourceSha256": "a89fc69b6c03588fa520a806d762a8156c6ba1dae0b61a998f792b9599aa7559"
+    },
+    {
+      "key": "neanderthal-hunter",
+      "url": "/models/neanderthal-hunter/model-thrust-r02.glb",
+      "sha256": "8530fa2b979cb19653409d2daf88d9c1bc918f2751cf756ce5f7678afad4e60d",
+      "bytes": 10948112,
+      "sourceSha256": "e475072a87ffbcfc2501a03c4cdb2517fef912358e935753fde4ce61cfe78b0c"
+    }
+  ]
+}

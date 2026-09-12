@@ -1197,7 +1197,15 @@ export class WorldRenderer {
                 entity.actor.animation.current?.time ?? 0,
                 entity.actor.gripUp,
               );
-            else orientSpear(entity.weapon, entity.model, attack, entity.actor.gripUp);
+            else
+              orientSpear(
+                entity.weapon,
+                entity.model,
+                attack,
+                entity.actor.gripUp,
+                entity.actor.asset.spearThrust?.attachment === 'authored-grip',
+                entity.actor.animation.current?.time ?? 0,
+              );
           }
         }
       }

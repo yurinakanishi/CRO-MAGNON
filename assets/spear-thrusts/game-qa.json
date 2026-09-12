@@ -1,0 +1,108 @@
+{
+  "records": [
+    {
+      "key": "cro-magnon-woman",
+      "attacks": [
+        {
+          "variant": "wood",
+          "localSamples": 20,
+          "remoteSamples": 19,
+          "maxGripError": 0.00003691358478320967,
+          "sha256": "078eb40117062f087ece99966616dcba952f71b66b8c376587ad1b5d6bc8263e",
+          "sequence": 1,
+          "meanFrameMs": 17.899999999999945
+        },
+        {
+          "variant": "obsidian",
+          "localSamples": 20,
+          "remoteSamples": 20,
+          "maxGripError": 0.000007648820785051239,
+          "sha256": "078eb40117062f087ece99966616dcba952f71b66b8c376587ad1b5d6bc8263e",
+          "sequence": 2,
+          "meanFrameMs": 17.076190476190494
+        }
+      ],
+      "walkRunAttackRecovery": true,
+      "jumpRecovery": true
+    },
+    {
+      "key": "cro-magnon-hunter",
+      "attacks": [
+        {
+          "variant": "wood",
+          "localSamples": 20,
+          "remoteSamples": 20,
+          "maxGripError": 0.000038753078061366385,
+          "sha256": "9246ef3ee00afffeec9d675a6574bfce0eb57b84f2431b71e524914197161b52",
+          "sequence": 5,
+          "meanFrameMs": 17.072093023255864
+        },
+        {
+          "variant": "obsidian",
+          "localSamples": 20,
+          "remoteSamples": 20,
+          "maxGripError": 0.00001656392199177156,
+          "sha256": "9246ef3ee00afffeec9d675a6574bfce0eb57b84f2431b71e524914197161b52",
+          "sequence": 6,
+          "meanFrameMs": 17.058139534883722
+        }
+      ],
+      "walkRunAttackRecovery": true,
+      "jumpRecovery": true
+    },
+    {
+      "key": "neanderthal-woman",
+      "attacks": [
+        {
+          "variant": "wood",
+          "localSamples": 20,
+          "remoteSamples": 19,
+          "maxGripError": 0.00000416831010792757,
+          "sha256": "9792b2d0b5cfff406b8341759c5a36c720139c467bcccdd5e6bbb3e48c2e8ad4",
+          "sequence": 9,
+          "meanFrameMs": 17.07857142857141
+        },
+        {
+          "variant": "obsidian",
+          "localSamples": 20,
+          "remoteSamples": 20,
+          "maxGripError": 0.000015040355429505196,
+          "sha256": "9792b2d0b5cfff406b8341759c5a36c720139c467bcccdd5e6bbb3e48c2e8ad4",
+          "sequence": 10,
+          "meanFrameMs": 17.073809523809576
+        }
+      ],
+      "walkRunAttackRecovery": true,
+      "jumpRecovery": true
+    },
+    {
+      "key": "neanderthal-hunter",
+      "attacks": [
+        {
+          "variant": "wood",
+          "localSamples": 21,
+          "remoteSamples": 20,
+          "maxGripError": 0.000014557863637581341,
+          "sha256": "8530fa2b979cb19653409d2daf88d9c1bc918f2751cf756ce5f7678afad4e60d",
+          "sequence": 13,
+          "meanFrameMs": 16.676744186046477
+        },
+        {
+          "variant": "obsidian",
+          "localSamples": 20,
+          "remoteSamples": 19,
+          "maxGripError": 0.000018172856282369773,
+          "sha256": "8530fa2b979cb19653409d2daf88d9c1bc918f2751cf756ce5f7678afad4e60d",
+          "sequence": 14,
+          "meanFrameMs": 17.07209302325578
+        }
+      ],
+      "walkRunAttackRecovery": true,
+      "jumpRecovery": true
+    }
+  ],
+  "connections": 5,
+  "reloadedAttack": true,
+  "errors": [],
+  "fixtures": "Clear meadow start (76,68), peers to one side, both spear inventory variants. Actual input and game time; observer does not alter rendering."
+}

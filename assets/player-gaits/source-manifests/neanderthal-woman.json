@@ -4,9 +4,9 @@
   "kind": "humanoid",
   "candidate": 1,
   "status": "reviewed-prototype",
-  "url": "/models/neanderthal-woman/model-thrust-r02.glb",
-  "sha256": "9792b2d0b5cfff406b8341759c5a36c720139c467bcccdd5e6bbb3e48c2e8ad4",
-  "bytes": 13870132,
+  "url": "/models/neanderthal-woman/model-downed-r01.glb",
+  "sha256": "58156f4088fba4740a03b2a71428a5d9cc5cabf8262a848e2667b3fd840a05d7",
+  "bytes": 13670144,
   "triangles": 68090,
   "upAxis": "Y",
   "forwardAxis": "+Z",
@@ -45,12 +45,12 @@
     },
     {
       "name": "Run_Loop",
-      "seconds": 0.72,
+      "seconds": 0.699999988079071,
       "loop": true
     },
     {
       "name": "Walk_Loop",
-      "seconds": 1.1,
+      "seconds": 1,
       "loop": true
     },
     {
@@ -60,7 +60,7 @@
     },
     {
       "name": "Attack",
-      "seconds": 0.7,
+      "seconds": 0.699999988079071,
       "loop": false
     },
     {
@@ -98,20 +98,18 @@
   "bones": 22,
   "locomotion": {
     "Walk_Loop": {
-      "metresPerSecond": 0.8536896039655271,
-      "strideMetres": 0.9390585643620799,
-      "dutyFactor": 0.6,
-      "method": "Distinct upright low-step walk and bent-elbow high-recovery run; limb-length IK refined against skinned soles",
-      "swingLiftMetres": 0.045074811089379836,
-      "cycleSeconds": 1.1
+      "metresPerSecond": 0.8264,
+      "strideMetres": 0.8264,
+      "dutyFactor": 0.62,
+      "method": "Fixed sole support and continuous swing; two-segment IK using delivered bone lengths, refined against skinned sole samples",
+      "swingLiftMetres": 0.09766209069365632
     },
     "Run_Loop": {
-      "metresPerSecond": 3.28670497526728,
-      "strideMetres": 2.3664275821924416,
-      "dutyFactor": 0.36,
-      "method": "Distinct upright low-step walk and bent-elbow high-recovery run; limb-length IK refined against skinned soles",
-      "swingLiftMetres": 0.3605984887150387,
-      "cycleSeconds": 0.72
+      "metresPerSecond": 2.4669,
+      "strideMetres": 1.7268299705922603,
+      "dutyFactor": 0.34,
+      "method": "Fixed sole support and continuous swing; two-segment IK using delivered bone lengths, refined against skinned sole samples",
+      "swingLiftMetres": 0.187811712872416
     }
   },
   "hunting": {
@@ -163,55 +161,5 @@
     "seconds": 1.8,
     "fps": 60,
     "review": "assets/downed-motion/README.md"
-  },
-  "playerGaits": {
-    "revision": "revision-02",
-    "sourceSha256": "58156f4088fba4740a03b2a71428a5d9cc5cabf8262a848e2667b3fd840a05d7",
-    "changes": [
-      {
-        "clip": "Run_Loop",
-        "frames": 44,
-        "sampleRate": 59.72222222222222,
-        "stride": 2.3664275821924416,
-        "duty": 0.36,
-        "lift": 0.3605984887150387,
-        "bodyClearance": 0.3075495945691774,
-        "armSwingRadians": 0.68,
-        "elbowBendRadians": 1.3,
-        "forwardLeanRadians": 0.16
-      },
-      {
-        "clip": "Walk_Loop",
-        "frames": 67,
-        "sampleRate": 59.99999999999999,
-        "stride": 0.9390585643620799,
-        "duty": 0.6,
-        "lift": 0.045074811089379836,
-        "bodyClearance": 0.0763314095722234,
-        "armSwingRadians": 0.27,
-        "elbowBendRadians": 0.2,
-        "forwardLeanRadians": 0.015
-      }
-    ],
-    "status": "adopted",
-    "review": "assets/player-gaits/README.md",
-    "sourceDelivery": "/models/neanderthal-woman/model-downed-r01.glb",
-    "author": "Codex"
-  },
-  "spearThrust": {
-    "revision": "revision-02",
-    "status": "adopted",
-    "sourceSha256": "a89fc69b6c03588fa520a806d762a8156c6ba1dae0b61a998f792b9599aa7559",
-    "sourceDelivery": "/models/neanderthal-woman/model-gaits-r02.glb",
-    "clip": "Attack",
-    "seconds": 0.7,
-    "impactSeconds": 0.333,
-    "frames": 86,
-    "sampleRate": 120,
-    "leftStepMetres": 0.44800000000000006,
-    "handSpacingMetres": 0.32000000000000006,
-    "attachment": "authored-grip",
-    "author": "Codex",
-    "review": "assets/spear-thrusts/README.md"
   }
 }

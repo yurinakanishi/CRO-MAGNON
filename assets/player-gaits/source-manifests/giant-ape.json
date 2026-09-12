@@ -4,9 +4,9 @@
   "kind": "humanoid",
   "candidate": 1,
   "status": "locally-integrated-and-game-qa-passed",
-  "url": "/models/giant-ape/model-gaits-r02.glb",
-  "sha256": "c41f3aab0cdc27f7decfd6e3111c37c2961d7a8a8827daf3f4f9dc61874e76d2",
-  "bytes": 16646936,
+  "url": "/models/giant-ape/model-downed-r01.glb",
+  "sha256": "4ed3c6997957bb39e82bcb300853b9b90598da1237aeb8bfd1ec73d17a546c59",
+  "bytes": 16524976,
   "triangles": 106357,
   "upAxis": "Y",
   "forwardAxis": "+Z",
@@ -58,7 +58,7 @@
     },
     {
       "name": "Run_Loop",
-      "seconds": 0.76,
+      "seconds": 1,
       "loop": true
     },
     {
@@ -78,7 +78,7 @@
     },
     {
       "name": "Walk_Loop",
-      "seconds": 1.2,
+      "seconds": 1.399999976158142,
       "loop": true
     },
     {
@@ -98,20 +98,18 @@
   "bones": 22,
   "locomotion": {
     "Walk_Loop": {
-      "metresPerSecond": 0.6736815704161496,
-      "strideMetres": 0.8084178844993795,
-      "dutyFactor": 0.6,
-      "method": "Distinct upright low-step walk and bent-elbow high-recovery run; limb-length IK refined against skinned soles",
-      "swingLiftMetres": 0.038804058455970215,
-      "cycleSeconds": 1.2
+      "metresPerSecond": 0.7325261013807649,
+      "strideMetres": 1.0255365244682877,
+      "dutyFactor": 0.66,
+      "method": "Fixed sole support and continuous swing; two-segment IK using delivered bone lengths, refined against skinned sole samples",
+      "swingLiftMetres": 0.08407545998793546
     },
     "Run_Loop": {
-      "metresPerSecond": 2.6805435117611003,
-      "strideMetres": 2.0372130689384362,
-      "dutyFactor": 0.36,
-      "method": "Distinct upright low-step walk and bent-elbow high-recovery run; limb-length IK refined against skinned soles",
-      "swingLiftMetres": 0.3104324676477617,
-      "cycleSeconds": 0.76
+      "metresPerSecond": 1.7834995079348375,
+      "strideMetres": 1.7834995079348375,
+      "dutyFactor": 0.42,
+      "method": "Fixed sole support and continuous swing; two-segment IK using delivered bone lengths, refined against skinned sole samples",
+      "swingLiftMetres": 0.1616835768998759
     }
   },
   "provenance": {
@@ -142,39 +140,5 @@
     "seconds": 1.8,
     "fps": 60,
     "review": "assets/downed-motion/README.md"
-  },
-  "playerGaits": {
-    "revision": "revision-02",
-    "sourceSha256": "4ed3c6997957bb39e82bcb300853b9b90598da1237aeb8bfd1ec73d17a546c59",
-    "changes": [
-      {
-        "clip": "Run_Loop",
-        "frames": 47,
-        "sampleRate": 60.526315789473685,
-        "stride": 2.0372130689384362,
-        "duty": 0.36,
-        "lift": 0.3104324676477617,
-        "bodyClearance": 0.334857007337381,
-        "armSwingRadians": 0.68,
-        "elbowBendRadians": 0.95,
-        "forwardLeanRadians": 0.16
-      },
-      {
-        "clip": "Walk_Loop",
-        "frames": 73,
-        "sampleRate": 60,
-        "stride": 0.8084178844993795,
-        "duty": 0.6,
-        "lift": 0.038804058455970215,
-        "bodyClearance": 0.08326144495401089,
-        "armSwingRadians": 0.27,
-        "elbowBendRadians": 0.34,
-        "forwardLeanRadians": 0.015
-      }
-    ],
-    "status": "adopted",
-    "review": "assets/player-gaits/README.md",
-    "sourceDelivery": "/models/giant-ape/model-downed-r01.glb",
-    "author": "Codex"
   }
 }

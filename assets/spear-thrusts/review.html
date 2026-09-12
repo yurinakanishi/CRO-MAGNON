@@ -1,0 +1,184 @@
+<!doctype html><meta charset="utf-8" /><title>両手の槍突き</title>
+<style>
+  body {
+    margin: 0;
+    background: #dbe2e5;
+    color: #263640;
+    font: 16px system-ui;
+  }
+  header {
+    padding: 10px;
+  }
+  select,
+  button {
+    font: inherit;
+    margin: 0 8px;
+  }
+  main {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 2px;
+  }
+  canvas {
+    width: 100%;
+    display: block;
+  }
+  p {
+    margin: 4px;
+  }
+</style>
+<script type="importmap">
+  {
+    "imports": {
+      "three": "/node_modules/three/build/three.module.js",
+      "three/addons/": "/node_modules/three/examples/jsm/"
+    }
+  }
+</script>
+<header>
+  槍の構え → 左足の踏み込み → 突き → 戻し
+  <select id="model"></select
+  ><select id="version">
+    <option>revision-02</option>
+    <option>revision-01</option>
+    <option>baseline</option></select
+  ><select id="view">
+    <option>side</option>
+    <option>front</option>
+    <option>back</option>
+    <option>left</option>
+    <option>angle</option></select
+  ><select id="weapon">
+    <option>wooden-spear</option>
+    <option>obsidian-spear</option></select
+  ><button id="play">再生／停止</button><span id="status"></span>
+</header>
+<main></main>
+<script type="module">
+  import * as T from 'three';
+  import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
+  import { clone } from 'three/addons/utils/SkeletonUtils.js';
+  import { handGripPlacement } from '/dist/src/character-assets.js';
+  import { orientSpear } from '/dist/src/spear-pose.js';
+  const keys = ['cro-magnon-woman', 'cro-magnon-hunter', 'neanderthal-woman', 'neanderthal-hunter'];
+  const model = document.querySelector('#model'),
+    version = document.querySelector('#version'),
+    view = document.querySelector('#view'),
+    weapon = document.querySelector('#weapon'),
+    status = document.querySelector('#status'),
+    main = document.querySelector('main');
+  keys.forEach((k) => model.add(new Option(k, k)));
+  const renderer = new T.WebGLRenderer({ antialias: true, preserveDrawingBuffer: true });
+  renderer.setSize(360, 340);
+  renderer.setPixelRatio(1);
+  renderer.toneMapping = T.ACESFilmicToneMapping;
+  renderer.toneMappingExposure = 1.2;
+  let cells = [],
+    playing = false,
+    clock = 0,
+    last = 0,
+    loaded;
+  async function load() {
+    status.textContent = '読込中';
+    playing = false;
+    cells = [];
+    main.replaceChildren();
+    const loader = new GLTFLoader();
+    loaded = await loader.loadAsync(
+      `/output/spear-thrusts/${version.value}/${model.value}/model.glb`,
+    );
+    const asset = await (
+      await fetch(`/output/spear-thrusts/${version.value}/${model.value}/asset.json`)
+    ).json();
+    const weaponAsset = await (await fetch(`/public/models/${weapon.value}/asset.json`)).json(),
+      tool = await loader.loadAsync('/public' + weaponAsset.url);
+    for (const time of [0, 0.1, 0.167, 0.267, 0.333, 0.4, 0.533, 0.7]) {
+      const scene = new T.Scene();
+      scene.background = new T.Color('#d0d9de');
+      scene.add(new T.HemisphereLight(0xffffff, 0x526548, 2));
+      const sun = new T.DirectionalLight(0xffffff, 3);
+      sun.position.set(3, 5, 4);
+      scene.add(sun);
+      const root = clone(loaded.scene);
+      scene.add(root);
+      const placement = handGripPlacement(root),
+        spear = clone(tool.scene);
+      placement.grip.add(spear);
+      spear.quaternion.copy(placement.rotation);
+      const h = asset.heightMetres;
+      scene.add(new T.GridHelper(h * 3, 18, 0x556976, 0xa0b1ba));
+      const camera = new T.PerspectiveCamera(36, 360 / 340, 0.01, 100),
+        mixer = new T.AnimationMixer(root),
+        clip = loaded.animations.find((c) => c.name === 'Attack'),
+        action = mixer.clipAction(clip).setLoop(T.LoopOnce, 1).play();
+      action.clampWhenFinished = true;
+      const div = document.createElement('div'),
+        canvas = document.createElement('canvas');
+      canvas.width = 360;
+      canvas.height = 340;
+      div.append(canvas);
+      const p = document.createElement('p');
+      p.textContent = `${Math.round(time * 1000)} ms${time === 0.333 ? ' · 命中' : ''}`;
+      div.append(p);
+      main.append(div);
+      cells.push({
+        scene,
+        root,
+        camera,
+        mixer,
+        action,
+        clip,
+        canvas,
+        h,
+        time,
+        spear,
+        gripUp: placement.rotation,
+        authored: !!asset.spearThrust,
+      });
+    }
+    clock = 0;
+    render();
+    status.textContent = `${model.value} · ${version.value} · ${weapon.value} · 完了`;
+  }
+  function render(selected = cells) {
+    for (const c of selected) {
+      const { camera, h } = c;
+      const dirs = {
+        side: [3.2, 0.95, 0.4],
+        front: [0.05, 0.95, 3.4],
+        back: [0.05, 0.95, -3.4],
+        left: [-3.2, 0.95, 0.4],
+        angle: [2.6, 1.2, 2.6],
+      };
+      camera.position.fromArray(dirs[view.value]).multiplyScalar(h);
+      camera.lookAt(0, h * 0.48, h * 0.3);
+      c.action.time = playing ? clock % 0.95 : c.time;
+      c.mixer.update(0);
+      orientSpear(c.spear, c.root, true, c.gripUp, c.authored, c.action.time);
+      renderer.render(c.scene, camera);
+      c.canvas.getContext('2d').drawImage(renderer.domElement, 0, 0);
+    }
+  }
+  model.onchange = version.onchange = weapon.onchange = load;
+  view.onchange = () => render();
+  document.querySelector('#play').onclick = () => {
+    playing = !playing;
+    clock = 0;
+  };
+  function tick(t) {
+    if (playing) {
+      clock += Math.min(0.05, (t - last) / 1000);
+      render();
+    }
+    last = t;
+    requestAnimationFrame(tick);
+  }
+  requestAnimationFrame(tick);
+  window.thrustReview = {
+    get cells() {
+      return cells;
+    },
+    render,
+  };
+  await load();
+</script>

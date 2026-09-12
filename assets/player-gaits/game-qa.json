@@ -1,0 +1,218 @@
+{
+  "records": [
+    {
+      "key": "cro-magnon-woman",
+      "phases": [
+        {
+          "label": "walk",
+          "clip": "Walk_Loop",
+          "frames": 74,
+          "sha": "1726a36d75e5fe9fd765abf650844c98b67eb480b6dd8ddc4537593d802bab9c",
+          "rate": 1.35,
+          "meanFrameMs": 16.678378378378387
+        },
+        {
+          "label": "run",
+          "clip": "Run_Loop",
+          "frames": 73,
+          "sha": "1726a36d75e5fe9fd765abf650844c98b67eb480b6dd8ddc4537593d802bab9c",
+          "rate": 1.5,
+          "meanFrameMs": 16.67945205479455
+        },
+        {
+          "label": "walk-again",
+          "clip": "Walk_Loop",
+          "frames": 72,
+          "sha": "1726a36d75e5fe9fd765abf650844c98b67eb480b6dd8ddc4537593d802bab9c",
+          "rate": 1.35,
+          "meanFrameMs": 16.680555555555557
+        }
+      ],
+      "jumpAndAttackRecovered": true
+    },
+    {
+      "key": "cro-magnon-hunter",
+      "phases": [
+        {
+          "label": "walk",
+          "clip": "Walk_Loop",
+          "frames": 72,
+          "sha": "12bfbb405a46ab2c64c2c3a197d085e20a9b27c4c16a728719206befc96d085e",
+          "rate": 1.35,
+          "meanFrameMs": 16.680555555555557
+        },
+        {
+          "label": "run",
+          "clip": "Run_Loop",
+          "frames": 73,
+          "sha": "12bfbb405a46ab2c64c2c3a197d085e20a9b27c4c16a728719206befc96d085e",
+          "rate": 1.5,
+          "meanFrameMs": 16.680821917808228
+        },
+        {
+          "label": "walk-again",
+          "clip": "Walk_Loop",
+          "frames": 73,
+          "sha": "12bfbb405a46ab2c64c2c3a197d085e20a9b27c4c16a728719206befc96d085e",
+          "rate": 1.35,
+          "meanFrameMs": 16.6794520547945
+        }
+      ],
+      "jumpAndAttackRecovered": true
+    },
+    {
+      "key": "neanderthal-woman",
+      "phases": [
+        {
+          "label": "walk",
+          "clip": "Walk_Loop",
+          "frames": 72,
+          "sha": "a89fc69b6c03588fa520a806d762a8156c6ba1dae0b61a998f792b9599aa7559",
+          "rate": 1.35,
+          "meanFrameMs": 16.680555555555557
+        },
+        {
+          "label": "run",
+          "clip": "Run_Loop",
+          "frames": 72,
+          "sha": "a89fc69b6c03588fa520a806d762a8156c6ba1dae0b61a998f792b9599aa7559",
+          "rate": 1.5,
+          "meanFrameMs": 16.680555555555557
+        },
+        {
+          "label": "walk-again",
+          "clip": "Walk_Loop",
+          "frames": 73,
+          "sha": "a89fc69b6c03588fa520a806d762a8156c6ba1dae0b61a998f792b9599aa7559",
+          "rate": 1.35,
+          "meanFrameMs": 16.680821917808178
+        }
+      ],
+      "jumpAndAttackRecovered": true
+    },
+    {
+      "key": "neanderthal-hunter",
+      "phases": [
+        {
+          "label": "walk",
+          "clip": "Walk_Loop",
+          "frames": 72,
+          "sha": "e475072a87ffbcfc2501a03c4cdb2517fef912358e935753fde4ce61cfe78b0c",
+          "rate": 1.35,
+          "meanFrameMs": 16.67916666666669
+        },
+        {
+          "label": "run",
+          "clip": "Run_Loop",
+          "frames": 73,
+          "sha": "e475072a87ffbcfc2501a03c4cdb2517fef912358e935753fde4ce61cfe78b0c",
+          "rate": 1.5,
+          "meanFrameMs": 16.680821917808178
+        },
+        {
+          "label": "walk-again",
+          "clip": "Walk_Loop",
+          "frames": 72,
+          "sha": "e475072a87ffbcfc2501a03c4cdb2517fef912358e935753fde4ce61cfe78b0c",
+          "rate": 1.35,
+          "meanFrameMs": 16.680555555555557
+        }
+      ],
+      "jumpAndAttackRecovered": true
+    },
+    {
+      "key": "cat-kunoichi",
+      "phases": [
+        {
+          "label": "walk",
+          "clip": "Walk_Loop",
+          "frames": 73,
+          "sha": "d9004c15adf306659239d6a818609a2f11d4f0e0f4a482436ea76f83bbb9eec8",
+          "rate": 1.35,
+          "meanFrameMs": 16.680821917808277
+        },
+        {
+          "label": "run",
+          "clip": "Run_Loop",
+          "frames": 73,
+          "sha": "d9004c15adf306659239d6a818609a2f11d4f0e0f4a482436ea76f83bbb9eec8",
+          "rate": 1.5,
+          "meanFrameMs": 16.6794520547945
+        },
+        {
+          "label": "walk-again",
+          "clip": "Walk_Loop",
+          "frames": 73,
+          "sha": "d9004c15adf306659239d6a818609a2f11d4f0e0f4a482436ea76f83bbb9eec8",
+          "rate": 1.35,
+          "meanFrameMs": 16.683561643835535
+        }
+      ],
+      "jumpAndAttackRecovered": true
+    },
+    {
+      "key": "desert-fennec-mage",
+      "phases": [
+        {
+          "label": "walk",
+          "clip": "Walk_Loop",
+          "frames": 72,
+          "sha": "402f60a6182e1204ce33ac643556bc3d5118a63f0490b1be97f2124e5207f174",
+          "rate": 1.35,
+          "meanFrameMs": 16.683333333333294
+        },
+        {
+          "label": "run",
+          "clip": "Run_Loop",
+          "frames": 73,
+          "sha": "402f60a6182e1204ce33ac643556bc3d5118a63f0490b1be97f2124e5207f174",
+          "rate": 1.5,
+          "meanFrameMs": 16.6794520547946
+        },
+        {
+          "label": "walk-again",
+          "clip": "Walk_Loop",
+          "frames": 73,
+          "sha": "402f60a6182e1204ce33ac643556bc3d5118a63f0490b1be97f2124e5207f174",
+          "rate": 1.35,
+          "meanFrameMs": 16.6794520547946
+        }
+      ],
+      "jumpAndAttackRecovered": true
+    },
+    {
+      "key": "giant-ape",
+      "phases": [
+        {
+          "label": "walk",
+          "clip": "Walk_Loop",
+          "frames": 72,
+          "sha": "c41f3aab0cdc27f7decfd6e3111c37c2961d7a8a8827daf3f4f9dc61874e76d2",
+          "rate": 1.35,
+          "meanFrameMs": 16.679166666666585
+        },
+        {
+          "label": "run",
+          "clip": "Run_Loop",
+          "frames": 73,
+          "sha": "c41f3aab0cdc27f7decfd6e3111c37c2961d7a8a8827daf3f4f9dc61874e76d2",
+          "rate": 1,
+          "meanFrameMs": 16.67808219178082
+        },
+        {
+          "label": "walk-again",
+          "clip": "Walk_Loop",
+          "frames": 74,
+          "sha": "c41f3aab0cdc27f7decfd6e3111c37c2961d7a8a8827daf3f4f9dc61874e76d2",
+          "rate": 1.35,
+          "meanFrameMs": 16.67837837837834
+        }
+      ],
+      "jumpAndAttackRecovered": true
+    }
+  ],
+  "errors": [],
+  "connections": 5,
+  "reloaded": true,
+  "fixtures": "Profiles and clear meadow start (76,68); peers beside the route; unchanged game time and real input"
+}

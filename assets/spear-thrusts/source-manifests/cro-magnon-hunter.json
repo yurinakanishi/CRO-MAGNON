@@ -1,6 +1,6 @@
 {
   "bones": 22,
-  "bytes": 10399520,
+  "bytes": 10313404,
   "candidate": 1,
   "clips": [
     {
@@ -45,7 +45,7 @@
     },
     {
       "name": "Attack",
-      "seconds": 0.7,
+      "seconds": 0.699999988079071,
       "loop": false
     },
     {
@@ -100,11 +100,11 @@
     "huntingAnimationAuthor": "Codex; appended keyframes, previous surface/rig/materials/animation bytes preserved",
     "previousMotionVisualReview": "output/model-generation/models/cro-magnon-hunter/qa/adoption-review.json"
   },
-  "sha256": "9246ef3ee00afffeec9d675a6574bfce0eb57b84f2431b71e524914197161b52",
+  "sha256": "12bfbb405a46ab2c64c2c3a197d085e20a9b27c4c16a728719206befc96d085e",
   "status": "completed-prototype-candidate",
   "triangles": 69990,
   "upAxis": "Y",
-  "url": "/models/cro-magnon-hunter/model-thrust-r02.glb",
+  "url": "/models/cro-magnon-hunter/model-gaits-r02.glb",
   "hunting": {
     "clip": {
       "name": "Attack",
@@ -188,21 +188,5 @@
     "review": "assets/player-gaits/README.md",
     "sourceDelivery": "/models/cro-magnon-hunter/model-downed-r01.glb",
     "author": "Codex"
-  },
-  "spearThrust": {
-    "revision": "revision-02",
-    "status": "adopted",
-    "sourceSha256": "12bfbb405a46ab2c64c2c3a197d085e20a9b27c4c16a728719206befc96d085e",
-    "sourceDelivery": "/models/cro-magnon-hunter/model-gaits-r02.glb",
-    "clip": "Attack",
-    "seconds": 0.7,
-    "impactSeconds": 0.333,
-    "frames": 86,
-    "sampleRate": 120,
-    "leftStepMetres": 0.5040000000000001,
-    "handSpacingMetres": 0.36000000000000004,
-    "attachment": "authored-grip",
-    "author": "Codex",
-    "review": "assets/spear-thrusts/README.md"
   }
 }
