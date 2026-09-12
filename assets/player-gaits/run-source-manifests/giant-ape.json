@@ -4,9 +4,9 @@
   "kind": "humanoid",
   "candidate": 1,
   "status": "locally-integrated-and-game-qa-passed",
-  "url": "/models/giant-ape/model-run-r05.glb",
-  "sha256": "ae9cee5355ca661235b4c310df8feb03f00dc447ab479c7de5446a9429d3faca",
-  "bytes": 16751356,
+  "url": "/models/giant-ape/model-gaits-r02.glb",
+  "sha256": "c41f3aab0cdc27f7decfd6e3111c37c2961d7a8a8827daf3f4f9dc61874e76d2",
+  "bytes": 16646936,
   "triangles": 106357,
   "upAxis": "Y",
   "forwardAxis": "+Z",
@@ -58,7 +58,7 @@
     },
     {
       "name": "Run_Loop",
-      "seconds": 0.9,
+      "seconds": 0.76,
       "loop": true
     },
     {
@@ -106,11 +106,12 @@
       "cycleSeconds": 1.2
     },
     "Run_Loop": {
-      "metresPerSecond": 1.4012576664655911,
-      "strideMetres": 1.261131899819032,
+      "metresPerSecond": 2.6805435117611003,
+      "strideMetres": 2.0372130689384362,
       "dutyFactor": 0.36,
-      "method": "Bounded sagittal joint recovery, grounded flexion/extension stance, independent flight pelvis, stable bone twist",
-      "cycleSeconds": 0.9
+      "method": "Distinct upright low-step walk and bent-elbow high-recovery run; limb-length IK refined against skinned soles",
+      "swingLiftMetres": 0.3104324676477617,
+      "cycleSeconds": 0.76
     }
   },
   "provenance": {
@@ -175,15 +176,5 @@
     "review": "assets/player-gaits/README.md",
     "sourceDelivery": "/models/giant-ape/model-downed-r01.glb",
     "author": "Codex"
-  },
-  "playerRun": {
-    "revision": "revision-05",
-    "sourceSha256": "c41f3aab0cdc27f7decfd6e3111c37c2961d7a8a8827daf3f4f9dc61874e76d2",
-    "sourceDelivery": "/models/giant-ape/model-gaits-r02.glb",
-    "status": "adopted",
-    "method": "Bounded sagittal joint recovery, grounded flexion/extension stance, independent flight pelvis, stable bone twist",
-    "stanceFraction": 0.36,
-    "peakAuthoredSwingKneeDegrees": 104,
-    "review": "assets/player-gaits/RUN_REPAIR.md"
   }
 }

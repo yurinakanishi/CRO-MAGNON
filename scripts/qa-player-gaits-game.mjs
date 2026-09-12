@@ -1,7 +1,7 @@
 // Real Chrome, five connections and real keys/ticks. Only profiles and a clear
 // starting position are fixtures; the renderer observer does not alter playback.
 import assert from 'node:assert/strict';
-import { mkdir, writeFile } from 'node:fs/promises';
+import { mkdir, readFile, writeFile } from 'node:fs/promises';
 import { WebSocket } from 'ws';
 import { createGameServer } from '../dist/server.mjs';
 import { CHARACTER_MODELS } from '../dist/shared/characters.mjs';
@@ -10,7 +10,7 @@ const { chromium } = await import(
   process.env.PLAYWRIGHT_MODULE ||
     'file:///C:/Users/yurin/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/node_modules/playwright/index.mjs'
 );
-const output = 'output/playwright/player-gaits/game';
+const output = process.env.GAIT_QA_OUTPUT || 'output/playwright/player-gaits/game';
 await mkdir(output, { recursive: true });
 const game = createGameServer({ port: 0, host: '127.0.0.1' }),
   address = await game.listen(),
@@ -81,6 +81,9 @@ try {
       if (p.name === 'Gait B') p.x = 70;
     }
   for (const profile of CHARACTER_MODELS) {
+    const expectedAsset = JSON.parse(
+      await readFile(`public/models/${profile.key}/asset.json`, 'utf8'),
+    );
     stopActor(me());
     Object.assign(me(), { x: 76, z: 68 });
     if (me().species !== profile.species || me().gender !== profile.gender) {
@@ -101,17 +104,14 @@ try {
     const phases = [];
     for (const [label, key, running] of [
       ['walk', 'w', false],
-      ['run', 's', true],
+      ['run', 'w', true],
       ['walk-again', 'w', false],
     ]) {
-      stopActor(me());
-      Object.assign(me(), { x: 76, z: 68 });
-      await page.waitForTimeout(350);
-      // The keyboard toggle persists while the server is stopped; toggle twice per profile.
+      // Keep moving across both transitions; Shift toggles twice per profile.
       if (label !== 'walk') await page.keyboard.press('Shift');
       await page.evaluate(() => (window.gaitFrames = []));
       await other.evaluate(() => (window.gaitFrames = []));
-      await page.keyboard.down(key);
+      if (label === 'walk') await page.keyboard.down(key);
       await page.waitForTimeout(1600);
       const frames = await page.evaluate(() => window.gaitFrames),
         remote = await other.evaluate(() => window.gaitFrames);
@@ -119,6 +119,10 @@ try {
         steady = frames.filter((f) => f.t > frames[0].t + 400);
       await writeFile(`${output}/${profile.key}-${label}-frames.json`, JSON.stringify(frames));
       assert.ok(steady.length > 8, `${profile.key} ${label} samples`);
+      assert.ok(
+        steady.every((f) => f.sha === expectedAsset.sha256),
+        `${profile.key}: exact delivered asset`,
+      );
       assert.ok(
         steady.filter((f) => f.clip === expected).length / steady.length > 0.85,
         `${profile.key} ${label} clip: ${JSON.stringify(steady.map((f) => f.clip))}`,
@@ -128,11 +132,12 @@ try {
         `${profile.key} remote ${label}`,
       );
       await page.screenshot({ path: `${output}/${profile.key}-${label}.png` });
-      await page.keyboard.up(key);
-      await page.waitForTimeout(450);
-      await page.waitForFunction(
-        () => gaitRenderer.players.get(gaitRenderer.selfId).actor.animation.name === 'Idle_Loop',
-      );
+      if (label === 'walk-again') {
+        await page.keyboard.up(key);
+        await page.waitForFunction(
+          () => gaitRenderer.players.get(gaitRenderer.selfId).actor.animation.name === 'Idle_Loop',
+        );
+      }
       phases.push({
         label,
         clip: expected,

@@ -26,11 +26,12 @@ const server = http.createServer(async (req, res) => {
       res.writeHead(405).end();
       return;
     }
+    const bytes = await readFile(file);
     res.writeHead(200, {
       'Content-Type': mime[path.extname(file)] || 'application/octet-stream',
       'Cache-Control': 'no-store',
     });
-    res.end(await readFile(file));
+    res.end(bytes);
   } catch {
     res.writeHead(404).end('Not found');
   }

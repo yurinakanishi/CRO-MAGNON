@@ -4,9 +4,9 @@
   "kind": "humanoid",
   "candidate": 1,
   "status": "reviewed-prototype",
-  "url": "/models/neanderthal-hunter/model-run-r05.glb",
-  "sha256": "3a7c008bfd8bd7bbf2f2010387373215aee67cf93c5387ccd6561d03c935ac2a",
-  "bytes": 11046344,
+  "url": "/models/neanderthal-hunter/model-thrust-r02.glb",
+  "sha256": "8530fa2b979cb19653409d2daf88d9c1bc918f2751cf756ce5f7678afad4e60d",
+  "bytes": 10948112,
   "triangles": 54422,
   "upAxis": "Y",
   "forwardAxis": "+Z",
@@ -43,7 +43,7 @@
     },
     {
       "name": "Run_Loop",
-      "seconds": 0.84,
+      "seconds": 0.72,
       "loop": true
     },
     {
@@ -96,11 +96,12 @@
       "cycleSeconds": 1.1
     },
     "Run_Loop": {
-      "metresPerSecond": 1.906287518977724,
-      "strideMetres": 1.601281515941288,
+      "metresPerSecond": 3.5926187857657106,
+      "strideMetres": 2.5866855257513115,
       "dutyFactor": 0.36,
-      "method": "Bounded sagittal joint recovery, grounded flexion/extension stance, independent flight pelvis, stable bone twist",
-      "cycleSeconds": 0.84
+      "method": "Distinct upright low-step walk and bent-elbow high-recovery run; limb-length IK refined against skinned soles",
+      "swingLiftMetres": 0.39416160392400934,
+      "cycleSeconds": 0.72
     }
   },
   "hunting": {
@@ -202,15 +203,5 @@
     "attachment": "authored-grip",
     "author": "Codex",
     "review": "assets/spear-thrusts/README.md"
-  },
-  "playerRun": {
-    "revision": "revision-05",
-    "sourceSha256": "8530fa2b979cb19653409d2daf88d9c1bc918f2751cf756ce5f7678afad4e60d",
-    "sourceDelivery": "/models/neanderthal-hunter/model-thrust-r02.glb",
-    "status": "adopted",
-    "method": "Bounded sagittal joint recovery, grounded flexion/extension stance, independent flight pelvis, stable bone twist",
-    "stanceFraction": 0.36,
-    "peakAuthoredSwingKneeDegrees": 104,
-    "review": "assets/player-gaits/RUN_REPAIR.md"
   }
 }

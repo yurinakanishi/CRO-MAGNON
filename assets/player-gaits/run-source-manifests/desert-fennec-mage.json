@@ -4,9 +4,9 @@
   "kind": "humanoid",
   "candidate": 1,
   "status": "reviewed-prototype",
-  "url": "/models/desert-fennec-mage/model-run-r05.glb",
-  "sha256": "1df80588345196a75382afbd437b6ec9349bc717688433801dc3fdd72c8e0841",
-  "bytes": 15792420,
+  "url": "/models/desert-fennec-mage/model-gaits-r02.glb",
+  "sha256": "402f60a6182e1204ce33ac643556bc3d5118a63f0490b1be97f2124e5207f174",
+  "bytes": 15690832,
   "triangles": 103314,
   "upAxis": "Y",
   "forwardAxis": "+Z",
@@ -58,7 +58,7 @@
     },
     {
       "name": "Run_Loop",
-      "seconds": 0.76,
+      "seconds": 0.6,
       "loop": true
     },
     {
@@ -91,11 +91,12 @@
       "cycleSeconds": 0.9
     },
     "Run_Loop": {
-      "metresPerSecond": 0.5268570269002336,
-      "strideMetres": 0.40041134044417753,
+      "metresPerSecond": 1.0780305319650934,
+      "strideMetres": 0.646818319179056,
       "dutyFactor": 0.36,
-      "method": "Bounded sagittal joint recovery, grounded flexion/extension stance, independent flight pelvis, stable bone twist",
-      "cycleSeconds": 0.76
+      "method": "Distinct upright low-step walk and bent-elbow high-recovery run; limb-length IK refined against skinned soles",
+      "swingLiftMetres": 0.09856279149395139,
+      "cycleSeconds": 0.6
     }
   },
   "notes": [
@@ -189,15 +190,5 @@
     "review": "assets/player-gaits/README.md",
     "sourceDelivery": "/models/desert-fennec-mage/model-downed-r01.glb",
     "author": "Codex"
-  },
-  "playerRun": {
-    "revision": "revision-05",
-    "sourceSha256": "402f60a6182e1204ce33ac643556bc3d5118a63f0490b1be97f2124e5207f174",
-    "sourceDelivery": "/models/desert-fennec-mage/model-gaits-r02.glb",
-    "status": "adopted",
-    "method": "Bounded sagittal joint recovery, grounded flexion/extension stance, independent flight pelvis, stable bone twist",
-    "stanceFraction": 0.36,
-    "peakAuthoredSwingKneeDegrees": 104,
-    "review": "assets/player-gaits/RUN_REPAIR.md"
   }
 }

@@ -1,6 +1,6 @@
 {
   "bones": 22,
-  "bytes": 10497740,
+  "bytes": 10399520,
   "candidate": 1,
   "clips": [
     {
@@ -30,7 +30,7 @@
     },
     {
       "name": "Run_Loop",
-      "seconds": 0.84,
+      "seconds": 0.72,
       "loop": true
     },
     {
@@ -58,11 +58,12 @@
   "heightMetres": 1.8,
   "locomotion": {
     "Run_Loop": {
-      "metresPerSecond": 1.972610730818252,
-      "strideMetres": 1.6569930138873314,
+      "metresPerSecond": 3.717612531157475,
+      "strideMetres": 2.6766810224333817,
       "dutyFactor": 0.36,
-      "method": "Bounded sagittal joint recovery, grounded flexion/extension stance, independent flight pelvis, stable bone twist",
-      "cycleSeconds": 0.84
+      "method": "Distinct upright low-step walk and bent-elbow high-recovery run; limb-length IK refined against skinned soles",
+      "swingLiftMetres": 0.40787520341842004,
+      "cycleSeconds": 0.72
     },
     "Walk_Loop": {
       "metresPerSecond": 0.9656136444564868,
@@ -99,11 +100,11 @@
     "huntingAnimationAuthor": "Codex; appended keyframes, previous surface/rig/materials/animation bytes preserved",
     "previousMotionVisualReview": "output/model-generation/models/cro-magnon-hunter/qa/adoption-review.json"
   },
-  "sha256": "e2836b875346050886de4788bc48c41d46b2faf4bbf77e04044623f05de5a6ae",
+  "sha256": "9246ef3ee00afffeec9d675a6574bfce0eb57b84f2431b71e524914197161b52",
   "status": "completed-prototype-candidate",
   "triangles": 69990,
   "upAxis": "Y",
-  "url": "/models/cro-magnon-hunter/model-run-r05.glb",
+  "url": "/models/cro-magnon-hunter/model-thrust-r02.glb",
   "hunting": {
     "clip": {
       "name": "Attack",
@@ -203,15 +204,5 @@
     "attachment": "authored-grip",
     "author": "Codex",
     "review": "assets/spear-thrusts/README.md"
-  },
-  "playerRun": {
-    "revision": "revision-05",
-    "sourceSha256": "9246ef3ee00afffeec9d675a6574bfce0eb57b84f2431b71e524914197161b52",
-    "sourceDelivery": "/models/cro-magnon-hunter/model-thrust-r02.glb",
-    "status": "adopted",
-    "method": "Bounded sagittal joint recovery, grounded flexion/extension stance, independent flight pelvis, stable bone twist",
-    "stanceFraction": 0.36,
-    "peakAuthoredSwingKneeDegrees": 104,
-    "review": "assets/player-gaits/RUN_REPAIR.md"
   }
 }

@@ -25,7 +25,9 @@ for (const profile of CHARACTER_MODELS)
         duration = action.getClip().duration;
       let elbow = 0,
         low = Infinity,
-        high = -Infinity;
+        high = -Infinity,
+        maximumKnee = 0,
+        maximumHip = 0;
       for (let i = 0; i < 60; i++) {
         action.time = (duration * i) / 60;
         animation.mixer.update(0);
@@ -35,11 +37,30 @@ for (const profile of CHARACTER_MODELS)
         const height = pos('FootL').y;
         low = Math.min(low, height);
         high = Math.max(high, height);
+        const hip = pos('UpperLegL'),
+          knee = pos('LowerLegL'),
+          foot = pos('FootL');
+        maximumKnee = Math.max(
+          maximumKnee,
+          THREE.MathUtils.radToDeg(Math.PI - hip.clone().sub(knee).angleTo(foot.sub(knee))),
+        );
+        maximumHip = Math.max(
+          maximumHip,
+          THREE.MathUtils.radToDeg(Math.atan2(knee.z - hip.z, hip.y - knee.y)),
+        );
       }
-      motions.push({ elbow: elbow / 60, footRange: high - low });
+      motions.push({ elbow: elbow / 60, footRange: high - low, maximumKnee, maximumHip });
     }
     assert.ok(motions[1].elbow > motions[0].elbow + 0.4, 'run bends the elbows distinctly');
     assert.ok(motions[1].footRange > motions[0].footRange * 2.5, 'run lifts the feet distinctly');
+    assert.ok(
+      motions[1].maximumKnee < 116,
+      'running recovery does not fold the calf into the thigh',
+    );
+    assert.ok(
+      motions[1].maximumHip < 60,
+      'running thigh stays below the exaggerated waist-high pose',
+    );
     animation.update(0.2, asset.locomotion.Walk_Loop.metresPerSecond, false);
     assert.equal(animation.name, 'Walk_Loop');
     animation.update(0.2, 0, true);

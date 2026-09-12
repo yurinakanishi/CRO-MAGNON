@@ -15,6 +15,11 @@ page.on('pageerror', (e) => errors.push(String(e)));
 try {
   await page.goto('http://127.0.0.1:3037');
   await page.waitForFunction(() => document.querySelector('#status')?.textContent.includes('完了'));
+  await page.evaluate((revision) => {
+    const select = document.querySelector('#version');
+    if (![...select.options].some((o) => o.value === revision))
+      select.add(new Option(revision, revision));
+  }, revision);
   await page.selectOption('#version', revision);
   const keys = await page.locator('#model option').evaluateAll((els) => els.map((e) => e.value));
   for (const key of keys) {

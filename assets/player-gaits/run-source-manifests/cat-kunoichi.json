@@ -4,9 +4,9 @@
   "kind": "humanoid",
   "candidate": 1,
   "status": "reviewed-prototype",
-  "url": "/models/cat-kunoichi/model-run-r05.glb",
-  "sha256": "088f582295a912ec7a09014b06eaf43c8618859ff1e9e3c4f6bfe595818f8c94",
-  "bytes": 7737180,
+  "url": "/models/cat-kunoichi/model-gaits-r02.glb",
+  "sha256": "d9004c15adf306659239d6a818609a2f11d4f0e0f4a482436ea76f83bbb9eec8",
+  "bytes": 7639084,
   "triangles": 66766,
   "upAxis": "Y",
   "forwardAxis": "+Z",
@@ -58,7 +58,7 @@
     },
     {
       "name": "Run_Loop",
-      "seconds": 0.84,
+      "seconds": 0.72,
       "loop": true
     },
     {
@@ -101,11 +101,12 @@
   "bones": 22,
   "locomotion": {
     "Run_Loop": {
-      "metresPerSecond": 1.724195170734536,
-      "method": "Bounded sagittal joint recovery, grounded flexion/extension stance, independent flight pelvis, stable bone twist",
+      "metresPerSecond": 3.249444744845856,
+      "method": "Distinct upright low-step walk and bent-elbow high-recovery run; limb-length IK refined against skinned soles",
       "dutyFactor": 0.36,
-      "strideMetres": 1.44832394341701,
-      "cycleSeconds": 0.84
+      "strideMetres": 2.3396002162890164,
+      "swingLiftMetres": 0.35651050914880245,
+      "cycleSeconds": 0.72
     },
     "Walk_Loop": {
       "metresPerSecond": 0.8440116220378846,
@@ -185,15 +186,5 @@
     "review": "assets/player-gaits/README.md",
     "sourceDelivery": "/models/cat-kunoichi/model-downed-r01.glb",
     "author": "Codex"
-  },
-  "playerRun": {
-    "revision": "revision-05",
-    "sourceSha256": "d9004c15adf306659239d6a818609a2f11d4f0e0f4a482436ea76f83bbb9eec8",
-    "sourceDelivery": "/models/cat-kunoichi/model-gaits-r02.glb",
-    "status": "adopted",
-    "method": "Bounded sagittal joint recovery, grounded flexion/extension stance, independent flight pelvis, stable bone twist",
-    "stanceFraction": 0.36,
-    "peakAuthoredSwingKneeDegrees": 104,
-    "review": "assets/player-gaits/RUN_REPAIR.md"
   }
 }

@@ -4,9 +4,9 @@
   "kind": "humanoid",
   "candidate": 1,
   "status": "reviewed-prototype",
-  "url": "/models/cro-magnon-woman/model-thrust-r02.glb",
-  "sha256": "078eb40117062f087ece99966616dcba952f71b66b8c376587ad1b5d6bc8263e",
-  "bytes": 14244552,
+  "url": "/models/cro-magnon-woman/model-run-r05.glb",
+  "sha256": "17754555b2ea158aec8531ea7ca214b485924a1ff51adc186f0fe7073733c2f0",
+  "bytes": 14342760,
   "triangles": 65707,
   "upAxis": "Y",
   "forwardAxis": "+Z",
@@ -45,7 +45,7 @@
     },
     {
       "name": "Run_Loop",
-      "seconds": 0.72,
+      "seconds": 0.84,
       "loop": true
     },
     {
@@ -106,12 +106,11 @@
       "cycleSeconds": 1.1
     },
     "Run_Loop": {
-      "metresPerSecond": 3.4339430493933456,
-      "strideMetres": 2.4724389955632087,
+      "metresPerSecond": 1.8220922302903464,
+      "strideMetres": 1.530557473443891,
       "dutyFactor": 0.36,
-      "method": "Distinct upright low-step walk and bent-elbow high-recovery run; limb-length IK refined against skinned soles",
-      "swingLiftMetres": 0.376752608847727,
-      "cycleSeconds": 0.72
+      "method": "Bounded sagittal joint recovery, grounded flexion/extension stance, independent flight pelvis, stable bone twist",
+      "cycleSeconds": 0.84
     }
   },
   "hunting": {
@@ -213,5 +212,15 @@
     "attachment": "authored-grip",
     "author": "Codex",
     "review": "assets/spear-thrusts/README.md"
+  },
+  "playerRun": {
+    "revision": "revision-05",
+    "sourceSha256": "078eb40117062f087ece99966616dcba952f71b66b8c376587ad1b5d6bc8263e",
+    "sourceDelivery": "/models/cro-magnon-woman/model-thrust-r02.glb",
+    "status": "adopted",
+    "method": "Bounded sagittal joint recovery, grounded flexion/extension stance, independent flight pelvis, stable bone twist",
+    "stanceFraction": 0.36,
+    "peakAuthoredSwingKneeDegrees": 104,
+    "review": "assets/player-gaits/RUN_REPAIR.md"
   }
 }

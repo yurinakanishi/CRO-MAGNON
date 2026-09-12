@@ -1,16 +1,16 @@
 {
-  "modelKey": "neanderthal-woman",
-  "name": "ネアンデルタール人 女性",
+  "modelKey": "cro-magnon-woman",
+  "name": "クロマニョン人 女性",
   "kind": "humanoid",
   "candidate": 1,
   "status": "reviewed-prototype",
-  "url": "/models/neanderthal-woman/model-run-r05.glb",
-  "sha256": "cf1259d975dd4873b8923889c59fb8fb8f88d59cd13cb4d83eb0e1ff4a23c2b3",
-  "bytes": 13968356,
-  "triangles": 68090,
+  "url": "/models/cro-magnon-woman/model-thrust-r02.glb",
+  "sha256": "078eb40117062f087ece99966616dcba952f71b66b8c376587ad1b5d6bc8263e",
+  "bytes": 14244552,
+  "triangles": 65707,
   "upAxis": "Y",
   "forwardAxis": "+Z",
-  "heightMetres": 1.6,
+  "heightMetres": 1.67,
   "widthMetres": null,
   "placement": {
     "pivot": "ground-centred",
@@ -45,7 +45,7 @@
     },
     {
       "name": "Run_Loop",
-      "seconds": 0.84,
+      "seconds": 0.72,
       "loop": true
     },
     {
@@ -70,7 +70,7 @@
     }
   ],
   "gender": "female",
-  "species": "nea",
+  "species": "cro",
   "notes": [
     "Adult female with a feminine face and body; primitive hide/fur wraps, rawhide ties and footwear.",
     "Original TRELLIS geometry retained through measured reduction. Existing source UV atlas preserved; selected reference projected onto facial colour only.",
@@ -78,39 +78,40 @@
     "Static front, sides, rear, top and bottom and sampled animation poses reviewed. Complete limbs and covered garment; no gross disjoint skin ribbons.",
     "Prototype limits: hair and fur remain solid reconstructed clusters; facial side detail is simplified, and the fur waist wrap stretches slightly in large strides.",
     "Gender changes appearance only. Missing gender starts female; male models remain available.",
-    "Reference v4 sweeps hair clear of both eyes. Animated Hips lifted 3 mm to correct measured floor penetration; in-place Root and rest mesh unchanged.",
+    "Small dark rear-waist albedo artifact replaced with colour sampled from neighbouring source texels; no geometry substitution.",
     "Hunting revision 03 adds Attack; original mesh, rig, textures and earlier clips retained byte-for-byte. Previous delivery archived."
   ],
   "provenance": {
     "provider": "Codex",
     "claudeUsed": false,
     "referenceGenerator": "Built-in imagegen",
-    "referenceImage": "output/model-generation/models/neanderthal-woman/source/original/reference-v4.png",
-    "referenceSha256": "34cc4d5fa6b4ca64fbef85cf1560011d705ab11d582883bc3955fe3e6d305222",
+    "referenceImage": "output/model-generation/models/cro-magnon-woman/source/original/reference-v3.png",
+    "referenceSha256": "7c105860011cf6a549f4f5b719f35416aac57fb1bb5302b2cb0bf48b90f4b502",
     "reconstruction": "Local TRELLIS-2; settings and dense SHA in model workspace",
-    "candidateFile": "output/creature-motion/revision-04/neanderthal-woman/model.glb",
-    "visualReview": "assets/creature-motion/models/neanderthal-woman-review.json",
-    "previousDeliverySha256": "ea63762e435024d4f907fdca86946e48b449d1d3a9d0e07856fc77395f0ba1ea",
+    "candidateFile": "output/creature-motion/revision-04/cro-magnon-woman/model.glb",
+    "visualReview": "assets/creature-motion/models/cro-magnon-woman-review.json",
+    "previousDeliverySha256": "4705b3e681b572a21225493db90730cec366c9f51fcbd71082c49e4f808379a9",
     "huntingAnimationAuthor": "Codex; appended keyframes, previous surface/rig/materials/animation bytes preserved",
-    "previousMotionVisualReview": "output/model-generation/models/neanderthal-woman/qa/adoption-review.json"
+    "previousMotionVisualReview": "output/model-generation/models/cro-magnon-woman/qa/adoption-review.json"
   },
   "lods": [],
   "bones": 22,
   "locomotion": {
     "Walk_Loop": {
-      "metresPerSecond": 0.8536896039655271,
-      "strideMetres": 0.9390585643620799,
+      "metresPerSecond": 0.891933259582687,
+      "strideMetres": 0.9811265855409558,
       "dutyFactor": 0.6,
       "method": "Distinct upright low-step walk and bent-elbow high-recovery run; limb-length IK refined against skinned soles",
-      "swingLiftMetres": 0.045074811089379836,
+      "swingLiftMetres": 0.047094076105965874,
       "cycleSeconds": 1.1
     },
     "Run_Loop": {
-      "metresPerSecond": 1.7439659052438627,
-      "strideMetres": 1.4649313604048446,
+      "metresPerSecond": 3.4339430493933456,
+      "strideMetres": 2.4724389955632087,
       "dutyFactor": 0.36,
-      "method": "Bounded sagittal joint recovery, grounded flexion/extension stance, independent flight pelvis, stable bone twist",
-      "cycleSeconds": 0.84
+      "method": "Distinct upright low-step walk and bent-elbow high-recovery run; limb-length IK refined against skinned soles",
+      "swingLiftMetres": 0.376752608847727,
+      "cycleSeconds": 0.72
     }
   },
   "hunting": {
@@ -125,39 +126,39 @@
       "forwardAxis": "+Z",
       "contact": "fixed reviewed idle legs and hips"
     },
-    "visualReview": "output/model-generation/models/neanderthal-woman/work/hunting/revision-03/qa/visual-review.json"
+    "visualReview": "output/model-generation/models/cro-magnon-woman/work/hunting/revision-03/qa/visual-review.json"
   },
   "motionReview": {
     "revision": "revision-04",
-    "sourceSha256": "63ab98a62b2706e76b4cc551d2a0c8bd23363072258598b606d5129ad32a9ff9",
+    "sourceSha256": "8690d5563233614397c7cfad6af0e0b3d89273a29fa59bf421372ec1168ef1b7",
     "changes": [
       {
         "clip": "Run_Loop",
         "frames": 43,
         "sampleRate": 60.00000102179393,
-        "stride": 1.7268299705922603,
+        "stride": 1.80410996927619,
         "duty": 0.34,
-        "lift": 0.187811712872416,
-        "bodyClearance": 0.12092101333803829
+        "lift": 0.19622531710819116,
+        "bodyClearance": 0.1350516569891238
       },
       {
         "clip": "Walk_Loop",
         "frames": 61,
         "sampleRate": 60,
-        "stride": 0.8264,
+        "stride": 0.8633,
         "duty": 0.62,
-        "lift": 0.09766209069365632,
-        "bodyClearance": 0.06367924782741097
+        "lift": 0.10203716489625941,
+        "bodyClearance": 0.08568402545072729
       }
     ],
     "status": "adopted",
-    "sourceDelivery": "output/creature-motion/baseline/neanderthal-woman/model.glb",
-    "review": "assets/creature-motion/models/neanderthal-woman-review.json"
+    "sourceDelivery": "output/creature-motion/baseline/cro-magnon-woman/model.glb",
+    "review": "assets/creature-motion/models/cro-magnon-woman-review.json"
   },
   "downedMotion": {
     "revision": "revision-01",
-    "sourceUrl": "/models/neanderthal-woman/model-motion-r04.glb",
-    "sourceSha256": "037e1c9ba7181ca94fba97d59f85d4a39326f043b8be4ccdfd8ccedefaa97038",
+    "sourceUrl": "/models/cro-magnon-woman/model-motion-r04.glb",
+    "sourceSha256": "e89a53faf2141e6b57b52c3656ec31bcde616333c7bacd82c5fa31ba86aeeaf9",
     "clip": "Downed",
     "seconds": 1.8,
     "fps": 60,
@@ -165,16 +166,16 @@
   },
   "playerGaits": {
     "revision": "revision-02",
-    "sourceSha256": "58156f4088fba4740a03b2a71428a5d9cc5cabf8262a848e2667b3fd840a05d7",
+    "sourceSha256": "539c3e1aeb063389a2b5cd4c2ae947655ded07ecafd7ae6c97c05f1cf8481a7c",
     "changes": [
       {
         "clip": "Run_Loop",
         "frames": 44,
         "sampleRate": 59.72222222222222,
-        "stride": 2.3664275821924416,
+        "stride": 2.4724389955632087,
         "duty": 0.36,
-        "lift": 0.3605984887150387,
-        "bodyClearance": 0.3075495945691774,
+        "lift": 0.376752608847727,
+        "bodyClearance": 0.36983628199671914,
         "armSwingRadians": 0.68,
         "elbowBendRadians": 1.3,
         "forwardLeanRadians": 0.16
@@ -183,10 +184,10 @@
         "clip": "Walk_Loop",
         "frames": 67,
         "sampleRate": 59.99999999999999,
-        "stride": 0.9390585643620799,
+        "stride": 0.9811265855409558,
         "duty": 0.6,
-        "lift": 0.045074811089379836,
-        "bodyClearance": 0.0763314095722234,
+        "lift": 0.047094076105965874,
+        "bodyClearance": 0.09274586939220009,
         "armSwingRadians": 0.27,
         "elbowBendRadians": 0.2,
         "forwardLeanRadians": 0.015
@@ -194,33 +195,23 @@
     ],
     "status": "adopted",
     "review": "assets/player-gaits/README.md",
-    "sourceDelivery": "/models/neanderthal-woman/model-downed-r01.glb",
+    "sourceDelivery": "/models/cro-magnon-woman/model-downed-r01.glb",
     "author": "Codex"
   },
   "spearThrust": {
     "revision": "revision-02",
     "status": "adopted",
-    "sourceSha256": "a89fc69b6c03588fa520a806d762a8156c6ba1dae0b61a998f792b9599aa7559",
-    "sourceDelivery": "/models/neanderthal-woman/model-gaits-r02.glb",
+    "sourceSha256": "1726a36d75e5fe9fd765abf650844c98b67eb480b6dd8ddc4537593d802bab9c",
+    "sourceDelivery": "/models/cro-magnon-woman/model-gaits-r02.glb",
     "clip": "Attack",
     "seconds": 0.7,
     "impactSeconds": 0.333,
     "frames": 86,
     "sampleRate": 120,
-    "leftStepMetres": 0.44800000000000006,
-    "handSpacingMetres": 0.32000000000000006,
+    "leftStepMetres": 0.4676,
+    "handSpacingMetres": 0.334,
     "attachment": "authored-grip",
     "author": "Codex",
     "review": "assets/spear-thrusts/README.md"
-  },
-  "playerRun": {
-    "revision": "revision-05",
-    "sourceSha256": "9792b2d0b5cfff406b8341759c5a36c720139c467bcccdd5e6bbb3e48c2e8ad4",
-    "sourceDelivery": "/models/neanderthal-woman/model-thrust-r02.glb",
-    "status": "adopted",
-    "method": "Bounded sagittal joint recovery, grounded flexion/extension stance, independent flight pelvis, stable bone twist",
-    "stanceFraction": 0.36,
-    "peakAuthoredSwingKneeDegrees": 104,
-    "review": "assets/player-gaits/RUN_REPAIR.md"
   }
 }
