@@ -347,12 +347,11 @@ test('map mode leaves game and menu bindings untouched', () => {
   assert.deepEqual(sample('map').actions, ['confirm']);
 });
 
-test('d-pad up eats carried food in game mode; the map stays on SHARE and the touchpad', () => {
+test('d-pad up is unassigned in game mode; the map stays on SHARE and the touchpad', () => {
   const { sample, press } = setup('game');
   press(PAD.up);
-  assert.deepEqual(sample().actions, ['heal']);
+  assert.deepEqual(sample().actions, []);
   press(PAD.up, false);
   press(PAD.share);
   assert.deepEqual(sample().actions, ['map']);
 });
-

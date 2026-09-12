@@ -22,8 +22,8 @@ import { meatRingLayout } from './resource-visuals.js';
 
 const TAU = Math.PI * 2;
 const random = seededRandom;
-// Metres the grassland tufts are sunk below the terrain (see grassPlacement).
-export const GRASS_SINK = 0.045;
+// Source-space metres; scale the sink with each tuft to bury the cut blade roots.
+export const GRASS_SINK = 0.08;
 
 function addModel(world, key, x, z, yaw = 0, scale = 1, surface = null) {
   const model = world.worldAssets.create(key, 0, surface);
@@ -204,12 +204,15 @@ function buildMarshAssets(world) {
 }
 
 export function buildForestAssets(world) {
-  // Tufts sink 45 mm: the root cap was cut off below 4.5 cm (meadow-grass) /
-  // 3 cm (meadow-sprig) by scripts/cut-grass-root.mjs, so the open cut edge
-  // has to sit below the ground on flat terrain (was 18 mm, 2026-09-12).
+  // The complete root discs ended at 8 cm / 4 cm, above the old cut.
+  // Sink the exposed blade ends at every placement scale, including streamed grass.
   const grassPlacement = (item) => ({
     ...item,
-    position: new THREE.Vector3(item.x, terrainHeight(item.x, item.z) - GRASS_SINK, item.z),
+    position: new THREE.Vector3(
+      item.x,
+      terrainHeight(item.x, item.z) - GRASS_SINK * item.scale,
+      item.z,
+    ),
     scale: new THREE.Vector3().setScalar(item.scale),
   });
   const trees = SCENERY.trees

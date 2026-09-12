@@ -33,7 +33,6 @@ export type PadAction =
   | 'menu'
   | 'inventory'
   | 'journal'
-  | 'heal'
   | 'center'
   | 'zoomIn'
   | 'zoomOut'
@@ -184,7 +183,6 @@ export class GamepadInput {
       frame.look = { x: right.x, y: right.y };
       // D-pad up eats whatever is carried; the map stays on SHARE / the touchpad.
       for (const [dir, action] of [
-        ['up', 'heal'],
         ['down', 'menu'],
         ['left', 'inventory'],
         ['right', 'journal'],

@@ -139,6 +139,13 @@ try {
   player().inventory.cookedMeat = 2;
   player().energy = 40;
   await sleep(400);
+  const shortcutStock = player().inventory.berry;
+  await page.keyboard.press('q');
+  await tap(PAD.up);
+  await sleep(400);
+  assert.equal(player().inventory.berry, shortcutStock, 'Q / up no longer consume food');
+  assert.ok(player().energy < 41, 'Q / up no longer heal');
+  assert.equal(await page.locator('#heal-hint').count(), 0);
 
   // 20 + 21: OPTIONS lands on the bag with the top-left food card selected; decide → 使う eats.
   await tap(PAD.options);
@@ -160,6 +167,13 @@ try {
     return cards.every((box) => box.top >= focused.top - 1 && box.left >= focused.left - 1);
   });
   assert.ok(firstCard, 'the focused card is the top-left one');
+  assert.ok(await page.locator('.inventory-header .portrait').isVisible());
+  assert.equal(await page.locator('#inventory-energy-track').getAttribute('data-level'), 'low');
+  assert.equal(
+    await page.locator('#inventory-energy-label').innerText(),
+    await page.locator('#energy-label').innerText(),
+  );
+  await page.screenshot({ path: `${output}/00-before-eating.png`, animations: 'disabled' });
   await tap(PAD.circle);
   assert.equal(await page.locator('.item-actions').count(), 1, 'decide opens the use popup');
   assert.match(await focusedKey(), /item-use/, '使う is focused');
@@ -174,6 +188,19 @@ try {
     'count refreshes',
   );
   await focusInsideModal('after eating');
+  assert.equal(
+    await page.locator('#inventory-energy-label').innerText(),
+    await page.locator('#energy-label').innerText(),
+  );
+  assert.equal(
+    await page.locator('#inventory-energy-track').getAttribute('aria-valuenow'),
+    String(Math.round(player().energy)),
+  );
+  assert.equal(await page.locator('#inventory-energy-track').getAttribute('data-level'), 'ok');
+  assert.equal(
+    await page.locator('#inventory-energy-bar').evaluate((el) => el.style.width),
+    `${Math.round(player().energy)}%`,
+  );
   await page.screenshot({ path: `${output}/01-bag-open.png`, animations: 'disabled' });
   passed('OPTIONS opens the bag with the top-left berry focused; decide → 使う eats one and heals');
 

@@ -46,9 +46,9 @@
       "kind": "foliage",
       "height": 0.55,
       "status": "integrated-reviewed-prototype",
-      "subject": "One small rounded clump of nine broad, smooth grass blades on a low root crown; clean readable ground cover.",
+      "subject": "Nine broad smooth grass blades without a root disc or pedestal.",
       "geometryResolution": 1024,
-      "sha256": "fcc3d10a1c602e651ef9a5684ee015b23749469cbec06caf90afa474085157d8",
+      "sha256": "24b41b18d4c5ea40ca660d7eda16f2154ca856828ebfc721d6c3489efe63f9c0",
       "delivery": "/models/meadow-grass/model.glb"
     },
     {
@@ -57,9 +57,9 @@
       "kind": "foliage",
       "height": 0.45,
       "status": "integrated-reviewed-prototype",
-      "subject": "One or two broad smooth grass blades rising from a tiny root crown; sparse scattered ground cover for the grassland.",
+      "subject": "Sparse grass blades without a root disc or pedestal.",
       "geometryResolution": 1024,
-      "sha256": "61a73df182ecc2f267f87159f57d5903cd663ff4fd8d67cd6411501a306801ae",
+      "sha256": "4a4c9060a5d95f0db3dcf3c4ff050c78c86f543b942ec62273471326959483de",
       "delivery": "/models/meadow-sprig/model.glb",
       "referenceVersion": 1
     },

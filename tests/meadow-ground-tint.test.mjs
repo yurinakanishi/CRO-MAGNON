@@ -191,10 +191,10 @@ test('the grass roots are leaf green, not the baked brown soil', () => {
 });
 
 // 2026-09-12: the root cap TRELLIS closed each tuft with was cut off
-// (scripts/cut-grass-root.mjs) and the tufts are sunk deeper so the cut edge
+// (scripts/cut-grass-root.mjs, complete disc tops at 8 / 4 cm) and the tufts are sunk deeper so the cut edge
 // stays below flat ground. The height is unchanged so placement scales hold.
 test('the grass root caps are cut off below the placement sink and the heights are unchanged', () => {
-  const cut = { 'meadow-grass': 0.045, 'meadow-sprig': 0.03 };
+  const cut = { 'meadow-grass': 0.08, 'meadow-sprig': 0.04 };
   for (const key of ['meadow-grass', 'meadow-sprig']) {
     const { positions, indices } = tuftGeometry(key),
       asset = JSON.parse(

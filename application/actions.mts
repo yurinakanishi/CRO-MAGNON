@@ -14,7 +14,6 @@ import { handleVillageAction } from '../shared/village-life.mjs';
 import { canStartJump, jumpProgress } from '../shared/jumping.mjs';
 import { cancelBarter } from '../shared/barter.mjs';
 import { carrying, handleCarryAction } from '../shared/carrying.mjs';
-import { chooseMeal, HEAL_REPEAT_MS } from '../shared/pantry.mjs';
 const distance = (a, b) => Math.hypot(a.x - b.x, a.z - b.z);
 export function createActionHandler({
   notice: sendNotice,
@@ -28,20 +27,6 @@ export function createActionHandler({
   const notice = (player, text, tone = 'info', _popup = false) =>
     sendNotice(player, text, tone, false);
   return function act(room, player, message, now) {
-    if (message.action === 'heal') {
-      // One button eats whatever is carried; the food's own handler applies it.
-      const meal = chooseMeal(player);
-      if (!meal)
-        return notice(
-          player,
-          player.energy >= 100
-            ? '体力は満タンです。'
-            : '食べ物がありません。ベリーや肉を集めよう。',
-        );
-      if (now - (player.healAt ?? 0) < HEAL_REPEAT_MS) return;
-      player.healAt = now;
-      message = { ...message, action: meal.eatAction };
-    }
     const action = message.action;
     if (action === 'changeCharacter') {
       const result = handleCharacterSwitch(room, player, message, now);

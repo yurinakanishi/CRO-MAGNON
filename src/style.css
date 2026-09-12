@@ -879,7 +879,7 @@ body[data-screen] .world-labels {
   box-shadow: inset 0 2px 4px #0008;
   overflow: hidden;
 }
-#energy-bar {
+.energy-fill {
   position: absolute;
   inset: 0 auto 0 0;
   display: block;
@@ -890,10 +890,10 @@ body[data-screen] .world-labels {
     width 0.3s,
     background 0.3s;
 }
-.energy-track[data-level='low'] #energy-bar {
+.energy-track[data-level='low'] .energy-fill {
   background: linear-gradient(180deg, #f3d27a, #d39a3a 55%, #b37a26);
 }
-.energy-track[data-level='critical'] #energy-bar {
+.energy-track[data-level='critical'] .energy-fill {
   background: linear-gradient(180deg, #f59a86, #d0493a 55%, #a8302a);
 }
 .energy-track[data-level='critical'] {
@@ -2389,6 +2389,81 @@ dialog:has(.character-switch) {
 .invite-code > span {
   font-size: 9px;
   color: #96a586;
+}
+.inventory-header {
+  position: sticky;
+  top: -1px;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 0 96px 16px 0;
+  margin-bottom: 8px;
+  background: var(--panel-solid);
+}
+.inventory-header .portrait {
+  flex-shrink: 0;
+  width: 64px;
+  height: 76px;
+  border-radius: 10px;
+}
+.inventory-status {
+  flex: 1;
+  min-width: 0;
+  max-width: 360px;
+}
+#modal-body .inventory-status h2 {
+  margin-bottom: 8px;
+}
+.inventory-status .energy-track {
+  width: 100%;
+  min-width: 130px;
+  height: 26px;
+}
+@media (max-width: 599px) {
+  .inventory-header {
+    padding-right: 0;
+  }
+}
+@media (max-height: 500px) and (min-width: 600px) {
+  .inventory-header {
+    gap: 10px;
+    padding: 0 0 8px;
+    margin-bottom: 4px;
+  }
+  .inventory-header .portrait {
+    width: 32px;
+    height: 38px;
+    border-radius: 6px;
+  }
+  .inventory-status {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    max-width: 440px;
+  }
+  #modal-body .inventory-status h2 {
+    margin: 0;
+    font-size: 18px;
+    white-space: nowrap;
+  }
+  .inventory-status .energy-track {
+    height: 22px;
+  }
+  #pause-panel-inventory .inventory-card {
+    padding: 8px;
+  }
+  #pause-panel-inventory .resource-icon {
+    height: 22px;
+    margin-bottom: 4px;
+  }
+  #pause-panel-inventory .resource-icon .icon {
+    width: 22px;
+    height: 22px;
+  }
+  #pause-panel-inventory .inventory-card p {
+    margin: 4px 0;
+  }
 }
 .inventory-grid {
   display: grid;
@@ -4040,13 +4115,6 @@ dialog:has(.atlas) #modal-body {
   .atlas-zoom .atlas-center kbd {
     display: none;
   }
-}
-.heal-hint {
-  margin-left: 0.5em;
-  font-size: 0.72em;
-  color: #ffe9a8;
-  opacity: 0.9;
-  white-space: nowrap;
 }
 
 /* 2026-09-12: bag cards are the controller's targets; "decide" opens a use popup. */

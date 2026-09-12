@@ -13,9 +13,12 @@ export const BEHEMOTH = Object.freeze({
   walkSpeed: 1.35,
   // Only the great ape (6.4) and the kunoichi (5.8) outrun it; humans (5.6) cannot.
   chaseSpeed: 5.7,
-  chargeSpeed: 7.5,
-  chargeStartSpeed: 4.125,
-  chargeAccelerationMs: 520,
+  // 3x the 7.5 m/s speed revision. Including acceleration, 1842 ms covers
+  // 40.5675 m: exactly 3x the previous 640 ms burst's 13.5225 m on open ground.
+  chargeSpeed: 22.5,
+  chargeStartSpeed: 12.375,
+  chargeAccelerationMs: 520 / 3,
+  chargeBrakeMs: 220,
   visionRange: 23,
   visionHalfAngle: Math.PI / 2.5,
   // Footsteps behind it are heard, running further than walking.
@@ -26,7 +29,7 @@ export const BEHEMOTH = Object.freeze({
   // Grounded charge brace, bite gape, raised-tail coil and neck draw-back each
   // announce a different strike. The strike clip follows on the same timeline.
   roarMs: 1200,
-  chargeMs: 1920,
+  chargeMs: 1842, // A ceiling; passing the target starts braking before this limit.
   recoveryMs: 700,
   gapeMs: 600,
   biteMs: 1000,

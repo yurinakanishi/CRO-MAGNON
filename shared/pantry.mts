@@ -4,7 +4,6 @@ import { attackProfile } from './combat-profiles.mjs';
 import { stopActor } from './combat.mjs';
 import { villageDay } from './village-sites.mjs';
 import type { PantryFoodId, PantryState, PantryAllowance } from './pantry-types.mjs';
-import { HUNTING } from './hunting.mjs';
 
 // Authored sharing rules and unlimited shelf life, not a reconstructed storage institution.
 export const PANTRY = Object.freeze({ capacity: 48, dailyAllowance: 3, reach: 9 });
@@ -58,32 +57,6 @@ export const PANTRY_FOODS: readonly {
     use: '火根と香草で作る食事。宴にも持ち寄れる。',
   },
 ]);
-// One press heals with whatever food is carried: the largest meal that is not
-// wasted on the missing energy, else the smallest meal carried. Null when the
-// player is full or has nothing to eat.
-export function chooseMeal(player: {
-  energy: number;
-  inventory?: Partial<Record<PantryFoodId | 'rawMeat', number>>;
-}) {
-  if (player.energy >= 100) return null;
-  const carried = [
-    ...PANTRY_FOODS,
-    {
-      id: 'rawMeat' as const,
-      name: '生肉',
-      energy: HUNTING.rawMeatEnergy,
-      eatAction: 'eatRawMeat',
-    },
-  ].filter((food) => (player.inventory?.[food.id] ?? 0) > 0);
-  if (!carried.length) return null;
-  const missing = 100 - player.energy;
-  const fits = carried.filter((food) => food.energy <= missing);
-  return fits.length
-    ? fits.reduce((best, food) => (food.energy > best.energy ? food : best))
-    : carried.reduce((best, food) => (food.energy < best.energy ? food : best));
-}
-export const HEAL_REPEAT_MS = 300;
-
 const bounded = (n: unknown, max: number) =>
   typeof n === 'number' && Number.isFinite(n) ? Math.max(0, Math.min(max, Math.floor(n))) : 0;
 export function createPantries(saved?: unknown): PantryState[] {

@@ -1,5 +1,4 @@
 import { mapScreen } from './map-screen.js';
-import { chooseMeal } from '../shared/pantry.mjs';
 import { installMapWarp, updateMapWarp, type MapInput } from './map-warp-ui.js';
 import { openCharacterSwitch, updateCharacterSwitch } from './character-switch-ui.js';
 import { carrying, canCarry } from '../shared/carrying.mjs';
@@ -179,7 +178,7 @@ $('#app').innerHTML = `
     <div id="damage-flash" class="damage-flash" aria-hidden="true" hidden></div>
     <div id="combat-status" class="combat-status" role="status" hidden></div>
     <div id="area-banner" class="area-banner" aria-live="polite" hidden><small></small><strong></strong></div>
-    <button id="status-plate" class="status-plate" title="部族の仲間・招待"><span class="energy-track" id="energy-track" data-level="ok"><span id="energy-bar"></span><em class="energy-label">${icon('leaf')}<b>体力</b><span id="energy-label">100 / 100</span></em><small id="heal-hint" class="heal-hint" hidden>Q／↑ 回復</small></span><span class="status-main"><span class="portrait cro cro-magnon-woman" id="my-portrait"><i></i></span><span class="status-text"><strong id="profile-name"></strong><small><span id="room-label"></span><i>·</i><b id="online-count">0/5</b><i>·</i><span id="day-label">1日目</span></small></span></span></button>
+    <button id="status-plate" class="status-plate" title="部族の仲間・招待"><span class="energy-track" id="energy-track" data-level="ok"><span id="energy-bar" class="energy-fill"></span><em class="energy-label">${icon('leaf')}<b>体力</b><span id="energy-label">100 / 100</span></em></span><span class="status-main"><span class="portrait cro cro-magnon-woman" id="my-portrait"><i></i></span><span class="status-text"><strong id="profile-name"></strong><small><span id="room-label"></span><i>·</i><b id="online-count">0/5</b><i>·</i><span id="day-label">1日目</span></small></span></span></button>
     <div class="map-hud"><button id="map-button" class="minimap-button" aria-label="世界地図を開く" title="世界地図 [M]"><canvas id="minimap" width="160" height="115"></canvas><span class="map-north">N</span><span class="map-area" id="map-area">はじまりの谷</span><kbd class="map-key">M</kbd></button><div class="connection"><i class="status-dot" id="connection-dot"></i><span id="connection-label">未接続</span><span id="ping-label">— ms</span></div></div>
     <div id="toast-stack" class="toast-stack" aria-live="polite"></div>
     <div class="chat-panel"><button class="chat-heading" id="chat-toggle">${icon('chat')}<strong>焚き火の会話</strong><kbd>Enter</kbd><span class="chat-collapse">−</span></button><div id="chat-content"><div id="chat-messages" class="chat-messages" role="log" aria-live="polite"><p class="chat-system">この谷での物語が、ここから始まります。</p></div><form id="chat-form"><input id="chat-input" maxlength="180" placeholder="仲間に話しかける…" aria-label="チャットメッセージ" autocomplete="off"><button aria-label="メッセージを送信" type="submit">${icon('arrow')}</button></form></div></div>
@@ -644,9 +643,6 @@ function updateHUD() {
   $('#energy-label').textContent = `${energy} / 100`;
   $('#energy-bar').style.width = `${energy}%`;
   $('#energy-track').dataset.level = energy <= 25 ? 'critical' : energy <= 50 ? 'low' : 'ok';
-  const meal = me && !me.downedUntil ? chooseMeal(me) : null;
-  $('#heal-hint').hidden = !meal;
-  if (meal) $('#heal-hint').textContent = `Q／↑ 回復（${meal.name}）`;
   updateObjectives();
   const target = nearby();
   $('#interaction-hint').hidden = !target;
@@ -1205,7 +1201,8 @@ function inventoryEntries() {
   return items;
 }
 function inventoryMarkup() {
-  return '<h2>持ち物</h2><div class="inventory-grid" aria-label="所持品"></div>';
+  const model = characterModel(player() ?? profile);
+  return `<header class="inventory-header"><span class="portrait ${model.species} ${model.key}" role="img" aria-label="${model.name}"><i></i></span><div class="inventory-status"><h2>持ち物</h2><div id="inventory-energy-track" class="energy-track" role="progressbar" aria-label="体力" aria-valuemin="0" aria-valuemax="100"><span id="inventory-energy-bar" class="energy-fill"></span><em class="energy-label">${icon('leaf')}<b>体力</b><span id="inventory-energy-label"></span></em></div></div></header><div class="inventory-grid" aria-label="所持品"></div>`;
 }
 function itemChoices(key: string) {
   const me = player();
@@ -1229,6 +1226,12 @@ function itemUseReason(key: string, use: ItemUse) {
 function updateInventory() {
   const grid = document.querySelector<HTMLElement>('.inventory-grid');
   if (!grid) return;
+  const energy = Math.round(player()?.energy ?? 100);
+  $('#inventory-energy-label').textContent = `${energy} / 100`;
+  $('#inventory-energy-bar').style.width = `${energy}%`;
+  $('#inventory-energy-track').dataset.level =
+    energy <= 25 ? 'critical' : energy <= 50 ? 'low' : 'ok';
+  $('#inventory-energy-track').setAttribute('aria-valuenow', String(energy));
   const entries = inventoryEntries(),
     signature = JSON.stringify(entries);
   if (grid.dataset.signature !== signature) {
@@ -1792,7 +1795,6 @@ document.addEventListener('keydown', (e) => {
   if (k === 'i') openInventory();
   if (k === 'j') openJournal();
   if (k === 'g') action('wave');
-  if (k === 'q') action('heal');
 });
 document.addEventListener('keyup', (e) => {
   const key = movementKey(e);
@@ -1850,9 +1852,6 @@ gamepadControls = new GamepadControls({
         break;
       case 'map':
         openMap();
-        break;
-      case 'heal':
-        action('heal');
         break;
       case 'menu':
         openPauseMenu();

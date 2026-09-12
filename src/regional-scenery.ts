@@ -8,10 +8,8 @@ import { LandscapeInstances } from './world-assets.js';
 import { WORLD } from '../shared/world.mjs';
 
 export const regionalId = (key, surface) => `${key}:${surface}`;
-// Metres regional ground cover is sunk below the terrain: the tuft root caps
-// were cut off below 4.5 cm / 3 cm (scripts/cut-grass-root.mjs, 2026-09-12),
-// so the open cut edge must sit below the ground on flat terrain (was 12 mm).
-export const GROUNDCOVER_SINK = 0.04;
+// Source-space metres for the complete 8 cm root-disc cut; scale with the plant.
+export const GROUNDCOVER_SINK = 0.08;
 const RADIUS = 125;
 
 // This owner accounts for every consumer of a regional material. Eviction frees
@@ -118,7 +116,12 @@ export class RegionalScenery {
         height: asset.heightMetres * (Array.isArray(item.scale) ? item.scale[1] : item.scale),
         position: new THREE.Vector3(
           item.x,
-          terrainHeight(item.x, item.z) - (foliage ? GROUNDCOVER_SINK : 0),
+          terrainHeight(item.x, item.z) -
+            (foliage
+              ? key === 'meadow-grass' || key === 'meadow-sprig'
+                ? GROUNDCOVER_SINK * (Array.isArray(item.scale) ? item.scale[1] : item.scale)
+                : 0.04
+              : 0),
           item.z,
         ),
         scale: Array.isArray(item.scale)

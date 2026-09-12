@@ -295,29 +295,48 @@ export function updateBehemoths(room, dt, now, damage) {
         }
         e.clip = 'Charge';
         e.behavior = 'charge';
-        // Fixed heading, small collision steps, and bounded elapsed time prevent tunneling.
+        // Keep the committed heading, but watch the target's current position
+        // along it. The maximum is a ceiling, not the destination of every rush.
         const activeUntil = Math.min(now, e.attackAt + R.roarMs + R.chargeMs);
         const seconds = Math.min(
           Math.max(0, dt),
           Math.max(0, activeUntil - strike.lastMoveAt) / 1000,
         );
         strike.lastMoveAt = activeUntil;
-        let remaining = seconds;
-        while (remaining > 1e-9) {
-          const step = Math.min(0.025, remaining);
-          remaining -= step;
-          move(
-            e,
-            room,
-            { x: e.x + Math.sin(strike.facing) * 10, z: e.z + Math.cos(strike.facing) * 10 },
+        let remaining = seconds,
+          stepAt = activeUntil - seconds * 1000,
+          stopped = false;
+        const forwardX = Math.sin(strike.facing),
+          forwardZ = Math.cos(strike.facing),
+          cruiseSpeed = (at) =>
             R.chargeStartSpeed +
-              (R.chargeSpeed - R.chargeStartSpeed) *
-                Math.min(
-                  1,
-                  Math.max(0, (activeUntil - e.attackAt - R.roarMs) / R.chargeAccelerationMs),
-                ),
-            step,
-          );
+            (R.chargeSpeed - R.chargeStartSpeed) *
+              Math.min(1, Math.max(0, (at - e.attackAt - R.roarMs) / R.chargeAccelerationMs));
+        while (remaining > 1e-9) {
+          if (
+            strike.brakeAt === undefined &&
+            (target.x - e.x) * forwardX + (target.z - e.z) * forwardZ <= 0
+          ) {
+            // Once past the player, commit to a short, weighty stop. A player
+            // still ahead can keep retreating; their old position never ends it.
+            strike.brakeAt = stepAt;
+            strike.brakeSpeed = cruiseSpeed(stepAt);
+          }
+          const brakeEnd =
+            strike.brakeAt === undefined ? Infinity : strike.brakeAt + R.chargeBrakeMs;
+          const step = Math.min(0.025, remaining, Math.max(0, brakeEnd - stepAt) / 1000);
+          if (step <= 1e-9) {
+            stopped = true;
+            break;
+          }
+          const stepEnd = stepAt + step * 1000,
+            speed =
+              strike.brakeAt === undefined
+                ? (cruiseSpeed(stepAt) + cruiseSpeed(stepEnd)) / 2
+                : strike.brakeSpeed *
+                  Math.max(0, 1 - ((stepAt + stepEnd) / 2 - strike.brakeAt) / R.chargeBrakeMs);
+          remaining -= step;
+          move(e, room, { x: e.x + forwardX * 10, z: e.z + forwardZ * 10 }, speed, step);
           e.facing = strike.facing;
           for (const p of room.players.values())
             if (
@@ -325,8 +344,13 @@ export function updateBehemoths(room, dt, now, damage) {
               Math.abs(angleDifference(angleTo(e, p), strike.facing)) < Math.PI / 2
             )
               hit(p, R.chargeDamage, '突進');
+          stepAt = stepEnd;
+          if (e.speed < 0.05 || stepAt >= brakeEnd) {
+            stopped = true;
+            break;
+          }
         }
-        if (elapsed >= R.roarMs + R.chargeMs || (seconds > 0 && e.speed < 0.05)) finish(e, now);
+        if (elapsed >= R.roarMs + R.chargeMs || stopped) finish(e, now);
       } else if (strike.kind === 'bite') {
         if (elapsed < R.gapeMs) {
           // Mouth open, head drawn back: the target may still step aside.

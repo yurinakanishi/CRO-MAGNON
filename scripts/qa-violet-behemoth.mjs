@@ -232,6 +232,48 @@ try {
     samples.some((s) => s.poisonSplashes > 0 && s.poisonParticles > 0),
     'Liquid impact rendered',
   );
+  for (const retreat of [false, true]) {
+    const staged = await request('prepare', { mode: 'charge' });
+    const start = { x: staged.enemy.x, z: staged.enemy.z };
+    await until(async () => {
+      const s = await request('state');
+      return s.enemy.behavior === 'charge' && s.enemy.z > start.z + 0.1;
+    }, 'rush actually moving before target dodges or retreats', 4000);
+    await request('place', {
+      x: start.x + (retreat ? 0 : 12),
+      z: start.z + (retreat ? 25 : 12),
+    });
+    const trace = [];
+    await until(
+      async () => {
+        const s = await request('state');
+        trace.push({
+          x: s.enemy.x,
+          z: s.enemy.z,
+          speed: s.enemy.speed,
+          behavior: s.enemy.behavior,
+        });
+        return s.enemy.behavior === 'recover';
+      },
+      retreat ? 'rush reaches retreating player' : 'rush brakes after passing player',
+      2500,
+    );
+    const stopped = await request('state');
+    const distance = stopped.enemy.z - start.z;
+    assert.ok(retreat ? distance > 18 && distance < 20 : distance > 13.5 && distance < 15.5);
+    assert.equal(
+      stopped.players.find((p) => p.name === 'Monster A').energy,
+      retreat ? 100 - tuning.chargeDamage : 100,
+    );
+    const stage = retreat ? 'charge-retreat' : 'charge-pass-stop';
+    await sample(a, stage);
+    samples.push({ stage: stage + '-server-trace', trace });
+    checks.push(
+      retreat
+        ? 'Rush reaches the player retreating beyond their original position'
+        : 'Rush brakes shortly after passing a sidestepping player',
+    );
+  }
   await request('prepare', { mode: 'poison' });
   await sleep(1150);
   const dodgeState = await request('state'),

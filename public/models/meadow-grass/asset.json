@@ -5,9 +5,9 @@
   "candidate": 1,
   "status": "reviewed-prototype",
   "url": "/models/meadow-grass/model.glb",
-  "sha256": "fcc3d10a1c602e651ef9a5684ee015b23749469cbec06caf90afa474085157d8",
-  "bytes": 3407748,
-  "triangles": 43848,
+  "sha256": "24b41b18d4c5ea40ca660d7eda16f2154ca856828ebfc721d6c3489efe63f9c0",
+  "bytes": 3392616,
+  "triangles": 42587,
   "upAxis": "Y",
   "forwardAxis": "+Z",
   "heightMetres": 0.5501837610190705,
@@ -31,7 +31,8 @@
     "Dense 296,779 -> 44,457 triangles; quadric collapse stalls at 35k on the open blade edges, so the 44k probe (p95 0.3 mm) is delivered. Full mesh is only drawn within 1.1 m; impostors beyond, as before (was 134,051 triangles).",
     "Height 0.55 m, ground-centred pivot; crops (fire-root, herb) reuse this model with their tints. No LOD delivered (same as v1).",
     "2026-09-11 root recolour requested by the user (\"no brown at the grass root\"): TRELLIS had baked the reference soil into the lowest 18% of the blades. scripts/recolor-grass-root.mjs re-hues the non-green/dull texels the lowest 18% of the vertices reference to the leaf-green chromaticity at each texel's own luminance (shading kept); geometry, UVs and normals are byte-identical. Root band mean RGB 111,104,68 (86% ochre) -> 63,117,42 (0% ochre).",
-    "2026-09-12 root cap removed (user: green base under grass): TRELLIS had sealed the bottom of the clump with a nearly flat root disc (285 flat triangles within +-0.12 m) that the root recolour turned into a green mound. scripts/cut-grass-root.mjs drops every triangle whose highest vertex is below 0.045 m (44,457 -> 43,848 triangles, 609 removed); vertices, normals, UVs, material and texture are byte-identical and the height is unchanged. The placement sink (world-scenery.ts / regional-scenery.ts) was raised so the cut edge sits below the ground."
+    "2026-09-12 root cap removed (user: green base under grass): TRELLIS had sealed the bottom of the clump with a nearly flat root disc (285 flat triangles within +-0.12 m) that the root recolour turned into a green mound. scripts/cut-grass-root.mjs drops every triangle whose highest vertex is below 0.045 m (44,457 -> 43,848 triangles, 609 removed); vertices, normals, UVs, material and texture are byte-identical and the height is unchanged. The placement sink (world-scenery.ts / regional-scenery.ts) was raised so the cut edge sits below the ground.",
+    "2026-09-12 follow-up by Codex: the earlier cut left the disc top visible. Removed all triangles below 0.08 m (1261 more triangles; 42587 remain), including the full horizontal cap. All source vertices, UVs, normals, texture and material remain byte-identical. The grass sink now scales with plant size. Exact candidates reviewed in real Chrome close meshes (12 tufts / 7 sprigs), normal impostors, overhead, two meadow areas and travel return; no light-green pedestals remain. Original candidate revisions are retained."
   ],
   "lods": [],
   "provenance": {
@@ -40,8 +41,8 @@
     "referenceGenerator": "Art-directed Blender 5.2 render (no local image generator on this host); see source/original/*.json",
     "referenceImage": "output/model-generation/models/meadow-grass/source/original/reference-v2.png",
     "referenceSha256": "ecfc6aa427b736702b66bce22100fde6dac129941d6bbc97be81abbb6d19cf52",
-    "reconstruction": "Local TRELLIS-2 1024, seed 42 (work/trellis/dense-v2-res1024-seed0042.glb, first attempt hit a CUDA launch error and was rerun); source-derived weld + quadric reduction with retained UV/albedo, foliage-only albedo luminance calibration; no replacement geometry. Root recolour (rev 03, 2026-09-11): scripts/recolor-grass-root.mjs on the rev 02 delivery, texture only. Root cap removed (rev 04, 2026-09-12): scripts/cut-grass-root.mjs on the rev 03 delivery, index buffer only.",
-    "candidateFile": "output/model-generation/models/meadow-grass/work/low-poly/candidate-04/candidate.glb",
-    "visualReview": "output/model-generation/models/meadow-grass/qa/adoption-review-rev04.json"
+    "reconstruction": "Local TRELLIS-2 1024, seed 42 (work/trellis/dense-v2-res1024-seed0042.glb, first attempt hit a CUDA launch error and was rerun); source-derived weld + quadric reduction with retained UV/albedo, foliage-only albedo luminance calibration; no replacement geometry. Root recolour (rev 03, 2026-09-11): scripts/recolor-grass-root.mjs on the rev 02 delivery, texture only. Root cap removed (rev 04, 2026-09-12): scripts/cut-grass-root.mjs on the rev 03 delivery, index buffer only. Complete root-disc removal (rev 05, Codex, 2026-09-12): scripts/cut-grass-root.mjs --cut 0.08, index buffer only.",
+    "candidateFile": "output/model-generation/models/meadow-grass/work/low-poly/candidate-05/candidate.glb",
+    "visualReview": "output/model-generation/models/meadow-grass/qa/adoption-review-rev05.json"
   }
 }

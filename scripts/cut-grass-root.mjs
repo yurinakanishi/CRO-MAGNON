@@ -1,12 +1,12 @@
 // Remove the root cap TRELLIS closed the grass tufts with (PLAYTEST_FEEDBACK_PLAN.md
 // section 12 item 1, 2026-09-12):
-//   node scripts/cut-grass-root.mjs meadow-grass 04
-//   node scripts/cut-grass-root.mjs meadow-sprig 03 [--cut 0.03]
+//   node scripts/cut-grass-root.mjs meadow-grass 05
+//   node scripts/cut-grass-root.mjs meadow-sprig 04 [--cut 0.04]
 // The tufts have no separate base mesh; the reconstruction sealed the bottom of
 // the clump with a dense, nearly flat root disc (grass: 285 triangles within
 // +-0.12 m, sprig: 250 within +-0.04 m) that the 2026-09-11 root recolour turned
 // into a green mound. This drops every triangle whose highest vertex lies below
-// the cut height (default meadow-grass 0.045 m, meadow-sprig 0.03 m), keeps the
+// the cut height (default meadow-grass 0.08 m, meadow-sprig 0.04 m), keeps the
 // vertex buffers, materials and texture byte-identical, rewrites only the index
 // bufferView (in place, later views shifted) and writes
 // output/model-generation/models/<key>/work/low-poly/candidate-<revision>/candidate.glb
@@ -20,7 +20,9 @@ import { resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import assert from 'node:assert/strict';
 
-const DEFAULT_CUT = { 'meadow-grass': 0.045, 'meadow-sprig': 0.03 };
+// The earlier 4.5 / 3 cm cut removed only the underside; the horizontal disc
+// tops still occupied the 6–8 / 3–4 cm bands. Cut through the full cap.
+const DEFAULT_CUT = { 'meadow-grass': 0.08, 'meadow-sprig': 0.04 };
 const root = fileURLToPath(new URL('../', import.meta.url)),
   args = process.argv.slice(2),
   cutFlag = args.indexOf('--cut'),

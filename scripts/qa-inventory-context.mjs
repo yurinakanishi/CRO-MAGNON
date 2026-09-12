@@ -180,6 +180,18 @@ try {
   await page.keyboard.press('Enter');
   await until(() => me.inventory.rawMeat === 2, 'keyboard raw meat use');
   assert.ok(me.energy >= hp + 14.9 && me.energy < hp + 16);
+  await until(
+    async () =>
+      (await page.locator('#inventory-energy-track').getAttribute('aria-valuenow')) ===
+        String(Math.round(me.energy)) &&
+      (await page.locator('#inventory-energy-label').innerText()) ===
+        (await page.locator('#energy-label').innerText()),
+    'inventory health matches HUD after raw meat',
+  );
+  assert.equal(
+    await page.locator('#inventory-energy-track').getAttribute('aria-valuenow'),
+    String(Math.round(me.energy)),
+  );
   assert.equal(
     await page.locator('.item-actions').count(),
     0,
@@ -322,6 +334,16 @@ try {
     await tap(PAD.circle);
     await scope(true);
     assert.ok(await page.locator('.item-actions-close').isVisible());
+    const healthBox = await page.locator('#inventory-energy-track').boundingBox();
+    assert.ok(
+      healthBox &&
+        healthBox.x >= 0 &&
+        healthBox.x + healthBox.width <= viewport.width &&
+        healthBox.y >= 0 &&
+        healthBox.y + healthBox.height <= viewport.height,
+      'health stays in the viewport beside the food popup',
+    );
+    assert.ok(await page.locator('.inventory-header .portrait').isVisible());
     await page.screenshot({ path: `${output}/04-popup-${viewport.width}.png` });
     await tap(PAD.cross);
     await tap(PAD.cross);

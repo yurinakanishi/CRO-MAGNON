@@ -134,17 +134,111 @@ test('a roar precedes a fast fixed-heading charge, with one damage event', () =>
     'even the ape must evade the faster charge or leave the territory',
   );
 });
-test('great ape sprint can leave territory and monster walks back without further damage', () => {
+test('a full unobstructed charge covers three times the former distance and respects the leash', () => {
+  for (const nearEdge of [false, true]) {
+    const { e, p, tick } = fixture();
+    e.z = e.home.z - (nearEdge ? 0 : 22);
+    Object.assign(p, { x: e.x, z: e.z + 12 });
+    const startZ = e.z;
+    tick(2000, 0);
+    // Stay ahead of the rush while outside its contact corridor.
+    Object.assign(p, { x: e.home.x + (nearEdge ? 8 : 12), z: e.home.z + (nearEdge ? 28 : 23) });
+    let peak = 0;
+    for (let elapsed = 1; elapsed <= R.chargeMs; elapsed++) {
+      tick(2000 + R.roarMs + elapsed, 0.001);
+      peak = Math.max(peak, e.speed);
+      if (!e.pendingAttack) break;
+    }
+    assert.ok(Math.abs(peak - 22.5) < 0.001);
+    const distance = e.z - startZ;
+    assert.ok(nearEdge ? distance > 29.8 && distance <= 30 : distance > 40 && distance < 41);
+    assert.equal(e.pendingAttack, null);
+    assert.equal(e.behavior, 'recover');
+    assert.equal(p.energy, 100, 'a sidestep avoids the fixed heading');
+  }
+});
+
+test('passing a sidestepping target brakes early, independently of tick size', () => {
+  for (const stepMs of [10, 50, 100]) {
+    const { e, p, tick } = fixture();
+    const startZ = e.z;
+    tick(2000, 0);
+    p.x += 12;
+    let passedAt = null,
+      previousBrakeSpeed = Infinity,
+      brakeSamples = 0;
+    for (let elapsed = stepMs; elapsed < R.chargeMs; elapsed += stepMs) {
+      tick(2000 + R.roarMs + elapsed, stepMs / 1000);
+      if (e.pendingAttack?.brakeAt !== undefined) {
+        passedAt ??= elapsed;
+        assert.ok(e.speed <= previousBrakeSpeed + 1e-6);
+        previousBrakeSpeed = e.speed;
+        brakeSamples++;
+      }
+      if (!e.pendingAttack) {
+        assert.ok(elapsed < 1100, 'nearby target never forces a maximum-distance charge');
+        break;
+      }
+    }
+    assert.ok(passedAt !== null && brakeSamples > 0);
+    assert.ok(e.z - startZ > 13.5 && e.z - startZ < 15.3, 'only a short braking overshoot');
+    assert.equal(e.behavior, 'recover');
+    assert.equal(p.energy, 100);
+  }
+});
+
+test('a target moving farther ahead extends the rush beyond their old position', () => {
+  const { e, p, tick } = fixture();
+  const startZ = e.z;
+  tick(2000, 0);
+  for (let elapsed = 10; elapsed <= R.chargeMs; elapsed += 10) {
+    if (elapsed === 150) p.z = startZ + 25;
+    tick(2000 + R.roarMs + elapsed, 0.01);
+    if (!e.pendingAttack) break;
+  }
+  assert.ok(e.z - startZ > 18 && e.z - startZ < 20, 'reaches the retreating player');
+  assert.equal(p.energy, 100 - R.chargeDamage);
+  assert.equal(p.hurtSequence, 1);
+  assert.equal(e.behavior, 'recover');
+});
+
+test('once it has passed, moving ahead again does not restart a braking rush', () => {
+  const { e, p, tick } = fixture();
+  const startZ = e.z;
+  tick(2000, 0);
+  p.x += 12;
+  let movedAgain = false;
+  for (let elapsed = 10; elapsed < R.chargeMs; elapsed += 10) {
+    tick(2000 + R.roarMs + elapsed, 0.01);
+    if (e.pendingAttack?.brakeAt !== undefined && !movedAgain) {
+      p.z = startZ + 24;
+      movedAgain = true;
+    }
+    if (!e.pendingAttack) break;
+  }
+  assert.equal(movedAgain, true);
+  assert.ok(e.z - startZ < 15.3);
+  assert.equal(e.behavior, 'recover');
+});
+
+test('the longer charge catches a fleeing ape, but leaving territory stops further damage', () => {
   const { e, p, room, tick } = fixture();
   tick(2000);
+  let energyOutside = null;
   for (let t = 2050; t < 10000; t += 50) {
-    p.z += 5.4 * 0.05;
+    p.z += 6.4 * 0.05;
     tick(t);
-    assert.equal(p.energy, 100);
+    if (p.z - e.home.z > R.territoryRadius) {
+      energyOutside ??= p.energy;
+      assert.equal(p.energy, energyOutside);
+      assert.equal(e.targetId, null);
+    }
     assert.ok(room.collision.free(e, e.radius));
   }
+  assert.ok(energyOutside !== null && energyOutside < 100);
   assert.equal(e.targetId, null);
   for (let t = 10000; t < 35000; t += 50) tick(t);
+  assert.equal(p.energy, energyOutside);
   assert.ok(Math.hypot(e.x - e.home.x, e.z - e.home.z) < 0.001);
   assert.equal(e.behavior, 'guard');
 });
@@ -268,10 +362,11 @@ test('extra clips are required only for behemoth and charge seeks after the tele
     /TailSpin/,
   );
   const state = { modelKey: R.modelKey, phase: 'alive', attackAt: 2000, clip: 'Charge' };
-  assert.deepEqual(enemyAnimationState(state, 3500), {
-    clip: 'Charge',
-    elapsed: (((1500 - R.roarMs) / 1000) * 2400) / R.chargeMs,
-  });
+  const chargeFrame = enemyAnimationState(state, 3500);
+  assert.equal(chargeFrame.clip, 'Charge');
+  assert.ok(
+    Math.abs(chargeFrame.elapsed - (((1500 - R.roarMs) / 1000) * 2400) / R.chargeMs) < 1e-9,
+  );
   // Each telegraph clip starts at the attack; its strike clip starts when it ends.
   for (const [clip, offset] of [
     ['Roar', 0],
