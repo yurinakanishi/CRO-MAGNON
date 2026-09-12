@@ -46,31 +46,56 @@ export function measuredWalkSurface(data, placement) {
       heights[(iz + 1) * nx + ix],
       heights[(iz + 1) * nx + ix + 1],
     ];
-    if (q.some((y) => y === null || Math.abs(y - h) > 0.8)) return h * scale;
-    return ((q[0] * (1 - fx) + q[1] * fx) * (1 - fz) + (q[2] * (1 - fx) + q[3] * fx) * fz) * scale;
+    // A solid neighbour or a wall-sized jump (over 1.2 m) does not take part;
+    // it reads as the centre height so the field stays continuous up to the
+    // wall. Tall risers the raster missed become steep ramps rather than
+    // invisible steps that stop a walking body.
+    const r = q.map((y) => (y === null || Math.abs(y - h) > 1.2 ? h : y));
+    return ((r[0] * (1 - fx) + r[1] * fx) * (1 - fz) + (r[2] * (1 - fx) + r[3] * fx) * fz) * scale;
   }
-  function free(x, z, radius = 0) {
+  // The largest height difference between the body centre and its eight-point
+  // ring; null when any sample is solid. Walls and drops show as large values.
+  // The ring is capped at the width of a broad human shoulder: the great ape
+  // still collides with walls and other bodies at its full radius, but the
+  // 0.35 m atlas cannot describe corridors finely enough for a 1.5 m ring
+  // without pockets that trap it on the side stairs.
+  const RING_CAP = 0.5;
+  function deviation(x, z, radius = 0) {
     const centre = height(x, z);
-    if (centre === null) return false;
+    if (centre === null) return null;
+    const ring = Math.min(radius, RING_CAP * scale);
+    let worst = 0;
     for (let i = 0; i < 8; i++) {
       const angle = (i * Math.PI) / 4,
-        h = height(x + Math.cos(angle) * radius, z + Math.sin(angle) * radius);
-      if (h === null) return false;
-      if (
-        centre !== undefined &&
-        h !== undefined &&
-        Math.abs(h - centre) > Math.max(0.7 * scale, radius * 1.5)
-      )
-        return false;
+        h = height(x + Math.cos(angle) * ring, z + Math.sin(angle) * ring);
+      if (h === null) return null;
+      if (centre !== undefined && h !== undefined) worst = Math.max(worst, Math.abs(h - centre));
     }
-    return true;
+    return worst;
+  }
+  const ringLimit = (radius) => Math.max(0.7 * scale, radius * 1.5);
+  function free(x, z, radius = 0) {
+    const worst = deviation(x, z, radius);
+    return worst !== null && worst <= ringLimit(radius);
+  }
+  // A step is allowed when the destination is free, or when the body is already
+  // brushing a ledge and the step does not bring it any closer (so a stair edge
+  // never traps a player who reached it legally). Drops stay with transition().
+  function allows(from, to, radius = 0) {
+    if (free(to.x, to.z, radius)) return true;
+    const next = deviation(to.x, to.z, radius);
+    if (next === null) return false;
+    const current = deviation(from.x, from.z, radius);
+    return current !== null && next <= Math.min(current + 0.25, ringLimit(radius) + 0.6);
   }
   function transition(a, b) {
     const ah = height(a.x, a.z),
       bh = height(b.x, b.z);
     if (ah === null || bh === null) return false;
     if (ah === undefined && bh === undefined) return true;
-    return Math.abs((ah ?? 0) - (bh ?? 0)) <= 0.6 * scale + Math.hypot(a.x - b.x, a.z - b.z) * 1.1;
+    // A tall step (the top riser of the side stairs reads as 0.7 m where the
+    // smoothing stops at a wall) is climbable; a 0.9 m ledge is not, even at a run.
+    return Math.abs((ah ?? 0) - (bh ?? 0)) <= 0.75 * scale + Math.hypot(a.x - b.x, a.z - b.z) * 0.6;
   }
-  return { local, world, cell, height, free, transition, data, placement };
+  return { local, world, cell, height, free, deviation, allows, transition, data, placement };
 }

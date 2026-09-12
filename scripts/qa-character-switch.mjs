@@ -42,7 +42,6 @@ try {
     await page.addInitScript(
       (name) => {
         localStorage.setItem('cro-name', name);
-        localStorage.setItem('cro-skip-guide', '1');
       },
       `Switch QA ${i + 1}`,
     );

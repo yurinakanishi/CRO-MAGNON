@@ -34,7 +34,22 @@ for(let cursor=0;cursor<queue.length;cursor++){
   }
 }
 const heights=choices.map((col,i)=>col.find((h,j)=>visited[i][j])??null);
+// Fill single-cell holes inside walkable floors above ground: a null cell whose
+// four neighbours are mostly measured floor at the same level is a ray miss in
+// the reconstruction (the side stairs had several), not a pillar. A body ring
+// test fails on one such cell and strands players mid-stair.
+const holeFills=[];
+const at=(x,z)=>x<0||z<0||x>=nx||z>=nz?undefined:heights[z*nx+x];
+for(let z=1;z<nz-1;z++)for(let x=1;x<nx-1;x++){
+  const i=z*nx+x;if(heights[i]!==null)continue;
+  const around=[at(x-1,z),at(x+1,z),at(x,z-1),at(x,z+1)].filter(h=>typeof h==='number');
+  if(around.length<3)continue;
+  const lo=Math.min(...around),hi=Math.max(...around);
+  if(hi-lo>1.2||lo<1)continue;
+  holeFills.push({x:Number((minX+(x+.5)*step).toFixed(2)),z:Number((minZ+(z+.5)*step).toFixed(2)),h:Number(((lo+hi)/2).toFixed(3))});
+}
+for(const fill of holeFills)heights[Math.round((fill.z-minZ)/step-.5)*nx+Math.round((fill.x-minX)/step-.5)]=fill.h;
 const buckets={};for(const h of heights)if(h!==null){const bucket=Math.round(h);buckets[bucket]=(buckets[bucket]??0)+1;}
-const result={schemaVersion:1,sourceSha256:source.sha256,step,minX,minZ,nx,nz,heights,measurement:{method:'Exposed terraces rasterized from exact GLB; two measured door passages; head clearance and connected step graph from outer ground. Single-cell vertical risers in the reused entrance stair interpolate the measured treads immediately before and after.',maxStepRise:rise,bodyHeadroom:1.8,riserInterpolations,reachable:heights.filter(h=>h!==null).length,blocked:heights.filter(h=>h===null).length,heightBuckets:buckets}};
+const result={schemaVersion:1,sourceSha256:source.sha256,step,minX,minZ,nx,nz,heights,measurement:{method:'Exposed terraces rasterized from exact GLB; two measured door passages; head clearance and connected step graph from outer ground. Single-cell vertical risers in the reused entrance stair interpolate the measured treads immediately before and after. Single-cell holes inside floors above ground are filled from their neighbours.',maxStepRise:rise,bodyHeadroom:1.8,riserInterpolations,holeFills,reachable:heights.filter(h=>h!==null).length,blocked:heights.filter(h=>h===null).length,heightBuckets:buckets}};
 result.measurement.entranceLandingZ=entranceLandingZ;
 await writeFile(output,JSON.stringify(result));console.log(JSON.stringify(result.measurement));

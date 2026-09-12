@@ -1,12 +1,11 @@
 /**
- * Full-screen game screens (title, setup, how-to-play) shown over the 3D world,
+ * Full-screen game screens (title, setup) shown over the 3D world,
  * plus the small pieces that make the HUD feel like a game: the area banner
  * shown when the player enters a new place and the button-prompt bar.
  */
 import { adjacentMenuItem, menuItems, menuKeyDirection } from './menu-navigation.js';
-import { helpTabsMarkup } from './help-content.js';
 
-export type ScreenId = 'title' | 'setup' | 'guide';
+export type ScreenId = 'title' | 'setup';
 
 export interface KeyPrompt {
   key: string;
@@ -23,25 +22,14 @@ export function keyPrompts(
     : [
         { key: gamepad ? '○' : 'E', label: '調べる' },
         { key: gamepad ? '□' : 'F', label: '攻撃' },
-        { key: gamepad ? '×' : 'Space', label: 'ジャンプ' },
+        { key: gamepad ? '△' : 'Space', label: 'ジャンプ' },
       ];
   if (options.ride)
-    prompts.push({ key: gamepad ? '△' : 'R', label: options.carry ? '肩乗り' : 'マンモス' });
-  if (options.boat) prompts.push({ key: gamepad ? '△' : 'B', label: '船' });
+    prompts.push({ key: gamepad ? '×' : 'R', label: options.carry ? '肩乗り' : 'マンモス' });
+  if (options.boat) prompts.push({ key: gamepad ? '×' : 'B', label: '船' });
   if (!gamepad) prompts.push({ key: 'Enter', label: '話す' });
-  prompts.push({ key: gamepad ? 'L3' : 'Tab', label: 'もちもの' });
   prompts.push({ key: gamepad ? 'OPTIONS' : 'ESC', label: 'メニュー' });
   return prompts;
-}
-
-interface GuideOptions {
-  gamepad: boolean;
-  skipChecked: boolean;
-}
-
-/** The pre-play "how to play" card: the same tabbed bindings as the in-game help. */
-export function guideMarkup({ gamepad, skipChecked }: GuideOptions): string {
-  return `<div class="guide-card" role="document"><p class="screen-eyebrow">HOW TO PLAY</p><h2>あそびかた</h2>${helpTabsMarkup(gamepad ? 'pad' : 'pc')}<div class="guide-actions"><label class="guide-skip"><input type="checkbox" id="guide-skip" ${skipChecked ? 'checked' : ''}> 次回から表示しない</label><button id="guide-back" class="button button-outline" type="button">戻る</button><button id="guide-start" class="button button-accent">冒険をはじめる</button></div></div>`;
 }
 
 /** Shows and hides the full-screen game screens; one screen is visible at a time. */

@@ -1,0 +1,10 @@
+{
+  "generator": "Codex built-in imagegen",
+  "prompt": "Broad two-storey ruined limestone castle: open forecourt behind a collapsed arch gate, three very wide gentle stairs (left, centre, right) rising to one enormous roofless great hall with broken half-height walls and column stumps. User request 2026-09-12: rebuild the sorcerer's castle as a wide, easily climbed ruin whose top is a huge open-air hall where the sorcerer is fought. Candidate 01 of two Codex image_gen references selected by Claude Code (user not available); candidate 02 retained as history.",
+  "source": "source/original/reference-v3.png",
+  "sha256": "1f21a183da803192601a238d78b4e5723e3b3e57b379c82d1270cbe77c8104c1",
+  "bytes": 2663380,
+  "fallback": "ZImage unavailable in the established local toolchain; permitted equivalent generator.",
+  "author": "Codex",
+  "claude_used": false
+}

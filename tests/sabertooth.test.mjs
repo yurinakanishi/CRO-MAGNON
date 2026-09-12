@@ -5,7 +5,12 @@ import { CollisionWorld } from '../dist/shared/collision.mjs';
 import { SABERTOOTH as R, SABERTOOTH_GROUND } from '../dist/shared/sabertooth-rules.mjs';
 import { createSabertooth } from '../dist/shared/sabertooth.mjs';
 import { updateEnemies } from '../dist/shared/enemies.mjs';
-import { startAttack, resolveAttack, damageableTargets } from '../dist/shared/combat.mjs';
+import {
+  startAttack,
+  resolveAttack,
+  damageableTargets,
+  updateProjectiles,
+} from '../dist/shared/combat.mjs';
 import { createGameCore } from '../dist/application/game-core.mjs';
 import {
   enemyAnimationState,
@@ -108,19 +113,36 @@ test('the snow-plain cat is added to new and old worlds; restore cancels its str
   assert.equal(added.health, R.maxHealth);
 });
 
-test('sees ahead, hears close behind, and ignores far rear intruders', () => {
+test('sees ahead, hears footsteps behind by pace, and ignores a still far intruder', () => {
   {
     const { e, p, tick } = fixture();
-    p.z = e.z - 15;
+    p.z = e.z - 8;
     tick(2000);
-    assert.equal(e.targetId, null);
+    assert.equal(e.targetId, null, 'standing still eight metres behind is not heard');
   }
   {
     const { e, p, tick } = fixture();
-    p.z = e.z - (R.hearingRange - 1);
+    p.z = e.z - (R.hearing.still - 0.5);
     tick(2000);
-    assert.equal(e.targetId, p.id);
+    assert.equal(e.targetId, p.id, 'creeping right behind it is heard');
     assert.equal(e.clip, 'Alert');
+  }
+  {
+    const { e, p, tick } = fixture();
+    p.z = e.z - (R.hearing.walking - 1);
+    p.moving = true;
+    tick(2000);
+    assert.equal(e.targetId, p.id, 'walking footsteps carry nine metres');
+  }
+  {
+    const { e, p, tick } = fixture();
+    p.z = e.z - (R.hearing.running - 1);
+    p.moving = true;
+    tick(2000);
+    assert.equal(e.targetId, null, 'a walker fifteen metres behind is not heard');
+    p.running = true;
+    tick(2050);
+    assert.equal(e.targetId, p.id, 'a runner fifteen metres behind is heard');
   }
   {
     const { e, tick } = fixture(20);
@@ -129,35 +151,70 @@ test('sees ahead, hears close behind, and ignores far rear intruders', () => {
   }
 });
 
-test('outruns the fastest sprinter while inside its territory', () => {
-  const { e, p, tick } = fixture(14);
-  engaged(e, p);
-  e.nextPounceAt = far;
-  const start = Math.hypot(p.x - e.x, p.z - e.z);
-  for (let t = 2000; t < 3000; t += 50) {
-    p.z += 5.4 * 0.05;
-    tick(t);
+test('a spell from far behind gives the caster away', () => {
+  const { e, p, room, tick } = fixture();
+  Object.assign(p, { z: e.z - 7, species: 'bear', gender: 'female', facing: 0, attackSequence: 0, attackAt: 0 });
+  tick(2000);
+  assert.equal(e.targetId, null);
+  assert.equal(startAttack(room, p, {}, 2000).accepted, true);
+  let now = 2000;
+  while (e.health === R.maxHealth && now < 6000) {
+    now += 50;
+    resolveAttack(room, p, now);
+    updateProjectiles(room, now);
+    tick(now);
   }
-  assert.ok(R.chaseSpeed > 5.4);
-  assert.ok(Math.hypot(p.x - e.x, p.z - e.z) < start - 0.5);
+  assert.ok(e.health < R.maxHealth, 'the orb hit');
+  assert.equal(e.provokedBy, p.id, 'the cat remembers who struck it');
+  tick(now + R.hitDurationMs + 50);
+  assert.equal(e.provokedBy, null, 'the provocation is consumed');
+  assert.equal(e.targetId, p.id);
+  assert.equal(e.behavior === 'alert' || e.behavior === 'chase', true);
 });
 
-test('pounce: still crouch telegraph, fast leap, one hit, then a landing opening', () => {
+test('weakened: the great ape outruns it but a human cannot', () => {
+  assert.ok(R.chaseSpeed < 6.4 && R.chaseSpeed > 5.8, 'between the human and ape sprints');
+  assert.ok(R.maxHealth <= 220 && R.pounceDamage <= 20 && R.clawDamage <= 10);
+  for (const [sprint, closes] of [
+    [6.4, false],
+    [5.6, true],
+  ]) {
+    const { e, p, tick } = fixture(14);
+    engaged(e, p);
+    e.nextPounceAt = far;
+    const start = Math.hypot(p.x - e.x, p.z - e.z);
+    for (let t = 2000; t < 3000; t += 50) {
+      p.z += sprint * 0.05;
+      tick(t);
+    }
+    const gap = Math.hypot(p.x - e.x, p.z - e.z);
+    assert.equal(gap < start - 0.3, closes, `sprint ${sprint}: ${start} -> ${gap}`);
+  }
+});
+
+test('pounce: a still Crouch telegraph, final dip, fast leap, one hit, then a landing opening', () => {
   const { e, p, tick } = fixture(7);
   engaged(e, p);
   tick(2000);
   assert.equal(e.pendingAttack.kind, 'pounce');
-  assert.equal(e.clip, 'Pounce');
+  assert.equal(e.clip, 'Crouch', 'the crouch clip announces the pounce');
   const z = e.z;
-  run(tick, 2050, 2000 + R.pounceCrouchMs - 50);
+  const dip = 2000 + R.pounceWindupMs,
+    leap = dip + R.pounceCrouchMs;
+  run(tick, 2050, dip - 50);
   assert.equal(e.z, z);
   assert.equal(e.behavior, 'crouch');
+  assert.equal(e.clip, 'Crouch');
   assert.equal(p.energy, 100);
-  run(tick, 2000 + R.pounceCrouchMs, 2000 + R.pounceCrouchMs + R.pounceLeapMs);
+  tick(dip);
+  assert.equal(e.clip, 'Pounce');
+  assert.equal(e.behavior, 'crouch');
+  assert.equal(e.z, z);
+  run(tick, leap, leap + R.pounceLeapMs);
   assert.ok(e.z > z + 4);
   assert.equal(p.energy, 100 - R.pounceDamage);
   assert.equal(p.hurtSequence, 1);
-  run(tick, 2000 + R.pounceCrouchMs + R.pounceLeapMs + 150, 2000 + R.pounceCrouchMs + R.pounceLeapMs + 300);
+  run(tick, leap + R.pounceLeapMs + 150, leap + R.pounceLeapMs + 300);
   assert.equal(e.behavior, 'land');
   assert.equal(e.speed, 0);
   assert.equal(p.energy, 100 - R.pounceDamage);
@@ -180,12 +237,14 @@ test('super armour keeps the pounce going when struck in mid-leap', () => {
   const { e, p, room, tick } = fixture(7);
   engaged(e, p);
   tick(2000);
-  run(tick, 2050, 2000 + R.pounceCrouchMs + 100);
+  const leap = 2000 + R.pounceWindupMs + R.pounceCrouchMs;
+  run(tick, 2050, leap + 100);
   const hitter = { ...p, id: 'h', energy: 100, x: e.x - e.radius - 0.9, z: e.z, facing: Math.PI / 2 };
   room.players.set(hitter.id, hitter);
   hitter.attackSequence = 0;
-  startAttack(room, hitter, { targetId: e.id }, 2600);
-  const result = resolveAttack(room, hitter, 3000);
+  // The ape's blow lands 400 ms after it starts, still inside the 600 ms leap.
+  startAttack(room, hitter, { targetId: e.id }, leap + 120);
+  const result = resolveAttack(room, hitter, leap + 520);
   assert.equal(result.hit, true);
   assert.equal(e.health, R.maxHealth - 25);
   assert.equal(e.pendingAttack?.kind, 'pounce');
@@ -197,14 +256,21 @@ test('claw combo lands two separate swipes on a player in front', () => {
   p.z = e.z + e.radius + p.radius + 0.4;
   engaged(e, p);
   tick(2000);
-  assert.equal(e.clip, 'Attack');
-  tick(2000 + R.clawImpactsMs[0] - 10);
+  assert.equal(e.clip, 'Snarl', 'the snarl announces the claw combo');
+  assert.equal(e.behavior, 'snarl');
+  tick(2000 + R.snarlMs - 1);
+  assert.equal(e.clip, 'Snarl');
   assert.equal(p.energy, 100);
-  tick(2000 + R.clawImpactsMs[0]);
+  const swing = 2000 + R.snarlMs;
+  tick(swing);
+  assert.equal(e.clip, 'Attack');
+  tick(swing + R.clawImpactsMs[0] - 10);
+  assert.equal(p.energy, 100);
+  tick(swing + R.clawImpactsMs[0]);
   assert.equal(p.energy, 100 - R.clawDamage);
-  tick(2000 + R.clawImpactsMs[1]);
+  tick(swing + R.clawImpactsMs[1]);
   assert.equal(p.energy, 100 - 2 * R.clawDamage);
-  tick(2000 + R.clawMs);
+  tick(swing + R.clawMs);
   assert.equal(p.hurtSequence, 2);
 });
 
@@ -285,9 +351,20 @@ test('client requires the cat clips and samples one-shots from the server clock'
       ),
     /Pounce/,
   );
-  for (const clip of ['Pounce', 'Step', 'Attack', 'Alert'])
+  // Telegraph clips start at the attack; Pounce and Attack start when theirs end.
+  for (const [clip, offset] of [
+    ['Crouch', 0],
+    ['Snarl', 0],
+    ['Step', 0],
+    ['Alert', 0],
+    ['Pounce', R.pounceWindupMs],
+    ['Attack', R.snarlMs],
+  ])
     assert.deepEqual(
-      enemyAnimationState({ modelKey: R.modelKey, phase: 'alive', attackAt: 2000, clip }, 2500),
+      enemyAnimationState(
+        { modelKey: R.modelKey, phase: 'alive', attackAt: 2000, clip },
+        2000 + offset + 500,
+      ),
       { clip, elapsed: 0.5 },
     );
 });
@@ -337,4 +414,20 @@ test('the hunting ground has no tree in the territory and no rock around the pos
   assert.ok(SCENERY.trees.some((t) => near(t) < R.territoryRadius + 20));
   assert.ok(inSabertoothClearing(SABERTOOTH_GROUND.x, SABERTOOTH_GROUND.z, -13));
   assert.equal(inSabertoothClearing(SABERTOOTH_GROUND.x + 40, SABERTOOTH_GROUND.z), false);
+});
+
+test('exhibition rules respawn the cat ten seconds after death', async () => {
+  const { EXHIBITION_RULES } = await import('../dist/shared/room-rules.mjs');
+  const { e, room, tick } = fixture(30);
+  room.rules = EXHIBITION_RULES;
+  e.health = 0;
+  e.phase = 'dead';
+  e.phaseStartedAt = 2000;
+  tick(2000 + R.deathMs);
+  assert.equal(e.phase, 'respawning');
+  tick(2000 + R.deathMs + 9990);
+  assert.equal(e.phase, 'respawning');
+  tick(2000 + R.deathMs + 10010);
+  assert.equal(e.phase, 'alive');
+  assert.equal(e.health, R.maxHealth);
 });

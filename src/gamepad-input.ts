@@ -21,7 +21,7 @@ export const PAD = {
 } as const;
 
 export const STICK = { deadzone: 0.16, lookDeadzone: 0.18, runEnter: 0.78, runExit: 0.68 };
-export type InputMode = 'game' | 'menu' | 'blocked';
+export type InputMode = 'game' | 'menu' | 'map' | 'blocked';
 export type Direction = 'up' | 'down' | 'left' | 'right';
 export type PadAction =
   | 'confirm'
@@ -33,9 +33,11 @@ export type PadAction =
   | 'menu'
   | 'inventory'
   | 'journal'
+  | 'heal'
   | 'center'
   | 'zoomIn'
-  | 'zoomOut';
+  | 'zoomOut'
+  | 'pin';
 export type PadDevice = Pick<
   Gamepad,
   'index' | 'id' | 'connected' | 'mapping' | 'axes' | 'buttons'
@@ -52,18 +54,23 @@ export interface PadFrame {
   look: { x: number; y: number };
   actions: PadAction[];
   navigation: Direction | null;
-  /** L3 held during play: the item and action bar stays visible while true. */
-  hotbar: boolean;
   active: boolean;
+  /** Map mode only: left stick displacement that moves the atlas pointer. */
+  pointer?: { x: number; y: number };
+  /** Map mode only: right stick vertical axis; up (negative) zooms in. */
+  zoom?: number;
 }
 
+// 2026-09-12: the top face button jumps and the bottom one rides; in every
+// menu the bottom button is "back" (it closes the pause menu, the atlas and
+// the settings) while the other three confirm.
 const gameBindings: [number, PadAction][] = [
-  [PAD.cross, 'jump'],
+  [PAD.triangle, 'jump'],
   [PAD.circle, 'confirm'],
   [PAD.square, 'attack'],
   [PAD.r2, 'attack'],
   [PAD.l2, 'cancel'],
-  [PAD.triangle, 'ride'],
+  [PAD.cross, 'ride'],
   [PAD.share, 'map'],
   [PAD.touchpad, 'map'],
   [PAD.options, 'menu'],
@@ -72,15 +79,31 @@ const gameBindings: [number, PadAction][] = [
   [PAD.r1, 'zoomIn'],
 ];
 const menuBindings: [number, PadAction][] = [
-  [PAD.cross, 'confirm'],
+  [PAD.cross, 'cancel'],
   [PAD.circle, 'confirm'],
   [PAD.square, 'confirm'],
   [PAD.triangle, 'confirm'],
   [PAD.options, 'menu'],
 ];
+/**
+ * The open atlas: circle confirms, the bottom button backs out, square pins, R3
+ * recentres, OPTIONS/L2 close, and the map buttons (SHARE / touchpad) toggle it shut.
+ */
+const mapBindings: [number, PadAction][] = [
+  [PAD.cross, 'cancel'],
+  [PAD.circle, 'confirm'],
+  [PAD.square, 'pin'],
+  [PAD.r3, 'center'],
+  [PAD.r1, 'zoomIn'],
+  [PAD.l1, 'zoomOut'],
+  [PAD.options, 'menu'],
+  [PAD.l2, 'menu'],
+  [PAD.share, 'map'],
+  [PAD.touchpad, 'map'],
+];
 const directions: Direction[] = ['up', 'down', 'left', 'right'];
 const usedButtons = [
-  ...new Set([...gameBindings.map(([index]) => index), ...directions.map((d) => PAD[d]), PAD.l3]),
+  ...new Set([...gameBindings.map(([index]) => index), ...directions.map((d) => PAD[d])]),
 ];
 const finiteAxis = (value: number | undefined) =>
   Number.isFinite(value) ? Math.max(-1, Math.min(1, value!)) : 0;
@@ -132,7 +155,6 @@ export class GamepadInput {
       look: { x: 0, y: 0 },
       actions: [],
       navigation: null,
-      hotbar: false,
       active: false,
     };
     if (!pad) return frame;
@@ -152,16 +174,17 @@ export class GamepadInput {
     }
     const pressed = (index: number) => held.has(index) && !this.previous.has(index);
     frame.active = !!(left.magnitude || right.magnitude || held.size);
-    for (const [index, action] of mode === 'menu' ? menuBindings : gameBindings) {
+    const bindings = mode === 'menu' ? menuBindings : mode === 'map' ? mapBindings : gameBindings;
+    for (const [index, action] of bindings) {
       if (pressed(index) && !frame.actions.includes(action)) frame.actions.push(action);
     }
     if (mode === 'game') {
       this.running = left.magnitude >= (this.running ? STICK.runExit : STICK.runEnter);
       frame.move = { x: left.x, y: left.y, running: this.running };
       frame.look = { x: right.x, y: right.y };
-      frame.hotbar = held.has(PAD.l3);
+      // D-pad up eats whatever is carried; the map stays on SHARE / the touchpad.
       for (const [dir, action] of [
-        ['up', 'map'],
+        ['up', 'heal'],
         ['down', 'menu'],
         ['left', 'inventory'],
         ['right', 'journal'],
@@ -170,8 +193,13 @@ export class GamepadInput {
       }
     } else {
       frame.look = { x: right.x, y: right.y };
+      if (mode === 'map') {
+        frame.pointer = { x: left.x, y: left.y };
+        frame.zoom = right.y;
+      }
       let direction = directions.find((d) => held.has(PAD[d])) ?? null;
-      if (!direction && left.magnitude >= 0.55) {
+      // Menus treat the left stick as a d-pad; the atlas uses it for the pointer instead.
+      if (!direction && mode === 'menu' && left.magnitude >= 0.55) {
         direction =
           Math.abs(left.x) > Math.abs(left.y)
             ? left.x < 0

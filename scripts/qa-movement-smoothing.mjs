@@ -49,7 +49,6 @@ try {
     localStorage.setItem('cro-species', species);
     localStorage.setItem('cro-gender', 'female');
     localStorage.setItem('cro-name', 'Movement QA');
-    localStorage.setItem('cro-skip-guide', '1');
   }, species);
   await page.goto(process.env.GAME_QA_URL || 'http://127.0.0.1:3023/?room=SMOOTH-QA');
   await page.locator('#title-start').click();
@@ -63,7 +62,7 @@ try {
   await hold('w', 2200);
   await stage('stop');
   await page.waitForTimeout(500);
-  await page.locator('#run-button').click();
+  await page.keyboard.press('Shift');
   await page.locator('#world').focus();
   await stage('run');
   await hold('s', 2000);

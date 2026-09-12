@@ -1,0 +1,398 @@
+# 試遊フィードバック 8 項目のレビューと詳細設計
+
+2026-09-11。ユーザーの 8 つの提案を、現行コードの調査結果（ファイル・行番号つき）と
+簡単な再現実験に基づいてレビューし、実装の詳細設計をまとめる。まだコードは変更していない。
+
+## 0. 総評と優先順位
+
+| # | 提案 | 判定 | 規模 | 主な変更先 |
+|---|---|---|---|---|
+| 1 | 展示モードで死亡後も体力全回復 | 賛成。定数 1 つだが「展示モード」をサーバーに明示する土台が必要 | 小 | `server.mts`, `application/game-core.mts`, `shared/enemies.mts` |
+| 2 | 城の 2 階→3 階の階段で詰まる | 再現できた。原因は床格子の穴 ＋ 斜め階段での軸方向スライド | 中 | `scripts/build-castle-walk-atlas.mjs`, `shared/collision.mts`, `tests/castle-stairs.test.mjs` |
+| 3 | 十字キー↑で食料を自動消費して回復 | 賛成。十字キー↑は現在「地図」なので割り当てを移す | 小〜中 | `application/actions.mts`, `src/gamepad-input.ts`, `src/main.ts` |
+| 4 | 展示モードでマンモス・敵が 10 秒で復活 | 賛成。復活タイマーは既にあり、値を部屋ルールで差し替えるだけ。マンモスは肉の山の扱いを決める | 小 | `shared/enemies.mts`, `shared/violet-behemoth.mts`, `shared/sabertooth.mts`, `shared/hunting.mts` |
+| 5 | 人間・魔法使いをかなり速く、大猿をもう少し速く（大猿＞人間＞魔法使い） | 賛成。ただし大虎「全キャラの走りより速い」・巨獣「大猿だけが逃げ切れる」の設計不変条件を一緒に動かす | 小（影響範囲は広い） | `shared/characters.mts`, `shared/world.mts`, `shared/sabertooth-rules.mts`, `shared/behemoth-rules.mts`, テスト多数 |
+| 6 | 草の根元の茶色をやめて緑だけに | 再現できた。茶色は GLB に焼き込まれたテクスチャ（下 10% の帯）。シェーダーではなくデータを直す | 小〜中 | `public/models/meadow-grass/model.glb`, 新スクリプト, `src/paleo-materials.ts` の定数, テスト |
+| 7 | 地図：タブ・サイドバー廃止、右スティック拡大縮小、左スティックで自由なポインタ、敵と地名の表示 | 賛成。地図画面の作り直しに近い。今の「メニューモード」のコントローラー処理では実現できないので専用の「地図モード」を追加 | 大 | `src/map-screen.ts`, `src/map-warp-ui.ts`, `src/world-map.ts`, `src/gamepad-input.ts`, `src/gamepad-ui.ts`, CSS |
+| 8 | モンスターが背後でも足音で気づく、攻撃されたら必ず気づく | 賛成。巨獣には聴覚がなく、被弾しても標的にしない実装なので両方直す | 小〜中 | `shared/combat.mts`, `shared/violet-behemoth.mts`, `shared/sabertooth.mts`, `shared/behemoth-rules.mts` |
+
+推奨する着手順：**2（不具合）→ 8 → 5 → 3 → 1・4（同じ土台）→ 6 → 7（最大）**。
+1・4 は「展示モード」フラグを先に作ると 2 つとも定数差し替えになる。7 は独立していて最も大きいので最後。
+
+---
+
+## 1. 展示モード：死亡後の体力全回復
+
+### 現状
+- 「展示モード」を表すフラグはゲーム本体に存在しない。クライアントは `multiplayer.mode === 'lan'`（`src/main.ts:118`）、サーバーは `expectedBuild` の有無（`server.mts:30,68,132`）で間接的に判定しているだけ。
+- 体力は `player.energy`（0〜100）。力尽きると `shared/enemies.mts:154 hitPlayer()` が `downedUntil = now + 4000` を立て、`shared/enemies.mts:126 recoverPlayers()` が 4 秒後に焚き火そばへ移して **`energy = ENEMY_RULES.recoveryEnergy`（50）** と 5 秒の無敵を与える。通知文も「元気50」と固定。
+
+### 設計
+1. **サーバーに展示モードを明示する。** `createGameServer({ exhibition: true })` を追加し、`scripts/start-exhibition.mjs` の host 起動（`:54-68`）で渡す。開発中に通常サーバーで試せるよう `EXHIBITION_RULES=1` 環境変数でも有効にする（`scripts/dev.mjs` 経由の 3000 番で確認できる）。
+2. **部屋ルール `room.rules` を導入する。** `application/game-core.mts` の部屋生成時に
+   `room.rules = exhibition ? EXHIBITION_RULES : DEFAULT_RULES`（`shared/room-rules.mts` を新設）。
+   ```ts
+   export const DEFAULT_RULES = Object.freeze({ recoveryEnergy: 50, respawnMs: null, meatLingerMs: null });
+   export const EXHIBITION_RULES = Object.freeze({ recoveryEnergy: 100, respawnMs: 10000, meatLingerMs: 10000 });
+   ```
+   `respawnMs: null` は「各生き物の既定値を使う」。テストは `room.rules` を直接差し替えれば展示ルールを検査できる。
+3. `recoverPlayers()` は `room.rules?.recoveryEnergy ?? ENEMY_RULES.recoveryEnergy` を使い、通知文を `元気${energy}` に動的化する。クライアントの「N秒後に焚き火で回復」表示（`src/main.ts:1037-1041`）は変更不要。
+4. `/api/health`（`server.mts:68`）に `exhibition: true` を載せ、起動ログにも「展示ルール：体力全回復・10 秒復活」と 1 行出す。QA スクリプトがこれで判定できる。
+
+### テスト
+- `tests/enemies.test.mjs`：`room.rules = EXHIBITION_RULES` で倒れた後 `energy === 100`、既定では 50 のまま。
+- `tests/exhibition-lan.test.mjs`：host 起動オプションに `exhibition: true` が渡ること、`/api/health` に出ること。
+
+---
+
+## 2. 城：2 階から上の階段で途中で詰まる
+
+### 再現と原因（今回の実験）
+`dist/shared` の衝突判定だけで、2 階テラス（高さ 12.6 m）の側面階段の足元から、プレイヤーが
+スティックを一方向に倒し続けた場合（経路探索なし）を全キャラでシミュレーションした。
+
+- 人間（半径 0.32）：右側の足元 `(18, 9)` から左上 `(-1,-1)` 方向へ倒し続けると **`(14.6, 5.5)` 高さ 15.9 m で停止**（歩き・走りとも）。`(-0.6,-1)` 方向でも `(14.5, 3.0)` 高さ 17.0 m で停止。左側も対称に同じ。
+- 大猿（半径 0.76）：`(19, 9)` から `(0,-1)` で **`(19, 7.0)` 高さ 13.2 m で停止**、`(-1,-0.6)` で `(17.2, 7.9)` で停止。階段の入口で止まる。
+- 一方、経路探索（`collision.path`）が返す折れ線どおりに歩かせると全 7 キャラが広間に着く。つまり **通れる筋は存在するが、手動操作では見つからない**。これが「途中で詰まる」の正体。
+
+床格子（`shared/castle-surface-data.mts`、0.35 m 格子、実 GLB からのレイ計測）を調べた結果：
+1. **踏面の中に 1 セルだけの穴（null）がある。** 4 近傍のうち 3 つ以上が高さ差 0.8 m 以内の床なのに中央が null のセルが地上より上に 93 個。
+   側面階段と 3 階の通路上にあるものが実際の停止位置と一致する：`(14.88, 5.07)` 高さ 15.9（人間の停止点）、`(19.08, 6.82)` 高さ 13.4（大猿の停止点）、`(16.63, 2.97)`、`(14.17, 2.63)`、左側 `(-18.02, 8.92)` など。復元メッシュの隙間やレイのすり抜けが原因で、本物の柱ではない。
+2. **側面階段は城の軸に対して 45° の斜め**だが、`shared/collision.mts:250-271 move()` の壁ずり（スライド）は床格子の x 軸か z 軸のどちらかにしか動かせない。斜めの階段で穴や手すりに当たると、軸方向の候補は両方とも手すり（+1.0〜1.2 m の帯、2F–3F 区間に 26 セル）か穴に入るため両方却下され、`candidates[0] ?? point` で **その場に留まる**。
+3. 大猿は半径 0.76 m の 8 点リング検査（`shared/measured-walk-surface.mts:52-67`）が穴 1 個で幅 1.5 m 以上を失うため、人間より早く止まる。
+
+なお中央階段の修正（`CASTLE_STAIRS_FIX.md`）は 1 階の上がり口だけを直したもので、側面階段は未対応。
+
+### 設計
+1. **床格子の穴埋め（データ修正）。** `scripts/build-castle-walk-atlas.mjs` に後処理を追加：
+   null セルのうち、4 近傍の 3 つ以上が有限の高さで最大差 0.8 m 以内、かつ最低高さが 1 m 以上（地上の岩などは対象外）のものを近傍平均で埋める。埋めたセル数と座標を `holeFills` として出力 JSON のメタデータに記録。
+   `node scripts/build-castle-walk-atlas.mjs <surface-rev08.json> <walk-rev09.json> 19.9` → `node scripts/install-castle-surface.mjs 09`（GLB は変更しないので `sourceSha256` は同じ。`tests/castle.test.mjs:18` の照合はそのまま通る）。
+   同じ規則を **1 セル幅の手すり上面**（両隣の床より 0.85〜1.6 m 高いセル）に適用して `null`（壁）にする。今は手すりの上が「歩ける床」として残っており、大猿のリング検査を無駄に落としている。3 階床と続く端のセルだけ残す。
+2. **斜め壁に沿うスライド（判定修正）。** `move()` の床格子ブロックで、軸方向の 2 候補が両方却下されたときのフォールバックを追加：入力ベクトルを ±22.5°、±45°、±67.5° 回転させた候補（長さは cos で縮める）を順に試し、`free` かつ `transition` を満たす最初のものを採用する。既存の「壁・落差・動的人物を越えない」検査（`tests/castle-stairs.test.mjs:63-95`）はそのまま満たす。屋外は床格子がないので影響なし。
+3. **大猿の追加策（1・2 で足りない場合のみ）。** 床格子のリング検査の半径だけ `Math.min(radius, 0.5)` にする（人物同士・岩との衝突は 0.76 のまま）。手すりを数十 cm 貫通して見えるが、詰まるよりよい。まず 1・2 を実装して下記テストで判定してから決める。
+
+### テスト・検証
+- `tests/castle-stairs.test.mjs` に「2 階の側面階段を、スティックを倒し続けて上る」を追加：両側 × 全 7 キャラ × 歩き／走り × 入力方向 `(∓1,-1)`, `(∓0.6,-1)`, `(∓1,-0.6)` で、12 秒以内に高さ 17.5 m 以上に達すること（今回のシミュレーションをそのまま回帰テストにする）。純粋な軸方向入力で柱に当たる場合は壁なので対象外。
+- `tests/castle.test.mjs`：穴埋め後も `nx/nz/step` と到達セル数が想定どおり、`holeFills` が 3 階以下の踏面のみであること。
+- `scripts/qa-castle-stairs.mjs` に 2 階→3 階（左右）の実 Chrome 区間を追加し、大猿と人間で通過を確認。
+
+---
+
+## 3. 十字キー↑で食料を自動消費して回復
+
+### 現状
+- 食料と回復量：ベリー +25（`application/actions.mts:214`）、焼き肉 +45、焼き魚 +30、焼いた貝 +20（貝殻が残る）、焼き根 +35、香草焼き根 +50（`shared/pantry.mts:10-59`、`shared/hunting.mts:75-201`）。すべて **別々のアクション名**（`eat` / `eatMeat` / `eatFish` / `eatShellfish` / `eatRoot` / `eatHerbRoot`）で、体力 100 のときは拒否。
+- 入力はホットバーの `#eat-button`（ベリー）と狩りパネルの `#eat-meat-button`（焼き肉）、それ以外はもちもの画面の中のボタンだけ。**コントローラーに食べる操作はなく**、十字キー ← でもちもの画面を開いて選ぶ必要がある。
+- 十字キーは ↑地図 ↓メニュー ←もちもの →手帳（`src/gamepad-input.ts:163-170`、`src/help-content.ts:91-95`）。地図は SHARE／タッチパッドと `M` キーにもある。
+
+### 設計
+1. **サーバーに `heal` アクションを追加**（`application/actions.mts`）。所持している食料から次の規則で 1 つ選び、既存の各 eat 処理へ委譲する（回復量・副作用・通知の二重管理を避ける）：
+   - 不足量 `missing = 100 - energy`。回復量が `missing` 以下のもののうち最大のもの（無駄なく使う）。なければ所持食料のうち回復量が最小のもの。
+   - 候補順（同点時）：ベリー → 焼いた貝 → 焼き魚 → 焼き根 → 焼き肉 → 香草焼き根。
+   - 体力 100：「体力は満タンです。」／食料なし：「食べ物がありません。ベリーや肉を集めよう。」（どちらも小さな通知）。
+   - 力尽き中・乗船中・調理中など既存の拒否条件は委譲先がそのまま適用する。
+2. **入力割り当て。** 十字キー↑ = `heal`。地図は SHARE／タッチパッド／`M` に残す（`help-content.ts` の十字キー説明を「↑ 回復 · ← もちもの · → 手帳 · ↓ メニュー」に更新し、地図の行に SHARE を明記）。キーボードは `Q`（未使用。`src/main.ts:1655-1683` の割り当て一覧で確認済み）。押しっぱなしで連続消費しないよう、クライアントは押下エッジのみ送信し、サーバーは同一プレイヤーの `heal` を 300 ms に 1 回に制限する。
+3. **HUD。** 体力バー（`#energy-track`）の右に小さなヒント「↑ 回復（焼き肉 2）」を、体力 < 100 かつ食料ありのときだけ表示。成功時の通知は「焼き肉を食べた。体力 +45」。
+
+### テスト
+- `tests/hunting-server.test.mjs` または新規 `tests/heal.test.mjs`：不足 30 でベリー(25)と焼き肉(45)を持つ → ベリーを消費。不足 10 でベリーのみ → ベリー消費で 100 に丸め。食料なし／体力 100 の通知。300 ms 制限。
+- `tests/gamepad-input.test.mjs`：十字キー↑が `heal`、地図は SHARE のみ。
+
+---
+
+## 4. 展示モード：マンモス・敵を 10 秒で復活
+
+### 現状（復活タイマーは全部ある）
+| 生き物 | 復活まで | 場所 |
+|---|---|---|
+| 白羽の呪術師・探索の守り手 | 45 s | `shared/enemies.mts:28 respawnMs`、`:222-249` |
+| 紫尾の巨獣 | 60 s | `shared/behemoth-rules.mts:31`、`shared/violet-behemoth.mts:172-184` |
+| 剣牙の大虎 | 90 s | `shared/sabertooth-rules.mts:43`、`shared/sabertooth.mts:268-280` |
+| マンモス | 肉の山（4 個）が空になってから 90 s | `shared/hunting.mts:25,154-157,293-309` |
+
+いずれも `now - phaseStartedAt >= respawnMs` → `nearestFree(home)` → 復活、の同じ形。サーバーは 50 ms 刻み（`server.mts:26`）。
+
+### 設計
+1. 各更新関数で `room.rules?.respawnMs ?? R.respawnMs` を使う（4 か所）。項目 1 の `room.rules` に相乗り。
+2. **マンモスの肉の山。** 展示では「倒して 10 秒で復活」を優先し、`meatLingerMs`（10 s）を追加：`meat` 段階が `meatLingerMs` を超えたら残りの肉を捨てて即 `alive` に戻す（死亡から合計 10 s で復活）。山が先に空になった場合は `respawnMs`（10 s）後に復活。通常モードは `meatLingerMs: null` で従来どおり（空になってから 90 s）。
+3. 復活位置は `nearestFree(home, …, roamRadius)` のまま。プレイヤーが柱の上に立っていても隣に出る。復活直後の `aggroAfter = now + 1000` も維持し、出現した瞬間に襲わない。
+4. 地図（項目 7）で復活待ちの敵は「復活まで N 秒」の中抜き印にする（展示で客に伝わる）。
+
+### テスト
+- `tests/enemies.test.mjs`・`tests/violet-behemoth.test.mjs`・`tests/sabertooth.test.mjs`・`tests/hunting-server.test.mjs`：`room.rules = EXHIBITION_RULES` で 10 s 後に `phase === 'alive'`、既定ルールは従来値のまま。マンモスは 4 個中 1 個だけ拾った状態で 10 s 経過 → 復活し `meatRemaining` がリセット。
+
+---
+
+## 5. 移動速度：人間・魔法使いをかなり速く、大猿をもう少し速く
+
+### 現状（`shared/characters.mts`、既定値は `shared/world.mts:12-13`）
+| キャラクター | 歩き | 走り |
+|---|---|---|
+| 人間 4 種（既定値） | 1.25 | 3.5 |
+| 猫耳のクノイチ | 1.6 | 4.6 |
+| 砂耳の魔法使い | 0.6 | 1.8 |
+| 巨腕の大猿 | 1.8 | 5.4 |
+
+サーバーとクライアント予測は同じ `shared/movement.mts` を使うので、`characters.mts`／`world.mts` を変えるだけで両方に効く。ただし次の **設計上の不変条件**がテストで固定されている：
+- 大虎の追走 6.2 は「全キャラの走りより速い」（`tests/sabertooth.test.mjs:141` `chaseSpeed > 5.4`）。
+- 巨獣の突進 5.15 は「大猿だけが走って逃げ切れる」（`tests/violet-behemoth.test.mjs:97` `5 < chargeSpeed < 5.4`）。
+- 大猿 5.4・魔法使い 0.6/1.8 が肩乗り・運搬テストのリテラルに散在（`tests/carrying.test.mjs:291`、`tests/shoulder-pose.test.mjs:19-20,36,56`、`tests/shoulder-inertia.test.mjs:106,156-157`、`tests/carry-support-pose.test.mjs:78-79,105`）。
+- 歩行アニメーションの再生速度は「実速度 ÷ クリップの m/s」（`src/character-animation.ts:116,165`）。魔法使いの Walk_Loop は 0.31 m/s なので、歩き 1.6 にすると 5 倍速で足が回る。
+
+### 提案値
+| キャラクター | 歩き | 走り | 備考 |
+|---|---|---|---|
+| 巨腕の大猿 | 1.8 → **2.4** | 5.4 → **6.4** | 「もう少し」＝約 +20〜30% |
+| 猫耳のクノイチ | 1.6 → **2.1** | 4.6 → **5.8** | 人間より少し速い現行関係を維持 |
+| 人間 4 種 | 1.25 → **2.0** | 3.5 → **5.6** | 「かなり」＝1.6 倍 |
+| 砂耳の魔法使い | 0.6 → **1.5** | 1.8 → **4.6** | 2.5 倍。それでも最も遅い |
+
+順序は 大猿 > クノイチ > 人間 > 魔法使い。連動して：
+- 大虎 `chaseSpeed` 6.2 → **7.4**（大猿 6.4 の約 1.15 倍。現行比率と同じ）。
+- 巨獣 `chargeSpeed` 5.15 → **6.0**（人間 5.6 より速く大猿 6.4 より遅い。「大猿だけが逃げ切れる」を維持）。クノイチ 5.8 も逃げ切れない側に置く。
+- 騎乗（`RIDING`）・船・住人・敵の歩き速度は変えない。
+- 魔法使いは歩き 1.5 で Walk_Loop 4.8 倍速になる。実ブラウザーで見て不自然なら `asset.json` の `metresPerSecond` ではなく **クリップ再生倍率の上限（例 3.0）** を `character-animation.ts` に入れ、足滑りを許容する。走りは Run_Loop の m/s 次第で同様に判断。
+
+### 変更点
+- `shared/world.mts` の `walkSpeed`/`runSpeed`（人間の既定値）、`shared/characters.mts` の 3 キャラの上書き、`shared/sabertooth-rules.mts`、`shared/behemoth-rules.mts`。
+- `WORLD.version` は速度に依存する保存データがないため据え置き（`shared/snapshots.mts` の検証で速度を参照していないことを確認してから決める）。
+- テスト更新：`tests/movement.test.mjs:18-27`、`tests/giant-ape.test.mjs:82-103`、上記のリテラル群、`tests/sabertooth.test.mjs:141`、`tests/violet-behemoth.test.mjs:97`。`scripts/qa-gamepad.mjs:153-157` は式で参照しているので変更不要。
+- `tests/movement-smoothing.test.mjs` と `src/local-prediction.ts` の「瞬間移動とみなす距離」が走り 6.4 m/s × 通信間隔で誤発火しないか確認。
+
+---
+
+## 6. 草の根元の茶色をやめる
+
+### 現状（今回の計測）
+`public/models/meadow-grass/model.glb`（草の株、512×512 テクスチャ）の頂点を高さで 10 帯に分けてテクセル色を平均すると、**最下帯（0〜10%、約 5.5 cm）は RGB 111,104,68 で 86% が黄土色**、次の帯も 24% が黄土色、それより上は 58,108,38 の葉の緑で一様。`meadow-sprig`（ぱらぱら草）は最下帯が 73,94,44 のくすんだ緑で茶色ではない。
+つまり茶色は TRELLIS 復元時の参照画像の土が葉の根元に焼き込まれたもので、シェーダー（`src/biome-surfaces.ts` の地域材質や `src/paleo-materials.ts` の地面の緑寄せ）には根元を茶色にする処理はない。地面はすでに草の緑に合わせてある（直前のコミット）ので、根元だけが浮いている。
+
+### 設計（データ修正。シェーダーは触らない）
+1. 新スクリプト `scripts/recolor-grass-root.mjs`：GLB の JSON・バイナリを読み、頂点の正規化高さが **0.18 未満**の頂点が参照する UV 周辺（半径 1 テクセル）のテクセルのうち、葉の緑でないもの（`g < r * 1.35`）を、その帯の上にある葉の緑の平均色相・彩度に、**元の輝度を保って**置き換える（陰影は残る）。PNG を再エンコードして同じ bufferView に差し替え、長さとパディングを更新。`meadow-sprig` にも同じ規則を適用（最下帯のくすみ取り）。
+2. 出力は `output/model-generation/models/meadow-grass/work/low-poly/candidate-03/`（元の candidate-02 は保持）とし、`scripts/adopt-foliage-revision.mjs` で採用 → `public/models/meadow-grass/model.glb`、`asset.json` の `sha256`/`bytes`/`notes`/`provenance`、`assets/world-models.json`、`public/models/world-assets.json` を更新。
+3. `src/paleo-materials.ts:93-101 BLADE_ALBEDO` は葉の緑テクセルの平均なので根元を緑化するとわずかに動く。`tests/meadow-ground-tint.test.mjs` の許容は 0.003 なので再計測値に更新（地面の色寄せの意図は変わらない）。
+4. 遠景のインポスターは実行時に GLB から描くので自動で追従。作物（火根草・香り草）は同じ GLB の色替えなので根元も一緒に緑になる（意図どおり）。
+
+### テスト・検証
+- `tests/meadow-ground-tint.test.mjs` に「最下帯（高さ 15% 未満）の平均色が `g > r * 1.4` かつ黄土色テクセル 5% 未満」を追加（今回の計測スクリプトを流用）。
+- `scripts/verify-world-assets.mjs` の SHA 照合、`npm run check`。実 Chrome で開始地点の近景（1.1 m 以内の実メッシュ）と遠景を確認し、エラー 0。
+
+---
+
+## 7. 地図：タブ・サイドバー廃止、スティックで自由に動くポインタ、敵と地名
+
+### 現状（`src/map-screen.ts`、`src/map-warp-ui.ts`、`src/world-map.ts`）
+- 上部ツールバー（世界全図／三つの岸の湾／現在地／探索の情報／中央にピンを打つ）と右サイドバー（行き先カード＋地域別の焚き火一覧）で構成。
+- 拡大縮小・移動はマウス（ホイール、ドラッグ、＋−）とキーボードだけ。**コントローラーは「メニューモード」でボタン間のフォーカス移動しかできず**、左スティックは項目送り、右スティックはサイドバーのスクロール（`src/gamepad-ui.ts:175-178`）。
+- 敵の点は「探索の情報」ON かつ現在地モードのときだけ（`src/world-map.ts:512-515`）。縄張りの輪（紫・琥珀）も同条件。地名は大陸名・海洋名のみ常時、その他は詳細 ON のとき。
+- 焚き火（ワープ先 30 か所）と現在地は DOM の印、それ以外はキャンバス描画。ワープは「選択 → もう一度決定」の 2 段階（`src/map-warp-ui.ts:84-114,336-339`）。
+
+### 設計
+**画面**
+- 全面キャンバス 1 枚。ツールバーとサイドバー（`.earth-map-toolbar`、`.earth-travel`、`#map-list`）を削除。残す UI は 3 つだけ：
+  1. 左下の小さなカード（`#map-card`）：選択中の焚き火の名前・距離・「○ ワープ」または不可の理由。未選択時は「焚き火にポインタを合わせて ○」。
+  2. 右下の拡大率表示と ＋／−（マウス・タッチ用）、「現在地へ（R3）」。
+  3. 中央のポインタ（`#map-cursor`、十字＋小円）。
+- 世界全図／湾／現在地の切替は廃止し、**1 つの投影で 1×（世界全体）〜32× をシームレスに**動く。湾は同じ平面上にあるので拡大すれば自然に見える。開いたときは現在地を中心に 4×。
+- 「探索の情報」の切替は廃止し、**拡大率で段階的に表示**する：
+
+  | 拡大率 | 表示 |
+  |---|---|
+  | 1〜2× | 大陸名・海洋名・現在地・焚き火の印（名前なし） |
+  | 2〜4× | 上に加えて 探索の地の名前・三つの岸の湾・白羽の大城・城門などの地点名（`EXPEDITION_STOPS`、`ADVENTURE_REGIONS`、`CASTLE`） |
+  | 4× 以上 | 上に加えて 焚き火の名前、集落名、**敵・モンスターの位置と名前**、縄張りの輪と名前（紫尾の巨獣の沼地／剣牙の大虎の狩り場）、裂け目 |
+  | 8× 以上 | 上に加えて 資源地・畑・釣り場・住人の道筋（現在の「詳細」相当） |
+
+- **敵・モンスター**：`state.enemies` の `hostile` なもの全部（白羽の呪術師、守り手、巨獣、大虎）を種類別の印（赤系の点＋短い記号）で描き、4× 以上で `enemy.name`、8× 以上で `enemyStatusLabel()` の状態（見回る／突進 など）を添える。マンモスは `state.animals` から群れの位置を黄土色の印＋「マンモス」で描く（狩りの目標として）。復活待ち（`phase === 'respawning'`）は住処（`home`）に中抜きの印と「復活まで N 秒」（展示で有用）。位置はスナップショット更新のたびに動く（既に毎回描き直している）。
+- ラベルの重なりは、既存の焚き火ラベル用の回避（`map-warp-ui.ts:189-218`）をキャンバスの地名・敵名にも使う簡易版（矩形が重なったら優先度の低い方を省く：焚き火 > 敵 > 地点名 > 集落）。
+
+**操作（コントローラー）**
+- `GamepadInput.sample` に **`'map'` モード**を追加（`'game' | 'menu' | 'blocked'` に加える）。`gamepad-ui.ts` の `mode()` は `#big-map` があるとき `'map'` を返す。
+  - 左スティック → `frame.pointer = {x, y}`：ポインタを画面上で `600 px/s × 倍率²`（微調整しやすい）で移動。ポインタが画面端 15% の帯に入ったら、その方向へ地図を自動スクロール（ポインタは帯の内側に留まる）。これで「キャンプ以外の場所へもシームレスに」移動できる。
+  - 右スティック上下 → `frame.zoom`：`zoom *= 2^(−y × dt × 1.5)`、拡大の基準点はポインタ。R1／L1 も ×1.5 段階で残す。
+  - ○／× = 決定：ポインタから 22 px 以内に焚き火があれば選択（カード更新、印を金色に）。すでに選択中の焚き火に対してもう一度 → ワープ（現行の 2 段階を維持。サーバー検査・到着後に閉じる処理はそのまま）。焚き火が近くにない場合は何もしない。
+  - □ = ポインタ位置に「ここへ行こう」のピン（現行の共有ピン機能を維持。ツールバーの「中央にピンを打つ」の代替）。もう一度 □ でピン消去。
+  - △ = 何もしない（誤操作防止）。R3 = 現在地へ中心を戻し 4×。OPTIONS／L2 = 閉じる。
+  - 十字キーはポインタを 1 px 単位で微調整（押しっぱなしで加速）。
+- マウス：ドラッグで移動、ホイールで拡大（カーソル基準）、クリックで最寄りの焚き火を選択、選択中の焚き火をもう一度クリックでワープ、右クリックでピン。キーボード：矢印でポインタ、＋−で拡大、Enter 決定、Esc 閉じる。タッチ：ドラッグ・ピンチ・タップ。
+- 焚き火にポインタが近づいたら「吸い付き」はせず、印を大きくして名前を出すだけ（自由移動を邪魔しない）。
+
+**内部**
+- `src/world-map.ts` の `mapProjection` から `overview/gulf` の分岐を外し、`bounds = EARTH ∪ GULF` 固定。`drawWorldMap` の `detailed` を `zoom` 段階の判定に置き換える。ミニマップ（`big = false`）の描画は変えない。
+- `src/map-warp-ui.ts` は `installMapWarp` を「ポインタ・選択・カード・ワープ」の 4 責務に整理し直す。一覧（`warpGroups`）と `select` 由来のコードは削除。
+- `src/gamepad-input.ts` の `PadFrame` に `pointer?`、`zoom?` を追加。`gamepad-ui.ts` は `'map'` モードのときフォーカス移動を行わず、`installMapWarp` が公開する `mapInput(frame)` に渡す。
+- 「ここへ行こう」のピン共有プロトコル（`shared/map-pins.mts`）は変更なし。
+
+### テスト・検証
+- `tests/gamepad-input.test.mjs`：`'map'` モードで `pointer`/`zoom`/各ボタンのアクション、ゲームモードには影響なし。
+- `tests/map-navigation.test.mjs`：ポインタ移動 → 端の帯で自動スクロール、拡大の基準点がポインタ、22 px 判定、決定 2 回でワープアクション送信、□ でピン。
+- `tests/map-gamepad-focus.test.mjs`：一覧がなくなるため「選択後に決定でワープ」を新しい流れで書き直す。
+- `tests/map-pins.test.mjs`・`tests/screens.test.mjs`：DOM 変更に追従。
+- 実 Chrome（`scripts/qa-map-pins.mjs` を拡張）：1440×900、390×844、844×390 で横スクロールなし、コントローラー模擬入力でポインタ移動・拡大・ワープ・ピン、敵の印が 4× 以上で名前つきで出ること、エラー 0。
+
+---
+
+## 8. モンスターの気づき：足音と被弾
+
+### 現状
+| 生き物 | 視覚 | 聴覚 | 被弾で標的にするか |
+|---|---|---|---|
+| 白羽の呪術師・守り手 | 全方位 8 m（`shared/enemies.mts:303-319`） | ― | 事実上する（8 m 全方位） |
+| 紫尾の巨獣 | 23 m・前方 ±72°（`shared/violet-behemoth.mts:215-231`） | **なし** | **しない**。背後から殴ると `Hit` 再生後に見張りへ戻る（`tests/violet-behemoth.test.mjs:68` がそれを固定） |
+| 剣牙の大虎 | 24 m・前方 ±75° | 7 m 全方位（`shared/sabertooth-rules.mts:17`） | 近接は聴覚に入るのでする。**20 m 後方からの魔法は無視** |
+
+被弾処理 `shared/combat.mts:180-204 applyHit()` は体力・`hitUntil`・`hitSequence` を更新するだけで `targetId` を触らない。
+
+### 設計
+1. **足音（聴覚）を共通化。** `shared/perception.mts` を新設：
+   ```ts
+   export const HEARING = Object.freeze({ still: 3, walking: 9, running: 16 });
+   export const heard = (e, p, R) =>
+     distance(e, p) <= (R.hearing ?? HEARING)[p.running ? 'running' : p.moving ? 'walking' : 'still'];
+   ```
+   立ち止まっていれば 3 m まで近づける（忍び寄りの余地）、歩けば 9 m、走れば 16 m で背後でも気づく。巨獣・大虎とも `hearing` を規則に持たせ（大虎の `hearingRange: 7` は `hearing` に置換）、標的選定を `視覚（前方・距離・視線）|| 聴覚（距離のみ、床の高さ差 1.4 m 以内）` にする。聴覚は壁越しの `segmentFree` を要求しない（音は回り込む。追跡は経路探索が担う）。
+2. **被弾で必ず気づく。** `applyHit()` で `kind === 'enemy'` のとき `target.provokedBy = attackerId; target.provokedAt = now` を記録（`strike.owner` は呼び出し側にあるので `applyHit` の引数に攻撃者 id を足す。飛び道具も同じ経路）。各 AI の標的選定の前に：`provokedBy` の相手が `eligible` で縄張り＋4 m 以内なら、視覚・聴覚・`aggroAfter` を無視して即 `targetId` にし `alert`（大虎）／`charge`（巨獣）へ。呪術師も同様。縄張りの外から撃たれた場合は縄張りの縁まで出て威嚇（現行の帰還規則の範囲内）し、届かなければ戻る。`provokedBy` は標的化した時点で消す。
+3. 大虎の回避（`threat()`）は変更しない。巨獣のスーパーアーマー等も変更なし。
+
+### テスト
+- `tests/violet-behemoth.test.mjs:68`「前方視界は背後の侵入者を無視」→「背後 12 m で立ち止まっていれば無視、歩けば 9 m で気づく、走れば 16 m で気づく」に書き換え。
+- `tests/sabertooth.test.mjs:111` も同じ 3 段階に更新。
+- 新規：背後 20 m からの魔法の命中 → 次の tick で `targetId` が攻撃者、`behavior` が `alert`/`charge`。縄張りの外からの命中 → 縁で止まって戻る。
+- `tests/enemies.test.mjs`：呪術師が 8 m 外（10 m）からの魔法で標的化。
+
+---
+
+## 9. 全体の検証と反映
+
+- 単体：`npm test`（現在 491）、`npm run check`（strict 型・構文・依存境界）、Prettier。
+- 実 Chrome QA：`scripts/qa-castle-stairs.mjs`（2 階→3 階追加）、`scripts/qa-sabertooth.mjs`／`qa-behemoth-marsh.mjs`（背後の足音・被弾）、`scripts/qa-map-pins.mjs`（新地図）、`scripts/qa-gamepad.mjs`（十字キー↑回復、速度）、`scripts/qa-exhibition-lan.mjs`（展示ルール：全回復・10 秒復活）。Browser ペインは rAF が止まるため使わず、Playwright スクリプトで確認する。
+- 通常 3000 番は `scripts/dev.mjs` のウォッチャーが保存→再起動する。展示パッケージ（`npm run build:exhibition`）と PC2 の更新、Cloudflare 公開は、ユーザーの指示があるまで行わない。
+- 保存データ：速度・ルール・地図は保存に入らない。城の床格子は保存と無関係。草 GLB は SHA が変わるので展示ビルドの同梱一覧を再生成する。
+
+## 11. 実装結果（2026-09-11、「ok. go」の後）
+
+### 2. 城の階段
+- 床格子 rev09：`scripts/build-castle-walk-atlas.mjs` に穴埋めを追加（4 近傍の 3 つ以上が床で高さ差 1.2 m 以内、最低 1 m 以上）。**141 セル**を埋め、`holeFills` をメタデータに記録。GLB は不変（`sourceSha256` 同一）。到達セル 25,957 → 26,098。
+- `shared/measured-walk-surface.mts`：(a) 高さの双一次補間で、壁（null）や 1.2 m 超の段差の隣も中心高さで埋めて連続にした（以前は 0.8 m 超で補間を打ち切り、見えない段差になっていた）。(b) `deviation()` と `allows()` を追加：到達済みの縁では「今より 0.25 m 以上悪化しない移動」を許す（壁は従来どおり絶対）。(c) リング検査の半径は 0.5 m で頭打ち（大猿は壁・人物とは 0.76 のまま）。(d) 段差の許容を `0.75 + 0.6×距離` に変更（旧 `0.6 + 1.1×距離`。走っても 0.9 m の縁は越えない）。
+- `shared/collision.mts`：`stepAllowed()` を新設し `move()` の全判定を通す。軸方向スライドの候補からゼロ移動を除外し、両方却下なら入力を ±22.5°〜±90° 回転した候補を試す（1 歩先も通れるものだけ採用し、角での往復を防ぐ）。
+- 検証：`tests/castle-stairs.test.mjs` に側面階段のスティック保持テスト（7 キャラ × 両側 × 3 始点 × 2 方向 × 歩き/走り = 168 通り、20 秒以内に 17.4 m 以上）と穴埋めの検査を追加。経路追従（城門→広間）は全 7 キャラ通過。**残る停止**は「階段に対して横向き（±1,−0.6）に押し続けて手すりの壁に当たる」場合だけで、これは壁なのでスティックを傾け直せば進める。
+- 未検証：実 Chrome での見た目（縁をまたぐときの足の浮き）。
+
+### 8. 気づき
+- `shared/perception.mts` 新設：`HEARING = { still: 3, walking: 9, running: 16 }`、`heard()`、`sameFloor()`、`provoker()`。
+- `shared/combat.mts applyHit()` が攻撃者 id を受け取り、敵に `provokedBy`/`provokedAt` を記録（近接・飛び道具の両方）。
+- 巨獣・大虎：標的選定を「視覚（前方・視線あり）｜｜聴覚（全方位・同じ階なら壁越しでも）」に変更し、被弾した相手は縄張り内なら即標的。呪術師も被弾で即標的（通知範囲外の魔法でも）。
+- テスト：巨獣「背後 8 m 立ち止まり＝無視／歩き＝気づく／15 m 走り＝気づく」、背後からの一撃で標的化。大虎「立ち止まり 2.5 m で気づく／歩き 8 m／走り 15 m／歩き 15 m は無視」、背後 7 m からの魔法で標的化。呪術師 10 m の被弾で標的化。
+
+### 5. 速度
+- 人間 2.0/5.6、クノイチ 2.1/5.8、魔法使い 1.5/4.6、大猿 2.4/6.4。大虎の追走 7.4、巨獣の追跡 5.7・突進 6.0。
+- テストのリテラル（`giant-ape`、`carrying`、`shoulder-inertia`、`movement`、`sabertooth`、`violet-behemoth`）を更新。
+- 未検証：アニメーションの足回り（魔法使いの Walk_Loop 4.8 倍速）は実ブラウザーで要確認。
+
+### 3. 回復（サーバー側）
+- `shared/pantry.mts chooseMeal()`：不足量に収まる最大の食事、なければ最小の食事。`HEAL_REPEAT_MS = 300`。
+- `application/actions.mts`：`heal` アクションを選んだ食事の既存アクションへ委譲。満タン／食料なしは小さな通知。`tests/heal.test.mjs` 追加。
+
+### 1・4. 展示ルール
+- `shared/room-rules.mts`：`DEFAULT_RULES`（回復 50、復活は各既定値）／`EXHIBITION_RULES`（回復 100、復活 10 s、肉の山 10 s）。`createGameCore({ exhibition })` → `room.rules`。`createGameServer({ exhibition })`（`EXHIBITION_RULES=1` でも有効）、`/api/health` に `exhibition: true`、`scripts/start-exhibition.mjs` の host は常に有効。
+- 呪術師・巨獣・大虎・マンモスの復活が `room.rules.respawnMs` を使う。マンモスは展示では倒してから 10 s で肉の山が消えて復活（通常は従来どおり空になってから 90 s）。
+- テスト：`enemies`・`sabertooth`・`violet-behemoth`・`hunting`・`server`（health と部屋ルール）。
+
+### 6. 草
+- `scripts/recolor-grass-root.mjs` で `meadow-grass`（candidate-03）と `meadow-sprig`（candidate-02）の根元帯を葉の緑に描き直し、`scripts/adopt-foliage-revision.mjs` で採用。最下帯の平均は 111,104,68（黄土 86%）→ 63,117,42（0%）。`BLADE_ALBEDO` を再計測、根元の緑テストを追加。
+- 新 SHA：meadow-grass `6356602b…`（3,415,056 B）、meadow-sprig `e946fd0e…`（900,800 B）。展示ビルドの同梱一覧は再ビルド時に追従。
+
+### 7. 地図
+- `src/map-screen.ts`・`src/map-warp-ui.ts`・`src/map-layout.ts`・`src/world-map.ts`・`src/gamepad-input.ts`（`'map'` モード、`pointer`/`zoom`、`pin`）・`src/gamepad-ui.ts`・`src/style.css` を設計どおりに作り直した。世界全図／湾／現在地の切替と「探索の情報」は廃止し、1 つの投影で 1〜32×、開いたときは現在地を中心に 4×。地名・敵・マンモス・縄張りの輪は拡大率の段階で表示（2×：探索の地・湾・城、4×：焚き火名・集落名・敵とマンモスの名前・縄張りの輪、8×：資源地・畑・釣り場・住人の道筋）。復活待ちの敵は中抜きの印と「復活まで N 秒」（スナップショットの `respawnMs` を使うので展示の 10 秒でも合う）。
+- 操作：左スティックでポインタ（600 px/s × 倍率²、端 15% で自動スクロール）、右スティック上下で拡大（ポインタ基準）、○/× で焚き火を選択→もう一度でワープ、□ でピン（もう一度で消去）、R3 で現在地へ 4×、R1/L1 ×1.5、OPTIONS/L2 で閉じる、十字キーで 1 px 微調整。マウス：ドラッグ・ホイール・クリック選択→再クリックでワープ・右クリックでピン。キーボード：矢印・＋−・Enter・Esc。タッチ：ドラッグ・ピンチ・タップ。
+- 実 Chrome の `scripts/qa-map-pins.mjs`：6/6、エラー 0、1440×900／390×844／844×390。仲間のピンの一覧は消えた（地図上の印と `#map-pin-status` の名前で示す）。
+
+### 全体の検証
+- 全 511 テスト通過、`npm run check` 通過、変更 TS の Prettier 通過（`src/lean-pose.ts` の警告は既存）。実 Chrome：`scripts/qa-map-pins.mjs` 6/6・エラー 0、`scripts/qa-castle-stairs.mjs`（中央階段・5 人接続・予測 ON/OFF・3 画面サイズ）通過、`scripts/qa-sabertooth.mjs`（10 項目、背後 12 m 静止の未検知・咆哮→疾走→命中・飛びかかり・爪・回避・帰還・復活）は 1 回目が「Alert rendered」のサンプル時刻ずれで失敗（従来から時刻に敏感）、2 回目 `output/playwright/sabertooth-2026-09-11c` で通過。
+- 未検証：物理コントローラー、速度変更後のアニメーションの足回り（魔法使い Walk_Loop 約 4.8 倍速）、城の縁をまたぐときの見た目。展示パッケージ・PC2・公開デプロイ・コミットは未実施。
+
+## 12. 第 2 ラウンド（2026-09-12）：追加 11 項目の調査と設計
+
+| # | 提案 | 調査で分かったこと | 設計 |
+|---|---|---|---|
+| 1 | 草の緑の土台を削除 | 土台は別メッシュではなく、TRELLIS 復元が株の底を閉じた**根元の塊**（草の株：半径約 0.13 m・高さ 5〜10 cm、285 三角形、ぱらぱら草：半径 0.06 m）。前回の根元の緑化でそれが緑の台に見えるようになった。沈め量は 18 mm だけ（`src/world-scenery.ts:203`） | 新スクリプト `scripts/cut-grass-root.mjs`：最大 y が 4.5 cm（ぱらぱら草 3 cm）未満の三角形を削除（頂点は保持し index を作り直す）→ candidate-04／03 を `adopt-foliage-revision.mjs` で採用（高さは不変）。配置の沈め量を 18 → 45 mm にして切り口を地面の下に隠す。作物（火根草・香り草）は同じ GLB なので追従 |
+| 2 | 歩行と走行のアニメーションを分ける | 全 7 キャラの GLB に **Walk_Loop と Run_Loop は別クリップとして存在**し、`character-animation.ts:162` は走行中に Run_Loop を選んでいる。見えている問題は前回の速度アップで再生倍率が「実速度 ÷ クリップの m/s」＝歩き 2.3×、走り 2.2× になり、歩きが早回しの走りに見えること | 再生倍率に上限を入れる：Walk_Loop ≤ 1.35×、Run_Loop ≤ 1.5×（下限 0.6×）。足滑りは許容。歩き→走りの切替は Run_Loop（0.7 s・duty 0.34 の別モーション）を必ず使う現状を維持し、テストで「走行中は Run_Loop、倍率上限」を固定 |
+| 3 | 「近くのものを調べる」ボタン削除・対象がある時だけ表示 | `#interaction-hint`（`src/main.ts:187`）は常時表示で既定文が「近くのものを調べる」。候補は実在資源（amount > 0）だが**半径 8 m**（サーバーの採集も 8 m）なので、遠くの資源でも表示される | 丸ボタンを廃止し、対象があるときだけ「E／○ 木材を採集する」の細い文字を出す（クリック／○ の当たりは残す）。資源の判定半径を **3.5 m** に縮め（クライアント・サーバー両方）、クライアントは資源モデルが読み込まれ表示中（amount > 0）のものだけ候補にする |
+| 4 | ベリーを視認しやすく | `berry-bush` の実はテクスチャに焼き込まれた塊で、独立した実の形状はない | 実を**生成ジオメトリで追加**：赤い球（半径 6 cm、少し自己発光）を茂みの上半分の頂点から決定的に選んだ位置に配置。実の数 = 残量（項目 5） |
+| 5 | 採取のたびに見た目を減らす | 資源は `amount/maxAmount` を持ち、クライアントは `visible = amount > 0` だけ（`src/world3d.ts:417`）。木材は 5 本積みの 1 メッシュ、石は岩 | ベリー：実の個数 = amount（最大 5）。木材：積み薪を**クリッピング平面**で上から削る（高さ比 = amount/maxAmount、斧で 2 本減る分もそのまま）。石：岩を `cbrt(amount/maxAmount)` で縮小（0.55 まで）。0 で非表示は従来どおり |
+| 6 | マンモスの肉を個別に | サーバーは既に `meatRemaining`（4 個）で 1 個ずつ採る。クライアントは肉モデル 1 個を表示 | 肉モデルを **4 個の塊**（円周に配置）にし `meatRemaining` 個だけ表示。ヒントは「生肉を採る（残り N 個）」のまま |
+| 7 | 地図をベクター形式に | 地形は 2048×1024 のビットマップを拡大描画（`world-map.ts baseMap()`）。海岸線は距離場ラスター（ポリゴンなし）、湾の道だけ折れ線。印・輪・文字は既にキャンバスのベクター描画 | **地形を表示領域ごとに画面解像度で再計算**（拡大しても粗くならない。中心・倍率が変わったときだけ再描画、ドラッグ中は半解像度）＋ **海岸線を marching squares で折れ線化**して 1 px の線で描く。既存のベクター要素は維持。SVG 化ではなくキャンバス上のベクター／解像度非依存描画で「ガビガビ」を解消 |
+| 8 | 地図ボタンをトグル | `openMap()` は開いている状態でもう一度押すと再描画するだけ | `toggleMap()`：`#big-map` が開いていれば閉じる。`#map-button`・`M`・SHARE／タッチパッド すべて同じ |
+| 9 | 地図のプレイヤー矢印 | 大地図は DOM の「▲」（`π − facing` 回転）、ミニマップはキャンバスの三角形（`−facing` 回転）で規則が違う | 両方を**同じ SVG 矢印**（先端が尖った矢＋尾）にし、回転規則を統一（北＝上、`facing` 0 で上）。大地図は毎フレーム更新なので向きは実時間で同期 |
+| 10 | 最初のチュートリアル削除 | `#screen-guide`・`guideMarkup()`・`cro-skip-guide`・`showGuide/finishGuide`（`src/main.ts:1123-1132`）、CSS `.guide-*`、テスト・QA の参照 | 画面・マークアップ・保存フラグ・CSS を削除。参加後は直接ゲームへ。QA スクリプトのフラグ設定行は無害だが削除。`tests/screens.test.mjs` の guide 検査を除去 |
+| 11 | 開始地点周辺の配置 | キャンプ (50, 50)。地図は +x 右・+z 下（南）。巨獣 (95, 110) 南東 75 m、大虎 (80, −30) 北 85 m、呪術師は城の広間 (150, −6) 東 115 m | 巨獣を**キャンプの左（西〜南西）** `(−15, 95)` へ（縄張り 26 m と沼地 32 m はこの周りに追従。40 m 内は全て陸）。呪術師を**城門前の広場** `castleWorld(0, 35)` ≈ (110, 17) へ（現在より下・城の中から城門へ）。大虎は現状 (80, −30)。3 者を結ぶ三角形は焚き火 (50, 50) を囲む（各辺と焚き火の位置関係を計算済み）。既存の保存では縄張り持ちの `home` を柱へ置き直す仕組みが働く |
+
+実装順：11（サーバー・小）→ 2 → 10 → 3 → 8・9 → 1 → 4・5・6 → 7（最大）。
+
+### 実装結果（2026-09-12）
+- 1：`scripts/cut-grass-root.mjs`（index を作り直し、頂点・テクスチャは不変）→ candidate-04／03 採用。草の株 44,457→43,848 三角形（SHA `fcc3d10a…`）、ぱらぱら草 12,550→11,765（`61a73df1…`）。沈め 45 mm／40 mm。テストで切り口の高さと三角形数を固定。
+- 2：`src/character-animation.ts locomotionTimeScale()`（Walk ≤ 1.35×、Run ≤ 1.5×、≥ 0.6×）。別クリップであることと上限をテストで固定。
+- 3：`#interaction-hint` は `hidden` 既定、対象があるときだけ表示。`GATHER_RANGE = 3.5`（`shared/interactions.mts`）。`renderer.resourceVisible(id)` で描画中の資源だけ候補。
+- 4・5・6：`src/resource-visuals.ts`（`berryAnchors`・`woodClipHeight`・`stoneScale`・`meatPieceVisibility`・`meatRingLayout`）＋ `src/world3d.ts`／`world-scenery.ts buildMeatPile()`。実の数は `amount` と 1:1（探索地の茂み 9・湾 8 もそのまま）。
+- 7：表示領域の再計算（海岸陰影は全画素、気候色は約 4 m 格子）＋ `coastlineContours()` の海岸線（marching squares、1 m 簡略化）。精細化 55〜155 ms。
+- 8：`openMap()` がトグル（ボタン・M・SHARE／タッチパッド。地図モード中の SHARE も閉じる）。
+- 9：`MAP_ARROW_PATH`（24×24 SVG）を大地図の DOM と ミニマップの `Path2D` で共用、`markerRotation()` をテスト。
+- 10：チュートリアル画面・保存フラグ・CSS を削除、QA スクリプトを `body.in-game` 待ちに更新。
+- 11：巨獣 `(−25, 70)`、呪術師 `castleWorld(0, 45)`、大虎はそのまま。位置依存のテスト（沼地の草チャンク、城の呪術師の高さ）を更新。三角形は焚き火を北・東南東・西南西から囲むが、南辺は焚き火の 9 m 北を通る（巨獣をさらに南へ置くと沼地が海に掛かる）。
+- 検証：全 527 テスト、`npm run check`、Prettier。実 Chrome：`qa-map-pins.mjs` 9/9、`qa-castle-stairs.mjs` 通過、`qa-violet-behemoth.mjs`（新位置 (−25, 70) で 9 項目：描画・背後静止の未検知・突進／噛みつき／尻尾の命中・離脱・帰還・実キー移動・再読込）通過、`qa-meadow-ground-tint.mjs` の実 Chrome 画像で草の土台なし・ベリーの赤い実・薪の山・ヒント文字を目視（`output/playwright/meadow-2026-09-12/`）。
+
+
+## 10. 決めた前提（違えば指摘してください）
+1. 展示モードの「10 秒復活」はマンモスも含み、肉の山は 10 秒で消える（残った肉は失われる）。
+2. 十字キー↑を回復に使うため、地図は SHARE／タッチパッド／`M` キーのみになる。
+3. 速度の具体値は上の表のとおり。猫耳のクノイチは人間より少し速いまま、魔法使いは最も遅いまま。
+4. 大虎の追走・巨獣の突進も連動して速くする（速度差の設計を保つため）。
+5. 地図のワープは「焚き火にポインタを合わせて ○、もう一度 ○」の 2 段階を残す（誤ワープ防止）。
+6. 足音の距離は 立ち止まり 3 m／歩き 9 m／走り 16 m。忍び寄りを残すため「止まっていれば 3 m まで」とした。
+7. 草は GLB のテクスチャを描き直す（シェーダーで根元を緑にする案は、平地の草に地域材質が当たっていないため採らない）。
+
+## 13. 第 3 ラウンド（2026-09-12）：巨獣 2 倍と予備動作・大虎弱体化・呪術師の赤い魔法・城跡の作り直し
+
+- 予備動作は「別クリップ＋サーバー側の待ち時間」で実装した。各クリップは開始も終了も休止姿勢なので、続く攻撃クリップへ飛びなく切り替わる。クライアントは `ONE_SHOT_OFFSET_MS` で攻撃クリップの開始を予備動作の終了時刻に合わせて権威時刻からサンプルする。
+- 巨獣：Roar 1.2 s→Charge、Gape 0.6 s→Attack（噛みつき判定は Gape 後 0.5 s）、Tremble 0.9 s→TailSpin。倍率 2.5。
+- 大虎：Crouch 0.8 s→Pounce（本体の沈み 0.2 s→跳躍 0.6 s→着地 0.7 s）、Snarl 0.7 s→Attack。体力・攻撃力・速度・再使用を弱体化。
+- 呪術師：単体向けの赤い呪弾（中距離）と範囲の赤い爆発（近距離、床の赤い輪が予告）。至近は杖。索敵と縄張りを広間サイズへ拡大。
+- 城跡：参照画像→TRELLIS→軽量化→`build-ruin-walk-atlas.mjs`（全上向き面・地面からの連結探索・蹴込み行の橋渡し・世界基準高さ）→`install-castle-surface.mjs 10`。台座 1.28 m は `groundOffset` で沈める。呪術師は最上部の大広間。
+- 検証：`npm test` 530 件、実 Chrome の巨獣・大虎・城跡 QA。詳細は `AGENTS.md` の同日項目。
+
+## 14. 第 4 ラウンド（2026-09-12）：呪術師を城内に固定・メニューとコントローラー配置の見直し（指示 17〜24）
+
+### 前提
+
+- ユーザーの「B ボタン」は右側 4 ボタンの**下**（標準マッピング index 0、DUALSHOCK の ×）。これまでジャンプがここにあった。「上のボタン」は index 3（△）。決定は右（○、index 1）のまま。
+- 表示は引き続き DUALSHOCK の記号で書くが、説明文に「上／下」を添える。
+
+### 17. 呪術師は城の中だけ
+
+- 「城の中」＝城の歩行アトラス上で高さが `CASTLE_UPPER_FLOOR` を超える最上部の大広間の床（`inSorcererHall()`）。前庭・階段・城外は対象外。
+- 生成位置が大広間なら `castle: true`。索敵・被弾での標的化・追跡継続のすべてで相手が広間内であることを要求し、広間を出たら手放して帰還。
+- 移動は経路の目標を広間の床が続く点までに切り詰め、経路点も広間内のみ、さらに 1 歩ごとに広間外なら戻す三重の制限。復活も広間内。
+- 冒険地域の番人は同じモデルだが `castle: false`。
+
+### 18〜19. 地図・設定の閉じ方とジャンプ
+
+- 地図ボタン（SHARE／タッチパッド、HUD の M）はトグル。地図モードの入力表に `map` を追加し、`onMapInput` の既存分岐で閉じる。M キーも開いた地図を閉じる。
+- ×（下）はメニュー・地図・設定・キャラクター画面で「戻る／閉じる」。もちものの「使う」ポップアップが開いている間はそれだけ閉じる。
+- ジャンプは △（上）、乗る／降りるは ×（下）。`keyPrompts`・HUD・ヘルプの表記を一致させた。
+
+### 20〜23. メニュー
+
+- 3 タブ（もちもの／世界・仲間・操作説明／設定）＋出口列（キャラクターを変える／探索に戻る／部屋を変える／タイトルへ戻る）。
+- 開くと必ずもちもの。左上のベリーにフォーカス済み。決定 → 「使う」に自動フォーカス → 決定で回復。開いたまま個数が更新される。
+- 情報タブのサブタブ：操作説明・世界（地図・手帳・各地の暮らし・乗る・手をふる）・仲間（同席者と招待）・目標。
+
+### 検証
+
+- 単体：`npm test` 531 件通過。`tests/enemies.test.mjs` に城内固定のテストを追加。
+- 実 Chrome：`scripts/qa-controller-menus.mjs` 8 検査通過（画像は `output/playwright/controller-menus-20260912/`）。既存 `qa-gamepad-menus.mjs`・`qa-menu-directions.mjs` を新構成に更新。
+
+### 追補：L3 長押しのもちもの HUD を撤去
+
+- 画面下部の `.hotbar`（資源枠・行動ボタン・走るボタン）と Tab／L3 長押しの表示処理を削除。もちものはメニューの最初の画面に一本化。
+- 走る／歩くの切り替えは Shift（2 回押しの走りは従来どおり）。操作説明とボタンバーから Tab／L3 表記を除去。
+- 検証：`npm test`、`scripts/qa-controller-menus.mjs`。

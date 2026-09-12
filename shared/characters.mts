@@ -38,8 +38,8 @@ export const CHARACTER_MODELS: readonly Readonly<CharacterModel>[] = Object.free
     height: 1.68,
     radius: 0.32,
     // A light-footed ninja: quicker than the human tribes, slower than the ape's sprint.
-    walkSpeed: 1.6,
-    runSpeed: 4.6,
+    walkSpeed: 2.1,
+    runSpeed: 5.8,
   }),
   Object.freeze({
     species: 'bear',
@@ -50,8 +50,9 @@ export const CHARACTER_MODELS: readonly Readonly<CharacterModel>[] = Object.free
     weapon: 'magic',
     height: 0.78,
     radius: 0.32,
-    walkSpeed: 0.6,
-    runSpeed: 1.8,
+    // The small mage is the slowest, but no longer a crawl.
+    walkSpeed: 1.5,
+    runSpeed: 4.6,
   }),
   Object.freeze({
     species: 'ape',
@@ -62,8 +63,8 @@ export const CHARACTER_MODELS: readonly Readonly<CharacterModel>[] = Object.free
     weapon: 'unarmed',
     height: 2,
     radius: 0.76,
-    walkSpeed: 1.8,
-    runSpeed: 5.4,
+    walkSpeed: 2.4,
+    runSpeed: 6.4,
   }),
 ]);
 

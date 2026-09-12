@@ -1,4 +1,5 @@
 import { FISHING } from './fishing-sites.mjs';
+import { respawnDelay } from './room-rules.mjs';
 import { COASTAL } from './coastal-sites.mjs';
 import { ROOT_RECIPES } from './crops.mjs';
 import { CAMP } from './world.mjs';
@@ -290,7 +291,22 @@ export function updateHunting(
       animal.meatRemaining = HUNTING.meatPerAnimal;
       animal.clip = null;
       changed = true;
-    } else if (animal.phase === 'respawning' && now - animal.phaseStartedAt >= HUNTING.respawnMs) {
+    } else if (
+      animal.phase === 'meat' &&
+      room.rules?.meatLingerMs != null &&
+      now - animal.phaseStartedAt >= room.rules.meatLingerMs - HUNTING.deathDurationMs
+    ) {
+      // Exhibition floor: the pile is cleared and the herd returns right away,
+      // one linger period after the kill.
+      animal.meatRemaining = 0;
+      animal.phase = 'respawning';
+      animal.phaseStartedAt = now - respawnDelay(room, HUNTING.respawnMs);
+      changed = true;
+    }
+    if (
+      animal.phase === 'respawning' &&
+      now - animal.phaseStartedAt >= respawnDelay(room, HUNTING.respawnMs)
+    ) {
       const dynamic = obstacles([
         ...room.players.values(),
         ...room.animals.filter((other) => other !== animal && animalIsSolid(other)),

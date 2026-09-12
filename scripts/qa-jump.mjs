@@ -54,9 +54,11 @@ async function join(profile, name, room, normal = false, touch = false) {
   if (normal) {
     await p.locator('#title-start').click();
     await p.locator('#setup-submit').click();
-    await p.locator('#guide-start').waitFor({ state: 'visible', timeout: 60000 });
-    assert.match(await p.locator('#screen-guide').innerText(), /ジャンプ/);
-    await p.locator('#guide-start').click();
+    // No tutorial screen: joining goes straight to play; the help dialog still explains the jump.
+    await p.waitForSelector('body.in-game', { timeout: 60000 });
+    await p.keyboard.press('h');
+    assert.match(await p.locator('#modal-body').innerText(), /ジャンプ/);
+    await p.locator('#modal-close').click();
   }
   await p.waitForSelector('#world[data-world-asset="ready"][data-character-asset="ready"]', {
     timeout: 60000,
@@ -105,9 +107,10 @@ const clear = (p) =>
   p.evaluate(() => {
     window.jumpSamples = [];
   });
+// 2026-09-12: jump is the top face button (triangle, index 3).
 const pressPad = (p, held) =>
   p.evaluate((value) => {
-    window.qaPad.buttons[6] = { pressed: value, value: value ? 1 : 0 };
+    window.qaPad.buttons[3] = { pressed: value, value: value ? 1 : 0 };
   }, held);
 try {
   browser = await chromium.launch({ channel: 'chrome', headless: true });
@@ -160,7 +163,7 @@ try {
       s.actors.some((a) => a.name === 'Jump A' && a.animation === 'Jump'),
     ),
   );
-  await page.locator('#run-button').click();
+  await page.keyboard.press('Shift');
   await page.locator('#world').focus();
   await page.keyboard.down('KeyS');
   await page.waitForTimeout(150);
@@ -169,7 +172,7 @@ try {
   assert.equal(me('Jump A').running, true);
   await page.waitForTimeout(700);
   await page.keyboard.up('KeyS');
-  await page.locator('#run-button').click();
+  await page.keyboard.press('Shift');
   await page.locator('#world').focus();
   passed('Walking and running retain horizontal movement throughout jumping');
 

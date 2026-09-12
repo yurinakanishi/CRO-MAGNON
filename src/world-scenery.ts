@@ -17,9 +17,13 @@ import { OpenWorldTerrain } from './open-world.js';
 import { clipRiverAtCoast } from './paleo-materials.js';
 import { RegionalScenery } from './regional-scenery.js';
 import { BEHEMOTH_MARSH } from '../shared/behemoth-rules.mjs';
+import { HUNTING } from '../shared/hunting.mjs';
+import { meatRingLayout } from './resource-visuals.js';
 
 const TAU = Math.PI * 2;
 const random = seededRandom;
+// Metres the grassland tufts are sunk below the terrain (see grassPlacement).
+export const GRASS_SINK = 0.045;
 
 function addModel(world, key, x, z, yaw = 0, scale = 1, surface = null) {
   const model = world.worldAssets.create(key, 0, surface);
@@ -200,9 +204,12 @@ function buildMarshAssets(world) {
 }
 
 export function buildForestAssets(world) {
+  // Tufts sink 45 mm: the root cap was cut off below 4.5 cm (meadow-grass) /
+  // 3 cm (meadow-sprig) by scripts/cut-grass-root.mjs, so the open cut edge
+  // has to sit below the ground on flat terrain (was 18 mm, 2026-09-12).
   const grassPlacement = (item) => ({
     ...item,
-    position: new THREE.Vector3(item.x, terrainHeight(item.x, item.z) - 0.018, item.z),
+    position: new THREE.Vector3(item.x, terrainHeight(item.x, item.z) - GRASS_SINK, item.z),
     scale: new THREE.Vector3().setScalar(item.scale),
   });
   const trees = SCENERY.trees
@@ -328,6 +335,26 @@ function buildFireEffect(world, x, z, size, key = 'stone-firepit', surface = nul
   return fire;
 }
 
+/**
+ * The meat left by a hunted animal: one piece per serving, arranged in a ring
+ * so the pile visibly shrinks as the servings are taken (the renderer shows
+ * `meatRemaining` of them). Every piece carries the animal id because the click
+ * raycast walks up from the hit mesh until it finds one.
+ */
+export function buildMeatPile(assets, animalId, total = HUNTING.meatPerAnimal) {
+  const meat = new THREE.Group();
+  meat.visible = false;
+  meat.userData.animalId = animalId;
+  for (const { x, z, yaw } of meatRingLayout(total)) {
+    const piece = assets.create('mammoth-meat');
+    piece.position.set(x, 0, z);
+    piece.rotation.y = yaw;
+    piece.userData.animalId = animalId;
+    meat.add(piece);
+  }
+  return meat;
+}
+
 export function buildAnimalAssets(world) {
   for (const spec of SCENERY.animals) {
     const actor = world.worldAssets.createAnimal('woolly-mammoth'),
@@ -336,9 +363,7 @@ export function buildAnimalAssets(world) {
     model.scale.setScalar(spec.scale);
     world.scene.add(model);
     model.userData.animalId = spec.id;
-    const meat = world.worldAssets.create('mammoth-meat');
-    meat.visible = false;
-    meat.userData.animalId = spec.id;
+    const meat = buildMeatPile(world.worldAssets, spec.id);
     world.scene.add(meat);
     const label = world.createLabel('', 'animal', new THREE.Vector3());
     label.active = false;

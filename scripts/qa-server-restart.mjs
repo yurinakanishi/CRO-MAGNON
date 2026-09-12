@@ -68,7 +68,6 @@ try {
   );
   await page.addInitScript(() => {
     localStorage.setItem('cro-name', 'Restart QA');
-    localStorage.setItem('cro-skip-guide', '1');
   });
   await page.goto(`${base}/?room=RESTART-QA`);
   await page.locator('#title-start').click();

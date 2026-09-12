@@ -23,7 +23,8 @@ const move = (p, dx, dz) => world.move(p, dx, dz, p.radius);
 test('wall sliding preserves input facing across repeated walking and running ticks', () => {
   for (const runningRequested of [false, true]) {
     const p = { ...actor(), runningRequested };
-    for (let i = 0; i < 60; i++) {
+    // Thirty ticks: a runner (5.6 m/s) must still be alongside the 16 m wall.
+    for (let i = 0; i < 30; i++) {
       p.lastInput = 1000 + i * 50;
       movePlayer(p, 0.05, p.lastInput, move);
       assert.equal(p.facing, Math.PI / 4);

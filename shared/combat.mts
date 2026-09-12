@@ -174,10 +174,10 @@ export function resolveAttack(room, player, now = Date.now()) {
     )
     .sort((a, b) => combatDistance(player, a.target) - combatDistance(player, b.target))[0];
   if (!hit) return { hit: false };
-  return applyHit(hit, profile, now);
+  return applyHit(hit, profile, now, player.id);
 }
 
-function applyHit({ target, kind }, profile, now) {
+function applyHit({ target, kind }, profile, now, attackerId = null) {
   target.health = Math.max(0, target.health - profile.damage);
   const killed = target.health === 0;
   // Super armour (a sabertooth in mid-leap) takes the damage without flinching.
@@ -190,6 +190,11 @@ function applyHit({ target, kind }, profile, now) {
   if (kind === 'enemy') {
     target.hitSequence = (target.hitSequence || 0) + 1;
     target.hitAt = now;
+    // Struck from anywhere, the creature knows who did it.
+    if (attackerId && !killed) {
+      target.provokedBy = attackerId;
+      target.provokedAt = now;
+    }
     if (!armoured) {
       target.pendingAttack = null;
       target.attackLockUntil = 0;
@@ -330,7 +335,7 @@ export function updateProjectiles(room, now = Date.now()) {
         hit: !!hit,
       };
       room.projectileImpacts.push(impact);
-      if (hit) events.push({ ...applyHit(hit, profile, now), owner });
+      if (hit) events.push({ ...applyHit(hit, profile, now, owner.id), owner });
       continue;
     }
     Object.assign(projectile, end, { updatedAt: now, travelled: projectile.travelled + travel });

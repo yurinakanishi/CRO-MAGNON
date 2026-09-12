@@ -107,7 +107,7 @@ async function play(name, species) {
   await page.locator('#title-start').click();
   await page.locator('#setup-form input[name="name"]').fill(name);
   await page.locator('#setup-submit').click();
-  await page.locator('#guide-start').click();
+  await page.waitForSelector('body.in-game', { timeout: 60000 });
   await page
     .locator('#world[data-world-asset="ready"][data-character-asset="ready"]')
     .waitFor({ timeout: 120000 });
@@ -201,7 +201,7 @@ try {
   await sleep(300);
   await sample(a, 'pounce');
   await shot(a, '03-crouch');
-  await sleep(450);
+  await sleep(700);
   await sample(a, 'pounce');
   await shot(a, '03-leap');
   await watch(a, b, 'pounce', 8);
@@ -210,11 +210,14 @@ try {
   await request('prepare', { mode: 'claw' });
   await sleep(250);
   await look(a, 7);
+  await sample(a, 'claw');
   await sleep(200);
+  await shot(a, '04-snarl');
+  await sleep(500);
   await shot(a, '04-claw');
   await watch(a, b, 'claw', 8);
   const e2 = await energyA();
-  assert.ok(e2 <= 100 - 2 * 16, 'two claw swipes');
+  assert.ok(e2 <= 100 - 2 * 10, 'two claw swipes');
   checks.push('Claw combo: two separate swipes both connected');
   // Real attack key: the held-back cat must side-step and the thrust must miss.
   await request('prepare', { mode: 'step' });
@@ -236,7 +239,8 @@ try {
   assert.equal(afterStep.enemy.health, healthBefore);
   assert.ok(samples.some((s) => s.stage === 'step' && s.enemy?.clip === 'Step'), 'Step rendered');
   checks.push('Real F-key thrust: the cat side-steps and takes no damage');
-  for (const clip of ['Alert', 'Run_Loop', 'Pounce', 'Attack', 'Step']) {
+  // 2026-09-12: Crouch precedes Pounce and Snarl precedes Attack.
+  for (const clip of ['Alert', 'Run_Loop', 'Crouch', 'Pounce', 'Snarl', 'Attack', 'Step']) {
     assert.ok(
       samples.some((s) => s.enemy?.clip === clip && s.enemy.visible),
       clip + ' rendered',

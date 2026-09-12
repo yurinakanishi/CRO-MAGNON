@@ -336,7 +336,7 @@ try {
   await pantry(a, valley.id);
   await input();
   await select('#pantry-food-cookedMeat');
-  await tap(PAD.cross);
+  await tap(PAD.circle);
   assert.equal(await a.locator('#pantry-food-cookedMeat').getAttribute('aria-pressed'), 'true');
   await a.evaluate(() => {
     window.qaFocus = document.activeElement;
@@ -377,7 +377,7 @@ try {
     viewports.push(layout);
     await shot(a, '04-pantry-' + width);
     await select('#pantry-back');
-    await tap(PAD.cross);
+    await tap(PAD.circle);
     await a.locator('#gulf-detail').waitFor();
     await a.locator('#gulf-pantry').click();
   }

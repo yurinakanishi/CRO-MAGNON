@@ -90,14 +90,14 @@ test('broad ape moves only from fresh manual input and uses its own walk/run spe
     path: [{ x: 100, z: 100 }],
   };
   movePlayer(player, 0.1, 1050);
-  assert.ok(Math.abs(player.z - 20.18) < 1e-8);
+  assert.ok(Math.abs(player.z - 20.24) < 1e-8);
   assert.equal(player.x, 20);
   assert.equal(player.target, null);
   assert.deepEqual(player.path, []);
   player.runningRequested = true;
   movePlayer(player, 0.1, 1100);
-  assert.ok(Math.abs(player.z - 20.72) < 1e-8);
+  assert.ok(Math.abs(player.z - 20.88) < 1e-8);
   movePlayer(player, 0.1, 1700);
-  assert.ok(Math.abs(player.z - 20.72) < 1e-8);
+  assert.ok(Math.abs(player.z - 20.88) < 1e-8);
   assert.equal(player.moving, false);
 });

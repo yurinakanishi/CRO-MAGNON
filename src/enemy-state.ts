@@ -8,8 +8,26 @@ export const ENEMY_CLIPS = Object.freeze([
   'Hit',
   'Death',
 ]);
-export const BEHEMOTH_CLIPS = Object.freeze([...ENEMY_CLIPS, 'Alert', 'Charge', 'TailSpin']);
-export const SABERTOOTH_CLIPS = Object.freeze([...ENEMY_CLIPS, 'Alert', 'Pounce', 'Step']);
+// 2026-09-12: every strike is announced by its own telegraph clip (behemoth:
+// Roar before Charge, Gape before Attack, Tremble before TailSpin; sabertooth:
+// Crouch before Pounce, Snarl before Attack).
+export const BEHEMOTH_CLIPS = Object.freeze([
+  ...ENEMY_CLIPS,
+  'Alert',
+  'Roar',
+  'Charge',
+  'Gape',
+  'Tremble',
+  'TailSpin',
+]);
+export const SABERTOOTH_CLIPS = Object.freeze([
+  ...ENEMY_CLIPS,
+  'Alert',
+  'Crouch',
+  'Pounce',
+  'Snarl',
+  'Step',
+]);
 const clipsFor = (key) =>
   key === BEHEMOTH.modelKey
     ? BEHEMOTH_CLIPS
@@ -32,44 +50,73 @@ export function enemyAnimationState(enemy, now) {
   const started =
     clip === 'Death'
       ? enemy.phaseStartedAt
-      : ['Attack', 'Alert', 'TailSpin', 'Pounce', 'Step'].includes(clip)
-        ? enemy.attackAt
-        : clip === 'Charge'
-          ? enemy.attackAt + BEHEMOTH.alertMs
-          : clip === 'Hit'
-            ? enemy.hitAt
+      : clip === 'Hit'
+        ? enemy.hitAt
+        : ONE_SHOT_OFFSET_MS[enemy.modelKey]?.[clip] !== undefined
+          ? enemy.attackAt + ONE_SHOT_OFFSET_MS[enemy.modelKey][clip]
+          : ['Attack', 'Alert'].includes(clip)
+            ? enemy.attackAt
             : null;
   return { clip, elapsed: started === null ? null : Math.max(0, (now - started) / 1000) };
 }
+// A strike clip starts when its telegraph clip ends, on the authoritative clock.
+const ONE_SHOT_OFFSET_MS = {
+  [BEHEMOTH.modelKey]: {
+    Alert: 0,
+    Roar: 0,
+    Charge: BEHEMOTH.roarMs,
+    Gape: 0,
+    Attack: BEHEMOTH.gapeMs,
+    Tremble: 0,
+    TailSpin: BEHEMOTH.trembleMs,
+  },
+  [SABERTOOTH.modelKey]: {
+    Alert: 0,
+    Crouch: 0,
+    Pounce: SABERTOOTH.pounceWindupMs,
+    Snarl: 0,
+    Attack: SABERTOOTH.snarlMs,
+    Step: 0,
+  },
+};
 
 const SABERTOOTH_CUES = {
   guard: '縄張りを見回る',
   alert: '咆哮！',
   chase: '疾走',
-  crouch: '身を沈めた…飛びかかり！',
+  crouch: '身を沈めた…飛びかかりが来る！',
   pounce: '飛びかかり',
   land: '着地の隙',
+  snarl: '牙をむいた…爪が来る！',
   claw: '爪の連撃',
   step: 'ステップでかわす',
   return: '縄張りへ戻る',
   recover: '身構える',
 };
+const BEHEMOTH_CUES = {
+  guard: '縄張りを警戒',
+  roar: '咆哮…突進が来る！',
+  charge: '突進',
+  gape: '口を開けた…噛みつきが来る！',
+  bite: '噛みつき',
+  tremble: '身を震わせた…尾の回転が来る！',
+  tail: '尾の回転攻撃',
+  return: '縄張りへ戻る',
+  recover: '隙あり',
+};
+const SHAMAN_CUES = {
+  bolt: '赤い呪弾を放つ…',
+  burst: '赤い呪いが広がる…離れろ！',
+};
 
 export function enemyStatusLabel(enemy) {
-  if (enemy.modelKey === SABERTOOTH.modelKey) {
-    const cue = SABERTOOTH_CUES[enemy.behavior];
-    return cue ? `${enemy.name} · ${cue}` : enemy.name;
-  }
-  if (enemy.modelKey !== BEHEMOTH.modelKey) return enemy.name;
-  const cue = {
-    guard: '縄張りを警戒',
-    alert: '尾を振る…突進！',
-    charge: '突進',
-    bite: '噛みつき',
-    tail: '尾の回転攻撃',
-    return: '縄張りへ戻る',
-    recover: '隙あり',
-  }[enemy.behavior];
+  const cues =
+    enemy.modelKey === SABERTOOTH.modelKey
+      ? SABERTOOTH_CUES
+      : enemy.modelKey === BEHEMOTH.modelKey
+        ? BEHEMOTH_CUES
+        : SHAMAN_CUES;
+  const cue = cues[enemy.behavior];
   return cue ? `${enemy.name} · ${cue}` : enemy.name;
 }
 

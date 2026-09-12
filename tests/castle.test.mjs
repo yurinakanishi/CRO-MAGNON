@@ -15,9 +15,13 @@ import {MeshRayGrid} from '../dist/src/mesh-ray-grid.js';
 import * as THREE from 'three';
 import {geometryScene} from '../scripts/measure-collision-bounds.mjs';
 
+const CASTLE_GLB=JSON.parse(await readFile('public/models/valley-castle/asset.json','utf8')).url.replace(/^\//,'public/');
 test('castle floor atlas is measured from the delivered mesh and clears the starting valley',async()=>{
-  const bytes=await readFile('public/models/valley-castle/model.glb');assert.equal(createHash('sha256').update(bytes).digest('hex'),CASTLE_SURFACE.data.sourceSha256);
-  for(let x=-35;x<=35;x+=2)for(let z=-33;z<=33;z+=2){const p=castleWorld(x,z);assert.ok(isLand(p.x,p.z,1));}
+  const bytes=await readFile(CASTLE_GLB);assert.equal(createHash('sha256').update(bytes).digest('hex'),CASTLE_SURFACE.data.sourceSha256);
+  for(let x=-39;x<=39;x+=2)for(let z=-39;z<=39;z+=2){const p=castleWorld(x,z);assert.ok(isLand(p.x,p.z,1),`${x},${z}`);}
+  // The ruin: forecourt at valley level, one great hall about 5.6 m above it.
+  assert.ok(Math.abs(CASTLE_SURFACE.height(CASTLE_GATE.x,CASTLE_GATE.z)??0)<0.3);
+  assert.ok((CASTLE_SURFACE.height(CASTLE_HALL.x,CASTLE_HALL.z)??0)>5);
   for(const p of [CAMP,...INITIAL_RESOURCES,...HUNTING_GROUNDS,...Object.values(SCENERY).flat()])assert.equal(nearCastle(p.x,p.z),false);
   assert.ok(Math.hypot(CASTLE.x-CAMP.x,CASTLE.z-CAMP.z)<110);
 });
@@ -35,13 +39,14 @@ test('normal authoritative movement enters the castle, climbs all terraces and r
       runningRequested: true,
     };
   let now = 1000;
+  // Gate, forecourt, up the left stair, across the hall, down the right stair, out.
   const goals = [
     CASTLE_GATE,
-    castleWorld(-17, 20),
-    castleWorld(-18, 12),
+    castleWorld(-22, 20),
+    castleWorld(-22, 2),
     CASTLE_HALL,
-    castleWorld(18, 12),
-    castleWorld(17, 20),
+    castleWorld(20, 2),
+    castleWorld(20, 20),
     CASTLE_GATE,
   ];
   let maximumHeight = 0,
@@ -62,7 +67,7 @@ test('normal authoritative movement enters the castle, climbs all terraces and r
       `Failed to reach ${JSON.stringify({ goal, actor, local: CASTLE_SURFACE.local(actor.x, actor.z) })}`,
     );
   }
-  assert.ok(maximumHeight > 17.5);
+  assert.ok(maximumHeight > 5, `hall reached (${maximumHeight})`);
   assert.ok(samples > 500);
   assert.ok(
     collision.path({ x: 48, z: 57 }, CASTLE_HALL, 0.32).length > 2,
@@ -73,14 +78,21 @@ test('normal authoritative movement enters the castle, climbs all terraces and r
     false,
     'Walls block a straight shortcut',
   );
+  // 2026-09-12: the sorcerer waits on the roofless great hall on top of the ruin.
   const enemy = createEnemies(collision, [], 1000)[0];
-  assert.ok(collision.surfaceHeight(enemy) > 17.5);
+  assert.ok(collision.surfaceHeight(enemy) > 5);
+  assert.ok(Math.hypot(enemy.x - CASTLE_HALL.x, enemy.z - CASTLE_HALL.z) < 20);
+  // The hall is a wide arena: a 12 m ring around the post is all walkable floor.
+  for (let a = 0; a < 16; a++) {
+    const p = { x: enemy.home.x + 12 * Math.cos((a * Math.PI) / 8), z: enemy.home.z + 12 * Math.sin((a * Math.PI) / 8) };
+    assert.ok(collision.surfaceHeight(p) > 5, `hall floor at ${a}`);
+  }
 });
 test('camera triangle index agrees with full exact-mesh raycasts across the castle',async()=>{
-  const gltf=await geometryScene('public/models/valley-castle/model.glb');gltf.scene.position.set(CASTLE.x,0,CASTLE.z);gltf.scene.rotation.y=CASTLE.yaw;gltf.scene.updateMatrixWorld(true);
+  const gltf=await geometryScene(CASTLE_GLB);gltf.scene.position.set(CASTLE.x,CASTLE.groundOffset,CASTLE.z);gltf.scene.rotation.y=CASTLE.yaw;gltf.scene.updateMatrixWorld(true);
   gltf.scene.traverse(n=>{if(n.isMesh)n.material.side=THREE.DoubleSide;});const grid=new MeshRayGrid(gltf.scene),ray=new THREE.Raycaster();let hits=0;
-  for(const local of [[0,30],[-17,20],[-17,12],[0,-12],[7,-12],[0,1]])for(let i=0;i<16;i++){
+  for(const local of [[-9,38],[-22,20],[-22,8],[0,-16],[7,-12],[0,8]])for(let i=0;i<16;i++){
     const p=castleWorld(...local),origin=new THREE.Vector3(p.x,(CASTLE_SURFACE.height(p.x,p.z)??0)+1.4,p.z),direction=new THREE.Vector3(Math.sin(i*Math.PI/8),.25,Math.cos(i*Math.PI/8)).normalize();
     ray.set(origin,direction);ray.far=9;const hit=ray.intersectObject(gltf.scene,true).find(h=>h.distance>.08);const expected=hit?Math.min(9,Math.max(.35,hit.distance-.2)):9,actual=grid.distance(origin,direction,9);assert.ok(Math.abs(actual-expected)<.002,`${actual} != ${expected}`);if(hit)hits++;
-  }assert.ok(hits>20);
+  }assert.ok(hits>6,`open ruin: ${hits} wall hits`);
 });

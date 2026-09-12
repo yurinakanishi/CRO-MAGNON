@@ -3,6 +3,7 @@ import {
   type Direction,
   type InputMode,
   type PadAction,
+  type PadFrame,
   type PadMovement,
 } from './gamepad-input.js';
 import { adjacentMenuItem, menuItems, menuKeyDirection } from './menu-navigation.js';
@@ -17,16 +18,15 @@ export const gamepadHelp = `
       <div><dt>右スティック</dt><dd>カメラを回す</dd></div>
       <div><dt>○</dt><dd>採集・調べる</dd></div>
       <div><dt>□ / R2</dt><dd>刀・魔法・槍で攻撃</dd></div>
-      <div><dt>×</dt><dd>ジャンプ（着地してからもう一度）</dd></div>
-      <div><dt>△</dt><dd>近くの船・マンモスに乗る／降りる</dd></div>
+      <div><dt>△（右側4ボタンの上）</dt><dd>ジャンプ（着地してからもう一度）</dd></div>
+      <div><dt>×（右側4ボタンの下）</dt><dd>近くの船・マンモスに乗る／降りる · メニューや地図では「戻る／閉じる」</dd></div>
       <div><dt>L2</dt><dd>作業を中止</dd></div>
       <div><dt>十字キー</dt><dd>↑ 地図 · ← もちもの · → 手帳 · ↓ メニュー</dd></div>
-      <div><dt>OPTIONS</dt><dd>メニューを開く／閉じる</dd></div>
-      <div><dt>タッチパッド / SHARE</dt><dd>地図</dd></div>
+      <div><dt>OPTIONS</dt><dd>メニュー（もちもの）を開く／閉じる</dd></div>
+      <div><dt>タッチパッド / SHARE</dt><dd>地図を開く／閉じる</dd></div>
       <div><dt>L1 / R1 · R3</dt><dd>カメラを遠く／近く · 視点を戻す</dd></div>
-      <div><dt>L3（左スティック押し込み）</dt><dd>押している間、もちものと行動の欄を表示</dd></div>
     </dl>
-    <p>メニューは十字キーか左スティックで、押した方向にある項目を選びます。右側の4ボタン（×・○・□・△）のどれでも決定できます。戻るときは画面内の「戻る」ボタンを選んで決定してください。選択欄は左右で切り替え、右スティックで説明をスクロールできます。名前・チャットの文字入力はキーボードを使います。</p>
+    <p>メニューは十字キーか左スティックで、押した方向にある項目を選びます。○・□・△で決定、×（下のボタン）で戻る／閉じる。選択欄は左右で切り替え、右スティックで説明をスクロールできます。名前・チャットの文字入力はキーボードを使います。</p>
     <p class="form-note">走るための2回倒し・スティック押し込みは不要です。画面に戻ったときはスティックとボタンを一度離してください。</p>
     <p class="form-note">認識しない場合は接続を確認し、最新のChrome / EdgeでHTTPSまたはlocalhostのゲームを開いてください。</p>
   </section>`;
@@ -38,13 +38,15 @@ interface GamepadUIOptions {
   menu: () => HTMLElement | null;
   /** OPTIONS while a menu is shown: close the dialog or step back from the screen. */
   closeMenu: () => void;
+  /** The bottom face button in a menu: step back one level; falls back to `closeMenu`. */
+  cancelMenu?: () => void;
   canPlay: () => boolean;
   onAction: (action: PadAction) => void;
   onLook: (x: number, y: number, dt: number) => void;
   onStop: () => void;
   onActivity: (active: boolean) => void;
-  /** L3 held or released during play. */
-  onHotbar?: (held: boolean) => void;
+  /** The open atlas receives every frame (pointer, zoom, actions) instead of focus navigation. */
+  onMapInput?: (frame: PadFrame, dt: number) => void;
 }
 
 /** Uses real DOM focus/click handlers so every existing dialog keeps its game rules. */
@@ -56,7 +58,6 @@ export class GamepadControls {
   private connectedIndex: number | null = null;
   private previousMode: InputMode = 'blocked';
   private active = false;
-  private hotbarHeld = false;
   private focused: HTMLElement | null = null;
 
   constructor(private options: GamepadUIOptions) {
@@ -82,7 +83,9 @@ export class GamepadControls {
 
   private keydown = (event: KeyboardEvent) => {
     // Full-screen menus are handled by ScreenManager. Native text/select editing stays native.
+    // The atlas moves its own pointer with the arrow keys.
     if (!this.options.dialog.open || this.options.menu() !== this.options.dialog) return;
+    if (this.mode() === 'map') return;
     const direction = menuKeyDirection(event);
     if (!direction) return;
     event.preventDefault();
@@ -119,7 +122,8 @@ export class GamepadControls {
 
   private mode(): InputMode {
     if (document.hidden || !document.hasFocus()) return 'blocked';
-    if (this.options.menu()) return 'menu';
+    const menu = this.options.menu();
+    if (menu) return menu.querySelector('#big-map') ? 'map' : 'menu';
     if (
       !this.options.canPlay() ||
       document.activeElement?.closest('input,textarea,select,[contenteditable]')
@@ -164,11 +168,6 @@ export class GamepadControls {
     for (const connection of document.querySelectorAll('.gamepad-connection'))
       if (connection.textContent !== label) connection.textContent = label;
     if (frame.active) this.setActive(true);
-    const hotbar = mode === 'game' && frame.hotbar;
-    if (hotbar !== this.hotbarHeld) {
-      this.hotbarHeld = hotbar;
-      this.options.onHotbar?.(hotbar);
-    }
     if (mode === 'menu' && this.active) {
       this.ensureFocus();
       if (frame.navigation) this.navigate(frame.navigation);
@@ -178,7 +177,14 @@ export class GamepadControls {
       }
       // Closing wins over confirming when two buttons arrive in the same frame.
       if (frame.actions.includes('menu')) this.options.closeMenu();
+      else if (frame.actions.includes('cancel'))
+        (this.options.cancelMenu ?? this.options.closeMenu)();
       else if (frame.actions.includes('confirm')) this.activate();
+    } else if (mode === 'map' && this.active) {
+      this.clearFocus();
+      if (frame.actions.includes('menu') || frame.actions.includes('cancel'))
+        this.options.closeMenu();
+      else this.options.onMapInput?.(frame, dt);
     } else if (mode === 'game') {
       if (frame.look.x || frame.look.y) this.options.onLook(frame.look.x, frame.look.y, dt);
       for (const action of frame.actions) {
@@ -224,6 +230,13 @@ export class GamepadControls {
 
   private ensureFocus() {
     const items = this.items();
+    // A menu that moves DOM focus itself (the bag's "use" popup, the first food
+    // card on opening) hands the controller selection to that element.
+    const active = document.activeElement as HTMLElement | null;
+    if (active && active !== this.focused && items.includes(active)) {
+      this.focus(active);
+      return;
+    }
     if (!this.focused || !items.includes(this.focused))
       this.focus(
         items.find(
@@ -258,19 +271,7 @@ export class GamepadControls {
     const el = this.focused;
     if (!el || el.matches(':disabled')) return;
     if (el instanceof HTMLSelectElement) this.navigate('down');
-    else {
-      el.click();
-      // Selecting an atlas fire moves native focus to its confirmation button.
-      // Follow that focus so the next press confirms the selected destination.
-      const next = document.activeElement;
-      if (
-        next instanceof HTMLElement &&
-        next !== el &&
-        next.closest('.atlas') &&
-        this.items().includes(next)
-      )
-        this.focus(next);
-    }
+    else el.click();
   }
 
   destroy() {

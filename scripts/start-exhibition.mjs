@@ -57,6 +57,8 @@ async function main() {
       port: settings.serverPort,
       host: '0.0.0.0',
       serveAssets: false,
+      // Exhibition rules: fallen players recover fully; creatures return in 10 s.
+      exhibition: true,
       expectedBuild: manifest.buildId,
       wsPaths: [settings.wsPath],
       allowedOrigins: [

@@ -4,7 +4,7 @@ import { handleAdventureAction, recordAdventureGather } from '../shared/adventur
 import { handleBoatAction } from '../shared/boats.mjs';
 import { attackProfile, shoulderMagic } from '../shared/combat-profiles.mjs';
 import { handleHuntingAction } from '../shared/hunting.mjs';
-import { interactionVisible } from '../shared/interactions.mjs';
+import { GATHER_RANGE, interactionVisible } from '../shared/interactions.mjs';
 import { handleRidingAction } from '../shared/riding.mjs';
 import { NPC } from '../shared/world.mjs';
 import { handleGulfAction, ensureGulfPlayer } from '../shared/gulf-life.mjs';
@@ -14,6 +14,7 @@ import { handleVillageAction } from '../shared/village-life.mjs';
 import { canStartJump, jumpProgress } from '../shared/jumping.mjs';
 import { cancelBarter } from '../shared/barter.mjs';
 import { carrying, handleCarryAction } from '../shared/carrying.mjs';
+import { chooseMeal, HEAL_REPEAT_MS } from '../shared/pantry.mjs';
 const distance = (a, b) => Math.hypot(a.x - b.x, a.z - b.z);
 export function createActionHandler({
   notice: sendNotice,
@@ -27,6 +28,20 @@ export function createActionHandler({
   const notice = (player, text, tone = 'info', _popup = false) =>
     sendNotice(player, text, tone, false);
   return function act(room, player, message, now) {
+    if (message.action === 'heal') {
+      // One button eats whatever is carried; the food's own handler applies it.
+      const meal = chooseMeal(player);
+      if (!meal)
+        return notice(
+          player,
+          player.energy >= 100
+            ? '体力は満タンです。'
+            : '食べ物がありません。ベリーや肉を集めよう。',
+        );
+      if (now - (player.healAt ?? 0) < HEAL_REPEAT_MS) return;
+      player.healAt = now;
+      message = { ...message, action: meal.eatAction };
+    }
     const action = message.action;
     if (action === 'changeCharacter') {
       const result = handleCharacterSwitch(room, player, message, now);
@@ -135,7 +150,7 @@ export function createActionHandler({
         (resource) =>
           resource.amount > 0 &&
           (!message.targetId || resource.id === message.targetId) &&
-          distance(resource, player) <= 8 &&
+          distance(resource, player) <= GATHER_RANGE &&
           interactionVisible(room.collision, player, resource),
       );
       const nearest = candidates

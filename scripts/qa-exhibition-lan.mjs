@@ -101,7 +101,6 @@ try {
       ({ index }) => {
         localStorage.setItem('cro-species', 'cro');
         localStorage.setItem('cro-gender', index ? 'male' : 'female');
-        localStorage.setItem('cro-skip-guide', '1');
         window.qaNetwork = { states: [], sends: [], welcomes: [], delay: 0, sockets: [], urls: [] };
         const NativeWebSocket = window.WebSocket;
         window.WebSocket = class extends NativeWebSocket {

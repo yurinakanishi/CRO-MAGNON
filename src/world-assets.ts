@@ -315,6 +315,32 @@ export class WorldAssets {
     }
     return root;
   }
+  /**
+   * Model-space vertex positions of a loaded template (LOD 0), evenly
+   * subsampled to at most `limit` points. Used to anchor generated detail such
+   * as berry fruit on the real foliage surface.
+   */
+  modelPoints(key, surface = null, limit = 3000): Array<[number, number, number]> {
+    const template = this.templates.has(key) ? this.get(key, surface) : null;
+    const points: Array<[number, number, number]> = [];
+    if (!template?.gltf?.scene) return points;
+    template.gltf.scene.updateMatrixWorld(true);
+    const meshes: THREE.Mesh[] = [];
+    template.gltf.scene.traverse((node) => {
+      if (isMesh(node) && node.geometry?.attributes?.position) meshes.push(node);
+    });
+    const total = meshes.reduce((sum, mesh) => sum + mesh.geometry.attributes.position.count, 0);
+    const stride = Math.max(1, Math.ceil(total / Math.max(1, limit)));
+    const vertex = new THREE.Vector3();
+    for (const mesh of meshes) {
+      const position = mesh.geometry.attributes.position;
+      for (let index = 0; index < position.count; index += stride) {
+        vertex.fromBufferAttribute(position, index).applyMatrix4(mesh.matrixWorld);
+        points.push([vertex.x, vertex.y, vertex.z]);
+      }
+    }
+    return points;
+  }
   async createEquipment(key) {
     if (this.templates.has(key)) return this.create(key);
     if (!this.equipmentLoads.has(key))

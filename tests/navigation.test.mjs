@@ -20,7 +20,7 @@ function step(player, collision, dynamic, now) {
     'Every movement step must remain body-clear',
   );
   assert.ok(
-    Math.hypot(player.x - before.x, player.z - before.z) <= 0.066,
+    Math.hypot(player.x - before.x, player.z - before.z) <= 0.104,
     'Navigation must walk without teleporting',
   );
 }

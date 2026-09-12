@@ -294,7 +294,7 @@ try {
   };
   await input();
   await select('#supper-food-herbRoot');
-  await tap(PAD.cross);
+  await tap(PAD.circle);
   assert.equal(await a.locator('#supper-food-herbRoot').getAttribute('aria-pressed'), 'true');
   await a.evaluate(() => {
     window.qaFocus = document.activeElement;

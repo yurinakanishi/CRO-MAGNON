@@ -129,7 +129,7 @@ try {
   await page.locator('#title-start').click();
   await page.locator('#setup-form input[name="name"]').fill('Monster A');
   await page.locator('#setup-submit').click();
-  await page.locator('#guide-start').click();
+  await page.waitForSelector('body.in-game', { timeout: 60000 });
   await page
     .locator('#world[data-world-asset="ready"][data-character-asset="ready"]')
     .waitFor({ timeout: 120000 });

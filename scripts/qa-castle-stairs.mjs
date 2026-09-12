@@ -58,7 +58,6 @@ try {
     });
     await page.addInitScript((i) => {
       localStorage.setItem('cro-name', 'Castle QA ' + i);
-      localStorage.setItem('cro-skip-guide', '1');
     }, i);
     await page.goto(`http://127.0.0.1:${address.port}/?room=CASTLE-STAIRS`);
     await page.locator('#title-start').click();
@@ -129,9 +128,7 @@ try {
     // Real-time key release can arrive one or two server ticks later at 5.4m/s.
     // Finish positioning with ordinary walking keys before aiming the next leg.
     if (wasRunning && Math.hypot(goal.x-me.x,goal.z-me.z)>.12) {
-      await page.keyboard.down('Tab');
-      await page.locator('#run-button').click();
-      await page.keyboard.up('Tab');
+      await page.keyboard.press('Shift');
       for(let attempt=0;attempt<3 && Math.hypot(goal.x-me.x,goal.z-me.z)>.12;attempt++){
         await page.evaluate(yaw=>{window.qaWorld.yaw=yaw;},Math.atan2(goal.x-me.x,goal.z-me.z)+Math.PI);
         await page.locator('#world').focus();await sleep(400);
@@ -140,9 +137,7 @@ try {
         while(Math.hypot(goal.x-me.x,goal.z-me.z)>.09&&Date.now()-correction<1500) await sleep(15);
         await page.keyboard.up('w');await sleep(250);
       }
-      await page.keyboard.down('Tab');
-      await page.locator('#run-button').click();
-      await page.keyboard.up('Tab');
+      await page.keyboard.press('Shift');
     }
     const end = castleLocal(me.x, me.z),
       distance = Math.hypot(goal.x - me.x, goal.z - me.z);
@@ -168,9 +163,7 @@ try {
       { prediction, position: castleWorld(0, 34) },
     );
     if (running) {
-      await page.keyboard.down('Tab');
-      await page.locator('#run-button').click();
-      await page.keyboard.up('Tab');
+      await page.keyboard.press('Shift');
     }
     const label = running ? 'run-right' : 'walk-left';
     await leg([0, 18.9], label + '-ascent');

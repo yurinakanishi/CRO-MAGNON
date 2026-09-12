@@ -1,0 +1,57 @@
+{
+  "modelKey": "valley-castle",
+  "name": "白羽の城跡",
+  "kind": "static",
+  "candidate": 1,
+  "revision": "10",
+  "status": "reviewed-prototype",
+  "environment": true,
+  "onDemand": true,
+  "url": "/models/valley-castle/model-r10.glb",
+  "sha256": "8200dcd3b23b6f616f0bf73950b76e2fdc428bcb67455eaf2dc3018b9f4342f4",
+  "bytes": 5852368,
+  "triangles": 79594,
+  "upAxis": "Y",
+  "forwardAxis": "+Z",
+  "heightMetres": 13.162530217614352,
+  "widthMetres": 80,
+  "placement": {
+    "pivot": "ground-centred",
+    "min": [
+      -40,
+      0,
+      -39.86972487638181
+    ],
+    "max": [
+      40,
+      13.162530217614352,
+      39.86972487638181
+    ],
+    "groundOffset": -1.28,
+    "note": "Stands on a 1.28 m plinth; placed 1.28 m below the terrain so the forecourt meets the valley floor."
+  },
+  "clips": [],
+  "lods": [],
+  "notes": "Rebuilt 2026-09-12 as a ruin: a broad open forecourt behind a collapsed gate, three very wide gentle stairs (left, centre, right) and one enormous roofless great hall on top where the sorcerer is fought. Full mesh shared; the coarse LODs are not adopted.",
+  "provenance": {
+    "provider": "Codex CLI image_gen reference (gpt-5.6-sol, medium) and local TRELLIS-2; reduction, walk atlas and integration by Claude Code",
+    "claudeUsed": true,
+    "referenceGenerator": "Codex built-in image_gen",
+    "referenceImage": "output/model-generation/models/valley-castle/source/original/reference-v3.png",
+    "referenceSha256": "1f21a183da803192601a238d78b4e5723e3b3e57b379c82d1270cbe77c8104c1",
+    "referencePrompt": "Broad two-storey ruined limestone castle: open forecourt behind a collapsed arch gate, three very wide gentle stairs (left, centre, right) rising to one enormous roofless great hall with broken half-height walls and column stumps. User request 2026-09-12: rebuild the sorcerer's castle as a wide, easily climbed ruin whose top is a huge open-air hall where the sorcerer is fought. Candidate 01 of two Codex image_gen references selected by Claude Code (user not available); candidate 02 retained as history.",
+    "reconstruction": "Local TRELLIS-2 1024 seed 42 (reference v3); shape-preserving quadric reduction at p95 0.03 m to 79594 triangles with the source UV and albedo.",
+    "candidateFile": "output/model-generation/models/valley-castle/work/low-poly/candidate-10/candidate.glb",
+    "visualReview": "output/model-generation/models/valley-castle/qa/adoption-review-ruin.json",
+    "walkAtlas": "output/model-generation/models/valley-castle/qa/walk-rev10.json"
+  },
+  "review": {
+    "decision": "adopt",
+    "sha256": "8200dcd3b23b6f616f0bf73950b76e2fdc428bcb67455eaf2dc3018b9f4342f4",
+    "candidate": "10",
+    "reviewedAt": "2026-09-11T22:41:40.942Z",
+    "views": "output/model-generation/models/valley-castle/qa/candidate-10-views.png",
+    "walkAtlas": "output/model-generation/models/valley-castle/qa/walk-rev10.png",
+    "notes": "Seven software views of every triangle reviewed: a broad two-storey ruin with a collapsed arch gate in the front wall, an open forecourt, three wide straight stairs and one roofless great hall with column stumps and broken half-height walls. The walk atlas shows the forecourt, all three stairs and the whole hall as one connected floor."
+  }
+}

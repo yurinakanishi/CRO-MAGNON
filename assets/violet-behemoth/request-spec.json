@@ -14,12 +14,16 @@
     "Walk_Loop",
     "Run_Loop",
     "Alert",
+    "Roar",
     "Charge",
+    "Gape",
     "Attack",
+    "Tremble",
     "TailSpin",
     "Hit",
     "Death"
   ],
   "selection": "User supplied purple monster image, explicitly requested creation as an enemy with territorial charge, bite and spinning tail.",
-  "bodyDraftLengthMetres": 4
+  "bodyDraftLengthMetres": 4,
+  "telegraphRevision": "Revision 05 (2026-09-12): user asked for a dedicated, clearly visible wind-up animation before the charge and the tail spin; Roar, Tremble and Gape were added and the body is rendered at scale 2.5 (twice the previous 1.25)."
 }

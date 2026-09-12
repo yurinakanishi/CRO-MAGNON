@@ -145,3 +145,19 @@ test('respawning waits for room capacity and never puts a mammoth inside players
   assert.ok(room.collision.free(animal, animal.radius, [actorObstacle(player)]));
   assert.ok(Math.hypot(animal.x - animal.home.x, animal.z - animal.home.z) <= animal.roamRadius);
 });
+
+test('exhibition rules clear the meat pile and bring the mammoth back ten seconds after the kill', async () => {
+  const { EXHIBITION_RULES } = await import('../dist/shared/room-rules.mjs');
+  const { room, animal } = fixture();
+  room.rules = EXHIBITION_RULES;
+  animal.health = 0; animal.phase = 'dying'; animal.phaseStartedAt = 5000;
+  updateHunting(room, 5000 + HUNTING.deathDurationMs);
+  assert.equal(animal.phase, 'meat'); assert.equal(animal.meatRemaining, HUNTING.meatPerAnimal);
+  animal.meatRemaining -= 1;
+  updateHunting(room, 5000 + 9990); assert.equal(animal.phase, 'meat');
+  updateHunting(room, 5000 + 10010);
+  assert.equal(animal.phase, 'alive', 'back one linger period after the kill');
+  assert.equal(animal.health, HUNTING.maxHealth);
+  assert.equal(animal.meatRemaining, 0);
+});
+

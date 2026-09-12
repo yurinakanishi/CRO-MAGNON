@@ -51,7 +51,7 @@ try{
   }
   await until(()=>room()?.players.size===5,'five players');
   for(const page of pages)await page.waitForSelector('#world[data-world-asset="ready"][data-character-asset="ready"]',{timeout:60000});
-  await pages[0].click('#run-button');
+  await pages[0].keyboard.press('Shift');
   timer=setInterval(()=>{
     const r=room();let violations=0;
     for(const p of r.players.values())if(!p.downedUntil&&!p.mountId&&!p.boatId){const dynamic=[...r.players.values()].filter(a=>a!==p).concat(r.animals.filter(a=>a.phase==='alive'),r.enemies.filter(enemyIsSolid)).map(actorObstacle);if(!r.collision.free(p,p.radius,dynamic))violations++;}

@@ -12,6 +12,8 @@ const obstacles = (room, enemy) =>
   ]
     .filter((a) => a !== enemy && !a.carrierId)
     .map(circle);
+import { heard, provoker, sameFloor } from './perception.mjs';
+import { respawnDelay } from './room-rules.mjs';
 const angleTo = (a, b) => Math.atan2(b.x - a.x, b.z - a.z);
 const angleDifference = (a, b) => Math.atan2(Math.sin(a - b), Math.cos(a - b));
 const clear = (room, a, b) =>
@@ -87,19 +89,24 @@ function begin(e, kind, now) {
   stopActor(e);
   e.attackAt = now;
   e.attackSequence++;
+  // Every strike opens with its own telegraph clip; the strike clip follows it.
+  const windup = WINDUP_MS[kind];
   const duration =
-    kind === 'charge' ? R.alertMs + R.chargeMs : kind === 'bite' ? R.biteMs : R.spinMs;
+    windup + (kind === 'charge' ? R.chargeMs : kind === 'bite' ? R.biteMs : R.spinMs);
   e.attackLockUntil = now + duration;
   e.pendingAttack = {
     kind,
     facing: e.facing,
     hitIds: [],
     lastSweep: 0,
-    lastMoveAt: now + R.alertMs,
+    lastMoveAt: now + windup,
   };
-  e.clip = kind === 'charge' ? 'Alert' : kind === 'bite' ? 'Attack' : 'TailSpin';
-  e.behavior = kind === 'charge' ? 'alert' : kind;
+  e.clip = WINDUP_CLIP[kind];
+  e.behavior = WINDUP_BEHAVIOR[kind];
 }
+const WINDUP_MS = { charge: R.roarMs, bite: R.gapeMs, tail: R.trembleMs };
+const WINDUP_CLIP = { charge: 'Roar', bite: 'Gape', tail: 'Tremble' };
+const WINDUP_BEHAVIOR = { charge: 'roar', bite: 'gape', tail: 'tremble' };
 function finish(e, now) {
   stopActor(e);
   e.pendingAttack = null;
@@ -171,7 +178,7 @@ export function updateBehemoths(room, dt, now, damage) {
     }
     if (e.phase === 'respawning') {
       if (
-        now - e.phaseStartedAt < R.respawnMs ||
+        now - e.phaseStartedAt < respawnDelay(room, R.respawnMs) ||
         !room.collision.free(e.home, e.radius, obstacles(room, e))
       )
         continue;
@@ -212,22 +219,25 @@ export function updateBehemoths(room, dt, now, damage) {
       e.behavior = 'hit';
       continue;
     }
-    if (!target && now >= e.aggroAfter) {
+    // A blow from anywhere gives the attacker away, even during the calm after a return.
+    if (!target)
+      target = provoker(room, e, (p) => eligible(room, e, p, now) && sameFloor(room, e, p));
+    if (!target && now >= e.aggroAfter)
       target = [...room.players.values()]
         .filter(
           (p) =>
             eligible(room, e, p, now) &&
-            distance(e, p) <= R.visionRange &&
-            Math.abs(angleDifference(angleTo(e, p), e.facing)) <= R.visionHalfAngle &&
-            clear(room, e, p),
+            ((sameFloor(room, e, p) && heard(e, p, R.hearing)) ||
+              (distance(e, p) <= R.visionRange &&
+                Math.abs(angleDifference(angleTo(e, p), e.facing)) <= R.visionHalfAngle &&
+                clear(room, e, p))),
         )
         .sort((a, b) => distance(e, a) - distance(e, b))[0];
-      if (target) {
-        e.targetId = target.id;
-        e.facing = angleTo(e, target);
-        begin(e, 'charge', now);
-        changed = true;
-      }
+    if (target && e.targetId !== target.id) {
+      e.targetId = target.id;
+      e.facing = angleTo(e, target);
+      begin(e, 'charge', now);
+      changed = true;
     }
     if (!target) {
       stopActor(e);
@@ -246,15 +256,15 @@ export function updateBehemoths(room, dt, now, damage) {
         changed = true;
       };
       if (strike.kind === 'charge') {
-        if (elapsed < R.alertMs) {
-          e.clip = 'Alert';
-          e.behavior = 'alert';
+        if (elapsed < R.roarMs) {
+          e.clip = 'Roar';
+          e.behavior = 'roar';
           continue;
         }
         e.clip = 'Charge';
         e.behavior = 'charge';
         // Fixed heading, small collision steps, and bounded elapsed time prevent tunneling.
-        const activeUntil = Math.min(now, e.attackAt + R.alertMs + R.chargeMs);
+        const activeUntil = Math.min(now, e.attackAt + R.roarMs + R.chargeMs);
         const seconds = Math.min(
           Math.max(0, dt),
           Math.max(0, activeUntil - strike.lastMoveAt) / 1000,
@@ -279,11 +289,18 @@ export function updateBehemoths(room, dt, now, damage) {
             )
               hit(p, R.chargeDamage, '突進');
         }
-        if (elapsed >= R.alertMs + R.chargeMs || (seconds > 0 && e.speed < 0.05)) finish(e, now);
+        if (elapsed >= R.roarMs + R.chargeMs || (seconds > 0 && e.speed < 0.05)) finish(e, now);
       } else if (strike.kind === 'bite') {
+        if (elapsed < R.gapeMs) {
+          // Mouth open, head drawn back: the target may still step aside.
+          e.clip = 'Gape';
+          e.behavior = 'gape';
+          e.facing = strike.facing = angleTo(e, target);
+          continue;
+        }
         e.clip = 'Attack';
         e.behavior = 'bite';
-        if (elapsed >= R.biteImpactMs && !strike.resolved) {
+        if (elapsed >= R.gapeMs + R.biteImpactMs && !strike.resolved) {
           strike.resolved = true;
           if (
             distance(e, target) <= e.radius + target.radius + R.biteReach &&
@@ -291,12 +308,20 @@ export function updateBehemoths(room, dt, now, damage) {
           )
             hit(target, R.biteDamage, '噛みつき');
         }
-        if (elapsed >= R.biteMs) finish(e, now);
+        if (elapsed >= R.gapeMs + R.biteMs) finish(e, now);
       } else {
+        if (elapsed < R.trembleMs) {
+          // The body shudders and the tail lifts before it whips round.
+          e.clip = 'Tremble';
+          e.behavior = 'tremble';
+          continue;
+        }
         e.clip = 'TailSpin';
         e.behavior = 'tail';
         const sweep =
-          Math.max(0, Math.min(1, (elapsed - R.spinWindupMs) / R.spinSweepMs)) * Math.PI * 2;
+          Math.max(0, Math.min(1, (elapsed - R.trembleMs - R.spinWindupMs) / R.spinSweepMs)) *
+          Math.PI *
+          2;
         if (sweep > strike.lastSweep) {
           for (const p of room.players.values()) {
             const a = (angleTo(e, p) - strike.facing - Math.PI + Math.PI * 4) % (Math.PI * 2);
@@ -310,7 +335,7 @@ export function updateBehemoths(room, dt, now, damage) {
           }
           strike.lastSweep = sweep;
         }
-        if (elapsed >= R.spinMs) finish(e, now);
+        if (elapsed >= R.trembleMs + R.spinMs) finish(e, now);
       }
       continue;
     }

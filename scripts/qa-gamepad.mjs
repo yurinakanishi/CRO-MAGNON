@@ -195,7 +195,7 @@ try {
   // The shared action rules reject gathering during the current attack animation.
   await sleep(800);
   const gathered = player().gathered;
-  await tap(PAD.cross);
+  await tap(PAD.circle);
   await until(() => player().gathered > gathered, 'cross gathers nearby resource');
   passed('cross gathers a real nearby resource through the existing action handler');
   await page.screenshot({ path: `${output}/01-controller-game.png` });
@@ -213,7 +213,7 @@ try {
   assert.equal(player().attackSequence, menuAttack);
   await axes();
   await select('[data-controller-menu="inventory"]');
-  await tap(PAD.cross);
+  await tap(PAD.circle);
   assert.equal(await page.locator('#modal-craft').count(), 1);
   await back();
   await axes(1);
@@ -232,7 +232,7 @@ try {
   await sleep(500);
   await tap(PAD.left);
   await select('#modal-craft');
-  await tap(PAD.cross);
+  await tap(PAD.circle);
   await until(() => player().tool, 'craft through menu');
   assert.equal(player().inventory.wood, 12);
   assert.equal(player().inventory.stone, 0);
@@ -241,7 +241,7 @@ try {
   const beforeDestination = await page.locator('#expedition-destination').inputValue();
   await tap(PAD.right);
   assert.notEqual(await page.locator('#expedition-destination').inputValue(), beforeDestination);
-  await tap(PAD.cross);
+  await tap(PAD.circle);
   assert.notEqual(
     await page.locator('.gamepad-focus').getAttribute('id'),
     'expedition-destination',
@@ -288,7 +288,7 @@ try {
   passed('disconnect, reconnect with held stick, blur and chat focus stop and require neutral');
 
   current = 'keyboard coexistence';
-  await page.locator('#run-button').evaluate((b) => b.click());
+  await page.keyboard.press('Shift');
   await sleep(150);
   await axes(0.5);
   assert.equal(player().runningRequested, false);
@@ -311,7 +311,7 @@ try {
     { x: animal.x + animal.radius + player().radius + 0.6, z: animal.z },
     'beside existing mammoth',
   );
-  await tap(PAD.triangle);
+  await tap(PAD.cross);
   await until(() => player().mountId, 'controller mount');
   await axes(0.5, 0, 0, 0, 350);
   assert.equal(animal.runningRequested, false);
@@ -321,7 +321,7 @@ try {
   assert.ok(animal.moving);
   speeds.push({ mode: 'mammoth deep', speed: animal.speed });
   await axes();
-  await tap(PAD.triangle);
+  await tap(PAD.cross);
   await until(() => !player().mountId, 'controller dismount');
   passed('triangle mounts/dismounts existing mammoth; analog gait controls the mount');
 
@@ -329,10 +329,10 @@ try {
   await stage({ x: 21, z: 125 }, 'known usable shore; remaining 12 wood from craft fixture');
   await tap(PAD.left);
   await select('#modal-boat-craft');
-  await tap(PAD.cross);
+  await tap(PAD.circle);
   await until(() => room.boats.length === 1, 'controller boat craft');
   await sleep(550);
-  await tap(PAD.triangle);
+  await tap(PAD.cross);
   await until(() => player().boatId, 'controller board');
   const boat = room.boats[0];
   const boatStart = position();
@@ -350,7 +350,7 @@ try {
   speeds.push({ mode: 'boat deep', speed: boat.speed });
   assert.ok(delta(boatStart) > 0.1);
   await axes();
-  await tap(PAD.triangle);
+  await tap(PAD.cross);
   await until(() => !player().boatId, 'controller land');
   passed('inventory builds a boat; triangle boards/lands; stick controls boat gait');
 
@@ -362,7 +362,7 @@ try {
     await page.setViewportSize(viewport);
     await tap(PAD.options);
     await select('[data-controller-menu="help"]');
-    await tap(PAD.cross);
+    await tap(PAD.circle);
     assert.equal(await page.locator('.gamepad-help').count(), 1);
     const overflow = await page.locator('#modal').evaluate((d) => d.scrollWidth - d.clientWidth);
     assert.ok(overflow <= 1, `dialog overflow ${overflow}`);

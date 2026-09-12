@@ -1,41 +1,49 @@
-// Sabre-toothed cat tuning. Faster than every playable sprint (great ape 5.4 m/s),
-// so the territory edge is the only way to shake it off. It side-steps attacks
-// it sees coming and pounces from mid range; the landing is its opening.
+// Sabre-toothed cat tuning. 2026-09-12: weakened at the user's request (less
+// health and damage, slower chase so the great ape can outrun it, longer
+// cooldowns) and every strike is announced: a Crouch clip before the pounce and
+// a Snarl clip before the claw combo, both interruptible. It still side-steps
+// attacks it sees coming; the pounce landing is its opening.
+import { HEARING } from './perception.mjs';
+
 export const SABERTOOTH = Object.freeze({
   modelKey: 'sabertooth-tiger',
   name: '剣牙の大虎',
-  maxHealth: 340,
+  maxHealth: 220,
   scale: 1,
   radius: 0.8,
   walkSpeed: 1.5,
-  chaseSpeed: 6.2,
+  // Humans (5.6) and the kunoichi (5.8) cannot outrun it; the great ape (6.4) can.
+  chaseSpeed: 6.0,
   visionRange: 24,
   visionHalfAngle: (75 * Math.PI) / 180,
-  // A cat hears footsteps right behind it.
-  hearingRange: 7,
+  // A cat hears footsteps all around it; running carries further, standing still less.
+  hearing: HEARING,
   territoryRadius: 24,
   alertMs: 600,
-  // Pounce: crouch (interruptible), leap (super armour), landing (opening).
-  pounceCrouchMs: 450,
+  // Pounce: Crouch clip (interruptible telegraph), final dip, leap (super
+  // armour), landing (opening).
+  pounceWindupMs: 800,
+  pounceCrouchMs: 200,
   pounceLeapMs: 600,
-  pounceLandMs: 500,
+  pounceLandMs: 700,
   pounceMinRange: 3.5,
-  pounceMaxRange: 10,
+  pounceMaxRange: 9,
   pounceLead: 0.35,
   pounceReach: 0.35,
-  pounceCooldownMs: 2600,
-  pounceDamage: 30,
-  // Two-swipe claw combo.
+  pounceCooldownMs: 4500,
+  pounceDamage: 20,
+  // Snarl clip (interruptible telegraph), then the two-swipe claw combo.
+  snarlMs: 700,
   clawMs: 1000,
   clawImpactsMs: Object.freeze([320, 620]),
   clawReach: 0.9,
   clawHalfAngle: (70 * Math.PI) / 180,
-  clawDamage: 16,
-  clawRecoveryMs: 350,
+  clawDamage: 10,
+  clawRecoveryMs: 900,
   // Quick evasive hop; the body cannot be struck while it lasts.
   stepMs: 350,
   stepDistance: 3.4,
-  stepCooldownMs: 1800,
+  stepCooldownMs: 3200,
   stepThreatRange: 4.2,
   stepProjectileRange: 6,
   hitDurationMs: 200,
@@ -55,4 +63,11 @@ export const SABERTOOTH_GROUND = Object.freeze({
   radius: 4,
   roamRadius: 6,
 });
-export const SABERTOOTH_ONE_SHOTS = Object.freeze(['Attack', 'Alert', 'Pounce', 'Step']);
+export const SABERTOOTH_ONE_SHOTS = Object.freeze([
+  'Attack',
+  'Alert',
+  'Crouch',
+  'Pounce',
+  'Snarl',
+  'Step',
+]);

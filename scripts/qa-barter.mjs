@@ -272,7 +272,7 @@ try {
   );
   await select('#barter-accept');
   await ready(a, '#barter-accept');
-  await tap(PAD.cross);
+  await tap(PAD.circle);
   await until(() => trade().accepted[0], 'controller consent');
   await sleep(550);
   await click(a, '#barter-revise');

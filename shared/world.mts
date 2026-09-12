@@ -9,8 +9,10 @@ export const WORLD = Object.freeze({
   ...WORLD_BOUNDS,
   chunkSize: 32,
   edgeMargin: 2,
-  walkSpeed: 1.25,
-  runSpeed: 3.5,
+  // Human tribes. 2026-09-11: everyone moves faster; the order stays
+  // great ape > kunoichi > humans > mage (see shared/characters.mts).
+  walkSpeed: 2.0,
+  runSpeed: 5.6,
   playerRadius: 0.32,
   maxPlayers: 5,
 });

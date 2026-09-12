@@ -147,25 +147,11 @@ try {
   await focused('#setup-form input[name="name"]');
   await arm('#setup-submit');
   await tap(PAD.square);
-  await page.waitForSelector('#guide-start', { state: 'visible', timeout: 60000 });
-  await arm('#guide-back');
-  await tap(PAD.right);
-  await focused('#guide-start');
-  await tap(PAD.left);
-  await focused('#guide-back');
-  await tap(PAD.triangle);
-  await page.waitForSelector('#setup-submit', { state: 'visible' });
-  await arm('#setup-submit');
-  await tap(PAD.cross);
-  await page.waitForSelector('#guide-start', { state: 'visible', timeout: 60000 });
-  await arm('#guide-start');
-  await tap(PAD.circle);
+  // 2026-09-12: the start tutorial was removed; the decision button joins directly.
   await page.waitForSelector('#world[data-world-asset="ready"][data-character-asset="ready"]', {
     timeout: 60000,
   });
-  passed(
-    'Name editing remains native; guide buttons move horizontally, Back and all four decision buttons work',
-  );
+  passed('Name editing remains native and the decision button starts the adventure directly');
 
   // Pause menu: a vertical tab rail on a PC, a horizontal tab strip at 860px and below.
   for (const viewport of [
@@ -176,38 +162,40 @@ try {
     await page.setViewportSize(viewport);
     await tap(PAD.options);
     const rail = viewport.width > 860;
+    // 2026-09-12: three tabs (bag, info, settings); below the strip sits the character change.
+    const belowStrip = 'character';
     await arm(item('inventory'));
     await tap(PAD.down);
-    await focused(item(rail ? 'world' : 'resume'));
+    await focused(item(rail ? 'info' : belowStrip));
     await tap(PAD.up);
-    // The wide Resume button climbs to the tab nearest its centre: the first tab on a tablet strip.
-    await focused(item(rail || viewport.width <= 520 ? 'inventory' : 'objectives'));
+    // The wide exit button climbs back to the first tab on both the rail and the strip.
+    await focused(item('inventory'));
     await arm(item('inventory'));
     if (rail) {
       await tap(PAD.down);
       await tap(PAD.down);
       await focused(item('settings'));
       await tap(PAD.up);
-      await focused(item('world'));
+      await focused(item('info'));
     } else {
       await tap(PAD.right);
-      await focused(item('world'));
+      await focused(item('info'));
       await tap(PAD.left);
       await focused(item('inventory'));
     }
     await arm(item('inventory'));
     await stick(0, 1);
-    await focused(item(rail ? 'world' : 'resume'));
+    await focused(item(rail ? 'info' : belowStrip));
     await page.keyboard.press('Tab');
     await page.locator(item('inventory')).focus();
     await page.keyboard.press('ArrowDown');
-    await focused(item(rail ? 'world' : 'resume'));
+    await focused(item(rail ? 'info' : belowStrip));
     await page.keyboard.press('ArrowUp');
-    await focused(item(rail || viewport.width <= 520 ? 'inventory' : 'objectives'));
+    await focused(item('inventory'));
     if (!rail) {
       await page.locator(item('inventory')).focus();
       await page.keyboard.press('ArrowRight');
-      await focused(item('world'));
+      await focused(item('info'));
     }
     await page.screenshot({ path: `${output}/menu-${viewport.width}x${viewport.height}.png` });
     passed(
@@ -244,10 +232,16 @@ try {
     ),
     'Right from the settings tab enters the settings panel',
   );
-  await page.locator(item('world')).focus();
+  await page.locator(item('info')).focus();
   await page.keyboard.press('Enter');
   assert.equal(
-    await page.locator('[data-pause-panel="world"]').evaluate((el) => !el.hidden),
+    await page.locator('[data-pause-panel="info"]').evaluate((el) => !el.hidden),
+    true,
+  );
+  await page.locator(item('sub-world')).focus();
+  await page.keyboard.press('Enter');
+  assert.equal(
+    await page.locator('[data-pause-subpanel="world"]').evaluate((el) => !el.hidden),
     true,
   );
   await page.locator(item('journal')).focus();
@@ -261,15 +255,16 @@ try {
     'none',
   );
   await page.keyboard.press('Escape');
+  // 2026-09-12: the menu always reopens on the bag.
   assert.equal(
     await page.locator('.pause-tab[aria-selected="true"]').getAttribute('data-pause-tab'),
-    'world',
+    'inventory',
   );
   await page.locator('#modal-close').focus();
   await page.keyboard.press('Enter');
   assert.equal(await page.locator('#modal').evaluate((el) => el.open), false);
   passed(
-    'Keyboard: Enter picks a tab and a panel button, ESC/Enter on Back close and hide the dialog, last tab is remembered',
+    'Keyboard: Enter picks a tab and a panel button, ESC/Enter on Back close and hide the dialog, the bag is always first',
   );
 
   // Held Down repeats through the rail and the right stick scrolls the panel, keeping Back visible.
@@ -277,13 +272,15 @@ try {
   // A dialog closed by keyboard waits for a neutral controller frame before new presses count.
   await input();
   await tap(PAD.options);
-  await arm(item('help'));
+  await arm(item('info'));
+  await tap(PAD.square);
+  await arm(item('sub-help'));
   await tap(PAD.square);
   await input([], [0, 0, 0, 1]);
   await page.waitForTimeout(1200);
   await input();
   assert.ok(await page.locator('.pause-panels').evaluate((el) => el.scrollTop > 0));
-  await arm(item('objectives'));
+  await arm(item('sub-objectives'));
   await input([PAD.down]);
   await page.waitForTimeout(780);
   await input();
@@ -293,7 +290,7 @@ try {
     box: document.activeElement.getBoundingClientRect().toJSON(),
     back: document.querySelector('#modal-close').getBoundingClientRect().toJSON(),
   }));
-  assert.notEqual(held.item, 'objectives', JSON.stringify(held));
+  assert.notEqual(held.item, 'sub-objectives', JSON.stringify(held));
   assert.ok(held.box.top >= 0 && held.box.bottom <= 390, JSON.stringify(held));
   assert.ok(held.back.top >= 0 && held.back.bottom <= 390 && held.back.right <= 844);
   await page.screenshot({ path: `${output}/held-down-scroll.png` });

@@ -1,13 +1,13 @@
 {
   "decision": "adopt",
-  "sha256": "6c4c5301071c1d69add3b357a14b8ba6af62a47a79089657928ab6424bde045d",
-  "revision": "11",
-  "reviewedAt": "2026-09-11T04:46:57.926Z",
+  "sha256": "54db205315086d109bd34b6cf35d31df25cca7472dddb95c7fdbeea6c868021d",
+  "revision": "13",
+  "reviewedAt": "2026-09-11T22:49:05.245Z",
   "sheets": [
-    "output/model-generation/models/sabertooth-tiger/work/rig/revision-11/qa/sheet-left-a.png",
-    "output/model-generation/models/sabertooth-tiger/work/rig/revision-11/qa/sheet-left-b.png",
-    "output/model-generation/models/sabertooth-tiger/work/rig/revision-11/qa/sheet-tq.png",
-    "output/model-generation/models/sabertooth-tiger/work/rig/revision-11/qa/sheet-front.png"
+    "output/model-generation/models/sabertooth-tiger/work/rig/revision-13/qa/sheet-left-a.png",
+    "output/model-generation/models/sabertooth-tiger/work/rig/revision-13/qa/sheet-left-b.png",
+    "output/model-generation/models/sabertooth-tiger/work/rig/revision-13/qa/sheet-tq.png",
+    "output/model-generation/models/sabertooth-tiger/work/rig/revision-13/qa/sheet-front.png"
   ],
-  "notes": "Nine pose sheets (left, three-quarter, front) reviewed: lateral walk, rotary gallop, crouch-leap-land pounce with reaching forelegs, two-swipe claw, tucked side-step hop, side collapse death. Fur tufts and sabers stay attached; no limb tearing at the belly."
+  "notes": "Eleven pose sheets (left, three-quarter, front) reviewed: lateral walk, rotary gallop, the new Crouch telegraph (body sunk, hindquarters gathered, tail lashing) before the pounce, the new Snarl telegraph (rocked back, head shaking, a forepaw raised) before the two-swipe claw, tucked side-step hop, side collapse death. Fur tufts and sabers stay attached; no limb tearing at the belly."
 }

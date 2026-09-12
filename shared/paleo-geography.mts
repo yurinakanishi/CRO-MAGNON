@@ -174,6 +174,199 @@ export function coastDistance(x, z) {
   );
 }
 export const isLand = (x, z, margin = 0) => coastDistance(x, z) > margin;
+
+type ContourPoint = { x: number; z: number };
+const contourCache = new Map<number, ContourPoint[][]>();
+/** Perpendicular distance from `p` to the segment `a`–`b` (to the nearer end when degenerate). */
+function segmentDistance(p: ContourPoint, a: ContourPoint, b: ContourPoint) {
+  const dx = b.x - a.x,
+    dz = b.z - a.z,
+    length = dx * dx + dz * dz;
+  const t = length ? clamp(((p.x - a.x) * dx + (p.z - a.z) * dz) / length, 0, 1) : 0;
+  return Math.hypot(p.x - a.x - t * dx, p.z - a.z - t * dz);
+}
+/** Douglas–Peucker on an open polyline; keeps the ends and every point farther than `tolerance`. */
+function simplifyOpen(points: ContourPoint[], tolerance: number): ContourPoint[] {
+  if (points.length < 3) return points.slice();
+  const keep = new Uint8Array(points.length);
+  keep[0] = keep[points.length - 1] = 1;
+  const stack: [number, number][] = [[0, points.length - 1]];
+  while (stack.length) {
+    const [first, last] = stack.pop();
+    let farthest = 0,
+      index = -1;
+    for (let i = first + 1; i < last; i++) {
+      const d = segmentDistance(points[i], points[first], points[last]);
+      if (d > farthest) {
+        farthest = d;
+        index = i;
+      }
+    }
+    if (index < 0 || farthest <= tolerance) continue;
+    keep[index] = 1;
+    stack.push([first, index], [index, last]);
+  }
+  return points.filter((_, i) => keep[i]);
+}
+function simplifyContour(points: ContourPoint[], tolerance: number): ContourPoint[] {
+  const first = points[0],
+    last = points[points.length - 1];
+  const closed = points.length > 3 && first.x === last.x && first.z === last.z;
+  if (!closed) return simplifyOpen(points, tolerance);
+  // A loop has no natural ends: split it at the point farthest from the start.
+  let split = 1,
+    farthest = -1;
+  for (let i = 1; i < points.length - 1; i++) {
+    const d = Math.hypot(points[i].x - first.x, points[i].z - first.z);
+    if (d > farthest) {
+      farthest = d;
+      split = i;
+    }
+  }
+  const head = simplifyOpen(points.slice(0, split + 1), tolerance),
+    tail = simplifyOpen(points.slice(split), tolerance);
+  return head.concat(tail.slice(1));
+}
+/**
+ * The shoreline as world-space polylines: marching squares over the same distance grid that
+ * `coastDistance` samples, traced where the distance crosses zero, sampled every `step` grid
+ * cells (2 m each) and simplified with `tolerance` metres. Closed coasts end on their first
+ * point. Computed once per step and cached.
+ */
+export function coastlineContours(step = 2, tolerance = 1): ContourPoint[][] {
+  const cached = contourCache.get(step);
+  if (cached) return cached;
+  // Edge keys: (row * width + column) * 2, +1 for the vertical edge below that corner.
+  const crossings = new Map<number, ContourPoint>();
+  const links = new Map<number, number[]>();
+  const segments: number[] = [];
+  const world = (u: number, v: number): ContourPoint => ({
+    x: WORLD_BOUNDS.minX + (u + 0.5) * cell,
+    z: WORLD_BOUNDS.minZ + (v + 0.5) * cell,
+  });
+  const crossing = (key: number, ix: number, iz: number, vertical: boolean) => {
+    if (!crossings.has(key)) {
+      const v0 = coast[iz * width + ix],
+        v1 = vertical ? coast[(iz + step) * width + ix] : coast[iz * width + ix + step];
+      const t = v1 === v0 ? 0.5 : clamp((128 - v0) / (v1 - v0), 0, 1);
+      crossings.set(key, vertical ? world(ix, iz + t * step) : world(ix + t * step, iz));
+    }
+    return key;
+  };
+  // Only the verified Earth grid holds a shoreline; the blank margin around it is open water,
+  // and tracing across that border would draw a false coast down the edge of the data.
+  const lastX = baseX + COAST_GRID.width - 1,
+    lastZ = baseZ + COAST_GRID.height - 1;
+  for (let iz = baseZ; iz + step <= lastZ; iz += step)
+    for (let ix = baseX; ix + step <= lastX; ix += step) {
+      const i = iz * width + ix;
+      const a = coast[i] > 128,
+        b = coast[i + step] > 128,
+        c = coast[i + step * width + step] > 128,
+        d = coast[i + step * width] > 128;
+      if (a === b && b === c && c === d) continue;
+      const code = (a ? 1 : 0) | (b ? 2 : 0) | (c ? 4 : 0) | (d ? 8 : 0);
+      // Edge ids: 0 top, 1 right, 2 bottom, 3 left.
+      let pairs: number[][];
+      switch (code) {
+        case 1:
+        case 14:
+          pairs = [[3, 0]];
+          break;
+        case 2:
+        case 13:
+          pairs = [[0, 1]];
+          break;
+        case 3:
+        case 12:
+          pairs = [[3, 1]];
+          break;
+        case 4:
+        case 11:
+          pairs = [[1, 2]];
+          break;
+        case 6:
+        case 9:
+          pairs = [[0, 2]];
+          break;
+        case 7:
+        case 8:
+          pairs = [[3, 2]];
+          break;
+        default: {
+          // Saddles: the cell centre decides which diagonal pair of land corners connects.
+          const centre =
+            (coast[i] +
+              coast[i + step] +
+              coast[i + step * width + step] +
+              coast[i + step * width]) /
+              4 >
+            128;
+          const joined = code === 5 ? centre : !centre; // Land at a and c joins when the centre is land.
+          pairs = joined
+            ? [
+                [3, 2],
+                [0, 1],
+              ]
+            : [
+                [3, 0],
+                [1, 2],
+              ];
+        }
+      }
+      const edgeKey = (edge: number) =>
+        edge === 0
+          ? crossing(i * 2, ix, iz, false)
+          : edge === 1
+            ? crossing((i + step) * 2 + 1, ix + step, iz, true)
+            : edge === 2
+              ? crossing((i + step * width) * 2, ix, iz + step, false)
+              : crossing(i * 2 + 1, ix, iz, true);
+      for (const [from, to] of pairs) {
+        const id = segments.length / 2;
+        const keyA = edgeKey(from),
+          keyB = edgeKey(to);
+        segments.push(keyA, keyB);
+        (links.get(keyA) ?? links.set(keyA, []).get(keyA)).push(id);
+        (links.get(keyB) ?? links.set(keyB, []).get(keyB)).push(id);
+      }
+    }
+  const used = new Uint8Array(segments.length / 2);
+  const contours: ContourPoint[][] = [];
+  const next = (key: number) => links.get(key).find((id) => !used[id]);
+  const walk = (start: number, key: number) => {
+    const keys = [key];
+    let id = start;
+    for (;;) {
+      used[id] = 1;
+      key = segments[id * 2] === key ? segments[id * 2 + 1] : segments[id * 2];
+      keys.push(key);
+      const following = next(key);
+      if (following === undefined) return keys;
+      id = following;
+    }
+  };
+  for (let id = 0; id < used.length; id++) {
+    if (used[id]) continue;
+    // Walk one way, then continue backwards from the start so open coasts are one polyline.
+    const forward = walk(id, segments[id * 2]);
+    const backward = next(segments[id * 2]);
+    const keys =
+      backward === undefined
+        ? forward
+        : walk(backward, segments[id * 2])
+            .reverse()
+            .concat(forward.slice(1));
+    contours.push(
+      simplifyContour(
+        keys.map((k) => crossings.get(k)),
+        tolerance,
+      ),
+    );
+  }
+  contourCache.set(step, contours);
+  return contours;
+}
 export function landBodyFree(x, z, radius = 0) {
   const d = coastDistance(x, z);
   if (d > radius * 1.5 + 2) return true;

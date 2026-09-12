@@ -102,10 +102,10 @@ test('diagonals are capped, including over-range device axes, and right stick ne
 test('mapped buttons fire once per press and simultaneous attack buttons produce one attack', () => {
   const { sample, press } = setup();
   for (const [button, action] of [
-    [PAD.cross, 'jump'],
+    [PAD.triangle, 'jump'],
     [PAD.circle, 'confirm'],
     [PAD.l2, 'cancel'],
-    [PAD.triangle, 'ride'],
+    [PAD.cross, 'ride'],
     [PAD.options, 'menu'],
     [PAD.touchpad, 'map'],
     [PAD.share, 'map'],
@@ -124,24 +124,27 @@ test('mapped buttons fire once per press and simultaneous attack buttons produce
   assert.deepEqual(sample().actions, ['attack']);
 });
 
-test('holding L3 keeps the item bar flag raised during play only, without firing an action', () => {
+// 2026-09-12: the held-L3 item bar was removed; L3 is not bound to anything.
+test('L3 is unbound: it neither raises a flag nor fires an action', () => {
   const { sample, press } = setup();
-  assert.equal(sample().hotbar, false);
   press(PAD.l3);
-  let frame = sample();
-  assert.equal(frame.hotbar, true);
+  const frame = sample();
+  assert.equal('hotbar' in frame, false);
   assert.deepEqual(frame.actions, []);
-  frame = sample('game', 1000);
-  assert.equal(frame.hotbar, true, 'stays raised while held');
-  assert.equal(sample('menu').hotbar, false, 'menus never show the item bar');
+  assert.equal(frame.active, false, 'an unbound button is not controller activity');
   press(PAD.l3, false);
-  sample('game');
-  assert.equal(sample().hotbar, false);
+  sample();
 });
 
 test('each face button confirms menus once per press without gameplay actions', () => {
   const { sample, press } = setup('menu');
-  for (const button of [PAD.cross, PAD.circle, PAD.square, PAD.triangle]) {
+  // 2026-09-12: the bottom face button is "back" in every menu; the other three confirm.
+  press(PAD.cross);
+  assert.deepEqual(sample().actions, ['cancel']);
+  assert.deepEqual(sample('menu', 1000).actions, [], 'holding does not repeat back');
+  press(PAD.cross, false);
+  sample();
+  for (const button of [PAD.circle, PAD.square, PAD.triangle]) {
     press(button);
     assert.deepEqual(sample().actions, ['confirm']);
     assert.deepEqual(sample('menu', 1000).actions, [], 'holding does not repeat a decision');
@@ -160,17 +163,16 @@ test('each face button confirms menus once per press without gameplay actions', 
 
 test('simultaneous face buttons produce one decision, including circle', () => {
   const { sample, press } = setup('menu');
-  for (const button of [PAD.cross, PAD.circle, PAD.square, PAD.triangle]) press(button);
+  for (const button of [PAD.circle, PAD.square, PAD.triangle]) press(button);
   assert.deepEqual(sample().actions, ['confirm']);
   assert.deepEqual(sample('menu', 1000).actions, []);
 });
 
 test('a held menu decision cannot activate the next screen or leak into gameplay', () => {
   for (const [button, gameplayAction] of [
-    [PAD.cross, 'jump'],
+    [PAD.triangle, 'jump'],
     [PAD.circle, 'confirm'],
     [PAD.square, 'attack'],
-    [PAD.triangle, 'ride'],
   ]) {
     const { input, sample, press } = setup('menu');
     press(button);
@@ -272,3 +274,85 @@ test('releasing the stick emits a stop, while idle polling preserves a newly sel
   commands.reset();
   assert.equal(commands.next({ dx: 0, dz: 0, running: true }), null);
 });
+
+test('map mode: the left stick becomes the pointer, the right stick the zoom, and the face buttons confirm or pin', () => {
+  const { pad, sample, press } = setup('map');
+  pad.axes = [0.5, 0, 0, -0.6];
+  let frame = sample();
+  const magnitude = (0.5 - STICK.deadzone) / (1 - STICK.deadzone);
+  assert.ok(Math.abs(frame.pointer.x - magnitude) < 1e-10 && frame.pointer.y === 0);
+  assert.ok(frame.zoom < 0, 'stick up zooms in');
+  assert.deepEqual(
+    frame.move,
+    { x: 0, y: 0, running: false },
+    'the player never moves from the atlas',
+  );
+  assert.equal(frame.navigation, null, 'the left stick is not a d-pad on the atlas');
+  pad.axes = [0, 0, 0, 0];
+  sample();
+  for (const [button, action] of [
+    [PAD.cross, 'cancel'],
+    [PAD.circle, 'confirm'],
+    [PAD.square, 'pin'],
+    [PAD.r3, 'center'],
+    [PAD.r1, 'zoomIn'],
+    [PAD.l1, 'zoomOut'],
+    [PAD.options, 'menu'],
+    [PAD.l2, 'menu'],
+    [PAD.share, 'map'],
+    [PAD.touchpad, 'map'],
+  ]) {
+    press(button);
+    assert.deepEqual(sample().actions, [action]);
+    assert.deepEqual(sample('map', 1000).actions, [], 'holding does not repeat');
+    press(button, false);
+    sample();
+  }
+  for (const button of [PAD.triangle, PAD.r2, PAD.l3]) {
+    press(button);
+    assert.deepEqual(sample().actions, [], 'unbound buttons do nothing on the atlas');
+    press(button, false);
+    sample();
+  }
+  press(PAD.up);
+  assert.equal(sample().navigation, 'up');
+  assert.equal(sample('map', 200).navigation, null);
+  assert.equal(sample('map', 180).navigation, 'up', 'd-pad nudges repeat like menus');
+});
+
+test('map mode leaves game and menu bindings untouched', () => {
+  const game = setup();
+  const frame = game.sample();
+  assert.equal(frame.pointer, undefined);
+  assert.equal(frame.zoom, undefined);
+  game.press(PAD.square);
+  assert.deepEqual(game.sample().actions, ['attack']);
+  game.press(PAD.square, false);
+  game.sample();
+  game.pad.axes = [0.6, 0, 0, 0];
+  assert.ok(game.sample().move.x > 0);
+  const menu = setup('menu');
+  menu.press(PAD.square);
+  assert.deepEqual(menu.sample().actions, ['confirm']);
+  assert.equal(menu.sample().pointer, undefined);
+  // Opening the atlas from a held button needs a neutral controller first.
+  const { input, sample, press } = setup();
+  press(PAD.circle);
+  assert.deepEqual(sample().actions, ['confirm']);
+  assert.deepEqual(sample('map').actions, []);
+  input.suspend();
+  press(PAD.circle, false);
+  sample('map');
+  press(PAD.circle);
+  assert.deepEqual(sample('map').actions, ['confirm']);
+});
+
+test('d-pad up eats carried food in game mode; the map stays on SHARE and the touchpad', () => {
+  const { sample, press } = setup('game');
+  press(PAD.up);
+  assert.deepEqual(sample().actions, ['heal']);
+  press(PAD.up, false);
+  press(PAD.share);
+  assert.deepEqual(sample().actions, ['map']);
+});
+

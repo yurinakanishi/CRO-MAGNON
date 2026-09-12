@@ -53,6 +53,21 @@ export function confirmedAction(before, after) {
   return null;
 }
 
+// Playback rate of a locomotion clip: the authored metres per second scaled to
+// the actual speed, but never fast-forwarded into a blur. Walk and Run are
+// separate clips; the run clip may play a little faster than the walk clip.
+export const LOCOMOTION_RATE = Object.freeze({
+  min: 0.6,
+  Walk_Loop: 1.35,
+  Run_Loop: 1.5,
+});
+export function locomotionTimeScale(name, speed, clipSpeed) {
+  if (!(clipSpeed > 0)) return 1;
+  const raw = speed / clipSpeed;
+  const max = LOCOMOTION_RATE[name] ?? 2;
+  return Math.min(max, Math.max(LOCOMOTION_RATE.min, raw));
+}
+
 export class CharacterAnimation {
   declare mixer: THREE.AnimationMixer<THREE.AnimationMixerEventMap>;
   declare actions: Map<string, THREE.AnimationAction>;
@@ -113,7 +128,7 @@ export class CharacterAnimation {
       next,
       fade,
       this.oneShot,
-      this.clipSpeeds[name] ? this.speed / this.clipSpeeds[name] : 1,
+      this.clipSpeeds[name] ? locomotionTimeScale(name, this.speed, this.clipSpeeds[name]) : 1,
     );
     next.time = phase;
   }
@@ -163,7 +178,9 @@ export class CharacterAnimation {
     if (this.moving && this.name !== locomotion && this.name !== 'Attack') this.change(locomotion);
     else if (!this.moving && !this.oneShot && this.name !== 'Idle_Loop') this.change('Idle_Loop');
     if (this.clipSpeeds[this.name])
-      this.current.setEffectiveTimeScale(this.speed / this.clipSpeeds[this.name]);
+      this.current.setEffectiveTimeScale(
+        locomotionTimeScale(this.name, this.speed, this.clipSpeeds[this.name]),
+      );
     this.blender.update(dt);
     this.mixer.update(dt);
     for (const [action, remaining] of this.retiring) {

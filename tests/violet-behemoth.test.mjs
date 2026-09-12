@@ -69,6 +69,34 @@ test('forward vision ignores rear intruders and checks walls', () => {
   const { e, p, room, tick } = fixture();
   p.z = e.z - 8;
   tick(2000);
+  assert.equal(e.targetId, null, 'standing still behind it is not heard');
+  p.moving = true;
+  tick(2010);
+  assert.equal(e.targetId, p.id, 'walking footsteps eight metres behind are heard');
+  e.targetId = null;
+  e.returning = false;
+  e.behavior = 'guard';
+  e.pendingAttack = null;
+  e.attackLockUntil = 0;
+  e.aggroAfter = 0;
+  e.facing = 0;
+  p.z = e.z - 15;
+  tick(2020);
+  assert.equal(e.targetId, null, 'walking fifteen metres behind is not heard');
+  p.running = true;
+  tick(2030);
+  assert.equal(e.targetId, p.id, 'running fifteen metres behind is heard');
+  e.targetId = null;
+  e.returning = false;
+  e.behavior = 'guard';
+  e.pendingAttack = null;
+  e.attackLockUntil = 0;
+  e.aggroAfter = 0;
+  e.facing = 0;
+  p.moving = false;
+  p.running = false;
+  p.z = e.z - 8;
+  tick(2040);
   assert.equal(e.targetId, null);
   p.z = e.z + 8;
   room.collision = new CollisionWorld(
@@ -80,21 +108,24 @@ test('forward vision ignores rear intruders and checks walls', () => {
   room.collision = new CollisionWorld([], { river: false });
   tick(2100);
   assert.equal(e.targetId, p.id);
-  assert.equal(e.clip, 'Alert');
+  assert.equal(e.clip, 'Roar');
+  assert.equal(e.behavior, 'roar');
   assert.equal(e.speed, 0);
 });
-test('telegraph precedes a fast fixed-heading charge, with one damage event', () => {
+test('a roar precedes a fast fixed-heading charge, with one damage event', () => {
   const { e, p, tick } = fixture();
   tick(2000);
   const z = e.z;
-  tick(2000 + R.alertMs - 1);
-  assert.equal(e.z, z);
+  tick(2000 + R.roarMs - 1);
+  assert.equal(e.z, z, 'the body stays put through the whole roar');
+  assert.equal(e.clip, 'Roar');
   assert.equal(p.energy, 100);
-  for (let t = 2000 + R.alertMs; t < 2000 + R.alertMs + R.chargeMs; t += 50) tick(t);
-  assert.ok(e.z > z + 6);
+  for (let t = 2000 + R.roarMs; t < 2000 + R.roarMs + R.chargeMs; t += 50) tick(t);
+  // The 5.25 m body meets the player after about six metres and stops there.
+  assert.ok(e.z > z + 4);
   assert.equal(p.energy, 100 - R.chargeDamage);
   assert.equal(p.hurtSequence, 1);
-  assert.ok(R.chargeSpeed < 5.4 && R.chargeSpeed > 5);
+  assert.ok(R.chargeSpeed < 6.4 && R.chargeSpeed > 5.6, 'only the ape outruns the charge');
 });
 test('great ape sprint can leave territory and monster walks back without further damage', () => {
   const { e, p, room, tick } = fixture();
@@ -129,12 +160,15 @@ test('bite has a delayed frontal contact and does not hit a player behind it', (
     e.nextAttackAt = 0;
     p.z = e.z + e.radius + p.radius + 0.1;
     tick(2000);
+    assert.equal(e.clip, 'Gape', 'the open mouth announces the bite');
+    assert.equal(e.behavior, 'gape');
+    tick(2000 + R.gapeMs);
     assert.equal(e.clip, 'Attack');
-    tick(2499);
+    tick(2000 + R.gapeMs + R.biteImpactMs - 1);
     assert.equal(p.energy, 100);
     if (rear) p.z = e.z - e.radius - p.radius - 0.1;
-    tick(2500);
-    tick(2550);
+    tick(2000 + R.gapeMs + R.biteImpactMs);
+    tick(2000 + R.gapeMs + R.biteImpactMs + 50);
     assert.equal(p.energy, rear ? 100 : 100 - R.biteDamage);
   }
 });
@@ -154,8 +188,13 @@ test('tail makes a full sweep with at most one hit per player', () => {
   }
   p.z = e.z + R.tailReach + 0.65;
   tick(2000);
+  assert.equal(e.clip, 'Tremble', 'the shudder announces the tail spin');
+  tick(2000 + R.trembleMs - 1);
+  assert.equal(e.clip, 'Tremble');
+  for (const peer of room.players.values()) assert.equal(peer.energy, 100);
+  tick(2000 + R.trembleMs);
   assert.equal(e.clip, 'TailSpin');
-  for (let t = 2050; t <= 3500; t += 50) tick(t);
+  for (let t = 2050 + R.trembleMs; t <= 2000 + R.trembleMs + R.spinMs + 100; t += 50) tick(t);
   for (const peer of room.players.values()) {
     assert.equal(peer.energy, 100 - R.tailDamage);
     assert.equal(peer.hurtSequence, 1);
@@ -171,11 +210,11 @@ test('tail rechecks walls and protected players during the sweep', () => {
     [{ id: 'wall', type: 'box', x: e.x, z: e.z + 1.5, hx: 4, hz: 0.1, c: 1, s: 0, height: 4 }],
     { river: false },
   );
-  for (let t = 2050; t <= 3500; t += 50) tick(t);
+  for (let t = 2050; t <= 2000 + R.trembleMs + R.spinMs + 100; t += 50) tick(t);
   assert.equal(p.energy, 100);
   room.collision = new CollisionWorld([], { river: false });
   p.invulnerableUntil = 10000;
-  tick(4000);
+  tick(5000);
   assert.equal(e.targetId, null);
   assert.equal(p.energy, 100);
 });
@@ -222,8 +261,65 @@ test('extra clips are required only for behemoth and charge seeks after the tele
     /TailSpin/,
   );
   const state = { modelKey: R.modelKey, phase: 'alive', attackAt: 2000, clip: 'Charge' };
-  assert.deepEqual(enemyAnimationState(state, 3000), {
+  assert.deepEqual(enemyAnimationState(state, 3500), {
     clip: 'Charge',
-    elapsed: (1000 - R.alertMs) / 1000,
+    elapsed: (1500 - R.roarMs) / 1000,
   });
+  // Each telegraph clip starts at the attack; its strike clip starts when it ends.
+  for (const [clip, offset] of [
+    ['Roar', 0],
+    ['Gape', 0],
+    ['Tremble', 0],
+    ['Attack', R.gapeMs],
+    ['TailSpin', R.trembleMs],
+  ])
+    assert.deepEqual(enemyAnimationState({ ...state, clip }, 2000 + offset + 250), {
+      clip,
+      elapsed: 0.25,
+    });
+});
+
+test('the body is rendered at 2.5x and its radius and tail reach follow', () => {
+  assert.equal(R.scale, 2.5);
+  assert.ok(Math.abs(R.radius - 2.1 * 2.5) < 1e-9);
+  assert.ok(Math.abs(R.tailReach - 4.35 * 2.5) < 1e-9);
+  const { e } = fixture();
+  assert.equal(e.scale, 2.5);
+  assert.equal(e.radius, R.radius);
+});
+
+test('a blow from behind turns the behemoth on its attacker', () => {
+  const { e, p, room, tick } = fixture();
+  Object.assign(p, {
+    z: e.z - e.radius - 0.9,
+    facing: 0,
+    attackSequence: 0,
+    attackAt: 0,
+    inventory: { wood: 7 },
+  });
+  tick(2000);
+  assert.equal(e.targetId, null, 'a still player right behind is neither seen nor heard');
+  startAttack(room, p, { targetId: e.id }, 2000);
+  assert.equal(resolveAttack(room, p, 2400).hit, true);
+  tick(2400, 0);
+  assert.equal(e.clip, 'Hit');
+  tick(2400 + R.hitDurationMs + 10, 0);
+  assert.equal(e.targetId, p.id);
+  assert.equal(e.provokedBy, null);
+});
+
+test('exhibition rules respawn the behemoth ten seconds after death', async () => {
+  const { EXHIBITION_RULES } = await import('../dist/shared/room-rules.mjs');
+  const { e, room, tick } = fixture();
+  room.rules = EXHIBITION_RULES;
+  e.health = 0;
+  e.phase = 'dead';
+  e.phaseStartedAt = 2000;
+  tick(2000 + R.deathMs);
+  assert.equal(e.phase, 'respawning');
+  tick(2000 + R.deathMs + 9990);
+  assert.equal(e.phase, 'respawning');
+  tick(2000 + R.deathMs + 10010);
+  assert.equal(e.phase, 'alive');
+  assert.equal(e.health, R.maxHealth);
 });

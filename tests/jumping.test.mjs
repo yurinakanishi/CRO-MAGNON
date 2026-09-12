@@ -252,7 +252,8 @@ test('reconnect and export/import restore on the ground without mutating live ju
   assert.equal(f.player.jumpSequence, 0);
 });
 
-test('cross jumps once per press and requires release across menu and focus changes', () => {
+// 2026-09-12: jump moved to the top face button (triangle); the bottom one rides / backs out.
+test('triangle jumps once per press and requires release across menu and focus changes', () => {
   const input = new GamepadInput(),
     pad = {
       id: 'standard',
@@ -264,7 +265,7 @@ test('cross jumps once per press and requires release across menu and focus chan
     };
   const sample = (mode = 'game') => input.sample([pad], mode, 0).actions;
   const press = (value) => {
-    pad.buttons[PAD.cross] = { pressed: value, value: value ? 1 : 0 };
+    pad.buttons[PAD.triangle] = { pressed: value, value: value ? 1 : 0 };
   };
   sample();
   press(true);

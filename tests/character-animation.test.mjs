@@ -43,7 +43,8 @@ test('movement cancels a stationary action, matches clip speed, and stops cleanl
   animation.play('Craft');
   animation.update(.2, 8, true);
   assert.equal(animation.name, 'Run_Loop');
-  assert.ok(Math.abs(animation.current.time - .4) < 1e-6);
+  // 8 m/s would be 2x the clip; the run clip is capped at 1.5x (no fast-forward blur).
+  assert.ok(Math.abs(animation.current.time - .3) < 1e-6);
   assert.equal(animation.play('Gather'), false);
   animation.update(.2, false);
   assert.equal(animation.name, 'Idle_Loop');
@@ -83,3 +84,13 @@ test('harvesting, cooking start, and eating meat animate only confirmed changes'
   assert.equal(confirmedAction(before,{...before,energy:85,inventory:{...before.inventory,cookedMeat:0}}),'Eat');
   assert.equal(confirmedAction(before,{...before,inventory:{...before.inventory,cookedMeat:2}}),null);
 });
+
+test('walking and running use their own clips and never fast-forward past the rate cap', async () => {
+  const { locomotionTimeScale, LOCOMOTION_RATE } = await import('../dist/src/character-animation.js');
+  assert.equal(locomotionTimeScale('Walk_Loop', 0.86, 0.86), 1);
+  assert.equal(locomotionTimeScale('Walk_Loop', 2.0, 0.86), LOCOMOTION_RATE.Walk_Loop);
+  assert.equal(locomotionTimeScale('Run_Loop', 5.6, 2.58), LOCOMOTION_RATE.Run_Loop);
+  assert.equal(locomotionTimeScale('Run_Loop', 0.3, 2.58), LOCOMOTION_RATE.min);
+  assert.ok(LOCOMOTION_RATE.Walk_Loop < 1.5 && LOCOMOTION_RATE.Run_Loop <= 1.6);
+});
+

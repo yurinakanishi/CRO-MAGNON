@@ -252,7 +252,8 @@ test('local prediction moves before another packet, bounds loss, reconciles and 
   const next = prediction.step(0.016, 1016, 1016, free, []);
   assert.ok(next.x > p.x && next.z > p.z);
   assert.equal(p.x, 40, 'wire state is immutable');
-  assert.ok(Math.hypot(next.x - 40, next.z - 50) < 0.06, 'diagonal normalization');
+  // One 16 ms run step (5.6 m/s) is 0.09 m; an unnormalized diagonal would be 0.127 m.
+  assert.ok(Math.hypot(next.x - 40, next.z - 50) < 0.1, 'diagonal normalization');
   const x = next.x;
   prediction.step(0.016, 1300, 1300, free, []);
   assert.equal(next.x, x);

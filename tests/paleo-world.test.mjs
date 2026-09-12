@@ -60,3 +60,25 @@ test('ocean, island and polar cameras retain a bounded rectangular working set',
     const chunks=nearbyChunks(point.x,point.z,128);assert.ok(chunks.length<=70);assert.ok(chunks.every(c=>c.ix<WORLD.width/WORLD.chunkSize&&c.iz<WORLD.depth/WORLD.chunkSize));
   }
 });
+test('the vector coastline traces the zero of the distance field inside the atlas, in a bounded time',async()=>{
+  const {coastlineContours}=await import('../dist/shared/paleo-geography.mjs');
+  const {GULF}=await import('../dist/shared/gulf-region.mjs');
+  const minX=Math.min(EARTH.minX,GULF.minX),maxX=Math.max(EARTH.maxX,GULF.maxX),minZ=Math.min(EARTH.minZ,GULF.minZ),maxZ=Math.max(EARTH.maxZ,GULF.maxZ);
+  const t=performance.now(),contours=coastlineContours();assert.ok(performance.now()-t<1500);
+  assert.ok(contours.length>50,`only ${contours.length} coastlines`);
+  let points=0;
+  for(const line of contours){
+    assert.ok(line.length>=2);
+    for(const p of line){
+      points++;
+      assert.ok(p.x>=minX-2&&p.x<=maxX+2&&p.z>=minZ-2&&p.z<=maxZ+2,`${p.x}, ${p.z} outside the atlas`);
+      assert.ok(Math.abs(coastDistance(p.x,p.z))<2,`${p.x}, ${p.z} is ${coastDistance(p.x,p.z)} m from the shore`);
+    }
+  }
+  assert.ok(points>5000,`only ${points} shoreline points`);
+  assert.equal(coastlineContours(),contours,'cached per step');
+  // The playable camp coast and the authored gulf both have a traced shoreline nearby.
+  const near=(x,z,r)=>contours.some(line=>line.some(p=>Math.hypot(p.x-x,p.z-z)<r));
+  assert.ok(near(-2000,850,400),'gulf shoreline');
+  assert.ok(near(geoToWorld(-5,36).x,geoToWorld(-5,36).z,120),'Gibraltar shoreline');
+});

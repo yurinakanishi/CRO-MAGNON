@@ -13,6 +13,8 @@ const obstacles = (room, enemy) =>
   ]
     .filter((a) => a !== enemy && !a.carrierId)
     .map(circle);
+import { heard, provoker, sameFloor } from './perception.mjs';
+import { respawnDelay } from './room-rules.mjs';
 const angleTo = (a, b) => Math.atan2(b.x - a.x, b.z - a.z);
 const angleDifference = (a, b) => Math.atan2(Math.sin(a - b), Math.cos(a - b));
 const clear = (room, a, b) =>
@@ -30,11 +32,12 @@ const eligible = (room, e, p, now) =>
 const clawRange = (e, p) => e.radius + p.radius + R.clawReach;
 const DURATION = {
   alert: R.alertMs,
-  pounce: R.pounceCrouchMs + R.pounceLeapMs + R.pounceLandMs,
-  claw: R.clawMs,
+  pounce: R.pounceWindupMs + R.pounceCrouchMs + R.pounceLeapMs + R.pounceLandMs,
+  claw: R.snarlMs + R.clawMs,
   step: R.stepMs,
 };
-const CLIP = { alert: 'Alert', pounce: 'Pounce', claw: 'Attack', step: 'Step' };
+// A strike opens with its telegraph clip; the strike clip follows.
+const CLIP = { alert: 'Alert', pounce: 'Crouch', claw: 'Snarl', step: 'Step' };
 
 export function createSabertooth(collision, dynamic = [], now = Date.now()) {
   const position = collision.nearestFree(SABERTOOTH_GROUND, R.radius, dynamic.map(circle), 4);
@@ -112,7 +115,7 @@ function begin(e, kind, now, extra = {}) {
   e.attackLockUntil = now + DURATION[kind];
   e.pendingAttack = { kind, facing: e.facing, hitIds: [], lastMoveAt: now, ...extra };
   e.clip = CLIP[kind];
-  e.behavior = kind === 'pounce' ? 'crouch' : kind;
+  e.behavior = kind === 'pounce' ? 'crouch' : kind === 'claw' ? 'snarl' : kind;
   if (kind === 'step') e.evading = true;
 }
 function finish(e, now, recovery) {
@@ -267,7 +270,7 @@ export function updateSabertooths(room, dt, now, damage) {
     }
     if (e.phase === 'respawning') {
       if (
-        now - e.phaseStartedAt < R.respawnMs ||
+        now - e.phaseStartedAt < respawnDelay(room, R.respawnMs) ||
         !room.collision.free(e.home, e.radius, obstacles(room, e))
       )
         continue;
@@ -310,23 +313,25 @@ export function updateSabertooths(room, dt, now, damage) {
       e.behavior = 'hit';
       continue;
     }
-    if (!target && now >= e.aggroAfter) {
+    // A blow from anywhere gives the attacker away, even during the calm after a return.
+    if (!target)
+      target = provoker(room, e, (p) => eligible(room, e, p, now) && sameFloor(room, e, p));
+    if (!target && now >= e.aggroAfter)
       target = [...room.players.values()]
         .filter(
           (p) =>
             eligible(room, e, p, now) &&
-            clear(room, e, p) &&
-            (distance(e, p) <= R.hearingRange ||
+            ((sameFloor(room, e, p) && heard(e, p, R.hearing)) ||
               (distance(e, p) <= R.visionRange &&
-                Math.abs(angleDifference(angleTo(e, p), e.facing)) <= R.visionHalfAngle)),
+                Math.abs(angleDifference(angleTo(e, p), e.facing)) <= R.visionHalfAngle &&
+                clear(room, e, p))),
         )
         .sort((a, b) => distance(e, a) - distance(e, b))[0];
-      if (target) {
-        e.targetId = target.id;
-        e.facing = angleTo(e, target);
-        begin(e, 'alert', now);
-        changed = true;
-      }
+    if (target && e.targetId !== target.id) {
+      e.targetId = target.id;
+      e.facing = angleTo(e, target);
+      begin(e, 'alert', now);
+      changed = true;
     }
     if (!target) {
       e.behavior = 'guard';
@@ -381,10 +386,18 @@ export function updateSabertooths(room, dt, now, damage) {
           e.nextPounceAt = Math.min(e.nextPounceAt, now);
         }
       } else if (strike.kind === 'claw') {
+        if (elapsed < R.snarlMs) {
+          // Rocked back, head shaking, a forepaw raised: the swipes are coming.
+          e.clip = 'Snarl';
+          e.behavior = 'snarl';
+          e.facing = strike.facing = angleTo(e, target);
+          continue;
+        }
         e.clip = 'Attack';
         e.behavior = 'claw';
         strike.swings ??= R.clawImpactsMs.map(() => []);
-        R.clawImpactsMs.forEach((at, i) => {
+        R.clawImpactsMs.forEach((offset, i) => {
+          const at = R.snarlMs + offset;
           if (elapsed < at - 120 && i === (strike.resolved ?? 0))
             e.facing = strike.facing = angleTo(e, target);
           if (elapsed < at || (strike.resolved ?? 0) > i) return;
@@ -396,7 +409,7 @@ export function updateSabertooths(room, dt, now, damage) {
             )
               hit(p, R.clawDamage, i ? '爪の返し' : '爪', strike.swings[i]);
         });
-        if (elapsed >= R.clawMs) {
+        if (elapsed >= R.snarlMs + R.clawMs) {
           finish(e, now, R.clawRecoveryMs);
           // Hit and away: every other combo ends in a back-step.
           if (++e.clawCount % 2 === 0 && now >= e.nextStepAt) {
@@ -406,15 +419,17 @@ export function updateSabertooths(room, dt, now, damage) {
         }
       } else {
         // Pounce.
-        const crouchEnd = e.attackAt + R.pounceCrouchMs,
+        const crouchEnd = e.attackAt + R.pounceWindupMs + R.pounceCrouchMs,
           leapEnd = crouchEnd + R.pounceLeapMs;
         if (now < crouchEnd) {
-          e.clip = 'Pounce';
+          // The Crouch clip sinks the body and gathers the hindquarters, then
+          // the Pounce clip's final dip; the aim tracks the target until take-off.
+          e.clip = elapsed < R.pounceWindupMs ? 'Crouch' : 'Pounce';
           e.behavior = 'crouch';
           Object.assign(strike, pounceGoal(e, target));
           e.facing = strike.facing;
           strike.lastMoveAt = crouchEnd;
-        } else if (elapsed < R.pounceCrouchMs + R.pounceLeapMs + 100) {
+        } else if (elapsed < R.pounceWindupMs + R.pounceCrouchMs + R.pounceLeapMs + 100) {
           e.clip = 'Pounce';
           e.behavior = 'pounce';
           e.superArmor = now < leapEnd;

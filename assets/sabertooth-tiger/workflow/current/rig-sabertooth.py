@@ -208,17 +208,42 @@ def alert(t):
     pose = {'Hips': {'loc': (0, 0, -.06*k)}, 'Chest': {'pitch': -4*k}, 'Neck': {'pitch': -14*r}, 'Head': {'pitch': -12*r},
             'Tail1': {'yaw': 22*math.sin(t*24)*k}, 'Tail2': {'yaw': 28*math.sin(t*24-.8)*k}}
     return pose, PLANT()
-CROUCH, LEAP, LAND = .45, .6, .5
+# Revision 12 (2026-09-12): the pounce is announced by a separate Crouch clip
+# (0.8 s, body sunk, hindquarters gathering, tail lashing) and the claw combo by
+# a Snarl clip (0.7 s, rocked back, head shaking, one forepaw raised and
+# scraping). Both end in the pose their strike clip starts from. The Pounce clip
+# itself keeps only a 0.2 s final dip at full crouch depth before the leap.
+@clip('Crouch', .8)
+def crouch(t):
+    # Revision 13: deeper and busier than 12 so the telegraph reads from every angle.
+    k = smooth(t/.3); w = 2*math.pi*t
+    pose = {'Hips': {'loc': (0, .04*k, -.3*k), 'yaw': 7*math.sin(w*3.5)*k, 'roll': 3*math.sin(w*3.5+.8)*k}, 'Spine': {'pitch': 7*k}, 'Chest': {'pitch': 11*k},
+            'Neck': {'pitch': -17*k}, 'Head': {'pitch': -8*k, 'yaw': 5*math.sin(w*2)*k},
+            'Shoulder.L': {'pitch': -8*k}, 'Shoulder.R': {'pitch': -8*k},
+            'UpperLeg.L': {'pitch': 30*k}, 'UpperLeg.R': {'pitch': 30*k},
+            'Tail1': {'pitch': -18*k, 'yaw': 30*math.sin(w*2.8)*k}, 'Tail2': {'pitch': -8*k, 'yaw': 36*math.sin(w*2.8-.7)*k}}
+    return pose, PLANT()
+@clip('Snarl', .7)
+def snarl(t):
+    r = smooth(t/.22)*(1-smooth((t-.5)/.2)); w = 2*math.pi*t
+    pose = {'Hips': {'loc': (0, .05*r, .02*r)}, 'Chest': {'pitch': -10*r}, 'Neck': {'pitch': -9*r},
+            'Head': {'yaw': 9*math.sin(w*4.6)*r, 'pitch': -6*r},
+            'Tail1': {'pitch': -16*r, 'yaw': 8*math.sin(w*3)*r}, 'Tail2': {'pitch': -10*r},
+            'UpperArm.R': {'pitch': -42*r, 'yaw': -6*r}, 'LowerArm.R': {'pitch': 26*r}, 'Hand.R': {'pitch': -14*r}}
+    legs = PLANT(); legs['FR'] = (neutral['FR'], 1-min(1, r*1.15))
+    return pose, legs
+CROUCH, LEAP, LAND = .2, .6, .5
 @clip('Pounce', CROUCH+LEAP+LAND)
 def pounce(t):
     pose = {}; legs = PLANT()
     if t < CROUCH:
-        k = smooth(t/.3)
-        pose = {'Hips': {'loc': (0, 0, -.2*k), 'yaw': 5*math.sin(t*28)*k}, 'Spine': {'pitch': 4*k}, 'Chest': {'pitch': 6*k},
+        # Already at the Crouch clip's depth: the final dip before take-off.
+        k = 1.0
+        pose = {'Hips': {'loc': (0, .04*k, -.3*k), 'yaw': 5*math.sin(t*28)*k}, 'Spine': {'pitch': 4*k}, 'Chest': {'pitch': 6*k},
                 'Neck': {'pitch': -10*k}, 'Head': {'pitch': -6*k}, 'Tail1': {'pitch': -6, 'yaw': 12*math.sin(t*20)}, 'Tail2': {'yaw': 18*math.sin(t*20-.6)}}
     elif t < CROUCH+LEAP:
         u = (t-CROUCH)/LEAP
-        height = 1.0*4*u*(1-u) - .2*(1-smooth(u/.25))
+        height = 1.0*4*u*(1-u) - .3*(1-smooth(u/.25))
         tilt = -16+34*smooth(u)  # nose up at take-off, nose down to land
         reach = bell(u*1.1)
         pose = {'Hips': {'loc': (0, 0, height), 'pitch': tilt}, 'Spine': {'pitch': -8*reach}, 'Neck': {'pitch': -6}, 'Head': {'pitch': -10},

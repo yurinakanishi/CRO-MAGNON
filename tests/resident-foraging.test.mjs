@@ -334,7 +334,7 @@ test('eight players and a resident conserve contested resource stock and the las
       resource = f.r.resources.find((s) => n.routineKey.endsWith(':' + s.id));
     resource.amount = 3;
     for (let i = 1; i <= 39; i++) updateForaging(f.r, 0.1, born + i * 100);
-    for (const p of f.r.players.values()) Object.assign(p, { x: resource.x, z: resource.z + 6 });
+    for (const p of f.r.players.values()) Object.assign(p, { x: resource.x, z: resource.z + 3 });
     f.setNow(born + 4000);
     for (const s of f.sockets)
       s.command({

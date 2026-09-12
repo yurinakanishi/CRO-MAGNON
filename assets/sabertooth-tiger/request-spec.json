@@ -12,12 +12,15 @@
     "Walk_Loop",
     "Run_Loop",
     "Alert",
+    "Crouch",
     "Pounce",
     "Step",
+    "Snarl",
     "Attack",
     "Hit",
     "Death"
   ],
   "selection": "User asked for a strong, fast sabertooth enemy that side-steps and pounces. Codex (gpt-5.6-sol, medium) built-in image_gen produced three references on 2026-09-11; user selected candidate 01 (tawny, faint stripes).",
-  "bodyDraftLengthMetres": 2.6
+  "bodyDraftLengthMetres": 2.6,
+  "telegraphRevision": "Revision 12 (2026-09-12): user found the cat too strong and its strikes sudden; Crouch (before the pounce) and Snarl (before the claw combo) were added and the tuning was weakened."
 }

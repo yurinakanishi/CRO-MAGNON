@@ -3,11 +3,11 @@
   "name": "紫尾の巨獣",
   "kind": "enemy",
   "candidate": 1,
-  "revision": "04",
+  "revision": "08",
   "status": "integrated-and-game-qa-passed",
-  "url": "/models/violet-behemoth/model-r04.glb",
-  "sha256": "f45bf9fd25da5c623e5572091fbd4f1c8d783fe8bf743abd590937ccef0c6c49",
-  "bytes": 14805624,
+  "url": "/models/violet-behemoth/model-r08.glb",
+  "sha256": "e7405c28bdacd186e00c66a077de0504918f3737e8a1729fb2996339380d976f",
+  "bytes": 14909088,
   "triangles": 67223,
   "upAxis": "Y",
   "forwardAxis": "+Z",
@@ -41,15 +41,33 @@
       "rootMotion": "in-place"
     },
     {
+      "name": "Roar",
+      "loop": false,
+      "seconds": 1.2,
+      "rootMotion": "in-place"
+    },
+    {
       "name": "Charge",
       "loop": false,
       "seconds": 2.4,
       "rootMotion": "in-place"
     },
     {
+      "name": "Gape",
+      "loop": false,
+      "seconds": 0.6,
+      "rootMotion": "in-place"
+    },
+    {
       "name": "Attack",
       "loop": false,
       "seconds": 1,
+      "rootMotion": "in-place"
+    },
+    {
+      "name": "Tremble",
+      "loop": false,
+      "seconds": 0.9,
       "rootMotion": "in-place"
     },
     {
@@ -96,9 +114,16 @@
       2.0000002239146806
     ]
   },
-  "source": "output/model-generation/models/violet-behemoth/work/rig/revision-04/candidate.glb",
+  "source": "output/model-generation/models/violet-behemoth/work/rig/revision-08/candidate.glb",
   "notes": [
     "User-supplied reference, vestigial hind legs, forearm/tail propulsion. Local TRELLIS-2 reconstruction; no visible replacement geometry.",
-    "Total length 6 m: retained body, extended tail. Revision 04 makes the tail a damped chain that undulates in Walk/Run/Charge and coils, lags and cracks through TailSpin; surface, material and the other five clips match revision 03."
-  ]
+    "Total length 6 m: retained body, extended tail. Revision 04 makes the tail a damped chain that undulates in Walk/Run/Charge and coils, lags and cracks through TailSpin; surface, material and the other five clips match revision 03.",
+    "Revision 08 (2026-09-12): rendered at scale 2.5 (twice the previous size) and every strike is announced by its own clip: Roar (1.2 s) before Charge, Gape (0.6 s) before Attack, Tremble (0.9 s) before TailSpin. Surface, material, weights and the nine earlier clips match revision 04."
+  ],
+  "provenance": {
+    "provider": "User-supplied reference and local TRELLIS-2 (Codex); revision 05-07 telegraph clips by Claude Code",
+    "claudeUsed": true,
+    "referenceImage": "output/model-generation/models/violet-behemoth/source/original/user-reference.png",
+    "visualReview": "assets/violet-behemoth/visual-review-r08.json"
+  }
 }

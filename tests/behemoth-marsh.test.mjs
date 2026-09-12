@@ -71,9 +71,9 @@ test('marsh grass stays as tufts between the pools; trees and rocks stay out', (
   assert.equal(tufts.filter((g) => inBehemothPool(g.x, g.z, 0.6)).length, 0);
   let generated = 0;
   for (const [x, z] of [
-    [112, 118],
-    [100, 120],
-    [118, 100],
+    [BEHEMOTH_GROUND.x + 17, BEHEMOTH_GROUND.z + 8],
+    [BEHEMOTH_GROUND.x + 5, BEHEMOTH_GROUND.z + 10],
+    [BEHEMOTH_GROUND.x + 23, BEHEMOTH_GROUND.z - 10],
   ]) {
     const grass = grassForChunk(
       Math.floor((x - WORLD.minX) / 32),

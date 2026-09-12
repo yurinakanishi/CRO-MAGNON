@@ -36,3 +36,16 @@ node scripts/install-castle-surface.mjs 08
 ```
 
 候補の生成は既存ファイルを上書きせず、同じ番号が存在する場合は停止する。
+
+## 2026-09-11 側面階段（2 階→3 階）で途中で詰まる
+
+再現：衝突判定のみのシミュレーションで、2 階テラス（12.6 m）の側面階段の足元からスティックを一方向に倒し続けると、人間は右側 `(14.6, 5.5)` 高さ 15.9 m、大猿は `(19, 7.0)` 13.2 m で停止した。経路探索どおりなら全キャラ通れる。
+
+原因と修正（詳細は `PLAYTEST_FEEDBACK_PLAN.md` 第 2・11 節）：
+1. 踏面の中の 1 セル穴（null）。`scripts/build-castle-walk-atlas.mjs` の後処理で 4 近傍の 3 つ以上が床（高さ差 1.2 m 以内、1 m 以上）の null を近傍平均で埋める。rev09：141 セル、`holeFills` に記録、GLB と `sourceSha256` は不変。到達 25,957 → 26,098 セル。
+2. 45° の斜め階段に対する軸方向スライド。`shared/collision.mts move()` はゼロ移動候補を除外し、両方却下なら入力を ±22.5°〜±90° 回転した候補（1 歩先も通れるもの）を採用。
+3. 手すりの縁で 8 点リング検査が紙一重で落ちる。`shared/measured-walk-surface.mts` に `deviation()`/`allows()`（到達済みの縁では 0.25 m まで悪化しない移動を許す）、高さ補間を壁の隣でも連続に、リング半径の上限 0.5 m、段差許容 `0.75 + 0.6×距離`。
+
+回帰：`tests/castle-stairs.test.mjs`「every character climbs both side stairs…」（7 キャラ × 両側 × 3 始点 × 2 方向 × 歩き/走り）。再生成は
+`node scripts/build-castle-walk-atlas.mjs output/model-generation/models/valley-castle/qa/surface-rev08.json output/model-generation/models/valley-castle/qa/walk-rev09.json 19.9` → `node scripts/install-castle-surface.mjs 09`。
+

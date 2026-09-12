@@ -45,7 +45,9 @@ export function snapshot(
     room: room.name,
     serverTime: now,
     maritime: maritimeWeather(now, room.createdAt ?? now),
-    projectiles: (room.projectiles || []).map(
+    // Player light orbs and the sorcerer's red hex bolts share one list; `kind`
+    // tells the renderer which colour to draw.
+    projectiles: [...(room.projectiles || []), ...(room.hexBolts || [])].map(
       ({ id, ownerId, x, z, dx, dz, speed, createdAt, updatedAt, travelled, kind, elevation }) => ({
         id,
         ownerId,
@@ -62,6 +64,19 @@ export function snapshot(
       }),
     ),
     projectileImpacts: (room.projectileImpacts || []).map((effect) => ({ ...effect })),
+    hexBursts: (room.hexBursts || []).map(
+      ({ id, ownerId, x, z, elevation, radius, startedAt, at, detonatedAt }) => ({
+        id,
+        ownerId,
+        x,
+        z,
+        elevation,
+        radius,
+        startedAt,
+        at,
+        detonatedAt: detonatedAt ?? null,
+      }),
+    ),
     animals: room.animals.map(
       ({
         id,
@@ -95,6 +110,8 @@ export function snapshot(
         phaseStartedAt,
         hitUntil,
         riderId,
+        // Exhibition rooms shorten every respawn; the map counts down with it.
+        ...(room.rules?.respawnMs != null ? { respawnMs: room.rules.respawnMs } : {}),
       }),
     ),
     enemies: (room.enemies || []).map(
@@ -120,6 +137,7 @@ export function snapshot(
         attackAt,
         hitSequence,
         hitAt,
+        elevation,
       }) => ({
         id,
         modelKey,
@@ -131,6 +149,7 @@ export function snapshot(
         facing,
         speed,
         radius,
+        elevation: elevation ?? 0,
         clip,
         phase,
         health,
@@ -142,6 +161,7 @@ export function snapshot(
         attackAt,
         hitSequence,
         hitAt,
+        ...(room.rules?.respawnMs != null ? { respawnMs: room.rules.respawnMs } : {}),
       }),
     ),
     players: [...room.players.values()].map(

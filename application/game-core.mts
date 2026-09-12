@@ -1,4 +1,5 @@
 import { updateFishing, cancelFishing } from '../shared/fishing.mjs';
+import { DEFAULT_RULES, EXHIBITION_RULES } from '../shared/room-rules.mjs';
 import { createHouseholds, householdSnapshots } from '../shared/household-life.mjs';
 import {
   createResidents,
@@ -67,6 +68,7 @@ export function createGameCore({
   persistentSessions = false,
   playerLimit = WORLD.maxPlayers,
   runtime = defaultRuntime,
+  exhibition = false,
 }: {
   resumeGraceMs?: number;
   keepEmptyRooms?: boolean;
@@ -74,6 +76,7 @@ export function createGameCore({
   persistentSessions?: boolean;
   playerLimit?: number;
   runtime?: Runtime;
+  exhibition?: boolean;
 } = {}) {
   if (!Number.isInteger(playerLimit) || playerLimit < 1 || playerLimit > 64)
     throw new Error('playerLimit must be an integer from 1 to 64');
@@ -127,6 +130,7 @@ export function createGameCore({
       room = {
         name: roomName,
         playerLimit,
+        rules: exhibition ? EXHIBITION_RULES : DEFAULT_RULES,
         createdAt: runtime.now(),
         players: new Map(),
         sessions: new Map(),

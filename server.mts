@@ -25,7 +25,8 @@ export function createGameServer({
   host = process.env.HOST || '0.0.0.0',
   tickMs = 50,
   resumeGraceMs = 120000,
-  core = createGameCore({ resumeGraceMs }),
+  exhibition = process.env.EXHIBITION_RULES === '1',
+  core = createGameCore({ resumeGraceMs, exhibition }),
   serveAssets = true,
   expectedBuild = '',
   allowedOrigins = [] as string[],
@@ -66,6 +67,7 @@ export function createGameServer({
               ? {
                   ok: true,
                   ...(expectedBuild ? { mode: 'lan', buildId: expectedBuild } : {}),
+                  ...(exhibition ? { exhibition: true } : {}),
                   ridingVersion: RIDING.version,
                   combatVersion: 3,
                   characterVersion: 2,
@@ -175,7 +177,13 @@ export function createGameServer({
         } finally {
           for (const client of wss.clients) client.terminate();
           await new Promise((resolve) => wss.close(resolve));
-          if (server.listening) await new Promise((resolve) => server.close(resolve));
+          if (server.listening) {
+            const closed = new Promise((resolve) => server.close(resolve));
+            // The world is already saved; an in-flight download (a large GLB) or a keep-alive
+            // socket must not hold the port open until the dev watcher's 10 s kill deadline.
+            server.closeAllConnections();
+            await closed;
+          }
           core.close();
         }
       })());

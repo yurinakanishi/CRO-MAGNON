@@ -103,7 +103,7 @@ async function play(name, species) {
   await page.locator('#title-start').click();
   await page.locator('#setup-form input[name="name"]').fill(name);
   await page.locator('#setup-submit').click();
-  await page.locator('#guide-start').click();
+  await page.waitForSelector('body.in-game', { timeout: 60000 });
   await page
     .locator('#world[data-world-asset="ready"][data-character-asset="ready"]')
     .waitFor({ timeout: 120000 });
@@ -178,7 +178,7 @@ try {
   await sample(a, 'rear');
   for (const mode of ['charge', 'bite', 'tail']) {
     await request('prepare', { mode });
-    // The 0.7 s telegraph is sampled before framing the shot, which takes longer than that.
+    // The telegraph (Roar 1.2 s, Gape 0.6 s, Tremble 0.9 s) is sampled before framing the shot.
     await sleep(120);
     await sample(a, mode);
     await sleep(130);
@@ -197,7 +197,8 @@ try {
     assert.ok(state.players.find((p) => p.name === 'Monster A').energy < 100, mode + ' damage');
     checks.push(mode + ' damage observed in actual server time');
   }
-  for (const clip of ['Alert', 'Charge', 'Attack', 'TailSpin']) {
+  // 2026-09-12: every strike opens with its telegraph clip.
+  for (const clip of ['Roar', 'Charge', 'Gape', 'Attack', 'Tremble', 'TailSpin']) {
     assert.ok(
       samples.some((s) => s.enemy?.clip === clip && s.enemy.visible),
       clip + ' rendered',
@@ -207,7 +208,7 @@ try {
   // checked on the authoritative state the pages rendered from.
   assert.ok(
     samples.some(
-      (s) => s.stage === 'charge' && ['alert', 'charge'].includes(s.enemy?.state.behavior),
+      (s) => s.stage === 'charge' && ['roar', 'charge'].includes(s.enemy?.state.behavior),
     ),
     'charge telegraph observed',
   );

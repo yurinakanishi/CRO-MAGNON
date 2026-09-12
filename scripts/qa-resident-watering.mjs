@@ -140,7 +140,7 @@ async function addPage(name, species, pad = false) {
   await page.goto(base + '/?room=WATER-QA', { waitUntil: 'domcontentloaded' });
   await page.locator('#title-start').click();
   await page.locator('#setup-submit').click();
-  await page.locator('#guide-start').click();
+  await page.waitForSelector('body.in-game', { timeout: 60000 });
   await page
     .locator('#world[data-world-asset="ready"][data-character-asset="ready"]')
     .waitFor({ timeout: 90000 });
@@ -231,7 +231,7 @@ try {
     await input([], [0, 0, 0.4, 0]);
     await input();
   };
-  for (const button of [PAD.cross, PAD.circle, PAD.square, PAD.triangle]) {
+  for (const button of [PAD.circle, PAD.square, PAD.triangle]) {
     const was = room().gulf.plots[0].waterRequestAt > 0;
     await arm('#gulf-resident-water');
     await tap(button);
@@ -420,7 +420,7 @@ try {
     await a.locator('#gulf-resident-water').scrollIntoViewIfNeeded();
     assert.match(await a.locator('#gulf-watering-status').innerText(), /まだ頼んでいません/);
     await arm('#gulf-resident-water');
-    await tap(PAD.cross);
+    await tap(PAD.circle);
     assert.ok(room().gulf.plots[10].waterRequestAt > 0);
     await tap(PAD.circle);
     assert.equal(room().gulf.plots[10].waterRequestAt, 0);

@@ -10,7 +10,7 @@ import {
   roadDistance,
 } from './biomes.mjs';
 import { nearLandmark } from './landmarks.mjs';
-import { CASTLE_HALL, nearCastle } from './castle-layout.mjs';
+import { CASTLE_SORCERER_POST, nearCastle } from './castle-layout.mjs';
 import { BIOME_SCENERY } from './biome-scenery.mjs';
 import {
   isLand,
@@ -33,11 +33,13 @@ export const HUNTING_GROUNDS = Object.freeze([
   Object.freeze({ x: 24, z: 85, radius: 10, roamRadius: 5 }),
 ]);
 export const ENEMY_GROUNDS: readonly EnemyGround[] = Object.freeze([
+  // 2026-09-12 (later the same day): the sorcerer stands in the roofless great
+  // hall on top of the rebuilt ruin, where the fight takes place.
   Object.freeze({
     id: 'crow-shaman-1',
-    x: CASTLE_HALL.x,
-    z: CASTLE_HALL.z,
-    radius: 5,
+    x: CASTLE_SORCERER_POST.x,
+    z: CASTLE_SORCERER_POST.z,
+    radius: 6,
     roamRadius: 3.2,
   }),
   ...ADVENTURE_ENEMIES,

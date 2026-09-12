@@ -48,7 +48,7 @@
       "status": "integrated-reviewed-prototype",
       "subject": "One small rounded clump of nine broad, smooth grass blades on a low root crown; clean readable ground cover.",
       "geometryResolution": 1024,
-      "sha256": "60a6005e1c3fac579d48cb508599c81eb1a6cce10936f69c1cb223afc964087a",
+      "sha256": "fcc3d10a1c602e651ef9a5684ee015b23749469cbec06caf90afa474085157d8",
       "delivery": "/models/meadow-grass/model.glb"
     },
     {
@@ -59,7 +59,7 @@
       "status": "integrated-reviewed-prototype",
       "subject": "One or two broad smooth grass blades rising from a tiny root crown; sparse scattered ground cover for the grassland.",
       "geometryResolution": 1024,
-      "sha256": "8faafb56623903e1f8cfd26a807a76c5bf1855114d44ae285d070f2e2a82cb72",
+      "sha256": "61a73df182ecc2f267f87159f57d5903cd663ff4fd8d67cd6411501a306801ae",
       "delivery": "/models/meadow-sprig/model.glb",
       "referenceVersion": 1
     },
@@ -387,18 +387,6 @@
       "gameQA": "assets/region-specific-game-qa.json"
     },
     {
-      "key": "valley-castle",
-      "name": "白羽の大城",
-      "kind": "static",
-      "height": 26.07665,
-      "geometryResolution": 1024,
-      "referenceVersion": 2,
-      "status": "integrated-game-qa-passed",
-      "sha256": "637a6fa0aa4a3734419f8161bbfa3e320565453023d7a18c6f3047d4d7a4b241",
-      "delivery": "/models/valley-castle/model.glb",
-      "subject": "Three exposed terrace levels, paired stone staircases, source-derived entrance stair and upper hall doorway. No tower climbing or hidden intermediate rooms. Full mesh shared; unrepaired coarse LODs are not adopted."
-    },
-    {
       "key": "dugout-canoe",
       "name": "丸木舟",
       "kind": "boat",
@@ -480,8 +468,8 @@
       "length": 6,
       "status": "integrated-and-game-qa-passed",
       "geometryResolution": 1024,
-      "sha256": "f45bf9fd25da5c623e5572091fbd4f1c8d783fe8bf743abd590937ccef0c6c49",
-      "delivery": "/models/violet-behemoth/model-r04.glb",
+      "sha256": "e7405c28bdacd186e00c66a077de0504918f3737e8a1729fb2996339380d976f",
+      "delivery": "/models/violet-behemoth/model-r08.glb",
       "gameQA": "assets/violet-behemoth/game-qa.json",
       "subject": "User reference: massive purple forearms, tiny vestigial hind legs, many eyes and a long tail; territorial grassland monster."
     },
@@ -493,10 +481,23 @@
       "length": 2.601785659790039,
       "status": "integrated-and-game-qa-passed",
       "geometryResolution": 1024,
-      "sha256": "6c4c5301071c1d69add3b357a14b8ba6af62a47a79089657928ab6424bde045d",
-      "delivery": "/models/sabertooth-tiger/model-r11.glb",
+      "sha256": "54db205315086d109bd34b6cf35d31df25cca7472dddb95c7fdbeea6c868021d",
+      "delivery": "/models/sabertooth-tiger/model-r13.glb",
       "gameQA": "assets/sabertooth-tiger/game-qa.json",
       "subject": "Sabre-toothed cat enemy on the Siberian snow plain: fast pursuit, side-steps telegraphed attacks, pounces from mid range, two-swipe claw combo."
+    },
+    {
+      "key": "valley-castle",
+      "name": "白羽の城跡",
+      "kind": "static",
+      "width": 80,
+      "height": 13.162530217614352,
+      "geometryResolution": 1024,
+      "referenceVersion": 3,
+      "status": "adopted-awaiting-game-QA",
+      "sha256": "8200dcd3b23b6f616f0bf73950b76e2fdc428bcb67455eaf2dc3018b9f4342f4",
+      "delivery": "/models/valley-castle/model-r10.glb",
+      "subject": "Rebuilt 2026-09-12 as a ruin: a broad open forecourt behind a collapsed gate, three very wide gentle stairs (left, centre, right) and one enormous roofless great hall on top where the sorcerer is fought. Full mesh shared; the coarse LODs are not adopted."
     }
   ],
   "reuse": {

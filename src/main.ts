@@ -1,5 +1,6 @@
 import { mapScreen } from './map-screen.js';
-import { installMapWarp, updateMapWarp } from './map-warp-ui.js';
+import { chooseMeal } from '../shared/pantry.mjs';
+import { installMapWarp, updateMapWarp, type MapInput } from './map-warp-ui.js';
 import { openCharacterSwitch, updateCharacterSwitch } from './character-switch-ui.js';
 import { carrying, canCarry } from '../shared/carrying.mjs';
 import { readSaved, save, savedSession, saveSession } from './session-storage.js';
@@ -41,12 +42,12 @@ import {
   acceptsGameShortcut,
 } from './combat-input.js';
 import { inAttackArc } from '../shared/combat.mjs';
-import { interactionVisible } from '../shared/interactions.mjs';
+import { GATHER_RANGE, interactionVisible } from '../shared/interactions.mjs';
 import { ENEMY_GROUNDS, SCENERY } from '../shared/scenery-layout.mjs';
 import { CASTLE_GATE } from '../shared/castle-layout.mjs';
 import { playerDamageEvent } from './enemy-state.js';
 import { biomeAt } from '../shared/biomes.mjs';
-import { drawWorldMap, setWorldMapMode, setWorldMapSelection } from './world-map.js';
+import { drawWorldMap, setWorldMapSelection } from './world-map.js';
 import { locationName } from '../shared/paleo-geography.mjs';
 import { regionAt } from '../shared/adventure-regions.mjs';
 import { installAdventureUI, adventureInteraction } from './adventure-ui.js';
@@ -57,7 +58,7 @@ import { installCoastalUI, coastalInteraction } from './coastal-ui.js';
 import { installGulfUI, gulfInteraction } from './gulf-ui.js';
 import { installVillageUI, residentInteraction } from './village-ui.js';
 import { inGulf } from '../shared/gulf-region.mjs';
-import { ScreenManager, AreaBanner, guideMarkup, keyPrompts } from './screens.js';
+import { ScreenManager, AreaBanner, keyPrompts } from './screens.js';
 import { helpTabsMarkup, bindHelpTabs } from './help-content.js';
 import { titleCreditsMarkup } from './title-credits.js';
 
@@ -159,6 +160,8 @@ const keys = new Set();
 const blockedMovementKeys = new Set();
 const movementCommands = new MovementCommands();
 let gamepadControls: GamepadControls | undefined;
+/** The open atlas, so the controller can hand it pointer, zoom and confirm frames. */
+let mapInput: MapInput | undefined;
 let usingGamepad = false;
 let selectedAnimalId = null,
   stateReceivedAt = performance.now(),
@@ -177,11 +180,11 @@ $('#app').innerHTML = `
     <div id="damage-flash" class="damage-flash" aria-hidden="true" hidden></div>
     <div id="combat-status" class="combat-status" role="status" hidden></div>
     <div id="area-banner" class="area-banner" aria-live="polite" hidden><small></small><strong></strong></div>
-    <button id="status-plate" class="status-plate" title="部族の仲間・招待"><span class="energy-track" id="energy-track" data-level="ok"><span id="energy-bar"></span><em class="energy-label">${icon('leaf')}<b>体力</b><span id="energy-label">100 / 100</span></em></span><span class="status-main"><span class="portrait cro cro-magnon-woman" id="my-portrait"><i></i></span><span class="status-text"><strong id="profile-name"></strong><small><span id="room-label"></span><i>·</i><b id="online-count">0/5</b><i>·</i><span id="day-label">1日目</span></small></span></span></button>
+    <button id="status-plate" class="status-plate" title="部族の仲間・招待"><span class="energy-track" id="energy-track" data-level="ok"><span id="energy-bar"></span><em class="energy-label">${icon('leaf')}<b>体力</b><span id="energy-label">100 / 100</span></em><small id="heal-hint" class="heal-hint" hidden>Q／↑ 回復</small></span><span class="status-main"><span class="portrait cro cro-magnon-woman" id="my-portrait"><i></i></span><span class="status-text"><strong id="profile-name"></strong><small><span id="room-label"></span><i>·</i><b id="online-count">0/5</b><i>·</i><span id="day-label">1日目</span></small></span></span></button>
     <div class="map-hud"><button id="map-button" class="minimap-button" aria-label="世界地図を開く" title="世界地図 [M]"><canvas id="minimap" width="160" height="115"></canvas><span class="map-north">N</span><span class="map-area" id="map-area">はじまりの谷</span><kbd class="map-key">M</kbd></button><div class="connection"><i class="status-dot" id="connection-dot"></i><span id="connection-label">未接続</span><span id="ping-label">— ms</span></div></div>
     <div id="toast-stack" class="toast-stack" aria-live="polite"></div>
     <div class="chat-panel"><button class="chat-heading" id="chat-toggle">${icon('chat')}<strong>焚き火の会話</strong><kbd>Enter</kbd><span class="chat-collapse">−</span></button><div id="chat-content"><div id="chat-messages" class="chat-messages" role="log" aria-live="polite"><p class="chat-system">この谷での物語が、ここから始まります。</p></div><form id="chat-form"><input id="chat-input" maxlength="180" placeholder="仲間に話しかける…" aria-label="チャットメッセージ" autocomplete="off"><button aria-label="メッセージを送信" type="submit">${icon('arrow')}</button></form></div></div>
-    <div class="hotbar-wrap"><div class="interaction-hint" id="interaction-hint"><kbd>E</kbd><span>近くのものを調べる</span></div><div class="hotbar"><div class="resource-slots"><button class="resource-slot" data-inventory="wood" aria-label="木材のもちもの"><kbd>木材</kbd><span class="resource-icon wood">${icon('wood')}</span><b id="wood-count">0</b></button><button class="resource-slot" data-inventory="stone" aria-label="石のもちもの"><kbd>石</kbd><span class="resource-icon stone">${icon('stone')}</span><b id="stone-count">0</b></button><button class="resource-slot" id="eat-button" aria-label="ベリーを食べて元気を回復"><kbd>ベリー</kbd><span class="resource-icon berry">${icon('berry')}</span><b id="berry-count">0</b></button></div><div class="hotbar-divider"></div><button class="action-slot selected" data-action="gather" title="採集する [1]"><kbd>1</kbd>${icon('leaf')}<span>採集</span></button><button class="action-slot" data-action="craft" title="木材3・石2で石斧を作る [2]"><kbd>2</kbd>${icon('axe')}<span>つくる</span></button><button class="action-slot" data-action="contribute" title="焚き火の近くで資材を届ける [3]"><kbd>3</kbd>${icon('flame')}<span>届ける</span></button><button class="action-slot" data-action="trade" title="オルの近くで物々交換 [4]"><kbd>4</kbd>${icon('exchange')}<span>交換</span></button><button id="run-button" class="action-slot" aria-label="走行モード" aria-pressed="false" title="走る／歩く（方向キーを素早く2回押しても走る）"><kbd>2回</kbd>${icon('arrow')}<span>走る</span></button></div></div>
+    <div class="hotbar-wrap"><div class="interaction-hint" id="interaction-hint" hidden><kbd>E</kbd><span></span></div></div>
     <div id="prompt-bar" class="prompt-bar" aria-label="操作の案内"></div>
     <div id="screens" class="screens">
       <section id="screen-title" class="screen title-screen" hidden>
@@ -203,13 +206,11 @@ $('#app').innerHTML = `
       <section id="screen-setup" class="screen setup-screen" hidden>
         <form id="setup-form" class="setup-card"><p class="form-error" id="setup-error" hidden></p>${joinFields()}<div class="setup-actions"><button type="button" id="setup-back" class="button button-outline setup-back">戻る</button><button class="setup-launch" id="setup-submit" type="submit"><span class="setup-launch-text">この谷へ出発する</span>${icon('arrow')}</button></div></form>
       </section>
-      <section id="screen-guide" class="screen guide-screen" hidden></section>
     </div>
   </section>
   <dialog id="modal"><div class="modal-top"><span class="eyebrow">${GAME_TITLE}</span><button id="modal-close" class="button button-outline modal-back" type="button">戻る</button></div><div id="modal-body"></div></dialog>`;
 
 const areaBanner = new AreaBanner($('#area-banner'));
-let guidePending = false;
 const screens = new ScreenManager($('#screens'), (id) => {
   if (id) stopInput();
   else $('#world').focus({ preventScroll: true });
@@ -345,12 +346,7 @@ $('#room-label').textContent = profile.room;
 function send(message) {
   if (socket?.readyState === WebSocket.OPEN) socket.send(JSON.stringify(message));
 }
-/** The item and action bar shows only while Tab (keyboard) or L3 (controller) is held. */
-function setHotbarShown(shown: boolean) {
-  $('.game-viewport').classList.toggle('hotbar-open', shown);
-}
 function stopInput() {
-  setHotbarShown(false);
   renderer.prediction?.stop();
   // Also cancels a cast sent just before a menu/blur, before its snapshot arrives.
   if (joined) {
@@ -501,8 +497,6 @@ async function connect(automatic = false) {
       $('#room-label').textContent = profile.room;
       connection(true, 'オンライン');
       renderer.focusPlayer();
-      if (guidePending && !message.resumed && readSaved('cro-skip-guide', '') !== '1') showGuide();
-      guidePending = false;
       if (message.resumed) notify('接続が戻りました。持ち物と進行を復元しました。', 'success');
     }
     if (message.type === 'state') {
@@ -619,7 +613,7 @@ function nearby(): { action: string; label: string; targetId?: string } | null {
   if (gulf) return gulf;
   const objects: { x: number; z: number; action: string; label: string; range: number }[] =
     state.resources
-      .filter((r) => r.amount > 0 && me.inventory[r.type] < 99)
+      .filter((r) => r.amount > 0 && me.inventory[r.type] < 99 && renderer.resourceVisible?.(r.id))
       .map((r) => ({
         ...r,
         action: 'gather',
@@ -628,7 +622,7 @@ function nearby(): { action: string; label: string; targetId?: string } | null {
           r.type === 'obsidian'
             ? '黒曜石を採掘する'
             : `${{ wood: '木材', stone: '石', berry: 'ベリー' }[r.type]}を採集する`,
-        range: 8,
+        range: GATHER_RANGE,
       }));
   objects.push(
     { ...state.camp, action: 'contribute', label: '焚き火に資材を届ける', range: 10 },
@@ -643,9 +637,7 @@ function nearby(): { action: string; label: string; targetId?: string } | null {
     .sort((a, b) => distance(me, a) - distance(me, b))[0];
 }
 function updateHUD() {
-  const me = player(),
-    inv = inventoryCounts(me?.inventory);
-  for (const key of ['wood', 'stone', 'berry']) $(`#${key}-count`).textContent = inv[key];
+  const me = player();
   $('#online-count').textContent =
     `${state.players.length}/${state.playerLimit ?? WORLD.maxPlayers}`;
   $('#day-label').textContent = `${state.day || 1}日目`;
@@ -653,9 +645,13 @@ function updateHUD() {
   $('#energy-label').textContent = `${energy} / 100`;
   $('#energy-bar').style.width = `${energy}%`;
   $('#energy-track').dataset.level = energy <= 25 ? 'critical' : energy <= 50 ? 'low' : 'ok';
+  const meal = me && !me.downedUntil ? chooseMeal(me) : null;
+  $('#heal-hint').hidden = !meal;
+  if (meal) $('#heal-hint').textContent = `Q／↑ 回復（${meal.name}）`;
   updateObjectives();
-  $('#interaction-hint span').textContent = nearby()?.label || '近くのものを調べる';
-  $('#interaction-hint').classList.toggle('available', !!nearby());
+  const target = nearby();
+  $('#interaction-hint').hidden = !target;
+  $('#interaction-hint span').textContent = target?.label ?? '';
   $('#my-portrait').className = `portrait ${profile.species} ${characterModel(profile).key}`;
   $('#status-plate').title = `${characterModel(profile).name} · 部族の仲間と招待`;
   updateHuntingHUD();
@@ -703,10 +699,10 @@ function updateObjectives() {
   $('#camp-level').textContent = `CAMP LEVEL ${state.camp.level}`;
   $('#camp-name').textContent = state.camp.level ? 'みんなの野営地' : '小さな野営地';
 }
-function updateModalHUD() {
-  const me = player(),
-    inv = inventoryCounts(me?.inventory);
-  const unavailable =
+/** True while the player cannot act from a menu: not joined, downed, mounted, or mid-task. */
+function modalActionsBlocked() {
+  const me = player();
+  return (
     !joined ||
     renderUnavailable ||
     !me ||
@@ -715,27 +711,20 @@ function updateModalHUD() {
     !!me.boatId ||
     !!me.cookingEndsAt ||
     !!me.fishing ||
-    !!me.coastalActivity;
+    !!me.coastalActivity
+  );
+}
+function updateModalHUD() {
+  const me = player(),
+    inv = inventoryCounts(me?.inventory);
+  const unavailable = modalActionsBlocked();
   for (const count of document.querySelectorAll<HTMLElement>('[data-modal-count]'))
     count.textContent = String(inv[count.dataset.modalCount]);
-  if ($('#modal-eat')) $('#modal-eat').disabled = unavailable || !inv.berry || me.energy >= 100;
-  if ($('#modal-cook'))
-    $('#modal-cook').disabled = unavailable || !inv.rawMeat || inv.cookedMeat >= 99;
-  if ($('#modal-eat-meat'))
-    $('#modal-eat-meat').disabled = unavailable || !inv.cookedMeat || me.energy >= 100;
+  for (const card of document.querySelectorAll<HTMLElement>('.inventory-card[data-item]'))
+    card.classList.toggle('inventory-empty', !inv[card.dataset.item]);
   if ($('#modal-fishing-kit'))
     $('#modal-fishing-kit').disabled =
       unavailable || !!me?.gulf?.fishingKit || inv.wood < 3 || inv.stone < 1;
-  if ($('#modal-cook-fish'))
-    $('#modal-cook-fish').disabled = unavailable || !inv.rawFish || inv.cookedFish >= 99;
-  if ($('#modal-eat-fish'))
-    $('#modal-eat-fish').disabled = unavailable || !inv.cookedFish || me?.energy >= 100;
-  if ($('#modal-cook-shellfish'))
-    $('#modal-cook-shellfish').disabled =
-      unavailable || !inv.rawShellfish || inv.cookedShellfish >= 99;
-  if ($('#modal-eat-shellfish'))
-    $('#modal-eat-shellfish').disabled =
-      unavailable || !inv.cookedShellfish || inv.shells >= 99 || me?.energy >= 100;
   if ($('#modal-boat-craft')) $('#modal-boat-craft').disabled = unavailable || inv.wood < 12;
   if ($('#modal-craft')) {
     $('#modal-craft').disabled = unavailable || me.tool || inv.wood < 3 || inv.stone < 2;
@@ -979,7 +968,7 @@ function updateHuntingHUD() {
   cooldownLabel.hidden = !metered;
   if (metered) cooldownLabel.textContent = `${(cooldownLeft / 1000).toFixed(1)}s`;
   attackButton.title = mounted
-    ? `${usingGamepad ? '△' : 'R'}で降りてから攻撃できます。`
+    ? `${usingGamepad ? '×' : 'R'}で降りてから攻撃できます。`
     : attackAvailable
       ? `前方へ${combat.label} [${usingGamepad ? attackKey : 'F / 5'}]。相手がいなくても発動できます。`
       : metered
@@ -1114,22 +1103,8 @@ function showSetup(error = '') {
   $('#setup-back').textContent = joined ? '探索に戻る' : '戻る';
   screens.show('setup');
 }
-function showGuide() {
-  $('#screen-guide').innerHTML = guideMarkup({ gamepad: usingGamepad, skipChecked: false });
-  bindHelpTabs($('#screen-guide'));
-  screens.show('guide');
-  $('#guide-start').onclick = finishGuide;
-  $('#guide-back').onclick = () => showSetup();
-}
-function finishGuide() {
-  if (screens.active !== 'guide') return;
-  save('cro-skip-guide', $('#guide-skip')?.checked ? '1' : '');
-  screens.hide();
-  areaBanner.reset();
-}
 function enterGame() {
   $('#retry-session')?.remove();
-  guidePending = true;
   screens.hide();
   document.body.classList.add('in-game');
   areaBanner.reset();
@@ -1184,93 +1159,139 @@ async function openInvite() {
   };
   $('#change-room').onclick = () => showSetup();
 }
+/**
+ * Bag items in display order. Food comes first so the top-left card, which is
+ * focused as soon as the menu opens, is a healing item (2026-09-12).
+ */
+const INVENTORY_ITEMS: readonly [string, string, string][] = [
+  ['berry', 'ベリー', '食べると元気が回復。'],
+  ['cookedMeat', '焼き肉', '1個で元気を45回復します。'],
+  ['rawMeat', '生肉', 'そのままでは食べられません。焚き火で3秒焼こう。'],
+  ['cookedFish', '焼き魚', '元気+30。集い場の食料にも持ち寄れます。'],
+  ['rawFish', '生魚', '湾の魚場で釣る。焚き火で3秒焼こう。'],
+  ['cookedShellfish', '焼いた貝', '元気+20。食べると貝殻1個が残ります。'],
+  ['rawShellfish', '生の貝', '浜の貝場で採集。焚き火で3秒焼こう。'],
+  ['cookedRoot', '焼き根', '元気+35。宴にも持ち寄れます。'],
+  ['herbRoot', '香草焼き根', '元気+50。火根1・香草1で料理。'],
+  ['rawRoot', '火根', '火根草の根。炉で焼いてから食べよう。'],
+  ['herb', '香草', '火根と一緒に焼くと、回復量が増えます。'],
+  ['wood', '木材', '採集して、道具や拠点に。'],
+  ['stone', '石', '丈夫な道具と火の囲いに。'],
+  ['obsidian', '黒曜石', '湾の西の露頭で採掘。石器作業場で削って刃を作ろう。'],
+  ['seed', 'ベリーの種', '共同の畑に植え、水をやって育てよう。'],
+  ['water', '水袋', '湾の水場で水6を補給。火根草は水2、ほかの作物は水1。'],
+  ['shells', '貝殻', '集落へ持ち帰り、みんなで貝塚を築こう。'],
+  ['obsidianBlade', '黒曜石の刃', '原石2個から作る。刃1・木材1で木槍の先へ。'],
+  ['rootSeed', '火根草の種', '集落の炉でベリー2と種2を交換。畑に植えて水2。'],
+  ['herbSeed', '香り草の種', '集落の炉で種を交換。水1で早く育つ。'],
+];
+interface ItemUse {
+  label: string;
+  action?: string;
+  run?: () => void;
+  /** Cooking needs the fire in view, so the menu closes first. */
+  closes?: boolean;
+  eats?: boolean;
+}
+/** What "decide" on a bag card offers: one use per item, healing food eaten in place. */
+const ITEM_USES: Record<string, ItemUse> = {
+  berry: { label: '使う（食べる）', action: 'eat', eats: true },
+  cookedMeat: { label: '使う（食べる）', action: 'eatMeat', eats: true },
+  cookedFish: { label: '使う（食べる）', action: 'eatFish', eats: true },
+  cookedShellfish: { label: '使う（食べる）', action: 'eatShellfish', eats: true },
+  cookedRoot: { label: '使う（食べる）', action: 'eatRoot', eats: true },
+  herbRoot: { label: '使う（食べる）', action: 'eatHerbRoot', eats: true },
+  rawMeat: { label: '焚き火で焼く', run: () => cook(), closes: true },
+  rawFish: { label: '焚き火で焼く', action: 'cookFish', closes: true },
+  rawShellfish: { label: '焚き火で焼く', action: 'cookShellfish', closes: true },
+};
+const itemIcon = (key: string) =>
+  key.endsWith('Meat')
+    ? 'meat'
+    : key.endsWith('Fish')
+      ? 'wave'
+      : key.toLowerCase().includes('shell')
+        ? 'shell'
+        : key === 'obsidianBlade'
+          ? 'blade'
+          : key === 'obsidian'
+            ? 'stone'
+            : key;
 /** Inventory content shared by the I key dialog and the pause menu tab. */
 function inventoryMarkup() {
   const me = player(),
     inv = inventoryCounts(me?.inventory);
-  return `<div class="gulf-actions"><button id="modal-crop-food" class="button button-outline">火根と香草の食事</button><button id="modal-crop-farms" class="button button-outline">共同の畑と種</button></div><h2>旅に持っていくもの。</h2><p class="modal-intro">生肉・魚・貝は、各地の焚き火で焼いてから食べよう。黒曜石の原石は石器作業場で刃にできます。</p><div class="inventory-grid">${[
-    ['wood', '木材', '採集して、道具や拠点に。'],
-    ['stone', '石', '丈夫な道具と火の囲いに。'],
-    ['berry', 'ベリー', '食べると元気が回復。'],
-    ['rawMeat', '生肉', 'そのままでは食べられません。焚き火で3秒焼こう。'],
-    ['cookedMeat', '焼き肉', '1個で元気を45回復します。'],
-    ['obsidian', '黒曜石', '湾の西の露頭で採掘。石器作業場で削って刃を作ろう。'],
-    ['seed', 'ベリーの種', '共同の畑に植え、水をやって育てよう。'],
-    ['water', '水袋', '湾の水場で水6を補給。火根草は水2、ほかの作物は水1。'],
-    ['rawFish', '生魚', '湾の魚場で釣る。焚き火で3秒焼こう。'],
-    ['cookedFish', '焼き魚', '元気+30。集い場の食料にも持ち寄れます。'],
-    ['rawShellfish', '生の貝', '浜の貝場で採集。焚き火で3秒焼こう。'],
-    ['cookedShellfish', '焼いた貝', '元気+20。食べると貝殻1個が残ります。'],
-    ['shells', '貝殻', '集落へ持ち帰り、みんなで貝塚を築こう。'],
-    ['obsidianBlade', '黒曜石の刃', '原石2個から作る。刃1・木材1で木槍の先へ。'],
-    ['rootSeed', '火根草の種', '集落の炉でベリー2と種2を交換。畑に植えて水2。'],
-    ['herbSeed', '香り草の種', '集落の炉で種を交換。水1で早く育つ。'],
-    ['rawRoot', '火根', '火根草の根。炉で焼いてから食べよう。'],
-    ['herb', '香草', '火根と一緒に焼くと、回復量が増えます。'],
-    ['cookedRoot', '焼き根', '元気+35。宴にも持ち寄れます。'],
-    ['herbRoot', '香草焼き根', '元気+50。火根1・香草1で料理。'],
-  ]
-    .map(
-      ([key, label, note]) =>
-        `<div class="inventory-card"><span class="resource-icon ${key}">${icon(key.endsWith('Meat') ? 'meat' : key.endsWith('Fish') ? 'wave' : key.toLowerCase().includes('shell') ? 'shell' : key === 'obsidianBlade' ? 'blade' : key === 'obsidian' ? 'stone' : key)}</span><strong>${label}<b>${inv[key]}</b></strong><p>${note}</p>${key === 'berry' ? '<button id="modal-eat" class="button button-outline">食べる</button>' : key === 'rawMeat' ? `<button id="modal-cook" class="button button-outline" ${inv.rawMeat ? '' : 'disabled'}>焚き火で焼く</button>` : key === 'cookedMeat' ? `<button id="modal-eat-meat" class="button button-outline" ${inv.cookedMeat ? '' : 'disabled'}>焼き肉を食べる</button>` : key === 'rawFish' ? '<button id="modal-cook-fish" class="button button-outline">焚き火で焼く</button>' : key === 'cookedFish' ? '<button id="modal-eat-fish" class="button button-outline">魚を食べる</button>' : ''}</div>`,
-    )
-    .join(
-      '',
-    )}</div><div class="recipe"><span class="resource-icon stone">${icon('axe')}</span><div><strong id="modal-axe-label">${me?.tool ? '石斧を装備中' : '石斧をつくる'}</strong><p>木材3 + 石2 ・ 採集量が増えます</p></div><button id="modal-craft" class="button button-accent" ${me?.tool ? 'disabled' : ''}>${me?.tool ? '装備中' : 'つくる'}</button></div><div class="recipe"><span class="resource-icon wood">${icon('wood')}</span><div><strong>丸木舟をつくる</strong><p>木材12 · 海岸で制作 · Bで乗船</p></div><button id="modal-boat-craft" class="button button-accent">船をつくる</button></div><p class="form-note">今の武器：${attackProfile(me ?? profile).noun}。人間系は木槍で出発し、黒曜石の刃で強化できます。相手を向いて F。</p><div class="recipe"><div><strong>湾の釣り道具</strong><p>木材3・石1 · 繰り返し使えます</p></div><button id="modal-fishing-kit" class="button button-accent">道具を作る</button><button id="modal-fishing" class="button button-outline">魚場と釣り方</button></div><div class="recipe coastal-recipe"><div><strong>貝の食事と黒曜石の道具</strong><p>貝殻を持ち帰って貝塚へ。原石を削って木槍の先へ。</p></div><button id="modal-coastal" class="button button-outline">貝と石器の作り方</button><button id="modal-cook-shellfish" class="button button-outline">貝を焼く</button><button id="modal-eat-shellfish" class="button button-outline">焼いた貝を食べる</button></div>`;
+  return `<div class="gulf-actions"><button id="modal-crop-food" class="button button-outline">火根と香草の食事</button><button id="modal-crop-farms" class="button button-outline">共同の畑と種</button></div><h2>旅に持っていくもの。</h2><p class="modal-intro">食べ物を選んで決定 → 「使う」で回復。生肉・魚・貝は、各地の焚き火で焼いてから食べよう。</p><div class="inventory-grid">${INVENTORY_ITEMS.map(
+    ([key, label, note]) => {
+      const use = ITEM_USES[key];
+      return `<div class="inventory-card${use ? ' inventory-usable' : ''}${inv[key] ? '' : ' inventory-empty'}" data-item="${key}" ${use ? `role="button" tabindex="0" aria-label="${label} ${inv[key]}個 · ${use.label}"` : ''}><span class="resource-icon ${key}">${icon(itemIcon(key))}</span><strong>${label}<b data-modal-count="${key}">${inv[key]}</b></strong><p>${note}</p>${use ? `<small class="item-use-hint">${use.label}</small>` : ''}</div>`;
+    },
+  ).join(
+    '',
+  )}</div><div class="recipe"><span class="resource-icon stone">${icon('axe')}</span><div><strong id="modal-axe-label">${me?.tool ? '石斧を装備中' : '石斧をつくる'}</strong><p>木材3 + 石2 ・ 採集量が増えます</p></div><button id="modal-craft" class="button button-accent" ${me?.tool ? 'disabled' : ''}>${me?.tool ? '装備中' : 'つくる'}</button></div><div class="recipe"><span class="resource-icon wood">${icon('wood')}</span><div><strong>丸木舟をつくる</strong><p>木材12 · 海岸で制作 · Bで乗船</p></div><button id="modal-boat-craft" class="button button-accent">船をつくる</button></div><p class="form-note">今の武器：${attackProfile(me ?? profile).noun}。人間系は木槍で出発し、黒曜石の刃で強化できます。相手を向いて F。</p><div class="recipe"><div><strong>湾の釣り道具</strong><p>木材3・石1 · 繰り返し使えます</p></div><button id="modal-fishing-kit" class="button button-accent">道具を作る</button><button id="modal-fishing" class="button button-outline">魚場と釣り方</button></div><div class="recipe coastal-recipe"><div><strong>貝の食事と黒曜石の道具</strong><p>貝殻を持ち帰って貝塚へ。原石を削って木槍の先へ。</p></div><button id="modal-coastal" class="button button-outline">貝と石器の作り方</button></div>`;
+}
+/** Removes the open "use" popup and returns focus to its card; false when none was open. */
+function closeItemActions(): boolean {
+  const popup = document.querySelector<HTMLElement>('.item-actions');
+  if (!popup) return false;
+  const card = popup.closest<HTMLElement>('.inventory-card');
+  popup.remove();
+  card?.focus({ preventScroll: true });
+  return true;
+}
+/**
+ * "Decide" on a bag card: a two-button popup (use / close) whose first button
+ * takes focus, so a controller eats a berry with decide → decide.
+ */
+function openItemActions(card: HTMLElement) {
+  closeItemActions();
+  const key = card.dataset.item!,
+    use = ITEM_USES[key];
+  if (!use) return;
+  const me = player(),
+    inv = inventoryCounts(me?.inventory);
+  const reason = !inv[key]
+    ? '持っていません。'
+    : use.eats && (me?.energy ?? 0) >= 100
+      ? '体力は満タンです。'
+      : modalActionsBlocked()
+        ? '今は使えません。'
+        : '';
+  card.insertAdjacentHTML(
+    'beforeend',
+    `<div class="item-actions" role="group" aria-label="${card.querySelector('strong')?.firstChild?.textContent ?? ''}"><button type="button" class="button button-accent item-use" ${reason ? 'disabled' : ''}>${use.label}</button><button type="button" class="button button-outline item-actions-close">閉じる</button>${reason ? `<small>${reason}</small>` : ''}</div>`,
+  );
+  const popup = card.querySelector<HTMLElement>('.item-actions')!;
+  popup.onclick = (event) => event.stopPropagation();
+  popup.querySelector<HTMLButtonElement>('.item-use')!.onclick = () => {
+    closeItemActions();
+    if (use.closes) $('#modal').close();
+    if (use.run) use.run();
+    else action(use.action);
+  };
+  popup.querySelector<HTMLButtonElement>('.item-actions-close')!.onclick = () => closeItemActions();
+  popup
+    .querySelector<HTMLButtonElement>(reason ? '.item-actions-close' : '.item-use')!
+    .focus({ preventScroll: true });
 }
 /** Wires the inventory buttons after `inventoryMarkup()` is in the document. */
 function bindInventory() {
-  $('#modal-eat').onclick = () => {
-    action('eat');
-    $('#modal').close();
-  };
+  for (const card of document.querySelectorAll<HTMLElement>('.inventory-card.inventory-usable')) {
+    card.onclick = () => openItemActions(card);
+    card.onkeydown = (event) => {
+      if (event.key === 'Enter' || event.key === ' ') {
+        event.preventDefault();
+        openItemActions(card);
+      }
+    };
+  }
   $('#modal-craft').onclick = () => {
     action('craft');
     $('#modal').close();
   };
-  $('#modal-cook').onclick = () => {
-    $('#modal').close();
-    cook();
-  };
-  $('#modal-eat-meat').onclick = () => {
-    action('eatMeat');
-    $('#modal').close();
-  };
-  document
-    .querySelectorAll<HTMLElement>('.inventory-card strong b')
-    .forEach(
-      (count, index) =>
-        (count.dataset.modalCount = [
-          'wood',
-          'stone',
-          'berry',
-          'rawMeat',
-          'cookedMeat',
-          'obsidian',
-          'seed',
-          'water',
-          'rawFish',
-          'cookedFish',
-          'rawShellfish',
-          'cookedShellfish',
-          'shells',
-          'obsidianBlade',
-          ...CROP_INVENTORY,
-        ][index]),
-    );
-  $('#modal-cook-fish').onclick = () => {
-    $('#modal').close();
-    action('cookFish');
-  };
-  $('#modal-eat-fish').onclick = () => action('eatFish');
   $('#modal-fishing-kit').onclick = () => action('craftFishingKit');
   $('#modal-fishing').onclick = () => fishingUI.open();
   $('#modal-coastal').onclick = () => coastalUI.open();
-  $('#modal-cook-shellfish').onclick = () => {
-    $('#modal').close();
-    action('cookShellfish');
-  };
-  $('#modal-eat-shellfish').onclick = () => action('eatShellfish');
   $('#modal-crop-food').onclick = () => cropFoodUI.open();
   $('#modal-crop-farms').onclick = () => gulfUI.open();
   $('#modal-boat-craft').onclick = () => {
@@ -1279,15 +1300,15 @@ function bindInventory() {
   };
   updateModalHUD();
 }
+/** The bag is the pause menu's first page, so every shortcut lands on the same screen. */
 function openInventory() {
-  openModal(inventoryMarkup());
-  bindInventory();
+  openPauseMenu('inventory');
+}
+function tribeMarkup() {
+  return `<h2>同じ火を囲む仲間。</h2><p class="modal-intro" id="tribe-summary">いま、この谷で暮らしている ${state.players.length} 人。</p><div id="tribe-list" class="tribe-list"></div><button id="tribe-invite" class="button button-accent wide">${icon('plus')} 仲間を招待する</button><p class="form-note">NPCのオルは参加人数に含まれません。ひとりでも採集や拠点づくりを楽しめます。</p>`;
 }
 function openTribe() {
-  openModal(
-    `<h2>同じ火を囲む仲間。</h2><p class="modal-intro">いま、この谷で暮らしている ${state.players.length} 人。</p><div id="tribe-list" class="tribe-list"></div><button id="tribe-invite" class="button button-accent wide">${icon('plus')} 仲間を招待する</button><p class="form-note">NPCのオルは参加人数に含まれません。ひとりでも採集や拠点づくりを楽しめます。</p>`,
-  );
-  $('#modal-body .modal-intro').id = 'tribe-summary';
+  openModal(tribeMarkup());
   updateModalHUD();
   $('#tribe-invite').onclick = openInvite;
 }
@@ -1301,7 +1322,7 @@ function helpMarkup() {
         {
           key: '大城の赤い印',
           title: '白羽の呪術師',
-          note: '始まりの谷の北東、白羽の大城の上階の広間にいます。力尽きても4秒後に焚き火で回復し、持ち物は残ります。',
+          note: '始まりの谷の北東、白羽の城跡の最上部にある天井のない大広間にいます。赤い呪弾（単体）と赤い呪いの爆発（範囲）を使い、どちらも杖を掲げる予備動作の後に来ます。力尽きても4秒後に焚き火で回復し、持ち物は残ります。',
         },
       ]
     : [];
@@ -1319,8 +1340,8 @@ function updateGamepadHints(active: boolean) {
   for (const [selector, label] of [
     ['#interaction-hint kbd', active ? '○' : 'E'],
     ['#attack-button kbd', active ? '□ / R2' : 'F'],
-    ['#ride-button kbd', active ? '△' : 'R'],
-    ['#boat-board kbd', active ? '△' : 'B'],
+    ['#ride-button kbd', active ? '×' : 'R'],
+    ['#boat-board kbd', active ? '×' : 'B'],
     ['#chat-toggle kbd', active ? '⌨' : 'Enter'],
   ])
     $(selector).textContent = label;
@@ -1366,42 +1387,47 @@ function updateSaveStatus() {
         ? `自動保存済み ${new Date(localSaveStatus.savedAt).toLocaleTimeString()} · タイトルへ戻っても続きから再開できます。${localSaveStatus.recovered ? ' 予備の保存から復元しました。' : ''}`
         : '自動保存を準備しています。';
 }
-let pauseTab = 'objectives';
-/** Game-style pause menu: a tab rail on the left, one panel on the right, exits as buttons below the tabs. */
-function openPauseMenu() {
+let pauseSubTab = 'help';
+function openCharacterSwitchMenu() {
+  openCharacterSwitch({
+    openModal,
+    player,
+    now: () => renderer.serverNow(),
+    connected: () => joined,
+    action,
+  });
+}
+/**
+ * Game-style pause menu: a tab rail on the left, one panel on the right, exits as
+ * buttons below the tabs. 2026-09-12: it opens straight on the bag with the first
+ * food card focused; the guide, world and companions share one tab with sub-tabs;
+ * the character change sits just above "back to exploring".
+ */
+function openPauseMenu(tab = 'inventory') {
   if (screens.active) return;
   const tabs: [string, string, string][] = [
-    ['objectives', 'check', '目標と野営地'],
     ['inventory', 'bag', 'もちもの・道具'],
-    ['world', 'compass', '世界と仲間'],
+    ['info', 'compass', '世界・仲間・操作説明'],
     ['settings', 'sound', '設定'],
-    ['help', 'help', '操作説明'],
+  ];
+  const subTabs: [string, string][] = [
+    ['help', '操作説明'],
+    ['world', '世界'],
+    ['tribe', '仲間'],
+    ['objectives', '目標'],
   ];
   const links: [string, string, string, () => void][] = [
-    [
-      'character',
-      'people',
-      'キャラクターを変える',
-      () =>
-        openCharacterSwitch({
-          openModal,
-          player,
-          now: () => renderer.serverNow(),
-          connected: () => joined,
-          action,
-        }),
-    ],
     ['map', 'expand', '世界地図', openMap],
     ['journal', 'book', '探索手帳', openJournal],
     ['gulf', 'wave', '三つの国・共同の畑', () => gulfUI.open()],
     ['fishing', 'wave', '魚場と釣り方', () => fishingUI.open()],
     ['coastal', 'stone', '貝塚・黒曜石の道具', () => coastalUI.open()],
     ['residents', 'wave', '集落の人びと・今日の手伝い', () => villageUI.open()],
-    ['tribe', 'people', '部族の仲間・招待', openTribe],
     ['ride', 'target', '船・マンモス・肩に乗る／降りる', controllerRide],
     ['wave', 'wave', '手をふる', () => action('wave')],
   ];
   const exits: [string, string, string, () => void][] = [
+    ['character', 'people', 'キャラクターを変える', openCharacterSwitchMenu],
     ['resume', 'compass', '探索に戻る', () => $('#modal').close()],
     ...(!fixedIdentity
       ? [
@@ -1415,13 +1441,16 @@ function openPauseMenu() {
       : []),
     ['title', 'close', 'タイトルへ戻る', leaveToTitle],
   ];
-  if (!tabs.some(([id]) => id === pauseTab)) pauseTab = 'objectives';
+  let pauseTab = tabs.some(([id]) => id === tab) ? tab : 'inventory';
+  if (!subTabs.some(([id]) => id === pauseSubTab)) pauseSubTab = 'help';
   const menuButton = ([id, glyph, label]: readonly [string, string, string, ...unknown[]]) =>
     `<button class="button button-outline" data-controller-menu="${id}">${icon(glyph)}<span>${label}</span></button>`;
   const panel = (id: string, body: string) =>
     `<section class="pause-panel" data-pause-panel="${id}" role="tabpanel" id="pause-panel-${id}" ${pauseTab === id ? '' : 'hidden'}>${body}</section>`;
+  const subPanel = (id: string, body: string) =>
+    `<section class="pause-subpanel" data-pause-subpanel="${id}" role="tabpanel" id="pause-subpanel-${id}" ${pauseSubTab === id ? '' : 'hidden'}>${body}</section>`;
   openModal(
-    `<div class="pause-menu"><aside class="pause-rail"><p class="screen-eyebrow">PAUSE</p><h2>メニュー</h2><nav class="pause-tabs" role="tablist" aria-label="メニューの項目">${tabs
+    `<div class="pause-menu"><aside class="pause-rail"><nav class="pause-tabs" role="tablist" aria-label="メニューの項目">${tabs
       .map(
         ([id, glyph, label]) =>
           `<button type="button" class="pause-tab" role="tab" data-pause-tab="${id}" data-controller-menu="${id}" aria-selected="${pauseTab === id}" aria-controls="pause-panel-${id}">${icon(glyph)}<span>${label}</span></button>`,
@@ -1429,44 +1458,71 @@ function openPauseMenu() {
       .join(
         '',
       )}</nav><div class="pause-exits">${exits.map(menuButton).join('')}</div></aside><div class="pause-panels">${panel(
-      'objectives',
-      objectivesMarkup(),
-    )}${panel('inventory', inventoryMarkup())}${panel(
-      'world',
-      `<h2>世界と仲間</h2><p class="modal-intro">地図・記録・各地の暮らしと、いまできる行動。</p><div class="controller-menu">${links.map(menuButton).join('')}</div>`,
+      'inventory',
+      inventoryMarkup(),
+    )}${panel(
+      'info',
+      `<div class="help-tabs sub-tabs" role="tablist" aria-label="世界・仲間・操作説明の切り替え">${subTabs
+        .map(
+          ([id, label]) =>
+            `<button type="button" class="help-tab sub-tab" role="tab" data-pause-subtab="${id}" data-controller-menu="sub-${id}" aria-selected="${pauseSubTab === id}" aria-controls="pause-subpanel-${id}">${label}</button>`,
+        )
+        .join('')}</div>${subPanel('help', `<h2>操作説明</h2>${helpMarkup()}`)}${subPanel(
+        'world',
+        `<h2>世界</h2><p class="modal-intro">地図・記録・各地の暮らしと、いまできる行動。</p><div class="controller-menu">${links.map(menuButton).join('')}</div>`,
+      )}${subPanel('tribe', tribeMarkup())}${subPanel('objectives', objectivesMarkup())}`,
     )}${panel(
       'settings',
-      `<h2>設定</h2><p class="modal-intro">音・画面・視点の調整。</p><div class="settings-list"><div class="settings-item"><div><strong>環境音</strong><p>谷の音を鳴らします。</p></div><button class="button button-outline" data-setting="sound" aria-pressed="${soundEnabled}">${icon(soundEnabled ? 'sound' : 'muted')} ${soundEnabled ? 'オン' : 'オフ'}</button></div><div class="settings-item"><div><strong>全画面表示</strong><p>ブラウザーの枠を隠して表示します。</p></div><button class="button button-outline" data-setting="fullscreen">${icon('expand')} 切り替え</button></div><div class="settings-item"><div><strong>視点</strong><p>カメラの距離を変え、キャラクターの後ろへ戻します。</p></div><div class="settings-buttons"><button class="button button-outline" data-setting="zoom-out">− 遠く</button><button class="button button-outline" data-setting="zoom-in">+ 近く</button><button class="button button-outline" data-setting="camera">${icon('target')} 視点を戻す</button></div></div><div class="settings-item"><div><strong>コントローラー</strong><p class="gamepad-connection" role="status">${usingGamepad ? '' : '未使用 · DUALSHOCK 4 をつないでボタンを押すと切り替わります。'}</p></div></div></div><p id="local-save-status" class="form-note" role="status" hidden></p>`,
-    )}${panel('help', `<h2>操作説明</h2>${helpMarkup()}`)}<p class="pause-hint">${usingGamepad ? '十字キー・左スティックで選ぶ · × ○ □ △ で決定 · 「戻る」または OPTIONS で閉じる' : 'ESC で閉じる · ↑↓←→ で選ぶ · Enter で決定'}</p></div></div>`,
+      `<h2>設定</h2><p class="modal-intro">音・画面・視点の調整。</p><div class="settings-list"><div class="settings-item"><div><strong>環境音</strong><p>谷の音を鳴らします。</p></div><button class="button button-outline" data-setting="sound" aria-pressed="${soundEnabled}">${icon(soundEnabled ? 'sound' : 'muted')} ${soundEnabled ? 'オン' : 'オフ'}</button></div><div class="settings-item"><div><strong>全画面表示</strong><p>ブラウザーの枠を隠して表示します。</p></div><button class="button button-outline" data-setting="fullscreen">${icon('expand')} 切り替え</button></div><div class="settings-item"><div><strong>視点</strong><p>カメラの距離を変え、キャラクターの後ろへ戻します。</p></div><div class="settings-buttons"><button class="button button-outline" data-setting="zoom-out">− 遠く</button><button class="button button-outline" data-setting="zoom-in">+ 近く</button><button class="button button-outline" data-setting="camera">${icon('target')} 視点を戻す</button></div></div><div class="settings-item"><div><strong>コントローラー</strong><p class="gamepad-connection" role="status">${usingGamepad ? '' : '未使用 · コントローラーをつないでボタンを押すと切り替わります。'}</p></div></div></div><p id="local-save-status" class="form-note" role="status" hidden></p>`,
+    )}<p class="pause-hint">${usingGamepad ? '十字キー・左スティックで選ぶ · ○ で決定 · ×（下のボタン）か OPTIONS で閉じる' : 'ESC で閉じる · ↑↓←→ で選ぶ · Enter で決定'}</p></div></div>`,
   );
   const root = $('#modal-body') as HTMLElement;
   const tabButtons = [...root.querySelectorAll<HTMLButtonElement>('.pause-tab')];
   const showTab = (id: string) => {
     pauseTab = id;
+    closeItemActions();
     for (const tab of tabButtons)
       tab.setAttribute('aria-selected', String(tab.dataset.pauseTab === id));
     for (const section of root.querySelectorAll<HTMLElement>('.pause-panel'))
       section.hidden = section.dataset.pausePanel !== id;
   };
   for (const tab of tabButtons) tab.onclick = () => showTab(tab.dataset.pauseTab!);
+  const subTabButtons = [...root.querySelectorAll<HTMLButtonElement>('.sub-tab')];
+  const showSubTab = (id: string) => {
+    pauseSubTab = id;
+    for (const tab of subTabButtons)
+      tab.setAttribute('aria-selected', String(tab.dataset.pauseSubtab === id));
+    for (const section of root.querySelectorAll<HTMLElement>('.pause-subpanel'))
+      section.hidden = section.dataset.pauseSubpanel !== id;
+  };
+  for (const tab of subTabButtons) tab.onclick = () => showSubTab(tab.dataset.pauseSubtab!);
   for (const [id, , , handler] of [...links, ...exits])
     $(`[data-controller-menu="${id}"]`).onclick = () => handler();
   updateObjectives();
   bindInventory();
-  bindHelpTabs($('[data-pause-panel="help"]'));
+  bindHelpTabs($('[data-pause-subpanel="help"]'));
   updateSaveStatus();
+  $('#tribe-invite').onclick = openInvite;
   $('[data-setting="sound"]').onclick = toggleSound;
   $('[data-setting="fullscreen"]').onclick = toggleFullscreen;
   $('[data-setting="camera"]').onclick = () => renderer.focusPlayer();
   $('[data-setting="zoom-out"]').onclick = () => renderer.adjustZoom(-0.15);
   $('[data-setting="zoom-in"]').onclick = () => renderer.adjustZoom(0.15);
+  // The bag opens ready to use: the first (top-left) food card holds focus.
+  if (pauseTab === 'inventory')
+    root.querySelector<HTMLElement>('.inventory-card.inventory-usable')?.focus({ preventScroll: true });
 }
 
+/** Opens the world map, or closes it when it is already open (button, M, SHARE/touchpad). */
 function openMap() {
-  setWorldMapMode(inGulf(player()?.x, player()?.z) ? 'gulf' : 'earth');
+  if ($('#modal').open && $('#big-map')) {
+    $('#modal').close();
+    mapInput = undefined;
+    return;
+  }
   setWorldMapSelection(null);
   openModal(mapScreen(icon));
-  installMapWarp({
+  mapInput = installMapWarp({
     player,
     pins: () => state.mapPins ?? [],
     pinEnabled: () => Array.isArray(state.mapPins),
@@ -1474,7 +1530,10 @@ function openMap() {
     action,
     icon,
     connected: () => joined,
-    redraw: () => drawMinimap($('#big-map'), true),
+    redraw: () => {
+      const map = $('#big-map');
+      if (map) drawMinimap(map, true);
+    },
     now: () => (state.serverTime ?? Date.now()) + performance.now() - stateReceivedAt,
   });
 }
@@ -1518,12 +1577,6 @@ async function toggleSound() {
   }
 }
 
-document
-  .querySelectorAll<HTMLElement>('[data-action]')
-  .forEach((b) => (b.onclick = () => action(b.dataset.action)));
-document
-  .querySelectorAll<HTMLElement>('[data-inventory]')
-  .forEach((b) => (b.onclick = openInventory));
 $('#status-plate').onclick = openTribe;
 $('#map-button').onclick = openMap;
 $('#attack-button').onclick = attack;
@@ -1549,12 +1602,6 @@ $('#interaction-hint').onkeydown = (e) => {
     e.stopPropagation();
     $('#interaction-hint').click();
   }
-};
-$('#eat-button').onclick = () => action('eat');
-$('#run-button').onclick = () => {
-  runMode = !runMode;
-  $('#run-button').setAttribute('aria-pressed', String(runMode));
-  $('#run-button span').textContent = runMode ? '歩く' : '走る';
 };
 async function toggleFullscreen() {
   try {
@@ -1608,6 +1655,18 @@ $('#chat-form').onsubmit = (e) => {
 };
 $('#chat-input').addEventListener('focus', stopInput);
 document.addEventListener('keydown', (e) => {
+  // The map key is a toggle: M with the atlas open closes it (2026-09-12).
+  if (
+    $('#modal').open &&
+    $('#big-map') &&
+    acceptsGameShortcut(e) &&
+    !(e.target as Element)?.closest<HTMLElement>('input,textarea,select,[contenteditable]') &&
+    movementKey(e) === 'm'
+  ) {
+    e.preventDefault();
+    openMap();
+    return;
+  }
   if (
     (e.target as Element)?.closest<HTMLElement>('input,textarea,select,[contenteditable]') ||
     !acceptsGameShortcut(e) ||
@@ -1619,11 +1678,6 @@ document.addEventListener('keydown', (e) => {
   if (e.key === 'Escape' && joined) {
     e.preventDefault();
     openPauseMenu();
-    return;
-  }
-  if (e.key === 'Tab') {
-    e.preventDefault();
-    if (joined) setHotbarShown(true);
     return;
   }
   if (
@@ -1651,6 +1705,12 @@ document.addEventListener('keydown', (e) => {
     return;
   }
   if (e.repeat) return;
+  // 2026-09-12: the held-Tab item bar and its run button are gone; Shift toggles walk / run.
+  if (k === 'shift') {
+    e.preventDefault();
+    runMode = !runMode;
+    return;
+  }
   if (e.code === 'KeyB' || k === 'b') {
     e.preventDefault();
     action('boardBoat');
@@ -1680,9 +1740,9 @@ document.addEventListener('keydown', (e) => {
   if (k === 'i') openInventory();
   if (k === 'j') openJournal();
   if (k === 'g') action('wave');
+  if (k === 'q') action('heal');
 });
 document.addEventListener('keyup', (e) => {
-  if (e.key === 'Tab') setHotbarShown(false);
   const key = movementKey(e);
   keys.delete(key);
   blockedMovementKeys.delete(key);
@@ -1698,14 +1758,19 @@ gamepadControls = new GamepadControls({
   menu: () => ($('#modal').open ? $('#modal') : screens.activeElement()),
   closeMenu: () => {
     if ($('#modal').open) $('#modal').close();
-    else if (screens.active === 'guide') finishGuide();
+    else if (screens.active === 'setup') $('#setup-back').click();
+  },
+  cancelMenu: () => {
+    if (closeItemActions()) return;
+    if ($('#modal').open) $('#modal').close();
     else if (screens.active === 'setup') $('#setup-back').click();
   },
   canPlay: () =>
     joined && !renderUnavailable && !screens.active && !!player() && !player()?.downedUntil,
   onStop: stopInput,
   onActivity: updateGamepadHints,
-  onHotbar: setHotbarShown,
+  onMapInput: (frame, dt) =>
+    frame.actions.includes('map') ? openMap() : mapInput?.input(frame, dt),
   onLook: (x, y, dt) => renderer.rotateCamera(x * dt * 2.4, y * dt * 1.5),
   onAction: (command) => {
     switch (command) {
@@ -1733,6 +1798,9 @@ gamepadControls = new GamepadControls({
         break;
       case 'map':
         openMap();
+        break;
+      case 'heal':
+        action('heal');
         break;
       case 'menu':
         openPauseMenu();
@@ -1832,7 +1900,6 @@ function titleIdle(now: number) {
 }
 requestAnimationFrame(titleIdle);
 if (query.get('autostart') === '1') {
-  // QA scripts and local shortcuts skip the title, setup and guide screens.
+  // QA scripts and local shortcuts skip the title and setup screens.
   enterGame();
-  guidePending = false;
 } else showTitle();

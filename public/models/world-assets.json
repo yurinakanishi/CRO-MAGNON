@@ -221,9 +221,9 @@
       "candidate": 1,
       "status": "reviewed-prototype",
       "url": "/models/meadow-grass/model.glb",
-      "sha256": "60a6005e1c3fac579d48cb508599c81eb1a6cce10936f69c1cb223afc964087a",
-      "bytes": 3451784,
-      "triangles": 44457,
+      "sha256": "fcc3d10a1c602e651ef9a5684ee015b23749469cbec06caf90afa474085157d8",
+      "bytes": 3407748,
+      "triangles": 43848,
       "upAxis": "Y",
       "forwardAxis": "+Z",
       "heightMetres": 0.5501837610190705,
@@ -245,7 +245,9 @@
       "notes": [
         "2026-09-11 rework requested by the user: the v1 dense needle-blade tuft looked unsettling. v2 has nine broad smooth blades.",
         "Dense 296,779 -> 44,457 triangles; quadric collapse stalls at 35k on the open blade edges, so the 44k probe (p95 0.3 mm) is delivered. Full mesh is only drawn within 1.1 m; impostors beyond, as before (was 134,051 triangles).",
-        "Height 0.55 m, ground-centred pivot; crops (fire-root, herb) reuse this model with their tints. No LOD delivered (same as v1)."
+        "Height 0.55 m, ground-centred pivot; crops (fire-root, herb) reuse this model with their tints. No LOD delivered (same as v1).",
+        "2026-09-11 root recolour requested by the user (\"no brown at the grass root\"): TRELLIS had baked the reference soil into the lowest 18% of the blades. scripts/recolor-grass-root.mjs re-hues the non-green/dull texels the lowest 18% of the vertices reference to the leaf-green chromaticity at each texel's own luminance (shading kept); geometry, UVs and normals are byte-identical. Root band mean RGB 111,104,68 (86% ochre) -> 63,117,42 (0% ochre).",
+        "2026-09-12 root cap removed (user: green base under grass): TRELLIS had sealed the bottom of the clump with a nearly flat root disc (285 flat triangles within +-0.12 m) that the root recolour turned into a green mound. scripts/cut-grass-root.mjs drops every triangle whose highest vertex is below 0.045 m (44,457 -> 43,848 triangles, 609 removed); vertices, normals, UVs, material and texture are byte-identical and the height is unchanged. The placement sink (world-scenery.ts / regional-scenery.ts) was raised so the cut edge sits below the ground."
       ],
       "lods": [],
       "provenance": {
@@ -254,9 +256,9 @@
         "referenceGenerator": "Art-directed Blender 5.2 render (no local image generator on this host); see source/original/*.json",
         "referenceImage": "output/model-generation/models/meadow-grass/source/original/reference-v2.png",
         "referenceSha256": "ecfc6aa427b736702b66bce22100fde6dac129941d6bbc97be81abbb6d19cf52",
-        "reconstruction": "Local TRELLIS-2 1024, seed 42 (work/trellis/dense-v2-res1024-seed0042.glb, first attempt hit a CUDA launch error and was rerun); source-derived weld + quadric reduction with retained UV/albedo, foliage-only albedo luminance calibration; no replacement geometry.",
-        "candidateFile": "output/model-generation/models/meadow-grass/work/low-poly/candidate-02/candidate.glb",
-        "visualReview": "output/model-generation/models/meadow-grass/qa/adoption-review-rev02.json"
+        "reconstruction": "Local TRELLIS-2 1024, seed 42 (work/trellis/dense-v2-res1024-seed0042.glb, first attempt hit a CUDA launch error and was rerun); source-derived weld + quadric reduction with retained UV/albedo, foliage-only albedo luminance calibration; no replacement geometry. Root recolour (rev 03, 2026-09-11): scripts/recolor-grass-root.mjs on the rev 02 delivery, texture only. Root cap removed (rev 04, 2026-09-12): scripts/cut-grass-root.mjs on the rev 03 delivery, index buffer only.",
+        "candidateFile": "output/model-generation/models/meadow-grass/work/low-poly/candidate-04/candidate.glb",
+        "visualReview": "output/model-generation/models/meadow-grass/qa/adoption-review-rev04.json"
       }
     },
     {
@@ -22414,50 +22416,6 @@
       }
     },
     {
-      "modelKey": "valley-castle",
-      "name": "白羽の大城",
-      "kind": "static",
-      "candidate": 1,
-      "status": "reviewed-prototype",
-      "environment": true,
-      "onDemand": true,
-      "url": "/models/valley-castle/model.glb",
-      "sha256": "637a6fa0aa4a3734419f8161bbfa3e320565453023d7a18c6f3047d4d7a4b241",
-      "bytes": 8226700,
-      "triangles": 134353,
-      "upAxis": "Y",
-      "forwardAxis": "+Z",
-      "heightMetres": 26.07665,
-      "widthMetres": 69.99084,
-      "placement": {
-        "pivot": "ground-centred",
-        "min": [
-          -35.000622,
-          -0.18375,
-          -32.494679
-        ],
-        "max": [
-          34.990219,
-          25.892897,
-          33
-        ]
-      },
-      "clips": [],
-      "lods": [],
-      "notes": "Three exposed terrace levels, paired stone staircases, source-derived entrance stair and upper hall doorway. No tower climbing or hidden intermediate rooms. Full mesh shared; unrepaired coarse LODs are not adopted. Revision 08 retains 0.8m more of the original floor at the entrance stair landing for the giant ape.",
-      "provenance": {
-        "provider": "Codex",
-        "claudeUsed": false,
-        "referenceGenerator": "Built-in imagegen",
-        "referenceImage": "output/model-generation/models/valley-castle/source/original/reference-v2.png",
-        "referenceSha256": "11e4b9c769593f0b58e6e5ec77735cdda3a5fd5f74cb3ef77aa783e695516eb8",
-        "reconstruction": "Local TRELLIS-2 1024; shape-preserving reduction, source-triangle door clipping and reuse of the existing stair and floor; lossless buffer packing.",
-        "candidateFile": "output/model-generation/models/valley-castle/work/low-poly/candidate-08/candidate.glb",
-        "visualReview": "assets/castle-stairs/adoption-review.json"
-      },
-      "revision": "08"
-    },
-    {
       "modelKey": "dugout-canoe",
       "name": "丸木舟",
       "kind": "boat",
@@ -22678,11 +22636,11 @@
       "name": "紫尾の巨獣",
       "kind": "enemy",
       "candidate": 1,
-      "revision": "04",
+      "revision": "08",
       "status": "integrated-and-game-qa-passed",
-      "url": "/models/violet-behemoth/model-r04.glb",
-      "sha256": "f45bf9fd25da5c623e5572091fbd4f1c8d783fe8bf743abd590937ccef0c6c49",
-      "bytes": 14805624,
+      "url": "/models/violet-behemoth/model-r08.glb",
+      "sha256": "e7405c28bdacd186e00c66a077de0504918f3737e8a1729fb2996339380d976f",
+      "bytes": 14909088,
       "triangles": 67223,
       "upAxis": "Y",
       "forwardAxis": "+Z",
@@ -22716,15 +22674,33 @@
           "rootMotion": "in-place"
         },
         {
+          "name": "Roar",
+          "loop": false,
+          "seconds": 1.2,
+          "rootMotion": "in-place"
+        },
+        {
           "name": "Charge",
           "loop": false,
           "seconds": 2.4,
           "rootMotion": "in-place"
         },
         {
+          "name": "Gape",
+          "loop": false,
+          "seconds": 0.6,
+          "rootMotion": "in-place"
+        },
+        {
           "name": "Attack",
           "loop": false,
           "seconds": 1,
+          "rootMotion": "in-place"
+        },
+        {
+          "name": "Tremble",
+          "loop": false,
+          "seconds": 0.9,
           "rootMotion": "in-place"
         },
         {
@@ -22771,11 +22747,18 @@
           2.0000002239146806
         ]
       },
-      "source": "output/model-generation/models/violet-behemoth/work/rig/revision-04/candidate.glb",
+      "source": "output/model-generation/models/violet-behemoth/work/rig/revision-08/candidate.glb",
       "notes": [
         "User-supplied reference, vestigial hind legs, forearm/tail propulsion. Local TRELLIS-2 reconstruction; no visible replacement geometry.",
-        "Total length 6 m: retained body, extended tail. Revision 04 makes the tail a damped chain that undulates in Walk/Run/Charge and coils, lags and cracks through TailSpin; surface, material and the other five clips match revision 03."
-      ]
+        "Total length 6 m: retained body, extended tail. Revision 04 makes the tail a damped chain that undulates in Walk/Run/Charge and coils, lags and cracks through TailSpin; surface, material and the other five clips match revision 03.",
+        "Revision 08 (2026-09-12): rendered at scale 2.5 (twice the previous size) and every strike is announced by its own clip: Roar (1.2 s) before Charge, Gape (0.6 s) before Attack, Tremble (0.9 s) before TailSpin. Surface, material, weights and the nine earlier clips match revision 04."
+      ],
+      "provenance": {
+        "provider": "User-supplied reference and local TRELLIS-2 (Codex); revision 05-07 telegraph clips by Claude Code",
+        "claudeUsed": true,
+        "referenceImage": "output/model-generation/models/violet-behemoth/source/original/user-reference.png",
+        "visualReview": "assets/violet-behemoth/visual-review-r08.json"
+      }
     },
     {
       "modelKey": "meadow-sprig",
@@ -22784,9 +22767,9 @@
       "candidate": 1,
       "status": "reviewed-prototype",
       "url": "/models/meadow-sprig/model.glb",
-      "sha256": "8faafb56623903e1f8cfd26a807a76c5bf1855114d44ae285d070f2e2a82cb72",
-      "bytes": 941100,
-      "triangles": 12550,
+      "sha256": "61a73df182ecc2f267f87159f57d5903cd663ff4fd8d67cd6411501a306801ae",
+      "bytes": 896092,
+      "triangles": 11765,
       "upAxis": "Y",
       "forwardAxis": "+Z",
       "heightMetres": 0.45013082993318676,
@@ -22807,7 +22790,9 @@
       "clips": [],
       "notes": [
         "New 2026-09-11 model for the user's 'a blade or two here and there' request; used for 25 of every 60 kept ground-cover spots in the grassland.",
-        "Dense 278,972 -> 12,550 triangles (p95 0.1 mm). Height 0.45 m, ground-centred pivot. Drawn within 1.1 m, impostor beyond 1.1 m to 24 m."
+        "Dense 278,972 -> 12,550 triangles (p95 0.1 mm). Height 0.45 m, ground-centred pivot. Drawn within 1.1 m, impostor beyond 1.1 m to 24 m.",
+        "2026-09-11 root recolour requested by the user (\"no brown at the grass root\"): scripts/recolor-grass-root.mjs re-hues the dull olive texels the lowest 18% of the vertices reference (mean RGB 73,94,44) to the leaf-green chromaticity at each texel's own luminance (now 22,102,11); geometry, UVs and normals are byte-identical.",
+        "2026-09-12 root cap removed (user: green base under grass): TRELLIS had sealed the bottom of the clump with a nearly flat root disc (250 flat triangles within +-0.04 m) that the root recolour turned into a green mound. scripts/cut-grass-root.mjs drops every triangle whose highest vertex is below 0.03 m (12,550 -> 11,765 triangles, 785 removed); vertices, normals, UVs, material and texture are byte-identical and the height is unchanged. The placement sink (world-scenery.ts / regional-scenery.ts) was raised so the cut edge sits below the ground."
       ],
       "lods": [],
       "provenance": {
@@ -22816,9 +22801,9 @@
         "referenceGenerator": "Art-directed Blender 5.2 render (no local image generator on this host); see source/original/*.json",
         "referenceImage": "output/model-generation/models/meadow-sprig/source/original/reference-v1.png",
         "referenceSha256": "9e6c3c093a576e132f2e27bb63a447ca1557823431bed64caa03baea4d5987dc",
-        "reconstruction": "Local TRELLIS-2 1024, seed 42 (work/trellis/dense-res1024-seed0042.glb); source-derived weld + quadric reduction with retained UV/albedo, foliage-only albedo luminance calibration; no replacement geometry.",
-        "candidateFile": "output/model-generation/models/meadow-sprig/work/low-poly/candidate-01/candidate.glb",
-        "visualReview": "output/model-generation/models/meadow-sprig/qa/adoption-review-rev01.json"
+        "reconstruction": "Local TRELLIS-2 1024, seed 42 (work/trellis/dense-res1024-seed0042.glb); source-derived weld + quadric reduction with retained UV/albedo, foliage-only albedo luminance calibration; no replacement geometry. Root recolour (rev 02, 2026-09-11): scripts/recolor-grass-root.mjs on the rev 01 delivery, texture only. Root cap removed (rev 03, 2026-09-12): scripts/cut-grass-root.mjs on the rev 02 delivery, index buffer only.",
+        "candidateFile": "output/model-generation/models/meadow-sprig/work/low-poly/candidate-03/candidate.glb",
+        "visualReview": "output/model-generation/models/meadow-sprig/qa/adoption-review-rev03.json"
       }
     },
     {
@@ -22826,11 +22811,11 @@
       "name": "剣牙の大虎",
       "kind": "enemy",
       "candidate": 1,
-      "revision": "11",
+      "revision": "13",
       "status": "integrated-and-game-qa-passed",
-      "url": "/models/sabertooth-tiger/model-r11.glb",
-      "sha256": "6c4c5301071c1d69add3b357a14b8ba6af62a47a79089657928ab6424bde045d",
-      "bytes": 20120956,
+      "url": "/models/sabertooth-tiger/model-r13.glb",
+      "sha256": "54db205315086d109bd34b6cf35d31df25cca7472dddb95c7fdbeea6c868021d",
+      "bytes": 20224888,
       "triangles": 72892,
       "upAxis": "Y",
       "forwardAxis": "+Z",
@@ -22864,9 +22849,21 @@
           "rootMotion": "in-place"
         },
         {
+          "name": "Crouch",
+          "loop": false,
+          "seconds": 0.8,
+          "rootMotion": "in-place"
+        },
+        {
+          "name": "Snarl",
+          "loop": false,
+          "seconds": 0.7,
+          "rootMotion": "in-place"
+        },
+        {
           "name": "Pounce",
           "loop": false,
-          "seconds": 1.55,
+          "seconds": 1.3,
           "rootMotion": "in-place"
         },
         {
@@ -22920,19 +22917,68 @@
         ]
       },
       "lods": [],
-      "source": "output/model-generation/models/sabertooth-tiger/work/rig/revision-11/candidate.glb",
+      "source": "output/model-generation/models/sabertooth-tiger/work/rig/revision-13/candidate.glb",
       "provenance": {
         "provider": "Codex CLI image_gen reference (gpt-5.6-sol, medium) and local TRELLIS-2; rig and clips by Claude Code",
-        "claudeUsed": true,
         "referenceGenerator": "Codex CLI built-in image_gen (gpt-5.6-sol, reasoning medium), run from Claude Code at user request",
+        "claudeUsed": true,
         "referenceImage": "output/model-generation/models/sabertooth-tiger/source/original/reference-v1.png",
         "referenceSha256": "2affce6595a797c07686821e73dfd87c6364917f803532d1d857cf1185bc0de9",
         "visualReview": "assets/sabertooth-tiger/visual-review.json"
       },
       "notes": [
         "User-selected candidate 01 of three Codex image_gen references (tawny, faint stripes). Local TRELLIS-2 1024 reconstruction, source-preserving QEM to 72,892 triangles; no visible replacement geometry.",
-        "Quadruped rig of 26 bones with two-bone IK planted paws and a gliding scapula; 60 fps keys. Pounce and Step bake body height only: the server moves the body horizontally."
+        "Quadruped rig of 26 bones with two-bone IK planted paws and a gliding scapula; 60 fps keys. Pounce and Step bake body height only: the server moves the body horizontally.",
+        "Revision 13 (2026-09-12): weakened at the user's request and every strike announced. Crouch (0.8 s) precedes the pounce, whose own clip keeps a 0.2 s final dip; Snarl (0.7 s) precedes the claw combo. Surface, weights and the nine earlier clips are unchanged."
       ]
+    },
+    {
+      "modelKey": "valley-castle",
+      "name": "白羽の城跡",
+      "kind": "static",
+      "candidate": 1,
+      "revision": "10",
+      "status": "reviewed-prototype",
+      "environment": true,
+      "onDemand": true,
+      "url": "/models/valley-castle/model-r10.glb",
+      "sha256": "8200dcd3b23b6f616f0bf73950b76e2fdc428bcb67455eaf2dc3018b9f4342f4",
+      "bytes": 5852368,
+      "triangles": 79594,
+      "upAxis": "Y",
+      "forwardAxis": "+Z",
+      "heightMetres": 13.162530217614352,
+      "widthMetres": 80,
+      "placement": {
+        "pivot": "ground-centred",
+        "min": [
+          -40,
+          0,
+          -39.86972487638181
+        ],
+        "max": [
+          40,
+          13.162530217614352,
+          39.86972487638181
+        ],
+        "groundOffset": -1.28,
+        "note": "Stands on a 1.28 m plinth; placed 1.28 m below the terrain so the forecourt meets the valley floor."
+      },
+      "clips": [],
+      "lods": [],
+      "notes": "Rebuilt 2026-09-12 as a ruin: a broad open forecourt behind a collapsed gate, three very wide gentle stairs (left, centre, right) and one enormous roofless great hall on top where the sorcerer is fought. Full mesh shared; the coarse LODs are not adopted.",
+      "provenance": {
+        "provider": "Codex CLI image_gen reference (gpt-5.6-sol, medium) and local TRELLIS-2; reduction, walk atlas and integration by Claude Code",
+        "claudeUsed": true,
+        "referenceGenerator": "Codex built-in image_gen",
+        "referenceImage": "output/model-generation/models/valley-castle/source/original/reference-v3.png",
+        "referenceSha256": "1f21a183da803192601a238d78b4e5723e3b3e57b379c82d1270cbe77c8104c1",
+        "referencePrompt": "Broad two-storey ruined limestone castle: open forecourt behind a collapsed arch gate, three very wide gentle stairs (left, centre, right) rising to one enormous roofless great hall with broken half-height walls and column stumps. User request 2026-09-12: rebuild the sorcerer's castle as a wide, easily climbed ruin whose top is a huge open-air hall where the sorcerer is fought. Candidate 01 of two Codex image_gen references selected by Claude Code (user not available); candidate 02 retained as history.",
+        "reconstruction": "Local TRELLIS-2 1024 seed 42 (reference v3); shape-preserving quadric reduction at p95 0.03 m to 79594 triangles with the source UV and albedo.",
+        "candidateFile": "output/model-generation/models/valley-castle/work/low-poly/candidate-10/candidate.glb",
+        "visualReview": "output/model-generation/models/valley-castle/qa/adoption-review-ruin.json",
+        "walkAtlas": "output/model-generation/models/valley-castle/qa/walk-rev10.json"
+      }
     }
   ],
   "status": "ready"

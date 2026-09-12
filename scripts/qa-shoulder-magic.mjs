@@ -44,7 +44,7 @@ try {
     await page.locator('#setup-form input[name="name"]').fill(`MagicQA-${species}`);
     await page.locator(`#setup-form input[name="species"][value="${species}"]`).check();
     await page.locator('#setup-submit').click();
-    await page.locator('#guide-start').click();
+    await page.waitForSelector('body.in-game', { timeout: 60000 });
     await page
       .locator('#world[data-world-asset="ready"][data-character-asset="ready"]')
       .waitFor({ timeout: 90000 });
@@ -99,7 +99,7 @@ try {
   assert.equal(mage.attackSequence, 2);
   reports.push({ step: 'keyboard and button, carrier walking', casts });
   await sleep(1200);
-  await a.locator('#run-button').click();
+  await a.keyboard.press('Shift');
   await a.keyboard.down('w');
   await sleep(300);
   await m.locator('#attack-button').click();
@@ -142,7 +142,7 @@ try {
     'orb pulls ahead of running carrier',
   );
   await a.keyboard.up('w');
-  await a.locator('#run-button').click();
+  await a.keyboard.press('Shift');
   await m.screenshot({ path: `${folder}/running-flight.png` });
   reports.push({ step: 'real running release inherits carrier velocity', flight, samples });
   for (const viewport of [

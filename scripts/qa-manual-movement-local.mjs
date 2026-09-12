@@ -9,7 +9,7 @@ try{
  page.on('pageerror',e=>errors.push(String(e)));page.on('console',m=>{if(m.type()==='error')errors.push(m.text());});
  page.on('websocket',s=>{s.on('framesent',e=>commands.push(JSON.parse(e.payload.toString())));s.on('framereceived',e=>{const m=JSON.parse(e.payload.toString());if(m.type==='welcome')id=m.id;if(m.type==='state')states.push(m);});});
  const current=()=>states.at(-1)?.players.find(p=>p.id===id),position=()=>({x:current().x,z:current().z});
- await page.goto('http://localhost:3000/?room=MANUAL-LOCAL');await page.locator('#title-start').click();await page.locator('#setup-form input[name="name"]').fill('Manual local QA');await page.locator('#setup-submit').click();await page.locator('#guide-start').click();
+ await page.goto('http://localhost:3000/?room=MANUAL-LOCAL');await page.locator('#title-start').click();await page.locator('#setup-form input[name="name"]').fill('Manual local QA');await page.locator('#setup-submit').click();await page.waitForSelector('body.in-game', { timeout: 60000 });
  await page.waitForSelector('#world[data-world-asset="ready"][data-character-asset="ready"]',{timeout:60000});
  const origin=position();await page.locator('#world').click({position:{x:720,y:590}});await page.waitForTimeout(350);assert.deepEqual(position(),origin);await page.keyboard.press('r');await page.waitForTimeout(250);assert.deepEqual(position(),origin);assert.ok(!current().mountId);
  await page.keyboard.press('m');await page.locator('#map-location').selectOption('sahul');await page.locator('#map-camp').click();assert.equal(await page.locator('#map-walk,#map-expedition').count(),0);await page.locator('#modal-close').click();await page.waitForTimeout(250);assert.deepEqual(position(),origin);

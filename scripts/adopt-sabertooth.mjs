@@ -38,7 +38,9 @@ const review = {
     `${folder}/qa/sheet-front.png`,
   ],
   notes:
-    'Nine pose sheets (left, three-quarter, front) reviewed: lateral walk, rotary gallop, crouch-leap-land pounce with reaching forelegs, two-swipe claw, tucked side-step hop, side collapse death. Fur tufts and sabers stay attached; no limb tearing at the belly.',
+    revision >= '12'
+      ? 'Eleven pose sheets (left, three-quarter, front) reviewed: lateral walk, rotary gallop, the new Crouch telegraph (body sunk, hindquarters gathered, tail lashing) before the pounce, the new Snarl telegraph (rocked back, head shaking, a forepaw raised) before the two-swipe claw, tucked side-step hop, side collapse death. Fur tufts and sabers stay attached; no limb tearing at the belly.'
+      : 'Nine pose sheets (left, three-quarter, front) reviewed: lateral walk, rotary gallop, crouch-leap-land pounce with reaching forelegs, two-swipe claw, tucked side-step hop, side collapse death. Fur tufts and sabers stay attached; no limb tearing at the belly.',
 };
 await save(`${destination}/visual-review.json`, review);
 const asset = {
@@ -69,6 +71,7 @@ const asset = {
   source: `${folder}/candidate.glb`,
   provenance: {
     provider: 'Codex CLI image_gen reference (gpt-5.6-sol, medium) and local TRELLIS-2; rig and clips by Claude Code',
+    referenceGenerator: reference.generator,
     claudeUsed: true,
     referenceGenerator: reference.generator,
     referenceImage: `${model}/source/original/reference-v1.png`,
@@ -78,6 +81,11 @@ const asset = {
   notes: [
     'User-selected candidate 01 of three Codex image_gen references (tawny, faint stripes). Local TRELLIS-2 1024 reconstruction, source-preserving QEM to 72,892 triangles; no visible replacement geometry.',
     'Quadruped rig of 26 bones with two-bone IK planted paws and a gliding scapula; 60 fps keys. Pounce and Step bake body height only: the server moves the body horizontally.',
+    ...(revision >= '12'
+      ? [
+          `Revision ${revision} (2026-09-12): weakened at the user's request and every strike announced. Crouch (0.8 s) precedes the pounce, whose own clip keeps a 0.2 s final dip; Snarl (0.7 s) precedes the claw combo. Surface, weights and the nine earlier clips are unchanged.`,
+        ]
+      : []),
   ],
 };
 await save(`public/models/${key}/asset.json`, asset);

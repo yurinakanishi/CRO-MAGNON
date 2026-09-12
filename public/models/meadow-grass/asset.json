@@ -5,9 +5,9 @@
   "candidate": 1,
   "status": "reviewed-prototype",
   "url": "/models/meadow-grass/model.glb",
-  "sha256": "60a6005e1c3fac579d48cb508599c81eb1a6cce10936f69c1cb223afc964087a",
-  "bytes": 3451784,
-  "triangles": 44457,
+  "sha256": "fcc3d10a1c602e651ef9a5684ee015b23749469cbec06caf90afa474085157d8",
+  "bytes": 3407748,
+  "triangles": 43848,
   "upAxis": "Y",
   "forwardAxis": "+Z",
   "heightMetres": 0.5501837610190705,
@@ -29,7 +29,9 @@
   "notes": [
     "2026-09-11 rework requested by the user: the v1 dense needle-blade tuft looked unsettling. v2 has nine broad smooth blades.",
     "Dense 296,779 -> 44,457 triangles; quadric collapse stalls at 35k on the open blade edges, so the 44k probe (p95 0.3 mm) is delivered. Full mesh is only drawn within 1.1 m; impostors beyond, as before (was 134,051 triangles).",
-    "Height 0.55 m, ground-centred pivot; crops (fire-root, herb) reuse this model with their tints. No LOD delivered (same as v1)."
+    "Height 0.55 m, ground-centred pivot; crops (fire-root, herb) reuse this model with their tints. No LOD delivered (same as v1).",
+    "2026-09-11 root recolour requested by the user (\"no brown at the grass root\"): TRELLIS had baked the reference soil into the lowest 18% of the blades. scripts/recolor-grass-root.mjs re-hues the non-green/dull texels the lowest 18% of the vertices reference to the leaf-green chromaticity at each texel's own luminance (shading kept); geometry, UVs and normals are byte-identical. Root band mean RGB 111,104,68 (86% ochre) -> 63,117,42 (0% ochre).",
+    "2026-09-12 root cap removed (user: green base under grass): TRELLIS had sealed the bottom of the clump with a nearly flat root disc (285 flat triangles within +-0.12 m) that the root recolour turned into a green mound. scripts/cut-grass-root.mjs drops every triangle whose highest vertex is below 0.045 m (44,457 -> 43,848 triangles, 609 removed); vertices, normals, UVs, material and texture are byte-identical and the height is unchanged. The placement sink (world-scenery.ts / regional-scenery.ts) was raised so the cut edge sits below the ground."
   ],
   "lods": [],
   "provenance": {
@@ -38,8 +40,8 @@
     "referenceGenerator": "Art-directed Blender 5.2 render (no local image generator on this host); see source/original/*.json",
     "referenceImage": "output/model-generation/models/meadow-grass/source/original/reference-v2.png",
     "referenceSha256": "ecfc6aa427b736702b66bce22100fde6dac129941d6bbc97be81abbb6d19cf52",
-    "reconstruction": "Local TRELLIS-2 1024, seed 42 (work/trellis/dense-v2-res1024-seed0042.glb, first attempt hit a CUDA launch error and was rerun); source-derived weld + quadric reduction with retained UV/albedo, foliage-only albedo luminance calibration; no replacement geometry.",
-    "candidateFile": "output/model-generation/models/meadow-grass/work/low-poly/candidate-02/candidate.glb",
-    "visualReview": "output/model-generation/models/meadow-grass/qa/adoption-review-rev02.json"
+    "reconstruction": "Local TRELLIS-2 1024, seed 42 (work/trellis/dense-v2-res1024-seed0042.glb, first attempt hit a CUDA launch error and was rerun); source-derived weld + quadric reduction with retained UV/albedo, foliage-only albedo luminance calibration; no replacement geometry. Root recolour (rev 03, 2026-09-11): scripts/recolor-grass-root.mjs on the rev 02 delivery, texture only. Root cap removed (rev 04, 2026-09-12): scripts/cut-grass-root.mjs on the rev 03 delivery, index buffer only.",
+    "candidateFile": "output/model-generation/models/meadow-grass/work/low-poly/candidate-04/candidate.glb",
+    "visualReview": "output/model-generation/models/meadow-grass/qa/adoption-review-rev04.json"
   }
 }

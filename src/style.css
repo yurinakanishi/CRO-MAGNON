@@ -1,4 +1,4 @@
-/* CRO-MAGNON game shell. The 3D world fills the window; screens (title, setup, guide)
+/* CRO-MAGNON game shell. The 3D world fills the window; screens (title, setup)
    cover it before play, and a light HUD floats over it during play.
    The local/LAN game must also start without access to a font CDN. */
 :root {
@@ -690,15 +690,13 @@ body[data-screen] .world-labels {
   color: #8d9b88;
   text-transform: uppercase;
 }
-.setup-screen,
-.guide-screen {
+.setup-screen {
   background: #07100cb8;
   backdrop-filter: blur(4px);
   -webkit-backdrop-filter: blur(4px);
   padding: 24px;
 }
-.setup-card,
-.guide-card {
+.setup-card {
   width: min(600px, 100%);
   background: var(--panel-solid);
   border: 1px solid var(--line);
@@ -708,15 +706,13 @@ body[data-screen] .world-labels {
   margin: auto;
   animation: title-rise 0.5s ease-out;
 }
-.setup-card h2,
-.guide-card h2 {
+.setup-card h2 {
   margin: 0 0 10px;
   font: 600 26px/1.4 var(--display);
   letter-spacing: 0.06em;
   color: #f2ead4;
 }
-.setup-intro,
-.guide-intro {
+.setup-intro {
   margin: 0 0 22px;
   font-size: 12px;
   line-height: 1.9;
@@ -813,115 +809,6 @@ body[data-screen] .world-labels {
     0 1px 0 #6f4d2a,
     0 6px 18px #000a;
 }
-.guide-card {
-  width: min(1120px, 100%);
-  padding: 24px 30px 26px;
-}
-.guide-card h2 {
-  margin-bottom: 14px;
-}
-.guide-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 10px 22px;
-}
-.guide-row {
-  display: flex;
-  gap: 14px;
-  align-items: flex-start;
-  padding: 10px 0;
-  border-bottom: 1px solid #ffffff0a;
-}
-.guide-row kbd {
-  flex-shrink: 0;
-  min-width: 64px;
-  height: 30px;
-  font-size: 11px;
-  font-weight: 600;
-  letter-spacing: 0.5px;
-  color: #f0dfb6;
-  border-color: #f0dfb640;
-}
-.guide-row strong {
-  display: block;
-  font-size: 12px;
-  font-weight: 600;
-  color: #e8e6d4;
-}
-.guide-row p {
-  margin: 4px 0 0;
-  font-size: 10px;
-  line-height: 1.7;
-  color: #97a492;
-}
-.guide-objective {
-  display: flex;
-  gap: 14px;
-  align-items: center;
-  margin: 20px 0 8px;
-  padding: 14px 16px;
-  border-radius: 9px;
-  background: #e0b07012;
-  border: 1px solid #e0b07038;
-}
-.guide-step {
-  display: grid;
-  place-items: center;
-  width: 30px;
-  height: 30px;
-  border-radius: 50%;
-  background: var(--accent);
-  color: var(--accent-ink);
-  font-weight: 700;
-  flex-shrink: 0;
-}
-.guide-objective strong {
-  display: block;
-  font-size: 11px;
-  color: #f0dfb6;
-  letter-spacing: 1px;
-}
-.guide-objective p {
-  margin: 4px 0 0;
-  font-size: 11px;
-  line-height: 1.7;
-  color: #d4d5c1;
-}
-.guide-actions {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 14px;
-  margin-top: 20px;
-  flex-wrap: wrap;
-}
-.guide-skip {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  font-size: 11px;
-  color: #a9b5a0;
-  margin: 0;
-  cursor: pointer;
-}
-.guide-skip input {
-  accent-color: var(--accent);
-  width: 15px;
-  height: 15px;
-  margin: 0;
-}
-.guide-actions .button-accent {
-  min-width: 200px;
-  min-height: 46px;
-  font-size: 13px;
-}
-.guide-footnote {
-  margin: 18px 0 0;
-  font-size: 10px;
-  line-height: 1.7;
-  color: #7f8d7c;
-}
-
 /* ---- HUD: player status (top-left) ---- */
 .status-plate {
   position: absolute;
@@ -1503,7 +1390,7 @@ body[data-screen] .world-labels {
   display: none;
 }
 
-/* ---- HUD: hotbar (bottom-center) ---- */
+/* ---- HUD: bottom-centre action rows ---- */
 .hotbar-wrap {
   position: absolute;
   bottom: 24px;
@@ -1516,96 +1403,33 @@ body[data-screen] .world-labels {
 }
 .interaction-hint {
   display: flex;
-  gap: 9px;
+  gap: 8px;
   align-items: center;
-  font-size: 11px;
-  color: #c8d1bc;
-  background: #141d18cc;
-  border: 1px solid #e8dcb524;
-  padding: 7px 14px;
-  border-radius: 20px;
-  white-space: nowrap;
-  opacity: 0.8;
-  transition: all 0.2s;
-}
-.interaction-hint.available {
-  background: #e0b070;
-  color: #2b2418;
-  border-color: #f3d8a8;
-  opacity: 1;
+  font-size: 12px;
   font-weight: 600;
-  box-shadow: 0 6px 20px #e0b07044;
-  transform: scale(1.04);
+  letter-spacing: 0.04em;
+  color: #f3e6c4;
+  text-shadow:
+    0 1px 2px #000c,
+    0 0 10px #0009;
+  white-space: nowrap;
+  cursor: pointer;
+}
+.interaction-hint[hidden] {
+  display: none;
 }
 .interaction-hint kbd {
   font-size: 9px;
-  width: 20px;
-  height: 20px;
-  min-width: 20px;
-  border-color: #e8dcb540;
+  height: 18px;
+  min-width: 18px;
+  padding: 0 5px;
+  border-color: #e8dcb560;
+  background: #141d18cc;
   color: #f0e6c8;
-}
-.interaction-hint.available kbd {
-  border-color: #7a5530;
-  color: #2b2418;
-  background: #fff3;
-}
-.hotbar {
-  display: none;
-  padding: 6px;
-  gap: 5px;
-  background: #141d18e0;
-  border: 1px solid #e8dcb52e;
-  border-radius: 12px;
-  box-shadow: var(--shadow);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-}
-.resource-slots {
-  display: flex;
-  gap: 4px;
-}
-.resource-slot {
-  position: relative;
-  width: 52px;
-  height: 60px;
-  background: #ffffff06;
-  border-radius: 7px;
-  border: 1px solid #ffffff08;
-  padding: 15px 5px 5px;
-}
-.resource-slot:hover {
-  background: #ffffff10;
-}
-.resource-slot kbd {
-  border: 0;
-  background: none;
-  position: absolute;
-  top: 3px;
-  left: 6px;
-  font-size: 7px;
-  color: #8fa38b;
-  height: auto;
-  padding: 0;
-  min-width: 0;
 }
 .resource-icon {
   display: grid;
   place-items: center;
-}
-.resource-slot .resource-icon .icon {
-  width: 25px;
-  height: 25px;
-  stroke-width: 1.7;
-}
-.resource-slot b {
-  position: absolute;
-  bottom: 4px;
-  right: 7px;
-  font-size: 11px;
-  font-weight: 600;
-  color: #e6e6cf;
-  text-shadow: 0 1px 2px #000;
 }
 .wood {
   color: #d5ad7d;
@@ -1621,9 +1445,6 @@ body[data-screen] .world-labels {
 }
 .resource-icon.cookedMeat {
   color: #d1ac76;
-}
-.game-viewport.hotbar-open .hotbar {
-  display: flex;
 }
 .objectives .modal-intro {
   margin-bottom: 6px;
@@ -1651,60 +1472,6 @@ body[data-screen] .world-labels {
 }
 .objectives .camp-stats {
   font-size: 12px;
-}
-.hotbar-divider {
-  width: 1px;
-  background: #e8dcb524;
-  margin: 5px 4px;
-}
-.action-slot {
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-  align-items: center;
-  justify-content: flex-end;
-  padding: 13px 7px 5px;
-  position: relative;
-  border: 1px solid transparent;
-  background: none;
-  border-radius: 7px;
-  min-width: 48px;
-  height: 60px;
-  color: #b6c2a8;
-}
-.action-slot > .icon {
-  width: 22px;
-  height: 22px;
-}
-.action-slot span {
-  font-size: 8px;
-  letter-spacing: 0.3px;
-}
-.action-slot kbd {
-  border: 0;
-  background: none;
-  position: absolute;
-  top: 3px;
-  left: 6px;
-  font-size: 8px;
-  color: #9aa98e;
-  min-width: 0;
-  height: 10px;
-  padding: 0;
-}
-.action-slot.selected {
-  color: #f0dfb6;
-  border-color: #e0b07070;
-  background: #e0b07014;
-  box-shadow: inset 0 -2px #e0b070;
-}
-.action-slot:hover {
-  background: #ffffff10;
-}
-#run-button[aria-pressed='true'] {
-  background: #8b805333;
-  border-color: #c5b77b;
-  color: #f3e8b8;
 }
 .hunt-controls {
   display: flex;
@@ -1902,17 +1669,11 @@ body[data-screen] .world-labels {
 .hotbar-wrap.boating .hunt-controls,
 .hotbar-wrap.boating .riding-controls,
 .hotbar-wrap.boating .interaction-hint,
-.hotbar-wrap.boating .resource-slots,
-.hotbar-wrap.boating .hotbar-divider,
 .hotbar-wrap.boating [data-action],
 .hotbar-wrap.boating #boat-craft,
 .hotbar-wrap.boating #boat-shore,
 .hotbar-wrap.riding .boat-controls {
   display: none;
-}
-.hotbar-wrap.boating .hotbar {
-  width: auto;
-  justify-content: center;
 }
 .hotbar-wrap.riding {
   display: grid;
@@ -1922,8 +1683,6 @@ body[data-screen] .world-labels {
 }
 .hotbar-wrap.riding .hunt-controls,
 .hotbar-wrap.riding .interaction-hint,
-.hotbar-wrap.riding .resource-slots,
-.hotbar-wrap.riding .hotbar-divider,
 .hotbar-wrap.riding [data-action] {
   display: none;
 }
@@ -1949,13 +1708,8 @@ body[data-screen] .world-labels {
   text-align: center;
   line-height: 1.5;
 }
-.hotbar-wrap.riding .hotbar {
-  padding: 4px;
-  width: auto;
-  min-width: 0;
-}
 
-/* Secondary rows only appear when they can be used, so the hotbar stays one line at rest. */
+/* Secondary rows only appear when they can be used, so the bottom rows stay one line at rest. */
 .riding-controls:has(#ride-button:disabled),
 .boat-controls:has(#boat-board:disabled):has(#boat-craft:disabled),
 .hunt-controls > #cook-button:disabled,
@@ -1991,9 +1745,6 @@ body[data-screen] .world-labels {
   background: #141d18cc;
   border-color: #e8dcb540;
   color: #f0e6c8;
-}
-.using-gamepad #run-button {
-  display: none;
 }
 .using-gamepad .hunt-button kbd {
   width: auto;
@@ -2876,7 +2627,7 @@ dialog:has(.character-switch) {
   color: #92a382;
   margin: 8px 0 0;
 }
-/* Help tabs shared by the pre-play guide and the in-game help dialog. */
+/* Help tabs of the in-game help dialog. */
 .help-tabs {
   display: flex;
   gap: 6px;
@@ -3080,96 +2831,6 @@ dialog:has(.earth-map) {
   background: #193948;
   margin-inline: auto;
 }
-.earth-map-toolbar {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  margin: 0 0 10px;
-}
-.earth-map-toolbar span {
-  margin-left: auto;
-  color: #9ba991;
-  font-size: 10px;
-}
-.earth-map-toolbar button[aria-pressed='true'] {
-  background: #81997b33;
-  border-color: #c4d4a875;
-}
-.earth-map-legend {
-  display: flex;
-  justify-content: center;
-  flex-wrap: wrap;
-  gap: 16px;
-  margin: 12px 0 18px;
-  color: #c7cfbc;
-  font-size: 11px;
-}
-.earth-map-legend span {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-}
-.earth-map-legend i {
-  width: 9px;
-  height: 9px;
-  border-radius: 2px;
-}
-.earth-travel {
-  display: grid;
-  grid-template-columns: 130px 1fr auto;
-  gap: 9px 14px;
-  align-items: center;
-  background: #8b9c7610;
-  border: 1px solid #8b9c7628;
-  padding: 16px;
-  border-radius: 8px;
-}
-.earth-travel > label {
-  font-size: 11px;
-  color: #c7cfbc;
-  margin: 0;
-}
-.earth-travel > select {
-  min-width: 0;
-  width: 100%;
-  padding: 10px;
-  color: #ede8d6;
-  border: 1px solid #a4b89750;
-  border-radius: 5px;
-  background: #26342c;
-  font: inherit;
-  font-size: 12px;
-}
-.earth-travel-actions {
-  display: flex;
-  gap: 8px;
-  grid-column: 3;
-  grid-row: 1/3;
-}
-.earth-travel > p {
-  font-size: 11px;
-  color: #a5b3a0;
-  margin: 0;
-  grid-column: 2;
-}
-.earth-travel > small {
-  grid-column: 1/-1;
-  font-size: 10px;
-  line-height: 1.7;
-  color: #93a08c;
-}
-.earth-map-sources {
-  margin-top: 18px;
-  color: #8da28c;
-  font-size: 10px;
-  line-height: 1.9;
-}
-.earth-map-sources a {
-  color: #bfcbae;
-}
-.earth-map-sources summary {
-  cursor: pointer;
-}
 
 /* ---- Responsive ---- */
 @media (min-width: 1600px) {
@@ -3204,29 +2865,8 @@ dialog:has(.earth-map) {
     right: 34px;
     bottom: 36px;
   }
-  .resource-slot {
-    width: 56px;
-    height: 65px;
-  }
-  .action-slot {
-    min-width: 53px;
-    height: 65px;
-  }
 }
 @media (max-width: 1250px) {
-  .resource-slot {
-    width: 44px;
-    height: 56px;
-  }
-  .action-slot {
-    min-width: 41px;
-    height: 56px;
-    padding-left: 5px;
-    padding-right: 5px;
-  }
-  .hotbar {
-    gap: 3px;
-  }
   .chat-panel {
     width: 220px;
   }
@@ -3308,36 +2948,8 @@ dialog:has(.earth-map) {
     bottom: 16px;
     gap: 7px;
   }
-  .hotbar {
-    gap: 3px;
-    padding: 5px;
-  }
-  .resource-slot {
-    width: 38px;
-    height: 52px;
-  }
-  .resource-slot .resource-icon .icon {
-    width: 22px;
-    height: 22px;
-  }
-  .action-slot {
-    min-width: 36px;
-    height: 52px;
-    padding: 13px 4px 4px;
-  }
-  .action-slot > .icon {
-    width: 20px;
-    height: 20px;
-  }
-  .action-slot span {
-    font-size: 7px;
-  }
-  .hotbar-divider {
-    margin: 5px 2px;
-  }
   .interaction-hint {
-    font-size: 9px;
-    padding: 5px 11px;
+    font-size: 10px;
   }
   .hunt-button {
     font-size: 9px;
@@ -3384,23 +2996,11 @@ dialog:has(.earth-map) {
     font-size: 15px;
     padding: 11px 32px;
   }
-  .setup-card,
-  .guide-card {
+  .setup-card {
     padding: 22px 20px 24px;
   }
-  .setup-card h2,
-  .guide-card h2 {
+  .setup-card h2 {
     font-size: 21px;
-  }
-  .guide-grid {
-    grid-template-columns: 1fr;
-    gap: 0;
-  }
-  .guide-row {
-    padding: 8px 0;
-  }
-  .guide-actions .button-accent {
-    width: 100%;
   }
   dialog {
     padding: 18px;
@@ -3456,45 +3056,6 @@ dialog:has(.earth-map) {
   .hotbar-wrap {
     width: calc(100% - 20px);
     max-width: calc(100% - 20px);
-  }
-  .hotbar {
-    gap: 2px;
-    padding: 4px;
-    max-width: 100%;
-    flex-wrap: wrap;
-    justify-content: center;
-  }
-  .resource-slot {
-    width: 32px;
-    height: 49px;
-  }
-  .resource-slot kbd {
-    font-size: 6px;
-    left: 4px;
-  }
-  .resource-slot b {
-    font-size: 8px;
-    right: 4px;
-  }
-  .resource-slot .resource-icon .icon {
-    width: 20px;
-    height: 20px;
-  }
-  .action-slot {
-    min-width: 31px;
-    height: 49px;
-    padding-left: 3px;
-    padding-right: 3px;
-  }
-  .action-slot .icon {
-    width: 18px;
-    height: 18px;
-  }
-  .action-slot span {
-    font-size: 6px;
-  }
-  .hotbar-divider {
-    margin: 4px 1px;
   }
   .hunt-controls {
     gap: 4px;
@@ -3592,21 +3153,6 @@ dialog:has(.earth-map) {
   }
 }
 @media (max-width: 380px) {
-  .hotbar {
-    gap: 1px;
-    padding: 3px;
-  }
-  .resource-slot {
-    width: 28px;
-  }
-  .action-slot {
-    min-width: 28px;
-    padding-left: 2px;
-    padding-right: 2px;
-  }
-  #run-button {
-    min-width: 33px;
-  }
 }
 @media (max-width: 430px) {
   .character-choice-grid {
@@ -3623,31 +3169,9 @@ dialog:has(.earth-map) {
   }
 }
 @media (max-width: 650px) {
-  .earth-map-toolbar span {
-    display: none;
-  }
-  .earth-travel {
-    grid-template-columns: 1fr;
-    padding: 12px;
-  }
-  .earth-travel > p,
-  .earth-travel-actions {
-    grid-column: 1;
-    grid-row: auto;
-  }
-  .earth-travel-actions > .button {
-    flex: 1;
-  }
-  .earth-map-legend {
-    gap: 10px;
-    font-size: 10px;
-  }
   dialog:has(.earth-map) {
     width: 96vw;
     padding: 18px;
-  }
-  .earth-map-toolbar .button {
-    min-height: 34px;
   }
   #modal-body:has(.earth-map) h2 {
     font-size: 21px;
@@ -3749,8 +3273,7 @@ dialog:has(.earth-map) {
     padding: 2px;
   }
   .interaction-hint {
-    padding: 3px 8px;
-    font-size: 9px;
+    font-size: 10px;
   }
   .chat-panel {
     bottom: 10px;
@@ -3788,8 +3311,7 @@ dialog:has(.earth-map) {
   .title-hint {
     margin-top: 16px;
   }
-  .setup-screen,
-  .guide-screen {
+  .setup-screen {
     align-items: start;
   }
 }
@@ -4001,43 +3523,21 @@ dialog:has(.earth-map) {
     width: 24px;
     height: 24px;
   }
-  .earth-travel select {
-    max-width: 100%;
-    min-width: 0;
-  }
   #map-warp {
     max-width: none;
     width: 100%;
   }
 }
-.earth-map-toolbar {
-  flex-wrap: wrap;
-}
-.earth-travel {
-  margin-bottom: 12px;
-}
 .warp-map-wrap {
   max-width: 880px;
   margin-inline: auto;
-}
-@media (max-width: 650px) {
-  .earth-map-toolbar .button {
-    flex: 1;
-    padding-inline: 8px;
-  }
-  .earth-travel {
-    grid-template-columns: minmax(0, 1fr);
-  }
-  .earth-travel > * {
-    min-width: 0;
-  }
 }
 @media (max-width: 760px) {
   dialog:has(.earth-map) .modal-top:before {
     inset: -18px -18px 0;
   }
 }
-/* Full-screen atlas. Its controls stay outside the pannable map. */
+/* Full-screen atlas: one canvas, a free pointer, a small card and the zoom controls. */
 dialog:has(.atlas) {
   width: 100vw;
   max-width: none;
@@ -4073,67 +3573,29 @@ dialog:has(.atlas) #modal-body {
 .atlas {
   height: 100%;
   display: grid;
-  grid-template-rows: auto minmax(0, 1fr);
-  gap: 10px;
-  padding: 12px 16px 16px;
+  grid-template-rows: minmax(0, 1fr);
   color: #f0e6c9;
 }
-.atlas .earth-map-toolbar {
-  margin: 0;
-  min-height: 42px;
-  gap: 4px;
-  padding-right: 100px;
-  flex-wrap: nowrap;
-}
-.atlas .earth-map-toolbar .button {
-  min-height: 40px;
-  background: transparent;
-  border-color: transparent;
-  color: #a9bcb8;
-  white-space: nowrap;
-  letter-spacing: 0.4px;
-}
-.atlas .earth-map-toolbar .button:hover {
-  color: #e8dfc0;
-  background: #ffffff08;
-}
-.atlas .earth-map-toolbar .button[aria-pressed='true'] {
-  color: #ffdf9a;
-  background: #e3c18114;
-  border-color: #dcc08760;
-}
-.atlas-body {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) 300px;
-  gap: 14px;
-  min-height: 0;
-}
-.atlas-map-area {
-  display: grid;
-  grid-template-rows: minmax(0, 1fr);
-  min-width: 0;
-  min-height: 0;
-}
 .atlas .warp-map-wrap {
+  position: relative;
   width: 100%;
   height: 100%;
   min-height: 0;
   max-width: none;
   margin: 0;
   overflow: hidden;
-  border: 1px solid #95b5ad40;
-  border-radius: 10px;
   background: #112d34;
   box-shadow: inset 0 0 80px #061418aa;
 }
 .atlas .big-map.earth-map {
+  display: block;
   width: 100%;
   height: 100%;
   max-width: none;
   aspect-ratio: auto;
   border: 0;
   border-radius: 0;
-  cursor: grab;
+  cursor: none;
   touch-action: none;
   outline: none;
 }
@@ -4144,12 +3606,11 @@ dialog:has(.atlas) #modal-body {
   pointer-events: none;
 }
 /* Bright travel points on quiet terrain: warm flames, a gold ring for the choice. */
-.atlas .warp-map-point,
-.atlas .warp-map-cluster {
+.atlas .warp-map-point {
   position: absolute;
   transform: translate(-50%, -50%);
-  width: 34px;
-  height: 34px;
+  width: 30px;
+  height: 30px;
   border: 1.5px solid #f2c67a;
   border-radius: 50%;
   background: radial-gradient(circle at 50% 35%, #5a3a1a, #2b1a0c);
@@ -4157,13 +3618,12 @@ dialog:has(.atlas) #modal-body {
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 0;
   box-shadow:
     0 2px 8px #04121aaa,
     0 0 0 3px #0f242966;
   pointer-events: auto;
   cursor: pointer;
-  padding: 6px;
+  padding: 5px;
   transition:
     transform 0.12s,
     box-shadow 0.15s;
@@ -4172,21 +3632,17 @@ dialog:has(.atlas) #modal-body {
 .atlas .warp-map-point[hidden] {
   display: none;
 }
-.atlas .warp-map-point svg,
-.atlas .warp-map-cluster svg {
-  width: 20px;
-  height: 20px;
+.atlas .warp-map-point svg {
+  width: 18px;
+  height: 18px;
   pointer-events: none;
 }
 .atlas .warp-map-point:hover,
-.atlas .warp-map-cluster:hover {
-  transform: translate(-50%, -50%) scale(1.12);
+.atlas .warp-map-point.is-near {
+  transform: translate(-50%, -50%) scale(1.2);
   z-index: 5;
 }
-.atlas .warp-map-point:focus-visible,
-.atlas .warp-map-cluster:focus-visible,
-.atlas .warp-map-point.gamepad-focus,
-.atlas .warp-map-cluster.gamepad-focus {
+.atlas .warp-map-point:focus-visible {
   outline: 2px solid #fff0b0;
   outline-offset: 3px;
   z-index: 5;
@@ -4226,31 +3682,10 @@ dialog:has(.atlas) #modal-body {
   color: #aab3b3;
   background: #2a3438;
 }
-.atlas .warp-map-cluster {
-  border-radius: 17px;
-  width: 44px;
-  color: #ffd98d;
-}
-.atlas .warp-map-cluster b {
-  position: absolute;
-  right: -6px;
-  top: -7px;
-  min-width: 20px;
-  height: 20px;
-  padding: 0 5px;
-  border-radius: 10px;
-  background: #f2c67a;
-  color: #2b1a0c;
-  display: grid;
-  place-items: center;
-  font-size: 11px;
-  font-weight: 700;
-  box-shadow: 0 2px 4px #0006;
-}
 .warp-point-label {
   display: none;
   position: absolute;
-  top: 40px;
+  top: 34px;
   left: var(--label-x);
   width: var(--label-width);
   font-size: 12px;
@@ -4266,7 +3701,6 @@ dialog:has(.atlas) #modal-body {
 }
 .show-label .warp-point-label,
 .warp-map-point:hover .warp-point-label,
-.warp-map-point:focus-visible .warp-point-label,
 .warp-map-point[aria-pressed='true'] .warp-point-label {
   display: block;
 }
@@ -4278,10 +3712,55 @@ dialog:has(.atlas) #modal-body {
 .warp-map-point.is-locked .warp-point-label {
   color: #b7c0c0;
 }
+/* The pointer: a crosshair with a small circle that widens when a fire is within reach. */
+.map-cursor {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 34px;
+  height: 34px;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+  z-index: 8;
+  filter: drop-shadow(0 0 2px #071f26);
+}
+.map-cursor:before,
+.map-cursor:after {
+  content: '';
+  position: absolute;
+  background: #f4f0dc;
+  left: 50%;
+  top: 50%;
+}
+.map-cursor:before {
+  width: 34px;
+  height: 1.5px;
+  transform: translate(-50%, -50%);
+}
+.map-cursor:after {
+  width: 1.5px;
+  height: 34px;
+  transform: translate(-50%, -50%);
+}
+.map-cursor i {
+  position: absolute;
+  inset: 9px;
+  border: 1.5px solid #f4f0dc;
+  border-radius: 50%;
+  background: #0f242940;
+  transition:
+    inset 0.1s,
+    border-color 0.1s;
+}
+.map-cursor.is-near i {
+  inset: 5px;
+  border-color: #ffd98d;
+  border-width: 2px;
+}
 .atlas-compass {
   position: absolute;
   top: 12px;
-  right: 16px;
+  left: 16px;
   text-align: center;
   line-height: 1;
   font:
@@ -4299,7 +3778,7 @@ dialog:has(.atlas) #modal-body {
 .atlas-zoom {
   position: absolute;
   right: 12px;
-  bottom: 40px;
+  bottom: 12px;
   display: grid;
   gap: 4px;
   z-index: 6;
@@ -4310,12 +3789,14 @@ dialog:has(.atlas) #modal-body {
   border-radius: 8px;
 }
 .atlas-zoom button {
-  width: 38px;
-  height: 38px;
+  width: 40px;
+  height: 40px;
   font-size: 24px;
   border-radius: 5px;
+  border: 0;
   background: #ffffff0a;
   color: #f9e4af;
+  cursor: pointer;
 }
 .atlas-zoom button:hover:not(:disabled) {
   background: #ffffff18;
@@ -4327,10 +3808,30 @@ dialog:has(.atlas) #modal-body {
   font-size: 11px;
   color: #bacfc8;
 }
+.atlas-zoom .atlas-center {
+  width: auto;
+  min-width: 40px;
+  height: auto;
+  min-height: 36px;
+  padding: 4px 8px;
+  font-size: 11px;
+  line-height: 1.3;
+  display: grid;
+  gap: 2px;
+  justify-items: center;
+  color: #ffe591;
+}
+.atlas-zoom .atlas-center kbd {
+  font: 600 9px/1 var(--display);
+  padding: 2px 4px;
+  border: 1px solid #ffffff33;
+  border-radius: 3px;
+  color: #d7ccad;
+}
 .atlas-legend {
   position: absolute;
-  left: 12px;
-  bottom: 12px;
+  left: 60px;
+  top: 14px;
   display: flex;
   align-items: center;
   gap: 14px;
@@ -4354,27 +3855,22 @@ dialog:has(.atlas) #modal-body {
 .atlas-legend-self {
   color: #ffe591;
 }
-/* Travel panel: the chosen destination and its confirmation stay together at the top. */
-.atlas .earth-travel {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr);
-  grid-template-rows: auto minmax(0, 1fr);
-  align-items: stretch;
-  gap: 10px;
-  min-width: 0;
-  min-height: 0;
-  margin: 0;
-  padding: 0;
-  border: 0;
-  background: none;
+.atlas-legend-enemy {
+  color: #ffb8ad;
 }
+/* The destination card: bottom left, small, with the confirmation right under the name. */
 .atlas-card {
+  position: absolute;
+  left: 12px;
+  bottom: 12px;
+  z-index: 6;
+  width: min(300px, calc(100% - 24px));
   display: grid;
-  gap: 12px;
-  padding: 18px 16px 16px;
+  gap: 8px;
+  padding: 12px 14px;
   border: 1px solid #d1bc8540;
   border-radius: 10px;
-  background: linear-gradient(165deg, #25403b, #152a2b);
+  background: linear-gradient(165deg, #25403bf0, #152a2bf0);
   box-shadow: 0 8px 24px #04101266;
 }
 .atlas-card[data-state='ready'] {
@@ -4383,40 +3879,10 @@ dialog:has(.atlas) #modal-body {
     0 8px 24px #04101266,
     0 0 32px #e0b07022;
 }
-.atlas-card-head {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  min-width: 0;
-}
 .atlas-card-text {
   display: grid;
   gap: 2px;
   min-width: 0;
-}
-.atlas-selection-icon {
-  flex-shrink: 0;
-  display: grid;
-  place-items: center;
-  color: #c9b58a;
-  width: 46px;
-  height: 46px;
-  border: 1px solid #d1bc8544;
-  border-radius: 50%;
-  background: #c4a5690b;
-  transition:
-    background 0.2s,
-    color 0.2s;
-}
-.atlas-selection-icon .icon {
-  width: 24px;
-  height: 24px;
-}
-.atlas-card[data-state='ready'] .atlas-selection-icon,
-.atlas-card[data-state='blocked'] .atlas-selection-icon {
-  color: #ffd98d;
-  background: radial-gradient(circle at 50% 35%, #5a3a1a, #2b1a0c);
-  border-color: #f2c67a;
 }
 .atlas #map-region {
   font-size: 10px;
@@ -4427,7 +3893,7 @@ dialog:has(.atlas) #modal-body {
   display: none;
 }
 .atlas #map-destination {
-  font-size: 19px;
+  font-size: 17px;
   line-height: 1.35;
   font-weight: 600;
   margin: 0;
@@ -4437,19 +3903,26 @@ dialog:has(.atlas) #modal-body {
 .atlas-card[data-state='empty'] #map-destination {
   color: #d9d2b8;
   font-weight: 500;
+  font-size: 13px;
 }
 .atlas #map-selection {
   font-size: 11.5px;
   color: #a8c2b8;
   margin: 0;
 }
+.atlas #map-selection:empty {
+  display: none;
+}
 .atlas #map-warp {
   width: 100%;
   max-width: none;
-  min-height: 50px;
-  font-size: 15px;
+  min-height: 44px;
+  font-size: 14px;
   margin: 0;
   position: relative;
+}
+.atlas-card[data-state='empty'] #map-warp {
+  display: none;
 }
 .atlas #map-warp kbd {
   position: absolute;
@@ -4481,225 +3954,30 @@ dialog:has(.atlas) #modal-body {
 .atlas #map-warp-status:empty {
   display: none;
 }
-/* All destinations by region, always reachable by name. */
-.atlas-list {
-  min-height: 0;
-  overflow-y: auto;
-  scrollbar-width: thin;
-  border: 1px solid #a8c7b52a;
-  border-radius: 10px;
-  background: #10252a;
-  padding: 4px 6px 8px;
+/* Shared invitations use the existing player colors. */
+.atlas [hidden] {
+  display: none !important;
 }
-.atlas-group h4 {
-  position: sticky;
-  top: 0;
-  z-index: 1;
-  margin: 0;
-  padding: 10px 8px 5px;
-  font-size: 10px;
-  font-weight: 600;
-  letter-spacing: 2px;
-  color: #9db5ab;
-  background: linear-gradient(#10252a 80%, #10252a00);
-}
-.atlas-item {
-  width: 100%;
-  background: transparent;
-  font: inherit;
-  cursor: pointer;
+.map-pin-actions {
   display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 8px;
-  min-height: 38px;
-  padding: 7px 10px 7px 12px;
-  border-radius: 6px;
-  border: 1px solid transparent;
-  color: #dfe6d6;
-  text-align: left;
-  font-size: 12.5px;
-  position: relative;
+  flex-wrap: wrap;
+  gap: 6px;
 }
-.atlas-item:before {
-  content: '';
-  position: absolute;
-  left: 4px;
-  top: 50%;
-  width: 3px;
-  height: 0;
-  border-radius: 2px;
-  background: #f2c67a;
-  transform: translateY(-50%);
-  transition: height 0.15s;
+.map-pin-actions .button {
+  flex: 1 1 110px;
+  min-width: 0;
+  min-height: 34px;
+  font-size: 12px;
+  padding: 6px;
 }
-.atlas-item span {
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
+#map-pin-send {
+  border-color: #87c4ce;
+  color: #b5edf2;
 }
-.atlas-item small {
-  flex-shrink: 0;
-  font-size: 10.5px;
-  color: #8fa79f;
-  font-variant-numeric: tabular-nums;
-}
-.atlas-item:hover {
-  background: #ffffff0a;
-  color: #fff2d2;
-}
-.atlas-item:focus-visible,
-.atlas-item.gamepad-focus {
-  outline: none;
-  background: #ffffff0f;
-  border-color: #e0b07080;
-  color: #fff2d2;
-}
-.atlas-item[aria-selected='true'] {
-  color: #ffe4a8;
-  background: #e0b07018;
-  border-color: #e0b0704a;
-}
-.atlas-item[aria-selected='true']:before {
-  height: 60%;
-}
-.atlas-item[aria-selected='true'] small {
-  color: #d8bd88;
-}
-.atlas-item.is-nearby {
-  background: #e0b0700d;
-}
-.atlas-item.is-locked {
-  color: #8fa199;
-}
-.atlas-item.is-locked small {
-  color: #7c8d88;
-}
-@media (max-width: 700px) and (orientation: portrait) {
-  .atlas {
-    padding: 8px;
-    gap: 6px;
-  }
-  .atlas .earth-map-toolbar {
-    padding-right: 74px;
-    gap: 2px;
-    min-height: 40px;
-    flex-wrap: nowrap;
-    overflow-x: auto;
-    scrollbar-width: none;
-  }
-  .atlas .earth-map-toolbar .button {
-    padding: 7px 9px;
-    font-size: 11px;
-    min-height: 36px;
-    flex: none;
-  }
-  .atlas .earth-map-toolbar .icon {
-    display: none;
-  }
-  dialog:has(.atlas) .modal-top {
-    right: 8px;
-    top: 8px;
-  }
-  dialog:has(.atlas) .modal-top .modal-back {
-    min-width: 62px;
-    padding: 7px 10px;
-  }
-  .atlas-body {
-    grid-template-columns: minmax(0, 1fr);
-    grid-template-rows: minmax(180px, 1fr) auto;
-    gap: 8px;
-  }
-  .atlas .earth-travel {
-    max-height: 46dvh;
-    grid-template-rows: auto minmax(0, 1fr);
-  }
-  .atlas-card {
-    padding: 10px 12px;
-    gap: 8px;
-    grid-template-columns: minmax(0, 1fr) 132px;
-    align-items: center;
-  }
-  .atlas-card-head {
-    grid-column: 1;
-  }
-  .atlas-selection-icon {
-    display: none;
-  }
-  .atlas #map-destination {
-    font-size: 16px;
-  }
-  .atlas #map-selection {
-    font-size: 11px;
-  }
-  .atlas #map-warp {
-    grid-column: 2;
-    grid-row: 1;
-    min-height: 46px;
-    font-size: 14px;
-  }
-  .atlas #map-warp kbd {
-    display: none;
-  }
-  .atlas #map-warp-status {
-    grid-column: 1/-1;
-    font-size: 11px;
-  }
-  .atlas-list {
-    min-height: 96px;
-  }
-  .atlas-item {
-    min-height: 36px;
-  }
-  .atlas-legend {
-    display: none;
-  }
-  .atlas-zoom {
-    bottom: 12px;
-  }
-}
-@media (max-height: 520px) and (orientation: landscape) {
-  .atlas {
-    padding: 8px;
-    gap: 6px;
-  }
-  .atlas-body {
-    grid-template-columns: minmax(0, 1fr) 240px;
-    gap: 8px;
-  }
-  .atlas .earth-map-toolbar .button {
-    min-height: 36px;
-    padding: 6px 12px;
-    font-size: 11px;
-  }
-  .atlas-card {
-    padding: 10px 12px;
-    gap: 8px;
-  }
-  .atlas-selection-icon {
-    display: none;
-  }
-  .atlas #map-destination {
-    font-size: 16px;
-  }
-  .atlas #map-warp {
-    min-height: 42px;
-    font-size: 13px;
-  }
-  .atlas #map-warp kbd {
-    display: none;
-  }
-  .atlas-item {
-    min-height: 34px;
-    font-size: 12px;
-  }
-  dialog:has(.atlas) .modal-top {
-    right: 8px;
-    top: 8px;
-  }
-  .atlas-legend {
-    display: none;
-  }
+#map-pin-status {
+  color: #a8c2b8;
+  font-size: 10px;
+  overflow-wrap: anywhere;
 }
 /* The player: a bright arrow with a soft ring, and the area name beneath it. */
 #map-self {
@@ -4723,11 +4001,23 @@ dialog:has(.atlas) #modal-body {
   animation: atlas-pulse 2.2s ease-out infinite;
 }
 #map-self span {
-  font-size: 24px;
-  color: #ffe591;
-  -webkit-text-stroke: 1px #493f28;
-  transform: rotate(var(--facing));
+  display: grid;
+  place-items: center;
+  transform: rotate(var(--facing, 0rad));
   filter: drop-shadow(0 1px 2px #000) drop-shadow(0 0 5px #ffe6a4);
+}
+/* The one arrow shape: the atlas draws this SVG, the minimap draws the same path on its canvas. */
+.map-arrow {
+  width: 24px;
+  height: 24px;
+  fill: #fff8da;
+  stroke: #12242b;
+  stroke-width: 2;
+  stroke-linejoin: round;
+}
+.atlas-legend-self .map-arrow {
+  width: 14px;
+  height: 14px;
 }
 #map-self b {
   position: absolute;
@@ -4746,68 +4036,163 @@ dialog:has(.atlas) #modal-body {
 #map-self.is-crowded b {
   display: none;
 }
-
-/* Shared invitations use the existing player colors. */
-.atlas [hidden] {
-  display: none !important;
-}
-.map-crosshair {
-  position: absolute;
-  left: 50%;
-  top: 50%;
-  transform: translate(-50%, -50%);
-  color: #e1ece3aa;
-  text-shadow: 0 1px 3px #071f26;
-  pointer-events: none;
-  font-size: 24px;
-}
-.map-pan {
-  position: absolute;
-  left: 12px;
-  bottom: 38px;
-  display: flex;
-  gap: 4px;
-}
-.map-pan button {
-  width: 36px;
-  height: 36px;
-  border: 1px solid #95b5ad80;
-  border-radius: 6px;
-  background: #10252aee;
-  color: #e1ece3;
-  cursor: pointer;
-}
-.map-pin-actions {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 6px;
-  grid-column: 1/-1;
-}
-.map-pin-actions .button {
-  flex: 1 1 110px;
-  min-width: 0;
-  min-height: 38px;
-  font-size: 12px;
-  padding: 6px;
-}
-#map-pin-send {
-  border-color: #87c4ce;
-  color: #b5edf2;
-}
-#map-pin-status {
-  grid-column: 1/-1;
-  color: #a8c2b8;
-  font-size: 10px;
-}
-#map-pin-list .atlas-item {
-  overflow-wrap: anywhere;
-  display: block;
+@media (max-width: 700px) and (orientation: portrait) {
+  dialog:has(.atlas) .modal-top {
+    right: 8px;
+    top: 8px;
+  }
+  dialog:has(.atlas) .modal-top .modal-back {
+    min-width: 62px;
+    padding: 7px 10px;
+  }
+  .atlas-legend {
+    display: none;
+  }
+  .atlas-card {
+    left: 8px;
+    bottom: 8px;
+    width: calc(100% - 78px);
+    padding: 10px 12px;
+    gap: 6px;
+  }
+  .atlas #map-destination {
+    font-size: 15px;
+  }
+  .atlas #map-warp {
+    min-height: 40px;
+    font-size: 13px;
+  }
+  .atlas #map-warp kbd {
+    display: none;
+  }
+  .atlas-zoom {
+    right: 8px;
+    bottom: 8px;
+    padding: 3px;
+  }
+  .atlas-zoom button {
+    width: 36px;
+    height: 36px;
+  }
+  .atlas-zoom .atlas-center kbd {
+    display: none;
+  }
 }
 @media (max-height: 520px) and (orientation: landscape) {
-  .atlas .earth-travel {
-    overflow-y: auto;
+  dialog:has(.atlas) .modal-top {
+    right: 8px;
+    top: 8px;
   }
-  .map-pan {
-    bottom: 12px;
+  .atlas-legend {
+    display: none;
   }
+  .atlas-card {
+    left: 8px;
+    bottom: 8px;
+    width: min(260px, calc(100% - 80px));
+    padding: 8px 10px;
+    gap: 5px;
+  }
+  .atlas #map-destination {
+    font-size: 14px;
+  }
+  .atlas #map-warp {
+    min-height: 36px;
+    font-size: 12px;
+  }
+  .atlas #map-warp kbd {
+    display: none;
+  }
+  .map-pin-actions .button {
+    min-height: 30px;
+    font-size: 11px;
+  }
+  .atlas-zoom {
+    right: 8px;
+    bottom: 8px;
+    grid-auto-flow: column;
+    padding: 3px;
+  }
+  .atlas-zoom button {
+    width: 34px;
+    height: 34px;
+  }
+  .atlas-zoom .atlas-center {
+    min-height: 34px;
+  }
+  .atlas-zoom .atlas-center kbd {
+    display: none;
+  }
+}
+.heal-hint {
+  margin-left: 0.5em;
+  font-size: 0.72em;
+  color: #ffe9a8;
+  opacity: 0.9;
+  white-space: nowrap;
+}
+
+/* 2026-09-12: bag cards are the controller's targets; "decide" opens a use popup. */
+.inventory-card.inventory-usable {
+  cursor: pointer;
+  transition:
+    border-color 0.16s,
+    background 0.16s;
+}
+.inventory-card.inventory-usable:hover {
+  border-color: #e0b07060;
+  background: #e0b0700c;
+}
+.inventory-card.inventory-usable:focus-visible,
+.inventory-card.gamepad-focus {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+  border-color: #e0b07080;
+  background: #e0b07012;
+}
+.inventory-card.inventory-empty .resource-icon,
+.inventory-card.inventory-empty strong b {
+  opacity: 0.45;
+}
+.item-use-hint {
+  display: block;
+  margin-top: 8px;
+  font-size: 9px;
+  letter-spacing: 0.04em;
+  color: #c9b27f;
+}
+.item-actions {
+  display: grid;
+  gap: 6px;
+  margin-top: 8px;
+  padding-top: 8px;
+  border-top: 1px solid #e0b07040;
+}
+.item-actions .button {
+  font-size: 9px;
+  padding: 6px 10px;
+  min-height: 28px;
+  width: 100%;
+  margin: 0;
+}
+.item-actions small {
+  font-size: 8.5px;
+  color: #d8b5a8;
+}
+.pause-rail .pause-tabs {
+  margin-top: 4px;
+}
+.sub-tabs {
+  margin-bottom: 18px;
+}
+.pause-subpanel[hidden] {
+  display: none;
+}
+.pause-subpanel > h2:first-child,
+.pause-subpanel > .objectives > h2 {
+  padding-right: 96px;
+}
+/* The sticky Back button sits over the panel's top-right corner; keep the sub-tabs clear of it. */
+.pause-panel > .sub-tabs {
+  margin-right: 96px;
 }

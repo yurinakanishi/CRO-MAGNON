@@ -1,7 +1,12 @@
 import type { Obstacle, Point } from './types.mjs';
 import { SCENERY, BRIDGE } from './scenery-layout.mjs';
 import { CASTLE_SURFACE } from './castle-surface.mjs';
-import { CASTLE_GATE, castleWorld } from './castle-layout.mjs';
+import {
+  CASTLE_GATE,
+  CASTLE_STAIR_FOOT,
+  CASTLE_STAIR_TOP,
+  CASTLE_UPPER_FLOOR,
+} from './castle-layout.mjs';
 import { MODEL_BOUNDS } from './model-bounds.mjs';
 import { LANDMARKS } from './landmarks.mjs';
 import { LANDMARK_BOUNDS } from './landmark-bounds.mjs';
@@ -182,6 +187,8 @@ export class CollisionWorld {
     } | null;
     height: (x: any, z: any) => number | null | undefined;
     free: (x: any, z: any, radius?: number) => boolean;
+    deviation: (x: any, z: any, radius?: number) => number | null;
+    allows: (from: any, to: any, radius?: number) => boolean;
     transition: (a: any, b: any) => boolean;
     data: any;
     placement: any;
@@ -242,10 +249,29 @@ export class CollisionWorld {
       return false;
     if (this.coast && !landBodyFree(point.x, point.z, radius)) return false;
     if (this.walkSurfaces.some((surface) => !surface.free(point.x, point.z, radius))) return false;
+    return this.clearOfBodies(point, radius, dynamic, ignore);
+  }
+  clearOfBodies(point, radius, dynamic = [], ignore = (_obstacle: Obstacle) => false) {
     for (const o of this.nearby(point, radius))
       if (!ignore(o) && overlap(point, radius, o)) return false;
     for (const o of dynamic) if (overlap(point, radius, o)) return false;
     return true;
+  }
+  // A movement step onto the walk surfaces: free at the destination, or no
+  // closer to a ledge than the start, and never across a wall or a drop.
+  stepAllowed(from, to, radius, dynamic = []) {
+    return (
+      Number.isFinite(to.x) &&
+      Number.isFinite(to.z) &&
+      to.x === worldClamp(to.x, 'x') &&
+      to.z === worldClamp(to.z, 'z') &&
+      !(this.river && riverBlocked(to, radius)) &&
+      (!this.coast || landBodyFree(to.x, to.z, radius)) &&
+      this.walkSurfaces.every(
+        (surface) => surface.allows(from, to, radius) && surface.transition(from, to),
+      ) &&
+      this.clearOfBodies(to, radius, dynamic)
+    );
   }
   move(start, dx, dz, radius, dynamic = []) {
     let point = { x: start.x, z: start.z };
@@ -256,17 +282,44 @@ export class CollisionWorld {
         z: worldClamp(point.z + dz / steps, 'z'),
       };
       for (const surface of this.walkSurfaces) {
-        if (surface.free(next.x, next.z, radius) && surface.transition(point, next)) continue;
+        if (surface.allows(point, next, radius) && surface.transition(point, next)) continue;
         // Raster walls and stairwell edges must slide the whole body, not just
         // its centre. Use the atlas axes: the castle is rotated in world space.
         const a = surface.local(point.x, point.z),
           b = surface.local(next.x, next.z),
           candidates = [surface.world(b.x, a.z), surface.world(a.x, b.z)]
-            .filter((p) => this.free(p, radius, dynamic) && this.surfaceTransition(point, p))
+            .filter(
+              (p) =>
+                Math.hypot(p.x - point.x, p.z - point.z) > 1e-6 &&
+                this.stepAllowed(point, p, radius, dynamic),
+            )
             .sort(
               (a, b) =>
                 Math.hypot(b.x - point.x, b.z - point.z) - Math.hypot(a.x - point.x, a.z - point.z),
             );
+        if (!candidates.length) {
+          // The side stairs run diagonally to the atlas axes, so both axis
+          // slides can end in the same wall. Turn the input a little instead.
+          const stepX = next.x - point.x,
+            stepZ = next.z - point.z;
+          for (const turn of [0.39, -0.39, 0.79, -0.79, 1.18, -1.18, 1.57, -1.57]) {
+            const scale = Math.max(Math.cos(turn), 0.3),
+              turned = {
+                x: point.x + (stepX * Math.cos(turn) - stepZ * Math.sin(turn)) * scale,
+                z: point.z + (stepX * Math.sin(turn) + stepZ * Math.cos(turn)) * scale,
+              };
+            // Look one step further so a corner never ping-pongs between the
+            // two perpendicular slides.
+            const beyond = { x: turned.x * 2 - point.x, z: turned.z * 2 - point.z };
+            if (
+              this.stepAllowed(point, turned, radius, dynamic) &&
+              this.stepAllowed(turned, beyond, radius, dynamic)
+            ) {
+              candidates.push(turned);
+              break;
+            }
+          }
+        }
         Object.assign(next, candidates[0] ?? point);
       }
       if (this.coast && !landBodyFree(next.x, next.z, radius)) {
@@ -293,7 +346,7 @@ export class CollisionWorld {
         }
         if (!adjusted) break;
       }
-      if (this.free(next, radius, dynamic) && this.surfaceTransition(point, next)) point = next;
+      if (this.stepAllowed(point, next, radius, dynamic)) point = next;
     }
     return point;
   }
@@ -338,23 +391,30 @@ export class CollisionWorld {
   }
   path(start, goal, radius, dynamic = []) {
     if (this.walkSurfaces.includes(CASTLE_SURFACE)) {
-      const level = (p) => {
-        const h = CASTLE_SURFACE.height(p.x, p.z) ?? 0;
-        return h > 15 ? 3 : h > 10 ? 2 : h > 2 ? 1 : 0;
+      // The ruin has two floors: the forecourt at ground level and the great
+      // hall above it. A route between them takes the central stair; a route
+      // from open ground enters by the gate rather than probing the wall ring.
+      const level = (p) => ((CASTLE_SURFACE.height(p.x, p.z) ?? 0) > CASTLE_UPPER_FLOOR ? 1 : 0);
+      const inside = (p) => {
+        const l = CASTLE_SURFACE.local(p.x, p.z);
+        return Math.abs(l.x) < 37 && Math.abs(l.z) < 37;
       };
       const from = level(start),
-        to = level(goal),
-        anchors = [CASTLE_GATE, castleWorld(0, 19), castleWorld(0, 11), castleWorld(0, 4)];
+        to = level(goal);
       if (from !== to) {
         const stops = [];
-        if (from === 0 && Math.hypot(start.x - CASTLE_GATE.x, start.z - CASTLE_GATE.z) > 2)
-          stops.push(CASTLE_GATE);
-        for (
-          let n = from + (to > from ? 1 : -1);
-          to > from ? n <= to : n >= to;
-          n += to > from ? 1 : -1
+        if (
+          from === 0 &&
+          !inside(start) &&
+          Math.hypot(start.x - CASTLE_GATE.x, start.z - CASTLE_GATE.z) > 2
         )
-          stops.push(anchors[n]);
+          stops.push(CASTLE_GATE);
+        stops.push(
+          ...(to > from
+            ? [CASTLE_STAIR_FOOT, CASTLE_STAIR_TOP]
+            : [CASTLE_STAIR_TOP, CASTLE_STAIR_FOOT]),
+        );
+        if (to === 0 && !inside(goal)) stops.push(CASTLE_GATE);
         stops.push(goal);
         let point = start;
         const route = [];

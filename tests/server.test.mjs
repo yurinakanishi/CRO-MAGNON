@@ -110,7 +110,7 @@ test('movement is normalized, times out, and ignores client-authored position', 
   client.send({ type: 'move', dx: 1000, dz: 1000, x: 99999, z: 99999 });
   await sleep(700);
   const traveled = Math.hypot(player.x - origin.x, player.z - origin.z);
-  assert.ok(traveled > .4 && traveled < .8, `Unexpected walking distance: ${traveled}`);
+  assert.ok(traveled > .7 && traveled < 1.3, `Unexpected walking distance: ${traveled}`);
   const stopped = { x: player.x, z: player.z };
   await sleep(150);
   assert.equal(player.x, stopped.x);
@@ -125,10 +125,10 @@ test('run requests use the server speed and gait changes affect only live direct
   client.send({ type: 'move', dx: 1, dz: 0, running: false, speed: 900 });
   await client.wait((m) => m.type === 'state' && m.players[0].moving);
   assert.equal(p.target, null);
-  assert.ok(p.speed <= 1.25001);
+  assert.ok(p.speed <= 2.00001);
   client.send({ type: 'gait', running: true });
   const run = await client.wait((m) => m.type === 'state' && m.players[0].running);
-  assert.ok(Math.abs(run.players[0].speed - 3.5) < 0.001);
+  assert.ok(Math.abs(run.players[0].speed - 5.6) < 0.001);
   assert.equal(p.target, null);
   client.send({ type: 'move', dx: 0, dz: 0, running: false });
   await sleep(60);
@@ -212,3 +212,23 @@ test('chat uses the authenticated player name and is confined to its room', asyn
   const traversal = await fetch(`${http}/src/%2e%2e%5cserver.mjs`);
   assert.equal(traversal.status, 403);
 });
+
+test('exhibition rules are opt-in per server and reported by /api/health', async (t) => {
+  const plain = createGameServer({ port: 0, host: '127.0.0.1', tickMs: 20 });
+  await plain.listen();
+  t.after(() => plain.close());
+  const plainHealth = await (await fetch(`http://127.0.0.1:${plain.address().port}/api/health`)).json();
+  assert.equal(plainHealth.exhibition, undefined);
+  const game = createGameServer({ port: 0, host: '127.0.0.1', tickMs: 20, exhibition: true });
+  await game.listen();
+  t.after(() => game.close());
+  const health = await (await fetch(`http://127.0.0.1:${game.address().port}/api/health`)).json();
+  assert.equal(health.exhibition, true);
+  const client = connect(`ws://127.0.0.1:${game.address().port}/ws`, 'SHOW', '客');
+  await client.wait((message) => message.type === 'welcome');
+  const room = game.rooms.get('SHOW');
+  assert.equal(room.rules.recoveryEnergy, 100);
+  assert.equal(room.rules.respawnMs, 10000);
+  client.socket.close();
+});
+

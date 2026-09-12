@@ -70,6 +70,7 @@ export interface AnimalSnapshot extends Point {
   maxHealth: number;
   meatRemaining: number;
   phaseStartedAt: number;
+  respawnMs?: number;
   riderId: string | null;
 }
 export interface EnemySnapshot extends Point {
@@ -87,12 +88,15 @@ export interface EnemySnapshot extends Point {
   health: number;
   maxHealth: number;
   phaseStartedAt: number;
+  respawnMs?: number;
   behavior: string;
   targetId: string | null;
   attackSequence: number;
   attackAt: number;
   hitSequence: number;
   hitAt: number;
+  // Floor height under the body (castle-relative), for effects drawn at the actor.
+  elevation?: number;
 }
 export interface BoatSnapshot extends Point {
   id: string;
@@ -114,6 +118,16 @@ export interface ProjectileSnapshot extends Point {
   travelled: number;
   kind: string;
   elevation: number;
+}
+// The sorcerer's area spell: a red ring telegraph, then a detonation at `at`.
+export interface HexBurstSnapshot extends Point {
+  id: string;
+  ownerId: string;
+  elevation: number;
+  radius: number;
+  startedAt: number;
+  at: number;
+  detonatedAt: number | null;
 }
 export interface ProjectileImpact extends Point {
   id: string;
@@ -160,6 +174,7 @@ export interface GameSnapshot {
   boats: BoatSnapshot[];
   projectiles: ProjectileSnapshot[];
   projectileImpacts: ProjectileImpact[];
+  hexBursts?: HexBurstSnapshot[];
   resources?: Resource[];
   camp?: CampSnapshot;
   cookingFires?: (Point & { id: string })[];

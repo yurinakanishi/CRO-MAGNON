@@ -62,7 +62,7 @@ try {
   await page.goto('http://127.0.0.1:' + address.port + '/?room=MANUAL-QA');
   await page.locator('#title-start').click();
   await page.locator('#setup-submit').click();
-  await page.locator('#guide-start').click();
+  await page.waitForSelector('body.in-game', { timeout: 60000 });
   await page.waitForSelector('#world[data-world-asset="ready"][data-character-asset="ready"]', {
     timeout: 60000,
   });
@@ -181,7 +181,7 @@ try {
   await sleep(450);
   assert.deepEqual(position(p), origin);
   assert.ok(!p.mountId);
-  await pad([PAD.triangle]);
+  await pad([PAD.cross]);
   await pad([]);
   await until(() => !!p.mountId);
   await sleep(400);

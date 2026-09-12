@@ -45,7 +45,7 @@ try {
     await page.locator('#setup-form input[name="name"]').fill(`Quiet-${species}`);
     await page.locator(`#setup-form input[name="species"][value="${species}"]`).check();
     await page.locator('#setup-submit').click();
-    await page.locator('#guide-start').click();
+    await page.waitForSelector('body.in-game', { timeout: 60000 });
     await page
       .locator('#world[data-world-asset="ready"][data-character-asset="ready"]')
       .waitFor({ timeout: 90000 });

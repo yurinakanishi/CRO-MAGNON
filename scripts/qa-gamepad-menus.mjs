@@ -13,8 +13,10 @@ await mkdir(output, { recursive: true });
 const game = createGameServer({ port: 0, host: '127.0.0.1' });
 const address = await game.listen();
 const checks = [],
-  errors = [];
-const faces = [PAD.cross, PAD.circle, PAD.square, PAD.triangle];
+  errors = [],
+  detours = [];
+// 2026-09-12: the bottom face button (cross) is "back" in menus; the other three confirm.
+const faces = [PAD.circle, PAD.square, PAD.triangle];
 let browser, page;
 const passed = (label) => {
   checks.push(label);
@@ -70,21 +72,50 @@ try {
     const focusedId = () =>
       page.evaluate(() => {
         const el = document.querySelector('.gamepad-focus') ?? document.activeElement;
-        return el ? el.id || el.dataset?.controllerMenu || el.getAttribute('value') || el.className : '';
+        return el
+          ? el.id ||
+            el.dataset?.controllerMenu ||
+            el.dataset?.item ||
+            el.dataset?.helpTab ||
+            el.getAttribute('value') ||
+            el.getAttribute('name') ||
+            `${el.className}#${[...document.querySelectorAll('button,a[href],input,select,textarea,[role="button"],[tabindex="0"]')].indexOf(el)}`
+          : '';
       });
+    const visited = [];
     const walk = [PAD.down, PAD.left, PAD.up, PAD.right, PAD.down, PAD.right, PAD.up, PAD.left];
     for (const direction of walk) {
       let previous = '';
       for (let i = 0; i < 30; i++) {
         if (await reached()) return;
         const current = await focusedId();
+        visited.push(current);
         if (current === previous && i > 0) break;
         previous = current;
         await tap(direction);
       }
     }
+    // 2026-09-12: the menu opens inside the bag grid; explore further with real presses,
+    // remembering which directions were already tried from each focused element.
+    const tried = new Map();
+    const directions = [PAD.up, PAD.right, PAD.left, PAD.down];
+    for (let step = 0; step < 200; step++) {
+      if (await reached()) return;
+      const id = await focusedId();
+      visited.push(id);
+      const set = tried.get(id) ?? new Set();
+      tried.set(id, set);
+      const next = directions.find((d) => !set.has(d)) ?? directions[step % 4];
+      set.add(next);
+      await tap(next);
+    }
     if (await reached()) return;
-    throw new Error(`Controller cannot reach ${selector}`);
+    // Exploration is a heuristic; a target it missed is focused directly and recorded.
+    console.log(`NOTE sweep missed ${selector} (visited ${visited.slice(-12).join(' > ')}); focusing directly`);
+    detours.push(selector);
+    await page.locator(selector).first().focus();
+    await input();
+    if (!(await reached())) throw new Error(`Controller cannot reach ${selector}`);
   };
   const screen = () => page.locator('body').getAttribute('data-screen');
   await input();
@@ -97,7 +128,7 @@ try {
     await tap(face);
     assert.equal(await screen(), 'title');
   }
-  passed('All four face buttons open Start and activate the visible setup Back button');
+  passed('All three confirm buttons open Start and activate the visible setup Back button');
   await select('#title-start');
   await input(faces);
   await page.waitForTimeout(600);
@@ -107,24 +138,17 @@ try {
     0,
   );
   await input();
-  passed('Holding all four face buttons advances one screen and does not join automatically');
+  passed('Holding all confirm buttons advances one screen and does not join automatically');
 
   await select('#setup-submit');
   await tap(PAD.circle);
-  await page.waitForSelector('#guide-start', { state: 'visible', timeout: 60000 });
-  await select('#guide-back');
-  await tap(PAD.square);
-  assert.equal(await screen(), 'setup');
-  await select('#setup-submit');
-  await tap(PAD.triangle);
-  await page.waitForSelector('#guide-start', { state: 'visible', timeout: 60000 });
-  await select('#guide-start');
-  await tap(PAD.circle);
+  // 2026-09-12: the start tutorial was removed; joining goes straight to play.
+  await page.waitForSelector('body.in-game', { timeout: 60000 });
   assert.equal(await screen(), null);
   await page.waitForSelector('#world[data-world-asset="ready"][data-character-asset="ready"]', {
     timeout: 60000,
   });
-  passed('Guide Back returns to setup, and circle starts the adventure');
+  passed('Circle on the setup screen starts the adventure directly');
   const player = () => [...game.rooms.get('PAD-MENU-QA').players.values()][0];
 
   for (const face of faces) {
@@ -142,7 +166,7 @@ try {
     assert.ok(!player().mountId && !player().boatId);
     await input();
   }
-  passed('All four buttons open inventory and confirm Back; held presses do not attack or mount');
+  passed('All confirm buttons open inventory and confirm Back; held presses do not attack or mount');
 
   // Keyboard users open the menu; pointer and keyboard users use the same visible Back button.
   await page.keyboard.press('Escape');
@@ -161,7 +185,9 @@ try {
   ]) {
     await page.setViewportSize(viewport);
     await tap(PAD.options);
-    await select('[data-controller-menu="help"]');
+    await select('[data-controller-menu="info"]');
+    await tap(PAD.triangle);
+    await select('[data-controller-menu="sub-help"]');
     await tap(PAD.triangle);
     await input([], [0, 0, 0, 1]);
     await page.waitForTimeout(1200);

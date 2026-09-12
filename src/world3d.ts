@@ -49,6 +49,15 @@ import { BoatRenderer } from './boat-renderer.js';
 import { BOATING, SeaCollision } from '../shared/boats.mjs';
 import { RIDING } from '../shared/riding.mjs';
 import { seaBoatSpeed } from '../shared/maritime-weather.mjs';
+import {
+  FRUIT_RADIUS,
+  berryAnchors,
+  fruitCount,
+  meatPieceVisibility,
+  seedFromId,
+  stoneScale,
+  woodClipPlane,
+} from './resource-visuals.js';
 
 const DEFAULT_DISTANCE = 5.5;
 const tempPoint = new THREE.Vector3();
@@ -108,6 +117,8 @@ export class WorldRenderer {
   declare fpsFrames: number;
   declare lastFpsTime: number;
   declare renderer: THREE.WebGLRenderer;
+  declare fruitGeometry: THREE.SphereGeometry | undefined;
+  declare fruitMaterial: THREE.MeshStandardMaterial | undefined;
   declare scene: THREE.Scene<THREE.Object3DEventMap>;
   declare spells: SpellEffects;
   declare camera: THREE.PerspectiveCamera;
@@ -228,6 +239,8 @@ export class WorldRenderer {
       powerPreference: 'high-performance',
     });
     this.renderer.setPixelRatio(Math.min(devicePixelRatio, 1.25));
+    // Firewood piles are clipped from the top by a per-pile plane as they are gathered.
+    this.renderer.localClippingEnabled = true;
     this.renderer.shadowMap.enabled = true;
     // Animated skins and their shadow depth must describe the same frame.
     // Reusing a 15 Hz shadow on a moving 60 Hz character makes its surface flash.
@@ -398,6 +411,11 @@ export class WorldRenderer {
     return label;
   }
 
+  /** Whether the resource's model is loaded and currently drawn (amount > 0). */
+  resourceVisible(id: string): boolean {
+    return !!this.resources.get(id)?.model.visible;
+  }
+
   syncResources() {
     if (!this.assetsReady) return;
     for (const resource of this.state.resources) {
@@ -410,11 +428,77 @@ export class WorldRenderer {
         model.position.set(resource.x, walkHeight(resource.x, resource.z), resource.z);
         model.rotation.y = yaw;
         this.scene.add(model);
-        item = { model, key, surface };
+        item = { model, key, surface, baseScale: scale };
+        this.decorateResource(item, resource);
         this.resources.set(resource.id, item);
       }
       item.resource = resource;
       item.model.visible = resource.amount > 0;
+      this.applyResourceAmount(item, resource);
+    }
+  }
+
+  /** Per-type extras built once: berry fruit, the wood clipping plane. */
+  decorateResource(item, resource) {
+    if (resource.type === 'berry') {
+      this.fruitGeometry ??= new THREE.SphereGeometry(FRUIT_RADIUS, 10, 8);
+      this.fruitMaterial ??= new THREE.MeshStandardMaterial({
+        color: '#d0202c',
+        emissive: '#8a0a14',
+        emissiveIntensity: 0.55,
+        roughness: 0.4,
+        metalness: 0,
+      });
+      const anchors = berryAnchors(
+        this.worldAssets.modelPoints(item.key, item.surface),
+        fruitCount(resource.maxAmount, resource.maxAmount),
+        seedFromId(String(resource.id)),
+      );
+      const fruit = new THREE.Group();
+      fruit.name = 'berry-fruit';
+      for (const [x, y, z] of anchors) {
+        const berry = new THREE.Mesh(this.fruitGeometry, this.fruitMaterial);
+        berry.position.set(x, y, z);
+        berry.castShadow = true;
+        fruit.add(berry);
+      }
+      // A direct child of the LOD root stays visible at every level.
+      item.model.add(fruit);
+      item.fruit = fruit;
+    } else if (resource.type === 'wood') {
+      const plane = new THREE.Plane(new THREE.Vector3(0, -1, 0), Infinity);
+      item.model.traverse((node) => {
+        if (!isMesh(node)) return;
+        // Clone so the plane belongs to this pile alone; textures stay shared.
+        const materials = [node.material].flat().map((material) => {
+          const clone = material.clone();
+          clone.clippingPlanes = [plane];
+          clone.clipShadows = true;
+          return clone;
+        });
+        node.material = Array.isArray(node.material) ? materials : materials[0];
+      });
+      item.clipPlane = plane;
+      item.heightMetres = this.worldAssets.get(item.key, item.surface)?.asset?.heightMetres ?? 0.7;
+    }
+  }
+
+  /** Makes the remaining amount visible: fruit count, pile height, boulder size. */
+  applyResourceAmount(item, resource) {
+    if (item.fruit) {
+      const shown = fruitCount(resource.amount, resource.maxAmount);
+      item.fruit.children.forEach((berry, index) => (berry.visible = index < shown));
+    } else if (item.clipPlane) {
+      const { constant } = woodClipPlane(
+        item.model.position.y,
+        item.model.scale.y,
+        item.heightMetres,
+        resource.amount,
+        resource.maxAmount,
+      );
+      item.clipPlane.constant = constant;
+    } else if (resource.type === 'stone' || resource.type === 'obsidian') {
+      item.model.scale.setScalar(stoneScale(item.baseScale, resource.amount, resource.maxAmount));
     }
   }
 
@@ -853,6 +937,10 @@ export class WorldRenderer {
       const phase = state?.phase ?? 'alive';
       animal.model.visible = !!state && (phase === 'alive' || phase === 'dying');
       animal.meat.visible = !!state && phase === 'meat';
+      if (animal.meat.visible) {
+        const shown = meatPieceVisibility(state.meatRemaining, animal.meat.children.length);
+        animal.meat.children.forEach((piece, index) => (piece.visible = shown[index]));
+      }
       animal.label.active = this.showCombatHealth(state);
       if (!state) continue;
       if (Math.hypot(state.x - this.camera.position.x, state.z - this.camera.position.z) > 90) {

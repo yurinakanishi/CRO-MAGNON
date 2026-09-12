@@ -101,9 +101,10 @@ export function terrainHeight(x, z) {
 }
 
 export function walkHeight(x, z) {
+  // The atlas is in world terms (the model's plinth is already subtracted), so
+  // the placement's groundOffset is not added here.
   const castleHeight = CASTLE_SURFACE.height(x, z);
-  if (Number.isFinite(castleHeight))
-    return terrainHeight(CASTLE.x, CASTLE.z) + CASTLE.groundOffset + castleHeight;
+  if (Number.isFinite(castleHeight)) return terrainHeight(CASTLE.x, CASTLE.z) + castleHeight;
   if (sourceBridge) {
     const bridge = sourceBridge,
       lx = x - bridge.x,

@@ -1,7 +1,7 @@
 {
-  "revision": "11",
-  "sha256": "6c4c5301071c1d69add3b357a14b8ba6af62a47a79089657928ab6424bde045d",
-  "bytes": 20120956,
+  "revision": "13",
+  "sha256": "54db205315086d109bd34b6cf35d31df25cca7472dddb95c7fdbeea6c868021d",
+  "bytes": 20224888,
   "reference": {
     "generator": "Codex CLI built-in image_gen (gpt-5.6-sol, reasoning medium), run from Claude Code at user request",
     "prompt": "Use case: 3D reconstruction reference. ONE single full-body saber-toothed cat (Smilodon-inspired) enemy creature for a prehistoric fantasy game, stylized sculpted 3D game art matching a friendly-but-dangerous game look, rich but readable short fur clumps. Powerful, heavy, muscular apex predator about 1.2 m at the shoulder and 2.4 m long: massive forelimbs and shoulders, deep chest, slightly sloping back, short bobbed tail, big paws with claws retracted. Two very long curved ivory saber fangs hanging well below the closed lower jaw, fierce amber eyes, small ears, strong jaw. Standing neutral four-legged stance with all four legs clearly separated and visible, head level and looking forward, mouth closed. Front three-quarter view from the left, slightly above, entire body uncropped including all paws and tail, centered with generous margin. Plain pure white background, soft neutral even studio lighting, very soft contact shadow only. No scenery, no rider, no text, no logo, no watermark, no second animal.\n\nTawny golden-ochre coat with faint darker brown tiger stripes on the back and flanks, cream belly and muzzle, dark rim around the eyes.",
@@ -181,10 +181,10 @@
   },
   "rig": {
     "candidate": 1,
-    "revision": "11",
+    "revision": "13",
     "source": "work\\low-poly\\revision-02\\candidate.glb",
-    "sha256": "6c4c5301071c1d69add3b357a14b8ba6af62a47a79089657928ab6424bde045d",
-    "bytes": 20120956,
+    "sha256": "54db205315086d109bd34b6cf35d31df25cca7472dddb95c7fdbeea6c868021d",
+    "bytes": 20224888,
     "heightMetres": 1.6476876735687256,
     "lengthMetres": 2.601785659790039,
     "widthMetres": 0.981932520866394,
@@ -558,9 +558,37 @@
           "maxShortfall": 0
         }
       },
+      "Crouch": {
+        "FL": {
+          "maxShortfall": 0
+        },
+        "FR": {
+          "maxShortfall": 0
+        },
+        "BL": {
+          "maxShortfall": 0
+        },
+        "BR": {
+          "maxShortfall": 0
+        }
+      },
+      "Snarl": {
+        "FL": {
+          "maxShortfall": 0
+        },
+        "FR": {
+          "maxShortfall": 0
+        },
+        "BL": {
+          "maxShortfall": 0
+        },
+        "BR": {
+          "maxShortfall": 0
+        }
+      },
       "Pounce": {
         "FL": {
-          "maxShortfall": 0.03769450496337323
+          "maxShortfall": 0
         },
         "FR": {
           "maxShortfall": 0
@@ -651,6 +679,16 @@
         "maximumMinimum": -0.0029527517035603523
       },
       {
+        "clip": "Crouch",
+        "minimumBeforeLock": -0.03902716934680939,
+        "maximumMinimum": -0.0029527517035603523
+      },
+      {
+        "clip": "Snarl",
+        "minimumBeforeLock": -0.003490658011287451,
+        "maximumMinimum": -0.0020274168346077204
+      },
+      {
         "clip": "Pounce",
         "minimumBeforeLock": -0.053937073796987534,
         "maximumMinimum": 0.9730734825134277
@@ -702,9 +740,21 @@
         "rootMotion": "in-place"
       },
       {
+        "name": "Crouch",
+        "loop": false,
+        "seconds": 0.8,
+        "rootMotion": "in-place"
+      },
+      {
+        "name": "Snarl",
+        "loop": false,
+        "seconds": 0.7,
+        "rootMotion": "in-place"
+      },
+      {
         "name": "Pounce",
         "loop": false,
-        "seconds": 1.55,
+        "seconds": 1.3,
         "rootMotion": "in-place"
       },
       {

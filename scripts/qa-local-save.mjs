@@ -113,7 +113,7 @@ async function play(ctx, name, resume = false) {
   if (!resume) {
     await page.locator('#setup-form input[name="name"]').fill(name);
     await page.locator('#setup-submit').click();
-    await page.locator('#guide-start').click();
+    await page.waitForSelector('body.in-game', { timeout: 60000 });
   }
   await page
     .locator('#world[data-world-asset="ready"][data-character-asset="ready"]')

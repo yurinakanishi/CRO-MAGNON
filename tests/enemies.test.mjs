@@ -1,7 +1,8 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { CollisionWorld, overlap } from '../dist/shared/collision.mjs';
-import { createEnemies, updateEnemies, ENEMY_RULES, ENEMY_GROUNDS } from '../dist/shared/enemies.mjs';
+import { createEnemies, updateEnemies, ENEMY_RULES, ENEMY_GROUNDS, inSorcererHall } from '../dist/shared/enemies.mjs';
+import { CASTLE_SURFACE } from '../dist/shared/castle-surface.mjs';
 import { createAnimals, updateAnimals, actorObstacle } from '../dist/shared/animals.mjs';
 import { COMBAT, enemyIsSolid, startAttack, resolveAttack } from '../dist/shared/combat.mjs';
 
@@ -9,6 +10,8 @@ function fixture(collision = new CollisionWorld([], { river: false })) {
   const enemy = createEnemies(collision, [], 1000)[0];
   const player = { id: 'player', x: enemy.x, z: enemy.z + 1.3, radius: .32, facing: Math.PI, energy: 100, inventory: { wood: 3, stone: 1, rawMeat: 2, cookedMeat: 1 }, hurtSequence: 0, hurtAt: 0, defeatSequence: 0, downedUntil: 0, invulnerableUntil: 0, attackSequence: 0, attackAt: 0, cookingEndsAt: 0 };
   const room = { players: new Map([[player.id, player]]), enemies: [enemy], animals: [], collision, camp: { x: 50, z: 50 } };
+  // The staff tests below predate the red magic; hold both spells unless a test arms them.
+  enemy.nextBoltAt = enemy.nextBurstAt = 1e12;
   return { room, enemy, player };
 }
 
@@ -22,8 +25,44 @@ test('crow clearing is body-clear, away from camp, and patrols use real static c
     const now = 1000 + i * 50; updateAnimals(room, .05, now); updateEnemies(room, .05, now);
     for (const actor of [...animals, ...enemies]) assert.ok(collision.free(actor, actor.radius, [...animals, ...enemies].filter(other => other !== actor).map(actorObstacle)));
     minX = Math.min(minX, enemy.x); maxX = Math.max(maxX, enemy.x); minZ = Math.min(minZ, enemy.z); maxZ = Math.max(maxZ, enemy.z);
+    assert.ok(inSorcererHall(enemy), 'the sorcerer patrols only the great hall floor');
   }
   assert.ok(maxX - minX > 5 && maxZ - minZ > 5); assert.equal(enemy.attackSequence, 0);
+});
+
+// 2026-09-12: the sorcerer is an indoor enemy; only the great hall (the upper storey) is its ground.
+test('the castle sorcerer ignores players below the hall, drops a target that leaves it, and never steps off the floor', () => {
+  const { room, enemy, player } = fixture();
+  assert.equal(enemy.castle, true); assert.ok(inSorcererHall(enemy));
+  assert.ok(createEnemies(new CollisionWorld([], { river: false }), [], 1000).filter(e => e.modelKey === ENEMY_RULES.modelKey && e.id !== enemy.id).every(e => !e.castle), 'adventure guardians keep their own grounds');
+  // Castle floor cells within the leash disc that are not the hall: the stairs and the forecourt.
+  const below = [];
+  for (let dx = -22; dx <= 22; dx += 0.5) for (let dz = -22; dz <= 22; dz += 0.5) {
+    const p = { x: enemy.home.x + dx, z: enemy.home.z + dz };
+    if (Math.hypot(dx, dz) <= ENEMY_RULES.leashRadius && Number.isFinite(CASTLE_SURFACE.height(p.x, p.z)) && !inSorcererHall(p)) below.push(p);
+  }
+  assert.ok(below.length > 20, 'the leash disc reaches castle floor outside the hall');
+  below.sort((a, b) => Math.hypot(a.x - enemy.x, a.z - enemy.z) - Math.hypot(b.x - enemy.x, b.z - enemy.z));
+  Object.assign(player, below[0]);
+  updateEnemies(room, 0, 2000); assert.equal(enemy.targetId, null); assert.equal(enemy.behavior, 'roam');
+  // A player in the hall is noticed; once they step down, the sorcerer lets go and returns home, staying on the hall floor throughout.
+  const start = { x: enemy.x, z: enemy.z };
+  Object.assign(player, { x: enemy.x, z: enemy.z + 5 }); assert.ok(inSorcererHall(player));
+  let now = 3000; updateEnemies(room, .05, now); assert.equal(enemy.targetId, player.id);
+  for (let i = 0; i < 40; i++) { now += 50; updateEnemies(room, .05, now); assert.ok(inSorcererHall(enemy)); }
+  Object.assign(player, below[0]);
+  updateEnemies(room, .05, now += 50); assert.equal(enemy.targetId, null); assert.equal(enemy.returning, true);
+  let nearestHome = Infinity;
+  for (let i = 0; i < 400; i++) { now += 50; updateEnemies(room, .05, now); assert.ok(inSorcererHall(enemy)); assert.equal(enemy.targetId, null); nearestHome = Math.min(nearestHome, Math.hypot(enemy.x - enemy.home.x, enemy.z - enemy.home.z)); }
+  assert.ok(nearestHome < 0.2, 'returned to its post before patrolling again'); assert.equal(enemy.returning, false); assert.equal(enemy.behavior, 'roam');
+  // Forced toward the lower floor, its step is undone rather than leaving the hall.
+  enemy.castle = true; enemy.targetId = null; enemy.returning = false;
+  for (let i = 0; i < 200; i++) {
+    enemy.target = { ...below[0] }; enemy.path = [];
+    now += 50; updateEnemies(room, .05, now);
+    assert.ok(inSorcererHall(enemy), `step ${i} left the hall`);
+  }
+  assert.ok(Math.hypot(enemy.x - start.x, enemy.z - start.z) < ENEMY_RULES.leashRadius);
 });
 
 test('crow notices nearby players, chases, winds up, and damages once per staff swing', () => {
@@ -91,7 +130,8 @@ test('line of sight gates aggro, pursuit paths avoid walls, and leash returns wi
 
 test('camp and recovery protection prevent crow attacks', () => {
   const { room, enemy, player } = fixture();
-  Object.assign(enemy, { x: 49, z: 41, home: { x: 49, z: 41 } }); Object.assign(player, { x: 49, z: 43 });
+  // Relocated beside camp for the rule under test: no longer the castle's indoor sorcerer.
+  Object.assign(enemy, { x: 49, z: 41, home: { x: 49, z: 41 }, castle: false }); Object.assign(player, { x: 49, z: 43 });
   updateEnemies(room, 0, 2000); assert.equal(enemy.targetId, null); assert.equal(enemy.attackSequence, 0);
   Object.assign(enemy, { x: 45, z: 16, home: { x: 45, z: 16 } }); Object.assign(player, { x: 45, z: 17.3, invulnerableUntil: 6000 });
   updateEnemies(room, 0, 3000); assert.equal(enemy.targetId, null);
@@ -127,4 +167,110 @@ test('wooden spear hits kill the crow; death remains briefly solid, then safe re
   assert.equal(enemy.phase, 'alive'); assert.equal(enemy.alive, true); assert.equal(enemy.health, 75);
   assert.equal(enemy.hitSequence, Math.ceil(75 / COMBAT.attackDamage)); assert.ok(room.collision.free(enemy, enemy.radius, [actorObstacle(player)]));
   assert.equal(player.inventory.rawMeat, 2);
+});
+
+test('a hit from outside the notice range still gives the attacker away', () => {
+  const { room, enemy, player } = fixture();
+  player.z = enemy.z + ENEMY_RULES.aggroRange + 2;
+  updateEnemies(room, .05, 2000);
+  assert.equal(enemy.targetId, null);
+  enemy.provokedBy = player.id;
+  updateEnemies(room, .05, 2050);
+  assert.equal(enemy.targetId, player.id);
+  assert.equal(enemy.provokedBy, null);
+  assert.equal(enemy.behavior, 'chase');
+});
+
+test('red bolt: raised-staff windup, straight flight, one hit; a side-step after release dodges it', () => {
+  for (const dodge of [false, true]) {
+    const { room, enemy, player } = fixture();
+    enemy.nextBoltAt = 0;
+    player.z = enemy.z + 8;
+    updateEnemies(room, .05, 2000);
+    assert.equal(enemy.targetId, player.id);
+    assert.equal(enemy.behavior, 'bolt');
+    assert.equal(enemy.clip, 'Attack');
+    assert.equal(enemy.pendingAttack.kind, 'bolt');
+    assert.equal(enemy.attackSequence, 1);
+    const release = 2000 + ENEMY_RULES.boltWindupMs;
+    updateEnemies(room, .05, release - 50);
+    assert.equal(enemy.speed, 0, 'the caster stands still through the windup');
+    assert.equal(enemy.behavior, 'bolt');
+    assert.equal((room.hexBolts ?? []).length, 0);
+    updateEnemies(room, .05, release);
+    assert.equal(room.hexBolts.length, 1);
+    const bolt = room.hexBolts[0];
+    assert.equal(bolt.kind, 'hex');
+    assert.equal(bolt.ownerId, enemy.id);
+    assert.ok(Math.abs(bolt.dz - 1) < 1e-9 && Math.abs(bolt.dx) < 1e-9, 'aimed straight at the target');
+    if (dodge) player.x += 1.6;
+    let now = release;
+    while (room.hexBolts.length && now < release + 4000) {
+      now += 50;
+      updateEnemies(room, .05, now);
+    }
+    assert.equal(room.hexBolts.length, 0, 'the bolt hit or expired');
+    if (dodge) {
+      assert.equal(player.energy, 100);
+      assert.equal(player.hurtSequence, 0);
+    } else {
+      assert.equal(player.energy, 100 - ENEMY_RULES.boltDamage);
+      assert.equal(player.hurtSequence, 1);
+      assert.ok(room.projectileImpacts.some((i) => i.kind === 'hex' && i.hit));
+    }
+    assert.ok(enemy.nextBoltAt >= 2000 + ENEMY_RULES.boltCooldownMs);
+  }
+});
+
+test('red burst: a ring telegraph around the caster, then damage only to those still inside', () => {
+  const { room, enemy, player } = fixture();
+  enemy.nextBurstAt = 0;
+  const stayer = { ...player, id: 'stayer', x: enemy.x + 2.5, z: enemy.z + 2, hurtSequence: 0 };
+  room.players.set(stayer.id, stayer);
+  player.z = enemy.z + 3;
+  updateEnemies(room, .05, 2000);
+  assert.equal(enemy.behavior, 'burst');
+  assert.equal(enemy.clip, 'Attack');
+  assert.equal(room.hexBursts.length, 1);
+  const burst = room.hexBursts[0];
+  assert.equal(burst.radius, ENEMY_RULES.burstRadius);
+  assert.equal(burst.startedAt, 2000);
+  assert.equal(burst.at, 2000 + ENEMY_RULES.burstWindupMs);
+  assert.equal(burst.detonatedAt, null);
+  updateEnemies(room, .05, burst.at - 50);
+  assert.equal(player.energy, 100);
+  assert.equal(stayer.energy, 100);
+  assert.equal(enemy.speed, 0);
+  // Leaving the ring before it closes is the answer.
+  player.z = enemy.z + ENEMY_RULES.burstRadius + player.radius + 0.5;
+  updateEnemies(room, .05, burst.at);
+  assert.equal(burst.detonatedAt, burst.at);
+  assert.equal(player.energy, 100);
+  assert.equal(player.hurtSequence, 0);
+  assert.equal(stayer.energy, 100 - ENEMY_RULES.burstDamage);
+  assert.equal(stayer.hurtSequence, 1);
+  assert.ok(enemy.nextBurstAt >= 2000 + ENEMY_RULES.burstCooldownMs);
+  // The flash lingers briefly for the renderer, then the record is dropped.
+  updateEnemies(room, .05, burst.at + 500);
+  assert.equal(room.hexBursts.length, 1);
+  updateEnemies(room, .05, burst.at + 900);
+  assert.equal(room.hexBursts.length, 0);
+});
+
+test('exhibition rules restore fallen players fully and bring the crow back in ten seconds', async () => {
+  const { EXHIBITION_RULES } = await import('../dist/shared/room-rules.mjs');
+  const { room, enemy, player } = fixture();
+  room.rules = EXHIBITION_RULES;
+  player.energy = 10;
+  player.downedUntil = 5000;
+  updateEnemies(room, .05, 5000);
+  assert.equal(player.downedUntil, 0);
+  assert.equal(player.energy, 100);
+  enemy.phase = 'respawning'; enemy.phaseStartedAt = 6000; enemy.health = 0; enemy.alive = false;
+  updateEnemies(room, 0, 6000 + 9999); assert.equal(enemy.phase, 'respawning');
+  updateEnemies(room, 0, 6000 + 10000); assert.equal(enemy.phase, 'alive'); assert.equal(enemy.health, enemy.maxHealth);
+  room.rules = undefined;
+  player.energy = 10; player.downedUntil = 20000;
+  updateEnemies(room, .05, 20000);
+  assert.equal(player.energy, ENEMY_RULES.recoveryEnergy);
 });

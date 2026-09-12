@@ -1,0 +1,11 @@
+{
+  "decision": "adopt",
+  "sha256": "e7405c28bdacd186e00c66a077de0504918f3737e8a1729fb2996339380d976f",
+  "revision": "08",
+  "reviewedAt": "2026-09-11T22:49:05.360Z",
+  "sheets": [
+    "output/model-generation/models/violet-behemoth/work/rig/revision-08/qa/sheet-left.png",
+    "output/model-generation/models/violet-behemoth/work/rig/revision-08/qa/sheet-threequarter.png"
+  ],
+  "notes": "Telegraph clips reviewed on pose sheets (left and three-quarter): Roar rears the front up with the jaw wide before the charge, Tremble shudders with the tail lifted and lashing before the tail spin, Gape pulls the head back with the mouth open before the bite. Surface, weights and the nine earlier clips are unchanged from revision 04."
+}

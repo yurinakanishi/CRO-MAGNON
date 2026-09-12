@@ -262,7 +262,7 @@ try {
     throw Error('Gamepad focus ' + id);
   }
   await select('#supper-food-herbRoot');
-  await tap(PAD.cross);
+  await tap(PAD.circle);
   await a.evaluate(() => {
     window.qaFocus = document.activeElement;
   });

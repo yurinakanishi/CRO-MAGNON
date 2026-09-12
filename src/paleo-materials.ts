@@ -79,20 +79,21 @@ export function clipRiverAtCoast(shader, textures) {
     '#include <color_fragment>\nif(shoreline(vRiverWorld)<=0.0)discard;',
   );
 }
-// Measured 2026-09-11 from the delivered grass GLBs (meadow-grass sha256
-// 60a6005e…, meadow-sprig sha256 8faafb56…): the mean linear albedo of each
-// texture's green-dominant blade texels (tests/meadow-ground-tint.test.mjs
-// re-measures them). The meadow-ground tile bakes as ochre instead
-// (area-weighted mean 0.153/0.122/0.042; 76% dirt texels at G/R≈0.72, 24% olive
-// turf at G/R≈0.94, the same luminance as the blades), so the grassland material
-// re-hues every ground texel to the placement-weighted blade green at the
-// texel's own luminance. Turf texels go all the way, dirt texels keep a trace of
-// their warmth. The texture's relief, biome transitions, beaches, the shadow
-// garden and the marsh still apply on top. Runtime material only; the GLBs are
-// unchanged.
+// Measured 2026-09-11 from the delivered grass GLBs after the root recolour
+// (meadow-grass sha256 6356602b…, meadow-sprig sha256 e946fd0e…; the baked
+// brown root band was re-hued green by scripts/recolor-grass-root.mjs): the
+// mean linear albedo of each texture's green-dominant blade texels
+// (tests/meadow-ground-tint.test.mjs re-measures them). The meadow-ground tile
+// bakes as ochre instead (area-weighted mean 0.153/0.122/0.042; 76% dirt texels
+// at G/R≈0.72, 24% olive turf at G/R≈0.94, the same luminance as the blades),
+// so the grassland material re-hues every ground texel to the placement-weighted
+// blade green at the texel's own luminance. Turf texels go all the way, dirt
+// texels keep a trace of their warmth. The texture's relief, biome transitions,
+// beaches, the shadow garden and the marsh still apply on top. Runtime material
+// only; the ground GLB is unchanged.
 export const BLADE_ALBEDO = Object.freeze({
-  'meadow-grass': Object.freeze({ r: 0.0442, g: 0.1503, b: 0.0205 }),
-  'meadow-sprig': Object.freeze({ r: 0.0221, g: 0.1717, b: 0.0087 }),
+  'meadow-grass': Object.freeze({ r: 0.0445, g: 0.155, b: 0.0207 }),
+  'meadow-sprig': Object.freeze({ r: 0.0143, g: 0.1743, b: 0.0058 }),
 });
 const blend = (channel) =>
   BLADE_ALBEDO['meadow-grass'][channel] * GROUNDCOVER_TUFT_SHARE +

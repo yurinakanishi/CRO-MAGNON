@@ -103,7 +103,7 @@ test('wall sliding inherits only the resolved tangent; blocked, released and exp
     if (mode === 'expired') movePlayer(f.ape, 0.1, 2000);
     const orb = release(f);
     near(orb.dx * orb.speed, 0);
-    near(orb.dz * orb.speed, mode === 'slide' ? 7 + 5.4 / Math.sqrt(2) : 7);
+    near(orb.dz * orb.speed, mode === 'slide' ? 7 + 6.4 / Math.sqrt(2) : 7);
   }
 });
 
@@ -116,12 +116,12 @@ test('flight retains release velocity after carrier turns, stops or passenger di
   Object.assign(f.ape, { dx: 1, dz: 0, lastInput: 1500 });
   movePlayer(f.ape, 0.1, 1500);
   updateProjectiles(f.room, 1600);
-  near(orb.z - origin, 12.4 * 0.2);
+  near(orb.z - origin, 13.4 * 0.2);
   stopActor(f.ape);
   f.mage.carrierId = null;
   f.ape.passengerId = null;
   updateProjectiles(f.room, 2000);
-  near(orb.z - origin, 12.4 * 0.6);
+  near(orb.z - origin, 13.4 * 0.6);
 });
 
 test('boosted flight sweeps walls and hits once even when a long tick crosses the target', () => {
@@ -153,8 +153,8 @@ test('boosted flight sweeps walls and hits once even when a long tick crosses th
 });
 
 test('rendered boosted orbs follow the combined flight direction and advance ahead of the moving ape', () => {
-  for (const vx of [0, 5.4]) {
-    const vz = vx ? 0 : 5.4,
+  for (const vx of [0, 6.4]) {
+    const vz = vx ? 0 : 6.4,
       speed = Math.hypot(vx, 7 + vz),
       dx = vx / speed,
       dz = (7 + vz) / speed;

@@ -201,14 +201,14 @@ test('carrier walks and runs at doubled speed with one body; passenger input can
   assert.equal(f.b.x, 0);
   f.peers[0].socket.command({ type: 'move', dx: 0, dz: 1 });
   f.advance(100);
-  assert.ok(Math.abs(f.a.z - 0.18) < 1e-8);
+  assert.ok(Math.abs(f.a.z - 0.24) < 1e-8);
   assert.equal(f.a.z, f.b.z);
   f.peers[0].socket.command({ type: 'move', dx: 0, dz: 1, running: true });
   f.advance(100);
-  assert.ok(Math.abs(f.a.z - 0.72) < 1e-8);
+  assert.ok(Math.abs(f.a.z - 0.88) < 1e-8);
   assert.equal(f.b.running, true);
   f.advance(600);
-  assert.ok(Math.abs(f.a.z - 0.72) < 1e-8);
+  assert.ok(Math.abs(f.a.z - 0.88) < 1e-8);
   assert.equal(f.b.moving, false);
   for (const { socket } of f.peers) {
     const snap = socket.messages.filter((m) => m.type === 'state').at(-1);
@@ -288,7 +288,7 @@ test('shoulder mage casts while the ape runs, damages once and synchronizes the 
       assert.equal(orb.ownerId, f.b.id);
       assert.equal(orb.x, f.a.x, 'launch follows current carrier position');
       target.x = orb.x + ((target.z - orb.z) * orb.dx) / orb.dz;
-      assert.ok(Math.abs(orb.dx * orb.speed - 5.4) < 1e-8);
+      assert.ok(Math.abs(orb.dx * orb.speed - 6.4) < 1e-8);
       assert.ok(Math.abs(orb.dz * orb.speed - 7) < 1e-8);
       for (const { socket } of f.peers) {
         const state = socket.messages.filter((m) => m.type === 'state').at(-1);
