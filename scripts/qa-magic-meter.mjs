@@ -34,20 +34,9 @@ try {
     .waitFor({ timeout: 90000 });
   const room = game.rooms.get('MAGIC-METER');
   room.enemies = [];
-  const button = page.locator('#attack-button');
-  const sample = async () =>
-    button.evaluate((b) => ({
-      disabled: b.disabled,
-      cooling: b.classList.contains('cooling'),
-      fill: b.style.getPropertyValue('--cooldown'),
-      left: b.querySelector('.cooldown-left').hidden
-        ? ''
-        : b.querySelector('.cooldown-left').textContent,
-      title: b.title,
-      meterWidth: b.querySelector('.cooldown-meter').getBoundingClientRect().width,
-    }));
-  await button.waitFor();
-  await page.waitForFunction(() => document.querySelector('#attack-button').disabled === false);
+  const button = page.locator('#magic-cooldown');
+  const sample = () => button.evaluate((b) => ({ hidden: b.hidden, left: b.textContent }));
+  await page.waitForSelector('#world[data-attack-available="true"]');
   const before = await sample();
   await page
     .locator('#world')
@@ -60,32 +49,30 @@ try {
   while (Date.now() - t0 < 5600) {
     samples.push({ t: Date.now() - t0, ...(await sample()) });
     if (samples.length === 4) await button.screenshot({ path: `${folder}/meter-early.png` });
-    if (samples.length === 16) await button.screenshot({ path: `${folder}/meter-late.png` });
+    if (samples.length === 10) await button.screenshot({ path: `${folder}/meter-late.png` });
     await sleep(300);
   }
-  await button.screenshot({ path: `${folder}/meter-ready.png` });
+  await page.screenshot({ path: `${folder}/meter-ready.png` });
   await page.screenshot({ path: `${folder}/hud.png` });
   const after = await sample();
   const mage = [...room.players.values()][0];
   assert.equal(mage.attackSequence, 1);
-  assert.equal(before.cooling, false);
-  assert.ok(samples[0].cooling && samples[0].disabled, 'meter shows right after the cast');
-  assert.ok(samples[0].left.endsWith('s'), 'remaining seconds are shown');
-  const fills = samples.filter((s) => s.cooling).map((s) => Number(s.fill));
-  assert.ok(fills.length >= 12, `meter stays visible for most of the 5s (${fills.length})`);
-  for (let i = 1; i < fills.length; i++) assert.ok(fills[i] >= fills[i - 1], 'fill only grows');
-  assert.ok(
-    fills[0] < 0.2 && fills.at(-1) > 0.8,
-    `fill spans the recharge ${fills[0]}→${fills.at(-1)}`,
-  );
-  assert.equal(after.cooling, false);
-  assert.equal(after.disabled, false);
+  assert.equal(before.hidden, true);
+  assert.ok(!samples[0].hidden, 'remaining time appears after casting');
+  assert.match(samples[0].left, /^魔法 あと[1-5]秒$/);
+  const seconds = samples
+    .filter((s) => !s.hidden)
+    .map((s) => Number(s.left.match(/あと(\d+)秒/)[1]));
+  assert.ok(seconds.length >= 8, 'countdown remains visible through recharge');
+  for (let i = 1; i < seconds.length; i++) assert.ok(seconds[i] <= seconds[i - 1]);
+  assert.equal(after.hidden, true);
+  assert.equal(after.left, '');
   assert.deepEqual(errors, []);
   await writeFile(
     `${folder}/summary.json`,
     JSON.stringify({ before, samples, after, errors }, null, 2),
   );
-  console.log('magic meter ok', samples.map((s) => `${s.t}:${s.fill}:${s.left}`).join(' '));
+  console.log('magic meter ok', samples.map((s) => `${s.t}:${s.hidden}:${s.left}`).join(' '));
 } finally {
   await browser.close();
   game.close();

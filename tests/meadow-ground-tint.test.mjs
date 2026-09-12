@@ -110,7 +110,7 @@ test('the blade albedo constants are the delivered grass textures', () => {
             BLADE_ALBEDO['meadow-sprig'][channel] * (1 - share)),
       ) < 1e-9,
     );
-  assert.ok(MEADOW_MATCH.turf === 1 && MEADOW_MATCH.dirt > 0.8 && MEADOW_MATCH.dirt <= 1);
+  assert.ok(MEADOW_MATCH.dirt < 0.3 && MEADOW_MATCH.turf < 1 && MEADOW_MATCH.turf > 0.6);
 });
 
 // Positions, UVs and triangle indices of a tuft GLB's single primitive.
@@ -247,11 +247,11 @@ function compiled(biome) {
   }
 }
 
-test('only the grassland ground is re-hued to the blade green, before its other treatments', () => {
+test('only grassland mixes soil and turf patches before its other treatments', () => {
   const { material, shader } = compiled(biomeById('grassland'));
   const fragment = shader.fragmentShader;
-  assert.ok(fragment.includes('vec3 meadowGreen(vec3 albedo)'));
-  const hue = fragment.indexOf('diffuseColor.rgb=meadowGreen(diffuseColor.rgb);'),
+  assert.ok(fragment.includes('vec3 meadowGreen(vec3 albedo,vec2 p)'));
+  const hue = fragment.indexOf('diffuseColor.rgb=meadowGreen(diffuseColor.rgb,vTerrainWorld.xz);'),
     transition = fragment.indexOf('float transition='),
     marsh = fragment.indexOf('float marsh=marshBasin');
   assert.ok(

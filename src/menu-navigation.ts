@@ -38,6 +38,8 @@ export function spatialMenuIndex(rects: readonly MenuRect[], index: number, dire
 }
 
 export function menuItems(root: HTMLElement): HTMLElement[] {
+  // The foremost item dialog owns navigation, including Tab and arrow keys.
+  root = root.querySelector<HTMLElement>('[data-focus-scope]') ?? root;
   return [
     ...root.querySelectorAll<HTMLElement>(
       'button,a[href],input,select,textarea,summary,[role="button"],[tabindex="0"]',

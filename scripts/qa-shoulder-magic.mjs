@@ -77,8 +77,7 @@ try {
     () => !!window.qaWorld.players.get(window.qaWorld.selfId).state.carrierId,
   );
   assert.equal(mage.carrierId, ape.id);
-  await m.locator('#attack-button').waitFor({ state: 'visible' });
-  assert.equal(await m.locator('#attack-button').isEnabled(), true);
+  await m.waitForSelector('#world[data-attack-available="true"]');
   await m.keyboard.press('f');
   await m.waitForFunction(
     () => window.qaWorld.players.get(window.qaWorld.selfId).actor.animation.name === 'Carry_Cast',
@@ -91,7 +90,8 @@ try {
   assert.ok(casts > 0);
   const before = { x: ape.x, z: ape.z };
   await a.keyboard.down('w');
-  await m.locator('#attack-button').click();
+  await m.waitForSelector('#world[data-attack-available="true"]');
+  await m.keyboard.press('f');
   await sleep(850);
   await a.keyboard.up('w');
   assert.ok(Math.hypot(ape.x - before.x, ape.z - before.z) > 0.1);
@@ -102,7 +102,8 @@ try {
   await a.keyboard.press('Shift');
   await a.keyboard.down('w');
   await sleep(300);
-  await m.locator('#attack-button').click();
+  await m.waitForSelector('#world[data-attack-available="true"]');
+  await m.keyboard.press('f');
   const flightSequence = mage.attackSequence;
   await m.waitForFunction(() =>
     window.qaWorld.state.projectiles.some((p) => p.ownerId === window.qaWorld.selfId),
@@ -152,12 +153,14 @@ try {
     await m.setViewportSize(viewport);
     await sleep(1200);
     const sequence = mage.attackSequence;
-    await m.locator('#attack-button').click();
+    await m.waitForSelector('#world[data-attack-available="true"]');
+    await m.keyboard.press('f');
     await m.waitForFunction(
       (seq) => window.qaWorld.players.get(window.qaWorld.selfId).state.attackSequence > seq,
       sequence,
     );
-    const box = await m.locator('#attack-button').boundingBox();
+    await m.locator('#magic-cooldown').waitFor({ state: 'visible' });
+    const box = await m.locator('#magic-cooldown').boundingBox();
     assert.ok(
       box.x >= 0 &&
         box.y >= 0 &&

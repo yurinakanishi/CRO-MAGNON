@@ -50,7 +50,7 @@ try {
     .locator('#world[data-world-asset="ready"][data-character-asset="ready"]')
     .waitFor({ timeout: 90000 });
   assert.ok((await p.locator('body').ariaSnapshot()).includes('三つの岸'));
-  assert.match(await p.locator('#attack-button').textContent(), /木槍/);
+  assert.equal(await p.locator('#world').getAttribute('data-weapon'), 'spear');
   peer = new WebSocket(base.replace('http', 'ws') + '/ws?room=CROP-ROLLOUT&name=CHECK');
   await new Promise((resolve, reject) => {
     const timeout = setTimeout(() => reject(new Error('No rollout snapshot')), 10000);

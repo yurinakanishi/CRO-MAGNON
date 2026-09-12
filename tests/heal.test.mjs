@@ -15,6 +15,9 @@ test('one press picks the meal that fits the missing energy, else the smallest c
     'cookedShellfish',
   );
   assert.equal(chooseMeal({ energy: 40, inventory: { herbRoot: 1, cookedRoot: 1 } }).id, 'herbRoot');
+  assert.equal(chooseMeal({ energy: 40, inventory: { rawMeat: 1 } }).eatAction, 'eatRawMeat');
+  assert.equal(chooseMeal({ energy: 80, inventory: { rawMeat: 1, cookedMeat: 1 } }).id, 'rawMeat');
+  assert.equal(chooseMeal({ energy: 40, inventory: { rawMeat: 1, cookedMeat: 1 } }).id, 'cookedMeat');
 });
 
 test('the heal action eats through the food handlers with a short repeat guard', () => {
@@ -63,4 +66,8 @@ test('the heal action eats through the food handlers with a short repeat guard',
   player.inventory = {};
   act(room, player, { action: 'heal' }, 7000);
   assert.match(notices.at(-1).text, /食べ物がありません/);
+  player.inventory.rawMeat = 1;
+  act(room, player, { action: 'heal' }, 8000);
+  assert.equal(player.energy, 25);
+  assert.equal(player.inventory.rawMeat, 0);
 });

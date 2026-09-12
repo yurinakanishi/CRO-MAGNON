@@ -10,13 +10,13 @@ test('button prompts follow the input device and the current mount options', () 
   const keyboard = keyPrompts(false, { ride: false, boat: false });
   assert.deepEqual(
     keyboard.map((p) => p.key),
-    ['E', 'F', 'Space', 'Enter', 'ESC'],
+    ['ESC'],
   );
   const pad = keyPrompts(true, { ride: true, boat: true });
   assert.deepEqual(
     pad.map((p) => p.key),
     // 2026-09-12: jump on the top face button, mount / boat on the bottom one.
-    ['○', '□', '△', '×', '×', 'OPTIONS'],
+    ['×', '×', 'OPTIONS'],
   );
   assert.ok(!pad.some((p) => p.label === '話す'), 'chat needs a keyboard');
 });

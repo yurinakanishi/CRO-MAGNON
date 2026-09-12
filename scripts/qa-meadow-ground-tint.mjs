@@ -1,5 +1,5 @@
 // Real-browser look at the grassland ground beside the meadow-grass / meadow-sprig
-// cover, with a pixel comparison of the drawn ground against the drawn blades.
+// cover, with colour buckets (not object segmentation) and stable instance tints.
 // Reuses the behemoth QA host fixture (room BEHEMOTH-QA, `place` command);
 // nothing here touches the normal server. Usage: node scripts/qa-meadow-ground-tint.mjs <outDir>
 import { fork } from 'node:child_process';
@@ -32,8 +32,8 @@ async function until(fn, label, limit = 30000) {
     await sleep(100);
   }
 }
-// Mean display colour of blade-like pixels (green-dominant) and ground-like
-// pixels inside the band below the horizon and above the bottom HUD.
+// Historical bucket names: "blade" = strong green, "ground" = olive/earth.
+// Both ground and blades now contain both buckets; these do not identify objects.
 async function analyse(file) {
   const { data, info } = await sharp(file).raw().toBuffer({ resolveWithObject: true });
   const x0 = Math.round(info.width * 0.05),
@@ -84,6 +84,31 @@ async function view(page, yaw, pitch, distance) {
     { yaw, pitch, distance },
   );
   await sleep(900);
+}
+async function grassPalette(page) {
+  return page.evaluate(() => {
+    const r = window.monsterReview, colours = {}, sources = [];
+    for (const landscape of r.landscapes) {
+      if (landscape.surface || !['meadow-grass', 'meadow-sprig'].includes(landscape.key)) continue;
+      const source = r.worldAssets.get(landscape.key).gltf.scene;
+      const original = [];
+      source.traverse((node) => { if (node.isMesh) original.push(node); });
+      sources.push({
+        key: landscape.key,
+        sharedGeometry: landscape.levels[0].every(({mesh}, i) => mesh.geometry === original[i].geometry),
+        sharedTexture: landscape.levels[0].every(({mesh}, i) => mesh.material.map === original[i].material.map),
+        sourceUntinted: original.every((node) => !node.material.customProgramCacheKey().includes('meadow-grass-palette')),
+        allLodsTinted: landscape.levels.flat().every(({mesh}) => mesh.instanceColor && mesh.material.customProgramCacheKey().includes('meadow-grass-palette')),
+      });
+      const mesh = landscape.levels[2][0].mesh;
+      for (let i = 0; i < mesh.count; i++) {
+        const matrix = mesh.instanceMatrix.array, colour = mesh.instanceColor.array;
+        const id = `${landscape.key}:${matrix[i*16+12].toFixed(3)},${matrix[i*16+14].toFixed(3)}`;
+        colours[id] = [...colour.slice(i*3, i*3+3)];
+      }
+    }
+    return { colours, sources };
+  });
 }
 let context;
 try {
@@ -139,6 +164,12 @@ try {
   await sleep(2500);
   await view(page, Math.PI * 0.5, 0.22, 6);
   await shot(page, '01-east-eye-level');
+  const paletteBefore = await grassPalette(page);
+  for (const source of paletteBefore.sources) {
+    assert.ok(source.sharedGeometry && source.sharedTexture && source.sourceUntinted && source.allLodsTinted, source.key);
+  }
+  assert.ok(paletteBefore.sources.length >= 2);
+  assert.ok(new Set(Object.values(paletteBefore.colours).map((c) => c.map((v) => v.toFixed(2)).join(','))).size > 30);
   await view(page, Math.PI * 0.5, 0.62, 14);
   await shot(page, '02-east-overview');
   await view(page, Math.PI * 0.5, 0.3, 2.2);
@@ -150,6 +181,34 @@ try {
   await sleep(2500);
   await view(page, 0, 0.25, 7);
   await shot(page, '05-south-eye-level');
+  // Return after streaming cells and changing LOD/culling order: the same plants keep their colours.
+  await request('place', { x: 76, z: 68 });
+  await sleep(2500);
+  await view(page, Math.PI * 0.5, 0.22, 6);
+  const paletteAfter = await grassPalette(page);
+  let compared = 0;
+  for (const [id, colour] of Object.entries(paletteBefore.colours)) {
+    if (!paletteAfter.colours[id]) continue;
+    assert.deepEqual(paletteAfter.colours[id], colour, id);
+    compared++;
+  }
+  assert.ok(compared > 100, `${compared} returned plants`);
+  facts.grassPalette = { sources: paletteBefore.sources, stableAfterTravel: compared };
+  await shot(page, '08-east-return');
+  // Exercise the actual near GLBs as well as the normal distant impostors.
+  // The fixture temporarily extends their threshold, then restores production distances.
+  const distances = await page.evaluate(() => window.monsterReview.landscapes.map((landscape) => {
+    const saved = [...landscape.distances];
+    if (!landscape.surface && ['meadow-grass', 'meadow-sprig'].includes(landscape.key)) landscape.distances[0] = 5;
+    return saved;
+  }));
+  await view(page, Math.PI * 0.5 + 0.01, 0.3, 2.2);
+  facts.grassPalette.nearModels = await page.evaluate(() => window.monsterReview.landscapes
+    .filter((l) => !l.surface && ['meadow-grass', 'meadow-sprig'].includes(l.key))
+    .map((l) => ({ key: l.key, count: l.levels[0][0].mesh.count })));
+  assert.ok(facts.grassPalette.nearModels.every((l) => l.count > 0));
+  await shot(page, '09-near-grass-models');
+  await page.evaluate((saved) => window.monsterReview.landscapes.forEach((l, i) => l.distances = saved[i]), distances);
   // The behemoth marsh keeps its mud and algae on top of the re-hued ground.
   await request('prepare', { mode: 'guard' });
   await sleep(2500);

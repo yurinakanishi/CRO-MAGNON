@@ -231,6 +231,8 @@ try {
   fixtures.push({ label: 'craft supplies', wood: 15, stone: 2 });
   await sleep(500);
   await tap(PAD.left);
+  await select('[data-controller-menu="crafting"]');
+  await tap(PAD.circle);
   await select('#modal-craft');
   await tap(PAD.circle);
   await until(() => player().tool, 'craft through menu');
@@ -328,6 +330,8 @@ try {
   current = 'boat';
   await stage({ x: 21, z: 125 }, 'known usable shore; remaining 12 wood from craft fixture');
   await tap(PAD.left);
+  await select('[data-controller-menu="crafting"]');
+  await tap(PAD.circle);
   await select('#modal-boat-craft');
   await tap(PAD.circle);
   await until(() => room.boats.length === 1, 'controller boat craft');

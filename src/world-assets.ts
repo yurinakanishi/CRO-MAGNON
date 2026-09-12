@@ -7,7 +7,8 @@ import { PlacementGrid } from '../shared/spatial-grid.mjs';
 import { createSurfaceTemplate } from './biome-surfaces.js';
 import { sha256 } from './asset-hash.js';
 import { ViewUpdateGate } from './view-update-gate.js';
-import { markActiveInstances } from './instance-updates.js';
+import { markActiveAttribute, markActiveInstances } from './instance-updates.js';
+import { applyMeadowGrassPalette, meadowGrassTint } from './meadow-palette.js';
 import { ActionBlender, gaitPhase } from './action-blender.js';
 
 function disposeTemplate(root) {
@@ -552,8 +553,11 @@ interface LandscapePlacement {
 
 export class LandscapeInstances {
   private viewUpdate = new ViewUpdateGate();
+  private grassTints: WeakMap<LandscapePlacement, THREE.Color> | null = null;
+  private grassMaterials = new Set<THREE.Material>();
   updates = 0;
   matrixUploadBytes = 0;
+  colorUploadBytes = 0;
   declare placements: any;
   declare distances: any;
   declare scene: any;
@@ -608,6 +612,8 @@ export class LandscapeInstances {
     this.capacity = this.grid.maximumNearby(distances[2]) + generatorCapacity;
     this.key = key;
     this.surface = surface;
+    if (!surface && (key === 'meadow-grass' || key === 'meadow-sprig'))
+      this.grassTints = new WeakMap();
     const template = assets.get(key, surface);
     for (const model of [template.gltf, template.lods[0]]) {
       if (!model) {
@@ -618,7 +624,18 @@ export class LandscapeInstances {
       model.scene.updateMatrixWorld(true);
       model.scene.traverse((node) => {
         if (!isMesh(node)) return;
-        const mesh = new THREE.InstancedMesh(node.geometry, node.material, this.capacity);
+        const grassMaterial = (source: THREE.Material) => {
+          const material = source.clone();
+          applyMeadowGrassPalette(material, key);
+          this.grassMaterials.add(material);
+          return material;
+        };
+        const material = this.grassTints
+          ? Array.isArray(node.material)
+            ? node.material.map(grassMaterial)
+            : grassMaterial(node.material)
+          : node.material;
+        const mesh = new THREE.InstancedMesh(node.geometry, material, this.capacity);
         mesh.instanceMatrix.setUsage(THREE.DynamicDrawUsage);
         mesh.count = 0;
         mesh.frustumCulled = false;
@@ -631,6 +648,7 @@ export class LandscapeInstances {
       this.levels.push(meshes);
     }
     this.impostor = renderImpostor(renderer, template.gltf.scene, surface ? 256 : 512);
+    if (this.grassTints) applyMeadowGrassPalette(this.impostor.material, key);
     const billboard = new THREE.InstancedMesh(
       this.impostor.geometry,
       this.impostor.material,
@@ -641,6 +659,13 @@ export class LandscapeInstances {
     billboard.frustumCulled = false;
     scene.add(billboard);
     this.levels.push([{ mesh: billboard, local: new THREE.Matrix4() }]);
+    if (this.grassTints)
+      for (const level of this.levels)
+        for (const { mesh } of level)
+          mesh.instanceColor = new THREE.InstancedBufferAttribute(
+            new Float32Array(this.capacity * 3),
+            3,
+          ).setUsage(THREE.DynamicDrawUsage);
     this.matrix = new THREE.Matrix4();
     this.composed = new THREE.Matrix4();
     this.rotation = new THREE.Quaternion();
@@ -710,14 +735,27 @@ export class LandscapeInstances {
           : item.yaw;
       this.rotation.setFromAxisAngle(this.axis, yaw);
       this.matrix.compose(item.position, this.rotation, item.scale);
-      for (const { mesh, local } of this.levels[level])
+      let tint: THREE.Color | undefined;
+      if (this.grassTints) {
+        tint = this.grassTints.get(item);
+        if (!tint) {
+          tint = meadowGrassTint(this.key, item.position.x, item.position.z);
+          this.grassTints.set(item, tint);
+        }
+      }
+      for (const { mesh, local } of this.levels[level]) {
         mesh.setMatrixAt(counts[level], this.composed.multiplyMatrices(this.matrix, local));
+        if (tint) mesh.setColorAt(counts[level], tint);
+      }
       counts[level]++;
     }
     for (const [level, meshes] of this.levels.entries())
       for (const { mesh } of meshes) {
         mesh.count = counts[level];
         this.matrixUploadBytes = (this.matrixUploadBytes ?? 0) + markActiveInstances(mesh);
+        if (mesh.instanceColor)
+          this.colorUploadBytes =
+            (this.colorUploadBytes ?? 0) + markActiveAttribute(mesh.instanceColor, mesh.count);
       }
   }
   dispose() {
@@ -729,5 +767,6 @@ export class LandscapeInstances {
     this.impostor.geometry.dispose();
     this.impostor.material.dispose();
     this.impostor.target.dispose();
+    for (const material of this.grassMaterials) material.dispose();
   }
 }

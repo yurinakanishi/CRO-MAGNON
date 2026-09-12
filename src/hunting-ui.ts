@@ -2,12 +2,11 @@ import {
   HUNTING,
   huntingDistance,
   nearestHuntTarget,
-  nearestCookingFire,
+  usableCookingFire,
 } from '../shared/hunting.mjs';
 import { WORLD } from '../shared/world.mjs';
 import { withinAttackReach } from '../shared/combat.mjs';
 
-import { interactionVisible } from '../shared/interactions.mjs';
 import { CROP_INVENTORY } from '../shared/crops.mjs';
 
 export function inventoryCounts(inventory = {}) {
@@ -82,20 +81,14 @@ export function huntInteraction(state, player, collision) {
       label: `生肉を採る（残り${meat.meatRemaining}個）`,
     };
   }
-  const fire = nearestCookingFire(state, player);
+  const fire = usableCookingFire(state, player, collision);
   const inv = inventoryCounts(player.inventory);
-  if (
-    inv.rawRoot &&
-    huntingDistance(player, fire) <= HUNTING.cookRange &&
-    (!collision || interactionVisible(collision, player, fire))
-  )
-    return { action: 'cropFoodOpen', label: '火根の焼き方を選ぶ' };
+  if (inv.rawRoot && fire) return { action: 'cropFoodOpen', label: '火根の焼き方を選ぶ' };
   if (
     (inventoryCounts(player.inventory).rawMeat ||
       inventoryCounts(player.inventory).rawFish ||
       inventoryCounts(player.inventory).rawShellfish) &&
-    huntingDistance(player, fire) <= HUNTING.cookRange &&
-    (!collision || interactionVisible(collision, player, fire))
+    fire
   ) {
     return inventoryCounts(player.inventory).rawMeat
       ? { action: 'cook', label: '焚き火で生肉を焼く（3秒）' }

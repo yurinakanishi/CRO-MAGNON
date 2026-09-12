@@ -65,6 +65,7 @@ export class GamepadControls {
     document.addEventListener('pointerdown', this.otherInput);
     document.addEventListener('keydown', this.otherInput);
     document.addEventListener('keydown', this.keydown);
+    document.addEventListener('focusin', this.focusChanged);
     options.dialog.addEventListener('close', this.closed);
     this.frameId = requestAnimationFrame(this.tick);
   }
@@ -86,12 +87,34 @@ export class GamepadControls {
     // The atlas moves its own pointer with the arrow keys.
     if (!this.options.dialog.open || this.options.menu() !== this.options.dialog) return;
     if (this.mode() === 'map') return;
+    if (event.key === 'Tab') {
+      const items = this.items(),
+        index = items.indexOf(document.activeElement as HTMLElement);
+      if (items.length) {
+        event.preventDefault();
+        items[(index + (event.shiftKey ? -1 : 1) + items.length) % items.length]?.focus();
+      }
+      return;
+    }
     const direction = menuKeyDirection(event);
     if (!direction) return;
     event.preventDefault();
     const el = adjacentMenuItem(this.items(), document.activeElement as HTMLElement, direction);
     el?.focus({ preventScroll: true });
     el?.scrollIntoView({ block: 'nearest', inline: 'nearest' });
+  };
+
+  private focusChanged = () => {
+    const menu = this.options.menu();
+    if (!menu || this.mode() === 'map') return;
+    const items = this.items(),
+      active = document.activeElement as HTMLElement;
+    const scope = menu.querySelector<HTMLElement>('[data-focus-scope]') ?? menu;
+    if (!scope.contains(active)) {
+      (items.includes(this.focused!) ? this.focused : items[0])?.focus({ preventScroll: true });
+      return;
+    }
+    if (this.active && items.includes(active) && active !== this.focused) this.focus(active);
   };
 
   private setActive(active: boolean) {
@@ -117,7 +140,9 @@ export class GamepadControls {
     // Require fresh controller input after closing a dialog.
     this.suspend();
     this.clearFocus();
-    this.options.canvas.focus({ preventScroll: true });
+    const menu = this.options.menu();
+    if (menu) menuItems(menu)[0]?.focus({ preventScroll: true });
+    else this.options.canvas.focus({ preventScroll: true });
   };
 
   private mode(): InputMode {
@@ -145,6 +170,7 @@ export class GamepadControls {
     }
     const mode = this.mode(),
       frame = this.input.sample(devices, mode, time);
+    if (mode !== this.previousMode) this.clearFocus();
     if (this.connectedIndex !== null && frame.index !== this.connectedIndex) this.loseConnection();
     if (mode === 'blocked' && this.previousMode !== 'blocked') {
       this.suspend();
@@ -186,8 +212,13 @@ export class GamepadControls {
         this.options.closeMenu();
       else this.options.onMapInput?.(frame, dt);
     } else if (mode === 'game') {
-      if (frame.look.x || frame.look.y) this.options.onLook(frame.look.x, frame.look.y, dt);
-      for (const action of frame.actions) {
+      // Opening a UI wins over every gameplay action arriving in the same frame.
+      const opensMenu = frame.actions.find((action) =>
+        ['menu', 'inventory', 'map', 'journal'].includes(action),
+      );
+      if (!opensMenu && (frame.look.x || frame.look.y))
+        this.options.onLook(frame.look.x, frame.look.y, dt);
+      for (const action of opensMenu ? [opensMenu] : frame.actions) {
         this.options.onAction(action);
         if (this.mode() !== 'game' || action === 'cancel') break;
       }
@@ -201,7 +232,8 @@ export class GamepadControls {
   }
 
   private clearFocus() {
-    this.focused?.classList.remove('gamepad-focus');
+    for (const el of document.querySelectorAll('.gamepad-focus'))
+      el.classList.remove('gamepad-focus');
     this.focused = null;
   }
 
@@ -237,6 +269,10 @@ export class GamepadControls {
       this.focus(active);
       return;
     }
+    if (this.focused && items.includes(this.focused) && active !== this.focused) {
+      this.focus(this.focused);
+      return;
+    }
     if (!this.focused || !items.includes(this.focused))
       this.focus(
         items.find(
@@ -269,7 +305,7 @@ export class GamepadControls {
 
   private activate() {
     const el = this.focused;
-    if (!el || el.matches(':disabled')) return;
+    if (!el || !this.items().includes(el) || el.matches(':disabled')) return;
     if (el instanceof HTMLSelectElement) this.navigate('down');
     else el.click();
   }
@@ -280,6 +316,7 @@ export class GamepadControls {
     document.removeEventListener('pointerdown', this.otherInput);
     document.removeEventListener('keydown', this.otherInput);
     document.removeEventListener('keydown', this.keydown);
+    document.removeEventListener('focusin', this.focusChanged);
     this.options.dialog.removeEventListener('close', this.closed);
     this.suspend();
     this.clearFocus();

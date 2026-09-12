@@ -74,9 +74,9 @@ try {
       await until(
         () =>
           page
-            .locator('#attack-button')
-            .textContent()
-            .then((s) => s.includes('黒曜石')),
+            .locator('#world')
+            .getAttribute('data-weapon')
+            .then((s) => s === 'obsidianSpear'),
         'upgraded HUD',
       );
       // Hafting plays a two-second Craft clip which intentionally hides tools.

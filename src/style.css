@@ -1511,92 +1511,13 @@ body[data-screen] .world-labels {
   opacity: 0.42;
   cursor: default;
 }
-.attack-button {
-  border-color: #cda9796b;
-}
-.attack-button.in-range {
-  background: #7a5a2ded;
-  border-color: #ecc48c;
-  box-shadow: 0 0 18px #e0b07055;
-}
-.attack-button[data-style='magic'] {
-  border-color: #a7d9d8;
+#magic-cooldown {
   color: #d5f7ec;
-}
-.attack-button {
-  position: relative;
-  overflow: hidden;
-  isolation: isolate;
-}
-/* Magic recharge: the button fills left to right over a dark track, with a
-   bright gauge along the bottom and a big countdown; a flash marks "ready". */
-.attack-button .cooldown-meter {
-  display: none;
-  position: absolute;
-  inset: 0;
-  z-index: -1;
-  pointer-events: none;
-  transform-origin: left;
-  transform: scaleX(var(--cooldown, 1));
-  background: linear-gradient(0deg, #b4fff0 0 6px, #2aa69cd9 6px, #1d7f78d9);
-  box-shadow: inset -3px 0 #eafffa;
-  transition: transform 0.1s linear;
-}
-.attack-button.cooling .cooldown-meter {
-  display: block;
-}
-.attack-button.cooling::before {
-  content: '';
-  position: absolute;
-  inset: auto 0 0;
-  height: 6px;
-  z-index: -2;
-  background: #ffffff26;
-}
-.attack-button[data-style='magic'] {
-  min-width: 180px;
-  min-height: 40px;
-  font-size: 11px;
-}
-.attack-button.cooling:disabled {
-  opacity: 1;
-  background: #0a1412f0;
   border-color: #5f9f9a88;
-}
-.attack-button.cooling > .icon,
-.attack-button.cooling > span {
-  opacity: 0.75;
-}
-.attack-button .cooldown-left {
-  min-width: 34px;
-  font-size: 13px;
-  font-weight: 700;
-  color: #effffa;
-  text-shadow: 0 1px 2px #000c;
   font-variant-numeric: tabular-nums;
 }
-.attack-button[data-style='magic']:not(.cooling):not(:disabled) {
-  box-shadow:
-    var(--shadow),
-    0 0 10px #7fe6d855;
-}
-.attack-button.charged {
-  animation: magic-charged 0.7s ease-out;
-}
-@keyframes magic-charged {
-  0% {
-    background: #7fe6d8;
-    box-shadow: 0 0 0 0 #a7f0e0cc;
-    transform: scale(1.08);
-  }
-  100% {
-    box-shadow: 0 0 0 16px #a7f0e000;
-    transform: scale(1);
-  }
-}
-.attack-button[data-style='katana'] {
-  border-color: #bdb6d9;
-  color: #e5ddf1;
+.hunt-controls > [hidden] {
+  display: none;
 }
 .cooking-status {
   display: flex;
@@ -1691,7 +1612,7 @@ body[data-screen] .world-labels {
   grid-column: 1 / -1;
   justify-content: center;
 }
-.hotbar-wrap.riding.shoulder-magic .hunt-controls > :not(#attack-button) {
+.hotbar-wrap.riding.shoulder-magic .hunt-controls > :not(#magic-cooldown) {
   display: none;
 }
 .hotbar-wrap.riding .riding-controls {
@@ -1712,8 +1633,7 @@ body[data-screen] .world-labels {
 /* Secondary rows only appear when they can be used, so the bottom rows stay one line at rest. */
 .riding-controls:has(#ride-button:disabled),
 .boat-controls:has(#boat-board:disabled):has(#boat-craft:disabled),
-.hunt-controls > #cook-button:disabled,
-.hunt-controls > #eat-meat-button:disabled {
+.hunt-controls > #cook-button:disabled {
   display: none;
 }
 
@@ -2107,6 +2027,7 @@ dialog:has(.pause-menu) #modal-body {
   }
   .pause-tabs {
     flex-direction: row;
+    margin-right: 88px;
     flex: none;
     overflow-x: auto;
     overflow-y: hidden;
@@ -2906,10 +2827,6 @@ dialog:has(.earth-map) {
   .energy-track {
     width: min(230px, 52vw);
     height: 17px;
-  }
-  .attack-button[data-style='magic'] {
-    min-width: 130px;
-    min-height: 34px;
   }
   .energy-label {
     font-size: 10px;
@@ -4143,23 +4060,12 @@ dialog:has(.atlas) #modal-body {
   border-color: #e0b07060;
   background: #e0b0700c;
 }
-.inventory-card.inventory-usable:focus-visible,
+.inventory-card:focus-visible,
 .inventory-card.gamepad-focus {
   outline: 2px solid var(--accent);
   outline-offset: 2px;
   border-color: #e0b07080;
   background: #e0b07012;
-}
-.inventory-card.inventory-empty .resource-icon,
-.inventory-card.inventory-empty strong b {
-  opacity: 0.45;
-}
-.item-use-hint {
-  display: block;
-  margin-top: 8px;
-  font-size: 9px;
-  letter-spacing: 0.04em;
-  color: #c9b27f;
 }
 .item-actions {
   display: grid;

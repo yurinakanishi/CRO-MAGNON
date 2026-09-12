@@ -7,6 +7,8 @@ import { BIOMES } from '../shared/biomes.mjs';
 import { regionById } from '../shared/adventure-regions.mjs';
 import { BEHEMOTH_MARSH } from '../shared/behemoth-rules.mjs';
 import { GROUNDCOVER_TUFT_SHARE } from '../shared/scenery-layout.mjs';
+import { BLADE_ALBEDO } from './meadow-palette.js';
+export { BLADE_ALBEDO } from './meadow-palette.js';
 const shadow = regionById('shadow-realm');
 // GLSL twin of marshDrop in behemoth-rules.mts: the drawn floor equals the walked floor.
 const marshShader = (() => {
@@ -86,28 +88,34 @@ export function clipRiverAtCoast(shader, textures) {
 // (tests/meadow-ground-tint.test.mjs re-measures them). The meadow-ground tile
 // bakes as ochre instead (area-weighted mean 0.153/0.122/0.042; 76% dirt texels
 // at G/R≈0.72, 24% olive turf at G/R≈0.94, the same luminance as the blades),
-// so the grassland material re-hues every ground texel to the placement-weighted
-// blade green at the texel's own luminance. Turf texels go all the way, dirt
-// texels keep a trace of their warmth. The texture's relief, biome transitions,
-// beaches, the shadow garden and the marsh still apply on top. Runtime material
-// only; the ground GLB is unchanged.
-export const BLADE_ALBEDO = Object.freeze({
-  'meadow-grass': Object.freeze({ r: 0.0445, g: 0.155, b: 0.0207 }),
-  'meadow-sprig': Object.freeze({ r: 0.0143, g: 0.1743, b: 0.0058 }),
-});
+// so retain those earth texels in irregular bare patches and blend greener,
+// drier turf around them. World coordinates cross tile edges without seams.
+// Texture relief, biome transitions, beaches and marsh treatments still apply.
 const blend = (channel) =>
   BLADE_ALBEDO['meadow-grass'][channel] * GROUNDCOVER_TUFT_SHARE +
   BLADE_ALBEDO['meadow-sprig'][channel] * (1 - GROUNDCOVER_TUFT_SHARE);
 export const MEADOW_BLADE_ALBEDO = Object.freeze({ r: blend('r'), g: blend('g'), b: blend('b') });
-export const MEADOW_MATCH = Object.freeze({ dirt: 0.9, turf: 1 });
+export const MEADOW_MATCH = Object.freeze({ dirt: 0.16, turf: 0.78 });
 const meadowShader = `
 uniform vec3 meadowBlade;
 uniform vec2 meadowMatch;
-vec3 meadowGreen(vec3 albedo){
+float meadowHash(vec2 p){return fract(sin(dot(p,vec2(127.1,311.7)))*43758.5453);}
+float meadowNoise(vec2 p){
+  vec2 i=floor(p),f=fract(p),u=f*f*(3.0-2.0*f);
+  return mix(mix(meadowHash(i),meadowHash(i+vec2(1,0)),u.x),
+    mix(meadowHash(i+vec2(0,1)),meadowHash(i+vec2(1,1)),u.x),u.y);
+}
+vec3 meadowGreen(vec3 albedo,vec2 p){
   const vec3 luma=vec3(.2126,.7152,.0722);
-  vec3 blade=meadowBlade*(dot(albedo,luma)/max(.001,dot(meadowBlade,luma)));
+  float dry=meadowNoise(p*.18);
+  float bare=smoothstep(.40,.65,meadowNoise(p*.24+17.0)*.65+meadowNoise(p*.85)*.35);
+  vec3 hue=mix(meadowBlade,vec3(.16,.205,.05),.18+.42*dry);
+  vec3 blade=hue*(dot(albedo,luma)/max(.001,dot(hue,luma)));
   float turf=smoothstep(.78,.90,albedo.g/max(albedo.r,.001));
-  return mix(albedo,blade,mix(meadowMatch.x,meadowMatch.y,turf));
+  float cover=mix(meadowMatch.x,meadowMatch.y,turf)*(1.0-.65*bare)+.78*(1.0-turf)*(1.0-bare);
+  vec3 earth=vec3(.18,.105,.05)*(dot(albedo,luma)/dot(vec3(.18,.105,.05),luma));
+  vec3 soil=mix(albedo,earth,bare*.4)*mix(.84,1.0,meadowNoise(p*.52+31.0));
+  return mix(soil,blade,cover);
 }
 `;
 export function earthTerrainMaterial(original, biome, textures) {
@@ -163,7 +171,7 @@ export function earthTerrainMaterial(original, biome, textures) {
       '#include <color_fragment>',
       `#include <color_fragment>
       float coast=32.0;if(vCoastal>.5)coast=shoreline(vTerrainWorld.xz);if(coast<=0.0)discard;
-      ${meadow ? 'diffuseColor.rgb=meadowGreen(diffuseColor.rgb);' : ''}
+      ${meadow ? 'diffuseColor.rgb=meadowGreen(diffuseColor.rgb,vTerrainWorld.xz);' : ''}
       vec3 climate=texture2D(earthBiomes,earthUV(vTerrainWorld.xz)).rgb;
       vec3 sourceClimate=vec3(${base.r.toFixed(5)},${base.g.toFixed(5)},${base.b.toFixed(5)});
       float transition=clamp(length(climate-sourceClimate)*8.0,0.0,1.0);
@@ -198,7 +206,7 @@ export function earthTerrainMaterial(original, biome, textures) {
       totalEmissiveRadiance+=vec3(1.0,.16,.018)*lava*.7;`,
       );
   };
-  material.customProgramCacheKey = () => `paleo-terrain-${biome.id}-marsh-1-meadow-1`;
+  material.customProgramCacheKey = () => `paleo-terrain-${biome.id}-marsh-1-meadow-2`;
   return material;
 }
 

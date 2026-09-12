@@ -40,7 +40,7 @@ try {
   await page
     .locator('#world[data-world-asset="ready"][data-character-asset="ready"]')
     .waitFor({ timeout: 90000 });
-  assert.match(await page.locator('#attack-button').textContent(), /木槍/);
+  assert.equal(await page.locator('#world').getAttribute('data-weapon'), 'spear');
   await page.locator('#gulf-button').click();
   await page.locator('#gulf-travel').click();
   await page.locator('#gulf-button').click();

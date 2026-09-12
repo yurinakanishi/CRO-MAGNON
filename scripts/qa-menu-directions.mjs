@@ -22,7 +22,8 @@ const passed = (message) => {
   checks.push(message);
   console.log('PASS ' + message);
 };
-const species = (value) => `#setup-form input[name="character"][value="${value}-${value === 'ape' ? 'male' : 'female'}"]`;
+const species = (value) =>
+  `#setup-form input[name="character"][value="${value}-${value === 'ape' ? 'male' : 'female'}"]`;
 const item = (value) => `[data-controller-menu="${value}"]`;
 try {
   browser = await chromium.launch({ channel: 'chrome', headless: true });
@@ -92,7 +93,9 @@ try {
   await arm('#title-start');
   await tap(PAD.circle);
   await page.waitForSelector('#setup-submit', { state: 'visible' });
-  passed('Title: Up reaches the fullscreen toggle and stops at the top edge; circle confirms Start');
+  passed(
+    'Title: Up reaches the fullscreen toggle and stops at the top edge; circle confirms Start',
+  );
 
   // Character cards: seven in a row on a PC, four columns at 1000px and below, two at 430px and below.
   const card = (value) => `#setup-form input[name="character"][value="${value}"]`;
@@ -105,7 +108,8 @@ try {
     await page.setViewportSize(viewport);
     const columns = viewport.width <= 430 ? 2 : viewport.width <= 1000 ? 4 : 7;
     // Below the first card: the next row, or the Back button once the row holds every card.
-    const belowFirst = columns === 7 ? '#setup-back' : card(columns === 4 ? 'cat-female' : 'nea-female');
+    const belowFirst =
+      columns === 7 ? '#setup-back' : card(columns === 4 ? 'cat-female' : 'nea-female');
     const belowSecond =
       columns === 7 ? '#setup-submit' : card(columns === 4 ? 'bear-female' : 'nea-male');
     // The identity fields stack at phone width, so the room field sits right above the cards.
@@ -166,12 +170,13 @@ try {
     const belowStrip = 'character';
     await arm(item('inventory'));
     await tap(PAD.down);
-    await focused(item(rail ? 'info' : belowStrip));
+    await focused(item(rail ? 'crafting' : belowStrip));
     await tap(PAD.up);
-    // The wide exit button climbs back to the first tab on both the rail and the strip.
-    await focused(item('inventory'));
+    // In landscape, the centre of the wide exit is beneath the crafting tab.
+    await focused(item(viewport.width === 844 ? 'crafting' : 'inventory'));
     await arm(item('inventory'));
     if (rail) {
+      await tap(PAD.down);
       await tap(PAD.down);
       await tap(PAD.down);
       await focused(item('settings'));
@@ -179,23 +184,23 @@ try {
       await focused(item('info'));
     } else {
       await tap(PAD.right);
-      await focused(item('info'));
+      await focused(item('crafting'));
       await tap(PAD.left);
       await focused(item('inventory'));
     }
     await arm(item('inventory'));
     await stick(0, 1);
-    await focused(item(rail ? 'info' : belowStrip));
+    await focused(item(rail ? 'crafting' : belowStrip));
     await page.keyboard.press('Tab');
     await page.locator(item('inventory')).focus();
     await page.keyboard.press('ArrowDown');
-    await focused(item(rail ? 'info' : belowStrip));
+    await focused(item(rail ? 'crafting' : belowStrip));
     await page.keyboard.press('ArrowUp');
-    await focused(item('inventory'));
+    await focused(item(viewport.width === 844 ? 'crafting' : 'inventory'));
     if (!rail) {
       await page.locator(item('inventory')).focus();
       await page.keyboard.press('ArrowRight');
-      await focused(item('info'));
+      await focused(item('crafting'));
     }
     await page.screenshot({ path: `${output}/menu-${viewport.width}x${viewport.height}.png` });
     passed(
@@ -208,7 +213,7 @@ try {
       await page.locator('[data-pause-panel="inventory"]').evaluate((el) => !el.hidden),
       true,
     );
-    await page.waitForSelector('#modal-craft', { state: 'visible' });
+    await page.waitForSelector('.inventory-grid', { state: 'visible' });
     await arm('#modal-close');
     await tap(PAD.circle);
     assert.equal(await page.locator('#modal').evaluate((el) => el.open), false);
@@ -234,10 +239,7 @@ try {
   );
   await page.locator(item('info')).focus();
   await page.keyboard.press('Enter');
-  assert.equal(
-    await page.locator('[data-pause-panel="info"]').evaluate((el) => !el.hidden),
-    true,
-  );
+  assert.equal(await page.locator('[data-pause-panel="info"]').evaluate((el) => !el.hidden), true);
   await page.locator(item('sub-world')).focus();
   await page.keyboard.press('Enter');
   assert.equal(
@@ -250,10 +252,7 @@ try {
   assert.equal(await page.locator('#modal').evaluate((el) => el.open), true);
   await page.keyboard.press('Escape');
   assert.equal(await page.locator('#modal').evaluate((el) => el.open), false);
-  assert.equal(
-    await page.locator('#modal').evaluate((el) => getComputedStyle(el).display),
-    'none',
-  );
+  assert.equal(await page.locator('#modal').evaluate((el) => getComputedStyle(el).display), 'none');
   await page.keyboard.press('Escape');
   // 2026-09-12: the menu always reopens on the bag.
   assert.equal(
@@ -297,7 +296,9 @@ try {
   await arm('#modal-close');
   await tap(PAD.triangle);
   assert.equal(await page.locator('#modal').evaluate((el) => el.open), false);
-  passed('Held Down repeats, the right stick scrolls the panel, and Back stays on screen at 844x390');
+  passed(
+    'Held Down repeats, the right stick scrolls the panel, and Back stays on screen at 844x390',
+  );
   await page.reload();
   await page.waitForSelector('#title-start', { state: 'visible' });
   await arm('#title-start');

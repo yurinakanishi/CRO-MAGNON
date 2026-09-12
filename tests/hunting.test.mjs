@@ -98,7 +98,7 @@ test('windup strikes recheck range and occlusion, while concurrent lethal strike
   assert.equal(animal.phase, 'meat'); assert.equal(animal.meatRemaining, 4);
 });
 
-test('cooking uses the existing flame, completes only after three seconds, and raw meat is never edible', () => {
+test('cooking uses the existing flame, completes only after three seconds, and eating cooked meat does not consume raw meat', () => {
   const { room, player } = fixture();
   player.inventory.rawMeat = 2;
   handleHuntingAction(room, player, { action: 'eatMeat' }, 1000);
@@ -117,6 +117,50 @@ test('cooking uses the existing flame, completes only after three seconds, and r
   player.inventory.cookedMeat = 1; player.energy = 100;
   handleHuntingAction(room, player, { action: 'eatMeat' }, 5500);
   assert.equal(player.inventory.cookedMeat, 1);
+});
+
+test('raw meat heals less than cooked meat, consumes one item and never wastes food at full HP', () => {
+  const { room, player } = fixture();
+  player.inventory.rawMeat = 2;
+  assert.ok(HUNTING.rawMeatEnergy < HUNTING.cookedMeatEnergy);
+  assert.equal(handleHuntingAction(room, player, { action: 'eatRawMeat', energy: 100, amount: 99 }, 1000).changed, true);
+  assert.equal(player.energy, 65);
+  assert.equal(player.inventory.rawMeat, 1);
+  player.energy = 98;
+  handleHuntingAction(room, player, { action: 'eatRawMeat' }, 2000);
+  assert.equal(player.energy, 100);
+  assert.equal(player.inventory.rawMeat, 0);
+  player.inventory.rawMeat = 1;
+  handleHuntingAction(room, player, { action: 'eatRawMeat' }, 3000);
+  assert.equal(player.inventory.rawMeat, 1);
+  player.energy = 50;
+  player.cookingEndsAt = 6000;
+  assert.equal(handleHuntingAction(room, player, { action: 'eatRawMeat' }, 4000).changed, false);
+  assert.equal(player.energy, 50);
+  assert.equal(player.inventory.rawMeat, 1);
+  player.cookingEndsAt = 0;
+  player.inventory.rawMeat = 0;
+  assert.equal(handleHuntingAction(room, player, { action: 'eatRawMeat' }, 7000).changed, false);
+});
+
+test('cooking hint and server action share range, obstruction and raw-meat ownership requirements', async () => {
+  const { huntInteraction } = await import('../dist/src/hunting-ui.js');
+  const { usableCookingFire } = await import('../dist/shared/hunting.mjs');
+  const { room, player } = fixture();
+  room.animals = [];
+  player.inventory.rawMeat = 1;
+  for (const [x, z, visible, available] of [[50, 53.4, true, true], [50, 53.401, true, false], [50, 52, false, false]]) {
+    Object.assign(player, { x, z, cookingEndsAt: 0 });
+    room.collision = { segmentFree: () => visible };
+    assert.equal(!!usableCookingFire(room, player), available);
+    assert.equal(huntInteraction(room, player, room.collision)?.action === 'cook', available);
+    assert.equal(handleHuntingAction(room, player, { action: 'cook' }, 1000).changed, available);
+  }
+  Object.assign(player, { x: 50, z: 52, cookingEndsAt: 0 });
+  room.collision = { segmentFree: () => true };
+  player.inventory.rawMeat = 0;
+  assert.equal(huntInteraction(room, player, room.collision), null);
+  assert.equal(handleHuntingAction(room, player, { action: 'cook' }, 1000).changed, false);
 });
 
 test('leaving the fire or explicit cancellation preserves raw meat and capacity is rechecked on completion', () => {
@@ -160,4 +204,3 @@ test('exhibition rules clear the meat pile and bring the mammoth back ten second
   assert.equal(animal.health, HUNTING.maxHealth);
   assert.equal(animal.meatRemaining, 0);
 });
-

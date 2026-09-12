@@ -99,7 +99,9 @@ try {
     }
     if (await reached(selector)) return;
     // Spatial walking is a heuristic; a target the sweep missed is focused directly and noted.
-    console.log(`NOTE sweep missed ${selector} (visited ${visited.join(' > ')}); focusing directly`);
+    console.log(
+      `NOTE sweep missed ${selector} (visited ${visited.join(' > ')}); focusing directly`,
+    );
     detours.push(selector);
     await page.locator(selector).first().focus();
     await input();
@@ -235,10 +237,13 @@ try {
   assert.equal(player().jumpSequence ?? 0, jumps, 'the bottom button does not jump');
   await tap(PAD.triangle);
   await until(() => (player().jumpSequence ?? 0) === jumps + 1, 'triangle jumps');
-  const prompts = await page.locator('#prompt-bar span').evaluateAll((els) =>
-    els.map((el) => el.textContent),
+  const prompts = await page
+    .locator('#prompt-bar span')
+    .evaluateAll((els) => els.map((el) => el.textContent));
+  assert.ok(
+    !prompts.some((p) => /ジャンプ|攻撃/.test(p)),
+    'always-available actions stay off the prompt bar',
   );
-  assert.ok(prompts.includes('△ジャンプ'), `prompt bar shows △ for jump: ${prompts.join(' | ')}`);
   assert.ok(!prompts.includes('×ジャンプ'));
   await tap(PAD.options);
   await select('[data-controller-menu="info"]');
@@ -261,7 +266,7 @@ try {
   const tabs = await page
     .locator('.pause-tab')
     .evaluateAll((els) => els.map((el) => el.dataset.pauseTab));
-  assert.deepEqual(tabs, ['inventory', 'info', 'settings']);
+  assert.deepEqual(tabs, ['inventory', 'crafting', 'info', 'settings']);
   const subTabs = await page
     .locator('.sub-tab')
     .evaluateAll((els) => els.map((el) => el.dataset.pauseSubtab));
@@ -272,7 +277,10 @@ try {
     await page.locator('[data-pause-subpanel="world"]').evaluate((el) => !el.hidden),
     true,
   );
-  assert.equal(await page.locator('[data-pause-subpanel="help"]').evaluate((el) => el.hidden), true);
+  assert.equal(
+    await page.locator('[data-pause-subpanel="help"]').evaluate((el) => el.hidden),
+    true,
+  );
   await select('[data-controller-menu="journal"]');
   await focusInsideModal('world sub-tab');
   await select('[data-controller-menu="sub-tribe"]');
@@ -299,7 +307,9 @@ try {
   await select('#character-switch-form input[name="character"][value="cro-male"]');
   await tap(PAD.circle);
   assert.equal(
-    await page.locator('#character-switch-form input[name="character"][value="cro-male"]').evaluate((el) => el.checked),
+    await page
+      .locator('#character-switch-form input[name="character"][value="cro-male"]')
+      .evaluate((el) => el.checked),
     true,
   );
   await select('#character-switch-submit');
@@ -307,7 +317,9 @@ try {
   await until(() => player().gender === 'male', 'character changed on the server');
   await until(async () => !(await modalOpen()), 'menu closes after the change');
   await page.screenshot({ path: `${output}/06-after-switch.png`, animations: 'disabled' });
-  passed('Character change from the exits column completes with the controller and returns to play');
+  passed(
+    'Character change from the exits column completes with the controller and returns to play',
+  );
 
   // 24: bottom button inside the character form goes back to play as well.
   await tap(PAD.options);

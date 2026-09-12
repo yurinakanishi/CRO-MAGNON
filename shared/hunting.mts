@@ -26,6 +26,7 @@ export const HUNTING = Object.freeze({
   respawnMs: 90000,
   cookRange: 3.4,
   cookDurationMs: 3000,
+  rawMeatEnergy: 15,
   cookedMeatEnergy: 45,
   inventoryLimit: 99,
 });
@@ -38,6 +39,16 @@ export function nearestCookingFire(state, player) {
       !nearest || huntingDistance(player, fire) < huntingDistance(player, nearest) ? fire : nearest,
     null,
   );
+}
+/** The same usable-fire check serves world hints, the bag and server cooking. */
+export function usableCookingFire(state, player, collision = state.collision) {
+  if (!player) return null;
+  const fire = nearestCookingFire(state, player);
+  return fire &&
+    huntingDistance(player, fire) <= HUNTING.cookRange &&
+    (!collision || interactionVisible(collision, player, fire))
+    ? fire
+    : null;
 }
 export const animalIsSolid = (animal) => animal.phase === 'alive' || animal.phase === 'dying';
 export function nearestHuntTarget(animals, player, phase = 'alive') {
@@ -81,6 +92,7 @@ export function handleHuntingAction(room, player, message, now = Date.now()) {
       'harvest',
       'cook',
       'eatMeat',
+      'eatRawMeat',
       'cookFish',
       'eatFish',
       'cookShellfish',
@@ -156,7 +168,7 @@ export function handleHuntingAction(room, player, message, now = Date.now()) {
       animal.phase = 'respawning';
       animal.phaseStartedAt = now;
     }
-    return response('生肉 +1。焚き火で焼くと食べられます。', 'success', true);
+    return response('生肉 +1。食べると元気+15、焼くと+45。', 'success', true);
   }
   if (
     action === 'cook' ||
@@ -167,7 +179,7 @@ export function handleHuntingAction(room, player, message, now = Date.now()) {
     const fire = nearestCookingFire(room, player);
     if (huntingDistance(player, fire) > HUNTING.cookRange)
       return response(`焚き火に近づいて${label}を焼こう。`);
-    if (!interactionVisible(room.collision, player, fire))
+    if (!usableCookingFire(room, player))
       return response('火までの間がふさがれています。回り込もう。');
     if (!player.inventory[raw]) return response(`焼くための生${label}を持っていません。`);
     if (
@@ -186,16 +198,19 @@ export function handleHuntingAction(room, player, message, now = Date.now()) {
       true,
     );
   }
-  if (!player.inventory[cooked]) return response(`${foodName}を持っていません。焚き火で焼こう。`);
+  const eatingRaw = action === 'eatRawMeat';
+  const food = eatingRaw ? 'rawMeat' : cooked;
+  if (!player.inventory[food])
+    return response(`${eatingRaw ? '生肉' : foodName}を持っていません。`);
   if (player.energy >= 100) return response('元気いっぱいです。', 'info');
   if (shellfish && (player.inventory.shells ?? 0) >= HUNTING.inventoryLimit)
     return response('貝殻の持ち物がいっぱいです。集落の貝塚へ殻を積んでから食べよう。');
-  player.inventory[cooked] -= 1;
+  player.inventory[food] -= 1;
   if (shellfish) player.inventory.shells = (player.inventory.shells ?? 0) + 1;
-  const restored = Math.min(energy, 100 - player.energy);
+  const restored = Math.min(eatingRaw ? HUNTING.rawMeatEnergy : energy, 100 - player.energy);
   player.energy += restored;
   return response(
-    `${foodName}を食べた。元気 +${restored}${shellfish ? '・貝殻 +1' : ''}`,
+    `${eatingRaw ? '生肉' : foodName}を食べた。元気 +${restored}${shellfish ? '・貝殻 +1' : ''}`,
     'success',
     true,
   );

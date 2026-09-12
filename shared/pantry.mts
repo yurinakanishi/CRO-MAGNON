@@ -4,6 +4,7 @@ import { attackProfile } from './combat-profiles.mjs';
 import { stopActor } from './combat.mjs';
 import { villageDay } from './village-sites.mjs';
 import type { PantryFoodId, PantryState, PantryAllowance } from './pantry-types.mjs';
+import { HUNTING } from './hunting.mjs';
 
 // Authored sharing rules and unlimited shelf life, not a reconstructed storage institution.
 export const PANTRY = Object.freeze({ capacity: 48, dailyAllowance: 3, reach: 9 });
@@ -62,10 +63,18 @@ export const PANTRY_FOODS: readonly {
 // player is full or has nothing to eat.
 export function chooseMeal(player: {
   energy: number;
-  inventory?: Partial<Record<PantryFoodId, number>>;
+  inventory?: Partial<Record<PantryFoodId | 'rawMeat', number>>;
 }) {
   if (player.energy >= 100) return null;
-  const carried = PANTRY_FOODS.filter((food) => (player.inventory?.[food.id] ?? 0) > 0);
+  const carried = [
+    ...PANTRY_FOODS,
+    {
+      id: 'rawMeat' as const,
+      name: '生肉',
+      energy: HUNTING.rawMeatEnergy,
+      eatAction: 'eatRawMeat',
+    },
+  ].filter((food) => (player.inventory?.[food.id] ?? 0) > 0);
   if (!carried.length) return null;
   const missing = 100 - player.energy;
   const fits = carried.filter((food) => food.energy <= missing);
