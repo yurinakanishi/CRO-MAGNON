@@ -1,6 +1,7 @@
 import * as THREE from 'three';
 import { projectileHeight } from '../shared/terrain.mjs';
 import { attackProfile } from '../shared/combat-profiles.mjs';
+import { PoisonEffects } from './poison-effects.js';
 
 const CAPACITY = 1024,
   point = new THREE.Vector3(),
@@ -14,6 +15,7 @@ const isHex = (item) => item.kind === 'hex';
 // Light is a runtime particle effect, with a single reusable GPU buffer and draw
 // call. Damage, flight positions and impacts all come from server snapshots.
 export class SpellEffects {
+  poison: PoisonEffects;
   declare positions: Map<any, any>;
   declare geometry: THREE.BufferGeometry<
     THREE.NormalBufferAttributes,
@@ -33,6 +35,7 @@ export class SpellEffects {
   declare count: number;
 
   constructor(scene) {
+    this.poison = new PoisonEffects(scene);
     this.positions = new Map();
     this.geometry = new THREE.BufferGeometry();
     this.xyz = new Float32Array(CAPACITY * 3);
@@ -146,6 +149,7 @@ export class SpellEffects {
     }
   }
   update(state, players, now, dt, pixelHeight) {
+    this.poison.update(state, now, pixelHeight);
     this.count = 0;
     this.material.uniforms.pixelHeight.value = pixelHeight;
     const active = new Set();
@@ -294,6 +298,7 @@ export class SpellEffects {
     }
   }
   dispose() {
+    this.poison.dispose();
     this.points.removeFromParent();
     this.geometry.dispose();
     this.material.dispose();

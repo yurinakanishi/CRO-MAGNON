@@ -1,0 +1,164 @@
+{
+  "revision": "10",
+  "sha256": "a0616efb9352f9dc387f46ff41e9ff57d976ed48842a23480475c0d982c15a50",
+  "sampleRate": 120,
+  "scaleInGame": 2.5,
+  "pass": true,
+  "records": [
+    {
+      "clip": "Alert",
+      "retainedMaximumVertexDifference": 1.8597345866078135e-06
+    },
+    {
+      "clip": "Attack",
+      "retainedMaximumVertexDifference": 4.935527399273613e-07
+    },
+    {
+      "clip": "Death",
+      "retainedMaximumVertexDifference": 1.5521380816345398e-07
+    },
+    {
+      "clip": "Hit",
+      "retainedMaximumVertexDifference": 7.360618805536482e-07
+    },
+    {
+      "clip": "Idle_Loop",
+      "retainedMaximumVertexDifference": 4.242645174881251e-07
+    },
+    {
+      "clip": "Run_Loop",
+      "retainedMaximumVertexDifference": 5.403429957323362e-08
+    },
+    {
+      "clip": "Walk_Loop",
+      "retainedMaximumVertexDifference": 5.130741376934945e-07
+    },
+    {
+      "clip": "Roar",
+      "samples": 145,
+      "minimumGroundMetres": -0.0035528535562812007,
+      "maximumLowestPalmMetres": 0.003457176687262864,
+      "hipsVerticalRangeMetres": 0.0011819004841390202,
+      "maximumTailCentrelineBendDegrees": 17.743734376686945,
+      "palmHorizontalJointRange": [
+        [
+          5.9486566696964616e-06,
+          1.3795593524879024e-05
+        ],
+        [
+          4.336736422971832e-05,
+          8.995027492630925e-05
+        ]
+      ]
+    },
+    {
+      "clip": "Gape",
+      "samples": 73,
+      "minimumGroundMetres": 0.0025121732457794,
+      "maximumLowestPalmMetres": 0.003150618573460034,
+      "hipsVerticalRangeMetres": 0.0,
+      "maximumTailCentrelineBendDegrees": 9.520119689703847,
+      "palmHorizontalJointRange": [
+        [
+          2.1324452077475797e-06,
+          2.4602177637333966e-06
+        ],
+        [
+          2.1794760118876155e-06,
+          2.403229077518887e-06
+        ]
+      ]
+    },
+    {
+      "clip": "Tremble",
+      "samples": 109,
+      "minimumGroundMetres": 0.00287967345085364,
+      "maximumLowestPalmMetres": 0.0031683472145381105,
+      "hipsVerticalRangeMetres": 0.002408623695373535,
+      "maximumTailCentrelineBendDegrees": 9.528523801271549,
+      "palmHorizontalJointRange": [
+        [
+          5.663667278588136e-05,
+          3.488411968555205e-05
+        ],
+        [
+          1.8549349415142302e-05,
+          6.656035249852366e-05
+        ]
+      ]
+    },
+    {
+      "clip": "SpitWindup",
+      "samples": 157,
+      "minimumGroundMetres": 0.002570483667464377,
+      "maximumLowestPalmMetres": 0.0032226500882646947,
+      "hipsVerticalRangeMetres": 0.0003049969671516939,
+      "maximumTailCentrelineBendDegrees": 13.668422944688421,
+      "palmHorizontalJointRange": [
+        [
+          1.919005532258211e-06,
+          3.575692273827258e-06
+        ],
+        [
+          1.3286300452941546e-05,
+          2.5635376994737058e-05
+        ]
+      ]
+    },
+    {
+      "clip": "Spit",
+      "samples": 109,
+      "minimumGroundMetres": 0.002144076960786353,
+      "maximumLowestPalmMetres": 0.0033333527982553593,
+      "hipsVerticalRangeMetres": 0.00021475553500849287,
+      "maximumTailCentrelineBendDegrees": 11.98832328810811,
+      "palmHorizontalJointRange": [
+        [
+          8.298342774648582e-05,
+          0.00017549328184496282
+        ],
+        [
+          2.911466955790587e-05,
+          6.228999818236325e-05
+        ]
+      ]
+    },
+    {
+      "clip": "Charge",
+      "samples": 289,
+      "minimumGroundMetres": 0.00024351551195069942,
+      "maximumLowestPalmMetres": 0.0037636714254218853,
+      "hipsVerticalRangeMetres": 0.0030989049256741064,
+      "maximumTailCentrelineBendDegrees": 28.4314861046666,
+      "palmHorizontalJointRange": [
+        [
+          0.0007638647021661615,
+          0.4199901213448618
+        ],
+        [
+          0.0007570615135508163,
+          0.41662455110620145
+        ]
+      ]
+    },
+    {
+      "clip": "TailSpin",
+      "samples": 181,
+      "minimumGroundMetres": 0.002504847431716657,
+      "maximumLowestPalmMetres": 0.01178603929705032,
+      "hipsVerticalRangeMetres": 0.00952708718747175,
+      "maximumTailCentrelineBendDegrees": 28.022800662870726,
+      "palmHorizontalJointRange": [
+        [
+          3.6483772386886484,
+          3.6472023712709802
+        ],
+        [
+          3.6476114893802847,
+          3.648025357978829
+        ]
+      ]
+    }
+  ],
+  "errors": []
+}

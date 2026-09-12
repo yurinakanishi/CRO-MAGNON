@@ -1,6 +1,8 @@
 import { BEHEMOTH as R, BEHEMOTH_GROUND } from './behemoth-rules.mjs';
 import { CAMP } from './world.mjs';
 import { combatDistance as distance, enemyIsSolid, stopActor } from './combat.mjs';
+import { launchPoison, updatePoison } from './behemoth-poison.mjs';
+import { projectileHeight } from './terrain.mjs';
 
 const circle = (a) => ({ id: a.id, type: 'circle', x: a.x, z: a.z, radius: a.radius });
 const obstacles = (room, enemy) =>
@@ -73,6 +75,7 @@ export function createBehemoth(collision, dynamic = [], now = Date.now()) {
     aggroAfter: now + 1000,
     nextAttackAt: 0,
     meleeIndex: 0,
+    nextSpitAt: 0,
   };
 }
 
@@ -92,7 +95,14 @@ function begin(e, kind, now) {
   // Every strike opens with its own telegraph clip; the strike clip follows it.
   const windup = WINDUP_MS[kind];
   const duration =
-    windup + (kind === 'charge' ? R.chargeMs : kind === 'bite' ? R.biteMs : R.spinMs);
+    windup +
+    (kind === 'charge'
+      ? R.chargeMs
+      : kind === 'bite'
+        ? R.biteMs
+        : kind === 'poison'
+          ? R.spitMs
+          : R.spinMs);
   e.attackLockUntil = now + duration;
   e.pendingAttack = {
     kind,
@@ -104,9 +114,9 @@ function begin(e, kind, now) {
   e.clip = WINDUP_CLIP[kind];
   e.behavior = WINDUP_BEHAVIOR[kind];
 }
-const WINDUP_MS = { charge: R.roarMs, bite: R.gapeMs, tail: R.trembleMs };
-const WINDUP_CLIP = { charge: 'Roar', bite: 'Gape', tail: 'Tremble' };
-const WINDUP_BEHAVIOR = { charge: 'roar', bite: 'gape', tail: 'tremble' };
+const WINDUP_MS = { charge: R.roarMs, bite: R.gapeMs, tail: R.trembleMs, poison: R.spitWindupMs };
+const WINDUP_CLIP = { charge: 'Roar', bite: 'Gape', tail: 'Tremble', poison: 'SpitWindup' };
+const WINDUP_BEHAVIOR = { charge: 'roar', bite: 'gape', tail: 'tremble', poison: 'spit-windup' };
 function finish(e, now) {
   stopActor(e);
   e.pendingAttack = null;
@@ -199,6 +209,44 @@ export function updateBehemoths(room, dt, now, damage) {
       target = null;
       changed = true;
     }
+    // Awareness is never disabled by returning, being hit or reaching home.
+    // Consume a real hit first, even when another player was already targeted.
+    // Leash/protection rules still apply to every possible new target.
+    const inside = distance(e, e.home) <= R.territoryRadius + 0.01;
+    const attacker = provoker(
+      room,
+      e,
+      (p) => inside && eligible(room, e, p, now) && sameFloor(room, e, p),
+    );
+    if (attacker) target = attacker;
+    if (!target && inside)
+      target = [...room.players.values()]
+        .filter(
+          (p) =>
+            eligible(room, e, p, now) &&
+            sameFloor(room, e, p) &&
+            (heard(e, p, R.hearing) ||
+              distance(e, p) <= e.radius + p.radius + R.contactNoticeMargin ||
+              (now >= e.aggroAfter &&
+                distance(e, p) <= R.visionRange &&
+                Math.abs(angleDifference(angleTo(e, p), e.facing)) <= R.visionHalfAngle &&
+                clear(room, e, p))),
+        )
+        .sort((a, b) => distance(e, a) - distance(e, b))[0];
+    let acquired = false;
+    if (target && (e.returning || e.targetId !== target.id || attacker)) {
+      acquired = e.targetId !== target.id || e.returning;
+      e.returning = false;
+      e.targetId = target.id;
+      e.facing = angleTo(e, target);
+      e.nextAttackAt = 0;
+      if (acquired || attacker) {
+        stopActor(e);
+        e.pendingAttack = null;
+        e.attackLockUntil = 0;
+      }
+      changed = true;
+    }
     if (e.returning) {
       e.behavior = 'return';
       if (distance(e, e.home) < 0.08 && room.collision.free(e.home, e.radius, obstacles(room, e))) {
@@ -208,7 +256,7 @@ export function updateBehemoths(room, dt, now, damage) {
         e.facing = Math.PI;
         e.clip = 'Idle_Loop';
         e.behavior = 'guard';
-        e.aggroAfter = now + 1200;
+        e.aggroAfter = now;
       } else navigate(e, room, e.home, R.walkSpeed, dt, now);
       continue;
     }
@@ -219,23 +267,7 @@ export function updateBehemoths(room, dt, now, damage) {
       e.behavior = 'hit';
       continue;
     }
-    // A blow from anywhere gives the attacker away, even during the calm after a return.
-    if (!target)
-      target = provoker(room, e, (p) => eligible(room, e, p, now) && sameFloor(room, e, p));
-    if (!target && now >= e.aggroAfter)
-      target = [...room.players.values()]
-        .filter(
-          (p) =>
-            eligible(room, e, p, now) &&
-            ((sameFloor(room, e, p) && heard(e, p, R.hearing)) ||
-              (distance(e, p) <= R.visionRange &&
-                Math.abs(angleDifference(angleTo(e, p), e.facing)) <= R.visionHalfAngle &&
-                clear(room, e, p))),
-        )
-        .sort((a, b) => distance(e, a) - distance(e, b))[0];
-    if (target && e.targetId !== target.id) {
-      e.targetId = target.id;
-      e.facing = angleTo(e, target);
+    if (target && acquired) {
       begin(e, 'charge', now);
       changed = true;
     }
@@ -278,7 +310,12 @@ export function updateBehemoths(room, dt, now, damage) {
             e,
             room,
             { x: e.x + Math.sin(strike.facing) * 10, z: e.z + Math.cos(strike.facing) * 10 },
-            R.chargeSpeed,
+            R.chargeStartSpeed +
+              (R.chargeSpeed - R.chargeStartSpeed) *
+                Math.min(
+                  1,
+                  Math.max(0, (activeUntil - e.attackAt - R.roarMs) / R.chargeAccelerationMs),
+                ),
             step,
           );
           e.facing = strike.facing;
@@ -309,9 +346,34 @@ export function updateBehemoths(room, dt, now, damage) {
             hit(target, R.biteDamage, '噛みつき');
         }
         if (elapsed >= R.gapeMs + R.biteMs) finish(e, now);
+      } else if (strike.kind === 'poison') {
+        if (elapsed < R.spitWindupMs) {
+          e.clip = 'SpitWindup';
+          e.behavior = 'spit-windup';
+          // Aim during the first part of the telegraph, then commit: no homing.
+          if (elapsed < R.spitWindupMs - 350) {
+            e.facing = strike.facing = angleTo(e, target);
+            strike.aim = {
+              x: target.x,
+              z: target.z,
+              y:
+                projectileHeight(target.x, target.z, room.collision.surfaceHeight?.(target) ?? 0) +
+                (target.species === 'bear' ? 0.45 : 0.85),
+            };
+          }
+          continue;
+        }
+        e.clip = 'Spit';
+        e.behavior = 'spit';
+        if (elapsed >= R.spitWindupMs + R.spitReleaseMs && !strike.resolved) {
+          strike.resolved = true;
+          launchPoison(room, e, strike.aim, e.attackAt + R.spitWindupMs + R.spitReleaseMs);
+          changed = true;
+        }
+        if (elapsed >= R.spitWindupMs + R.spitMs) finish(e, now);
       } else {
         if (elapsed < R.trembleMs) {
-          // The body shudders and the tail lifts before it whips round.
+          // The tail lifts and the torso coils against the coming rotation.
           e.clip = 'Tremble';
           e.behavior = 'tremble';
           continue;
@@ -345,7 +407,24 @@ export function updateBehemoths(room, dt, now, damage) {
       e.behavior = 'recover';
       continue;
     }
-    if (distance(e, target) <= R.tailReach + target.radius && clear(room, e, target)) {
+    if (
+      distance(e, target) >= R.spitMinRange &&
+      distance(e, target) <= R.spitRange &&
+      now >= e.nextSpitAt &&
+      clear(room, e, target)
+    ) {
+      e.facing = angleTo(e, target);
+      begin(e, 'poison', now);
+      e.pendingAttack.aim = {
+        x: target.x,
+        z: target.z,
+        y:
+          projectileHeight(target.x, target.z, room.collision.surfaceHeight?.(target) ?? 0) +
+          (target.species === 'bear' ? 0.45 : 0.85),
+      };
+      e.nextSpitAt = now + R.spitCooldownMs;
+      changed = true;
+    } else if (distance(e, target) <= R.tailReach + target.radius && clear(room, e, target)) {
       const rear = Math.abs(angleDifference(angleTo(e, target), e.facing)) > Math.PI / 2;
       const kind = rear || ++e.meleeIndex % 2 === 0 ? 'tail' : 'bite';
       if (kind === 'bite' && distance(e, target) > e.radius + target.radius + R.biteReach) {
@@ -367,5 +446,5 @@ export function updateBehemoths(room, dt, now, damage) {
       }
     }
   }
-  return changed;
+  return updatePoison(room, now, damage, eligible) || changed;
 }

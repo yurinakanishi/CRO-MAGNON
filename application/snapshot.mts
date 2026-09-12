@@ -64,6 +64,8 @@ export function snapshot(
       }),
     ),
     projectileImpacts: (room.projectileImpacts || []).map((effect) => ({ ...effect })),
+    poisonShots: (room.poisonShots ?? []).map((shot) => ({ ...shot })),
+    poisonSplashes: (room.poisonSplashes ?? []).map((splash) => ({ ...splash })),
     hexBursts: (room.hexBursts || []).map(
       ({ id, ownerId, x, z, elevation, radius, startedAt, at, detonatedAt }) => ({
         id,

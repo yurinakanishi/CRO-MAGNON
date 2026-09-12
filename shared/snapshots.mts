@@ -135,6 +135,28 @@ export interface ProjectileImpact extends Point {
   kind?: string;
   elevation?: number;
 }
+export interface PoisonShot extends Point {
+  id: string;
+  ownerId: string;
+  y: number;
+  originX: number;
+  originY: number;
+  originZ: number;
+  vx: number;
+  vy: number;
+  vz: number;
+  createdAt: number;
+  updatedAt: number;
+  expiresAt: number;
+}
+export interface PoisonSplash extends Point {
+  id: string;
+  y: number;
+  floorY?: number;
+  radius?: number;
+  at: number;
+  hit: boolean;
+}
 export interface CampSnapshot extends Point {
   wood: number;
   stone: number;
@@ -174,6 +196,8 @@ export interface GameSnapshot {
   boats: BoatSnapshot[];
   projectiles: ProjectileSnapshot[];
   projectileImpacts: ProjectileImpact[];
+  poisonShots?: PoisonShot[];
+  poisonSplashes?: PoisonSplash[];
   hexBursts?: HexBurstSnapshot[];
   resources?: Resource[];
   camp?: CampSnapshot;

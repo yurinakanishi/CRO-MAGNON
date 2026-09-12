@@ -37,6 +37,7 @@ const review = {
   reviewedAt: new Date().toISOString(),
   sheets: [`${folder}/qa/sheet-left.png`, `${folder}/qa/sheet-threequarter.png`],
   notes:
+    process_.motionNotes ??
     'Telegraph clips reviewed on pose sheets (left and three-quarter): Roar rears the front up with the jaw wide before the charge, Tremble shudders with the tail lifted and lashing before the tail spin, Gape pulls the head back with the mouth open before the bite. Surface, weights and the nine earlier clips are unchanged from revision 04.',
 };
 await save(`${destination}/visual-review-r${revision}.json`, review);
@@ -56,14 +57,16 @@ const asset = {
   locomotion: process_.locomotion,
   source: `${folder}/candidate.glb`,
   provenance: {
-    provider: 'User-supplied reference and local TRELLIS-2 (Codex); revision 05-07 telegraph clips by Claude Code',
+    provider:
+      'User-supplied reference and local TRELLIS-2 (Codex); revision 05-08 telegraphs by Claude Code; revision 09 onward grounded IK, tail and poison animations by Codex',
     claudeUsed: true,
     referenceImage: `${model}/source/original/user-reference.png`,
     visualReview: `${destination}/visual-review-r${revision}.json`,
   },
   notes: [
     ...(previous.notes ?? []).slice(0, 2),
-    `Revision ${revision} (2026-09-12): rendered at scale 2.5 (twice the previous size) and every strike is announced by its own clip: Roar (1.2 s) before Charge, Gape (0.6 s) before Attack, Tremble (0.9 s) before TailSpin. Surface, material, weights and the nine earlier clips match revision 04.`,
+    process_.motionNotes ??
+      `Revision ${revision} (2026-09-12): rendered at scale 2.5 (twice the previous size) and every strike is announced by its own clip: Roar (1.2 s) before Charge, Gape (0.6 s) before Attack, Tremble (0.9 s) before TailSpin. Surface, material, weights and the nine earlier clips match revision 04.`,
   ],
 };
 await save(`public/models/${key}/asset.json`, asset);
@@ -75,7 +78,9 @@ await save('public/models/world-assets.json', catalog);
 const models = await json('assets/world-models.json');
 const index = models.assets.findIndex((a) => a.key === key);
 const entry = {
-  ...(index < 0 ? { key, name: asset.name, kind: 'enemy', geometryResolution: 1024 } : models.assets[index]),
+  ...(index < 0
+    ? { key, name: asset.name, kind: 'enemy', geometryResolution: 1024 }
+    : models.assets[index]),
   height: asset.heightMetres,
   length: 6,
   status: asset.status,
@@ -109,4 +114,6 @@ await archive(`${model}/workflow/current`, `${destination}/workflow/current`);
 await copyFile(`${model}/request-spec.json`, `${destination}/request-spec.json`);
 for (const sheet of review.sheets)
   await copyFile(sheet, `${destination}/r${revision}-${sheet.split('/').pop()}`).catch(() => {});
-console.log(JSON.stringify({ adopted: url, sha256: asset.sha256, bytes: asset.bytes, status: asset.status }));
+console.log(
+  JSON.stringify({ adopted: url, sha256: asset.sha256, bytes: asset.bytes, status: asset.status }),
+);

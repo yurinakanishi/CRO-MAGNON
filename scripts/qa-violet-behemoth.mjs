@@ -14,6 +14,7 @@ const sleep = (ms) => new Promise((r) => setTimeout(r, ms)),
   screenshots = [];
 let child,
   base,
+  tuning,
   ready = false,
   rid = 0;
 const pending = new Map(),
@@ -53,6 +54,9 @@ async function sample(page, stage) {
           }
         : null,
       players: r.players.size,
+      poisonShots: r.state.poisonShots?.length ?? 0,
+      poisonSplashes: r.state.poisonSplashes?.length ?? 0,
+      poisonParticles: r.spells.poison.count,
       diagnostics: document.querySelector('#world').dataset.enemyAnimations,
     };
   });
@@ -121,6 +125,7 @@ try {
   child.on('message', (m) => {
     if (m.ready) {
       base = `http://127.0.0.1:${m.port}`;
+      tuning = m.tuning;
       ready = true;
     }
     if (m.reply) {
@@ -174,11 +179,11 @@ try {
   await request('prepare', { mode: 'rear' });
   await sleep(1500);
   assert.equal((await request('state')).enemy.targetId, null);
-  checks.push('Rear approach remains undetected');
+  checks.push('A stationary player behind the monster beyond contact range stays undetected');
   await sample(a, 'rear');
-  for (const mode of ['charge', 'bite', 'tail']) {
+  for (const mode of ['charge', 'bite', 'tail', 'poison']) {
     await request('prepare', { mode });
-    // The telegraph (Roar 1.2 s, Gape 0.6 s, Tremble 0.9 s) is sampled before framing the shot.
+    // Sample short telegraphs before spending time framing a screenshot.
     await sleep(120);
     await sample(a, mode);
     await sleep(130);
@@ -188,22 +193,53 @@ try {
     await shot(a, '02-' + mode);
     await sample(a, mode);
     await sample(b, mode);
-    for (let i = 0; i < 20; i++) {
-      await sleep(200);
+    for (let i = 0; i < 32; i++) {
+      await sleep(110);
       await sample(a, mode);
       await sample(b, mode);
+      if (
+        mode === 'poison' &&
+        samples.at(-1).poisonShots > 0 &&
+        !screenshots.some((s) => s.endsWith('02-poison-flight.png'))
+      )
+        await shot(b, '02-poison-flight');
     }
     const state = await request('state');
     assert.ok(state.players.find((p) => p.name === 'Monster A').energy < 100, mode + ' damage');
     checks.push(mode + ' damage observed in actual server time');
   }
   // 2026-09-12: every strike opens with its telegraph clip.
-  for (const clip of ['Roar', 'Charge', 'Gape', 'Attack', 'Tremble', 'TailSpin']) {
+  for (const clip of [
+    'Roar',
+    'Charge',
+    'Gape',
+    'Attack',
+    'Tremble',
+    'TailSpin',
+    'SpitWindup',
+    'Spit',
+  ]) {
     assert.ok(
       samples.some((s) => s.enemy?.clip === clip && s.enemy.visible),
       clip + ' rendered',
     );
   }
+  assert.ok(
+    samples.some((s) => s.poisonShots > 0 && s.poisonParticles > 10),
+    'Liquid flight rendered',
+  );
+  assert.ok(
+    samples.some((s) => s.poisonSplashes > 0 && s.poisonParticles > 0),
+    'Liquid impact rendered',
+  );
+  await request('prepare', { mode: 'poison' });
+  await sleep(1150);
+  const dodgeState = await request('state'),
+    dodgePlayer = dodgeState.players.find((p) => p.name === 'Monster A');
+  await request('place', { x: dodgePlayer.x + 4, z: dodgePlayer.z });
+  await sleep(1800);
+  assert.equal((await request('state')).players.find((p) => p.name === 'Monster A').energy, 100);
+  checks.push('Poison aim locks before release; side step avoids damage');
   // The HUD discovery card was retired; the telegraph and charge cues are
   // checked on the authoritative state the pages rendered from.
   assert.ok(
@@ -228,6 +264,67 @@ try {
     20000,
   );
   checks.push('Returns to exact home by movement');
+  const homeState = await request('state'),
+    home = homeState.enemy;
+  await request('place', { x: home.x, z: home.z + 12 });
+  await sleep(120);
+  await look(a);
+  await a.locator('#world').focus();
+  await a.keyboard.down('w');
+  try {
+    await until(
+      async () => {
+        const s = await request('state');
+        return s.enemy.targetId === s.players.find((p) => p.name === 'Monster A').id;
+      },
+      'rear footsteps after return',
+      2500,
+    );
+  } finally {
+    await a.keyboard.up('w');
+  }
+  await sample(a, 'rear-footsteps-after-return');
+  checks.push('Real W footsteps from behind reacquire after a complete leash return');
+  await request('escape');
+  await until(
+    async () => {
+      const e = (await request('state')).enemy;
+      return !e.returning && e.behavior === 'guard';
+    },
+    'second return',
+    15000,
+  );
+  const rearHome = (await request('state')).enemy;
+  await request('place', {
+    player: 'Monster B',
+    x: rearHome.x,
+    z: rearHome.z + 7,
+    facing: Math.PI,
+    vulnerable: true,
+  });
+  await sleep(120);
+  await look(b);
+  await b.locator('#world').focus();
+  assert.equal(
+    (await request('state')).enemy.targetId,
+    null,
+    'stationary spearman outside contact remains unseen behind',
+  );
+  await b.keyboard.press('f');
+  await until(
+    async () => {
+      const s = await request('state');
+      return (
+        s.enemy.health < rearHome.health &&
+        s.enemy.targetId === s.players.find((p) => p.name === 'Monster B').id
+      );
+    },
+    'real rear spear hit retaliation',
+    2500,
+  );
+  await sample(b, 'rear-hit-after-return');
+  await shot(b, '02-rear-hit-retaliation');
+  checks.push('Real F spear hit from behind immediately reacquires after the second return');
   await request('prepare', { mode: 'guard' });
   await sleep(800);
   await look(a);
@@ -278,6 +375,7 @@ try {
     path.join(out, 'summary.json'),
     JSON.stringify(
       {
+        tuning,
         checks,
         errors,
         samples,

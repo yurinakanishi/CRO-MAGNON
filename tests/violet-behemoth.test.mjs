@@ -1,7 +1,11 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { CollisionWorld } from '../dist/shared/collision.mjs';
-import { BEHEMOTH as R, BEHEMOTH_GROUND } from '../dist/shared/behemoth-rules.mjs';
+import {
+  BEHEMOTH as R,
+  BEHEMOTH_GROUND,
+  BEHEMOTH_CLIP_TIMING,
+} from '../dist/shared/behemoth-rules.mjs';
 import { createBehemoth } from '../dist/shared/violet-behemoth.mjs';
 import { updateEnemies } from '../dist/shared/enemies.mjs';
 import { startAttack, resolveAttack } from '../dist/shared/combat.mjs';
@@ -125,7 +129,10 @@ test('a roar precedes a fast fixed-heading charge, with one damage event', () =>
   assert.ok(e.z > z + 4);
   assert.equal(p.energy, 100 - R.chargeDamage);
   assert.equal(p.hurtSequence, 1);
-  assert.ok(R.chargeSpeed < 6.4 && R.chargeSpeed > 5.6, 'only the ape outruns the charge');
+  assert.ok(
+    R.chargeSpeed > 6.4,
+    'even the ape must evade the faster charge or leave the territory',
+  );
 });
 test('great ape sprint can leave territory and monster walks back without further damage', () => {
   const { e, p, room, tick } = fixture();
@@ -263,7 +270,7 @@ test('extra clips are required only for behemoth and charge seeks after the tele
   const state = { modelKey: R.modelKey, phase: 'alive', attackAt: 2000, clip: 'Charge' };
   assert.deepEqual(enemyAnimationState(state, 3500), {
     clip: 'Charge',
-    elapsed: (1500 - R.roarMs) / 1000,
+    elapsed: (((1500 - R.roarMs) / 1000) * 2400) / R.chargeMs,
   });
   // Each telegraph clip starts at the attack; its strike clip starts when it ends.
   for (const [clip, offset] of [
@@ -275,7 +282,11 @@ test('extra clips are required only for behemoth and charge seeks after the tele
   ])
     assert.deepEqual(enemyAnimationState({ ...state, clip }, 2000 + offset + 250), {
       clip,
-      elapsed: 0.25,
+      elapsed:
+        0.25 *
+        (BEHEMOTH_CLIP_TIMING[clip]
+          ? BEHEMOTH_CLIP_TIMING[clip].authoredMs / BEHEMOTH_CLIP_TIMING[clip].activeMs
+          : 1),
     });
 });
 
@@ -291,7 +302,8 @@ test('the body is rendered at 2.5x and its radius and tail reach follow', () => 
 test('a blow from behind turns the behemoth on its attacker', () => {
   const { e, p, room, tick } = fixture();
   Object.assign(p, {
-    z: e.z - e.radius - 0.9,
+    species: 'cro',
+    z: e.z - e.radius - p.radius - R.contactNoticeMargin - 0.1,
     facing: 0,
     attackSequence: 0,
     attackAt: 0,
@@ -303,9 +315,125 @@ test('a blow from behind turns the behemoth on its attacker', () => {
   assert.equal(resolveAttack(room, p, 2400).hit, true);
   tick(2400, 0);
   assert.equal(e.clip, 'Hit');
+  assert.equal(e.targetId, p.id, 'awareness changes on the hit frame, before flinch ends');
   tick(2400 + R.hitDurationMs + 10, 0);
   assert.equal(e.targetId, p.id);
   assert.equal(e.provokedBy, null);
+});
+
+function returnToPost(f, start = 2000) {
+  const { e, p, tick } = f;
+  e.z = e.home.z + 4;
+  e.targetId = p.id;
+  p.z = e.home.z + R.territoryRadius + 1;
+  tick(start);
+  assert.equal(e.returning, true);
+  for (let now = start + 50; now < start + 8000; now += 50) {
+    tick(now);
+    if (!e.returning) {
+      assert.ok(Math.hypot(e.x - e.home.x, e.z - e.home.z) < 0.001);
+      return now;
+    }
+  }
+  assert.fail('did not return to post');
+}
+test('after an actual leash return, rear footsteps reacquire immediately, repeatedly', () => {
+  const f = fixture(),
+    { e, p, tick } = f;
+  let nextReturnAt = 2000;
+  for (let cycle = 0; cycle < 2; cycle++) {
+    const at = returnToPost(f, nextReturnAt);
+    Object.assign(p, { x: e.x, z: e.z + 12, moving: true, running: false });
+    assert.equal(e.facing, Math.PI, 'standing with its back to the player');
+    tick(at + 1, 0);
+    assert.equal(e.targetId, p.id);
+    assert.equal(e.returning, false);
+    assert.equal(e.clip, 'Roar');
+    nextReturnAt = at + 1000;
+  }
+});
+test('returning and an occupied home do not disable hearing or close-contact awareness', () => {
+  for (const contact of [false, true]) {
+    const { e, p, tick } = fixture();
+    Object.assign(e, {
+      z: e.home.z + 2,
+      returning: true,
+      targetId: null,
+      facing: Math.PI,
+      aggroAfter: 99999,
+    });
+    Object.assign(p, {
+      x: e.x,
+      z: e.z + (contact ? e.radius + p.radius + 0.2 : 12),
+      moving: !contact,
+      running: false,
+    });
+    tick(2000, 0);
+    assert.equal(e.targetId, p.id);
+    assert.equal(e.returning, false);
+    assert.equal(e.clip, 'Roar');
+  }
+});
+test('a rear hit interrupts a return and records the attacker even during hit recovery', () => {
+  const { e, p, room, tick } = fixture();
+  Object.assign(e, { returning: true, targetId: null, facing: Math.PI, aggroAfter: 99999 });
+  Object.assign(p, { species: 'cro', x: e.x, z: e.z + e.radius + p.radius + 0.5, facing: Math.PI });
+  assert.equal(startAttack(room, p, { targetId: e.id }, 2000).accepted, true);
+  assert.equal(resolveAttack(room, p, 2400).hit, true);
+  tick(2400, 0);
+  assert.equal(e.targetId, p.id);
+  assert.equal(e.returning, false);
+  assert.ok(Math.abs(e.facing) < 1e-6);
+  assert.equal(e.clip, 'Hit');
+  tick(2400 + R.hitDurationMs, 0);
+  assert.ok(['roar', 'gape', 'tremble', 'chase'].includes(e.behavior));
+});
+test('another attacker is noticed immediately, while outside/protected/other-floor players remain excluded', () => {
+  const { e, p, room, tick } = fixture();
+  e.targetId = 'old';
+  room.players.set('old', { ...p, id: 'old' });
+  e.provokedBy = p.id;
+  e.hitUntil = 2300;
+  p.z = e.z - 8;
+  tick(2100, 0);
+  assert.equal(e.targetId, p.id);
+  assert.equal(e.provokedBy, null);
+  for (const mode of ['outside', 'protected', 'other-floor']) {
+    Object.assign(e, { z: e.home.z + 2, targetId: null, returning: true, provokedBy: p.id });
+    room.players.delete('old');
+    Object.assign(p, {
+      z: e.z - 8,
+      moving: true,
+      invulnerableUntil: mode === 'protected' ? 99999 : 0,
+    });
+    if (mode === 'outside') p.z = e.home.z + R.territoryRadius + 1;
+    room.collision.surfaceHeight = (a) => (mode === 'other-floor' && a === p ? 4 : 0);
+    tick(2400, 0);
+    assert.equal(e.targetId, null, mode);
+    assert.equal(e.returning, true, mode);
+  }
+});
+test('faster attack playback completes every authored pose and keeps the mouth release aligned', () => {
+  const offsets = {
+    Charge: R.roarMs,
+    Tremble: 0,
+    TailSpin: R.trembleMs,
+    SpitWindup: 0,
+    Spit: R.spitWindupMs,
+  };
+  for (const [clip, timing] of Object.entries(BEHEMOTH_CLIP_TIMING)) {
+    const e = { modelKey: R.modelKey, phase: 'alive', attackAt: 5000, clip };
+    const final = enemyAnimationState(e, 5000 + offsets[clip] + timing.activeMs);
+    assert.ok(Math.abs(final.elapsed - timing.authoredMs / 1000) < 1e-9, clip);
+  }
+  assert.ok(
+    Math.abs(
+      enemyAnimationState(
+        { modelKey: R.modelKey, phase: 'alive', attackAt: 5000, clip: 'Spit' },
+        5000 + R.spitWindupMs + R.spitReleaseMs,
+      ).elapsed - 0.18,
+    ) < 1e-9,
+  );
 });
 
 test('exhibition rules respawn the behemoth ten seconds after death', async () => {

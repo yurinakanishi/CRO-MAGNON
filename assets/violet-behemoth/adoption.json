@@ -3,11 +3,11 @@
   "name": "紫尾の巨獣",
   "kind": "enemy",
   "candidate": 1,
-  "revision": "04",
+  "revision": "10",
   "status": "integrated-and-game-qa-passed",
-  "url": "/models/violet-behemoth/model-r04.glb",
-  "sha256": "f45bf9fd25da5c623e5572091fbd4f1c8d783fe8bf743abd590937ccef0c6c49",
-  "bytes": 14805624,
+  "url": "/models/violet-behemoth/model-r10.glb",
+  "sha256": "a0616efb9352f9dc387f46ff41e9ff57d976ed48842a23480475c0d982c15a50",
+  "bytes": 15383812,
   "triangles": 67223,
   "upAxis": "Y",
   "forwardAxis": "+Z",
@@ -17,57 +17,87 @@
   "bones": 20,
   "clips": [
     {
-      "name": "Idle_Loop",
-      "loop": true,
-      "seconds": 3,
-      "rootMotion": "in-place"
-    },
-    {
-      "name": "Walk_Loop",
-      "loop": true,
-      "seconds": 1.2,
-      "rootMotion": "in-place"
-    },
-    {
-      "name": "Run_Loop",
-      "loop": true,
-      "seconds": 0.8,
-      "rootMotion": "in-place"
-    },
-    {
       "name": "Alert",
-      "loop": false,
       "seconds": 0.7,
-      "rootMotion": "in-place"
-    },
-    {
-      "name": "Charge",
       "loop": false,
-      "seconds": 2.4,
       "rootMotion": "in-place"
     },
     {
       "name": "Attack",
-      "loop": false,
       "seconds": 1,
+      "loop": false,
       "rootMotion": "in-place"
     },
     {
-      "name": "TailSpin",
+      "name": "Charge",
+      "seconds": 2.4,
       "loop": false,
-      "seconds": 1.5,
-      "rootMotion": "in-place"
-    },
-    {
-      "name": "Hit",
-      "loop": false,
-      "seconds": 0.3,
       "rootMotion": "in-place"
     },
     {
       "name": "Death",
-      "loop": false,
       "seconds": 1.6,
+      "loop": false,
+      "rootMotion": "in-place"
+    },
+    {
+      "name": "Gape",
+      "seconds": 0.6,
+      "loop": false,
+      "rootMotion": "in-place"
+    },
+    {
+      "name": "Hit",
+      "seconds": 0.3,
+      "loop": false,
+      "rootMotion": "in-place"
+    },
+    {
+      "name": "Idle_Loop",
+      "seconds": 3,
+      "loop": true,
+      "rootMotion": "in-place"
+    },
+    {
+      "name": "Roar",
+      "seconds": 1.2,
+      "loop": false,
+      "rootMotion": "in-place"
+    },
+    {
+      "name": "Run_Loop",
+      "seconds": 0.8,
+      "loop": true,
+      "rootMotion": "in-place"
+    },
+    {
+      "name": "Spit",
+      "seconds": 0.9,
+      "loop": false,
+      "rootMotion": "in-place"
+    },
+    {
+      "name": "SpitWindup",
+      "seconds": 1.3,
+      "loop": false,
+      "rootMotion": "in-place"
+    },
+    {
+      "name": "TailSpin",
+      "seconds": 1.5,
+      "loop": false,
+      "rootMotion": "in-place"
+    },
+    {
+      "name": "Tremble",
+      "seconds": 0.9,
+      "loop": false,
+      "rootMotion": "in-place"
+    },
+    {
+      "name": "Walk_Loop",
+      "seconds": 1.2,
+      "loop": true,
       "rootMotion": "in-place"
     }
   ],
@@ -96,20 +126,16 @@
       2.0000002239146806
     ]
   },
-  "source": "output/model-generation/models/violet-behemoth/work/rig/revision-04/candidate.glb",
+  "source": "output/model-generation/models/violet-behemoth/work/rig/revision-10/candidate.glb",
   "notes": [
     "User-supplied reference, vestigial hind legs, forearm/tail propulsion. Local TRELLIS-2 reconstruction; no visible replacement geometry.",
-    "Total length 6 m: retained body, extended tail. Revision 04 makes the tail a damped chain that undulates in Walk/Run/Charge and coils, lags and cracks through TailSpin; surface, material and the other five clips match revision 03."
+    "Total length 6 m: retained body, extended tail. Revision 04 makes the tail a damped chain that undulates in Walk/Run/Charge and coils, lags and cracks through TailSpin; surface, material and the other five clips match revision 03.",
+    "Separate torso/palm/tail constraints; fixed palms on all telegraphs; travelling charge wave and 26 ms per-link spin delay; no telegraph flight."
   ],
-  "adoptedAt": "2026-09-11T01:10:43.267Z",
-  "browserSource": "output/playwright/violet-behemoth-r04/summary.json",
-  "visualReview": "Revision 04: six-direction sheets and videos of Walk_Loop, Run_Loop and TailSpin plus top-down strips of the tail chain, then actual game playback. Earlier revisions reviewed nine clips in six directions with the death pose corrected to a grounded side fall.",
-  "preservedClips": [
-    "Alert",
-    "Attack",
-    "Death",
-    "Hit",
-    "Idle_Loop"
-  ],
-  "productionFileCount": 620
+  "provenance": {
+    "provider": "User-supplied reference and local TRELLIS-2 (Codex); revision 05-08 telegraphs by Claude Code; revision 09 onward grounded IK, tail and poison animations by Codex",
+    "claudeUsed": true,
+    "referenceImage": "output/model-generation/models/violet-behemoth/source/original/user-reference.png",
+    "visualReview": "assets/violet-behemoth/visual-review-r10.json"
+  }
 }

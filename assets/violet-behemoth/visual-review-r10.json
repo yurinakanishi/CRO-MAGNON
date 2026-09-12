@@ -1,0 +1,11 @@
+{
+  "decision": "adopt",
+  "sha256": "a0616efb9352f9dc387f46ff41e9ff57d976ed48842a23480475c0d982c15a50",
+  "revision": "10",
+  "reviewedAt": "2026-09-12T10:15:44.151Z",
+  "sheets": [
+    "output/model-generation/models/violet-behemoth/work/rig/revision-10/qa/sheet-left.png",
+    "output/model-generation/models/violet-behemoth/work/rig/revision-10/qa/sheet-threequarter.png"
+  ],
+  "notes": "Separate torso/palm/tail constraints; fixed palms on all telegraphs; travelling charge wave and 26 ms per-link spin delay; no telegraph flight."
+}

@@ -28,6 +28,8 @@ const project = () => {
   const e = room.enemies.find((e) => e.modelKey === R.modelKey);
   return {
     enemy: { ...e, pendingAttack: e.pendingAttack },
+    poisonShots: room.poisonShots ?? [],
+    poisonSplashes: room.poisonSplashes ?? [],
     players: [...room.players.values()].map((p) => ({
       id: p.id,
       name: p.name,
@@ -40,7 +42,7 @@ const project = () => {
     count: room.players.size,
   };
 };
-process.send({ ready: true, port });
+process.send({ ready: true, port, tuning: R });
 process.on('message', async (m) => {
   try {
     const room = game.rooms.get('BEHEMOTH-QA');
@@ -48,6 +50,8 @@ process.on('message', async (m) => {
       const e = room.enemies.find((e) => e.modelKey === R.modelKey),
         now = Date.now();
       Object.assign(e, createBehemoth(room.collision, [], now));
+      room.poisonShots = [];
+      room.poisonSplashes = [];
       e.facing = 0;
       const people = [...room.players.values()];
       for (const [i, p] of people.entries()) {
@@ -61,7 +65,11 @@ process.on('message', async (m) => {
       const p = people.find((p) => p.name === 'Monster A');
       if (!p) throw Error('Missing Monster A');
       if (m.mode === 'rear') Object.assign(p, { x: e.x, z: e.z - 9 });
-      else if (['bite', 'tail'].includes(m.mode)) {
+      else if (m.mode === 'poison') {
+        Object.assign(p, { x: e.x, z: e.z + 18 });
+        e.targetId = p.id;
+        e.aggroAfter = now;
+      } else if (['bite', 'tail'].includes(m.mode)) {
         Object.assign(p, { x: e.x, z: e.z + e.radius + p.radius + 0.1 });
         e.targetId = p.id;
         e.aggroAfter = now;
@@ -83,10 +91,12 @@ process.on('message', async (m) => {
     }
     if (m.kind === 'place') {
       // Marsh QA: stand the reviewer exactly where the sheet and floor must agree.
-      const p = [...room.players.values()].find((p) => p.name === 'Monster A');
+      const p = [...room.players.values()].find((p) => p.name === (m.player ?? 'Monster A'));
       if (!p) throw Error('Missing Monster A');
       stopActor(p);
       Object.assign(p, { x: m.x, z: m.z });
+      if (Number.isFinite(m.facing)) p.facing = m.facing;
+      if (m.vulnerable) p.invulnerableUntil = 0;
     }
     if (m.kind === 'escape') {
       const e = room.enemies.find((e) => e.modelKey === R.modelKey);

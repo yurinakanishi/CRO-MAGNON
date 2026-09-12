@@ -1,13 +1,18 @@
 // How territorial creatures notice players without seeing them: footsteps carry
 // further the faster a player moves, in every direction, but a player who stands
 // still can creep to three metres. Being struck always gives the attacker away.
-export const HEARING = Object.freeze({ still: 3, walking: 9, running: 16 });
+export type HearingProfile = Readonly<{
+  still: number;
+  walking: number;
+  running: number;
+}>;
+export const HEARING: HearingProfile = Object.freeze({ still: 3, walking: 9, running: 16 });
 
-export function hearingRange(player, hearing = HEARING) {
+export function hearingRange(player, hearing: HearingProfile = HEARING) {
   return player.running ? hearing.running : player.moving ? hearing.walking : hearing.still;
 }
 
-export const heard = (listener, player, hearing = HEARING) =>
+export const heard = (listener, player, hearing: HearingProfile = HEARING) =>
   Math.hypot(listener.x - player.x, listener.z - player.z) <= hearingRange(player, hearing);
 
 // Sound crosses walls but not floors: a player on another castle level is not heard.

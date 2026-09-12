@@ -16,7 +16,7 @@ assert.equal(numeric.sha256, asset.sha256);
 assert.equal(numeric.numericPass, true);
 assert.ok(Math.abs(numeric.restBounds.max[2] - numeric.restBounds.min[2] - 6) < 0.001);
 assert.equal(numeric.skinJoints, 20);
-assert.equal(numeric.clips.length, 9);
+assert.equal(numeric.clips.length, asset.clips.length);
 const catalog = await json('public/models/world-assets.json');
 assert.deepEqual(
   catalog.assets.find((a) => a.modelKey === asset.modelKey),
@@ -68,21 +68,35 @@ function glb(b) {
 // Revision 04 reworks only the tail motion of the gait and spin clips; the
 // surface, textures, materials and the other five clips are byte-identical to
 // the adopted revision 03.
-const old = glb(await readFile(`${model}/work/rig/revision-03/candidate.glb`)),
+const grounded = Number(asset.revision) >= 9;
+if (grounded) {
+  const contact = await json(`${folder}/qa/grounded.json`);
+  assert.equal(contact.pass, true, '120 Hz support, tail and retained-motion checks');
+  assert.equal(contact.sha256, asset.sha256);
+}
+const old = glb(
+    await readFile(`${model}/work/rig/revision-${grounded ? '08' : '03'}/candidate.glb`),
+  ),
   current = glb(source);
 assert.deepEqual(current.surface, old.surface);
 assert.deepEqual(current.images, old.images);
 assert.deepEqual(current.g.materials, old.g.materials);
-const reworkedClips = ['Walk_Loop', 'Run_Loop', 'Charge', 'TailSpin'];
+const reworkedClips = grounded
+  ? ['Roar', 'Gape', 'Tremble', 'Charge', 'TailSpin']
+  : ['Walk_Loop', 'Run_Loop', 'Charge', 'TailSpin'];
 const retainedClips = Object.keys(old.clips).filter((n) => !reworkedClips.includes(n));
-for (const name of retainedClips) assert.deepEqual(current.clips[name], old.clips[name], name);
+// 60 Hz export resamples retained clips; their deformed poses are checked by
+// validate-grounded.py rather than asserting identical 30 Hz sampler bytes.
+if (!grounded)
+  for (const name of retainedClips) assert.deepEqual(current.clips[name], old.clips[name], name);
 for (const name of reworkedClips) {
   assert.notDeepEqual(current.clips[name], old.clips[name], name);
-  assert.deepEqual(
-    current.clips[name].map((c) => [c.node, c.path, c.interpolation, c.input.count]),
-    old.clips[name].map((c) => [c.node, c.path, c.interpolation, c.input.count]),
-    name + ' keeps the same bones, channels and timing',
-  );
+  if (!grounded)
+    assert.deepEqual(
+      current.clips[name].map((c) => [c.node, c.path, c.interpolation, c.input.count]),
+      old.clips[name].map((c) => [c.node, c.path, c.interpolation, c.input.count]),
+      name + ' keeps the same bones, channels and timing',
+    );
 }
 
 const existing = [];

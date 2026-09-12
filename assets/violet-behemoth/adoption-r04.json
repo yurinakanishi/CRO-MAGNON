@@ -1,0 +1,115 @@
+{
+  "modelKey": "violet-behemoth",
+  "name": "紫尾の巨獣",
+  "kind": "enemy",
+  "candidate": 1,
+  "revision": "04",
+  "status": "integrated-and-game-qa-passed",
+  "url": "/models/violet-behemoth/model-r04.glb",
+  "sha256": "f45bf9fd25da5c623e5572091fbd4f1c8d783fe8bf743abd590937ccef0c6c49",
+  "bytes": 14805624,
+  "triangles": 67223,
+  "upAxis": "Y",
+  "forwardAxis": "+Z",
+  "heightMetres": 2.064113140106201,
+  "widthMetres": 2.6545490026474,
+  "lengthMetres": 6,
+  "bones": 20,
+  "clips": [
+    {
+      "name": "Idle_Loop",
+      "loop": true,
+      "seconds": 3,
+      "rootMotion": "in-place"
+    },
+    {
+      "name": "Walk_Loop",
+      "loop": true,
+      "seconds": 1.2,
+      "rootMotion": "in-place"
+    },
+    {
+      "name": "Run_Loop",
+      "loop": true,
+      "seconds": 0.8,
+      "rootMotion": "in-place"
+    },
+    {
+      "name": "Alert",
+      "loop": false,
+      "seconds": 0.7,
+      "rootMotion": "in-place"
+    },
+    {
+      "name": "Charge",
+      "loop": false,
+      "seconds": 2.4,
+      "rootMotion": "in-place"
+    },
+    {
+      "name": "Attack",
+      "loop": false,
+      "seconds": 1,
+      "rootMotion": "in-place"
+    },
+    {
+      "name": "TailSpin",
+      "loop": false,
+      "seconds": 1.5,
+      "rootMotion": "in-place"
+    },
+    {
+      "name": "Hit",
+      "loop": false,
+      "seconds": 0.3,
+      "rootMotion": "in-place"
+    },
+    {
+      "name": "Death",
+      "loop": false,
+      "seconds": 1.6,
+      "rootMotion": "in-place"
+    }
+  ],
+  "locomotion": {
+    "Walk_Loop": {
+      "metresPerSecond": 1.35,
+      "cycleSeconds": 1.2,
+      "dutyFactor": 0.62
+    },
+    "Run_Loop": {
+      "metresPerSecond": 4.9,
+      "cycleSeconds": 0.4,
+      "dutyFactor": 0.48
+    }
+  },
+  "placement": {
+    "pivot": "ground-body-centred",
+    "min": [
+      -1.2159718550237413,
+      2.940193993597767e-8,
+      -3.9999992352940628
+    ],
+    "max": [
+      1.438577103536168,
+      2.0641133972291863,
+      2.0000002239146806
+    ]
+  },
+  "source": "output/model-generation/models/violet-behemoth/work/rig/revision-04/candidate.glb",
+  "notes": [
+    "User-supplied reference, vestigial hind legs, forearm/tail propulsion. Local TRELLIS-2 reconstruction; no visible replacement geometry.",
+    "Total length 6 m: retained body, extended tail. Revision 04 makes the tail a damped chain that undulates in Walk/Run/Charge and coils, lags and cracks through TailSpin; surface, material and the other five clips match revision 03."
+  ],
+  "adoptedAt": "2026-09-11T01:10:43.267Z",
+  "browserSource": "output/playwright/violet-behemoth-r04/summary.json",
+  "visualReview": "Revision 04: six-direction sheets and videos of Walk_Loop, Run_Loop and TailSpin plus top-down strips of the tail chain, then actual game playback. Earlier revisions reviewed nine clips in six directions with the death pose corrected to a grounded side fall.",
+  "preservedClips": [
+    "Alert",
+    "Attack",
+    "Death",
+    "Hit",
+    "Idle_Loop"
+  ],
+  "productionFileCount": 620
+}

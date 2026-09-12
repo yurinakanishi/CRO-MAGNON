@@ -13,33 +13,60 @@ export const BEHEMOTH = Object.freeze({
   walkSpeed: 1.35,
   // Only the great ape (6.4) and the kunoichi (5.8) outrun it; humans (5.6) cannot.
   chaseSpeed: 5.7,
-  chargeSpeed: 6.0,
+  chargeSpeed: 7.5,
+  chargeStartSpeed: 4.125,
+  chargeAccelerationMs: 520,
   visionRange: 23,
   visionHalfAngle: Math.PI / 2.5,
   // Footsteps behind it are heard, running further than walking.
-  hearing: HEARING,
+  hearing: Object.freeze({ ...HEARING, walking: 14, running: 22 }),
+  contactNoticeMargin: 0.4,
   territoryRadius: 30,
   alertMs: 700,
-  // Every strike is announced by its own clip: Roar before the charge, Gape
-  // before the bite, Tremble before the tail spin. The strike clip follows.
+  // Grounded charge brace, bite gape, raised-tail coil and neck draw-back each
+  // announce a different strike. The strike clip follows on the same timeline.
   roarMs: 1200,
-  chargeMs: 2400,
-  recoveryMs: 900,
+  chargeMs: 1920,
+  recoveryMs: 700,
   gapeMs: 600,
   biteMs: 1000,
   biteImpactMs: 500,
   biteReach: 0.3,
-  trembleMs: 900,
-  spinMs: 1500,
-  spinWindupMs: 450,
-  spinSweepMs: 850,
+  trembleMs: 600,
+  spinMs: 1200,
+  spinWindupMs: 360,
+  spinSweepMs: 680,
   tailReach: 4.35 * SCALE,
   chargeDamage: 25,
   biteDamage: 22,
   tailDamage: 20,
+  spitWindupMs: 1000,
+  spitMs: 720,
+  spitReleaseMs: 144,
+  spitCooldownMs: 5200,
+  spitMinRange: 12,
+  spitRange: 30,
+  spitSpeed: 18,
+  spitGravity: 9.8,
+  spitRadius: 0.6,
+  spitSplashRadius: 2.4,
+  spitDamage: 18,
+  // Original GLB mouth aperture at Spit 0.18 s, scaled in world space.
+  mouthForward: 1.7872,
+  mouthHeight: 1.2191,
   hitDurationMs: 300,
   deathMs: 1600,
   respawnMs: 60000,
+});
+// The grounded r10 poses stay intact. Sample the entire authored clip inside
+// its authoritative gameplay duration so faster attacks never cut poses short
+// or release poison at a different mouth position. Shared for late joins/QA.
+export const BEHEMOTH_CLIP_TIMING = Object.freeze({
+  Charge: { authoredMs: 2400, activeMs: BEHEMOTH.chargeMs },
+  Tremble: { authoredMs: 900, activeMs: BEHEMOTH.trembleMs },
+  TailSpin: { authoredMs: 1500, activeMs: BEHEMOTH.spinMs },
+  SpitWindup: { authoredMs: 1300, activeMs: BEHEMOTH.spitWindupMs },
+  Spit: { authoredMs: 900, activeMs: BEHEMOTH.spitMs },
 });
 export const BEHEMOTH_GROUND = Object.freeze({
   id: 'violet-behemoth-1',

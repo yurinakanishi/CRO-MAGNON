@@ -1,4 +1,4 @@
-import { BEHEMOTH } from '../shared/behemoth-rules.mjs';
+import { BEHEMOTH, BEHEMOTH_CLIP_TIMING } from '../shared/behemoth-rules.mjs';
 import { SABERTOOTH } from '../shared/sabertooth-rules.mjs';
 export const ENEMY_CLIPS = Object.freeze([
   'Idle_Loop',
@@ -19,6 +19,8 @@ export const BEHEMOTH_CLIPS = Object.freeze([
   'Gape',
   'Tremble',
   'TailSpin',
+  'SpitWindup',
+  'Spit',
 ]);
 export const SABERTOOTH_CLIPS = Object.freeze([
   ...ENEMY_CLIPS,
@@ -57,7 +59,14 @@ export function enemyAnimationState(enemy, now) {
           : ['Attack', 'Alert'].includes(clip)
             ? enemy.attackAt
             : null;
-  return { clip, elapsed: started === null ? null : Math.max(0, (now - started) / 1000) };
+  const timing = enemy.modelKey === BEHEMOTH.modelKey ? BEHEMOTH_CLIP_TIMING[clip] : null;
+  return {
+    clip,
+    elapsed:
+      started === null
+        ? null
+        : Math.max(0, (now - started) / 1000) * (timing ? timing.authoredMs / timing.activeMs : 1),
+  };
 }
 // A strike clip starts when its telegraph clip ends, on the authoritative clock.
 const ONE_SHOT_OFFSET_MS = {
@@ -69,6 +78,8 @@ const ONE_SHOT_OFFSET_MS = {
     Attack: BEHEMOTH.gapeMs,
     Tremble: 0,
     TailSpin: BEHEMOTH.trembleMs,
+    SpitWindup: 0,
+    Spit: BEHEMOTH.spitWindupMs,
   },
   [SABERTOOTH.modelKey]: {
     Alert: 0,
@@ -95,11 +106,13 @@ const SABERTOOTH_CUES = {
 };
 const BEHEMOTH_CUES = {
   guard: '縄張りを警戒',
-  roar: '咆哮…突進が来る！',
+  roar: '低く構えた…突進が来る！',
   charge: '突進',
   gape: '口を開けた…噛みつきが来る！',
   bite: '噛みつき',
-  tremble: '身を震わせた…尾の回転が来る！',
+  tremble: '尾を持ち上げた…回転が来る！',
+  'spit-windup': '首を引いた…毒液が来る！',
+  spit: '毒液を吐く',
   tail: '尾の回転攻撃',
   return: '縄張りへ戻る',
   recover: '隙あり',
