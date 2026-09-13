@@ -37,7 +37,9 @@ for (const spec of catalog.assets) {
   // assets record false; the 2026-09-10 valley-pine rework was made by Claude
   // at the user's request and records true.
   assert.equal(typeof manifest.provenance.claudeUsed, 'boolean');
-  assert.ok(typeof manifest.provenance.provider === 'string' && manifest.provenance.provider.length > 0);
+  assert.ok(
+    typeof manifest.provenance.provider === 'string' && manifest.provenance.provider.length > 0,
+  );
   assert.equal(manifest.sha256, spec.sha256);
   if (spec.kind !== 'humanoid')
     assert.deepEqual(
@@ -97,10 +99,12 @@ for (const spec of catalog.assets) {
       manifest.locomotion.Walk_Loop.metresPerSecond > 0 &&
         manifest.locomotion.Run_Loop.metresPerSecond > 0,
     );
-    assert.equal(
-      manifest.clips.length,
-      spec.kind === 'humanoid' ? 9 : spec.kind === 'enemy' ? 6 : 5,
-    );
+    // Humanoids carry the nine original clips plus later additions (the
+    // 2026-09-12 downed pose); enemies carry the six shared clips plus their
+    // own telegraphs (sabertooth 11, behemoth 14); the mammoth keeps five.
+    const minimumClips = { humanoid: 9, enemy: 6, quadruped: 5 }[spec.kind];
+    assert.ok(manifest.clips.length >= minimumClips, `${spec.key}: ${manifest.clips.length} clips`);
+    if (spec.kind === 'quadruped') assert.equal(manifest.clips.length, 5);
   }
   if (spec.kind === 'terrain')
     assert.equal(
@@ -133,6 +137,21 @@ const huntingKeys = [
   'neanderthal-woman',
   'woolly-mammoth',
 ];
+// The motion revisions' source deliveries were archived under output/ (not in
+// git). Each is byte-identical to the model.glb still served for that key, so
+// on a host without the archive the in-repo copy stands in, verified by hash.
+async function archivedSource(key, motionReview) {
+  for (const candidate of [motionReview.sourceDelivery, `public/models/${key}/model.glb`]) {
+    let bytes;
+    try {
+      bytes = await readFile(resolve(root, candidate));
+    } catch {
+      continue;
+    }
+    if (hash(bytes) === motionReview.sourceSha256) return bytes;
+  }
+  throw new Error(`${key}: no copy of motion source ${motionReview.sourceSha256} on this host`);
+}
 function glbParts(bytes) {
   const jsonLength = bytes.readUInt32LE(12),
     binStart = 20 + jsonLength;
@@ -150,7 +169,7 @@ for (const key of huntingKeys) {
   // Preserve the historical hunting assertion against its own delivery. The
   // later motion revision is verified separately against that archived source.
   const huntingBytes = manifest.motionReview
-    ? await readFile(resolve(root, manifest.motionReview.sourceDelivery))
+    ? await archivedSource(key, manifest.motionReview)
     : currentBytes;
   if (manifest.motionReview) assert.equal(hash(huntingBytes), manifest.motionReview.sourceSha256);
   const old = glbParts(oldBytes),
@@ -184,7 +203,7 @@ for (const key of huntingKeys) {
       ),
     );
     assert.equal(inspection.validation, 'passed');
-    assert.equal(inspection.animations.length, 9);
+    assert.ok(inspection.animations.length >= 9);
   }
 }
 if (results.some((result) => ['woolly-mammoth', 'crow-shaman'].includes(result.key))) {

@@ -12,9 +12,9 @@
       "status": "integrated-and-game-qa-passed",
       "subject": "One original fully clothed adult Neanderthal hunter, natural stocky powerful human anatomy, broad chest, short robust lower limbs, subtle broad nose and brow, upright dignified posture, short dark beard, brown hair tied compactly. Fitted grey-brown hide tunic ending above the knees, compact fur shoulders, belt, ankle boots, small cream shoulder cloth accent. Empty hands. Symmetrical relaxed A-pose with both arms separated 35 degrees from torso, fingers readable, knees and elbows visible, legs apart. Full body, near-frontal view with at most 10 degrees three-quarter turn, both feet visible.",
       "geometryResolution": 1024,
-      "sha256": "3a7c008bfd8bd7bbf2f2010387373215aee67cf93c5387ccd6561d03c935ac2a",
-      "delivery": "/models/neanderthal-hunter/model-run-r05.glb",
-      "gameQA": "assets/player-gaits/RUN_REPAIR.md"
+      "sha256": "93047f04342a5880dc4574956846f130b3d97c5041408c07f790d2ae09f55000",
+      "delivery": "/models/neanderthal-hunter/model-human-r10.glb",
+      "gameQA": "assets/human-locomotion/README.md"
     },
     {
       "key": "woolly-mammoth",
@@ -24,9 +24,10 @@
       "status": "integrated-and-game-qa-passed",
       "subject": "One anatomically believable woolly mammoth, warm dark brown thick fur in compact clean masses, high shoulder hump, domed head, small ears, two complete ivory tusks curving forward and upward with clear space between tusks and trunk. Trunk hangs almost straight with a gentle tip curl, visibly separated from chest and tusks. All four sturdy legs and complete flat feet visible and separated in a neutral standing pose. Small tail visible. Full animal, moderate three-quarter side view facing left, no overlapping legs, no vegetation, no rock or base.",
       "geometryResolution": 1024,
-      "sha256": "f54643731a621d903728ea29bf0b713cd930536122c9aeb70f60a4d05c9a28f7",
-      "delivery": "/models/woolly-mammoth/model-motion-r04.glb",
-      "gameQA": "assets/creature-motion/models/woolly-mammoth-review.json"
+      "sha256": "f6fad8db82228cfb110cb1b513e0a09cfd54b6325de4dcfcf9f4a95525d66712",
+      "delivery": "/models/woolly-mammoth/model-tail-r11.glb",
+      "gameQA": "assets/creature-motion/models/woolly-mammoth-review.json",
+      "triangles": 26067
     },
     {
       "key": "valley-pine",
@@ -203,9 +204,9 @@
       "geometryResolution": 1024,
       "subject": "Edit this image for a prehistoric MMORPG image-to-3D character reference. Preserve this exact ADULT 24-year-old woman's beautiful idol-like face, hairstyle, skin, feminine hourglass body proportions, pose, camera, full-body framing and neutral background. Change ONLY her entire costume to unmistakably primitive prehistoric hunter-gatherer clothing. Replace the tailored shirt and trousers completely. She wears a naturally irregular tawny animal-hide wrap across the torso, fastened over one shoulder by a simple rawhide tie, with a modest fully covered chest; the edge of the other shoulder is visible. The hide conforms lightly to her slender waist and feminine shape without modern tailoring. A narrow simple twisted rawhide cord ties around the waist. A separate short layered animal-hide wrap skirt / fur waist wrap reaches mid-thigh, with rough naturally irregular edges and a little dark brown fur at its hem, overlapping panels closed securely across front and back, legs separate and visible below. Bare knees and calves. Feet have simple soft rawhide foot coverings folded around the feet and ankles, held by a few thin leather ties, no manufactured soles or boot shafts. Natural irregular hide, rough edges, subtle primitive hand-pierced lacing only where necessary; NO tailored shirt, NO trousers or leggings, NO modern leather jacket, NO fabric buttons, NO metal buckle or zipper, NO denim-like seams, NO modern stitching grids, NO corset, NO armor, NO jewelry, NO tools, NO weapons. It should read immediately as a beautiful adult prehistoric woman wearing a small number of raw animal hides, not modern leather fashion. Keep costume practical and securely covering her bust and pelvis; neither sexualized nor glamorous modern clothing. Maintain empty hands in the same relaxed A-pose, unobscured arms and hands, clear gaps between arms and waist and between both legs, flat feet, whole figure in frame. Premium realistic Japanese fantasy MMORPG character render with soft neutral light. No scenery or text.",
       "referenceVersion": 3,
-      "sha256": "17754555b2ea158aec8531ea7ca214b485924a1ff51adc186f0fe7073733c2f0",
-      "delivery": "/models/cro-magnon-woman/model-run-r05.glb",
-      "gameQA": "assets/player-gaits/RUN_REPAIR.md"
+      "sha256": "bac0bdd9d2961654501b5cc39ce94514b6262c7750ff10299948db4c377e711a",
+      "delivery": "/models/cro-magnon-woman/model-human-r10.glb",
+      "gameQA": "assets/human-locomotion/README.md"
     },
     {
       "key": "neanderthal-woman",
@@ -218,9 +219,9 @@
       "geometryResolution": 1024,
       "subject": "Precise edit of the attached adult prehistoric woman character reference for image-to-3D reconstruction. Keep her exact beautiful ADULT 25-year-old idol-like facial identity, eyes, nose, lips, slight smile, face shape, feminine figure, skin, primitive one-shoulder grey-brown fur wrap, dark fur waist wrap, rawhide ties and foot wraps, pose, background, lighting and framing unchanged. Change ONLY the hairstyle near the forehead: sweep and tuck ALL front hair neatly back behind both ears into the existing compact low bun. Both eyebrows, BOTH complete eyes, forehead, cheeks and ears must be clearly visible with absolutely no hair overlapping the face or hanging beside the eyes. No bangs, no fringe and no long loose strands. A pretty neat swept-back idol hairstyle, naturally soft and elegant. Retain the same compact bun at the back. This small hairstyle clarification is necessary because image-to-3D mistakenly turned the original fringe into a thick flap covering an eye. Do not change the costume, body, face identity, expression, stance or camera. Single complete figure, full head and feet visible, neutral grey studio background, no text.",
       "referenceVersion": 4,
-      "sha256": "cf1259d975dd4873b8923889c59fb8fb8f88d59cd13cb4d83eb0e1ff4a23c2b3",
-      "delivery": "/models/neanderthal-woman/model-run-r05.glb",
-      "gameQA": "assets/player-gaits/RUN_REPAIR.md"
+      "sha256": "b1cd6f89291d3d71adb7be0a7f245c746a32691fba2df0e62faccb905a0af1a8",
+      "delivery": "/models/neanderthal-woman/model-human-r10.glb",
+      "gameQA": "assets/human-locomotion/README.md"
     },
     {
       "key": "mammoth-meat",
@@ -256,10 +257,10 @@
       "geometryResolution": 1024,
       "referenceVersion": 1,
       "status": "integrated-and-game-qa-passed",
-      "sha256": "088f582295a912ec7a09014b06eaf43c8618859ff1e9e3c4f6bfe595818f8c94",
-      "delivery": "/models/cat-kunoichi/model-run-r05.glb",
+      "sha256": "c81c37512be0502decf46495868a0c8521470098117b422b167ffce8da59cd9b",
+      "delivery": "/models/cat-kunoichi/model-human-r10.glb",
       "subject": "Adult female cat-eared kunoichi in a covered primitive dark outfit.",
-      "gameQA": "assets/player-gaits/RUN_REPAIR.md"
+      "gameQA": "assets/human-locomotion/README.md"
     },
     {
       "key": "desert-fennec-mage",
@@ -489,16 +490,16 @@
     },
     {
       "key": "valley-castle",
-      "name": "白羽の城跡",
+      "name": "白羽教団の大聖城",
       "kind": "static",
-      "width": 80,
-      "height": 13.162530217614352,
+      "width": 110,
+      "height": 52.89262724603607,
       "geometryResolution": 1024,
-      "referenceVersion": 3,
+      "referenceVersion": 4,
       "status": "adopted-awaiting-game-QA",
-      "sha256": "8200dcd3b23b6f616f0bf73950b76e2fdc428bcb67455eaf2dc3018b9f4342f4",
-      "delivery": "/models/valley-castle/model-r10.glb",
-      "subject": "Rebuilt 2026-09-12 as a ruin: a broad open forecourt behind a collapsed gate, three very wide gentle stairs (left, centre, right) and one enormous roofless great hall on top where the sorcerer is fought. Full mesh shared; the coarse LODs are not adopted."
+      "sha256": "2a271bbc12e1b331da6468d5f84f1db173beeb284fdebfdde7c56b613e48dc90",
+      "delivery": "/models/valley-castle/model-r13.glb",
+      "subject": "Rebuilt 2026-09-13 as a stepped temple-fortress: a walled forecourt behind a collapsed arch gate, three progressively smaller roofless terraces and a summit altar with a ruined throne, joined by grand central stairs and side stairs; the crow cult is fought one level at a time with the pontiff on the summit. Full mesh shared; the coarse LODs are not adopted."
     }
   ],
   "reuse": {

@@ -1,48 +1,48 @@
 {
   "modelKey": "valley-castle",
-  "name": "白羽の城跡",
+  "name": "白羽教団の大聖城",
   "kind": "static",
   "candidate": 1,
-  "revision": "10",
+  "revision": "13",
   "status": "reviewed-prototype",
   "environment": true,
   "onDemand": true,
-  "url": "/models/valley-castle/model-r10.glb",
-  "sha256": "8200dcd3b23b6f616f0bf73950b76e2fdc428bcb67455eaf2dc3018b9f4342f4",
-  "bytes": 5852368,
-  "triangles": 79594,
+  "url": "/models/valley-castle/model-r13.glb",
+  "sha256": "2a271bbc12e1b331da6468d5f84f1db173beeb284fdebfdde7c56b613e48dc90",
+  "bytes": 8889164,
+  "triangles": 127254,
   "upAxis": "Y",
   "forwardAxis": "+Z",
-  "heightMetres": 13.162530217614352,
-  "widthMetres": 80,
+  "heightMetres": 52.89262724603607,
+  "widthMetres": 110,
   "placement": {
     "pivot": "ground-centred",
     "min": [
-      -40,
+      -55,
       0,
-      -39.86972487638181
+      -63.98344164509722
     ],
     "max": [
-      40,
-      13.162530217614352,
-      39.86972487638181
+      55,
+      52.89262724603607,
+      63.98344164509722
     ],
-    "groundOffset": -1.28,
-    "note": "Stands on a 1.28 m plinth; placed 1.28 m below the terrain so the forecourt meets the valley floor."
+    "groundOffset": -13.4,
+    "note": "The forecourt floor is 13.4 m above the model base (the outer walls continue down to an apron); placed 13.4 m below the terrain so the forecourt meets the valley floor."
   },
   "clips": [],
   "lods": [],
-  "notes": "Rebuilt 2026-09-12 as a ruin: a broad open forecourt behind a collapsed gate, three very wide gentle stairs (left, centre, right) and one enormous roofless great hall on top where the sorcerer is fought. Full mesh shared; the coarse LODs are not adopted.",
+  "notes": "Rebuilt 2026-09-13 as a stepped temple-fortress: a walled forecourt behind a collapsed arch gate, three progressively smaller roofless terraces and a summit altar with a ruined throne, joined by grand central stairs and side stairs; the crow cult is fought one level at a time with the pontiff on the summit. Full mesh shared; the coarse LODs are not adopted.",
   "provenance": {
     "provider": "Codex CLI image_gen reference (gpt-5.6-sol, medium) and local TRELLIS-2; reduction, walk atlas and integration by Claude Code",
     "claudeUsed": true,
     "referenceGenerator": "Codex built-in image_gen",
-    "referenceImage": "output/model-generation/models/valley-castle/source/original/reference-v3.png",
-    "referenceSha256": "1f21a183da803192601a238d78b4e5723e3b3e57b379c82d1270cbe77c8104c1",
-    "referencePrompt": "Broad two-storey ruined limestone castle: open forecourt behind a collapsed arch gate, three very wide gentle stairs (left, centre, right) rising to one enormous roofless great hall with broken half-height walls and column stumps. User request 2026-09-12: rebuild the sorcerer's castle as a wide, easily climbed ruin whose top is a huge open-air hall where the sorcerer is fought. Candidate 01 of two Codex image_gen references selected by Claude Code (user not available); candidate 02 retained as history.",
-    "reconstruction": "Local TRELLIS-2 1024 seed 42 (reference v3); shape-preserving quadric reduction at p95 0.03 m to 79594 triangles with the source UV and albedo.",
-    "candidateFile": "output/model-generation/models/valley-castle/work/low-poly/candidate-10/candidate.glb",
-    "visualReview": "output/model-generation/models/valley-castle/qa/adoption-review-ruin.json",
-    "walkAtlas": "output/model-generation/models/valley-castle/qa/walk-rev10.json"
+    "referenceImage": "output/model-generation/models/valley-castle/source/original/reference-v4.png",
+    "referenceSha256": "6ab1f45748219bf78385f4018e0ce51d9e2d318062f737ea60ab7a4ed7bf09b2",
+    "referencePrompt": "Ruined stepped temple-fortress of five ascending open terraces: a broad walled forecourt behind a collapsed arch gate, three progressively smaller roofless terraces stacked like a ziggurat, and a small summit altar platform with a ruined throne dais and four broken pillars; every level joined by one grand central stair and two flanking side stairs. User request 2026-09-13: rebuild the crow cult's castle so it is wider, climbed by many stairs in stages, with the pontiff at the very top. Candidate 01 of two Codex image_gen references selected by Claude Code (user not available); candidate 02 retained as history.",
+    "reconstruction": "Local TRELLIS-2 1024 seed 42 (reference v4); shape-preserving quadric reduction at p95 0.065 m to 127254 triangles with the source UV and albedo.",
+    "candidateFile": "output/model-generation/models/valley-castle/work/low-poly/candidate-13/candidate.glb",
+    "visualReview": "output/model-generation/models/valley-castle/qa/adoption-review-tiers.json",
+    "walkAtlas": "output/model-generation/models/valley-castle/qa/walk-rev13.json"
   }
 }

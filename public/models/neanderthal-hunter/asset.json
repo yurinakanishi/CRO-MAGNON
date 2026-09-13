@@ -4,9 +4,9 @@
   "kind": "humanoid",
   "candidate": 1,
   "status": "reviewed-prototype",
-  "url": "/models/neanderthal-hunter/model-run-r05.glb",
-  "sha256": "3a7c008bfd8bd7bbf2f2010387373215aee67cf93c5387ccd6561d03c935ac2a",
-  "bytes": 11046344,
+  "url": "/models/neanderthal-hunter/model-human-r10.glb",
+  "sha256": "93047f04342a5880dc4574956846f130b3d97c5041408c07f790d2ae09f55000",
+  "bytes": 11260680,
   "triangles": 54422,
   "upAxis": "Y",
   "forwardAxis": "+Z",
@@ -43,13 +43,19 @@
     },
     {
       "name": "Run_Loop",
-      "seconds": 0.84,
-      "loop": true
+      "seconds": 0.7333333333333333,
+      "loop": true,
+      "fps": 120,
+      "frames": 89,
+      "description": "CMU 09_01 human running retargeted to the existing skeleton with stable anatomical joint planes and sole contact."
     },
     {
       "name": "Walk_Loop",
-      "seconds": 1.1,
-      "loop": true
+      "seconds": 1.1166666666666667,
+      "loop": true,
+      "fps": 120,
+      "frames": 135,
+      "description": "CMU 35_01 human walking retargeted to the existing skeleton with stable anatomical joint planes and sole contact."
     },
     {
       "name": "Wave",
@@ -79,28 +85,28 @@
     "referenceSha256": "a25cfee8c4ce4559950f218663017d83b18658ce2226ec0bec3df685af4ba973",
     "reconstruction": "Local TRELLIS-2; settings and dense SHA in model workspace",
     "candidateFile": "output/creature-motion/revision-04/neanderthal-hunter/model.glb",
-    "visualReview": "assets/creature-motion/models/neanderthal-hunter-review.json",
+    "visualReview": "assets/human-locomotion/reviews/neanderthal-hunter-r10.json",
     "previousDeliverySha256": "55232891640fed7e15bb75f3ad985ae53b5a8b19b31013e85d8c5d5f70619c65",
     "huntingAnimationAuthor": "Codex; appended keyframes, previous surface/rig/materials/animation bytes preserved",
-    "previousMotionVisualReview": "output/model-generation/models/neanderthal-hunter/qa/adoption-review.json"
+    "previousMotionVisualReview": "output/model-generation/models/neanderthal-hunter/qa/adoption-review.json",
+    "previousVisualReview": "assets/creature-motion/models/neanderthal-hunter-review.json"
   },
   "lods": [],
   "bones": 22,
   "locomotion": {
     "Walk_Loop": {
-      "metresPerSecond": 0.933147736562522,
-      "strideMetres": 1.0264625102187743,
-      "dutyFactor": 0.6,
-      "method": "Distinct upright low-step walk and bent-elbow high-recovery run; limb-length IK refined against skinned soles",
-      "swingLiftMetres": 0.04927020049050117,
-      "cycleSeconds": 1.1
+      "metresPerSecond": 1.2144910764127108,
+      "strideMetres": 1.3561817019941937,
+      "cycleSeconds": 1.1166666666666667,
+      "dutyFactor": 0.61,
+      "method": "CMU measured human locomotion, anatomical retarget and sole contact"
     },
     "Run_Loop": {
-      "metresPerSecond": 1.906287518977724,
-      "strideMetres": 1.601281515941288,
+      "metresPerSecond": 3.4765966597007814,
+      "strideMetres": 2.549504217113906,
+      "cycleSeconds": 0.7333333333333333,
       "dutyFactor": 0.36,
-      "method": "Bounded sagittal joint recovery, grounded flexion/extension stance, independent flight pelvis, stable bone twist",
-      "cycleSeconds": 0.84
+      "method": "CMU measured human locomotion, anatomical retarget and sole contact"
     }
   },
   "hunting": {
@@ -185,7 +191,8 @@
     "status": "adopted",
     "review": "assets/player-gaits/README.md",
     "sourceDelivery": "/models/neanderthal-hunter/model-downed-r01.glb",
-    "author": "Codex"
+    "author": "Codex",
+    "supersededBy": "humanLocomotion"
   },
   "spearThrust": {
     "revision": "revision-02",
@@ -211,6 +218,41 @@
     "method": "Bounded sagittal joint recovery, grounded flexion/extension stance, independent flight pelvis, stable bone twist",
     "stanceFraction": 0.36,
     "peakAuthoredSwingKneeDegrees": 104,
-    "review": "assets/player-gaits/RUN_REPAIR.md"
+    "review": "assets/player-gaits/RUN_REPAIR.md",
+    "supersededBy": "humanLocomotion"
+  },
+  "humanLocomotion": {
+    "revision": "revision-10",
+    "sourceDelivery": "/models/neanderthal-hunter/model-run-r05.glb",
+    "sourceSha256": "3a7c008bfd8bd7bbf2f2010387373215aee67cf93c5387ccd6561d03c935ac2a",
+    "status": "adopted",
+    "changes": [
+      {
+        "clip": "Walk_Loop",
+        "trial": "35_01",
+        "startFrame": 140,
+        "endFrame": 274,
+        "phaseOffsetFrames": 0,
+        "sampleRate": 120,
+        "frames": 135,
+        "seconds": 1.1166666666666667,
+        "legScale": 0.9408955983634594,
+        "strideMetres": 1.3561817019941937
+      },
+      {
+        "clip": "Run_Loop",
+        "trial": "09_01",
+        "startFrame": 1,
+        "endFrame": 89,
+        "phaseOffsetFrames": 80,
+        "sampleRate": 120,
+        "frames": 89,
+        "seconds": 0.7333333333333333,
+        "legScale": 0.9555397268076466,
+        "strideMetres": 2.549504217113906
+      }
+    ],
+    "reference": "assets/human-locomotion/README.md",
+    "previousVisualReview": "assets/player-gaits/reviews/neanderthal-hunter-run-r05.json"
   }
 }

@@ -1,0 +1,34 @@
+{
+  "decision": "adopt",
+  "at": "2026-09-12T13:33:30.761Z",
+  "key": "cro-magnon-woman",
+  "revision": "run-revision-05",
+  "sha256": "17754555b2ea158aec8531ea7ca214b485924a1ff51adc186f0fe7073733c2f0",
+  "sourceSha256": "078eb40117062f087ece99966616dcba952f71b66b8c376587ad1b5d6bc8263e",
+  "source": "/models/cro-magnon-woman/model-thrust-r02.glb",
+  "sourceKind": "Delivered spear-thrust revision 02 GLB (itself built on the creature-motion revision 04 delivery); Run_Loop re-authored, everything else retained.",
+  "modifiedClips": [
+    "Run_Loop"
+  ],
+  "preserved": "Original binary prefix, meshes, skins, bones, UVs, materials, textures, Walk_Loop (gaits revision 02), Attack (thrust revision 02) and all other clips.",
+  "measurement": "assets/player-gaits/run-validation.json",
+  "metrics": {
+    "maximumKneeDegrees": 103.93668139140041,
+    "pelvisExcursionMetres": 0.0867401886514867,
+    "flightFraction": 0.21674876847290642,
+    "minimumSoleY": 0.002685832139475068,
+    "loopSurfaceError": 5.953140644179246e-08
+  },
+  "evidence": "assets/player-gaits/run-game-qa.json",
+  "gameQA": {
+    "phases": [
+      "walk",
+      "run",
+      "walk-again"
+    ],
+    "connections": 5,
+    "reloaded": true,
+    "errors": 0
+  },
+  "notes": "Review record written 2026-09-13 for the run-gait adoption of 2026-09-12 (assets/player-gaits/RUN_REPAIR.md); the adoption itself, its 240 Hz GLB read-back and the five-connection real-Chrome QA were done then. Foot slip at high speed remains, as documented."
+}

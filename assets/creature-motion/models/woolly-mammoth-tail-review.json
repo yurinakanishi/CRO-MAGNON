@@ -1,0 +1,17 @@
+{
+  "decision": "adopt",
+  "at": "2026-09-13T11:00:34.101Z",
+  "key": "woolly-mammoth",
+  "revision": "revision-05",
+  "sha256": "f52b082cd0b1742aacf362c1ef35d89ca1160c34ff17be9a3e79236cc83077c6",
+  "sourceSha256": "f54643731a621d903728ea29bf0b713cd930536122c9aeb70f60a4d05c9a28f7",
+  "sourceKind": "Delivered motion revision 04 GLB; the side fur strands collapsed onto the rump vertices they hang from.",
+  "modifiedAccessors": [
+    "POSITION",
+    "NORMAL"
+  ],
+  "preserved": "Original binary prefix, indices, UVs, skin weights, bones, materials, textures and all five clips.",
+  "evidence": "output/blender/mammoth-tail-r05/",
+  "reviewedBy": "Claude (headless Blender renders of rest pose and Walk_Loop, then the real game page)",
+  "scope": "Single central tail from the rear, side and three-quarter views at 8-9 m; hind legs, rump and tail motion in Walk_Loop, Run_Loop and Death unchanged. The hollow between the fur masses at the tail base, previously hidden behind the strands, is original TRELLIS geometry and still reads as dark facets at close range."
+}

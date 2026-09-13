@@ -1,0 +1,33 @@
+{
+  "at": "2026-09-13T12:27:33.538Z",
+  "fullSuite": {
+    "tests": 583,
+    "passed": 582,
+    "failed": 1,
+    "failure": "local-save.test.mjs title leave: Persistence condition timed out"
+  },
+  "rerun": {
+    "files": [
+      "tests/local-save.test.mjs",
+      "tests/locomotion-grounding.test.mjs"
+    ],
+    "tests": 14,
+    "passed": 14,
+    "failed": 0
+  },
+  "targetSuite": {
+    "tests": 19,
+    "passed": 19
+  },
+  "typecheck": "passed (including strict)",
+  "syntax": {
+    "status": "passed",
+    "files": 308
+  },
+  "architecture": "passed",
+  "assets": {
+    "status": "passed",
+    "models": 42
+  },
+  "logs": "output/player-gaits/revision-10/"
+}

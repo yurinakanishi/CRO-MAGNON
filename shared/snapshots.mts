@@ -96,6 +96,9 @@ export interface EnemySnapshot extends Point {
   hitSequence: number;
   hitAt: number;
   crowRole?: string;
+  // Rank 1..5 of the castle cult and whether it is praying behind the seal.
+  crowTier?: number;
+  sealed?: boolean;
   airborneHeight?: number;
   // Floor height under the body (castle-relative), for effects drawn at the actor.
   elevation?: number;

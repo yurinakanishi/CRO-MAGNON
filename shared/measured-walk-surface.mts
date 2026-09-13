@@ -63,7 +63,7 @@ export function measuredWalkSurface(data, placement) {
   function deviation(x, z, radius = 0) {
     const centre = height(x, z);
     if (centre === null) return null;
-    const ring = Math.min(radius, RING_CAP * scale);
+    const ring = Math.min(radius, RING_CAP);
     let worst = 0;
     for (let i = 0; i < 8; i++) {
       const angle = (i * Math.PI) / 4,
@@ -73,7 +73,9 @@ export function measuredWalkSurface(data, placement) {
     }
     return worst;
   }
-  const ringLimit = (radius) => Math.max(0.7 * scale, radius * 1.5);
+  // 2026-09-13: the limits were tuned on the 1.2x ruin (0.84 m ring, 0.9 m
+  // step); they are body limits, not model limits, so they no longer scale.
+  const ringLimit = (radius) => Math.max(0.84, radius * 1.5);
   function free(x, z, radius = 0) {
     const worst = deviation(x, z, radius);
     return worst !== null && worst <= ringLimit(radius);
@@ -95,7 +97,7 @@ export function measuredWalkSurface(data, placement) {
     if (ah === undefined && bh === undefined) return true;
     // A tall step (the top riser of the side stairs reads as 0.7 m where the
     // smoothing stops at a wall) is climbable; a 0.9 m ledge is not, even at a run.
-    return Math.abs((ah ?? 0) - (bh ?? 0)) <= 0.75 * scale + Math.hypot(a.x - b.x, a.z - b.z) * 0.6;
+    return Math.abs((ah ?? 0) - (bh ?? 0)) <= 0.9 + Math.hypot(a.x - b.x, a.z - b.z) * 0.6;
   }
   return { local, world, cell, height, free, deviation, allows, transition, data, placement };
 }

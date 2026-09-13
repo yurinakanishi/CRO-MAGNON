@@ -10,6 +10,7 @@ import {
 } from '../dist/shared/difficulty.mjs';
 import { CollisionWorld } from '../dist/shared/collision.mjs';
 import { createEnemies, updateEnemies } from '../dist/shared/enemies.mjs';
+import { CROW_ROLE_RULES } from '../dist/shared/crow-faction.mjs';
 import { BEHEMOTH } from '../dist/shared/behemoth-rules.mjs';
 import { SABERTOOTH } from '../dist/shared/sabertooth-rules.mjs';
 
@@ -136,9 +137,10 @@ test('enemy hits apply the target player difficulty without changing another pla
     updateEnemies(room, 0, 2000);
     return player.energy;
   };
-  assert.equal(hit('easy'), 89);
-  assert.equal(hit('normal'), 85);
-  assert.equal(hit('hard'), 79);
+  const staff = CROW_ROLE_RULES.shaman.attackDamage;
+  assert.equal(hit('easy'), 100 - Math.max(1, Math.round(staff * 0.7)));
+  assert.equal(hit('normal'), 100 - staff);
+  assert.equal(hit('hard'), 100 - Math.max(1, Math.round(staff * 1.4)));
 });
 
 test('crow, behemoth and sabertooth combat movement follows the targeted player difficulty', () => {

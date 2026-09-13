@@ -23,11 +23,14 @@
     "provider": "Codex",
     "claudeUsed": false,
     "referenceGenerator": "Existing imagegen → TRELLIS flint-spear lineage",
-    "referenceImage": "Retained public/models/flint-spear/model.glb (historical reference recorded in its asset.json)",
+    "referenceImage": "public/models/flint-spear/model.glb",
     "reconstruction": "Source-derived variant of the retained flint-spear GLB",
     "candidateFile": "assets/coastal-craft/models/obsidian-blade/work/revision-01/candidate.glb",
-    "visualReview": "assets/coastal-craft/weapon-qa/adoption-review.json",
+    "visualReview": "assets/coastal-craft/models/obsidian-blade/qa/adoption-review.json",
     "sourceAsset": "assets/coastal-craft/models/obsidian-blade/source/flint-spear.glb",
-    "sourceAssetSha256": "1a10db6d1b44da1e982f88e5ae9ef6be8fb74f5900ebd9258380ad200e53ed3d"
+    "sourceAssetSha256": "1a10db6d1b44da1e982f88e5ae9ef6be8fb74f5900ebd9258380ad200e53ed3d",
+    "weaponQA": "assets/coastal-craft/weapon-qa/adoption-review.json",
+    "referenceSha256": "1a10db6d1b44da1e982f88e5ae9ef6be8fb74f5900ebd9258380ad200e53ed3d",
+    "referenceNote": "No image reference: the retained flint-spear GLB was the source model (historical reference recorded in its asset.json)."
   }
 }

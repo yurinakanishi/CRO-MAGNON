@@ -1,0 +1,21 @@
+{
+  "decision": "adopt",
+  "at": "2026-09-13T12:14:28.606Z",
+  "key": "cro-magnon-woman",
+  "revision": "revision-10",
+  "sha256": "bac0bdd9d2961654501b5cc39ce94514b6262c7750ff10299948db4c377e711a",
+  "source": "/models/cro-magnon-woman/model-run-r05.glb",
+  "sourceSha256": "17754555b2ea158aec8531ea7ca214b485924a1ff51adc186f0fe7073733c2f0",
+  "modifiedClips": [
+    "Walk_Loop",
+    "Run_Loop"
+  ],
+  "motionSources": [
+    "https://mocap.cs.cmu.edu/subjects/35/35_01.amc",
+    "https://mocap.cs.cmu.edu/subjects/09/09_01.amc"
+  ],
+  "preserved": "Original binary prefix, nodes, mesh, skin weights, bind transforms, UV, materials, images, all other animation clips and the two-handed spear attack.",
+  "measurement": "assets/human-locomotion/validation.json",
+  "evidence": "output/playwright/human-joints/revision-10/",
+  "review": "assets/human-locomotion/README.md"
+}

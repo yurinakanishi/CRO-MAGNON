@@ -4,10 +4,10 @@
   "kind": "quadruped",
   "candidate": 1,
   "status": "reviewed-prototype",
-  "url": "/models/woolly-mammoth/model-motion-r04.glb",
-  "sha256": "f54643731a621d903728ea29bf0b713cd930536122c9aeb70f60a4d05c9a28f7",
-  "bytes": 4513636,
-  "triangles": 24173,
+  "url": "/models/woolly-mammoth/model-tail-r11.glb",
+  "sha256": "f6fad8db82228cfb110cb1b513e0a09cfd54b6325de4dcfcf9f4a95525d66712",
+  "bytes": 7319308,
+  "triangles": 26067,
   "upAxis": "Y",
   "forwardAxis": "+Z",
   "heightMetres": 3.6,
@@ -44,7 +44,8 @@
   ],
   "notes": [
     "Exact GLB four-loop pose sheets and 30 fps MP4 metadata reviewed. Mammoth-specific 24-bone rig, four-beat walk and trunk/tail motion. Repaired belly weighting and reachable leg IK retain 24173 source-derived triangles. Walk foot-surface p02 stance range -1.04 to +1.88 cm; run -3.03 to +2.06 cm. Two borderline local stretch edges in Run remain a prototype limitation, without visible gross tearing in reviewed views.",
-    "Hunting revision 03 adds Death; original mesh, rig, textures and earlier clips retained byte-for-byte. Previous delivery archived."
+    "Hunting revision 03 adds Death; original mesh, rig, textures and earlier clips retained byte-for-byte. Previous delivery archived.",
+    "Tail structural revision 11 (2026-09-13): Blender 5.2 cuts the forked posterior surface, closes and relaxes the rump, and extrudes one rounded, tapered tail with a terminal fur tuft from the existing central attachment loop. Continuous flank fur is baked from the original TRELLIS texture. Tail/rump skin weights are repaired. Original 24 bones and all five clips remain byte-identical; r04 and rejected r05 remain archived."
   ],
   "provenance": {
     "provider": "Codex",
@@ -54,10 +55,31 @@
     "referenceSha256": "306a8308bf2de33664feee4ab1e697729e195881857b47b85526ea0e41169f87",
     "reconstruction": "Local TRELLIS-2; settings and dense SHA in model workspace",
     "candidateFile": "output/creature-motion/revision-04/woolly-mammoth/model.glb",
-    "visualReview": "assets/creature-motion/models/woolly-mammoth-review.json",
+    "visualReview": "assets/mammoth-tail/review-r11.json",
     "previousDeliverySha256": "6d675f895bb26cad7f62b5a7161b442e04a07f1582562498d6033a85cf977abf",
     "huntingAnimationAuthor": "Codex; appended keyframes, previous surface/rig/materials/animation bytes preserved",
-    "previousMotionVisualReview": "output/model-generation/models/woolly-mammoth/qa/adoption-review.json"
+    "previousMotionVisualReview": "output/model-generation/models/woolly-mammoth/qa/adoption-review.json",
+    "previousMotionDeliverySha256": "f54643731a621d903728ea29bf0b713cd930536122c9aeb70f60a4d05c9a28f7",
+    "previousVisualReview": "assets/creature-motion/models/woolly-mammoth-tail-review.json",
+    "previousTailRepair": {
+      "revision": "revision-05",
+      "builder": "scripts/fix-mammoth-tail.mjs",
+      "claudeUsed": true,
+      "foldedVertices": 477,
+      "sourceSha256": "f54643731a621d903728ea29bf0b713cd930536122c9aeb70f60a4d05c9a28f7"
+    },
+    "structuralRepair": {
+      "revision": "revision-11",
+      "provider": "Codex",
+      "claudeUsed": false,
+      "tripoUsed": false,
+      "source": "public/models/woolly-mammoth/model-motion-r04.glb",
+      "sourceSha256": "f54643731a621d903728ea29bf0b713cd930536122c9aeb70f60a4d05c9a28f7",
+      "builder": "scripts/blender-mammoth-tail.py",
+      "packager": "scripts/build-mammoth-tail-glb.mjs",
+      "blenderVersion": "5.2.0",
+      "blend": "output/mammoth-tail/revision-11/mammoth-tail.blend"
+    }
   },
   "lods": [],
   "bones": 24,
@@ -154,6 +176,7 @@
     ],
     "status": "adopted",
     "sourceDelivery": "output/creature-motion/baseline/woolly-mammoth/model.glb",
-    "review": "assets/creature-motion/models/woolly-mammoth-review.json"
+    "review": "assets/creature-motion/models/woolly-mammoth-review.json",
+    "delivery": "model-tail-r11.glb"
   }
 }

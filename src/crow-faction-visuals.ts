@@ -215,6 +215,92 @@ function soldierParts() {
   return [spear, shield];
 }
 
+// The prayer seal: a translucent red veil that encloses the whole praying
+// crow like a capsule. A fresnel rim keeps the silhouette readable while the
+// centre stays faint enough to see the body inside; a soft ring marks the floor.
+const sealVertex = `
+  varying vec3 vNormalW;
+  varying vec3 vViewW;
+  void main() {
+    vec4 world = modelMatrix * vec4(position, 1.0);
+    vNormalW = normalize(mat3(modelMatrix) * normal);
+    vViewW = cameraPosition - world.xyz;
+    gl_Position = projectionMatrix * viewMatrix * world;
+  }`;
+const sealFragment = `
+  uniform float uOpacity;
+  uniform float uTime;
+  varying vec3 vNormalW;
+  varying vec3 vViewW;
+  void main() {
+    float facing = abs(dot(normalize(vNormalW), normalize(vViewW)));
+    float rim = pow(1.0 - facing, 2.4);
+    float bands = 0.5 + 0.5 * sin(vNormalW.y * 9.0 - uTime * 1.6);
+    vec3 colour = mix(vec3(0.95, 0.22, 0.16), vec3(1.0, 0.55, 0.35), rim);
+    float alpha = uOpacity * (0.16 + 0.84 * rim) * (0.85 + 0.15 * bands);
+    gl_FragColor = vec4(colour, alpha);
+  }`;
+const sealCapsule = new THREE.CapsuleGeometry(0.5, 1, 6, 24);
+const sealRingGeometry = new THREE.RingGeometry(0.78, 1, 48);
+const sealRingMaterial = new THREE.MeshBasicMaterial({
+  color: 0xff3b2f,
+  transparent: true,
+  opacity: 0.35,
+  side: THREE.DoubleSide,
+  depthWrite: false,
+});
+export function createPrayerSeal(radius = 0.5, height = 2) {
+  const seal = new THREE.Group();
+  seal.name = 'CrowPrayerSeal';
+  const veil = new THREE.Mesh(
+    sealCapsule,
+    new THREE.ShaderMaterial({
+      vertexShader: sealVertex,
+      fragmentShader: sealFragment,
+      uniforms: { uOpacity: { value: 0.5 }, uTime: { value: 0 } },
+      transparent: true,
+      depthWrite: false,
+      side: THREE.DoubleSide,
+    }),
+  );
+  veil.name = 'CrowPrayerVeil';
+  veil.renderOrder = 3;
+  const ring = new THREE.Mesh(sealRingGeometry, sealRingMaterial.clone());
+  ring.name = 'CrowPrayerSealRing';
+  ring.rotation.x = -Math.PI / 2;
+  ring.position.y = 0.05;
+  ring.renderOrder = 2;
+  seal.add(veil, ring);
+  seal.userData.veil = veil;
+  seal.userData.ring = ring;
+  resizePrayerSeal(seal, radius, height);
+  seal.visible = false;
+  return seal;
+}
+export function resizePrayerSeal(seal: THREE.Group, radius: number, height: number) {
+  const veil = seal.userData.veil as THREE.Mesh,
+    ring = seal.userData.ring as THREE.Mesh;
+  // The capsule geometry is 2 units tall for its 0.5 radius: stretch the
+  // cylinder part so the veil covers the body from the floor to above the head.
+  const capsuleHeight = Math.max(height, radius * 2.2);
+  veil.scale.set(radius / 0.5, capsuleHeight / 2, radius / 0.5);
+  veil.position.y = capsuleHeight / 2;
+  ring.scale.setScalar(radius * 1.15);
+}
+export function pulsePrayerSeal(seal: THREE.Group, seconds: number) {
+  const veil = seal.userData.veil as THREE.Mesh,
+    material = veil.material as THREE.ShaderMaterial;
+  material.uniforms.uOpacity.value = 0.42 + 0.14 * (0.5 + 0.5 * Math.sin(seconds * 2.2));
+  material.uniforms.uTime.value = seconds;
+  const ring = seal.userData.ring as THREE.Mesh;
+  (ring.material as THREE.MeshBasicMaterial).opacity =
+    0.25 + 0.15 * (0.5 + 0.5 * Math.sin(seconds * 2.2));
+}
+export function disposePrayerSeal(seal: THREE.Group) {
+  ((seal.userData.veil as THREE.Mesh).material as THREE.Material).dispose();
+  ((seal.userData.ring as THREE.Mesh).material as THREE.Material).dispose();
+}
+
 export function decorateCrowFaction(root: THREE.Object3D, crowRole = 'shaman') {
   const parts =
     crowRole === 'pontiff'

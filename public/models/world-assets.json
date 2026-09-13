@@ -8,10 +8,10 @@
       "kind": "quadruped",
       "candidate": 1,
       "status": "reviewed-prototype",
-      "url": "/models/woolly-mammoth/model-motion-r04.glb",
-      "sha256": "f54643731a621d903728ea29bf0b713cd930536122c9aeb70f60a4d05c9a28f7",
-      "bytes": 4513636,
-      "triangles": 24173,
+      "url": "/models/woolly-mammoth/model-tail-r11.glb",
+      "sha256": "f6fad8db82228cfb110cb1b513e0a09cfd54b6325de4dcfcf9f4a95525d66712",
+      "bytes": 7319308,
+      "triangles": 26067,
       "upAxis": "Y",
       "forwardAxis": "+Z",
       "heightMetres": 3.6,
@@ -48,7 +48,8 @@
       ],
       "notes": [
         "Exact GLB four-loop pose sheets and 30 fps MP4 metadata reviewed. Mammoth-specific 24-bone rig, four-beat walk and trunk/tail motion. Repaired belly weighting and reachable leg IK retain 24173 source-derived triangles. Walk foot-surface p02 stance range -1.04 to +1.88 cm; run -3.03 to +2.06 cm. Two borderline local stretch edges in Run remain a prototype limitation, without visible gross tearing in reviewed views.",
-        "Hunting revision 03 adds Death; original mesh, rig, textures and earlier clips retained byte-for-byte. Previous delivery archived."
+        "Hunting revision 03 adds Death; original mesh, rig, textures and earlier clips retained byte-for-byte. Previous delivery archived.",
+        "Tail structural revision 11 (2026-09-13): Blender 5.2 cuts the forked posterior surface, closes and relaxes the rump, and extrudes one rounded, tapered tail with a terminal fur tuft from the existing central attachment loop. Continuous flank fur is baked from the original TRELLIS texture. Tail/rump skin weights are repaired. Original 24 bones and all five clips remain byte-identical; r04 and rejected r05 remain archived."
       ],
       "provenance": {
         "provider": "Codex",
@@ -58,10 +59,31 @@
         "referenceSha256": "306a8308bf2de33664feee4ab1e697729e195881857b47b85526ea0e41169f87",
         "reconstruction": "Local TRELLIS-2; settings and dense SHA in model workspace",
         "candidateFile": "output/creature-motion/revision-04/woolly-mammoth/model.glb",
-        "visualReview": "assets/creature-motion/models/woolly-mammoth-review.json",
+        "visualReview": "assets/mammoth-tail/review-r11.json",
         "previousDeliverySha256": "6d675f895bb26cad7f62b5a7161b442e04a07f1582562498d6033a85cf977abf",
         "huntingAnimationAuthor": "Codex; appended keyframes, previous surface/rig/materials/animation bytes preserved",
-        "previousMotionVisualReview": "output/model-generation/models/woolly-mammoth/qa/adoption-review.json"
+        "previousMotionVisualReview": "output/model-generation/models/woolly-mammoth/qa/adoption-review.json",
+        "previousMotionDeliverySha256": "f54643731a621d903728ea29bf0b713cd930536122c9aeb70f60a4d05c9a28f7",
+        "previousVisualReview": "assets/creature-motion/models/woolly-mammoth-tail-review.json",
+        "previousTailRepair": {
+          "revision": "revision-05",
+          "builder": "scripts/fix-mammoth-tail.mjs",
+          "claudeUsed": true,
+          "foldedVertices": 477,
+          "sourceSha256": "f54643731a621d903728ea29bf0b713cd930536122c9aeb70f60a4d05c9a28f7"
+        },
+        "structuralRepair": {
+          "revision": "revision-11",
+          "provider": "Codex",
+          "claudeUsed": false,
+          "tripoUsed": false,
+          "source": "public/models/woolly-mammoth/model-motion-r04.glb",
+          "sourceSha256": "f54643731a621d903728ea29bf0b713cd930536122c9aeb70f60a4d05c9a28f7",
+          "builder": "scripts/blender-mammoth-tail.py",
+          "packager": "scripts/build-mammoth-tail-glb.mjs",
+          "blenderVersion": "5.2.0",
+          "blend": "output/mammoth-tail/revision-11/mammoth-tail.blend"
+        }
       },
       "lods": [],
       "bones": 24,
@@ -158,7 +180,8 @@
         ],
         "status": "adopted",
         "sourceDelivery": "output/creature-motion/baseline/woolly-mammoth/model.glb",
-        "review": "assets/creature-motion/models/woolly-mammoth-review.json"
+        "review": "assets/creature-motion/models/woolly-mammoth-review.json",
+        "delivery": "model-tail-r11.glb"
       }
     },
     {
@@ -22549,7 +22572,10 @@
       "placement": {
         "pivot": "grip",
         "gripNode": "Grip.R",
-        "shaftAxis": "+Y"
+        "shaftAxis": "+Y",
+        "gripToButtMetres": 0.7136262059211731,
+        "gripToTipMetres": 0.8999999761581421,
+        "gripMeasurement": "The GLB origin is the grip (no Grip.R node inside the file; Grip.R is the hand bone it attaches to). Distances are the mesh extent below and above the origin along the shaft axis, measured 2026-09-13 from the served GLB."
       },
       "clips": [],
       "lods": [],
@@ -22557,12 +22583,15 @@
         "provider": "Codex",
         "claudeUsed": false,
         "referenceGenerator": "Existing imagegen → TRELLIS flint-spear lineage",
-        "referenceImage": "Retained public/models/flint-spear/model.glb (historical reference recorded in its asset.json)",
+        "referenceImage": "public/models/flint-spear/model.glb",
         "reconstruction": "Source-derived variant of the retained flint-spear GLB",
         "candidateFile": "assets/coastal-craft/models/wooden-spear/work/revision-02/candidate.glb",
-        "visualReview": "assets/coastal-craft/weapon-qa/adoption-review.json",
+        "visualReview": "assets/coastal-craft/models/wooden-spear/qa/adoption-review.json",
         "sourceAsset": "assets/coastal-craft/models/wooden-spear/source/flint-spear.glb",
-        "sourceAssetSha256": "1a10db6d1b44da1e982f88e5ae9ef6be8fb74f5900ebd9258380ad200e53ed3d"
+        "sourceAssetSha256": "1a10db6d1b44da1e982f88e5ae9ef6be8fb74f5900ebd9258380ad200e53ed3d",
+        "weaponQA": "assets/coastal-craft/weapon-qa/adoption-review.json",
+        "referenceSha256": "1a10db6d1b44da1e982f88e5ae9ef6be8fb74f5900ebd9258380ad200e53ed3d",
+        "referenceNote": "No image reference: the retained flint-spear GLB was the source model (historical reference recorded in its asset.json)."
       }
     },
     {
@@ -22583,7 +22612,10 @@
       "placement": {
         "pivot": "grip",
         "gripNode": "Grip.R",
-        "shaftAxis": "+Y"
+        "shaftAxis": "+Y",
+        "gripToButtMetres": 0.7136262059211731,
+        "gripToTipMetres": 1.3853787183761597,
+        "gripMeasurement": "The GLB origin is the grip (no Grip.R node inside the file; Grip.R is the hand bone it attaches to). Distances are the mesh extent below and above the origin along the shaft axis, measured 2026-09-13 from the served GLB."
       },
       "clips": [],
       "lods": [],
@@ -22591,12 +22623,15 @@
         "provider": "Codex",
         "claudeUsed": false,
         "referenceGenerator": "Existing imagegen → TRELLIS flint-spear lineage",
-        "referenceImage": "Retained public/models/flint-spear/model.glb (historical reference recorded in its asset.json)",
+        "referenceImage": "public/models/flint-spear/model.glb",
         "reconstruction": "Source-derived variant of the retained flint-spear GLB",
         "candidateFile": "assets/coastal-craft/models/obsidian-spear/work/revision-01/candidate.glb",
-        "visualReview": "assets/coastal-craft/weapon-qa/adoption-review.json",
+        "visualReview": "assets/coastal-craft/models/obsidian-spear/qa/adoption-review.json",
         "sourceAsset": "assets/coastal-craft/models/obsidian-spear/source/flint-spear.glb",
-        "sourceAssetSha256": "1a10db6d1b44da1e982f88e5ae9ef6be8fb74f5900ebd9258380ad200e53ed3d"
+        "sourceAssetSha256": "1a10db6d1b44da1e982f88e5ae9ef6be8fb74f5900ebd9258380ad200e53ed3d",
+        "weaponQA": "assets/coastal-craft/weapon-qa/adoption-review.json",
+        "referenceSha256": "1a10db6d1b44da1e982f88e5ae9ef6be8fb74f5900ebd9258380ad200e53ed3d",
+        "referenceNote": "No image reference: the retained flint-spear GLB was the source model (historical reference recorded in its asset.json)."
       }
     },
     {
@@ -22624,12 +22659,15 @@
         "provider": "Codex",
         "claudeUsed": false,
         "referenceGenerator": "Existing imagegen → TRELLIS flint-spear lineage",
-        "referenceImage": "Retained public/models/flint-spear/model.glb (historical reference recorded in its asset.json)",
+        "referenceImage": "public/models/flint-spear/model.glb",
         "reconstruction": "Source-derived variant of the retained flint-spear GLB",
         "candidateFile": "assets/coastal-craft/models/obsidian-blade/work/revision-01/candidate.glb",
-        "visualReview": "assets/coastal-craft/weapon-qa/adoption-review.json",
+        "visualReview": "assets/coastal-craft/models/obsidian-blade/qa/adoption-review.json",
         "sourceAsset": "assets/coastal-craft/models/obsidian-blade/source/flint-spear.glb",
-        "sourceAssetSha256": "1a10db6d1b44da1e982f88e5ae9ef6be8fb74f5900ebd9258380ad200e53ed3d"
+        "sourceAssetSha256": "1a10db6d1b44da1e982f88e5ae9ef6be8fb74f5900ebd9258380ad200e53ed3d",
+        "weaponQA": "assets/coastal-craft/weapon-qa/adoption-review.json",
+        "referenceSha256": "1a10db6d1b44da1e982f88e5ae9ef6be8fb74f5900ebd9258380ad200e53ed3d",
+        "referenceNote": "No image reference: the retained flint-spear GLB was the source model (historical reference recorded in its asset.json)."
       }
     },
     {
@@ -22956,50 +22994,50 @@
     },
     {
       "modelKey": "valley-castle",
-      "name": "白羽の城跡",
+      "name": "白羽教団の大聖城",
       "kind": "static",
       "candidate": 1,
-      "revision": "10",
+      "revision": "13",
       "status": "reviewed-prototype",
       "environment": true,
       "onDemand": true,
-      "url": "/models/valley-castle/model-r10.glb",
-      "sha256": "8200dcd3b23b6f616f0bf73950b76e2fdc428bcb67455eaf2dc3018b9f4342f4",
-      "bytes": 5852368,
-      "triangles": 79594,
+      "url": "/models/valley-castle/model-r13.glb",
+      "sha256": "2a271bbc12e1b331da6468d5f84f1db173beeb284fdebfdde7c56b613e48dc90",
+      "bytes": 8889164,
+      "triangles": 127254,
       "upAxis": "Y",
       "forwardAxis": "+Z",
-      "heightMetres": 13.162530217614352,
-      "widthMetres": 80,
+      "heightMetres": 52.89262724603607,
+      "widthMetres": 110,
       "placement": {
         "pivot": "ground-centred",
         "min": [
-          -40,
+          -55,
           0,
-          -39.86972487638181
+          -63.98344164509722
         ],
         "max": [
-          40,
-          13.162530217614352,
-          39.86972487638181
+          55,
+          52.89262724603607,
+          63.98344164509722
         ],
-        "groundOffset": -1.28,
-        "note": "Stands on a 1.28 m plinth; placed 1.28 m below the terrain so the forecourt meets the valley floor."
+        "groundOffset": -13.4,
+        "note": "The forecourt floor is 13.4 m above the model base (the outer walls continue down to an apron); placed 13.4 m below the terrain so the forecourt meets the valley floor."
       },
       "clips": [],
       "lods": [],
-      "notes": "Rebuilt 2026-09-12 as a ruin: a broad open forecourt behind a collapsed gate, three very wide gentle stairs (left, centre, right) and one enormous roofless great hall on top where the sorcerer is fought. Full mesh shared; the coarse LODs are not adopted.",
+      "notes": "Rebuilt 2026-09-13 as a stepped temple-fortress: a walled forecourt behind a collapsed arch gate, three progressively smaller roofless terraces and a summit altar with a ruined throne, joined by grand central stairs and side stairs; the crow cult is fought one level at a time with the pontiff on the summit. Full mesh shared; the coarse LODs are not adopted.",
       "provenance": {
         "provider": "Codex CLI image_gen reference (gpt-5.6-sol, medium) and local TRELLIS-2; reduction, walk atlas and integration by Claude Code",
         "claudeUsed": true,
         "referenceGenerator": "Codex built-in image_gen",
-        "referenceImage": "output/model-generation/models/valley-castle/source/original/reference-v3.png",
-        "referenceSha256": "1f21a183da803192601a238d78b4e5723e3b3e57b379c82d1270cbe77c8104c1",
-        "referencePrompt": "Broad two-storey ruined limestone castle: open forecourt behind a collapsed arch gate, three very wide gentle stairs (left, centre, right) rising to one enormous roofless great hall with broken half-height walls and column stumps. User request 2026-09-12: rebuild the sorcerer's castle as a wide, easily climbed ruin whose top is a huge open-air hall where the sorcerer is fought. Candidate 01 of two Codex image_gen references selected by Claude Code (user not available); candidate 02 retained as history.",
-        "reconstruction": "Local TRELLIS-2 1024 seed 42 (reference v3); shape-preserving quadric reduction at p95 0.03 m to 79594 triangles with the source UV and albedo.",
-        "candidateFile": "output/model-generation/models/valley-castle/work/low-poly/candidate-10/candidate.glb",
-        "visualReview": "output/model-generation/models/valley-castle/qa/adoption-review-ruin.json",
-        "walkAtlas": "output/model-generation/models/valley-castle/qa/walk-rev10.json"
+        "referenceImage": "output/model-generation/models/valley-castle/source/original/reference-v4.png",
+        "referenceSha256": "6ab1f45748219bf78385f4018e0ce51d9e2d318062f737ea60ab7a4ed7bf09b2",
+        "referencePrompt": "Ruined stepped temple-fortress of five ascending open terraces: a broad walled forecourt behind a collapsed arch gate, three progressively smaller roofless terraces stacked like a ziggurat, and a small summit altar platform with a ruined throne dais and four broken pillars; every level joined by one grand central stair and two flanking side stairs. User request 2026-09-13: rebuild the crow cult's castle so it is wider, climbed by many stairs in stages, with the pontiff at the very top. Candidate 01 of two Codex image_gen references selected by Claude Code (user not available); candidate 02 retained as history.",
+        "reconstruction": "Local TRELLIS-2 1024 seed 42 (reference v4); shape-preserving quadric reduction at p95 0.065 m to 127254 triangles with the source UV and albedo.",
+        "candidateFile": "output/model-generation/models/valley-castle/work/low-poly/candidate-13/candidate.glb",
+        "visualReview": "output/model-generation/models/valley-castle/qa/adoption-review-tiers.json",
+        "walkAtlas": "output/model-generation/models/valley-castle/qa/walk-rev13.json"
       }
     }
   ],

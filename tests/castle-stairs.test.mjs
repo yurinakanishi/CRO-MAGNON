@@ -1,23 +1,24 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { CollisionWorld } from '../dist/shared/collision.mjs';
-import { castleWorld, castleLocal } from '../dist/shared/castle-layout.mjs';
+import { castleWorld, castleLocal, CASTLE_TIERS } from '../dist/shared/castle-layout.mjs';
 import { CHARACTER_MODELS } from '../dist/shared/characters.mjs';
 import { movePlayer } from '../dist/shared/movement.mjs';
 import { WORLD } from '../dist/shared/world.mjs';
 import { measuredWalkSurface } from '../dist/shared/measured-walk-surface.mjs';
 import { CASTLE_SURFACE } from '../dist/shared/castle-surface.mjs';
 
-// 2026-09-12 ruin: through the gate, across the forecourt, up the central
-// stair onto the hall, sideways along the hall's front edge, and back down.
-test('all seven characters manually climb the central stair, turn both ways and descend', () => {
+// 2026-09-13 stepped fortress: through the gate, across the forecourt, up the
+// grand central stairs level by level to the summit, sideways on the middle
+// terrace, and back down.
+test('all seven characters manually climb the central stairs to the summit, turn both ways and descend', () => {
   const collision = new CollisionWorld();
   for (const model of CHARACTER_MODELS)
     for (const runningRequested of [false, true]) {
       for (const side of [-1, 1]) {
         const actor = {
           ...model,
-          ...castleWorld(-11, 40),
+          ...castleWorld(-2, 62),
           radius: model.radius ?? WORLD.playerRadius,
           runningRequested,
           lastInput: 0,
@@ -27,19 +28,30 @@ test('all seven characters manually climb the central stair, turn both ways and 
         };
         let now = 1000;
         for (const local of [
-          [-11, 30],
-          [0, 16],
-          [0, 2],
-          [0, -4],
-          [side * 6, -4],
-          [0, -4],
-          [0, -12],
-          [side * 4, -18],
-          [0, -4],
-          [0, 2],
-          [0, 16],
-          [-11, 30],
-          [-11, 40],
+          [-2, 52],
+          [0, 44],
+          [0, 40],
+          [0, 24],
+          [0, 21],
+          [0, 9],
+          [-2, 9],
+          [side * 5, 6],
+          [0, 8],
+          [0, -2],
+          [-2, -6],
+          [-3, -11],
+          [-8, -12],
+          [-3, -11],
+          [-2, -6],
+          [0, -2],
+          [0, 8],
+          [0, 9],
+          [0, 21],
+          [0, 24],
+          [0, 40],
+          [0, 44],
+          [-2, 52],
+          [-2, 62],
         ]) {
           const goal = castleWorld(...local);
           for (let n = 0; n < 2400 && Math.hypot(actor.x - goal.x, actor.z - goal.z) > 0.06; n++) {
@@ -105,16 +117,16 @@ test('rotated measured walls slide the body without crossing walls, drops or oth
 // The 2026-09-11 report (old keep): players stopped midway on the side stairs.
 // The ruin's side stairs are wide and straight; holding the stick up either
 // flight from the forecourt must carry every character onto the hall floor.
-test('every character climbs both side stairs to the upper hall by holding the stick', () => {
+test('every character climbs the first flight of stairs by holding the stick', () => {
   const collision = new CollisionWorld();
   const level = (actor) => CASTLE_SURFACE.height(actor.x, actor.z) ?? 0;
   for (const model of CHARACTER_MODELS) {
     const radius = model.radius ?? WORLD.playerRadius;
     for (const side of [1, -1])
       for (const [x0, z0] of [
-        [21, 16],
-        [24, 15],
-        [18, 15],
+        [4, 42],
+        [2, 41],
+        [0, 42],
       ])
         for (const [dxl, dzl] of [
           [0, -1],
@@ -162,19 +174,37 @@ test('every character climbs both side stairs to the upper hall by holding the s
   }
 });
 
-test('the walk atlas bridges the unmeasured riser rows so every stair is continuous', () => {
-  const { holeFills, groundMetres } = CASTLE_SURFACE.data.measurement;
+test('the walk atlas bridges the unmeasured riser rows so every central stair is continuous', () => {
+  const { holeFills, groundMetres, columnChoice, maxStepRise } = CASTLE_SURFACE.data.measurement;
   assert.ok(holeFills.length >= 90, 'holes recorded');
-  assert.equal(groundMetres, 1.28, 'the plinth height the atlas was levelled by');
+  assert.equal(groundMetres, 13.4, 'the forecourt height the atlas was levelled by');
+  assert.equal(columnChoice, 'highest', 'terraces win over the internal floor beneath them');
+  assert.equal(maxStepRise, 1);
   for (const fill of holeFills) assert.ok(fill.h >= 0.3, 'only floors above the ground are filled');
-  // Along the centre line of each of the three stairs the floor is measured
-  // (or bridged) at every cell from the forecourt to the hall.
-  for (const x of [-22, 0, 20])
-    for (let z = 14; z >= 2; z -= 0.35) {
-      const p = castleWorld(x, z);
+  // Along the centre line of every grand stair the floor is measured (or
+  // bridged) at every cell from its foot to its top, rising within a riser of
+  // the previous cell.
+  for (const level of CASTLE_TIERS) {
+    if (!level.stair) continue;
+    const { foot, top } = level.stair,
+      steps = Math.ceil(Math.hypot(top.x - foot.x, top.z - foot.z) / 0.35);
+    let previous = CASTLE_SURFACE.height(foot.x, foot.z);
+    for (let i = 1; i <= steps; i++) {
+      const p = {
+          x: foot.x + ((top.x - foot.x) * i) / steps,
+          z: foot.z + ((top.z - foot.z) * i) / steps,
+        },
+        h = CASTLE_SURFACE.height(p.x, p.z);
+      assert.ok(Number.isFinite(h), `stair ${level.tier} cell ${i}`);
       assert.ok(
-        Number.isFinite(CASTLE_SURFACE.height(p.x, p.z)),
-        `stair ${x} at z ${z.toFixed(2)}`,
+        h >= previous - 0.4 && h - previous <= 1.2,
+        `stair ${level.tier} cell ${i}: ${previous} -> ${h}`,
       );
+      previous = h;
     }
+    assert.ok(
+      previous >= CASTLE_TIERS[level.tier].floor - 0.6,
+      `stair ${level.tier} reaches the next level`,
+    );
+  }
 });

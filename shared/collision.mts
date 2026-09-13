@@ -1,12 +1,7 @@
 import type { Obstacle, Point } from './types.mjs';
 import { SCENERY, BRIDGE } from './scenery-layout.mjs';
 import { CASTLE_SURFACE } from './castle-surface.mjs';
-import {
-  CASTLE_GATE,
-  CASTLE_STAIR_FOOT,
-  CASTLE_STAIR_TOP,
-  CASTLE_UPPER_FLOOR,
-} from './castle-layout.mjs';
+import { CASTLE_GATE, CASTLE_TIERS, castleTierOfHeight } from './castle-layout.mjs';
 import { MODEL_BOUNDS } from './model-bounds.mjs';
 import { LANDMARKS } from './landmarks.mjs';
 import { LANDMARK_BOUNDS } from './landmark-bounds.mjs';
@@ -391,30 +386,34 @@ export class CollisionWorld {
   }
   path(start, goal, radius, dynamic = []) {
     if (this.walkSurfaces.includes(CASTLE_SURFACE)) {
-      // The ruin has two floors: the forecourt at ground level and the great
-      // hall above it. A route between them takes the central stair; a route
+      // 2026-09-13: the keep has five levels. A route between levels climbs
+      // (or descends) the grand central stairs one level at a time; a route
       // from open ground enters by the gate rather than probing the wall ring.
-      const level = (p) => ((CASTLE_SURFACE.height(p.x, p.z) ?? 0) > CASTLE_UPPER_FLOOR ? 1 : 0);
+      const level = (p) => {
+        const h = CASTLE_SURFACE.height(p.x, p.z);
+        return Number.isFinite(h) ? castleTierOfHeight(h) : 0;
+      };
       const inside = (p) => {
         const l = CASTLE_SURFACE.local(p.x, p.z);
-        return Math.abs(l.x) < 37 && Math.abs(l.z) < 37;
+        return Math.abs(l.x) < 50 && Math.abs(l.z) < 57;
       };
-      const from = level(start),
-        to = level(goal);
+      const from = Math.max(1, level(start)),
+        to = Math.max(1, level(goal));
       if (from !== to) {
         const stops = [];
         if (
-          from === 0 &&
+          from === 1 &&
           !inside(start) &&
           Math.hypot(start.x - CASTLE_GATE.x, start.z - CASTLE_GATE.z) > 2
         )
           stops.push(CASTLE_GATE);
-        stops.push(
-          ...(to > from
-            ? [CASTLE_STAIR_FOOT, CASTLE_STAIR_TOP]
-            : [CASTLE_STAIR_TOP, CASTLE_STAIR_FOOT]),
-        );
-        if (to === 0 && !inside(goal)) stops.push(CASTLE_GATE);
+        if (to > from)
+          for (let t = from; t < to; t++)
+            stops.push(CASTLE_TIERS[t - 1].stair.foot, CASTLE_TIERS[t - 1].stair.top);
+        else
+          for (let t = from; t > to; t--)
+            stops.push(CASTLE_TIERS[t - 2].stair.top, CASTLE_TIERS[t - 2].stair.foot);
+        if (to === 1 && !inside(goal)) stops.push(CASTLE_GATE);
         stops.push(goal);
         let point = start;
         const route = [];

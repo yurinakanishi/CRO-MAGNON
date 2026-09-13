@@ -1,0 +1,34 @@
+{
+  "decision": "adopt",
+  "at": "2026-09-12T13:33:30.761Z",
+  "key": "cat-kunoichi",
+  "revision": "run-revision-05",
+  "sha256": "088f582295a912ec7a09014b06eaf43c8618859ff1e9e3c4f6bfe595818f8c94",
+  "sourceSha256": "d9004c15adf306659239d6a818609a2f11d4f0e0f4a482436ea76f83bbb9eec8",
+  "source": "/models/cat-kunoichi/model-gaits-r02.glb",
+  "sourceKind": "Delivered gaits revision 02 GLB (itself built on the creature-motion revision 04 delivery); Run_Loop re-authored, everything else retained.",
+  "modifiedClips": [
+    "Run_Loop"
+  ],
+  "preserved": "Original binary prefix, meshes, skins, bones, UVs, materials, textures, Walk_Loop (gaits revision 02) and all other clips.",
+  "measurement": "assets/player-gaits/run-validation.json",
+  "metrics": {
+    "maximumKneeDegrees": 103.80570768289518,
+    "pelvisExcursionMetres": 0.045865295035365294,
+    "flightFraction": 0.15763546798029557,
+    "minimumSoleY": 0.0026822299722654218,
+    "loopSurfaceError": 1.367560004115111e-07
+  },
+  "evidence": "assets/player-gaits/run-game-qa.json",
+  "gameQA": {
+    "phases": [
+      "walk",
+      "run",
+      "walk-again"
+    ],
+    "connections": 5,
+    "reloaded": true,
+    "errors": 0
+  },
+  "notes": "Review record written 2026-09-13 for the run-gait adoption of 2026-09-12 (assets/player-gaits/RUN_REPAIR.md); the adoption itself, its 240 Hz GLB read-back and the five-connection real-Chrome QA were done then. Foot slip at high speed remains, as documented."
+}

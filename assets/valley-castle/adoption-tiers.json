@@ -1,0 +1,57 @@
+{
+  "modelKey": "valley-castle",
+  "name": "白羽教団の大聖城",
+  "kind": "static",
+  "candidate": 1,
+  "revision": "13",
+  "status": "reviewed-prototype",
+  "environment": true,
+  "onDemand": true,
+  "url": "/models/valley-castle/model-r13.glb",
+  "sha256": "2a271bbc12e1b331da6468d5f84f1db173beeb284fdebfdde7c56b613e48dc90",
+  "bytes": 8889164,
+  "triangles": 127254,
+  "upAxis": "Y",
+  "forwardAxis": "+Z",
+  "heightMetres": 52.89262724603607,
+  "widthMetres": 110,
+  "placement": {
+    "pivot": "ground-centred",
+    "min": [
+      -55,
+      0,
+      -63.98344164509722
+    ],
+    "max": [
+      55,
+      52.89262724603607,
+      63.98344164509722
+    ],
+    "groundOffset": -13.4,
+    "note": "The forecourt floor is 13.4 m above the model base (the outer walls continue down to an apron); placed 13.4 m below the terrain so the forecourt meets the valley floor."
+  },
+  "clips": [],
+  "lods": [],
+  "notes": "Rebuilt 2026-09-13 as a stepped temple-fortress: a walled forecourt behind a collapsed arch gate, three progressively smaller roofless terraces and a summit altar with a ruined throne, joined by grand central stairs and side stairs; the crow cult is fought one level at a time with the pontiff on the summit. Full mesh shared; the coarse LODs are not adopted.",
+  "provenance": {
+    "provider": "Codex CLI image_gen reference (gpt-5.6-sol, medium) and local TRELLIS-2; reduction, walk atlas and integration by Claude Code",
+    "claudeUsed": true,
+    "referenceGenerator": "Codex built-in image_gen",
+    "referenceImage": "output/model-generation/models/valley-castle/source/original/reference-v4.png",
+    "referenceSha256": "6ab1f45748219bf78385f4018e0ce51d9e2d318062f737ea60ab7a4ed7bf09b2",
+    "referencePrompt": "Ruined stepped temple-fortress of five ascending open terraces: a broad walled forecourt behind a collapsed arch gate, three progressively smaller roofless terraces stacked like a ziggurat, and a small summit altar platform with a ruined throne dais and four broken pillars; every level joined by one grand central stair and two flanking side stairs. User request 2026-09-13: rebuild the crow cult's castle so it is wider, climbed by many stairs in stages, with the pontiff at the very top. Candidate 01 of two Codex image_gen references selected by Claude Code (user not available); candidate 02 retained as history.",
+    "reconstruction": "Local TRELLIS-2 1024 seed 42 (reference v4); shape-preserving quadric reduction at p95 0.065 m to 127254 triangles with the source UV and albedo.",
+    "candidateFile": "output/model-generation/models/valley-castle/work/low-poly/candidate-13/candidate.glb",
+    "visualReview": "output/model-generation/models/valley-castle/qa/adoption-review-tiers.json",
+    "walkAtlas": "output/model-generation/models/valley-castle/qa/walk-rev13.json"
+  },
+  "review": {
+    "decision": "adopt",
+    "sha256": "2a271bbc12e1b331da6468d5f84f1db173beeb284fdebfdde7c56b613e48dc90",
+    "candidate": "13",
+    "reviewedAt": "2026-09-13T12:41:48.599Z",
+    "views": "output/model-generation/models/valley-castle/qa/candidate-13-views.png",
+    "walkAtlas": "output/model-generation/models/valley-castle/qa/walk-rev13-walk.png",
+    "notes": "Seven software views of every triangle reviewed: a stepped temple-fortress of five levels: a walled forecourt behind a collapsed arch gate, three progressively smaller roofless terraces and a summit altar platform with a ruined throne, each level joined to the next by a grand central stair and two side stairs. The walk atlas (highest connected surface per column, walls solid where an unreached top stands over the internal floor, the gate passage opened by the arch underside) shows the forecourt, the central stairs and all four upper floors as one connected surface up to the summit."
+  }
+}

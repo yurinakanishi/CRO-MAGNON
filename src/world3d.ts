@@ -34,7 +34,13 @@ import { jumpHeight, jumpProgress } from '../shared/jumping.mjs';
 import { orientSpear } from './spear-pose.js';
 import { orientKatana } from './katana-pose.js';
 import { SpellEffects } from './spell-effects.js';
-import { decorateCrowFaction } from './crow-faction-visuals.js';
+import {
+  createPrayerSeal,
+  decorateCrowFaction,
+  disposePrayerSeal,
+  pulsePrayerSeal,
+  resizePrayerSeal,
+} from './crow-faction-visuals.js';
 import { attackProfile } from '../shared/combat-profiles.mjs';
 import { CollisionWorld } from '../shared/collision.mjs';
 import { CHARACTER_MODELS, characterModel } from '../shared/characters.mjs';
@@ -523,7 +529,7 @@ export class WorldRenderer {
         const health = document.createElement('progress');
         health.setAttribute('aria-label', `${state.name}の体力`);
         label.element.append(health);
-        entity = { model, label, health, state, actor: null };
+        entity = { model, label, health, state, actor: null, seal: null, sealSize: '' };
         this.enemies.set(state.id, entity);
         this.loadEnemy(entity, state.id);
       }
@@ -536,6 +542,10 @@ export class WorldRenderer {
     const entity = this.enemies.get(id);
     if (!entity) return;
     this.scene.remove(entity.model);
+    if (entity.seal) {
+      this.scene.remove(entity.seal);
+      disposePrayerSeal(entity.seal);
+    }
     entity.actor?.dispose();
     entity.label.element.remove();
     this.labels.splice(this.labels.indexOf(entity.label), 1);
@@ -1354,6 +1364,24 @@ export class WorldRenderer {
       );
       if (enemy.health.max !== state.maxHealth) enemy.health.max = state.maxHealth;
       if (enemy.health.value !== state.health) enemy.health.value = state.health;
+      // A castle rank praying behind the seal is enclosed in a translucent red
+      // veil: a capsule from the floor to above the head, plus a faint floor ring.
+      if (state.sealed) {
+        const sealRadius = state.radius * (state.scale ?? 1) + 0.45,
+          sealHeight = (actor.asset.heightMetres ?? 1.85) * (state.scale ?? 1) + 0.4;
+        if (!enemy.seal) {
+          enemy.seal = createPrayerSeal(sealRadius, sealHeight);
+          enemy.sealSize = `${sealRadius}:${sealHeight}`;
+          this.scene.add(enemy.seal);
+        } else if (enemy.sealSize !== `${sealRadius}:${sealHeight}`) {
+          resizePrayerSeal(enemy.seal, sealRadius, sealHeight);
+          enemy.sealSize = `${sealRadius}:${sealHeight}`;
+        }
+        enemy.seal.visible = true;
+        enemy.seal.position.set(model.position.x, model.position.y, model.position.z);
+        pulsePrayerSeal(enemy.seal, time + state.id.length);
+      } else if (enemy.seal) enemy.seal.visible = false;
+      enemy.health.classList.toggle('sealed', state.sealed === true);
       const animation = enemyAnimationState(state, this.serverNow());
       if (animation && animation.elapsed !== null)
         actor.sampleOnce(animation.clip, animation.elapsed);

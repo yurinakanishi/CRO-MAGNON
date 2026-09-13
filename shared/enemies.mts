@@ -1,6 +1,6 @@
 import { CAMP } from './world.mjs';
 import { CASTLE_SURFACE } from './castle-surface.mjs';
-import { CASTLE_UPPER_FLOOR } from './castle-layout.mjs';
+import { castleTierOfHeight } from './castle-layout.mjs';
 import { ENEMY_GROUNDS } from './scenery-layout.mjs';
 export { ENEMY_GROUNDS } from './scenery-layout.mjs';
 import {
@@ -16,7 +16,16 @@ import { createBehemoth, updateBehemoths } from './violet-behemoth.mjs';
 import { provoker } from './perception.mjs';
 import { respawnDelay } from './room-rules.mjs';
 import { createSabertooth, updateSabertooths } from './sabertooth.mjs';
-import { CROW_ROLE_RULES, crowRules } from './crow-faction.mjs';
+import {
+  CROW_ALTAR,
+  CROW_RITE_TEXT,
+  CROW_ROLE_RULES,
+  castleOccupied,
+  crowRules,
+  crowTier,
+  inCrowWard,
+} from './crow-faction.mjs';
+import { nearCastle } from './castle-layout.mjs';
 import { enemyMovementSpeed, incomingDamage } from './difficulty.mjs';
 
 export const ENEMY_RULES = Object.freeze({
@@ -47,13 +56,15 @@ const dynamicActors = (room, except) =>
   ]
     .filter((actor) => actor !== except && !actor.carrierId)
     .map(circle);
-// 2026-09-12: the castle sorcerer is an indoor enemy. Its ground is the great
-// hall on the upper storey of the ruin; it never notices, chases or follows a
-// player who is not standing on that floor, and its own steps are undone if
-// one would carry it off the hall (down the stair or over the edge).
+// 2026-09-12: the castle sorcerer is an indoor enemy. Its ground is one level
+// of the keep (since 2026-09-13 the middle terrace, tier 3); it never notices,
+// chases or follows a player who is not standing on that level, and its own
+// steps are undone if one would carry it off it (down a stair or over an edge).
 export const inSorcererHall = (point) =>
-  (CASTLE_SURFACE.height(point.x, point.z) ?? -Infinity) > CASTLE_UPPER_FLOOR;
-const onOwnGround = (enemy, point) => !enemy.castle || inSorcererHall(point);
+  castleTierOfHeight(CASTLE_SURFACE.height(point.x, point.z)) === 3;
+// 2026-09-13: every castle rank has its own ward (forecourt, stair heads, hall,
+// altar); a castle crow never notices, follows or steps outside it.
+const onOwnGround = (enemy, point) => !enemy.castle || inCrowWard(enemy, point);
 const withinStaffReach = (enemy, player) =>
   combatDistance(enemy, player) <=
   enemy.radius + player.radius + crowRules(enemy).attackReach + 1e-9;
@@ -106,7 +117,9 @@ export function createEnemies(collision, dynamic = [], now = Date.now()) {
       hostile: true,
       ...position,
       home: { ...position },
-      castle: inSorcererHall(position),
+      castle: !ground.regionId,
+      tier: rules.tier,
+      sealed: false,
       radius: rules.radius,
       scale: rules.scale,
       phase: 'alive',
@@ -336,13 +349,13 @@ function plan(enemy, room, goal, now) {
     let inside = { x: enemy.x, z: enemy.z };
     for (let t = 0.05; t <= 1; t += 0.05) {
       const p = { x: enemy.x + (goal.x - enemy.x) * t, z: enemy.z + (goal.z - enemy.z) * t };
-      if (!inSorcererHall(p)) break;
+      if (!onOwnGround(enemy, p)) break;
       inside = p;
     }
     goal = inside;
   }
   enemy.path = room.collision.path(enemy, goal, enemy.radius);
-  if (enemy.castle) enemy.path = enemy.path.filter((point) => inSorcererHall(point));
+  if (enemy.castle) enemy.path = enemy.path.filter((point) => onOwnGround(enemy, point));
   enemy.target = enemy.path.shift() || null;
   enemy.pathGoal = { x: goal.x, z: goal.z };
   enemy.nextPathAt = now + 500;
@@ -368,6 +381,41 @@ function moveEnemy(enemy, room, dt, now, speed) {
   enemy.clip = enemy.moving ? (enemy.running ? 'Run_Loop' : 'Walk_Loop') : 'Idle_Loop';
 }
 
+const isCastleCrow = (enemy) => enemy.castle && enemy.modelKey === ENEMY_RULES.modelKey;
+const notifyCastle = (room, notify, text, tone = 'info') => {
+  for (const player of room.players.values())
+    if (nearCastle(player.x, player.z, 12)) notify(player, text, tone, true);
+};
+// The staged assault. The lowest rank with a member still standing is "open";
+// every rank above it prays behind the seal (cannot be hurt, does not fight).
+// When a rank falls the players in the keep are told which rank rises next,
+// and when the pontiff falls the whole congregation re-forms together after
+// the ordinary respawn delay.
+function updateCastleRite(room, now, notify) {
+  const crows = (room.enemies || []).filter(isCastleCrow);
+  if (!crows.length) return false;
+  const standing = crows.filter((enemy) => enemy.phase === 'alive');
+  const openTier = standing.length ? Math.min(...standing.map(crowTier)) : 6;
+  for (const enemy of crows) enemy.sealed = enemy.phase === 'alive' && crowTier(enemy) > openTier;
+  const rite = (room.crowRite ??= { openTier: null, endedAt: null });
+  const previous = rite.openTier;
+  if (previous === openTier) return false;
+  rite.openTier = openTier;
+  if (previous === null) return true;
+  if (openTier > previous) {
+    notifyCastle(room, notify, CROW_RITE_TEXT[openTier], openTier === 6 ? 'success' : 'error');
+    if (openTier === 6) {
+      rite.endedAt = now;
+      for (const enemy of crows) if (enemy.phase === 'respawning') enemy.phaseStartedAt = now;
+    }
+  } else {
+    // A fallen rank has returned: the seal closes again above it.
+    if (previous === 6) notifyCastle(room, notify, CROW_RITE_TEXT.reform);
+    rite.endedAt = null;
+  }
+  return true;
+}
+
 export function updateEnemies(
   room,
   dt,
@@ -375,6 +423,7 @@ export function updateEnemies(
   notify = (_player, _text: string, _tone?: string, _popup?: boolean) => {},
 ) {
   let changed = recoverPlayers(room, now, notify);
+  if (updateCastleRite(room, now, notify)) changed = true;
   for (const enemy of room.enemies || []) {
     // Generic combat also supports other hostile types, whose own AI owns them.
     if (enemy.modelKey !== ENEMY_RULES.modelKey) continue;
@@ -395,6 +444,13 @@ export function updateEnemies(
       continue;
     }
     if (enemy.phase === 'respawning') {
+      // A fallen castle rank stays fallen while players hold the keep and the
+      // pontiff still stands; the clock only runs once the keep is empty (or
+      // the rite has ended), so a cleared rank is not refilled mid-assault.
+      if (isCastleCrow(enemy) && room.crowRite?.endedAt == null && castleOccupied(room)) {
+        enemy.phaseStartedAt = now;
+        continue;
+      }
       if (now - enemy.phaseStartedAt < respawnDelay(room, ENEMY_RULES.respawnMs)) continue;
       const spawn = room.collision.nearestFree(
         enemy.home,
@@ -421,6 +477,24 @@ export function updateEnemies(
       });
       stopActor(enemy);
       changed = true;
+      continue;
+    }
+    if (enemy.sealed) {
+      // Praying behind the seal: grounded, still, facing the altar, blind to
+      // everyone until the rank below has fallen.
+      approachFlight(enemy, dt, 0);
+      stopActor(enemy);
+      enemy.pendingAttack = null;
+      enemy.attackLockUntil = 0;
+      enemy.targetId = null;
+      enemy.returning = false;
+      enemy.provokedBy = null;
+      enemy.facing = Math.atan2(CROW_ALTAR.x - enemy.x, CROW_ALTAR.z - enemy.z);
+      enemy.clip = 'Idle_Loop';
+      enemy.behavior = 'pray';
+      enemy.aggroAfter = now + 1500;
+      enemy.nextRoamAt = now + 1500;
+      enemy.elevation = room.collision.surfaceHeight?.(enemy) ?? 0;
       continue;
     }
     if (now < enemy.hitUntil) {

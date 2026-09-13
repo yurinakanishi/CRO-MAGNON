@@ -141,6 +141,8 @@ export function snapshot(
         hitAt,
         elevation,
         crowRole,
+        tier,
+        sealed,
         airborneHeight,
       }) => ({
         id,
@@ -155,6 +157,7 @@ export function snapshot(
         radius,
         elevation: elevation ?? 0,
         crowRole,
+        ...(tier ? { crowTier: tier, sealed: sealed === true } : {}),
         airborneHeight: airborneHeight ?? 0,
         clip,
         phase,

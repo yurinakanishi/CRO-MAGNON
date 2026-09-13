@@ -1,0 +1,34 @@
+{
+  "decision": "adopt",
+  "at": "2026-09-12T13:33:30.761Z",
+  "key": "neanderthal-woman",
+  "revision": "run-revision-05",
+  "sha256": "cf1259d975dd4873b8923889c59fb8fb8f88d59cd13cb4d83eb0e1ff4a23c2b3",
+  "sourceSha256": "9792b2d0b5cfff406b8341759c5a36c720139c467bcccdd5e6bbb3e48c2e8ad4",
+  "source": "/models/neanderthal-woman/model-thrust-r02.glb",
+  "sourceKind": "Delivered spear-thrust revision 02 GLB (itself built on the creature-motion revision 04 delivery); Run_Loop re-authored, everything else retained.",
+  "modifiedClips": [
+    "Run_Loop"
+  ],
+  "preserved": "Original binary prefix, meshes, skins, bones, UVs, materials, textures, Walk_Loop (gaits revision 02), Attack (thrust revision 02) and all other clips.",
+  "measurement": "assets/player-gaits/run-validation.json",
+  "metrics": {
+    "maximumKneeDegrees": 103.90250222627233,
+    "pelvisExcursionMetres": 0.06042658637963372,
+    "flightFraction": 0.19704433497536947,
+    "minimumSoleY": 0.0026569736546095887,
+    "loopSurfaceError": 3.8140146677562075e-07
+  },
+  "evidence": "assets/player-gaits/run-game-qa.json",
+  "gameQA": {
+    "phases": [
+      "walk",
+      "run",
+      "walk-again"
+    ],
+    "connections": 5,
+    "reloaded": true,
+    "errors": 0
+  },
+  "notes": "Review record written 2026-09-13 for the run-gait adoption of 2026-09-12 (assets/player-gaits/RUN_REPAIR.md); the adoption itself, its 240 Hz GLB read-back and the five-connection real-Chrome QA were done then. Foot slip at high speed remains, as documented."
+}

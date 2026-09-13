@@ -1,0 +1,21 @@
+{
+  "decision": "adopt",
+  "at": "2026-09-13T12:14:28.645Z",
+  "key": "neanderthal-hunter",
+  "revision": "revision-10",
+  "sha256": "93047f04342a5880dc4574956846f130b3d97c5041408c07f790d2ae09f55000",
+  "source": "/models/neanderthal-hunter/model-run-r05.glb",
+  "sourceSha256": "3a7c008bfd8bd7bbf2f2010387373215aee67cf93c5387ccd6561d03c935ac2a",
+  "modifiedClips": [
+    "Walk_Loop",
+    "Run_Loop"
+  ],
+  "motionSources": [
+    "https://mocap.cs.cmu.edu/subjects/35/35_01.amc",
+    "https://mocap.cs.cmu.edu/subjects/09/09_01.amc"
+  ],
+  "preserved": "Original binary prefix, nodes, mesh, skin weights, bind transforms, UV, materials, images, all other animation clips and the two-handed spear attack.",
+  "measurement": "assets/human-locomotion/validation.json",
+  "evidence": "output/playwright/human-joints/revision-10/",
+  "review": "assets/human-locomotion/README.md"
+}

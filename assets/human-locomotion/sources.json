@@ -1,0 +1,54 @@
+{
+  "checked": "2026-09-13",
+  "tripoUsed": false,
+  "files": [
+    {
+      "file": "source/35.asf",
+      "url": "https://mocap.cs.cmu.edu/subjects/35/35.asf",
+      "sha256": "2a8e2eda3c0d7d828566b2a9a8ab36b2b8b3864110574e8b73c8f069fded416c",
+      "bytes": 7261
+    },
+    {
+      "file": "source/35_01.amc",
+      "url": "https://mocap.cs.cmu.edu/subjects/35/35_01.amc",
+      "sha256": "0743f4ea48e7e199cd56b2810b5ce81f8ede08d32ff79aa4e363c44cc4fe33aa",
+      "bytes": 286988
+    },
+    {
+      "file": "source/09.asf",
+      "url": "https://mocap.cs.cmu.edu/subjects/09/09.asf",
+      "sha256": "be10dbce393fd60a2d322410032d618757afcc5bb2f7a508d887c5b0213f1897",
+      "bytes": 7260
+    },
+    {
+      "file": "source/09_01.amc",
+      "url": "https://mocap.cs.cmu.edu/subjects/09/09_01.amc",
+      "sha256": "02c94e8c2d4d2ff05f9a784f06403700c2c9d7caedd9bd92b50284d1a05f2bee",
+      "bytes": 118653
+    },
+    {
+      "file": "source/35_17.amc",
+      "url": "https://mocap.cs.cmu.edu/subjects/35/35_17.amc",
+      "sha256": "8096cd53878242dbc35e987288cef6ae81d4e1c0e207086639bbed5cc06c8fee",
+      "bytes": 133172
+    },
+    {
+      "file": "source/subject-35.html",
+      "url": "https://mocap.cs.cmu.edu/search.php?subjectnumber=35",
+      "sha256": "db4c8ab900df5b80c8508e6231aee639bb9118ada8f4b4ef112865123198de97",
+      "bytes": 17227
+    },
+    {
+      "file": "source/subject-09.html",
+      "url": "https://mocap.cs.cmu.edu/search.php?subjectnumber=9",
+      "sha256": "c3a461cf0ed64c0268c3d4a6f3388598ffedb322a5841f297f461e5edfbece17",
+      "bytes": 8582
+    },
+    {
+      "file": "source/cmu-faq.html",
+      "url": "https://mocap.cs.cmu.edu/faqs.php",
+      "sha256": "518f04f07d7b0e0e8b605089f1033320d3ad5aa092f9d164f2c76c484a3f4f4e",
+      "bytes": 8654
+    }
+  ]
+}

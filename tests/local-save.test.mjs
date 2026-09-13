@@ -212,8 +212,8 @@ test('disk restart restores shared and personal records, freezes shutdown input,
     room = game.rooms.get('SAVE'),
     p = room.players.get(client.welcome.id);
   Object.assign(p, {
-    x: 130,
-    z: 50,
+    x: 100,
+    z: 120,
     energy: 54,
     gathered: 12,
     tool: true,
@@ -256,7 +256,7 @@ test('disk restart restores shared and personal records, freezes shutdown input,
   assert.equal(resumed.welcome.persistentSession, true);
   assert.equal(saved.id, p.id);
   assert.deepEqual(saved.inventory, p.inventory);
-  assert.deepEqual([saved.x, saved.z, saved.energy, saved.gathered], [130, 50, 54, 12]);
+  assert.deepEqual([saved.x, saved.z, saved.energy, saved.gathered], [100, 120, 54, 12]);
   assert.equal(saved.dx, 0);
   assert.equal(saved.jumpAt, 0);
   assert.equal(saved.cookingEndsAt, 0);

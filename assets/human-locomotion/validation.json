@@ -1,0 +1,306 @@
+{
+  "status": "passed",
+  "revision": "revision-10",
+  "results": [
+    {
+      "key": "cro-magnon-woman",
+      "sha256": "bac0bdd9d2961654501b5cc39ce94514b6262c7750ff10299948db4c377e711a",
+      "records": [
+        {
+          "clip": "Walk_Loop",
+          "seconds": 1.1166666746139526,
+          "sampleRate": 240,
+          "metric": {
+            "minimumSoleY": 0.0027449654033742383,
+            "maximumLowestSoleY": 0.003738741429189456,
+            "flightFraction": 0,
+            "kneeDegrees": [
+              14.18475997546461,
+              75.21751314425003
+            ],
+            "elbowDegrees": [
+              17.40812875475949,
+              32.70756978627487
+            ],
+            "minimumForwardKneePlane": 0.9809696755860533,
+            "maximumBoneLengthError": 5.194112820960939e-7,
+            "pelvisExcursion": 0.03326051040720912,
+            "maxPelvisSpeed": 0.4590014941863059,
+            "maxKneeDegreesPerSecond": 376.07071908346035,
+            "maxLocalJointDegreesPerSecond": 484.0098816231433,
+            "loopSurfaceError": 1.2423359826128076e-7
+          }
+        },
+        {
+          "clip": "Run_Loop",
+          "seconds": 0.7333333492279053,
+          "sampleRate": 240,
+          "metric": {
+            "minimumSoleY": 0.0025845351881925455,
+            "maximumLowestSoleY": 0.033351176845044204,
+            "flightFraction": 0.2247191011235955,
+            "kneeDegrees": [
+              3.2823699775156783,
+              115.15786208221472
+            ],
+            "elbowDegrees": [
+              66.47666360062823,
+              125.43955611503769
+            ],
+            "minimumForwardKneePlane": 0.9648352073811607,
+            "maximumBoneLengthError": 5.720072862591685e-7,
+            "pelvisExcursion": 0.04065922620844875,
+            "maxPelvisSpeed": 0.9228777165546056,
+            "maxKneeDegreesPerSecond": 668.1026054378601,
+            "maxLocalJointDegreesPerSecond": 684.2220007910523,
+            "loopSurfaceError": 9.747772510655695e-8
+          }
+        }
+      ],
+      "blendMinimumSoleY": -0.04595202041592357,
+      "blendCorrectedMinimumSoleY": 0.002999999444384299,
+      "blendMinimumKneeDegrees": 9.969800763397267,
+      "unchangedOtherClips": 8
+    },
+    {
+      "key": "cro-magnon-hunter",
+      "sha256": "b2d51d01d095bb5e995e6a6f7a9e9b084f2796e47f675370900dea7ac20d2720",
+      "records": [
+        {
+          "clip": "Walk_Loop",
+          "seconds": 1.1166666746139526,
+          "sampleRate": 240,
+          "metric": {
+            "minimumSoleY": 0.0027087840874589707,
+            "maximumLowestSoleY": 0.004086926868200201,
+            "flightFraction": 0,
+            "kneeDegrees": [
+              14.184724482298247,
+              75.21750012301524
+            ],
+            "elbowDegrees": [
+              19.725952811542765,
+              32.79864091596233
+            ],
+            "minimumForwardKneePlane": 0.9809695547246858,
+            "maximumBoneLengthError": 1.0876353595534738e-7,
+            "pelvisExcursion": 0.036992539172810424,
+            "maxPelvisSpeed": 0.7259963108149763,
+            "maxKneeDegreesPerSecond": 376.07015480172686,
+            "maxLocalJointDegreesPerSecond": 483.59094362411315,
+            "loopSurfaceError": 2.435972800846922e-7
+          }
+        },
+        {
+          "clip": "Run_Loop",
+          "seconds": 0.7333333492279053,
+          "sampleRate": 240,
+          "metric": {
+            "minimumSoleY": 0.00255328211543577,
+            "maximumLowestSoleY": 0.0383913031810374,
+            "flightFraction": 0.2303370786516854,
+            "kneeDegrees": [
+              3.282365092412071,
+              115.15789043736837
+            ],
+            "elbowDegrees": [
+              68.42541229279554,
+              122.64649879975691
+            ],
+            "minimumForwardKneePlane": 0.9648355747815104,
+            "maximumBoneLengthError": 1.027932530206499e-7,
+            "pelvisExcursion": 0.07433850464925862,
+            "maxPelvisSpeed": 1.2490736961524898,
+            "maxKneeDegreesPerSecond": 668.1024759230896,
+            "maxLocalJointDegreesPerSecond": 684.1193925198919,
+            "loopSurfaceError": 1.333190879939178e-7
+          }
+        }
+      ],
+      "blendMinimumSoleY": -0.046133910704870384,
+      "blendCorrectedMinimumSoleY": 0.002999999039050189,
+      "blendMinimumKneeDegrees": 9.96979108266701,
+      "unchangedOtherClips": 8
+    },
+    {
+      "key": "neanderthal-woman",
+      "sha256": "b1cd6f89291d3d71adb7be0a7f245c746a32691fba2df0e62faccb905a0af1a8",
+      "records": [
+        {
+          "clip": "Walk_Loop",
+          "seconds": 1.1166666746139526,
+          "sampleRate": 240,
+          "metric": {
+            "minimumSoleY": 0.002786051522228076,
+            "maximumLowestSoleY": 0.0035747222725881884,
+            "flightFraction": 0,
+            "kneeDegrees": [
+              14.184984529075566,
+              75.21777502821746
+            ],
+            "elbowDegrees": [
+              17.408125350009215,
+              32.707576136709804
+            ],
+            "minimumForwardKneePlane": 0.9809696828820318,
+            "maximumBoneLengthError": 0.000004825009539632941,
+            "pelvisExcursion": 0.0381251333903454,
+            "maxPelvisSpeed": 0.28560188398090947,
+            "maxKneeDegreesPerSecond": 376.07163068216494,
+            "maxLocalJointDegreesPerSecond": 485.18807984789373,
+            "loopSurfaceError": 2.2973562779564747e-7
+          }
+        },
+        {
+          "clip": "Run_Loop",
+          "seconds": 0.7333333492279053,
+          "sampleRate": 240,
+          "metric": {
+            "minimumSoleY": 0.0026249083700279185,
+            "maximumLowestSoleY": 0.032163963496009654,
+            "flightFraction": 0.21910112359550563,
+            "kneeDegrees": [
+              3.2824411215872566,
+              115.15753978974081
+            ],
+            "elbowDegrees": [
+              66.47666577310459,
+              125.43954017889045
+            ],
+            "minimumForwardKneePlane": 0.9648351487229851,
+            "maximumBoneLengthError": 0.000005201750074179667,
+            "pelvisExcursion": 0.04360840026671253,
+            "maxPelvisSpeed": 0.9044417156690224,
+            "maxKneeDegreesPerSecond": 668.1012832196363,
+            "maxLocalJointDegreesPerSecond": 684.4428360620085,
+            "loopSurfaceError": 2.384284852266661e-7
+          }
+        }
+      ],
+      "blendMinimumSoleY": -0.04017242061086664,
+      "blendCorrectedMinimumSoleY": 0.0028330265809898406,
+      "blendMinimumKneeDegrees": 9.969978993794,
+      "unchangedOtherClips": 8
+    },
+    {
+      "key": "neanderthal-hunter",
+      "sha256": "93047f04342a5880dc4574956846f130b3d97c5041408c07f790d2ae09f55000",
+      "records": [
+        {
+          "clip": "Walk_Loop",
+          "seconds": 1.1166666746139526,
+          "sampleRate": 240,
+          "metric": {
+            "minimumSoleY": 0.002764117680920699,
+            "maximumLowestSoleY": 0.003919331623471961,
+            "flightFraction": 0,
+            "kneeDegrees": [
+              14.184731206565527,
+              75.21750055125956
+            ],
+            "elbowDegrees": [
+              19.72595399405724,
+              32.79864372690708
+            ],
+            "minimumForwardKneePlane": 0.9809695576235669,
+            "maximumBoneLengthError": 2.912592088621935e-7,
+            "pelvisExcursion": 0.030218612410956913,
+            "maxPelvisSpeed": 0.5278949805872676,
+            "maxKneeDegreesPerSecond": 376.0699640002802,
+            "maxLocalJointDegreesPerSecond": 484.6886514993504,
+            "loopSurfaceError": 2.646312841096312e-7
+          }
+        },
+        {
+          "clip": "Run_Loop",
+          "seconds": 0.7333333492279053,
+          "sampleRate": 240,
+          "metric": {
+            "minimumSoleY": 0.0025830687715339535,
+            "maximumLowestSoleY": 0.03639732931009545,
+            "flightFraction": 0.2247191011235955,
+            "kneeDegrees": [
+              3.2823606222829906,
+              115.15787238910389
+            ],
+            "elbowDegrees": [
+              68.42541921429256,
+              122.6464952647738
+            ],
+            "minimumForwardKneePlane": 0.964835100865189,
+            "maximumBoneLengthError": 3.3095313917153035e-7,
+            "pelvisExcursion": 0.05994630155295977,
+            "maxPelvisSpeed": 1.1922537282753476,
+            "maxKneeDegreesPerSecond": 668.1023383933635,
+            "maxLocalJointDegreesPerSecond": 684.1423672726667,
+            "loopSurfaceError": 3.4851489723969525e-7
+          }
+        }
+      ],
+      "blendMinimumSoleY": -0.04736821335871437,
+      "blendCorrectedMinimumSoleY": 0.002999999795897309,
+      "blendMinimumKneeDegrees": 9.96978594807269,
+      "unchangedOtherClips": 8
+    },
+    {
+      "key": "cat-kunoichi",
+      "sha256": "c81c37512be0502decf46495868a0c8521470098117b422b167ffce8da59cd9b",
+      "records": [
+        {
+          "clip": "Walk_Loop",
+          "seconds": 1.1166666746139526,
+          "sampleRate": 240,
+          "metric": {
+            "minimumSoleY": 0.002752434168540913,
+            "maximumLowestSoleY": 0.0038503683170210542,
+            "flightFraction": 0,
+            "kneeDegrees": [
+              14.184713138959856,
+              75.2175606140362
+            ],
+            "elbowDegrees": [
+              17.408131023162674,
+              32.707571729301435
+            ],
+            "minimumForwardKneePlane": 0.9809695226453385,
+            "maximumBoneLengthError": 0.000001007336518366042,
+            "pelvisExcursion": 0.03895234742658338,
+            "maxPelvisSpeed": 0.7454330601241949,
+            "maxKneeDegreesPerSecond": 376.0706650389534,
+            "maxLocalJointDegreesPerSecond": 483.64868392316737,
+            "loopSurfaceError": 1.5952394228353408e-7
+          }
+        },
+        {
+          "clip": "Run_Loop",
+          "seconds": 0.7333333492279053,
+          "sampleRate": 240,
+          "metric": {
+            "minimumSoleY": 0.002619320123735445,
+            "maximumLowestSoleY": 0.03491434062345939,
+            "flightFraction": 0.2247191011235955,
+            "kneeDegrees": [
+              3.282389441024464,
+              115.15790150935541
+            ],
+            "elbowDegrees": [
+              66.47666134494929,
+              125.43954648227623
+            ],
+            "minimumForwardKneePlane": 0.9648350991545952,
+            "maximumBoneLengthError": 7.050159611110551e-7,
+            "pelvisExcursion": 0.054386505081225334,
+            "maxPelvisSpeed": 1.1789356612619795,
+            "maxKneeDegreesPerSecond": 668.1025751436405,
+            "maxLocalJointDegreesPerSecond": 684.0982003390598,
+            "loopSurfaceError": 9.93652804243707e-8
+          }
+        }
+      ],
+      "blendMinimumSoleY": -0.039169653515178836,
+      "blendCorrectedMinimumSoleY": 0.002522930424962941,
+      "blendMinimumKneeDegrees": 9.969835917627197,
+      "unchangedOtherClips": 8
+    }
+  ]
+}

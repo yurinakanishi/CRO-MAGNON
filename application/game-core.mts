@@ -723,6 +723,7 @@ export function createGameCore({
                 ? {
                     home: { ...actor.home },
                     crowRole: actor.crowRole,
+                    tier: actor.tier,
                     name: actor.name,
                     scale: actor.scale,
                     radius: actor.radius,
@@ -768,6 +769,7 @@ export function createGameCore({
               home: currentCrow.home,
               health: Math.min(actor.health ?? currentCrow.maxHealth, currentCrow.maxHealth),
               airborneHeight: 0,
+              sealed: false,
               targetId: null,
               returning: actor.phase === 'alive',
               nextPathAt: 0,

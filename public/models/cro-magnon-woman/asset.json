@@ -4,9 +4,9 @@
   "kind": "humanoid",
   "candidate": 1,
   "status": "reviewed-prototype",
-  "url": "/models/cro-magnon-woman/model-run-r05.glb",
-  "sha256": "17754555b2ea158aec8531ea7ca214b485924a1ff51adc186f0fe7073733c2f0",
-  "bytes": 14342760,
+  "url": "/models/cro-magnon-woman/model-human-r10.glb",
+  "sha256": "bac0bdd9d2961654501b5cc39ce94514b6262c7750ff10299948db4c377e711a",
+  "bytes": 14557108,
   "triangles": 65707,
   "upAxis": "Y",
   "forwardAxis": "+Z",
@@ -45,13 +45,19 @@
     },
     {
       "name": "Run_Loop",
-      "seconds": 0.84,
-      "loop": true
+      "seconds": 0.7333333333333333,
+      "loop": true,
+      "fps": 120,
+      "frames": 89,
+      "description": "CMU 09_01 human running retargeted to the existing skeleton with stable anatomical joint planes and sole contact."
     },
     {
       "name": "Walk_Loop",
-      "seconds": 1.1,
-      "loop": true
+      "seconds": 1.1166666666666667,
+      "loop": true,
+      "fps": 120,
+      "frames": 135,
+      "description": "CMU 35_01 human walking retargeted to the existing skeleton with stable anatomical joint planes and sole contact."
     },
     {
       "name": "Wave",
@@ -89,28 +95,28 @@
     "referenceSha256": "7c105860011cf6a549f4f5b719f35416aac57fb1bb5302b2cb0bf48b90f4b502",
     "reconstruction": "Local TRELLIS-2; settings and dense SHA in model workspace",
     "candidateFile": "output/creature-motion/revision-04/cro-magnon-woman/model.glb",
-    "visualReview": "assets/creature-motion/models/cro-magnon-woman-review.json",
+    "visualReview": "assets/human-locomotion/reviews/cro-magnon-woman-r10.json",
     "previousDeliverySha256": "4705b3e681b572a21225493db90730cec366c9f51fcbd71082c49e4f808379a9",
     "huntingAnimationAuthor": "Codex; appended keyframes, previous surface/rig/materials/animation bytes preserved",
-    "previousMotionVisualReview": "output/model-generation/models/cro-magnon-woman/qa/adoption-review.json"
+    "previousMotionVisualReview": "output/model-generation/models/cro-magnon-woman/qa/adoption-review.json",
+    "previousVisualReview": "assets/creature-motion/models/cro-magnon-woman-review.json"
   },
   "lods": [],
   "bones": 22,
   "locomotion": {
     "Walk_Loop": {
-      "metresPerSecond": 0.891933259582687,
-      "strideMetres": 0.9811265855409558,
-      "dutyFactor": 0.6,
-      "method": "Distinct upright low-step walk and bent-elbow high-recovery run; limb-length IK refined against skinned soles",
-      "swingLiftMetres": 0.047094076105965874,
-      "cycleSeconds": 1.1
+      "metresPerSecond": 1.161063382186609,
+      "strideMetres": 1.2965207767750468,
+      "cycleSeconds": 1.1166666666666667,
+      "dutyFactor": 0.61,
+      "method": "CMU measured human locomotion, anatomical retarget and sole contact"
     },
     "Run_Loop": {
-      "metresPerSecond": 1.8220922302903464,
-      "strideMetres": 1.530557473443891,
+      "metresPerSecond": 3.323654783972368,
+      "strideMetres": 2.4373468415797364,
+      "cycleSeconds": 0.7333333333333333,
       "dutyFactor": 0.36,
-      "method": "Bounded sagittal joint recovery, grounded flexion/extension stance, independent flight pelvis, stable bone twist",
-      "cycleSeconds": 0.84
+      "method": "CMU measured human locomotion, anatomical retarget and sole contact"
     }
   },
   "hunting": {
@@ -195,7 +201,8 @@
     "status": "adopted",
     "review": "assets/player-gaits/README.md",
     "sourceDelivery": "/models/cro-magnon-woman/model-downed-r01.glb",
-    "author": "Codex"
+    "author": "Codex",
+    "supersededBy": "humanLocomotion"
   },
   "spearThrust": {
     "revision": "revision-02",
@@ -221,6 +228,41 @@
     "method": "Bounded sagittal joint recovery, grounded flexion/extension stance, independent flight pelvis, stable bone twist",
     "stanceFraction": 0.36,
     "peakAuthoredSwingKneeDegrees": 104,
-    "review": "assets/player-gaits/RUN_REPAIR.md"
+    "review": "assets/player-gaits/RUN_REPAIR.md",
+    "supersededBy": "humanLocomotion"
+  },
+  "humanLocomotion": {
+    "revision": "revision-10",
+    "sourceDelivery": "/models/cro-magnon-woman/model-run-r05.glb",
+    "sourceSha256": "17754555b2ea158aec8531ea7ca214b485924a1ff51adc186f0fe7073733c2f0",
+    "status": "adopted",
+    "changes": [
+      {
+        "clip": "Walk_Loop",
+        "trial": "35_01",
+        "startFrame": 140,
+        "endFrame": 274,
+        "phaseOffsetFrames": 0,
+        "sampleRate": 120,
+        "frames": 135,
+        "seconds": 1.1166666666666667,
+        "legScale": 0.8995038719816305,
+        "strideMetres": 1.2965207767750468
+      },
+      {
+        "clip": "Run_Loop",
+        "trial": "09_01",
+        "startFrame": 1,
+        "endFrame": 89,
+        "phaseOffsetFrames": 80,
+        "sampleRate": 120,
+        "frames": 89,
+        "seconds": 0.7333333333333333,
+        "legScale": 0.9135037783051951,
+        "strideMetres": 2.4373468415797364
+      }
+    ],
+    "reference": "assets/human-locomotion/README.md",
+    "previousVisualReview": "assets/player-gaits/reviews/cro-magnon-woman-run-r05.json"
   }
 }

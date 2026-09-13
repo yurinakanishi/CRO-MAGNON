@@ -16,7 +16,7 @@
     "pivot": "ground-centred",
     "min": [
       -0.21255625186896718,
-      5.5505816141005146e-8,
+      5.5505816141005146e-08,
       -0.26347975874488405
     ],
     "max": [
@@ -116,9 +116,10 @@
     "referenceSha256": "aa89e5f3e32de72d75709596719bf65371efc2e70bc7c863911225375391be57",
     "reconstruction": "Local TRELLIS-2; preserved dense reconstruction and measured reduction.",
     "candidateFile": "output/creature-motion/revision-04/desert-fennec-mage/model.glb",
-    "visualReview": "assets/creature-motion/models/desert-fennec-mage-review.json",
+    "visualReview": "assets/player-gaits/reviews/desert-fennec-mage-run-r05.json",
     "replaces": "floppy-ear-mage",
-    "previousMotionVisualReview": "output/model-generation/models/desert-fennec-mage/qa/adoption-review.json"
+    "previousMotionVisualReview": "output/model-generation/models/desert-fennec-mage/qa/adoption-review.json",
+    "previousVisualReview": "assets/creature-motion/models/desert-fennec-mage-review.json"
   },
   "motionReview": {
     "revision": "revision-04",

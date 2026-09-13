@@ -1,0 +1,34 @@
+{
+  "decision": "adopt",
+  "at": "2026-09-12T13:33:30.761Z",
+  "key": "giant-ape",
+  "revision": "run-revision-05",
+  "sha256": "ae9cee5355ca661235b4c310df8feb03f00dc447ab479c7de5446a9429d3faca",
+  "sourceSha256": "c41f3aab0cdc27f7decfd6e3111c37c2961d7a8a8827daf3f4f9dc61874e76d2",
+  "source": "/models/giant-ape/model-gaits-r02.glb",
+  "sourceKind": "Delivered gaits revision 02 GLB (itself built on the creature-motion revision 04 delivery); Run_Loop re-authored, everything else retained.",
+  "modifiedClips": [
+    "Run_Loop"
+  ],
+  "preserved": "Original binary prefix, meshes, skins, bones, UVs, materials, textures, Walk_Loop (gaits revision 02) and all other clips.",
+  "measurement": "assets/player-gaits/run-validation.json",
+  "metrics": {
+    "maximumKneeDegrees": 102.14344569066395,
+    "pelvisExcursionMetres": 0.13604032435403146,
+    "flightFraction": 0.2304147465437788,
+    "minimumSoleY": 0.002865727913269414,
+    "loopSurfaceError": 1.104252019719609e-07
+  },
+  "evidence": "assets/player-gaits/run-game-qa.json",
+  "gameQA": {
+    "phases": [
+      "walk",
+      "run",
+      "walk-again"
+    ],
+    "connections": 5,
+    "reloaded": true,
+    "errors": 0
+  },
+  "notes": "Review record written 2026-09-13 for the run-gait adoption of 2026-09-12 (assets/player-gaits/RUN_REPAIR.md); the adoption itself, its 240 Hz GLB read-back and the five-connection real-Chrome QA were done then. Foot slip at high speed remains, as documented."
+}

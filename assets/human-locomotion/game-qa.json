@@ -1,0 +1,268 @@
+{
+  "records": [
+    {
+      "key": "cro-magnon-woman",
+      "phases": [
+        {
+          "minimumLocalSoleY": 0.0027386074635110383,
+          "sampledSoles": 19,
+          "label": "walk",
+          "clip": "Walk_Loop",
+          "frames": 56,
+          "sha": "bac0bdd9d2961654501b5cc39ce94514b6262c7750ff10299948db4c377e711a",
+          "rate": 1.35,
+          "meanFrameMs": 20.712499999999995
+        },
+        {
+          "minimumLocalSoleY": 0.0026180904903267844,
+          "sampledSoles": 22,
+          "label": "run",
+          "clip": "Run_Loop",
+          "frames": 49,
+          "sha": "bac0bdd9d2961654501b5cc39ce94514b6262c7750ff10299948db4c377e711a",
+          "rate": 1.5,
+          "meanFrameMs": 23.532653061224497
+        },
+        {
+          "minimumLocalSoleY": 0.0025521875693133526,
+          "sampledSoles": 25,
+          "label": "walk-again",
+          "clip": "Walk_Loop",
+          "frames": 56,
+          "sha": "bac0bdd9d2961654501b5cc39ce94514b6262c7750ff10299948db4c377e711a",
+          "rate": 1.35,
+          "meanFrameMs": 21.42678571428574
+        }
+      ],
+      "jumpAndAttackRecovered": true
+    },
+    {
+      "key": "cro-magnon-hunter",
+      "phases": [
+        {
+          "minimumLocalSoleY": 0.0028980268343058333,
+          "sampledSoles": 23,
+          "label": "walk",
+          "clip": "Walk_Loop",
+          "frames": 57,
+          "sha": "b2d51d01d095bb5e995e6a6f7a9e9b084f2796e47f675370900dea7ac20d2720",
+          "rate": 1.35,
+          "meanFrameMs": 21.92807017543856
+        },
+        {
+          "minimumLocalSoleY": 0.002589359904376508,
+          "sampledSoles": 22,
+          "label": "run",
+          "clip": "Run_Loop",
+          "frames": 49,
+          "sha": "b2d51d01d095bb5e995e6a6f7a9e9b084f2796e47f675370900dea7ac20d2720",
+          "rate": 1.5,
+          "meanFrameMs": 23.88163265306124
+        },
+        {
+          "minimumLocalSoleY": 0.0026910857087366676,
+          "sampledSoles": 27,
+          "label": "walk-again",
+          "clip": "Walk_Loop",
+          "frames": 61,
+          "sha": "b2d51d01d095bb5e995e6a6f7a9e9b084f2796e47f675370900dea7ac20d2720",
+          "rate": 1.35,
+          "meanFrameMs": 19.399999999999963
+        }
+      ],
+      "jumpAndAttackRecovered": true
+    },
+    {
+      "key": "neanderthal-woman",
+      "phases": [
+        {
+          "minimumLocalSoleY": 0.0025189119404884406,
+          "sampledSoles": 22,
+          "label": "walk",
+          "clip": "Walk_Loop",
+          "frames": 54,
+          "sha": "b1cd6f89291d3d71adb7be0a7f245c746a32691fba2df0e62faccb905a0af1a8",
+          "rate": 1.35,
+          "meanFrameMs": 22.840740740740767
+        },
+        {
+          "minimumLocalSoleY": 0.0027419642840401464,
+          "sampledSoles": 23,
+          "label": "run",
+          "clip": "Run_Loop",
+          "frames": 51,
+          "sha": "b1cd6f89291d3d71adb7be0a7f245c746a32691fba2df0e62faccb905a0af1a8",
+          "rate": 1.5,
+          "meanFrameMs": 22.94313725490193
+        },
+        {
+          "minimumLocalSoleY": 0.0028744207861998335,
+          "sampledSoles": 26,
+          "label": "walk-again",
+          "clip": "Walk_Loop",
+          "frames": 60,
+          "sha": "b1cd6f89291d3d71adb7be0a7f245c746a32691fba2df0e62faccb905a0af1a8",
+          "rate": 1.35,
+          "meanFrameMs": 20.55499999999993
+        }
+      ],
+      "jumpAndAttackRecovered": true
+    },
+    {
+      "key": "neanderthal-hunter",
+      "phases": [
+        {
+          "minimumLocalSoleY": 0.002782301106631902,
+          "sampledSoles": 22,
+          "label": "walk",
+          "clip": "Walk_Loop",
+          "frames": 55,
+          "sha": "93047f04342a5880dc4574956846f130b3d97c5041408c07f790d2ae09f55000",
+          "rate": 1.35,
+          "meanFrameMs": 21.821818181818127
+        },
+        {
+          "minimumLocalSoleY": 0.0026312082744276892,
+          "sampledSoles": 22,
+          "label": "run",
+          "clip": "Run_Loop",
+          "frames": 47,
+          "sha": "93047f04342a5880dc4574956846f130b3d97c5041408c07f790d2ae09f55000",
+          "rate": 1.5,
+          "meanFrameMs": 23.47446808510629
+        },
+        {
+          "minimumLocalSoleY": 0.0027413219601775812,
+          "sampledSoles": 24,
+          "label": "walk-again",
+          "clip": "Walk_Loop",
+          "frames": 56,
+          "sha": "93047f04342a5880dc4574956846f130b3d97c5041408c07f790d2ae09f55000",
+          "rate": 1.35,
+          "meanFrameMs": 21.132142857142753
+        }
+      ],
+      "jumpAndAttackRecovered": true
+    },
+    {
+      "key": "cat-kunoichi",
+      "phases": [
+        {
+          "minimumLocalSoleY": 0.002881652610740952,
+          "sampledSoles": 22,
+          "label": "walk",
+          "clip": "Walk_Loop",
+          "frames": 52,
+          "sha": "c81c37512be0502decf46495868a0c8521470098117b422b167ffce8da59cd9b",
+          "rate": 1.35,
+          "meanFrameMs": 24.03846153846154
+        },
+        {
+          "minimumLocalSoleY": 0.002638627853534755,
+          "sampledSoles": 21,
+          "label": "run",
+          "clip": "Run_Loop",
+          "frames": 47,
+          "sha": "c81c37512be0502decf46495868a0c8521470098117b422b167ffce8da59cd9b",
+          "rate": 1.5,
+          "meanFrameMs": 24.536170212765896
+        },
+        {
+          "minimumLocalSoleY": 0.0028881145236825147,
+          "sampledSoles": 24,
+          "label": "walk-again",
+          "clip": "Walk_Loop",
+          "frames": 55,
+          "sha": "c81c37512be0502decf46495868a0c8521470098117b422b167ffce8da59cd9b",
+          "rate": 1.35,
+          "meanFrameMs": 21.818181818181817
+        }
+      ],
+      "jumpAndAttackRecovered": true
+    },
+    {
+      "key": "desert-fennec-mage",
+      "phases": [
+        {
+          "minimumLocalSoleY": null,
+          "sampledSoles": 0,
+          "label": "walk",
+          "clip": "Walk_Loop",
+          "frames": 54,
+          "sha": "1df80588345196a75382afbd437b6ec9349bc717688433801dc3fdd72c8e0841",
+          "rate": 1.35,
+          "meanFrameMs": 24.077777777777722
+        },
+        {
+          "minimumLocalSoleY": null,
+          "sampledSoles": 0,
+          "label": "run",
+          "clip": "Run_Loop",
+          "frames": 45,
+          "sha": "1df80588345196a75382afbd437b6ec9349bc717688433801dc3fdd72c8e0841",
+          "rate": 1.5,
+          "meanFrameMs": 25.260000000000097
+        },
+        {
+          "minimumLocalSoleY": null,
+          "sampledSoles": 0,
+          "label": "walk-again",
+          "clip": "Walk_Loop",
+          "frames": 51,
+          "sha": "1df80588345196a75382afbd437b6ec9349bc717688433801dc3fdd72c8e0841",
+          "rate": 1.35,
+          "meanFrameMs": 23.854901960784286
+        }
+      ],
+      "jumpAndAttackRecovered": true
+    },
+    {
+      "key": "giant-ape",
+      "phases": [
+        {
+          "minimumLocalSoleY": null,
+          "sampledSoles": 0,
+          "label": "walk",
+          "clip": "Walk_Loop",
+          "frames": 55,
+          "sha": "ae9cee5355ca661235b4c310df8feb03f00dc447ab479c7de5446a9429d3faca",
+          "rate": 1.35,
+          "meanFrameMs": 23.336363636363636
+        },
+        {
+          "minimumLocalSoleY": null,
+          "sampledSoles": 0,
+          "label": "run",
+          "clip": "Run_Loop",
+          "frames": 45,
+          "sha": "ae9cee5355ca661235b4c310df8feb03f00dc447ab479c7de5446a9429d3faca",
+          "rate": 1.5,
+          "meanFrameMs": 24.148888888888823
+        },
+        {
+          "minimumLocalSoleY": null,
+          "sampledSoles": 0,
+          "label": "walk-again",
+          "clip": "Walk_Loop",
+          "frames": 55,
+          "sha": "ae9cee5355ca661235b4c310df8feb03f00dc447ab479c7de5446a9429d3faca",
+          "rate": 1.35,
+          "meanFrameMs": 21.516363636363796
+        }
+      ],
+      "jumpAndAttackRecovered": true
+    }
+  ],
+  "errors": [],
+  "connections": 5,
+  "reloaded": true,
+  "fixtures": "Profiles and clear meadow start (76,68); peers beside the route; unchanged game time and real input",
+  "bridge": {
+    "crossed": true,
+    "turnedAndStopped": true,
+    "samples": 57,
+    "notes": "Node host did not install the client terrain atlas, so recorded y=0 is not a rendered height measurement. The actual bridge deck is visible in bridge-crossing.png."
+  },
+  "totalSoleSamples": 344,
+  "minimumObservedLocalSoleY": 0.0025189119404884406
+}

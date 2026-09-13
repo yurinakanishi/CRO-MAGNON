@@ -41,6 +41,14 @@ const project = () => {
   const e = room.enemies.find((e) => e.modelKey === R.modelKey);
   return {
     enemy: { ...e, pendingAttack: e.pendingAttack },
+    enemies: room.enemies.map((x) => ({
+      id: x.id,
+      phase: x.phase,
+      crowRole: x.crowRole,
+      sealed: x.sealed,
+      health: x.health,
+    })),
+    crowRite: room.crowRite ?? null,
     poisonShots: room.poisonShots ?? [],
     poisonSplashes: room.poisonSplashes ?? [],
     players: [...room.players.values()].map((p) => ({
@@ -59,6 +67,13 @@ process.send({ ready: true, port, tuning: R });
 process.on('message', async (m) => {
   try {
     const room = game.rooms.get('BEHEMOTH-QA');
+    if (m.kind === 'mammothStage') {
+      // Tail review only: hold the initial roaming pose for rear screenshots.
+      // Once mounted, the ordinary server riding controller owns the animal.
+      const animal=room.animals.find(a=>a.id==='mammoth-1');
+      stopActor(animal);
+      Object.assign(animal,{facing:0,nextRoam:animal.age+600,clip:'Idle_Loop'});
+    }
     if (m.kind === 'prepare') {
       const e = room.enemies.find((e) => e.modelKey === R.modelKey),
         now = Date.now();
@@ -117,6 +132,22 @@ process.on('message', async (m) => {
       Object.assign(p, { x: m.x, z: m.z });
       if (Number.isFinite(m.facing)) p.facing = m.facing;
       if (m.vulnerable) p.invulnerableUntil = 0;
+    }
+    if (m.kind === 'crowFall') {
+      // Castle QA: a whole cult rank falls at once so the rank above opens.
+      const now = Date.now();
+      for (const e of room.enemies)
+        if (e.castle && e.modelKey === 'crow-shaman' && (m.roles || []).includes(e.crowRole))
+          Object.assign(e, {
+            phase: 'respawning',
+            phaseStartedAt: now,
+            alive: false,
+            health: 0,
+            clip: null,
+            behavior: 'respawning',
+            pendingAttack: null,
+            targetId: null,
+          });
     }
     if (m.kind === 'escape') {
       const e = room.enemies.find((e) => e.modelKey === R.modelKey);

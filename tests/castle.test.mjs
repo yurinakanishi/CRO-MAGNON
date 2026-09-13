@@ -6,6 +6,9 @@ import {
   CASTLE,
   CASTLE_GATE,
   CASTLE_HALL,
+  CASTLE_SUMMIT,
+  CASTLE_TIERS,
+  castleTierOfHeight,
   castleWorld,
   nearCastle,
 } from '../dist/shared/castle-layout.mjs';
@@ -28,14 +31,31 @@ const CASTLE_GLB = JSON.parse(
 test('castle floor atlas is measured from the delivered mesh and clears the starting valley', async () => {
   const bytes = await readFile(CASTLE_GLB);
   assert.equal(createHash('sha256').update(bytes).digest('hex'), CASTLE_SURFACE.data.sourceSha256);
-  for (let x = -39; x <= 39; x += 2)
-    for (let z = -39; z <= 39; z += 2) {
+  for (let x = -55; x <= 55; x += 2)
+    for (let z = -64; z <= 64; z += 2) {
       const p = castleWorld(x, z);
       assert.ok(isLand(p.x, p.z, 1), `${x},${z}`);
     }
-  // The ruin: forecourt at valley level, one great hall about 5.6 m above it.
+  // 2026-09-13 stepped fortress: the forecourt at valley level, then four
+  // terraces at the measured heights, the summit altar highest.
   assert.ok(Math.abs(CASTLE_SURFACE.height(CASTLE_GATE.x, CASTLE_GATE.z) ?? 0) < 0.3);
-  assert.ok((CASTLE_SURFACE.height(CASTLE_HALL.x, CASTLE_HALL.z) ?? 0) > 5);
+  for (const level of CASTLE_TIERS) {
+    const h = CASTLE_SURFACE.height(level.post.x, level.post.z);
+    assert.ok(Math.abs(h - level.floor) < 0.6, `level ${level.tier} post at ${h}`);
+    assert.equal(castleTierOfHeight(h), level.tier);
+    if (level.stair) {
+      assert.equal(
+        castleTierOfHeight(CASTLE_SURFACE.height(level.stair.foot.x, level.stair.foot.z)),
+        level.tier,
+      );
+      assert.equal(
+        castleTierOfHeight(CASTLE_SURFACE.height(level.stair.top.x, level.stair.top.z)),
+        level.tier + 1,
+      );
+    }
+  }
+  assert.ok((CASTLE_SURFACE.height(CASTLE_HALL.x, CASTLE_HALL.z) ?? 0) > 17);
+  assert.ok((CASTLE_SURFACE.height(CASTLE_SUMMIT.x, CASTLE_SUMMIT.z) ?? 0) > 28);
   for (const p of [
     CAMP,
     ...INITIAL_RESOURCES,
@@ -48,7 +68,10 @@ test('castle floor atlas is measured from the delivered mesh and clears the star
     Math.abs(Math.hypot(CASTLE.x - CAMP.x, CASTLE.z - CAMP.z) - Math.hypot(90, 50)) < 1e-9,
     'camp distance is preserved',
   );
-  assert.ok(CASTLE.z > 0 && CASTLE.scale === 1.2, 'castle moved map-south and enlarged');
+  assert.ok(
+    CASTLE.z > 0 && CASTLE.scale === 1,
+    'castle stays map-south; the 110 m model at scale 1',
+  );
   assert.ok(
     Math.hypot(CASTLE.x - SABERTOOTH_GROUND.x, CASTLE.z - SABERTOOTH_GROUND.z) > 90,
     'sabertooth separation increased',
@@ -68,14 +91,16 @@ test('normal authoritative movement enters the castle, climbs all terraces and r
       runningRequested: true,
     };
   let now = 1000;
-  // Gate, forecourt, up the left stair, across the hall, down the right stair, out.
+  // Gate, forecourt, then level by level up the central stairs to the summit
+  // and back down to the gate.
   const goals = [
     CASTLE_GATE,
-    castleWorld(-22, 20),
-    castleWorld(-22, 2),
+    castleWorld(-20, 45),
+    castleWorld(-10, 24),
     CASTLE_HALL,
-    castleWorld(20, 2),
-    castleWorld(20, 20),
+    castleWorld(8, -4),
+    CASTLE_SUMMIT,
+    castleWorld(-10, 24),
     CASTLE_GATE,
   ];
   let maximumHeight = 0,
@@ -96,28 +121,28 @@ test('normal authoritative movement enters the castle, climbs all terraces and r
       `Failed to reach ${JSON.stringify({ goal, actor, local: CASTLE_SURFACE.local(actor.x, actor.z) })}`,
     );
   }
-  assert.ok(maximumHeight > 5, `hall reached (${maximumHeight})`);
+  assert.ok(maximumHeight > 28, `summit reached (${maximumHeight})`);
   assert.ok(samples > 500);
   assert.ok(
-    collision.path({ x: 48, z: 57 }, CASTLE_HALL, 0.32).length > 2,
-    'Long route uses the entrance',
+    collision.path({ x: 48, z: 57 }, CASTLE_SUMMIT, 0.32).length > 8,
+    'Long route uses the entrance and every stair',
   );
   assert.equal(
-    collision.segmentFree(CASTLE_GATE, CASTLE_HALL, 0.32),
+    collision.segmentFree(castleWorld(-22, 36), castleWorld(-22, 20), 0.32),
     false,
-    'Walls block a straight shortcut',
+    'The terrace wall blocks a straight shortcut from the forecourt onto the first terrace',
   );
-  // 2026-09-12: the sorcerer waits on the roofless great hall on top of the ruin.
+  // 2026-09-13: the first hex monk waits on the middle terrace.
   const enemy = createEnemies(collision, [], 1000)[0];
-  assert.ok(collision.surfaceHeight(enemy) > 5);
-  assert.ok(Math.hypot(enemy.x - CASTLE_HALL.x, enemy.z - CASTLE_HALL.z) < 20);
-  // The hall is a wide arena: a 12 m ring around the post is all walkable floor.
+  assert.ok(collision.surfaceHeight(enemy) > 17);
+  assert.ok(Math.hypot(enemy.x - CASTLE_HALL.x, enemy.z - CASTLE_HALL.z) < 32);
+  // Its beat: a 2 m ring around the post is all terrace floor.
   for (let a = 0; a < 16; a++) {
     const p = {
-      x: enemy.home.x + 12 * Math.cos((a * Math.PI) / 8),
-      z: enemy.home.z + 12 * Math.sin((a * Math.PI) / 8),
+      x: enemy.home.x + 2 * Math.cos((a * Math.PI) / 8),
+      z: enemy.home.z + 2 * Math.sin((a * Math.PI) / 8),
     };
-    assert.ok(collision.surfaceHeight(p) > 5, `hall floor at ${a}`);
+    assert.ok(collision.surfaceHeight(p) > 17, `terrace floor at ${a}`);
   }
 });
 test('camera triangle index agrees with full exact-mesh raycasts across the castle', async () => {
@@ -133,12 +158,13 @@ test('camera triangle index agrees with full exact-mesh raycasts across the cast
     ray = new THREE.Raycaster();
   let hits = 0;
   for (const local of [
-    [-9, 38],
-    [-22, 20],
-    [-22, 8],
-    [0, -16],
-    [7, -12],
-    [0, 8],
+    [-2, 58],
+    [0, 44],
+    [0, 32],
+    [-10, 24],
+    [-29, 7],
+    [8, -4],
+    [-10, -20],
   ])
     for (let i = 0; i < 16; i++) {
       const p = castleWorld(...local),
@@ -157,5 +183,5 @@ test('camera triangle index agrees with full exact-mesh raycasts across the cast
       else assert.ok(actual > 8.8, `only a grazing float32 hit is allowed: ${actual}`);
       if (hit) hits++;
     }
-  assert.ok(hits > 6, `open ruin: ${hits} wall hits`);
+  assert.ok(hits > 6, `open terraces: ${hits} wall hits`);
 });

@@ -1,0 +1,41 @@
+{
+  "at": "2026-09-13T12:14:28.667Z",
+  "revision": "revision-10",
+  "records": [
+    {
+      "key": "cro-magnon-woman",
+      "url": "/models/cro-magnon-woman/model-human-r10.glb",
+      "sha256": "bac0bdd9d2961654501b5cc39ce94514b6262c7750ff10299948db4c377e711a",
+      "bytes": 14557108,
+      "source": "/models/cro-magnon-woman/model-run-r05.glb"
+    },
+    {
+      "key": "cro-magnon-hunter",
+      "url": "/models/cro-magnon-hunter/model-human-r10.glb",
+      "sha256": "b2d51d01d095bb5e995e6a6f7a9e9b084f2796e47f675370900dea7ac20d2720",
+      "bytes": 10712084,
+      "source": "/models/cro-magnon-hunter/model-run-r05.glb"
+    },
+    {
+      "key": "neanderthal-woman",
+      "url": "/models/neanderthal-woman/model-human-r10.glb",
+      "sha256": "b1cd6f89291d3d71adb7be0a7f245c746a32691fba2df0e62faccb905a0af1a8",
+      "bytes": 14182696,
+      "source": "/models/neanderthal-woman/model-run-r05.glb"
+    },
+    {
+      "key": "neanderthal-hunter",
+      "url": "/models/neanderthal-hunter/model-human-r10.glb",
+      "sha256": "93047f04342a5880dc4574956846f130b3d97c5041408c07f790d2ae09f55000",
+      "bytes": 11260680,
+      "source": "/models/neanderthal-hunter/model-run-r05.glb"
+    },
+    {
+      "key": "cat-kunoichi",
+      "url": "/models/cat-kunoichi/model-human-r10.glb",
+      "sha256": "c81c37512be0502decf46495868a0c8521470098117b422b167ffce8da59cd9b",
+      "bytes": 7951312,
+      "source": "/models/cat-kunoichi/model-run-r05.glb"
+    }
+  ]
+}

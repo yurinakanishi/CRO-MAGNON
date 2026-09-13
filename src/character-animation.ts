@@ -1,5 +1,6 @@
 import * as THREE from 'three';
 import { ActionBlender, gaitPhase } from './action-blender.js';
+import { LocomotionGrounding } from './locomotion-grounding.js';
 
 export const HUMAN_CLIPS = [
   'Idle_Loop',
@@ -85,8 +86,9 @@ export class CharacterAnimation {
   declare current: any;
   declare name: any;
   private blender: ActionBlender;
+  private grounding: LocomotionGrounding | null;
 
-  constructor(root, clips, { walkSpeed, runSpeed }) {
+  constructor(root, clips, { walkSpeed, runSpeed, groundLocomotion = false }) {
     if (!(runSpeed > 0) || !(walkSpeed > 0))
       throw new Error('Character clip speeds must be positive');
     const byName = new Map<string, THREE.AnimationClip>(clips.map((clip) => [clip.name, clip]));
@@ -100,6 +102,7 @@ export class CharacterAnimation {
     if (byName.has('Downed'))
       this.actions.set('Downed', this.mixer.clipAction(byName.get('Downed')));
     this.root = root;
+    this.grounding = groundLocomotion ? new LocomotionGrounding(root) : null;
     this.blender = new ActionBlender(this.actions);
     this.clipSpeeds = { Walk_Loop: walkSpeed, Run_Loop: runSpeed };
     this.speed = 0;
@@ -114,6 +117,7 @@ export class CharacterAnimation {
   }
 
   change(name, fade = 0.16) {
+    this.grounding?.restore();
     const next = this.actions.get(name);
     if (next === this.current && !this.oneShot) return;
     const previous = this.current;
@@ -154,6 +158,7 @@ export class CharacterAnimation {
 
   /** Seek from the fatal hit timestamp; hold the last frame until server recovery. */
   updateDowned(dt: number, elapsedSeconds: number) {
+    this.grounding?.restore();
     const action = this.actions.get('Downed');
     if (!action) return;
     if (this.name !== 'Downed' || this.current !== action)
@@ -171,6 +176,7 @@ export class CharacterAnimation {
   }
 
   update(dt, speed = 0, running = false) {
+    this.grounding?.restore();
     if (this.name === 'Downed') return;
     this.speed = Number.isFinite(speed) ? Math.max(0, speed) : 0;
     this.moving = this.speed > 0.025;
@@ -183,6 +189,7 @@ export class CharacterAnimation {
       );
     this.blender.update(dt);
     this.mixer.update(dt);
+    this.grounding?.apply(this.actions);
     for (const [action, remaining] of this.retiring) {
       if (remaining <= dt) {
         action.stop();
@@ -193,6 +200,7 @@ export class CharacterAnimation {
   }
 
   dispose() {
+    this.grounding?.restore();
     this.mixer.removeEventListener('finished', this.onFinished);
     this.mixer.stopAllAction();
     this.mixer.uncacheRoot(this.root);

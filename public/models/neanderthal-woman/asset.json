@@ -4,9 +4,9 @@
   "kind": "humanoid",
   "candidate": 1,
   "status": "reviewed-prototype",
-  "url": "/models/neanderthal-woman/model-run-r05.glb",
-  "sha256": "cf1259d975dd4873b8923889c59fb8fb8f88d59cd13cb4d83eb0e1ff4a23c2b3",
-  "bytes": 13968356,
+  "url": "/models/neanderthal-woman/model-human-r10.glb",
+  "sha256": "b1cd6f89291d3d71adb7be0a7f245c746a32691fba2df0e62faccb905a0af1a8",
+  "bytes": 14182696,
   "triangles": 68090,
   "upAxis": "Y",
   "forwardAxis": "+Z",
@@ -45,13 +45,19 @@
     },
     {
       "name": "Run_Loop",
-      "seconds": 0.84,
-      "loop": true
+      "seconds": 0.7333333333333333,
+      "loop": true,
+      "fps": 120,
+      "frames": 89,
+      "description": "CMU 09_01 human running retargeted to the existing skeleton with stable anatomical joint planes and sole contact."
     },
     {
       "name": "Walk_Loop",
-      "seconds": 1.1,
-      "loop": true
+      "seconds": 1.1166666666666667,
+      "loop": true,
+      "fps": 120,
+      "frames": 135,
+      "description": "CMU 35_01 human walking retargeted to the existing skeleton with stable anatomical joint planes and sole contact."
     },
     {
       "name": "Wave",
@@ -89,28 +95,28 @@
     "referenceSha256": "34cc4d5fa6b4ca64fbef85cf1560011d705ab11d582883bc3955fe3e6d305222",
     "reconstruction": "Local TRELLIS-2; settings and dense SHA in model workspace",
     "candidateFile": "output/creature-motion/revision-04/neanderthal-woman/model.glb",
-    "visualReview": "assets/creature-motion/models/neanderthal-woman-review.json",
+    "visualReview": "assets/human-locomotion/reviews/neanderthal-woman-r10.json",
     "previousDeliverySha256": "ea63762e435024d4f907fdca86946e48b449d1d3a9d0e07856fc77395f0ba1ea",
     "huntingAnimationAuthor": "Codex; appended keyframes, previous surface/rig/materials/animation bytes preserved",
-    "previousMotionVisualReview": "output/model-generation/models/neanderthal-woman/qa/adoption-review.json"
+    "previousMotionVisualReview": "output/model-generation/models/neanderthal-woman/qa/adoption-review.json",
+    "previousVisualReview": "assets/creature-motion/models/neanderthal-woman-review.json"
   },
   "lods": [],
   "bones": 22,
   "locomotion": {
     "Walk_Loop": {
-      "metresPerSecond": 0.8536896039655271,
-      "strideMetres": 0.9390585643620799,
-      "dutyFactor": 0.6,
-      "method": "Distinct upright low-step walk and bent-elbow high-recovery run; limb-length IK refined against skinned soles",
-      "swingLiftMetres": 0.045074811089379836,
-      "cycleSeconds": 1.1
+      "metresPerSecond": 1.1105029315718766,
+      "strideMetres": 1.240061606921929,
+      "cycleSeconds": 1.1166666666666667,
+      "dutyFactor": 0.61,
+      "method": "CMU measured human locomotion, anatomical retarget and sole contact"
     },
     "Run_Loop": {
-      "metresPerSecond": 1.7439659052438627,
-      "strideMetres": 1.4649313604048446,
+      "metresPerSecond": 3.1789206668314267,
+      "strideMetres": 2.331208489009713,
+      "cycleSeconds": 0.7333333333333333,
       "dutyFactor": 0.36,
-      "method": "Bounded sagittal joint recovery, grounded flexion/extension stance, independent flight pelvis, stable bone twist",
-      "cycleSeconds": 0.84
+      "method": "CMU measured human locomotion, anatomical retarget and sole contact"
     }
   },
   "hunting": {
@@ -195,7 +201,8 @@
     "status": "adopted",
     "review": "assets/player-gaits/README.md",
     "sourceDelivery": "/models/neanderthal-woman/model-downed-r01.glb",
-    "author": "Codex"
+    "author": "Codex",
+    "supersededBy": "humanLocomotion"
   },
   "spearThrust": {
     "revision": "revision-02",
@@ -221,6 +228,41 @@
     "method": "Bounded sagittal joint recovery, grounded flexion/extension stance, independent flight pelvis, stable bone twist",
     "stanceFraction": 0.36,
     "peakAuthoredSwingKneeDegrees": 104,
-    "review": "assets/player-gaits/RUN_REPAIR.md"
+    "review": "assets/player-gaits/RUN_REPAIR.md",
+    "supersededBy": "humanLocomotion"
+  },
+  "humanLocomotion": {
+    "revision": "revision-10",
+    "sourceDelivery": "/models/neanderthal-woman/model-run-r05.glb",
+    "sourceSha256": "cf1259d975dd4873b8923889c59fb8fb8f88d59cd13cb4d83eb0e1ff4a23c2b3",
+    "status": "adopted",
+    "changes": [
+      {
+        "clip": "Walk_Loop",
+        "trial": "35_01",
+        "startFrame": 140,
+        "endFrame": 274,
+        "phaseOffsetFrames": 0,
+        "sampleRate": 120,
+        "frames": 135,
+        "seconds": 1.1166666666666667,
+        "legScale": 0.8603334685438462,
+        "strideMetres": 1.240061606921929
+      },
+      {
+        "clip": "Run_Loop",
+        "trial": "09_01",
+        "startFrame": 1,
+        "endFrame": 89,
+        "phaseOffsetFrames": 80,
+        "sampleRate": 120,
+        "frames": 89,
+        "seconds": 0.7333333333333333,
+        "legScale": 0.8737237254863836,
+        "strideMetres": 2.331208489009713
+      }
+    ],
+    "reference": "assets/human-locomotion/README.md",
+    "previousVisualReview": "assets/player-gaits/reviews/neanderthal-woman-run-r05.json"
   }
 }

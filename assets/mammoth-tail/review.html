@@ -1,0 +1,177 @@
+<!doctype html>
+<html lang="ja">
+  <meta charset="utf-8" /><title>マンモスの尾・構造修正</title>
+  <style>
+    body {
+      margin: 0;
+      background: #27352d;
+      color: #eee;
+      font: 15px system-ui;
+    }
+    header {
+      padding: 12px 24px;
+      display: flex;
+      gap: 20px;
+      align-items: center;
+    }
+    select {
+      font: inherit;
+      padding: 5px;
+    }
+    canvas {
+      display: block;
+    }
+    label {
+      position: absolute;
+      top: 70px;
+      padding: 9px 16px;
+      background: #1c2928c9;
+      border-radius: 5px;
+    }
+    #old {
+      left: 24px;
+    }
+    #new {
+      left: 52%;
+    }
+  </style>
+  <header>
+    <b>マンモスの尾</b
+    ><select id="clip"></select
+    ><select id="view">
+      <option>rear</option>
+      <option>quarter</option>
+      <option>side</option>
+      <option>front</option>
+      <option>left</option>
+      <option>close</option></select
+    ><span>修正前 / Blenderで構造を修正</span>
+  </header>
+  <label id="old">修正前</label
+  ><label id="new">修正後：一本の垂れた尾</label>
+  <script type="importmap">
+    {
+      "imports": {
+        "three": "/node_modules/three/build/three.module.js",
+        "three/addons/": "/node_modules/three/examples/jsm/"
+      }
+    }
+  </script>
+  <script type="module">
+    import * as T from 'three';
+    import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
+    const renderer = new T.WebGLRenderer({ antialias: true, preserveDrawingBuffer: true });
+    renderer.setPixelRatio(1);
+    renderer.setSize(innerWidth, innerHeight - 58);
+    renderer.setScissorTest(true);
+    renderer.outputColorSpace = T.SRGBColorSpace;
+    renderer.toneMapping = T.ACESFilmicToneMapping;
+    document.body.append(renderer.domElement);
+    const scenes = [],
+      models = [],
+      cameras = [],
+      mixers = [],
+      actions = [];
+    for (const url of [
+      '/public/models/woolly-mammoth/model-motion-r05.glb',
+      '/output/mammoth-tail/revision-11/model.glb',
+    ]) {
+      const g = await new GLTFLoader().loadAsync(url);
+      models.push(g);
+      const scene = new T.Scene();
+      scene.background = new T.Color('#75857a');
+      scene.add(g.scene);
+      scene.add(new T.HemisphereLight(0xf4efde, 0x4e5946, 2.5));
+      const light = new T.DirectionalLight(0xffedd9, 2);
+      light.position.set(4, 7, -5);
+      scene.add(light);
+      const fill = new T.DirectionalLight(0xdde9ff, 0.7);
+      fill.position.set(-5, 3, -2);
+      scene.add(fill);
+      const plane = new T.Mesh(
+        new T.PlaneGeometry(200, 200),
+        new T.MeshStandardMaterial({ color: '#788273', roughness: 1 }),
+      );
+      plane.rotation.x = -Math.PI / 2;
+      plane.position.y = -0.005;
+      scene.add(plane);
+      scenes.push(scene);
+      cameras.push(new T.PerspectiveCamera(39, innerWidth / 2 / (innerHeight - 58), 0.01, 100));
+      mixers.push(new T.AnimationMixer(g.scene));
+    }
+    const clip = document.querySelector('#clip');
+    for (const c of models[1].animations) clip.add(new Option(c.name, c.name));
+    let mode = 'rear',
+      time = 0,
+      paused = false,
+      current = 'Idle_Loop';
+    function setPose(name, phase) {
+      current = name;
+      time = phase * models[1].animations.find((a) => a.name === name).duration;
+      for (let i = 0; i < 2; i++) {
+        mixers[i].stopAllAction();
+        const c = models[i].animations.find((a) => a.name === name);
+        const a = mixers[i].clipAction(c).setLoop(T.LoopOnce, 1);
+        a.clampWhenFinished = true;
+        a.play();
+        a.time = Math.min(c.duration, time);
+        mixers[i].update(0);
+        models[i].scene.updateMatrixWorld(true);
+        actions[i] = a;
+      }
+      draw();
+    }
+    function view(name) {
+      mode = name;
+      const pos = {
+        rear: [0, 2.9, -9],
+        quarter: [6, 3.8, -8],
+        side: [9, 3, 0],
+        front: [0, 3, 9],
+        left: [-9, 3, 0],
+        close: [2.7, 2.5, -6.6],
+      }[name];
+      for (const c of cameras) {
+        c.position.fromArray(pos);
+        c.lookAt(0, name === 'close' ? 1.65 : 1.8, name === 'close' ? -2.15 : 0);
+      }
+      draw();
+    }
+    function draw() {
+      for (let i = 0; i < 2; i++) {
+        renderer.setViewport((i * innerWidth) / 2, 0, innerWidth / 2, innerHeight - 58);
+        renderer.setScissor((i * innerWidth) / 2, 0, innerWidth / 2, innerHeight - 58);
+        renderer.render(scenes[i], cameras[i]);
+      }
+    }
+    clip.onchange = () => setPose(clip.value, 0);
+    document.querySelector('#view').onchange = (e) => view(e.target.value);
+    window.tailReview = {
+      models,
+      scenes,
+      renderer,
+      cameras,
+      pose: setPose,
+      view,
+      pause: () => (paused = true),
+      ready: true,
+    };
+    view('rear');
+    setPose('Idle_Loop', 0);
+    let last = performance.now();
+    function animate(now) {
+      if (!paused) {
+        const dt = Math.min(0.05, (now - last) / 1000);
+        time += dt;
+        const duration = models[1].animations.find((a) => a.name === current).duration;
+        setPose(
+          current,
+          current === 'Death' ? Math.min(1, time / duration) : (time % duration) / duration,
+        );
+      }
+      last = now;
+      requestAnimationFrame(animate);
+    }
+    requestAnimationFrame(animate);
+  </script>
+</html>

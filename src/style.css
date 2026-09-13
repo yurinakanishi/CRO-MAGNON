@@ -407,6 +407,16 @@ progress::-moz-progress-bar {
 .world-label.enemy progress::-moz-progress-bar {
   background: #dd8a76;
 }
+/* A castle rank praying behind the seal: its bar is dim until the rank below falls. */
+.world-label.enemy progress.sealed {
+  opacity: 0.45;
+}
+.world-label.enemy progress.sealed::-webkit-progress-value {
+  background: #9a5a58;
+}
+.world-label.enemy progress.sealed::-moz-progress-bar {
+  background: #9a5a58;
+}
 .tps-reticle {
   position: absolute;
   left: 50%;

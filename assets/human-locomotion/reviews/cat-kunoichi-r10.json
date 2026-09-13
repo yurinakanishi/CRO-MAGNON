@@ -1,0 +1,21 @@
+{
+  "decision": "adopt",
+  "at": "2026-09-13T12:14:28.653Z",
+  "key": "cat-kunoichi",
+  "revision": "revision-10",
+  "sha256": "c81c37512be0502decf46495868a0c8521470098117b422b167ffce8da59cd9b",
+  "source": "/models/cat-kunoichi/model-run-r05.glb",
+  "sourceSha256": "088f582295a912ec7a09014b06eaf43c8618859ff1e9e3c4f6bfe595818f8c94",
+  "modifiedClips": [
+    "Walk_Loop",
+    "Run_Loop"
+  ],
+  "motionSources": [
+    "https://mocap.cs.cmu.edu/subjects/35/35_01.amc",
+    "https://mocap.cs.cmu.edu/subjects/09/09_01.amc"
+  ],
+  "preserved": "Original binary prefix, nodes, mesh, skin weights, bind transforms, UV, materials, images, all other animation clips and the two-handed spear attack.",
+  "measurement": "assets/human-locomotion/validation.json",
+  "evidence": "output/playwright/human-joints/revision-10/",
+  "review": "assets/human-locomotion/README.md"
+}

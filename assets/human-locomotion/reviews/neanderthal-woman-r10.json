@@ -1,0 +1,21 @@
+{
+  "decision": "adopt",
+  "at": "2026-09-13T12:14:28.636Z",
+  "key": "neanderthal-woman",
+  "revision": "revision-10",
+  "sha256": "b1cd6f89291d3d71adb7be0a7f245c746a32691fba2df0e62faccb905a0af1a8",
+  "source": "/models/neanderthal-woman/model-run-r05.glb",
+  "sourceSha256": "cf1259d975dd4873b8923889c59fb8fb8f88d59cd13cb4d83eb0e1ff4a23c2b3",
+  "modifiedClips": [
+    "Walk_Loop",
+    "Run_Loop"
+  ],
+  "motionSources": [
+    "https://mocap.cs.cmu.edu/subjects/35/35_01.amc",
+    "https://mocap.cs.cmu.edu/subjects/09/09_01.amc"
+  ],
+  "preserved": "Original binary prefix, nodes, mesh, skin weights, bind transforms, UV, materials, images, all other animation clips and the two-handed spear attack.",
+  "measurement": "assets/human-locomotion/validation.json",
+  "evidence": "output/playwright/human-joints/revision-10/",
+  "review": "assets/human-locomotion/README.md"
+}

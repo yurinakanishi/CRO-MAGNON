@@ -124,10 +124,12 @@ export class CharacterAssets {
     const jumpPose = new JumpPose(root);
     const shoulderSeat = asset.modelKey === 'giant-ape' ? apeShoulderSeat(root) : null;
     const carrySupportPose = shoulderSeat ? new CarrySupportPose(root) : null;
-    const leanPose = asset.modelKey === 'cat-kunoichi' ? new LeanPose(root) : null;
+    const leanPose =
+      asset.modelKey === 'cat-kunoichi' && !asset.humanLocomotion ? new LeanPose(root) : null;
     const animation = new CharacterAnimation(root, gltf.animations, {
       walkSpeed: asset.locomotion.Walk_Loop.metresPerSecond,
       runSpeed: asset.locomotion.Run_Loop.metresPerSecond,
+      groundLocomotion: !!asset.humanLocomotion,
     });
     animation.mixer.update(Math.random() * animation.current.getClip().duration);
     const instance = {

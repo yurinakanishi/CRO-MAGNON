@@ -178,6 +178,10 @@ export function resolveAttack(room, player, now = Date.now()) {
 }
 
 function applyHit({ target, kind }, profile, now, attackerId = null) {
+  // A castle crow praying behind the seal is struck but not hurt: the blow is
+  // absorbed, and the attacker is told which rank must fall first.
+  if (kind === 'enemy' && target.sealed === true)
+    return { hit: true, sealed: true, target, kind, killed: false, weapon: profile.key };
   target.health = Math.max(0, target.health - profile.damage);
   const killed = target.health === 0;
   // Super armour (a sabertooth in mid-leap) takes the damage without flinching.

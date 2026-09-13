@@ -16,7 +16,7 @@
     "pivot": "ground-centred",
     "min": [
       -0.7510207323956336,
-      -8.732114386140612e-8,
+      -8.732114386140612e-08,
       -0.4904356744698057
     ],
     "max": [
@@ -123,7 +123,8 @@
     "referenceSha256": "71d710a68a80caec0ab0c76b9cd7cff0221373cec7afbb7bb0246b892abd0053",
     "reconstruction": "Local TRELLIS-2 1024 seed 42; source-preserving measured reduction.",
     "candidateFile": "output/model-generation/models/giant-ape/work/rig/revision-13/candidate.glb",
-    "visualReview": "assets/shoulder-carry/adoption.json"
+    "visualReview": "assets/player-gaits/reviews/giant-ape-run-r05.json",
+    "previousVisualReview": "assets/shoulder-carry/adoption.json"
   },
   "notes": [
     "User selected image candidate 4 and the name 巨腕の大猿. Candidate 1, local TRELLIS-2 1024 seed 42, measured source-preserving reduction; original and all revisions retained.",

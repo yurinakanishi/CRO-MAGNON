@@ -1,3 +1,4 @@
+import { crowSealNotice } from './crow-faction.mjs';
 import { FISHING } from './fishing-sites.mjs';
 import { respawnDelay } from './room-rules.mjs';
 import { COASTAL } from './coastal-sites.mjs';
@@ -225,7 +226,8 @@ export function updateHunting(
   const reportHit = (player, strike) => {
     changed = true;
     const label = strike.kind === 'animal' ? 'マンモス' : strike.target.name || '敵';
-    if (strike.killed)
+    if (strike.sealed) notify(player, crowSealNotice(room), 'error');
+    else if (strike.killed)
       notify(
         player,
         strike.kind === 'animal'

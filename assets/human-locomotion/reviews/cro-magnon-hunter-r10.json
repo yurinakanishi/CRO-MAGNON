@@ -1,0 +1,21 @@
+{
+  "decision": "adopt",
+  "at": "2026-09-13T12:14:28.626Z",
+  "key": "cro-magnon-hunter",
+  "revision": "revision-10",
+  "sha256": "b2d51d01d095bb5e995e6a6f7a9e9b084f2796e47f675370900dea7ac20d2720",
+  "source": "/models/cro-magnon-hunter/model-run-r05.glb",
+  "sourceSha256": "e2836b875346050886de4788bc48c41d46b2faf4bbf77e04044623f05de5a6ae",
+  "modifiedClips": [
+    "Walk_Loop",
+    "Run_Loop"
+  ],
+  "motionSources": [
+    "https://mocap.cs.cmu.edu/subjects/35/35_01.amc",
+    "https://mocap.cs.cmu.edu/subjects/09/09_01.amc"
+  ],
+  "preserved": "Original binary prefix, nodes, mesh, skin weights, bind transforms, UV, materials, images, all other animation clips and the two-handed spear attack.",
+  "measurement": "assets/human-locomotion/validation.json",
+  "evidence": "output/playwright/human-joints/revision-10/",
+  "review": "assets/human-locomotion/README.md"
+}

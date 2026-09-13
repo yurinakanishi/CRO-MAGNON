@@ -1,0 +1,10 @@
+{
+  "generator": "Codex built-in imagegen",
+  "prompt": "Ruined stepped temple-fortress of five ascending open terraces: a broad walled forecourt behind a collapsed arch gate, three progressively smaller roofless terraces stacked like a ziggurat, and a small summit altar platform with a ruined throne dais and four broken pillars; every level joined by one grand central stair and two flanking side stairs. User request 2026-09-13: rebuild the crow cult's castle so it is wider, climbed by many stairs in stages, with the pontiff at the very top. Candidate 01 of two Codex image_gen references selected by Claude Code (user not available); candidate 02 retained as history.",
+  "source": "source/original/reference-v4.png",
+  "sha256": "6ab1f45748219bf78385f4018e0ce51d9e2d318062f737ea60ab7a4ed7bf09b2",
+  "bytes": 2586347,
+  "fallback": "ZImage unavailable in the established local toolchain; permitted equivalent generator.",
+  "author": "Codex",
+  "claude_used": false
+}

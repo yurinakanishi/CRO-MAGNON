@@ -1,3 +1,41 @@
+## 2026-09-13 祈りの結界をベールに、城を五段の階段状要塞に作り直し
+
+ユーザー指示「祈りの結界を視覚的にちゃんと全体を囲うカプセル・ベールみたいに」「城を作り直して、段階でもっと広く、もっと階段で、一番頂上に教皇」に対応。
+
+**ベール**：`src/crow-faction-visuals.ts` の `createPrayerSeal` を、足元の輪から、体の半径＋0.45 m・身長（役職倍率込み）＋0.4 mのカプセル（フレネル縁光の半透明赤シェーダー、明滅）＋薄い床輪に変更。`src/world3d.ts` が寸法変化時に `resizePrayerSeal` で追従、退場時に破棄。
+
+**城**：Codex `image_gen` で五段のジッグラト型遺跡の参照2案を生成し（`assets/valley-castle/codex-request-v4.txt`、候補01を採用・02は保持）、ローカルTRELLIS-2 1024 seed 42（1,296秒、`output/generate-playable-model.py`）→ `workflow/current/process-static-model.py --width 110 --p95 0.065` で候補13（127,254三角形、8.9 MB。p95 0.03／0.05は全比率で予算超過のため候補11／12は保持のみ）。`scripts/adopt-castle-tiers.mjs 13 13` で **`public/models/valley-castle/model-r13.glb`**（SHA `2a271bbc12e1b331da6468d5f84f1db173beeb284fdebfdde7c56b613e48dc90`）を採用、r10・旧 model.glb は保持。幅110 m・奥行128 m・高さ52.9 m、中心・向きは以前と同じ、倍率1、`groundOffset -13.4`（復元の前庭床が基部から13.4 m上）。
+
+床アトラスは復元の構造に合わせて作り直した：`scripts/measure-castle-surface.mjs` が下向き面（天井）も記録し、`scripts/build-ruin-walk-atlas.mjs … 1.0 13.4 highest` が列ごとに到達済みの最も高い面を採る（全段の下に前庭高さの内部床があるため）。到達済み床の上に未到達面がある列は壁、天井の下だけを門の通路（幅約2 m）とし、欠けた蹴込み行（4セルまで・1区間1 m以内）と一段1 mの蹴込みを両側へ均す。`shared/measured-walk-surface.mts` の輪0.84 m・段差0.9 mは倍率非依存の定数に。`shared/castle-layout.mts` は `CASTLE_TIERS`（前庭0／第一段9.6／第二段18.2／第三段25.8／祭壇29.1 m、各段の大階段の下・上、持ち場）と `castleTierOfHeight` を持ち、`nearCastle` は回転した矩形の足跡で判定。`shared/collision.mts` の経路は段ごとに大階段を経由、`shared/crow-faction.mts` の持ち場は「同じ段」、配置は前庭12・第一段6・第二段6・第三段3・祭壇1（呪僧・大司祭の巡回半径は柱の多い段に合わせ2.0／2.2 m）。祈りの向き `CROW_ALTAR` は祭壇の玉座 (-6,-15)。
+
+検証：全583テスト（城の段の高さと判定、全7キャラの大階段の手動登降と経路追従、蹴込みの連続性、カメラ三角形、階位の段の境界、セッション系テストの固定座標を城の外へ移動）、型・strict・312JS構文・依存境界、変更ファイルのPrettier。実Chrome `scripts/qa-castle-ruin.mjs`（段状版に更新）で門・前庭の第一階位、第一段で祈る第二階位のベール、階位を順に倒して第二段の赤い魔法・第三段の飛行・祭壇の教皇の交戦、教皇撃破後の全員退場、エラー0（`output/playwright/castle-tiers-r13/`）。ベール単体は旧城で確認済み（`output/playwright/crow-veil-r01/`）。既知の制約：門の通路が約2 m幅、低い外壁に崩れ（前庭へ門以外から入れる箇所）、第二段以上の段の縁に内部床を読む筋状の落差セル、門が焚き火から約40 mまで近づいた。通常3000番サーバーの手動再起動・展示／PC2更新・公開デプロイ・コミットなし。
+
+## 2026-09-13 人間の歩行・走行をCMUの実測動作へ変更
+
+ユーザー指示「人の関節がクネクネ曲がるのをやめて自然な歩き・走りに、指定記事を参考に、Tripoは使わない」に対応。記事は参考として読むだけにし、Tripoの生成・API・リギングは不使用。CMUの原ASF/AMC（歩行35_01、走行09_01）をローカルで読み、人間男女4体＋猫耳の Walk_Loop / Run_Loop を制作。現在の配信は各 model-human-r10.glb。骨の長さ、膝と肘の曲げ面を保持し、モデルごとの肩幅・足裏・足首・つま先を調整。元のGLBバイナリ、メッシュ、骨、ウェイト、材質、両手槍攻撃を含む他のクリップは不変。旧GLBと未採用r06〜09を保持。再現スクリプトは scripts/cmu-motion.mjs、build-human-locomotion.mjs、verify-human-locomotion.mjs、adopt-human-locomotion.mjs。資料・SHA・採用・検証は assets/human-locomotion/README.md と同フォルダー。
+
+src/locomotion-grounding.ts は待機・歩行・走行の切替中だけスキン足裏を測ってHipsを持ち上げ、次のミキサー更新前に戻す。関節角度とサーバーの位置を変えず、歩走混合中の最大約4.74cmの沈みを床上2.52mm以上へ補正。移動・回転・拡縮した親でも正しく扱う。猫耳は制作済みの前傾へ既存LeanPoseを重ねない。ゲーム速度と再生倍率上限は保持しているため高速時の足滑りは残る。
+
+最終GLBを240Hzで5体×2動作、32位相×3混合比、Chrome5方向×6時点と30fps比較動画、Blender無彩色で確認。実Chrome2画面＋通信3人で全7体の21歩走区間・同期・ジャンプ/攻撃復帰・橋横断/旋回/停止・縦横画面・女性の再読込、エラー0。実描画中の足裏344回は最低2.519mm。全583テストのうち既存保存1件が時間切れ、当該ファイル＋新規検査14件の再実行は合格。型/strict・308JS構文・依存境界、verify:assets 42モデルも合格。通常3000番で新GLB5件/関連JS3件のSHA一致。脚別の坂・段差IK、全自己交差、物理コントローラー、長時間負荷は未検証。展示・PC2更新、公開デプロイ、通常サーバー手動再起動、コミットなし。
+
+## 2026-09-13 マンモスの尻尾を一本に、資産検証を通る状態へ
+
+ユーザー指摘「マンモスの尻尾が二本ある」に対応。原因はTRELLIS復元面にある、お尻の左右から垂れた細い毛束状の形状2本（`Hips` 荷重、尾の骨なし）で、中央の骨付きの尾と合わせて複数本に見えていた。`scripts/fix-mammoth-tail.mjs` が配信中の `model-motion-r04.glb` を読み、glTF座標で z<-2.3・0.15<|x|<0.75・0.55<y<2.3 の477頂点を、それぞれの毛束が付いている胴側の頂点（同じ側の付け根の環の最近傍）へ法線ごと重ね、毛束の三角形を面積ゼロにして描画されないようにする。元のバイナリはそのまま先頭に保持し、座標と法線だけを末尾に追加した新しいbufferViewへ `POSITION`／`NORMAL` アクセサを向け直す。インデックス・UV・スキン・骨・5クリップは同じバイト列。試した代替（最近傍頂点への畳み込み、1リング拡張、付け根の重心への集約、窪みを外殻へ押し出す充填）はいずれも黒い面や割れが増えて不採用。毛束で隠れていた尾の付け根の窪み（毛の塊の隙間）は元の復元形状で、近距離では暗い面として残る（毛束を完全に削除した診断描画でも同じ）。
+
+`scripts/adopt-mammoth-tail.mjs` で **`public/models/woolly-mammoth/model-motion-r05.glb`**（SHA `f52b082cd0b1742aacf362c1ef35d89ca1160c34ff17be9a3e79236cc83077c6`、5,450,960 bytes）を採用し、`asset.json`・`world-assets.json`・`assets/world-models.json` と新しいレビュー `assets/creature-motion/models/woolly-mammoth-tail-review.json` を更新。r04・model.glb・旧レビューは保持。当たり判定の `shared/model-bounds.mts` は `model.glb` 由来のため変更なし。
+
+追補「fix them all」で、このホストで以前から通らなかった `npm run verify:assets` を通る状態にした。記録側：走行r05を配信している7体（人間4・猫耳・魔法使い・大猿）の `provenance.visualReview` が旧モーションr04のレビューを指したままだったので、`assets/player-gaits/run-adoption.json`／`run-validation.json`／`run-game-qa.json` から `assets/player-gaits/reviews/<key>-run-r05.json` を起こして向け直した（旧パスは `previousVisualReview` に保持）。木槍・黒曜石の槍・黒曜石の刃は `referenceImage` が説明文だったので、実際の元である `public/models/flint-spear/model.glb` とそのSHAを記録し、槍2本は原点＝握りとして石突き0.7136m・穂先0.9000／1.3854mを配信GLBから測って `gripToButtMetres`／`gripToTipMetres` に記録、`visualReview` は各モデルの `qa/adoption-review.json` へ。検証側：`scripts/verify-world-assets.mjs` と `scripts/verify-motion-delivery.mjs` は、`output/creature-motion/baseline/` の不在時に同じバイト列の `public/models/<key>/model.glb` をSHA照合で代用し、人間型のクリップ数は9以上（倒れ姿勢追加）、敵は6以上（剣牙11・巨獣14）、配信名は `model-*.glb`、元クリップは名前の残存で検査し、モーション採用時に保持した59 GLBのうち後の採用記録（マニフェスト、または `assets/` 配下の記録）があるもの（草・城・松2件）は置き換えとして扱う。結果「8 active motion deliveries, 71 clips, 55 earlier GLBs（4 replaced）」「status passed, models 42」。
+
+検証：Blender 5.2のヘッドレス描画（静止姿勢の後方・側面・斜め、Walk 30/80%・Run 50%・Death終端、背面カリング有りの8〜9m比較）を `output/blender/mammoth-tail-r05/`、実Chrome `scripts/qa-mammoth-tail.mjs`（配信URLとSHAの一致、mammoth-1の真後ろ・左右斜め後ろ・近接の4枚、エラー0）を `output/playwright/mammoth-tail-r05/` に保存。`inspect-glb --hunting` 合格、24173三角形、5クリップの長さ一致。全582テスト（`title leave…` は全件実行で一度落ち単独再実行で通過）、300JS構文、型、依存境界が通過。通常3000番サーバーの手動再起動・展示／PC2更新・公開デプロイ・コミットなし。
+
+## 2026-09-13 白羽教団の城を五階位の段階攻略に
+
+ユーザー指示「一番最初は雑魚、2番目は物理、3番目は魔法、4番目は幹部、5番目が教皇。段差を作って攻略していく。宗教っぽい集団にする」に対応。`shared/crow-faction.mts` を階位順（soldier→brute→shaman→prelate→pontiff、`CROW_TIERS`）に組み直し、名前を第一階位・黒羽の門徒（12、体力60、槍のみ）／第二階位・黒羽の戦僧（6、180、斧のみ）／第三階位・白羽の呪僧（6、90、赤い魔法主体、杖は10）／第四階位・白羽の大司祭（3、170、飛行と物理魔法）／第五階位・白羽教皇（1、420）にした。持ち場は前庭 z18〜30、階段上の広間前縁 z-3、広間中央、広間後方、祭壇 z-30（城ローカル）。`inCrowWard` が階位ごとの行動範囲（門徒は広間より下、戦僧は z≥-9、教皇は z≤-19、他は広間全体）を定め、旧 `castle`＋`inSorcererHall` の判定を置き換えた。
+
+`shared/enemies.mts` の `updateCastleRite` が「立っている最下位の階位」を求め、それより上の階位を結界（`sealed`）にする。結界中は祭壇を向いて祈り、索敵・挑発・移動をせず、`applyHit` は無傷で `sealed` を返し、`hunting` が「祈りの結界に阻まれた。先に第N階位・○○を全て倒せ。」を通知する。階位が全滅すると城内（半径81m）の全員へ `CROW_RITE_TEXT` の文言を出す。倒れた階位は教皇が立っていて誰かが城内にいる間は復活の時計が止まり、全員が離れると45秒（展示10秒）後に戻って結界も掛かり直す。教皇が倒れると全階位が同じ遅延後に一斉に戻る。スナップショットに `crowTier`／`sealed` を追加し、`src/crow-faction-visuals.ts` の赤い輪と薄い体力バーで結界を表示。保存データの役職・持ち場は既存の移行処理で現行配置に合わせる。
+
+検証：`tests/enemies.test.mjs` に持ち場境界・結界の無傷と非挑発・階位ごとの解除と通知・城内滞在中の復活停止・教皇撃破後の一斉復活を追加し、既存の呪術師の数値をルール参照に変更。全582テスト、型・strict・297JS構文・依存境界が通過（`title leave…` は全件実行で一度タイムアウトし単独再実行で通過）。実Chromeの `scripts/qa-castle-ruin.mjs`（QAホストに `crowFall` を追加）で前庭の門徒12体、広間で祈る第二〜五階位と結界の輪、階位を順に倒して呪僧の赤い呪弾・範囲魔法、大司祭の飛行、教皇の交戦、教皇撃破後の全員退場を確認、ブラウザエラー0。画像と記録は `output/playwright/crow-rite-r01/`、詳細は `assets/crow-faction/README.md`。通常3000番サーバーの手動再起動・展示／PC2更新・公開デプロイ・コミットなし。
+
 ## 2026-09-13 紫尾の巨獣の巡回と体色
 
 ユーザー指示「キャラクターがいない間も縄張り内をゆっくり徘徊、もっと紫色」に対応。`shared/behemoth-patrol.mts` が標的不在時に7〜13m先の通れる行き先を選び、最高1.05m/s・加速0.6m/s²・旋回上限0.7rad/sで歩く。到着後1.5〜3.3秒休み、帰還完了後も1.8秒で再開。体半径＋1mを縄張りから内側へ確保し、地形・障害物・人物との衝突と行き止まりでの再選択を行う。索敵・背後の足音・被弾は巡回より優先。接続者が縄張り外にいても巡回するが、接続者ゼロの部屋は従来どおり休止する。
