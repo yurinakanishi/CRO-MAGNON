@@ -1,0 +1,22 @@
+{
+  "checkedAt": "2026-09-13T03:34:58.474Z",
+  "activeGLB": "/models/violet-behemoth/model-quadruped-r04.glb",
+  "sha256": "6dd28210973bdccc543c0e2805ced82c838b95df2535218a652fda8ca869aa55",
+  "bytes": 15320936,
+  "retainedOlderGLBs": 5,
+  "served": [
+    {
+      "url": "/shared/behemoth-patrol.mjs",
+      "sha256": "d24a7b276f4c85f5158cb96c972697b12f332d173338852a0ad3114567b1b66c"
+    },
+    {
+      "url": "/src/behemoth-palette.js",
+      "sha256": "de6086c7cacc8a956c97b54b1670e81797001e188d7e531c3b42ced17b81bd69"
+    },
+    {
+      "url": "/src/world-assets.js",
+      "sha256": "5128909f7deb8b776a19b8a9c015291a2bcc5ff0de5ed7afb299f5569f36137a"
+    }
+  ],
+  "origin": "http://127.0.0.1:3000"
+}

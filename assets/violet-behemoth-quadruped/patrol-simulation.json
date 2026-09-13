@@ -1,0 +1,22 @@
+{
+  "runs": [
+    {
+      "tickMs": 50,
+      "seconds": 180,
+      "travel": 128.64419809023013,
+      "maxRadius": 23.282551660843907,
+      "maxSpeed": 1.050000000000137,
+      "maxRest": 3.2499999999999964,
+      "destinations": 15
+    },
+    {
+      "tickMs": 100,
+      "seconds": 180,
+      "travel": 128.77345175204064,
+      "maxRadius": 23.286656785684325,
+      "maxSpeed": 1.050000000000131,
+      "maxRest": 3.3000000000000016,
+      "destinations": 15
+    }
+  ]
+}

@@ -237,10 +237,14 @@ test('the longer charge catches a fleeing ape, but leaving territory stops furth
   }
   assert.ok(energyOutside !== null && energyOutside < 100);
   assert.equal(e.targetId, null);
-  for (let t = 10000; t < 35000; t += 50) tick(t);
+  let returned = false;
+  for (let t = 10000; t < 35000; t += 50) {
+    tick(t);
+    if (!e.returning && Math.hypot(e.x - e.home.x, e.z - e.home.z) < 0.001) returned = true;
+  }
   assert.equal(p.energy, energyOutside);
-  assert.ok(Math.hypot(e.x - e.home.x, e.z - e.home.z) < 0.001);
-  assert.equal(e.behavior, 'guard');
+  assert.ok(returned, 'returns to the post before resuming its patrol');
+  assert.ok(['patrol', 'guard'].includes(e.behavior));
 });
 test('crossing leash cancels even a due bite before impact', () => {
   const { e, p, tick } = fixture();

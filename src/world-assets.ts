@@ -10,6 +10,7 @@ import { ViewUpdateGate } from './view-update-gate.js';
 import { markActiveAttribute, markActiveInstances } from './instance-updates.js';
 import { applyMeadowGrassPalette, meadowGrassTint } from './meadow-palette.js';
 import { ActionBlender, gaitPhase } from './action-blender.js';
+import { applyBehemothPalette } from './behemoth-palette.js';
 
 function disposeTemplate(root) {
   const resources = new Set<THREE.BufferGeometry | THREE.Material | THREE.Texture>();
@@ -470,6 +471,8 @@ export class WorldAssets {
             if (isMesh(node)) {
               node.castShadow = true;
               node.receiveShadow = true;
+              if (key === 'violet-behemoth')
+                for (const material of [node.material].flat()) applyBehemothPalette(material);
             }
           });
           this.templates.set(key, { gltf, lods: [], asset });

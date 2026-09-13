@@ -11,6 +11,7 @@ const sleep = (ms) => new Promise((r) => setTimeout(r, ms)),
   errors = [],
   checks = [],
   samples = [],
+  poisonFrames = [],
   screenshots = [];
 let child,
   base,
@@ -176,6 +177,57 @@ try {
   await shot(b, '01-side-tail');
   assert.equal((await request('state')).count, 5);
   checks.push('Five connected players, two actual Chrome pages render the enemy');
+  const palette = await a.evaluate(() => {
+    const e = [...window.monsterReview.enemies.values()].find(
+      (e) => e.state.modelKey === 'violet-behemoth',
+    );
+    const keys = [];
+    e.actor.root.traverse((n) => {
+      if (n.isMesh) for (const m of [n.material].flat()) keys.push(m.customProgramCacheKey());
+    });
+    return keys;
+  });
+  assert.ok(palette.length && palette.every((key) => key === 'violet-behemoth-palette-1'));
+  checks.push('Verified quadruped uses the skin-only purple palette in actual Chrome');
+  await request('prepare', { mode: 'patrol' });
+  await sleep(300);
+  await look(a);
+  await look(b);
+  const patrol = [];
+  for (let i = 0; i < 72; i++) {
+    await sleep(500);
+    const state = await request('state');
+    patrol.push(state.enemy);
+    assert.equal(state.enemy.targetId, null);
+    assert.ok(
+      Math.hypot(state.enemy.x - state.enemy.home.x, state.enemy.z - state.enemy.home.z) +
+        state.enemy.radius <
+        tuning.territoryRadius,
+    );
+    assert.ok(
+      state.players.every(
+        (p) =>
+          Math.hypot(p.x - state.enemy.home.x, p.z - state.enemy.home.z) > tuning.territoryRadius,
+      ),
+    );
+    await sample(a, 'patrol');
+    if (i % 12 === 0) {
+      await sample(b, 'patrol');
+      await look(a);
+      await look(b);
+      await shot(a, `01-patrol-${i}`);
+    }
+  }
+  const patrolDistance = patrol
+    .slice(1)
+    .reduce((sum, e, i) => sum + Math.hypot(e.x - patrol[i].x, e.z - patrol[i].z), 0);
+  assert.ok(patrolDistance > 17, `patrolled ${patrolDistance}m in the real game`);
+  assert.ok(patrol.some((e) => e.clip === 'Walk_Loop' && e.speed > 0.5));
+  assert.ok(patrol.some((e) => e.clip === 'Idle_Loop'));
+  assert.ok(patrol.at(-1).patrolStep >= 2);
+  checks.push(
+    `No characters in territory: ${patrolDistance.toFixed(1)}m of slow patrol, with short rests and multiple destinations`,
+  );
   await request('prepare', { mode: 'rear' });
   await sleep(1500);
   assert.equal((await request('state')).enemy.targetId, null);
@@ -224,21 +276,29 @@ try {
       clip + ' rendered',
     );
   }
+  // The flight screenshot can take longer than the entire splash lifetime.
+  // Observe actual effect updates in each browser, independently of screenshots.
+  for (const page of [a, b])
+    poisonFrames.push(...(await page.evaluate(() => window.poisonReviewFrames)));
   assert.ok(
-    samples.some((s) => s.poisonShots > 0 && s.poisonParticles > 10),
+    poisonFrames.some((s) => s.shots > 0 && s.particles > 10),
     'Liquid flight rendered',
   );
   assert.ok(
-    samples.some((s) => s.poisonSplashes > 0 && s.poisonParticles > 0),
+    poisonFrames.some((s) => s.splashes > 0 && s.particles > 0),
     'Liquid impact rendered',
   );
   for (const retreat of [false, true]) {
     const staged = await request('prepare', { mode: 'charge' });
     const start = { x: staged.enemy.x, z: staged.enemy.z };
-    await until(async () => {
-      const s = await request('state');
-      return s.enemy.behavior === 'charge' && s.enemy.z > start.z + 0.1;
-    }, 'rush actually moving before target dodges or retreats', 4000);
+    await until(
+      async () => {
+        const s = await request('state');
+        return s.enemy.behavior === 'charge' && s.enemy.z > start.z + 0.1;
+      },
+      'rush actually moving before target dodges or retreats',
+      4000,
+    );
     await request('place', {
       x: start.x + (retreat ? 0 : 12),
       z: start.z + (retreat ? 25 : 12),
@@ -421,6 +481,7 @@ try {
         checks,
         errors,
         samples,
+        poisonFrames,
         screenshots,
         fixtures:
           'Profiles, initial proximity, selected attack state and death are explicit QA fixtures. Attack timing, movement, rendering and damage run in real time. Three peers are socket-only. No physical-device claim.',
@@ -430,6 +491,12 @@ try {
     ),
   );
   console.log(JSON.stringify({ checks, errors, screenshots }));
+} catch (error) {
+  await writeFile(
+    path.join(out, 'failure.json'),
+    JSON.stringify({ error: String(error), checks, errors, samples }, null, 2),
+  );
+  throw error;
 } finally {
   for (const s of peers) s.close();
   for (const context of contexts) await context.close();

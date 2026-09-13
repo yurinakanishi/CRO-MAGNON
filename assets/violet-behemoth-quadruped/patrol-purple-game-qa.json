@@ -1,0 +1,40 @@
+{
+  "checkedAt": "2026-09-13T03:40:59.680Z",
+  "checks": [
+    "Five connected players, two actual Chrome pages render the enemy",
+    "Verified quadruped uses the skin-only purple palette in actual Chrome",
+    "No characters in territory: 28.1m of slow patrol, with short rests and multiple destinations",
+    "A stationary player behind the monster beyond contact range stays undetected",
+    "charge damage observed in actual server time",
+    "bite damage observed in actual server time",
+    "tail damage observed in actual server time",
+    "poison damage observed in actual server time",
+    "Rush brakes shortly after passing a sidestepping player",
+    "Rush reaches the player retreating beyond their original position",
+    "Poison aim locks before release; side step avoids damage",
+    "Leaving the territory cancels pursuit",
+    "Returns to exact home by movement",
+    "Real W footsteps from behind reacquire after a complete leash return",
+    "Real F spear hit from behind immediately reacquires after the second return",
+    "Real keyboard movement with enemy present",
+    "Reload resumes and mobile viewport dimensions render"
+  ],
+  "errors": [],
+  "samples": 360,
+  "poisonFrames": 172,
+  "patrolSeconds": 40.45849975585938,
+  "peakPoisonParticles": 67,
+  "summary": "output/playwright/behemoth-patrol-purple-verified/summary.json",
+  "screenshot": "output/playwright/behemoth-patrol-purple-verified/01-scale-ape.png",
+  "tests": {
+    "passed": 572,
+    "failed": 0
+  },
+  "checksPassed": [
+    "TypeScript",
+    "strict",
+    "296 JavaScript syntax",
+    "architecture"
+  ],
+  "earlierAttempts": "First: sparse sampling missed flight particles. Second: the screenshot delayed sampling by 1.45s and missed the 0.85s splash. Final QA records real PoisonEffects.update frames independently of screenshot capture; rendering and gameplay were unchanged."
+}

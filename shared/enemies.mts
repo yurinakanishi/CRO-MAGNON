@@ -17,6 +17,7 @@ import { provoker } from './perception.mjs';
 import { respawnDelay } from './room-rules.mjs';
 import { createSabertooth, updateSabertooths } from './sabertooth.mjs';
 import { CROW_ROLE_RULES, crowRules } from './crow-faction.mjs';
+import { enemyMovementSpeed, incomingDamage } from './difficulty.mjs';
 
 export const ENEMY_RULES = Object.freeze({
   modelKey: 'crow-shaman',
@@ -189,6 +190,7 @@ function recoverPlayers(room, now, notify) {
 
 function hitPlayer(room, enemy, player, now, notify, damage?: number, label = '杖') {
   damage ??= crowRules(enemy).attackDamage;
+  damage = incomingDamage(player, damage);
   player.energy = Math.max(0, player.energy - damage);
   player.hurtSequence = (player.hurtSequence || 0) + 1;
   player.hurtAt = now;
@@ -596,7 +598,7 @@ export function updateEnemies(
         approachFlight(enemy, dt, rules.flightHeight);
         enemy.behavior = 'chase';
         plan(enemy, room, target, now);
-        moveEnemy(enemy, room, dt, now, rules.chaseSpeed);
+        moveEnemy(enemy, room, dt, now, enemyMovementSpeed(target, rules.chaseSpeed));
       }
       continue;
     }

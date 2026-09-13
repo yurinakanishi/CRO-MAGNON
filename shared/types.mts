@@ -5,11 +5,13 @@ export interface Point {
 }
 export type Species = 'cro' | 'nea' | 'cat' | 'bear' | 'ape';
 export type Gender = 'female' | 'male';
+export type Difficulty = import('./difficulty.mjs').Difficulty;
 export type ResourceKind = 'wood' | 'stone' | 'berry' | 'obsidian';
 export interface CharacterProfile {
   species?: unknown;
   gender?: unknown;
   spearHead?: 'wood' | 'obsidian';
+  difficulty?: Difficulty;
 }
 export interface CharacterModel {
   carryable: boolean;

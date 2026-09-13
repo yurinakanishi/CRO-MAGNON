@@ -11,14 +11,27 @@ game.server.removeListener('request', normal);
 game.server.on('request', async (req, res) => {
   if (req.url.split('?')[0] === '/') {
     const html = await readFile('public/index.html', 'utf8');
-    res
-      .writeHead(200, { 'Content-Type': 'text/html' })
-      .end(
-        html.replace(
-          '<script type="module" src="/src/main.js"></script>',
-          '<script type="module">import {WorldRenderer} from "/src/world3d.js";const old=WorldRenderer.prototype.render;WorldRenderer.prototype.render=function(...a){window.monsterReview=this;return old.apply(this,a)};await import("/src/main.js");</script>',
-        ),
-      );
+    res.writeHead(200, { 'Content-Type': 'text/html' }).end(
+      html.replace(
+        '<script type="module" src="/src/main.js"></script>',
+        `<script type="module">
+          import {WorldRenderer} from "/src/world3d.js";
+          import {PoisonEffects} from "/src/poison-effects.js";
+          const old=WorldRenderer.prototype.render;
+          WorldRenderer.prototype.render=function(...a){window.monsterReview=this;return old.apply(this,a)};
+          const update=PoisonEffects.prototype.update;
+          window.poisonReviewFrames=[];
+          PoisonEffects.prototype.update=function(state,now,...rest){
+            update.call(this,state,now,...rest);
+            if(state.poisonShots?.length || state.poisonSplashes?.length){
+              window.poisonReviewFrames.push({at:now,shots:state.poisonShots?.length??0,splashes:state.poisonSplashes?.length??0,particles:this.count});
+              if(window.poisonReviewFrames.length>1200)window.poisonReviewFrames.shift();
+            }
+          };
+          await import("/src/main.js");
+          </script>`,
+      ),
+    );
   } else normal(req, res);
 });
 const { port } = await game.listen();
@@ -53,6 +66,9 @@ process.on('message', async (m) => {
       room.poisonShots = [];
       room.poisonSplashes = [];
       e.facing = 0;
+      // Fixed poses isolate colour/attack checks; the patrol fixture below runs
+      // the ordinary idle AI with every character outside its territory.
+      if (['guard', 'rear'].includes(m.mode)) e.patrolPauseUntil = now + 600000;
       const people = [...room.players.values()];
       for (const [i, p] of people.entries()) {
         stopActor(p);
@@ -77,6 +93,10 @@ process.on('message', async (m) => {
       } else Object.assign(p, { x: e.x, z: e.z + 12 });
       if (m.mode === 'guard') {
         e.aggroAfter = now + 600000;
+      }
+      if (m.mode === 'patrol') {
+        for (const [i, person] of people.entries())
+          Object.assign(person, { x: e.home.x + (i === 1 ? -26 : 26 + i * 3), z: e.home.z + 26 });
       }
       if (m.mode === 'return') {
         Object.assign(e, { z: e.home.z + 12, targetId: p.id });

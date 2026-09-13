@@ -1,6 +1,10 @@
 import { mapScreen } from './map-screen.js';
 import { installMapWarp, updateMapWarp, type MapInput } from './map-warp-ui.js';
-import { openCharacterSwitch, updateCharacterSwitch } from './character-switch-ui.js';
+import {
+  closeCharacterConfirm,
+  openCharacterSwitch,
+  updateCharacterSwitch,
+} from './character-switch-ui.js';
 import { carrying, canCarry } from '../shared/carrying.mjs';
 import { readSaved, save, savedSession, saveSession } from './session-storage.js';
 import {
@@ -59,6 +63,12 @@ import { inGulf } from '../shared/gulf-region.mjs';
 import { ScreenManager, AreaBanner, keyPrompts } from './screens.js';
 import { helpTabsMarkup, bindHelpTabs } from './help-content.js';
 import { titleCreditsMarkup } from './title-credits.js';
+import {
+  DIFFICULTIES,
+  DIFFICULTY_LEVELS,
+  normalizeDifficulty,
+  type Difficulty,
+} from '../shared/difficulty.mjs';
 
 const icons = {
   unarmed:
@@ -131,6 +141,7 @@ let profile = {
     species: readSaved('cro-species', 'cro'),
     gender: readSaved('cro-gender', 'female'),
   }),
+  difficulty: normalizeDifficulty(readSaved('cro-difficulty', 'normal')),
   room: fixedIdentity
     ? cleanRoom(multiplayer.room || '') || 'EXHIBITION'
     : cleanRoom(query.get('room') || multiplayer.room || readSaved('cro-room', 'EMBER')) || 'EMBER',
@@ -171,7 +182,24 @@ const joinFields = () =>
   (fixedIdentity
     ? `<input type="hidden" name="name"><input type="hidden" name="room">`
     : `<div class="setup-identity"><label>あなたの名前<input name="name" maxlength="16" required autocomplete="off" autofocus></label><label>部屋のコード <span>英数字・ハイフン・アンダースコア / 最大16文字</span><input name="room" maxlength="16" pattern="[A-Za-z0-9_\\-]+" required autocomplete="off"></label></div>`) +
-  characterChoicesMarkup();
+  characterChoicesMarkup() +
+  difficultyChoicesMarkup();
+
+function difficultyChoicesMarkup() {
+  return `<fieldset class="difficulty-options"><legend class="character-legend">難易度を選ぶ</legend><div class="difficulty-choice-grid">${DIFFICULTY_LEVELS.map(
+    (id) => {
+      const option = DIFFICULTIES[id];
+      return `<label class="difficulty-choice"><input type="radio" name="difficulty" value="${id}" required><span><strong>${option.label}</strong><small>${option.description}</small></span></label>`;
+    },
+  ).join('')}</div><p>難易度は仲間とは別に選べ、あとから設定で変えられます。</p></fieldset>`;
+}
+
+function bindDifficultySelection(form: HTMLFormElement) {
+  const input = form.querySelector<HTMLInputElement>(
+    `input[name="difficulty"][value="${normalizeDifficulty(profile.difficulty)}"]`,
+  );
+  if (input) input.checked = true;
+}
 $('#app').innerHTML = `
   <section class="game-viewport" aria-label="${GAME_TITLE} ゲーム画面">
     <canvas id="world" aria-label="氷河時代の大陸が広がる3Dワールド。WASDまたは左スティックで移動。左スティックを浅く倒すと歩き、深く倒すと走ります。右スティックまたはドラッグでカメラ回転。" tabindex="0"></canvas>
@@ -1050,6 +1078,7 @@ function applyProfileForm(form: HTMLFormElement) {
     name: fixedIdentity ? profile.name : String(data.get('name')).trim() || '旅人',
     room: fixedIdentity ? profile.room : String(data.get('room')).toUpperCase(),
     ...parseCharacterValue(data.get('character')),
+    difficulty: normalizeDifficulty(data.get('difficulty')),
   };
   saveSession(sessionKey(profile.room), null);
   for (const [k, v] of Object.entries(profile)) save(`cro-${k}`, v);
@@ -1067,6 +1096,7 @@ function showSetup(error = '') {
   form.name.value = profile.name;
   form.room.value = profile.room;
   bindCharacterSelection(form, profile);
+  bindDifficultySelection(form);
   $('#setup-error').hidden = !error;
   $('#setup-error').textContent = error;
   $('#setup-back').textContent = joined ? '探索に戻る' : '戻る';
@@ -1449,6 +1479,19 @@ function updateSaveStatus() {
         : '自動保存を準備しています。';
 }
 let pauseSubTab = 'help';
+function difficultySettingsMarkup() {
+  const selected = normalizeDifficulty(profile.difficulty);
+  return `<div class="settings-item difficulty-setting"><div><strong>難易度</strong><p>自分の被ダメージと、自分を狙う敵の追跡・突進・飛びかかり速度を調整します。</p></div><div class="settings-buttons" role="group" aria-label="難易度">${DIFFICULTY_LEVELS.map((id) => `<button type="button" class="button button-outline" data-difficulty="${id}" aria-pressed="${selected === id}" title="${DIFFICULTIES[id].description}">${DIFFICULTIES[id].label}</button>`).join('')}</div></div>`;
+}
+
+function setDifficulty(difficulty: Difficulty) {
+  profile.difficulty = normalizeDifficulty(difficulty);
+  save('cro-difficulty', profile.difficulty);
+  send({ type: 'difficulty', difficulty: profile.difficulty });
+  for (const button of document.querySelectorAll<HTMLButtonElement>('[data-difficulty]'))
+    button.setAttribute('aria-pressed', String(button.dataset.difficulty === profile.difficulty));
+  notify(`難易度を「${DIFFICULTIES[profile.difficulty].label}」に変更しました。`, 'success');
+}
 function openCharacterSwitchMenu() {
   openCharacterSwitch({
     openModal,
@@ -1456,6 +1499,7 @@ function openCharacterSwitchMenu() {
     now: () => renderer.serverNow(),
     connected: () => joined,
     action,
+    settle: () => gamepadControls?.suspend(),
   });
 }
 /**
@@ -1598,7 +1642,7 @@ function openPauseMenu(tab = 'inventory') {
       )}${subPanel('tribe', tribeMarkup())}${subPanel('objectives', objectivesMarkup())}`,
     )}${panel(
       'settings',
-      `<h2>設定</h2><p class="modal-intro">音・画面・視点の調整。</p><div class="settings-list"><div class="settings-item"><div><strong>環境音</strong><p>谷の音を鳴らします。</p></div><button class="button button-outline" data-setting="sound" aria-pressed="${soundEnabled}">${icon(soundEnabled ? 'sound' : 'muted')} ${soundEnabled ? 'オン' : 'オフ'}</button></div><div class="settings-item"><div><strong>全画面表示</strong><p>ブラウザーの枠を隠して表示します。</p></div><button class="button button-outline" data-setting="fullscreen">${icon('expand')} 切り替え</button></div><div class="settings-item"><div><strong>視点</strong><p>カメラの距離を変え、キャラクターの後ろへ戻します。</p></div><div class="settings-buttons"><button class="button button-outline" data-setting="zoom-out">− 遠く</button><button class="button button-outline" data-setting="zoom-in">+ 近く</button><button class="button button-outline" data-setting="camera">${icon('target')} 視点を戻す</button></div></div><div class="settings-item"><div><strong>コントローラー</strong><p class="gamepad-connection" role="status">${usingGamepad ? '' : '未使用 · コントローラーをつないでボタンを押すと切り替わります。'}</p></div></div></div><p id="local-save-status" class="form-note" role="status" hidden></p>${localResetMarkup()}`,
+      `<h2>設定</h2><p class="modal-intro">難易度・音・画面・視点の調整。</p><div class="settings-list">${difficultySettingsMarkup()}<div class="settings-item"><div><strong>環境音</strong><p>谷の音を鳴らします。</p></div><button class="button button-outline" data-setting="sound" aria-pressed="${soundEnabled}">${icon(soundEnabled ? 'sound' : 'muted')} ${soundEnabled ? 'オン' : 'オフ'}</button></div><div class="settings-item"><div><strong>全画面表示</strong><p>ブラウザーの枠を隠して表示します。</p></div><button class="button button-outline" data-setting="fullscreen">${icon('expand')} 切り替え</button></div><div class="settings-item"><div><strong>視点</strong><p>カメラの距離を変え、キャラクターの後ろへ戻します。</p></div><div class="settings-buttons"><button class="button button-outline" data-setting="zoom-out">− 遠く</button><button class="button button-outline" data-setting="zoom-in">+ 近く</button><button class="button button-outline" data-setting="camera">${icon('target')} 視点を戻す</button></div></div><div class="settings-item"><div><strong>コントローラー</strong><p class="gamepad-connection" role="status">${usingGamepad ? '' : '未使用 · コントローラーをつないでボタンを押すと切り替わります。'}</p></div></div></div><p id="local-save-status" class="form-note" role="status" hidden></p>${localResetMarkup()}`,
     )}<p class="pause-hint">${usingGamepad ? '十字キー・左スティックで選ぶ · ○ で決定 · ×（下のボタン）か OPTIONS で閉じる' : 'ESC で閉じる · ↑↓←→ で選ぶ · Enter で決定'}</p></div></div>`,
   );
   const root = $('#modal-body') as HTMLElement;
@@ -1635,6 +1679,8 @@ function openPauseMenu(tab = 'inventory') {
   $('[data-setting="camera"]').onclick = () => renderer.focusPlayer();
   $('[data-setting="zoom-out"]').onclick = () => renderer.adjustZoom(-0.15);
   $('[data-setting="zoom-in"]').onclick = () => renderer.adjustZoom(0.15);
+  for (const button of root.querySelectorAll<HTMLButtonElement>('[data-difficulty]'))
+    button.onclick = () => setDifficulty(normalizeDifficulty(button.dataset.difficulty));
   if ($('[data-setting="reset-room"]')) $('[data-setting="reset-room"]').onclick = openRoomReset;
   // The bag opens ready to use: the first (top-left) food card holds focus.
   if (pauseTab === 'inventory')
@@ -1757,7 +1803,7 @@ $('#modal-close').onclick = () => {
   if (!cancelRoomReset()) $('#modal').close();
 };
 $('#modal').addEventListener('cancel', (event) => {
-  if (cancelRoomReset()) event.preventDefault();
+  if (cancelRoomReset() || closeCharacterConfirm()) event.preventDefault();
 });
 $('#modal').addEventListener('click', (e) => {
   if (e.target === $('#modal')) {
@@ -1893,6 +1939,10 @@ gamepadControls = new GamepadControls({
   },
   cancelMenu: () => {
     if (cancelRoomReset()) return;
+    if (closeCharacterConfirm()) {
+      gamepadControls?.suspend();
+      return;
+    }
     if (closeItemActions()) return;
     if ($('#modal').open) $('#modal').close();
     else if (screens.active === 'setup') $('#setup-back').click();

@@ -15,6 +15,7 @@ const obstacles = (room, enemy) =>
     .map(circle);
 import { heard, provoker, sameFloor } from './perception.mjs';
 import { respawnDelay } from './room-rules.mjs';
+import { enemyMovementSpeed } from './difficulty.mjs';
 const angleTo = (a, b) => Math.atan2(b.x - a.x, b.z - a.z);
 const angleDifference = (a, b) => Math.atan2(Math.sin(a - b), Math.cos(a - b));
 const clear = (room, a, b) =>
@@ -436,7 +437,13 @@ export function updateSabertooths(room, dt, now, damage) {
           const until = Math.min(now, leapEnd);
           const seconds = Math.min(Math.max(0, dt), Math.max(0, until - strike.lastMoveAt) / 1000);
           strike.lastMoveAt = until;
-          travel(e, room, strike.facing, strike.length / (R.pounceLeapMs / 1000), seconds);
+          travel(
+            e,
+            room,
+            strike.facing,
+            enemyMovementSpeed(target, strike.length / (R.pounceLeapMs / 1000)),
+            seconds,
+          );
           e.facing = strike.facing;
           if (now >= crouchEnd + R.pounceLeapMs * 0.45)
             for (const p of room.players.values())
@@ -486,7 +493,7 @@ export function updateSabertooths(room, dt, now, damage) {
       changed = true;
     } else {
       e.behavior = 'chase';
-      navigate(e, room, target, R.chaseSpeed, dt, now);
+      navigate(e, room, target, enemyMovementSpeed(target, R.chaseSpeed), dt, now);
     }
   }
   return changed;

@@ -734,6 +734,74 @@ body[data-screen] .world-labels {
 .setup-identity label {
   margin: 0;
 }
+.difficulty-options {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  align-items: center;
+  gap: 10px 18px;
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+.difficulty-options .character-legend {
+  grid-column: 1 / -1;
+  margin-bottom: 0;
+}
+.difficulty-choice-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 10px;
+}
+.difficulty-choice {
+  position: relative;
+  margin: 0;
+  cursor: pointer;
+}
+.difficulty-choice input {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  opacity: 0;
+  cursor: pointer;
+}
+.difficulty-choice > span {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  min-height: 54px;
+  padding: 9px 12px;
+  border: 1px solid #a3b58b26;
+  border-radius: 8px;
+  background: #0d1712;
+  transition:
+    border-color 0.18s,
+    background 0.18s,
+    box-shadow 0.18s;
+}
+.difficulty-choice strong {
+  font-size: 12px;
+  color: #e2e6d2;
+}
+.difficulty-choice small,
+.difficulty-options > p {
+  font-size: 9px;
+  line-height: 1.6;
+  color: #8fa080;
+}
+.difficulty-options > p {
+  margin: 0;
+}
+.difficulty-choice:has(input:checked) > span {
+  border-color: var(--accent);
+  background: linear-gradient(180deg, #2b2417, #1d1a12);
+  box-shadow: 0 0 0 1px var(--accent);
+}
+.difficulty-choice:focus-within > span {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
 .setup-actions {
   display: flex;
   gap: 12px;
@@ -2169,24 +2237,101 @@ dialog:has(.character-switch) {
   aspect-ratio: 7/8;
   object-fit: contain;
 }
-.character-switch-footer {
-  position: sticky;
-  bottom: -1px;
+/* Confirmation raised over the grid the moment a card is picked; はい is focused first. */
+.character-confirm {
+  position: fixed;
+  inset: 0;
+  z-index: 6;
+  display: grid;
+  place-items: center;
+  padding: 16px;
+  background: #07100cc8;
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+}
+.character-confirm-card {
+  display: flex;
+  align-items: stretch;
+  gap: 22px;
+  width: min(560px, 100%);
+  padding: 22px 24px;
+  border-radius: 14px;
+  border: 1px solid #e0b07066;
   background: var(--panel-solid);
-  padding-top: 10px;
-  margin-top: 14px;
-  z-index: 3;
+  box-shadow:
+    0 0 0 1px #6f4d2a55,
+    0 30px 90px #000c,
+    0 0 40px #e0b07022;
+  animation: title-rise 0.25s ease-out;
 }
-#character-switch-status {
-  min-height: 18px;
-  margin: 0 0 8px;
+.character-confirm-art {
+  width: 150px;
+  height: auto;
+  aspect-ratio: 7/8;
+  flex-shrink: 0;
+  object-fit: cover;
+  object-position: 50% 0;
+  border-radius: 10px;
+  border: 1px solid var(--accent);
+  background: #0d1712;
+}
+.character-confirm-body {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 12px;
+  min-width: 0;
+  flex: 1;
+}
+.character-confirm-body h3 {
+  margin: 0;
+  font: 400 15px/1.7 var(--display);
+  letter-spacing: 0.04em;
+  color: #e2e6d2;
+}
+.character-confirm-body h3 strong {
+  display: block;
+  font-size: 22px;
+  font-weight: 600;
+  color: #f5e6c4;
+}
+.character-confirm-body h3 small {
+  font-size: 13px;
+  font-weight: 400;
+  color: #d6c79a;
+}
+.character-confirm-note {
+  margin: 0;
   font-size: 11px;
-  color: #a3b298;
-  text-align: center;
+  line-height: 1.7;
+  color: #d8b5a8;
 }
-#character-switch-submit {
+.character-confirm-actions {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin-top: 4px;
+}
+.character-confirm-actions .button {
   min-height: 48px;
   font-size: 14px;
+  letter-spacing: 0.2em;
+  padding-left: calc(18px + 0.2em);
+}
+.character-confirm-actions .button:focus-visible,
+.character-confirm-actions .button.gamepad-focus {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+}
+@media (max-width: 560px) {
+  .character-confirm-card {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+  .character-confirm-art {
+    width: 110px;
+  }
 }
 @media (max-width: 760px) {
   dialog:has(.character-switch) .modal-top:before {
@@ -2345,6 +2490,9 @@ dialog:has(.character-switch) {
     height: clamp(120px, 32vw, 180px);
   }
   .setup-identity {
+    grid-template-columns: 1fr;
+  }
+  .difficulty-options {
     grid-template-columns: 1fr;
   }
   .setup-launch {

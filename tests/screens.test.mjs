@@ -71,6 +71,17 @@ test('the game opens on a title screen and only joins after Start or ?autostart=
   assert.doesNotMatch(main, /data-panel=/, 'no top navigation dock');
 });
 
+test('setup and in-game settings both offer easy, normal and hard difficulty', async () => {
+  const main = await readFile(new URL('src/main.ts', root), 'utf8');
+  const css = await readFile(new URL('src/style.css', root), 'utf8');
+  assert.match(main, /difficultyChoicesMarkup\(\)/);
+  assert.match(main, /difficultySettingsMarkup\(\)/);
+  assert.match(main, /data-difficulty=/);
+  assert.match(main, /type: 'difficulty'/);
+  assert.match(main, /cro-difficulty/);
+  assert.match(css, /\.difficulty-choice-grid/);
+});
+
 test('the atlas is a full-bleed canvas with a pointer, a small card and zoom controls, without toolbar or list', async () => {
   const { mapScreen, MAP_EMPTY_PROMPT } = await import('../dist/src/map-screen.js');
   const html = mapScreen((name) => `<i class="icon-${name}"></i>`);

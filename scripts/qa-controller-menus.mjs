@@ -339,7 +339,30 @@ try {
       .evaluate((el) => el.checked),
     true,
   );
-  await select('#character-switch-submit');
+  await page.waitForSelector('#character-confirm', { state: 'visible' });
+  assert.equal(
+    await focusedKey(),
+    'character-confirm-yes',
+    'はい is focused when the confirmation opens',
+  );
+  await tap(PAD.cross);
+  assert.equal(
+    await page.locator('#character-confirm').count(),
+    0,
+    'the bottom face button declines',
+  );
+  assert.equal(await modalOpen(), true, 'declining keeps the character form open');
+  assert.equal(
+    await page
+      .locator('#character-switch-form input[name="character"][value="cro-female"]')
+      .evaluate((el) => el.checked),
+    true,
+    'declining restores the current character',
+  );
+  await select('#character-switch-form input[name="character"][value="cro-male"]');
+  await tap(PAD.circle);
+  await page.waitForSelector('#character-confirm', { state: 'visible' });
+  await select('#character-confirm-yes');
   await tap(PAD.circle);
   await until(() => player().gender === 'male', 'character changed on the server');
   await until(async () => !(await modalOpen()), 'menu closes after the change');

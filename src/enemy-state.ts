@@ -106,6 +106,7 @@ const SABERTOOTH_CUES = {
 };
 const BEHEMOTH_CUES = {
   guard: '縄張りを警戒',
+  patrol: '縄張りをのし歩く',
   roar: '低く構えた…突進が来る！',
   charge: '突進',
   gape: '口を開けた…噛みつきが来る！',

@@ -3,6 +3,8 @@ import { CAMP } from './world.mjs';
 import { combatDistance as distance, enemyIsSolid, stopActor } from './combat.mjs';
 import { launchPoison, updatePoison } from './behemoth-poison.mjs';
 import { projectileHeight } from './terrain.mjs';
+import { patrolBehemoth, resetBehemothPatrol } from './behemoth-patrol.mjs';
+import { enemyMovementSpeed } from './difficulty.mjs';
 
 const circle = (a) => ({ id: a.id, type: 'circle', x: a.x, z: a.z, radius: a.radius });
 const obstacles = (room, enemy) =>
@@ -63,7 +65,11 @@ export function createBehemoth(collision, dynamic = [], now = Date.now()) {
     path: [],
     target: null,
     nextPathAt: 0,
-    roamRadius: 3,
+    roamRadius: R.territoryRadius - R.radius - 1,
+    patrolGoal: null,
+    patrolStep: 0,
+    patrolPauseUntil: now + 1200,
+    patrolBlockedMs: 0,
     attackSequence: 0,
     attackAt: 0,
     attackLockUntil: 0,
@@ -81,6 +87,7 @@ export function createBehemoth(collision, dynamic = [], now = Date.now()) {
 
 function returnHome(e) {
   stopActor(e);
+  resetBehemothPatrol(e);
   e.targetId = null;
   e.pendingAttack = null;
   e.attackLockUntil = 0;
@@ -242,6 +249,7 @@ export function updateBehemoths(room, dt, now, damage) {
       e.nextAttackAt = 0;
       if (acquired || attacker) {
         stopActor(e);
+        resetBehemothPatrol(e);
         e.pendingAttack = null;
         e.attackLockUntil = 0;
       }
@@ -257,6 +265,7 @@ export function updateBehemoths(room, dt, now, damage) {
         e.clip = 'Idle_Loop';
         e.behavior = 'guard';
         e.aggroAfter = now;
+        resetBehemothPatrol(e, now + 1800);
       } else navigate(e, room, e.home, R.walkSpeed, dt, now);
       continue;
     }
@@ -272,9 +281,7 @@ export function updateBehemoths(room, dt, now, damage) {
       changed = true;
     }
     if (!target) {
-      stopActor(e);
-      e.clip = 'Idle_Loop';
-      e.behavior = 'guard';
+      patrolBehemoth(e, room, dt, now, obstacles(room, e));
       continue;
     }
     const strike = e.pendingAttack;
@@ -309,9 +316,12 @@ export function updateBehemoths(room, dt, now, damage) {
         const forwardX = Math.sin(strike.facing),
           forwardZ = Math.cos(strike.facing),
           cruiseSpeed = (at) =>
-            R.chargeStartSpeed +
-            (R.chargeSpeed - R.chargeStartSpeed) *
-              Math.min(1, Math.max(0, (at - e.attackAt - R.roarMs) / R.chargeAccelerationMs));
+            enemyMovementSpeed(
+              target,
+              R.chargeStartSpeed +
+                (R.chargeSpeed - R.chargeStartSpeed) *
+                  Math.min(1, Math.max(0, (at - e.attackAt - R.roarMs) / R.chargeAccelerationMs)),
+            );
         while (remaining > 1e-9) {
           if (
             strike.brakeAt === undefined &&
@@ -453,7 +463,7 @@ export function updateBehemoths(room, dt, now, damage) {
       const kind = rear || ++e.meleeIndex % 2 === 0 ? 'tail' : 'bite';
       if (kind === 'bite' && distance(e, target) > e.radius + target.radius + R.biteReach) {
         e.behavior = 'chase';
-        navigate(e, room, target, R.chaseSpeed, dt, now);
+        navigate(e, room, target, enemyMovementSpeed(target, R.chaseSpeed), dt, now);
       } else {
         if (kind === 'bite') e.facing = angleTo(e, target);
         begin(e, kind, now);
@@ -466,7 +476,7 @@ export function updateBehemoths(room, dt, now, damage) {
         changed = true;
       } else {
         e.behavior = 'chase';
-        navigate(e, room, target, R.chaseSpeed, dt, now);
+        navigate(e, room, target, enemyMovementSpeed(target, R.chaseSpeed), dt, now);
       }
     }
   }

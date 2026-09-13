@@ -35,6 +35,7 @@ import { SABERTOOTH } from '../shared/sabertooth-rules.mjs';
 import { animalIsSolid, updateHunting } from '../shared/hunting.mjs';
 import { movePlayer } from '../shared/movement.mjs';
 import { canStartJump, jumpProgress } from '../shared/jumping.mjs';
+import { normalizeDifficulty } from '../shared/difficulty.mjs';
 
 import { carrying, updateCarrying, releaseCarry, clearCarryOffer } from '../shared/carrying.mjs';
 import { RIDING, mountedAnimal, releaseRider } from '../shared/riding.mjs';
@@ -243,6 +244,7 @@ export function createGameCore({
         alive: true,
         socket,
         sessionToken: resumable ? runtime.token() : null,
+        difficulty: normalizeDifficulty(params.get('difficulty')),
       };
     player.radius = characterModel(player).radius ?? WORLD.playerRadius;
     ensureAdventure(player);
@@ -299,6 +301,7 @@ export function createGameCore({
       runningRequested: false,
       needsWorld: false,
       ready: room.camp.level > 0,
+      difficulty: normalizeDifficulty(params.get('difficulty') ?? player.difficulty),
     });
     stopActor(player);
     Object.assign(player, spawn);
@@ -314,7 +317,12 @@ export function createGameCore({
       room: roomName,
       resumed,
       session: player.sessionToken,
-      profile: { name: player.name, species: player.species, gender: player.gender },
+      profile: {
+        name: player.name,
+        species: player.species,
+        gender: player.gender,
+        difficulty: player.difficulty,
+      },
     });
     broadcast(room, snapshot(room, true));
     systemChat(room, `${player.name} が谷に${resumed ? '戻ってきた' : 'やってきた'}。`);
@@ -373,6 +381,10 @@ export function createGameCore({
       if (message.type === 'leave') {
         if (!persistentSessions || !message.keepSession) player.sessionToken = null;
         socket.close(1000, 'Explicit leave');
+        return;
+      }
+      if (message.type === 'difficulty') {
+        player.difficulty = message.difficulty;
         return;
       }
       if (message.type === 'barter') {

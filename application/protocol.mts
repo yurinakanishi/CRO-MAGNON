@@ -1,5 +1,6 @@
 import type { BarterCommand } from '../shared/barter-types.mjs';
 import { validMapPinPoint } from '../shared/map-pins.mjs';
+import { DIFFICULTY_LEVELS, type Difficulty } from '../shared/difficulty.mjs';
 export type ClientCommand =
   | BarterCommand
   | { type: 'leave'; keepSession?: boolean }
@@ -9,6 +10,7 @@ export type ClientCommand =
   | { type: 'chat'; text: string }
   | { type: 'mapPin'; x: number; z: number }
   | { type: 'clearMapPin' }
+  | { type: 'difficulty'; difficulty: Difficulty }
   | { type: 'ping'; at: number | string };
 
 function finite(value: unknown): value is number {
@@ -32,6 +34,11 @@ export function decodeCommand(text: string): ClientCommand | null {
         : null;
     case 'clearMapPin':
       return { type: 'clearMapPin' };
+    case 'difficulty':
+      return typeof message.difficulty === 'string' &&
+        DIFFICULTY_LEVELS.includes(message.difficulty as Difficulty)
+        ? { type: 'difficulty', difficulty: message.difficulty as Difficulty }
+        : null;
     case 'barter': {
       const id = (v: unknown): v is string =>
         typeof v === 'string' && v.length > 0 && v.length <= 80;

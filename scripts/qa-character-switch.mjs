@@ -84,18 +84,41 @@ try {
   await open();
   assert.equal(await page.locator('#character-switch-form input[type="radio"]').count(), 7);
   assert.equal(await page.locator('#character-switch-form input:not([type="radio"])').count(), 0);
-  assert.equal(await page.locator('#character-switch-submit').isDisabled(), true);
+  assert.equal(await page.locator('#character-confirm').count(), 0);
   await choose(CHARACTER_MODELS[6]);
   assert.equal(me().species, 'cro');
+  await page.waitForSelector('#character-confirm');
+  assert.equal(
+    await page.locator('#character-confirm-yes').evaluate((el) => document.activeElement === el),
+    true,
+    'はい is focused as soon as a card is picked',
+  );
   await page.waitForTimeout(250);
   await page.screenshot({ path: `${output}/desktop.png` });
+  await page.locator('#character-confirm-no').click();
+  assert.equal(await page.locator('#character-confirm').count(), 0);
+  assert.equal(
+    await page.locator('#character-switch-form input:checked').inputValue(),
+    'cro-female',
+  );
+  assert.equal(
+    await page
+      .locator(
+        `#character-switch-form input[value="${CHARACTER_MODELS[6].species}-${CHARACTER_MODELS[6].gender}"]`,
+      )
+      .evaluate((el) => document.activeElement === el),
+    true,
+    'declining returns focus to the declined card',
+  );
   await page.locator('#modal-close').click();
   assert.equal(me().species, 'cro');
-  passed('Seven image choices, no identity inputs, selection and cancel do not change character');
+  passed(
+    'Seven image choices, no submit button; picking asks はい/いいえ with はい focused, いいえ and back do not change character',
+  );
   for (const model of [...CHARACTER_MODELS.slice(1), CHARACTER_MODELS[0]]) {
     await open();
     await choose(model);
-    await page.locator('#character-switch-submit').click();
+    await page.locator('#character-confirm-yes').click();
     await page.waitForFunction(() => !document.querySelector('#modal').open);
     await Promise.all([rendered(page, model), rendered(other, model)]);
     assert.equal(me().id, id);
@@ -128,8 +151,16 @@ try {
       await page.locator('#modal').evaluate((el) => el.scrollWidth > el.clientWidth + 1),
       false,
     );
-    await page.locator('#character-switch-submit').scrollIntoViewIfNeeded();
+    assert.equal(
+      await page.locator('#character-confirm').evaluate((el) => {
+        const r = el.querySelector('.character-confirm-card').getBoundingClientRect();
+        return r.left >= 0 && r.right <= innerWidth && r.top >= 0 && r.bottom <= innerHeight;
+      }),
+      true,
+      'confirmation card fits the small screen',
+    );
     await page.screenshot({ path: `${output}/${viewport.width}x${viewport.height}.png` });
+    await page.locator('#character-confirm-no').click();
     await page.locator('#modal-close').click();
   }
   passed(
@@ -141,15 +172,30 @@ try {
   await page.keyboard.press('Enter');
   assert.equal(await page.locator('#character-switch-form input:checked').inputValue(), 'cro-male');
   assert.equal(me().gender, 'female');
-  await page.keyboard.press('ArrowDown');
   assert.equal(
-    await page.locator('#character-switch-submit').evaluate((el) => document.activeElement === el),
+    await page.locator('#character-confirm-yes').evaluate((el) => document.activeElement === el),
     true,
   );
+  await page.keyboard.press('Escape');
+  assert.equal(
+    await page.locator('#modal').evaluate((el) => el.open),
+    true,
+    'Escape only closes the confirmation',
+  );
+  assert.equal(await page.locator('#character-confirm').count(), 0);
+  assert.equal(
+    await page.locator('#character-switch-form input:checked').inputValue(),
+    'cro-female',
+  );
+  await page.keyboard.press('Enter');
+  await page.waitForSelector('#character-confirm');
+  assert.equal(await page.locator('#character-switch-form input:checked').inputValue(), 'cro-male');
   await page.keyboard.press('Enter');
   await page.waitForFunction(() => !document.querySelector('#modal').open);
   await rendered(page, CHARACTER_MODELS[1]);
-  passed('Keyboard arrows + Enter select a card without changing, then confirm explicitly');
+  passed(
+    'Keyboard arrows + Enter pick a card, Escape declines, Enter on the focused はい confirms',
+  );
   await page.reload();
   await page.locator('#title-start').click();
   await rendered(page, CHARACTER_MODELS[1]);
