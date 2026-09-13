@@ -1,0 +1,1028 @@
+{
+  "candidate": 1,
+  "revision": "04",
+  "source": "work/low-poly/revision-01/candidate.glb",
+  "sha256": "6dd28210973bdccc543c0e2805ced82c838b95df2535218a652fda8ca869aa55",
+  "bytes": 15320936,
+  "heightMetres": 3.119311809539795,
+  "widthMetres": 3.4453582763671875,
+  "lengthMetres": 6.002918004989624,
+  "upAxis": "Y",
+  "forwardAxis": "+Z",
+  "boundsBlender": {
+    "min": [
+      -1.7226791381835938,
+      -2.4016916751861572,
+      0
+    ],
+    "max": [
+      1.7226791381835938,
+      3.601226329803467,
+      3.119311809539795
+    ]
+  },
+  "triangles": 47789,
+  "topology": {
+    "vertices_before": 51297,
+    "vertices_after": 23740,
+    "faces": 47789,
+    "weld_distance": 0.00001,
+    "shading": "angle-limited crease-aware smooth normals",
+    "crease_angle_degrees": 50,
+    "sharp_edges": 8802,
+    "boundary_edges": 50,
+    "non_manifold_edges": 175
+  },
+  "weights": {
+    "method": "geodesic surface skinning: fitted per-bone capsule radii, Euclidean-nearest cores, Dijkstra distance over the welded surface graph, compact quadratic falloff, smooth opposite-side limb gate and surface Laplacian weight smoothing",
+    "falloff_radius_m": 0.22,
+    "falloff_power": 1.6,
+    "core_quantile": 0.5,
+    "core_floor_m": 0.01,
+    "smoothing": {
+      "iterations": 65,
+      "factor": 0.55,
+      "domain": "mesh surface graph only"
+    },
+    "surface_graph": {
+      "vertices": 23740,
+      "edges": 71573,
+      "components_before": 1,
+      "bridges": 0,
+      "forced_bridges": 0,
+      "max_bridge_m": 0
+    },
+    "geodesic_cap_m": 1.45425,
+    "max_distance_to_any_core_m": 1.22325,
+    "opposite_side_gate": {
+      "full_influence_below_m": 0.06,
+      "zero_influence_above_m": 0.2
+    },
+    "max_influences": 4,
+    "vertices_clipped_to_max": 14452,
+    "influence_histogram": {
+      "1": 3043,
+      "2": 15,
+      "3": 1275,
+      "4": 19407
+    },
+    "weight_sum_min": 1,
+    "weight_sum_max": 1,
+    "bones": [
+      {
+        "bone": "Hips",
+        "capsule_radius_m": 0.14,
+        "owned": 827,
+        "core": 414,
+        "core_limit_m": 0.55436
+      },
+      {
+        "bone": "Spine",
+        "capsule_radius_m": 0.14,
+        "owned": 698,
+        "core": 349,
+        "core_limit_m": 0.62046
+      },
+      {
+        "bone": "Chest",
+        "capsule_radius_m": 0.14,
+        "owned": 363,
+        "core": 182,
+        "core_limit_m": 0.64758
+      },
+      {
+        "bone": "Neck",
+        "capsule_radius_m": 0.14,
+        "owned": 1216,
+        "core": 608,
+        "core_limit_m": 0.49213
+      },
+      {
+        "bone": "Head",
+        "capsule_radius_m": 0.14,
+        "owned": 2143,
+        "core": 1072,
+        "core_limit_m": 0.35046
+      },
+      {
+        "bone": "Jaw",
+        "capsule_radius_m": 0.14,
+        "owned": 2075,
+        "core": 1038,
+        "core_limit_m": 0.36474
+      },
+      {
+        "bone": "Shoulder.L",
+        "capsule_radius_m": 0.14,
+        "owned": 1497,
+        "core": 749,
+        "core_limit_m": 0.37239
+      },
+      {
+        "bone": "UpperArm.L",
+        "capsule_radius_m": 0.14,
+        "owned": 1107,
+        "core": 554,
+        "core_limit_m": 0.26527
+      },
+      {
+        "bone": "LowerArm.L",
+        "capsule_radius_m": 0.14,
+        "owned": 708,
+        "core": 354,
+        "core_limit_m": 0.16907
+      },
+      {
+        "bone": "Hand.L",
+        "capsule_radius_m": 0.14,
+        "owned": 924,
+        "core": 462,
+        "core_limit_m": 0.14123
+      },
+      {
+        "bone": "Shoulder.R",
+        "capsule_radius_m": 0.14,
+        "owned": 1511,
+        "core": 756,
+        "core_limit_m": 0.37664
+      },
+      {
+        "bone": "UpperArm.R",
+        "capsule_radius_m": 0.14,
+        "owned": 1144,
+        "core": 572,
+        "core_limit_m": 0.26441
+      },
+      {
+        "bone": "LowerArm.R",
+        "capsule_radius_m": 0.14,
+        "owned": 978,
+        "core": 489,
+        "core_limit_m": 0.18988
+      },
+      {
+        "bone": "Hand.R",
+        "capsule_radius_m": 0.13116,
+        "owned": 702,
+        "core": 351,
+        "core_limit_m": 0.07029
+      },
+      {
+        "bone": "UpperLeg.L",
+        "capsule_radius_m": 0.14,
+        "owned": 1204,
+        "core": 602,
+        "core_limit_m": 0.25732
+      },
+      {
+        "bone": "LowerLeg.L",
+        "capsule_radius_m": 0.13595,
+        "owned": 946,
+        "core": 473,
+        "core_limit_m": 0.17292
+      },
+      {
+        "bone": "Foot.L",
+        "capsule_radius_m": 0.13018,
+        "owned": 559,
+        "core": 280,
+        "core_limit_m": 0.07719
+      },
+      {
+        "bone": "UpperLeg.R",
+        "capsule_radius_m": 0.14,
+        "owned": 1204,
+        "core": 602,
+        "core_limit_m": 0.25678
+      },
+      {
+        "bone": "LowerLeg.R",
+        "capsule_radius_m": 0.1346,
+        "owned": 944,
+        "core": 472,
+        "core_limit_m": 0.18189
+      },
+      {
+        "bone": "Foot.R",
+        "capsule_radius_m": 0.13298,
+        "owned": 589,
+        "core": 295,
+        "core_limit_m": 0.07525
+      },
+      {
+        "bone": "Tail1",
+        "capsule_radius_m": 0.14,
+        "owned": 885,
+        "core": 443,
+        "core_limit_m": 0.38191
+      },
+      {
+        "bone": "Tail2",
+        "capsule_radius_m": 0.14,
+        "owned": 378,
+        "core": 189,
+        "core_limit_m": 0.1057
+      },
+      {
+        "bone": "Tail3",
+        "capsule_radius_m": 0.14,
+        "owned": 370,
+        "core": 185,
+        "core_limit_m": 0.10223
+      },
+      {
+        "bone": "Tail4",
+        "capsule_radius_m": 0.13863,
+        "owned": 310,
+        "core": 155,
+        "core_limit_m": 0.05361
+      },
+      {
+        "bone": "Tail5",
+        "capsule_radius_m": 0.124,
+        "owned": 159,
+        "core": 100,
+        "core_limit_m": 0.01
+      },
+      {
+        "bone": "Tail6",
+        "capsule_radius_m": 0.13099,
+        "owned": 213,
+        "core": 107,
+        "core_limit_m": 0.05764
+      },
+      {
+        "bone": "Tail7",
+        "capsule_radius_m": 0.14,
+        "owned": 86,
+        "core": 66,
+        "core_limit_m": 0.01
+      }
+    ],
+    "vertices": 23740,
+    "repaired_unweighted": 0,
+    "clipped_to_four": 0
+  },
+  "bones": [
+    "Root",
+    "Hips",
+    "Spine",
+    "Chest",
+    "Neck",
+    "Head",
+    "Jaw",
+    "Shoulder.L",
+    "UpperArm.L",
+    "LowerArm.L",
+    "Hand.L",
+    "UpperLeg.L",
+    "LowerLeg.L",
+    "Foot.L",
+    "Shoulder.R",
+    "UpperArm.R",
+    "LowerArm.R",
+    "Hand.R",
+    "UpperLeg.R",
+    "LowerLeg.R",
+    "Foot.R",
+    "Tail1",
+    "Tail2",
+    "Tail3",
+    "Tail4",
+    "Tail5",
+    "Tail6",
+    "Tail7"
+  ],
+  "bonePlan": [
+    [
+      "Root",
+      [
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        0.15
+      ],
+      null,
+      false
+    ],
+    [
+      "Hips",
+      [
+        0,
+        0.8,
+        1.43
+      ],
+      [
+        0,
+        0.08,
+        1.62
+      ],
+      "Root",
+      false
+    ],
+    [
+      "Spine",
+      [
+        0,
+        0.08,
+        1.62
+      ],
+      [
+        0,
+        -0.55,
+        1.82
+      ],
+      "Hips",
+      false
+    ],
+    [
+      "Chest",
+      [
+        0,
+        -0.55,
+        1.82
+      ],
+      [
+        0,
+        -1.05,
+        2.07
+      ],
+      "Spine",
+      false
+    ],
+    [
+      "Neck",
+      [
+        0,
+        -1.05,
+        2.07
+      ],
+      [
+        0,
+        -1.52,
+        2.24
+      ],
+      "Chest",
+      false
+    ],
+    [
+      "Head",
+      [
+        0,
+        -1.52,
+        2.24
+      ],
+      [
+        0,
+        -2.26,
+        2.25
+      ],
+      "Neck",
+      false
+    ],
+    [
+      "Jaw",
+      [
+        0,
+        -1.65,
+        2.05
+      ],
+      [
+        0,
+        -2.28,
+        1.95
+      ],
+      "Head",
+      false
+    ],
+    [
+      "Shoulder.L",
+      [
+        0.6,
+        -0.65,
+        1.95
+      ],
+      [
+        1.02,
+        -0.8,
+        1.8
+      ],
+      "Chest",
+      false
+    ],
+    [
+      "UpperArm.L",
+      [
+        1.02,
+        -0.8,
+        1.8
+      ],
+      [
+        1.3,
+        -0.8,
+        0.91
+      ],
+      "Shoulder.L",
+      false
+    ],
+    [
+      "LowerArm.L",
+      [
+        1.3,
+        -0.8,
+        0.91
+      ],
+      [
+        1.24,
+        -1.2,
+        0.24
+      ],
+      "UpperArm.L",
+      false
+    ],
+    [
+      "Hand.L",
+      [
+        1.24,
+        -1.2,
+        0.24
+      ],
+      [
+        1.24,
+        -1.6,
+        0.11
+      ],
+      "LowerArm.L",
+      false
+    ],
+    [
+      "UpperLeg.L",
+      [
+        0.78,
+        0.8,
+        1.48
+      ],
+      [
+        0.91,
+        0.65,
+        0.89
+      ],
+      "Hips",
+      false
+    ],
+    [
+      "LowerLeg.L",
+      [
+        0.91,
+        0.65,
+        0.89
+      ],
+      [
+        0.83,
+        1.45,
+        0.25
+      ],
+      "UpperLeg.L",
+      false
+    ],
+    [
+      "Foot.L",
+      [
+        0.83,
+        1.45,
+        0.25
+      ],
+      [
+        0.83,
+        1.08,
+        0.09
+      ],
+      "LowerLeg.L",
+      false
+    ],
+    [
+      "Shoulder.R",
+      [
+        -0.6,
+        -0.65,
+        1.95
+      ],
+      [
+        -1.02,
+        -0.8,
+        1.8
+      ],
+      "Chest",
+      false
+    ],
+    [
+      "UpperArm.R",
+      [
+        -1.02,
+        -0.8,
+        1.8
+      ],
+      [
+        -1.3,
+        -0.8,
+        0.91
+      ],
+      "Shoulder.R",
+      false
+    ],
+    [
+      "LowerArm.R",
+      [
+        -1.3,
+        -0.8,
+        0.91
+      ],
+      [
+        -1.24,
+        -1.2,
+        0.24
+      ],
+      "UpperArm.R",
+      false
+    ],
+    [
+      "Hand.R",
+      [
+        -1.24,
+        -1.2,
+        0.24
+      ],
+      [
+        -1.24,
+        -1.6,
+        0.11
+      ],
+      "LowerArm.R",
+      false
+    ],
+    [
+      "UpperLeg.R",
+      [
+        -0.78,
+        0.8,
+        1.48
+      ],
+      [
+        -0.91,
+        0.65,
+        0.89
+      ],
+      "Hips",
+      false
+    ],
+    [
+      "LowerLeg.R",
+      [
+        -0.91,
+        0.65,
+        0.89
+      ],
+      [
+        -0.83,
+        1.45,
+        0.25
+      ],
+      "UpperLeg.R",
+      false
+    ],
+    [
+      "Foot.R",
+      [
+        -0.83,
+        1.45,
+        0.25
+      ],
+      [
+        -0.83,
+        1.08,
+        0.09
+      ],
+      "LowerLeg.R",
+      false
+    ],
+    [
+      "Tail1",
+      [
+        0,
+        1.05,
+        1.46
+      ],
+      [
+        -0.004516631364822388,
+        1.48,
+        1.7853435277938843
+      ],
+      "Hips",
+      false
+    ],
+    [
+      "Tail2",
+      [
+        -0.004516631364822388,
+        1.48,
+        1.7853435277938843
+      ],
+      [
+        0.03310668468475342,
+        1.884,
+        1.5174087333679198
+      ],
+      "Tail1",
+      false
+    ],
+    [
+      "Tail3",
+      [
+        0.03310668468475342,
+        1.884,
+        1.5174087333679198
+      ],
+      [
+        0.11783488839864731,
+        2.2880000000000003,
+        1.2452794981002808
+      ],
+      "Tail2",
+      false
+    ],
+    [
+      "Tail4",
+      [
+        0.11783488839864731,
+        2.2880000000000003,
+        1.2452794981002808
+      ],
+      [
+        0.25940993428230286,
+        2.692,
+        1.0534365797042846
+      ],
+      "Tail3",
+      false
+    ],
+    [
+      "Tail5",
+      [
+        0.25940993428230286,
+        2.692,
+        1.0534365797042846
+      ],
+      [
+        0.5213324874639511,
+        3.096,
+        0.9785724568367005
+      ],
+      "Tail4",
+      false
+    ],
+    [
+      "Tail6",
+      [
+        0.5213324874639511,
+        3.096,
+        0.9785724568367005
+      ],
+      [
+        0.8338328003883362,
+        3.5,
+        1.1416303062438964
+      ],
+      "Tail5",
+      false
+    ],
+    [
+      "Tail7",
+      [
+        0.8338328003883362,
+        3.5,
+        1.1416303062438964
+      ],
+      [
+        0.8609152436256409,
+        3.5153777599334717,
+        1.417362928390503
+      ],
+      "Tail6",
+      false
+    ]
+  ],
+  "clips": [
+    {
+      "name": "Alert",
+      "seconds": 0.7,
+      "loop": false,
+      "rootMotion": "in-place"
+    },
+    {
+      "name": "Attack",
+      "seconds": 1,
+      "loop": false,
+      "rootMotion": "in-place"
+    },
+    {
+      "name": "Charge",
+      "seconds": 2.4,
+      "loop": false,
+      "rootMotion": "in-place"
+    },
+    {
+      "name": "Death",
+      "seconds": 1.6,
+      "loop": false,
+      "rootMotion": "in-place"
+    },
+    {
+      "name": "Gape",
+      "seconds": 0.6,
+      "loop": false,
+      "rootMotion": "in-place"
+    },
+    {
+      "name": "Hit",
+      "seconds": 0.3,
+      "loop": false,
+      "rootMotion": "in-place"
+    },
+    {
+      "name": "Idle_Loop",
+      "seconds": 3,
+      "loop": true,
+      "rootMotion": "in-place"
+    },
+    {
+      "name": "Roar",
+      "seconds": 1.2,
+      "loop": false,
+      "rootMotion": "in-place"
+    },
+    {
+      "name": "Run_Loop",
+      "seconds": 0.6,
+      "loop": true,
+      "rootMotion": "in-place"
+    },
+    {
+      "name": "Spit",
+      "seconds": 0.9,
+      "loop": false,
+      "rootMotion": "in-place"
+    },
+    {
+      "name": "SpitWindup",
+      "seconds": 1.3,
+      "loop": false,
+      "rootMotion": "in-place"
+    },
+    {
+      "name": "TailSpin",
+      "seconds": 1.5,
+      "loop": false,
+      "rootMotion": "in-place"
+    },
+    {
+      "name": "Tremble",
+      "seconds": 0.9,
+      "loop": false,
+      "rootMotion": "in-place"
+    },
+    {
+      "name": "Walk_Loop",
+      "seconds": 1.2,
+      "loop": true,
+      "rootMotion": "in-place"
+    }
+  ],
+  "locomotion": {
+    "Walk_Loop": {
+      "metresPerSecond": 0.54,
+      "cycleSeconds": 1.2,
+      "dutyFactor": 0.76
+    },
+    "Run_Loop": {
+      "metresPerSecond": 2.28,
+      "cycleSeconds": 0.6,
+      "dutyFactor": 0.6
+    }
+  },
+  "groundCheck": [
+    {
+      "clip": "Alert",
+      "minimumGroundMetres": 0.002999781398102641,
+      "maximumLowestPawMetres": 0.003000011434778571,
+      "maximumJointGlideMetres": {
+        "FL": 0,
+        "FR": 0,
+        "BL": 0,
+        "BR": 0
+      }
+    },
+    {
+      "clip": "Attack",
+      "minimumGroundMetres": 0.0029997555539011955,
+      "maximumLowestPawMetres": 0.003000028431415558,
+      "maximumJointGlideMetres": {
+        "FL": 0,
+        "FR": 0,
+        "BL": 0,
+        "BR": 0
+      }
+    },
+    {
+      "clip": "Charge",
+      "minimumGroundMetres": 0.002999741118401289,
+      "maximumLowestPawMetres": 0.0030001152772456408,
+      "maximumJointGlideMetres": {
+        "FL": 0,
+        "FR": 0,
+        "BL": 0,
+        "BR": 0
+      }
+    },
+    {
+      "clip": "Death",
+      "minimumGroundMetres": 0.0029996633529663086,
+      "maximumLowestPawMetres": 1.3098175525665283,
+      "maximumJointGlideMetres": {
+        "FL": 0,
+        "FR": 0,
+        "BL": 0,
+        "BR": 0
+      }
+    },
+    {
+      "clip": "Gape",
+      "minimumGroundMetres": 0.0029997818637639284,
+      "maximumLowestPawMetres": 0.003000055206939578,
+      "maximumJointGlideMetres": {
+        "FL": 0,
+        "FR": 0,
+        "BL": 0,
+        "BR": 0
+      }
+    },
+    {
+      "clip": "Hit",
+      "minimumGroundMetres": 0.002999768126755953,
+      "maximumLowestPawMetres": 0.0030000382103025913,
+      "maximumJointGlideMetres": {
+        "FL": 0,
+        "FR": 0,
+        "BL": 0,
+        "BR": 0
+      }
+    },
+    {
+      "clip": "Idle_Loop",
+      "minimumGroundMetres": 0.002999713411554694,
+      "maximumLowestPawMetres": 0.00300005660392344,
+      "maximumJointGlideMetres": {
+        "FL": 0,
+        "FR": 0,
+        "BL": 0,
+        "BR": 0
+      }
+    },
+    {
+      "clip": "Roar",
+      "minimumGroundMetres": 0.0029997725505381823,
+      "maximumLowestPawMetres": 0.003000088268890977,
+      "maximumJointGlideMetres": {
+        "FL": 0,
+        "FR": 0,
+        "BL": 0,
+        "BR": 0
+      }
+    },
+    {
+      "clip": "Run_Loop",
+      "minimumGroundMetres": 0.0029997902456671,
+      "maximumLowestPawMetres": 0.003000107128173113,
+      "maximumJointGlideMetres": {
+        "FL": 0,
+        "FR": 0,
+        "BL": 0,
+        "BR": 0
+      }
+    },
+    {
+      "clip": "Spit",
+      "minimumGroundMetres": 0.002990594832226634,
+      "maximumLowestPawMetres": 0.003000012831762433,
+      "maximumJointGlideMetres": {
+        "FL": 0,
+        "FR": 0,
+        "BL": 0,
+        "BR": 0
+      }
+    },
+    {
+      "clip": "SpitWindup",
+      "minimumGroundMetres": 0.0029997217934578657,
+      "maximumLowestPawMetres": 0.00300007127225399,
+      "maximumJointGlideMetres": {
+        "FL": 0,
+        "FR": 0,
+        "BL": 0,
+        "BR": 0
+      }
+    },
+    {
+      "clip": "TailSpin",
+      "minimumGroundMetres": 0.00299972016364336,
+      "maximumLowestPawMetres": 0.003000108292326331,
+      "maximumJointGlideMetres": {
+        "FL": 0,
+        "FR": 0,
+        "BL": 0,
+        "BR": 0
+      }
+    },
+    {
+      "clip": "Tremble",
+      "minimumGroundMetres": 0.0029997723177075386,
+      "maximumLowestPawMetres": 0.003000084776431322,
+      "maximumJointGlideMetres": {
+        "FL": 0,
+        "FR": 0,
+        "BL": 0,
+        "BR": 0
+      }
+    },
+    {
+      "clip": "Walk_Loop",
+      "minimumGroundMetres": 0.0029996896628290415,
+      "maximumLowestPawMetres": 0.0030000880360603333,
+      "maximumJointGlideMetres": {
+        "FL": 0,
+        "FR": 0,
+        "BL": 0,
+        "BR": 0
+      }
+    }
+  ],
+  "mouth": {
+    "authoredSeconds": 0.18333333333333332,
+    "pointBlender": [
+      0,
+      -2.291968584060669,
+      1.611863613128662
+    ],
+    "mouthSide": 0,
+    "mouthForward": 2.291968584060669,
+    "mouthHeight": 1.611863613128662
+  },
+  "tailCentreline": [
+    [
+      0,
+      1.05,
+      1.46
+    ],
+    [
+      -0.004516631364822388,
+      1.48,
+      1.7853435277938843
+    ],
+    [
+      0.03310668468475342,
+      1.884,
+      1.5174087333679198
+    ],
+    [
+      0.11783488839864731,
+      2.2880000000000003,
+      1.2452794981002808
+    ],
+    [
+      0.25940993428230286,
+      2.692,
+      1.0534365797042846
+    ],
+    [
+      0.5213324874639511,
+      3.096,
+      0.9785724568367005
+    ],
+    [
+      0.8338328003883362,
+      3.5,
+      1.1416303062438964
+    ],
+    [
+      0.8609152436256409,
+      3.5153777599334717,
+      1.417362928390503
+    ]
+  ],
+  "geometryOrigin": "New Codex image -> local TRELLIS-2 -> measured surface reduction. No visible procedural geometry.",
+  "motionNotes": "Four independent planted paw IK chains, seven delayed tail links, distinct charge brace, tail coil, bite gape and inflated poison draw-back. All current gameplay tuning retained.",
+  "visualReviewRequired": true
+}

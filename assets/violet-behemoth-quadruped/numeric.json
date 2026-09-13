@@ -1,0 +1,599 @@
+{
+  "revision": "04",
+  "sha256": "6dd28210973bdccc543c0e2805ced82c838b95df2535218a652fda8ca869aa55",
+  "bytes": 15320936,
+  "sampleRate": 240,
+  "triangles": 47789,
+  "renderVertices": 51297,
+  "skinJoints": 28,
+  "restBounds": {
+    "min": [
+      -1.7226788934323538,
+      1.0288153858524622e-7,
+      -3.6012264044781777
+    ],
+    "max": [
+      1.7226788924227074,
+      3.11931144854528,
+      2.401691565046224
+    ]
+  },
+  "weights": {
+    "sumMin": 0.9999998603016138,
+    "sumMax": 1.0000001312218956,
+    "maxInfluences": 4
+  },
+  "mouth": {
+    "authoredSeconds": 0.18,
+    "activeMilliseconds": 144,
+    "mouthSide": 0,
+    "mouthHeight": 1.6189243587876243,
+    "mouthForward": 2.292788796171056,
+    "method": "Midpoint of upper and lower lip reference transformed by exact exported Head/Jaw matrices."
+  },
+  "mouthWindup": [
+    {
+      "forward": 2.36,
+      "height": 2.04
+    },
+    {
+      "forward": 2.359028,
+      "height": 2.045636
+    },
+    {
+      "forward": 2.356057,
+      "height": 2.061161
+    },
+    {
+      "forward": 2.350766,
+      "height": 2.084587
+    },
+    {
+      "forward": 2.342786,
+      "height": 2.113893
+    },
+    {
+      "forward": 2.331972,
+      "height": 2.146966
+    },
+    {
+      "forward": 2.318599,
+      "height": 2.181566
+    },
+    {
+      "forward": 2.303464,
+      "height": 2.215396
+    },
+    {
+      "forward": 2.287909,
+      "height": 2.246144
+    },
+    {
+      "forward": 2.273755,
+      "height": 2.27151
+    },
+    {
+      "forward": 2.263104,
+      "height": 2.28929
+    },
+    {
+      "forward": 2.258094,
+      "height": 2.297319
+    },
+    {
+      "forward": 2.257932,
+      "height": 2.297575
+    },
+    {
+      "forward": 2.257932,
+      "height": 2.297575
+    },
+    {
+      "forward": 2.257932,
+      "height": 2.297575
+    },
+    {
+      "forward": 2.257932,
+      "height": 2.297575
+    },
+    {
+      "forward": 2.257932,
+      "height": 2.297575
+    }
+  ],
+  "clips": [
+    {
+      "clip": "Alert",
+      "seconds": 0.699999988079071,
+      "samples": 169,
+      "minimumGroundMetres": 0.0029995020055159243,
+      "maximumLowestPawMetres": 0.0030001769191404823,
+      "minimumPawsInContact": 4,
+      "allPawsAirborneFraction": 0,
+      "pawJointRangeMetres": [
+        [
+          0.0000010649282731201026,
+          0.0000013454018229497322,
+          0.0000012536988871492127
+        ],
+        [
+          0.0000010385304585192046,
+          0.000001384237656609777,
+          0.0000012273381437832853
+        ],
+        [
+          7.527910028670703e-7,
+          9.851259972215587e-7,
+          9.486966847660483e-7
+        ],
+        [
+          7.740358989316576e-7,
+          9.115417025640227e-7,
+          8.236529023264438e-7
+        ]
+      ],
+      "rootMatrixMaxDelta": 0,
+      "maximumEdgeElongation": 2.5239738138919723,
+      "maximumP99EdgeElongation": 1.1039358026799948,
+      "loopClosureMetres": null
+    },
+    {
+      "clip": "Attack",
+      "seconds": 1,
+      "samples": 241,
+      "minimumGroundMetres": 0.002993958213368796,
+      "maximumLowestPawMetres": 0.003000380751755046,
+      "minimumPawsInContact": 4,
+      "allPawsAirborneFraction": 0,
+      "pawJointRangeMetres": [
+        [
+          0.000002351129641642302,
+          0.00000459846121581009,
+          0.0000010206264784429209
+        ],
+        [
+          0.000002089015548323303,
+          0.000004670432784514844,
+          0.0000011295717650128267
+        ],
+        [
+          0.0000026230823505501988,
+          0.000006771109222536431,
+          0.0000022355149111863426
+        ],
+        [
+          0.0000027164566097637177,
+          0.000006572799831405796,
+          0.000002182204013934097
+        ]
+      ],
+      "rootMatrixMaxDelta": 0,
+      "maximumEdgeElongation": 3.0226777541125145,
+      "maximumP99EdgeElongation": 1.1510793623688411,
+      "loopClosureMetres": null
+    },
+    {
+      "clip": "Charge",
+      "seconds": 2.4000000953674316,
+      "samples": 577,
+      "minimumGroundMetres": 0.00047506444074234754,
+      "maximumLowestPawMetres": 0.0030008380682359707,
+      "minimumPawsInContact": 2,
+      "allPawsAirborneFraction": 0,
+      "pawJointRangeMetres": [
+        [
+          0.0006548137083275396,
+          0.2023982060937803,
+          0.9446216977126145
+        ],
+        [
+          0.0006051800966124787,
+          0.20123982026378595,
+          0.9446832630880991
+        ],
+        [
+          0.0009391723472279567,
+          0.20117414313918214,
+          0.9446175339279305
+        ],
+        [
+          0.0009396554376243094,
+          0.20105785103720214,
+          0.9448751308021541
+        ]
+      ],
+      "rootMatrixMaxDelta": 0,
+      "maximumEdgeElongation": 3.9745546049415132,
+      "maximumP99EdgeElongation": 1.2764239490969411,
+      "loopClosureMetres": null
+    },
+    {
+      "clip": "Death",
+      "seconds": 1.600000023841858,
+      "samples": 385,
+      "minimumGroundMetres": 0.0027946448100704124,
+      "maximumLowestPawMetres": 1.3098174997437924,
+      "minimumPawsInContact": 0,
+      "allPawsAirborneFraction": 0.6051948051948052,
+      "pawJointRangeMetres": [
+        [
+          1.9993988583225129,
+          1.3803278252540419,
+          0.23483736108974762
+        ],
+        [
+          0.5106367959651033,
+          1.8819588120193214,
+          0.08098445102080376
+        ],
+        [
+          1.687491842591729,
+          1.595004910664525,
+          0.30094844971718526
+        ],
+        [
+          0.5402874475264297,
+          1.488693935492154,
+          0.1399722503046723
+        ]
+      ],
+      "rootMatrixMaxDelta": 0,
+      "maximumEdgeElongation": 5.676922446599176,
+      "maximumP99EdgeElongation": 1.5092868577746803,
+      "loopClosureMetres": null
+    },
+    {
+      "clip": "Gape",
+      "seconds": 0.6000000238418579,
+      "samples": 145,
+      "minimumGroundMetres": 0.0029990781650393256,
+      "maximumLowestPawMetres": 0.0030003747829459014,
+      "minimumPawsInContact": 4,
+      "allPawsAirborneFraction": 0,
+      "pawJointRangeMetres": [
+        [
+          9.93071201271789e-7,
+          0.0000011812008096079296,
+          0.0000010678645938622111
+        ],
+        [
+          8.179613748549031e-7,
+          0.0000010083258985549293,
+          0.0000010467900879440606
+        ],
+        [
+          6.988197899238102e-7,
+          0.0000014858613224255635,
+          0.0000011050432489057016
+        ],
+        [
+          6.940534663657516e-7,
+          0.0000014885682168008785,
+          9.088559353997994e-7
+        ]
+      ],
+      "rootMatrixMaxDelta": 0,
+      "maximumEdgeElongation": 3.0226670808707685,
+      "maximumP99EdgeElongation": 1.1393325318817402,
+      "loopClosureMetres": null
+    },
+    {
+      "clip": "Hit",
+      "seconds": 0.30000001192092896,
+      "samples": 73,
+      "minimumGroundMetres": 0.0029907186701722175,
+      "maximumLowestPawMetres": 0.0030002332057002547,
+      "minimumPawsInContact": 4,
+      "allPawsAirborneFraction": 0,
+      "pawJointRangeMetres": [
+        [
+          0.0000044387041442384145,
+          0.000010296519789787517,
+          0.000009175001780770131
+        ],
+        [
+          0.000006379381391807826,
+          0.0000068019203055547095,
+          0.0000016851448947363679
+        ],
+        [
+          0.0000018755605766251904,
+          0.000005440432377490367,
+          0.0000022336887284257756
+        ],
+        [
+          0.0000018398915971884477,
+          0.000005169762137491318,
+          0.0000022988154855241305
+        ]
+      ],
+      "rootMatrixMaxDelta": 0,
+      "maximumEdgeElongation": 2.5336622604693804,
+      "maximumP99EdgeElongation": 1.1099564391632597,
+      "loopClosureMetres": null
+    },
+    {
+      "clip": "Idle_Loop",
+      "seconds": 3,
+      "samples": 721,
+      "minimumGroundMetres": 0.0029991135671246054,
+      "maximumLowestPawMetres": 0.0030003793250004338,
+      "minimumPawsInContact": 4,
+      "allPawsAirborneFraction": 0,
+      "pawJointRangeMetres": [
+        [
+          0.0000012431747147267913,
+          0.0000014791707073635862,
+          0.0000013730067729422757
+        ],
+        [
+          0.000001220190871675797,
+          0.0000014753000261436,
+          0.0000015116079690180584
+        ],
+        [
+          8.936501553202802e-7,
+          0.000001063822979929796,
+          0.0000010510394394813716
+        ],
+        [
+          8.072379039658628e-7,
+          0.0000014905643694884674,
+          0.0000012505086925962416
+        ]
+      ],
+      "rootMatrixMaxDelta": 0,
+      "maximumEdgeElongation": 1.4590300923455317,
+      "maximumP99EdgeElongation": 1.0761224623818828,
+      "loopClosureMetres": 0
+    },
+    {
+      "clip": "Roar",
+      "seconds": 1.2000000476837158,
+      "samples": 289,
+      "minimumGroundMetres": 0.002995976610335042,
+      "maximumLowestPawMetres": 0.003000431986853312,
+      "minimumPawsInContact": 3,
+      "allPawsAirborneFraction": 0,
+      "pawJointRangeMetres": [
+        [
+          0.0000013864967227661396,
+          0.09000196322372256,
+          0.0650009547770265
+        ],
+        [
+          0.0000011322755693043973,
+          0.0000049020116552611626,
+          0.0000033515439572529004
+        ],
+        [
+          9.375976416370335e-7,
+          0.0000019347057371721377,
+          0.0000016177298796105077
+        ],
+        [
+          0.0000011273160811509086,
+          0.0000019244529299022872,
+          0.0000016999036338560813
+        ]
+      ],
+      "rootMatrixMaxDelta": 0,
+      "maximumEdgeElongation": 2.890119889013817,
+      "maximumP99EdgeElongation": 1.1995237437111568,
+      "loopClosureMetres": null
+    },
+    {
+      "clip": "Run_Loop",
+      "seconds": 0.6000000238418579,
+      "samples": 145,
+      "minimumGroundMetres": 0.00275628480095664,
+      "maximumLowestPawMetres": 0.0030005135443744784,
+      "minimumPawsInContact": 2,
+      "allPawsAirborneFraction": 0,
+      "pawJointRangeMetres": [
+        [
+          0.00009071873768684569,
+          0.16990808722170697,
+          0.8189345914135231
+        ],
+        [
+          0.00009085282737619771,
+          0.1699030893272604,
+          0.8189353932817702
+        ],
+        [
+          0.00012567848236055834,
+          0.16978456114399948,
+          0.8189342241000532
+        ],
+        [
+          0.00012560858701338162,
+          0.16978509511422096,
+          0.818934676980366
+        ]
+      ],
+      "rootMatrixMaxDelta": 0,
+      "maximumEdgeElongation": 3.1347125800031246,
+      "maximumP99EdgeElongation": 1.246580550745098,
+      "loopClosureMetres": 0
+    },
+    {
+      "clip": "Spit",
+      "seconds": 0.8999999761581421,
+      "samples": 217,
+      "minimumGroundMetres": 0.0029888857232637503,
+      "maximumLowestPawMetres": 0.0030003653746861684,
+      "minimumPawsInContact": 4,
+      "allPawsAirborneFraction": 0,
+      "pawJointRangeMetres": [
+        [
+          0.0000011394172663159452,
+          0.0000035205945152494422,
+          0.000001335749036268652
+        ],
+        [
+          0.0000011163875772712828,
+          0.0000031951836531041167,
+          0.0000014956940344035274
+        ],
+        [
+          0.0000014924293521012544,
+          0.000003613014284531424,
+          0.0000017199571415993375
+        ],
+        [
+          0.00000151345425447591,
+          0.000004072302288382623,
+          0.0000017168842119108518
+        ]
+      ],
+      "rootMatrixMaxDelta": 0,
+      "maximumEdgeElongation": 4.37546071724232,
+      "maximumP99EdgeElongation": 1.2133031797953826,
+      "loopClosureMetres": null
+    },
+    {
+      "clip": "SpitWindup",
+      "seconds": 1.2999999523162842,
+      "samples": 313,
+      "minimumGroundMetres": 0.00299927313800083,
+      "maximumLowestPawMetres": 0.003000555899100232,
+      "minimumPawsInContact": 4,
+      "allPawsAirborneFraction": 0,
+      "pawJointRangeMetres": [
+        [
+          0.0000010622066752841164,
+          0.000001710324766035498,
+          0.000001039610648678746
+        ],
+        [
+          0.0000012129115560810533,
+          0.0000014381484314540671,
+          0.000001242013437430245
+        ],
+        [
+          8.351132358974667e-7,
+          0.0000010428968534315075,
+          0.0000011018661147943476
+        ],
+        [
+          7.699260278215547e-7,
+          0.0000011725568198617253,
+          0.0000012139666172306107
+        ]
+      ],
+      "rootMatrixMaxDelta": 0,
+      "maximumEdgeElongation": 3.2315927351144182,
+      "maximumP99EdgeElongation": 1.1795403474257542,
+      "loopClosureMetres": null
+    },
+    {
+      "clip": "TailSpin",
+      "seconds": 1.5,
+      "samples": 361,
+      "minimumGroundMetres": 0.00294687085158115,
+      "maximumLowestPawMetres": 0.0030006485144542802,
+      "minimumPawsInContact": 2,
+      "allPawsAirborneFraction": 0,
+      "pawJointRangeMetres": [
+        [
+          3.451506806269112,
+          0.09952156282013985,
+          3.451086857923019
+        ],
+        [
+          3.4513470442229224,
+          0.09287478006855565,
+          3.451279572993319
+        ],
+        [
+          3.340790397447144,
+          0.09283904896650064,
+          3.341108773224709
+        ],
+        [
+          3.3413963795590256,
+          0.09948858618874817,
+          3.3406313066533073
+        ]
+      ],
+      "rootMatrixMaxDelta": 0,
+      "maximumEdgeElongation": 4.412223000360152,
+      "maximumP99EdgeElongation": 1.2262214055199723,
+      "loopClosureMetres": null
+    },
+    {
+      "clip": "Tremble",
+      "seconds": 0.8999999761581421,
+      "samples": 217,
+      "minimumGroundMetres": 0.0029910469468962062,
+      "maximumLowestPawMetres": 0.003000381827686513,
+      "minimumPawsInContact": 4,
+      "allPawsAirborneFraction": 0,
+      "pawJointRangeMetres": [
+        [
+          0.0000022952319385094455,
+          0.000008075758332171112,
+          0.000003693191038323107
+        ],
+        [
+          0.0000013562843943493164,
+          0.000006233909546571326,
+          0.0000039478551607796675
+        ],
+        [
+          0.0000015034915508138624,
+          0.0000012604057436638172,
+          0.0000021581784821478323
+        ],
+        [
+          9.506468980902127e-7,
+          0.000003798532291154899,
+          0.0000024750286711228142
+        ]
+      ],
+      "rootMatrixMaxDelta": 0,
+      "maximumEdgeElongation": 3.4069656939787043,
+      "maximumP99EdgeElongation": 1.2084369208388108,
+      "loopClosureMetres": null
+    },
+    {
+      "clip": "Walk_Loop",
+      "seconds": 1.2000000476837158,
+      "samples": 289,
+      "minimumGroundMetres": 0.002995703739213573,
+      "maximumLowestPawMetres": 0.0030005714620825,
+      "minimumPawsInContact": 3,
+      "allPawsAirborneFraction": 0,
+      "pawJointRangeMetres": [
+        [
+          0.000019828780801089962,
+          0.08994563561786162,
+          0.49209668813172613
+        ],
+        [
+          0.000019837086510765545,
+          0.08994562294425534,
+          0.4920970108360415
+        ],
+        [
+          0.000026369616073607105,
+          0.08994627137221611,
+          0.49209583001365
+        ],
+        [
+          0.00002626363089763828,
+          0.08994622035351763,
+          0.49209644922614815
+        ]
+      ],
+      "rootMatrixMaxDelta": 0,
+      "maximumEdgeElongation": 2.3020934839425724,
+      "maximumP99EdgeElongation": 1.1316247771815693,
+      "loopClosureMetres": 0
+    }
+  ],
+  "numericPass": true,
+  "errors": [],
+  "visualReviewRequired": true
+}

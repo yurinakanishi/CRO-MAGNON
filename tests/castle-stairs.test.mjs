@@ -17,7 +17,7 @@ test('all seven characters manually climb the central stair, turn both ways and 
       for (const side of [-1, 1]) {
         const actor = {
           ...model,
-          ...castleWorld(-9, 40),
+          ...castleWorld(-11, 40),
           radius: model.radius ?? WORLD.playerRadius,
           runningRequested,
           lastInput: 0,
@@ -27,7 +27,7 @@ test('all seven characters manually climb the central stair, turn both ways and 
         };
         let now = 1000;
         for (const local of [
-          [-9, 30],
+          [-11, 30],
           [0, 16],
           [0, 2],
           [0, -4],
@@ -38,8 +38,8 @@ test('all seven characters manually climb the central stair, turn both ways and 
           [0, -4],
           [0, 2],
           [0, 16],
-          [-9, 30],
-          [-9, 40],
+          [-11, 30],
+          [-11, 40],
         ]) {
           const goal = castleWorld(...local);
           for (let n = 0; n < 2400 && Math.hypot(actor.x - goal.x, actor.z - goal.z) > 0.06; n++) {
@@ -172,6 +172,9 @@ test('the walk atlas bridges the unmeasured riser rows so every stair is continu
   for (const x of [-22, 0, 20])
     for (let z = 14; z >= 2; z -= 0.35) {
       const p = castleWorld(x, z);
-      assert.ok(Number.isFinite(CASTLE_SURFACE.height(p.x, p.z)), `stair ${x} at z ${z.toFixed(2)}`);
+      assert.ok(
+        Number.isFinite(CASTLE_SURFACE.height(p.x, p.z)),
+        `stair ${x} at z ${z.toFixed(2)}`,
+      );
     }
 });

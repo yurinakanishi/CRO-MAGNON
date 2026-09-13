@@ -1,0 +1,21 @@
+{
+  "generator": "Codex built-in image_gen.imagegen",
+  "prompt": "Create a clean high quality 3D-reconstruction reference of a NEW FOUR-LEGGED HORNED VERSION of the purple behemoth in the reference image. Keep the recognizable identity: deep violet/plum reptilian leathery skin, broad heavy amphibian-like head, multiple small golden eyes above a huge toothy mouth, folds on neck, sparse dorsal ridges, and a long thick muscular flexible tail. CHANGE the anatomy decisively: this is a true massive terrestrial QUADRUPED, like a heavy rhinoceros or stocky armored lizard in its support and weight, with FOUR EQUALLY FUNCTIONAL POWERFUL LEGS. Two muscular hind legs must be as clearly developed as the front legs; no vestigial rear feet, no gorilla arms, no seated or belly-dragging pose. The broad horizontal torso is raised clearly above the ground, with a visible air gap below the belly. Each leg has a distinct upper segment, elbow/knee, lower segment and broad short-clawed paw; all FOUR paws flat on one ground plane in a neutral riggable standing stance. FOUR limbs only. Add TWO LARGE THICK CURVED HORNS growing from the skull above and behind the eyes, swept back and slightly outward, with dark charcoal-purple roots and worn ivory tips. The horns should be prominent, solid and easy to reconstruct, not a frill and not detached. Head held low and forward, mouth slightly open so upper and lower jaws are distinct for bite and poison-spitting animation; keep chin clean without long thin tendrils. Long tapering tail extends behind, gently curved horizontally away from the rear paws with a clear gap; muscular and supple, not a club or spike weapon. Tail contributes about 40 percent of total nose-to-tail length. Low three-quarter side view, camera primarily showing the creature's left flank with the head pointing to image left and tail to image right, enough front angle to see face and both horns. Use a mild stagger of the far paws so all four limbs, all four feet, and negative spaces between them are unambiguously visible, but keep left/right anatomy symmetric. Entire creature including horn tips and tail tip inside frame with generous margin. ONE creature, ONE view, no people, no props, no base, no pedestal, no text, no multi-view sheet. Seamless pure white background, soft even neutral studio lighting, restrained soft contact shadows, natural nonmetallic skin, realistic readable major forms with fine skin texture rather than excessive warts. Game creature production concept rendered with crisp contours suitable for image-to-3D, not a photograph or painting.",
+  "source": "source/original/reference-v1.png",
+  "sha256": "2388d240c5efe7aede5d0843850f2831a838b10a4bd14e8a92fbcaa107d28ada",
+  "bytes": 1918679,
+  "fallback": "ZImage unavailable in the established local toolchain; permitted equivalent generator.",
+  "author": "Codex",
+  "claude_used": false,
+  "referencedImages": [
+    {
+      "path": "assets/violet-behemoth/source/reference-v2.png",
+      "sha256": "2f433fec0060ca3f5834044e8da5741dd6ee83bb876600f9c0c3e14e9e94ccc9"
+    }
+  ],
+  "output": {
+    "path": "assets/violet-behemoth-quadruped/source/reference-v1.png",
+    "sha256": "2388d240c5efe7aede5d0843850f2831a838b10a4bd14e8a92fbcaa107d28ada"
+  },
+  "userAuthorization": "Create a horned four-legged version from image-to-3D and use it, retaining the current model unused."
+}

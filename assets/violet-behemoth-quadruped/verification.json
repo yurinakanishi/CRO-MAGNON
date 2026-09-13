@@ -1,0 +1,14 @@
+{
+  "sha256": "6dd28210973bdccc543c0e2805ced82c838b95df2535218a652fda8ca869aa55",
+  "url": "/models/violet-behemoth/model-quadruped-r04.glb",
+  "retainedOriginal": "/models/violet-behemoth/model-r10.glb",
+  "existingGLBsUnchanged": 104,
+  "fourLegRig": true,
+  "numeric240HzPass": true,
+  "gameplayUnchangedExceptMouth": true,
+  "exactGLBClips": 14,
+  "viewsPerClip": 6,
+  "gameChecks": 15,
+  "errors": [],
+  "verifiedAt": "2026-09-12T14:54:04.883Z"
+}

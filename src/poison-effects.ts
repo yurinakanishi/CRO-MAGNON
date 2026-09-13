@@ -1,6 +1,7 @@
 import * as THREE from 'three';
 import { poisonPoint } from '../shared/behemoth-poison.mjs';
 import { BEHEMOTH as R } from '../shared/behemoth-rules.mjs';
+import { behemothWindupMouth } from '../shared/behemoth-mouth.mjs';
 import { projectileHeight } from '../shared/terrain.mjs';
 
 const CAPACITY = 512;
@@ -138,10 +139,9 @@ export class PoisonEffects {
       const age = Math.max(0, (now - e.attackAt) / 1000),
         strength = Math.min(1, age / (R.spitWindupMs / 1000));
       // Heavy drips build up at the mouth while the neck draws back.
-      const forward = (R.mouthForward - 0.12 * strength) * e.scale,
-        y =
-          projectileHeight(e.x, e.z, e.elevation ?? 0) +
-          (R.mouthHeight + 0.22 * strength) * e.scale,
+      const mouth = behemothWindupMouth(strength),
+        forward = mouth.forward * e.scale,
+        y = projectileHeight(e.x, e.z, e.elevation ?? 0) + mouth.height * e.scale,
         x = e.x + Math.sin(e.facing) * forward,
         z = e.z + Math.cos(e.facing) * forward;
       for (let i = 0; i < 4; i++) {

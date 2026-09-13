@@ -9,9 +9,8 @@ import path from 'node:path';
 import assert from 'node:assert/strict';
 const { chromium } =
   await import('file:///C:/Users/yurin/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/node_modules/playwright/index.mjs');
-const { CASTLE, CASTLE_GATE, CASTLE_HALL, CASTLE_SORCERER_POST, castleWorld } = await import(
-  '../dist/shared/castle-layout.mjs'
-);
+const { CASTLE, CASTLE_GATE, CASTLE_HALL, CASTLE_SORCERER_POST, castleWorld } =
+  await import('../dist/shared/castle-layout.mjs');
 const { ENEMY_RULES } = await import('../dist/shared/enemies.mjs');
 const out = path.resolve(process.argv[2] || 'output/playwright/castle-ruin');
 await mkdir(out, { recursive: true });
@@ -67,7 +66,7 @@ async function sample(page, stage) {
           }
         : null,
       castleCrows: [...r.enemies.values()]
-        .filter((e) => /^crow-shaman-[123]$/.test(e.state.id))
+        .filter((e) => /^crow-(?:shaman|pontiff|prelate|brute|soldier)-\d+$/.test(e.state.id))
         .map((e) => ({
           id: e.state.id,
           x: e.state.x,
@@ -75,6 +74,17 @@ async function sample(page, stage) {
           y: e.model.position.y,
           visible: e.model.visible,
           clip: e.actor?.name,
+          role: e.state.crowRole,
+          airborneHeight: e.state.airborneHeight,
+          decorated: !!e.actor?.root.getObjectByName(
+            {
+              pontiff: 'CrowPontiffCrown',
+              prelate: 'CrowPrelateMantle',
+              shaman: 'CrowShamanFocus',
+              brute: 'CrowBruteAxe',
+              soldier: 'CrowSoldierShield',
+            }[e.state.crowRole],
+          ),
         })),
       hexBursts: (r.state.hexBursts || []).length,
       hexBolts: (r.state.projectiles || []).filter((p) => p.kind === 'hex').length,
@@ -139,7 +149,11 @@ try {
     channel: 'chrome',
     headless: true,
     viewport: { width: 1440, height: 900 },
-    args: ['--use-angle=d3d11', '--disable-background-timer-throttling', '--disable-renderer-backgrounding'],
+    args: [
+      '--use-angle=d3d11',
+      '--disable-background-timer-throttling',
+      '--disable-renderer-backgrounding',
+    ],
   });
   contexts.push(context);
   const page = context.pages()[0] || (await context.newPage());
@@ -190,18 +204,47 @@ try {
   // The great hall: wide open floor, the sorcerer ahead.
   await place(page, castleWorld(0, -4));
   await lookAt(page, CASTLE_SORCERER_POST, 20, 0.35);
+  await until(
+    () =>
+      page.evaluate(
+        () =>
+          [...window.monsterReview.enemies.values()]
+            .filter((e) => /^crow-(?:shaman|pontiff|prelate|brute|soldier)-\d+$/.test(e.state.id))
+            .filter((e) => e.actor).length === 28,
+      ),
+    'all crow faction models',
+    120000,
+  );
   await sleep(1000);
   const hall = await sample(page, 'hall');
   await shot(page, '04-great-hall');
-  assert.ok(hall.me.y > forecourt.me.y + 5, `hall floor is a storey up (${hall.me.y - forecourt.me.y})`);
+  assert.ok(
+    hall.me.y > forecourt.me.y + 5,
+    `hall floor is a storey up (${hall.me.y - forecourt.me.y})`,
+  );
   assert.ok(hall.enemy?.visible, 'the sorcerer is drawn in the hall');
   assert.ok(Math.abs(hall.enemy.y - hall.me.y) < 1.5, 'the sorcerer stands on the same floor');
-  assert.equal(hall.castleCrows.length, 3, 'three castle sorcerers are synchronized');
+  assert.equal(hall.castleCrows.length, 28, 'all 28 faction members are synchronized');
+  assert.deepEqual(
+    Object.fromEntries(
+      ['pontiff', 'prelate', 'shaman', 'brute', 'soldier'].map((role) => [
+        role,
+        hall.castleCrows.filter((crow) => crow.role === role).length,
+      ]),
+    ),
+    { pontiff: 1, prelate: 3, shaman: 6, brute: 6, soldier: 12 },
+  );
   for (const crow of hall.castleCrows) {
-    assert.ok(crow.visible && crow.clip, `${crow.id} has a visible animated model`);
-    assert.ok(Math.abs(crow.y - hall.me.y) < 1.5, `${crow.id} stands on the hall floor`);
+    assert.ok(
+      crow.visible && crow.clip && crow.decorated,
+      `${crow.id} has its animated role model`,
+    );
+    if (crow.role === 'prelate') {
+      assert.ok(crow.airborneHeight > 2, `${crow.id} is flying`);
+      assert.ok(crow.y > hall.me.y + 1.8, `${crow.id} is visibly above the hall floor`);
+    } else assert.ok(Math.abs(crow.y - hall.me.y) < 1.5, `${crow.id} stands on the hall floor`);
   }
-  checks.push('The roofless great hall is one storey up with three visible animated sorcerers');
+  checks.push('The enlarged roofless hall shows all 28 ranked faction members; three prelates fly');
   // Approach to bolt range and watch the red spells in server time.
   await place(page, {
     x: CASTLE_SORCERER_POST.x + 8,

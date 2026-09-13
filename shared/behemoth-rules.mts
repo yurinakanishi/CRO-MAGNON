@@ -1,6 +1,7 @@
-// Fictional creature tuning. Hind legs are vestigial; locomotion is forearm-driven.
+// Horned quadruped variant; four supporting legs. Gameplay tuning is retained.
 // Rendered at 2.5x the delivered 6 m GLB (2026-09-12: the user asked for twice the
 // previous 1.25 size); body radius and tail reach follow the scale.
+import { BEHEMOTH_MOUTH_AT_RELEASE } from './behemoth-mouth.mjs';
 import { HEARING } from './perception.mjs';
 
 const SCALE = 2.5;
@@ -54,14 +55,14 @@ export const BEHEMOTH = Object.freeze({
   spitRadius: 0.6,
   spitSplashRadius: 2.4,
   spitDamage: 18,
-  // Original GLB mouth aperture at Spit 0.18 s, scaled in world space.
-  mouthForward: 1.7872,
-  mouthHeight: 1.2191,
+  // Four-legged GLB mouth aperture at authored Spit 0.18 s (game release 144 ms).
+  mouthForward: BEHEMOTH_MOUTH_AT_RELEASE.forward,
+  mouthHeight: BEHEMOTH_MOUTH_AT_RELEASE.height,
   hitDurationMs: 300,
   deathMs: 1600,
   respawnMs: 60000,
 });
-// The grounded r10 poses stay intact. Sample the entire authored clip inside
+// The quadruped retains the authored attack durations. Sample every pose inside
 // its authoritative gameplay duration so faster attacks never cut poses short
 // or release poison at a different mouth position. Shared for late joins/QA.
 export const BEHEMOTH_CLIP_TIMING = Object.freeze({

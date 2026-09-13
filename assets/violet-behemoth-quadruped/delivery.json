@@ -1,0 +1,15 @@
+{
+  "adoptedAt": "2026-09-12T14:47:25.084Z",
+  "url": "/models/violet-behemoth/model-quadruped-r04.glb",
+  "sha256": "6dd28210973bdccc543c0e2805ced82c838b95df2535218a652fda8ca869aa55",
+  "bytes": 15320936,
+  "revision": "04",
+  "originalRetained": {
+    "url": "/models/violet-behemoth/model-r10.glb",
+    "sha256": "a0616efb9352f9dc387f46ff41e9ff57d976ed48842a23480475c0d982c15a50",
+    "active": false
+  },
+  "existingGLBsUnchanged": 104,
+  "numericPass": true,
+  "status": "integrated-and-game-qa-passed"
+}

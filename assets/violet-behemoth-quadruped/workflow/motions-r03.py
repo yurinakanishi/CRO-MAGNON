@@ -134,12 +134,11 @@ def pose_at(name, t):
         pose['Chest'] = {'roll': (1 if name == 'Alert' else 3)*k}
     elif name == 'Death':
         k = smooth(t/1.1)
-        pose['Hips'] = {'roll': 94*k, 'loc': (.08*k, 0., -.075-.24*k)}
+        pose['Hips'] = {'roll': 76*k, 'loc': (.08*k, 0., -.075-.24*k)}
         pose['Neck'] = {'pitch': 10*k}; pose['Head'] = {'pitch': 12*k}; pose['Jaw'] = {'pitch': 13*k}
         for side in 'LR':
-            fold = (68 if side == 'L' else -12)*k
-            pose['UpperArm.'+side] = {'pitch': -20*k, 'roll': fold}; pose['LowerArm.'+side] = {'pitch': 38*k}
-            pose['UpperLeg.'+side] = {'pitch': 26*k, 'roll': fold}; pose['LowerLeg.'+side] = {'pitch': -36*k}
+            pose['UpperArm.'+side] = {'pitch': -20*k}; pose['LowerArm.'+side] = {'pitch': 38*k}
+            pose['UpperLeg.'+side] = {'pitch': 26*k}; pose['LowerLeg.'+side] = {'pitch': -36*k}
         feet = None
         for i in range(7): pose[f'Tail{i+1}'] = {'yaw': 4*k*math.exp(-i*.15)}
     return pose, feet, yaw

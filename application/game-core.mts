@@ -705,7 +705,21 @@ export function createGameCore({
       for (const name of ['animals', 'enemies'])
         for (const actor of room[name]) {
           const previous = record[name].find((item) => item.id === actor.id);
-          const post = { x: actor.x, z: actor.z };
+          const post = { x: actor.x, z: actor.z },
+            currentCrow =
+              name === 'enemies' && actor.modelKey === 'crow-shaman'
+                ? {
+                    home: { ...actor.home },
+                    crowRole: actor.crowRole,
+                    name: actor.name,
+                    scale: actor.scale,
+                    radius: actor.radius,
+                    maxHealth: actor.maxHealth,
+                    roamRadius: actor.roamRadius,
+                    castle: actor.castle,
+                    regionId: actor.regionId,
+                  }
+                : null;
           if (previous) Object.assign(actor, previous);
           stopActor(actor);
           actor.riderId = null;
@@ -733,6 +747,22 @@ export function createGameCore({
             const territory = (actor.modelKey === 'violet-behemoth' ? BEHEMOTH : SABERTOOTH)
               .territoryRadius;
             if (Math.hypot(actor.x - post.x, actor.z - post.z) > territory)
+              Object.assign(actor, post);
+          } else if (currentCrow?.castle && !currentCrow.regionId) {
+            // Castle faction membership and posts are current world layout, not
+            // save data. This migrates the old three-shaman encounter to the
+            // 28-member hierarchy without leaving saved bodies at the old keep.
+            Object.assign(actor, currentCrow, {
+              home: currentCrow.home,
+              health: Math.min(actor.health ?? currentCrow.maxHealth, currentCrow.maxHealth),
+              airborneHeight: 0,
+              targetId: null,
+              returning: actor.phase === 'alive',
+              nextPathAt: 0,
+              nextBoltAt: 0,
+              nextBurstAt: 0,
+            });
+            if (Math.hypot(actor.x - post.x, actor.z - post.z) > actor.roamRadius + 1)
               Object.assign(actor, post);
           }
         }

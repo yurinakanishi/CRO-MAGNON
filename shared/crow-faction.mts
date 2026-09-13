@@ -1,0 +1,217 @@
+import { castleWorld } from './castle-layout.mjs';
+
+export const CROW_FACTION_ROSTER = Object.freeze({
+  pontiff: 1,
+  prelate: 3,
+  shaman: 6,
+  brute: 6,
+  soldier: 12,
+});
+
+const spell = Object.freeze({
+  boltMinRange: 2.4,
+  boltRange: 13,
+  boltWindupMs: 900,
+  boltSpeed: 9,
+  boltReach: 16,
+  boltRadius: 0.35,
+  boltDamage: 12,
+  boltCooldownMs: 3200,
+  burstRange: 5.5,
+  burstWindupMs: 1400,
+  burstRadius: 4.5,
+  burstDamage: 18,
+  burstCooldownMs: 6500,
+});
+
+// Every rank reuses the verified crow rig, while size, durability, weapons and
+// permitted combat styles make the hierarchy legible in play. Pontiff and
+// prelates are deliberate hybrids; prelates also patrol and cast from the air.
+export const CROW_ROLE_RULES = Object.freeze({
+  pontiff: Object.freeze({
+    name: '白羽教皇',
+    scale: 1.65,
+    radius: 0.72,
+    maxHealth: 360,
+    roamSpeed: 0.55,
+    chaseSpeed: 1.35,
+    aggroRange: 17,
+    leashRadius: 34,
+    loseTargetRange: 38,
+    attackReach: 1,
+    attackDamage: 28,
+    attackCooldownMs: 2200,
+    attackDurationMs: 1200,
+    attackImpactMs: 600,
+    physical: true,
+    magic: true,
+    flying: false,
+    flightHeight: 0,
+    ...spell,
+    boltDamage: 20,
+    boltRadius: 0.48,
+    boltCooldownMs: 2600,
+    burstRange: 7,
+    burstRadius: 5.8,
+    burstDamage: 28,
+    burstCooldownMs: 5600,
+  }),
+  prelate: Object.freeze({
+    name: '白羽の司祭長',
+    scale: 1.18,
+    radius: 0.55,
+    maxHealth: 155,
+    roamSpeed: 1.05,
+    chaseSpeed: 2.2,
+    aggroRange: 16,
+    leashRadius: 30,
+    loseTargetRange: 34,
+    attackReach: 0.82,
+    attackDamage: 18,
+    attackCooldownMs: 1700,
+    attackDurationMs: 950,
+    attackImpactMs: 475,
+    physical: true,
+    magic: true,
+    flying: true,
+    flightHeight: 2.4,
+    ...spell,
+    boltDamage: 15,
+    boltCooldownMs: 2800,
+    burstDamage: 20,
+    burstCooldownMs: 6000,
+  }),
+  shaman: Object.freeze({
+    name: '白羽の呪術師',
+    scale: 1,
+    radius: 0.48,
+    maxHealth: 75,
+    roamSpeed: 0.7,
+    chaseSpeed: 1.65,
+    aggroRange: 14,
+    leashRadius: 22,
+    loseTargetRange: 26,
+    attackReach: 0.6,
+    attackDamage: 15,
+    attackCooldownMs: 1800,
+    attackDurationMs: 1000,
+    attackImpactMs: 450,
+    physical: true,
+    magic: true,
+    flying: false,
+    flightHeight: 0,
+    ...spell,
+  }),
+  brute: Object.freeze({
+    name: '黒羽の破砕兵',
+    scale: 1.34,
+    radius: 0.64,
+    maxHealth: 190,
+    roamSpeed: 0.62,
+    chaseSpeed: 1.5,
+    aggroRange: 12,
+    leashRadius: 25,
+    loseTargetRange: 29,
+    attackReach: 1.15,
+    attackDamage: 24,
+    attackCooldownMs: 1900,
+    attackDurationMs: 1100,
+    attackImpactMs: 550,
+    physical: true,
+    magic: false,
+    flying: false,
+    flightHeight: 0,
+    ...spell,
+  }),
+  soldier: Object.freeze({
+    name: '黒羽の城兵',
+    scale: 0.98,
+    radius: 0.46,
+    maxHealth: 90,
+    roamSpeed: 0.78,
+    chaseSpeed: 1.8,
+    aggroRange: 11,
+    leashRadius: 24,
+    loseTargetRange: 28,
+    attackReach: 0.9,
+    attackDamage: 12,
+    attackCooldownMs: 1350,
+    attackDurationMs: 800,
+    attackImpactMs: 360,
+    physical: true,
+    magic: false,
+    flying: false,
+    flightHeight: 0,
+    ...spell,
+  }),
+});
+
+const FORMATION = Object.freeze({
+  // Keep shaman first for backwards-compatible encounter fixtures and IDs.
+  shaman: [
+    [-0.2, -18],
+    [-20, -25],
+    [24, -25],
+    [-22, -12],
+    [22, -12],
+    [10, -8],
+  ],
+  pontiff: [[0, -27]],
+  prelate: [
+    [-12, -22],
+    [0, -20.5],
+    [12, -22],
+  ],
+  brute: [
+    [-16, -28],
+    [16, -28],
+    [-16, -16],
+    [16, -16],
+    [-6, -13],
+    [6, -13],
+  ],
+  soldier: [
+    [-28, -28],
+    [28, -28],
+    [-28, -20],
+    [28, -20],
+    [-28, -10],
+    [28, -10],
+    [-20, -4],
+    [-12, -4],
+    [-4, -4],
+    [4, -4],
+    [12, -4],
+    [20, -4],
+  ],
+});
+
+const rolePrefix = {
+  pontiff: 'crow-pontiff',
+  prelate: 'crow-prelate',
+  shaman: 'crow-shaman',
+  brute: 'crow-brute',
+  soldier: 'crow-soldier',
+};
+const roamRadius = { pontiff: 1.2, prelate: 3.2, shaman: 3.2, brute: 1.8, soldier: 1.6 };
+
+export const CROW_FACTION_GROUNDS = Object.freeze(
+  Object.entries(FORMATION).flatMap(([crowRole, points]) =>
+    points.map(([x, z], index) => {
+      const rules = CROW_ROLE_RULES[crowRole];
+      return Object.freeze({
+        id: `${rolePrefix[crowRole]}-${index + 1}`,
+        ...castleWorld(x, z),
+        radius: 5,
+        roamRadius: roamRadius[crowRole],
+        name: rules.name,
+        maxHealth: rules.maxHealth,
+        crowRole,
+      });
+    }),
+  ),
+);
+
+export function crowRules(enemy) {
+  return CROW_ROLE_RULES[enemy?.crowRole] ?? CROW_ROLE_RULES.shaman;
+}

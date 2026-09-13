@@ -85,6 +85,7 @@ export interface EnemyGround extends Point {
   name?: string;
   regionId?: string;
   maxHealth?: number;
+  crowRole?: string;
 }
 export interface Rift extends Point {
   id: string;

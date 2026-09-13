@@ -22636,19 +22636,20 @@
       "modelKey": "violet-behemoth",
       "name": "紫尾の巨獣",
       "kind": "enemy",
+      "variant": "violet-behemoth-quadruped",
       "candidate": 1,
-      "revision": "10",
+      "revision": "04",
       "status": "integrated-and-game-qa-passed",
-      "url": "/models/violet-behemoth/model-r10.glb",
-      "sha256": "a0616efb9352f9dc387f46ff41e9ff57d976ed48842a23480475c0d982c15a50",
-      "bytes": 15383812,
-      "triangles": 67223,
+      "url": "/models/violet-behemoth/model-quadruped-r04.glb",
+      "sha256": "6dd28210973bdccc543c0e2805ced82c838b95df2535218a652fda8ca869aa55",
+      "bytes": 15320936,
+      "triangles": 47789,
       "upAxis": "Y",
       "forwardAxis": "+Z",
-      "heightMetres": 2.064113140106201,
-      "widthMetres": 2.6545490026474,
-      "lengthMetres": 6,
-      "bones": 20,
+      "heightMetres": 3.119311809539795,
+      "widthMetres": 3.4453582763671875,
+      "lengthMetres": 6.002918004989624,
+      "bones": 28,
       "clips": [
         {
           "name": "Alert",
@@ -22700,7 +22701,7 @@
         },
         {
           "name": "Run_Loop",
-          "seconds": 0.8,
+          "seconds": 0.6,
           "loop": true,
           "rootMotion": "in-place"
         },
@@ -22737,41 +22738,48 @@
       ],
       "locomotion": {
         "Walk_Loop": {
-          "metresPerSecond": 1.35,
+          "metresPerSecond": 0.54,
           "cycleSeconds": 1.2,
-          "dutyFactor": 0.62
+          "dutyFactor": 0.76
         },
         "Run_Loop": {
-          "metresPerSecond": 4.9,
-          "cycleSeconds": 0.4,
-          "dutyFactor": 0.48
+          "metresPerSecond": 2.28,
+          "cycleSeconds": 0.6,
+          "dutyFactor": 0.6
         }
       },
+      "lods": [],
       "placement": {
         "pivot": "ground-body-centred",
         "min": [
-          -1.2159718550237413,
-          2.940193993597767e-8,
-          -3.9999992352940628
+          -1.7226788934323538,
+          1.0288153858524622e-7,
+          -3.6012264044781777
         ],
         "max": [
-          1.438577103536168,
-          2.0641133972291863,
-          2.0000002239146806
+          1.7226788924227074,
+          3.11931144854528,
+          2.401691565046224
         ]
       },
-      "source": "output/model-generation/models/violet-behemoth/work/rig/revision-10/candidate.glb",
-      "notes": [
-        "User-supplied reference, vestigial hind legs, forearm/tail propulsion. Local TRELLIS-2 reconstruction; no visible replacement geometry.",
-        "Total length 6 m: retained body, extended tail. Revision 04 makes the tail a damped chain that undulates in Walk/Run/Charge and coils, lags and cracks through TailSpin; surface, material and the other five clips match revision 03.",
-        "Separate torso/palm/tail constraints; fixed palms on all telegraphs; travelling charge wave and 26 ms per-link spin delay; no telegraph flight."
-      ],
+      "source": "output/model-generation/models/violet-behemoth-quadruped/work/rig/revision-04/candidate.glb",
+      "retainedOriginal": {
+        "url": "/models/violet-behemoth/model-r10.glb",
+        "sha256": "a0616efb9352f9dc387f46ff41e9ff57d976ed48842a23480475c0d982c15a50",
+        "active": false
+      },
       "provenance": {
-        "provider": "User-supplied reference and local TRELLIS-2 (Codex); revision 05-08 telegraphs by Claude Code; revision 09 onward grounded IK, tail and poison animations by Codex",
-        "claudeUsed": true,
-        "referenceImage": "output/model-generation/models/violet-behemoth/source/original/user-reference.png",
-        "visualReview": "assets/violet-behemoth/visual-review-r10.json"
-      }
+        "provider": "Codex built-in imagegen -> local TRELLIS-2 -> measured reduction -> four-leg IK and seven-link tail rig by Codex",
+        "claudeUsed": false,
+        "referenceImage": "assets/violet-behemoth-quadruped/source/reference-v1.png",
+        "referenceSha256": "2388d240c5efe7aede5d0843850f2831a838b10a4bd14e8a92fbcaa107d28ada",
+        "visualReview": "assets/violet-behemoth-quadruped/visual-review.json"
+      },
+      "notes": [
+        "New Codex image -> local TRELLIS-2 -> measured surface reduction. No visible procedural geometry.",
+        "Four independent planted paw IK chains, seven delayed tail links, distinct charge brace, tail coil, bite gape and inflated poison draw-back. All current gameplay tuning retained.",
+        "Original r10 and all previous deliveries retained byte-for-byte, unused by the active catalog."
+      ]
     },
     {
       "modelKey": "meadow-sprig",

@@ -34,6 +34,7 @@ import { jumpHeight, jumpProgress } from '../shared/jumping.mjs';
 import { orientSpear } from './spear-pose.js';
 import { orientKatana } from './katana-pose.js';
 import { SpellEffects } from './spell-effects.js';
+import { decorateCrowFaction } from './crow-faction-visuals.js';
 import { attackProfile } from '../shared/combat-profiles.mjs';
 import { CollisionWorld } from '../shared/collision.mjs';
 import { CHARACTER_MODELS, characterModel } from '../shared/characters.mjs';
@@ -550,6 +551,8 @@ export class WorldRenderer {
         return;
       }
       entity.actor = actor;
+      if (entity.state.modelKey === 'crow-shaman')
+        decorateCrowFaction(actor.root, entity.state.crowRole);
       entity.model.add(actor.root);
       entity.model.scale.setScalar(entity.state.scale ?? 1);
       this.updateAssetDiagnostics();
@@ -1307,7 +1310,11 @@ export class WorldRenderer {
         enemy.phaseStartedAt = state.phaseStartedAt;
       }
       if (!enemy.initialized) {
-        model.position.set(state.x, walkHeight(state.x, state.z), state.z);
+        model.position.set(
+          state.x,
+          walkHeight(state.x, state.z) + (state.airborneHeight ?? 0),
+          state.z,
+        );
         model.rotation.y = state.facing;
         enemy.initialized = true;
       }
@@ -1316,7 +1323,11 @@ export class WorldRenderer {
       model.visible = visible;
       enemy.label.active = visible && this.showCombatHealth(state);
       if (!visible) {
-        model.position.set(state.x, walkHeight(state.x, state.z), state.z);
+        model.position.set(
+          state.x,
+          walkHeight(state.x, state.z) + (state.airborneHeight ?? 0),
+          state.z,
+        );
         continue;
       }
       const factor = 1 - Math.exp(-dt * 20),
@@ -1326,12 +1337,16 @@ export class WorldRenderer {
           (state.z - model.position.z) * factor,
           state.radius,
         );
-      model.position.set(next.x, walkHeight(next.x, next.z), next.z);
+      const airborne = state.airborneHeight ?? 0,
+        flightBob = airborne > 0 ? Math.sin(this.serverNow() * 0.003 + state.id.length) * 0.08 : 0;
+      model.position.set(next.x, walkHeight(next.x, next.z) + airborne + flightBob, next.z);
       const diff = Math.atan2(
         Math.sin(state.facing - model.rotation.y),
         Math.cos(state.facing - model.rotation.y),
       );
       model.rotation.y += diff * (1 - Math.exp(-dt * 24));
+      model.rotation.z =
+        airborne > 0 ? Math.sin(this.serverNow() * 0.0024 + state.id.length * 0.7) * 0.055 : 0;
       enemy.label.position.set(
         model.position.x,
         model.position.y + (actor.asset.heightMetres ?? 1.85) * (state.scale ?? 1) + 0.3,

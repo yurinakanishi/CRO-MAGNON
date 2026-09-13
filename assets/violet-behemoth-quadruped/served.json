@@ -1,0 +1,9 @@
+{
+  "origin": "http://127.0.0.1:3000",
+  "healthStatus": 200,
+  "url": "/models/violet-behemoth/model-quadruped-r04.glb",
+  "sha256": "6dd28210973bdccc543c0e2805ced82c838b95df2535218a652fda8ca869aa55",
+  "bytes": 15320936,
+  "emitterModuleSha256": "fce41c72959e082eac9e5cbaad6a3f0c6d06032fcf9c21a2491f8730e7714df8",
+  "checkedAt": "2026-09-12T14:54:05.014Z"
+}

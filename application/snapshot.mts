@@ -140,6 +140,8 @@ export function snapshot(
         hitSequence,
         hitAt,
         elevation,
+        crowRole,
+        airborneHeight,
       }) => ({
         id,
         modelKey,
@@ -152,6 +154,8 @@ export function snapshot(
         speed,
         radius,
         elevation: elevation ?? 0,
+        crowRole,
+        airborneHeight: airborneHeight ?? 0,
         clip,
         phase,
         health,

@@ -464,14 +464,15 @@
       "key": "violet-behemoth",
       "name": "紫尾の巨獣",
       "kind": "enemy",
-      "height": 2.064113140106201,
-      "length": 6,
+      "height": 3.119311809539795,
+      "length": 6.002918004989624,
       "status": "integrated-and-game-qa-passed",
       "geometryResolution": 1024,
-      "sha256": "a0616efb9352f9dc387f46ff41e9ff57d976ed48842a23480475c0d982c15a50",
-      "delivery": "/models/violet-behemoth/model-r10.glb",
-      "gameQA": "assets/violet-behemoth/game-qa.json",
-      "subject": "User reference: massive purple forearms, tiny vestigial hind legs, many eyes and a long tail; territorial grassland monster."
+      "sha256": "6dd28210973bdccc543c0e2805ced82c838b95df2535218a652fda8ca869aa55",
+      "delivery": "/models/violet-behemoth/model-quadruped-r04.glb",
+      "gameQA": "assets/violet-behemoth-quadruped/game-qa.json",
+      "subject": "Horned purple giant with four functional supporting legs, broad jaws and a flexible seven-link tail; same territorial attacks and tuning.",
+      "variant": "violet-behemoth-quadruped"
     },
     {
       "key": "sabertooth-tiger",

@@ -1,0 +1,30 @@
+{
+  "key": "violet-behemoth-quadruped",
+  "name": "紫尾の巨獣・有角四足版",
+  "kind": "quadruped",
+  "candidate": 1,
+  "geometryResolution": 1024,
+  "referenceVersion": 1,
+  "lengthMetres": 6,
+  "bodyDraftLengthMetres": 6,
+  "anatomy": "Four fully functional weight-bearing legs; two prominent skull horns; horizontal heavy torso clear of ground; long flexible muscular tail.",
+  "clips": [
+    "Alert",
+    "Attack",
+    "Charge",
+    "Death",
+    "Gape",
+    "Hit",
+    "Idle_Loop",
+    "Roar",
+    "Run_Loop",
+    "Spit",
+    "SpitWindup",
+    "TailSpin",
+    "Tremble",
+    "Walk_Loop"
+  ],
+  "selection": "User requested image-to-3D horned quadruped replacement. Preserve the existing biped-like/forelimb-propelled violet behemoth unused. Adopt quadruped; retain same attack patterns and current gameplay tuning.",
+  "generator": "Codex built-in imagegen followed by local TRELLIS-2",
+  "author": "Codex"
+}

@@ -1,0 +1,18 @@
+{
+  "decision": "adopt",
+  "revision": "04",
+  "candidate": 1,
+  "sha256": "6dd28210973bdccc543c0e2805ced82c838b95df2535218a652fda8ca869aa55",
+  "reviewer": "Codex",
+  "reference": "assets/violet-behemoth-quadruped/source/reference-v1.png",
+  "evidence": "output/model-generation/models/violet-behemoth-quadruped/work/rig/revision-04/qa/",
+  "shapeReview": "Dense and reduced front, rear, side, oblique, top and underside views show four substantial separate legs, broad paws, two skull horns, an open mouth and retained curved tail. The body clears the ground. Skin and original silhouette survive measured reduction.",
+  "motionReview": "Separate paw targets produce a four-beat walk and faster paired-foot run. Charge has a stronger travelling tail wave. Roar ends low and braced, Tremble lowers and coils the raised tail, Gape opens the jaw, and SpitWindup draws the neck back and expands the chest. TailSpin shares one ground pivot between torso and paws, with successive tail delays. Death now folds the lower-side limbs so the body settles on the ground.",
+  "revisionHistory": {
+    "01": "60 Hz draft; run duration rounded off the intended duration, and the spin pivot strained hind-leg skin.",
+    "02": "120 Hz keys and exact 0.6-second run cycle; retained for comparison.",
+    "03": "Unified spin pivot eliminates the hind-leg pull; numeric checks passed, but visual review rejected the propped-up death pose.",
+    "04": "Death folds the supporting-side legs and rolls onto the flank; accepted after exact-export views and numeric QA. Other clips retained."
+  },
+  "limits": "No claim of exhaustive mesh self-intersection testing, physical-controller testing or long-duration load testing. Ground contact is measured on a flat surface; territory gameplay is checked separately."
+}

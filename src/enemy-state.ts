@@ -120,6 +120,7 @@ const BEHEMOTH_CUES = {
 const SHAMAN_CUES = {
   bolt: '赤い呪弾を放つ…',
   burst: '赤い呪いが広がる…離れろ！',
+  dive: '空から急降下！',
 };
 
 export function enemyStatusLabel(enemy) {

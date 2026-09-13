@@ -95,6 +95,8 @@ export interface EnemySnapshot extends Point {
   attackAt: number;
   hitSequence: number;
   hitAt: number;
+  crowRole?: string;
+  airborneHeight?: number;
   // Floor height under the body (castle-relative), for effects drawn at the actor.
   elevation?: number;
 }

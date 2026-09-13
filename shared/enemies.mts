@@ -16,44 +16,12 @@ import { createBehemoth, updateBehemoths } from './violet-behemoth.mjs';
 import { provoker } from './perception.mjs';
 import { respawnDelay } from './room-rules.mjs';
 import { createSabertooth, updateSabertooths } from './sabertooth.mjs';
+import { CROW_ROLE_RULES, crowRules } from './crow-faction.mjs';
 
 export const ENEMY_RULES = Object.freeze({
   modelKey: 'crow-shaman',
-  maxHealth: 75,
-  radius: 0.48,
-  roamSpeed: 0.7,
-  chaseSpeed: 1.65,
-  // 2026-09-12: the sorcerer fights from the castle's roofless great hall, so
-  // it notices players further off and leashes to the whole hall.
-  aggroRange: 14,
-  leashRadius: 22,
-  loseTargetRange: 26,
+  ...CROW_ROLE_RULES.shaman,
   campSafeRadius: 12,
-  // Exact crow Staff skin reaches a player at 1.47 m during the 450 ms impact;
-  // stop at 1.40 m center distance (.48 + .32 + .60) so the visible blow connects.
-  attackReach: 0.6,
-  attackDamage: 15,
-  attackCooldownMs: 1800,
-  attackDurationMs: 1000,
-  attackImpactMs: 450,
-  // Red hex magic (2026-09-12). Both spells are announced by the raised staff
-  // (Attack clip) with a red glow at its tip; the staff blow stays for point blank.
-  // Bolt: a single-target red orb fired straight at the target from mid range.
-  boltMinRange: 2.4,
-  boltRange: 13,
-  boltWindupMs: 900,
-  boltSpeed: 9,
-  boltReach: 16,
-  boltRadius: 0.35,
-  boltDamage: 12,
-  boltCooldownMs: 3200,
-  // Burst: a red ring grows on the floor around the caster, then everyone still
-  // inside it is struck. Leaving the ring is the answer.
-  burstRange: 5.5,
-  burstWindupMs: 1400,
-  burstRadius: 4.5,
-  burstDamage: 18,
-  burstCooldownMs: 6500,
   hitDurationMs: 400,
   deathDurationMs: 1200,
   respawnMs: 45000,
@@ -86,7 +54,26 @@ export const inSorcererHall = (point) =>
   (CASTLE_SURFACE.height(point.x, point.z) ?? -Infinity) > CASTLE_UPPER_FLOOR;
 const onOwnGround = (enemy, point) => !enemy.castle || inSorcererHall(point);
 const withinStaffReach = (enemy, player) =>
-  combatDistance(enemy, player) <= enemy.radius + player.radius + ENEMY_RULES.attackReach + 1e-9;
+  combatDistance(enemy, player) <=
+  enemy.radius + player.radius + crowRules(enemy).attackReach + 1e-9;
+const approachFlight = (enemy, dt, target) => {
+  const rules = crowRules(enemy);
+  if (!rules.flying) {
+    enemy.airborneHeight = 0;
+    return true;
+  }
+  const speed = target < (enemy.airborneHeight || 0) ? 5.5 : 2.4;
+  enemy.airborneHeight = Math.max(
+    0,
+    Math.min(
+      rules.flightHeight,
+      (enemy.airborneHeight || 0) +
+        Math.sign(target - (enemy.airborneHeight || 0)) *
+          Math.min(Math.abs(target - (enemy.airborneHeight || 0)), speed * dt),
+    ),
+  );
+  return Math.abs(enemy.airborneHeight - target) < 0.08;
+};
 const eligiblePlayer = (room, player, now) =>
   player &&
   !player.mountId &&
@@ -101,9 +88,10 @@ const clearLine = (room, a, b) =>
 
 export function createEnemies(collision, dynamic = [], now = Date.now()) {
   const enemies = ENEMY_GROUNDS.map((ground) => {
+    const rules = crowRules(ground);
     const position = collision.nearestFree(
       ground,
-      ENEMY_RULES.radius,
+      rules.radius,
       dynamic.map(circle),
       ground.roamRadius,
     );
@@ -111,19 +99,20 @@ export function createEnemies(collision, dynamic = [], now = Date.now()) {
     return {
       id: ground.id,
       modelKey: ENEMY_RULES.modelKey,
-      name: ground.name ?? '白羽の呪術師',
+      name: ground.name ?? rules.name,
+      crowRole: ground.crowRole ?? 'shaman',
       regionId: ground.regionId,
       hostile: true,
       ...position,
       home: { ...position },
       castle: inSorcererHall(position),
-      radius: ENEMY_RULES.radius,
-      scale: 1,
+      radius: rules.radius,
+      scale: rules.scale,
       phase: 'alive',
       phaseStartedAt: now,
       alive: true,
-      health: ground.maxHealth ?? ENEMY_RULES.maxHealth,
-      maxHealth: ground.maxHealth ?? ENEMY_RULES.maxHealth,
+      health: ground.maxHealth ?? rules.maxHealth,
+      maxHealth: ground.maxHealth ?? rules.maxHealth,
       facing: 0,
       speed: 0,
       moving: false,
@@ -155,6 +144,7 @@ export function createEnemies(collision, dynamic = [], now = Date.now()) {
       nextBoltAt: 0,
       nextBurstAt: 0,
       elevation: 0,
+      airborneHeight: 0,
     };
   });
   const behemoth = createBehemoth(collision, [...dynamic, ...enemies], now);
@@ -197,15 +187,8 @@ function recoverPlayers(room, now, notify) {
   return changed;
 }
 
-function hitPlayer(
-  room,
-  enemy,
-  player,
-  now,
-  notify,
-  damage: number = ENEMY_RULES.attackDamage,
-  label = '杖',
-) {
+function hitPlayer(room, enemy, player, now, notify, damage?: number, label = '杖') {
+  damage ??= crowRules(enemy).attackDamage;
   player.energy = Math.max(0, player.energy - damage);
   player.hurtSequence = (player.hurtSequence || 0) + 1;
   player.hurtAt = now;
@@ -225,6 +208,7 @@ function hitPlayer(
 // apart from player orbs (whose owner must be a player) and shown by the same
 // renderer through the snapshot's projectile list.
 function launchBolt(room, enemy, target, now) {
+  const rules = crowRules(enemy);
   const dx = target.x - enemy.x,
     dz = target.z - enemy.z,
     d = Math.hypot(dx, dz) || 1;
@@ -238,7 +222,10 @@ function launchBolt(room, enemy, target, now) {
     z: enemy.z,
     dx: dx / d,
     dz: dz / d,
-    speed: ENEMY_RULES.boltSpeed,
+    speed: rules.boltSpeed,
+    reach: rules.boltReach,
+    radius: rules.boltRadius,
+    damage: rules.boltDamage,
     elevation: room.collision.surfaceHeight?.(enemy) ?? 0,
     createdAt: now,
     updatedAt: now,
@@ -253,16 +240,17 @@ function updateHexBolts(room, now, notify) {
     const caster = (room.enemies || []).find((e) => e.id === bolt.ownerId);
     if (!caster || caster.phase !== 'alive') continue;
     const travel = Math.min(
-      ENEMY_RULES.boltReach - bolt.travelled,
+      (bolt.reach ?? ENEMY_RULES.boltReach) - bolt.travelled,
       (Math.max(0, now - bolt.updatedAt) * bolt.speed) / 1000,
     );
     const end = { x: bolt.x + bolt.dx * travel, z: bolt.z + bolt.dz * travel };
-    const wall = projectileWallEntry(room.collision, bolt, end, ENEMY_RULES.boltRadius);
+    const radius = bolt.radius ?? ENEMY_RULES.boltRadius;
+    const wall = projectileWallEntry(room.collision, bolt, end, radius);
     const hit = [...room.players.values()]
       .filter((player) => eligiblePlayer(room, player, now))
       .map((player) => ({
         player,
-        t: circleEntry(bolt, end, player, player.radius + ENEMY_RULES.boltRadius),
+        t: circleEntry(bolt, end, player, player.radius + radius),
       }))
       .filter(
         ({ player, t }) =>
@@ -282,12 +270,21 @@ function updateHexBolts(room, now, notify) {
         hit: !!hit,
         kind: 'hex',
       });
-      if (hit) hitPlayer(room, caster, hit.player, now, notify, ENEMY_RULES.boltDamage, '赤い呪弾');
+      if (hit)
+        hitPlayer(
+          room,
+          caster,
+          hit.player,
+          now,
+          notify,
+          bolt.damage ?? ENEMY_RULES.boltDamage,
+          '赤い呪弾',
+        );
       changed = true;
       continue;
     }
     Object.assign(bolt, end, { updatedAt: now, travelled: bolt.travelled + travel });
-    if (bolt.travelled < ENEMY_RULES.boltReach) remaining.push(bolt);
+    if (bolt.travelled < (bolt.reach ?? ENEMY_RULES.boltReach)) remaining.push(bolt);
     else changed = true;
   }
   room.hexBolts = remaining;
@@ -296,18 +293,26 @@ function updateHexBolts(room, now, notify) {
   return changed;
 }
 function beginSpell(room, enemy, target, now, kind) {
-  const windup = kind === 'bolt' ? ENEMY_RULES.boltWindupMs : ENEMY_RULES.burstWindupMs;
+  const rules = crowRules(enemy),
+    windup = kind === 'bolt' ? rules.boltWindupMs : rules.burstWindupMs;
   stopActor(enemy);
   enemy.facing = Math.atan2(target.x - enemy.x, target.z - enemy.z);
   enemy.attackAt = now;
   enemy.attackSequence++;
   enemy.attackLockUntil = now + windup;
-  enemy.pendingAttack = { kind, targetId: target.id, impactAt: now + windup, facing: enemy.facing };
+  enemy.pendingAttack = {
+    kind,
+    targetId: target.id,
+    impactAt: now + windup,
+    facing: enemy.facing,
+    damage: kind === 'bolt' ? rules.boltDamage : rules.burstDamage,
+    radius: rules.burstRadius,
+  };
   enemy.clip = 'Attack';
   enemy.behavior = kind;
-  if (kind === 'bolt') enemy.nextBoltAt = now + ENEMY_RULES.boltCooldownMs;
+  if (kind === 'bolt') enemy.nextBoltAt = now + rules.boltCooldownMs;
   else {
-    enemy.nextBurstAt = now + ENEMY_RULES.burstCooldownMs;
+    enemy.nextBurstAt = now + rules.burstCooldownMs;
     room.hexBursts ??= [];
     room.hexBursts.push({
       id: `${enemy.id}:${enemy.attackSequence}`,
@@ -315,7 +320,7 @@ function beginSpell(room, enemy, target, now, kind) {
       x: enemy.x,
       z: enemy.z,
       elevation: room.collision.surfaceHeight?.(enemy) ?? 0,
-      radius: ENEMY_RULES.burstRadius,
+      radius: rules.burstRadius,
       startedAt: now,
       at: now + windup,
       detonatedAt: null,
@@ -342,7 +347,7 @@ function plan(enemy, room, goal, now) {
 }
 function moveEnemy(enemy, room, dt, now, speed) {
   if (!enemy.target) enemy.target = enemy.path.shift() || null;
-  enemy.runningRequested = speed > ENEMY_RULES.roamSpeed;
+  enemy.runningRequested = speed > crowRules(enemy).roamSpeed;
   const before = { x: enemy.x, z: enemy.z };
   moveActor(
     enemy,
@@ -371,7 +376,9 @@ export function updateEnemies(
   for (const enemy of room.enemies || []) {
     // Generic combat also supports other hostile types, whose own AI owns them.
     if (enemy.modelKey !== ENEMY_RULES.modelKey) continue;
+    const rules = crowRules(enemy);
     if (enemy.phase === 'dead') {
+      approachFlight(enemy, dt, 0);
       stopActor(enemy);
       enemy.pendingAttack = null;
       enemy.clip = 'Death';
@@ -408,12 +415,14 @@ export function updateEnemies(
         pendingAttack: null,
         nextRoamAt: now + 1000,
         aggroAfter: now + 1000,
+        airborneHeight: 0,
       });
       stopActor(enemy);
       changed = true;
       continue;
     }
     if (now < enemy.hitUntil) {
+      approachFlight(enemy, dt, rules.flightHeight);
       stopActor(enemy);
       enemy.clip = 'Hit';
       enemy.behavior = 'hit';
@@ -437,10 +446,18 @@ export function updateEnemies(
         for (const p of room.players.values())
           if (
             eligiblePlayer(room, p, now) &&
-            combatDistance(enemy, p) <= ENEMY_RULES.burstRadius + p.radius &&
+            combatDistance(enemy, p) <= (strike.radius ?? rules.burstRadius) + p.radius &&
             clearLine(room, enemy, p)
           )
-            hitPlayer(room, enemy, p, now, notify, ENEMY_RULES.burstDamage, '赤い呪いの爆発');
+            hitPlayer(
+              room,
+              enemy,
+              p,
+              now,
+              notify,
+              strike.damage ?? rules.burstDamage,
+              '赤い呪いの爆発',
+            );
         changed = true;
       } else if (
         eligiblePlayer(room, player, now) &&
@@ -448,11 +465,12 @@ export function updateEnemies(
         inAttackArc(enemy, player, strike.facing) &&
         clearLine(room, enemy, player)
       ) {
-        hitPlayer(room, enemy, player, now, notify);
+        hitPlayer(room, enemy, player, now, notify, strike.damage);
         changed = true;
       }
     }
     if (now < enemy.attackLockUntil) {
+      approachFlight(enemy, dt, enemy.behavior === 'attack' ? 0 : rules.flightHeight);
       stopActor(enemy);
       enemy.clip = 'Attack';
       if (!['bolt', 'burst'].includes(enemy.behavior)) enemy.behavior = 'attack';
@@ -463,9 +481,9 @@ export function updateEnemies(
       enemy.targetId &&
       (!eligiblePlayer(room, target, now) ||
         !onOwnGround(enemy, target) ||
-        combatDistance(target, enemy.home) > ENEMY_RULES.leashRadius ||
-        combatDistance(target, enemy) > ENEMY_RULES.loseTargetRange ||
-        combatDistance(enemy, enemy.home) > ENEMY_RULES.leashRadius)
+        combatDistance(target, enemy.home) > rules.leashRadius ||
+        combatDistance(target, enemy) > rules.loseTargetRange ||
+        combatDistance(enemy, enemy.home) > rules.leashRadius)
     ) {
       enemy.targetId = null;
       target = null;
@@ -474,6 +492,7 @@ export function updateEnemies(
       enemy.nextPathAt = 0;
     }
     if (enemy.returning) {
+      approachFlight(enemy, dt, rules.flightHeight);
       enemy.behavior = 'return';
       if (combatDistance(enemy, enemy.home) < 0.15) {
         enemy.returning = false;
@@ -482,7 +501,7 @@ export function updateEnemies(
         enemy.clip = 'Idle_Loop';
       } else {
         plan(enemy, room, enemy.home, now);
-        moveEnemy(enemy, room, dt, now, ENEMY_RULES.chaseSpeed);
+        moveEnemy(enemy, room, dt, now, rules.chaseSpeed);
       }
       continue;
     }
@@ -494,7 +513,7 @@ export function updateEnemies(
         (player) =>
           eligiblePlayer(room, player, now) &&
           onOwnGround(enemy, player) &&
-          combatDistance(player, enemy.home) <= ENEMY_RULES.leashRadius,
+          combatDistance(player, enemy.home) <= rules.leashRadius,
       );
       if (target) {
         enemy.targetId = target.id;
@@ -509,8 +528,8 @@ export function updateEnemies(
           (player) =>
             eligiblePlayer(room, player, now) &&
             onOwnGround(enemy, player) &&
-            combatDistance(player, enemy.home) <= ENEMY_RULES.leashRadius &&
-            combatDistance(player, enemy) <= ENEMY_RULES.aggroRange &&
+            combatDistance(player, enemy.home) <= rules.leashRadius &&
+            combatDistance(player, enemy) <= rules.aggroRange &&
             clearLine(room, enemy, player),
         )
         .sort((a, b) => combatDistance(enemy, a) - combatDistance(enemy, b))[0];
@@ -525,48 +544,64 @@ export function updateEnemies(
       const sight = clearLine(room, enemy, target),
         d = combatDistance(enemy, target);
       if (
+        rules.magic &&
         !withinStaffReach(enemy, target) &&
         sight &&
-        d <= ENEMY_RULES.burstRange &&
+        d <= rules.burstRange &&
         now >= enemy.nextBurstAt
       ) {
+        approachFlight(enemy, dt, rules.flightHeight);
         beginSpell(room, enemy, target, now, 'burst');
         changed = true;
       } else if (
+        rules.magic &&
         !withinStaffReach(enemy, target) &&
         sight &&
-        d >= ENEMY_RULES.boltMinRange &&
-        d <= ENEMY_RULES.boltRange &&
+        d >= rules.boltMinRange &&
+        d <= rules.boltRange &&
         now >= enemy.nextBoltAt
       ) {
+        approachFlight(enemy, dt, rules.flightHeight);
         beginSpell(room, enemy, target, now, 'bolt');
         changed = true;
-      } else if (withinStaffReach(enemy, target) && sight) {
+      } else if (rules.physical && withinStaffReach(enemy, target) && sight) {
+        // Flying prelates telegraph their physical option by dropping to the
+        // floor before starting the same authoritative close-range strike.
+        if (!approachFlight(enemy, dt, 0)) {
+          stopActor(enemy);
+          enemy.facing = Math.atan2(target.x - enemy.x, target.z - enemy.z);
+          enemy.clip = 'Idle_Loop';
+          enemy.behavior = 'dive';
+          continue;
+        }
         stopActor(enemy);
         enemy.facing = Math.atan2(target.x - enemy.x, target.z - enemy.z);
         enemy.clip = 'Idle_Loop';
         enemy.behavior = 'chase';
-        if (!enemy.attackSequence || now - enemy.attackAt >= ENEMY_RULES.attackCooldownMs) {
+        if (!enemy.attackSequence || now - enemy.attackAt >= rules.attackCooldownMs) {
           enemy.attackAt = now;
           enemy.attackSequence++;
-          enemy.attackLockUntil = now + ENEMY_RULES.attackDurationMs;
+          enemy.attackLockUntil = now + rules.attackDurationMs;
           enemy.pendingAttack = {
             targetId: target.id,
-            impactAt: now + ENEMY_RULES.attackImpactMs,
+            impactAt: now + rules.attackImpactMs,
             facing: enemy.facing,
+            damage: rules.attackDamage,
           };
           enemy.clip = 'Attack';
           enemy.behavior = 'attack';
           changed = true;
         }
       } else {
+        approachFlight(enemy, dt, rules.flightHeight);
         enemy.behavior = 'chase';
         plan(enemy, room, target, now);
-        moveEnemy(enemy, room, dt, now, ENEMY_RULES.chaseSpeed);
+        moveEnemy(enemy, room, dt, now, rules.chaseSpeed);
       }
       continue;
     }
     enemy.behavior = 'roam';
+    approachFlight(enemy, dt, rules.flightHeight);
     if (!enemy.target && !enemy.path.length && now >= enemy.nextRoamAt) {
       const angle = ++enemy.roamIndex * 2.39996;
       plan(
@@ -580,7 +615,7 @@ export function updateEnemies(
       );
       enemy.nextRoamAt = now + 2500;
     }
-    moveEnemy(enemy, room, dt, now, ENEMY_RULES.roamSpeed);
+    moveEnemy(enemy, room, dt, now, rules.roamSpeed);
   }
   const strike = (enemy, player, time, damage, label) =>
     hitPlayer(room, enemy, player, time, notify, damage, label);

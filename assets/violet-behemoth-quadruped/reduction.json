@@ -1,0 +1,149 @@
+{
+  "candidate": 1,
+  "revision": "01",
+  "source": {
+    "path": "work/trellis/dense-res1024-seed0042.glb",
+    "sha256": "fc2dbf1b3dda9a0a1e7e72a7cebe950c293880cf493f8840a63d3b69d44ad324",
+    "resolution": 1024,
+    "seed": 42,
+    "status": "reconstruction-only; visual review required"
+  },
+  "sha256": "a38b1cbc908167cf0eb84e19de0cc1f0df52167e8459726bbdea435592efc659",
+  "denseTriangles": 298685,
+  "triangles": 47789,
+  "weld": {
+    "weld_distance": 1e-05,
+    "vertices_before": 210173,
+    "vertices_after": 149188,
+    "faces_before": 298730,
+    "faces_after": 298685
+  },
+  "islands": {
+    "components": 1,
+    "largest_faces": 298685,
+    "removed_components": 0,
+    "removed_faces": 0,
+    "keep_fraction": 0.02
+  },
+  "topology": {
+    "vertices_before": 23740,
+    "vertices_after": 23740,
+    "faces": 47789,
+    "weld_distance": 1e-05,
+    "shading": "angle-limited crease-aware smooth normals",
+    "crease_angle_degrees": 50,
+    "sharp_edges": 8802,
+    "boundary_edges": 50,
+    "non_manifold_edges": 175
+  },
+  "denoise": {
+    "method": "feature-weighted Taubin lambda/mu smoothing with a hard displacement clamp",
+    "iterations": 4,
+    "lam": 0.55,
+    "mu": -0.56,
+    "sigma_edge_lengths": 0.16,
+    "mean_edge_length": 0.004540673628108423,
+    "sigma": 0.0007265077804973477,
+    "clamp_model_height_fraction": 0.0007,
+    "clamp_mm_at_1p80m": 1.26,
+    "max_displacement_units": 0.00036498972475530484,
+    "rms_displacement_units": 9.660738973885902e-05,
+    "mean_displacement_units": 7.606310309616113e-05,
+    "max_displacement_mm_at_1p80m": 1.26,
+    "rms_displacement_mm_at_1p80m": 0.3335,
+    "clamped_vertices": 3,
+    "laplacian_quantiles_in_edge_lengths": {
+      "p50": 0.18661,
+      "p75": 0.26235,
+      "p90": 0.34903,
+      "p95": 0.4083,
+      "p99": 0.53806,
+      "max": 1.06846
+    }
+  },
+  "tolerances": {
+    "surfaceP95": 0.0037400508544916783,
+    "surfaceMax": 0.018700254272458392
+  },
+  "trials": [
+    {
+      "ratio": 0.06,
+      "triangles": 17920,
+      "denseToReduced": {
+        "p95": 0.007808365552598874,
+        "rms": 0.00389820469002702,
+        "max": 0.024494606508011562
+      },
+      "reducedToDense": {
+        "p95": 0.007838199047645846,
+        "rms": 0.0038471796840567327,
+        "max": 0.020977749204051377
+      },
+      "passed": false
+    },
+    {
+      "ratio": 0.1,
+      "triangles": 29866,
+      "denseToReduced": {
+        "p95": 0.004477535905311135,
+        "rms": 0.002217216652295814,
+        "max": 0.011279807908160857
+      },
+      "reducedToDense": {
+        "p95": 0.00441826799270388,
+        "rms": 0.002207694601381136,
+        "max": 0.011631443536413821
+      },
+      "passed": false
+    },
+    {
+      "ratio": 0.16,
+      "triangles": 47789,
+      "denseToReduced": {
+        "p95": 0.0026503100870807895,
+        "rms": 0.0013224667648323522,
+        "max": 0.006634748459333122
+      },
+      "reducedToDense": {
+        "p95": 0.0026634393275730877,
+        "rms": 0.0013293050118674786,
+        "max": 0.006256688821661132
+      },
+      "passed": true
+    }
+  ],
+  "alignment": {
+    "pcaYawDegrees": 2.7026898492473053,
+    "spineYawDegrees": -2.270810986836646,
+    "symmetryScore": 0.16631750465549347,
+    "headSlabSpan": [
+      0.49508005380630493,
+      0.14726148173213005
+    ],
+    "headAtHighYBeforeTurn": false,
+    "manualFlip": false,
+    "totalYawDegrees": 0.0,
+    "metresPerUnit": 5.977418496505795,
+    "footprintOffset": [
+      -0.009331449925462865,
+      0.19980931647244615
+    ]
+  },
+  "heightMetres": 3.11931186287517,
+  "lengthMetres": 6.002917948811435,
+  "widthMetres": 3.4453582613490483,
+  "boundsBlender": {
+    "min": [
+      -1.7226791306745242,
+      -2.40169169774682,
+      0.0
+    ],
+    "max": [
+      1.7226791306745242,
+      3.6012262510646154,
+      3.11931186287517
+    ]
+  },
+  "forward": "-Y (glTF +Z)",
+  "visualReviewRequired": true
+}
