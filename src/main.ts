@@ -915,10 +915,10 @@ function updateHuntingHUD() {
   $('.riding-controls').hidden = !mounted && !nearRide;
   $('#riding-hint').textContent = mounted
     ? usingGamepad
-      ? '左スティックで移動 · △ で降りる'
+      ? '左スティックで移動 · × で降りる'
       : 'WASDで移動 · R で降りる'
     : usingGamepad
-      ? '△ を押すとマンモスに乗れます'
+      ? '× を押すとマンモスに乗れます'
       : 'R を押すとマンモスに乗れます';
   const carryChoice = joined && !renderUnavailable && hasCarryChoice();
   if (carryChoice) {
@@ -940,9 +940,9 @@ function updateHuntingHUD() {
     $('#riding-hint').textContent = me.carrierId
       ? `${partnerName}が移動します · R／×で降りる`
       : me.passengerId
-        ? '歩行・走行できます · R／△で降ろす'
+        ? '歩行・走行できます · R／×で降ろす'
         : me.carryOfferFromId
-          ? `${partnerName}からの誘い · R／△で肩に乗る`
+          ? `${partnerName}からの誘い · R／×で肩に乗る`
           : me.carryOfferToId
             ? '相手の返事を待っています · 動くと取消'
             : '相手が「肩に乗る」を押すと担ぎます';
@@ -953,7 +953,7 @@ function updateHuntingHUD() {
     passengerId: me?.passengerId ?? '',
   });
   if (usingGamepad && me?.boatId)
-    $('#boat-hint').textContent = '左スティックで操船 · 深く倒すと速く · 岸で △';
+    $('#boat-hint').textContent = '左スティックで操船 · 深く倒すと速く · 岸で ×';
   updatePromptBar();
   Object.assign($('#world').dataset, {
     ridingVersion: String(state.ridingVersion ?? 0),

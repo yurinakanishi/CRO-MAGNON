@@ -162,7 +162,7 @@ try {
   await pad([]);
   await pad([PAD.r1]);
   await pad([]);
-  assert.match(await page.locator('#riding-hint').innerText(), /△.*乗れます/);
+  assert.match(await page.locator('#riding-hint').innerText(), /×.*乗れます/);
   for (const viewport of [
     { width: 390, height: 844 },
     { width: 844, height: 390 },
@@ -208,7 +208,7 @@ try {
   await page.keyboard.press('r');
   await until(() => !p.mountId);
   passed(
-    'Manual W approach shows △ prompt; proximity alone never mounts; triangle mounts, W drives, R dismounts, clicks do not drive',
+    'Manual W approach shows × prompt; proximity alone never mounts; cross mounts, W drives, R dismounts, clicks do not drive',
   );
   // Explicit position fixture takes the player to the Gulf for UI regression.
   stopActor(p);

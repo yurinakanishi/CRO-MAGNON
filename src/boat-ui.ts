@@ -54,7 +54,7 @@ export function installBoatControls(api) {
         ? 'WASDで操船 · 2回押しで速く · 岸で B'
         : near
           ? document.body.classList.contains('using-gamepad')
-            ? '△ を押すと船に乗れます'
+            ? '× を押すと船に乗れます'
             : 'B を押すと船に乗れます'
           : `部屋で共有 ${(state().boats || []).length}/${BOATING.maxBoats}隻 · 自分で岸まで歩いてつくろう`;
       wrap.classList.toggle('boating', aboard);

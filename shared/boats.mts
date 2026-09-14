@@ -180,7 +180,7 @@ export function handleBoatAction(room, player, message, now) {
     return {
       changed: true,
       tone: 'success',
-      text: '木材12個で丸木舟を作りました！ B で乗れます。',
+      text: '木材12個で丸木舟を作りました！ B／× で乗れます。',
     };
   }
   const target =

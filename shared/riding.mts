@@ -107,7 +107,7 @@ export function handleRidingAction(room, player, message, now) {
           .filter((a) => a.phase === 'alive' && !a.riderId)
           .sort((a, b) => ridingDistance(player, a) - ridingDistance(player, b))[0];
   if (!animal || animal.phase !== 'alive' || animal.health <= 0)
-    return fail('生きているマンモスの横で R を押すと乗れます。');
+    return fail('生きているマンモスの横で R／× を押すと乗れます。');
   if (animal.riderId) return fail('このマンモスには仲間が乗っています。1頭につき1人乗れます。');
   if (
     ridingDistance(player, animal) > RIDING.reach ||
