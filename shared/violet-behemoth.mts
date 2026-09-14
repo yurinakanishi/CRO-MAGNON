@@ -4,7 +4,6 @@ import { combatDistance as distance, enemyIsSolid, stopActor } from './combat.mj
 import { launchPoison, updatePoison } from './behemoth-poison.mjs';
 import { projectileHeight } from './terrain.mjs';
 import { patrolBehemoth, resetBehemothPatrol } from './behemoth-patrol.mjs';
-import { enemyMovementSpeed } from './difficulty.mjs';
 
 const circle = (a) => ({ id: a.id, type: 'circle', x: a.x, z: a.z, radius: a.radius });
 const obstacles = (room, enemy) =>
@@ -316,12 +315,9 @@ export function updateBehemoths(room, dt, now, damage) {
         const forwardX = Math.sin(strike.facing),
           forwardZ = Math.cos(strike.facing),
           cruiseSpeed = (at) =>
-            enemyMovementSpeed(
-              target,
-              R.chargeStartSpeed +
-                (R.chargeSpeed - R.chargeStartSpeed) *
-                  Math.min(1, Math.max(0, (at - e.attackAt - R.roarMs) / R.chargeAccelerationMs)),
-            );
+            R.chargeStartSpeed +
+            (R.chargeSpeed - R.chargeStartSpeed) *
+              Math.min(1, Math.max(0, (at - e.attackAt - R.roarMs) / R.chargeAccelerationMs));
         while (remaining > 1e-9) {
           if (
             strike.brakeAt === undefined &&
@@ -463,7 +459,7 @@ export function updateBehemoths(room, dt, now, damage) {
       const kind = rear || ++e.meleeIndex % 2 === 0 ? 'tail' : 'bite';
       if (kind === 'bite' && distance(e, target) > e.radius + target.radius + R.biteReach) {
         e.behavior = 'chase';
-        navigate(e, room, target, enemyMovementSpeed(target, R.chaseSpeed), dt, now);
+        navigate(e, room, target, R.chaseSpeed, dt, now);
       } else {
         if (kind === 'bite') e.facing = angleTo(e, target);
         begin(e, kind, now);
@@ -476,7 +472,7 @@ export function updateBehemoths(room, dt, now, damage) {
         changed = true;
       } else {
         e.behavior = 'chase';
-        navigate(e, room, target, enemyMovementSpeed(target, R.chaseSpeed), dt, now);
+        navigate(e, room, target, R.chaseSpeed, dt, now);
       }
     }
   }

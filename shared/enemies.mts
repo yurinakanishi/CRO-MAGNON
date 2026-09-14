@@ -26,7 +26,7 @@ import {
   inCrowWard,
 } from './crow-faction.mjs';
 import { nearCastle } from './castle-layout.mjs';
-import { enemyMovementSpeed, incomingDamage } from './difficulty.mjs';
+import { incomingDamage } from './difficulty.mjs';
 
 export const ENEMY_RULES = Object.freeze({
   modelKey: 'crow-shaman',
@@ -672,7 +672,9 @@ export function updateEnemies(
         approachFlight(enemy, dt, rules.flightHeight);
         enemy.behavior = 'chase';
         plan(enemy, room, target, now);
-        moveEnemy(enemy, room, dt, now, enemyMovementSpeed(target, rules.chaseSpeed));
+        // Enemy transforms are shared room state. Personal difficulty must never
+        // alter a movement path that every connected player observes.
+        moveEnemy(enemy, room, dt, now, rules.chaseSpeed);
       }
       continue;
     }

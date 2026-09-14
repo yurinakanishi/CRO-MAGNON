@@ -2,12 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { createGameCore } from '../dist/application/game-core.mjs';
 import { decodeCommand } from '../dist/application/protocol.mjs';
-import {
-  DIFFICULTIES,
-  enemyMovementSpeed,
-  incomingDamage,
-  normalizeDifficulty,
-} from '../dist/shared/difficulty.mjs';
+import { DIFFICULTIES, incomingDamage, normalizeDifficulty } from '../dist/shared/difficulty.mjs';
 import { CollisionWorld } from '../dist/shared/collision.mjs';
 import { createEnemies, updateEnemies } from '../dist/shared/enemies.mjs';
 import { CROW_ROLE_RULES } from '../dist/shared/crow-faction.mjs';
@@ -32,7 +27,7 @@ class Socket {
   }
 }
 
-test('difficulty names and damage multipliers have a safe normal fallback', () => {
+test('difficulty names and personal damage multipliers have a safe normal fallback', () => {
   assert.deepEqual(
     Object.values(DIFFICULTIES).map(({ label }) => label),
     ['簡単', '普通', '難しい'],
@@ -45,9 +40,10 @@ test('difficulty names and damage multipliers have a safe normal fallback', () =
   assert.equal(incomingDamage({ difficulty: 'normal' }, 15), 15);
   assert.equal(incomingDamage({ difficulty: 'hard' }, 15), 21);
   assert.equal(incomingDamage({ difficulty: 'easy' }, 1), 1);
-  assert.ok(Math.abs(enemyMovementSpeed({ difficulty: 'easy' }, 6) - 4.8) < 1e-12);
-  assert.equal(enemyMovementSpeed({ difficulty: 'normal' }, 6), 6);
-  assert.ok(Math.abs(enemyMovementSpeed({ difficulty: 'hard' }, 6) - 7.2) < 1e-12);
+  assert.ok(
+    Object.values(DIFFICULTIES).every((difficulty) => !('enemyMovementSpeed' in difficulty)),
+    'personal difficulty cannot carry a shared-world movement multiplier',
+  );
 });
 
 test('difficulty command accepts only the three public values', () => {
@@ -100,6 +96,98 @@ test('the server owns, updates and restores each player difficulty', () => {
   assert.equal(resumed.profile.difficulty, 'hard');
 });
 
+test('co-op peers receive one authoritative enemy state when personal difficulty changes', () => {
+  let now = 1000,
+    serial = 0;
+  const runtime = {
+      now: () => now,
+      id: () => `coop-${++serial}`,
+      token: () => `coop-token-${++serial}`,
+    },
+    core = createGameCore({ runtime, keepEmptyRooms: true }),
+    easySocket = new Socket(),
+    hardSocket = new Socket();
+  try {
+    core.connect(
+      easySocket,
+      new URLSearchParams({ room: 'SHARED-DIFFICULTY', name: 'Easy', difficulty: 'easy' }),
+    );
+    core.connect(
+      hardSocket,
+      new URLSearchParams({ room: 'SHARED-DIFFICULTY', name: 'Hard', difficulty: 'hard' }),
+    );
+    const room = core.rooms.get('SHARED-DIFFICULTY'),
+      easyId = easySocket.messages.find((message) => message.type === 'welcome').id,
+      hardId = hardSocket.messages.find((message) => message.type === 'welcome').id,
+      easy = room.players.get(easyId),
+      hard = room.players.get(hardId),
+      enemy = room.enemies.find(
+        (candidate) => candidate.modelKey === 'crow-shaman' && !candidate.castle,
+      );
+    Object.assign(easy, {
+      x: enemy.x,
+      z: enemy.z + 6,
+      dx: 0,
+      dz: 0,
+      lastInput: 0,
+      invulnerableUntil: 0,
+      downedUntil: 0,
+    });
+    Object.assign(hard, {
+      x: enemy.x + 8,
+      z: enemy.z + 8,
+      dx: 0,
+      dz: 0,
+      lastInput: 0,
+      invulnerableUntil: 0,
+      downedUntil: 0,
+    });
+    Object.assign(enemy, {
+      targetId: easy.id,
+      pendingAttack: null,
+      attackLockUntil: 0,
+      nextAttackAt: 0,
+      nextBoltAt: 1e12,
+      nextBurstAt: 1e12,
+      target: null,
+      path: [],
+      nextPathAt: 0,
+      facing: 0,
+    });
+    easySocket.messages.length = 0;
+    hardSocket.messages.length = 0;
+
+    now += 100;
+    core.tick();
+    const firstEasy = easySocket.messages.findLast((message) => message.type === 'state'),
+      firstHard = hardSocket.messages.findLast((message) => message.type === 'state');
+    assert.deepEqual(firstEasy.enemies, firstHard.enemies, 'both peers receive the same enemies');
+    assert.ok(
+      Math.abs(
+        firstEasy.enemies.find((candidate) => candidate.id === enemy.id).speed -
+          CROW_ROLE_RULES.shaman.chaseSpeed,
+      ) < 1e-9,
+    );
+
+    easySocket.command({ type: 'difficulty', difficulty: 'hard' });
+    assert.equal(easy.difficulty, 'hard');
+    now += 100;
+    core.tick();
+    const changedEasy = easySocket.messages.findLast((message) => message.type === 'state'),
+      changedHard = hardSocket.messages.findLast((message) => message.type === 'state'),
+      changedEnemy = changedEasy.enemies.find((candidate) => candidate.id === enemy.id);
+    assert.deepEqual(
+      changedEasy.enemies,
+      changedHard.enemies,
+      'a personal setting change cannot fork shared enemy state',
+    );
+    assert.equal(changedEnemy.targetId, easy.id);
+    assert.ok(Math.abs(changedEnemy.speed - CROW_ROLE_RULES.shaman.chaseSpeed) < 1e-9);
+  } finally {
+    core.close();
+  }
+});
+
 test('enemy hits apply the target player difficulty without changing another player', () => {
   const hit = (difficulty) => {
     const collision = new CollisionWorld([], { river: false });
@@ -143,7 +231,7 @@ test('enemy hits apply the target player difficulty without changing another pla
   assert.equal(hit('hard'), 100 - Math.max(1, Math.round(staff * 1.4)));
 });
 
-test('crow, behemoth and sabertooth combat movement follows the targeted player difficulty', () => {
+test('crow, behemoth and sabertooth movement is independent of the target difficulty', () => {
   const measuredSpeed = (modelKey, difficulty) => {
     const collision = new CollisionWorld([], { river: false });
     const enemies = createEnemies(collision, [], 1000);
@@ -195,12 +283,12 @@ test('crow, behemoth and sabertooth combat movement follows the targeted player 
     const easy = measuredSpeed(modelKey, 'easy');
     const normal = measuredSpeed(modelKey, 'normal');
     const hard = measuredSpeed(modelKey, 'hard');
-    assert.ok(Math.abs(easy / normal - 0.8) < 1e-9, `${modelKey} easy speed`);
-    assert.ok(Math.abs(hard / normal - 1.2) < 1e-9, `${modelKey} hard speed`);
+    assert.equal(easy, normal, `${modelKey} easy and normal speed`);
+    assert.equal(hard, normal, `${modelKey} hard and normal speed`);
   }
 });
 
-test('behemoth charge and sabertooth pounce use the targeted player speed setting', () => {
+test('behemoth charge and sabertooth pounce are independent of the target difficulty', () => {
   const encounter = (modelKey, difficulty, range) => {
     const collision = new CollisionWorld([], { river: false });
     const enemy = createEnemies(collision, [], 1000).find(
@@ -257,9 +345,9 @@ test('behemoth charge and sabertooth pounce use the targeted player speed settin
     }
     return peak;
   };
-  assert.ok(Math.abs(chargeSpeed('easy') - BEHEMOTH.chargeSpeed * 0.8) < 1e-6);
+  assert.ok(Math.abs(chargeSpeed('easy') - BEHEMOTH.chargeSpeed) < 1e-6);
   assert.ok(Math.abs(chargeSpeed('normal') - BEHEMOTH.chargeSpeed) < 1e-6);
-  assert.ok(Math.abs(chargeSpeed('hard') - BEHEMOTH.chargeSpeed * 1.2) < 1e-6);
+  assert.ok(Math.abs(chargeSpeed('hard') - BEHEMOTH.chargeSpeed) < 1e-6);
 
   const pounceSpeed = (difficulty) => {
     const { enemy, room } = encounter('sabertooth-tiger', difficulty, 6);
@@ -270,6 +358,6 @@ test('behemoth charge and sabertooth pounce use the targeted player speed settin
     return enemy.speed;
   };
   const normalPounce = pounceSpeed('normal');
-  assert.ok(Math.abs(pounceSpeed('easy') / normalPounce - 0.8) < 1e-9);
-  assert.ok(Math.abs(pounceSpeed('hard') / normalPounce - 1.2) < 1e-9);
+  assert.equal(pounceSpeed('easy'), normalPounce);
+  assert.equal(pounceSpeed('hard'), normalPounce);
 });

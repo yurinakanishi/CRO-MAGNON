@@ -79,6 +79,7 @@ test('setup and in-game settings both offer easy, normal and hard difficulty', a
   assert.match(main, /data-difficulty=/);
   assert.match(main, /type: 'difficulty'/);
   assert.match(main, /cro-difficulty/);
+  assert.match(main, /敵の動きと攻撃時間は(?:仲間)?全員で共通です/);
   assert.match(css, /\.difficulty-choice-grid/);
 });
 

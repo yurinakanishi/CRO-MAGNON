@@ -191,7 +191,9 @@ function difficultyChoicesMarkup() {
       const option = DIFFICULTIES[id];
       return `<label class="difficulty-choice"><input type="radio" name="difficulty" value="${id}" required><span><strong>${option.label}</strong><small>${option.description}</small></span></label>`;
     },
-  ).join('')}</div><p>難易度は仲間とは別に選べ、あとから設定で変えられます。</p></fieldset>`;
+  ).join(
+    '',
+  )}</div><p>難易度は仲間とは別に選べ、あとから設定で変えられます。敵の動きと攻撃時間は全員で共通です。</p></fieldset>`;
 }
 
 function bindDifficultySelection(form: HTMLFormElement) {
@@ -1481,7 +1483,7 @@ function updateSaveStatus() {
 let pauseSubTab = 'help';
 function difficultySettingsMarkup() {
   const selected = normalizeDifficulty(profile.difficulty);
-  return `<div class="settings-item difficulty-setting"><div><strong>難易度</strong><p>自分の被ダメージと、自分を狙う敵の追跡・突進・飛びかかり速度を調整します。</p></div><div class="settings-buttons" role="group" aria-label="難易度">${DIFFICULTY_LEVELS.map((id) => `<button type="button" class="button button-outline" data-difficulty="${id}" aria-pressed="${selected === id}" title="${DIFFICULTIES[id].description}">${DIFFICULTIES[id].label}</button>`).join('')}</div></div>`;
+  return `<div class="settings-item difficulty-setting"><div><strong>難易度</strong><p>自分が敵から受けるダメージを調整します。敵の動きと攻撃時間は仲間全員で共通です。</p></div><div class="settings-buttons" role="group" aria-label="難易度">${DIFFICULTY_LEVELS.map((id) => `<button type="button" class="button button-outline" data-difficulty="${id}" aria-pressed="${selected === id}" title="${DIFFICULTIES[id].description}">${DIFFICULTIES[id].label}</button>`).join('')}</div></div>`;
 }
 
 function setDifficulty(difficulty: Difficulty) {
