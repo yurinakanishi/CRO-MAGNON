@@ -52,7 +52,9 @@ try {
   }, species);
   await page.goto(process.env.GAME_QA_URL || 'http://127.0.0.1:3023/?room=SMOOTH-QA');
   await page.locator('#title-start').click();
-  await page.locator('#setup-submit').click();
+  await page.locator('#setup-form .character-choice:has(input:checked)').click();
+  await page.locator('#setup-flow [data-choose-difficulty="normal"]').click();
+  await page.locator('#setup-flow-yes').click();
   await page.waitForSelector('#world[data-world-asset="ready"][data-character-asset="ready"]', {
     timeout: 60000,
   });

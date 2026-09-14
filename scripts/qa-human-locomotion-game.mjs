@@ -51,7 +51,9 @@ async function open(name) {
   });
   await page.goto(`${base}/?room=${roomName}`);
   await page.locator('#title-start').click();
-  await page.locator('#setup-submit').click();
+  await page.locator('#setup-form .character-choice:has(input:checked)').click();
+  await page.locator('#setup-flow [data-choose-difficulty="normal"]').click();
+  await page.locator('#setup-flow-yes').click();
   await page.waitForSelector('#world[data-world-asset="ready"][data-character-asset="ready"]', {
     timeout: 90000,
   });

@@ -130,7 +130,9 @@ try {
   await page.goto(base + '/?room=BEHEMOTH-QA');
   await page.locator('#title-start').click();
   await page.locator('#setup-form input[name="name"]').fill('Monster A');
-  await page.locator('#setup-submit').click();
+  await page.locator('#setup-form .character-choice:has(input:checked)').click();
+  await page.locator('#setup-flow [data-choose-difficulty="normal"]').click();
+  await page.locator('#setup-flow-yes').click();
   await page.waitForSelector('body.in-game', { timeout: 60000 });
   await page
     .locator('#world[data-world-asset="ready"][data-character-asset="ready"]')
@@ -165,7 +167,9 @@ try {
   await other.goto(base + '/?room=BEHEMOTH-QA');
   await other.locator('#title-start').click();
   await other.locator('#setup-form input[name="name"]').fill('Monster B');
-  await other.locator('#setup-submit').click();
+  await other.locator('#setup-form .character-choice:has(input:checked)').click();
+  await other.locator('#setup-flow [data-choose-difficulty="normal"]').click();
+  await other.locator('#setup-flow-yes').click();
   await other.waitForSelector('#world[data-world-asset="ready"][data-character-asset="ready"]', {
     timeout: 120000,
   });
@@ -272,7 +276,11 @@ try {
   await page.setViewportSize({ width: 1440, height: 900 });
   await page.reload();
   await page.locator('#title-start').click();
-  if (await page.locator('#setup-submit').isVisible()) await page.locator('#setup-submit').click();
+  if (await page.locator('#setup-back').isVisible()) {
+    await page.locator('#setup-form .character-choice:has(input:checked)').click();
+    await page.locator('#setup-flow [data-choose-difficulty="normal"]').click();
+    await page.locator('#setup-flow-yes').click();
+  }
   await page.waitForSelector('#world[data-world-asset="ready"][data-character-asset="ready"]', {
     timeout: 120000,
   });

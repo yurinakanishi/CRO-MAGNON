@@ -126,7 +126,11 @@ try {
   await input();
   await select('#title-start');
   await tap(PAD.circle);
-  await select('#setup-submit');
+  await select('#setup-form input[name="character"]:checked');
+  await tap(PAD.circle);
+  await select('#setup-flow [data-choose-difficulty="normal"]');
+  await tap(PAD.circle);
+  await select('#setup-flow-yes');
   await tap(PAD.circle);
   await page.waitForSelector('body.in-game', { timeout: 60000 });
   await page.waitForSelector('#world[data-world-asset="ready"][data-character-asset="ready"]', {

@@ -47,6 +47,15 @@ test('the interaction hint is a hidden text line that only names a real nearby a
   assert.doesNotMatch(help, /近くのものを調べる/);
 });
 
+test('the mage recharge is a continuous bar without a numbered countdown', async () => {
+  const main = await readFile(new URL('src/main.ts', root), 'utf8');
+  const css = await readFile(new URL('src/style.css', root), 'utf8');
+  assert.match(main, /id="magic-cooldown-progress"/);
+  assert.match(main, /magicCooldownProgress\.value = metered \? cooldownLeft : 0/);
+  assert.doesNotMatch(main, /魔法 あと|Math\.ceil\(cooldownLeft/);
+  assert.match(css, /#magic-cooldown progress/);
+});
+
 test('the map button, M and SHARE toggle the atlas closed when it is already open', async () => {
   const main = await readFile(new URL('src/main.ts', root), 'utf8');
   assert.match(
@@ -71,16 +80,24 @@ test('the game opens on a title screen and only joins after Start or ?autostart=
   assert.doesNotMatch(main, /data-panel=/, 'no top navigation dock');
 });
 
-test('setup and in-game settings both offer easy, normal and hard difficulty', async () => {
+test('setup asks character → difficulty → final はい with no fixed launch button', async () => {
   const main = await readFile(new URL('src/main.ts', root), 'utf8');
+  const flow = await readFile(new URL('src/setup-flow.ts', root), 'utf8');
   const css = await readFile(new URL('src/style.css', root), 'utf8');
-  assert.match(main, /difficultyChoicesMarkup\(\)/);
+  assert.match(main, /bindSetupFlow\(\{/);
   assert.match(main, /difficultySettingsMarkup\(\)/);
   assert.match(main, /data-difficulty=/);
   assert.match(main, /type: 'difficulty'/);
   assert.match(main, /cro-difficulty/);
   assert.match(main, /敵の動きと攻撃時間は(?:仲間)?全員で共通です/);
-  assert.match(css, /\.difficulty-choice-grid/);
+  assert.doesNotMatch(main, /setup-submit|この谷へ出発する|difficultyChoicesMarkup/);
+  assert.match(flow, /難易度はどれにしますか/);
+  assert.match(flow, /これでいいですか/);
+  assert.match(flow, /data-choose-difficulty=/);
+  assert.doesNotMatch(flow, /\.description/, 'difficulty buttons show only the label');
+  assert.match(flow, /id="setup-flow-yes"[^>]*type="submit"/);
+  assert.match(css, /\.setup-flow-choices/);
+  assert.doesNotMatch(css, /\.difficulty-choice-grid|\.setup-launch/);
 });
 
 test('the atlas is a full-bleed canvas with a pointer, a small card and zoom controls, without toolbar or list', async () => {

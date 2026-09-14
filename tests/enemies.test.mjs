@@ -656,13 +656,21 @@ test('red burst: a ring telegraph around the caster, then damage only to those s
   assert.equal(room.hexBursts.length, 0);
 });
 
-test('exhibition rules restore fallen players fully and bring the crow back in ten seconds', async () => {
-  const { EXHIBITION_RULES } = await import('../dist/shared/room-rules.mjs');
+test('exhibition restores fallen players to 100 while normal play restores them to 50', async () => {
+  const { DEFAULT_RULES, EXHIBITION_RULES } = await import('../dist/shared/room-rules.mjs');
   const { room, enemy, player } = fixture();
+  assert.equal(DEFAULT_RULES.recoveryEnergy, 50);
+  assert.equal(EXHIBITION_RULES.recoveryEnergy, 100);
   room.rules = EXHIBITION_RULES;
   player.energy = 10;
-  player.downedUntil = 5000;
-  updateEnemies(room, 0.05, 5000);
+  updateEnemies(room, 0, 2000);
+  updateEnemies(room, 0, 2450);
+  assert.equal(player.energy, 0);
+  assert.ok(player.downedUntil > 2450);
+  const exhibitionRecoveryAt = player.downedUntil;
+  updateEnemies(room, 0.05, exhibitionRecoveryAt - 1);
+  assert.equal(player.energy, 0);
+  updateEnemies(room, 0.05, exhibitionRecoveryAt);
   assert.equal(player.downedUntil, 0);
   assert.equal(player.energy, 100);
   enemy.phase = 'respawning';
@@ -675,11 +683,12 @@ test('exhibition rules restore fallen players fully and bring the crow back in t
   updateEnemies(room, 0, 6000 + 10000);
   assert.equal(enemy.phase, 'alive');
   assert.equal(enemy.health, enemy.maxHealth);
-  room.rules = undefined;
-  player.energy = 10;
+  room.rules = DEFAULT_RULES;
+  player.energy = 0;
   player.downedUntil = 20000;
   updateEnemies(room, 0.05, 20000);
-  assert.equal(player.energy, ENEMY_RULES.recoveryEnergy);
+  assert.equal(player.downedUntil, 0);
+  assert.equal(player.energy, 50);
 });
 
 // 2026-09-13: the cult is fought rank by rank.
@@ -720,6 +729,10 @@ function castleFixture(now = 1000) {
 test('five ranks hold their own levels of the stepped fortress: followers in the forecourt, the pontiff on the summit', () => {
   const { enemies } = castleFixture();
   assert.deepEqual(CROW_TIERS, ['soldier', 'brute', 'shaman', 'prelate', 'pontiff']);
+  assert.deepEqual(
+    Object.fromEntries(CROW_TIERS.map((role) => [role, CROW_ROLE_RULES[role].maxHealth])),
+    { soldier: 15, brute: 60, shaman: 30, prelate: 60, pontiff: 150 },
+  );
   for (const [index, role] of CROW_TIERS.entries()) {
     assert.equal(CROW_ROLE_RULES[role].tier, index + 1);
     for (const crow of enemies.filter((e) => e.crowRole === role)) {
@@ -794,6 +807,29 @@ test('five ranks hold their own levels of the stepped fortress: followers in the
   assert.equal(CROW_ROLE_RULES.brute.magic, false);
   assert.equal(CROW_ROLE_RULES.shaman.magic, true);
   assert.ok(CROW_ROLE_RULES.shaman.attackDamage < CROW_ROLE_RULES.shaman.boltDamage);
+});
+
+test('a hard-difficulty player defeats a first-rank follower with one basic spear attack', () => {
+  const { room, player, byRole, tick } = castleFixture();
+  const soldier = byRole('soldier')[0];
+  const now = 2000;
+  Object.assign(player, {
+    species: 'cro',
+    gender: 'female',
+    difficulty: 'hard',
+    x: soldier.x,
+    z: soldier.z + 1.2,
+    facing: Math.PI,
+  });
+  tick(now);
+  assert.equal(soldier.sealed, false);
+  assert.equal(soldier.health, 15);
+  assert.equal(startAttack(room, player, { targetId: soldier.id }, now).accepted, true);
+  const strike = resolveAttack(room, player, now + COMBAT.attackImpactMs);
+  assert.equal(strike.hit, true);
+  assert.equal(strike.killed, true);
+  assert.equal(soldier.health, 0);
+  assert.equal(soldier.phase, 'dead');
 });
 
 test('higher ranks pray behind the seal, cannot be hurt or provoked, and each rank rises when the one below has fallen', () => {

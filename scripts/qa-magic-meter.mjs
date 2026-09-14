@@ -27,7 +27,9 @@ try {
   await page.goto(`http://127.0.0.1:${port}/?room=MAGIC-METER`);
   await page.locator('#title-start').click();
   await page.locator('#setup-form input[name="name"]').fill('MeterQA');
-  await page.locator('#setup-submit').click();
+  await page.locator('#setup-form .character-choice:has(input:checked)').click();
+  await page.locator('#setup-flow [data-choose-difficulty="normal"]').click();
+  await page.locator('#setup-flow-yes').click();
   await page.waitForSelector('body.in-game', { timeout: 60000 });
   await page
     .locator('#world[data-world-asset="ready"][data-character-asset="ready"]')
@@ -35,7 +37,17 @@ try {
   const room = game.rooms.get('MAGIC-METER');
   room.enemies = [];
   const button = page.locator('#magic-cooldown');
-  const sample = () => button.evaluate((b) => ({ hidden: b.hidden, left: b.textContent }));
+  const sample = () =>
+    button.evaluate((b) => {
+      const progress = b.querySelector('progress');
+      return {
+        hidden: b.hidden,
+        label: b.querySelector('span')?.textContent ?? '',
+        value: progress.value,
+        max: progress.max,
+        ariaValueText: progress.getAttribute('aria-valuetext'),
+      };
+    });
   await page.waitForSelector('#world[data-attack-available="true"]');
   const before = await sample();
   await page
@@ -58,21 +70,26 @@ try {
   const mage = [...room.players.values()][0];
   assert.equal(mage.attackSequence, 1);
   assert.equal(before.hidden, true);
-  assert.ok(!samples[0].hidden, 'remaining time appears after casting');
-  assert.match(samples[0].left, /^魔法 あと[1-5]秒$/);
-  const seconds = samples
-    .filter((s) => !s.hidden)
-    .map((s) => Number(s.left.match(/あと(\d+)秒/)[1]));
-  assert.ok(seconds.length >= 8, 'countdown remains visible through recharge');
-  for (let i = 1; i < seconds.length; i++) assert.ok(seconds[i] <= seconds[i - 1]);
+  assert.ok(!samples[0].hidden, 'recharge bar appears after casting');
+  assert.equal(samples[0].label, '魔法を再び使えるまで');
+  assert.doesNotMatch(samples[0].label, /\d/);
+  const values = samples.filter((s) => !s.hidden).map((s) => s.value);
+  assert.ok(values.length >= 8, 'recharge bar remains visible through recharge');
+  assert.ok(values.every((value) => value >= 0 && value <= 5000));
+  assert.ok(values[values.length - 1] < values[0] - 3000, 'bar continuously loses time');
+  for (let i = 1; i < values.length; i++) assert.ok(values[i] <= values[i - 1] + 1);
+  assert.ok(samples.filter((s) => !s.hidden).every((s) => s.max === 5000));
+  assert.ok(samples.filter((s) => !s.hidden).every((s) => s.ariaValueText === '再使用待ち'));
   assert.equal(after.hidden, true);
-  assert.equal(after.left, '');
+  assert.equal(after.value, 0);
+  assert.equal(after.ariaValueText, '使用可能');
+  assert.equal(await page.locator('#world').getAttribute('data-attack-available'), 'true');
   assert.deepEqual(errors, []);
   await writeFile(
     `${folder}/summary.json`,
     JSON.stringify({ before, samples, after, errors }, null, 2),
   );
-  console.log('magic meter ok', samples.map((s) => `${s.t}:${s.hidden}:${s.left}`).join(' '));
+  console.log('magic meter ok', samples.map((s) => `${s.t}:${s.hidden}:${s.value}`).join(' '));
 } finally {
   await browser.close();
   game.close();

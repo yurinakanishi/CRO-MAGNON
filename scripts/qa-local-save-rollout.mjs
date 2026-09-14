@@ -65,7 +65,9 @@ try {
   let page = await launch();
   await page.locator('#title-start').click();
   await page.locator('#setup-form input[name="name"]').fill('保存の反映確認');
-  await page.locator('#setup-submit').click();
+  await page.locator('#setup-form .character-choice:has(input:checked)').click();
+  await page.locator('#setup-flow [data-choose-difficulty="normal"]').click();
+  await page.locator('#setup-flow-yes').click();
   await page.waitForSelector('body.in-game', { timeout: 60000 });
   await ready(page);
   console.log('READY normal 3000');

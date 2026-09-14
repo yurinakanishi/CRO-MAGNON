@@ -140,7 +140,11 @@ try {
   await input();
   passed('Holding all confirm buttons advances one screen and does not join automatically');
 
-  await select('#setup-submit');
+  await select('#setup-form input[name="character"]:checked');
+  await tap(PAD.circle);
+  await select('#setup-flow [data-choose-difficulty="normal"]');
+  await tap(PAD.circle);
+  await select('#setup-flow-yes');
   await tap(PAD.circle);
   // 2026-09-12: the start tutorial was removed; joining goes straight to play.
   await page.waitForSelector('body.in-game', { timeout: 60000 });

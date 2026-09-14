@@ -92,7 +92,7 @@ try {
   await focused('#title-fullscreen');
   await arm('#title-start');
   await tap(PAD.circle);
-  await page.waitForSelector('#setup-submit', { state: 'visible' });
+  await page.waitForSelector('#setup-back', { state: 'visible' });
   passed(
     'Title: Up reaches the fullscreen toggle and stops at the top edge; circle confirms Start',
   );
@@ -110,8 +110,9 @@ try {
     // Below the first card: the next row, or the Back button once the row holds every card.
     const belowFirst =
       columns === 7 ? '#setup-back' : card(columns === 4 ? 'cat-female' : 'nea-female');
+    // With no launch button, the Back button is the only control below a full row.
     const belowSecond =
-      columns === 7 ? '#setup-submit' : card(columns === 4 ? 'bear-female' : 'nea-male');
+      columns === 7 ? '#setup-back' : card(columns === 4 ? 'bear-female' : 'nea-male');
     // The identity fields stack at phone width, so the room field sits right above the cards.
     const above = field(viewport.width <= 640 ? 'room' : 'name');
     await arm(card('cro-female'));
@@ -127,8 +128,8 @@ try {
     await tap(PAD.down);
     await focused(belowSecond);
     await tap(PAD.up);
-    // The wide launch button climbs back to the card nearest its centre.
-    await focused(card(columns === 7 ? 'nea-male' : 'cro-male'));
+    // The Back button sits under the first card and climbs back to it.
+    await focused(card(columns === 7 ? 'cro-female' : 'cro-male'));
     await arm(card('cro-male'));
     await tap(PAD.left);
     await focused(card('cro-female'));
@@ -149,13 +150,19 @@ try {
   await page.locator('#setup-form input[name="name"]').fill('Direction QA');
   await page.keyboard.press('ArrowLeft');
   await focused('#setup-form input[name="name"]');
-  await arm('#setup-submit');
+  // Picking a card asks the difficulty, then one final はい starts the adventure.
+  await arm(card('cro-female'));
   await tap(PAD.square);
-  // 2026-09-12: the start tutorial was removed; the decision button joins directly.
+  await page.waitForSelector('#setup-flow[data-step="difficulty"]');
+  await focused('#setup-flow [data-choose-difficulty="normal"]');
+  await tap(PAD.square);
+  await page.waitForSelector('#setup-flow[data-step="confirm"]');
+  await focused('#setup-flow-yes');
+  await tap(PAD.square);
   await page.waitForSelector('#world[data-world-asset="ready"][data-character-asset="ready"]', {
     timeout: 60000,
   });
-  passed('Name editing remains native and the decision button starts the adventure directly');
+  passed('Name editing remains native; card → difficulty → はい starts the adventure directly');
 
   // Pause menu: a vertical tab rail on a PC, a horizontal tab strip at 860px and below.
   for (const viewport of [

@@ -53,7 +53,9 @@ async function join(profile, name, room, normal = false, touch = false) {
   await p.goto(`${base}/?room=${room}${normal ? '' : '&autostart=1'}`);
   if (normal) {
     await p.locator('#title-start').click();
-    await p.locator('#setup-submit').click();
+    await p.locator('#setup-form .character-choice:has(input:checked)').click();
+    await p.locator('#setup-flow [data-choose-difficulty="normal"]').click();
+    await p.locator('#setup-flow-yes').click();
     // No tutorial screen: joining goes straight to play; the help dialog still explains the jump.
     await p.waitForSelector('body.in-game', { timeout: 60000 });
     await p.keyboard.press('h');

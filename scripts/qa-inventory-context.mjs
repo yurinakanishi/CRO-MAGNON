@@ -308,17 +308,18 @@ try {
   await tap(PAD.cross);
   await page.keyboard.press('f');
   await until(() => page.locator('#magic-cooldown').isVisible(), 'magic cooldown appears');
-  const label = await page.locator('#magic-cooldown').innerText();
-  assert.match(label, /^魔法 あと[1-5]秒$/);
+  const meter = page.locator('#magic-cooldown-progress');
+  assert.equal(await page.locator('#magic-cooldown span').innerText(), '魔法を再び使えるまで');
+  assert.ok((await meter.evaluate((p) => p.value)) > 0);
   await page.screenshot({ path: `${output}/03-magic-cooldown.png` });
   await until(
     async () => !(await page.locator('#magic-cooldown').isVisible()),
     'magic cooldown disappears',
     6500,
   );
-  assert.equal(await page.locator('#magic-cooldown').innerText(), '');
+  assert.equal(await meter.evaluate((p) => p.value), 0);
   pass(
-    'Empty inventory stays navigable; abilities are not items; magic shows remaining seconds only during recharge',
+    'Empty inventory stays navigable; abilities are not items; magic shows a recharge bar only while unavailable',
   );
 
   Object.assign(me.inventory, { berry: 2, rawMeat: 1, cookedMeat: 1 });

@@ -5,6 +5,7 @@ import {
   normalizeCharacter,
   characterModel,
 } from '../dist/shared/characters.mjs';
+import { WORLD } from '../dist/shared/world.mjs';
 
 test('new and legacy profiles default to female in either species', () => {
   assert.deepEqual(normalizeCharacter(), { species: 'cro', gender: 'female' });
@@ -24,8 +25,13 @@ test('all seven explicit choices resolve to distinct models and retain male choi
 
 test('new fantasy choices normalize to their one supplied appearance', () => {
   assert.equal(characterModel({ species: 'cat', gender: 'male' }).key, 'cat-kunoichi');
-  assert.equal(characterModel({ species: 'bear' }).key, 'desert-fennec-mage');
-  assert.equal(characterModel({ species: 'bear' }).weapon, 'magic');
+  const mage = characterModel({ species: 'bear' });
+  assert.equal(mage.key, 'desert-fennec-mage');
+  assert.equal(mage.weapon, 'magic');
+  assert.equal(mage.walkSpeed, 1.2);
+  assert.equal(mage.runSpeed, 3.8);
+  assert.ok(mage.walkSpeed < WORLD.walkSpeed);
+  assert.ok(mage.runSpeed < WORLD.runSpeed);
   assert.deepEqual(normalizeCharacter({ species: 'cat', gender: 'invalid' }), {
     species: 'cat',
     gender: 'female',

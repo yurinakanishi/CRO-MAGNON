@@ -112,7 +112,9 @@ async function play(ctx, name, resume = false) {
   await page.locator('#title-start').click();
   if (!resume) {
     await page.locator('#setup-form input[name="name"]').fill(name);
-    await page.locator('#setup-submit').click();
+    await page.locator('#setup-form .character-choice:has(input:checked)').click();
+    await page.locator('#setup-flow [data-choose-difficulty="normal"]').click();
+    await page.locator('#setup-flow-yes').click();
     await page.waitForSelector('body.in-game', { timeout: 60000 });
   }
   await page

@@ -146,7 +146,9 @@ try {
       path.join(folder, `setup-${index}.txt`),
       await page.locator('body').ariaSnapshot(),
     );
-    await page.getByRole('button', { name: 'この谷へ出発する', exact: false }).click();
+    await page.locator('#setup-form .character-choice:has(input:checked)').click();
+    await page.getByRole('button', { name: '普通', exact: true }).click();
+    await page.getByRole('button', { name: 'はい', exact: true }).click();
     await page
       .locator('#connection-label')
       .filter({ hasText: 'LAN: Connected' })

@@ -139,7 +139,9 @@ async function addPage(name, species, pad = false) {
   );
   await page.goto(base + '/?room=WATER-QA', { waitUntil: 'domcontentloaded' });
   await page.locator('#title-start').click();
-  await page.locator('#setup-submit').click();
+  await page.locator('#setup-form .character-choice:has(input:checked)').click();
+  await page.locator('#setup-flow [data-choose-difficulty="normal"]').click();
+  await page.locator('#setup-flow-yes').click();
   await page.waitForSelector('body.in-game', { timeout: 60000 });
   await page
     .locator('#world[data-world-asset="ready"][data-character-asset="ready"]')

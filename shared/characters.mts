@@ -50,9 +50,9 @@ export const CHARACTER_MODELS: readonly Readonly<CharacterModel>[] = Object.free
     weapon: 'magic',
     height: 0.78,
     radius: 0.32,
-    // The small mage is the slowest, but no longer a crawl.
-    walkSpeed: 1.5,
-    runSpeed: 4.6,
+    // Its 60-damage magic is the strongest player attack, paid for with low mobility.
+    walkSpeed: 1.2,
+    runSpeed: 3.8,
   }),
   Object.freeze({
     species: 'ape',

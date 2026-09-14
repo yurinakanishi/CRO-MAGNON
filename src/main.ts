@@ -69,6 +69,7 @@ import {
   normalizeDifficulty,
   type Difficulty,
 } from '../shared/difficulty.mjs';
+import { bindSetupFlow, closeSetupFlow, setupFlowBack, setupFlowOpen } from './setup-flow.js';
 
 const icons = {
   unarmed:
@@ -181,27 +182,8 @@ let selectedAnimalId = null,
 const joinFields = () =>
   (fixedIdentity
     ? `<input type="hidden" name="name"><input type="hidden" name="room">`
-    : `<div class="setup-identity"><label>あなたの名前<input name="name" maxlength="16" required autocomplete="off" autofocus></label><label>部屋のコード <span>英数字・ハイフン・アンダースコア / 最大16文字</span><input name="room" maxlength="16" pattern="[A-Za-z0-9_\\-]+" required autocomplete="off"></label></div>`) +
-  characterChoicesMarkup() +
-  difficultyChoicesMarkup();
-
-function difficultyChoicesMarkup() {
-  return `<fieldset class="difficulty-options"><legend class="character-legend">難易度を選ぶ</legend><div class="difficulty-choice-grid">${DIFFICULTY_LEVELS.map(
-    (id) => {
-      const option = DIFFICULTIES[id];
-      return `<label class="difficulty-choice"><input type="radio" name="difficulty" value="${id}" required><span><strong>${option.label}</strong><small>${option.description}</small></span></label>`;
-    },
-  ).join(
-    '',
-  )}</div><p>難易度は仲間とは別に選べ、あとから設定で変えられます。敵の動きと攻撃時間は全員で共通です。</p></fieldset>`;
-}
-
-function bindDifficultySelection(form: HTMLFormElement) {
-  const input = form.querySelector<HTMLInputElement>(
-    `input[name="difficulty"][value="${normalizeDifficulty(profile.difficulty)}"]`,
-  );
-  if (input) input.checked = true;
-}
+    : `<div class="setup-identity"><label>あなたの名前<input name="name" maxlength="16" required autocomplete="off" autofocus></label><label>部屋のコード<span>英数字・ハイフン・アンダースコア / 最大16文字</span><input name="room" maxlength="16" pattern="[A-Za-z0-9_\\-]+" required autocomplete="off"></label></div>`) +
+  characterChoicesMarkup();
 $('#app').innerHTML = `
   <section class="game-viewport" aria-label="${GAME_TITLE} ゲーム画面">
     <canvas id="world" aria-label="氷河時代の大陸が広がる3Dワールド。WASDまたは左スティックで移動。左スティックを浅く倒すと歩き、深く倒すと走ります。右スティックまたはドラッグでカメラ回転。" tabindex="0"></canvas>
@@ -234,7 +216,7 @@ $('#app').innerHTML = `
         <div class="title-footer"><span>v0.1</span></div>
       </section>
       <section id="screen-setup" class="screen setup-screen" hidden>
-        <form id="setup-form" class="setup-card"><p class="form-error" id="setup-error" hidden></p>${joinFields()}<div class="setup-actions"><button type="button" id="setup-back" class="button button-outline setup-back">戻る</button><button class="setup-launch" id="setup-submit" type="submit"><span class="setup-launch-text">この谷へ出発する</span>${icon('arrow')}</button></div></form>
+        <form id="setup-form" class="setup-card"><header class="setup-heading"><span class="setup-eyebrow">${GAME_TITLE}</span><h2>旅人を選ぶ</h2></header><p class="form-error" id="setup-error" hidden></p>${joinFields()}<div class="setup-actions"><button type="button" id="setup-back" class="button button-outline setup-back">戻る</button></div></form>
       </section>
     </div>
   </section>
@@ -365,7 +347,7 @@ const villageUI = installVillageUI({
 });
 $('.hotbar-wrap').insertAdjacentHTML(
   'afterbegin',
-  `<div class="hunt-controls"><div id="magic-cooldown" class="hunt-button" hidden></div><button id="cook-button" class="hunt-button" hidden>${icon('flame')}<span>肉を焼く</span></button></div><div id="cooking-status" class="cooking-status" hidden><span id="cooking-label">肉を焼いています…</span><progress id="cooking-progress" max="1" value="0" aria-label="肉を焼く進み具合"></progress><button id="cancel-cook">中止</button></div>`,
+  `<div class="hunt-controls"><div id="magic-cooldown" class="hunt-button" hidden><span>魔法を再び使えるまで</span><progress id="magic-cooldown-progress" max="1" value="0" aria-label="魔法の再使用待ち"></progress></div><button id="cook-button" class="hunt-button" hidden>${icon('flame')}<span>肉を焼く</span></button></div><div id="cooking-status" class="cooking-status" hidden><span id="cooking-label">肉を焼いています…</span><progress id="cooking-progress" max="1" value="0" aria-label="肉を焼く進み具合"></progress><button id="cancel-cook">中止</button></div>`,
 );
 $('#chat-content').hidden = true;
 $('.chat-collapse').textContent = '+';
@@ -974,8 +956,12 @@ function updateHuntingHUD() {
   const cooldownLeft =
     me?.attackSequence > 0 ? Math.max(0, combat.cooldownMs - (serverNow - me.attackAt)) : 0;
   const metered = combat.key === 'magic' && cooldownLeft > 0;
-  $('#magic-cooldown').hidden = !joined || downed || !metered;
-  $('#magic-cooldown').textContent = metered ? `魔法 あと${Math.ceil(cooldownLeft / 1000)}秒` : '';
+  const magicCooldown = $('#magic-cooldown'),
+    magicCooldownProgress = $('#magic-cooldown-progress');
+  magicCooldown.hidden = !joined || downed || !metered;
+  magicCooldownProgress.max = Math.max(1, combat.cooldownMs);
+  magicCooldownProgress.value = metered ? cooldownLeft : 0;
+  magicCooldownProgress.setAttribute('aria-valuetext', metered ? '再使用待ち' : '使用可能');
   const canCook =
     !modalActionsBlocked() &&
     inv.rawMeat > 0 &&
@@ -1098,7 +1084,7 @@ function showSetup(error = '') {
   form.name.value = profile.name;
   form.room.value = profile.room;
   bindCharacterSelection(form, profile);
-  bindDifficultySelection(form);
+  closeSetupFlow();
   $('#setup-error').hidden = !error;
   $('#setup-error').textContent = error;
   $('#setup-back').textContent = joined ? '探索に戻る' : '戻る';
@@ -1796,9 +1782,17 @@ document.addEventListener('fullscreenchange', () => {
   $('#title-fullscreen').setAttribute('aria-label', active ? '全画面表示を終了' : '全画面表示');
 });
 $('#setup-back').onclick = () => (joined ? screens.hide() : showTitle());
+bindSetupFlow({
+  form: $('#setup-form'),
+  difficulty: () => normalizeDifficulty(profile.difficulty),
+  settle: () => gamepadControls?.suspend(),
+});
 $('#setup-form').onsubmit = (e) => {
   e.preventDefault();
+  // Only the final はい of the setup flow submits; a stray Enter elsewhere does nothing.
+  if (!setupFlowOpen()) return;
   applyProfileForm(e.currentTarget);
+  closeSetupFlow();
   enterGame();
 };
 $('#modal-close').onclick = () => {
@@ -1937,7 +1931,7 @@ gamepadControls = new GamepadControls({
   menu: () => ($('#modal').open ? $('#modal') : screens.activeElement()),
   closeMenu: () => {
     if ($('#modal').open) $('#modal').close();
-    else if (screens.active === 'setup') $('#setup-back').click();
+    else if (screens.active === 'setup' && !setupFlowBack()) $('#setup-back').click();
   },
   cancelMenu: () => {
     if (cancelRoomReset()) return;
@@ -1945,6 +1939,7 @@ gamepadControls = new GamepadControls({
       gamepadControls?.suspend();
       return;
     }
+    if (screens.active === 'setup' && setupFlowBack()) return;
     if (closeItemActions()) return;
     if ($('#modal').open) $('#modal').close();
     else if (screens.active === 'setup') $('#setup-back').click();
