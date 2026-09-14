@@ -122,3 +122,50 @@ test('cached vegetation matches a fresh calculation through travel, turns, zoom 
       mesh.material.dispose();
     }
 });
+
+test('a walking sight line hides its blocking canopy and restores trees when the camera leaves', () => {
+  const a = landscapeFixtures(),
+    b = landscapeFixtures();
+  const camera = new THREE.PerspectiveCamera(57, 1.6, 0.15, 360);
+  const focus = new THREE.Vector3(76, 1.4, 68);
+  const positions = (landscape) =>
+    landscape.levels
+      .flatMap((parts) =>
+        parts.flatMap(({ mesh }) =>
+          Array.from({ length: mesh.count }, (_, i) =>
+            [mesh.instanceMatrix.array[i * 16 + 12], mesh.instanceMatrix.array[i * 16 + 14]].join(
+              ',',
+            ),
+          ),
+        ),
+      )
+      .sort();
+  try {
+    camera.position.set(74.5074, 2.44, 73.1907);
+    camera.lookAt(focus);
+    camera.updateMatrixWorld(true);
+    a[0].update(camera, 1, focus);
+    b[0].update(camera, 1);
+    const walking = positions(a[0]),
+      unobstructedPolicy = positions(b[0]);
+    assert.ok(
+      walking.length < unobstructedPolicy.length,
+      'the canopy covering the walking camera must be hidden',
+    );
+    assert.ok(walking.every((p) => unobstructedPolicy.includes(p)));
+    assert.deepEqual(positions(b[0]), unobstructedPolicy, 'one view cannot change another view');
+    a[0].update(camera, 2, null);
+    assert.deepEqual(
+      positions(a[0]),
+      unobstructedPolicy,
+      'trees return when the sight line is cleared',
+    );
+  } finally {
+    for (const f of [...a, ...b])
+      for (const { mesh } of f.levels.flat()) {
+        mesh.dispose();
+        mesh.geometry.dispose();
+        mesh.material.dispose();
+      }
+  }
+});

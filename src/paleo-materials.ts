@@ -288,11 +288,13 @@ export class EarthOcean {
       for (const p of this.parts) p.mesh.setMatrixAt(count, this.matrix);
       count++;
     }
+    let uploadBytes = 0;
     for (const p of this.parts) {
       p.mesh.count = count;
-      markActiveInstances(p.mesh);
+      uploadBytes += markActiveInstances(p.mesh);
       p.mesh.boundingSphere = null;
     }
+    return uploadBytes;
   }
   dispose() {
     for (const p of this.parts) {

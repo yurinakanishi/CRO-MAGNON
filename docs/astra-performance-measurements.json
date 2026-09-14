@@ -1,0 +1,241 @@
+{
+  "date": "2026-09-14",
+  "baselineCommit": "ddbc04b3d87dd680dc1dd1ddf6a85905bf71f5c6",
+  "platform": "win32 10.0.26200",
+  "cpu": "AMD Ryzen 7 5800H with Radeon Graphics         ",
+  "article": "https://developers.openai.com/blog/how-to-build-games-with-astra",
+  "terrainBenchmark": {
+    "current": [
+      {
+        "scenario": "stationary",
+        "ticks": 300,
+        "rounds": 7,
+        "milliseconds": 2.233400000000074,
+        "requestedBytes": 1192,
+        "placementUpdates": 1
+      },
+      {
+        "scenario": "moving",
+        "ticks": 300,
+        "rounds": 7,
+        "milliseconds": 36.5632999999998,
+        "requestedBytes": 436032,
+        "placementUpdates": 300
+      }
+    ],
+    "baseline": [
+      {
+        "scenario": "stationary",
+        "ticks": 300,
+        "rounds": 7,
+        "milliseconds": 6.881199999999808,
+        "requestedBytes": 357600,
+        "placementUpdates": 300
+      },
+      {
+        "scenario": "moving",
+        "ticks": 300,
+        "rounds": 7,
+        "milliseconds": 36.17000000000007,
+        "requestedBytes": 436032,
+        "placementUpdates": 300
+      }
+    ],
+    "equivalentViews": 180
+  },
+  "browser": [
+    {
+      "variant": "baseline",
+      "viewport": [1280, 800],
+      "renderedViewsDuringMeasurement": 1,
+      "warmupSeconds": 8,
+      "fixture": {
+        "x": 76,
+        "z": 68
+      },
+      "measurements": [
+        {
+          "scene": "camp-stationary",
+          "frameMs": {
+            "mean": 16.681111111243567,
+            "median": 16.699999928474426,
+            "p95": 17.5
+          },
+          "cpuMs": {
+            "mean": 3.9928176745525383,
+            "median": 3.8000000715255737,
+            "p95": 5.299999952316284
+          },
+          "sampledFrames": 181,
+          "intervals": 180,
+          "graphics": "ANGLE (NVIDIA, NVIDIA GeForce RTX 3070 Laptop GPU (0x000024DD) Direct3D11 vs_5_0 ps_5_0, D3D11)",
+          "pixelRatio": 1,
+          "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/152.0.0.0 Safari/537.36",
+          "camera": [74.50739670491303, 2.439943922370753, 73.19068280832013],
+          "first": {
+            "at": 17568.899999976158,
+            "cpuMs": 3.5,
+            "calls": 161,
+            "triangles": 2250506,
+            "geometries": 74,
+            "textures": 48,
+            "terrainUpdates": null,
+            "terrainUploadBytes": null
+          },
+          "last": {
+            "at": 20571.5,
+            "cpuMs": 3.1999999284744263,
+            "calls": 162,
+            "triangles": 2250514,
+            "geometries": 74,
+            "textures": 48,
+            "terrainUpdates": null,
+            "terrainUploadBytes": null
+          }
+        }
+      ],
+      "checks": ["joined and rendered the verified world"],
+      "errors": []
+    },
+    {
+      "variant": "current",
+      "viewport": [1280, 800],
+      "renderedViewsDuringMeasurement": 1,
+      "warmupSeconds": 8,
+      "fixture": {
+        "x": 76,
+        "z": 68
+      },
+      "measurements": [
+        {
+          "scene": "camp-stationary",
+          "frameMs": {
+            "mean": 16.679999999867544,
+            "median": 16.700000047683716,
+            "p95": 17.300000071525574
+          },
+          "cpuMs": {
+            "mean": 3.8889502688666076,
+            "median": 3.899999976158142,
+            "p95": 4.600000023841858
+          },
+          "sampledFrames": 181,
+          "intervals": 180,
+          "graphics": "ANGLE (NVIDIA, NVIDIA GeForce RTX 3070 Laptop GPU (0x000024DD) Direct3D11 vs_5_0 ps_5_0, D3D11)",
+          "pixelRatio": 1,
+          "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/152.0.0.0 Safari/537.36",
+          "camera": [74.50739670491303, 2.439943922370753, 73.19068280832013],
+          "first": {
+            "at": 17275.600000023842,
+            "cpuMs": 4.299999952316284,
+            "calls": 162,
+            "triangles": 2225296,
+            "geometries": 74,
+            "textures": 48,
+            "terrainUpdates": 48,
+            "terrainUploadBytes": 60836
+          },
+          "last": {
+            "at": 20278,
+            "cpuMs": 3.5,
+            "calls": 162,
+            "triangles": 2225296,
+            "geometries": 74,
+            "textures": 48,
+            "terrainUpdates": 48,
+            "terrainUploadBytes": 60836
+          }
+        },
+        {
+          "scene": "snow-stationary",
+          "frameMs": {
+            "mean": 16.677222222752043,
+            "median": 16.699999928474426,
+            "p95": 17.300000071525574
+          },
+          "cpuMs": {
+            "mean": 1.9828729234347686,
+            "median": 1.899999976158142,
+            "p95": 2.5
+          },
+          "sampledFrames": 181,
+          "intervals": 180,
+          "graphics": "ANGLE (NVIDIA, NVIDIA GeForce RTX 3070 Laptop GPU (0x000024DD) Direct3D11 vs_5_0 ps_5_0, D3D11)",
+          "pixelRatio": 1,
+          "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/152.0.0.0 Safari/537.36",
+          "camera": [489.17406337157956, 2.426118322370753, -58.09820608056875],
+          "first": {
+            "at": 35391.299999952316,
+            "cpuMs": 2,
+            "calls": 31,
+            "triangles": 406684,
+            "geometries": 63,
+            "textures": 48,
+            "terrainUpdates": 109,
+            "terrainUploadBytes": 176236
+          },
+          "last": {
+            "at": 38393.200000047684,
+            "cpuMs": 1.7999999523162842,
+            "calls": 31,
+            "triangles": 406684,
+            "geometries": 63,
+            "textures": 48,
+            "terrainUpdates": 109,
+            "terrainUploadBytes": 176236
+          }
+        }
+      ],
+      "checks": [
+        "joined and rendered the verified world",
+        "walking camera excludes trees covering the player sight line",
+        "actual walking and attack; terrain resumes updating",
+        "snow scene loaded and camp reloaded after regional eviction",
+        "five connections, two rendered views, actual lateral movement synchronizes",
+        "reload resumes the same identity, position and inventory",
+        "inventory and map in portrait and landscape sizes"
+      ],
+      "errors": []
+    }
+  ],
+  "delivery": [
+    {
+      "url": "http://127.0.0.1:3000/src/open-world.js",
+      "status": 200,
+      "matches": true,
+      "sha256": "d1b8127ed81b8a898f0bb1e442c48ad703eab9a7d74ce8f70c9eadda01cd7bf4"
+    },
+    {
+      "url": "http://127.0.0.1:3000/src/world-assets.js",
+      "status": 200,
+      "matches": true,
+      "sha256": "adab39c90f69c16ba5ac50588074e799513d5f3e5d7a47b0f07da43d54e94ab9"
+    },
+    {
+      "url": "http://127.0.0.1:3000/src/world3d.js",
+      "status": 200,
+      "matches": true,
+      "sha256": "edbce7a5056db53b484f0bb9648d2bc198fbd7b9e03899be22abbcf548156aaf"
+    },
+    {
+      "url": "http://127.0.0.1:3000/src/view-update-gate.js",
+      "status": 200,
+      "matches": true,
+      "sha256": "b5d9b7f2017b5a0c3347fab8ccdaf0b97a42d0bcf06059ff735cdf8623bebe45"
+    },
+    {
+      "url": "http://127.0.0.1:3000/src/paleo-materials.js",
+      "status": 200,
+      "matches": true,
+      "sha256": "5bb36467fc226135377fd7ae23b5496bcaa35c1d2491076b72ae17270cacae68"
+    }
+  ],
+  "limitations": [
+    "CPU microbenchmark uses real chunk/coast selection with lightweight geometry sinks; excludes GPU work and initial allocation.",
+    "Browser metrics are single-run observations, not statistically established FPS improvement or individual GPU command timings.",
+    "Initial camp and snow positions are fixtures; walking, attacks, menus and reconnect use real controls and time.",
+    "Baseline camp view is covered by a canopy; current intentionally removes blocking trees from this view.",
+    "Two rendered views and three socket peers were used for multiplayer functionality after the one-view timings.",
+    "No physical phone/gamepad or long-duration soak test was performed."
+  ]
+}

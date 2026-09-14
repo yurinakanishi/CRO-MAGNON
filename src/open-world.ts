@@ -6,6 +6,7 @@ import { BIOMES, biomeById, nearbyChunks } from '../shared/biomes.mjs';
 import { installBiomeTerrain } from '../shared/terrain.mjs';
 import { fitSourceRiverBank } from './source-surface-fit.js';
 import { coastDistance } from '../shared/paleo-geography.mjs';
+import { ViewUpdateGate } from './view-update-gate.js';
 
 const RADIUS = 128,
   CAPACITY = 100;
@@ -25,7 +26,12 @@ export class OpenWorldTerrain {
   declare desired: any[];
   declare desiredKeys: Set<any>;
   declare nextPlan: number;
-  declare nextCull: number;
+  private readonly viewGate = new ViewUpdateGate(0.1);
+  private cullDirty = true;
+  private cullUpdates = 0;
+  private uploadBytes = 0;
+  private planX = NaN;
+  private planZ = NaN;
   declare disposed: boolean;
   declare frustum: THREE.Frustum;
   declare projection: THREE.Matrix4;
@@ -52,7 +58,6 @@ export class OpenWorldTerrain {
     this.desired = [];
     this.desiredKeys = new Set();
     this.nextPlan = 0;
-    this.nextCull = 0;
     this.disposed = false;
     this.frustum = new THREE.Frustum();
     this.projection = new THREE.Matrix4();
@@ -77,16 +82,21 @@ export class OpenWorldTerrain {
     for (const chunk of this.desired.filter((c) => c.distance < 55)) this.admit(chunk);
   }
   plan(x, z, time) {
-    this.surroundings = nearbyChunks(x, z, RADIUS);
-    this.desired = this.surroundings.filter((c) => c.land);
-    this.desiredKeys = new Set(this.desired.map((c) => c.key));
-    if (this.desired.length > CAPACITY)
-      throw new Error('Terrain working set exceeded its allocation');
-    for (const [key, chunk] of this.chunks)
-      if (!this.desiredKeys.has(key)) {
-        this.removeChunk(chunk);
-        this.chunks.delete(key);
-      }
+    if (x !== this.planX || z !== this.planZ) {
+      this.planX = x;
+      this.planZ = z;
+      this.surroundings = nearbyChunks(x, z, RADIUS);
+      this.desired = this.surroundings.filter((c) => c.land);
+      this.desiredKeys = new Set(this.desired.map((c) => c.key));
+      if (this.desired.length > CAPACITY)
+        throw new Error('Terrain working set exceeded its allocation');
+      for (const [key, chunk] of this.chunks)
+        if (!this.desiredKeys.has(key)) {
+          this.removeChunk(chunk);
+          this.chunks.delete(key);
+        }
+    }
+    // Retain request retries, usage timestamps and eviction while stationary.
     for (const chunk of this.desired) {
       const key = biomeById(chunk.biome).ground;
       this.lastUsed.set(key, time);
@@ -174,6 +184,7 @@ export class OpenWorldTerrain {
         record.bankMeshes.push(mesh);
       }
     this.chunks.set(chunk.key, record);
+    this.cullDirty = true;
   }
   update(camera, time) {
     if (this.disposed) return;
@@ -189,18 +200,22 @@ export class OpenWorldTerrain {
         this.admit(chunk);
         if (++admitted >= 2 || performance.now() - started > 3) break;
       }
-    if (time < this.nextCull && !admitted) return;
-    this.nextCull = time + 0.1;
+    // Membership changes must refresh even at a fixed camera or within the
+    // throttle interval. Water time above continues advancing on every frame.
+    if (!this.viewGate.shouldUpdate(camera, time, null, this.cullDirty)) return;
+    this.cullDirty = false;
+    this.cullUpdates++;
     this.projection.multiplyMatrices(camera.projectionMatrix, camera.matrixWorldInverse);
     this.frustum.setFromProjectionMatrix(this.projection);
-    this.ocean?.update(
-      this.surroundings.filter((c) => {
-        sphere.center.set(c.x, -0.52, c.z);
-        sphere.radius = 25;
-        return coastDistance(c.x, c.z) < 26 && this.frustum.intersectsSphere(sphere);
-      }),
-      time,
-    );
+    this.uploadBytes +=
+      this.ocean?.update(
+        this.surroundings.filter((c) => {
+          sphere.center.set(c.x, -0.52, c.z);
+          sphere.radius = 25;
+          return coastDistance(c.x, c.z) < 26 && this.frustum.intersectsSphere(sphere);
+        }),
+        time,
+      ) ?? 0;
     for (const levels of this.prepared.values())
       for (const parts of levels) for (const part of parts) part.mesh.count = 0;
     let visible = 0;
@@ -232,9 +247,12 @@ export class OpenWorldTerrain {
     for (const levels of this.prepared.values())
       for (const parts of levels)
         for (const part of parts) {
-          markActiveInstances(part.mesh);
+          this.uploadBytes += markActiveInstances(part.mesh);
           if (part.geometry?.attributes.earthCoastal)
-            markActiveAttribute(part.geometry.attributes.earthCoastal, part.mesh.count);
+            this.uploadBytes += markActiveAttribute(
+              part.geometry.attributes.earthCoastal,
+              part.mesh.count,
+            );
           // InstancedMesh caches this on its first raycast. Streaming changes both
           // the count and positions, so the next ground click needs fresh bounds.
           part.mesh.boundingSphere = null;
@@ -247,9 +265,12 @@ export class OpenWorldTerrain {
       terrainRadius: String(RADIUS),
       terrainAssetTypes: String(this.prepared.size),
       terrainPending: String(this.pending.size),
+      terrainUpdates: String(this.cullUpdates),
+      terrainUploadBytes: String(this.uploadBytes),
     });
   }
   removeChunk(chunk) {
+    this.cullDirty = true;
     for (const mesh of chunk.bankMeshes) {
       this.root.remove(mesh);
       mesh.geometry.dispose();
@@ -266,6 +287,7 @@ export class OpenWorldTerrain {
         part.material.dispose();
       }
     this.prepared.delete(key);
+    this.cullDirty = true;
   }
   dispose() {
     this.disposed = true;

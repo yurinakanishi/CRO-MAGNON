@@ -1291,7 +1291,7 @@ export class WorldRenderer {
       if (this.npc.visible) this.npcActor?.animation.update(dt, 0);
     }
     for (const landscape of this.landscapes)
-      landscape.update(this.camera, time, self?.state.mountId ? this.focus : null);
+      landscape.update(this.camera, time, self ? this.focus : null);
     for (const fire of this.fires) {
       const visible = fire.root.position.distanceTo(this.camera.position) < 65;
       fire.light.visible = visible;

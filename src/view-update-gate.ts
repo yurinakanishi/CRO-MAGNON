@@ -12,12 +12,18 @@ export class ViewUpdateGate {
 
   constructor(private readonly interval = 0.18) {}
 
-  shouldUpdate(camera: Camera, time: number, riderFocus: Vector3 | null = null): boolean {
-    if (time < this.next) return false;
+  shouldUpdate(
+    camera: Camera,
+    time: number,
+    riderFocus: Vector3 | null = null,
+    force = false,
+  ): boolean {
+    if (!force && time < this.next) return false;
     this.next = time + this.interval;
     const hasFocus = riderFocus !== null;
     if (
       this.initialized &&
+      !force &&
       hasFocus === this.hadFocus &&
       (!riderFocus || this.focus.distanceToSquared(riderFocus) < 1e-12) &&
       sameMatrix(this.world, camera.matrixWorld) &&

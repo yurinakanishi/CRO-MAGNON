@@ -12,20 +12,26 @@ import { applyMeadowGrassPalette, meadowGrassTint } from './meadow-palette.js';
 import { ActionBlender, gaitPhase } from './action-blender.js';
 import { applyBehemothPalette } from './behemoth-palette.js';
 
-function disposeTemplate(root) {
-  const resources = new Set<THREE.BufferGeometry | THREE.Material | THREE.Texture>();
-  root.traverse((node) => {
-    if (node.geometry) resources.add(node.geometry);
-    if (node.skeleton) resources.add(node.skeleton);
-    for (const material of [node.material].flat().filter(Boolean)) {
-      resources.add(material);
-      for (const value of Object.values(material)) if (isTexture(value)) resources.add(value);
-    }
-  });
+function disposeTemplates(models) {
+  const resources = new Set<
+    THREE.BufferGeometry | THREE.Material | THREE.Texture | THREE.Skeleton
+  >();
+  const images = new Set<ImageBitmap>();
+  for (const model of models)
+    model.scene.traverse((node) => {
+      if (node.geometry) resources.add(node.geometry);
+      if (node.skeleton) resources.add(node.skeleton);
+      for (const material of [node.material].flat().filter(Boolean)) {
+        resources.add(material);
+        for (const value of Object.values(material)) if (isTexture(value)) resources.add(value);
+      }
+    });
   for (const value of resources) {
     value.dispose();
-    if (isTexture(value)) (value.source?.data as ImageBitmap | undefined)?.close?.();
+    if (isTexture(value) && value.source?.data) images.add(value.source.data as ImageBitmap);
   }
+  // LODs share textures; distinct texture slots may also share one ImageBitmap.
+  for (const data of images) data.close?.();
 }
 
 export async function loadVerifiedGLB(record) {
@@ -156,18 +162,21 @@ export class WorldAssets {
     // Bound concurrent texture decoding while keeping independent downloads busy.
     await Promise.all(
       Array.from({ length: 3 }, async () => {
-        while (pending.length) {
+        while (pending.length && !this.disposed) {
           const asset = pending.shift(),
             gltf = await loadVerifiedGLB(asset);
           const lods = [];
           try {
-            for (const lod of asset.lods ?? []) lods.push(await loadVerifiedGLB(lod));
+            for (const lod of asset.lods ?? []) {
+              if (this.disposed) break;
+              lods.push(await loadVerifiedGLB(lod));
+            }
           } catch (error) {
-            for (const model of [gltf, ...lods]) disposeTemplate(model.scene);
+            disposeTemplates([gltf, ...lods]);
             throw error;
           }
           if (this.disposed) {
-            for (const model of [gltf, ...lods]) disposeTemplate(model.scene);
+            disposeTemplates([gltf, ...lods]);
             continue;
           }
           shareLodTextures([gltf, ...lods]);
@@ -280,7 +289,7 @@ export class WorldAssets {
           this.templates.set(job.asset.modelKey, template);
           job.resolve(template);
         } catch (error) {
-          for (const model of models) disposeTemplate(model.scene);
+          disposeTemplates(models);
           job.reject(error);
         } finally {
           this.environmentActive--;
@@ -293,7 +302,12 @@ export class WorldAssets {
   releaseEnvironment(key) {
     const template = this.templates.get(key);
     if (!template?.asset.environment || !template.asset.onDemand) return;
-    for (const model of [template.gltf, ...template.lods]) disposeTemplate(model.scene);
+    for (const [id, surface] of this.surfaceTemplates)
+      if (surface.asset.modelKey === key) {
+        surface.dispose();
+        this.surfaceTemplates.delete(id);
+      }
+    disposeTemplates([template.gltf, ...template.lods]);
     this.templates.delete(key);
   }
   create(key, level = 0, surface = null) {
@@ -344,6 +358,7 @@ export class WorldAssets {
     return points;
   }
   async createEquipment(key) {
+    if (this.disposed) return null;
     if (this.templates.has(key)) return this.create(key);
     if (!this.equipmentLoads.has(key))
       this.equipmentLoads.set(
@@ -355,7 +370,7 @@ export class WorldAssets {
           if (!asset) throw new Error(`Missing verified equipment ${key}`);
           const gltf = await loadVerifiedGLB(asset);
           if (this.disposed) {
-            disposeTemplate(gltf.scene);
+            disposeTemplates([gltf]);
             return;
           }
           gltf.scene.updateMatrixWorld(true);
@@ -445,6 +460,7 @@ export class WorldAssets {
     return actor;
   }
   async createEnemy(key) {
+    if (this.disposed) return null;
     // Older servers have no enemies: only require this verified model when a
     // snapshot actually contains one. Concurrent instances share one download.
     if (!this.enemyLoads.has(key))
@@ -459,11 +475,11 @@ export class WorldAssets {
           try {
             requireEnemyClips(gltf.animations, key);
           } catch (error) {
-            disposeTemplate(gltf.scene);
+            disposeTemplates([gltf]);
             throw error;
           }
           if (this.disposed) {
-            disposeTemplate(gltf.scene);
+            disposeTemplates([gltf]);
             return;
           }
           gltf.scene.updateMatrixWorld(true);
@@ -483,11 +499,15 @@ export class WorldAssets {
   }
   dispose() {
     this.disposed = true;
+    // Queued work must settle even when the two active requests never finish.
+    for (const job of this.environmentQueue.splice(0)) {
+      this.environmentLoads.delete(job.asset.modelKey);
+      job.reject(new Error('World assets disposed'));
+    }
     for (const template of this.surfaceTemplates.values()) template.dispose();
     this.surfaceTemplates.clear();
     for (const actor of this.animals) actor.dispose();
-    for (const { gltf, lods } of this.templates.values())
-      for (const model of [gltf, ...lods]) disposeTemplate(model.scene);
+    disposeTemplates([...this.templates.values()].flatMap(({ gltf, lods }) => [gltf, ...lods]));
     this.templates.clear();
   }
 }
@@ -709,8 +729,8 @@ export class LandscapeInstances {
     for (const item of nearby) {
       const distance = item.position.distanceTo(camera.position);
       if (distance > this.distances[2]) continue;
-      // A raised riding camera can enter a canopy. Cull only the trees blocking
-      // its short sight line; the body colliders and other players' views remain.
+      // Walking and riding cameras can both enter a canopy. Cull only the trees
+      // blocking this view's sight line; body colliders and other views remain.
       if (this.canopyOcclusion && riderFocus && distance < 22) {
         this.sphere.center.copy(item.position);
         this.sphere.center.y += item.height * 0.65;
