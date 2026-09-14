@@ -12,6 +12,11 @@ let game,
   client,
   timer,
   stopping = false;
+export function exhibitionLocalUrl(settings) {
+  const url = new URL(`http://localhost:${settings.clientPort}/`);
+  url.searchParams.set('room', settings.room);
+  return url.href;
+}
 async function stop() {
   if (stopping) return;
   stopping = true;
@@ -83,7 +88,7 @@ async function main() {
     },
   });
   await client.listen();
-  const localUrl = `http://localhost:${settings.clientPort}/`;
+  const localUrl = exhibitionLocalUrl(settings);
   console.log(`Local game: ${localUrl} (assets rendered on this PC)`);
   let lastStatus = '';
   let probing = false;

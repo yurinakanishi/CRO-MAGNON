@@ -12,6 +12,7 @@ import {
 import { LocalPrediction } from '../dist/src/local-prediction.js';
 import { parseSettings, readSettings } from '../scripts/exhibition-config.mjs';
 import { sha256, buildId, verifyExhibition } from '../scripts/exhibition-integrity.mjs';
+import { exhibitionLocalUrl } from '../scripts/start-exhibition.mjs';
 import { mkdir, mkdtemp, writeFile } from 'node:fs/promises';
 const root = path.resolve(import.meta.dirname, '..');
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
@@ -89,6 +90,16 @@ test('settings preserve explicit port and reject WAN/DNS endpoints without execu
   ])
     await assert.rejects(() => readSettings(root, { MULTIPLAYER_SERVER_URL: url }));
   await assert.rejects(() => readSettings(root, { CLIENT_PORT: 'abc' }));
+});
+test('exhibition launcher opens the configured room directly', () => {
+  assert.equal(
+    exhibitionLocalUrl({ clientPort: 4173, room: 'EXHIBITION' }),
+    'http://localhost:4173/?room=EXHIBITION',
+  );
+  assert.equal(
+    new URL(exhibitionLocalUrl({ clientPort: 5173, room: 'ROOM_2' })).searchParams.get('room'),
+    'ROOM_2',
+  );
 });
 test('two independent loopback asset servers share one LAN game server, movement, actions, world and resume', async (t) => {
   const game = createGameServer({
