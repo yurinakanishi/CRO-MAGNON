@@ -2,8 +2,16 @@ import assert from 'node:assert/strict';
 import { writeFile, mkdir } from 'node:fs/promises';
 import * as T from 'three';
 import { loadMotion } from './motion-glb.mjs';
-const dir = 'output/mammoth-tail/revision-11';
-const delivery = process.argv[2] || `${dir}/model.glb`;
+import { checkMammothSurface } from './check-mammoth-surface.mjs';
+const delivery = process.argv[2] || 'output/mammoth-tail/revision-12/model.glb';
+const revision = delivery.match(/(?:revision-|model-tail-r)(\d+)/)?.[1] ?? '12';
+const dir = `output/mammoth-tail/revision-${revision}`;
+const surface = await checkMammothSurface(delivery);
+assert.equal(surface.missing, 0, 'no missing body triangles');
+assert.equal(surface.extra, 0, 'no extra body triangles');
+assert.equal(surface.reversed, 0, 'source body winding preserved');
+assert.equal(surface.alteredCornerNormals, 0, 'source body split normals preserved');
+assert.equal(surface.opaqueSingleSided, true, 'opaque front faces, without double-sided masking');
 const [g, old] = await Promise.all([
   loadMotion(delivery),
   loadMotion('public/models/woolly-mammoth/model-motion-r04.glb'),
@@ -26,9 +34,10 @@ for (let i = 0; i < p.count; i++) {
   let w = 0;
   for (let k = 0; k < 4; k++)
     if (tailBones.has(skin.array[i * 4 + k])) w += weights.array[i * 4 + k];
-  if (w > 0.01 && p.getZ(i) < -2.3 && p.getY(i) < 2.25) tail.push(i);
+  if (w > 0.01 && p.getZ(i) < -2.15 && p.getY(i) < 2.1) tail.push(i);
 }
 assert.ok(tail.length > 200);
+const tailSet = new Set(tail);
 const sections = [];
 for (const height of [0.7, 0.9, 1.1, 1.3, 1.5, 1.7, 1.9]) {
   const nodes = new Map(),
@@ -39,7 +48,7 @@ for (const height of [0.7, 0.9, 1.1, 1.3, 1.5, 1.7, 1.9]) {
       const points = [0, 1, 2].map((j) =>
         new T.Vector3().fromBufferAttribute(p, index.getX(k + j)),
       );
-      if (points.some((v) => v.z > -2.3)) continue;
+      if (![0, 1, 2].every((j) => tailSet.has(index.getX(k + j)))) continue;
       const cut = [];
       for (let j = 0; j < 3; j++) {
         const a = points[j],
@@ -60,7 +69,7 @@ for (const height of [0.7, 0.9, 1.1, 1.3, 1.5, 1.7, 1.9]) {
   assert.ok(nodes.size > 20, `tail cross section at ${height}`);
   assert.ok(
     [...graph.values()].every((s) => s.size === 2),
-    'one closed tail surface',
+    `one closed tail surface at ${height}: ${JSON.stringify([...graph].filter(([, s]) => s.size !== 2).map(([k, s]) => [k, [...s]]))}`,
   );
   const seen = new Set(),
     todo = [nodes.keys().next().value];
@@ -78,8 +87,14 @@ for (const height of [0.7, 0.9, 1.1, 1.3, 1.5, 1.7, 1.9]) {
     Math.min(width, depth) > 0.07 && Math.max(width, depth) / Math.min(width, depth) < 1.5,
     `round, uncrushed tail at ${height}`,
   );
-  sections.push({ height, width, depth, components: 1 });
+  const posterior =
+    -0.5 * (Math.max(...points.map((v) => v.z)) + Math.min(...points.map((v) => v.z)));
+  sections.push({ height, width, depth, posterior, components: 1 });
 }
+const upper = sections.find((s) => s.height === 1.9);
+const lower = sections.find((s) => s.height === 0.7);
+assert.ok(upper.posterior < 2.34, 'tail drops close to the rump immediately');
+assert.ok(Math.abs(upper.posterior - lower.posterior) < 0.1, 'nearly vertical shaft');
 const key = (v) => v.map((n) => Math.round(n * 1e4)).join(',');
 const oldMesh = [];
 old.scene.traverse((n) => {
@@ -231,6 +246,7 @@ const result = {
   status: 'passed',
   fps: 240,
   tailVertices: tail.length,
+  surface,
   sections,
   unchangedOutsideVertices: outside.length,
   outsideMaximumError: outsideError,

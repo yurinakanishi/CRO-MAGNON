@@ -1,0 +1,14 @@
+{
+  "typecheck": "passed",
+  "strict": "passed",
+  "syntaxFiles": 313,
+  "architecture": "passed",
+  "assetModels": 42,
+  "huntingRidingTests": {
+    "passed": 32,
+    "failed": 0
+  },
+  "fullTestSuite": "not rerun for this asset-only repair",
+  "normalServerManuallyRestarted": false,
+  "publicDeployment": false
+}

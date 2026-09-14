@@ -1,6 +1,6 @@
 {
   "status": "passed",
-  "at": "2026-09-13T13:02:27.077Z",
+  "at": "2026-09-13T13:39:16.342Z",
   "originalGLBsPreserved": 55,
   "originalGLBsSupersededByLaterAdoptions": 4,
   "results": [
@@ -55,7 +55,7 @@
     },
     {
       "key": "woolly-mammoth",
-      "sha256": "f6fad8db82228cfb110cb1b513e0a09cfd54b6325de4dcfcf9f4a95525d66712",
+      "sha256": "dc8ddadd93b9ef078cf75e0e6c182521ad167a30d4ecae57b75daf5d01e13ba8",
       "clips": 5,
       "preservedClips": 3,
       "triangles": 26067

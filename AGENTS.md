@@ -1,3 +1,21 @@
+## 2026-09-13 マンモスの尾の張り出しと胴体の透けを訂正（r12）
+
+ユーザー指摘「付け根が横に行き過ぎ。もっとすぐ垂れるべき」「マンモスが壊れて透けている」に対応。r11の全体へのBMesh法線再計算が、UVなどで分かれた元の三角形を個別に裏返していた。元r04との照合では、補修外22,272枚中11,290枚が逆向き。以前の位置・変形中心の検証では見逃していたため、r11の外観を合格とした判断を訂正した。
+
+Blenderの処理を元の面の向き・分割法線を保持する形へ変更し、尾だけを局所的に整える。尾は付け根からすぐ下降する15段の中心線へ変更。高さ1.9→0.7mの間の前後差は約6.1cm。分割操作でBMVert参照が無効になる問題も、尾465頂点の永続IDで取り直して解決し、お尻の平滑化で尾の上部まで潰さない。材質は不透明・片面のまま。Tripo使用なし。
+
+採用 **`public/models/woolly-mammoth/model-tail-r12.glb`**、SHA `dc8ddadd93b9ef078cf75e0e6c182521ad167a30d4ecae57b75daf5d01e13ba8`、7,280,948 bytes、26,067三角形。元24骨・5クリップ・元バイナリ先頭を保持。旧r04・r05・r11も保持。新規 `scripts/check-mammoth-surface.mjs` が補修外の欠落・追加・逆向き0を検査。全5動作240Hz・7つの閉じた円形断面、125姿勢画像＋30fps比較動画、90条件の片面／両面シルエット比較、Blenderの36画像を確認。シルエット残差はr11最大22.59%→r12最大0.0274%（微小な毛の縁の画素差を含む）。実Chrome2画面＋通信3人で前横後・騎乗歩走・同期・停止・降車・縦横画面・再読込、エラー0。狩猟／騎乗32テスト、型・strict・314JS構文・依存境界、42モデルの資産検証が通過。
+
+詳細 `assets/mammoth-tail/README.md`、正本 `output/mammoth-tail/revision-12/mammoth-tail.blend`、実ゲーム `output/playwright/mammoth-tail-r12-game/`。通常3000番は照合時に停止していたため `scripts/dev.mjs` を新規起動した（既存サーバーの停止や古い保存の再適用なし）。配信結果は `assets/mammoth-tail/delivery.json`。元の後部の毛の層や深い隙間は残り、全自己交差・坂IK・長時間負荷は未検証。展示／PC2更新・公開デプロイ・コミットなし。
+
+## 2026-09-13 マンモスの潰れた尾をBlenderで一本の垂れた尾へ
+
+ユーザー指示「潰れた尾を象のように一本垂れる形に、構造からBlenderで」に対応。`scripts/blender-mammoth-tail.py` がBlender 5.2のBMeshで、潰していないr04の後部分岐を切り、既存の中央付け根31辺から15段を押し出して丸い尾と先の毛房を接続。切断部を閉じて分割・平滑化し、Hips／Tail1／Tail2のウェイトを修正。元の脇腹の毛色を512角へベイク。可視モデル全体のプリミティブ置換、Tripo、Claudeは使用していない。
+
+採用は **`public/models/woolly-mammoth/model-tail-r11.glb`**（SHA `f6fad8db82228cfb110cb1b513e0a09cfd54b6325de4dcfcf9f4a95525d66712`、7,319,308 bytes、26,067三角形）。`scripts/build-mammoth-tail-glb.mjs` がBlenderの実メッシュを格納し、元バイナリの先頭・24骨・逆バインド行列・5クリップを保持。`scripts/adopt-mammoth-tail-structure.mjs` でmanifest・一覧・レビューを更新。旧r04・r05・元モデルは保持。新規 `scripts/verify-mammoth-tail-structure.mjs` が、7断面で丸い輪が一本だけ、240Hz相当の全5動作で尾の床沈みなし、ループ連続、尾以外の表面の変形差0.000000686m以下を確認。`verify-motion-delivery` はこの構造補修だけに専用検証を適用し、骨・動作・元バイナリ保持は引き続き検査する。
+
+最終GLBをBlenderで24画像、Chromeで125姿勢＋30fps歩行比較動画、実Chrome2画面＋通信3人で後方・騎乗歩走・同期・停止・降りる・縦横画面・再読込を確認、エラー0。狩猟／騎乗32テスト、型・strict・313JS構文・依存境界、42モデルの資産検証が通過。通常3000番もURL・SHA一致。Blender正本・途中r06〜10・再読込正本は `output/mammoth-tail/`、ゲームQAは `output/playwright/mammoth-tail-r11-game-verified/`、詳細は `assets/mammoth-tail/README.md`。元の腹下の不規則な毛は残り、全自己交差・脚別の坂IK・長時間負荷は未保証。通常サーバー手動再起動・展示／PC2更新・公開デプロイ・コミットなし。
+
 ## 2026-09-13 祈りの結界をベールに、城を五段の階段状要塞に作り直し
 
 ユーザー指示「祈りの結界を視覚的にちゃんと全体を囲うカプセル・ベールみたいに」「城を作り直して、段階でもっと広く、もっと階段で、一番頂上に教皇」に対応。

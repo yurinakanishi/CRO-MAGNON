@@ -70,9 +70,9 @@ process.on('message', async (m) => {
     if (m.kind === 'mammothStage') {
       // Tail review only: hold the initial roaming pose for rear screenshots.
       // Once mounted, the ordinary server riding controller owns the animal.
-      const animal=room.animals.find(a=>a.id==='mammoth-1');
+      const animal = room.animals.find((a) => a.id === 'mammoth-1');
       stopActor(animal);
-      Object.assign(animal,{facing:0,nextRoam:animal.age+600,clip:'Idle_Loop'});
+      Object.assign(animal, { facing: 0, nextRoam: animal.age + 600, clip: 'Idle_Loop' });
     }
     if (m.kind === 'prepare') {
       const e = room.enemies.find((e) => e.modelKey === R.modelKey),

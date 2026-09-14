@@ -9,7 +9,7 @@ import path from 'node:path';
 import assert from 'node:assert/strict';
 const { chromium } =
   await import('file:///C:/Users/yurin/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/node_modules/playwright/index.mjs');
-const out = path.resolve(process.argv[2] || 'output/playwright/mammoth-tail-r11-game');
+const out = path.resolve(process.argv[2] || 'output/playwright/mammoth-tail-r12-game');
 const expectedAsset = JSON.parse(await readFile('public/models/woolly-mammoth/asset.json', 'utf8'));
 const peers = [];
 await mkdir(out, { recursive: true });
@@ -147,7 +147,7 @@ try {
       bytes: bytes.length,
     };
   });
-  assert.equal(served.url, '/models/woolly-mammoth/model-tail-r11.glb');
+  assert.equal(served.url, '/models/woolly-mammoth/model-tail-r12.glb');
   assert.equal(served.sha256, expectedAsset.sha256);
   checks.push(`Served ${served.url} (${served.bytes} bytes, sha256 ${served.sha256})`);
   let m = await mammoth(page);
@@ -189,7 +189,10 @@ try {
   await page.waitForFunction(() => monsterReview.players.size === 5);
   await other.waitForFunction(() => monsterReview.players.size === 5);
   await request('mammothStage');
-  m=await mammoth(page);
+  await page.waitForFunction(
+    () => Math.abs(monsterReview.state.animals.find((a) => a.id === 'mammoth-1').facing) < 0.001,
+  );
+  m = await mammoth(page);
   await request('place', { player: 'Monster B', ...behind(7, 3) });
   await lookAt(other, { x: m.x, z: m.z }, 5, 0.15);
   await place(page, behind(9));
@@ -213,13 +216,21 @@ try {
   await lookAt(page, { x: m.x, z: m.z }, 3.5, 0.05);
   await sleep(1200);
   await shot(page, '04-rear-close');
+  await place(page, behind(-9));
+  await lookAt(page, { x: m.x, z: m.z }, 4.5, 0.08);
+  await sleep(1200);
+  await shot(page, '04-front-opaque');
+  await place(page, behind(0, 9));
+  await lookAt(page, { x: m.x, z: m.z }, 4.5, 0.08);
+  await sleep(1200);
+  await shot(page, '04-side-opaque-and-tail');
   const after = await mammoth(page);
   checks.push(
     `mammoth-1 at (${after.x.toFixed(1)}, ${after.z.toFixed(1)}) scale ${after.scale}, phase ${after.phase}`,
   );
   await shot(other, '05-other-player');
   const live = await mammoth(page);
-  await place(page, { x: live.x + live.radius + .7, z: live.z });
+  await place(page, { x: live.x + live.radius + 0.7, z: live.z });
   await page.locator('#world').focus();
   await page.keyboard.press('r');
   await page.waitForFunction(
@@ -260,6 +271,8 @@ try {
   }
   await page.setViewportSize({ width: 1440, height: 900 });
   await page.reload();
+  await page.locator('#title-start').click();
+  if (await page.locator('#setup-submit').isVisible()) await page.locator('#setup-submit').click();
   await page.waitForSelector('#world[data-world-asset="ready"][data-character-asset="ready"]', {
     timeout: 120000,
   });

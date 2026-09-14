@@ -11,11 +11,13 @@ from mathutils.bvhtree import BVHTree
 from mathutils.geometry import barycentric_transform
 
 ROOT = Path(__file__).resolve().parents[1]
-OUT = ROOT / 'output/mammoth-tail/revision-11'
+args = sys.argv[sys.argv.index('--') + 1:] if '--' in sys.argv else ['inspect']
+revision = args[1] if len(args)>1 else '12'
+OUT = ROOT / f'output/mammoth-tail/revision-{revision}'
 OUT.mkdir(parents=True, exist_ok=True)
-mode = sys.argv[sys.argv.index('--') + 1] if '--' in sys.argv else 'inspect'
+mode = args[0]
 source = ROOT / 'public/models/woolly-mammoth/model-motion-r04.glb'
-if mode=='render':source=OUT/'model.glb'
+if mode in ['render','render-rest']:source=OUT/'model.glb'
 bpy.ops.wm.read_factory_settings(use_empty=True)
 scene = bpy.context.scene
 scene.render.fps = 30
@@ -41,9 +43,24 @@ def report():
 
 def studio():
     if scene.camera:return scene.camera
+    # Cycles normally renders both sides even for a single-sided game material.
+    # Explicit back-facing transparency gives these diagnostic renders the same
+    # visible surface as the game's FrontSide materials. No GLB material changes.
+    for material in obj.data.materials:
+        material.use_backface_culling=True
+        nodes=material.node_tree.nodes;links=material.node_tree.links
+        output=next(n for n in nodes if n.type=='OUTPUT_MATERIAL')
+        surface=output.inputs['Surface'].links[0].from_socket
+        geometry=nodes.new('ShaderNodeNewGeometry')
+        transparent=nodes.new('ShaderNodeBsdfTransparent')
+        mix=nodes.new('ShaderNodeMixShader')
+        links.new(geometry.outputs['Backfacing'],mix.inputs[0])
+        links.new(surface,mix.inputs[1]);links.new(transparent.outputs[0],mix.inputs[2])
+        links.new(mix.outputs[0],output.inputs['Surface'])
     scene.render.engine='CYCLES'
     scene.cycles.device='CPU'
     scene.cycles.samples=16
+    scene.cycles.transparent_max_bounces=64
     scene.cycles.use_denoising=True
     scene.render.resolution_x=1000
     scene.render.resolution_y=900
@@ -65,7 +82,8 @@ def render_views(prefix):
     cam=studio()
     for name,loc,target,scale in [('rear',(0,10,2.8),(0,1.1,1.8),4.5),
             ('quarter',(6,9,4),(0,.5,1.8),6.3),('side',(10,0,3),(0,0,1.8),6.7),
-            ('close',(2.8,8,3.2),(0,2.2,1.6),3.1)]:
+            ('close',(2.8,8,3.2),(0,2.2,1.6),3.1),
+            ('front',(0,-10,2.8),(0,0,1.8),5.6),('left',(-10,0,3),(0,0,1.8),6.7)]:
         cam.location=loc;cam.rotation_euler=(Vector(target)-cam.location).to_track_quat('-Z','Y').to_euler()
         cam.data.ortho_scale=scale
         scene.render.filepath=str(OUT/f'{prefix}-{name}.png')
@@ -75,8 +93,9 @@ if mode=='inspect':
     report()
     bpy.ops.wm.save_as_mainfile(filepath=str(OUT/'source-r04.blend'))
     render_views('source')
-elif mode=='render':
+elif mode in ['render','render-rest']:
     render_views('final-rest')
+    if mode=='render-rest':sys.exit(0)
     rig.data.pose_position='POSE'
     for track in rig.animation_data.nla_tracks:track.mute=True
     for name,fraction in [('Idle_Loop',.25),('Graze_Loop',.5),('Walk_Loop',.3),('Run_Loop',.5),('Death',1)]:
@@ -91,6 +110,9 @@ elif mode=='build':
     old_positions=[v.co.copy() for v in obj.data.vertices]
     old_tris=[list(t.vertices) for t in obj.data.loop_triangles]
     old_uvs=[[obj.data.uv_layers.active.data[i].uv.copy() for i in t.loops] for t in obj.data.loop_triangles]
+    # Preserve imported split normals per original vertex. Topology operations
+    # carry this integer layer through to vertices outside the local repair.
+    old_normals={l.vertex_index:obj.data.corner_normals[l.index].vector.copy() for l in obj.data.loops}
     tree=BVHTree.FromPolygons(old_positions,old_tris,all_triangles=True)
     # Bake a continuous fur patch from the original textured flank. Sampling
     # the source triangles per texel avoids interpolating across atlas islands.
@@ -116,6 +138,9 @@ elif mode=='build':
         if node.type=='TEX_IMAGE':node.image=fur
     obj.data.materials.append(material)
     bm=bmesh.new();bm.from_mesh(obj.data)
+    source_vertex=bm.verts.layers.int.new('original_vertex_plus_one')
+    tail_vertex=bm.verts.layers.int.new('tail_vertex_plus_one')
+    for v in bm.verts:v[source_vertex]=v.index+1
     bmesh.ops.remove_doubles(bm,verts=[v for v in bm.verts if v.co.y>1.7 and v.co.z>.5],dist=.00001)
     before_boundary={e for e in bm.edges if e.is_boundary}
     upper_faces=[f for f in bm.faces if all(v.co.z>.5 for v in f.verts)]
@@ -165,17 +190,21 @@ elif mode=='build':
         weight(v,1,0,0)
     first=math.atan2(ring[0].co.z-center.z,ring[0].co.x)
     angles=[first-math.tau*i/len(ring) for i in range(len(ring))]
-    profiles=[(2.32,2.15,.12,0),(2.43,2.17,.10,.4),(2.51,2.09,.09,.85),
-        (2.55,1.97,.088,1.1),(2.575,1.82,.078,1.4),(2.59,1.66,.068,1.5),
-        (2.60,1.50,.061,1.55),(2.60,1.34,.054,1.60),(2.595,1.18,.049,1.61),
-        (2.58,1.02,.046,1.65),(2.56,.90,.051,1.68),(2.54,.80,.080,1.70),
-        (2.52,.69,.078,1.72),(2.495,.59,.045,1.75),(2.48,.54,.012,1.76)]
+    # The centerline descends immediately at the root. Only 10 cm of posterior
+    # clearance is introduced before the shaft falls almost vertically.
+    profiles=[(2.25,2.055,.115,.95),(2.28,1.96,.10,1.32),(2.29,1.85,.09,1.48),
+        (2.30,1.74,.083,1.53),(2.305,1.62,.075,1.54),(2.31,1.50,.068,1.55),
+        (2.315,1.38,.061,1.55),(2.32,1.26,.055,1.55),(2.325,1.14,.050,1.54),
+        (2.33,1.02,.046,1.53),(2.335,.90,.051,1.53),(2.34,.80,.080,1.53),
+        (2.345,.69,.078,1.53),(2.35,.59,.045,1.53),(2.35,.54,.012,1.57)]
+    authored_tail=[]
     for step,(y,z,radius,bend) in enumerate(profiles):
         nxt=[]
         for theta in angles:
             tuft=1+.10*math.cos(theta*7) if step>=10 else 1
             r=radius*tuft
             v=bm.verts.new((r*math.cos(theta),y+r*math.sin(theta)*math.sin(bend),z+r*math.sin(theta)*math.cos(bend)))
+            authored_tail.append(v.co.copy());v[tail_vertex]=len(authored_tail)
             t=max(0,min(1,(1.72-z)/.55));h=max(0,1-step/2)
             weight(v,h,(1-h)*(1-t),(1-h)*t)
             nxt.append(v);tail_verts.append(v)
@@ -189,6 +218,10 @@ elif mode=='build':
         ring=nxt
     tip=bm.faces.new(tuple(reversed(ring)));tip.smooth=True;tip.material_index=1;tail_faces.append(tip)
     for l in tip.loops:l[uv].uv=(.45,.04)
+    # The newly extruded tube is connected, so orient this local patch only.
+    # Never recalculate winding over the UV-split imported body: Blender can
+    # independently flip those disconnected source triangles.
+    bmesh.ops.recalc_face_normals(bm,faces=tail_faces)
     for g in loops:
         if g is not root_edges:
             patched+=bmesh.ops.holes_fill(bm,edges=g,sides=0)['faces']
@@ -211,20 +244,27 @@ elif mode=='build':
         f.smooth=True;f.material_index=1
         for l in f.loops:
             l[uv].uv=(.03+.94*(l.vert.co.x+.6)/1.2,.03+.94*(l.vert.co.z-1.2)/1.4)
-    patch_faces=set(patched)
     # Subdivide and relax the new closures in Blender, preserving their seams.
     patch_edges={e for f in patched for e in f.edges}
     sub=bmesh.ops.subdivide_edges(bm,edges=list(patch_edges),cuts=2,use_grid_fill=True)
-    tail_set=set(tail_verts)
-    soften=[v for v in bm.verts if v not in tail_set and v.co.y>1.94 and 1.27<v.co.z<2.6]
+    # Subdivision can invalidate Python BMVert handles. Re-identify the tail
+    # using its persistent custom-data IDs before relaxing the rump, otherwise
+    # stale handles would let that relaxation squash the upper tail as well.
+    tail_verts=[v for v in bm.verts if v[tail_vertex]>0]
+    assert len(tail_verts)==len(authored_tail)==465
+    assert len({v[tail_vertex] for v in tail_verts})==465
+    soften=[v for v in bm.verts if v[tail_vertex]==0 and v.co.y>1.94 and 1.27<v.co.z<2.6]
     for _ in range(12):
         bmesh.ops.smooth_vert(bm,verts=soften,factor=.38,use_axis_x=True,use_axis_y=True,use_axis_z=True)
-    bmesh.ops.recalc_face_normals(bm,faces=list(bm.faces))
-    for f in bm.faces:
-        if all(v.co.y>2.02 for v in f.verts) and f not in tail_faces and f.normal.y<0 and f in patch_faces:f.normal_flip()
+    tail_displacement=max((v.co-authored_tail[v[tail_vertex]-1]).length for v in tail_verts)
+    assert tail_displacement<1e-7, f'Rump relaxation moved the authored tail: {tail_displacement}'
+    bm.normal_update()
+    bm.verts.index_update()
+    retained_normals={v.index:old_normals[v[source_vertex]-1] for v in bm.verts
+        if v[source_vertex]>0 and (v.co.y<1.7 or v.co.z<.5)}
     bm.to_mesh(obj.data);bm.free();obj.data.update()
     for p in obj.data.polygons:p.use_smooth=True
-    obj.data.normals_split_custom_set([(0,0,0)]*len(obj.data.loops))
+    obj.data.normals_split_custom_set([retained_normals.get(l.vertex_index,(0,0,0)) for l in obj.data.loops])
     obj.data.calc_loop_triangles()
     payload={'vertices':[], 'triangles':[], 'groups':[g.name for g in obj.vertex_groups]}
     for v in obj.data.vertices:
@@ -233,9 +273,12 @@ elif mode=='build':
     for t in obj.data.loop_triangles:
         corners=[]
         for li in t.loops:
-            normal=obj.data.corner_normals[li].vector;tex=obj.data.uv_layers.active.data[li].uv
+            normal=retained_normals.get(obj.data.loops[li].vertex_index,obj.data.corner_normals[li].vector)
+            tex=obj.data.uv_layers.active.data[li].uv
             corners.append([obj.data.loops[li].vertex_index,[normal.x,normal.z,-normal.y],[tex.x,1-tex.y]])
         payload['triangles'].append({'material':t.material_index,'corners':corners})
     (OUT/'mesh.json').write_text(json.dumps(payload,separators=(',',':')),encoding='utf8')
+    (OUT/'tail-profile.json').write_text(json.dumps({'root':[0,2.17,2.15],
+        'profiles':[list(p) for p in profiles], 'coordinates':'Blender X right, Y rear, Z up'},indent=2),encoding='utf8')
     bpy.ops.wm.save_as_mainfile(filepath=str(OUT/'mammoth-tail.blend'))
     render_views('rebuilt')

@@ -1,0 +1,22 @@
+{
+  "status": "passed",
+  "checks": [
+    "Served /models/woolly-mammoth/model-tail-r11.glb (7319308 bytes, sha256 f6fad8db82228cfb110cb1b513e0a09cfd54b6325de4dcfcf9f4a95525d66712)",
+    "mammoth-1 at (27.4, 18.4) scale 1.25, phase alive",
+    "Real R mount, W walk, Shift run, remote run synchronization, stop and R dismount passed",
+    "Two Chrome pages + three sockets; five-player presence, rear views, portrait/landscape and reload passed"
+  ],
+  "errors": [],
+  "screenshots": [
+    "C:\\Users\\yurin\\Desktop\\projects\\CRO-MAGNON\\output\\playwright\\mammoth-tail-r11-game-verified\\01-behind.png",
+    "C:\\Users\\yurin\\Desktop\\projects\\CRO-MAGNON\\output\\playwright\\mammoth-tail-r11-game-verified\\02-rear-quarter.png",
+    "C:\\Users\\yurin\\Desktop\\projects\\CRO-MAGNON\\output\\playwright\\mammoth-tail-r11-game-verified\\03-rear-quarter-other.png",
+    "C:\\Users\\yurin\\Desktop\\projects\\CRO-MAGNON\\output\\playwright\\mammoth-tail-r11-game-verified\\04-rear-close.png",
+    "C:\\Users\\yurin\\Desktop\\projects\\CRO-MAGNON\\output\\playwright\\mammoth-tail-r11-game-verified\\05-other-player.png",
+    "C:\\Users\\yurin\\Desktop\\projects\\CRO-MAGNON\\output\\playwright\\mammoth-tail-r11-game-verified\\07-mounted-walk.png",
+    "C:\\Users\\yurin\\Desktop\\projects\\CRO-MAGNON\\output\\playwright\\mammoth-tail-r11-game-verified\\08-mounted-run.png",
+    "C:\\Users\\yurin\\Desktop\\projects\\CRO-MAGNON\\output\\playwright\\mammoth-tail-r11-game-verified\\09-observer-run.png",
+    "C:\\Users\\yurin\\Desktop\\projects\\CRO-MAGNON\\output\\playwright\\mammoth-tail-r11-game-verified\\06-390x844.png",
+    "C:\\Users\\yurin\\Desktop\\projects\\CRO-MAGNON\\output\\playwright\\mammoth-tail-r11-game-verified\\06-844x390.png"
+  ]
+}

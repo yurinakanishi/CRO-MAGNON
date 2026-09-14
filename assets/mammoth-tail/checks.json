@@ -1,0 +1,21 @@
+{
+  "at": "2026-09-13T13:44:44.050Z",
+  "revision": 12,
+  "status": "passed",
+  "types": "passed",
+  "strict": "passed",
+  "syntaxFiles": 314,
+  "architecture": "passed",
+  "assetModels": 42,
+  "tests": {
+    "passed": 32,
+    "failed": 0,
+    "scope": "hunting and riding",
+    "fullSuiteRun": false
+  },
+  "evidence": [
+    "output/mammoth-tail/check-r12.log",
+    "output/mammoth-tail/assets-r12.log",
+    "output/mammoth-tail/tests-r12.log"
+  ]
+}

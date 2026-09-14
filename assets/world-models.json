@@ -24,8 +24,8 @@
       "status": "integrated-and-game-qa-passed",
       "subject": "One anatomically believable woolly mammoth, warm dark brown thick fur in compact clean masses, high shoulder hump, domed head, small ears, two complete ivory tusks curving forward and upward with clear space between tusks and trunk. Trunk hangs almost straight with a gentle tip curl, visibly separated from chest and tusks. All four sturdy legs and complete flat feet visible and separated in a neutral standing pose. Small tail visible. Full animal, moderate three-quarter side view facing left, no overlapping legs, no vegetation, no rock or base.",
       "geometryResolution": 1024,
-      "sha256": "f6fad8db82228cfb110cb1b513e0a09cfd54b6325de4dcfcf9f4a95525d66712",
-      "delivery": "/models/woolly-mammoth/model-tail-r11.glb",
+      "sha256": "dc8ddadd93b9ef078cf75e0e6c182521ad167a30d4ecae57b75daf5d01e13ba8",
+      "delivery": "/models/woolly-mammoth/model-tail-r12.glb",
       "gameQA": "assets/creature-motion/models/woolly-mammoth-review.json",
       "triangles": 26067
     },

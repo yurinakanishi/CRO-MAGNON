@@ -73,8 +73,8 @@
       mixers = [],
       actions = [];
     for (const url of [
-      '/public/models/woolly-mammoth/model-motion-r05.glb',
-      '/output/mammoth-tail/revision-11/model.glb',
+      '/public/models/woolly-mammoth/model-tail-r11.glb',
+      `/output/mammoth-tail/revision-${new URLSearchParams(location.search).get('revision') || '12'}/model.glb`,
     ]) {
       const g = await new GLTFLoader().loadAsync(url);
       models.push(g);
@@ -106,6 +106,7 @@
       paused = false,
       current = 'Idle_Loop';
     function setPose(name, phase) {
+      clip.value = name;
       current = name;
       time = phase * models[1].animations.find((a) => a.name === name).duration;
       for (let i = 0; i < 2; i++) {
@@ -122,6 +123,7 @@
       draw();
     }
     function view(name) {
+      document.querySelector('#view').value = name;
       mode = name;
       const pos = {
         rear: [0, 2.9, -9],
@@ -155,6 +157,86 @@
       view,
       pause: () => (paused = true),
       ready: true,
+      async silhouetteChecks() {
+        const source = await new GLTFLoader().loadAsync(
+          '/public/models/woolly-mammoth/model-motion-r04.glb',
+        );
+        const all = [source, ...models],
+          records = [];
+        const target = new T.WebGLRenderTarget(640, 640);
+        const camera = new T.PerspectiveCamera(39, 1, 0.01, 100);
+        const material = new T.MeshBasicMaterial({ color: 0xffffff, side: T.FrontSide });
+        const pixels = new Uint8Array(640 * 640 * 4);
+        const oldScissor = renderer.getScissorTest();
+        renderer.setScissorTest(false);
+        for (const name of ['Idle_Loop', 'Walk_Loop', 'Run_Loop', 'Graze_Loop', 'Death']) {
+          for (const phase of [0, 0.5, 1]) {
+            const samples = [];
+            for (let i = 0; i < all.length; i++) {
+              const g = all[i],
+                scene = new T.Scene(),
+                parent = g.scene.parent;
+              scene.background = new T.Color(0x000000);
+              scene.add(g.scene);
+              scene.overrideMaterial = material;
+              const mixer = new T.AnimationMixer(g.scene),
+                clip = g.animations.find((c) => c.name === name);
+              const action = mixer.clipAction(clip).setLoop(T.LoopOnce, 1);
+              action.clampWhenFinished = true;
+              action.play();
+              action.time = phase * clip.duration;
+              mixer.update(0);
+              const views = [];
+              for (const position of [
+                [0, 3, 9],
+                [9, 3, 0],
+                [-9, 3, 0],
+                [0, 3, -9],
+                [6, 3, -8],
+                [-6, 3, 8],
+              ]) {
+                camera.position.fromArray(position);
+                camera.lookAt(0, 1.8, 0);
+                const masks = [];
+                for (const side of [T.FrontSide, T.DoubleSide]) {
+                  material.side = side;
+                  material.needsUpdate = true;
+                  renderer.setRenderTarget(target);
+                  renderer.setViewport(0, 0, 640, 640);
+                  renderer.render(scene, camera);
+                  renderer.readRenderTargetPixels(target, 0, 0, 640, 640, pixels);
+                  masks.push(
+                    Uint8Array.from({ length: 640 * 640 }, (_, k) => (pixels[k * 4] > 127 ? 1 : 0)),
+                  );
+                }
+                let visible = 0,
+                  lost = 0;
+                for (let k = 0; k < masks[0].length; k++) {
+                  visible += masks[1][k];
+                  if (masks[1][k] && !masks[0][k]) lost++;
+                }
+                views.push({ position, visible, lost, loss: lost / visible });
+              }
+              samples.push(views);
+              mixer.stopAllAction();
+              if (parent) parent.add(g.scene);
+            }
+            records.push({
+              name,
+              phase,
+              source: samples[0],
+              rejectedR11: samples[1],
+              repaired: samples[2],
+            });
+          }
+        }
+        renderer.setRenderTarget(null);
+        renderer.setScissorTest(oldScissor);
+        material.dispose();
+        target.dispose();
+        setPose('Idle_Loop', 0);
+        return records;
+      },
     };
     view('rear');
     setPose('Idle_Loop', 0);

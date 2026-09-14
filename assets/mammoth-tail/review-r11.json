@@ -109,5 +109,9 @@
   "limitations": [
     "Original irregular fur geometry remains beneath the rump.",
     "Full mesh self-intersection and individual-foot slope IK are not certified by this local tail repair."
-  ]
+  ],
+  "gameEvidence": "assets/mammoth-tail/game-qa.json",
+  "deliveryEvidence": "assets/mammoth-tail/delivery.json",
+  "supersededBy": "assets/mammoth-tail/review-r12.json",
+  "subsequentFinding": "User rejected horizontal tail root and see-through body; 11290 body triangles were reversed. Earlier position-only validation and visual acceptance did not catch the defect."
 }

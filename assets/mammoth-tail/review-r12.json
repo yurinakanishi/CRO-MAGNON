@@ -1,0 +1,137 @@
+{
+  "decision": "adopt",
+  "at": "2026-09-13T13:38:30.721Z",
+  "key": "woolly-mammoth",
+  "revision": "revision-12",
+  "sha256": "dc8ddadd93b9ef078cf75e0e6c182521ad167a30d4ecae57b75daf5d01e13ba8",
+  "bytes": 7280948,
+  "triangles": 26067,
+  "sourceSha256": "f54643731a621d903728ea29bf0b713cd930536122c9aeb70f60a4d05c9a28f7",
+  "reviewedBy": "Codex",
+  "method": "Blender mesh edit; exact GLB reload with front-face rendering in Blender and Chrome; original body triangle winding comparison; 240 Hz CPU skin validation",
+  "visualEvidence": "output/playwright/mammoth-tail-structure-r12/",
+  "blenderEvidence": "output/mammoth-tail/revision-12",
+  "repaired": "One round tail descends at its root and hangs close to the rump. Body triangles keep their original orientation instead of being globally recalculated across disconnected UV islands. Subdivision-safe vertex IDs exclude the tail shaft from rump relaxation.",
+  "preserved": "Original binary prefix, skeleton, five clips and texture. All 22,272 tested body triangles retain their winding, with no missing or extra faces; original split normals are restored at retained corners. Outside the rump, deformation agrees to sub-micrometre numerical error.",
+  "supersedes": {
+    "revision": "revision-11",
+    "reason": "User rejected the horizontal tail root and see-through body; 11,290 body triangles had been reversed by global face-normal recalculation."
+  },
+  "validation": {
+    "status": "passed",
+    "fps": 240,
+    "tailVertices": 479,
+    "surface": {
+      "sourceTriangles": 22272,
+      "candidateTriangles": 22272,
+      "missing": 0,
+      "extra": 0,
+      "reversed": 0,
+      "alteredCornerNormals": 0,
+      "maximumNormalError": 0.00009448278636585654,
+      "normalErrors": [],
+      "opaqueSingleSided": true
+    },
+    "sections": [
+      {
+        "height": 0.7,
+        "width": 0.16464575893311673,
+        "depth": 0.16634560332240556,
+        "posterior": 2.3447125330682015,
+        "components": 1
+      },
+      {
+        "height": 0.9,
+        "width": 0.10761050854726262,
+        "depth": 0.10905932087582793,
+        "posterior": 2.335582886615679,
+        "components": 1
+      },
+      {
+        "height": 1.1,
+        "width": 0.0971222231337812,
+        "depth": 0.09728597190952826,
+        "posterior": 2.3266295779532435,
+        "components": 1
+      },
+      {
+        "height": 1.3,
+        "width": 0.11375221561968248,
+        "depth": 0.11392471728631959,
+        "posterior": 2.3182950377330602,
+        "components": 1
+      },
+      {
+        "height": 1.5,
+        "width": 0.13570559067247867,
+        "depth": 0.13591091441147807,
+        "posterior": 2.309942226929849,
+        "components": 1
+      },
+      {
+        "height": 1.7,
+        "width": 0.1603293819683902,
+        "depth": 0.16059598277341536,
+        "posterior": 2.301494565548161,
+        "components": 1
+      },
+      {
+        "height": 1.9,
+        "width": 0.18881608489380314,
+        "depth": 0.1888403435580277,
+        "posterior": 2.284210997914065,
+        "components": 1
+      }
+    ],
+    "unchangedOutsideVertices": 37074,
+    "outsideMaximumError": 6.853952325876822e-7,
+    "results": [
+      {
+        "clip": "Graze_Loop",
+        "frames": 1201,
+        "minTailHeight": 0.5319915226989453,
+        "maxTailHeight": 1.9927921816300107,
+        "maxAbsTailX": 0.11313024746338218,
+        "maxTailZ": -2.1827664456981015
+      },
+      {
+        "clip": "Idle_Loop",
+        "frames": 961,
+        "minTailHeight": 0.5319900355895805,
+        "maxTailHeight": 1.9927938672788943,
+        "maxAbsTailX": 0.11313531257235077,
+        "maxTailZ": -2.182766399358046
+      },
+      {
+        "clip": "Run_Loop",
+        "frames": 290,
+        "minTailHeight": 0.36502436797477766,
+        "maxTailHeight": 1.8290724063094035,
+        "maxAbsTailX": 0.11312427775948677,
+        "maxTailZ": -2.182766797449087
+      },
+      {
+        "clip": "Walk_Loop",
+        "frames": 578,
+        "minTailHeight": 0.46339178135912185,
+        "maxTailHeight": 1.9241920268337132,
+        "maxAbsTailX": 0.11313254372187678,
+        "maxTailZ": -2.182766369882186
+      },
+      {
+        "clip": "Death",
+        "frames": 290,
+        "minTailHeight": 0.5011065809516548,
+        "maxTailHeight": 1.9864109126611178,
+        "maxAbsTailX": 1.4884806851613226,
+        "maxTailZ": -2.1832905326435705
+      }
+    ]
+  },
+  "limitations": [
+    "Original irregular fur geometry remains beneath the rump.",
+    "Full mesh self-intersection and individual-foot slope IK are not certified by this local tail repair."
+  ],
+  "gameEvidence": "assets/mammoth-tail/game-qa.json",
+  "deliveryEvidence": "assets/mammoth-tail/delivery.json"
+}
