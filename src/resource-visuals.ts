@@ -134,32 +134,6 @@ export function berryAnchors(
   return chosen;
 }
 
-/** Visible pile height (metres, model space) for the remaining wood. */
-export function woodClipHeight(heightMetres: number, amount: number, maxAmount: number): number {
-  const ratio = maxAmount > 0 ? Math.min(1, Math.max(0, amount / maxAmount)) : 0;
-  return heightMetres * ratio;
-}
-
-/**
- * World-space clipping plane that removes the top of a firewood pile: normal
- * −y, so everything above `baseY + visible height × scale` is clipped (three.js
- * discards points with a negative signed distance).
- */
-export function woodClipPlane(
-  baseY: number,
-  scale: number,
-  heightMetres: number,
-  amount: number,
-  maxAmount: number,
-): { normal: Point; constant: number } {
-  // Leave a hair above the geometric height so a full pile is never clipped.
-  const extra = amount >= maxAmount ? 0.05 : 0;
-  return {
-    normal: [0, -1, 0],
-    constant: baseY + (woodClipHeight(heightMetres, amount, maxAmount) + extra) * scale,
-  };
-}
-
 /** Boulder scale for the remaining stone: volume follows the amount, never below 55 %. */
 export function stoneScale(baseScale: number, amount: number, maxAmount: number): number {
   const ratio = maxAmount > 0 ? Math.min(1, Math.max(0, amount / maxAmount)) : 1;

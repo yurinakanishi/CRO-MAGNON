@@ -66,7 +66,7 @@ test('the biome map controls every tree, rock, camp and resource without adding 
   }
   for(const resource of INITIAL_RESOURCES){
     const appearance=resourceAppearance(resource);
-    assert.equal(appearance.key,{wood:'firewood-pile',stone:'valley-boulder',berry:'berry-bush',obsidian:'valley-boulder'}[resource.type]);
+    assert.equal(appearance.key,{wood:'firewood-log',stone:'valley-boulder',berry:'berry-bush',obsidian:'valley-boulder'}[resource.type]);
     assert.equal(appearance.scale,['stone','obsidian'].includes(resource.type)?.55:1);
   }
 });

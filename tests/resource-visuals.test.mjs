@@ -11,8 +11,6 @@ import {
   meatRingLayout,
   seedFromId,
   stoneScale,
-  woodClipHeight,
-  woodClipPlane,
 } from '../dist/src/resource-visuals.js';
 
 // A synthetic bush: rings of vertices at several heights, radius growing with
@@ -100,26 +98,6 @@ test('fruit count follows the amount and is bounded by the maximum', () => {
   assert.equal(fruitCount(0, 5), 0);
   assert.equal(fruitCount(-2, 5), 0);
   assert.equal(fruitCount(2, undefined), 0);
-});
-
-test('wood clipping height tracks the remaining amount and the plane sits above the pile base', () => {
-  assert.equal(woodClipHeight(0.7, 7, 7), 0.7);
-  assert.ok(Math.abs(woodClipHeight(0.7, 5, 7) - 0.5) < 1e-9);
-  assert.equal(woodClipHeight(0.7, 0, 7), 0);
-  assert.equal(woodClipHeight(0.7, 3, 0), 0);
-  const plane = woodClipPlane(12, 1, 0.7, 3, 7);
-  assert.deepEqual(plane.normal, [0, -1, 0]);
-  assert.ok(Math.abs(plane.constant - (12 + 0.3)) < 1e-9);
-  assert.ok(woodClipPlane(12, 1, 0.7, 7, 7).constant > 12.7, 'a full pile is never clipped');
-  assert.ok(
-    Math.abs(woodClipPlane(0, 2, 0.7, 3, 7).constant - 0.6) < 1e-9,
-    'scaled with the model',
-  );
-  // three.js discards points whose signed distance n·p + c is negative:
-  // a log above the clip height is removed, one below is kept.
-  const signed = (y) => -y + plane.constant;
-  assert.ok(signed(12.5) < 0);
-  assert.ok(signed(12.1) > 0);
 });
 
 test('stone shrinks with the cube root of the remaining amount and never below 55 %', () => {

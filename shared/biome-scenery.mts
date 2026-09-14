@@ -91,7 +91,12 @@ export function resourceAppearance(resource) {
     };
   const biome = resource.appearanceBiome ?? biomeAt(resource.x, resource.z).id,
     palette = BIOME_SCENERY[biome];
-  const key = resource.type === 'stone' ? palette.rock : palette[resource.type];
+  const key =
+    resource.type === 'wood' && palette.wood
+      ? 'firewood-log'
+      : resource.type === 'stone'
+        ? palette.rock
+        : palette[resource.type];
   if (!key) throw new Error(`No ${resource.type} resource model for ${biome}`);
   return {
     key,

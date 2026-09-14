@@ -126,7 +126,7 @@ const sessionKey = (room: string) => multiplayerSessionKey(multiplayer, room);
 // The exhibition LAN build never asks for a name or room: each PC is a fixed
 // player in the fixed exhibition room, and only the character is chosen.
 const fixedIdentity = multiplayer.mode === 'lan';
-const titleEdition = multiplayer.mode === 'lan' ? 'DUO' : 'XI';
+const titleEdition = 'DUO';
 const titleArtPath = `/title/cro-magnon-${titleEdition.toLowerCase()}-transparent.png`;
 const cleanRoom = (value: string) =>
   value

@@ -18,6 +18,7 @@ const profiles = {
   'meadow-grass': { low: 0.04, rock: 0, plant: 1, hearth: 0 },
   'meadow-sprig': { low: 0.04, rock: 0, plant: 1, hearth: 0 },
   'firewood-pile': { low: 0.12, rock: 0, plant: 0, hearth: 0 },
+  'firewood-log': { low: 0.05, rock: 0, plant: 0, hearth: 0 },
   'hide-tent': { low: 0.18, rock: 0, plant: 0, hearth: 0 },
   'stone-firepit': { low: 0.05, rock: 1, plant: 0, hearth: 1 },
 };

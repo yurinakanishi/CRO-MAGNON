@@ -1,0 +1,986 @@
+{
+  "mode": "current",
+  "samples": [
+    {
+      "label": "full",
+      "amount": 7,
+      "visible": true,
+      "clip": null,
+      "instances": [
+        {
+          "count": 7,
+          "capacity": 7
+        },
+        {
+          "count": 7,
+          "capacity": 7
+        },
+        {
+          "count": 7,
+          "capacity": 7
+        }
+      ],
+      "camera": [
+        54.507396704913035,
+        2.435885922370753,
+        69.59068280832014
+      ],
+      "calls": 164,
+      "triangles": 2498776,
+      "fps": 46,
+      "geometries": 74,
+      "textures": 49,
+      "worldLoadMilliseconds": 950.5999999940395,
+      "pixelRatio": 1,
+      "viewport": [
+        1280,
+        800
+      ]
+    },
+    {
+      "label": "take-1",
+      "amount": 6,
+      "visible": true,
+      "clip": null,
+      "instances": [
+        {
+          "count": 6,
+          "capacity": 7
+        },
+        {
+          "count": 6,
+          "capacity": 7
+        },
+        {
+          "count": 6,
+          "capacity": 7
+        }
+      ],
+      "camera": [
+        54.507396704913035,
+        2.435885922370753,
+        69.59068280832014
+      ],
+      "calls": 162,
+      "triangles": 2466422,
+      "fps": 46,
+      "geometries": 74,
+      "textures": 49,
+      "worldLoadMilliseconds": 950.5999999940395,
+      "pixelRatio": 1,
+      "viewport": [
+        1280,
+        800
+      ]
+    },
+    {
+      "label": "peer-take-1",
+      "amount": 6,
+      "visible": true,
+      "clip": null,
+      "instances": [
+        {
+          "count": 6,
+          "capacity": 7
+        },
+        {
+          "count": 6,
+          "capacity": 7
+        },
+        {
+          "count": 6,
+          "capacity": 7
+        }
+      ],
+      "camera": [
+        57.507396704913035,
+        1.9599260272679726,
+        69.59068280832014
+      ],
+      "calls": 165,
+      "triangles": 2575596,
+      "fps": 45,
+      "geometries": 70,
+      "textures": 48,
+      "worldLoadMilliseconds": 932.9000000059605,
+      "pixelRatio": 1,
+      "viewport": [
+        1280,
+        800
+      ]
+    },
+    {
+      "label": "take-2",
+      "amount": 5,
+      "visible": true,
+      "clip": null,
+      "instances": [
+        {
+          "count": 5,
+          "capacity": 7
+        },
+        {
+          "count": 5,
+          "capacity": 7
+        },
+        {
+          "count": 5,
+          "capacity": 7
+        }
+      ],
+      "camera": [
+        54.507396704913035,
+        2.435885922370753,
+        69.59068280832014
+      ],
+      "calls": 162,
+      "triangles": 2439742,
+      "fps": 43,
+      "geometries": 74,
+      "textures": 49,
+      "worldLoadMilliseconds": 950.5999999940395,
+      "pixelRatio": 1,
+      "viewport": [
+        1280,
+        800
+      ]
+    },
+    {
+      "label": "peer-take-2",
+      "amount": 5,
+      "visible": true,
+      "clip": null,
+      "instances": [
+        {
+          "count": 5,
+          "capacity": 7
+        },
+        {
+          "count": 5,
+          "capacity": 7
+        },
+        {
+          "count": 5,
+          "capacity": 7
+        }
+      ],
+      "camera": [
+        57.507396704913035,
+        1.9599260272679726,
+        69.59068280832014
+      ],
+      "calls": 165,
+      "triangles": 2548916,
+      "fps": 46,
+      "geometries": 70,
+      "textures": 48,
+      "worldLoadMilliseconds": 932.9000000059605,
+      "pixelRatio": 1,
+      "viewport": [
+        1280,
+        800
+      ]
+    },
+    {
+      "label": "take-3",
+      "amount": 4,
+      "visible": true,
+      "clip": null,
+      "instances": [
+        {
+          "count": 4,
+          "capacity": 7
+        },
+        {
+          "count": 4,
+          "capacity": 7
+        },
+        {
+          "count": 4,
+          "capacity": 7
+        }
+      ],
+      "camera": [
+        54.507396704913035,
+        2.435885922370753,
+        69.59068280832014
+      ],
+      "calls": 162,
+      "triangles": 2413062,
+      "fps": 43,
+      "geometries": 74,
+      "textures": 49,
+      "worldLoadMilliseconds": 950.5999999940395,
+      "pixelRatio": 1,
+      "viewport": [
+        1280,
+        800
+      ]
+    },
+    {
+      "label": "peer-take-3",
+      "amount": 4,
+      "visible": true,
+      "clip": null,
+      "instances": [
+        {
+          "count": 4,
+          "capacity": 7
+        },
+        {
+          "count": 4,
+          "capacity": 7
+        },
+        {
+          "count": 4,
+          "capacity": 7
+        }
+      ],
+      "camera": [
+        57.507396704913035,
+        1.9599260272679726,
+        69.59068280832014
+      ],
+      "calls": 165,
+      "triangles": 2522236,
+      "fps": 42,
+      "geometries": 70,
+      "textures": 48,
+      "worldLoadMilliseconds": 932.9000000059605,
+      "pixelRatio": 1,
+      "viewport": [
+        1280,
+        800
+      ]
+    },
+    {
+      "label": "reload-partly-collected",
+      "amount": 4,
+      "visible": true,
+      "clip": null,
+      "instances": [
+        {
+          "count": 4,
+          "capacity": 7
+        },
+        {
+          "count": 4,
+          "capacity": 7
+        },
+        {
+          "count": 4,
+          "capacity": 7
+        }
+      ],
+      "camera": [
+        54.507396704913035,
+        2.435885922370753,
+        69.59068280832014
+      ],
+      "calls": 162,
+      "triangles": 2553305,
+      "fps": 21,
+      "geometries": 67,
+      "textures": 44,
+      "worldLoadMilliseconds": 1132.2999999970198,
+      "pixelRatio": 1,
+      "viewport": [
+        1280,
+        800
+      ]
+    },
+    {
+      "label": "take-4",
+      "amount": 3,
+      "visible": true,
+      "clip": null,
+      "instances": [
+        {
+          "count": 3,
+          "capacity": 7
+        },
+        {
+          "count": 3,
+          "capacity": 7
+        },
+        {
+          "count": 3,
+          "capacity": 7
+        }
+      ],
+      "camera": [
+        54.507396704913035,
+        2.435885922370753,
+        69.59068280832014
+      ],
+      "calls": 160,
+      "triangles": 2520951,
+      "fps": 28,
+      "geometries": 67,
+      "textures": 44,
+      "worldLoadMilliseconds": 1132.2999999970198,
+      "pixelRatio": 1,
+      "viewport": [
+        1280,
+        800
+      ]
+    },
+    {
+      "label": "peer-take-4",
+      "amount": 3,
+      "visible": true,
+      "clip": null,
+      "instances": [
+        {
+          "count": 3,
+          "capacity": 7
+        },
+        {
+          "count": 3,
+          "capacity": 7
+        },
+        {
+          "count": 3,
+          "capacity": 7
+        }
+      ],
+      "camera": [
+        57.507396704913035,
+        1.9599260272679726,
+        69.59068280832014
+      ],
+      "calls": 165,
+      "triangles": 2495556,
+      "fps": 41,
+      "geometries": 70,
+      "textures": 48,
+      "worldLoadMilliseconds": 932.9000000059605,
+      "pixelRatio": 1,
+      "viewport": [
+        1280,
+        800
+      ]
+    },
+    {
+      "label": "take-5",
+      "amount": 2,
+      "visible": true,
+      "clip": null,
+      "instances": [
+        {
+          "count": 2,
+          "capacity": 7
+        },
+        {
+          "count": 2,
+          "capacity": 7
+        },
+        {
+          "count": 2,
+          "capacity": 7
+        }
+      ],
+      "camera": [
+        54.507396704913035,
+        2.435885922370753,
+        69.59068280832014
+      ],
+      "calls": 160,
+      "triangles": 2494271,
+      "fps": 42,
+      "geometries": 67,
+      "textures": 44,
+      "worldLoadMilliseconds": 1132.2999999970198,
+      "pixelRatio": 1,
+      "viewport": [
+        1280,
+        800
+      ]
+    },
+    {
+      "label": "peer-take-5",
+      "amount": 2,
+      "visible": true,
+      "clip": null,
+      "instances": [
+        {
+          "count": 2,
+          "capacity": 7
+        },
+        {
+          "count": 2,
+          "capacity": 7
+        },
+        {
+          "count": 2,
+          "capacity": 7
+        }
+      ],
+      "camera": [
+        57.507396704913035,
+        1.9599260272679726,
+        69.59068280832014
+      ],
+      "calls": 165,
+      "triangles": 2468876,
+      "fps": 44,
+      "geometries": 70,
+      "textures": 48,
+      "worldLoadMilliseconds": 932.9000000059605,
+      "pixelRatio": 1,
+      "viewport": [
+        1280,
+        800
+      ]
+    },
+    {
+      "label": "take-6",
+      "amount": 1,
+      "visible": true,
+      "clip": null,
+      "instances": [
+        {
+          "count": 1,
+          "capacity": 7
+        },
+        {
+          "count": 1,
+          "capacity": 7
+        },
+        {
+          "count": 1,
+          "capacity": 7
+        }
+      ],
+      "camera": [
+        54.507396704913035,
+        2.435885922370753,
+        69.59068280832014
+      ],
+      "calls": 160,
+      "triangles": 2467591,
+      "fps": 43,
+      "geometries": 67,
+      "textures": 44,
+      "worldLoadMilliseconds": 1132.2999999970198,
+      "pixelRatio": 1,
+      "viewport": [
+        1280,
+        800
+      ]
+    },
+    {
+      "label": "peer-take-6",
+      "amount": 1,
+      "visible": true,
+      "clip": null,
+      "instances": [
+        {
+          "count": 1,
+          "capacity": 7
+        },
+        {
+          "count": 1,
+          "capacity": 7
+        },
+        {
+          "count": 1,
+          "capacity": 7
+        }
+      ],
+      "camera": [
+        57.507396704913035,
+        1.9599260272679726,
+        69.59068280832014
+      ],
+      "calls": 165,
+      "triangles": 2442196,
+      "fps": 45,
+      "geometries": 70,
+      "textures": 48,
+      "worldLoadMilliseconds": 932.9000000059605,
+      "pixelRatio": 1,
+      "viewport": [
+        1280,
+        800
+      ]
+    },
+    {
+      "label": "take-7",
+      "amount": 0,
+      "visible": false,
+      "clip": null,
+      "instances": [
+        {
+          "count": 0,
+          "capacity": 7
+        },
+        {
+          "count": 0,
+          "capacity": 7
+        },
+        {
+          "count": 0,
+          "capacity": 7
+        }
+      ],
+      "camera": [
+        54.507396704913035,
+        2.435885922370753,
+        69.59068280832014
+      ],
+      "calls": 158,
+      "triangles": 2440911,
+      "fps": 45,
+      "geometries": 67,
+      "textures": 44,
+      "worldLoadMilliseconds": 1132.2999999970198,
+      "pixelRatio": 1,
+      "viewport": [
+        1280,
+        800
+      ]
+    },
+    {
+      "label": "peer-take-7",
+      "amount": 0,
+      "visible": false,
+      "clip": null,
+      "instances": [
+        {
+          "count": 0,
+          "capacity": 7
+        },
+        {
+          "count": 0,
+          "capacity": 7
+        },
+        {
+          "count": 0,
+          "capacity": 7
+        }
+      ],
+      "camera": [
+        57.507396704913035,
+        1.9599260272679726,
+        69.59068280832014
+      ],
+      "calls": 163,
+      "triangles": 2415516,
+      "fps": 45,
+      "geometries": 70,
+      "textures": 48,
+      "worldLoadMilliseconds": 932.9000000059605,
+      "pixelRatio": 1,
+      "viewport": [
+        1280,
+        800
+      ]
+    },
+    {
+      "label": "natural-regrowth-one-log",
+      "amount": 1,
+      "visible": true,
+      "clip": null,
+      "instances": [
+        {
+          "count": 1,
+          "capacity": 7
+        },
+        {
+          "count": 1,
+          "capacity": 7
+        },
+        {
+          "count": 1,
+          "capacity": 7
+        }
+      ],
+      "camera": [
+        54.507396704913035,
+        2.435885922370753,
+        69.59068280832014
+      ],
+      "calls": 162,
+      "triangles": 2473265,
+      "fps": 53,
+      "geometries": 67,
+      "textures": 44,
+      "worldLoadMilliseconds": 1132.2999999970198,
+      "pixelRatio": 1,
+      "viewport": [
+        1280,
+        800
+      ]
+    },
+    {
+      "label": "viewport-390",
+      "amount": 1,
+      "visible": true,
+      "clip": null,
+      "instances": [
+        {
+          "count": 1,
+          "capacity": 7
+        },
+        {
+          "count": 1,
+          "capacity": 7
+        },
+        {
+          "count": 1,
+          "capacity": 7
+        }
+      ],
+      "camera": [
+        54.507396704913035,
+        2.435885922370753,
+        69.59068280832014
+      ],
+      "calls": 127,
+      "triangles": 1812398,
+      "fps": 47,
+      "geometries": 67,
+      "textures": 44,
+      "worldLoadMilliseconds": 1132.2999999970198,
+      "pixelRatio": 1,
+      "viewport": [
+        390,
+        844
+      ]
+    },
+    {
+      "label": "viewport-844",
+      "amount": 1,
+      "visible": true,
+      "clip": null,
+      "instances": [
+        {
+          "count": 1,
+          "capacity": 7
+        },
+        {
+          "count": 1,
+          "capacity": 7
+        },
+        {
+          "count": 1,
+          "capacity": 7
+        }
+      ],
+      "camera": [
+        54.507396704913035,
+        2.435885922370753,
+        69.59068280832014
+      ],
+      "calls": 174,
+      "triangles": 2566775,
+      "fps": 47,
+      "geometries": 70,
+      "textures": 48,
+      "worldLoadMilliseconds": 1132.2999999970198,
+      "pixelRatio": 1,
+      "viewport": [
+        844,
+        390
+      ]
+    },
+    {
+      "label": "axe-two-units",
+      "amount": 5,
+      "visible": true,
+      "clip": null,
+      "instances": [
+        {
+          "count": 5,
+          "capacity": 7
+        },
+        {
+          "count": 5,
+          "capacity": 7
+        },
+        {
+          "count": 5,
+          "capacity": 7
+        }
+      ],
+      "camera": [
+        54.507396704913035,
+        2.435885922370753,
+        69.59068280832014
+      ],
+      "calls": 160,
+      "triangles": 2574311,
+      "fps": 50,
+      "geometries": 70,
+      "textures": 48,
+      "worldLoadMilliseconds": 1132.2999999970198,
+      "pixelRatio": 1,
+      "viewport": [
+        1280,
+        800
+      ]
+    },
+    {
+      "label": "regional-snow",
+      "amount": 7,
+      "visible": true,
+      "clip": null,
+      "instances": [
+        {
+          "count": 7,
+          "capacity": 7
+        },
+        {
+          "count": 7,
+          "capacity": 7
+        },
+        {
+          "count": 7,
+          "capacity": 7
+        }
+      ],
+      "camera": [
+        481.17406337157956,
+        2.3529092557040903,
+        -50.69820608056875
+      ],
+      "calls": 36,
+      "triangles": 685911,
+      "fps": 1,
+      "geometries": 60,
+      "textures": 49,
+      "worldLoadMilliseconds": 1132.2999999970198,
+      "pixelRatio": 1,
+      "viewport": [
+        1280,
+        800
+      ]
+    },
+    {
+      "label": "regional-snow-collected",
+      "amount": 6,
+      "visible": true,
+      "clip": null,
+      "instances": [
+        {
+          "count": 6,
+          "capacity": 7
+        },
+        {
+          "count": 6,
+          "capacity": 7
+        },
+        {
+          "count": 6,
+          "capacity": 7
+        }
+      ],
+      "camera": [
+        481.17406337157956,
+        2.3529092557040903,
+        -50.69820608056875
+      ],
+      "calls": 36,
+      "triangles": 662073,
+      "fps": 1,
+      "geometries": 60,
+      "textures": 49,
+      "worldLoadMilliseconds": 1132.2999999970198,
+      "pixelRatio": 1,
+      "viewport": [
+        1280,
+        800
+      ]
+    },
+    {
+      "label": "regional-ash",
+      "amount": 7,
+      "visible": true,
+      "clip": null,
+      "instances": [
+        {
+          "count": 7,
+          "capacity": 7
+        },
+        {
+          "count": 7,
+          "capacity": 7
+        },
+        {
+          "count": 7,
+          "capacity": 7
+        }
+      ],
+      "camera": [
+        287.7518411493576,
+        2.430881846815197,
+        171.16846058609792
+      ],
+      "calls": 20,
+      "triangles": 634360,
+      "fps": 56,
+      "geometries": 67,
+      "textures": 53,
+      "worldLoadMilliseconds": 1132.2999999970198,
+      "pixelRatio": 1,
+      "viewport": [
+        1280,
+        800
+      ]
+    },
+    {
+      "label": "regional-ash-collected",
+      "amount": 6,
+      "visible": true,
+      "clip": null,
+      "instances": [
+        {
+          "count": 6,
+          "capacity": 7
+        },
+        {
+          "count": 6,
+          "capacity": 7
+        },
+        {
+          "count": 6,
+          "capacity": 7
+        }
+      ],
+      "camera": [
+        287.7518411493576,
+        2.430881846815197,
+        171.16846058609792
+      ],
+      "calls": 26,
+      "triangles": 751029,
+      "fps": 26,
+      "geometries": 73,
+      "textures": 56,
+      "worldLoadMilliseconds": 1132.2999999970198,
+      "pixelRatio": 1,
+      "viewport": [
+        1280,
+        800
+      ]
+    },
+    {
+      "label": "regional-sand",
+      "amount": 7,
+      "visible": true,
+      "clip": null,
+      "instances": [
+        {
+          "count": 7,
+          "capacity": 7
+        },
+        {
+          "count": 7,
+          "capacity": 7
+        },
+        {
+          "count": 7,
+          "capacity": 7
+        }
+      ],
+      "camera": [
+        -30.825936628420454,
+        2.017889922370758,
+        336.1462383638757
+      ],
+      "calls": 76,
+      "triangles": 762246,
+      "fps": 24,
+      "geometries": 84,
+      "textures": 56,
+      "worldLoadMilliseconds": 1132.2999999970198,
+      "pixelRatio": 1,
+      "viewport": [
+        1280,
+        800
+      ]
+    },
+    {
+      "label": "regional-sand-collected",
+      "amount": 6,
+      "visible": true,
+      "clip": null,
+      "instances": [
+        {
+          "count": 6,
+          "capacity": 7
+        },
+        {
+          "count": 6,
+          "capacity": 7
+        },
+        {
+          "count": 6,
+          "capacity": 7
+        }
+      ],
+      "camera": [
+        -30.825936628420454,
+        2.017889922370758,
+        336.1462383638757
+      ],
+      "calls": 77,
+      "triangles": 744366,
+      "fps": 24,
+      "geometries": 84,
+      "textures": 56,
+      "worldLoadMilliseconds": 1132.2999999970198,
+      "pixelRatio": 1,
+      "viewport": [
+        1280,
+        800
+      ]
+    },
+    {
+      "label": "return-to-valley",
+      "amount": 6,
+      "visible": true,
+      "clip": null,
+      "instances": [
+        {
+          "count": 6,
+          "capacity": 7
+        },
+        {
+          "count": 6,
+          "capacity": 7
+        },
+        {
+          "count": 6,
+          "capacity": 7
+        }
+      ],
+      "camera": [
+        54.507396704913035,
+        2.435885922370753,
+        69.59068280832014
+      ],
+      "calls": 164,
+      "triangles": 2632732,
+      "fps": 52,
+      "geometries": 82,
+      "textures": 48,
+      "worldLoadMilliseconds": 1132.2999999970198,
+      "pixelRatio": 1,
+      "viewport": [
+        1280,
+        800
+      ]
+    }
+  ],
+  "checks": [
+    "five connections, two actual Chrome renderers",
+    "reload restores partly collected pile and inventory",
+    "real E input: seven whole logs removed, one inventory unit per log, both views agree",
+    "natural regeneration makes exactly one entire log reappear",
+    "existing axe yield removes two complete logs",
+    "snow, ash and sand surfaces load and collect whole logs with actual E"
+  ],
+  "errors": []
+}

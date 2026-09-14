@@ -1,0 +1,564 @@
+{
+  "at": "2026-09-14T04:18:41.4646660Z",
+  "source": "output/model-generation/models/firewood-log",
+  "target": "../threed-model-creation/models/firewood-log",
+  "count": 111,
+  "status": "passed",
+  "files": [
+    {
+      "path": "request-spec.json",
+      "bytes": 229,
+      "sha256": "1653f7233faf7db6d7d1604824bba2120e2f701057f092ce7ec3c58c74f49fbc"
+    },
+    {
+      "path": "geometry/accepted.glb",
+      "bytes": 2156672,
+      "sha256": "8a32826636cfc198cc1776ebec499b1bc036779c08143cf256ad7e4d8a186cd3"
+    },
+    {
+      "path": "qa/adoption-review.json",
+      "bytes": 1502,
+      "sha256": "a4841782a5b31720fcb212cce7fe717da41bf5f224b7c695cd8b57d9851a6511"
+    },
+    {
+      "path": "qa/dense-render-retry.log",
+      "bytes": 1183,
+      "sha256": "bc393727b07d24f819ff93bd7f8a5832a0fef2d796b097ce8a68f387d345dcd9"
+    },
+    {
+      "path": "qa/dense-render.log",
+      "bytes": 1313,
+      "sha256": "f844b6d33152139eca6230be1aa124ecfbd5ce652997357eb6c909614acb5d6b"
+    },
+    {
+      "path": "qa/process-r01.log",
+      "bytes": 3902,
+      "sha256": "7d795b0962e71506dbfd6e7c30a14e9eb409cde6324ba52d73e565a58ab759b7"
+    },
+    {
+      "path": "qa/process-r02.log",
+      "bytes": 4221,
+      "sha256": "172fbf37ca626f3f014dcd4c7c6b1015fa34627b9bf3a2c9e358349151f61da1"
+    },
+    {
+      "path": "qa/dense/front.png",
+      "bytes": 306944,
+      "sha256": "0944444b0ebe5a53a96248aab76de493f4fc7f57d1f51bed28df4a7de415e189"
+    },
+    {
+      "path": "qa/dense/left.png",
+      "bytes": 279127,
+      "sha256": "043554c5c556e044e19dc8f64a3d4912ead68cb08846171c1609bd382d4babf5"
+    },
+    {
+      "path": "qa/dense/threequarter.png",
+      "bytes": 315705,
+      "sha256": "7feb403d2d4e352ea78e61df60823e9a7afa355a2aab31933c14fa515f6415d5"
+    },
+    {
+      "path": "qa/dense/top.png",
+      "bytes": 307782,
+      "sha256": "9659660e5b70b765c820e99ab2e49bf779c3b82f2d150daf5df3f05099178859"
+    },
+    {
+      "path": "qa/exact-glb/candidate-back-clay.png",
+      "bytes": 37867,
+      "sha256": "a5df96865e4cb175e7f0b10ef648aeb632e6fd78f102da00efcdb55bbf4bb139"
+    },
+    {
+      "path": "qa/exact-glb/candidate-back.png",
+      "bytes": 66107,
+      "sha256": "0dac95c6904086abd51a19ae7b91a08dc0be4b0d8996203bf7d244bfe3c8cb90"
+    },
+    {
+      "path": "qa/exact-glb/candidate-bottom-clay.png",
+      "bytes": 74587,
+      "sha256": "7336c46f2f7c45314fcb5d711888100ac7f58b315b592624dfc09c9fd47e8b58"
+    },
+    {
+      "path": "qa/exact-glb/candidate-bottom.png",
+      "bytes": 78214,
+      "sha256": "9bb3d211009b23e3aa64711b03f369e18087bb7f872dbe7a7f704d86f5200f32"
+    },
+    {
+      "path": "qa/exact-glb/candidate-end-clay.png",
+      "bytes": 37757,
+      "sha256": "4522e73f4823014156ffad960570308f4a24702306be33842244f9cd88687a4c"
+    },
+    {
+      "path": "qa/exact-glb/candidate-end.png",
+      "bytes": 69089,
+      "sha256": "e0b92424478d899995d13142cf9659b2b2e271052623217ba0fe57e13137c91d"
+    },
+    {
+      "path": "qa/exact-glb/candidate-rear-clay.png",
+      "bytes": 85836,
+      "sha256": "23b18945da56abf4a960b11ecbf6d0401c20284fda2032165f403a436356e75e"
+    },
+    {
+      "path": "qa/exact-glb/candidate-rear.png",
+      "bytes": 121874,
+      "sha256": "c1c7bafec333cfac117f3817a4ba6f770c66a1798022a600aef5b8affc0eb69a"
+    },
+    {
+      "path": "qa/exact-glb/candidate-side-clay.png",
+      "bytes": 87291,
+      "sha256": "42451136ca982881edbb7c8f7d4ba9ce18d878b1e5a0f1b4310a310466d6dacd"
+    },
+    {
+      "path": "qa/exact-glb/candidate-side.png",
+      "bytes": 135846,
+      "sha256": "9e344512482f57f92e715b66e056049a4ec9f86db037f04d275268eaf32d5f72"
+    },
+    {
+      "path": "qa/exact-glb/candidate-threequarter-clay.png",
+      "bytes": 88797,
+      "sha256": "10ffb9362090a5d2e5ea95dc1e4f6955b20c1646900a69b3b8885cb2307563b0"
+    },
+    {
+      "path": "qa/exact-glb/candidate-threequarter.png",
+      "bytes": 149992,
+      "sha256": "d99de863a86fed48baf6a9f739ccd20d15b543fe03e0149a244c160699592ef2"
+    },
+    {
+      "path": "qa/exact-glb/candidate-top-clay.png",
+      "bytes": 78904,
+      "sha256": "b8464690368a2f223eb73ceef566c264b40951825e716551079814baa847baab"
+    },
+    {
+      "path": "qa/exact-glb/candidate-top.png",
+      "bytes": 154824,
+      "sha256": "343ffa3557d7ae0440cd204043847fc8ddf3cd81641d2782b7d22b5f76d6ed44"
+    },
+    {
+      "path": "qa/exact-glb/dense-back.png",
+      "bytes": 67423,
+      "sha256": "a32e07dff77554e653b932ec668956e5aa2a0b03108a0c2726417cc0936e7c32"
+    },
+    {
+      "path": "qa/exact-glb/dense-bottom.png",
+      "bytes": 86961,
+      "sha256": "e77c807582b5952c29b470032f6119c1df647cfa26b9a0218e3e2c1ccfcf03da"
+    },
+    {
+      "path": "qa/exact-glb/dense-end.png",
+      "bytes": 71239,
+      "sha256": "42d932ce630524f7817e51130d8e793cf8ca5ba76237fd03c3151ebf30f4e7f3"
+    },
+    {
+      "path": "qa/exact-glb/dense-rear.png",
+      "bytes": 129329,
+      "sha256": "f3f3140701429dd27403524339baa5f10034949c7dba2edfb407588f7378a1ae"
+    },
+    {
+      "path": "qa/exact-glb/dense-side.png",
+      "bytes": 144771,
+      "sha256": "9f1f24b84e55f854f997fc3f2b165bbfb0a3a5b9f111826e3d86f88bbd39b34a"
+    },
+    {
+      "path": "qa/exact-glb/dense-threequarter.png",
+      "bytes": 156233,
+      "sha256": "40d75981d1f4485503dc47bf9057555b26b05e534a5e51f3e9b36e92aed38540"
+    },
+    {
+      "path": "qa/exact-glb/dense-top.png",
+      "bytes": 160552,
+      "sha256": "7f876f3aa7031a9e89138e712dbe7f83abdf1fb9c0bd11ebb0d5a328c1f46747"
+    },
+    {
+      "path": "qa/exact-glb/distance-12.png",
+      "bytes": 14020,
+      "sha256": "1f87cfc9bbcc7af3bdc66d0ced4e8e4e100bf78bf520e4daa333ab134f6f2f9a"
+    },
+    {
+      "path": "qa/exact-glb/distance-21.png",
+      "bytes": 7737,
+      "sha256": "9ec4856d813542f33f5514463011dbcdbe5107d73619facad95aa3efaf9a36fe"
+    },
+    {
+      "path": "qa/exact-glb/distance-26.png",
+      "bytes": 6481,
+      "sha256": "41ef189dc08d7d5286f7c1a166edf5df4e43234c53345d20386d00066b0f8a81"
+    },
+    {
+      "path": "qa/exact-glb/distance-9.png",
+      "bytes": 21783,
+      "sha256": "418bc8259a3f544192b8eb3785e13559045332526dbb04d045934dcfd0ff378d"
+    },
+    {
+      "path": "qa/exact-glb/lod1-back.png",
+      "bytes": 61060,
+      "sha256": "336d89bc0067f97f57b75155080dbfaf96dfc49cae793c36f416ae9646dd2efd"
+    },
+    {
+      "path": "qa/exact-glb/lod1-bottom.png",
+      "bytes": 68307,
+      "sha256": "0377bc36f79a90eb87a659cd91dda461ac1364136383f8759569608c32e8f394"
+    },
+    {
+      "path": "qa/exact-glb/lod1-end.png",
+      "bytes": 64092,
+      "sha256": "f1a5e71089ab2cd2253e523b7153d22202435d41e212946e515e02f934b60d71"
+    },
+    {
+      "path": "qa/exact-glb/lod1-rear.png",
+      "bytes": 107234,
+      "sha256": "42b8cb9c561fde584db52510771e0fe5367b4f71bab805fa808d4c148c1e433d"
+    },
+    {
+      "path": "qa/exact-glb/lod1-side.png",
+      "bytes": 125119,
+      "sha256": "e1fd7729f302dcd886dc165aab20f701e4390240ca7c4bf78b43037596911650"
+    },
+    {
+      "path": "qa/exact-glb/lod1-threequarter.png",
+      "bytes": 141961,
+      "sha256": "349c0ce48e3a33ec1f39fc9522ea2b5c1ae431ba05fbc1ac925fbc5861fc1cfa"
+    },
+    {
+      "path": "qa/exact-glb/lod1-top.png",
+      "bytes": 138754,
+      "sha256": "9a2ef34d01dbd7f600f0a7c417d30811c1e3b971b5e5128e249b6112e949a5cf"
+    },
+    {
+      "path": "qa/exact-glb/lod2-back.png",
+      "bytes": 56803,
+      "sha256": "d22df05f7a558744d1e319daf9834a00ada475c2ef98c3ce8dda2c19bf7565e4"
+    },
+    {
+      "path": "qa/exact-glb/lod2-bottom.png",
+      "bytes": 64176,
+      "sha256": "41de583f11bf8f66a12b6bc92033c30368ea0eed5e7cf0928ec7fe2e02493463"
+    },
+    {
+      "path": "qa/exact-glb/lod2-end.png",
+      "bytes": 60460,
+      "sha256": "15bf96aaf52a0a86afa6bcf674e74b9ca8e8fd2c8671c1e37b8df012d2c14dac"
+    },
+    {
+      "path": "qa/exact-glb/lod2-rear.png",
+      "bytes": 89960,
+      "sha256": "d2ec9ebcf2bf0f2043210d3278e9b1b39b55d626643faa773501ff336feb28d8"
+    },
+    {
+      "path": "qa/exact-glb/lod2-side.png",
+      "bytes": 112451,
+      "sha256": "d7a458addcef75f757e45d7f3e80e3ed8d13034df9bc9cab3493a3bb049d5873"
+    },
+    {
+      "path": "qa/exact-glb/lod2-threequarter.png",
+      "bytes": 130328,
+      "sha256": "71911a1e345389509a1ce7cb924254f3e36c4860387b2e6b32084def73b9837f"
+    },
+    {
+      "path": "qa/exact-glb/lod2-top.png",
+      "bytes": 123012,
+      "sha256": "40f477c9b2cca7c443f7dcb54c72250b518bd97541204f929f414e21d4c36b59"
+    },
+    {
+      "path": "qa/exact-glb/pile-0.png",
+      "bytes": 3525,
+      "sha256": "c95f47a8e1f1472980dc90104b13fe80be34ff248446f4b6174d24ab0918542b"
+    },
+    {
+      "path": "qa/exact-glb/pile-1.png",
+      "bytes": 76616,
+      "sha256": "fcddc3c69bf5e48f0272fb7f617be7d760dbe76b7340babe2d3c57ff4d839085"
+    },
+    {
+      "path": "qa/exact-glb/pile-2.png",
+      "bytes": 123325,
+      "sha256": "08190264ba378bd710d2635db94ed6fed7eccf958bf2692c22112fc6c876ed3f"
+    },
+    {
+      "path": "qa/exact-glb/pile-3.png",
+      "bytes": 169989,
+      "sha256": "a5622d678539e30ac8ee7ecd934a2aa243fe4aef3e438e1831d330d1f9a8bb5c"
+    },
+    {
+      "path": "qa/exact-glb/pile-4.png",
+      "bytes": 216608,
+      "sha256": "4c77de5c3b6303400b5ab8360e1ec8d914d58051d840105370178cc8bcd9ba85"
+    },
+    {
+      "path": "qa/exact-glb/pile-5.png",
+      "bytes": 250989,
+      "sha256": "6e028cb563a4d2a510e920dff55f6627c4f5329ec0164d7bf2a2d22574de281a"
+    },
+    {
+      "path": "qa/exact-glb/pile-6.png",
+      "bytes": 265278,
+      "sha256": "4c23110e203103400638697f2b50f9485cd873438853edf3d594677d654625f5"
+    },
+    {
+      "path": "qa/exact-glb/pile-7.png",
+      "bytes": 277554,
+      "sha256": "45ef8c5f90051713abe70bfd6ea8b3a44b1891dbe69f12b4967ddc0b5fb6e3e1"
+    },
+    {
+      "path": "qa/exact-glb/summary.json",
+      "bytes": 9793,
+      "sha256": "06203270efa12c807d84fce9655681884616156793d5fc4507d7ea5501b4d4df"
+    },
+    {
+      "path": "qa/game/axe-two-units.png",
+      "bytes": 885258,
+      "sha256": "b0a81f0cb6c73ff547637c3efa30240222285fdcdd240355af45ecfdb4aa1a1a"
+    },
+    {
+      "path": "qa/game/full.png",
+      "bytes": 869599,
+      "sha256": "c1de47a6d4e5ae231dc6b33173c58e0db7ed7d9afc47ce048bc7d6696fdbe637"
+    },
+    {
+      "path": "qa/game/natural-regrowth-one-log.png",
+      "bytes": 877820,
+      "sha256": "d42491ce356ff6a671b2baf2e618811755467b8d5957b58b6634782f4c4f7145"
+    },
+    {
+      "path": "qa/game/peer-take-1.png",
+      "bytes": 915806,
+      "sha256": "0042189daa6d452df191779cc4e955d7c45f9fccadf6b5b884915af254f6ccc6"
+    },
+    {
+      "path": "qa/game/peer-take-2.png",
+      "bytes": 916077,
+      "sha256": "07f979614f7427afa8ee2b064b88b2132f03c42454712222367d8e0b1c69fca8"
+    },
+    {
+      "path": "qa/game/peer-take-3.png",
+      "bytes": 915997,
+      "sha256": "9bbaaf8fc176ee67344de3b393b25222ad78fe0bb1d82949ad272b8e152d687a"
+    },
+    {
+      "path": "qa/game/peer-take-4.png",
+      "bytes": 916253,
+      "sha256": "107c3d69e8768ff76254ae0d3bee95af97b753bc3fdf07631807e07cb5305f7c"
+    },
+    {
+      "path": "qa/game/peer-take-5.png",
+      "bytes": 911924,
+      "sha256": "f7b1996021e27c8449f6de76c96132150869d4a47b5e3e34c6a4fc6988c9e92b"
+    },
+    {
+      "path": "qa/game/peer-take-6.png",
+      "bytes": 911079,
+      "sha256": "bf7381bb9b35192c9a5d1e3ee35b6ec61b14ef0a38fad1d0bc903d1aee096151"
+    },
+    {
+      "path": "qa/game/peer-take-7.png",
+      "bytes": 908365,
+      "sha256": "7f421a7f96d1c0734979e4399e03d1f4ced17cdf75a4163a2efa445df91c7b4b"
+    },
+    {
+      "path": "qa/game/regional-ash-collected.png",
+      "bytes": 464850,
+      "sha256": "4065f6bfc3a7ae58a8484f9aae6e1e8e40da668ca50d6c76573921a95d7f30da"
+    },
+    {
+      "path": "qa/game/regional-ash.png",
+      "bytes": 417533,
+      "sha256": "61778cb789ce9ee7a6b5c06bf8237b623defb1f17b1eb1f33a45d08f0f0d3498"
+    },
+    {
+      "path": "qa/game/regional-sand-collected.png",
+      "bytes": 629259,
+      "sha256": "426011502b1fc49b8e5c264153d3982fa1fac37eaad906dbb6aebb1efc12c96a"
+    },
+    {
+      "path": "qa/game/regional-sand.png",
+      "bytes": 620452,
+      "sha256": "8e76c42ae0a1393393e2a1c02b2a57c59cbc76e369817154f8e4073e2199472a"
+    },
+    {
+      "path": "qa/game/regional-snow-collected.png",
+      "bytes": 529704,
+      "sha256": "4685fd3dad9a34b685c97985bee77808f1e76cf0942cc0d246f82cacff9843c2"
+    },
+    {
+      "path": "qa/game/regional-snow.png",
+      "bytes": 532286,
+      "sha256": "8726a015148f8ba05553182401a75281c7de4435ab56f1e89e61332409cc1646"
+    },
+    {
+      "path": "qa/game/reload-partly-collected.png",
+      "bytes": 901248,
+      "sha256": "68d5072c46e7b981521b7bc1e161b7334fe13530c170809c5102cbdbd9858da3"
+    },
+    {
+      "path": "qa/game/return-to-valley.png",
+      "bytes": 892520,
+      "sha256": "d94039eb7ce5d4266c3c6521380d0fd4dc0784f06ffe20eac6b32bf9ed0587f5"
+    },
+    {
+      "path": "qa/game/summary.json",
+      "bytes": 18909,
+      "sha256": "31ca0427734e2e9577f6ea15f2be23d6b0243d61b4405a63e9390029f8074b6f"
+    },
+    {
+      "path": "qa/game/take-1.png",
+      "bytes": 885917,
+      "sha256": "761ddc8eaa4e1095255d8eb8abfe815b526b90a2f2bd7469161ac5c93aa88f36"
+    },
+    {
+      "path": "qa/game/take-2.png",
+      "bytes": 886019,
+      "sha256": "37bea131cc8eb139d96fc91aa85c7e86813bd5683a2dbd83a39ba7d9ba390b88"
+    },
+    {
+      "path": "qa/game/take-3.png",
+      "bytes": 884354,
+      "sha256": "88c9f8d854fc077cbcc9f767ddbb1300d5944725331e0b7b6d0d5a1c10644b93"
+    },
+    {
+      "path": "qa/game/take-4.png",
+      "bytes": 893541,
+      "sha256": "1edbe9de0382ba4b662237f4c10e027800e849bf8b429ef077b453cadda870fe"
+    },
+    {
+      "path": "qa/game/take-5.png",
+      "bytes": 880277,
+      "sha256": "388e1246c9651559e8775130c1502fc4cfd4ea1edeceb820ef64395f62f77020"
+    },
+    {
+      "path": "qa/game/take-6.png",
+      "bytes": 878115,
+      "sha256": "0d37b44060b6ca103a2a19d6fbe04c2bdc3209af1a2804af205cb6c80612badd"
+    },
+    {
+      "path": "qa/game/take-7.png",
+      "bytes": 870340,
+      "sha256": "16e191b5ee609f1218be3717239628cd4ff96e3f0610c43d0eedf16b08c61b62"
+    },
+    {
+      "path": "qa/game/viewport-390.png",
+      "bytes": 269548,
+      "sha256": "5534f3bc7f5c2d029230a4d4c63d1d2070fbc405b3edcc644d93b4a4d911aa42"
+    },
+    {
+      "path": "qa/game/viewport-844.png",
+      "bytes": 367062,
+      "sha256": "3c175b42613db57e2b9abd5f2d12e9b74d5e592367b5e3ae2ac44651c76185ac"
+    },
+    {
+      "path": "source/original/prompt.txt",
+      "bytes": 1140,
+      "sha256": "0f67ac8e3e41bd8f8f5aabeedc804fc4d875a517c695adb63a8b58055232eb85"
+    },
+    {
+      "path": "source/original/reference-v1.json",
+      "bytes": 1507,
+      "sha256": "ec5844b0146a3037bde0d7f18077506d4961890f43cd03116bfc99d1455e659c"
+    },
+    {
+      "path": "source/original/reference-v1.png",
+      "bytes": 2218173,
+      "sha256": "70cd9e6c0b7a26a4b22234c115675d2f0b1bc6f81e7ac172954047ce279a80a0"
+    },
+    {
+      "path": "source/prepared/birefnet_cutout.png",
+      "bytes": 1978420,
+      "sha256": "5be239f7413195cdb97a25be0df2008942dbd7a61d86b55bdc3687eba86d05b8"
+    },
+    {
+      "path": "source/prepared/birefnet.log",
+      "bytes": 563,
+      "sha256": "273425539fbecc68da1e7b28296f08e10a4e25ffcb3c2d225f695ec65faeef6b"
+    },
+    {
+      "path": "source/prepared/conditioning.png",
+      "bytes": 652362,
+      "sha256": "dbb013b34a6b480e5be15072cab5e9f8886be524e52fe03a00ee754bda4db07c"
+    },
+    {
+      "path": "source/prepared/matte.png",
+      "bytes": 14071,
+      "sha256": "eab76d9c0ea02c4dd7492dece1c121e9caec7d5a0383098ed6665ccc76bc03cd"
+    },
+    {
+      "path": "source/prepared/preparation.json",
+      "bytes": 497,
+      "sha256": "6cb5e7a0c2a264da457ab2f5804c289b85b478156690b5222cec5ac37a4ae83a"
+    },
+    {
+      "path": "work/low-poly/candidate-01/candidate.glb",
+      "bytes": 1904772,
+      "sha256": "965876d7815f56ebdeea6026483e082d92a4862fdaf3f505a0aff8004e2f3d47"
+    },
+    {
+      "path": "work/low-poly/candidate-01/lod1.glb",
+      "bytes": 1682040,
+      "sha256": "c7d0a47d90d80b234d049eec62a6b4f0be1f74a1bdf53ee818139a17b26422c2"
+    },
+    {
+      "path": "work/low-poly/candidate-01/lod2.glb",
+      "bytes": 1661088,
+      "sha256": "ded9b8dba11b4f4f91f66e25cbd5bbb6bca69aa3b10fd768d3f2fc82c9cc5db7"
+    },
+    {
+      "path": "work/low-poly/candidate-01/process-report.json",
+      "bytes": 3263,
+      "sha256": "f67cf5fa9183abc5af420744278fab40ad7f46b7888a2f4a3ac3eb6f87ef024e"
+    },
+    {
+      "path": "work/low-poly/candidate-02/candidate.glb",
+      "bytes": 2156672,
+      "sha256": "8a32826636cfc198cc1776ebec499b1bc036779c08143cf256ad7e4d8a186cd3"
+    },
+    {
+      "path": "work/low-poly/candidate-02/lod1.glb",
+      "bytes": 1728432,
+      "sha256": "75460ca0a571243cab6c63dfe0acc44fbed1fae17578823df02ffbf90626cf2e"
+    },
+    {
+      "path": "work/low-poly/candidate-02/lod2.glb",
+      "bytes": 1663640,
+      "sha256": "f24ff178715163c72f74ec06a1bf6aa4cb1e6052b4810d66faffb8832bd5e71d"
+    },
+    {
+      "path": "work/low-poly/candidate-02/process-report.json",
+      "bytes": 3700,
+      "sha256": "322e3cc622b4f92d8c1657159988558f4e08c590c098caf7670da861aabf1b0c"
+    },
+    {
+      "path": "work/trellis/dense-res1024-seed0042_base.png",
+      "bytes": 6162810,
+      "sha256": "6af13e337304fb7ff676d01787d91b8183c65a89c0f24a8e6337d97066c8417a"
+    },
+    {
+      "path": "work/trellis/dense-res1024-seed0042.glb",
+      "bytes": 16373844,
+      "sha256": "c19923553450efb3754c9074aa4cd1541d68e94d39c065d7d086d94d840574cf"
+    },
+    {
+      "path": "work/trellis/dense-res1024-seed0042.json",
+      "bytes": 922,
+      "sha256": "5336006daabc00fdf7cb9f9334b95166fa6e671501cf2f6e63fc83d007082a7e"
+    },
+    {
+      "path": "work/trellis/dense-res1024-seed0042.log",
+      "bytes": 6212,
+      "sha256": "594a4ad9141ac4703ec7438445fcee949866c242e8b11079b4e837140b2a1004"
+    },
+    {
+      "path": "work/trellis/dense-res1024-seed0042.ply",
+      "bytes": 56430380,
+      "sha256": "f9fb757e6f12af379f8e2937b3147be4017d8a4e6db034a8ab66357de2df7ccb"
+    },
+    {
+      "path": "work/trellis/selected-dense.json",
+      "bytes": 238,
+      "sha256": "4d11aec026677f59e236b35cf39eafe5e7b0f16a3ffafe8c690d063dce626643"
+    },
+    {
+      "path": "workflow/current/generate-model.py",
+      "bytes": 6140,
+      "sha256": "a6fc0abaf9afbeab0348029a8e122bc7241040cbad7da1ce0b10f0fbf1747ea1"
+    },
+    {
+      "path": "workflow/current/process-static-model.py",
+      "bytes": 14315,
+      "sha256": "51dc34b4318b028299cbeabf9526dc0f2e2f9006a1f20e38408de7a2fe7d5b35"
+    }
+  ]
+}

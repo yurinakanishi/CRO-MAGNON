@@ -1,0 +1,23 @@
+{
+  "decision": "adopt",
+  "candidate": 1,
+  "revision": "02",
+  "sha256": "8a32826636cfc198cc1776ebec499b1bc036779c08143cf256ad7e4d8a186cd3",
+  "visualGate": "passed",
+  "browserGate": "passed",
+  "gameGate": "passed",
+  "reference": "output/model-generation/models/firewood-log/source/original/reference-v1.png",
+  "browserEvidence": "output/playwright/firewood/asset-r02/summary.json",
+  "acceptedLods": [
+    "lod1",
+    "lod2"
+  ],
+  "notes": [
+    "One complete 1.20 m bark log, approximately 0.35 m tall and 0.37 m across. Both end surfaces and underside are present. Opaque, single-sided, dielectric material; no clipping plane.",
+    "Reviewed dense and exact exported GLB from seven directions, candidate in clay, and the assembled pile at every count 7 through 0. The same complete geometry is instanced once per resource unit.",
+    "Revision 01 preserved but rejected for faceted shading. Revision 02 retains more source detail (13,340 triangles) and recomputes normals after alignment. Bidirectional p95 surface distance to dense is below 0.813 mm.",
+    "LOD1 (1,866 triangles) is only used beyond 10 m; LOD2 (466 triangles) beyond 22 m. Their close-up simplification is visible. Source bark crevices and small irregularities along the cut-end rim remain. Exact perspective views at 9/12/21/26 m confirmed LOD0/1/1/2; gameplay QA passed."
+  ],
+  "gameEvidence": "output/playwright/firewood/final/summary.json",
+  "distanceEvidence": "output/playwright/firewood/asset-r02/summary.json"
+}

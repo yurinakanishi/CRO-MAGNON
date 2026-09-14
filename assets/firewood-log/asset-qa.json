@@ -1,0 +1,558 @@
+{
+  "results": [
+    {
+      "view": "end",
+      "kind": "dense",
+      "amount": 7,
+      "clay": false,
+      "counts": [],
+      "distance": 0,
+      "level": null,
+      "calls": 1,
+      "triangles": 296488
+    },
+    {
+      "view": "back",
+      "kind": "dense",
+      "amount": 7,
+      "clay": false,
+      "counts": [],
+      "distance": 0,
+      "level": null,
+      "calls": 1,
+      "triangles": 296488
+    },
+    {
+      "view": "side",
+      "kind": "dense",
+      "amount": 7,
+      "clay": false,
+      "counts": [],
+      "distance": 0,
+      "level": null,
+      "calls": 1,
+      "triangles": 296488
+    },
+    {
+      "view": "rear",
+      "kind": "dense",
+      "amount": 7,
+      "clay": false,
+      "counts": [],
+      "distance": 0,
+      "level": null,
+      "calls": 1,
+      "triangles": 296488
+    },
+    {
+      "view": "threequarter",
+      "kind": "dense",
+      "amount": 7,
+      "clay": false,
+      "counts": [],
+      "distance": 0,
+      "level": null,
+      "calls": 1,
+      "triangles": 296488
+    },
+    {
+      "view": "top",
+      "kind": "dense",
+      "amount": 7,
+      "clay": false,
+      "counts": [],
+      "distance": 0,
+      "level": null,
+      "calls": 1,
+      "triangles": 296488
+    },
+    {
+      "view": "bottom",
+      "kind": "dense",
+      "amount": 7,
+      "clay": false,
+      "counts": [],
+      "distance": 0,
+      "level": null,
+      "calls": 1,
+      "triangles": 296488
+    },
+    {
+      "view": "end",
+      "kind": "candidate",
+      "amount": 7,
+      "clay": false,
+      "counts": [],
+      "distance": 0,
+      "level": null,
+      "calls": 1,
+      "triangles": 13340
+    },
+    {
+      "view": "end",
+      "kind": "candidate",
+      "amount": 7,
+      "clay": true,
+      "counts": [],
+      "distance": 0,
+      "level": null,
+      "calls": 1,
+      "triangles": 13340
+    },
+    {
+      "view": "back",
+      "kind": "candidate",
+      "amount": 7,
+      "clay": false,
+      "counts": [],
+      "distance": 0,
+      "level": null,
+      "calls": 1,
+      "triangles": 13340
+    },
+    {
+      "view": "back",
+      "kind": "candidate",
+      "amount": 7,
+      "clay": true,
+      "counts": [],
+      "distance": 0,
+      "level": null,
+      "calls": 1,
+      "triangles": 13340
+    },
+    {
+      "view": "side",
+      "kind": "candidate",
+      "amount": 7,
+      "clay": false,
+      "counts": [],
+      "distance": 0,
+      "level": null,
+      "calls": 1,
+      "triangles": 13340
+    },
+    {
+      "view": "side",
+      "kind": "candidate",
+      "amount": 7,
+      "clay": true,
+      "counts": [],
+      "distance": 0,
+      "level": null,
+      "calls": 1,
+      "triangles": 13340
+    },
+    {
+      "view": "rear",
+      "kind": "candidate",
+      "amount": 7,
+      "clay": false,
+      "counts": [],
+      "distance": 0,
+      "level": null,
+      "calls": 1,
+      "triangles": 13340
+    },
+    {
+      "view": "rear",
+      "kind": "candidate",
+      "amount": 7,
+      "clay": true,
+      "counts": [],
+      "distance": 0,
+      "level": null,
+      "calls": 1,
+      "triangles": 13340
+    },
+    {
+      "view": "threequarter",
+      "kind": "candidate",
+      "amount": 7,
+      "clay": false,
+      "counts": [],
+      "distance": 0,
+      "level": null,
+      "calls": 1,
+      "triangles": 13340
+    },
+    {
+      "view": "threequarter",
+      "kind": "candidate",
+      "amount": 7,
+      "clay": true,
+      "counts": [],
+      "distance": 0,
+      "level": null,
+      "calls": 1,
+      "triangles": 13340
+    },
+    {
+      "view": "top",
+      "kind": "candidate",
+      "amount": 7,
+      "clay": false,
+      "counts": [],
+      "distance": 0,
+      "level": null,
+      "calls": 1,
+      "triangles": 13340
+    },
+    {
+      "view": "top",
+      "kind": "candidate",
+      "amount": 7,
+      "clay": true,
+      "counts": [],
+      "distance": 0,
+      "level": null,
+      "calls": 1,
+      "triangles": 13340
+    },
+    {
+      "view": "bottom",
+      "kind": "candidate",
+      "amount": 7,
+      "clay": false,
+      "counts": [],
+      "distance": 0,
+      "level": null,
+      "calls": 1,
+      "triangles": 13340
+    },
+    {
+      "view": "bottom",
+      "kind": "candidate",
+      "amount": 7,
+      "clay": true,
+      "counts": [],
+      "distance": 0,
+      "level": null,
+      "calls": 1,
+      "triangles": 13340
+    },
+    {
+      "view": "end",
+      "kind": "lod1",
+      "amount": 7,
+      "clay": false,
+      "counts": [],
+      "distance": 0,
+      "level": null,
+      "calls": 1,
+      "triangles": 1866
+    },
+    {
+      "view": "back",
+      "kind": "lod1",
+      "amount": 7,
+      "clay": false,
+      "counts": [],
+      "distance": 0,
+      "level": null,
+      "calls": 1,
+      "triangles": 1866
+    },
+    {
+      "view": "side",
+      "kind": "lod1",
+      "amount": 7,
+      "clay": false,
+      "counts": [],
+      "distance": 0,
+      "level": null,
+      "calls": 1,
+      "triangles": 1866
+    },
+    {
+      "view": "rear",
+      "kind": "lod1",
+      "amount": 7,
+      "clay": false,
+      "counts": [],
+      "distance": 0,
+      "level": null,
+      "calls": 1,
+      "triangles": 1866
+    },
+    {
+      "view": "threequarter",
+      "kind": "lod1",
+      "amount": 7,
+      "clay": false,
+      "counts": [],
+      "distance": 0,
+      "level": null,
+      "calls": 1,
+      "triangles": 1866
+    },
+    {
+      "view": "top",
+      "kind": "lod1",
+      "amount": 7,
+      "clay": false,
+      "counts": [],
+      "distance": 0,
+      "level": null,
+      "calls": 1,
+      "triangles": 1866
+    },
+    {
+      "view": "bottom",
+      "kind": "lod1",
+      "amount": 7,
+      "clay": false,
+      "counts": [],
+      "distance": 0,
+      "level": null,
+      "calls": 1,
+      "triangles": 1866
+    },
+    {
+      "view": "end",
+      "kind": "lod2",
+      "amount": 7,
+      "clay": false,
+      "counts": [],
+      "distance": 0,
+      "level": null,
+      "calls": 1,
+      "triangles": 466
+    },
+    {
+      "view": "back",
+      "kind": "lod2",
+      "amount": 7,
+      "clay": false,
+      "counts": [],
+      "distance": 0,
+      "level": null,
+      "calls": 1,
+      "triangles": 466
+    },
+    {
+      "view": "side",
+      "kind": "lod2",
+      "amount": 7,
+      "clay": false,
+      "counts": [],
+      "distance": 0,
+      "level": null,
+      "calls": 1,
+      "triangles": 466
+    },
+    {
+      "view": "rear",
+      "kind": "lod2",
+      "amount": 7,
+      "clay": false,
+      "counts": [],
+      "distance": 0,
+      "level": null,
+      "calls": 1,
+      "triangles": 466
+    },
+    {
+      "view": "threequarter",
+      "kind": "lod2",
+      "amount": 7,
+      "clay": false,
+      "counts": [],
+      "distance": 0,
+      "level": null,
+      "calls": 1,
+      "triangles": 466
+    },
+    {
+      "view": "top",
+      "kind": "lod2",
+      "amount": 7,
+      "clay": false,
+      "counts": [],
+      "distance": 0,
+      "level": null,
+      "calls": 1,
+      "triangles": 466
+    },
+    {
+      "view": "bottom",
+      "kind": "lod2",
+      "amount": 7,
+      "clay": false,
+      "counts": [],
+      "distance": 0,
+      "level": null,
+      "calls": 1,
+      "triangles": 466
+    },
+    {
+      "kind": "pile",
+      "amount": 7,
+      "clay": false,
+      "counts": [
+        7,
+        7,
+        7
+      ],
+      "distance": 0,
+      "level": 0,
+      "calls": 1,
+      "triangles": 93380
+    },
+    {
+      "kind": "pile",
+      "amount": 6,
+      "clay": false,
+      "counts": [
+        6,
+        6,
+        6
+      ],
+      "distance": 0,
+      "level": 0,
+      "calls": 1,
+      "triangles": 80040
+    },
+    {
+      "kind": "pile",
+      "amount": 5,
+      "clay": false,
+      "counts": [
+        5,
+        5,
+        5
+      ],
+      "distance": 0,
+      "level": 0,
+      "calls": 1,
+      "triangles": 66700
+    },
+    {
+      "kind": "pile",
+      "amount": 4,
+      "clay": false,
+      "counts": [
+        4,
+        4,
+        4
+      ],
+      "distance": 0,
+      "level": 0,
+      "calls": 1,
+      "triangles": 53360
+    },
+    {
+      "kind": "pile",
+      "amount": 3,
+      "clay": false,
+      "counts": [
+        3,
+        3,
+        3
+      ],
+      "distance": 0,
+      "level": 0,
+      "calls": 1,
+      "triangles": 40020
+    },
+    {
+      "kind": "pile",
+      "amount": 2,
+      "clay": false,
+      "counts": [
+        2,
+        2,
+        2
+      ],
+      "distance": 0,
+      "level": 0,
+      "calls": 1,
+      "triangles": 26680
+    },
+    {
+      "kind": "pile",
+      "amount": 1,
+      "clay": false,
+      "counts": [
+        1,
+        1,
+        1
+      ],
+      "distance": 0,
+      "level": 0,
+      "calls": 1,
+      "triangles": 13340
+    },
+    {
+      "kind": "pile",
+      "amount": 0,
+      "clay": false,
+      "counts": [
+        0,
+        0,
+        0
+      ],
+      "distance": 0,
+      "level": 0,
+      "calls": 0,
+      "triangles": 0
+    },
+    {
+      "kind": "pile",
+      "amount": 7,
+      "clay": false,
+      "counts": [
+        7,
+        7,
+        7
+      ],
+      "distance": 9,
+      "level": 0,
+      "calls": 1,
+      "triangles": 93380
+    },
+    {
+      "kind": "pile",
+      "amount": 7,
+      "clay": false,
+      "counts": [
+        7,
+        7,
+        7
+      ],
+      "distance": 12,
+      "level": 1,
+      "calls": 1,
+      "triangles": 13062
+    },
+    {
+      "kind": "pile",
+      "amount": 7,
+      "clay": false,
+      "counts": [
+        7,
+        7,
+        7
+      ],
+      "distance": 21,
+      "level": 1,
+      "calls": 1,
+      "triangles": 13062
+    },
+    {
+      "kind": "pile",
+      "amount": 7,
+      "clay": false,
+      "counts": [
+        7,
+        7,
+        7
+      ],
+      "distance": 26,
+      "level": 2,
+      "calls": 1,
+      "triangles": 3262
+    }
+  ],
+  "errors": []
+}

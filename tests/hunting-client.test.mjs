@@ -117,23 +117,16 @@ test('animal death seeks to server phase time, clamps, and resets after respawn'
   actor.dispose();
 });
 
-test('resource models deplete visibly: fruit count, wood clip plane, boulder scale, meat pieces', () => {
+test('resource models deplete visibly: fruit count and boulder scale', () => {
   const bush = new THREE.Group(),
     leaves = new THREE.Mesh(new THREE.SphereGeometry(0.5, 12, 8), new THREE.MeshStandardMaterial());
   leaves.position.y = 0.7;
   bush.add(leaves);
-  const logs = new THREE.Group();
-  logs.add(new THREE.Mesh(new THREE.BoxGeometry(1, 0.7, 0.5), new THREE.MeshStandardMaterial()));
   const assets = new WorldAssets();
   assets.templates.set('berry-bush', {
     gltf: { scene: bush },
     lods: [{ scene: bush.clone(true) }],
     asset: { heightMetres: 1.2 },
-  });
-  assets.templates.set('firewood-pile', {
-    gltf: { scene: logs },
-    lods: [],
-    asset: { heightMetres: 0.7 },
   });
   const points = assets.modelPoints('berry-bush');
   assert.ok(points.length > 50 && points.every(([, y]) => y >= 0.19), 'points are in model space');
@@ -153,19 +146,6 @@ test('resource models deplete visibly: fruit count, wood clip plane, boulder sca
   );
   for (const fruit of berry.fruit.children)
     assert.ok(fruit.position.y > 0.45 && Math.hypot(fruit.position.x, fruit.position.z) > 0.3);
-  const woodModel = assets.createResource('firewood-pile');
-  woodModel.position.y = 10;
-  const wood = { model: woodModel, key: 'firewood-pile', surface: null, baseScale: 1 };
-  world.decorateResource(wood, { id: 'wood-1', type: 'wood', amount: 7, maxAmount: 7 });
-  const material = woodModel.children[0].material;
-  assert.notEqual(material, logs.children[0].material, 'material is cloned per pile');
-  assert.equal(material.clippingPlanes[0], wood.clipPlane);
-  assert.equal(material.clipShadows, true);
-  world.applyResourceAmount(wood, { type: 'wood', amount: 3, maxAmount: 7 });
-  assert.deepEqual(wood.clipPlane.normal.toArray(), [0, -1, 0]);
-  assert.ok(Math.abs(wood.clipPlane.constant - 10.3) < 1e-9);
-  assert.ok(wood.clipPlane.distanceToPoint(new THREE.Vector3(0, 10.6, 0)) < 0, 'top log clipped');
-  assert.ok(wood.clipPlane.distanceToPoint(new THREE.Vector3(0, 10.1, 0)) > 0, 'bottom log kept');
   const stone = { model: new THREE.Group(), key: 'valley-boulder', surface: null, baseScale: 0.55 };
   world.decorateResource(stone, { id: 'stone-1', type: 'stone', amount: 8, maxAmount: 8 });
   world.applyResourceAmount(stone, { type: 'stone', amount: 1, maxAmount: 8 });

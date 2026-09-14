@@ -20,6 +20,7 @@ import {
 } from '../shared/terrain.mjs';
 import { WORLD, CAMP, NPC, INITIAL_RESOURCES } from '../shared/world.mjs';
 import { WorldAssets } from './world-assets.js';
+import { buildWoodPile } from './wood-pile.js';
 import { WorldLandmarks } from './world-landmarks.js';
 import {
   buildTerrainAssets,
@@ -63,7 +64,6 @@ import {
   meatPieceVisibility,
   seedFromId,
   stoneScale,
-  woodClipPlane,
 } from './resource-visuals.js';
 
 const DEFAULT_DISTANCE = 5.5;
@@ -430,12 +430,16 @@ export class WorldRenderer {
       if (!item) {
         const { key, surface, scale, yaw } = resourceAppearance(resource);
         if (surface && !this.regionalScenery?.wants(key, surface)) continue;
-        const model = this.worldAssets.createResource(key, surface);
+        const wood =
+          resource.type === 'wood'
+            ? buildWoodPile(this.worldAssets, resource.maxAmount, surface)
+            : null;
+        const model = wood?.root ?? this.worldAssets.createResource(key, surface);
         model.scale.setScalar(scale);
         model.position.set(resource.x, walkHeight(resource.x, resource.z), resource.z);
         model.rotation.y = yaw;
         this.scene.add(model);
-        item = { model, key, surface, baseScale: scale };
+        item = { model, key, surface, baseScale: scale, wood };
         this.decorateResource(item, resource);
         this.resources.set(resource.id, item);
       }
@@ -445,7 +449,7 @@ export class WorldRenderer {
     }
   }
 
-  /** Per-type extras built once: berry fruit, the wood clipping plane. */
+  /** Berry fruit is attached once to the verified bush. */
   decorateResource(item, resource) {
     if (resource.type === 'berry') {
       this.fruitGeometry ??= new THREE.SphereGeometry(FRUIT_RADIUS, 10, 8);
@@ -472,38 +476,16 @@ export class WorldRenderer {
       // A direct child of the LOD root stays visible at every level.
       item.model.add(fruit);
       item.fruit = fruit;
-    } else if (resource.type === 'wood') {
-      const plane = new THREE.Plane(new THREE.Vector3(0, -1, 0), Infinity);
-      item.model.traverse((node) => {
-        if (!isMesh(node)) return;
-        // Clone so the plane belongs to this pile alone; textures stay shared.
-        const materials = [node.material].flat().map((material) => {
-          const clone = material.clone();
-          clone.clippingPlanes = [plane];
-          clone.clipShadows = true;
-          return clone;
-        });
-        node.material = Array.isArray(node.material) ? materials : materials[0];
-      });
-      item.clipPlane = plane;
-      item.heightMetres = this.worldAssets.get(item.key, item.surface)?.asset?.heightMetres ?? 0.7;
     }
   }
 
-  /** Makes the remaining amount visible: fruit count, pile height, boulder size. */
+  /** Makes the remaining amount visible: fruit, whole logs, boulder size. */
   applyResourceAmount(item, resource) {
     if (item.fruit) {
       const shown = fruitCount(resource.amount, resource.maxAmount);
       item.fruit.children.forEach((berry, index) => (berry.visible = index < shown));
-    } else if (item.clipPlane) {
-      const { constant } = woodClipPlane(
-        item.model.position.y,
-        item.model.scale.y,
-        item.heightMetres,
-        resource.amount,
-        resource.maxAmount,
-      );
-      item.clipPlane.constant = constant;
+    } else if (item.wood) {
+      item.wood.setAmount(resource.amount);
     } else if (resource.type === 'stone' || resource.type === 'obsidian') {
       item.model.scale.setScalar(stoneScale(item.baseScale, resource.amount, resource.maxAmount));
     }

@@ -14,13 +14,15 @@ import { COASTAL, MIDDEN_SITES, KNAPPING_SITES } from './coastal-sites.mjs';
 import { WORLD, worldClamp, INITIAL_RESOURCES, NPC } from './world.mjs';
 import { riverX, riverHalfWidth, terrainHeight } from './terrain.mjs';
 import { resourceAppearance } from './biome-scenery.mjs';
+import { woodPileBounds } from './wood-pile-layout.mjs';
 import { landBodyFree, isLand, landmassAt } from './paleo-geography.mjs';
 
 const CELL = 4,
   EPS = 0.0001;
 const clamp = (n, a, b) => Math.max(a, Math.min(b, n));
 function modelBox(item) {
-  const source = MODEL_BOUNDS[item.key],
+  const source =
+      item.key === 'firewood-log' ? woodPileBounds(item.maxAmount) : MODEL_BOUNDS[item.key],
     bounds = item.key === 'valley-pine' ? source.trunk : source;
   const [sx, sy, sz] = Array.isArray(item.scale)
     ? item.scale
@@ -84,6 +86,7 @@ export function staticObstacles(): Obstacle[] {
           x: resource.x,
           z: resource.z,
           resourceId: resource.id,
+          maxAmount: resource.maxAmount,
         }),
       );
   for (const z of [BRIDGE.z + BRIDGE.minZ - 0.08, BRIDGE.z + BRIDGE.maxZ + 0.08])

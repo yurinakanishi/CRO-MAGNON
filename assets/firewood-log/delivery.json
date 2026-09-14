@@ -1,0 +1,288 @@
+{
+  "at": "2026-09-14T04:20:18.079Z",
+  "status": "passed",
+  "preservedCount": 56,
+  "preserved": [
+    {
+      "file": "public/models/woolly-mammoth/model-tail-r12.glb",
+      "sha256": "dc8ddadd93b9ef078cf75e0e6c182521ad167a30d4ecae57b75daf5d01e13ba8"
+    },
+    {
+      "file": "public/models/valley-pine/model.glb",
+      "sha256": "659a8624253f383bd40ca4b8461427e695a91e97a747d9507c949342b18e0dd8"
+    },
+    {
+      "file": "public/models/valley-pine/lod1.glb",
+      "sha256": "a3927a386890f6a9e3ce71d2a0c42be2e864a83487abc13f8a01b6b69a16bff1"
+    },
+    {
+      "file": "public/models/meadow-grass/model.glb",
+      "sha256": "24b41b18d4c5ea40ca660d7eda16f2154ca856828ebfc721d6c3489efe63f9c0"
+    },
+    {
+      "file": "public/models/valley-boulder/model.glb",
+      "sha256": "f46449aa51814b9037c8ed3c43179845e63c6f9b48b94e02c7979266cb09bb1d"
+    },
+    {
+      "file": "public/models/firewood-pile/model.glb",
+      "sha256": "88fdbe0514694b4b484e285dc6ffa85c8cebe134ea120d34f7486dc27d3d3d3a"
+    },
+    {
+      "file": "public/models/berry-bush/model.glb",
+      "sha256": "3d405ba99daa2d984810e9a2cf4418ad2008c0ee9279c0157fb68fc5a3008ee1"
+    },
+    {
+      "file": "public/models/berry-bush/lod1.glb",
+      "sha256": "a5073cf0717125339f6baea01ac415a91b87db8fada01dada236863eda89e0c2"
+    },
+    {
+      "file": "public/models/hide-tent/model.glb",
+      "sha256": "7c7aef410b4f8eee268cd32f75faa65f0b7ea3f2d8e4cf53b6d810e5a1e20de7"
+    },
+    {
+      "file": "public/models/drying-rack/model.glb",
+      "sha256": "b106d53d89e9fa51ee38d3baa2c3a0b898fd39658f5718728ef12844b9f1d65d"
+    },
+    {
+      "file": "public/models/stone-firepit/model.glb",
+      "sha256": "d47aa67f9987cacd61d523d53622e33ebf0778c9a03f9e68559ad3f6db20f65a"
+    },
+    {
+      "file": "public/models/flint-spear/model.glb",
+      "sha256": "1a10db6d1b44da1e982f88e5ae9ef6be8fb74f5900ebd9258380ad200e53ed3d"
+    },
+    {
+      "file": "public/models/stone-axe/model.glb",
+      "sha256": "12dc3f23f8ec2acfb9fb6f770ab05f59c21584be00795f9b8cf272a2f6cf5ac0"
+    },
+    {
+      "file": "public/models/meadow-ground/model.glb",
+      "sha256": "6c6b41bdec1631236027c567635623aa9cdd1e0d92c0ae9e89f77764b52995e1"
+    },
+    {
+      "file": "public/models/river-water/model.glb",
+      "sha256": "8575faa5fd988da815d622ebbd03d49390339df5eeafd0eb794e1b0368ec0274"
+    },
+    {
+      "file": "public/models/wood-footbridge/model.glb",
+      "sha256": "629a8ec5db3dd16b7a126b1c8ea4877a5ec0bc4037017e0a2a53ec2f63e3a369"
+    },
+    {
+      "file": "public/models/mammoth-meat/model.glb",
+      "sha256": "50bf72d1dc5ff23b7eb206e7d0c6535d9a4ac1559190e6c4f5bbb94cd0ffaf2d"
+    },
+    {
+      "file": "public/models/crow-shaman/model-motion-r04.glb",
+      "sha256": "0fdb13ce4ace078b93694a898e58aa4fc05ac64eb11d128ac83e7935a5a55e63"
+    },
+    {
+      "file": "public/models/kunoichi-katana/model.glb",
+      "sha256": "3e6e061fc02779d3516d114b53629fa0d5b585e815d4683ce74dd7d9c2822e0e"
+    },
+    {
+      "file": "public/models/snow-ground/model.glb",
+      "sha256": "ddf7037c1cd52801d7c5f1a71492c496d7885f407372edb275e445ce0e009f44"
+    },
+    {
+      "file": "public/models/snow-ground/lod1.glb",
+      "sha256": "e822a8dd99fb95c3589b161a5ac95a931a7bb04edff30d8571ea8973a34fb412"
+    },
+    {
+      "file": "public/models/snow-ground/lod2.glb",
+      "sha256": "8173f329c3fef54d0cf60cbfc61b5e9326bec395d9a002d6c118eb8fcd70fad3"
+    },
+    {
+      "file": "public/models/ice-ground/model.glb",
+      "sha256": "30eeb7ceea111e33576b497e8341f9f01bf232fc598c6bbefa79a9867df51cce"
+    },
+    {
+      "file": "public/models/ice-ground/lod1.glb",
+      "sha256": "239f235f9df4e4ab55f41668b9dfd3b7eba920e06a7cc53db2a1740365228707"
+    },
+    {
+      "file": "public/models/ice-ground/lod2.glb",
+      "sha256": "58932f8b217650af1a596c8de6863e373d6b76bf2671a81f282cbdb8fc74c5c4"
+    },
+    {
+      "file": "public/models/desert-ground/model.glb",
+      "sha256": "fcf25dfc8bed6ce7ecfbdf445674e3c092f36d353462685cb5730ba3ef00005e"
+    },
+    {
+      "file": "public/models/desert-ground/lod1.glb",
+      "sha256": "fb7f7b45c67bf8c1e62b0bf77a6ac52b57b8917aed3e1c6956461cd939e34882"
+    },
+    {
+      "file": "public/models/desert-ground/lod2.glb",
+      "sha256": "733979092eeedff1984acdf3395576b616db477f580ec708bbfe0a27b7fe87df"
+    },
+    {
+      "file": "public/models/volcanic-ground/model.glb",
+      "sha256": "2bca15ffc01cce6148f8569a60b3fbecd16ac0c7946014f7b48f267b5eaffb88"
+    },
+    {
+      "file": "public/models/volcanic-ground/lod1.glb",
+      "sha256": "dd46d5d0bd30c0d98f8c4aff2fbb907d91585e1e11dda60a6f1ff08000c207f2"
+    },
+    {
+      "file": "public/models/volcanic-ground/lod2.glb",
+      "sha256": "ff9d0530565596a465f6dbf8d17f4d2788e541df44d09e017ef8f499805ef2ac"
+    },
+    {
+      "file": "public/models/glacier-spires/model.glb",
+      "sha256": "af945c2fec27252389a05ca2eabb6970003372a584a83cf18e2e6c34a42f6b53"
+    },
+    {
+      "file": "public/models/glacier-spires/lod1.glb",
+      "sha256": "763d759cf19ed420903233d58051a2d9c619071a8c748f72fc29f6c525e4f1a2"
+    },
+    {
+      "file": "public/models/glacier-spires/lod2.glb",
+      "sha256": "3a6fa1607b3a778910797750dedfe6e1dd285871c10bb25ee70ec2514dd07caf"
+    },
+    {
+      "file": "public/models/volcanic-cone/model.glb",
+      "sha256": "868c062028af62fedf491ed7391602991dbc76b1ddbbd09494ee958a7898cd5b"
+    },
+    {
+      "file": "public/models/volcanic-basalt-columns/model.glb",
+      "sha256": "a3cf5fa909494f4250e4cacd9bc9529b9780f9d7292fc1bfd6bf6235ae71c0fc"
+    },
+    {
+      "file": "public/models/volcanic-basalt-columns/lod1.glb",
+      "sha256": "2a3e890af2b0bf31f71fba58db39eff122f6b60c06cf341c86c85f80db665dde"
+    },
+    {
+      "file": "public/models/desert-cactus/model.glb",
+      "sha256": "df3e780323fd45808d92b2f7edcd2c7d9ee8000f1ea0c67b29baab73c939d7ed"
+    },
+    {
+      "file": "public/models/desert-cactus/lod1.glb",
+      "sha256": "d04e3a4dcab15ab00753fe26bf84a062c40c09d5ae3083174148e3bb6d19ed2d"
+    },
+    {
+      "file": "public/models/desert-cactus/lod2.glb",
+      "sha256": "1f1642cf62ce45665a5e326a0ef795a716a4397822c1fdc9ff0366e39fb13f8e"
+    },
+    {
+      "file": "public/models/dugout-canoe/model.glb",
+      "sha256": "6e77ae6df54f19a450d460b70ee35596e9703942d5d18bcdbf6b35f066e964e4"
+    },
+    {
+      "file": "public/models/cockle-shell/model.glb",
+      "sha256": "7e4f448274b346dd8a3705901cccf0e7e4d49be2bc09b683cd85cdc740122a81"
+    },
+    {
+      "file": "public/models/shell-midden/model.glb",
+      "sha256": "494844840a1ac461837e73874bf3858d5a5f73baf8655769b6cd590d048e07cd"
+    },
+    {
+      "file": "public/models/wooden-spear/model.glb",
+      "sha256": "ac2b1a3c8100b38a7753749fd6578b5f355247478cf9f44ea642c06eb858ee5d"
+    },
+    {
+      "file": "public/models/obsidian-spear/model.glb",
+      "sha256": "d89b680a1519081cb5725ae543ebf1ce7e81c1fdf7f844e060eb17b4f42ca7bc"
+    },
+    {
+      "file": "public/models/obsidian-blade/model.glb",
+      "sha256": "3319075637b3714f836a59d9381fa23f0fb943ed8969a6c193f11e5152590f60"
+    },
+    {
+      "file": "public/models/violet-behemoth/model-quadruped-r04.glb",
+      "sha256": "6dd28210973bdccc543c0e2805ced82c838b95df2535218a652fda8ca869aa55"
+    },
+    {
+      "file": "public/models/meadow-sprig/model.glb",
+      "sha256": "4a4c9060a5d95f0db3dcf3c4ff050c78c86f543b942ec62273471326959483de"
+    },
+    {
+      "file": "public/models/sabertooth-tiger/model-r13.glb",
+      "sha256": "54db205315086d109bd34b6cf35d31df25cca7472dddb95c7fdbeea6c868021d"
+    },
+    {
+      "file": "public/models/valley-castle/model-r13.glb",
+      "sha256": "2a271bbc12e1b331da6468d5f84f1db173beeb284fdebfdde7c56b613e48dc90"
+    },
+    {
+      "file": "public/models/neanderthal-hunter/model-human-r10.glb",
+      "sha256": "93047f04342a5880dc4574956846f130b3d97c5041408c07f790d2ae09f55000"
+    },
+    {
+      "file": "public/models/cro-magnon-woman/model-human-r10.glb",
+      "sha256": "bac0bdd9d2961654501b5cc39ce94514b6262c7750ff10299948db4c377e711a"
+    },
+    {
+      "file": "public/models/neanderthal-woman/model-human-r10.glb",
+      "sha256": "b1cd6f89291d3d71adb7be0a7f245c746a32691fba2df0e62faccb905a0af1a8"
+    },
+    {
+      "file": "public/models/cat-kunoichi/model-human-r10.glb",
+      "sha256": "c81c37512be0502decf46495868a0c8521470098117b422b167ffce8da59cd9b"
+    },
+    {
+      "file": "public/models/desert-fennec-mage/model-run-r05.glb",
+      "sha256": "1df80588345196a75382afbd437b6ec9349bc717688433801dc3fdd72c8e0841"
+    },
+    {
+      "file": "public/models/giant-ape/model-run-r05.glb",
+      "sha256": "ae9cee5355ca661235b4c310df8feb03f00dc447ab479c7de5446a9429d3faca"
+    }
+  ],
+  "served": [
+    {
+      "url": "/models/firewood-log/model.glb",
+      "sha256": "8a32826636cfc198cc1776ebec499b1bc036779c08143cf256ad7e4d8a186cd3",
+      "bytes": 2156672
+    },
+    {
+      "url": "/models/firewood-log/lod1.glb",
+      "sha256": "75460ca0a571243cab6c63dfe0acc44fbed1fae17578823df02ffbf90626cf2e",
+      "bytes": 1728432
+    },
+    {
+      "url": "/models/firewood-log/lod2.glb",
+      "sha256": "f24ff178715163c72f74ec06a1bf6aa4cb1e6052b4810d66faffb8832bd5e71d",
+      "bytes": 1663640
+    },
+    {
+      "url": "/src/world3d.js",
+      "sha256": "d88b7b5d17ecd01ead20579ead51613ad9a42ca6c7245a382b12a3aacd855029"
+    },
+    {
+      "url": "/src/wood-pile.js",
+      "sha256": "09b9c9af6b7d24cedcccb4e0558c1aa98fdfa67d5feabfba1bfa580acfe3fc9d"
+    },
+    {
+      "url": "/src/biome-surfaces.js",
+      "sha256": "83148c097c68428d0b511ac685f5d06dc67b9e69611ceb51a7fcbc7d18e668b1"
+    },
+    {
+      "url": "/src/regional-scenery.js",
+      "sha256": "5d8b5f6a7de15474384a4802615d7661c030ead644099de27d2ddcb73bcadc1a"
+    },
+    {
+      "url": "/src/resource-visuals.js",
+      "sha256": "57ef63f6f7776c5ca03afa7bd53e25f6295c4f1b379e50f13d7025df6c4d4d57"
+    },
+    {
+      "url": "/shared/wood-pile-layout.mjs",
+      "sha256": "0d278e9a98c8371ab0b79fc49d3ae66bdc2cb55395f4b0ffaef165eb6bf03312"
+    },
+    {
+      "url": "/shared/biome-scenery.mjs",
+      "sha256": "3e4455a5d35fdd39faf20ca4e5945694c1e863c29c063409db9550ab6dca1b32"
+    },
+    {
+      "url": "/shared/model-bounds.mjs",
+      "sha256": "c964833442a456faaba9681c4189e5dd59f9619685bca9fa1a8ee025a1f4cfac"
+    },
+    {
+      "url": "/shared/collision.mjs",
+      "sha256": "5d440a3d0ca2b14b81714b701b79809315326051e8dbc2b699f3dfbf88c53af1"
+    },
+    {
+      "url": "/models/world-assets.json",
+      "sha256": "68507288a435f419e37aa70f7ae25701b85db8205bf17aed2050e790258f968c"
+    }
+  ]
+}

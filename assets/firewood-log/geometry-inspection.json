@@ -1,0 +1,74 @@
+{
+  "bounds": {
+    "min": [
+      -0.5996699333190918,
+      0.00014604443276766688,
+      -0.18544593453407288
+    ],
+    "max": [
+      0.5999230146408081,
+      0.3453669250011444,
+      0.184891015291214
+    ],
+    "radius": 0.6277285833067148,
+    "sha256": "8a32826636cfc198cc1776ebec499b1bc036779c08143cf256ad7e4d8a186cd3"
+  },
+  "size": [
+    1.1995929479599,
+    0.34522088056837674,
+    0.37033694982528687
+  ],
+  "inspections": [
+    {
+      "name": "candidate",
+      "sha256": "8a32826636cfc198cc1776ebec499b1bc036779c08143cf256ad7e4d8a186cd3",
+      "bytes": 2156672,
+      "triangles": 13340,
+      "inspection": {
+        "file": "C:\\Users\\yurin\\Desktop\\projects\\CRO-MAGNON\\output\\model-generation\\models\\firewood-log\\work\\low-poly\\candidate-02\\candidate.glb",
+        "sha256": "8a32826636cfc198cc1776ebec499b1bc036779c08143cf256ad7e4d8a186cd3",
+        "bytes": 2156672,
+        "triangles": 13340,
+        "skins": [],
+        "animations": [],
+        "validation": "passed",
+        "errors": [],
+        "visualReviewRequired": true
+      }
+    },
+    {
+      "name": "lod1",
+      "sha256": "75460ca0a571243cab6c63dfe0acc44fbed1fae17578823df02ffbf90626cf2e",
+      "bytes": 1728432,
+      "triangles": 1866,
+      "inspection": {
+        "file": "C:\\Users\\yurin\\Desktop\\projects\\CRO-MAGNON\\output\\model-generation\\models\\firewood-log\\work\\low-poly\\candidate-02\\lod1.glb",
+        "sha256": "75460ca0a571243cab6c63dfe0acc44fbed1fae17578823df02ffbf90626cf2e",
+        "bytes": 1728432,
+        "triangles": 1866,
+        "skins": [],
+        "animations": [],
+        "validation": "passed",
+        "errors": [],
+        "visualReviewRequired": true
+      }
+    },
+    {
+      "name": "lod2",
+      "sha256": "f24ff178715163c72f74ec06a1bf6aa4cb1e6052b4810d66faffb8832bd5e71d",
+      "bytes": 1663640,
+      "triangles": 466,
+      "inspection": {
+        "file": "C:\\Users\\yurin\\Desktop\\projects\\CRO-MAGNON\\output\\model-generation\\models\\firewood-log\\work\\low-poly\\candidate-02\\lod2.glb",
+        "sha256": "f24ff178715163c72f74ec06a1bf6aa4cb1e6052b4810d66faffb8832bd5e71d",
+        "bytes": 1663640,
+        "triangles": 466,
+        "skins": [],
+        "animations": [],
+        "validation": "passed",
+        "errors": [],
+        "visualReviewRequired": true
+      }
+    }
+  ]
+}

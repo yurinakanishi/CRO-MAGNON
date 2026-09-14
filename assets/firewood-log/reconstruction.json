@@ -1,0 +1,38 @@
+{
+  "author": "Codex",
+  "claude_used": false,
+  "seed": 42,
+  "resolution": 1024,
+  "texture_resolution": 512,
+  "conditioning": {
+    "path": "source/prepared/conditioning.png",
+    "sha256": "dbb013b34a6b480e5be15072cab5e9f8886be524e52fe03a00ee754bda4db07c"
+  },
+  "output": {
+    "path": "work/trellis/dense-res1024-seed0042.glb",
+    "sha256": "c19923553450efb3754c9074aa4cd1541d68e94d39c065d7d086d94d840574cf",
+    "bytes": 16373844
+  },
+  "seconds": 665.72,
+  "command": [
+    "<trellis-studio>\\runtime\\trellis-cli.exe",
+    "--image",
+    "<model>\\source\\prepared\\conditioning.png",
+    "--output",
+    "<model>\\work\\trellis\\dense-res1024-seed0042.glb",
+    "--models",
+    "<trellis-studio>\\models",
+    "--seed",
+    "42",
+    "--res",
+    "1024",
+    "--gpu",
+    "0",
+    "--require-gpu",
+    "--xatlas",
+    "--webp",
+    "off",
+    "--tex-res",
+    "512"
+  ]
+}

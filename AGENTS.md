@@ -1,3 +1,11 @@
+## 2026-09-14 採取用の丸太を1本ずつの3Dアセットへ
+
+ユーザー指示「上から無理に切って消す方式をやめ、Image to 3Dで丸太1本を作って積み重ね、1個ずつ消す」に対応。Codex imagegen参照→ローカルTRELLIS-2 1024 seed42（665.72秒）→形状保持QEM・向き変更後の法線再計算でCandidate 1 / revision 02を採用。`public/models/firewood-log/model.glb`、SHA `8a32826636cfc198cc1776ebec499b1bc036779c08143cf256ad7e4d8a186cd3`、2,156,672 bytes、13,340三角形、長さ1.20 m。LODは1,866／466三角形。旧飾り用の山とGLB・未採用r01は保持。
+
+`src/wood-pile.ts` が同じ丸太を1単位につき1本インスタンス描画し、全LODの本数だけを減らす。7本は4＋3段。残った丸太の位置・大きさは不変、0本で消え、自然再生成で下段から戻る。斧の2単位採取は2本。旧woodClipHeight／woodClipPlaneと材質の切断処理を撤去。`shared/wood-pile-layout.mts` の同じ配置と実GLBの寸法から衝突外形を算出。雪・灰・砂を継続し、地域退場時は山固有のインスタンスバッファを解放、元メッシュ・材質は共有。LOD生成直後の可視レベルも修正。
+
+全601テスト、型・strict・依存境界・JS構文・書式、43モデルの総合検証が通過。Blender dense4方向、実Chromeの単体・LOD・無彩色・全本数・距離遷移47記録。実Chrome2画面＋通信3人で7→0本のE採取、持ち物・同期、4本で再読込、実時間20秒の自然再生成、斧2本、雪・灰・砂の採取、縦横画面を確認、エラー0。準備の位置変更と実操作は区別。通常3000番の新GLB3件・JS9件・マニフェストのSHA一致、旧56GLB不変。詳細 `assets/firewood-log/README.md`、画像 `output/playwright/firewood/final/`。性能改善は主張しない。手動サーバー再起動・展示／PC2更新・公開デプロイ・コミットなし。
+
 ## 不具合・性能改善の方針（2026-09-14）
 
 ユーザー指定の記事 [Building games with Astra](https://developers.openai.com/blog/how-to-build-games-with-astra) を確認し、[GAME_IMPROVEMENT_PLAN.md](GAME_IMPROVEMENT_PLAN.md) に本ゲーム向けの方針をまとめた。再現→状態と画面の観測→原因の修正→同条件の再検証を基本とする。準備用の状態設定と実操作の検証を区別し、性能の主張には対象・環境・変更前後の数値を添える。既存の制作ルール・ゲーム仕様・共有ドメインと描画の境界を保持する。

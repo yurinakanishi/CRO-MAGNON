@@ -500,6 +500,19 @@
       "sha256": "2a271bbc12e1b331da6468d5f84f1db173beeb284fdebfdde7c56b613e48dc90",
       "delivery": "/models/valley-castle/model-r13.glb",
       "subject": "Rebuilt 2026-09-13 as a stepped temple-fortress: a walled forecourt behind a collapsed arch gate, three progressively smaller roofless terraces and a summit altar with a ruined throne, joined by grand central stairs and side stairs; the crow cult is fought one level at a time with the pontiff on the summit. Full mesh shared; the coarse LODs are not adopted."
+    },
+    {
+      "key": "firewood-log",
+      "name": "丸太1本",
+      "kind": "static",
+      "height": 0.34522088056837674,
+      "width": 1.1995929479599,
+      "geometryResolution": 1024,
+      "referenceVersion": 1,
+      "status": "adopted-and-game-qa-passed",
+      "sha256": "8a32826636cfc198cc1776ebec499b1bc036779c08143cf256ad7e4d8a186cd3",
+      "delivery": "/models/firewood-log/model.glb",
+      "subject": "One complete rough bark hardwood log with closed pale cut ends; individual stackable firewood."
     }
   ],
   "reuse": {
