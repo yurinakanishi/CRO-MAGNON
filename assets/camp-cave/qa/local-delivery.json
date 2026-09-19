@@ -1,0 +1,46 @@
+{
+  "status": "passed",
+  "server": "Started local dev server because port 3000 was not listening; existing saves retained.",
+  "results": [
+    {
+      "url": "http://127.0.0.1:3000/models/camp-cave/model-r05.glb",
+      "bytes": 4641368,
+      "sha256": "812262019d83328c0908729c7b68e836a37f3c0613bda5c6e0a39b41e383e46f"
+    },
+    {
+      "url": "http://127.0.0.1:3000/models/camp-mountain/model-r05.glb",
+      "bytes": 5756836,
+      "sha256": "751ae47bbc9a1f9686bf28edf34db39eee80939aaa01730823e9e5c2d72c275f"
+    },
+    {
+      "url": "http://127.0.0.1:3000/models/camp-cave/mural.png",
+      "bytes": 1973515,
+      "sha256": "6cf92e8ddb0f90fa0a23f538e3e568e333c80b9498e52172aa46742a8517c20e"
+    },
+    {
+      "url": "http://127.0.0.1:3000/models/world-assets.json",
+      "bytes": 563264,
+      "sha256": "7bfad162ad50b3234cce663591760bb2f4d47ae88f5f9e19adf7c8d48f08df01"
+    },
+    {
+      "url": "http://127.0.0.1:3000/shared/castle-layout.mjs",
+      "bytes": 5149,
+      "sha256": "354c2a7ef84fdad186686b0d1cab42ceaa8886087303ed86b9021dc99b68fe38"
+    },
+    {
+      "url": "http://127.0.0.1:3000/shared/camp-cave-layout.mjs",
+      "bytes": 1858,
+      "sha256": "9c6988bb9c8ac74104c1981a6289c6220514429835b55ae9c25bf87a07dcfa5a"
+    },
+    {
+      "url": "http://127.0.0.1:3000/src/world-landmarks.js",
+      "bytes": 8820,
+      "sha256": "ed6537fc3d73392492fffd01a551be6db680597517c5356cc390e63ae40c2eaa"
+    },
+    {
+      "url": "http://127.0.0.1:3000/src/cave-materials.js",
+      "bytes": 3008,
+      "sha256": "65d133db6ca8c4a83590493f503f198b0a1a34a626d4245832b0f3c9298f9bc8"
+    }
+  ]
+}

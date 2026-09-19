@@ -1,0 +1,14 @@
+{
+  "status": "passed",
+  "samples": 189347,
+  "maximum": 0.0972367620463509,
+  "mean": 0.0013838463608996342,
+  "worst": {
+    "x": 53.26666768391925,
+    "z": 117.66666793823242,
+    "drawn": 0.14442932605743408,
+    "walk": 0.24166608810378498
+  },
+  "method": "Every exposed triangle centre compared to the measured walking field; cave interior tested separately.",
+  "before": "output/camp-surface-mismatch-before.json"
+}

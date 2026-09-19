@@ -1,0 +1,18 @@
+{
+  "date": "2026-09-18",
+  "candidate": 2,
+  "revision": "14",
+  "sha256": "5b7312c2a7cb9b139216751c444f38baceb74347cdc2753cd9e1b1b1fedbf90f",
+  "decision": "adopt",
+  "visualGate": "passed",
+  "browserGate": "passed",
+  "gameGate": "pending",
+  "visualEvidence": "output/playwright/camp-mountain/asset-14-dressed/",
+  "notes": [
+    "Source r11 upper envelope resampled and locally smoothed, retaining the source mountain form.",
+    "Continuous shared-edge retopology repairs holes and stacked skin. This is a ray-projected TRELLIS source surface, not a replacement primitive.",
+    "Accepted meadow-ground texture reused; world-space material treatment blends terrain and cave apron.",
+    "All upward faces, including steep slopes, contribute to the 0.4m physical height field.",
+    "River-side relief capped to a broad 0.72 grade shoulder, avoiding the former compressed vertical turf skirt."
+  ]
+}

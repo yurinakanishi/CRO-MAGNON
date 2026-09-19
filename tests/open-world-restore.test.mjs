@@ -58,6 +58,7 @@ test('a restored application core preserves inventories, resources and hunting p
   room.resources[0].amount = 1;
   room.camp.wood = 8;
   room.camp.stone = 4;
+  room.camp.caveFireLit = true;
   Object.assign(room.animals[0], { phase: 'meat', health: 0, meatRemaining: 3 });
   Object.assign(room.enemies[0], {
     phase: 'respawning',
@@ -70,6 +71,7 @@ test('a restored application core preserves inventories, resources and hunting p
   await original.close();
   const restoredCore = createGameCore();
   restoredCore.importState(saved);
+  assert.equal(restoredCore.rooms.get('FANTASY-QA').camp.caveFireLit, true);
   const restored = createGameServer({
     core: restoredCore,
     port: 0,

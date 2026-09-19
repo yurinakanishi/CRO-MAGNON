@@ -1,0 +1,9 @@
+{
+  "decision": "adopt",
+  "sha256": "6cfda27586229d13369b297d9f589b61c9a6c2e1042fbf96c4749abf08483476",
+  "visualGate": "passed",
+  "browserGate": "passed",
+  "views": "output/playwright/camp-mountain/asset-02",
+  "notes": "Source-derived broad hill fitted around camp, river corridor and castle foundation; summit 8.5m, wide switchback route. Original source and r01 retained.",
+  "gameQA": "pending"
+}

@@ -1,0 +1,17 @@
+{
+  "date": "2026-09-18",
+  "candidate": 1,
+  "revision": "07",
+  "sha256": "13e1c3655e05f03e44823ccd377e1a930cef82d833e008ca0ef175cadf7923a7",
+  "decision": "adopt",
+  "visualGate": "passed",
+  "browserGate": "passed",
+  "gameGate": "passed",
+  "visualEvidence": "output/playwright/camp-cave/asset-07-dressed/",
+  "notes": [
+    "Source r05 chamber stretched to twice its depth with entrance kept in place.",
+    "Smoothed welded source floor; existing boulder is part of the same model and closes the far end.",
+    "Pigment relocated to the far end wall, with a shared dust palette at the entrance."
+  ],
+  "gameQA": "output/playwright/camp-cave/game-final-r15/summary.json"
+}

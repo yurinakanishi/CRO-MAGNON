@@ -20,7 +20,7 @@ class Socket extends EventEmitter {
   command(value){this.emit('message',Buffer.from(JSON.stringify(value)),false);}
 }
 
-test('fantasy gulf changes only its reserved ocean; original land cells and other coasts are preserved', () => {
+test('fictional gulf and camp hill change only their reserved areas; other coasts are preserved', () => {
   const raw=new Uint8Array(COAST_GRID.width*COAST_GRID.height);let offset=0;
   for(let i=0;i<COAST_RUNS.length;i+=2){raw.fill(COAST_RUNS[i+1],offset,offset+COAST_RUNS[i]);offset+=COAST_RUNS[i];}
   const source=coastTextureData(), actual=source.data;let additions=0;
@@ -29,6 +29,7 @@ test('fantasy gulf changes only its reserved ocean; original land cells and othe
     const j=(row+(EARTH.minZ-source.minZ)/source.cell)*source.width+col+(EARTH.minX-source.minX)/source.cell;
     if(actual[j]===raw[i])continue;
     const x=EARTH.minX+(i%COAST_GRID.width+.5)*COAST_GRID.cell,z=EARTH.minZ+(Math.floor(i/COAST_GRID.width)+.5)*COAST_GRID.cell;
+    if(x>=-215 && x<=65 && z>=30 && z<=315){assert.ok(actual[j]>=raw[i],'hill never removes old land');continue;}
     assert.ok(inGulf(x,z),`changed outside gulf ${x},${z}`);assert.ok(raw[i]<=128,'existing land changed');assert.ok(actual[j]>=raw[i]);additions++;
   }
   assert.ok(additions>1000);assert.equal(isLand(-2180,900),false,'central gulf remains water');

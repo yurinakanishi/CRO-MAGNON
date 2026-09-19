@@ -246,7 +246,8 @@ test('the pontiff has both a close physical strike and stronger red magic', () =
   pontiff.targetId = null;
   pontiff.aggroAfter = 0;
   pontiff.nextBoltAt = 0;
-  Object.assign(player, { x: pontiff.x, z: pontiff.z + 9 });
+  // The keep now faces north; aim along the altar rather than off its edge.
+  Object.assign(player, { x: pontiff.x - 9, z: pontiff.z });
   updateEnemies(room, 0, 5000);
   assert.equal(pontiff.behavior, 'bolt');
   assert.equal(pontiff.pendingAttack.damage, CROW_ROLE_RULES.pontiff.boltDamage);
@@ -567,7 +568,7 @@ test('wooden spear hits kill the crow; death remains briefly solid, then safe re
 
 test('a hit from outside the notice range still gives the attacker away', () => {
   const { room, enemy, player } = fixture();
-  player.z = enemy.z + ENEMY_RULES.aggroRange + 2;
+  Object.assign(player, { x: enemy.x - ENEMY_RULES.aggroRange - 2, z: enemy.z });
   updateEnemies(room, 0.05, 2000);
   assert.equal(enemy.targetId, null);
   enemy.provokedBy = player.id;
@@ -581,7 +582,7 @@ test('red bolt: raised-staff windup, straight flight, one hit; a side-step after
   for (const dodge of [false, true]) {
     const { room, enemy, player } = fixture();
     enemy.nextBoltAt = 0;
-    player.z = enemy.z + 8;
+    Object.assign(player, { x: enemy.x - 8, z: enemy.z });
     updateEnemies(room, 0.05, 2000);
     assert.equal(enemy.targetId, player.id);
     assert.equal(enemy.behavior, 'bolt');
@@ -599,10 +600,10 @@ test('red bolt: raised-staff windup, straight flight, one hit; a side-step after
     assert.equal(bolt.kind, 'hex');
     assert.equal(bolt.ownerId, enemy.id);
     assert.ok(
-      Math.abs(bolt.dz - 1) < 1e-9 && Math.abs(bolt.dx) < 1e-9,
+      Math.abs(bolt.dx + 1) < 1e-9 && Math.abs(bolt.dz) < 1e-9,
       'aimed straight at the target',
     );
-    if (dodge) player.x += 1.6;
+    if (dodge) player.z += 1.6;
     let now = release;
     while (room.hexBolts.length && now < release + 4000) {
       now += 50;

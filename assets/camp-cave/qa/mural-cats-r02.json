@@ -1,0 +1,95 @@
+{
+  "date": "2026-09-18T06:10:32.814Z",
+  "decision": "adopt",
+  "generator": "Built-in imagegen",
+  "source": "assets/camp-cave/source/mural-cats-v2.png",
+  "sha256": "8058db4fed713baaf3f4ca75f4b9bf527502794e05aa08e7646ae23d74ef1804",
+  "prompt": "assets/camp-cave/mural-cats-prompt.txt",
+  "references": [
+    {
+      "path": "assets/camp-cave/source/cat-reference-user.png",
+      "sha256": "e00722b68d4147b34e51937c2d1172458cae9e36113f6313a4f774a074384df6",
+      "role": "User-provided subject reference"
+    },
+    {
+      "path": "assets/camp-cave/source/character-524-reference-user.png",
+      "sha256": "8231914f43d9e8454823a923c8004df44c0bad1ee1aec9e2f140493d5f2af273",
+      "role": "User-provided subject reference"
+    }
+  ],
+  "imageInspection": {
+    "size": [
+      1942,
+      809
+    ],
+    "mode": "RGBA",
+    "alphaRange": [
+      0,
+      255
+    ],
+    "transparentFraction": 0.39532219278737274,
+    "processing": "Generated alpha and original PNG bytes retained without image editing"
+  },
+  "projectionMetres": [
+    5,
+    2.0833
+  ],
+  "visualReview": [
+    "Fluffy reclining tabby/white cat pose, face and curled paws remain recognizable.",
+    "Yellow cat-eared character retains three white discs, orange 524 and dark teal mouth.",
+    "Initial 6.4m projection rejected because the left overhang covered the cat face.",
+    "Final 5m projection places the face in view and keeps both subjects about 2m tall.",
+    "Actual game screenshots show faint unlit pigment and vivid fire-lit pigment on the same wall.",
+    "Portrait screen crops parts of the large mural naturally; landscape shows both subjects."
+  ],
+  "gameQA": "output/playwright/camp-cave/game-mural-cats-r02-framed/summary.json",
+  "checks": [
+    "keyboard walk: approach the large rear-wall painting",
+    "active manifest mural loaded in real renderer",
+    "actual E input illuminates the mural",
+    "reload retains the current mural and fire state",
+    "actual E input extinguishes the light"
+  ],
+  "errors": [],
+  "validation": [
+    "TypeScript + strict build",
+    "architecture boundaries",
+    "changed script syntax",
+    "Prettier"
+  ],
+  "unchanged": [
+    "Old mural source and delivery",
+    "Cave r07 GLB",
+    "Mountain r15 GLB"
+  ],
+  "localDelivery": {
+    "origin": "http://127.0.0.1:3000",
+    "results": [
+      {
+        "url": "/models/camp-cave/mural-cats-r02.png",
+        "bytes": 2582801,
+        "sha256": "8058db4fed713baaf3f4ca75f4b9bf527502794e05aa08e7646ae23d74ef1804"
+      },
+      {
+        "url": "/models/world-assets.json",
+        "bytes": 565710,
+        "sha256": "c6442ab602aa0a9074e0d90c2255e6e01fdd085a5c500283cf7879811a7b9ff9"
+      },
+      {
+        "url": "/models/camp-cave/asset.json",
+        "bytes": 3501,
+        "sha256": "ac627a0c817589e7fe4099fd8b43c9a6cd920ebd9db8f133964a5397081046a8"
+      },
+      {
+        "url": "/src/world-landmarks.js",
+        "bytes": 9208,
+        "sha256": "d71fce6fec8e063a64678f90a473ebe2d84bc90a5c83eb10d97f57d34eb566a8"
+      },
+      {
+        "url": "/src/cave-materials.js",
+        "bytes": 3826,
+        "sha256": "551421580adba11fac5ec90252afdf1e981a5043657973ea71eef9c20e8a6ce4"
+      }
+    ]
+  }
+}

@@ -76,12 +76,10 @@ export const BEHEMOTH_GROUND = Object.freeze({
   id: 'violet-behemoth-1',
   modelKey: BEHEMOTH.modelKey,
   name: BEHEMOTH.name,
-  // 2026-09-12: moved to the meadow west-south-west of the starting fire (50, 50),
-  // 78 m away, so the three territorial creatures stand around the camp
-  // (sabertooth north, crow shaman east at the castle gate, behemoth west).
-  // The 40 m marsh footprint is dry land here; the shore lies just beyond it.
-  x: -25,
-  z: 70,
+  // The southern mountain occupies the former western meadow. Keep the whole
+  // marsh on low, dry grassland east of the unchanged river and bridge.
+  x: 112,
+  z: 65,
   radius: 32,
   roamRadius: 3,
 });

@@ -1,0 +1,9 @@
+{
+  "decision": "adopt",
+  "sha256": "a899390a2ac67c413a73e05bc86a255993cbe4bd8308c39910ebeb3340d7ae42",
+  "visualGate": "passed",
+  "browserGate": "passed",
+  "views": "output/playwright/camp-cave/asset-02-dressed",
+  "notes": "Source cave retained. Generated ochre/charcoal pigment projected onto actual interior triangles; verified faint and fire-lit views. Failed UV bake r03/r04 retained, not delivered. Small irregular reconstructed rock fissures remain.",
+  "gameQA": "pending"
+}

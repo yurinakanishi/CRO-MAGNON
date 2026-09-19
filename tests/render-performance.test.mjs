@@ -127,7 +127,11 @@ test('a walking sight line hides its blocking canopy and restores trees when the
   const a = landscapeFixtures(),
     b = landscapeFixtures();
   const camera = new THREE.PerspectiveCamera(57, 1.6, 0.15, 360);
-  const focus = new THREE.Vector3(76, 1.4, 68);
+  // Follow a real retained tree: the new hill changed the old fixed camera's elevation.
+  const tree = a[0].placements.find((p) => p.height < 7);
+  assert.ok(tree);
+  const floor = tree.position.y;
+  const focus = new THREE.Vector3(tree.x, floor + 1.4, tree.z - 3);
   const positions = (landscape) =>
     landscape.levels
       .flatMap((parts) =>
@@ -141,7 +145,7 @@ test('a walking sight line hides its blocking canopy and restores trees when the
       )
       .sort();
   try {
-    camera.position.set(74.5074, 2.44, 73.1907);
+    camera.position.set(tree.x, floor + 2.44, tree.z + 1);
     camera.lookAt(focus);
     camera.updateMatrixWorld(true);
     a[0].update(camera, 1, focus);

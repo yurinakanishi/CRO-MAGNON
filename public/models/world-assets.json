@@ -23099,6 +23099,178 @@
         "candidateFile": "output/model-generation/models/firewood-log/work/low-poly/candidate-02/candidate.glb",
         "visualReview": "assets/firewood-log/adoption-review.json"
       }
+    },
+    {
+      "modelKey": "camp-cave",
+      "name": "はじまりの壁画洞窟",
+      "kind": "static",
+      "candidate": 1,
+      "revision": "07",
+      "status": "integrated-and-game-qa-passed",
+      "url": "/models/camp-cave/model-r07.glb",
+      "sha256": "13e1c3655e05f03e44823ccd377e1a930cef82d833e008ca0ef175cadf7923a7",
+      "bytes": 7088964,
+      "triangles": 37846,
+      "upAxis": "Y",
+      "forwardAxis": "+Z",
+      "heightMetres": 8.608572006225586,
+      "widthMetres": 17.888314247131348,
+      "placement": {
+        "pivot": "ground-centred",
+        "min": [
+          -8.949607849121094,
+          0.75,
+          -18.114377975463867
+        ],
+        "max": [
+          8.938706398010254,
+          9.358572006225586,
+          18.207656860351562
+        ]
+      },
+      "clips": [],
+      "lods": [],
+      "notes": [
+        "Source r05 chamber stretched to twice its depth with entrance kept in place.",
+        "Smoothed welded source floor; existing boulder is part of the same model and closes the far end.",
+        "Pigment relocated to the far end wall, with a shared dust palette at the entrance."
+      ],
+      "provenance": {
+        "provider": "Codex",
+        "claudeUsed": false,
+        "referenceGenerator": "Built-in imagegen",
+        "referenceImage": "assets/camp-cave/source/reference-v1.png",
+        "referenceSha256": "6ce31118ad3f35b1c0cd25bef9cfd3c6d5e67174957b8a1d76105410e6baa509",
+        "reconstruction": "Local TRELLIS.2 (GGUF/C++), 1024 geometry, seed 42, 512 texture flow, 2048 atlas",
+        "sourceGeometry": "assets/camp-cave/work/trellis/reduced-res1024-seed42.glb",
+        "sourceGeometrySha256": "5024f96c96a53c054b213508d84f90a267cc725da64eed1d096274d6d9168459",
+        "visualReview": "assets/camp-cave/qa/adoption-r07.json",
+        "modelWorkspace": "assets/camp-cave",
+        "workflow": "Source image → TRELLIS.2 → source-preserving QEM → terrain fitting/UV/materials → exact GLB QA",
+        "derivedInputs": [
+          {
+            "path": "public/models/camp-cave/model-r05.glb",
+            "sha256": "812262019d83328c0908729c7b68e836a37f3c0613bda5c6e0a39b41e383e46f"
+          },
+          {
+            "path": "public/models/valley-boulder/model.glb",
+            "sha256": "f46449aa51814b9037c8ed3c43179845e63c6f9b48b94e02c7979266cb09bb1d"
+          }
+        ],
+        "refinementWorkflow": "assets/camp-cave/workflow/refine-landforms.py"
+      },
+      "pigment": {
+        "url": "/models/camp-cave/mural-atlas-r05.png",
+        "source": "assets/camp-cave/source/mural-atlas-r05.png",
+        "sha256": "6efe80a19056af4f5a9ce50d7309b578f4c3e914fa9543c51a8fc629842e6889",
+        "bytes": 1851771,
+        "image": {
+          "width": 1254,
+          "height": 1254
+        },
+        "generator": "Built-in imagegen",
+        "prompt": "assets/camp-cave/mural-atlas-prompt-r05.txt",
+        "references": [
+          {
+            "path": "assets/camp-cave/source/cat-reference-user.png",
+            "sha256": "e00722b68d4147b34e51937c2d1172458cae9e36113f6313a4f774a074384df6",
+            "role": "User-provided subject reference"
+          },
+          {
+            "path": "assets/camp-cave/source/character-524-reference-user.png",
+            "sha256": "8231914f43d9e8454823a923c8004df44c0bad1ee1aec9e2f140493d5f2af273",
+            "role": "User-provided subject reference"
+          }
+        ],
+        "styleReference": "assets/camp-cave/source/mural-side-r04.png",
+        "application": "Fourteen separate mural placements on east, west and rear walls; cat and 524 face each other across the chamber",
+        "layout": "src/cave-gallery-layout.ts",
+        "review": "assets/camp-cave/qa/gallery-r05.json",
+        "previous": {
+          "url": "/models/camp-cave/mural-side-r04.png",
+          "source": "assets/camp-cave/source/mural-side-r04.png",
+          "sha256": "1cbdd091523b48fea81f70eba5cc3840c7328ccfab4b8d1ef63e44b49e0ff5af"
+        }
+      },
+      "gameQA": "output/playwright/camp-cave/game-final-r15/summary.json",
+      "rockSurface": {
+        "url": "/models/camp-cave/limestone-r05.png",
+        "source": "assets/camp-cave/source/limestone-r05.png",
+        "sha256": "574372b875437977f226564a2bc1a8cd7149695582b1bbb6c806f7e83a075cee",
+        "bytes": 3425333,
+        "image": {
+          "width": 1254,
+          "height": 1254
+        },
+        "generator": "Built-in imagegen",
+        "prompt": "assets/camp-cave/limestone-prompt-r05.txt",
+        "application": "2.8m triplanar limestone colour and surface-gradient relief, mineral mottling and damp roughness",
+        "review": "assets/camp-cave/qa/gallery-r05.json"
+      }
+    },
+    {
+      "modelKey": "camp-mountain",
+      "name": "白羽の丘陵",
+      "kind": "static",
+      "candidate": 2,
+      "revision": "15",
+      "status": "integrated-and-game-qa-passed",
+      "url": "/models/camp-mountain/model-r15.glb",
+      "sha256": "193127fbde284f036864996060cb3b85578ab7a595384151dad858e569eb9202",
+      "bytes": 8929000,
+      "triangles": 245000,
+      "upAxis": "Y",
+      "forwardAxis": "+Z",
+      "heightMetres": 40.25746309757233,
+      "widthMetres": 280,
+      "placement": {
+        "pivot": "ground-centred",
+        "min": [
+          -140,
+          -1.100000023841858,
+          -140
+        ],
+        "max": [
+          140,
+          39.15746307373047,
+          140
+        ]
+      },
+      "clips": [],
+      "lods": [],
+      "notes": [
+        "Source r11 upper envelope resampled and locally smoothed, retaining the source mountain form.",
+        "Continuous shared-edge retopology repairs holes and stacked skin. This is a ray-projected TRELLIS source surface, not a replacement primitive.",
+        "Accepted meadow-ground texture reused; world-space material treatment blends terrain and cave apron.",
+        "All upward faces, including steep slopes, contribute to the 0.4m physical height field.",
+        "River-side relief capped to a broad 0.72 grade shoulder, avoiding the former compressed vertical turf skirt.",
+        "Apron fitted below the measured cave floor until the actual rock arch; exact roof texture avoids cutting sky gaps around the mouth."
+      ],
+      "provenance": {
+        "provider": "Codex",
+        "claudeUsed": false,
+        "referenceGenerator": "Built-in imagegen",
+        "referenceImage": "assets/camp-mountain/source/reference-v2.png",
+        "referenceSha256": "d1656f3db71a436224d30ea42eddfd236578fe4bfcf78e3959272aa6f4cda23f",
+        "reconstruction": "Local TRELLIS.2 (GGUF/C++), 1024 geometry, seed 42, 512 texture flow, 2048 atlas",
+        "sourceGeometry": "assets/camp-mountain/work/trellis/massif-v2-res1024-seed42.glb",
+        "sourceGeometrySha256": "7b8cf524287688102da66ab8b7a685603530d6763e47f4db679ec5b2975c194b",
+        "visualReview": "assets/camp-mountain/qa/adoption-r15.json",
+        "modelWorkspace": "assets/camp-mountain",
+        "workflow": "Source image → TRELLIS.2 → source-preserving QEM → terrain fitting/UV/materials → exact GLB QA → source-envelope retopology and smoothing → measured surface comparison",
+        "derivedInputs": [
+          {
+            "path": "public/models/camp-mountain/model-r11.glb",
+            "sha256": "a445118fc438e025b7b4450321282d257d8ffd67f582d249103f46627169ee47"
+          },
+          {
+            "path": "public/models/meadow-ground/model.glb",
+            "sha256": "6c6b41bdec1631236027c567635623aa9cdd1e0d92c0ae9e89f77764b52995e1"
+          }
+        ],
+        "refinementWorkflow": "assets/camp-cave/workflow/refine-landforms.py"
+      },
+      "gameQA": "output/playwright/camp-cave/game-final-r15/summary.json"
     }
   ],
   "status": "ready"

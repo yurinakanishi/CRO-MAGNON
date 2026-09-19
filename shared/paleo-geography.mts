@@ -1,6 +1,7 @@
 import { COAST_GRID, COAST_RUNS } from './paleo-coast-data.mjs';
 import { GULF, GULF_ENTRY, inGulf, gulfLandDistance } from './gulf-region.mjs';
 import { WORLD_BOUNDS } from './world-bounds.mjs';
+import { mountainLandDistance } from './camp-mountain.mjs';
 import { LEGACY_GULF, legacyGulfDistance, inLegacyGulf } from './gulf-legacy.mjs';
 
 export const EARTH = Object.freeze({
@@ -97,6 +98,25 @@ for (
     const encoded = Math.max(0, Math.min(255, Math.round(128 + 4 * gulfLandDistance(x, z))));
     if (coast[iz * width + ix] <= 128)
       coast[iz * width + ix] = Math.max(coast[iz * width + ix], encoded);
+  }
+// Join the new source-derived southern foothill to the existing shoreline.
+// This same grid controls sea rendering, walking, boats and the map.
+for (
+  let iz = Math.floor((30 - WORLD_BOUNDS.minZ) / cell);
+  iz < Math.ceil((315 - WORLD_BOUNDS.minZ) / cell);
+  iz++
+)
+  for (
+    let ix = Math.floor((-215 - WORLD_BOUNDS.minX) / cell);
+    ix < Math.ceil((65 - WORLD_BOUNDS.minX) / cell);
+    ix++
+  ) {
+    const d = mountainLandDistance(
+      WORLD_BOUNDS.minX + (ix + 0.5) * cell,
+      WORLD_BOUNDS.minZ + (iz + 0.5) * cell,
+    );
+    const value = Math.max(0, Math.min(255, Math.round(128 + 4 * d)));
+    coast[iz * width + ix] = Math.max(coast[iz * width + ix], value);
   }
 export const coastTextureData = () => ({
   data: coast,

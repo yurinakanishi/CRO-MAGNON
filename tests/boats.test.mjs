@@ -2,7 +2,8 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { CollisionWorld } from '../dist/shared/collision.mjs';
 import { BOATING,initializeBoats,handleBoatAction,updateBoats,releaseBoat,launchPoint,waterBodyFree,landingPoint } from '../dist/shared/boats.mjs';
-const shore={x:21,z:125};
+// The former test shore is now the mountain's lower shoulder.
+const shore={x:128,z:124};
 function fixture(){const p={id:'p',species:'cro',gender:'female',...shore,radius:.32,inventory:{wood:24},path:[],energy:100};const r={collision:new CollisionWorld(),players:new Map([[p.id,p]]),animals:[],enemies:[],p};initializeBoats(r);return r;}
 const act=(r,action,p=r.p,targetId)=>handleBoatAction(r,p,{action,targetId},10000);
 test('building consumes wood only after capacity, coast and free launch space pass',()=>{
@@ -22,11 +23,11 @@ test('boarding is exclusive, validates range and action conflicts, and cannot fa
 });
 test('hull sweeps stay at sea, rider stays synchronized, stale input stops and offshore exit fails',()=>{
   const r=fixture();act(r,'craftBoat');act(r,'boardBoat');const b=r.boats[0];
-  b.dx=0;b.dz=1;b.runningRequested=true;
+  b.dx=1;b.dz=0;b.runningRequested=true;
   for(let i=0;i<14;i++){b.lastInput=11000+i*100;updateBoats(r,.1,b.lastInput);assert.ok(waterBodyFree(b.x,b.z,b.radius));assert.equal(r.p.x,b.x);assert.equal(r.p.z,b.z);}
   const before={x:b.x,z:b.z};updateBoats(r,.1,b.lastInput+1000);assert.equal(b.x,before.x);assert.equal(b.z,before.z);
   assert.equal(landingPoint(r,r.p,b),null);assert.equal(act(r,'boardBoat').changed,false);assert.equal(r.p.boatId,b.id);
-  b.dz=-1;for(let i=0;i<140;i++){b.lastInput=21000+i*100;updateBoats(r,.1,b.lastInput);assert.ok(waterBodyFree(b.x,b.z,b.radius));}
+  b.dx=-1;for(let i=0;i<140;i++){b.lastInput=21000+i*100;updateBoats(r,.1,b.lastInput);assert.ok(waterBodyFree(b.x,b.z,b.radius));}
   assert.ok(landingPoint(r,r.p,b));assert.equal(act(r,'boardBoat').changed,true);assert.ok(r.collision.free(r.p,r.p.radius));
 });
 test('disconnect returns the boat and player to the embarkation, keeps materials and clears input',()=>{

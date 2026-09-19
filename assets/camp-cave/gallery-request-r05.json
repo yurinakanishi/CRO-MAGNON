@@ -1,0 +1,55 @@
+{
+  "date": "2026-09-19",
+  "request": "壁画を洞窟内の各所に分散し、猫と524は反対の壁へ。洞窟内部の岩肌の質感と忠実度を高める。",
+  "pigment": {
+    "url": "/models/camp-cave/mural-atlas-r05.png",
+    "source": "assets/camp-cave/source/mural-atlas-r05.png",
+    "sha256": "6efe80a19056af4f5a9ce50d7309b578f4c3e914fa9543c51a8fc629842e6889",
+    "bytes": 1851771,
+    "image": {
+      "width": 1254,
+      "height": 1254
+    },
+    "generator": "Built-in imagegen",
+    "prompt": "assets/camp-cave/mural-atlas-prompt-r05.txt",
+    "references": [
+      {
+        "path": "assets/camp-cave/source/cat-reference-user.png",
+        "sha256": "e00722b68d4147b34e51937c2d1172458cae9e36113f6313a4f774a074384df6",
+        "role": "User-provided subject reference"
+      },
+      {
+        "path": "assets/camp-cave/source/character-524-reference-user.png",
+        "sha256": "8231914f43d9e8454823a923c8004df44c0bad1ee1aec9e2f140493d5f2af273",
+        "role": "User-provided subject reference"
+      }
+    ],
+    "styleReference": "assets/camp-cave/source/mural-side-r04.png",
+    "application": "Fourteen separate mural placements on east, west and rear walls; cat and 524 face each other across the chamber",
+    "layout": "src/cave-gallery-layout.ts",
+    "review": "assets/camp-cave/qa/gallery-r05.json",
+    "previous": {
+      "url": "/models/camp-cave/mural-side-r04.png",
+      "source": "assets/camp-cave/source/mural-side-r04.png",
+      "sha256": "1cbdd091523b48fea81f70eba5cc3840c7328ccfab4b8d1ef63e44b49e0ff5af"
+    }
+  },
+  "rockSurface": {
+    "url": "/models/camp-cave/limestone-r05.png",
+    "source": "assets/camp-cave/source/limestone-r05.png",
+    "sha256": "574372b875437977f226564a2bc1a8cd7149695582b1bbb6c806f7e83a075cee",
+    "bytes": 3425333,
+    "image": {
+      "width": 1254,
+      "height": 1254
+    },
+    "generator": "Built-in imagegen",
+    "prompt": "assets/camp-cave/limestone-prompt-r05.txt",
+    "application": "2.8m triplanar limestone colour and surface-gradient relief, mineral mottling and damp roughness",
+    "review": "assets/camp-cave/qa/gallery-r05.json"
+  },
+  "preservedModel": {
+    "url": "/models/camp-cave/model-r07.glb",
+    "sha256": "13e1c3655e05f03e44823ccd377e1a930cef82d833e008ca0ef175cadf7923a7"
+  }
+}

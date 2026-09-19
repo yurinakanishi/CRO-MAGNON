@@ -179,7 +179,8 @@ const FORMATION = Object.freeze({
     [-29, 7],
     [14, 6],
     [-34, 0],
-    [18, 0],
+    // Keep its patrol ring clear of the pillar after rotating the keep uphill.
+    [18, 0.5],
     [20, -12],
     [-31, -30],
   ],

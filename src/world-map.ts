@@ -17,6 +17,7 @@ import {
 import { LANDMARKS } from '../shared/landmarks.mjs';
 import { WARP_POINTS } from '../shared/warp-sites.mjs';
 import { CASTLE, CASTLE_GATE } from '../shared/castle-layout.mjs';
+import { CAMP_CAVE, CAMP_MOUNTAIN_TRAIL } from '../shared/camp-cave-layout.mjs';
 import { ENEMY_RULES } from '../shared/enemies.mjs';
 import { HUNTING } from '../shared/hunting.mjs';
 import { enemyStatusLabel } from './enemy-state.js';
@@ -655,6 +656,20 @@ export function drawWorldMap(canvas, state, selfId, big = false) {
       if (!near) label(2, stop.name, x + 8, y + 4, { color: '#ffe9c0' });
     }
   if (mini || places) {
+    ctx.beginPath();
+    CAMP_MOUNTAIN_TRAIL.forEach((p, i) => {
+      const [px, py] = point(p.x, p.z);
+      if (i) ctx.lineTo(px, py);
+      else ctx.moveTo(px, py);
+    });
+    ctx.strokeStyle = '#c8a477';
+    ctx.lineWidth = mini ? 1 : 2;
+    ctx.stroke();
+    dot(CAMP_CAVE.x, CAMP_CAVE.z, '#d5ae85', 3);
+    if (places) {
+      const [cx, cy] = point(CAMP_CAVE.x, CAMP_CAVE.z);
+      label(2, CAMP_CAVE.name, cx + 8, cy + 4, { color: '#e9d0aa' });
+    }
     const [x, y] = point(CASTLE.x, CASTLE.z);
     ctx.fillStyle = '#d8cebc';
     ctx.fillRect(x - 4, y - 3, 8, 7);

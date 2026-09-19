@@ -45,6 +45,7 @@ import {
   acceptsGameShortcut,
 } from './combat-input.js';
 import { GATHER_RANGE, interactionVisible } from '../shared/interactions.mjs';
+import { caveFireInteraction } from '../shared/cave-fire.mjs';
 import { ENEMY_GROUNDS, SCENERY } from '../shared/scenery-layout.mjs';
 import { CASTLE_GATE } from '../shared/castle-layout.mjs';
 import { playerDamageEvent } from './enemy-state.js';
@@ -623,6 +624,8 @@ function nearby(): { action: string; label: string; targetId?: string } | null {
   if (me.boatId) return null;
   const hunting = huntInteraction(state, me, renderer.collision);
   if (hunting) return hunting;
+  const caveFire = caveFireInteraction(state, me, renderer.collision);
+  if (caveFire) return caveFire;
   const adventure = adventureInteraction(me, renderer.collision);
   if (adventure) return adventure;
   const resident = residentInteraction(state, me, renderer.collision);

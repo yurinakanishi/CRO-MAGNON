@@ -14,6 +14,7 @@ import { handleVillageAction } from '../shared/village-life.mjs';
 import { canStartJump, jumpProgress } from '../shared/jumping.mjs';
 import { cancelBarter } from '../shared/barter.mjs';
 import { carrying, handleCarryAction } from '../shared/carrying.mjs';
+import { toggleCaveFire } from '../shared/cave-fire.mjs';
 const distance = (a, b) => Math.hypot(a.x - b.x, a.z - b.z);
 export function createActionHandler({
   notice: sendNotice,
@@ -112,6 +113,10 @@ export function createActionHandler({
     if (player.cookingEndsAt) return notice(player, '調理中です。先に調理を終えるか中止しよう。');
     if (player.attackSequence && now - player.attackAt < attackProfile(player).durationMs)
       return notice(player, '攻撃が終わってから行おう。');
+    if (action === 'toggleCaveFire') {
+      if (toggleCaveFire(room, player)) broadcast(room, snapshot(room, true));
+      return;
+    }
     const village = handleVillageAction(room, player, message, now);
     if (village) {
       notice(player, village.text, village.ok ? 'success' : 'info');

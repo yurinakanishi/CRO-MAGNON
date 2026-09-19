@@ -1,0 +1,67 @@
+{
+  "status": "passed",
+  "date": "2026-09-18T04:20:23.784Z",
+  "server": "Existing local development watcher. No manual restart or save replacement.",
+  "results": [
+    {
+      "url": "http://127.0.0.1:3000/models/camp-mountain/model-r15.glb",
+      "bytes": 8929000,
+      "sha256": "193127fbde284f036864996060cb3b85578ab7a595384151dad858e569eb9202"
+    },
+    {
+      "url": "http://127.0.0.1:3000/models/camp-cave/model-r07.glb",
+      "bytes": 7088964,
+      "sha256": "13e1c3655e05f03e44823ccd377e1a930cef82d833e008ca0ef175cadf7923a7"
+    },
+    {
+      "url": "http://127.0.0.1:3000/models/camp-cave/mural.png",
+      "bytes": 1973515,
+      "sha256": "6cf92e8ddb0f90fa0a23f538e3e568e333c80b9498e52172aa46742a8517c20e"
+    },
+    {
+      "url": "http://127.0.0.1:3000/models/world-assets.json",
+      "bytes": 564740,
+      "sha256": "966e04fe77b40e83f4346a1f79deebaa433b223578510794e3fe1deaceb62c9e"
+    },
+    {
+      "url": "http://127.0.0.1:3000/shared/camp-cave-layout.mjs",
+      "bytes": 2134,
+      "sha256": "b543dbdfa939483384dad49c5ef1265ef8fce308930fe5f97d2cd6be3c11c4aa"
+    },
+    {
+      "url": "http://127.0.0.1:3000/shared/camp-cave-surface-data.mjs",
+      "bytes": 298981,
+      "sha256": "4231fcb577ff1eee1eca949159615b4bb172cb307ec256f9b995656cd338d016"
+    },
+    {
+      "url": "http://127.0.0.1:3000/shared/camp-mountain-surface-data.mjs",
+      "bytes": 2550893,
+      "sha256": "b9f11a4dc300970fef0f17bc013aa29c13233182f5e6dd76f14c12f91be21851"
+    },
+    {
+      "url": "http://127.0.0.1:3000/shared/terrain.mjs",
+      "bytes": 6602,
+      "sha256": "eba043073da6a61a8fce97563652d601811305f1ca3ef0e9b389b966c8a25c38"
+    },
+    {
+      "url": "http://127.0.0.1:3000/src/cave-ground-style.js",
+      "bytes": 598,
+      "sha256": "3b8b977feee9535c7193b8f74acc379850e5ccf6da4e3eb866add717dd689023"
+    },
+    {
+      "url": "http://127.0.0.1:3000/src/cave-materials.js",
+      "bytes": 3735,
+      "sha256": "0848548854bb60a4551a6fbced26bc2559713ffb618fcf94dd41b970512f41f8"
+    },
+    {
+      "url": "http://127.0.0.1:3000/src/mountain-materials.js",
+      "bytes": 4376,
+      "sha256": "e841131a0f36a9af25a112dc999e32e6c103f997eddd0338a9fc6dd315bc0b82"
+    },
+    {
+      "url": "http://127.0.0.1:3000/src/world-landmarks.js",
+      "bytes": 9211,
+      "sha256": "625a7a068caa9aaf21e746372d45edf30228bda372566cd2cc7e1fd05cd5b54c"
+    }
+  ]
+}

@@ -1,0 +1,9 @@
+{
+  "decision": "adopt",
+  "sha256": "cda011cf67b9bb79b887faf5c1331655097cd587916f675286710b65da25691a",
+  "visualGate": "passed",
+  "browserGate": "passed",
+  "views": "output/playwright/camp-mountain/asset-04",
+  "notes": "UV seam vertices reconnected before QEM; exact exported geometry and textured/clay views reviewed. Broad rear shoulder joins cave; 8.5m castle foundation and gentle switchback.",
+  "gameQA": "pending"
+}

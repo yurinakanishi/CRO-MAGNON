@@ -19,6 +19,7 @@ import { RegionalScenery } from './regional-scenery.js';
 import { BEHEMOTH_MARSH } from '../shared/behemoth-rules.mjs';
 import { HUNTING } from '../shared/hunting.mjs';
 import { meatRingLayout } from './resource-visuals.js';
+import { CAVE_HEARTH } from '../shared/camp-cave-layout.mjs';
 
 const TAU = Math.PI * 2;
 const random = seededRandom;
@@ -303,6 +304,9 @@ export function buildCampAssets(world) {
     freezeStatic(world, addModel(world, item.key, item.x, item.z, item.yaw, item.scale));
   for (const item of SCENERY.fires.filter((item) => !item.surface))
     buildFireEffect(world, item.x, item.z, item.scale);
+  const caveFire = buildFireEffect(world, CAVE_HEARTH.x, CAVE_HEARTH.z, 0.6);
+  caveFire.cave = true;
+  caveFire.light.distance = 16;
   world.campLabel = world.createLabel('みんなの野営地', 'camp', new THREE.Vector3(50, 3, 50));
   world.npcLabel = world.createLabel(
     'オル',
@@ -331,9 +335,9 @@ function buildFireEffect(world, x, z, size, key = 'stone-firepit', surface = nul
   const sparks = new THREE.Points(geometry, material);
   root.add(sparks);
   const light = new THREE.PointLight('#ffad57', 4, 11, 1.6);
-  light.position.set(x, terrainHeight(x, z) + 1.3, z);
+  light.position.set(x, walkHeight(x, z) + 1.3, z);
   world.scene.add(light);
-  const fire = { root, light, sparks, seed: x };
+  const fire = { root, light, sparks, seed: x, cave: false };
   world.fires.push(fire);
   return fire;
 }

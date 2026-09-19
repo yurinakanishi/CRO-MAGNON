@@ -11,6 +11,7 @@ import {
 } from './biomes.mjs';
 import { nearLandmark } from './landmarks.mjs';
 import { nearCastle } from './castle-layout.mjs';
+import { campLandformReserved } from './camp-cave-layout.mjs';
 import { CROW_FACTION_GROUNDS } from './crow-faction.mjs';
 import { BIOME_SCENERY } from './biome-scenery.mjs';
 import {
@@ -317,7 +318,14 @@ function layout() {
       grass.splice(i, 1);
   return Object.fromEntries(
     Object.entries({ trees, grass, rocks, ridges, tents, props, fires, animals }).map(
-      ([key, items]) => [key, items.filter((item) => !nearCastle(item.x, item.z, 3))],
+      ([key, items]) => [
+        key,
+        items.filter(
+          (item) =>
+            !nearCastle(item.x, item.z, 3) &&
+            !campLandformReserved(item.x, item.z, key === 'trees' ? 2 : 0),
+        ),
+      ],
     ),
   );
 }
@@ -380,6 +388,7 @@ export function grassForChunk(ix, iz) {
   return grass.filter(
     (item, i) =>
       !nearCastle(item.x, item.z, 1) &&
+      !campLandformReserved(item.x, item.z) &&
       (!inBehemothClearing(item.x, item.z) ||
         (i % 4 === 0 && !inBehemothPool(item.x, item.z, 0.6))),
   );

@@ -96,7 +96,7 @@ const blend = (channel) =>
   BLADE_ALBEDO['meadow-sprig'][channel] * (1 - GROUNDCOVER_TUFT_SHARE);
 export const MEADOW_BLADE_ALBEDO = Object.freeze({ r: blend('r'), g: blend('g'), b: blend('b') });
 export const MEADOW_MATCH = Object.freeze({ dirt: 0.16, turf: 0.78 });
-const meadowShader = `
+export const meadowShader = `
 uniform vec3 meadowBlade;
 uniform vec2 meadowMatch;
 float meadowHash(vec2 p){return fract(sin(dot(p,vec2(127.1,311.7)))*43758.5453);}
@@ -206,7 +206,7 @@ export function earthTerrainMaterial(original, biome, textures) {
       totalEmissiveRadiance+=vec3(1.0,.16,.018)*lava*.7;`,
       );
   };
-  material.customProgramCacheKey = () => `paleo-terrain-${biome.id}-marsh-1-meadow-2`;
+  material.customProgramCacheKey = () => `paleo-terrain-${biome.id}-marsh-1-meadow-2-cave-1`;
   return material;
 }
 

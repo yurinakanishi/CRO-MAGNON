@@ -30,6 +30,7 @@ export const CAMP = Object.freeze({
   level: 0,
   goalWood: 12,
   goalStone: 6,
+  caveFireLit: false,
 });
 
 export const NPC = Object.freeze({
@@ -62,7 +63,8 @@ const nodes: [ResourceKind, number, number, number][] = [
   ['stone', 60, 37, 7],
   ['stone', 20, 33, 8],
   ['stone', 79, 68, 6],
-  ['stone', 52, 83, 7],
+  // Moved a few metres clear of the new cave's rear wall; stock/id retained.
+  ['stone', 42, 86, 7],
   ['stone', 82, 19, 8],
   ['stone', 16, 51, 6],
   ['berry', 60, 53, 5],

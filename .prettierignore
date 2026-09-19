@@ -5,4 +5,6 @@ output
 public/vendor
 shared/paleo-coast-data.mts
 shared/castle-surface-data.mts
+shared/camp-cave-surface-data.mts
+shared/camp-mountain-surface-data.mts
 shared/landmark-bounds.mts

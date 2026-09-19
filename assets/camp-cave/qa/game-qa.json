@@ -1,0 +1,777 @@
+{
+  "checks": [
+    "keyboard walk: camp to cave ledge 0",
+    "keyboard walk: camp to cave ledge 1",
+    "keyboard walk: camp to cave ledge 2",
+    "keyboard walk: camp to cave ledge 3",
+    "keyboard walk: camp to cave ledge 4",
+    "keyboard walk: through cave entrance",
+    "keyboard walk: inside by hearth",
+    "E ignites, two renderers plus three websocket peers agree",
+    "reload retains shared fire",
+    "E extinguishes",
+    "keyboard walk: return through chamber",
+    "keyboard walk: exit cave",
+    "keyboard walk: mountain trail 5",
+    "keyboard walk: mountain trail 6",
+    "keyboard walk: mountain trail 7",
+    "keyboard walk: mountain trail 8",
+    "keyboard walk: mountain trail 9",
+    "keyboard walk: mountain trail 10",
+    "keyboard walk: mountain trail 11",
+    "keyboard walk: mountain trail 12",
+    "keyboard walk: castle gate",
+    "28 castle crows restored at relocated posts for final visual"
+  ],
+  "samples": [
+    {
+      "label": "camp-unchanged-entrance",
+      "position": [
+        48,
+        57
+      ],
+      "height": 0.00116,
+      "camera": [
+        48,
+        7.7879268085991535,
+        44.73216716505269
+      ],
+      "camp": {
+        "x": 50,
+        "z": 50,
+        "wood": 0,
+        "stone": 0,
+        "level": 0,
+        "goalWood": 12,
+        "goalStone": 6,
+        "caveFireLit": false
+      },
+      "landmarks": [
+        "camp-cave",
+        "camp-mountain",
+        "valley-castle"
+      ],
+      "calls": 129,
+      "triangles": 2028920,
+      "fps": 60,
+      "geometries": 91,
+      "textures": 48,
+      "loadMilliseconds": 1328.800000000745
+    },
+    {
+      "label": "approach-0",
+      "position": [
+        50.058247128354445,
+        62.14561782088613
+      ],
+      "height": -0.002032030462800034,
+      "camera": [
+        47.531459903186324,
+        3.129807998116397,
+        55.82864975796589
+      ],
+      "camp": {
+        "x": 50,
+        "z": 50,
+        "wood": 0,
+        "stone": 0,
+        "level": 0,
+        "goalWood": 12,
+        "goalStone": 6,
+        "caveFireLit": false
+      },
+      "landmarks": [
+        "camp-cave",
+        "camp-mountain",
+        "valley-castle"
+      ],
+      "calls": 102,
+      "triangles": 1797426,
+      "fps": 60,
+      "geometries": 92,
+      "textures": 48,
+      "loadMilliseconds": 1328.800000000745
+    },
+    {
+      "label": "approach-1",
+      "position": [
+        49.00774794397631,
+        72.92052976779442
+      ],
+      "height": 0.0032613716162836733,
+      "camera": [
+        49.66696122046837,
+        3.13508090086909,
+        66.1590157047078
+      ],
+      "camp": {
+        "x": 50,
+        "z": 50,
+        "wood": 0,
+        "stone": 0,
+        "level": 0,
+        "goalWood": 12,
+        "goalStone": 6,
+        "caveFireLit": false
+      },
+      "landmarks": [
+        "camp-cave",
+        "camp-mountain",
+        "valley-castle"
+      ],
+      "calls": 92,
+      "triangles": 1788451,
+      "fps": 60,
+      "geometries": 89,
+      "textures": 48,
+      "loadMilliseconds": 1328.800000000745
+    },
+    {
+      "label": "approach-2",
+      "position": [
+        44.99729578004689,
+        84.00747585050031
+      ],
+      "height": 2.2373852275047894,
+      "camera": [
+        47.30786855872295,
+        5.366236541349325,
+        77.61986797731558
+      ],
+      "camp": {
+        "x": 50,
+        "z": 50,
+        "wood": 0,
+        "stone": 0,
+        "level": 0,
+        "goalWood": 12,
+        "goalStone": 6,
+        "caveFireLit": false
+      },
+      "landmarks": [
+        "camp-cave",
+        "camp-mountain",
+        "valley-castle"
+      ],
+      "calls": 66,
+      "triangles": 1391456,
+      "fps": 60,
+      "geometries": 88,
+      "textures": 47,
+      "loadMilliseconds": 1328.800000000745
+    },
+    {
+      "label": "approach-3",
+      "position": [
+        42.02310490987085,
+        94.91526319110118
+      ],
+      "height": 4.994034903154846,
+      "camera": [
+        43.80955551375475,
+        8.12386208196519,
+        88.363490244366
+      ],
+      "camp": {
+        "x": 50,
+        "z": 50,
+        "wood": 0,
+        "stone": 0,
+        "level": 0,
+        "goalWood": 12,
+        "goalStone": 6,
+        "caveFireLit": false
+      },
+      "landmarks": [
+        "camp-cave",
+        "camp-mountain",
+        "valley-castle"
+      ],
+      "calls": 49,
+      "triangles": 1340067,
+      "fps": 60,
+      "geometries": 88,
+      "textures": 47,
+      "loadMilliseconds": 1328.800000000745
+    },
+    {
+      "label": "approach-4",
+      "position": [
+        35.020107583420156,
+        103.97398983703368
+      ],
+      "height": 7.968525031507994,
+      "camera": [
+        39.17372752364034,
+        11.098572440472775,
+        98.60107508702636
+      ],
+      "camp": {
+        "x": 50,
+        "z": 50,
+        "wood": 0,
+        "stone": 0,
+        "level": 0,
+        "goalWood": 12,
+        "goalStone": 6,
+        "caveFireLit": false
+      },
+      "landmarks": [
+        "camp-cave",
+        "camp-mountain",
+        "valley-castle"
+      ],
+      "calls": 32,
+      "triangles": 1112793,
+      "fps": 60,
+      "geometries": 87,
+      "textures": 48,
+      "loadMilliseconds": 1328.800000000745
+    },
+    {
+      "label": "murals-fire-off",
+      "position": [
+        34.49619182932643,
+        130.5799864281266
+      ],
+      "height": 8.016630891287265,
+      "camera": [
+        34.4969663678977,
+        9.90459085844765,
+        126.51629965053428
+      ],
+      "camp": {
+        "x": 50,
+        "z": 50,
+        "wood": 0,
+        "stone": 0,
+        "level": 0,
+        "goalWood": 12,
+        "goalStone": 6,
+        "caveFireLit": false
+      },
+      "landmarks": [
+        "camp-cave",
+        "camp-mountain",
+        "valley-castle"
+      ],
+      "calls": 36,
+      "triangles": 1330719,
+      "fps": 60,
+      "geometries": 88,
+      "textures": 49,
+      "loadMilliseconds": 1328.800000000745
+    },
+    {
+      "label": "murals-fire-on",
+      "position": [
+        34.49619182932643,
+        130.5799864281266
+      ],
+      "height": 8.016630891287265,
+      "camera": [
+        34.496191829326435,
+        9.89547972044294,
+        126.60875188471111
+      ],
+      "camp": {
+        "x": 50,
+        "z": 50,
+        "wood": 0,
+        "stone": 0,
+        "level": 0,
+        "goalWood": 12,
+        "goalStone": 6,
+        "caveFireLit": true
+      },
+      "landmarks": [
+        "camp-cave",
+        "camp-mountain",
+        "valley-castle"
+      ],
+      "calls": 41,
+      "triangles": 1467807,
+      "fps": 51,
+      "geometries": 89,
+      "textures": 50,
+      "loadMilliseconds": 1328.800000000745
+    },
+    {
+      "label": "peer-fire-on",
+      "position": [
+        36,
+        129
+      ],
+      "height": 8.01925,
+      "camera": [
+        34.70639618144183,
+        10.319487348282303,
+        133.49864148355368
+      ],
+      "camp": {
+        "x": 50,
+        "z": 50,
+        "wood": 0,
+        "stone": 0,
+        "level": 0,
+        "goalWood": 12,
+        "goalStone": 6,
+        "caveFireLit": true
+      },
+      "landmarks": [
+        "camp-cave",
+        "camp-mountain",
+        "valley-castle"
+      ],
+      "calls": 158,
+      "triangles": 2316092,
+      "fps": 2,
+      "geometries": 72,
+      "textures": 56,
+      "loadMilliseconds": 1362.5999999977648
+    },
+    {
+      "label": "reload-lit",
+      "position": [
+        34.49619182932643,
+        130.5799864281266
+      ],
+      "height": 8.016630891287265,
+      "camera": [
+        33.65711862930098,
+        10.000553899065315,
+        133.49795053059796
+      ],
+      "camp": {
+        "x": 50,
+        "z": 50,
+        "wood": 0,
+        "stone": 0,
+        "level": 0,
+        "goalWood": 12,
+        "goalStone": 6,
+        "caveFireLit": true
+      },
+      "landmarks": [
+        "camp-cave",
+        "camp-mountain",
+        "valley-castle"
+      ],
+      "calls": 160,
+      "triangles": 2347556,
+      "fps": 22,
+      "geometries": 66,
+      "textures": 49,
+      "loadMilliseconds": 1276.2000000029802
+    },
+    {
+      "label": "viewport-390",
+      "position": [
+        34.49619182932643,
+        130.5799864281266
+      ],
+      "height": 8.016630891287265,
+      "camera": [
+        33.65711862930098,
+        10.000553899065315,
+        133.49795053059796
+      ],
+      "camp": {
+        "x": 50,
+        "z": 50,
+        "wood": 0,
+        "stone": 0,
+        "level": 0,
+        "goalWood": 12,
+        "goalStone": 6,
+        "caveFireLit": false
+      },
+      "landmarks": [
+        "camp-cave",
+        "camp-mountain",
+        "valley-castle"
+      ],
+      "calls": 114,
+      "triangles": 2041086,
+      "fps": 32,
+      "geometries": 66,
+      "textures": 49,
+      "loadMilliseconds": 1276.2000000029802
+    },
+    {
+      "label": "viewport-844",
+      "position": [
+        34.49619182932643,
+        130.5799864281266
+      ],
+      "height": 8.016630891287265,
+      "camera": [
+        33.65711862930098,
+        10.000553899065315,
+        133.49795053059796
+      ],
+      "camp": {
+        "x": 50,
+        "z": 50,
+        "wood": 0,
+        "stone": 0,
+        "level": 0,
+        "goalWood": 12,
+        "goalStone": 6,
+        "caveFireLit": false
+      },
+      "landmarks": [
+        "camp-cave",
+        "camp-mountain",
+        "valley-castle"
+      ],
+      "calls": 161,
+      "triangles": 2363475,
+      "fps": 32,
+      "geometries": 66,
+      "textures": 49,
+      "loadMilliseconds": 1276.2000000029802
+    },
+    {
+      "label": "trail-5",
+      "position": [
+        21.791219665541306,
+        101.9696603858927
+      ],
+      "height": 10.643668942270898,
+      "camera": [
+        27.080944156375267,
+        13.401034100670774,
+        102.73835443076983
+      ],
+      "camp": {
+        "x": 50,
+        "z": 50,
+        "wood": 0,
+        "stone": 0,
+        "level": 0,
+        "goalWood": 12,
+        "goalStone": 6,
+        "caveFireLit": false
+      },
+      "landmarks": [
+        "camp-cave",
+        "camp-mountain",
+        "valley-castle"
+      ],
+      "calls": 30,
+      "triangles": 1052287,
+      "fps": 61,
+      "geometries": 77,
+      "textures": 52,
+      "loadMilliseconds": 1276.2000000029802
+    },
+    {
+      "label": "trail-6",
+      "position": [
+        8.033215647774435,
+        97.01196924513857
+      ],
+      "height": 13.796628785865362,
+      "camera": [
+        13.054828375380358,
+        16.55531704343178,
+        98.82150534498237
+      ],
+      "camp": {
+        "x": 50,
+        "z": 50,
+        "wood": 0,
+        "stone": 0,
+        "level": 0,
+        "goalWood": 12,
+        "goalStone": 6,
+        "caveFireLit": false
+      },
+      "landmarks": [
+        "camp-cave",
+        "camp-mountain",
+        "valley-castle"
+      ],
+      "calls": 26,
+      "triangles": 933992,
+      "fps": 60,
+      "geometries": 76,
+      "textures": 51,
+      "loadMilliseconds": 1276.2000000029802
+    },
+    {
+      "label": "trail-7",
+      "position": [
+        -9.875760280810967,
+        91.041419422103
+      ],
+      "height": 17.773081085057044,
+      "camera": [
+        -4.811323788689002,
+        20.53185662055382,
+        92.72981693418804
+      ],
+      "camp": {
+        "x": 50,
+        "z": 50,
+        "wood": 0,
+        "stone": 0,
+        "level": 0,
+        "goalWood": 12,
+        "goalStone": 6,
+        "caveFireLit": false
+      },
+      "landmarks": [
+        "camp-cave",
+        "camp-mountain",
+        "valley-castle"
+      ],
+      "calls": 22,
+      "triangles": 1049863,
+      "fps": 60,
+      "geometries": 76,
+      "textures": 51,
+      "loadMilliseconds": 1276.2000000029802
+    },
+    {
+      "label": "trail-8",
+      "position": [
+        -30.103891167211,
+        86.97913621648269
+      ],
+      "height": 22.030507288089446,
+      "camera": [
+        -24.859700368373076,
+        24.787330859760594,
+        88.0322927502633
+      ],
+      "camp": {
+        "x": 50,
+        "z": 50,
+        "wood": 0,
+        "stone": 0,
+        "level": 0,
+        "goalWood": 12,
+        "goalStone": 6,
+        "caveFireLit": false
+      },
+      "landmarks": [
+        "camp-cave",
+        "camp-mountain",
+        "valley-castle"
+      ],
+      "calls": 21,
+      "triangles": 961110,
+      "fps": 60,
+      "geometries": 73,
+      "textures": 50,
+      "loadMilliseconds": 1276.2000000029802
+    },
+    {
+      "label": "trail-9",
+      "position": [
+        -49.976139572687714,
+        89.99637722625403
+      ],
+      "height": 26.48505217840835,
+      "camera": [
+        -44.696053036382665,
+        29.243397193389217,
+        89.19469171450831
+      ],
+      "camp": {
+        "x": 50,
+        "z": 50,
+        "wood": 0,
+        "stone": 0,
+        "level": 0,
+        "goalWood": 12,
+        "goalStone": 6,
+        "caveFireLit": false
+      },
+      "landmarks": [
+        "camp-cave",
+        "camp-mountain",
+        "valley-castle"
+      ],
+      "calls": 20,
+      "triangles": 984941,
+      "fps": 60,
+      "geometries": 71,
+      "textures": 50,
+      "loadMilliseconds": 1276.2000000029802
+    },
+    {
+      "label": "trail-10",
+      "position": [
+        -67.7500532564943,
+        95.91674447504815
+      ],
+      "height": 29.579546463159307,
+      "camera": [
+        -62.68394744862355,
+        32.338650928127436,
+        94.22925980299361
+      ],
+      "camp": {
+        "x": 50,
+        "z": 50,
+        "wood": 0,
+        "stone": 0,
+        "level": 0,
+        "goalWood": 12,
+        "goalStone": 6,
+        "caveFireLit": false
+      },
+      "landmarks": [
+        "camp-cave",
+        "camp-mountain",
+        "valley-castle"
+      ],
+      "calls": 17,
+      "triangles": 941503,
+      "fps": 60,
+      "geometries": 68,
+      "textures": 50,
+      "loadMilliseconds": 1276.2000000029802
+    },
+    {
+      "label": "trail-11",
+      "position": [
+        -67.99727699436649,
+        115.7812061194879
+      ],
+      "height": 34.92171107091038,
+      "camera": [
+        -67.93085973496869,
+        37.680749269335834,
+        110.44457011039754
+      ],
+      "camp": {
+        "x": 50,
+        "z": 50,
+        "wood": 0,
+        "stone": 0,
+        "level": 0,
+        "goalWood": 12,
+        "goalStone": 6,
+        "caveFireLit": false
+      },
+      "landmarks": [
+        "camp-cave",
+        "camp-mountain",
+        "valley-castle"
+      ],
+      "calls": 14,
+      "triangles": 962664,
+      "fps": 54,
+      "geometries": 68,
+      "textures": 51,
+      "loadMilliseconds": 1276.2000000029802
+    },
+    {
+      "label": "trail-12",
+      "position": [
+        -68.00003440371967,
+        123.09120559942599
+      ],
+      "height": 35,
+      "camera": [
+        -67.99801511142971,
+        37.76072177589987,
+        117.73798317190557
+      ],
+      "camp": {
+        "x": 50,
+        "z": 50,
+        "wood": 0,
+        "stone": 0,
+        "level": 0,
+        "goalWood": 12,
+        "goalStone": 6,
+        "caveFireLit": false
+      },
+      "landmarks": [
+        "camp-cave",
+        "camp-mountain",
+        "valley-castle"
+      ],
+      "calls": 15,
+      "triangles": 966029,
+      "fps": 54,
+      "geometries": 67,
+      "textures": 51,
+      "loadMilliseconds": 1276.2000000029802
+    },
+    {
+      "label": "castle-from-mountain",
+      "position": [
+        -68.00003440371967,
+        123.09120559942599
+      ],
+      "height": 35,
+      "camera": [
+        -68.00003440154963,
+        41.37795486828515,
+        111.31722938617696
+      ],
+      "camp": {
+        "x": 50,
+        "z": 50,
+        "wood": 0,
+        "stone": 0,
+        "level": 0,
+        "goalWood": 12,
+        "goalStone": 6,
+        "caveFireLit": false
+      },
+      "landmarks": [
+        "camp-cave",
+        "camp-mountain",
+        "valley-castle"
+      ],
+      "calls": 15,
+      "triangles": 968077,
+      "fps": 45,
+      "geometries": 67,
+      "textures": 51,
+      "loadMilliseconds": 1276.2000000029802
+    }
+  ],
+  "errors": [],
+  "setup": "Enemies suppressed; second viewer position prepared. Main route and fire interaction are actual keyboard input.",
+  "modelRecords": [
+    {
+      "key": "camp-cave",
+      "url": "/models/camp-cave/model-r07.glb",
+      "sha256": "13e1c3655e05f03e44823ccd377e1a930cef82d833e008ca0ef175cadf7923a7",
+      "triangles": 37846,
+      "bytes": 7088964
+    },
+    {
+      "key": "camp-mountain",
+      "url": "/models/camp-mountain/model-r15.glb",
+      "sha256": "193127fbde284f036864996060cb3b85578ab7a595384151dad858e569eb9202",
+      "triangles": 245000,
+      "bytes": 8929000
+    }
+  ],
+  "date": "2026-09-18",
+  "tests": {
+    "total": 613,
+    "passed": 613,
+    "log": "output/camp-refine-final-r15-tests.log"
+  },
+  "performanceClaim": "No before/after performance claim; recorded samples include simultaneous validation work.",
+  "seamQA": {
+    "path": "output/playwright/camp-cave/game-seams-final-r15/summary.json",
+    "checks": 21,
+    "screenshots": 11,
+    "errors": [],
+    "setup": "Entry and river-side positions deliberately prepared; subsequent travel uses actual keyboard input. Ground ray height compared with the rendered player at 10 stops."
+  },
+  "surfaceComparison": "assets/camp-mountain/qa/surface-r15.json",
+  "delivery": "assets/camp-cave/qa/local-delivery-r15.json",
+  "lastVisualChange": "Final seam screenshots use the non-periodic soil grain; five-player route screenshots predate only this colour-detail refinement."
+}

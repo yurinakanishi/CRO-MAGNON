@@ -1,0 +1,114 @@
+{
+  "atlasSha256": "6efe80a19056af4f5a9ce50d7309b578f4c3e914fa9543c51a8fc629842e6889",
+  "size": [
+    1254,
+    1254
+  ],
+  "alphaRange": [
+    0,
+    255
+  ],
+  "transparentFraction": 0.5880461629643196,
+  "placements": [
+    {
+      "motif": "hands",
+      "wall": "east",
+      "centre": 7.8,
+      "paintedSamples": 65,
+      "rejected": []
+    },
+    {
+      "motif": "redHorse",
+      "wall": "east",
+      "centre": 10,
+      "paintedSamples": 62,
+      "rejected": []
+    },
+    {
+      "motif": "mammoth",
+      "wall": "east",
+      "centre": 5.65,
+      "paintedSamples": 102,
+      "rejected": []
+    },
+    {
+      "motif": "signs",
+      "wall": "east",
+      "centre": 2.8,
+      "paintedSamples": 44,
+      "rejected": []
+    },
+    {
+      "motif": "cat",
+      "wall": "east",
+      "centre": 0.1,
+      "paintedSamples": 89,
+      "rejected": []
+    },
+    {
+      "motif": "deer",
+      "wall": "east",
+      "centre": -4,
+      "paintedSamples": 59,
+      "rejected": []
+    },
+    {
+      "motif": "ochreHorse",
+      "wall": "west",
+      "centre": 8.1,
+      "paintedSamples": 66,
+      "rejected": []
+    },
+    {
+      "motif": "bison",
+      "wall": "west",
+      "centre": 4.6,
+      "paintedSamples": 91,
+      "rejected": []
+    },
+    {
+      "motif": "hands",
+      "wall": "west",
+      "centre": 2.2,
+      "paintedSamples": 65,
+      "rejected": []
+    },
+    {
+      "motif": "creature524",
+      "wall": "west",
+      "centre": 0,
+      "paintedSamples": 117,
+      "rejected": []
+    },
+    {
+      "motif": "redHorse",
+      "wall": "west",
+      "centre": -3.65,
+      "paintedSamples": 62,
+      "rejected": []
+    },
+    {
+      "motif": "signs",
+      "wall": "west",
+      "centre": -6.2,
+      "paintedSamples": 44,
+      "rejected": []
+    },
+    {
+      "motif": "hands",
+      "wall": "back",
+      "centre": 1.1,
+      "paintedSamples": 65,
+      "rejected": []
+    },
+    {
+      "motif": "signs",
+      "wall": "back",
+      "centre": -0.4,
+      "paintedSamples": 44,
+      "rejected": []
+    }
+  ],
+  "totalPaintedSamples": 975,
+  "totalRejected": 0
+}

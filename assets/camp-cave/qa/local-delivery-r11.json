@@ -1,0 +1,77 @@
+{
+  "status": "passed",
+  "date": "2026-09-18T03:09:54.661Z",
+  "server": "Existing local development server and watcher; no manual restart in this revision. Existing saves retained.",
+  "results": [
+    {
+      "url": "http://127.0.0.1:3000/models/camp-mountain/model-r11.glb",
+      "bytes": 10922236,
+      "sha256": "a445118fc438e025b7b4450321282d257d8ffd67f582d249103f46627169ee47"
+    },
+    {
+      "url": "http://127.0.0.1:3000/models/camp-cave/model-r05.glb",
+      "bytes": 4641368,
+      "sha256": "812262019d83328c0908729c7b68e836a37f3c0613bda5c6e0a39b41e383e46f"
+    },
+    {
+      "url": "http://127.0.0.1:3000/models/camp-cave/mural.png",
+      "bytes": 1973515,
+      "sha256": "6cf92e8ddb0f90fa0a23f538e3e568e333c80b9498e52172aa46742a8517c20e"
+    },
+    {
+      "url": "http://127.0.0.1:3000/models/world-assets.json",
+      "bytes": 563744,
+      "sha256": "a9b7281f565f68dd9c4b3902fd993647b1220181cb76dc0c8af0201730b00eb6"
+    },
+    {
+      "url": "http://127.0.0.1:3000/shared/camp-cave-layout.mjs",
+      "bytes": 2355,
+      "sha256": "c8426b97b12a640bb91aaaa40a301fb1f62dae9180a78dacf40126cdd9d6b1ba"
+    },
+    {
+      "url": "http://127.0.0.1:3000/shared/castle-layout.mjs",
+      "bytes": 5154,
+      "sha256": "6fdf9f3392fd1ddc09eb6969320f2fd1b003e0e87358ddb3244d70dc40d8574d"
+    },
+    {
+      "url": "http://127.0.0.1:3000/shared/behemoth-rules.mjs",
+      "bytes": 5231,
+      "sha256": "82318b10aaafcece7a9c2d52c50e328f7b8d7d59cfb1be201094660d6eeb1f94"
+    },
+    {
+      "url": "http://127.0.0.1:3000/shared/terrain.mjs",
+      "bytes": 6602,
+      "sha256": "eba043073da6a61a8fce97563652d601811305f1ca3ef0e9b389b966c8a25c38"
+    },
+    {
+      "url": "http://127.0.0.1:3000/shared/collision.mjs",
+      "bytes": 26162,
+      "sha256": "b0596e9dc796ee529750a71e12857cb0da55b6fd655fc83e89f5f68d366f42a5"
+    },
+    {
+      "url": "http://127.0.0.1:3000/shared/boats.mjs",
+      "bytes": 10781,
+      "sha256": "440d797712d86bd1e78dcfc0b562fc3690343f1b2d96f6262031c2935fe70509"
+    },
+    {
+      "url": "http://127.0.0.1:3000/src/world-landmarks.js",
+      "bytes": 9235,
+      "sha256": "4529a2a25dc59622d073c28365b8b6570099906338bc3c0c127fe7c06830e762"
+    },
+    {
+      "url": "http://127.0.0.1:3000/src/mountain-materials.js",
+      "bytes": 2595,
+      "sha256": "146ff18847d9135f2877f91aacd5558efb80a8fdbedaba00f32f79a69763f041"
+    },
+    {
+      "url": "http://127.0.0.1:3000/src/cave-materials.js",
+      "bytes": 4238,
+      "sha256": "7d436f0e6b4b4444e1a8d9b44dec3d2019e322c029384fc9ab0a07bd18a70da5"
+    },
+    {
+      "url": "http://127.0.0.1:3000/src/world3d.js",
+      "bytes": 67960,
+      "sha256": "658edae4796bcccb5d0ba59baa724679e8febc3010d645d792164d1f366da845"
+    }
+  ]
+}

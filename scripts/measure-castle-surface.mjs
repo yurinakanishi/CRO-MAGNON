@@ -9,7 +9,7 @@ if (!file || !output) throw new Error('Usage: measure-castle-surface.mjs source.
 const gltf = await geometryScene(file);
 gltf.scene.updateMatrixWorld(true);
 const box = new THREE.Box3().setFromObject(gltf.scene, true),
-  step = 0.35;
+  step = Number(process.argv[4] || 0.35);
 const minX = Math.floor(box.min.x / step) * step - step * 2,
   minZ = Math.floor(box.min.z / step) * step - step * 2;
 const nx = Math.ceil((box.max.x - minX) / step) + 3,
@@ -35,7 +35,12 @@ gltf.scene.traverse((node) => {
       .subVectors(p[1], p[0])
       .cross(new THREE.Vector3().subVectors(p[2], p[0]))
       .normalize();
-    const facing = normal.y >= 0.35 ? columns : normal.y <= -0.15 ? ceilings : null;
+    const facing =
+      normal.y >= (process.argv.includes('--terrain') ? 0.00001 : 0.35)
+        ? columns
+        : normal.y <= -0.15
+          ? ceilings
+          : null;
     if (!facing) continue;
     const [a, b, c] = p,
       den = (b.z - c.z) * (a.x - c.x) + (c.x - b.x) * (a.z - c.z);

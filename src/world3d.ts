@@ -12,6 +12,7 @@ import * as THREE from 'three';
 import {
   terrainHeight,
   walkHeight,
+  cameraFloorHeight,
   riverX,
   riverHalfWidth,
   WATER_LEVEL,
@@ -1230,6 +1231,10 @@ export class WorldRenderer {
       cameraDistance = this.landmarks.castleCamera.distance(aim, offset, cameraDistance);
       this.camera.position.copy(aim).addScaledVector(offset, cameraDistance);
     }
+    if (this.landmarks?.caveCamera) {
+      cameraDistance = this.landmarks.caveCamera.distance(aim, offset, cameraDistance);
+      this.camera.position.copy(aim).addScaledVector(offset, cameraDistance);
+    }
     const aboveWater =
       !isLand(this.camera.position.x, this.camera.position.z) ||
       (riverHalfWidth(this.camera.position.z) > 0.7 &&
@@ -1237,13 +1242,13 @@ export class WorldRenderer {
           riverHalfWidth(this.camera.position.z));
     this.camera.position.y = Math.max(
       this.camera.position.y,
-      terrainHeight(this.camera.position.x, this.camera.position.z) + 0.25,
+      cameraFloorHeight(this.camera.position.x, this.camera.position.z) + 0.25,
       aboveWater ? WATER_LEVEL + 0.3 : -Infinity,
     );
     this.camera.lookAt(aim);
     this.camera.updateMatrixWorld();
-    this.sun.position.set(this.focus.x - 32, 48, this.focus.z - 25);
-    this.sun.target.position.set(this.focus.x, 0, this.focus.z);
+    this.sun.position.set(this.focus.x - 32, this.focus.y + 48, this.focus.z - 25);
+    this.sun.target.position.set(this.focus.x, this.focus.y, this.focus.z);
     this.openWorld?.update(this.camera, time);
     this.landmarks?.update(this.camera, time);
     this.regionalScenery?.update(this.camera, time);
@@ -1275,11 +1280,14 @@ export class WorldRenderer {
     for (const landscape of this.landscapes)
       landscape.update(this.camera, time, self ? this.focus : null);
     for (const fire of this.fires) {
-      const visible = fire.root.position.distanceTo(this.camera.position) < 65;
+      const visible =
+        fire.root.position.distanceTo(this.camera.position) < 65 &&
+        (!fire.cave || this.state.camp.caveFireLit);
       fire.light.visible = visible;
       fire.sparks.visible = visible;
       if (!visible) continue;
-      fire.light.intensity = 4.1 + Math.sin(time * 9 + fire.seed) * 0.5;
+      fire.light.intensity =
+        (fire.cave ? 35 : 4.1) + Math.sin(time * 9 + fire.seed) * (fire.cave ? 2 : 0.5);
       const pos = fire.sparks.geometry.attributes.position;
       for (let i = 0; i < pos.count; i++) {
         const life = (time * 0.32 + i / pos.count) % 1;

@@ -1,6 +1,8 @@
 import type { Obstacle, Point } from './types.mjs';
 import { SCENERY, BRIDGE } from './scenery-layout.mjs';
 import { CASTLE_SURFACE } from './castle-surface.mjs';
+import { CAMP_CAVE_SURFACE } from './camp-cave-surface.mjs';
+import { CAMP_CAVE, CAVE_HEARTH, CAMP_MOUNTAIN_TRAIL } from './camp-cave-layout.mjs';
 import { CASTLE_GATE, CASTLE_TIERS, castleTierOfHeight } from './castle-layout.mjs';
 import { MODEL_BOUNDS } from './model-bounds.mjs';
 import { LANDMARKS } from './landmarks.mjs';
@@ -44,6 +46,7 @@ function modelBox(item) {
     height: source.max[1] * sy,
     groundX: item.x,
     groundZ: item.z,
+    groundY: item.elevation === undefined ? undefined : item.elevation + (item.groundOffset ?? 0),
   };
 }
 export function staticObstacles(): Obstacle[] {
@@ -58,6 +61,13 @@ export function staticObstacles(): Obstacle[] {
     .filter((item) => item.key !== 'berry-bush')
     .map(modelBox);
   result.push(...landmarkObstacles(LANDMARKS, LANDMARK_BOUNDS));
+  result.push({
+    ...CAVE_HEARTH,
+    type: 'circle',
+    height: 0.6,
+    groundX: CAVE_HEARTH.x,
+    groundZ: CAVE_HEARTH.z,
+  });
   result.push(...landmarkObstacles(REGION_FEATURES, REGION_FEATURE_BOUNDS));
   result.push(
     ...landmarkObstacles(ADVENTURE_LANDMARKS, { ...LANDMARK_BOUNDS, ...REGION_FEATURE_BOUNDS }),
@@ -201,7 +211,7 @@ export class CollisionWorld {
       active = (_obstacle: Obstacle): boolean => true,
       river = false,
       coast = true,
-      walkSurfaces = [CASTLE_SURFACE],
+      walkSurfaces = [CASTLE_SURFACE, CAMP_CAVE_SURFACE],
     } = {},
   ) {
     this.obstacles = obstacles;
@@ -388,6 +398,54 @@ export class CollisionWorld {
     return 0;
   }
   path(start, goal, radius, dynamic = []) {
+    if (
+      this.walkSurfaces.includes(CASTLE_SURFACE) &&
+      this.walkSurfaces.includes(CAMP_CAVE_SURFACE)
+    ) {
+      const byCamp = (p) => p.x >= 25 && p.x < 70 && p.z >= 30 && p.z < 105;
+      const inCave = (p) => CAMP_CAVE_SURFACE.cell(p.x, p.z) !== null;
+      const byCastle = (p) => CASTLE_SURFACE.cell(p.x, p.z) && p.z >= CASTLE_GATE.z - 0.2;
+      const uphill = (byCamp(start) || inCave(start)) && byCastle(goal),
+        downhill = byCastle(start) && (byCamp(goal) || inCave(goal));
+      if (uphill || downhill) {
+        const lower = uphill ? start : goal;
+        const nearest = CAMP_MOUNTAIN_TRAIL.slice(0, 5).reduce(
+          (best, p, i, list) =>
+            Math.hypot(p.x - lower.x, p.z - lower.z) <
+            Math.hypot(list[best].x - lower.x, list[best].z - lower.z)
+              ? i
+              : best,
+          0,
+        );
+        const approach = inCave(lower)
+          ? [{ x: CAMP_CAVE.x, z: CAMP_CAVE.z - 5 }, ...CAMP_MOUNTAIN_TRAIL.slice(4)]
+          : [...CAMP_MOUNTAIN_TRAIL.slice(nearest)];
+        const stops = uphill ? approach : [...approach].reverse();
+        const route = [];
+        let point = start;
+        if (downhill) {
+          const leg = this.path(start, CASTLE_GATE, radius, dynamic);
+          if (!leg.length) return [];
+          route.push(...leg);
+          point = CASTLE_GATE;
+        }
+        for (const stop of stops) {
+          if (Math.hypot(point.x - stop.x, point.z - stop.z) < 0.02) continue;
+          const leg = this.directPath(point, stop, radius, dynamic);
+          if (!leg.length) return [];
+          route.push(...leg);
+          point = leg.at(-1);
+        }
+        if (Math.hypot(point.x - goal.x, point.z - goal.z) > 0.02) {
+          const leg = uphill
+            ? this.path(point, goal, radius, dynamic)
+            : this.directPath(point, goal, radius, dynamic);
+          if (!leg.length) return [];
+          route.push(...leg);
+        }
+        return route;
+      }
+    }
     if (this.walkSurfaces.includes(CASTLE_SURFACE)) {
       // 2026-09-13: the keep has five levels. A route between levels climbs
       // (or descends) the grand central stairs one level at a time; a route
@@ -571,7 +629,8 @@ export class CollisionWorld {
         dz = o.s * direction.x + o.c * direction.z;
       let lo = 0,
         hi = maximum;
-      const base = terrainHeight(o.groundX ?? o.x, o.groundZ ?? o.z) + (o.groundOffset ?? 0);
+      const base =
+        o.groundY ?? terrainHeight(o.groundX ?? o.x, o.groundZ ?? o.z) + (o.groundOffset ?? 0);
       for (const [p, d, min, max] of [
         [ox, dx, -o.hx - 0.12, o.hx + 0.12],
         [oz, dz, -o.hz - 0.12, o.hz + 0.12],

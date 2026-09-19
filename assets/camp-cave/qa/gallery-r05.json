@@ -1,0 +1,360 @@
+{
+  "date": "2026-09-18T19:18:35.251Z",
+  "decision": "adopt",
+  "generator": "Built-in imagegen",
+  "pigments": {
+    "url": "/models/camp-cave/mural-atlas-r05.png",
+    "source": "assets/camp-cave/source/mural-atlas-r05.png",
+    "sha256": "6efe80a19056af4f5a9ce50d7309b578f4c3e914fa9543c51a8fc629842e6889",
+    "bytes": 1851771,
+    "image": {
+      "width": 1254,
+      "height": 1254
+    },
+    "generator": "Built-in imagegen",
+    "prompt": "assets/camp-cave/mural-atlas-prompt-r05.txt",
+    "references": [
+      {
+        "path": "assets/camp-cave/source/cat-reference-user.png",
+        "sha256": "e00722b68d4147b34e51937c2d1172458cae9e36113f6313a4f774a074384df6",
+        "role": "User-provided subject reference"
+      },
+      {
+        "path": "assets/camp-cave/source/character-524-reference-user.png",
+        "sha256": "8231914f43d9e8454823a923c8004df44c0bad1ee1aec9e2f140493d5f2af273",
+        "role": "User-provided subject reference"
+      }
+    ],
+    "styleReference": "assets/camp-cave/source/mural-side-r04.png",
+    "application": "Fourteen separate mural placements on east, west and rear walls; cat and 524 face each other across the chamber",
+    "layout": "src/cave-gallery-layout.ts",
+    "review": "assets/camp-cave/qa/gallery-r05.json",
+    "previous": {
+      "url": "/models/camp-cave/mural-side-r04.png",
+      "source": "assets/camp-cave/source/mural-side-r04.png",
+      "sha256": "1cbdd091523b48fea81f70eba5cc3840c7328ccfab4b8d1ef63e44b49e0ff5af"
+    }
+  },
+  "rockSurface": {
+    "url": "/models/camp-cave/limestone-r05.png",
+    "source": "assets/camp-cave/source/limestone-r05.png",
+    "sha256": "574372b875437977f226564a2bc1a8cd7149695582b1bbb6c806f7e83a075cee",
+    "bytes": 3425333,
+    "image": {
+      "width": 1254,
+      "height": 1254
+    },
+    "generator": "Built-in imagegen",
+    "prompt": "assets/camp-cave/limestone-prompt-r05.txt",
+    "application": "2.8m triplanar limestone colour and surface-gradient relief, mineral mottling and damp roughness",
+    "review": "assets/camp-cave/qa/gallery-r05.json"
+  },
+  "layout": [
+    {
+      "motif": "hands",
+      "wall": "east",
+      "centre": 7.8,
+      "bottom": 3.3,
+      "width": 0.9,
+      "strength": 0.66
+    },
+    {
+      "motif": "redHorse",
+      "wall": "east",
+      "centre": 10,
+      "bottom": 1.6,
+      "width": 3.2,
+      "strength": 0.74
+    },
+    {
+      "motif": "mammoth",
+      "wall": "east",
+      "centre": 5.65,
+      "bottom": 1.8,
+      "width": 3,
+      "strength": 0.77
+    },
+    {
+      "motif": "signs",
+      "wall": "east",
+      "centre": 2.8,
+      "bottom": 3.2,
+      "width": 1.15,
+      "strength": 0.57
+    },
+    {
+      "motif": "cat",
+      "wall": "east",
+      "centre": 0.1,
+      "bottom": 1.65,
+      "width": 3.6,
+      "strength": 0.8
+    },
+    {
+      "motif": "deer",
+      "wall": "east",
+      "centre": -4,
+      "bottom": 1.5,
+      "width": 2,
+      "strength": 0.66
+    },
+    {
+      "motif": "ochreHorse",
+      "wall": "west",
+      "centre": 8.1,
+      "bottom": 1.55,
+      "width": 2.5,
+      "strength": 0.67
+    },
+    {
+      "motif": "bison",
+      "wall": "west",
+      "centre": 4.6,
+      "bottom": 1.6,
+      "width": 2.7,
+      "strength": 0.78
+    },
+    {
+      "motif": "hands",
+      "wall": "west",
+      "centre": 2.2,
+      "bottom": 3.2,
+      "width": 0.9,
+      "strength": 0.58
+    },
+    {
+      "motif": "creature524",
+      "wall": "west",
+      "centre": 0,
+      "bottom": 1.8,
+      "width": 2.5,
+      "strength": 0.79
+    },
+    {
+      "motif": "redHorse",
+      "wall": "west",
+      "centre": -3.65,
+      "bottom": 1.5,
+      "width": 2.6,
+      "strength": 0.64
+    },
+    {
+      "motif": "signs",
+      "wall": "west",
+      "centre": -6.2,
+      "bottom": 1.5,
+      "width": 0.9,
+      "strength": 0.62
+    },
+    {
+      "motif": "hands",
+      "wall": "back",
+      "centre": 1.1,
+      "bottom": 1.55,
+      "width": 1.3,
+      "strength": 0.64
+    },
+    {
+      "motif": "signs",
+      "wall": "back",
+      "centre": -0.4,
+      "bottom": 2.4,
+      "width": 0.8,
+      "strength": 0.48
+    }
+  ],
+  "coverage": {
+    "atlasSha256": "6efe80a19056af4f5a9ce50d7309b578f4c3e914fa9543c51a8fc629842e6889",
+    "size": [
+      1254,
+      1254
+    ],
+    "alphaRange": [
+      0,
+      255
+    ],
+    "transparentFraction": 0.5880461629643196,
+    "placements": [
+      {
+        "motif": "hands",
+        "wall": "east",
+        "centre": 7.8,
+        "paintedSamples": 65,
+        "rejected": []
+      },
+      {
+        "motif": "redHorse",
+        "wall": "east",
+        "centre": 10,
+        "paintedSamples": 62,
+        "rejected": []
+      },
+      {
+        "motif": "mammoth",
+        "wall": "east",
+        "centre": 5.65,
+        "paintedSamples": 102,
+        "rejected": []
+      },
+      {
+        "motif": "signs",
+        "wall": "east",
+        "centre": 2.8,
+        "paintedSamples": 44,
+        "rejected": []
+      },
+      {
+        "motif": "cat",
+        "wall": "east",
+        "centre": 0.1,
+        "paintedSamples": 89,
+        "rejected": []
+      },
+      {
+        "motif": "deer",
+        "wall": "east",
+        "centre": -4,
+        "paintedSamples": 59,
+        "rejected": []
+      },
+      {
+        "motif": "ochreHorse",
+        "wall": "west",
+        "centre": 8.1,
+        "paintedSamples": 66,
+        "rejected": []
+      },
+      {
+        "motif": "bison",
+        "wall": "west",
+        "centre": 4.6,
+        "paintedSamples": 91,
+        "rejected": []
+      },
+      {
+        "motif": "hands",
+        "wall": "west",
+        "centre": 2.2,
+        "paintedSamples": 65,
+        "rejected": []
+      },
+      {
+        "motif": "creature524",
+        "wall": "west",
+        "centre": 0,
+        "paintedSamples": 117,
+        "rejected": []
+      },
+      {
+        "motif": "redHorse",
+        "wall": "west",
+        "centre": -3.65,
+        "paintedSamples": 62,
+        "rejected": []
+      },
+      {
+        "motif": "signs",
+        "wall": "west",
+        "centre": -6.2,
+        "paintedSamples": 44,
+        "rejected": []
+      },
+      {
+        "motif": "hands",
+        "wall": "back",
+        "centre": 1.1,
+        "paintedSamples": 65,
+        "rejected": []
+      },
+      {
+        "motif": "signs",
+        "wall": "back",
+        "centre": -0.4,
+        "paintedSamples": 44,
+        "rejected": []
+      }
+    ],
+    "totalPaintedSamples": 975,
+    "totalRejected": 0
+  },
+  "review": [
+    "Fourteen independent placements; cat and 524 occur once each on opposite side walls.",
+    "Horses, mammoth, bison, deer, hands and signs extend from the entrance region to the blind end.",
+    "Limestone colour, pores, bedding and mineral patches remain visible across walls, ceiling and floor.",
+    "The initial excessive relief was rejected; filtered, attenuated relief removes the black sparkling grain.",
+    "Generated PNGs are copied unchanged; atlas rectangles select whole motifs at render time.",
+    "The r07 cave mesh, walk surface, entrance and outdoor camp are unchanged."
+  ],
+  "gameQA": "output/playwright/camp-cave/game-gallery-r05-final/summary.json",
+  "checks": [
+    "keyboard walk: reach the cave hearth",
+    "keyboard walk: view opposing motifs before ignition",
+    "keyboard walk: return to light the cave hearth",
+    "keyboard walk: view opposing motifs in firelight",
+    "cat and 524 are on opposite walls, actual E reveals both",
+    "two renderers and three network peers share the cave fire",
+    "keyboard walk: gallery route 120",
+    "keyboard walk: gallery route 115",
+    "keyboard walk: gallery route 120",
+    "keyboard walk: gallery route 125.2",
+    "keyboard walk: gallery route 130",
+    "keyboard walk: return to central gallery",
+    "keyboard walk: approach the limestone and cat",
+    "keyboard walk: return from the rock face",
+    "keyboard walk: return for extinguishing",
+    "gallery reload and real E extinguishing pass"
+  ],
+  "errors": [],
+  "sampleCount": 20,
+  "screenshotCount": 18,
+  "verification": [
+    "TypeScript build including configured strict checks",
+    "architecture boundaries",
+    "changed JS syntax",
+    "Prettier",
+    "14 cave/fire/terrain/render tests"
+  ],
+  "delivery": [
+    {
+      "url": "/models/camp-cave/mural-atlas-r05.png",
+      "bytes": 1851771,
+      "sha256": "6efe80a19056af4f5a9ce50d7309b578f4c3e914fa9543c51a8fc629842e6889"
+    },
+    {
+      "url": "/models/camp-cave/limestone-r05.png",
+      "bytes": 3425333,
+      "sha256": "574372b875437977f226564a2bc1a8cd7149695582b1bbb6c806f7e83a075cee"
+    },
+    {
+      "url": "/models/camp-cave/asset.json",
+      "bytes": 4254,
+      "sha256": "7566293510f22f794c96c167dec927ae018fc3bccfb13115944469b05f7c9301"
+    },
+    {
+      "url": "/models/world-assets.json",
+      "bytes": 566535,
+      "sha256": "70f221e2645858f831a782f2623e9c09a62b27018c4de6b895d06e93205e934e"
+    },
+    {
+      "url": "/src/cave-materials.js",
+      "bytes": 4917,
+      "sha256": "47c41270ca37b262562fc3b247fb6c6db4f15656c6da58048b7164bc04d3aec9"
+    },
+    {
+      "url": "/src/cave-rock-shader.js",
+      "bytes": 1416,
+      "sha256": "b64f9f5bca7e9a225a871d090c5216d31b91f5d9c547554aaa971223e16c8223"
+    },
+    {
+      "url": "/src/cave-gallery-layout.js",
+      "bytes": 3412,
+      "sha256": "01214f31e73bc944b79c4f95fee9aaef377e21d32f8021d7c531ab23ddda41fd"
+    },
+    {
+      "url": "/src/world-landmarks.js",
+      "bytes": 10110,
+      "sha256": "72a0065a32aacffc8bf16cc0d195337722953d38b550f38e2b48569a50364d50"
+    }
+  ],
+  "performanceClaim": "No performance improvement claim; QA includes two simultaneous renderers and initial loading samples."
+}

@@ -1,0 +1,36 @@
+{
+  "date": "2026-09-18",
+  "request": "添付の猫と524のキャラクターを、洞窟最奥の壁画へ大きく描く。",
+  "url": "/models/camp-cave/mural-cats-r02.png",
+  "sha256": "8058db4fed713baaf3f4ca75f4b9bf527502794e05aa08e7646ae23d74ef1804",
+  "bytes": 2582801,
+  "source": "assets/camp-cave/source/mural-cats-v2.png",
+  "generator": "Built-in imagegen",
+  "prompt": "assets/camp-cave/mural-cats-prompt.txt",
+  "references": [
+    {
+      "path": "assets/camp-cave/source/cat-reference-user.png",
+      "sha256": "e00722b68d4147b34e51937c2d1172458cae9e36113f6313a4f774a074384df6",
+      "role": "User-provided subject reference"
+    },
+    {
+      "path": "assets/camp-cave/source/character-524-reference-user.png",
+      "sha256": "8231914f43d9e8454823a923c8004df44c0bad1ee1aec9e2f140493d5f2af273",
+      "role": "User-provided subject reference"
+    }
+  ],
+  "application": "Two large subjects projected onto the existing far interior wall triangles",
+  "widthMetres": 5,
+  "heightMetres": 2.0833,
+  "review": "assets/camp-cave/qa/mural-cats-r02.json",
+  "previous": {
+    "url": "/models/camp-cave/mural.png",
+    "source": "assets/camp-cave/source/mural-v1.png",
+    "sha256": "6cf92e8ddb0f90fa0a23f538e3e568e333c80b9498e52172aa46742a8517c20e"
+  },
+  "image": {
+    "width": 1942,
+    "height": 809,
+    "mode": "RGBA"
+  }
+}

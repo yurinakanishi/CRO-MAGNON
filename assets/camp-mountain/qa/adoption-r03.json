@@ -1,0 +1,9 @@
+{
+  "decision": "adopt",
+  "sha256": "97d3778d9cc7768ee1a7ab03509dc01724c0ab1cf015c3900b394ee444b82b77",
+  "visualGate": "passed",
+  "browserGate": "passed",
+  "views": "output/playwright/camp-mountain/asset-03",
+  "notes": "Source-derived broad hill fitted around camp, river corridor and castle foundation; summit 8.5m, wide switchback route. Original source and r01 retained. r03: trail shifted outside cave and castle walls; original underside retained below ground.",
+  "gameQA": "pending"
+}

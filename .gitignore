@@ -23,3 +23,8 @@ assets/coastal-craft/models/*/qa/game-views/
 assets/coastal-craft/models/*/qa/appearance-views/
 assets/coastal-craft/models/*/qa/static-comparison/
 assets/coastal-craft/models/*/qa/static-config.json
+
+# Full camp landform reconstruction intermediates stay in the local model archive.
+# Keep source references, workflows, accepted models and QA in this repository.
+assets/camp-cave/work/
+assets/camp-mountain/work/

@@ -63,10 +63,10 @@ test('castle floor atlas is measured from the delivered mesh and clears the star
     ...Object.values(SCENERY).flat(),
   ])
     assert.equal(nearCastle(p.x, p.z), false);
-  assert.ok(Math.hypot(CASTLE.x - CAMP.x, CASTLE.z - CAMP.z) < 110);
+  assert.ok(Math.hypot(CASTLE.x - CAMP.x, CASTLE.z - CAMP.z) < 200);
   assert.ok(
-    Math.abs(Math.hypot(CASTLE.x - CAMP.x, CASTLE.z - CAMP.z) - Math.hypot(90, 50)) < 1e-9,
-    'camp distance is preserved',
+    CASTLE.z > CAMP.z + 50,
+    'castle is now on the southern mountain behind the original outdoor camp',
   );
   assert.ok(
     CASTLE.z > 0 && CASTLE.scale === 1,

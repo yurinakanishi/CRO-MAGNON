@@ -1,0 +1,18 @@
+{
+  "date": "2026-09-18",
+  "candidate": 2,
+  "revision": "10",
+  "sha256": "b6d5d265e6fa2906c304f0bb0a735d47aeadef7e0ef81a7263bbd437818cac4e",
+  "decision": "adopt",
+  "visualGate": "passed",
+  "browserGate": "passed",
+  "gameGate": "pending",
+  "visualEvidence": "output/playwright/camp-mountain/asset-10/",
+  "notes": [
+    "New imagegen reference v2 -> native TRELLIS 1024 seed42; broad 280m massif west of unchanged river.",
+    "Source topology, winding, UV charts and original textures retained; raised cave ledge and continuous gentle trail fitted into reconstructed mountain.",
+    "Keep native 289417 triangle reduction: additional QEM in r09 passed geometry distance checks but produced visibly stretched texture triangles on flattened upland.",
+    "Source upper and lower skins retain their vertical separation. Old revisions and native source preserved.",
+    "World peak 40.36m; cave ledge 8m; castle forecourt 35m; detailed game gate recorded separately."
+  ]
+}

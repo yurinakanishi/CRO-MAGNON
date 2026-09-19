@@ -15,11 +15,10 @@ export const CASTLE = Object.freeze({
   id: 'valley-castle',
   key: 'valley-castle',
   name: '白羽教団の大聖城',
-  // The same centre and heading as the previous keep: 102.956301 m from the
-  // camp, the gate turned back toward it.
-  x: 151.6733430370152,
-  z: 33.79718186001477,
-  yaw: -1.4127636728014257,
+  // The broad southern upland, west of the river; the gate faces the northern ascent.
+  x: -70,
+  z: 183,
+  yaw: Math.PI,
   scale: SCALE,
   // Half of the 110 x 128 m footprint's diagonal, rounded up.
   clearance: 86,

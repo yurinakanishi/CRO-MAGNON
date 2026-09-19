@@ -1,0 +1,64 @@
+{
+  "modelKey": "camp-mountain",
+  "name": "白羽の丘陵",
+  "kind": "static",
+  "candidate": 2,
+  "revision": "15",
+  "status": "integrated-and-game-qa-passed",
+  "url": "/models/camp-mountain/model-r15.glb",
+  "sha256": "193127fbde284f036864996060cb3b85578ab7a595384151dad858e569eb9202",
+  "bytes": 8929000,
+  "triangles": 245000,
+  "upAxis": "Y",
+  "forwardAxis": "+Z",
+  "heightMetres": 40.25746309757233,
+  "widthMetres": 280,
+  "placement": {
+    "pivot": "ground-centred",
+    "min": [
+      -140,
+      -1.100000023841858,
+      -140
+    ],
+    "max": [
+      140,
+      39.15746307373047,
+      140
+    ]
+  },
+  "clips": [],
+  "lods": [],
+  "notes": [
+    "Source r11 upper envelope resampled and locally smoothed, retaining the source mountain form.",
+    "Continuous shared-edge retopology repairs holes and stacked skin. This is a ray-projected TRELLIS source surface, not a replacement primitive.",
+    "Accepted meadow-ground texture reused; world-space material treatment blends terrain and cave apron.",
+    "All upward faces, including steep slopes, contribute to the 0.4m physical height field.",
+    "River-side relief capped to a broad 0.72 grade shoulder, avoiding the former compressed vertical turf skirt.",
+    "Apron fitted below the measured cave floor until the actual rock arch; exact roof texture avoids cutting sky gaps around the mouth."
+  ],
+  "provenance": {
+    "provider": "Codex",
+    "claudeUsed": false,
+    "referenceGenerator": "Built-in imagegen",
+    "referenceImage": "assets/camp-mountain/source/reference-v2.png",
+    "referenceSha256": "d1656f3db71a436224d30ea42eddfd236578fe4bfcf78e3959272aa6f4cda23f",
+    "reconstruction": "Local TRELLIS.2 (GGUF/C++), 1024 geometry, seed 42, 512 texture flow, 2048 atlas",
+    "sourceGeometry": "assets/camp-mountain/work/trellis/massif-v2-res1024-seed42.glb",
+    "sourceGeometrySha256": "7b8cf524287688102da66ab8b7a685603530d6763e47f4db679ec5b2975c194b",
+    "visualReview": "assets/camp-mountain/qa/adoption-r15.json",
+    "modelWorkspace": "assets/camp-mountain",
+    "workflow": "Source image → TRELLIS.2 → source-preserving QEM → terrain fitting/UV/materials → exact GLB QA → source-envelope retopology and smoothing → measured surface comparison",
+    "derivedInputs": [
+      {
+        "path": "public/models/camp-mountain/model-r11.glb",
+        "sha256": "a445118fc438e025b7b4450321282d257d8ffd67f582d249103f46627169ee47"
+      },
+      {
+        "path": "public/models/meadow-ground/model.glb",
+        "sha256": "6c6b41bdec1631236027c567635623aa9cdd1e0d92c0ae9e89f77764b52995e1"
+      }
+    ],
+    "refinementWorkflow": "assets/camp-cave/workflow/refine-landforms.py"
+  },
+  "gameQA": "output/playwright/camp-cave/game-final-r15/summary.json"
+}

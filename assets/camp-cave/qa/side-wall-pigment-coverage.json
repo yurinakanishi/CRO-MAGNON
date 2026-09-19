@@ -1,0 +1,21 @@
+{
+  "samples": 2821,
+  "paintedSamples": 1236,
+  "paintedClipped": [],
+  "maxAdjacentPaintedDepthChange": 0.09571527628330223,
+  "thresholdAlpha": 32,
+  "note": "The 5 clipped rectangle samples lie in the transparent top-right margin.",
+  "image": {
+    "size": [
+      2172,
+      724
+    ],
+    "mode": "RGBA",
+    "alphaRange": [
+      0,
+      255
+    ],
+    "transparentFraction": 0.45196842281981625,
+    "sha256": "1cbdd091523b48fea81f70eba5cc3840c7328ccfab4b8d1ef63e44b49e0ff5af"
+  }
+}

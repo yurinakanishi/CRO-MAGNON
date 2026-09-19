@@ -19,6 +19,7 @@ import {
   boardedBoat,
   initializeBoats,
   releaseBoat,
+  restoreBoatMooring,
   updateBoats,
 } from '../shared/boats.mjs';
 import { characterModel, normalizeCharacter } from '../shared/characters.mjs';
@@ -699,13 +700,15 @@ export function createGameCore({
       room.createdAt = record.createdAt;
       Object.assign(room.camp, record.camp);
       room.gulf = createGulfState(record.gulf);
-      room.boats = (record.boats || []).slice(0, BOATING.maxBoats).map((b) => {
+      room.boats = [];
+      for (const b of (record.boats || []).slice(0, BOATING.maxBoats)) {
         const boat = { ...b };
         stopActor(boat);
         boat.riderId = null;
         Object.assign(boat, boat.mooring);
-        return boat;
-      });
+        restoreBoatMooring(room, boat);
+        room.boats.push(boat);
+      }
       for (const resource of record.resources) {
         const current = room.resourceById.get(resource.id);
         if (current)

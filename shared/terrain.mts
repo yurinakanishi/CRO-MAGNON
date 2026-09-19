@@ -4,6 +4,9 @@ import { CASTLE_SURFACE } from './castle-surface.mjs';
 import { BIOMES, biomeAt, chunkAt, chunkDescription } from './biomes.mjs';
 import { coastDistance } from './paleo-geography.mjs';
 import { marshDrop } from './behemoth-rules.mjs';
+import { mountainHeight } from './camp-mountain.mjs';
+import { CAMP_CAVE_SURFACE } from './camp-cave-surface.mjs';
+import { CAMP_CAVE, insideCaveGround } from './camp-cave-layout.mjs';
 export const WATER_LEVEL = -0.45;
 export const riverX = (z) => 65 + Math.sin(z * 0.065) * 3.5;
 export const clamp = (n, min, max) => Math.max(min, Math.min(max, n));
@@ -94,13 +97,22 @@ export function installBiomeTerrain(fields) {
 }
 
 export function terrainHeight(x, z) {
+  const hill = mountainHeight(x, z);
   if (sourceSurface)
-    return sourceSurface(x, z) - riverBankDrop(x, z) - coastBankDrop(x, z) - marshDrop(x, z);
+    return Math.max(
+      hill > 0.02 ? hill : -Infinity,
+      sourceSurface(x, z) - riverBankDrop(x, z) - coastBankDrop(x, z) - marshDrop(x, z),
+    );
   // Neutral height is used only by unloaded/invisible actors; no legacy terrain is drawn.
-  return 0;
+  return hill;
 }
 
 export function walkHeight(x, z) {
+  const caveHeight = CAMP_CAVE_SURFACE.height(x, z);
+  if (Number.isFinite(caveHeight))
+    return insideCaveGround(x, z)
+      ? CAMP_CAVE.elevation + caveHeight
+      : Math.max(terrainHeight(x, z), CAMP_CAVE.elevation + caveHeight);
   // The atlas is in world terms (the model's plinth is already subtracted), so
   // the placement's groundOffset is not added here.
   const castleHeight = CASTLE_SURFACE.height(x, z);
@@ -120,10 +132,19 @@ export function walkHeight(x, z) {
   }
   return terrainHeight(x, z);
 }
+// A body-blocking cave wall cell is not the mountain roof. The exact cave mesh
+// shortens the camera ray; its floor clamp must stay inside the chamber.
+export function cameraFloorHeight(x, z) {
+  if (insideCaveGround(x, z)) return CAMP_CAVE.elevation + (CAMP_CAVE_SURFACE.height(x, z) ?? 0);
+  return terrainHeight(x, z);
+}
 export function projectileHeight(x, z, elevation = 0) {
   return (
-    (CASTLE_SURFACE.cell(x, z) ? terrainHeight(CASTLE.x, CASTLE.z) : terrainHeight(x, z)) +
-    elevation
+    (CAMP_CAVE_SURFACE.cell(x, z)
+      ? CAMP_CAVE.elevation
+      : CASTLE_SURFACE.cell(x, z)
+        ? terrainHeight(CASTLE.x, CASTLE.z)
+        : terrainHeight(x, z)) + elevation
   );
 }
 export function installSourceBridge(bounds, x = riverX(43.5), z = 43.5, deckY = 0.3) {

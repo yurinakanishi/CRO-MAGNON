@@ -1,0 +1,10 @@
+{
+  "decision": "adopt",
+  "sha256": "812262019d83328c0908729c7b68e836a37f3c0613bda5c6e0a39b41e383e46f",
+  "visualGate": "passed",
+  "browserGate": "passed",
+  "views": "output/playwright/camp-cave/asset-05-dressed",
+  "notes": "UV seam vertices reconnected before QEM; exact exported geometry and textured/clay views reviewed. Pigment projected onto original wall, faint and lit browser views passed.",
+  "gameQA": "output/playwright/camp-cave/game-final-r11/summary.json",
+  "gameGate": "passed"
+}

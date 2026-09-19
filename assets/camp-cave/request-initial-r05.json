@@ -1,0 +1,15 @@
+{
+  "date": "2026-09-18",
+  "status": "integrated-and-game-qa-passed",
+  "brief": "Preserve the initial outdoor campfire, add an enterable mural cave immediately behind it, and connect a gentle southern mountain trail to the existing White Feather castle. Keep northern snow access and surrounding circulation.",
+  "userClarification": "カラスの巣は白羽教団の大聖城を指す。",
+  "newModelCandidates": { "camp-cave": 1, "camp-mountain": 1 },
+  "referenceGenerator": "Codex built-in imagegen",
+  "reconstruction": { "tool": "Local TRELLIS.2 GGUF/C++", "geometryResolution": 1024, "seed": 42, "textureResolution": 512, "atlasResolution": 2048 },
+  "sourcePolicy": "Keep original reference, dense reconstruction, every processing revision and Blender files. Weld matching source UV-seam vertices before QEM. No visible primitive replacements, no Claude, no Tripo.",
+  "finalRevisions": { "camp-cave": "05", "camp-mountain": "05" },
+  "murals": { "source": "source/mural-v1.png", "method": "Generated ochre and charcoal pigment projected onto existing cave wall triangles; faint daylight with actual warm point lighting when the separate cave hearth is lit." },
+  "qa": "qa/game-qa.json",
+  "delivery": "qa/local-delivery.json",
+  "retainedFailures": "Cave direct dense Blender reduction interrupted before completion; cave UV-bake r03/r04 rejected; all earlier terrain fitting and reduction revisions retained."
+}

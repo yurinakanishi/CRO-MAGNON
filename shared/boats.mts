@@ -4,6 +4,7 @@ import { stopActor } from './combat.mjs';
 import { attackProfile } from './combat-profiles.mjs';
 import { movePlayer } from './movement.mjs';
 import { maritimeWeather, seaBoatSpeed } from './maritime-weather.mjs';
+import { walkHeight } from './terrain.mjs';
 
 export const BOATING = Object.freeze({
   version: 1,
@@ -97,6 +98,36 @@ export function launchPoint(room, player) {
         return p;
     }
   return null;
+}
+// A coastline edit can turn a saved mooring into land. Preserve the boat and
+// reconnect its passengers to a nearby usable beach before restoring sessions.
+export function restoreBoatMooring(room, boat) {
+  if (
+    room.seaCollision.free(boat.mooring, boat.radius, boatObstacles(room)) &&
+    room.collision.free(boat.shore, 0.32)
+  )
+    return;
+  const origin = boat.shore;
+  for (let radius = 0; radius <= 360; radius += 4) {
+    const count = Math.max(1, Math.ceil((2 * Math.PI * radius) / 4));
+    for (let i = 0; i < count; i++) {
+      const angle = (2 * Math.PI * i) / count;
+      const shore = {
+        x: origin.x + Math.cos(angle) * radius,
+        z: origin.z + Math.sin(angle) * radius,
+        radius: 0.32,
+      };
+      const coast = coastDistance(shore.x, shore.z);
+      if (coast < 0.8 || coast > 4.5 || Math.abs(walkHeight(shore.x, shore.z)) > 1.5) continue;
+      const mooring = launchPoint(room, shore);
+      if (!mooring) continue;
+      boat.shore = { x: shore.x, z: shore.z };
+      boat.mooring = mooring;
+      Object.assign(boat, mooring);
+      return;
+    }
+  }
+  throw new Error('No safe shore for saved boat');
 }
 export function landingPoint(room, player, boat) {
   const dynamic = landObstacles(room, player);

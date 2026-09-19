@@ -1,0 +1,10 @@
+{
+  "decision": "adopt",
+  "sha256": "751ae47bbc9a1f9686bf28edf34db39eee80939aaa01730823e9e5c2d72c275f",
+  "visualGate": "passed",
+  "browserGate": "passed",
+  "views": "output/playwright/camp-mountain/asset-05",
+  "notes": "UV seam vertices reconnected before QEM; exact exported geometry and textured/clay views reviewed. Broad rear shoulder joins cave; 8.5m castle foundation and gentle switchback. Final r05 feathers the lifted soil back into the original measured perimeter. 140986 triangles retained because coarser QEM exceeds the edge error limit.",
+  "gameQA": "output/playwright/camp-cave/game-final-r05/summary.json",
+  "gameGate": "passed"
+}

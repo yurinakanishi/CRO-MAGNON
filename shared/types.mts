@@ -77,6 +77,7 @@ export interface Obstacle extends Point {
   s?: number;
   height?: number;
   groundX?: number;
+  groundY?: number;
   groundZ?: number;
   groundOffset?: number;
 }

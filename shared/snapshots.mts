@@ -163,6 +163,7 @@ export interface PoisonSplash extends Point {
   hit: boolean;
 }
 export interface CampSnapshot extends Point {
+  caveFireLit?: boolean;
   wood: number;
   stone: number;
   level: number;

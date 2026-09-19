@@ -9,11 +9,16 @@ import { regionFeatureDiagnostics } from './region-feature-diagnostics.js';
 import { ADVENTURE_LANDMARKS } from '../shared/adventure-layout.mjs';
 import { AdventureMaterials } from './adventure-materials.js';
 import { GULF_LANDMARKS } from '../shared/gulf-region.mjs';
+import { CAMP_CAVE, CAMP_MOUNTAIN } from '../shared/camp-cave-layout.mjs';
+import { prepareCaveMaterials } from './cave-materials.js';
+import { prepareMountainMaterials } from './mountain-materials.js';
 
 const PLACEMENTS = Object.freeze([
   ...LANDMARKS,
   ...REGION_FEATURES,
   CASTLE,
+  CAMP_CAVE,
+  CAMP_MOUNTAIN,
   ...ADVENTURE_LANDMARKS,
   ...GULF_LANDMARKS,
 ]);
@@ -32,6 +37,9 @@ export class WorldLandmarks {
   declare disposed: boolean;
   declare coatings: AdventureMaterials;
   declare castleCamera: MeshRayGrid | null | undefined;
+  declare caveCamera: MeshRayGrid | null | undefined;
+  declare cavePigment: THREE.Texture | undefined;
+  declare caveLimestone: THREE.Texture | undefined;
 
   constructor(world, placements = PLACEMENTS) {
     this.world = world;
@@ -57,8 +65,10 @@ export class WorldLandmarks {
     for (const [id, root] of this.instances)
       if (!ids.has(id)) {
         this.world.scene.remove(root);
+        for (const material of root.userData.ownedMaterials ?? []) material.dispose();
         this.instances.delete(id);
         if (id === CASTLE.id) this.castleCamera = null;
+        if (id === CAMP_CAVE.id) this.caveCamera = null;
       }
     for (const item of desired) {
       this.used.set(item.key, time);
@@ -90,6 +100,55 @@ export class WorldLandmarks {
         root.name = item.id;
         root.userData.landmarkId = item.id;
         if (this.featureKeys.has(item.key)) root.userData.regionFeature = item.key;
+        if (item.key === CAMP_CAVE.key && !template.cavePrepared) {
+          if (!this.cavePigment) {
+            this.cavePigment = new THREE.TextureLoader().load(
+              template.asset.pigment.url,
+              undefined,
+              undefined,
+              (error) => {
+                if (!this.disposed)
+                  this.world.failWorld(
+                    '洞窟の壁画を読み込めませんでした。再読み込みしてください。',
+                    error,
+                  );
+              },
+            );
+            this.cavePigment.colorSpace = THREE.SRGBColorSpace;
+            this.cavePigment.anisotropy = Math.min(
+              8,
+              this.world.renderer.capabilities.getMaxAnisotropy(),
+            );
+          }
+          if (!this.caveLimestone) {
+            this.caveLimestone = new THREE.TextureLoader().load(
+              template.asset.rockSurface.url,
+              undefined,
+              undefined,
+              (error) => {
+                if (!this.disposed)
+                  this.world.failWorld(
+                    '洞窟の岩肌を読み込めませんでした。再読み込みしてください。',
+                    error,
+                  );
+              },
+            );
+            this.caveLimestone.colorSpace = THREE.SRGBColorSpace;
+            this.caveLimestone.wrapS = this.caveLimestone.wrapT = THREE.RepeatWrapping;
+            this.caveLimestone.anisotropy = Math.min(
+              8,
+              this.world.renderer.capabilities.getMaxAnisotropy(),
+            );
+          }
+          template.cavePrepared = true;
+          for (const gltf of [template.gltf, ...template.lods])
+            prepareCaveMaterials(gltf.scene, this.cavePigment, this.caveLimestone);
+        }
+        if (item.key === CAMP_MOUNTAIN.key && !template.trailPrepared) {
+          template.trailPrepared = true;
+          for (const gltf of [template.gltf, ...template.lods])
+            template.caveRoofTexture = prepareMountainMaterials(gltf.scene);
+        }
         if (item.key === 'volcanic-cone' && !template.lavaPrepared) {
           template.lavaPrepared = true;
           for (const gltf of [template.gltf, ...template.lods])
@@ -111,7 +170,8 @@ export class WorldLandmarks {
         }
         root.position.set(
           item.x,
-          terrainHeight(item.x, item.z) + (item.groundOffset ?? -0.08),
+          (item.elevation ?? (item.id === CAMP_MOUNTAIN.id ? 0 : terrainHeight(item.x, item.z))) +
+            (item.groundOffset ?? -0.08),
           item.z,
         );
         root.rotation.y = item.yaw;
@@ -138,12 +198,20 @@ export class WorldLandmarks {
         this.instances.set(item.id, root);
         this.world.scene.add(root);
         if (item.id === CASTLE.id) this.castleCamera = new MeshRayGrid(root);
+        if (item.id === CAMP_CAVE.id) this.caveCamera = new MeshRayGrid(root);
       }
       this.instances.get(item.id).update(camera);
     }
     for (const [key, last] of this.used)
       if (time - last > 12 && !this.pending.has(key)) {
+        this.assets.templates.get(key)?.caveRoofTexture?.dispose();
         this.assets.releaseEnvironment(key);
+        if (key === CAMP_CAVE.key) {
+          this.cavePigment?.dispose();
+          this.cavePigment = undefined;
+          this.caveLimestone?.dispose();
+          this.caveLimestone = undefined;
+        }
         this.used.delete(key);
         this.world.updateAssetDiagnostics();
       }
@@ -156,8 +224,15 @@ export class WorldLandmarks {
   }
   dispose() {
     this.disposed = true;
-    for (const root of this.instances.values()) this.world.scene.remove(root);
+    for (const root of this.instances.values()) {
+      this.world.scene.remove(root);
+      for (const material of root.userData.ownedMaterials ?? []) material.dispose();
+    }
     this.instances.clear();
     this.coatings.dispose();
+    this.assets.templates.get(CAMP_MOUNTAIN.key)?.caveRoofTexture?.dispose();
+    this.cavePigment?.dispose();
+    this.caveLimestone?.dispose();
+    this.caveCamera = this.castleCamera = null;
   }
 }
