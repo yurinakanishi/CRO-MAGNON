@@ -5,6 +5,7 @@ import { handleBoatAction } from '../shared/boats.mjs';
 import { attackProfile, shoulderMagic } from '../shared/combat-profiles.mjs';
 import { handleHuntingAction } from '../shared/hunting.mjs';
 import { GATHER_RANGE, interactionVisible } from '../shared/interactions.mjs';
+import { campContribution } from '../shared/camp-contribution.mjs';
 import { handleRidingAction } from '../shared/riding.mjs';
 import { NPC } from '../shared/world.mjs';
 import { handleGulfAction, ensureGulfPlayer } from '../shared/gulf-life.mjs';
@@ -170,16 +171,18 @@ export function createActionHandler({
       ];
       notice(player, `${label} +${collected}`, 'success');
     } else if (action === 'contribute') {
-      if (distance(player, room.camp) > 10)
+      if (distance(player, room.camp) > GATHER_RANGE)
         return notice(player, '焚き火に近づいてから届けよう。', 'error');
       if (!interactionVisible(room.collision, player, room.camp))
         return notice(player, '焚き火までの間がふさがれています。回り込もう。', 'error');
-      const { wood, stone } = player.inventory;
-      if (!wood && !stone) return notice(player, '木材や石を集めて持ってこよう。', 'error');
+      const contribution = campContribution(room.camp, player, now);
+      if (!contribution)
+        return notice(player, 'いま、この焚き火へ届けられる資材はありません。', 'error');
+      const { wood, stone } = contribution;
       room.camp.wood += wood;
       room.camp.stone += stone;
-      player.inventory.wood = 0;
-      player.inventory.stone = 0;
+      player.inventory.wood -= wood;
+      player.inventory.stone -= stone;
       notice(player, `焚き火に木材 ${wood}・石 ${stone} を届けた。`, 'success');
       systemChat(room, `${player.name} が木材 ${wood}・石 ${stone} を届けた。`);
       if (

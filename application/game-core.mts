@@ -247,7 +247,13 @@ export function createGameCore({
         sessionToken: resumable ? runtime.token() : null,
         difficulty: normalizeDifficulty(params.get('difficulty')),
       };
-    player.radius = characterModel(player).radius ?? WORLD.playerRadius;
+    // Only an explicit confirmed title start picks a new appearance and camp
+    // spawn. A dropped connection continues with the saved player and position.
+    const startAtCamp = params.get('startAtCamp') === '1';
+    const appearance = startAtCamp
+      ? normalizeCharacter({ species: params.get('species'), gender: params.get('gender') })
+      : normalizeCharacter(player);
+    const radius = characterModel(appearance).radius ?? WORLD.playerRadius;
     ensureAdventure(player);
     ensureGulfPlayer(player);
     ensureVillageProgress(player);
@@ -257,14 +263,14 @@ export function createGameCore({
       .filter((p) => p !== player && !p.mountId)
       .concat(room.animals.filter(animalIsSolid), room.enemies.filter(enemyIsSolid), room.residents)
       .map(actorObstacle);
+    const otherPlayers = room.players.size - (active ? 1 : 0);
+    const origin = startAtCamp
+      ? { x: 48 + otherPlayers * 1.1, z: 57 + (otherPlayers % 2) }
+      : player;
     const spawn =
-      room.collision.nearestFree(player, player.radius, dynamic) ||
+      room.collision.nearestFree(origin, radius, dynamic) ||
       (resumed &&
-        room.collision.nearestFree(
-          { x: room.camp.x - 1, z: room.camp.z + 3 },
-          player.radius,
-          dynamic,
-        ));
+        room.collision.nearestFree({ x: room.camp.x - 1, z: room.camp.z + 3 }, radius, dynamic));
     if (!spawn) {
       send(socket, { type: 'error', code: 'NO_SPAWN', text: '安全な参加地点がありません。' });
       socket.close();
@@ -272,6 +278,10 @@ export function createGameCore({
     }
     if (active) {
       const oldSocket = player.socket;
+      if (startAtCamp) {
+        clearCarryOffer(room, player);
+        releaseCarry(room, player, true);
+      }
       releaseRider(room, player);
       player.pendingStrike = null;
       player.cookingEndsAt = 0;
@@ -289,8 +299,13 @@ export function createGameCore({
       oldSocket.close(4004, 'Session replaced');
     }
     if (saved) room.sessions.delete(token);
+    if (startAtCamp) {
+      Object.assign(player, appearance);
+      player.name = cleanText(params.get('name'), 16) || player.name;
+    }
     Object.assign(player, {
       socket,
+      radius,
       alive: true,
       tokens: 70,
       refillAt: now,
@@ -380,7 +395,7 @@ export function createGameCore({
         return;
       }
       if (message.type === 'leave') {
-        if (!persistentSessions || !message.keepSession) player.sessionToken = null;
+        if (!message.keepSession) player.sessionToken = null;
         socket.close(1000, 'Explicit leave');
         return;
       }

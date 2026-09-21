@@ -2476,41 +2476,9 @@ dialog:has(.character-switch) {
   letter-spacing: 0.2em;
   color: #aab4a7;
 }
-.character-check {
-  position: absolute;
-  top: 10px;
-  right: 10px;
-  width: 26px;
-  height: 26px;
-  border-radius: 50%;
-  background: var(--accent);
-  box-shadow: 0 0 16px #e0b070aa;
-  opacity: 0;
-  transform: scale(0.6);
-  transition:
-    opacity 0.18s,
-    transform 0.18s;
-  z-index: 1;
-}
-.character-check:after {
-  content: '';
-  position: absolute;
-  left: 9px;
-  top: 5px;
-  width: 6px;
-  height: 12px;
-  border: solid #2a2012;
-  border-width: 0 2px 2px 0;
-  transform: rotate(45deg);
-}
-.character-choice:hover {
-  border-color: #e0b07077;
-  transform: translateY(-3px);
-}
-.character-choice:hover .character-art {
-  filter: saturate(0.9) brightness(0.9);
-}
-.character-choice:has(input:checked) {
+/* The stored radio choice is not a second cursor. Only the currently focused
+   card is highlighted; pointer movement hands it the same focus as keys/pad. */
+.character-choice:focus-within {
   border-color: var(--accent);
   box-shadow:
     0 0 0 1px var(--accent),
@@ -2518,16 +2486,12 @@ dialog:has(.character-switch) {
     0 0 40px #e0b07044;
   transform: translateY(-4px);
 }
-.character-choice:has(input:checked) .character-art {
+.character-choice:focus-within .character-art {
   filter: none;
   transform: scale(1.05);
 }
-.character-choice:has(input:checked) .character-name strong {
+.character-choice:focus-within .character-name strong {
   color: #f7ecd0;
-}
-.character-choice:has(input:checked) .character-check {
-  opacity: 1;
-  transform: none;
 }
 .character-choice:focus-within {
   outline: 2px solid var(--accent);

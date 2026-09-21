@@ -110,13 +110,11 @@ async function play(ctx, name, resume = false) {
   assert.equal(await page.locator('#screen-title .menu-item').count(), 2);
   assert.equal(await page.locator('#screen-title a').count(), 0);
   await page.locator('#title-start').click();
-  if (!resume) {
-    await page.locator('#setup-form input[name="name"]').fill(name);
-    await page.locator('#setup-form .character-choice:has(input:checked)').click();
-    await page.locator('#setup-flow [data-choose-difficulty="normal"]').click();
-    await page.locator('#setup-flow-yes').click();
-    await page.waitForSelector('body.in-game', { timeout: 60000 });
-  }
+  await page.locator('#setup-form input[name="name"]').fill(name);
+  await page.locator('#setup-form .character-choice:has(input:checked)').click();
+  await page.locator('#setup-flow [data-choose-difficulty="normal"]').click();
+  await page.locator('#setup-flow-yes').click();
+  await page.waitForSelector('body.in-game', { timeout: 60000 });
   await page
     .locator('#world[data-world-asset="ready"][data-character-asset="ready"]')
     .waitFor({ timeout: 90000 });
@@ -183,6 +181,9 @@ try {
   const titleWelcome = a.seen.welcome;
   await a.page.locator('[data-controller-menu="title"]').click();
   await a.page.locator('#title-start').click();
+  await a.page.locator('#setup-form .character-choice:has(input:checked)').click();
+  await a.page.locator('#setup-flow [data-choose-difficulty="normal"]').click();
+  await a.page.locator('#setup-flow-yes').click();
   await until(
     () =>
       a.seen.welcome !== titleWelcome &&
@@ -191,7 +192,9 @@ try {
     'title resume',
   );
   assert.equal(a.seen.id, originalIds[0]);
-  pass('Save updates preserve menu selection; title exit and Start retain identity and supplies');
+  pass(
+    'Save updates preserve menu selection; title Start asks for character and difficulty again, retaining identity and supplies',
+  );
   await context.close();
   context = null;
   await peerContext.close();
@@ -210,7 +213,7 @@ try {
     const after = restored.people.find((n) => n.id === p.id);
     assert.deepEqual(after.inventory, p.inventory);
     assert.equal(after.spearHead, p.spearHead);
-    assert.deepEqual([after.x, after.z], [p.x, p.z]);
+    assert.ok(Math.hypot(after.x - 48, after.z - 57) < 10, 'Title Start returns to camp');
   }
   assert.deepEqual(loaded.gulf, shutdownCheckpoint.gulf);
   assert.equal(restored.createdAt, expected.createdAt);

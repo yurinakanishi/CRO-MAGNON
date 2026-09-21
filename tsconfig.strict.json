@@ -16,6 +16,7 @@
     "src/gamepad-input.ts",
     "src/gamepad-ui.ts",
     "src/screens.ts",
+    "src/character-selection.ts",
     "src/view-update-gate.ts",
     "src/instance-updates.ts",
     "src/dom-updates.ts",

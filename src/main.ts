@@ -45,6 +45,7 @@ import {
   acceptsGameShortcut,
 } from './combat-input.js';
 import { GATHER_RANGE, interactionVisible } from '../shared/interactions.mjs';
+import { campContribution } from '../shared/camp-contribution.mjs';
 import { caveFireInteraction } from '../shared/cave-fire.mjs';
 import { ENEMY_GROUNDS, SCENERY } from '../shared/scenery-layout.mjs';
 import { CASTLE_GATE } from '../shared/castle-layout.mjs';
@@ -485,6 +486,7 @@ async function connect(automatic = false) {
       ...profile,
       resume: '1',
       session: savedSession(sessionKey(profile.room)),
+      ...(startAtCamp ? { startAtCamp: '1' } : {}),
     }),
   );
   socket = ws;
@@ -512,7 +514,9 @@ async function connect(automatic = false) {
       $('#room-label').textContent = profile.room;
       connection(true, 'オンライン');
       renderer.focusPlayer();
-      if (message.resumed) notify('接続が戻りました。持ち物と進行を復元しました。', 'success');
+      if (message.resumed && !startAtCamp)
+        notify('接続が戻りました。持ち物と進行を復元しました。', 'success');
+      startAtCamp = false;
     }
     if (message.type === 'roomReset') {
       restartAfterRoomReset();
@@ -645,10 +649,14 @@ function nearby(): { action: string; label: string; targetId?: string } | null {
             : `${{ wood: '木材', stone: '石', berry: 'ベリー' }[r.type]}を採集する`,
         range: GATHER_RANGE,
       }));
-  objects.push(
-    { ...state.camp, action: 'contribute', label: '焚き火に資材を届ける', range: 10 },
-    { ...state.npc, action: 'trade', label: 'オルと物々交換する', range: 10 },
-  );
+  if (campContribution(state.camp, me, renderer.serverNow()))
+    objects.push({
+      ...state.camp,
+      action: 'contribute',
+      label: '焚き火に資材を届ける',
+      range: GATHER_RANGE,
+    });
+  objects.push({ ...state.npc, action: 'trade', label: 'オルと物々交換する', range: 10 });
   return objects
     .filter(
       (o) =>
@@ -1059,19 +1067,24 @@ function openModal(content) {
 }
 function applyProfileForm(form: HTMLFormElement) {
   const data = new FormData(form);
+  const room = fixedIdentity ? profile.room : String(data.get('room')).toUpperCase();
+  // A title start changes the traveller and spawn, but keeps their possessions.
+  // Joining a different room while playing retains the explicit fresh-join path.
+  startAtCamp = !joined;
+  const keepSession = startAtCamp && room === profile.room;
   manualLeave = true;
-  saveSession(sessionKey(profile.room), null);
-  send({ type: 'leave' });
+  if (!keepSession) saveSession(sessionKey(profile.room), null);
+  send({ type: 'leave', ...(keepSession ? { keepSession: true } : {}) });
   const previous = socket;
   socket = null;
   previous?.close();
   profile = {
     name: fixedIdentity ? profile.name : String(data.get('name')).trim() || '旅人',
-    room: fixedIdentity ? profile.room : String(data.get('room')).toUpperCase(),
+    room,
     ...parseCharacterValue(data.get('character')),
     difficulty: normalizeDifficulty(data.get('difficulty')),
   };
-  saveSession(sessionKey(profile.room), null);
+  if (!keepSession) saveSession(sessionKey(profile.room), null);
   for (const [k, v] of Object.entries(profile)) save(`cro-${k}`, v);
   history.replaceState({}, '', `?room=${encodeURIComponent(profile.room)}`);
   $('#profile-name').textContent = profile.name;
@@ -1103,8 +1116,7 @@ function enterGame() {
 function leaveToTitle() {
   manualLeave = true;
   clearTimeout(retry);
-  send({ type: 'leave', ...(persistentSession ? { keepSession: true } : {}) });
-  if (!persistentSession) saveSession(sessionKey(profile.room), null);
+  send({ type: 'leave', keepSession: true });
   const previous = socket;
   socket = null;
   previous?.close();
@@ -1454,7 +1466,8 @@ function controllerRide() {
   else ride();
 }
 
-let persistentSession = false,
+let startAtCamp = false,
+  persistentSession = false,
   resumeStored = true;
 let localSaveStatus: { state: string; savedAt?: number; recovered?: boolean } | null = null;
 function updateSaveStatus() {
@@ -1775,8 +1788,7 @@ async function toggleFullscreen() {
     notify('この画面では全画面表示を利用できません。');
   }
 }
-$('#title-start').onclick = () =>
-  savedSession(sessionKey(profile.room)) ? enterGame() : showSetup();
+$('#title-start').onclick = () => showSetup();
 $('#title-howto').onclick = openHelp;
 $('#title-fullscreen').onclick = toggleFullscreen;
 document.addEventListener('fullscreenchange', () => {
