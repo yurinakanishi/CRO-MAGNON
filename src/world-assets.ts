@@ -11,6 +11,7 @@ import { markActiveAttribute, markActiveInstances } from './instance-updates.js'
 import { applyMeadowGrassPalette, meadowGrassTint } from './meadow-palette.js';
 import { ActionBlender, gaitPhase } from './action-blender.js';
 import { applyBehemothPalette } from './behemoth-palette.js';
+import { installSkinnedBounds } from './skinned-bounds.js';
 
 function disposeTemplates(models) {
   const resources = new Set<
@@ -390,6 +391,7 @@ export class WorldAssets {
     const { gltf, asset } = this.get(key),
       root = cloneSkeleton(gltf.scene),
       mixer = new THREE.AnimationMixer(root);
+    installSkinnedBounds(root);
     const actions = new Map<string, THREE.AnimationAction>(
       gltf.animations.map((clip) => [clip.name, mixer.clipAction(clip)]),
     );

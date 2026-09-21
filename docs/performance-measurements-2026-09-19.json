@@ -1,0 +1,677 @@
+{
+  "date": "2026-09-19",
+  "environment": {
+    "graphics": "ANGLE (AMD, AMD Radeon(TM) Graphics (0x00001638) Direct3D11 vs_5_0 ps_5_0, D3D11)",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/153.0.0.0 Safari/537.36",
+    "pixelRatio": 1
+  },
+  "normal": {
+    "viewport": {
+      "width": 1280,
+      "height": 800
+    },
+    "cpuThrottle": 1,
+    "warmupMs": 10000,
+    "sampleMs": 5000,
+    "comparisons": [
+      {
+        "scene": "camp",
+        "moving": false,
+        "before": {
+          "frames": 301,
+          "frameMs": {
+            "mean": 16.66633333330353,
+            "median": 16.700000002980232,
+            "p95": 17.5,
+            "max": 19
+          },
+          "cpuMs": {
+            "mean": 2.9282392023805763,
+            "median": 2.800000011920929,
+            "p95": 3.5999999940395355,
+            "max": 5.799999997019768
+          },
+          "calls": {
+            "mean": 139,
+            "median": 139,
+            "p95": 139,
+            "max": 139
+          },
+          "triangles": {
+            "mean": 1879990,
+            "median": 1879990,
+            "p95": 1879990,
+            "max": 1879990
+          },
+          "longTasks": []
+        },
+        "after": {
+          "frames": 300,
+          "frameMs": {
+            "mean": 16.665886287605485,
+            "median": 16.700000002980232,
+            "p95": 17.299999997019768,
+            "max": 18.599999994039536
+          },
+          "cpuMs": {
+            "mean": 2.5213333331545194,
+            "median": 2.5,
+            "p95": 2.9000000059604645,
+            "max": 3.6000000089406967
+          },
+          "calls": {
+            "mean": 139,
+            "median": 139,
+            "p95": 139,
+            "max": 139
+          },
+          "triangles": {
+            "mean": 1879990,
+            "median": 1879990,
+            "p95": 1879990,
+            "max": 1879990
+          },
+          "longTasks": [],
+          "wire": {
+            "messages": 49,
+            "bytes": 1000302
+          }
+        }
+      },
+      {
+        "scene": "camp",
+        "moving": true,
+        "before": {
+          "frames": 289,
+          "frameMs": {
+            "mean": 17.361458333312637,
+            "median": 16.69999998807907,
+            "p95": 20.799999997019768,
+            "max": 112.40000000596046
+          },
+          "cpuMs": {
+            "mean": 4.808304498249272,
+            "median": 3.7999999970197678,
+            "p95": 6.4000000059604645,
+            "max": 107.29999999701977
+          },
+          "calls": {
+            "mean": 139.47750865051904,
+            "median": 140,
+            "p95": 148,
+            "max": 151
+          },
+          "triangles": {
+            "mean": 1996563.519031142,
+            "median": 1984346,
+            "p95": 2081795,
+            "max": 2089452
+          },
+          "longTasks": [
+            {
+              "at": 26755.5,
+              "duration": 108
+            },
+            {
+              "at": 26866.90000000596,
+              "duration": 92
+            }
+          ]
+        },
+        "after": {
+          "frames": 301,
+          "frameMs": {
+            "mean": 16.6670000000298,
+            "median": 16.69999998807907,
+            "p95": 17.600000008940697,
+            "max": 25.799999997019768
+          },
+          "cpuMs": {
+            "mean": 2.99036544883172,
+            "median": 2.6000000089406967,
+            "p95": 4.5,
+            "max": 25.299999997019768
+          },
+          "calls": {
+            "mean": 140.63787375415282,
+            "median": 140,
+            "p95": 151,
+            "max": 152
+          },
+          "triangles": {
+            "mean": 2032228.9302325582,
+            "median": 2028873,
+            "p95": 2129484,
+            "max": 2132344
+          },
+          "longTasks": [],
+          "wire": {
+            "messages": 49,
+            "bytes": 1025206
+          }
+        }
+      },
+      {
+        "scene": "cave",
+        "moving": false,
+        "before": {
+          "frames": 294,
+          "frameMs": {
+            "mean": 17.008191126300208,
+            "median": 16.700000002980232,
+            "p95": 17.5,
+            "max": 137.1000000089407
+          },
+          "cpuMs": {
+            "mean": 2.4091836734085668,
+            "median": 2.2999999970197678,
+            "p95": 3.0999999940395355,
+            "max": 4.0999999940395355
+          },
+          "calls": {
+            "mean": 36,
+            "median": 36,
+            "p95": 36,
+            "max": 36
+          },
+          "triangles": {
+            "mean": 1333410,
+            "median": 1333410,
+            "p95": 1333410,
+            "max": 1333410
+          },
+          "longTasks": []
+        },
+        "after": {
+          "frames": 298,
+          "frameMs": {
+            "mean": 16.83535353538364,
+            "median": 16.700000002980232,
+            "p95": 17.30000001192093,
+            "max": 81.90000000596046
+          },
+          "cpuMs": {
+            "mean": 1.9728187922163298,
+            "median": 1.9000000059604645,
+            "p95": 2.6000000089406967,
+            "max": 3.2000000029802322
+          },
+          "calls": {
+            "mean": 36,
+            "median": 36,
+            "p95": 36,
+            "max": 36
+          },
+          "triangles": {
+            "mean": 1333410,
+            "median": 1333410,
+            "p95": 1333410,
+            "max": 1333410
+          },
+          "longTasks": [],
+          "wire": {
+            "messages": 50,
+            "bytes": 1022214
+          }
+        }
+      },
+      {
+        "scene": "cave",
+        "moving": true,
+        "before": {
+          "frames": 302,
+          "frameMs": {
+            "mean": 16.667109634541593,
+            "median": 16.700000002980232,
+            "p95": 17.80000001192093,
+            "max": 27.700000002980232
+          },
+          "cpuMs": {
+            "mean": 2.595695364159464,
+            "median": 2.4000000059604645,
+            "p95": 3.7000000029802322,
+            "max": 6.799999997019768
+          },
+          "calls": {
+            "mean": 35.39403973509934,
+            "median": 35,
+            "p95": 36,
+            "max": 36
+          },
+          "triangles": {
+            "mean": 1304898.4933774834,
+            "median": 1287026,
+            "p95": 1333412,
+            "max": 1333416
+          },
+          "longTasks": []
+        },
+        "after": {
+          "frames": 301,
+          "frameMs": {
+            "mean": 16.663333333333334,
+            "median": 16.69999998807907,
+            "p95": 17.200000002980232,
+            "max": 34.29999999701977
+          },
+          "cpuMs": {
+            "mean": 2.184385382356834,
+            "median": 2,
+            "p95": 3.1000000089406967,
+            "max": 6.700000002980232
+          },
+          "calls": {
+            "mean": 35.388704318936874,
+            "median": 35,
+            "p95": 36,
+            "max": 36
+          },
+          "triangles": {
+            "mean": 1304412.757475083,
+            "median": 1287026,
+            "p95": 1333410,
+            "max": 1333416
+          },
+          "longTasks": [],
+          "wire": {
+            "messages": 48,
+            "bytes": 1031224
+          }
+        }
+      },
+      {
+        "scene": "castle",
+        "moving": false,
+        "before": {
+          "frames": 300,
+          "frameMs": {
+            "mean": 16.665551839464882,
+            "median": 16.69999998807907,
+            "p95": 17.5,
+            "max": 20.600000008940697
+          },
+          "cpuMs": {
+            "mean": 3.8376666671037674,
+            "median": 3.4000000059604645,
+            "p95": 6.100000008940697,
+            "max": 9.299999997019768
+          },
+          "calls": {
+            "mean": 142.60333333333332,
+            "median": 142,
+            "p95": 145,
+            "max": 145
+          },
+          "triangles": {
+            "mean": 2368786.6666666665,
+            "median": 2356526,
+            "p95": 2422316,
+            "max": 2422316
+          },
+          "longTasks": []
+        },
+        "after": {
+          "frames": 301,
+          "frameMs": {
+            "mean": 16.66699999998013,
+            "median": 16.700000002980232,
+            "p95": 18.200000002980232,
+            "max": 20.69999998807907
+          },
+          "cpuMs": {
+            "mean": 3.388039866852206,
+            "median": 3.1000000089406967,
+            "p95": 5,
+            "max": 8.5
+          },
+          "calls": {
+            "mean": 141.93355481727573,
+            "median": 142,
+            "p95": 144,
+            "max": 144
+          },
+          "triangles": {
+            "mean": 2370209.80730897,
+            "median": 2356526,
+            "p95": 2422284,
+            "max": 2422284
+          },
+          "longTasks": [],
+          "wire": {
+            "messages": 48,
+            "bytes": 1018520
+          }
+        }
+      },
+      {
+        "scene": "castle",
+        "moving": true,
+        "before": {
+          "frames": 296,
+          "frameMs": {
+            "mean": 16.89322033898305,
+            "median": 16.69999998807907,
+            "p95": 19.900000005960464,
+            "max": 43.900000005960464
+          },
+          "cpuMs": {
+            "mean": 4.56013513522575,
+            "median": 3.5999999940395355,
+            "p95": 6.5,
+            "max": 43.599999994039536
+          },
+          "calls": {
+            "mean": 140.57432432432432,
+            "median": 140,
+            "p95": 151,
+            "max": 151
+          },
+          "triangles": {
+            "mean": 2359082.881756757,
+            "median": 2362487,
+            "p95": 2494547,
+            "max": 2494547
+          },
+          "longTasks": []
+        },
+        "after": {
+          "frames": 301,
+          "frameMs": {
+            "mean": 16.6663333333532,
+            "median": 16.700000002980232,
+            "p95": 18.200000002980232,
+            "max": 28.700000002980232
+          },
+          "cpuMs": {
+            "mean": 3.5152823923533143,
+            "median": 3.2000000029802322,
+            "p95": 5.0999999940395355,
+            "max": 9.5
+          },
+          "calls": {
+            "mean": 142.17607973421926,
+            "median": 141,
+            "p95": 151,
+            "max": 151
+          },
+          "triangles": {
+            "mean": 2387047.504983389,
+            "median": 2363159,
+            "p95": 2494547,
+            "max": 2494547
+          },
+          "longTasks": [],
+          "wire": {
+            "messages": 48,
+            "bytes": 1047570
+          }
+        }
+      }
+    ]
+  },
+  "stress": {
+    "viewport": {
+      "width": 1920,
+      "height": 1080
+    },
+    "cpuThrottle": 4,
+    "warmupMs": 10000,
+    "sampleMs": 5000,
+    "comparisons": [
+      {
+        "scene": "camp",
+        "moving": false,
+        "before": {
+          "frames": 177,
+          "frameMs": {
+            "mean": 28.347159090875223,
+            "median": 24.200000002980232,
+            "p95": 44.79999999701977,
+            "max": 60.3999999910593
+          },
+          "cpuMs": {
+            "mean": 21.196610168969563,
+            "median": 21,
+            "p95": 26,
+            "max": 34.5
+          },
+          "calls": {
+            "mean": 139,
+            "median": 139,
+            "p95": 139,
+            "max": 139
+          },
+          "triangles": {
+            "mean": 1882740,
+            "median": 1882740,
+            "p95": 1882740,
+            "max": 1882740
+          },
+          "longTasks": []
+        },
+        "after": {
+          "frames": 208,
+          "frameMs": {
+            "mean": 24.095652173898646,
+            "median": 20.400000005960464,
+            "p95": 41.20000000298023,
+            "max": 49.29999999701977
+          },
+          "cpuMs": {
+            "mean": 17.796634615757146,
+            "median": 17.400000005960464,
+            "p95": 22.099999994039536,
+            "max": 25.299999997019768
+          },
+          "calls": {
+            "mean": 139,
+            "median": 139,
+            "p95": 139,
+            "max": 139
+          },
+          "triangles": {
+            "mean": 1882740,
+            "median": 1882740,
+            "p95": 1882740,
+            "max": 1882740
+          },
+          "longTasks": [],
+          "wire": {
+            "messages": 49,
+            "bytes": 1000156
+          }
+        }
+      },
+      {
+        "scene": "camp",
+        "moving": true,
+        "before": {
+          "frames": 144,
+          "frameMs": {
+            "mean": 36.117482517461674,
+            "median": 25.899999991059303,
+            "p95": 48.099999994039536,
+            "max": 488.79999999701977
+          },
+          "cpuMs": {
+            "mean": 27.219444444920455,
+            "median": 21.400000005960464,
+            "p95": 28.600000008940697,
+            "max": 432.19999998807907
+          },
+          "calls": {
+            "mean": 142.47916666666666,
+            "median": 142,
+            "p95": 150,
+            "max": 154
+          },
+          "triangles": {
+            "mean": 2026566.0347222222,
+            "median": 2064214,
+            "p95": 2098330,
+            "max": 2137315
+          },
+          "longTasks": [
+            {
+              "at": 26870,
+              "duration": 372
+            },
+            {
+              "at": 27244.5,
+              "duration": 435
+            }
+          ]
+        },
+        "after": {
+          "frames": 169,
+          "frameMs": {
+            "mean": 30.664285714250234,
+            "median": 27.30000001192093,
+            "p95": 49.5,
+            "max": 62.70000000298023
+          },
+          "cpuMs": {
+            "mean": 21.846745562447598,
+            "median": 21,
+            "p95": 30.299999997019768,
+            "max": 52.099999994039536
+          },
+          "calls": {
+            "mean": 143.6153846153846,
+            "median": 142,
+            "p95": 154,
+            "max": 155
+          },
+          "triangles": {
+            "mean": 2054098.7218934912,
+            "median": 2079416,
+            "p95": 2183824,
+            "max": 2185104
+          },
+          "longTasks": [
+            {
+              "at": 25878.70000000298,
+              "duration": 60
+            },
+            {
+              "at": 27068,
+              "duration": 53
+            }
+          ],
+          "wire": {
+            "messages": 52,
+            "bytes": 1067523
+          }
+        }
+      }
+    ]
+  },
+  "checks": [
+    "24 real river-bank geometries match synchronous positions, normals, UVs and indices exactly",
+    "joined and rendered the verified world",
+    "walking camera excludes trees covering the player sight line",
+    "actual walking and attack; terrain resumes updating",
+    "snow scene loaded and camp reloaded after regional eviction",
+    "five connections, two rendered views, actual lateral movement synchronizes",
+    "reload resumes the same identity, position and inventory",
+    "inventory and map in portrait and landscape sizes"
+  ],
+  "errors": [],
+  "tests": {
+    "passed": 629,
+    "failed": 0
+  },
+  "delivered": [
+    {
+      "file": "src/world3d.js",
+      "status": 200,
+      "equal": true,
+      "sha256": "081c0c5d4a685a2c341a634f58db5fbd1f577687120ad02f54118a46c6ee0013"
+    },
+    {
+      "file": "src/open-world.js",
+      "status": 200,
+      "equal": true,
+      "sha256": "99343e95331672c2067cd1a16e15aef470607b6c3bc05a7a466744f8444a9aa0"
+    },
+    {
+      "file": "src/world-assets.js",
+      "status": 200,
+      "equal": true,
+      "sha256": "77944315f19689d7b82f466e5a3e971b32e37492e19350974a10f1853b32e26c"
+    },
+    {
+      "file": "src/world-scenery.js",
+      "status": 200,
+      "equal": true,
+      "sha256": "1f843246f04f05b2c1d55a27ec849fbc0a5a6d454a0ac6fea02609ae8246bfc1"
+    },
+    {
+      "file": "src/character-assets.js",
+      "status": 200,
+      "equal": true,
+      "sha256": "9714728d39c218d7b4884cd8c63fed22c640b3b3f8f515f794f29f906be5de0c"
+    },
+    {
+      "file": "src/skinned-bounds.js",
+      "status": 200,
+      "equal": true,
+      "sha256": "139ab5584d5e8ba643687dff5271b258bc8bc8d3e83ea4b6593ef6365b4f7853"
+    },
+    {
+      "file": "src/visible-actor-group.js",
+      "status": 200,
+      "equal": true,
+      "sha256": "4903409a72aeb1705f43d7b94a47d2ebedc1853e5c9c0b9105a6bf5407620026"
+    },
+    {
+      "file": "src/river-bank-builder.js",
+      "status": 200,
+      "equal": true,
+      "sha256": "b5fccdf2a5f0cc9f43fc9983da33ce8b87279d1d0c21eaa92b367c74f54c5c4d"
+    },
+    {
+      "file": "src/river-bank-worker.js",
+      "status": 200,
+      "equal": true,
+      "sha256": "df54fdbb5e34e54640acdaa2a09ba5ee70cf09574a7abbf0496613a8dfed60cf"
+    },
+    {
+      "file": "src/river-bank-worker-fit.js",
+      "status": 200,
+      "equal": true,
+      "sha256": "7f737a31dbfd147e8272893af6cb58a16fc3f59c4e88712a4fa1e5bc015176d1"
+    },
+    {
+      "file": "src/river-bank-worker-utils.js",
+      "status": 200,
+      "equal": true,
+      "sha256": "ae95dc36fa4f46650ff79c931126207410540e36cb1cdacd9e2571d994608846"
+    },
+    {
+      "file": "src/source-surface-fit.js",
+      "status": 200,
+      "equal": true,
+      "sha256": "d40dc7841771ac0df4ddf61b1de6a3ecd9d4be5d0a85a6a25ae6d24834f50b3a"
+    },
+    {
+      "file": "shared/river-profile.mjs",
+      "status": 200,
+      "equal": true,
+      "sha256": "5af7cc45923b3bcc27adae3982ff60d9c9e468e4294b301585b493c9d2f6269a"
+    },
+    {
+      "file": "shared/terrain.mjs",
+      "status": 200,
+      "equal": true,
+      "sha256": "be09022a0d7912445bdc96d1d5d16b8c9514bf5abd2a664ea762ee933d231f4f"
+    }
+  ],
+  "limitations": [
+    "Single five-second samples per scene; scheduler noise affects maximum frame intervals.",
+    "CPU throttling is a synthetic browser load, not a measurement on a different physical device.",
+    "GPU time and memory bytes were not separately measured. Draw calls include shadow passes.",
+    "Conservative animated bounds can draw extra edge-of-view triangles to avoid clipping; models and resolution are unchanged.",
+    "No public deployment, exhibition package or second PC update."
+  ]
+}

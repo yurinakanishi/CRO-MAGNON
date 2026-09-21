@@ -1,6 +1,6 @@
 import * as THREE from 'three';
 import { mergeVertices } from 'three/addons/utils/BufferGeometryUtils.js';
-import { riverBankDrop } from '../shared/terrain.mjs';
+import { riverBankDrop } from '../shared/river-profile.mjs';
 
 // Subdivide existing source triangles near the river, interpolating their UVs.
 // Coarse flat triangles otherwise bridge across the lowered riverbed.

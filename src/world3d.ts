@@ -6,6 +6,7 @@ import { CoastalRenderer } from './coastal-renderer.js';
 import { VillageRenderer } from './village-renderer.js';
 import { isMesh } from './three-types.js';
 import { setText } from './dom-updates.js';
+import { VisibleActorGroup } from './visible-actor-group.js';
 import type { RegionalScenery } from './regional-scenery.js';
 import type { OpenWorldTerrain } from './open-world.js';
 import * as THREE from 'three';
@@ -258,6 +259,9 @@ export class WorldRenderer {
     this.renderer.toneMapping = THREE.ACESFilmicToneMapping;
     this.renderer.toneMappingExposure = 1.18;
     this.scene = new THREE.Scene();
+    // The world root never moves. Recomputing it forces every static descendant's
+    // world matrix to multiply again, including hidden LODs, on every frame.
+    this.scene.matrixAutoUpdate = false;
     this.scene.background = new THREE.Color('#c0cec1');
     this.scene.fog = new THREE.Fog('#b5c4b2', 45, 118);
     this.spells = new SpellEffects(this.scene);
@@ -503,7 +507,7 @@ export class WorldRenderer {
         entity = null;
       }
       if (!entity) {
-        const model = new THREE.Group();
+        const model = new VisibleActorGroup();
         model.visible = false;
         model.userData.animalId = state.id;
         this.scene.add(model);
@@ -691,7 +695,7 @@ export class WorldRenderer {
         }
       }
       if (!entity) {
-        const model = new THREE.Group();
+        const model = new VisibleActorGroup();
         model.position.set(p.x, walkHeight(p.x, p.z), p.z);
         model.rotation.y = p.facing ?? 0;
         this.scene.add(model);

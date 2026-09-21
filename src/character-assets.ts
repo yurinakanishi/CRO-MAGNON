@@ -8,6 +8,7 @@ import { JumpPose } from './jump-pose.js';
 import { CarrySupportPose } from './carry-support-pose.js';
 import { LeanPose } from './lean-pose.js';
 import { sha256 } from './asset-hash.js';
+import { installSkinnedBounds } from './skinned-bounds.js';
 
 export function handGripPlacement(root) {
   root.updateMatrixWorld(true);
@@ -120,6 +121,7 @@ export class CharacterAssets {
       node.material = Array.isArray(node.material) ? node.material.map(tint) : tint(node.material);
     });
     const { rotation: gripUp } = handGripPlacement(root);
+    installSkinnedBounds(root);
     const ridingPose = new RidingPose(root);
     const jumpPose = new JumpPose(root);
     const shoulderSeat = asset.modelKey === 'giant-ape' ? apeShoulderSeat(root) : null;

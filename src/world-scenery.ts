@@ -1,4 +1,5 @@
 import { isMesh } from './three-types.js';
+import { VisibleActorGroup } from './visible-actor-group.js';
 import * as THREE from 'three';
 import {
   terrainHeight,
@@ -349,7 +350,7 @@ function buildFireEffect(world, x, z, size, key = 'stone-firepit', surface = nul
  * raycast walks up from the hit mesh until it finds one.
  */
 export function buildMeatPile(assets, animalId, total = HUNTING.meatPerAnimal) {
-  const meat = new THREE.Group();
+  const meat = new VisibleActorGroup();
   meat.visible = false;
   meat.userData.animalId = animalId;
   for (const { x, z, yaw } of meatRingLayout(total)) {
@@ -365,7 +366,7 @@ export function buildMeatPile(assets, animalId, total = HUNTING.meatPerAnimal) {
 export function buildAnimalAssets(world) {
   for (const spec of SCENERY.animals) {
     const actor = world.worldAssets.createAnimal('woolly-mammoth'),
-      model = new THREE.Group();
+      model = new VisibleActorGroup();
     model.add(actor.root);
     model.scale.setScalar(spec.scale);
     world.scene.add(model);

@@ -37,7 +37,7 @@ export function terrainFixture(Type = OpenWorldTerrain) {
     canvas: { dataset: {} },
     updateAssetDiagnostics() {},
   };
-  const terrain = new Type(world);
+  const terrain = new Type(world, null); // Synchronous CPU fixture; browsers use the worker.
   const coast = new THREE.DataTexture(),
     biomes = new THREE.DataTexture();
   terrain.earthTextures = {

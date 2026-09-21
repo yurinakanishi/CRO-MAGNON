@@ -12,7 +12,7 @@ const { chromium } = await import(
 );
 const variant = process.argv[2] || 'current';
 assert.ok(['baseline', 'current'].includes(variant));
-const folder = `output/playwright/astra-improvements/${variant}`;
+const folder = process.env.QA_OUTPUT || `output/playwright/astra-improvements/${variant}`;
 await mkdir(folder, { recursive: true });
 const game = createGameServer({ port: 0, host: '127.0.0.1' });
 const { port } = await game.listen();
@@ -119,6 +119,38 @@ async function measure(page, scene) {
 try {
   browser = await chromium.launch({ channel: 'chrome', headless: true });
   const page = await open('Astra A');
+  if (process.env.QA_RIVER_WORKER === '1') {
+    const compared = await page.evaluate(async () => {
+      const { fitSourceRiverBank } = await import('/src/source-surface-fit.js');
+      const terrain = astraRenderer.openWorld;
+      await Promise.all(terrain.bankJobs.values());
+      let count = 0;
+      for (const chunk of terrain.chunks.values()) {
+        if (!chunk.bankMeshes.length) continue;
+        const parts = terrain.prepared.get(chunk.assetKey)[0];
+        for (const [i, part] of parts.entries()) {
+          const source = part.geometry.clone().rotateY(chunk.yaw).translate(chunk.x, 0, chunk.z);
+          source.deleteAttribute('earthCoastal');
+          const expected = fitSourceRiverBank(source),
+            actual = chunk.bankMeshes[i].geometry;
+          const equal = (a, b) => a.length === b.length && a.every((v, j) => Object.is(v, b[j]));
+          if (!equal(expected.index.array, actual.index.array))
+            throw new Error('Worker bank indices differ');
+          for (const name of Object.keys(expected.attributes))
+            if (!equal(expected.attributes[name].array, actual.attributes[name].array))
+              throw new Error(`Worker bank ${name} differs`);
+          count++;
+          expected.dispose();
+          if (expected !== source) source.dispose();
+        }
+      }
+      return count;
+    });
+    assert.ok(compared > 0);
+    checks.push(
+      `${compared} real river-bank geometries match synchronous positions, normals, UVs and indices exactly`,
+    );
+  }
   const room = game.rooms.get(roomName);
   const me = () => [...room.players.values()].find((p) => p.name === 'Astra A');
   // A reproducible starting position. Only the setup uses direct positioning.

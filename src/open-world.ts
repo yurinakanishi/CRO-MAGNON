@@ -7,6 +7,7 @@ import { installBiomeTerrain } from '../shared/terrain.mjs';
 import { fitSourceRiverBank } from './source-surface-fit.js';
 import { coastDistance } from '../shared/paleo-geography.mjs';
 import { ViewUpdateGate } from './view-update-gate.js';
+import { RiverBankBuilder } from './river-bank-builder.js';
 
 const RADIUS = 128,
   CAPACITY = 100;
@@ -32,6 +33,7 @@ export class OpenWorldTerrain {
   private uploadBytes = 0;
   private planX = NaN;
   private planZ = NaN;
+  private bankJobs = new Map<string, Promise<void>>();
   declare disposed: boolean;
   declare frustum: THREE.Frustum;
   declare projection: THREE.Matrix4;
@@ -45,10 +47,14 @@ export class OpenWorldTerrain {
   declare ocean: EarthOcean | undefined;
   declare surroundings: any[] | undefined;
 
-  constructor(world) {
+  constructor(
+    world,
+    private bankBuilder: RiverBankBuilder | null = new RiverBankBuilder(),
+  ) {
     this.world = world;
     this.assets = world.worldAssets;
     this.root = new THREE.Group();
+    this.root.matrixAutoUpdate = false;
     this.root.name = 'Streamed TRELLIS world';
     this.chunks = new Map();
     this.prepared = new Map();
@@ -80,6 +86,7 @@ export class OpenWorldTerrain {
     // The nearest floor exists before characters become visible; distant chunks
     // are then admitted in a bounded amount of work each frame.
     for (const chunk of this.desired.filter((c) => c.distance < 55)) this.admit(chunk);
+    await Promise.all(this.bankJobs.values());
   }
   plan(x, z, time) {
     if (x !== this.planX || z !== this.planZ) {
@@ -165,12 +172,50 @@ export class OpenWorldTerrain {
     return levels;
   }
   admit(chunk) {
-    if (this.chunks.has(chunk.key)) return;
+    if (this.disposed || this.chunks.has(chunk.key) || this.bankJobs.has(chunk.key)) return;
     const key = biomeById(chunk.biome).ground;
     if (!this.assets.templates.has(key)) return;
     const levels = this.prepare(key),
       bank = chunk.x + 16 >= 57 && chunk.x - 16 <= 73 && chunk.z + 16 >= -64 && chunk.z - 16 <= 184;
     const record = { ...chunk, assetKey: key, bankMeshes: [] };
+    if (bank && this.bankBuilder) {
+      const jobs = levels[0].map((part) => {
+        const source = part.geometry.clone().rotateY(chunk.yaw).translate(chunk.x, 0, chunk.z);
+        source.deleteAttribute('earthCoastal');
+        return this.bankBuilder.build(source);
+      });
+      const job = Promise.allSettled(jobs)
+        .then((results) => {
+          const failed = results.find((r) => r.status === 'rejected');
+          if (
+            failed ||
+            this.disposed ||
+            !this.desiredKeys.has(chunk.key) ||
+            this.prepared.get(key) !== levels
+          ) {
+            for (const r of results) if (r.status === 'fulfilled') r.value.dispose();
+            if (failed && !this.disposed) throw failed.reason;
+            return;
+          }
+          for (const [i, result] of results.entries()) {
+            if (result.status !== 'fulfilled') continue;
+            const mesh = new THREE.Mesh(result.value, levels[0][i].material);
+            mesh.matrixAutoUpdate = false;
+            mesh.receiveShadow = true;
+            this.root.add(mesh);
+            record.bankMeshes.push(mesh);
+          }
+          this.chunks.set(chunk.key, record);
+          this.cullDirty = true;
+        })
+        .finally(() => this.bankJobs.delete(chunk.key));
+      this.bankJobs.set(chunk.key, job);
+      job.catch((error) => {
+        if (!this.disposed)
+          this.world.failWorld('川岸の地形を準備できませんでした。再読み込みしてください。', error);
+      });
+      return;
+    }
     if (bank)
       for (const part of levels[0]) {
         const source = part.geometry.clone().rotateY(chunk.yaw).translate(chunk.x, 0, chunk.z);
@@ -196,7 +241,11 @@ export class OpenWorldTerrain {
     const started = performance.now();
     let admitted = 0;
     for (const chunk of this.desired)
-      if (!this.chunks.has(chunk.key) && this.assets.templates.has(biomeById(chunk.biome).ground)) {
+      if (
+        !this.chunks.has(chunk.key) &&
+        !this.bankJobs.has(chunk.key) &&
+        this.assets.templates.has(biomeById(chunk.biome).ground)
+      ) {
         this.admit(chunk);
         if (++admitted >= 2 || performance.now() - started > 3) break;
       }
@@ -265,6 +314,7 @@ export class OpenWorldTerrain {
       terrainRadius: String(RADIUS),
       terrainAssetTypes: String(this.prepared.size),
       terrainPending: String(this.pending.size),
+      terrainBankPending: String(this.bankJobs.size),
       terrainUpdates: String(this.cullUpdates),
       terrainUploadBytes: String(this.uploadBytes),
     });
@@ -291,6 +341,7 @@ export class OpenWorldTerrain {
   }
   dispose() {
     this.disposed = true;
+    this.bankBuilder?.dispose();
     for (const chunk of this.chunks.values()) this.removeChunk(chunk);
     this.chunks.clear();
     for (const key of [...this.prepared.keys()]) this.releasePrepared(key);

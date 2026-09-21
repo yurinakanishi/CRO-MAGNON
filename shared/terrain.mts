@@ -8,15 +8,12 @@ import { mountainHeight } from './camp-mountain.mjs';
 import { CAMP_CAVE_SURFACE } from './camp-cave-surface.mjs';
 import { CAMP_CAVE, insideCaveGround } from './camp-cave-layout.mjs';
 export const WATER_LEVEL = -0.45;
-export const riverX = (z) => 65 + Math.sin(z * 0.065) * 3.5;
+import { riverX, riverHalfWidth, riverBankDrop } from './river-profile.mjs';
+export { riverX, riverFade, riverHalfWidth, riverBankDrop } from './river-profile.mjs';
 export const clamp = (n, min, max) => Math.max(min, Math.min(max, n));
 const smooth = (t) => ((t = clamp(t, 0, 1)), t * t * (3 - 2 * t));
-export const riverFade = (z) => smooth((z + 64) / 24) * smooth((184 - z) / 24);
-export const riverHalfWidth = (z) => 3.05 * riverFade(z);
 let sourceSurface = null;
 let sourceBridge = null;
-export const riverBankDrop = (x, z) =>
-  clamp((3.8 * riverFade(z) - Math.abs(x - riverX(z))) / 1.25, 0, 1) * 0.72;
 export const coastBankDrop = (x, z) => 0.55 * (1 - smooth(coastDistance(x, z) / 4));
 
 // The height samples come from ray queries against the exact reconstructed GLB.
