@@ -28,3 +28,9 @@ assets/coastal-craft/models/*/qa/static-config.json
 # Keep source references, workflows, accepted models and QA in this repository.
 assets/camp-cave/work/
 assets/camp-mountain/work/
+
+# Female face reconstruction binaries stay in the local archive.
+# Commit references, build records, QA and the adopted models under public/models.
+assets/female-face-repair/*/work/**/*.glb
+assets/female-face-repair/*/work/**/*.ply
+assets/female-face-repair/*/work/**/*.png

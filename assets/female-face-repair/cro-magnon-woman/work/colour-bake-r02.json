@@ -1,0 +1,66 @@
+{
+  "key": "cro-magnon-woman",
+  "revision": "02",
+  "method": "Generated reference baked onto visible reconstructed facial UVs and neck with body-matched colour calibration; original hair atlas retained; source geometry unchanged.",
+  "landmarks": {
+    "centreX": 320,
+    "referenceX": 627,
+    "xScale": 2.17,
+    "gain": [
+      0.75,
+      0.73,
+      0.75
+    ],
+    "y": [
+      [
+        150,
+        302
+      ],
+      [
+        265,
+        550
+      ],
+      [
+        346,
+        713
+      ],
+      [
+        383,
+        797
+      ],
+      [
+        435,
+        940
+      ],
+      [
+        574,
+        1198
+      ]
+    ],
+    "eyes": [
+      [
+        271,
+        266,
+        34,
+        22
+      ],
+      [
+        376,
+        266,
+        34,
+        22
+      ]
+    ],
+    "ellipse": [
+      320,
+      320,
+      125,
+      151
+    ]
+  },
+  "pixels": 208665,
+  "sourceSha256": "d12fe35d809ccf70351b0e81db8b73d38f99ec3bf415dfe7675050051bd98979",
+  "sha256": "91d4b87ce3148f7f51c14df1c2b60f6ca9584835ee5ca3cdf92731a0ed3a4403",
+  "metallic": 0,
+  "roughness": 0.72
+}

@@ -1,0 +1,26 @@
+{
+  "key": "cro-magnon-woman",
+  "revision": "08",
+  "sourceSha256": "28605bcba393e733b4f5888d2500c92790e0fa39a30dff8bbb5bfcd9b4b0cfab",
+  "sha256": "a21bd03cdd98cedefed832665c5d5a1a6091d966c59cc6301a95f600cc14590c",
+  "bytes": 1072196,
+  "records": [
+    {
+      "primitive": 0,
+      "before": 55478,
+      "after": 4415,
+      "error": 0.01789545826613903,
+      "lockedNeckVertices": 258
+    },
+    {
+      "primitive": 1,
+      "before": 134924,
+      "after": 11132,
+      "error": 0.029743211343884468,
+      "lockedNeckVertices": 560
+    }
+  ],
+  "jointOrder": "identical to adopted model",
+  "primitiveOrder": "body then head",
+  "clips": 0
+}

@@ -1,0 +1,17 @@
+{
+  "decision": "adopt",
+  "key": "cro-magnon-woman",
+  "revision": "10",
+  "sha256": "55c0728b99376581695712f4010bcf948b3d4cc23ca64922dd000234f22c9b5a",
+  "source": "public/models/cro-magnon-woman/model-human-r10.glb",
+  "sourceSha256": "bac0bdd9d2961654501b5cc39ce94514b6262c7750ff10299948db4c377e711a",
+  "validation": "assets/female-face-repair/validation-r10.json",
+  "visualReview": "assets/female-face-repair/visual-review-r10.json",
+  "gameQA": "assets/female-face-repair/qa/game/report.json",
+  "preserved": "Original binary, body geometry and vertex attributes below neck, nodes, skin inverse binds and all 10 animation clips. Original materials remain archived in the GLB; a separate atlas matches the retained braid colour.",
+  "portrait": {
+    "file": "assets/female-face-repair/cro-magnon-woman/work/revision-10/portrait-exact.png",
+    "sha256": "37397f7957845de6a14b60c59616a1e121ece36143b893b876b5fcea70eedccc",
+    "modelSha256": "55c0728b99376581695712f4010bcf948b3d4cc23ca64922dd000234f22c9b5a"
+  }
+}

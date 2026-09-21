@@ -1,0 +1,20 @@
+{
+  "source": "assets/female-face-repair/cro-magnon-woman/work/head-colour-r05.glb",
+  "destination": "assets/female-face-repair/cro-magnon-woman/work/head-reduced-r04.glb",
+  "engine": "meshoptimizer 1.1.1",
+  "before": 278054,
+  "after": 138822,
+  "error": 0.0039455038495361805,
+  "flags": [
+    "LockBorder"
+  ],
+  "lockedFacialVertices": 34952,
+  "attributeWeights": [
+    0.5,
+    0.5,
+    0.5,
+    10,
+    10
+  ],
+  "retainedVertexAttributes": "exact original values"
+}

@@ -1,0 +1,14 @@
+{
+  "source": "C:\\Users\\yurin\\Desktop\\projects\\CRO-MAGNON\\assets\\female-face-repair\\cro-magnon-woman\\work\\head-colour-r05.glb",
+  "blender": "3.6.2",
+  "ratio": 0.1,
+  "records": [
+    {
+      "mesh": "Mesh_0",
+      "before": 278054,
+      "after": 27805,
+      "sourceDistanceP95": 0.002358936006203294,
+      "sourceDistanceMax": 0.016292402520775795
+    }
+  ]
+}

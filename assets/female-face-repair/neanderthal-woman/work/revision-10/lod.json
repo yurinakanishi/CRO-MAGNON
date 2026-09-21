@@ -1,0 +1,26 @@
+{
+  "key": "neanderthal-woman",
+  "revision": "10",
+  "sourceSha256": "21da70ddc2c5cfc7a2199dad4782b7d4822c3451d33d0d2275b405a2f3a78311",
+  "sha256": "d25be8ef21e7faa37ad17d15e162d751d6b1e880777881675618591a335b9f71",
+  "bytes": 1202692,
+  "records": [
+    {
+      "primitive": 0,
+      "before": 53338,
+      "after": 4233,
+      "error": 0.016104208305478096,
+      "lockedNeckVertices": 115
+    },
+    {
+      "primitive": 1,
+      "before": 164825,
+      "after": 13137,
+      "error": 0.02974116988480091,
+      "lockedNeckVertices": 260
+    }
+  ],
+  "jointOrder": "identical to adopted model",
+  "primitiveOrder": "body then head",
+  "clips": 0
+}

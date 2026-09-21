@@ -1,0 +1,20 @@
+{
+  "source": "assets/female-face-repair/neanderthal-woman/work/head-colour-r01.glb",
+  "destination": "assets/female-face-repair/neanderthal-woman/work/head-reduced-r04.glb",
+  "engine": "meshoptimizer 1.1.1",
+  "before": 279320,
+  "after": 166190,
+  "error": 0.003993441816419363,
+  "flags": [
+    "LockBorder"
+  ],
+  "lockedFacialVertices": 18481,
+  "attributeWeights": [
+    0.5,
+    0.5,
+    0.5,
+    10,
+    10
+  ],
+  "retainedVertexAttributes": "exact original values"
+}

@@ -1,0 +1,48 @@
+{
+  "status": "passed",
+  "server": "http://127.0.0.1:3000",
+  "records": [
+    {
+      "path": "/models/cro-magnon-woman/model-face-r10.glb",
+      "bytes": 55574540,
+      "sha256": "55c0728b99376581695712f4010bcf948b3d4cc23ca64922dd000234f22c9b5a"
+    },
+    {
+      "path": "/models/cro-magnon-woman/lod-face-r10.glb",
+      "bytes": 1072196,
+      "sha256": "ec8f40b3847acdffd3a6072f54147c09d72026019beb63300b1ae8af3606fe30"
+    },
+    {
+      "path": "/models/cro-magnon-woman/portrait.png",
+      "bytes": 64870,
+      "sha256": "37397f7957845de6a14b60c59616a1e121ece36143b893b876b5fcea70eedccc"
+    },
+    {
+      "path": "/models/cro-magnon-woman/asset.json",
+      "bytes": 11268,
+      "sha256": "e2e2e47f2e0a11578f9bd0e23967e1967d0496df514af16e77631ee70676e9f9"
+    },
+    {
+      "path": "/models/neanderthal-woman/model-face-r10.glb",
+      "bytes": 42680492,
+      "sha256": "21da70ddc2c5cfc7a2199dad4782b7d4822c3451d33d0d2275b405a2f3a78311"
+    },
+    {
+      "path": "/models/neanderthal-woman/lod-face-r10.glb",
+      "bytes": 1202692,
+      "sha256": "d25be8ef21e7faa37ad17d15e162d751d6b1e880777881675618591a335b9f71"
+    },
+    {
+      "path": "/models/neanderthal-woman/portrait.png",
+      "bytes": 70893,
+      "sha256": "54176f4c67c368d8e81960e996928a989e768606cc32264d241e7e991842a604"
+    },
+    {
+      "path": "/models/neanderthal-woman/asset.json",
+      "bytes": 11346,
+      "sha256": "497efa4f2ef720a389a971a8f416f885a575c9afcc923e0054829bf503dbcb54"
+    }
+  ],
+  "oldSourcesPreserved": true,
+  "serverRestarted": false
+}

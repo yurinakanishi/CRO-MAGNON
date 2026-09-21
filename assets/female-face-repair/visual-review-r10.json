@@ -1,0 +1,29 @@
+{
+  "decision": "adopt",
+  "revision": "10",
+  "models": [
+    {
+      "key": "cro-magnon-woman",
+      "sha256": "55c0728b99376581695712f4010bcf948b3d4cc23ca64922dd000234f22c9b5a",
+      "review": "Front, oblique, profile, rear, untextured surface and 30 sampled poses from all 10 clips inspected in Chrome. Facial shape and eyes are coherent; neck joins retain original motion. Hair remains reconstructed solid strands, not simulated hair."
+    },
+    {
+      "key": "neanderthal-woman",
+      "sha256": "21da70ddc2c5cfc7a2199dad4782b7d4822c3451d33d0d2275b405a2f3a78311",
+      "review": "Front, oblique, profile, rear, untextured surface and 30 sampled poses from all 10 clips inspected in Chrome. Facial shape and eyes are coherent; neck joins retain original motion. Hair remains reconstructed solid strands, not simulated hair."
+    }
+  ],
+  "evidence": [
+    "output/playwright/female-faces/final-r08/report.json",
+    "output/playwright/female-faces/poses-r10/report.json",
+    "assets/female-face-repair/validation-r10.json",
+    "output/playwright/female-faces/adopted-r10/report.json",
+    "output/playwright/female-faces/portraits-r10/report.json",
+    "assets/female-face-repair/qa/game/report.json"
+  ],
+  "rejected": [
+    "Assembly r01-r07: UV reduction artifacts, neck bands or hair overlap/tint issues.",
+    "r09: aggressive UV seam simplification causes atlas overlap during neck baking."
+  ],
+  "accepted": "r08 surfaces and colour, with r10 braid-weight transition."
+}

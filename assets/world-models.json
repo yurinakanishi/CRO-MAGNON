@@ -204,9 +204,9 @@
       "geometryResolution": 1024,
       "subject": "Edit this image for a prehistoric MMORPG image-to-3D character reference. Preserve this exact ADULT 24-year-old woman's beautiful idol-like face, hairstyle, skin, feminine hourglass body proportions, pose, camera, full-body framing and neutral background. Change ONLY her entire costume to unmistakably primitive prehistoric hunter-gatherer clothing. Replace the tailored shirt and trousers completely. She wears a naturally irregular tawny animal-hide wrap across the torso, fastened over one shoulder by a simple rawhide tie, with a modest fully covered chest; the edge of the other shoulder is visible. The hide conforms lightly to her slender waist and feminine shape without modern tailoring. A narrow simple twisted rawhide cord ties around the waist. A separate short layered animal-hide wrap skirt / fur waist wrap reaches mid-thigh, with rough naturally irregular edges and a little dark brown fur at its hem, overlapping panels closed securely across front and back, legs separate and visible below. Bare knees and calves. Feet have simple soft rawhide foot coverings folded around the feet and ankles, held by a few thin leather ties, no manufactured soles or boot shafts. Natural irregular hide, rough edges, subtle primitive hand-pierced lacing only where necessary; NO tailored shirt, NO trousers or leggings, NO modern leather jacket, NO fabric buttons, NO metal buckle or zipper, NO denim-like seams, NO modern stitching grids, NO corset, NO armor, NO jewelry, NO tools, NO weapons. It should read immediately as a beautiful adult prehistoric woman wearing a small number of raw animal hides, not modern leather fashion. Keep costume practical and securely covering her bust and pelvis; neither sexualized nor glamorous modern clothing. Maintain empty hands in the same relaxed A-pose, unobscured arms and hands, clear gaps between arms and waist and between both legs, flat feet, whole figure in frame. Premium realistic Japanese fantasy MMORPG character render with soft neutral light. No scenery or text.",
       "referenceVersion": 3,
-      "sha256": "bac0bdd9d2961654501b5cc39ce94514b6262c7750ff10299948db4c377e711a",
-      "delivery": "/models/cro-magnon-woman/model-human-r10.glb",
-      "gameQA": "assets/human-locomotion/README.md"
+      "sha256": "55c0728b99376581695712f4010bcf948b3d4cc23ca64922dd000234f22c9b5a",
+      "delivery": "/models/cro-magnon-woman/model-face-r10.glb",
+      "gameQA": "assets/female-face-repair/README.md"
     },
     {
       "key": "neanderthal-woman",
@@ -219,9 +219,9 @@
       "geometryResolution": 1024,
       "subject": "Precise edit of the attached adult prehistoric woman character reference for image-to-3D reconstruction. Keep her exact beautiful ADULT 25-year-old idol-like facial identity, eyes, nose, lips, slight smile, face shape, feminine figure, skin, primitive one-shoulder grey-brown fur wrap, dark fur waist wrap, rawhide ties and foot wraps, pose, background, lighting and framing unchanged. Change ONLY the hairstyle near the forehead: sweep and tuck ALL front hair neatly back behind both ears into the existing compact low bun. Both eyebrows, BOTH complete eyes, forehead, cheeks and ears must be clearly visible with absolutely no hair overlapping the face or hanging beside the eyes. No bangs, no fringe and no long loose strands. A pretty neat swept-back idol hairstyle, naturally soft and elegant. Retain the same compact bun at the back. This small hairstyle clarification is necessary because image-to-3D mistakenly turned the original fringe into a thick flap covering an eye. Do not change the costume, body, face identity, expression, stance or camera. Single complete figure, full head and feet visible, neutral grey studio background, no text.",
       "referenceVersion": 4,
-      "sha256": "b1cd6f89291d3d71adb7be0a7f245c746a32691fba2df0e62faccb905a0af1a8",
-      "delivery": "/models/neanderthal-woman/model-human-r10.glb",
-      "gameQA": "assets/human-locomotion/README.md"
+      "sha256": "21da70ddc2c5cfc7a2199dad4782b7d4822c3451d33d0d2275b405a2f3a78311",
+      "delivery": "/models/neanderthal-woman/model-face-r10.glb",
+      "gameQA": "assets/female-face-repair/README.md"
     },
     {
       "key": "mammoth-meat",

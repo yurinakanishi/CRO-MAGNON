@@ -1,0 +1,73 @@
+{
+  "key": "neanderthal-woman",
+  "revision": "01",
+  "method": "Generated reference baked onto facial UVs and neck with body-matched colour calibration. Redundant fringe is repaired only where a measured forehead exists underneath.",
+  "landmarks": {
+    "centreX": 319,
+    "referenceX": 618,
+    "xScale": 2.28,
+    "gain": [
+      0.85,
+      0.8,
+      0.76
+    ],
+    "y": [
+      [
+        158,
+        258
+      ],
+      [
+        234,
+        464
+      ],
+      [
+        275,
+        542
+      ],
+      [
+        345,
+        699
+      ],
+      [
+        387,
+        787
+      ],
+      [
+        442,
+        951
+      ],
+      [
+        585,
+        1205
+      ]
+    ],
+    "eyes": [
+      [
+        266,
+        275,
+        36,
+        22
+      ],
+      [
+        378,
+        275,
+        36,
+        22
+      ]
+    ],
+    "ellipse": [
+      320,
+      310,
+      130,
+      184
+    ]
+  },
+  "pixels": 268704,
+  "fringeVertices": 0,
+  "removedFringeTriangles": 0,
+  "fringeMaximumDisplacementSourceUnits": 0,
+  "sourceSha256": "76053436f6b4eebf9b8a5d2475f0bbadf60ee97e5af88dc1be7ee6917de6e555",
+  "sha256": "305669c8c50cc64d17cf231138329b01ed9421ffdbae1fa9190b82fbba6e3062",
+  "metallic": 0,
+  "roughness": 0.72
+}

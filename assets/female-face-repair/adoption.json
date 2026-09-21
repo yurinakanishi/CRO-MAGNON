@@ -1,0 +1,38 @@
+{
+  "revision": "10",
+  "records": [
+    {
+      "key": "cro-magnon-woman",
+      "url": "/models/cro-magnon-woman/model-face-r10.glb",
+      "sha256": "55c0728b99376581695712f4010bcf948b3d4cc23ca64922dd000234f22c9b5a",
+      "bytes": 55574540,
+      "triangles": 190402,
+      "lod": {
+        "url": "/models/cro-magnon-woman/lod-face-r10.glb",
+        "sha256": "ec8f40b3847acdffd3a6072f54147c09d72026019beb63300b1ae8af3606fe30",
+        "bytes": 1072196,
+        "triangles": 15547,
+        "distanceMetres": 28,
+        "purpose": "animated-medium-lod-geometry"
+      }
+    },
+    {
+      "key": "neanderthal-woman",
+      "url": "/models/neanderthal-woman/model-face-r10.glb",
+      "sha256": "21da70ddc2c5cfc7a2199dad4782b7d4822c3451d33d0d2275b405a2f3a78311",
+      "bytes": 42680492,
+      "triangles": 218163,
+      "lod": {
+        "url": "/models/neanderthal-woman/lod-face-r10.glb",
+        "sha256": "d25be8ef21e7faa37ad17d15e162d751d6b1e880777881675618591a335b9f71",
+        "bytes": 1202692,
+        "triangles": 17370,
+        "distanceMetres": 28,
+        "purpose": "animated-medium-lod-geometry"
+      }
+    }
+  ],
+  "gameQA": "assets/female-face-repair/qa/game/report.json",
+  "publicDeployment": false,
+  "status": "adopted-and-game-verified"
+}

@@ -1,0 +1,69 @@
+{
+  "key": "cro-magnon-woman",
+  "revision": "04",
+  "method": "Generated reference baked onto facial UVs and neck with body-matched colour calibration. Redundant fringe is repaired only where a measured forehead exists underneath.",
+  "landmarks": {
+    "centreX": 320,
+    "referenceX": 627,
+    "xScale": 2.17,
+    "gain": [
+      0.75,
+      0.73,
+      0.75
+    ],
+    "y": [
+      [
+        150,
+        302
+      ],
+      [
+        265,
+        550
+      ],
+      [
+        346,
+        713
+      ],
+      [
+        383,
+        797
+      ],
+      [
+        435,
+        940
+      ],
+      [
+        574,
+        1198
+      ]
+    ],
+    "eyes": [
+      [
+        271,
+        266,
+        34,
+        22
+      ],
+      [
+        376,
+        266,
+        34,
+        22
+      ]
+    ],
+    "ellipse": [
+      320,
+      320,
+      125,
+      151
+    ]
+  },
+  "pixels": 208506,
+  "fringeVertices": 2040,
+  "removedFringeTriangles": 3022,
+  "fringeMaximumDisplacementSourceUnits": 0,
+  "sourceSha256": "d12fe35d809ccf70351b0e81db8b73d38f99ec3bf415dfe7675050051bd98979",
+  "sha256": "3d507cc958e783d1f516b2f99e50051f65a1a7da01b08ce8c6a84fd984266a2a",
+  "metallic": 0,
+  "roughness": 0.72
+}

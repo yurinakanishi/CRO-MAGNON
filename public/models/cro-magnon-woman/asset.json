@@ -4,10 +4,10 @@
   "kind": "humanoid",
   "candidate": 1,
   "status": "reviewed-prototype",
-  "url": "/models/cro-magnon-woman/model-human-r10.glb",
-  "sha256": "bac0bdd9d2961654501b5cc39ce94514b6262c7750ff10299948db4c377e711a",
-  "bytes": 14557108,
-  "triangles": 65707,
+  "url": "/models/cro-magnon-woman/model-face-r10.glb",
+  "sha256": "55c0728b99376581695712f4010bcf948b3d4cc23ca64922dd000234f22c9b5a",
+  "bytes": 55574540,
+  "triangles": 190402,
   "upAxis": "Y",
   "forwardAxis": "+Z",
   "heightMetres": 1.67,
@@ -86,28 +86,35 @@
     "Gender changes appearance only. Missing gender starts female; male models remain available.",
     "Small dark rear-waist albedo artifact replaced with colour sampled from neighbouring source texels; no geometry substitution.",
     "Hunting revision 03 adds Attack; original mesh, rig, textures and earlier clips retained byte-for-byte. Previous delivery archived.",
-    "Source-derived 9,856-triangle animated LOD is used beyond 28 m; the adopted close model, skeleton, clips, materials and collision are unchanged."
+    "Source-derived 15,547-triangle geometry LOD beyond 28 m; primitive order, joint indices, retained vertex attributes and original clip bytes verified.",
+    "Head repaired from a close-up imagegen reference and local TRELLIS-2. Body below neck, original skeleton and all 10 animation clips retained; source neck seam verified across every clip."
   ],
   "provenance": {
     "provider": "Codex",
     "claudeUsed": false,
     "referenceGenerator": "Built-in imagegen",
-    "referenceImage": "output/model-generation/models/cro-magnon-woman/source/original/reference-v3.png",
-    "referenceSha256": "7c105860011cf6a549f4f5b719f35416aac57fb1bb5302b2cb0bf48b90f4b502",
+    "referenceImage": "assets/female-face-repair/cro-magnon-woman/source/reference-v1.png",
+    "referenceSha256": "06d7b91c33a57f87d8b583001e53b6ea35d52afd52ef630c34aa2c32c3712baa",
     "reconstruction": "Local TRELLIS-2; settings and dense SHA in model workspace",
-    "candidateFile": "output/creature-motion/revision-04/cro-magnon-woman/model.glb",
-    "visualReview": "assets/human-locomotion/reviews/cro-magnon-woman-r10.json",
+    "candidateFile": "public/models/cro-magnon-woman/model-face-r10.glb",
+    "visualReview": "assets/female-face-repair/cro-magnon-woman/adoption-review-r10.json",
     "previousDeliverySha256": "4705b3e681b572a21225493db90730cec366c9f51fcbd71082c49e4f808379a9",
     "huntingAnimationAuthor": "Codex; appended keyframes, previous surface/rig/materials/animation bytes preserved",
     "previousMotionVisualReview": "output/model-generation/models/cro-magnon-woman/qa/adoption-review.json",
-    "previousVisualReview": "assets/creature-motion/models/cro-magnon-woman-review.json"
+    "previousVisualReview": "assets/creature-motion/models/cro-magnon-woman-review.json",
+    "previousFaceReference": {
+      "path": "output/model-generation/models/cro-magnon-woman/source/original/reference-v3.png",
+      "sha256": "7c105860011cf6a549f4f5b719f35416aac57fb1bb5302b2cb0bf48b90f4b502"
+    },
+    "previousFaceVisualReview": "assets/human-locomotion/reviews/cro-magnon-woman-r10.json",
+    "previousFaceCandidate": "output/creature-motion/revision-04/cro-magnon-woman/model.glb"
   },
   "lods": [
     {
-      "url": "/models/cro-magnon-woman/lod-performance.glb",
-      "sha256": "88e5c1d63c665ec9eb7a3317811bf31608aaa44f252d998fbaea14c32362ffcd",
-      "bytes": 823312,
-      "triangles": 9856,
+      "url": "/models/cro-magnon-woman/lod-face-r10.glb",
+      "sha256": "ec8f40b3847acdffd3a6072f54147c09d72026019beb63300b1ae8af3606fe30",
+      "bytes": 1072196,
+      "triangles": 15547,
       "distanceMetres": 28,
       "purpose": "animated-medium-lod-geometry"
     }
@@ -274,5 +281,22 @@
     ],
     "reference": "assets/human-locomotion/README.md",
     "previousVisualReview": "assets/player-gaits/reviews/cro-magnon-woman-run-r05.json"
+  },
+  "faceRepair": {
+    "revision": "10",
+    "source": "public/models/cro-magnon-woman/model-human-r10.glb",
+    "sourceSha256": "bac0bdd9d2961654501b5cc39ce94514b6262c7750ff10299948db4c377e711a",
+    "headReference": "assets/female-face-repair/cro-magnon-woman/source/reference-v1.png",
+    "headReconstruction": "assets/female-face-repair/cro-magnon-woman/work/trellis/reconstruction.json",
+    "build": "assets/female-face-repair/cro-magnon-woman/work/revision-10/build.json",
+    "validation": "assets/female-face-repair/validation-r10.json",
+    "visualReview": "assets/female-face-repair/visual-review-r10.json",
+    "status": "adopted",
+    "gameQA": "assets/female-face-repair/qa/game/report.json",
+    "portrait": {
+      "file": "public/models/cro-magnon-woman/portrait.png",
+      "sha256": "37397f7957845de6a14b60c59616a1e121ece36143b893b876b5fcea70eedccc",
+      "modelSha256": "55c0728b99376581695712f4010bcf948b3d4cc23ca64922dd000234f22c9b5a"
+    }
   }
 }

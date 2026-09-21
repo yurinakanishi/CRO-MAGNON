@@ -60,6 +60,32 @@ for (const key of MOTION_KEYS) {
       ),
     );
     assert.equal(check.status, 'passed');
+  } else if (asset.faceRepair) {
+    // A close-up TRELLIS reconstruction replaces only the female heads. Check
+    // the exact shipped bytes, retained body and every original clip's seam.
+    assert.ok(['cro-magnon-woman', 'neanderthal-woman'].includes(key));
+    const repair = asset.faceRepair;
+    assert.equal(repair.source, `public/models/${key}/model-human-r10.glb`);
+    const originalBytes = await readFile(repair.source),
+      original = unpack(originalBytes);
+    assert.equal(hash(originalBytes), repair.sourceSha256);
+    for (const field of ['nodes', 'skins', 'animations'])
+      assert.deepEqual(b.doc[field], original.doc[field], `Face repair: ${field} unchanged`);
+    const check = JSON.parse(
+      execFileSync(
+        process.execPath,
+        [
+          'scripts/verify-female-faces.mjs',
+          repair.revision,
+          key,
+          '--no-write',
+          `--delivery=${file}`,
+        ],
+        { encoding: 'utf8' },
+      ),
+    );
+    assert.equal(check.status, 'passed');
+    assert.equal(check.results[0].sha256, asset.sha256);
   } else {
     for (const field of ['nodes', 'meshes', 'skins', 'materials', 'textures', 'images'])
       assert.deepEqual(b.doc[field], a.doc[field]);

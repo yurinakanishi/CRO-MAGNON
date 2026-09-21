@@ -1,0 +1,29 @@
+{
+  "status": "passed",
+  "results": [
+    {
+      "key": "cro-magnon-woman",
+      "sha256": "33a44058dc42f4f6abf956c1c74a51dd67ba88dd0f46a114ec73b51915fd6a04",
+      "triangles": 191617,
+      "retainedBodyTriangles": 55079,
+      "unchangedBodyVertices": 76432,
+      "clips": 10,
+      "seamPairs": 50,
+      "seamSamples": 101750,
+      "maximumSeamGapMetres": 0,
+      "originalBytesPreserved": 14346384
+    },
+    {
+      "key": "neanderthal-woman",
+      "sha256": "d3fb9b3f8fbc2acdbd7daa624b9f74c3d25c9add9c12067fc92dd415eb969412",
+      "triangles": 218109,
+      "retainedBodyTriangles": 53191,
+      "unchangedBodyVertices": 62688,
+      "clips": 10,
+      "seamPairs": 52,
+      "seamSamples": 105820,
+      "maximumSeamGapMetres": 0,
+      "originalBytesPreserved": 13970992
+    }
+  ]
+}

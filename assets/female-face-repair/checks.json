@@ -1,0 +1,23 @@
+{
+  "status": "targeted-checks-passed",
+  "relatedTests": {
+    "passed": 32,
+    "log": "output/female-face-final-tests.log"
+  },
+  "typeScript": "passed",
+  "javascriptSyntaxFiles": 365,
+  "architecture": "passed",
+  "format": "passed",
+  "motionDeliveries": {
+    "status": "passed",
+    "models": 8,
+    "log": "output/female-face-motion-delivery.log"
+  },
+  "fullAssetValidation": {
+    "status": "blocked-by-preexisting-missing-reference",
+    "missing": "output/model-generation/models/neanderthal-hunter/source/original/reference-v1.png",
+    "before": "output/female-faces-baseline-assets.log",
+    "after": "output/female-faces-final-assets.log"
+  },
+  "gameQA": "assets/female-face-repair/qa/game/report.json"
+}

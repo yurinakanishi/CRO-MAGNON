@@ -1,0 +1,60 @@
+{
+  "key": "cro-magnon-woman",
+  "method": "Unchanged imagegen reference projected onto visible reconstructed facial UVs; original hair/back atlas retained; source geometry unchanged.",
+  "landmarks": {
+    "centreX": 320,
+    "referenceX": 627,
+    "xScale": 2.17,
+    "y": [
+      [
+        150,
+        302
+      ],
+      [
+        265,
+        550
+      ],
+      [
+        346,
+        713
+      ],
+      [
+        383,
+        797
+      ],
+      [
+        435,
+        940
+      ],
+      [
+        574,
+        1198
+      ]
+    ],
+    "eyes": [
+      [
+        271,
+        266,
+        34,
+        22
+      ],
+      [
+        376,
+        266,
+        34,
+        22
+      ]
+    ],
+    "ellipse": [
+      320,
+      320,
+      125,
+      151
+    ]
+  },
+  "pixels": 61392,
+  "sourceSha256": "d12fe35d809ccf70351b0e81db8b73d38f99ec3bf415dfe7675050051bd98979",
+  "sha256": "b8d5e64cc7067f572a10fe09ed5d2bd20c0eb67085d52e1a10f8bf0f31b7f8b8",
+  "metallic": 0,
+  "roughness": 0.72
+}

@@ -1,0 +1,44 @@
+{
+  "status": "passed",
+  "records": [
+    {
+      "key": "cro-magnon-woman",
+      "sha256": "55c0728b99376581695712f4010bcf948b3d4cc23ca64922dd000234f22c9b5a",
+      "phases": [
+        {
+          "label": "walk",
+          "frames": 84
+        },
+        {
+          "label": "run",
+          "frames": 92
+        }
+      ],
+      "attack": true,
+      "jump": true,
+      "remote": true
+    },
+    {
+      "key": "neanderthal-woman",
+      "sha256": "21da70ddc2c5cfc7a2199dad4782b7d4822c3451d33d0d2275b405a2f3a78311",
+      "phases": [
+        {
+          "label": "walk",
+          "frames": 76
+        },
+        {
+          "label": "run",
+          "frames": 86
+        }
+      ],
+      "attack": true,
+      "jump": true,
+      "remote": true
+    }
+  ],
+  "connections": 5,
+  "lodRoundTrip": true,
+  "reload": true,
+  "errors": [],
+  "fixtures": "In-memory test world; combat enemies removed, initial coordinates prepared and a front inspection camera. Walking/running/attack/jump and title selection use real controls."
+}

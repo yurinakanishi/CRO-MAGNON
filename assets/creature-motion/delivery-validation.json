@@ -1,15 +1,15 @@
 {
   "status": "passed",
-  "at": "2026-09-21T09:25:36.163Z",
+  "at": "2026-09-21T13:52:30.625Z",
   "originalGLBsPreserved": 55,
   "originalGLBsSupersededByLaterAdoptions": 4,
   "results": [
     {
       "key": "cro-magnon-woman",
-      "sha256": "bac0bdd9d2961654501b5cc39ce94514b6262c7750ff10299948db4c377e711a",
+      "sha256": "55c0728b99376581695712f4010bcf948b3d4cc23ca64922dd000234f22c9b5a",
       "clips": 10,
       "preservedClips": 6,
-      "triangles": 65707
+      "triangles": 190402
     },
     {
       "key": "cro-magnon-hunter",
@@ -20,10 +20,10 @@
     },
     {
       "key": "neanderthal-woman",
-      "sha256": "b1cd6f89291d3d71adb7be0a7f245c746a32691fba2df0e62faccb905a0af1a8",
+      "sha256": "21da70ddc2c5cfc7a2199dad4782b7d4822c3451d33d0d2275b405a2f3a78311",
       "clips": 10,
       "preservedClips": 6,
-      "triangles": 68090
+      "triangles": 218163
     },
     {
       "key": "neanderthal-hunter",

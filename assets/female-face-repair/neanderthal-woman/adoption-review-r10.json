@@ -1,0 +1,17 @@
+{
+  "decision": "adopt",
+  "key": "neanderthal-woman",
+  "revision": "10",
+  "sha256": "21da70ddc2c5cfc7a2199dad4782b7d4822c3451d33d0d2275b405a2f3a78311",
+  "source": "public/models/neanderthal-woman/model-human-r10.glb",
+  "sourceSha256": "b1cd6f89291d3d71adb7be0a7f245c746a32691fba2df0e62faccb905a0af1a8",
+  "validation": "assets/female-face-repair/validation-r10.json",
+  "visualReview": "assets/female-face-repair/visual-review-r10.json",
+  "gameQA": "assets/female-face-repair/qa/game/report.json",
+  "preserved": "Original binary, body geometry and vertex attributes below neck, nodes, skin inverse binds and all 10 animation clips. Original materials remain archived in the GLB; a separate atlas matches the retained braid colour.",
+  "portrait": {
+    "file": "assets/female-face-repair/neanderthal-woman/work/revision-10/portrait-exact.png",
+    "sha256": "54176f4c67c368d8e81960e996928a989e768606cc32264d241e7e991842a604",
+    "modelSha256": "21da70ddc2c5cfc7a2199dad4782b7d4822c3451d33d0d2275b405a2f3a78311"
+  }
+}
