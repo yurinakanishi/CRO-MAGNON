@@ -67,6 +67,7 @@ import {
   seedFromId,
   stoneScale,
 } from './resource-visuals.js';
+import { updateActorPerformance, updateSimplifiedShadow } from './performance-lod.js';
 
 const DEFAULT_DISTANCE = 5.5;
 const tempPoint = new THREE.Vector3();
@@ -475,7 +476,7 @@ export class WorldRenderer {
       for (const [x, y, z] of anchors) {
         const berry = new THREE.Mesh(this.fruitGeometry, this.fruitMaterial);
         berry.position.set(x, y, z);
-        berry.castShadow = true;
+        berry.castShadow = false;
         fruit.add(berry);
       }
       // A direct child of the LOD root stays visible at every level.
@@ -950,6 +951,10 @@ export class WorldRenderer {
         animal.initialized = false;
         continue;
       }
+      updateActorPerformance(
+        animal.actor.root,
+        animal.model.position.distanceTo(this.camera.position),
+      );
       if (
         phase !== animal.phase ||
         (phase === 'alive' && state.phaseStartedAt !== animal.phaseStartedAt)
@@ -1030,6 +1035,8 @@ export class WorldRenderer {
         entity.label.active = false;
         continue;
       }
+      if (entity.actor)
+        updateActorPerformance(entity.actor.root, model.position.distanceTo(this.camera.position));
       entity.label.active = true;
       const airborne = jumpProgress(p, this.serverNow());
       if (airborne === null) entity.actor?.jumpPose.leave(entity.actor.animation);
@@ -1263,23 +1270,34 @@ export class WorldRenderer {
     this.villageRenderer?.update(dt, time);
     if (time >= this.nextStaticCull) {
       this.nextStaticCull = time + 0.2;
-      for (const { root, radius } of this.staticScenery)
+      for (const { root, radius } of this.staticScenery) {
         root.visible =
           Math.hypot(
             root.position.x - this.camera.position.x,
             root.position.z - this.camera.position.z,
           ) <
           (this.scene.fog as THREE.Fog).far + radius;
+        if (root.visible) updateSimplifiedShadow(root, this.camera);
+      }
     }
-    for (const item of this.resources.values())
+    for (const item of this.resources.values()) {
       item.model.visible =
         item.resource.amount > 0 &&
         item.model.position.distanceTo(this.camera.position) <
           (this.scene.fog as THREE.Fog).far + 5;
+      if (item.model.visible) updateSimplifiedShadow(item.model, this.camera);
+    }
     if (this.waterMaterial) this.waterMaterial.userData.time.value = time;
     if (this.npc) {
       this.npc.visible = this.npc.position.distanceTo(this.camera.position) < 75;
-      if (this.npc.visible) this.npcActor?.animation.update(dt, 0);
+      if (this.npc.visible) {
+        if (this.npcActor)
+          updateActorPerformance(
+            this.npcActor.root,
+            this.npc.position.distanceTo(this.camera.position),
+          );
+        this.npcActor?.animation.update(dt, 0);
+      }
     }
     for (const landscape of this.landscapes)
       landscape.update(this.camera, time, self ? this.focus : null);
@@ -1289,6 +1307,7 @@ export class WorldRenderer {
         (!fire.cave || this.state.camp.caveFireLit);
       fire.light.visible = visible;
       fire.sparks.visible = visible;
+      updateSimplifiedShadow(fire.root, this.camera);
       if (!visible) continue;
       fire.light.intensity =
         (fire.cave ? 35 : 4.1) + Math.sin(time * 9 + fire.seed) * (fire.cave ? 2 : 0.5);
@@ -1334,6 +1353,7 @@ export class WorldRenderer {
         );
         continue;
       }
+      updateActorPerformance(actor.root, model.position.distanceTo(this.camera.position));
       const factor = 1 - Math.exp(-dt * 20),
         next = this.collision.move(
           model.position,
@@ -1503,6 +1523,14 @@ export class WorldRenderer {
       data.geometries = String(info.memory.geometries);
       data.textures = String(info.memory.textures);
       data.glbPlayers = String([...this.players.values()].filter((entity) => entity.actor).length);
+      data.actorLowLods = String(
+        [
+          ...[...this.players.values()].map((entity) => entity.actor),
+          this.npcActor,
+          ...this.mammoths.map((animal) => animal.actor),
+          ...[...this.enemies.values()].map((enemy) => enemy.actor),
+        ].filter((actor) => actor?.root.userData.actorDetail?.level === 1).length,
+      );
       data.projectileCount = String(this.state.projectiles?.length ?? 0);
       data.spellParticles = String(this.spells.count);
       data.attackStyle = self ? attackProfile(self.state).key : '';

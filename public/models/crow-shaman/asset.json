@@ -74,11 +74,21 @@
       "swingLiftMetres": 0.19635490633886143
     }
   },
-  "lods": [],
+  "lods": [
+    {
+      "url": "/models/crow-shaman/lod-performance.glb",
+      "sha256": "c07bc8af0f22ea62bc6c3da1f193af2af27f1a327926f5992ae5919a3806e94a",
+      "bytes": 950616,
+      "triangles": 9862,
+      "distanceMetres": 28,
+      "purpose": "animated-medium-lod-geometry"
+    }
+  ],
   "notes": [
     "Reviewed game prototype; layered feather tips and ragged cloth are thin open surfaces, not a watertight sculpture.",
     "Cloth follows the skeleton with modest local stretching; no cloth simulation or finger articulation.",
-    "JPEG quality94 albedo retains source UVs; geometry, skin and animation buffers are unchanged from revision05."
+    "JPEG quality94 albedo retains source UVs; geometry, skin and animation buffers are unchanged from revision05.",
+    "Source-derived 9,862-triangle animated LOD is used beyond 28 m; the adopted close model, skeleton, clips, materials and collision are unchanged."
   ],
   "provenance": {
     "provider": "Codex",

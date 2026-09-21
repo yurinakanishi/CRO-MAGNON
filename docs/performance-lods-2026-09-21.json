@@ -1,0 +1,191 @@
+{
+  "status": "passed",
+  "createdAt": "2026-09-21T09:24:48.166Z",
+  "verifiedAt": "2026-09-21T09:25:00.000Z",
+  "method": "Blender 5.2 source-derived QEM on the adopted GLBs; close files retained byte-for-byte. Actor runtime reuses the adopted materials and animation skeleton with reduced geometry.",
+  "verification": {
+    "tests": 633,
+    "typeScript": "passed",
+    "syntax": "passed",
+    "architecture": "passed",
+    "assetModels": 45,
+    "browserErrors": 0,
+    "browserCamp": {
+      "x": 48,
+      "z": 57,
+      "campMountainLod": 0,
+      "actorLowLods": 4,
+      "renderTriangles": 1270907
+    },
+    "browserCastleApproach": {
+      "x": -99.17,
+      "z": 125.24,
+      "campMountainLod": 1,
+      "actorLowLods": 21,
+      "renderTriangles": 438994
+    },
+    "note": "The two browser triangle counts are different views and are not a controlled before/after performance benchmark. No FPS claim is made."
+  },
+  "records": [
+    {
+      "key": "cro-magnon-woman",
+      "mainTriangles": 65707,
+      "url": "/models/cro-magnon-woman/lod-performance.glb",
+      "sha256": "88e5c1d63c665ec9eb7a3317811bf31608aaa44f252d998fbaea14c32362ffcd",
+      "bytes": 823312,
+      "triangles": 9856,
+      "distanceMetres": 28,
+      "purpose": "animated-medium-lod-geometry"
+    },
+    {
+      "key": "cro-magnon-hunter",
+      "mainTriangles": 69990,
+      "url": "/models/cro-magnon-hunter/lod-performance.glb",
+      "sha256": "9cfa67c7a783bf3a21b5ae3185f5376b3fd4102b1c5a3582f5f86f146b6774ca",
+      "bytes": 815764,
+      "triangles": 10498,
+      "distanceMetres": 28,
+      "purpose": "animated-medium-lod-geometry"
+    },
+    {
+      "key": "neanderthal-woman",
+      "mainTriangles": 68090,
+      "url": "/models/neanderthal-woman/lod-performance.glb",
+      "sha256": "6485d7a322e2f99e64d94f29358530c2e74ce5104071ce83c7bc3d8254c81032",
+      "bytes": 836548,
+      "triangles": 10213,
+      "distanceMetres": 28,
+      "purpose": "animated-medium-lod-geometry"
+    },
+    {
+      "key": "neanderthal-hunter",
+      "mainTriangles": 54422,
+      "url": "/models/neanderthal-hunter/lod-performance.glb",
+      "sha256": "40635a6831b871023541cc6830814399a2946c54333a2df5439e6c9895b46f67",
+      "bytes": 711464,
+      "triangles": 8163,
+      "distanceMetres": 28,
+      "purpose": "animated-medium-lod-geometry"
+    },
+    {
+      "key": "cat-kunoichi",
+      "mainTriangles": 66766,
+      "url": "/models/cat-kunoichi/lod-performance.glb",
+      "sha256": "c8085452014f4a472fd9a927610d51d6b23b0b4aad7a4c24c8dd8d3b5490a388",
+      "bytes": 827352,
+      "triangles": 10014,
+      "distanceMetres": 28,
+      "purpose": "animated-medium-lod-geometry"
+    },
+    {
+      "key": "desert-fennec-mage",
+      "mainTriangles": 103314,
+      "url": "/models/desert-fennec-mage/lod-performance.glb",
+      "sha256": "95c4c8e99dcc09a66d46f0f668249c146de24015848bac107f773d52fa8403bc",
+      "bytes": 1301548,
+      "triangles": 15497,
+      "distanceMetres": 28,
+      "purpose": "animated-medium-lod-geometry"
+    },
+    {
+      "key": "giant-ape",
+      "mainTriangles": 106357,
+      "url": "/models/giant-ape/lod-performance.glb",
+      "sha256": "f8b1033c49b5179c79c5581d4899f4789c074f8154a8e937986e88b192d00fbd",
+      "bytes": 1326948,
+      "triangles": 15953,
+      "distanceMetres": 28,
+      "purpose": "animated-medium-lod-geometry"
+    },
+    {
+      "key": "crow-shaman",
+      "mainTriangles": 65750,
+      "url": "/models/crow-shaman/lod-performance.glb",
+      "sha256": "c07bc8af0f22ea62bc6c3da1f193af2af27f1a327926f5992ae5919a3806e94a",
+      "bytes": 950616,
+      "triangles": 9862,
+      "distanceMetres": 28,
+      "purpose": "animated-medium-lod-geometry"
+    },
+    {
+      "key": "violet-behemoth",
+      "mainTriangles": 47789,
+      "url": "/models/violet-behemoth/lod-performance.glb",
+      "sha256": "53d11944cf0e7b4298ea6e1b0e136a151a73d3ff24e29d03da688bfa2a6a8dc8",
+      "bytes": 599964,
+      "triangles": 7167,
+      "distanceMetres": 28,
+      "purpose": "animated-medium-lod-geometry"
+    },
+    {
+      "key": "sabertooth-tiger",
+      "mainTriangles": 72892,
+      "url": "/models/sabertooth-tiger/lod-performance.glb",
+      "sha256": "cccd444673cf8dc6eba0238cfa15990985fc4b4bcfa500c9c95c9afcaf4352cd",
+      "bytes": 964560,
+      "triangles": 10933,
+      "distanceMetres": 28,
+      "purpose": "animated-medium-lod-geometry"
+    },
+    {
+      "key": "woolly-mammoth",
+      "mainTriangles": 26067,
+      "url": "/models/woolly-mammoth/lod-performance.glb",
+      "sha256": "bece0bb61dbaaecb76cea676504d8a21c086f96e79f311c5bfdd8e9e5a7143b0",
+      "bytes": 354052,
+      "triangles": 3910,
+      "distanceMetres": 28,
+      "purpose": "animated-medium-lod-geometry"
+    },
+    {
+      "key": "berry-bush",
+      "mainTriangles": 103563,
+      "url": "/models/berry-bush/lod-performance.glb",
+      "sha256": "972efcd873a8f3ac829868d82245c0a985bb29d5fe38710052310fdd2487a614",
+      "bytes": 3625404,
+      "triangles": 12427,
+      "distanceMetres": 14,
+      "purpose": "medium-distance-lod"
+    },
+    {
+      "key": "hide-tent",
+      "mainTriangles": 24603,
+      "url": "/models/hide-tent/lod-performance.glb",
+      "sha256": "57bae53dd8bf87e0d8e9b8e72d6aeec761dd94f38afaa0889b98af785e662c41",
+      "bytes": 2110496,
+      "triangles": 3690,
+      "distanceMetres": 14,
+      "purpose": "medium-distance-lod"
+    },
+    {
+      "key": "firewood-pile",
+      "mainTriangles": 12282,
+      "url": "/models/firewood-pile/lod-performance.glb",
+      "sha256": "dd79b8adb654ffc52786d4c2a9fc1b7020c5f54684346046c63cac1b5b25443b",
+      "bytes": 2175316,
+      "triangles": 1841,
+      "distanceMetres": 14,
+      "purpose": "medium-distance-lod"
+    },
+    {
+      "key": "stone-firepit",
+      "mainTriangles": 31466,
+      "url": "/models/stone-firepit/lod-performance.glb",
+      "sha256": "f20d687b16e7b74dc84ee20a40fb76cf4541445ab33d6f2a8e9062961ca47209",
+      "bytes": 2607924,
+      "triangles": 3775,
+      "distanceMetres": 14,
+      "purpose": "medium-distance-lod"
+    },
+    {
+      "key": "camp-mountain",
+      "mainTriangles": 245000,
+      "url": "/models/camp-mountain/lod-performance.glb",
+      "sha256": "6d4db4974cd16bd7ccc8ad53a199197ada18166dba1d3aae116f98c526496b2d",
+      "bytes": 2596720,
+      "triangles": 24499,
+      "distanceMetres": 100,
+      "purpose": "medium-distance-lod"
+    }
+  ]
+}

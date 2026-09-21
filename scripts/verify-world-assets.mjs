@@ -59,22 +59,26 @@ for (const spec of catalog.assets) {
     const bytes = await readFile(path);
     assert.equal(bytes.byteLength, record.bytes);
     assert.equal(hash(bytes), record.sha256);
+    const geometryOnly = record.purpose === 'animated-medium-lod-geometry';
     const inspection = JSON.parse(
       execFileSync(
         process.execPath,
         [
           resolve(root, 'scripts/inspect-glb.mjs'),
           path,
-          ...(spec.kind === 'humanoid' ? ['--humanoid'] : []),
-          ...(spec.kind === 'enemy' ? ['--enemy'] : []),
-          ...(['humanoid', 'quadruped'].includes(spec.kind) ? ['--hunting'] : []),
+          ...(!geometryOnly && spec.kind === 'humanoid' ? ['--humanoid'] : []),
+          ...(!geometryOnly && spec.kind === 'enemy' ? ['--enemy'] : []),
+          ...(!geometryOnly && ['humanoid', 'quadruped'].includes(spec.kind) ? ['--hunting'] : []),
         ],
         { encoding: 'utf8' },
       ),
     );
     assert.equal(inspection.validation, 'passed');
     assert.equal(inspection.triangles, record.triangles);
-    if (['enemy', 'humanoid', 'quadruped'].includes(spec.kind)) {
+    if (geometryOnly) {
+      assert.ok(inspection.skins.length > 0, `${spec.key}: geometry LOD lost its skin`);
+      assert.equal(inspection.animations.length, 0, `${spec.key}: geometry LOD duplicated clips`);
+    } else if (['enemy', 'humanoid', 'quadruped'].includes(spec.kind)) {
       assert.deepEqual(
         manifest.clips.map((clip) => clip.name).sort(),
         inspection.animations.map((clip) => clip.name).sort(),

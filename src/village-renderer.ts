@@ -3,6 +3,7 @@ import { characterModel } from '../shared/characters.mjs';
 import { RESIDENTS } from '../shared/village-sites.mjs';
 import { COUNTRIES } from '../shared/gulf-region.mjs';
 import { walkHeight } from '../shared/terrain.mjs';
+import { updateActorPerformance } from './performance-lod.js';
 
 /** Separate actors, shared adopted geometry/textures and existing character providers. */
 export class VillageRenderer {
@@ -87,6 +88,7 @@ export class VillageRenderer {
       root.visible = near;
       entity.label.active = near && Math.hypot(p.x - w.focus.x, p.z - w.focus.z) < 22;
       if (!near) continue;
+      updateActorPerformance(root, root.position.distanceTo(w.camera.position));
       const remaining = Math.hypot(p.x - root.position.x, p.z - root.position.z);
       const factor = remaining < 0.012 ? 1 : 1 - Math.exp(-dt * 16);
       const dynamic = this.obstacles(p.id).concat(

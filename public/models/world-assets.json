@@ -49,7 +49,8 @@
       "notes": [
         "Exact GLB four-loop pose sheets and 30 fps MP4 metadata reviewed. Mammoth-specific 24-bone rig, four-beat walk and trunk/tail motion. Repaired belly weighting and reachable leg IK retain 24173 source-derived triangles. Walk foot-surface p02 stance range -1.04 to +1.88 cm; run -3.03 to +2.06 cm. Two borderline local stretch edges in Run remain a prototype limitation, without visible gross tearing in reviewed views.",
         "Hunting revision 03 adds Death; original mesh, rig, textures and earlier clips retained byte-for-byte. Previous delivery archived.",
-        "Tail structural revision 12 (2026-09-13): Blender 5.2 rebuilds one round tail descending immediately along the rump, with a terminal fur tuft. Original body face winding and split normals are retained, correcting the see-through body in r11. Persistent mesh IDs protect the upper tail from rump relaxation. Original 24 bones and five clips remain byte-identical; original and earlier deliveries remain archived."
+        "Tail structural revision 12 (2026-09-13): Blender 5.2 rebuilds one round tail descending immediately along the rump, with a terminal fur tuft. Original body face winding and split normals are retained, correcting the see-through body in r11. Persistent mesh IDs protect the upper tail from rump relaxation. Original 24 bones and five clips remain byte-identical; original and earlier deliveries remain archived.",
+        "Source-derived 3,910-triangle animated LOD is used beyond 28 m; the adopted close model, skeleton, clips, materials and collision are unchanged."
       ],
       "provenance": {
         "provider": "Codex",
@@ -85,7 +86,16 @@
           "blend": "output/mammoth-tail/revision-12/mammoth-tail.blend"
         }
       },
-      "lods": [],
+      "lods": [
+        {
+          "url": "/models/woolly-mammoth/lod-performance.glb",
+          "sha256": "bece0bb61dbaaecb76cea676504d8a21c086f96e79f311c5bfdd8e9e5a7143b0",
+          "bytes": 354052,
+          "triangles": 3910,
+          "distanceMetres": 28,
+          "purpose": "animated-medium-lod-geometry"
+        }
+      ],
       "bones": 24,
       "locomotion": {
         "Walk_Loop": {
@@ -337,7 +347,8 @@
       },
       "clips": [],
       "notes": [
-        "Five source-derived logs retain bark, both cut ends, stacked contact gaps and stable underside after conservative reduction. Height 0.70 m, ground-centred pivot. Reviewed exact reimported candidate from six views; no added primitive geometry. Source gaps are stylized but coherent for the game prototype."
+        "Five source-derived logs retain bark, both cut ends, stacked contact gaps and stable underside after conservative reduction. Height 0.70 m, ground-centred pivot. Reviewed exact reimported candidate from six views; no added primitive geometry. Source gaps are stylized but coherent for the game prototype.",
+        "Source-derived 1,841-triangle medium LOD is used from 14 m; the adopted close model and collision are unchanged."
       ],
       "provenance": {
         "provider": "Codex",
@@ -349,7 +360,16 @@
         "candidateFile": "output/model-generation/models/firewood-pile/work/low-poly/candidate-01/candidate.glb",
         "visualReview": "output/model-generation/models/firewood-pile/qa/adoption-review.json"
       },
-      "lods": []
+      "lods": [
+        {
+          "url": "/models/firewood-pile/lod-performance.glb",
+          "sha256": "dd79b8adb654ffc52786d4c2a9fc1b7020c5f54684346046c63cac1b5b25443b",
+          "bytes": 2175316,
+          "triangles": 1841,
+          "distanceMetres": 14,
+          "purpose": "medium-distance-lod"
+        }
+      ]
     },
     {
       "modelKey": "berry-bush",
@@ -370,7 +390,8 @@
       },
       "clips": [],
       "notes": [
-        "Revision 02 preserves rounded leaf edges and berry clusters more faithfully than revision 01; all six exact-GLB views inspected. Height 1.2 m, grounded root crown and open branch gaps. LOD1 retains the crown silhouette and is intended beyond 10 m; verify the actual transition in game. LOD2 was inspected and rejected because its crown loses too much foliage, and is retained only in the source workspace. Individual berries remain stylized connected clusters from TRELLIS."
+        "Revision 02 preserves rounded leaf edges and berry clusters more faithfully than revision 01; all six exact-GLB views inspected. Height 1.2 m, grounded root crown and open branch gaps. LOD1 retains the crown silhouette and is intended beyond 10 m; verify the actual transition in game. LOD2 was inspected and rejected because its crown loses too much foliage, and is retained only in the source workspace. Individual berries remain stylized connected clusters from TRELLIS.",
+        "Source-derived 12,427-triangle medium LOD is used from 14 m; the adopted close model and collision are unchanged."
       ],
       "provenance": {
         "provider": "Codex",
@@ -384,10 +405,12 @@
       },
       "lods": [
         {
-          "url": "/models/berry-bush/lod1.glb",
-          "sha256": "a5073cf0717125339f6baea01ac415a91b87db8fada01dada236863eda89e0c2",
-          "bytes": 6009448,
-          "triangles": 41368
+          "url": "/models/berry-bush/lod-performance.glb",
+          "sha256": "972efcd873a8f3ac829868d82245c0a985bb29d5fe38710052310fdd2487a614",
+          "bytes": 3625404,
+          "triangles": 12427,
+          "distanceMetres": 14,
+          "purpose": "medium-distance-lod"
         }
       ]
     },
@@ -410,7 +433,8 @@
       },
       "clips": [],
       "notes": [
-        "Reviewed the exact reduced GLB from six views: A-frame roof silhouette, hide panels and seams, lashed wooden supports, interior cross-members and entrance remain coherent. Height 3.5 m, ground-centred pivot. This reconstruction is an open-ended shelter with no closed back wall; accepted for the prototype camp and not filled with generated primitive geometry. Minor pole and seam simplification remains. No LODs delivered because four copies of the 24603-triangle mesh are sufficient pending whole-game performance QA."
+        "Reviewed the exact reduced GLB from six views: A-frame roof silhouette, hide panels and seams, lashed wooden supports, interior cross-members and entrance remain coherent. Height 3.5 m, ground-centred pivot. This reconstruction is an open-ended shelter with no closed back wall; accepted for the prototype camp and not filled with generated primitive geometry. Minor pole and seam simplification remains. No LODs delivered because four copies of the 24603-triangle mesh are sufficient pending whole-game performance QA.",
+        "Source-derived 3,690-triangle medium LOD is used from 14 m; the adopted close model and collision are unchanged."
       ],
       "provenance": {
         "provider": "Codex",
@@ -422,7 +446,16 @@
         "candidateFile": "output/model-generation/models/hide-tent/work/low-poly/candidate-01/candidate.glb",
         "visualReview": "output/model-generation/models/hide-tent/qa/adoption-review.json"
       },
-      "lods": []
+      "lods": [
+        {
+          "url": "/models/hide-tent/lod-performance.glb",
+          "sha256": "57bae53dd8bf87e0d8e9b8e72d6aeec761dd94f38afaa0889b98af785e662c41",
+          "bytes": 2110496,
+          "triangles": 3690,
+          "distanceMetres": 14,
+          "purpose": "medium-distance-lod"
+        }
+      ]
     },
     {
       "modelKey": "drying-rack",
@@ -476,7 +509,8 @@
       },
       "clips": [],
       "notes": [
-        "Exact reduced GLB preserves the rounded stone ring, overlapping central logs and dark ember bed. Six views compared with source image and dense mesh, including underside. Height 0.5 m, ground-centred. Two camp instances use the complete 31466-triangle mesh; flame and sparks are separate runtime effects. No primitive stone/log replacement or extra caps were added."
+        "Exact reduced GLB preserves the rounded stone ring, overlapping central logs and dark ember bed. Six views compared with source image and dense mesh, including underside. Height 0.5 m, ground-centred. Two camp instances use the complete 31466-triangle mesh; flame and sparks are separate runtime effects. No primitive stone/log replacement or extra caps were added.",
+        "Source-derived 3,775-triangle medium LOD is used from 14 m; the adopted close model and collision are unchanged."
       ],
       "provenance": {
         "provider": "Codex",
@@ -488,7 +522,16 @@
         "candidateFile": "output/model-generation/models/stone-firepit/work/low-poly/candidate-01/candidate.glb",
         "visualReview": "output/model-generation/models/stone-firepit/qa/adoption-review.json"
       },
-      "lods": []
+      "lods": [
+        {
+          "url": "/models/stone-firepit/lod-performance.glb",
+          "sha256": "f20d687b16e7b74dc84ee20a40fb76cf4541445ab33d6f2a8e9062961ca47209",
+          "bytes": 2607924,
+          "triangles": 3775,
+          "distanceMetres": 14,
+          "purpose": "medium-distance-lod"
+        }
+      ]
     },
     {
       "modelKey": "flint-spear",
@@ -5019,11 +5062,21 @@
           "swingLiftMetres": 0.19635490633886143
         }
       },
-      "lods": [],
+      "lods": [
+        {
+          "url": "/models/crow-shaman/lod-performance.glb",
+          "sha256": "c07bc8af0f22ea62bc6c3da1f193af2af27f1a327926f5992ae5919a3806e94a",
+          "bytes": 950616,
+          "triangles": 9862,
+          "distanceMetres": 28,
+          "purpose": "animated-medium-lod-geometry"
+        }
+      ],
       "notes": [
         "Reviewed game prototype; layered feather tips and ragged cloth are thin open surfaces, not a watertight sculpture.",
         "Cloth follows the skeleton with modest local stretching; no cloth simulation or finger articulation.",
-        "JPEG quality94 albedo retains source UVs; geometry, skin and animation buffers are unchanged from revision05."
+        "JPEG quality94 albedo retains source UVs; geometry, skin and animation buffers are unchanged from revision05.",
+        "Source-derived 9,862-triangle animated LOD is used beyond 28 m; the adopted close model, skeleton, clips, materials and collision are unchanged."
       ],
       "provenance": {
         "provider": "Codex",
@@ -22786,7 +22839,16 @@
           "dutyFactor": 0.6
         }
       },
-      "lods": [],
+      "lods": [
+        {
+          "url": "/models/violet-behemoth/lod-performance.glb",
+          "sha256": "53d11944cf0e7b4298ea6e1b0e136a151a73d3ff24e29d03da688bfa2a6a8dc8",
+          "bytes": 599964,
+          "triangles": 7167,
+          "distanceMetres": 28,
+          "purpose": "animated-medium-lod-geometry"
+        }
+      ],
       "placement": {
         "pivot": "ground-body-centred",
         "min": [
@@ -22816,7 +22878,8 @@
       "notes": [
         "New Codex image -> local TRELLIS-2 -> measured surface reduction. No visible procedural geometry.",
         "Four independent planted paw IK chains, seven delayed tail links, distinct charge brace, tail coil, bite gape and inflated poison draw-back. All current gameplay tuning retained.",
-        "Original r10 and all previous deliveries retained byte-for-byte, unused by the active catalog."
+        "Original r10 and all previous deliveries retained byte-for-byte, unused by the active catalog.",
+        "Source-derived 7,167-triangle animated LOD is used beyond 28 m; the adopted close model, skeleton, clips, materials and collision are unchanged."
       ]
     },
     {
@@ -22976,7 +23039,16 @@
           1.3008928298950195
         ]
       },
-      "lods": [],
+      "lods": [
+        {
+          "url": "/models/sabertooth-tiger/lod-performance.glb",
+          "sha256": "cccd444673cf8dc6eba0238cfa15990985fc4b4bcfa500c9c95c9afcaf4352cd",
+          "bytes": 964560,
+          "triangles": 10933,
+          "distanceMetres": 28,
+          "purpose": "animated-medium-lod-geometry"
+        }
+      ],
       "source": "output/model-generation/models/sabertooth-tiger/work/rig/revision-13/candidate.glb",
       "provenance": {
         "provider": "Codex CLI image_gen reference (gpt-5.6-sol, medium) and local TRELLIS-2; rig and clips by Claude Code",
@@ -22989,7 +23061,8 @@
       "notes": [
         "User-selected candidate 01 of three Codex image_gen references (tawny, faint stripes). Local TRELLIS-2 1024 reconstruction, source-preserving QEM to 72,892 triangles; no visible replacement geometry.",
         "Quadruped rig of 26 bones with two-bone IK planted paws and a gliding scapula; 60 fps keys. Pounce and Step bake body height only: the server moves the body horizontally.",
-        "Revision 13 (2026-09-12): weakened at the user's request and every strike announced. Crouch (0.8 s) precedes the pounce, whose own clip keeps a 0.2 s final dip; Snarl (0.7 s) precedes the claw combo. Surface, weights and the nine earlier clips are unchanged."
+        "Revision 13 (2026-09-12): weakened at the user's request and every strike announced. Crouch (0.8 s) precedes the pounce, whose own clip keeps a 0.2 s final dip; Snarl (0.7 s) precedes the claw combo. Surface, weights and the nine earlier clips are unchanged.",
+        "Source-derived 10,933-triangle animated LOD is used beyond 28 m; the adopted close model, skeleton, clips, materials and collision are unchanged."
       ]
     },
     {
@@ -23237,14 +23310,24 @@
         ]
       },
       "clips": [],
-      "lods": [],
+      "lods": [
+        {
+          "url": "/models/camp-mountain/lod-performance.glb",
+          "sha256": "6d4db4974cd16bd7ccc8ad53a199197ada18166dba1d3aae116f98c526496b2d",
+          "bytes": 2596720,
+          "triangles": 24499,
+          "distanceMetres": 100,
+          "purpose": "medium-distance-lod"
+        }
+      ],
       "notes": [
         "Source r11 upper envelope resampled and locally smoothed, retaining the source mountain form.",
         "Continuous shared-edge retopology repairs holes and stacked skin. This is a ray-projected TRELLIS source surface, not a replacement primitive.",
         "Accepted meadow-ground texture reused; world-space material treatment blends terrain and cave apron.",
         "All upward faces, including steep slopes, contribute to the 0.4m physical height field.",
         "River-side relief capped to a broad 0.72 grade shoulder, avoiding the former compressed vertical turf skirt.",
-        "Apron fitted below the measured cave floor until the actual rock arch; exact roof texture avoids cutting sky gaps around the mouth."
+        "Apron fitted below the measured cave floor until the actual rock arch; exact roof texture avoids cutting sky gaps around the mouth.",
+        "Source-derived 24,499-triangle LOD is used outside the camp/cave detail area, including views from the castle; the measured gameplay height field is unchanged."
       ],
       "provenance": {
         "provider": "Codex",

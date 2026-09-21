@@ -17,7 +17,8 @@
   },
   "clips": [],
   "notes": [
-    "Five source-derived logs retain bark, both cut ends, stacked contact gaps and stable underside after conservative reduction. Height 0.70 m, ground-centred pivot. Reviewed exact reimported candidate from six views; no added primitive geometry. Source gaps are stylized but coherent for the game prototype."
+    "Five source-derived logs retain bark, both cut ends, stacked contact gaps and stable underside after conservative reduction. Height 0.70 m, ground-centred pivot. Reviewed exact reimported candidate from six views; no added primitive geometry. Source gaps are stylized but coherent for the game prototype.",
+    "Source-derived 1,841-triangle medium LOD is used from 14 m; the adopted close model and collision are unchanged."
   ],
   "provenance": {
     "provider": "Codex",
@@ -29,5 +30,14 @@
     "candidateFile": "output/model-generation/models/firewood-pile/work/low-poly/candidate-01/candidate.glb",
     "visualReview": "output/model-generation/models/firewood-pile/qa/adoption-review.json"
   },
-  "lods": []
+  "lods": [
+    {
+      "url": "/models/firewood-pile/lod-performance.glb",
+      "sha256": "dd79b8adb654ffc52786d4c2a9fc1b7020c5f54684346046c63cac1b5b25443b",
+      "bytes": 2175316,
+      "triangles": 1841,
+      "distanceMetres": 14,
+      "purpose": "medium-distance-lod"
+    }
+  ]
 }

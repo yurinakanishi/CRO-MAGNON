@@ -45,7 +45,8 @@
   "notes": [
     "Exact GLB four-loop pose sheets and 30 fps MP4 metadata reviewed. Mammoth-specific 24-bone rig, four-beat walk and trunk/tail motion. Repaired belly weighting and reachable leg IK retain 24173 source-derived triangles. Walk foot-surface p02 stance range -1.04 to +1.88 cm; run -3.03 to +2.06 cm. Two borderline local stretch edges in Run remain a prototype limitation, without visible gross tearing in reviewed views.",
     "Hunting revision 03 adds Death; original mesh, rig, textures and earlier clips retained byte-for-byte. Previous delivery archived.",
-    "Tail structural revision 12 (2026-09-13): Blender 5.2 rebuilds one round tail descending immediately along the rump, with a terminal fur tuft. Original body face winding and split normals are retained, correcting the see-through body in r11. Persistent mesh IDs protect the upper tail from rump relaxation. Original 24 bones and five clips remain byte-identical; original and earlier deliveries remain archived."
+    "Tail structural revision 12 (2026-09-13): Blender 5.2 rebuilds one round tail descending immediately along the rump, with a terminal fur tuft. Original body face winding and split normals are retained, correcting the see-through body in r11. Persistent mesh IDs protect the upper tail from rump relaxation. Original 24 bones and five clips remain byte-identical; original and earlier deliveries remain archived.",
+    "Source-derived 3,910-triangle animated LOD is used beyond 28 m; the adopted close model, skeleton, clips, materials and collision are unchanged."
   ],
   "provenance": {
     "provider": "Codex",
@@ -81,7 +82,16 @@
       "blend": "output/mammoth-tail/revision-12/mammoth-tail.blend"
     }
   },
-  "lods": [],
+  "lods": [
+    {
+      "url": "/models/woolly-mammoth/lod-performance.glb",
+      "sha256": "bece0bb61dbaaecb76cea676504d8a21c086f96e79f311c5bfdd8e9e5a7143b0",
+      "bytes": 354052,
+      "triangles": 3910,
+      "distanceMetres": 28,
+      "purpose": "animated-medium-lod-geometry"
+    }
+  ],
   "bones": 24,
   "locomotion": {
     "Walk_Loop": {

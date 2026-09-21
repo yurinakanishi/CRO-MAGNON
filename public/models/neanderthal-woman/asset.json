@@ -85,7 +85,8 @@
     "Prototype limits: hair and fur remain solid reconstructed clusters; facial side detail is simplified, and the fur waist wrap stretches slightly in large strides.",
     "Gender changes appearance only. Missing gender starts female; male models remain available.",
     "Reference v4 sweeps hair clear of both eyes. Animated Hips lifted 3 mm to correct measured floor penetration; in-place Root and rest mesh unchanged.",
-    "Hunting revision 03 adds Attack; original mesh, rig, textures and earlier clips retained byte-for-byte. Previous delivery archived."
+    "Hunting revision 03 adds Attack; original mesh, rig, textures and earlier clips retained byte-for-byte. Previous delivery archived.",
+    "Source-derived 10,213-triangle animated LOD is used beyond 28 m; the adopted close model, skeleton, clips, materials and collision are unchanged."
   ],
   "provenance": {
     "provider": "Codex",
@@ -101,7 +102,16 @@
     "previousMotionVisualReview": "output/model-generation/models/neanderthal-woman/qa/adoption-review.json",
     "previousVisualReview": "assets/creature-motion/models/neanderthal-woman-review.json"
   },
-  "lods": [],
+  "lods": [
+    {
+      "url": "/models/neanderthal-woman/lod-performance.glb",
+      "sha256": "6485d7a322e2f99e64d94f29358530c2e74ce5104071ce83c7bc3d8254c81032",
+      "bytes": 836548,
+      "triangles": 10213,
+      "distanceMetres": 28,
+      "purpose": "animated-medium-lod-geometry"
+    }
+  ],
   "bones": 22,
   "locomotion": {
     "Walk_Loop": {

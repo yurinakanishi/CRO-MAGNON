@@ -85,7 +85,8 @@
     "Prototype limits: hair and fur remain solid reconstructed clusters; facial side detail is simplified, and the fur waist wrap stretches slightly in large strides.",
     "Gender changes appearance only. Missing gender starts female; male models remain available.",
     "Small dark rear-waist albedo artifact replaced with colour sampled from neighbouring source texels; no geometry substitution.",
-    "Hunting revision 03 adds Attack; original mesh, rig, textures and earlier clips retained byte-for-byte. Previous delivery archived."
+    "Hunting revision 03 adds Attack; original mesh, rig, textures and earlier clips retained byte-for-byte. Previous delivery archived.",
+    "Source-derived 9,856-triangle animated LOD is used beyond 28 m; the adopted close model, skeleton, clips, materials and collision are unchanged."
   ],
   "provenance": {
     "provider": "Codex",
@@ -101,7 +102,16 @@
     "previousMotionVisualReview": "output/model-generation/models/cro-magnon-woman/qa/adoption-review.json",
     "previousVisualReview": "assets/creature-motion/models/cro-magnon-woman-review.json"
   },
-  "lods": [],
+  "lods": [
+    {
+      "url": "/models/cro-magnon-woman/lod-performance.glb",
+      "sha256": "88e5c1d63c665ec9eb7a3317811bf31608aaa44f252d998fbaea14c32362ffcd",
+      "bytes": 823312,
+      "triangles": 9856,
+      "distanceMetres": 28,
+      "purpose": "animated-medium-lod-geometry"
+    }
+  ],
   "bones": 22,
   "locomotion": {
     "Walk_Loop": {

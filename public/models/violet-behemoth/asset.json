@@ -114,7 +114,16 @@
       "dutyFactor": 0.6
     }
   },
-  "lods": [],
+  "lods": [
+    {
+      "url": "/models/violet-behemoth/lod-performance.glb",
+      "sha256": "53d11944cf0e7b4298ea6e1b0e136a151a73d3ff24e29d03da688bfa2a6a8dc8",
+      "bytes": 599964,
+      "triangles": 7167,
+      "distanceMetres": 28,
+      "purpose": "animated-medium-lod-geometry"
+    }
+  ],
   "placement": {
     "pivot": "ground-body-centred",
     "min": [
@@ -144,6 +153,7 @@
   "notes": [
     "New Codex image -> local TRELLIS-2 -> measured surface reduction. No visible procedural geometry.",
     "Four independent planted paw IK chains, seven delayed tail links, distinct charge brace, tail coil, bite gape and inflated poison draw-back. All current gameplay tuning retained.",
-    "Original r10 and all previous deliveries retained byte-for-byte, unused by the active catalog."
+    "Original r10 and all previous deliveries retained byte-for-byte, unused by the active catalog.",
+    "Source-derived 7,167-triangle animated LOD is used beyond 28 m; the adopted close model, skeleton, clips, materials and collision are unchanged."
   ]
 }

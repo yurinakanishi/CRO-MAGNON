@@ -108,7 +108,16 @@
       1.3008928298950195
     ]
   },
-  "lods": [],
+  "lods": [
+    {
+      "url": "/models/sabertooth-tiger/lod-performance.glb",
+      "sha256": "cccd444673cf8dc6eba0238cfa15990985fc4b4bcfa500c9c95c9afcaf4352cd",
+      "bytes": 964560,
+      "triangles": 10933,
+      "distanceMetres": 28,
+      "purpose": "animated-medium-lod-geometry"
+    }
+  ],
   "source": "output/model-generation/models/sabertooth-tiger/work/rig/revision-13/candidate.glb",
   "provenance": {
     "provider": "Codex CLI image_gen reference (gpt-5.6-sol, medium) and local TRELLIS-2; rig and clips by Claude Code",
@@ -121,6 +130,7 @@
   "notes": [
     "User-selected candidate 01 of three Codex image_gen references (tawny, faint stripes). Local TRELLIS-2 1024 reconstruction, source-preserving QEM to 72,892 triangles; no visible replacement geometry.",
     "Quadruped rig of 26 bones with two-bone IK planted paws and a gliding scapula; 60 fps keys. Pounce and Step bake body height only: the server moves the body horizontally.",
-    "Revision 13 (2026-09-12): weakened at the user's request and every strike announced. Crouch (0.8 s) precedes the pounce, whose own clip keeps a 0.2 s final dip; Snarl (0.7 s) precedes the claw combo. Surface, weights and the nine earlier clips are unchanged."
+    "Revision 13 (2026-09-12): weakened at the user's request and every strike announced. Crouch (0.8 s) precedes the pounce, whose own clip keeps a 0.2 s final dip; Snarl (0.7 s) precedes the claw combo. Surface, weights and the nine earlier clips are unchanged.",
+    "Source-derived 10,933-triangle animated LOD is used beyond 28 m; the adopted close model, skeleton, clips, materials and collision are unchanged."
   ]
 }

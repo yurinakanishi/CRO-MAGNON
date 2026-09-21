@@ -17,7 +17,8 @@
   },
   "clips": [],
   "notes": [
-    "Reviewed the exact reduced GLB from six views: A-frame roof silhouette, hide panels and seams, lashed wooden supports, interior cross-members and entrance remain coherent. Height 3.5 m, ground-centred pivot. This reconstruction is an open-ended shelter with no closed back wall; accepted for the prototype camp and not filled with generated primitive geometry. Minor pole and seam simplification remains. No LODs delivered because four copies of the 24603-triangle mesh are sufficient pending whole-game performance QA."
+    "Reviewed the exact reduced GLB from six views: A-frame roof silhouette, hide panels and seams, lashed wooden supports, interior cross-members and entrance remain coherent. Height 3.5 m, ground-centred pivot. This reconstruction is an open-ended shelter with no closed back wall; accepted for the prototype camp and not filled with generated primitive geometry. Minor pole and seam simplification remains. No LODs delivered because four copies of the 24603-triangle mesh are sufficient pending whole-game performance QA.",
+    "Source-derived 3,690-triangle medium LOD is used from 14 m; the adopted close model and collision are unchanged."
   ],
   "provenance": {
     "provider": "Codex",
@@ -29,5 +30,14 @@
     "candidateFile": "output/model-generation/models/hide-tent/work/low-poly/candidate-01/candidate.glb",
     "visualReview": "output/model-generation/models/hide-tent/qa/adoption-review.json"
   },
-  "lods": []
+  "lods": [
+    {
+      "url": "/models/hide-tent/lod-performance.glb",
+      "sha256": "57bae53dd8bf87e0d8e9b8e72d6aeec761dd94f38afaa0889b98af785e662c41",
+      "bytes": 2110496,
+      "triangles": 3690,
+      "distanceMetres": 14,
+      "purpose": "medium-distance-lod"
+    }
+  ]
 }

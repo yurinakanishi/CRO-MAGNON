@@ -16,7 +16,7 @@
     "pivot": "ground-centred",
     "min": [
       -0.21255625186896718,
-      5.5505816141005146e-08,
+      5.5505816141005146e-8,
       -0.26347975874488405
     ],
     "max": [
@@ -77,7 +77,16 @@
       "loop": false
     }
   ],
-  "lods": [],
+  "lods": [
+    {
+      "url": "/models/desert-fennec-mage/lod-performance.glb",
+      "sha256": "95c4c8e99dcc09a66d46f0f668249c146de24015848bac107f773d52fa8403bc",
+      "bytes": 1301548,
+      "triangles": 15497,
+      "distanceMetres": 28,
+      "purpose": "animated-medium-lod-geometry"
+    }
+  ],
   "species": "bear",
   "gender": "female",
   "bones": 25,
@@ -104,7 +113,8 @@
     "Source-specific 25-bone rig with three tail bones; all nine clips pass independent 60 Hz skin evaluation. 270 frames in six directions and nine 30 fps video files generated. All contact sheets inspected.",
     "Source roughness atlas preserved with metallic factor zero; base color JPEG only, PSNR 44.0 dB, channel error P95 3.",
     "Exact GLB SHA checked in actual IAB; magic impact pose and five-model run displayed, with no console warnings/errors. Observed 60 FPS for one, 43 FPS for five while Blender rendered; not a constant-FPS claim.",
-    "Game QA pending separately; species bear, magic and movement speeds retained. Collision radius .32 m provides extra tail clearance."
+    "Game QA pending separately; species bear, magic and movement speeds retained. Collision radius .32 m provides extra tail clearance.",
+    "Source-derived 15,497-triangle animated LOD is used beyond 28 m; the adopted close model, skeleton, clips, materials and collision are unchanged."
   ],
   "provenance": {
     "provider": "Codex",

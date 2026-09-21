@@ -27,14 +27,24 @@
     ]
   },
   "clips": [],
-  "lods": [],
+  "lods": [
+    {
+      "url": "/models/camp-mountain/lod-performance.glb",
+      "sha256": "6d4db4974cd16bd7ccc8ad53a199197ada18166dba1d3aae116f98c526496b2d",
+      "bytes": 2596720,
+      "triangles": 24499,
+      "distanceMetres": 100,
+      "purpose": "medium-distance-lod"
+    }
+  ],
   "notes": [
     "Source r11 upper envelope resampled and locally smoothed, retaining the source mountain form.",
     "Continuous shared-edge retopology repairs holes and stacked skin. This is a ray-projected TRELLIS source surface, not a replacement primitive.",
     "Accepted meadow-ground texture reused; world-space material treatment blends terrain and cave apron.",
     "All upward faces, including steep slopes, contribute to the 0.4m physical height field.",
     "River-side relief capped to a broad 0.72 grade shoulder, avoiding the former compressed vertical turf skirt.",
-    "Apron fitted below the measured cave floor until the actual rock arch; exact roof texture avoids cutting sky gaps around the mouth."
+    "Apron fitted below the measured cave floor until the actual rock arch; exact roof texture avoids cutting sky gaps around the mouth.",
+    "Source-derived 24,499-triangle LOD is used outside the camp/cave detail area, including views from the castle; the measured gameplay height field is unchanged."
   ],
   "provenance": {
     "provider": "Codex",

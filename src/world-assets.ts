@@ -12,6 +12,11 @@ import { applyMeadowGrassPalette, meadowGrassTint } from './meadow-palette.js';
 import { ActionBlender, gaitPhase } from './action-blender.js';
 import { applyBehemothPalette } from './behemoth-palette.js';
 import { installSkinnedBounds } from './skinned-bounds.js';
+import {
+  attachSimplifiedShadow,
+  configureActorPerformance,
+  disposeActorPerformance,
+} from './performance-lod.js';
 
 function disposeTemplates(models) {
   const resources = new Set<
@@ -322,14 +327,20 @@ export class WorldAssets {
   }
   createResource(key, surface = null) {
     const template = this.get(key, surface);
-    if (!template.lods.length) return this.create(key, 0, surface);
+    if (!template.lods.length) {
+      const root = this.create(key, 0, surface);
+      attachSimplifiedShadow(root, key);
+      return root;
+    }
     const root = new THREE.LOD();
     root.userData.assetKey = key;
     root.userData.regionalSurface = surface;
     root.addLevel(this.create(key, 0, surface), 0);
     for (let index = 0; index < template.lods.length; index++) {
-      root.addLevel(this.create(key, index + 1, surface), index === 0 ? 10 : 22, 0.15);
+      const distance = template.asset.lods?.[index]?.distanceMetres ?? (index === 0 ? 10 : 22);
+      root.addLevel(this.create(key, index + 1, surface), distance, 0.15);
     }
+    attachSimplifiedShadow(root, key);
     return root;
   }
   /**
@@ -388,9 +399,10 @@ export class WorldAssets {
     return this.disposed ? null : this.create(key);
   }
   createAnimal(key) {
-    const { gltf, asset } = this.get(key),
+    const { gltf, lods, asset } = this.get(key),
       root = cloneSkeleton(gltf.scene),
       mixer = new THREE.AnimationMixer(root);
+    configureActorPerformance(root, lods?.[0]?.scene, asset);
     installSkinnedBounds(root);
     const actions = new Map<string, THREE.AnimationAction>(
       gltf.animations.map((clip) => [clip.name, mixer.clipAction(clip)]),
@@ -452,6 +464,7 @@ export class WorldAssets {
         retiring.clear();
         mixer.stopAllAction();
         mixer.uncacheRoot(root);
+        disposeActorPerformance(root);
         root.traverse((node) => {
           if (isSkinnedMesh(node)) node.skeleton.dispose();
         });
@@ -473,15 +486,23 @@ export class WorldAssets {
             (record) => record.modelKey === key && record.kind === 'enemy',
           );
           if (!asset) throw new Error(`Missing verified enemy ${key}`);
-          const gltf = await loadVerifiedGLB(asset);
+          const models = [];
+          try {
+            for (const record of [asset, ...(asset.lods ?? [])])
+              models.push(await loadVerifiedGLB(record));
+          } catch (error) {
+            disposeTemplates(models);
+            throw error;
+          }
+          const gltf = models[0];
           try {
             requireEnemyClips(gltf.animations, key);
           } catch (error) {
-            disposeTemplates([gltf]);
+            disposeTemplates(models);
             throw error;
           }
           if (this.disposed) {
-            disposeTemplates([gltf]);
+            disposeTemplates(models);
             return;
           }
           gltf.scene.updateMatrixWorld(true);
@@ -493,7 +514,7 @@ export class WorldAssets {
                 for (const material of [node.material].flat()) applyBehemothPalette(material);
             }
           });
-          this.templates.set(key, { gltf, lods: [], asset });
+          this.templates.set(key, { gltf, lods: models.slice(1), asset });
         })(),
       );
     await this.enemyLoads.get(key);

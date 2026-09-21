@@ -21,6 +21,7 @@ import { BEHEMOTH_MARSH } from '../shared/behemoth-rules.mjs';
 import { HUNTING } from '../shared/hunting.mjs';
 import { meatRingLayout } from './resource-visuals.js';
 import { CAVE_HEARTH } from '../shared/camp-cave-layout.mjs';
+import { SIMPLIFIED_SHADOW_KEYS } from './performance-lod.js';
 
 const TAU = Math.PI * 2;
 const random = seededRandom;
@@ -28,7 +29,9 @@ const random = seededRandom;
 export const GRASS_SINK = 0.08;
 
 function addModel(world, key, x, z, yaw = 0, scale = 1, surface = null) {
-  const model = world.worldAssets.create(key, 0, surface);
+  const model = SIMPLIFIED_SHADOW_KEYS.has(key)
+    ? world.worldAssets.createResource(key, surface)
+    : world.worldAssets.create(key, 0, surface);
   model.position.set(x, walkHeight(x, z), z);
   model.rotation.y = yaw;
   Array.isArray(scale) ? model.scale.set(...scale) : model.scale.setScalar(scale);

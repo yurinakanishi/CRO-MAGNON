@@ -75,7 +75,8 @@
   ],
   "notes": [
     "Exact final GLB reviewed across all eight clips, rear/TPS and side views; all eight 30 fps MP4 files reopen with verified hashes, dimensions and frame counts. Stocky 1.72 m hunter, 22 bones, Grip.L/R and max four weights. Torso/garment skin weights repaired; 5569 covered interior triangles removed only after source-albedo classification and nine outward occlusion rays per face, fixing orange interior surface patches during running. All remaining geometry attributes, materials, rig and clip bytes are preserved from repaired-03. Contact minima are within 4.2 mm of ground; two duplicate threshold edges in Wave remain a minor local armpit limitation.",
-    "Hunting revision 03 adds Attack; original mesh, rig, textures and earlier clips retained byte-for-byte. Previous delivery archived."
+    "Hunting revision 03 adds Attack; original mesh, rig, textures and earlier clips retained byte-for-byte. Previous delivery archived.",
+    "Source-derived 8,163-triangle animated LOD is used beyond 28 m; the adopted close model, skeleton, clips, materials and collision are unchanged."
   ],
   "provenance": {
     "provider": "Codex",
@@ -91,7 +92,16 @@
     "previousMotionVisualReview": "output/model-generation/models/neanderthal-hunter/qa/adoption-review.json",
     "previousVisualReview": "assets/creature-motion/models/neanderthal-hunter-review.json"
   },
-  "lods": [],
+  "lods": [
+    {
+      "url": "/models/neanderthal-hunter/lod-performance.glb",
+      "sha256": "40635a6831b871023541cc6830814399a2946c54333a2df5439e6c9895b46f67",
+      "bytes": 711464,
+      "triangles": 8163,
+      "distanceMetres": 28,
+      "purpose": "animated-medium-lod-geometry"
+    }
+  ],
   "bones": 22,
   "locomotion": {
     "Walk_Loop": {

@@ -9,7 +9,7 @@ import { regionFeatureDiagnostics } from './region-feature-diagnostics.js';
 import { ADVENTURE_LANDMARKS } from '../shared/adventure-layout.mjs';
 import { AdventureMaterials } from './adventure-materials.js';
 import { GULF_LANDMARKS } from '../shared/gulf-region.mjs';
-import { CAMP_CAVE, CAMP_MOUNTAIN } from '../shared/camp-cave-layout.mjs';
+import { CAMP_CAVE, CAMP_MOUNTAIN, campMountainVisualLod } from '../shared/camp-cave-layout.mjs';
 import { prepareCaveMaterials } from './cave-materials.js';
 import { prepareMountainMaterials } from './mountain-materials.js';
 
@@ -100,6 +100,7 @@ export class WorldLandmarks {
         root.name = item.id;
         root.userData.landmarkId = item.id;
         if (this.featureKeys.has(item.key)) root.userData.regionFeature = item.key;
+        if (item.id === CAMP_MOUNTAIN.id) root.autoUpdate = false;
         if (item.key === CAMP_CAVE.key && !template.cavePrepared) {
           if (!this.cavePigment) {
             this.cavePigment = new THREE.TextureLoader().load(
@@ -200,7 +201,15 @@ export class WorldLandmarks {
         if (item.id === CASTLE.id) this.castleCamera = new MeshRayGrid(root);
         if (item.id === CAMP_CAVE.id) this.caveCamera = new MeshRayGrid(root);
       }
-      this.instances.get(item.id).update(camera);
+      const instance = this.instances.get(item.id);
+      if (item.id === CAMP_MOUNTAIN.id && instance.levels.length > 1) {
+        const previous = instance.userData.performanceLod ?? 0,
+          level = campMountainVisualLod(camera.position.x, camera.position.z, previous);
+        for (const [index, record] of instance.levels.entries())
+          record.object.visible = index === level;
+        instance.userData.performanceLod = level;
+        this.world.canvas.dataset.campMountainLod = String(level);
+      } else instance.update(camera);
     }
     for (const [key, last] of this.used)
       if (time - last > 12 && !this.pending.has(key)) {

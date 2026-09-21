@@ -9,6 +9,8 @@ import { CarrySupportPose } from './carry-support-pose.js';
 import { LeanPose } from './lean-pose.js';
 import { sha256 } from './asset-hash.js';
 import { installSkinnedBounds } from './skinned-bounds.js';
+import { loadVerifiedGLB } from './world-assets.js';
+import { configureActorPerformance, disposeActorPerformance } from './performance-lod.js';
 
 export function handGripPlacement(root) {
   root.updateMatrixWorld(true);
@@ -45,7 +47,11 @@ function disposeScene(scene) {
 
 // One template per world; geometry/textures are shared, bones/mixers are not.
 export class CharacterAssets {
-  declare pending: Promise<{ gltf: import('three/addons/loaders/GLTFLoader.js').GLTF; asset: any }>;
+  declare pending: Promise<{
+    gltf: import('three/addons/loaders/GLTFLoader.js').GLTF;
+    lod: import('three/addons/loaders/GLTFLoader.js').GLTF | null;
+    asset: any;
+  } | null>;
   declare manifestURL: string;
   declare instances: Set<any>;
   declare disposed: boolean;
@@ -53,6 +59,7 @@ export class CharacterAssets {
   declare template:
     | {
         gltf: import('three/addons/loaders/GLTFLoader.js').GLTF;
+        lod: import('three/addons/loaders/GLTFLoader.js').GLTF | null;
         asset: any;
       }
     | null
@@ -90,19 +97,27 @@ export class CharacterAssets {
       return resource;
     });
     const gltf = await new GLTFLoader(manager).parseAsync(bytes, '');
+    let lod = null;
+    try {
+      lod = asset.lods?.[0] ? await loadVerifiedGLB(asset.lods[0]) : null;
+    } catch (error) {
+      disposeScene(gltf.scene);
+      throw error;
+    }
     if (this.disposed) {
       disposeScene(gltf.scene);
+      if (lod) disposeScene(lod.scene);
       return null;
     }
     this.loadMilliseconds = performance.now() - started;
-    this.template = { gltf, asset };
+    this.template = { gltf, lod, asset };
     return this.template;
   }
 
   async create({ color }) {
     const template = await this.load();
     if (!template || this.disposed) return null;
-    const { gltf, asset } = template;
+    const { gltf, lod, asset } = template;
     const root = clone(gltf.scene),
       personalMaterials = new Map();
     root.traverse((node) => {
@@ -120,6 +135,7 @@ export class CharacterAssets {
       };
       node.material = Array.isArray(node.material) ? node.material.map(tint) : tint(node.material);
     });
+    configureActorPerformance(root, lod?.scene, asset);
     const { rotation: gripUp } = handGripPlacement(root);
     installSkinnedBounds(root);
     const ridingPose = new RidingPose(root);
@@ -147,6 +163,7 @@ export class CharacterAssets {
       dispose: () => {
         if (!this.instances.delete(instance)) return;
         animation.dispose();
+        disposeActorPerformance(root);
         root.traverse((node) => {
           if (isSkinnedMesh(node)) node.skeleton.dispose();
         });
@@ -160,7 +177,10 @@ export class CharacterAssets {
   dispose() {
     this.disposed = true;
     for (const instance of this.instances) instance.dispose();
-    if (this.template) disposeScene(this.template.gltf.scene);
+    if (this.template) {
+      disposeScene(this.template.gltf.scene);
+      if (this.template.lod) disposeScene(this.template.lod.scene);
+    }
     this.template = null;
   }
 }

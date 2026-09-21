@@ -85,7 +85,8 @@
     "Run hem deformation diagnostic retains 9 edges over the stated 5 cm / 4x threshold at 0.6 s; these are local skirt folds, reviewed visually. Other seven clips have zero such edges.",
     "Performance is a sample on this PC, not a guarantee for all devices; long-running memory soak testing was not performed.",
     "Runtime now selects Walk/Run and retimes each clip to actual movement; all visible world models use verified image-to-3D assets.",
-    "Hunting revision 03 adds Attack; original mesh, rig, textures and earlier clips retained byte-for-byte. Previous delivery archived."
+    "Hunting revision 03 adds Attack; original mesh, rig, textures and earlier clips retained byte-for-byte. Previous delivery archived.",
+    "Source-derived 10,498-triangle animated LOD is used beyond 28 m; the adopted close model, skeleton, clips, materials and collision are unchanged."
   ],
   "provenance": {
     "candidateFile": "output/creature-motion/revision-04/cro-magnon-hunter/model.glb",
@@ -255,5 +256,15 @@
     ],
     "reference": "assets/human-locomotion/README.md",
     "previousVisualReview": "assets/player-gaits/reviews/cro-magnon-hunter-run-r05.json"
-  }
+  },
+  "lods": [
+    {
+      "url": "/models/cro-magnon-hunter/lod-performance.glb",
+      "sha256": "9cfa67c7a783bf3a21b5ae3185f5376b3fd4102b1c5a3582f5f86f146b6774ca",
+      "bytes": 815764,
+      "triangles": 10498,
+      "distanceMetres": 28,
+      "purpose": "animated-medium-lod-geometry"
+    }
+  ]
 }

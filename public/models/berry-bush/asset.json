@@ -17,7 +17,8 @@
   },
   "clips": [],
   "notes": [
-    "Revision 02 preserves rounded leaf edges and berry clusters more faithfully than revision 01; all six exact-GLB views inspected. Height 1.2 m, grounded root crown and open branch gaps. LOD1 retains the crown silhouette and is intended beyond 10 m; verify the actual transition in game. LOD2 was inspected and rejected because its crown loses too much foliage, and is retained only in the source workspace. Individual berries remain stylized connected clusters from TRELLIS."
+    "Revision 02 preserves rounded leaf edges and berry clusters more faithfully than revision 01; all six exact-GLB views inspected. Height 1.2 m, grounded root crown and open branch gaps. LOD1 retains the crown silhouette and is intended beyond 10 m; verify the actual transition in game. LOD2 was inspected and rejected because its crown loses too much foliage, and is retained only in the source workspace. Individual berries remain stylized connected clusters from TRELLIS.",
+    "Source-derived 12,427-triangle medium LOD is used from 14 m; the adopted close model and collision are unchanged."
   ],
   "provenance": {
     "provider": "Codex",
@@ -31,10 +32,12 @@
   },
   "lods": [
     {
-      "url": "/models/berry-bush/lod1.glb",
-      "sha256": "a5073cf0717125339f6baea01ac415a91b87db8fada01dada236863eda89e0c2",
-      "bytes": 6009448,
-      "triangles": 41368
+      "url": "/models/berry-bush/lod-performance.glb",
+      "sha256": "972efcd873a8f3ac829868d82245c0a985bb29d5fe38710052310fdd2487a614",
+      "bytes": 3625404,
+      "triangles": 12427,
+      "distanceMetres": 14,
+      "purpose": "medium-distance-lod"
     }
   ]
 }

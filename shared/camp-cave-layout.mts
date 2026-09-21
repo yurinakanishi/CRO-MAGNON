@@ -24,7 +24,17 @@ export const CAMP_MOUNTAIN = Object.freeze({
   scale: 1,
   clearance: 200,
   groundOffset: 0,
+  // Preserve full source detail around the outdoor camp, cave and ascent. The
+  // castle lies outside this area and uses the 1/10 source-derived LOD.
+  detail: Object.freeze({ x: 42, z: 86, radius: 100, hysteresis: 3 }),
 });
+export function campMountainVisualLod(x: number, z: number, previous = 0) {
+  const { detail } = CAMP_MOUNTAIN,
+    distance = Math.hypot(x - detail.x, z - detail.z);
+  return previous === 0
+    ? Number(distance > detail.radius + detail.hysteresis)
+    : Number(distance >= detail.radius - detail.hysteresis);
+}
 export function caveLocal(x: number, z: number) {
   return { x: CAMP_CAVE.x - x, z: CAMP_CAVE.z - z };
 }

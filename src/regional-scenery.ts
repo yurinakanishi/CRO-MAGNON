@@ -6,6 +6,7 @@ import { PlacementGrid } from '../shared/spatial-grid.mjs';
 import { terrainHeight, walkHeight } from '../shared/terrain.mjs';
 import { LandscapeInstances } from './world-assets.js';
 import { WORLD } from '../shared/world.mjs';
+import { disposeSimplifiedShadow } from './performance-lod.js';
 
 export const regionalId = (key, surface) => `${key}:${surface}`;
 // Source-space metres for the complete 8 cm root-disc cut; scale with the plant.
@@ -207,6 +208,7 @@ export class RegionalScenery {
     for (const [instanceId, item] of this.props) {
       if (item.id !== id) continue;
       this.world.scene.remove(item.root);
+      disposeSimplifiedShadow(item.root);
       this.world.staticScenery.splice(this.world.staticScenery.indexOf(item.record), 1);
       if (item.fire) {
         this.world.scene.remove(item.fire.light);

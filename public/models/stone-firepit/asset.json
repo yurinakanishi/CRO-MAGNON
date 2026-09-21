@@ -17,7 +17,8 @@
   },
   "clips": [],
   "notes": [
-    "Exact reduced GLB preserves the rounded stone ring, overlapping central logs and dark ember bed. Six views compared with source image and dense mesh, including underside. Height 0.5 m, ground-centred. Two camp instances use the complete 31466-triangle mesh; flame and sparks are separate runtime effects. No primitive stone/log replacement or extra caps were added."
+    "Exact reduced GLB preserves the rounded stone ring, overlapping central logs and dark ember bed. Six views compared with source image and dense mesh, including underside. Height 0.5 m, ground-centred. Two camp instances use the complete 31466-triangle mesh; flame and sparks are separate runtime effects. No primitive stone/log replacement or extra caps were added.",
+    "Source-derived 3,775-triangle medium LOD is used from 14 m; the adopted close model and collision are unchanged."
   ],
   "provenance": {
     "provider": "Codex",
@@ -29,5 +30,14 @@
     "candidateFile": "output/model-generation/models/stone-firepit/work/low-poly/candidate-01/candidate.glb",
     "visualReview": "output/model-generation/models/stone-firepit/qa/adoption-review.json"
   },
-  "lods": []
+  "lods": [
+    {
+      "url": "/models/stone-firepit/lod-performance.glb",
+      "sha256": "f20d687b16e7b74dc84ee20a40fb76cf4541445ab33d6f2a8e9062961ca47209",
+      "bytes": 2607924,
+      "triangles": 3775,
+      "distanceMetres": 14,
+      "purpose": "medium-distance-lod"
+    }
+  ]
 }

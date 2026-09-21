@@ -83,13 +83,23 @@
       "loop": false
     }
   ],
-  "lods": [],
+  "lods": [
+    {
+      "url": "/models/cat-kunoichi/lod-performance.glb",
+      "sha256": "c8085452014f4a472fd9a927610d51d6b23b0b4aad7a4c24c8dd8d3b5490a388",
+      "bytes": 827352,
+      "triangles": 10014,
+      "distanceMetres": 28,
+      "purpose": "animated-medium-lod-geometry"
+    }
+  ],
   "notes": [
     "Codex imagegen reference → local TRELLIS-2 dense reconstruction → measured QEM and feature-preserving Taubin surface repair. Source geometry, UV and albedo lineage retained; no procedural model replacement.",
     "22 bones including hand grip sockets; normalized maximum-four influences; nine in-place motions. Locomotion follows measured stance speed.",
     "Opaque source atlas packed as baseline JPEG with measured PSNR >40 dB; mesh, rig and animation buffer views remain byte-identical to the preceding revision.",
     "Prototype limits: hair/fur remains a solid reconstructed surface, and there are no separate finger or facial expression rigs. Layered clothing retains small shoulder/waist deformation at extreme poses.",
-    "Adult female cat-eared kunoichi, 1.68 m tall, covered dark primitive outfit. Katana cut impact at 267 ms; separately verified equipment and game contact QA follow body adoption."
+    "Adult female cat-eared kunoichi, 1.68 m tall, covered dark primitive outfit. Katana cut impact at 267 ms; separately verified equipment and game contact QA follow body adoption.",
+    "Source-derived 10,014-triangle animated LOD is used beyond 28 m; the adopted close model, skeleton, clips, materials and collision are unchanged."
   ],
   "provenance": {
     "provider": "Codex",

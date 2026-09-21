@@ -16,7 +16,7 @@
     "pivot": "ground-centred",
     "min": [
       -0.7510207323956336,
-      -8.732114386140612e-08,
+      -8.732114386140612e-8,
       -0.4904356744698057
     ],
     "max": [
@@ -92,7 +92,16 @@
       "loop": false
     }
   ],
-  "lods": [],
+  "lods": [
+    {
+      "url": "/models/giant-ape/lod-performance.glb",
+      "sha256": "f8b1033c49b5179c79c5581d4899f4789c074f8154a8e937986e88b192d00fbd",
+      "bytes": 1326948,
+      "triangles": 15953,
+      "distanceMetres": 28,
+      "purpose": "animated-medium-lod-geometry"
+    }
+  ],
   "species": "ape",
   "gender": "male",
   "bones": 22,
@@ -132,7 +141,8 @@
     "Source-specific skin and 12 clips. All 360 frames reviewed as 6-direction/5-time contact sheets, selected full-size views and real-browser playback; 12 video files generated. Independent 60 Hz full-skin validation passed.",
     "Existing 0.78 m mage used unchanged for a measured lap comparison. This is a size fixture, not a networked lap-sitting feature.",
     "Actual two-screen/three-socket-peer game QA: five players, walking/running, jump, strike, wave, riding and dismount. Profiles, keyboard sequence and mammoth proximity/wait are fixtures. Physical devices, long-duration load, and all-terrain mesh contact are not verified.",
-    "2026-09-09 stride revision 13: walking stride +55%, running stride +30%; actual movement speeds 1.8 and 5.4 m/s. Both gaits validated at 60 Hz and reviewed in 60 images; other 10 clips and original geometry/materials/skin unchanged. Shoulder carrying added through server-authoritative mutual acceptance and the real animated shoulder socket."
+    "2026-09-09 stride revision 13: walking stride +55%, running stride +30%; actual movement speeds 1.8 and 5.4 m/s. Both gaits validated at 60 Hz and reviewed in 60 images; other 10 clips and original geometry/materials/skin unchanged. Shoulder carrying added through server-authoritative mutual acceptance and the real animated shoulder socket.",
+    "Source-derived 15,953-triangle animated LOD is used beyond 28 m; the adopted close model, skeleton, clips, materials and collision are unchanged."
   ],
   "downedMotion": {
     "revision": "revision-01",

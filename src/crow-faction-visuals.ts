@@ -43,7 +43,8 @@ function mesh(
   result.position.fromArray(position);
   result.rotation.fromArray(rotation);
   result.scale.fromArray(scale);
-  result.castShadow = true;
+  // The animated actor uses one low-poly shadow proxy for the entire body.
+  result.castShadow = false;
   result.receiveShadow = true;
   return result;
 }
