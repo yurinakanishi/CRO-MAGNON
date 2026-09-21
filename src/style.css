@@ -1892,8 +1892,11 @@ dialog:has(.pause-menu) #modal-body {
 }
 .pause-tab.gamepad-focus,
 .pause-tab:focus-visible {
-  outline: 2px solid var(--accent);
-  outline-offset: 2px;
+  /* This rail scrolls in either axis. Keep the entire ring inside the button,
+     overriding the generic controller halo that its scrollport would clip. */
+  outline: 3px solid #efd18c !important;
+  outline-offset: -3px !important;
+  box-shadow: none !important;
 }
 .pause-exits {
   display: grid;

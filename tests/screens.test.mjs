@@ -56,6 +56,21 @@ test('the mage recharge is a continuous bar without a numbered countdown', async
   assert.match(css, /#magic-cooldown progress/);
 });
 
+test('pause tab focus stays inside the scrollport for keyboard and controller navigation', async () => {
+  const css = await readFile(new URL('src/style.css', root), 'utf8');
+  const rule = css.match(
+    /\.pause-tab\.gamepad-focus,\s*\.pause-tab:focus-visible\s*\{([^}]+)\}/,
+  )?.[1];
+  assert.ok(rule, 'both input devices share the pause-tab focus rule');
+  assert.match(rule, /outline: 3px solid #[\da-f]+ !important/);
+  assert.match(rule, /outline-offset: -3px !important/);
+  assert.match(
+    rule,
+    /box-shadow: none !important/,
+    'the global outside controller halo must not leak back in',
+  );
+});
+
 test('the map button, M and SHARE toggle the atlas closed when it is already open', async () => {
   const main = await readFile(new URL('src/main.ts', root), 'utf8');
   assert.match(
