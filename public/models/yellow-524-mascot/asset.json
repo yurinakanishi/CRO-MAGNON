@@ -1,0 +1,41 @@
+{
+  "modelKey": "yellow-524-mascot",
+  "name": "524",
+  "kind": "companion",
+  "candidate": 14,
+  "status": "reviewed-prototype",
+  "url": "/models/yellow-524-mascot/model-c14.glb",
+  "sha256": "2652765f480973f6d974d0c51b2bd294c6e4c81e32e369814e09ba6c03c3e418",
+  "bytes": 18199668,
+  "triangles": 449022,
+  "upAxis": "Y",
+  "forwardAxis": "+Z",
+  "heightMetres": 1.0370343499999999,
+  "widthMetres": 1.1924108499999997,
+  "placement": {
+    "pivot": "original-body-centre",
+    "scale": 1.15,
+    "hoverHeightMetres": 0.94
+  },
+  "clips": [
+    {
+      "name": "Floating_Ripple",
+      "seconds": 4,
+      "loop": true
+    }
+  ],
+  "lods": [],
+  "notes": [
+    "Latest completed Candidate 14, 2026-09-21: yellow texture revision of accepted Candidate 13. Source repository is read-only; no source promotion.",
+    "Exact source GLB bytes, embedded texture, 20 bones, six-appendage ripple, geometry and normals retained. Runtime wrapper adds happy bobs/tilt or directional recoil while the original floating clip continues."
+  ],
+  "provenance": {
+    "provider": "Codex imagegen and local TRELLIS-2; existing Candidate 14 imported unchanged",
+    "claudeUsed": false,
+    "source": "../threed-model-creation/models/yellow-524-mascot/work/low-poly/batch-016/run-01/attempt-01/candidate.glb",
+    "sourceSha256": "2652765f480973f6d974d0c51b2bd294c6e4c81e32e369814e09ba6c03c3e418",
+    "referenceImage": "assets/companion-524/reference.png",
+    "referenceSha256": "1327aec1bebbe9f1df13bfb0000ad8aee9d967c38687588c401a5d870e32fb41",
+    "visualReview": "assets/companion-524/adoption.json"
+  }
+}

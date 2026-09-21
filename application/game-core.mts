@@ -25,6 +25,11 @@ import {
 import { characterModel, normalizeCharacter } from '../shared/characters.mjs';
 import { CollisionWorld, overlap } from '../shared/collision.mjs';
 import { attackProfile } from '../shared/combat-profiles.mjs';
+import {
+  createCompanion524,
+  updateCompanion524,
+  restoreCompanion524,
+} from '../shared/companion-524.mjs';
 import { handleBarterCommand, cancelBarter, updateBarters } from '../shared/barter.mjs';
 import { updateSuppers } from '../shared/supper.mjs';
 import { updateForaging } from '../shared/foraging.mjs';
@@ -164,6 +169,7 @@ export function createGameCore({
         room.collision.obstacles.filter((o) => o.resourceId).map((o) => [o.resourceId, o]),
       );
       room.animals = createAnimals(room.collision);
+      room.companion524 = createCompanion524(room.collision);
       room.enemies = createEnemies(room.collision, room.animals);
       createResidents(room, [], runtime.now());
       rooms.set(roomName, room);
@@ -532,6 +538,7 @@ export function createGameCore({
       for (const [token, entry] of room.sessions)
         if (now >= entry.expiresAt) room.sessions.delete(token);
       if (!room.players.size) {
+        updateCompanion524(room, dt, now);
         updateBarters(room, now);
         for (const resident of room.residents) {
           resident.forageWork = null;
@@ -578,6 +585,7 @@ export function createGameCore({
       const wateringChanged = updateWatering(room, dt, now);
       const supperChanged = updateSuppers(room, now);
       const huntingChanged = updateHunting(room, now, notice);
+      updateCompanion524(room, dt, now);
       updateAnimals(room, dt, now);
       const enemiesChanged = updateEnemies(room, dt, now, notice);
       updateCarrying(room, now);
@@ -667,6 +675,7 @@ export function createGameCore({
               camp: room.camp,
               resources: room.resources,
               animals: room.animals,
+              companion524: room.companion524,
               enemies: room.enemies,
               boats: room.boats,
               gulf: room.gulf,
@@ -838,6 +847,7 @@ export function createGameCore({
         }
       room.households = createHouseholds(record.households, runtime.now());
       createResidents(room, record.residents, runtime.now());
+      restoreCompanion524(room, record.companion524);
     }
   }
 

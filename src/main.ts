@@ -47,6 +47,7 @@ import {
 import { GATHER_RANGE, interactionVisible } from '../shared/interactions.mjs';
 import { campContribution } from '../shared/camp-contribution.mjs';
 import { caveFireInteraction } from '../shared/cave-fire.mjs';
+import { nearCompanion524 } from '../shared/companion-524.mjs';
 import { ENEMY_GROUNDS, SCENERY } from '../shared/scenery-layout.mjs';
 import { CASTLE_GATE } from '../shared/castle-layout.mjs';
 import { playerDamageEvent } from './enemy-state.js';
@@ -198,7 +199,7 @@ $('#app').innerHTML = `
     <div class="map-hud"><button id="map-button" class="minimap-button" aria-label="世界地図を開く" title="世界地図 [M]"><canvas id="minimap" width="160" height="115"></canvas><span class="map-north">N</span><span class="map-area" id="map-area">はじまりの谷</span><kbd class="map-key">M</kbd></button><div class="connection"><i class="status-dot" id="connection-dot"></i><span id="connection-label">未接続</span><span id="ping-label">— ms</span></div></div>
     <div id="toast-stack" class="toast-stack" aria-live="polite"></div>
     <div class="chat-panel"><button class="chat-heading" id="chat-toggle">${icon('chat')}<strong>焚き火の会話</strong><kbd>Enter</kbd><span class="chat-collapse">−</span></button><div id="chat-content"><div id="chat-messages" class="chat-messages" role="log" aria-live="polite"><p class="chat-system">この谷での物語が、ここから始まります。</p></div><form id="chat-form"><input id="chat-input" maxlength="180" placeholder="仲間に話しかける…" aria-label="チャットメッセージ" autocomplete="off"><button aria-label="メッセージを送信" type="submit">${icon('arrow')}</button></form></div></div>
-    <div class="hotbar-wrap"><div class="interaction-hint" id="interaction-hint" hidden><kbd>E</kbd><span></span></div></div>
+    <div class="hotbar-wrap"><div id="companion524-controls"><button type="button" class="hunt-button" id="pet524-button" hidden><kbd>V</kbd><span>524を撫でる</span></button><button type="button" class="hunt-button" id="dismiss524-button" hidden><kbd>T</kbd><span>524をキャンプへ帰す</span></button></div><div class="interaction-hint" id="interaction-hint" hidden><kbd>E</kbd><span></span></div></div>
     <div id="prompt-bar" class="prompt-bar" aria-label="操作の案内"></div>
     <div id="screens" class="screens">
       <section id="screen-title" class="screen title-screen" hidden>
@@ -820,6 +821,19 @@ function huntTarget() {
 function attack() {
   action('attack');
 }
+function canPet524() {
+  return (
+    joined &&
+    !renderUnavailable &&
+    nearCompanion524(player(), state.companion524, renderer.collision, renderer.serverNow())
+  );
+}
+function pet524() {
+  if (canPet524()) action('pet524');
+}
+function dismiss524() {
+  if (state.companion524?.followPlayerId === selfId) action('dismiss524');
+}
 function jump() {
   const now = (state.serverTime ?? Date.now()) + performance.now() - stateReceivedAt;
   if (
@@ -868,6 +882,10 @@ function ride() {
   action('ride', animal.id);
 }
 function interactAnimal(id) {
+  if (id === state.companion524?.id) {
+    if (canStartAttack(player(), renderer.serverNow())) action('attack', id);
+    return;
+  }
   const animal = [
       ...(state.animals || []),
       ...(state.enemies || []).filter((item) => item.hostile === true),
@@ -886,6 +904,13 @@ function interactAnimal(id) {
 }
 function updateHuntingHUD() {
   boatUI.update();
+  const petAvailable = canPet524();
+  $('#pet524-button').hidden = !petAvailable;
+  $('#pet524-button kbd').textContent = usingGamepad ? '×' : 'V';
+  $('#dismiss524-button').hidden = !joined || state.companion524?.followPlayerId !== selfId;
+  $('#dismiss524-button kbd').textContent = usingGamepad ? 'メニュー' : 'T';
+  const menuDismiss = $('[data-controller-menu="dismiss524"]');
+  if (menuDismiss) menuDismiss.disabled = state.companion524?.followPlayerId !== selfId;
   const me = player(),
     animal = me?.mountId ? (state.animals || []).find((a) => a.id === me.mountId) : huntTarget(),
     inv = inventoryCounts(me?.inventory),
@@ -1446,6 +1471,10 @@ function updatePromptBar() {
 updatePromptBar();
 
 function controllerRide() {
+  if (canPet524()) {
+    pet524();
+    return;
+  }
   if (player()?.boatId) action('boardBoat');
   else if (player()?.mountId || hasCarryChoice()) ride();
   else if (!$('#boat-board').disabled) action('boardBoat');
@@ -1586,6 +1615,19 @@ function openPauseMenu(tab = 'inventory') {
     ['wave', 'wave', '手をふる', () => action('wave')],
   ];
   const exits: [string, string, string, () => void][] = [
+    ...(state.companion524?.followPlayerId === selfId
+      ? [
+          [
+            'dismiss524',
+            'wave',
+            '524をキャンプへ帰す',
+            () => {
+              dismiss524();
+              $('#modal').close();
+            },
+          ] as [string, string, string, () => void],
+        ]
+      : []),
     ['character', 'people', 'キャラクターを変える', openCharacterSwitchMenu],
     ['resume', 'compass', '探索に戻る', () => $('#modal').close()],
     ...(!fixedIdentity
@@ -1754,6 +1796,8 @@ $('#cancel-cook').onclick = () =>
         : 'cancelCook',
   );
 $('#interaction-hint').setAttribute('role', 'button');
+$('#pet524-button').onclick = pet524;
+$('#dismiss524-button').onclick = dismiss524;
 $('#interaction-hint').tabIndex = 0;
 $('#interaction-hint').onclick = () => {
   const next = nearby();
@@ -1898,6 +1942,14 @@ document.addEventListener('keydown', (e) => {
     e.preventDefault();
     const next = nearby();
     action(next?.action || 'gather', next?.targetId);
+  }
+  if (k === 'v') {
+    e.preventDefault();
+    pet524();
+  }
+  if (k === 't') {
+    e.preventDefault();
+    dismiss524();
   }
   if (isAttackShortcut(e)) {
     e.preventDefault();

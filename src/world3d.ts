@@ -4,6 +4,7 @@ import { enemyIsSolid } from '../shared/combat.mjs';
 import { activateMiddenObstacle } from '../shared/coastal-sites.mjs';
 import { CoastalRenderer } from './coastal-renderer.js';
 import { VillageRenderer } from './village-renderer.js';
+import { Companion524Renderer } from './companion-524-renderer.js';
 import { isMesh } from './three-types.js';
 import { setText } from './dom-updates.js';
 import { VisibleActorGroup } from './visible-actor-group.js';
@@ -170,6 +171,7 @@ export class WorldRenderer {
   declare gulfRenderer: GulfRenderer | undefined;
   declare coastalRenderer: CoastalRenderer | undefined;
   declare villageRenderer: VillageRenderer | undefined;
+  declare companion524Renderer: Companion524Renderer | undefined;
   declare npcActor: any;
   declare npc: any;
   declare failed: boolean | undefined;
@@ -363,6 +365,7 @@ export class WorldRenderer {
       this.gulfRenderer = new GulfRenderer(this);
       this.coastalRenderer = new CoastalRenderer(this);
       this.villageRenderer = new VillageRenderer(this);
+      this.companion524Renderer = new Companion524Renderer(this);
       this.npcActor = await this.npcAssets.create({ color: '#ad9d79' });
       if (this.disposed) {
         this.npcActor?.dispose();
@@ -606,6 +609,7 @@ export class WorldRenderer {
           this.camera,
         );
         const animalRoots = [
+          ...(this.companion524Renderer ? [this.companion524Renderer.root] : []),
           ...this.mammoths.flatMap((animal) => [animal.model, animal.meat]),
           ...[...this.enemies.values()].map((enemy) => enemy.model),
         ].filter((root) => root.visible);
@@ -1268,6 +1272,7 @@ export class WorldRenderer {
     this.gulfRenderer?.update(time);
     this.coastalRenderer?.update(time);
     this.villageRenderer?.update(dt, time);
+    this.companion524Renderer?.update(dt);
     if (time >= this.nextStaticCull) {
       this.nextStaticCull = time + 0.2;
       for (const { root, radius } of this.staticScenery) {
@@ -1461,6 +1466,7 @@ export class WorldRenderer {
       data.glbNpcs = String(this.npcActor ? 1 : 0);
       data.glbAnimals = String(this.mammoths.filter((a) => a.model.visible).length);
       data.animals = JSON.stringify(this.state.animals || []);
+      data.companion524 = JSON.stringify(this.companion524Renderer?.diagnostics() ?? null);
       data.meatPiles = String(this.mammoths.filter((a) => a.meat.visible).length);
       data.animalAnimations = JSON.stringify(
         this.mammoths.map((a) => ({
@@ -1587,6 +1593,7 @@ export class WorldRenderer {
     this.gulfRenderer?.dispose();
     this.coastalRenderer?.dispose();
     this.villageRenderer?.dispose();
+    this.companion524Renderer?.dispose();
     this.regionalScenery?.dispose();
     this.landmarks?.dispose();
     this.openWorld?.dispose();

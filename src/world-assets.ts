@@ -398,7 +398,7 @@ export class WorldAssets {
     await this.equipmentLoads.get(key);
     return this.disposed ? null : this.create(key);
   }
-  createAnimal(key) {
+  createAnimal(key, initialClip = 'Idle_Loop') {
     const { gltf, lods, asset } = this.get(key),
       root = cloneSkeleton(gltf.scene),
       mixer = new THREE.AnimationMixer(root);
@@ -471,7 +471,7 @@ export class WorldAssets {
       },
     };
     this.animals.add(actor);
-    actor.play('Idle_Loop');
+    actor.play(initialClip);
     return actor;
   }
   async createEnemy(key) {

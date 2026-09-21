@@ -1,9 +1,30 @@
 # CRO-MAGNON 展示3台運用手順（PC0・PC1・PC2）
 
-更新日: 2026-09-21。この文書を、3台構成の役割、SSH、修正、配布、切替、復旧に
+更新日: 2026-09-22。この文書を、3台構成の役割、SSH、修正、配布、切替、復旧に
 関する現行の正本とします。ゲーム自体の起動とLAN診断は
 [展示LANの基本手順](README-EXHIBITION.md)、来場者向けWindowsアカウントの方針は
 [展示用の安全対策](README-EXHIBITION-SECURITY.md)も参照してください。
+
+### 実機の接続確認（2026-09-22、設定作業中）
+
+- PC0のEthernetを `10.10.10.3/24`、DHCP無効、Private、Gateway/DNSなしに設定済み。
+  有線リンクは1 Gbps。Wi-Fiの設定は維持している。
+- PC0からPC1 `10.10.10.1` とPC2 `10.10.10.2` へのpingは両方成功（0〜1 ms）。
+- PC2のTCP 22は応答し、Windows OpenSSHの待ち受けを確認済み。
+  PC1のTCP 22と8081はタイムアウト。SSHログイン成功やゲーム起動を確認した記録ではない。
+- このPC0には旧展示用SSH秘密鍵がなかったため、パスフレーズ付きEd25519鍵を機体別に作成し、
+  両方ともSSHエージェントへの登録を確認済み。秘密鍵はPC0の `.ssh` にだけ保持している。
+  PC1/PC2の標準ユーザーへの公開鍵登録は未完了。
+  SSH鍵のファイルがあること、ポートが開くこと、認証成功は別々に確認する。
+- PC0のWindows `ssh-agent` を自動起動に設定し、稼働を確認済み。
+- PC0のSSH接続名 `cro-pc1` / `cro-pc2` を作成済み。ユーザーは両方とも `CRO-MAGNON`、
+  鍵は機体ごとに分離。専用 `known_hosts` はホスト鍵の照合後に登録し、厳密なホスト鍵確認を使う。
+- ユーザーから、PC1/PC2の `CRO-MAGNON` アカウントは作成済みとの確認あり。
+  初回登録キットはGit対象外の `output/lan-setup-2026-09-22/display-setup-kit.zip` に作成。
+  一時配信は `http://10.10.10.3:4189/`（PC1・PC2だけ許可、起動から1時間で終了）。
+  登録完了後に一時配信と `CRO-MAGNON-Temporary-SSH-Setup-20260922` のFirewall規則を片付ける。
+- PC0変更前の設定と実行結果は、Git対象外の `output/lan-setup-2026-09-22/` に保存。
+  ゲームの更新・起動・停止は実施していない。
 
 ## 最初に自分の役割を判定する
 
@@ -191,6 +212,26 @@ icacls $authorized /grant:r "${account}:F" "SYSTEM:F"
 
 PC2ではコピー元を `cro-magnon-pc2.pub` にします。複数鍵を登録する場合は、公開鍵を
 1行ずつ追記します。秘密鍵は絶対にUSBでPC1/PC2へ運びません。
+
+既存の標準ユーザーがあり、そのユーザーで一度ログイン済みなら、
+`scripts/setup-exhibition-ssh-display.ps1` でOpenSSH Serverの導入・起動、公開鍵の登録、
+Private LAN上のPC0だけを許可するFirewall規則を設定できます。このスクリプトと
+対象PC用の `.pub` をUSBなどで運び、**対象PC自身の管理者PowerShell**で実行します。
+ユーザー作成、IP変更、ゲーム起動は行いません。例の `E:` は実際のコピー先へ置き換えます。
+
+```powershell
+# PC1で実行
+& E:\setup-exhibition-ssh-display.ps1 -Role PC1 -DisplayUser CRO-MAGNON -PublicKeyFile E:\cro-magnon-pc1.pub
+# PC2で実行
+& E:\setup-exhibition-ssh-display.ps1 -Role PC2 -DisplayUser CRO-MAGNON -PublicKeyFile E:\cro-magnon-pc2.pub
+```
+
+スクリプトは鍵フォルダーと `authorized_keys` の所有者を対象ユーザーにし、
+アクセス権をそのユーザー・SYSTEM・Administratorsに限定します。既存の鍵は保持し、
+新しい鍵には接続元 `10.10.10.3` の制限を付けます。既定の広いOpenSSH受信規則は無効にしますが、
+別途作られた独自のFirewall規則や `sshd_config` は変更しません。既存設定でログインが拒否される場合は
+その内容を確認してから調整します。最後に表示されるホスト鍵の指紋を、次項でPC0側と照合してください。
+2026-09-22時点では、この補助スクリプトは構文確認までで、展示PC上での実行は未完了です。
 
 ### 5. ホスト鍵を照合して接続を試す
 

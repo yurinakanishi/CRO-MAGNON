@@ -177,6 +177,7 @@ export interface NpcSnapshot extends Point {
   greeting: string;
 }
 export interface GameSnapshot {
+  companion524?: import('./companion-524-types.mjs').Companion524Snapshot;
   mapPins?: import('./map-pins.mjs').MapPin[];
   type: 'state';
   room: string;

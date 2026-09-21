@@ -1,5 +1,6 @@
 import { WORLD } from './world.mjs';
 import { attackProfile, ATTACK_PROFILES, shoulderMagic } from './combat-profiles.mjs';
+import { hitCompanion524 } from './companion-524.mjs';
 
 export const COMBAT = Object.freeze({
   attackDamage: 15,
@@ -46,9 +47,11 @@ const actors = (collection) =>
 
 // Only server-owned damageable collections participate. Other players and the
 // friendly village NPC are never searched or selected by a client-supplied ID.
+// 524 is a separate, explicitly hittable companion; it has no health or death.
 export function damageableTargets(room) {
   const playerIds = new Set(room.players.keys());
   return [
+    ...(room.companion524 ? [{ target: room.companion524, kind: 'companion524' }] : []),
     ...actors(room.animals)
       .filter((target) => !target.riderId)
       .map((target) => ({ target, kind: 'animal' })),
@@ -59,7 +62,7 @@ export function damageableTargets(room) {
   ].filter(
     ({ target }) =>
       !playerIds.has(target.id) &&
-      alive(target) &&
+      (target === room.companion524 || alive(target)) &&
       Number.isFinite(target.x) &&
       Number.isFinite(target.z) &&
       Number.isFinite(target.radius) &&
@@ -174,10 +177,17 @@ export function resolveAttack(room, player, now = Date.now()) {
     )
     .sort((a, b) => combatDistance(player, a.target) - combatDistance(player, b.target))[0];
   if (!hit) return { hit: false };
-  return applyHit(hit, profile, now, player.id);
+  return applyHit(hit, profile, now, player.id, {
+    x: Math.sin(strike.facing),
+    z: Math.cos(strike.facing),
+  });
 }
 
-function applyHit({ target, kind }, profile, now, attackerId = null) {
+function applyHit({ target, kind }, profile, now, attackerId = null, direction = { x: 0, z: 1 }) {
+  if (kind === 'companion524') {
+    hitCompanion524(target, direction.x, direction.z, now);
+    return { hit: true, target, kind, killed: false, weapon: profile.key };
+  }
   // A castle crow praying behind the seal is struck but not hurt: the blow is
   // absorbed, and the attacker is told which rank must fall first.
   if (kind === 'enemy' && target.sealed === true)
@@ -339,7 +349,14 @@ export function updateProjectiles(room, now = Date.now()) {
         hit: !!hit,
       };
       room.projectileImpacts.push(impact);
-      if (hit) events.push({ ...applyHit(hit, profile, now, owner.id), owner });
+      if (hit)
+        events.push({
+          ...applyHit(hit, profile, now, owner.id, {
+            x: projectile.dx,
+            z: projectile.dz,
+          }),
+          owner,
+        });
       continue;
     }
     Object.assign(projectile, end, { updatedAt: now, travelled: projectile.travelled + travel });

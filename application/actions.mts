@@ -16,6 +16,7 @@ import { canStartJump, jumpProgress } from '../shared/jumping.mjs';
 import { cancelBarter } from '../shared/barter.mjs';
 import { carrying, handleCarryAction } from '../shared/carrying.mjs';
 import { toggleCaveFire } from '../shared/cave-fire.mjs';
+import { handleCompanion524Action } from '../shared/companion-524.mjs';
 const distance = (a, b) => Math.hypot(a.x - b.x, a.z - b.z);
 export function createActionHandler({
   notice: sendNotice,
@@ -30,6 +31,10 @@ export function createActionHandler({
     sendNotice(player, text, tone, false);
   return function act(room, player, message, now) {
     const action = message.action;
+    if (action === 'pet524' || action === 'dismiss524') {
+      if (handleCompanion524Action(room, player, action, now)) broadcast(room, snapshot(room));
+      return;
+    }
     if (action === 'changeCharacter') {
       const result = handleCharacterSwitch(room, player, message, now);
       sendNotice(player, result.text, result.ok ? 'success' : 'error', true);

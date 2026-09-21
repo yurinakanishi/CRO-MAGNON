@@ -1426,6 +1426,20 @@ body[data-screen] .world-labels {
 .interaction-hint[hidden] {
   display: none;
 }
+#companion524-controls {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 6px;
+  max-width: calc(100vw - 24px);
+}
+#companion524-controls .hunt-button {
+  font-size: 14px;
+  padding: 8px 12px;
+}
+#companion524-controls button[hidden] {
+  display: none;
+}
 .interaction-hint kbd {
   font-size: 15px;
   height: 32px;

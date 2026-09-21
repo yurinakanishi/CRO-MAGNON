@@ -225,6 +225,10 @@ export function updateHunting(
   let changed = false;
   const reportHit = (player, strike) => {
     changed = true;
+    if (strike.kind === 'companion524') {
+      notify(player, '524がぽんっと浮かんだ。', 'info', false);
+      return;
+    }
     const label = strike.kind === 'animal' ? 'マンモス' : strike.target.name || '敵';
     if (strike.sealed) notify(player, crowSealNotice(room), 'error');
     else if (strike.killed)
