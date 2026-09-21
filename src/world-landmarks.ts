@@ -39,6 +39,7 @@ export class WorldLandmarks {
   declare castleCamera: MeshRayGrid | null | undefined;
   declare caveCamera: MeshRayGrid | null | undefined;
   declare cavePigment: THREE.Texture | undefined;
+  declare caveCharacter524: THREE.Texture | undefined;
   declare caveLimestone: THREE.Texture | undefined;
 
   constructor(world, placements = PLACEMENTS) {
@@ -141,9 +142,33 @@ export class WorldLandmarks {
               this.world.renderer.capabilities.getMaxAnisotropy(),
             );
           }
+          if (!this.caveCharacter524) {
+            this.caveCharacter524 = new THREE.TextureLoader().load(
+              template.asset.characterPigment.url,
+              undefined,
+              undefined,
+              (error) => {
+                if (!this.disposed)
+                  this.world.failWorld(
+                    '洞窟の壁画を読み込めませんでした。再読み込みしてください。',
+                    error,
+                  );
+              },
+            );
+            this.caveCharacter524.colorSpace = THREE.SRGBColorSpace;
+            this.caveCharacter524.anisotropy = Math.min(
+              8,
+              this.world.renderer.capabilities.getMaxAnisotropy(),
+            );
+          }
           template.cavePrepared = true;
           for (const gltf of [template.gltf, ...template.lods])
-            prepareCaveMaterials(gltf.scene, this.cavePigment, this.caveLimestone);
+            prepareCaveMaterials(
+              gltf.scene,
+              this.cavePigment,
+              this.caveLimestone,
+              this.caveCharacter524,
+            );
         }
         if (item.key === CAMP_MOUNTAIN.key && !template.trailPrepared) {
           template.trailPrepared = true;
@@ -220,6 +245,8 @@ export class WorldLandmarks {
           this.cavePigment = undefined;
           this.caveLimestone?.dispose();
           this.caveLimestone = undefined;
+          this.caveCharacter524?.dispose();
+          this.caveCharacter524 = undefined;
         }
         this.used.delete(key);
         this.world.updateAssetDiagnostics();
@@ -242,6 +269,7 @@ export class WorldLandmarks {
     this.assets.templates.get(CAMP_MOUNTAIN.key)?.caveRoofTexture?.dispose();
     this.cavePigment?.dispose();
     this.caveLimestone?.dispose();
+    this.caveCharacter524?.dispose();
     this.caveCamera = this.castleCamera = null;
   }
 }

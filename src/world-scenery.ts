@@ -310,7 +310,8 @@ export function buildCampAssets(world) {
     buildFireEffect(world, item.x, item.z, item.scale);
   const caveFire = buildFireEffect(world, CAVE_HEARTH.x, CAVE_HEARTH.z, 0.6);
   caveFire.cave = true;
-  caveFire.light.distance = 16;
+  caveFire.light.distance = 24;
+  caveFire.light.color.set('#ffd6a4');
   world.campLabel = world.createLabel('みんなの野営地', 'camp', new THREE.Vector3(50, 3, 50));
   world.npcLabel = world.createLabel(
     'オル',

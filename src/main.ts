@@ -283,7 +283,7 @@ try {
 }
 $('.hotbar-wrap').insertAdjacentHTML(
   'afterbegin',
-  `<div class="riding-controls" hidden><button id="ride-button" class="hunt-button"><kbd>R</kbd><span>マンモスに乗る</span></button><button id="carry-decline" class="hunt-button" hidden>断る</button><small id="riding-hint">1頭に1人 · 近づいて R で乗る</small></div>`,
+  `<div class="riding-controls" hidden><button id="ride-button" class="hunt-button"><kbd>R</kbd><span>マンモスに乗る</span></button><button id="carry-decline" class="hunt-button" hidden>断る</button><small id="riding-hint" hidden></small></div>`,
 );
 $('#ride-button').onclick = ride;
 $('#carry-decline').onclick = () => action('carryDecline');
@@ -908,13 +908,8 @@ function updateHuntingHUD() {
   rideButton.classList.toggle('mounted', mounted);
   rideButton.querySelector('span').textContent = mounted ? 'マンモスから降りる' : 'マンモスに乗る';
   $('.riding-controls').hidden = !mounted && !nearRide;
-  $('#riding-hint').textContent = mounted
-    ? usingGamepad
-      ? '左スティックで移動 · × で降りる'
-      : 'WASDで移動 · R で降りる'
-    : usingGamepad
-      ? '× を押すとマンモスに乗れます'
-      : 'R を押すとマンモスに乗れます';
+  // The button already names its key and action; the hint only adds what it cannot say.
+  let ridingHint = mounted ? (usingGamepad ? '左スティックで移動' : 'WASDで移動') : '';
   const carryChoice = joined && !renderUnavailable && hasCarryChoice();
   if (carryChoice) {
     const partnerId = me.carryOfferFromId || me.carryOfferToId || me.carrierId || me.passengerId;
@@ -932,24 +927,25 @@ function updateHuntingHUD() {
           : me.carryOfferToId
             ? '誘いを取り消す'
             : `${partnerName}を担ぐ`;
-    $('#riding-hint').textContent = me.carrierId
-      ? `${partnerName}が移動します · R／×で降りる`
+    ridingHint = me.carrierId
+      ? `${partnerName}が移動します`
       : me.passengerId
-        ? '歩行・走行できます · R／×で降ろす'
+        ? '歩行・走行できます'
         : me.carryOfferFromId
-          ? `${partnerName}からの誘い · R／×で肩に乗る`
+          ? `${partnerName}からの誘い`
           : me.carryOfferToId
             ? '相手の返事を待っています · 動くと取消'
             : '相手が「肩に乗る」を押すと担ぎます';
   }
+  $('#riding-hint').textContent = ridingHint;
+  $('#riding-hint').hidden = !ridingHint;
   $('#carry-decline').hidden = !me?.carryOfferFromId;
   Object.assign($('#world').dataset, {
     carrierId: me?.carrierId ?? '',
     passengerId: me?.passengerId ?? '',
   });
   if (usingGamepad && me?.boatId)
-    $('#boat-hint').textContent = '左スティックで操船 · 深く倒すと速く · 岸で ×';
-  updatePromptBar();
+    $('#boat-hint').textContent = '左スティックで操船 · 深く倒すと速く';
   Object.assign($('#world').dataset, {
     ridingVersion: String(state.ridingVersion ?? 0),
     mountId: me?.mountId ?? '',
@@ -1442,22 +1438,12 @@ function updateGamepadHints(active: boolean) {
   updatePromptBar();
   updateHuntingHUD();
 }
-let promptSignature = '';
 function updatePromptBar() {
-  const me = player();
-  const prompts = keyPrompts(usingGamepad, {
-    ride: !$('#ride-button').disabled || !!me?.mountId,
-    boat: !carrying(me) && (!$('#boat-board').disabled || !!me?.boatId),
-    carry: hasCarryChoice(),
-    carrying: carrying(me),
-  });
-  const signature = JSON.stringify(prompts);
-  if (signature === promptSignature) return;
-  promptSignature = signature;
-  $('#prompt-bar').innerHTML = prompts
+  $('#prompt-bar').innerHTML = keyPrompts(usingGamepad)
     .map((p) => `<span><kbd>${p.key}</kbd>${p.label}</span>`)
     .join('');
 }
+updatePromptBar();
 
 function controllerRide() {
   if (player()?.boatId) action('boardBoat');

@@ -5,7 +5,10 @@ const source = JSON.parse(await readFile(input, 'utf8'));
 const { step, minX, minZ, nx, nz, columns, ceilings } = source;
 const heights = columns.map((column, i) => {
   if (!column.length) return 0;
-  const floor = column.find((h) => h >= -0.1 && h < 2.6);
+  // Overlapping source rock at the blind end remains buried under the new
+  // rising limestone floor. Use the highest walkable surface so characters
+  // stand on the visible dome instead of sinking into it.
+  const floor = column.findLast((h) => h >= -0.1 && h < 2.6);
   if (floor === undefined) return null;
   const ceiling = ceilings[i].find((h) => h > floor + 0.1);
   if (ceiling !== undefined && ceiling - floor < 2.6) return null;

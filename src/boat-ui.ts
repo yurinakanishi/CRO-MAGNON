@@ -50,13 +50,14 @@ export function installBoatControls(api) {
         !!p?.mountId ||
         !!p?.cookingEndsAt ||
         (p?.inventory.wood ?? 0) < BOATING.wood;
-      $('#boat-hint').textContent = aboard
-        ? 'WASDで操船 · 2回押しで速く · 岸で B'
+      // The board button already names its key and action, so the hint never repeats it.
+      const hint = aboard
+        ? 'WASDで操船 · 2回押しで速く'
         : near
-          ? document.body.classList.contains('using-gamepad')
-            ? '× を押すと船に乗れます'
-            : 'B を押すと船に乗れます'
+          ? ''
           : `部屋で共有 ${(state().boats || []).length}/${BOATING.maxBoats}隻 · 自分で岸まで歩いてつくろう`;
+      $('#boat-hint').textContent = hint;
+      $('#boat-hint').hidden = !hint;
       wrap.classList.toggle('boating', aboard);
       const canvas = $('#world');
       canvas.dataset.boatId = p?.boatId || '';

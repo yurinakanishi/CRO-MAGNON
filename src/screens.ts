@@ -12,17 +12,12 @@ export interface KeyPrompt {
   label: string;
 }
 
-/** Contextual button prompts, in the order a player scans them (main action first). */
-export function keyPrompts(
-  gamepad: boolean,
-  options: { ride: boolean; boat: boolean; carry?: boolean; carrying?: boolean },
-): KeyPrompt[] {
-  const prompts: KeyPrompt[] = [];
-  if (options.ride)
-    prompts.push({ key: gamepad ? '×' : 'R', label: options.carry ? '肩乗り' : 'マンモス' });
-  if (options.boat) prompts.push({ key: gamepad ? '×' : 'B', label: '船' });
-  prompts.push({ key: gamepad ? 'OPTIONS' : 'ESC', label: 'メニュー' });
-  return prompts;
+/**
+ * Button prompts for the bottom-right bar. Contextual actions (ride, board, interact) are
+ * announced once, by their own key-labelled button, so they are never repeated here.
+ */
+export function keyPrompts(gamepad: boolean): KeyPrompt[] {
+  return [{ key: gamepad ? 'OPTIONS' : 'ESC', label: 'メニュー' }];
 }
 
 /** Shows and hides the full-screen game screens; one screen is visible at a time. */

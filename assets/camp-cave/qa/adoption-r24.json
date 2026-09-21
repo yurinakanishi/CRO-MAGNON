@@ -1,0 +1,32 @@
+{
+  "date": "2026-09-22",
+  "candidate": 1,
+  "revision": "24",
+  "sha256": "c1895d819f1c1958bca85a4209c9714ffe9a5c5f57e90b15fdec27f03cbab241",
+  "decision": "adopt",
+  "visualGate": "passed",
+  "browserGate": "passed",
+  "gameGate": "passed",
+  "visualEvidence": "output/playwright/camp-cave/asset-24-dressed/",
+  "derivedInputs": [
+    {
+      "path": "public/models/camp-cave/model-r07.glb",
+      "sha256": "13e1c3655e05f03e44823ccd377e1a930cef82d833e008ca0ef175cadf7923a7"
+    }
+  ],
+  "notes": [
+    "The accepted entrance is held in place while inward source distances are doubled and the deep half bends under the existing mountain.",
+    "The separate valley-boulder plug and its 2,953 triangles are removed.",
+    "All three exact source cross-section boundaries continue from shared vertices into a rounded blind end. Every one of the 652 seam edges joins two faces; no overlapping lining or separate cap stone remains.",
+    "The walkable aisle measured from the exported GLBs grows from 26.00 m to 53.25 m (2.05 times), including the curve and floor height.",
+    "All fourteen paintings are on the east or west wall beyond the chamber midpoint; the cat and 524 creature remain on opposite walls at different depths.",
+    "The interior limestone and daylight masking follow the curved chamber. The outdoor starting campfire and cave entrance position are unchanged."
+  ],
+  "gameQA": "output/playwright/camp-cave/game-depth-r24-verified/summary.json",
+  "postReviewCorrection": {
+    "date": "2026-09-22",
+    "supersededByRevision": "25",
+    "issue": "The r24 visual gate missed that stretching the open apron moved the actual rock mouth behind the mountain face. Interior navigation passed while the exterior entrance was visually blocked.",
+    "evidence": "output/playwright/camp-cave/game-entrance-obstructed-r24/"
+  }
+}

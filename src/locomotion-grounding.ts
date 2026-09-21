@@ -5,7 +5,8 @@ import { isSkinnedMesh } from './three-types.js';
  * the joints again. Only used while idle/walk/run poses crossfade. */
 export class LocomotionGrounding {
   private hips: THREE.Object3D;
-  private samples: { mesh: THREE.SkinnedMesh; index: number }[] = [];
+  private samples: { mesh: THREE.SkinnedMesh; geometry: THREE.BufferGeometry; index: number }[] =
+    [];
   private meshes: THREE.SkinnedMesh[] = [];
   private inverse = new THREE.Matrix4();
   private point = new THREE.Vector3();
@@ -19,9 +20,14 @@ export class LocomotionGrounding {
     root.updateWorldMatrix(true, false);
     root.updateMatrixWorld(true);
     this.inverse.copy(root.matrixWorld).invert();
-    const candidates: { mesh: THREE.SkinnedMesh; index: number; y: number }[] = [];
+    const candidates: {
+      mesh: THREE.SkinnedMesh;
+      geometry: THREE.BufferGeometry;
+      index: number;
+      y: number;
+    }[] = [];
     root.traverse((mesh) => {
-      if (!isSkinnedMesh(mesh)) return;
+      if (!isSkinnedMesh(mesh) || mesh.userData.shadowOnly) return;
       this.meshes.push(mesh);
       const a = mesh.geometry.attributes;
       for (let i = 0; i < a.position.count; i++) {
@@ -35,7 +41,7 @@ export class LocomotionGrounding {
             .getVertexPosition(i, this.point)
             .applyMatrix4(mesh.matrixWorld)
             .applyMatrix4(this.inverse);
-          candidates.push({ mesh, index: i, y: this.point.y });
+          candidates.push({ mesh, geometry: mesh.geometry, index: i, y: this.point.y });
         }
       }
     });
@@ -66,12 +72,17 @@ export class LocomotionGrounding {
     for (const mesh of this.meshes) mesh.skeleton.update();
     let lowest = Infinity;
     for (const s of this.samples) {
+      // Performance LOD temporarily swaps the geometry on this SkinnedMesh.
+      // Its vertex indices differ from the near mesh used to select sole
+      // samples, so defer grounding until that exact geometry is visible again.
+      if (s.mesh.geometry !== s.geometry) continue;
       s.mesh
         .getVertexPosition(s.index, this.point)
         .applyMatrix4(s.mesh.matrixWorld)
         .applyMatrix4(this.inverse);
       lowest = Math.min(lowest, this.point.y);
     }
+    if (!Number.isFinite(lowest)) return;
     if (lowest >= 0.0025) return;
     this.base.copy(this.hips.position);
     // Transform the model-space displacement into the hips parent's space;

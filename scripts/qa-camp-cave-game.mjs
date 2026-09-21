@@ -9,12 +9,26 @@ import {
   CAVE_MURAL_VIEW,
   CAVE_APPROACH,
   CAMP_MOUNTAIN_TRAIL,
+  caveWorldAt,
 } from '../dist/shared/camp-cave-layout.mjs';
 import { CASTLE_GATE } from '../dist/shared/castle-layout.mjs';
 import { createEnemies } from '../dist/shared/enemies.mjs';
+import { CAVE_MURALS } from '../dist/src/cave-gallery-layout.js';
 const { chromium } =
   await import('file:///C:/Users/yurin/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/node_modules/playwright/index.mjs');
 const folder = `output/playwright/camp-cave/game-${process.argv[2] || '01'}`;
+const caveCandidate = process.argv.find((a) => a.startsWith('--cave-candidate='))?.split('=')[1],
+  caveAsset = JSON.parse(await readFile('public/models/camp-cave/asset.json')),
+  caveFile = caveCandidate
+    ? `assets/camp-cave/work/revision-${caveCandidate}/model.glb`
+    : `public${caveAsset.url}`;
+const cave = {
+  file: caveFile,
+  sha256: createHash('sha256')
+    .update(await readFile(caveFile))
+    .digest('hex'),
+  previewOverride: !!caveCandidate,
+};
 await mkdir(folder, { recursive: true });
 const game = createGameServer({ port: 0, host: '127.0.0.1' });
 const { port } = await game.listen();
@@ -23,31 +37,65 @@ const errors = [],
   samples = [],
   checks = [],
   peers = [];
+async function peersSeeFire(lit) {
+  const deadline = Date.now() + 5000;
+  while (!peers.every((p) => p.lastCamp?.caveFireLit === lit) && Date.now() < deadline)
+    await new Promise((resolve) => setTimeout(resolve, 50));
+  assert.ok(peers.every((p) => p.lastCamp?.caveFireLit === lit));
+}
 async function ready(page) {
   await page
     .locator('#world[data-world-asset="ready"][data-character-asset="ready"]')
     .waitFor({ timeout: 120000 });
   await page.waitForFunction(() => window.caveWorld?.players.get(caveWorld.selfId)?.actor);
 }
+async function start(page) {
+  await page.locator('#title-start').click();
+  await page.locator('#setup-form .character-choice:has(input:checked)').click();
+  await page.locator('#setup-flow [data-choose-difficulty="normal"]').click();
+  await page.locator('#setup-flow-yes').click();
+  await ready(page);
+}
 async function open(name) {
   const page = await browser.newPage({ viewport: { width: 1280, height: 800 } });
-  const candidate = process.argv.find((a) => a.startsWith('--candidate='))?.split('=')[1];
-  if (candidate) {
-    const bytes = await readFile(`assets/camp-mountain/work/revision-${candidate}/model.glb`);
+  const mountainCandidate = process.argv.find((a) => a.startsWith('--candidate='))?.split('=')[1],
+    overrides = [];
+  if (mountainCandidate) {
+    const bytes = await readFile(
+      `assets/camp-mountain/work/revision-${mountainCandidate}/model.glb`,
+    );
     await page.route('**/models/camp-mountain/model-*.glb', async (route) =>
       route.fulfill({ contentType: 'model/gltf-binary', body: bytes }),
     );
+    overrides.push({ key: 'camp-mountain', bytes });
+  }
+  if (caveCandidate) {
+    const bytes = await readFile(`assets/camp-cave/work/revision-${caveCandidate}/model.glb`);
+    await page.route('**/models/camp-cave/model-*.glb', async (route) =>
+      route.fulfill({ contentType: 'model/gltf-binary', body: bytes }),
+    );
+    overrides.push({ key: 'camp-cave', bytes });
+    const surface = process.argv.find((a) => a.startsWith('--cave-surface='))?.split('=')[1];
+    if (surface) {
+      const body = await readFile(surface, 'utf8');
+      await page.route('**/shared/camp-cave-surface-data.mjs', (route) =>
+        route.fulfill({ contentType: 'text/javascript', body }),
+      );
+    }
+  }
+  if (overrides.length) {
     await page.route('**/models/world-assets.json', async (route) => {
       const response = await route.fetch(),
         data = await response.json();
-      Object.assign(
-        data.assets.find((a) => a.modelKey === 'camp-mountain'),
-        { bytes: bytes.length, sha256: createHash('sha256').update(bytes).digest('hex') },
-      );
+      for (const { key, bytes } of overrides)
+        Object.assign(
+          data.assets.find((a) => a.modelKey === key),
+          { bytes: bytes.length, sha256: createHash('sha256').update(bytes).digest('hex') },
+        );
       await route.fulfill({ response, json: data });
     });
   }
-  page.on('pageerror', (e) => errors.push(String(e)));
+  page.on('pageerror', (e) => errors.push(e.stack || String(e)));
   page.on('console', (m) => {
     if (m.type() === 'error') errors.push(m.text());
   });
@@ -66,11 +114,7 @@ async function open(name) {
     });
   });
   await page.goto(`http://127.0.0.1:${port}/?room=CAVE-QA`);
-  await page.locator('#title-start').click();
-  await page.locator('#setup-form .character-choice:has(input:checked)').click();
-  await page.locator('#setup-flow [data-choose-difficulty="normal"]').click();
-  await page.locator('#setup-flow-yes').click();
-  await ready(page);
+  await start(page);
   return page;
 }
 async function shot(page, label) {
@@ -119,7 +163,7 @@ async function walk(page, goal, label) {
         w.pitch = 0.25;
         return d;
       }, goal);
-      if (distance < 0.3) {
+      if (distance < 0.4) {
         checks.push(`keyboard walk: ${label}`);
         return;
       }
@@ -148,14 +192,55 @@ try {
   await page.waitForTimeout(2500);
   if (process.argv.includes('--gallery')) {
     const player = [...room.players.values()].find((p) => p.name === 'Cave A');
-    Object.assign(player, { x: CAVE_MURAL_VIEW.x, z: CAVE_MURAL_VIEW.z - 1 });
-    await page.waitForTimeout(1200);
-    await walk(page, CAVE_MURAL_VIEW, 'reach the cave hearth');
+    if (process.argv.includes('--from-camp')) {
+      await page.evaluate(() => {
+        caveWorld.yaw = 2.85;
+        caveWorld.pitch = 0.2;
+        caveWorld.targetDistance = 7;
+      });
+      await shot(page, 'entrance-from-camp');
+      for (let i = 0; i < CAVE_APPROACH.length; i++) {
+        await walk(page, CAVE_APPROACH[i], `walk from outdoor camp to ledge ${i}`);
+        if (i >= 3) {
+          await page.evaluate(() => {
+            caveWorld.yaw = Math.PI;
+            caveWorld.pitch = 0.15;
+          });
+          await shot(page, `entrance-approach-${i}`);
+        }
+      }
+      for (const z of [17, 12, 6, 0, -6, -12, -18]) {
+        await walk(page, caveWorldAt(z), `walk through the visible rock mouth ${z}`);
+        if ([12, 6, -6].includes(z)) {
+          await page.evaluate(() => {
+            caveWorld.pitch = 0.15;
+          });
+          await shot(page, `entrance-traverse-${z}`);
+        }
+      }
+      checks.push(
+        'continuous keyboard walk from the original outdoor camp through the visible mouth',
+      );
+    } else {
+      Object.assign(player, caveWorldAt(-18));
+      await page.waitForTimeout(1200);
+    }
+    await walk(page, CAVE_MURAL_VIEW, 'reach the deep gallery');
     await page.waitForFunction(
       () =>
         caveWorld.landmarks.cavePigment?.image?.complete &&
+        caveWorld.landmarks.caveCharacter524?.image?.complete &&
         caveWorld.landmarks.caveLimestone?.image?.complete,
     );
+    const activeCharacter = JSON.parse(
+      await readFile('public/models/camp-cave/asset.json'),
+    ).characterPigment;
+    assert.ok(
+      (await page.evaluate(() => caveWorld.landmarks.caveCharacter524.image.src)).endsWith(
+        activeCharacter.url,
+      ),
+    );
+    checks.push('faithful transparent 524 pigment loaded from the active manifest');
     const frame = async (wall, distance = 4) => {
       await page.evaluate(
         ({ wall, distance }) => {
@@ -166,26 +251,40 @@ try {
         { wall, distance },
       );
     };
-    await walk(page, { x: 34.5, z: 125.2 }, 'view opposing motifs before ignition');
+    const catView = caveWorldAt(CAVE_MURALS.find((m) => m.motif === 'cat').centre),
+      creatureView = caveWorldAt(CAVE_MURALS.find((m) => m.motif === 'creature524').centre),
+      hearthApproach = caveWorldAt(-20, 1.5);
+    await walk(page, catView, 'view the cat beyond the chamber midpoint before ignition');
     await frame('east');
     await shot(page, 'gallery-cat-unlit');
+    await walk(page, creatureView, 'view 524 on the opposite wall before ignition');
     await frame('west');
     await shot(page, 'gallery-524-unlit');
-    await walk(page, CAVE_MURAL_VIEW, 'return to light the cave hearth');
+    await walk(page, hearthApproach, 'return to light the cave hearth');
     await page.locator('#world').focus();
     await page.keyboard.press('KeyE');
     await page.waitForFunction(() => caveWorld.state.camp.caveFireLit === true);
-    await walk(page, { x: 34.5, z: 125.2 }, 'view opposing motifs in firelight');
+    await walk(page, catView, 'view the cat in firelight');
     await frame('east');
     await shot(page, 'gallery-cat-lit');
+    await walk(page, creatureView, 'view 524 in firelight');
     await frame('west');
     await shot(page, 'gallery-524-lit');
     checks.push('cat and 524 are on opposite walls, actual E reveals both');
+    if (process.argv.includes('--gallery-preview')) {
+      await walk(page, caveWorldAt(-30.5), 'preview the spacious back chamber');
+      await page.evaluate(() => {
+        caveWorld.yaw = 2.75;
+        caveWorld.pitch = 0.13;
+        caveWorld.targetDistance = 6;
+      });
+      await shot(page, 'gallery-spacious-back');
+    }
     if (!process.argv.includes('--gallery-preview')) {
       const other = await open('Cave B');
       Object.assign(
         [...room.players.values()].find((p) => p.name === 'Cave B'),
-        { x: 36, z: 126 },
+        caveWorldAt(-22, -1),
       );
       for (let i = 0; i < 3; i++) {
         const socket = new WebSocket(
@@ -197,13 +296,13 @@ try {
               gender: 'male',
             }),
         );
-        await new Promise((resolve, reject) => {
-          socket.once('open', resolve);
-          socket.once('error', reject);
-        });
         socket.on('message', (data) => {
           const msg = JSON.parse(data);
           if (msg.camp) socket.lastCamp = msg.camp;
+        });
+        await new Promise((resolve, reject) => {
+          socket.once('open', resolve);
+          socket.once('error', reject);
         });
         peers.push(socket);
       }
@@ -218,22 +317,37 @@ try {
         caveWorld.targetDistance = 3;
       });
       await shot(other, 'gallery-peer-west');
-      assert.ok(peers.every((p) => p.lastCamp?.caveFireLit));
+      await peersSeeFire(true);
       checks.push('two renderers and three network peers share the cave fire');
-      for (const z of [120, 115, 120, 125.2, 130]) {
-        await walk(page, { x: 34.5, z }, `gallery route ${z}`);
+      for (const localZ of [-13, -18, -23, -28, -31.5]) {
+        await walk(page, caveWorldAt(localZ), `gallery route ${localZ}`);
         for (const wall of ['east', 'west']) {
           await frame(wall);
-          await shot(page, `gallery-${wall}-${z}`);
+          await shot(page, `gallery-${wall}-${Math.abs(localZ)}`);
         }
       }
-      await frame('back');
+      await walk(page, caveWorldAt(-31.5), 'approach the natural blind end');
+      await page.evaluate(() => {
+        caveWorld.yaw = 2.82;
+        caveWorld.pitch = 0.13;
+        caveWorld.targetDistance = 3;
+      });
       await shot(page, 'gallery-blind-end');
-      await walk(page, { x: 34.5, z: 125.2 }, 'return to central gallery');
-      await walk(page, { x: 37.7, z: 125.2 }, 'approach the limestone and cat');
+      await walk(page, caveWorldAt(-30.5), 'stand in the full-width back chamber');
+      await page.evaluate(() => {
+        caveWorld.yaw = 2.75;
+        caveWorld.pitch = 0.13;
+        caveWorld.targetDistance = 6;
+      });
+      await shot(page, 'gallery-spacious-back');
+      for (const across of [-3.5, 3.5, 0])
+        await walk(page, caveWorldAt(-30.5, across), `cross the back chamber at ${across}`);
+      checks.push('the rear chamber can be crossed in both directions at full standing height');
+      await walk(page, catView, 'return to the cat gallery');
+      await walk(page, caveWorldAt(-28, -3.6), 'approach the limestone and cat');
       await frame('east', 1.8);
       await shot(page, 'gallery-rock-close');
-      await walk(page, { x: 34.5, z: 125.2 }, 'return from the rock face');
+      await walk(page, catView, 'return from the rock face');
       await frame('east');
       for (const [width, height] of [
         [390, 844],
@@ -244,18 +358,36 @@ try {
       }
       await page.setViewportSize({ width: 1280, height: 800 });
       await page.reload();
-      await page.locator('#title-start').click();
-      await ready(page);
+      await start(page);
       await page.waitForFunction(() => caveWorld.landmarks.caveLimestone?.image?.complete);
+      await page.evaluate(() => {
+        caveWorld.yaw = Math.PI;
+        caveWorld.pitch = 0.35;
+        caveWorld.targetDistance = 8;
+      });
+      const camp = await shot(page, 'gallery-reload-camp');
+      assert.ok(Math.hypot(camp.position[0] - 50, camp.position[1] - 50) < 12);
+      for (const [i, point] of CAVE_APPROACH.entries())
+        await walk(page, point, `camp to cave approach after reload ${i}`);
+      await walk(page, caveWorldAt(12), 'enter the unpainted front chamber');
+      await page.evaluate(() => {
+        caveWorld.yaw = Math.PI;
+        caveWorld.pitch = 0.13;
+        caveWorld.targetDistance = 4;
+      });
+      await shot(page, 'gallery-entrance');
+      for (const z of [4, -4, -12, -20])
+        await walk(page, caveWorldAt(z), `follow the extended chamber after reload ${z}`);
+      await walk(page, creatureView, 'return to the gallery after reload');
       await frame('west');
       await shot(page, 'gallery-reload');
       assert.equal(room.camp.caveFireLit, true);
-      await walk(page, CAVE_MURAL_VIEW, 'return for extinguishing');
+      await walk(page, hearthApproach, 'return for extinguishing');
       await page.locator('#world').focus();
       await page.keyboard.press('KeyE');
       await page.waitForFunction(() => caveWorld.state.camp.caveFireLit === false);
       await other.waitForFunction(() => caveWorld.state.camp.caveFireLit === false);
-      assert.ok(peers.every((p) => p.lastCamp?.caveFireLit === false));
+      await peersSeeFire(false);
       checks.push('gallery reload and real E extinguishing pass');
     }
   } else if (process.argv.includes('--mural')) {
@@ -311,8 +443,7 @@ try {
     }
     await page.setViewportSize({ width: 1280, height: 800 });
     await page.reload();
-    await page.locator('#title-start').click();
-    await ready(page);
+    await start(page);
     await page.waitForFunction(() => caveWorld.landmarks.cavePigment?.image?.complete);
     await frame();
     assert.equal(room.camp.caveFireLit, true);
@@ -447,13 +578,13 @@ try {
               gender: 'male',
             }),
         );
-        await new Promise((resolve, reject) => {
-          socket.once('open', resolve);
-          socket.once('error', reject);
-        });
         socket.on('message', (data) => {
           const msg = JSON.parse(data);
           if (msg.camp) socket.lastCamp = msg.camp;
+        });
+        await new Promise((resolve, reject) => {
+          socket.once('open', resolve);
+          socket.once('error', reject);
         });
         peers.push(socket);
       }
@@ -464,11 +595,10 @@ try {
       await other.waitForFunction(() => caveWorld.state.camp.caveFireLit === true);
       await shot(page, 'murals-fire-on');
       await shot(other, 'peer-fire-on');
-      assert.ok(peers.every((p) => p.lastCamp?.caveFireLit === true));
+      await peersSeeFire(true);
       checks.push('E ignites, two renderers plus three websocket peers agree');
       await page.reload();
-      await page.locator('#title-start').click();
-      await ready(page);
+      await start(page);
       assert.equal(room.camp.caveFireLit, true);
       await shot(page, 'reload-lit');
       checks.push('reload retains shared fire');
@@ -511,14 +641,17 @@ try {
     `${folder}/summary.json`,
     JSON.stringify(
       {
+        cave,
         checks,
         samples,
         errors,
-        setup: process.argv.includes('--gallery')
-          ? 'Scene preparation places the player near the hearth and suppresses enemies. All following gallery walking, lighting and extinguishing use real keyboard input.'
-          : process.argv.includes('--mural')
-            ? 'Enemies suppressed and player placed 2m before the rear mural for preparation. Final approach, ignition and extinguishing use actual keyboard input.'
-            : 'Enemies suppressed; second viewer position prepared. Main route and fire interaction are actual keyboard input.',
+        setup: process.argv.includes('--from-camp')
+          ? 'Only enemies are suppressed initially. The main player walks from the original camp through the entrance and galleries using keyboard input; only the second observer is placed for multiplayer observation.'
+          : process.argv.includes('--gallery')
+            ? 'Scene preparation places the player near the hearth and suppresses enemies. All following gallery walking, lighting and extinguishing use real keyboard input.'
+            : process.argv.includes('--mural')
+              ? 'Enemies suppressed and player placed 2m before the rear mural for preparation. Final approach, ignition and extinguishing use actual keyboard input.'
+              : 'Enemies suppressed; second viewer position prepared. Main route and fire interaction are actual keyboard input.',
       },
       null,
       2,

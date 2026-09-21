@@ -8,12 +8,30 @@ export const CAMP_CAVE = Object.freeze({
   z: 125.15,
   yaw: Math.PI,
   scale: 1,
-  clearance: 24,
+  clearance: 50,
   elevation: 8,
   groundOffset: -1.05,
 });
-export const CAVE_HEARTH = Object.freeze({ id: 'cave-hearth', x: 32, z: 130, radius: 0.55 });
-export const CAVE_MURAL_VIEW = Object.freeze({ x: 34.5, z: 130.5 });
+// r25 retains the original rock mouth and apron, then joins the extended
+// chamber before its gallery. The deep half bends west under the mountain;
+// these values reproduce that bend in gameplay, wall projection and QA.
+export const CAVE_BEND = Object.freeze({ depth: 72.64, offset: 38 });
+export function caveCentreOffset(localZ: number) {
+  const t = Math.max(0, Math.min(1, -localZ / CAVE_BEND.depth));
+  return CAVE_BEND.offset * t * t * (3 - 2 * t);
+}
+export function caveWorldAt(localZ: number, across = 0) {
+  return {
+    x: CAMP_CAVE.x - caveCentreOffset(localZ) - across,
+    z: CAMP_CAVE.z - localZ,
+  };
+}
+export const CAVE_HEARTH = Object.freeze({
+  id: 'cave-hearth',
+  ...caveWorldAt(-20, 3),
+  radius: 0.55,
+});
+export const CAVE_MURAL_VIEW = Object.freeze(caveWorldAt(-25));
 export const CAMP_MOUNTAIN = Object.freeze({
   id: 'camp-mountain',
   key: 'camp-mountain',
@@ -67,11 +85,14 @@ export function campTrailDistance(x: number, z: number) {
   return distance;
 }
 export function insideCaveGround(x: number, z: number) {
-  return ((x - CAMP_CAVE.x) / 7.5) ** 2 + ((z - CAMP_CAVE.z) / 17.2) ** 2 < 1;
+  const p = caveLocal(x, z);
+  return p.z > -42 && p.z < 18.5 && Math.abs(p.x - caveCentreOffset(p.z)) < 7.5;
 }
 export function campLandformReserved(x: number, z: number, margin = 0) {
-  return (
-    (Math.abs(x - CAMP_CAVE.x) < 11 + margin && Math.abs(z - CAMP_CAVE.z) < 22 + margin) ||
-    campTrailDistance(x, z) < 5.5 + margin
-  );
+  const p = caveLocal(x, z),
+    aroundCave =
+      p.z > -58 - margin &&
+      p.z < 21 + margin &&
+      Math.abs(p.x - caveCentreOffset(p.z)) < 11 + margin;
+  return aroundCave || campTrailDistance(x, z) < 5.5 + margin;
 }

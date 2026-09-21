@@ -1,0 +1,20 @@
+{
+  "date": "2026-09-22",
+  "candidate": 1,
+  "revision": "21",
+  "sha256": "e8553280d455f081af9e9d398fdfdf5a2d35fc3471f3e8e488e94b42a17d4f94",
+  "decision": "adopt",
+  "visualGate": "passed",
+  "browserGate": "passed",
+  "gameGate": "passed",
+  "visualEvidence": "output/playwright/camp-cave/asset-21-dressed/",
+  "notes": [
+    "The accepted entrance is held in place while inward source distances are doubled and the deep half bends under the existing mountain.",
+    "The separate valley-boulder plug and its 2,953 triangles are removed.",
+    "The retained TRELLIS shell is locally smoothed and contracts into a measured inner-wall lining; side walls, ceiling and floor converge into a rounded blind end without daylight openings or a flat cap.",
+    "The measured walkable route from the entrance grows from about 27 m to about 49.5 m, approximately twice the former playable depth.",
+    "All fourteen paintings are on the east or west wall beyond the new chamber midpoint; the cat and 524 creature remain on opposite walls at different depths.",
+    "The outdoor starting campfire and cave entrance position are unchanged."
+  ],
+  "gameQA": "output/playwright/camp-cave/game-depth-r21-final/summary.json"
+}

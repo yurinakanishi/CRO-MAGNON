@@ -6,19 +6,16 @@ import { helpTabsMarkup } from '../dist/src/help-content.js';
 
 const root = new URL('../', import.meta.url);
 
-test('button prompts follow the input device and the current mount options', () => {
-  const keyboard = keyPrompts(false, { ride: false, boat: false });
-  assert.deepEqual(
-    keyboard.map((p) => p.key),
-    ['ESC'],
-  );
-  const pad = keyPrompts(true, { ride: true, boat: true });
-  assert.deepEqual(
-    pad.map((p) => p.key),
-    // 2026-09-12: jump on the top face button, mount / boat on the bottom one.
-    ['×', '×', 'OPTIONS'],
-  );
-  assert.ok(!pad.some((p) => p.label === '話す'), 'chat needs a keyboard');
+test('button prompts follow the input device and never repeat a contextual button', async () => {
+  assert.deepEqual(keyPrompts(false), [{ key: 'ESC', label: 'メニュー' }]);
+  assert.deepEqual(keyPrompts(true), [{ key: 'OPTIONS', label: 'メニュー' }]);
+  // 2026-09-21: riding and boarding are announced once, by their own key-labelled button.
+  const main = await readFile(new URL('src/main.ts', root), 'utf8');
+  const boat = await readFile(new URL('src/boat-ui.ts', root), 'utf8');
+  assert.doesNotMatch(main + boat, /を押すと(マンモス|船)に乗れます/);
+  assert.doesNotMatch(main + boat, /[R×B] ?で(降りる|降ろす|肩に乗る)|岸で [B×]/);
+  assert.match(main, /\$\('#riding-hint'\)\.hidden = !ridingHint/);
+  assert.match(boat, /\$\('#boat-hint'\)\.hidden = !hint/);
 });
 
 test('there is no pre-play tutorial; the help dialog keeps both device tabs', async () => {

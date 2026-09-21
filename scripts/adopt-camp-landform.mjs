@@ -29,13 +29,15 @@ const name = key === 'camp-cave' ? 'はじまりの壁画洞窟' : '白羽の丘
 const massif = key === 'camp-mountain' && Number(revision) >= 6;
 const referenceImage = `assets/${key}/source/reference-v${massif ? 2 : 1}.png`;
 const sourceGeometry = `assets/${key}/work/trellis/${massif ? 'massif-v2' : 'reduced'}-res1024-seed42.glb`;
+const previous = JSON.parse(await readFile(`public/models/${key}/asset.json`, 'utf8'));
 const manifest = {
+  ...previous,
   modelKey: key,
   name,
   kind: 'static',
   candidate: massif ? 2 : 1,
   revision,
-  status: 'reviewed-prototype',
+  status: review.gameGate === 'passed' ? 'integrated-and-game-qa-passed' : 'reviewed-prototype',
   url: `/models/${key}/model-r${revision}.glb`,
   sha256,
   bytes: bytes.length,
@@ -49,6 +51,7 @@ const manifest = {
   lods: [],
   notes: review.notes,
   provenance: {
+    ...previous.provenance,
     provider: 'Codex',
     claudeUsed: false,
     referenceGenerator: 'Built-in imagegen',
@@ -61,42 +64,47 @@ const manifest = {
     visualReview: reviewPath,
     modelWorkspace: `assets/${key}`,
     workflow:
-      'Source image → TRELLIS.2 → source-preserving QEM → terrain fitting/UV/materials → exact GLB QA',
+      'Source image → TRELLIS.2 → source-preserving QEM → terrain fitting/UV/materials → exact GLB QA → source-shell refinement and measured walk surface',
+    derivedInputs: review.derivedInputs ?? [
+      {
+        path: `public/models/${key}/${previous.url.split('/').at(-1)}`,
+        sha256: previous.sha256,
+      },
+    ],
+    refinementWorkflow: `assets/camp-cave/workflow/refine-landforms.py`,
   },
+  ...(review.gameQA ? { gameQA: review.gameQA } : {}),
 };
 const save = (p, v) => writeFile(p, JSON.stringify(v, null, 2) + '\n');
-if (key === 'camp-cave') {
-  const pigment = await readFile('assets/camp-cave/source/mural-v1.png');
+if (key === 'camp-cave')
   manifest.pigment = {
-    url: '/models/camp-cave/mural.png',
-    sha256: hash(pigment),
-    bytes: pigment.length,
-    source: 'assets/camp-cave/source/mural-v1.png',
-    generator: 'Built-in imagegen',
-    application: 'Projected onto existing interior wall triangles',
+    ...previous.pigment,
+    application: previous.pigment.application,
+    review: `assets/camp-cave/qa/gallery-r${revision}.json`,
   };
-}
 await mkdir(`public/models/${key}`, { recursive: true });
 await copyFile(source, `public${manifest.url}`, constants.COPYFILE_EXCL);
-if (key === 'camp-cave') await copyFile(manifest.pigment.source, `public${manifest.pigment.url}`);
 await save(`public/models/${key}/asset.json`, manifest);
 const world = JSON.parse(await readFile('public/models/world-assets.json', 'utf8'));
 world.assets = world.assets.filter((a) => a.modelKey !== key);
 world.assets.push(manifest);
 await save('public/models/world-assets.json', world);
 const catalog = JSON.parse(await readFile('assets/world-models.json', 'utf8'));
+const previousCatalog = catalog.assets.find((a) => a.key === key) ?? {};
 catalog.assets = catalog.assets.filter((a) => a.key !== key);
 catalog.assets.push({
+  ...previousCatalog,
   key,
   name,
   kind: 'static',
   height: size.y,
-  status: 'adopted-awaiting-game-qa',
+  status:
+    review.gameGate === 'passed' ? 'integrated-and-game-qa-passed' : 'adopted-awaiting-game-qa',
   geometryResolution: 1024,
   sha256,
   triangles: inspection.triangles,
   delivery: manifest.url,
-  gameQA: `assets/${key}/README.md`,
+  gameQA: review.gameQA ?? `assets/${key}/README.md`,
 });
 await save('assets/world-models.json', catalog);
 console.log(

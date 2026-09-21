@@ -3,6 +3,8 @@ import { isMesh, isSkinnedMesh } from './three-types.js';
 
 export const ACTOR_LOD_DISTANCE = 28;
 export const ACTOR_LOD_HYSTERESIS = 2;
+export const ACTOR_SHADOW_LOD_DISTANCE = 18;
+export const ACTOR_SHADOW_DISTANCE = 34;
 export const SIMPLIFIED_SHADOW_KEYS = new Set([
   'berry-bush',
   'hide-tent',
@@ -15,13 +17,18 @@ type ActorMeshLevel = {
   mesh: THREE.Mesh;
   high: THREE.BufferGeometry;
   low: THREE.BufferGeometry;
+  shadow: THREE.Mesh | null;
+  castShadow: boolean;
+  receiveShadow: boolean;
 };
 
 type ActorDetail = {
   level: 0 | 1;
   meshes: ActorMeshLevel[];
-  proxy: THREE.Mesh;
+  shadowLevel: 0 | 1;
 };
+
+type ActorAsset = { modelKey: string; lods?: { distanceMetres?: number }[] };
 
 function shadowOnlyMaterial() {
   const material = new THREE.MeshBasicMaterial();
@@ -39,43 +46,38 @@ function boundsOf(root: THREE.Object3D) {
   return new THREE.Box3().setFromObject(root).applyMatrix4(root.matrixWorld.clone().invert());
 }
 
-function actorShadowProxy(asset): THREE.Mesh {
-  const placedMin = asset.placement?.min,
-    placedMax = asset.placement?.max,
-    horizontal =
-      asset.kind === 'quadruped' ||
-      (asset.kind === 'enemy' && (asset.lengthMetres ?? 0) > (asset.heightMetres ?? 1) * 1.15),
-    height = asset.heightMetres ?? 1.8,
-    width = asset.widthMetres ?? height * (horizontal ? 0.72 : 0.42),
-    length = asset.lengthMetres ?? height * (horizontal ? 1.45 : 0.36),
-    bounds =
-      Array.isArray(placedMin) && Array.isArray(placedMax)
-        ? new THREE.Box3(new THREE.Vector3(...placedMin), new THREE.Vector3(...placedMax))
-        : new THREE.Box3(
-            new THREE.Vector3(-width / 2, 0, -length / 2),
-            new THREE.Vector3(width / 2, height, length / 2),
-          ),
-    size = bounds.getSize(new THREE.Vector3()),
-    centre = bounds.getCenter(new THREE.Vector3());
-  let geometry: THREE.BufferGeometry;
-  if (horizontal) {
-    geometry = new THREE.BoxGeometry(
-      Math.max(0.25, size.x * 0.72),
-      Math.max(0.25, size.y * 0.65),
-      Math.max(0.35, size.z * 0.76),
-    );
-    centre.y = bounds.min.y + size.y * 0.43;
-  } else {
-    const radius = Math.max(0.13, Math.min(size.y * 0.23, Math.max(size.x, size.z) * 0.31));
-    geometry = new THREE.CapsuleGeometry(radius, Math.max(0.05, size.y - radius * 2), 4, 8);
-  }
-  const proxy = new THREE.Mesh(geometry, shadowOnlyMaterial());
-  proxy.name = 'actor-simplified-shadow';
-  proxy.position.copy(centre);
-  proxy.castShadow = true;
-  proxy.receiveShadow = false;
-  proxy.frustumCulled = true;
-  return proxy;
+function actorShadowMesh(source: THREE.Mesh, geometry: THREE.BufferGeometry) {
+  // Keep cutouts, sidedness and displacement consistent with the visible mesh.
+  const invisible = (original: THREE.Material) => {
+    const material = original.clone();
+    material.colorWrite = false;
+    material.depthWrite = false;
+    return material;
+  };
+  const material = Array.isArray(source.material)
+    ? source.material.map(invisible)
+    : invisible(source.material);
+  let shadow: THREE.Mesh;
+  if (isSkinnedMesh(source)) {
+    const skin = new THREE.SkinnedMesh(geometry, material);
+    skin.skeleton = source.skeleton;
+    skin.bindMode = source.bindMode;
+    skin.bindMatrix.copy(source.bindMatrix);
+    skin.bindMatrixInverse.copy(source.bindMatrixInverse);
+    shadow = skin;
+  } else shadow = new THREE.Mesh(geometry, material);
+  shadow.name = `${source.name}-lod-shadow`;
+  shadow.userData.shadowOnly = true;
+  shadow.castShadow = true;
+  shadow.visible = false;
+  shadow.matrixAutoUpdate = false;
+  shadow.morphTargetInfluences = source.morphTargetInfluences;
+  // Picking uses the visible animal surface, including when this helper is hidden.
+  shadow.raycast = () => {};
+  // Identity child transform keeps animated mesh transforms and the shared
+  // skeleton in exactly the same world space, including rider/runtime poses.
+  source.add(shadow);
+  return shadow;
 }
 
 /** Bind a reduced, geometry-only GLB to the adopted animated meshes. The
@@ -84,14 +86,12 @@ function actorShadowProxy(asset): THREE.Mesh {
 export function configureActorPerformance(
   root: THREE.Object3D,
   lowRoot: THREE.Object3D | null | undefined,
-  asset,
+  asset: ActorAsset,
 ) {
   const highMeshes: THREE.Mesh[] = [],
     lowMeshes: THREE.Mesh[] = [];
   root.traverse((node) => {
     if (!isMesh(node)) return;
-    node.castShadow = false;
-    node.receiveShadow = true;
     highMeshes.push(node);
   });
   lowRoot?.traverse((node) => {
@@ -101,21 +101,32 @@ export function configureActorPerformance(
   const meshes: ActorMeshLevel[] = [];
   for (const [index, mesh] of highMeshes.entries()) {
     const reduced = lowByName.get(mesh.name) ?? lowMeshes[index];
-    if (!reduced) continue;
-    if (isSkinnedMesh(mesh) !== isSkinnedMesh(reduced))
+    if (!reduced && lowRoot) continue;
+    if (reduced && isSkinnedMesh(mesh) !== isSkinnedMesh(reduced))
       throw new Error(`${asset.modelKey}: actor LOD skin mismatch for ${mesh.name}`);
     if (
+      reduced &&
       isSkinnedMesh(mesh) &&
       (!reduced.geometry.attributes.skinIndex || !reduced.geometry.attributes.skinWeight)
     )
       throw new Error(`${asset.modelKey}: actor LOD lost weights for ${mesh.name}`);
-    meshes.push({ mesh, high: mesh.geometry, low: reduced.geometry });
+    meshes.push({
+      mesh,
+      high: mesh.geometry,
+      low: reduced?.geometry ?? mesh.geometry,
+      shadow: null,
+      castShadow: mesh.castShadow,
+      receiveShadow: mesh.receiveShadow,
+    });
   }
   if (lowRoot && meshes.length !== highMeshes.length)
     throw new Error(`${asset.modelKey}: actor LOD mesh count mismatch`);
-  const proxy = actorShadowProxy(asset);
-  root.add(proxy);
-  const detail: ActorDetail = { level: 0, meshes, proxy };
+  for (const entry of meshes) {
+    entry.mesh.castShadow = true;
+    entry.mesh.receiveShadow = true;
+    if (entry.low !== entry.high) entry.shadow = actorShadowMesh(entry.mesh, entry.low);
+  }
+  const detail: ActorDetail = { level: 0, meshes, shadowLevel: 0 };
   root.userData.actorDetail = detail;
   root.userData.actorLodDistance = asset.lods?.[0]?.distanceMetres ?? ACTOR_LOD_DISTANCE;
   return detail;
@@ -136,21 +147,41 @@ export function updateActorPerformance(root: THREE.Object3D, distance: number) {
     for (const entry of detail.meshes) entry.mesh.geometry = level ? entry.low : entry.high;
     detail.level = level;
   }
-  detail.proxy.castShadow = distance < 34;
+  detail.shadowLevel = (
+    detail.shadowLevel === 0
+      ? distance > ACTOR_SHADOW_LOD_DISTANCE + ACTOR_LOD_HYSTERESIS
+      : distance >= ACTOR_SHADOW_LOD_DISTANCE - ACTOR_LOD_HYSTERESIS
+  )
+    ? 1
+    : 0;
+  const castsShadow = distance < ACTOR_SHADOW_DISTANCE;
+  for (const entry of detail.meshes) {
+    // When the visible mesh already uses the low geometry, cast it directly.
+    // Never draw both the source and its shadow-only copy into the shadow map.
+    const separate =
+      castsShadow && detail.shadowLevel === 1 && detail.level === 0 && !!entry.shadow;
+    entry.mesh.castShadow = castsShadow && !separate;
+    if (entry.shadow) entry.shadow.visible = separate;
+  }
   return detail.level;
 }
 
 export function disposeActorPerformance(root: THREE.Object3D) {
   const detail = root.userData.actorDetail as ActorDetail | undefined;
   if (!detail) return;
-  for (const entry of detail.meshes) entry.mesh.geometry = entry.high;
-  detail.proxy.removeFromParent();
-  detail.proxy.geometry.dispose();
-  for (const material of [detail.proxy.material].flat()) material.dispose();
+  for (const entry of detail.meshes) {
+    entry.mesh.geometry = entry.high;
+    entry.mesh.castShadow = entry.castShadow;
+    entry.mesh.receiveShadow = entry.receiveShadow;
+    if (!entry.shadow) continue;
+    entry.shadow.removeFromParent();
+    for (const material of [entry.shadow.material].flat()) material.dispose();
+    // Geometry, textures and skeleton are owned by the actor/template.
+  }
   delete root.userData.actorDetail;
 }
 
-const shadowDistances = {
+const shadowDistances: Record<string, number> = {
   'berry-bush': 18,
   'hide-tent': 32,
   'firewood-pile': 22,

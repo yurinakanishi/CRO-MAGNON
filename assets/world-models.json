@@ -515,18 +515,6 @@
       "subject": "One complete rough bark hardwood log with closed pale cut ends; individual stackable firewood."
     },
     {
-      "key": "camp-cave",
-      "name": "はじまりの壁画洞窟",
-      "kind": "static",
-      "height": 8.608572006225586,
-      "status": "integrated-and-game-qa-passed",
-      "geometryResolution": 1024,
-      "sha256": "13e1c3655e05f03e44823ccd377e1a930cef82d833e008ca0ef175cadf7923a7",
-      "triangles": 37846,
-      "delivery": "/models/camp-cave/model-r07.glb",
-      "gameQA": "output/playwright/camp-cave/game-final-r15/summary.json"
-    },
-    {
       "key": "camp-mountain",
       "name": "白羽の丘陵",
       "kind": "static",
@@ -537,6 +525,18 @@
       "triangles": 245000,
       "delivery": "/models/camp-mountain/model-r15.glb",
       "gameQA": "output/playwright/camp-cave/game-final-r15/summary.json"
+    },
+    {
+      "key": "camp-cave",
+      "name": "はじまりの壁画洞窟",
+      "kind": "static",
+      "height": 8.398508608341217,
+      "status": "integrated-and-game-qa-passed",
+      "geometryResolution": 1024,
+      "sha256": "65dde1aa7311b88c159d524d93af82a770dac77e48ee1f35356e3000cad8a15f",
+      "triangles": 74458,
+      "delivery": "/models/camp-cave/model-r26.glb",
+      "gameQA": "output/playwright/camp-cave/game-white-gallery-r26-delivered/summary.json"
     }
   ],
   "reuse": {

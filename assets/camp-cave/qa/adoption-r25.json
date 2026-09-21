@@ -1,0 +1,33 @@
+{
+  "date": "2026-09-22",
+  "candidate": 1,
+  "revision": "25",
+  "sha256": "347b7b4fbe26955e5e7f6341f0ed418456317f7e0cf25a5c6ab9fa2ccca3f0f9",
+  "decision": "adopt",
+  "visualGate": "passed",
+  "browserGate": "passed",
+  "gameGate": "passed",
+  "visualEvidence": "output/playwright/camp-cave/asset-25-dressed-faces/",
+  "prototypeGameQA": "output/playwright/camp-cave/game-entrance-full-r25-preview/summary.json",
+  "entranceComparison": {
+    "before": "output/playwright/camp-cave/game-entrance-obstructed-r24/",
+    "after": "output/playwright/camp-cave/game-entrance-repair-r25-preview/"
+  },
+  "derivedInputs": [
+    {
+      "path": "public/models/camp-cave/model-r07.glb",
+      "sha256": "13e1c3655e05f03e44823ccd377e1a930cef82d833e008ca0ef175cadf7923a7"
+    }
+  ],
+  "notes": [
+    "Corrects r24: holding only the apron edge had moved the rock mouth about 8 m behind the mountain face, making the entrance appear to disappear.",
+    "The original r07 rock mouth and apron coordinates are restored and joined smoothly to the extended chamber before the gallery begins.",
+    "The measured walkable aisle is 53.85 m, 2.07 times the original 26.00 m. The deep curved aisle and continuously joined blind end remain in place.",
+    "All fourteen paintings remain beyond the chamber midpoint, with the cat and 524 on opposite side walls.",
+    "Visible back faces of thin source folds use interior limestone and interior daylight attenuation, removing bright untextured patches at the mouth.",
+    "The outdoor starting campfire, mountain mesh, river and castle trail are unchanged. Old revisions are retained."
+  ],
+  "gameQA": "output/playwright/camp-cave/game-entrance-r25-delivered/summary.json",
+  "gameChecks": 43,
+  "gameScreenshots": 28
+}

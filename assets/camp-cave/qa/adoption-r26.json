@@ -1,0 +1,29 @@
+{
+  "date": "2026-09-22",
+  "candidate": 1,
+  "revision": "26",
+  "sha256": "65dde1aa7311b88c159d524d93af82a770dac77e48ee1f35356e3000cad8a15f",
+  "decision": "adopt",
+  "visualGate": "passed",
+  "browserGate": "passed",
+  "gameGate": "passed",
+  "visualEvidence": "output/playwright/camp-cave/asset-26-dressed-final/",
+  "prototypeGameQA": "output/playwright/camp-cave/game-white-gallery-r26-preview/summary.json",
+  "derivedInputs": [
+    {
+      "path": "public/models/camp-cave/model-r07.glb",
+      "sha256": "13e1c3655e05f03e44823ccd377e1a930cef82d833e008ca0ef175cadf7923a7"
+    }
+  ],
+  "notes": [
+    "The deep gallery keeps approximately 11 m width and 5.5 m centre headroom up to the back chamber. Existing measured source relief is expanded without moving the accepted mouth or replacing the cave with primitive geometry.",
+    "Only the final 1.2 m rounds into a broad rear wall; the long tapered dead end is removed. The source boundary vertices remain shared across the wall, floor and ceiling joins.",
+    "The measured aisle is 54.91 m, 2.11 times the original 26.00 m. The original outdoor campfire, river, mountain mesh and castle path are unchanged.",
+    "Sixteen wall paintings form two animal groups with the same mammoth, bison, deer and two horses in different orders. The left group includes the cat; the right group includes 524, with animals on both sides of each character.",
+    "The separate transparent 524 pigment closely preserves the user image silhouette, ears, lower lobes, two drops, three white patches, exact digits and dark mouth. Its generated PNG is copied unchanged; other accepted animal art is retained.",
+    "White calcite wall albedo retains real rock relief, pores and bedding; pigments are projected directly onto those existing triangles. Warm fire illuminates the same faintly visible paintings."
+  ],
+  "gameQA": "output/playwright/camp-cave/game-white-gallery-r26-delivered/summary.json",
+  "gameChecks": 49,
+  "gameScreenshots": 29
+}

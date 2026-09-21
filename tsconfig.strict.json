@@ -23,6 +23,7 @@
     "src/river-bank-builder.ts",
     "src/river-bank-worker.ts",
     "src/skinned-bounds.ts",
+    "src/performance-lod.ts",
     "src/visible-actor-group.ts",
     "shared/river-profile.mts",
     "src/session-storage.ts",

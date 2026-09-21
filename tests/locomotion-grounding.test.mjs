@@ -4,11 +4,14 @@ import { readFile } from 'node:fs/promises';
 import * as T from 'three';
 import { loadMotion } from '../scripts/motion-glb.mjs';
 import { CharacterAnimation } from '../dist/src/character-animation.js';
+import { configureActorPerformance, disposeActorPerformance } from '../dist/src/performance-lod.js';
 
 test('human gait transitions keep skinned soles above a translated, rotated and scaled actor floor', async () => {
   const asset = JSON.parse(await readFile('public/models/cro-magnon-woman/asset.json'));
   const g = await loadMotion('public' + asset.url),
     container = new T.Group();
+  const lod = await loadMotion('public' + asset.lods[0].url);
+  configureActorPerformance(g.scene, lod.scene, asset);
   container.position.set(31, 4, -19);
   container.rotation.y = 1.2;
   container.scale.setScalar(1.4);
@@ -18,7 +21,7 @@ test('human gait transitions keep skinned soles above a translated, rotated and 
     point = new T.Vector3(),
     soles = [];
   g.scene.traverse((mesh) => {
-    if (!mesh.isSkinnedMesh) return;
+    if (!mesh.isSkinnedMesh || mesh.userData.shadowOnly) return;
     const a = mesh.geometry.attributes;
     for (let i = 0; i < a.position.count; i++) {
       let w = 0;
@@ -73,4 +76,5 @@ test('human gait transitions keep skinned soles above a translated, rotated and 
   animation.mixer.update(0);
   assert.ok(hips.position.distanceTo(idle) < 1e-7, 'no retained lift after the gait transition');
   animation.dispose();
+  disposeActorPerformance(g.scene);
 });

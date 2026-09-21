@@ -8,6 +8,7 @@ import {
   CAVE_MURAL_VIEW,
   CAVE_APPROACH,
   CAMP_MOUNTAIN_TRAIL,
+  caveWorldAt,
 } from '../dist/shared/camp-cave-layout.mjs';
 import { CAMP_CAVE_SURFACE } from '../dist/shared/camp-cave-surface.mjs';
 import { CAMP_MOUNTAIN_SURFACE_DATA } from '../dist/shared/camp-mountain-surface-data.mjs';
@@ -138,13 +139,16 @@ test('cave walls stop walking out sideways and the roof has room over the main a
     p = { x: CAMP_CAVE.x, z: CAMP_CAVE.z - 3 };
   for (let i = 0; i < 120; i++) Object.assign(p, collision.move(p, 0.1, 0, 0.32));
   assert.ok(p.x < CAMP_CAVE.x + 6, JSON.stringify(p));
-  for (let z = CAMP_CAVE.z - 8; z <= CAMP_CAVE.z; z += 0.2)
-    assert.ok(CAMP_CAVE_SURFACE.free(CAMP_CAVE.x, z, 0.76));
-  assert.equal(
-    collision.free({ x: CAMP_CAVE.x, z: CAMP_CAVE.z + 12 }, 0.32),
-    false,
-    'buried cave end is solid',
-  );
+  for (let localZ = 16; localZ >= -31.5; localZ -= 0.2) {
+    const aisle = caveWorldAt(localZ);
+    assert.ok(CAMP_CAVE_SURFACE.free(aisle.x, aisle.z, 0.76), `aisle ${localZ}`);
+  }
+  const blindEnd = caveWorldAt(-33.5);
+  assert.equal(collision.free(blindEnd, 0.32), false, 'natural blind end is solid');
+  for (const localZ of [-20, -25, -31]) {
+    const aisle = caveWorldAt(localZ);
+    assert.ok(mountainHeight(aisle.x, aisle.z) > CAMP_CAVE.elevation + 4);
+  }
   let walls = 0;
   for (let x = CAMP_CAVE.x - 6; x <= CAMP_CAVE.x + 6; x += 0.3)
     for (let z = CAMP_CAVE.z - 5; z <= CAMP_CAVE.z + 3; z += 0.3)

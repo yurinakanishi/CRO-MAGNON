@@ -164,7 +164,10 @@ try {
   await pad([]);
   await pad([PAD.r1]);
   await pad([]);
-  assert.match(await page.locator('#riding-hint').innerText(), /×.*乗れます/);
+  // The ride prompt is the key-labelled button alone; no second line repeats it.
+  assert.match(await page.locator('#ride-button').innerText(), /×\s*マンモスに乗る/);
+  assert.equal(await page.locator('#riding-hint').isVisible(), false);
+  assert.doesNotMatch(await page.locator('#prompt-bar').innerText(), /マンモス/);
   for (const viewport of [
     { width: 390, height: 844 },
     { width: 844, height: 390 },
