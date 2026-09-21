@@ -1,8 +1,10 @@
 # 展示会の有線LANモード
 
-今回のPC1・PC2の実際の配置場所、起動順、画面表示の場所、部屋名の誤入力からの
-復旧手順と確認結果は [この2台の手順書](README-EXHIBITION-NOW.md) を参照してください。
-同じ手順書を両PCのプロジェクト直下に配置しています。
+PC0（裏方の開発・配布機）、PC1（展示ホスト）、PC2（展示クライアント）の役割、
+SSH鍵の初期設定、展示中の修正・配布・切替・復旧は
+[展示3台運用手順](README-EXHIBITION-3PC.md) を参照してください。
+以前の2台固有の配置と確認結果は、ソースリポジトリの
+`README-EXHIBITION-NOW.md` に履歴として残しています。
 
 PC1はゲームサーバーと自分の画面、PC2は自分の画面を実行します。
 ゲーム本体・3Dモデル・テクスチャ・Three.jsは各PCの `http://localhost:4173`
@@ -15,7 +17,8 @@ PC1はゲームサーバーと自分の画面、PC2は自分の画面を実行�
 Windows x64、Node.js 22以上、インストール済みのこのリポジトリで
 `npm run build:exhibition` を実行します。準備段階で依存がなければ
 インターネットのある場所で `npm ci` を先に実行してください。
-完成する `output/exhibition` フォルダー全体をUSBなどで両PCへコピーします。
+完成する `output/exhibition` フォルダー全体をUSBまたはPC0からのSSH/SCPで
+PC1とPC2へコピーします。
 配布先にNode.js、npm、Cloudflare、開発ツールをインストールする必要はありません。
 ChromeまたはEdgeとGPUドライバーは事前にインストールしてください。
 今回の配布はNode.js v24.15.0を同梱します。別のNode版で再配布する場合は、
@@ -29,17 +32,19 @@ ChromeまたはEdgeとGPUドライバーは事前にインストールしてく�
 
 ## 展示当日
 
-1. PC1とPC2をEthernet LANケーブルで直接接続します。
+1. PC0・PC1・PC2をEthernetハブへ接続します。PC0を使わない通常起動でも、
+   PC1とPC2は同じハブ上に置きます。
 2. PC1のEthernet IPv4を **10.10.10.1** に設定します。
 3. PC2のEthernet IPv4を **10.10.10.2** に設定します。
-4. 両PCのSubnet maskを **255.255.255.0**（プレフィックス長24）にします。
+4. PC0のEthernet IPv4を **10.10.10.3** に設定します。
+5. 3台のSubnet maskを **255.255.255.0**（プレフィックス長24）にします。
    Gateway / DNSは空欄です。Wi-FiアダプターのIPは変更しません。
-5. PC1で配布フォルダー内の **start-exhibition-host.bat** をダブルクリックします。
-6. PC2で **start-exhibition-client.bat** をダブルクリックします。
-7. 両方でブラウザーが開きます。「はじめる」→キャラクターを選択→
+6. PC1で配布フォルダー内の **start-exhibition-host.bat** をダブルクリックします。
+7. PC2で **start-exhibition-client.bat** をダブルクリックします。
+8. 両方でブラウザーが開きます。「はじめる」→キャラクターを選択→
    「この谷へ出発する」。名前はプレイヤー1 / プレイヤー2、部屋はEXHIBITIONに固定され、入力欄は表示されません。
    両方の画面で **LAN: Connected** を確認します。
-8. プレイヤー1 / プレイヤー2が互いに見えることを確認し、交互に歩く・走る・
+9. プレイヤー1 / プレイヤー2が互いに見えることを確認し、交互に歩く・走る・
    向きを変える・攻撃する・採集する操作を行います。
 
 起動ウィンドウは閉じないでください。PC1で `Ctrl+C` を押すと共有サーバーも
@@ -55,7 +60,7 @@ Windowsの「ネットワーク接続」（`ncpa.cpl`）→接続中のEthernet�
 「IPアドレスを自動的に取得する」「DNSサーバーのアドレスを自動的に取得する」
 へ戻してください。`169.254.*.*` はDHCPがない直結LANの自動割当です。
 
-PC1の直結Ethernetだけを **Private（プライベート）** にします。
+PC1の展示Ethernetだけを **Private（プライベート）** にします。
 Windowsのネットワーク設定で選べない「識別されていないネットワーク」は、
 管理者として **Windows PowerShell** を開き、まず対象のInterfaceIndexを確認します。
 
@@ -67,7 +72,7 @@ Set-NetConnectionProfile -InterfaceIndex 15 -NetworkCategory Private
 New-NetFirewallRule -DisplayName 'CRO-MAGNON Exhibition LAN' -Direction Inbound -Action Allow -Protocol TCP -LocalPort 8081 -LocalAddress 10.10.10.1 -RemoteAddress 10.10.10.0/24 -Profile Private
 ```
 
-これはPC1の指定ポートへの直結サブネットからの受信だけを許可します。
+これはPC1の指定ポートへの展示LANサブネットからの受信だけを許可します。
 Public全体への許可やFirewall全体の無効化は不要です。ポートを変えた場合は
 `LocalPort`も同じ値にします。展示後に規則を消す場合:
 
@@ -125,14 +130,14 @@ PC1自身もこのWebSocket URLを使用します。`OPEN_BROWSER=0` ならブ�
 
 ## インターネットなしの最終確認
 
-両PCのWi-FiをOFFにし、EthernetがPC同士のケーブルだけになった状態で、
-ブラウザーを新しく開き直して手順5〜8を確認します。新規起動で確かめれば
+PC1/PC2のWi-FiをOFFにし、Ethernetハブだけで通信する状態で、
+ブラウザーを新しく開き直して手順6〜9を確認します。新規起動で確かめれば
 オンラインのブラウザーキャッシュへの依存も検出できます。Google Fonts、
 CDN、外部JavaScript、外部APIは使用しません。LANクライアントのCSPは
 アセットの外部取得を禁止し、同期接続先だけを許可します。ゲーム内の考古資料への
 リンクは任意の参考リンクで、オフラインでは閲覧できません。
 
-実PC2・物理ケーブル・Wi-Fi OFFでの確認は、同一PC上の2ブラウザー試験とは
+実PC2・物理ハブ・Wi-Fi OFFでの確認は、同一PC上の2ブラウザー試験とは
 別の確認です。検証結果と残る確認事項は `assets/exhibition-lan/qa-summary.json` を参照してください。
 
 LANでは自キャラの歩行・走行・経路移動・舟・騎乗をローカルで予測し、

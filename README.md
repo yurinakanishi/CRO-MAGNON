@@ -4,7 +4,7 @@
 
 **2026-09-09：今回の修正は完了しました。** 通常サーバーの自動保存までを反映し、残りの開発・検証・運用はすべて [将来の対応一覧](FUTURE_WORK.md) に移しました。次の作業は再開の指示を受けてから行います。以下の過去の更新記録は当時の結果であり、現在の未完了作業一覧ではありません。
 
-**展示会のPC2台・Ethernet直結:** [LAN展示モードの準備・起動・固定IP・Firewall](README-EXHIBITION.md)。各PCに同じオフラインビルドを配置し、PC1は `start-exhibition-host.bat`、PC2は `start-exhibition-client.bat` を実行します。通常のオンライン起動は以下の手順を継続します。
+**展示会の3台構成:** [PC0・PC1・PC2の役割、SSH、修正配布と復旧](README-EXHIBITION-3PC.md)、[LAN展示モードの準備・起動・固定IP・Firewall](README-EXHIBITION.md)。PC0は裏方の修正・ビルド・配布機、PC1は展示ホスト、PC2は展示クライアントです。PC1/PC2には同じオフラインビルドを配置します。通常のオンライン起動は以下の手順を継続します。
 
 TypeScript開発・ビルド手順と責務の分離は [ARCHITECTURE.md](ARCHITECTURE.md) を参照してください。`npm start` / `npm test` は先にビルドし、`npm run dev` はTypeScriptとCSSを監視します。直接 `node server.mjs` を使う場合は先に `npm run build` を実行してください。
 

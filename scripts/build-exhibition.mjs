@@ -47,6 +47,8 @@ for (const file of [
   'start-exhibition-host.bat',
   'start-exhibition-client.bat',
   'README-EXHIBITION.md',
+  'README-EXHIBITION-3PC.md',
+  'README-EXHIBITION-SECURITY.md',
   'assets/exhibition-lan/qa-summary.json',
   'exhibition.env',
 ])
@@ -76,7 +78,16 @@ for (const asset of manifest.assets) {
     glbs++;
   }
 }
-for (const key of ['cro-magnon-woman', 'cro-magnon-hunter', 'neanderthal-woman', 'neanderthal-hunter', 'cat-kunoichi', 'desert-fennec-mage', 'giant-ape']) add(`public/models/${key}/portrait.png`);
+for (const key of [
+  'cro-magnon-woman',
+  'cro-magnon-hunter',
+  'neanderthal-woman',
+  'neanderthal-hunter',
+  'cat-kunoichi',
+  'desert-fennec-mage',
+  'giant-ape',
+])
+  add(`public/models/${key}/portrait.png`);
 sources.set('runtime/node.exe', process.execPath);
 // Keep the license for the exact bundled runtime. New Node versions need their
 // matching license added during preparation, never fetched at exhibition startup.
@@ -107,5 +118,5 @@ const report = {
 };
 await writeFile(path.join(destination, 'exhibition-build.json'), JSON.stringify(report, null, 2));
 console.log(
-  `Offline exhibition ready: ${destination}\nBuild ${report.buildId}\n${files.length} verified files; ${glbs} GLBs; ${(bytes / 1024 / 1024).toFixed(1)} MiB. Copy the complete folder to BOTH PCs.`,
+  `Offline exhibition ready: ${destination}\nBuild ${report.buildId}\n${files.length} verified files; ${glbs} GLBs; ${(bytes / 1024 / 1024).toFixed(1)} MiB. Copy the complete folder to display PCs PC1 and PC2.`,
 );

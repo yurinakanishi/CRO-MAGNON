@@ -13,7 +13,7 @@ import { LocalPrediction } from '../dist/src/local-prediction.js';
 import { parseSettings, readSettings } from '../scripts/exhibition-config.mjs';
 import { sha256, buildId, verifyExhibition } from '../scripts/exhibition-integrity.mjs';
 import { exhibitionLocalUrl } from '../scripts/start-exhibition.mjs';
-import { mkdir, mkdtemp, writeFile } from 'node:fs/promises';
+import { mkdir, mkdtemp, readFile, writeFile } from 'node:fs/promises';
 const root = path.resolve(import.meta.dirname, '..');
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 function peer(url, origin, name = 'Player', build = 'test-build', session = '') {
@@ -325,4 +325,22 @@ test('offline package integrity catches a partial or modified copy', async () =>
   await verifyExhibition(folder);
   await writeFile(path.join(folder, 'asset'), 'changed');
   await assert.rejects(() => verifyExhibition(folder), /changed or missing/);
+});
+
+test('offline packages carry the three-PC role, SSH and security runbooks', async () => {
+  const buildScript = await readFile(path.join(root, 'scripts/build-exhibition.mjs'), 'utf8');
+  for (const file of [
+    'README-EXHIBITION.md',
+    'README-EXHIBITION-3PC.md',
+    'README-EXHIBITION-SECURITY.md',
+  ])
+    assert.match(buildScript, new RegExp(`'${file}'`));
+  const runbook = await readFile(path.join(root, 'README-EXHIBITION-3PC.md'), 'utf8');
+  assert.match(runbook, /PC0.*10\.10\.10\.3/);
+  assert.match(runbook, /PC1.*10\.10\.10\.1/);
+  assert.match(runbook, /PC2.*10\.10\.10\.2/);
+  assert.match(runbook, /authorized_keys/);
+  assert.match(runbook, /起動中のリリースへファイルを上書きしません/);
+  assert.match(runbook, /start-exhibition-host\.bat/);
+  assert.match(runbook, /start-exhibition-client\.bat/);
 });
