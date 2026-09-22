@@ -5,26 +5,95 @@
 [展示LANの基本手順](README-EXHIBITION.md)、来場者向けWindowsアカウントの方針は
 [展示用の安全対策](README-EXHIBITION-SECURITY.md)も参照してください。
 
-### 実機の接続確認（2026-09-22、設定作業中）
+### 実機の接続確認（2026-09-22、SSH・Public読み書き確認済み）
 
 - PC0のEthernetを `10.10.10.3/24`、DHCP無効、Private、Gateway/DNSなしに設定済み。
   有線リンクは1 Gbps。Wi-Fiの設定は維持している。
 - PC0からPC1 `10.10.10.1` とPC2 `10.10.10.2` へのpingは両方成功（0〜1 ms）。
-- PC2のTCP 22は応答し、Windows OpenSSHの待ち受けを確認済み。
-  PC1のTCP 22と8081はタイムアウト。SSHログイン成功やゲーム起動を確認した記録ではない。
+- 10:55〜11:00の確認で、PC1・PC2の両方に `CRO-MAGNON` 標準ユーザーとして
+  鍵認証SSHログインが成功。両PCへのSCP転送も成功し、3ファイルのSHA-256一致を確認済み。
+  ホスト鍵の実機画面照合はユーザーの明示指示で省略し、前回取得した鍵から変更がないことを
+  確認して登録した。以後の厳密なホスト鍵検証は有効にしている。
+  PC1の8081は初期確認でタイムアウトしており、ゲーム起動を確認した記録ではない。
 - このPC0には旧展示用SSH秘密鍵がなかったため、パスフレーズ付きEd25519鍵を機体別に作成し、
   両方ともSSHエージェントへの登録を確認済み。秘密鍵はPC0の `.ssh` にだけ保持している。
-  PC1/PC2の標準ユーザーへの公開鍵登録は未完了。
+  PC1/PC2の標準ユーザーへの公開鍵登録と、その鍵による認証成功を確認済み。
   SSH鍵のファイルがあること、ポートが開くこと、認証成功は別々に確認する。
 - PC0のWindows `ssh-agent` を自動起動に設定し、稼働を確認済み。
 - PC0のSSH接続名 `cro-pc1` / `cro-pc2` を作成済み。ユーザーは両方とも `CRO-MAGNON`、
-  鍵は機体ごとに分離。専用 `known_hosts` はホスト鍵の照合後に登録し、厳密なホスト鍵確認を使う。
+  鍵は機体ごとに分離。専用 `known_hosts` へ上記の承認に基づき登録し、厳密なホスト鍵確認を使う。
 - ユーザーから、PC1/PC2の `CRO-MAGNON` アカウントは作成済みとの確認あり。
   初回登録キットはGit対象外の `output/lan-setup-2026-09-22/display-setup-kit.zip` に作成。
-  一時配信は `http://10.10.10.3:4189/`（PC1・PC2だけ許可、起動から1時間で終了）。
-  登録完了後に一時配信と `CRO-MAGNON-Temporary-SSH-Setup-20260922` のFirewall規則を片付ける。
+  初回配信用の `http://10.10.10.3:4189/` はSSH/SCP成功後の11:02に停止。
+  `CRO-MAGNON-Temporary-SSH-Setup-20260922` のFirewall規則も11:04の管理者処理で削除済み。
+- 09:28の再確認では、配信が以前の1時間制限で停止し、PC0のEthernetもPublicに変わっていた。
+  自動終了を撤去し、配信許可の設定時に対象Ethernetの機体情報と `10.10.10.3/24` を照合して
+  Privateへ設定するよう変更した。Wi-Fiや他アダプターの分類は変更しない。
+  09:29に配信を再開し、09:30:52にはPC2から設定ページへの実アクセスを確認。
+  09:34にはPC1からのページ・ZIP取得も確認。Privateへ戻す管理者確認はキャンセルとして終了し、
+  10:47時点のPC0 EthernetはPublicだったが、11:04の管理者処理でPrivateへ変更し、実状態も確認済み。
+- 初回のSSHログイン後、両PCとも `C:\Users\Public` と `C:\Users\Public\CRO-MAGNON` へのアクセス拒否を確認。
+  初回SSHスクリプトに不足していたPublic権限設定を
+  `scripts/setup-exhibition-public-folders.ps1` として追加した。最初に使った展示ユーザーの
+  個人フォルダーは別のログインユーザーでは開けないため、両PCの
+  `C:\ProgramData\CRO-MAGNON-Setup-20260922\Public-Setup.cmd` へ補修用ファイルを配置し直した。
+  3ファイルのSHA一致と、ローカルUsersの読み取り・実行権限を確認済み。この一時領域に秘密鍵や
+  ゲーム本体は置かない。
+- ユーザーによる両PCの設定実行後、11:45にPC0から両方のSSHコマンド実行と、
+  `C:\Users\Public\CRO-MAGNON\incoming`・`releases` での一時ファイルの作成・読み取り・
+  追記・削除がすべて成功。展示ユーザーは両方とも標準ユーザーのまま。
+  11:46に両PCの固定IPとPublicの3フォルダーの存在を確認し、`releases` 直下に版フォルダーは
+  検出されなかった。ProgramDataの設定結果JSONは取得できていないが、実際の読み書きで確認した。
+  記録は `output/lan-setup-2026-09-22/cro-pc1-file-access-latest.json` / `cro-pc2-file-access-latest.json`
+  と、同じ場所の `cro-pc1-display-state-latest.json` / `cro-pc2-display-state-latest.json`。
+- 次回の初回設定用に、SSHとPublic権限をまとめて設定するキット生成スクリプトを追加。
+  `Setup-PC1.cmd` / `Setup-PC2.cmd` の1回の実行で両方を設定する。両処理が成功した場合だけ
+  完了を表示する。現在の更新キットは `output/exhibition-setup-20260922-r04.zip`。
+  r03ではPC1のゲーム同期用TCP8081を展示LANからだけ許可する設定も含む。
+  Windows PowerShell 5.1で4スクリプトの構文、ZIPの9ファイルと8件のSHA、起動CMD2件、
+  Publicヘルパー欠落時の停止、既存ZIPの上書き拒否を確認した。
+  r04ではSSH経由の初期設定をエラーで止め、展示画面へ管理者確認を出さない。
+  記録は `output/verify-exhibition-setup-r04-result.json`。統合版の展示PC上での一括実行はまだ行っていないが、
+  PublicとPC1のゲーム通信許可は各補助スクリプトで実機設定・通信確認を完了した。
 - PC0変更前の設定と実行結果は、Git対象外の `output/lan-setup-2026-09-22/` に保存。
-  ゲームの更新・起動・停止は実施していない。
+  以下の配布記録より前の作業ではゲームの更新・起動・停止は実施していない。
+
+### 展示ゲームの配布と起動（2026-09-22）
+
+両PCの現在の版は `C:\Users\Public\CRO-MAGNON\releases\exhibition-20260922-1200`。
+`buildId` は `f89f86b303cdb6c4aa314a61e75735bedd31ce4443d7b8bb4a9dfa2ed0cc5694`、
+ZIPのSHA-256は `025371f4b85ff58e18cd76fb4930ce348a85a8958793b4efb3d0c2a26c765e23`。
+全394ファイル・78GLBをPC0/PC1/PC2で照合し、Node.js v24.16.0と対応する公式LICENSEを同梱。
+配布処理を最新LOD名と洞窟の外部画像3件に対応させ、全689テスト・型・375JS構文・依存境界を確認。
+女性2体の `lod-face-r10.glb` を含む16個の性能LODも同梱されている。
+
+PC1の新版ホストとPC2の新版クライアントは、各機の `CRO-MAGNON` 標準ユーザーの対話セッション2で起動。
+両PCのPublic直下にあった旧版は保持し、PC2の旧クライアントPID25828だけを実行パス・旧buildIdで
+照合して停止した。旧PC1/PC2は異なるbuildIdだったため、旧版は混在して使用しない。
+PC1のホストは配布前に停止しており、新しい展示ワールドで起動した。
+
+PC1でユーザーが管理者確認を承認し、Privateの `10.10.10.1:8081` を
+`10.10.10.0/24` から許可する `CRO-MAGNON-Exhibition-LAN` 規則を設定済み。
+PC2からホストへのHTTP健康診断・buildId一致が成功し、両PCそれぞれのlocalhost配信から
+HTMLと最新素材の8ファイルのSHA一致を確認。専用 `LAN-QA-0922` 部屋へ両実機から同時に接続し、
+PC1から見たPC2の移動4.67mと攻撃、PC2から見たPC1の移動4.38mと攻撃の同期を確認した。
+この検査は通信プログラムによるもので、実画面の操作・描画の検査とは区別する。
+
+通常起動は新しい版のBATを各PCで実行する。今回用意した手動実行タスクを使う場合は、
+各PCで `CRO-MAGNON` にログインした状態で、PC0から次のコマンドでも起動できる。
+タスクは管理者昇格なし・定期実行なしで、その展示ユーザーの画面にランチャーを開く。
+
+```powershell
+ssh cro-pc1 schtasks /Run /TN CRO-MAGNON-PC1-exhibition-20260922-1200
+ssh cro-pc2 schtasks /Run /TN CRO-MAGNON-PC2-exhibition-20260922-1200
+```
+
+両PCの画面用URLは、それぞれのPCで `http://localhost:4173/?room=EXHIBITION`。
+起動補助とログは各PCの `C:\Users\Public\CRO-MAGNON\operations\exhibition-20260922-1200`。
+証拠はPC0の `output/lan-setup-2026-09-22/` の `deployment-*.json`、
+`cro-pc*-installed-release.json`、`cro-pc*-http-assets.json`、`lan-peer-PC*.json` を参照。
+パッケージはGit HEAD `aa9b8b6c3408f04e2689ce3ce252fc5690c2ea07` と、この作業の配布処理・手順書変更から作成。
+この配布ではゲームソースの変更・通常3000番の再起動は行っていない。
 
 ## 最初に自分の役割を判定する
 
@@ -105,23 +174,33 @@ Test-NetConnection 10.10.10.2 -Port 22
 `CRO-MAGNON` を実在する標準ユーザー名へ置き換え、機体ごとの記録に残してください。
 このユーザーを `Administrators` グループへ追加しません。
 
-PC1/PC2で一度だけ、管理者PowerShellから配布領域を作り、その標準ユーザーだけに
-変更権限を与えます。
+その標準ユーザーで一度ログインしてから、後述の「SSHとPublicをまとめて初回設定する」の
+キットを使います。配布領域の作成と権限設定も含むため、個別にPublic設定を行う必要はありません。
+既にSSH設定済みのPCでPublic権限だけを補修する場合は、次の補助スクリプトをコピーし、
+対象PCの管理者PowerShellで実行します。`E:` は実際のコピー先へ置き換えてください。
 
 ```powershell
-$displayUser = 'CRO-MAGNON'
-$account = "$env:COMPUTERNAME\$displayUser"
-$root = 'C:\Users\Public\CRO-MAGNON'
-New-Item -ItemType Directory -Force "$root\incoming", "$root\releases" | Out-Null
-icacls $root /inheritance:r
-icacls $root /grant:r "SYSTEM:(OI)(CI)F" "BUILTIN\Administrators:(OI)(CI)F" "${account}:(OI)(CI)M"
+& E:\setup-exhibition-public-folders.ps1 -DisplayUser CRO-MAGNON
 ```
 
-- `incoming`: PC0から受け取るZIPの一時置き場です。
-- `releases`: 展開済みの版を、版ごとの別フォルダーで保持します。
+- `C:\Users\Public\CRO-MAGNON\incoming`: PC0から受け取るZIPの一時置き場です。
+- `C:\Users\Public\CRO-MAGNON\releases`: 展開済みの版を、版ごとの別フォルダーで保持します。
 - `current` のような実体フォルダーを上書きする運用はしません。
 
+SSHはNETWORKログオンなので、PublicのINTERACTIVEログオン向け権限だけではアクセスできない
+環境があります。`scripts/setup-exhibition-public-folders.ps1` は、管理者として対象PC上で実行すると、
+元のACLを保存し、Public自体には展示ユーザーの読み取り・通過権限を「このフォルダーのみ」で追加します。
+`CRO-MAGNON`・`incoming`・`releases` はSYSTEM/Administratorsにフルコントロール、
+展示ユーザーに変更権限を設定します。元の権限はスクリプトと同じフォルダーの
+`public-permissions-before-*.json` に毎回別名で保存します。
+Public内の他フォルダーへ権限を継承させず、ゲームファイルのコピー・更新・起動・停止は行いません。
+既存の明示的なACLは保持し、リンクやジャンクションを配置先として処理しません。
+
 ## Windows OpenSSHの初期設定
+
+通常は、下の「SSHとPublicをまとめて初回設定する」を使います。
+PC0側の鍵の準備は必要ですが、PC1/PC2側のOpenSSH導入・鍵登録・Public設定の手作業は不要です。
+各項の個別コマンドは、設定内容の確認や補修用です。
 
 MicrosoftのWindows OpenSSHでは、標準ユーザーの公開鍵は
 `C:\Users\<ユーザー>\.ssh\authorized_keys` に置きます。既定設定でAdministrators
@@ -213,11 +292,37 @@ icacls $authorized /grant:r "${account}:F" "SYSTEM:F"
 PC2ではコピー元を `cro-magnon-pc2.pub` にします。複数鍵を登録する場合は、公開鍵を
 1行ずつ追記します。秘密鍵は絶対にUSBでPC1/PC2へ運びません。
 
-既存の標準ユーザーがあり、そのユーザーで一度ログイン済みなら、
-`scripts/setup-exhibition-ssh-display.ps1` でOpenSSH Serverの導入・起動、公開鍵の登録、
-Private LAN上のPC0だけを許可するFirewall規則を設定できます。このスクリプトと
-対象PC用の `.pub` をUSBなどで運び、**対象PC自身の管理者PowerShell**で実行します。
-ユーザー作成、IP変更、ゲーム起動は行いません。例の `E:` は実際のコピー先へ置き換えます。
+#### SSHとPublicをまとめて初回設定する
+
+PC0で機体別の公開鍵を作成した後、リポジトリのルートからキットを生成します。
+
+```powershell
+.\scripts\build-exhibition-setup-kit.ps1 -PublicKeyDirectory "$env:USERPROFILE\.ssh"
+```
+
+このコマンドは `cro-magnon-pc1.pub` と `cro-magnon-pc2.pub` だけを読み、3本の設定スクリプト、
+機体別の起動CMD、説明とSHA-256一覧を含むZIPを `output/exhibition-setup-日時.zip` に作成します。
+秘密鍵は読み取らず、既存のキットも上書きしません。
+
+1. PC1/PC2に固定IPと標準ユーザーを用意し、そのユーザーで一度ログインします。
+2. キットのZIPをUSBなどで運び、**今操作しているユーザーが開けるフォルダーへ全体を展開**します。
+   別ユーザーの個人フォルダーに置いたり、ZIP内から直接実行したりしません。
+3. PC1では `Setup-PC1.cmd`、PC2では `Setup-PC2.cmd` を実行し、各PCで管理者確認を承認します。
+4. Public配布領域と権限、OpenSSH Serverの導入・起動、公開鍵、Private LAN上のPC0だけを
+   許可するFirewall規則を順に設定します。PC1ではゲーム同期用TCP8081を展示LANから許可する
+   規則も設定します。別途 `Public-Setup.cmd` や8081許可の管理者作業を行う必要はありません。
+5. 両方の処理が成功した場合だけ完了を表示し、キットのフォルダーへ `setup-PC1-result.json`
+   または `setup-PC2-result.json` を保存します。失敗時は画面に出たエラーを確認します。
+6. 次項でホスト鍵を照合し、PC0からSSH接続とPublicへの読み書きを確認します。
+
+Public用スクリプトが欠けている場合は設定開始前に止まり、Publicの設定に失敗した場合は
+SSH設定へ進みません。途中で失敗した場合、それまでの変更は残るため、原因を直して再実行します。
+ユーザー作成、固定IP変更、ゲームのコピー・更新・起動は行いません。
+実行ポリシーの変更は設定用PowerShellプロセスだけに適用します。
+
+手動で実行する場合も、`setup-exhibition-ssh-display.ps1` と
+`setup-exhibition-public-folders.ps1` を**同じフォルダーへ**コピーしてください。
+対象PC自身の管理者PowerShellで実行します。例の `E:` は実際のコピー先へ置き換えます。
 
 ```powershell
 # PC1で実行
@@ -231,7 +336,8 @@ Private LAN上のPC0だけを許可するFirewall規則を設定できます。�
 新しい鍵には接続元 `10.10.10.3` の制限を付けます。既定の広いOpenSSH受信規則は無効にしますが、
 別途作られた独自のFirewall規則や `sshd_config` は変更しません。既存設定でログインが拒否される場合は
 その内容を確認してから調整します。最後に表示されるホスト鍵の指紋を、次項でPC0側と照合してください。
-2026-09-22時点では、この補助スクリプトは構文確認までで、展示PC上での実行は未完了です。
+従来版では両PCのSSH/SCP成功を確認済みです。Publicを含む統合版は別途、
+構文・配布ZIPの同梱内容・欠落時の停止を確認し、実機での一括実行は未実施です。
 
 ### 5. ホスト鍵を照合して接続を試す
 
@@ -293,6 +399,28 @@ Restart-Service sshd
 リセットされます。
 
 ## 展示中に不具合を直して配布する
+
+### 展示中に権限確認を出さない
+
+PC0からの操作で、来場者のPC1/PC2に管理者確認や権限確認を出しません。
+Publicの権限、SSH、PC1のゲーム用TCP8081の許可は、開場前の初期セットアップで済ませます。
+現行の8081許可は実行ファイルのリリースパスに依存しないため、新しい版の別フォルダーを作るたびに
+管理者設定をやり直す必要はありません。
+
+展示中に行うZIP転送・展開・SHA照合・状態確認・通常起動は、標準ユーザーのSSHで行います。
+通常起動タスクもRunLevel 0で、管理者昇格は使いません。権限が足りなければPC0側へエラーを返し、
+その操作を止めます。`Setup-PC*.cmd`、`Public-Setup.cmd`、`Start-Process -Verb RunAs`、
+管理者確認を表示する対話タスクを、展示中の復旧方法として使いません。
+新たな管理者作業は、ユーザーが展示外の保守として明示的に指示したときに行います。
+
+2026-09-22に使った一時タスク `CRO-MAGNON-PC1-LAN-permission-20260922` と、
+`operations/exhibition-20260922-1200/request-exhibition-lan-permission.ps1` は、設定成功後に撤去しました。
+撤去時にPC1のゲームPID・開始時刻・buildIdが変わっていないことを確認済みです。
+記録は `output/lan-setup-2026-09-22/cro-pc1-admin-prompt-removed.json`。
+WindowsのUAC設定と展示ユーザーの標準権限は維持します。
+
+権限確認が不要でも、新版への切替・ゲーム再起動はプレイを中断します。
+転送と検証を先に済ませ、切替は来場者対応の区切りで行ってください。
 
 ### 1. 現行展示はそのまま動かす
 
@@ -465,6 +593,7 @@ ssh -vvv -i "$env:USERPROFILE\.ssh\cro-magnon-pc1" CRO-MAGNON@10.10.10.1 hostnam
 - [ ] IPは `10.10.10.1`
 - [ ] 標準ユーザーでログイン
 - [ ] PC0からだけSSHを許可
+- [ ] PC0から標準ユーザーでPublicのincoming/releasesに読み書きできる
 - [ ] PC2と同じbuildId
 - [ ] ホストBATを実行し、ウィンドウを開いたままにする
 - [ ] 停止すると展示ワールドがリセットされることを理解
@@ -474,6 +603,7 @@ ssh -vvv -i "$env:USERPROFILE\.ssh\cro-magnon-pc1" CRO-MAGNON@10.10.10.1 hostnam
 - [ ] IPは `10.10.10.2`
 - [ ] 標準ユーザーでログイン
 - [ ] PC0からだけSSHを許可
+- [ ] PC0から標準ユーザーでPublicのincoming/releasesに読み書きできる
 - [ ] PC1と同じbuildId
 - [ ] クライアントBATを実行
 - [ ] `EXHIBITION`、`LAN: Connected`、`2/5` を確認

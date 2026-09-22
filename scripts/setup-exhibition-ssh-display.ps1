@@ -1,6 +1,6 @@
 # Run locally in an elevated Windows PowerShell on the display PC.
 # The standard display user must already exist and have signed in once.
-# Copy only this script and that PC's .pub file from PC0.
+# Copy both setup scripts and that PC's .pub file from PC0, or use the setup kit.
 [CmdletBinding()]
 param(
   [Parameter(Mandatory = $true)]
@@ -12,6 +12,11 @@ param(
 )
 
 $ErrorActionPreference = 'Stop'
+$ProgressPreference = 'SilentlyContinue'
+$publicSetupScript = Join-Path $PSScriptRoot 'setup-exhibition-public-folders.ps1'
+if (-not (Test-Path -LiteralPath $publicSetupScript -PathType Leaf)) {
+  throw 'The Public setup helper is missing. Extract the complete setup kit before running it.'
+}
 $principal = [Security.Principal.WindowsPrincipal][Security.Principal.WindowsIdentity]::GetCurrent()
 if (-not $principal.IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator)) {
   throw 'Run this script in a local administrator PowerShell on the display PC.'
@@ -38,6 +43,12 @@ if ($publicKey -notmatch '^ssh-ed25519 [A-Za-z0-9+/]+={0,2}( [^\r\n]+)?$') {
 }
 $keyCheck = & ssh-keygen.exe -lf $PublicKeyFile 2>&1
 if ($LASTEXITCODE -ne 0) { throw 'The public key is invalid.' }
+
+Write-Host 'Preparing Public game folders and display-user permissions...'
+$publicResult = & $publicSetupScript -DisplayUser $DisplayUser | ConvertFrom-Json
+if ($publicResult.success -ne $true) {
+  throw 'Public folder setup did not complete. SSH setup has not been started.'
+}
 
 $capability = Get-WindowsCapability -Online -Name 'OpenSSH.Server~~~~0.0.1.0'
 if ($capability.State -ne 'Installed') {
@@ -79,14 +90,34 @@ if (Get-NetFirewallRule -Name $ruleName -ErrorAction SilentlyContinue) {
   New-NetFirewallRule -Name $ruleName -DisplayName 'CRO-MAGNON SSH from PC0' -Enabled True -Direction Inbound -Action Allow -Protocol TCP -LocalPort 22 -LocalAddress $address -RemoteAddress 10.10.10.3 -Profile Private | Out-Null
 }
 Get-NetFirewallRule -Name 'OpenSSH-Server-In-TCP' -ErrorAction SilentlyContinue | Disable-NetFirewallRule
+if ($Role -eq 'PC1') {
+  # PC1 hosts game synchronization. Both browsers load assets from their own PC.
+  $gameRuleName = 'CRO-MAGNON-Exhibition-LAN'
+  if (Get-NetFirewallRule -Name $gameRuleName -ErrorAction SilentlyContinue) {
+    Set-NetFirewallRule -Name $gameRuleName -Enabled True -Direction Inbound -Action Allow -Protocol TCP -LocalPort 8081 -LocalAddress 10.10.10.1 -RemoteAddress 10.10.10.0/24 -Profile Private
+  } else {
+    New-NetFirewallRule -Name $gameRuleName -DisplayName 'CRO-MAGNON Exhibition LAN' -Enabled True -Direction Inbound -Action Allow -Protocol TCP -LocalPort 8081 -LocalAddress 10.10.10.1 -RemoteAddress 10.10.10.0/24 -Profile Private | Out-Null
+  }
+}
 Set-Service sshd -StartupType Automatic
 Start-Service sshd
 & "$env:WINDIR\System32\OpenSSH\sshd.exe" -t
 if ($LASTEXITCODE -ne 0) { throw 'The existing sshd configuration failed validation; check it locally.' }
 
 Write-Host "Role: $Role | LAN: $address | User: $DisplayUser"
+Write-Host 'Public game folders: C:\Users\Public\CRO-MAGNON\incoming and releases'
 Write-Host 'Registered public key:'
-$keyCheck
+$keyCheck | ForEach-Object { Write-Host $_ }
 Write-Host 'Compare this host fingerprint with the one seen on PC0 before trusting the host:'
-& ssh-keygen.exe -lf "$env:ProgramData\ssh\ssh_host_ed25519_key.pub"
-Write-Host 'Then verify a key-authenticated hostname command from PC0. This script alone does not prove login success.'
+$hostFingerprint = & ssh-keygen.exe -lf "$env:ProgramData\ssh\ssh_host_ed25519_key.pub"
+if ($LASTEXITCODE -ne 0) { throw 'Unable to read the SSH host fingerprint.' }
+$hostFingerprint | ForEach-Object { Write-Host $_ }
+Write-Host 'Then verify SSH login and Public-folder read/write access from PC0.'
+[pscustomobject]@{
+  success = $true
+  role = $Role
+  displayUser = $DisplayUser
+  publicFolders = $publicResult
+  gameHostPort = $(if ($Role -eq 'PC1') { 8081 } else { $null })
+  hostFingerprint = ($hostFingerprint -join "`n")
+}

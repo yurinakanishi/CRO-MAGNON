@@ -21,7 +21,7 @@ Windows x64、Node.js 22以上、インストール済みのこのリポジト�
 PC1とPC2へコピーします。
 配布先にNode.js、npm、Cloudflare、開発ツールをインストールする必要はありません。
 ChromeまたはEdgeとGPUドライバーは事前にインストールしてください。
-今回の配布はNode.js v24.15.0を同梱します。別のNode版で再配布する場合は、
+今回の配布はNode.js v24.16.0を同梱します。別のNode版で再配布する場合は、
 その版の公式LICENSEを `scripts/licenses/node-v<version>-LICENSE.txt` に用意します。
 
 同じビルドをコピーし、`runtime`、`node_modules/ws`、`public`、`dist`、

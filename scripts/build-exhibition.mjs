@@ -67,7 +67,9 @@ let glbs = 0;
 for (const asset of manifest.assets) {
   add(`public/models/${asset.modelKey}/asset.json`);
   for (const model of [asset, ...(asset.lods || [])]) {
-    if (!/^\/models\/[a-z0-9-]+\/(model(?:-[a-z0-9]+)*|lod\d+)\.glb$/.test(model.url))
+    if (
+      !/^\/models\/[a-z0-9-]+\/(model(?:-[a-z0-9]+)*|lod(?:\d+|-[a-z0-9-]+))\.glb$/.test(model.url)
+    )
       throw new Error(`Unexpected model: ${model.url}`);
     const file = `public${model.url}`;
     if (
@@ -77,6 +79,20 @@ for (const asset of manifest.assets) {
       throw new Error(`Model integrity failed: ${file}`);
     add(file);
     glbs++;
+  }
+  // External runtime textures (for example cave pigment and limestone) are
+  // declared directly on the accepted asset. Historical provenance is not shipped.
+  for (const texture of Object.values(asset)) {
+    if (!texture || typeof texture !== 'object' || !texture.url?.match(/\.(png|jpe?g)$/)) continue;
+    if (!/^\/models\/[a-z0-9-]+\/[a-z0-9-]+\.(png|jpe?g)$/.test(texture.url))
+      throw new Error(`Unexpected texture: ${texture.url}`);
+    const file = `public${texture.url}`;
+    if (
+      (await sha256(path.join(root, file))) !== texture.sha256 ||
+      (await stat(path.join(root, file))).size !== texture.bytes
+    )
+      throw new Error(`Texture integrity failed: ${file}`);
+    add(file);
   }
 }
 for (const key of [
