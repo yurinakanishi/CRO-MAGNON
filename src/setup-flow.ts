@@ -5,6 +5,7 @@ import {
   normalizeDifficulty,
   type Difficulty,
 } from '../shared/difficulty.mjs';
+import { SPAWN_SITES, spawnSite } from '../shared/spawn-sites.mjs';
 import { parseCharacterValue } from './character-selection.js';
 
 /**
@@ -13,13 +14,20 @@ import { parseCharacterValue } from './character-selection.js';
  * whose はい submits the setup form. Escape, いいえ, the backdrop and the controller's
  * cancel button each step back one screen; backing out of the difficulty step returns
  * to the card grid with the pick still highlighted.
+ *
+ * The exhibition build has no difficulty: the card instead asks where to begin, as a
+ * grid of pictured sights, and picking one starts the game at once.
  */
-type Step = 'difficulty' | 'confirm';
+type Step = 'difficulty' | 'confirm' | 'spawn';
 
 interface SetupFlowOptions {
   form: HTMLFormElement;
   /** Difficulty to preselect when the question opens (the player's last choice). */
   difficulty: () => Difficulty;
+  /** True when the room lets the visitor choose a starting sight instead. */
+  spawnChoice?: () => boolean;
+  /** Starting sight to preselect (the visitor's last choice). */
+  spawn?: () => string;
   /** Called after focus moves, so the controller does not reuse the press that got here. */
   settle?: () => void;
 }
@@ -28,6 +36,9 @@ let current: SetupFlowOptions | null = null;
 
 const hiddenDifficulty = (form: HTMLFormElement) =>
   form.querySelector<HTMLInputElement>('input[name="difficulty"]');
+
+const hiddenSpawn = (form: HTMLFormElement) =>
+  form.querySelector<HTMLInputElement>('input[name="spawn"]');
 
 const overlay = (form: HTMLFormElement) => form.querySelector<HTMLElement>('#setup-flow');
 
@@ -67,6 +78,7 @@ function render(step: Step) {
   const model = characterModel(parseCharacterValue(card.value));
   const [name, variant] = model.name.split(' ');
   const difficulty = normalizeDifficulty(hiddenDifficulty(form)?.value || current.difficulty());
+  if (step === 'spawn') return renderSpawn(`${name}${variant ? ` ${variant}` : ''}`);
   const who = `<p class="setup-flow-eyebrow">${step === 'difficulty' ? 'Character' : 'Ready'}</p><h3 id="setup-flow-title"><strong>${name}</strong>${variant ? `<small>${variant}</small>` : ''}</h3>`;
   const body =
     step === 'difficulty'
@@ -102,18 +114,50 @@ function render(step: Step) {
   current.settle?.();
 }
 
+function renderSpawn(who: string) {
+  if (!current) return;
+  const { form } = current;
+  const picked = spawnSite(hiddenSpawn(form)?.value || current.spawn?.()).id;
+  overlay(form)?.remove();
+  form.insertAdjacentHTML(
+    'beforeend',
+    `<div id="setup-flow" class="character-confirm setup-flow" role="dialog" aria-modal="true" aria-labelledby="setup-flow-title" data-focus-scope data-step="spawn"><div class="spawn-picker"><p class="setup-flow-eyebrow">${who}</p><h3 id="setup-flow-title">どこから はじめますか？</h3><div class="spawn-grid" role="group" aria-label="はじめる場所">${SPAWN_SITES.map(
+      (site) =>
+        `<button type="submit" class="spawn-card" data-choose-spawn="${site.id}" aria-pressed="${site.id === picked}"><img src="/spawn/${site.id}.jpg" width="640" height="360" alt="" draggable="false"><strong>${site.name}</strong><small>${site.blurb}</small></button>`,
+    ).join('')}</div></div></div>`,
+  );
+  const flow = overlay(form)!;
+  flow.onclick = (event) => {
+    const target = event.target as HTMLElement;
+    if (target === flow) {
+      setupFlowBack();
+      return;
+    }
+    // The card is the submit button: record the sight before the form submits.
+    const choice = target.closest<HTMLButtonElement>('[data-choose-spawn]');
+    const input = hiddenSpawn(form);
+    if (choice && input) input.value = spawnSite(choice.dataset.chooseSpawn).id;
+  };
+  flow
+    .querySelector<HTMLElement>(`[data-choose-spawn="${picked}"]`)
+    ?.focus({ preventScroll: true });
+  current.settle?.();
+}
+
 /** Wires the card grid of `form`; safe to call once per page. */
 export function bindSetupFlow(options: SetupFlowOptions) {
   current = options;
   const { form } = options;
   if (!hiddenDifficulty(form))
     form.insertAdjacentHTML('afterbegin', '<input type="hidden" name="difficulty">');
+  if (!hiddenSpawn(form))
+    form.insertAdjacentHTML('afterbegin', '<input type="hidden" name="spawn">');
   const open = () => {
     const input = hiddenDifficulty(form);
     if (input) input.value = normalizeDifficulty(options.difficulty());
     // The name and room fields are validated before the questions start.
     if (!form.reportValidity()) return;
-    render('difficulty');
+    render(options.spawnChoice?.() ? 'spawn' : 'difficulty');
   };
   form.addEventListener('click', (event) => {
     const target = event.target as HTMLElement;

@@ -8,13 +8,15 @@ export function moveActor(
   now: number,
   move = (p: MovableActor, dx: number, dz: number) => ({ x: p.x + dx, z: p.z + dz }),
   configuredSpeed?: number,
+  // Room tuning for a player on foot; vehicles pass their own configuredSpeed.
+  speedScale = 1,
 ) {
   const character = characterModel(player);
   const maximumSpeed =
     configuredSpeed ??
     (player.runningRequested
       ? (character.runSpeed ?? WORLD.runSpeed)
-      : (character.walkSpeed ?? WORLD.walkSpeed));
+      : (character.walkSpeed ?? WORLD.walkSpeed)) * speedScale;
   let dx = 0,
     dz = 0,
     distance = maximumSpeed * dt;

@@ -10,6 +10,8 @@ export class LocalPrediction {
   inputAt = -Infinity;
   enabled = false;
   latencyMs = 0;
+  /** Room tuning for the on-foot speed, from the server's welcome. */
+  speedScale = 1;
   private display: any = null;
   private correction = { x: 0, z: 0 };
   private reconcile = false;
@@ -108,10 +110,10 @@ export class LocalPrediction {
     const catchup = p.predictionStarted ? 0 : age / 1000;
     p.predictionStarted = true;
     const move = (actor, dx, dz) => collision.move(actor, dx, dz, p.radius, obstacles);
-    if (catchup) movePlayer(p, catchup, now, move, configuredSpeed);
+    if (catchup) movePlayer(p, catchup, now, move, configuredSpeed, this.speedScale);
     const beforeX = p.x,
       beforeZ = p.z;
-    movePlayer(p, Math.min(0.05, dt), now, move, configuredSpeed);
+    movePlayer(p, Math.min(0.05, dt), now, move, configuredSpeed, this.speedScale);
     if (!this.display) this.display = { ...p };
     if (this.reconcile) {
       // Continue this frame's actual movement from the last displayed position.

@@ -2383,6 +2383,89 @@ dialog:has(.character-switch) {
   letter-spacing: 0.2em;
   color: #f7ecd0;
 }
+/* Exhibition start: a grid of pictured sights; picking one begins the game. */
+.spawn-picker {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  width: min(1080px, 100%);
+  max-height: 100%;
+  padding: 28px 30px 30px;
+  border-radius: 20px;
+  border: 1px solid #e0b07055;
+  background: linear-gradient(160deg, #182319f8, #0c140ff8);
+  box-shadow:
+    0 0 0 1px #00000088,
+    0 40px 120px #000e,
+    0 0 80px #e0b07022;
+  overflow-y: auto;
+  animation: title-rise 0.3s ease-out;
+}
+.spawn-picker h3 {
+  margin: 0;
+  font: 500 30px/1.25 var(--display);
+  letter-spacing: 0.12em;
+  color: #f7ecd0;
+}
+.spawn-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 16px;
+  margin-top: 6px;
+}
+.spawn-card {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 0 0 14px;
+  overflow: hidden;
+  border-radius: 14px;
+  border: 1px solid #e0b07044;
+  background: #ffffff06;
+  color: #e6e0c8;
+  text-align: left;
+  cursor: pointer;
+  transition:
+    transform 0.15s ease-out,
+    border-color 0.15s;
+}
+.spawn-card img {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 16/9;
+  object-fit: cover;
+  background: #0d1712;
+}
+.spawn-card strong {
+  padding: 6px 16px 0;
+  font: 500 21px/1.3 var(--display);
+  letter-spacing: 0.1em;
+  color: #f7ecd0;
+}
+.spawn-card small {
+  padding: 0 16px;
+  font-size: 14px;
+  line-height: 1.5;
+  color: #d6c79a;
+}
+.spawn-card:hover,
+.spawn-card:focus-visible,
+.spawn-card.gamepad-focus {
+  border-color: #f2cf94;
+  transform: translateY(-3px);
+  box-shadow: 0 0 40px #e0b07040;
+}
+.spawn-card:focus-visible,
+.spawn-card.gamepad-focus {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+}
+@media (max-width: 760px) {
+  .spawn-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
 @media (max-width: 640px) {
   .character-confirm-card {
     flex-direction: column;

@@ -1,6 +1,7 @@
 import { WORLD } from './world.mjs';
 import { attackProfile, ATTACK_PROFILES, shoulderMagic } from './combat-profiles.mjs';
 import { hitCompanion524 } from './companion-524.mjs';
+import { roomRules } from './room-rules.mjs';
 
 export const COMBAT = Object.freeze({
   attackDamage: 15,
@@ -124,7 +125,7 @@ export function startAttack(room, player, message: { targetId?: string } = {}, n
     impactAt: now + profile.impactMs,
     kind: profile.id,
   };
-  player.energy = Math.max(0, player.energy - profile.energy);
+  if (!roomRules(room).freeActions) player.energy = Math.max(0, player.energy - profile.energy);
   return { accepted: true, interruptedCooking };
 }
 
@@ -177,13 +178,20 @@ export function resolveAttack(room, player, now = Date.now()) {
     )
     .sort((a, b) => combatDistance(player, a.target) - combatDistance(player, b.target))[0];
   if (!hit) return { hit: false };
-  return applyHit(hit, profile, now, player.id, {
+  return applyHit(room, hit, profile, now, player.id, {
     x: Math.sin(strike.facing),
     z: Math.cos(strike.facing),
   });
 }
 
-function applyHit({ target, kind }, profile, now, attackerId = null, direction = { x: 0, z: 1 }) {
+function applyHit(
+  room,
+  { target, kind },
+  profile,
+  now,
+  attackerId = null,
+  direction = { x: 0, z: 1 },
+) {
   if (kind === 'companion524') {
     hitCompanion524(target, direction.x, direction.z, now);
     return { hit: true, target, kind, killed: false, weapon: profile.key };
@@ -192,7 +200,7 @@ function applyHit({ target, kind }, profile, now, attackerId = null, direction =
   // absorbed, and the attacker is told which rank must fall first.
   if (kind === 'enemy' && target.sealed === true)
     return { hit: true, sealed: true, target, kind, killed: false, weapon: profile.key };
-  target.health = Math.max(0, target.health - profile.damage);
+  target.health = Math.max(0, target.health - profile.damage * roomRules(room).playerDamageScale);
   const killed = target.health === 0;
   // Super armour (a sabertooth in mid-leap) takes the damage without flinching.
   const armoured = kind === 'enemy' && target.superArmor === true && !killed;
@@ -351,7 +359,7 @@ export function updateProjectiles(room, now = Date.now()) {
       room.projectileImpacts.push(impact);
       if (hit)
         events.push({
-          ...applyHit(hit, profile, now, owner.id, {
+          ...applyHit(room, hit, profile, now, owner.id, {
             x: projectile.dx,
             z: projectile.dz,
           }),

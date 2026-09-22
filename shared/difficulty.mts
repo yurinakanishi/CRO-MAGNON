@@ -29,8 +29,14 @@ export function normalizeDifficulty(value: unknown): Difficulty {
 }
 
 /** Difficulty is personal in co-op: damage is scaled for the player who receives it. */
-export function incomingDamage(player: { difficulty?: unknown } | null, amount: number): number {
+export function incomingDamage(
+  player: { difficulty?: unknown } | null,
+  amount: number,
+  // A room may fix one multiplier for everyone instead of the personal choice.
+  roomScale: number | null = null,
+): number {
   if (!Number.isFinite(amount) || amount <= 0) return 0;
-  const multiplier = DIFFICULTIES[normalizeDifficulty(player?.difficulty)].incomingDamage;
+  const multiplier =
+    roomScale ?? DIFFICULTIES[normalizeDifficulty(player?.difficulty)].incomingDamage;
   return Math.max(1, Math.round(amount * multiplier));
 }

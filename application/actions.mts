@@ -8,6 +8,7 @@ import { GATHER_RANGE, interactionVisible } from '../shared/interactions.mjs';
 import { campContribution } from '../shared/camp-contribution.mjs';
 import { handleRidingAction } from '../shared/riding.mjs';
 import { NPC } from '../shared/world.mjs';
+import { roomRules } from '../shared/room-rules.mjs';
 import { handleGulfAction, ensureGulfPlayer } from '../shared/gulf-life.mjs';
 import { handleFishingAction, cancelFishing } from '../shared/fishing.mjs';
 import { handleCoastalAction, cancelCoastal } from '../shared/coastal-craft.mjs';
@@ -170,7 +171,7 @@ export function createActionHandler({
       player.gathered = (player.gathered ?? 0) + collected;
       recordAdventureGather(player, nearest, collected);
       if (nearest.type === 'obsidian') ensureGulfPlayer(player).procured += collected;
-      player.energy = Math.max(0, player.energy - 3);
+      if (!roomRules(room).freeActions) player.energy = Math.max(0, player.energy - 3);
       const label = { wood: '木材', stone: '石', berry: 'ベリー', obsidian: '黒曜石' }[
         nearest.type
       ];

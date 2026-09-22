@@ -14,7 +14,7 @@ import {
 import { moveActor } from './movement.mjs';
 import { createBehemoth, updateBehemoths } from './violet-behemoth.mjs';
 import { provoker } from './perception.mjs';
-import { respawnDelay } from './room-rules.mjs';
+import { respawnDelay, roomRules } from './room-rules.mjs';
 import { createSabertooth, updateSabertooths } from './sabertooth.mjs';
 import {
   CROW_ALTAR,
@@ -203,8 +203,10 @@ function recoverPlayers(room, now, notify) {
 
 function hitPlayer(room, enemy, player, now, notify, damage?: number, label = '杖') {
   damage ??= crowRules(enemy).attackDamage;
-  damage = incomingDamage(player, damage);
-  player.energy = Math.max(0, player.energy - damage);
+  const tuning = roomRules(room);
+  damage = incomingDamage(player, damage, tuning.incomingDamageScale);
+  // A floor above zero means this room never downs a player.
+  player.energy = Math.max(Math.min(player.energy, tuning.minimumEnergy), player.energy - damage);
   player.hurtSequence = (player.hurtSequence || 0) + 1;
   player.hurtAt = now;
   player.cookingEndsAt = 0;
@@ -396,7 +398,9 @@ function updateCastleRite(room, now, notify) {
   if (!crows.length) return false;
   const standing = crows.filter((enemy) => enemy.phase === 'alive');
   const openTier = standing.length ? Math.min(...standing.map(crowTier)) : 6;
-  for (const enemy of crows) enemy.sealed = enemy.phase === 'alive' && crowTier(enemy) > openTier;
+  const sealing = roomRules(room).castleSeal;
+  for (const enemy of crows)
+    enemy.sealed = sealing && enemy.phase === 'alive' && crowTier(enemy) > openTier;
   const rite = (room.crowRite ??= { openTier: null, endedAt: null });
   const previous = rite.openTier;
   if (previous === openTier) return false;

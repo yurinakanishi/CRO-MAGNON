@@ -23,6 +23,7 @@ import {
 import { WorldRenderer } from './world3d.js';
 
 import { WORLD, CAMP, NPC, INITIAL_RESOURCES } from '../shared/world.mjs';
+import { spawnSite } from '../shared/spawn-sites.mjs';
 import { HUNTING, usableCookingFire } from '../shared/hunting.mjs';
 import { CROP_INVENTORY, ROOT_RECIPES } from '../shared/crops.mjs';
 import { installCropFoodUI } from './crop-food-ui.js';
@@ -256,7 +257,11 @@ const DOUBLE_TAP_MS = 300;
 const DIRECTION_KEYS = ['w', 'a', 's', 'd', 'arrowup', 'arrowdown', 'arrowleft', 'arrowright'];
 const lastTapAt = new Map<string, number>();
 let dashing = false;
-const wantsToRun = () => runMode || dashing;
+// Room tuning from the server's welcome: the exhibition floor always runs, faster.
+let tuning = { alwaysRun: false, speedScale: 1 };
+// The sight chosen in the setup flow; only a room with spawnChoice honours it.
+let spawnChoice = spawnSite(readSaved('cro-spawn', 'camp')).id;
+const wantsToRun = () => runMode || dashing || tuning.alwaysRun;
 let lastGait = false;
 let renderer;
 try {
@@ -487,7 +492,7 @@ async function connect(automatic = false) {
       ...profile,
       resume: '1',
       session: savedSession(sessionKey(profile.room)),
-      ...(startAtCamp ? { startAtCamp: '1' } : {}),
+      ...(startAtCamp ? { startAtCamp: '1', spawn: spawnChoice } : {}),
     }),
   );
   socket = ws;
@@ -513,8 +518,16 @@ async function connect(automatic = false) {
       for (const [key, value] of Object.entries(profile)) save(`cro-${key}`, value);
       $('#profile-name').textContent = profile.name;
       $('#room-label').textContent = profile.room;
+      tuning = { alwaysRun: false, speedScale: 1, ...message.rules };
+      renderer.prediction.speedScale = tuning.speedScale;
       connection(true, 'オンライン');
-      renderer.focusPlayer();
+      // Arrive looking at the chosen sight, not at the default camp view.
+      const site = spawnSite(spawnChoice);
+      renderer.focusPlayer(
+        startAtCamp && message.rules?.spawnChoice
+          ? Math.atan2(site.x - site.look.x, site.z - site.look.z)
+          : undefined,
+      );
       if (message.resumed && !startAtCamp)
         notify('接続が戻りました。持ち物と進行を復元しました。', 'success');
       startAtCamp = false;
@@ -1105,6 +1118,8 @@ function applyProfileForm(form: HTMLFormElement) {
     ...parseCharacterValue(data.get('character')),
     difficulty: normalizeDifficulty(data.get('difficulty')),
   };
+  spawnChoice = spawnSite(data.get('spawn')).id;
+  save('cro-spawn', spawnChoice);
   if (!keepSession) saveSession(sessionKey(profile.room), null);
   for (const [k, v] of Object.entries(profile)) save(`cro-${k}`, v);
   history.replaceState({}, '', `?room=${encodeURIComponent(profile.room)}`);
@@ -1674,7 +1689,7 @@ function openPauseMenu(tab = 'inventory') {
       )}${subPanel('tribe', tribeMarkup())}${subPanel('objectives', objectivesMarkup())}`,
     )}${panel(
       'settings',
-      `<h2>設定</h2><p class="modal-intro">難易度・音・画面・視点の調整。</p><div class="settings-list">${difficultySettingsMarkup()}<div class="settings-item"><div><strong>環境音</strong><p>谷の音を鳴らします。</p></div><button class="button button-outline" data-setting="sound" aria-pressed="${soundEnabled}">${icon(soundEnabled ? 'sound' : 'muted')} ${soundEnabled ? 'オン' : 'オフ'}</button></div><div class="settings-item"><div><strong>全画面表示</strong><p>ブラウザーの枠を隠して表示します。</p></div><button class="button button-outline" data-setting="fullscreen">${icon('expand')} 切り替え</button></div><div class="settings-item"><div><strong>視点</strong><p>カメラの距離を変え、キャラクターの後ろへ戻します。</p></div><div class="settings-buttons"><button class="button button-outline" data-setting="zoom-out">− 遠く</button><button class="button button-outline" data-setting="zoom-in">+ 近く</button><button class="button button-outline" data-setting="camera">${icon('target')} 視点を戻す</button></div></div><div class="settings-item"><div><strong>コントローラー</strong><p class="gamepad-connection" role="status">${usingGamepad ? '' : '未使用 · コントローラーをつないでボタンを押すと切り替わります。'}</p></div></div></div><p id="local-save-status" class="form-note" role="status" hidden></p>${localResetMarkup()}`,
+      `<h2>設定</h2><p class="modal-intro">${fixedIdentity ? '' : '難易度・'}音・画面・視点の調整。</p><div class="settings-list">${fixedIdentity ? '' : difficultySettingsMarkup()}<div class="settings-item"><div><strong>環境音</strong><p>谷の音を鳴らします。</p></div><button class="button button-outline" data-setting="sound" aria-pressed="${soundEnabled}">${icon(soundEnabled ? 'sound' : 'muted')} ${soundEnabled ? 'オン' : 'オフ'}</button></div><div class="settings-item"><div><strong>全画面表示</strong><p>ブラウザーの枠を隠して表示します。</p></div><button class="button button-outline" data-setting="fullscreen">${icon('expand')} 切り替え</button></div><div class="settings-item"><div><strong>視点</strong><p>カメラの距離を変え、キャラクターの後ろへ戻します。</p></div><div class="settings-buttons"><button class="button button-outline" data-setting="zoom-out">− 遠く</button><button class="button button-outline" data-setting="zoom-in">+ 近く</button><button class="button button-outline" data-setting="camera">${icon('target')} 視点を戻す</button></div></div><div class="settings-item"><div><strong>コントローラー</strong><p class="gamepad-connection" role="status">${usingGamepad ? '' : '未使用 · コントローラーをつないでボタンを押すと切り替わります。'}</p></div></div></div><p id="local-save-status" class="form-note" role="status" hidden></p>${localResetMarkup()}`,
     )}<p class="pause-hint">${usingGamepad ? '十字キー・左スティックで選ぶ · ○ で決定 · ×（下のボタン）か OPTIONS で閉じる' : 'ESC で閉じる · ↑↓←→ で選ぶ · Enter で決定'}</p></div></div>`,
   );
   const root = $('#modal-body') as HTMLElement;
@@ -1830,6 +1845,8 @@ $('#setup-back').onclick = () => (joined ? screens.hide() : showTitle());
 bindSetupFlow({
   form: $('#setup-form'),
   difficulty: () => normalizeDifficulty(profile.difficulty),
+  spawnChoice: () => fixedIdentity,
+  spawn: () => spawnChoice,
   settle: () => gamepadControls?.suspend(),
 });
 $('#setup-form').onsubmit = (e) => {
@@ -2079,7 +2096,7 @@ function updateMovementInput() {
     wantsToRun(),
     canMove ? gamepadControls.movement : { x: 0, y: 0, running: false },
   );
-  const running = motion.running;
+  const running = motion.running || tuning.alwaysRun;
   if (running !== lastGait) {
     send({ type: 'gait', running });
     lastGait = running;

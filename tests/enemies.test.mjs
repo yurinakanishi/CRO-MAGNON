@@ -657,12 +657,25 @@ test('red burst: a ring telegraph around the caster, then damage only to those s
   assert.equal(room.hexBursts.length, 0);
 });
 
+test('the exhibition floor softens blows and never downs a visitor', async () => {
+  const { EXHIBITION_RULES } = await import('../dist/shared/room-rules.mjs');
+  const { room, player } = fixture();
+  room.rules = EXHIBITION_RULES;
+  player.energy = 2;
+  updateEnemies(room, 0, 2000);
+  updateEnemies(room, 0, 2450);
+  assert.equal(player.hurtSequence, 1);
+  assert.equal(player.energy, 1);
+  assert.equal(player.downedUntil, 0);
+});
+
 test('exhibition restores fallen players to 100 while normal play restores them to 50', async () => {
   const { DEFAULT_RULES, EXHIBITION_RULES } = await import('../dist/shared/room-rules.mjs');
   const { room, enemy, player } = fixture();
   assert.equal(DEFAULT_RULES.recoveryEnergy, 50);
   assert.equal(EXHIBITION_RULES.recoveryEnergy, 100);
-  room.rules = EXHIBITION_RULES;
+  // Recovery and respawn timing, with the floor's downing protection set aside.
+  room.rules = { ...EXHIBITION_RULES, minimumEnergy: 0, incomingDamageScale: null };
   player.energy = 10;
   updateEnemies(room, 0, 2000);
   updateEnemies(room, 0, 2450);

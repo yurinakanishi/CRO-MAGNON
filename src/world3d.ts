@@ -861,9 +861,10 @@ export class WorldRenderer {
   adjustZoom(delta) {
     this.setZoom(this.zoom + delta);
   }
-  focusPlayer() {
+  focusPlayer(yaw?: number) {
     const me = this.players.get(this.selfId);
-    if (me?.state.moving) this.yaw = me.state.facing + Math.PI;
+    if (yaw !== undefined) this.yaw = yaw;
+    else if (me?.state.moving) this.yaw = me.state.facing + Math.PI;
     else this.yaw = -0.28;
     this.pitch = 0.19;
     this.targetDistance = me?.state.mountId

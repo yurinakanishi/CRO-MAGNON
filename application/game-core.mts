@@ -1,5 +1,5 @@
 import { updateFishing, cancelFishing } from '../shared/fishing.mjs';
-import { DEFAULT_RULES, EXHIBITION_RULES } from '../shared/room-rules.mjs';
+import { DEFAULT_RULES, EXHIBITION_RULES, clientRules, roomRules } from '../shared/room-rules.mjs';
 import { createHouseholds, householdSnapshots } from '../shared/household-life.mjs';
 import {
   createResidents,
@@ -40,6 +40,7 @@ import { BEHEMOTH } from '../shared/behemoth-rules.mjs';
 import { SABERTOOTH } from '../shared/sabertooth-rules.mjs';
 import { animalIsSolid, updateHunting } from '../shared/hunting.mjs';
 import { movePlayer } from '../shared/movement.mjs';
+import { CAMP_SPAWN, spawnFacing, spawnSite } from '../shared/spawn-sites.mjs';
 import { canStartJump, jumpProgress } from '../shared/jumping.mjs';
 import { normalizeDifficulty } from '../shared/difficulty.mjs';
 
@@ -270,8 +271,11 @@ export function createGameCore({
       .concat(room.animals.filter(animalIsSolid), room.enemies.filter(enemyIsSolid), room.residents)
       .map(actorObstacle);
     const otherPlayers = room.players.size - (active ? 1 : 0);
+    // The camp unless this room lets a title start name another sight.
+    const site =
+      startAtCamp && roomRules(room).spawnChoice ? spawnSite(params.get('spawn')) : CAMP_SPAWN;
     const origin = startAtCamp
-      ? { x: 48 + otherPlayers * 1.1, z: 57 + (otherPlayers % 2) }
+      ? { x: site.x + otherPlayers * 1.1, z: site.z + (otherPlayers % 2) }
       : player;
     const spawn =
       room.collision.nearestFree(origin, radius, dynamic) ||
@@ -327,6 +331,7 @@ export function createGameCore({
     });
     stopActor(player);
     Object.assign(player, spawn);
+    if (startAtCamp && site !== CAMP_SPAWN) player.facing = spawnFacing(player, site);
     room.players.set(player.id, player);
     send(socket, {
       type: 'welcome',
@@ -339,6 +344,7 @@ export function createGameCore({
       room: roomName,
       resumed,
       session: player.sessionToken,
+      rules: clientRules(room),
       profile: {
         name: player.name,
         species: player.species,
@@ -440,13 +446,13 @@ export function createGameCore({
         controlled.dx = dx / length;
         controlled.dz = dz / length;
         controlled.lastInput = now;
-        controlled.runningRequested = message.running === true;
+        controlled.runningRequested = message.running === true || roomRules(room).alwaysRun;
         controlled.target = null;
         controlled.path = [];
         controlled.navigationGoal = null;
         controlled.navigationEnd = null;
       } else if (message.type === 'gait' && typeof message.running === 'boolean') {
-        controlled.runningRequested = message.running;
+        controlled.runningRequested = message.running || roomRules(room).alwaysRun;
       } else if (
         message.type === 'action' &&
         typeof message.action === 'string' &&
@@ -565,8 +571,13 @@ export function createGameCore({
           player.moving = false;
           player.running = false;
         } else if (!player.mountId && !player.boatId && !player.carrierId) {
-          movePlayer(player, dt, now, (p, dx, dz) =>
-            room.collision.move(p, dx, dz, player.radius, dynamic),
+          movePlayer(
+            player,
+            dt,
+            now,
+            (p, dx, dz) => room.collision.move(p, dx, dz, player.radius, dynamic),
+            undefined,
+            roomRules(room).speedScale,
           );
         }
         if (heartbeat) {
