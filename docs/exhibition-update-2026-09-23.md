@@ -28,6 +28,30 @@ GitHubのmainも同じSHAであることを確認した。
 
 ## 配布状況
 
+### その後のPC2復旧とセットアップ修正
+
+ユーザーの診断でPC2はsshdがRunning、TCP22が待ち受け中だが、有線LANがPublicと判明。
+旧セットアップ再実行はタスク再登録の手前で「Stop the exhibition at a visitor break
+before registering its launcher」で中断した。このエラーを報告した機体はPC2。
+LAN・SSHの再設定後、PC0からPC2へ標準ユーザーのSSH接続が復旧した。
+
+PC2へゲーム版 `exhibition-20260923-complete-r01` を配置し、411ファイル・78GLBを照合。
+PC1は引き続きSSHがタイムアウトするため、PC1/PC2の選択版・稼働版は変更していない。
+記録 `output/exhibition-fleet/20260923-073743-deploy-13ed0fcc45bd48ccaa49e591c28d7e74.json`。
+
+ユーザー指定でセットアップを修正。起動中の展示が記録・タスク・PIDと一致する場合、
+既存リリースを照合し、標準ランチャーへ停止を要求する。停止を確認してから再登録し、
+元々起動していた展示だけを同じ版で再起動する。停止・登録・起動の失敗は未完了として返す。
+無関係なプロセスをまとめて終了せず、待機機は起動しない。
+
+修正版セットアップ：`output/exhibition-setup-20260923-r05.zip`、17ファイル。
+SHA-256：`f619b9147bed63086278138853fb1b4baf5eed248c66b7950c090fee2e1dbc03`。
+PC0/PC1/PC2の既存公開鍵とMicrosoft署名・SHA確認済みOpenSSH MSIを保持。
+関連12テスト成功。PS5.1の7条件で動作順序・待機・検証/停止/登録/起動失敗・停止残存を確認。
+この修正版セットアップの実機での再登録・復帰はまだ未検証。
+
+### 初回の接続障害とPC0への配置
+
 PC0の `C:\Users\Public\CRO-MAGNON\releases\exhibition-20260923-complete-r01`
 へ配置し、全411ファイル・78GLBを照合済み。選択中の版と稼働状態は変更していない。
 記録 `output/exhibition-fleet/20260923-070742-deploy-13b8648fe8de42789c1a04d94ef1708b.json`。

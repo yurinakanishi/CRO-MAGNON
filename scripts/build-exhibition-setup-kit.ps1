@@ -11,7 +11,7 @@ $zipPath = $OutputDirectory + '.zip'
 if ((Test-Path -LiteralPath $OutputDirectory) -or (Test-Path -LiteralPath $zipPath)) {
   throw 'Choose a new output directory. Existing setup kits will not be overwritten.'
 }
-$scriptNames = @('setup-exhibition-ssh-display.ps1','setup-exhibition-public-folders.ps1','run-exhibition-display-setup.ps1','initialize-exhibition-display.ps1','install-exhibition-openssh.ps1','exhibition-openssh.json','exhibition-station.ps1')
+$scriptNames = @('setup-exhibition-ssh-display.ps1','setup-exhibition-public-folders.ps1','run-exhibition-display-setup.ps1','initialize-exhibition-display.ps1','install-exhibition-openssh.ps1','exhibition-openssh.json','exhibition-station.ps1','register-exhibition-setup-launcher.ps1')
 foreach ($name in $scriptNames) {
   if (-not (Test-Path -LiteralPath (Join-Path $PSScriptRoot $name) -PathType Leaf)) { throw "Missing setup script: $name" }
 }
@@ -74,7 +74,10 @@ setup-PC3-result.json record the outcome. If an error appears, keep the window o
 After completion, have PC0 verify the host fingerprint, SSH login and Public read/write access.
 
 Only public keys are included. Never copy PC0 private keys to a display PC.
-This installer does not copy, start, stop or update the game.
+This installer does not copy or update the game release. On a repeat setup it verifies,
+stops and restarts ONLY the previously running, tracked exhibition through its standard
+launcher. It waits for that launcher to stop before registration. Idle/standby PCs remain
+stopped, and unrelated applications are not terminated. A host restart resets its world.
 Execution policy is set only for the setup processes; persistent policies are unchanged.
 '@ | Set-Content -LiteralPath (Join-Path $OutputDirectory 'README.txt') -Encoding UTF8
 $hashes = @(Get-ChildItem -LiteralPath $OutputDirectory -File -Recurse | Sort-Object FullName | ForEach-Object {

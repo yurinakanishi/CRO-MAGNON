@@ -20,6 +20,9 @@ $publicSetupScript = Join-Path $PSScriptRoot 'setup-exhibition-public-folders.ps
 if (-not (Test-Path -LiteralPath $publicSetupScript -PathType Leaf)) {
   throw 'The Public setup helper is missing. Extract the complete setup kit before running it.'
 }
+if (-not (Test-Path -LiteralPath (Join-Path $PSScriptRoot 'register-exhibition-setup-launcher.ps1') -PathType Leaf)) {
+  throw 'The launcher maintenance helper is missing. Extract the complete updated setup kit before running it.'
+}
 $principal = [Security.Principal.WindowsPrincipal][Security.Principal.WindowsIdentity]::GetCurrent()
 if (-not $principal.IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator)) {
   throw 'Run this script in a local administrator PowerShell on the display PC.'
@@ -116,7 +119,7 @@ Start-Service sshd
 if ($LASTEXITCODE -ne 0) { throw 'The existing sshd configuration failed validation; check it locally.' }
 }
 
-$taskResult = & (Join-Path $PSScriptRoot 'exhibition-station.ps1') -Action Register -Machine $Role -DisplayUser $DisplayUser -OperatorUser $OperatorUser | ConvertFrom-Json
+$taskResult = & (Join-Path $PSScriptRoot 'register-exhibition-setup-launcher.ps1') -Machine $Role -DisplayUser $DisplayUser -OperatorUser $OperatorUser | ConvertFrom-Json
 if (-not $taskResult.registered) { throw 'The standard exhibition task was not registered.' }
 
 Write-Host "Role: $Role | LAN: $address | User: $DisplayUser"
