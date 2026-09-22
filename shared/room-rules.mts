@@ -22,6 +22,8 @@ export type RoomRules = {
   freeActions: boolean;
   /** The crow keep's ranks must be felled from the lowest upward. */
   castleSeal: boolean;
+  /** Crow followers, warrior monks and hex monks fall to any single blow. */
+  crowMinionsOneBlow: boolean;
   /** Title starts and menu warps may name one of the six SPAWN_SITES. */
   spawnChoice: boolean;
 };
@@ -36,6 +38,7 @@ export const DEFAULT_RULES: RoomRules = Object.freeze({
   minimumEnergy: 0,
   freeActions: false,
   castleSeal: true,
+  crowMinionsOneBlow: false,
   spawnChoice: false,
 });
 export const EXHIBITION_RULES: RoomRules = Object.freeze({
@@ -49,6 +52,7 @@ export const EXHIBITION_RULES: RoomRules = Object.freeze({
   minimumEnergy: 1,
   freeActions: true,
   castleSeal: false,
+  crowMinionsOneBlow: true,
   spawnChoice: true,
 });
 // Fixtures and old saves may carry only some fields.

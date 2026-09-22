@@ -131,6 +131,38 @@ test('exhibition blows land fourfold, cost nothing, and ignore the castle seal',
   assert.equal(pontiff.health, before - profile.damage * EXHIBITION_RULES.playerDamageScale);
 });
 
+test('every crow below the high priests falls to one blow from any melee character', () => {
+  const { room, player, advance } = join(true);
+  advance(50);
+  const open = { ...room, collision: { segmentFree: () => true, surfaceHeight: () => 0 } };
+  let at = 5000;
+  for (const [species, gender] of [
+    ['cro', 'female'],
+    ['nea', 'male'],
+    ['cat', 'female'],
+    ['ape', 'male'],
+  ]) {
+    Object.assign(player, { species, gender, invulnerableUntil: 1e12, energy: 100 });
+    for (const role of ['soldier', 'brute', 'shaman']) {
+      const crow = room.enemies.find(
+        (enemy) => enemy.castle && enemy.crowRole === role && enemy.phase === 'alive',
+      );
+      assert.ok(crow, `${species} ${role}`);
+      crow.health = crow.maxHealth;
+      Object.assign(player, { x: crow.x, z: crow.z - 0.5, facing: 0, attackSequence: 0 });
+      at += 10000;
+      assert.equal(startAttack(open, player, {}, at).accepted, true);
+      const profile = attackProfile(player);
+      const result = resolveAttack(open, player, at + profile.impactMs);
+      assert.equal(result.killed, true, `${species} fells ${role} in one ${profile.key} blow`);
+      // Slain crows are struck no more; let the roster stand again for the next character.
+      Object.assign(crow, { phase: 'alive', alive: true, health: crow.maxHealth });
+    }
+  }
+  const prelate = room.enemies.find((enemy) => enemy.castle && enemy.crowRole === 'prelate');
+  assert.ok(prelate.health > 0);
+});
+
 test('the ordinary game keeps its seal and single damage', () => {
   const { room, advance } = join(false);
   advance(50);

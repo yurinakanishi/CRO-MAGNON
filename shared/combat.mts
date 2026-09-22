@@ -200,7 +200,13 @@ function applyHit(
   // absorbed, and the attacker is told which rank must fall first.
   if (kind === 'enemy' && target.sealed === true)
     return { hit: true, sealed: true, target, kind, killed: false, weapon: profile.key };
-  target.health = Math.max(0, target.health - profile.damage * roomRules(room).playerDamageScale);
+  const tuning = roomRules(room);
+  // The keep's lesser ranks (below the high priests) need no second swing.
+  const minion = kind === 'enemy' && target.castle === true && (target.crowTier ?? 9) <= 3;
+  target.health =
+    tuning.crowMinionsOneBlow && minion
+      ? 0
+      : Math.max(0, target.health - profile.damage * tuning.playerDamageScale);
   const killed = target.health === 0;
   // Super armour (a sabertooth in mid-leap) takes the damage without flinching.
   const armoured = kind === 'enemy' && target.superArmor === true && !killed;
