@@ -22,7 +22,7 @@ export type RoomRules = {
   freeActions: boolean;
   /** The crow keep's ranks must be felled from the lowest upward. */
   castleSeal: boolean;
-  /** A title start may name one of SPAWN_SITES instead of the camp. */
+  /** Title starts and menu warps may name one of the six SPAWN_SITES. */
   spawnChoice: boolean;
 };
 export const DEFAULT_RULES: RoomRules = Object.freeze({

@@ -3,6 +3,8 @@ import assert from 'node:assert/strict';
 import { EventEmitter } from 'node:events';
 import { WARP_POINTS, warpUnavailable } from '../dist/shared/warp-sites.mjs';
 import { handleWarpAction } from '../dist/shared/warping.mjs';
+import { SPAWN_SITES } from '../dist/shared/spawn-sites.mjs';
+import { EXHIBITION_RULES } from '../dist/shared/room-rules.mjs';
 import { CHARACTER_MODELS } from '../dist/shared/characters.mjs';
 import { WORLD } from '../dist/shared/world.mjs';
 import { SCENERY } from '../dist/shared/scenery-layout.mjs';
@@ -79,8 +81,61 @@ const room = (p) => ({
 const warp = (r, p, targetId = 'fire-snow', now = 10000) =>
   handleWarpAction(r, p, { action: 'warp', targetId }, now);
 
-test('all 30 fire points match rendered cooking fires and land every selectable body without collision', () => {
-  assert.equal(WARP_POINTS.length, 30);
+test('exhibition sight warps preserve possessions, find safe ground for every body and face the sight', () => {
+  for (const site of SPAWN_SITES) {
+    for (const character of CHARACTER_MODELS) {
+      const p = { ...player(), ...character, radius: character.radius ?? WORLD.playerRadius };
+      const r = { ...room(p), rules: EXHIBITION_RULES };
+      const inventory = { ...p.inventory };
+      assert.equal(warp(r, p, `spawn-${site.id}`).ok, true, `${site.id}/${character.key}`);
+      assert.ok(collision.free(p, p.radius), `${site.id}/${character.key}`);
+      assert.ok(Math.hypot(p.x - site.x, p.z - site.z) <= 8);
+      assert.equal(p.facing, Math.atan2(site.look.x - p.x, site.look.z - p.z));
+      assert.deepEqual(p.inventory, inventory);
+      assert.equal(p.energy, 73);
+      assert.equal(p.warpSequence, 1);
+    }
+  }
+});
+
+test('sight warps reject ordinary rooms, unknown sights and unavailable action states', () => {
+  for (const site of SPAWN_SITES) {
+    const p = player(),
+      r = room(p),
+      before = structuredClone(p);
+    assert.equal(warp(r, p, `spawn-${site.id}`).ok, false);
+    assert.deepEqual(p, before);
+  }
+  for (const state of [
+    { downedUntil: 20000 },
+    { boatId: 'b' },
+    { mountId: 'm' },
+    { carrierId: 'a' },
+    { passengerId: 'b' },
+    { jumpSequence: 1, jumpAt: 10000 },
+    { attackSequence: 1, attackAt: 10000 },
+    { cookingEndsAt: 20000 },
+    { fishing: {} },
+    { coastalActivity: {} },
+    { lastExpeditionAt: 9999 },
+  ]) {
+    const p = { ...player(), ...state },
+      r = { ...room(p), rules: EXHIBITION_RULES };
+    const before = structuredClone(p);
+    assert.equal(warp(r, p, 'spawn-cave').ok, false, JSON.stringify(state));
+    assert.deepEqual(p, before);
+  }
+  for (const id of ['spawn-nowhere', 'spawn-__proto__', 'spawn-', '__proto__']) {
+    const p = player(),
+      r = { ...room(p), rules: EXHIBITION_RULES };
+    const before = structuredClone(p);
+    assert.equal(warp(r, p, id).ok, false);
+    assert.deepEqual(p, before);
+  }
+});
+
+test('all 20 remaining fire points match rendered cooking fires and land every selectable body without collision', () => {
+  assert.equal(WARP_POINTS.length, 20);
   assert.equal(new Set(WARP_POINTS.map((p) => p.id)).size, WARP_POINTS.length);
   for (const site of WARP_POINTS) {
     assert.ok(
@@ -238,7 +293,7 @@ test('wire action broadcasts arrival to both players and checkpoint resume prese
     JSON.stringify({
       type: 'action',
       action: 'warp',
-      targetId: 'gulf-fire-many-hearths',
+      targetId: 'fire-north-america',
       x: 99999,
       z: 99999,
     }),

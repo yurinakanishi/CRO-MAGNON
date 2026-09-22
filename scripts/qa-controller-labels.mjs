@@ -136,14 +136,15 @@ try {
         `${right} で決定 · ${bottom}（下のボタン）か ${menu}`,
       ),
     );
-    await page.locator('[data-pause-tab="info"]').click();
-    await page.locator('[data-help-tab="pad"]').click();
-    assert.ok(
-      (await page.locator('#help-panel-pad').innerText()).includes(
-        `${left} / ${layout === 'ps4' ? 'R2' : 'ZR'}`,
-      ),
+    assert.deepEqual(
+      await page
+        .locator('[data-pause-tab]')
+        .evaluateAll((tabs) => tabs.map((tab) => tab.dataset.pauseTab)),
+      ['inventory', 'character', 'warp'],
     );
-    await shot(page, `${layout}-pause-help`);
+    await page.locator('[data-pause-tab="warp"]').click();
+    assert.equal(await page.locator('[data-warp-spawn]').count(), 6);
+    await shot(page, `${layout}-pause-warp`);
     await tap(page, 0);
     await page.locator('#modal').waitFor({ state: 'hidden' });
     assert.equal(await page.locator('#prompt-bar kbd').innerText(), menu);

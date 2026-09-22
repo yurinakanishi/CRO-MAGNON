@@ -142,7 +142,7 @@ test('unchanged world resources are not resent on movement ticks and static file
   const {url,http}=await start(t),client=connect(url,'DELTA');
   const initial=await client.wait(m=>m.type==='state'&&m.resources);
   const tick=await client.wait(m=>m.type==='state'&&!m.resources);
-  assert.ok(tick.animals.length===2);assert.ok(JSON.stringify(tick).length<JSON.stringify(initial).length*.65);
+  assert.ok(tick.animals.length===2);assert.equal(Object.hasOwn(tick,'resources'),false);assert.ok(JSON.stringify(tick).length<JSON.stringify(initial).length);
   const asset=await fetch(`${http}/models/stone-axe/model.glb`,{method:'HEAD'});
   assert.ok(asset.headers.get('etag'));
   const cached=await fetch(`${http}/models/stone-axe/model.glb`,{headers:{'if-none-match':asset.headers.get('etag')}});

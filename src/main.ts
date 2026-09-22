@@ -2,10 +2,17 @@ import { controllerLabels, controllerMenuHint, setControllerLayout } from './con
 import { mapScreen } from './map-screen.js';
 import { installMapWarp, updateMapWarp, type MapInput } from './map-warp-ui.js';
 import {
+  bindCharacterSwitch,
+  characterSwitchMarkup,
   closeCharacterConfirm,
   openCharacterSwitch,
   updateCharacterSwitch,
 } from './character-switch-ui.js';
+import {
+  bindExhibitionWarp,
+  exhibitionWarpMarkup,
+  updateExhibitionWarp,
+} from './exhibition-warp-ui.js';
 import { carrying, canCarry } from '../shared/carrying.mjs';
 import { readSaved, save, savedSession, saveSession } from './session-storage.js';
 import {
@@ -567,10 +574,12 @@ async function connect(automatic = false) {
       }
       if (warped) {
         stopInput();
-        if ($('#big-map')) $('#modal').close();
+        if ($('#big-map') || $('#exhibition-warp')) $('#modal').close();
       }
       renderer.setState(state, selfId);
+      if (warped && $('#exhibition-warp')) renderer.focusPlayer(player().facing + Math.PI);
       updateCharacterSwitch(player(), renderer.serverNow(), joined);
+      updateExhibitionWarp(player(), renderer.serverNow(), joined);
       if ($('#big-map'))
         updateMapWarp(
           player(),
@@ -1416,18 +1425,14 @@ function bindInventory() {
 }
 function craftingMarkup() {
   const me = player();
-  return `<h2>クラフト・ガイド</h2><p class="modal-intro">生肉はそのままでHP+15。焚き火で3秒焼くと、焼き肉（HP+45）になります。</p><div class="gulf-actions"><button id="modal-crop-food" class="button button-outline">火根と香草の食事</button><button id="modal-crop-farms" class="button button-outline">共同の畑と種</button></div><div class="recipe"><span class="resource-icon stone">${icon('axe')}</span><div><strong id="modal-axe-label">${me?.tool ? '石斧を装備中' : '石斧をつくる'}</strong><p>木材3 + 石2 ・ 採集量が増えます</p></div><button id="modal-craft" class="button button-accent" ${me?.tool ? 'disabled' : ''}>${me?.tool ? '装備中' : 'つくる'}</button></div><div class="recipe"><span class="resource-icon wood">${icon('wood')}</span><div><strong>丸木舟をつくる</strong><p>木材12 · 海岸で制作 · Bで乗船</p></div><button id="modal-boat-craft" class="button button-accent">船をつくる</button></div><p class="form-note">今の武器：${attackProfile(me ?? profile).noun}。人間系は木槍で出発し、黒曜石の刃で強化できます。相手を向いて F。</p><div class="recipe"><div><strong>湾の釣り道具</strong><p>木材3・石1 · 繰り返し使えます</p></div><button id="modal-fishing-kit" class="button button-accent">道具を作る</button><button id="modal-fishing" class="button button-outline">魚場と釣り方</button></div><div class="recipe coastal-recipe"><div><strong>貝の食事と黒曜石の道具</strong><p>貝殻を持ち帰って貝塚へ。原石を削って木槍の先へ。</p></div><button id="modal-coastal" class="button button-outline">貝と石器の作り方</button></div>`;
+  return `<h2>クラフト・ガイド</h2><p class="modal-intro">生肉はそのままでHP+15。焚き火で3秒焼くと、焼き肉（HP+45）になります。</p><div class="gulf-actions"><button id="modal-crop-food" class="button button-outline">火根と香草の食事</button></div><div class="recipe"><span class="resource-icon stone">${icon('axe')}</span><div><strong id="modal-axe-label">${me?.tool ? '石斧を装備中' : '石斧をつくる'}</strong><p>木材3 + 石2 ・ 採集量が増えます</p></div><button id="modal-craft" class="button button-accent" ${me?.tool ? 'disabled' : ''}>${me?.tool ? '装備中' : 'つくる'}</button></div><div class="recipe"><span class="resource-icon wood">${icon('wood')}</span><div><strong>丸木舟をつくる</strong><p>木材12 · 海岸で制作 · Bで乗船</p></div><button id="modal-boat-craft" class="button button-accent">船をつくる</button></div><p class="form-note">今の武器：${attackProfile(me ?? profile).noun}。相手を向いて F。</p>`;
 }
 function bindCrafting() {
   $('#modal-craft').onclick = () => {
     action('craft');
     $('#modal').close();
   };
-  $('#modal-fishing-kit').onclick = () => action('craftFishingKit');
-  $('#modal-fishing').onclick = () => fishingUI.open();
-  $('#modal-coastal').onclick = () => coastalUI.open();
   $('#modal-crop-food').onclick = () => cropFoodUI.open();
-  $('#modal-crop-farms').onclick = () => gulfUI.open();
   $('#modal-boat-craft').onclick = () => {
     action('craftBoat');
     $('#modal').close();
@@ -1611,9 +1616,16 @@ function openPauseMenu(tab = 'inventory') {
   if (screens.active) return;
   const tabs: [string, string, string][] = [
     ['inventory', 'bag', '持ち物'],
-    ['crafting', 'axe', 'クラフト・ガイド'],
-    ['info', 'compass', '世界・仲間・操作説明'],
-    ['settings', 'sound', '設定'],
+    ...(fixedIdentity
+      ? ([
+          ['character', 'people', 'キャラクターを変える'],
+          ['warp', 'compass', 'ワープする'],
+        ] as [string, string, string][])
+      : ([
+          ['crafting', 'axe', 'クラフト・ガイド'],
+          ['info', 'compass', '世界・仲間・操作説明'],
+          ['settings', 'sound', '設定'],
+        ] as [string, string, string][])),
   ];
   const subTabs: [string, string][] = [
     ['help', '操作説明'],
@@ -1624,10 +1636,6 @@ function openPauseMenu(tab = 'inventory') {
   const links: [string, string, string, () => void][] = [
     ['map', 'expand', '世界地図', openMap],
     ['journal', 'book', '探索手帳', openJournal],
-    ['gulf', 'wave', '三つの国・共同の畑', () => gulfUI.open()],
-    ['fishing', 'wave', '魚場と釣り方', () => fishingUI.open()],
-    ['coastal', 'stone', '貝塚・黒曜石の道具', () => coastalUI.open()],
-    ['residents', 'wave', '集落の人びと・今日の手伝い', () => villageUI.open()],
     ['ride', 'target', '船・マンモス・肩に乗る／降りる', controllerRide],
     ['wave', 'wave', '手をふる', () => action('wave')],
   ];
@@ -1645,10 +1653,20 @@ function openPauseMenu(tab = 'inventory') {
           ] as [string, string, string, () => void],
         ]
       : []),
-    ['character', 'people', 'キャラクターを変える', openCharacterSwitchMenu],
-    ['resume', 'compass', '探索に戻る', () => $('#modal').close()],
     ...(!fixedIdentity
       ? [
+          ['character', 'people', 'キャラクターを変える', openCharacterSwitchMenu] as [
+            string,
+            string,
+            string,
+            () => void,
+          ],
+          ['resume', 'compass', '探索に戻る', () => $('#modal').close()] as [
+            string,
+            string,
+            string,
+            () => void,
+          ],
           ['profile', 'people', '部屋を変える（参加し直す）', () => showSetup()] as [
             string,
             string,
@@ -1664,11 +1682,13 @@ function openPauseMenu(tab = 'inventory') {
   const menuButton = ([id, glyph, label]: readonly [string, string, string, ...unknown[]]) =>
     `<button class="button button-outline" data-controller-menu="${id}">${icon(glyph)}<span>${label}</span></button>`;
   const panel = (id: string, body: string) =>
-    `<section class="pause-panel" data-pause-panel="${id}" role="tabpanel" id="pause-panel-${id}" ${pauseTab === id ? '' : 'hidden'}>${body}</section>`;
+    tabs.some(([key]) => key === id)
+      ? `<section class="pause-panel" data-pause-panel="${id}" role="tabpanel" id="pause-panel-${id}" ${pauseTab === id ? '' : 'hidden'}>${body}</section>`
+      : '';
   const subPanel = (id: string, body: string) =>
     `<section class="pause-subpanel" data-pause-subpanel="${id}" role="tabpanel" id="pause-subpanel-${id}" ${pauseSubTab === id ? '' : 'hidden'}>${body}</section>`;
   openModal(
-    `<div class="pause-menu"><aside class="pause-rail"><nav class="pause-tabs" role="tablist" aria-label="メニューの項目">${tabs
+    `<div class="pause-menu${fixedIdentity ? ' exhibition-menu' : ''}"><aside class="pause-rail"><nav class="pause-tabs" role="tablist" aria-label="メニューの項目">${tabs
       .map(
         ([id, glyph, label]) =>
           `<button type="button" class="pause-tab" role="tab" data-pause-tab="${id}" data-controller-menu="${id}" aria-selected="${pauseTab === id}" aria-controls="pause-panel-${id}">${icon(glyph)}<span>${label}</span></button>`,
@@ -1678,7 +1698,7 @@ function openPauseMenu(tab = 'inventory') {
       )}</nav><div class="pause-exits">${exits.map(menuButton).join('')}</div></aside><div class="pause-panels">${panel(
       'inventory',
       inventoryMarkup(),
-    )}${panel('crafting', craftingMarkup())}${panel(
+    )}${panel('character', characterSwitchMarkup())}${panel('warp', exhibitionWarpMarkup())}${panel('crafting', craftingMarkup())}${panel(
       'info',
       `<div class="help-tabs sub-tabs" role="tablist" aria-label="世界・仲間・操作説明の切り替え">${subTabs
         .map(
@@ -1704,6 +1724,13 @@ function openPauseMenu(tab = 'inventory') {
     for (const section of root.querySelectorAll<HTMLElement>('.pause-panel'))
       section.hidden = section.dataset.pausePanel !== id;
     root.querySelector<HTMLElement>(`[data-pause-tab="${id}"]`)?.focus({ preventScroll: true });
+    if (id === 'character')
+      root
+        .querySelector<HTMLElement>('#character-switch-form input:checked')
+        ?.focus({ preventScroll: true });
+    if (id === 'warp')
+      root.querySelector<HTMLElement>('[data-warp-spawn]')?.focus({ preventScroll: true });
+    gamepadControls?.suspend();
   };
   for (const tab of tabButtons) tab.onclick = () => showTab(tab.dataset.pauseTab!);
   const subTabButtons = [...root.querySelectorAll<HTMLButtonElement>('.sub-tab')];
@@ -1716,21 +1743,35 @@ function openPauseMenu(tab = 'inventory') {
   };
   for (const tab of subTabButtons) tab.onclick = () => showSubTab(tab.dataset.pauseSubtab!);
   for (const [id, , , handler] of [...links, ...exits])
-    $(`[data-controller-menu="${id}"]`).onclick = () => handler();
+    if ($(`[data-controller-menu="${id}"]`))
+      $(`[data-controller-menu="${id}"]`).onclick = () => handler();
+  if (fixedIdentity) {
+    const options = {
+      player,
+      now: () => renderer.serverNow(),
+      connected: () => joined,
+      action,
+      settle: () => gamepadControls?.suspend(),
+    };
+    bindCharacterSwitch(options, false);
+    bindExhibitionWarp(options);
+  }
   updateObjectives();
-  bindCrafting();
   updateModalHUD();
-  bindHelpTabs($('[data-pause-subpanel="help"]'));
-  updateSaveStatus();
-  $('#tribe-invite').onclick = openInvite;
-  $('[data-setting="sound"]').onclick = toggleSound;
-  $('[data-setting="fullscreen"]').onclick = toggleFullscreen;
-  $('[data-setting="camera"]').onclick = () => renderer.focusPlayer();
-  $('[data-setting="zoom-out"]').onclick = () => renderer.adjustZoom(-0.15);
-  $('[data-setting="zoom-in"]').onclick = () => renderer.adjustZoom(0.15);
-  for (const button of root.querySelectorAll<HTMLButtonElement>('[data-difficulty]'))
-    button.onclick = () => setDifficulty(normalizeDifficulty(button.dataset.difficulty));
-  if ($('[data-setting="reset-room"]')) $('[data-setting="reset-room"]').onclick = openRoomReset;
+  if (!fixedIdentity) {
+    bindCrafting();
+    bindHelpTabs($('[data-pause-subpanel="help"]'));
+    updateSaveStatus();
+    $('#tribe-invite').onclick = openInvite;
+    $('[data-setting="sound"]').onclick = toggleSound;
+    $('[data-setting="fullscreen"]').onclick = toggleFullscreen;
+    $('[data-setting="camera"]').onclick = () => renderer.focusPlayer();
+    $('[data-setting="zoom-out"]').onclick = () => renderer.adjustZoom(-0.15);
+    $('[data-setting="zoom-in"]').onclick = () => renderer.adjustZoom(0.15);
+    for (const button of root.querySelectorAll<HTMLButtonElement>('[data-difficulty]'))
+      button.onclick = () => setDifficulty(normalizeDifficulty(button.dataset.difficulty));
+    if ($('[data-setting="reset-room"]')) $('[data-setting="reset-room"]').onclick = openRoomReset;
+  }
   // The bag opens ready to use: the first (top-left) food card holds focus.
   if (pauseTab === 'inventory')
     root

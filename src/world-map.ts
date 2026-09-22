@@ -60,12 +60,12 @@ let mapZoom = 1,
 let fireLabelIds = new Set<string>();
 /** One seamless projection: the whole earth and the gulf share a plane, 1× to 32×. */
 export const ATLAS_BOUNDS = Object.freeze({
-  minX: Math.min(EARTH.minX, GULF.minX),
-  maxX: Math.max(EARTH.maxX, GULF.maxX),
-  minZ: Math.min(EARTH.minZ, GULF.minZ),
-  maxZ: Math.max(EARTH.maxZ, GULF.maxZ),
-  width: Math.max(EARTH.maxX, GULF.maxX) - Math.min(EARTH.minX, GULF.minX),
-  depth: Math.max(EARTH.maxZ, GULF.maxZ) - Math.min(EARTH.minZ, GULF.minZ),
+  minX: EARTH.minX,
+  maxX: EARTH.maxX,
+  minZ: EARTH.minZ,
+  maxZ: EARTH.maxZ,
+  width: EARTH.width,
+  depth: EARTH.height,
 });
 const clampZoom = (zoom) => Math.max(MAP_ZOOM.min, Math.min(MAP_ZOOM.max, zoom));
 /** Opens the atlas on a point at a zoom; without a point it shows the whole world at 1×. */
@@ -509,7 +509,7 @@ export function drawWorldMap(canvas, state, selfId, big = false) {
     ctx.arc(...point(x, z), r, 0, Math.PI * 2);
     ctx.stroke();
   };
-  if (big) {
+  if (big && SETTLEMENTS.length) {
     ctx.save();
     strokeGulfSpine(ctx, point, zoom);
     if (places)

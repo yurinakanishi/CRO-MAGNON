@@ -363,9 +363,11 @@ export class WorldRenderer {
       this.campLabel.element.classList.toggle('complete', this.state.camp.level > 0);
       this.boatRenderer = new BoatRenderer(this);
       this.adventureEffects = new AdventureEffects(this);
-      this.gulfRenderer = new GulfRenderer(this);
-      this.coastalRenderer = new CoastalRenderer(this);
-      this.villageRenderer = new VillageRenderer(this);
+      if (COUNTRIES.length) {
+        this.gulfRenderer = new GulfRenderer(this);
+        this.coastalRenderer = new CoastalRenderer(this);
+        this.villageRenderer = new VillageRenderer(this);
+      }
       this.companion524Renderer = new Companion524Renderer(this);
       this.npcActor = await this.npcAssets.create({ color: '#ad9d79' });
       if (this.disposed) {

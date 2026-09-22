@@ -18,7 +18,7 @@ test('Earth coordinates round-trip at equator, poles, dateline and the existing 
   const camp=worldToGeo(50,50);assert.ok(camp.longitude>15&&camp.longitude<25&&camp.latitude>45&&camp.latitude<53);
   assert.equal(WORLD.width,8192);assert.equal(WORLD.depth,4096);assert.equal(EARTH.epochYearsBP,50000);
 });
-test('archived NOAA base field retains its hash; runtime samples include the explicitly authored gulf',async()=>{
+test('archived NOAA base field retains its hash; runtime samples retain the shared shoreline',async()=>{
   const meta=JSON.parse(await readFile(new URL('../assets/geography/build.json',import.meta.url))),source=coastTextureData();
   const base=new Uint8Array(COAST_GRID.width*COAST_GRID.height);let cursor=0;
   for(let i=0;i<COAST_RUNS.length;i+=2){base.fill(COAST_RUNS[i+1],cursor,cursor+COAST_RUNS[i]);cursor+=COAST_RUNS[i];}
@@ -77,8 +77,8 @@ test('the vector coastline traces the zero of the distance field inside the atla
   }
   assert.ok(points>5000,`only ${points} shoreline points`);
   assert.equal(coastlineContours(),contours,'cached per step');
-  // The playable camp coast and the authored gulf both have a traced shoreline nearby.
+  // The playable camp coast and North America both have a traced shoreline nearby.
   const near=(x,z,r)=>contours.some(line=>line.some(p=>Math.hypot(p.x-x,p.z-z)<r));
-  assert.ok(near(-2000,850,400),'gulf shoreline');
+  assert.ok(near(-1500,200,400),'North American shoreline');
   assert.ok(near(geoToWorld(-5,36).x,geoToWorld(-5,36).z,120),'Gibraltar shoreline');
 });

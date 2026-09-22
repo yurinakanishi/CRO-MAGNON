@@ -26,6 +26,7 @@ export function handleFishingAction(room, player, message, now) {
     cancelFishing(player);
     return response(active ? '魚を待つのをやめた。道具は手元にあります。' : '', active);
   }
+  if (!FISHING_SITES.length) return response('この魚場はありません。');
   const progress = ensureGulfPlayer(player);
   if (
     player.downedUntil ||

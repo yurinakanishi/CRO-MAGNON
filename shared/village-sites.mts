@@ -166,7 +166,9 @@ const work = [
   '畑の手入れをしている',
   '浜で使う道具を直している',
 ];
-export const RESIDENTS: ResidentDefinition[] = people.map((p, i) => ({
-  ...p,
-  routine: routine(p.settlementId, i % 2 === 1, work[i]),
-}));
+export const RESIDENTS: ResidentDefinition[] = people
+  .filter((p) => SETTLEMENTS.some((s) => s.id === p.settlementId))
+  .map((p, i) => ({
+    ...p,
+    routine: routine(p.settlementId, i % 2 === 1, work[i]),
+  }));

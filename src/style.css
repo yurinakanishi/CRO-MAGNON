@@ -1827,6 +1827,28 @@ dialog:has(.pause-menu) .modal-top:before,
 dialog:has(.pause-menu) .modal-top .eyebrow {
   display: none;
 }
+
+dialog:has(.exhibition-menu) .modal-top {
+  display: none;
+}
+
+.exhibition-menu .spawn-grid {
+  padding: 6px;
+}
+
+.exhibition-menu .spawn-card[aria-disabled='true'] {
+  opacity: 0.6;
+}
+
+.exhibition-menu .character-choice-grid {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+@media (max-width: 520px) {
+  .exhibition-menu .character-choice-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
 dialog:has(.pause-menu) #modal-body {
   flex: 1;
   min-height: 0;

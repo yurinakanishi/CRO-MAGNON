@@ -4,6 +4,7 @@ import { ADVENTURE_REGIONS, travelSeals } from './adventure-regions.mjs';
 import { SETTLEMENTS, GULF_STOPS } from './gulf-region.mjs';
 import { jumpProgress } from './jumping.mjs';
 import { attackProfile } from './combat-profiles.mjs';
+import { SPAWN_SITES } from './spawn-sites.mjs';
 
 const names = new Map([
   ['fire-50-50', 'はじまりの焚き火'],
@@ -27,6 +28,11 @@ export const WARP_POINTS = Object.freeze(
   }),
 );
 export const warpPointById = (id) => WARP_POINTS.find((p) => p.id === id);
+
+/** Sight IDs are accepted only under the server's exhibition room rules. */
+export const warpDestination = (id, allowSpawn = false) =>
+  warpPointById(id) ??
+  (allowSpawn ? SPAWN_SITES.find((site) => `spawn-${site.id}` === id) : undefined);
 
 export function warpUnavailable(player, point, now) {
   if (!player) return '接続を待っています。';

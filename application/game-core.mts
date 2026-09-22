@@ -12,6 +12,7 @@ import { activateMiddenObstacle } from '../shared/coastal-sites.mjs';
 import { ensureAdventure, updateAdventures } from '../shared/adventures.mjs';
 import { createGulfState, ensureGulfPlayer, updateGulf } from '../shared/gulf-life.mjs';
 import { migrateGulfRecord } from '../shared/gulf-migration.mjs';
+import { retireGulfRecord } from '../shared/gulf-retirement.mjs';
 import { GULF, MANY_HEARTHS } from '../shared/gulf-region.mjs';
 import {
   actorObstacle,
@@ -736,6 +737,7 @@ export function createGameCore({
     for (const record of JSON.parse(JSON.stringify(saved.rooms))) {
       if (record.gulf?.version > GULF.version) throw new Error('Unsupported saved gulf version');
       const movedGulfPlayers = migrateGulfRecord(record);
+      for (const player of retireGulfRecord(record)) movedGulfPlayers.add(player);
       const room = ensureRoom(record.name);
       room.createdAt = record.createdAt;
       Object.assign(room.camp, record.camp);
@@ -850,10 +852,7 @@ export function createGameCore({
           if (movedGulfPlayers.has(player) && !room.collision.free(player, player.radius ?? 0.32)) {
             const safe =
               room.collision.nearestFree(player, player.radius ?? 0.32, [], 80) ??
-              room.collision.nearestFree(
-                { ...MANY_HEARTHS, z: MANY_HEARTHS.z + 5 },
-                player.radius ?? 0.32,
-              );
+              room.collision.nearestFree({ x: 49, z: 52.4 }, player.radius ?? 0.32);
             if (!safe) throw new Error('No safe arrival for migrated player');
             Object.assign(player, safe);
           }

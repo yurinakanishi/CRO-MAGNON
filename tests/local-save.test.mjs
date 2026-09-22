@@ -233,11 +233,6 @@ test('disk restart restores shared and personal records, freezes shutdown input,
   });
   room.camp.wood = 8;
   room.resources[0].amount = 1;
-  Object.assign(room.gulf.plots[0], { stage: 'planted', waterRequestAt: Date.now() });
-  room.residents[0].watering.water = 2;
-  room.gulf.pantries[0].food.cookedRoot = 3;
-  room.gulf.pantries[0].supper.berry = 2;
-  room.gulf.middens[0].shells = 9;
   const expected = game.core.exportState().rooms[0];
   await game.close();
   const reopened = await createPersistentGameServer({
@@ -262,7 +257,8 @@ test('disk restart restores shared and personal records, freezes shutdown input,
   assert.equal(saved.cookingEndsAt, 0);
   assert.equal(saved.target, null);
   assert.equal(saved.spearHead, 'obsidian');
-  assert.equal(after.residents[0].watering.water, 2);
+  assert.equal(after.residents.length, 0);
+  assert.equal(after.gulf.plots.length, 0);
   assert.equal(after.camp.wood, 8);
   assert.equal(after.resources[0].amount, 1);
   assert.deepEqual(after.gulf, expected.gulf);

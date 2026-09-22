@@ -57,12 +57,13 @@ export function installGulfUI(api) {
   const pantry = installPantryUI(api, () => open());
   const barter = installBarterUI(api, () => open());
   let selected: string = MANY_HEARTHS.id,
-    plotId = FARM_PLOTS[0].id,
+    plotId = FARM_PLOTS[0]?.id ?? '',
     chosenCrop = 'berry',
     signature = '',
     wateringReadyAt = 0;
   const at = (point, range = 9) => distance(player(), point) <= range;
   function open(requestedPlot?: string) {
+    if (!SETTLEMENTS.length) return;
     if (player() && inGulf(player().x, player().z)) {
       const nearest = [...SETTLEMENTS].sort(
         (a, b) => distance(player(), a) - distance(player(), b),

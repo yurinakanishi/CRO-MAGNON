@@ -1,4 +1,4 @@
-import { LANDINGS } from './gulf-region.mjs';
+import { LANDINGS, inGulf } from './gulf-region.mjs';
 import type { ShoalState } from './fishing-types.mjs';
 
 // Authored gameplay grounds, not a reconstruction of a prehistoric fishery.
@@ -47,7 +47,7 @@ export const FISHING_SITES = [
     capacity: 10,
     recoverMs: 30000,
   },
-];
+].filter((site) => inGulf(site.x, site.z));
 export function createShoals(saved?: ShoalState[]): ShoalState[] {
   return FISHING_SITES.map((site) => {
     const old = saved?.find?.((s) => s.id === site.id);

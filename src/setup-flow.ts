@@ -5,7 +5,8 @@ import {
   normalizeDifficulty,
   type Difficulty,
 } from '../shared/difficulty.mjs';
-import { SPAWN_SITES, spawnSite } from '../shared/spawn-sites.mjs';
+import { spawnSite } from '../shared/spawn-sites.mjs';
+import { spawnCardsMarkup } from './spawn-picker.js';
 import { parseCharacterValue } from './character-selection.js';
 
 /**
@@ -121,10 +122,7 @@ function renderSpawn(who: string) {
   overlay(form)?.remove();
   form.insertAdjacentHTML(
     'beforeend',
-    `<div id="setup-flow" class="character-confirm setup-flow" role="dialog" aria-modal="true" aria-labelledby="setup-flow-title" data-focus-scope data-step="spawn"><div class="spawn-picker"><p class="setup-flow-eyebrow">${who}</p><h3 id="setup-flow-title">どこから はじめますか？</h3><div class="spawn-grid" role="group" aria-label="はじめる場所">${SPAWN_SITES.map(
-      (site) =>
-        `<button type="submit" class="spawn-card" data-choose-spawn="${site.id}" aria-pressed="${site.id === picked}"><img src="/spawn/${site.id}.jpg" width="640" height="360" alt="" draggable="false"><strong>${site.name}</strong><small>${site.blurb}</small></button>`,
-    ).join('')}</div></div></div>`,
+    `<div id="setup-flow" class="character-confirm setup-flow" role="dialog" aria-modal="true" aria-labelledby="setup-flow-title" data-focus-scope data-step="spawn"><div class="spawn-picker"><p class="setup-flow-eyebrow">${who}</p><h3 id="setup-flow-title">どこから はじめますか？</h3><div class="spawn-grid" role="group" aria-label="はじめる場所">${spawnCardsMarkup(picked)}</div></div></div>`,
   );
   const flow = overlay(form)!;
   flow.onclick = (event) => {

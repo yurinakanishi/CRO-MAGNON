@@ -47,7 +47,7 @@ export function installVillageUI({ player, state, available, action, openModal, 
     { player, state, available, canAct: residentAvailable, action, openModal, collision },
     () => directory(),
   );
-  let settlementId = SETTLEMENTS[0].id as string;
+  let settlementId = (SETTLEMENTS[0]?.id ?? '') as string;
   let conversationReadyAt = 0;
   const $ = <T extends HTMLElement = HTMLElement>(id: string) => document.getElementById(id) as T;
   const button = (id: string, text: string) =>
@@ -74,6 +74,7 @@ export function installVillageUI({ player, state, available, action, openModal, 
     update();
   }
   function open(id?: string) {
+    if (!RESIDENTS.length) return;
     const d = RESIDENTS.find((r) => r.id === id);
     if (d) {
       settlementId = d.settlementId;

@@ -1,4 +1,4 @@
-import { SETTLEMENTS } from './gulf-region.mjs';
+import { SETTLEMENTS, inGulf } from './gulf-region.mjs';
 import type { ShellBedState, MiddenState } from './coastal-types.mjs';
 
 // Authored game locations and recipes, not reconstructed archaeological sites.
@@ -20,7 +20,7 @@ export const SHELL_BEDS = [
   { id: 'shell-reed', name: '葦の浜の貝場', x: -1874, z: 870 },
   { id: 'shell-west', name: '西の入り江の貝場', x: -2523, z: 1170 },
   { id: 'shell-east', name: '南の浜の貝場', x: -1858, z: 1165 },
-];
+].filter((site) => inGulf(site.x, site.z));
 export const MIDDEN_SITES = SETTLEMENTS.map((s) => ({
   id: `midden-${s.id}`,
   name: `${s.name}の貝塚`,

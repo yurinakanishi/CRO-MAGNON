@@ -129,7 +129,7 @@ export function handleGulfAction(room, player, message, now = Date.now()) {
   room.gulf ??= createGulfState();
   const near = (point, range = 5) =>
     point && distance(player, point) <= range && interactionVisible(room.collision, player, point);
-  const atHearth = near(MANY_HEARTHS, 9);
+  const atHearth = SETTLEMENTS.some((s) => s.id === MANY_HEARTHS.id) && near(MANY_HEARTHS, 9);
   const settlement = SETTLEMENTS.find((s) => near(s, 9));
   const action = message.action;
   const supper = handleSupperAction(room, player, message, now);

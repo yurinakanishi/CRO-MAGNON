@@ -22,6 +22,7 @@ import {
   EXPEDITION_STOPS,
   worldToGeo,
 } from './paleo-geography.mjs';
+import { inGulf as inArchivedGulf } from './gulf-archive.mjs';
 import { inLegacyGulf, LEGACY_RESOURCE_POINTS } from './gulf-legacy.mjs';
 import { ADVENTURE_ENEMIES, adventureReserved } from './adventure-regions.mjs';
 import { ADVENTURE_SCENERY } from './adventure-layout.mjs';
@@ -296,7 +297,7 @@ function layout() {
   // Reserve the authored settlement and footpaths from global random scenery.
   for (const items of [trees, grass, rocks, ridges, tents, props, fires])
     for (let i = items.length - 1; i >= 0; i--)
-      if (inGulf(items[i].x, items[i].z) || inLegacyGulf(items[i].x, items[i].z))
+      if (inArchivedGulf(items[i].x, items[i].z) || inLegacyGulf(items[i].x, items[i].z))
         items.splice(i, 1);
   for (const [category, items] of Object.entries(GULF_SCENERY)) {
     const target = { trees, props, fires }[category];

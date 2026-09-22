@@ -10,6 +10,7 @@ import {
 import { CollisionWorld } from '../dist/shared/collision.mjs';
 import {
   initializeBoats,
+  launchPoint,
   updateBoats,
   waterBodyFree,
   handleBoatAction,
@@ -79,10 +80,10 @@ test('forecast switches at the shared boundary and includes the next weather wit
   assert.equal(weather(6).kind, 'calm');
   assert.ok(weather(3).currentX < 0);
 });
-test('head of gulf and shoreline shelter boats; original continents and regional edges retain old speeds', () => {
+test('retired gulf currents have no effect in either the old island or original continents', () => {
   const rain = weather(2),
     outer = seaConditions(rain, -2200, 1145);
-  assert.ok(outer.exposure > 0.99);
+  assert.equal(outer.exposure, 0);
   assert.ok(seaConditions(rain, -2200, 600).exposure < 0.4);
   assert.ok(seaConditions(rain, -2526, 850).exposure < 0.3);
   for (const p of [
@@ -94,9 +95,9 @@ test('head of gulf and shoreline shelter boats; original continents and regional
     assert.equal(seaBoatSpeed({ ...p, dx: 1, dz: 0 }, 7, rain), 7);
   }
 });
-test('with and against current differ, all phases allow headway, old snapshots have calm movement', () => {
+test('all headings and old weather snapshots retain ordinary paddling after island removal', () => {
   const b = { x: -2200, z: 1145, dx: 1, dz: 0 };
-  assert.ok(seaBoatSpeed(b, 4, weather(1)) > seaBoatSpeed({ ...b, dx: -1 }, 4, weather(1)) + 1);
+  assert.equal(seaBoatSpeed(b, 4, weather(1)), seaBoatSpeed({ ...b, dx: -1 }, 4, weather(1)));
   assert.equal(seaBoatSpeed(b, 4), 4);
   for (let phase = 0; phase < 6; phase++)
     for (let angle = 0; angle < 6.3; angle += 0.2)
@@ -162,11 +163,14 @@ test('eight opposing hulls and riders remain synchronized without overlap in rai
     }
   }
 });
-test('a boat can return against rain current to the shore and cannot drive through land', () => {
+test('a boat can return to a surviving coast and cannot drive through land', () => {
   const r = fixture(),
     b = r.boats[0],
     p = r.players.get(b.riderId);
-  Object.assign(b, { x: -2505, z: 1150, dx: -1, dz: 0, runningRequested: true });
+  const shore={x:128,z:124,radius:.32},launch=launchPoint(r,shore);
+  assert.ok(launch);
+  const d=Math.hypot(shore.x-launch.x,shore.z-launch.z);
+  Object.assign(b,launch,{dx:(shore.x-launch.x)/d,dz:(shore.z-launch.z)/d,runningRequested:true});
   for (let t = 0; t < 120; t++) {
     b.lastInput = atPhase(2) + t * 100;
     updateBoats(r, 0.1, b.lastInput);
@@ -176,24 +180,13 @@ test('a boat can return against rain current to the shore and cannot drive throu
   assert.equal(p.boatId, null);
   assert.ok(r.collision.free(p, p.radius));
 });
-test('stopped offshore fishing completes through a weather transition without drift', () => {
-  const r = fixture(),
-    b = r.boats[0],
-    p = r.players.get(b.riderId),
-    site = FISHING_SITES.at(-1),
-    now = atPhase(2) - 3000;
-  Object.assign(b, { x: site.x, z: site.z });
-  Object.assign(p, { x: site.x, z: site.z });
-  p.gulf.fishingKit = true;
-  assert.equal(handleFishingAction(r, p, { action: 'fish', targetId: site.id }, now).changed, true);
-  for (let t = 0; t <= 60; t++) {
-    updateBoats(r, 0.1, now + t * 100);
-    updateFishing(r, now + t * 100);
-  }
-  assert.equal(p.inventory.rawFish, 1);
-  assert.equal(p.fishing, null);
-  assert.equal(b.x, site.x);
-  assert.equal(b.z, site.z);
+test('retired offshore fish sites reject requests without moving a boat or granting stock', () => {
+  const r=fixture(),b=r.boats[0],p=r.players.get(b.riderId),now=atPhase(2)-3000;
+  const before={x:b.x,z:b.z,inventory:{...p.inventory}};
+  assert.equal(FISHING_SITES.length,0);
+  assert.equal(handleFishingAction(r,p,{action:'fish',targetId:'fish-outer-water'},now).changed,false);
+  for(let t=0;t<=60;t++){updateBoats(r,.1,now+t*100);updateFishing(r,now+t*100);}
+  assert.deepEqual({x:b.x,z:b.z,inventory:p.inventory},before);
 });
 class Socket {
   readyState = 1;

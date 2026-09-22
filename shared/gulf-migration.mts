@@ -1,4 +1,4 @@
-import { GULF, SETTLEMENTS } from './gulf-region.mjs';
+import { GULF, SETTLEMENTS } from './gulf-archive.mjs';
 import { inLegacyGulf, LEGACY_SETTLEMENTS } from './gulf-legacy.mjs';
 
 function movePoint(point, local = false) {

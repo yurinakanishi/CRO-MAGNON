@@ -52,10 +52,16 @@ export function updateCharacterSwitch(player, now, connected) {
       ?.focus({ preventScroll: true });
 }
 
-export function openCharacterSwitch({ openModal, player, now, connected, action, settle }) {
-  openModal(
-    `<form id="character-switch-form" class="character-switch"><h2>キャラクターを変える</h2><p class="modal-intro">キャラクターを選ぶと確認が出ます。今いる場所で切り替わり、もちもの・元気・進行はそのまま。</p>${characterChoicesMarkup()}</form>`,
-  );
+export function characterSwitchMarkup() {
+  return `<form id="character-switch-form" class="character-switch"><h2>キャラクターを変える</h2><p class="modal-intro">キャラクターを選ぶと確認が出ます。今いる場所で切り替わり、もちもの・元気・進行はそのまま。</p>${characterChoicesMarkup()}</form>`;
+}
+
+export function openCharacterSwitch(options) {
+  options.openModal(characterSwitchMarkup());
+  bindCharacterSwitch(options);
+}
+
+export function bindCharacterSwitch({ player, now, connected, action, settle }, focus = true) {
   const form = document.querySelector<HTMLFormElement>('#character-switch-form');
   const current = () => form.querySelector<HTMLInputElement>('input[name="character"]:checked');
   bindCharacterSelection(form, player());
@@ -113,5 +119,5 @@ export function openCharacterSwitch({ openModal, player, now, connected, action,
     yes.disabled = true;
     action('changeCharacter', model.key);
   };
-  current()?.focus({ preventScroll: true });
+  if (focus) current()?.focus({ preventScroll: true });
 }

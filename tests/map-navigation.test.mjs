@@ -22,9 +22,9 @@ import {
   ATLAS_BOUNDS,
 } from '../dist/src/world-map.js';
 import { WARP_POINTS } from '../dist/shared/warp-sites.mjs';
-import { GULF } from '../dist/shared/gulf-region.mjs';
+import { EARTH } from '../dist/shared/paleo-geography.mjs';
 
-test('one seamless projection shows the whole earth and the gulf at 1× and keeps the minimap unchanged', () => {
+test('one seamless projection shows the whole Earth after the island removal at 1× and keeps the minimap unchanged', () => {
   const canvas = { width: 1000, height: 620 },
     self = { x: 50, z: 50 };
   resetWorldMap();
@@ -33,16 +33,16 @@ test('one seamless projection shows the whole earth and the gulf at 1× and keep
   assert.equal(projection.zoom, 1);
   for (const point of [
     ...WARP_POINTS,
-    { x: GULF.minX, z: GULF.maxZ },
-    { x: GULF.maxX, z: GULF.minZ },
+    { x: EARTH.minX, z: EARTH.maxZ },
+    { x: EARTH.maxX, z: EARTH.minZ },
   ]) {
     const [x, y] = projection.point(point.x, point.z);
     assert.ok(
       x > 24 && x < canvas.width - 24 && y > 24 && y < canvas.height - 24,
-      point.id ?? 'gulf',
+      point.id ?? 'Earth corner',
     );
   }
-  assert.ok(ATLAS_BOUNDS.minX <= GULF.minX && ATLAS_BOUNDS.maxZ >= GULF.maxZ);
+  assert.ok(ATLAS_BOUNDS.minX <= EARTH.minX && ATLAS_BOUNDS.maxZ >= EARTH.maxZ);
   assert.deepEqual(mapProjection({ width: 150, height: 100 }, false, self).point(80, 60), mini);
   assert.deepEqual(
     mapProjection({ width: 150, height: 100 }, false, self).point(self.x, self.z),

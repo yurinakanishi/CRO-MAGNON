@@ -66,8 +66,9 @@ const routes: [string, string, [string, string], Point[], [number, number]][] = 
     [24, 17],
   ],
 ];
-export const HOUSEHOLDS: HouseholdDefinition[] = routes.map(
-  ([id, name, members, stops, guest], i) => {
+export const HOUSEHOLDS: HouseholdDefinition[] = routes
+  .filter((_, i) => SETTLEMENTS[i + 1])
+  .map(([id, name, members, stops, guest], i) => {
     const home = SETTLEMENTS[i + 1];
     return {
       id,
@@ -84,8 +85,7 @@ export const HOUSEHOLDS: HouseholdDefinition[] = routes.map(
         guestRoutine(guest[0] + 5, guest[1] + 4, true),
       ],
     };
-  },
-);
+  });
 export const householdFor = (residentId: string) =>
   HOUSEHOLDS.find((h) => h.members.includes(residentId));
 export const householdGoal = (

@@ -1,4 +1,4 @@
-import { MANY_HEARTHS } from './gulf-region.mjs';
+import { MANY_HEARTHS, SETTLEMENTS } from './gulf-region.mjs';
 import { pantryAvailable } from './pantry.mjs';
 import { interactionVisible } from './interactions.mjs';
 import { stopActor } from './combat.mjs';
@@ -57,6 +57,7 @@ export function barterAvailable(p, now: number) {
 export function barterProblem(a, b, now: number, collision?): string {
   if (!a || !b || a.id === b.id) return '近くにいる別の旅人を選ぼう。';
   if (![a.x, a.z, b.x, b.z].every(Number.isFinite)) return '二人の位置を確認してから交換しよう。';
+  if (!SETTLEMENTS.length) return 'この集い場はありません。';
   if ([a, b].some((p) => Math.hypot(p.x - MANY_HEARTHS.x, p.z - MANY_HEARTHS.z) > BARTER.campReach))
     return '二人で、多くの炉の集い場へ来よう。';
   if (!barterAvailable(a, now) || !barterAvailable(b, now))

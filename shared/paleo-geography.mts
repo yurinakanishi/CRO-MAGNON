@@ -1,5 +1,4 @@
 import { COAST_GRID, COAST_RUNS } from './paleo-coast-data.mjs';
-import { GULF, GULF_ENTRY, inGulf, gulfLandDistance } from './gulf-region.mjs';
 import { WORLD_BOUNDS } from './world-bounds.mjs';
 import { mountainLandDistance } from './camp-mountain.mjs';
 import { LEGACY_GULF, legacyGulfDistance, inLegacyGulf } from './gulf-legacy.mjs';
@@ -81,24 +80,6 @@ export function legacySceneryLand(x, z, margin = 0) {
     margin
   );
 }
-// Apply the fictional gulf once to the same distance grid used by the server,
-// map, land rendering and boat collision. Original cells elsewhere are untouched.
-for (
-  let iz = Math.floor((GULF.minZ - WORLD_BOUNDS.minZ) / cell);
-  iz < Math.ceil((GULF.maxZ - WORLD_BOUNDS.minZ) / cell);
-  iz++
-)
-  for (
-    let ix = Math.floor((GULF.minX - WORLD_BOUNDS.minX) / cell);
-    ix < Math.ceil((GULF.maxX - WORLD_BOUNDS.minX) / cell);
-    ix++
-  ) {
-    const x = WORLD_BOUNDS.minX + (ix + 0.5) * cell,
-      z = WORLD_BOUNDS.minZ + (iz + 0.5) * cell;
-    const encoded = Math.max(0, Math.min(255, Math.round(128 + 4 * gulfLandDistance(x, z))));
-    if (coast[iz * width + ix] <= 128)
-      coast[iz * width + ix] = Math.max(coast[iz * width + ix], encoded);
-  }
 // Join the new source-derived southern foothill to the existing shoreline.
 // This same grid controls sea rendering, walking, boats and the map.
 for (
@@ -432,7 +413,6 @@ export const CLIMATE_ZONES = Object.freeze(
 export const BIOME_IDS = Object.freeze(['grassland', 'snow', 'ice', 'volcano', 'desert']);
 const smooth = (t) => ((t = clamp(t, 0, 1)), t * t * (3 - 2 * t));
 export function geographicWeights(x, z) {
-  if (inGulf(x, z) && gulfLandDistance(x, z) > 0) return [1, 0, 0, 0, 0];
   return earthWeights(x, z);
 }
 export function legacySceneryBiome(x, z) {
@@ -489,7 +469,7 @@ export const EXPEDITION_STOPS = Object.freeze([
 ]);
 export const expeditionById = (id) => EXPEDITION_STOPS.find((s) => s.id === id);
 export function locationName(x, z) {
-  if (inGulf(x, z)) return GULF.name;
+  if (!isLand(x, z)) return '海';
   const nearest = EXPEDITION_STOPS.reduce((best, s) =>
     Math.hypot(s.x - x, s.z - z) < Math.hypot(best.x - x, best.z - z) ? s : best,
   );
