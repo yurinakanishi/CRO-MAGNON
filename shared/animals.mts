@@ -4,6 +4,7 @@ import { moveActor } from './movement.mjs';
 import { animalIsSolid, initialHuntState, stopActor } from './hunting.mjs';
 import { enemyIsSolid } from './combat.mjs';
 import { updateRiddenAnimal } from './riding.mjs';
+import { mammothNavigation } from './mammoth-navigation.mjs';
 
 export const animalRadius = (scale) => MODEL_BOUNDS['woolly-mammoth'].radius * scale + 0.08;
 export const actorObstacle = (actor) => ({
@@ -15,9 +16,10 @@ export const actorObstacle = (actor) => ({
 });
 export function createAnimals(collision, now = Date.now()) {
   const animals = [];
+  const navigation = mammothNavigation(collision);
   for (const [index, item] of SCENERY.animals.entries()) {
     const radius = animalRadius(item.scale),
-      position = collision.nearestFree(item, radius, animals.map(actorObstacle), 12);
+      position = navigation.nearestFree(item, radius, animals.map(actorObstacle), 12);
     if (!position) throw new Error(`No collision-free spawn for ${item.id}`);
     animals.push({
       ...item,
@@ -44,7 +46,23 @@ export function createAnimals(collision, now = Date.now()) {
   }
   return animals;
 }
+/** Recover old saves that left a living mammoth or its home on unsafe ground. */
+export function restoreAnimalGround(room, animal, safePost) {
+  const navigation = mammothNavigation(room.collision);
+  if (!navigation.free(animal.home, animal.radius)) animal.home = { ...safePost };
+  if (animal.phase !== 'alive' || navigation.free(animal, animal.radius)) return;
+  const dynamic = room.animals
+    .filter((other) => other !== animal && animalIsSolid(other))
+    .map(actorObstacle);
+  const point = navigation.nearestFree(animal.home, animal.radius, dynamic, animal.roamRadius);
+  if (!point) throw new Error(`No safe ground to restore ${animal.id}`);
+  Object.assign(animal, point);
+  animal.home = { ...point };
+  stopActor(animal);
+  animal.nextRoam = animal.age + 1;
+}
 export function updateAnimals(room, dt, now = Date.now()) {
+  const navigation = mammothNavigation(room.collision);
   for (const animal of room.animals) {
     animal.age += dt;
     if (animal.phase !== 'alive') {
@@ -73,11 +91,25 @@ export function updateAnimals(room, dt, now = Date.now()) {
     }
     if (!animal.target && !animal.path.length && animal.age >= animal.nextRoam) {
       const angle = ++animal.roamIndex * 2.39996;
-      const goal = {
-        x: animal.home.x + Math.sin(angle) * animal.roamRadius,
-        z: animal.home.z + Math.cos(angle) * animal.roamRadius,
-      };
-      animal.path = room.collision.path(animal, goal, animal.radius);
+      // Shorten a grazing step before a cliff. Generic pathfinding may move an
+      // unsafe goal beyond the pasture, so select a safe goal here first.
+      for (const fraction of [1, 0.75, 0.5]) {
+        const goal = {
+          x: animal.home.x + Math.sin(angle) * animal.roamRadius * fraction,
+          z: animal.home.z + Math.cos(angle) * animal.roamRadius * fraction,
+        };
+        if (!navigation.free(goal, animal.radius)) continue;
+        const path = navigation.path(animal, goal, animal.radius);
+        if (
+          path.length &&
+          path.every(
+            (p) => Math.hypot(p.x - animal.home.x, p.z - animal.home.z) <= animal.roamRadius + 0.01,
+          )
+        ) {
+          animal.path = path;
+          break;
+        }
+      }
       animal.nextRoam = animal.age + 4;
     }
     if (!animal.target) animal.target = animal.path.shift() || null;
@@ -87,7 +119,7 @@ export function updateAnimals(room, dt, now = Date.now()) {
       animal,
       dt,
       Infinity,
-      (p, dx, dz) => room.collision.move(p, dx, dz, animal.radius, dynamic),
+      (p, dx, dz) => navigation.move(p, dx, dz, animal.radius, dynamic),
       targetSpeed,
     );
     animal.blockedFor = animal.target && !animal.moving ? animal.blockedFor + dt : 0;

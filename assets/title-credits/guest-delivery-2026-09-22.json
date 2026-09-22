@@ -1,0 +1,54 @@
+{
+  "checkedAt": "2026-09-22T08:08:52.959Z",
+  "baseUrl": "http://localhost:3000",
+  "files": [
+    {
+      "file": "dist/src/title-credits.js",
+      "route": "/src/title-credits.js",
+      "sha256": "681e87d77763666064459238936cc61053f857e44e1a413741bf6e37cc344bb4",
+      "match": true
+    },
+    {
+      "file": "dist/src/title.css",
+      "route": "/src/title.css",
+      "sha256": "a771c8c7ff807f05a9ff70f58887cd69511d9a2630e961d81191279c71897d59",
+      "match": true
+    },
+    {
+      "file": "public/title/qr-yuri.png",
+      "route": "/title/qr-yuri.png",
+      "sha256": "d4d66516d07b921bc9ec62bf2c29ad5c30ffde667bd12a87ca125c9becfd59e2",
+      "match": true
+    },
+    {
+      "file": "public/title/qr-ryuichi.png",
+      "route": "/title/qr-ryuichi.png",
+      "sha256": "20f5a583332e0365650ad970e41b4e3bd942c4b348e460b6c90f18b86811b5ed",
+      "match": true
+    },
+    {
+      "file": "public/title/qr-otani.png",
+      "route": "/title/qr-otani.png",
+      "sha256": "28253a6610560b142d7c2ba2f52db9f72e2cf9e5a1bededdb629c55808f962cf",
+      "match": true
+    },
+    {
+      "file": "public/title/qr-urata.png",
+      "route": "/title/qr-urata.png",
+      "sha256": "f00def28241a54d4f13646d64996f514f1226508e8d49d2adde004b4e26f914a",
+      "match": true
+    },
+    {
+      "file": "public/title/qr-nukonuko.png",
+      "route": "/title/qr-nukonuko.png",
+      "sha256": "a71b1303fba1c60c0a6deb72200d0869f660fffb1aaf0d5a8de443fb0cf31e06",
+      "match": true
+    },
+    {
+      "file": "public/title/qr-r524.png",
+      "route": "/title/qr-r524.png",
+      "sha256": "6a288cf67375aba853f9d9223ea2a495d52aeb80aed9d321ed2fd9ed18543649",
+      "match": true
+    }
+  ]
+}

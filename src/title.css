@@ -58,7 +58,7 @@
   display: block;
   width: auto;
   max-width: 100%;
-  height: clamp(220px, 54dvh, 600px);
+  height: clamp(200px, min(54dvh, calc(100dvh - 400px)), 600px);
   object-fit: contain;
   filter: drop-shadow(0 8px 18px #0009);
 }
@@ -94,25 +94,41 @@
 }
 .title-credits {
   display: grid;
-  grid-template-columns: minmax(135px, 0.85fr) minmax(0, 4fr);
-  gap: 12px 24px;
+  grid-template-columns: minmax(176px, 1.1fr) minmax(0, 4fr) minmax(110px, 0.85fr);
+  grid-template-areas: 'production planning guest';
+  align-items: start;
+  gap: 16px 24px;
   width: 100%;
-  max-width: 1180px;
+  max-width: 1100px;
   margin-top: auto;
   flex-shrink: 0;
-  padding: 14px 24px 0;
+  padding: 16px 0 0;
   border-top: 1px solid #dbc89540;
 }
 .title-credits h2 {
-  margin: 0 0 13px;
+  margin: 0 0 12px;
   color: #d6c79a;
   font-size: 11px;
   font-weight: 500;
   letter-spacing: 0.18em;
 }
 .credit-production {
+  grid-area: production;
   border-right: 1px solid #dbc89533;
   padding-right: 24px;
+}
+.credit-production h2 {
+  font-size: 13px;
+  font-weight: 600;
+}
+.credit-planning {
+  grid-area: planning;
+  min-width: 0;
+}
+.credit-guest {
+  grid-area: guest;
+  border-left: 1px solid #dbc89533;
+  padding-left: 24px;
 }
 .credit-people {
   display: grid;
@@ -124,24 +140,35 @@
   margin: 0;
   align-items: center;
   flex-direction: column;
-  gap: 10px;
+  gap: 8px;
   min-width: 0;
 }
 .credit-person img {
   display: block;
   flex-shrink: 0;
-  width: 111px;
-  height: 111px;
+  width: 74px;
+  height: 74px;
   background: white;
   image-rendering: pixelated;
   box-shadow: 0 2px 10px #513a260c;
 }
 .credit-name {
-  font-size: 12px;
+  font-size: 11px;
   font-weight: 500;
-  line-height: 1.65;
+  line-height: 1.5;
+  text-align: center;
+  text-wrap: balance;
   overflow-wrap: anywhere;
   color: #f1ead8;
+}
+.credit-production .credit-person img {
+  width: 148px;
+  height: 148px;
+}
+.credit-production .credit-name {
+  font-size: 22px;
+  line-height: 1.2;
+  letter-spacing: 0.04em;
 }
 #screen-title .title-footer {
   position: static;
@@ -160,17 +187,17 @@
     padding: 16px 24px 0;
   }
   .title-credits {
-    padding: 14px 16px 0;
-    gap: 12px 16px;
+    grid-template-columns: 164px minmax(0, 1fr) 90px;
+    gap: 16px;
   }
   .credit-production {
     padding-right: 16px;
   }
+  .credit-guest {
+    padding-left: 16px;
+  }
   .credit-people {
     gap: 12px;
-  }
-  .credit-name {
-    font-size: 11px;
   }
 }
 @media (max-width: 700px) {
@@ -183,28 +210,22 @@
     height: auto;
   }
   .title-credits {
-    grid-template-columns: 1fr;
-    gap: 24px;
-    padding: 20px 12px 0;
+    grid-template-columns: minmax(148px, 1.35fr) minmax(0, 1fr);
+    grid-template-areas: 'production guest' 'planning planning';
+    gap: 24px 20px;
+    padding: 20px 0 0;
   }
   .credit-production {
     padding: 0;
     border: 0;
   }
-  .credit-production .credit-person {
-    flex-direction: row;
-    justify-content: center;
-    gap: 20px;
-  }
-  .credit-production .credit-name {
-    font-size: 18px;
+  .credit-guest {
+    padding: 0;
+    border: 0;
   }
   .credit-people {
     grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 24px 18px;
-  }
-  .credit-name {
-    font-size: 12px;
+    gap: 20px 18px;
   }
   #screen-title .title-footer {
     padding: 8px 18px 10px;

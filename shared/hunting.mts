@@ -15,6 +15,7 @@ import {
 } from './combat.mjs';
 import { attackProfile } from './combat-profiles.mjs';
 import { interactionVisible } from './interactions.mjs';
+import { mammothNavigation } from './mammoth-navigation.mjs';
 export { withinSpearReach, stopActor } from './combat.mjs';
 
 // Distances use the same body radii as authoritative movement collision.
@@ -334,7 +335,7 @@ export function updateHunting(
         ...(room.enemies || []).filter(enemyIsSolid),
         ...(room.residents || []),
       ]);
-      const spawn = room.collision.nearestFree(
+      const spawn = mammothNavigation(room.collision).nearestFree(
         animal.home,
         animal.radius,
         dynamic,

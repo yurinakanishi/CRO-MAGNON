@@ -20,26 +20,29 @@ PROFILES = [
     ('otani', 'https://x.com/otani_ai_memo'),
     ('urata', 'https://x.com/yuki_urata'),
     ('nukonuko', 'https://x.com/nukonuko'),
+    ('r524', 'https://x.com/R5ni4'),
 ]
 destination = ROOT / 'public/title'
 destination.mkdir(parents=True, exist_ok=True)
 results = []
 for key, url in PROFILES:
-    # Fixed version 3 gives all five codes 29 + 8 quiet-zone modules.
-    # They display at 111px: exactly 3 CSS pixels per module.
+    # Version 3 gives 29 + 8 quiet-zone modules. Display yuri at 148px
+    # (4 CSS pixels/module), the remaining credits at 74px (2/module).
     qr = qrcode.QRCode(version=3, error_correction=qrcode.constants.ERROR_CORRECT_M,
                        box_size=8, border=4)
     qr.add_data(url)
     qr.make(fit=False)
     path = destination / f'qr-{key}.png'
-    qr.make_image(fill_color='black', back_color='white').save(path)
+    if not path.exists():
+        qr.make_image(fill_color='black', back_color='white').save(path)
     image = Image.open(path).convert('RGB')
-    for size in [296, 111]:
+    sizes = [296, 148 if key == 'yuri' else 74]
+    for size in sizes:
         decoded = zxingcpp.read_barcode(image.resize((size, size), Image.Resampling.NEAREST))
         assert decoded and decoded.text == url, (key, size, decoded)
     results.append({'file': path.relative_to(ROOT).as_posix(), 'url': url,
                     'sha256': hashlib.sha256(path.read_bytes()).hexdigest(),
-                    'decodedAtPixels': [296, 111], 'quietZoneModules': 4})
+                    'decodedAtPixels': sizes, 'quietZoneModules': 4})
 
 report = ROOT / 'assets/title-credits/qr-verification.json'
 report.parent.mkdir(parents=True, exist_ok=True)

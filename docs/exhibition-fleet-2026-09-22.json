@@ -1,0 +1,201 @@
+{
+  "verifiedAt": "2026-09-22T19:59:37.2080948+09:00",
+  "release": "exhibition-20260922-fleet-r04",
+  "buildId": "57ca374df2bb864d6d7bdf1eb664484caa33983cc18a6883cf7abe545181d111",
+  "zipSha256": "CD5A235053F6627F1A67B467AF3E2CA5A2F60D588B27EB86587E9E483AD75A3A",
+  "machines": [
+    {
+      "id": "PC0",
+      "computerName": "YURI",
+      "role": "standby",
+      "hostPC": "PC1",
+      "release": "exhibition-20260922-fleet-r04",
+      "buildId": "57ca374df2bb864d6d7bdf1eb664484caa33983cc18a6883cf7abe545181d111",
+      "publicWrite": true,
+      "verifiedFiles": 400,
+      "glbs": 78,
+      "taskRunLevel": 0,
+      "running": false,
+      "displayUser": "CRO-MAGNON",
+      "displaySession": null
+    },
+    {
+      "id": "PC1",
+      "computerName": "YURIALIENWARE",
+      "role": "host",
+      "hostPC": "PC1",
+      "release": "exhibition-20260922-fleet-r04",
+      "buildId": "57ca374df2bb864d6d7bdf1eb664484caa33983cc18a6883cf7abe545181d111",
+      "publicWrite": true,
+      "verifiedFiles": 400,
+      "glbs": 78,
+      "taskRunLevel": 0,
+      "running": true,
+      "displayUser": "YuriAlienware\\CRO-MAGNON",
+      "displaySession": 2
+    },
+    {
+      "id": "PC2",
+      "computerName": "LAPTOP-HS5HI3E4",
+      "role": "client",
+      "hostPC": "PC1",
+      "release": "exhibition-20260922-fleet-r04",
+      "buildId": "57ca374df2bb864d6d7bdf1eb664484caa33983cc18a6883cf7abe545181d111",
+      "publicWrite": true,
+      "verifiedFiles": 400,
+      "glbs": 78,
+      "taskRunLevel": 0,
+      "running": true,
+      "displayUser": "LAPTOP-HS5HI3E4\\CRO-MAGNON",
+      "displaySession": 1
+    },
+    {
+      "id": "PC3",
+      "computerName": "YURI_TP_X1_12",
+      "role": "standby",
+      "hostPC": "PC1",
+      "release": "exhibition-20260922-fleet-r04",
+      "buildId": "57ca374df2bb864d6d7bdf1eb664484caa33983cc18a6883cf7abe545181d111",
+      "publicWrite": true,
+      "verifiedFiles": 400,
+      "glbs": 78,
+      "taskRunLevel": 0,
+      "running": false,
+      "displayUser": "CRO-MAGNON",
+      "displaySession": null
+    }
+  ],
+  "liveLanCases": [
+    {
+      "host": "PC1",
+      "client": "PC2",
+      "room": "FLEET-QA-194852",
+      "passed": true,
+      "peers": [
+        {
+          "machine": "PC1",
+          "controllerLayout": "ps4",
+          "serverUrl": "ws://10.10.10.1:8081/",
+          "ownMovement": true,
+          "peerMovement": true,
+          "peerAttack": true,
+          "snapshots": 28,
+          "local524Bytes": 19046100,
+          "source": "output/exhibition-fleet-setup/FLEET-QA-194852-PC1.json"
+        },
+        {
+          "machine": "PC2",
+          "controllerLayout": "switch-pro",
+          "serverUrl": "ws://10.10.10.1:8081/",
+          "ownMovement": true,
+          "peerMovement": true,
+          "peerAttack": true,
+          "snapshots": 18,
+          "local524Bytes": 19046100,
+          "source": "output/exhibition-fleet-setup/FLEET-QA-194852-PC2.json"
+        }
+      ]
+    },
+    {
+      "host": "PC1",
+      "client": "PC3",
+      "room": "FLEET-QA-194941",
+      "passed": true,
+      "peers": [
+        {
+          "machine": "PC1",
+          "controllerLayout": "ps4",
+          "serverUrl": "ws://10.10.10.1:8081/",
+          "ownMovement": true,
+          "peerMovement": true,
+          "peerAttack": true,
+          "snapshots": 24,
+          "local524Bytes": 19046100,
+          "source": "output/exhibition-fleet-setup/FLEET-QA-194941-PC1.json"
+        },
+        {
+          "machine": "PC3",
+          "controllerLayout": "switch-pro",
+          "serverUrl": "ws://10.10.10.1:8081/",
+          "ownMovement": true,
+          "peerMovement": true,
+          "peerAttack": true,
+          "snapshots": 19,
+          "local524Bytes": 19046100,
+          "source": "output/exhibition-fleet-setup/FLEET-QA-194941-PC3.json"
+        }
+      ]
+    },
+    {
+      "host": "PC3",
+      "client": "PC2",
+      "room": "FLEET-QA-195245",
+      "passed": true,
+      "peers": [
+        {
+          "machine": "PC3",
+          "controllerLayout": "ps4",
+          "serverUrl": "ws://10.10.10.4:8081/",
+          "ownMovement": true,
+          "peerMovement": true,
+          "peerAttack": true,
+          "snapshots": 24,
+          "local524Bytes": 19046100,
+          "source": "output/exhibition-fleet-setup/FLEET-QA-195245-PC3.json"
+        },
+        {
+          "machine": "PC2",
+          "controllerLayout": "switch-pro",
+          "serverUrl": "ws://10.10.10.4:8081/",
+          "ownMovement": true,
+          "peerMovement": true,
+          "peerAttack": true,
+          "snapshots": 18,
+          "local524Bytes": 19046100,
+          "source": "output/exhibition-fleet-setup/FLEET-QA-195245-PC2.json"
+        }
+      ]
+    },
+    {
+      "host": "PC0",
+      "client": "PC2",
+      "room": "FLEET-QA-195646",
+      "passed": true,
+      "peers": [
+        {
+          "machine": "PC0",
+          "controllerLayout": "ps4",
+          "serverUrl": "ws://10.10.10.3:8081/",
+          "ownMovement": true,
+          "peerMovement": true,
+          "peerAttack": true,
+          "snapshots": 25,
+          "local524Bytes": 19046100,
+          "source": "output/exhibition-fleet-setup/FLEET-QA-195646-PC0.json"
+        },
+        {
+          "machine": "PC2",
+          "controllerLayout": "switch-pro",
+          "serverUrl": "ws://10.10.10.3:8081/",
+          "ownMovement": true,
+          "peerMovement": true,
+          "peerAttack": true,
+          "snapshots": 17,
+          "local524Bytes": 19046100,
+          "source": "output/exhibition-fleet-setup/FLEET-QA-195646-PC2.json"
+        }
+      ]
+    }
+  ],
+  "clientReplacementPreservedHost": true,
+  "automatedGameTests": 700,
+  "fleetScenarios": 10,
+  "bundledLauncherScenarios": 4,
+  "physicalControllerInputVerified": false,
+  "displayVisualInspectionVerified": false,
+  "temporarySetupHttpServerStopped": true,
+  "pc3HostKeyManuallyCompared": false,
+  "pc3InitialHostKeyAcceptance": "User explicitly requested first-connection acceptance; subsequent connections require the stored key.",
+  "statusSource": "output/exhibition-fleet/20260922-195829-status-9296d12fa52d45c583003b5f9a9cc8ba.json",
+  "fileVerificationSource": "output/exhibition-fleet/20260922-195442-verify-6152ae88d26746fd9dabfc1982929a55.json"
+}

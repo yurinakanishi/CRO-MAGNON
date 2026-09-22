@@ -1,0 +1,49 @@
+{
+  "date": "2026-09-22",
+  "method": "Real Chrome through CUA, screenshots inspected in conversation and read-only DOM measurements; no synthetic game state",
+  "url": "http://localhost:3000/?room=TITLE-CREDITS-QA",
+  "roles": ["制作", "監修", "友情出演"],
+  "production": { "name": "yuri", "nameFontPx": 22, "qrPixels": 148 },
+  "otherCredits": { "count": 5, "nameFontPx": 11, "qrPixels": 74 },
+  "viewports": [
+    {
+      "viewport": [767, 722],
+      "client": [767, 722],
+      "scroll": [767, 722],
+      "yuriNameBottomPx": 691.6
+    },
+    {
+      "viewport": [1280, 800],
+      "client": [1280, 800],
+      "scroll": [1280, 800],
+      "yuriNameBottomPx": 770
+    },
+    {
+      "viewport": [1440, 900],
+      "client": [1440, 900],
+      "scroll": [1440, 900],
+      "yuriNameBottomPx": 870
+    },
+    {
+      "viewport": [390, 844],
+      "client": [380, 844],
+      "scroll": [380, 976],
+      "gridAreas": "production guest / planning planning"
+    },
+    { "viewport": [844, 390], "client": [834, 390], "scroll": [834, 632] }
+  ],
+  "allQrImagesLoaded": true,
+  "allNamesReachableByScrolling": true,
+  "horizontalOverflow": false,
+  "interactiveCreditElements": 0,
+  "checks": [
+    "ArrowDown from title-start focuses title-howto",
+    "Enter opens help, modal-close returns to title",
+    "Start opens character selection, setup-back returns to title",
+    "Reload preserves updated credit roles, names and QR images",
+    "Clicking static credit names does not navigate"
+  ],
+  "consoleErrorsOrWarnings": [],
+  "viewportOverrideReset": true,
+  "limits": "QR decoded in software at source and display resolutions; physical phone camera and controller not tested in this change."
+}

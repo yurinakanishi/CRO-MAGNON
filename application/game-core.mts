@@ -13,7 +13,12 @@ import { ensureAdventure, updateAdventures } from '../shared/adventures.mjs';
 import { createGulfState, ensureGulfPlayer, updateGulf } from '../shared/gulf-life.mjs';
 import { migrateGulfRecord } from '../shared/gulf-migration.mjs';
 import { GULF, MANY_HEARTHS } from '../shared/gulf-region.mjs';
-import { actorObstacle, createAnimals, updateAnimals } from '../shared/animals.mjs';
+import {
+  actorObstacle,
+  createAnimals,
+  restoreAnimalGround,
+  updateAnimals,
+} from '../shared/animals.mjs';
 import {
   BOATING,
   boardedBoat,
@@ -775,6 +780,7 @@ export function createGameCore({
           stopActor(actor);
           actor.riderId = null;
           actor.pendingAttack = null;
+          if (name === 'animals') restoreAnimalGround(room, actor, post);
           if (
             name === 'enemies' &&
             ['violet-behemoth', 'sabertooth-tiger'].includes(actor.modelKey)

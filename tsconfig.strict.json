@@ -15,6 +15,7 @@
     "src/frame-clock.ts",
     "src/gamepad-input.ts",
     "src/gamepad-ui.ts",
+    "src/multiplayer-config.ts",
     "src/screens.ts",
     "src/character-selection.ts",
     "src/view-update-gate.ts",

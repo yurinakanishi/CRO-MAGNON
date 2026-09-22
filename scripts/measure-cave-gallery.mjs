@@ -6,7 +6,9 @@ import { CAVE_MOTIFS, CAVE_MURALS, caveMuralHeight } from '../dist/src/cave-gall
 import { caveCentreOffset } from '../dist/shared/camp-cave-layout.mjs';
 const asset = JSON.parse(await readFile('public/models/camp-cave/asset.json'));
 const source = process.argv[2] ?? `public${asset.url}`,
-  output = process.argv[3] ?? `assets/camp-cave/qa/gallery-surfaces-r${asset.revision}.json`;
+  output =
+    process.argv[3] ??
+    `assets/camp-cave/qa/gallery-surfaces-r${asset.galleryRevision ?? asset.revision}.json`;
 const { scene } = await loadMotion(source);
 scene.traverse((n) => {
   if (n.isMesh) for (const m of [n.material].flat()) m.side = THREE.DoubleSide;

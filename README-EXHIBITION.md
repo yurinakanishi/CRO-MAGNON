@@ -1,3 +1,9 @@
+# PC0～PC3の現行運用
+
+4台への配布、PC3／PC0での展示代行、標準Windowsユーザーでの起動は
+[README-EXHIBITION-4PC.md](README-EXHIBITION-4PC.md) を参照してください。
+以下は1台のホストと1台のクライアントを動かす基本手順です。機体が交代しても役割は同じです。
+
 # 展示会の有線LANモード
 
 PC0（裏方の開発・配布機）、PC1（展示ホスト）、PC2（展示クライアント）の役割、
@@ -59,6 +65,48 @@ ChromeまたはEdgeとGPUドライバーは事前にインストールしてく�
 停止します。展示ワールドはメモリー上にあり、ホスト終了でリセットされます。
 ブラウザーの再読み込み・短時間の再接続は既存の復帰機能（通常2分）で扱います。
 ゲスト名だけで参加でき、ログイン・Telemetry・Analyticsは起動条件にありません。
+
+## PCごとのコントローラー表記
+
+配布フォルダーの `exhibition.env` で指定します。初期値はPC1がPS4、PC2がSwitch Proです。
+
+```ini
+PC1_CONTROLLER_LAYOUT=ps4
+PC2_CONTROLLER_LAYOUT=switch-pro
+```
+
+| 操作                   | PC1 / PS4            | PC2 / Switch Pro     |
+| ---------------------- | -------------------- | -------------------- |
+| 調べる・決定           | ○                    | A                    |
+| 撫でる・乗り降り・戻る | ×                    | B                    |
+| 攻撃                   | □ / R2               | Y / ZR               |
+| ジャンプ               | △                    | X                    |
+| メニュー               | OPTIONS              | ＋                   |
+| 地図                   | SHARE / タッチパッド | −                    |
+| 作業中止               | L2                   | ZL                   |
+| カメラの距離           | L1 / R1              | L / R                |
+| 視点・現在地へ戻す     | R3                   | 右スティック押し込み |
+
+操作説明のポップアップ、地図、近くの行動案内にも同じ表記を使います。
+ボタンの位置と機能は両機種で共通です。ブラウザーのstandard mappingを使い、
+機器名による自動判定はしません。位置の対応は
+[Gamepad標準](https://w3c.github.io/gamepad/#remapping)と
+[ChromiumのNintendo実装](https://chromium.googlesource.com/chromium/src/+/HEAD/device/gamepad/nintendo_controller.cc)
+に基づきます。
+
+後で機種を変えるときは、**そのPCで使っている配布フォルダー**の該当行を
+`ps4` または `switch-pro` に変更し、体験の区切りでブラウザーを再読み込みします。
+例：PC2をPS4に変える場合は `PC2_CONTROLLER_LAYOUT=ps4`。
+`exhibition.local.env` にその1行だけを置く方法も使えます（こちらが優先）。
+変更は各PCに独立して適用されます。再ビルド・共有ゲームサーバーの再起動・管理者権限は不要です。
+設定は画面の読込時に反映するため、プレイ中に勝手に表記が変わることはありません。
+接続先IPなど他の設定を変える場合は従来どおり起動し直してください。
+
+表示定義のコードは `shared/controller-layout.mts`、表示への適用は
+`src/controller-labels.ts` に集約しています。通常のオンライン版の既定はPS4で、
+`public/multiplayer-config.json` の `controllerLayout` でも指定できます。
+実機をつないだ開場前確認では、A／○で決定、B／×で戻る、X／△でジャンプ、
+Y／□で攻撃することを画面と照合してください。
 
 ## 固定IPとWindows Firewall
 

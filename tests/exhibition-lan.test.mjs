@@ -327,11 +327,12 @@ test('offline package integrity catches a partial or modified copy', async () =>
   await assert.rejects(() => verifyExhibition(folder), /changed or missing/);
 });
 
-test('offline packages carry the three-PC role, SSH and security runbooks', async () => {
+test('offline packages carry the four-PC operation, SSH and security runbooks', async () => {
   const buildScript = await readFile(path.join(root, 'scripts/build-exhibition.mjs'), 'utf8');
   for (const file of [
     'README-EXHIBITION.md',
     'README-EXHIBITION-3PC.md',
+    'README-EXHIBITION-4PC.md',
     'README-EXHIBITION-SECURITY.md',
   ])
     assert.match(buildScript, new RegExp(`'${file}'`));

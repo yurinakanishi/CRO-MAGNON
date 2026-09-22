@@ -536,7 +536,7 @@
       "sha256": "65dde1aa7311b88c159d524d93af82a770dac77e48ee1f35356e3000cad8a15f",
       "triangles": 74458,
       "delivery": "/models/camp-cave/model-r26.glb",
-      "gameQA": "output/playwright/camp-cave/game-white-gallery-r26-delivered/summary.json"
+      "gameQA": "output/playwright/camp-cave/game-packed-wall-r29/summary.json"
     },
     {
       "key": "yellow-524-mascot",
@@ -544,10 +544,11 @@
       "kind": "companion",
       "candidate": 14,
       "status": "integrated-reviewed-prototype",
-      "sha256": "2652765f480973f6d974d0c51b2bd294c6e4c81e32e369814e09ba6c03c3e418",
-      "delivery": "/models/yellow-524-mascot/model-c14.glb",
+      "sha256": "77faeb7e7b0a34cd1aa6e23b728cbaf295227998791bb437977a8ff2abfbb3b9",
+      "delivery": "/models/yellow-524-mascot/model-midpoint-r01.glb",
       "triangles": 449022,
-      "gameQA": "assets/companion-524/README.md"
+      "gameQA": "assets/companion-524/README.md",
+      "revision": "midpoint-r01"
     }
   ],
   "reuse": {

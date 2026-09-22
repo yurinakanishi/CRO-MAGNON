@@ -1,4 +1,4 @@
-/** Profile names and destinations confirmed in Chrome on 2026-09-09. */
+/** Original profiles confirmed on 2026-09-09; R-524 in yuri's followers on 2026-09-22. */
 export const TITLE_CREDITS = [
   { name: 'yuri', profile: 'https://x.com/yurinakanishi33', qr: 'yuri' },
   { name: 'Ryuichi-typeR', profile: 'https://x.com/WabisukeTyper', qr: 'ryuichi' },
@@ -11,11 +11,20 @@ export const TITLE_CREDITS = [
   { name: 'ぬこぬこ / NUKO 🇯🇵', profile: 'https://x.com/nukonuko', qr: 'nukonuko' },
 ] as const;
 
+export const TITLE_GUEST = {
+  name: 'R-524',
+  profile: 'https://x.com/R5ni4',
+  qr: 'r524',
+} as const;
+
 export function titleCreditsMarkup(): string {
-  const card = (credit: (typeof TITLE_CREDITS)[number]) =>
-    `<figure class="credit-person"><img src="/title/qr-${credit.qr}.png" width="111" height="111" alt="${credit.name}のXプロフィールのQRコード" decoding="async"><figcaption class="credit-name">${credit.name}</figcaption></figure>`;
+  const card = (credit: (typeof TITLE_CREDITS)[number] | typeof TITLE_GUEST, size = 74) =>
+    `<figure class="credit-person"><img src="/title/qr-${credit.qr}.png" width="${size}" height="${size}" alt="${credit.name}のXプロフィールのQRコード" decoding="async"><figcaption class="credit-name">${credit.name}</figcaption></figure>`;
   return `<section class="title-credits" aria-label="クレジット">
-    <div class="credit-production"><h2>制作</h2>${card(TITLE_CREDITS[0])}</div>
-    <div class="credit-planning"><h2>監修</h2><div class="credit-people">${TITLE_CREDITS.slice(1).map(card).join('')}</div></div>
+    <div class="credit-production"><h2>制作</h2>${card(TITLE_CREDITS[0], 148)}</div>
+    <div class="credit-planning"><h2>監修</h2><div class="credit-people">${TITLE_CREDITS.slice(1)
+      .map((credit) => card(credit))
+      .join('')}</div></div>
+    <div class="credit-guest"><h2>友情出演</h2>${card(TITLE_GUEST)}</div>
   </section>`;
 }

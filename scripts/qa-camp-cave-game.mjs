@@ -13,7 +13,7 @@ import {
 } from '../dist/shared/camp-cave-layout.mjs';
 import { CASTLE_GATE } from '../dist/shared/castle-layout.mjs';
 import { createEnemies } from '../dist/shared/enemies.mjs';
-import { CAVE_MURALS } from '../dist/src/cave-gallery-layout.js';
+import { CAVE_MOTIFS, CAVE_MURALS, caveMuralHeight } from '../dist/src/cave-gallery-layout.js';
 const { chromium } =
   await import('file:///C:/Users/yurin/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/node_modules/playwright/index.mjs');
 const folder = `output/playwright/camp-cave/game-${process.argv[2] || '01'}`;
@@ -36,7 +36,8 @@ const browser = await chromium.launch({ channel: 'chrome', headless: true });
 const errors = [],
   samples = [],
   checks = [],
-  peers = [];
+  peers = [],
+  gallery = { revision: caveAsset.galleryRevision, layout: CAVE_MURALS };
 async function peersSeeFire(lit) {
   const deadline = Date.now() + 5000;
   while (!peers.every((p) => p.lastCamp?.caveFireLit === lit) && Date.now() < deadline)
@@ -241,6 +242,66 @@ try {
       ),
     );
     checks.push('faithful transparent 524 pigment loaded from the active manifest');
+    const pigmentBounds = await page.evaluate((motifs) => {
+      const bounds = {};
+      for (const motif of ['mammoth', 'creature524']) {
+        const texture =
+          motif === 'mammoth'
+            ? caveWorld.landmarks.cavePigment
+            : caveWorld.landmarks.caveCharacter524;
+        const [x0, y0, x1, y1] = motifs[motif],
+          canvas = document.createElement('canvas');
+        canvas.width = x1 - x0;
+        canvas.height = y1 - y0;
+        const context = canvas.getContext('2d');
+        context.drawImage(
+          texture.image,
+          x0,
+          y0,
+          canvas.width,
+          canvas.height,
+          0,
+          0,
+          canvas.width,
+          canvas.height,
+        );
+        const { data } = context.getImageData(0, 0, canvas.width, canvas.height);
+        let minY = canvas.height,
+          maxY = -1;
+        for (let y = 0; y < canvas.height; y++)
+          for (let x = 0; x < canvas.width; x++)
+            if (data[(y * canvas.width + x) * 4 + 3] > 32) {
+              minY = Math.min(minY, y);
+              maxY = Math.max(maxY, y);
+            }
+        bounds[motif] = { heightPixels: maxY - minY + 1, imageHeight: canvas.height };
+      }
+      return bounds;
+    }, CAVE_MOTIFS);
+    const mammothMural = CAVE_MURALS.find((m) => m.wall === 'west' && m.motif === 'mammoth'),
+      smallMural = CAVE_MURALS.find((m) => m.motif === 'creature524');
+    const paintedHeight = (mural) =>
+      (caveMuralHeight(mural) * pigmentBounds[mural.motif].heightPixels) /
+      pigmentBounds[mural.motif].imageHeight;
+    const targetHeightRatio = 0.5,
+      paintedHeightRatio = paintedHeight(smallMural) / paintedHeight(mammothMural);
+    gallery.scale = {
+      pigmentBounds,
+      companionPaintedHeight: paintedHeight(smallMural),
+      mammothPaintedHeight: paintedHeight(mammothMural),
+      targetHeightRatio,
+      paintedHeightRatio,
+      relativeError: Math.abs(paintedHeightRatio / targetHeightRatio - 1),
+    };
+    assert.ok(
+      gallery.scale.relativeError < 0.02,
+      '524 must be half the mammoth painted height, excluding transparent margins',
+    );
+    assert.ok(
+      smallMural.bottom > mammothMural.bottom,
+      '524 should float above the animal baseline',
+    );
+    checks.push('painted 524 is half the mammoth height within two percent');
     const frame = async (wall, distance = 4) => {
       await page.evaluate(
         ({ wall, distance }) => {
@@ -251,12 +312,37 @@ try {
         { wall, distance },
       );
     };
-    const catView = caveWorldAt(CAVE_MURALS.find((m) => m.motif === 'cat').centre),
+    assert.equal(CAVE_MURALS.length, 15);
+    assert.equal('cat' in CAVE_MOTIFS, false);
+    assert.equal(
+      CAVE_MURALS.some((m) => m.motif === 'cat'),
+      false,
+    );
+    checks.push('cat motif and projection are completely removed from the active gallery');
+    const eastAnimals = CAVE_MURALS.filter(
+      (m) =>
+        m.wall === 'east' &&
+        ['redHorse', 'mammoth', 'bison', 'deer', 'ochreHorse'].includes(m.motif),
+    ).sort((a, b) => b.centre - a.centre);
+    gallery.eastAnimalGaps = eastAnimals.slice(1).map((m, i) => {
+      const previous = eastAnimals[i];
+      const gap = previous.centre - previous.width / 2 - (m.centre + m.width / 2);
+      assert.ok(
+        gap >= 0 && gap < Math.min(previous.width, m.width),
+        'animal row has an empty slot or overlap',
+      );
+      return gap;
+    });
+    checks.push(
+      'the east animal row closes the former cat slot without overlap or a large blank gap',
+    );
+    // Inspect the old cat footprint, now occupied by the deer in a continuous animal row.
+    const reflowedWallView = caveWorldAt(-26.1),
       creatureView = caveWorldAt(CAVE_MURALS.find((m) => m.motif === 'creature524').centre),
       hearthApproach = caveWorldAt(-20, 1.5);
-    await walk(page, catView, 'view the cat beyond the chamber midpoint before ignition');
+    await walk(page, reflowedWallView, 'view the reflowed animal row before ignition');
     await frame('east');
-    await shot(page, 'gallery-cat-unlit');
+    await shot(page, 'gallery-reflowed-wall-unlit');
     await walk(page, creatureView, 'view 524 on the opposite wall before ignition');
     await frame('west');
     await shot(page, 'gallery-524-unlit');
@@ -264,13 +350,17 @@ try {
     await page.locator('#world').focus();
     await page.keyboard.press('KeyE');
     await page.waitForFunction(() => caveWorld.state.camp.caveFireLit === true);
-    await walk(page, catView, 'view the cat in firelight');
+    await walk(page, reflowedWallView, 'view the reflowed animal row in firelight');
     await frame('east');
-    await shot(page, 'gallery-cat-lit');
+    await shot(page, 'gallery-reflowed-wall-lit');
     await walk(page, creatureView, 'view 524 in firelight');
     await frame('west');
     await shot(page, 'gallery-524-lit');
-    checks.push('cat and 524 are on opposite walls, actual E reveals both');
+    checks.push('actual E lighting reveals continuous limestone and the small floating 524');
+    await walk(page, caveWorldAt(-22.2, 3.0), 'approach the small 524 and neighbouring mammoth');
+    await frame('west', 1.5);
+    await shot(page, 'gallery-524-close');
+    await walk(page, creatureView, 'return from the small 524');
     if (process.argv.includes('--gallery-preview')) {
       await walk(page, caveWorldAt(-30.5), 'preview the spacious back chamber');
       await page.evaluate(() => {
@@ -343,11 +433,11 @@ try {
       for (const across of [-3.5, 3.5, 0])
         await walk(page, caveWorldAt(-30.5, across), `cross the back chamber at ${across}`);
       checks.push('the rear chamber can be crossed in both directions at full standing height');
-      await walk(page, catView, 'return to the cat gallery');
-      await walk(page, caveWorldAt(-28, -3.6), 'approach the limestone and cat');
+      await walk(page, reflowedWallView, 'return to the reflowed wall');
+      await walk(page, caveWorldAt(-26.1, -3.6), 'approach the former cat footprint');
       await frame('east', 1.8);
       await shot(page, 'gallery-rock-close');
-      await walk(page, catView, 'return from the rock face');
+      await walk(page, reflowedWallView, 'return from the rock face');
       await frame('east');
       for (const [width, height] of [
         [390, 844],
@@ -642,6 +732,7 @@ try {
     JSON.stringify(
       {
         cave,
+        gallery,
         checks,
         samples,
         errors,

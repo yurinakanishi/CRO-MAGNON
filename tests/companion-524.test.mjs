@@ -73,6 +73,7 @@ test('524 spawns within six metres of the real camp on a safe surface', () => {
   assert.ok(collision.free(c, c.radius));
   assert.equal(c.mode, 'idle');
   assert.equal(c.followPlayerId, null);
+  assert.equal(c.radius, 0.18, 'the small body uses its matching navigation/hit radius');
 });
 
 test('petting verifies range, visibility and every incompatible activity', () => {
@@ -344,7 +345,7 @@ test('two clients see one pet and hit state; current and pre-524 persistent save
   assert.equal(legacy.rooms.get('MASCOT').companion524.mode, 'idle');
 });
 
-test('delivered 524 is the unchanged latest C14 with one four-second floating clip and twenty bones', async () => {
+test('retained original C14 keeps its exact hash, four-second floating clip and twenty bones', async () => {
   const b = await readFile('public/models/yellow-524-mascot/model-c14.glb');
   assert.equal(
     createHash('sha256').update(b).digest('hex'),
@@ -357,4 +358,45 @@ test('delivered 524 is the unchanged latest C14 with one four-second floating cl
     ['Floating_Ripple'],
   );
   assert.equal(Math.max(...j.animations[0].samplers.map((s) => j.accessors[s.input].max[0])), 4);
+});
+
+test('the selected midpoint delivery keeps all C14 geometry, skin and animation buffers at a 30cm game scale', async () => {
+  const manifest = JSON.parse(await readFile('public/models/yellow-524-mascot/asset.json', 'utf8'));
+  assert.equal(manifest.revision, 'midpoint-r01');
+  assert.equal(manifest.heightMetres, 0.3);
+  assert.equal(manifest.placement.scale, COMPANION_524.scale);
+  const data = await readFile(`public${manifest.url}`);
+  assert.equal(createHash('sha256').update(data).digest('hex'), manifest.sha256);
+  const original = await readFile('public/models/yellow-524-mascot/model-c14.glb');
+  const parse = (b) => {
+    const length = b.readUInt32LE(12),
+      doc = JSON.parse(b.subarray(20, 20 + length));
+    return {
+      doc,
+      view(i) {
+        const v = doc.bufferViews[i],
+          start = 28 + length + (v.byteOffset ?? 0);
+        return b.subarray(start, start + v.byteLength);
+      },
+    };
+  };
+  const a = parse(original),
+    b = parse(data),
+    image = a.doc.images[0].bufferView;
+  for (let i = 0; i < a.doc.bufferViews.length; i++)
+    if (i !== image) assert.deepEqual(a.view(i), b.view(i), `unchanged non-image buffer ${i}`);
+  assert.notDeepEqual(a.view(image), b.view(image), 'the selected color is actually delivered');
+  for (const key of ['nodes', 'meshes', 'skins', 'accessors', 'animations'])
+    assert.deepEqual(a.doc[key], b.doc[key]);
+  const position = b.doc.accessors[b.doc.meshes[0].primitives[0].attributes.POSITION];
+  assert.ok(Math.abs((position.max[1] - position.min[1]) * COMPANION_524.scale - 0.3) < 1e-8);
+});
+
+test('restoring an older metre-tall 524 keeps its position but uses the new small-body radius', () => {
+  const { room, c } = fixture();
+  const saved = { ...c, x: c.x + 2, radius: 0.58 };
+  restoreCompanion524(room, saved);
+  assert.equal(room.companion524.x, saved.x);
+  assert.equal(room.companion524.radius, COMPANION_524.radius);
+  assert.equal(saved.radius, 0.58);
 });

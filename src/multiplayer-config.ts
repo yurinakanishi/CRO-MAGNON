@@ -1,9 +1,12 @@
+import { parseControllerLayout, type ControllerLayout } from '../shared/controller-layout.mjs';
+
 export interface MultiplayerConfig {
   mode: 'online' | 'lan';
   serverUrl: string;
   room?: string;
   guestName?: string;
   buildId?: string;
+  controllerLayout?: ControllerLayout;
 }
 
 export function parseMultiplayerConfig(value: unknown): MultiplayerConfig {
@@ -26,6 +29,7 @@ export function parseMultiplayerConfig(value: unknown): MultiplayerConfig {
     room: typeof config.room === 'string' ? config.room : undefined,
     guestName: typeof config.guestName === 'string' ? config.guestName : undefined,
     buildId: typeof config.buildId === 'string' ? config.buildId : undefined,
+    controllerLayout: parseControllerLayout(config.controllerLayout),
   };
 }
 

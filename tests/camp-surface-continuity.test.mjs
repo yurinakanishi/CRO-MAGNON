@@ -82,11 +82,12 @@ test('the extended chamber doubles the measured aisle and keeps paintings in its
       nearest = after.samples.find((s) => s.z <= entranceEdge);
     assert.ok(nearest.distance > after.lengthMetres / 2, `${mural.motif} crosses the midpoint`);
   }
-  const cat = CAVE_MURALS.find((m) => m.motif === 'cat'),
-    creature = CAVE_MURALS.find((m) => m.motif === 'creature524');
-  assert.equal(cat.wall, 'east');
+  const creature = CAVE_MURALS.find((m) => m.motif === 'creature524');
+  assert.equal(
+    CAVE_MURALS.some((m) => m.motif === 'cat'),
+    false,
+  );
   assert.equal(creature.wall, 'west');
-  assert.ok(Math.abs(cat.centre - creature.centre) > 4);
 });
 
 test('both animal galleries retain a broad room and full standing height all the way to the back', async () => {
@@ -112,9 +113,11 @@ test('both animal galleries retain a broad room and full standing height all the
         .sort(),
       [...animals].sort(),
     );
-    const character = paintings.find((m) => m.motif === (wall === 'east' ? 'cat' : 'creature524'));
-    assert.ok(paintings.some((m) => animals.includes(m.motif) && m.centre > character.centre));
-    assert.ok(paintings.some((m) => animals.includes(m.motif) && m.centre < character.centre));
+    if (wall === 'west') {
+      const character = paintings.find((m) => m.motif === 'creature524');
+      assert.ok(paintings.some((m) => animals.includes(m.motif) && m.centre > character.centre));
+      assert.ok(paintings.some((m) => animals.includes(m.motif) && m.centre < character.centre));
+    }
   }
 });
 

@@ -1,5 +1,6 @@
 import type { ViewState } from './view-state.js';
 import { LocalPrediction } from './local-prediction.js';
+import { mammothNavigation } from '../shared/mammoth-navigation.mjs';
 import { enemyIsSolid } from '../shared/combat.mjs';
 import { activateMiddenObstacle } from '../shared/coastal-sites.mjs';
 import { CoastalRenderer } from './coastal-renderer.js';
@@ -915,6 +916,7 @@ export class WorldRenderer {
             ? BOATING.fastSpeed
             : BOATING.speed;
       } else if (p.mountId) {
+        collision = mammothNavigation(this.collision);
         const scale = this.state.animals?.find((a) => a.id === p.mountId)?.scale ?? 1;
         speed = (running ? RIDING.runSpeed : RIDING.walkSpeed) * scale;
       }
@@ -979,7 +981,7 @@ export class WorldRenderer {
         animal.initialized = true;
       }
       const factor = predicted?.mountId === state.id ? 1 : 1 - Math.exp(-dt * 15),
-        next = this.collision.move(
+        next = (phase === 'alive' ? mammothNavigation(this.collision) : this.collision).move(
           animal.model.position,
           (state.x - animal.model.position.x) * factor,
           (state.z - animal.model.position.z) * factor,

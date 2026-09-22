@@ -6,7 +6,8 @@ from pathlib import Path
 from PIL import Image
 
 base=Path('assets/camp-cave')
-revision=json.loads(Path('public/models/camp-cave/asset.json').read_text(encoding='utf8'))['revision']
+asset=json.loads(Path('public/models/camp-cave/asset.json').read_text(encoding='utf8'))
+revision=asset.get('galleryRevision',asset['revision'])
 records_path=Path(sys.argv[1]) if len(sys.argv)>1 else base/f'qa/gallery-surfaces-r{revision}.json'
 output_path=Path(sys.argv[2]) if len(sys.argv)>2 else base/f'qa/gallery-pigment-coverage-r{revision}.json'
 records=json.loads(records_path.read_text(encoding='utf8'))

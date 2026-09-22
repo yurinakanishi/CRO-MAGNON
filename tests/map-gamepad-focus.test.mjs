@@ -112,8 +112,8 @@ globalThis.document = {
 const { installMapWarp, selectedWarpId } = await import('../dist/src/map-warp-ui.js');
 const { mapProjection } = await import('../dist/src/world-map.js');
 const { WARP_POINTS } = await import('../dist/shared/warp-sites.mjs');
-const { MAP_EMPTY_PROMPT } = await import('../dist/src/map-screen.js');
-elements['map-destination'].textContent = MAP_EMPTY_PROMPT; // As the markup renders it.
+const { mapEmptyPrompt } = await import('../dist/src/map-screen.js');
+elements['map-destination'].textContent = mapEmptyPrompt(); // As the markup renders it.
 
 const frame = (overrides = {}) => ({
   status: 'connected',
@@ -150,7 +150,7 @@ test('controller: the stick moves the pointer, confirm selects the fire under it
     [500, 310],
     'centred on the player',
   );
-  assert.equal(elements['map-destination'].textContent, MAP_EMPTY_PROMPT);
+  assert.equal(elements['map-destination'].textContent, mapEmptyPrompt());
   assert.equal(elements['map-cursor'].style.left, '500px');
   assert.ok(
     elements['map-cursor'].classList.contains('is-near'),

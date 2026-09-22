@@ -32,14 +32,20 @@ import { SABERTOOTH, SABERTOOTH_GROUND } from './sabertooth-rules.mjs';
 // Existing harvestable resources sit outside the five-metre roaming footprint.
 export const HUNTING_GROUNDS = Object.freeze([
   Object.freeze({ x: 25, z: 21, radius: 10, roamRadius: 5 }),
-  Object.freeze({ x: 24, z: 85, radius: 10, roamRadius: 5 }),
+  // The northern herd grazes on the plain below the mountain, not its cliff ramp.
+  Object.freeze({ x: 29.5, z: 68.5, radius: 10, roamRadius: 5 }),
 ]);
 export const ENEMY_GROUNDS: readonly EnemyGround[] = Object.freeze([
   ...CROW_FACTION_GROUNDS,
   ...ADVENTURE_ENEMIES,
 ]);
+// Preserve the existing scatter stream and far-away scenery when moving a herd.
+// The new pasture is cleared after generation; the former clearings remain.
+const scatterHuntingGrounds = [HUNTING_GROUNDS[0], { x: 24, z: 85, radius: 10 }];
 const inHuntingGround = (x, z, margin = 0) =>
-  HUNTING_GROUNDS.some((ground) => Math.hypot(x - ground.x, z - ground.z) < ground.radius + margin);
+  scatterHuntingGrounds.some(
+    (ground) => Math.hypot(x - ground.x, z - ground.z) < ground.radius + margin,
+  );
 export const inSabertoothClearing = (x, z, margin = 0) =>
   Math.hypot(x - SABERTOOTH_GROUND.x, z - SABERTOOTH_GROUND.z) <
   SABERTOOTH_GROUND.radius + SABERTOOTH_GROUND.roamRadius + 4 + margin;
@@ -316,6 +322,12 @@ function layout() {
       (i % 4 !== 0 || inBehemothPool(grass[i].x, grass[i].z, 0.6))
     )
       grass.splice(i, 1);
+  for (const items of [trees, rocks, ridges])
+    for (let i = items.length - 1; i >= 0; i--)
+      if (
+        HUNTING_GROUNDS.some((g) => Math.hypot(items[i].x - g.x, items[i].z - g.z) < g.radius + 3.5)
+      )
+        items.splice(i, 1);
   return Object.fromEntries(
     Object.entries({ trees, grass, rocks, ridges, tents, props, fires, animals }).map(
       ([key, items]) => [

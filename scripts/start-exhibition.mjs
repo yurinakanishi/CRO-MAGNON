@@ -3,7 +3,7 @@ import { fileURLToPath } from 'node:url';
 import { networkInterfaces } from 'node:os';
 import { spawn } from 'node:child_process';
 import { WebSocket } from 'ws';
-import { readSettings } from './exhibition-config.mjs';
+import { readSettings, readControllerLayout } from './exhibition-config.mjs';
 import { verifyExhibition } from './exhibition-integrity.mjs';
 
 const root = path.dirname(path.dirname(fileURLToPath(import.meta.url)));
@@ -40,7 +40,9 @@ export async function probeServer(settings, buildId) {
 async function main() {
   if (!['host', 'client'].includes(role))
     throw new Error('Use start-exhibition-host.bat or start-exhibition-client.bat.');
-  console.log(`CRO-MAGNON Exhibition / LAN - ${role === 'host' ? 'PC1 Host' : 'PC2 Client'}`);
+  console.log(
+    `CRO-MAGNON Exhibition / LAN - ${role === 'host' ? 'Host / Player 1' : 'Client / Player 2'}`,
+  );
   console.log('Verifying local game assets and offline runtime...');
   const manifest = await verifyExhibition(root);
   const settings = await readSettings(root);
@@ -54,13 +56,13 @@ async function main() {
   console.log(`Multiplayer: ${settings.serverUrl} | Room: ${settings.room}`);
   if (role === 'host' && !addresses.includes(settings.host))
     throw new Error(
-      `PC1 Ethernet does not have ${settings.host}. Configure the static Ethernet IP first (README-EXHIBITION.md). No server was started.`,
+      `This host does not have ${settings.host}. Check the selected host and static Ethernet IP (README-EXHIBITION-4PC.md). No server was started.`,
     );
   if (role === 'host') {
     const { createGameServer } = await import('../dist/server.mjs');
     game = createGameServer({
       port: settings.serverPort,
-      host: '0.0.0.0',
+      host: settings.host,
       serveAssets: false,
       // Exhibition rules: fallen players recover fully; creatures return in 10 s.
       exhibition: true,
@@ -72,19 +74,23 @@ async function main() {
       ],
     });
     await game.listen();
-    console.log(`Server listening on 0.0.0.0:${settings.serverPort} (synchronization only)`);
+    console.log(
+      `Server listening on ${settings.host}:${settings.serverPort} (synchronization only)`,
+    );
   }
   const { createExhibitionClient } =
     await import('../dist/infrastructure/node/exhibition-client.mjs');
   client = createExhibitionClient({
     root,
     port: settings.clientPort,
+    getControllerLayout: () => readControllerLayout(root, role),
     config: {
       mode: settings.mode,
       serverUrl: settings.serverUrl,
       room: settings.room,
       guestName: role === 'host' ? 'プレイヤー1' : 'プレイヤー2',
       buildId: manifest.buildId,
+      controllerLayout: settings.controllerLayouts[role === 'host' ? 'PC1' : 'PC2'],
     },
   });
   await client.listen();
@@ -101,7 +107,7 @@ async function main() {
       if (message !== lastStatus) console.log(message);
       lastStatus = message;
     } catch (error) {
-      const message = `LAN: Waiting - ${error.message}. Check PC1, Ethernet IP and Private Firewall TCP ${settings.serverPort}.`;
+      const message = `LAN: Waiting - ${error.message}. Check the selected host, Ethernet IP and Private Firewall TCP ${settings.serverPort}.`;
       if (message !== lastStatus) console.log(message);
       lastStatus = message;
     } finally {

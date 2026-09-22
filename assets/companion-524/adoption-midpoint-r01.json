@@ -1,0 +1,36 @@
+{
+  "decision": "adopt",
+  "revision": "midpoint-r01",
+  "sourceCandidates": [
+    13,
+    14
+  ],
+  "sourceHashes": [
+    "04b54fad6ab5f59ee342f3b98dbd902ef8a4f4fe9bb53816fc91879291e32b3a",
+    "2652765f480973f6d974d0c51b2bd294c6e4c81e32e369814e09ba6c03c3e418"
+  ],
+  "sha256": "77faeb7e7b0a34cd1aa6e23b728cbaf295227998791bb437977a8ff2abfbb3b9",
+  "bytes": 19046100,
+  "triangles": 449022,
+  "bodyHeightMetres": 0.3,
+  "approval": "User selected the middle color and explicitly requested implementation after the three-image review.",
+  "colorReview": "assets/companion-524/color-review-2026-09-22.json",
+  "build": "assets/companion-524/midpoint-build-r01.json",
+  "sourceFilesUnmodified": true,
+  "gameValidation": "passed",
+  "gameEvidence": "output/playwright/companion-524/midpoint-r01/game/result.json",
+  "colorEvidence": "output/playwright/companion-524/midpoint-r01/color/result.json",
+  "normalDelivery": "output/playwright/companion-524/midpoint-r01/normal/delivery.json",
+  "automatedTestsPassed": 694,
+  "gameChecks": 11,
+  "gameScreenshots": 13,
+  "participants": { "rendered": 2, "networkOnly": 3 },
+  "browserErrors": 0,
+  "floatingPoses": 51,
+  "floatingVertexSamples": 11495553,
+  "minimumSurfaceClearanceMetres": 0.667808055984019,
+  "animatedBodyHeightMetres": [0.3054298585451134, 0.309914331324205],
+  "referenceHumanHeightMetres": 1.67,
+  "maximumRenderedColorDifference8bit": 2,
+  "physicalControllerTested": false
+}

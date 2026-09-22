@@ -1,0 +1,145 @@
+{
+  "date": "2026-09-22T10:12:05.580Z",
+  "hashes": [
+    {
+      "url": "/src/world3d.js",
+      "sha256": "3ea455badcfeea672424e55cc04ec114b6e9fb81c306516d3b8cd6b60a1989f7"
+    },
+    {
+      "url": "/shared/mammoth-navigation.mjs",
+      "sha256": "9441e6179d73cb02279642e268d50d9d596bc5d6fac873ea6ae6d97c28f37f7b"
+    },
+    {
+      "url": "/shared/animals.mjs",
+      "sha256": "9b5e88b5ceb2efbe660c8251dd04976f3906de2c649a52e04d87a448a0978d5a"
+    },
+    {
+      "url": "/shared/hunting.mjs",
+      "sha256": "c0c572e5fab96511253acf2bc7689603179fce302ba9f9c8e08b4f6f377805b3"
+    },
+    {
+      "url": "/shared/riding.mjs",
+      "sha256": "74eb99b006e3a43119b86fb9a5bd7ba859486dbcf78f55f2016b01d180bf78b4"
+    },
+    {
+      "url": "/shared/scenery-layout.mjs",
+      "sha256": "e7fb2f709165bcaed4a12d9692817a358790211ce66e2ea0440f3d96e9630b4f"
+    }
+  ],
+  "rooms": [
+    {
+      "room": "EXIHIBITION",
+      "animals": [
+        {
+          "id": "mammoth-1",
+          "x": 26.938614141489204,
+          "z": 24.511518220815788,
+          "home": {
+            "x": 25,
+            "z": 21
+          },
+          "health": 100,
+          "phase": "alive",
+          "safe": true,
+          "safeHome": true
+        },
+        {
+          "id": "mammoth-2",
+          "x": 31.86296074039591,
+          "z": 64.09875707959402,
+          "home": {
+            "x": 29.5,
+            "z": 68.5
+          },
+          "health": 100,
+          "phase": "alive",
+          "safe": true,
+          "safeHome": true
+        }
+      ]
+    },
+    {
+      "room": "EMBER",
+      "animals": [
+        {
+          "id": "mammoth-1",
+          "x": 22.806082955554967,
+          "z": 19.94705333431376,
+          "home": {
+            "x": 22.0471732182878,
+            "z": 18.168391266113645
+          },
+          "health": 100,
+          "phase": "alive",
+          "safe": true,
+          "safeHome": true
+        },
+        {
+          "id": "mammoth-2",
+          "x": 29.5,
+          "z": 68.5,
+          "home": {
+            "x": 29.5,
+            "z": 68.5
+          },
+          "health": 100,
+          "phase": "alive",
+          "safe": true,
+          "safeHome": true
+        }
+      ]
+    },
+    {
+      "room": "APE-CHECK",
+      "animals": [
+        {
+          "id": "mammoth-1",
+          "x": 27.23189159565341,
+          "z": 19.231270007240955,
+          "home": {
+            "x": 25,
+            "z": 21
+          },
+          "health": 100,
+          "phase": "alive",
+          "safe": true,
+          "safeHome": true
+        },
+        {
+          "id": "mammoth-2",
+          "x": 33.67493942289781,
+          "z": 68.59415402268765,
+          "home": {
+            "x": 29.5,
+            "z": 68.5
+          },
+          "health": 100,
+          "phase": "alive",
+          "safe": true,
+          "safeHome": true
+        }
+      ]
+    }
+  ],
+  "health": {
+    "ok": true,
+    "ridingVersion": 1,
+    "combatVersion": 3,
+    "characterVersion": 2,
+    "enemyVersion": 1,
+    "worldVersion": 4,
+    "worldSize": 8192,
+    "worldWidth": 8192,
+    "worldDepth": 4096,
+    "epochYearsBP": 50000,
+    "rooms": 3,
+    "players": 2,
+    "maxPlayers": 5,
+    "save": {
+      "enabled": true,
+      "state": "saved",
+      "savedAt": 1790071925062,
+      "recovered": false
+    }
+  }
+}

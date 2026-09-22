@@ -10,7 +10,7 @@ const { chromium } = await import(
   process.env.PLAYWRIGHT_MODULE ||
     'file:///C:/Users/yurin/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/node_modules/playwright/index.mjs'
 );
-const out = process.env.QA_524_OUT || 'output/playwright/companion-524/game';
+const out = process.env.QA_524_OUT || 'output/playwright/companion-524/midpoint-r01/game';
 await mkdir(out, { recursive: true });
 const game = createGameServer({ port: 0, host: '127.0.0.1' });
 const { port } = await game.listen();
@@ -163,12 +163,34 @@ try {
   await sleep(400);
   const t1 = await a.page.evaluate(() => qa524.companion524Renderer.actor.mixer.time);
   assert.notEqual(t0, t1);
-  pass('Exact Candidate 14 appears beside the camp; Floating_Ripple advances while idle');
+  assert.equal(observations.at(-1).view.assetRevision, 'midpoint-r01');
+  assert.equal(observations.at(-1).view.bodyHeight, 0.3);
+  pass('Adopted midpoint 524 appears beside the camp; Floating_Ripple advances while idle');
   await walk(a, { x: home.x, z: home.z + 1.8 });
   await until(() => nearCompanion524(a.p, c, room.collision, Date.now()), 'normal approach');
   await until(() => a.page.locator('#pet524-button').isVisible(), 'pet prompt');
   await shot(a, '02-near-pet-prompt');
   pass('Ordinary title selection and walking from the initial spawn reach the pet prompt');
+
+  const bob = await a.page.evaluate(async () => {
+    const samples = [];
+    const start = performance.now();
+    while (performance.now() - start < 4500) {
+      const c = qa524.companion524Renderer;
+      samples.push({
+        at: performance.now() - start,
+        height: c.root.position.y - c.diagnostics().floor,
+      });
+      await new Promise(requestAnimationFrame);
+    }
+    return samples;
+  });
+  const bobRange = Math.max(...bob.map((s) => s.height)) - Math.min(...bob.map((s) => s.height));
+  assert.ok(bobRange > 0.23 && bobRange < 0.25);
+  observations.push({ realTimeIdleBob: { durationMs: 4500, rangeMetres: bobRange, samples: bob } });
+  pass(
+    'Stationary 524 gently rises and falls 24cm over a continuous four-second cycle in the actual game',
+  );
 
   const b = await open('524検証B', true);
   for (let i = 0; i < 3; i++) {
@@ -262,7 +284,7 @@ try {
     await shot(a, `06-hit-${index}`);
     await sleep(700);
     assert.ok((c.x - before.x) * dx + (c.z - before.z) * dz > 0.55);
-    assert.ok(observations.at(-1).view.y - observations.at(-1).view.floor > 0.9);
+    assert.ok(observations.at(-1).view.y - observations.at(-1).view.floor > 0.8);
     await until(
       () =>
         b.seen.state.companion524?.hitSequence === c.hitSequence &&
@@ -320,10 +342,11 @@ try {
     const T = qaThree,
       r = qa524;
     const { companion524Pose } = await import('/src/companion-524-renderer.js');
+    const { COMPANION_524 } = await import('/shared/companion-524.mjs');
     const actor = r.worldAssets.createAnimal('yellow-524-mascot', 'Floating_Ripple');
     const stage = new T.Group(),
       tilt = new T.Group();
-    actor.root.scale.setScalar(1.15);
+    actor.root.scale.setScalar(COMPANION_524.scale);
     tilt.add(actor.root);
     stage.add(tilt);
     actor.update(0.3);
@@ -331,6 +354,8 @@ try {
       samples = 0,
       vertices = 0,
       loopError = 0;
+    let bodyHeightMin = Infinity,
+      bodyHeightMax = 0;
     const first = [];
     for (const reaction of ['idle', 'happy', 'hit'])
       for (let i = 0; i <= 16; i++) {
@@ -352,6 +377,8 @@ try {
         stage.updateMatrixWorld(true);
         const v = new T.Vector3();
         let offset = 0;
+        let poseMin = Infinity,
+          poseMax = -Infinity;
         actor.root.traverse((mesh) => {
           if (!mesh.isSkinnedMesh) return;
           mesh.skeleton.update();
@@ -359,6 +386,8 @@ try {
             mesh.getVertexPosition(j, v).applyMatrix4(mesh.matrixWorld);
             if (![v.x, v.y, v.z].every(Number.isFinite)) throw Error('Nonfinite surface');
             minimum = Math.min(minimum, v.y);
+            poseMin = Math.min(poseMin, v.y);
+            poseMax = Math.max(poseMax, v.y);
             vertices++;
             if (reaction === 'idle' && i === 0) first.push(v.x, v.y, v.z);
             if (reaction === 'idle' && i === 16)
@@ -369,6 +398,10 @@ try {
             offset += 3;
           }
         });
+        if (reaction === 'idle') {
+          bodyHeightMin = Math.min(bodyHeightMin, poseMax - poseMin);
+          bodyHeightMax = Math.max(bodyHeightMax, poseMax - poseMin);
+        }
         samples++;
       }
     actor.dispose();
@@ -379,6 +412,9 @@ try {
       samples,
       vertices,
       loopError,
+      bodyHeightMin,
+      bodyHeightMax,
+      humanHeight: r.players.get(r.selfId).actor.asset.heightMetres,
       renderer: ext ? gl.getParameter(ext.UNMASKED_RENDERER_WEBGL) : gl.getParameter(gl.RENDERER),
       triangles: r.renderer.info.render.triangles,
       memory: r.renderer.info.memory,
@@ -386,11 +422,16 @@ try {
       fps: r.canvas.dataset.fps,
     };
   });
-  assert.ok(surface.minimum > 0.2, JSON.stringify(surface));
+  assert.ok(surface.minimum > 0.6, JSON.stringify(surface));
+  assert.ok(
+    surface.bodyHeightMin > 0.285 && surface.bodyHeightMax < 0.315,
+    JSON.stringify(surface),
+  );
   assert.ok(surface.loopError < 1e-5);
+  assert.equal(surface.humanHeight, 1.67);
   observations.push({ surface });
   pass(
-    'Every delivered skinned vertex stays above the floor in 51 idle/happy/hit poses; floating loop closes',
+    'All vertices in 51 poses stay airborne; body height is 30cm beside a human; the four-second loop closes',
   );
 
   // Late/far visibility seeks the shared phase instead of freezing the old pose.

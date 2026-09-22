@@ -4,18 +4,20 @@
   "kind": "companion",
   "candidate": 14,
   "status": "reviewed-prototype",
-  "url": "/models/yellow-524-mascot/model-c14.glb",
-  "sha256": "2652765f480973f6d974d0c51b2bd294c6e4c81e32e369814e09ba6c03c3e418",
-  "bytes": 18199668,
+  "url": "/models/yellow-524-mascot/model-midpoint-r01.glb",
+  "sha256": "77faeb7e7b0a34cd1aa6e23b728cbaf295227998791bb437977a8ff2abfbb3b9",
+  "bytes": 19046100,
   "triangles": 449022,
   "upAxis": "Y",
   "forwardAxis": "+Z",
-  "heightMetres": 1.0370343499999999,
-  "widthMetres": 1.1924108499999997,
+  "heightMetres": 0.3,
+  "widthMetres": 0.3449484712228878,
   "placement": {
     "pivot": "original-body-centre",
-    "scale": 1.15,
-    "hoverHeightMetres": 0.94
+    "scale": 0.3326795608548851,
+    "hoverHeightMetres": 0.94,
+    "hoverAmplitudeMetres": 0.12,
+    "hoverPeriodMs": 4000
   },
   "clips": [
     {
@@ -26,16 +28,26 @@
   ],
   "lods": [],
   "notes": [
-    "Latest completed Candidate 14, 2026-09-21: yellow texture revision of accepted Candidate 13. Source repository is read-only; no source promotion.",
-    "Exact source GLB bytes, embedded texture, 20 bones, six-appendage ripple, geometry and normals retained. Runtime wrapper adds happy bobs/tilt or directional recoil while the original floating clip continues."
+    "User selected the midpoint between C13 and C14 on 2026-09-22. Equal linear-light interpolation, matching the reviewed material preview within 8-bit PNG quantization.",
+    "C14 geometry, normals, UVs, 20 bones, skin weights and Floating_Ripple remain byte-identical. Original C13/C14 and the former game GLB are retained.",
+    "Body height 0.30m excludes the floating air gap. Runtime adds 0.12m vertical amplitude over a four-second cycle; hearts and name offset fit the smaller body."
   ],
   "provenance": {
-    "provider": "Codex imagegen and local TRELLIS-2; existing Candidate 14 imported unchanged",
+    "provider": "Codex imagegen and local TRELLIS-2 lineage; original C13/C14 midpoint color baked by Codex",
     "claudeUsed": false,
     "source": "../threed-model-creation/models/yellow-524-mascot/work/low-poly/batch-016/run-01/attempt-01/candidate.glb",
     "sourceSha256": "2652765f480973f6d974d0c51b2bd294c6e4c81e32e369814e09ba6c03c3e418",
     "referenceImage": "assets/companion-524/reference.png",
     "referenceSha256": "1327aec1bebbe9f1df13bfb0000ad8aee9d967c38687588c401a5d870e32fb41",
-    "visualReview": "assets/companion-524/adoption.json"
-  }
+    "visualReview": "assets/companion-524/adoption-midpoint-r01.json",
+    "colorSources": [
+      "../threed-model-creation/models/yellow-524-mascot/work/low-poly/batch-015/run-01/attempt-01/candidate.glb",
+      "../threed-model-creation/models/yellow-524-mascot/work/low-poly/batch-016/run-01/attempt-01/candidate.glb"
+    ],
+    "colorSourceHashes": [
+      "04b54fad6ab5f59ee342f3b98dbd902ef8a4f4fe9bb53816fc91879291e32b3a",
+      "2652765f480973f6d974d0c51b2bd294c6e4c81e32e369814e09ba6c03c3e418"
+    ]
+  },
+  "revision": "midpoint-r01"
 }

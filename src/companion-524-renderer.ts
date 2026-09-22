@@ -15,9 +15,17 @@ export function companion524Pose(c: Companion524Snapshot, now: number) {
   const jp = happy ? happyAge / COMPANION_524.happyMs : 0;
   const kick = hit ? Math.sin(hp * Math.PI) * (1 - hp) : 0;
   const bounce = happy ? Math.sin(jp * Math.PI * 3) ** 2 * (1 - jp) : 0;
+  // A continuous server-clock phase keeps every viewer, action transition and
+  // return from distance culling on the same slow, soft vertical wave.
+  const floatPhase =
+    ((now % COMPANION_524.hoverPeriodMs) / COMPANION_524.hoverPeriodMs) * Math.PI * 2;
   return {
     reaction: hit ? 'hit' : happy ? 'happy' : 'floating',
-    height: COMPANION_524.hoverHeight + kick * 0.23 + bounce * 0.2,
+    height:
+      COMPANION_524.hoverHeight +
+      Math.sin(floatPhase) * COMPANION_524.hoverAmplitude +
+      kick * 0.23 +
+      bounce * 0.2,
     pitch:
       kick * 0.38 * (c.hitDirectionX * Math.sin(c.facing) + c.hitDirectionZ * Math.cos(c.facing)),
     roll:
@@ -127,17 +135,18 @@ export class Companion524Renderer {
       });
     }
     this.label.active = this.root.visible && distance < 20;
-    this.label.position.copy(this.root.position).add(new THREE.Vector3(0, 0.82, 0));
+    this.label.position.copy(this.root.position);
+    this.label.position.y += COMPANION_524.bodyHeight * 0.5 + 0.13;
     for (const [i, heart] of this.hearts.entries()) {
       const age = (pose.happyAge - i * 160) / 1200;
       heart.visible = this.root.visible && pose.happyAge >= 0 && age > 0 && age < 1;
       if (!heart.visible) continue;
       heart.position.set(
-        this.root.position.x + Math.sin(i * 2.4) * (0.28 + age * 0.38),
-        this.root.position.y + 0.55 + age * 0.85,
-        this.root.position.z + Math.cos(i * 2.4) * 0.35,
+        this.root.position.x + Math.sin(i * 2.4) * (0.12 + age * 0.18),
+        this.root.position.y + 0.21 + age * 0.4,
+        this.root.position.z + Math.cos(i * 2.4) * 0.14,
       );
-      heart.scale.setScalar(0.22 + Math.sin(age * Math.PI) * 0.1);
+      heart.scale.setScalar(0.1 + Math.sin(age * Math.PI) * 0.04);
       heart.material.opacity = Math.sin(age * Math.PI);
     }
   }
@@ -154,6 +163,8 @@ export class Companion524Renderer {
       z: this.root.position.z,
       floor: this.floor,
       scale: COMPANION_524.scale,
+      bodyHeight: COMPANION_524.bodyHeight,
+      assetRevision: this.actor.asset.revision,
     };
   }
 

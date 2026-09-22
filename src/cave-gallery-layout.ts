@@ -2,7 +2,6 @@ import { CAVE_BEND } from '../shared/camp-cave-layout.mjs';
 
 // Pixel bounds preserve each complete motif in the unmodified generated atlas.
 export const CAVE_MOTIFS = {
-  cat: [4, 67, 456, 411],
   // The faithful 524 uses its own unmodified transparent image.
   creature524: [0, 0, 1254, 1254],
   bison: [805, 40, 1254, 418],
@@ -24,20 +23,22 @@ export type CaveMural = {
 };
 
 // Wall coordinates follow local Z into the cave. Every painting starts beyond
-// the midpoint of the walkable chamber; the user motifs occur once each on
-// opposite walls and at different depths.
+// the midpoint of the walkable chamber. The east-wall deer and horse close the
+// former cat's gap, keeping one continuous animal group on the natural limestone.
 export const CAVE_MURALS: readonly CaveMural[] = [
   { motif: 'hands', wall: 'east', centre: -13.8, bottom: 4.35, width: 0.95, strength: 0.64 },
   { motif: 'redHorse', wall: 'east', centre: -15.2, bottom: 1.65, width: 2.8, strength: 0.78 },
   { motif: 'mammoth', wall: 'east', centre: -19.2, bottom: 1.6, width: 3, strength: 0.81 },
   { motif: 'bison', wall: 'east', centre: -22.8, bottom: 1.7, width: 2.8, strength: 0.79 },
   { motif: 'signs', wall: 'east', centre: -24.2, bottom: 4.45, width: 1.05, strength: 0.57 },
-  { motif: 'cat', wall: 'east', centre: -26.1, bottom: 1.8, width: 3.3, strength: 0.84 },
-  { motif: 'deer', wall: 'east', centre: -29.2, bottom: 1.6, width: 1.7, strength: 0.72 },
-  { motif: 'ochreHorse', wall: 'east', centre: -31.2, bottom: 1.55, width: 1.85, strength: 0.72 },
+  { motif: 'deer', wall: 'east', centre: -26.1, bottom: 1.6, width: 1.7, strength: 0.72 },
+  { motif: 'ochreHorse', wall: 'east', centre: -29, bottom: 1.55, width: 1.85, strength: 0.72 },
   { motif: 'deer', wall: 'west', centre: -14, bottom: 1.6, width: 1.8, strength: 0.72 },
   { motif: 'mammoth', wall: 'west', centre: -17.4, bottom: 1.6, width: 3, strength: 0.81 },
-  { motif: 'creature524', wall: 'west', centre: -21.2, bottom: 1.5, width: 3.5, strength: 0.94 },
+  // The user requested half the neighbouring mammoth's 2.22 m painted height.
+  // A 1.34 m image width * 1042/1254 painted pixels gives about 1.11 m,
+  // excluding transparent margins. Its raised baseline still suggests floating.
+  { motif: 'creature524', wall: 'west', centre: -21.2, bottom: 2, width: 1.34, strength: 0.94 },
   { motif: 'redHorse', wall: 'west', centre: -24.8, bottom: 1.65, width: 2.8, strength: 0.78 },
   { motif: 'hands', wall: 'west', centre: -24.7, bottom: 4.5, width: 1.0, strength: 0.64 },
   { motif: 'bison', wall: 'west', centre: -28.6, bottom: 1.5, width: 2.7, strength: 0.79 },

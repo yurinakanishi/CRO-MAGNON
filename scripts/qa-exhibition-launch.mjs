@@ -4,7 +4,7 @@ import { createServer } from 'node:net';
 import path from 'node:path';
 import { mkdir, writeFile } from 'node:fs/promises';
 const root = path.resolve(process.argv[2] || 'output/exhibition-r01');
-const reportPath = path.resolve('assets/exhibition-lan/launch-qa.json');
+const reportPath = path.resolve(process.argv[3] || 'assets/exhibition-lan/launch-qa.json');
 const executable = path.join(root, 'runtime/node.exe');
 const children = [],
   checks = [];
@@ -47,7 +47,7 @@ try {
   });
   await wait(badIp, (r) => r.exit !== undefined);
   assert.equal(badIp.exit, 1);
-  assert.match(badIp.output, /Ethernet does not have/);
+  assert.match(badIp.output, /This host does not have/);
   checks.push({ check: 'missing host IP is explicit', output: badIp.output });
   const url = `ws://127.0.0.1:${serverPort}`;
   const host = launch('host', { MULTIPLAYER_SERVER_URL: url, CLIENT_PORT: String(hostPort) });

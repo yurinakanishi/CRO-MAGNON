@@ -1,0 +1,502 @@
+{
+  "date": "2026-09-22T10:01:47.717Z",
+  "decision": "adopt",
+  "galleryRevision": "29",
+  "geometryRevision": "26",
+  "generator": "Existing built-in imagegen pigments; projection layout edited without changing images",
+  "pigments": {
+    "url": "/models/camp-cave/mural-atlas-r05.png",
+    "source": "assets/camp-cave/source/mural-atlas-r05.png",
+    "sha256": "6efe80a19056af4f5a9ce50d7309b578f4c3e914fa9543c51a8fc629842e6889",
+    "bytes": 1851771,
+    "image": {
+      "width": 1254,
+      "height": 1254
+    },
+    "generator": "Built-in imagegen",
+    "prompt": "assets/camp-cave/mural-atlas-prompt-r05.txt",
+    "references": [
+      {
+        "path": "assets/camp-cave/source/cat-reference-user.png",
+        "sha256": "e00722b68d4147b34e51937c2d1172458cae9e36113f6313a4f774a074384df6",
+        "role": "User-provided subject reference"
+      },
+      {
+        "path": "assets/camp-cave/source/character-524-reference-user.png",
+        "sha256": "8231914f43d9e8454823a923c8004df44c0bad1ee1aec9e2f140493d5f2af273",
+        "role": "User-provided subject reference"
+      }
+    ],
+    "styleReference": "assets/camp-cave/source/mural-side-r04.png",
+    "application": "Fifteen placements: seven on the left and eight on the right. No cat is projected. The east-wall deer at -26.1 m and ochre horse at -29 m close the former empty slot; animal gaps are 0.7 to 1.125 m. The 524 image width remains 1.34 m, half the neighbouring mammoth painted height.",
+    "layout": "src/cave-gallery-layout.ts",
+    "review": "assets/camp-cave/qa/gallery-r29.json",
+    "previous": {
+      "url": "/models/camp-cave/mural-side-r04.png",
+      "source": "assets/camp-cave/source/mural-side-r04.png",
+      "sha256": "1cbdd091523b48fea81f70eba5cc3840c7328ccfab4b8d1ef63e44b49e0ff5af"
+    }
+  },
+  "characterPigment": {
+    "url": "/models/camp-cave/character-524-mural-r06.png",
+    "source": "assets/camp-cave/source/character-524-mural-r06.png",
+    "bytes": 1757426,
+    "sha256": "9fc9d9d635989a1e928a5ccdac2a7ed3889a1442930ff07f8503c7d2832fd071",
+    "image": {
+      "width": 1254,
+      "height": 1254
+    },
+    "generator": "Built-in imagegen",
+    "prompt": "assets/camp-cave/character-524-prompt-r06.txt",
+    "reference": {
+      "path": "assets/camp-cave/source/character-524-reference-r06.png",
+      "sha256": "8231914f43d9e8454823a923c8004df44c0bad1ee1aec9e2f140493d5f2af273"
+    },
+    "application": "One unchanged transparent ochre-pigment image on the right wall. At 1.34 m image width its painted height is about 1.11 m, half the neighbouring mammoth mural. Its raised baseline expresses floating. The actual companion keeps its existing 0.30 m body height.",
+    "review": "assets/camp-cave/qa/gallery-r29.json"
+  },
+  "chamber": {
+    "minWidth": 11.015158879328325,
+    "minHeadroom": 4.648291331642173
+  },
+  "rockSurface": {
+    "url": "/models/camp-cave/limestone-r05.png",
+    "source": "assets/camp-cave/source/limestone-r05.png",
+    "sha256": "574372b875437977f226564a2bc1a8cd7149695582b1bbb6c806f7e83a075cee",
+    "bytes": 3425333,
+    "image": {
+      "width": 1254,
+      "height": 1254
+    },
+    "generator": "Built-in imagegen",
+    "prompt": "assets/camp-cave/limestone-prompt-r05.txt",
+    "application": "White calcite limestone colour with 2.8m triplanar pores, bedding and surface-gradient relief, mineral mottling and damp roughness; warm fire reveals the pigments on the same triangles.",
+    "review": "assets/camp-cave/qa/gallery-r29.json"
+  },
+  "layout": [
+    {
+      "motif": "hands",
+      "wall": "east",
+      "centre": -13.8,
+      "bottom": 4.35,
+      "width": 0.95,
+      "strength": 0.64
+    },
+    {
+      "motif": "redHorse",
+      "wall": "east",
+      "centre": -15.2,
+      "bottom": 1.65,
+      "width": 2.8,
+      "strength": 0.78
+    },
+    {
+      "motif": "mammoth",
+      "wall": "east",
+      "centre": -19.2,
+      "bottom": 1.6,
+      "width": 3,
+      "strength": 0.81
+    },
+    {
+      "motif": "bison",
+      "wall": "east",
+      "centre": -22.8,
+      "bottom": 1.7,
+      "width": 2.8,
+      "strength": 0.79
+    },
+    {
+      "motif": "signs",
+      "wall": "east",
+      "centre": -24.2,
+      "bottom": 4.45,
+      "width": 1.05,
+      "strength": 0.57
+    },
+    {
+      "motif": "deer",
+      "wall": "east",
+      "centre": -26.1,
+      "bottom": 1.6,
+      "width": 1.7,
+      "strength": 0.72
+    },
+    {
+      "motif": "ochreHorse",
+      "wall": "east",
+      "centre": -29,
+      "bottom": 1.55,
+      "width": 1.85,
+      "strength": 0.72
+    },
+    {
+      "motif": "deer",
+      "wall": "west",
+      "centre": -14,
+      "bottom": 1.6,
+      "width": 1.8,
+      "strength": 0.72
+    },
+    {
+      "motif": "mammoth",
+      "wall": "west",
+      "centre": -17.4,
+      "bottom": 1.6,
+      "width": 3,
+      "strength": 0.81
+    },
+    {
+      "motif": "creature524",
+      "wall": "west",
+      "centre": -21.2,
+      "bottom": 2,
+      "width": 1.34,
+      "strength": 0.94
+    },
+    {
+      "motif": "redHorse",
+      "wall": "west",
+      "centre": -24.8,
+      "bottom": 1.65,
+      "width": 2.8,
+      "strength": 0.78
+    },
+    {
+      "motif": "hands",
+      "wall": "west",
+      "centre": -24.7,
+      "bottom": 4.5,
+      "width": 1,
+      "strength": 0.64
+    },
+    {
+      "motif": "bison",
+      "wall": "west",
+      "centre": -28.6,
+      "bottom": 1.5,
+      "width": 2.7,
+      "strength": 0.79
+    },
+    {
+      "motif": "signs",
+      "wall": "west",
+      "centre": -28.4,
+      "bottom": 4.5,
+      "width": 0.95,
+      "strength": 0.57
+    },
+    {
+      "motif": "ochreHorse",
+      "wall": "west",
+      "centre": -31.2,
+      "bottom": 1.5,
+      "width": 1.7,
+      "strength": 0.72
+    }
+  ],
+  "scale": {
+    "pigmentBounds": {
+      "mammoth": {
+        "heightPixels": 319,
+        "imageHeight": 349
+      },
+      "creature524": {
+        "heightPixels": 1042,
+        "imageHeight": 1254
+      }
+    },
+    "companionPaintedHeight": 1.1134609250398724,
+    "mammothPaintedHeight": 2.2204176334106727,
+    "targetHeightRatio": 0.5,
+    "paintedHeightRatio": 0.5014646381318548,
+    "relativeError": 0.002929276263709646
+  },
+  "eastAnimalGaps": [
+    1.1000000000000014,
+    0.7000000000000028,
+    1.0500000000000007,
+    1.1249999999999964
+  ],
+  "coverage": {
+    "atlasSha256": "6efe80a19056af4f5a9ce50d7309b578f4c3e914fa9543c51a8fc629842e6889",
+    "characterSha256": "9fc9d9d635989a1e928a5ccdac2a7ed3889a1442930ff07f8503c7d2832fd071",
+    "size": [
+      1254,
+      1254
+    ],
+    "alphaRange": [
+      0,
+      255
+    ],
+    "transparentFraction": 0.5880461629643196,
+    "placements": [
+      {
+        "motif": "hands",
+        "wall": "east",
+        "centre": -13.8,
+        "paintedSamples": 65,
+        "rejected": []
+      },
+      {
+        "motif": "redHorse",
+        "wall": "east",
+        "centre": -15.2,
+        "paintedSamples": 62,
+        "rejected": []
+      },
+      {
+        "motif": "mammoth",
+        "wall": "east",
+        "centre": -19.2,
+        "paintedSamples": 102,
+        "rejected": []
+      },
+      {
+        "motif": "bison",
+        "wall": "east",
+        "centre": -22.8,
+        "paintedSamples": 91,
+        "rejected": []
+      },
+      {
+        "motif": "signs",
+        "wall": "east",
+        "centre": -24.2,
+        "paintedSamples": 44,
+        "rejected": []
+      },
+      {
+        "motif": "deer",
+        "wall": "east",
+        "centre": -26.1,
+        "paintedSamples": 59,
+        "rejected": []
+      },
+      {
+        "motif": "ochreHorse",
+        "wall": "east",
+        "centre": -29,
+        "paintedSamples": 66,
+        "rejected": []
+      },
+      {
+        "motif": "deer",
+        "wall": "west",
+        "centre": -14,
+        "paintedSamples": 59,
+        "rejected": []
+      },
+      {
+        "motif": "mammoth",
+        "wall": "west",
+        "centre": -17.4,
+        "paintedSamples": 102,
+        "rejected": []
+      },
+      {
+        "motif": "creature524",
+        "wall": "west",
+        "centre": -21.2,
+        "paintedSamples": 82,
+        "rejected": []
+      },
+      {
+        "motif": "redHorse",
+        "wall": "west",
+        "centre": -24.8,
+        "paintedSamples": 62,
+        "rejected": []
+      },
+      {
+        "motif": "hands",
+        "wall": "west",
+        "centre": -24.7,
+        "paintedSamples": 65,
+        "rejected": []
+      },
+      {
+        "motif": "bison",
+        "wall": "west",
+        "centre": -28.6,
+        "paintedSamples": 91,
+        "rejected": []
+      },
+      {
+        "motif": "signs",
+        "wall": "west",
+        "centre": -28.4,
+        "paintedSamples": 44,
+        "rejected": []
+      },
+      {
+        "motif": "ochreHorse",
+        "wall": "west",
+        "centre": -31.2,
+        "paintedSamples": 66,
+        "rejected": []
+      }
+    ],
+    "totalPaintedSamples": 1060,
+    "totalRejected": 0
+  },
+  "length": {
+    "beforeMetres": 26.000152518107853,
+    "afterMetres": 54.91420959981371,
+    "ratio": 2.1120725950191486
+  },
+  "review": [
+    "Fifteen independent placements retain the same five animal motifs on both sides. The cat remains removed. The east-wall deer and ochre horse move forward to close its old slot, with 0.7 to 1.125 m gaps between the animals and the original limestone underneath.",
+    "The right-wall 524 uses 1.34 m image width and approximately 1.11 m painted height, half the neighbouring mammoth at the user-requested mural scale. The silhouette floats slightly above the animal baseline. The actual companion size is unchanged.",
+    "Every painting is beyond the midpoint of the doubled chamber; horses, mammoth, bison, deer, hands and signs extend toward the broad back chamber.",
+    "White calcite limestone retains pores, bedding, roughness and wall relief under the pigments. Cave fire makes the same paintings clearer.",
+    "Generated PNGs are copied unchanged; atlas rectangles select whole motifs at render time.",
+    "The original r07 rock mouth and apron stay in place. The deep chamber keeps its full source-derived cross-section until the short rounded corners meet a broad rear wall. The outdoor camp remains unchanged.",
+    "The actual entrance arch is checked against r07, and the full approach is walked and photographed in the game with the mountain visible. Preserving only the apron bounds is insufficient."
+  ],
+  "gameQA": "output/playwright/camp-cave/game-packed-wall-r29/summary.json",
+  "checks": [
+    "keyboard walk: walk from outdoor camp to ledge 0",
+    "keyboard walk: walk from outdoor camp to ledge 1",
+    "keyboard walk: walk from outdoor camp to ledge 2",
+    "keyboard walk: walk from outdoor camp to ledge 3",
+    "keyboard walk: walk from outdoor camp to ledge 4",
+    "keyboard walk: walk through the visible rock mouth 17",
+    "keyboard walk: walk through the visible rock mouth 12",
+    "keyboard walk: walk through the visible rock mouth 6",
+    "keyboard walk: walk through the visible rock mouth 0",
+    "keyboard walk: walk through the visible rock mouth -6",
+    "keyboard walk: walk through the visible rock mouth -12",
+    "keyboard walk: walk through the visible rock mouth -18",
+    "continuous keyboard walk from the original outdoor camp through the visible mouth",
+    "keyboard walk: reach the deep gallery",
+    "faithful transparent 524 pigment loaded from the active manifest",
+    "painted 524 is half the mammoth height within two percent",
+    "cat motif and projection are completely removed from the active gallery",
+    "the east animal row closes the former cat slot without overlap or a large blank gap",
+    "keyboard walk: view the reflowed animal row before ignition",
+    "keyboard walk: view 524 on the opposite wall before ignition",
+    "keyboard walk: return to light the cave hearth",
+    "keyboard walk: view the reflowed animal row in firelight",
+    "keyboard walk: view 524 in firelight",
+    "actual E lighting reveals continuous limestone and the small floating 524",
+    "keyboard walk: approach the small 524 and neighbouring mammoth",
+    "keyboard walk: return from the small 524",
+    "two renderers and three network peers share the cave fire",
+    "keyboard walk: gallery route -13",
+    "keyboard walk: gallery route -18",
+    "keyboard walk: gallery route -23",
+    "keyboard walk: gallery route -28",
+    "keyboard walk: gallery route -31.5",
+    "keyboard walk: approach the natural blind end",
+    "keyboard walk: stand in the full-width back chamber",
+    "keyboard walk: cross the back chamber at -3.5",
+    "keyboard walk: cross the back chamber at 3.5",
+    "keyboard walk: cross the back chamber at 0",
+    "the rear chamber can be crossed in both directions at full standing height",
+    "keyboard walk: return to the reflowed wall",
+    "keyboard walk: approach the former cat footprint",
+    "keyboard walk: return from the rock face",
+    "keyboard walk: camp to cave approach after reload 0",
+    "keyboard walk: camp to cave approach after reload 1",
+    "keyboard walk: camp to cave approach after reload 2",
+    "keyboard walk: camp to cave approach after reload 3",
+    "keyboard walk: camp to cave approach after reload 4",
+    "keyboard walk: enter the unpainted front chamber",
+    "keyboard walk: follow the extended chamber after reload 4",
+    "keyboard walk: follow the extended chamber after reload -4",
+    "keyboard walk: follow the extended chamber after reload -12",
+    "keyboard walk: follow the extended chamber after reload -20",
+    "keyboard walk: return to the gallery after reload",
+    "keyboard walk: return for extinguishing",
+    "gallery reload and real E extinguishing pass"
+  ],
+  "errors": [],
+  "sampleCount": 30,
+  "screenshotCount": 30,
+  "verification": [
+    "TypeScript build including configured strict checks",
+    "architecture boundaries",
+    "changed JS syntax",
+    "Prettier",
+    "cave, fire, terrain continuity and LOD gait regression tests"
+  ],
+  "delivery": [
+    {
+      "url": "/models/camp-cave/model-r26.glb",
+      "bytes": 5393776,
+      "sha256": "65dde1aa7311b88c159d524d93af82a770dac77e48ee1f35356e3000cad8a15f"
+    },
+    {
+      "url": "/models/camp-cave/mural-atlas-r05.png",
+      "bytes": 1851771,
+      "sha256": "6efe80a19056af4f5a9ce50d7309b578f4c3e914fa9543c51a8fc629842e6889"
+    },
+    {
+      "url": "/models/camp-cave/character-524-mural-r06.png",
+      "bytes": 1757426,
+      "sha256": "9fc9d9d635989a1e928a5ccdac2a7ed3889a1442930ff07f8503c7d2832fd071"
+    },
+    {
+      "url": "/models/camp-cave/limestone-r05.png",
+      "bytes": 3425333,
+      "sha256": "574372b875437977f226564a2bc1a8cd7149695582b1bbb6c806f7e83a075cee"
+    },
+    {
+      "url": "/models/camp-cave/asset.json",
+      "bytes": 6399,
+      "sha256": "f2af0fef7ae6539064ee56ea2daefc2ff84f7f183ad66eb78ca65a549c6f2d08"
+    },
+    {
+      "url": "/models/world-assets.json",
+      "bytes": 575137,
+      "sha256": "610d49994ac624e7421292508caf5ea11207ca7943cc7b0972c781deb34eb6d9"
+    },
+    {
+      "url": "/src/cave-materials.js",
+      "bytes": 6062,
+      "sha256": "d156e278dab5842c9f08a5019a6f0d6c9e48db1e4f32c57e7f5e2a1b4b34758b"
+    },
+    {
+      "url": "/src/cave-rock-shader.js",
+      "bytes": 1416,
+      "sha256": "b64f9f5bca7e9a225a871d090c5216d31b91f5d9c547554aaa971223e16c8223"
+    },
+    {
+      "url": "/src/cave-gallery-layout.js",
+      "bytes": 4007,
+      "sha256": "051777345519aee5268913bc4466c323df2fc9ed98c41f0e6c212c4d717c2d8c"
+    },
+    {
+      "url": "/src/world-landmarks.js",
+      "bytes": 11629,
+      "sha256": "c6ea0799a2ae831af034755a0fbb5dd450b6df85af26f9ee30221b5a33ff8e49"
+    },
+    {
+      "url": "/src/world-scenery.js",
+      "bytes": 17285,
+      "sha256": "11fc0b416bcb1fa7f95c5f3911fc2efa662ca93d645d8ea4cc5e7b3235288c1f"
+    },
+    {
+      "url": "/src/locomotion-grounding.js",
+      "bytes": 4275,
+      "sha256": "638ced713fbd3803a744819f54a064a7ac5873f2d92dfa140f2575ad7a117026"
+    },
+    {
+      "url": "/shared/camp-cave-layout.mjs",
+      "bytes": 3411,
+      "sha256": "7246e2bb58eae7bec7ff40f685ecc4c548d1d3c7450aedf2dfea11eff04c9fb9"
+    },
+    {
+      "url": "/shared/camp-cave-surface-data.mjs",
+      "bytes": 221250,
+      "sha256": "58815005607e0175608c5d38c7c3827f8fc27517ac236071ac6c2d3e459f2f54"
+    },
+    {
+      "url": "/shared/camp-cave-surface.mjs",
+      "bytes": 325,
+      "sha256": "b092a435518a574820f014b46fd70ab5879611dbdbab7a1302e800647f741852"
+    }
+  ],
+  "performanceClaim": "No performance improvement claim; QA includes two simultaneous renderers and initial loading samples."
+}

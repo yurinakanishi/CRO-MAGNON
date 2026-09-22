@@ -23281,7 +23281,7 @@
         "The deep gallery keeps approximately 11 m width and 5.5 m centre headroom up to the back chamber. Existing measured source relief is expanded without moving the accepted mouth or replacing the cave with primitive geometry.",
         "Only the final 1.2 m rounds into a broad rear wall; the long tapered dead end is removed. The source boundary vertices remain shared across the wall, floor and ceiling joins.",
         "The measured aisle is 54.91 m, 2.11 times the original 26.00 m. The original outdoor campfire, river, mountain mesh and castle path are unchanged.",
-        "Sixteen wall paintings form two animal groups with the same mammoth, bison, deer and two horses in different orders. The left group includes the cat; the right group includes 524, with animals on both sides of each character.",
+        "Fifteen wall paintings retain the same five animal motifs on both sides. The east-wall deer and ochre horse move forward to close the removed cat slot, leaving even natural spacing over the limestone. The 524 stays half the neighbouring mammoth painted height.",
         "The separate transparent 524 pigment closely preserves the user image silhouette, ears, lower lobes, two drops, three white patches, exact digits and dark mouth. Its generated PNG is copied unchanged; other accepted animal art is retained.",
         "White calcite wall albedo retains real rock relief, pores and bedding; pigments are projected directly onto those existing triangles. Warm fire illuminates the same faintly visible paintings."
       ],
@@ -23329,16 +23329,16 @@
           }
         ],
         "styleReference": "assets/camp-cave/source/mural-side-r04.png",
-        "application": "Sixteen placements, eight on each wall: matching mammoth, bison, deer and two horse motifs in different orders, with the cat on the left and a separate faithful 524 pigment on the right.",
+        "application": "Fifteen placements: seven on the left and eight on the right. No cat is projected. The east-wall deer at -26.1 m and ochre horse at -29 m close the former empty slot; animal gaps are 0.7 to 1.125 m. The 524 image width remains 1.34 m, half the neighbouring mammoth painted height.",
         "layout": "src/cave-gallery-layout.ts",
-        "review": "assets/camp-cave/qa/gallery-r26.json",
+        "review": "assets/camp-cave/qa/gallery-r29.json",
         "previous": {
           "url": "/models/camp-cave/mural-side-r04.png",
           "source": "assets/camp-cave/source/mural-side-r04.png",
           "sha256": "1cbdd091523b48fea81f70eba5cc3840c7328ccfab4b8d1ef63e44b49e0ff5af"
         }
       },
-      "gameQA": "output/playwright/camp-cave/game-white-gallery-r26-delivered/summary.json",
+      "gameQA": "output/playwright/camp-cave/game-packed-wall-r29/summary.json",
       "rockSurface": {
         "url": "/models/camp-cave/limestone-r05.png",
         "source": "assets/camp-cave/source/limestone-r05.png",
@@ -23351,7 +23351,7 @@
         "generator": "Built-in imagegen",
         "prompt": "assets/camp-cave/limestone-prompt-r05.txt",
         "application": "White calcite limestone colour with 2.8m triplanar pores, bedding and surface-gradient relief, mineral mottling and damp roughness; warm fire reveals the pigments on the same triangles.",
-        "review": "assets/camp-cave/qa/gallery-r26.json"
+        "review": "assets/camp-cave/qa/gallery-r29.json"
       },
       "characterPigment": {
         "url": "/models/camp-cave/character-524-mural-r06.png",
@@ -23368,9 +23368,10 @@
           "path": "assets/camp-cave/source/character-524-reference-r06.png",
           "sha256": "8231914f43d9e8454823a923c8004df44c0bad1ee1aec9e2f140493d5f2af273"
         },
-        "application": "Faithful 524 silhouette, digits, white face circles, mouth and two drops; one transparent ochre-pigment image projected into the right wall animal group. Generated PNG is copied unchanged.",
-        "review": "assets/camp-cave/qa/gallery-r26.json"
-      }
+        "application": "One unchanged transparent ochre-pigment image on the right wall. At 1.34 m image width its painted height is about 1.11 m, half the neighbouring mammoth mural. Its raised baseline expresses floating. The actual companion keeps its existing 0.30 m body height.",
+        "review": "assets/camp-cave/qa/gallery-r29.json"
+      },
+      "galleryRevision": "29"
     },
     {
       "modelKey": "yellow-524-mascot",
@@ -23378,18 +23379,20 @@
       "kind": "companion",
       "candidate": 14,
       "status": "reviewed-prototype",
-      "url": "/models/yellow-524-mascot/model-c14.glb",
-      "sha256": "2652765f480973f6d974d0c51b2bd294c6e4c81e32e369814e09ba6c03c3e418",
-      "bytes": 18199668,
+      "url": "/models/yellow-524-mascot/model-midpoint-r01.glb",
+      "sha256": "77faeb7e7b0a34cd1aa6e23b728cbaf295227998791bb437977a8ff2abfbb3b9",
+      "bytes": 19046100,
       "triangles": 449022,
       "upAxis": "Y",
       "forwardAxis": "+Z",
-      "heightMetres": 1.0370343499999999,
-      "widthMetres": 1.1924108499999997,
+      "heightMetres": 0.3,
+      "widthMetres": 0.3449484712228878,
       "placement": {
         "pivot": "original-body-centre",
-        "scale": 1.15,
-        "hoverHeightMetres": 0.94
+        "scale": 0.3326795608548851,
+        "hoverHeightMetres": 0.94,
+        "hoverAmplitudeMetres": 0.12,
+        "hoverPeriodMs": 4000
       },
       "clips": [
         {
@@ -23400,18 +23403,28 @@
       ],
       "lods": [],
       "notes": [
-        "Latest completed Candidate 14, 2026-09-21: yellow texture revision of accepted Candidate 13. Source repository is read-only; no source promotion.",
-        "Exact source GLB bytes, embedded texture, 20 bones, six-appendage ripple, geometry and normals retained. Runtime wrapper adds happy bobs/tilt or directional recoil while the original floating clip continues."
+        "User selected the midpoint between C13 and C14 on 2026-09-22. Equal linear-light interpolation, matching the reviewed material preview within 8-bit PNG quantization.",
+        "C14 geometry, normals, UVs, 20 bones, skin weights and Floating_Ripple remain byte-identical. Original C13/C14 and the former game GLB are retained.",
+        "Body height 0.30m excludes the floating air gap. Runtime adds 0.12m vertical amplitude over a four-second cycle; hearts and name offset fit the smaller body."
       ],
       "provenance": {
-        "provider": "Codex imagegen and local TRELLIS-2; existing Candidate 14 imported unchanged",
+        "provider": "Codex imagegen and local TRELLIS-2 lineage; original C13/C14 midpoint color baked by Codex",
         "claudeUsed": false,
         "source": "../threed-model-creation/models/yellow-524-mascot/work/low-poly/batch-016/run-01/attempt-01/candidate.glb",
         "sourceSha256": "2652765f480973f6d974d0c51b2bd294c6e4c81e32e369814e09ba6c03c3e418",
         "referenceImage": "assets/companion-524/reference.png",
         "referenceSha256": "1327aec1bebbe9f1df13bfb0000ad8aee9d967c38687588c401a5d870e32fb41",
-        "visualReview": "assets/companion-524/adoption.json"
-      }
+        "visualReview": "assets/companion-524/adoption-midpoint-r01.json",
+        "colorSources": [
+          "../threed-model-creation/models/yellow-524-mascot/work/low-poly/batch-015/run-01/attempt-01/candidate.glb",
+          "../threed-model-creation/models/yellow-524-mascot/work/low-poly/batch-016/run-01/attempt-01/candidate.glb"
+        ],
+        "colorSourceHashes": [
+          "04b54fad6ab5f59ee342f3b98dbd902ef8a4f4fe9bb53816fc91879291e32b3a",
+          "2652765f480973f6d974d0c51b2bd294c6e4c81e32e369814e09ba6c03c3e418"
+        ]
+      },
+      "revision": "midpoint-r01"
     }
   ],
   "status": "ready"

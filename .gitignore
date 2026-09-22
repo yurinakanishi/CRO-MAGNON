@@ -6,6 +6,11 @@ dist/
 .pnpm-store/
 public/vendor/
 output/
+# Temporary document renderers and conversion intermediates are local tools.
+/tmp/
+# Local Windows setup receipts and ACL backups are operational records, not source.
+scripts/setup-PC*-result.json
+scripts/public-permissions-before-*.json
 .playwright-cli/
 .env
 exhibition.local.env

@@ -1,0 +1,122 @@
+{
+  "atlasSha256": "6efe80a19056af4f5a9ce50d7309b578f4c3e914fa9543c51a8fc629842e6889",
+  "characterSha256": "9fc9d9d635989a1e928a5ccdac2a7ed3889a1442930ff07f8503c7d2832fd071",
+  "size": [
+    1254,
+    1254
+  ],
+  "alphaRange": [
+    0,
+    255
+  ],
+  "transparentFraction": 0.5880461629643196,
+  "placements": [
+    {
+      "motif": "hands",
+      "wall": "east",
+      "centre": -13.8,
+      "paintedSamples": 65,
+      "rejected": []
+    },
+    {
+      "motif": "redHorse",
+      "wall": "east",
+      "centre": -15.2,
+      "paintedSamples": 62,
+      "rejected": []
+    },
+    {
+      "motif": "mammoth",
+      "wall": "east",
+      "centre": -19.2,
+      "paintedSamples": 102,
+      "rejected": []
+    },
+    {
+      "motif": "bison",
+      "wall": "east",
+      "centre": -22.8,
+      "paintedSamples": 91,
+      "rejected": []
+    },
+    {
+      "motif": "signs",
+      "wall": "east",
+      "centre": -24.2,
+      "paintedSamples": 44,
+      "rejected": []
+    },
+    {
+      "motif": "deer",
+      "wall": "east",
+      "centre": -26.1,
+      "paintedSamples": 59,
+      "rejected": []
+    },
+    {
+      "motif": "ochreHorse",
+      "wall": "east",
+      "centre": -29,
+      "paintedSamples": 66,
+      "rejected": []
+    },
+    {
+      "motif": "deer",
+      "wall": "west",
+      "centre": -14,
+      "paintedSamples": 59,
+      "rejected": []
+    },
+    {
+      "motif": "mammoth",
+      "wall": "west",
+      "centre": -17.4,
+      "paintedSamples": 102,
+      "rejected": []
+    },
+    {
+      "motif": "creature524",
+      "wall": "west",
+      "centre": -21.2,
+      "paintedSamples": 82,
+      "rejected": []
+    },
+    {
+      "motif": "redHorse",
+      "wall": "west",
+      "centre": -24.8,
+      "paintedSamples": 62,
+      "rejected": []
+    },
+    {
+      "motif": "hands",
+      "wall": "west",
+      "centre": -24.7,
+      "paintedSamples": 65,
+      "rejected": []
+    },
+    {
+      "motif": "bison",
+      "wall": "west",
+      "centre": -28.6,
+      "paintedSamples": 91,
+      "rejected": []
+    },
+    {
+      "motif": "signs",
+      "wall": "west",
+      "centre": -28.4,
+      "paintedSamples": 44,
+      "rejected": []
+    },
+    {
+      "motif": "ochreHorse",
+      "wall": "west",
+      "centre": -31.2,
+      "paintedSamples": 66,
+      "rejected": []
+    }
+  ],
+  "totalPaintedSamples": 1060,
+  "totalRejected": 0
+}

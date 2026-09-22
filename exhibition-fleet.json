@@ -1,0 +1,33 @@
+{
+  "displayUser": "CRO-MAGNON",
+  "machines": [
+    {
+      "id": "PC0",
+      "address": "10.10.10.3",
+      "computerName": "YURI",
+      "ssh": null,
+      "defaultRole": "standby"
+    },
+    {
+      "id": "PC1",
+      "address": "10.10.10.1",
+      "computerName": "YURIALIENWARE",
+      "ssh": "cro-pc1",
+      "defaultRole": "host"
+    },
+    {
+      "id": "PC2",
+      "address": "10.10.10.2",
+      "computerName": "LAPTOP-HS5HI3E4",
+      "ssh": "cro-pc2",
+      "defaultRole": "client"
+    },
+    {
+      "id": "PC3",
+      "address": "10.10.10.4",
+      "computerName": "YURI_TP_X1_12",
+      "ssh": "cro-pc3",
+      "defaultRole": "standby"
+    }
+  ]
+}

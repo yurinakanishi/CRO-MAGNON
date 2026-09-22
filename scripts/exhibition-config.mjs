@@ -1,5 +1,6 @@
 import { readFile } from 'node:fs/promises';
 import path from 'node:path';
+import { parseControllerLayout } from '../dist/shared/controller-layout.mjs';
 
 export function parseSettings(text) {
   const values = {};
@@ -12,7 +13,7 @@ export function parseSettings(text) {
   return values;
 }
 
-export async function readSettings(root, env = process.env) {
+async function readValues(root, env) {
   const values = parseSettings(await readFile(path.join(root, 'exhibition.env'), 'utf8'));
   try {
     Object.assign(
@@ -22,7 +23,24 @@ export async function readSettings(root, env = process.env) {
   } catch (error) {
     if (error.code !== 'ENOENT') throw error;
   }
-  for (const key of Object.keys(values)) if (env[key] !== undefined) values[key] = env[key];
+  for (const key of [...Object.keys(values), 'PC1_CONTROLLER_LAYOUT', 'PC2_CONTROLLER_LAYOUT'])
+    if (env[key] !== undefined) values[key] = env[key];
+  return values;
+}
+
+/** Read on each page load so changing labels does not restart the shared game server. */
+export async function readControllerLayout(root, role, env = process.env) {
+  if (role !== 'host' && role !== 'client') throw new Error('Unknown exhibition role.');
+  const values = await readValues(root, env);
+  return parseControllerLayout(values[`${role === 'host' ? 'PC1' : 'PC2'}_CONTROLLER_LAYOUT`]);
+}
+
+export async function readSettings(root, env = process.env) {
+  const values = await readValues(root, env);
+  const controllerLayouts = {
+    PC1: parseControllerLayout(values.PC1_CONTROLLER_LAYOUT),
+    PC2: parseControllerLayout(values.PC2_CONTROLLER_LAYOUT),
+  };
   if (values.MULTIPLAYER_MODE !== 'lan')
     throw new Error('Exhibition launchers require MULTIPLAYER_MODE=lan. Use npm start for Online.');
   const url = new URL(values.MULTIPLAYER_SERVER_URL);
@@ -55,5 +73,6 @@ export async function readSettings(root, env = process.env) {
     clientPort,
     room,
     openBrowser: values.OPEN_BROWSER !== '0',
+    controllerLayouts,
   };
 }

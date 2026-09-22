@@ -1,7 +1,8 @@
 [CmdletBinding()]
 param(
-  [Parameter(Mandatory=$true)][ValidateSet('PC1','PC2')][string]$Role,
-  [string]$DisplayUser = 'CRO-MAGNON'
+  [Parameter(Mandatory=$true)][ValidateSet('PC0','PC1','PC2','PC3')][string]$Role,
+  [string]$DisplayUser = 'CRO-MAGNON',
+  [string]$OperatorUser
 )
 $ErrorActionPreference = 'Stop'
 # Initial Windows setup is a local, pre-exhibition operation. Never turn an SSH
@@ -12,7 +13,9 @@ if ($env:SSH_CONNECTION -or $env:SSH_CLIENT) {
 $principal = [Security.Principal.WindowsPrincipal][Security.Principal.WindowsIdentity]::GetCurrent()
 if (-not $principal.IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator)) {
   try {
+    if ($Role -eq 'PC0' -and -not $OperatorUser) { $OperatorUser = $env:USERNAME }
     $arguments = @('-NoProfile','-ExecutionPolicy','Bypass','-File',('"{0}"' -f $PSCommandPath),'-Role',$Role,'-DisplayUser',('"{0}"' -f $DisplayUser))
+    if ($OperatorUser) { $arguments += @('-OperatorUser',('"{0}"' -f $OperatorUser)) }
     $process = Start-Process -FilePath "$env:WINDIR\System32\WindowsPowerShell\v1.0\powershell.exe" -Verb RunAs -WindowStyle Normal -ArgumentList $arguments -Wait -PassThru
     if ($process.ExitCode -ne 0) { throw 'Administrator setup did not complete successfully.' }
   } catch {
@@ -24,14 +27,17 @@ if (-not $principal.IsInRole([Security.Principal.WindowsBuiltInRole]::Administra
 }
 $exitCode = 0
 try {
+  $preparation = & (Join-Path $PSScriptRoot 'initialize-exhibition-display.ps1') -Role $Role -DisplayUser $DisplayUser
+  if (-not $preparation.prepared) { throw 'Display-account preparation failed.' }
   $pub = Join-Path $PSScriptRoot ('cro-magnon-' + $Role.ToLowerInvariant() + '.pub')
-  $details = & (Join-Path $PSScriptRoot 'setup-exhibition-ssh-display.ps1') -Role $Role -DisplayUser $DisplayUser -PublicKeyFile $pub
+  $details = & (Join-Path $PSScriptRoot 'setup-exhibition-ssh-display.ps1') -Role $Role -DisplayUser $DisplayUser -PublicKeyFile $pub -OperatorUser $OperatorUser
   if ($details.success -ne $true) { throw 'The setup did not report success.' }
-  $report = [pscustomobject]@{success=$true; timestamp=(Get-Date).ToString('o'); details=$details}
+  $report = [pscustomobject]@{success=$true; timestamp=(Get-Date).ToString('o'); preparation=$preparation; details=$details}
   Write-Host 'SSH and Public folder setup completed. Ask PC0 to verify login and read/write access.' -ForegroundColor Green
+  Write-Host "Sign in as $DisplayUser before starting the exhibition game."
 } catch {
   $exitCode = 1
-  $report = [pscustomobject]@{success=$false; timestamp=(Get-Date).ToString('o'); error=$_.Exception.Message}
+  $report = [pscustomobject]@{success=$false; timestamp=(Get-Date).ToString('o'); error=$_.Exception.Message; errorId=$_.FullyQualifiedErrorId; errorScript=$_.InvocationInfo.ScriptName; errorLine=$_.InvocationInfo.ScriptLineNumber; stack=$_.ScriptStackTrace}
   Write-Host $_.Exception.Message -ForegroundColor Red
   Write-Host 'Setup is incomplete. Report this error to the PC0 operator.' -ForegroundColor Yellow
 }

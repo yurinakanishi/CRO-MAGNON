@@ -8,29 +8,6 @@ import {
 } from './gamepad-input.js';
 import { adjacentMenuItem, menuItems, menuKeyDirection } from './menu-navigation.js';
 
-export const gamepadHelp = `
-  <section class="gamepad-help" aria-label="PS4コントローラーの操作">
-    <h3 tabindex="0">PS4コントローラー（DUALSHOCK 4）</h3>
-    <p class="gamepad-connection" role="status"></p>
-    <p>USBまたはBluetoothで端末につなぎ、この画面でボタンを一度押してください。</p>
-    <dl class="gamepad-bindings">
-      <div><dt>左スティック</dt><dd>浅く倒すと歩く、深く倒すと走る</dd></div>
-      <div><dt>右スティック</dt><dd>カメラを回す</dd></div>
-      <div><dt>○</dt><dd>採集・調べる</dd></div>
-      <div><dt>□ / R2</dt><dd>刀・魔法・槍で攻撃</dd></div>
-      <div><dt>△（右側4ボタンの上）</dt><dd>ジャンプ（着地してからもう一度）</dd></div>
-      <div><dt>×（右側4ボタンの下）</dt><dd>近くの船・マンモスに乗る／降りる · メニューや地図では「戻る／閉じる」</dd></div>
-      <div><dt>L2</dt><dd>作業を中止</dd></div>
-      <div><dt>十字キー</dt><dd>↑ 地図 · ← もちもの · → 手帳 · ↓ メニュー</dd></div>
-      <div><dt>OPTIONS</dt><dd>メニュー（もちもの）を開く／閉じる</dd></div>
-      <div><dt>タッチパッド / SHARE</dt><dd>地図を開く／閉じる</dd></div>
-      <div><dt>L1 / R1 · R3</dt><dd>カメラを遠く／近く · 視点を戻す</dd></div>
-    </dl>
-    <p>メニューは十字キーか左スティックで、押した方向にある項目を選びます。○・□・△で決定、×（下のボタン）で戻る／閉じる。選択欄は左右で切り替え、右スティックで説明をスクロールできます。名前・チャットの文字入力はキーボードを使います。</p>
-    <p class="form-note">走るための2回倒し・スティック押し込みは不要です。画面に戻ったときはスティックとボタンを一度離してください。</p>
-    <p class="form-note">認識しない場合は接続を確認し、最新のChrome / EdgeでHTTPSまたはlocalhostのゲームを開いてください。</p>
-  </section>`;
-
 interface GamepadUIOptions {
   dialog: HTMLDialogElement;
   canvas: HTMLCanvasElement;

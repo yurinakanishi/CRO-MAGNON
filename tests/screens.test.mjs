@@ -113,7 +113,7 @@ test('setup asks character → difficulty → final はい with no fixed launch 
 });
 
 test('the atlas is a full-bleed canvas with a pointer, a small card and zoom controls, without toolbar or list', async () => {
-  const { mapScreen, MAP_EMPTY_PROMPT } = await import('../dist/src/map-screen.js');
+  const { mapScreen, mapEmptyPrompt } = await import('../dist/src/map-screen.js');
   const html = mapScreen((name) => `<i class="icon-${name}"></i>`);
   for (const id of [
     'big-map',
@@ -135,7 +135,7 @@ test('the atlas is a full-bleed canvas with a pointer, a small card and zoom con
     'map-center',
   ])
     assert.match(html, new RegExp(`id="${id}"`), id);
-  assert.match(html, new RegExp(MAP_EMPTY_PROMPT));
+  assert.match(html, new RegExp(mapEmptyPrompt()));
   assert.match(html, /id="map-warp"[^>]*>○ ワープ<kbd>Enter<\/kbd>/);
   assert.match(html, /id="map-center"[^>]*>現在地へ<kbd>R3<\/kbd>/);
   for (const removed of [

@@ -1,9 +1,27 @@
 import http from 'node:http';
 import type { AddressInfo } from 'node:net';
 import { MIME, serveStatic } from './static-files.mjs';
+import type { ControllerLayout } from '../../shared/controller-layout.mjs';
 
 /** Assets are loopback-only. There is deliberately no WebSocket proxy here. */
-export function createExhibitionClient({ root, port, config }) {
+export function createExhibitionClient({
+  root,
+  port,
+  config,
+  getControllerLayout,
+}: {
+  root: string;
+  port: number;
+  config: {
+    mode: string;
+    serverUrl: string;
+    room?: string;
+    guestName?: string;
+    buildId?: string;
+    controllerLayout?: ControllerLayout;
+  };
+  getControllerLayout?: () => Promise<ControllerLayout>;
+}) {
   const connectOrigin = new URL(config.serverUrl).origin;
   const server = http.createServer(async (request, response) => {
     response.setHeader('X-Content-Type-Options', 'nosniff');
@@ -19,16 +37,15 @@ export function createExhibitionClient({ root, port, config }) {
       }
       const url = new URL(request.url || '/', 'http://localhost');
       if (url.pathname === '/multiplayer-config.json' || url.pathname === '/api/status') {
+        const payload =
+          url.pathname === '/api/status'
+            ? { ok: true, mode: config.mode, buildId: config.buildId }
+            : {
+                ...config,
+                ...(getControllerLayout ? { controllerLayout: await getControllerLayout() } : {}),
+              };
         response.writeHead(200, { 'Content-Type': MIME['.json'] });
-        response.end(
-          request.method === 'HEAD'
-            ? undefined
-            : JSON.stringify(
-                url.pathname === '/api/status'
-                  ? { ok: true, mode: config.mode, buildId: config.buildId }
-                  : config,
-              ),
-        );
+        response.end(request.method === 'HEAD' ? undefined : JSON.stringify(payload));
         return;
       }
       await serveStatic(request, response, url.pathname, root);

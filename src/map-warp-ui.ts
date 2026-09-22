@@ -12,7 +12,7 @@ import {
   nudgeStep,
   type Point,
 } from './map-layout.js';
-import { MAP_EMPTY_PROMPT, warpRegionName } from './map-screen.js';
+import { mapEmptyPrompt, warpRegionName } from './map-screen.js';
 import {
   mapProjection,
   setWorldMapSelection,
@@ -108,7 +108,7 @@ export function installMapWarp({
     card.dataset.warpId = warpPointById(point?.id)?.id ?? '';
     setWorldMapSelection(point);
     document.querySelector('#map-region').textContent = point ? warpRegionName(point) : '';
-    document.querySelector('#map-destination').textContent = point?.name ?? MAP_EMPTY_PROMPT;
+    document.querySelector('#map-destination').textContent = point?.name ?? mapEmptyPrompt();
     document.querySelector('#map-selection').textContent = point
       ? `現在地から ${metres(point, me())}`
       : '';

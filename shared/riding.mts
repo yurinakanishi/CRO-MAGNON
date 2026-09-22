@@ -2,6 +2,7 @@ import { combatDistance, stopActor, enemyIsSolid } from './combat.mjs';
 import { attackProfile } from './combat-profiles.mjs';
 import { movePlayer } from './movement.mjs';
 import { jumpProgress } from './jumping.mjs';
+import { mammothNavigation } from './mammoth-navigation.mjs';
 
 export const RIDING = Object.freeze({ version: 1, reach: 1.35, walkSpeed: 0.7, runSpeed: 2.25 });
 const circle = (actor) => ({
@@ -146,7 +147,7 @@ export function updateRiddenAnimal(room, animal, dt, now) {
     animal,
     dt,
     now,
-    (p, dx, dz) => room.collision.move(p, dx, dz, animal.radius, dynamic),
+    (p, dx, dz) => mammothNavigation(room.collision).move(p, dx, dz, animal.radius, dynamic),
     speed,
   );
   animal.clip = animal.moving ? (animal.running ? 'Run_Loop' : 'Walk_Loop') : 'Idle_Loop';

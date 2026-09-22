@@ -1,3 +1,4 @@
+import { controllerLabels } from './controller-labels.js';
 /**
  * Full-screen game screens (title, setup) shown over the 3D world,
  * plus the small pieces that make the HUD feel like a game: the area banner
@@ -17,7 +18,7 @@ export interface KeyPrompt {
  * announced once, by their own key-labelled button, so they are never repeated here.
  */
 export function keyPrompts(gamepad: boolean): KeyPrompt[] {
-  return [{ key: gamepad ? 'OPTIONS' : 'ESC', label: 'メニュー' }];
+  return [{ key: gamepad ? controllerLabels().menu : 'ESC', label: 'メニュー' }];
 }
 
 /** Shows and hides the full-screen game screens; one screen is visible at a time. */

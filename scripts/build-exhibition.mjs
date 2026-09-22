@@ -45,10 +45,12 @@ for (const file of [
   'scripts/start-exhibition.mjs',
   'scripts/exhibition-config.mjs',
   'scripts/exhibition-integrity.mjs',
+  'scripts/exhibition-station.ps1',
   'start-exhibition-host.bat',
   'start-exhibition-client.bat',
   'README-EXHIBITION.md',
   'README-EXHIBITION-3PC.md',
+  'README-EXHIBITION-4PC.md',
   'README-EXHIBITION-SECURITY.md',
   'assets/exhibition-lan/qa-summary.json',
   'exhibition.env',
@@ -135,5 +137,5 @@ const report = {
 };
 await writeFile(path.join(destination, 'exhibition-build.json'), JSON.stringify(report, null, 2));
 console.log(
-  `Offline exhibition ready: ${destination}\nBuild ${report.buildId}\n${files.length} verified files; ${glbs} GLBs; ${(bytes / 1024 / 1024).toFixed(1)} MiB. Copy the complete folder to display PCs PC1 and PC2.`,
+  `Offline exhibition ready: ${destination}\nBuild ${report.buildId}\n${files.length} verified files; ${glbs} GLBs; ${(bytes / 1024 / 1024).toFixed(1)} MiB. Deploy this same build to PC0, PC1, PC2 and PC3.`,
 );

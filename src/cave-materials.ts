@@ -105,7 +105,7 @@ export function prepareCaveMaterials(
           '#include <lights_fragment_end>\nreflectedLight.indirectDiffuse*=caveDaylight;',
         );
       };
-      material.customProgramCacheKey = () => 'camp-cave-white-gallery-v11';
+      material.customProgramCacheKey = () => 'camp-cave-white-gallery-v14';
       material.needsUpdate = true;
     }
   });

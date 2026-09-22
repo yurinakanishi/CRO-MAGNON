@@ -1,8 +1,10 @@
 /**
  * "How to play" content for the in-game
  * help dialog: one card grid per input device, switched with tabs so the same
- * layout serves keyboard/mouse and the DUALSHOCK 4 controller.
+ * layout serves keyboard/mouse and the configured controller.
  */
+import { controllerLabels } from './controller-labels.js';
+
 export type HelpDevice = 'pc' | 'pad';
 
 export interface HelpCard {
@@ -69,50 +71,53 @@ export const PC_HELP: readonly HelpCard[] = [
   },
 ];
 
-export const PAD_HELP: readonly HelpCard[] = [
-  { key: '左スティック', title: '移動', note: '浅く倒すと歩き、深く倒すと走ります。' },
-  {
-    key: '右スティック',
-    title: '視点',
-    note: 'カメラを回します。L1 / R1 でカメラの距離を調整し、R3 で元に戻します。',
-  },
-  {
-    key: '○',
-    title: '調べる・採集',
-    note: '木や石、焚き火、仲間、肉に近づいて押します。メニューでは決定。',
-  },
-  {
-    key: '□ / R2',
-    title: '攻撃',
-    note: '相手の方を向いて押します。槍・刀・魔法・大きな手など、攻撃方法はキャラクターによって異なります。',
-  },
-  {
-    key: '△（上）',
-    title: 'ジャンプ',
-    note: '右側4ボタンの上。歩きながら、走りながらも跳べます。着地してからもう一度。',
-  },
-  {
-    key: '×（下）',
-    title: '撫でる・乗り降り / 戻る',
-    note: '524の近くでは撫でると、浮かんでついてきます。OPTIONSの「524をキャンプへ帰す」でお別れ。マンモス、肩乗り、船のそばでは乗り降り。メニューや地図では戻る／閉じる。',
-  },
-  { key: 'L2', title: '作業を中止', note: '採集や調理の途中でやめます。' },
-  {
-    key: '十字キー',
-    title: 'もちもの・手帳・メニュー',
-    note: '← もちもの · → 手帳 · ↓ メニュー。食べ物を使うときは、もちものから選びます。地図は SHARE／タッチパッド。',
-  },
-  {
-    key: 'OPTIONS',
-    title: 'メニュー（もちもの）',
-    note: 'メニューを開くと、もちもの一覧の左上の項目が選択されています。十字キーか左スティックで選び、○ で決定 → 「使う」で回復。× で戻る／閉じる。キャラクターを変更するには、「探索に戻る」の上にあるボタンを選びます。',
-  },
-  {
-    key: 'タッチパッド / SHARE',
-    title: '地図（もう一度押すと閉じる）',
-    note: '左スティックでポインタを動かし、右スティックで地図を拡大・縮小します。焚き火に合わせて ○ で選び、もう一度 ○ でワープ。□ でピンを共有、R3 で現在地へ、× か OPTIONS で閉じる。',
-  },
-];
+export function padHelp(): readonly HelpCard[] {
+  const pad = controllerLabels();
+  return [
+    { key: '左スティック', title: '移動', note: '浅く倒すと歩き、深く倒すと走ります。' },
+    {
+      key: '右スティック',
+      title: '視点',
+      note: `カメラを回します。${pad.leftShoulder} / ${pad.rightShoulder} でカメラの距離を調整し、${pad.rightStick} で元に戻します。`,
+    },
+    {
+      key: pad.right,
+      title: '調べる・採集',
+      note: '木や石、焚き火、仲間、肉に近づいて押します。メニューでは決定。',
+    },
+    {
+      key: `${pad.left} / ${pad.rightTrigger}`,
+      title: '攻撃',
+      note: '相手の方を向いて押します。槍・刀・魔法・大きな手など、攻撃方法はキャラクターによって異なります。',
+    },
+    {
+      key: `${pad.top}（上）`,
+      title: 'ジャンプ',
+      note: '右側4ボタンの上。歩きながら、走りながらも跳べます。着地してからもう一度。',
+    },
+    {
+      key: `${pad.bottom}（下）`,
+      title: '撫でる・乗り降り / 戻る',
+      note: `524の近くでは撫でると、浮かんでついてきます。${pad.menu}の「524をキャンプへ帰す」でお別れ。マンモス、肩乗り、船のそばでは乗り降り。メニューや地図では戻る／閉じる。`,
+    },
+    { key: pad.leftTrigger, title: '作業を中止', note: '採集や調理の途中でやめます。' },
+    {
+      key: '十字キー',
+      title: 'もちもの・手帳・メニュー',
+      note: `← もちもの · → 手帳 · ↓ メニュー。食べ物を使うときは、もちものから選びます。地図は ${pad.map}。`,
+    },
+    {
+      key: pad.menu,
+      title: 'メニュー（もちもの）',
+      note: `メニューを開くと、もちもの一覧の左上の項目が選択されています。十字キーか左スティックで選び、${pad.right} で決定 → 「使う」で回復。${pad.bottom} で戻る／閉じる。キャラクターを変更するには、「探索に戻る」の上にあるボタンを選びます。`,
+    },
+    {
+      key: pad.map,
+      title: '地図（もう一度押すと閉じる）',
+      note: `左スティックでポインタを動かし、右スティックで地図を拡大・縮小します。焚き火に合わせて ${pad.right} で選び、もう一度 ${pad.right} でワープ。${pad.left} でピンを共有、${pad.rightStick} で現在地へ、${pad.bottom} か ${pad.menu} で閉じる。`,
+    },
+  ];
+}
 
 const card = ({ key, title, note }: HelpCard) =>
   `<div class="help-card"><kbd>${key}</kbd><strong>${title}</strong><p>${note}</p></div>`;
@@ -123,9 +128,9 @@ export function helpTabsMarkup(device: HelpDevice, extra: readonly HelpCard[] = 
     `<button type="button" class="help-tab" role="tab" data-help-tab="${id}" aria-selected="${device === id}" aria-controls="help-panel-${id}">${label}</button>`;
   const panel = (id: HelpDevice, cards: readonly HelpCard[], head = '') =>
     `<div class="help-panel" id="help-panel-${id}" role="tabpanel" data-help-panel="${id}" ${device === id ? '' : 'hidden'}>${head}<div class="help-grid">${[...cards, ...extra].map(card).join('')}</div></div>`;
-  return `<div class="help-tabs" role="tablist" aria-label="操作方法の切り替え">${tab('pc', 'PC（キーボード・マウス）')}${tab('pad', 'コントローラー（DUALSHOCK 4）')}</div>${panel('pc', PC_HELP)}${panel(
+  return `<div class="help-tabs" role="tablist" aria-label="操作方法の切り替え">${tab('pc', 'PC（キーボード・マウス）')}${tab('pad', `コントローラー（${controllerLabels().name}）`)}</div>${panel('pc', PC_HELP)}${panel(
     'pad',
-    PAD_HELP,
+    padHelp(),
     '<p class="gamepad-connection help-status" role="status"></p>',
   )}`;
 }

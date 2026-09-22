@@ -32,7 +32,7 @@
     "The deep gallery keeps approximately 11 m width and 5.5 m centre headroom up to the back chamber. Existing measured source relief is expanded without moving the accepted mouth or replacing the cave with primitive geometry.",
     "Only the final 1.2 m rounds into a broad rear wall; the long tapered dead end is removed. The source boundary vertices remain shared across the wall, floor and ceiling joins.",
     "The measured aisle is 54.91 m, 2.11 times the original 26.00 m. The original outdoor campfire, river, mountain mesh and castle path are unchanged.",
-    "Sixteen wall paintings form two animal groups with the same mammoth, bison, deer and two horses in different orders. The left group includes the cat; the right group includes 524, with animals on both sides of each character.",
+    "Fifteen wall paintings retain the same five animal motifs on both sides. The east-wall deer and ochre horse move forward to close the removed cat slot, leaving even natural spacing over the limestone. The 524 stays half the neighbouring mammoth painted height.",
     "The separate transparent 524 pigment closely preserves the user image silhouette, ears, lower lobes, two drops, three white patches, exact digits and dark mouth. Its generated PNG is copied unchanged; other accepted animal art is retained.",
     "White calcite wall albedo retains real rock relief, pores and bedding; pigments are projected directly onto those existing triangles. Warm fire illuminates the same faintly visible paintings."
   ],
@@ -80,16 +80,16 @@
       }
     ],
     "styleReference": "assets/camp-cave/source/mural-side-r04.png",
-    "application": "Sixteen placements, eight on each wall: matching mammoth, bison, deer and two horse motifs in different orders, with the cat on the left and a separate faithful 524 pigment on the right.",
+    "application": "Fifteen placements: seven on the left and eight on the right. No cat is projected. The east-wall deer at -26.1 m and ochre horse at -29 m close the former empty slot; animal gaps are 0.7 to 1.125 m. The 524 image width remains 1.34 m, half the neighbouring mammoth painted height.",
     "layout": "src/cave-gallery-layout.ts",
-    "review": "assets/camp-cave/qa/gallery-r26.json",
+    "review": "assets/camp-cave/qa/gallery-r29.json",
     "previous": {
       "url": "/models/camp-cave/mural-side-r04.png",
       "source": "assets/camp-cave/source/mural-side-r04.png",
       "sha256": "1cbdd091523b48fea81f70eba5cc3840c7328ccfab4b8d1ef63e44b49e0ff5af"
     }
   },
-  "gameQA": "output/playwright/camp-cave/game-white-gallery-r26-delivered/summary.json",
+  "gameQA": "output/playwright/camp-cave/game-packed-wall-r29/summary.json",
   "rockSurface": {
     "url": "/models/camp-cave/limestone-r05.png",
     "source": "assets/camp-cave/source/limestone-r05.png",
@@ -102,7 +102,7 @@
     "generator": "Built-in imagegen",
     "prompt": "assets/camp-cave/limestone-prompt-r05.txt",
     "application": "White calcite limestone colour with 2.8m triplanar pores, bedding and surface-gradient relief, mineral mottling and damp roughness; warm fire reveals the pigments on the same triangles.",
-    "review": "assets/camp-cave/qa/gallery-r26.json"
+    "review": "assets/camp-cave/qa/gallery-r29.json"
   },
   "characterPigment": {
     "url": "/models/camp-cave/character-524-mural-r06.png",
@@ -119,7 +119,8 @@
       "path": "assets/camp-cave/source/character-524-reference-r06.png",
       "sha256": "8231914f43d9e8454823a923c8004df44c0bad1ee1aec9e2f140493d5f2af273"
     },
-    "application": "Faithful 524 silhouette, digits, white face circles, mouth and two drops; one transparent ochre-pigment image projected into the right wall animal group. Generated PNG is copied unchanged.",
-    "review": "assets/camp-cave/qa/gallery-r26.json"
-  }
+    "application": "One unchanged transparent ochre-pigment image on the right wall. At 1.34 m image width its painted height is about 1.11 m, half the neighbouring mammoth mural. Its raised baseline expresses floating. The actual companion keeps its existing 0.30 m body height.",
+    "review": "assets/camp-cave/qa/gallery-r29.json"
+  },
+  "galleryRevision": "29"
 }

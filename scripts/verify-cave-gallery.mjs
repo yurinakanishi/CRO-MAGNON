@@ -1,7 +1,7 @@
 import assert from 'node:assert/strict';
 import { createHash } from 'node:crypto';
 import { readFile, writeFile } from 'node:fs/promises';
-import { CAVE_MURALS } from '../dist/src/cave-gallery-layout.js';
+import { CAVE_MOTIFS, CAVE_MURALS } from '../dist/src/cave-gallery-layout.js';
 
 const hash = (b) => createHash('sha256').update(b).digest('hex');
 const asset = JSON.parse(await readFile('public/models/camp-cave/asset.json'));
@@ -20,7 +20,7 @@ for (const r of [
   assert.equal(hash(await readFile(r.source)), r.sha256);
 }
 assert.equal(hash(await readFile(`public${asset.url}`)), asset.sha256);
-assert.equal(CAVE_MURALS.length, 16);
+assert.equal(CAVE_MURALS.length, 15);
 const animals = ['redHorse', 'ochreHorse', 'mammoth', 'bison', 'deer'];
 for (const wall of ['east', 'west'])
   assert.deepEqual(
@@ -31,14 +31,15 @@ for (const wall of ['east', 'west'])
   );
 const cats = CAVE_MURALS.filter((m) => m.motif === 'cat');
 const creatures = CAVE_MURALS.filter((m) => m.motif === 'creature524');
-assert.equal(cats.length, 1);
+assert.equal(cats.length, 0);
+assert.equal('cat' in CAVE_MOTIFS, false);
 assert.equal(creatures.length, 1);
-assert.equal(cats[0].wall, 'east');
 assert.equal(creatures[0].wall, 'west');
-assert.ok(Math.abs(cats[0].centre - creatures[0].centre) > 4);
 assert.ok(CAVE_MURALS.every((m) => m.centre <= -13));
 const coverage = JSON.parse(
-  await readFile(`assets/camp-cave/qa/gallery-pigment-coverage-r${asset.revision}.json`),
+  await readFile(
+    `assets/camp-cave/qa/gallery-pigment-coverage-r${asset.galleryRevision ?? asset.revision}.json`,
+  ),
 );
 const length = JSON.parse(await readFile(`assets/camp-cave/qa/length-r${asset.revision}.json`));
 assert.equal(length.measurements[1].sha256, asset.sha256);
@@ -47,6 +48,12 @@ assert.equal(coverage.atlasSha256, asset.pigment.sha256);
 assert.equal(coverage.characterSha256, asset.characterPigment.sha256);
 assert.equal(coverage.totalRejected, 0);
 assert.ok(coverage.placements.every((p) => p.paintedSamples > 30));
+assert.equal(coverage.placements.length, CAVE_MURALS.length);
+for (const [index, mural] of CAVE_MURALS.entries()) {
+  assert.equal(coverage.placements[index].motif, mural.motif);
+  assert.equal(coverage.placements[index].wall, mural.wall);
+  assert.equal(coverage.placements[index].centre, mural.centre);
+}
 const qaPath = asset.gameQA;
 const qa = JSON.parse(await readFile(qaPath));
 assert.equal(qa.cave.sha256, asset.sha256);
@@ -60,6 +67,18 @@ assert.ok(
 assert.ok(qa.checks.includes('two renderers and three network peers share the cave fire'));
 assert.ok(qa.checks.includes('gallery reload and real E extinguishing pass'));
 assert.ok(
+  qa.checks.includes('cat motif and projection are completely removed from the active gallery'),
+);
+assert.ok(qa.checks.includes('painted 524 is half the mammoth height within two percent'));
+assert.deepEqual(qa.gallery.layout, CAVE_MURALS);
+assert.ok(
+  qa.checks.includes(
+    'the east animal row closes the former cat slot without overlap or a large blank gap',
+  ),
+);
+assert.equal(qa.gallery.scale.targetHeightRatio, 0.5);
+assert.ok(qa.gallery.scale.relativeError < 0.02);
+assert.ok(
   qa.checks.includes('the rear chamber can be crossed in both directions at full standing height'),
 );
 const room = JSON.parse(await readFile(`assets/camp-cave/qa/room-r${asset.revision}.json`));
@@ -69,8 +88,9 @@ for (const label of [
   'entrance-from-camp',
   'entrance-approach-4',
   'entrance-traverse-6',
-  'gallery-cat-lit',
+  'gallery-reflowed-wall-lit',
   'gallery-524-lit',
+  'gallery-524-close',
   'gallery-east-13',
   'gallery-west-23',
   'gallery-east-31.5',
@@ -112,12 +132,17 @@ for (const [url, path] of files) {
 const report = {
   date: new Date().toISOString(),
   decision: 'adopt',
-  generator: 'Built-in imagegen',
+  galleryRevision: asset.galleryRevision,
+  geometryRevision: asset.revision,
+  generator:
+    'Existing built-in imagegen pigments; projection layout edited without changing images',
   pigments: asset.pigment,
   characterPigment: asset.characterPigment,
   chamber: { minWidth: room.minWidth, minHeadroom: room.minHeadroom },
   rockSurface: asset.rockSurface,
   layout: CAVE_MURALS,
+  scale: qa.gallery.scale,
+  eastAnimalGaps: qa.gallery.eastAnimalGaps,
   coverage,
   length: {
     beforeMetres: length.measurements[0].lengthMetres,
@@ -125,7 +150,8 @@ const report = {
     ratio: length.ratio,
   },
   review: [
-    'Sixteen independent placements with the same five animal motifs on both sides; the left cat and right 524 each stand between other animals.',
+    'Fifteen independent placements retain the same five animal motifs on both sides. The cat remains removed. The east-wall deer and ochre horse move forward to close its old slot, with 0.7 to 1.125 m gaps between the animals and the original limestone underneath.',
+    'The right-wall 524 uses 1.34 m image width and approximately 1.11 m painted height, half the neighbouring mammoth at the user-requested mural scale. The silhouette floats slightly above the animal baseline. The actual companion size is unchanged.',
     'Every painting is beyond the midpoint of the doubled chamber; horses, mammoth, bison, deer, hands and signs extend toward the broad back chamber.',
     'White calcite limestone retains pores, bedding, roughness and wall relief under the pigments. Cave fire makes the same paintings clearer.',
     'Generated PNGs are copied unchanged; atlas rectangles select whole motifs at render time.',

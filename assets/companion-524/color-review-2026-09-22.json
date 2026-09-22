@@ -1,0 +1,29 @@
+{
+  "stage": "midpoint-selected-and-implemented",
+  "userRequest": "まず最新・1つ前・その中間色の3画像を提示。その後の実装では中間色、よりふわふわした上下動、本体の高さを2Lペットボトル程度にする。",
+  "previousCandidate": 13,
+  "previousSha256": "04b54fad6ab5f59ee342f3b98dbd902ef8a4f4fe9bb53816fc91879291e32b3a",
+  "latestCandidate": 14,
+  "latestSha256": "2652765f480973f6d974d0c51b2bd294c6e4c81e32e369814e09ba6c03c3e418",
+  "midpoint": {
+    "ratio": 0.5,
+    "method": "Render original Candidate 13 and 14 base-color maps in equal proportions in linear-light RGB, on their identical existing geometry and animation. No generated image or replacement geometry.",
+    "unchanged": "The ivory face, orange digits, teal mouth and alpha are identical in both source maps; interpolation preserves them."
+  },
+  "preview": "output/playwright/companion-524/color-review-2026-09-22/comparison.png",
+  "individualImages": [
+    "output/playwright/companion-524/color-review-2026-09-22/01-previous-c13.png",
+    "output/playwright/companion-524/color-review-2026-09-22/02-midpoint.png",
+    "output/playwright/companion-524/color-review-2026-09-22/03-latest-c14.png"
+  ],
+  "evidence": "output/playwright/companion-524/color-review-2026-09-22/review.json",
+  "implementationIntent": {
+    "bodyHeightMetres": 0.3,
+    "heightDefinition": "Approximate 2L PET bottle height, from the top of the ears to the lowest body tip, excluding the air gap under the floating character.",
+    "humanReferenceHeightMetres": 1.67,
+    "motion": "Increase gentle vertical floating; preserve original appendage ripple, petting, following and directional knockback."
+  },
+  "gameChangesApplied": true,
+  "adoption": "assets/companion-524/adoption-midpoint-r01.json",
+  "sourceRepositoryChanged": false
+}
