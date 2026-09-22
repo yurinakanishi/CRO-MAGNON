@@ -45,7 +45,7 @@ export const EXHIBITION_RULES: RoomRules = Object.freeze({
   alwaysRun: true,
   speedScale: 1.4,
   playerDamageScale: 4,
-  incomingDamageScale: 0.2,
+  incomingDamageScale: 0.1,
   minimumEnergy: 1,
   freeActions: true,
   castleSeal: false,
