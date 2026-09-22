@@ -20,7 +20,7 @@ async function collect(directory) {
 }
 await collect('dist/src'); await collect('dist/shared'); await collect('public/vendor');
 for (const name of await readdir(path.join(root, 'public/title'))) {
-  if (name.endsWith('.png')) files.add(`public/title/${name}`);
+  if (/\.(png|jpe?g)$/.test(name)) files.add(`public/title/${name}`);
 }
 const manifest = JSON.parse(await readFile(path.join(root, 'public/models/world-assets.json'), 'utf8'));
 for (const { key } of CHARACTER_MODELS) {

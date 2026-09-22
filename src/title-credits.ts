@@ -1,4 +1,4 @@
-/** Original profiles confirmed on 2026-09-09; R-524 in yuri's followers on 2026-09-22. */
+/** Profiles and their bundled X avatars confirmed on 2026-09-22. */
 export const TITLE_CREDITS = [
   { name: 'yuri', profile: 'https://x.com/yurinakanishi33', qr: 'yuri' },
   { name: 'Ryuichi-typeR', profile: 'https://x.com/WabisukeTyper', qr: 'ryuichi' },
@@ -19,7 +19,7 @@ export const TITLE_GUEST = {
 
 export function titleCreditsMarkup(): string {
   const card = (credit: (typeof TITLE_CREDITS)[number] | typeof TITLE_GUEST, size = 74) =>
-    `<figure class="credit-person"><img src="/title/qr-${credit.qr}.png" width="${size}" height="${size}" alt="${credit.name}のXプロフィールのQRコード" decoding="async"><figcaption class="credit-name">${credit.name}</figcaption></figure>`;
+    `<figure class="credit-person"><img class="credit-avatar" src="/title/avatar-${credit.qr}.jpg" width="56" height="56" alt="${credit.name}のXアイコン" decoding="async"><img class="credit-qr" src="/title/qr-${credit.qr}.png" width="${size}" height="${size}" alt="${credit.name}のXプロフィールのQRコード" decoding="async"><figcaption class="credit-name">${credit.name}</figcaption></figure>`;
   return `<section class="title-credits" aria-label="クレジット">
     <div class="credit-production"><h2>制作</h2>${card(TITLE_CREDITS[0], 148)}</div>
     <div class="credit-planning"><h2>監修</h2><div class="credit-people">${TITLE_CREDITS.slice(1)

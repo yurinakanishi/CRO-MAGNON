@@ -110,22 +110,37 @@ try {
       };
     });
     await page.goto(`http://127.0.0.1:${local.port}`);
+    await page.waitForFunction(() => {
+      const avatars = [...document.querySelectorAll('.credit-avatar')];
+      return (
+        avatars.length === 6 &&
+        avatars.every((image) => image.complete && image.naturalWidth === 200)
+      );
+    });
     await page.locator('#title-start').click();
     await tap(page, 1);
     await page.locator('#setup-flow[data-step="spawn"]').waitFor();
-    const startCards = await page
-      .locator('[data-choose-spawn]')
-      .evaluateAll((nodes) =>
-        nodes.map((el) => ({
-          id: el.dataset.chooseSpawn,
-          text: el.innerText,
-          image: el.querySelector('img').getAttribute('src'),
-        })),
-      );
+    const startCards = await page.locator('[data-choose-spawn]').evaluateAll((nodes) =>
+      nodes.map((el) => ({
+        id: el.dataset.chooseSpawn,
+        text: el.innerText,
+        image: el.querySelector('img').getAttribute('src'),
+      })),
+    );
     await page.locator('[data-choose-spawn="camp"]').click();
     await page
       .locator('#world[data-world-asset="ready"][data-character-asset="ready"]')
       .waitFor({ timeout: 120000 });
+    // Position only in this unsaved QA world to exercise the prompt beside Or.
+    const nearOr = actor(layout);
+    const start = { x: nearOr.x, z: nearOr.z };
+    Object.assign(nearOr, { x: 70, z: 43 });
+    await sleep(800);
+    assert.doesNotMatch(await page.locator('#interaction-hint').innerText(), /オルと物々交換する/);
+    await shot(page, `${layout}-no-trade-prompt`);
+    Object.assign(nearOr, start);
+    await sleep(500);
+    pass(`${layout}: all six title avatars load; no trade prompt beside Or`);
     await menu(page);
     assert.deepEqual(
       await page
@@ -154,15 +169,13 @@ try {
     );
     await shot(page, `${layout}-inventory`);
     await page.locator('[data-pause-tab="warp"]').click();
-    const warpCards = await page
-      .locator('[data-warp-spawn]')
-      .evaluateAll((nodes) =>
-        nodes.map((el) => ({
-          id: el.dataset.warpSpawn,
-          text: el.innerText,
-          image: el.querySelector('img').getAttribute('src'),
-        })),
-      );
+    const warpCards = await page.locator('[data-warp-spawn]').evaluateAll((nodes) =>
+      nodes.map((el) => ({
+        id: el.dataset.warpSpawn,
+        text: el.innerText,
+        image: el.querySelector('img').getAttribute('src'),
+      })),
+    );
     assert.deepEqual(warpCards, startCards);
     await shot(page, `${layout}-warp`);
     await tap(page, 0);
@@ -305,7 +318,11 @@ try {
         errors,
         observations,
         physicalControllers: false,
-        fixtures: ['Standard Gamepad API', 'One berry and 40 health in isolated world'],
+        fixtures: [
+          'Standard Gamepad API',
+          'Position beside Or',
+          'One berry and 40 health in isolated world',
+        ],
       },
       null,
       2,

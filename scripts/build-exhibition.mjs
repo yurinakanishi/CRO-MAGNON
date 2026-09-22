@@ -34,7 +34,7 @@ for (const directory of ['dist/src', 'dist/shared', 'dist/application', 'dist/in
   await collect(directory, (file) => /\.(js|mjs|css)$/.test(file));
 add('dist/server.mjs');
 await collect('public/vendor', (file) => /\.(js|mjs)$/.test(file));
-await collect('public/title', (file) => /\.png$/.test(file));
+await collect('public/title', (file) => /\.(png|jpe?g)$/.test(file));
 await collect('public/spawn', (file) => /\.jpg$/.test(file));
 await collect('node_modules/ws');
 for (const file of [

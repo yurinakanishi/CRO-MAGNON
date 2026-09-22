@@ -88,6 +88,8 @@ export class WorldRenderer {
   predictionObstacles = [];
   predictionSeaCollision: SeaCollision | undefined;
   predictedMotion: any = null;
+  /** True while an opaque screen covers the canvas: the simulation runs on, the GPU draw is skipped. */
+  occluded: () => boolean = () => false;
   declare campLabel: ReturnType<WorldRenderer['createLabel']>;
   declare regionalScenery: RegionalScenery;
   declare openWorld: OpenWorldTerrain;
@@ -1425,7 +1427,7 @@ export class WorldRenderer {
     );
     this.updateLabels();
     const simulationEnded = performance.now();
-    this.renderer.render(this.scene, this.camera);
+    if (!this.occluded()) this.renderer.render(this.scene, this.camera);
     this.simulationMs = (this.simulationMs ?? 0) * 0.8 + (simulationEnded - frameStarted) * 0.2;
     this.submissionMs =
       (this.submissionMs ?? 0) * 0.8 + (performance.now() - simulationEnded) * 0.2;

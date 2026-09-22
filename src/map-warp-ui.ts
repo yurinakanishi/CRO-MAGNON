@@ -96,6 +96,16 @@ export function installMapWarp({
   };
   const ownPin = () =>
     pins().find((pin) => pin.ownerId === player()?.id && pin.expiresAt > now()) ?? null;
+  // Drags, pinches and wheel ticks arrive far faster than frames; one draw per frame is enough.
+  let redrawFrame = 0;
+  const redrawSoon = () => {
+    if (typeof requestAnimationFrame !== 'function') return redraw();
+    if (redrawFrame) return;
+    redrawFrame = requestAnimationFrame(() => {
+      redrawFrame = 0;
+      if (dialog.open) redraw();
+    });
+  };
 
   root.innerHTML = WARP_POINTS.map(
     (p) =>
@@ -164,12 +174,12 @@ export function installMapWarp({
     pointer = next;
     if (pan.x || pan.y) {
       panWorldMap(canvas, player(), pan.x, pan.y);
-      redraw();
+      redrawSoon();
     } else refreshPointer();
   };
   const zoom = (factor: number, anchor: Point = pointer) => {
     zoomWorldMap(canvas, player(), factor, anchor);
-    redraw();
+    redrawSoon();
   };
   const centerOnPlayer = () => {
     resetWorldMap(me(), MAP_ZOOM.open);
@@ -329,7 +339,7 @@ export function installMapWarp({
       setPointer(at.x, at.y);
       if (pinch.distance > 0) zoomWorldMap(canvas, player(), distance / pinch.distance, at);
       pinch = { distance, mid };
-      redraw();
+      redrawSoon();
       return;
     }
     if (!drag || drag.id !== event.pointerId) {
@@ -344,7 +354,7 @@ export function installMapWarp({
     panWorldMap(canvas, player(), event.clientX - drag.x, event.clientY - drag.y);
     drag.x = event.clientX;
     drag.y = event.clientY;
-    redraw();
+    redrawSoon();
   };
   const release = (event: PointerEvent) => {
     touches.delete(event.pointerId);

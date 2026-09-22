@@ -279,6 +279,8 @@ try {
     onError: showRenderError,
   });
   renderer.prediction.enabled = multiplayer.mode === 'lan';
+  // The full-screen atlas hides the world completely; its pan and zoom need the frame time.
+  renderer.occluded = () => $('#modal').open && !!$('#big-map');
 } catch (error) {
   console.error('3D renderer could not initialize:', error);
   showRenderError(
@@ -681,7 +683,8 @@ function nearby(): { action: string; label: string; targetId?: string } | null {
       label: '焚き火に資材を届ける',
       range: GATHER_RANGE,
     });
-  objects.push({ ...state.npc, action: 'trade', label: 'オルと物々交換する', range: 10 });
+  if (!fixedIdentity)
+    objects.push({ ...state.npc, action: 'trade', label: 'オルと物々交換する', range: 10 });
   return objects
     .filter(
       (o) =>

@@ -1,0 +1,61 @@
+{
+  "verifiedOn": "2026-09-22",
+  "verification": "Each account's live X profile title and profile-photo link were checked in Chrome. Sources are the exact 200x200 profile image URLs exposed on those pages.",
+  "processing": "Original JPEG bytes; circular presentation is CSS only.",
+  "profiles": [
+    {
+      "key": "yuri",
+      "name": "yuri",
+      "profile": "https://x.com/yurinakanishi33",
+      "source": "https://pbs.twimg.com/profile_images/2089635551020482560/chOEF9xl_200x200.jpg",
+      "file": "public/title/avatar-yuri.jpg",
+      "bytes": 12135,
+      "sha256": "68a0d2ca6f6a57d774bd977c41c724eada6d8f0020b2ea2bcd43e29ea94f1234"
+    },
+    {
+      "key": "ryuichi",
+      "name": "Ryuichi-typeR",
+      "profile": "https://x.com/WabisukeTyper",
+      "source": "https://pbs.twimg.com/profile_images/1983477054395068416/k3b2tg9W_200x200.jpg",
+      "file": "public/title/avatar-ryuichi.jpg",
+      "bytes": 8837,
+      "sha256": "06cba8b57b036a3d1551a74c6be9748271ebdd702402dbf71f6adbfe9cbcc2e5"
+    },
+    {
+      "key": "otani",
+      "name": "オータニ@AI駆動開発",
+      "profile": "https://x.com/otani_ai_memo",
+      "source": "https://pbs.twimg.com/profile_images/2085737294255017984/PKIV79Qt_200x200.jpg",
+      "file": "public/title/avatar-otani.jpg",
+      "bytes": 13718,
+      "sha256": "9f79702e5d49b9a2178d9fc1154bd654c18f335ce57698be36c822e41cc6b9ae"
+    },
+    {
+      "key": "urata",
+      "name": "浦田 勇樹 | 生成AI×新規プロダクト開発@ブレインパッド",
+      "profile": "https://x.com/yuki_urata",
+      "source": "https://pbs.twimg.com/profile_images/2088111762751303680/d07iPgGL_200x200.jpg",
+      "file": "public/title/avatar-urata.jpg",
+      "bytes": 11987,
+      "sha256": "811faa362ca844e2db5e74bf9dabb253d1f048214e01ca5c3e35ec3dcbaff059"
+    },
+    {
+      "key": "nukonuko",
+      "name": "ぬこぬこ / NUKO 🇯🇵",
+      "profile": "https://x.com/nukonuko",
+      "source": "https://pbs.twimg.com/profile_images/2051950657809362944/x6v0T-f1_200x200.jpg",
+      "file": "public/title/avatar-nukonuko.jpg",
+      "bytes": 13782,
+      "sha256": "c1ba1357ca632ff79899b0593f2815c38898d04e197ab3e383afc4f5f6181c6e"
+    },
+    {
+      "key": "r524",
+      "name": "R-524",
+      "profile": "https://x.com/R5ni4",
+      "source": "https://pbs.twimg.com/profile_images/2058486847798652928/1VcjbMa8_200x200.jpg",
+      "file": "public/title/avatar-r524.jpg",
+      "bytes": 5825,
+      "sha256": "6b8bc0201a6d31a9aa2cb9d27c6bf3827e1559c38eba138dd7f998c1d573c4cc"
+    }
+  ]
+}

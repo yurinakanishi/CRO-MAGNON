@@ -165,17 +165,35 @@ function localColor(wx: number, wz: number, out: Uint8ClampedArray | number[], i
  * lookup (~10 ns) while `biomeWeights` is climate geometry (~1.1 µs, far too slow for 576 000
  * screen pixels). So the coast shading — everything the eye reads as shape — is computed per
  * pixel, and the biome colour is taken from a lattice a few metres apart and interpolated,
- * which is finer than the climate zones themselves vary. While the view is still moving both
- * drop by a factor of two and the result is upscaled.
+ * which is finer than the climate zones themselves vary. The lattice is also capped at a fixed
+ * sample budget, so a zoomed-out full-screen atlas never asks for tens of thousands of climate
+ * samples: at 1× the samples sit ~30 m apart, still well inside the bands' transition widths.
+ * While the view is still moving nothing is recomputed at all: the last filled tile is drawn
+ * shifted and scaled under the new projection (magnified pixels for a moment, like any map),
+ * and a fresh coarse fill happens only once that tile no longer covers the view.
  */
 const TERRAIN = Object.freeze({
   fine: 1,
   coarse: 2,
   /** Metres between biome-colour samples; the climate bands are an order of magnitude wider. */
   latticeMetres: 4,
+  /**
+   * Upper bound on biome samples per settled fill (~1.5 µs each); the transient coarse fill
+   * gets a quarter of it, since its result is replaced as soon as the view settles.
+   */
+  latticeBudget: 12000,
   refineMs: 120,
+  /** A moving view reuses the last tile while it covers at least this much of the screen. */
+  reuseCover: 0.3,
 });
-let terrain: { key: string; canvas: HTMLCanvasElement } | null = null;
+let terrain: {
+  key: string;
+  canvas: HTMLCanvasElement;
+  w: number;
+  h: number;
+  scale: number;
+  center: { x: number; z: number };
+} | null = null;
 let movedAt = -Infinity;
 let refineTimer: ReturnType<typeof setTimeout> | null = null;
 const mapNow = () =>
@@ -188,12 +206,35 @@ function markMapMoved() {
 export function worldMapTerrainSample() {
   return mapNow() - movedAt < TERRAIN.refineMs ? TERRAIN.coarse : TERRAIN.fine;
 }
-function atlasTerrain(canvas, projection) {
+/**
+ * Paints the terrain for the projection: the cached tile when it matches, the last tile
+ * re-projected while the view is moving, otherwise a fresh fill at the sample the motion allows.
+ */
+function drawAtlasTerrain(ctx, canvas, projection) {
   const { scale, center } = projection,
     w = canvas.width,
     h = canvas.height,
     sample = worldMapTerrainSample();
   const key = `${w}x${h}|${scale.toFixed(4)}|${center.x.toFixed(2)},${center.z.toFixed(2)}|${sample}`;
+  if (terrain?.key !== key && sample === TERRAIN.coarse && terrain?.w === w && terrain.h === h) {
+    // The old tile covered a w × h screen rectangle at its own projection; place that rectangle
+    // under the new one and stretch it by the zoom ratio.
+    const k = scale / terrain.scale,
+      left = w / 2 + (terrain.center.x - center.x) * scale - (w / 2) * k,
+      top = h / 2 + (terrain.center.z - center.z) * scale - (h / 2) * k;
+    const coverX = Math.max(0, Math.min(w, left + w * k) - Math.max(0, left)),
+      coverY = Math.max(0, Math.min(h, top + h * k) - Math.max(0, top));
+    if ((coverX * coverY) / (w * h) >= TERRAIN.reuseCover) {
+      ctx.drawImage(terrain.canvas, left, top, w * k, h * k);
+      return;
+    }
+  }
+  ctx.drawImage(atlasTerrain(canvas, projection, sample, key), 0, 0, w, h);
+}
+function atlasTerrain(canvas, projection, sample: number, key: string) {
+  const { scale, center } = projection,
+    w = canvas.width,
+    h = canvas.height;
   if (terrain?.key === key) return terrain.canvas;
   const cw = Math.max(1, Math.ceil(w / sample)),
     ch = Math.max(1, Math.ceil(h / sample)),
@@ -207,8 +248,13 @@ function atlasTerrain(canvas, projection) {
     x: center.x + ((px + 0.5) * sample - w / 2) / scale,
     z: center.z + ((py + 0.5) * sample - h / 2) / scale,
   });
-  // The biome lattice, in filled pixels: never denser than 2 px, never coarser than 24.
-  const span = Math.max(2, Math.min(24, Math.round((TERRAIN.latticeMetres * scale) / sample)));
+  // The biome lattice, in filled pixels: a few metres apart, but never more samples than the
+  // budget allows, so the fill stays cheap however far the view is zoomed out.
+  const span = Math.max(
+    2,
+    Math.round((TERRAIN.latticeMetres * scale) / sample),
+    Math.ceil(Math.sqrt(((cw * ch) * sample * sample) / TERRAIN.latticeBudget)),
+  );
   const lw = Math.ceil(cw / span) + 1,
     lh = Math.ceil(ch / span) + 1,
     lattice = new Float32Array(lw * lh * 3),
@@ -256,7 +302,7 @@ function atlasTerrain(canvas, projection) {
     }
   }
   ctx.putImageData(pixels, 0, 0);
-  terrain = { key, canvas: tile };
+  terrain = { key, canvas: tile, w, h, scale, center: { x: center.x, z: center.z } };
   return tile;
 }
 /** After the view settles, ask the atlas for one more draw so the fine fill replaces the coarse. */
@@ -445,7 +491,7 @@ export function drawWorldMap(canvas, state, selfId, big = false) {
   ctx.fillRect(0, 0, w, h);
   if (big) {
     // Terrain for this viewport only, at screen resolution: zooming reveals detail, never pixels.
-    ctx.drawImage(atlasTerrain(canvas, { scale, center }), 0, 0, w, h);
+    drawAtlasTerrain(ctx, canvas, { scale, center });
     if (worldMapTerrainSample() === TERRAIN.coarse) scheduleRefine(canvas);
     withMapTransform(ctx, { scale, center }, w, h, () => strokeCoastline(ctx, scale, zoom));
   } else {

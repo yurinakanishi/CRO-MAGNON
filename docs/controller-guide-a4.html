@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<title>CRO-MAGNON コントローラー操作説明（A4 図解）</title>
+<style>
+  @page { size: A4 landscape; margin: 0; }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; background: #e9e6df; }
+  body { font-family: "Yu Gothic UI", "Yu Gothic", "Meiryo", "Hiragino Sans", "Noto Sans JP", sans-serif; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  .page { width: 297mm; height: 210mm; overflow: hidden; page-break-after: always; break-after: page; background: #fffdf7; }
+  .page:last-child { page-break-after: auto; break-after: auto; }
+  .page svg { width: 297mm; height: 210mm; display: block; }
+  @media screen { .page { margin: 8mm auto; box-shadow: 0 6px 24px rgba(0,0,0,.18); } }
+</style>
+</head>
+<body>
+<section class="page" id="ps4"></section>
+<section class="page" id="switch"></section>
+<section class="page" id="logitech"></section>
+
+<script>
+const W = 1414, H = 1000;
+const FONT = "'Yu Gothic UI','Yu Gothic','Meiryo',sans-serif";
+const esc = (s) => String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;');
+
+// Colours per role: sticks, face buttons, middle buttons, the unused centre button.
+const ROLE = {
+  lstick: '#2f7de1', rstick: '#0f9d8a', top: '#37a934', right: '#e5473f', left: '#d9469a',
+  bottom: '#7d4ee0', mapBtn: '#d99a00', menuBtn: '#f07a1a', centre: '#6b7280',
+};
+const LIGHT = {
+  lstick: '#eaf2fe', rstick: '#e6f7f4', top: '#ebf8e9', right: '#feecea', left: '#fde9f3',
+  bottom: '#f1ebfd', mapBtn: '#fff7dd', menuBtn: '#fff0e3', centre: '#f0f1f4',
+};
+
+// The controller is drawn in a 600x320 box and placed with this transform.
+const SCALE = 1.35, OX = 302, OY = 324;
+const P = (x, y) => [OX + x * SCALE, OY + y * SCALE];
+
+// ---------- controller drawings (600 x 320 local coordinates) ----------
+function stick(x, y, concave) {
+  return `<circle cx="${x}" cy="${y}" r="31" fill="#0b0d12"/>
+    <circle cx="${x}" cy="${y}" r="24" fill="#3d4352"/>
+    <circle cx="${x}" cy="${y}" r="18" fill="${concave ? '#2c3140' : '#525a6c'}"/>
+    <circle cx="${x}" cy="${y - 5}" r="9" fill="#70788a" opacity=".5"/>`;
+}
+function dpad(x, y) {
+  return `<path d="M${x - 9} ${y - 28} h18 v19 h19 v18 h-19 v19 h-18 v-19 h-19 v-18 h19 z" fill="#0b0d12" stroke="#4b5160" stroke-width="2" stroke-linejoin="round"/>
+    <path d="M${x} ${y - 22} l5 6 h-10 z M${x} ${y + 22} l5 -6 h-10 z M${x - 22} ${y} l6 -5 v10 z M${x + 22} ${y} l-6 -5 v10 z" fill="#6b7383"/>`;
+}
+function faceButton(x, y, label, color, style) {
+  const fill = style === 'grey' ? '#3a3f4a' : '#0b0d12';
+  const txt = style === 'grey' ? '#e8e8e8' : color;
+  return `<circle cx="${x}" cy="${y}" r="15" fill="${fill}" stroke="${style === 'grey' ? '#6b7383' : color}" stroke-width="2.5"/>
+    <text x="${x}" y="${y + 6}" text-anchor="middle" font-size="16" font-weight="800" fill="${txt}" font-family="Segoe UI Symbol,${FONT}">${esc(label)}</text>`;
+}
+const BODY_PS = `<path d="M148 66 Q300 44 452 66 Q522 74 540 118 L578 250 Q590 302 548 308 Q506 314 476 272 L440 226 Q370 236 300 236 Q230 236 160 226 L124 272 Q94 314 52 308 Q10 302 22 250 L60 118 Q78 74 148 66 Z"`;
+const BODY_XB = `<path d="M150 62 Q300 40 450 62 Q518 70 536 116 L572 240 Q584 296 542 304 Q500 310 472 268 L438 222 Q370 232 300 232 Q230 232 162 222 L128 268 Q100 310 58 304 Q16 296 28 240 L64 116 Q82 70 150 62 Z"`;
+
+const DRAW = {
+  ps4() {
+    const p = [];
+    p.push(`<rect x="118" y="46" width="70" height="20" rx="8" fill="#15181e"/><rect x="412" y="46" width="70" height="20" rx="8" fill="#15181e"/>`);
+    p.push(`${BODY_PS} fill="#1c1f26"/>`);
+    p.push(`<path d="M300 58 Q430 58 468 106 L442 214 Q300 224 158 214 L132 106 Q170 58 300 58 Z" fill="#272b34"/>`);
+    p.push(`<rect x="248" y="60" width="104" height="7" rx="3" fill="#3b8bff"/>`); // light bar
+    p.push(`<rect x="254" y="99" width="92" height="58" rx="8" fill="#0b0d12" stroke="#5a6272" stroke-width="1.5"/><line x1="300" y1="103" x2="300" y2="153" stroke="#2c3140" stroke-width="1.5"/>`);
+    p.push(`<rect x="200" y="97" width="30" height="13" rx="6" fill="#0b0d12" stroke="#6b7383" stroke-width="1.5"/><text x="215" y="124" text-anchor="middle" font-size="9" font-weight="700" fill="#cfd4dc" font-family="${FONT}">SHARE</text>`);
+    p.push(`<rect x="370" y="97" width="30" height="13" rx="6" fill="#0b0d12" stroke="#6b7383" stroke-width="1.5"/><text x="385" y="124" text-anchor="middle" font-size="9" font-weight="700" fill="#cfd4dc" font-family="${FONT}">OPTIONS</text>`);
+    p.push(`<circle cx="300" cy="200" r="9" fill="#0b0d12" stroke="#6b7383" stroke-width="1.5"/><text x="300" y="203.5" text-anchor="middle" font-size="7" font-weight="700" fill="#cfd4dc" font-family="${FONT}">PS</text>`);
+    p.push(dpad(140, 140));
+    p.push(faceButton(460, 106, '△', '#3cb371'), faceButton(494, 140, '○', '#ef5350'), faceButton(426, 140, '□', '#e87bb0'), faceButton(460, 174, '×', '#8ea1e0'));
+    p.push(stick(222, 208, false), stick(378, 208, false));
+    return p.join('');
+  },
+  switch() {
+    const p = [];
+    p.push(`<rect x="120" y="42" width="70" height="22" rx="9" fill="#1a1a1a"/><rect x="410" y="42" width="70" height="22" rx="9" fill="#1a1a1a"/>`);
+    p.push(`${BODY_XB} fill="#262626"/>`);
+    p.push(`<path d="M300 54 Q430 54 466 104 L440 212 Q300 222 160 212 L134 104 Q170 54 300 54 Z" fill="#313131"/>`);
+    p.push(`<circle cx="244" cy="118" r="10" fill="#0b0d12" stroke="#6b7383" stroke-width="1.5"/><line x1="238" y1="118" x2="250" y2="118" stroke="#eee" stroke-width="2.5"/>`);
+    p.push(`<circle cx="356" cy="118" r="10" fill="#0b0d12" stroke="#6b7383" stroke-width="1.5"/><line x1="350" y1="118" x2="362" y2="118" stroke="#eee" stroke-width="2.5"/><line x1="356" y1="112" x2="356" y2="124" stroke="#eee" stroke-width="2.5"/>`);
+    p.push(`<circle cx="336" cy="178" r="12" fill="#0b0d12" stroke="#6b7383" stroke-width="1.5"/><path d="M330 180 l6 -6 l6 6 v5 h-12 z" fill="none" stroke="#eee" stroke-width="1.6"/>`);
+    p.push(`<rect x="254" y="168" width="20" height="20" rx="4" fill="#0b0d12" stroke="#6b7383" stroke-width="1.5"/><circle cx="264" cy="178" r="4" fill="none" stroke="#eee" stroke-width="1.5"/>`);
+    p.push(stick(140, 140, true), stick(378, 208, true));
+    p.push(dpad(222, 208));
+    p.push(faceButton(460, 106, 'X', '#8c8c8c', 'grey'), faceButton(494, 140, 'A', '#8c8c8c', 'grey'), faceButton(426, 140, 'Y', '#8c8c8c', 'grey'), faceButton(460, 174, 'B', '#8c8c8c', 'grey'));
+    return p.join('');
+  },
+  logitech() {
+    const p = [];
+    p.push(`<rect x="118" y="46" width="70" height="20" rx="8" fill="#1a2238"/><rect x="412" y="46" width="70" height="20" rx="8" fill="#1a2238"/>`);
+    p.push(`${BODY_PS} fill="#22304d"/>`);
+    p.push(`<path d="M300 58 Q430 58 468 106 L442 214 Q300 224 158 214 L132 106 Q170 58 300 58 Z" fill="#2e3f63"/>`);
+    p.push(`<rect x="226" y="132" width="34" height="14" rx="7" fill="#0b0d12" stroke="#6b7383" stroke-width="1.5"/><text x="243" y="161" text-anchor="middle" font-size="9" font-weight="700" fill="#dfe4ee" font-family="${FONT}">BACK</text>`);
+    p.push(`<rect x="340" y="132" width="34" height="14" rx="7" fill="#0b0d12" stroke="#6b7383" stroke-width="1.5"/><text x="357" y="161" text-anchor="middle" font-size="9" font-weight="700" fill="#dfe4ee" font-family="${FONT}">START</text>`);
+    p.push(`<circle cx="300" cy="136" r="18" fill="#0b0d12" stroke="#7e8aa3" stroke-width="2"/><text x="300" y="141" text-anchor="middle" font-size="11" font-weight="800" fill="#dfe4ee" font-family="${FONT}">Logi</text>`);
+    p.push(`<circle cx="300" cy="182" r="7" fill="#0b0d12" stroke="#6b7383" stroke-width="1.5"/><circle cx="300" cy="196" r="2" fill="#555"/><text x="300" y="212" text-anchor="middle" font-size="8" font-weight="700" fill="#dfe4ee" font-family="${FONT}">MODE</text>`);
+    p.push(dpad(140, 140));
+    p.push(faceButton(460, 106, 'Y', '#f2c11f'), faceButton(494, 140, 'B', '#e5473f'), faceButton(426, 140, 'X', '#2f7de1'), faceButton(460, 174, 'A', '#37a934'));
+    p.push(stick(222, 208, false), stick(378, 208, false));
+    return p.join('');
+  },
+};
+
+// ---------- callouts: box + arrow to the button ----------
+// target: local (x, y, r) of the button. box: [x, y, w, h] on the page.
+function callout(role, key, title, notes, target, box, keyFont = 40) {
+  const color = ROLE[role], light = LIGHT[role];
+  const [bx, by, bw, bh] = box;
+  const [tx, ty] = P(target[0], target[1]);
+  const tr = target[2] * SCALE + 6;
+  const cx = bx + bw / 2, cy = by + bh / 2;
+  // start: where the centre->target line leaves the box
+  let dx = tx - cx, dy = ty - cy;
+  const sx = Math.abs(dx) * bh > Math.abs(dy) * bw ? (bw / 2) / Math.abs(dx) : (bh / 2) / Math.abs(dy);
+  const x0 = cx + dx * sx, y0 = cy + dy * sx;
+  const len = Math.hypot(tx - x0, ty - y0), ux = (tx - x0) / len, uy = (ty - y0) / len;
+  const ex = tx - ux * tr, ey = ty - uy * tr; // arrow tip on the button's rim
+  const hl = 20, hw = 16;
+  const lx = ex - ux * hl, ly = ey - uy * hl;
+  const head = `${ex},${ey} ${lx - uy * hw / 2},${ly + ux * hw / 2} ${lx + uy * hw / 2},${ly - ux * hw / 2}`;
+  const isWord = key.length > 1;
+  const kf = isWord ? 26 : keyFont;
+  const keyW = isWord ? [...key].reduce((w, ch) => w + kf * (ch.charCodeAt(0) > 0xff ? 1.0 : 0.68), 0) : kf * 1.05;
+  const noteLines = notes.map((n, i) => `<text x="${bx + 18}" y="${by + 92 + i * 22}" font-size="16" fill="#3a4050" font-family="${FONT}">${esc(n)}</text>`).join('');
+  return `
+    <line x1="${x0}" y1="${y0}" x2="${lx}" y2="${ly}" stroke="#fff" stroke-width="11" stroke-linecap="round"/>
+    <line x1="${x0}" y1="${y0}" x2="${lx}" y2="${ly}" stroke="${color}" stroke-width="5" stroke-linecap="round"/>
+    <polygon points="${head}" fill="${color}" stroke="#fff" stroke-width="2.5" stroke-linejoin="round"/>
+    <circle cx="${x0}" cy="${y0}" r="7" fill="${color}" stroke="#fff" stroke-width="2"/>
+    <rect x="${bx}" y="${by}" width="${bw}" height="${bh}" rx="16" fill="${light}" stroke="${color}" stroke-width="4"/>
+    <text x="${bx + 18}" y="${by + 54}" font-size="${kf}" font-weight="900" fill="${color}" font-family="Segoe UI Symbol,${FONT}">${esc(key)}</text>
+    <text x="${bx + 18 + keyW + 10}" y="${by + 54}" font-size="24" font-weight="800" fill="#1f2430" font-family="${FONT}">${esc(title)}</text>
+    ${noteLines}`;
+}
+
+// Standard positions (top row / right column / bottom row) shared by all three pages.
+const BOX = {
+  topA: [40, 118, 300, 140], topB: [372, 118, 300, 140], topC: [704, 118, 300, 140], topD: [1036, 118, 338, 140],
+  rightA: [1090, 420, 284, 140], rightB: [1090, 600, 284, 140],
+  botA: [40, 820, 340, 140], botB: [420, 820, 330, 140], botC: [800, 820, 380, 140],
+};
+const FACE = { top: [460, 106, 15], right: [494, 140, 15], left: [426, 140, 15], bottom: [460, 174, 15] };
+const STICK_PS = { l: [222, 208, 31], r: [378, 208, 31] };
+
+const PAGES = {
+  ps4: {
+    title: 'PS4 コントローラー（DUALSHOCK 4）', grad: ['#1d3fa0', '#2f7de1'], draw: DRAW.ps4,
+    items: [
+      ['mapBtn', 'SHARE', '地図をひらく', ['もう一度おすと とじる'], [215, 103, 8], BOX.topA],
+      ['centre', 'タッチパッド', 'おしこむと 地図', ['したの小さな PS ボタンは', 'おさないでね'], [300, 128, 30], BOX.topB],
+      ['menuBtn', 'OPTIONS', 'メニュー', ['たべものを つかう', 'キャラクターを かえる'], [385, 103, 8], BOX.topC],
+      ['top', '△', 'ジャンプ', ['あるきながらでも とべる'], FACE.top, BOX.topD],
+      ['right', '○', 'しらべる・とる', ['木・石・たき火・なかま・肉の', 'そばで。メニューでは「けってい」'], FACE.right, BOX.rightA],
+      ['bottom', '×', 'のる・おりる', ['マンモス・ふね・大ざるのそば。', '524をなでる。メニューでは「もどる」'], FACE.bottom, BOX.rightB],
+      ['lstick', '左スティック', 'あるく・はしる', ['あさくたおす ＝ あるく', 'ふかくたおす ＝ はしる'], STICK_PS.l, BOX.botA],
+      ['rstick', '右スティック', 'みる（カメラ）', ['おしこむと 視点をもどす'], STICK_PS.r, BOX.botB],
+      ['left', '□', 'こうげき', ['あいての方をむいて おす。', '地図では ピンを なかまに共有'], FACE.left, BOX.botC],
+    ],
+  },
+  switch: {
+    title: 'Nintendo Switch プロコントローラー', grad: ['#c8102e', '#f0433f'], draw: DRAW.switch,
+    items: [
+      ['mapBtn', '−', '地図をひらく', ['もう一度おすと とじる'], [244, 118, 10], BOX.topA],
+      ['centre', 'HOME', 'つかいません', ['HOME と 撮影ボタン（□）は', 'おさないでね'], [336, 178, 12], BOX.topB],
+      ['menuBtn', '＋', 'メニュー', ['たべものを つかう', 'キャラクターを かえる'], [356, 118, 10], BOX.topC],
+      ['top', 'X', 'ジャンプ', ['あるきながらでも とべる'], FACE.top, BOX.topD],
+      ['right', 'A', 'しらべる・とる', ['木・石・たき火・なかま・肉の', 'そばで。メニューでは「けってい」'], FACE.right, BOX.rightA],
+      ['bottom', 'B', 'のる・おりる', ['マンモス・ふね・大ざるのそば。', '524をなでる。メニューでは「もどる」'], FACE.bottom, BOX.rightB],
+      ['lstick', '左スティック', 'あるく・はしる', ['あさくたおす ＝ あるく', 'ふかくたおす ＝ はしる'], [140, 140, 31], BOX.botA],
+      ['rstick', '右スティック', 'みる（カメラ）', ['おしこむと 視点をもどす'], [378, 208, 31], BOX.botB],
+      ['left', 'Y', 'こうげき', ['あいての方をむいて おす。', '地図では ピンを なかまに共有'], FACE.left, BOX.botC],
+    ],
+  },
+  logitech: {
+    title: 'Logicool ゲームパッド（F310 / F710）', grad: ['#0f766e', '#22b8a0'], draw: DRAW.logitech,
+    items: [
+      ['mapBtn', 'BACK', '地図をひらく', ['もう一度おすと とじる'], [243, 139, 9], BOX.topA],
+      ['centre', 'ロゴボタン', 'つかいません', ['ロゴと MODE は おさないでね', '（うらのスイッチは「X」がわ）'], [300, 136, 18], BOX.topB],
+      ['menuBtn', 'START', 'メニュー', ['たべものを つかう', 'キャラクターを かえる'], [357, 139, 9], BOX.topC],
+      ['top', 'Y', 'ジャンプ', ['あるきながらでも とべる'], FACE.top, BOX.topD],
+      ['right', 'B', 'しらべる・とる', ['木・石・たき火・なかま・肉の', 'そばで。メニューでは「けってい」'], FACE.right, BOX.rightA],
+      ['bottom', 'A', 'のる・おりる', ['マンモス・ふね・大ざるのそば。', '524をなでる。メニューでは「もどる」'], FACE.bottom, BOX.rightB],
+      ['lstick', '左スティック', 'あるく・はしる', ['あさくたおす ＝ あるく', 'ふかくたおす ＝ はしる'], STICK_PS.l, BOX.botA],
+      ['rstick', '右スティック', 'みる（カメラ）', ['おしこむと 視点をもどす'], STICK_PS.r, BOX.botB],
+      ['left', 'X', 'こうげき', ['あいての方をむいて おす。', '地図では ピンを なかまに共有'], FACE.left, BOX.botC],
+    ],
+  },
+};
+
+function page(id) {
+  const pg = PAGES[id];
+  const parts = [];
+  parts.push(`<defs><linearGradient id="g-${id}" x1="0" x2="1"><stop offset="0" stop-color="${pg.grad[0]}"/><stop offset="1" stop-color="${pg.grad[1]}"/></linearGradient></defs>`);
+  parts.push(`<rect width="${W}" height="${H}" fill="#fffdf7"/>`);
+  parts.push(`<rect x="40" y="26" width="${W - 80}" height="70" rx="18" fill="url(#g-${id})"/>`);
+  parts.push(`<text x="66" y="74" font-size="34" font-weight="900" fill="#fff" font-family="${FONT}">そうさ せつめい　${esc(pg.title)}</text>`);
+  parts.push(`<text x="${W - 66}" y="72" text-anchor="end" font-size="18" font-weight="700" fill="#fff" opacity=".9" font-family="${FONT}">CRO-MAGNON</text>`);
+  parts.push(`<g transform="translate(${OX} ${OY}) scale(${SCALE})">${pg.draw()}</g>`);
+  for (const it of pg.items) parts.push(callout(...it));
+  parts.push(`<text x="${W / 2}" y="${H - 14}" text-anchor="middle" font-size="13" fill="#9aa0ad" font-family="${FONT}">L・R ボタンと 十字キーは つかわなくても あそべます</text>`);
+  return `<svg viewBox="0 0 ${W} ${H}" xmlns="http://www.w3.org/2000/svg">${parts.join('')}</svg>`;
+}
+for (const id of Object.keys(PAGES)) document.getElementById(id).innerHTML = page(id);
+</script>
+</body>
+</html>
