@@ -123,12 +123,17 @@ const card = ({ key, title, note }: HelpCard) =>
   `<div class="help-card"><kbd>${key}</kbd><strong>${title}</strong><p>${note}</p></div>`;
 
 /** Tabs plus both device panels; `device` chooses the tab shown first. */
-export function helpTabsMarkup(device: HelpDevice, extra: readonly HelpCard[] = []): string {
+export function helpTabsMarkup(
+  device: HelpDevice,
+  extra: readonly HelpCard[] = [],
+  controllerOnly = false,
+): string {
+  const selected = controllerOnly ? 'pad' : device;
   const tab = (id: HelpDevice, label: string) =>
-    `<button type="button" class="help-tab" role="tab" data-help-tab="${id}" aria-selected="${device === id}" aria-controls="help-panel-${id}">${label}</button>`;
+    `<button type="button" class="help-tab" role="tab" data-help-tab="${id}" aria-selected="${selected === id}" aria-controls="help-panel-${id}">${label}</button>`;
   const panel = (id: HelpDevice, cards: readonly HelpCard[], head = '') =>
-    `<div class="help-panel" id="help-panel-${id}" role="tabpanel" data-help-panel="${id}" ${device === id ? '' : 'hidden'}>${head}<div class="help-grid">${[...cards, ...extra].map(card).join('')}</div></div>`;
-  return `<div class="help-tabs" role="tablist" aria-label="操作方法の切り替え">${tab('pc', 'PC（キーボード・マウス）')}${tab('pad', `コントローラー（${controllerLabels().name}）`)}</div>${panel('pc', PC_HELP)}${panel(
+    `<div class="help-panel" id="help-panel-${id}" role="tabpanel" data-help-panel="${id}" ${selected === id ? '' : 'hidden'}>${head}<div class="help-grid">${[...cards, ...extra].map(card).join('')}</div></div>`;
+  return `<div class="help-tabs" role="tablist" aria-label="操作方法の切り替え">${controllerOnly ? '' : tab('pc', 'PC（キーボード・マウス）')}${tab('pad', `コントローラー（${controllerLabels().name}）`)}</div>${controllerOnly ? '' : panel('pc', PC_HELP)}${panel(
     'pad',
     padHelp(),
     '<p class="gamepad-connection help-status" role="status"></p>',

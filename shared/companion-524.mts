@@ -21,11 +21,15 @@ export const COMPANION_524 = Object.freeze({
   hoverPeriodMs: 4000,
   petRange: 2.6,
   petCooldownMs: 1200,
+  petApproachMs: 3000,
+  petStrokeMs: 1100,
+  spinMs: 1000,
   happyMs: 1800,
   hitMs: 650,
   impulse: 5.2,
   damping: 7,
   followDistance: 2.1,
+  followAcceleration: 6,
 });
 
 type PetPlayer = Pick<
@@ -33,6 +37,8 @@ type PetPlayer = Pick<
   | 'id'
   | 'x'
   | 'z'
+  | 'facing'
+  | 'radius'
   | 'downedUntil'
   | 'mountId'
   | 'boatId'
@@ -69,6 +75,10 @@ export function createCompanion524(collision: CollisionWorld): Companion524 {
     followPlayerId: null,
     petSequence: 0,
     petAt: 0,
+    petPlayerId: null,
+    petContactAt: 0,
+    petHeight: COMPANION_524.hoverHeight,
+    petFacing: 0,
     hitSequence: 0,
     hitAt: 0,
     hitDirectionX: 0,
@@ -79,6 +89,11 @@ export function createCompanion524(collision: CollisionWorld): Companion524 {
     goal: null,
     nextPathAt: 0,
     trail: [point(home)],
+    followSpeed: 0,
+    ownerPosition: null,
+    petOrigin: null,
+    petGoal: null,
+    petCharacter: '',
   };
 }
 
@@ -95,6 +110,10 @@ export function companion524Snapshot(c?: Companion524): Companion524Snapshot | u
     followPlayerId,
     petSequence,
     petAt,
+    petPlayerId,
+    petContactAt,
+    petHeight,
+    petFacing,
     hitSequence,
     hitAt,
     hitDirectionX,
@@ -110,6 +129,10 @@ export function companion524Snapshot(c?: Companion524): Companion524Snapshot | u
     followPlayerId,
     petSequence,
     petAt,
+    petPlayerId,
+    petContactAt,
+    petHeight,
+    petFacing,
     hitSequence,
     hitAt,
     hitDirectionX,
@@ -148,6 +171,16 @@ export function returnCompanion524(c: Companion524) {
   c.path = [];
   c.goal = null;
   c.nextPathAt = 0;
+  c.followSpeed = 0;
+  c.ownerPosition = null;
+  cancelPet(c);
+}
+
+function cancelPet(c: Companion524) {
+  c.petPlayerId = null;
+  c.petContactAt = 0;
+  c.petOrigin = null;
+  c.petGoal = null;
 }
 
 export function handleCompanion524Action(
@@ -167,21 +200,51 @@ export function handleCompanion524Action(
     action !== 'pet524' ||
     !nearCompanion524(player, c, room.collision, now) ||
     (c.petSequence > 0 && now - c.petAt < COMPANION_524.petCooldownMs) ||
+    (c.petPlayerId &&
+      now <
+        (c.petContactAt || c.petAt + COMPANION_524.petApproachMs) +
+          COMPANION_524.petStrokeMs +
+          COMPANION_524.happyMs) ||
     (c.hitSequence > 0 && now - c.hitAt < 350)
   )
     return false;
+  // 524 comes to the offered hand. The player's feet never move automatically.
+  const facing = Math.atan2(c.x - player.x, c.z - player.z);
+  const [reach, side, height] =
+    player.species === 'bear'
+      ? [0.25, 0.1, 0.35]
+      : player.species === 'ape'
+        ? [0.7, 0.32, 1.02]
+        : [0.52, 0.12, COMPANION_524.hoverHeight];
+  const goal = {
+    x: player.x + Math.sin(facing) * reach - Math.cos(facing) * side,
+    z: player.z + Math.cos(facing) * reach + Math.sin(facing) * side,
+  };
+  if (!room.collision.segmentFree(c, goal, c.radius)) return false;
   c.petAt = now;
   c.petSequence++;
+  c.petPlayerId = player.id;
+  c.petContactAt = 0;
+  c.petOrigin = point(player);
+  c.petGoal = goal;
+  c.petHeight = height;
+  c.petFacing = facing;
+  c.petCharacter = `${player.species}/${player.gender}`;
+  player.facing = facing;
   c.mode = 'following';
   c.followPlayerId = player.id;
   c.facing = Math.atan2(player.x - c.x, player.z - c.z);
   c.path = [];
   c.nextPathAt = 0;
+  c.followSpeed = 0;
+  c.ownerPosition = point(player);
   return true;
 }
 
 /** A real, repeatable impact, without health, loot, retaliation or a death state. */
 export function hitCompanion524(c: Companion524, dx: number, dz: number, now: number) {
+  cancelPet(c);
+  c.followSpeed = 0;
   const length = Math.hypot(dx, dz) || 1;
   c.hitDirectionX = dx / length;
   c.hitDirectionZ = dz / length;
@@ -234,20 +297,75 @@ export function updateCompanion524(room: CompanionRoom, dt: number, now: number)
   }
   if (c.hitSequence > 0 && now - c.hitAt < COMPANION_524.hitMs) return;
   if (c.mode === 'idle') return;
-  if (c.mode === 'following' && c.petSequence > 0 && now - c.petAt < 750) return;
+
+  if (c.petPlayerId && c.petOrigin && c.petGoal) {
+    const stroking = !c.petContactAt || now < c.petContactAt + COMPANION_524.petStrokeMs;
+    if (
+      stroking &&
+      (!owner ||
+        distance(owner, c.petOrigin) > 0.25 ||
+        `${owner.species}/${owner.gender}` !== c.petCharacter ||
+        !nearCompanion524(owner, c, room.collision, now) ||
+        (!c.petContactAt && now - c.petAt > COMPANION_524.petApproachMs))
+    ) {
+      cancelPet(c);
+    } else if (!c.petContactAt) {
+      const length = distance(c, c.petGoal);
+      const amount = Math.min(length, 1.6 * dt);
+      if (length > 0.001)
+        Object.assign(
+          c,
+          room.collision.move(
+            c,
+            ((c.petGoal.x - c.x) / length) * amount,
+            ((c.petGoal.z - c.z) / length) * amount,
+            c.radius,
+          ),
+        );
+      rememberRoute(c);
+      if (distance(c, c.petGoal) < 0.015) c.petContactAt = now;
+      return;
+    } else if (now < c.petContactAt + COMPANION_524.petStrokeMs + COMPANION_524.happyMs) {
+      return;
+    }
+  }
 
   let goal: Point, speed: number;
   if (c.mode === 'following' && owner) {
     const gap = COMPANION_524.followDistance + Math.max(0, owner.radius - 0.32);
-    goal = {
-      x: owner.x - Math.sin(owner.facing) * gap,
-      z: owner.z - Math.cos(owner.facing) * gap,
-    };
-    speed = Math.min(11, Math.max(2.4, owner.speed + 1.4, distance(c, goal) * 1.8));
-    if (distance(c, goal) < 0.35) {
+    const separation = distance(owner, c);
+    const radialSpeed = c.ownerPosition
+      ? Math.max(
+          0,
+          Math.min(
+            owner.speed,
+            ((owner.x - c.ownerPosition.x) * (owner.x - c.x) +
+              (owner.z - c.ownerPosition.z) * (owner.z - c.z)) /
+              (dt * Math.max(0.001, separation)),
+          ),
+        )
+      : 0;
+    c.ownerPosition = point(owner);
+    // Keep a comfortable distance from the person, independent of their gaze.
+    // Walking toward 524 or turning to face it must never make it flee behind us.
+    if (separation <= gap + 0.06) {
       c.path = [];
+      c.followSpeed = 0;
       return;
     }
+    goal = {
+      x: owner.x + ((c.x - owner.x) / separation) * gap,
+      z: owner.z + ((c.z - owner.z) / separation) * gap,
+    };
+    const desired = Math.min(
+      Math.max(2.8, owner.speed + 0.6),
+      radialSpeed + (separation - gap) * 2.4,
+    );
+    c.followSpeed += Math.max(
+      -COMPANION_524.followAcceleration * dt,
+      Math.min(COMPANION_524.followAcceleration * dt, desired - c.followSpeed),
+    );
+    speed = c.followSpeed;
   } else {
     // Gathered resources can regrow after we passed them. Discard a newly
     // obstructed breadcrumb so pathfinding can route around it toward home.
@@ -278,7 +396,10 @@ export function updateCompanion524(room: CompanionRoom, dt: number, now: number)
   }
   while (c.path.length && distance(c, c.path[0]) < 0.04) c.path.shift();
   const target = c.path[0];
-  if (!target) return;
+  if (!target) {
+    c.followSpeed = 0;
+    return;
+  }
   const length = distance(c, target),
     amount = Math.min(length, speed * dt);
   const dx = ((target.x - c.x) / length) * amount;
@@ -288,6 +409,7 @@ export function updateCompanion524(room: CompanionRoom, dt: number, now: number)
     c.path = [];
     c.nextPathAt = Math.max(c.nextPathAt, now + 300);
   } else c.facing = Math.atan2(next.x - c.x, next.z - c.z);
+  if (c.mode === 'following') c.followSpeed = Math.min(c.followSpeed, distance(c, next) / dt);
   Object.assign(c, next);
   if (c.mode === 'following') rememberRoute(c);
 }

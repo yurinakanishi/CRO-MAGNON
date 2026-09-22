@@ -32,7 +32,7 @@ export const CAMP_SPAWN = site(
 );
 export const SPAWN_SITES: readonly SpawnSite[] = Object.freeze([
   CAMP_SPAWN,
-  site('mammoth', 'マンモスの草原', '背中に乗れる大きなマンモス', 33, 32, HUNTING_GROUNDS[0]),
+  site('mammoth', 'マンモスの近く', '背中に乗れる大きなマンモス', 33, 32, HUNTING_GROUNDS[0]),
   site('sabertooth', '剣牙の雪原', '飛びかかってくる剣牙の大虎', 77, -4, SABERTOOTH_GROUND),
   site('behemoth', '紫尾の沼地', '毒を吐く紫尾の巨獣', 79, 62, BEHEMOTH_GROUND),
   site(

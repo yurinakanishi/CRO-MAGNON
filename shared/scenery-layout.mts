@@ -75,7 +75,11 @@ const GRASS_KEEP = 0.6,
 // ground colour match in src/paleo-materials.ts weights the two blade greens by it.
 export const GROUNDCOVER_TUFT_SHARE = GRASS_TUFT / GRASS_KEEP;
 const SCATTER_RESOURCES = [
-  ...INITIAL_RESOURCES.filter((r) => !r.id.startsWith('gulf-')),
+  // Retain the old scatter exclusion when moving this harvest node. Otherwise
+  // a previously rejected boulder appears directly on the mammoth arrival.
+  ...INITIAL_RESOURCES.filter((r) => !r.id.startsWith('gulf-')).map((r) =>
+    r.id === 'wood-7' ? { ...r, x: 32, z: 32 } : r,
+  ),
   ...LEGACY_RESOURCE_POINTS,
 ];
 const scatterBiomeAt = (x, z) => biomeById(legacySceneryBiome(x, z));
@@ -329,6 +333,12 @@ function layout() {
         HUNTING_GROUNDS.some((g) => Math.hypot(items[i].x - g.x, items[i].z - g.z) < g.radius + 3.5)
       )
         items.splice(i, 1);
+  // The surviving pine beside the mammoth arrival fills the camera on landing.
+  // Keep its size and scatter identity, but place it with the trees beyond the clearing.
+  const arrivalPine = trees.find(
+    (item) => Math.hypot(item.x - 36.5113837668, item.z - 32.6710389298) < 0.01,
+  );
+  if (arrivalPine) Object.assign(arrivalPine, { x: 43, z: 37 });
   return Object.fromEntries(
     Object.entries({ trees, grass, rocks, ridges, tents, props, fires, animals }).map(
       ([key, items]) => [

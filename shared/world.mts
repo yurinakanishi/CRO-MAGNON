@@ -49,7 +49,8 @@ const nodes: [ResourceKind, number, number, number][] = [
   ['wood', 30, 54, 7],
   ['wood', 26, 60, 6],
   ['wood', 25, 42, 8],
-  ['wood', 32, 32, 6],
+  // Keep the mammoth arrival view clear; the same wood node sits farther behind it.
+  ['wood', 35, 43, 6],
   ['wood', 39, 23, 7],
   ['wood', 57, 24, 7],
   ['wood', 77, 29, 6],

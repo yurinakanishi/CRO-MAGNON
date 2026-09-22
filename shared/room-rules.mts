@@ -4,6 +4,8 @@
 //
 // A visitor has a minute or two: they always run (and faster), fell creatures
 // in a few blows, cannot be downed, and may strike any rank of the crow keep.
+export const EXHIBITION_PLAYER_LIMIT = 2;
+
 export type RoomRules = {
   recoveryEnergy: number;
   respawnMs: number | null;

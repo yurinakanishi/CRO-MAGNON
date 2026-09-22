@@ -63,6 +63,7 @@ async function shot(page, label) {
 }
 async function help(page, layout, label) {
   await page.locator('#title-howto').click();
+  assert.equal(await page.locator('[data-help-tab="pc"]').count(), 0);
   await page.locator('[data-help-tab="pad"]').click();
   const text = await page.locator('#help-panel-pad').innerText();
   if (layout === 'switch-pro') {
@@ -129,6 +130,13 @@ try {
       .locator('#world[data-world-asset="ready"][data-character-asset="ready"]')
       .waitFor({ timeout: 120000 });
     assert.match(await page.locator('#connection-label').innerText(), /LAN: Connected/);
+    assert.deepEqual(await page.locator('#prompt-bar span').allTextContents(), [
+      `${layout === 'ps4' ? 'SHARE / タッチパッド' : '−'}地図`,
+      `${menu}メニュー`,
+    ]);
+    assert.equal(await page.locator('.map-key').count(), 0);
+    assert.equal(await page.locator('#chat-toggle kbd').count(), 0);
+    pass(`${layout}: controller-only HUD before gameplay input`);
     await tap(page, 9);
     await page.locator('.pause-menu').waitFor();
     assert.ok(
@@ -140,14 +148,19 @@ try {
       await page
         .locator('[data-pause-tab]')
         .evaluateAll((tabs) => tabs.map((tab) => tab.dataset.pauseTab)),
-      ['inventory', 'character', 'warp'],
+      ['warp', 'character', 'inventory'],
     );
     await page.locator('[data-pause-tab="warp"]').click();
     assert.equal(await page.locator('[data-warp-spawn]').count(), 6);
     await shot(page, `${layout}-pause-warp`);
     await tap(page, 0);
     await page.locator('#modal').waitFor({ state: 'hidden' });
-    assert.equal(await page.locator('#prompt-bar kbd').innerText(), menu);
+    await page.keyboard.press('Escape');
+    await page.locator('.pause-menu').waitFor();
+    assert.match(await page.locator('.pause-hint').innerText(), new RegExp(menu));
+    await page.keyboard.press('Escape');
+    await page.locator('#modal').waitFor({ state: 'hidden' });
+    assert.equal(await page.locator('#prompt-bar kbd').last().innerText(), menu);
     pass(`${layout}: right button selects character and spawn; menu hints agree`);
     await tap(page, 8);
     await page.locator('.atlas').waitFor();
@@ -199,7 +212,7 @@ try {
   await help(switchPage, 'ps4', 'pc2-changed-to-ps4-without-restart');
   assert.equal(game.rooms.get('LABELS-QA'), room);
   assert.equal(room.players.get(pc1Player.id), pc1Player);
-  assert.equal(await pages[0].locator('#prompt-bar kbd').innerText(), 'OPTIONS');
+  assert.equal(await pages[0].locator('#prompt-bar kbd').last().innerText(), 'OPTIONS');
   pass('PC2 label override appears on browser reload; PC1 player and shared world persist');
   assert.deepEqual(errors, []);
 } finally {

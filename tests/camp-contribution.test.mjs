@@ -49,6 +49,7 @@ function fixture() {
   const hint = () =>
     vm.runInNewContext(`${nearbySource}\nnearby()`, {
       state: core.snapshot(room, true),
+      fixedIdentity: false,
       player: () => player,
       renderer: { collision: room.collision, resourceVisible: () => true, serverNow: () => now },
       campContribution,

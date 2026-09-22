@@ -25,7 +25,7 @@ export const mapArrowSvg = () =>
  * Full-bleed atlas: one canvas, a free pointer, a small destination card at the bottom left
  * and the zoom controls at the bottom right. No toolbar, no list.
  */
-export function mapScreen(icon) {
+export function mapScreen(icon, controllerOnly = false) {
   return `<section class="atlas" aria-label="世界地図とワープ">
     <div class="warp-map-wrap">
       <canvas id="big-map" width="960" height="600" class="big-map earth-map" aria-label="世界地図。ポインタを焚き火に合わせて決定するとワープ先になります。"></canvas>
@@ -40,7 +40,7 @@ export function mapScreen(icon) {
           <h3 id="map-destination" aria-live="polite">${mapEmptyPrompt()}</h3>
           <p id="map-selection"></p>
         </div>
-        <button id="map-warp" class="button button-accent" disabled>${controllerLabels().right} ワープ<kbd>Enter</kbd></button>
+        <button id="map-warp" class="button button-accent" disabled>${controllerLabels().right} ワープ${controllerOnly ? '' : '<kbd>Enter</kbd>'}</button>
         <small id="map-warp-status" role="status"></small>
         <div class="map-pin-actions">
           <button id="map-pin-send" class="button button-outline" disabled>${controllerLabels().left} ここへ行こう</button>

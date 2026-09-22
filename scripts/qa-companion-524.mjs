@@ -10,7 +10,7 @@ const { chromium } = await import(
   process.env.PLAYWRIGHT_MODULE ||
     'file:///C:/Users/yurin/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/node_modules/playwright/index.mjs'
 );
-const out = process.env.QA_524_OUT || 'output/playwright/companion-524/midpoint-r01/game';
+const out = process.env.QA_524_OUT || 'output/playwright/companion-524/natural-follow-r01/game';
 await mkdir(out, { recursive: true });
 const game = createGameServer({ port: 0, host: '127.0.0.1' });
 const { port } = await game.listen();
@@ -224,10 +224,29 @@ try {
       .map((m) => m.action),
     ['pet524'],
   );
+  await until(() => c.petContactAt > 0, '524 approaches the offered hand');
+  await sleep(250);
+  await shot(a, '03a-hand-stroking');
+  const touching = await a.page.evaluate(() => {
+    const r = qa524,
+      p = r.players.get(r.selfId),
+      pose = p.actor.pettingPose;
+    return {
+      weight: pose.weight,
+      gap: pose.contact.distanceTo(pose.requested),
+      weapon: !!p.weapon?.visible,
+    };
+  });
+  assert.ok(touching.weight > 0.99 && touching.gap < 0.04, JSON.stringify(touching));
+  assert.equal(touching.weapon, false);
+  await until(
+    () => a.page.evaluate(() => qa524.companion524Renderer.diagnostics().hearts > 0),
+    'spin then hearts',
+  );
   await shot(a, '03-cross-happy-hearts');
   assert.ok(observations.at(-1).view.hearts > 0);
   pass(
-    'Bottom/Cross pets once, plays a happy floating reaction and hearts, and synchronizes to all five clients',
+    'Bottom/Cross offers the empty hand, strokes 524, then spins with hearts; all five clients share the event',
   );
 
   // Empty peripheral participants stay out of the movement route.
@@ -247,6 +266,20 @@ try {
   assert.ok(behind < -0.8);
   await shot(a, '04-following');
   pass('524 follows behind normal player movement while continuing the floating clip');
+  await sleep(900);
+  const settled = { x: c.x, z: c.z };
+  const toward = { x: c.x - a.p.x, z: c.z - a.p.z };
+  const length = Math.hypot(toward.x, toward.z);
+  await walk(a, { x: a.p.x + (toward.x / length) * 0.65, z: a.p.z + (toward.z / length) * 0.65 });
+  await sleep(1600);
+  assert.ok(
+    distance(c, settled) < 0.08,
+    `524 fled ${distance(c, settled)}m after the player turned toward it`,
+  );
+  await shot(a, '04a-face-each-other');
+  pass(
+    'Turning around and walking toward 524 leaves it in place instead of orbiting behind the player',
+  );
 
   await tap(a, 9);
   await a.page.locator('[data-controller-menu="dismiss524"]').waitFor();
@@ -364,6 +397,8 @@ try {
           ...r.state.companion524,
           facing: 0,
           petAt: 10000,
+          petPlayerId: reaction === 'happy' ? r.selfId : null,
+          petContactAt: reaction === 'happy' ? 10000 - COMPANION_524.petStrokeMs : 0,
           hitAt: 10000,
           petSequence: reaction === 'happy' ? 1 : 0,
           hitSequence: reaction === 'hit' ? 1 : 0,
@@ -372,7 +407,7 @@ try {
         };
         const pose = companion524Pose(state, now);
         stage.position.y = pose.height;
-        tilt.rotation.set(pose.pitch, 0, pose.roll);
+        tilt.rotation.set(pose.pitch, pose.spin, pose.roll);
         actor.mixer.setTime(i / 4);
         stage.updateMatrixWorld(true);
         const v = new T.Vector3();

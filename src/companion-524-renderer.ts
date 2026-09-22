@@ -7,14 +7,25 @@ import type { WorldRenderer } from './world3d.js';
 
 /** Additive placement motion; the delivered bones and Floating_Ripple stay intact. */
 export function companion524Pose(c: Companion524Snapshot, now: number) {
-  const happyAge = c.petSequence > 0 ? now - c.petAt : Infinity;
+  const petAge = c.petPlayerId ? now - c.petAt : -1;
+  const contactAge = c.petContactAt > 0 ? now - c.petContactAt : -1;
+  const happyAge = contactAge >= 0 ? contactAge - COMPANION_524.petStrokeMs : Infinity;
   const hitAge = c.hitSequence > 0 ? now - c.hitAt : Infinity;
   const hit = hitAge >= 0 && hitAge < COMPANION_524.hitMs;
   const happy = !hit && happyAge >= 0 && happyAge < COMPANION_524.happyMs;
   const hp = hit ? hitAge / COMPANION_524.hitMs : 0;
   const jp = happy ? happyAge / COMPANION_524.happyMs : 0;
   const kick = hit ? Math.sin(hp * Math.PI) * (1 - hp) : 0;
-  const bounce = happy ? Math.sin(jp * Math.PI * 3) ** 2 * (1 - jp) : 0;
+  const bounce = happy ? Math.sin(jp * Math.PI) ** 2 : 0;
+  const smooth = (value: number) => {
+    const t = THREE.MathUtils.clamp(value, 0, 1);
+    return t * t * (3 - 2 * t);
+  };
+  const petBlend =
+    !hit && petAge >= 0
+      ? smooth(petAge / 400) *
+        (contactAge >= 0 ? 1 - smooth((contactAge - COMPANION_524.petStrokeMs) / 450) : 1)
+      : 0;
   // A continuous server-clock phase keeps every viewer, action transition and
   // return from distance culling on the same slow, soft vertical wave.
   const floatPhase =
@@ -22,10 +33,12 @@ export function companion524Pose(c: Companion524Snapshot, now: number) {
   return {
     reaction: hit ? 'hit' : happy ? 'happy' : 'floating',
     height:
-      COMPANION_524.hoverHeight +
-      Math.sin(floatPhase) * COMPANION_524.hoverAmplitude +
+      COMPANION_524.hoverHeight * (1 - petBlend) +
+      c.petHeight * petBlend +
+      Math.sin(floatPhase) * COMPANION_524.hoverAmplitude * (1 - petBlend) +
       kick * 0.23 +
-      bounce * 0.2,
+      bounce * 0.14,
+    spin: happy ? Math.PI * 2 * smooth(happyAge / COMPANION_524.spinMs) : 0,
     pitch:
       kick * 0.38 * (c.hitDirectionX * Math.sin(c.facing) + c.hitDirectionZ * Math.cos(c.facing)),
     roll:
@@ -65,6 +78,7 @@ export class Companion524Renderer {
   readonly label: ReturnType<WorldRenderer['createLabel']>;
   private placed = false;
   private floor = 0;
+  private height: number = COMPANION_524.hoverHeight;
   private reaction = 'floating';
 
   constructor(private world: WorldRenderer) {
@@ -110,6 +124,7 @@ export class Companion524Renderer {
       this.root.position.set(c.x, ground + pose.height, c.z);
       this.root.rotation.y = c.facing;
       this.floor = ground;
+      this.height = pose.height;
       this.placed = true;
     } else {
       this.root.position.x += (c.x - this.root.position.x) * blend;
@@ -118,13 +133,16 @@ export class Companion524Renderer {
     // Float above the actual floor, including the interpolated position on slopes.
     const floor = Math.max(ground, walkHeight(this.root.position.x, this.root.position.z));
     this.floor = Math.max(floor, this.floor + (floor - this.floor) * blend);
-    this.root.position.y = this.floor + pose.height;
+    // Withdrawing a hand or interrupting a pet must not pop the low mage pose
+    // back to the ordinary hover height in a single frame.
+    this.height += (pose.height - this.height) * blend;
+    this.root.position.y = this.floor + this.height;
     const delta = Math.atan2(
       Math.sin(c.facing - this.root.rotation.y),
       Math.cos(c.facing - this.root.rotation.y),
     );
     this.root.rotation.y += delta * blend;
-    this.tilt.rotation.set(pose.pitch, 0, pose.roll);
+    this.tilt.rotation.set(pose.pitch, pose.spin, pose.roll);
     const distance = this.root.position.distanceTo(this.world.camera.position);
     this.root.visible = distance < 85;
     if (this.root.visible) {
@@ -138,7 +156,7 @@ export class Companion524Renderer {
     this.label.position.copy(this.root.position);
     this.label.position.y += COMPANION_524.bodyHeight * 0.5 + 0.13;
     for (const [i, heart] of this.hearts.entries()) {
-      const age = (pose.happyAge - i * 160) / 1200;
+      const age = (pose.happyAge - 700 - i * 120) / 600;
       heart.visible = this.root.visible && pose.happyAge >= 0 && age > 0 && age < 1;
       if (!heart.visible) continue;
       heart.position.set(
@@ -157,6 +175,7 @@ export class Companion524Renderer {
       clip: this.actor.name,
       time: this.actor.mixer.time,
       reaction: this.reaction,
+      spin: this.tilt.rotation.y,
       hearts: this.hearts.filter((h) => h.visible).length,
       x: this.root.position.x,
       y: this.root.position.y,

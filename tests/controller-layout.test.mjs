@@ -27,11 +27,22 @@ test('each controller uses its physical labels in help, menus and the map withou
     assert.ok(controllerMenuHint().includes(`${right} で決定 · ${bottom}（下のボタン）か ${menu}`));
     assert.equal(keyPrompts(true)[0].key, menu);
     assert.equal(keyPrompts(false)[0].key, 'ESC');
+    assert.deepEqual(keyPrompts(false, true), [
+      { key: layout === 'ps4' ? 'SHARE / タッチパッド' : '−', label: '地図' },
+      { key: menu, label: 'メニュー' },
+    ]);
+    const exhibitionHelp = helpTabsMarkup('pc', [], true);
+    assert.doesNotMatch(exhibitionHelp, /PC（キーボード・マウス）|W A S D|ESC/);
+    assert.match(exhibitionHelp, /data-help-tab="pad" aria-selected="true"/);
     assert.ok(mapEmptyPrompt().endsWith(right));
     const map = mapScreen(() => '');
     assert.ok(map.includes(`${right} ワープ`));
     assert.ok(map.includes(`${left} ここへ行こう`));
     assert.ok(map.includes('4×'), 'zoom multiplier is not a controller label');
+    assert.doesNotMatch(
+      mapScreen(() => '', true),
+      /<kbd>Enter<\/kbd>/,
+    );
     if (layout === 'switch-pro') {
       assert.doesNotMatch(
         helpTabsMarkup('pad'),

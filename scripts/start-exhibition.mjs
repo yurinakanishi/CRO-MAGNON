@@ -60,12 +60,14 @@ async function main() {
     );
   if (role === 'host') {
     const { createGameServer } = await import('../dist/server.mjs');
+    const { EXHIBITION_PLAYER_LIMIT } = await import('../dist/shared/room-rules.mjs');
     game = createGameServer({
       port: settings.serverPort,
       host: settings.host,
       serveAssets: false,
       // Exhibition rules: fallen players recover fully; creatures return in 10 s.
       exhibition: true,
+      playerLimit: EXHIBITION_PLAYER_LIMIT,
       expectedBuild: manifest.buildId,
       wsPaths: [settings.wsPath],
       allowedOrigins: [

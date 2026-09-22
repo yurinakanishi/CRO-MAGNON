@@ -31,6 +31,7 @@ import {
 import { WorldRenderer } from './world3d.js';
 
 import { WORLD, CAMP, NPC, INITIAL_RESOURCES } from '../shared/world.mjs';
+import { EXHIBITION_PLAYER_LIMIT } from '../shared/room-rules.mjs';
 import { spawnSite } from '../shared/spawn-sites.mjs';
 import { HUNTING, usableCookingFire } from '../shared/hunting.mjs';
 import { CROP_INVENTORY, ROOT_RECIPES } from '../shared/crops.mjs';
@@ -139,6 +140,8 @@ const sessionKey = (room: string) => multiplayerSessionKey(multiplayer, room);
 // The exhibition LAN build never asks for a name or room: each PC is a fixed
 // player in the fixed exhibition room, and only the character is chosen.
 const fixedIdentity = multiplayer.mode === 'lan';
+const hudPlayerLimit = () =>
+  fixedIdentity ? EXHIBITION_PLAYER_LIMIT : (state.playerLimit ?? WORLD.maxPlayers);
 const titleEdition = 'DUO';
 const titleArtPath = `/title/cro-magnon-${titleEdition.toLowerCase()}-transparent.png`;
 const cleanRoom = (value: string) =>
@@ -188,6 +191,8 @@ let gamepadControls: GamepadControls | undefined;
 /** The open atlas, so the controller can hand it pointer, zoom and confirm frames. */
 let mapInput: MapInput | undefined;
 let usingGamepad = false;
+const controllerHints = () => fixedIdentity || usingGamepad;
+document.body.classList.toggle('exhibition-mode', fixedIdentity);
 let selectedAnimalId = null,
   stateReceivedAt = performance.now(),
   hurtUntil = 0;
@@ -199,16 +204,16 @@ const joinFields = () =>
   characterChoicesMarkup();
 $('#app').innerHTML = `
   <section class="game-viewport" aria-label="${GAME_TITLE} ゲーム画面">
-    <canvas id="world" aria-label="氷河時代の大陸が広がる3Dワールド。WASDまたは左スティックで移動。左スティックを浅く倒すと歩き、深く倒すと走ります。右スティックまたはドラッグでカメラ回転。" tabindex="0"></canvas>
+    <canvas id="world" aria-label="${fixedIdentity ? '氷河時代の大陸が広がる3Dワールド。左スティックを浅く倒すと歩き、深く倒すと走ります。右スティックでカメラ回転。' : '氷河時代の大陸が広がる3Dワールド。WASDまたは左スティックで移動。左スティックを浅く倒すと歩き、深く倒すと走ります。右スティックまたはドラッグでカメラ回転。'}" tabindex="0"></canvas>
     <div class="tps-reticle" aria-hidden="true"><i></i></div>
     <div class="scene-shade"></div>
     <div id="damage-flash" class="damage-flash" aria-hidden="true" hidden></div>
     <div id="combat-status" class="combat-status" role="status" hidden></div>
     <div id="area-banner" class="area-banner" aria-live="polite" hidden><small></small><strong></strong></div>
-    <button id="status-plate" class="status-plate" title="部族の仲間・招待"><span class="energy-track" id="energy-track" data-level="ok"><span id="energy-bar" class="energy-fill"></span><em class="energy-label">${icon('leaf')}<b>体力</b><span id="energy-label">100 / 100</span></em></span><span class="status-main"><span class="portrait cro cro-magnon-woman" id="my-portrait"><i></i></span><span class="status-text"><strong id="profile-name"></strong><small><span id="room-label"></span><i>·</i><b id="online-count">0/5</b><i>·</i><span id="day-label">1日目</span></small></span></span></button>
-    <div class="map-hud"><button id="map-button" class="minimap-button" aria-label="世界地図を開く" title="世界地図 [M]"><canvas id="minimap" width="160" height="115"></canvas><span class="map-north">N</span><span class="map-area" id="map-area">はじまりの谷</span><kbd class="map-key">M</kbd></button><div class="connection"><i class="status-dot" id="connection-dot"></i><span id="connection-label">未接続</span><span id="ping-label">— ms</span></div></div>
+    <button id="status-plate" class="status-plate" title="部族の仲間・招待"><span class="energy-track" id="energy-track" data-level="ok"><span id="energy-bar" class="energy-fill"></span><em class="energy-label">${icon('leaf')}<b>体力</b><span id="energy-label">100 / 100</span></em></span><span class="status-main"><span class="portrait cro cro-magnon-woman" id="my-portrait"><i></i></span><span class="status-text"><strong id="profile-name"></strong><small><span id="room-label"></span><i>·</i><b id="online-count">0/${hudPlayerLimit()}</b><i>·</i><span id="day-label">1日目</span></small></span></span></button>
+    <div class="map-hud"><button id="map-button" class="minimap-button" aria-label="世界地図を開く" title="世界地図 [${fixedIdentity ? controllerLabels().map : 'M'}]"><canvas id="minimap" width="160" height="115"></canvas><span class="map-north">N</span><span class="map-area" id="map-area">はじまりの谷</span>${fixedIdentity ? '' : '<kbd class="map-key">M</kbd>'}</button><div class="connection"><i class="status-dot" id="connection-dot"></i><span id="connection-label">未接続</span><span id="ping-label">— ms</span></div></div>
     <div id="toast-stack" class="toast-stack" aria-live="polite"></div>
-    <div class="chat-panel"><button class="chat-heading" id="chat-toggle">${icon('chat')}<strong>焚き火の会話</strong><kbd>Enter</kbd><span class="chat-collapse">−</span></button><div id="chat-content"><div id="chat-messages" class="chat-messages" role="log" aria-live="polite"><p class="chat-system">この谷での物語が、ここから始まります。</p></div><form id="chat-form"><input id="chat-input" maxlength="180" placeholder="仲間に話しかける…" aria-label="チャットメッセージ" autocomplete="off"><button aria-label="メッセージを送信" type="submit">${icon('arrow')}</button></form></div></div>
+    ${fixedIdentity ? '' : `<div class="chat-panel"><button class="chat-heading" id="chat-toggle">${icon('chat')}<strong>焚き火の会話</strong><kbd>Enter</kbd><span class="chat-collapse">−</span></button><div id="chat-content"><div id="chat-messages" class="chat-messages" role="log" aria-live="polite"><p class="chat-system">この谷での物語が、ここから始まります。</p></div><form id="chat-form"><input id="chat-input" maxlength="180" placeholder="仲間に話しかける…" aria-label="チャットメッセージ" autocomplete="off"><button aria-label="メッセージを送信" type="submit">${icon('arrow')}</button></form></div></div>`}
     <div class="hotbar-wrap"><div id="companion524-controls"><button type="button" class="hunt-button" id="pet524-button" hidden><kbd>V</kbd><span>524を撫でる</span></button><button type="button" class="hunt-button" id="dismiss524-button" hidden><kbd>T</kbd><span>524をキャンプへ帰す</span></button></div><div class="interaction-hint" id="interaction-hint" hidden><kbd>E</kbd><span></span></div></div>
     <div id="prompt-bar" class="prompt-bar" aria-label="操作の案内"></div>
     <div id="screens" class="screens">
@@ -368,8 +373,10 @@ $('.hotbar-wrap').insertAdjacentHTML(
   'afterbegin',
   `<div class="hunt-controls"><div id="magic-cooldown" class="hunt-button" hidden><span>魔法を再び使えるまで</span><progress id="magic-cooldown-progress" max="1" value="0" aria-label="魔法の再使用待ち"></progress></div><button id="cook-button" class="hunt-button" hidden>${icon('flame')}<span>肉を焼く</span></button></div><div id="cooking-status" class="cooking-status" hidden><span id="cooking-label">肉を焼いています…</span><progress id="cooking-progress" max="1" value="0" aria-label="肉を焼く進み具合"></progress><button id="cancel-cook">中止</button></div>`,
 );
-$('#chat-content').hidden = true;
-$('.chat-collapse').textContent = '+';
+if (!fixedIdentity) {
+  $('#chat-content').hidden = true;
+  $('.chat-collapse').textContent = '+';
+}
 renderer.setState(state, selfId);
 $('#profile-name').textContent = profile.name;
 $('#room-label').textContent = profile.room;
@@ -404,6 +411,7 @@ function notify(text, tone = 'info') {
   if ($('#toast-stack').children.length > 3) $('#toast-stack').firstChild.remove();
 }
 function addChat(message) {
+  if (fixedIdentity) return;
   const p = document.createElement('p');
   if (message.system) {
     p.className = 'chat-system';
@@ -695,9 +703,9 @@ function nearby(): { action: string; label: string; targetId?: string } | null {
 }
 function updateHUD() {
   const me = player();
-  $('#online-count').textContent =
-    `${state.players.length}/${state.playerLimit ?? WORLD.maxPlayers}`;
-  $('#day-label').textContent = `${state.day || 1}日目`;
+  $('#online-count').textContent = `${state.players.length}/${hudPlayerLimit()}`;
+  // Each exhibition visit is day one; the world's simulation clock keeps running.
+  $('#day-label').textContent = `${fixedIdentity ? 1 : state.day || 1}日目`;
   const energy = Math.round(me?.energy ?? 100);
   $('#energy-label').textContent = `${energy} / 100`;
   $('#energy-bar').style.width = `${energy}%`;
@@ -933,9 +941,9 @@ function updateHuntingHUD() {
   boatUI.update();
   const petAvailable = canPet524();
   $('#pet524-button').hidden = !petAvailable;
-  $('#pet524-button kbd').textContent = usingGamepad ? controllerLabels().bottom : 'V';
+  $('#pet524-button kbd').textContent = controllerHints() ? controllerLabels().bottom : 'V';
   $('#dismiss524-button').hidden = !joined || state.companion524?.followPlayerId !== selfId;
-  $('#dismiss524-button kbd').textContent = usingGamepad ? 'メニュー' : 'T';
+  $('#dismiss524-button kbd').textContent = controllerHints() ? 'メニュー' : 'T';
   const menuDismiss = $('[data-controller-menu="dismiss524"]');
   if (menuDismiss) menuDismiss.disabled = state.companion524?.followPlayerId !== selfId;
   const me = player(),
@@ -961,7 +969,7 @@ function updateHuntingHUD() {
   rideButton.querySelector('span').textContent = mounted ? 'マンモスから降りる' : 'マンモスに乗る';
   $('.riding-controls').hidden = !mounted && !nearRide;
   // The button already names its key and action; the hint only adds what it cannot say.
-  let ridingHint = mounted ? (usingGamepad ? '左スティックで移動' : 'WASDで移動') : '';
+  let ridingHint = mounted ? (controllerHints() ? '左スティックで移動' : 'WASDで移動') : '';
   const carryChoice = joined && !renderUnavailable && hasCarryChoice();
   if (carryChoice) {
     const partnerId = me.carryOfferFromId || me.carryOfferToId || me.carrierId || me.passengerId;
@@ -996,7 +1004,7 @@ function updateHuntingHUD() {
     carrierId: me?.carrierId ?? '',
     passengerId: me?.passengerId ?? '',
   });
-  if (usingGamepad && me?.boatId)
+  if (controllerHints() && me?.boatId)
     $('#boat-hint').textContent = '左スティックで操船 · 深く倒すと速く';
   Object.assign($('#world').dataset, {
     ridingVersion: String(state.ridingVersion ?? 0),
@@ -1180,7 +1188,7 @@ function leaveToTitle() {
 }
 async function openInvite() {
   openModal(
-    `<span class="modal-illustration">${icon('people')}</span><h2>ひとつの火を、仲間と。</h2><p class="modal-intro">同じ部屋のリンクを仲間に渡して、一緒に谷を探索しよう。</p><div class="invite-code"><small>ROOM CODE</small><strong id="invite-code"></strong><span>現在の部屋の接続上限は ${state.playerLimit ?? WORLD.maxPlayers}人</span></div><label>招待リンク<input id="invite-url" readonly aria-label="招待リンク"></label><button id="copy-invite" class="button button-accent wide">${icon('link')} 招待リンクをコピー</button><p id="invite-note" class="form-note">このPCと同じWi-Fi・LANにいる仲間が参加できます。インターネット越しの参加には、サーバーの公開が必要です。</p><button id="change-room" class="text-button">別の部屋に参加する ${icon('arrow')}</button>`,
+    `<span class="modal-illustration">${icon('people')}</span><h2>ひとつの火を、仲間と。</h2><p class="modal-intro">同じ部屋のリンクを仲間に渡して、一緒に谷を探索しよう。</p><div class="invite-code"><small>ROOM CODE</small><strong id="invite-code"></strong><span>現在の部屋の接続上限は ${hudPlayerLimit()}人</span></div><label>招待リンク<input id="invite-url" readonly aria-label="招待リンク"></label><button id="copy-invite" class="button button-accent wide">${icon('link')} 招待リンクをコピー</button><p id="invite-note" class="form-note">このPCと同じWi-Fi・LANにいる仲間が参加できます。インターネット越しの参加には、サーバーの公開が必要です。</p><button id="change-room" class="text-button">別の部屋に参加する ${icon('arrow')}</button>`,
   );
   $('#invite-code').textContent = profile.room;
   let base = location.origin;
@@ -1441,7 +1449,7 @@ function bindCrafting() {
     $('#modal').close();
   };
 }
-/** The bag is the pause menu's first page, so every shortcut lands on the same screen. */
+/** The inventory shortcut opens the bag directly in either menu layout. */
 function openInventory() {
   openPauseMenu('inventory');
 }
@@ -1467,7 +1475,7 @@ function helpMarkup() {
         },
       ]
     : [];
-  return helpTabsMarkup(usingGamepad ? 'pad' : 'pc', extra);
+  return helpTabsMarkup(controllerHints() ? 'pad' : 'pc', extra, fixedIdentity);
 }
 function openHelp() {
   openModal(
@@ -1478,22 +1486,26 @@ function openHelp() {
 }
 function updateGamepadHints(active: boolean) {
   usingGamepad = active;
-  for (const [selector, label] of [
-    ['#interaction-hint kbd', active ? controllerLabels().right : 'E'],
-    ['#ride-button kbd', active ? controllerLabels().bottom : 'R'],
-    ['#boat-board kbd', active ? controllerLabels().bottom : 'B'],
-    ['#chat-toggle kbd', active ? '⌨' : 'Enter'],
-  ])
-    $(selector).textContent = label;
-  updatePromptBar();
+  updateHintLabels();
   updateHuntingHUD();
 }
+function updateHintLabels() {
+  const pad = controllerHints();
+  for (const [selector, label] of [
+    ['#interaction-hint kbd', pad ? controllerLabels().right : 'E'],
+    ['#ride-button kbd', pad ? controllerLabels().bottom : 'R'],
+    ['#boat-board kbd', pad ? controllerLabels().bottom : 'B'],
+    ['#chat-toggle kbd', pad ? '⌨' : 'Enter'],
+  ])
+    if ($(selector)) $(selector).textContent = label;
+  updatePromptBar();
+}
 function updatePromptBar() {
-  $('#prompt-bar').innerHTML = keyPrompts(usingGamepad)
+  $('#prompt-bar').innerHTML = keyPrompts(usingGamepad, fixedIdentity)
     .map((p) => `<span><kbd>${p.key}</kbd>${p.label}</span>`)
     .join('');
 }
-updatePromptBar();
+updateHintLabels();
 
 function controllerRide() {
   if (canPet524()) {
@@ -1548,9 +1560,8 @@ function openCharacterSwitchMenu() {
 }
 /**
  * Game-style pause menu: a tab rail on the left, one panel on the right, exits as
- * buttons below the tabs. 2026-09-12: it opens straight on the bag with the first
- * food card focused; the guide, world and companions share one tab with sub-tabs;
- * the character change sits just above "back to exploring".
+ * buttons below the tabs. The exhibition layout opens on Warp; the normal layout
+ * opens on the bag with the first food card focused.
  */
 function localResetMarkup() {
   return localRoomReset
@@ -1566,7 +1577,7 @@ function restartAfterRoomReset() {
   socket = null;
   previous?.close();
   $('#modal').close();
-  $('#chat-messages').replaceChildren();
+  $('#chat-messages')?.replaceChildren();
   selectedAnimalId = null;
   enterGame();
   notify('部屋の進行をリセットしました。', 'success');
@@ -1615,7 +1626,7 @@ function cancelRoomReset() {
   return true;
 }
 
-function openPauseMenu(tab = 'inventory') {
+function openPauseMenu(tab?: string) {
   if (screens.active) return;
   const tabs: [string, string, string][] = fixedIdentity
     ? [
@@ -1679,7 +1690,8 @@ function openPauseMenu(tab = 'inventory') {
       : []),
     ['title', 'close', 'タイトルへ戻る', leaveToTitle],
   ];
-  let pauseTab = tabs.some(([id]) => id === tab) ? tab : 'inventory';
+  const initialTab = tab ?? (fixedIdentity ? 'warp' : 'inventory');
+  let pauseTab = tabs.some(([id]) => id === initialTab) ? initialTab : tabs[0][0];
   if (!subTabs.some(([id]) => id === pauseSubTab)) pauseSubTab = 'help';
   const menuButton = ([id, glyph, label]: readonly [string, string, string, ...unknown[]]) =>
     `<button class="button button-outline" data-controller-menu="${id}">${icon(glyph)}<span>${label}</span></button>`;
@@ -1714,7 +1726,7 @@ function openPauseMenu(tab = 'inventory') {
     )}${panel(
       'settings',
       `<h2>設定</h2><p class="modal-intro">${fixedIdentity ? '' : '難易度・'}音・画面・視点の調整。</p><div class="settings-list">${fixedIdentity ? '' : difficultySettingsMarkup()}<div class="settings-item"><div><strong>環境音</strong><p>谷の音を鳴らします。</p></div><button class="button button-outline" data-setting="sound" aria-pressed="${soundEnabled}">${icon(soundEnabled ? 'sound' : 'muted')} ${soundEnabled ? 'オン' : 'オフ'}</button></div><div class="settings-item"><div><strong>全画面表示</strong><p>ブラウザーの枠を隠して表示します。</p></div><button class="button button-outline" data-setting="fullscreen">${icon('expand')} 切り替え</button></div><div class="settings-item"><div><strong>視点</strong><p>カメラの距離を変え、キャラクターの後ろへ戻します。</p></div><div class="settings-buttons"><button class="button button-outline" data-setting="zoom-out">− 遠く</button><button class="button button-outline" data-setting="zoom-in">+ 近く</button><button class="button button-outline" data-setting="camera">${icon('target')} 視点を戻す</button></div></div><div class="settings-item"><div><strong>コントローラー</strong><p class="gamepad-connection" role="status">${usingGamepad ? '' : '未使用 · コントローラーをつないでボタンを押すと切り替わります。'}</p></div></div></div><p id="local-save-status" class="form-note" role="status" hidden></p>${localResetMarkup()}`,
-    )}<p class="pause-hint">${usingGamepad ? controllerMenuHint() : 'ESC で閉じる · ↑↓←→ で選ぶ · Enter で決定'}</p></div></div>`,
+    )}<p class="pause-hint">${controllerHints() ? controllerMenuHint() : 'ESC で閉じる · ↑↓←→ で選ぶ · Enter で決定'}</p></div></div>`,
   );
   const root = $('#modal-body') as HTMLElement;
   const tabButtons = [...root.querySelectorAll<HTMLButtonElement>('.pause-tab')];
@@ -1774,7 +1786,9 @@ function openPauseMenu(tab = 'inventory') {
       button.onclick = () => setDifficulty(normalizeDifficulty(button.dataset.difficulty));
     if ($('[data-setting="reset-room"]')) $('[data-setting="reset-room"]').onclick = openRoomReset;
   }
-  // The bag opens ready to use: the first (top-left) food card holds focus.
+  // The exhibition menu opens on its first tab; the bag shortcut still focuses a usable item.
+  if (pauseTab === 'warp')
+    root.querySelector<HTMLElement>('[data-pause-tab="warp"]')?.focus({ preventScroll: true });
   if (pauseTab === 'inventory')
     root
       .querySelector<HTMLElement>('.inventory-card, .inventory-none')
@@ -1789,7 +1803,7 @@ function openMap() {
     return;
   }
   setWorldMapSelection(null);
-  openModal(mapScreen(icon));
+  openModal(mapScreen(icon, fixedIdentity));
   mapInput = installMapWarp({
     player,
     pins: () => state.mapPins ?? [],
@@ -1916,25 +1930,28 @@ $('#modal').addEventListener('click', (e) => {
   }
 });
 function setChatOpen(open) {
+  if (fixedIdentity) return;
   $('#chat-content').hidden = !open;
   $('.chat-collapse').textContent = open ? '−' : '+';
   $('#chat-toggle').setAttribute('aria-expanded', String(open));
   if (open) stopInput();
   else $('#chat-input').blur();
 }
-$('#chat-toggle').setAttribute('aria-label', 'チャットを開く／閉じる');
-$('#chat-toggle').setAttribute('aria-expanded', String(!$('#chat-content').hidden));
-$('#chat-toggle').onclick = () => setChatOpen($('#chat-content').hidden);
-$('#chat-form').onsubmit = (e) => {
-  e.preventDefault();
-  const text = $('#chat-input').value.trim();
-  if (!text) return;
-  if (!joined) return notify('チャットの送信には接続が必要です。', 'error');
-  send({ type: 'chat', text });
-  $('#chat-input').value = '';
-  $('#chat-input').blur();
-};
-$('#chat-input').addEventListener('focus', stopInput);
+if (!fixedIdentity) {
+  $('#chat-toggle').setAttribute('aria-label', 'チャットを開く／閉じる');
+  $('#chat-toggle').setAttribute('aria-expanded', String(!$('#chat-content').hidden));
+  $('#chat-toggle').onclick = () => setChatOpen($('#chat-content').hidden);
+  $('#chat-form').onsubmit = (e) => {
+    e.preventDefault();
+    const text = $('#chat-input').value.trim();
+    if (!text) return;
+    if (!joined) return notify('チャットの送信には接続が必要です。', 'error');
+    send({ type: 'chat', text });
+    $('#chat-input').value = '';
+    $('#chat-input').blur();
+  };
+  $('#chat-input').addEventListener('focus', stopInput);
+}
 document.addEventListener('keydown', (e) => {
   // The map key is a toggle: M with the atlas open closes it (2026-09-12).
   if (
@@ -2019,7 +2036,7 @@ document.addEventListener('keydown', (e) => {
   }
   if (['1', '2', '3', '4'].includes(k))
     action(['gather', 'craft', 'contribute', 'trade'][Number(k) - 1]);
-  if (k === 'enter') {
+  if (k === 'enter' && !fixedIdentity) {
     e.preventDefault();
     setChatOpen(true);
     $('#chat-input').focus();

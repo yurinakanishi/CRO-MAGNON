@@ -161,12 +161,23 @@ try {
       layout === 'ps4' ? /×（下のボタン）/ : /B（下のボタン）/,
     );
     assert.equal(
+      await page.locator('[data-pause-tab="warp"]').getAttribute('aria-selected'),
+      'true',
+    );
+    assert.equal(
+      await page.locator('[data-pause-tab="warp"]').evaluate((el) => el === document.activeElement),
+      true,
+    );
+    assert.equal(await page.locator('[data-pause-panel="warp"]').isVisible(), true);
+    await shot(page, `${layout}-warp-initial-focus`);
+    await page.locator('[data-pause-tab="inventory"]').click();
+    assert.equal(
       await page
-        .locator('.inventory-card, .inventory-none')
-        .first()
+        .locator('[data-pause-tab="inventory"]')
         .evaluate((el) => el === document.activeElement),
       true,
     );
+    assert.equal(await page.locator('[data-pause-panel="inventory"]').isVisible(), true);
     await shot(page, `${layout}-inventory`);
     await page.locator('[data-pause-tab="warp"]').click();
     const warpCards = await page.locator('[data-warp-spawn]').evaluateAll((nodes) =>
@@ -180,7 +191,9 @@ try {
     await shot(page, `${layout}-warp`);
     await tap(page, 0);
     assert.equal(await page.locator('#modal').isVisible(), false);
-    pass(`${layout}: three tabs, same six photos, inventory focus and bottom-button close`);
+    pass(
+      `${layout}: three tabs, warp opens focused, inventory remains usable, and bottom button closes`,
+    );
   }
   for (let i = 0; i < 3; i++) {
     const socket = new WebSocket(`ws://127.0.0.1:${port}/ws?room=${roomName}&name=Observer${i}`);
@@ -199,6 +212,7 @@ try {
   p.energy = 40;
   await sleep(500);
   await menu(page);
+  await page.locator('[data-pause-tab="inventory"]').click();
   await page.locator('[data-inventory-item="berry"], [data-item="berry"]').first().click();
   await page.locator('[data-item-action="eat"]').click();
   await until(() => p.inventory.berry === 0 && p.energy >= 65, 'eat and update health');

@@ -8,6 +8,10 @@ export interface Companion524Snapshot extends Point {
   followPlayerId: string | null;
   petSequence: number;
   petAt: number;
+  petPlayerId: string | null;
+  petContactAt: number;
+  petHeight: number;
+  petFacing: number;
   hitSequence: number;
   hitAt: number;
   hitDirectionX: number;
@@ -21,4 +25,9 @@ export interface Companion524 extends Companion524Snapshot {
   goal: Point | null;
   nextPathAt: number;
   trail: Point[];
+  followSpeed: number;
+  ownerPosition: Point | null;
+  petOrigin: Point | null;
+  petGoal: Point | null;
+  petCharacter: string;
 }

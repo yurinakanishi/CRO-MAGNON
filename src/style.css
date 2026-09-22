@@ -1715,8 +1715,9 @@ body[data-screen] .world-labels {
   background: #141d18cc;
   border-color: #e8dcb540;
   color: #f0e6c8;
+  white-space: nowrap;
 }
-.using-gamepad .hunt-button kbd {
+:is(.using-gamepad, .exhibition-mode) .hunt-button kbd {
   width: auto;
   min-width: 26px;
   white-space: nowrap;

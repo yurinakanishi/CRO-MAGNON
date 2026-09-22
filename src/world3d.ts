@@ -6,6 +6,7 @@ import { activateMiddenObstacle } from '../shared/coastal-sites.mjs';
 import { CoastalRenderer } from './coastal-renderer.js';
 import { VillageRenderer } from './village-renderer.js';
 import { Companion524Renderer } from './companion-524-renderer.js';
+import { pettingProgress } from './petting-pose.js';
 import { isMesh } from './three-types.js';
 import { setText } from './dom-updates.js';
 import { VisibleActorGroup } from './visible-actor-group.js';
@@ -1025,6 +1026,7 @@ export class WorldRenderer {
       }
     }
     this.boatRenderer?.update(time, dt);
+    this.companion524Renderer?.update(dt);
     // Update the carrier's animated shoulder before its passenger, regardless of join order.
     for (const entity of [...this.players.values()].sort(
       (a, b) => Number(!!a.state.carrierId) - Number(!!b.state.carrierId),
@@ -1032,8 +1034,9 @@ export class WorldRenderer {
       const { model } = entity,
         p = entity.state.id === this.selfId && predicted ? predicted : entity.state,
         factor = 1 - Math.exp(-dt * 20);
-      entity.actor?.carrySupportPose?.restore();
+      entity.actor?.pettingPose.restore();
       entity.actor?.leanPose?.restore();
+      entity.actor?.carrySupportPose?.restore();
       if (p.mountId || p.boatId || p.carrierId || p.downedUntil) {
         entity.actor?.carrySupportPose?.reset();
         entity.actor?.leanPose?.reset();
@@ -1163,7 +1166,8 @@ export class WorldRenderer {
       // Position reconciliation can move a model backwards by a few centimetres.
       // It is not a turn or a step: use the collision-checked simulation motion.
       const motionSpeed = p.moving ? p.speed : 0;
-      const facing = p.facing;
+      const petting = pettingProgress(this.state.companion524, p, this.serverNow());
+      const facing = petting.weight > 0 ? this.state.companion524!.petFacing : p.facing;
       const diff = Math.atan2(
         Math.sin(facing - model.rotation.y),
         Math.cos(facing - model.rotation.y),
@@ -1191,10 +1195,19 @@ export class WorldRenderer {
           airborne === null && !p.downedUntil ? motionSpeed : null,
           entity.running,
         );
+        if (petting.weight > 0 && this.companion524Renderer) {
+          tempPoint.copy(this.companion524Renderer.root.position);
+          const petNear = p.species === 'bear' ? 0.13 : 0.08;
+          tempPoint.x -= Math.sin(facing) * petNear;
+          tempPoint.z -= Math.cos(facing) * petNear;
+          tempPoint.y += p.species === 'bear' ? 0.07 : 0.11;
+          entity.actor.pettingPose.update(tempPoint, petting.weight, petting.stroke);
+        }
         if (entity.axe) {
           const attack = entity.actor.animation.name === 'Attack';
           const profile = attackProfile(p);
           entity.axe.visible =
+            petting.weight === 0 &&
             !p.fishing &&
             !p.coastalActivity &&
             p.tool &&
@@ -1203,6 +1216,7 @@ export class WorldRenderer {
               : entity.actor.animation.name === 'Gather');
           if (entity.weapon) {
             entity.weapon.visible =
+              petting.weight === 0 &&
               !p.fishing &&
               !p.coastalActivity &&
               (attack ||
@@ -1279,7 +1293,6 @@ export class WorldRenderer {
     this.gulfRenderer?.update(time);
     this.coastalRenderer?.update(time);
     this.villageRenderer?.update(dt, time);
-    this.companion524Renderer?.update(dt);
     if (time >= this.nextStaticCull) {
       this.nextStaticCull = time + 0.2;
       for (const { root, radius } of this.staticScenery) {

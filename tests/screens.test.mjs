@@ -9,6 +9,10 @@ const root = new URL('../', import.meta.url);
 test('button prompts follow the input device and never repeat a contextual button', async () => {
   assert.deepEqual(keyPrompts(false), [{ key: 'ESC', label: 'メニュー' }]);
   assert.deepEqual(keyPrompts(true), [{ key: 'OPTIONS', label: 'メニュー' }]);
+  assert.deepEqual(keyPrompts(false, true), [
+    { key: 'SHARE / タッチパッド', label: '地図' },
+    { key: 'OPTIONS', label: 'メニュー' },
+  ]);
   // 2026-09-21: riding and boarding are announced once, by their own key-labelled button.
   const main = await readFile(new URL('src/main.ts', root), 'utf8');
   const boat = await readFile(new URL('src/boat-ui.ts', root), 'utf8');

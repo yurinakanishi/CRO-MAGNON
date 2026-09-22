@@ -114,12 +114,82 @@ test('pet event is rate limited, latest valid pet chooses one owner and only tha
   assert.equal(c.followPlayerId, p.id);
   assert.equal(handleCompanion524Action(room, q, 'pet524', 10100), false);
   assert.equal(handleCompanion524Action(room, q, 'dismiss524', 10100), false);
-  assert.ok(handleCompanion524Action(room, q, 'pet524', 11200));
+  assert.equal(
+    handleCompanion524Action(room, q, 'pet524', 11200),
+    false,
+    'finish the offered hand and reaction before another pet',
+  );
+  advance(room, 10000, 6);
+  assert.ok(handleCompanion524Action(room, q, 'pet524', 16000));
   assert.equal(c.petSequence, 2);
   assert.equal(c.followPlayerId, q.id);
-  assert.equal(handleCompanion524Action(room, p, 'dismiss524', 12000), false);
-  assert.ok(handleCompanion524Action(room, q, 'dismiss524', 12000));
+  assert.equal(handleCompanion524Action(room, p, 'dismiss524', 17000), false);
+  assert.ok(handleCompanion524Action(room, q, 'dismiss524', 17000));
   assert.equal(c.mode, 'returning');
+});
+
+test('524 stays put when its follower turns in place or walks toward it', () => {
+  const { room, c, p } = fixture();
+  assert.ok(handleCompanion524Action(room, p, 'pet524', 10000));
+  advance(room, 10000, 6);
+  const before = { x: c.x, z: c.z };
+  for (let i = 0; i < 160; i++) {
+    p.facing = (i * Math.PI) / 40;
+    updateCompanion524(room, 0.05, 16000 + i * 50);
+    assert.ok(distance(c, before) < 1e-8, 'turning must not send 524 around the player');
+  }
+  p.x = c.x + 5;
+  p.z = c.z;
+  advance(room, 25000, 4);
+  const settled = { x: c.x, z: c.z };
+  p.x -= 1.2;
+  p.facing = -Math.PI / 2;
+  advance(room, 30000, 4);
+  assert.ok(distance(c, settled) < 1e-8, 'the player can approach and face 524');
+});
+
+test('following accelerates gently, stops near the player and resumes after a turn', () => {
+  const { room, c, p } = fixture();
+  c.mode = 'following';
+  c.followPlayerId = p.id;
+  p.z += 8;
+  let previousSpeed = 0;
+  for (let i = 0; i < 100; i++) {
+    const before = { x: c.x, z: c.z };
+    updateCompanion524(room, 0.05, 10000 + i * 50);
+    const speed = distance(c, before) / 0.05;
+    assert.ok(speed <= 2.8 + 1e-8, 'no high-speed orbit or catch-up to a stationary owner');
+    assert.ok(speed - previousSpeed <= COMPANION_524.followAcceleration * 0.05 + 1e-8);
+    previousSpeed = speed;
+  }
+  assert.ok(distance(c, p) >= COMPANION_524.followDistance);
+  assert.ok(distance(c, p) < COMPANION_524.followDistance + 0.1);
+  p.speed = 3;
+  for (let i = 0; i < 120; i++) {
+    p.x += 0.15;
+    p.facing = Math.PI / 2;
+    updateCompanion524(room, 0.05, 16000 + i * 50);
+  }
+  assert.ok(c.x < p.x && distance(c, p) < 3);
+});
+
+test('524 reaches the offered hand before stroking; walking away interrupts the pet without teleporting', () => {
+  const { room, c, p } = fixture();
+  assert.ok(handleCompanion524Action(room, p, 'pet524', 10000));
+  assert.equal(c.petContactAt, 0);
+  const feet = { x: p.x, z: p.z };
+  const before = { x: c.x, z: c.z };
+  updateCompanion524(room, 0.05, 10050);
+  assert.ok(distance(c, before) <= 1.6 * 0.05 + 1e-8);
+  advance(room, 10050, 1.5);
+  assert.ok(c.petContactAt > c.petAt);
+  assert.ok(distance(c, c.petGoal) < 0.015);
+  assert.deepEqual({ x: p.x, z: p.z }, feet);
+  p.x += 0.5;
+  updateCompanion524(room, 0.05, 11600);
+  assert.equal(c.petPlayerId, null);
+  assert.equal(c.petContactAt, 0);
+  assert.equal(c.followPlayerId, p.id);
 });
 
 test('real melee impact moves 524 in the strike direction and repeat blows accumulate displacement without death', () => {
