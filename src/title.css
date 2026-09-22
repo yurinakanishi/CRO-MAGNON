@@ -13,12 +13,13 @@
 #screen-title .title-content {
   display: grid;
   grid-template-columns: minmax(160px, 1fr) minmax(0, 3.4fr) minmax(160px, 1fr);
-  grid-template-areas: 'production hero guest' 'planning planning planning';
-  grid-template-rows: minmax(360px, 1fr) auto;
+  grid-template-areas: 'production hero guest' 'production planning guest';
+  grid-template-rows: minmax(300px, 1fr) auto;
   width: 100%;
   max-width: 1500px;
   margin: 0 auto;
-  padding: 24px 40px 0;
+  /* Match the footer below so both side columns center on the whole screen. */
+  padding: 30px 40px 0;
   gap: 24px;
   flex: 1 0 auto;
   align-items: center;
@@ -64,7 +65,7 @@
   display: block;
   width: auto;
   max-width: 100%;
-  height: clamp(200px, min(52dvh, calc(100dvh - 444px)), 600px);
+  height: clamp(200px, min(52dvh, calc(100dvh - 480px)), 600px);
   object-fit: contain;
   filter: drop-shadow(0 8px 18px #0009);
 }
@@ -187,17 +188,19 @@
   position: static;
   flex-shrink: 0;
   width: 100%;
+  height: 30px;
   padding: 8px 24px 10px;
   justify-content: flex-end;
   gap: 10px;
   flex-wrap: wrap;
   color: #a8b49b;
   font-size: 8px;
+  line-height: 12px;
   letter-spacing: 0.1em;
 }
 @media (max-width: 1000px) {
   #screen-title .title-content {
-    padding: 24px 24px 0;
+    padding: 30px 24px 0;
     gap: 16px;
   }
   .credit-people {
@@ -228,9 +231,6 @@
   }
 }
 @media (max-height: 600px) and (min-width: 701px) {
-  #screen-title .title-content {
-    padding-top: 16px;
-  }
   .title-art {
     height: 200px;
   }

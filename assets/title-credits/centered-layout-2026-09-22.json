@@ -1,0 +1,100 @@
+{
+  "date": "2026-09-22",
+  "completed": "2026-09-23",
+  "change": "Center production and guest independently across the full title screen, including the adviser row.",
+  "browser": "Chrome via CUA, http://localhost:3000/",
+  "measurement": "CSS pixels at scrollTop 0; rounded to 0.1px. Blocks include heading, avatar, QR and name.",
+  "desktop": [
+    {
+      "width": 1280,
+      "height": 800,
+      "productionTop": 223.2,
+      "productionBottomMargin": 223.2,
+      "guestTop": 297.7,
+      "guestBottomMargin": 297.7
+    },
+    {
+      "width": 1440,
+      "height": 900,
+      "productionTop": 273.2,
+      "productionBottomMargin": 273.2,
+      "guestTop": 347.7,
+      "guestBottomMargin": 347.7
+    },
+    {
+      "width": 1920,
+      "height": 1080,
+      "productionTop": 363.2,
+      "productionBottomMargin": 363.2,
+      "guestTop": 437.7,
+      "guestBottomMargin": 437.7
+    },
+    {
+      "width": 1000,
+      "height": 700,
+      "productionTop": 173.2,
+      "productionBottomMargin": 173.2,
+      "guestTop": 247.7,
+      "guestBottomMargin": 247.7
+    },
+    {
+      "width": 1536,
+      "height": 776,
+      "productionTop": 211.2,
+      "productionBottomMargin": 211.2,
+      "guestTop": 285.7,
+      "guestBottomMargin": 285.7
+    }
+  ],
+  "scrollingLayouts": [
+    {
+      "width": 767,
+      "height": 722,
+      "scrollHeight": 752,
+      "scrollWidth": 757,
+      "productionTop": 199.2,
+      "productionBottom": 552.8,
+      "guestTop": 273.7,
+      "guestBottom": 478.3,
+      "centering": "full scrollable content"
+    },
+    {
+      "width": 844,
+      "height": 390,
+      "scrollHeight": 681,
+      "scrollWidth": 834,
+      "productionTop": 163.9,
+      "productionBottom": 517.5,
+      "guestTop": 238.4,
+      "guestBottom": 443.0,
+      "centering": "full scrollable content",
+      "scrolledPlanningBottom": 360.2
+    },
+    {
+      "width": 390,
+      "height": 844,
+      "scrollHeight": 1289,
+      "scrollWidth": 380,
+      "productionTop": 423.3,
+      "productionBottom": 776.9,
+      "guestTop": 497.8,
+      "guestBottom": 702.4,
+      "centering": "shared row below hero",
+      "scrolledPlanningBottom": 813.7
+    }
+  ],
+  "checks": {
+    "horizontalOverflow": false,
+    "overlappingCreditGroups": false,
+    "creditImageCount": 12,
+    "allCreditImagesLoaded": true,
+    "creditLinks": 0,
+    "startAndBack": true,
+    "helpAndBack": true,
+    "downAndUpMenuNavigation": true,
+    "reload": true,
+    "viewportOverrideReset": true,
+    "newBrowserErrorsOrWarnings": 0
+  },
+  "limits": ["Physical controllers and physical exhibition screens were not visually inspected."]
+}
