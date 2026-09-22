@@ -1,0 +1,61 @@
+{
+  "verifiedAt": "2026-09-22T23:42:32.5702078+09:00",
+  "checks": [
+    {
+      "file": "dist/src/title-credits.js",
+      "sha256": "4e3de3481bc7c203397f9c8c7831c54bae8ed6220d72542c09518edb9909c3e6"
+    },
+    {
+      "file": "dist/src/title.css",
+      "sha256": "16d993b728f1e19a6f60fe533df1ffe85261c8c47e982c73fb0a6d5a336ba7dd"
+    },
+    {
+      "file": "public/title/avatar-nukonuko.jpg",
+      "sha256": "c1ba1357ca632ff79899b0593f2815c38898d04e197ab3e383afc4f5f6181c6e"
+    },
+    {
+      "file": "public/title/avatar-otani.jpg",
+      "sha256": "9f79702e5d49b9a2178d9fc1154bd654c18f335ce57698be36c822e41cc6b9ae"
+    },
+    {
+      "file": "public/title/avatar-r524.jpg",
+      "sha256": "6b8bc0201a6d31a9aa2cb9d27c6bf3827e1559c38eba138dd7f998c1d573c4cc"
+    },
+    {
+      "file": "public/title/avatar-ryuichi.jpg",
+      "sha256": "06cba8b57b036a3d1551a74c6be9748271ebdd702402dbf71f6adbfe9cbcc2e5"
+    },
+    {
+      "file": "public/title/avatar-urata.jpg",
+      "sha256": "811faa362ca844e2db5e74bf9dabb253d1f048214e01ca5c3e35ec3dcbaff059"
+    },
+    {
+      "file": "public/title/avatar-yuri.jpg",
+      "sha256": "68a0d2ca6f6a57d774bd977c41c724eada6d8f0020b2ea2bcd43e29ea94f1234"
+    },
+    {
+      "file": "public/title/qr-nukonuko.png",
+      "sha256": "a71b1303fba1c60c0a6deb72200d0869f660fffb1aaf0d5a8de443fb0cf31e06"
+    },
+    {
+      "file": "public/title/qr-otani.png",
+      "sha256": "28253a6610560b142d7c2ba2f52db9f72e2cf9e5a1bededdb629c55808f962cf"
+    },
+    {
+      "file": "public/title/qr-r524.png",
+      "sha256": "6a288cf67375aba853f9d9223ea2a495d52aeb80aed9d321ed2fd9ed18543649"
+    },
+    {
+      "file": "public/title/qr-ryuichi.png",
+      "sha256": "20f5a583332e0365650ad970e41b4e3bd942c4b348e460b6c90f18b86811b5ed"
+    },
+    {
+      "file": "public/title/qr-urata.png",
+      "sha256": "f00def28241a54d4f13646d64996f514f1226508e8d49d2adde004b4e26f914a"
+    },
+    {
+      "file": "public/title/qr-yuri.png",
+      "sha256": "d4d66516d07b921bc9ec62bf2c29ad5c30ffde667bd12a87ca125c9becfd59e2"
+    }
+  ]
+}

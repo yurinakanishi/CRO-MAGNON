@@ -1,0 +1,37 @@
+{
+  "verifiedOn": "2026-09-22",
+  "layout": "Creator at middle left, title and menu in the center, guest at middle right, four advisers in a row below. Narrow phones keep the creator and guest side by side below the hero, with advisers in two columns.",
+  "sizes": {
+    "creatorAvatar": 112,
+    "otherAvatars": 56,
+    "creatorQR": 148,
+    "otherQRs": 74,
+    "creatorHeading": 22,
+    "otherHeadings": 18,
+    "creatorName": 28,
+    "otherNames": 14
+  },
+  "chromeViewports": [
+    { "width": 1920, "height": 1080, "scrollWidth": 1920, "scrollHeight": 1080 },
+    { "width": 1536, "height": 776, "scrollWidth": 1536, "scrollHeight": 776 },
+    { "width": 1440, "height": 900, "scrollWidth": 1440, "scrollHeight": 900 },
+    { "width": 1280, "height": 800, "scrollWidth": 1280, "scrollHeight": 800 },
+    { "width": 1000, "height": 700, "scrollWidth": 1000, "scrollHeight": 700 },
+    { "width": 767, "height": 722, "scrollWidth": 767, "scrollHeight": 722 },
+    { "width": 390, "height": 844, "scrollWidth": 380, "scrollHeight": 1288 },
+    { "width": 844, "height": 390, "scrollWidth": 834, "scrollHeight": 664 }
+  ],
+  "checks": [
+    "All 6 original avatar JPEGs and 6 QR PNGs load",
+    "Creator avatar is doubled; adviser and guest images retain their exact display sizes",
+    "No horizontal overflow; all advisers reachable by scrolling on short or narrow screens",
+    "Headings and names enlarged; original names, order and non-clickable credits preserved",
+    "Arrow keys move between Start and Help",
+    "Help opens and returns; Start opens character selection and returns",
+    "Reload preserves layout and returns to a fully rendered title",
+    "Final normal viewport has no render-error overlay"
+  ],
+  "transientDevelopmentIssue": "A reload during the development watcher update failed to fetch terrain assets. Reloading after the final build restored the rendered background; no later console errors were observed.",
+  "physicalControllers": false,
+  "exhibitionDisplayVisualInspection": false
+}

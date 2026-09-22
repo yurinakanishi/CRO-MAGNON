@@ -18,10 +18,14 @@ export const TITLE_GUEST = {
 } as const;
 
 export function titleCreditsMarkup(): string {
-  const card = (credit: (typeof TITLE_CREDITS)[number] | typeof TITLE_GUEST, size = 74) =>
-    `<figure class="credit-person"><img class="credit-avatar" src="/title/avatar-${credit.qr}.jpg" width="56" height="56" alt="${credit.name}のXアイコン" decoding="async"><img class="credit-qr" src="/title/qr-${credit.qr}.png" width="${size}" height="${size}" alt="${credit.name}のXプロフィールのQRコード" decoding="async"><figcaption class="credit-name">${credit.name}</figcaption></figure>`;
+  const card = (
+    credit: (typeof TITLE_CREDITS)[number] | typeof TITLE_GUEST,
+    size = 74,
+    avatarSize = 56,
+  ) =>
+    `<figure class="credit-person"><img class="credit-avatar" src="/title/avatar-${credit.qr}.jpg" width="${avatarSize}" height="${avatarSize}" alt="${credit.name}のXアイコン" decoding="async"><img class="credit-qr" src="/title/qr-${credit.qr}.png" width="${size}" height="${size}" alt="${credit.name}のXプロフィールのQRコード" decoding="async"><figcaption class="credit-name">${credit.name}</figcaption></figure>`;
   return `<section class="title-credits" aria-label="クレジット">
-    <div class="credit-production"><h2>制作</h2>${card(TITLE_CREDITS[0], 148)}</div>
+    <div class="credit-production"><h2>制作</h2>${card(TITLE_CREDITS[0], 148, 112)}</div>
     <div class="credit-planning"><h2>監修</h2><div class="credit-people">${TITLE_CREDITS.slice(1)
       .map((credit) => card(credit))
       .join('')}</div></div>

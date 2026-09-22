@@ -1,4 +1,4 @@
-/* Keep the original 3D title backdrop and centered game menu. */
+/* Frame the centered title with the creator and guest; advisers sit below. */
 #screen-title {
   display: flex;
   flex-direction: column;
@@ -11,20 +11,26 @@
   display: none;
 }
 #screen-title .title-content {
+  display: grid;
+  grid-template-columns: minmax(160px, 1fr) minmax(0, 3.4fr) minmax(160px, 1fr);
+  grid-template-areas: 'production hero guest' 'planning planning planning';
+  grid-template-rows: minmax(360px, 1fr) auto;
   width: 100%;
+  max-width: 1500px;
   margin: 0 auto;
-  padding: 16px 40px 0;
-  gap: 16px;
+  padding: 24px 40px 0;
+  gap: 24px;
   flex: 1 0 auto;
-  justify-content: space-between;
+  align-items: center;
 }
 .title-hero {
+  grid-area: hero;
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 6px;
   width: 100%;
-  flex: 1 0 auto;
+  min-width: 0;
   justify-content: center;
 }
 #screen-title .title-logo {
@@ -58,7 +64,7 @@
   display: block;
   width: auto;
   max-width: 100%;
-  height: clamp(200px, min(54dvh, calc(100dvh - 464px)), 600px);
+  height: clamp(200px, min(52dvh, calc(100dvh - 444px)), 600px);
   object-fit: contain;
   filter: drop-shadow(0 8px 18px #0009);
 }
@@ -93,47 +99,39 @@
   min-height: 44px;
 }
 .title-credits {
-  display: grid;
-  grid-template-columns: minmax(176px, 1.1fr) minmax(0, 4fr) minmax(110px, 0.85fr);
-  grid-template-areas: 'production planning guest';
-  align-items: start;
-  gap: 16px 24px;
-  width: 100%;
-  max-width: 1100px;
-  margin-top: auto;
-  flex-shrink: 0;
-  padding: 16px 0 0;
-  border-top: 1px solid #dbc89540;
+  display: contents;
 }
 .title-credits h2 {
   margin: 0 0 12px;
   color: #d6c79a;
-  font-size: 11px;
-  font-weight: 500;
+  font-size: 18px;
+  font-weight: 600;
   letter-spacing: 0.18em;
+  text-align: center;
 }
 .credit-production {
   grid-area: production;
-  border-right: 1px solid #dbc89533;
-  padding-right: 24px;
+  min-width: 0;
 }
 .credit-production h2 {
-  font-size: 13px;
-  font-weight: 600;
+  font-size: 22px;
 }
 .credit-planning {
   grid-area: planning;
   min-width: 0;
+  width: min(900px, 100%);
+  justify-self: center;
+  padding-top: 16px;
+  border-top: 1px solid #dbc89540;
 }
 .credit-guest {
   grid-area: guest;
-  border-left: 1px solid #dbc89533;
-  padding-left: 24px;
+  min-width: 0;
 }
 .credit-people {
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
-  gap: 16px;
+  gap: 24px;
 }
 .credit-person {
   display: flex;
@@ -164,7 +162,7 @@
   box-shadow: 0 2px 10px #513a260c;
 }
 .credit-name {
-  font-size: 11px;
+  font-size: 14px;
   font-weight: 500;
   line-height: 1.5;
   text-align: center;
@@ -176,8 +174,12 @@
   width: 148px;
   height: 148px;
 }
+.credit-production .credit-avatar {
+  width: 112px;
+  height: 112px;
+}
 .credit-production .credit-name {
-  font-size: 22px;
+  font-size: 28px;
   line-height: 1.2;
   letter-spacing: 0.04em;
 }
@@ -195,52 +197,34 @@
 }
 @media (max-width: 1000px) {
   #screen-title .title-content {
-    padding: 16px 24px 0;
-  }
-  .title-credits {
-    grid-template-columns: 164px minmax(0, 1fr) 90px;
+    padding: 24px 24px 0;
     gap: 16px;
   }
-  .credit-production {
-    padding-right: 16px;
-  }
-  .credit-guest {
-    padding-left: 16px;
-  }
   .credit-people {
-    gap: 12px;
+    gap: 16px;
   }
 }
 @media (max-width: 700px) {
   #screen-title .title-content {
+    grid-template-columns: minmax(148px, 1fr) minmax(0, 1fr);
+    grid-template-areas: 'hero hero' 'production guest' 'planning planning';
+    grid-template-rows: auto;
     padding: 66px 18px 0;
-    gap: 32px;
+    gap: 28px 20px;
   }
   .title-art {
     width: min(620px, 100%);
     height: auto;
   }
-  .title-credits {
-    grid-template-columns: minmax(148px, 1.35fr) minmax(0, 1fr);
-    grid-template-areas: 'production guest' 'planning planning';
-    gap: 24px 20px;
-    padding: 20px 0 0;
-  }
-  .credit-production {
-    padding: 0;
-    border: 0;
-  }
-  .credit-guest {
-    padding: 0;
-    border: 0;
-  }
-  .credit-people {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 20px 18px;
-  }
   #screen-title .title-footer {
     padding: 8px 18px 10px;
     font-size: 7px;
+  }
+}
+@media (max-width: 560px) {
+  .credit-people {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 24px 18px;
   }
 }
 @media (max-height: 600px) and (min-width: 701px) {
@@ -248,7 +232,7 @@
     padding-top: 16px;
   }
   .title-art {
-    height: 240px;
+    height: 200px;
   }
   .title-welcome {
     padding: 0;
