@@ -1617,19 +1617,18 @@ function cancelRoomReset() {
 
 function openPauseMenu(tab = 'inventory') {
   if (screens.active) return;
-  const tabs: [string, string, string][] = [
-    ['inventory', 'bag', '持ち物'],
-    ...(fixedIdentity
-      ? ([
-          ['character', 'people', 'キャラクターを変える'],
-          ['warp', 'compass', 'ワープする'],
-        ] as [string, string, string][])
-      : ([
-          ['crafting', 'axe', 'クラフト・ガイド'],
-          ['info', 'compass', '世界・仲間・操作説明'],
-          ['settings', 'sound', '設定'],
-        ] as [string, string, string][])),
-  ];
+  const tabs: [string, string, string][] = fixedIdentity
+    ? [
+        ['warp', 'compass', 'ワープする'],
+        ['character', 'people', 'キャラクターを変える'],
+        ['inventory', 'bag', '持ち物'],
+      ]
+    : [
+        ['inventory', 'bag', '持ち物'],
+        ['crafting', 'axe', 'クラフト・ガイド'],
+        ['info', 'compass', '世界・仲間・操作説明'],
+        ['settings', 'sound', '設定'],
+      ];
   const subTabs: [string, string][] = [
     ['help', '操作説明'],
     ['world', '世界'],

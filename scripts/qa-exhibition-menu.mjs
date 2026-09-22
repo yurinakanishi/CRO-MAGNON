@@ -146,7 +146,7 @@ try {
       await page
         .locator('[data-pause-tab]')
         .evaluateAll((nodes) => nodes.map((el) => el.dataset.pauseTab)),
-      ['inventory', 'character', 'warp'],
+      ['warp', 'character', 'inventory'],
     );
     assert.equal(
       await page
