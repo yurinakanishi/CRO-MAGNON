@@ -1,0 +1,17 @@
+[
+  {
+    "source": "scripts\\build-human-locomotion.mjs",
+    "sha256": "7c5735ea57a88e3febec4470acaab0f14c8d61cad6a408f51dafd01e2cfc6a5e",
+    "derivative": "retarget-human.mjs"
+  },
+  {
+    "source": "scripts\\build-downed-motion.mjs",
+    "sha256": "a4cf6b831cc0d72d0355fdf1179c1a4ec77e77d68bbecca069d864372cc557eb",
+    "derivative": "build-downed.mjs"
+  },
+  {
+    "source": "scripts\\verify-human-locomotion.mjs",
+    "sha256": "450ce01eb6c9b72d41276c577f0dc37a4f1772f1af92bc0d5d6c9f79fab96373",
+    "derivative": "verify-human.mjs"
+  }
+]

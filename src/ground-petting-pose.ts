@@ -20,6 +20,12 @@ export class GroundPettingPose {
   private hips: THREE.Object3D;
   private spine: THREE.Object3D;
   private legs: THREE.Object3D[][];
+  private coat: {
+    bone: THREE.Object3D;
+    follow: number;
+    world: THREE.Quaternion;
+    at: THREE.Vector3;
+  }[];
   private joints: THREE.Object3D[];
   private base: { p: THREE.Vector3; q: THREE.Quaternion }[];
   private applied = false;
@@ -45,7 +51,20 @@ export class GroundPettingPose {
     this.legs = ['L', 'R'].map((side) =>
       ['UpperLeg', 'LowerLeg', 'Foot'].map((name) => root.getObjectByName(name + side)!),
     );
-    this.joints = [this.hips, this.spine, ...this.legs.flat()];
+    this.coat = ['FrontL', 'FrontR', 'BackL', 'BackR'].flatMap((panel) => {
+      const bone = root.getObjectByName('Coat' + panel);
+      return bone
+        ? [
+            {
+              bone,
+              follow: panel.startsWith('Front') ? 0.45 : 0.18,
+              world: new THREE.Quaternion(),
+              at: new THREE.Vector3(),
+            },
+          ]
+        : [];
+    });
+    this.joints = [this.hips, this.spine, ...this.legs.flat(), ...this.coat.map((c) => c.bone)];
     if (this.joints.some((b) => !b))
       throw new Error('Ground petting requires hips, spine and both complete legs');
     this.base = this.joints.map((b) => ({ p: b.position.clone(), q: b.quaternion.clone() }));
@@ -79,6 +98,11 @@ export class GroundPettingPose {
       this.base[i].q.copy(b.quaternion);
     });
     this.root.updateWorldMatrix(true, true);
+    for (const c of this.coat) {
+      c.bone.getWorldQuaternion(c.world);
+      c.bone.getWorldPosition(c.at);
+    }
+    const hipsStart = this.hips.getWorldPosition(new THREE.Vector3());
     this.root.getWorldQuaternion(this.rootQ);
     const floor = this.root.getWorldPosition(new THREE.Vector3()).y;
     const hipHeight = this.hips.getWorldPosition(new THREE.Vector3()).y - floor;
@@ -132,6 +156,17 @@ export class GroundPettingPose {
       leg[2].quaternion.copy(this.parentQ.multiply(f.q));
       leg[2].updateWorldMatrix(false, true);
     });
+    // A long coat hangs from the lowered hips. Let the front panels yield to
+    // the knees, while the back panels retain most of their hanging angle.
+    const hipsDelta = this.hips.getWorldPosition(new THREE.Vector3()).sub(hipsStart);
+    for (const c of this.coat) {
+      c.bone.getWorldQuaternion(this.q);
+      c.world.slerp(this.q, c.follow);
+      c.bone.parent!.getWorldQuaternion(this.parentQ).invert();
+      c.bone.quaternion.copy(this.parentQ.multiply(c.world));
+      c.bone.position.copy(c.bone.parent!.worldToLocal(c.at.add(hipsDelta)));
+      c.bone.updateWorldMatrix(false, true);
+    }
     this.requested
       .copy(target)
       .add(

@@ -1,0 +1,208 @@
+{
+  "candidate": 1,
+  "completedCandidates": 1,
+  "adoptedRevision": "11",
+  "reconstruction": [
+    {
+      "attempt": 1,
+      "decision": "rejected",
+      "reason": "Missing eyes and cloudy glasses; source and outputs retained. Requested unsupported tex-res option did not raise PBR resolution; actual PBR 512, atlas 2048."
+    },
+    {
+      "attempt": 2,
+      "decision": "selected",
+      "reason": "Frontal upright head, visible eyes, same clothing; shape 1024, PBR 1024, atlas 4096."
+    }
+  ],
+  "revisions": [
+    {
+      "revision": "rig/revision-01",
+      "review": "Rejected: influence columns did not follow Blender bone hierarchy order.",
+      "files": [
+        {
+          "path": "work/rig/revision-01/candidate.glb",
+          "sha256": "c08ce106873b4f004aec2e0e268b3b478581ed11310a8b44c85987d6f2efcf66",
+          "bytes": 29159760
+        }
+      ]
+    },
+    {
+      "revision": "rig/revision-02",
+      "review": "Influence ordering repaired; ankle deformation failed subsequent numeric review.",
+      "files": [
+        {
+          "path": "work/rig/revision-02/candidate.glb",
+          "sha256": "5447a60fc567191998d11d0a81478985cf3e62c715be7e75923ccacbf71820e8",
+          "bytes": 29159684
+        }
+      ]
+    },
+    {
+      "revision": "rig/revision-03",
+      "review": "Leg and armpit ownership repaired; wrist location and cuff weights failed visual review.",
+      "files": [
+        {
+          "path": "work/rig/revision-03/candidate.glb",
+          "sha256": "38b0eb498ed1183dd97497b5c1db192ecf473c9f518122cab453de3aa41e29ce",
+          "bytes": 29159684
+        }
+      ]
+    },
+    {
+      "revision": "rig/revision-04",
+      "review": "Wrist/cuff repaired; close coat layers required spatially continuous weights.",
+      "files": [
+        {
+          "path": "work/rig/revision-04/candidate.glb",
+          "sha256": "0d986107275cb6421b2c6c8b4d260b571e133a7e7a0fe1ff1ace844f06b6d283",
+          "bytes": 29159796
+        }
+      ]
+    },
+    {
+      "revision": "rig/revision-05",
+      "review": "Accepted rig: nearest-surface weight continuity joins close coat shells; face remains rigid.",
+      "files": [
+        {
+          "path": "work/rig/revision-05/candidate.glb",
+          "sha256": "5424467dfae5fcfcb39bf2d0cee6dd4e33ce7bcd24adc61d43aaf48b65a4c8d4",
+          "bytes": 29159796
+        }
+      ]
+    },
+    {
+      "revision": "motion/revision-02",
+      "review": "Rejected inherited rig01 influence error.",
+      "files": [
+        {
+          "path": "work/motion/revision-02/howkey-scientist/model.glb",
+          "sha256": "9d917a23ecd886a6072300eddceb016846cd018816fdfe8376f88526648447e1",
+          "bytes": 29431720
+        }
+      ]
+    },
+    {
+      "revision": "motion/revision-04",
+      "review": "CMU retarget passed; later final05 deformation review failed.",
+      "files": [
+        {
+          "path": "work/motion/revision-04/howkey-scientist/model.glb",
+          "sha256": "25772c56db622488980d815170e3d28fced14bd44ec5194858b07607b2c3e2b6",
+          "bytes": 29431644
+        }
+      ]
+    },
+    {
+      "revision": "motion/revision-06",
+      "review": "CMU retarget passed; later final07 wrist/cuff visual review failed.",
+      "files": [
+        {
+          "path": "work/motion/revision-06/howkey-scientist/model.glb",
+          "sha256": "c44432fecd1f83ee5833b910b08d240adbc8bcbc258156e6d773ee20a057ff95",
+          "bytes": 29431644
+        }
+      ]
+    },
+    {
+      "revision": "motion/revision-08",
+      "review": "CMU retarget passed; later final09 close coat-layer visual review required revision.",
+      "files": [
+        {
+          "path": "work/motion/revision-08/howkey-scientist/model.glb",
+          "sha256": "a52c5901df3f55bff50ef7cb1d754d7bc79157db90c7ac7364bc4b475f1a8bc5",
+          "bytes": 29431756
+        }
+      ]
+    },
+    {
+      "revision": "motion/revision-10",
+      "review": "Accepted CMU locomotion from rig05.",
+      "files": [
+        {
+          "path": "work/motion/revision-10/howkey-scientist/model.glb",
+          "sha256": "f1ef6e25c33b503b4b3e39b7c6046ba9877280e500f74e132e140835880ac20c",
+          "bytes": 29431756
+        }
+      ]
+    },
+    {
+      "revision": "final/revision-03",
+      "review": "Failed script attempt; no completed model. Logs retained.",
+      "files": []
+    },
+    {
+      "revision": "final/revision-05",
+      "review": "Rejected ankle stretching. Early stills used incorrect importer FPS and are not acceptance evidence.",
+      "files": [
+        {
+          "path": "work/final/revision-05/howkey-scientist/model-downed-r01.glb",
+          "sha256": "4d62134cbf900ab4771ef7b6da6ca1942a9a03f691193eba77a170087a56b974",
+          "bytes": 29530380
+        },
+        {
+          "path": "work/final/revision-05/howkey-scientist/source.glb",
+          "sha256": "25772c56db622488980d815170e3d28fced14bd44ec5194858b07607b2c3e2b6",
+          "bytes": 29431644
+        }
+      ]
+    },
+    {
+      "revision": "final/revision-07",
+      "review": "Numeric pass; rejected wrist/cuff appearance.",
+      "files": [
+        {
+          "path": "work/final/revision-07/howkey-scientist/model-downed-r01.glb",
+          "sha256": "143dcf3778f02b84fdb68c917c6a935c32baa8ff8db3cb66070a8aea2adf9705",
+          "bytes": 29530380
+        },
+        {
+          "path": "work/final/revision-07/howkey-scientist/source.glb",
+          "sha256": "c44432fecd1f83ee5833b910b08d240adbc8bcbc258156e6d773ee20a057ff95",
+          "bytes": 29431644
+        }
+      ]
+    },
+    {
+      "revision": "final/revision-09",
+      "review": "Numeric/browser pass; rejected close coat-layer artifacts.",
+      "files": [
+        {
+          "path": "work/final/revision-09/howkey-scientist/model-downed-r01.glb",
+          "sha256": "1bfefc26f169e44bab1e308d00cd93fcde5a469fe6357a4a93e421a1385806f3",
+          "bytes": 29530492
+        },
+        {
+          "path": "work/final/revision-09/howkey-scientist/source.glb",
+          "sha256": "a52c5901df3f55bff50ef7cb1d754d7bc79157db90c7ac7364bc4b475f1a8bc5",
+          "bytes": 29431756
+        }
+      ]
+    },
+    {
+      "revision": "final/revision-11",
+      "review": "Adopted. Correct-FPS exact-export stills, numeric, browser and game QA passed.",
+      "files": [
+        {
+          "path": "work/final/revision-11/howkey-scientist/lod-performance-r02.glb",
+          "sha256": "7e0fe5d847dcb1956ee575941e7396a63f663a40d43db08fe2e5a06996d0e2d2",
+          "bytes": 912884
+        },
+        {
+          "path": "work/final/revision-11/howkey-scientist/lod-performance.glb",
+          "sha256": "7e0fe5d847dcb1956ee575941e7396a63f663a40d43db08fe2e5a06996d0e2d2",
+          "bytes": 912884
+        },
+        {
+          "path": "work/final/revision-11/howkey-scientist/model-downed-r01.glb",
+          "sha256": "f6366ce469d719b2456de06d776bf029e2fdc0a80e9f0ed7c4a51c6bb0ad8c83",
+          "bytes": 29530492
+        },
+        {
+          "path": "work/final/revision-11/howkey-scientist/source.glb",
+          "sha256": "f1ef6e25c33b503b4b3e39b7c6046ba9877280e500f74e132e140835880ac20c",
+          "bytes": 29431756
+        }
+      ]
+    }
+  ]
+}

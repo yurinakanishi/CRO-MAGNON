@@ -95,6 +95,8 @@ const icons = {
   katana: '<path d="m4 21 4-4m-2-3 4 4M8 15C15 10 20 5 21 2c-4 1-9 6-13 11Z"/>',
   magic:
     '<path d="m12 2 2.5 7.5L22 12l-7.5 2.5L12 22l-2.5-7.5L2 12l7.5-2.5L12 2Z"/><path d="m20 3 1 1M3 20l1 1"/>',
+  science:
+    '<circle cx="12" cy="12" r="2"/><ellipse cx="12" cy="12" rx="10" ry="4" transform="rotate(35 12 12)"/><ellipse cx="12" cy="12" rx="10" ry="4" transform="rotate(-35 12 12)"/><ellipse cx="12" cy="12" rx="4" ry="10"/>',
   spear: '<path d="m4 21 12-14m-2 0 6-5-1 8-5-3Z"/>',
   meat: '<path d="M5 6c3-3 9-3 12 0s4 9 0 12-10 3-13-1S2 9 5 6Z"/><path d="M7 8c2-2 6-2 8 0s2 6 0 8-6 2-8 0-2-6 0-8Z"/>',
   flame:
@@ -1082,10 +1084,16 @@ function updateHuntingHUD() {
   const combat = attackProfile(me ?? profile);
   const cooldownLeft =
     me?.attackSequence > 0 ? Math.max(0, combat.cooldownMs - (serverNow - me.attackAt)) : 0;
-  const metered = combat.key === 'magic' && cooldownLeft > 0;
+  const metered = !!combat.projectileSpeed && cooldownLeft > 0;
   const magicCooldown = $('#magic-cooldown'),
     magicCooldownProgress = $('#magic-cooldown-progress');
   magicCooldown.hidden = !joined || downed || !metered;
+  magicCooldown.querySelector('span')!.textContent =
+    combat.key === 'science' ? '科学パルスを充填中' : '魔法を再び使えるまで';
+  magicCooldownProgress.setAttribute(
+    'aria-label',
+    combat.key === 'science' ? '科学パルスの再使用待ち' : '魔法の再使用待ち',
+  );
   magicCooldownProgress.max = Math.max(1, combat.cooldownMs);
   magicCooldownProgress.value = metered ? cooldownLeft : 0;
   magicCooldownProgress.setAttribute('aria-valuetext', metered ? '再使用待ち' : '使用可能');

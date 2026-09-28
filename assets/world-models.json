@@ -560,6 +560,22 @@
       "delivery": "/models/rimo-neko/model-r08.glb",
       "triangles": 136745,
       "gameQA": "assets/rimo-neko/README.md"
+    },
+    {
+      "key": "howkey-scientist",
+      "name": "Howkey 科学使い",
+      "kind": "humanoid",
+      "height": 1.549999901917819,
+      "geometryResolution": 1024,
+      "referenceVersion": 2,
+      "status": "integrated-and-game-qa-passed",
+      "sha256": "f6366ce469d719b2456de06d776bf029e2fdc0a80e9f0ed7c4a51c6bb0ad8c83",
+      "delivery": "/models/howkey-scientist/model-r11.glb",
+      "subject": "Adult anime scientist, sage bob with cream tips, round glasses, blue grey eyes, white lab coat, charcoal suit and red badge.",
+      "candidate": 1,
+      "revision": "11",
+      "triangles": 66406,
+      "gameQA": "assets/howkey-scientist/README.md"
     }
   ],
   "reuse": {

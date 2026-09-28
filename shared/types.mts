@@ -3,7 +3,7 @@ export interface Point {
   x: number;
   z: number;
 }
-export type Species = 'cro' | 'nea' | 'cat' | 'bear' | 'ape';
+export type Species = 'cro' | 'nea' | 'cat' | 'bear' | 'ape' | 'howkey';
 export type Gender = 'female' | 'male';
 export type Difficulty = import('./difficulty.mjs').Difficulty;
 export type ResourceKind = 'wood' | 'stone' | 'berry' | 'obsidian';
@@ -19,7 +19,7 @@ export interface CharacterModel {
   gender: Gender;
   key: string;
   name: string;
-  weapon?: 'katana' | 'magic' | 'unarmed';
+  weapon?: 'katana' | 'magic' | 'unarmed' | 'science';
   height?: number;
   radius?: number;
   walkSpeed?: number;

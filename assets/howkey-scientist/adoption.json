@@ -1,0 +1,24 @@
+{
+  "modelKey": "howkey-scientist",
+  "candidate": 1,
+  "revision": "11",
+  "decision": "adopt",
+  "sha256": "f6366ce469d719b2456de06d776bf029e2fdc0a80e9f0ed7c4a51c6bb0ad8c83",
+  "visualGate": "passed",
+  "browserGate": "passed",
+  "reviewer": "Codex",
+  "source": "output/model-generation/models/howkey-scientist/work/final/revision-11/howkey-scientist/model-downed-r01.glb",
+  "staticReview": "Exact GLB, seven normal and seven clay views. Adult scientist silhouette, sage/cream bob, visible blue-grey eyes, glasses, white coat, charcoal vest/tie and red badge retained.",
+  "motionReview": "Exact reimport at correct FPS; 50 motion keyframes. Wrist placement and close coat-shell weights repaired; Eat, Gather, Walk, Run, Craft, Give, Wave, Attack and Downed inspected. No ground-plane accessory or substituted organic geometry.",
+  "numericReport": "output/model-generation/models/howkey-scientist/work/final/revision-11/howkey-scientist/qa/numeric.json",
+  "browserReport": "output/playwright/howkey/viewer-r11/result.json",
+  "notes": [
+    "One completed Candidate 1; rejected reconstructions and intermediate rigs retained.",
+    "Generated full-body interpretation of two user portraits; trousers, shoes and back are inferred.",
+    "28 joints, maximum four influences. Coat and hair secondary bones; rigid facial features and glasses.",
+    "CMU 35_01 walking and 09_01 running; original clips and geometry preserved through motion retargeting.",
+    "Double-sided coat with repaired spatially continuous skin; this is a skinned garment, not cloth simulation.",
+    "Browser confirms exact SHA, 10 clips, normal/half-speed playback from two views, pause/scrub, quarter speed, rotation/zoom/reset and mobile controls. Zero external requests and page errors.",
+    "Game integration QA follows adoption; this review does not claim a public deployment or exhibition-PC cutover."
+  ]
+}

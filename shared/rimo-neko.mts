@@ -213,7 +213,9 @@ export function handleRimoNekoAction(
       ? [0.3, 0.07, RIMO_NEKO.headHeight]
       : player.species === 'ape'
         ? [0.8, 0.25, RIMO_NEKO.headHeight]
-        : [0.6, 0.12, RIMO_NEKO.headHeight];
+        : player.species === 'howkey'
+          ? [0.54, 0.12, RIMO_NEKO.headHeight]
+          : [0.6, 0.12, RIMO_NEKO.headHeight];
   const goal = {
     x: player.x + Math.sin(facing) * reach - Math.cos(facing) * side,
     z: player.z + Math.cos(facing) * reach + Math.sin(facing) * side,

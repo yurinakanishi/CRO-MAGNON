@@ -97,6 +97,22 @@ export const ATTACK_PROFILES = Object.freeze({
     projectileSpeed: 7,
     projectileRadius: 0.16,
   }),
+  science: Object.freeze({
+    id: 'science',
+    key: 'science',
+    label: '科学パルス',
+    noun: '科学パルス',
+    startText: '科学パルスを放った。',
+    damage: 24,
+    cooldownMs: 1600,
+    durationMs: 900,
+    impactMs: 400,
+    reach: 7,
+    halfAngle: (12 * Math.PI) / 180,
+    energy: 3,
+    projectileSpeed: 9,
+    projectileRadius: 0.14,
+  }),
 });
 
 export function attackProfile(character: CharacterProfile): Readonly<AttackProfile> {

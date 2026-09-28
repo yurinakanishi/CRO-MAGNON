@@ -259,12 +259,18 @@ button kbd {
 .portrait.bear {
   background: #95714d url('/models/desert-fennec-mage/portrait.png') 50% 28%/220% auto no-repeat;
 }
+.portrait.howkey {
+  background: #b5cec2 url('/models/howkey-scientist/portrait.png') 50% 18%/190% auto no-repeat;
+}
 .portrait.cat:before,
 .portrait.cat:after,
 .portrait.cat i,
 .portrait.bear:before,
 .portrait.bear:after,
-.portrait.bear i {
+.portrait.bear i,
+.portrait.howkey:before,
+.portrait.howkey:after,
+.portrait.howkey i {
   display: none;
 }
 
@@ -2536,7 +2542,7 @@ dialog:has(.character-switch) {
 }
 .character-choice-grid {
   display: grid;
-  grid-template-columns: repeat(7, minmax(0, 1fr));
+  grid-template-columns: repeat(8, minmax(0, 1fr));
   gap: 14px;
 }
 .character-choice {

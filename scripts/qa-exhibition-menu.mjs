@@ -118,6 +118,8 @@ try {
       );
     });
     await page.locator('#title-start').click();
+    if (process.env.QA_CHARACTER)
+      await page.locator(`#setup-form input[value="${process.env.QA_CHARACTER}"]`).focus();
     await tap(page, 1);
     await page.locator('#setup-flow[data-step="spawn"]').waitFor();
     const startCards = await page.locator('[data-choose-spawn]').evaluateAll((nodes) =>
@@ -131,6 +133,14 @@ try {
     await page
       .locator('#world[data-world-asset="ready"][data-character-asset="ready"]')
       .waitFor({ timeout: 120000 });
+    if (process.env.QA_CHARACTER === 'howkey-female') {
+      assert.equal(actor(layout).species, 'howkey');
+      assert.match(
+        await page.locator('#my-portrait').evaluate((el) => getComputedStyle(el).backgroundImage),
+        /howkey-scientist\/portrait\.png/,
+      );
+      await shot(page, `${layout}-howkey-hud`);
+    }
     // Position only in this unsaved QA world to exercise the prompt beside Or.
     const nearOr = actor(layout);
     const start = { x: nearOr.x, z: nearOr.z };

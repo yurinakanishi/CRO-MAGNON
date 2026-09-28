@@ -1,0 +1,43 @@
+{
+  "candidate": 1,
+  "revision": "11",
+  "sha256": "f6366ce469d719b2456de06d776bf029e2fdc0a80e9f0ed7c4a51c6bb0ad8c83",
+  "triangles": 66406,
+  "bytes": 29530492,
+  "joints": 28,
+  "clips": 10,
+  "heightMetres": 1.549999901917819,
+  "numeric": {
+    "sampleRate": 120,
+    "poses": 2056,
+    "renderVertices": 112427,
+    "minimumGroundMetres": -0.00019538821685271315,
+    "maximumEdgeElongation": 4.374078181435876,
+    "errors": []
+  },
+  "runtimeCrouch": {
+    "poses": 30,
+    "minimumGroundMetres": 4.99356989232973e-07,
+    "maximumHandGapMetres": 0.00023204649120737097
+  },
+  "reports": {
+    "modelViewer": "output/playwright/howkey/viewer-r11/result.json",
+    "game": "output/playwright/howkey/game-r03/result.json",
+    "detail": "output/playwright/howkey/detail-r01/result.json",
+    "runtimeCrouch": "output/model-generation/models/howkey-scientist/qa/runtime-crouch.json"
+  },
+  "tests": {
+    "passed": 615,
+    "failed": 0,
+    "log": "output/howkey-tests-final.log"
+  },
+  "portrait": {
+    "path": "public/models/howkey-scientist/portrait.png",
+    "sha256": "62f60254e41ef1cab392847f976d91d91df00850bfb178db0d3130f85d17020c"
+  },
+  "limits": [
+    "Physical controllers, exhibition screens and long-running sessions untested.",
+    "Skinned coat and hair; no cloth or hair physics. Reconstructed source has boundary and non-manifold edges.",
+    "No public deployment, ordinary-server restart or user-save edits."
+  ]
+}

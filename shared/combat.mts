@@ -136,7 +136,7 @@ export function resolveAttack(room, player, now = Date.now()) {
   if (!strike || now < strike.impactAt) return null;
   player.pendingStrike = null;
   const profile = ATTACK_PROFILES[strike.kind || 'spear'];
-  if (profile.key === 'magic') {
+  if (profile.key === 'magic' || profile.key === 'science') {
     // Start at the body centre and sweep the first segment too, so casting next
     // to a wall cannot spawn the orb on the wall's far side.
     const carrier = player.carrierId && room.players.get(player.carrierId);
@@ -165,7 +165,7 @@ export function resolveAttack(room, player, now = Date.now()) {
       createdAt: strike.impactAt,
       updatedAt: strike.impactAt,
       travelled: 0,
-      kind: 'magic',
+      kind: profile.key,
     });
     return { hit: false, launched: true };
   }
@@ -325,9 +325,9 @@ export function updateProjectiles(room, now = Date.now()) {
   for (const projectile of room.projectiles || []) {
     const owner = room.players.get(projectile.ownerId);
     if (!owner || owner.downedUntil) continue;
-    const profile = ATTACK_PROFILES.magic;
+    const profile = projectile.kind === 'science' ? ATTACK_PROFILES.science : ATTACK_PROFILES.magic;
     const speed = projectile.speed ?? profile.projectileSpeed;
-    // Retain the spell's original lifetime (8 / 7 seconds). Inherited motion
+    // Retain the profile's original lifetime. Inherited motion
     // adds world distance without reducing its forward travel relative to the ape.
     const range = (profile.reach * speed) / profile.projectileSpeed;
     const travel = Math.min(
@@ -367,6 +367,7 @@ export function updateProjectiles(room, now = Date.now()) {
         elevation: projectile.elevation ?? 0,
         at: now,
         hit: !!hit,
+        kind: projectile.kind ?? 'magic',
       };
       room.projectileImpacts.push(impact);
       if (hit)

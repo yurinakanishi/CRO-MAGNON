@@ -1,0 +1,173 @@
+{
+  "modelKey": "howkey-scientist",
+  "name": "Howkey 科学使い",
+  "kind": "humanoid",
+  "candidate": 1,
+  "revision": "11",
+  "status": "integrated-reviewed-prototype",
+  "species": "howkey",
+  "gender": "female",
+  "url": "/models/howkey-scientist/model-r11.glb",
+  "sha256": "f6366ce469d719b2456de06d776bf029e2fdc0a80e9f0ed7c4a51c6bb0ad8c83",
+  "bytes": 29530492,
+  "triangles": 66406,
+  "bones": 28,
+  "upAxis": "Y",
+  "forwardAxis": "+Z",
+  "heightMetres": 1.549999901917819,
+  "widthMetres": 0.773907259384759,
+  "placement": {
+    "pivot": "ground-centred",
+    "min": [
+      -0.3870612117523622,
+      -9.275617246731705e-08,
+      -0.23046672605980648
+    ],
+    "max": [
+      0.38684604763239683,
+      1.5499998091616465,
+      0.12171934662478755
+    ]
+  },
+  "clips": [
+    {
+      "name": "Attack",
+      "seconds": 0.8999999761581421,
+      "loop": false
+    },
+    {
+      "name": "Craft",
+      "seconds": 2,
+      "loop": false
+    },
+    {
+      "name": "Eat",
+      "seconds": 1.7999999523162842,
+      "loop": false
+    },
+    {
+      "name": "Gather",
+      "seconds": 1.5,
+      "loop": false
+    },
+    {
+      "name": "Give",
+      "seconds": 1.2000000476837158,
+      "loop": false
+    },
+    {
+      "name": "Idle_Loop",
+      "seconds": 4,
+      "loop": true
+    },
+    {
+      "name": "Run_Loop",
+      "seconds": 0.7333333492279053,
+      "loop": true
+    },
+    {
+      "name": "Walk_Loop",
+      "seconds": 1.1166666746139526,
+      "loop": true
+    },
+    {
+      "name": "Wave",
+      "seconds": 2,
+      "loop": false
+    },
+    {
+      "name": "Downed",
+      "seconds": 1.7999999523162842,
+      "loop": false
+    }
+  ],
+  "locomotion": {
+    "Walk_Loop": {
+      "metresPerSecond": 1.0440897872302657,
+      "strideMetres": 1.16590026240713,
+      "cycleSeconds": 1.1166666666666667,
+      "dutyFactor": 0.61,
+      "method": "CMU measured human locomotion, anatomical retarget and sole contact"
+    },
+    "Run_Loop": {
+      "metresPerSecond": 2.9888067003622254,
+      "strideMetres": 2.191791580265632,
+      "cycleSeconds": 0.7333333333333333,
+      "dutyFactor": 0.36,
+      "method": "CMU measured human locomotion, anatomical retarget and sole contact"
+    }
+  },
+  "humanLocomotion": {
+    "revision": "10",
+    "sourceDelivery": "C:\\Users\\yurin\\Desktop\\projects\\CRO-MAGNON\\output\\model-generation\\models\\howkey-scientist\\work\\rig\\revision-05\\candidate.glb",
+    "sourceSha256": "5424467dfae5fcfcb39bf2d0cee6dd4e33ce7bcd24adc61d43aaf48b65a4c8d4",
+    "status": "reviewed",
+    "changes": [
+      {
+        "clip": "Walk_Loop",
+        "trial": "35_01",
+        "startFrame": 140,
+        "endFrame": 274,
+        "phaseOffsetFrames": 0,
+        "sampleRate": 120,
+        "frames": 135,
+        "seconds": 1.1166666666666667,
+        "legScale": 0.8088816000220357,
+        "strideMetres": 1.16590026240713
+      },
+      {
+        "clip": "Run_Loop",
+        "trial": "09_01",
+        "startFrame": 1,
+        "endFrame": 89,
+        "phaseOffsetFrames": 80,
+        "sampleRate": 120,
+        "frames": 89,
+        "seconds": 0.7333333333333333,
+        "legScale": 0.8214710584778575,
+        "strideMetres": 2.191791580265632
+      }
+    ],
+    "reference": "assets/human-locomotion/README.md"
+  },
+  "downedMotion": {
+    "revision": "revision-01",
+    "sourceUrl": "output/model-generation/models/howkey-scientist/work/motion/revision-10/howkey-scientist/model.glb",
+    "sourceSha256": "f1ef6e25c33b503b4b3e39b7c6046ba9877280e500f74e132e140835880ac20c",
+    "clip": "Downed",
+    "seconds": 1.8,
+    "fps": 60,
+    "review": "assets/howkey-scientist/README.md"
+  },
+  "lods": [
+    {
+      "url": "/models/howkey-scientist/lod-performance-r02.glb",
+      "sha256": "7e0fe5d847dcb1956ee575941e7396a63f663a40d43db08fe2e5a06996d0e2d2",
+      "bytes": 912884,
+      "triangles": 9960,
+      "distanceMetres": 28,
+      "purpose": "animated-medium-lod-geometry"
+    }
+  ],
+  "provenance": {
+    "provider": "Codex",
+    "claudeUsed": false,
+    "referenceGenerator": "Built-in imagegen",
+    "referenceImage": "assets/howkey-scientist/source/reference-v2.png",
+    "referenceSha256": "5907781a465bcb50cde4ecdc650d5028f71b8d69c0b79c121ce9e37b3aeffaad",
+    "reconstruction": "Local TRELLIS-2 v0.8.1; retained dense geometry, source-preserving reduction and 28-joint skin.",
+    "candidateFile": "output/model-generation/models/howkey-scientist/work/final/revision-11/howkey-scientist/model-downed-r01.glb",
+    "visualReview": "assets/howkey-scientist/adoption.json"
+  },
+  "notes": [
+    "One completed Candidate 1; rejected reconstructions and intermediate rigs retained.",
+    "Generated full-body interpretation of two user portraits; trousers, shoes and back are inferred.",
+    "28 joints, maximum four influences. Coat and hair secondary bones; rigid facial features and glasses.",
+    "CMU 35_01 walking and 09_01 running; original clips and geometry preserved through motion retargeting.",
+    "Double-sided coat with repaired spatially continuous skin; this is a skinned garment, not cloth simulation.",
+    "Browser confirms exact SHA, 10 clips, normal/half-speed playback from two views, pause/scrub, quarter speed, rotation/zoom/reset and mobile controls. Zero external requests and page errors.",
+    "Source-derived medium geometry for 28 m distance and simplified shadows. Runtime shares the exact close-model materials and animated skeleton.",
+    "Game QA passed in an isolated, unsaved world: two renderers and three additional peers, actions, science hit synchronization, pets, riding, recovery, reload and mobile layouts. Physical controllers and long-duration exhibition use remain untested."
+  ],
+  "gameQA": "assets/howkey-scientist/README.md"
+}

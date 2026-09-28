@@ -1,0 +1,11 @@
+{
+  "candidate": 1,
+  "attempt": "01",
+  "decision": "reject-and-revise-same-pending-candidate",
+  "denseSha256": "6753ea576a14d819f91f3595a5d3c215cee6069605941c945ca5e796f345c6fe",
+  "reason": "Exact dense GLB face renders show blank/obscured eyes, thick cloudy spectacle lenses, and broken dark facial texture. Reduction is not the cause; the dense reconstruction itself fails reference fidelity.",
+  "evidence": "output/model-generation/models/howkey-scientist/qa/dense-face/",
+  "retained": ["reference-v1.png", "dense-res1024-seed0042.glb", "work/low-poly/revision-01"],
+  "metadataCorrection": "The attempt-01 generator recorded a requested --tex-res 2048. CLI help accepts 512 or 1024 for the PBR volume, not 2048; the log confirms actual PBR volume 512 and UV atlas 2048. The retained original record is historical input, not evidence of a 2048 PBR volume.",
+  "next": "Frontal upright reference-v2 with unobscured eyes and fine lensless frame; explicit --tex-res 1024, --atlas 4096, --steps 24. Retain all prior bytes."
+}

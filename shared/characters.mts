@@ -66,6 +66,19 @@ export const CHARACTER_MODELS: readonly Readonly<CharacterModel>[] = Object.free
     walkSpeed: 2.4,
     runSpeed: 6.4,
   }),
+  Object.freeze({
+    species: 'howkey',
+    gender: 'female',
+    key: 'howkey-scientist',
+    carryable: false,
+    name: 'Howkey 科学使い',
+    weapon: 'science',
+    height: 1.55,
+    radius: 0.32,
+    // Stay within the delivered CMU stride and the animation rate limits.
+    walkSpeed: 1.4,
+    runSpeed: 4.4,
+  }),
 ]);
 
 // Missing choices (including profiles saved before gender existed) start female.
@@ -73,7 +86,8 @@ export function normalizeCharacter({ species, gender }: CharacterProfile = {}): 
   species: Species;
   gender: Gender;
 } {
-  if (species === 'cat' || species === 'bear') return { species, gender: 'female' };
+  if (species === 'cat' || species === 'bear' || species === 'howkey')
+    return { species, gender: 'female' };
   if (species === 'ape') return { species, gender: 'male' };
   return {
     species: species === 'nea' ? 'nea' : 'cro',

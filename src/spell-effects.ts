@@ -9,8 +9,11 @@ const CAPACITY = 1024,
 // Player light is teal with a warm core; the sorcerer's hex magic is red with a
 // pale hot core, so the two are told apart at a glance.
 const LIGHT = Object.freeze({ halo: [0.26, 0.75, 0.85], core: [1.0, 0.9, 0.55] }),
+  SCIENCE = Object.freeze({ halo: [0.2, 0.45, 1.0], core: [0.72, 1.0, 1.0] }),
   HEX = Object.freeze({ halo: [0.95, 0.08, 0.12], core: [1.0, 0.72, 0.5] });
 const isHex = (item) => item.kind === 'hex';
+const paletteFor = (item) => (isHex(item) ? HEX : item.kind === 'science' ? SCIENCE : LIGHT);
+const flightHeight = (item) => (item.kind === 'science' ? 1.0 : 0.4);
 
 // Light is a runtime particle effect, with a single reusable GPU buffer and draw
 // call. Damage, flight positions and impacts all come from server snapshots.
@@ -92,6 +95,26 @@ export class SpellEffects {
       this.core[i * 3 + k] = palette.core[k];
     }
   }
+  // Three luminous orbital paths distinguish Howkey's pulse from a magic orb.
+  // These are short-lived particles in the shared buffer, not additional models.
+  addScienceOrbit(x: number, y: number, z: number, radius: number, phase: number, alpha: number) {
+    for (let plane = 0; plane < 3; plane++) {
+      const tilt = (plane * Math.PI) / 3;
+      for (let i = 0; i < 18; i++) {
+        const angle = (i / 18) * Math.PI * 2 + phase,
+          a = Math.cos(angle) * radius,
+          b = Math.sin(angle) * radius;
+        this.add(
+          x + a * Math.cos(tilt),
+          y + b,
+          z + a * Math.sin(tilt),
+          i === 0 ? 0.07 : 0.028,
+          alpha * (i === 0 ? 1 : 0.65),
+          SCIENCE,
+        );
+      }
+    }
+  }
   // The sorcerer's area burst: a red ring on the floor grows and pulses through
   // the windup so players know where to leave, then flashes outward on detonation.
   addBurst(burst, now) {
@@ -155,14 +178,14 @@ export class SpellEffects {
     const active = new Set();
     for (const orb of state.projectiles || []) {
       active.add(orb.id);
-      const palette = isHex(orb) ? HEX : LIGHT;
+      const palette = paletteFor(orb);
       let p = this.positions.get(orb.id);
       if (!p) {
         // The server sweeps from the body centre to prevent firing through an
         // adjacent wall. Draw from the hands while retaining that collision path.
         const originX = orb.x - orb.dx * orb.travelled,
           originZ = orb.z - orb.dz * orb.travelled,
-          baseY = projectileHeight(originX, originZ, orb.elevation) + 0.4;
+          baseY = projectileHeight(originX, originZ, orb.elevation) + flightHeight(orb);
         point.set(originX + orb.dx * 0.16, baseY, originZ + orb.dz * 0.16);
         const owner = players.get(orb.ownerId);
         if (owner?.gripLeft && owner?.gripRight) {
@@ -180,7 +203,7 @@ export class SpellEffects {
           forward,
           lateral: (point.x - originX) * orb.dz - (point.z - originZ) * orb.dx,
           handHeight: point.y - baseY,
-          handBlendDistance: owner?.state.carrierId ? 2 : 0.35,
+          handBlendDistance: owner?.state.carrierId ? 2 : orb.kind === 'science' ? 0.8 : 0.35,
         };
         this.positions.set(orb.id, p);
       }
@@ -202,10 +225,22 @@ export class SpellEffects {
           0,
           p.originZ + orb.dz * forward - orb.dx * lateral,
         );
-        point.y = projectileHeight(point.x, point.z, orb.elevation) + 0.4 + p.handHeight * blend;
+        point.y =
+          projectileHeight(point.x, point.z, orb.elevation) +
+          flightHeight(orb) +
+          p.handHeight * blend;
       };
       flightPoint(travelled);
-      this.add(point.x, point.y, point.z, isHex(orb) ? 0.56 : 0.48, 1, palette);
+      this.add(
+        point.x,
+        point.y,
+        point.z,
+        isHex(orb) ? 0.56 : orb.kind === 'science' ? 0.25 : 0.48,
+        1,
+        palette,
+      );
+      if (orb.kind === 'science')
+        this.addScienceOrbit(point.x, point.y, point.z, 0.14, now * 0.013, 0.95);
       for (let i = 1; i <= 9; i++) {
         const d = i * 0.052,
           phase = now * 0.012 + i * 2.4;
@@ -227,10 +262,12 @@ export class SpellEffects {
     for (const impact of state.projectileImpacts || []) {
       const age = Math.max(0, (now - impact.at) / 1000);
       if (age > 0.6) continue;
-      const y = projectileHeight(impact.x, impact.z, impact.elevation) + 0.4,
+      const y = projectileHeight(impact.x, impact.z, impact.elevation) + flightHeight(impact),
         fade = 1 - age / 0.6,
-        palette = isHex(impact) ? HEX : LIGHT;
+        palette = paletteFor(impact);
       this.add(impact.x, y, impact.z, 0.65 + age * 0.7, fade * 0.6, palette);
+      if (impact.kind === 'science')
+        this.addScienceOrbit(impact.x, y, impact.z, 0.15 + age * 0.7, age * 7, fade);
       for (let i = 0; i < 18; i++) {
         const a = i * 2.39996323,
           s = Math.sqrt((i + 0.5) / 18),
@@ -272,10 +309,19 @@ export class SpellEffects {
     for (const entity of players.values()) {
       const p = entity.state,
         profile = attackProfile(p);
-      if (profile.key !== 'magic' || !p.attackSequence || p.downedUntil) continue;
+      if (!profile.projectileSpeed || !p.attackSequence || p.downedUntil) continue;
       const age = (now - p.attackAt) / 1000;
       if (age < 0 || age >= profile.impactMs / 1000) continue;
       entity.model.updateMatrixWorld(true);
+      if (profile.key === 'science' && entity.gripLeft && entity.gripRight) {
+        entity.gripLeft.getWorldPosition(point);
+        entity.gripRight.getWorldPosition(otherHand);
+        point.add(otherHand).multiplyScalar(0.5);
+        const growth = age / (profile.impactMs / 1000);
+        this.add(point.x, point.y, point.z, 0.08 + growth * 0.2, 0.65, SCIENCE);
+        this.addScienceOrbit(point.x, point.y, point.z, 0.07 + growth * 0.1, now * 0.018, growth);
+        continue;
+      }
       for (const grip of [entity.gripLeft, entity.gripRight]) {
         if (!grip) continue;
         grip.getWorldPosition(point);
