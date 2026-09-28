@@ -5,6 +5,8 @@ import { enemyIsSolid } from '../shared/combat.mjs';
 import { activateMiddenObstacle } from '../shared/coastal-sites.mjs';
 import { CoastalRenderer } from './coastal-renderer.js';
 import { VillageRenderer } from './village-renderer.js';
+import { RimoNekoRenderer } from './rimo-neko-renderer.js';
+import { groundPettingProgress } from './ground-petting-pose.js';
 import { Companion524Renderer } from './companion-524-renderer.js';
 import { pettingProgress } from './petting-pose.js';
 import { isMesh } from './three-types.js';
@@ -176,6 +178,7 @@ export class WorldRenderer {
   declare coastalRenderer: CoastalRenderer | undefined;
   declare villageRenderer: VillageRenderer | undefined;
   declare companion524Renderer: Companion524Renderer | undefined;
+  declare rimoNekoRenderer: RimoNekoRenderer | undefined;
   declare npcActor: any;
   declare npc: any;
   declare failed: boolean | undefined;
@@ -372,6 +375,7 @@ export class WorldRenderer {
         this.villageRenderer = new VillageRenderer(this);
       }
       this.companion524Renderer = new Companion524Renderer(this);
+      this.rimoNekoRenderer = new RimoNekoRenderer(this);
       this.npcActor = await this.npcAssets.create({ color: '#ad9d79' });
       if (this.disposed) {
         this.npcActor?.dispose();
@@ -616,6 +620,7 @@ export class WorldRenderer {
         );
         const animalRoots = [
           ...(this.companion524Renderer ? [this.companion524Renderer.root] : []),
+          ...(this.rimoNekoRenderer ? [this.rimoNekoRenderer.root] : []),
           ...this.mammoths.flatMap((animal) => [animal.model, animal.meat]),
           ...[...this.enemies.values()].map((enemy) => enemy.model),
         ].filter((root) => root.visible);
@@ -1027,6 +1032,7 @@ export class WorldRenderer {
     }
     this.boatRenderer?.update(time, dt);
     this.companion524Renderer?.update(dt);
+    this.rimoNekoRenderer?.update(dt);
     // Update the carrier's animated shoulder before its passenger, regardless of join order.
     for (const entity of [...this.players.values()].sort(
       (a, b) => Number(!!a.state.carrierId) - Number(!!b.state.carrierId),
@@ -1034,6 +1040,7 @@ export class WorldRenderer {
       const { model } = entity,
         p = entity.state.id === this.selfId && predicted ? predicted : entity.state,
         factor = 1 - Math.exp(-dt * 20);
+      entity.actor?.groundPettingPose.restore();
       entity.actor?.pettingPose.restore();
       entity.actor?.leanPose?.restore();
       entity.actor?.carrySupportPose?.restore();
@@ -1166,8 +1173,22 @@ export class WorldRenderer {
       // Position reconciliation can move a model backwards by a few centimetres.
       // It is not a turn or a step: use the collision-checked simulation motion.
       const motionSpeed = p.moving ? p.speed : 0;
-      const petting = pettingProgress(this.state.companion524, p, this.serverNow());
-      const facing = petting.weight > 0 ? this.state.companion524!.petFacing : p.facing;
+      const groundPetting = groundPettingProgress(this.state.rimoNeko, p, this.serverNow());
+      if (entity.actor) {
+        if (p.downedUntil || airborne !== null || p.mountId || p.boatId || p.carrierId) {
+          entity.actor.groundPettingPose.weight = 0;
+          groundPetting.weight = 0;
+        } else {
+          groundPetting.weight = entity.actor.groundPettingPose.blendWeight(
+            groundPetting.weight,
+            dt,
+          );
+        }
+      }
+      const petting524 = pettingProgress(this.state.companion524, p, this.serverNow());
+      const petting = groundPetting.weight > 0 ? groundPetting : petting524;
+      const petCompanion = groundPetting.weight > 0 ? this.state.rimoNeko : this.state.companion524;
+      const facing = petting.weight > 0 ? petCompanion!.petFacing : p.facing;
       const diff = Math.atan2(
         Math.sin(facing - model.rotation.y),
         Math.cos(facing - model.rotation.y),
@@ -1195,7 +1216,14 @@ export class WorldRenderer {
           airborne === null && !p.downedUntil ? motionSpeed : null,
           entity.running,
         );
-        if (petting.weight > 0 && this.companion524Renderer) {
+        if (groundPetting.weight > 0 && this.rimoNekoRenderer) {
+          this.rimoNekoRenderer.petTarget(tempPoint);
+          entity.actor.groundPettingPose.update(
+            tempPoint,
+            groundPetting.weight,
+            groundPetting.stroke,
+          );
+        } else if (petting524.weight > 0 && this.companion524Renderer) {
           tempPoint.copy(this.companion524Renderer.root.position);
           const petNear = p.species === 'bear' ? 0.13 : 0.08;
           tempPoint.x -= Math.sin(facing) * petNear;
@@ -1487,6 +1515,7 @@ export class WorldRenderer {
       data.glbAnimals = String(this.mammoths.filter((a) => a.model.visible).length);
       data.animals = JSON.stringify(this.state.animals || []);
       data.companion524 = JSON.stringify(this.companion524Renderer?.diagnostics() ?? null);
+      data.rimoNeko = JSON.stringify(this.rimoNekoRenderer?.diagnostics() ?? null);
       data.meatPiles = String(this.mammoths.filter((a) => a.meat.visible).length);
       data.animalAnimations = JSON.stringify(
         this.mammoths.map((a) => ({
@@ -1614,6 +1643,7 @@ export class WorldRenderer {
     this.coastalRenderer?.dispose();
     this.villageRenderer?.dispose();
     this.companion524Renderer?.dispose();
+    this.rimoNekoRenderer?.dispose();
     this.regionalScenery?.dispose();
     this.landmarks?.dispose();
     this.openWorld?.dispose();

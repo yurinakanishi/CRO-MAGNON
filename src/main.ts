@@ -57,6 +57,8 @@ import {
 import { GATHER_RANGE, interactionVisible } from '../shared/interactions.mjs';
 import { campContribution } from '../shared/camp-contribution.mjs';
 import { caveFireInteraction } from '../shared/cave-fire.mjs';
+import { nearRimoNeko, RIMO_NEKO } from '../shared/rimo-neko.mjs';
+import { playCatHiss } from './cat-hiss.js';
 import { nearCompanion524 } from '../shared/companion-524.mjs';
 import { ENEMY_GROUNDS, SCENERY } from '../shared/scenery-layout.mjs';
 import { CASTLE_GATE } from '../shared/castle-layout.mjs';
@@ -214,7 +216,7 @@ $('#app').innerHTML = `
     <div class="map-hud"><button id="map-button" class="minimap-button" aria-label="世界地図を開く" title="世界地図 [${fixedIdentity ? controllerLabels().map : 'M'}]"><canvas id="minimap" width="160" height="115"></canvas><span class="map-north">N</span><span class="map-area" id="map-area">はじまりの谷</span>${fixedIdentity ? '' : '<kbd class="map-key">M</kbd>'}</button><div class="connection"><i class="status-dot" id="connection-dot"></i><span id="connection-label">未接続</span><span id="ping-label">— ms</span></div></div>
     <div id="toast-stack" class="toast-stack" aria-live="polite"></div>
     ${fixedIdentity ? '' : `<div class="chat-panel"><button class="chat-heading" id="chat-toggle">${icon('chat')}<strong>焚き火の会話</strong><kbd>Enter</kbd><span class="chat-collapse">−</span></button><div id="chat-content"><div id="chat-messages" class="chat-messages" role="log" aria-live="polite"><p class="chat-system">この谷での物語が、ここから始まります。</p></div><form id="chat-form"><input id="chat-input" maxlength="180" placeholder="仲間に話しかける…" aria-label="チャットメッセージ" autocomplete="off"><button aria-label="メッセージを送信" type="submit">${icon('arrow')}</button></form></div></div>`}
-    <div class="hotbar-wrap"><div id="companion524-controls"><button type="button" class="hunt-button" id="pet524-button" hidden><kbd>V</kbd><span>524を撫でる</span></button><button type="button" class="hunt-button" id="dismiss524-button" hidden><kbd>T</kbd><span>524をキャンプへ帰す</span></button></div><div class="interaction-hint" id="interaction-hint" hidden><kbd>E</kbd><span></span></div></div>
+    <div class="hotbar-wrap"><div id="companion524-controls"><button type="button" class="hunt-button" id="pet-rimo-button" hidden><kbd>V</kbd><span>リモねこを撫でる</span></button><button type="button" class="hunt-button" id="dismiss-rimo-button" hidden><kbd>T</kbd><span>リモねこをキャンプへ帰す</span></button><button type="button" class="hunt-button" id="pet524-button" hidden><kbd>V</kbd><span>524を撫でる</span></button><button type="button" class="hunt-button" id="dismiss524-button" hidden><kbd>T</kbd><span>524をキャンプへ帰す</span></button></div><div class="interaction-hint" id="interaction-hint" hidden><kbd>E</kbd><span></span></div></div>
     <div id="prompt-bar" class="prompt-bar" aria-label="操作の案内"></div>
     <div id="screens" class="screens">
       <section id="screen-title" class="screen title-screen" hidden>
@@ -856,10 +858,60 @@ function huntTarget() {
 function attack() {
   action('attack');
 }
+function canPetRimo() {
+  return (
+    joined &&
+    !renderUnavailable &&
+    !state.rimoNeko?.petPlayerId &&
+    state.companion524?.petPlayerId !== selfId &&
+    nearRimoNeko(player(), state.rimoNeko, renderer.collision, renderer.serverNow())
+  );
+}
+function petRimo() {
+  if (canPetRimo()) action('petRimo');
+}
+function dismissRimo() {
+  if (state.rimoNeko?.followPlayerId === selfId) action('dismissRimo');
+}
+function preferredPet() {
+  if (
+    canPetRimo() &&
+    (!canPet524() || distance(player(), state.rimoNeko) < distance(player(), state.companion524))
+  )
+    return 'rimo';
+  return canPet524() ? '524' : null;
+}
+function petNearbyCompanion() {
+  if (preferredPet() === 'rimo') petRimo();
+  else pet524();
+}
+function dismissNearbyCompanion() {
+  if (
+    state.rimoNeko?.followPlayerId === selfId &&
+    (state.companion524?.followPlayerId !== selfId ||
+      distance(player(), state.rimoNeko) < distance(player(), state.companion524))
+  )
+    dismissRimo();
+  else dismiss524();
+}
+let lastCatHiss = '';
+function updateCatHiss() {
+  const c = state.rimoNeko,
+    me = player();
+  if (!c || !me || !c.hitSequence) return;
+  const age = renderer.serverNow() - c.hitAt - RIMO_NEKO.hitMs,
+    key = `${c.hitSequence}/${c.hitAt}`;
+  if (age < 0 || lastCatHiss === key) return;
+  lastCatHiss = key;
+  const separation = distance(me, c);
+  if (age < 400 && separation < 12 && soundEnabled && audioContext?.state === 'running')
+    playCatHiss(audioContext, 0.14 * (1 - separation / 12));
+}
 function canPet524() {
   return (
     joined &&
     !renderUnavailable &&
+    state.rimoNeko?.petPlayerId !== selfId &&
     nearCompanion524(player(), state.companion524, renderer.collision, renderer.serverNow())
   );
 }
@@ -917,7 +969,7 @@ function ride() {
   action('ride', animal.id);
 }
 function interactAnimal(id) {
-  if (id === state.companion524?.id) {
+  if (id === state.companion524?.id || id === state.rimoNeko?.id) {
     if (canStartAttack(player(), renderer.serverNow())) action('attack', id);
     return;
   }
@@ -939,7 +991,15 @@ function interactAnimal(id) {
 }
 function updateHuntingHUD() {
   boatUI.update();
-  const petAvailable = canPet524();
+  updateCatHiss();
+  const petChoice = preferredPet();
+  $('#pet-rimo-button').hidden = petChoice !== 'rimo';
+  $('#pet-rimo-button kbd').textContent = controllerHints() ? controllerLabels().bottom : 'V';
+  $('#dismiss-rimo-button').hidden = !joined || state.rimoNeko?.followPlayerId !== selfId;
+  $('#dismiss-rimo-button kbd').textContent = controllerHints() ? 'メニュー' : 'T';
+  const menuRimo = $('[data-controller-menu="dismissRimo"]');
+  if (menuRimo) menuRimo.disabled = state.rimoNeko?.followPlayerId !== selfId;
+  const petAvailable = petChoice === '524';
   $('#pet524-button').hidden = !petAvailable;
   $('#pet524-button kbd').textContent = controllerHints() ? controllerLabels().bottom : 'V';
   $('#dismiss524-button').hidden = !joined || state.companion524?.followPlayerId !== selfId;
@@ -1508,8 +1568,8 @@ function updatePromptBar() {
 updateHintLabels();
 
 function controllerRide() {
-  if (canPet524()) {
-    pet524();
+  if (preferredPet()) {
+    petNearbyCompanion();
     return;
   }
   if (player()?.boatId) action('boardBoat');
@@ -1653,6 +1713,19 @@ function openPauseMenu(tab?: string) {
     ['wave', 'wave', '手をふる', () => action('wave')],
   ];
   const exits: [string, string, string, () => void][] = [
+    ...(state.rimoNeko?.followPlayerId === selfId
+      ? [
+          [
+            'dismissRimo',
+            'wave',
+            'リモねこをキャンプへ帰す',
+            () => {
+              dismissRimo();
+              $('#modal').close();
+            },
+          ] as [string, string, string, () => void],
+        ]
+      : []),
     ...(state.companion524?.followPlayerId === selfId
       ? [
           [
@@ -1870,6 +1943,8 @@ $('#cancel-cook').onclick = () =>
         : 'cancelCook',
   );
 $('#interaction-hint').setAttribute('role', 'button');
+$('#pet-rimo-button').onclick = petRimo;
+$('#dismiss-rimo-button').onclick = dismissRimo;
 $('#pet524-button').onclick = pet524;
 $('#dismiss524-button').onclick = dismiss524;
 $('#interaction-hint').tabIndex = 0;
@@ -2024,11 +2099,11 @@ document.addEventListener('keydown', (e) => {
   }
   if (k === 'v') {
     e.preventDefault();
-    pet524();
+    petNearbyCompanion();
   }
   if (k === 't') {
     e.preventDefault();
-    dismiss524();
+    dismissNearbyCompanion();
   }
   if (isAttackShortcut(e)) {
     e.preventDefault();

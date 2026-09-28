@@ -15,6 +15,7 @@ export function pettingProgress(
   c: Companion524Snapshot | undefined,
   p: PlayerSnapshot,
   now: number,
+  timing: { petApproachMs: number; petStrokeMs: number } = COMPANION_524,
 ) {
   if (
     !c ||
@@ -34,13 +35,11 @@ export function pettingProgress(
     return { weight: 0, stroke: 0 };
   const age = now - c.petAt;
   const contact = c.petContactAt > 0 ? now - c.petContactAt : -1;
-  if (age < 0 || (contact < 0 && age > COMPANION_524.petApproachMs))
-    return { weight: 0, stroke: 0 };
+  if (age < 0 || (contact < 0 && age > timing.petApproachMs)) return { weight: 0, stroke: 0 };
   return {
     weight:
-      smooth(age / 350) *
-      (contact >= 0 ? 1 - smooth((contact - COMPANION_524.petStrokeMs) / 250) : 1),
-    stroke: contact >= 0 ? THREE.MathUtils.clamp(contact / COMPANION_524.petStrokeMs, 0, 1) : 0,
+      smooth(age / 350) * (contact >= 0 ? 1 - smooth((contact - timing.petStrokeMs) / 250) : 1),
+    stroke: contact >= 0 ? THREE.MathUtils.clamp(contact / timing.petStrokeMs, 0, 1) : 0,
   };
 }
 

@@ -1,0 +1,125 @@
+{
+  "modelKey": "rimo-neko",
+  "name": "リモねこ",
+  "kind": "companion",
+  "candidate": 1,
+  "status": "reviewed-prototype",
+  "url": "/models/rimo-neko/model-r08.glb",
+  "sha256": "19e44d1e02c501bc10cc02929383e55a0f6ee9f31e1b5ec76c42686c606dcfb1",
+  "bytes": 25693880,
+  "triangles": 136745,
+  "upAxis": "Y",
+  "forwardAxis": "+Z",
+  "heightMetres": 0.5200296395414625,
+  "widthMetres": 0.475124791264534,
+  "lengthMetres": 0.6896228492259979,
+  "placement": {
+    "pivot": "ground-between-four-paws",
+    "scale": 1
+  },
+  "clips": [
+    {
+      "name": "Idle_Loop",
+      "seconds": 3,
+      "loop": true,
+      "rootMotion": "in-place",
+      "fps": 60
+    },
+    {
+      "name": "Walk_Loop",
+      "seconds": 0.6833333333333333,
+      "loop": true,
+      "rootMotion": "in-place",
+      "fps": 60
+    },
+    {
+      "name": "Run_Loop",
+      "seconds": 0.5,
+      "loop": true,
+      "rootMotion": "in-place",
+      "fps": 240
+    },
+    {
+      "name": "Pet",
+      "seconds": 1.6,
+      "loop": false,
+      "rootMotion": "in-place",
+      "fps": 60
+    },
+    {
+      "name": "Happy",
+      "seconds": 0.9,
+      "loop": false,
+      "rootMotion": "in-place",
+      "fps": 60
+    },
+    {
+      "name": "Hit",
+      "seconds": 0.5,
+      "loop": false,
+      "rootMotion": "in-place",
+      "fps": 60
+    },
+    {
+      "name": "Hiss",
+      "seconds": 2.1,
+      "loop": false,
+      "rootMotion": "in-place",
+      "fps": 240
+    }
+  ],
+  "locomotion": {
+    "Walk_Loop": {
+      "metresPerSecond": 0.4677073170731707,
+      "cycleSeconds": 0.6833333333333333,
+      "dutyFactor": 0.6,
+      "authoredCycleSeconds": 0.68,
+      "gait": "walk",
+      "touchdownPhases": {
+        "BL": 0,
+        "FL": 0.75,
+        "BR": 0.5,
+        "FR": 0.25
+      }
+    },
+    "Run_Loop": {
+      "metresPerSecond": 2,
+      "cycleSeconds": 0.5,
+      "authoredCycleSeconds": 0.5,
+      "dutyFactor": 0.23333333333333334,
+      "gait": "feline-gallop",
+      "touchdownPhases": {
+        "FL": 0,
+        "FR": 0.06666666666666667,
+        "BR": 0.5,
+        "BL": 0.5666666666666667
+      },
+      "airbornePhases": [
+        [
+          0.3,
+          0.5
+        ],
+        [
+          0.8,
+          1
+        ]
+      ],
+      "strideMetres": 1,
+      "timingBasis": "Authored to fit this cat; observed sequence, not motion capture"
+    }
+  },
+  "lods": [],
+  "provenance": {
+    "provider": "Codex imagegen; local TRELLIS-2 via trellis.cpp v0.8.1; source-preserving repair and body-specific quadruped rig",
+    "claudeUsed": false,
+    "source": "output/model-generation/models/rimo-neko/work/rig/revision-08/candidate.glb",
+    "sourceSha256": "19e44d1e02c501bc10cc02929383e55a0f6ee9f31e1b5ec76c42686c606dcfb1",
+    "referenceImage": "assets/rimo-neko/source/reference-v1.png",
+    "referenceSha256": "65021b6381b4c6dc8be59409581b889a7272471e7e63919be9e0d5b94676b46d",
+    "visualReview": "assets/rimo-neko/adoption.json"
+  },
+  "notes": [
+    "Grey-white longhair, green eyes, pink nose, four grounded paws and plume tail from the user reference.",
+    "One successful TRELLIS candidate; all revisions retained. Jaw lining follows the original split lip seam."
+  ]
+}

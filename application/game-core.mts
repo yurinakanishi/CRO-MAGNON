@@ -1,3 +1,4 @@
+import { createRimoNeko, updateRimoNeko, restoreRimoNeko } from '../shared/rimo-neko.mjs';
 import { updateFishing, cancelFishing } from '../shared/fishing.mjs';
 import { DEFAULT_RULES, EXHIBITION_RULES, clientRules, roomRules } from '../shared/room-rules.mjs';
 import { createHouseholds, householdSnapshots } from '../shared/household-life.mjs';
@@ -177,6 +178,7 @@ export function createGameCore({
       );
       room.animals = createAnimals(room.collision);
       room.companion524 = createCompanion524(room.collision);
+      room.rimoNeko = createRimoNeko(room.collision);
       room.enemies = createEnemies(room.collision, room.animals);
       createResidents(room, [], runtime.now());
       rooms.set(roomName, room);
@@ -551,6 +553,7 @@ export function createGameCore({
         if (now >= entry.expiresAt) room.sessions.delete(token);
       if (!room.players.size) {
         updateCompanion524(room, dt, now);
+        updateRimoNeko(room, dt, now);
         updateBarters(room, now);
         for (const resident of room.residents) {
           resident.forageWork = null;
@@ -603,6 +606,7 @@ export function createGameCore({
       const supperChanged = updateSuppers(room, now);
       const huntingChanged = updateHunting(room, now, notice);
       updateCompanion524(room, dt, now);
+      updateRimoNeko(room, dt, now);
       updateAnimals(room, dt, now);
       const enemiesChanged = updateEnemies(room, dt, now, notice);
       updateCarrying(room, now);
@@ -693,6 +697,7 @@ export function createGameCore({
               resources: room.resources,
               animals: room.animals,
               companion524: room.companion524,
+              rimoNeko: room.rimoNeko,
               enemies: room.enemies,
               boats: room.boats,
               gulf: room.gulf,
@@ -864,6 +869,7 @@ export function createGameCore({
       room.households = createHouseholds(record.households, runtime.now());
       createResidents(room, record.residents, runtime.now());
       restoreCompanion524(room, record.companion524);
+      restoreRimoNeko(room, record.rimoNeko);
     }
   }
 

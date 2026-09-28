@@ -7,6 +7,7 @@ import { RidingPose, apeShoulderSeat } from './riding-pose.js';
 import { JumpPose } from './jump-pose.js';
 import { CarrySupportPose } from './carry-support-pose.js';
 import { LeanPose } from './lean-pose.js';
+import { GroundPettingPose } from './ground-petting-pose.js';
 import { PettingPose } from './petting-pose.js';
 import { sha256 } from './asset-hash.js';
 import { installSkinnedBounds } from './skinned-bounds.js';
@@ -142,6 +143,7 @@ export class CharacterAssets {
     const ridingPose = new RidingPose(root);
     const jumpPose = new JumpPose(root);
     const pettingPose = new PettingPose(root);
+    const groundPettingPose = new GroundPettingPose(root);
     const shoulderSeat = asset.modelKey === 'giant-ape' ? apeShoulderSeat(root) : null;
     const carrySupportPose = shoulderSeat ? new CarrySupportPose(root) : null;
     const leanPose =
@@ -163,6 +165,7 @@ export class CharacterAssets {
       leanPose,
       jumpPose,
       pettingPose,
+      groundPettingPose,
       dispose: () => {
         if (!this.instances.delete(instance)) return;
         animation.dispose();

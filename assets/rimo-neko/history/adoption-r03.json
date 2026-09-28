@@ -1,0 +1,20 @@
+{
+  "decision": "adopt",
+  "candidate": 1,
+  "revision": "03",
+  "sha256": "5ae2412e20a61a3e15f0c5d47adc6aaf8de36cfb5c4fd2dd2703f81f6d98c3bb",
+  "source": "output/model-generation/models/rimo-neko/work/rig/revision-03/candidate.glb",
+  "triangles": 136745,
+  "bytes": 24944224,
+  "viewerQA": "output/model-generation/models/rimo-neko/qa/rig-03/browser-framing-r03/result.json",
+  "gameValidation": "passed",
+  "gameQA": "output/playwright/rimo-neko/game-r05/result.json",
+  "arrivalAndSoundQA": "output/playwright/rimo-neko/arrival-sound-r07/result.json",
+  "motionQA": "output/model-generation/models/rimo-neko/qa/rig-03/motion.json",
+  "neutralViews": 7,
+  "clayViews": 7,
+  "knownLimits": [
+    "No exhaustive mesh self-intersection proof or hair physics.",
+    "Physical controllers and exhibition PCs are not visually verified."
+  ]
+}

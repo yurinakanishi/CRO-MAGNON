@@ -17,6 +17,7 @@ import { canStartJump, jumpProgress } from '../shared/jumping.mjs';
 import { cancelBarter } from '../shared/barter.mjs';
 import { carrying, handleCarryAction } from '../shared/carrying.mjs';
 import { toggleCaveFire } from '../shared/cave-fire.mjs';
+import { handleRimoNekoAction } from '../shared/rimo-neko.mjs';
 import { handleCompanion524Action } from '../shared/companion-524.mjs';
 import { stopActor } from '../shared/combat.mjs';
 const distance = (a, b) => Math.hypot(a.x - b.x, a.z - b.z);
@@ -33,7 +34,16 @@ export function createActionHandler({
     sendNotice(player, text, tone, false);
   return function act(room, player, message, now) {
     const action = message.action;
+    if (action === 'petRimo' || action === 'dismissRimo') {
+      if (action === 'petRimo' && room.companion524?.petPlayerId === player.id) return;
+      if (handleRimoNekoAction(room, player, action, now)) {
+        if (action === 'petRimo') stopActor(player);
+        broadcast(room, snapshot(room));
+      }
+      return;
+    }
     if (action === 'pet524' || action === 'dismiss524') {
+      if (action === 'pet524' && room.rimoNeko?.petPlayerId === player.id) return;
       if (handleCompanion524Action(room, player, action, now)) {
         if (action === 'pet524') stopActor(player);
         broadcast(room, snapshot(room));

@@ -549,6 +549,17 @@
       "triangles": 449022,
       "gameQA": "assets/companion-524/README.md",
       "revision": "midpoint-r01"
+    },
+    {
+      "key": "rimo-neko",
+      "name": "リモねこ",
+      "kind": "companion",
+      "candidate": 1,
+      "status": "integrated-reviewed-prototype",
+      "sha256": "19e44d1e02c501bc10cc02929383e55a0f6ee9f31e1b5ec76c42686c606dcfb1",
+      "delivery": "/models/rimo-neko/model-r08.glb",
+      "triangles": 136745,
+      "gameQA": "assets/rimo-neko/README.md"
     }
   ],
   "reuse": {
