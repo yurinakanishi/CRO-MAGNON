@@ -38,6 +38,8 @@ import { CROP_INVENTORY, ROOT_RECIPES } from '../shared/crops.mjs';
 import { installCropFoodUI } from './crop-food-ui.js';
 import { canMount, ridingDistance } from '../shared/riding.mjs';
 import { GamepadControls } from './gamepad-ui.js';
+import { MotionControls } from './motion-controls.js';
+import { MotionPetHold, motionTarget } from './motion-interaction.js';
 import { combineMovement } from './gamepad-input.js';
 import { canStartJump } from '../shared/jumping.mjs';
 import { installBoatControls } from './boat-ui.js';
@@ -49,6 +51,7 @@ import {
 } from './hunting-ui.js';
 import {
   canStartAttack,
+  attackBlockReason,
   isAttackShortcut,
   MovementCommands,
   movementKey,
@@ -192,6 +195,7 @@ const keys = new Set();
 const blockedMovementKeys = new Set();
 const movementCommands = new MovementCommands();
 let gamepadControls: GamepadControls | undefined;
+let motionControls: MotionControls | undefined;
 /** The open atlas, so the controller can hand it pointer, zoom and confirm frames. */
 let mapInput: MapInput | undefined;
 let usingGamepad = false;
@@ -246,6 +250,7 @@ $('#app').innerHTML = `
 
 const areaBanner = new AreaBanner($('#area-banner'));
 const screens = new ScreenManager($('#screens'), (id) => {
+  if (id) motionControls?.stop();
   if (id) stopInput();
   else $('#world').focus({ preventScroll: true });
 });
@@ -389,6 +394,10 @@ function send(message) {
   if (socket?.readyState === WebSocket.OPEN) socket.send(JSON.stringify(message));
 }
 function stopInput() {
+  motionControls?.input.pause();
+  clearMovementInput();
+}
+function clearMovementInput() {
   renderer.prediction?.stop();
   // Also cancels a cast sent just before a menu/blur, before its snapshot arrives.
   if (joined) {
@@ -431,6 +440,8 @@ function addChat(message) {
   box.scrollTop = box.scrollHeight;
 }
 function connection(connected, label) {
+  if (!connected)
+    motionControls?.pause('通信が切れました。再接続後、両手を確認して自動再開します。');
   joined = connected;
   updateCharacterSwitch(player(), renderer.serverNow(), connected);
   if (!connected) renderer.prediction?.reset();
@@ -567,6 +578,7 @@ async function connect(automatic = false) {
         (previous?.mountId ?? previous?.boatId ?? null) !==
         (player()?.mountId ?? player()?.boatId ?? null)
       ) {
+        motionControls?.pause('乗り物が変わりました。両手を戻すと自動再開します。');
         movementCommands.reset();
         lastGait = null;
       }
@@ -913,6 +925,7 @@ function canPet524() {
   return (
     joined &&
     !renderUnavailable &&
+    !state.companion524?.petPlayerId &&
     state.rimoNeko?.petPlayerId !== selfId &&
     nearCompanion524(player(), state.companion524, renderer.collision, renderer.serverNow())
   );
@@ -996,14 +1009,22 @@ function updateHuntingHUD() {
   updateCatHiss();
   const petChoice = preferredPet();
   $('#pet-rimo-button').hidden = petChoice !== 'rimo';
-  $('#pet-rimo-button kbd').textContent = controllerHints() ? controllerLabels().bottom : 'V';
+  $('#pet-rimo-button kbd').textContent = motionControls?.ownsInput
+    ? '横なで'
+    : controllerHints()
+      ? controllerLabels().bottom
+      : 'V';
   $('#dismiss-rimo-button').hidden = !joined || state.rimoNeko?.followPlayerId !== selfId;
   $('#dismiss-rimo-button kbd').textContent = controllerHints() ? 'メニュー' : 'T';
   const menuRimo = $('[data-controller-menu="dismissRimo"]');
   if (menuRimo) menuRimo.disabled = state.rimoNeko?.followPlayerId !== selfId;
   const petAvailable = petChoice === '524';
   $('#pet524-button').hidden = !petAvailable;
-  $('#pet524-button kbd').textContent = controllerHints() ? controllerLabels().bottom : 'V';
+  $('#pet524-button kbd').textContent = motionControls?.ownsInput
+    ? '横なで'
+    : controllerHints()
+      ? controllerLabels().bottom
+      : 'V';
   $('#dismiss524-button').hidden = !joined || state.companion524?.followPlayerId !== selfId;
   $('#dismiss524-button kbd').textContent = controllerHints() ? 'メニュー' : 'T';
   const menuDismiss = $('[data-controller-menu="dismiss524"]');
@@ -1216,6 +1237,7 @@ function applyProfileForm(form: HTMLFormElement) {
   $('#profile-name').textContent = profile.name;
 }
 function showTitle() {
+  motionControls?.stop();
   $('#modal').close();
   screens.show('title');
 }
@@ -1240,6 +1262,7 @@ function enterGame() {
   connect();
 }
 function leaveToTitle() {
+  motionControls?.stop();
   manualLeave = true;
   clearTimeout(retry);
   send({ type: 'leave', keepSession: true });
@@ -2061,6 +2084,7 @@ document.addEventListener('keydown', (e) => {
     openPauseMenu();
     return;
   }
+  if (motionControls?.ownsInput) return;
   if (
     ['Enter', ' '].includes(e.key) &&
     (e.target as Element)?.closest<HTMLElement>('button,a,[role="button"]')
@@ -2161,12 +2185,23 @@ gamepadControls = new GamepadControls({
   },
   canPlay: () =>
     joined && !renderUnavailable && !screens.active && !!player() && !player()?.downedUntil,
-  onStop: stopInput,
+  onStop: () => {
+    // A controller losing focus/connection cannot suspend the current camera
+    // owner. Camera input handles its own menus, focus and text-field checks.
+    if (!motionControls?.ownsInput) stopInput();
+  },
   onActivity: updateGamepadHints,
   onMapInput: (frame, dt) =>
     frame.actions.includes('map') ? openMap() : mapInput?.input(frame, dt),
-  onLook: (x, y, dt) => renderer.rotateCamera(x * dt * 2.4, y * dt * 1.5),
+  onLook: (x, y, dt) => {
+    if (!motionControls?.ownsInput) renderer.rotateCamera(x * dt * 2.4, y * dt * 1.5);
+  },
   onAction: (command) => {
+    if (
+      motionControls?.ownsInput &&
+      !['menu', 'inventory', 'map', 'journal', 'cancel'].includes(command)
+    )
+      return;
     switch (command) {
       case 'confirm':
         $('#interaction-hint').click();
@@ -2214,21 +2249,140 @@ gamepadControls = new GamepadControls({
     }
   },
 });
+motionControls = new MotionControls($('.game-viewport'), {
+  stop: clearMovementInput,
+  updateInput: updateMovementInput,
+  canStart: () =>
+    joined &&
+    !renderUnavailable &&
+    !screens.active &&
+    !$('#modal').open &&
+    !document.hidden &&
+    !player()?.downedUntil,
+  begin: () => {
+    clearMovementInput();
+    renderer.cancel?.();
+  },
+});
+renderer.manualInputAllowed = () => !motionControls?.ownsInput;
+renderer.onFrameTiming = (ms) => motionControls.camera.metrics.record('renderFrameMs', ms);
+/** Read-only aggregate diagnostics. No images, body coordinates or event consumption. */
+export function motionDiagnostics() {
+  return {
+    state: motionControls.input.state,
+    options: {
+      delegate: motionControls.camera.options.delegate,
+      hz: motionControls.camera.options.hz,
+    },
+    metrics: motionControls.camera.metrics.summary(performance.now()),
+  };
+}
+/** Starts a new aggregate-only performance window without changing input or calibration. */
+export function resetMotionMetrics() {
+  motionControls.camera.resetMetrics();
+}
 let lastMoveSent = 0;
+let lastMotionDirection = '0,0';
+const motionPetHold = new MotionPetHold();
 function updateMovementInput() {
   if (player()?.downedUntil || !joined || renderUnavailable) {
+    motionControls?.pause('今は操作できません。操作可能になると自動再開します。');
     keys.clear();
     movementCommands.reset();
     return;
   }
   let sx = 0,
     sy = 0;
-  const canMove =
-    !document.hidden &&
-    document.hasFocus() &&
-    !$('#modal').open &&
-    !screens.active &&
-    !document.activeElement?.closest('input,textarea,select,[contenteditable]');
+  const gameFocused =
+    !document.hidden && document.hasFocus() && !$('#modal').open && !screens.active;
+  const focusedField = document.activeElement?.closest('input,textarea,select,[contenteditable]');
+  const canMove = gameFocused && !focusedField;
+  if (motionControls?.ownsInput) {
+    if (!gameFocused || (focusedField && !motionControls.root.contains(focusedField)))
+      motionControls.pause();
+    const now = performance.now(),
+      input = motionControls.input;
+    let intent = input.read(now);
+    const movement = {
+      offset: input.movementOffset,
+      push: input.movementPush,
+      roll: input.movementRoll,
+    };
+    const petting =
+      state.rimoNeko?.petPlayerId === selfId || state.companion524?.petPlayerId === selfId;
+    const target = motionTarget(preferredPet(), nearby());
+    motionControls.interactionHint =
+      petting || motionPetHold.active
+        ? '撫でています · 移動する手を大きく動かすと中断'
+        : target
+          ? `手のひらを水平にして横なで → ${target.label}`
+          : '横なでする相手がいません · 近づいてください';
+    motionControls.attackStatus =
+      attackBlockReason(player(), renderer.serverNow()) || '攻撃できます';
+    for (const event of motionControls.input.consumeActions(now)) {
+      if (event.action === 'attack') {
+        const blocked = attackBlockReason(player(), renderer.serverNow());
+        if (!blocked) {
+          motionPetHold.reset();
+          attack();
+        }
+        motionControls.reportAction(
+          blocked || '銃の形を認識 → 攻撃。指を開いてから、もう一度銃の形へ。',
+          !blocked,
+        );
+      } else if (event.action === 'jump') {
+        const allowed = canStartJump(player(), renderer.serverNow());
+        if (allowed) {
+          motionPetHold.reset();
+          jump();
+        }
+        motionControls.reportAction(
+          allowed
+            ? '上げる動きを認識 → ジャンプ。下ろすと次を出せます。'
+            : '今はジャンプできません。着地や動作の終了を待ってください。',
+          allowed,
+        );
+      } else {
+        if (petting || motionPetHold.active) {
+          motionControls.reportAction('撫でています。なで続けなくても大丈夫です。', true);
+          continue;
+        }
+        if (target) {
+          if (target.action === 'petRimo' || target.action === 'pet524') {
+            motionPetHold.begin(input.sessionId, now, movement);
+            // Stop before the action reaches the server, so the first pet tick is stationary.
+            renderer.prediction?.stop();
+            send({ type: 'move', dx: 0, dz: 0, running: false });
+            lastMotionDirection = '0,0';
+            lastMoveSent = now;
+          }
+          action(target.action, target.targetId);
+        }
+        motionControls.reportAction(
+          target
+            ? `横なでを認識 → ${target.label}`
+            : '横なでは認識しました。近くに相手がいません。',
+          !!target,
+        );
+      }
+    }
+    intent = motionPetHold.filter(intent, movement, petting, now);
+    const navigation = motionControls.navigation.step(intent, now);
+    renderer.rotateCamera(navigation.cameraDelta, navigation.cameraPitchDelta);
+    const { dx, dz } = renderer.getMovementDirection(navigation.sx, navigation.sy);
+    const running = tuning.alwaysRun;
+    renderer.prediction?.setInput(dx, dz, running, now);
+    const direction = `${dx},${dz}`;
+    const stopped = direction === '0,0' && lastMotionDirection !== '0,0';
+    if (stopped || now - lastMoveSent >= 70) {
+      send({ type: 'move', dx, dz, running });
+      lastMoveSent = now;
+    }
+    lastMotionDirection = direction;
+    motionControls.camera.applied(now);
+    return;
+  }
+  motionPetHold.reset();
   if (canMove) {
     if (keys.has('w') || keys.has('arrowup')) sy--;
     if (keys.has('s') || keys.has('arrowdown')) sy++;
@@ -2278,6 +2432,7 @@ window.addEventListener('beforeunload', () => {
   socket?.close();
   hudObserver.disconnect();
   gamepadControls.destroy();
+  motionControls?.destroy();
   screens.destroy();
   renderer.destroy();
 });

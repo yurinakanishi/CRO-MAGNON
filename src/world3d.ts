@@ -110,6 +110,9 @@ export class WorldRenderer {
   declare state: ViewState;
   declare selfId: any;
   declare yaw: number;
+  manualInputAllowed = () => true;
+  onFrameTiming: ((ms: number) => void) | null = null;
+  private motionLastFrame: number | null = null;
   declare pitch: number;
   declare distance: number;
   declare targetDistance: number;
@@ -299,7 +302,12 @@ export class WorldRenderer {
     this.animate = (now) => {
       if (this.disposed || this.failed) return;
       const dt = this.frameClock.advance(now, document.hidden);
-      if (dt !== null) this.render(now / 1000, dt);
+      if (dt !== null) {
+        if (this.motionLastFrame !== null && !document.hidden)
+          this.onFrameTiming?.(now - this.motionLastFrame);
+        this.motionLastFrame = now;
+        this.render(now / 1000, dt);
+      } else if (document.hidden) this.motionLastFrame = null;
       this.frame = requestAnimationFrame(this.animate);
     };
     this.frame = requestAnimationFrame(this.animate);
@@ -575,6 +583,7 @@ export class WorldRenderer {
 
   setupInput() {
     this.down = (e) => {
+      if (!this.manualInputAllowed()) return;
       if (e.button !== 0 && e.button !== 2) return;
       e.preventDefault();
       this.canvas.focus({ preventScroll: true });
@@ -590,6 +599,10 @@ export class WorldRenderer {
       this.canvas.setPointerCapture(e.pointerId);
     };
     this.move = (e) => {
+      if (!this.manualInputAllowed()) {
+        this.cancel();
+        return;
+      }
       if (!this.pointer || this.pointer.id !== e.pointerId) return;
       const p = this.pointer,
         dx = e.clientX - p.lastX,
@@ -603,6 +616,10 @@ export class WorldRenderer {
       p.lastY = e.clientY;
     };
     this.up = (e) => {
+      if (!this.manualInputAllowed()) {
+        this.cancel();
+        return;
+      }
       if (!this.pointer || this.pointer.id !== e.pointerId) return;
       const click = !this.pointer.dragged && this.pointer.button === 0;
       this.pointer = null;
@@ -640,6 +657,7 @@ export class WorldRenderer {
       this.canvas.style.cursor = 'crosshair';
     };
     this.wheel = (e) => {
+      if (!this.manualInputAllowed()) return;
       e.preventDefault();
       this.targetDistance = clamp(this.targetDistance + e.deltaY * 0.009, 3.2, 19);
       this.zoom = DEFAULT_DISTANCE / this.targetDistance;
@@ -1561,6 +1579,7 @@ export class WorldRenderer {
         .sort()
         .join(',');
       data.cameraYaw = this.yaw.toFixed(3);
+      data.cameraPitch = this.pitch.toFixed(3);
       data.cameraDistance = cameraDistance.toFixed(2);
       data.drawCalls = String(info.render.calls);
       data.renderTriangles = String(info.render.triangles);

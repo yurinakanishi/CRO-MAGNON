@@ -18,6 +18,9 @@ export const MIME: Readonly<Record<string, string>> = {
   '.mp3': 'audio/mpeg',
   '.ogg': 'audio/ogg',
   '.glb': 'model/gltf-binary',
+  '.wasm': 'application/wasm',
+  '.task': 'application/octet-stream',
+  '.txt': 'text/plain; charset=utf-8',
 };
 
 /** Only public assets and emitted browser/domain modules are exposed. */

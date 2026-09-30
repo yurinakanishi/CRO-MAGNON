@@ -104,6 +104,7 @@ export interface MovableActor extends Point, CharacterProfile {
   velocityX?: number;
   velocityZ?: number;
   facing: number;
+  inputFacing?: number;
   target: Point | null;
   path: Point[];
   lastInput: number;

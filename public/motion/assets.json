@@ -1,0 +1,28 @@
+{
+  "package": "@mediapipe/tasks-vision",
+  "version": "1.0.1",
+  "modelSource": "https://storage.googleapis.com/mediapipe-models/hand_landmarker/hand_landmarker/float16/1/hand_landmarker.task",
+  "license": "Apache-2.0",
+  "files": [
+    {
+      "url": "/vendor/mediapipe/vision_bundle.mjs",
+      "bytes": 155439,
+      "sha256": "d885630c297c0b20b1fe86096cb06291c4c8080876f27852e724f24ac603713f"
+    },
+    {
+      "url": "/vendor/mediapipe/wasm/vision_wasm_module_internal.js",
+      "bytes": 323415,
+      "sha256": "da8934057f147b622e82cfb4c0dbd85461c598e268588b5a8ba9ca963a8ff82d"
+    },
+    {
+      "url": "/vendor/mediapipe/wasm/vision_wasm_module_internal.wasm",
+      "bytes": 11756972,
+      "sha256": "2dabd8e23c60984628beb7bb338764c81a08e6837145273f59578684b5d53c1b"
+    },
+    {
+      "url": "/motion/hand_landmarker-float16-v1.task",
+      "bytes": 7819105,
+      "sha256": "fbc2a30080c3c557093b5ddfc334698132eb341044ccee322ccf8bcf3607cde1"
+    }
+  ]
+}

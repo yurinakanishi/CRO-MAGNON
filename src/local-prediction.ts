@@ -6,7 +6,11 @@ export class LocalPrediction {
   actor: any = null;
   latest: any = null;
   receivedAt = -Infinity;
-  input = { dx: 0, dz: 0, running: false };
+  input: { dx: number; dz: number; running: boolean; facing?: number } = {
+    dx: 0,
+    dz: 0,
+    running: false,
+  };
   inputAt = -Infinity;
   enabled = false;
   latencyMs = 0;
@@ -26,8 +30,8 @@ export class LocalPrediction {
     this.correction = { x: 0, z: 0 };
     this.reconcile = false;
   }
-  setInput(dx: number, dz: number, running: boolean, now: number) {
-    this.input = { dx, dz, running };
+  setInput(dx: number, dz: number, running: boolean, now: number, facing?: number) {
+    this.input = { dx, dz, running, facing };
     this.inputAt = now;
   }
   stop() {
@@ -101,6 +105,7 @@ export class LocalPrediction {
     Object.assign(p, {
       dx: input.dx,
       dz: input.dz,
+      inputFacing: 'facing' in input ? input.facing : undefined,
       lastInput: now,
       runningRequested: input.running,
     });

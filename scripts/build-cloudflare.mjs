@@ -15,17 +15,18 @@ const files = new Set([
   'public/models/world-assets.json',
   'public/multiplayer-config.json',
 ]);
-async function collect(directory) {
+async function collect(directory, extensions = /\.(js|mjs|css)$/) {
   for (const entry of await readdir(path.join(root, directory), { withFileTypes: true })) {
     if (entry.name.startsWith('.')) continue;
     const file = `${directory}/${entry.name}`;
-    if (entry.isDirectory()) await collect(file);
-    else if (/\.(js|mjs|css)$/.test(file)) files.add(file);
+    if (entry.isDirectory()) await collect(file, extensions);
+    else if (extensions.test(file)) files.add(file);
   }
 }
 await collect('dist/src');
 await collect('dist/shared');
-await collect('public/vendor');
+await collect('public/vendor', /\.(js|mjs|wasm)$/);
+await collect('public/motion', /\.(task|txt|json)$/);
 for (const name of await readdir(path.join(root, 'public/title'))) {
   if (/\.(png|jpe?g)$/.test(name)) files.add(`public/title/${name}`);
 }

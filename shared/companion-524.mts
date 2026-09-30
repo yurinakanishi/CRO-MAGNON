@@ -327,7 +327,7 @@ export function updateCompanion524(room: CompanionRoom, dt: number, now: number)
       return;
     } else if (now < c.petContactAt + COMPANION_524.petStrokeMs + COMPANION_524.happyMs) {
       return;
-    }
+    } else cancelPet(c);
   }
 
   let goal: Point, speed: number;

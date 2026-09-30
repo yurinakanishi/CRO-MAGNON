@@ -10,3 +10,4 @@ await Promise.all(addons.map(async name => {
   await copyFile(new URL(`node_modules/three/examples/jsm/${name}`, root), target);
 }));
 console.log('Three.js core and GLB review modules ready.');
+await import('./prepare-motion-assets.mjs');

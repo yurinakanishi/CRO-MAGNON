@@ -453,6 +453,8 @@ export function createGameCore({
         const length = Math.max(1, Math.hypot(dx, dz));
         controlled.dx = dx / length;
         controlled.dz = dz / length;
+        // Optional idle heading uses the same owned actor and simulation locks as movement.
+        controlled.inputFacing = message.facing;
         controlled.lastInput = now;
         controlled.runningRequested = message.running === true || roomRules(room).alwaysRun;
         controlled.target = null;

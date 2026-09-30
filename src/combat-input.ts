@@ -53,15 +53,21 @@ export function isAttackShortcut(event) {
 
 // Having a target, its phase, and cooking never gate the attack control.
 export function canStartAttack(player, serverNow) {
-  return (
-    !!player &&
-    !player.downedUntil &&
-    !player.mountId &&
-    !player.boatId &&
-    (!player.carrierId || shoulderMagic(player)) &&
-    !player.passengerId &&
-    jumpProgress(player, serverNow) === null &&
-    (!(player.attackSequence > 0) ||
-      serverNow - player.attackAt >= attackProfile(player).cooldownMs)
-  );
+  return attackBlockReason(player, serverNow) === null;
+}
+
+/** Share the actual attack gate with feedback instead of silently dropping a gesture. */
+export function attackBlockReason(player, serverNow): string | null {
+  if (!player || player.downedUntil) return '今は攻撃できません。復帰を待ってください。';
+  if (player.mountId || player.boatId || player.passengerId)
+    return '乗り物から降りると攻撃できます。';
+  if (player.carrierId && !shoulderMagic(player)) return '地面に降りると攻撃できます。';
+  if (jumpProgress(player, serverNow) !== null)
+    return '空中では攻撃できません。着地したら、もう一度押してください。';
+  if (
+    player.attackSequence > 0 &&
+    !(serverNow - player.attackAt >= attackProfile(player).cooldownMs)
+  )
+    return '次の攻撃を準備中です。少し引いて、もう一度押してください。';
+  return null;
 }

@@ -1,0 +1,381 @@
+{
+  "checks": [
+    "camera OFF requests no model/WASM/camera",
+    "synthetic upper body calibrates and arms in real game UI",
+    "camera forward input goes through server collision and is received by second Chrome client",
+    "idle turning changes authoritative facing with no translation",
+    "move + attack is consumed once and held action cannot repeat",
+    "jump gesture invokes existing server jump",
+    "interact never falls back to attack",
+    "hand loss immediately stops server motion; explicit resume + neutral required",
+    "stalled Worker expires input, never queues more than one bitmap, terminates on stop",
+    "actual WebSocket disconnect pauses camera input and reconnect requires explicit resume",
+    "real menu and synthetic focus/visibility events pause until explicit neutral re-arm",
+    "permission denial, absent camera and occupied camera have distinct recoverable errors",
+    "cancel during permission request stops a subsequently granted stream",
+    "late camera/model initialization cannot undo a lifecycle pause",
+    "three repeated start/stop sessions release tracks and Workers",
+    "cancel during bitmap creation closes the late bitmap before transfer",
+    "new-video-frame RAF fallback calibrates and releases resources",
+    "video with no new decoded frames expires rather than holding movement",
+    "camera track ending releases stream/Worker and leaves normal controls available",
+    "real local model + module WASM executes CPU in production CSP at 10/15/20 Hz; GPU result or failure recorded",
+    "CPU inference remains usable after GPU comparison and cleanup",
+    "model 404 and Worker startup failure release resources without external fallback",
+    "keyboard movement restored after camera errors/shutdown",
+    "interact uses the existing visible nearby resource and server gather checks",
+    "interact reuses preferred companion selection and begins existing Rimo petting",
+    "portrait/landscape staff panel fits viewport and scrolls",
+    "only existing gameplay messages plus optional facing; no images/landmarks/external network"
+  ],
+  "measurements": [
+    {
+      "label": "camera OFF, game at camp",
+      "state": "OFF",
+      "options": {
+        "delegate": "CPU",
+        "hz": 15
+      },
+      "metrics": {
+        "frames": 0,
+        "validRate": 0,
+        "effectiveHz": 0,
+        "dropped": 0,
+        "trackingLosses": 0,
+        "startupMs": 0,
+        "modelLoadMs": 0,
+        "distributions": {
+          "renderFrameMs": {
+            "count": 241,
+            "median": 16.700000000000728,
+            "p95": 16.799999999999272,
+            "over50Ms": 0
+          }
+        }
+      },
+      "jsHeapBytes": 907838142,
+      "mediaSettings": null
+    },
+    {
+      "label": "synthetic six-point input ACTIVE (mock inference, software timing only)",
+      "state": "ACTIVE",
+      "options": {
+        "delegate": "CPU",
+        "hz": 15
+      },
+      "metrics": {
+        "frames": 20,
+        "validRate": 1,
+        "effectiveHz": 9.990009990009991,
+        "dropped": 0,
+        "trackingLosses": 0,
+        "startupMs": 586.1000000238419,
+        "modelLoadMs": 1,
+        "distributions": {
+          "renderFrameMs": {
+            "count": 120,
+            "median": 16.69999999999709,
+            "p95": 16.900000000001455,
+            "over50Ms": 0
+          },
+          "captureMs": {
+            "count": 20,
+            "median": 0.20000004768371582,
+            "p95": 0.3999999761581421,
+            "over50Ms": 0
+          },
+          "inferenceMs": {
+            "count": 20,
+            "median": 1,
+            "p95": 1,
+            "over50Ms": 0
+          },
+          "captureToResultMs": {
+            "count": 20,
+            "median": 4.299999952316284,
+            "p95": 5.299999952316284,
+            "over50Ms": 0
+          },
+          "resultToApplyMs": {
+            "count": 20,
+            "median": 16.399999976158142,
+            "p95": 19.5,
+            "over50Ms": 0
+          }
+        }
+      },
+      "jsHeapBytes": 920714446,
+      "mediaSettings": {
+        "width": 640,
+        "height": 480,
+        "frameRate": 20,
+        "aspectRatio": 1.3333333333333333
+      }
+    },
+    {
+      "label": "explicit synthetic hand loss to server stop upper bound ms",
+      "value": 110
+    },
+    {
+      "label": "fake camera preview only",
+      "state": "PAUSED",
+      "options": {
+        "delegate": "preview",
+        "hz": 15
+      },
+      "metrics": {
+        "frames": 0,
+        "validRate": 0,
+        "effectiveHz": 0,
+        "dropped": 0,
+        "trackingLosses": 0,
+        "startupMs": 80.5,
+        "modelLoadMs": 0,
+        "distributions": {
+          "renderFrameMs": {
+            "count": 240,
+            "median": 16.69999999999709,
+            "p95": 16.80000000000291,
+            "over50Ms": 0
+          }
+        }
+      },
+      "jsHeapBytes": 930240767,
+      "mediaSettings": {
+        "width": 640,
+        "height": 480,
+        "frameRate": 20,
+        "aspectRatio": 1.3333333333333333
+      }
+    },
+    {
+      "label": "real Lite CPU Worker 10 Hz with synthetic browser camera (no person)",
+      "state": "CALIBRATING",
+      "options": {
+        "delegate": "CPU",
+        "hz": 10
+      },
+      "metrics": {
+        "frames": 42,
+        "validRate": 0,
+        "effectiveHz": 8.392782207381693,
+        "dropped": 0,
+        "trackingLosses": 0,
+        "startupMs": 363.89999997615814,
+        "modelLoadMs": 271.60000002384186,
+        "distributions": {
+          "renderFrameMs": {
+            "count": 300,
+            "median": 16.69999999999709,
+            "p95": 16.80000000000291,
+            "over50Ms": 0
+          },
+          "captureMs": {
+            "count": 43,
+            "median": 0.2999999523162842,
+            "p95": 0.40000009536743164,
+            "over50Ms": 0
+          },
+          "inferenceMs": {
+            "count": 42,
+            "median": 21.700000047683716,
+            "p95": 24.59999990463257,
+            "over50Ms": 0
+          },
+          "captureToResultMs": {
+            "count": 42,
+            "median": 22.299999952316284,
+            "p95": 25.09999990463257,
+            "over50Ms": 0
+          }
+        }
+      },
+      "jsHeapBytes": 931929814,
+      "mediaSettings": {
+        "width": 640,
+        "height": 480,
+        "frameRate": 20,
+        "aspectRatio": 1.3333333333333333
+      }
+    },
+    {
+      "label": "real Lite CPU Worker 15 Hz with synthetic browser camera (no person)",
+      "state": "CALIBRATING",
+      "options": {
+        "delegate": "CPU",
+        "hz": 15
+      },
+      "metrics": {
+        "frames": 52,
+        "validRate": 0,
+        "effectiveHz": 10.387742463694709,
+        "dropped": 0,
+        "trackingLosses": 0,
+        "startupMs": 364.2999999523163,
+        "modelLoadMs": 271.59999990463257,
+        "distributions": {
+          "renderFrameMs": {
+            "count": 300,
+            "median": 16.69999999999709,
+            "p95": 16.80000000000291,
+            "over50Ms": 0
+          },
+          "captureMs": {
+            "count": 52,
+            "median": 0.30000007152557373,
+            "p95": 0.40000009536743164,
+            "over50Ms": 0
+          },
+          "inferenceMs": {
+            "count": 52,
+            "median": 21.800000071525574,
+            "p95": 24.5,
+            "over50Ms": 0
+          },
+          "captureToResultMs": {
+            "count": 52,
+            "median": 22.5,
+            "p95": 25.200000047683716,
+            "over50Ms": 0
+          }
+        }
+      },
+      "jsHeapBytes": 947830719,
+      "mediaSettings": {
+        "width": 640,
+        "height": 480,
+        "frameRate": 20,
+        "aspectRatio": 1.3333333333333333
+      }
+    },
+    {
+      "label": "real Lite CPU Worker 20 Hz with synthetic browser camera (no person)",
+      "state": "CALIBRATING",
+      "options": {
+        "delegate": "CPU",
+        "hz": 20
+      },
+      "metrics": {
+        "frames": 72,
+        "validRate": 0,
+        "effectiveHz": 14.355784184438114,
+        "dropped": 0,
+        "trackingLosses": 0,
+        "startupMs": 319.2999999523163,
+        "modelLoadMs": 228.79999995231628,
+        "distributions": {
+          "captureMs": {
+            "count": 72,
+            "median": 0.2999999523162842,
+            "p95": 0.3999999761581421,
+            "over50Ms": 0
+          },
+          "renderFrameMs": {
+            "count": 301,
+            "median": 16.69999999999709,
+            "p95": 16.80000000000291,
+            "over50Ms": 0
+          },
+          "inferenceMs": {
+            "count": 72,
+            "median": 22.600000023841858,
+            "p95": 27.600000023841858,
+            "over50Ms": 0
+          },
+          "captureToResultMs": {
+            "count": 72,
+            "median": 23.200000047683716,
+            "p95": 28.09999990463257,
+            "over50Ms": 0
+          }
+        }
+      },
+      "jsHeapBytes": 955346344,
+      "mediaSettings": {
+        "width": 640,
+        "height": 480,
+        "frameRate": 20,
+        "aspectRatio": 1.3333333333333333
+      }
+    },
+    {
+      "label": "real Lite GPU Worker 10 Hz with synthetic browser camera (no person)",
+      "state": "ERROR",
+      "options": {
+        "delegate": "GPU",
+        "hz": 10
+      },
+      "metrics": {
+        "frames": 0,
+        "validRate": 0,
+        "effectiveHz": 0,
+        "dropped": 38,
+        "trackingLosses": 0,
+        "startupMs": 383.90000009536743,
+        "modelLoadMs": 294.3000000715256,
+        "distributions": {
+          "renderFrameMs": {
+            "count": 103,
+            "median": 16.69999999999709,
+            "p95": 83.40000000000873,
+            "over50Ms": 22
+          }
+        }
+      },
+      "jsHeapBytes": 956286738,
+      "mediaSettings": null,
+      "limitation": "GPU Worker could not produce a usable result in this headless environment; do not use its frame times as successful inference performance.",
+      "error": "GPUの認識が応答しません。認識設定をCPUにして開始してください。"
+    }
+  ],
+  "errors": [],
+  "expectedErrors": [
+    "Error: QA initialization failure"
+  ],
+  "externalRequests": [],
+  "environment": {
+    "browser": "153.0.8010.48",
+    "node": "v24.15.0",
+    "os": "Windows 11 Home",
+    "cpu": "AMD Ryzen 7 5800H with Radeon Graphics         ",
+    "graphics": {
+      "devices": [
+        {
+          "vendorId": 4318,
+          "deviceId": 9437,
+          "subSysId": 177672232,
+          "revision": 161,
+          "vendorString": "",
+          "deviceString": "NVIDIA GeForce RTX 3070 Laptop GPU",
+          "driverVendor": "NVIDIA",
+          "driverVersion": "32.0.16.1060"
+        },
+        {
+          "vendorId": 4098,
+          "deviceId": 5688,
+          "subSysId": 175050792,
+          "revision": 197,
+          "vendorString": "",
+          "deviceString": "AMD Radeon(TM) Graphics",
+          "driverVendor": "",
+          "driverVersion": "31.0.21925.2001"
+        },
+        {
+          "vendorId": 5140,
+          "deviceId": 140,
+          "subSysId": 0,
+          "revision": 0,
+          "vendorString": "",
+          "deviceString": "Microsoft Basic Render Driver",
+          "driverVendor": "",
+          "driverVersion": "10.0.26100.9278"
+        }
+      ],
+      "renderer": "ANGLE (NVIDIA, NVIDIA GeForce RTX 3070 Laptop GPU (0x000024DD) Direct3D11 vs_5_0 ps_5_0, D3D11-32.0.16.1060)",
+      "vendor": "Google Inc. (NVIDIA)"
+    },
+    "viewport": "1440x900",
+    "warmup": "same camp camera views before all baseline comparisons"
+  },
+  "conditions": "Chrome headless, synthetic browser media + synthetic landmarks, isolated unsaved exhibition world. Real camera/people/controllers not tested."
+}

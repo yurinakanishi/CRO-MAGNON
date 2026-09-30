@@ -66,7 +66,9 @@ export function movePlayer(...args: Parameters<typeof moveActor>) {
   const facing =
     now - player.lastInput < 500 && Math.hypot(player.dx, player.dz) > 0
       ? Math.atan2(player.dx, player.dz)
-      : player.facing;
+      : now - player.lastInput < 500 && Number.isFinite(player.inputFacing)
+        ? player.inputFacing!
+        : player.facing;
   player.target = null;
   player.path = [];
   player.navigationGoal = null;

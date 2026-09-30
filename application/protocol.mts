@@ -4,7 +4,7 @@ import { DIFFICULTY_LEVELS, type Difficulty } from '../shared/difficulty.mjs';
 export type ClientCommand =
   | BarterCommand
   | { type: 'leave'; keepSession?: boolean }
-  | { type: 'move'; dx: number; dz: number; running?: boolean }
+  | { type: 'move'; dx: number; dz: number; running?: boolean; facing?: number }
   | { type: 'gait'; running: boolean }
   | { type: 'action'; action: string; targetId?: string; regionId?: string; cropId?: string }
   | { type: 'chat'; text: string }
@@ -90,8 +90,19 @@ export function decodeCommand(text: string): ClientCommand | null {
     case 'leave':
       return { type: 'leave', ...(message.keepSession === true ? { keepSession: true } : {}) };
     case 'move':
+      if (
+        message.facing !== undefined &&
+        (!finite(message.facing) || Math.abs(message.facing) > Math.PI)
+      )
+        return null;
       return finite(message.dx) && finite(message.dz)
-        ? { type: 'move', dx: message.dx, dz: message.dz, running: message.running === true }
+        ? {
+            type: 'move',
+            dx: message.dx,
+            dz: message.dz,
+            running: message.running === true,
+            ...(finite(message.facing) ? { facing: message.facing } : {}),
+          }
         : null;
     case 'gait':
       return typeof message.running === 'boolean'
