@@ -15,6 +15,7 @@ import { GULF_LANDMARKS } from './gulf-region.mjs';
 import { COASTAL, MIDDEN_SITES, KNAPPING_SITES } from './coastal-sites.mjs';
 import { WORLD, worldClamp, INITIAL_RESOURCES, NPC } from './world.mjs';
 import { riverX, riverHalfWidth, terrainHeight } from './terrain.mjs';
+import { mountainRiverContains } from './mountain-river.mjs';
 import { resourceAppearance } from './biome-scenery.mjs';
 import { woodPileBounds } from './wood-pile-layout.mjs';
 import { landBodyFree, isLand, landmassAt } from './paleo-geography.mjs';
@@ -151,6 +152,7 @@ export function overlap(point, radius, obstacle) {
   return { x: obstacle.c * nx + obstacle.s * nz, z: -obstacle.s * nx + obstacle.c * nz, depth };
 }
 function riverBlocked(point, radius) {
+  if (mountainRiverContains(point.x, point.z, radius)) return true;
   const width = riverHalfWidth(point.z);
   if (width < 0.7 || Math.abs(point.x - riverX(point.z)) >= width + radius) return false;
   return !(

@@ -1,6 +1,6 @@
 import { COAST_GRID, COAST_RUNS } from './paleo-coast-data.mjs';
 import { WORLD_BOUNDS } from './world-bounds.mjs';
-import { mountainLandDistance } from './camp-mountain.mjs';
+import { mountainLandDistance, MOUNTAIN_BOUNDS } from './camp-mountain.mjs';
 import { LEGACY_GULF, legacyGulfDistance, inLegacyGulf } from './gulf-legacy.mjs';
 
 export const EARTH = Object.freeze({
@@ -83,13 +83,13 @@ export function legacySceneryLand(x, z, margin = 0) {
 // Join the new source-derived southern foothill to the existing shoreline.
 // This same grid controls sea rendering, walking, boats and the map.
 for (
-  let iz = Math.floor((30 - WORLD_BOUNDS.minZ) / cell);
-  iz < Math.ceil((315 - WORLD_BOUNDS.minZ) / cell);
+  let iz = Math.floor((MOUNTAIN_BOUNDS.minZ - 5 - WORLD_BOUNDS.minZ) / cell);
+  iz < Math.ceil((MOUNTAIN_BOUNDS.maxZ + 5 - WORLD_BOUNDS.minZ) / cell);
   iz++
 )
   for (
-    let ix = Math.floor((-215 - WORLD_BOUNDS.minX) / cell);
-    ix < Math.ceil((65 - WORLD_BOUNDS.minX) / cell);
+    let ix = Math.floor((MOUNTAIN_BOUNDS.minX - 5 - WORLD_BOUNDS.minX) / cell);
+    ix < Math.ceil((MOUNTAIN_BOUNDS.maxX + 5 - WORLD_BOUNDS.minX) / cell);
     ix++
   ) {
     const d = mountainLandDistance(

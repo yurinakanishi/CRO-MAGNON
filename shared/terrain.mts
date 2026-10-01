@@ -7,6 +7,7 @@ import { marshDrop } from './behemoth-rules.mjs';
 import { mountainHeight } from './camp-mountain.mjs';
 import { CAMP_CAVE_SURFACE } from './camp-cave-surface.mjs';
 import { CAMP_CAVE, insideCaveGround } from './camp-cave-layout.mjs';
+import { mountainRiverBed } from './mountain-river.mjs';
 export const WATER_LEVEL = -0.45;
 import { riverX, riverHalfWidth, riverBankDrop } from './river-profile.mjs';
 export { riverX, riverFade, riverHalfWidth, riverBankDrop } from './river-profile.mjs';
@@ -96,12 +97,16 @@ export function installBiomeTerrain(fields) {
 export function terrainHeight(x, z) {
   const hill = mountainHeight(x, z);
   if (sourceSurface)
-    return Math.max(
-      hill > 0.02 ? hill : -Infinity,
-      sourceSurface(x, z) - riverBankDrop(x, z) - coastBankDrop(x, z) - marshDrop(x, z),
+    return mountainRiverBed(
+      x,
+      z,
+      Math.max(
+        hill > 0.02 ? hill : -Infinity,
+        sourceSurface(x, z) - riverBankDrop(x, z) - coastBankDrop(x, z) - marshDrop(x, z),
+      ),
     );
   // Neutral height is used only by unloaded/invisible actors; no legacy terrain is drawn.
-  return hill;
+  return mountainRiverBed(x, z, hill);
 }
 
 export function walkHeight(x, z) {

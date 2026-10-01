@@ -41,15 +41,17 @@ export function prepareMountainMaterials(root: THREE.Object3D) {
         shader.uniforms.meadowMatch = {
           value: new THREE.Vector2(MEADOW_MATCH.dirt, MEADOW_MATCH.turf),
         };
-        shader.vertexShader = 'varying vec3 hillPosition;\n' + shader.vertexShader;
+        shader.vertexShader =
+          'attribute float riverCut; varying float vRiverCut; varying vec3 hillPosition;\n' +
+          shader.vertexShader;
         shader.vertexShader = shader.vertexShader.replace(
           '#include <begin_vertex>',
-          '#include <begin_vertex>\nhillPosition=position;',
+          '#include <begin_vertex>\nhillPosition=position;vRiverCut=riverCut;',
         );
         shader.fragmentShader =
           meadowShader +
           caveGroundShader +
-          `uniform sampler2D caveRoof; varying vec3 hillPosition;
+          `uniform sampler2D caveRoof; varying vec3 hillPosition; varying float vRiverCut;
           float trailSegment(vec2 p,vec2 a,vec2 b){vec2 d=b-a;return length(p-a-d*clamp(dot(p-a,d)/dot(d,d),0.0,1.0));}
           ` +
           shader.fragmentShader;
@@ -79,10 +81,12 @@ export function prepareMountainMaterials(root: THREE.Object3D) {
           diffuseColor.rgb=mix(diffuseColor.rgb,caveDust(diffuseColor.rgb,p),path*.85);
           float apron=(1.0-smoothstep(6.0,11.0,abs(p.x-35.0)))*smoothstep(98.0,106.0,p.y)*(1.0-smoothstep(116.0,124.0,p.y));
           diffuseColor.rgb=mix(diffuseColor.rgb,caveDust(diffuseColor.rgb,p),apron);
+          float riverRock=1.0-exp(-vRiverCut*2.5);
+          diffuseColor.rgb=mix(diffuseColor.rgb,vec3(.22,.205,.17)*(shade*3.0+.3),riverRock*.88);
         `,
         );
       };
-      material.customProgramCacheKey = () => 'camp-mountain-measured-opening-v6';
+      material.customProgramCacheKey = () => 'camp-mountain-river-v7';
       material.needsUpdate = true;
     }
   });

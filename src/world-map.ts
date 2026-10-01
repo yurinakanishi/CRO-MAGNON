@@ -18,6 +18,8 @@ import { LANDMARKS } from '../shared/landmarks.mjs';
 import { WARP_POINTS } from '../shared/warp-sites.mjs';
 import { CASTLE, CASTLE_GATE } from '../shared/castle-layout.mjs';
 import { CAMP_CAVE, CAMP_MOUNTAIN_TRAIL } from '../shared/camp-cave-layout.mjs';
+import { MOUNTAIN_RIVER_SAMPLES } from '../shared/mountain-river.mjs';
+import { mountainLakePoint } from '../shared/mountain-lake.mjs';
 import { ENEMY_RULES } from '../shared/enemies.mjs';
 import { HUNTING } from '../shared/hunting.mjs';
 import { enemyStatusLabel } from './enemy-state.js';
@@ -253,7 +255,7 @@ function atlasTerrain(canvas, projection, sample: number, key: string) {
   const span = Math.max(
     2,
     Math.round((TERRAIN.latticeMetres * scale) / sample),
-    Math.ceil(Math.sqrt(((cw * ch) * sample * sample) / TERRAIN.latticeBudget)),
+    Math.ceil(Math.sqrt((cw * ch * sample * sample) / TERRAIN.latticeBudget)),
   );
   const lw = Math.ceil(cw / span) + 1,
     lh = Math.ceil(ch / span) + 1,
@@ -702,6 +704,25 @@ export function drawWorldMap(canvas, state, selfId, big = false) {
       if (!near) label(2, stop.name, x + 8, y + 4, { color: '#ffe9c0' });
     }
   if (mini || places) {
+    ctx.beginPath();
+    for (let i = 0; i <= 96; i++) {
+      const p = mountainLakePoint((i * Math.PI * 2) / 96);
+      const [px, py] = point(p.x, p.z);
+      if (i) ctx.lineTo(px, py);
+      else ctx.moveTo(px, py);
+    }
+    ctx.closePath();
+    ctx.fillStyle = '#6eabb6';
+    ctx.fill();
+    ctx.beginPath();
+    MOUNTAIN_RIVER_SAMPLES.forEach((p, i) => {
+      const [px, py] = point(p.x, p.z);
+      if (i) ctx.lineTo(px, py);
+      else ctx.moveTo(px, py);
+    });
+    ctx.strokeStyle = '#83c8cf';
+    ctx.lineWidth = mini ? 1.5 : 2.5;
+    ctx.stroke();
     ctx.beginPath();
     CAMP_MOUNTAIN_TRAIL.forEach((p, i) => {
       const [px, py] = point(p.x, p.z);

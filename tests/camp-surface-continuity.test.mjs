@@ -6,6 +6,7 @@ import { geometryScene } from '../scripts/measure-collision-bounds.mjs';
 import { measureCaveAisle } from '../scripts/measure-cave-length.mjs';
 import { measureCaveRoom } from '../scripts/measure-cave-room.mjs';
 import { mountainHeight } from '../dist/shared/camp-mountain.mjs';
+import { expandedMountainX, expandedMountainZ } from '../dist/shared/mountain-expansion.mjs';
 import {
   CAMP_CAVE,
   CAMP_MOUNTAIN,
@@ -37,8 +38,9 @@ test('every exposed mountain triangle has matching ground, including former shor
         );
       point.multiplyScalar(1 / 3);
       if (point.y < 0.1) continue; // Buried skirts are not walking surfaces.
-      const x = CAMP_MOUNTAIN.x - point.x,
-        z = CAMP_MOUNTAIN.z - point.z;
+      const sourceZ = CAMP_MOUNTAIN.z - point.z,
+        x = expandedMountainX(CAMP_MOUNTAIN.x - point.x, sourceZ),
+        z = expandedMountainZ(sourceZ);
       const error = Math.abs(mountainHeight(x, z) - point.y);
       worst = Math.max(worst, error);
       samples++;

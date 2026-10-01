@@ -10,7 +10,7 @@ import {
   chunkHasLand,
   locationName,
 } from '../dist/shared/paleo-geography.mjs';
-import { mountainLandDistance } from '../dist/shared/camp-mountain.mjs';
+import { mountainLandDistance, MOUNTAIN_BOUNDS } from '../dist/shared/camp-mountain.mjs';
 import {
   GULF_SPINE,
   LANDINGS,
@@ -52,7 +52,7 @@ const make = () => {
   return { core, socket, room, player };
 };
 
-test('every shoreline byte matches the archived Earth source plus the unchanged camp mountain only', () => {
+test('every shoreline byte matches the archived Earth source plus the expanded camp mountain only', () => {
   const raw = new Uint8Array(COAST_GRID.width * COAST_GRID.height);
   let offset = 0;
   for (let i = 0; i < COAST_RUNS.length; i += 2) {
@@ -60,6 +60,12 @@ test('every shoreline byte matches the archived Earth source plus the unchanged 
     offset += COAST_RUNS[i];
   }
   const grid = coastTextureData();
+  const bounds = {
+    minX: Math.floor((MOUNTAIN_BOUNDS.minX - 5 - grid.minX) / grid.cell),
+    maxX: Math.ceil((MOUNTAIN_BOUNDS.maxX + 5 - grid.minX) / grid.cell),
+    minZ: Math.floor((MOUNTAIN_BOUNDS.minZ - 5 - grid.minZ) / grid.cell),
+    maxZ: Math.ceil((MOUNTAIN_BOUNDS.maxZ + 5 - grid.minZ) / grid.cell),
+  };
   let differing = 0;
   for (let z = 0; z < grid.height; z++)
     for (let x = 0; x < grid.width; x++) {
@@ -71,7 +77,7 @@ test('every shoreline byte matches the archived Earth source plus the unchanged 
         bx >= 0 && bz >= 0 && bx < COAST_GRID.width && bz < COAST_GRID.height
           ? raw[bz * COAST_GRID.width + bx]
           : 0;
-      if (wx >= -215 && wx <= 65 && wz >= 30 && wz < 316)
+      if (x >= bounds.minX && x < bounds.maxX && z >= bounds.minZ && z < bounds.maxZ)
         expected = Math.max(
           expected,
           Math.max(0, Math.min(255, Math.round(128 + 4 * mountainLandDistance(wx, wz)))),

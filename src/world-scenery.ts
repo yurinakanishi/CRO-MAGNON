@@ -22,6 +22,7 @@ import { HUNTING } from '../shared/hunting.mjs';
 import { meatRingLayout } from './resource-visuals.js';
 import { CAVE_HEARTH } from '../shared/camp-cave-layout.mjs';
 import { SIMPLIFIED_SHADOW_KEYS } from './performance-lod.js';
+import { buildMountainRiver } from './mountain-river.js';
 
 const TAU = Math.PI * 2;
 const random = seededRandom;
@@ -101,6 +102,8 @@ export async function buildTerrainAssets(world) {
       world.water.add(new THREE.Mesh(geometry, world.waterMaterial));
     }
   world.scene.add(world.water);
+  world.mountainRiver = buildMountainRiver(waterTemplate, world.waterMaterial.userData.time);
+  world.scene.add(world.mountainRiver);
   buildMarshAssets(world);
   world.bridge = addModel(world, 'wood-footbridge', riverX(43.5), 43.5);
   const bridgeAsset = world.worldAssets.get('wood-footbridge').asset;

@@ -26,6 +26,7 @@ import {
   movementFromCamera,
 } from '../shared/terrain.mjs';
 import { WORLD, CAMP, NPC, INITIAL_RESOURCES } from '../shared/world.mjs';
+import { mountainWaterHeight } from '../shared/mountain-river.mjs';
 import { WorldAssets } from './world-assets.js';
 import { buildWoodPile } from './wood-pile.js';
 import { WorldLandmarks } from './world-landmarks.js';
@@ -100,6 +101,7 @@ export class WorldRenderer {
   declare terrain: THREE.Object3D;
   declare bridge: THREE.Object3D;
   declare waterMaterial: THREE.ShaderMaterial;
+  declare mountainRiver: THREE.Group;
   declare motes: THREE.Object3D;
   declare releaseTerrainSampler: () => void;
   declare releaseBridgeSampler: () => void;
@@ -1322,10 +1324,12 @@ export class WorldRenderer {
       (riverHalfWidth(this.camera.position.z) > 0.7 &&
         Math.abs(this.camera.position.x - riverX(this.camera.position.z)) <
           riverHalfWidth(this.camera.position.z));
+    const mountainWater = mountainWaterHeight(this.camera.position.x, this.camera.position.z);
     this.camera.position.y = Math.max(
       this.camera.position.y,
       cameraFloorHeight(this.camera.position.x, this.camera.position.z) + 0.25,
       aboveWater ? WATER_LEVEL + 0.3 : -Infinity,
+      mountainWater + 0.3,
     );
     this.camera.lookAt(aim);
     this.camera.updateMatrixWorld();

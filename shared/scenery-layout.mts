@@ -12,6 +12,8 @@ import {
 import { nearLandmark } from './landmarks.mjs';
 import { nearCastle } from './castle-layout.mjs';
 import { campLandformReserved } from './camp-cave-layout.mjs';
+import { mountainRiverContains } from './mountain-river.mjs';
+import { mountainLakePoint, MOUNTAIN_LAKE } from './mountain-lake.mjs';
 import { CROW_FACTION_GROUNDS } from './crow-faction.mjs';
 import { BIOME_SCENERY } from './biome-scenery.mjs';
 import {
@@ -339,6 +341,33 @@ function layout() {
     (item) => Math.hypot(item.x - 36.5113837668, item.z - 32.6710389298) < 0.01,
   );
   if (arrivalPine) Object.assign(arrivalPine, { x: 43, z: 37 });
+  // Small, uneven groups of the accepted boulder around the exposed lake shore.
+  // Append after seeded generation so the existing world's scatter stays stable.
+  for (const [angle, offset, scale, yaw] of [
+    [0.72, 3.6, 0.62, 0.3],
+    [0.81, 4.0, 0.29, 2.1],
+    [1.72, 3.4, 0.42, 1.4],
+    [1.85, 4.2, 0.24, 0.5],
+    [2.94, 3.5, 0.68, 2.7],
+    [3.06, 3.3, 0.32, 1.8],
+    [4.02, 3.6, 0.38, 0.7],
+    [4.16, 4.4, 0.23, 2.4],
+  ]) {
+    const p = mountainLakePoint(angle);
+    const distance = Math.hypot(p.x - MOUNTAIN_LAKE.x, p.z - MOUNTAIN_LAKE.z);
+    const x = p.x + ((p.x - MOUNTAIN_LAKE.x) / distance) * offset;
+    const z = p.z + ((p.z - MOUNTAIN_LAKE.z) / distance) * offset;
+    const biome = biomeAt(x, z).id;
+    rocks.push({
+      key: 'valley-boulder',
+      x,
+      z,
+      yaw,
+      scale,
+      biome,
+      surface: BIOME_SCENERY[biome].surface ?? null,
+    });
+  }
   return Object.fromEntries(
     Object.entries({ trees, grass, rocks, ridges, tents, props, fires, animals }).map(
       ([key, items]) => [
@@ -346,7 +375,8 @@ function layout() {
         items.filter(
           (item) =>
             !nearCastle(item.x, item.z, 3) &&
-            !campLandformReserved(item.x, item.z, key === 'trees' ? 2 : 0),
+            !campLandformReserved(item.x, item.z, key === 'trees' ? 2 : 0) &&
+            !mountainRiverContains(item.x, item.z, key === 'trees' ? 5 : 2.5),
         ),
       ],
     ),
@@ -412,6 +442,7 @@ export function grassForChunk(ix, iz) {
     (item, i) =>
       !nearCastle(item.x, item.z, 1) &&
       !campLandformReserved(item.x, item.z) &&
+      !mountainRiverContains(item.x, item.z, 2.5) &&
       (!inBehemothClearing(item.x, item.z) ||
         (i % 4 === 0 && !inBehemothPool(item.x, item.z, 0.6))),
   );

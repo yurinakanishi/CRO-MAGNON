@@ -8,6 +8,7 @@ import { fitSourceRiverBank } from './source-surface-fit.js';
 import { coastDistance } from '../shared/paleo-geography.mjs';
 import { ViewUpdateGate } from './view-update-gate.js';
 import { RiverBankBuilder } from './river-bank-builder.js';
+import { mountainRiverIntersects } from '../shared/mountain-river.mjs';
 
 const RADIUS = 128,
   CAPACITY = 100;
@@ -176,7 +177,9 @@ export class OpenWorldTerrain {
     const key = biomeById(chunk.biome).ground;
     if (!this.assets.templates.has(key)) return;
     const levels = this.prepare(key),
-      bank = chunk.x + 16 >= 57 && chunk.x - 16 <= 73 && chunk.z + 16 >= -64 && chunk.z - 16 <= 184;
+      bank =
+        (chunk.x + 16 >= 57 && chunk.x - 16 <= 73 && chunk.z + 16 >= -64 && chunk.z - 16 <= 184) ||
+        mountainRiverIntersects(chunk.x - 16, chunk.x + 16, chunk.z - 16, chunk.z + 16);
     const record = { ...chunk, assetKey: key, bankMeshes: [] };
     if (bank && this.bankBuilder) {
       const jobs = levels[0].map((part) => {

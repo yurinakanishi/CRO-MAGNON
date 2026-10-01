@@ -40,7 +40,7 @@ export const CAMP_MOUNTAIN = Object.freeze({
   z: 175,
   yaw: Math.PI,
   scale: 1,
-  clearance: 200,
+  clearance: 320,
   groundOffset: 0,
   // Preserve full source detail around the outdoor camp, cave and ascent. The
   // castle lies outside this area and uses the 1/10 source-derived LOD.

@@ -12,6 +12,7 @@ import { GULF_LANDMARKS } from '../shared/gulf-region.mjs';
 import { CAMP_CAVE, CAMP_MOUNTAIN, campMountainVisualLod } from '../shared/camp-cave-layout.mjs';
 import { prepareCaveMaterials } from './cave-materials.js';
 import { prepareMountainMaterials } from './mountain-materials.js';
+import { prepareMountainRiverBed } from './mountain-river.js';
 
 const PLACEMENTS = Object.freeze([
   ...LANDMARKS,
@@ -172,8 +173,10 @@ export class WorldLandmarks {
         }
         if (item.key === CAMP_MOUNTAIN.key && !template.trailPrepared) {
           template.trailPrepared = true;
-          for (const gltf of [template.gltf, ...template.lods])
+          for (const gltf of [template.gltf, ...template.lods]) {
+            prepareMountainRiverBed(gltf.scene);
             template.caveRoofTexture = prepareMountainMaterials(gltf.scene);
+          }
         }
         if (item.key === 'volcanic-cone' && !template.lavaPrepared) {
           template.lavaPrepared = true;
