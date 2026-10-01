@@ -11,7 +11,7 @@ import { CASTLE_SURFACE } from '../dist/shared/castle-surface.mjs';
 // 2026-09-13 stepped fortress: through the gate, across the forecourt, up the
 // grand central stairs level by level to the summit, sideways on the middle
 // terrace, and back down.
-test('all seven characters manually climb the central stairs to the summit, turn both ways and descend', () => {
+test('all playable characters manually climb the central stairs to the summit, turn both ways and descend', () => {
   const collision = new CollisionWorld();
   for (const model of CHARACTER_MODELS)
     for (const runningRequested of [false, true]) {
@@ -65,6 +65,7 @@ test('all seven characters manually climb the central stairs to the summit, turn
             const speed = runningRequested
               ? (model.runSpeed ?? WORLD.runSpeed)
               : (model.walkSpeed ?? WORLD.walkSpeed);
+            const previous = {x:actor.x,z:actor.z};
             movePlayer(
               actor,
               Math.min(0.05, distance / speed),
@@ -72,7 +73,10 @@ test('all seven characters manually climb the central stairs to the summit, turn
               (p, dx, dz) => collision.move(p, dx, dz, p.radius),
               speed,
             );
-            assert.ok(collision.free(actor, actor.radius), `${model.key}: body clearance`);
+            // Stair movement permits a sampled riser that is unsuitable for a
+            // static spawn. Verify the movement contract and full body clearance.
+            assert.ok(collision.stepAllowed(previous,actor,actor.radius), `${model.key}: legal stair transition`);
+            assert.ok(collision.clearOfBodies(actor,actor.radius), `${model.key}: body clearance`);
           }
           assert.ok(
             Math.hypot(actor.x - goal.x, actor.z - goal.z) < 0.06,

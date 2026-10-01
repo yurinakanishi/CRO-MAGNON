@@ -1,0 +1,20 @@
+{
+  "modelKey": "maruimo-octopus",
+  "candidate": 1,
+  "revision": "10",
+  "decision": "adopt",
+  "sha256": "09366f85545b6e79967e52977e04f25a6a75e5833c51e00f5e05565e5d661ac5",
+  "visualGate": "passed",
+  "browserGate": "passed with limitations in validation.json",
+  "reviewer": "Codex",
+  "source": "output/model-generation/models/maruimo-octopus/work/rig/revision-10/candidate.glb",
+  "staticReview": "Seven normal and seven clay views of the reimported delivery; brown hair, round glasses, knit torso, red tentacles and cream suckers retained.",
+  "motionReview": "Thirteen clips inspected at 65 rendered key poses; all vertices tested at 120 Hz. Existing HTTP viewer and game confirmed the delivered skin and actions.",
+  "numericReport": "assets/maruimo-octopus/validation.json",
+  "browserReport": "assets/maruimo-octopus/game-qa.json",
+  "notes": [
+    "The long side appendage is interpreted as the right arm; unseen depth and back are inferred.",
+    "One completed candidate; all failed reconstruction and rig attempts retained.",
+    "No public or exhibition deployment."
+  ]
+}

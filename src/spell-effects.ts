@@ -188,7 +188,10 @@ export class SpellEffects {
           baseY = projectileHeight(originX, originZ, orb.elevation) + flightHeight(orb);
         point.set(originX + orb.dx * 0.16, baseY, originZ + orb.dz * 0.16);
         const owner = players.get(orb.ownerId);
-        if (owner?.gripLeft && owner?.gripRight) {
+        if (orb.kind === 'science' && owner?.state.species === 'howkey' && owner.gripLeft) {
+          owner.model.updateMatrixWorld(true);
+          owner.gripLeft.getWorldPosition(point);
+        } else if (orb.kind !== 'science' && owner?.gripLeft && owner?.gripRight) {
           owner.model.updateMatrixWorld(true);
           owner.gripLeft.getWorldPosition(point);
           owner.gripRight.getWorldPosition(otherHand);
@@ -313,15 +316,14 @@ export class SpellEffects {
       const age = (now - p.attackAt) / 1000;
       if (age < 0 || age >= profile.impactMs / 1000) continue;
       entity.model.updateMatrixWorld(true);
-      if (profile.key === 'science' && entity.gripLeft && entity.gripRight) {
+      if (profile.key === 'science' && entity.gripLeft) {
         entity.gripLeft.getWorldPosition(point);
-        entity.gripRight.getWorldPosition(otherHand);
-        point.add(otherHand).multiplyScalar(0.5);
         const growth = age / (profile.impactMs / 1000);
         this.add(point.x, point.y, point.z, 0.08 + growth * 0.2, 0.65, SCIENCE);
         this.addScienceOrbit(point.x, point.y, point.z, 0.07 + growth * 0.1, now * 0.018, growth);
         continue;
       }
+      if (profile.key === 'science') continue;
       for (const grip of [entity.gripLeft, entity.gripRight]) {
         if (!grip) continue;
         grip.getWorldPosition(point);

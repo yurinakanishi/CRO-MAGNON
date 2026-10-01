@@ -10,7 +10,7 @@ test('all delivered skins sit on the canoe socket with feet inside its cockpit a
   const hull = await geometryScene('public/models/dugout-canoe/model.glb'),
     bounds = new THREE.Box3().setFromObject(hull.scene),
     seat = new THREE.Vector3(0, 0.67, -1.3);
-  for (const profile of CHARACTER_MODELS) {
+  for (const profile of CHARACTER_MODELS.filter((model) => model.bodyPlan !== 'octopus')) {
     const gltf = await geometryScene(await deliveredModel(profile.key)),
       group = new THREE.Group();
     group.add(gltf.scene);

@@ -576,6 +576,18 @@
       "revision": "11",
       "triangles": 66406,
       "gameQA": "assets/howkey-scientist/README.md"
+    },
+    {
+      "key": "maruimo-octopus",
+      "name": "まるぃも タコ人間",
+      "kind": "humanoid",
+      "height": 1.55,
+      "geometryResolution": 1024,
+      "referenceVersion": 2,
+      "status": "game-integrated",
+      "sha256": "09366f85545b6e79967e52977e04f25a6a75e5833c51e00f5e05565e5d661ac5",
+      "delivery": "/models/maruimo-octopus/model-r10.glb",
+      "subject": "Friendly octopus-human with brown hair, round glasses, cable knit sweater, red lower arms, cream suction cups and a long flexible right tentacle."
     }
   ],
   "reuse": {

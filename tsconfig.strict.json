@@ -10,6 +10,8 @@
     "application/ports.mts",
     "application/protocol.mts",
     "src/three-types.ts",
+    "src/science-cast.ts",
+    "src/octopus-pose.ts",
     "shared/snapshots.mts",
     "shared/spatial-grid.mts",
     "src/frame-clock.ts",

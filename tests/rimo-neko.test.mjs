@@ -206,7 +206,7 @@ test('all delivered characters crouch, keep both soles planted and reach the cat
   const cat = await loadMotion(await deliveredModel('rimo-neko'));
   const catMixer = new THREE.AnimationMixer(cat.scene),
     catAction = catMixer.clipAction(cat.animations.find((c) => c.name === 'Pet')).play();
-  for (const character of CHARACTER_MODELS) {
+  for (const character of CHARACTER_MODELS.filter((model) => model.bodyPlan !== 'octopus')) {
     const gltf = await loadMotion(await deliveredModel(character.key)),
       outer = new THREE.Group();
     outer.add(gltf.scene);

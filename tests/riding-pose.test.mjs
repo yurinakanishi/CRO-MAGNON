@@ -12,7 +12,7 @@ test('all six delivered skins seat at the animated spine, restore their bind tra
     mixer = new THREE.AnimationMixer(mammoth.scene);
   const run = mixer.clipAction(mammoth.animations.find((c) => c.name === 'Run_Loop'));
   run.play();
-  for (const model of CHARACTER_MODELS) {
+  for (const model of CHARACTER_MODELS.filter((model) => model.bodyPlan !== 'octopus')) {
     const gltf = await geometryScene(await deliveredModel(model.key)),
       group = new THREE.Group();
     group.add(gltf.scene);

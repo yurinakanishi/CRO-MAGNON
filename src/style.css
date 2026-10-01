@@ -262,6 +262,9 @@ button kbd {
 .portrait.howkey {
   background: #b5cec2 url('/models/howkey-scientist/portrait.png') 50% 18%/190% auto no-repeat;
 }
+.portrait.maruimo {
+  background: #e6d4c0 url('/models/maruimo-octopus/portrait.png') 50% 18%/180% auto no-repeat;
+}
 .portrait.cat:before,
 .portrait.cat:after,
 .portrait.cat i,
@@ -270,7 +273,10 @@ button kbd {
 .portrait.bear i,
 .portrait.howkey:before,
 .portrait.howkey:after,
-.portrait.howkey i {
+.portrait.howkey i,
+.portrait.maruimo:before,
+.portrait.maruimo:after,
+.portrait.maruimo i {
   display: none;
 }
 

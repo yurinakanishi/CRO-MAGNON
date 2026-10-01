@@ -1,0 +1,331 @@
+{
+  "modelKey": "maruimo-octopus",
+  "revision": "10",
+  "sha256": "09366f85545b6e79967e52977e04f25a6a75e5833c51e00f5e05565e5d661ac5",
+  "exactDeliveryHashes": "passed",
+  "numeric": {
+    "file": "output/model-generation/models/maruimo-octopus/work/rig/revision-10/candidate.glb",
+    "sha256": "09366f85545b6e79967e52977e04f25a6a75e5833c51e00f5e05565e5d661ac5",
+    "sampleHz": 120,
+    "renderVertices": 141627,
+    "triangles": 137602,
+    "bones": 75,
+    "clips": [
+      {
+        "clip": "Attack",
+        "seconds": 1,
+        "samples": 121,
+        "minimumY": 0.0016137209285831823,
+        "maximumLowestY": 0.0016137560407531479,
+        "bounds": {
+          "min": [
+            -0.860815217626739,
+            0.0016137209285831823,
+            -0.5835946607161764
+          ],
+          "max": [
+            0.8166928757619325,
+            1.5520120115591285,
+            1.6964838208311765
+          ]
+        },
+        "rootDrift": 0,
+        "maximumEdgeElongation": 5.27807315324507,
+        "loopClosure": null,
+        "tipAtImpact": [
+          -0.05999875209783141,
+          0.8366079443898248,
+          1.6603035129523498
+        ]
+      },
+      {
+        "clip": "Boat_Loop",
+        "seconds": 2,
+        "samples": 241,
+        "minimumY": 0.0016137209285831823,
+        "maximumLowestY": 0.0016137560407531479,
+        "bounds": {
+          "min": [
+            -0.860815217626739,
+            0.0016137209285831823,
+            -0.5835946607161764
+          ],
+          "max": [
+            0.8166928757619325,
+            1.5509304423501038,
+            0.7347841129066022
+          ]
+        },
+        "rootDrift": 0,
+        "maximumEdgeElongation": 5.281847071613312,
+        "loopClosure": 0
+      },
+      {
+        "clip": "Craft",
+        "seconds": 1.5,
+        "samples": 181,
+        "minimumY": 0.0016137209285831823,
+        "maximumLowestY": 0.0016137560407531479,
+        "bounds": {
+          "min": [
+            -0.860815217626739,
+            0.0016137209285831823,
+            -0.5835946607161764
+          ],
+          "max": [
+            0.8166928757619325,
+            1.5499998719860502,
+            0.734351127097865
+          ]
+        },
+        "rootDrift": 0,
+        "maximumEdgeElongation": 5.278073865845786,
+        "loopClosure": null
+      },
+      {
+        "clip": "Downed",
+        "seconds": 1.399999976158142,
+        "samples": 169,
+        "minimumY": 0.0016137209285831823,
+        "maximumLowestY": 0.0016137560407531479,
+        "bounds": {
+          "min": [
+            -0.860815217626739,
+            0.0016137209285831823,
+            -0.5835946607161764
+          ],
+          "max": [
+            0.8166928757619325,
+            1.5499998717407348,
+            0.7398985361554116
+          ]
+        },
+        "rootDrift": 0,
+        "maximumEdgeElongation": 5.291993172256699,
+        "loopClosure": null
+      },
+      {
+        "clip": "Eat",
+        "seconds": 1.5,
+        "samples": 181,
+        "minimumY": 0.0016137209285831823,
+        "maximumLowestY": 0.0016137560407531479,
+        "bounds": {
+          "min": [
+            -0.860815217626739,
+            0.0016137209285831823,
+            -0.5835946607161764
+          ],
+          "max": [
+            0.8166928757619325,
+            1.5499998719860502,
+            0.734351127097865
+          ]
+        },
+        "rootDrift": 0,
+        "maximumEdgeElongation": 7.246695520956755,
+        "loopClosure": null
+      },
+      {
+        "clip": "Gather",
+        "seconds": 1.399999976158142,
+        "samples": 169,
+        "minimumY": 0.0016137209285831823,
+        "maximumLowestY": 0.0016137560407531479,
+        "bounds": {
+          "min": [
+            -0.860815217626739,
+            0.0016137209285831823,
+            -0.5835946607161764
+          ],
+          "max": [
+            0.8166928757619325,
+            1.5499998717407348,
+            1.7520643392677262
+          ]
+        },
+        "rootDrift": 0,
+        "maximumEdgeElongation": 5.278070913086559,
+        "loopClosure": null
+      },
+      {
+        "clip": "Give",
+        "seconds": 1.100000023841858,
+        "samples": 133,
+        "minimumY": 0.0016137209285831823,
+        "maximumLowestY": 0.0016137560407531479,
+        "bounds": {
+          "min": [
+            -0.860815217626739,
+            0.0016137209285831823,
+            -0.5835946607161764
+          ],
+          "max": [
+            0.8166928757619325,
+            1.5499998724025337,
+            0.734351127097865
+          ]
+        },
+        "rootDrift": 0,
+        "maximumEdgeElongation": 5.278073865845786,
+        "loopClosure": null
+      },
+      {
+        "clip": "Idle_Loop",
+        "seconds": 3,
+        "samples": 361,
+        "minimumY": 0.0014050869408765946,
+        "maximumLowestY": 0.0017187609970422866,
+        "bounds": {
+          "min": [
+            -0.8623143764370345,
+            0.0014050869408765946,
+            -0.5842576526037907
+          ],
+          "max": [
+            0.8168072852415679,
+            1.5509304423501038,
+            0.7347841129066022
+          ]
+        },
+        "rootDrift": 0,
+        "maximumEdgeElongation": 5.281847071613312,
+        "loopClosure": 0
+      },
+      {
+        "clip": "Jump",
+        "seconds": 1,
+        "samples": 121,
+        "minimumY": 0.001544243836474281,
+        "maximumLowestY": 0.02272701033676726,
+        "bounds": {
+          "min": [
+            -0.8612003005011651,
+            0.001544243836474281,
+            -0.5835946607161764
+          ],
+          "max": [
+            0.8168331927953432,
+            1.5529782943458272,
+            0.7353467786584538
+          ]
+        },
+        "rootDrift": 0,
+        "maximumEdgeElongation": 5.278073865845786,
+        "loopClosure": null
+      },
+      {
+        "clip": "Ride_Loop",
+        "seconds": 2,
+        "samples": 241,
+        "minimumY": 0.0016137209285831823,
+        "maximumLowestY": 0.0016137560407531479,
+        "bounds": {
+          "min": [
+            -0.860815217626739,
+            0.0016137209285831823,
+            -0.5835946607161764
+          ],
+          "max": [
+            0.8166928757619325,
+            1.5509304423501038,
+            0.7347841129066022
+          ]
+        },
+        "rootDrift": 0,
+        "maximumEdgeElongation": 5.281847071613312,
+        "loopClosure": 0
+      },
+      {
+        "clip": "Run_Loop",
+        "seconds": 0.30000001192092896,
+        "samples": 37,
+        "minimumY": 0.0008705018679376538,
+        "maximumLowestY": 0.0029155469546454167,
+        "bounds": {
+          "min": [
+            -0.8619506160448434,
+            0.0008705018679376538,
+            -0.7510294771184634
+          ],
+          "max": [
+            0.8174548143850348,
+            1.5534130952560885,
+            0.847197179040253
+          ]
+        },
+        "rootDrift": 0,
+        "maximumEdgeElongation": 7.433081158040027,
+        "loopClosure": 0
+      },
+      {
+        "clip": "Walk_Loop",
+        "seconds": 0.5,
+        "samples": 61,
+        "minimumY": 0.0014111323223543516,
+        "maximumLowestY": 0.0025481045168136056,
+        "bounds": {
+          "min": [
+            -0.8613185383991537,
+            0.0014111323223543516,
+            -0.7184839863571519
+          ],
+          "max": [
+            0.8170324145222055,
+            1.551597608538981,
+            0.8183856443472364
+          ]
+        },
+        "rootDrift": 0,
+        "maximumEdgeElongation": 7.8406956705488176,
+        "loopClosure": 0
+      },
+      {
+        "clip": "Wave",
+        "seconds": 1.7999999523162842,
+        "samples": 217,
+        "minimumY": 0.0016137209285831823,
+        "maximumLowestY": 0.0016137560407531479,
+        "bounds": {
+          "min": [
+            -0.860815217626739,
+            0.0016137209285831823,
+            -0.5835946607161764
+          ],
+          "max": [
+            0.8166928757619325,
+            1.5499998732108224,
+            0.734351127097865
+          ]
+        },
+        "rootDrift": 0,
+        "maximumEdgeElongation": 6.745991029017774,
+        "loopClosure": null
+      }
+    ],
+    "weightSumError": 1.4013494364917278e-7,
+    "errors": [],
+    "numericPass": true,
+    "scope": "All surface vertices at 120 Hz including interpolated frames; edge stretch at up to 24 Hz. Visual review separately checks curl intersections."
+  },
+  "runtimePetting": {
+    "poses": 30,
+    "minimumY": 0.0014175495727584981,
+    "maximumFullWeightGap": 0.00007398642930506012
+  },
+  "checks": {
+    "fullTests": 755,
+    "finalRidingTests": 26,
+    "typecheck": "passed including strict",
+    "syntax": 401,
+    "architecture": "passed",
+    "diffCheck": "passed"
+  },
+  "browser": "game-qa.json",
+  "limitations": [
+    "Full historical asset audit stops at the pre-existing missing neanderthal-hunter original reference.",
+    "No reliable sustained foreground FPS or mobile viewport measurement in this browser session.",
+    "Standalone file:// viewer launch was blocked by the browser tool protocol policy; HTTP runtime was verified.",
+    "Physical controllers, real hand input and long-duration operation were not tested."
+  ]
+}

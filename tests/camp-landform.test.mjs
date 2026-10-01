@@ -49,7 +49,7 @@ test('outdoor camp and northern route stay level while the southern castle sits 
     for (let dx = -6; dx <= 6; dx += 1)
       assert.equal(mountainHeight(riverX(z) + dx, z), 0, `river ${z}/${dx}`);
 });
-test('all seven characters walk into and out of the cave, then the full gentle trail to the castle', () => {
+test('all playable characters walk into and out of the cave, then the full gentle trail to the castle', () => {
   const collision = new CollisionWorld();
   const goals = [
     ...CAVE_APPROACH,
@@ -75,9 +75,11 @@ test('all seven characters walk into and out of the cave, then the full gentle t
     };
     let time = 1000;
     for (const goal of goals) {
+      // Give every gait the same travel budget, including slower octopus crawling.
+      const steps = Math.ceil(Math.hypot(actor.x-goal.x,actor.z-goal.z)/((model.walkSpeed??WORLD.walkSpeed)*.025))*2+100;
       for (
         let step = 0;
-        Math.hypot(actor.x - goal.x, actor.z - goal.z) > 0.08 && step < 1500;
+        Math.hypot(actor.x - goal.x, actor.z - goal.z) > 0.08 && step < steps;
         step++
       ) {
         const dx = goal.x - actor.x,

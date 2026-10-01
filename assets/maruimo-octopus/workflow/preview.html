@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="ja"><meta charset="utf-8"><title>まるぃも · モデル確認</title>
+<style>
+body{margin:0;background:#d9e0e2;color:#19252b;font:14px system-ui}header{position:absolute;inset:14px 18px auto;z-index:2;padding:12px;background:#f5f7f5e8;border-radius:12px}h1{font-size:21px;margin:0 0 8px}button,select,input{font:inherit;margin:3px;padding:5px 9px}#status{position:absolute;bottom:12px;left:18px;max-width:520px;padding:10px;background:#f5f7f5e0;font:12px monospace;white-space:pre-wrap;pointer-events:none}canvas{display:block;width:100vw;height:100vh}#time{width:180px;vertical-align:middle}
+</style>
+<script type="importmap">{"imports":{"three":"/vendor/three.module.js","three/addons/":"/vendor/addons/"}}</script>
+<header><h1>まるぃも · 形状と動作の確認</h1>
+<select id="model" aria-label="モデル"><option value="dense">TRELLIS原形</option><option value="surface">軽量化後</option><option value="rig">動作 r01</option><option value="rig-03">動作 r03</option><option value="rig-04">動作 r04</option><option value="rig-08">動作 r08</option><option value="production">ゲーム採用版</option></select>
+<select id="view" aria-label="視点"><option value="front">正面</option><option value="back">背面</option><option value="left">左</option><option value="right">右</option><option value="top">上</option><option value="bottom">下</option><option value="threequarter">斜め</option></select>
+<button id="clay">単色にする</button><button id="bones">骨格を表示</button><button id="play">再生</button>
+<select id="clip" aria-label="動作"><option value="rest">基準姿勢</option></select>
+<select id="speed" aria-label="速度"><option value="1">通常速度</option><option value=".5">1/2速度</option><option value=".25">1/4速度</option></select>
+<input id="time" aria-label="動作の時刻" type="range" min="0" max="1" step=".001" value="0">
+<button id="pet">猫を撫でる</button><button id="measure">関節位置を測る</button></header>
+<canvas id="scene"></canvas><pre id="status">読み込み中</pre>
+<script type="module">
+import * as T from 'three';
+import {GLTFLoader} from 'three/addons/loaders/GLTFLoader.js';
+import {OrbitControls} from 'three/addons/controls/OrbitControls.js';
+import {OctopusPettingPose} from '/src/octopus-pose.js';
+import {CharacterAssets} from '/src/character-assets.js';
+const status=document.querySelector('#status'),errors=[];
+window.addEventListener('error',e=>{errors.push(e.message);status.textContent=errors.join('\n')});
+window.addEventListener('unhandledrejection',e=>{errors.push(String(e.reason));status.textContent=errors.join('\n')});
+const renderer=new T.WebGLRenderer({canvas:document.querySelector('#scene'),antialias:true});
+renderer.setPixelRatio(Math.min(devicePixelRatio,1.5));renderer.outputColorSpace=T.SRGBColorSpace;
+const scene=new T.Scene();scene.background=new T.Color('#d9e0e2');
+scene.add(new T.HemisphereLight('#eaf4ff','#787264',2.1));
+for(const [color,intensity,position] of [['#fff5e6',2.4,[-3,5,4]],['#edf5ff',1.2,[3,3,-3]]]){
+ const light=new T.DirectionalLight(color,intensity);light.position.fromArray(position);scene.add(light);
+}
+const camera=new T.PerspectiveCamera(30,1,.01,100),controls=new OrbitControls(camera,renderer.domElement);
+const group=new T.Group();scene.add(group);
+const clayMaterial=new T.MeshStandardMaterial({color:'#91a4b0',roughness:.8});
+let root,mixer,clips=[],action,provider,actor,skeleton,petPose,rest=[],materials=[],center=new T.Vector3(),radius=2;
+let playing=false,clay=false,petting=false,at=0,last=performance.now(),generation=0;
+let measuring=false,picked=[];
+const views={front:[0,.05,1],back:[0,.05,-1],left:[1,.05,0],right:[-1,.05,0],top:[0,1,.001],bottom:[0,-1,.001],threequarter:[1,.3,1]};
+function frameView(){camera.position.copy(center).add(new T.Vector3(...views[document.querySelector('#view').value]).normalize().multiplyScalar(radius));controls.target.copy(center);camera.lookAt(center);controls.update();}
+function chooseClip(){mixer?.stopAllAction();for(const {bone,p,q,s} of rest){bone.position.copy(p);bone.quaternion.copy(q);bone.scale.copy(s)}const name=document.querySelector('#clip').value,clip=clips.find(c=>c.name===name);action=clip?mixer.clipAction(clip):null;if(action){action.reset().setLoop(T.LoopOnce,1).setEffectiveWeight(1).play();action.clampWhenFinished=true;action.paused=true;}at=0;document.querySelector('#time').max=clip?.duration||1;sample();}
+function sample(){petPose?.restore();if(action){action.time=at;mixer.update(0);}root?.updateMatrixWorld(true);if(petting&&petPose){petPose.update(root.localToWorld(new T.Vector3(-.12,.46,.68)),1,(at%1.6)/1.6);}document.querySelector('#time').value=at;}
+async function load(){const token=++generation;document.body.dataset.ready='false';status.textContent='読み込み中';playing=false;group.clear();provider?.dispose();provider=null;actor=null;
+const key=document.querySelector('#model').value;
+if(key==='production'){provider=new CharacterAssets('/models/maruimo-octopus/asset.json');actor=await provider.create({color:'#dd6a65'});root=actor.root;clips=provider.template.gltf.animations;mixer=actor.animation.mixer;}
+else{const gltf=await new GLTFLoader().loadAsync('/qa/maruimo/'+key+'.glb');if(token!==generation)return;root=gltf.scene;clips=gltf.animations;mixer=new T.AnimationMixer(root);}
+group.add(root);root.updateMatrixWorld(true);rest=[];materials=[];root.traverse(b=>{if(b.isBone)rest.push({bone:b,p:b.position.clone(),q:b.quaternion.clone(),s:b.scale.clone()});if(b.isMesh){materials.push([b,b.material]);if(clay)b.material=clayMaterial;}});
+if(skeleton)scene.remove(skeleton);skeleton=new T.SkeletonHelper(root);skeleton.visible=false;scene.add(skeleton);
+petPose=rest.some(({bone})=>bone.name==='ArmR01')?new OctopusPettingPose(root):null;petting=false;
+const box=new T.Box3().setFromObject(root,true);box.getCenter(center);radius=box.getSize(new T.Vector3()).length()*1.6;
+document.querySelector('#clip').innerHTML='<option value="rest">基準姿勢</option>'+clips.map(c=>'<option>'+c.name+'</option>').join('');if(clips.some(c=>c.name==='Idle_Loop'))document.querySelector('#clip').value='Idle_Loop';chooseClip();frameView();document.body.dataset.ready='true';}
+document.querySelector('#model').onchange=load;document.querySelector('#view').onchange=frameView;document.querySelector('#clip').onchange=chooseClip;
+document.querySelector('#play').onclick=()=>{playing=!playing;document.querySelector('#play').textContent=playing?'停止':'再生'};
+document.querySelector('#time').oninput=e=>{playing=false;at=Number(e.target.value);sample()};
+document.querySelector('#clay').onclick=e=>{clay=!clay;for(const [mesh,material] of materials)mesh.material=clay?clayMaterial:material;e.target.textContent=clay?'色を表示':'単色にする'};
+document.querySelector('#bones').onclick=()=>{if(skeleton)skeleton.visible=!skeleton.visible};
+document.querySelector('#pet').onclick=()=>{petting=!petting;sample()};
+document.querySelector('#measure').onclick=e=>{measuring=!measuring;controls.enabled=!measuring;e.target.textContent=measuring?'測定を終える':'関節位置を測る'};
+renderer.domElement.addEventListener('click',event=>{if(!measuring||!root)return;const rect=renderer.domElement.getBoundingClientRect(),ray=new T.Raycaster();ray.setFromCamera(new T.Vector2((event.clientX-rect.left)/rect.width*2-1,1-(event.clientY-rect.top)/rect.height*2),camera);const sides=[];root.traverse(mesh=>{if(mesh.isMesh)for(const mat of [mesh.material].flat()){sides.push([mat,mat.side]);mat.side=T.DoubleSide;}});const hits=ray.intersectObject(root,true).filter(hit=>hit.object.isMesh);for(const [mat,side] of sides)mat.side=side;const unique=hits.filter((hit,i)=>!i||hit.distance-hits[i-1].distance>.0002);picked=[];for(let i=0;i+1<unique.length;i+=2){const middle=unique[i].point.clone().lerp(unique[i+1].point,.5);root.worldToLocal(middle);picked.push([middle.x,-middle.z,middle.y].map(n=>Number(n.toFixed(4))));}status.textContent=JSON.stringify({pickedBlenderXYZ:picked});});
+function draw(now){const dt=Math.min(.05,(now-last)/1000);last=now;if(playing&&action){at=(at+dt*Number(document.querySelector('#speed').value))%action.getClip().duration;sample();}camera.aspect=innerWidth/innerHeight;camera.updateProjectionMatrix();renderer.setSize(innerWidth,innerHeight,false);controls.update();renderer.render(scene,camera);if(root&&document.body.dataset.ready==='true'){const tip=root.getObjectByName('GripR')?.getWorldPosition(new T.Vector3());status.textContent=JSON.stringify({model:document.querySelector('#model').value,view:document.querySelector('#view').value,clip:document.querySelector('#clip').value,time:Number(at.toFixed(3)),bones:rest.length,triangles:renderer.info.render.triangles,tip:tip?.toArray().map(v=>Number(v.toFixed(4))),petting,contactGap:petting?petPose?.contact.distanceTo(petPose.requested):null,pickedBlenderXYZ:picked,errors},null,2);}requestAnimationFrame(draw);}
+await load();requestAnimationFrame(draw);
+</script></html>

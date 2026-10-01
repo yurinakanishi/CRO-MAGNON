@@ -215,7 +215,9 @@ export function handleCompanion524Action(
       ? [0.25, 0.1, 0.35]
       : player.species === 'ape'
         ? [0.7, 0.32, 1.02]
-        : [0.52, 0.12, COMPANION_524.hoverHeight];
+        : player.species === 'maruimo'
+          ? [1.08, 0.12, COMPANION_524.hoverHeight]
+          : [0.52, 0.12, COMPANION_524.hoverHeight];
   const goal = {
     x: player.x + Math.sin(facing) * reach - Math.cos(facing) * side,
     z: player.z + Math.cos(facing) * reach + Math.sin(facing) * side,

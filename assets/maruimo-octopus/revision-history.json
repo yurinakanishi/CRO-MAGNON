@@ -1,0 +1,82 @@
+{
+  "candidate": 1,
+  "adoptedRevision": "10",
+  "reconstruction": [
+    {
+      "attempt": 1,
+      "result": "rejected",
+      "reason": "BiRefNet removed the red octopus flesh along with the background"
+    },
+    {
+      "attempt": 2,
+      "result": "failed",
+      "reason": "missing tex_flow_1024.gguf; prepared image preserved"
+    },
+    {
+      "attempt": 3,
+      "result": "retained",
+      "file": "work/trellis/dense-attempt-03-res1024-seed0042.glb",
+      "triangles": 251466,
+      "sha256": "94e72f4fd5d7ed5be13c28b1820468354220c828fd2b273344bf5ef1550ec8fe"
+    }
+  ],
+  "revisions": [
+    {
+      "revision": "01",
+      "reason": "Initial 65-bone rig; slow first attempt cancelled; initial floor and head-weight failures retained."
+    },
+    {
+      "revision": "02",
+      "reason": "Separate lower-arm floor projection; head deformation remained."
+    },
+    {
+      "revision": "03",
+      "reason": "75 bones and 20 right-arm segments; nonuniform scaling produced shear, rejected."
+    },
+    {
+      "revision": "04",
+      "reason": "Removed segment scaling; stance translation worked but mantle seam stretched."
+    },
+    {
+      "revision": "05",
+      "reason": "Arc-length right-arm curve; Gather IK branch flips crossed the floor between keys."
+    },
+    {
+      "revision": "06",
+      "reason": "Blended local quaternions for strike/gather; mantle and sleeve seams still failed."
+    },
+    {
+      "revision": "07",
+      "reason": "Texture-based skin partition introduced weight discontinuities; rejected."
+    },
+    {
+      "revision": "08",
+      "reason": "Continuous spatial weights fixed body/arm discontinuities; mantle still exceeded edge-stretch limit."
+    },
+    {
+      "revision": "09",
+      "reason": "Broader fixed mantle region; remaining sleeve overlap isolated."
+    },
+    {
+      "revision": "10",
+      "reason": "Sleeve excluded from lower mantle weights; 120Hz surface QA and visual review passed."
+    }
+  ],
+  "lod": [
+    {
+      "revision": "01",
+      "decision": "rejected",
+      "reason": "Generic Blender import/export altered bone axes and inverse binds"
+    },
+    {
+      "revision": "02",
+      "decision": "rejected",
+      "reason": "Cleared animation poses but bind basis still differed"
+    },
+    {
+      "revision": "03",
+      "decision": "adopted",
+      "reason": "Exact original node transforms, joint hierarchy and inverse binds restored; reduced skin passed shadow/animation tests"
+    }
+  ]
+}

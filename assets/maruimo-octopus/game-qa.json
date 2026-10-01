@@ -1,0 +1,1108 @@
+{
+  "observations": [
+    {
+      "check": "cat completed",
+      "state": {
+        "id": "c5f04afa-ff87-4a8c-bdef-e5ec0c938d3f",
+        "people": 1,
+        "model": "maruimo-octopus",
+        "sha256": "09366f85545b6e79967e52977e04f25a6a75e5833c51e00f5e05565e5d661ac5",
+        "clip": "Idle_Loop",
+        "clipsSeen": [
+          "Idle_Loop",
+          "Attack",
+          "Jump"
+        ],
+        "modelsSeen": [
+          "maruimo-octopus"
+        ],
+        "position": [
+          40,
+          56.8
+        ],
+        "attackSequence": 1,
+        "jumpSequence": 1,
+        "mountId": null,
+        "boatId": null,
+        "lod": 0,
+        "gathered": 0,
+        "inventory": {
+          "wood": 0,
+          "stone": 0,
+          "berry": 0,
+          "rawMeat": 0,
+          "cookedMeat": 0,
+          "rootSeed": 0,
+          "herbSeed": 0,
+          "rawRoot": 0,
+          "herb": 0,
+          "cookedRoot": 0,
+          "herbRoot": 0,
+          "rawShellfish": 0,
+          "cookedShellfish": 0,
+          "shells": 0,
+          "obsidianBlade": 0,
+          "rawFish": 0,
+          "cookedFish": 0,
+          "obsidian": 0,
+          "seed": 0,
+          "water": 0
+        },
+        "petWeight": 0,
+        "petGap": null,
+        "catFriend": "c5f04afa-ff87-4a8c-bdef-e5ec0c938d3f",
+        "companionFriend": null,
+        "actors": [
+          {
+            "id": "c5f04afa-ff87-4a8c-bdef-e5ec0c938d3f",
+            "key": "maruimo-octopus",
+            "clip": "Idle_Loop"
+          }
+        ],
+        "lastFixture": {
+          "fixture": "pet",
+          "position": [
+            40,
+            56.8
+          ],
+          "people": 1
+        },
+        "errors": []
+      }
+    },
+    {
+      "check": "524 completed",
+      "state": {
+        "id": "c5f04afa-ff87-4a8c-bdef-e5ec0c938d3f",
+        "people": 2,
+        "model": "maruimo-octopus",
+        "sha256": "09366f85545b6e79967e52977e04f25a6a75e5833c51e00f5e05565e5d661ac5",
+        "clip": "Idle_Loop",
+        "clipsSeen": [
+          "Idle_Loop",
+          "Attack",
+          "Jump"
+        ],
+        "modelsSeen": [
+          "maruimo-octopus",
+          "howkey-scientist"
+        ],
+        "position": [
+          40,
+          56.8
+        ],
+        "attackSequence": 1,
+        "jumpSequence": 1,
+        "mountId": null,
+        "boatId": null,
+        "lod": 0,
+        "gathered": 0,
+        "inventory": {
+          "wood": 0,
+          "stone": 0,
+          "berry": 0,
+          "rawMeat": 0,
+          "cookedMeat": 0,
+          "rootSeed": 0,
+          "herbSeed": 0,
+          "rawRoot": 0,
+          "herb": 0,
+          "cookedRoot": 0,
+          "herbRoot": 0,
+          "rawShellfish": 0,
+          "cookedShellfish": 0,
+          "shells": 0,
+          "obsidianBlade": 0,
+          "rawFish": 0,
+          "cookedFish": 0,
+          "obsidian": 0,
+          "seed": 0,
+          "water": 0
+        },
+        "petWeight": 0,
+        "petGap": null,
+        "catFriend": null,
+        "companionFriend": "c5f04afa-ff87-4a8c-bdef-e5ec0c938d3f",
+        "actors": [
+          {
+            "id": "c5f04afa-ff87-4a8c-bdef-e5ec0c938d3f",
+            "key": "maruimo-octopus",
+            "clip": "Idle_Loop"
+          },
+          {
+            "id": "b37c22b6-40cf-4ac2-8f9b-928cfa2c0e47",
+            "key": "howkey-scientist",
+            "clip": "Idle_Loop"
+          }
+        ],
+        "lastFixture": {
+          "fixture": "companion",
+          "position": [
+            40,
+            56.8
+          ],
+          "people": 1
+        },
+        "errors": []
+      }
+    },
+    {
+      "check": "riding",
+      "state": {
+        "id": "c5f04afa-ff87-4a8c-bdef-e5ec0c938d3f",
+        "people": 5,
+        "model": "maruimo-octopus",
+        "sha256": "09366f85545b6e79967e52977e04f25a6a75e5833c51e00f5e05565e5d661ac5",
+        "clip": "Ride_Loop",
+        "clipsSeen": [
+          "Idle_Loop",
+          "Attack",
+          "Jump",
+          "Ride_Loop"
+        ],
+        "modelsSeen": [
+          "maruimo-octopus",
+          "howkey-scientist",
+          "cro-magnon-woman"
+        ],
+        "position": [
+          23.977153295931583,
+          21.953171883855916
+        ],
+        "attackSequence": 1,
+        "jumpSequence": 1,
+        "mountId": "mammoth-1",
+        "boatId": null,
+        "lod": 0,
+        "gathered": 0,
+        "inventory": {
+          "wood": 0,
+          "stone": 0,
+          "berry": 0,
+          "rawMeat": 0,
+          "cookedMeat": 0,
+          "rootSeed": 0,
+          "herbSeed": 0,
+          "rawRoot": 0,
+          "herb": 0,
+          "cookedRoot": 0,
+          "herbRoot": 0,
+          "rawShellfish": 0,
+          "cookedShellfish": 0,
+          "shells": 0,
+          "obsidianBlade": 0,
+          "rawFish": 0,
+          "cookedFish": 0,
+          "obsidian": 0,
+          "seed": 0,
+          "water": 0
+        },
+        "petWeight": 0,
+        "petGap": null,
+        "catFriend": null,
+        "companionFriend": "c5f04afa-ff87-4a8c-bdef-e5ec0c938d3f",
+        "actors": [
+          {
+            "id": "c5f04afa-ff87-4a8c-bdef-e5ec0c938d3f",
+            "key": "maruimo-octopus",
+            "clip": "Ride_Loop"
+          },
+          {
+            "id": "b37c22b6-40cf-4ac2-8f9b-928cfa2c0e47",
+            "key": "howkey-scientist",
+            "clip": "Idle_Loop"
+          },
+          {
+            "id": "0da1968a-4595-4e73-8c48-2ac3c769a74e",
+            "key": "cro-magnon-woman",
+            "clip": "Idle_Loop"
+          },
+          {
+            "id": "ba107c9a-a56b-409e-94fe-f8565ffdaffe",
+            "key": "cro-magnon-woman",
+            "clip": "Idle_Loop"
+          },
+          {
+            "id": "4b042ddf-b9a6-46a6-8593-d4ddf27848fe",
+            "key": "cro-magnon-woman",
+            "clip": "Idle_Loop"
+          }
+        ],
+        "lastFixture": {
+          "fixture": "mammoth",
+          "position": [
+            28.226474831759475,
+            22.368344516047877
+          ],
+          "people": 5
+        },
+        "errors": []
+      }
+    },
+    {
+      "check": "boat boarded",
+      "state": {
+        "id": "c5f04afa-ff87-4a8c-bdef-e5ec0c938d3f",
+        "people": 5,
+        "model": "maruimo-octopus",
+        "sha256": "09366f85545b6e79967e52977e04f25a6a75e5833c51e00f5e05565e5d661ac5",
+        "clip": "Boat_Loop",
+        "clipsSeen": [
+          "Idle_Loop",
+          "Attack",
+          "Jump",
+          "Ride_Loop",
+          "Gather",
+          "Boat_Loop"
+        ],
+        "modelsSeen": [
+          "maruimo-octopus",
+          "howkey-scientist",
+          "cro-magnon-woman"
+        ],
+        "position": [
+          132.2,
+          124
+        ],
+        "attackSequence": 1,
+        "jumpSequence": 1,
+        "mountId": null,
+        "boatId": "boat-1",
+        "lod": 0,
+        "gathered": 0,
+        "inventory": {
+          "wood": 12,
+          "stone": 0,
+          "berry": 0,
+          "rawMeat": 0,
+          "cookedMeat": 0,
+          "rootSeed": 0,
+          "herbSeed": 0,
+          "rawRoot": 0,
+          "herb": 0,
+          "cookedRoot": 0,
+          "herbRoot": 0,
+          "rawShellfish": 0,
+          "cookedShellfish": 0,
+          "shells": 0,
+          "obsidianBlade": 0,
+          "rawFish": 0,
+          "cookedFish": 0,
+          "obsidian": 0,
+          "seed": 0,
+          "water": 0
+        },
+        "petWeight": 0,
+        "petGap": null,
+        "catFriend": null,
+        "companionFriend": null,
+        "actors": [
+          {
+            "id": "c5f04afa-ff87-4a8c-bdef-e5ec0c938d3f",
+            "key": "maruimo-octopus",
+            "clip": "Boat_Loop"
+          },
+          {
+            "id": "b37c22b6-40cf-4ac2-8f9b-928cfa2c0e47",
+            "key": "howkey-scientist",
+            "clip": "Idle_Loop"
+          },
+          {
+            "id": "0da1968a-4595-4e73-8c48-2ac3c769a74e",
+            "key": "cro-magnon-woman",
+            "clip": "Idle_Loop"
+          },
+          {
+            "id": "ba107c9a-a56b-409e-94fe-f8565ffdaffe",
+            "key": "cro-magnon-woman",
+            "clip": "Idle_Loop"
+          },
+          {
+            "id": "4b042ddf-b9a6-46a6-8593-d4ddf27848fe",
+            "key": "cro-magnon-woman",
+            "clip": "Idle_Loop"
+          }
+        ],
+        "lastFixture": {
+          "fixture": "shore",
+          "position": [
+            128,
+            124
+          ],
+          "people": 5
+        },
+        "errors": []
+      }
+    },
+    {
+      "check": "riding after anchor fix",
+      "state": {
+        "id": "c5f04afa-ff87-4a8c-bdef-e5ec0c938d3f",
+        "people": 5,
+        "model": "maruimo-octopus",
+        "sha256": "09366f85545b6e79967e52977e04f25a6a75e5833c51e00f5e05565e5d661ac5",
+        "clip": "Ride_Loop",
+        "clipsSeen": [
+          "Idle_Loop",
+          "Ride_Loop"
+        ],
+        "modelsSeen": [
+          "howkey-scientist",
+          "cro-magnon-woman",
+          "maruimo-octopus"
+        ],
+        "position": [
+          19.793346448848173,
+          23.69862917597743
+        ],
+        "attackSequence": 1,
+        "jumpSequence": 0,
+        "mountId": "mammoth-1",
+        "boatId": null,
+        "lod": 0,
+        "gathered": 0,
+        "inventory": {
+          "wood": 12,
+          "stone": 0,
+          "berry": 0,
+          "rawMeat": 0,
+          "cookedMeat": 0,
+          "rootSeed": 0,
+          "herbSeed": 0,
+          "rawRoot": 0,
+          "herb": 0,
+          "cookedRoot": 0,
+          "herbRoot": 0,
+          "rawShellfish": 0,
+          "cookedShellfish": 0,
+          "shells": 0,
+          "obsidianBlade": 0,
+          "rawFish": 0,
+          "cookedFish": 0,
+          "obsidian": 0,
+          "seed": 0,
+          "water": 0
+        },
+        "petWeight": 0,
+        "petGap": null,
+        "catFriend": null,
+        "companionFriend": null,
+        "actors": [
+          {
+            "id": "b37c22b6-40cf-4ac2-8f9b-928cfa2c0e47",
+            "key": "howkey-scientist",
+            "clip": "Idle_Loop"
+          },
+          {
+            "id": "0da1968a-4595-4e73-8c48-2ac3c769a74e",
+            "key": "cro-magnon-woman",
+            "clip": "Idle_Loop"
+          },
+          {
+            "id": "ba107c9a-a56b-409e-94fe-f8565ffdaffe",
+            "key": "cro-magnon-woman",
+            "clip": "Idle_Loop"
+          },
+          {
+            "id": "4b042ddf-b9a6-46a6-8593-d4ddf27848fe",
+            "key": "cro-magnon-woman",
+            "clip": "Idle_Loop"
+          },
+          {
+            "id": "c5f04afa-ff87-4a8c-bdef-e5ec0c938d3f",
+            "key": "maruimo-octopus",
+            "clip": "Ride_Loop"
+          }
+        ],
+        "lastFixture": {
+          "fixture": "mammoth",
+          "position": [
+            24.207489399293138,
+            23.69862917597743
+          ],
+          "people": 5
+        },
+        "errors": []
+      }
+    },
+    {
+      "check": "berry gathered",
+      "state": {
+        "id": "c5f04afa-ff87-4a8c-bdef-e5ec0c938d3f",
+        "people": 5,
+        "model": "maruimo-octopus",
+        "sha256": "09366f85545b6e79967e52977e04f25a6a75e5833c51e00f5e05565e5d661ac5",
+        "clip": "Gather",
+        "clipsSeen": [
+          "Idle_Loop",
+          "Ride_Loop",
+          "Gather"
+        ],
+        "modelsSeen": [
+          "howkey-scientist",
+          "cro-magnon-woman",
+          "maruimo-octopus"
+        ],
+        "position": [
+          60.8,
+          53
+        ],
+        "attackSequence": 1,
+        "jumpSequence": 0,
+        "mountId": null,
+        "boatId": null,
+        "lod": 0,
+        "gathered": 1,
+        "inventory": {
+          "wood": 12,
+          "stone": 0,
+          "berry": 1,
+          "rawMeat": 0,
+          "cookedMeat": 0,
+          "rootSeed": 0,
+          "herbSeed": 0,
+          "rawRoot": 0,
+          "herb": 0,
+          "cookedRoot": 0,
+          "herbRoot": 0,
+          "rawShellfish": 0,
+          "cookedShellfish": 0,
+          "shells": 0,
+          "obsidianBlade": 0,
+          "rawFish": 0,
+          "cookedFish": 0,
+          "obsidian": 0,
+          "seed": 0,
+          "water": 0
+        },
+        "petWeight": 0,
+        "petGap": null,
+        "catFriend": null,
+        "companionFriend": null,
+        "actors": [
+          {
+            "id": "b37c22b6-40cf-4ac2-8f9b-928cfa2c0e47",
+            "key": "howkey-scientist",
+            "clip": "Idle_Loop"
+          },
+          {
+            "id": "0da1968a-4595-4e73-8c48-2ac3c769a74e",
+            "key": "cro-magnon-woman",
+            "clip": "Idle_Loop"
+          },
+          {
+            "id": "ba107c9a-a56b-409e-94fe-f8565ffdaffe",
+            "key": "cro-magnon-woman",
+            "clip": "Idle_Loop"
+          },
+          {
+            "id": "4b042ddf-b9a6-46a6-8593-d4ddf27848fe",
+            "key": "cro-magnon-woman",
+            "clip": "Idle_Loop"
+          },
+          {
+            "id": "c5f04afa-ff87-4a8c-bdef-e5ec0c938d3f",
+            "key": "maruimo-octopus",
+            "clip": "Gather"
+          }
+        ],
+        "lastFixture": {
+          "fixture": "resource",
+          "position": [
+            60.8,
+            53
+          ],
+          "people": 5
+        },
+        "errors": []
+      }
+    },
+    {
+      "check": "changed to Howkey after eating",
+      "state": {
+        "id": "c5f04afa-ff87-4a8c-bdef-e5ec0c938d3f",
+        "people": 5,
+        "model": "howkey-scientist",
+        "sha256": "f6366ce469d719b2456de06d776bf029e2fdc0a80e9f0ed7c4a51c6bb0ad8c83",
+        "clip": "Idle_Loop",
+        "clipsSeen": [
+          "Idle_Loop",
+          "Ride_Loop",
+          "Gather",
+          "Eat"
+        ],
+        "modelsSeen": [
+          "howkey-scientist",
+          "cro-magnon-woman",
+          "maruimo-octopus"
+        ],
+        "position": [
+          60.8,
+          53
+        ],
+        "attackSequence": 1,
+        "jumpSequence": 0,
+        "mountId": null,
+        "boatId": null,
+        "lod": 0,
+        "gathered": 1,
+        "inventory": {
+          "wood": 12,
+          "stone": 0,
+          "berry": 0,
+          "rawMeat": 0,
+          "cookedMeat": 0,
+          "rootSeed": 0,
+          "herbSeed": 0,
+          "rawRoot": 0,
+          "herb": 0,
+          "cookedRoot": 0,
+          "herbRoot": 0,
+          "rawShellfish": 0,
+          "cookedShellfish": 0,
+          "shells": 0,
+          "obsidianBlade": 0,
+          "rawFish": 0,
+          "cookedFish": 0,
+          "obsidian": 0,
+          "seed": 0,
+          "water": 0
+        },
+        "petWeight": 0,
+        "petGap": null,
+        "catFriend": null,
+        "companionFriend": null,
+        "actors": [
+          {
+            "id": "b37c22b6-40cf-4ac2-8f9b-928cfa2c0e47",
+            "key": "howkey-scientist",
+            "clip": "Idle_Loop"
+          },
+          {
+            "id": "0da1968a-4595-4e73-8c48-2ac3c769a74e",
+            "key": "cro-magnon-woman",
+            "clip": "Idle_Loop"
+          },
+          {
+            "id": "ba107c9a-a56b-409e-94fe-f8565ffdaffe",
+            "key": "cro-magnon-woman",
+            "clip": "Idle_Loop"
+          },
+          {
+            "id": "4b042ddf-b9a6-46a6-8593-d4ddf27848fe",
+            "key": "cro-magnon-woman",
+            "clip": "Idle_Loop"
+          },
+          {
+            "id": "c5f04afa-ff87-4a8c-bdef-e5ec0c938d3f",
+            "key": "howkey-scientist",
+            "clip": "Idle_Loop"
+          }
+        ],
+        "lastFixture": {
+          "fixture": "resource",
+          "position": [
+            60.8,
+            53
+          ],
+          "people": 5
+        },
+        "errors": []
+      }
+    },
+    {
+      "check": "far LOD",
+      "state": {
+        "id": "c5f04afa-ff87-4a8c-bdef-e5ec0c938d3f",
+        "people": 5,
+        "model": "maruimo-octopus",
+        "sha256": "09366f85545b6e79967e52977e04f25a6a75e5833c51e00f5e05565e5d661ac5",
+        "clip": "Idle_Loop",
+        "clipsSeen": [
+          "Idle_Loop",
+          "Ride_Loop",
+          "Gather",
+          "Eat"
+        ],
+        "modelsSeen": [
+          "howkey-scientist",
+          "cro-magnon-woman",
+          "maruimo-octopus"
+        ],
+        "position": [
+          60.8,
+          53
+        ],
+        "attackSequence": 1,
+        "jumpSequence": 0,
+        "mountId": null,
+        "boatId": null,
+        "lod": 1,
+        "gathered": 1,
+        "inventory": {
+          "wood": 12,
+          "stone": 0,
+          "berry": 0,
+          "rawMeat": 0,
+          "cookedMeat": 0,
+          "rootSeed": 0,
+          "herbSeed": 0,
+          "rawRoot": 0,
+          "herb": 0,
+          "cookedRoot": 0,
+          "herbRoot": 0,
+          "rawShellfish": 0,
+          "cookedShellfish": 0,
+          "shells": 0,
+          "obsidianBlade": 0,
+          "rawFish": 0,
+          "cookedFish": 0,
+          "obsidian": 0,
+          "seed": 0,
+          "water": 0
+        },
+        "petWeight": 0,
+        "petGap": null,
+        "catFriend": null,
+        "companionFriend": null,
+        "actors": [
+          {
+            "id": "b37c22b6-40cf-4ac2-8f9b-928cfa2c0e47",
+            "key": "howkey-scientist",
+            "clip": "Idle_Loop"
+          },
+          {
+            "id": "0da1968a-4595-4e73-8c48-2ac3c769a74e",
+            "key": "cro-magnon-woman",
+            "clip": "Idle_Loop"
+          },
+          {
+            "id": "ba107c9a-a56b-409e-94fe-f8565ffdaffe",
+            "key": "cro-magnon-woman",
+            "clip": "Idle_Loop"
+          },
+          {
+            "id": "4b042ddf-b9a6-46a6-8593-d4ddf27848fe",
+            "key": "cro-magnon-woman",
+            "clip": "Idle_Loop"
+          },
+          {
+            "id": "c5f04afa-ff87-4a8c-bdef-e5ec0c938d3f",
+            "key": "maruimo-octopus",
+            "clip": "Idle_Loop"
+          }
+        ],
+        "lastFixture": {
+          "fixture": "resource",
+          "position": [
+            60.8,
+            53
+          ],
+          "people": 5
+        },
+        "errors": []
+      }
+    },
+    {
+      "check": "near LOD and switched back",
+      "state": {
+        "id": "c5f04afa-ff87-4a8c-bdef-e5ec0c938d3f",
+        "people": 5,
+        "model": "maruimo-octopus",
+        "sha256": "09366f85545b6e79967e52977e04f25a6a75e5833c51e00f5e05565e5d661ac5",
+        "clip": "Idle_Loop",
+        "clipsSeen": [
+          "Idle_Loop",
+          "Ride_Loop",
+          "Gather",
+          "Eat",
+          "Give"
+        ],
+        "modelsSeen": [
+          "howkey-scientist",
+          "cro-magnon-woman",
+          "maruimo-octopus"
+        ],
+        "position": [
+          51.6,
+          51
+        ],
+        "attackSequence": 1,
+        "jumpSequence": 0,
+        "mountId": null,
+        "boatId": null,
+        "lod": 0,
+        "gathered": 1,
+        "inventory": {
+          "wood": 8,
+          "stone": 7,
+          "berry": 4,
+          "rawMeat": 0,
+          "cookedMeat": 0,
+          "rootSeed": 0,
+          "herbSeed": 0,
+          "rawRoot": 0,
+          "herb": 0,
+          "cookedRoot": 0,
+          "herbRoot": 0,
+          "rawShellfish": 0,
+          "cookedShellfish": 0,
+          "shells": 0,
+          "obsidianBlade": 0,
+          "rawFish": 0,
+          "cookedFish": 0,
+          "obsidian": 0,
+          "seed": 0,
+          "water": 0
+        },
+        "petWeight": 0,
+        "petGap": null,
+        "catFriend": null,
+        "companionFriend": null,
+        "actors": [
+          {
+            "id": "b37c22b6-40cf-4ac2-8f9b-928cfa2c0e47",
+            "key": "howkey-scientist",
+            "clip": "Idle_Loop"
+          },
+          {
+            "id": "0da1968a-4595-4e73-8c48-2ac3c769a74e",
+            "key": "cro-magnon-woman",
+            "clip": "Idle_Loop"
+          },
+          {
+            "id": "ba107c9a-a56b-409e-94fe-f8565ffdaffe",
+            "key": "cro-magnon-woman",
+            "clip": "Idle_Loop"
+          },
+          {
+            "id": "4b042ddf-b9a6-46a6-8593-d4ddf27848fe",
+            "key": "cro-magnon-woman",
+            "clip": "Idle_Loop"
+          },
+          {
+            "id": "c5f04afa-ff87-4a8c-bdef-e5ec0c938d3f",
+            "key": "maruimo-octopus",
+            "clip": "Idle_Loop"
+          }
+        ],
+        "lastFixture": {
+          "fixture": "camp",
+          "position": [
+            51.6,
+            51
+          ],
+          "people": 5
+        },
+        "errors": []
+      }
+    },
+    {
+      "check": "crafted stone axe",
+      "state": {
+        "id": "c5f04afa-ff87-4a8c-bdef-e5ec0c938d3f",
+        "people": 5,
+        "model": "maruimo-octopus",
+        "sha256": "09366f85545b6e79967e52977e04f25a6a75e5833c51e00f5e05565e5d661ac5",
+        "clip": "Idle_Loop",
+        "clipsSeen": [
+          "Idle_Loop",
+          "Ride_Loop",
+          "Gather",
+          "Eat",
+          "Give",
+          "Craft"
+        ],
+        "modelsSeen": [
+          "howkey-scientist",
+          "cro-magnon-woman",
+          "maruimo-octopus"
+        ],
+        "position": [
+          51.6,
+          51
+        ],
+        "attackSequence": 1,
+        "jumpSequence": 0,
+        "mountId": null,
+        "boatId": null,
+        "lod": 0,
+        "gathered": 1,
+        "inventory": {
+          "wood": 5,
+          "stone": 5,
+          "berry": 4,
+          "rawMeat": 0,
+          "cookedMeat": 0,
+          "rootSeed": 0,
+          "herbSeed": 0,
+          "rawRoot": 0,
+          "herb": 0,
+          "cookedRoot": 0,
+          "herbRoot": 0,
+          "rawShellfish": 0,
+          "cookedShellfish": 0,
+          "shells": 0,
+          "obsidianBlade": 0,
+          "rawFish": 0,
+          "cookedFish": 0,
+          "obsidian": 0,
+          "seed": 0,
+          "water": 0
+        },
+        "petWeight": 0,
+        "petGap": null,
+        "catFriend": null,
+        "companionFriend": null,
+        "actors": [
+          {
+            "id": "b37c22b6-40cf-4ac2-8f9b-928cfa2c0e47",
+            "key": "howkey-scientist",
+            "clip": "Idle_Loop"
+          },
+          {
+            "id": "0da1968a-4595-4e73-8c48-2ac3c769a74e",
+            "key": "cro-magnon-woman",
+            "clip": "Idle_Loop"
+          },
+          {
+            "id": "ba107c9a-a56b-409e-94fe-f8565ffdaffe",
+            "key": "cro-magnon-woman",
+            "clip": "Idle_Loop"
+          },
+          {
+            "id": "4b042ddf-b9a6-46a6-8593-d4ddf27848fe",
+            "key": "cro-magnon-woman",
+            "clip": "Idle_Loop"
+          },
+          {
+            "id": "c5f04afa-ff87-4a8c-bdef-e5ec0c938d3f",
+            "key": "maruimo-octopus",
+            "clip": "Idle_Loop"
+          }
+        ],
+        "lastFixture": {
+          "fixture": "camp",
+          "position": [
+            51.6,
+            51
+          ],
+          "people": 5
+        },
+        "errors": []
+      }
+    },
+    {
+      "check": "remote model and attack",
+      "attackObserved": false,
+      "state": {
+        "id": "b37c22b6-40cf-4ac2-8f9b-928cfa2c0e47",
+        "people": 5,
+        "model": "howkey-scientist",
+        "sha256": "f6366ce469d719b2456de06d776bf029e2fdc0a80e9f0ed7c4a51c6bb0ad8c83",
+        "clip": "Idle_Loop",
+        "clipsSeen": [
+          "Idle_Loop"
+        ],
+        "modelsSeen": [
+          "maruimo-octopus",
+          "howkey-scientist",
+          "cro-magnon-woman"
+        ],
+        "position": [
+          49.1,
+          58
+        ],
+        "attackSequence": 0,
+        "jumpSequence": 0,
+        "mountId": null,
+        "boatId": null,
+        "lod": 1,
+        "gathered": 0,
+        "inventory": {
+          "wood": 0,
+          "stone": 0,
+          "berry": 0,
+          "rawMeat": 0,
+          "cookedMeat": 0,
+          "rootSeed": 0,
+          "herbSeed": 0,
+          "rawRoot": 0,
+          "herb": 0,
+          "cookedRoot": 0,
+          "herbRoot": 0,
+          "rawShellfish": 0,
+          "cookedShellfish": 0,
+          "shells": 0,
+          "obsidianBlade": 0,
+          "rawFish": 0,
+          "cookedFish": 0,
+          "obsidian": 0,
+          "seed": 0,
+          "water": 0
+        },
+        "petWeight": 0,
+        "petGap": null,
+        "catFriend": null,
+        "companionFriend": null,
+        "actors": [
+          {
+            "id": "b37c22b6-40cf-4ac2-8f9b-928cfa2c0e47",
+            "key": "howkey-scientist",
+            "clip": "Idle_Loop"
+          },
+          {
+            "id": "0da1968a-4595-4e73-8c48-2ac3c769a74e",
+            "key": "cro-magnon-woman",
+            "clip": "Idle_Loop"
+          },
+          {
+            "id": "ba107c9a-a56b-409e-94fe-f8565ffdaffe",
+            "key": "cro-magnon-woman",
+            "clip": "Idle_Loop"
+          },
+          {
+            "id": "4b042ddf-b9a6-46a6-8593-d4ddf27848fe",
+            "key": "cro-magnon-woman",
+            "clip": "Idle_Loop"
+          },
+          {
+            "id": "c5f04afa-ff87-4a8c-bdef-e5ec0c938d3f",
+            "key": "maruimo-octopus",
+            "clip": "Idle_Loop"
+          }
+        ],
+        "errors": []
+      }
+    },
+    {
+      "check": "final game state",
+      "state": {
+        "id": "c5f04afa-ff87-4a8c-bdef-e5ec0c938d3f",
+        "people": 5,
+        "model": "maruimo-octopus",
+        "sha256": "09366f85545b6e79967e52977e04f25a6a75e5833c51e00f5e05565e5d661ac5",
+        "clip": "Idle_Loop",
+        "clipsSeen": [
+          "Idle_Loop",
+          "Ride_Loop",
+          "Gather",
+          "Eat",
+          "Give",
+          "Craft",
+          "Attack"
+        ],
+        "modelsSeen": [
+          "howkey-scientist",
+          "cro-magnon-woman",
+          "maruimo-octopus"
+        ],
+        "position": [
+          51.6,
+          51
+        ],
+        "attackSequence": 3,
+        "jumpSequence": 0,
+        "mountId": null,
+        "boatId": null,
+        "lod": 0,
+        "gathered": 1,
+        "inventory": {
+          "wood": 5,
+          "stone": 5,
+          "berry": 4,
+          "rawMeat": 0,
+          "cookedMeat": 0,
+          "rootSeed": 0,
+          "herbSeed": 0,
+          "rawRoot": 0,
+          "herb": 0,
+          "cookedRoot": 0,
+          "herbRoot": 0,
+          "rawShellfish": 0,
+          "cookedShellfish": 0,
+          "shells": 0,
+          "obsidianBlade": 0,
+          "rawFish": 0,
+          "cookedFish": 0,
+          "obsidian": 0,
+          "seed": 0,
+          "water": 0
+        },
+        "petWeight": 0,
+        "petGap": null,
+        "catFriend": null,
+        "companionFriend": null,
+        "actors": [
+          {
+            "id": "b37c22b6-40cf-4ac2-8f9b-928cfa2c0e47",
+            "key": "howkey-scientist",
+            "clip": "Idle_Loop"
+          },
+          {
+            "id": "0da1968a-4595-4e73-8c48-2ac3c769a74e",
+            "key": "cro-magnon-woman",
+            "clip": "Idle_Loop"
+          },
+          {
+            "id": "ba107c9a-a56b-409e-94fe-f8565ffdaffe",
+            "key": "cro-magnon-woman",
+            "clip": "Idle_Loop"
+          },
+          {
+            "id": "4b042ddf-b9a6-46a6-8593-d4ddf27848fe",
+            "key": "cro-magnon-woman",
+            "clip": "Idle_Loop"
+          },
+          {
+            "id": "c5f04afa-ff87-4a8c-bdef-e5ec0c938d3f",
+            "key": "maruimo-octopus",
+            "clip": "Idle_Loop"
+          }
+        ],
+        "lastFixture": {
+          "fixture": "camp",
+          "position": [
+            51.6,
+            51
+          ],
+          "people": 5
+        },
+        "errors": []
+      }
+    }
+  ],
+  "renderMetrics": {
+    "attackStyle": "tentacle",
+    "documentFocus": "true",
+    "drawCalls": "130",
+    "fps": "1",
+    "frameSimulationMs": "1.48",
+    "frameSubmissionMs": "3.11",
+    "geometries": "137",
+    "glbAnimals": "2",
+    "glbNpcs": "1",
+    "glbPlayers": "5",
+    "playerModel": "maruimo-octopus",
+    "renderTriangles": "4157849",
+    "textures": "66"
+  },
+  "viewport": {
+    "width": 1691,
+    "height": 809
+  },
+  "limitations": [
+    "Chrome viewport override did not apply; mobile layout unverified.",
+    "Browser frames were throttled near 1 fps between tool actions; no sustained foreground FPS claim.",
+    "Physical controller and real camera gestures were not exercised for this character."
+  ],
+  "browserErrors": [],
+  "remoteAttackFirstObservation": {
+    "source": "Transcribed from the first Chrome accessibility snapshot after F; later second sampling missed the short action.",
+    "people": 5,
+    "observerModel": "howkey-scientist",
+    "remoteActorId": "c5f04afa-ff87-4a8c-bdef-e5ec0c938d3f",
+    "remoteModel": "maruimo-octopus",
+    "remoteClip": "Attack"
+  }
+}

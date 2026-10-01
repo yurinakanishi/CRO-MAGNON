@@ -21,6 +21,21 @@ import { characterModel } from './characters.mjs';
 // This is shared presentation data; the server always selects it from the
 // normalized character, never from a weapon/damage field supplied by a client.
 export const ATTACK_PROFILES = Object.freeze({
+  tentacle: Object.freeze({
+    id: 'tentacle',
+    key: 'tentacle',
+    label: '触手を伸ばして攻撃',
+    noun: '触手',
+    startText: '触手を前へ伸ばした。',
+    damage: 22,
+    cooldownMs: 1100,
+    durationMs: 1000,
+    impactMs: 400,
+    // Together with the 0.6 m mantle radius, matches the exported 1.66 m tip.
+    reach: 1.05,
+    halfAngle: (45 * Math.PI) / 180,
+    energy: 3,
+  }),
   unarmed: Object.freeze({
     id: 'unarmed',
     key: 'unarmed',
@@ -122,5 +137,9 @@ export function attackProfile(character: CharacterProfile): Readonly<AttackProfi
   ];
 }
 
-export const shoulderMagic = (player) =>
-  !!player?.carrierId && !player.passengerId && attackProfile(player).key === 'magic';
+export const shoulderMagic = (
+  player:
+    | (CharacterProfile & { carrierId?: string | null; passengerId?: string | null })
+    | null
+    | undefined,
+) => !!player?.carrierId && !player.passengerId && attackProfile(player).key === 'magic';

@@ -3,12 +3,14 @@ import * as THREE from 'three';
 import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
 import { clone } from 'three/addons/utils/SkeletonUtils.js';
 import { CharacterAnimation } from './character-animation.js';
+import { scienceAttackClip } from './science-cast.js';
 import { RidingPose, apeShoulderSeat } from './riding-pose.js';
 import { JumpPose } from './jump-pose.js';
 import { CarrySupportPose } from './carry-support-pose.js';
 import { LeanPose } from './lean-pose.js';
 import { GroundPettingPose } from './ground-petting-pose.js';
 import { PettingPose } from './petting-pose.js';
+import { OctopusRidingPose, OctopusJumpPose, OctopusPettingPose } from './octopus-pose.js';
 import { sha256 } from './asset-hash.js';
 import { installSkinnedBounds } from './skinned-bounds.js';
 import { loadVerifiedGLB } from './world-assets.js';
@@ -99,6 +101,10 @@ export class CharacterAssets {
       return resource;
     });
     const gltf = await new GLTFLoader(manager).parseAsync(bytes, '');
+    if (asset.modelKey === 'howkey-scientist')
+      gltf.animations = gltf.animations.map((clip) =>
+        clip.name === 'Attack' ? scienceAttackClip(gltf.scene, clip) : clip,
+      );
     let lod = null;
     try {
       lod = asset.lods?.[0] ? await loadVerifiedGLB(asset.lods[0]) : null;
@@ -140,10 +146,11 @@ export class CharacterAssets {
     configureActorPerformance(root, lod?.scene, asset);
     const { rotation: gripUp } = handGripPlacement(root);
     installSkinnedBounds(root);
-    const ridingPose = new RidingPose(root);
-    const jumpPose = new JumpPose(root);
-    const pettingPose = new PettingPose(root);
-    const groundPettingPose = new GroundPettingPose(root);
+    const octopus = asset.bodyPlan === 'octopus';
+    const ridingPose = octopus ? new OctopusRidingPose(root, gltf.animations) : new RidingPose(root);
+    const jumpPose = octopus ? new OctopusJumpPose(root, gltf.animations) : new JumpPose(root);
+    const pettingPose = octopus ? new OctopusPettingPose(root) : new PettingPose(root);
+    const groundPettingPose = octopus ? new OctopusPettingPose(root) : new GroundPettingPose(root);
     const shoulderSeat = asset.modelKey === 'giant-ape' ? apeShoulderSeat(root) : null;
     const carrySupportPose = shoulderSeat ? new CarrySupportPose(root) : null;
     const leanPose =

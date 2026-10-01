@@ -4,6 +4,7 @@ import * as THREE from 'three';
 import { CharacterAnimation, HUMAN_CLIPS } from '../dist/src/character-animation.js';
 import { JumpPose } from '../dist/src/jump-pose.js';
 import { RidingPose } from '../dist/src/riding-pose.js';
+import { OctopusJumpPose, OctopusRidingPose } from '../dist/src/octopus-pose.js';
 import { loadMotion } from '../scripts/motion-glb.mjs';
 import { CHARACTER_MODELS } from '../dist/shared/characters.mjs';
 import { readFile } from 'node:fs/promises';
@@ -14,8 +15,8 @@ for (const { key } of CHARACTER_MODELS)
     async () => {
       const asset = JSON.parse(await readFile(`public/models/${key}/asset.json`, 'utf8'));
       const gltf = await loadMotion('public' + asset.url);
-      const jump = new JumpPose(gltf.scene),
-        riding = new RidingPose(gltf.scene);
+      const jump = asset.bodyPlan === 'octopus' ? new OctopusJumpPose(gltf.scene, gltf.animations) : new JumpPose(gltf.scene),
+        riding = asset.bodyPlan === 'octopus' ? new OctopusRidingPose(gltf.scene, gltf.animations) : new RidingPose(gltf.scene);
       const animation = new CharacterAnimation(gltf.scene, gltf.animations, {
         walkSpeed: 1,
         runSpeed: 3,

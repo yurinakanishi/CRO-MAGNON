@@ -6,7 +6,8 @@ import { CHARACTER_MODELS } from '../dist/shared/characters.mjs';
 import { CharacterAnimation } from '../dist/src/character-animation.js';
 import { loadMotion } from '../scripts/motion-glb.mjs';
 
-for (const profile of CHARACTER_MODELS)
+// Octopus support arms have their own gait and contact checks in octopus-pose.
+for (const profile of CHARACTER_MODELS.filter((model) => model.bodyPlan !== 'octopus'))
   test(`${profile.key}: delivered walk and run visibly differ and switch on the real skin`, async () => {
     const asset = JSON.parse(await readFile(`public/models/${profile.key}/asset.json`, 'utf8'));
     const gltf = await loadMotion('public' + asset.url);

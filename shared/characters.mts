@@ -79,6 +79,19 @@ export const CHARACTER_MODELS: readonly Readonly<CharacterModel>[] = Object.free
     walkSpeed: 1.4,
     runSpeed: 4.4,
   }),
+  Object.freeze({
+    species: 'maruimo',
+    gender: 'male',
+    key: 'maruimo-octopus',
+    carryable: false,
+    name: 'まるぃも タコ人間',
+    weapon: 'tentacle',
+    bodyPlan: 'octopus',
+    height: 1.55,
+    radius: 0.6,
+    walkSpeed: 0.8,
+    runSpeed: 2.2,
+  }),
 ]);
 
 // Missing choices (including profiles saved before gender existed) start female.
@@ -88,7 +101,7 @@ export function normalizeCharacter({ species, gender }: CharacterProfile = {}): 
 } {
   if (species === 'cat' || species === 'bear' || species === 'howkey')
     return { species, gender: 'female' };
-  if (species === 'ape') return { species, gender: 'male' };
+  if (species === 'ape' || species === 'maruimo') return { species, gender: 'male' };
   return {
     species: species === 'nea' ? 'nea' : 'cro',
     gender: gender === 'male' ? 'male' : 'female',
