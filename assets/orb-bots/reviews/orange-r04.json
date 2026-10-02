@@ -1,0 +1,7 @@
+{
+  "decision": "reject",
+  "candidate": 1,
+  "revision": "04",
+  "sha256": "ba4bb8d56e1a6cc41daf0265bd43a976b83fe2cae56cd170d088922830b7f285",
+  "finding": "Exact GLB clay is smooth after the two locally constrained patches and removal of an enclosed duplicate shell. The emission bake used the wrong active render UV map on the rebuilt mesh, leaving large black islands; neutral/browser appearance is rejected despite passing numerical checks."
+}

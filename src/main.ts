@@ -39,6 +39,7 @@ import { installCropFoodUI } from './crop-food-ui.js';
 import { canMount, ridingDistance } from '../shared/riding.mjs';
 import { GamepadControls } from './gamepad-ui.js';
 import { MotionControls } from './motion-controls.js';
+import { OrbBotUI } from './orb-bot-ui.js';
 import { MotionPetHold, motionTarget } from './motion-interaction.js';
 import { combineMovement } from './gamepad-input.js';
 import { canStartJump } from '../shared/jumping.mjs';
@@ -249,6 +250,15 @@ $('#app').innerHTML = `
   <dialog id="modal"><div class="modal-top"><span class="eyebrow">${GAME_TITLE}</span><button id="modal-close" class="button button-outline modal-back" type="button">戻る</button></div><div id="modal-body"></div></dialog>`;
 
 const areaBanner = new AreaBanner($('#area-banner'));
+const orbBotUI = new OrbBotUI({
+  bots: () => state.orbBots ?? [],
+  player,
+  now: () => renderer?.serverNow() ?? Date.now(),
+  available: () => joined && !renderUnavailable && !screens.active,
+  action,
+  openModal,
+  closeModal: () => $('#modal').close(),
+});
 const screens = new ScreenManager($('#screens'), (id) => {
   if (id) motionControls?.stop();
   if (id) stopInput();
@@ -401,6 +411,7 @@ function clearMovementInput() {
   renderer.prediction?.stop();
   // Also cancels a cast sent just before a menu/blur, before its snapshot arrives.
   if (joined) {
+    send({ type: 'action', action: 'cancelBotThrows' });
     send({ type: 'action', action: 'cancelFishing' });
     send({ type: 'action', action: 'cancelCoastal' });
   }
@@ -847,8 +858,9 @@ function action(type, targetId?, cropId?) {
     villageUI.open(targetId);
     return;
   }
-  if (player()?.boatId && !['boardBoat', 'fish', 'cancelFishing'].includes(type)) return;
-  if (player()?.mountId && type !== 'ride') return;
+  if (player()?.boatId && !['boardBoat', 'fish', 'cancelFishing', 'recallBots'].includes(type))
+    return;
+  if (player()?.mountId && !['ride', 'recallBots'].includes(type)) return;
   if (
     type === 'gulfOpen' ||
     (inGulf(player()?.x, player()?.z) && ['contribute', 'trade'].includes(type))
@@ -1005,6 +1017,7 @@ function interactAnimal(id) {
   }
 }
 function updateHuntingHUD() {
+  orbBotUI.update();
   boatUI.update();
   updateCatHiss();
   const petChoice = preferredPet();
@@ -1744,6 +1757,7 @@ function openPauseMenu(tab?: string) {
     ['wave', 'wave', '手をふる', () => action('wave')],
   ];
   const exits: [string, string, string, () => void][] = [
+    ['bots', 'people', 'botたちを選ぶ・呼ぶ', () => orbBotUI.open()],
     ...(state.rimoNeko?.followPlayerId === selfId
       ? [
           [
@@ -2110,6 +2124,18 @@ document.addEventListener('keydown', (e) => {
     return;
   }
   if (e.repeat) return;
+  if (k === 'c') {
+    e.preventDefault();
+    orbBotUI.use();
+  }
+  if (k === 'z') {
+    e.preventDefault();
+    orbBotUI.cycle();
+  }
+  if (k === 'q') {
+    e.preventDefault();
+    orbBotUI.recall();
+  }
   // 2026-09-12: the held-Tab item bar and its run button are gone; Shift toggles walk / run.
   if (k === 'shift') {
     e.preventDefault();
@@ -2203,6 +2229,12 @@ gamepadControls = new GamepadControls({
     )
       return;
     switch (command) {
+      case 'bot':
+        orbBotUI.use();
+        break;
+      case 'recallBots':
+        orbBotUI.recall();
+        break;
       case 'confirm':
         $('#interaction-hint').click();
         break;
@@ -2374,7 +2406,7 @@ function updateMovementInput() {
     renderer.prediction?.setInput(dx, dz, running, now);
     const direction = `${dx},${dz}`;
     const stopped = direction === '0,0' && lastMotionDirection !== '0,0';
-    if (stopped || now - lastMoveSent >= 70) {
+    if (stopped || now - lastMoveSent >= (multiplayer.movementRefreshMs || 70)) {
       send({ type: 'move', dx, dz, running });
       lastMoveSent = now;
     }
@@ -2405,7 +2437,12 @@ function updateMovementInput() {
     command = movementCommands.next({ dx, dz, running });
   const now = performance.now();
   if (renderer.prediction?.enabled) renderer.prediction.setInput(dx, dz, running, now);
-  if (command && (multiplayer.mode !== 'lan' || changed || now - lastMoveSent >= 70)) {
+  if (
+    command &&
+    ((!multiplayer.movementRefreshMs && multiplayer.mode !== 'lan') ||
+      changed ||
+      now - lastMoveSent >= (multiplayer.movementRefreshMs || 70))
+  ) {
     send(command);
     lastMoveSent = now;
   }

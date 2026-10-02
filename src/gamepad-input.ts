@@ -29,6 +29,8 @@ export type PadAction =
   | 'attack'
   | 'jump'
   | 'ride'
+  | 'bot'
+  | 'recallBots'
   | 'map'
   | 'menu'
   | 'inventory'
@@ -74,6 +76,7 @@ const gameBindings: [number, PadAction][] = [
   [PAD.touchpad, 'map'],
   [PAD.options, 'menu'],
   [PAD.r3, 'center'],
+  [PAD.l3, 'bot'],
   [PAD.l1, 'zoomOut'],
   [PAD.r1, 'zoomIn'],
 ];
@@ -181,8 +184,9 @@ export class GamepadInput {
       this.running = left.magnitude >= (this.running ? STICK.runExit : STICK.runEnter);
       frame.move = { x: left.x, y: left.y, running: this.running };
       frame.look = { x: right.x, y: right.y };
-      // D-pad up eats whatever is carried; the map stays on SHARE / the touchpad.
+      // The up direction recalls all of the player's bot companions.
       for (const [dir, action] of [
+        ['up', 'recallBots'],
         ['down', 'menu'],
         ['left', 'inventory'],
         ['right', 'journal'],

@@ -31,11 +31,17 @@ try {
   let saved = await read();
   saved.game.rooms[0].sessions[0].player.inventory.wood = 11;
   saved.game.rooms[0].camp.wood = 8;
+  saved.game.worldVersion = 2;
+  for (const field of ['gulf', 'boats', 'residents', 'households', 'companion524', 'rimoNeko'])
+    delete saved.game.rooms[0][field];
+  const legacyCheckpoint = JSON.stringify(saved);
   await seed(saved);
   client = await open(welcome.session);
   assert.equal((await client.wait(m => m.type === 'welcome')).resumed, true);
   const state = await client.wait(m => m.type === 'state');
   assert.equal(state.players[0].inventory.wood, 11); assert.equal(state.camp.wood, 8);
+  assert.equal((await storage.exec('SELECT data FROM checkpoint_backup WHERE id = 1'))[0].data, legacyCheckpoint);
+  assert.equal((await read()).game.worldVersion, 4);
   client.socket.close(); await pause(300);
   const baseline = await read();
   for (const [field, value] of [['activeMs', 12 * 3600000], ['connections', 2000], ['writes', 20000]]) {
@@ -54,6 +60,7 @@ try {
   const failed = await open(welcome.session); assert.equal(failed.response.status, 503);
   assert.equal((await read()).game.rooms[0].sessions[0].player.inventory.wood, 11);
   const result = { checkedAt: new Date().toISOString(), status: 'passed', actualSqliteRestore: true,
+    legacyVersion2Restored: true, legacyCheckpointBackupExact: true,
     inventoryAndCampRestored: true, activeTimeLimit: true, connectionLimit: true, writeLimit: true,
     messageLimit: true, storageFailureStopsPlay: true, priorCheckpointPreserved: true };
   await mkdir('assets/cloudflare', { recursive: true });

@@ -1,0 +1,10 @@
+{
+  "candidate": 1,
+  "revision": "02",
+  "decision": "rejected-visual",
+  "sha256": "99f45fefe43cc134b674d8a1ee67a95aadee2272ab4a1416890b7bae57f416ae",
+  "reason": "The reconstruction interpreted the painted horizontal eyes as recessed rectangular geometry. Reference-ink projection cannot conceal those cavities; face marks break when viewed obliquely.",
+  "retained": "output/model-generation/models/orb-bot-orange/work/rig/revision-02",
+  "evidence": "output/model-generation/models/orb-bot-orange/qa/final-02",
+  "nextRevision": "03: repair only the mistaken eye insets using the neighbouring reconstructed surface"
+}

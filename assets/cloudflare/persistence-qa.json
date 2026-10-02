@@ -1,7 +1,9 @@
 {
-  "checkedAt": "2026-09-07T07:58:58.107Z",
+  "checkedAt": "2026-10-01T10:16:39.513Z",
   "status": "passed",
   "actualSqliteRestore": true,
+  "legacyVersion2Restored": true,
+  "legacyCheckpointBackupExact": true,
   "inventoryAndCampRestored": true,
   "activeTimeLimit": true,
   "connectionLimit": true,

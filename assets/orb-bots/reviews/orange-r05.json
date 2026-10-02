@@ -1,0 +1,7 @@
+{
+  "decision": "reject",
+  "candidate": 1,
+  "revision": "05",
+  "sha256": "ba4bb8d56e1a6cc41daf0265bd43a976b83fe2cae56cd170d088922830b7f285",
+  "finding": "Setting the render UV flag did not fix r04. Inspection of saved Blender source proves the named BotAtlas layer was removed by a stale RNA reference across edit-mode UV unwrapping. The export is byte-identical to rejected r04. Fix by reacquiring both layers by name."
+}

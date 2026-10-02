@@ -14,17 +14,11 @@ export interface KeyPrompt {
 }
 
 /**
- * Button prompts for the bottom-right bar. Contextual actions (ride, board, interact) are
- * announced once, by their own key-labelled button, so they are never repeated here.
+ * The bottom-right bar only keeps the exhibition map shortcut.
+ * Menu controls remain available without a persistent HUD prompt.
  */
-export function keyPrompts(gamepad: boolean, exhibition = false): KeyPrompt[] {
-  const pad = controllerLabels();
-  if (exhibition)
-    return [
-      { key: pad.map, label: '地図' },
-      { key: pad.menu, label: 'メニュー' },
-    ];
-  return [{ key: gamepad ? pad.menu : 'ESC', label: 'メニュー' }];
+export function keyPrompts(_gamepad: boolean, exhibition = false): KeyPrompt[] {
+  return exhibition ? [{ key: controllerLabels().map, label: '地図' }] : [];
 }
 
 /** Shows and hides the full-screen game screens; one screen is visible at a time. */

@@ -1,0 +1,18 @@
+{
+  "candidate": 1,
+  "revision": "06",
+  "decision": "adopt",
+  "sha256": "a69f9a4f5d65fe867f5fd6865a41f2862282ef3ae7fa8858774b7797ddf6cf1b",
+  "lodSha256": "1f5187de9141e06f6e4d2975b090ab34520911e552595ea6e13b4420c92a530c",
+  "review": "Inspected the exact exported GLB: yellow rounded triangular body, smooth black round frames, both original curved closed eyes, no duplicate baked ring remnants in front and three-quarter views. Seven neutral directions and clay front/three-quarter/back distinguish frame shadows from albedo. Viewed all seven clip examples from front/side/back; the connected frame remains aligned under hop, squash and tilt. Full-vertex main/LOD 120 Hz checks, viewer controls and 70 clip/direction/speed observations pass. Game integration is still pending.",
+  "numeric": "output/model-generation/models/orb-bot-triangle/work/rig/revision-06/qa/numeric.json",
+  "viewer": "output/model-generation/models/orb-bot-triangle/qa/final-06/viewer.html",
+  "viewerQA": "output/model-generation/models/orb-bot-triangle/qa/final-06/viewer-qa.json",
+  "motionViewQA": "output/model-generation/models/orb-bot-triangle/qa/final-06/motion-angles/qa.json",
+  "visualEvidence": "output/model-generation/models/orb-bot-triangle/qa/final-06",
+  "gameIntegrationVerified": true,
+  "gameQA": "output/playwright/shape-bots/game-1790867552591",
+  "layoutQA": "output/playwright/shape-bots/layout-1790867788017",
+  "rearCameraFlightQA": "output/playwright/shape-bots/flight-1790867802767",
+  "gameVisualReview": "Inspected all four new held bots on the actual character hand; each preserves its distinct outline, face and accessories. All nine kinds complete synchronized windup, airborne, landing, return and reunion on five clients. Rear-camera supplemental images show the beret and heart visibly in flight and the frog back in formation; all four projected airborne centres are inside the screen. All nine player rigs, distant LOD and non-empty-inventory reload pass. Three screen sizes retain 33 unobstructed control targets."
+}

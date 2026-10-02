@@ -1,0 +1,7 @@
+{
+  "candidate": 1,
+  "revision": "01",
+  "decision": "rejected; no-adoption",
+  "sha256": "c48d44ec5d7e3c8d7279ff2e440c5894fc178c99b78f445c7c82bafbfe854168",
+  "review": "The shape, pink body, lenses and motion are recognizable, but close neutral and clay renders reveal faceted sunglasses borders and surface kinks around their attachment. Retain this revision and tighten the source-deviation tolerance to preserve more of the original smooth surface."
+}

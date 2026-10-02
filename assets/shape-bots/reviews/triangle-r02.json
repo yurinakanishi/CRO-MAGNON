@@ -1,0 +1,7 @@
+{
+  "candidate": 1,
+  "revision": "02",
+  "decision": "no-adoption",
+  "reason": "Preparation stopped before export because disconnected UV islands were far apart in the arbitrary atlas. Use measured 3D body proximity for isolated colour interpolation, rather than an atlas-distance threshold. Source geometry, dense and failed calibrated texture are retained. No candidate GLB was produced.",
+  "nextRevision": "03"
+}

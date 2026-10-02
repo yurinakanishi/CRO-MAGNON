@@ -1,0 +1,13 @@
+{
+  "candidate": 1,
+  "revision": "02",
+  "decision": "visual-approved-for-game-qa",
+  "sha256": "2e8190ae6a2d4cb35f62c6bd7cced754767f080a3a329ab8e7b9fd87fda70f97",
+  "lodSha256": "a33ec432dd655db4204949a55b7a10a6c44920c7a686d5b12538258c36607f38",
+  "review": "The exact exported GLB shows a purple round body and two hollow black ring eyes with purple centres, matching the reference. Front, rear, three-quarter and landing poses retain the face and a clean back. The neutral/clay surface is smooth, with no extra limbs, face duplicates or dents. Main/LOD numeric and all ten offline viewer checks passed.",
+  "numeric": "output/model-generation/models/orb-bot-purple/work/rig/revision-02/qa/numeric.json",
+  "viewer": "output/model-generation/models/orb-bot-purple/qa/final-02/viewer.html",
+  "viewerQA": "output/model-generation/models/orb-bot-purple/qa/final-02/viewer-qa.json",
+  "visualEvidence": "output/model-generation/models/orb-bot-purple/qa/final-02",
+  "gameIntegrationVerified": false
+}

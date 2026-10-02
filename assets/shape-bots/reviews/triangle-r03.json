@@ -1,0 +1,8 @@
+{
+  "candidate": 1,
+  "revision": "03",
+  "decision": "no-adoption",
+  "sha256": "e9d8d09a75ec4159a60e3388e7f6e3f5d1427deb0290328404c2ded3c17d5f8f",
+  "reason": "Exact GLB review found a residual lower arc inside each protected eye region and visibly coarse spectacle rims at close range. Raise the protected region to the measured existing U-eye ink and tighten the source-deviation tolerance for the round frames. Retain this GLB and all successful numeric/viewer checks as a visually rejected revision.",
+  "nextRevision": "04"
+}

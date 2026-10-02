@@ -1,9 +1,9 @@
 {
-  "checkedAt": "2026-09-07T08:11:57.7884371Z",
+  "checkedAt": "2026-10-01T10:19:32.9000004Z",
   "accountId": "a211102818d484cb668c6b62bebff3f9",
   "accountName": "CRO-MAGNON Free",
   "workersPlan": "Free",
-  "evidence": "Workers plans dashboard: Free $0 has disabled Current plan button; Paid $5/month + usage has Upgrade. Account creation explicitly states no payment methods or subscriptions inherited.",
+  "evidence": "Exact CRO-MAGNON Free account Workers plans dashboard observed for URL change: Free $0 with disabled Current plan; Paid $5/month + usage has Upgrade. No plan or billing changes performed.",
   "dashboard": "https://dash.cloudflare.com/a211102818d484cb668c6b62bebff3f9/workers/plans",
   "deploymentAllowed": true
 }

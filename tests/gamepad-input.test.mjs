@@ -124,14 +124,15 @@ test('mapped buttons fire once per press and simultaneous attack buttons produce
   assert.deepEqual(sample().actions, ['attack']);
 });
 
-// 2026-09-12: the held-L3 item bar was removed; L3 is not bound to anything.
-test('L3 is unbound: it neither raises a flag nor fires an action', () => {
+// The removed held item bar stays removed; L3 now operates the bot companions.
+test('L3 holds or throws a bot once per press without restoring the old item bar', () => {
   const { sample, press } = setup();
   press(PAD.l3);
   const frame = sample();
   assert.equal('hotbar' in frame, false);
-  assert.deepEqual(frame.actions, []);
-  assert.equal(frame.active, false, 'an unbound button is not controller activity');
+  assert.deepEqual(frame.actions, ['bot']);
+  assert.equal(frame.active, true);
+  assert.deepEqual(sample().actions, [], 'holding does not throw the newly picked-up bot');
   press(PAD.l3, false);
   sample();
 });
@@ -347,9 +348,10 @@ test('map mode leaves game and menu bindings untouched', () => {
   assert.deepEqual(sample('map').actions, ['confirm']);
 });
 
-test('d-pad up is unassigned in game mode; the map stays on SHARE and the touchpad', () => {
+test('d-pad up recalls bots once per press; the map stays on SHARE and the touchpad', () => {
   const { sample, press } = setup('game');
   press(PAD.up);
+  assert.deepEqual(sample().actions, ['recallBots']);
   assert.deepEqual(sample().actions, []);
   press(PAD.up, false);
   press(PAD.share);

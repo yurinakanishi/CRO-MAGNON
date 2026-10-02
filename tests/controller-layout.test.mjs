@@ -25,11 +25,10 @@ test('each controller uses its physical labels in help, menus and the map withou
     assert.equal(cards.find((card) => card.title === 'ジャンプ').key, `${top}（上）`);
     assert.equal(cards.find((card) => card.title.startsWith('撫でる')).key, `${bottom}（下）`);
     assert.ok(controllerMenuHint().includes(`${right} で決定 · ${bottom}（下のボタン）か ${menu}`));
-    assert.equal(keyPrompts(true)[0].key, menu);
-    assert.equal(keyPrompts(false)[0].key, 'ESC');
+    assert.deepEqual(keyPrompts(true), []);
+    assert.deepEqual(keyPrompts(false), []);
     assert.deepEqual(keyPrompts(false, true), [
       { key: layout === 'ps4' ? 'SHARE / タッチパッド' : '−', label: '地図' },
-      { key: menu, label: 'メニュー' },
     ]);
     const exhibitionHelp = helpTabsMarkup('pc', [], true);
     assert.doesNotMatch(exhibitionHelp, /PC（キーボード・マウス）|W A S D|ESC/);
@@ -79,7 +78,7 @@ test('each controller uses its physical labels in help, menus and the map withou
   }
   assert.equal(JSON.stringify(PC_HELP), keyboard);
   setControllerLayout(undefined);
-  assert.equal(keyPrompts(true)[0].key, 'OPTIONS');
+  assert.deepEqual(keyPrompts(true), []);
 });
 
 test('invalid profiles fail explicitly while older runtime configs retain PS4 labels', () => {

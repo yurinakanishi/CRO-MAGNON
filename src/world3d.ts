@@ -6,6 +6,8 @@ import { activateMiddenObstacle } from '../shared/coastal-sites.mjs';
 import { CoastalRenderer } from './coastal-renderer.js';
 import { VillageRenderer } from './village-renderer.js';
 import { RimoNekoRenderer } from './rimo-neko-renderer.js';
+import { OrbBotRenderer } from './orb-bot-renderer.js';
+import { posingOrbBot } from '../shared/orb-bots.mjs';
 import { groundPettingProgress } from './ground-petting-pose.js';
 import { Companion524Renderer } from './companion-524-renderer.js';
 import { pettingProgress } from './petting-pose.js';
@@ -184,6 +186,7 @@ export class WorldRenderer {
   declare villageRenderer: VillageRenderer | undefined;
   declare companion524Renderer: Companion524Renderer | undefined;
   declare rimoNekoRenderer: RimoNekoRenderer | undefined;
+  declare orbBotRenderer: OrbBotRenderer | undefined;
   declare npcActor: any;
   declare npc: any;
   declare failed: boolean | undefined;
@@ -386,6 +389,7 @@ export class WorldRenderer {
       }
       this.companion524Renderer = new Companion524Renderer(this);
       this.rimoNekoRenderer = new RimoNekoRenderer(this);
+      this.orbBotRenderer = new OrbBotRenderer(this);
       this.npcActor = await this.npcAssets.create({ color: '#ad9d79' });
       if (this.disposed) {
         this.npcActor?.dispose();
@@ -1051,7 +1055,7 @@ export class WorldRenderer {
       }
     }
     this.boatRenderer?.update(time, dt);
-    this.companion524Renderer?.update(dt);
+    if (!this.companion524Renderer?.inHand) this.companion524Renderer?.update(dt);
     this.rimoNekoRenderer?.update(dt);
     // Update the carrier's animated shoulder before its passenger, regardless of join order.
     for (const entity of [...this.players.values()].sort(
@@ -1061,6 +1065,7 @@ export class WorldRenderer {
         p = entity.state.id === this.selfId && predicted ? predicted : entity.state,
         factor = 1 - Math.exp(-dt * 20);
       entity.actor?.groundPettingPose.restore();
+      entity.actor?.orbBotPose.restore();
       entity.actor?.pettingPose.restore();
       entity.actor?.leanPose?.restore();
       entity.actor?.carrySupportPose?.restore();
@@ -1251,10 +1256,18 @@ export class WorldRenderer {
           tempPoint.y += p.species === 'bear' ? 0.07 : 0.11;
           entity.actor.pettingPose.update(tempPoint, petting.weight, petting.stroke);
         }
+        const bot = posingOrbBot(this.state.orbBots, p.id, this.serverNow());
+        entity.actor.orbBotPose.update(
+          petting.weight > 0 ? undefined : bot,
+          p,
+          this.serverNow(),
+          model,
+        );
         if (entity.axe) {
           const attack = entity.actor.animation.name === 'Attack';
           const profile = attackProfile(p);
           entity.axe.visible =
+            entity.actor.orbBotPose.weight === 0 &&
             petting.weight === 0 &&
             !p.fishing &&
             !p.coastalActivity &&
@@ -1264,6 +1277,7 @@ export class WorldRenderer {
               : entity.actor.animation.name === 'Gather');
           if (entity.weapon) {
             entity.weapon.visible =
+              entity.actor.orbBotPose.weight === 0 &&
               petting.weight === 0 &&
               !p.fishing &&
               !p.coastalActivity &&
@@ -1295,6 +1309,8 @@ export class WorldRenderer {
         model.position.z,
       );
     }
+    if (this.companion524Renderer?.inHand) this.companion524Renderer.update(dt);
+    this.orbBotRenderer?.update(dt);
     const self = this.players.get(this.selfId);
     if (self) {
       tempPoint.copy(self.model.position);
@@ -1538,6 +1554,7 @@ export class WorldRenderer {
       data.animals = JSON.stringify(this.state.animals || []);
       data.companion524 = JSON.stringify(this.companion524Renderer?.diagnostics() ?? null);
       data.rimoNeko = JSON.stringify(this.rimoNekoRenderer?.diagnostics() ?? null);
+      data.orbBots = JSON.stringify(this.orbBotRenderer?.diagnostics() ?? []);
       data.meatPiles = String(this.mammoths.filter((a) => a.meat.visible).length);
       data.animalAnimations = JSON.stringify(
         this.mammoths.map((a) => ({
@@ -1667,6 +1684,7 @@ export class WorldRenderer {
     this.villageRenderer?.dispose();
     this.companion524Renderer?.dispose();
     this.rimoNekoRenderer?.dispose();
+    this.orbBotRenderer?.dispose();
     this.regionalScenery?.dispose();
     this.landmarks?.dispose();
     this.openWorld?.dispose();

@@ -1,0 +1,193 @@
+{
+  "health": {
+    "ok": true,
+    "ridingVersion": 1,
+    "combatVersion": 3,
+    "characterVersion": 2,
+    "enemyVersion": 1,
+    "worldVersion": 4,
+    "worldSize": 8192,
+    "worldWidth": 8192,
+    "worldDepth": 4096,
+    "epochYearsBP": 50000,
+    "rooms": 3,
+    "players": 0,
+    "maxPlayers": 5,
+    "save": {
+      "enabled": true,
+      "state": "saved",
+      "savedAt": 1790868219915,
+      "recovered": false
+    }
+  },
+  "status": {
+    "ok": true,
+    "boatingVersion": 1,
+    "adventureVersion": 1,
+    "gulfVersion": 3,
+    "localRoomReset": true,
+    "save": {
+      "enabled": true,
+      "state": "saved",
+      "savedAt": 1790868219915,
+      "recovered": false
+    }
+  },
+  "matches": [
+    {
+      "url": "/models/orb-bot-white/model-r03.glb",
+      "sha256": "0e68d2dda0a2d11396a50a853cefcd3897e53abd9b18e2023bd1e2bc6f4d266a",
+      "bytes": 535824
+    },
+    {
+      "url": "/models/orb-bot-white/lod-r02.glb",
+      "sha256": "b05fb8beea1cfc301b5d8d0c8ee703219b70fef5dcaa97af231b5bf78d789297",
+      "bytes": 72752
+    },
+    {
+      "url": "/models/orb-bot-blue/model-r03.glb",
+      "sha256": "dee691fc7c35bde8079cd394744a2bdf050380528d30e86ec823cf8269806304",
+      "bytes": 508596
+    },
+    {
+      "url": "/models/orb-bot-blue/lod-r02.glb",
+      "sha256": "446ca81625dff165d40596cf63005fa04fe5c8f1d039fbd7c8a2c7b0b1018a8c",
+      "bytes": 73228
+    },
+    {
+      "url": "/models/orb-bot-green/model-r03.glb",
+      "sha256": "4f7461ab063fce7aae319745520523bb2d84938ba7a11b765f3ea6b34dbb12ce",
+      "bytes": 497696
+    },
+    {
+      "url": "/models/orb-bot-green/lod-r02.glb",
+      "sha256": "becab68c827d467624b1f3d9bf84126d094dd8accd8c05420fd38b1101609497",
+      "bytes": 71372
+    },
+    {
+      "url": "/models/orb-bot-purple/model-r03.glb",
+      "sha256": "5cc2232ba84cacbd2616ec6979757f41822cb4d845c7cbe873888756f6059e96",
+      "bytes": 549020
+    },
+    {
+      "url": "/models/orb-bot-purple/lod-r02.glb",
+      "sha256": "a33ec432dd655db4204949a55b7a10a6c44920c7a686d5b12538258c36607f38",
+      "bytes": 73076
+    },
+    {
+      "url": "/models/orb-bot-orange/model-r08.glb",
+      "sha256": "35a5de83fc555c537e918000b6c2f0fabed5ce6ac2f837aa78930e7547f99d55",
+      "bytes": 454820
+    },
+    {
+      "url": "/models/orb-bot-orange/lod-r06.glb",
+      "sha256": "b291e5836bb739096128a47b406bed1af8ba4247f76b04900cbee94306f03ae8",
+      "bytes": 37140
+    },
+    {
+      "url": "/models/orb-bot-beret/model-r03.glb",
+      "sha256": "0c18e377dc69de6c1fce9bd2baaade3fb20914f2e547d382ec5a6a8b24e304e0",
+      "bytes": 17676368
+    },
+    {
+      "url": "/models/orb-bot-beret/lod-r03.glb",
+      "sha256": "e08d43efcd7d647259f275d55538544a2a9c4829250a523d6a782804dc0075ff",
+      "bytes": 540524
+    },
+    {
+      "url": "/models/orb-bot-beret/portrait.png",
+      "sha256": "0b9b7c2accf86d2a0fcbe3db4a586ba716bcd15c5519ef189758a06202c3e33d",
+      "bytes": 1357885
+    },
+    {
+      "url": "/models/orb-bot-frog/model-r01.glb",
+      "sha256": "cdd25740bb82c8553f3acc174d29e1b016729af1eb60ddf2e0d4ce7f479b5741",
+      "bytes": 27659764
+    },
+    {
+      "url": "/models/orb-bot-frog/lod-r01.glb",
+      "sha256": "4f50f276ba068a6476021bc34abd3f2cc73909db7baa1ca2c881ee96a94f34cb",
+      "bytes": 1926104
+    },
+    {
+      "url": "/models/orb-bot-frog/portrait.png",
+      "sha256": "0930a7dcb766477aae7bc44c54e53981af7758a2148cc79e8535fa4311380211",
+      "bytes": 1816488
+    },
+    {
+      "url": "/models/orb-bot-triangle/model-r06.glb",
+      "sha256": "a69f9a4f5d65fe867f5fd6865a41f2862282ef3ae7fa8858774b7797ddf6cf1b",
+      "bytes": 16759840
+    },
+    {
+      "url": "/models/orb-bot-triangle/lod-r06.glb",
+      "sha256": "1f5187de9141e06f6e4d2975b090ab34520911e552595ea6e13b4420c92a530c",
+      "bytes": 171912
+    },
+    {
+      "url": "/models/orb-bot-triangle/portrait.png",
+      "sha256": "abb0d9213901714801ea6d10d09d73b00fe52cd0c6cd83248f4c6126627c3bf9",
+      "bytes": 1637486
+    },
+    {
+      "url": "/models/orb-bot-heart/model-r02.glb",
+      "sha256": "fe294cdc517abb4485b4379ffd4619fe4ff37a535d5463850f87b6ba612defc7",
+      "bytes": 18235068
+    },
+    {
+      "url": "/models/orb-bot-heart/lod-r02.glb",
+      "sha256": "dc5b5a69e1d838f8b2c45f10ded323ec83c65e67fa429e56f502430338559fc2",
+      "bytes": 499512
+    },
+    {
+      "url": "/models/orb-bot-heart/portrait.png",
+      "sha256": "ab989e7959bf932e715cbb9c61c6f9e067ec6a475f2eed136287a04efd7d1935",
+      "bytes": 1386225
+    },
+    {
+      "url": "/src/main.js",
+      "sha256": "44d31fc78ef23faa9d7ddd4b3760f9e4bf14c87685e2c557f923f691838a5bb7",
+      "bytes": 111631
+    },
+    {
+      "url": "/src/world3d.js",
+      "sha256": "2384636b72d636dd4615c0af367b14be7f74444cfd88769e477ca342a43345aa",
+      "bytes": 74593
+    },
+    {
+      "url": "/src/orb-bot-pose.js",
+      "sha256": "6d96b425f0e8bd3ad0a66a7caa97f8928bd8b798fe448013dc3aca50d045357a",
+      "bytes": 4930
+    },
+    {
+      "url": "/src/orb-bot-renderer.js",
+      "sha256": "3c406b93f6e336d8dcfa80db750457281cc4acb9b8f64b89d5761b05d1a97c7d",
+      "bytes": 7005
+    },
+    {
+      "url": "/src/orb-bot-ui.js",
+      "sha256": "c73f85c549f464bec5ab7bb3ac4bc4b95b99540672baa93282c7639957b93c61",
+      "bytes": 5581
+    },
+    {
+      "url": "/src/orb-bots.css",
+      "sha256": "48d3bcd8540a8a5eebdb6fd6999f679d5364b24e971a42a83de44f54b776e841",
+      "bytes": 2786
+    },
+    {
+      "url": "/src/gamepad-input.js",
+      "sha256": "0c5223d352994845a2eb086bd02ac3f8e2dfe0e525aeaa9495f72034f9b0c487",
+      "bytes": 6860
+    },
+    {
+      "url": "/src/help-content.js",
+      "sha256": "ee114c8229896c714ac7a41faa14598bf3d7577379dcaefaccf14d96f06bb226",
+      "bytes": 8096
+    },
+    {
+      "url": "/shared/orb-bots.mjs",
+      "sha256": "0df2a76a9a93059803fecd7ad0d940864d204a2a12e1688efcbf13995743f9ae",
+      "bytes": 14716
+    }
+  ]
+}

@@ -1,0 +1,66 @@
+[
+  {
+    "kind": "beret",
+    "file": "assets\\shape-bots\\source\\beret-reference-v1.png",
+    "sha256": "0b9b7c2accf86d2a0fcbe3db4a586ba716bcd15c5519ef189758a06202c3e33d",
+    "size": [
+      1346,
+      1168
+    ],
+    "alphaBounds": [
+      0,
+      49,
+      1326,
+      1144
+    ],
+    "visualReview": "Reference identity and accessory/silhouette checked from the tool output; full body, no added limbs/mouth."
+  },
+  {
+    "kind": "frog",
+    "file": "assets\\shape-bots\\source\\frog-reference-v1.png",
+    "sha256": "0930a7dcb766477aae7bc44c54e53981af7758a2148cc79e8535fa4311380211",
+    "size": [
+      1326,
+      1187
+    ],
+    "alphaBounds": [
+      0,
+      21,
+      1306,
+      1187
+    ],
+    "visualReview": "Reference identity and accessory/silhouette checked from the tool output; full body, no added limbs/mouth."
+  },
+  {
+    "kind": "triangle",
+    "file": "assets\\shape-bots\\source\\triangle-reference-v1.png",
+    "sha256": "abb0d9213901714801ea6d10d09d73b00fe52cd0c6cd83248f4c6126627c3bf9",
+    "size": [
+      1374,
+      1145
+    ],
+    "alphaBounds": [
+      0,
+      40,
+      1348,
+      1145
+    ],
+    "visualReview": "Reference identity and accessory/silhouette checked from the tool output; full body, no added limbs/mouth."
+  },
+  {
+    "kind": "heart",
+    "file": "assets\\shape-bots\\source\\heart-reference-v1.png",
+    "sha256": "ab989e7959bf932e715cbb9c61c6f9e067ec6a475f2eed136287a04efd7d1935",
+    "size": [
+      1374,
+      1145
+    ],
+    "alphaBounds": [
+      81,
+      122,
+      1322,
+      1118
+    ],
+    "visualReview": "Reference identity and accessory/silhouette checked from the tool output; full body, no added limbs/mouth."
+  }
+]

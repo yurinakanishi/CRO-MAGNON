@@ -3,6 +3,7 @@ import { RIMO_NEKO } from '../shared/rimo-neko.mjs';
 import { walkHeight } from '../shared/terrain.mjs';
 import { VisibleActorGroup } from './visible-actor-group.js';
 import { isMesh } from './three-types.js';
+import { companionHeartTexture } from './companion-heart-texture.js';
 import type { WorldRenderer } from './world3d.js';
 
 /** Grounded quadruped. The delivered GLB owns all body/ear/tail/jaw motion. */
@@ -12,6 +13,10 @@ export class RimoNekoRenderer {
   readonly actor: ReturnType<WorldRenderer['worldAssets']['createAnimal']>;
   readonly label: ReturnType<WorldRenderer['createLabel']>;
   readonly hissLabel: ReturnType<WorldRenderer['createLabel']>;
+  readonly hearts: THREE.Sprite[] = [];
+  private readonly heartTexture = companionHeartTexture();
+  private readonly heartOrigin = new THREE.Vector3();
+  private happyAge = -1;
   private contactBone: THREE.Object3D;
   private placed = false;
   private floor = 0;
@@ -29,6 +34,20 @@ export class RimoNekoRenderer {
     world.scene.add(this.root);
     this.label = world.createLabel('リモねこ', 'companion', new THREE.Vector3());
     this.hissLabel = world.createLabel('シャーッ！', 'companion rimo-hiss', new THREE.Vector3());
+    for (let i = 0; i < 5; i++) {
+      const heart = new THREE.Sprite(
+        new THREE.SpriteMaterial({
+          map: this.heartTexture,
+          transparent: true,
+          depthWrite: false,
+          toneMapped: false,
+        }),
+      );
+      heart.raycast = () => {};
+      heart.visible = false;
+      this.hearts.push(heart);
+      world.scene.add(heart);
+    }
   }
 
   petTarget(out: THREE.Vector3) {
@@ -41,6 +60,8 @@ export class RimoNekoRenderer {
     if (!c) {
       this.root.visible = false;
       this.label.active = this.hissLabel.active = false;
+      this.happyAge = -1;
+      for (const heart of this.hearts) heart.visible = false;
       return;
     }
     const now = this.world.serverNow(),
@@ -82,6 +103,7 @@ export class RimoNekoRenderer {
     this.root.visible = distance < 85;
     const hitAge = c.hitSequence ? now - c.hitAt : Infinity;
     const petAge = c.petPlayerId && c.petContactAt > 0 ? now - c.petContactAt : -1;
+    this.happyAge = -1;
     if (hitAge >= 0 && hitAge < RIMO_NEKO.hitMs) {
       this.actor.sampleOnce('Hit', hitAge / 1000);
       this.reaction = 'hit';
@@ -97,6 +119,7 @@ export class RimoNekoRenderer {
     ) {
       this.actor.sampleOnce('Happy', (petAge - RIMO_NEKO.petStrokeMs) / 1000);
       this.reaction = 'happy';
+      this.happyAge = petAge - RIMO_NEKO.petStrokeMs;
     } else {
       const speed = this.renderedSpeed > 0.05 ? this.renderedSpeed : 0;
       const clip = speed > 1.1 ? 'Run_Loop' : speed > 0 ? 'Walk_Loop' : 'Idle_Loop';
@@ -104,6 +127,22 @@ export class RimoNekoRenderer {
       this.actor.play(clip, speed > 0 ? speed / reference : 1);
       if (this.root.visible) this.actor.update(dt);
       this.reaction = speed > 0 ? 'moving' : 'idle';
+    }
+    // Derive every particle from the shared contact time, so late joins and
+    // distance culling cannot replay a completed reaction or leave hearts behind.
+    if (this.happyAge >= 0) this.petTarget(this.heartOrigin);
+    for (const [i, heart] of this.hearts.entries()) {
+      const age = (this.happyAge - 180 - i * 140) / 720;
+      heart.visible = this.root.visible && this.happyAge >= 0 && age > 0 && age < 1;
+      if (!heart.visible) continue;
+      const spread = Math.sin(i * 2.4) * (0.09 + age * 0.15);
+      heart.position.set(
+        this.heartOrigin.x + Math.cos(yaw) * spread,
+        this.heartOrigin.y + 0.09 + age * 0.38,
+        this.heartOrigin.z - Math.sin(yaw) * spread + Math.cos(i * 2.4) * 0.06,
+      );
+      heart.scale.setScalar(0.075 + Math.sin(age * Math.PI) * 0.035);
+      heart.material.opacity = Math.sin(age * Math.PI);
     }
     this.actor.root.traverse((node) => {
       if (isMesh(node)) node.castShadow = distance < 28;
@@ -120,6 +159,8 @@ export class RimoNekoRenderer {
       visible: this.root.visible,
       clip: this.actor.name,
       reaction: this.reaction,
+      happyAge: this.happyAge,
+      hearts: this.hearts.filter((h) => h.visible).length,
       position: this.root.position.toArray(),
       floor: this.floor,
       speed: this.renderedSpeed,
@@ -128,8 +169,10 @@ export class RimoNekoRenderer {
   }
 
   dispose() {
-    this.world.scene.remove(this.root);
+    this.world.scene.remove(this.root, ...this.hearts);
     this.actor.dispose();
+    for (const heart of this.hearts) heart.material.dispose();
+    this.heartTexture.dispose();
     for (const label of [this.label, this.hissLabel]) {
       label.element.remove();
       const i = this.world.labels.indexOf(label);

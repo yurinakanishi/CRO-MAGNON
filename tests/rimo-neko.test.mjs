@@ -100,6 +100,29 @@ test('proximity cannot reach through a wall or while riding, jumping, downed, ca
   );
   assert.equal(handleRimoNekoAction(room, p, 'petRimo', 10000), false);
 });
+
+test('a completed pet holds the shared happy phase before following and rejects repeated pets', () => {
+  const { c, p, room } = fixture();
+  handleRimoNekoAction(room, p, 'petRimo', 10000);
+  advance(room, 10000, 1);
+  const contactAt = c.petContactAt;
+  const finished = contactAt + RIMO_NEKO.petStrokeMs;
+  updateRimoNeko(room, 0.05, finished);
+  assert.equal(c.followPlayerId, p.id);
+  const position = { x: c.x, z: c.z };
+  assert.equal(handleRimoNekoAction(room, p, 'petRimo', finished + 600), false);
+  p.z -= 4;
+  p.moving = true;
+  p.speed = 2;
+  updateRimoNeko(room, 0.05, finished + RIMO_NEKO.happyMs - 1);
+  assert.equal(dist(c, position), 0, 'the cat finishes the gesture on planted paws');
+  assert.equal(c.petContactAt, contactAt, 'shared clock remains available to late viewers');
+  updateRimoNeko(room, 0.05, finished + RIMO_NEKO.happyMs + 1);
+  assert.equal(c.petPlayerId, null);
+  assert.equal(c.petContactAt, 0);
+  assert.ok(dist(c, position) > 0, 'follow resumes after the gesture');
+  assert.equal(c.followPlayerId, p.id);
+});
 test('follow stops comfortably, does not orbit a stationary owner, and returns after disconnect', () => {
   const { c, p, room } = fixture();
   handleRimoNekoAction(room, p, 'petRimo', 10000);

@@ -32,7 +32,7 @@ for (const m of meshes) {
 }
 assert.ok(maxWeightError < 1e-6);
 for (const clip of gltf.animations) {
-  const sampleHz = (clip.name === 'Run_Loop' || clip.name === 'Hiss') && Number(revision) >= 8 ? 480 : 120;
+  const sampleHz = Math.max(120, 2 * (asset.clips.find(c => c.name === clip.name)?.fps ?? 60));
   const steps = Math.round(clip.duration * sampleHz),
     looping = clip.name.endsWith('_Loop');
   let minimum = Infinity,

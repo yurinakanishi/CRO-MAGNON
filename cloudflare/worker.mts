@@ -47,7 +47,20 @@ export class FreeGameRoom extends DurableObject<Env> {
         .toArray();
       const saved = rows.length ? JSON.parse(rows[0].data) : null;
       this.budget = saved?.budget || freshBudget();
-      if (saved?.game) this.game.importState(saved.game);
+      if (saved?.game) {
+        this.game.importState(saved.game);
+        if (saved.game.worldVersion !== WORLD.version) {
+          // Keep the exact prior cloud checkpoint before the first upgraded save.
+          ctx.storage.sql.exec(
+            'CREATE TABLE IF NOT EXISTS checkpoint_backup (id INTEGER PRIMARY KEY CHECK (id = 1), data TEXT NOT NULL)',
+          );
+          ctx.storage.sql.exec(
+            'INSERT OR IGNORE INTO checkpoint_backup (id, data) VALUES (1, ?)',
+            rows[0].data,
+          );
+          await ctx.storage.sync();
+        }
+      }
     });
   }
 

@@ -1,7 +1,7 @@
 {
   "$schema": "./node_modules/wrangler/config-schema.json",
-  "name": "cro-magnon-free",
-  "main": "dist/cloudflare/worker.mjs",
+  "name": "cromagnonmmo",
+  "main": "dist-cloudflare-worker/cloudflare/worker.mjs",
   "compatibility_date": "2026-09-07",
   "compatibility_flags": [
     "nodejs_compat"

@@ -1,0 +1,154 @@
+{
+  "modelKey": "orb-bot-triangle",
+  "name": "さんかくbot",
+  "kind": "companion",
+  "candidate": 1,
+  "revision": "06",
+  "status": "integrated-reviewed-prototype",
+  "url": "/models/orb-bot-triangle/model-r06.glb",
+  "sha256": "a69f9a4f5d65fe867f5fd6865a41f2862282ef3ae7fa8858774b7797ddf6cf1b",
+  "bytes": 16759840,
+  "triangles": 14021,
+  "bones": 2,
+  "upAxis": "Y",
+  "forwardAxis": "+Z",
+  "heightMetres": 0.25344121781436846,
+  "widthMetres": 0.28,
+  "lengthMetres": 0.2782609707940249,
+  "placement": {
+    "pivot": "ground-centred",
+    "scale": 1
+  },
+  "portrait": {
+    "url": "/models/orb-bot-triangle/portrait.png",
+    "sha256": "abb0d9213901714801ea6d10d09d73b00fe52cd0c6cd83248f4c6126627c3bf9"
+  },
+  "clips": [
+    {
+      "name": "Catch",
+      "seconds": 0.30000001192092896,
+      "loop": false,
+      "rootMotion": "in-place",
+      "fps": 60
+    },
+    {
+      "name": "Held_Loop",
+      "seconds": 1.2000000476837158,
+      "loop": true,
+      "rootMotion": "in-place",
+      "fps": 60
+    },
+    {
+      "name": "Idle_Loop",
+      "seconds": 2.4000000953674316,
+      "loop": true,
+      "rootMotion": "in-place",
+      "fps": 60
+    },
+    {
+      "name": "Land",
+      "seconds": 0.4166666567325592,
+      "loop": false,
+      "rootMotion": "in-place",
+      "fps": 60
+    },
+    {
+      "name": "Run_Loop",
+      "seconds": 0.4000000059604645,
+      "loop": true,
+      "rootMotion": "in-place",
+      "fps": 60
+    },
+    {
+      "name": "Thrown_Loop",
+      "seconds": 0.8999999761581421,
+      "loop": true,
+      "rootMotion": "in-place",
+      "fps": 60
+    },
+    {
+      "name": "Walk_Loop",
+      "seconds": 0.6000000238418579,
+      "loop": true,
+      "rootMotion": "in-place",
+      "fps": 60
+    }
+  ],
+  "locomotion": {
+    "Walk_Loop": {
+      "metresPerSecond": 3,
+      "cycleSeconds": 0.6
+    },
+    "Run_Loop": {
+      "metresPerSecond": 3,
+      "cycleSeconds": 0.4
+    }
+  },
+  "lods": [
+    {
+      "url": "/models/orb-bot-triangle/lod-r06.glb",
+      "sha256": "1f5187de9141e06f6e4d2975b090ab34520911e552595ea6e13b4420c92a530c",
+      "bytes": 171912,
+      "triangles": 2803,
+      "distanceMetres": 9,
+      "purpose": "animated-medium-lod-geometry"
+    }
+  ],
+  "provenance": {
+    "provider": "Codex",
+    "claudeUsed": false,
+    "referenceGenerator": "Built-in imagegen",
+    "referenceImage": "assets/shape-bots/source/triangle-reference-v1.png",
+    "referenceSha256": "abb0d9213901714801ea6d10d09d73b00fe52cd0c6cd83248f4c6126627c3bf9",
+    "userReference": "assets/shape-bots/source/user-reference.png",
+    "userReferenceSha256": "9836ed1b161feba83535854a67235b74ceb1c4dbe26a2098e53a33559c69ad77",
+    "reconstruction": "Local TRELLIS-2 v0.8.1 official Vulkan / 512 / seed42; measured source-preserving reduction and squash/hop rig.",
+    "denseSha256": "964f4283abfe6a4ce8d84fd9d61d37519db1b32acb293f0ce80ce754f9d72f0f",
+    "sourceUvAndAlbedoPreserved": false,
+    "sourceUvPreserved": true,
+    "materialRepair": {
+      "method": "Reference-derived body-colour calibration of source albedo; neutral white/black features retained",
+      "records": [
+        {
+          "reference": "C:\\Users\\yurin\\Desktop\\projects\\CRO-MAGNON\\assets\\shape-bots\\source\\triangle-reference-v1.png",
+          "targetHsv": [
+            0.12430554628372192,
+            0.9446640610694885,
+            0.9803922176361084
+          ],
+          "denseHsv": [
+            0.09905660152435303,
+            0.8542510271072388,
+            0.9686275124549866
+          ],
+          "hueShift": 0.025248944759368896,
+          "changedPixels": 14482876,
+          "unchangedPixels": 2294340,
+          "alphaExact": true,
+          "originalUVsExact": true
+        }
+      ],
+      "faceRetouch": {
+        "method": "Geometry-masked interpolation from adjacent original body texels; duplicate baked rings only",
+        "changedPixels": 100734,
+        "protectedEyePixels": 40790,
+        "bodyRegionPixels": 703080,
+        "iterations": 40,
+        "isolatedChartTexels": 632,
+        "geometryExact": true,
+        "uvExact": true,
+        "closedEyeTexelsExact": true,
+        "pixelsOutsideMaskExact": true,
+        "bodyDepthToleranceMetres": 0.002520000010728836,
+        "sourceOriginalRetained": true
+      }
+    },
+    "candidateFile": "output/model-generation/models/orb-bot-triangle/work/rig/revision-06/candidate.glb",
+    "visualReview": "assets/shape-bots/reviews/triangle-r06.json"
+  },
+  "notes": [
+    "Each of the four subjects has its own independent image and dense reconstruction. No visible primitive-built geometry.",
+    "Five loop clips and two one-shots; in-place, server-timed throws and return; original skeleton and material shared with LOD."
+  ],
+  "gameQA": "output/playwright/shape-bots/game-1790867552591"
+}

@@ -7,6 +7,7 @@ export interface MultiplayerConfig {
   guestName?: string;
   buildId?: string;
   controllerLayout?: ControllerLayout;
+  movementRefreshMs?: number;
 }
 
 export function parseMultiplayerConfig(value: unknown): MultiplayerConfig {
@@ -15,6 +16,13 @@ export function parseMultiplayerConfig(value: unknown): MultiplayerConfig {
   if (config.mode !== 'lan' && config.mode !== 'online')
     throw new Error('MULTIPLAYER_MODE は lan または online にしてください。');
   const serverUrl = typeof config.serverUrl === 'string' ? config.serverUrl : '';
+  if (
+    config.movementRefreshMs !== undefined &&
+    (!Number.isInteger(config.movementRefreshMs) ||
+      Number(config.movementRefreshMs) < 70 ||
+      Number(config.movementRefreshMs) > 140)
+  )
+    throw new Error('移動の送信間隔が不正です。');
   if (config.mode === 'lan' && !serverUrl) throw new Error('LANサーバーURLが未設定です。');
   if (serverUrl) {
     const url = new URL(serverUrl);
@@ -30,6 +38,9 @@ export function parseMultiplayerConfig(value: unknown): MultiplayerConfig {
     guestName: typeof config.guestName === 'string' ? config.guestName : undefined,
     buildId: typeof config.buildId === 'string' ? config.buildId : undefined,
     controllerLayout: parseControllerLayout(config.controllerLayout),
+    ...(config.movementRefreshMs === undefined
+      ? {}
+      : { movementRefreshMs: Number(config.movementRefreshMs) }),
   };
 }
 

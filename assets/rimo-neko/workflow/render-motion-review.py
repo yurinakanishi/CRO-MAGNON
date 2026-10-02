@@ -3,7 +3,7 @@ import argparse,json,math,sys
 from pathlib import Path
 import bpy
 from mathutils import Vector
-ap=argparse.ArgumentParser();ap.add_argument('revision');a=ap.parse_args(sys.argv[sys.argv.index('--')+1:])
+ap=argparse.ArgumentParser();ap.add_argument('revision');ap.add_argument('--happy', action='store_true');a=ap.parse_args(sys.argv[sys.argv.index('--')+1:])
 ROOT=next(p for p in Path(__file__).resolve().parents if (p/'package.json').is_file())
 M=ROOT/'output/model-generation/models/rimo-neko';out=M/f'qa/rig-{a.revision}/motion-frames';out.mkdir(parents=True,exist_ok=True)
 bpy.ops.wm.read_factory_settings(use_empty=True);scene=bpy.context.scene;scene.render.fps=60
@@ -26,6 +26,8 @@ mat=bpy.data.materials.new('QA floor');mat.diffuse_color=(.33,.37,.39,1);floor.d
 cam=bpy.data.objects.new('QA camera',bpy.data.cameras.new('QA camera'));scene.collection.objects.link(cam);scene.camera=cam;cam.data.type='ORTHO';cam.data.ortho_scale=size
 views={'right':(1,0,.10),'front':(0,-1,.10),'threequarter':(-.8,-1,.24)}
 schedule={'Idle_Loop':[0],'Hiss':[0,.22,.8,1.5,2.1],'Run_Loop':[i*.5/8 for i in range(8)]}
+if a.happy:
+    schedule={'Pet':[1.6], 'Happy':[0,.2,.4,.6,.8,1.0,1.3,1.6], 'Idle_Loop':[0]}
 for clip,times in schedule.items():
     action=next(x for x in bpy.data.actions if x.name==clip or x.name.endswith('|'+clip))
     rig.animation_data.action=action;rig.animation_data.action_slot=action.slots[0]

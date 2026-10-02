@@ -6,6 +6,7 @@ import { requireEnemyClips } from './enemy-state.js';
 import { PlacementGrid } from '../shared/spatial-grid.mjs';
 import { createSurfaceTemplate } from './biome-surfaces.js';
 import { sha256 } from './asset-hash.js';
+import { downloadVerifiedAsset } from './asset-download.js';
 import { ViewUpdateGate } from './view-update-gate.js';
 import { markActiveAttribute, markActiveInstances } from './instance-updates.js';
 import { applyMeadowGrassPalette, meadowGrassTint } from './meadow-palette.js';
@@ -41,13 +42,7 @@ function disposeTemplates(models) {
 }
 
 export async function loadVerifiedGLB(record) {
-  const url = new URL(record.url, location.origin);
-  if (url.origin !== location.origin) throw new Error('Models must be served by this game');
-  const response = await fetch(url);
-  if (!response.ok) throw new Error(`${record.url}: HTTP ${response.status}`);
-  const bytes = await response.arrayBuffer();
-  if (bytes.byteLength !== record.bytes) throw new Error(`${record.url}: file length mismatch`);
-  if ((await sha256(bytes)) !== record.sha256) throw new Error(`${record.url}: SHA-256 mismatch`);
+  const bytes = await downloadVerifiedAsset(record);
   const manager = new THREE.LoadingManager();
   manager.setURLModifier((url) => {
     if (!url.startsWith('blob:') && !url.startsWith('data:'))

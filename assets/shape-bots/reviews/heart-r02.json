@@ -1,0 +1,18 @@
+{
+  "candidate": 1,
+  "revision": "02",
+  "decision": "adopt",
+  "sha256": "fe294cdc517abb4485b4379ffd4619fe4ff37a535d5463850f87b6ba612defc7",
+  "lodSha256": "dc5b5a69e1d838f8b2c45f10ded323ec83c65e67fa429e56f502430338559fc2",
+  "review": "Compared dense reconstruction, r01 and the exact r02 GLB in neutral and clay. The pink heart lobes and central notch, rounded bottom, thick plush profile and two black round sunglasses are retained. The higher surface density improves the glasses edge and attachment shading; the source side seam remains as a soft fabric-like crease. Checked textured front/back/side/three-quarter motion samples for walking, running, held, airborne, landing and reunion; glasses stay attached. Numeric main/LOD checks and all 70 live clip/direction/speed observations pass. Ready for game integration QA.",
+  "numeric": "output/model-generation/models/orb-bot-heart/work/rig/revision-02/qa/numeric.json",
+  "viewer": "output/model-generation/models/orb-bot-heart/qa/final-02/viewer.html",
+  "viewerQA": "output/model-generation/models/orb-bot-heart/qa/final-02/viewer-qa.json",
+  "motionViewQA": "output/model-generation/models/orb-bot-heart/qa/final-02/motion-angles/qa.json",
+  "visualEvidence": "output/model-generation/models/orb-bot-heart/qa/final-02",
+  "gameIntegrationVerified": true,
+  "gameQA": "output/playwright/shape-bots/game-1790867552591",
+  "layoutQA": "output/playwright/shape-bots/layout-1790867788017",
+  "rearCameraFlightQA": "output/playwright/shape-bots/flight-1790867802767",
+  "gameVisualReview": "Inspected all four new held bots on the actual character hand; each preserves its distinct outline, face and accessories. All nine kinds complete synchronized windup, airborne, landing, return and reunion on five clients. Rear-camera supplemental images show the beret and heart visibly in flight and the frog back in formation; all four projected airborne centres are inside the screen. All nine player rigs, distant LOD and non-empty-inventory reload pass. Three screen sizes retain 33 unobstructed control targets."
+}

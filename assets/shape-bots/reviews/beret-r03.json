@@ -1,0 +1,17 @@
+{
+  "candidate": 1,
+  "revision": "03",
+  "decision": "adopt",
+  "sha256": "0c18e377dc69de6c1fce9bd2baaade3fb20914f2e547d382ec5a6a8b24e304e0",
+  "lodSha256": "e08d43efcd7d647259f275d55538544a2a9c4829250a523d6a782804dc0075ff",
+  "review": "Reviewed exact delivered GLB textured front/back/three-quarter, neutral and real plain-clay three-quarter plus landing/airborne poses. Two blue lobes, separate black oval eyes, tilted beret and stem remain readable; recomputed smooth normals remove stale cheek facets. Material calibration restores reference blue while preserving UV details. Ready for multiplayer game QA.",
+  "numeric": "output/model-generation/models/orb-bot-beret/work/rig/revision-03/qa/numeric.json",
+  "viewer": "output/model-generation/models/orb-bot-beret/qa/final-03/viewer.html",
+  "viewerQA": "output/model-generation/models/orb-bot-beret/qa/final-03/viewer-qa.json",
+  "visualEvidence": "output/model-generation/models/orb-bot-beret/qa/final-03",
+  "gameIntegrationVerified": true,
+  "gameQA": "output/playwright/shape-bots/game-1790867552591",
+  "layoutQA": "output/playwright/shape-bots/layout-1790867788017",
+  "rearCameraFlightQA": "output/playwright/shape-bots/flight-1790867802767",
+  "gameVisualReview": "Inspected all four new held bots on the actual character hand; each preserves its distinct outline, face and accessories. All nine kinds complete synchronized windup, airborne, landing, return and reunion on five clients. Rear-camera supplemental images show the beret and heart visibly in flight and the frog back in formation; all four projected airborne centres are inside the screen. All nine player rigs, distant LOD and non-empty-inventory reload pass. Three screen sizes retain 33 unobstructed control targets."
+}

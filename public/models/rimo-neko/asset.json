@@ -4,9 +4,9 @@
   "kind": "companion",
   "candidate": 1,
   "status": "reviewed-prototype",
-  "url": "/models/rimo-neko/model-r08.glb",
-  "sha256": "19e44d1e02c501bc10cc02929383e55a0f6ee9f31e1b5ec76c42686c606dcfb1",
-  "bytes": 25693880,
+  "url": "/models/rimo-neko/model-r10.glb",
+  "sha256": "545900f93a483fb1b9cb7483c4fa79a97c3b40d107054e6ef4cadd34fe12205b",
+  "bytes": 26147952,
   "triangles": 136745,
   "upAxis": "Y",
   "forwardAxis": "+Z",
@@ -48,10 +48,10 @@
     },
     {
       "name": "Happy",
-      "seconds": 0.9,
+      "seconds": 1.6,
       "loop": false,
       "rootMotion": "in-place",
-      "fps": 60
+      "fps": 240
     },
     {
       "name": "Hit",
@@ -112,8 +112,8 @@
   "provenance": {
     "provider": "Codex imagegen; local TRELLIS-2 via trellis.cpp v0.8.1; source-preserving repair and body-specific quadruped rig",
     "claudeUsed": false,
-    "source": "output/model-generation/models/rimo-neko/work/rig/revision-08/candidate.glb",
-    "sourceSha256": "19e44d1e02c501bc10cc02929383e55a0f6ee9f31e1b5ec76c42686c606dcfb1",
+    "source": "output/model-generation/models/rimo-neko/work/rig/revision-10/candidate.glb",
+    "sourceSha256": "545900f93a483fb1b9cb7483c4fa79a97c3b40d107054e6ef4cadd34fe12205b",
     "referenceImage": "assets/rimo-neko/source/reference-v1.png",
     "referenceSha256": "65021b6381b4c6dc8be59409581b889a7272471e7e63919be9e0d5b94676b46d",
     "visualReview": "assets/rimo-neko/adoption.json"

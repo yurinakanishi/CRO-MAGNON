@@ -1,0 +1,7 @@
+{
+  "candidate": 1,
+  "revision": "01",
+  "decision": "no-adoption",
+  "reason": "Source duplicate spectacle rings require body-albedo repair. First preparation stopped before export because 646 masked texels were in disconnected UV charts without same-island donors. Keep calibrated source texture and process logs. No candidate GLB was produced.",
+  "nextRevision": "02"
+}

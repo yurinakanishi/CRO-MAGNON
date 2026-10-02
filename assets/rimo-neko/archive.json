@@ -1,31 +1,31 @@
 {
   "destination": "C:\\Users\\yurin\\Desktop\\projects\\threed-model-creation\\models\\rimo-neko",
-  "files": 786,
-  "bytes": 1500362959,
+  "files": 1155,
+  "bytes": 1917833830,
   "records": [
     {
       "path": "candidate-index.json",
-      "sha256": "0abc0d9fff77ec34c09b7f92ea750a7b47eb81fc272ca424e24c4b73bfd04790",
+      "sha256": "9cbb8ddb19f36bf022fbbc63469287359faedf2a063322e1575a0a2604c2b140",
       "bytes": 339
     },
     {
       "path": "model.json",
-      "sha256": "151319576d2c6b2f70409368d0ff4d7822e98d825ce163cb55d630b590619727",
-      "bytes": 1497
+      "sha256": "83e10c38db53a00644180d5bbacc2f90e7f540719cd64bb9542302c649593995",
+      "bytes": 1520
     },
     {
       "path": "qa/candidate-1/browser-result.json",
-      "sha256": "53d41ca404ef60722b11f3b46fb4ac585e0f5b1f899d277c3aaf2c39cd2096f4",
+      "sha256": "bb302b3a0c94a6978e8962beff55955cd02188c7a6cc76d64d5f8eac93d34886",
       "bytes": 442
     },
     {
       "path": "qa/candidate-1/viewer.html",
-      "sha256": "f3db44863e2cddc6f4b4011acbf1be8c65bfa11047cd80663a5c6590638ecf2e",
-      "bytes": 35332195
+      "sha256": "1e66420e487a9ffd8107533e0b3da2af4a51207934f8db7c7909c4bb066b2971",
+      "bytes": 35937623
     },
     {
       "path": "qa/candidate-1/viewer.json",
-      "sha256": "fdefce3ee2b76a39d3ea280f8d651a5c9b632f1be65c85ff53a6721ee6007405",
+      "sha256": "8f1b1f3620d448d657c34d38519a79ef1ffbe3647a66d1a2639d72b8c429b215",
       "bytes": 372
     },
     {
@@ -172,6 +172,336 @@
       "path": "qa/game/arrival-sound-r07/result.json",
       "sha256": "09a4dd9980b21b55b57177bfefb29d70b7e6903a16ff7f0bcd10ee6fca05a504",
       "bytes": 619
+    },
+    {
+      "path": "qa/game/game-happy-r10-a/cat-kunoichi-happy.png",
+      "sha256": "895af07e0d5cd254fd19433ed3a611c84a2a6741fee989584e255992acf5b8f7",
+      "bytes": 900478
+    },
+    {
+      "path": "qa/game/game-happy-r10-a/cat-kunoichi-stroke.png",
+      "sha256": "c6b2c3a1dd3cec83a60759094a6078e5e34b4fd636e69ce83915aadb06e72996",
+      "bytes": 894125
+    },
+    {
+      "path": "qa/game/game-happy-r10-a/cat-kunoichi.webm",
+      "sha256": "80bed2daf1967ba18e16b6b937a836e0b97d4fcdcb6fde5301027167eb6a6f3c",
+      "bytes": 1056150
+    },
+    {
+      "path": "qa/game/game-happy-r10-a/cro-magnon-hunter-happy.png",
+      "sha256": "913a075b1ea32d84b3a478e44f6e1b720def1fef7c8138692bf1422426f0739d",
+      "bytes": 902270
+    },
+    {
+      "path": "qa/game/game-happy-r10-a/cro-magnon-hunter-stroke.png",
+      "sha256": "4a1ebfe506f340c436342b1e12bcfbf841145070db0cb41339fad44cc0ea78a6",
+      "bytes": 893550
+    },
+    {
+      "path": "qa/game/game-happy-r10-a/cro-magnon-hunter.webm",
+      "sha256": "b09a1c2526ceeafc0dffb5306ad49cda132823edb1da5fe297976c2515735abb",
+      "bytes": 1032600
+    },
+    {
+      "path": "qa/game/game-happy-r10-a/cro-magnon-woman-happy.png",
+      "sha256": "659f31506edeee9e49a076548cfcf89d56cab5b3110a117ce7f872522aa0fd44",
+      "bytes": 905066
+    },
+    {
+      "path": "qa/game/game-happy-r10-a/cro-magnon-woman-stroke.png",
+      "sha256": "7dc2f749439b758116f8eb2ec1b22633443e2e72253aa33facb3a28d124e377c",
+      "bytes": 901551
+    },
+    {
+      "path": "qa/game/game-happy-r10-a/cro-magnon-woman.webm",
+      "sha256": "67b23570100a68ac0bff48f53be75a6826ff15b8015904a3ac11686b33a1a979",
+      "bytes": 882408
+    },
+    {
+      "path": "qa/game/game-happy-r10-a/desert-fennec-mage-happy.png",
+      "sha256": "f7b5f1eda0148e78282a62f430a792372c34f0729b4617a11a23af4bc446c1a8",
+      "bytes": 850147
+    },
+    {
+      "path": "qa/game/game-happy-r10-a/desert-fennec-mage-stroke.png",
+      "sha256": "843f9b0710f939dc9334b79b7b34290c4856580a708dbfd10fbeda37548f36d9",
+      "bytes": 836760
+    },
+    {
+      "path": "qa/game/game-happy-r10-a/desert-fennec-mage.webm",
+      "sha256": "0a451e3e94d523b34572f86e776e003131b81feb5ef43bd017ef853141fd471f",
+      "bytes": 1245827
+    },
+    {
+      "path": "qa/game/game-happy-r10-a/failure.json",
+      "sha256": "360475457fc382850a20cec2db842ae22898d4d6ccb85550801a4cf7d1e560d2",
+      "bytes": 118472
+    },
+    {
+      "path": "qa/game/game-happy-r10-a/failure.png",
+      "sha256": "980536212ae520987f6701ec2f103ca8674e767516f9f224c735750d3b774792",
+      "bytes": 901366
+    },
+    {
+      "path": "qa/game/game-happy-r10-a/frames.json",
+      "sha256": "3acced404a7e5fe0e588efc0ba9662fbae7e791ffedf714dff2451c63e57f67e",
+      "bytes": 473844
+    },
+    {
+      "path": "qa/game/game-happy-r10-a/giant-ape-happy.png",
+      "sha256": "c80309381872315cc7f62570335523133961fc829096d340b1412b677534e407",
+      "bytes": 959698
+    },
+    {
+      "path": "qa/game/game-happy-r10-a/giant-ape-stroke.png",
+      "sha256": "7b05275638547a7b94a61221f897a3c541c92e5b3a8aec5cfad2faa74ba7bf7b",
+      "bytes": 952573
+    },
+    {
+      "path": "qa/game/game-happy-r10-a/giant-ape.webm",
+      "sha256": "18715508f57966f27d68d1d1ce6a0707ead3fde93d5a05923cdc1a592e7e5671",
+      "bytes": 1000613
+    },
+    {
+      "path": "qa/game/game-happy-r10-a/howkey-scientist-happy.png",
+      "sha256": "f8d08f5b73eeda4b839056a9158af069cd64265d0b417448d421bac92494b46e",
+      "bytes": 903349
+    },
+    {
+      "path": "qa/game/game-happy-r10-a/howkey-scientist-stroke.png",
+      "sha256": "b12c7bc7fe4c2ba9029afdd3d1a9434a28bf538f09f9d0a8c226f62a3f1b208b",
+      "bytes": 896480
+    },
+    {
+      "path": "qa/game/game-happy-r10-a/howkey-scientist.webm",
+      "sha256": "782d29b516f76acbda8cea3fa17efb7d986abe5241f2dd7d8dda833f60175e8e",
+      "bytes": 1020780
+    },
+    {
+      "path": "qa/game/game-happy-r10-a/neanderthal-hunter-happy.png",
+      "sha256": "1f52cf91861066ef715155abbb10c200f022955c5d468d84c0f6fc59d765dc04",
+      "bytes": 904307
+    },
+    {
+      "path": "qa/game/game-happy-r10-a/neanderthal-hunter-stroke.png",
+      "sha256": "5db569925870dae263538d83e9229dce0b2c97dcc502aa2230c0b46468e7a6f3",
+      "bytes": 895367
+    },
+    {
+      "path": "qa/game/game-happy-r10-a/neanderthal-hunter.webm",
+      "sha256": "2126bc044f3add80c842d9dcc3a9756ddade7c753e806c1229c59e2855bc641c",
+      "bytes": 1051321
+    },
+    {
+      "path": "qa/game/game-happy-r10-a/neanderthal-woman-happy.png",
+      "sha256": "9cbf92c37c5bca2d7a40faebbdd708a1239c17b477f8925dbb820a611e60d5a5",
+      "bytes": 904006
+    },
+    {
+      "path": "qa/game/game-happy-r10-a/neanderthal-woman-stroke.png",
+      "sha256": "255b9668fb74c7e2e44e3901dd0bdb06d9af2bc8f294be75f67f26c0ec0b16ca",
+      "bytes": 893666
+    },
+    {
+      "path": "qa/game/game-happy-r10-a/neanderthal-woman.webm",
+      "sha256": "fb977231fa9fea20fb99fa7eec52beaa6a36904976cf1bc5d8d3b190dfad3ffa",
+      "bytes": 1022005
+    },
+    {
+      "path": "qa/game/game-happy-r10-a/result.json",
+      "sha256": "64b5b4ed03329f8b15dba52af4553ed34de62387fcf7c58943dc751f94553c90",
+      "bytes": 2115
+    },
+    {
+      "path": "qa/game/game-happy-r10-b/cat-kunoichi-happy.png",
+      "sha256": "97b1bf05ad62b3bbcc25db93ab3fb92d45f476b4f13e39adb24618956a0c86fd",
+      "bytes": 900139
+    },
+    {
+      "path": "qa/game/game-happy-r10-b/cat-kunoichi-stroke.png",
+      "sha256": "1a8c7615d85dac3d336b5de425c57c5859eb8a51b400af4116f720e6b387a02c",
+      "bytes": 894505
+    },
+    {
+      "path": "qa/game/game-happy-r10-b/cat-kunoichi.webm",
+      "sha256": "52907a29747c168dc817ede6fd1f89c1e2a8048d391683ac212d5be7fe69fa42",
+      "bytes": 1047498
+    },
+    {
+      "path": "qa/game/game-happy-r10-b/cro-magnon-hunter-happy.png",
+      "sha256": "a7e44d3bb73a2992f6e253e71cf702de85bc1c5a91a8fcc2c5384f9fc2323be6",
+      "bytes": 903036
+    },
+    {
+      "path": "qa/game/game-happy-r10-b/cro-magnon-hunter-stroke.png",
+      "sha256": "30a3cf429ae6c6f6aa8ae8eed4708e60af8c3eab5e9da3bb624dd452c2a07e34",
+      "bytes": 893834
+    },
+    {
+      "path": "qa/game/game-happy-r10-b/cro-magnon-hunter.webm",
+      "sha256": "7cef00585910a952b939b70e12ec3308804c9bfcda0e24011a154a5a7b1ac35b",
+      "bytes": 1037925
+    },
+    {
+      "path": "qa/game/game-happy-r10-b/cro-magnon-woman-happy.png",
+      "sha256": "999d7490b7e8036fd37dc0f549b0c6d3d0c397c7d3056d03553b0cbbf5c9464e",
+      "bytes": 904391
+    },
+    {
+      "path": "qa/game/game-happy-r10-b/cro-magnon-woman-stroke.png",
+      "sha256": "db9bcb67fb72e03d485b7bda10e9448b27f9fdef5653ffb06f1d11ad19e9a28a",
+      "bytes": 902172
+    },
+    {
+      "path": "qa/game/game-happy-r10-b/cro-magnon-woman.webm",
+      "sha256": "543a7f6c36c85d376d46b9200bb1b2c15bb9c0e6708c2db9386b0fe869516f30",
+      "bytes": 740440
+    },
+    {
+      "path": "qa/game/game-happy-r10-b/desert-fennec-mage-happy.png",
+      "sha256": "31c1ac3113704e07ac7f8864fca85b632db406395a4f0fe766ff50006e586dde",
+      "bytes": 850543
+    },
+    {
+      "path": "qa/game/game-happy-r10-b/desert-fennec-mage-stroke.png",
+      "sha256": "65508a9fc8329695ebb6c489c5ec8995d93711253a4c6bdb79a78427c1a4c811",
+      "bytes": 836754
+    },
+    {
+      "path": "qa/game/game-happy-r10-b/desert-fennec-mage.webm",
+      "sha256": "051ec4fa7aa7cd658c656f017f5d573138d152f90f99e344e1e5f824680079ba",
+      "bytes": 1187598
+    },
+    {
+      "path": "qa/game/game-happy-r10-b/following.png",
+      "sha256": "7050284a644eb4ba8718fad954bb68f49e117490f94797be24b7bb547c89e1a6",
+      "bytes": 840003
+    },
+    {
+      "path": "qa/game/game-happy-r10-b/frames.json",
+      "sha256": "b8c308b21019f14415f38ee477dfedc628aa1936a6198aee54b559f1b7fb7b8d",
+      "bytes": 631073
+    },
+    {
+      "path": "qa/game/game-happy-r10-b/gallop-follow.png",
+      "sha256": "124b763fc0b554f74feb12196185b839c9c9f8ccf6b0c4758b09e5a78e2265bd",
+      "bytes": 841047
+    },
+    {
+      "path": "qa/game/game-happy-r10-b/giant-ape-happy.png",
+      "sha256": "117e045b5ec166812c0f516fbf8fd8c1acb7c3b3dd57d4ba1c24be9dc28d24c0",
+      "bytes": 960299
+    },
+    {
+      "path": "qa/game/game-happy-r10-b/giant-ape-stroke.png",
+      "sha256": "522204ed1b08db952b5d2db7141c037b1775c27eba0814e4fc0c19ea05c32145",
+      "bytes": 952833
+    },
+    {
+      "path": "qa/game/game-happy-r10-b/giant-ape.webm",
+      "sha256": "36e3f47b00544a0656e8145b53454b409be87195629df276f6d7dfb182a03bb9",
+      "bytes": 1022355
+    },
+    {
+      "path": "qa/game/game-happy-r10-b/hiss-1.png",
+      "sha256": "6af2fe18784d6fba07cbd8ba471e5e5ec966894b879761afaa9cbdb27e542fc8",
+      "bytes": 845001
+    },
+    {
+      "path": "qa/game/game-happy-r10-b/hiss-2.png",
+      "sha256": "caa02291c6a52c634232b34bedf93799bd62b8764bd0b3399f5179c1802e6874",
+      "bytes": 829835
+    },
+    {
+      "path": "qa/game/game-happy-r10-b/hiss-3.png",
+      "sha256": "0c19871ba3bf498e5588bbc0407c1f4b8a1ab00e2226f26e560b9c9d810b3219",
+      "bytes": 975158
+    },
+    {
+      "path": "qa/game/game-happy-r10-b/hit-1.png",
+      "sha256": "2b4af7f8982b76e7e3b1e6e1d64e3dd67ed25d350d41f344e901868a2266d5c2",
+      "bytes": 858678
+    },
+    {
+      "path": "qa/game/game-happy-r10-b/hit-2.png",
+      "sha256": "b1ff5a10b54ae732d375087ce01ea36df41c6a11122354f06d6608a32314028d",
+      "bytes": 829521
+    },
+    {
+      "path": "qa/game/game-happy-r10-b/hit-3.png",
+      "sha256": "5a86817610b95b91738c43c38f132d0b3f8e50d8a4d897cfc2ae68f01b6e5b7c",
+      "bytes": 986017
+    },
+    {
+      "path": "qa/game/game-happy-r10-b/howkey-scientist-happy.png",
+      "sha256": "8c9a119ba54b23e3a96fa18f0fcf20b974024a80159423ebcf2ef93495d41c03",
+      "bytes": 902745
+    },
+    {
+      "path": "qa/game/game-happy-r10-b/howkey-scientist-stroke.png",
+      "sha256": "7c91c5bb0c8d13845925e69b14ca1feb97b34ed5b0ed526e79a8dd81beb1a945",
+      "bytes": 897458
+    },
+    {
+      "path": "qa/game/game-happy-r10-b/howkey-scientist.webm",
+      "sha256": "0e96cb0264b1124071e9d67ca1eb3ffc1a626101687faa92decbe4166b8910c8",
+      "bytes": 1011712
+    },
+    {
+      "path": "qa/game/game-happy-r10-b/neanderthal-hunter-happy.png",
+      "sha256": "a5b995d64e7da99e0a486fc1eb20e9c48c1690e8d4bbd6ec207c4149a5475e05",
+      "bytes": 904326
+    },
+    {
+      "path": "qa/game/game-happy-r10-b/neanderthal-hunter-stroke.png",
+      "sha256": "aff77ef2534a44dedc86ff0c8ccdd61ea122167034960b424837d62ca51396b6",
+      "bytes": 895643
+    },
+    {
+      "path": "qa/game/game-happy-r10-b/neanderthal-hunter.webm",
+      "sha256": "11d5b111ee7696ee63f196c4903c024296633cc000df1b27de9a3b224f9eef0e",
+      "bytes": 1057031
+    },
+    {
+      "path": "qa/game/game-happy-r10-b/neanderthal-woman-happy.png",
+      "sha256": "9f427b5d7569ed5cf898288039281e1d828bc0420faa118f9f582d22a6483723",
+      "bytes": 905682
+    },
+    {
+      "path": "qa/game/game-happy-r10-b/neanderthal-woman-stroke.png",
+      "sha256": "14048d73947ff74ed79ef079b7663189568566c0c34d1b71e2d2b43390e27a83",
+      "bytes": 894317
+    },
+    {
+      "path": "qa/game/game-happy-r10-b/neanderthal-woman.webm",
+      "sha256": "4176a80643c015f220abde0ee81fc7176ba4ab9ac623be80ea363a55ae416712",
+      "bytes": 1052097
+    },
+    {
+      "path": "qa/game/game-happy-r10-b/result.json",
+      "sha256": "246c614b039db9e710db1ca1323f7d45a7494023d790599cb4ad868bd4196b61",
+      "bytes": 3213
+    },
+    {
+      "path": "qa/game/game-happy-r10-b/terrain-bridge.png",
+      "sha256": "15ed0696913c89c3f5ae151f68d8e56369bb96ffb06d63f7974b9c6fd263476f",
+      "bytes": 887518
+    },
+    {
+      "path": "qa/game/game-happy-r10-b/terrain-slope.png",
+      "sha256": "daf766821f52948799261badb686b8935496795b2764f01d8db198cbdef2ffdc",
+      "bytes": 932542
+    },
+    {
+      "path": "qa/game/game-happy-r10-b/viewport-390.png",
+      "sha256": "e83bdd42c3aaab0f822c0ceb03df55ca071ed8804dd006408b0701147b0fb332",
+      "bytes": 288501
+    },
+    {
+      "path": "qa/game/game-happy-r10-b/viewport-844.png",
+      "sha256": "bdbb1af98534d7d54db62ed2295582a126a2345f1ba4db3fdf2a88ca33b09b5b",
+      "bytes": 334955
     },
     {
       "path": "qa/game/game-motion-r08/cat-kunoichi-happy.png",
@@ -1130,13 +1460,13 @@
     },
     {
       "path": "qa/game-adoption.json",
-      "sha256": "a9c980a76d1b13b514ad689bfe2773de90602282a066880581b8cc65b7b256fc",
-      "bytes": 1085
+      "sha256": "0c71432d4c95698a42cf31fc48c3cadcb31db110104178c5f46704ee15b6219b",
+      "bytes": 1757
     },
     {
       "path": "qa/game-readme.md",
-      "sha256": "6f24d948d97bbc6b3c41c61007b7cffae3ac642ae11847d5b38757a878c60d6a",
-      "bytes": 9187
+      "sha256": "ccc3ca3d930bd2fd04439cfcf700c289701c7fc8b3106c74e88694b17b0aeabb",
+      "bytes": 12157
     },
     {
       "path": "qa/head/bounds.json",
@@ -1152,6 +1482,11 @@
       "path": "qa/history/adoption-r03.json",
       "sha256": "1e1cba725358e6773eeacfc389cc320c68349abeef1957d28130a7a9ff0781e9",
       "bytes": 840
+    },
+    {
+      "path": "qa/history/adoption-r08.json",
+      "sha256": "a9c980a76d1b13b514ad689bfe2773de90602282a066880581b8cc65b7b256fc",
+      "bytes": 1085
     },
     {
       "path": "qa/motion-research-2026-09-28.md",
@@ -1197,6 +1532,71 @@
       "path": "qa/presentation-history/before-final-framing/workflow/make-preview.py",
       "sha256": "29aec8e10dc049980b6078c23b55eeca9bfdf3f581dc0bf66e60df589f81f476",
       "bytes": 4492
+    },
+    {
+      "path": "qa/presentation-history/before-happy-r10/candidate-index.json",
+      "sha256": "0abc0d9fff77ec34c09b7f92ea750a7b47eb81fc272ca424e24c4b73bfd04790",
+      "bytes": 339
+    },
+    {
+      "path": "qa/presentation-history/before-happy-r10/model.json",
+      "sha256": "151319576d2c6b2f70409368d0ff4d7822e98d825ce163cb55d630b590619727",
+      "bytes": 1497
+    },
+    {
+      "path": "qa/presentation-history/before-happy-r10/qa/candidate-1/browser-result.json",
+      "sha256": "53d41ca404ef60722b11f3b46fb4ac585e0f5b1f899d277c3aaf2c39cd2096f4",
+      "bytes": 442
+    },
+    {
+      "path": "qa/presentation-history/before-happy-r10/qa/candidate-1/viewer.html",
+      "sha256": "f3db44863e2cddc6f4b4011acbf1be8c65bfa11047cd80663a5c6590638ecf2e",
+      "bytes": 35332195
+    },
+    {
+      "path": "qa/presentation-history/before-happy-r10/qa/candidate-1/viewer.json",
+      "sha256": "fdefce3ee2b76a39d3ea280f8d651a5c9b632f1be65c85ff53a6721ee6007405",
+      "bytes": 372
+    },
+    {
+      "path": "qa/presentation-history/before-happy-r10/qa/game-adoption.json",
+      "sha256": "a9c980a76d1b13b514ad689bfe2773de90602282a066880581b8cc65b7b256fc",
+      "bytes": 1085
+    },
+    {
+      "path": "qa/presentation-history/before-happy-r10/qa/game-readme.md",
+      "sha256": "6f24d948d97bbc6b3c41c61007b7cffae3ac642ae11847d5b38757a878c60d6a",
+      "bytes": 9187
+    },
+    {
+      "path": "qa/presentation-history/before-happy-r10/README.md",
+      "sha256": "4cd4eb447d0e59dba116c9f34b30a90179ac57c1d2e0144b4313bcb31654a381",
+      "bytes": 1148
+    },
+    {
+      "path": "qa/presentation-history/before-happy-r10/workflow/game-qa/qa-rimo-motion-viewer.mjs",
+      "sha256": "4e2c3e765a48f18b66968a180cf7374c0151687494800b0586101a028013b8c0",
+      "bytes": 3538
+    },
+    {
+      "path": "qa/presentation-history/before-happy-r10/workflow/game-qa/qa-rimo-motion.mjs",
+      "sha256": "a17792cdca6edf88d51e9f67fb62a2c757fef6437d639b2558952babb6fdc4d4",
+      "bytes": 5280
+    },
+    {
+      "path": "qa/presentation-history/before-happy-r10/workflow/game-qa/qa-rimo-neko.mjs",
+      "sha256": "65d5e2d6915600b22b18f80b43efb7dda411ae48dcc91fd8627089879bc2a674",
+      "bytes": 19076
+    },
+    {
+      "path": "qa/presentation-history/before-happy-r10/workflow/game-qa/qa-rimo-preservation.mjs",
+      "sha256": "f71fe9f012e2fb9772d6840d27d9654f99cd37477f76f7bac345fc261c3d026b",
+      "bytes": 2428
+    },
+    {
+      "path": "qa/presentation-history/before-happy-r10/workflow/render-motion-review.py",
+      "sha256": "ba0f8f2c558f3fb0778089c48c7f27d786fe01ea478b4b0416f579ccdb4bbda9",
+      "bytes": 3128
     },
     {
       "path": "qa/presentation-history/before-motion-r08/candidate-index.json",
@@ -3539,14 +3939,1389 @@
       "bytes": 570
     },
     {
+      "path": "qa/rig-09/clay/back.png",
+      "sha256": "d3d4773c845f1a0876ee55ba7329d49515542f89d8d89e2171512d6db3593cea",
+      "bytes": 459643
+    },
+    {
+      "path": "qa/rig-09/clay/bottom.png",
+      "sha256": "35433e15c31fcc29dfa85a035338eea1d9aa94458283c153e09c702da5a353e3",
+      "bytes": 464340
+    },
+    {
+      "path": "qa/rig-09/clay/bounds.json",
+      "sha256": "50564f419bff3ae9edbd8ae86c1f1b518e89c2629fbf9c5d25206cbb79cfa62b",
+      "bytes": 241
+    },
+    {
+      "path": "qa/rig-09/clay/front.png",
+      "sha256": "2b5f4b1d9832bb0b8cd75047178ec598b905aaf60ebd9f143d29f515029c08cf",
+      "bytes": 459814
+    },
+    {
+      "path": "qa/rig-09/clay/left.png",
+      "sha256": "bda82e0ca03911da00d1a88a175dab2ad8768dbf884c45a25790ab14fde12519",
+      "bytes": 473620
+    },
+    {
+      "path": "qa/rig-09/clay/right.png",
+      "sha256": "54976732271633d5629da2a12f387917228d81cffb7557f42ed7ba99d4a46f52",
+      "bytes": 470358
+    },
+    {
+      "path": "qa/rig-09/clay/threequarter.png",
+      "sha256": "f8ee46c9edd0e90ddb0cea167a614ff5dddab29e651d244844970109f323cd13",
+      "bytes": 464356
+    },
+    {
+      "path": "qa/rig-09/clay/top.png",
+      "sha256": "8c9b4cdddb9a2a81742383220a1a868e2dc834a1dcf2391625612e0711db4f0d",
+      "bytes": 453662
+    },
+    {
+      "path": "qa/rig-09/happy-contact-failure.json",
+      "sha256": "071d91c1699065ca720fcce2b4f024892707d70e605448368586d3a239190ee7",
+      "bytes": 267
+    },
+    {
+      "path": "qa/rig-09/motion-frames/Happy-front-00.png",
+      "sha256": "fb9766a4534c52519f107735d611cc59cb9cf3562c842bb25d401d31b8c940dd",
+      "bytes": 382940
+    },
+    {
+      "path": "qa/rig-09/motion-frames/Happy-front-01.png",
+      "sha256": "6145ade3d43bfeaf140553d36bab2239fd145b30e289bb699a4922a30856dd4d",
+      "bytes": 383756
+    },
+    {
+      "path": "qa/rig-09/motion-frames/Happy-front-02.png",
+      "sha256": "548770de97e507a580bc67d814bc4f7bac3abb523bd7664c8c3e7ccdecc21a1f",
+      "bytes": 382505
+    },
+    {
+      "path": "qa/rig-09/motion-frames/Happy-front-03.png",
+      "sha256": "fcfabd92f1bfd64bd18d1da8f67fe81f0c7c3cbdb483701026d88df915fd2108",
+      "bytes": 382587
+    },
+    {
+      "path": "qa/rig-09/motion-frames/Happy-front-04.png",
+      "sha256": "37fbe49a1d1db234e5924dc93b9d9ed13537e50c344aebf24a5430004e8ef82e",
+      "bytes": 383173
+    },
+    {
+      "path": "qa/rig-09/motion-frames/Happy-front-05.png",
+      "sha256": "b8b7e0cf47ca49ea436e55863b3d953e05072be721602f7c80fa132ebca7b146",
+      "bytes": 382961
+    },
+    {
+      "path": "qa/rig-09/motion-frames/Happy-front-06.png",
+      "sha256": "aebc924fdfe9e2367e2586e6ad52599d6b6315f9237d7f5d236c05cc3e8eccbc",
+      "bytes": 383369
+    },
+    {
+      "path": "qa/rig-09/motion-frames/Happy-front-07.png",
+      "sha256": "d759cd04228c54f0ad48a131932e7a324d26ffb5894c26017cb39122eed3aefe",
+      "bytes": 383057
+    },
+    {
+      "path": "qa/rig-09/motion-frames/Happy-right-00.png",
+      "sha256": "a602eae38a56f5f344583d73436692d50d8ec74c6878f72dc96d5c5bfd694cd1",
+      "bytes": 404576
+    },
+    {
+      "path": "qa/rig-09/motion-frames/Happy-right-01.png",
+      "sha256": "d16ce847dd383ab4626a17e7ee76e6444e74421a4227f49ed1cdb7c652283cb3",
+      "bytes": 406101
+    },
+    {
+      "path": "qa/rig-09/motion-frames/Happy-right-02.png",
+      "sha256": "909cdcc07bb38b7945b5736d1f4f32086ad1aadf8e42bb8541d63a817f359bbd",
+      "bytes": 407580
+    },
+    {
+      "path": "qa/rig-09/motion-frames/Happy-right-03.png",
+      "sha256": "343dad30783bb2fab3ed777d35590f2e83d0cea41f4126e699048f7a4692aee0",
+      "bytes": 408219
+    },
+    {
+      "path": "qa/rig-09/motion-frames/Happy-right-04.png",
+      "sha256": "7e8c6ebf6ccf95dadcd1fb6fffbe01a7f01f5b4ee8499fd5f2d645891b48f128",
+      "bytes": 407597
+    },
+    {
+      "path": "qa/rig-09/motion-frames/Happy-right-05.png",
+      "sha256": "8ba44c4ed3e784053c25b7dc348df0bac5c730752a7ac6062c115f4a1be234ef",
+      "bytes": 405998
+    },
+    {
+      "path": "qa/rig-09/motion-frames/Happy-right-06.png",
+      "sha256": "afbf2cf9afd316e043587dfcce82c39992fa6d28cbb8125c626706b6536364b2",
+      "bytes": 404821
+    },
+    {
+      "path": "qa/rig-09/motion-frames/Happy-right-07.png",
+      "sha256": "d2271d461d71a4c5c5eb0872b5f280a83c37b63906240550241964f3e6743a7a",
+      "bytes": 404676
+    },
+    {
+      "path": "qa/rig-09/motion-frames/Happy-threequarter-00.png",
+      "sha256": "7b0a98d3d6064819e5cb9b01a85c427e580f9f627885a08975228bf58ebb2503",
+      "bytes": 393766
+    },
+    {
+      "path": "qa/rig-09/motion-frames/Happy-threequarter-01.png",
+      "sha256": "b314dbd3a7a03654cf68a9aa976e3239cfdad2581754b7021f68e37af640e0a4",
+      "bytes": 395438
+    },
+    {
+      "path": "qa/rig-09/motion-frames/Happy-threequarter-02.png",
+      "sha256": "821233820afa71069f88b3072aef1b61d51a352f3535667c7dad43ca71643c02",
+      "bytes": 398222
+    },
+    {
+      "path": "qa/rig-09/motion-frames/Happy-threequarter-03.png",
+      "sha256": "cc1785b004c9420e40e9f9094a01a42688d18008ca074341dbb3620fad9e1208",
+      "bytes": 399285
+    },
+    {
+      "path": "qa/rig-09/motion-frames/Happy-threequarter-04.png",
+      "sha256": "726a41cf141705dec3fb5b5cf28cb621a08fcce566cf8aa66ba2421c9a773c2a",
+      "bytes": 398859
+    },
+    {
+      "path": "qa/rig-09/motion-frames/Happy-threequarter-05.png",
+      "sha256": "d68231a0894746f06488bf43a0a2dc435e35749f8264f37f60cea2d1e7c92dbe",
+      "bytes": 396987
+    },
+    {
+      "path": "qa/rig-09/motion-frames/Happy-threequarter-06.png",
+      "sha256": "0f84138c999ede50f95347ae8b3f1371befe92ccb9da13a87ecc6b096a5abffe",
+      "bytes": 395231
+    },
+    {
+      "path": "qa/rig-09/motion-frames/Happy-threequarter-07.png",
+      "sha256": "245e19ea8e5f1e498b819f75df3b9caec763a2027db1d11a18827be3660613c8",
+      "bytes": 393892
+    },
+    {
+      "path": "qa/rig-09/motion-frames/Idle_Loop-front-00.png",
+      "sha256": "4206ac6ae817d56b3315c617eeb0d6fd7178066d35910add1d599a19866bc598",
+      "bytes": 382636
+    },
+    {
+      "path": "qa/rig-09/motion-frames/Idle_Loop-right-00.png",
+      "sha256": "047b6eee91199842ab4a97d65f150f3ca6d8be5fe8f531bb29141be3c4267fce",
+      "bytes": 402973
+    },
+    {
+      "path": "qa/rig-09/motion-frames/Idle_Loop-threequarter-00.png",
+      "sha256": "46495be1796201f9984b26493b9b21c72ab3cb767eb54a8fe2c2604821e9abfe",
+      "bytes": 393590
+    },
+    {
+      "path": "qa/rig-09/motion-frames/Pet-front-00.png",
+      "sha256": "4787017362ffbdc5a34ab902efa35b66e9638d0b5dc562692be86c3cd23b9601",
+      "bytes": 383057
+    },
+    {
+      "path": "qa/rig-09/motion-frames/Pet-right-00.png",
+      "sha256": "5df7632545dc49616c71396be9d645b81ff0fb408673161fb72f5c53f80c107f",
+      "bytes": 404676
+    },
+    {
+      "path": "qa/rig-09/motion-frames/Pet-threequarter-00.png",
+      "sha256": "5bd7757a8c0c082ca989071c606f198da101b2bedee8ddd27fe58aeee07bf2e3",
+      "bytes": 393892
+    },
+    {
+      "path": "qa/rig-09/motion-frames/schedule.json",
+      "sha256": "15884476c2732160d06d4b2f67cf8f39c57bb321f2c8712bfe36a69e3c1c2d07",
+      "bytes": 160
+    },
+    {
+      "path": "qa/rig-09/motion.json",
+      "sha256": "610b9205af07d68a8f34c4955bbe2178f602524448987c941bec164a027513a2",
+      "bytes": 808490
+    },
+    {
+      "path": "qa/rig-09/neutral/back.png",
+      "sha256": "cae431b58d36ef433e63ba3bb052250376cf0986a2479e304792673f08e3b616",
+      "bytes": 491635
+    },
+    {
+      "path": "qa/rig-09/neutral/bottom.png",
+      "sha256": "84bb8e70672286f1847ff255eb17b6273b7681f1ca73c7e8d39bbcf12052204c",
+      "bytes": 501045
+    },
+    {
+      "path": "qa/rig-09/neutral/bounds.json",
+      "sha256": "1fa1131c675ca5ec55feda047e970a00a9221c4383c0cc1f7e6beec587c20569",
+      "bytes": 242
+    },
+    {
+      "path": "qa/rig-09/neutral/front.png",
+      "sha256": "b732fb6e01b196afc13d36b9a84345e8a32aaf8ea674d6bd28b6ecd3bf5c8d8b",
+      "bytes": 494077
+    },
+    {
+      "path": "qa/rig-09/neutral/left.png",
+      "sha256": "c10588b35ede9f25168166efbb626186635365cee936b31d8cd4faf49c4dd645",
+      "bytes": 508903
+    },
+    {
+      "path": "qa/rig-09/neutral/right.png",
+      "sha256": "818c984ea136c2636d9a069ff63bac04bddff9a1aad7c4bff03c435f72807e92",
+      "bytes": 512436
+    },
+    {
+      "path": "qa/rig-09/neutral/threequarter.png",
+      "sha256": "f1ae4d801eab961cfec481ef9d0fc24d8920ea4d081e8c0c883eeec41686e4ef",
+      "bytes": 500156
+    },
+    {
+      "path": "qa/rig-09/neutral/top.png",
+      "sha256": "d007af878043165aac2194ec135c30adaaf4e063a20b3862608976f30757a5ae",
+      "bytes": 503534
+    },
+    {
+      "path": "qa/rig-09/preservation.json",
+      "sha256": "dda0a8c11361dc3d1b793548aa1b21a045554b92b48808a338c419b287529de3",
+      "bytes": 333
+    },
+    {
+      "path": "qa/rig-09/viewer.html",
+      "sha256": "d3b4ee97728bd1ff6967a2ae789052d9d4462b4c6c138513bbf594c246b1d99c",
+      "bytes": 35937623
+    },
+    {
+      "path": "qa/rig-09/viewer.json",
+      "sha256": "0d1b80caa1e17f616be6f303be1ba9744514706fc439a873d0d34b434939ab83",
+      "bytes": 570
+    },
+    {
+      "path": "qa/rig-10/browser/Happy-0.15.png",
+      "sha256": "1310f80386ec36d1e5dffadbc9931e57ea1fb76dfdb1ee80229317ded7109cd4",
+      "bytes": 218433
+    },
+    {
+      "path": "qa/rig-10/browser/Happy-0.4.png",
+      "sha256": "f8615ced9c165d6479785eda47b55b57a7f2831558c4667534d0ce9e85b52f30",
+      "bytes": 219306
+    },
+    {
+      "path": "qa/rig-10/browser/Happy-0.65.png",
+      "sha256": "ebad56593b0b272aa1166a9490a37ec3298f3b644797abb4c06e7ae1c9cdd2b7",
+      "bytes": 217591
+    },
+    {
+      "path": "qa/rig-10/browser/Happy-0.9.png",
+      "sha256": "e8125bb300d11eefd5b0466ca49934381df00b8582e079c12546da7d6e4ce7c0",
+      "bytes": 217506
+    },
+    {
+      "path": "qa/rig-10/browser/Hiss-0.15.png",
+      "sha256": "0ba690f6d955a466226e925fd6cbe22b4eb1cd117cef91aec6f8eca6c7afc6ce",
+      "bytes": 189236
+    },
+    {
+      "path": "qa/rig-10/browser/Hiss-0.4.png",
+      "sha256": "4a2983c9ec4dc59978d3adbefa6a37cff202950f4b758d694402ef767a115730",
+      "bytes": 188832
+    },
+    {
+      "path": "qa/rig-10/browser/Hiss-0.65.png",
+      "sha256": "e97100dbae956dd0fd1ed9461cd520c5d49eefcf8a5fc79ad0ba2f63b9245f26",
+      "bytes": 189909
+    },
+    {
+      "path": "qa/rig-10/browser/Hiss-0.9.png",
+      "sha256": "1513ca983cd61985fcb3381389d38453d29d2bf078520808abfb562bfa016065",
+      "bytes": 201897
+    },
+    {
+      "path": "qa/rig-10/browser/Hit-0.15.png",
+      "sha256": "7caacb87ffd1edb1491c4319de683182cb2d5174e28f19e99d4cb01955128ebd",
+      "bytes": 217312
+    },
+    {
+      "path": "qa/rig-10/browser/Hit-0.4.png",
+      "sha256": "57195e37446896982cdbed6ad61332e1ace474e4d5a56dc3c9052580dce8e44e",
+      "bytes": 214387
+    },
+    {
+      "path": "qa/rig-10/browser/Hit-0.65.png",
+      "sha256": "ef0701d5b9fd5e0534a57268e4b23f4d5b84a9111e4b95f344b2605af9f7414c",
+      "bytes": 214658
+    },
+    {
+      "path": "qa/rig-10/browser/Hit-0.9.png",
+      "sha256": "d70d4648cab2869a130c10ad9f5192fffd015414713bab6d231c751f5aa258a9",
+      "bytes": 217655
+    },
+    {
+      "path": "qa/rig-10/browser/Idle_Loop-0.15.png",
+      "sha256": "aaf6700da6da032bb46704c6e330e2556402b30b1aa29be5789d8fb0d1a181b2",
+      "bytes": 219369
+    },
+    {
+      "path": "qa/rig-10/browser/Idle_Loop-0.4.png",
+      "sha256": "262eddb9fcab1811a1d9785063582d0662d1c1c9900e5a8665918a952bcb9ded",
+      "bytes": 217542
+    },
+    {
+      "path": "qa/rig-10/browser/Idle_Loop-0.65.png",
+      "sha256": "6fb48b56f22b2f31f34425bb2eb8a23d2eb75bbe55d957092c65f7c432f2c09e",
+      "bytes": 218885
+    },
+    {
+      "path": "qa/rig-10/browser/Idle_Loop-0.9.png",
+      "sha256": "7a249e673f9ddce4de2eef39465c6777afba59b6c81d829b754ddc463e7f74be",
+      "bytes": 217443
+    },
+    {
+      "path": "qa/rig-10/browser/mobile.png",
+      "sha256": "a80c5f4959b099551ecc10e00bd9221a9e30c640c0206bc4064718468e1d6920",
+      "bytes": 88966
+    },
+    {
+      "path": "qa/rig-10/browser/Pet-0.15.png",
+      "sha256": "fbd774d5d32491cdfc42dfa3eea70dfc94c109707eb274724b31418f5e5d3e7a",
+      "bytes": 218839
+    },
+    {
+      "path": "qa/rig-10/browser/Pet-0.4.png",
+      "sha256": "d13528be1588830db5dbaead8d58bdfbf998adcae91ccc5a1ffa1fdfd8327db1",
+      "bytes": 222847
+    },
+    {
+      "path": "qa/rig-10/browser/Pet-0.65.png",
+      "sha256": "52261ffe86e418c67c9b4d1c2b1dceddd09973f602610e615300821020660591",
+      "bytes": 220249
+    },
+    {
+      "path": "qa/rig-10/browser/Pet-0.9.png",
+      "sha256": "40d394809eaf85d39ca30fb6bda7d90bebdba0d47d44d27d159378066147b670",
+      "bytes": 218433
+    },
+    {
+      "path": "qa/rig-10/browser/result.json",
+      "sha256": "bb302b3a0c94a6978e8962beff55955cd02188c7a6cc76d64d5f8eac93d34886",
+      "bytes": 442
+    },
+    {
+      "path": "qa/rig-10/browser/Run_Loop-0.15.png",
+      "sha256": "caa9f1bbc2f31c8bab0238c8d42c85a9c8cab350b036630e1e0d316279577be8",
+      "bytes": 200653
+    },
+    {
+      "path": "qa/rig-10/browser/Run_Loop-0.4.png",
+      "sha256": "6bf6726449d211c0a8739c8df0b3c6af2387f833e32503e11fecd9778d94774b",
+      "bytes": 181430
+    },
+    {
+      "path": "qa/rig-10/browser/Run_Loop-0.65.png",
+      "sha256": "30a829a4453877dab1994472cc4b1529628c9fb146ea47a576c54fc39e1801c7",
+      "bytes": 192463
+    },
+    {
+      "path": "qa/rig-10/browser/Run_Loop-0.9.png",
+      "sha256": "68a00950d98b8807945767e4fd4f7426ac0a5a34c1776f5be5c6f60666fc0702",
+      "bytes": 213513
+    },
+    {
+      "path": "qa/rig-10/browser/Walk_Loop-0.15.png",
+      "sha256": "e21525c4e82b682d71f31fc4b48ef805c2ea9d4a2795dad01d30680226d2e767",
+      "bytes": 216023
+    },
+    {
+      "path": "qa/rig-10/browser/Walk_Loop-0.4.png",
+      "sha256": "43c5d0e8b34c88dae9a276a05b33872900c0daf2f2bd25c353155090d4f6e955",
+      "bytes": 219261
+    },
+    {
+      "path": "qa/rig-10/browser/Walk_Loop-0.65.png",
+      "sha256": "52f357d82e205b150e85aba56eff59865c9792262df998735bbcfde1aa6604b0",
+      "bytes": 211346
+    },
+    {
+      "path": "qa/rig-10/browser/Walk_Loop-0.9.png",
+      "sha256": "f42fded4b377f9a617cad6b0a1624cbaa6b88beed72fdb9af45b4f375aebd45a",
+      "bytes": 201657
+    },
+    {
+      "path": "qa/rig-10/clay/back.png",
+      "sha256": "ec45702a4df1847bba147d0cef9073007a1e8d1ffa400c8c67baadf536c73c33",
+      "bytes": 459643
+    },
+    {
+      "path": "qa/rig-10/clay/bottom.png",
+      "sha256": "7e39a75fa3e6abff151eaa9ac700ea9acfbc94a6f318c394616bf15b5cd771c8",
+      "bytes": 464340
+    },
+    {
+      "path": "qa/rig-10/clay/bounds.json",
+      "sha256": "50564f419bff3ae9edbd8ae86c1f1b518e89c2629fbf9c5d25206cbb79cfa62b",
+      "bytes": 241
+    },
+    {
+      "path": "qa/rig-10/clay/front.png",
+      "sha256": "5ce6019fbe3d88634d17bdc2a78ee3e80a9e94ba80f7d1efed3b01c69825b5f8",
+      "bytes": 459814
+    },
+    {
+      "path": "qa/rig-10/clay/left.png",
+      "sha256": "2b1a72c0a4097b1075d8fb3534fd7663aa53c9bc0e30b9808da5d9007f9a8ef6",
+      "bytes": 473620
+    },
+    {
+      "path": "qa/rig-10/clay/right.png",
+      "sha256": "a774476b3833d959e5ed91123de2342adc76803facb922c3f332ad5de5d21b51",
+      "bytes": 470358
+    },
+    {
+      "path": "qa/rig-10/clay/threequarter.png",
+      "sha256": "458529518f8400faaa4953a2d620ebb00d98f3da8b3e3fe6405099e5c1748fcf",
+      "bytes": 464356
+    },
+    {
+      "path": "qa/rig-10/clay/top.png",
+      "sha256": "901a038ca3244a6094260b4985aaf3dceec2c7ebe41cb02f9d5885f2fee8a788",
+      "bytes": 453662
+    },
+    {
+      "path": "qa/rig-10/happy-contact.json",
+      "sha256": "e31a91d2b7313b185005687e09ec7f3c084459521a22af39de56d2f182e84554",
+      "bytes": 384
+    },
+    {
+      "path": "qa/rig-10/motion-browser/Happy-back-0.5.png",
+      "sha256": "a49644881ae03f91cfc3eddd5bdc99dd33aa0a61120bd1097e0b6e61b02712a1",
+      "bytes": 104281
+    },
+    {
+      "path": "qa/rig-10/motion-browser/Happy-back-0.5.webm",
+      "sha256": "bdecce112cb579c826ca877931d35cbf4112aa65b08c92a4a155aaa615c116e0",
+      "bytes": 828036
+    },
+    {
+      "path": "qa/rig-10/motion-browser/Happy-back-1.png",
+      "sha256": "15d543f820925bad68a20916d6fdcc469004c4409cfb85baa60c33460e197c27",
+      "bytes": 103846
+    },
+    {
+      "path": "qa/rig-10/motion-browser/Happy-back-1.webm",
+      "sha256": "b8fb580bda113846d7598ba03b15198b9f7365371560799b3fc0b55a3f1b94e3",
+      "bytes": 426161
+    },
+    {
+      "path": "qa/rig-10/motion-browser/Happy-front-0.5.png",
+      "sha256": "6ef3850a27eab20723a0f4342ca49db3361a18f2393538c05c59cda243b267ae",
+      "bytes": 102754
+    },
+    {
+      "path": "qa/rig-10/motion-browser/Happy-front-0.5.webm",
+      "sha256": "1606e27c20cc08c0fcee8f7004250f3f79a23b509d96daa59aa22dd413df6647",
+      "bytes": 756765
+    },
+    {
+      "path": "qa/rig-10/motion-browser/Happy-front-1.png",
+      "sha256": "dfbc66aa81bdf32d4f4628b1335c130bf82ad4c3d7b58055c7f5ed8757b321d0",
+      "bytes": 102401
+    },
+    {
+      "path": "qa/rig-10/motion-browser/Happy-front-1.webm",
+      "sha256": "60b1f06a50fe6b26a5c1c04587acf0e4882ff389a89f4dc78f20841351abc758",
+      "bytes": 380474
+    },
+    {
+      "path": "qa/rig-10/motion-browser/Happy-left-0.5.png",
+      "sha256": "1cd0d9d4c4edcca8d345eb499c9b68be2eba921e91c6495d739a289ff5929893",
+      "bytes": 132463
+    },
+    {
+      "path": "qa/rig-10/motion-browser/Happy-left-0.5.webm",
+      "sha256": "fb9af6584065e1287040297975e92e047ba99c346ae39dc623980ec6709e2d36",
+      "bytes": 674982
+    },
+    {
+      "path": "qa/rig-10/motion-browser/Happy-left-1.png",
+      "sha256": "cc16c0ec49bb4ea11b823fb52a0ec53658e4e4b983f2b931e91fa33ea2c22bd1",
+      "bytes": 131732
+    },
+    {
+      "path": "qa/rig-10/motion-browser/Happy-left-1.webm",
+      "sha256": "aacd87b76ee4e24599f7c570da306d63804e427862a3dcbb5940612bdcb159ca",
+      "bytes": 391526
+    },
+    {
+      "path": "qa/rig-10/motion-browser/Happy-right-0.5.png",
+      "sha256": "e23e1f301fc902e5a7d980da03adddfdb1f287ce540c5e8877cef616d4dbc3cb",
+      "bytes": 120195
+    },
+    {
+      "path": "qa/rig-10/motion-browser/Happy-right-0.5.webm",
+      "sha256": "5e4c72479c5a3458199c24abd67a5e064f4306faab25eca03480227296571fa4",
+      "bytes": 787999
+    },
+    {
+      "path": "qa/rig-10/motion-browser/Happy-right-1.png",
+      "sha256": "9a64cc803c2669c959e0e1dca5901ffed88acd5846eea99ee4ffee601b5e6be2",
+      "bytes": 119799
+    },
+    {
+      "path": "qa/rig-10/motion-browser/Happy-right-1.webm",
+      "sha256": "ecd53258075510668e2d4cafa9c3d622157050ddd324bb0bbf9579250ff636b1",
+      "bytes": 390643
+    },
+    {
+      "path": "qa/rig-10/motion-browser/Happy-threequarter-0.5.png",
+      "sha256": "fdf5077c4a4fbaec66d250762a6e3a4d3cc25f4b1aec6568daa6e1efa2326f30",
+      "bytes": 121822
+    },
+    {
+      "path": "qa/rig-10/motion-browser/Happy-threequarter-0.5.webm",
+      "sha256": "9c59558a8518b1508ae9db7d46d5dec3215a96e871464ad7e143ade0d698127f",
+      "bytes": 858820
+    },
+    {
+      "path": "qa/rig-10/motion-browser/Happy-threequarter-1.png",
+      "sha256": "3dbccfdf1172494d9d08d73b5178b64fd1178af8467069c9e941dbc313a6856d",
+      "bytes": 121825
+    },
+    {
+      "path": "qa/rig-10/motion-browser/Happy-threequarter-1.webm",
+      "sha256": "025dd4e293c87edad901ba7492ffa9bcec4a470bfdc270950f8a146d1f5c358c",
+      "bytes": 423738
+    },
+    {
+      "path": "qa/rig-10/motion-browser/Hiss-back-0.25.png",
+      "sha256": "b193990af6f73ea9d7c10e104a95851e984f252b971c8cc244720d4b1b80de7a",
+      "bytes": 94311
+    },
+    {
+      "path": "qa/rig-10/motion-browser/Hiss-back-0.25.webm",
+      "sha256": "785b474ca39aa11f934b8c5b0ab53473a554ba3a5787989d602f3db3a3f1cc8f",
+      "bytes": 1709143
+    },
+    {
+      "path": "qa/rig-10/motion-browser/Hiss-back-1.png",
+      "sha256": "7e1eced1dfc42e842ddb9ae9d4a460cf9aead240e25c3179f619eb59539252c1",
+      "bytes": 94980
+    },
+    {
+      "path": "qa/rig-10/motion-browser/Hiss-back-1.webm",
+      "sha256": "10cb85824b2716d7c56e589173acb9d68e79d8c2c3fe72b2314eff2b34a9b411",
+      "bytes": 616389
+    },
+    {
+      "path": "qa/rig-10/motion-browser/Hiss-front-0.25.png",
+      "sha256": "2444f618edfcc6e7870dc5cb83187d0920c143c3f4aa0bb7ffb7eacea62dfea7",
+      "bytes": 89145
+    },
+    {
+      "path": "qa/rig-10/motion-browser/Hiss-front-0.25.webm",
+      "sha256": "3d4d0e1f919c13526c3eb0c415570bf712969829754110606db306f8937c9f78",
+      "bytes": 1578417
+    },
+    {
+      "path": "qa/rig-10/motion-browser/Hiss-front-1.png",
+      "sha256": "0a57a9ae8afa0fbddd54a2a8b9e52a289ce3d5eb7ce7ac9dbef5ce99587a84f4",
+      "bytes": 93052
+    },
+    {
+      "path": "qa/rig-10/motion-browser/Hiss-front-1.webm",
+      "sha256": "be7ac864a4ba97e2bc802b864d998bdea007250aa75ac25b3c05c1c22c46fb32",
+      "bytes": 545612
+    },
+    {
+      "path": "qa/rig-10/motion-browser/Hiss-left-0.25.png",
+      "sha256": "313cd51604827add48c667a09ba33613cb0fa2aee75ccbda8b65731ff8b5ed5c",
+      "bytes": 115869
+    },
+    {
+      "path": "qa/rig-10/motion-browser/Hiss-left-0.25.webm",
+      "sha256": "491db0c8c96107cff3e6c1cc2a75723386e2e095af8d02e6448e283f9557cef0",
+      "bytes": 1665354
+    },
+    {
+      "path": "qa/rig-10/motion-browser/Hiss-left-1.png",
+      "sha256": "7f468617c7b5fe9c042558d31c5b04dc2793ca271429871ca87ce7f304a4f5a5",
+      "bytes": 115744
+    },
+    {
+      "path": "qa/rig-10/motion-browser/Hiss-left-1.webm",
+      "sha256": "cd3d10527d19d68a9ff3012fbb588c6003db77451a9ac1c7c6d9819f65a1a1ef",
+      "bytes": 594428
+    },
+    {
+      "path": "qa/rig-10/motion-browser/Hiss-right-0.25.png",
+      "sha256": "86801c3270859c8b50c7bb16cbf8b2070c8a27cd0cd908e5984928152ba3a9a6",
+      "bytes": 110633
+    },
+    {
+      "path": "qa/rig-10/motion-browser/Hiss-right-0.25.webm",
+      "sha256": "1537a8e9d87cc2679050eb7cd70d4ac858bf7c506d8932adb69230a95335c6d6",
+      "bytes": 1941663
+    },
+    {
+      "path": "qa/rig-10/motion-browser/Hiss-right-1.png",
+      "sha256": "762b3df197dd7b608db5c81e1d8c462bc02b9d1698095ececa54e547d805f39a",
+      "bytes": 110150
+    },
+    {
+      "path": "qa/rig-10/motion-browser/Hiss-right-1.webm",
+      "sha256": "fb22376cd4a96add664e5a8c153a7da3587ef4cb5e97afbcc7b49082a67e83f1",
+      "bytes": 633547
+    },
+    {
+      "path": "qa/rig-10/motion-browser/Hiss-threequarter-0.25.png",
+      "sha256": "7b0a27d5c3d1aa117b2231a59ec13876ec57509822fee7108404346c2fa8bd14",
+      "bytes": 106397
+    },
+    {
+      "path": "qa/rig-10/motion-browser/Hiss-threequarter-0.25.webm",
+      "sha256": "6f09465efef6ddd7a7f7cbb95988a75e78380058aee7d2095ef1b6fc6ae808b3",
+      "bytes": 1888928
+    },
+    {
+      "path": "qa/rig-10/motion-browser/Hiss-threequarter-1.png",
+      "sha256": "ed3d9615f450e8e9dee9d3aef7e7cf37853a4a4fc41409ebe651e6f806a30552",
+      "bytes": 107151
+    },
+    {
+      "path": "qa/rig-10/motion-browser/Hiss-threequarter-1.webm",
+      "sha256": "4be184df82b28f7afe883e54509a66c4ad1014e2438bc60acd6e67f1b5e0d087",
+      "bytes": 616338
+    },
+    {
+      "path": "qa/rig-10/motion-browser/Hit-back-0.5.png",
+      "sha256": "072ceb10b1fe5df8191731918adfa3b06a2447d69fff6dfca4d986f688f8f1d7",
+      "bytes": 101082
+    },
+    {
+      "path": "qa/rig-10/motion-browser/Hit-back-0.5.webm",
+      "sha256": "025e31010f2f77efc5fddebcd1d69a38c6d4d9db5576d849b729a2ec4af7ce4a",
+      "bytes": 240819
+    },
+    {
+      "path": "qa/rig-10/motion-browser/Hit-back-1.png",
+      "sha256": "1ab99b324a6df21956f9a9259d6f9eb83b8f7161b132bf55865fecc25190b583",
+      "bytes": 102685
+    },
+    {
+      "path": "qa/rig-10/motion-browser/Hit-back-1.webm",
+      "sha256": "703e2557799afbc3c43f7d41a6db88beafd95ad56c51eafac00410ae0d6351d5",
+      "bytes": 95247
+    },
+    {
+      "path": "qa/rig-10/motion-browser/Hit-front-0.5.png",
+      "sha256": "16fc0bff369c7260e8146125a78b44cdbce132e91d8d9bc4b782b29f5492a5fe",
+      "bytes": 102876
+    },
+    {
+      "path": "qa/rig-10/motion-browser/Hit-front-0.5.webm",
+      "sha256": "ce139ac4dc266e70c5c1f005342bc7a08cfba8857c7efce8c7df62757c88203e",
+      "bytes": 262614
+    },
+    {
+      "path": "qa/rig-10/motion-browser/Hit-front-1.png",
+      "sha256": "80a3705d501ccf1ebd794c826597e1b0ac2696bdfea9f7ddb38c27c518cafb1f",
+      "bytes": 102757
+    },
+    {
+      "path": "qa/rig-10/motion-browser/Hit-front-1.webm",
+      "sha256": "c1a67dc86bd6ae03efce9aca809d84c33e1795f88cf84a7160ae527ede7ea95f",
+      "bytes": 98773
+    },
+    {
+      "path": "qa/rig-10/motion-browser/Hit-left-0.5.png",
+      "sha256": "f0a7a78349bcb5df8baaa8b23d866462b357e960333c94a09e9b9aa25d1b5f2c",
+      "bytes": 127966
+    },
+    {
+      "path": "qa/rig-10/motion-browser/Hit-left-0.5.webm",
+      "sha256": "f0f0e84a8e9615aac20109fb4f67e3b698bb1786044be83374cfed6af60b810c",
+      "bytes": 313909
+    },
+    {
+      "path": "qa/rig-10/motion-browser/Hit-left-1.png",
+      "sha256": "3a998e6dab9d6ddb21753eccc9e36b07bba308806d04ea06017b2a0b9f881996",
+      "bytes": 127690
+    },
+    {
+      "path": "qa/rig-10/motion-browser/Hit-left-1.webm",
+      "sha256": "839461593b6ab64bed2d6849749f56b03d9fb1ba68360264567372e1c9dd88c3",
+      "bytes": 102785
+    },
+    {
+      "path": "qa/rig-10/motion-browser/Hit-right-0.5.png",
+      "sha256": "c642b4039ffdc96f10a5cc9dcd1f8787bcb1ef3d9663f84560cd39a3605684e5",
+      "bytes": 118974
+    },
+    {
+      "path": "qa/rig-10/motion-browser/Hit-right-0.5.webm",
+      "sha256": "6e2a43bfed94d188d41b7c56bd0f6ff381e9ca1f8fcdb2e82ec9c8c4cf003153",
+      "bytes": 315457
+    },
+    {
+      "path": "qa/rig-10/motion-browser/Hit-right-1.png",
+      "sha256": "8139df110d483f191e0f09995a62f5970affa8d474ef1ad7ed4220038b76880c",
+      "bytes": 119272
+    },
+    {
+      "path": "qa/rig-10/motion-browser/Hit-right-1.webm",
+      "sha256": "a6741b3f8f425de1e261df8053d5690552871957f3e879aa4a9c9bff2b6df47f",
+      "bytes": 108474
+    },
+    {
+      "path": "qa/rig-10/motion-browser/Hit-threequarter-0.5.png",
+      "sha256": "6035eb05a7e317aba4aedc1143cac13546abbfee91063c412fadc8716459cc6f",
+      "bytes": 120952
+    },
+    {
+      "path": "qa/rig-10/motion-browser/Hit-threequarter-0.5.webm",
+      "sha256": "acfa7289fd7c216a058c07729f3c5c2fd4a9a50811a65db744f3abf5e68853cd",
+      "bytes": 308703
+    },
+    {
+      "path": "qa/rig-10/motion-browser/Hit-threequarter-1.png",
+      "sha256": "533d6217c8773dff911b1ae47be6840ae1b40b68158e73fa7f503d51c85162be",
+      "bytes": 121056
+    },
+    {
+      "path": "qa/rig-10/motion-browser/Hit-threequarter-1.webm",
+      "sha256": "a9bac1c637bc792c3b836a557e47324560c6e1107683605f836c41478decf174",
+      "bytes": 110756
+    },
+    {
+      "path": "qa/rig-10/motion-browser/Idle_Loop-back-0.5.png",
+      "sha256": "d706c32614794ad54c7dd520d8c5ee44012691c303c18b77d2d6c28b061e27ae",
+      "bytes": 101425
+    },
+    {
+      "path": "qa/rig-10/motion-browser/Idle_Loop-back-0.5.webm",
+      "sha256": "e6963202855f11e95ead1f6c0cf74152a1c3615c13d7916dd48fd63b2b6895c6",
+      "bytes": 1182339
+    },
+    {
+      "path": "qa/rig-10/motion-browser/Idle_Loop-back-1.png",
+      "sha256": "585c4f80c5d7f2a10b63226a9582d3a514ab2a781b56f85253878a1503198b0e",
+      "bytes": 101022
+    },
+    {
+      "path": "qa/rig-10/motion-browser/Idle_Loop-back-1.webm",
+      "sha256": "a1fecad68bbb6f999dddf3ee657e2e8bc5c75d86cbf1958b5b344e82dd2d537b",
+      "bytes": 653803
+    },
+    {
+      "path": "qa/rig-10/motion-browser/Idle_Loop-front-0.5.png",
+      "sha256": "f07371d8540c9ddb9b4b61e414188b3fe011a0bd39cc8c77fa636cc6e5f995e1",
+      "bytes": 102323
+    },
+    {
+      "path": "qa/rig-10/motion-browser/Idle_Loop-front-0.5.webm",
+      "sha256": "26f381e3254581d31647d3366634f91f252d88e459fc13a5a4456641e6c4f6a8",
+      "bytes": 1252339
+    },
+    {
+      "path": "qa/rig-10/motion-browser/Idle_Loop-front-1.png",
+      "sha256": "2adc40a9d1ddcac72cf84a401a57aabbde06cb1d07f1a4be1ad17bf9cada4a3b",
+      "bytes": 102963
+    },
+    {
+      "path": "qa/rig-10/motion-browser/Idle_Loop-front-1.webm",
+      "sha256": "a2be8555bc76cb795c6bd01d289e902643dd4f42bcf0ed7b9722a25bebba32b5",
+      "bytes": 724659
+    },
+    {
+      "path": "qa/rig-10/motion-browser/Idle_Loop-left-0.5.png",
+      "sha256": "3531d78fbbfe99c4c5d126133da8608428e3541cb242dcd082b4cc25ed7a8380",
+      "bytes": 127566
+    },
+    {
+      "path": "qa/rig-10/motion-browser/Idle_Loop-left-0.5.webm",
+      "sha256": "7aeac6e865142f6dbfca0bc98c07e81e8ba441236a1f6eee0808ea66523c92c9",
+      "bytes": 1167614
+    },
+    {
+      "path": "qa/rig-10/motion-browser/Idle_Loop-left-1.png",
+      "sha256": "cd7d2a0cb8e8f0116e769531e134765eed5b3f6ebeb68845c7cfb71126faf389",
+      "bytes": 129153
+    },
+    {
+      "path": "qa/rig-10/motion-browser/Idle_Loop-left-1.webm",
+      "sha256": "a5e4ec9d1ee075369aaef5a232d2e195c4d6196e34f2e0ba0b8ef09416472ff7",
+      "bytes": 697556
+    },
+    {
+      "path": "qa/rig-10/motion-browser/Idle_Loop-right-0.5.png",
+      "sha256": "db935fa43295e806ce941976dd286f8dc0d4204dbda2360c08fb6e3fced7a0c0",
+      "bytes": 121289
+    },
+    {
+      "path": "qa/rig-10/motion-browser/Idle_Loop-right-0.5.webm",
+      "sha256": "7204d413ccd9105edaa5eccd5947835b2a9e7cfc0d34ba19ad8f375fdd3acb71",
+      "bytes": 1329703
+    },
+    {
+      "path": "qa/rig-10/motion-browser/Idle_Loop-right-1.png",
+      "sha256": "ba43d9f86e4344528a259db3b3288112affc6fa23e5f6f7908ae6819f576b7e9",
+      "bytes": 121312
+    },
+    {
+      "path": "qa/rig-10/motion-browser/Idle_Loop-right-1.webm",
+      "sha256": "773a265340d97a43703f1326fca895765d1eb1170b8bda14a28dbcdf63bf6bf2",
+      "bytes": 758432
+    },
+    {
+      "path": "qa/rig-10/motion-browser/Idle_Loop-threequarter-0.5.png",
+      "sha256": "3b5b6bae6440488f32fc77d05ca01f07323230e1a480b6937b93282ce2c1e90e",
+      "bytes": 121401
+    },
+    {
+      "path": "qa/rig-10/motion-browser/Idle_Loop-threequarter-0.5.webm",
+      "sha256": "4e013f566ae0fbf6186498220446056b02fb803ff81dc70d820e5d19144cc7ae",
+      "bytes": 1363010
+    },
+    {
+      "path": "qa/rig-10/motion-browser/Idle_Loop-threequarter-1.png",
+      "sha256": "74bb9372ae66f22fc1fbbba8b80eb7fadf44d9258fa77287ac1b09ee86a73bac",
+      "bytes": 122130
+    },
+    {
+      "path": "qa/rig-10/motion-browser/Idle_Loop-threequarter-1.webm",
+      "sha256": "46d3edcd17b0bfba41f649689fdc9111a1276f513ff086c4b24e6ba39c3fc941",
+      "bytes": 782177
+    },
+    {
+      "path": "qa/rig-10/motion-browser/Pet-back-0.5.png",
+      "sha256": "292fe6b54b9b0f0a6fa8f614212773b78352ed251eee1c8e3f72cba5c4f8e301",
+      "bytes": 106096
+    },
+    {
+      "path": "qa/rig-10/motion-browser/Pet-back-0.5.webm",
+      "sha256": "0893a04e2a93c619bccf721deb57bf2656005eff1de151021bf89411959559b2",
+      "bytes": 795928
+    },
+    {
+      "path": "qa/rig-10/motion-browser/Pet-back-1.png",
+      "sha256": "fcfbd12468c40b18eb103f142b7b1dcbcc920666d1bc5f84105eca1acbbcfe8b",
+      "bytes": 104536
+    },
+    {
+      "path": "qa/rig-10/motion-browser/Pet-back-1.webm",
+      "sha256": "e840c303c5799be294447c77450caddaa8f01a88155fd1d4ef1bca7f9aa3cd05",
+      "bytes": 404626
+    },
+    {
+      "path": "qa/rig-10/motion-browser/Pet-front-0.5.png",
+      "sha256": "1fd93d5d1d6c7b89db8265e3a3788eae9e3504d8a0276fe58d013e0c39b2ef5c",
+      "bytes": 105635
+    },
+    {
+      "path": "qa/rig-10/motion-browser/Pet-front-0.5.webm",
+      "sha256": "7a96aefdc49dca1396395479c882a6c9795e63725bf102073c84da4192cfee45",
+      "bytes": 808266
+    },
+    {
+      "path": "qa/rig-10/motion-browser/Pet-front-1.png",
+      "sha256": "3b3af5fa632f8f597a825586d50b487880f3c6d8fbf12aa2c171fdf7c9674af1",
+      "bytes": 104508
+    },
+    {
+      "path": "qa/rig-10/motion-browser/Pet-front-1.webm",
+      "sha256": "d39ac672f203584311ceaa375f3f4fe672c1c27e944808f82ca9adeb9969c1ab",
+      "bytes": 450960
+    },
+    {
+      "path": "qa/rig-10/motion-browser/Pet-left-0.5.png",
+      "sha256": "8c903c40b5bb50a6e4c918d074ae06f7f1b394a01c6c7987418328e2fbd579eb",
+      "bytes": 129825
+    },
+    {
+      "path": "qa/rig-10/motion-browser/Pet-left-0.5.webm",
+      "sha256": "b1386a4ff7adbbdc57ec64209f47779070844b08c4896ef49abcbe076d3e0b82",
+      "bytes": 751041
+    },
+    {
+      "path": "qa/rig-10/motion-browser/Pet-left-1.png",
+      "sha256": "a0db954637af8244454d3af7271df47ad8cccd34ef7ad8de7c8bb6b85915c8a6",
+      "bytes": 129362
+    },
+    {
+      "path": "qa/rig-10/motion-browser/Pet-left-1.webm",
+      "sha256": "1e76389f4568bce39140da6674105e4592f515e34e8f6de228e48592cce7d514",
+      "bytes": 383585
+    },
+    {
+      "path": "qa/rig-10/motion-browser/Pet-right-0.5.png",
+      "sha256": "28a2a4b5367dcb31e37819c124371a0877bf973434a47fc8d55e8930f723bca9",
+      "bytes": 118247
+    },
+    {
+      "path": "qa/rig-10/motion-browser/Pet-right-0.5.webm",
+      "sha256": "75109b0044d857e8f15d699ce91a3a93c1ef6a6eb5988f685c2a24a9635cb3fc",
+      "bytes": 848309
+    },
+    {
+      "path": "qa/rig-10/motion-browser/Pet-right-1.png",
+      "sha256": "2476b7bb5cba0beb332ee38cfccc3da9fbfcd607983f86c08ecc46795410f3a4",
+      "bytes": 118478
+    },
+    {
+      "path": "qa/rig-10/motion-browser/Pet-right-1.webm",
+      "sha256": "40d4eed2b934d02d459036b0663e0ea88e9004fea20d07bbd2bcb2178d520d3c",
+      "bytes": 459029
+    },
+    {
+      "path": "qa/rig-10/motion-browser/Pet-threequarter-0.5.png",
+      "sha256": "172fbf6421ca7993c2d7effc8a66be344734f013c76c17deba0d5c9e28383dc3",
+      "bytes": 124018
+    },
+    {
+      "path": "qa/rig-10/motion-browser/Pet-threequarter-0.5.webm",
+      "sha256": "c055a7e244a35f326883d77253fce22f0a36083c0ba1d7987d9cfd3530ef47dc",
+      "bytes": 859029
+    },
+    {
+      "path": "qa/rig-10/motion-browser/Pet-threequarter-1.png",
+      "sha256": "a799193e7ee2082b5a64d60490a7f51a9718b60bfb6bec1f425dd9ac7069c5d9",
+      "bytes": 122684
+    },
+    {
+      "path": "qa/rig-10/motion-browser/Pet-threequarter-1.webm",
+      "sha256": "c65adfc211b5955f4f27833eeb7da426c0e2ea8ae613b7c45544c304d96c6f23",
+      "bytes": 483711
+    },
+    {
+      "path": "qa/rig-10/motion-browser/result.json",
+      "sha256": "1f45b79ef998fb3ee59684fb5ff9a9888bc9b509d5cb8034a1b0571b06fb6794",
+      "bytes": 8950
+    },
+    {
+      "path": "qa/rig-10/motion-browser/Run_Loop-back-0.25.png",
+      "sha256": "aeb26d2bfb7a44dc8143a6f999837f4f8604312dc7b206553350abfa4c741a91",
+      "bytes": 99908
+    },
+    {
+      "path": "qa/rig-10/motion-browser/Run_Loop-back-0.25.webm",
+      "sha256": "274239ef2afda628da7a8b6af2a35c33f13fa3c3e58a7cb378935f3ad11126b8",
+      "bytes": 1585863
+    },
+    {
+      "path": "qa/rig-10/motion-browser/Run_Loop-back-1.png",
+      "sha256": "ac24a7fa0332001beb453fdc927ef528416d6c51f2a57933c6d7a51e53d84793",
+      "bytes": 97554
+    },
+    {
+      "path": "qa/rig-10/motion-browser/Run_Loop-back-1.webm",
+      "sha256": "91305f148ab2cfc6beae995ba90566ce4b5f3c2976328bcf8c70281f62ebe180",
+      "bytes": 759561
+    },
+    {
+      "path": "qa/rig-10/motion-browser/Run_Loop-front-0.25.png",
+      "sha256": "8c80f7b13fec49691d5814475623aa7160a220e669c65d07cde66f145683b6df",
+      "bytes": 101638
+    },
+    {
+      "path": "qa/rig-10/motion-browser/Run_Loop-front-0.25.webm",
+      "sha256": "29c129fe3128c723452cbb39c27d8a9ff745fcd19ada34db903329bc5c98972e",
+      "bytes": 1715973
+    },
+    {
+      "path": "qa/rig-10/motion-browser/Run_Loop-front-1.png",
+      "sha256": "1ae9b70ac454dd691f7c8cc498812bbeea2743822fcd00d87ec1e64fd32d789e",
+      "bytes": 97377
+    },
+    {
+      "path": "qa/rig-10/motion-browser/Run_Loop-front-1.webm",
+      "sha256": "e2d792a9ff7c927124e5189754728d13099112081d5e81ffe5f0556f925370ee",
+      "bytes": 347462
+    },
+    {
+      "path": "qa/rig-10/motion-browser/Run_Loop-left-0.25.png",
+      "sha256": "3f17afa4b8272ebe0547a3c3db58b2a94ffdf68f752073979fc5e9de33a76c73",
+      "bytes": 119589
+    },
+    {
+      "path": "qa/rig-10/motion-browser/Run_Loop-left-0.25.webm",
+      "sha256": "f0fa82db8496bfcf68c8b87e8c1fe260f10bfc756117a6e65600edc10024fbf6",
+      "bytes": 1684259
+    },
+    {
+      "path": "qa/rig-10/motion-browser/Run_Loop-left-1.png",
+      "sha256": "743fedddb407074f4354b00934a852d83622644f3e72fa529cbd0e2f9b08aecf",
+      "bytes": 117288
+    },
+    {
+      "path": "qa/rig-10/motion-browser/Run_Loop-left-1.webm",
+      "sha256": "b9dfc8160bf8f4007296fff2c01b0a9df1a97723f958e12262423bbdcf011e74",
+      "bytes": 781295
+    },
+    {
+      "path": "qa/rig-10/motion-browser/Run_Loop-right-0.25.png",
+      "sha256": "b9d33f2d66042a1b844c9821a6efad4e6ebdab45823db62d48cde451123391c9",
+      "bytes": 107302
+    },
+    {
+      "path": "qa/rig-10/motion-browser/Run_Loop-right-0.25.webm",
+      "sha256": "cfccda10cda8ef62f31e9d37e59f73ac3aaa07ce82a0b07e8c66ac7f00923051",
+      "bytes": 1654046
+    },
+    {
+      "path": "qa/rig-10/motion-browser/Run_Loop-right-1.png",
+      "sha256": "7cb437bb7ab0fe81d857da7866b38fa69572262549b8da1459c6231acc76a6aa",
+      "bytes": 112831
+    },
+    {
+      "path": "qa/rig-10/motion-browser/Run_Loop-right-1.webm",
+      "sha256": "568aec56dc94713a83a46b9bccb489b4d73a391371c8f9a78bdc52521d8ad1df",
+      "bytes": 762506
+    },
+    {
+      "path": "qa/rig-10/motion-browser/Run_Loop-threequarter-0.25.png",
+      "sha256": "f1cee76a8894f9f8cc0860622c82e2257f605138cdc90c2fc509b4b80e6d7acc",
+      "bytes": 124037
+    },
+    {
+      "path": "qa/rig-10/motion-browser/Run_Loop-threequarter-0.25.webm",
+      "sha256": "7dac4ab83c10b2a46e8b538164d81b7dccde4812b9d5228440e6bf5f99e597a5",
+      "bytes": 1766765
+    },
+    {
+      "path": "qa/rig-10/motion-browser/Run_Loop-threequarter-1.png",
+      "sha256": "1fac2fbe503272f3fd47e9682cb93de9d8f5ab4ec2bdc6c50b857c0f53884191",
+      "bytes": 100282
+    },
+    {
+      "path": "qa/rig-10/motion-browser/Run_Loop-threequarter-1.webm",
+      "sha256": "44c6b3e6252fb352c59c0f41d1c9743cdbe296e3c995e1593b1ad68659330d83",
+      "bytes": 734975
+    },
+    {
+      "path": "qa/rig-10/motion-browser/Walk_Loop-back-0.5.png",
+      "sha256": "145853a07a8c93dad57368822c1638ca8bac7222e19690bf12c332d3c7fec518",
+      "bytes": 98870
+    },
+    {
+      "path": "qa/rig-10/motion-browser/Walk_Loop-back-0.5.webm",
+      "sha256": "c7c939772f4dcdcb14efe9ab51c0aab3474cc55f1ded0148dcf522d0420a63ab",
+      "bytes": 465464
+    },
+    {
+      "path": "qa/rig-10/motion-browser/Walk_Loop-back-1.png",
+      "sha256": "24e1861e4972048f54474ff99811dcff0f24b15b26e017a50919b724d0284627",
+      "bytes": 98979
+    },
+    {
+      "path": "qa/rig-10/motion-browser/Walk_Loop-back-1.webm",
+      "sha256": "48fb98067392f509bacf36c980eb56e6379b2d4ddf558b3c19f32f0d7c14992b",
+      "bytes": 183618
+    },
+    {
+      "path": "qa/rig-10/motion-browser/Walk_Loop-front-0.5.png",
+      "sha256": "a7045bd05da139d043804d0bff4bbe74d396b015844e46bbea19b860fb8b55e1",
+      "bytes": 100261
+    },
+    {
+      "path": "qa/rig-10/motion-browser/Walk_Loop-front-0.5.webm",
+      "sha256": "8b8f5ed21562a7efe4534f6541a1a42d6286da5c073fd782aa472f78529e9ba4",
+      "bytes": 482608
+    },
+    {
+      "path": "qa/rig-10/motion-browser/Walk_Loop-front-1.png",
+      "sha256": "a860af3913cdf22dc43b5c74170a60e533395251ed7ccc407a8fa1e7e530c4ec",
+      "bytes": 99937
+    },
+    {
+      "path": "qa/rig-10/motion-browser/Walk_Loop-front-1.webm",
+      "sha256": "9b112cec3ade732338f93137ec361e17cee043586f3be3ab165c4075dd4e6add",
+      "bytes": 185803
+    },
+    {
+      "path": "qa/rig-10/motion-browser/Walk_Loop-left-0.5.png",
+      "sha256": "72801a02e12ab0ae71489c46921bfc574e9df3ef83e49d893aa4801d0c2d4f63",
+      "bytes": 128147
+    },
+    {
+      "path": "qa/rig-10/motion-browser/Walk_Loop-left-0.5.webm",
+      "sha256": "cc41c67df3251acc25ee1073430d003eacc0f34eafbc4431821a17989ec4f13d",
+      "bytes": 492374
+    },
+    {
+      "path": "qa/rig-10/motion-browser/Walk_Loop-left-1.png",
+      "sha256": "e51c1d66343a57e0842e0a33261c025d46e50bfd671a6ec3c1997187ee2742e6",
+      "bytes": 128701
+    },
+    {
+      "path": "qa/rig-10/motion-browser/Walk_Loop-left-1.webm",
+      "sha256": "58d03d5da37427fdeb1069380c7a57c8fc557db1a702f228c451cb619566babe",
+      "bytes": 219611
+    },
+    {
+      "path": "qa/rig-10/motion-browser/Walk_Loop-right-0.5.png",
+      "sha256": "727e563d8450744fbce27511de76ea1f1694cf5fbe9dcd4f754d872a5c5e17b5",
+      "bytes": 118655
+    },
+    {
+      "path": "qa/rig-10/motion-browser/Walk_Loop-right-0.5.webm",
+      "sha256": "3f5bde005a8839970603f30d8a3a55bc6ec413e4022e0d2f24da7ee9c4465173",
+      "bytes": 497264
+    },
+    {
+      "path": "qa/rig-10/motion-browser/Walk_Loop-right-1.png",
+      "sha256": "b3f5163939ca10f28e83c031b7cde43eb1dbb78f885f9f90f074a3dc3968ce2e",
+      "bytes": 118746
+    },
+    {
+      "path": "qa/rig-10/motion-browser/Walk_Loop-right-1.webm",
+      "sha256": "13ad86b84cc5f6a8e39d08028c4fcd37acd3efe5d7cedf7a7cb3a6fead9d54bc",
+      "bytes": 209086
+    },
+    {
+      "path": "qa/rig-10/motion-browser/Walk_Loop-threequarter-0.5.png",
+      "sha256": "7875e3287ea91135ef1c376efaa06f6847e6dce0e5c8544f7cb734f316384db2",
+      "bytes": 112409
+    },
+    {
+      "path": "qa/rig-10/motion-browser/Walk_Loop-threequarter-0.5.webm",
+      "sha256": "28c9d6ca929a6677bf43629003a65ae7b1034dc86cb39ac961d604ccf1865416",
+      "bytes": 483451
+    },
+    {
+      "path": "qa/rig-10/motion-browser/Walk_Loop-threequarter-1.png",
+      "sha256": "455f92223d5221629c70a9e2cd1812baef2511394d03d91eb3bf6b445097ae33",
+      "bytes": 112410
+    },
+    {
+      "path": "qa/rig-10/motion-browser/Walk_Loop-threequarter-1.webm",
+      "sha256": "2171f90096a44ba60fc4e688d42b74b1c9aedea61f7336c7eaf2521ca723d30c",
+      "bytes": 207705
+    },
+    {
+      "path": "qa/rig-10/motion-frames/Happy-front-00.png",
+      "sha256": "f9b0e47dd6efa54e95315dbe8ccc93a1f2184d3d6f5dd705ac4e1f7d9ceec4b2",
+      "bytes": 382940
+    },
+    {
+      "path": "qa/rig-10/motion-frames/Happy-front-01.png",
+      "sha256": "b13e1ac3357b648677e9c5bee564278208c8c83b1d560c4890d7c31ba69f9f30",
+      "bytes": 383756
+    },
+    {
+      "path": "qa/rig-10/motion-frames/Happy-front-02.png",
+      "sha256": "da6879fbffc90952afb855cc7166345f65be78cc17e0800ed24371de1ccce371",
+      "bytes": 382505
+    },
+    {
+      "path": "qa/rig-10/motion-frames/Happy-front-03.png",
+      "sha256": "aa31be33fcc280af3b93d867afe7c10274e35672250df0aebd9827c6f4040f85",
+      "bytes": 382587
+    },
+    {
+      "path": "qa/rig-10/motion-frames/Happy-front-04.png",
+      "sha256": "745c3095c28e0b3944567cba526d7cccb02eb761e8982acf806e37494175fc8a",
+      "bytes": 383173
+    },
+    {
+      "path": "qa/rig-10/motion-frames/Happy-front-05.png",
+      "sha256": "52aed080fec396c912ddf4df4ba7bdf6357356fc43f0d903c310f6f9762c0642",
+      "bytes": 382961
+    },
+    {
+      "path": "qa/rig-10/motion-frames/Happy-front-06.png",
+      "sha256": "6e9c8d6cf4d9fa596b7b1ea2d0a1045a6e61bf1c6b81ddc8b9b232c124bd5f8b",
+      "bytes": 383181
+    },
+    {
+      "path": "qa/rig-10/motion-frames/Happy-front-07.png",
+      "sha256": "e82a46fdc4b6e14bb6559bdbbe2016b6869788f93570475a30f3d012e5ba454b",
+      "bytes": 382354
+    },
+    {
+      "path": "qa/rig-10/motion-frames/Happy-right-00.png",
+      "sha256": "f06f7c86c1e98e5dd9834e49ecedb95750c01595a6093e1ecf7933a2cf591132",
+      "bytes": 404576
+    },
+    {
+      "path": "qa/rig-10/motion-frames/Happy-right-01.png",
+      "sha256": "5c8c249eff3dc41c5616e9517a44ab0c421fd3b9cb4bd1c90305fa13776bc8ea",
+      "bytes": 406101
+    },
+    {
+      "path": "qa/rig-10/motion-frames/Happy-right-02.png",
+      "sha256": "05f59fe85f54ad440583e220598a59738bfa14d0c8071b0619328a07c21b833c",
+      "bytes": 407580
+    },
+    {
+      "path": "qa/rig-10/motion-frames/Happy-right-03.png",
+      "sha256": "cac0b163f8d27a8e94ab106a383a6460f6e4abfca994c384edf666256234751b",
+      "bytes": 408219
+    },
+    {
+      "path": "qa/rig-10/motion-frames/Happy-right-04.png",
+      "sha256": "61c148e69c7e5d6a308f963eec32bd6f0eb10cfeebdab152cd50f3ede6e2ff0c",
+      "bytes": 407597
+    },
+    {
+      "path": "qa/rig-10/motion-frames/Happy-right-05.png",
+      "sha256": "b00509e83bbe71036e556036efe253499351f33884cbd309ee269d51eb907daf",
+      "bytes": 405998
+    },
+    {
+      "path": "qa/rig-10/motion-frames/Happy-right-06.png",
+      "sha256": "c35e26a7b73d10a4349cc763d93a240d72494c1cde8b25dec213bf8e6692d965",
+      "bytes": 404224
+    },
+    {
+      "path": "qa/rig-10/motion-frames/Happy-right-07.png",
+      "sha256": "3ef8cdb60be39f03c7483b3e76e1785b1fb80986c9596935c86602b94346fa23",
+      "bytes": 402953
+    },
+    {
+      "path": "qa/rig-10/motion-frames/Happy-threequarter-00.png",
+      "sha256": "02b5a97fd16d0ab467fe2c0966ea60a1edd19516db3bd97d9ee4e1b13af4e2fe",
+      "bytes": 393766
+    },
+    {
+      "path": "qa/rig-10/motion-frames/Happy-threequarter-01.png",
+      "sha256": "c5767884a3e463bda52ca37ee8d6e0e239d18e78ea5569236a98ac8c6897b31f",
+      "bytes": 395438
+    },
+    {
+      "path": "qa/rig-10/motion-frames/Happy-threequarter-02.png",
+      "sha256": "ce6ed5f7d8029817bcadb4a82bf5fc029dba956ec6cec8abad21a52b211dd348",
+      "bytes": 398222
+    },
+    {
+      "path": "qa/rig-10/motion-frames/Happy-threequarter-03.png",
+      "sha256": "81d17a151f5d0460b18ca07a675ac14253304667eaed51370bad7c9d3ae3cf00",
+      "bytes": 399285
+    },
+    {
+      "path": "qa/rig-10/motion-frames/Happy-threequarter-04.png",
+      "sha256": "b5531999126335ab80b42cb608cfd05c26977ffcc326c1a83bc23ce82bcddc6e",
+      "bytes": 398859
+    },
+    {
+      "path": "qa/rig-10/motion-frames/Happy-threequarter-05.png",
+      "sha256": "7e60b8ed7c00da5789f21d9a1d9763ae80814fab8f87dd23a557354d3b99d1c2",
+      "bytes": 396987
+    },
+    {
+      "path": "qa/rig-10/motion-frames/Happy-threequarter-06.png",
+      "sha256": "5158f9b73b1c4e23d3fedc2cb647f11f0941480ac0c2b1c340b38ca97e89b41a",
+      "bytes": 394897
+    },
+    {
+      "path": "qa/rig-10/motion-frames/Happy-threequarter-07.png",
+      "sha256": "4aefe2a37b306819096441e8f2c9ad3d349fcef7d7b0e21e633e4020ebda0552",
+      "bytes": 393149
+    },
+    {
+      "path": "qa/rig-10/motion-frames/Idle_Loop-front-00.png",
+      "sha256": "aebc66d0788dc1b7b08ddf904fbb44a5a5f8859c90b746247e7ed5d537a4b7a3",
+      "bytes": 382636
+    },
+    {
+      "path": "qa/rig-10/motion-frames/Idle_Loop-right-00.png",
+      "sha256": "9c76c9ff7dd1631765434e8e7b2d7b3a2fef5783bb35b29854eb25f0723d8f42",
+      "bytes": 402973
+    },
+    {
+      "path": "qa/rig-10/motion-frames/Idle_Loop-threequarter-00.png",
+      "sha256": "cbdccf4230720e33c6b23a4e6b621f7fdcc9000a99ab37910fcd4e246623333e",
+      "bytes": 393590
+    },
+    {
+      "path": "qa/rig-10/motion-frames/Pet-front-00.png",
+      "sha256": "4695249c0103392bf53870ea147364a92dfbcdd5a688b0a948971371a1c67c7e",
+      "bytes": 383057
+    },
+    {
+      "path": "qa/rig-10/motion-frames/Pet-right-00.png",
+      "sha256": "56208e4816cd9812110d30a33982e3e9eed791ff2bcfa7fc4c7391d0fa6a0005",
+      "bytes": 404676
+    },
+    {
+      "path": "qa/rig-10/motion-frames/Pet-threequarter-00.png",
+      "sha256": "6096d2a0658bd77600f11db6c8432a5f496b09653938492f1389ff25e85e2520",
+      "bytes": 393892
+    },
+    {
+      "path": "qa/rig-10/motion-frames/schedule.json",
+      "sha256": "15884476c2732160d06d4b2f67cf8f39c57bb321f2c8712bfe36a69e3c1c2d07",
+      "bytes": 160
+    },
+    {
+      "path": "qa/rig-10/motion.json",
+      "sha256": "977acd3a1852ccdc8bbdf0b1fdd729bd434d12df426075037f1a00cd54d316bb",
+      "bytes": 808490
+    },
+    {
+      "path": "qa/rig-10/neutral/back.png",
+      "sha256": "75ad88723716ef33e5793700baa6b458d71aa54e1bdb4fed7516f40602bea2d7",
+      "bytes": 491635
+    },
+    {
+      "path": "qa/rig-10/neutral/bottom.png",
+      "sha256": "9102968013957acab9e4887d8b691e46ec1fc9859cbeee6faa3654fc91fe5a51",
+      "bytes": 501045
+    },
+    {
+      "path": "qa/rig-10/neutral/bounds.json",
+      "sha256": "1fa1131c675ca5ec55feda047e970a00a9221c4383c0cc1f7e6beec587c20569",
+      "bytes": 242
+    },
+    {
+      "path": "qa/rig-10/neutral/front.png",
+      "sha256": "a6e409bc2e8e6d76824c450a0dc13b2a49be1328c4f59e87d60dd2551fb0eb26",
+      "bytes": 494077
+    },
+    {
+      "path": "qa/rig-10/neutral/left.png",
+      "sha256": "82dfc1bf439fdf1d039386c5ed6f16e8e0f6612296482ec3b91aa47ff34907a1",
+      "bytes": 508903
+    },
+    {
+      "path": "qa/rig-10/neutral/right.png",
+      "sha256": "5d659575d8b5177913d451b9c6eeab7ebc84a9c0bdd8fb44ca4841477594144a",
+      "bytes": 512436
+    },
+    {
+      "path": "qa/rig-10/neutral/threequarter.png",
+      "sha256": "46838c458d5d26abb6e50ae522bfa2010b6bc1444856151bf63e2b4ac4064dd5",
+      "bytes": 500156
+    },
+    {
+      "path": "qa/rig-10/neutral/top.png",
+      "sha256": "b0dec50645a1b486fab22fc555d301d369db96ef62d9bd32541e79157d58a744",
+      "bytes": 503534
+    },
+    {
+      "path": "qa/rig-10/preservation.json",
+      "sha256": "447a9dfaa21eaddea2d01f2ebe7dd1640e90d1547d195a0a90c55f48a2136f7a",
+      "bytes": 333
+    },
+    {
+      "path": "qa/rig-10/viewer.html",
+      "sha256": "1e66420e487a9ffd8107533e0b3da2af4a51207934f8db7c7909c4bb066b2971",
+      "bytes": 35937623
+    },
+    {
+      "path": "qa/rig-10/viewer.json",
+      "sha256": "323f49c32ad6d318a19fa3bab7823ab5742f1040224ac0739b27ebf789403ff7",
+      "bytes": 570
+    },
+    {
       "path": "qa/surface-landmarks.json",
       "sha256": "e723c4930f5c9971b882de0a8043eb17c81670cdc52ad9954f91404ca904e110",
       "bytes": 7452
     },
     {
       "path": "README.md",
-      "sha256": "4cd4eb447d0e59dba116c9f34b30a90179ac57c1d2e0144b4313bcb31654a381",
-      "bytes": 1148
+      "sha256": "ee290a32353173409cbd6f9e3e5dd6be14f0b534c28491215c1a9a57a75a4f12",
+      "bytes": 1484
     },
     {
       "path": "source/generated/reference-v1.png",
@@ -3769,6 +5544,56 @@
       "bytes": 21088133
     },
     {
+      "path": "work/rig/revision-09/candidate.glb",
+      "sha256": "9e99226f3f0f0f9c86810cd27f89a596bcefece5625380b50c958dbf90bfbcf3",
+      "bytes": 26147952
+    },
+    {
+      "path": "work/rig/revision-09/motion-export.glb",
+      "sha256": "d6370551def5f7a8e04bb42e5c2b4c4fc74698c334e1d0354330d3712753c2df",
+      "bytes": 26775796
+    },
+    {
+      "path": "work/rig/revision-09/process.json",
+      "sha256": "9d023a36167c0b3d2a8abfd608b2ca0023643f4872af06135e66755d0dc12562",
+      "bytes": 161736
+    },
+    {
+      "path": "work/rig/revision-09/rig-source.py",
+      "sha256": "768b27adcef3368e149e6b2ec18f03237d5f51ace765068bd3d620a478d1fda1",
+      "bytes": 6758
+    },
+    {
+      "path": "work/rig/revision-09/source.blend",
+      "sha256": "fd823f7ffea497647a1f492900044b2fc59cd685303d505739126075eb9d2288",
+      "bytes": 21330139
+    },
+    {
+      "path": "work/rig/revision-10/candidate.glb",
+      "sha256": "545900f93a483fb1b9cb7483c4fa79a97c3b40d107054e6ef4cadd34fe12205b",
+      "bytes": 26147952
+    },
+    {
+      "path": "work/rig/revision-10/motion-export.glb",
+      "sha256": "5b41c7ba810c5196525254a678fb3be9a38a072c99c54e2f80f6f80334ec296a",
+      "bytes": 26945956
+    },
+    {
+      "path": "work/rig/revision-10/process.json",
+      "sha256": "ab7ab21417d4af762ca48d34391ae30f65a1cc17f5ef15353cbed26e388134e6",
+      "bytes": 161750
+    },
+    {
+      "path": "work/rig/revision-10/rig-source.py",
+      "sha256": "653332536dc3556f448cdb74a0ef8eece507d2377f514a7b741c992815d32792",
+      "bytes": 7216
+    },
+    {
+      "path": "work/rig/revision-10/source.blend",
+      "sha256": "2a61c66c556442113cfe9ded536eb5b8fb17c44dba100380f2bc0535ad0ce741",
+      "bytes": 21344924
+    },
+    {
       "path": "work/rig-r01.log",
       "sha256": "c3a4ab017f0df6bc7b09310238d59d33d6c5692bead88d837ab722dd54671dae",
       "bytes": 3702
@@ -3809,6 +5634,11 @@
       "bytes": 12469831
     },
     {
+      "path": "workflow/archive-happy.py",
+      "sha256": "3b7748fcf417a32d7ab691db1e4821f58ca11dd10f04da8a3d65f9bc7d59c09d",
+      "bytes": 5169
+    },
+    {
       "path": "workflow/archive-motion.py",
       "sha256": "12842bd6b37b34b5af735a520dec51681d1814a4af58a17c7b6eb35a1ba45b66",
       "bytes": 5472
@@ -3829,24 +5659,34 @@
       "bytes": 8045
     },
     {
+      "path": "workflow/game-qa/qa-rimo-happy-contact.mjs",
+      "sha256": "d92ec2b76a1f29319b31d1ada7743c79febcde755884e2deabd094a0d6f9d2ed",
+      "bytes": 3094
+    },
+    {
+      "path": "workflow/game-qa/qa-rimo-happy-lifecycle.mjs",
+      "sha256": "ba36ecb0bfbd1166f161dd12677dc86d624479add66be93fcea508aa05b26a75",
+      "bytes": 4581
+    },
+    {
       "path": "workflow/game-qa/qa-rimo-motion-viewer.mjs",
-      "sha256": "4e2c3e765a48f18b66968a180cf7374c0151687494800b0586101a028013b8c0",
-      "bytes": 3538
+      "sha256": "162e5f20e3fb668deedf7e3a6847826b7593b0535529b7138d34fb58de5b3fd6",
+      "bytes": 3670
     },
     {
       "path": "workflow/game-qa/qa-rimo-motion.mjs",
-      "sha256": "a17792cdca6edf88d51e9f67fb62a2c757fef6437d639b2558952babb6fdc4d4",
-      "bytes": 5280
+      "sha256": "527a27129356df554502e3657f52f60174421a42069ed4489671c28a72528b6a",
+      "bytes": 5268
     },
     {
       "path": "workflow/game-qa/qa-rimo-neko.mjs",
-      "sha256": "65d5e2d6915600b22b18f80b43efb7dda411ae48dcc91fd8627089879bc2a674",
-      "bytes": 19076
+      "sha256": "6ea9e4d598d75c40cc891997b49309abc5626a3ce4554f44af287b123bf67bf4",
+      "bytes": 20018
     },
     {
       "path": "workflow/game-qa/qa-rimo-preservation.mjs",
-      "sha256": "f71fe9f012e2fb9772d6840d27d9654f99cd37477f76f7bac345fc261c3d026b",
-      "bytes": 2428
+      "sha256": "8988e03b318f468f3a264f0738864d422593ddf7701e065c5b8403f78e0a742f",
+      "bytes": 2568
     },
     {
       "path": "workflow/game-qa/qa-rimo-viewer.mjs",
@@ -3915,13 +5755,18 @@
     },
     {
       "path": "workflow/render-motion-review.py",
-      "sha256": "ba0f8f2c558f3fb0778089c48c7f27d786fe01ea478b4b0416f579ccdb4bbda9",
-      "bytes": 3128
+      "sha256": "29dc06df2a4b0517b3f679d8e56c4adf1036bf3171df1d8fa447d783506dd267",
+      "bytes": 3269
     },
     {
       "path": "workflow/render-review.py",
       "sha256": "43ae4a80d76dee62faabd2701351ac96cc70cc89b17810979f4c9c796f12ab3d",
       "bytes": 4067
+    },
+    {
+      "path": "workflow/revise-happy.py",
+      "sha256": "653332536dc3556f448cdb74a0ef8eece507d2377f514a7b741c992815d32792",
+      "bytes": 7216
     },
     {
       "path": "workflow/revise-motion.py",

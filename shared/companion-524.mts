@@ -4,8 +4,10 @@ import type { CollisionWorld } from './collision.mjs';
 import { CAMP } from './world.mjs';
 import { interactionVisible } from './interactions.mjs';
 import { attackProfile } from './combat-profiles.mjs';
+import { characterModel } from './characters.mjs';
 import { jumpProgress } from './jumping.mjs';
 import type { Companion524, Companion524Snapshot } from './companion-524-types.mjs';
+import type { OrbBotSnapshot } from './orb-bot-types.mjs';
 export type { Companion524, Companion524Snapshot } from './companion-524-types.mjs';
 
 export const COMPANION_524 = Object.freeze({
@@ -73,6 +75,8 @@ export function createCompanion524(collision: CollisionWorld): Companion524 {
     facing: 0,
     mode: 'idle',
     followPlayerId: null,
+    squadPlayerId: null,
+    squadMode: null,
     petSequence: 0,
     petAt: 0,
     petPlayerId: null,
@@ -108,6 +112,8 @@ export function companion524Snapshot(c?: Companion524): Companion524Snapshot | u
     radius,
     mode,
     followPlayerId,
+    squadPlayerId,
+    squadMode,
     petSequence,
     petAt,
     petPlayerId,
@@ -127,6 +133,8 @@ export function companion524Snapshot(c?: Companion524): Companion524Snapshot | u
     radius,
     mode,
     followPlayerId,
+    squadPlayerId,
+    squadMode,
     petSequence,
     petAt,
     petPlayerId,
@@ -150,6 +158,7 @@ export function nearCompanion524(
   return (
     !!player &&
     !!c &&
+    companion524OnGround(c) &&
     !player.downedUntil &&
     !player.mountId &&
     !player.boatId &&
@@ -167,6 +176,8 @@ export function nearCompanion524(
 
 export function returnCompanion524(c: Companion524) {
   c.followPlayerId = null;
+  c.squadPlayerId = null;
+  c.squadMode = null;
   c.mode = 'returning';
   c.path = [];
   c.goal = null;
@@ -181,6 +192,22 @@ function cancelPet(c: Companion524) {
   c.petContactAt = 0;
   c.petOrigin = null;
   c.petGoal = null;
+  if (c.squadPlayerId) c.followPlayerId = c.squadPlayerId;
+}
+
+/** Airborne/held bodies have no ground-level pet or combat target. */
+export function companion524OnGround(c: Companion524Snapshot) {
+  return !c.squadMode || !['windup', 'airborne', 'landing', 'stowed'].includes(c.squadMode);
+}
+
+/** Keep the original NPC, hit target and route attached to the one squad member. */
+export function syncCompanion524Bot(c: Companion524, b: OrbBotSnapshot) {
+  c.x = b.x;
+  c.z = b.z;
+  c.facing = b.facing;
+  c.squadMode = b.mode;
+  if (companion524OnGround(c)) rememberRoute(c);
+  else c.velocityX = c.velocityZ = 0;
 }
 
 export function handleCompanion524Action(
@@ -215,7 +242,7 @@ export function handleCompanion524Action(
       ? [0.25, 0.1, 0.35]
       : player.species === 'ape'
         ? [0.7, 0.32, 1.02]
-        : player.species === 'maruimo'
+        : characterModel(player).bodyPlan === 'octopus'
           ? [1.08, 0.12, COMPANION_524.hoverHeight]
           : [0.52, 0.12, COMPANION_524.hoverHeight];
   const goal = {
@@ -270,19 +297,19 @@ function rememberRoute(c: Companion524) {
   const revisited = c.trail.findIndex((p) => distance(c, p) < 0.7);
   if (revisited >= 0) c.trail.length = revisited + 1;
   c.trail.push(point(c));
+  if (c.trail.length > 4096) c.trail.splice(1, 1);
 }
 
 export function updateCompanion524(room: CompanionRoom, dt: number, now: number) {
   const c = room.companion524;
   if (!c || dt <= 0) return;
+  if (c.petPlayerId && !room.players.has(c.petPlayerId)) cancelPet(c);
   const owner = c.followPlayerId ? room.players.get(c.followPlayerId) : null;
   if (
     c.mode === 'following' &&
     (!owner ||
-      owner.downedUntil ||
-      owner.boatId ||
-      distance(owner, c) > 60 ||
-      c.trail.length >= 4096)
+      (!c.squadPlayerId &&
+        (owner.downedUntil || owner.boatId || distance(owner, c) > 60 || c.trail.length >= 4096)))
   )
     returnCompanion524(c);
 
@@ -329,8 +356,16 @@ export function updateCompanion524(room: CompanionRoom, dt: number, now: number)
       return;
     } else if (now < c.petContactAt + COMPANION_524.petStrokeMs + COMPANION_524.happyMs) {
       return;
-    } else cancelPet(c);
+    } else {
+      c.squadPlayerId = c.petPlayerId;
+      c.squadMode = 'following';
+      cancelPet(c);
+    }
   }
+
+  // Once recruited, the shared dots simulation owns movement and recall. Petting
+  // and impacts above remain on the original body, never on a second model.
+  if (c.squadPlayerId) return;
 
   let goal: Point, speed: number;
   if (c.mode === 'following' && owner) {

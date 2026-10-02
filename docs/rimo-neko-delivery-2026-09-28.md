@@ -1,5 +1,8 @@
 # リモねこのローカル実装と展示配布
 
+2026-09-30のハートと仕草の追加、最新配布物と配置状態は
+`docs/rimo-neko-happy-delivery-2026-09-30.md`を参照。以下は9月28日の履歴。
+
 2026-09-28。制作・ゲーム挙動・検査は `assets/rimo-neko/README.md`。
 TRELLIS更新記録は `docs/trellis-update-2026-09-27.md`。
 

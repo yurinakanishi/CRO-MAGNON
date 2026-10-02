@@ -5,7 +5,9 @@ import { readFile, mkdir, writeFile } from 'node:fs/promises';
 import { createHash } from 'node:crypto';
 import { unpack } from './motion-glb.mjs';
 const rev = process.argv[2] || '06', base = 'output/model-generation/models/rimo-neko';
-const a = unpack(await readFile(`${base}/work/rig/revision-03/candidate.glb`));
+const parent = process.argv[3] || '03';
+const changed = (process.argv[4] || 'Run_Loop,Hiss').split(',');
+const a = unpack(await readFile(`${base}/work/rig/revision-${parent}/candidate.glb`));
 const b = unpack(await readFile(`${base}/work/rig/revision-${rev}/candidate.glb`));
 const sha = (bytes) => createHash('sha256').update(bytes).digest('hex');
 const view = (g, i) => { const v = g.doc.bufferViews[i]; return g.binary.subarray(v.byteOffset || 0, (v.byteOffset || 0) + v.byteLength); };
@@ -17,11 +19,11 @@ assert.deepEqual(b.doc.images.map(i=>sha(view(b,i.bufferView))),a.doc.images.map
 assert.deepEqual(b.doc.nodes,a.doc.nodes,'rest hierarchy changed');
 assert.deepEqual(b.doc.skins.map(s=>({...s,inverseBindMatrices:accessor(b,s.inverseBindMatrices)})),a.doc.skins.map(s=>({...s,inverseBindMatrices:accessor(a,s.inverseBindMatrices)})),'bind pose changed');
 const preserved=[];
-for(const name of ['Idle_Loop','Walk_Loop','Pet','Happy','Hit']) {
+for(const name of a.doc.animations.map(c=>c.name).filter(n=>!changed.includes(n))) {
   const clip=(g)=>{const c=g.doc.animations.find(c=>c.name===name);return {...c,samplers:c.samplers.map(s=>({...s,input:accessor(g,s.input),output:accessor(g,s.output)}))};};
   assert.deepEqual(clip(b),clip(a),`${name} changed`);preserved.push(name);
 }
-const report={revision:rev,parentRevision:'03',geometryAndSkin:'byte-identical',textures:'byte-identical',materials:'identical',restHierarchy:'identical',preservedAnimationBuffers:preserved};
+const report={revision:rev,parentRevision:parent,changed,geometryAndSkin:'byte-identical',textures:'byte-identical',materials:'identical',restHierarchy:'identical',preservedAnimationBuffers:preserved};
 await mkdir(`${base}/qa/rig-${rev}`,{recursive:true});
 await writeFile(`${base}/qa/rig-${rev}/preservation.json`,JSON.stringify(report,null,2)+'\n');
 console.log(JSON.stringify(report));

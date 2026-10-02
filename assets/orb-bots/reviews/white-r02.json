@@ -1,0 +1,14 @@
+{
+  "candidate": 1,
+  "revision": "02",
+  "decision": "visual-approved-for-game-qa",
+  "sha256": "3772d1a2ce5eff3280fa905b863e1bd41249e2c353d9b2cd592e852ad105ee67",
+  "lodSha256": "b05fb8beea1cfc301b5d8d0c8ee703219b70fef5dcaa97af231b5bf78d789297",
+  "review": "Actual exported GLB shows two separate black upturned eyes, a smooth warm-white round silhouette, and a clean crown and back. Land/Catch squash retains the face. No invented limbs or mouth. The neutral/clay renders and offline viewer use the delivered bytes.",
+  "numeric": "output/model-generation/models/orb-bot-white/work/rig/revision-02/qa/numeric.json",
+  "viewer": "output/model-generation/models/orb-bot-white/qa/final-02/viewer.html",
+  "viewerQA": "output/model-generation/models/orb-bot-white/qa/final-02/viewer-qa.json",
+  "visualEvidence": "output/model-generation/models/orb-bot-white/qa/final-02",
+  "materialRepair": "Source-PNG ink projected onto the unchanged reconstructed surface. New UV atlas; original reconstruction and failed material retained. Back colour inferred.",
+  "gameIntegrationVerified": false
+}

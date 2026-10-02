@@ -1,0 +1,53 @@
+{
+  "decision": "adopt",
+  "candidate": 1,
+  "models": [
+    {
+      "key": "orb-bot-beret",
+      "revision": "03",
+      "sha256": "0c18e377dc69de6c1fce9bd2baaade3fb20914f2e547d382ec5a6a8b24e304e0",
+      "triangles": 23581,
+      "lodTriangles": 8253
+    },
+    {
+      "key": "orb-bot-frog",
+      "revision": "01",
+      "sha256": "cdd25740bb82c8553f3acc174d29e1b016729af1eb60ddf2e0d4ce7f479b5741",
+      "triangles": 41638,
+      "lodTriangles": 27062
+    },
+    {
+      "key": "orb-bot-triangle",
+      "revision": "06",
+      "sha256": "a69f9a4f5d65fe867f5fd6865a41f2862282ef3ae7fa8858774b7797ddf6cf1b",
+      "triangles": 14021,
+      "lodTriangles": 2803
+    },
+    {
+      "key": "orb-bot-heart",
+      "revision": "02",
+      "sha256": "fe294cdc517abb4485b4379ffd4619fe4ff37a535d5463850f87b6ba612defc7",
+      "triangles": 24624,
+      "lodTriangles": 8618
+    }
+  ],
+  "gameQA": "output/playwright/shape-bots/game-1790867552591",
+  "layoutQA": "output/playwright/shape-bots/layout-1790867788017",
+  "rearCameraFlightQA": "output/playwright/shape-bots/flight-1790867802767",
+  "finding": "Inspected all four new held bots on the actual character hand; each preserves its distinct outline, face and accessories. All nine kinds complete synchronized windup, airborne, landing, return and reunion on five clients. Rear-camera supplemental images show the beret and heart visibly in flight and the frog back in formation; all four projected airborne centres are inside the screen. All nine player rigs, distant LOD and non-empty-inventory reload pass. Three screen sizes retain 33 unobstructed control targets.",
+  "checks": [
+    "two Chrome players and three wire peers, 45 unique bots, sixth rejected",
+    "four portrait buttons load and Z cycles through all nine kinds back to the first",
+    "all nine exact models selected, held at the hand, thrown, landed and automatically rejoined on all five clients",
+    "two owners throw different companions at once and each receives their own bot",
+    "all nine bot meshes switch at actual distance and reuse the exact original skeleton and material",
+    "all nine playable characters hold and throw with their delivered rig",
+    "attack releases the hand safely and keeps existing combat available",
+    "walking companions catch the moving owner",
+    "simulated standard-controller L3 holds/throws and D-pad up recalls through the real UI",
+    "menu exposes all nine choices and recall",
+    "portrait and landscape controls fit and remain clickable",
+    "reload retains non-empty inventory and recreates exactly nine owned companions"
+  ],
+  "priorExactAssetsPreserved": 91
+}

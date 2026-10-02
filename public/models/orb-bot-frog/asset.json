@@ -1,0 +1,140 @@
+{
+  "modelKey": "orb-bot-frog",
+  "name": "かえるbot",
+  "kind": "companion",
+  "candidate": 1,
+  "revision": "01",
+  "status": "integrated-reviewed-prototype",
+  "url": "/models/orb-bot-frog/model-r01.glb",
+  "sha256": "cdd25740bb82c8553f3acc174d29e1b016729af1eb60ddf2e0d4ce7f479b5741",
+  "bytes": 27659764,
+  "triangles": 41638,
+  "bones": 2,
+  "upAxis": "Y",
+  "forwardAxis": "+Z",
+  "heightMetres": 0.2678865952403118,
+  "widthMetres": 0.28,
+  "lengthMetres": 0.2797204143383655,
+  "placement": {
+    "pivot": "ground-centred",
+    "scale": 1
+  },
+  "portrait": {
+    "url": "/models/orb-bot-frog/portrait.png",
+    "sha256": "0930a7dcb766477aae7bc44c54e53981af7758a2148cc79e8535fa4311380211"
+  },
+  "clips": [
+    {
+      "name": "Catch",
+      "seconds": 0.30000001192092896,
+      "loop": false,
+      "rootMotion": "in-place",
+      "fps": 60
+    },
+    {
+      "name": "Held_Loop",
+      "seconds": 1.2000000476837158,
+      "loop": true,
+      "rootMotion": "in-place",
+      "fps": 60
+    },
+    {
+      "name": "Idle_Loop",
+      "seconds": 2.4000000953674316,
+      "loop": true,
+      "rootMotion": "in-place",
+      "fps": 60
+    },
+    {
+      "name": "Land",
+      "seconds": 0.4166666567325592,
+      "loop": false,
+      "rootMotion": "in-place",
+      "fps": 60
+    },
+    {
+      "name": "Run_Loop",
+      "seconds": 0.4000000059604645,
+      "loop": true,
+      "rootMotion": "in-place",
+      "fps": 60
+    },
+    {
+      "name": "Thrown_Loop",
+      "seconds": 0.8999999761581421,
+      "loop": true,
+      "rootMotion": "in-place",
+      "fps": 60
+    },
+    {
+      "name": "Walk_Loop",
+      "seconds": 0.6000000238418579,
+      "loop": true,
+      "rootMotion": "in-place",
+      "fps": 60
+    }
+  ],
+  "locomotion": {
+    "Walk_Loop": {
+      "metresPerSecond": 3,
+      "cycleSeconds": 0.6
+    },
+    "Run_Loop": {
+      "metresPerSecond": 3,
+      "cycleSeconds": 0.4
+    }
+  },
+  "lods": [
+    {
+      "url": "/models/orb-bot-frog/lod-r01.glb",
+      "sha256": "4f50f276ba068a6476021bc34abd3f2cc73909db7baa1ca2c881ee96a94f34cb",
+      "bytes": 1926104,
+      "triangles": 27062,
+      "distanceMetres": 9,
+      "purpose": "animated-medium-lod-geometry"
+    }
+  ],
+  "provenance": {
+    "provider": "Codex",
+    "claudeUsed": false,
+    "referenceGenerator": "Built-in imagegen",
+    "referenceImage": "assets/shape-bots/source/frog-reference-v1.png",
+    "referenceSha256": "0930a7dcb766477aae7bc44c54e53981af7758a2148cc79e8535fa4311380211",
+    "userReference": "assets/shape-bots/source/user-reference.png",
+    "userReferenceSha256": "9836ed1b161feba83535854a67235b74ceb1c4dbe26a2098e53a33559c69ad77",
+    "reconstruction": "Local TRELLIS-2 v0.8.1 official Vulkan / 512 / seed42; measured source-preserving reduction and squash/hop rig.",
+    "denseSha256": "54e7c94d5213d5f209faefaa9468c0f2fb21c7b72139a763b9fd079b1f3692fd",
+    "sourceUvAndAlbedoPreserved": false,
+    "sourceUvPreserved": true,
+    "materialRepair": {
+      "method": "Reference-derived body-colour calibration of source albedo; neutral white/black features retained",
+      "records": [
+        {
+          "reference": "C:\\Users\\yurin\\Desktop\\projects\\CRO-MAGNON\\assets\\shape-bots\\source\\frog-reference-v1.png",
+          "targetHsv": [
+            0.20806099474430084,
+            0.850649356842041,
+            0.7058823704719543
+          ],
+          "denseHsv": [
+            0.2389558106660843,
+            0.8350515961647034,
+            0.7647059559822083
+          ],
+          "hueShift": -0.030894815921783447,
+          "changedPixels": 14570072,
+          "unchangedPixels": 2207144,
+          "alphaExact": true,
+          "originalUVsExact": true
+        }
+      ]
+    },
+    "candidateFile": "output/model-generation/models/orb-bot-frog/work/rig/revision-01/candidate.glb",
+    "visualReview": "assets/shape-bots/reviews/frog-r01.json"
+  },
+  "notes": [
+    "Each of the four subjects has its own independent image and dense reconstruction. No visible primitive-built geometry.",
+    "Five loop clips and two one-shots; in-place, server-timed throws and return; original skeleton and material shared with LOD."
+  ],
+  "gameQA": "output/playwright/shape-bots/game-1790867552591"
+}

@@ -20,6 +20,7 @@ import { toggleCaveFire } from '../shared/cave-fire.mjs';
 import { handleRimoNekoAction } from '../shared/rimo-neko.mjs';
 import { handleCompanion524Action } from '../shared/companion-524.mjs';
 import { stopActor } from '../shared/combat.mjs';
+import { handleOrbBotAction, releaseHeldOrbBot, syncOrbBots } from '../shared/orb-bots.mjs';
 const distance = (a, b) => Math.hypot(a.x - b.x, a.z - b.z);
 export function createActionHandler({
   notice: sendNotice,
@@ -34,6 +35,14 @@ export function createActionHandler({
     sendNotice(player, text, tone, false);
   return function act(room, player, message, now) {
     const action = message.action;
+    if (['throwBot', 'recallBots', 'cancelBotThrows'].includes(action)) {
+      if (handleOrbBotAction(room, player, action, message.targetId, now))
+        broadcast(room, snapshot(room));
+      return;
+    }
+    // A held companion never occupies the hand during another action.
+    if (!['cancelCook', 'cancelFishing', 'cancelCoastal'].includes(action))
+      releaseHeldOrbBot(room, player, now);
     if (action === 'petRimo' || action === 'dismissRimo') {
       if (action === 'petRimo' && room.companion524?.petPlayerId === player.id) return;
       if (handleRimoNekoAction(room, player, action, now)) {
@@ -46,6 +55,7 @@ export function createActionHandler({
       if (action === 'pet524' && room.rimoNeko?.petPlayerId === player.id) return;
       if (handleCompanion524Action(room, player, action, now)) {
         if (action === 'pet524') stopActor(player);
+        syncOrbBots(room, now);
         broadcast(room, snapshot(room));
       }
       return;

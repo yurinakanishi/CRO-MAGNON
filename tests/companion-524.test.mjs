@@ -128,9 +128,10 @@ test('pet event is rate limited, latest valid pet chooses one owner and only tha
   assert.equal(c.mode, 'returning');
 });
 
-test('524 stays put when its follower turns in place or walks toward it', () => {
+test('before joining dots, 524 stays put when its follower turns in place or walks toward it', () => {
   const { room, c, p } = fixture();
-  assert.ok(handleCompanion524Action(room, p, 'pet524', 10000));
+  c.followPlayerId = p.id;
+  c.mode = 'following';
   advance(room, 10000, 6);
   const before = { x: c.x, z: c.z };
   for (let i = 0; i < 160; i++) {

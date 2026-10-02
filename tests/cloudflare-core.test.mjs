@@ -45,3 +45,31 @@ test('free quotas refuse excess usage and reserved usage survives restart', () =
 test('unknown saved schema fails closed instead of silently resetting progress', () => {
   assert.throws(() => createGameCore().importState({ version: 999 }), /Unsupported saved world/);
 });
+
+test('legacy version 2 cloud checkpoint preserves progress and supplies later world features', () => {
+  const core = createGameCore({ resumeGraceMs: 86400000, keepEmptyRooms: true });
+  const socket = new Socket();
+  core.connect(socket, new URLSearchParams({ room: 'EMBER', name: 'Legacy traveller', resume: '1' }));
+  const welcome = socket.messages.find(m => m.type === 'welcome');
+  const room = core.rooms.get('EMBER');
+  room.camp.wood = 8;
+  room.players.get(welcome.id).inventory.wood = 11;
+  room.resources[0].amount = 2;
+  const saved = JSON.parse(JSON.stringify(core.exportState()));
+  saved.worldVersion = 2;
+  for (const field of ['gulf', 'boats', 'residents', 'households', 'companion524', 'rimoNeko'])
+    delete saved.rooms[0][field];
+  const before = JSON.stringify(saved);
+  const restored = createGameCore({ resumeGraceMs: 86400000, keepEmptyRooms: true });
+  restored.importState(saved);
+  const fresh = new Socket();
+  restored.connect(fresh, new URLSearchParams({ room: 'EMBER', resume: '1', session: welcome.session }));
+  assert.equal(fresh.messages.find(m => m.type === 'welcome').resumed, true);
+  const recovered = restored.rooms.get('EMBER');
+  assert.equal(recovered.camp.wood, 8);
+  assert.equal(recovered.players.get(welcome.id).inventory.wood, 11);
+  assert.equal(recovered.resources[0].amount, 2);
+  assert.ok(recovered.rimoNeko && recovered.companion524 && recovered.gulf);
+  assert.equal(JSON.stringify(saved), before);
+  assert.throws(() => createGameCore().importState({ ...saved, worldVersion: 999 }), /Unsupported saved world/);
+});

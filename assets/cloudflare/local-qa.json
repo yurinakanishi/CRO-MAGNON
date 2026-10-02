@@ -1,5 +1,5 @@
 {
-  "checkedAt": "2026-09-07T07:59:02.285Z",
+  "checkedAt": "2026-10-01T03:49:43.356Z",
   "base": "http://127.0.0.1:8787",
   "status": "passed",
   "fiveClients": true,
@@ -8,6 +8,7 @@
   "attack": true,
   "reconnect": true,
   "privateFilesNotServed": true,
-  "verifiedGLBs": 46,
-  "stateSamples": 149
+  "verifiedGLBs": 83,
+  "splitModelsVerified": 4,
+  "stateSamples": 317
 }

@@ -1,11 +1,16 @@
 // UI interaction in an isolated, unsaved world. Positions/camera are explicit fixtures.
 import assert from 'node:assert/strict';
 import { mkdir, writeFile } from 'node:fs/promises';
+import { resolve, join } from 'node:path';
+import { pathToFileURL } from 'node:url';
 import WebSocket from 'ws';
-import { createGameServer } from '../dist/server.mjs';
-import { CHARACTER_MODELS } from '../dist/shared/characters.mjs';
-import { stopActor } from '../dist/shared/combat.mjs';
-import { BRIDGE } from '../dist/shared/scenery-layout.mjs';
+import { verifyRimoHappyLifecycle } from './qa-rimo-happy-lifecycle.mjs';
+const root = resolve(process.argv[2] || '.');
+const load = (file) => import(pathToFileURL(join(root, 'dist', file)));
+const { createGameServer } = await load('server.mjs');
+const { CHARACTER_MODELS } = await load('shared/characters.mjs');
+const { stopActor } = await load('shared/combat.mjs');
+const { BRIDGE } = await load('shared/scenery-layout.mjs');
 const { chromium } = await import(
   process.env.PLAYWRIGHT_MODULE ||
     'file:///C:/Users/yurin/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/node_modules/playwright/index.mjs'
@@ -229,6 +234,8 @@ try {
     await shot(a, character.key + '-stroke');
     await until(() => c.followPlayerId === a.p.id, character.key + ' friendship');
     await sleep(900);
+    assert.equal(b.seen.state.rimoNeko.petContactAt, c.petContactAt);
+    assert.ok(peers.every(peer => peer.seen.rimoNeko?.petContactAt === c.petContactAt));
     await shot(a, character.key + '-happy');
     const result = await a.page.evaluate(async () => {
       window.rimoUntil = 0;
@@ -246,6 +253,9 @@ try {
       return { samples: rimoFrames, video };
     });
     await writeFile(`${out}/${character.key}.webm`, Buffer.from(result.video, 'base64'));
+    const happy = result.samples.filter(s => s.reaction === 'happy');
+    assert.ok(happy.some(s => s.hearts >= 3), character.key + ': completed pet emits hearts');
+    assert.ok(result.samples.filter(s => s.reaction !== 'happy').every(s => s.hearts === 0));
     const contact = result.samples.filter(
         (s) =>
           s.weight > 0.99 &&
@@ -259,6 +269,8 @@ try {
       samples: contact.length,
       maxGap,
       minDepth: Math.min(...contact.map((s) => s.depth)),
+      happySamples: happy.length,
+      maxHearts: Math.max(...happy.map(s => s.hearts)),
     });
     samples.push({ skin: character.key, frames: result.samples });
     console.log('PET', character.key, maxGap);
@@ -269,6 +281,8 @@ try {
       'five-client friendship',
     );
   }
+  const lifecycle = await verifyRimoHappyLifecycle(a.page);
+  checks.push({ scenario: 'happy lifecycle with actual GLB', checks: lifecycle });
   await setSkin(a, CHARACTER_MODELS[0]);
   await sleep(300);
   await a.page.locator('#world').focus();
@@ -489,6 +503,7 @@ try {
     `${out}/result.json`,
     JSON.stringify(
       {
+        root,
         checks,
         errors,
         failure,

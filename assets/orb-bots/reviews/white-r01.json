@@ -1,0 +1,10 @@
+{
+  "candidate": 1,
+  "revision": "01",
+  "decision": "rejected-visual",
+  "sha256": "f8a19129e208a185bbd261d43a98dc287ad239a72321679c394c038c27e80d01",
+  "reason": "TRELLIS duplicated eye fragments on the crown; the front eyes became uneven. Dense front renders confirm that the source reconstruction contains the texture defect.",
+  "retained": "output/model-generation/models/orb-bot-white/work/rig/revision-01",
+  "evidence": "output/model-generation/models/orb-bot-white/qa/dense-03",
+  "nextRevision": "02: preserve the TRELLIS surface and bake ink from the immutable reference PNG into a repaired UV atlas"
+}

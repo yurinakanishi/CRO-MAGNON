@@ -10,8 +10,8 @@ import { CarrySupportPose } from './carry-support-pose.js';
 import { LeanPose } from './lean-pose.js';
 import { GroundPettingPose } from './ground-petting-pose.js';
 import { PettingPose } from './petting-pose.js';
-import { OctopusRidingPose, OctopusJumpPose, OctopusPettingPose } from './octopus-pose.js';
-import { sha256 } from './asset-hash.js';
+import { OrbBotPose } from './orb-bot-pose.js';
+import { downloadVerifiedAsset } from './asset-download.js';
 import { installSkinnedBounds } from './skinned-bounds.js';
 import { loadVerifiedGLB } from './world-assets.js';
 import { configureActorPerformance, disposeActorPerformance } from './performance-lod.js';
@@ -85,15 +85,7 @@ export class CharacterAssets {
     const response = await fetch(this.manifestURL);
     if (!response.ok) throw new Error(`Character manifest: HTTP ${response.status}`);
     const asset = await response.json();
-    const url = new URL(asset.url, location.origin);
-    if (url.origin !== location.origin) throw new Error('Character must be served by this game');
-    const file = await fetch(url);
-    if (!file.ok) throw new Error(`Character GLB: HTTP ${file.status}`);
-    const bytes = await file.arrayBuffer();
-    if (bytes.byteLength !== asset.bytes)
-      throw new Error('Character GLB length does not match its verified manifest');
-    if ((await sha256(bytes)) !== asset.sha256)
-      throw new Error('Character GLB hash does not match its verified manifest');
+    const bytes = await downloadVerifiedAsset(asset);
     const manager = new THREE.LoadingManager();
     manager.setURLModifier((resource) => {
       if (!resource.startsWith('blob:') && !resource.startsWith('data:'))
@@ -126,6 +118,8 @@ export class CharacterAssets {
     const template = await this.load();
     if (!template || this.disposed) return null;
     const { gltf, lod, asset } = template;
+    const octopus = asset.bodyPlan === 'octopus' ? await import('./octopus-pose.js') : null;
+    if (this.disposed) return null;
     const root = clone(gltf.scene),
       personalMaterials = new Map();
     root.traverse((node) => {
@@ -146,11 +140,16 @@ export class CharacterAssets {
     configureActorPerformance(root, lod?.scene, asset);
     const { rotation: gripUp } = handGripPlacement(root);
     installSkinnedBounds(root);
-    const octopus = asset.bodyPlan === 'octopus';
-    const ridingPose = octopus ? new OctopusRidingPose(root, gltf.animations) : new RidingPose(root);
-    const jumpPose = octopus ? new OctopusJumpPose(root, gltf.animations) : new JumpPose(root);
-    const pettingPose = octopus ? new OctopusPettingPose(root) : new PettingPose(root);
-    const groundPettingPose = octopus ? new OctopusPettingPose(root) : new GroundPettingPose(root);
+    const ridingPose = octopus
+      ? new octopus.OctopusRidingPose(root, gltf.animations)
+      : new RidingPose(root);
+    const jumpPose = octopus
+      ? new octopus.OctopusJumpPose(root, gltf.animations)
+      : new JumpPose(root);
+    const pettingPose = octopus ? new octopus.OctopusPettingPose(root) : new PettingPose(root);
+    const groundPettingPose = octopus
+      ? new octopus.OctopusPettingPose(root)
+      : new GroundPettingPose(root);
     const shoulderSeat = asset.modelKey === 'giant-ape' ? apeShoulderSeat(root) : null;
     const carrySupportPose = shoulderSeat ? new CarrySupportPose(root) : null;
     const leanPose =
@@ -160,6 +159,7 @@ export class CharacterAssets {
       runSpeed: asset.locomotion.Run_Loop.metresPerSecond,
       groundLocomotion: !!asset.humanLocomotion,
     });
+    const orbBotPose = new OrbBotPose(root);
     animation.mixer.update(Math.random() * animation.current.getClip().duration);
     const instance = {
       root,
@@ -173,6 +173,7 @@ export class CharacterAssets {
       jumpPose,
       pettingPose,
       groundPettingPose,
+      orbBotPose,
       dispose: () => {
         if (!this.instances.delete(instance)) return;
         animation.dispose();

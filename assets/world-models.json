@@ -551,17 +551,6 @@
       "revision": "midpoint-r01"
     },
     {
-      "key": "rimo-neko",
-      "name": "リモねこ",
-      "kind": "companion",
-      "candidate": 1,
-      "status": "integrated-reviewed-prototype",
-      "sha256": "19e44d1e02c501bc10cc02929383e55a0f6ee9f31e1b5ec76c42686c606dcfb1",
-      "delivery": "/models/rimo-neko/model-r08.glb",
-      "triangles": 136745,
-      "gameQA": "assets/rimo-neko/README.md"
-    },
-    {
       "key": "howkey-scientist",
       "name": "Howkey 科学使い",
       "kind": "humanoid",
@@ -588,6 +577,125 @@
       "sha256": "09366f85545b6e79967e52977e04f25a6a75e5833c51e00f5e05565e5d661ac5",
       "delivery": "/models/maruimo-octopus/model-r10.glb",
       "subject": "Friendly octopus-human with brown hair, round glasses, cable knit sweater, red lower arms, cream suction cups and a long flexible right tentacle."
+    },
+    {
+      "key": "rimo-neko",
+      "name": "リモねこ",
+      "kind": "companion",
+      "candidate": 1,
+      "status": "integrated-reviewed-prototype",
+      "sha256": "545900f93a483fb1b9cb7483c4fa79a97c3b40d107054e6ef4cadd34fe12205b",
+      "delivery": "/models/rimo-neko/model-r10.glb",
+      "triangles": 136745,
+      "gameQA": "assets/rimo-neko/README.md"
+    },
+    {
+      "key": "orb-bot-white",
+      "name": "しろbot",
+      "kind": "companion",
+      "height": 0.28,
+      "geometryResolution": 512,
+      "referenceVersion": 1,
+      "status": "integrated-reviewed-prototype",
+      "sha256": "0e68d2dda0a2d11396a50a853cefcd3897e53abd9b18e2023bd1e2bc6f4d266a",
+      "delivery": "/models/orb-bot-white/model-r03.glb",
+      "subject": "しろbot: ＾＾; independently reconstructed round companion."
+    },
+    {
+      "key": "orb-bot-blue",
+      "name": "あおbot",
+      "kind": "companion",
+      "height": 0.28,
+      "geometryResolution": 512,
+      "referenceVersion": 1,
+      "status": "integrated-reviewed-prototype",
+      "sha256": "dee691fc7c35bde8079cd394744a2bdf050380528d30e86ec823cf8269806304",
+      "delivery": "/models/orb-bot-blue/model-r03.glb",
+      "subject": "あおbot: ＞＜; independently reconstructed round companion."
+    },
+    {
+      "key": "orb-bot-green",
+      "name": "みどりbot",
+      "kind": "companion",
+      "height": 0.28,
+      "geometryResolution": 512,
+      "referenceVersion": 1,
+      "status": "integrated-reviewed-prototype",
+      "sha256": "4f7461ab063fce7aae319745520523bb2d84938ba7a11b765f3ea6b34dbb12ce",
+      "delivery": "/models/orb-bot-green/model-r03.glb",
+      "subject": "みどりbot: ＋＋; independently reconstructed round companion."
+    },
+    {
+      "key": "orb-bot-purple",
+      "name": "むらさきbot",
+      "kind": "companion",
+      "height": 0.28,
+      "geometryResolution": 512,
+      "referenceVersion": 1,
+      "status": "integrated-reviewed-prototype",
+      "sha256": "5cc2232ba84cacbd2616ec6979757f41822cb4d845c7cbe873888756f6059e96",
+      "delivery": "/models/orb-bot-purple/model-r03.glb",
+      "subject": "むらさきbot: ○○; independently reconstructed round companion."
+    },
+    {
+      "key": "orb-bot-orange",
+      "name": "オレンジbot",
+      "kind": "companion",
+      "height": 0.28,
+      "geometryResolution": 512,
+      "referenceVersion": 1,
+      "status": "integrated-reviewed-prototype",
+      "sha256": "35a5de83fc555c537e918000b6c2f0fabed5ce6ac2f837aa78930e7547f99d55",
+      "delivery": "/models/orb-bot-orange/model-r08.glb",
+      "subject": "オレンジbot: －－; independently reconstructed round companion."
+    },
+    {
+      "key": "orb-bot-beret",
+      "name": "ベレーbot",
+      "kind": "companion",
+      "height": 0.28,
+      "geometryResolution": 512,
+      "referenceVersion": 1,
+      "status": "integrated-reviewed-prototype",
+      "sha256": "0c18e377dc69de6c1fce9bd2baaade3fb20914f2e547d382ec5a6a8b24e304e0",
+      "delivery": "/models/orb-bot-beret/model-r03.glb",
+      "subject": "the LEFTMOST vivid cyan-blue character wearing a BLACK BERET. Its body is a compact soft asymmetric rounded blob, with a narrower rounded head blending into a broader round lower body, not a perfect sphere. Exactly TWO small vertical black oval eyes on the front. Keep its black soft French beret tilted slightly to the viewer's left, with its little top stem and puffy crown. Reconstruct the cropped left edge naturally as a continuation of the same rounded blue body. The hat is a distinct thick three-dimensional fitted accessory."
+    },
+    {
+      "key": "orb-bot-frog",
+      "name": "かえるbot",
+      "kind": "companion",
+      "height": 0.2678865952403118,
+      "geometryResolution": 512,
+      "referenceVersion": 1,
+      "status": "integrated-reviewed-prototype",
+      "sha256": "cdd25740bb82c8553f3acc174d29e1b016729af1eb60ddf2e0d4ce7f479b5741",
+      "delivery": "/models/orb-bot-frog/model-r01.glb",
+      "subject": "the LIME-GREEN second character. Its compact plush pear-shaped body has a broad flat-rounded bottom and TWO prominent raised frog-like eye mounds on the top. Each eye has a large white front with one round black pupil. Keep the expressive protruding two eyes and lime/apple green color. There is NO mouth and no limbs. The two eye mounds are substantial three-dimensional anatomy attached to the body, not flat markings."
+    },
+    {
+      "key": "orb-bot-triangle",
+      "name": "さんかくbot",
+      "kind": "companion",
+      "height": 0.25344121781436846,
+      "geometryResolution": 512,
+      "referenceVersion": 1,
+      "status": "integrated-reviewed-prototype",
+      "sha256": "a69f9a4f5d65fe867f5fd6865a41f2862282ef3ae7fa8858774b7797ddf6cf1b",
+      "delivery": "/models/orb-bot-triangle/model-r06.glb",
+      "subject": "the GOLDEN-YELLOW third character. Its complete body is an upright thick rounded triangular plush shape with a high softly rounded apex and broad rounded horizontal bottom. It wears large ROUND BLACK EYEGLASS FRAMES with a visible bridge and short temples. Inside each transparent lens a simple black upward-curving U-shaped closed eye is printed on the yellow face, expressing peaceful happiness. Exactly two round rims, two U-shaped eyes, no nose and no mouth. Preserve the distinct triangular silhouette and thick three-dimensional round frames."
+    },
+    {
+      "key": "orb-bot-heart",
+      "name": "ハートbot",
+      "kind": "companion",
+      "height": 0.2440195634964502,
+      "geometryResolution": 512,
+      "referenceVersion": 1,
+      "status": "integrated-reviewed-prototype",
+      "sha256": "fe294cdc517abb4485b4379ffd4619fe4ff37a535d5463850f87b6ba612defc7",
+      "delivery": "/models/orb-bot-heart/model-r02.glb",
+      "subject": "the HOT-PINK/MAGENTA rightmost character. Its entire body is a plush upright HEART shape, with two large round top lobes, a clear central V notch and one softly rounded bottom point. It wears small ROUND BLACK SUNGLASSES: two opaque dark circular lenses with a short black bridge and little temples. Keep the pronounced heart outline, saturated hot pink and cool round sunglasses. No mouth, no nose, no limbs, no extra eyes behind the opaque sunglasses."
     }
   ],
   "reuse": {

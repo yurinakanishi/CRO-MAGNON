@@ -1,4 +1,5 @@
 import { createRimoNeko, updateRimoNeko, restoreRimoNeko } from '../shared/rimo-neko.mjs';
+import { updateOrbBots } from '../shared/orb-bots.mjs';
 import { updateFishing, cancelFishing } from '../shared/fishing.mjs';
 import { DEFAULT_RULES, EXHIBITION_RULES, clientRules, roomRules } from '../shared/room-rules.mjs';
 import { createHouseholds, householdSnapshots } from '../shared/household-life.mjs';
@@ -471,15 +472,36 @@ export function createGameCore({
           message.action === 'cancelCook' ||
           message.action === 'cancelFishing' ||
           message.action === 'cancelCoastal' ||
+          message.action === 'throwBot' ||
+          message.action === 'recallBots' ||
+          message.action === 'cancelBotThrows' ||
           message.action === 'rift' ||
           message.action === 'warp' ||
           message.action === 'changeCharacter' ||
           now - player.lastAction >= 450)
       ) {
         if (message.action === 'jump' && !canStartJump(player, now)) return;
-        if (!['cancelFishing', 'cancelCoastal', 'cancelCook', 'wave'].includes(message.action))
+        if (
+          ![
+            'cancelFishing',
+            'cancelCoastal',
+            'cancelCook',
+            'cancelBotThrows',
+            'recallBots',
+            'wave',
+          ].includes(message.action)
+        )
           cancelBarter(room, player.id, now, '別の作業を始めたので、交換を中止しました。');
-        if (!['cancelFishing', 'cancelCoastal', 'jump'].includes(message.action))
+        if (
+          ![
+            'cancelFishing',
+            'cancelCoastal',
+            'cancelBotThrows',
+            'throwBot',
+            'recallBots',
+            'jump',
+          ].includes(message.action)
+        )
           player.lastAction = now;
         act(room, player, message, now);
       } else if (message.type === 'chat' && now - player.lastChat >= 600) {
@@ -556,6 +578,7 @@ export function createGameCore({
       if (!room.players.size) {
         updateCompanion524(room, dt, now);
         updateRimoNeko(room, dt, now);
+        updateOrbBots(room, dt, now);
         updateBarters(room, now);
         for (const resident of room.residents) {
           resident.forageWork = null;
@@ -609,6 +632,7 @@ export function createGameCore({
       const huntingChanged = updateHunting(room, now, notice);
       updateCompanion524(room, dt, now);
       updateRimoNeko(room, dt, now);
+      updateOrbBots(room, dt, now);
       updateAnimals(room, dt, now);
       const enemiesChanged = updateEnemies(room, dt, now, notice);
       updateCarrying(room, now);
@@ -733,10 +757,12 @@ export function createGameCore({
     if (
       !saved ||
       saved.version !== 1 ||
-      ![3, WORLD.version].includes(saved.worldVersion) ||
+      ![2, 3, WORLD.version].includes(saved.worldVersion) ||
       !Array.isArray(saved.rooms)
     ) {
-      throw new Error('Unsupported saved world; refusing to overwrite it');
+      throw new Error(
+        `Unsupported saved world (schema ${Number(saved?.version)}, world ${Number(saved?.worldVersion)}); refusing to overwrite it`,
+      );
     }
     if (rooms.size) throw new Error('Restore requires an empty game');
     // Restoring must not attach sockets or live mutations to the caller's saved
@@ -836,6 +862,9 @@ export function createGameCore({
       for (const entry of record.sessions)
         if (entry.expiresAt > runtime.now()) {
           const player = entry.player;
+          // Restored profiles must belong to this build's available catalog too.
+          Object.assign(player, normalizeCharacter(player));
+          player.radius = characterModel(player).radius ?? WORLD.playerRadius;
           if (player.boatId) {
             const boat = room.boats.find((b) => b.id === player.boatId);
             if (boat) Object.assign(player, boat.shore);

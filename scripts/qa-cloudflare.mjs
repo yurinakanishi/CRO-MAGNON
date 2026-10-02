@@ -2,6 +2,7 @@ import assert from 'node:assert/strict';
 import WebSocket from 'ws';
 import { writeFile, mkdir, readFile } from 'node:fs/promises';
 import { createHash } from 'node:crypto';
+import { downloadVerifiedAsset } from '../dist/src/asset-download.js';
 const base = process.argv[2] || 'http://127.0.0.1:8787';
 const pause = ms => new Promise(r => setTimeout(r, ms));
 const clients = [];
@@ -16,6 +17,7 @@ function join(name, session) {
 }
 try {
   assert.equal((await fetch(`${base}/api/health`).then(r => r.json())).hosting, 'cloudflare-free');
+  assert.equal((await fetch(`${base}/api/status`).then(r => r.json())).players, 0, 'Do not run public-room QA while somebody is playing');
   for (const url of ['/.env', '/server.mjs', '/models/cro-magnon-hunter/preview.glb']) assert.equal((await fetch(base + url)).status, 404);
   const peers = Array.from({ length: 5 }, (_, i) => join(`Cloud QA ${i}`));
   const welcome = await Promise.all(peers.map(c => c.wait(m => m.type === 'welcome')));
@@ -31,14 +33,14 @@ try {
   const back = join('Ignored replacement name', welcome[0].session);
   const resumed = await back.wait(m => m.type === 'welcome');
   assert.equal(resumed.resumed, true); assert.equal(resumed.id, welcome[0].id);
-  const build = JSON.parse(await readFile('assets/cloudflare/build.json'));
+  const build = JSON.parse(await readFile('output/cloudflare-build.json'));
   for (const record of build.models) {
-    const response = await fetch(base + record.url); assert.equal(response.status, 200, record.url);
-    const bytes = Buffer.from(await response.arrayBuffer());
+    const bytes = Buffer.from(await downloadVerifiedAsset(record, base));
     assert.equal(createHash('sha256').update(bytes).digest('hex'), record.sha256, record.url);
   }
   const result = { checkedAt: new Date().toISOString(), base, status: 'passed', fiveClients: true, sixthRefused: true,
     movement: true, attack: true, reconnect: true, privateFilesNotServed: true, verifiedGLBs: build.models.length,
+    splitModelsVerified: build.models.filter(model => model.parts).length,
     stateSamples: peers.reduce((sum, peer) => sum + peer.messages.filter(m => m.type === 'state').length, 0) };
   await mkdir('assets/cloudflare', { recursive: true });
   await writeFile(`assets/cloudflare/${base.startsWith('http://127.') ? 'local' : 'live'}-qa.json`, JSON.stringify(result, null, 2));

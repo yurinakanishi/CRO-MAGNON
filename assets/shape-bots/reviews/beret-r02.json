@@ -1,0 +1,9 @@
+{
+  "candidate": 1,
+  "revision": "02",
+  "decision": "visual-rejected",
+  "sha256": "ca8bc944458d5460a18f382d357ff0c1efc3e7fd2c7e952557c924d30f1ec42f",
+  "review": "Correct blue, intact beret and eyes. The plain-material close review shows angular shading near the left cheek after reduction. The saved mesh still contains imported custom split normals although its geometry changed. Recalculate smooth normals on the reduced source surface and its LOD, retaining this revision.",
+  "visualEvidence": "output/model-generation/models/orb-bot-beret/qa/final-02",
+  "gameIntegrationVerified": false
+}

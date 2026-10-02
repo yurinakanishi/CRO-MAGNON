@@ -4,6 +4,7 @@ import type { CollisionWorld } from './collision.mjs';
 import { CAMP } from './world.mjs';
 import { interactionVisible } from './interactions.mjs';
 import { attackProfile } from './combat-profiles.mjs';
+import { characterModel } from './characters.mjs';
 import { jumpProgress } from './jumping.mjs';
 import type { RimoNeko, RimoNekoSnapshot } from './rimo-neko-types.mjs';
 export type { RimoNeko, RimoNekoSnapshot } from './rimo-neko-types.mjs';
@@ -19,7 +20,7 @@ export const RIMO_NEKO = Object.freeze({
   petCooldownMs: 1400,
   petApproachMs: 4000,
   petStrokeMs: 1600,
-  happyMs: 900,
+  happyMs: 1600,
   hitMs: 500,
   hissMs: 2100,
   impulse: 3.4,
@@ -213,7 +214,7 @@ export function handleRimoNekoAction(
       ? [0.3, 0.07, RIMO_NEKO.headHeight]
       : player.species === 'ape'
         ? [0.8, 0.25, RIMO_NEKO.headHeight]
-        : player.species === 'maruimo'
+        : characterModel(player).bodyPlan === 'octopus'
           ? [1.08, 0.12, RIMO_NEKO.headHeight]
           : player.species === 'howkey'
             ? [0.54, 0.12, RIMO_NEKO.headHeight]

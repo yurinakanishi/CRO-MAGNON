@@ -1,0 +1,10 @@
+{
+  "checkedAt": "2026-10-01T10:19:57.031Z",
+  "status": "passed",
+  "auditedFiles": 521,
+  "bundledWorkerAudited": true,
+  "publicCharacters": 8,
+  "localCharacters": 9,
+  "excludedCharacterNeverInOutboundPackets": true,
+  "priorInventoryPreserved": true
+}

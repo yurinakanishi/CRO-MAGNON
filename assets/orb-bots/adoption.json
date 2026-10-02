@@ -1,0 +1,64 @@
+{
+  "decision": "adopt",
+  "candidate": 1,
+  "revisions": {
+    "white": "03",
+    "blue": "03",
+    "green": "03",
+    "purple": "03",
+    "orange": "08"
+  },
+  "models": [
+    {
+      "key": "orb-bot-white",
+      "revision": "03",
+      "sha256": "0e68d2dda0a2d11396a50a853cefcd3897e53abd9b18e2023bd1e2bc6f4d266a",
+      "triangles": 5175,
+      "lodTriangles": 1811
+    },
+    {
+      "key": "orb-bot-blue",
+      "revision": "03",
+      "sha256": "dee691fc7c35bde8079cd394744a2bdf050380528d30e86ec823cf8269806304",
+      "triangles": 5227,
+      "lodTriangles": 1829
+    },
+    {
+      "key": "orb-bot-green",
+      "revision": "03",
+      "sha256": "4f7461ab063fce7aae319745520523bb2d84938ba7a11b765f3ea6b34dbb12ce",
+      "triangles": 5214,
+      "lodTriangles": 1824
+    },
+    {
+      "key": "orb-bot-purple",
+      "revision": "03",
+      "sha256": "5cc2232ba84cacbd2616ec6979757f41822cb4d845c7cbe873888756f6059e96",
+      "triangles": 5206,
+      "lodTriangles": 1822
+    },
+    {
+      "key": "orb-bot-orange",
+      "revision": "08",
+      "sha256": "35a5de83fc555c537e918000b6c2f0fabed5ce6ac2f837aa78930e7547f99d55",
+      "triangles": 2531,
+      "lodTriangles": 885
+    }
+  ],
+  "gameQA": "output/playwright/orb-bots/verified-20261001",
+  "gameVisualReview": "全5体の最終GLBで元画像の顔と丸い輪郭を確認。ゲームの小さな表示の黒いUV継ぎ目は解消。9人物の左手との接点、飛行、着地、地上での帰還、縦横画面の操作部を実Chromeで確認。再読込は既存タイトルからの参加を別実行で検証し、元のQA待機失敗も保持。",
+  "checks": [
+    "two Chrome players and three wire peers, 25 unique bots, sixth rejected",
+    "all five exact models selected, held at the hand, thrown, landed and automatically rejoined on all five clients",
+    "two owners throw different companions at once and each receives their own bot",
+    "all five bot meshes switch at actual distance and reuse the exact original skeleton and material",
+    "all nine playable characters hold and throw with their delivered rig",
+    "attack releases the hand safely and keeps existing combat available",
+    "walking companions catch the moving owner",
+    "simulated standard-controller L3 holds/throws and D-pad up recalls through the real UI",
+    "menu exposes all five choices and recall",
+    "portrait and landscape controls fit and remain clickable",
+    "reload through the existing title and setup restores the player inventory and recreates all five bots without duplicates",
+    "all 21 control hit targets fit at 844x390, 390x844 and 1280x800"
+  ]
+}

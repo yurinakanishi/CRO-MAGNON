@@ -1,0 +1,13 @@
+{
+  "candidate": 1,
+  "revision": "02",
+  "decision": "visual-approved-for-game-qa",
+  "sha256": "1c562290d6ae51fea8f9d62cf627695d802211f85f736c65743e26c8a7cf07b9",
+  "lodSha256": "becab68c827d467624b1f3d9bf84126d094dd8accd8c05420fd38b1101609497",
+  "review": "The exact exported GLB preserves the green round body and two separate black plus signs. Front, back, three-quarter and landing frames retain the reference face without extra marks. Neutral and clay renders show a smooth closed silhouette. Numeric main/LOD animation checks and the ten offline viewer checks passed.",
+  "numeric": "output/model-generation/models/orb-bot-green/work/rig/revision-02/qa/numeric.json",
+  "viewer": "output/model-generation/models/orb-bot-green/qa/final-02/viewer.html",
+  "viewerQA": "output/model-generation/models/orb-bot-green/qa/final-02/viewer-qa.json",
+  "visualEvidence": "output/model-generation/models/orb-bot-green/qa/final-02",
+  "gameIntegrationVerified": false
+}

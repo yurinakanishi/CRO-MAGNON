@@ -1,0 +1,42 @@
+[
+  {
+    "colour": "white",
+    "revision": "03",
+    "previous": "02",
+    "identicalAccessors": 54,
+    "meshesNodesSkinsAnimationsExact": true,
+    "lodBytesExact": true
+  },
+  {
+    "colour": "blue",
+    "revision": "03",
+    "previous": "02",
+    "identicalAccessors": 54,
+    "meshesNodesSkinsAnimationsExact": true,
+    "lodBytesExact": true
+  },
+  {
+    "colour": "green",
+    "revision": "03",
+    "previous": "02",
+    "identicalAccessors": 54,
+    "meshesNodesSkinsAnimationsExact": true,
+    "lodBytesExact": true
+  },
+  {
+    "colour": "purple",
+    "revision": "03",
+    "previous": "02",
+    "identicalAccessors": 54,
+    "meshesNodesSkinsAnimationsExact": true,
+    "lodBytesExact": true
+  },
+  {
+    "colour": "orange",
+    "revision": "08",
+    "previous": "06",
+    "identicalAccessors": 54,
+    "meshesNodesSkinsAnimationsExact": true,
+    "lodBytesExact": true
+  }
+]

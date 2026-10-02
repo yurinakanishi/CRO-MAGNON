@@ -1,0 +1,23 @@
+{
+  "decision": "adopt",
+  "candidate": 1,
+  "revision": "08",
+  "sha256": "19e44d1e02c501bc10cc02929383e55a0f6ee9f31e1b5ec76c42686c606dcfb1",
+  "source": "output/model-generation/models/rimo-neko/work/rig/revision-08/candidate.glb",
+  "triangles": 136745,
+  "bytes": 25693880,
+  "viewerQA": "output/model-generation/models/rimo-neko/qa/rig-08/browser/result.json",
+  "gameValidation": "passed",
+  "gameQA": "output/playwright/rimo-neko/game-motion-r08-c/result.json",
+  "gameVerificationGroups": 17,
+  "motionQA": "output/model-generation/models/rimo-neko/qa/rig-08/motion.json",
+  "preservationQA": "output/model-generation/models/rimo-neko/qa/rig-08/preservation.json",
+  "motionViewerQA": "output/model-generation/models/rimo-neko/qa/rig-08/motion-browser/result.json",
+  "neutralViews": 7,
+  "clayViews": 7,
+  "knownLimits": [
+    "No exhaustive mesh self-intersection proof or hair physics.",
+    "Reference-plane support measurements do not guarantee identical precision on every terrain surface.",
+    "Physical controllers and exhibition PCs are not visually verified."
+  ]
+}

@@ -15,6 +15,11 @@ export interface HelpCard {
 
 export const PC_HELP: readonly HelpCard[] = [
   {
+    key: 'C · Z · Q',
+    title: 'botを順番に投げる・呼ぶ',
+    note: '白・青・緑・紫・オレンジと、ベレー・かえる・さんかく・ハートの9匹。524も撫で終えると仲間になります。Cを押すたびに次の1匹を投げます。着地した場所で待ち、Qで全員が戻ります。Zで投げ始める種類を変更。メニューの「botたち」からも操作できます。',
+  },
+  {
     key: 'V / T',
     title: '524といっしょに',
     note: 'キャンプの524に近づいてVで撫でると、浮かんでついてきます。Tまたはメニューの「524をキャンプへ帰す」でお別れ。攻撃すると少し吹き飛びますが、反撃しません。',
@@ -74,6 +79,11 @@ export const PC_HELP: readonly HelpCard[] = [
 export function padHelp(): readonly HelpCard[] {
   const pad = controllerLabels();
   return [
+    {
+      key: '左スティック押し込み · ↑',
+      title: 'botを順番に投げる・呼ぶ',
+      note: '左スティックを押し込むたびに、次の1匹を投げます。投げた場所で待ち、十字キー↑で全員が戻ります。メニューの「botたち」で投げ始める種類を選べます。',
+    },
     { key: '左スティック', title: '移動', note: '浅く倒すと歩き、深く倒すと走ります。' },
     {
       key: '右スティック',

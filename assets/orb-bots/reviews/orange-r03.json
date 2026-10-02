@@ -1,0 +1,7 @@
+{
+  "decision": "reject",
+  "candidate": 1,
+  "revision": "03",
+  "sha256": "717832ab215768ac8027c40fa36e269554bb11b003306c25eabb252d40d81c47",
+  "finding": "Local vertex relaxation left folded cavity rims and a duplicate inner shell. Front screenshot visibly creased. LOD quality gate also failed. Preserve the partial export and all evidence."
+}

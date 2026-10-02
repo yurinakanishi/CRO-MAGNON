@@ -1,7 +1,7 @@
 import { WORLD } from './world.mjs';
 import { attackProfile, ATTACK_PROFILES, shoulderMagic } from './combat-profiles.mjs';
 import { hitRimoNeko } from './rimo-neko.mjs';
-import { hitCompanion524 } from './companion-524.mjs';
+import { hitCompanion524, companion524OnGround } from './companion-524.mjs';
 import { roomRules } from './room-rules.mjs';
 
 export const COMBAT = Object.freeze({
@@ -54,7 +54,9 @@ export function damageableTargets(room) {
   const playerIds = new Set(room.players.keys());
   return [
     ...(room.rimoNeko ? [{ target: room.rimoNeko, kind: 'rimoNeko' }] : []),
-    ...(room.companion524 ? [{ target: room.companion524, kind: 'companion524' }] : []),
+    ...(room.companion524 && companion524OnGround(room.companion524)
+      ? [{ target: room.companion524, kind: 'companion524' }]
+      : []),
     ...actors(room.animals)
       .filter((target) => !target.riderId)
       .map((target) => ({ target, kind: 'animal' })),

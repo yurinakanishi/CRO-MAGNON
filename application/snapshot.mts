@@ -11,6 +11,7 @@ import { barterSnapshots } from '../shared/barter.mjs';
 import { activeMapPins } from '../shared/map-pins.mjs';
 import { rimoNekoSnapshot } from '../shared/rimo-neko.mjs';
 import { companion524Snapshot } from '../shared/companion-524.mjs';
+import { orbBotSnapshots } from '../shared/orb-bots.mjs';
 export function snapshot(
   room,
   includeWorld = false,
@@ -19,6 +20,7 @@ export function snapshot(
   return {
     companion524: companion524Snapshot(room.companion524),
     rimoNeko: rimoNekoSnapshot(room.rimoNeko),
+    orbBots: orbBotSnapshots(room),
     mapPins: activeMapPins(room, now),
     barters: barterSnapshots(room),
     residents: residentSnapshots(room),

@@ -1,0 +1,28 @@
+{
+  "checkedAt": "2026-10-01T10:25:52.253Z",
+  "base": "https://cromagnonmmo.cro-magnon.workers.dev",
+  "status": "passed",
+  "servedFilesVerified": 26,
+  "publicCreditsOnly": true,
+  "excludedSupervisorFiles": [
+    "/title/qr-ryuichi.png",
+    "/title/avatar-ryuichi.jpg",
+    "/title/qr-otani.png",
+    "/title/avatar-otani.jpg",
+    "/title/qr-urata.png",
+    "/title/avatar-urata.jpg",
+    "/title/qr-nukonuko.png",
+    "/title/avatar-nukonuko.jpg"
+  ],
+  "runtimeTexturesVerified": 3,
+  "publicCharacterCount": 8,
+  "excludedCharacterFiles": [
+    "/models/maruimo-octopus/asset.json",
+    "/models/maruimo-octopus/portrait.png",
+    "/models/maruimo-octopus/model-r10.glb",
+    "/models/maruimo-octopus/lod-r10-bind-r03.glb",
+    "/src/octopus-pose.js",
+    "/models/maruimo-octopus/model-r10-09366f85545b.part-1.bin",
+    "/models/maruimo-octopus/model-r10-09366f85545b.part-2.bin"
+  ]
+}

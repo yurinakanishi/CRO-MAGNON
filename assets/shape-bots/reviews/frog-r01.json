@@ -1,0 +1,18 @@
+{
+  "candidate": 1,
+  "revision": "01",
+  "decision": "adopt",
+  "sha256": "cdd25740bb82c8553f3acc174d29e1b016729af1eb60ddf2e0d4ce7f479b5741",
+  "lodSha256": "4f50f276ba068a6476021bc34abd3f2cc73909db7baa1ca2c881ee96a94f34cb",
+  "review": "Reviewed the actual exported GLB from all seven static views, neutral and real clay, running and landing poses, and side/back/three-quarter held, walking, airborne and reunion views. Lime pear-shaped body, two raised eyes, white eye borders and black pupils remain recognizable. No extra face, limbs, open seams or detached eyes; springy in-place motion suits the limbless plush subject. All 70 live direction/speed observations and all-vertex checks pass. Ready for game QA.",
+  "numeric": "output/model-generation/models/orb-bot-frog/work/rig/revision-01/qa/numeric.json",
+  "viewer": "output/model-generation/models/orb-bot-frog/qa/final-01/viewer.html",
+  "viewerQA": "output/model-generation/models/orb-bot-frog/qa/final-01/viewer-qa.json",
+  "motionViewQA": "output/model-generation/models/orb-bot-frog/qa/final-01/motion-angles/qa.json",
+  "visualEvidence": "output/model-generation/models/orb-bot-frog/qa/final-01",
+  "gameIntegrationVerified": true,
+  "gameQA": "output/playwright/shape-bots/game-1790867552591",
+  "layoutQA": "output/playwright/shape-bots/layout-1790867788017",
+  "rearCameraFlightQA": "output/playwright/shape-bots/flight-1790867802767",
+  "gameVisualReview": "Inspected all four new held bots on the actual character hand; each preserves its distinct outline, face and accessories. All nine kinds complete synchronized windup, airborne, landing, return and reunion on five clients. Rear-camera supplemental images show the beret and heart visibly in flight and the frog back in formation; all four projected airborne centres are inside the screen. All nine player rigs, distant LOD and non-empty-inventory reload pass. Three screen sizes retain 33 unobstructed control targets."
+}

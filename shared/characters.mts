@@ -1,111 +1,20 @@
 import type { CharacterModel, CharacterProfile, Species, Gender } from './types.mjs';
-export const CHARACTER_MODELS: readonly Readonly<CharacterModel>[] = Object.freeze([
-  Object.freeze({
-    species: 'cro',
-    gender: 'female',
-    key: 'cro-magnon-woman',
-    carryable: false,
-    name: 'クロマニョン人 女性',
-  }),
-  Object.freeze({
-    species: 'cro',
-    gender: 'male',
-    key: 'cro-magnon-hunter',
-    carryable: false,
-    name: 'クロマニョン人 男性',
-  }),
-  Object.freeze({
-    species: 'nea',
-    gender: 'female',
-    key: 'neanderthal-woman',
-    carryable: false,
-    name: 'ネアンデルタール人 女性',
-  }),
-  Object.freeze({
-    species: 'nea',
-    gender: 'male',
-    key: 'neanderthal-hunter',
-    carryable: false,
-    name: 'ネアンデルタール人 男性',
-  }),
-  Object.freeze({
-    species: 'cat',
-    gender: 'female',
-    key: 'cat-kunoichi',
-    carryable: false,
-    name: '猫耳のクノイチ',
-    weapon: 'katana',
-    height: 1.68,
-    radius: 0.32,
-    // A light-footed ninja: quicker than the human tribes, slower than the ape's sprint.
-    walkSpeed: 2.1,
-    runSpeed: 5.8,
-  }),
-  Object.freeze({
-    species: 'bear',
-    gender: 'female',
-    key: 'desert-fennec-mage',
-    carryable: true,
-    name: '砂耳の魔法使い',
-    weapon: 'magic',
-    height: 0.78,
-    radius: 0.32,
-    // Its 60-damage magic is the strongest player attack, paid for with low mobility.
-    walkSpeed: 1.2,
-    runSpeed: 3.8,
-  }),
-  Object.freeze({
-    species: 'ape',
-    gender: 'male',
-    key: 'giant-ape',
-    carryable: false,
-    name: '巨腕の大猿',
-    weapon: 'unarmed',
-    height: 2,
-    radius: 0.76,
-    walkSpeed: 2.4,
-    runSpeed: 6.4,
-  }),
-  Object.freeze({
-    species: 'howkey',
-    gender: 'female',
-    key: 'howkey-scientist',
-    carryable: false,
-    name: 'Howkey 科学使い',
-    weapon: 'science',
-    height: 1.55,
-    radius: 0.32,
-    // Stay within the delivered CMU stride and the animation rate limits.
-    walkSpeed: 1.4,
-    runSpeed: 4.4,
-  }),
-  Object.freeze({
-    species: 'maruimo',
-    gender: 'male',
-    key: 'maruimo-octopus',
-    carryable: false,
-    name: 'まるぃも タコ人間',
-    weapon: 'tentacle',
-    bodyPlan: 'octopus',
-    height: 1.55,
-    radius: 0.6,
-    walkSpeed: 0.8,
-    runSpeed: 2.2,
-  }),
-]);
+import { CHARACTER_MODELS } from './character-profiles.mjs';
+export { CHARACTER_MODELS } from './character-profiles.mjs';
 
 // Missing choices (including profiles saved before gender existed) start female.
 export function normalizeCharacter({ species, gender }: CharacterProfile = {}): {
   species: Species;
   gender: Gender;
 } {
-  if (species === 'cat' || species === 'bear' || species === 'howkey')
-    return { species, gender: 'female' };
-  if (species === 'ape' || species === 'maruimo') return { species, gender: 'male' };
-  return {
-    species: species === 'nea' ? 'nea' : 'cro',
-    gender: gender === 'male' ? 'male' : 'female',
-  };
+  const choices = CHARACTER_MODELS.filter((model) => model.species === species);
+  const available = choices.length
+    ? choices
+    : CHARACTER_MODELS.filter((model) => model.species === 'cro');
+  const model =
+    available.find((choice) => choice.gender === (gender === 'male' ? 'male' : 'female')) ||
+    available[0];
+  return { species: model.species, gender: model.gender };
 }
 
 export function characterModel(profile: CharacterProfile): Readonly<CharacterModel> {

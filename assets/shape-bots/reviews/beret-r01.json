@@ -1,0 +1,9 @@
+{
+  "candidate": 1,
+  "revision": "01",
+  "decision": "visual-rejected",
+  "sha256": "d87a7fc82b6610eac65941b0a499b59d15398d3b63f64e6d21be8fa33d4e70a0",
+  "review": "The exact GLB viewer still shows cyan because Blender's copied image retained the original packed data, although the separately saved calibrated PNG has the correct blue. Small jagged eye boundaries and coarse top-stem contour also require a tighter source-error gate. Numeric and viewer interactions passed, but appearance is not accepted.",
+  "visualEvidence": "output/model-generation/models/orb-bot-beret/qa/final-01",
+  "gameIntegrationVerified": false
+}

@@ -1,0 +1,13 @@
+{
+  "candidate": 1,
+  "revision": "06",
+  "decision": "visual-approved-for-game-qa",
+  "sha256": "8607a5021ba110abad29818cfe422fe1c1ad7340ca0470a3b432b3fabdfda212",
+  "lodSha256": "b291e5836bb739096128a47b406bed1af8ba4247f76b04900cbee94306f03ae8",
+  "review": "Inspected exact exported GLB front, three-quarter, back, landing squash and clay. Clean continuous round orange exterior, exactly two horizontal black reference-ink eyes, no cavity rims or duplicated crown/back faces. Local source-constrained patches preserve the original exterior boundary; internal duplicate shell removed. Seven views, 35 poses, main/LOD all-vertex checks and offline viewer controls pass.",
+  "numeric": "output/model-generation/models/orb-bot-orange/work/rig/revision-06/qa/numeric.json",
+  "viewer": "output/model-generation/models/orb-bot-orange/qa/final-06/viewer.html",
+  "viewerQA": "output/model-generation/models/orb-bot-orange/qa/final-06/viewer-qa.json",
+  "visualEvidence": "output/model-generation/models/orb-bot-orange/qa/final-06",
+  "gameIntegrationVerified": false
+}

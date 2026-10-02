@@ -1,0 +1,13 @@
+{
+  "candidate": 1,
+  "revision": "02",
+  "decision": "visual-approved-for-game-qa",
+  "sha256": "52e5eaefcce3b7cb0cce209d1bde7bf1160977507e32fd7584ffd67308313c1f",
+  "lodSha256": "446ca81625dff165d40596cf63005fa04fe5c8f1d039fbd7c8a2c7b0b1018a8c",
+  "review": "The exact exported GLB has a smooth saturated-blue body and two crisp inward-facing angular eyes. Front, back, three-quarter and landing views preserve the source identity. Neutral and clay views show no duplicated features or surface lumps; the back is clean. All seven clip poses and offline controls passed.",
+  "numeric": "output/model-generation/models/orb-bot-blue/work/rig/revision-02/qa/numeric.json",
+  "viewer": "output/model-generation/models/orb-bot-blue/qa/final-02/viewer.html",
+  "viewerQA": "output/model-generation/models/orb-bot-blue/qa/final-02/viewer-qa.json",
+  "visualEvidence": "output/model-generation/models/orb-bot-blue/qa/final-02",
+  "gameIntegrationVerified": false
+}

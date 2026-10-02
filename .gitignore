@@ -16,6 +16,7 @@ scripts/public-permissions-before-*.json
 exhibition.local.env
 *.log
 dist-cloudflare/
+dist-cloudflare-worker/
 .wrangler/
 .dev.vars*
 worker-configuration.d.ts

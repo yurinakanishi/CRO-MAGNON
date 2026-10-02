@@ -1,0 +1,124 @@
+{
+  "modelKey": "orb-bot-green",
+  "name": "みどりbot",
+  "kind": "companion",
+  "candidate": 1,
+  "revision": "02",
+  "status": "candidate-game-QA",
+  "url": "/models/orb-bot-green/model-r02.glb",
+  "sha256": "1c562290d6ae51fea8f9d62cf627695d802211f85f736c65743e26c8a7cf07b9",
+  "bytes": 608716,
+  "triangles": 5214,
+  "bones": 2,
+  "upAxis": "Y",
+  "forwardAxis": "+Z",
+  "heightMetres": 0.28,
+  "widthMetres": 0.27988458366990276,
+  "lengthMetres": 0.2798688018929965,
+  "placement": {
+    "pivot": "ground-centred",
+    "scale": 1
+  },
+  "clips": [
+    {
+      "name": "Catch",
+      "seconds": 0.30000001192092896,
+      "loop": false,
+      "rootMotion": "in-place",
+      "fps": 60
+    },
+    {
+      "name": "Held_Loop",
+      "seconds": 1.2000000476837158,
+      "loop": true,
+      "rootMotion": "in-place",
+      "fps": 60
+    },
+    {
+      "name": "Idle_Loop",
+      "seconds": 2.4000000953674316,
+      "loop": true,
+      "rootMotion": "in-place",
+      "fps": 60
+    },
+    {
+      "name": "Land",
+      "seconds": 0.4166666567325592,
+      "loop": false,
+      "rootMotion": "in-place",
+      "fps": 60
+    },
+    {
+      "name": "Run_Loop",
+      "seconds": 0.4000000059604645,
+      "loop": true,
+      "rootMotion": "in-place",
+      "fps": 60
+    },
+    {
+      "name": "Thrown_Loop",
+      "seconds": 0.8999999761581421,
+      "loop": true,
+      "rootMotion": "in-place",
+      "fps": 60
+    },
+    {
+      "name": "Walk_Loop",
+      "seconds": 0.6000000238418579,
+      "loop": true,
+      "rootMotion": "in-place",
+      "fps": 60
+    }
+  ],
+  "locomotion": {
+    "Walk_Loop": {
+      "metresPerSecond": 3,
+      "cycleSeconds": 0.6
+    },
+    "Run_Loop": {
+      "metresPerSecond": 3,
+      "cycleSeconds": 0.4
+    }
+  },
+  "lods": [
+    {
+      "url": "/models/orb-bot-green/lod-r02.glb",
+      "sha256": "becab68c827d467624b1f3d9bf84126d094dd8accd8c05420fd38b1101609497",
+      "bytes": 71372,
+      "triangles": 1824,
+      "distanceMetres": 9,
+      "purpose": "animated-medium-lod-geometry"
+    }
+  ],
+  "provenance": {
+    "provider": "Codex",
+    "claudeUsed": false,
+    "referenceGenerator": "Built-in imagegen",
+    "referenceImage": "assets/orb-bots/source/green-reference-v1.png",
+    "referenceSha256": "c63615b4f2bdbe72efc3121d75a382a3c97b97e4461f10f983bf0547c7728a38",
+    "userReference": "assets/orb-bots/source/user-reference.png",
+    "userReferenceSha256": "c26fcc4d555b7cf586249114fb0a118c82baade3c3836e3cd745babe2c076a40",
+    "reconstruction": "Local TRELLIS-2 v0.8.1 official Vulkan / 512 / seed42; adaptive source-preserving surface reduction; immutable reference-PNG face ink rebaked into repaired UVs.",
+    "denseSha256": "5a574e2f4a74f4dca416bb39dde14dca10c8f07953bdcfde7c78ff76f9d3de60",
+    "materialRepair": {
+      "method": "Source-PNG ink projection on the unchanged TRELLIS surface, lighting removed, front-normal mask; Cycles emission bake",
+      "source": "C:\\Users\\yurin\\Desktop\\projects\\CRO-MAGNON\\assets\\orb-bots\\source\\green-reference-v1.png",
+      "sourceAlphaBounds": [
+        0.10366826156299841,
+        0.8851674641148325,
+        0.09728867623604466,
+        0.8763955342902712
+      ],
+      "atlas": 4096,
+      "inferredBackColour": "18b653",
+      "sourcePngUnmodified": true,
+      "analyticEyes": false
+    },
+    "candidateFile": "output/model-generation/models/orb-bot-green/work/rig/revision-02/candidate.glb",
+    "visualReview": "assets/orb-bots/reviews/green-r02.json"
+  },
+  "notes": [
+    "Each colour was reconstructed separately from its own reference. No primitive-built visible bot geometry.",
+    "Squash and hop rig; five loop clips and two one-shots. Ground placement and held/flight paths use the shared server clock."
+  ]
+}

@@ -1,8 +1,15 @@
 import * as THREE from 'three';
 import { COMPANION_524, type Companion524Snapshot } from '../shared/companion-524.mjs';
 import { walkHeight } from '../shared/terrain.mjs';
+import {
+  botFlightPosition,
+  botGroundHeight,
+  botHandOffset,
+  ORB_BOTS,
+} from '../shared/orb-bots.mjs';
 import { isMesh } from './three-types.js';
 import { VisibleActorGroup } from './visible-actor-group.js';
+import { companionHeartTexture } from './companion-heart-texture.js';
 import type { WorldRenderer } from './world3d.js';
 
 /** Additive placement motion; the delivered bones and Floating_Ripple stay intact. */
@@ -48,38 +55,26 @@ export function companion524Pose(c: Companion524Snapshot, now: number) {
   };
 }
 
-function heartTexture() {
-  const canvas = document.createElement('canvas');
-  canvas.width = canvas.height = 128;
-  const ctx = canvas.getContext('2d')!;
-  ctx.beginPath();
-  ctx.moveTo(64, 111);
-  ctx.bezierCurveTo(53, 97, 10, 68, 10, 40);
-  ctx.bezierCurveTo(10, 10, 49, 7, 64, 32);
-  ctx.bezierCurveTo(79, 7, 118, 10, 118, 40);
-  ctx.bezierCurveTo(118, 68, 75, 97, 64, 111);
-  ctx.closePath();
-  ctx.fillStyle = '#ff689d';
-  ctx.fill();
-  ctx.lineWidth = 5;
-  ctx.strokeStyle = '#ffe5ed';
-  ctx.stroke();
-  const texture = new THREE.CanvasTexture(canvas);
-  texture.colorSpace = THREE.SRGBColorSpace;
-  return texture;
-}
-
 export class Companion524Renderer {
   readonly root = new VisibleActorGroup();
   readonly tilt = new THREE.Group();
   readonly actor: ReturnType<WorldRenderer['worldAssets']['createAnimal']>;
   readonly hearts: THREE.Sprite[] = [];
-  readonly texture = heartTexture();
+  readonly texture = companionHeartTexture();
   readonly label: ReturnType<WorldRenderer['createLabel']>;
   private placed = false;
   private floor = 0;
   private height: number = COMPANION_524.hoverHeight;
   private reaction = 'floating';
+
+  private get squadBot() {
+    return this.world.state.orbBots?.find(
+      (b) => b.kind === '524' && b.ownerId === this.world.state.companion524?.squadPlayerId,
+    );
+  }
+  get inHand() {
+    return this.squadBot?.mode === 'windup';
+  }
 
   constructor(private world: WorldRenderer) {
     this.root.name = '524 floating companion';
@@ -117,34 +112,71 @@ export class Companion524Renderer {
     }
     const now = this.world.serverNow();
     const pose = companion524Pose(c, now);
+    const bot = this.squadBot;
     this.reaction = pose.reaction;
-    const ground = walkHeight(c.x, c.z);
+    const ground = bot ? botGroundHeight(c.x, c.z) : walkHeight(c.x, c.z);
     const blend = 1 - Math.exp(-dt * 14);
-    if (!this.placed || Math.hypot(this.root.position.x - c.x, this.root.position.z - c.z) > 25) {
-      this.root.position.set(c.x, ground + pose.height, c.z);
-      this.root.rotation.y = c.facing;
+    const flying = bot && !bot.busy && ['windup', 'airborne', 'landing'].includes(bot.mode);
+    if (flying) {
+      const position = new THREE.Vector3(bot.x, bot.y, bot.z);
+      const owner = this.world.players.get(bot.ownerId);
+      if (bot.mode === 'windup' && owner?.actor?.orbBotPose.weight > 0) {
+        position.copy(owner.actor.orbBotPose.contact);
+        position.y += botHandOffset('524');
+        if (bot.origin) {
+          const t = THREE.MathUtils.clamp((now - bot.throwAt) / ORB_BOTS.pickupMs, 0, 1);
+          position.lerpVectors(
+            new THREE.Vector3(bot.origin.x, bot.origin.y, bot.origin.z),
+            position,
+            t * t * (3 - 2 * t),
+          );
+        }
+        this.root.rotation.y = owner.model.rotation.y;
+      } else {
+        const flight = bot.mode === 'airborne' ? botFlightPosition(bot, now) : null;
+        if (flight) {
+          position.set(flight.x, flight.y, flight.z);
+          pose.pitch += Math.sin(flight.t * Math.PI * 2) * 0.42;
+          pose.roll += Math.sin(flight.t * Math.PI) * 0.2;
+        } else if (bot.mode === 'landing') {
+          const t = THREE.MathUtils.clamp((now - bot.phaseAt) / ORB_BOTS.landMs, 0, 1);
+          position.y -= Math.sin(t * Math.PI) * 0.09;
+          pose.roll += Math.sin(t * Math.PI * 2) * (1 - t) * 0.18;
+        }
+        this.root.rotation.y = bot.facing;
+      }
+      this.root.position.copy(position);
       this.floor = ground;
-      this.height = pose.height;
+      this.height = position.y - ground;
       this.placed = true;
+      this.reaction = bot.mode;
     } else {
-      this.root.position.x += (c.x - this.root.position.x) * blend;
-      this.root.position.z += (c.z - this.root.position.z) * blend;
+      if (!this.placed || Math.hypot(this.root.position.x - c.x, this.root.position.z - c.z) > 25) {
+        this.root.position.set(c.x, ground + pose.height, c.z);
+        this.root.rotation.y = c.facing;
+        this.floor = ground;
+        this.height = pose.height;
+        this.placed = true;
+      } else {
+        this.root.position.x += (c.x - this.root.position.x) * blend;
+        this.root.position.z += (c.z - this.root.position.z) * blend;
+      }
+      // Float above the actual floor, including the interpolated position on slopes.
+      const floor = Math.max(ground, walkHeight(this.root.position.x, this.root.position.z));
+      this.floor = Math.max(floor, this.floor + (floor - this.floor) * blend);
+      // Withdrawing a hand or interrupting a pet must not pop the low mage pose
+      // back to the ordinary hover height in a single frame.
+      this.height += (pose.height - this.height) * blend;
+      this.root.position.y = this.floor + this.height;
+      const delta = Math.atan2(
+        Math.sin(c.facing - this.root.rotation.y),
+        Math.cos(c.facing - this.root.rotation.y),
+      );
+      this.root.rotation.y += delta * blend;
     }
-    // Float above the actual floor, including the interpolated position on slopes.
-    const floor = Math.max(ground, walkHeight(this.root.position.x, this.root.position.z));
-    this.floor = Math.max(floor, this.floor + (floor - this.floor) * blend);
-    // Withdrawing a hand or interrupting a pet must not pop the low mage pose
-    // back to the ordinary hover height in a single frame.
-    this.height += (pose.height - this.height) * blend;
-    this.root.position.y = this.floor + this.height;
-    const delta = Math.atan2(
-      Math.sin(c.facing - this.root.rotation.y),
-      Math.cos(c.facing - this.root.rotation.y),
-    );
-    this.root.rotation.y += delta * blend;
     this.tilt.rotation.set(pose.pitch, pose.spin, pose.roll);
     const distance = this.root.position.distanceTo(this.world.camera.position);
-    this.root.visible = distance < 85;
+    this.root.visible = distance < 85 && bot?.mode !== 'stowed';
     if (this.root.visible) {
       // Absolute server phase also resumes correctly after culling or a late join.
       this.actor.mixer.setTime((now / 1000) % 4);
@@ -170,7 +202,17 @@ export class Companion524Renderer {
   }
 
   diagnostics() {
+    const bot = this.squadBot;
+    const contact = bot && this.world.players.get(bot.ownerId)?.actor?.orbBotPose.contact;
     return {
+      squadOwner: bot?.ownerId ?? null,
+      squadMode: bot?.mode ?? null,
+      handError:
+        bot?.mode === 'windup' && contact
+          ? this.root.position.distanceTo(
+              contact.clone().add(new THREE.Vector3(0, botHandOffset('524'), 0)),
+            )
+          : null,
       visible: this.root.visible,
       clip: this.actor.name,
       time: this.actor.mixer.time,

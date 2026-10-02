@@ -1,0 +1,15 @@
+{
+  "candidate": 1,
+  "revision": "03",
+  "decision": "adopt",
+  "sha256": "4f7461ab063fce7aae319745520523bb2d84938ba7a11b765f3ea6b34dbb12ce",
+  "lodSha256": "becab68c827d467624b1f3d9bf84126d094dd8accd8c05420fd38b1101609497",
+  "review": "Inspected the exact final GLB in the browser, including the three-quarter view: clean rounded body, two correct reference-derived eyes, smooth silhouette and no extra features. Final padding matches the body palette. All 54 geometry/UV/skin/animation accessors, nodes and clips are byte/value-identical to the previously reviewed version; the LOD is byte-identical. All-vertex 120Hz checks, 7 neutral/clay/browser views, 35 poses and 10 viewer checks pass.",
+  "numeric": "output/model-generation/models/orb-bot-green/work/rig/revision-03/qa/numeric.json",
+  "viewer": "output/model-generation/models/orb-bot-green/qa/final-03/viewer.html",
+  "viewerQA": "output/model-generation/models/orb-bot-green/qa/final-03/viewer-qa.json",
+  "visualEvidence": "output/model-generation/models/orb-bot-green/qa/final-03",
+  "gameIntegrationVerified": true,
+  "gameQA": "output/playwright/orb-bots/verified-20261001",
+  "gameVisualReview": "全5体の最終GLBで元画像の顔と丸い輪郭を確認。ゲームの小さな表示の黒いUV継ぎ目は解消。9人物の左手との接点、飛行、着地、地上での帰還、縦横画面の操作部を実Chromeで確認。再読込は既存タイトルからの参加を別実行で検証し、元のQA待機失敗も保持。"
+}

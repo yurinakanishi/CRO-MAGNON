@@ -1,0 +1,7 @@
+{
+  "candidate": 1,
+  "revision": "07",
+  "decision": "reject",
+  "sha256": "81ebd8ae1e5b0018bbf1538039f30d09dfd4139099b78e364f7064b2dd71265d",
+  "finding": "The generated image background was supplied in linear light while this image stores generated pixels as sRGB. Atlas inspection shows darker orange in unused areas. Re-bake with the original sRGB body colour; keep all geometry/UV/rig arrays and the LOD unchanged."
+}

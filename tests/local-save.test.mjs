@@ -313,8 +313,13 @@ test('title leave retains progress; explicit character change discards it; save 
   await until(() => second.messages.some((m) => m.type === 'saveStatus' && m.state === 'error'));
   assert.ok(errors.length);
   await rmdir(path.join(dir, 'world.backup.json'));
+  const beforeRecoverySave = second.messages.length;
   await game.saveNow();
-  await until(() => second.messages.at(-1)?.state === 'saved');
+  await until(() =>
+    second.messages
+      .slice(beforeRecoverySave)
+      .some((message) => message.type === 'saveStatus' && message.state === 'saved'),
+  );
   second.socket.send(JSON.stringify({ type: 'leave' }));
   await until(() => !room.players.size);
   assert.equal(room.sessions.size, 0);

@@ -132,7 +132,6 @@ try {
     assert.match(await page.locator('#connection-label').innerText(), /LAN: Connected/);
     assert.deepEqual(await page.locator('#prompt-bar span').allTextContents(), [
       `${layout === 'ps4' ? 'SHARE / タッチパッド' : '−'}地図`,
-      `${menu}メニュー`,
     ]);
     assert.equal(await page.locator('.map-key').count(), 0);
     assert.equal(await page.locator('#chat-toggle kbd').count(), 0);
@@ -160,7 +159,10 @@ try {
     assert.match(await page.locator('.pause-hint').innerText(), new RegExp(menu));
     await page.keyboard.press('Escape');
     await page.locator('#modal').waitFor({ state: 'hidden' });
-    assert.equal(await page.locator('#prompt-bar kbd').last().innerText(), menu);
+    assert.equal(
+      await page.locator('#prompt-bar kbd').last().innerText(),
+      layout === 'ps4' ? 'SHARE / タッチパッド' : '−',
+    );
     pass(`${layout}: right button selects character and spawn; menu hints agree`);
     await tap(page, 8);
     await page.locator('.atlas').waitFor();
@@ -212,7 +214,10 @@ try {
   await help(switchPage, 'ps4', 'pc2-changed-to-ps4-without-restart');
   assert.equal(game.rooms.get('LABELS-QA'), room);
   assert.equal(room.players.get(pc1Player.id), pc1Player);
-  assert.equal(await pages[0].locator('#prompt-bar kbd').last().innerText(), 'OPTIONS');
+  assert.equal(
+    await pages[0].locator('#prompt-bar kbd').last().innerText(),
+    'SHARE / タッチパッド',
+  );
   pass('PC2 label override appears on browser reload; PC1 player and shared world persist');
   assert.deepEqual(errors, []);
 } finally {

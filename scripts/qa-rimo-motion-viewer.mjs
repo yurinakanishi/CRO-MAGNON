@@ -19,7 +19,8 @@ try {
   const record=JSON.parse(await readFile(`${root}/viewer.json`,'utf8'));
   assert.equal(await page.evaluate(()=>window.candidateSha256),record.sourceSha256);
   const program=[['Run_Loop','1',2000],['Run_Loop','0.25',4200],['Hiss','1',2300],['Hiss','0.25',8700]];
-  for (const [clip,duration] of [['Idle_Loop',3],['Walk_Loop',41/60],['Pet',1.6],['Happy',.9],['Hit',.5]])
+  const rig=JSON.parse(await readFile(`output/model-generation/models/rimo-neko/work/rig/revision-${revision}/process.json`,'utf8'));
+  for (const {name:clip,seconds:duration} of rig.clips.filter(c=>!['Run_Loop','Hiss'].includes(c.name)))
     for (const speed of ['1','0.5']) program.push([clip,speed,duration*1000/Number(speed)+120]);
   for(const [view,theta] of [['front',0],['right',90],['left',-90],['back',180],['threequarter',30]]) {
     await page.evaluate(theta=>{const m=document.querySelector('#mv');m.cameraOrbit=`${theta}deg 78deg 165%`;m.jumpCameraToGoal();},theta);
