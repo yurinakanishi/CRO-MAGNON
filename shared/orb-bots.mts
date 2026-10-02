@@ -170,9 +170,7 @@ function formationPoint(room: BotRoom, p: PlayerSnapshot, kind: BotKind) {
 export function syncOrbBots(room: BotRoom, now: number) {
   const c = room.companion524;
   room.orbBots = (room.orbBots ?? []).filter((b) =>
-    b.kind === '524'
-      ? !!c?.squadPlayerId && room.players.has(c.squadPlayerId)
-      : room.players.has(b.ownerId),
+    b.kind === '524' ? !!c?.squadPlayerId : room.players.has(b.ownerId),
   );
   for (const p of room.players.values())
     for (const kind of c?.squadPlayerId === p.id ? BOT_ORDER : BOT_KINDS) {
@@ -201,10 +199,10 @@ export function syncOrbBots(room: BotRoom, now: number) {
         id: kind === '524' ? 'orb:companion-524' : `orb:${p.id}:${kind}`,
         ownerId: p.id,
         kind,
-        mode: 'following',
+        mode: kind === '524' && c?.squadMode === 'waiting' ? 'waiting' : 'following',
         ...start,
         y: botRestHeight(kind, start.x, start.z),
-        facing: p.facing,
+        facing: kind === '524' && c?.squadMode === 'waiting' ? c.facing : p.facing,
         speed: 0,
         phaseAt: now,
         throwAt: 0,
@@ -226,7 +224,7 @@ export function syncOrbBots(room: BotRoom, now: number) {
 
 export function orbBotSnapshots(room: BotRoom): OrbBotSnapshot[] {
   return (room.orbBots ?? [])
-    .filter((b) => room.players.has(b.ownerId))
+    .filter((b) => b.kind === '524' || room.players.has(b.ownerId))
     .map(({ path, nextPathAt, lastOwner, warpSequence, stuckAt, ...b }) => ({
       ...b,
       origin: b.origin ? { ...b.origin } : null,
@@ -436,15 +434,42 @@ export function handleOrbBotAction(
   return true;
 }
 
+/** A released body completes its flight even if its owner temporarily disconnects. */
+function updateDeployedBot(b: OrbBot, now: number) {
+  if (b.mode === 'airborne') {
+    const pos = botFlightPosition(b, now);
+    if (!pos) {
+      setMode(b, 'returning', now);
+      return false;
+    }
+    b.x = pos.x;
+    b.y = pos.y;
+    b.z = pos.z;
+    if (pos.t >= 1) setMode(b, 'landing', b.throwAt + ORB_BOTS.windupMs + ORB_BOTS.flightMs);
+    else return true;
+  }
+  if (b.mode === 'landing') {
+    // Keep the complete squash/rebound, including a recall, across snapshots.
+    if (now - b.phaseAt < ORB_BOTS.landMs) return true;
+    setMode(b, b.recall ? 'returning' : 'waiting', now);
+  }
+  if (b.mode === 'waiting') {
+    b.speed = 0;
+    return true;
+  }
+  return false;
+}
+
 export function updateOrbBots(room: BotRoom, dt: number, now: number) {
   syncOrbBots(room, now);
   if (!(dt > 0) || !Number.isFinite(dt)) return;
   dt = Math.min(dt, 0.15);
   for (const b of room.orbBots!) {
-    const p = room.players.get(b.ownerId)!;
+    const p = room.players.get(b.ownerId);
     const radius = botRadius(b.kind);
     if (b.kind === '524' && room.companion524) {
       const c = room.companion524;
+      b.busy = !!c.petPlayerId || (c.hitSequence > 0 && now - c.hitAt < COMPANION_524.hitMs);
       if (!['windup', 'airborne', 'landing', 'stowed'].includes(b.mode)) {
         Object.assign(b, point(c), { y: botRestHeight(b.kind, c.x, c.z) });
       }
@@ -460,6 +485,21 @@ export function updateOrbBots(room: BotRoom, dt: number, now: number) {
         }
         continue;
       }
+    }
+    if (!p) {
+      b.recallAt = 0;
+      b.speed = 0;
+      b.path = [];
+      if (!updateDeployedBot(b, now)) {
+        // Cancel only the unlaunched hand gesture; keep the friendship and wait
+        // for the same saved player to return, with no offline expiry.
+        if (b.mode === 'windup' && b.origin) Object.assign(b, point(b.origin));
+        b.y = botRestHeight(b.kind, b.x, b.z);
+        b.throwAt = 0;
+        b.origin = b.landing = null;
+        setMode(b, 'following', now);
+      }
+      continue;
     }
     const warp = (p.warpSequence ?? 0) !== b.warpSequence || distance(p, b.lastOwner) > 12;
     if (warp || !canHandleBot(p, now) || (b.recallAt && now - b.recallAt >= ORB_BOTS.callMs))
@@ -525,29 +565,9 @@ export function updateOrbBots(room: BotRoom, dt: number, now: number) {
       b.facing = p.facing;
       setMode(b, 'airborne', b.throwAt + ORB_BOTS.windupMs);
     }
-    if (b.mode === 'airborne') {
-      const pos = botFlightPosition(b, now);
-      if (!pos) {
-        setMode(b, 'returning', now);
-        continue;
-      }
-      b.x = pos.x;
-      b.y = pos.y;
-      b.z = pos.z;
-      if (pos.t >= 1) setMode(b, 'landing', b.throwAt + ORB_BOTS.windupMs + ORB_BOTS.flightMs);
-      else continue;
-    }
-    if (b.mode === 'landing') {
-      // Keep the complete squash/rebound, including a recall. A 100 ms shortcut
-      // can disappear between the shared 90 ms snapshots under ordinary jitter.
-      if (now - b.phaseAt < ORB_BOTS.landMs) continue;
-      setMode(b, b.recall ? 'returning' : 'waiting', now);
-    }
-    if (b.mode === 'waiting') {
-      b.speed = 0;
-      continue;
-    }
+    if (updateDeployedBot(b, now)) continue;
     if (b.mode === 'catching') {
+      b.facing = p.facing;
       if (now - b.phaseAt < ORB_BOTS.catchMs) continue;
       setMode(b, 'following', now);
       b.recall = false;
@@ -561,6 +581,8 @@ export function updateOrbBots(room: BotRoom, dt: number, now: number) {
     if (gap < 0.12) {
       b.speed = 0;
       b.path = [];
+      // The last return step points away from the owner; face forward once assembled.
+      b.facing = p.facing;
       if (b.mode === 'returning') setMode(b, 'catching', now);
       continue;
     }
@@ -599,7 +621,7 @@ export function updateOrbBots(room: BotRoom, dt: number, now: number) {
       // A newly grown obstacle can enclose a small bot. Recover at a verified free
       // formation point after a bounded wait; renderer shows a short arrival hop.
       if (now - b.stuckAt > 5000 || distance(p, b) > 40) {
-        Object.assign(b, goal, { y: botRestHeight(b.kind, goal.x, goal.z) });
+        Object.assign(b, goal, { y: botRestHeight(b.kind, goal.x, goal.z), facing: p.facing });
         setMode(b, 'catching', now);
       }
     }

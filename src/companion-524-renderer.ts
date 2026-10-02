@@ -10,6 +10,7 @@ import {
 import { isMesh } from './three-types.js';
 import { VisibleActorGroup } from './visible-actor-group.js';
 import { companionHeartTexture } from './companion-heart-texture.js';
+import { botFlightTurn } from './bot-flight-pose.js';
 import type { WorldRenderer } from './world3d.js';
 
 /** Additive placement motion; the delivered bones and Floating_Ripple stay intact. */
@@ -136,8 +137,8 @@ export class Companion524Renderer {
         const flight = bot.mode === 'airborne' ? botFlightPosition(bot, now) : null;
         if (flight) {
           position.set(flight.x, flight.y, flight.z);
-          pose.pitch += Math.sin(flight.t * Math.PI * 2) * 0.42;
-          pose.roll += Math.sin(flight.t * Math.PI) * 0.2;
+          // This GLB already has its body-centred pivot at the floating origin.
+          pose.pitch = botFlightTurn(flight.t);
         } else if (bot.mode === 'landing') {
           const t = THREE.MathUtils.clamp((now - bot.phaseAt) / ORB_BOTS.landMs, 0, 1);
           position.y -= Math.sin(t * Math.PI) * 0.09;
@@ -218,6 +219,7 @@ export class Companion524Renderer {
       time: this.actor.mixer.time,
       reaction: this.reaction,
       spin: this.tilt.rotation.y,
+      pitch: this.tilt.rotation.x,
       hearts: this.hearts.filter((h) => h.visible).length,
       x: this.root.position.x,
       y: this.root.position.y,

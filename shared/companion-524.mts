@@ -60,6 +60,7 @@ type CompanionRoom = {
   companion524?: Companion524;
   collision: CollisionWorld;
   players: Map<string, PetPlayer & { facing: number; radius: number; speed: number }>;
+  sessions?: Map<string, { player: { id: string } }>;
 };
 const distance = (a: Point, b: Point) => Math.hypot(a.x - b.x, a.z - b.z);
 const point = (p: Point): Point => ({ x: p.x, z: p.z });
@@ -307,9 +308,12 @@ export function updateCompanion524(room: CompanionRoom, dt: number, now: number)
   const owner = c.followPlayerId ? room.players.get(c.followPlayerId) : null;
   if (
     c.mode === 'following' &&
+    !c.squadPlayerId &&
     (!owner ||
-      (!c.squadPlayerId &&
-        (owner.downedUntil || owner.boatId || distance(owner, c) > 60 || c.trail.length >= 4096)))
+      owner.downedUntil ||
+      owner.boatId ||
+      distance(owner, c) > 60 ||
+      c.trail.length >= 4096)
   )
     returnCompanion524(c);
 
@@ -363,8 +367,8 @@ export function updateCompanion524(room: CompanionRoom, dt: number, now: number)
     }
   }
 
-  // Once recruited, the shared dots simulation owns movement and recall. Petting
-  // and impacts above remain on the original body, never on a second model.
+  // Recruitment has no timeout, including while the owner is disconnected.
+  // The shared dots simulation owns movement and recall on the original body.
   if (c.squadPlayerId) return;
 
   let goal: Point, speed: number;
@@ -451,12 +455,36 @@ export function updateCompanion524(room: CompanionRoom, dt: number, now: number)
   if (c.mode === 'following') rememberRoute(c);
 }
 
-/** Old saves gain a camp companion. A restored follower returns along its saved route. */
+/** Save a settled pose without replaying a hand gesture or an interrupted flight on restart. */
+export function saveCompanion524(c?: Companion524, bot?: OrbBotSnapshot): Companion524 | undefined {
+  if (!c?.squadPlayerId) return c;
+  const deployed = bot
+    ? !bot.recall && ['airborne', 'landing', 'waiting'].includes(bot.mode)
+    : c.squadMode === 'waiting';
+  const landing = deployed && bot?.mode === 'airborne' ? bot.landing : null;
+  return {
+    ...c,
+    ...(landing ? point(landing) : {}),
+    squadMode: deployed ? 'waiting' : 'following',
+  };
+}
+
+/** Keep completed recruitment for the saved player; unfinished pets do not create a bond. */
 export function restoreCompanion524(room: CompanionRoom, saved: unknown) {
   const c = createCompanion524(room.collision);
   room.companion524 = c;
   if (!saved || typeof saved !== 'object') return;
   const record = saved as Partial<Companion524>;
+  const ownerId = record.squadPlayerId;
+  if (
+    typeof ownerId === 'string' &&
+    (room.players.has(ownerId) ||
+      [...(room.sessions?.values() ?? [])].some((entry) => entry.player.id === ownerId))
+  ) {
+    c.squadPlayerId = c.followPlayerId = ownerId;
+    c.mode = 'following';
+    c.squadMode = 'following';
+  }
   if (!Number.isFinite(record.x) || !Number.isFinite(record.z)) return;
   const position = { x: record.x!, z: record.z! };
   if (!room.collision.free(position, c.radius)) return;
@@ -469,5 +497,11 @@ export function restoreCompanion524(room: CompanionRoom, saved: unknown) {
         .map(point)
     : [];
   c.trail = [point(c.home), ...trail];
+  if (c.squadPlayerId) {
+    c.squadMode = ['airborne', 'landing', 'waiting'].includes(record.squadMode ?? '')
+      ? 'waiting'
+      : 'following';
+    return;
+  }
   if (record.mode !== 'idle') returnCompanion524(c);
 }

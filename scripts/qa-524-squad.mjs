@@ -142,7 +142,8 @@ try {
     qa.pitch = 0.17;
     qa.targetDistance = 4;
   });
-  await a.page.locator('#pet524-button').click();
+  await a.page.locator('#world').focus();
+  await a.page.keyboard.press('v');
   await until(() => c.petContactAt > 0, 'pet hand contact');
   assert.equal(mascot(), undefined);
   await sleep(1900);
@@ -307,7 +308,8 @@ try {
   await stage(b, c.x, c.z + 1.5);
   await menu(a);
   await sleep(600);
-  await b.page.locator('#pet524-button').click();
+  await b.page.locator('#world').focus();
+  await b.page.keyboard.press('v');
   await until(() => mascot()?.ownerId === b.p.id, 'second pet transfers');
   await until(
     () =>
@@ -323,7 +325,9 @@ try {
   assert.equal(await b.page.locator('[data-bot-kind]').count(), 10);
   await b.page.locator('#modal-close').click();
   pass('a second completed pet transfers the one 524 and updates the previous owner’s open menu');
-  await b.page.locator('#dismiss524-button').click();
+  await b.page.locator('#world').focus();
+  await b.page.keyboard.press('Escape');
+  await b.page.locator('[data-controller-menu="dismiss524"]').click();
   await until(() => !mascot(), 'dismiss removes squad member');
   assert.equal(c.squadPlayerId, null);
   assert.equal(room.companion524.id, c.id);

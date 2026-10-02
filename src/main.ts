@@ -223,7 +223,7 @@ $('#app').innerHTML = `
     <div class="map-hud"><button id="map-button" class="minimap-button" aria-label="世界地図を開く" title="世界地図 [${fixedIdentity ? controllerLabels().map : 'M'}]"><canvas id="minimap" width="160" height="115"></canvas><span class="map-north">N</span><span class="map-area" id="map-area">はじまりの谷</span>${fixedIdentity ? '' : '<kbd class="map-key">M</kbd>'}</button><div class="connection"><i class="status-dot" id="connection-dot"></i><span id="connection-label">未接続</span><span id="ping-label">— ms</span></div></div>
     <div id="toast-stack" class="toast-stack" aria-live="polite"></div>
     ${fixedIdentity ? '' : `<div class="chat-panel"><button class="chat-heading" id="chat-toggle">${icon('chat')}<strong>焚き火の会話</strong><kbd>Enter</kbd><span class="chat-collapse">−</span></button><div id="chat-content"><div id="chat-messages" class="chat-messages" role="log" aria-live="polite"><p class="chat-system">この谷での物語が、ここから始まります。</p></div><form id="chat-form"><input id="chat-input" maxlength="180" placeholder="仲間に話しかける…" aria-label="チャットメッセージ" autocomplete="off"><button aria-label="メッセージを送信" type="submit">${icon('arrow')}</button></form></div></div>`}
-    <div class="hotbar-wrap"><div id="companion524-controls"><button type="button" class="hunt-button" id="pet-rimo-button" hidden><kbd>V</kbd><span>リモねこを撫でる</span></button><button type="button" class="hunt-button" id="dismiss-rimo-button" hidden><kbd>T</kbd><span>リモねこをキャンプへ帰す</span></button><button type="button" class="hunt-button" id="pet524-button" hidden><kbd>V</kbd><span>524を撫でる</span></button><button type="button" class="hunt-button" id="dismiss524-button" hidden><kbd>T</kbd><span>524をキャンプへ帰す</span></button></div><div class="interaction-hint" id="interaction-hint" hidden><kbd>E</kbd><span></span></div></div>
+    <div class="hotbar-wrap"><div id="companion524-controls"><button type="button" class="hunt-button" id="pet-rimo-button" hidden><kbd>V</kbd><span>リモねこを撫でる</span></button><button type="button" class="hunt-button" id="dismiss-rimo-button" hidden><kbd>T</kbd><span>リモねこをキャンプへ帰す</span></button></div><div class="interaction-hint" id="interaction-hint" hidden><kbd>E</kbd><span></span></div></div>
     <div id="prompt-bar" class="prompt-bar" aria-label="操作の案内"></div>
     <div id="screens" class="screens">
       <section id="screen-title" class="screen title-screen" hidden>
@@ -1031,15 +1031,6 @@ function updateHuntingHUD() {
   $('#dismiss-rimo-button kbd').textContent = controllerHints() ? 'メニュー' : 'T';
   const menuRimo = $('[data-controller-menu="dismissRimo"]');
   if (menuRimo) menuRimo.disabled = state.rimoNeko?.followPlayerId !== selfId;
-  const petAvailable = petChoice === '524';
-  $('#pet524-button').hidden = !petAvailable;
-  $('#pet524-button kbd').textContent = motionControls?.ownsInput
-    ? '横なで'
-    : controllerHints()
-      ? controllerLabels().bottom
-      : 'V';
-  $('#dismiss524-button').hidden = !joined || state.companion524?.followPlayerId !== selfId;
-  $('#dismiss524-button kbd').textContent = controllerHints() ? 'メニュー' : 'T';
   const menuDismiss = $('[data-controller-menu="dismiss524"]');
   if (menuDismiss) menuDismiss.disabled = state.companion524?.followPlayerId !== selfId;
   const me = player(),
@@ -1990,8 +1981,6 @@ $('#cancel-cook').onclick = () =>
 $('#interaction-hint').setAttribute('role', 'button');
 $('#pet-rimo-button').onclick = petRimo;
 $('#dismiss-rimo-button').onclick = dismissRimo;
-$('#pet524-button').onclick = pet524;
-$('#dismiss524-button').onclick = dismiss524;
 $('#interaction-hint').tabIndex = 0;
 $('#interaction-hint').onclick = () => {
   const next = nearby();

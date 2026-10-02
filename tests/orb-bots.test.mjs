@@ -164,6 +164,35 @@ test('nine quick presses reserve nine distinct bots, throw in order, and never a
   assert.equal(nextOrbBot(f.room.orbBots, f.p)?.kind, 'white');
 });
 
+test("recalled bots face their owner's heading on arrival and after a formation turn", () => {
+  for (const facing of [0, Math.PI / 2, Math.PI, -Math.PI / 2]) {
+    const f = fixture();
+    f.p.facing = facing;
+    advance(f.room, 10000, 3);
+    for (let i = 0; i < BOT_KINDS.length; i++)
+      assert.ok(handleOrbBotAction(f.room, f.p, 'throwBot', 'white', 13000 + i * 20));
+    advance(f.room, 13200, 6);
+    assert.ok(f.room.orbBots.every((b) => b.mode === 'waiting'));
+    handleOrbBotAction(f.room, f.p, 'recallBots', null, 19200);
+    const arrivals = new Set();
+    advance(f.room, 19200, 8, () => {
+      for (const b of f.room.orbBots) {
+        if (b.mode !== 'catching') continue;
+        arrivals.add(b.kind);
+        assert.ok(Math.cos(b.facing - f.p.facing) > 0.999999, `${b.kind} arrives facing forward`);
+      }
+    });
+    assert.equal(arrivals.size, BOT_KINDS.length);
+    assert.ok(f.room.orbBots.every((b) => b.mode === 'following'));
+    f.p.facing += 0.8;
+    advance(f.room, 27200, 4);
+    for (const b of orbBotSnapshots(f.room)) {
+      assert.equal(b.speed, 0);
+      assert.ok(Math.cos(b.facing - f.p.facing) > 0.999999, `${b.kind} settles facing forward`);
+    }
+  }
+});
+
 test('waiting bots stay put when their owner walks away, warps, mounts, or respawns', () => {
   const f = fixture(),
     b = throwOne(f);

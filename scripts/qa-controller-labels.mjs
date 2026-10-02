@@ -192,7 +192,7 @@ try {
     assert.equal(await page.locator('#interaction-hint kbd').innerText(), right);
     assert.equal(await page.locator('#ride-button kbd').textContent(), bottom);
     assert.equal(await page.locator('#boat-board kbd').textContent(), bottom);
-    assert.equal(await page.locator('#pet524-button kbd').textContent(), bottom);
+    assert.equal(await page.locator('#pet524-button, #dismiss524-button').count(), 0);
     await shot(page, `${layout}-context`);
     const amount = berry.amount;
     await tap(page, 1);

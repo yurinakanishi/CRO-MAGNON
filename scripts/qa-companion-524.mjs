@@ -158,7 +158,7 @@ try {
     c = room.companion524;
   const home = { ...c.home };
   await shot(a, '01-initial-camp');
-  assert.equal(await a.page.locator('#pet524-button').isVisible(), false);
+  assert.equal(await a.page.locator('#pet524-button, #dismiss524-button').count(), 0);
   const t0 = await a.page.evaluate(() => qa524.companion524Renderer.actor.mixer.time);
   await sleep(400);
   const t1 = await a.page.evaluate(() => qa524.companion524Renderer.actor.mixer.time);
@@ -168,9 +168,9 @@ try {
   pass('Adopted midpoint 524 appears beside the camp; Floating_Ripple advances while idle');
   await walk(a, { x: home.x, z: home.z + 1.8 });
   await until(() => nearCompanion524(a.p, c, room.collision, Date.now()), 'normal approach');
-  await until(() => a.page.locator('#pet524-button').isVisible(), 'pet prompt');
-  await shot(a, '02-near-pet-prompt');
-  pass('Ordinary title selection and walking from the initial spawn reach the pet prompt');
+  assert.equal(await a.page.locator('#pet524-button, #dismiss524-button').count(), 0);
+  await shot(a, '02-near-companion');
+  pass('Ordinary title selection and walking reach the companion without bottom pet prompts');
 
   const bob = await a.page.evaluate(async () => {
     const samples = [];
@@ -339,14 +339,14 @@ try {
   await a.page.setViewportSize({ width: 390, height: 844 });
   await sleep(350);
   await shot(a, '07-narrow-happy');
-  const buttonBounds = await a.page.locator('#companion524-controls').boundingBox();
-  assert.ok(buttonBounds.x >= 0 && buttonBounds.x + buttonBounds.width <= 390);
-  await a.page.locator('#dismiss524-button').click();
-  await until(() => c.followPlayerId === null, 'touch dismissal');
+  assert.equal(await a.page.locator('#pet524-button, #dismiss524-button').count(), 0);
+  await a.page.keyboard.press('Escape');
+  await a.page.locator('[data-controller-menu="dismiss524"]').click();
+  await until(() => c.followPlayerId === null, 'menu dismissal');
   await a.page.setViewportSize({ width: 844, height: 390 });
   await shot(a, '08-landscape-return');
-  await until(() => c.mode === 'idle', 'return after touch', 25000);
-  pass('Keyboard V and narrow-screen tap work; portrait and landscape controls remain on screen');
+  await until(() => c.mode === 'idle', 'return after menu dismissal', 25000);
+  pass('Keyboard V and menu dismissal work without bottom prompts in portrait and landscape');
 
   await a.page.setViewportSize({ width: 1280, height: 800 });
   await fixturePlayer(a, c, 0, -1);

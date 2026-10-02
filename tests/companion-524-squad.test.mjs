@@ -150,6 +150,28 @@ test('one repeated button queues all ten; the original 524 travels from the hand
   assert.equal(f.bot.y, botRestHeight('524', f.bot.x, f.bot.z));
 });
 
+test('recruited 524 faces forward with its owner after recall and a formation turn', () => {
+  const f = fixture();
+  f.recruit();
+  assert.ok(f.action('throwBot', '524'));
+  f.step(2);
+  assert.equal(f.bot.mode, 'waiting');
+  assert.ok(f.action('recallBots'));
+  while (f.bot.mode !== 'catching' && f.now < 30000) f.step(0.05);
+  assert.equal(f.bot.mode, 'catching');
+  assert.ok(Math.cos(f.bot.facing - f.p.facing) > 0.999999);
+  assert.equal(f.c.facing, f.bot.facing);
+  f.p.facing += 0.5;
+  f.step(0.1);
+  assert.equal(f.bot.mode, 'catching');
+  assert.ok(Math.cos(f.c.facing - f.p.facing) > 0.999999);
+  f.step(4);
+  assert.equal(f.bot.mode, 'following');
+  assert.equal(f.bot.speed, 0);
+  assert.ok(Math.cos(f.bot.facing - f.p.facing) > 0.999999);
+  assert.equal(f.c.facing, f.bot.facing);
+});
+
 for (const reason of ['walk', 'warp', 'boat', 'downed'])
   test(`deployed 524 waits through owner ${reason} until called`, () => {
     const f = fixture();
@@ -246,21 +268,84 @@ test('a visitor disconnecting during a pet leaves 524 in the existing squad', ()
   assert.equal(gap(f.c, f.bot), 0);
 });
 
-for (const reason of ['dismiss', 'disconnect', 'restore'])
-  test(`${reason} removes only the recruited proxy and returns the original NPC`, () => {
-    const f = fixture();
-    f.recruit();
-    assert.ok(f.action('throwBot', '524'));
-    f.step(2);
-    const pos = { x: f.c.x, z: f.c.z };
-    if (reason === 'dismiss') assert.ok(handleCompanion524Action(f.room, f.p, 'dismiss524', f.now));
-    if (reason === 'disconnect') f.room.players.delete(f.p.id);
-    if (reason === 'restore') restoreCompanion524(f.room, structuredClone(f.c));
-    f.step(0.05);
-    assert.equal(f.bot, undefined);
-    assert.equal(f.room.companion524.squadPlayerId, null);
-    assert.ok(gap(f.room.companion524, pos) < 0.3);
-    f.step(20);
-    assert.equal(f.room.companion524.mode, 'idle');
-    assert.ok(gap(f.room.companion524, f.c.home) < 0.01);
-  });
+test('dismiss removes only the recruited proxy and returns the original NPC', () => {
+  const f = fixture();
+  f.recruit();
+  assert.ok(f.action('throwBot', '524'));
+  f.step(2);
+  const pos = { x: f.c.x, z: f.c.z };
+  assert.ok(handleCompanion524Action(f.room, f.p, 'dismiss524', f.now));
+  f.step(0.05);
+  assert.equal(f.bot, undefined);
+  assert.equal(f.room.companion524.squadPlayerId, null);
+  assert.ok(gap(f.room.companion524, pos) < 0.3);
+  f.step(20);
+  assert.equal(f.room.companion524.mode, 'idle');
+  assert.ok(gap(f.room.companion524, f.c.home) < 0.01);
+});
+
+test('disconnecting after release finishes the flight and preserves its waiting spot until recall', () => {
+  const f = fixture();
+  f.recruit();
+  assert.ok(f.action('throwBot', '524'));
+  f.step(0.4);
+  assert.equal(f.bot.mode, 'airborne');
+  const landing = { ...f.bot.landing };
+  f.room.players.delete(f.p.id);
+  f.step(30);
+  assert.equal(f.c.squadPlayerId, f.p.id);
+  assert.equal(f.bot.mode, 'waiting');
+  assert.equal(gap(f.c, landing), 0);
+  assert.equal(orbBotSnapshots(f.room).filter((b) => b.kind === '524').length, 1);
+  f.room.players.set(f.p.id, f.p);
+  f.step(1);
+  assert.equal(f.bot.mode, 'waiting');
+  assert.equal(gap(f.c, landing), 0);
+  assert.ok(f.action('recallBots'));
+  f.step(5);
+  assert.equal(f.bot.mode, 'following');
+  assert.ok(f.action('throwBot', '524'));
+});
+
+test('disconnecting before release cancels the throw without losing friendship', () => {
+  const f = fixture();
+  f.recruit();
+  assert.ok(f.action('throwBot', '524'));
+  f.step(0.1);
+  assert.equal(f.bot.mode, 'windup');
+  f.room.players.delete(f.p.id);
+  f.step(3);
+  assert.equal(f.c.squadPlayerId, f.p.id);
+  assert.equal(f.bot.mode, 'following');
+  assert.equal(f.bot.throwAt, 0);
+  f.room.players.set(f.p.id, f.p);
+  f.step(1);
+  assert.ok(f.action('throwBot', '524'));
+});
+
+test("another player can befriend an offline owner's 524, without duplicating or reclaiming it on reconnect", () => {
+  const f = fixture();
+  f.recruit();
+  f.room.players.delete(f.p.id);
+  f.step(1);
+  Object.assign(f.q, { x: f.c.x, z: f.c.z + 1.5 });
+  assert.ok(f.pet(f.q));
+  f.step(5);
+  assert.equal(f.c.squadPlayerId, f.q.id);
+  assert.equal(f.bot.ownerId, f.q.id);
+  f.room.players.set(f.p.id, f.p);
+  f.step(1);
+  assert.equal(f.room.orbBots.filter((b) => b.kind === '524').length, 1);
+  assert.equal(f.action('throwBot', '524'), false);
+  assert.ok(f.action('throwBot', '524', f.q));
+});
+
+test('restoring a recruited companion keeps its bond even if its saved position is invalid', () => {
+  const f = fixture();
+  f.recruit();
+  const saved = { ...structuredClone(f.c), x: NaN };
+  restoreCompanion524(f.room, saved);
+  assert.equal(f.room.companion524.squadPlayerId, f.p.id);
+  assert.equal(f.room.companion524.mode, 'following');
+  assert.ok(f.room.collision.free(f.room.companion524, COMPANION_524.radius));
+});

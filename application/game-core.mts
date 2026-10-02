@@ -37,6 +37,7 @@ import {
   createCompanion524,
   updateCompanion524,
   restoreCompanion524,
+  saveCompanion524,
 } from '../shared/companion-524.mjs';
 import { handleBarterCommand, cancelBarter, updateBarters } from '../shared/barter.mjs';
 import { updateSuppers } from '../shared/supper.mjs';
@@ -722,7 +723,10 @@ export function createGameCore({
               camp: room.camp,
               resources: room.resources,
               animals: room.animals,
-              companion524: room.companion524,
+              companion524: saveCompanion524(
+                room.companion524,
+                room.orbBots?.find((bot) => bot.kind === '524'),
+              ),
               rimoNeko: room.rimoNeko,
               enemies: room.enemies,
               boats: room.boats,

@@ -3,6 +3,7 @@ import type { WorldRenderer } from './world3d.js';
 import type { OrbBotSnapshot } from '../shared/orb-bot-types.mjs';
 import { botFlightPosition, botGroundHeight, ORB_BOTS } from '../shared/orb-bots.mjs';
 import { updateActorPerformance } from './performance-lod.js';
+import { applyBotFlightTurn } from './bot-flight-pose.js';
 
 type Actor = ReturnType<WorldRenderer['worldAssets']['createAnimal']>;
 type Entry = { actor: Actor; state: OrbBotSnapshot; mode: string; sequence: number };
@@ -43,6 +44,7 @@ export class OrbBotRenderer {
         (b.mode !== 'windup' || !!owner.actor) &&
         (b.ownerId === world.selfId || Math.hypot(b.x - world.focus.x, b.z - world.focus.z) < 60);
       if (!actor.root.visible) continue;
+      actor.root.rotation.x = actor.root.rotation.z = 0;
       updateActorPerformance(actor.root, actor.root.position.distanceTo(world.camera.position));
       const position = new THREE.Vector3(b.x, b.y, b.z);
       if (b.mode === 'windup' && owner?.actor?.orbBotPose.weight > 0) {
@@ -62,10 +64,8 @@ export class OrbBotRenderer {
       } else if (b.mode === 'airborne') {
         const p = botFlightPosition(b, now);
         if (p) position.set(p.x, p.y, p.z);
-        actor.root.position.copy(position);
-        actor.root.rotation.y = b.facing;
-        actor.play('Thrown_Loop');
-        actor.update(dt);
+        applyBotFlightTurn(actor.root, position, b.facing, p?.t ?? 0, actor.asset.heightMetres / 2);
+        actor.sampleOnce('Thrown_Loop', ((p?.t ?? 0) * ORB_BOTS.flightMs) / 1000);
       } else {
         const delta = actor.root.position.distanceTo(position);
         const transition = entry.mode !== b.mode || entry.sequence !== b.sequence;
@@ -108,6 +108,7 @@ export class OrbBotRenderer {
       model: actor.asset.modelKey,
       visible: actor.root.visible,
       position: actor.root.position.toArray(),
+      pitch: actor.root.rotation.x,
       handError:
         state.mode === 'windup'
           ? actor.root.position.distanceTo(
