@@ -29,6 +29,7 @@ export class OrbBotRenderer {
     for (const b of states) {
       let entry = this.bots.get(b.id);
       if (!entry) {
+        if (!world.worldAssets.templates.has(`orb-bot-${b.kind}`)) continue;
         const actor = world.worldAssets.createAnimal(`orb-bot-${b.kind}`);
         actor.root.position.set(b.x, b.y, b.z);
         world.scene.add(actor.root);
@@ -45,7 +46,8 @@ export class OrbBotRenderer {
         (b.ownerId === world.selfId || Math.hypot(b.x - world.focus.x, b.z - world.focus.z) < 60);
       if (!actor.root.visible) continue;
       actor.root.rotation.x = actor.root.rotation.z = 0;
-      updateActorPerformance(actor.root, actor.root.position.distanceTo(world.camera.position));
+      const distance = actor.root.position.distanceTo(world.camera.position);
+      updateActorPerformance(actor.root, distance, world.graphics.tier);
       const position = new THREE.Vector3(b.x, b.y, b.z);
       if (b.mode === 'windup' && owner?.actor?.orbBotPose.weight > 0) {
         position.copy(owner.actor.orbBotPose.contact);
@@ -90,7 +92,8 @@ export class OrbBotRenderer {
             b.speed > 2 ? 'Run_Loop' : b.speed > 0.05 ? 'Walk_Loop' : 'Idle_Loop',
             b.speed > 0.05 ? THREE.MathUtils.clamp(b.speed / 3, 0.7, 1.7) : 1,
           );
-          actor.update(dt);
+          const step = world.actorBudget.step(actor, actor.root.position, distance, now / 1000, dt);
+          if (step !== null) actor.update(step);
         }
       }
       entry.mode = b.mode;

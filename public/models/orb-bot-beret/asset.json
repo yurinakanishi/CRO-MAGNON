@@ -21,7 +21,8 @@
   },
   "portrait": {
     "url": "/models/orb-bot-beret/portrait.png",
-    "sha256": "0b9b7c2accf86d2a0fcbe3db4a586ba716bcd15c5519ef189758a06202c3e33d"
+    "sha256": "0b9b7c2accf86d2a0fcbe3db4a586ba716bcd15c5519ef189758a06202c3e33d",
+    "bytes": 1357885
   },
   "clips": [
     {

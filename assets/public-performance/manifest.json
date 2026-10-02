@@ -1,0 +1,1490 @@
+{
+  "version": 1,
+  "method": "Lanczos texture resizing; every non-image bufferView preserved byte for byte; PNG with original alpha",
+  "records": [
+    {
+      "sourceUrl": "/models/woolly-mammoth/model-tail-r12.glb",
+      "sourceSha256": "dc8ddadd93b9ef078cf75e0e6c182521ad167a30d4ecae57b75daf5d01e13ba8",
+      "sourceBytes": 7280948,
+      "file": "assets/public-performance/models/woolly-mammoth-model-tail-r12.glb",
+      "url": "/models/woolly-mammoth/model-web-d419c051b606bd9c.glb",
+      "sha256": "d419c051b606bd9c7fc6b7610f90e0aea98763a429694e7902adbaa26f18dda8",
+      "bytes": 7281000,
+      "maximumTextureEdge": 1024,
+      "images": []
+    },
+    {
+      "sourceUrl": "/models/woolly-mammoth/lod-performance.glb",
+      "sourceSha256": "bece0bb61dbaaecb76cea676504d8a21c086f96e79f311c5bfdd8e9e5a7143b0",
+      "sourceBytes": 354052,
+      "file": "assets/public-performance/models/woolly-mammoth-lod-performance.glb",
+      "url": "/models/woolly-mammoth/lod-web-bece0bb61dbaaecb.glb",
+      "sha256": "bece0bb61dbaaecb76cea676504d8a21c086f96e79f311c5bfdd8e9e5a7143b0",
+      "bytes": 354052,
+      "maximumTextureEdge": 1024,
+      "images": []
+    },
+    {
+      "sourceUrl": "/models/valley-pine/model.glb",
+      "sourceSha256": "659a8624253f383bd40ca4b8461427e695a91e97a747d9507c949342b18e0dd8",
+      "sourceBytes": 1127004,
+      "file": "assets/public-performance/models/valley-pine-model.glb",
+      "url": "/models/valley-pine/model-web-bb3989ca0ff70c53.glb",
+      "sha256": "bb3989ca0ff70c5305603463f44d90dac03408aca79a8f0445d6175b3d871bc2",
+      "bytes": 1127004,
+      "maximumTextureEdge": 1024,
+      "images": []
+    },
+    {
+      "sourceUrl": "/models/valley-pine/lod1.glb",
+      "sourceSha256": "a3927a386890f6a9e3ce71d2a0c42be2e864a83487abc13f8a01b6b69a16bff1",
+      "sourceBytes": 842952,
+      "file": "assets/public-performance/models/valley-pine-lod1.glb",
+      "url": "/models/valley-pine/lod-web-a85a6fa24d448c8d.glb",
+      "sha256": "a85a6fa24d448c8d7c5a7a96d6eb2a0cb6226743a923f6a1048ab263f173c5d5",
+      "bytes": 842952,
+      "maximumTextureEdge": 1024,
+      "images": []
+    },
+    {
+      "sourceUrl": "/models/meadow-grass/model.glb",
+      "sourceSha256": "24b41b18d4c5ea40ca660d7eda16f2154ca856828ebfc721d6c3489efe63f9c0",
+      "sourceBytes": 3392616,
+      "file": "assets/public-performance/models/meadow-grass-model.glb",
+      "url": "/models/meadow-grass/model-web-77ae9254dd8d1f25.glb",
+      "sha256": "77ae9254dd8d1f25838f89eb0cf172258b2cbcf3df09cdde73d6f19959685396",
+      "bytes": 3392616,
+      "maximumTextureEdge": 1024,
+      "images": []
+    },
+    {
+      "sourceUrl": "/models/valley-boulder/model.glb",
+      "sourceSha256": "f46449aa51814b9037c8ed3c43179845e63c6f9b48b94e02c7979266cb09bb1d",
+      "sourceBytes": 2443928,
+      "file": "assets/public-performance/models/valley-boulder-model.glb",
+      "url": "/models/valley-boulder/model-web-4de5ca9ba24957a4.glb",
+      "sha256": "4de5ca9ba24957a4eeb7f6de54ade74724a7756a32216552f0fb84eb86538df9",
+      "bytes": 2443928,
+      "maximumTextureEdge": 1024,
+      "images": []
+    },
+    {
+      "sourceUrl": "/models/firewood-pile/model.glb",
+      "sourceSha256": "88fdbe0514694b4b484e285dc6ffa85c8cebe134ea120d34f7486dc27d3d3d3a",
+      "sourceBytes": 2566200,
+      "file": "assets/public-performance/models/firewood-pile-model.glb",
+      "url": "/models/firewood-pile/model-web-48f7564d4ec58fe2.glb",
+      "sha256": "48f7564d4ec58fe222f2c768c01bc1142ac102d4333e86fe037a781d217fa97a",
+      "bytes": 2566200,
+      "maximumTextureEdge": 1024,
+      "images": []
+    },
+    {
+      "sourceUrl": "/models/firewood-pile/lod-performance.glb",
+      "sourceSha256": "dd79b8adb654ffc52786d4c2a9fc1b7020c5f54684346046c63cac1b5b25443b",
+      "sourceBytes": 2175316,
+      "file": "assets/public-performance/models/firewood-pile-lod-performance.glb",
+      "url": "/models/firewood-pile/lod-web-a43957710c2f0ef1.glb",
+      "sha256": "a43957710c2f0ef1bbf61396c8283ad1fef747e429ac558ed76c23d186a5604d",
+      "bytes": 2175316,
+      "maximumTextureEdge": 1024,
+      "images": []
+    },
+    {
+      "sourceUrl": "/models/berry-bush/model.glb",
+      "sourceSha256": "3d405ba99daa2d984810e9a2cf4418ad2008c0ee9279c0157fb68fc5a3008ee1",
+      "sourceBytes": 9032376,
+      "file": "assets/public-performance/models/berry-bush-model.glb",
+      "url": "/models/berry-bush/model-web-3d405ba99daa2d98.glb",
+      "sha256": "3d405ba99daa2d984810e9a2cf4418ad2008c0ee9279c0157fb68fc5a3008ee1",
+      "bytes": 9032376,
+      "maximumTextureEdge": 1024,
+      "images": []
+    },
+    {
+      "sourceUrl": "/models/berry-bush/lod-performance.glb",
+      "sourceSha256": "972efcd873a8f3ac829868d82245c0a985bb29d5fe38710052310fdd2487a614",
+      "sourceBytes": 3625404,
+      "file": "assets/public-performance/models/berry-bush-lod-performance.glb",
+      "url": "/models/berry-bush/lod-web-972efcd873a8f3ac.glb",
+      "sha256": "972efcd873a8f3ac829868d82245c0a985bb29d5fe38710052310fdd2487a614",
+      "bytes": 3625404,
+      "maximumTextureEdge": 1024,
+      "images": []
+    },
+    {
+      "sourceUrl": "/models/hide-tent/model.glb",
+      "sourceSha256": "7c7aef410b4f8eee268cd32f75faa65f0b7ea3f2d8e4cf53b6d810e5a1e20de7",
+      "sourceBytes": 3426740,
+      "file": "assets/public-performance/models/hide-tent-model.glb",
+      "url": "/models/hide-tent/model-web-67cad22a6529e3a9.glb",
+      "sha256": "67cad22a6529e3a9fdd06aad0a55ad67ec07fa47bc8e309f9d9c6506362d7c64",
+      "bytes": 3426740,
+      "maximumTextureEdge": 1024,
+      "images": []
+    },
+    {
+      "sourceUrl": "/models/hide-tent/lod-performance.glb",
+      "sourceSha256": "57bae53dd8bf87e0d8e9b8e72d6aeec761dd94f38afaa0889b98af785e662c41",
+      "sourceBytes": 2110496,
+      "file": "assets/public-performance/models/hide-tent-lod-performance.glb",
+      "url": "/models/hide-tent/lod-web-90a76b7130e5aad5.glb",
+      "sha256": "90a76b7130e5aad553405ea1ed8a605fc6261c25a93eebc6fd8f996da5f1c519",
+      "bytes": 2110496,
+      "maximumTextureEdge": 1024,
+      "images": []
+    },
+    {
+      "sourceUrl": "/models/drying-rack/model.glb",
+      "sourceSha256": "b106d53d89e9fa51ee38d3baa2c3a0b898fd39658f5718728ef12844b9f1d65d",
+      "sourceBytes": 3022452,
+      "file": "assets/public-performance/models/drying-rack-model.glb",
+      "url": "/models/drying-rack/model-web-7260c6f2a7966091.glb",
+      "sha256": "7260c6f2a79660910e5fe511ecf3bbba0a4161f7ef76911959bcca3032a4eab3",
+      "bytes": 3022452,
+      "maximumTextureEdge": 1024,
+      "images": []
+    },
+    {
+      "sourceUrl": "/models/stone-firepit/model.glb",
+      "sourceSha256": "d47aa67f9987cacd61d523d53622e33ebf0778c9a03f9e68559ad3f6db20f65a",
+      "sourceBytes": 4326524,
+      "file": "assets/public-performance/models/stone-firepit-model.glb",
+      "url": "/models/stone-firepit/model-web-ce12c804e338fac4.glb",
+      "sha256": "ce12c804e338fac410a2bc78ddecf5744e7b31153dc94b140ea6d07de4bf0b9d",
+      "bytes": 4326524,
+      "maximumTextureEdge": 1024,
+      "images": []
+    },
+    {
+      "sourceUrl": "/models/stone-firepit/lod-performance.glb",
+      "sourceSha256": "f20d687b16e7b74dc84ee20a40fb76cf4541445ab33d6f2a8e9062961ca47209",
+      "sourceBytes": 2607924,
+      "file": "assets/public-performance/models/stone-firepit-lod-performance.glb",
+      "url": "/models/stone-firepit/lod-web-68a4d39bd955a5f8.glb",
+      "sha256": "68a4d39bd955a5f8207233d16b0ba5758f7665451c3209283ea626f79d8736da",
+      "bytes": 2607924,
+      "maximumTextureEdge": 1024,
+      "images": []
+    },
+    {
+      "sourceUrl": "/models/flint-spear/model.glb",
+      "sourceSha256": "1a10db6d1b44da1e982f88e5ae9ef6be8fb74f5900ebd9258380ad200e53ed3d",
+      "sourceBytes": 2816964,
+      "file": "assets/public-performance/models/flint-spear-model.glb",
+      "url": "/models/flint-spear/model-web-800a130b02f0ad08.glb",
+      "sha256": "800a130b02f0ad08742c757c2de34af6508deb9424b482e070eadfb95e72fac7",
+      "bytes": 2816964,
+      "maximumTextureEdge": 1024,
+      "images": []
+    },
+    {
+      "sourceUrl": "/models/stone-axe/model.glb",
+      "sourceSha256": "12dc3f23f8ec2acfb9fb6f770ab05f59c21584be00795f9b8cf272a2f6cf5ac0",
+      "sourceBytes": 743996,
+      "file": "assets/public-performance/models/stone-axe-model.glb",
+      "url": "/models/stone-axe/model-web-12dc3f23f8ec2acf.glb",
+      "sha256": "12dc3f23f8ec2acfb9fb6f770ab05f59c21584be00795f9b8cf272a2f6cf5ac0",
+      "bytes": 743996,
+      "maximumTextureEdge": 1024,
+      "images": []
+    },
+    {
+      "sourceUrl": "/models/meadow-ground/model.glb",
+      "sourceSha256": "6c6b41bdec1631236027c567635623aa9cdd1e0d92c0ae9e89f77764b52995e1",
+      "sourceBytes": 2126388,
+      "file": "assets/public-performance/models/meadow-ground-model.glb",
+      "url": "/models/meadow-ground/model-web-0f25798deaeed408.glb",
+      "sha256": "0f25798deaeed408472fcf35ed3d9a1f27280955bfc0f3df4b548921c3423f64",
+      "bytes": 2126388,
+      "maximumTextureEdge": 1024,
+      "images": []
+    },
+    {
+      "sourceUrl": "/models/river-water/model.glb",
+      "sourceSha256": "8575faa5fd988da815d622ebbd03d49390339df5eeafd0eb794e1b0368ec0274",
+      "sourceBytes": 1905036,
+      "file": "assets/public-performance/models/river-water-model.glb",
+      "url": "/models/river-water/model-web-8575faa5fd988da8.glb",
+      "sha256": "8575faa5fd988da815d622ebbd03d49390339df5eeafd0eb794e1b0368ec0274",
+      "bytes": 1905036,
+      "maximumTextureEdge": 1024,
+      "images": []
+    },
+    {
+      "sourceUrl": "/models/wood-footbridge/model.glb",
+      "sourceSha256": "629a8ec5db3dd16b7a126b1c8ea4877a5ec0bc4037017e0a2a53ec2f63e3a369",
+      "sourceBytes": 1821888,
+      "file": "assets/public-performance/models/wood-footbridge-model.glb",
+      "url": "/models/wood-footbridge/model-web-dacb9502e26a7d9d.glb",
+      "sha256": "dacb9502e26a7d9d993df052ced13085c6e14c775e5eff0a0bcb6f2659b8ddbd",
+      "bytes": 1821888,
+      "maximumTextureEdge": 1024,
+      "images": []
+    },
+    {
+      "sourceUrl": "/models/mammoth-meat/model.glb",
+      "sourceSha256": "50bf72d1dc5ff23b7eb206e7d0c6535d9a4ac1559190e6c4f5bbb94cd0ffaf2d",
+      "sourceBytes": 579220,
+      "file": "assets/public-performance/models/mammoth-meat-model.glb",
+      "url": "/models/mammoth-meat/model-web-8f979738936ef86d.glb",
+      "sha256": "8f979738936ef86d4626bfc51e753feaafcd0585e4cfcb0122ee16287efbdd83",
+      "bytes": 579220,
+      "maximumTextureEdge": 1024,
+      "images": []
+    },
+    {
+      "sourceUrl": "/models/crow-shaman/model-motion-r04.glb",
+      "sourceSha256": "0fdb13ce4ace078b93694a898e58aa4fc05ac64eb11d128ac83e7935a5a55e63",
+      "sourceBytes": 8323452,
+      "file": "assets/public-performance/models/crow-shaman-model-motion-r04.glb",
+      "url": "/models/crow-shaman/model-web-f5edc02014718e0a.glb",
+      "sha256": "f5edc02014718e0a7866bd41a416d696853c8c93885079c2de186791d134e46f",
+      "bytes": 8582436,
+      "maximumTextureEdge": 1024,
+      "images": [
+        {
+          "before": [
+            2048,
+            2048
+          ],
+          "after": [
+            1024,
+            1024
+          ],
+          "beforeBytes": 1259951,
+          "afterBytes": 1518904
+        }
+      ]
+    },
+    {
+      "sourceUrl": "/models/crow-shaman/lod-performance.glb",
+      "sourceSha256": "c07bc8af0f22ea62bc6c3da1f193af2af27f1a327926f5992ae5919a3806e94a",
+      "sourceBytes": 950616,
+      "file": "assets/public-performance/models/crow-shaman-lod-performance.glb",
+      "url": "/models/crow-shaman/lod-web-c07bc8af0f22ea62.glb",
+      "sha256": "c07bc8af0f22ea62bc6c3da1f193af2af27f1a327926f5992ae5919a3806e94a",
+      "bytes": 950616,
+      "maximumTextureEdge": 1024,
+      "images": []
+    },
+    {
+      "sourceUrl": "/models/kunoichi-katana/model.glb",
+      "sourceSha256": "3e6e061fc02779d3516d114b53629fa0d5b585e815d4683ce74dd7d9c2822e0e",
+      "sourceBytes": 2019308,
+      "file": "assets/public-performance/models/kunoichi-katana-model.glb",
+      "url": "/models/kunoichi-katana/model-web-c974f982c51bb9e0.glb",
+      "sha256": "c974f982c51bb9e085635c1e1c000c6672d185537538f68fb8a5428021e0aa52",
+      "bytes": 2325988,
+      "maximumTextureEdge": 1024,
+      "images": [
+        {
+          "before": [
+            2048,
+            2048
+          ],
+          "after": [
+            1024,
+            1024
+          ],
+          "beforeBytes": 1095364,
+          "afterBytes": 1402041
+        }
+      ]
+    },
+    {
+      "sourceUrl": "/models/snow-ground/model.glb",
+      "sourceSha256": "ddf7037c1cd52801d7c5f1a71492c496d7885f407372edb275e445ce0e009f44",
+      "sourceBytes": 3092188,
+      "file": "assets/public-performance/models/snow-ground-model.glb",
+      "url": "/models/snow-ground/model-web-7adaff7386987a8b.glb",
+      "sha256": "7adaff7386987a8be2f561583c34f889e69e311439bb32bcb3e1fa9c98ce75dd",
+      "bytes": 2630540,
+      "maximumTextureEdge": 1024,
+      "images": [
+        {
+          "before": [
+            1254,
+            1254
+          ],
+          "after": [
+            1024,
+            1024
+          ],
+          "beforeBytes": 1392016,
+          "afterBytes": 930366
+        }
+      ]
+    },
+    {
+      "sourceUrl": "/models/snow-ground/lod1.glb",
+      "sourceSha256": "e822a8dd99fb95c3589b161a5ac95a931a7bb04edff30d8571ea8973a34fb412",
+      "sourceBytes": 2907308,
+      "file": "assets/public-performance/models/snow-ground-lod1.glb",
+      "url": "/models/snow-ground/lod-web-8a133c3b1078a4ef.glb",
+      "sha256": "8a133c3b1078a4ef414498ce69cdba6d843a79968bb317b497fe1767cdedc5da",
+      "bytes": 2445656,
+      "maximumTextureEdge": 1024,
+      "images": [
+        {
+          "before": [
+            1254,
+            1254
+          ],
+          "after": [
+            1024,
+            1024
+          ],
+          "beforeBytes": 1392016,
+          "afterBytes": 930366
+        }
+      ]
+    },
+    {
+      "sourceUrl": "/models/snow-ground/lod2.glb",
+      "sourceSha256": "8173f329c3fef54d0cf60cbfc61b5e9326bec395d9a002d6c118eb8fcd70fad3",
+      "sourceBytes": 2877800,
+      "file": "assets/public-performance/models/snow-ground-lod2.glb",
+      "url": "/models/snow-ground/lod-web-fd22ad9168bf2db7.glb",
+      "sha256": "fd22ad9168bf2db77d15dad0eeaf62e794864df5d10c3c6b8f14b5ba0314ef77",
+      "bytes": 2416148,
+      "maximumTextureEdge": 1024,
+      "images": [
+        {
+          "before": [
+            1254,
+            1254
+          ],
+          "after": [
+            1024,
+            1024
+          ],
+          "beforeBytes": 1392016,
+          "afterBytes": 930366
+        }
+      ]
+    },
+    {
+      "sourceUrl": "/models/ice-ground/model.glb",
+      "sourceSha256": "30eeb7ceea111e33576b497e8341f9f01bf232fc598c6bbefa79a9867df51cce",
+      "sourceBytes": 2151736,
+      "file": "assets/public-performance/models/ice-ground-model.glb",
+      "url": "/models/ice-ground/model-web-75d2a5323ee9391e.glb",
+      "sha256": "75d2a5323ee9391ead34eaa6f33274fd039ba3d284289cec97839f3f3fd22078",
+      "bytes": 2151736,
+      "maximumTextureEdge": 1024,
+      "images": []
+    },
+    {
+      "sourceUrl": "/models/ice-ground/lod1.glb",
+      "sourceSha256": "239f235f9df4e4ab55f41668b9dfd3b7eba920e06a7cc53db2a1740365228707",
+      "sourceBytes": 2016248,
+      "file": "assets/public-performance/models/ice-ground-lod1.glb",
+      "url": "/models/ice-ground/lod-web-68397872a0f29414.glb",
+      "sha256": "68397872a0f29414ccecb1b5175bcaa1b5018a49fa0a9f4598a6e66b5677dd87",
+      "bytes": 2016248,
+      "maximumTextureEdge": 1024,
+      "images": []
+    },
+    {
+      "sourceUrl": "/models/ice-ground/lod2.glb",
+      "sourceSha256": "58932f8b217650af1a596c8de6863e373d6b76bf2671a81f282cbdb8fc74c5c4",
+      "sourceBytes": 1998100,
+      "file": "assets/public-performance/models/ice-ground-lod2.glb",
+      "url": "/models/ice-ground/lod-web-31fdd1501fc3dedb.glb",
+      "sha256": "31fdd1501fc3dedb20a45efa340f45d333b657827c80887c770a6a1e9bc9315d",
+      "bytes": 1998100,
+      "maximumTextureEdge": 1024,
+      "images": []
+    },
+    {
+      "sourceUrl": "/models/desert-ground/model.glb",
+      "sourceSha256": "fcf25dfc8bed6ce7ecfbdf445674e3c092f36d353462685cb5730ba3ef00005e",
+      "sourceBytes": 2082132,
+      "file": "assets/public-performance/models/desert-ground-model.glb",
+      "url": "/models/desert-ground/model-web-31e17ccb7bbe4c95.glb",
+      "sha256": "31e17ccb7bbe4c95032c72a2338cfadb4a7b4c25bee8cf446cde72208ab27904",
+      "bytes": 1197348,
+      "maximumTextureEdge": 1024,
+      "images": [
+        {
+          "before": [
+            1316,
+            1316
+          ],
+          "after": [
+            1024,
+            1024
+          ],
+          "beforeBytes": 1500439,
+          "afterBytes": 615653
+        }
+      ]
+    },
+    {
+      "sourceUrl": "/models/desert-ground/lod1.glb",
+      "sourceSha256": "fb7f7b45c67bf8c1e62b0bf77a6ac52b57b8917aed3e1c6956461cd939e34882",
+      "sourceBytes": 1654188,
+      "file": "assets/public-performance/models/desert-ground-lod1.glb",
+      "url": "/models/desert-ground/lod-web-04adc29526ac5da0.glb",
+      "sha256": "04adc29526ac5da032cc3a4db91e6777633774855518d4df3e31bcae59ee3a45",
+      "bytes": 769404,
+      "maximumTextureEdge": 1024,
+      "images": [
+        {
+          "before": [
+            1316,
+            1316
+          ],
+          "after": [
+            1024,
+            1024
+          ],
+          "beforeBytes": 1500439,
+          "afterBytes": 615653
+        }
+      ]
+    },
+    {
+      "sourceUrl": "/models/desert-ground/lod2.glb",
+      "sourceSha256": "733979092eeedff1984acdf3395576b616db477f580ec708bbfe0a27b7fe87df",
+      "sourceBytes": 1542504,
+      "file": "assets/public-performance/models/desert-ground-lod2.glb",
+      "url": "/models/desert-ground/lod-web-571fe0ea7a98d817.glb",
+      "sha256": "571fe0ea7a98d8177e507c23753fe59ff871e0b8e3995ee0acf078214a9326ed",
+      "bytes": 657720,
+      "maximumTextureEdge": 1024,
+      "images": [
+        {
+          "before": [
+            1316,
+            1316
+          ],
+          "after": [
+            1024,
+            1024
+          ],
+          "beforeBytes": 1500439,
+          "afterBytes": 615653
+        }
+      ]
+    },
+    {
+      "sourceUrl": "/models/volcanic-ground/model.glb",
+      "sourceSha256": "2bca15ffc01cce6148f8569a60b3fbecd16ac0c7946014f7b48f267b5eaffb88",
+      "sourceBytes": 1506956,
+      "file": "assets/public-performance/models/volcanic-ground-model.glb",
+      "url": "/models/volcanic-ground/model-web-9c7868d9ce6c69c9.glb",
+      "sha256": "9c7868d9ce6c69c9534979dfd76c7693703fd2e1a210223b9d165bdb3ee5d6dc",
+      "bytes": 1506956,
+      "maximumTextureEdge": 1024,
+      "images": []
+    },
+    {
+      "sourceUrl": "/models/volcanic-ground/lod1.glb",
+      "sourceSha256": "dd46d5d0bd30c0d98f8c4aff2fbb907d91585e1e11dda60a6f1ff08000c207f2",
+      "sourceBytes": 1354216,
+      "file": "assets/public-performance/models/volcanic-ground-lod1.glb",
+      "url": "/models/volcanic-ground/lod-web-1b490a51d75fa425.glb",
+      "sha256": "1b490a51d75fa42562b0197cdf2ccdee63330c8d2f4cb8562589e5b84ca5017e",
+      "bytes": 1354216,
+      "maximumTextureEdge": 1024,
+      "images": []
+    },
+    {
+      "sourceUrl": "/models/volcanic-ground/lod2.glb",
+      "sourceSha256": "ff9d0530565596a465f6dbf8d17f4d2788e541df44d09e017ef8f499805ef2ac",
+      "sourceBytes": 1332664,
+      "file": "assets/public-performance/models/volcanic-ground-lod2.glb",
+      "url": "/models/volcanic-ground/lod-web-89c607989018bb84.glb",
+      "sha256": "89c607989018bb842b83d1c0df6c7407fb16137557ceb0b5efc61fe78e282731",
+      "bytes": 1332664,
+      "maximumTextureEdge": 1024,
+      "images": []
+    },
+    {
+      "sourceUrl": "/models/glacier-spires/model.glb",
+      "sourceSha256": "af945c2fec27252389a05ca2eabb6970003372a584a83cf18e2e6c34a42f6b53",
+      "sourceBytes": 2190204,
+      "file": "assets/public-performance/models/glacier-spires-model.glb",
+      "url": "/models/glacier-spires/model-web-af945c2fec272523.glb",
+      "sha256": "af945c2fec27252389a05ca2eabb6970003372a584a83cf18e2e6c34a42f6b53",
+      "bytes": 2190204,
+      "maximumTextureEdge": 1024,
+      "images": []
+    },
+    {
+      "sourceUrl": "/models/glacier-spires/lod1.glb",
+      "sourceSha256": "763d759cf19ed420903233d58051a2d9c619071a8c748f72fc29f6c525e4f1a2",
+      "sourceBytes": 1833232,
+      "file": "assets/public-performance/models/glacier-spires-lod1.glb",
+      "url": "/models/glacier-spires/lod-web-763d759cf19ed420.glb",
+      "sha256": "763d759cf19ed420903233d58051a2d9c619071a8c748f72fc29f6c525e4f1a2",
+      "bytes": 1833232,
+      "maximumTextureEdge": 1024,
+      "images": []
+    },
+    {
+      "sourceUrl": "/models/glacier-spires/lod2.glb",
+      "sourceSha256": "3a6fa1607b3a778910797750dedfe6e1dd285871c10bb25ee70ec2514dd07caf",
+      "sourceBytes": 1770552,
+      "file": "assets/public-performance/models/glacier-spires-lod2.glb",
+      "url": "/models/glacier-spires/lod-web-3a6fa1607b3a7789.glb",
+      "sha256": "3a6fa1607b3a778910797750dedfe6e1dd285871c10bb25ee70ec2514dd07caf",
+      "bytes": 1770552,
+      "maximumTextureEdge": 1024,
+      "images": []
+    },
+    {
+      "sourceUrl": "/models/volcanic-cone/model.glb",
+      "sourceSha256": "868c062028af62fedf491ed7391602991dbc76b1ddbbd09494ee958a7898cd5b",
+      "sourceBytes": 2081908,
+      "file": "assets/public-performance/models/volcanic-cone-model.glb",
+      "url": "/models/volcanic-cone/model-web-d0502dc14a12f418.glb",
+      "sha256": "d0502dc14a12f4182aa3540959bea0b15f478b0f97edf50191de624b7ece8d70",
+      "bytes": 2081908,
+      "maximumTextureEdge": 1024,
+      "images": []
+    },
+    {
+      "sourceUrl": "/models/volcanic-basalt-columns/model.glb",
+      "sourceSha256": "a3cf5fa909494f4250e4cacd9bc9529b9780f9d7292fc1bfd6bf6235ae71c0fc",
+      "sourceBytes": 5454964,
+      "file": "assets/public-performance/models/volcanic-basalt-columns-model.glb",
+      "url": "/models/volcanic-basalt-columns/model-web-5090f475661cc4df.glb",
+      "sha256": "5090f475661cc4df534b0e04190b95d68f4b1ebd3c98aa961338360231ab989b",
+      "bytes": 5454964,
+      "maximumTextureEdge": 1024,
+      "images": []
+    },
+    {
+      "sourceUrl": "/models/volcanic-basalt-columns/lod1.glb",
+      "sourceSha256": "2a3e890af2b0bf31f71fba58db39eff122f6b60c06cf341c86c85f80db665dde",
+      "sourceBytes": 3088636,
+      "file": "assets/public-performance/models/volcanic-basalt-columns-lod1.glb",
+      "url": "/models/volcanic-basalt-columns/lod-web-adce1c2a11ff7c2b.glb",
+      "sha256": "adce1c2a11ff7c2b5842228743fe4c2436c01b513551cdcd03d84235851e1515",
+      "bytes": 3088636,
+      "maximumTextureEdge": 1024,
+      "images": []
+    },
+    {
+      "sourceUrl": "/models/desert-cactus/model.glb",
+      "sourceSha256": "df3e780323fd45808d92b2f7edcd2c7d9ee8000f1ea0c67b29baab73c939d7ed",
+      "sourceBytes": 2122540,
+      "file": "assets/public-performance/models/desert-cactus-model.glb",
+      "url": "/models/desert-cactus/model-web-294efcf358f632fc.glb",
+      "sha256": "294efcf358f632fcc0de45854f091e4073e186f60db2488a7ed71617e6f4493f",
+      "bytes": 2122540,
+      "maximumTextureEdge": 1024,
+      "images": []
+    },
+    {
+      "sourceUrl": "/models/desert-cactus/lod1.glb",
+      "sourceSha256": "d04e3a4dcab15ab00753fe26bf84a062c40c09d5ae3083174148e3bb6d19ed2d",
+      "sourceBytes": 1662216,
+      "file": "assets/public-performance/models/desert-cactus-lod1.glb",
+      "url": "/models/desert-cactus/lod-web-d19a4b390300985e.glb",
+      "sha256": "d19a4b390300985efe827bfbd09273dfd7b0de9e364d04aad3923c571e577110",
+      "bytes": 1662216,
+      "maximumTextureEdge": 1024,
+      "images": []
+    },
+    {
+      "sourceUrl": "/models/desert-cactus/lod2.glb",
+      "sourceSha256": "1f1642cf62ce45665a5e326a0ef795a716a4397822c1fdc9ff0366e39fb13f8e",
+      "sourceBytes": 1424504,
+      "file": "assets/public-performance/models/desert-cactus-lod2.glb",
+      "url": "/models/desert-cactus/lod-web-738862567202c7ae.glb",
+      "sha256": "738862567202c7ae9f70a410ef17167dfaa83184255bbc08d7fa260eb46d74b7",
+      "bytes": 1424504,
+      "maximumTextureEdge": 1024,
+      "images": []
+    },
+    {
+      "sourceUrl": "/models/dugout-canoe/model.glb",
+      "sourceSha256": "6e77ae6df54f19a450d460b70ee35596e9703942d5d18bcdbf6b35f066e964e4",
+      "sourceBytes": 4732516,
+      "file": "assets/public-performance/models/dugout-canoe-model.glb",
+      "url": "/models/dugout-canoe/model-web-aea7e58e66602e9c.glb",
+      "sha256": "aea7e58e66602e9c94da0d37fb9e5e55e4445560d409978064bec80ecc55fcc8",
+      "bytes": 4145260,
+      "maximumTextureEdge": 1024,
+      "images": [
+        {
+          "before": [
+            2048,
+            2048
+          ],
+          "after": [
+            1024,
+            1024
+          ],
+          "beforeBytes": 1613944,
+          "afterBytes": 1215104
+        },
+        {
+          "before": [
+            2048,
+            2048
+          ],
+          "after": [
+            1024,
+            1024
+          ],
+          "beforeBytes": 897716,
+          "afterBytes": 709302
+        }
+      ]
+    },
+    {
+      "sourceUrl": "/models/cockle-shell/model.glb",
+      "sourceSha256": "7e4f448274b346dd8a3705901cccf0e7e4d49be2bc09b683cd85cdc740122a81",
+      "sourceBytes": 10177512,
+      "file": "assets/public-performance/models/cockle-shell-model.glb",
+      "url": "/models/cockle-shell/model-web-f6380ac5ea8f4b96.glb",
+      "sha256": "f6380ac5ea8f4b96805e9a66614d6064e325672004cdb1a05077540f61ea7ed7",
+      "bytes": 3040800,
+      "maximumTextureEdge": 1024,
+      "images": [
+        {
+          "before": [
+            2048,
+            2048
+          ],
+          "after": [
+            1024,
+            1024
+          ],
+          "beforeBytes": 8772278,
+          "afterBytes": 1812577
+        },
+        {
+          "before": [
+            2048,
+            2048
+          ],
+          "after": [
+            1024,
+            1024
+          ],
+          "beforeBytes": 186819,
+          "afterBytes": 9811
+        }
+      ]
+    },
+    {
+      "sourceUrl": "/models/shell-midden/model.glb",
+      "sourceSha256": "494844840a1ac461837e73874bf3858d5a5f73baf8655769b6cd590d048e07cd",
+      "sourceBytes": 15209472,
+      "file": "assets/public-performance/models/shell-midden-model.glb",
+      "url": "/models/shell-midden/model-web-4d3a9724fbfe084a.glb",
+      "sha256": "4d3a9724fbfe084a697a056a1f2c15ef6c6d83e50e7baf78fb9ef11e12cb3353",
+      "bytes": 6647020,
+      "maximumTextureEdge": 1024,
+      "images": [
+        {
+          "before": [
+            2048,
+            2048
+          ],
+          "after": [
+            1024,
+            1024
+          ],
+          "beforeBytes": 9941376,
+          "afterBytes": 2252322
+        },
+        {
+          "before": [
+            2048,
+            2048
+          ],
+          "after": [
+            1024,
+            1024
+          ],
+          "beforeBytes": 1057022,
+          "afterBytes": 183627
+        }
+      ]
+    },
+    {
+      "sourceUrl": "/models/wooden-spear/model.glb",
+      "sourceSha256": "ac2b1a3c8100b38a7753749fd6578b5f355247478cf9f44ea642c06eb858ee5d",
+      "sourceBytes": 1462776,
+      "file": "assets/public-performance/models/wooden-spear-model.glb",
+      "url": "/models/wooden-spear/model-web-86b206862357cd4d.glb",
+      "sha256": "86b206862357cd4d5e4dad81baa132cf14d306ba2255cb8d5525432922ce0481",
+      "bytes": 1462776,
+      "maximumTextureEdge": 1024,
+      "images": []
+    },
+    {
+      "sourceUrl": "/models/obsidian-spear/model.glb",
+      "sourceSha256": "d89b680a1519081cb5725ae543ebf1ce7e81c1fdf7f844e060eb17b4f42ca7bc",
+      "sourceBytes": 2816996,
+      "file": "assets/public-performance/models/obsidian-spear-model.glb",
+      "url": "/models/obsidian-spear/model-web-6f11e9bcff32e9b7.glb",
+      "sha256": "6f11e9bcff32e9b7201ebfd57c8d9a31f9cc9d0b2378a6d7259ba53a51347b06",
+      "bytes": 2816996,
+      "maximumTextureEdge": 1024,
+      "images": []
+    },
+    {
+      "sourceUrl": "/models/obsidian-blade/model.glb",
+      "sourceSha256": "3319075637b3714f836a59d9381fa23f0fb943ed8969a6c193f11e5152590f60",
+      "sourceBytes": 2816960,
+      "file": "assets/public-performance/models/obsidian-blade-model.glb",
+      "url": "/models/obsidian-blade/model-web-91d625efbf986f15.glb",
+      "sha256": "91d625efbf986f15532140056eef977d58e059900900768f04f78e8727501711",
+      "bytes": 2816960,
+      "maximumTextureEdge": 1024,
+      "images": []
+    },
+    {
+      "sourceUrl": "/models/violet-behemoth/model-quadruped-r04.glb",
+      "sourceSha256": "6dd28210973bdccc543c0e2805ced82c838b95df2535218a652fda8ca869aa55",
+      "sourceBytes": 15320936,
+      "file": "assets/public-performance/models/violet-behemoth-model-quadruped-r04.glb",
+      "url": "/models/violet-behemoth/model-web-52ec61b3662b0121.glb",
+      "sha256": "52ec61b3662b0121fb3ff37040d1b440c32be8a31c2bc50a799177f44e1d250f",
+      "bytes": 7531176,
+      "maximumTextureEdge": 1024,
+      "images": [
+        {
+          "before": [
+            2048,
+            2048
+          ],
+          "after": [
+            1024,
+            1024
+          ],
+          "beforeBytes": 9804372,
+          "afterBytes": 2015770
+        }
+      ]
+    },
+    {
+      "sourceUrl": "/models/violet-behemoth/lod-performance.glb",
+      "sourceSha256": "53d11944cf0e7b4298ea6e1b0e136a151a73d3ff24e29d03da688bfa2a6a8dc8",
+      "sourceBytes": 599964,
+      "file": "assets/public-performance/models/violet-behemoth-lod-performance.glb",
+      "url": "/models/violet-behemoth/lod-web-53d11944cf0e7b42.glb",
+      "sha256": "53d11944cf0e7b4298ea6e1b0e136a151a73d3ff24e29d03da688bfa2a6a8dc8",
+      "bytes": 599964,
+      "maximumTextureEdge": 1024,
+      "images": []
+    },
+    {
+      "sourceUrl": "/models/meadow-sprig/model.glb",
+      "sourceSha256": "4a4c9060a5d95f0db3dcf3c4ff050c78c86f543b942ec62273471326959483de",
+      "sourceBytes": 894776,
+      "file": "assets/public-performance/models/meadow-sprig-model.glb",
+      "url": "/models/meadow-sprig/model-web-726c4b3d1a7d6a3e.glb",
+      "sha256": "726c4b3d1a7d6a3eea6e8c4142d784ef24b9b243f70cacb898b917db3865444b",
+      "bytes": 894772,
+      "maximumTextureEdge": 1024,
+      "images": []
+    },
+    {
+      "sourceUrl": "/models/sabertooth-tiger/model-r13.glb",
+      "sourceSha256": "54db205315086d109bd34b6cf35d31df25cca7472dddb95c7fdbeea6c868021d",
+      "sourceBytes": 20224888,
+      "file": "assets/public-performance/models/sabertooth-tiger-model-r13.glb",
+      "url": "/models/sabertooth-tiger/model-web-9b26754b6e3dc033.glb",
+      "sha256": "9b26754b6e3dc033fa845cc843f976d15239a8e58c5cc8512509bcd1e7b20962",
+      "bytes": 10493696,
+      "maximumTextureEdge": 1024,
+      "images": [
+        {
+          "before": [
+            2048,
+            2048
+          ],
+          "after": [
+            1024,
+            1024
+          ],
+          "beforeBytes": 12402561,
+          "afterBytes": 2671767
+        }
+      ]
+    },
+    {
+      "sourceUrl": "/models/sabertooth-tiger/lod-performance.glb",
+      "sourceSha256": "cccd444673cf8dc6eba0238cfa15990985fc4b4bcfa500c9c95c9afcaf4352cd",
+      "sourceBytes": 964560,
+      "file": "assets/public-performance/models/sabertooth-tiger-lod-performance.glb",
+      "url": "/models/sabertooth-tiger/lod-web-cccd444673cf8dc6.glb",
+      "sha256": "cccd444673cf8dc6eba0238cfa15990985fc4b4bcfa500c9c95c9afcaf4352cd",
+      "bytes": 964560,
+      "maximumTextureEdge": 1024,
+      "images": []
+    },
+    {
+      "sourceUrl": "/models/valley-castle/model-r13.glb",
+      "sourceSha256": "2a271bbc12e1b331da6468d5f84f1db173beeb284fdebfdde7c56b613e48dc90",
+      "sourceBytes": 8889164,
+      "file": "assets/public-performance/models/valley-castle-model-r13.glb",
+      "url": "/models/valley-castle/model-web-6527d4a141ff3c19.glb",
+      "sha256": "6527d4a141ff3c1961072f7003c99e1fb3eea2d53e05cfade9b5d8316a26c3af",
+      "bytes": 8889164,
+      "maximumTextureEdge": 1024,
+      "images": []
+    },
+    {
+      "sourceUrl": "/models/firewood-log/model.glb",
+      "sourceSha256": "8a32826636cfc198cc1776ebec499b1bc036779c08143cf256ad7e4d8a186cd3",
+      "sourceBytes": 2156672,
+      "file": "assets/public-performance/models/firewood-log-model.glb",
+      "url": "/models/firewood-log/model-web-8a32826636cfc198.glb",
+      "sha256": "8a32826636cfc198cc1776ebec499b1bc036779c08143cf256ad7e4d8a186cd3",
+      "bytes": 2156672,
+      "maximumTextureEdge": 1024,
+      "images": []
+    },
+    {
+      "sourceUrl": "/models/firewood-log/lod1.glb",
+      "sourceSha256": "75460ca0a571243cab6c63dfe0acc44fbed1fae17578823df02ffbf90626cf2e",
+      "sourceBytes": 1728432,
+      "file": "assets/public-performance/models/firewood-log-lod1.glb",
+      "url": "/models/firewood-log/lod-web-75460ca0a571243c.glb",
+      "sha256": "75460ca0a571243cab6c63dfe0acc44fbed1fae17578823df02ffbf90626cf2e",
+      "bytes": 1728432,
+      "maximumTextureEdge": 1024,
+      "images": []
+    },
+    {
+      "sourceUrl": "/models/firewood-log/lod2.glb",
+      "sourceSha256": "f24ff178715163c72f74ec06a1bf6aa4cb1e6052b4810d66faffb8832bd5e71d",
+      "sourceBytes": 1663640,
+      "file": "assets/public-performance/models/firewood-log-lod2.glb",
+      "url": "/models/firewood-log/lod-web-f24ff178715163c7.glb",
+      "sha256": "f24ff178715163c72f74ec06a1bf6aa4cb1e6052b4810d66faffb8832bd5e71d",
+      "bytes": 1663640,
+      "maximumTextureEdge": 1024,
+      "images": []
+    },
+    {
+      "sourceUrl": "/models/camp-mountain/model-r15.glb",
+      "sourceSha256": "193127fbde284f036864996060cb3b85578ab7a595384151dad858e569eb9202",
+      "sourceBytes": 8929000,
+      "file": "assets/public-performance/models/camp-mountain-model-r15.glb",
+      "url": "/models/camp-mountain/model-web-c74deb8fd777aa82.glb",
+      "sha256": "c74deb8fd777aa8217d2c6e1e471c15be52ed9826b5f4a295305a8a17ddd8d1a",
+      "bytes": 8929000,
+      "maximumTextureEdge": 1024,
+      "images": []
+    },
+    {
+      "sourceUrl": "/models/camp-mountain/lod-performance.glb",
+      "sourceSha256": "6d4db4974cd16bd7ccc8ad53a199197ada18166dba1d3aae116f98c526496b2d",
+      "sourceBytes": 2596720,
+      "file": "assets/public-performance/models/camp-mountain-lod-performance.glb",
+      "url": "/models/camp-mountain/lod-web-2a2a3441f75b3e4e.glb",
+      "sha256": "2a2a3441f75b3e4ebf6fc57205a72e57ce8ebf9642f19d4452351ea3331b8c9f",
+      "bytes": 2596720,
+      "maximumTextureEdge": 1024,
+      "images": []
+    },
+    {
+      "sourceUrl": "/models/camp-cave/model-r26.glb",
+      "sourceSha256": "65dde1aa7311b88c159d524d93af82a770dac77e48ee1f35356e3000cad8a15f",
+      "sourceBytes": 5393776,
+      "file": "assets/public-performance/models/camp-cave-model-r26.glb",
+      "url": "/models/camp-cave/model-web-bcd38c9fef1aed6f.glb",
+      "sha256": "bcd38c9fef1aed6ffdd0dd4c31e50911b090a1c1b84b5f18f4bdbab228d7c87d",
+      "bytes": 2767148,
+      "maximumTextureEdge": 1024,
+      "images": [
+        {
+          "before": [
+            2048,
+            2048
+          ],
+          "after": [
+            1024,
+            1024
+          ],
+          "beforeBytes": 2821684,
+          "afterBytes": 714261
+        },
+        {
+          "before": [
+            2048,
+            2048
+          ],
+          "after": [
+            1024,
+            1024
+          ],
+          "beforeBytes": 605817,
+          "afterBytes": 86609
+        }
+      ]
+    },
+    {
+      "sourceUrl": "/models/yellow-524-mascot/model-midpoint-r01.glb",
+      "sourceSha256": "77faeb7e7b0a34cd1aa6e23b728cbaf295227998791bb437977a8ff2abfbb3b9",
+      "sourceBytes": 19046100,
+      "file": "assets/public-performance/models/yellow-524-mascot-model-midpoint-r01.glb",
+      "url": "/models/yellow-524-mascot/model-web-d24c1595b1142bcc.glb",
+      "sha256": "d24c1595b1142bccfc68d94df59de927289c8bc929cbaabc872a96f3eac3556b",
+      "bytes": 17709676,
+      "maximumTextureEdge": 1024,
+      "images": [
+        {
+          "before": [
+            1620,
+            971
+          ],
+          "after": [
+            1024,
+            614
+          ],
+          "beforeBytes": 1851477,
+          "afterBytes": 515034
+        }
+      ]
+    },
+    {
+      "sourceUrl": "/models/yellow-524-mascot/lod-low-spec-r01.glb",
+      "sourceSha256": "07022f5603e1be9e77d02dd5a45dd61c053aa75ea8bdfbe3e3e2a64d4a46bbf2",
+      "sourceBytes": 1191728,
+      "file": "assets/public-performance/models/yellow-524-mascot-lod-low-spec-r01.glb",
+      "url": "/models/yellow-524-mascot/lod-web-07022f5603e1be9e.glb",
+      "sha256": "07022f5603e1be9e77d02dd5a45dd61c053aa75ea8bdfbe3e3e2a64d4a46bbf2",
+      "bytes": 1191728,
+      "maximumTextureEdge": 1024,
+      "images": []
+    },
+    {
+      "sourceUrl": "/models/rimo-neko/model-r10.glb",
+      "sourceSha256": "545900f93a483fb1b9cb7483c4fa79a97c3b40d107054e6ef4cadd34fe12205b",
+      "sourceBytes": 26147952,
+      "file": "assets/public-performance/models/rimo-neko-model-r10-tex2048.glb",
+      "url": "/models/rimo-neko/model-web-545900f93a483fb1.glb",
+      "sha256": "545900f93a483fb1b9cb7483c4fa79a97c3b40d107054e6ef4cadd34fe12205b",
+      "bytes": 26147952,
+      "maximumTextureEdge": 2048,
+      "images": []
+    },
+    {
+      "sourceUrl": "/models/rimo-neko/lod-low-spec-r01.glb",
+      "sourceSha256": "f7604e5311a8a37415b02778394b5bdf4d5747f7e69cd86f124e42d67c33777f",
+      "sourceBytes": 1756636,
+      "file": "assets/public-performance/models/rimo-neko-lod-low-spec-r01.glb",
+      "url": "/models/rimo-neko/lod-web-f7604e5311a8a374.glb",
+      "sha256": "f7604e5311a8a37415b02778394b5bdf4d5747f7e69cd86f124e42d67c33777f",
+      "bytes": 1756636,
+      "maximumTextureEdge": 1024,
+      "images": []
+    },
+    {
+      "sourceUrl": "/models/orb-bot-white/model-r03.glb",
+      "sourceSha256": "0e68d2dda0a2d11396a50a853cefcd3897e53abd9b18e2023bd1e2bc6f4d266a",
+      "sourceBytes": 535824,
+      "file": "assets/public-performance/models/orb-bot-white-model-r03.glb",
+      "url": "/models/orb-bot-white/model-web-88959455fc8d1bea.glb",
+      "sha256": "88959455fc8d1beaeb0528d3aecca2b4a1e2d5f8a30a057a4646658be9154ef9",
+      "bytes": 258864,
+      "maximumTextureEdge": 1024,
+      "images": [
+        {
+          "before": [
+            4096,
+            4096
+          ],
+          "after": [
+            1024,
+            1024
+          ],
+          "beforeBytes": 305990,
+          "afterBytes": 29033
+        }
+      ]
+    },
+    {
+      "sourceUrl": "/models/orb-bot-white/lod-r02.glb",
+      "sourceSha256": "b05fb8beea1cfc301b5d8d0c8ee703219b70fef5dcaa97af231b5bf78d789297",
+      "sourceBytes": 72752,
+      "file": "assets/public-performance/models/orb-bot-white-lod-r02.glb",
+      "url": "/models/orb-bot-white/lod-web-b05fb8beea1cfc30.glb",
+      "sha256": "b05fb8beea1cfc301b5d8d0c8ee703219b70fef5dcaa97af231b5bf78d789297",
+      "bytes": 72752,
+      "maximumTextureEdge": 1024,
+      "images": []
+    },
+    {
+      "sourceUrl": "/models/orb-bot-blue/model-r03.glb",
+      "sourceSha256": "dee691fc7c35bde8079cd394744a2bdf050380528d30e86ec823cf8269806304",
+      "sourceBytes": 508596,
+      "file": "assets/public-performance/models/orb-bot-blue-model-r03.glb",
+      "url": "/models/orb-bot-blue/model-web-4737ce34b76a1504.glb",
+      "sha256": "4737ce34b76a15040a4b23428045a7a1a90dff159ec03fe07f22ba6a6f42c89c",
+      "bytes": 254088,
+      "maximumTextureEdge": 1024,
+      "images": [
+        {
+          "before": [
+            4096,
+            4096
+          ],
+          "after": [
+            1024,
+            1024
+          ],
+          "beforeBytes": 275957,
+          "afterBytes": 21449
+        }
+      ]
+    },
+    {
+      "sourceUrl": "/models/orb-bot-blue/lod-r02.glb",
+      "sourceSha256": "446ca81625dff165d40596cf63005fa04fe5c8f1d039fbd7c8a2c7b0b1018a8c",
+      "sourceBytes": 73228,
+      "file": "assets/public-performance/models/orb-bot-blue-lod-r02.glb",
+      "url": "/models/orb-bot-blue/lod-web-446ca81625dff165.glb",
+      "sha256": "446ca81625dff165d40596cf63005fa04fe5c8f1d039fbd7c8a2c7b0b1018a8c",
+      "bytes": 73228,
+      "maximumTextureEdge": 1024,
+      "images": []
+    },
+    {
+      "sourceUrl": "/models/orb-bot-green/model-r03.glb",
+      "sourceSha256": "4f7461ab063fce7aae319745520523bb2d84938ba7a11b765f3ea6b34dbb12ce",
+      "sourceBytes": 497696,
+      "file": "assets/public-performance/models/orb-bot-green-model-r03.glb",
+      "url": "/models/orb-bot-green/model-web-a912e026f193038b.glb",
+      "sha256": "a912e026f193038b68144d5a61b61ee3e36e3321ab7e54e12af7c35b64ef9218",
+      "bytes": 252500,
+      "maximumTextureEdge": 1024,
+      "images": [
+        {
+          "before": [
+            4096,
+            4096
+          ],
+          "after": [
+            1024,
+            1024
+          ],
+          "beforeBytes": 268152,
+          "afterBytes": 22953
+        }
+      ]
+    },
+    {
+      "sourceUrl": "/models/orb-bot-green/lod-r02.glb",
+      "sourceSha256": "becab68c827d467624b1f3d9bf84126d094dd8accd8c05420fd38b1101609497",
+      "sourceBytes": 71372,
+      "file": "assets/public-performance/models/orb-bot-green-lod-r02.glb",
+      "url": "/models/orb-bot-green/lod-web-becab68c827d4676.glb",
+      "sha256": "becab68c827d467624b1f3d9bf84126d094dd8accd8c05420fd38b1101609497",
+      "bytes": 71372,
+      "maximumTextureEdge": 1024,
+      "images": []
+    },
+    {
+      "sourceUrl": "/models/orb-bot-purple/model-r03.glb",
+      "sourceSha256": "5cc2232ba84cacbd2616ec6979757f41822cb4d845c7cbe873888756f6059e96",
+      "sourceBytes": 549020,
+      "file": "assets/public-performance/models/orb-bot-purple-model-r03.glb",
+      "url": "/models/orb-bot-purple/model-web-c84f6da8f28722b1.glb",
+      "sha256": "c84f6da8f28722b105c23ff1e16759377d7a71298a6d72973b7b54a4f9d1a3b5",
+      "bytes": 263132,
+      "maximumTextureEdge": 1024,
+      "images": [
+        {
+          "before": [
+            4096,
+            4096
+          ],
+          "after": [
+            1024,
+            1024
+          ],
+          "beforeBytes": 318118,
+          "afterBytes": 32234
+        }
+      ]
+    },
+    {
+      "sourceUrl": "/models/orb-bot-purple/lod-r02.glb",
+      "sourceSha256": "a33ec432dd655db4204949a55b7a10a6c44920c7a686d5b12538258c36607f38",
+      "sourceBytes": 73076,
+      "file": "assets/public-performance/models/orb-bot-purple-lod-r02.glb",
+      "url": "/models/orb-bot-purple/lod-web-a33ec432dd655db4.glb",
+      "sha256": "a33ec432dd655db4204949a55b7a10a6c44920c7a686d5b12538258c36607f38",
+      "bytes": 73076,
+      "maximumTextureEdge": 1024,
+      "images": []
+    },
+    {
+      "sourceUrl": "/models/orb-bot-orange/model-r08.glb",
+      "sourceSha256": "35a5de83fc555c537e918000b6c2f0fabed5ce6ac2f837aa78930e7547f99d55",
+      "sourceBytes": 454820,
+      "file": "assets/public-performance/models/orb-bot-orange-model-r08.glb",
+      "url": "/models/orb-bot-orange/model-web-e8f6a5a51aa37715.glb",
+      "sha256": "e8f6a5a51aa37715e5e9e1d4f8f63394776e3133fb9c36df9e94432d320895ea",
+      "bytes": 151008,
+      "maximumTextureEdge": 1024,
+      "images": [
+        {
+          "before": [
+            4096,
+            4096
+          ],
+          "after": [
+            1024,
+            1024
+          ],
+          "beforeBytes": 319054,
+          "afterBytes": 15243
+        }
+      ]
+    },
+    {
+      "sourceUrl": "/models/orb-bot-orange/lod-r06.glb",
+      "sourceSha256": "b291e5836bb739096128a47b406bed1af8ba4247f76b04900cbee94306f03ae8",
+      "sourceBytes": 37140,
+      "file": "assets/public-performance/models/orb-bot-orange-lod-r06.glb",
+      "url": "/models/orb-bot-orange/lod-web-b291e5836bb73909.glb",
+      "sha256": "b291e5836bb739096128a47b406bed1af8ba4247f76b04900cbee94306f03ae8",
+      "bytes": 37140,
+      "maximumTextureEdge": 1024,
+      "images": []
+    },
+    {
+      "sourceUrl": "/models/orb-bot-beret/model-r03.glb",
+      "sourceSha256": "0c18e377dc69de6c1fce9bd2baaade3fb20914f2e547d382ec5a6a8b24e304e0",
+      "sourceBytes": 17676368,
+      "file": "assets/public-performance/models/orb-bot-beret-model-r03.glb",
+      "url": "/models/orb-bot-beret/model-web-d1ad88f3b99ccd01.glb",
+      "sha256": "d1ad88f3b99ccd01dabf26a53db1e326c7575b5f86137a3da4df53e8ac655677",
+      "bytes": 2505592,
+      "maximumTextureEdge": 1024,
+      "images": [
+        {
+          "before": [
+            4096,
+            4096
+          ],
+          "after": [
+            1024,
+            1024
+          ],
+          "beforeBytes": 16399432,
+          "afterBytes": 1228701
+        }
+      ]
+    },
+    {
+      "sourceUrl": "/models/orb-bot-beret/lod-r03.glb",
+      "sourceSha256": "e08d43efcd7d647259f275d55538544a2a9c4829250a523d6a782804dc0075ff",
+      "sourceBytes": 540524,
+      "file": "assets/public-performance/models/orb-bot-beret-lod-r03.glb",
+      "url": "/models/orb-bot-beret/lod-web-e08d43efcd7d6472.glb",
+      "sha256": "e08d43efcd7d647259f275d55538544a2a9c4829250a523d6a782804dc0075ff",
+      "bytes": 540524,
+      "maximumTextureEdge": 1024,
+      "images": []
+    },
+    {
+      "sourceUrl": "/models/orb-bot-frog/model-r01.glb",
+      "sourceSha256": "cdd25740bb82c8553f3acc174d29e1b016729af1eb60ddf2e0d4ce7f479b5741",
+      "sourceBytes": 27659764,
+      "file": "assets/public-performance/models/orb-bot-frog-model-r01.glb",
+      "url": "/models/orb-bot-frog/model-web-637c509fdf75f83c.glb",
+      "sha256": "637c509fdf75f83cf564d3d2f9107671913d2948563ec2694d88de4d31a40725",
+      "bytes": 4553328,
+      "maximumTextureEdge": 1024,
+      "images": [
+        {
+          "before": [
+            4096,
+            4096
+          ],
+          "after": [
+            1024,
+            1024
+          ],
+          "beforeBytes": 25040764,
+          "afterBytes": 1934376
+        }
+      ]
+    },
+    {
+      "sourceUrl": "/models/orb-bot-frog/lod-r01.glb",
+      "sourceSha256": "4f50f276ba068a6476021bc34abd3f2cc73909db7baa1ca2c881ee96a94f34cb",
+      "sourceBytes": 1926104,
+      "file": "assets/public-performance/models/orb-bot-frog-lod-r01.glb",
+      "url": "/models/orb-bot-frog/lod-web-4f50f276ba068a64.glb",
+      "sha256": "4f50f276ba068a6476021bc34abd3f2cc73909db7baa1ca2c881ee96a94f34cb",
+      "bytes": 1926104,
+      "maximumTextureEdge": 1024,
+      "images": []
+    },
+    {
+      "sourceUrl": "/models/orb-bot-triangle/model-r06.glb",
+      "sourceSha256": "a69f9a4f5d65fe867f5fd6865a41f2862282ef3ae7fa8858774b7797ddf6cf1b",
+      "sourceBytes": 16759840,
+      "file": "assets/public-performance/models/orb-bot-triangle-model-r06.glb",
+      "url": "/models/orb-bot-triangle/model-web-75f60f670e7669cb.glb",
+      "sha256": "75f60f670e7669cb055ecc78c3f3aea562655401d4d324eee6e7d5a90394cd08",
+      "bytes": 2023080,
+      "maximumTextureEdge": 1024,
+      "images": [
+        {
+          "before": [
+            4096,
+            4096
+          ],
+          "after": [
+            1024,
+            1024
+          ],
+          "beforeBytes": 16072982,
+          "afterBytes": 1336270
+        }
+      ]
+    },
+    {
+      "sourceUrl": "/models/orb-bot-triangle/lod-r06.glb",
+      "sourceSha256": "1f5187de9141e06f6e4d2975b090ab34520911e552595ea6e13b4420c92a530c",
+      "sourceBytes": 171912,
+      "file": "assets/public-performance/models/orb-bot-triangle-lod-r06.glb",
+      "url": "/models/orb-bot-triangle/lod-web-1f5187de9141e06f.glb",
+      "sha256": "1f5187de9141e06f6e4d2975b090ab34520911e552595ea6e13b4420c92a530c",
+      "bytes": 171912,
+      "maximumTextureEdge": 1024,
+      "images": []
+    },
+    {
+      "sourceUrl": "/models/orb-bot-heart/model-r02.glb",
+      "sourceSha256": "fe294cdc517abb4485b4379ffd4619fe4ff37a535d5463850f87b6ba612defc7",
+      "sourceBytes": 18235068,
+      "file": "assets/public-performance/models/orb-bot-heart-model-r02.glb",
+      "url": "/models/orb-bot-heart/model-web-699cb96ccaf6d903.glb",
+      "sha256": "699cb96ccaf6d9036ae8cf9856384fd5d7c3634983d9a8e2067bffe380107fe2",
+      "bytes": 2622016,
+      "maximumTextureEdge": 1024,
+      "images": [
+        {
+          "before": [
+            4096,
+            4096
+          ],
+          "after": [
+            1024,
+            1024
+          ],
+          "beforeBytes": 16999591,
+          "afterBytes": 1386585
+        }
+      ]
+    },
+    {
+      "sourceUrl": "/models/orb-bot-heart/lod-r02.glb",
+      "sourceSha256": "dc5b5a69e1d838f8b2c45f10ded323ec83c65e67fa429e56f502430338559fc2",
+      "sourceBytes": 499512,
+      "file": "assets/public-performance/models/orb-bot-heart-lod-r02.glb",
+      "url": "/models/orb-bot-heart/lod-web-dc5b5a69e1d838f8.glb",
+      "sha256": "dc5b5a69e1d838f8b2c45f10ded323ec83c65e67fa429e56f502430338559fc2",
+      "bytes": 499512,
+      "maximumTextureEdge": 1024,
+      "images": []
+    },
+    {
+      "sourceUrl": "/models/cro-magnon-woman/model-face-r10.glb",
+      "sourceSha256": "55c0728b99376581695712f4010bcf948b3d4cc23ca64922dd000234f22c9b5a",
+      "sourceBytes": 55574540,
+      "file": "assets/public-performance/models/cro-magnon-woman-model-face-r10.glb",
+      "url": "/models/cro-magnon-woman/model-web-41a119c905eaf5cb.glb",
+      "sha256": "41a119c905eaf5cb8470334f0c816389be65bed947c741faab45bf2b558f1083",
+      "bytes": 55574576,
+      "maximumTextureEdge": 2048,
+      "images": []
+    },
+    {
+      "sourceUrl": "/models/cro-magnon-woman/lod-face-r10.glb",
+      "sourceSha256": "ec8f40b3847acdffd3a6072f54147c09d72026019beb63300b1ae8af3606fe30",
+      "sourceBytes": 1072196,
+      "file": "assets/public-performance/models/cro-magnon-woman-lod-face-r10.glb",
+      "url": "/models/cro-magnon-woman/lod-web-55873fe55e22a446.glb",
+      "sha256": "55873fe55e22a44692e9ee572163543e79b25ec81782fc41f26420a0ecf9ce4f",
+      "bytes": 1072228,
+      "maximumTextureEdge": 2048,
+      "images": []
+    },
+    {
+      "sourceUrl": "/models/cro-magnon-hunter/model-human-r10.glb",
+      "sourceSha256": "b2d51d01d095bb5e995e6a6f7a9e9b084f2796e47f675370900dea7ac20d2720",
+      "sourceBytes": 10712084,
+      "file": "assets/public-performance/models/cro-magnon-hunter-model-human-r10.glb",
+      "url": "/models/cro-magnon-hunter/model-web-e84fff28d0007e67.glb",
+      "sha256": "e84fff28d0007e677ae7a90d4ff11f2b951f9af7830833ffe37f21a664691679",
+      "bytes": 10712120,
+      "maximumTextureEdge": 2048,
+      "images": []
+    },
+    {
+      "sourceUrl": "/models/cro-magnon-hunter/lod-performance.glb",
+      "sourceSha256": "9cfa67c7a783bf3a21b5ae3185f5376b3fd4102b1c5a3582f5f86f146b6774ca",
+      "sourceBytes": 815764,
+      "file": "assets/public-performance/models/cro-magnon-hunter-lod-performance.glb",
+      "url": "/models/cro-magnon-hunter/lod-web-9cfa67c7a783bf3a.glb",
+      "sha256": "9cfa67c7a783bf3a21b5ae3185f5376b3fd4102b1c5a3582f5f86f146b6774ca",
+      "bytes": 815764,
+      "maximumTextureEdge": 2048,
+      "images": []
+    },
+    {
+      "sourceUrl": "/models/neanderthal-woman/model-face-r10.glb",
+      "sourceSha256": "21da70ddc2c5cfc7a2199dad4782b7d4822c3451d33d0d2275b405a2f3a78311",
+      "sourceBytes": 42680492,
+      "file": "assets/public-performance/models/neanderthal-woman-model-face-r10.glb",
+      "url": "/models/neanderthal-woman/model-web-3333f91813d24953.glb",
+      "sha256": "3333f91813d2495331942abf8718176d4daec856a2fe976197347af978e9cdff",
+      "bytes": 42680528,
+      "maximumTextureEdge": 2048,
+      "images": []
+    },
+    {
+      "sourceUrl": "/models/neanderthal-woman/lod-face-r10.glb",
+      "sourceSha256": "d25be8ef21e7faa37ad17d15e162d751d6b1e880777881675618591a335b9f71",
+      "sourceBytes": 1202692,
+      "file": "assets/public-performance/models/neanderthal-woman-lod-face-r10.glb",
+      "url": "/models/neanderthal-woman/lod-web-8b997d47f0f717ad.glb",
+      "sha256": "8b997d47f0f717adefbe1aab89993c146a706f422ebd5b1424438960b8dcf73c",
+      "bytes": 1202728,
+      "maximumTextureEdge": 2048,
+      "images": []
+    },
+    {
+      "sourceUrl": "/models/neanderthal-hunter/model-human-r10.glb",
+      "sourceSha256": "93047f04342a5880dc4574956846f130b3d97c5041408c07f790d2ae09f55000",
+      "sourceBytes": 11260680,
+      "file": "assets/public-performance/models/neanderthal-hunter-model-human-r10.glb",
+      "url": "/models/neanderthal-hunter/model-web-5e8922e8dc222623.glb",
+      "sha256": "5e8922e8dc22262355f58d10278894abc79576c503180db388e4c6623181d036",
+      "bytes": 11260716,
+      "maximumTextureEdge": 2048,
+      "images": []
+    },
+    {
+      "sourceUrl": "/models/neanderthal-hunter/lod-performance.glb",
+      "sourceSha256": "40635a6831b871023541cc6830814399a2946c54333a2df5439e6c9895b46f67",
+      "sourceBytes": 711464,
+      "file": "assets/public-performance/models/neanderthal-hunter-lod-performance.glb",
+      "url": "/models/neanderthal-hunter/lod-web-40635a6831b87102.glb",
+      "sha256": "40635a6831b871023541cc6830814399a2946c54333a2df5439e6c9895b46f67",
+      "bytes": 711464,
+      "maximumTextureEdge": 2048,
+      "images": []
+    },
+    {
+      "sourceUrl": "/models/cat-kunoichi/model-human-r10.glb",
+      "sourceSha256": "c81c37512be0502decf46495868a0c8521470098117b422b167ffce8da59cd9b",
+      "sourceBytes": 7951312,
+      "file": "assets/public-performance/models/cat-kunoichi-model-human-r10.glb",
+      "url": "/models/cat-kunoichi/model-web-53b5473d41d0c003.glb",
+      "sha256": "53b5473d41d0c003da7d97a8381a5bf8fa76a2f9d6737772e89ed85c8dfaacc1",
+      "bytes": 7951348,
+      "maximumTextureEdge": 2048,
+      "images": []
+    },
+    {
+      "sourceUrl": "/models/cat-kunoichi/lod-performance.glb",
+      "sourceSha256": "c8085452014f4a472fd9a927610d51d6b23b0b4aad7a4c24c8dd8d3b5490a388",
+      "sourceBytes": 827352,
+      "file": "assets/public-performance/models/cat-kunoichi-lod-performance.glb",
+      "url": "/models/cat-kunoichi/lod-web-c8085452014f4a47.glb",
+      "sha256": "c8085452014f4a472fd9a927610d51d6b23b0b4aad7a4c24c8dd8d3b5490a388",
+      "bytes": 827352,
+      "maximumTextureEdge": 2048,
+      "images": []
+    },
+    {
+      "sourceUrl": "/models/desert-fennec-mage/model-run-r05.glb",
+      "sourceSha256": "1df80588345196a75382afbd437b6ec9349bc717688433801dc3fdd72c8e0841",
+      "sourceBytes": 15792420,
+      "file": "assets/public-performance/models/desert-fennec-mage-model-run-r05.glb",
+      "url": "/models/desert-fennec-mage/model-web-57bf2205ca27403e.glb",
+      "sha256": "57bf2205ca27403ed52307694d67967de0341673b39a7ac391259dab9af258fc",
+      "bytes": 15792460,
+      "maximumTextureEdge": 2048,
+      "images": []
+    },
+    {
+      "sourceUrl": "/models/desert-fennec-mage/lod-performance.glb",
+      "sourceSha256": "95c4c8e99dcc09a66d46f0f668249c146de24015848bac107f773d52fa8403bc",
+      "sourceBytes": 1301548,
+      "file": "assets/public-performance/models/desert-fennec-mage-lod-performance.glb",
+      "url": "/models/desert-fennec-mage/lod-web-95c4c8e99dcc09a6.glb",
+      "sha256": "95c4c8e99dcc09a66d46f0f668249c146de24015848bac107f773d52fa8403bc",
+      "bytes": 1301548,
+      "maximumTextureEdge": 2048,
+      "images": []
+    },
+    {
+      "sourceUrl": "/models/giant-ape/model-run-r05.glb",
+      "sourceSha256": "ae9cee5355ca661235b4c310df8feb03f00dc447ab479c7de5446a9429d3faca",
+      "sourceBytes": 16751356,
+      "file": "assets/public-performance/models/giant-ape-model-run-r05.glb",
+      "url": "/models/giant-ape/model-web-59d00de1b4c20623.glb",
+      "sha256": "59d00de1b4c2062378c35f2b095d9cb2cb29a9bc49768dba0a7870b17138929e",
+      "bytes": 16751396,
+      "maximumTextureEdge": 2048,
+      "images": []
+    },
+    {
+      "sourceUrl": "/models/giant-ape/lod-performance.glb",
+      "sourceSha256": "f8b1033c49b5179c79c5581d4899f4789c074f8154a8e937986e88b192d00fbd",
+      "sourceBytes": 1326948,
+      "file": "assets/public-performance/models/giant-ape-lod-performance.glb",
+      "url": "/models/giant-ape/lod-web-f8b1033c49b5179c.glb",
+      "sha256": "f8b1033c49b5179c79c5581d4899f4789c074f8154a8e937986e88b192d00fbd",
+      "bytes": 1326948,
+      "maximumTextureEdge": 2048,
+      "images": []
+    },
+    {
+      "sourceUrl": "/models/howkey-scientist/model-r11.glb",
+      "sourceSha256": "f6366ce469d719b2456de06d776bf029e2fdc0a80e9f0ed7c4a51c6bb0ad8c83",
+      "sourceBytes": 29530492,
+      "file": "assets/public-performance/models/howkey-scientist-model-r11.glb",
+      "url": "/models/howkey-scientist/model-web-204dd8e39edc026a.glb",
+      "sha256": "204dd8e39edc026aa14c3c69b18f3e0d542add6f80098b26ea0adead6619f9c7",
+      "bytes": 13230468,
+      "maximumTextureEdge": 2048,
+      "images": [
+        {
+          "before": [
+            4096,
+            4096
+          ],
+          "after": [
+            2048,
+            2048
+          ],
+          "beforeBytes": 21858797,
+          "afterBytes": 5558737
+        }
+      ]
+    },
+    {
+      "sourceUrl": "/models/howkey-scientist/lod-performance-r02.glb",
+      "sourceSha256": "7e0fe5d847dcb1956ee575941e7396a63f663a40d43db08fe2e5a06996d0e2d2",
+      "sourceBytes": 912884,
+      "file": "assets/public-performance/models/howkey-scientist-lod-performance-r02.glb",
+      "url": "/models/howkey-scientist/lod-web-7e0fe5d847dcb195.glb",
+      "sha256": "7e0fe5d847dcb1956ee575941e7396a63f663a40d43db08fe2e5a06996d0e2d2",
+      "bytes": 912884,
+      "maximumTextureEdge": 2048,
+      "images": []
+    }
+  ]
+}

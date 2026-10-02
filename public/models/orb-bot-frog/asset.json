@@ -21,7 +21,8 @@
   },
   "portrait": {
     "url": "/models/orb-bot-frog/portrait.png",
-    "sha256": "0930a7dcb766477aae7bc44c54e53981af7758a2148cc79e8535fa4311380211"
+    "sha256": "0930a7dcb766477aae7bc44c54e53981af7758a2148cc79e8535fa4311380211",
+    "bytes": 1816488
   },
   "clips": [
     {

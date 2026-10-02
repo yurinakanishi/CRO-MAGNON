@@ -26,7 +26,16 @@
       "loop": true
     }
   ],
-  "lods": [],
+  "lods": [
+    {
+      "url": "/models/yellow-524-mascot/lod-low-spec-r01.glb",
+      "sha256": "07022f5603e1be9e77d02dd5a45dd61c053aa75ea8bdfbe3e3e2a64d4a46bbf2",
+      "bytes": 1191728,
+      "triangles": 35921,
+      "distanceMetres": 3.5,
+      "purpose": "source-derived animated geometry; original skeleton/materials/clips retained"
+    }
+  ],
   "notes": [
     "User selected the midpoint between C13 and C14 on 2026-09-22. Equal linear-light interpolation, matching the reviewed material preview within 8-bit PNG quantization.",
     "C14 geometry, normals, UVs, 20 bones, skin weights and Floating_Ripple remain byte-identical. Original C13/C14 and the former game GLB are retained.",

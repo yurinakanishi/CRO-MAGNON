@@ -1,46 +1,66 @@
 {
-  "checkedAt": "2026-10-01T10:36:44.960Z",
+  "checkedAt": "2026-10-02T06:00:21.610Z",
   "status": "deployed-and-live-verified",
   "url": "https://cromagnonmmo.cro-magnon.workers.dev",
+  "workerName": "cromagnonmmo",
   "accountId": "a211102818d484cb668c6b62bebff3f9",
   "accountName": "CRO-MAGNON Free",
   "workersPlan": "Free",
-  "versionId": "2024e6ad-e30e-47de-9679-1daa52789715",
-  "previousVersionId": "43199ac4-b262-4b4a-91f0-3af46f42a558",
+  "versionId": "5802f152-ab5b-4cfd-b11d-d459297e3394",
+  "previousVersionId": "2024e6ad-e30e-47de-9679-1daa52789715",
   "newPaidSubscription": false,
-  "publicCredits": ["yuri", "R-524"],
+  "durableObjectNamespaceId": "9071351c3ff8445d8ce2eebdb7822cec",
+  "workerNameAndStorageUnchanged": true,
+  "publicCredits": [
+    "yuri",
+    "R-524"
+  ],
   "localCredits": "full",
+  "excludedPublicCharacters": [
+    "maruimo"
+  ],
+  "publicCharacterCount": 8,
+  "localCharacterCount": 9,
+  "optimizedPublicAssets": true,
   "browser": {
     "rendered3D": true,
+    "worldAssetsReady": true,
+    "companionAssetsReady": true,
+    "publicCharacterChoices": 8,
+    "publicCredits": [
+      "yuri",
+      "R-524"
+    ],
+    "lowDrawingBuffer": [
+      1402,
+      657
+    ],
+    "settingsFpsLimits": [
+      30,
+      60,
+      30
+    ],
+    "qualityRestoredToAuto": true,
     "consoleWarningsOrErrors": 0,
-    "howkeyModel": true,
-    "publicCreditsOnly": true,
-    "publicCharacterChoices": 8
+    "returnedToTitle": true
   },
   "networkQA": "live-qa.json",
   "releaseQA": "public-release-qa.json",
+  "characterPrivacyQA": "character-privacy-qa.json",
   "localStorageAndQuotaQA": "persistence-qa.json",
   "legacyWorldVersion2Migration": true,
-  "originalCloudCheckpointBackup": "SQLite checkpoint_backup, id 1; never overwritten",
-  "testsPassed": 771,
-  "verifiedGLBs": 81,
-  "splitGLBs": 3,
-  "testBrowserClosed": true,
+  "testsPassed": 818,
+  "verifiedGLBs": 101,
+  "splitGLBs": 2,
+  "staticFiles": 447,
+  "staticMiB": 469.8,
+  "testConnectionsClosed": true,
+  "publicBrowserReturnedToTitle": true,
   "playersAtStop": 0,
   "workStatus": "complete",
-  "resumeReadonlyQA": "output/cloudflare-deploy/cromagnonmmo-readonly-check.json",
+  "resumeReadonlyQA": "output/low-spec-20261002/public-browser-final.json",
   "documentation": "CLOUDFLARE_DEPLOYMENT.md",
-  "releaseNotes": "docs/cloudflare-public-release-2026-10-01.md",
-  "pending": [],
-  "workerName": "cromagnonmmo",
-  "previousUrl": "https://cro-magnon-free.cro-magnon.workers.dev",
-  "previousUrlStatus": 404,
-  "renamedExistingWorker": true,
-  "durableObjectNamespaceId": "9071351c3ff8445d8ce2eebdb7822cec",
-  "excludedPublicCharacters": ["maruimo"],
-  "publicCharacterCount": 8,
-  "localCharacterCount": 9,
-  "characterPrivacyQA": "character-privacy-qa.json",
-  "staticFiles": 404,
-  "staticMiB": 500.2
+  "releaseNotes": "docs/low-spec-public-2026-10-02.md",
+  "performanceQA": "assets/public-performance/browser-qa.json",
+  "pending": []
 }

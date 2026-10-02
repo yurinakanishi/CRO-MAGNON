@@ -21,6 +21,7 @@ export interface CharacterModel {
   name: string;
   weapon?: 'katana' | 'magic' | 'unarmed' | 'science' | 'tentacle';
   bodyPlan?: 'biped' | 'octopus';
+  botHandRatios?: { side: number; front: number; height: number };
   height?: number;
   radius?: number;
   walkSpeed?: number;

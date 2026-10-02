@@ -7,7 +7,7 @@ import {
   botHandOffset,
   ORB_BOTS,
 } from '../shared/orb-bots.mjs';
-import { isMesh } from './three-types.js';
+import { updateActorPerformance } from './performance-lod.js';
 import { VisibleActorGroup } from './visible-actor-group.js';
 import { companionHeartTexture } from './companion-heart-texture.js';
 import { botFlightTurn } from './bot-flight-pose.js';
@@ -180,10 +180,17 @@ export class Companion524Renderer {
     this.root.visible = distance < 85 && bot?.mode !== 'stowed';
     if (this.root.visible) {
       // Absolute server phase also resumes correctly after culling or a late join.
-      this.actor.mixer.setTime((now / 1000) % 4);
-      this.actor.root.traverse((node) => {
-        if (isMesh(node)) node.castShadow = distance < 34;
-      });
+      const step = this.world.actorBudget.step(
+        this.actor,
+        this.root.position,
+        distance,
+        now / 1000,
+        dt,
+        !!c.petPlayerId ||
+          (!!bot && ['windup', 'airborne', 'landing', 'catching'].includes(bot.mode)),
+      );
+      if (step !== null) this.actor.mixer.setTime((now / 1000) % 4);
+      updateActorPerformance(this.actor.root, distance, this.world.graphics.tier);
     }
     this.label.active = this.root.visible && distance < 20;
     this.label.position.copy(this.root.position);

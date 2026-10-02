@@ -150,7 +150,7 @@ export class WorldAssets {
     this.environmentActive = 0;
     this.disposed = false;
   }
-  async load() {
+  async load({ deferCompanions = false } = {}) {
     const started = performance.now();
     const response = await fetch('/models/world-assets.json');
     if (!response.ok) throw new Error(`World assets: HTTP ${response.status}`);
@@ -158,7 +158,10 @@ export class WorldAssets {
     if (this.catalog.status !== 'ready' || !Array.isArray(this.catalog.assets))
       throw new Error('World model catalog is not ready');
     const pending = this.catalog.assets.filter(
-      (asset) => asset.kind !== 'enemy' && !asset.onDemand,
+      (asset) =>
+        asset.kind !== 'enemy' &&
+        !asset.onDemand &&
+        !(deferCompanions && asset.kind === 'companion'),
     );
     // Bound concurrent texture decoding while keeping independent downloads busy.
     await Promise.all(
@@ -250,11 +253,18 @@ export class WorldAssets {
     };
   }
   ensureEnvironment(key) {
+    return this.ensureQueued(key, false);
+  }
+  ensureCompanion(key) {
+    return this.ensureQueued(key, true);
+  }
+  private ensureQueued(key, companion: boolean) {
     if (this.disposed) return Promise.reject(new Error('World assets disposed'));
     if (this.templates.has(key)) return Promise.resolve(this.get(key));
     if (this.environmentLoads.has(key)) return this.environmentLoads.get(key);
     const asset = this.catalog.assets.find(
-      (record) => record.modelKey === key && record.environment,
+      (record) =>
+        record.modelKey === key && (companion ? record.kind === 'companion' : record.environment),
     );
     if (!asset) return Promise.reject(new Error(`Missing verified environment ${key}`));
     const promise = new Promise((resolve, reject) =>
@@ -593,6 +603,7 @@ interface LandscapePlacement {
 }
 
 export class LandscapeInstances {
+  private density = 1;
   private viewUpdate = new ViewUpdateGate();
   private grassTints: WeakMap<LandscapePlacement, THREE.Color> | null = null;
   private grassMaterials = new Set<THREE.Material>();
@@ -715,8 +726,12 @@ export class LandscapeInstances {
     this.frustum = new THREE.Frustum();
     this.projection = new THREE.Matrix4();
   }
-  update(camera, time, riderFocus = null) {
-    if (!(this.viewUpdate ??= new ViewUpdateGate()).shouldUpdate(camera, time, riderFocus)) return;
+  update(camera, time, riderFocus = null, foliageDensity = 1) {
+    const density = !this.castNearbyShadows ? foliageDensity : 1;
+    const changed = density !== this.density;
+    this.density = density;
+    if (!(this.viewUpdate ??= new ViewUpdateGate()).shouldUpdate(camera, time, riderFocus, changed))
+      return;
     this.updates = (this.updates ?? 0) + 1;
     this.projection.multiplyMatrices(camera.projectionMatrix, camera.matrixWorldInverse);
     this.frustum.setFromProjectionMatrix(this.projection);
@@ -745,6 +760,14 @@ export class LandscapeInstances {
     }
     this.examined = nearby.length;
     for (const item of nearby) {
+      // Stable spatial thinning changes decorative grass only, never resources/colliders.
+      if (
+        density < 1 &&
+        (((Math.floor(item.x * 17) * 73856093) ^ (Math.floor(item.z * 17) * 19349663)) >>> 0) %
+          100 >=
+          density * 100
+      )
+        continue;
       const distance = item.position.distanceTo(camera.position);
       if (distance > this.distances[2]) continue;
       // Walking and riding cameras can both enter a canopy. Cull only the trees

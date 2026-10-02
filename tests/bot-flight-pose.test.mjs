@@ -12,6 +12,7 @@ import {
 } from '../dist/shared/orb-bots.mjs';
 import { COMPANION_524, createCompanion524 } from '../dist/shared/companion-524.mjs';
 import { CollisionWorld } from '../dist/shared/collision.mjs';
+import { ActorUpdateBudget } from '../dist/src/actor-update-budget.js';
 
 test('one forward turn keeps the body centre fixed and returns upright at every heading', () => {
   assert.equal(botFlightTurn(-1), 0);
@@ -82,7 +83,12 @@ function fixture() {
     camera: { position: new THREE.Vector3(50, 5, 50) },
     players: new Map([['owner', { model: new THREE.Group() }]]),
     collision: { segmentFree: () => true },
-    worldAssets: { createAnimal: actor },
+    graphics: { tier: 'standard' },
+    actorBudget: new ActorUpdateBudget(),
+    worldAssets: {
+      createAnimal: actor,
+      templates: new Map(BOT_KINDS.map((kind) => [`orb-bot-${kind}`, {}])),
+    },
     serverNow: () => now,
   };
   const dots = new OrbBotRenderer(world);

@@ -155,6 +155,13 @@ for (const { key } of publicCharacters)
       JSON.parse(await readFile(path.join(root, `public/models/${key}/asset.json`), 'utf8')),
     );
 const downloads = new Map();
+const optimized = release.optimizedAssets
+  ? new Map(
+      JSON.parse(
+        await readFile(path.join(root, 'assets/public-performance/manifest.json'), 'utf8'),
+      ).records.map((record) => [record.sourceUrl, record]),
+    )
+  : null;
 for (const asset of assets) {
   for (const record of [asset, ...(asset.lods || [])]) {
     if (
@@ -162,15 +169,30 @@ for (const asset of assets) {
     )
       throw new Error(`Unexpected model URL: ${record.url}`);
     if (downloads.has(record.url)) continue;
-    const bytes = await readFile(path.join(root, `public${record.url}`));
+    let bytes = await readFile(path.join(root, `public${record.url}`));
     if (hash(bytes) !== record.sha256 || bytes.length !== record.bytes)
       throw new Error(`Model mismatch: ${record.url}`);
     const download = { url: record.url, sha256: record.sha256, bytes: record.bytes };
+    if (optimized) {
+      const derived = optimized.get(record.url);
+      if (
+        !derived ||
+        derived.sourceSha256 !== record.sha256 ||
+        derived.sourceBytes !== record.bytes
+      )
+        throw new Error(`Missing or stale public optimization: ${record.url}`);
+      if (!/^assets\/public-performance\/models\/[a-z0-9-]+\.glb$/.test(derived.file))
+        throw new Error(`Invalid optimized path: ${derived.file}`);
+      bytes = await readFile(path.join(root, derived.file));
+      if (bytes.length !== derived.bytes || hash(bytes) !== derived.sha256)
+        throw new Error(`Optimized model mismatch: ${record.url}`);
+      Object.assign(download, { url: derived.url, sha256: derived.sha256, bytes: derived.bytes });
+    }
     if (bytes.length > fileLimit) {
       download.parts = [];
       for (let offset = 0, part = 0; offset < bytes.length; offset += partSize, part++) {
         const chunk = bytes.subarray(offset, offset + partSize);
-        const url = `${record.url.slice(0, -4)}-${record.sha256.slice(0, 12)}.part-${part + 1}.bin`;
+        const url = `${download.url.slice(0, -4)}-${download.sha256.slice(0, 12)}.part-${part + 1}.bin`;
         await publish(url, chunk);
         download.parts.push({ url, bytes: chunk.length, sha256: hash(chunk) });
       }
@@ -181,7 +203,7 @@ for (const asset of assets) {
       );
       if (!bytes.equals(reconstructed))
         throw new Error(`Model reconstruction failed: ${record.url}`);
-    } else await publish(record.url, bytes);
+    } else await publish(download.url, bytes);
     downloads.set(record.url, download);
     models.push(download);
   }
@@ -230,7 +252,8 @@ for (const { key } of publicCharacters)
 await publish(
   '/_headers',
   Buffer.from(
-    '/*\n  X-Content-Type-Options: nosniff\n  Referrer-Policy: no-referrer\n  X-Frame-Options: DENY\n  Cache-Control: no-cache\n/models/*.bin\n  Cache-Control: public, max-age=31536000, immutable\n',
+    '/*\n  X-Content-Type-Options: nosniff\n  Referrer-Policy: no-referrer\n  X-Frame-Options: DENY\n  Cache-Control: no-cache\n/models/*.bin\n  Cache-Control: public, max-age=31536000, immutable\n' +
+      (optimized ? '/models/*.glb\n  Cache-Control: public, max-age=31536000, immutable\n' : ''),
   ),
 );
 if (files.size > 20000) throw new Error('Static asset file count exceeds the Free plan');
@@ -270,6 +293,7 @@ await retainAndSwap(staging, destination, 'previous');
 const report = {
   builtAt: new Date().toISOString(),
   credits: release.credits,
+  optimizedAssets: !!optimized,
   excludedCharacters: [...excludedSpecies],
   characters: publicCharacters,
   workerMain: 'dist-cloudflare-worker/cloudflare/worker.mjs',

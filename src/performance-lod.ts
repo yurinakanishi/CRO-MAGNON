@@ -132,14 +132,14 @@ export function configureActorPerformance(
   return detail;
 }
 
-export function updateActorPerformance(root: THREE.Object3D, distance: number) {
+export function updateActorPerformance(root: THREE.Object3D, distance: number, tier = 'standard') {
   const detail = root.userData.actorDetail as ActorDetail | undefined;
   if (!detail) return 0;
-  const threshold = root.userData.actorLodDistance ?? ACTOR_LOD_DISTANCE;
+  const threshold =
+    (root.userData.actorLodDistance ?? ACTOR_LOD_DISTANCE) * (tier === 'low' ? 0.5 : 1);
+  const hysteresis = Math.min(ACTOR_LOD_HYSTERESIS, threshold * 0.2);
   const level = (
-    detail.level === 0
-      ? distance > threshold + ACTOR_LOD_HYSTERESIS
-      : distance >= threshold - ACTOR_LOD_HYSTERESIS
+    detail.level === 0 ? distance > threshold + hysteresis : distance >= threshold - hysteresis
   )
     ? 1
     : 0;
@@ -149,12 +149,12 @@ export function updateActorPerformance(root: THREE.Object3D, distance: number) {
   }
   detail.shadowLevel = (
     detail.shadowLevel === 0
-      ? distance > ACTOR_SHADOW_LOD_DISTANCE + ACTOR_LOD_HYSTERESIS
-      : distance >= ACTOR_SHADOW_LOD_DISTANCE - ACTOR_LOD_HYSTERESIS
+      ? distance > (tier === 'low' ? 0 : ACTOR_SHADOW_LOD_DISTANCE + ACTOR_LOD_HYSTERESIS)
+      : distance >= (tier === 'low' ? 0 : ACTOR_SHADOW_LOD_DISTANCE - ACTOR_LOD_HYSTERESIS)
   )
     ? 1
     : 0;
-  const castsShadow = distance < ACTOR_SHADOW_DISTANCE;
+  const castsShadow = distance < (tier === 'low' ? 20 : ACTOR_SHADOW_DISTANCE);
   for (const entry of detail.meshes) {
     // When the visible mesh already uses the low geometry, cast it directly.
     // Never draw both the source and its shadow-only copy into the shadow map.

@@ -1,0 +1,94 @@
+{
+  "checkedAt": "2026-10-02T05:52:33.839Z",
+  "scope": "One real Chrome view and four protocol clients. Isolated unsaved camp scene; browser loads local HTTP public artifacts. Baseline 15s and optimized low 600s have different frame caps and duration; no speedup claim or physical low-memory-device claim.",
+  "reports": [
+    {
+      "name": "baseline-final",
+      "mode": "standard",
+      "durationMs": 15015.70000000298,
+      "averageFps": 31.833347762668748,
+      "p50Ms": 33.30000000000291,
+      "p95Ms": 49.900000000001455,
+      "frames": 478,
+      "gpu": "ANGLE (Intel, Intel(R) Iris(R) Xe Graphics (0x0000A7A0) Direct3D11 vs_5_0 ps_5_0, D3D11)",
+      "viewport": [
+        1280,
+        800
+      ],
+      "drawingBuffer": [
+        1280,
+        800
+      ],
+      "worldSceneReadyMs": 7360,
+      "finalDrawCalls": 235,
+      "finalTriangles": 5772674,
+      "jsHeapMiB": {
+        "start": 1297.676622390747,
+        "min": 1297.676622390747,
+        "max": 1326.8949489593506,
+        "end": 1324.1269245147705
+      },
+      "geometryRange": [
+        112,
+        112
+      ],
+      "textureRange": [
+        116,
+        116
+      ],
+      "decodedResourceBytes": 480710580,
+      "checks": [
+        "one real Chrome view plus four protocol clients, 45 bots and both companions"
+      ],
+      "errors": [],
+      "evidence": "output/playwright/low-spec/baseline-final/result.json"
+    },
+    {
+      "name": "sustained-final",
+      "mode": "low",
+      "durationMs": 600008.6000000089,
+      "averageFps": 29.554576384404715,
+      "p50Ms": 33.300000000046566,
+      "p95Ms": 50,
+      "frames": 17733,
+      "gpu": "ANGLE (Intel, Intel(R) Iris(R) Xe Graphics (0x0000A7A0) Direct3D11 vs_5_0 ps_5_0, D3D11)",
+      "viewport": [
+        1280,
+        800
+      ],
+      "drawingBuffer": [
+        1214,
+        758
+      ],
+      "worldSceneReadyMs": 3133,
+      "finalDrawCalls": 166,
+      "finalTriangles": 2379974,
+      "jsHeapMiB": {
+        "start": 1129.6629695892334,
+        "min": 1003.327802658081,
+        "max": 1173.9285278320312,
+        "end": 1037.9489574432373
+      },
+      "geometryRange": [
+        107,
+        107
+      ],
+      "textureRange": [
+        113,
+        113
+      ],
+      "decodedResourceBytes": 374490460,
+      "checks": [
+        "one real Chrome view plus four protocol clients, 45 bots and both companions",
+        "live settings switch 30 / 60 / 30 FPS and low drawing buffer cap",
+        "nine throws, wait and recall through keyboard",
+        "portrait and landscape viewport",
+        "quality persists after reload"
+      ],
+      "errors": [],
+      "evidence": "output/playwright/low-spec/sustained-final/result.json"
+    }
+  ],
+  "companionQA": "output/playwright/companion-524/squad-1790920053608/result.json",
+  "testsPassed": 818
+}

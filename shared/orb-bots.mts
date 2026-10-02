@@ -124,11 +124,12 @@ export function canHandleBot(p: PlayerSnapshot | undefined | null, now: number) 
 export function botHandPosition(p: PlayerSnapshot, floor = walkHeight(p.x, p.z)) {
   const height =
     characterModel(p).height ?? (p.species === 'bear' ? 0.78 : p.species === 'ape' ? 3.2 : 1.68);
-  const side = height * (p.species === 'maruimo' ? 0.2 : p.species === 'bear' ? 0.18 : 0.14),
-    front = height * (p.species === 'bear' ? 0.14 : p.species === 'maruimo' ? 0.25 : 0.22);
+  const grip = characterModel(p).botHandRatios;
+  const side = height * (grip?.side ?? (p.species === 'bear' ? 0.18 : 0.14)),
+    front = height * (grip?.front ?? (p.species === 'bear' ? 0.14 : 0.22));
   return {
     x: p.x + Math.cos(p.facing) * side + Math.sin(p.facing) * front,
-    y: floor + height * (p.species === 'maruimo' ? 0.53 : p.species === 'bear' ? 0.55 : 0.76),
+    y: floor + height * (grip?.height ?? (p.species === 'bear' ? 0.55 : 0.76)),
     z: p.z - Math.sin(p.facing) * side + Math.cos(p.facing) * front,
   };
 }

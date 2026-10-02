@@ -21,7 +21,8 @@
   },
   "portrait": {
     "url": "/models/orb-bot-heart/portrait.png",
-    "sha256": "ab989e7959bf932e715cbb9c61c6f9e067ec6a475f2eed136287a04efd7d1935"
+    "sha256": "ab989e7959bf932e715cbb9c61c6f9e067ec6a475f2eed136287a04efd7d1935",
+    "bytes": 1386225
   },
   "clips": [
     {

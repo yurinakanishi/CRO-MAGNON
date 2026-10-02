@@ -1,4 +1,5 @@
 import { controllerLabels, controllerMenuHint, setControllerLayout } from './controller-labels.js';
+import { graphicsSettingsMarkup, bindGraphicsSettings } from './graphics-settings.js';
 import { mapScreen } from './map-screen.js';
 import { installMapWarp, updateMapWarp, type MapInput } from './map-warp-ui.js';
 import {
@@ -234,6 +235,7 @@ $('#app').innerHTML = `
           <nav class="title-menu" aria-label="タイトルメニュー">
             <button id="title-start" class="menu-item">はじめる</button>
             <button id="title-howto" class="menu-item">あそびかた</button>
+            <button id="title-graphics" class="menu-item">画質</button>
           </nav>
           </div>
           </div>
@@ -1834,10 +1836,11 @@ function openPauseMenu(tab?: string) {
       )}${subPanel('tribe', tribeMarkup())}${subPanel('objectives', objectivesMarkup())}`,
     )}${panel(
       'settings',
-      `<h2>設定</h2><p class="modal-intro">${fixedIdentity ? '' : '難易度・'}音・画面・視点の調整。</p><div class="settings-list">${fixedIdentity ? '' : difficultySettingsMarkup()}<div class="settings-item"><div><strong>環境音</strong><p>谷の音を鳴らします。</p></div><button class="button button-outline" data-setting="sound" aria-pressed="${soundEnabled}">${icon(soundEnabled ? 'sound' : 'muted')} ${soundEnabled ? 'オン' : 'オフ'}</button></div><div class="settings-item"><div><strong>全画面表示</strong><p>ブラウザーの枠を隠して表示します。</p></div><button class="button button-outline" data-setting="fullscreen">${icon('expand')} 切り替え</button></div><div class="settings-item"><div><strong>視点</strong><p>カメラの距離を変え、キャラクターの後ろへ戻します。</p></div><div class="settings-buttons"><button class="button button-outline" data-setting="zoom-out">− 遠く</button><button class="button button-outline" data-setting="zoom-in">+ 近く</button><button class="button button-outline" data-setting="camera">${icon('target')} 視点を戻す</button></div></div><div class="settings-item"><div><strong>コントローラー</strong><p class="gamepad-connection" role="status">${usingGamepad ? '' : '未使用 · コントローラーをつないでボタンを押すと切り替わります。'}</p></div></div></div><p id="local-save-status" class="form-note" role="status" hidden></p>${localResetMarkup()}`,
+      `<h2>設定</h2><p class="modal-intro">${fixedIdentity ? '' : '難易度・'}音・画面・視点の調整。</p><div class="settings-list">${graphicsSettingsMarkup()}${fixedIdentity ? '' : difficultySettingsMarkup()}<div class="settings-item"><div><strong>環境音</strong><p>谷の音を鳴らします。</p></div><button class="button button-outline" data-setting="sound" aria-pressed="${soundEnabled}">${icon(soundEnabled ? 'sound' : 'muted')} ${soundEnabled ? 'オン' : 'オフ'}</button></div><div class="settings-item"><div><strong>全画面表示</strong><p>ブラウザーの枠を隠して表示します。</p></div><button class="button button-outline" data-setting="fullscreen">${icon('expand')} 切り替え</button></div><div class="settings-item"><div><strong>視点</strong><p>カメラの距離を変え、キャラクターの後ろへ戻します。</p></div><div class="settings-buttons"><button class="button button-outline" data-setting="zoom-out">− 遠く</button><button class="button button-outline" data-setting="zoom-in">+ 近く</button><button class="button button-outline" data-setting="camera">${icon('target')} 視点を戻す</button></div></div><div class="settings-item"><div><strong>コントローラー</strong><p class="gamepad-connection" role="status">${usingGamepad ? '' : '未使用 · コントローラーをつないでボタンを押すと切り替わります。'}</p></div></div></div><p id="local-save-status" class="form-note" role="status" hidden></p>${localResetMarkup()}`,
     )}<p class="pause-hint">${controllerHints() ? controllerMenuHint() : 'ESC で閉じる · ↑↓←→ で選ぶ · Enter で決定'}</p></div></div>`,
   );
   const root = $('#modal-body') as HTMLElement;
+  bindGraphicsSettings(root, (mode) => renderer.setGraphicsMode?.(mode));
   const tabButtons = [...root.querySelectorAll<HTMLButtonElement>('.pause-tab')];
   const showTab = (id: string) => {
     pauseTab = id;
@@ -2003,6 +2006,10 @@ async function toggleFullscreen() {
 }
 $('#title-start').onclick = () => showSetup();
 $('#title-howto').onclick = openHelp;
+$('#title-graphics').onclick = () => {
+  openModal(`<h2>画質</h2><div class="settings-list">${graphicsSettingsMarkup()}</div>`);
+  bindGraphicsSettings($('#modal-body'), (mode) => renderer.setGraphicsMode?.(mode));
+};
 $('#title-fullscreen').onclick = toggleFullscreen;
 document.addEventListener('fullscreenchange', () => {
   const active = !!document.fullscreenElement;

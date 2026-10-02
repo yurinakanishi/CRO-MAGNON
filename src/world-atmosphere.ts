@@ -97,6 +97,7 @@ export class WorldAtmosphere {
     world.scene.add(this.particles);
   }
   update(position, time, dt) {
+    this.particles.geometry.setDrawRange(0, this.world.graphics?.tier === 'low' ? 128 : 384);
     const weights = biomeWeights(position.x, position.z),
       alpha = 1 - Math.exp(-dt * 1.8);
     this.target.setRGB(0, 0, 0);

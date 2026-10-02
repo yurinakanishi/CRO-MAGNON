@@ -58,6 +58,14 @@ import { CHARACTER_MODELS, characterModel } from '../shared/characters.mjs';
 import { enemyAnimationState, playerRecovered } from './enemy-state.js';
 import { isLand } from '../shared/paleo-geography.mjs';
 import { FrameClock } from './frame-clock.js';
+import {
+  GraphicsQuality,
+  graphicsPixelRatio,
+  readGraphicsMode,
+  type GraphicsMode,
+} from './graphics-quality.js';
+import { ActorUpdateBudget } from './actor-update-budget.js';
+import { ContactShadows } from './contact-shadows.js';
 import { WorldAtmosphere } from './world-atmosphere.js';
 import { AdventureEffects } from './adventure-effects.js';
 import { GulfRenderer } from './gulf-renderer.js';
@@ -90,6 +98,13 @@ function mesh(geometry, material, parent, position: [number, number, number] = [
 }
 
 export class WorldRenderer {
+  readonly graphics = new GraphicsQuality(
+    readGraphicsMode(),
+    navigator.hardwareConcurrency ?? 8,
+    (navigator as Navigator & { deviceMemory?: number }).deviceMemory ?? 8,
+  );
+  readonly actorBudget = new ActorUpdateBudget();
+  private contactShadows: ContactShadows;
   prediction = new LocalPrediction();
   predictionObstacles = [];
   predictionSeaCollision: SeaCollision | undefined;
@@ -290,6 +305,7 @@ export class WorldRenderer {
     this.labelLayer.setAttribute('aria-hidden', 'true');
     canvas.parentElement.append(this.labelLayer);
     this.setupLighting();
+    this.contactShadows = new ContactShadows(this);
     this.atmosphere = new WorldAtmosphere(this);
     this.setupInput();
     this.resizeObserver = new ResizeObserver(() => this.resize());
@@ -303,11 +319,21 @@ export class WorldRenderer {
       );
     };
     canvas.addEventListener('webglcontextlost', this.contextLost);
-    this.frameClock = new FrameClock(performance.now(), 60);
+    this.frameClock = new FrameClock(performance.now(), this.graphics.fps);
+    this.applyGraphics();
     this.animate = (now) => {
       if (this.disposed || this.failed) return;
       const dt = this.frameClock.advance(now, document.hidden);
       if (dt !== null) {
+        if (
+          this.motionLastFrame !== null &&
+          this.graphics.observe(
+            now,
+            now - this.motionLastFrame,
+            !!this.selfId && !!this.assetsReady && !this.occluded() && !document.hidden,
+          )
+        )
+          this.applyGraphics();
         if (this.motionLastFrame !== null && !document.hidden)
           this.onFrameTiming?.(now - this.motionLastFrame);
         this.motionLastFrame = now;
@@ -317,7 +343,7 @@ export class WorldRenderer {
     };
     this.frame = requestAnimationFrame(this.animate);
     canvas.dataset.renderer = 'three-webgl-tps';
-    canvas.dataset.fpsLimit = '60';
+    canvas.dataset.fpsLimit = String(this.graphics.fps);
     this.loadingLabel = document.createElement('div');
     this.loadingLabel.className = 'world-loading';
     this.loadingLabel.textContent = '渓谷を準備しています…';
@@ -368,7 +394,7 @@ export class WorldRenderer {
   async initializeWorld() {
     const started = performance.now();
     try {
-      await Promise.all([this.worldAssets.load(), this.npcAssets.load()]);
+      await Promise.all([this.worldAssets.load({ deferCompanions: true }), this.npcAssets.load()]);
       if (this.disposed) return;
       await buildTerrainAssets(this);
       if (this.disposed) return;
@@ -387,8 +413,6 @@ export class WorldRenderer {
         this.coastalRenderer = new CoastalRenderer(this);
         this.villageRenderer = new VillageRenderer(this);
       }
-      this.companion524Renderer = new Companion524Renderer(this);
-      this.rimoNekoRenderer = new RimoNekoRenderer(this);
       this.orbBotRenderer = new OrbBotRenderer(this);
       this.npcActor = await this.npcAssets.create({ color: '#ad9d79' });
       if (this.disposed) {
@@ -404,11 +428,58 @@ export class WorldRenderer {
       this.canvas.dataset.worldLoadMs = this.worldAssets.loadMilliseconds.toFixed(0);
       this.canvas.dataset.worldSceneReadyMs = (performance.now() - started).toFixed(0);
       this.loadingLabel.remove();
+      this.graphics.ready(performance.now());
+      void this.initializeCompanions();
     } catch (error) {
       if (this.disposed) return;
       this.failWorld('検証済みの3D素材を読み込めませんでした。再読み込みしてください。', error);
       throw error;
     }
+  }
+
+  private async initializeCompanions() {
+    this.canvas.dataset.companionAssets = 'loading';
+    try {
+      await Promise.all(
+        this.worldAssets.catalog.assets
+          .filter((a) => a.kind === 'companion')
+          .map(async (asset) => {
+            await this.worldAssets.ensureCompanion(asset.modelKey);
+            if (this.disposed) return;
+            if (asset.modelKey === 'yellow-524-mascot')
+              this.companion524Renderer = new Companion524Renderer(this);
+            if (asset.modelKey === 'rimo-neko') this.rimoNekoRenderer = new RimoNekoRenderer(this);
+          }),
+      );
+      if (this.disposed) return;
+      this.canvas.dataset.companionAssets = 'ready';
+      this.updateAssetDiagnostics();
+      this.graphics.ready(performance.now());
+    } catch (error) {
+      if (!this.disposed)
+        this.failWorld('仲間の3D素材を読み込めませんでした。再読み込みしてください。', error);
+    }
+  }
+
+  setGraphicsMode(mode: GraphicsMode) {
+    this.graphics.setMode(mode, performance.now());
+    this.applyGraphics();
+  }
+
+  private applyGraphics() {
+    const low = this.graphics.tier === 'low';
+    this.renderer.shadowMap.enabled = !low;
+    this.frameClock?.setRate(performance.now(), this.graphics.fps);
+    this.canvas.dataset.graphicsMode = this.graphics.mode;
+    this.canvas.dataset.graphicsTier = this.graphics.tier;
+    this.canvas.dataset.fpsLimit = String(this.graphics.fps);
+    const shadowSize = low ? 512 : 1024;
+    if (this.sun.shadow.mapSize.x !== shadowSize) {
+      this.sun.shadow.map?.dispose();
+      this.sun.shadow.map = null;
+      this.sun.shadow.mapSize.set(shadowSize, shadowSize);
+    }
+    this.resize();
   }
 
   updateAssetDiagnostics() {
@@ -915,6 +986,9 @@ export class WorldRenderer {
     const r = this.canvas.getBoundingClientRect();
     this.width = Math.max(1, r.width);
     this.height = Math.max(1, r.height);
+    this.renderer.setPixelRatio(
+      graphicsPixelRatio(this.width, this.height, devicePixelRatio, this.graphics.tier),
+    );
     this.renderer.setSize(this.width, this.height, false);
     this.camera.aspect = this.width / this.height;
     this.camera.updateProjectionMatrix();
@@ -934,6 +1008,7 @@ export class WorldRenderer {
 
   render(time, dt) {
     const frameStarted = performance.now();
+    this.actorBudget.begin(this.camera);
     let predicted = null;
     if (this.prediction.enabled && this.prediction.actor) {
       const p = this.prediction.actor,
@@ -995,6 +1070,7 @@ export class WorldRenderer {
       updateActorPerformance(
         animal.actor.root,
         animal.model.position.distanceTo(this.camera.position),
+        this.graphics.tier,
       );
       if (
         phase !== animal.phase ||
@@ -1082,7 +1158,11 @@ export class WorldRenderer {
         continue;
       }
       if (entity.actor)
-        updateActorPerformance(entity.actor.root, model.position.distanceTo(this.camera.position));
+        updateActorPerformance(
+          entity.actor.root,
+          model.position.distanceTo(this.camera.position),
+          this.graphics.tier,
+        );
       entity.label.active = true;
       const airborne = jumpProgress(p, this.serverNow());
       if (airborne === null) entity.actor?.jumpPose.leave(entity.actor.animation);
@@ -1386,12 +1466,18 @@ export class WorldRenderer {
           updateActorPerformance(
             this.npcActor.root,
             this.npc.position.distanceTo(this.camera.position),
+            this.graphics.tier,
           );
         this.npcActor?.animation.update(dt, 0);
       }
     }
     for (const landscape of this.landscapes)
-      landscape.update(this.camera, time, self ? this.focus : null);
+      landscape.update(
+        this.camera,
+        time,
+        self ? this.focus : null,
+        this.graphics.tier === 'low' ? 0.5 : 1,
+      );
     for (const fire of this.fires) {
       const visible =
         fire.root.position.distanceTo(this.camera.position) < 65 &&
@@ -1444,7 +1530,11 @@ export class WorldRenderer {
         );
         continue;
       }
-      updateActorPerformance(actor.root, model.position.distanceTo(this.camera.position));
+      updateActorPerformance(
+        actor.root,
+        model.position.distanceTo(this.camera.position),
+        this.graphics.tier,
+      );
       const factor = 1 - Math.exp(-dt * 20),
         next = this.collision.move(
           model.position,
@@ -1496,7 +1586,10 @@ export class WorldRenderer {
         actor.update(dt);
       }
     }
-    if (this.motes) this.motes.rotation.y = Math.sin(time * 0.02) * 0.03;
+    if (this.motes) {
+      this.motes.rotation.y = Math.sin(time * 0.02) * 0.03;
+      (this.motes as THREE.Points).geometry.setDrawRange(0, this.graphics.tier === 'low' ? 24 : 65);
+    }
     this.spells.update(
       this.state,
       this.players,
@@ -1505,6 +1598,7 @@ export class WorldRenderer {
       this.height * this.renderer.getPixelRatio(),
     );
     this.updateLabels();
+    this.contactShadows.update();
     const simulationEnded = performance.now();
     if (!this.occluded()) this.renderer.render(this.scene, this.camera);
     this.simulationMs = (this.simulationMs ?? 0) * 0.8 + (simulationEnded - frameStarted) * 0.2;
@@ -1531,6 +1625,8 @@ export class WorldRenderer {
       data.fps = String(Math.round(this.fpsFrames / (time - this.lastFpsTime)));
       data.frameSimulationMs = this.simulationMs.toFixed(2);
       data.frameSubmissionMs = this.submissionMs.toFixed(2);
+      data.animationSamples = String(this.actorBudget.samples);
+      data.animationSkipped = String(this.actorBudget.skipped);
       data.documentFocus = String(document.hasFocus());
       data.cameraPosition = [this.camera.position.x, this.camera.position.y, this.camera.position.z]
         .map((n) => n.toFixed(2))
@@ -1685,6 +1781,7 @@ export class WorldRenderer {
     this.companion524Renderer?.dispose();
     this.rimoNekoRenderer?.dispose();
     this.orbBotRenderer?.dispose();
+    this.contactShadows.dispose();
     this.regionalScenery?.dispose();
     this.landmarks?.dispose();
     this.openWorld?.dispose();

@@ -51,7 +51,13 @@ async function open(name, character) {
       if (m.type === 'state') observe(seen, m);
     }),
   );
-  await page.addInitScript((name) => localStorage.setItem('cro-name', name), name);
+  await page.addInitScript(
+    ({ name, graphics }) => {
+      localStorage.setItem('cro-name', name);
+      localStorage.setItem('cro-graphics-quality', graphics);
+    },
+    { name, graphics: process.env.QA_GRAPHICS ?? 'auto' },
+  );
   await page.route('**/src/world3d.js', async (route) => {
     const response = await route.fetch();
     await route.fulfill({

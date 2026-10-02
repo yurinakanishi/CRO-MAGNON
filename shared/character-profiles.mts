@@ -87,6 +87,7 @@ export const CHARACTER_MODELS: readonly Readonly<CharacterModel>[] = Object.free
     name: 'まるぃも タコ人間',
     weapon: 'tentacle',
     bodyPlan: 'octopus',
+    botHandRatios: { side: 0.2, front: 0.25, height: 0.53 },
     height: 1.55,
     radius: 0.6,
     walkSpeed: 0.8,

@@ -1,5 +1,5 @@
 {
-  "checkedAt": "2026-10-01T10:26:55.972Z",
+  "checkedAt": "2026-10-02T05:57:15.039Z",
   "base": "https://cromagnonmmo.cro-magnon.workers.dev",
   "status": "passed",
   "fiveClients": true,
@@ -8,7 +8,7 @@
   "attack": true,
   "reconnect": true,
   "privateFilesNotServed": true,
-  "verifiedGLBs": 81,
-  "splitModelsVerified": 3,
-  "stateSamples": 2377
+  "verifiedGLBs": 101,
+  "splitModelsVerified": 2,
+  "stateSamples": 2363
 }

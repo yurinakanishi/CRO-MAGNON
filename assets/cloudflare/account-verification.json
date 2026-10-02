@@ -1,9 +1,9 @@
 {
-  "checkedAt": "2026-10-01T10:19:32.9000004Z",
+  "checkedAt": "2026-10-02T05:49:43.362Z",
   "accountId": "a211102818d484cb668c6b62bebff3f9",
   "accountName": "CRO-MAGNON Free",
   "workersPlan": "Free",
-  "evidence": "Exact CRO-MAGNON Free account Workers plans dashboard observed for URL change: Free $0 with disabled Current plan; Paid $5/month + usage has Upgrade. No plan or billing changes performed.",
+  "evidence": "Exact CRO-MAGNON Free Workers plans dashboard reloaded and observed: Free $0 with disabled Current plan. No billing changes. Screenshot output/low-spec-20261002/cloudflare-free-plan.png",
   "dashboard": "https://dash.cloudflare.com/a211102818d484cb668c6b62bebff3f9/workers/plans",
   "deploymentAllowed": true
 }

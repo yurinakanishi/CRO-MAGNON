@@ -2,7 +2,7 @@ import * as THREE from 'three';
 import { RIMO_NEKO } from '../shared/rimo-neko.mjs';
 import { walkHeight } from '../shared/terrain.mjs';
 import { VisibleActorGroup } from './visible-actor-group.js';
-import { isMesh } from './three-types.js';
+import { updateActorPerformance } from './performance-lod.js';
 import { companionHeartTexture } from './companion-heart-texture.js';
 import type { WorldRenderer } from './world3d.js';
 
@@ -125,7 +125,16 @@ export class RimoNekoRenderer {
       const clip = speed > 1.1 ? 'Run_Loop' : speed > 0 ? 'Walk_Loop' : 'Idle_Loop';
       const reference = this.actor.asset.locomotion?.[clip]?.metresPerSecond ?? 1;
       this.actor.play(clip, speed > 0 ? speed / reference : 1);
-      if (this.root.visible) this.actor.update(dt);
+      if (this.root.visible) {
+        const step = this.world.actorBudget.step(
+          this.actor,
+          this.root.position,
+          distance,
+          now / 1000,
+          dt,
+        );
+        if (step !== null) this.actor.update(step);
+      }
       this.reaction = speed > 0 ? 'moving' : 'idle';
     }
     // Derive every particle from the shared contact time, so late joins and
@@ -144,9 +153,7 @@ export class RimoNekoRenderer {
       heart.scale.setScalar(0.075 + Math.sin(age * Math.PI) * 0.035);
       heart.material.opacity = Math.sin(age * Math.PI);
     }
-    this.actor.root.traverse((node) => {
-      if (isMesh(node)) node.castShadow = distance < 28;
-    });
+    updateActorPerformance(this.actor.root, distance, this.world.graphics.tier);
     this.label.active = this.root.visible && distance < 18 && this.reaction !== 'hiss';
     this.label.position.copy(this.root.position);
     this.label.position.y += 0.72;

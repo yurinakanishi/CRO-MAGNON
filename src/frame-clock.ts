@@ -8,6 +8,10 @@ export class FrameClock {
     this.next = now;
     this.lastRender = now;
   }
+  setRate(now: number, framesPerSecond: number) {
+    this.interval = 1000 / framesPerSecond;
+    this.next = this.lastRender = now;
+  }
   advance(now: number, hidden = false): number | null {
     if (hidden) {
       this.next = this.lastRender = now;

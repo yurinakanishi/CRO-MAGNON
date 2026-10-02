@@ -23401,7 +23401,16 @@
           "loop": true
         }
       ],
-      "lods": [],
+      "lods": [
+        {
+          "url": "/models/yellow-524-mascot/lod-low-spec-r01.glb",
+          "sha256": "07022f5603e1be9e77d02dd5a45dd61c053aa75ea8bdfbe3e3e2a64d4a46bbf2",
+          "bytes": 1191728,
+          "triangles": 35921,
+          "distanceMetres": 3.5,
+          "purpose": "source-derived animated geometry; original skeleton/materials/clips retained"
+        }
+      ],
       "notes": [
         "User selected the midpoint between C13 and C14 on 2026-09-22. Equal linear-light interpolation, matching the reviewed material preview within 8-bit PNG quantization.",
         "C14 geometry, normals, UVs, 20 bones, skin weights and Floating_Ripple remain byte-identical. Original C13/C14 and the former game GLB are retained.",
@@ -23536,7 +23545,16 @@
           "timingBasis": "Authored to fit this cat; observed sequence, not motion capture"
         }
       },
-      "lods": [],
+      "lods": [
+        {
+          "url": "/models/rimo-neko/lod-low-spec-r01.glb",
+          "sha256": "f7604e5311a8a37415b02778394b5bdf4d5747f7e69cd86f124e42d67c33777f",
+          "bytes": 1756636,
+          "triangles": 21879,
+          "distanceMetres": 6,
+          "purpose": "source-derived animated geometry; original skeleton/materials/clips retained"
+        }
+      ],
       "provenance": {
         "provider": "Codex imagegen; local TRELLIS-2 via trellis.cpp v0.8.1; source-preserving repair and body-specific quadruped rig",
         "claudeUsed": false,
@@ -24243,7 +24261,8 @@
       },
       "portrait": {
         "url": "/models/orb-bot-beret/portrait.png",
-        "sha256": "0b9b7c2accf86d2a0fcbe3db4a586ba716bcd15c5519ef189758a06202c3e33d"
+        "sha256": "0b9b7c2accf86d2a0fcbe3db4a586ba716bcd15c5519ef189758a06202c3e33d",
+        "bytes": 1357885
       },
       "clips": [
         {
@@ -24383,7 +24402,8 @@
       },
       "portrait": {
         "url": "/models/orb-bot-frog/portrait.png",
-        "sha256": "0930a7dcb766477aae7bc44c54e53981af7758a2148cc79e8535fa4311380211"
+        "sha256": "0930a7dcb766477aae7bc44c54e53981af7758a2148cc79e8535fa4311380211",
+        "bytes": 1816488
       },
       "clips": [
         {
@@ -24523,7 +24543,8 @@
       },
       "portrait": {
         "url": "/models/orb-bot-triangle/portrait.png",
-        "sha256": "abb0d9213901714801ea6d10d09d73b00fe52cd0c6cd83248f4c6126627c3bf9"
+        "sha256": "abb0d9213901714801ea6d10d09d73b00fe52cd0c6cd83248f4c6126627c3bf9",
+        "bytes": 1637486
       },
       "clips": [
         {
@@ -24677,7 +24698,8 @@
       },
       "portrait": {
         "url": "/models/orb-bot-heart/portrait.png",
-        "sha256": "ab989e7959bf932e715cbb9c61c6f9e067ec6a475f2eed136287a04efd7d1935"
+        "sha256": "ab989e7959bf932e715cbb9c61c6f9e067ec6a475f2eed136287a04efd7d1935",
+        "bytes": 1386225
       },
       "clips": [
         {

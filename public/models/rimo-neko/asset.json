@@ -108,7 +108,16 @@
       "timingBasis": "Authored to fit this cat; observed sequence, not motion capture"
     }
   },
-  "lods": [],
+  "lods": [
+    {
+      "url": "/models/rimo-neko/lod-low-spec-r01.glb",
+      "sha256": "f7604e5311a8a37415b02778394b5bdf4d5747f7e69cd86f124e42d67c33777f",
+      "bytes": 1756636,
+      "triangles": 21879,
+      "distanceMetres": 6,
+      "purpose": "source-derived animated geometry; original skeleton/materials/clips retained"
+    }
+  ],
   "provenance": {
     "provider": "Codex imagegen; local TRELLIS-2 via trellis.cpp v0.8.1; source-preserving repair and body-specific quadruped rig",
     "claudeUsed": false,
