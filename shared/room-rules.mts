@@ -26,7 +26,7 @@ export type RoomRules = {
   castleSeal: boolean;
   /** Crow followers, warrior monks and hex monks fall to any single blow. */
   crowMinionsOneBlow: boolean;
-  /** Title starts and menu warps may name one of the six SPAWN_SITES. */
+  /** Title starts may name one of the six SPAWN_SITES. Menu warps are available in every room. */
   spawnChoice: boolean;
 };
 export const DEFAULT_RULES: RoomRules = Object.freeze({

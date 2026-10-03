@@ -90,7 +90,7 @@ export class GroundPettingPose {
     bone.updateWorldMatrix(false, true);
   }
 
-  update(target: THREE.Vector3, weight: number, stroke: number) {
+  update(target: THREE.Vector3, weight: number, stroke: number, lowTarget = false) {
     this.restore();
     if (weight <= 0) return;
     this.joints.forEach((b, i) => {
@@ -118,7 +118,13 @@ export class GroundPettingPose {
           .distanceTo(leg[2].getWorldPosition(new THREE.Vector3())),
       ],
     }));
-    this.depth = THREE.MathUtils.clamp((hipHeight - 0.23) * 0.83, 0.035, 0.7) * weight;
+    const extraCrouch = lowTarget ? Math.max(0, 0.45 - (target.y - floor)) * 0.9 : 0;
+    this.depth =
+      THREE.MathUtils.clamp(
+        (hipHeight - 0.23) * 0.83 + extraCrouch,
+        0.035,
+        lowTarget ? hipHeight - 0.17 : 0.7,
+      ) * weight;
     this.hips.parent!.getWorldQuaternion(this.parentQ).invert();
     this.hips.parent!.getWorldScale(this.scale);
     this.v
@@ -130,7 +136,7 @@ export class GroundPettingPose {
     this.root.updateWorldMatrix(true, true);
     const pitch = new THREE.Quaternion().setFromAxisAngle(
       new THREE.Vector3(1, 0, 0).applyQuaternion(this.rootQ),
-      (hipHeight < 0.4 ? 0.15 : 0.55) * weight,
+      (lowTarget ? 0.95 : hipHeight < 0.4 ? 0.15 : 0.55) * weight,
     );
     this.spine.getWorldQuaternion(this.q).premultiply(pitch);
     this.spine.parent!.getWorldQuaternion(this.parentQ).invert();

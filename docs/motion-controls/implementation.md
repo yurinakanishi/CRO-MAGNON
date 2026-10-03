@@ -51,7 +51,7 @@
 視点の停止・持ち替え、未知の指、片手喪失、自動復帰、既存の移動と撫で処理）、型/strict・398JS構文・依存境界を確認。
 通常Chromeの保存なしの独立ゲームで、合成21点→実際のカメラ取得経路→入力→通信→ゲーム処理まで13項目が成功。
 視点2軸と人物の独立、停止・持ち替え、単発攻撃と再準備、指表示、左手ジャンプ、斜め移動、
-ボタンなし復帰、リモねこを撫でてなつく動作の完了、近接と視点・攻撃の分離を確認した。
+ボタンなし復帰、りもねこを撫でてなつく動作の完了、近接と視点・攻撃の分離を確認した。
 記録は `output/motion-right-hand-qa/browser-results.json` と同フォルダーの合成入力画面。
 旧検査の失敗（1秒更新の表示を早く読んだ計測、957msの入力消費待ち、猫の喜ぶ動作の終了待ち）も記録を保持。
 実身体による新しい銃の形・水平な横なでの認識精度と連続操作感は未確認。
@@ -109,10 +109,10 @@
   撫でる直前に移動を止め、その間の小さな揺れを抑える。明確な新しい押し込み・旋回を
   80ms以上の新しい標本で確認すれば中断する。未開始の要求は900msで解除し、セッションを跨がない。
 - 524の喜ぶ動作が終わったらpetPlayerId等を消す。従来は終了後も残り、
-  リモねこの操作受付を妨げていた。他の人が撫でている524を操作候補にしない。
+  りもねこの操作受付を妨げていた。他の人が撫でている524を操作候補にしない。
 
 10/15/20Hz・左右入替・部分的な引き戻し・中央外での手振り・手首固定・片手喪失と、
-ゲームのリモねこ/524の処理を通した撫で完了を検証。関連132テスト、型/strict、398JS構文、依存境界を確認。
+ゲームのりもねこ/524の処理を通した撫で完了を検証。関連132テスト、型/strict、398JS構文、依存境界を確認。
 実カメラによる連続プレイの体験は未確認。結果 `output/motion-feel-tests.txt`。
 3000番の既存起動は監視なしの単独Nodeだったため、Chromeの接続を一度閉じ、接続者0と新しい
 自動保存成功を確認。保存2ファイルを配信外の`output/motion-feel-save-before-restart/`へ予備保存した。
@@ -373,7 +373,7 @@ Chromeの通常3000番で認識初期化/カメラ選択肢/受信表示を確�
 - `git diff --check`：成功。
 - `node scripts/verify-world-assets.mjs`：制作履歴の元画像 `output/model-generation/models/neanderthal-hunter/source/original/reference-v1.png` が存在せず停止。今回変更していない既存の履歴資料で、検査成功として扱わない。
 - `node scripts/build-exhibition.mjs output/exhibition-20260929-motion-r01`：434検証対象ファイル・81 GLBのSHAを照合して生成。展開約580.2 MiB、同梱Node v24.15.0。
-- `node scripts/qa-motion-controls.mjs output/exhibition-20260929-motion-r01 output/playwright/motion-controls-final-20260929`：実Chrome2画面で27検査群成功。既存の採集・リモねこ撫で・その場旋回・動作同期、通信断後の停止、許可/Bitmap作成途中の終了、遅れて初期化が完了した時の停止保持、旧入力の破棄を確認。予期しない例外0、外部HTTP要求0。GPUの応答失敗は性能比較の制約として記録。
+- `node scripts/qa-motion-controls.mjs output/exhibition-20260929-motion-r01 output/playwright/motion-controls-final-20260929`：実Chrome2画面で27検査群成功。既存の採集・りもねこ撫で・その場旋回・動作同期、通信断後の停止、許可/Bitmap作成途中の終了、遅れて初期化が完了した時の停止保持、旧入力の破棄を確認。予期しない例外0、外部HTTP要求0。GPUの応答失敗は性能比較の制約として記録。
 - `node scripts/qa-exhibition-menu.mjs output/exhibition-20260929-motion-r01`：既存のPS4/Switch Pro表記、合成パッドによる人物変更・食事・6地点ワープ・タイトル復帰・縦横画面の14検査群成功。`output/playwright/exhibition-menu-1790655011668/result.json`。
 - `node scripts/qa-exhibition-launch.mjs output/exhibition-20260929-motion-r01 output/exhibition-20260929-motion-r01-launch-qa.json`：同梱Nodeの起動4項目成功。未設定ホストIPの診断、独立ポートのホスト疎通、二重起動拒否、クライアント起動。実PC1/PC2ではない。
 

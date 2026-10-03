@@ -58,5 +58,15 @@
       74
     ],
     "quietZoneModules": 4
+  },
+  {
+    "file": "public/title/qr-rimo.png",
+    "url": "https://x.com/vibe_walking",
+    "sha256": "0826ed18e273ba3ea104a78c6e3b3112554baf76a689085ab166cee34d972e5f",
+    "decodedAtPixels": [
+      296,
+      74
+    ],
+    "quietZoneModules": 4
   }
 ]

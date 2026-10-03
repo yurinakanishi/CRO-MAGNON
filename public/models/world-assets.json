@@ -23281,9 +23281,9 @@
         "The deep gallery keeps approximately 11 m width and 5.5 m centre headroom up to the back chamber. Existing measured source relief is expanded without moving the accepted mouth or replacing the cave with primitive geometry.",
         "Only the final 1.2 m rounds into a broad rear wall; the long tapered dead end is removed. The source boundary vertices remain shared across the wall, floor and ceiling joins.",
         "The measured aisle is 54.91 m, 2.11 times the original 26.00 m. The original outdoor campfire, river, mountain mesh and castle path are unchanged.",
-        "Fifteen wall paintings retain the same five animal motifs on both sides. The east-wall deer and ochre horse move forward to close the removed cat slot, leaving even natural spacing over the limestone. The 524 stays half the neighbouring mammoth painted height.",
         "The separate transparent 524 pigment closely preserves the user image silhouette, ears, lower lobes, two drops, three white patches, exact digits and dark mouth. Its generated PNG is copied unchanged; other accepted animal art is retained.",
-        "White calcite wall albedo retains real rock relief, pores and bedding; pigments are projected directly onto those existing triangles. Warm fire illuminates the same faintly visible paintings."
+        "White calcite wall albedo retains real rock relief, pores and bedding; pigments are projected directly onto those existing triangles. Warm fire illuminates the same faintly visible paintings.",
+        "Gallery r30 restores the user-reference waving gray-white Rimo cat among two horses, an aurochs and a deer, directly opposite the unchanged west-wall 524. The cave geometry, walking surface and fire are unchanged."
       ],
       "provenance": {
         "provider": "Codex",
@@ -23329,16 +23329,16 @@
           }
         ],
         "styleReference": "assets/camp-cave/source/mural-side-r04.png",
-        "application": "Fifteen placements: seven on the left and eight on the right. No cat is projected. The east-wall deer at -26.1 m and ochre horse at -29 m close the former empty slot; animal gaps are 0.7 to 1.125 m. The 524 image width remains 1.34 m, half the neighbouring mammoth painted height.",
+        "application": "Existing animal, hand and sign motifs frame the new Rimo/Lascaux frieze. Two east-wall animal placements are replaced by one continuous five-subject frieze; remaining twelve placements and the 524 scale are retained.",
         "layout": "src/cave-gallery-layout.ts",
-        "review": "assets/camp-cave/qa/gallery-r29.json",
+        "review": "assets/camp-cave/qa/gallery-r30.json",
         "previous": {
           "url": "/models/camp-cave/mural-side-r04.png",
           "source": "assets/camp-cave/source/mural-side-r04.png",
           "sha256": "1cbdd091523b48fea81f70eba5cc3840c7328ccfab4b8d1ef63e44b49e0ff5af"
         }
       },
-      "gameQA": "output/playwright/camp-cave/game-packed-wall-r29/summary.json",
+      "gameQA": "output/cave-rimo-r30/game-review.json",
       "rockSurface": {
         "url": "/models/camp-cave/limestone-r05.png",
         "source": "assets/camp-cave/source/limestone-r05.png",
@@ -23369,9 +23369,35 @@
           "sha256": "8231914f43d9e8454823a923c8004df44c0bad1ee1aec9e2f140493d5f2af273"
         },
         "application": "One unchanged transparent ochre-pigment image on the right wall. At 1.34 m image width its painted height is about 1.11 m, half the neighbouring mammoth mural. Its raised baseline expresses floating. The actual companion keeps its existing 0.30 m body height.",
-        "review": "assets/camp-cave/qa/gallery-r29.json"
+        "review": "assets/camp-cave/qa/gallery-r30.json"
       },
-      "galleryRevision": "29"
+      "galleryRevision": "30",
+      "rimoPigment": {
+        "source": "assets/camp-cave/source/rimo-lascaux-frieze-r30.png",
+        "url": "/models/camp-cave/rimo-lascaux-frieze-r30.png",
+        "sha256": "b750045fda524816577747197874d173d41161e2b55d9acfe772a8f37f8d01df",
+        "bytes": 2272546,
+        "image": {
+          "width": 2172,
+          "height": 724
+        },
+        "generator": "Built-in imagegen",
+        "prompt": "assets/camp-cave/rimo-lascaux-prompt-r30.txt",
+        "reference": {
+          "path": "assets/rimo-neko/source/user-reference.jpg",
+          "sha256": "3a0ebdfadbb383d170318a0cd4d3cb9540ccb113822bc0a44836dfcaeeebdf41"
+        },
+        "styleReference": "assets/camp-cave/source/mural-atlas-r05.png",
+        "subjects": [
+          "Rimo-neko",
+          "ochre wild horse",
+          "red wild horse",
+          "aurochs",
+          "red deer"
+        ],
+        "application": "One 7.5 x 2.5 m transparent pigment frieze on the east wall, centred at local Z -21.2 opposite the existing 524. Direct projection on the existing limestone, no decal plane or opaque backing.",
+        "review": "assets/camp-cave/qa/gallery-r30.json"
+      }
     },
     {
       "modelKey": "yellow-524-mascot",
@@ -23437,19 +23463,19 @@
     },
     {
       "modelKey": "rimo-neko",
-      "name": "リモねこ",
+      "name": "りもねこ",
       "kind": "companion",
-      "candidate": 1,
+      "candidate": 2,
       "status": "reviewed-prototype",
-      "url": "/models/rimo-neko/model-r10.glb",
-      "sha256": "545900f93a483fb1b9cb7483c4fa79a97c3b40d107054e6ef4cadd34fe12205b",
-      "bytes": 26147952,
-      "triangles": 136745,
+      "url": "/models/rimo-neko/model-c02-r02.glb",
+      "sha256": "c336d59a52a5fc5594969ee97d8b4393b7e7f5a3ba7a8b176a6375ada41a3f57",
+      "bytes": 26079252,
+      "triangles": 140226,
       "upAxis": "Y",
       "forwardAxis": "+Z",
-      "heightMetres": 0.5200296395414625,
-      "widthMetres": 0.475124791264534,
-      "lengthMetres": 0.6896228492259979,
+      "heightMetres": 0.5199786842176763,
+      "widthMetres": 0.3086169958114624,
+      "lengthMetres": 0.5808424800634384,
       "placement": {
         "pivot": "ground-between-four-paws",
         "scale": 1
@@ -23460,49 +23486,49 @@
           "seconds": 3,
           "loop": true,
           "rootMotion": "in-place",
-          "fps": 60
+          "fps": 120
         },
         {
           "name": "Walk_Loop",
           "seconds": 0.6833333333333333,
           "loop": true,
           "rootMotion": "in-place",
-          "fps": 60
+          "fps": 120
         },
         {
           "name": "Run_Loop",
           "seconds": 0.5,
           "loop": true,
           "rootMotion": "in-place",
-          "fps": 240
+          "fps": 120
         },
         {
           "name": "Pet",
           "seconds": 1.6,
           "loop": false,
           "rootMotion": "in-place",
-          "fps": 60
+          "fps": 120
         },
         {
           "name": "Happy",
           "seconds": 1.6,
           "loop": false,
           "rootMotion": "in-place",
-          "fps": 240
+          "fps": 120
         },
         {
           "name": "Hit",
           "seconds": 0.5,
           "loop": false,
           "rootMotion": "in-place",
-          "fps": 60
+          "fps": 120
         },
         {
           "name": "Hiss",
           "seconds": 2.1,
           "loop": false,
           "rootMotion": "in-place",
-          "fps": 240
+          "fps": 120
         }
       ],
       "locomotion": {
@@ -23510,8 +23536,6 @@
           "metresPerSecond": 0.4677073170731707,
           "cycleSeconds": 0.6833333333333333,
           "dutyFactor": 0.6,
-          "authoredCycleSeconds": 0.68,
-          "gait": "walk",
           "touchdownPhases": {
             "BL": 0,
             "FL": 0.75,
@@ -23522,51 +23546,39 @@
         "Run_Loop": {
           "metresPerSecond": 2,
           "cycleSeconds": 0.5,
-          "authoredCycleSeconds": 0.5,
           "dutyFactor": 0.23333333333333334,
-          "gait": "feline-gallop",
           "touchdownPhases": {
             "FL": 0,
             "FR": 0.06666666666666667,
             "BR": 0.5,
             "BL": 0.5666666666666667
-          },
-          "airbornePhases": [
-            [
-              0.3,
-              0.5
-            ],
-            [
-              0.8,
-              1
-            ]
-          ],
-          "strideMetres": 1,
-          "timingBasis": "Authored to fit this cat; observed sequence, not motion capture"
+          }
         }
       },
       "lods": [
         {
-          "url": "/models/rimo-neko/lod-low-spec-r01.glb",
-          "sha256": "f7604e5311a8a37415b02778394b5bdf4d5747f7e69cd86f124e42d67c33777f",
-          "bytes": 1756636,
-          "triangles": 21879,
+          "url": "/models/rimo-neko/lod-c02-r02.glb",
+          "sha256": "50de7f30f0c61a7e83d0ef148c006d8d050f5578e263c1e70377d5ea47017a04",
+          "bytes": 1975020,
+          "triangles": 22436,
           "distanceMetres": 6,
           "purpose": "source-derived animated geometry; original skeleton/materials/clips retained"
         }
       ],
       "provenance": {
-        "provider": "Codex imagegen; local TRELLIS-2 via trellis.cpp v0.8.1; source-preserving repair and body-specific quadruped rig",
+        "provider": "Codex built-in imagegen; local TRELLIS-2; measured surface reduction and body-specific quadruped rig",
         "claudeUsed": false,
-        "source": "output/model-generation/models/rimo-neko/work/rig/revision-10/candidate.glb",
-        "sourceSha256": "545900f93a483fb1b9cb7483c4fa79a97c3b40d107054e6ef4cadd34fe12205b",
-        "referenceImage": "assets/rimo-neko/source/reference-v1.png",
-        "referenceSha256": "65021b6381b4c6dc8be59409581b889a7272471e7e63919be9e0d5b94676b46d",
+        "source": "output/model-generation/models/rimo-neko/candidate-2/work/rig/revision-02/candidate.glb",
+        "sourceSha256": "c336d59a52a5fc5594969ee97d8b4393b7e7f5a3ba7a8b176a6375ada41a3f57",
+        "surface": "Candidate 2 / surface01",
+        "sourceSurfaceSha256": "284095b15d1e08fdfa7a7157ba5806c322e52d280d03a0f0436c8f2311761850",
+        "referenceImage": "assets/rimo-neko/source/reference-v2.png",
+        "referenceSha256": "8e4854b4d1a397a9b485fe2e5a063ae8f5ca0f59ce05b9eb7a43f0ae491ee5f2",
         "visualReview": "assets/rimo-neko/adoption.json"
       },
       "notes": [
-        "Grey-white longhair, green eyes, pink nose, four grounded paws and plume tail from the user reference.",
-        "One successful TRELLIS candidate; all revisions retained. Jaw lining follows the original split lip seam."
+        "The user selected Candidate 2 surface01. Its gray-white fur, green eyes and plume tail are retained; rigging adds a small lip seam and mouth lining for Hiss.",
+        "Original image, Candidate 1, interrupted generation, all C2 revisions and measured QA are retained."
       ]
     },
     {

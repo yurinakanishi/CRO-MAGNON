@@ -41,6 +41,7 @@ export class WorldLandmarks {
   declare caveCamera: MeshRayGrid | null | undefined;
   declare cavePigment: THREE.Texture | undefined;
   declare caveCharacter524: THREE.Texture | undefined;
+  declare caveRimoPigment: THREE.Texture | undefined;
   declare caveLimestone: THREE.Texture | undefined;
 
   constructor(world, placements = PLACEMENTS) {
@@ -162,6 +163,25 @@ export class WorldLandmarks {
               this.world.renderer.capabilities.getMaxAnisotropy(),
             );
           }
+          if (!this.caveRimoPigment) {
+            this.caveRimoPigment = new THREE.TextureLoader().load(
+              template.asset.rimoPigment.url,
+              undefined,
+              undefined,
+              (error) => {
+                if (!this.disposed)
+                  this.world.failWorld(
+                    'りもねこの壁画を読み込めませんでした。再読み込みしてください。',
+                    error,
+                  );
+              },
+            );
+            this.caveRimoPigment.colorSpace = THREE.SRGBColorSpace;
+            this.caveRimoPigment.anisotropy = Math.min(
+              8,
+              this.world.renderer.capabilities.getMaxAnisotropy(),
+            );
+          }
           template.cavePrepared = true;
           for (const gltf of [template.gltf, ...template.lods])
             prepareCaveMaterials(
@@ -169,6 +189,7 @@ export class WorldLandmarks {
               this.cavePigment,
               this.caveLimestone,
               this.caveCharacter524,
+              this.caveRimoPigment,
             );
         }
         if (item.key === CAMP_MOUNTAIN.key && !template.trailPrepared) {
@@ -250,6 +271,8 @@ export class WorldLandmarks {
           this.caveLimestone = undefined;
           this.caveCharacter524?.dispose();
           this.caveCharacter524 = undefined;
+          this.caveRimoPigment?.dispose();
+          this.caveRimoPigment = undefined;
         }
         this.used.delete(key);
         this.world.updateAssetDiagnostics();
@@ -273,6 +296,7 @@ export class WorldLandmarks {
     this.cavePigment?.dispose();
     this.caveLimestone?.dispose();
     this.caveCharacter524?.dispose();
+    this.caveRimoPigment?.dispose();
     this.caveCamera = this.castleCamera = null;
   }
 }

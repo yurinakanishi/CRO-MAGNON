@@ -132,8 +132,17 @@
   padding-top: 16px;
   border-top: 1px solid #dbc89540;
 }
-.credit-guest {
+.credit-side {
   grid-area: guest;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: clamp(20px, 4dvh, 42px);
+  min-width: 0;
+}
+.credit-guest,
+.credit-support {
   min-width: 0;
 }
 .credit-people {

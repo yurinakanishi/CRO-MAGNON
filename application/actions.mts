@@ -17,10 +17,16 @@ import { canStartJump, jumpProgress } from '../shared/jumping.mjs';
 import { cancelBarter } from '../shared/barter.mjs';
 import { carrying, handleCarryAction } from '../shared/carrying.mjs';
 import { toggleCaveFire } from '../shared/cave-fire.mjs';
-import { handleRimoNekoAction } from '../shared/rimo-neko.mjs';
+import { toggleCaveTorch } from '../shared/cave-light.mjs';
+import { handleRimoNekoAction, returnRimoNeko } from '../shared/rimo-neko.mjs';
 import { handleCompanion524Action } from '../shared/companion-524.mjs';
 import { stopActor } from '../shared/combat.mjs';
-import { handleOrbBotAction, releaseHeldOrbBot, syncOrbBots } from '../shared/orb-bots.mjs';
+import {
+  handleOrbBotAction,
+  pettingOrbBot,
+  releaseHeldOrbBot,
+  syncOrbBots,
+} from '../shared/orb-bots.mjs';
 const distance = (a, b) => Math.hypot(a.x - b.x, a.z - b.z);
 export function createActionHandler({
   notice: sendNotice,
@@ -35,16 +41,45 @@ export function createActionHandler({
     sendNotice(player, text, tone, false);
   return function act(room, player, message, now) {
     const action = message.action;
-    if (['throwBot', 'recallBots', 'cancelBotThrows'].includes(action)) {
-      if (handleOrbBotAction(room, player, action, message.targetId, now))
+    if (action === 'toggleCaveTorch') {
+      if (toggleCaveTorch(player)) broadcast(room, snapshot(room));
+      return;
+    }
+    if (action === 'travelAlone') {
+      handleOrbBotAction(room, player, 'dismissBots', null, now);
+      handleCompanion524Action(room, player, 'dismiss524', now);
+      if (room.rimoNeko?.petPlayerId === player.id) returnRimoNeko(room.rimoNeko);
+      else handleRimoNekoAction(room, player, 'dismissRimo', now);
+      syncOrbBots(room, now);
+      broadcast(room, snapshot(room));
+      return;
+    }
+    if (
+      [
+        'throwBot',
+        'recallBots',
+        'cancelBotThrows',
+        'petBot',
+        'petBots',
+        'dismissBot',
+        'dismissBots',
+      ].includes(action)
+    ) {
+      if (handleOrbBotAction(room, player, action, message.targetId, now)) {
+        if (action === 'petBot' || action === 'petBots') stopActor(player);
         broadcast(room, snapshot(room));
+      }
       return;
     }
     // A held companion never occupies the hand during another action.
     if (!['cancelCook', 'cancelFishing', 'cancelCoastal'].includes(action))
       releaseHeldOrbBot(room, player, now);
     if (action === 'petRimo' || action === 'dismissRimo') {
-      if (action === 'petRimo' && room.companion524?.petPlayerId === player.id) return;
+      if (
+        action === 'petRimo' &&
+        (room.companion524?.petPlayerId === player.id || pettingOrbBot(room.orbBots, player.id))
+      )
+        return;
       if (handleRimoNekoAction(room, player, action, now)) {
         if (action === 'petRimo') stopActor(player);
         broadcast(room, snapshot(room));
@@ -52,7 +87,11 @@ export function createActionHandler({
       return;
     }
     if (action === 'pet524' || action === 'dismiss524') {
-      if (action === 'pet524' && room.rimoNeko?.petPlayerId === player.id) return;
+      if (
+        action === 'pet524' &&
+        (room.rimoNeko?.petPlayerId === player.id || pettingOrbBot(room.orbBots, player.id))
+      )
+        return;
       if (handleCompanion524Action(room, player, action, now)) {
         if (action === 'pet524') stopActor(player);
         syncOrbBots(room, now);

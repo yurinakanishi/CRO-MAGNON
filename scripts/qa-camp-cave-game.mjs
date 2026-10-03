@@ -312,17 +312,19 @@ try {
         { wall, distance },
       );
     };
-    assert.equal(CAVE_MURALS.length, 15);
+    assert.equal(CAVE_MURALS.length, 14);
     assert.equal('cat' in CAVE_MOTIFS, false);
     assert.equal(
       CAVE_MURALS.some((m) => m.motif === 'cat'),
       false,
     );
-    checks.push('cat motif and projection are completely removed from the active gallery');
+    const rimoMural = CAVE_MURALS.find((m) => m.motif === 'rimoFrieze');
+    assert.equal(rimoMural.wall, 'east');
+    assert.equal(rimoMural.centre, smallMural.centre);
+    checks.push('Rimo and four Lascaux-inspired animals face the unchanged 524');
     const eastAnimals = CAVE_MURALS.filter(
       (m) =>
-        m.wall === 'east' &&
-        ['redHorse', 'mammoth', 'bison', 'deer', 'ochreHorse'].includes(m.motif),
+        m.wall === 'east' && ['redHorse', 'rimoFrieze', 'deer', 'ochreHorse'].includes(m.motif),
     ).sort((a, b) => b.centre - a.centre);
     gallery.eastAnimalGaps = eastAnimals.slice(1).map((m, i) => {
       const previous = eastAnimals[i];
@@ -333,11 +335,9 @@ try {
       );
       return gap;
     });
-    checks.push(
-      'the east animal row closes the former cat slot without overlap or a large blank gap',
-    );
-    // Inspect the old cat footprint, now occupied by the deer in a continuous animal row.
-    const reflowedWallView = caveWorldAt(-26.1),
+    checks.push('the east animal row joins the Rimo frieze without overlap or a large blank gap');
+    // The new cat frieze is centred directly opposite 524.
+    const reflowedWallView = caveWorldAt(rimoMural.centre),
       creatureView = caveWorldAt(CAVE_MURALS.find((m) => m.motif === 'creature524').centre),
       hearthApproach = caveWorldAt(-20, 1.5);
     await walk(page, reflowedWallView, 'view the reflowed animal row before ignition');

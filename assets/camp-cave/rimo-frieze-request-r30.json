@@ -1,0 +1,35 @@
+{
+  "date": "2026-10-02",
+  "request": "洞窟のりもねこの壁画を高い再現度で復活し、524の反対側に、ラスコー風の動物たちへ自然に溶け込ませる。",
+  "pigment": {
+    "source": "assets/camp-cave/source/rimo-lascaux-frieze-r30.png",
+    "url": "/models/camp-cave/rimo-lascaux-frieze-r30.png",
+    "sha256": "b750045fda524816577747197874d173d41161e2b55d9acfe772a8f37f8d01df",
+    "bytes": 2272546,
+    "image": {
+      "width": 2172,
+      "height": 724
+    },
+    "generator": "Built-in imagegen",
+    "prompt": "assets/camp-cave/rimo-lascaux-prompt-r30.txt",
+    "reference": {
+      "path": "assets/rimo-neko/source/user-reference.jpg",
+      "sha256": "3a0ebdfadbb383d170318a0cd4d3cb9540ccb113822bc0a44836dfcaeeebdf41"
+    },
+    "styleReference": "assets/camp-cave/source/mural-atlas-r05.png",
+    "subjects": [
+      "Rimo-neko",
+      "ochre wild horse",
+      "red wild horse",
+      "aurochs",
+      "red deer"
+    ],
+    "application": "One 7.5 x 2.5 m transparent pigment frieze on the east wall, centred at local Z -21.2 opposite the existing 524. Direct projection on the existing limestone, no decal plane or opaque backing.",
+    "review": "assets/camp-cave/qa/gallery-r30.json"
+  },
+  "preservedCave": {
+    "url": "/models/camp-cave/model-r26.glb",
+    "sha256": "65dde1aa7311b88c159d524d93af82a770dac77e48ee1f35356e3000cad8a15f"
+  },
+  "preserved524": "9fc9d9d635989a1e928a5ccdac2a7ed3889a1442930ff07f8503c7d2832fd071"
+}

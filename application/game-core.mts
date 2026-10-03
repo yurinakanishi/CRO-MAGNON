@@ -1,5 +1,6 @@
 import { createRimoNeko, updateRimoNeko, restoreRimoNeko } from '../shared/rimo-neko.mjs';
-import { updateOrbBots } from '../shared/orb-bots.mjs';
+import { updateOrbBots, saveOrbBots, restoreOrbBots } from '../shared/orb-bots.mjs';
+import { caveInteriorWeight } from '../shared/cave-light.mjs';
 import { updateFishing, cancelFishing } from '../shared/fishing.mjs';
 import { DEFAULT_RULES, EXHIBITION_RULES, clientRules, roomRules } from '../shared/room-rules.mjs';
 import { createHouseholds, householdSnapshots } from '../shared/household-life.mjs';
@@ -476,6 +477,9 @@ export function createGameCore({
           message.action === 'throwBot' ||
           message.action === 'recallBots' ||
           message.action === 'cancelBotThrows' ||
+          message.action === 'dismissBot' ||
+          message.action === 'dismissBots' ||
+          message.action === 'travelAlone' ||
           message.action === 'rift' ||
           message.action === 'warp' ||
           message.action === 'changeCharacter' ||
@@ -489,6 +493,9 @@ export function createGameCore({
             'cancelCook',
             'cancelBotThrows',
             'recallBots',
+            'dismissBot',
+            'dismissBots',
+            'travelAlone',
             'wave',
           ].includes(message.action)
         )
@@ -500,6 +507,9 @@ export function createGameCore({
             'cancelBotThrows',
             'throwBot',
             'recallBots',
+            'dismissBot',
+            'dismissBots',
+            'travelAlone',
             'jump',
           ].includes(message.action)
         )
@@ -615,6 +625,7 @@ export function createGameCore({
             roomRules(room).speedScale,
           );
         }
+        if (player.caveTorchOff && caveInteriorWeight(player) === 0) player.caveTorchOff = false;
         if (heartbeat) {
           if (!player.alive) {
             player.socket.terminate();
@@ -728,6 +739,7 @@ export function createGameCore({
                 room.orbBots?.find((bot) => bot.kind === '524'),
               ),
               rimoNeko: room.rimoNeko,
+              orbBots: saveOrbBots(room),
               enemies: room.enemies,
               boats: room.boats,
               gulf: room.gulf,
@@ -905,6 +917,7 @@ export function createGameCore({
       createResidents(room, record.residents, runtime.now());
       restoreCompanion524(room, record.companion524);
       restoreRimoNeko(room, record.rimoNeko);
+      restoreOrbBots(room, record.orbBots, runtime.now());
     }
   }
 

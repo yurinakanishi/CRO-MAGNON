@@ -33,7 +33,7 @@ if (!rig.locomotionSpeedIsExported)
   }
 const record = {
   modelKey: 'rimo-neko',
-  name: 'リモねこ',
+  name: 'りもねこ',
   kind: 'companion',
   candidate: 1,
   status: 'reviewed-prototype',
@@ -75,7 +75,7 @@ for (const file of ['public/models/world-assets.json', 'assets/world-models.json
       ? record
       : {
           key: 'rimo-neko',
-          name: 'リモねこ',
+          name: 'りもねこ',
           kind: 'companion',
           candidate: 1,
           status: 'integrated-reviewed-prototype',

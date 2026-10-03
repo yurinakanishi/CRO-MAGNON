@@ -3,6 +3,7 @@ import { BIOMES, biomeWeights, biomeAt } from '../shared/biomes.mjs';
 import { WORLD } from '../shared/world.mjs';
 import { ADVENTURE_REGIONS, regionAt, regionWeight } from '../shared/adventure-regions.mjs';
 import { SEA_WEATHER, maritimeWeight } from '../shared/maritime-weather.mjs';
+import { caveInteriorWeight } from '../shared/cave-light.mjs';
 
 export class WorldAtmosphere {
   declare world: any;
@@ -16,6 +17,7 @@ export class WorldAtmosphere {
   declare seaFog: THREE.Color;
   declare seaSky: THREE.Color;
   declare seaLight: THREE.Color;
+  private caveDark = new THREE.Color('#020202');
   declare uniforms: {
     time: {
       value: number;
@@ -110,6 +112,7 @@ export class WorldAtmosphere {
         this.light[channel] += this.lightColors[i][channel] * weights[i];
       }
     const world = this.world;
+    const cave = caveInteriorWeight(position);
     const region = regionAt(position.x, position.z),
       weight = regionWeight(region, position.x, position.z),
       colors = this.regions.get(region?.id);
@@ -127,9 +130,11 @@ export class WorldAtmosphere {
     this.target.lerp(this.seaFog, mist);
     this.sky.lerp(this.seaSky, Math.max(mist, dim));
     this.light.lerp(this.seaLight, dim);
-    world.sun.intensity += (2.65 - shadow * 1.7 - dim * 2 - world.sun.intensity) * alpha;
+    this.target.lerp(this.caveDark, cave);
+    world.sun.intensity +=
+      ((2.65 - shadow * 1.7 - dim * 2) * (1 - cave * 0.997) - world.sun.intensity) * alpha;
     world.hemisphere.intensity +=
-      (2 - shadow * 1.1 - dim * 0.6 - world.hemisphere.intensity) * alpha;
+      ((2 - shadow * 1.1 - dim * 0.6) * (1 - cave * 0.994) - world.hemisphere.intensity) * alpha;
     world.skyUniforms.shadowRealm.value += (shadow - world.skyUniforms.shadowRealm.value) * alpha;
     world.scene.fog.color.lerp(this.target, alpha);
     world.sun.color.lerp(this.light, alpha);
@@ -139,8 +144,10 @@ export class WorldAtmosphere {
       position.z - WORLD.minZ,
       WORLD.maxZ - position.z,
     );
-    world.scene.fog.near += (45 - mist * 23 - world.scene.fog.near) * alpha;
-    world.scene.fog.far += (118 - mist * 52 - world.scene.fog.far) * alpha;
+    world.scene.fog.near +=
+      ((45 - mist * 23) * (1 - cave) + 5 * cave - world.scene.fog.near) * alpha;
+    world.scene.fog.far +=
+      ((118 - mist * 52) * (1 - cave) + 26 * cave - world.scene.fog.far) * alpha;
     world.scene.fog.near = Math.min(world.scene.fog.near, Math.max(5, edge * 0.4));
     world.scene.fog.far = Math.min(world.scene.fog.far, Math.max(12, edge + 8));
     world.skyUniforms.biomeFog.value.copy(world.scene.fog.color);
@@ -152,7 +159,8 @@ export class WorldAtmosphere {
     const intensity =
       ((snow * 0.8 + ash * 0.35 + sand * 0.32) * (1 - shadow) + shadow * 0.65) * (1 - seaWeight) +
       sea.rain * seaWeight;
-    this.uniforms.intensity.value += (intensity - this.uniforms.intensity.value) * alpha;
+    this.uniforms.intensity.value +=
+      (intensity * (1 - cave) - this.uniforms.intensity.value) * alpha;
     this.particles.visible = this.uniforms.intensity.value > 0.01;
     this.uniforms.time.value = time;
     this.uniforms.centre.value.set(position.x, position.y, position.z);
@@ -174,6 +182,7 @@ export class WorldAtmosphere {
     world.canvas.dataset.seaWeather = seaWeight > 0.5 ? weather.kind : '';
     world.canvas.dataset.seaFog = world.scene.fog.far.toFixed(1);
     world.canvas.dataset.adventureRegion = region?.id ?? '';
+    world.canvas.dataset.caveDarkness = cave.toFixed(3);
   }
   dispose() {
     this.world.scene.remove(this.particles);

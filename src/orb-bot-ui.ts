@@ -38,6 +38,7 @@ export class OrbBotUI {
       player(): PlayerSnapshot | undefined;
       now(): number;
       available(): boolean;
+      pettable(): readonly OrbBotSnapshot[];
       action(name: string, target?: string): void;
       openModal(markup: string): void;
       closeModal(): void;
@@ -61,6 +62,10 @@ export class OrbBotUI {
   }
   private bind(root: Element) {
     this.bindChoices(root);
+    root.querySelector('[data-bot-action="petAll"]')?.addEventListener('click', () => {
+      if (this.hooks.available() && this.hooks.pettable().length) this.hooks.action('petBots');
+      this.hooks.closeModal();
+    });
     root.querySelector('[data-bot-action="use"]')?.addEventListener('click', () => {
       this.use();
       this.hooks.closeModal();
@@ -69,9 +74,20 @@ export class OrbBotUI {
       this.recall();
       this.hooks.closeModal();
     });
+    for (const [button, action] of [
+      ['dismiss', 'dismissBot'],
+      ['dismissAll', 'dismissBots'],
+    ]) {
+      root.querySelector(`[data-bot-action="${button}"]`)?.addEventListener('click', () => {
+        if (this.hooks.available())
+          this.hooks.action(action, button === 'dismiss' ? this.selected : undefined);
+        this.hooks.closeModal();
+      });
+    }
   }
   cycle() {
     const kinds = ownedBotKinds(this.hooks.bots(), this.hooks.player()?.id);
+    if (!kinds.length) return;
     this.selected = kinds[(kinds.indexOf(this.selected) + 1) % kinds.length];
     this.update();
   }
@@ -87,7 +103,7 @@ export class OrbBotUI {
   open() {
     const kinds = ownedBotKinds(this.hooks.bots(), this.hooks.player()?.id);
     this.hooks.openModal(
-      `<div class="orb-menu"><h2>${kinds.length}種類のbotたち</h2><p>ボタンを押すたびに、次の1匹を前へ投げます。投げたbotは、その場所で待ちます。</p><div class="orb-choices">${choices(this.selected, kinds)}</div><p>種類を選ぶと、その種類から順番に投げます。<br>C ／ 左スティック押し込み：1匹ずつ投げる<br>Q ／ 十字キー↑：みんなを呼び戻す</p><div class="orb-actions"><button type="button" class="button" data-bot-action="use">投げる</button><button type="button" class="button button-outline" data-bot-action="recall">みんなを呼ぶ</button></div></div>`,
+      `<div class="orb-menu"><h2>仲間のbotたち · ${kinds.length}匹</h2><p data-bot-status></p><p>近くで V ／ コントローラーの下ボタンを1回押すと、集まったbotたちを一度に撫でます。全員が同時に喜んで仲間になります。歩き出すかQで中断できます。他の人の仲間は対象に入りません。1匹だけなら、その子をクリック・タップしてください。</p><button type="button" class="button button-accent" data-bot-action="petAll">近くのbotたちをまとめて撫でる</button><div class="orb-choices">${choices(this.selected, kinds)}</div><p>種類を選ぶと、その種類から順番に投げます。<br>C ／ 左スティック押し込み：1匹ずつ投げる<br>Q ／ 十字キー↑：投げた場所で待つ仲間を呼ぶ<br>T：いちばん近い仲間を元の場所へ帰す</p><div class="orb-actions"><button type="button" class="button" data-bot-action="use">投げる</button><button type="button" class="button button-outline" data-bot-action="recall">みんなを呼ぶ</button><button type="button" class="button button-outline" data-bot-action="dismiss">選んだ子を帰す</button><button type="button" class="button button-outline" data-bot-action="dismissAll">全員を元の場所へ帰す</button></div></div>`,
     );
     this.bind(document.querySelector('.orb-menu')!);
     this.update();
@@ -98,24 +114,39 @@ export class OrbBotUI {
     if (!p || !this.hooks.available()) return;
     const own = bots.filter((b) => b.ownerId === p.id);
     const kinds = ownedBotKinds(bots, p.id);
-    if (!kinds.includes(this.selected)) this.selected = kinds[0];
+    if (!kinds.includes(this.selected)) this.selected = kinds[0] ?? 'white';
     const next = nextOrbBot(bots, p, this.selected);
-    if (next) this.selected = next.kind;
     const menu = document.querySelector('.orb-menu');
     if (!menu) return;
-    if (menu.querySelectorAll('[data-bot-kind]').length !== kinds.length) {
-      menu.querySelector('h2')!.textContent = `${kinds.length}種類のbotたち`;
+    const group = bots.filter((b) => b.petPlayerId === p.id && b.petGroupLeaderId);
+    const pettable = this.hooks.pettable();
+    const petAll = menu.querySelector<HTMLButtonElement>('[data-bot-action="petAll"]')!;
+    petAll.disabled = !pettable.length;
+    petAll.textContent = group.length
+      ? `みんなを撫でています（${group.length}匹）`
+      : pettable.length
+        ? `近くのbotたちをまとめて撫でる（${pettable.length}匹）`
+        : '近くのbotたちをまとめて撫でる';
+    if (menu.getAttribute('data-kinds') !== kinds.join(',')) {
+      menu.setAttribute('data-kinds', kinds.join(','));
+      menu.querySelector('h2')!.textContent = `仲間のbotたち · ${kinds.length}匹`;
       const list = menu.querySelector('.orb-choices')!;
       list.innerHTML = choices(this.selected, kinds);
       this.bindChoices(list);
     }
+    menu.querySelector('[data-bot-status]')!.textContent = kinds.length
+      ? '撫でて仲間になった子だけが、いっしょに歩きます。帰した子はキャンプで待ち、また撫でると仲間になります。'
+      : '連れているbotはいません。ひとりで自由に歩けます。';
+    for (const name of ['recall', 'dismiss', 'dismissAll'])
+      menu.querySelector<HTMLButtonElement>(`[data-bot-action="${name}"]`)!.disabled =
+        !kinds.length && (name === 'dismiss' || !group.length);
     const available = canHandleBot(p, this.hooks.now());
     const use = menu.querySelector<HTMLButtonElement>('[data-bot-action="use"]')!;
-    use.disabled = !available || !next;
+    use.disabled = !available || !next || group.length > 0;
     menu.querySelectorAll('[data-bot-kind]').forEach((el) => {
       const kind = (el as HTMLElement).dataset.botKind as BotKind;
       const bot = own.find((b) => b.kind === kind);
-      el.setAttribute('aria-pressed', String(!!next && kind === this.selected));
+      el.setAttribute('aria-pressed', String(kind === this.selected));
       el.setAttribute('data-bot-mode', bot?.mode ?? 'stowed');
       el.setAttribute('title', `${BOT_DESIGNS[kind].name} · ${modeName(bot)}`);
     });

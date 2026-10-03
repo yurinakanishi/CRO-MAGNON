@@ -5,11 +5,14 @@ import { mkdir, readFile, writeFile } from 'node:fs/promises';
 import { createHash } from 'node:crypto';
 import * as THREE from 'three';
 import { loadMotion, pose } from './motion-glb.mjs';
+import { fastSkinPositions } from './fast-skin-positions.mjs';
 
 const revision = process.argv[2] || '03';
-const base = 'output/model-generation/models/rimo-neko';
+// An explicit workspace permits later candidates without treating them as C1.
+const base = process.argv[3] || 'output/model-generation/models/rimo-neko';
 const file = `${base}/work/rig/revision-${revision}/candidate.glb`;
-const out = `${base}/qa/rig-${revision}/motion.json`;
+const lowDetail = process.argv.includes('--lod');
+const out = `${base}/qa/rig-${revision}/${lowDetail ? 'lod-motion' : 'motion'}.json`;
 const asset = JSON.parse(await readFile(`${base}/work/rig/revision-${revision}/process.json`, 'utf8'));
 if (!asset.locomotionSpeedIsExported)
   for (const [name, gait] of Object.entries(asset.locomotion))
@@ -19,8 +22,25 @@ const gltf = await loadMotion(file),
 gltf.scene.traverse((o) => {
   if (o.isSkinnedMesh) meshes.push(o);
 });
-const v = new THREE.Vector3(),
-  checks = [];
+let lodSha256;
+if (lowDetail) {
+  const low = await loadMotion(`${base}/work/rig/revision-${revision}/lod.glb`), lowMeshes = [];
+  low.scene.traverse(o => { if (o.isSkinnedMesh) lowMeshes.push(o); });
+  assert.equal(meshes.length, lowMeshes.length);
+  for (const [i, mesh] of meshes.entries()) {
+    const reduced = lowMeshes.find(m => m.name === mesh.name) ?? lowMeshes[i];
+    assert.deepEqual(mesh.skeleton.bones.map(b => b.name), reduced.skeleton.bones.map(b => b.name));
+    for (const [j, inverse] of mesh.skeleton.boneInverses.entries())
+      assert.ok(inverse.elements.every((n, k) => Math.abs(n-reduced.skeleton.boneInverses[j].elements[k]) < 1e-6));
+    assert.ok(mesh.matrixWorld.elements.every((n,k) => Math.abs(n-reduced.matrixWorld.elements[k]) < 1e-6));
+    // Match production: keep the original animated skeleton and bind matrices.
+    mesh.geometry = reduced.geometry;
+  }
+  lodSha256 = createHash('sha256').update(low.bytes).digest('hex');
+}
+const samplers = meshes.map(fastSkinPositions);
+let maximumSamplerReferenceError = 0;
+const checks = [];
 let maxWeightError = 0;
 for (const m of meshes) {
   const w = m.geometry.attributes.skinWeight;
@@ -54,16 +74,20 @@ for (const clip of gltf.animations) {
       mixer = pose(gltf, clip, time);
     for (const [mi, m] of meshes.entries()) {
       if (step === 0) first[mi] = new Float32Array(m.geometry.attributes.position.count * 3);
-      for (let i = 0; i < m.geometry.attributes.position.count; i++) {
-        m.getVertexPosition(i, v);
-        m.localToWorld(v);
-        assert.ok(Number.isFinite(v.x + v.y + v.z));
-        minimum = Math.min(minimum, v.y);
-        if (step === 0) v.toArray(first[mi], i * 3);
+      const points = samplers[mi].sample();
+      if (step === 0 || step === Math.floor(steps * .37) || step === steps) {
+        maximumSamplerReferenceError = Math.max(maximumSamplerReferenceError, samplers[mi].referenceError());
+        assert.ok(maximumSamplerReferenceError < 1e-7, 'cached skin sampling agrees with Three.js');
+      }
+      for (let i = 0; i < points.length; i += 3) {
+        const x = points[i], y = points[i + 1], z = points[i + 2];
+        assert.ok(Number.isFinite(x + y + z));
+        minimum = Math.min(minimum, y);
+        if (step === 0) { first[mi][i] = x; first[mi][i + 1] = y; first[mi][i + 2] = z; }
         if (looping && step === steps)
           loopMaxError = Math.max(
             loopMaxError,
-            v.distanceTo(new THREE.Vector3().fromArray(first[mi], i * 3)),
+            Math.hypot(x - first[mi][i], y - first[mi][i + 1], z - first[mi][i + 2]),
           );
       }
     }
@@ -122,8 +146,10 @@ await writeFile(
     {
       file,
       sha256: createHash('sha256').update(gltf.bytes).digest('hex'),
-      sampleHz: '120 Hz for unchanged clips; 480 Hz including between-key poses for revised clips',
+      lodSha256,
+      sampleHz: 'At least 120 Hz and twice each clip authoring rate, including between-key poses',
       maxWeightError,
+      maximumSamplerReferenceError,
       checks,
       scope:
         'All exported vertices, including between-key poses; root/loop/paw stance checks. No exhaustive self-intersection proof.',

@@ -1,9 +1,9 @@
-import { TITLE_CREDITS, TITLE_GUEST } from './title-credit-profiles.js';
-export { TITLE_CREDITS, TITLE_GUEST } from './title-credit-profiles.js';
+import { TITLE_CREDITS, TITLE_GUEST, TITLE_SUPPORT } from './title-credit-profiles.js';
+export { TITLE_CREDITS, TITLE_GUEST, TITLE_SUPPORT } from './title-credit-profiles.js';
 
 export function titleCreditsMarkup(): string {
   const card = (
-    credit: (typeof TITLE_CREDITS)[number] | typeof TITLE_GUEST,
+    credit: (typeof TITLE_CREDITS)[number] | typeof TITLE_GUEST | typeof TITLE_SUPPORT,
     size = 74,
     avatarSize = 56,
   ) =>
@@ -19,6 +19,9 @@ export function titleCreditsMarkup(): string {
             .join('')}</div></div>`
         : ''
     }
-    <div class="credit-guest"><h2>友情出演</h2>${card(TITLE_GUEST)}</div>
+    <div class="credit-side">
+      <div class="credit-guest"><h2>友情出演</h2>${card(TITLE_GUEST)}</div>
+      <div class="credit-support"><h2>友情出演</h2>${card(TITLE_SUPPORT)}</div>
+    </div>
   </section>`;
 }

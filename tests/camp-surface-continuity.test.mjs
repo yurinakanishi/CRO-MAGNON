@@ -85,10 +85,9 @@ test('the extended chamber doubles the measured aisle and keeps paintings in its
     assert.ok(nearest.distance > after.lengthMetres / 2, `${mural.motif} crosses the midpoint`);
   }
   const creature = CAVE_MURALS.find((m) => m.motif === 'creature524');
-  assert.equal(
-    CAVE_MURALS.some((m) => m.motif === 'cat'),
-    false,
-  );
+  const rimo = CAVE_MURALS.find((m) => m.motif === 'rimoFrieze');
+  assert.equal(rimo.wall, 'east');
+  assert.equal(rimo.centre, creature.centre);
   assert.equal(creature.wall, 'west');
 });
 
@@ -105,7 +104,7 @@ test('both animal galleries retain a broad room and full standing height all the
       assert.ok(CAMP_CAVE_SURFACE.free(p.x, p.z, 0.76), `blocked gallery ${section.z},${across}`);
     }
   }
-  const animals = ['redHorse', 'ochreHorse', 'mammoth', 'bison', 'deer'];
+  const animals = ['redHorse', 'ochreHorse', 'mammoth', 'bison', 'deer', 'rimoFrieze'];
   for (const wall of ['east', 'west']) {
     const paintings = CAVE_MURALS.filter((m) => m.wall === wall);
     assert.deepEqual(
@@ -113,7 +112,10 @@ test('both animal galleries retain a broad room and full standing height all the
         .filter((m) => animals.includes(m.motif))
         .map((m) => m.motif)
         .sort(),
-      [...animals].sort(),
+      (wall === 'east'
+        ? ['redHorse', 'ochreHorse', 'deer', 'rimoFrieze']
+        : ['redHorse', 'ochreHorse', 'mammoth', 'bison', 'deer']
+      ).sort(),
     );
     if (wall === 'west') {
       const character = paintings.find((m) => m.motif === 'creature524');

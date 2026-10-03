@@ -7,8 +7,10 @@ import { CoastalRenderer } from './coastal-renderer.js';
 import { VillageRenderer } from './village-renderer.js';
 import { RimoNekoRenderer } from './rimo-neko-renderer.js';
 import { OrbBotRenderer } from './orb-bot-renderer.js';
-import { posingOrbBot } from '../shared/orb-bots.mjs';
-import { groundPettingProgress } from './ground-petting-pose.js';
+import { ORB_BOTS, pettingOrbBot, posingOrbBot } from '../shared/orb-bots.mjs';
+import { GroundPettingPose, groundPettingProgress } from './ground-petting-pose.js';
+import { CaveTorch } from './cave-torch.js';
+import { caveTorchLit } from '../shared/cave-light.mjs';
 import { Companion524Renderer } from './companion-524-renderer.js';
 import { pettingProgress } from './petting-pose.js';
 import { isMesh } from './three-types.js';
@@ -468,7 +470,17 @@ export class WorldRenderer {
 
   private applyGraphics() {
     const low = this.graphics.tier === 'low';
+    const shadowsChanged = this.renderer.shadowMap.enabled === low;
     this.renderer.shadowMap.enabled = !low;
+    if (shadowsChanged) {
+      // USE_SHADOWMAP is a shader variant. Toggling the renderer alone leaves
+      // existing materials using the old program and a disposed shadow texture.
+      const materials = new Set<THREE.Material>();
+      this.scene.traverse((node) => {
+        if (isMesh(node)) for (const material of [node.material].flat()) materials.add(material);
+      });
+      for (const material of materials) material.needsUpdate = true;
+    }
     this.frameClock?.setRate(performance.now(), this.graphics.fps);
     this.canvas.dataset.graphicsMode = this.graphics.mode;
     this.canvas.dataset.graphicsTier = this.graphics.tier;
@@ -715,6 +727,7 @@ export class WorldRenderer {
         const animalRoots = [
           ...(this.companion524Renderer ? [this.companion524Renderer.root] : []),
           ...(this.rimoNekoRenderer ? [this.rimoNekoRenderer.root] : []),
+          ...[...(this.orbBotRenderer?.bots.values() ?? [])].map(({ actor }) => actor.root),
           ...this.mammoths.flatMap((animal) => [animal.model, animal.meat]),
           ...[...this.enemies.values()].map((enemy) => enemy.model),
         ].filter((root) => root.visible);
@@ -794,6 +807,7 @@ export class WorldRenderer {
       const changedCharacter = entity && characterModel(entity.state).key !== characterModel(p).key;
       if (changedCharacter) {
         this.scene.remove(entity.model);
+        entity.torch?.dispose();
         entity.actor?.dispose();
         entity.label.element.remove();
         this.labels.splice(this.labels.indexOf(entity.label), 1);
@@ -866,6 +880,7 @@ export class WorldRenderer {
     for (const [id, entity] of this.players)
       if (!present.has(id)) {
         this.scene.remove(entity.model);
+        entity.torch?.dispose();
         entity.actor?.dispose();
         entity.label.element.remove();
         this.labels.splice(this.labels.indexOf(entity.label), 1);
@@ -926,6 +941,12 @@ export class WorldRenderer {
         entity.axe.visible = false;
       }
       previous.add(actor.root);
+      entity.torch = new CaveTorch(
+        this.scene,
+        this.worldAssets,
+        actor.root,
+        actor.asset.heightMetres,
+      );
       entity.actor = actor;
       pendingActor = null;
       this.updateAssetDiagnostics();
@@ -1140,6 +1161,8 @@ export class WorldRenderer {
       const { model } = entity,
         p = entity.state.id === this.selfId && predicted ? predicted : entity.state,
         factor = 1 - Math.exp(-dt * 20);
+      entity.torch?.pose.restore();
+      if (entity.torch) entity.torch.root.visible = entity.torch.light.visible = false;
       entity.actor?.groundPettingPose.restore();
       entity.actor?.orbBotPose.restore();
       entity.actor?.pettingPose.restore();
@@ -1278,7 +1301,16 @@ export class WorldRenderer {
       // Position reconciliation can move a model backwards by a few centimetres.
       // It is not a turn or a step: use the collision-checked simulation motion.
       const motionSpeed = p.moving ? p.speed : 0;
-      const groundPetting = groundPettingProgress(this.state.rimoNeko, p, this.serverNow());
+      const petDot = pettingOrbBot(this.state.orbBots, p.id);
+      const groundCompanion = petDot ?? this.state.rimoNeko;
+      const groundPetting = petDot
+        ? pettingProgress(petDot, p, this.serverNow(), {
+            ...ORB_BOTS,
+            petApproachMs: petDot.petGroupLeaderId
+              ? ORB_BOTS.petGroupApproachMs
+              : ORB_BOTS.petApproachMs,
+          })
+        : groundPettingProgress(this.state.rimoNeko, p, this.serverNow());
       if (entity.actor) {
         if (p.downedUntil || airborne !== null || p.mountId || p.boatId || p.carrierId) {
           entity.actor.groundPettingPose.weight = 0;
@@ -1292,8 +1324,11 @@ export class WorldRenderer {
       }
       const petting524 = pettingProgress(this.state.companion524, p, this.serverNow());
       const petting = groundPetting.weight > 0 ? groundPetting : petting524;
-      const petCompanion = groundPetting.weight > 0 ? this.state.rimoNeko : this.state.companion524;
-      const facing = petting.weight > 0 ? petCompanion!.petFacing : p.facing;
+      const petCompanion = groundPetting.weight > 0 ? groundCompanion : this.state.companion524;
+      const facing =
+        petting.weight > 0 && petCompanion?.petPlayerId === p.id
+          ? (petCompanion.petFacing ?? p.facing)
+          : p.facing;
       const diff = Math.atan2(
         Math.sin(facing - model.rotation.y),
         Math.cos(facing - model.rotation.y),
@@ -1321,13 +1356,17 @@ export class WorldRenderer {
           airborne === null && !p.downedUntil ? motionSpeed : null,
           entity.running,
         );
-        if (groundPetting.weight > 0 && this.rimoNekoRenderer) {
-          this.rimoNekoRenderer.petTarget(tempPoint);
-          entity.actor.groundPettingPose.update(
-            tempPoint,
-            groundPetting.weight,
-            groundPetting.stroke,
-          );
+        if (groundPetting.weight > 0) {
+          if (petDot) {
+            if (this.orbBotRenderer) this.orbBotRenderer.petTarget(petDot, tempPoint);
+            else tempPoint.set(petDot.x, petDot.y + ORB_BOTS.diameter * 0.9, petDot.z);
+          } else if (this.state.rimoNeko?.petPlayerId === p.id && this.rimoNekoRenderer)
+            this.rimoNekoRenderer.petTarget(tempPoint);
+          else tempPoint.copy(entity.actor.groundPettingPose.requested);
+          const pose = entity.actor.groundPettingPose;
+          if (pose instanceof GroundPettingPose)
+            pose.update(tempPoint, groundPetting.weight, groundPetting.stroke, !!petDot);
+          else pose.update(tempPoint, groundPetting.weight, groundPetting.stroke);
         } else if (petting524.weight > 0 && this.companion524Renderer) {
           tempPoint.copy(this.companion524Renderer.root.position);
           const petNear = p.species === 'bear' ? 0.13 : 0.08;
@@ -1342,6 +1381,18 @@ export class WorldRenderer {
           p,
           this.serverNow(),
           model,
+        );
+        entity.torch?.update(
+          caveTorchLit(p) &&
+            petting.weight === 0 &&
+            entity.actor.orbBotPose.weight === 0 &&
+            !entity.actor.animation.oneShot &&
+            !p.fishing &&
+            !p.coastalActivity &&
+            !p.cookingEndsAt,
+          time,
+          dt,
+          this.renderer.getPixelRatio(),
         );
         if (entity.axe) {
           const attack = entity.actor.animation.name === 'Attack';
@@ -1487,7 +1538,7 @@ export class WorldRenderer {
       updateSimplifiedShadow(fire.root, this.camera);
       if (!visible) continue;
       fire.light.intensity =
-        (fire.cave ? 35 : 4.1) + Math.sin(time * 9 + fire.seed) * (fire.cave ? 2 : 0.5);
+        (fire.cave ? 8 : 4.1) + Math.sin(time * 9 + fire.seed) * (fire.cave ? 0.55 : 0.5);
       const pos = fire.sparks.geometry.attributes.position;
       for (let i = 0; i < pos.count; i++) {
         const life = (time * 0.32 + i / pos.count) % 1;
@@ -1791,7 +1842,10 @@ export class WorldRenderer {
     this.resizeObserver.disconnect();
     this.labelLayer.remove();
     this.loadingLabel?.remove();
-    for (const entity of this.players.values()) if (entity.actor) this.scene.remove(entity.model);
+    for (const entity of this.players.values()) {
+      entity.torch?.dispose();
+      if (entity.actor) this.scene.remove(entity.model);
+    }
     for (const landscape of this.landscapes) landscape.dispose();
     for (const provider of this.humanAssets.values()) provider.dispose();
     this.worldAssets.dispose();

@@ -1,121 +1,99 @@
+// Validate the current mural against its source, real wall and CUA game evidence.
+// Historical r29 observations remain in assets/camp-cave/qa/gallery-r29.json.
 import assert from 'node:assert/strict';
 import { createHash } from 'node:crypto';
 import { readFile, writeFile } from 'node:fs/promises';
-import { CAVE_MOTIFS, CAVE_MURALS } from '../dist/src/cave-gallery-layout.js';
+import { CAVE_MURALS, caveMuralHeight } from '../dist/src/cave-gallery-layout.js';
 
 const hash = (b) => createHash('sha256').update(b).digest('hex');
-const asset = JSON.parse(await readFile('public/models/camp-cave/asset.json'));
-const world = JSON.parse(await readFile('public/models/world-assets.json'));
+const json = async (p) => JSON.parse(await readFile(p, 'utf8'));
+const asset = await json('public/models/camp-cave/asset.json');
+const world = await json('public/models/world-assets.json');
+const previous = await json('assets/camp-cave/qa/gallery-r29.json');
+assert.equal(asset.galleryRevision, '30');
 assert.deepEqual(
   world.assets.find((a) => a.modelKey === 'camp-cave'),
   asset,
 );
-for (const r of [
-  asset.pigment,
-  asset.characterPigment,
-  asset.rockSurface,
-  asset.pigment.previous,
-]) {
+assert.equal(asset.sha256, '65dde1aa7311b88c159d524d93af82a770dac77e48ee1f35356e3000cad8a15f');
+assert.equal(hash(await readFile(`public${asset.url}`)), asset.sha256);
+const pigments = [asset.pigment, asset.characterPigment, asset.rockSurface, asset.rimoPigment];
+for (const r of [...pigments, asset.pigment.previous]) {
   assert.equal(hash(await readFile(`public${r.url}`)), r.sha256);
   assert.equal(hash(await readFile(r.source)), r.sha256);
 }
-assert.equal(hash(await readFile(`public${asset.url}`)), asset.sha256);
-assert.equal(CAVE_MURALS.length, 15);
-const animals = ['redHorse', 'ochreHorse', 'mammoth', 'bison', 'deer'];
-for (const wall of ['east', 'west'])
-  assert.deepEqual(
-    CAVE_MURALS.filter((m) => m.wall === wall && animals.includes(m.motif))
-      .map((m) => m.motif)
-      .sort(),
-    [...animals].sort(),
-  );
-const cats = CAVE_MURALS.filter((m) => m.motif === 'cat');
-const creatures = CAVE_MURALS.filter((m) => m.motif === 'creature524');
-assert.equal(cats.length, 0);
-assert.equal('cat' in CAVE_MOTIFS, false);
-assert.equal(creatures.length, 1);
-assert.equal(creatures[0].wall, 'west');
-assert.ok(CAVE_MURALS.every((m) => m.centre <= -13));
-const coverage = JSON.parse(
-  await readFile(
-    `assets/camp-cave/qa/gallery-pigment-coverage-r${asset.galleryRevision ?? asset.revision}.json`,
-  ),
+assert.equal(
+  hash(await readFile(asset.rimoPigment.reference.path)),
+  asset.rimoPigment.reference.sha256,
 );
-const length = JSON.parse(await readFile(`assets/camp-cave/qa/length-r${asset.revision}.json`));
-assert.equal(length.measurements[1].sha256, asset.sha256);
-assert.ok(length.ratio > 1.95 && length.ratio < 2.15);
+assert.equal(CAVE_MURALS.length, 14);
+const rimo = CAVE_MURALS.find((m) => m.motif === 'rimoFrieze');
+const figure = CAVE_MURALS.find((m) => m.motif === 'creature524');
+assert.equal(rimo.wall, 'east');
+assert.equal(figure.wall, 'west');
+assert.equal(rimo.centre, figure.centre);
+assert.equal(rimo.width, 7.5);
+assert.equal(caveMuralHeight(rimo), 2.5);
+assert.deepEqual(
+  CAVE_MURALS.filter((m) => m.motif !== 'rimoFrieze'),
+  previous.layout.filter((m) => !(m.wall === 'east' && ['mammoth', 'bison'].includes(m.motif))),
+);
+
+const coverage = await json('assets/camp-cave/qa/gallery-pigment-coverage-r30.json');
 assert.equal(coverage.atlasSha256, asset.pigment.sha256);
 assert.equal(coverage.characterSha256, asset.characterPigment.sha256);
+assert.equal(coverage.rimoSha256, asset.rimoPigment.sha256);
 assert.equal(coverage.totalRejected, 0);
-assert.ok(coverage.placements.every((p) => p.paintedSamples > 30));
 assert.equal(coverage.placements.length, CAVE_MURALS.length);
-for (const [index, mural] of CAVE_MURALS.entries()) {
-  assert.equal(coverage.placements[index].motif, mural.motif);
-  assert.equal(coverage.placements[index].wall, mural.wall);
-  assert.equal(coverage.placements[index].centre, mural.centre);
-}
-const qaPath = asset.gameQA;
-const qa = JSON.parse(await readFile(qaPath));
-assert.equal(qa.cave.sha256, asset.sha256);
-assert.equal(qa.cave.previewOverride, false);
-assert.deepEqual(qa.errors, []);
-assert.ok(
-  qa.checks.includes(
-    'continuous keyboard walk from the original outdoor camp through the visible mouth',
-  ),
-);
-assert.ok(qa.checks.includes('two renderers and three network peers share the cave fire'));
-assert.ok(qa.checks.includes('gallery reload and real E extinguishing pass'));
-assert.ok(
-  qa.checks.includes('cat motif and projection are completely removed from the active gallery'),
-);
-assert.ok(qa.checks.includes('painted 524 is half the mammoth height within two percent'));
-assert.deepEqual(qa.gallery.layout, CAVE_MURALS);
-assert.ok(
-  qa.checks.includes(
-    'the east animal row closes the former cat slot without overlap or a large blank gap',
-  ),
-);
-assert.equal(qa.gallery.scale.targetHeightRatio, 0.5);
-assert.ok(qa.gallery.scale.relativeError < 0.02);
-assert.ok(
-  qa.checks.includes('the rear chamber can be crossed in both directions at full standing height'),
-);
-const room = JSON.parse(await readFile(`assets/camp-cave/qa/room-r${asset.revision}.json`));
+assert.ok(coverage.placements.every((p) => p.paintedSamples > 30));
+assert.ok(coverage.placements.find((p) => p.motif === 'rimoFrieze').paintedSamples >= 1200);
+for (const [i, mural] of CAVE_MURALS.entries())
+  for (const field of ['motif', 'wall', 'centre'])
+    assert.equal(coverage.placements[i][field], mural[field]);
+const room = await json(`assets/camp-cave/qa/room-r${asset.revision}.json`);
 assert.equal(room.sha256, asset.sha256);
 assert.ok(room.minWidth > 10.5 && room.minHeadroom > 4.5);
-for (const label of [
-  'entrance-from-camp',
-  'entrance-approach-4',
-  'entrance-traverse-6',
-  'gallery-reflowed-wall-lit',
-  'gallery-524-lit',
-  'gallery-524-close',
-  'gallery-east-13',
-  'gallery-west-23',
-  'gallery-east-31.5',
-  'gallery-blind-end',
-  'gallery-spacious-back',
-  'gallery-rock-close',
-  'gallery-entrance',
-  'gallery-reload',
-])
-  assert.ok(qa.samples.some((s) => s.label === label));
+
+const qa = await json(asset.gameQA);
+assert.equal(qa.cave.sha256, asset.sha256);
+assert.equal(qa.rimoSha256, asset.rimoPigment.sha256);
+assert.equal(qa.fixture.isolatedMemoryOnly, true);
+assert.equal(qa.fixture.geometryOrLightingOverride, false);
+assert.equal(qa.fixture.observationCamera, true);
+assert.deepEqual(qa.errors, []);
+assert.equal(qa.renderers.length, 2);
+assert.equal(new Set(qa.renderers.map((r) => r.tabId)).size, 2);
+assert.equal(qa.reloadVerified, true);
+assert.deepEqual(qa.gallery.layout, CAVE_MURALS);
+assert.deepEqual(qa.samples, await json('output/cave-rimo-r30/captures.json'));
+for (const view of ['east', 'east-close', 'west', 'both', 'normal'])
+  assert.ok(qa.samples.some((s) => s.view === view && s.fire && s.rimoLoaded && s.caveVisible));
+for (const fire of [true, false]) {
+  const synced = qa.samples.filter(
+    (s) =>
+      s.fire === fire &&
+      s.players === 5 &&
+      s.peers.length === 3 &&
+      s.peers.every((p) => p.fire === fire && p.players === 5),
+  );
+  assert.ok(synced.length >= 2, `Missing two-renderer fire=${fire} captures`);
+  assert.ok(new Set(synced.map((s) => s.viewport.join('x'))).size >= 2);
+}
+for (const sample of qa.samples) {
+  assert.equal(hash(await readFile(sample.file)), sample.sha256);
+  assert.equal(new URL(sample.rimoTexture).pathname, asset.rimoPigment.url);
+}
+
+const base = process.argv[2] ?? qa.server;
 const files = [
   [asset.url, `public${asset.url}`],
-  [asset.pigment.url, `public${asset.pigment.url}`],
-  [asset.characterPigment.url, `public${asset.characterPigment.url}`],
-  [asset.rockSurface.url, `public${asset.rockSurface.url}`],
+  ...pigments.map((p) => [p.url, `public${p.url}`]),
   ['/models/camp-cave/asset.json', 'public/models/camp-cave/asset.json'],
   ['/models/world-assets.json', 'public/models/world-assets.json'],
-  ...[
-    'cave-materials',
-    'cave-rock-shader',
-    'cave-gallery-layout',
-    'world-landmarks',
-    'world-scenery',
-    'locomotion-grounding',
-  ].map((n) => [`/src/${n}.js`, `dist/src/${n}.js`]),
+  ...['cave-materials', 'cave-rock-shader', 'cave-gallery-layout', 'world-landmarks'].map((n) => [
+    `/src/${n}.js`,
+    `dist/src/${n}.js`,
+  ]),
   ...['camp-cave-layout', 'camp-cave-surface-data', 'camp-cave-surface'].map((n) => [
     `/shared/${n}.mjs`,
     `dist/shared/${n}.mjs`,
@@ -123,7 +101,7 @@ const files = [
 ];
 const delivery = [];
 for (const [url, path] of files) {
-  const response = await fetch(`http://127.0.0.1:3000${url}`);
+  const response = await fetch(new URL(url, base));
   assert.equal(response.status, 200, url);
   const bytes = Buffer.from(await response.arrayBuffer());
   assert.equal(hash(bytes), hash(await readFile(path)), url);
@@ -132,57 +110,38 @@ for (const [url, path] of files) {
 const report = {
   date: new Date().toISOString(),
   decision: 'adopt',
-  galleryRevision: asset.galleryRevision,
+  galleryRevision: '30',
   geometryRevision: asset.revision,
-  generator:
-    'Existing built-in imagegen pigments; projection layout edited without changing images',
-  pigments: asset.pigment,
+  sha256: asset.sha256,
+  rimoPigment: asset.rimoPigment,
   characterPigment: asset.characterPigment,
-  chamber: { minWidth: room.minWidth, minHeadroom: room.minHeadroom },
-  rockSurface: asset.rockSurface,
   layout: CAVE_MURALS,
-  scale: qa.gallery.scale,
-  eastAnimalGaps: qa.gallery.eastAnimalGaps,
   coverage,
-  length: {
-    beforeMetres: length.measurements[0].lengthMetres,
-    afterMetres: length.measurements[1].lengthMetres,
-    ratio: length.ratio,
-  },
+  chamber: { minWidth: room.minWidth, minHeadroom: room.minHeadroom, unchanged: true },
   review: [
-    'Fifteen independent placements retain the same five animal motifs on both sides. The cat remains removed. The east-wall deer and ochre horse move forward to close its old slot, with 0.7 to 1.125 m gaps between the animals and the original limestone underneath.',
-    'The right-wall 524 uses 1.34 m image width and approximately 1.11 m painted height, half the neighbouring mammoth at the user-requested mural scale. The silhouette floats slightly above the animal baseline. The actual companion size is unchanged.',
-    'Every painting is beyond the midpoint of the doubled chamber; horses, mammoth, bison, deer, hands and signs extend toward the broad back chamber.',
-    'White calcite limestone retains pores, bedding, roughness and wall relief under the pigments. Cave fire makes the same paintings clearer.',
-    'Generated PNGs are copied unchanged; atlas rectangles select whole motifs at render time.',
-    'The original r07 rock mouth and apron stay in place. The deep chamber keeps its full source-derived cross-section until the short rounded corners meet a broad rear wall. The outdoor camp remains unchanged.',
-    'The actual entrance arch is checked against r07, and the full approach is walked and photographed in the game with the mountain visible. Preserving only the apron bounds is insufficient.',
+    'The original waving gray-white kitten reference supplies the face, raised paw, white chest and curved dark tail.',
+    'Two wild horses, an aurochs and a stag share one transparent worn mineral-pigment painting with Rimo.',
+    'The frieze is projected onto the original limestone triangles opposite the unchanged 524, with no added planes.',
+    'Near, whole-wall, opposing-wall, both-wall and normal-camera views were inspected in the actual game.',
+    'Real E extinguishing and lighting were observed across two browser renderers and three protocol peers. A browser reload and rejoin loaded the same pigment.',
   ],
-  gameQA: qaPath,
+  sources: 'docs/rimo-cave-mural-2026-10-02.md',
+  gameQA: asset.gameQA,
   checks: qa.checks,
   errors: qa.errors,
   sampleCount: qa.samples.length,
-  screenshotCount: new Set(qa.samples.map((s) => s.label)).size,
-  verification: [
-    'TypeScript build including configured strict checks',
-    'architecture boundaries',
-    'changed JS syntax',
-    'Prettier',
-    'cave, fire, terrain continuity and LOD gait regression tests',
-  ],
   delivery,
-  performanceClaim:
-    'No performance improvement claim; QA includes two simultaneous renderers and initial loading samples.',
+  fixture: qa.fixture,
+  unverified: qa.unverified,
 };
-await writeFile(asset.pigment.review, JSON.stringify(report, null, 2) + '\n');
+await writeFile(asset.rimoPigment.review, JSON.stringify(report, null, 2) + '\n');
 console.log(
   JSON.stringify({
     status: 'passed',
     placements: CAVE_MURALS.length,
     paintedSamples: coverage.totalPaintedSamples,
     clipped: coverage.totalRejected,
-    screenshots: report.screenshotCount,
-    checks: qa.checks.length,
+    captures: qa.samples.length,
     deliveryFiles: delivery.length,
     errors: qa.errors,
   }),

@@ -227,7 +227,7 @@ export function updateHunting(
   const reportHit = (player, strike) => {
     changed = true;
     if (strike.kind === 'rimoNeko') {
-      notify(player, 'リモねこが身を引いて、シャーッと威嚇した。', 'info', false);
+      notify(player, 'りもねこが身を引いて、シャーッと威嚇した。', 'info', false);
       return;
     }
     if (strike.kind === 'companion524') {

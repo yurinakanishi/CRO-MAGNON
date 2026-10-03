@@ -6,7 +6,7 @@ import * as THREE from 'three';
 import { loadMotion, pose } from './motion-glb.mjs';
 
 const revision = process.argv[2] || '10';
-const base = `output/model-generation/models/rimo-neko`;
+const base = process.argv[3] || 'output/model-generation/models/rimo-neko';
 const file = `${base}/work/rig/revision-${revision}/candidate.glb`;
 const gltf = await loadMotion(file);
 const meshes = [];

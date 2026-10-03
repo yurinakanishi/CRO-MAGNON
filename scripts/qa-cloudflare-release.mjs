@@ -34,6 +34,7 @@ for (const file of files) {
 const profiles = await fetch(`${base}/src/title-credit-profiles.js`).then((r) => r.text());
 assert.match(profiles, /yuri/);
 assert.match(profiles, /R-524/);
+assert.match(profiles, /vibe_walking/);
 assert.doesNotMatch(profiles, /WabisukeTyper|otani_ai_memo|yuki_urata|nukonuko/);
 const excluded = [];
 for (const name of ['ryuichi', 'otani', 'urata', 'nukonuko']) {

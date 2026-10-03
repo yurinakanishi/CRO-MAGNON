@@ -1,6 +1,6 @@
 import { SPAWN_SITES } from '../shared/spawn-sites.mjs';
 
-/** The same six pictured destinations are used at departure and in the exhibition menu. */
+/** The same six pictured destinations are used at departure and in every mode's warp menu. */
 export function spawnCardsMarkup(picked = '', warp = false) {
   return SPAWN_SITES.map(
     (site) =>

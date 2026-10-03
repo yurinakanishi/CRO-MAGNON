@@ -51,6 +51,7 @@ function fixture() {
       state: core.snapshot(room, true),
       fixedIdentity: false,
       player: () => player,
+      preferredPet: () => null, // This fixture isolates the camp's resource interaction.
       renderer: { collision: room.collision, resourceVisible: () => true, serverNow: () => now },
       campContribution,
       coastalInteraction,

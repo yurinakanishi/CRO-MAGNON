@@ -86,7 +86,10 @@ function fixture() {
     action(action, kind, player = p) {
       return handleOrbBotAction(room, player, action, kind, now);
     },
-    recruit() {
+    recruit(dots = false) {
+      if (dots)
+        for (const b of room.orbBots)
+          Object.assign(b, { ownerId: p.id, mode: 'following', lastOwner: { x: p.x, z: p.z } });
       assert.ok(this.pet());
       step(5);
       assert.equal(c.squadPlayerId, p.id);
@@ -95,9 +98,9 @@ function fixture() {
   };
 }
 
-test('524 joins only after the complete pet and happy reaction, as one tenth member for its owner', () => {
+test('524 joins only after the complete pet and happy reaction; home dots stay unowned', () => {
   const f = fixture();
-  assert.equal(f.room.orbBots.length, 18);
+  assert.equal(f.room.orbBots.length, 9);
   assert.equal(f.action('throwBot', '524'), false);
   assert.ok(f.pet());
   f.step(1.5);
@@ -109,9 +112,9 @@ test('524 joins only after the complete pet and happy reaction, as one tenth mem
   f.step(0.1);
   assert.equal(f.bot.ownerId, f.p.id);
   assert.equal(f.c.petPlayerId, null);
-  assert.equal(f.room.orbBots.length, 19);
-  assert.equal(ownedBotKinds(orbBotSnapshots(f.room), f.p.id).length, 10);
-  assert.equal(ownedBotKinds(orbBotSnapshots(f.room), f.q.id).length, 9);
+  assert.equal(f.room.orbBots.length, 10);
+  assert.equal(ownedBotKinds(orbBotSnapshots(f.room), f.p.id).length, 1);
+  assert.equal(ownedBotKinds(orbBotSnapshots(f.room), f.q.id).length, 0);
   assert.equal(f.action('throwBot', '524', f.q), false);
   for (let i = 0; i < 5; i++) syncOrbBots(f.room, f.now);
   assert.equal(f.room.orbBots.filter((b) => b.kind === '524').length, 1);
@@ -133,7 +136,7 @@ for (const reason of ['movement', 'hit'])
 
 test('one repeated button queues all ten; the original 524 travels from the hand and waits', () => {
   const f = fixture();
-  f.recruit();
+  f.recruit(true);
   const order = [];
   for (let i = 0; i < 10; i++) {
     order.push(nextOrbBot(f.room.orbBots, f.p).kind);
@@ -246,8 +249,8 @@ test('a second completed pet transfers the same 524, while cancelling a pet keep
   assert.equal(f.bot.id, id);
   assert.equal(f.bot.ownerId, f.q.id);
   assert.equal(f.c.followPlayerId, f.q.id);
-  assert.equal(f.room.orbBots.filter((b) => b.ownerId === f.p.id).length, 9);
-  assert.equal(f.room.orbBots.filter((b) => b.ownerId === f.q.id).length, 10);
+  assert.equal(f.room.orbBots.filter((b) => b.ownerId === f.p.id).length, 0);
+  assert.equal(f.room.orbBots.filter((b) => b.ownerId === f.q.id).length, 1);
   assert.equal(f.action('throwBot', '524'), false);
 });
 

@@ -4,6 +4,8 @@ import { CAVE_BEND } from '../shared/camp-cave-layout.mjs';
 export const CAVE_MOTIFS = {
   // The faithful 524 uses its own unmodified transparent image.
   creature524: [0, 0, 1254, 1254],
+  // One unmodified transparent painting: Rimo, two horses, aurochs and deer.
+  rimoFrieze: [0, 0, 2172, 724],
   bison: [805, 40, 1254, 418],
   redHorse: [3, 443, 431, 779],
   ochreHorse: [435, 442, 827, 779],
@@ -23,13 +25,12 @@ export type CaveMural = {
 };
 
 // Wall coordinates follow local Z into the cave. Every painting starts beyond
-// the midpoint of the walkable chamber. The east-wall deer and horse close the
-// former cat's gap, keeping one continuous animal group on the natural limestone.
+// the midpoint of the walkable chamber. Rimo is painted among animals on the
+// east wall, at the same depth as the 524 painting on the opposite west wall.
 export const CAVE_MURALS: readonly CaveMural[] = [
   { motif: 'hands', wall: 'east', centre: -13.8, bottom: 4.35, width: 0.95, strength: 0.64 },
   { motif: 'redHorse', wall: 'east', centre: -15.2, bottom: 1.65, width: 2.8, strength: 0.78 },
-  { motif: 'mammoth', wall: 'east', centre: -19.2, bottom: 1.6, width: 3, strength: 0.81 },
-  { motif: 'bison', wall: 'east', centre: -22.8, bottom: 1.7, width: 2.8, strength: 0.79 },
+  { motif: 'rimoFrieze', wall: 'east', centre: -21.2, bottom: 1.6, width: 7.5, strength: 0.82 },
   { motif: 'signs', wall: 'east', centre: -24.2, bottom: 4.45, width: 1.05, strength: 0.57 },
   { motif: 'deer', wall: 'east', centre: -26.1, bottom: 1.6, width: 1.7, strength: 0.72 },
   { motif: 'ochreHorse', wall: 'east', centre: -29, bottom: 1.55, width: 1.85, strength: 0.72 },
@@ -51,9 +52,24 @@ export function caveMuralHeight(mural: CaveMural) {
   return (mural.width * (y1 - y0)) / (x1 - x0);
 }
 
+export function caveMuralPigment(mural: CaveMural) {
+  return mural.motif === 'creature524'
+    ? 'character524'
+    : mural.motif === 'rimoFrieze'
+      ? 'rimoFrieze'
+      : 'atlas';
+}
+
 const f = (n: number) => n.toFixed(6);
 export const caveMuralShader = CAVE_MURALS.map((m) => {
   const [x0, y0, x1, y1] = CAVE_MOTIFS[m.motif];
+  const [imageWidth, imageHeight] = m.motif === 'rimoFrieze' ? [2172, 724] : [1254, 1254];
+  const sampler =
+    m.motif === 'creature524'
+      ? 'caveCharacter524'
+      : m.motif === 'rimoFrieze'
+        ? 'caveRimoPigment'
+        : 'cavePigment';
   const u =
     m.wall === 'east'
       ? `(${f(m.centre + m.width / 2)}-cavePosition.z)/${f(m.width)}`
@@ -69,8 +85,8 @@ export const caveMuralShader = CAVE_MURALS.map((m) => {
     vec2 muralUV=vec2(${u},(cavePosition.y-${f(m.bottom)})/${f(caveMuralHeight(m))});
     float muralSide=${wall};
     if(muralSide>0.0 && all(greaterThanEqual(muralUV,vec2(0.0))) && all(lessThanEqual(muralUV,vec2(1.0)))) {
-      vec2 atlasUV=vec2(${f(x0 / 1254)},${f(1 - y1 / 1254)})+clamp(muralUV,.001,.999)*vec2(${f((x1 - x0) / 1254)},${f((y1 - y0) / 1254)});
-      vec4 paint=texture2D(${m.motif === 'creature524' ? 'caveCharacter524' : 'cavePigment'},atlasUV);
+      vec2 atlasUV=vec2(${f(x0 / imageWidth)},${f(1 - y1 / imageHeight)})+clamp(muralUV,.001,.999)*vec2(${f((x1 - x0) / imageWidth)},${f((y1 - y0) / imageHeight)});
+      vec4 paint=texture2D(${sampler},atlasUV);
       vec3 mineralPaint=paint.rgb*(.84+.24*rockLuma);
       diffuseColor.rgb=mix(diffuseColor.rgb,mineralPaint,paint.a*muralSide*${f(m.strength)});
     }

@@ -1,0 +1,35 @@
+<!doctype html><html lang="ja"><meta charset="utf-8"><title>C2表面01 ゲーム用リグ確認</title>
+<style>body{font:15px system-ui;margin:20px;background:#eee;color:#243337}main{display:flex;gap:22px;flex-wrap:wrap}canvas{width:min(640px,90vw);height:auto;background:#c7cbca}button,select,input{font:inherit;padding:8px;margin:4px}h1{font-size:22px}aside{max-width:450px}#status{white-space:pre-wrap;font-size:13px;overflow-wrap:anywhere}</style>
+<script type="importmap">{"imports":{"three":"/three/build/three.module.js","three/addons/":"/three/examples/jsm/"}}</script>
+<h1>りもねこ C2表面01 ゲーム用リグ確認</h1><main><canvas id="view" width="640" height="640" aria-label="リグ付きC2表面01の実GLB"></canvas><aside>
+<p>選択した表面01を使った7動作。灰色の線は接地確認用です。</p>
+<select id="clip" aria-label="動作"></select><select id="angle" aria-label="見る方向"><option value="-30">斜め正面</option><option value="0">正面</option><option value="90">右</option><option value="180">背面</option><option value="270">左</option></select>
+<button id="play">再生</button><label>時間<input id="time" aria-label="時間" type="range" min="0" max="3" step=".005" value="0"></label>
+<button id="inspect" disabled>全7動作の確認画像を作成</button><div id="status">読込中</div></aside></main>
+<script type="module">
+import * as THREE from 'three';
+import {GLTFLoader} from 'three/addons/loaders/GLTFLoader.js';
+import {RoomEnvironment} from 'three/addons/environments/RoomEnvironment.js';
+const canvas=document.querySelector('#view'),status=document.querySelector('#status'),select=document.querySelector('#clip'),angle=document.querySelector('#angle'),slider=document.querySelector('#time');
+const renderer=new THREE.WebGLRenderer({canvas,alpha:false,antialias:true,preserveDrawingBuffer:true});renderer.setSize(640,640,false);renderer.setPixelRatio(1);renderer.outputColorSpace=THREE.SRGBColorSpace;renderer.toneMapping=THREE.ACESFilmicToneMapping;
+const scene=new THREE.Scene();scene.background=new THREE.Color('#c7cbca');const pmrem=new THREE.PMREMGenerator(renderer),room=new RoomEnvironment();scene.environment=pmrem.fromScene(room,.04).texture;room.dispose();pmrem.dispose();
+const grid=new THREE.GridHelper(1.5,30,0x80918b,0xaab6b2);grid.position.y=-.001;scene.add(grid);
+const camera=new THREE.PerspectiveCamera(30,1,.01,20),target=new THREE.Vector3(0,.26,-.055),errors=[];
+addEventListener('error',e=>errors.push(String(e.message)));
+const metadata=await(await fetch('/metadata')).json(),gltf=await new GLTFLoader().loadAsync('/model.glb');scene.add(gltf.scene);
+const mixer=new THREE.AnimationMixer(gltf.scene),actions=new Map(gltf.animations.map(c=>[c.name,mixer.clipAction(c)]));
+const expected=['Idle_Loop','Walk_Loop','Run_Loop','Pet','Happy','Hit','Hiss'];
+for(const name of expected){if(!actions.has(name))throw Error('Missing '+name);const option=document.createElement('option');option.value=option.textContent=name;select.append(option);}
+let playing=false,active='',elapsed=0,previous=performance.now();
+function pose(name,t){if(active!==name){mixer.stopAllAction();const action=actions.get(name);action.reset().setLoop(THREE.LoopOnce,1);action.clampWhenFinished=true;action.play();active=name;}mixer.setTime(t);gltf.scene.updateMatrixWorld(true);}
+function render(name,t,azimuth){pose(name,t);camera.position.setFromSphericalCoords(1.6,THREE.MathUtils.degToRad(80),THREE.MathUtils.degToRad(azimuth)).add(target);camera.lookAt(target);renderer.render(scene,camera);}
+function update(){const c=gltf.animations.find(c=>c.name===select.value);slider.max=c.duration;render(c.name,Number(slider.value),Number(angle.value));}
+select.onchange=()=>{slider.value=0;elapsed=0;update();};angle.onchange=update;slider.oninput=()=>{playing=false;document.querySelector('#play').textContent='再生';update();};
+document.querySelector('#play').onclick=()=>{playing=!playing;document.querySelector('#play').textContent=playing?'停止':'再生';};
+function tick(now){if(playing){elapsed=(elapsed+Math.min(.06,(now-previous)/1000))%Number(slider.max);slider.value=elapsed;update();}previous=now;requestAnimationFrame(tick);}requestAnimationFrame(tick);
+update();status.textContent=JSON.stringify(metadata,null,2);document.querySelector('#inspect').disabled=false;
+document.querySelector('#inspect').onclick=async()=>{playing=false;document.querySelector('#inspect').disabled=true;const captures=[];
+try{for(const name of expected){const clip=gltf.animations.find(c=>c.name===name);for(const view of [0,90,180])for(let i=0;i<6;i++){const time=clip.duration*i/6;render(name,time,view);const response=await fetch('/capture',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({clip:name,view,frame:i,time,image:canvas.toDataURL('image/jpeg',.93)})});if(!response.ok)throw Error(await response.text());captures.push({clip:name,view,frame:i,time});status.textContent='確認画像 '+captures.length+' / 126';}}
+const response=await fetch('/finish',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({sourceSha256:metadata.sha256,errors,captures,renderer:'Three.js '+THREE.REVISION,clips:expected})});if(!response.ok)throw Error(await response.text());status.textContent='7動作 × 3方向 × 6時刻の126画像を保存しました。';slider.value=0;update();
+}catch(error){errors.push(String(error));status.textContent=String(error);}};
+</script></html>

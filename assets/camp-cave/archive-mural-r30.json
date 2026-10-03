@@ -1,0 +1,209 @@
+{
+  "date": "2026-10-02T09:32:59.780Z",
+  "destination": "C:\\Users\\yurin\\Desktop\\projects\\threed-model-creation\\models\\rimo-neko\\wall-mural\\r30",
+  "kind": "2D cave mural r30; 3D candidates unchanged",
+  "count": 40,
+  "bytes": 58941758,
+  "records": [
+    {
+      "path": "assets/rimo-neko/source/user-reference.jpg",
+      "bytes": 27231,
+      "sha256": "3a0ebdfadbb383d170318a0cd4d3cb9540ccb113822bc0a44836dfcaeeebdf41"
+    },
+    {
+      "path": "assets/camp-cave/source/mural-atlas-r05.png",
+      "bytes": 1851771,
+      "sha256": "6efe80a19056af4f5a9ce50d7309b578f4c3e914fa9543c51a8fc629842e6889"
+    },
+    {
+      "path": "assets/camp-cave/source/rimo-lascaux-frieze-r30.png",
+      "bytes": 2272546,
+      "sha256": "b750045fda524816577747197874d173d41161e2b55d9acfe772a8f37f8d01df"
+    },
+    {
+      "path": "assets/camp-cave/rimo-lascaux-prompt-r30.txt",
+      "bytes": 3203,
+      "sha256": "52f63fc20f63f7e1404d93a62a9688510683a14f8600eed5ee6ec36d5c8131b7"
+    },
+    {
+      "path": "assets/camp-cave/rimo-frieze-request-r30.json",
+      "bytes": 1479,
+      "sha256": "8c4d8f0de0db9be3a9e657e13d566d3629e34fbb2cef82d49985dc1dd6181093"
+    },
+    {
+      "path": "assets/camp-cave/qa/gallery-r30.json",
+      "bytes": 11525,
+      "sha256": "fc4d42cc5f2064bddd8f85ac7d80eea2b70f11e4ddcc729ca3217f704aeb53dc"
+    },
+    {
+      "path": "assets/camp-cave/qa/gallery-surfaces-r30.json",
+      "bytes": 1255237,
+      "sha256": "1de24e27a7d657f684f4117f6d99c2805f51701921c60f2f5b492ead6ae8b00f"
+    },
+    {
+      "path": "assets/camp-cave/qa/gallery-pigment-coverage-r30.json",
+      "bytes": 2431,
+      "sha256": "2e6634bfdaefa456f307619dcc89d2d3a72b6381105d818ff1115e1faa31b933"
+    },
+    {
+      "path": "assets/camp-cave/qa/rimo-r30-in-game.png",
+      "bytes": 4525784,
+      "sha256": "cb6029bb38027502a1fb1970ad099bde38683801d8af32f6b447df4a292687c2"
+    },
+    {
+      "path": "assets/camp-cave/README.md",
+      "bytes": 32888,
+      "sha256": "76bab490c72a13679458f5d3f56f30612c558e811d88881697d3e6082f91f227"
+    },
+    {
+      "path": "assets/camp-cave/workflow/game-review-r30.js",
+      "bytes": 3351,
+      "sha256": "fac7c1b9050823f14206adbca61109e37bc184bf271a3c693247cd554cc6bc41"
+    },
+    {
+      "path": "assets/camp-cave/workflow/measure-gallery-pigment.py",
+      "bytes": 2709,
+      "sha256": "9cf8ab907d14c1de330d245e9adc66dae6c029899cde6ff0a66ebd7cc269d048"
+    },
+    {
+      "path": "assets/camp-cave/workflow/archive-r30.mjs",
+      "bytes": 3414,
+      "sha256": "fa254b4c62e47e625c8f2650d30e32a2eb151ce12fe43e7fbbe8f67fe828fc2b"
+    },
+    {
+      "path": "docs/rimo-cave-mural-2026-10-02.md",
+      "bytes": 8840,
+      "sha256": "f6394886f0613bebd4871db1a8d3a95e9970fe56c1dcb4ba6a484cef060c0763"
+    },
+    {
+      "path": "public/models/camp-cave/asset.json",
+      "bytes": 7317,
+      "sha256": "c553a340abd77dd6e0210fa06dabdbb44ed93bfe2f977af7f18d30721a3c7bdd"
+    },
+    {
+      "path": "public/models/camp-cave/model-r26.glb",
+      "bytes": 5393776,
+      "sha256": "65dde1aa7311b88c159d524d93af82a770dac77e48ee1f35356e3000cad8a15f"
+    },
+    {
+      "path": "src/cave-materials.ts",
+      "bytes": 6198,
+      "sha256": "35ec7fc19f7f3cf613b9fb6e22749a73ca1694c3ddd2257e0ab0fe27fd5bd828"
+    },
+    {
+      "path": "src/cave-gallery-layout.ts",
+      "bytes": 4541,
+      "sha256": "4da9b60f3abd1a385d84c5b91dd5274ea08abaa4de7687eb75b2b2f65d76c30b"
+    },
+    {
+      "path": "src/world-landmarks.ts",
+      "bytes": 12370,
+      "sha256": "5baefcd333278efb5634c7365d5de326abf2aec63e6a64161882e0fe385d6c7c"
+    },
+    {
+      "path": "scripts/adopt-cave-rimo-frieze.mjs",
+      "bytes": 3436,
+      "sha256": "9613844b72459eccfabaf677d1a5bd6371dac71cedbca2fe625bd2cb11893347"
+    },
+    {
+      "path": "scripts/measure-cave-gallery.mjs",
+      "bytes": 2328,
+      "sha256": "96a669d8e31a5ee89e65efa278ad593b8b87aa05079ae7b66a0571a806979741"
+    },
+    {
+      "path": "scripts/qa-cave-rimo-r30.mjs",
+      "bytes": 4257,
+      "sha256": "c8ec90074f6299b13d42717368a0188142e873b4c1846daa13bbc45c2293bd97"
+    },
+    {
+      "path": "scripts/verify-cave-gallery.mjs",
+      "bytes": 6641,
+      "sha256": "29bab9c83c0a05ccbec6556ae5bb6509a8bc94943de397c8ab6131ec0006bc90"
+    },
+    {
+      "path": "tests/cave-rimo-mural.test.mjs",
+      "bytes": 2971,
+      "sha256": "be7eebd39253f9a9995c6b9d7997106d6e49f8db4f55de43a62ece6883ac5e88"
+    },
+    {
+      "path": "tests/camp-surface-continuity.test.mjs",
+      "bytes": 8545,
+      "sha256": "9c06fec7cfc3d3c0f9b8226fa86569190a067acc242d8140bb08b2523ba7677e"
+    },
+    {
+      "path": "output/cave-rimo-r30/game-review.json",
+      "bytes": 13147,
+      "sha256": "fc3be3acd96548fb966f1052ff65d4d4839b7aebb123376f1b2498c2d3241fa2"
+    },
+    {
+      "path": "output/cave-rimo-r30/captures.json",
+      "bytes": 7654,
+      "sha256": "c73b04a766a23239ddf2c24f16c6a851e312ff18fcaa6987f70ac41d50c22c35"
+    },
+    {
+      "path": "output/cave-rimo-r30/tests-final.log",
+      "bytes": 1890,
+      "sha256": "f28d47672ff585207d3420cf456f5cae28a19f1d267151ebccd8ff5f933fb25d"
+    },
+    {
+      "path": "output/cave-rimo-r30/public-build.log",
+      "bytes": 280,
+      "sha256": "578d12b96d464e7a749a1921c13def94e37f0d33b0a28188571addd53976b0f2"
+    },
+    {
+      "path": "output/cave-rimo-r30/build-image-verification.json",
+      "bytes": 369,
+      "sha256": "d51da8d5274893ddbfd40811a8e83f50ab15fae37413cdcf9aeb89c8daae185b"
+    },
+    {
+      "path": "output/cave-rimo-r30/1790932766838-east-lit.png",
+      "bytes": 4525784,
+      "sha256": "cb6029bb38027502a1fb1970ad099bde38683801d8af32f6b447df4a292687c2"
+    },
+    {
+      "path": "output/cave-rimo-r30/1790932798938-east-close-lit.png",
+      "bytes": 4746244,
+      "sha256": "db4d219446e37a78488ffcb04e342da6fb25db8064b90017eace55b36ea19c27"
+    },
+    {
+      "path": "output/cave-rimo-r30/1790932960023-west-lit.png",
+      "bytes": 4292100,
+      "sha256": "b95a40d611dba86605e536ac65e7de05d12dadd3792cdbad8c7c1bb8d2f34aab"
+    },
+    {
+      "path": "output/cave-rimo-r30/1790933023733-both-lit.png",
+      "bytes": 4542596,
+      "sha256": "83002b91f141700da0b9e3479f88c5009a5c0f9615769cf12c229c59a6e88f04"
+    },
+    {
+      "path": "output/cave-rimo-r30/1790933025194-east-lit.png",
+      "bytes": 4566990,
+      "sha256": "c885c5df7d6525430c07e6a718284be55edf0076e76cb0cbd1c9b2d5a46a4a0f"
+    },
+    {
+      "path": "output/cave-rimo-r30/1790933040386-east-unlit.png",
+      "bytes": 3790335,
+      "sha256": "9cb293377d7d76af55682a695a2f8cd0dd2957c6b356f68a14b314ac3c010ed5"
+    },
+    {
+      "path": "output/cave-rimo-r30/1790933041710-east-unlit.png",
+      "bytes": 3788529,
+      "sha256": "607d3985c15bd21bf731b9ffd5bd7db76d07971236bf82812780e67ae7f83b4d"
+    },
+    {
+      "path": "output/cave-rimo-r30/1790933109853-normal-lit.png",
+      "bytes": 4369118,
+      "sha256": "3b24123baeb88fb1bb67ddf7b92c46e5e97f4d5e9cab9bf0efc81a26100fdfdb"
+    },
+    {
+      "path": "output/cave-rimo-r30/1790933153706-east-lit.png",
+      "bytes": 4273239,
+      "sha256": "ab10d6fb0d547ea97a7d21c5b467602f3e926bac229b2886e126da381bc5cf1b"
+    },
+    {
+      "path": "output/cave-rimo-r30/1790933155073-east-lit.png",
+      "bytes": 4568694,
+      "sha256": "20e924916e34f62930b33ae925c5f7c0cbc5b3df08680ca68ef81fd15639b8bb"
+    }
+  ]
+}

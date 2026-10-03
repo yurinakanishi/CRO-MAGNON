@@ -16,9 +16,11 @@ image=Image.open(image_path)
 alpha=image.getchannel('A')
 character_path=base/'source/character-524-mural-r06.png'
 character=Image.open(character_path)
+rimo_path=Path(asset['rimoPigment']['source']) if asset.get('rimoPigment') else None
+rimo=Image.open(rimo_path) if rimo_path else None
 reports=[]
 for record in records:
-    current=character if record.get('pigment')=='character524' else image
+    current=character if record.get('pigment')=='character524' else rimo if record.get('pigment')=='rimoFrieze' else image
     current_alpha=current.getchannel('A')
     x0,y0,x1,y1=record['rectangle']
     painted=[]
@@ -41,6 +43,7 @@ for record in records:
                     'paintedSamples':len(painted),'rejected':rejected})
 result={'atlasSha256':hashlib.sha256(image_path.read_bytes()).hexdigest(),
         'characterSha256':hashlib.sha256(character_path.read_bytes()).hexdigest(),
+        'rimoSha256':hashlib.sha256(rimo_path.read_bytes()).hexdigest() if rimo_path else None,
         'size':image.size,'alphaRange':alpha.getextrema(),
         'transparentFraction':alpha.histogram()[0]/(image.width*image.height),
         'placements':reports,'totalPaintedSamples':sum(r['paintedSamples'] for r in reports),

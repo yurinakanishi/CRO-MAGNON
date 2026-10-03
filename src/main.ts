@@ -41,6 +41,12 @@ import { canMount, ridingDistance } from '../shared/riding.mjs';
 import { GamepadControls } from './gamepad-ui.js';
 import { MotionControls } from './motion-controls.js';
 import { OrbBotUI } from './orb-bot-ui.js';
+import {
+  BOT_DESIGNS,
+  nearOrbBot,
+  nearbyOrbBotsForPetting,
+  pettingOrbBot,
+} from '../shared/orb-bots.mjs';
 import { MotionPetHold, motionTarget } from './motion-interaction.js';
 import { combineMovement } from './gamepad-input.js';
 import { canStartJump } from '../shared/jumping.mjs';
@@ -62,6 +68,7 @@ import {
 import { GATHER_RANGE, interactionVisible } from '../shared/interactions.mjs';
 import { campContribution } from '../shared/camp-contribution.mjs';
 import { caveFireInteraction } from '../shared/cave-fire.mjs';
+import { caveTorchAvailable, caveTorchLit } from '../shared/cave-light.mjs';
 import { nearRimoNeko, RIMO_NEKO } from '../shared/rimo-neko.mjs';
 import { playCatHiss } from './cat-hiss.js';
 import { nearCompanion524 } from '../shared/companion-524.mjs';
@@ -137,7 +144,7 @@ const icons = {
 };
 const icon = (name, cls = '') =>
   `<svg class="icon ${cls}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${icons[name] || icons.leaf}</svg>`;
-const GAME_TITLE = 'CRO-MAGNON';
+const GAME_TITLE = 'CRO-MAGNON MMO';
 const $ = (s) => document.querySelector(s);
 const query = new URLSearchParams(location.search);
 const multiplayer = await loadMultiplayerConfig().catch((error) => {
@@ -151,8 +158,7 @@ const sessionKey = (room: string) => multiplayerSessionKey(multiplayer, room);
 const fixedIdentity = multiplayer.mode === 'lan';
 const hudPlayerLimit = () =>
   fixedIdentity ? EXHIBITION_PLAYER_LIMIT : (state.playerLimit ?? WORLD.maxPlayers);
-const titleEdition = 'DUO';
-const titleArtPath = `/title/cro-magnon-${titleEdition.toLowerCase()}-transparent.png`;
+const titleArtPath = '/title/cro-magnon-mmo-transparent.png';
 const cleanRoom = (value: string) =>
   value
     .toUpperCase()
@@ -224,13 +230,13 @@ $('#app').innerHTML = `
     <div class="map-hud"><button id="map-button" class="minimap-button" aria-label="世界地図を開く" title="世界地図 [${fixedIdentity ? controllerLabels().map : 'M'}]"><canvas id="minimap" width="160" height="115"></canvas><span class="map-north">N</span><span class="map-area" id="map-area">はじまりの谷</span>${fixedIdentity ? '' : '<kbd class="map-key">M</kbd>'}</button><div class="connection"><i class="status-dot" id="connection-dot"></i><span id="connection-label">未接続</span><span id="ping-label">— ms</span></div></div>
     <div id="toast-stack" class="toast-stack" aria-live="polite"></div>
     ${fixedIdentity ? '' : `<div class="chat-panel"><button class="chat-heading" id="chat-toggle">${icon('chat')}<strong>焚き火の会話</strong><kbd>Enter</kbd><span class="chat-collapse">−</span></button><div id="chat-content"><div id="chat-messages" class="chat-messages" role="log" aria-live="polite"><p class="chat-system">この谷での物語が、ここから始まります。</p></div><form id="chat-form"><input id="chat-input" maxlength="180" placeholder="仲間に話しかける…" aria-label="チャットメッセージ" autocomplete="off"><button aria-label="メッセージを送信" type="submit">${icon('arrow')}</button></form></div></div>`}
-    <div class="hotbar-wrap"><div id="companion524-controls"><button type="button" class="hunt-button" id="pet-rimo-button" hidden><kbd>V</kbd><span>リモねこを撫でる</span></button><button type="button" class="hunt-button" id="dismiss-rimo-button" hidden><kbd>T</kbd><span>リモねこをキャンプへ帰す</span></button></div><div class="interaction-hint" id="interaction-hint" hidden><kbd>E</kbd><span></span></div></div>
+    <div class="hotbar-wrap"><div id="companion524-controls"><button type="button" class="hunt-button" id="pet-rimo-button" hidden><kbd>V</kbd><span>りもねこを撫でる</span></button><button type="button" class="hunt-button" id="dismiss-rimo-button" hidden><kbd>T</kbd><span>りもねこをキャンプへ帰す</span></button></div><div class="interaction-hint" id="interaction-hint" hidden><kbd>E</kbd><span></span></div></div>
     <div id="prompt-bar" class="prompt-bar" aria-label="操作の案内"></div>
     <div id="screens" class="screens">
       <section id="screen-title" class="screen title-screen" hidden>
         <div class="title-content">
           <div class="title-hero">
-          <div class="title-logo" style="--title-art: url('${titleArtPath}')"><h1>${GAME_TITLE}</h1><img class="title-art" src="${titleArtPath}" width="1536" height="1024" alt="CRO-MAGNON ${titleEdition} — 氷河時代の旅人たちとマンモス" fetchpriority="high"></div>
+          <div class="title-logo" style="--title-art: url('${titleArtPath}')"><h1>${GAME_TITLE}</h1><img class="title-art" src="${titleArtPath}" width="1536" height="1024" alt="${GAME_TITLE} — 氷河時代の旅人たちとマンモス" fetchpriority="high"></div>
           <div class="title-welcome">
           <nav class="title-menu" aria-label="タイトルメニュー">
             <button id="title-start" class="menu-item">はじめる</button>
@@ -257,6 +263,7 @@ const orbBotUI = new OrbBotUI({
   player,
   now: () => renderer?.serverNow() ?? Date.now(),
   available: () => joined && !renderUnavailable && !screens.active,
+  pettable: nearbyBotsForPetting,
   action,
   openModal,
   closeModal: () => $('#modal').close(),
@@ -685,6 +692,8 @@ function distance(a, b) {
 function nearby(): { action: string; label: string; targetId?: string } | null {
   const me = player();
   if (!me || me.downedUntil || me.mountId) return null;
+  const dot = preferredPet();
+  if (dot && typeof dot === 'object') return dot;
   const coastal = coastalInteraction(state, me, renderer.collision);
   if (coastal) return coastal;
   const fishing = fishingInteraction(me);
@@ -892,6 +901,7 @@ function canPetRimo() {
     !renderUnavailable &&
     !state.rimoNeko?.petPlayerId &&
     state.companion524?.petPlayerId !== selfId &&
+    !pettingOrbBot(state.orbBots, selfId) &&
     nearRimoNeko(player(), state.rimoNeko, renderer.collision, renderer.serverNow())
   );
 }
@@ -901,26 +911,79 @@ function petRimo() {
 function dismissRimo() {
   if (state.rimoNeko?.followPlayerId === selfId) action('dismissRimo');
 }
-function preferredPet() {
+function nearbyBotsForPetting() {
   if (
-    canPetRimo() &&
-    (!canPet524() || distance(player(), state.rimoNeko) < distance(player(), state.companion524))
+    !joined ||
+    renderUnavailable ||
+    state.rimoNeko?.petPlayerId === selfId ||
+    state.companion524?.petPlayerId === selfId
   )
-    return 'rimo';
-  return canPet524() ? '524' : null;
+    return [];
+  return nearbyOrbBotsForPetting(
+    state.orbBots ?? [],
+    player(),
+    renderer.collision,
+    renderer.serverNow(),
+  );
+}
+function preferredPet() {
+  const me = player();
+  if (!me || !joined || renderUnavailable) return null;
+  const candidates: {
+    point: { x: number; z: number };
+    choice: 'rimo' | '524' | { action: string; label: string; targetId?: string };
+  }[] = [];
+  if (canPetRimo()) candidates.push({ point: state.rimoNeko!, choice: 'rimo' });
+  if (canPet524()) candidates.push({ point: state.companion524!, choice: '524' });
+  const group = nearbyBotsForPetting();
+  if (group.length > 0)
+    candidates.push({
+      point: group[0],
+      choice: { action: 'petBots', label: `近くのbotたちをまとめて撫でる（${group.length}匹）` },
+    });
+  if (
+    state.rimoNeko?.petPlayerId !== selfId &&
+    state.companion524?.petPlayerId !== selfId &&
+    !pettingOrbBot(state.orbBots, selfId)
+  ) {
+    for (const b of state.orbBots ?? []) {
+      if (
+        group.some((candidate) => candidate.id === b.id) ||
+        b.ownerId === selfId ||
+        b.busy ||
+        !nearOrbBot(me, b, renderer.collision, renderer.serverNow())
+      )
+        continue;
+      candidates.push({
+        point: b,
+        choice: { action: 'petBot', targetId: b.id, label: `${BOT_DESIGNS[b.kind].name}を撫でる` },
+      });
+    }
+  }
+  return (
+    candidates.sort((a, b) => distance(me, a.point) - distance(me, b.point))[0]?.choice ?? null
+  );
 }
 function petNearbyCompanion() {
-  if (preferredPet() === 'rimo') petRimo();
-  else pet524();
+  const choice = preferredPet();
+  if (choice === 'rimo') petRimo();
+  else if (choice === '524') pet524();
+  else if (choice) action(choice.action, choice.targetId);
 }
 function dismissNearbyCompanion() {
-  if (
-    state.rimoNeko?.followPlayerId === selfId &&
-    (state.companion524?.followPlayerId !== selfId ||
-      distance(player(), state.rimoNeko) < distance(player(), state.companion524))
+  const me = player();
+  if (!me) return;
+  const candidates: { point: { x: number; z: number }; action: string; target?: string }[] = (
+    state.orbBots ?? []
   )
-    dismissRimo();
-  else dismiss524();
+    .filter((b) => b.ownerId === selfId)
+    .map((b) => ({ point: b, action: 'dismissBot', target: b.kind }));
+  if (state.rimoNeko?.followPlayerId === selfId)
+    candidates.push({ point: state.rimoNeko, action: 'dismissRimo' });
+  if (state.companion524?.followPlayerId === selfId && !candidates.some((c) => c.target === '524'))
+    candidates.push({ point: state.companion524, action: 'dismiss524' });
+  const nearest = candidates.sort((a, b) => distance(me, a.point) - distance(me, b.point))[0];
+  if (nearest) action(nearest.action, nearest.target);
 }
 let lastCatHiss = '';
 function updateCatHiss() {
@@ -941,6 +1004,7 @@ function canPet524() {
     !renderUnavailable &&
     !state.companion524?.petPlayerId &&
     state.rimoNeko?.petPlayerId !== selfId &&
+    !pettingOrbBot(state.orbBots, selfId) &&
     nearCompanion524(player(), state.companion524, renderer.collision, renderer.serverNow())
   );
 }
@@ -998,6 +1062,12 @@ function ride() {
   action('ride', animal.id);
 }
 function interactAnimal(id) {
+  const bot = state.orbBots?.find((b) => b.id === id && b.kind !== '524');
+  if (bot) {
+    if (!bot.busy && nearOrbBot(player(), bot, renderer.collision, renderer.serverNow()))
+      action('petBot', id);
+    return;
+  }
   if (id === state.companion524?.id || id === state.rimoNeko?.id) {
     if (canStartAttack(player(), renderer.serverNow())) action('attack', id);
     return;
@@ -1733,6 +1803,7 @@ function openPauseMenu(tab?: string) {
       ]
     : [
         ['inventory', 'bag', '持ち物'],
+        ['warp', 'compass', 'ワープする'],
         ['crafting', 'axe', 'クラフト・ガイド'],
         ['info', 'compass', '世界・仲間・操作説明'],
         ['settings', 'sound', '設定'],
@@ -1750,13 +1821,35 @@ function openPauseMenu(tab?: string) {
     ['wave', 'wave', '手をふる', () => action('wave')],
   ];
   const exits: [string, string, string, () => void][] = [
-    ['bots', 'people', 'botたちを選ぶ・呼ぶ', () => orbBotUI.open()],
+    ...(caveTorchAvailable(player())
+      ? [
+          [
+            'caveTorch',
+            'sun',
+            caveTorchLit(player()) ? '松明をしまう' : '松明を持つ',
+            () => {
+              action('toggleCaveTorch');
+              $('#modal').close();
+            },
+          ] as [string, string, string, () => void],
+        ]
+      : []),
+    ['bots', 'people', 'botたちを選ぶ・呼ぶ・帰す', () => orbBotUI.open()],
+    [
+      'travelAlone',
+      'wave',
+      'みんなを帰してひとりで歩く',
+      () => {
+        action('travelAlone');
+        $('#modal').close();
+      },
+    ],
     ...(state.rimoNeko?.followPlayerId === selfId
       ? [
           [
             'dismissRimo',
             'wave',
-            'リモねこをキャンプへ帰す',
+            'りもねこをキャンプへ帰す',
             () => {
               dismissRimo();
               $('#modal').close();
@@ -1871,17 +1964,15 @@ function openPauseMenu(tab?: string) {
   for (const [id, , , handler] of [...links, ...exits])
     if ($(`[data-controller-menu="${id}"]`))
       $(`[data-controller-menu="${id}"]`).onclick = () => handler();
-  if (fixedIdentity) {
-    const options = {
-      player,
-      now: () => renderer.serverNow(),
-      connected: () => joined,
-      action,
-      settle: () => gamepadControls?.suspend(),
-    };
-    bindCharacterSwitch(options, false);
-    bindExhibitionWarp(options);
-  }
+  const menuActions = {
+    player,
+    now: () => renderer.serverNow(),
+    connected: () => joined,
+    action,
+    settle: () => gamepadControls?.suspend(),
+  };
+  if (fixedIdentity) bindCharacterSwitch(menuActions, false);
+  bindExhibitionWarp(menuActions);
   updateObjectives();
   updateModalHUD();
   if (!fixedIdentity) {
@@ -2159,6 +2250,10 @@ document.addEventListener('keydown', (e) => {
     e.preventDefault();
     dismissNearbyCompanion();
   }
+  if (k === 'l' && !e.ctrlKey && !e.metaKey && !e.altKey) {
+    e.preventDefault();
+    action('toggleCaveTorch');
+  }
   if (isAttackShortcut(e)) {
     e.preventDefault();
     attack();
@@ -2337,7 +2432,9 @@ function updateMovementInput() {
       roll: input.movementRoll,
     };
     const petting =
-      state.rimoNeko?.petPlayerId === selfId || state.companion524?.petPlayerId === selfId;
+      state.rimoNeko?.petPlayerId === selfId ||
+      state.companion524?.petPlayerId === selfId ||
+      !!pettingOrbBot(state.orbBots, selfId);
     const target = motionTarget(preferredPet(), nearby());
     motionControls.interactionHint =
       petting || motionPetHold.active
@@ -2376,7 +2473,12 @@ function updateMovementInput() {
           continue;
         }
         if (target) {
-          if (target.action === 'petRimo' || target.action === 'pet524') {
+          if (
+            target.action === 'petRimo' ||
+            target.action === 'pet524' ||
+            target.action === 'petBot' ||
+            target.action === 'petBots'
+          ) {
             motionPetHold.begin(input.sessionId, now, movement);
             // Stop before the action reaches the server, so the first pet tick is stationary.
             renderer.prediction?.stop();

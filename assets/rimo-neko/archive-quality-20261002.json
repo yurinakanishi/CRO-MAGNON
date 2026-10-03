@@ -1,0 +1,10 @@
+{
+  "date": "2026-10-02",
+  "candidate": 2,
+  "decision": "not-adopted; surface quality failed",
+  "files": 120,
+  "bytes": 881828912,
+  "missingHistoricalSources": "C1 dense and Blender source were absent on this host; only available delivery was retained",
+  "archive": "C:\\Users\\yurin\\Desktop\\projects\\threed-model-creation\\models\\rimo-neko\\candidate-2",
+  "manifestSha256": "d4d556782cc3a6372ab18daf38b9e16bccf77bf56c2e795ff49cb73257202ed1"
+}

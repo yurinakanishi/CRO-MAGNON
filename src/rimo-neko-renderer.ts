@@ -32,7 +32,7 @@ export class RimoNekoRenderer {
     this.slope.add(this.actor.root);
     this.root.add(this.slope);
     world.scene.add(this.root);
-    this.label = world.createLabel('リモねこ', 'companion', new THREE.Vector3());
+    this.label = world.createLabel('りもねこ', 'companion', new THREE.Vector3());
     this.hissLabel = world.createLabel('シャーッ！', 'companion rimo-hiss', new THREE.Vector3());
     for (let i = 0; i < 5; i++) {
       const heart = new THREE.Sprite(

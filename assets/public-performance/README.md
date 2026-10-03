@@ -4,7 +4,7 @@
 
 `manifest.json` は原本・派生物のSHA-256とバイト数、元URL、画像寸法を記録する。公開GLBのURLには内容のSHAを付ける。原本が変更されている場合、公開ビルドは古い派生物を拒否する。
 
-画像は `scripts/optimize-public-glb.py` のPillow Lanczosで主に1024pxへ縮小する。人物とリモねこは2048pxを保持する。猫の1024px版はUV境界の色にじみがあったため不採用とし、旧生成物と比較画像を残した。PNGのアルファ、頂点・UV・材質・骨・動作・すべての非画像bufferViewは保持する。
+画像は `scripts/optimize-public-glb.py` のPillow Lanczosで主に1024pxへ縮小する。人物とりもねこは2048pxを保持する。猫の1024px版はUV境界の色にじみがあったため不採用とし、旧生成物と比較画像を残した。PNGのアルファ、頂点・UV・材質・骨・動作・すべての非画像bufferViewは保持する。
 
 524と猫の新LODは元GLBに `scripts/build-performance-lods.py` を適用したもの。Blender 5.2、削減率は524が0.08、猫が0.16。元の骨の順序とスキン属性を照合し、実行時は元モデルの骨・材質・クリップを共用する。採用LODは `public/models/{yellow-524-mascot,rimo-neko}/lod-low-spec-r01.glb`。
 

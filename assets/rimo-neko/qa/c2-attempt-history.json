@@ -1,0 +1,37 @@
+{
+  "date": "2026-10-02",
+  "candidate": 2,
+  "selectedSurface": "01",
+  "adoptedRig": "02",
+  "note": "Summary of observed attempts; this is not a complete raw terminal transcript.",
+  "attempts": [
+    {
+      "stage": "Rig construction",
+      "result": "Some initial dense Blender evaluation passes were interrupted. Vectorized skin evaluation was used for subsequent construction and independently checked against Three.js for final QA."
+    },
+    {
+      "stage": "Rig revision 01",
+      "result": "Retained, not adopted: turning the source head toward the front stretched cheek fur; Happy tail moved downward. Revision 02 preserves the source head direction and lifts the tail."
+    },
+    {
+      "stage": "Rig revision 02 generation",
+      "result": "An initial NameError was fixed before the successful saved GLB and Blender scene. The raw failing console output is not included in this archive."
+    },
+    {
+      "stage": "Game fixture server",
+      "result": "Initial QA UI accessed rimoNeko before the first game state. The guard was fixed and the memory-only QA server restarted; the completed game checks report no errors."
+    },
+    {
+      "stage": "Full test suite",
+      "result": "Initial run: 820 passed, one pet reach failure for desert-fennec-mage. Corrected that character's approach offset for the new crown position; final run: all 821 passed. Both logs retained."
+    },
+    {
+      "stage": "Normal server",
+      "result": "A duplicate start was safely rejected by the save lease. The existing server continued serving the new asset. No forced stop or save restore. Only the sanitized server verification is archived, not player saves."
+    },
+    {
+      "stage": "Supplementary image contact sheet",
+      "result": "ffmpeg could not decode Blender PNG EXIF for a combined 14-view sheet. No sheet produced. All 14 original neutral/clay PNGs were individually viewed instead."
+    }
+  ]
+}

@@ -1,0 +1,14 @@
+{
+  "verifiedOn": "2026-10-02",
+  "name": "りも(Limo)",
+  "role": "友情出演",
+  "profile": "https://x.com/vibe_walking",
+  "avatarOriginal": "assets/rimo-neko/source/user-reference.jpg",
+  "avatarFile": "public/title/avatar-rimo.jpg",
+  "avatarBytes": 27231,
+  "avatarSha256": "3a0ebdfadbb383d170318a0cd4d3cb9540ccb113822bc0a44836dfcaeeebdf41",
+  "avatarCheck": "Existing user-provided image matched the public X avatar fetched on 2026-10-02 byte for byte; the title copy is unchanged.",
+  "qrFile": "public/title/qr-rimo.png",
+  "qrSha256": "0826ed18e273ba3ea104a78c6e3b3112554baf76a689085ab166cee34d972e5f",
+  "qrDecodedAtPixels": [296, 74]
+}

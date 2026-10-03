@@ -97,7 +97,7 @@ test('a completed bond has no online or offline time limit and remains throwable
   for (const days of [1, 7, 365]) {
     f.elapse(days * 86400000);
     assert.equal(f.room().companion524.squadPlayerId, f.owner.welcome.id);
-    assert.equal(ownedBotKinds(f.core.snapshot(f.room()).orbBots, f.owner.welcome.id).length, 10);
+    assert.equal(ownedBotKinds(f.core.snapshot(f.room()).orbBots, f.owner.welcome.id).length, 1);
   }
   f.owner.socket.close();
   f.elapse(365 * 86400000);
@@ -174,6 +174,6 @@ test('an explicit goodbye persists, and an interrupted pet never becomes a saved
     f.action('throwBot', '524', next.socket);
     f.step(2);
     assert.equal(f.bot, undefined);
-    assert.equal(ownedBotKinds(f.core.snapshot(f.room()).orbBots, next.welcome.id).length, 9);
+    assert.equal(ownedBotKinds(f.core.snapshot(f.room()).orbBots, next.welcome.id).length, 0);
   }
 });

@@ -1,0 +1,17 @@
+{
+  "sourceSha256": "284095b15d1e08fdfa7a7157ba5806c322e52d280d03a0f0436c8f2311761850",
+  "sha256": "c336d59a52a5fc5594969ee97d8b4393b7e7f5a3ba7a8b176a6375ada41a3f57",
+  "sourceVertices": 191737,
+  "rigVertices": 191975,
+  "maximumDistance": 0,
+  "maximumUVError": 0,
+  "missing": 0,
+  "imageBytesRetained": true,
+  "sourceImages": [
+    "cdc1a858935806ec21acc29af297284c696e0e359b342c4bf9b351567c2ca2e3"
+  ],
+  "rigImages": [
+    "cdc1a858935806ec21acc29af297284c696e0e359b342c4bf9b351567c2ca2e3"
+  ],
+  "scope": "Source surface vertex positions and UV correspondence in the unanimated bind pose. A small source lip seam is split and lined; 1e-5 m coincident welding and normals are allowed."
+}

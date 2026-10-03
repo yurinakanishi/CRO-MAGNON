@@ -4,15 +4,38 @@ import type { OrbBotSnapshot } from '../shared/orb-bot-types.mjs';
 import { botFlightPosition, botGroundHeight, ORB_BOTS } from '../shared/orb-bots.mjs';
 import { updateActorPerformance } from './performance-lod.js';
 import { applyBotFlightTurn } from './bot-flight-pose.js';
+import { companionHeartTexture } from './companion-heart-texture.js';
 
 type Actor = ReturnType<WorldRenderer['worldAssets']['createAnimal']>;
-type Entry = { actor: Actor; state: OrbBotSnapshot; mode: string; sequence: number };
+type Entry = {
+  actor: Actor;
+  state: OrbBotSnapshot;
+  mode: string;
+  sequence: number;
+  hearts?: THREE.Sprite[];
+};
 
 /** Draw only the reviewed, image-derived companion GLBs. */
 export class OrbBotRenderer {
   readonly bots = new Map<string, Entry>();
+  private heartTexture?: THREE.Texture;
 
   constructor(private world: WorldRenderer) {}
+
+  petTarget(b: OrbBotSnapshot, out: THREE.Vector3) {
+    const actor = this.bots.get(b.id)?.actor;
+    if (actor) out.copy(actor.root.position);
+    else out.set(b.x, b.y, b.z);
+    out.y += ORB_BOTS.diameter * 0.9;
+    return out;
+  }
+
+  private removeHearts(entry: Entry) {
+    for (const heart of entry.hearts ?? []) {
+      this.world.scene.remove(heart);
+      (heart.material as THREE.SpriteMaterial).dispose();
+    }
+  }
 
   update(dt: number) {
     const { world } = this;
@@ -22,6 +45,7 @@ export class OrbBotRenderer {
     const ids = new Set(states.map((b) => b.id));
     for (const [id, entry] of this.bots)
       if (!ids.has(id)) {
+        this.removeHearts(entry);
         world.scene.remove(entry.actor.root);
         entry.actor.dispose();
         this.bots.delete(id);
@@ -31,6 +55,7 @@ export class OrbBotRenderer {
       if (!entry) {
         if (!world.worldAssets.templates.has(`orb-bot-${b.kind}`)) continue;
         const actor = world.worldAssets.createAnimal(`orb-bot-${b.kind}`);
+        actor.root.userData.animalId = b.id;
         actor.root.position.set(b.x, b.y, b.z);
         world.scene.add(actor.root);
         entry = { actor, state: b, mode: b.mode, sequence: b.sequence };
@@ -41,9 +66,9 @@ export class OrbBotRenderer {
       const owner = world.players.get(b.ownerId);
       actor.root.visible =
         b.mode !== 'stowed' &&
-        !!owner &&
-        (b.mode !== 'windup' || !!owner.actor) &&
+        (b.mode !== 'windup' || !!owner?.actor) &&
         (b.ownerId === world.selfId || Math.hypot(b.x - world.focus.x, b.z - world.focus.z) < 60);
+      for (const heart of entry.hearts ?? []) heart.visible = false;
       if (!actor.root.visible) continue;
       actor.root.rotation.x = actor.root.rotation.z = 0;
       const distance = actor.root.position.distanceTo(world.camera.position);
@@ -82,7 +107,38 @@ export class OrbBotRenderer {
         const yaw = b.facing - actor.root.rotation.y;
         actor.root.rotation.y +=
           Math.atan2(Math.sin(yaw), Math.cos(yaw)) * (1 - Math.exp(-dt * 18));
-        if (b.mode === 'landing' || b.mode === 'catching')
+        const happyAge =
+          b.petPlayerId && b.petContactAt ? now - b.petContactAt - ORB_BOTS.petStrokeMs : -1;
+        if (happyAge >= 0 && happyAge < ORB_BOTS.happyMs) {
+          actor.sampleOnce('Catch', happyAge / 1000);
+          if (!entry.hearts) {
+            this.heartTexture ??= companionHeartTexture();
+            entry.hearts = Array.from({ length: 3 }, () => {
+              const heart = new THREE.Sprite(
+                new THREE.SpriteMaterial({
+                  map: this.heartTexture,
+                  transparent: true,
+                  depthWrite: false,
+                  toneMapped: false,
+                }),
+              );
+              heart.raycast = () => {};
+              world.scene.add(heart);
+              return heart;
+            });
+          }
+          entry.hearts.forEach((heart, i) => {
+            const t = (happyAge - i * 120) / 600;
+            heart.visible = t > 0 && t < 1;
+            heart.position.set(
+              b.x + Math.sin(i * 2.4) * 0.15,
+              b.y + 0.32 + t * 0.35,
+              b.z + Math.cos(i * 2.4) * 0.15,
+            );
+            heart.scale.setScalar(0.09);
+            (heart.material as THREE.SpriteMaterial).opacity = Math.max(0, Math.sin(t * Math.PI));
+          });
+        } else if (b.mode === 'landing' || b.mode === 'catching')
           actor.sampleOnce(
             b.mode === 'landing' ? 'Land' : 'Catch',
             Math.max(0, (now - b.phaseAt) / 1000),
@@ -123,10 +179,13 @@ export class OrbBotRenderer {
   }
 
   dispose() {
-    for (const { actor } of this.bots.values()) {
+    for (const entry of this.bots.values()) {
+      const { actor } = entry;
+      this.removeHearts(entry);
       this.world.scene.remove(actor.root);
       actor.dispose();
     }
     this.bots.clear();
+    this.heartTexture?.dispose();
   }
 }

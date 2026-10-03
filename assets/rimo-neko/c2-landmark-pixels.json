@@ -1,0 +1,28 @@
+{
+  "renderMetadata": "output/model-generation/models/rimo-neko/candidate-2/qa/face-01/bounds.json",
+  "surface": {
+    "mouth": {"view": "front", "pixel": [222, 616]},
+    "nose": {"view": "front", "pixel": [208, 583]},
+    "lipLeft": {"view": "front", "pixel": [174, 619]},
+    "lipRight": {"view": "front", "pixel": [278, 619]},
+    "crown": {"view": "front", "pixel": [323, 258]},
+    "earLeftBase": {"view": "front", "pixel": [138, 344]},
+    "earLeftTip": {"view": "front", "pixel": [101, 197]},
+    "earRightBase": {"view": "front", "pixel": [475, 338]},
+    "earRightTip": {"view": "front", "pixel": [535, 164]}
+  },
+  "internal": {
+    "headCentre": [-0.023, -0.105, 0.405],
+    "neckCentre": [-0.003, -0.092, 0.335],
+    "chestCentre": [0, -0.102, 0.280],
+    "spineCentre": [0, 0.025, 0.265],
+    "hipCentre": [0, 0.147, 0.244],
+    "tail0": [-0.003, 0.171, 0.230],
+    "tail1": [-0.018, 0.238, 0.219],
+    "tail2": [-0.046, 0.282, 0.268],
+    "tail3": [-0.060, 0.280, 0.345],
+    "tail4": [-0.063, 0.269, 0.409],
+    "tail5": [-0.054, 0.257, 0.453]
+  },
+  "review": "2026-10-02: source surface 01 face/front, left, top and 360-degree turntable; internal centres inferred from the actual mesh views. User approved surface 01 for game replacement."
+}

@@ -26,6 +26,7 @@ export interface PlayerSnapshot extends Point {
   inventory: Inventory;
   gathered: number;
   tool: boolean;
+  caveTorchOff?: boolean;
   ready: boolean;
   energy: number;
   facing: number;

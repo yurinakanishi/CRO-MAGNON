@@ -10,7 +10,7 @@
 - ZIP: 405,721,041 bytes。422検証対象ファイル、81 GLB、展開約563.5 MiB。
 - Howkey: Candidate 1 / revision 11、GLB SHA
   `f6366ce469d719b2456de06d776bf029e2fdc0a80e9f0ed7c4a51c6bb0ad8c83`。
-- リモねこのr08と、それまでの変更も含む。
+- りもねこのr08と、それまでの変更も含む。
 
 全615テスト、型・strict、JS構文、依存境界、全48素材を確認。
 Howkeyの本体は実Chrome2画面＋通信3人で14検査群、最終HUD・科学パルス・実距離LODは補足3検査群が成功。

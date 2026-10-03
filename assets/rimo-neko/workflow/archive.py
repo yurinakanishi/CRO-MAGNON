@@ -41,11 +41,11 @@ keys={'original':'source/original/user-reference.jpg','reference':'source/genera
       'conditioning':'source/prepared/reference_cutout.png','dense':'work/trellis/dense-res1024-seed0042.glb',
       'candidate':'work/rig/revision-03/candidate.glb','viewer':'qa/candidate-1/viewer.html'}
 artifacts={k:dict(path=v,sha256=digest((DEST/v).read_bytes())) for k,v in keys.items()}
-write('model.json',dict(schema_version=1,model_key='rimo-neko',name='リモねこ',slug='rimo-neko',lifecycle_status='game-integrated',artifacts=artifacts,
+write('model.json',dict(schema_version=1,model_key='rimo-neko',name='りもねこ',slug='rimo-neko',lifecycle_status='game-integrated',artifacts=artifacts,
  provenance=dict(candidate=1,revision='03',agent='Codex',claudeUsed=False,trellisRuntime='v0.8.1',gameRepository='../CRO-MAGNON'),
  notes=['One successful candidate, three retained rig revisions.','Not published to Meshmell or social media.']))
 write('candidate-index.json',dict(completedCandidates=[dict(number=1,revision='03',file=keys['candidate'],sha256=artifacts['candidate']['sha256'],viewer=keys['viewer'],decision='integrated in CRO-MAGNON')],nextCandidate=2))
-keep(Path('README.md'),'''# リモねこ — Candidate 1
+keep(Path('README.md'),'''# りもねこ — Candidate 1
 
 ゲームCRO-MAGNONの依頼で制作した1件の候補。2026-09-28完成、rig revision 03。
 

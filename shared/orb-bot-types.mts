@@ -12,6 +12,8 @@ export type BotKind =
   | 'heart'
   | '524';
 export type BotMode =
+  | 'home'
+  | 'goingHome'
   | 'following'
   | 'queued'
   | 'windup'
@@ -23,6 +25,7 @@ export type BotMode =
   | 'stowed';
 export interface OrbBotSnapshot extends Point {
   id: string;
+  /** Empty until a complete pet; one shared dot of each kind lives in the room. */
   ownerId: string;
   kind: BotKind;
   mode: BotMode;
@@ -40,6 +43,13 @@ export interface OrbBotSnapshot extends Point {
   recallAt?: number;
   /** A recruited companion can be occupied by petting or an impact reaction. */
   busy?: boolean;
+  petPlayerId?: string | null;
+  petAt?: number;
+  petContactAt?: number;
+  petFacing?: number;
+  /** Every participant shares one gesture, contact time and completion. */
+  petGroupLeaderId?: string;
+  returnHome?: boolean;
 }
 export interface OrbBot extends OrbBotSnapshot {
   path: Point[];
@@ -47,4 +57,10 @@ export interface OrbBot extends OrbBotSnapshot {
   lastOwner: Point;
   warpSequence: number;
   stuckAt: number;
+  home?: Point;
+  petOrigin?: Point | null;
+  petGoal?: Point | null;
+  petCharacter?: string;
+  petMode?: BotMode;
+  petWarpSequence?: number;
 }

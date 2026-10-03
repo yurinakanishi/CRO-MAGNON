@@ -1,6 +1,6 @@
 import type { MotionIntent, Offset } from './motion-input.js';
 
-export type MotionPet = 'rimo' | '524';
+export type MotionPet = 'rimo' | '524' | MotionTarget;
 export interface MotionTarget {
   action: string;
   label: string;
@@ -12,10 +12,12 @@ export function motionTarget(
   nearby: MotionTarget | null,
 ): MotionTarget | null {
   if (pet)
-    return {
-      action: pet === 'rimo' ? 'petRimo' : 'pet524',
-      label: pet === 'rimo' ? 'リモねこを撫でる' : '524を撫でる',
-    };
+    return typeof pet === 'object'
+      ? pet
+      : {
+          action: pet === 'rimo' ? 'petRimo' : 'pet524',
+          label: pet === 'rimo' ? 'りもねこを撫でる' : '524を撫でる',
+        };
   return nearby;
 }
 interface MovementSample {

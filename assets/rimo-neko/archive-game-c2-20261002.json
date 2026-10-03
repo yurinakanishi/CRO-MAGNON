@@ -1,0 +1,19 @@
+{
+  "date": "2026-10-02",
+  "candidate": 2,
+  "surface": "01",
+  "rigRevision": "02",
+  "decision": "adopted in local game at explicit user request",
+  "modelSha256": "c336d59a52a5fc5594969ee97d8b4393b7e7f5a3ba7a8b176a6375ada41a3f57",
+  "files": 404,
+  "bytes": 357432432,
+  "playerSavesIncluded": false,
+  "filesVerifiedBySha256": true,
+  "limitations": [
+    "Background browser rendering drops to about one frame per second between automation actions. These recordings do not measure sustained FPS.",
+    "Initial distant approaches in records 0 and 6 show renderer interpolation lag, up to 0.447 m hand/target gap during throttled rendering. Settled strokes and independent full-pose checks are reported separately.",
+    "No physical controller, small viewport, long-duration play or exhaustive self-intersection validation in this replacement."
+  ],
+  "archive": "C:\\Users\\yurin\\Desktop\\projects\\threed-model-creation\\models\\rimo-neko\\candidate-2\\game-adoption-20261002",
+  "manifestSha256": "d87d49ba479f95173b720a8310d87d7ad0faa01cdb9d568e426dc13374218526"
+}

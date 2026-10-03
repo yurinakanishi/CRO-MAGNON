@@ -16,3 +16,9 @@ export const TITLE_GUEST = {
   profile: 'https://x.com/R5ni4',
   qr: 'r524',
 } as const;
+
+export const TITLE_SUPPORT = {
+  name: 'りも(Limo)',
+  profile: 'https://x.com/vibe_walking',
+  qr: 'rimo',
+} as const;

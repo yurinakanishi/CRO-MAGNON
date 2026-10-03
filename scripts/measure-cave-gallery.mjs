@@ -2,7 +2,12 @@
 import * as THREE from 'three';
 import { readFile, writeFile } from 'node:fs/promises';
 import { loadMotion } from './motion-glb.mjs';
-import { CAVE_MOTIFS, CAVE_MURALS, caveMuralHeight } from '../dist/src/cave-gallery-layout.js';
+import {
+  CAVE_MOTIFS,
+  CAVE_MURALS,
+  caveMuralHeight,
+  caveMuralPigment,
+} from '../dist/src/cave-gallery-layout.js';
 import { caveCentreOffset } from '../dist/shared/camp-cave-layout.mjs';
 const asset = JSON.parse(await readFile('public/models/camp-cave/asset.json'));
 const source = process.argv[2] ?? `public${asset.url}`,
@@ -18,10 +23,12 @@ const records = [];
 for (const mural of CAVE_MURALS) {
   const height = caveMuralHeight(mural),
     samples = [];
-  for (let v = 0; v <= 12; v++)
-    for (let u = 0; u <= 16; u++) {
-      const along = mural.centre + (u / 16 - 0.5) * mural.width;
-      const y = mural.bottom + (v / 12) * height;
+  const columns = mural.motif === 'rimoFrieze' ? 96 : 16;
+  const rows = mural.motif === 'rimoFrieze' ? 32 : 12;
+  for (let v = 0; v <= rows; v++)
+    for (let u = 0; u <= columns; u++) {
+      const along = mural.centre + (u / columns - 0.5) * mural.width;
+      const y = mural.bottom + (v / rows) * height;
       const centreX = caveCentreOffset(along);
       ray.set(
         new THREE.Vector3(centreX, y, along),
@@ -30,15 +37,15 @@ for (const mural of CAVE_MURALS) {
       const hit = ray.intersectObject(scene, true)[0];
       const normal = hit?.face.normal;
       samples.push({
-        u: mural.wall === 'east' ? 1 - u / 16 : u / 16,
-        v: v / 12,
+        u: mural.wall === 'east' ? 1 - u / columns : u / columns,
+        v: v / rows,
         point: hit?.point.toArray(),
         facing: normal ? (mural.wall === 'east' ? normal.x : -normal.x) : 0,
       });
     }
   records.push({
     ...mural,
-    pigment: mural.motif === 'creature524' ? 'character524' : 'atlas',
+    pigment: caveMuralPigment(mural),
     height,
     rectangle: CAVE_MOTIFS[mural.motif],
     samples,

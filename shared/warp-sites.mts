@@ -29,10 +29,9 @@ export const WARP_POINTS = Object.freeze(
 );
 export const warpPointById = (id) => WARP_POINTS.find((p) => p.id === id);
 
-/** Sight IDs are accepted only under the server's exhibition room rules. */
-export const warpDestination = (id, allowSpawn = false) =>
-  warpPointById(id) ??
-  (allowSpawn ? SPAWN_SITES.find((site) => `spawn-${site.id}` === id) : undefined);
+/** Map fires and the six pictured menu destinations are available in every room. */
+export const warpDestination = (id) =>
+  warpPointById(id) ?? SPAWN_SITES.find((site) => `spawn-${site.id}` === id);
 
 export function warpUnavailable(player, point, now) {
   if (!player) return '接続を待っています。';

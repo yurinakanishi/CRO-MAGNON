@@ -1,0 +1,30 @@
+{
+  "date": "2026-10-02",
+  "status": "not-adopted; awaiting authorization for one further reconstruction",
+  "gitPull": {"method": "ff-only", "before": "e306c1b", "after": "8969cdf"},
+  "originalImageSha256": "3a0ebdfadbb383d170318a0cd4d3cb9540ccb113822bc0a44836dfcaeeebdf41",
+  "unchangedGameModelSha256": "545900f93a483fb1b9cb7483c4fa79a97c3b40d107054e6ef4cadd34fe12205b",
+  "checks": {
+    "pythonSourcesParsed": 12,
+    "nodeSourcesSyntaxChecked": 4,
+    "gitDiffWhitespace": "passed",
+    "build": "node scripts/build.mjs passed earlier in this work session",
+    "candidate2Surface01GlbStructure": "passed; 139992 triangles, no skin or animation yet",
+    "browser": {
+      "url": "http://127.0.0.1:54665/",
+      "tabTitle": "りもねこ：原画像と3D試作の比較",
+      "verifiedLoaded": ["current-c1-r10", "c2-surface01", "c2-surface04", "c2-surface05"],
+      "verifiedControls": ["model revision selection", "front/back camera selection"],
+      "consoleErrorsObserved": [],
+      "scope": "Local review viewer, not the game; no performance claim"
+    },
+    "clayReview": {
+      "failedPath": "output/model-generation/models/rimo-neko/candidate-2/qa/clay-01",
+      "failure": "Blender 3.6 EEVEE ignored view-layer material override; textured output is not clay evidence",
+      "correctedPath": "output/model-generation/models/rimo-neko/candidate-2/qa/clay-01-fixed",
+      "correction": "Assign clay to the disposable QA scene's mesh material slots; source GLB unchanged",
+      "finding": "Thin fur plates and tail gaps remain in untextured geometry"
+    }
+  },
+  "notPerformed": ["new candidate rigging", "new candidate motion QA", "new candidate LOD", "new game model adoption", "new multi-client game QA", "live server restart", "public deployment", "commit or push"]
+}

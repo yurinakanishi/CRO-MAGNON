@@ -536,7 +536,8 @@
       "sha256": "65dde1aa7311b88c159d524d93af82a770dac77e48ee1f35356e3000cad8a15f",
       "triangles": 74458,
       "delivery": "/models/camp-cave/model-r26.glb",
-      "gameQA": "output/playwright/camp-cave/game-packed-wall-r29/summary.json"
+      "gameQA": "output/cave-rimo-r30/game-review.json",
+      "galleryRevision": "30"
     },
     {
       "key": "yellow-524-mascot",
@@ -580,13 +581,13 @@
     },
     {
       "key": "rimo-neko",
-      "name": "リモねこ",
+      "name": "りもねこ",
       "kind": "companion",
-      "candidate": 1,
+      "candidate": 2,
       "status": "integrated-reviewed-prototype",
-      "sha256": "545900f93a483fb1b9cb7483c4fa79a97c3b40d107054e6ef4cadd34fe12205b",
-      "delivery": "/models/rimo-neko/model-r10.glb",
-      "triangles": 136745,
+      "sha256": "c336d59a52a5fc5594969ee97d8b4393b7e7f5a3ba7a8b176a6375ada41a3f57",
+      "delivery": "/models/rimo-neko/model-c02-r02.glb",
+      "triangles": 140226,
       "gameQA": "assets/rimo-neko/README.md"
     },
     {

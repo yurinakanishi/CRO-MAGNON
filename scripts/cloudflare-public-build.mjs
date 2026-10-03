@@ -6,7 +6,8 @@ import './prepare-vendor.mjs';
 import './build.mjs';
 if (process.exitCode) throw new Error('TypeScript build failed');
 const { CHARACTER_MODELS } = await import('../dist/shared/characters.mjs');
-const { TITLE_CREDITS, TITLE_GUEST } = await import('../dist/src/title-credit-profiles.js');
+const { TITLE_CREDITS, TITLE_GUEST, TITLE_SUPPORT } =
+  await import('../dist/src/title-credit-profiles.js');
 
 const root = path.dirname(path.dirname(fileURLToPath(import.meta.url)));
 const destination = path.join(root, 'dist-cloudflare');
@@ -34,7 +35,9 @@ if (!publicCharacters.some((model) => model.species === 'cro'))
 const hasOctopus = publicCharacters.some((model) => model.bodyPlan === 'octopus');
 const forbidden = /maruimo|まる[ぃい]も/i;
 const credits = release.credits === 'full' ? TITLE_CREDITS : TITLE_CREDITS.slice(0, 1);
-const visibleProfiles = new Set([...credits, TITLE_GUEST].map((person) => person.qr));
+const visibleProfiles = new Set(
+  [...credits, TITLE_GUEST, TITLE_SUPPORT].map((person) => person.qr),
+);
 const fileLimit = 25 * 1024 * 1024;
 const partSize = 24 * 1024 * 1024;
 const hash = (bytes) => createHash('sha256').update(bytes).digest('hex');
@@ -138,7 +141,7 @@ await publish(
 await publish(
   '/src/title-credit-profiles.js',
   Buffer.from(
-    `export const TITLE_CREDITS = ${JSON.stringify(credits)};\nexport const TITLE_GUEST = ${JSON.stringify(TITLE_GUEST)};\n`,
+    `export const TITLE_CREDITS = ${JSON.stringify(credits)};\nexport const TITLE_GUEST = ${JSON.stringify(TITLE_GUEST)};\nexport const TITLE_SUPPORT = ${JSON.stringify(TITLE_SUPPORT)};\n`,
   ),
 );
 

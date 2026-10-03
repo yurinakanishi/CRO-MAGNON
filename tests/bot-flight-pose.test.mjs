@@ -139,6 +139,19 @@ test('all nine rendered dots and 524 share the flight phase, including a late fi
   assert.equal(f.mascot.tilt.rotation.x, late.mascot.tilt.rotation.x);
 });
 
+test('home dots and recruited dots remain visible without an online owner', () => {
+  const f = fixture();
+  f.world.players.clear();
+  f.bots[0].mode = 'home';
+  f.bots[0].ownerId = '';
+  f.at(0.5);
+  assert.equal(f.dots.bots.size, 9);
+  for (const [id, { actor }] of f.dots.bots) {
+    assert.equal(actor.root.visible, true);
+    assert.equal(actor.root.userData.animalId, id);
+  }
+});
+
 test('landing and recall clear the flight rotation for every companion', () => {
   const f = fixture();
   f.at(0.6);

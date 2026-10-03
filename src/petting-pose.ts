@@ -12,7 +12,7 @@ const smooth = (value: number) => {
 
 /** Seek the shared event, including a late join, instead of replaying an old pet. */
 export function pettingProgress(
-  c: Companion524Snapshot | undefined,
+  c: Partial<Pick<Companion524Snapshot, 'petPlayerId' | 'petAt' | 'petContactAt'>> | undefined,
   p: PlayerSnapshot,
   now: number,
   timing: { petApproachMs: number; petStrokeMs: number } = COMPANION_524,
@@ -33,8 +33,8 @@ export function pettingProgress(
     (p.attackSequence > 0 && now - p.attackAt < attackProfile(p).durationMs)
   )
     return { weight: 0, stroke: 0 };
-  const age = now - c.petAt;
-  const contact = c.petContactAt > 0 ? now - c.petContactAt : -1;
+  const age = now - (c.petAt ?? 0);
+  const contact = (c.petContactAt ?? 0) > 0 ? now - c.petContactAt! : -1;
   if (age < 0 || (contact < 0 && age > timing.petApproachMs)) return { weight: 0, stroke: 0 };
   return {
     weight:

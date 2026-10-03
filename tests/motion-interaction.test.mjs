@@ -24,7 +24,7 @@ test('one target supplies both the label and action, with petting before nearby 
   const resource = { label: '木材を採集する', action: 'gather', targetId: 'wood' };
   assert.deepEqual(motionTarget('rimo', resource), {
     action: 'petRimo',
-    label: 'リモねこを撫でる',
+    label: 'りもねこを撫でる',
   });
   assert.deepEqual(motionTarget('524', resource), { action: 'pet524', label: '524を撫でる' });
   assert.equal(motionTarget(null, resource), resource);

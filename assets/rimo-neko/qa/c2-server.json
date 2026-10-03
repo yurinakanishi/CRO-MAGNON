@@ -1,0 +1,47 @@
+{
+  "checkedAt": "2026-10-02T12:18:21.774Z",
+  "status": {
+    "ok": true,
+    "boatingVersion": 1,
+    "adventureVersion": 1,
+    "gulfVersion": 3,
+    "localRoomReset": true,
+    "save": {
+      "enabled": true,
+      "state": "saved",
+      "savedAt": 1790943492509,
+      "recovered": false
+    }
+  },
+  "rooms": 6,
+  "savedPlayers": 9,
+  "playerStateUnchanged": false,
+  "records": [
+    {
+      "path": "/models/rimo-neko/asset.json",
+      "sha256": "71d8cedffdc945efbb57239b078646c9e3abed559f36cc78265072a872066e68"
+    },
+    {
+      "path": "/models/rimo-neko/model-c02-r02.glb",
+      "sha256": "c336d59a52a5fc5594969ee97d8b4393b7e7f5a3ba7a8b176a6375ada41a3f57"
+    },
+    {
+      "path": "/models/rimo-neko/lod-c02-r02.glb",
+      "sha256": "50de7f30f0c61a7e83d0ef148c006d8d050f5578e263c1e70377d5ea47017a04"
+    },
+    {
+      "path": "/models/world-assets.json",
+      "sha256": "aa7bbd90a4ca8339ac5de2a9a4a7f7807dcbf4cba6892d71368f6e137454bc57"
+    },
+    {
+      "path": "/shared/rimo-neko.mjs",
+      "sha256": "e628a303d05f18c01ddd80033e508dc8d6880880a3dd3506db6ef88a40eb061e"
+    }
+  ],
+  "serverAction": "Existing server retained; attempted duplicate start failed safely on its save lease; no forced stop or save restore.",
+  "gameplayPlayerStateUnchanged": true,
+  "changedPlayerFields": [
+    "tokens",
+    "refillAt"
+  ]
+}

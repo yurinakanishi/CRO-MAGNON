@@ -1,0 +1,395 @@
+{
+  "date": "2026-10-02T09:29:41.723Z",
+  "decision": "adopt",
+  "galleryRevision": "30",
+  "geometryRevision": "26",
+  "sha256": "65dde1aa7311b88c159d524d93af82a770dac77e48ee1f35356e3000cad8a15f",
+  "rimoPigment": {
+    "source": "assets/camp-cave/source/rimo-lascaux-frieze-r30.png",
+    "url": "/models/camp-cave/rimo-lascaux-frieze-r30.png",
+    "sha256": "b750045fda524816577747197874d173d41161e2b55d9acfe772a8f37f8d01df",
+    "bytes": 2272546,
+    "image": {
+      "width": 2172,
+      "height": 724
+    },
+    "generator": "Built-in imagegen",
+    "prompt": "assets/camp-cave/rimo-lascaux-prompt-r30.txt",
+    "reference": {
+      "path": "assets/rimo-neko/source/user-reference.jpg",
+      "sha256": "3a0ebdfadbb383d170318a0cd4d3cb9540ccb113822bc0a44836dfcaeeebdf41"
+    },
+    "styleReference": "assets/camp-cave/source/mural-atlas-r05.png",
+    "subjects": [
+      "Rimo-neko",
+      "ochre wild horse",
+      "red wild horse",
+      "aurochs",
+      "red deer"
+    ],
+    "application": "One 7.5 x 2.5 m transparent pigment frieze on the east wall, centred at local Z -21.2 opposite the existing 524. Direct projection on the existing limestone, no decal plane or opaque backing.",
+    "review": "assets/camp-cave/qa/gallery-r30.json"
+  },
+  "characterPigment": {
+    "url": "/models/camp-cave/character-524-mural-r06.png",
+    "source": "assets/camp-cave/source/character-524-mural-r06.png",
+    "bytes": 1757426,
+    "sha256": "9fc9d9d635989a1e928a5ccdac2a7ed3889a1442930ff07f8503c7d2832fd071",
+    "image": {
+      "width": 1254,
+      "height": 1254
+    },
+    "generator": "Built-in imagegen",
+    "prompt": "assets/camp-cave/character-524-prompt-r06.txt",
+    "reference": {
+      "path": "assets/camp-cave/source/character-524-reference-r06.png",
+      "sha256": "8231914f43d9e8454823a923c8004df44c0bad1ee1aec9e2f140493d5f2af273"
+    },
+    "application": "One unchanged transparent ochre-pigment image on the right wall. At 1.34 m image width its painted height is about 1.11 m, half the neighbouring mammoth mural. Its raised baseline expresses floating. The actual companion keeps its existing 0.30 m body height.",
+    "review": "assets/camp-cave/qa/gallery-r30.json"
+  },
+  "layout": [
+    {
+      "motif": "hands",
+      "wall": "east",
+      "centre": -13.8,
+      "bottom": 4.35,
+      "width": 0.95,
+      "strength": 0.64
+    },
+    {
+      "motif": "redHorse",
+      "wall": "east",
+      "centre": -15.2,
+      "bottom": 1.65,
+      "width": 2.8,
+      "strength": 0.78
+    },
+    {
+      "motif": "rimoFrieze",
+      "wall": "east",
+      "centre": -21.2,
+      "bottom": 1.6,
+      "width": 7.5,
+      "strength": 0.82
+    },
+    {
+      "motif": "signs",
+      "wall": "east",
+      "centre": -24.2,
+      "bottom": 4.45,
+      "width": 1.05,
+      "strength": 0.57
+    },
+    {
+      "motif": "deer",
+      "wall": "east",
+      "centre": -26.1,
+      "bottom": 1.6,
+      "width": 1.7,
+      "strength": 0.72
+    },
+    {
+      "motif": "ochreHorse",
+      "wall": "east",
+      "centre": -29,
+      "bottom": 1.55,
+      "width": 1.85,
+      "strength": 0.72
+    },
+    {
+      "motif": "deer",
+      "wall": "west",
+      "centre": -14,
+      "bottom": 1.6,
+      "width": 1.8,
+      "strength": 0.72
+    },
+    {
+      "motif": "mammoth",
+      "wall": "west",
+      "centre": -17.4,
+      "bottom": 1.6,
+      "width": 3,
+      "strength": 0.81
+    },
+    {
+      "motif": "creature524",
+      "wall": "west",
+      "centre": -21.2,
+      "bottom": 2,
+      "width": 1.34,
+      "strength": 0.94
+    },
+    {
+      "motif": "redHorse",
+      "wall": "west",
+      "centre": -24.8,
+      "bottom": 1.65,
+      "width": 2.8,
+      "strength": 0.78
+    },
+    {
+      "motif": "hands",
+      "wall": "west",
+      "centre": -24.7,
+      "bottom": 4.5,
+      "width": 1,
+      "strength": 0.64
+    },
+    {
+      "motif": "bison",
+      "wall": "west",
+      "centre": -28.6,
+      "bottom": 1.5,
+      "width": 2.7,
+      "strength": 0.79
+    },
+    {
+      "motif": "signs",
+      "wall": "west",
+      "centre": -28.4,
+      "bottom": 4.5,
+      "width": 0.95,
+      "strength": 0.57
+    },
+    {
+      "motif": "ochreHorse",
+      "wall": "west",
+      "centre": -31.2,
+      "bottom": 1.5,
+      "width": 1.7,
+      "strength": 0.72
+    }
+  ],
+  "coverage": {
+    "atlasSha256": "6efe80a19056af4f5a9ce50d7309b578f4c3e914fa9543c51a8fc629842e6889",
+    "characterSha256": "9fc9d9d635989a1e928a5ccdac2a7ed3889a1442930ff07f8503c7d2832fd071",
+    "rimoSha256": "b750045fda524816577747197874d173d41161e2b55d9acfe772a8f37f8d01df",
+    "size": [
+      1254,
+      1254
+    ],
+    "alphaRange": [
+      0,
+      255
+    ],
+    "transparentFraction": 0.5880461629643196,
+    "placements": [
+      {
+        "motif": "hands",
+        "wall": "east",
+        "centre": -13.8,
+        "paintedSamples": 65,
+        "rejected": []
+      },
+      {
+        "motif": "redHorse",
+        "wall": "east",
+        "centre": -15.2,
+        "paintedSamples": 62,
+        "rejected": []
+      },
+      {
+        "motif": "rimoFrieze",
+        "wall": "east",
+        "centre": -21.2,
+        "paintedSamples": 1272,
+        "rejected": []
+      },
+      {
+        "motif": "signs",
+        "wall": "east",
+        "centre": -24.2,
+        "paintedSamples": 44,
+        "rejected": []
+      },
+      {
+        "motif": "deer",
+        "wall": "east",
+        "centre": -26.1,
+        "paintedSamples": 59,
+        "rejected": []
+      },
+      {
+        "motif": "ochreHorse",
+        "wall": "east",
+        "centre": -29,
+        "paintedSamples": 66,
+        "rejected": []
+      },
+      {
+        "motif": "deer",
+        "wall": "west",
+        "centre": -14,
+        "paintedSamples": 59,
+        "rejected": []
+      },
+      {
+        "motif": "mammoth",
+        "wall": "west",
+        "centre": -17.4,
+        "paintedSamples": 102,
+        "rejected": []
+      },
+      {
+        "motif": "creature524",
+        "wall": "west",
+        "centre": -21.2,
+        "paintedSamples": 82,
+        "rejected": []
+      },
+      {
+        "motif": "redHorse",
+        "wall": "west",
+        "centre": -24.8,
+        "paintedSamples": 62,
+        "rejected": []
+      },
+      {
+        "motif": "hands",
+        "wall": "west",
+        "centre": -24.7,
+        "paintedSamples": 65,
+        "rejected": []
+      },
+      {
+        "motif": "bison",
+        "wall": "west",
+        "centre": -28.6,
+        "paintedSamples": 91,
+        "rejected": []
+      },
+      {
+        "motif": "signs",
+        "wall": "west",
+        "centre": -28.4,
+        "paintedSamples": 44,
+        "rejected": []
+      },
+      {
+        "motif": "ochreHorse",
+        "wall": "west",
+        "centre": -31.2,
+        "paintedSamples": 66,
+        "rejected": []
+      }
+    ],
+    "totalPaintedSamples": 2139,
+    "totalRejected": 0
+  },
+  "chamber": {
+    "minWidth": 11.015158879328325,
+    "minHeadroom": 4.648291331642173,
+    "unchanged": true
+  },
+  "review": [
+    "The original waving gray-white kitten reference supplies the face, raised paw, white chest and curved dark tail.",
+    "Two wild horses, an aurochs and a stag share one transparent worn mineral-pigment painting with Rimo.",
+    "The frieze is projected onto the original limestone triangles opposite the unchanged 524, with no added planes.",
+    "Near, whole-wall, opposing-wall, both-wall and normal-camera views were inspected in the actual game.",
+    "Real E extinguishing and lighting were observed across two browser renderers and three protocol peers. A browser reload and rejoin loaded the same pigment."
+  ],
+  "sources": "docs/rimo-cave-mural-2026-10-02.md",
+  "gameQA": "output/cave-rimo-r30/game-review.json",
+  "checks": [
+    "original gray-white Rimo face, raised paw and curved dark tail visible in actual rock paint",
+    "whole frieze, close face, opposite 524 and both walls visually inspected",
+    "original wall pores and relief remain visible through worn pigment without a rectangular backing",
+    "normal gameplay camera shows the new mural on the existing cave wall",
+    "two real browser renderers plus three network peers share the lit and unlit cave state",
+    "real E extinguishes and relights the cave fire",
+    "browser B reload, normal rejoin and new pigment loading verified"
+  ],
+  "errors": [],
+  "sampleCount": 10,
+  "delivery": [
+    {
+      "url": "/models/camp-cave/model-r26.glb",
+      "bytes": 5393776,
+      "sha256": "65dde1aa7311b88c159d524d93af82a770dac77e48ee1f35356e3000cad8a15f"
+    },
+    {
+      "url": "/models/camp-cave/mural-atlas-r05.png",
+      "bytes": 1851771,
+      "sha256": "6efe80a19056af4f5a9ce50d7309b578f4c3e914fa9543c51a8fc629842e6889"
+    },
+    {
+      "url": "/models/camp-cave/character-524-mural-r06.png",
+      "bytes": 1757426,
+      "sha256": "9fc9d9d635989a1e928a5ccdac2a7ed3889a1442930ff07f8503c7d2832fd071"
+    },
+    {
+      "url": "/models/camp-cave/limestone-r05.png",
+      "bytes": 3425333,
+      "sha256": "574372b875437977f226564a2bc1a8cd7149695582b1bbb6c806f7e83a075cee"
+    },
+    {
+      "url": "/models/camp-cave/rimo-lascaux-frieze-r30.png",
+      "bytes": 2272546,
+      "sha256": "b750045fda524816577747197874d173d41161e2b55d9acfe772a8f37f8d01df"
+    },
+    {
+      "url": "/models/camp-cave/asset.json",
+      "bytes": 7317,
+      "sha256": "c553a340abd77dd6e0210fa06dabdbb44ed93bfe2f977af7f18d30721a3c7bdd"
+    },
+    {
+      "url": "/models/world-assets.json",
+      "bytes": 624122,
+      "sha256": "7a08b9c0cf6a5c3397a8d584ea13470f6f757f9de08bfc33e66f5e84eb7fea23"
+    },
+    {
+      "url": "/src/cave-materials.js",
+      "bytes": 6197,
+      "sha256": "ebf964b95be89010f1df17003d009a7274a31b2914a5ab44f8e3de0573e652df"
+    },
+    {
+      "url": "/src/cave-rock-shader.js",
+      "bytes": 1416,
+      "sha256": "b64f9f5bca7e9a225a871d090c5216d31b91f5d9c547554aaa971223e16c8223"
+    },
+    {
+      "url": "/src/cave-gallery-layout.js",
+      "bytes": 4461,
+      "sha256": "4508c00b02fe1ef9bc09cbc929aa5aebfa4f033af68b72414ccc41ff2a98dd1c"
+    },
+    {
+      "url": "/src/world-landmarks.js",
+      "bytes": 12601,
+      "sha256": "5777e887df27db98e1db87512fcb3a0869beb553bf77d96bb32e1b4a66a6adaf"
+    },
+    {
+      "url": "/shared/camp-cave-layout.mjs",
+      "bytes": 3411,
+      "sha256": "ad5b4539411fe81986dc71e0e382652498f1df3ebd51608f9a34b729f3f67aee"
+    },
+    {
+      "url": "/shared/camp-cave-surface-data.mjs",
+      "bytes": 221250,
+      "sha256": "58815005607e0175608c5d38c7c3827f8fc27517ac236071ac6c2d3e459f2f54"
+    },
+    {
+      "url": "/shared/camp-cave-surface.mjs",
+      "bytes": 325,
+      "sha256": "b092a435518a574820f014b46fd70ab5879611dbdbab7a1302e800647f741852"
+    }
+  ],
+  "fixture": {
+    "isolatedMemoryOnly": true,
+    "initialPlayerPlacement": "Browsers at caveWorldAt(-21.2,1); three protocol peers at caveWorldAt(-16,2)",
+    "initialFire": true,
+    "enemiesRemoved": true,
+    "observationCamera": true,
+    "geometryOrLightingOverride": false,
+    "normalCameraAlsoReviewed": true,
+    "script": "scripts/qa-cave-rimo-r30.mjs",
+    "client": "assets/camp-cave/workflow/game-review-r30.js"
+  },
+  "unverified": [
+    "No fresh manual walk from the outdoor camp; initial cave positions are explicit fixtures. Automated cave traversal regression tests cover unchanged collision geometry.",
+    "No mobile viewport or physical device check in this revision.",
+    "No sustained FPS or long-session claim.",
+    "No normal port 3000 startup, user save edits, exhibition delivery or public deployment."
+  ]
+}

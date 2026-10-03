@@ -21,6 +21,7 @@ PROFILES = [
     ('urata', 'https://x.com/yuki_urata'),
     ('nukonuko', 'https://x.com/nukonuko'),
     ('r524', 'https://x.com/R5ni4'),
+    ('rimo', 'https://x.com/vibe_walking'),
 ]
 destination = ROOT / 'public/title'
 destination.mkdir(parents=True, exist_ok=True)

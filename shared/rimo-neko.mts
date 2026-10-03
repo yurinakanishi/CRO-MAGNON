@@ -15,7 +15,7 @@ export const RIMO_NEKO = Object.freeze({
   home: { x: CAMP.x + 1, z: CAMP.z + 3 },
   radius: 0.3,
   bodyHeight: 0.52,
-  headHeight: 0.45,
+  headHeight: 0.47,
   petRange: 2.6,
   petCooldownMs: 1400,
   petApproachMs: 4000,
@@ -62,7 +62,7 @@ const point = (p: Point): Point => ({ x: p.x, z: p.z });
 
 export function createRimoNeko(collision: CollisionWorld): RimoNeko {
   const home = collision.nearestFree(RIMO_NEKO.home, RIMO_NEKO.radius, [], 3);
-  if (!home) throw new Error('リモねこ: no safe position beside the initial camp');
+  if (!home) throw new Error('りもねこ: no safe position beside the initial camp');
   return {
     ...home,
     home,
@@ -208,10 +208,12 @@ export function handleRimoNekoAction(
   )
     return false;
   // The cat approaches the crouching hand. Player navigation stays manual.
+  // C2's crown sits 4 cm farther back and 5 cm toward the opposite cheek.
+  // Bring it closer to the short-armed mage and align it with the right hand.
   const facing = Math.atan2(c.x - player.x, c.z - player.z);
   const [reach, side, height] =
     player.species === 'bear'
-      ? [0.3, 0.07, RIMO_NEKO.headHeight]
+      ? [0.26, 0.12, RIMO_NEKO.headHeight]
       : player.species === 'ape'
         ? [0.8, 0.25, RIMO_NEKO.headHeight]
         : characterModel(player).bodyPlan === 'octopus'
@@ -362,7 +364,7 @@ export function updateRimoNeko(room: CompanionRoom, dt: number, now: number) {
       : 0;
     c.ownerPosition = point(owner);
     // Keep a comfortable distance from the person, independent of their gaze.
-    // Walking toward リモねこ or turning to face it must never make it flee behind us.
+    // Walking toward りもねこ or turning to face it must never make it flee behind us.
     if (separation <= gap + 0.06) {
       c.path = [];
       c.followSpeed = 0;

@@ -13,6 +13,7 @@ export function prepareCaveMaterials(
   pigment: THREE.Texture,
   limestone: THREE.Texture,
   character524: THREE.Texture,
+  rimoPigment: THREE.Texture,
 ) {
   const materials = new Set<THREE.Material>();
   root.traverse((node) => {
@@ -31,6 +32,7 @@ export function prepareCaveMaterials(
         shader.uniforms.cavePigment = { value: pigment };
         shader.uniforms.caveLimestone = { value: limestone };
         shader.uniforms.caveCharacter524 = { value: character524 };
+        shader.uniforms.caveRimoPigment = { value: rimoPigment };
         shader.vertexShader =
           'varying vec3 cavePosition;\nvarying vec3 caveNormal;\n' + shader.vertexShader;
         shader.vertexShader = shader.vertexShader.replace(
@@ -40,7 +42,7 @@ export function prepareCaveMaterials(
         shader.fragmentShader =
           caveGroundShader +
           caveRockShader +
-          'uniform sampler2D cavePigment;\nuniform sampler2D caveCharacter524;\nvarying vec3 cavePosition;\nvarying vec3 caveNormal;\n' +
+          'uniform sampler2D cavePigment;\nuniform sampler2D caveCharacter524;\nuniform sampler2D caveRimoPigment;\nvarying vec3 cavePosition;\nvarying vec3 caveNormal;\n' +
           shader.fragmentShader;
         shader.fragmentShader = shader.fragmentShader.replace(
           '#include <map_fragment>',
@@ -92,8 +94,8 @@ export function prepareCaveMaterials(
           '#include <lights_fragment_begin>',
           `
           float facingRoom=1.0-smoothstep(-0.15,0.3,dot(roomFacingNormal,normalize(roomToRock)));
-          float depth=1.0-smoothstep(3.0,9.5,cavePosition.z);
-          float caveDaylight=mix(1.0,0.24,facingRoom*depth);
+          float depth=1.0-smoothstep(1.0,11.0,cavePosition.z);
+          float caveDaylight=mix(1.0,0.006,facingRoom*depth);
           ${THREE.ShaderChunk.lights_fragment_begin.replace(
             'getDirectionalLightInfo( directionalLight, directLight );',
             'getDirectionalLightInfo( directionalLight, directLight ); directLight.color *= caveDaylight;',
@@ -105,7 +107,7 @@ export function prepareCaveMaterials(
           '#include <lights_fragment_end>\nreflectedLight.indirectDiffuse*=caveDaylight;',
         );
       };
-      material.customProgramCacheKey = () => 'camp-cave-white-gallery-v14';
+      material.customProgramCacheKey = () => 'camp-cave-white-gallery-v16-torch-darkness';
       material.needsUpdate = true;
     }
   });

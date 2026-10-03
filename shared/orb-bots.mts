@@ -6,7 +6,9 @@ import { mountainWaterHeight } from './mountain-river.mjs';
 import { characterModel } from './characters.mjs';
 import { attackProfile } from './combat-profiles.mjs';
 import { jumpProgress } from './jumping.mjs';
-import { COMPANION_524, syncCompanion524Bot } from './companion-524.mjs';
+import { COMPANION_524, returnCompanion524, syncCompanion524Bot } from './companion-524.mjs';
+import { CAMP } from './world.mjs';
+import { interactionVisible } from './interactions.mjs';
 import type { Companion524 } from './companion-524-types.mjs';
 import type { BotKind, BotMode, OrbBot, OrbBotSnapshot } from './orb-bot-types.mjs';
 export type { BotKind, BotMode, OrbBot, OrbBotSnapshot } from './orb-bot-types.mjs';
@@ -70,6 +72,12 @@ export const ORB_BOTS = Object.freeze({
   throwDistance: 8,
   arcHeight: 2,
   speed: 8.5,
+  petRange: 2.6,
+  petGroupRange: 4.5,
+  petApproachMs: 3000,
+  petGroupApproachMs: 4500,
+  petStrokeMs: 1100,
+  happyMs: 900,
 });
 type BotRoom = {
   orbBots?: OrbBot[];
@@ -77,6 +85,7 @@ type BotRoom = {
   collision: CollisionWorld;
   rimoNeko?: { petPlayerId: string | null };
   companion524?: Companion524;
+  sessions?: Map<string, { player: { id: string } }>;
 };
 const distance = (a: Point, b: Point) => Math.hypot(a.x - b.x, a.z - b.z);
 const point = (p: Point): Point => ({ x: p.x, z: p.z });
@@ -91,7 +100,9 @@ export function ownedBotKinds(
   bots: readonly OrbBotSnapshot[],
   ownerId?: string,
 ): readonly BotKind[] {
-  return bots.some((b) => b.kind === '524' && b.ownerId === ownerId) ? BOT_ORDER : BOT_KINDS;
+  return ownerId
+    ? BOT_ORDER.filter((kind) => bots.some((b) => b.kind === kind && b.ownerId === ownerId))
+    : [];
 }
 
 /** Round companions float with their lower 6 cm in traversable river/lake water. */
@@ -134,9 +145,8 @@ export function botHandPosition(p: PlayerSnapshot, floor = walkHeight(p.x, p.z))
   };
 }
 
-function formation(p: PlayerSnapshot, kind: BotKind, count: number): Point {
-  const i = BOT_ORDER.indexOf(kind),
-    row = Math.floor(i / 5),
+function formation(p: PlayerSnapshot, i: number, count: number): Point {
+  const row = Math.floor(i / 5),
     rowSize = Math.min(5, count - row * 5),
     column = (i % 5) - (rowSize - 1) / 2,
     side = column * 0.4,
@@ -149,13 +159,14 @@ function formation(p: PlayerSnapshot, kind: BotKind, count: number): Point {
 
 /** A free spot behind a fire/wall is not a usable reunion. Keep the owner in reach. */
 function formationPoint(room: BotRoom, p: PlayerSnapshot, kind: BotKind) {
-  const count = room.companion524?.squadPlayerId === p.id ? BOT_ORDER.length : BOT_KINDS.length;
+  const kinds = ownedBotKinds(room.orbBots ?? [], p.id);
+  const i = Math.max(0, kinds.indexOf(kind)),
+    count = Math.max(1, kinds.length);
   const bodyRadius = botRadius(kind);
-  const desired = formation(p, kind, count);
+  const desired = formation(p, i, count);
   const first = room.collision.nearestFree(desired, bodyRadius, [], 1);
   if (first && room.collision.segmentFree(p, first, bodyRadius)) return first;
-  const i = BOT_ORDER.indexOf(kind),
-    row = Math.floor(i / 5),
+  const row = Math.floor(i / 5),
     rowSize = Math.min(5, count - row * 5),
     radius = p.radius + 0.65 + row * 0.42;
   for (const offset of [0, 0.6, -0.6, 1.2, -1.2, 1.8, -1.8, Math.PI]) {
@@ -167,14 +178,53 @@ function formationPoint(room: BotRoom, p: PlayerSnapshot, kind: BotKind) {
   return room.collision.nearestFree(p, bodyRadius, [], 2);
 }
 
-/** Nine base bots per connection; the existing 524 joins one squad after a complete pet. */
+/** Nine shared camp residents. Connections never create or automatically recruit dots. */
 export function syncOrbBots(room: BotRoom, now: number) {
   const c = room.companion524;
   room.orbBots = (room.orbBots ?? []).filter((b) =>
-    b.kind === '524' ? !!c?.squadPlayerId : room.players.has(b.ownerId),
+    b.kind === '524' ? !!c?.squadPlayerId : !!b.home,
   );
+  for (const [i, kind] of BOT_KINDS.entries()) {
+    if (room.orbBots.some((b) => b.kind === kind)) continue;
+    const home = room.collision.nearestFree(
+      { x: CAMP.x - 6.2 + (i % 3) * 0.95, z: CAMP.z + 5.7 + Math.floor(i / 3) * 0.95 },
+      ORB_BOTS.radius,
+      [],
+      3,
+    );
+    if (!home) continue;
+    room.orbBots.push({
+      id: `orb:${kind}`,
+      kind,
+      ownerId: '',
+      mode: 'home',
+      home,
+      ...home,
+      y: botGroundHeight(home.x, home.z),
+      facing: Math.PI,
+      speed: 0,
+      phaseAt: now,
+      throwAt: 0,
+      sequence: 0,
+      origin: null,
+      landing: null,
+      landingY: 0,
+      recall: false,
+      recallAt: 0,
+      path: [],
+      nextPathAt: 0,
+      lastOwner: point(home),
+      warpSequence: 0,
+      stuckAt: 0,
+      busy: false,
+      petPlayerId: null,
+      petAt: 0,
+      petContactAt: 0,
+      petFacing: 0,
+    });
+  }
   for (const p of room.players.values())
-    for (const kind of c?.squadPlayerId === p.id ? BOT_ORDER : BOT_KINDS) {
+    for (const kind of c?.squadPlayerId === p.id ? ['524' as const] : []) {
       const existing = room.orbBots.find(
         (b) => b.kind === kind && (kind === '524' || b.ownerId === p.id),
       );
@@ -224,13 +274,26 @@ export function syncOrbBots(room: BotRoom, now: number) {
 }
 
 export function orbBotSnapshots(room: BotRoom): OrbBotSnapshot[] {
-  return (room.orbBots ?? [])
-    .filter((b) => b.kind === '524' || room.players.has(b.ownerId))
-    .map(({ path, nextPathAt, lastOwner, warpSequence, stuckAt, ...b }) => ({
+  return (room.orbBots ?? []).map(
+    ({
+      path,
+      nextPathAt,
+      lastOwner,
+      warpSequence,
+      stuckAt,
+      home,
+      petOrigin,
+      petGoal,
+      petCharacter,
+      petMode,
+      petWarpSequence,
+      ...b
+    }) => ({
       ...b,
       origin: b.origin ? { ...b.origin } : null,
       landing: b.landing ? { ...b.landing } : null,
-    }));
+    }),
+  );
 }
 
 /** Start at the chosen kind, then skip companions already deployed or reserved. */
@@ -282,6 +345,422 @@ function setMode(b: OrbBot, mode: BotMode, now: number) {
   b.path = [];
   b.nextPathAt = 0;
   b.stuckAt = 0;
+}
+
+export function pettingOrbBot(bots: readonly OrbBotSnapshot[] | undefined, playerId?: string) {
+  if (!playerId) return undefined;
+  const pets = bots?.filter((b) => b.petPlayerId === playerId);
+  return pets?.find((b) => b.id === b.petGroupLeaderId) ?? pets?.[0];
+}
+
+export function nearOrbBot(
+  p: PlayerSnapshot | undefined | null,
+  b: OrbBotSnapshot,
+  collision: CollisionWorld,
+  now: number,
+  range: number = ORB_BOTS.petRange,
+) {
+  return (
+    !!p &&
+    b.kind !== '524' &&
+    canHandleBot(p, now) &&
+    !['queued', 'windup', 'airborne', 'landing', 'stowed'].includes(b.mode) &&
+    distance(p, b) <= range &&
+    interactionVisible(collision, p, b)
+  );
+}
+
+function botPetPosition(p: PlayerSnapshot, b: OrbBotSnapshot) {
+  const facing = Math.atan2(b.x - p.x, b.z - p.z);
+  const [reach, side] =
+    p.species === 'bear'
+      ? [0.2, 0.12]
+      : p.species === 'ape'
+        ? [0.8, 0.25]
+        : characterModel(p).bodyPlan === 'octopus'
+          ? [1.08, 0.12]
+          : p.species === 'howkey'
+            ? [0.4, 0.12]
+            : [0.5, 0.12];
+  return {
+    facing,
+    goal: {
+      x: p.x + Math.sin(facing) * reach - Math.cos(facing) * side,
+      z: p.z + Math.cos(facing) * reach + Math.sin(facing) * side,
+    },
+  };
+}
+
+/** Gather the group in distinct places around one shared hand target. */
+function groupBotPetPlans(
+  bots: readonly OrbBotSnapshot[],
+  p: PlayerSnapshot | undefined | null,
+  collision: CollisionWorld,
+  now: number,
+) {
+  if (!p || pettingOrbBot(bots, p.id)) return [];
+  const candidates = bots
+    .filter(
+      (b) =>
+        !b.busy &&
+        (!b.ownerId || b.ownerId === p.id) &&
+        nearOrbBot(p, b, collision, now, ORB_BOTS.petGroupRange),
+    )
+    .sort(
+      (a, b) =>
+        distance(p, a) - distance(p, b) || BOT_ORDER.indexOf(a.kind) - BOT_ORDER.indexOf(b.kind),
+    );
+  const plans: { bot: OrbBotSnapshot; goal: Point; facing: number }[] = [];
+  const slots = [0, 1, 2].flatMap((row) => [0, -1, 1].map((column) => ({ row, column })));
+  for (const bot of candidates) {
+    const anchor = plans[0] ?? botPetPosition(p, bot);
+    if (!plans.length && !collision.segmentFree(bot, anchor.goal, ORB_BOTS.radius)) continue;
+    const slot = slots.findIndex(({ row, column }) => {
+      const goal = {
+        x:
+          anchor.goal.x + (Math.sin(anchor.facing) * row + Math.cos(anchor.facing) * column) * 0.36,
+        z:
+          anchor.goal.z + (Math.cos(anchor.facing) * row - Math.sin(anchor.facing) * column) * 0.36,
+      };
+      return collision.segmentFree(bot, goal, ORB_BOTS.radius);
+    });
+    if (slot < 0) continue;
+    const { row, column } = slots.splice(slot, 1)[0];
+    plans.push({
+      bot,
+      facing: anchor.facing,
+      goal: {
+        x:
+          anchor.goal.x + (Math.sin(anchor.facing) * row + Math.cos(anchor.facing) * column) * 0.36,
+        z:
+          anchor.goal.z + (Math.cos(anchor.facing) * row - Math.sin(anchor.facing) * column) * 0.36,
+      },
+    });
+  }
+  return plans;
+}
+
+/** Invite nearby free dots and one's own companions to the same petting action. */
+export function nearbyOrbBotsForPetting(
+  bots: readonly OrbBotSnapshot[],
+  p: PlayerSnapshot | undefined | null,
+  collision: CollisionWorld,
+  now: number,
+) {
+  return groupBotPetPlans(bots, p, collision, now).map(({ bot }) => bot);
+}
+
+function clearBotPet(b: OrbBot) {
+  b.petPlayerId = null;
+  b.petOrigin = b.petGoal = null;
+  b.busy = false;
+  b.petGroupLeaderId = undefined;
+  b.petWarpSequence = undefined;
+}
+
+function sendBotHome(b: OrbBot, now: number) {
+  clearBotPet(b);
+  b.ownerId = '';
+  b.recall = false;
+  b.recallAt = 0;
+  b.returnHome = true;
+  // A released dot still lands before walking home.
+  if (b.mode === 'airborne' || b.mode === 'landing') return;
+  if (b.mode === 'windup' && b.origin) Object.assign(b, point(b.origin));
+  b.y = botGroundHeight(b.x, b.z);
+  b.origin = b.landing = null;
+  b.throwAt = 0;
+  setMode(b, 'goingHome', now);
+}
+
+function handleBotCare(
+  room: BotRoom,
+  p: PlayerSnapshot,
+  action: string,
+  target: unknown,
+  now: number,
+) {
+  if (action === 'dismissBot' || action === 'dismissBots') {
+    const selected = room.orbBots!.filter(
+      (b) => b.ownerId === p.id && (action === 'dismissBots' || target === b.kind),
+    );
+    const groups = new Set(selected.map((b) => b.petGroupLeaderId).filter(Boolean));
+    const unfinished = room.orbBots!.filter(
+      (b) => b.petPlayerId === p.id && (action === 'dismissBots' || groups.has(b.petGroupLeaderId)),
+    );
+    for (const pet of unfinished) cancelBotPet(pet, now);
+    for (const b of selected) {
+      if (b.kind === '524' && room.companion524) returnCompanion524(room.companion524);
+      else sendBotHome(b, now);
+    }
+    syncOrbBots(room, now);
+    return selected.length > 0 || unfinished.length > 0;
+  }
+  if (
+    pettingOrbBot(room.orbBots, p.id) ||
+    room.rimoNeko?.petPlayerId === p.id ||
+    room.companion524?.petPlayerId === p.id
+  )
+    return false;
+  const group = action === 'petBots';
+  const plans = group
+    ? groupBotPetPlans(room.orbBots!, p, room.collision, now)
+    : room
+        .orbBots!.filter(
+          (b) =>
+            b.id === target &&
+            !b.busy &&
+            nearOrbBot(p, b, room.collision, now) &&
+            room.collision.segmentFree(b, botPetPosition(p, b).goal, ORB_BOTS.radius),
+        )
+        .map((bot) => ({ bot, ...botPetPosition(p, bot) }));
+  if (!plans.length) return false;
+  releaseHeldOrbBot(room, p, now);
+  p.facing = plans[0].facing;
+  for (const { bot: candidate, goal, facing } of plans) {
+    const b = room.orbBots!.find((bot) => bot.id === candidate.id)!;
+    b.petPlayerId = p.id;
+    b.petAt = now;
+    b.petContactAt = 0;
+    b.petOrigin = point(p);
+    b.petGoal = goal;
+    b.petFacing = facing;
+    b.petCharacter = `${p.species}/${p.gender}`;
+    b.petWarpSequence = p.warpSequence ?? 0;
+    b.petMode = b.mode;
+    b.petGroupLeaderId = group ? plans[0].bot.id : undefined;
+    b.busy = true;
+    b.speed = 0;
+    b.path = [];
+    b.recallAt = 0;
+  }
+  return true;
+}
+
+function cancelBotPet(b: OrbBot, now: number) {
+  clearBotPet(b);
+  b.petContactAt = 0;
+  if (!b.ownerId) sendBotHome(b, now);
+  else setMode(b, b.petMode === 'waiting' ? 'waiting' : 'following', now);
+}
+
+function botPetInterrupted(p: PlayerSnapshot, b: OrbBot, now: number) {
+  return (
+    !canHandleBot(p, now) ||
+    !b.petOrigin ||
+    distance(p, b.petOrigin) > 0.25 ||
+    p.moving ||
+    (p.hurtAt ?? 0) > b.petAt! ||
+    `${p.species}/${p.gender}` !== b.petCharacter ||
+    (p.warpSequence ?? 0) !== b.petWarpSequence
+  );
+}
+
+function approachBotPet(room: BotRoom, p: PlayerSnapshot, b: OrbBot, dt: number) {
+  b.speed = 0;
+  b.facing = Math.atan2(p.x - b.x, p.z - b.z);
+  const goal = b.petGoal!;
+  const gap = distance(b, goal),
+    amount = Math.min(gap, dt * 1.6);
+  if (gap > 0.001) {
+    const before = point(b);
+    Object.assign(
+      b,
+      room.collision.move(
+        b,
+        ((goal.x - b.x) / gap) * amount,
+        ((goal.z - b.z) / gap) * amount,
+        ORB_BOTS.radius,
+      ),
+    );
+    b.speed = distance(b, before) / dt;
+  }
+  b.y = botGroundHeight(b.x, b.z);
+  return distance(b, goal) < 0.015;
+}
+
+function finishBotPet(p: PlayerSnapshot, b: OrbBot, now: number) {
+  b.ownerId = p.id;
+  b.returnHome = false;
+  b.lastOwner = point(p);
+  b.warpSequence = p.warpSequence ?? 0;
+  b.throwAt = b.recallAt = 0;
+  b.origin = b.landing = null;
+  b.recall = false;
+  clearBotPet(b);
+  setMode(b, 'following', now);
+}
+
+/** Everyone gathers together, then shares one stroke, one reaction and one completion. */
+function updateBotPetGroups(room: BotRoom, dt: number, now: number) {
+  const grouped = new Map<string, OrbBot[]>();
+  for (const b of room.orbBots ?? []) {
+    if (!b.petPlayerId || !b.petGroupLeaderId) continue;
+    const group = grouped.get(b.petPlayerId) ?? [];
+    group.push(b);
+    grouped.set(b.petPlayerId, group);
+  }
+  for (const [playerId, group] of grouped) {
+    const p = room.players.get(playerId);
+    const leader = group.find((b) => b.id === b.petGroupLeaderId);
+    if (
+      !p ||
+      !leader ||
+      group.some(
+        (b) =>
+          !b.petGoal ||
+          botPetInterrupted(p, b, now) ||
+          !nearOrbBot(p, b, room.collision, now, ORB_BOTS.petGroupRange) ||
+          (!b.petContactAt && now - b.petAt! > ORB_BOTS.petGroupApproachMs),
+      )
+    ) {
+      for (const b of group) cancelBotPet(b, now);
+      continue;
+    }
+    if (!leader.petContactAt) {
+      // Map first: every bot moves in this tick, even if an earlier one has not arrived.
+      const arrived = group.map((b) => approachBotPet(room, p, b, dt));
+      if (arrived.every(Boolean))
+        for (const b of group) {
+          b.petContactAt = now;
+          b.speed = 0;
+        }
+    } else if (now >= leader.petContactAt + ORB_BOTS.petStrokeMs + ORB_BOTS.happyMs) {
+      for (const b of group) finishBotPet(p, b, now);
+    }
+  }
+}
+
+function updateBotPet(room: BotRoom, b: OrbBot, dt: number, now: number) {
+  if (b.petPlayerId && b.petGroupLeaderId) return true;
+  if (!b.petPlayerId || !b.petGoal || !b.petOrigin) return false;
+  const p = room.players.get(b.petPlayerId);
+  const stroking = !b.petContactAt || now < b.petContactAt + ORB_BOTS.petStrokeMs;
+  if (
+    !p ||
+    (stroking &&
+      (botPetInterrupted(p, b, now) ||
+        !nearOrbBot(p, b, room.collision, now) ||
+        (!b.petContactAt && now - b.petAt! > ORB_BOTS.petApproachMs)))
+  ) {
+    cancelBotPet(b, now);
+    return false;
+  }
+  b.speed = 0;
+  b.facing = Math.atan2(p.x - b.x, p.z - b.z);
+  if (!b.petContactAt) {
+    if (approachBotPet(room, p, b, dt)) b.petContactAt = now;
+  } else if (now >= b.petContactAt + ORB_BOTS.petStrokeMs + ORB_BOTS.happyMs) {
+    finishBotPet(p, b, now);
+  }
+  return true;
+}
+
+function updateBotHome(room: BotRoom, b: OrbBot, dt: number, now: number) {
+  if (b.mode === 'airborne' || b.mode === 'landing') {
+    updateDeployedBot(b, now);
+    if (b.mode === 'airborne' || b.mode === 'landing') return;
+  }
+  if (b.mode !== 'goingHome') setMode(b, 'goingHome', now);
+  const goal = room.collision.nearestFree(b.home!, ORB_BOTS.radius, [], 3);
+  if (!goal) return;
+  if (distance(b, goal) < 0.06) {
+    Object.assign(b, goal, { y: botGroundHeight(goal.x, goal.z), facing: Math.PI });
+    b.returnHome = false;
+    b.origin = b.landing = null;
+    b.throwAt = 0;
+    setMode(b, 'home', now);
+    return;
+  }
+  if (room.collision.segmentFree(b, goal, ORB_BOTS.radius)) b.path = [goal];
+  else if (now >= b.nextPathAt) {
+    b.path = room.collision.path(b, goal, ORB_BOTS.radius);
+    b.nextPathAt = now + 1500;
+  }
+  const target = b.path[0],
+    before = point(b);
+  if (target) {
+    const length = distance(b, target),
+      amount = Math.min(length, dt * 3);
+    if (length > 0.001)
+      Object.assign(
+        b,
+        room.collision.move(
+          b,
+          ((target.x - b.x) / length) * amount,
+          ((target.z - b.z) / length) * amount,
+          ORB_BOTS.radius,
+        ),
+      );
+    if (distance(b, target) < 0.06) b.path.shift();
+  }
+  b.speed = distance(before, b) / dt;
+  b.y = botGroundHeight(b.x, b.z);
+  if (b.speed > 0.03) {
+    b.facing = Math.atan2(b.x - before.x, b.z - before.z);
+    b.stuckAt = 0;
+  } else {
+    b.stuckAt ||= now;
+    // Warps or newly closed passages may leave no route; finish at the checked home spot.
+    if (now - b.stuckAt > 5000) Object.assign(b, goal, { y: botGroundHeight(goal.x, goal.z) });
+  }
+}
+
+/** Persist completed bonds, never a half-finished pet or hand/flight animation. */
+export function saveOrbBots(room: BotRoom) {
+  return (room.orbBots ?? [])
+    .filter((b) => b.kind !== '524')
+    .map((b) => {
+      const waiting =
+        !!b.ownerId && !b.recall && ['airborne', 'landing', 'waiting'].includes(b.mode);
+      const position =
+        b.mode === 'airborne' && b.landing
+          ? b.landing
+          : b.mode === 'windup' && b.origin
+            ? b.origin
+            : b;
+      return {
+        kind: b.kind,
+        ownerId: b.ownerId,
+        ...point(position),
+        facing: b.facing,
+        mode: b.ownerId
+          ? waiting
+            ? 'waiting'
+            : 'following'
+          : b.mode === 'home' && !b.busy
+            ? 'home'
+            : 'goingHome',
+      };
+    });
+}
+
+export function restoreOrbBots(room: BotRoom, saved: unknown, now: number) {
+  room.orbBots = [];
+  syncOrbBots(room, now);
+  if (!Array.isArray(saved)) return;
+  for (const b of room.orbBots) {
+    if (b.kind === '524') continue;
+    const record = saved.find((r) => r && typeof r === 'object' && r.kind === b.kind);
+    if (!record) continue;
+    const ownerId = record.ownerId;
+    if (
+      typeof ownerId === 'string' &&
+      ownerId &&
+      (room.players.has(ownerId) ||
+        [...(room.sessions?.values() ?? [])].some((entry) => entry.player.id === ownerId))
+    )
+      b.ownerId = ownerId;
+    if (
+      Number.isFinite(record.x) &&
+      Number.isFinite(record.z) &&
+      room.collision.free(record, ORB_BOTS.radius)
+    )
+      Object.assign(b, point(record), { y: botGroundHeight(record.x, record.z) });
+    if (Number.isFinite(record.facing)) b.facing = record.facing;
+    if (b.ownerId) setMode(b, record.mode === 'waiting' ? 'waiting' : 'following', now);
+    else sendBotHome(b, now);
+  }
 }
 
 /** The preview and server both stop before a wall, ledge, sea or inaccessible landing. */
@@ -386,21 +865,37 @@ export function handleOrbBotAction(
   kind: unknown,
   now: number,
 ): boolean {
-  if (!['throwBot', 'recallBots', 'cancelBotThrows'].includes(action)) return false;
+  if (
+    ![
+      'throwBot',
+      'recallBots',
+      'cancelBotThrows',
+      'petBot',
+      'petBots',
+      'dismissBot',
+      'dismissBots',
+    ].includes(action)
+  )
+    return false;
   syncOrbBots(room, now);
+  if (['petBot', 'petBots', 'dismissBot', 'dismissBots'].includes(action))
+    return handleBotCare(room, p, action, kind, now);
   const bots = room.orbBots!.filter((b) => b.ownerId === p.id);
   if (action === 'cancelBotThrows') {
     releaseHeldOrbBot(room, p, now);
     return true;
   }
   if (action === 'recallBots') {
+    for (const b of room.orbBots!)
+      if (b.petPlayerId === p.id && b.petGroupLeaderId) cancelBotPet(b, now);
     releaseHeldOrbBot(room, p, now);
     for (const b of bots) {
       b.recall = true;
       b.recallAt =
         canHandleBot(p, now) &&
         room.rimoNeko?.petPlayerId !== p.id &&
-        room.companion524?.petPlayerId !== p.id
+        room.companion524?.petPlayerId !== p.id &&
+        !pettingOrbBot(room.orbBots, p.id)
           ? now
           : 0;
       if (b.mode === 'waiting') setMode(b, 'returning', now);
@@ -411,7 +906,8 @@ export function handleOrbBotAction(
   if (
     !canHandleBot(p, now) ||
     room.rimoNeko?.petPlayerId === p.id ||
-    room.companion524?.petPlayerId === p.id
+    room.companion524?.petPlayerId === p.id ||
+    pettingOrbBot(room.orbBots, p.id)
   )
     return false;
   if (kind != null && !ownedBotKinds(bots, p.id).includes(kind as BotKind)) return false;
@@ -465,7 +961,19 @@ export function updateOrbBots(room: BotRoom, dt: number, now: number) {
   syncOrbBots(room, now);
   if (!(dt > 0) || !Number.isFinite(dt)) return;
   dt = Math.min(dt, 0.15);
+  updateBotPetGroups(room, dt, now);
   for (const b of room.orbBots!) {
+    if (b.kind !== '524') {
+      if (updateBotPet(room, b, dt, now)) continue;
+      if (b.returnHome) {
+        updateBotHome(room, b, dt, now);
+        continue;
+      }
+      if (!b.ownerId) {
+        b.speed = 0;
+        continue;
+      }
+    }
     const p = room.players.get(b.ownerId);
     const radius = botRadius(b.kind);
     if (b.kind === '524' && room.companion524) {

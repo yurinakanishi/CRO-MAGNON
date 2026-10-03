@@ -1,0 +1,63 @@
+{
+  "candidate": 2,
+  "surface": "01",
+  "revision": "02",
+  "sha256": "c336d59a52a5fc5594969ee97d8b4393b7e7f5a3ba7a8b176a6375ada41a3f57",
+  "status": "passed",
+  "browserScreens": 2,
+  "protocolPeers": 3,
+  "allSevenClipsObserved": [
+    "Happy",
+    "Hiss",
+    "Hit",
+    "Idle_Loop",
+    "Pet",
+    "Run_Loop",
+    "Walk_Loop"
+  ],
+  "recordings": 9,
+  "renderedFrames": 98,
+  "captures": 8,
+  "settledPetContact": [
+    {
+      "record": 1,
+      "character": "cro-magnon-woman",
+      "samples": 6,
+      "maxContactGap": 1.077798765653036e-7
+    },
+    {
+      "record": 2,
+      "character": "maruimo-octopus",
+      "samples": 1,
+      "maxContactGap": 0.00008229709072151198
+    },
+    {
+      "record": 7,
+      "character": "desert-fennec-mage",
+      "samples": 1,
+      "maxContactGap": 3.719561429490613e-8
+    }
+  ],
+  "checks": [
+    "high and low geometry",
+    "Pet → Happy with five hearts → follow",
+    "walk/run/deceleration",
+    "Hit → Hiss",
+    "bridge floor",
+    "T return to camp",
+    "two screens and three protocol peers",
+    "reload and rejoin with same observer id",
+    "normal camera"
+  ],
+  "methods": "Local memory-only server. CUA operated actual V/button pet and T return. Placement, character, follow destination, bridge and hit were explicit QA fixtures. Same delivered GLB and game renderer.",
+  "limitations": [
+    "Background browser rendering drops to about one frame per second between automation actions. These recordings do not measure sustained FPS.",
+    "Initial distant approaches in records 0 and 6 show renderer interpolation lag, up to 0.447 m hand/target gap during throttled rendering. Settled strokes and independent full-pose checks are reported separately.",
+    "No physical controller, small viewport, long-duration play or exhaustive self-intersection validation in this replacement."
+  ],
+  "evidence": {
+    "captures": "output/rimo-neko-c2-game/captures.json",
+    "records": "output/rimo-neko-c2-game/records.json",
+    "delivery": "output/rimo-neko-c2-game/delivery.json"
+  }
+}
