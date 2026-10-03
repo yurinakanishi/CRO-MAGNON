@@ -180,6 +180,7 @@ export interface NpcSnapshot extends Point {
 export interface GameSnapshot {
   companion524?: import('./companion-524-types.mjs').Companion524Snapshot;
   rimoNeko?: import('./rimo-neko-types.mjs').RimoNekoSnapshot;
+  mae?: import('./mae-types.mjs').MaeSnapshot;
   orbBots?: import('./orb-bot-types.mjs').OrbBotSnapshot[];
   mapPins?: import('./map-pins.mjs').MapPin[];
   type: 'state';

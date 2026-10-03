@@ -19,6 +19,7 @@ import { carrying, handleCarryAction } from '../shared/carrying.mjs';
 import { toggleCaveFire } from '../shared/cave-fire.mjs';
 import { toggleCaveTorch } from '../shared/cave-light.mjs';
 import { handleRimoNekoAction, returnRimoNeko } from '../shared/rimo-neko.mjs';
+import { handleMaeAction, cancelMaePet } from '../shared/mae.mjs';
 import { handleCompanion524Action } from '../shared/companion-524.mjs';
 import { stopActor } from '../shared/combat.mjs';
 import {
@@ -46,6 +47,8 @@ export function createActionHandler({
       return;
     }
     if (action === 'travelAlone') {
+      if (room.mae?.petPlayerId === player.id) cancelMaePet(room.mae);
+      handleMaeAction(room, player, 'dismissMae', now);
       handleOrbBotAction(room, player, 'dismissBots', null, now);
       handleCompanion524Action(room, player, 'dismiss524', now);
       if (room.rimoNeko?.petPlayerId === player.id) returnRimoNeko(room.rimoNeko);
@@ -65,6 +68,7 @@ export function createActionHandler({
         'dismissBots',
       ].includes(action)
     ) {
+      if (action === 'recallBots' && room.mae?.petPlayerId === player.id) cancelMaePet(room.mae);
       if (handleOrbBotAction(room, player, action, message.targetId, now)) {
         if (action === 'petBot' || action === 'petBots') stopActor(player);
         broadcast(room, snapshot(room));
@@ -74,10 +78,26 @@ export function createActionHandler({
     // A held companion never occupies the hand during another action.
     if (!['cancelCook', 'cancelFishing', 'cancelCoastal'].includes(action))
       releaseHeldOrbBot(room, player, now);
+    if (action === 'petMae' || action === 'dismissMae') {
+      if (
+        action === 'petMae' &&
+        (room.companion524?.petPlayerId === player.id ||
+          room.rimoNeko?.petPlayerId === player.id ||
+          pettingOrbBot(room.orbBots, player.id))
+      )
+        return;
+      if (handleMaeAction(room, player, action, now)) {
+        if (action === 'petMae') stopActor(player);
+        broadcast(room, snapshot(room));
+      }
+      return;
+    }
     if (action === 'petRimo' || action === 'dismissRimo') {
       if (
         action === 'petRimo' &&
-        (room.companion524?.petPlayerId === player.id || pettingOrbBot(room.orbBots, player.id))
+        (room.companion524?.petPlayerId === player.id ||
+          room.mae?.petPlayerId === player.id ||
+          pettingOrbBot(room.orbBots, player.id))
       )
         return;
       if (handleRimoNekoAction(room, player, action, now)) {
@@ -89,7 +109,9 @@ export function createActionHandler({
     if (action === 'pet524' || action === 'dismiss524') {
       if (
         action === 'pet524' &&
-        (room.rimoNeko?.petPlayerId === player.id || pettingOrbBot(room.orbBots, player.id))
+        (room.rimoNeko?.petPlayerId === player.id ||
+          room.mae?.petPlayerId === player.id ||
+          pettingOrbBot(room.orbBots, player.id))
       )
         return;
       if (handleCompanion524Action(room, player, action, now)) {

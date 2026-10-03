@@ -1,0 +1,111 @@
+{
+  "modelKey": "mae",
+  "name": "mae",
+  "kind": "companion",
+  "candidate": 1,
+  "revision": "01",
+  "status": "integrated-reviewed-prototype",
+  "url": "/models/mae/model-r01.glb",
+  "sha256": "3fb4776d3830cda7b00dd1eeadaf4c000ebe7f41af38ccfe0ee55909e1309405",
+  "bytes": 17886104,
+  "triangles": 24836,
+  "bones": 4,
+  "upAxis": "Y",
+  "forwardAxis": "+Z",
+  "heightMetres": 0.38,
+  "widthMetres": 0.5071021524100772,
+  "lengthMetres": 0.17883455802619852,
+  "placement": {
+    "pivot": "ground-centred",
+    "scale": 1
+  },
+  "portrait": {
+    "url": "/models/mae/portrait.png",
+    "sha256": "861ac733cc0a6e1868ae4a5ae9d85984daa534cbe61c08d481ce4efdae6383fa"
+  },
+  "clips": [
+    {
+      "name": "Happy",
+      "seconds": 1.399999976158142,
+      "loop": false,
+      "rootMotion": "in-place",
+      "fps": 60
+    },
+    {
+      "name": "Hit",
+      "seconds": 0.6499999761581421,
+      "loop": false,
+      "rootMotion": "in-place",
+      "fps": 60
+    },
+    {
+      "name": "Idle_Loop",
+      "seconds": 3,
+      "loop": true,
+      "rootMotion": "in-place",
+      "fps": 60
+    },
+    {
+      "name": "Pet",
+      "seconds": 1.399999976158142,
+      "loop": false,
+      "rootMotion": "in-place",
+      "fps": 60
+    },
+    {
+      "name": "Run_Loop",
+      "seconds": 0.5,
+      "loop": true,
+      "rootMotion": "in-place",
+      "fps": 60
+    },
+    {
+      "name": "Walk_Loop",
+      "seconds": 0.800000011920929,
+      "loop": true,
+      "rootMotion": "in-place",
+      "fps": 60
+    }
+  ],
+  "locomotion": {
+    "Walk_Loop": {
+      "metresPerSecond": 0.6,
+      "cycleSeconds": 0.8,
+      "style": "alternating grounded pouch rocking"
+    },
+    "Run_Loop": {
+      "metresPerSecond": 1.8,
+      "cycleSeconds": 0.5,
+      "style": "soft compress-launch-land hop"
+    }
+  },
+  "lods": [
+    {
+      "url": "/models/mae/lod-r01.glb",
+      "sha256": "3fbb5c47bba03031a39e86b5af843895110cbcd800e7a7f6f57ebbcff81623c6",
+      "bytes": 1668032,
+      "triangles": 19868,
+      "distanceMetres": 9,
+      "purpose": "animated-medium-lod-geometry"
+    }
+  ],
+  "provenance": {
+    "provider": "Codex",
+    "claudeUsed": false,
+    "referenceGenerator": "Built-in imagegen",
+    "referenceImage": "assets/mae/source/reference-v1.png",
+    "referenceSha256": "861ac733cc0a6e1868ae4a5ae9d85984daa534cbe61c08d481ce4efdae6383fa",
+    "userReference": "assets/mae/source/mae.jpg",
+    "userReferenceSha256": "ed917b016d8aab12ccd7f7b1521f5d5e314a99d18f70de23ddd82cf1ce6d149a",
+    "reconstruction": "Local TRELLIS-2 v0.8.1 Vulkan / GPU 1 / 512 / seed42 / threshold cutout; measured source-preserving reduction and soft pouch rig.",
+    "denseSha256": "6ee7f824fb254f709bea0f59234bb35ef4f7bf34ea0bdc651c18c73f4c259069",
+    "sourceUvAndAlbedoPreserved": true,
+    "candidateFile": "output/model-generation/models/mae/work/rig/revision-01/candidate.glb",
+    "visualReview": "assets/mae/adoption-review.json"
+  },
+  "notes": [
+    "One continuous reconstructed pouch surface; no added visible primitive geometry, limbs or accessories.",
+    "Three loops and three reactions; shared skeleton, inverse bind matrices and material with LOD. PetContact follows the actual crown.",
+    "The measured LOD retains 19,868 triangles because smaller candidates distorted the source silhouette."
+  ]
+}

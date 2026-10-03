@@ -1,4 +1,5 @@
 import { createRimoNeko, updateRimoNeko, restoreRimoNeko } from '../shared/rimo-neko.mjs';
+import { createMae, updateMae, restoreMae } from '../shared/mae.mjs';
 import { updateOrbBots, saveOrbBots, restoreOrbBots } from '../shared/orb-bots.mjs';
 import { caveInteriorWeight } from '../shared/cave-light.mjs';
 import { updateFishing, cancelFishing } from '../shared/fishing.mjs';
@@ -182,6 +183,7 @@ export function createGameCore({
       room.animals = createAnimals(room.collision);
       room.companion524 = createCompanion524(room.collision);
       room.rimoNeko = createRimoNeko(room.collision);
+      room.mae = createMae(room.collision);
       room.enemies = createEnemies(room.collision, room.animals);
       createResidents(room, [], runtime.now());
       rooms.set(roomName, room);
@@ -589,6 +591,7 @@ export function createGameCore({
       if (!room.players.size) {
         updateCompanion524(room, dt, now);
         updateRimoNeko(room, dt, now);
+        updateMae(room, dt, now);
         updateOrbBots(room, dt, now);
         updateBarters(room, now);
         for (const resident of room.residents) {
@@ -644,6 +647,7 @@ export function createGameCore({
       const huntingChanged = updateHunting(room, now, notice);
       updateCompanion524(room, dt, now);
       updateRimoNeko(room, dt, now);
+      updateMae(room, dt, now);
       updateOrbBots(room, dt, now);
       updateAnimals(room, dt, now);
       const enemiesChanged = updateEnemies(room, dt, now, notice);
@@ -739,6 +743,7 @@ export function createGameCore({
                 room.orbBots?.find((bot) => bot.kind === '524'),
               ),
               rimoNeko: room.rimoNeko,
+              mae: room.mae,
               orbBots: saveOrbBots(room),
               enemies: room.enemies,
               boats: room.boats,
@@ -917,6 +922,7 @@ export function createGameCore({
       createResidents(room, record.residents, runtime.now());
       restoreCompanion524(room, record.companion524);
       restoreRimoNeko(room, record.rimoNeko);
+      restoreMae(room, record.mae);
       restoreOrbBots(room, record.orbBots, runtime.now());
     }
   }

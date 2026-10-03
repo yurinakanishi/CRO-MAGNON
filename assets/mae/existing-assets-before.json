@@ -1,0 +1,342 @@
+[
+  {
+    "url": "/models/woolly-mammoth/model-tail-r12.glb",
+    "sha256": "dc8ddadd93b9ef078cf75e0e6c182521ad167a30d4ecae57b75daf5d01e13ba8"
+  },
+  {
+    "url": "/models/woolly-mammoth/lod-performance.glb",
+    "sha256": "bece0bb61dbaaecb76cea676504d8a21c086f96e79f311c5bfdd8e9e5a7143b0"
+  },
+  {
+    "url": "/models/valley-pine/model.glb",
+    "sha256": "659a8624253f383bd40ca4b8461427e695a91e97a747d9507c949342b18e0dd8"
+  },
+  {
+    "url": "/models/valley-pine/lod1.glb",
+    "sha256": "a3927a386890f6a9e3ce71d2a0c42be2e864a83487abc13f8a01b6b69a16bff1"
+  },
+  {
+    "url": "/models/meadow-grass/model.glb",
+    "sha256": "24b41b18d4c5ea40ca660d7eda16f2154ca856828ebfc721d6c3489efe63f9c0"
+  },
+  {
+    "url": "/models/valley-boulder/model.glb",
+    "sha256": "f46449aa51814b9037c8ed3c43179845e63c6f9b48b94e02c7979266cb09bb1d"
+  },
+  {
+    "url": "/models/firewood-pile/model.glb",
+    "sha256": "88fdbe0514694b4b484e285dc6ffa85c8cebe134ea120d34f7486dc27d3d3d3a"
+  },
+  {
+    "url": "/models/firewood-pile/lod-performance.glb",
+    "sha256": "dd79b8adb654ffc52786d4c2a9fc1b7020c5f54684346046c63cac1b5b25443b"
+  },
+  {
+    "url": "/models/berry-bush/model.glb",
+    "sha256": "3d405ba99daa2d984810e9a2cf4418ad2008c0ee9279c0157fb68fc5a3008ee1"
+  },
+  {
+    "url": "/models/berry-bush/lod-performance.glb",
+    "sha256": "972efcd873a8f3ac829868d82245c0a985bb29d5fe38710052310fdd2487a614"
+  },
+  {
+    "url": "/models/hide-tent/model.glb",
+    "sha256": "7c7aef410b4f8eee268cd32f75faa65f0b7ea3f2d8e4cf53b6d810e5a1e20de7"
+  },
+  {
+    "url": "/models/hide-tent/lod-performance.glb",
+    "sha256": "57bae53dd8bf87e0d8e9b8e72d6aeec761dd94f38afaa0889b98af785e662c41"
+  },
+  {
+    "url": "/models/drying-rack/model.glb",
+    "sha256": "b106d53d89e9fa51ee38d3baa2c3a0b898fd39658f5718728ef12844b9f1d65d"
+  },
+  {
+    "url": "/models/stone-firepit/model.glb",
+    "sha256": "d47aa67f9987cacd61d523d53622e33ebf0778c9a03f9e68559ad3f6db20f65a"
+  },
+  {
+    "url": "/models/stone-firepit/lod-performance.glb",
+    "sha256": "f20d687b16e7b74dc84ee20a40fb76cf4541445ab33d6f2a8e9062961ca47209"
+  },
+  {
+    "url": "/models/flint-spear/model.glb",
+    "sha256": "1a10db6d1b44da1e982f88e5ae9ef6be8fb74f5900ebd9258380ad200e53ed3d"
+  },
+  {
+    "url": "/models/stone-axe/model.glb",
+    "sha256": "12dc3f23f8ec2acfb9fb6f770ab05f59c21584be00795f9b8cf272a2f6cf5ac0"
+  },
+  {
+    "url": "/models/meadow-ground/model.glb",
+    "sha256": "6c6b41bdec1631236027c567635623aa9cdd1e0d92c0ae9e89f77764b52995e1"
+  },
+  {
+    "url": "/models/river-water/model.glb",
+    "sha256": "8575faa5fd988da815d622ebbd03d49390339df5eeafd0eb794e1b0368ec0274"
+  },
+  {
+    "url": "/models/wood-footbridge/model.glb",
+    "sha256": "629a8ec5db3dd16b7a126b1c8ea4877a5ec0bc4037017e0a2a53ec2f63e3a369"
+  },
+  {
+    "url": "/models/mammoth-meat/model.glb",
+    "sha256": "50bf72d1dc5ff23b7eb206e7d0c6535d9a4ac1559190e6c4f5bbb94cd0ffaf2d"
+  },
+  {
+    "url": "/models/crow-shaman/model-motion-r04.glb",
+    "sha256": "0fdb13ce4ace078b93694a898e58aa4fc05ac64eb11d128ac83e7935a5a55e63"
+  },
+  {
+    "url": "/models/crow-shaman/lod-performance.glb",
+    "sha256": "c07bc8af0f22ea62bc6c3da1f193af2af27f1a327926f5992ae5919a3806e94a"
+  },
+  {
+    "url": "/models/kunoichi-katana/model.glb",
+    "sha256": "3e6e061fc02779d3516d114b53629fa0d5b585e815d4683ce74dd7d9c2822e0e"
+  },
+  {
+    "url": "/models/snow-ground/model.glb",
+    "sha256": "ddf7037c1cd52801d7c5f1a71492c496d7885f407372edb275e445ce0e009f44"
+  },
+  {
+    "url": "/models/snow-ground/lod1.glb",
+    "sha256": "e822a8dd99fb95c3589b161a5ac95a931a7bb04edff30d8571ea8973a34fb412"
+  },
+  {
+    "url": "/models/snow-ground/lod2.glb",
+    "sha256": "8173f329c3fef54d0cf60cbfc61b5e9326bec395d9a002d6c118eb8fcd70fad3"
+  },
+  {
+    "url": "/models/ice-ground/model.glb",
+    "sha256": "30eeb7ceea111e33576b497e8341f9f01bf232fc598c6bbefa79a9867df51cce"
+  },
+  {
+    "url": "/models/ice-ground/lod1.glb",
+    "sha256": "239f235f9df4e4ab55f41668b9dfd3b7eba920e06a7cc53db2a1740365228707"
+  },
+  {
+    "url": "/models/ice-ground/lod2.glb",
+    "sha256": "58932f8b217650af1a596c8de6863e373d6b76bf2671a81f282cbdb8fc74c5c4"
+  },
+  {
+    "url": "/models/desert-ground/model.glb",
+    "sha256": "fcf25dfc8bed6ce7ecfbdf445674e3c092f36d353462685cb5730ba3ef00005e"
+  },
+  {
+    "url": "/models/desert-ground/lod1.glb",
+    "sha256": "fb7f7b45c67bf8c1e62b0bf77a6ac52b57b8917aed3e1c6956461cd939e34882"
+  },
+  {
+    "url": "/models/desert-ground/lod2.glb",
+    "sha256": "733979092eeedff1984acdf3395576b616db477f580ec708bbfe0a27b7fe87df"
+  },
+  {
+    "url": "/models/volcanic-ground/model.glb",
+    "sha256": "2bca15ffc01cce6148f8569a60b3fbecd16ac0c7946014f7b48f267b5eaffb88"
+  },
+  {
+    "url": "/models/volcanic-ground/lod1.glb",
+    "sha256": "dd46d5d0bd30c0d98f8c4aff2fbb907d91585e1e11dda60a6f1ff08000c207f2"
+  },
+  {
+    "url": "/models/volcanic-ground/lod2.glb",
+    "sha256": "ff9d0530565596a465f6dbf8d17f4d2788e541df44d09e017ef8f499805ef2ac"
+  },
+  {
+    "url": "/models/glacier-spires/model.glb",
+    "sha256": "af945c2fec27252389a05ca2eabb6970003372a584a83cf18e2e6c34a42f6b53"
+  },
+  {
+    "url": "/models/glacier-spires/lod1.glb",
+    "sha256": "763d759cf19ed420903233d58051a2d9c619071a8c748f72fc29f6c525e4f1a2"
+  },
+  {
+    "url": "/models/glacier-spires/lod2.glb",
+    "sha256": "3a6fa1607b3a778910797750dedfe6e1dd285871c10bb25ee70ec2514dd07caf"
+  },
+  {
+    "url": "/models/volcanic-cone/model.glb",
+    "sha256": "868c062028af62fedf491ed7391602991dbc76b1ddbbd09494ee958a7898cd5b"
+  },
+  {
+    "url": "/models/volcanic-basalt-columns/model.glb",
+    "sha256": "a3cf5fa909494f4250e4cacd9bc9529b9780f9d7292fc1bfd6bf6235ae71c0fc"
+  },
+  {
+    "url": "/models/volcanic-basalt-columns/lod1.glb",
+    "sha256": "2a3e890af2b0bf31f71fba58db39eff122f6b60c06cf341c86c85f80db665dde"
+  },
+  {
+    "url": "/models/desert-cactus/model.glb",
+    "sha256": "df3e780323fd45808d92b2f7edcd2c7d9ee8000f1ea0c67b29baab73c939d7ed"
+  },
+  {
+    "url": "/models/desert-cactus/lod1.glb",
+    "sha256": "d04e3a4dcab15ab00753fe26bf84a062c40c09d5ae3083174148e3bb6d19ed2d"
+  },
+  {
+    "url": "/models/desert-cactus/lod2.glb",
+    "sha256": "1f1642cf62ce45665a5e326a0ef795a716a4397822c1fdc9ff0366e39fb13f8e"
+  },
+  {
+    "url": "/models/dugout-canoe/model.glb",
+    "sha256": "6e77ae6df54f19a450d460b70ee35596e9703942d5d18bcdbf6b35f066e964e4"
+  },
+  {
+    "url": "/models/cockle-shell/model.glb",
+    "sha256": "7e4f448274b346dd8a3705901cccf0e7e4d49be2bc09b683cd85cdc740122a81"
+  },
+  {
+    "url": "/models/shell-midden/model.glb",
+    "sha256": "494844840a1ac461837e73874bf3858d5a5f73baf8655769b6cd590d048e07cd"
+  },
+  {
+    "url": "/models/wooden-spear/model.glb",
+    "sha256": "ac2b1a3c8100b38a7753749fd6578b5f355247478cf9f44ea642c06eb858ee5d"
+  },
+  {
+    "url": "/models/obsidian-spear/model.glb",
+    "sha256": "d89b680a1519081cb5725ae543ebf1ce7e81c1fdf7f844e060eb17b4f42ca7bc"
+  },
+  {
+    "url": "/models/obsidian-blade/model.glb",
+    "sha256": "3319075637b3714f836a59d9381fa23f0fb943ed8969a6c193f11e5152590f60"
+  },
+  {
+    "url": "/models/violet-behemoth/model-quadruped-r04.glb",
+    "sha256": "6dd28210973bdccc543c0e2805ced82c838b95df2535218a652fda8ca869aa55"
+  },
+  {
+    "url": "/models/violet-behemoth/lod-performance.glb",
+    "sha256": "53d11944cf0e7b4298ea6e1b0e136a151a73d3ff24e29d03da688bfa2a6a8dc8"
+  },
+  {
+    "url": "/models/meadow-sprig/model.glb",
+    "sha256": "4a4c9060a5d95f0db3dcf3c4ff050c78c86f543b942ec62273471326959483de"
+  },
+  {
+    "url": "/models/sabertooth-tiger/model-r13.glb",
+    "sha256": "54db205315086d109bd34b6cf35d31df25cca7472dddb95c7fdbeea6c868021d"
+  },
+  {
+    "url": "/models/sabertooth-tiger/lod-performance.glb",
+    "sha256": "cccd444673cf8dc6eba0238cfa15990985fc4b4bcfa500c9c95c9afcaf4352cd"
+  },
+  {
+    "url": "/models/valley-castle/model-r13.glb",
+    "sha256": "2a271bbc12e1b331da6468d5f84f1db173beeb284fdebfdde7c56b613e48dc90"
+  },
+  {
+    "url": "/models/firewood-log/model.glb",
+    "sha256": "8a32826636cfc198cc1776ebec499b1bc036779c08143cf256ad7e4d8a186cd3"
+  },
+  {
+    "url": "/models/firewood-log/lod1.glb",
+    "sha256": "75460ca0a571243cab6c63dfe0acc44fbed1fae17578823df02ffbf90626cf2e"
+  },
+  {
+    "url": "/models/firewood-log/lod2.glb",
+    "sha256": "f24ff178715163c72f74ec06a1bf6aa4cb1e6052b4810d66faffb8832bd5e71d"
+  },
+  {
+    "url": "/models/camp-mountain/model-r15.glb",
+    "sha256": "193127fbde284f036864996060cb3b85578ab7a595384151dad858e569eb9202"
+  },
+  {
+    "url": "/models/camp-mountain/lod-performance.glb",
+    "sha256": "6d4db4974cd16bd7ccc8ad53a199197ada18166dba1d3aae116f98c526496b2d"
+  },
+  {
+    "url": "/models/camp-cave/model-r26.glb",
+    "sha256": "65dde1aa7311b88c159d524d93af82a770dac77e48ee1f35356e3000cad8a15f"
+  },
+  {
+    "url": "/models/yellow-524-mascot/model-midpoint-r01.glb",
+    "sha256": "77faeb7e7b0a34cd1aa6e23b728cbaf295227998791bb437977a8ff2abfbb3b9"
+  },
+  {
+    "url": "/models/yellow-524-mascot/lod-low-spec-r01.glb",
+    "sha256": "07022f5603e1be9e77d02dd5a45dd61c053aa75ea8bdfbe3e3e2a64d4a46bbf2"
+  },
+  {
+    "url": "/models/rimo-neko/model-c02-r02.glb",
+    "sha256": "c336d59a52a5fc5594969ee97d8b4393b7e7f5a3ba7a8b176a6375ada41a3f57"
+  },
+  {
+    "url": "/models/rimo-neko/lod-c02-r02.glb",
+    "sha256": "50de7f30f0c61a7e83d0ef148c006d8d050f5578e263c1e70377d5ea47017a04"
+  },
+  {
+    "url": "/models/orb-bot-white/model-r03.glb",
+    "sha256": "0e68d2dda0a2d11396a50a853cefcd3897e53abd9b18e2023bd1e2bc6f4d266a"
+  },
+  {
+    "url": "/models/orb-bot-white/lod-r02.glb",
+    "sha256": "b05fb8beea1cfc301b5d8d0c8ee703219b70fef5dcaa97af231b5bf78d789297"
+  },
+  {
+    "url": "/models/orb-bot-blue/model-r03.glb",
+    "sha256": "dee691fc7c35bde8079cd394744a2bdf050380528d30e86ec823cf8269806304"
+  },
+  {
+    "url": "/models/orb-bot-blue/lod-r02.glb",
+    "sha256": "446ca81625dff165d40596cf63005fa04fe5c8f1d039fbd7c8a2c7b0b1018a8c"
+  },
+  {
+    "url": "/models/orb-bot-green/model-r03.glb",
+    "sha256": "4f7461ab063fce7aae319745520523bb2d84938ba7a11b765f3ea6b34dbb12ce"
+  },
+  {
+    "url": "/models/orb-bot-green/lod-r02.glb",
+    "sha256": "becab68c827d467624b1f3d9bf84126d094dd8accd8c05420fd38b1101609497"
+  },
+  {
+    "url": "/models/orb-bot-purple/model-r03.glb",
+    "sha256": "5cc2232ba84cacbd2616ec6979757f41822cb4d845c7cbe873888756f6059e96"
+  },
+  {
+    "url": "/models/orb-bot-purple/lod-r02.glb",
+    "sha256": "a33ec432dd655db4204949a55b7a10a6c44920c7a686d5b12538258c36607f38"
+  },
+  {
+    "url": "/models/orb-bot-orange/model-r08.glb",
+    "sha256": "35a5de83fc555c537e918000b6c2f0fabed5ce6ac2f837aa78930e7547f99d55"
+  },
+  {
+    "url": "/models/orb-bot-orange/lod-r06.glb",
+    "sha256": "b291e5836bb739096128a47b406bed1af8ba4247f76b04900cbee94306f03ae8"
+  },
+  {
+    "url": "/models/orb-bot-beret/model-r03.glb",
+    "sha256": "0c18e377dc69de6c1fce9bd2baaade3fb20914f2e547d382ec5a6a8b24e304e0"
+  },
+  {
+    "url": "/models/orb-bot-beret/lod-r03.glb",
+    "sha256": "e08d43efcd7d647259f275d55538544a2a9c4829250a523d6a782804dc0075ff"
+  },
+  {
+    "url": "/models/orb-bot-frog/model-r01.glb",
+    "sha256": "cdd25740bb82c8553f3acc174d29e1b016729af1eb60ddf2e0d4ce7f479b5741"
+  },
+  {
+    "url": "/models/orb-bot-frog/lod-r01.glb",
+    "sha256": "4f50f276ba068a6476021bc34abd3f2cc73909db7baa1ca2c881ee96a94f34cb"
+  },
+  {
+    "url": "/models/orb-bot-triangle/model-r06.glb",
+    "sha256": "a69f9a4f5d65fe867f5fd6865a41f2862282ef3ae7fa8858774b7797ddf6cf1b"
+  },
+  {
+    "url": "/models/orb-bot-triangle/lod-r06.glb",
+    "sha256": "1f5187de9141e06f6e4d2975b090ab34520911e552595ea6e13b4420c92a530c"
+  },
+  {
+    "url": "/models/orb-bot-heart/model-r02.glb",
+    "sha256": "fe294cdc517abb4485b4379ffd4619fe4ff37a535d5463850f87b6ba612defc7"
+  },
+  {
+    "url": "/models/orb-bot-heart/lod-r02.glb",
+    "sha256": "dc5b5a69e1d838f8b2c45f10ded323ec83c65e67fa429e56f502430338559fc2"
+  }
+]

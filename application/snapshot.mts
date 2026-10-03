@@ -10,6 +10,7 @@ import { maritimeWeather } from '../shared/maritime-weather.mjs';
 import { barterSnapshots } from '../shared/barter.mjs';
 import { activeMapPins } from '../shared/map-pins.mjs';
 import { rimoNekoSnapshot } from '../shared/rimo-neko.mjs';
+import { maeSnapshot } from '../shared/mae.mjs';
 import { companion524Snapshot } from '../shared/companion-524.mjs';
 import { orbBotSnapshots } from '../shared/orb-bots.mjs';
 export function snapshot(
@@ -20,6 +21,7 @@ export function snapshot(
   return {
     companion524: companion524Snapshot(room.companion524),
     rimoNeko: rimoNekoSnapshot(room.rimoNeko),
+    mae: maeSnapshot(room.mae),
     orbBots: orbBotSnapshots(room),
     mapPins: activeMapPins(room, now),
     barters: barterSnapshots(room),

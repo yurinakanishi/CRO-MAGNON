@@ -1,0 +1,30 @@
+{
+  "candidate": 1,
+  "revision": "01",
+  "sha256": "3fb4776d3830cda7b00dd1eeadaf4c000ebe7f41af38ccfe0ee55909e1309405",
+  "decision": "adopt",
+  "reviewer": "Codex visual inspection",
+  "reference": "assets/mae/source/mae.jpg",
+  "evidence": "output/model-generation/models/mae/qa/final-01",
+  "observations": [
+    "Rounded horizontal pouch outline, light gray surface, two short vertical eyes and straight mouth retained.",
+    "Front, back, side, bottom and three-quarter source and export renders show a continuous soft body without extra limbs or accessories.",
+    "Normal and clay renders show smooth volume; no conspicuous holes, hard ridges or disconnected geometry.",
+    "Exact exported browser playback shows grounded rocking, running hops, pet dip, happy bounces and recoil. Facial texture deforms with the continuous skin.",
+    "Camera controls and all six clips passed the offline viewer checks; five directions and two playback speeds were exercised."
+  ],
+  "limits": [
+    "Single reference image: hidden surfaces are inferred.",
+    "Physical phone/controller, long sessions and sustained FPS are not verified."
+  ],
+  "gameQa": "assets/mae/game-qa.json",
+  "numericQa": "output/model-generation/models/mae/work/rig/revision-01/qa/numeric.json",
+  "embeddedSourceAlbedo": {
+    "passed": true,
+    "embeddedSourceAlbedoExact": true,
+    "imageSha256": [
+      "dd18b547900aab0b9ab5afa93105e07429ae5250342085cd9127dffac817f608"
+    ]
+  },
+  "existingWorldModelsUnchanged": 85
+}

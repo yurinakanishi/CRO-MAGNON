@@ -1,0 +1,1143 @@
+{
+  "target": "C:\\Users\\yurin\\Desktop\\projects\\threed-model-creation\\models\\mae",
+  "verified": true,
+  "files": 227,
+  "bytes": 250945627,
+  "records": [
+    {
+      "path": "qa\\all-assets-final.log",
+      "bytes": 9492,
+      "sha256": "d4b3439502c04eac49c8a5ec0874051b15726faa800cf6feb23206127facbb86"
+    },
+    {
+      "path": "qa\\all-assets.log",
+      "bytes": 501,
+      "sha256": "abedd8dfe15277329e5a72c973ef37a1ecbb7e7a94ccb92f094a45fcaa9ab2b0"
+    },
+    {
+      "path": "qa\\check-delivery.log",
+      "bytes": 296,
+      "sha256": "92ba1b5b81c4e81a0158a23c9f9a87778b58e72ce4f1dd8ba2611b676ec2d374"
+    },
+    {
+      "path": "qa\\check-final.log",
+      "bytes": 296,
+      "sha256": "87793e079ad61f86bac8c90b4f19035d24c18f000430bf82a25f23bda184a1a6"
+    },
+    {
+      "path": "qa\\check.log",
+      "bytes": 296,
+      "sha256": "d4c8e7e4ea887917d86ba81cf4431cbdf097c44e209a58aaef3be2d146da9fde"
+    },
+    {
+      "path": "qa\\contact-before-position-fix.json",
+      "bytes": 140043,
+      "sha256": "f4e7ac5d7ac7eb48ec5dcf54ec02a540f030393ba26180639ded366654c98101"
+    },
+    {
+      "path": "qa\\contact.json",
+      "bytes": 140299,
+      "sha256": "6bd62884561b3013a360d353b4c8326b6fe7e32ee29434fd6b8f6289df4848e7"
+    },
+    {
+      "path": "qa\\dense-neutral\\back.png",
+      "bytes": 280251,
+      "sha256": "94e28d68cbfbcdbe348937d6e32ba9dc6006446894737129411ea72bac78b1f3"
+    },
+    {
+      "path": "qa\\dense-neutral\\bottom.png",
+      "bytes": 276776,
+      "sha256": "010e68b7a769a2f2071664191a85e7d0c69f28ba3e5dfb7afbd248c6b30b1b35"
+    },
+    {
+      "path": "qa\\dense-neutral\\bounds.json",
+      "bytes": 243,
+      "sha256": "cc3d17e44180e2a4d4448f71cd43b61f754ba9038e4d3aaff3d8a9e939bb1508"
+    },
+    {
+      "path": "qa\\dense-neutral\\front.png",
+      "bytes": 281696,
+      "sha256": "2f1f9694b0fcd1563a9273ab11d016b932b7a12d9d1773357f6e97fa5b57385b"
+    },
+    {
+      "path": "qa\\dense-neutral\\left.png",
+      "bytes": 272767,
+      "sha256": "cc5114d4c9bebc8137e5e9a969ff404a85f97b85485b6fb17a1752476662f927"
+    },
+    {
+      "path": "qa\\dense-neutral\\render.log",
+      "bytes": 1593,
+      "sha256": "8a9afda658f0098844a41c69a449227af370640ca38a546a82a2aa2d67a9f03a"
+    },
+    {
+      "path": "qa\\dense-neutral\\right.png",
+      "bytes": 272655,
+      "sha256": "d3848aa4b3596a682ab6946ea8f8ce03f1212f26003e276e03970215050bc106"
+    },
+    {
+      "path": "qa\\dense-neutral\\threequarter.png",
+      "bytes": 280343,
+      "sha256": "419a62389649d80d3d8c3c38c101a1988ceccaaf5a24db3bd86296a21cbeff67"
+    },
+    {
+      "path": "qa\\dense-neutral\\top.png",
+      "bytes": 271942,
+      "sha256": "c046002a3b795dc4e6a8e39529526560fa12e629202473f3b921580fa5d0b054"
+    },
+    {
+      "path": "qa\\final-01\\browser-back.png",
+      "bytes": 123858,
+      "sha256": "897a8d3c7458ddc7347556cc27d30cadf8033d920df01699d5ea3a101b9e6e68"
+    },
+    {
+      "path": "qa\\final-01\\browser-bottom.png",
+      "bytes": 73067,
+      "sha256": "26994e36c5df78684ed7686e28aa2288baf8bd62dcadb29f4d58236bca17d2e1"
+    },
+    {
+      "path": "qa\\final-01\\browser-front.png",
+      "bytes": 132848,
+      "sha256": "af7fae66e00cedcfa2568c2a60a2602e3b2b7d2afb6bf3d8e979168bf8c83db8"
+    },
+    {
+      "path": "qa\\final-01\\browser-left.png",
+      "bytes": 64244,
+      "sha256": "f0a767b88f11d1b2a86f65863a2243950ab2a7e352796444739607353a66eedc"
+    },
+    {
+      "path": "qa\\final-01\\browser-right.png",
+      "bytes": 66918,
+      "sha256": "fd2d2a3b5fec5bf1cc6189bc46b9b6f47e0a592aee46e52bc0a74242e3f48b1e"
+    },
+    {
+      "path": "qa\\final-01\\browser-threequarter.png",
+      "bytes": 121779,
+      "sha256": "ac8ea9568e301160490238866e4da5445e939fbec4a8c63433eeaaa833943a9b"
+    },
+    {
+      "path": "qa\\final-01\\browser-top.png",
+      "bytes": 66960,
+      "sha256": "3ff6f72578debcf08cf9f34cb6815d8e75d1d90fe85f94d4e49a74837bdf0da3"
+    },
+    {
+      "path": "qa\\final-01\\clay\\back.png",
+      "bytes": 409249,
+      "sha256": "33f2031ad15b16494537861179681aaf58734a37847a5e865990afc327edeff3"
+    },
+    {
+      "path": "qa\\final-01\\clay\\bottom.png",
+      "bytes": 407161,
+      "sha256": "83678a9418921e0da732ec2c9299f689a5512a9ba950ec1a1099139e9d2a6363"
+    },
+    {
+      "path": "qa\\final-01\\clay\\bounds.json",
+      "bytes": 244,
+      "sha256": "d5abe5488dabbd4ccff9d9d67382fff321edfd0804bed853e1859164c8a42cf9"
+    },
+    {
+      "path": "qa\\final-01\\clay\\front.png",
+      "bytes": 410659,
+      "sha256": "f07fbc512952b89f208607c13c7dd1c7eeb104f7d4f0e95ec92c5de30badc9c0"
+    },
+    {
+      "path": "qa\\final-01\\clay\\left.png",
+      "bytes": 407514,
+      "sha256": "943e9652339340231e2152ad2da3a63073e26d042d47578cfd172755c5231a79"
+    },
+    {
+      "path": "qa\\final-01\\clay\\right.png",
+      "bytes": 407776,
+      "sha256": "751fe94172ac3eff5f09fa1077c1f08b48939348c75a084b2f27dd0a83c98f25"
+    },
+    {
+      "path": "qa\\final-01\\clay\\threequarter.png",
+      "bytes": 411267,
+      "sha256": "9ac24783baa494308a8286e5f98d4afd167883f1a97a26d8760249940f90d177"
+    },
+    {
+      "path": "qa\\final-01\\clay\\top.png",
+      "bytes": 407760,
+      "sha256": "0a25de0f9c039808a6c8f3da315a694f082309b7aaf33c4568fad621e102dd2a"
+    },
+    {
+      "path": "qa\\final-01\\Happy-30.png",
+      "bytes": 133165,
+      "sha256": "dc42b5986d9caa8f6cddd4f95c5fed364472ca79e797c3515b7f8d2b546a8c3a"
+    },
+    {
+      "path": "qa\\final-01\\Happy-5.png",
+      "bytes": 133384,
+      "sha256": "3723009db6b8e36c4cbad44728683d9f431e1ebb15ab71ea5773ac0915b75b04"
+    },
+    {
+      "path": "qa\\final-01\\Happy-55.png",
+      "bytes": 135911,
+      "sha256": "5646601a3a66c141620dededbd03d6ce71c86a2baccfb2455d758cac93730aff"
+    },
+    {
+      "path": "qa\\final-01\\Happy-80.png",
+      "bytes": 133512,
+      "sha256": "320a763a6db7fe08a4333137d18e46a0a4e9051cc4ebbe4c0b0a7768a48dfe5b"
+    },
+    {
+      "path": "qa\\final-01\\Happy-98.png",
+      "bytes": 133522,
+      "sha256": "642bca88139ecc6ca457f5d3f37d43ee565729c01d2cd4be38d46a8c116da190"
+    },
+    {
+      "path": "qa\\final-01\\Hit-30.png",
+      "bytes": 132247,
+      "sha256": "75d38fc853cffd2e1962b339f482334b47813dbd4d6ea2cbd102d4b5f141eb59"
+    },
+    {
+      "path": "qa\\final-01\\Hit-5.png",
+      "bytes": 133759,
+      "sha256": "13b6b9db8830bcb2825ecbabbcf79ff2fbd3f815f5489418f16a97c5c8577816"
+    },
+    {
+      "path": "qa\\final-01\\Hit-55.png",
+      "bytes": 127992,
+      "sha256": "a42c119c52a0e0cf0c02abdddf2ab45a0d1aa7df7985b8746c367151639108b4"
+    },
+    {
+      "path": "qa\\final-01\\Hit-80.png",
+      "bytes": 132130,
+      "sha256": "7a3093ec128846ec252a4143792c55f780be779fb313cd6839892c9df4dcaf61"
+    },
+    {
+      "path": "qa\\final-01\\Hit-98.png",
+      "bytes": 133593,
+      "sha256": "2e70bba6cec24a3d75fd5f2579ab49f2fb64944802dee2d99a8fba077292510a"
+    },
+    {
+      "path": "qa\\final-01\\Idle_Loop-30.png",
+      "bytes": 134013,
+      "sha256": "8612c3eedc92bee0a90993ed12610c05eeacdf15245d0c53cd003f6c188086f8"
+    },
+    {
+      "path": "qa\\final-01\\Idle_Loop-5.png",
+      "bytes": 133566,
+      "sha256": "057e4ffda44b0a14f35ff6dc5f73b277e571c720e1f9a421d85e6a8cf4cb6ba4"
+    },
+    {
+      "path": "qa\\final-01\\Idle_Loop-55.png",
+      "bytes": 133514,
+      "sha256": "6dab241121374c85d1ed4445ca41ce5056fd83a5241f8c7c7c210b7b662f241a"
+    },
+    {
+      "path": "qa\\final-01\\Idle_Loop-80.png",
+      "bytes": 133182,
+      "sha256": "2a50b9196cad98f3e18a0fc200f70dc0aa511aebb726b9b816ceb46d9ef11489"
+    },
+    {
+      "path": "qa\\final-01\\Idle_Loop-98.png",
+      "bytes": 133446,
+      "sha256": "975f28e1bc6b8edf1b47437fb1322b798a2a712247f4a99ce9e3754051610577"
+    },
+    {
+      "path": "qa\\final-01\\motion-angles\\Happy-back.png",
+      "bytes": 127667,
+      "sha256": "02cf3de207cd1ad958042848dca212a37a3b8b9e3e42780539b8ae8d044a071e"
+    },
+    {
+      "path": "qa\\final-01\\motion-angles\\Happy-front.png",
+      "bytes": 135991,
+      "sha256": "89c7bfc8db5b217e67c4114166e4d072d51809400dbaf5cd10ad4f9270cd83aa"
+    },
+    {
+      "path": "qa\\final-01\\motion-angles\\Happy-left.png",
+      "bytes": 67304,
+      "sha256": "6c62dad2f798c2658a054c3b17b248ec2dbc9cd273a453f296bb4aebb2c4857c"
+    },
+    {
+      "path": "qa\\final-01\\motion-angles\\Happy-right.png",
+      "bytes": 70008,
+      "sha256": "76119ece0dcc56d81c5c65eb28718388e79a857392609dd0e4740069b975429a"
+    },
+    {
+      "path": "qa\\final-01\\motion-angles\\Happy-threequarter.png",
+      "bytes": 123485,
+      "sha256": "c27645efdb4f31abb0dccde81da5c295b2a5a85f39b5b35afda91dee901f56af"
+    },
+    {
+      "path": "qa\\final-01\\motion-angles\\Hit-back.png",
+      "bytes": 125873,
+      "sha256": "5aa89fec163a2c9bc6e1b5fcedaf88fdd9db947ac685b0adcdad39e9e0c872c5"
+    },
+    {
+      "path": "qa\\final-01\\motion-angles\\Hit-front.png",
+      "bytes": 133542,
+      "sha256": "9f3d69092e73e9b6ac96b58ebc067e3aa56dff29b62a3bb49a86efe01a919564"
+    },
+    {
+      "path": "qa\\final-01\\motion-angles\\Hit-left.png",
+      "bytes": 66977,
+      "sha256": "17c8b6b8ab98a4ba2a889695b836f13862a8473dcf6995371d04f9d313efaf13"
+    },
+    {
+      "path": "qa\\final-01\\motion-angles\\Hit-right.png",
+      "bytes": 69343,
+      "sha256": "da65c9ea0b16eab386481b8014dfe5620aed30b0a454fb0d3bf8345dabfa3221"
+    },
+    {
+      "path": "qa\\final-01\\motion-angles\\Hit-threequarter.png",
+      "bytes": 120611,
+      "sha256": "c5dc61c40dc6e75090528ff8dafaf7fa5c89c9c4b7660c01e29dd7d4b1852b8e"
+    },
+    {
+      "path": "qa\\final-01\\motion-angles\\Idle_Loop-back.png",
+      "bytes": 124994,
+      "sha256": "1c110bbae2a0ad24db2fcdccb6e9f86004348d37e88d4872e204845ff615b52c"
+    },
+    {
+      "path": "qa\\final-01\\motion-angles\\Idle_Loop-front.png",
+      "bytes": 133930,
+      "sha256": "3c081bbb99be19922b148b388bc163456259a7e8c836c756014f750b6d98839d"
+    },
+    {
+      "path": "qa\\final-01\\motion-angles\\Idle_Loop-left.png",
+      "bytes": 66856,
+      "sha256": "6f29a73226345be76eeb6e9cb006d5604b358812debd0574a711757802266226"
+    },
+    {
+      "path": "qa\\final-01\\motion-angles\\Idle_Loop-right.png",
+      "bytes": 69470,
+      "sha256": "604022d392e96ada1c70683e81c20c75b5ce7b3dbb0a7c29b025c0d3278bb76a"
+    },
+    {
+      "path": "qa\\final-01\\motion-angles\\Idle_Loop-threequarter.png",
+      "bytes": 121479,
+      "sha256": "e741634ade0416ad0035dfc6b3a0cc609642e1ebad48cd1aab69292b77bf4609"
+    },
+    {
+      "path": "qa\\final-01\\motion-angles\\Pet-back.png",
+      "bytes": 124379,
+      "sha256": "90f89751fd3429f49690d2ce9f486ca0ae5090f6bc5f9e7a40a20ebecaecf252"
+    },
+    {
+      "path": "qa\\final-01\\motion-angles\\Pet-front.png",
+      "bytes": 133104,
+      "sha256": "2032a797f3b4287933920f2af982601924879f91d9c4c8514c0c5b08a7910700"
+    },
+    {
+      "path": "qa\\final-01\\motion-angles\\Pet-left.png",
+      "bytes": 66876,
+      "sha256": "f5fd8de0a6e86a0b861bb14218c1e17af2eab46e1ee0b318ac3933e09c57514b"
+    },
+    {
+      "path": "qa\\final-01\\motion-angles\\Pet-right.png",
+      "bytes": 69562,
+      "sha256": "324c0ff11a286449d302cee069860ffd2e4717b4b26a0d51fcd0749a29055453"
+    },
+    {
+      "path": "qa\\final-01\\motion-angles\\Pet-threequarter.png",
+      "bytes": 120894,
+      "sha256": "b3e4a29afac55e64e5a182abcdca1e44a18fba3b32896c92d0ac51a64ccdfb7a"
+    },
+    {
+      "path": "qa\\final-01\\motion-angles\\qa.json",
+      "bytes": 9133,
+      "sha256": "dbaef5594c9b686ba8146d45b6251762d1baafdd2830395974ca1418fa1ea150"
+    },
+    {
+      "path": "qa\\final-01\\motion-angles\\Run_Loop-back.png",
+      "bytes": 127116,
+      "sha256": "9763fd585b278f20a8c7e2ffa3b3e53860214e8c22b3f9122a7f310c41bcc362"
+    },
+    {
+      "path": "qa\\final-01\\motion-angles\\Run_Loop-front.png",
+      "bytes": 135999,
+      "sha256": "16c7f02ce58376d7203f530faa7549e0cc9c2e586d6a870b81d54af986836fb5"
+    },
+    {
+      "path": "qa\\final-01\\motion-angles\\Run_Loop-left.png",
+      "bytes": 66953,
+      "sha256": "900d5f9851fa6433577749d3cdf0d8ffd394041aed304ce466e419db95bfd036"
+    },
+    {
+      "path": "qa\\final-01\\motion-angles\\Run_Loop-right.png",
+      "bytes": 69724,
+      "sha256": "7200ed6daf39988e5bece7b2518cf2aad2a3ea72ea6678428036d9cd07fadf2a"
+    },
+    {
+      "path": "qa\\final-01\\motion-angles\\Run_Loop-threequarter.png",
+      "bytes": 122866,
+      "sha256": "446e93869db587bc9ec81288a4330458e8a1e2ad6d856366895746c5a483175d"
+    },
+    {
+      "path": "qa\\final-01\\motion-angles\\Walk_Loop-back.png",
+      "bytes": 124032,
+      "sha256": "f0bb8dd4b4e3eaa4dd37a6e2dcad4dcdbfd37e5f8a7652593ff62bf2e3130476"
+    },
+    {
+      "path": "qa\\final-01\\motion-angles\\Walk_Loop-front.png",
+      "bytes": 132743,
+      "sha256": "9555c40cd2a1708986239660732f4a5c13bf38912cfb1a7096285def9712d5af"
+    },
+    {
+      "path": "qa\\final-01\\motion-angles\\Walk_Loop-left.png",
+      "bytes": 66761,
+      "sha256": "b18fa93c96655de43a11d2100983913a84ae808a345c44eebe1bb95dd8e3e0e4"
+    },
+    {
+      "path": "qa\\final-01\\motion-angles\\Walk_Loop-right.png",
+      "bytes": 68666,
+      "sha256": "ab74783f4ae9d45e3e940d32b606b52f2f888a8427f313403769df1e3c1f5fcc"
+    },
+    {
+      "path": "qa\\final-01\\motion-angles\\Walk_Loop-threequarter.png",
+      "bytes": 120478,
+      "sha256": "a3d8a9e0301eccd3d1777881cc8fbabe22af50ee397de0231403dc0a5fe32c55"
+    },
+    {
+      "path": "qa\\final-01\\neutral\\back.png",
+      "bytes": 421197,
+      "sha256": "c52cffafd64cb3b146693f452db262d80ed0be6436f85ff3e99a734fb70565ab"
+    },
+    {
+      "path": "qa\\final-01\\neutral\\bottom.png",
+      "bytes": 417050,
+      "sha256": "e85014e3f69879b0ff72275844299088cdb3010fab1c527f0a5b51b099030bd2"
+    },
+    {
+      "path": "qa\\final-01\\neutral\\bounds.json",
+      "bytes": 245,
+      "sha256": "4f79c63891d21b6e956758e307c0370562d0a084bd4a39e5625f28fd3714cb31"
+    },
+    {
+      "path": "qa\\final-01\\neutral\\front.png",
+      "bytes": 422895,
+      "sha256": "47d5a819d220d40120749448ec697495bd9ec920acc1257daeeed54ce14799f3"
+    },
+    {
+      "path": "qa\\final-01\\neutral\\left.png",
+      "bytes": 410994,
+      "sha256": "781cbf97d3cdcc07a5663e985a4a5b5f4aa1bed5a80ae6bf045d23cb3cb578db"
+    },
+    {
+      "path": "qa\\final-01\\neutral\\right.png",
+      "bytes": 410210,
+      "sha256": "b3a44086e1ed3697744169e510f313ce748cfdc6afc8d26e7b1b251d71007c31"
+    },
+    {
+      "path": "qa\\final-01\\neutral\\threequarter.png",
+      "bytes": 421485,
+      "sha256": "fe74d27dbff8eb74fded815a3e40548376e4299029f437cbcb9b3206021ba1b4"
+    },
+    {
+      "path": "qa\\final-01\\neutral\\top.png",
+      "bytes": 409858,
+      "sha256": "4df63d6f89aa5a534630b11910aff55204d876dc5fe18f99fb48329f45e596d9"
+    },
+    {
+      "path": "qa\\final-01\\Pet-30.png",
+      "bytes": 132078,
+      "sha256": "7d3e68598b33fe341571ef1741249a4c95d8570ec14eeaf9b0b4b9560d42989c"
+    },
+    {
+      "path": "qa\\final-01\\Pet-5.png",
+      "bytes": 137010,
+      "sha256": "f552e7543749fe27321f7eca71e89154385ca14111146679a04781e908f74aad"
+    },
+    {
+      "path": "qa\\final-01\\Pet-55.png",
+      "bytes": 131479,
+      "sha256": "a6b57a9592610470eab7c28c9bfa2303a514b1c24b188081e2f76ca74aff9b4e"
+    },
+    {
+      "path": "qa\\final-01\\Pet-80.png",
+      "bytes": 132937,
+      "sha256": "44b1aac971ad2232d69711d1e02086c9f57586061b3c0664b19fbf79b2f40067"
+    },
+    {
+      "path": "qa\\final-01\\Pet-98.png",
+      "bytes": 133755,
+      "sha256": "e2bd39f6b0bc9fade271369dac996ba60d63bd0142c425dcefbc7780c8d1fb4d"
+    },
+    {
+      "path": "qa\\final-01\\Run_Loop-30.png",
+      "bytes": 135428,
+      "sha256": "2693a52a57a8aba81a84627ef3bb1c89db0ace34ccb612b0ec7e27823199fc7e"
+    },
+    {
+      "path": "qa\\final-01\\Run_Loop-5.png",
+      "bytes": 133332,
+      "sha256": "f81f3873a612ec278e9e3660cbaf5292635470b06c92e860b3d05c67511136b1"
+    },
+    {
+      "path": "qa\\final-01\\Run_Loop-55.png",
+      "bytes": 132890,
+      "sha256": "1db39c26e588f6844b1839a990eabea75ced947ced352ff4d9df27675112b8a1"
+    },
+    {
+      "path": "qa\\final-01\\Run_Loop-80.png",
+      "bytes": 129900,
+      "sha256": "69b6c64c33fa4cdfcc86b0973ebd191bce91d796a3c78193c186306a90b499bc"
+    },
+    {
+      "path": "qa\\final-01\\Run_Loop-98.png",
+      "bytes": 133035,
+      "sha256": "607b16d1480a88c37b7610b95b158d0da08ecf419927d52d6a0cb3e397255f3d"
+    },
+    {
+      "path": "qa\\final-01\\viewer-mobile.png",
+      "bytes": 89945,
+      "sha256": "54417e2d0439a98b7905acb757bb5f27040cb3a76fb9f21da3c78e83c7e0aab5"
+    },
+    {
+      "path": "qa\\final-01\\viewer-qa.json",
+      "bytes": 390,
+      "sha256": "aeee7f6bc42cc584226113c93d81d1f9fb7df77641140f3d29ab7f53c10b839b"
+    },
+    {
+      "path": "qa\\final-01\\viewer.html",
+      "bytes": 24921570,
+      "sha256": "1b19cc32156a71ffff7824498a603636e0a111a00d394ed1d2d4f7ed54107d10"
+    },
+    {
+      "path": "qa\\final-01\\viewer.json",
+      "bytes": 595,
+      "sha256": "7fa7f0c66644a702b7a823b51f6313e83f8627130d1acad52b00065cee7f7b2c"
+    },
+    {
+      "path": "qa\\final-01\\Walk_Loop-30.png",
+      "bytes": 133179,
+      "sha256": "bf69ba248fd8c8265fba1ace717826d0e0fe5a9b0af5ec5b5bed579859f1b1a8"
+    },
+    {
+      "path": "qa\\final-01\\Walk_Loop-5.png",
+      "bytes": 133313,
+      "sha256": "238fddbfe6a6c51af94faa6b8012f1f8dc6e22cf1817a7c2a0e6c285b3e00a92"
+    },
+    {
+      "path": "qa\\final-01\\Walk_Loop-55.png",
+      "bytes": 133135,
+      "sha256": "affd6adbb019701799b60adb6c742da8cc9d6977e050f864a9f32e40b28a6bb6"
+    },
+    {
+      "path": "qa\\final-01\\Walk_Loop-80.png",
+      "bytes": 132487,
+      "sha256": "639081d7934cd839d2cf16abe8859dfd3e0722a1b67f8beca384955bb2730fdd"
+    },
+    {
+      "path": "qa\\final-01\\Walk_Loop-98.png",
+      "bytes": 133255,
+      "sha256": "3e0a5c9cc788fdb9ba0d713b30ea1f4ca4104c5a4ced2d536f0ded3981fbfcff"
+    },
+    {
+      "path": "qa\\game-01.log",
+      "bytes": 612,
+      "sha256": "d09a9237702b702b210647fcbed1e52266809db88e09b7c66308955cb6b28e40"
+    },
+    {
+      "path": "qa\\game-02.log",
+      "bytes": 550,
+      "sha256": "acef839501b957e8e60d8b0db95aa554139b2d2ca22766fda3017a3f93b7dc85"
+    },
+    {
+      "path": "qa\\game-03.log",
+      "bytes": 782,
+      "sha256": "092b53feeb5e14f9839657ad8f5e73aec5dfded56284be89369e97812edd2a7f"
+    },
+    {
+      "path": "qa\\game-04.log",
+      "bytes": 1972,
+      "sha256": "5a21ce95cc6af8adbfc9d6c5745b75bcad0ab6a9e14573ff91095a65121c6d48"
+    },
+    {
+      "path": "qa\\game-05.log",
+      "bytes": 1278,
+      "sha256": "99989d121f1deb82b17cc559fdc0de92627922e6441abb33c4236e7dcef971b7"
+    },
+    {
+      "path": "qa\\game-06.log",
+      "bytes": 1148,
+      "sha256": "6f71d9a1308f2beae07bf2b7c929e3e2134e5f9f3abd426809a3b88f3720ac80"
+    },
+    {
+      "path": "qa\\motion-01.log",
+      "bytes": 89,
+      "sha256": "20b7c2ec70eafe8f3d8170f5d7afe8293b17a44187a3cb6ac895812c638d47f9"
+    },
+    {
+      "path": "qa\\render-final-01-clay.log",
+      "bytes": 1901,
+      "sha256": "526192771b0c7dd4c9462801aba436c6f7768497788f07d4ec6352a27fc7d95d"
+    },
+    {
+      "path": "qa\\render-final-01-neutral.log",
+      "bytes": 1637,
+      "sha256": "b0ab9c055985a07b45f4db191279c4801cf833c1c948db5e5e2add157a9cf62e"
+    },
+    {
+      "path": "qa\\tests-final.log",
+      "bytes": 86406,
+      "sha256": "591e233c109237e24474702ad363ed0fcbff9ea465317081d9d349c80a5fd53b"
+    },
+    {
+      "path": "qa\\tests.log",
+      "bytes": 87192,
+      "sha256": "fc7037300fda9d98d06d7cf87de82f66fec3d3c43ec027728f54db55a3492e2d"
+    },
+    {
+      "path": "qa\\viewer-01.log",
+      "bytes": 44,
+      "sha256": "c0c67b19ff163eefaf2e745f4c6613401c77c9acc7eb8fac0fbac7da62109685"
+    },
+    {
+      "path": "source\\mae.jpg",
+      "bytes": 7125,
+      "sha256": "ed917b016d8aab12ccd7f7b1521f5d5e314a99d18f70de23ddd82cf1ce6d149a"
+    },
+    {
+      "path": "source\\reference-v1.png",
+      "bytes": 1348440,
+      "sha256": "861ac733cc0a6e1868ae4a5ae9d85984daa534cbe61c08d481ce4efdae6383fa"
+    },
+    {
+      "path": "work\\prepare-r01-retry.log",
+      "bytes": 17851,
+      "sha256": "5fa7f60d16816368513a498419b3f82265ae20b650e84b8bf9a4340b56b4a4d0"
+    },
+    {
+      "path": "work\\prepare-r01.log",
+      "bytes": 439,
+      "sha256": "2b279b1006bf7387967a2ca0caa1f5ed3366223312b475d7e34c886f8a79cd21"
+    },
+    {
+      "path": "work\\rig\\revision-01\\candidate.glb",
+      "bytes": 17886104,
+      "sha256": "3fb4776d3830cda7b00dd1eeadaf4c000ebe7f41af38ccfe0ee55909e1309405"
+    },
+    {
+      "path": "work\\rig\\revision-01\\lod.glb",
+      "bytes": 1668032,
+      "sha256": "3fbb5c47bba03031a39e86b5af843895110cbcd800e7a7f6f57ebbcff81623c6"
+    },
+    {
+      "path": "work\\rig\\revision-01\\qa\\images.json",
+      "bytes": 158,
+      "sha256": "e0e731aa62662fcf7e40711268fbe382c233230b776175eecc486245725f44ca"
+    },
+    {
+      "path": "work\\rig\\revision-01\\qa\\numeric.json",
+      "bytes": 8758,
+      "sha256": "89d0f4926ae9a9e922f372bdf63273a9d4737e7b8db69e118fccad39c4b619ca"
+    },
+    {
+      "path": "work\\rig\\revision-01\\rig.json",
+      "bytes": 13599,
+      "sha256": "c668977176825e2b805b76739786fa303c699d879d4e0baec3df87da12c8b125"
+    },
+    {
+      "path": "work\\rig\\revision-01\\source.blend",
+      "bytes": 18455926,
+      "sha256": "ff93812899dd8d08a6312d115bdff092304e4685253aeec150a776a9323c5e01"
+    },
+    {
+      "path": "work\\rig\\revision-01\\surface.glb",
+      "bytes": 17102684,
+      "sha256": "599e1a1283b97793812a757dcab57e4b2363343befb6dda2c07d873f1a4a4521"
+    },
+    {
+      "path": "work\\trellis\\dense-attempt-01-res512-seed0042.json",
+      "bytes": 1377,
+      "sha256": "49b6f9935b8f0170b4495d9281d20f28b0aedf7fa130e2fa1405c36c7c12ab4e"
+    },
+    {
+      "path": "work\\trellis\\dense-attempt-01-res512-seed0042.log",
+      "bytes": 743,
+      "sha256": "13246dfffb4f979a7b46f3c37c94f4cf5f240317a91c6334705e8303f8db51dc"
+    },
+    {
+      "path": "work\\trellis\\dense-attempt-02-res512-seed0042.glb",
+      "bytes": 23710928,
+      "sha256": "6ee7f824fb254f709bea0f59234bb35ef4f7bf34ea0bdc651c18c73f4c259069"
+    },
+    {
+      "path": "work\\trellis\\dense-attempt-02-res512-seed0042.json",
+      "bytes": 1537,
+      "sha256": "4952ff661682e4d70d5f1ac93ddcfddc12bf80c281109b836bcbd954d8d47977"
+    },
+    {
+      "path": "work\\trellis\\dense-attempt-02-res512-seed0042.log",
+      "bytes": 5689,
+      "sha256": "abfd7795c8d5b2de0c363a71e6185419df1aee9b48e770882fbea05fa2899ae9"
+    },
+    {
+      "path": "work\\trellis\\dense-attempt-02-res512-seed0042.ply",
+      "bytes": 46811583,
+      "sha256": "7a17ad786b6628e53bfa5f95d8c0c65e43e3d8186ef2b8e6593ad3b2bbf081be"
+    },
+    {
+      "path": "work\\trellis\\dense-attempt-02-res512-seed0042_base.png",
+      "bytes": 15837050,
+      "sha256": "dd18b547900aab0b9ab5afa93105e07429ae5250342085cd9127dffac817f608"
+    },
+    {
+      "path": "work\\trellis\\dense-attempt-02-res512-seed0042_cutout.png",
+      "bytes": 1358679,
+      "sha256": "9041ce56bfd215c617c6408e5c30f911ccbbd67dbfe130f4a1212a4566e0a027"
+    },
+    {
+      "path": "work\\validate-r01-surface.log",
+      "bytes": 5928,
+      "sha256": "79f32061902b00888c793f22b8f38b6dda9760eca0b27141d7d5a26343d1d03e"
+    },
+    {
+      "path": "work\\validate-r01.log",
+      "bytes": 4377,
+      "sha256": "43555b8f84ca628f02ec2335b93b3a93b52784c714a789c7c5803263f0b5f6b4"
+    },
+    {
+      "path": "game-adoption\\adoption-review.json",
+      "bytes": 1497,
+      "sha256": "f6723a18b927550d4d2a15791922bcc17835fc81e42ee55d21713c3322d3e372"
+    },
+    {
+      "path": "game-adoption\\existing-assets-before.json",
+      "bytes": 11772,
+      "sha256": "6b82929daf8a4a6c5fa5da4af7b0dbf645f235ac6086af9711a5c3f766355aea"
+    },
+    {
+      "path": "game-adoption\\game-qa.json",
+      "bytes": 3000,
+      "sha256": "b701b218be6d3fccfb068f7f9b47172e87ae48c98e01728a1b7f3caea984ead4"
+    },
+    {
+      "path": "game-adoption\\local-rollout.json",
+      "bytes": 1352,
+      "sha256": "199d5386eb7f351b34a4856e1c18221810a42882a63cb4cebdc42320aab74e19"
+    },
+    {
+      "path": "game-adoption\\README.md",
+      "bytes": 4716,
+      "sha256": "8ff4a04c110f069bfe8e0398abb419d311f6ec1ae4c22b1794373a051022f9c0"
+    },
+    {
+      "path": "game-adoption\\source\\brief.md",
+      "bytes": 1583,
+      "sha256": "f7e5d92aa6a8629c879c76a1ac9f649b312a302c79b967fe64484e939d4e4319"
+    },
+    {
+      "path": "game-adoption\\source\\mae.jpg",
+      "bytes": 7125,
+      "sha256": "ed917b016d8aab12ccd7f7b1521f5d5e314a99d18f70de23ddd82cf1ce6d149a"
+    },
+    {
+      "path": "game-adoption\\source\\reference-v1.png",
+      "bytes": 1348440,
+      "sha256": "861ac733cc0a6e1868ae4a5ae9d85984daa534cbe61c08d481ce4efdae6383fa"
+    },
+    {
+      "path": "game-adoption\\source\\reference-v1.prompt.md",
+      "bytes": 1545,
+      "sha256": "39af093fc1a3f9ba8594b009503ff3f1ef8eaa23675bcb8ef731e185cf8f695a"
+    },
+    {
+      "path": "game-adoption\\visual-review-r01.json",
+      "bytes": 1118,
+      "sha256": "1055f53b3bf3402c09ef07e3b4ef524368adfc87e668cc090aa29f0bdd1c5e81"
+    },
+    {
+      "path": "game-adoption\\workflow\\archive.py",
+      "bytes": 2805,
+      "sha256": "050f1b674f294e28ceef625fb4bd5298d4ea1998a59d68d7420baeef276c8320"
+    },
+    {
+      "path": "game-adoption\\workflow\\finish.mjs",
+      "bytes": 3020,
+      "sha256": "0d6866615e722ceb16cd8c4a88e68a2652a7984dcec55e604f144970fba07302"
+    },
+    {
+      "path": "game-adoption\\workflow\\generate.py",
+      "bytes": 3449,
+      "sha256": "00a5948cdf9a664c266f23764a7c9422f80d6940a599d66ae27621e006c35563"
+    },
+    {
+      "path": "game-adoption\\workflow\\make-preview.py",
+      "bytes": 4693,
+      "sha256": "3a829d197698306dd330892b3b7862accbb1bdbc78445d2fd9ff6dc8d8fc7b42"
+    },
+    {
+      "path": "game-adoption\\workflow\\prepare.py",
+      "bytes": 12076,
+      "sha256": "3906373a45c2dd5231691ba98ee4ed6b92d8331ebfb769a0b5577dcc0f191b91"
+    },
+    {
+      "path": "game-adoption\\workflow\\qa-motion-angles.mjs",
+      "bytes": 3162,
+      "sha256": "71f7ec8803f912c66020405c44e92365fd194ade5c3d0c17a64c833b0082f8ef"
+    },
+    {
+      "path": "game-adoption\\workflow\\qa-viewer.mjs",
+      "bytes": 5078,
+      "sha256": "559f3189709c1776e400312bead17225eb4092fe9c932b4eada1dfe5ec595c47"
+    },
+    {
+      "path": "game-adoption\\workflow\\stage.mjs",
+      "bytes": 5184,
+      "sha256": "7aea46ba65efd25e043b3fc1f65baeb806fdb2f94cc0b889c2089162decf9d36"
+    },
+    {
+      "path": "game-adoption\\workflow\\validate.py",
+      "bytes": 6489,
+      "sha256": "09c2610c7ef302ac78324e86c9361fd7ecdea8e636fb062c9977e6a0bcf1a792"
+    },
+    {
+      "path": "delivery\\asset.json",
+      "bytes": 3294,
+      "sha256": "bfdd63e63def97d9069d58181284e4ecc2538f7acfdc398dad61f716fcdd4b0f"
+    },
+    {
+      "path": "delivery\\lod-r01.glb",
+      "bytes": 1668032,
+      "sha256": "3fbb5c47bba03031a39e86b5af843895110cbcd800e7a7f6f57ebbcff81623c6"
+    },
+    {
+      "path": "delivery\\model-r01.glb",
+      "bytes": 17886104,
+      "sha256": "3fb4776d3830cda7b00dd1eeadaf4c000ebe7f41af38ccfe0ee55909e1309405"
+    },
+    {
+      "path": "delivery\\portrait.png",
+      "bytes": 1348440,
+      "sha256": "861ac733cc0a6e1868ae4a5ae9d85984daa534cbe61c08d481ce4efdae6383fa"
+    },
+    {
+      "path": "qa\\game-runs\\1790990553103\\cro-magnon-woman-happy.png",
+      "bytes": 860956,
+      "sha256": "72256cb25512d95b2ca5b57611e77ff5afe3476063354156781d92875ea76df5"
+    },
+    {
+      "path": "qa\\game-runs\\1790990553103\\failure-state.json",
+      "bytes": 116467,
+      "sha256": "2d693aa1c96ea8f87989d5f59dcb037c80a80219fe2856415dfab02e9fcc303d"
+    },
+    {
+      "path": "qa\\game-runs\\1790990553103\\failure.png",
+      "bytes": 865202,
+      "sha256": "efe2871416c122b4c4d6d313b44d4a5530577824a8ab546a363636eee7a46a9c"
+    },
+    {
+      "path": "qa\\game-runs\\1790990553103\\frames.json",
+      "bytes": 3,
+      "sha256": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570"
+    },
+    {
+      "path": "qa\\game-runs\\1790990553103\\result.json",
+      "bytes": 582,
+      "sha256": "5c7809626ac40c10a9e65769a4fda2ba734d2f7c6337fe88e6265bac655b4f28"
+    },
+    {
+      "path": "qa\\game-runs\\1790990749407\\cro-magnon-woman-happy.png",
+      "bytes": 862697,
+      "sha256": "386fc3ef011c0b7f378093286169dfac2103e32af84aa3a837c338c7fcb6547e"
+    },
+    {
+      "path": "qa\\game-runs\\1790990749407\\failure-state.json",
+      "bytes": 462157,
+      "sha256": "5b4f175cf481b20046427d8d80ed07ee491a609b2d3b1621758b00ee3a3393a4"
+    },
+    {
+      "path": "qa\\game-runs\\1790990749407\\failure.png",
+      "bytes": 792556,
+      "sha256": "9c42bdf93fd8cc0e3b30e4ccce0933e34f2703a3fe0fb811d549eb4399526706"
+    },
+    {
+      "path": "qa\\game-runs\\1790990749407\\frames.json",
+      "bytes": 122194,
+      "sha256": "652a0a5f60e0961f4af80eb2bc381b5610e2bdf0ded77a5bdddc4faaa4081482"
+    },
+    {
+      "path": "qa\\game-runs\\1790990749407\\result.json",
+      "bytes": 709,
+      "sha256": "f5aa120f8741e9ccd740393e23f0b43790322099e703fd81ec2495135521e60e"
+    },
+    {
+      "path": "qa\\game-runs\\1790990944115\\bridge.png",
+      "bytes": 936144,
+      "sha256": "fcbba1a77644922987b36598f3017fa7fdfdb36a5263ff10e3c19ca0a433bf24"
+    },
+    {
+      "path": "qa\\game-runs\\1790990944115\\cat-kunoichi-happy.png",
+      "bytes": 852241,
+      "sha256": "cdb23e5fb0e6b978588b72a241bacab9ab1c1be8b64128aa499f79da8f7bc198"
+    },
+    {
+      "path": "qa\\game-runs\\1790990944115\\cro-magnon-hunter-happy.png",
+      "bytes": 852989,
+      "sha256": "1353c909e917574c36c4e2c339f5de9e772107f7dd7926483c71287ab7ab7b51"
+    },
+    {
+      "path": "qa\\game-runs\\1790990944115\\cro-magnon-woman-happy.png",
+      "bytes": 863017,
+      "sha256": "edf296d83b87cf5d02e1a01c3224f7b6c23d87372e258d4b2549b3a7c6450021"
+    },
+    {
+      "path": "qa\\game-runs\\1790990944115\\desert-fennec-mage-happy.png",
+      "bytes": 798053,
+      "sha256": "1805bc82150220c5869dc937061f5cf660bb159ca979b4400bcb0cf92ffecdca"
+    },
+    {
+      "path": "qa\\game-runs\\1790990944115\\failure-state.json",
+      "bytes": 80606,
+      "sha256": "34da9c2594b8c9188ee35538a7f74aee3327e35beee9f45307d8f2bffffe8a45"
+    },
+    {
+      "path": "qa\\game-runs\\1790990944115\\failure.png",
+      "bytes": 143274,
+      "sha256": "bcb08498b8f7e89697169b0e8b5ee721d646e6d7d6689ff85a7ac943dcd4db44"
+    },
+    {
+      "path": "qa\\game-runs\\1790990944115\\frames.json",
+      "bytes": 1114330,
+      "sha256": "a2a8e59aa6ef4137158348d59379a876bab100226a44531301a18287c69afecd"
+    },
+    {
+      "path": "qa\\game-runs\\1790990944115\\giant-ape-happy.png",
+      "bytes": 913159,
+      "sha256": "bcd4b2f1e597faa0f7f4bd965050987d6996bba08369c8595c2a5fb1087bbc51"
+    },
+    {
+      "path": "qa\\game-runs\\1790990944115\\howkey-scientist-happy.png",
+      "bytes": 855032,
+      "sha256": "96a8720645ce476569c2891d60142248c1ed2443f2e897a0bd6a62c7fc1bdb32"
+    },
+    {
+      "path": "qa\\game-runs\\1790990944115\\key-e-happy.png",
+      "bytes": 858122,
+      "sha256": "3d28a971f9f6eb99f749e752e9fce07061f33f70268d7f97f59b44ac995880fe"
+    },
+    {
+      "path": "qa\\game-runs\\1790990944115\\lod-16-2.png",
+      "bytes": 887261,
+      "sha256": "19214e585b8c1f0e498f9e7b3deb22fe6f1e211ea5df6dc49d6243608b40eadf"
+    },
+    {
+      "path": "qa\\game-runs\\1790990944115\\lod-3-1.png",
+      "bytes": 864998,
+      "sha256": "8477964d5036fbd01bd4d7b8df4d713dc927df7c64bd79a787dbe9320a6208c9"
+    },
+    {
+      "path": "qa\\game-runs\\1790990944115\\lod-3-3.png",
+      "bytes": 865475,
+      "sha256": "cd56e28f5e9348a3fc3ee1909075dc7ae6109ce532c1ab1cfe9ff9b118761ca9"
+    },
+    {
+      "path": "qa\\game-runs\\1790990944115\\maruimo-octopus-happy.png",
+      "bytes": 895810,
+      "sha256": "f26423a41190e20df8620c9193ce4d403778ba415b4dbefec82cdd67e6ece702"
+    },
+    {
+      "path": "qa\\game-runs\\1790990944115\\mesh-click-happy.png",
+      "bytes": 861826,
+      "sha256": "4b7b342b54e320249818b60705f09adfc8300022509b882f1169b1669ed5607b"
+    },
+    {
+      "path": "qa\\game-runs\\1790990944115\\neanderthal-hunter-happy.png",
+      "bytes": 858061,
+      "sha256": "cc5f97f6c121c34c064d2f91b45df2fee8f30a196a0d4465d1540e7abc5d201f"
+    },
+    {
+      "path": "qa\\game-runs\\1790990944115\\neanderthal-woman-happy.png",
+      "bytes": 851981,
+      "sha256": "11f0c67f42c824fb82352599c5d7e1a3d2ec71044eec8ceddf7f03420b658404"
+    },
+    {
+      "path": "qa\\game-runs\\1790990944115\\ordinary-camera-follow.png",
+      "bytes": 846074,
+      "sha256": "a7721fd85a51582fa18bf30132a95e1700257401244e10fa9b36930ecbc6c67a"
+    },
+    {
+      "path": "qa\\game-runs\\1790990944115\\result.json",
+      "bytes": 1862,
+      "sha256": "6f1f228a0221ab6afdc65515671340c3a328efe6a5213f3421d0d9ad2975f726"
+    },
+    {
+      "path": "qa\\game-runs\\1790991127300\\cat-kunoichi-happy.png",
+      "bytes": 780419,
+      "sha256": "05a006d34f21a1d19069dd1e04d7a0243c9b1e928990ae9845ec21f88d874175"
+    },
+    {
+      "path": "qa\\game-runs\\1790991127300\\cro-magnon-hunter-happy.png",
+      "bytes": 786643,
+      "sha256": "6baa66a08f7d5ee3725a42f44640079ef1a6dc5ecd1c4fe09d7310ceba9e8879"
+    },
+    {
+      "path": "qa\\game-runs\\1790991127300\\cro-magnon-woman-happy.png",
+      "bytes": 862072,
+      "sha256": "1d814b6f7fa94b2f573ca4c3faa4abb16604b8fb891855fe9dec2ad8b4e9eae6"
+    },
+    {
+      "path": "qa\\game-runs\\1790991127300\\desert-fennec-mage-happy.png",
+      "bytes": 713339,
+      "sha256": "41873d477d8a87e50fc75724eae9b972e21fe580003c5865aa3b52e592555f12"
+    },
+    {
+      "path": "qa\\game-runs\\1790991127300\\failure-state.json",
+      "bytes": 76469,
+      "sha256": "7cd983adadc38b2afd14908c6fdf174fb9b3712417370e0149d5dc9bb91ac48d"
+    },
+    {
+      "path": "qa\\game-runs\\1790991127300\\failure.png",
+      "bytes": 797164,
+      "sha256": "8beaf3b7cb03ca6fd5186eec3dfc22ad17ddb76c70409657bec942c42a1d1e86"
+    },
+    {
+      "path": "qa\\game-runs\\1790991127300\\frames.json",
+      "bytes": 1028424,
+      "sha256": "b1f101204d7a3e3072a3125ce87f76e955a6dd0557edb966a367806cfd6c07c8"
+    },
+    {
+      "path": "qa\\game-runs\\1790991127300\\giant-ape-happy.png",
+      "bytes": 848477,
+      "sha256": "d813cbbf6864e9e41b6024c0bbfa8df08b83edadad8199944862d8830f525553"
+    },
+    {
+      "path": "qa\\game-runs\\1790991127300\\howkey-scientist-happy.png",
+      "bytes": 781957,
+      "sha256": "66a69b1eab3dca01cf469cfc7cd1b78b41ea37d7fa31d6b11e6eb91f5b41c6ee"
+    },
+    {
+      "path": "qa\\game-runs\\1790991127300\\key-e-happy.png",
+      "bytes": 785954,
+      "sha256": "fb19a8bec4f97060d441e0689debb86da93f26c4167ef9821801f4842b6c1936"
+    },
+    {
+      "path": "qa\\game-runs\\1790991127300\\lod-16-2.png",
+      "bytes": 864110,
+      "sha256": "f28254d665b0478f300fb9ff5d6f17dfc594c68f7f4d4025d167bf09b461837e"
+    },
+    {
+      "path": "qa\\game-runs\\1790991127300\\lod-3-1.png",
+      "bytes": 796752,
+      "sha256": "ae0a7ab2dfdbe18ea6f528109e47f6ea87aa0e135a03030d0e177072a7e13b4a"
+    },
+    {
+      "path": "qa\\game-runs\\1790991127300\\lod-3-3.png",
+      "bytes": 797374,
+      "sha256": "6c0c86289d32a8cc7125bc6062a642f1e20ad67b8cf5c92afa91dd83980769c2"
+    },
+    {
+      "path": "qa\\game-runs\\1790991127300\\maruimo-octopus-happy.png",
+      "bytes": 835020,
+      "sha256": "9b91fd6e44a868e26a69948760c1ae5df3102910ce2130e8b29abc0b408becca"
+    },
+    {
+      "path": "qa\\game-runs\\1790991127300\\mesh-click-happy.png",
+      "bytes": 791855,
+      "sha256": "7740830db08ef7f644202841e3ab54220da56eb281c7c352c2011aae5cf5d934"
+    },
+    {
+      "path": "qa\\game-runs\\1790991127300\\neanderthal-hunter-happy.png",
+      "bytes": 787794,
+      "sha256": "ec5fdcf934606bba1065495bb0e778017625e1caf747319eff0330d2ae201358"
+    },
+    {
+      "path": "qa\\game-runs\\1790991127300\\neanderthal-woman-happy.png",
+      "bytes": 782695,
+      "sha256": "c7a28f4105a70230ceb048039312fcc27a3952289781089a760bddd0c86499e1"
+    },
+    {
+      "path": "qa\\game-runs\\1790991127300\\ordinary-camera-follow.png",
+      "bytes": 832294,
+      "sha256": "199be5804c4b6a89b31090e0f13e31d5f42e3c1b5e90c298322ee2382490c384"
+    },
+    {
+      "path": "qa\\game-runs\\1790991127300\\result.json",
+      "bytes": 862,
+      "sha256": "27bc00d22e8442de863de3c1492340141c44da298a975e3fb21a483c815e479c"
+    },
+    {
+      "path": "qa\\game-runs\\1790991308946\\before-rejoin-happy.png",
+      "bytes": 862493,
+      "sha256": "367c322c8fd3451f4efbb7302cd8f60320d6152d9a140ed3c3fe642ce1e10a3b"
+    },
+    {
+      "path": "qa\\game-runs\\1790991308946\\before-return-happy.png",
+      "bytes": 862386,
+      "sha256": "77952f7977d748a307a65ed65a1e8584245ee359bfda96537bfe757cf2aee963"
+    },
+    {
+      "path": "qa\\game-runs\\1790991308946\\bridge.png",
+      "bytes": 936414,
+      "sha256": "e5ef23edaedd6b1e9ad5c4ebb27a294ae48fdb53721b08be1fcb04ece56517e9"
+    },
+    {
+      "path": "qa\\game-runs\\1790991308946\\frames.json",
+      "bytes": 1071101,
+      "sha256": "5c7f3a6374712931b48d0d2d1425d1947d171f0bdad04bf9b79be675b8e83da2"
+    },
+    {
+      "path": "qa\\game-runs\\1790991308946\\hit.png",
+      "bytes": 805944,
+      "sha256": "4dd764deeaef03f084c1f2814204d543f550ae728d001e3a6122220d52f61735"
+    },
+    {
+      "path": "qa\\game-runs\\1790991308946\\key-e-happy.png",
+      "bytes": 862543,
+      "sha256": "3b78d9fa1e57f3e5b7dac36bbc0164ab7c5247dd296757e8da318d814edb7b2e"
+    },
+    {
+      "path": "qa\\game-runs\\1790991308946\\lod-16-2.png",
+      "bytes": 905410,
+      "sha256": "da12bdc40c5a377d418914106dd7c29082730834addad543b5f7e9867c971fd3"
+    },
+    {
+      "path": "qa\\game-runs\\1790991308946\\lod-3-1.png",
+      "bytes": 916939,
+      "sha256": "37573d122a35a566ec4c190419c525a408ae37a7c0abefa36da31b615f2e0881"
+    },
+    {
+      "path": "qa\\game-runs\\1790991308946\\lod-3-3.png",
+      "bytes": 916436,
+      "sha256": "f8ffaf93a666fe9ebb09260a961cf63426e58f790a8c8761b0660420ec560816"
+    },
+    {
+      "path": "qa\\game-runs\\1790991308946\\mesh-click-happy.png",
+      "bytes": 862367,
+      "sha256": "e440694b3fe5c6fe3f6bcea82567284aa2b940c36b32fcee1291abda0f681e19"
+    },
+    {
+      "path": "qa\\game-runs\\1790991308946\\ordinary-camera-follow.png",
+      "bytes": 847009,
+      "sha256": "00c058b96c584bbbe73e78aef344024bc3f93ec7dfb3d78e1b424fea1e40a785"
+    },
+    {
+      "path": "qa\\game-runs\\1790991308946\\result.json",
+      "bytes": 1362,
+      "sha256": "b5d0c5ad821081997218789e223ba96cca12676fe4764e9dc4a4e792a4d66729"
+    },
+    {
+      "path": "qa\\game-runs\\1790991308946\\viewport-1280.png",
+      "bytes": 149842,
+      "sha256": "83573ea28e91df03d8971754743d72ef404eea7bebf9dbf18310e29a5f8eb2cc"
+    },
+    {
+      "path": "qa\\game-runs\\1790991308946\\viewport-390.png",
+      "bytes": 75338,
+      "sha256": "f658a71aeb429cd81a1dd1ace43bc128a6a82b180ee9f6644e2512c59eb78257"
+    },
+    {
+      "path": "qa\\game-runs\\1790991308946\\viewport-844.png",
+      "bytes": 62999,
+      "sha256": "29d2d2d48ab61ff91618ae7953b93406cff52395a1d8a8c17c74841dd4cdc380"
+    },
+    {
+      "path": "qa-mae.mjs",
+      "bytes": 20779,
+      "sha256": "ac9c983f5aa444a6b1a655426741b0f51ac5c385aae919e12e948e615752f233"
+    },
+    {
+      "path": "qa-mae-contact.mjs",
+      "bytes": 3098,
+      "sha256": "17de5015998626b81c66a99a0cd8b564bfc35ba0a1ea049a34cb7e92b1f62d06"
+    },
+    {
+      "path": "README.md",
+      "bytes": 6871,
+      "sha256": "136bcdd3ae1a8538915260e2c4f1e5df1c40ecf46b4a8572dd4d030ce7d8ab38"
+    }
+  ]
+}

@@ -1,0 +1,83 @@
+{
+  "passed": true,
+  "checks": [
+    "two real Chrome views and three network participants; all existing companion assets loaded",
+    "all nine characters crouch, touch the moving crown and share the happy gesture and hearts",
+    "nearby E, actual walking and running inputs, stopping and ordinary rear camera",
+    "clicking the actual pouch mesh pets mae",
+    "real camera distance switches to the shared-rig LOD and returns to the original mesh",
+    "real follow input crosses the bridge with aligned floor height",
+    "normal menu pet and Q interrupt before affection",
+    "synthetic standard gamepad bottom button and movement cancellation",
+    "owned-only return command walks mae back to camp",
+    "real melee input produces a soft recoil without health or loot",
+    "title rejoin retains inventory and creates exactly one mae renderer",
+    "portrait, landscape and desktop viewports fit without extra permanent pet controls",
+    "late display, distance culling, cancellation, expiration and disposal with the delivered GLB"
+  ],
+  "errors": [],
+  "fixtures": [
+    "in-memory unsaved room",
+    "explicit preparation positions and observation camera",
+    "existing pets moved away and hostile actors removed only in QA"
+  ],
+  "out": "output/playwright/mae/1790991308946",
+  "priorCharacterEvidence": "output/playwright/mae/1790991127300",
+  "actors": [
+    {
+      "character": "cro-magnon-woman",
+      "maxHandGap": 3.2287404218585547e-7,
+      "contactSamples": 53,
+      "observedFrameRate": 47.04933458798226
+    },
+    {
+      "character": "cro-magnon-hunter",
+      "maxHandGap": 3.014068578401055e-7,
+      "contactSamples": 35,
+      "observedFrameRate": 29.97377337048251
+    },
+    {
+      "character": "neanderthal-woman",
+      "maxHandGap": 3.9963632624945804e-7,
+      "contactSamples": 34,
+      "observedFrameRate": 29.992288534072504
+    },
+    {
+      "character": "neanderthal-hunter",
+      "maxHandGap": 4.5116036208836874e-7,
+      "contactSamples": 35,
+      "observedFrameRate": 29.99688752998041
+    },
+    {
+      "character": "cat-kunoichi",
+      "maxHandGap": 3.9875149621006604e-7,
+      "contactSamples": 34,
+      "observedFrameRate": 29.996572657225688
+    },
+    {
+      "character": "desert-fennec-mage",
+      "maxHandGap": 0.025952935732855568,
+      "contactSamples": 34,
+      "observedFrameRate": 29.903493271714012
+    },
+    {
+      "character": "giant-ape",
+      "maxHandGap": 3.6164969671122606e-7,
+      "contactSamples": 35,
+      "observedFrameRate": 29.98812351543943
+    },
+    {
+      "character": "howkey-scientist",
+      "maxHandGap": 3.0213716243234886e-7,
+      "contactSamples": 35,
+      "observedFrameRate": 30.041199778798198
+    },
+    {
+      "character": "maruimo-octopus",
+      "maxHandGap": 0.00009303377828704461,
+      "contactSamples": 34,
+      "observedFrameRate": 30.013377438419656
+    }
+  ],
+  "frameRateLimit": "Short captured petting intervals with two Chrome views; not a sustained FPS benchmark."
+}

@@ -63,6 +63,7 @@ export class ContactShadows {
     for (const a of this.world.mammoths) add(a.model, 0.85);
     for (const b of this.world.orbBotRenderer?.bots.values() ?? []) add(b.actor.root, 0.16);
     add(this.world.rimoNekoRenderer?.root, 0.28);
+    add(this.world.maeRenderer?.root, 0.24);
     add(this.world.companion524Renderer?.root, 0.18);
     this.mesh.count = count;
     this.mesh.instanceMatrix.clearUpdateRanges();

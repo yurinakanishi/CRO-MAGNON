@@ -1,0 +1,48 @@
+{
+  "passed": true,
+  "rooms": 3,
+  "sessions": 6,
+  "preservedSessionData": true,
+  "save": {
+    "enabled": true,
+    "state": "saved",
+    "savedAt": 1790991477120,
+    "recovered": false
+  },
+  "served": [
+    {
+      "path": "src/main.js",
+      "sha256": "341ed844286601615fd284b01e2cc1c1ad03aabccc2358a1da28c84ccbdf41d2"
+    },
+    {
+      "path": "src/world3d.js",
+      "sha256": "f46464015c5c57fb572bcc73d84673823c51b2b2dcdbb8e2d5ff5811e2fdf4ce"
+    },
+    {
+      "path": "src/mae-renderer.js",
+      "sha256": "30f7fec61d4b8bb667e9566d8edfe41290731ffd5161887532431db54c0314d8"
+    },
+    {
+      "path": "shared/mae.mjs",
+      "sha256": "a680325054bafe7995b2589afefe3747ad0a9488fe69d1fe1c5d9cf60000aeae"
+    },
+    {
+      "path": "shared/combat.mjs",
+      "sha256": "e895b409bc6860d3c76ada0ddc36e14f955a5bf14945fa5c4ac5d718bc8f6234"
+    },
+    {
+      "path": "models/mae/model-r01.glb",
+      "sha256": "3fb4776d3830cda7b00dd1eeadaf4c000ebe7f41af38ccfe0ee55909e1309405"
+    },
+    {
+      "path": "models/mae/lod-r01.glb",
+      "sha256": "3fbb5c47bba03031a39e86b5af843895110cbcd800e7a7f6f57ebbcff81623c6"
+    },
+    {
+      "path": "models/world-assets.json",
+      "sha256": "dc22ed410a6f1c6ad36a2331c10868ae3aa8a60e20b309b96ebcd302cee3d60d"
+    }
+  ],
+  "backup": "output/mae-server-20261003/before",
+  "manuallyEditedSave": false
+}

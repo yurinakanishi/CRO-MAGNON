@@ -70,6 +70,7 @@ import { campContribution } from '../shared/camp-contribution.mjs';
 import { caveFireInteraction } from '../shared/cave-fire.mjs';
 import { caveTorchAvailable, caveTorchLit } from '../shared/cave-light.mjs';
 import { nearRimoNeko, RIMO_NEKO } from '../shared/rimo-neko.mjs';
+import { nearMae } from '../shared/mae.mjs';
 import { playCatHiss } from './cat-hiss.js';
 import { nearCompanion524 } from '../shared/companion-524.mjs';
 import { ENEMY_GROUNDS, SCENERY } from '../shared/scenery-layout.mjs';
@@ -900,6 +901,7 @@ function canPetRimo() {
     joined &&
     !renderUnavailable &&
     !state.rimoNeko?.petPlayerId &&
+    state.mae?.petPlayerId !== selfId &&
     state.companion524?.petPlayerId !== selfId &&
     !pettingOrbBot(state.orbBots, selfId) &&
     nearRimoNeko(player(), state.rimoNeko, renderer.collision, renderer.serverNow())
@@ -911,10 +913,28 @@ function petRimo() {
 function dismissRimo() {
   if (state.rimoNeko?.followPlayerId === selfId) action('dismissRimo');
 }
+function canPetMae() {
+  return (
+    joined &&
+    !renderUnavailable &&
+    !state.mae?.petPlayerId &&
+    state.rimoNeko?.petPlayerId !== selfId &&
+    state.companion524?.petPlayerId !== selfId &&
+    !pettingOrbBot(state.orbBots, selfId) &&
+    nearMae(player(), state.mae, renderer.collision, renderer.serverNow())
+  );
+}
+function petMae() {
+  if (canPetMae()) action('petMae');
+}
+function dismissMae() {
+  if (state.mae?.followPlayerId === selfId) action('dismissMae');
+}
 function nearbyBotsForPetting() {
   if (
     !joined ||
     renderUnavailable ||
+    state.mae?.petPlayerId === selfId ||
     state.rimoNeko?.petPlayerId === selfId ||
     state.companion524?.petPlayerId === selfId
   )
@@ -934,6 +954,8 @@ function preferredPet() {
     choice: 'rimo' | '524' | { action: string; label: string; targetId?: string };
   }[] = [];
   if (canPetRimo()) candidates.push({ point: state.rimoNeko!, choice: 'rimo' });
+  if (canPetMae())
+    candidates.push({ point: state.mae!, choice: { action: 'petMae', label: 'maeを撫でる' } });
   if (canPet524()) candidates.push({ point: state.companion524!, choice: '524' });
   const group = nearbyBotsForPetting();
   if (group.length > 0)
@@ -943,6 +965,7 @@ function preferredPet() {
     });
   if (
     state.rimoNeko?.petPlayerId !== selfId &&
+    state.mae?.petPlayerId !== selfId &&
     state.companion524?.petPlayerId !== selfId &&
     !pettingOrbBot(state.orbBots, selfId)
   ) {
@@ -980,6 +1003,8 @@ function dismissNearbyCompanion() {
     .map((b) => ({ point: b, action: 'dismissBot', target: b.kind }));
   if (state.rimoNeko?.followPlayerId === selfId)
     candidates.push({ point: state.rimoNeko, action: 'dismissRimo' });
+  if (state.mae?.followPlayerId === selfId)
+    candidates.push({ point: state.mae, action: 'dismissMae' });
   if (state.companion524?.followPlayerId === selfId && !candidates.some((c) => c.target === '524'))
     candidates.push({ point: state.companion524, action: 'dismiss524' });
   const nearest = candidates.sort((a, b) => distance(me, a.point) - distance(me, b.point))[0];
@@ -1003,6 +1028,7 @@ function canPet524() {
     joined &&
     !renderUnavailable &&
     !state.companion524?.petPlayerId &&
+    state.mae?.petPlayerId !== selfId &&
     state.rimoNeko?.petPlayerId !== selfId &&
     !pettingOrbBot(state.orbBots, selfId) &&
     nearCompanion524(player(), state.companion524, renderer.collision, renderer.serverNow())
@@ -1062,6 +1088,10 @@ function ride() {
   action('ride', animal.id);
 }
 function interactAnimal(id) {
+  if (id === state.mae?.id) {
+    petMae();
+    return;
+  }
   const bot = state.orbBots?.find((b) => b.id === id && b.kind !== '524');
   if (bot) {
     if (!bot.busy && nearOrbBot(player(), bot, renderer.collision, renderer.serverNow()))
@@ -1102,6 +1132,10 @@ function updateHuntingHUD() {
   $('#dismiss-rimo-button').hidden = !joined || state.rimoNeko?.followPlayerId !== selfId;
   $('#dismiss-rimo-button kbd').textContent = controllerHints() ? 'メニュー' : 'T';
   const menuRimo = $('[data-controller-menu="dismissRimo"]');
+  const menuMae = $('[data-controller-menu="dismissMae"]');
+  if (menuMae) menuMae.disabled = state.mae?.followPlayerId !== selfId;
+  const menuPetMae = $('[data-controller-menu="petMae"]');
+  if (menuPetMae) menuPetMae.disabled = !canPetMae();
   if (menuRimo) menuRimo.disabled = state.rimoNeko?.followPlayerId !== selfId;
   const menuDismiss = $('[data-controller-menu="dismiss524"]');
   if (menuDismiss) menuDismiss.disabled = state.companion524?.followPlayerId !== selfId;
@@ -1819,8 +1853,34 @@ function openPauseMenu(tab?: string) {
     ['journal', 'book', '探索手帳', openJournal],
     ['ride', 'target', '船・マンモス・肩に乗る／降りる', controllerRide],
     ['wave', 'wave', '手をふる', () => action('wave')],
+    ...(canPetMae()
+      ? [
+          [
+            'petMae',
+            'wave',
+            'maeを撫でる',
+            () => {
+              petMae();
+              $('#modal').close();
+            },
+          ] as [string, string, string, () => void],
+        ]
+      : []),
   ];
   const exits: [string, string, string, () => void][] = [
+    ...(state.mae?.followPlayerId === selfId
+      ? [
+          [
+            'dismissMae',
+            'wave',
+            'maeをキャンプへ帰す',
+            () => {
+              dismissMae();
+              $('#modal').close();
+            },
+          ] as [string, string, string, () => void],
+        ]
+      : []),
     ...(caveTorchAvailable(player())
       ? [
           [
@@ -2432,6 +2492,7 @@ function updateMovementInput() {
       roll: input.movementRoll,
     };
     const petting =
+      state.mae?.petPlayerId === selfId ||
       state.rimoNeko?.petPlayerId === selfId ||
       state.companion524?.petPlayerId === selfId ||
       !!pettingOrbBot(state.orbBots, selfId);
@@ -2475,6 +2536,7 @@ function updateMovementInput() {
         if (target) {
           if (
             target.action === 'petRimo' ||
+            target.action === 'petMae' ||
             target.action === 'pet524' ||
             target.action === 'petBot' ||
             target.action === 'petBots'

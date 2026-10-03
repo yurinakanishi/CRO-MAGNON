@@ -697,6 +697,18 @@
       "sha256": "fe294cdc517abb4485b4379ffd4619fe4ff37a535d5463850f87b6ba612defc7",
       "delivery": "/models/orb-bot-heart/model-r02.glb",
       "subject": "the HOT-PINK/MAGENTA rightmost character. Its entire body is a plush upright HEART shape, with two large round top lobes, a clear central V notch and one softly rounded bottom point. It wears small ROUND BLACK SUNGLASSES: two opaque dark circular lenses with a short black bridge and little temples. Keep the pronounced heart outline, saturated hot pink and cool round sunglasses. No mouth, no nose, no limbs, no extra eyes behind the opaque sunglasses."
+    },
+    {
+      "key": "mae",
+      "name": "mae",
+      "kind": "companion",
+      "height": 0.38,
+      "geometryResolution": 512,
+      "referenceVersion": 1,
+      "status": "integrated-reviewed-prototype",
+      "sha256": "3fb4776d3830cda7b00dd1eeadaf4c000ebe7f41af38ccfe0ee55909e1309405",
+      "delivery": "/models/mae/model-r01.glb",
+      "subject": "Gray rounded soft pouch with two vertical eyes and a straight mouth, based on user mae.jpg."
     }
   ],
   "reuse": {

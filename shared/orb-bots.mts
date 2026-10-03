@@ -84,6 +84,7 @@ type BotRoom = {
   players: Map<string, PlayerSnapshot>;
   collision: CollisionWorld;
   rimoNeko?: { petPlayerId: string | null };
+  mae?: { petPlayerId: string | null };
   companion524?: Companion524;
   sessions?: Map<string, { player: { id: string } }>;
 };
@@ -499,6 +500,7 @@ function handleBotCare(
   if (
     pettingOrbBot(room.orbBots, p.id) ||
     room.rimoNeko?.petPlayerId === p.id ||
+    room.mae?.petPlayerId === p.id ||
     room.companion524?.petPlayerId === p.id
   )
     return false;
@@ -894,6 +896,7 @@ export function handleOrbBotAction(
       b.recallAt =
         canHandleBot(p, now) &&
         room.rimoNeko?.petPlayerId !== p.id &&
+        room.mae?.petPlayerId !== p.id &&
         room.companion524?.petPlayerId !== p.id &&
         !pettingOrbBot(room.orbBots, p.id)
           ? now
@@ -906,6 +909,7 @@ export function handleOrbBotAction(
   if (
     !canHandleBot(p, now) ||
     room.rimoNeko?.petPlayerId === p.id ||
+    room.mae?.petPlayerId === p.id ||
     room.companion524?.petPlayerId === p.id ||
     pettingOrbBot(room.orbBots, p.id)
   )
