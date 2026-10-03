@@ -1,0 +1,181 @@
+{
+  "sha256": "2b303eb5967bcc5bb0fc1cc13c922ddc959fd08ddfc736366c6e05392fd2063f",
+  "allVertexPosesPerLOD": 2403,
+  "high": [
+    {
+      "clip": "Happy",
+      "seconds": 1.600000023841858,
+      "sampleHz": 240,
+      "samples": 385,
+      "minimumY": 0.0009999344550735345,
+      "rootDrift": 0,
+      "loopMaxError": 0,
+      "maxStanceDrift": {}
+    },
+    {
+      "clip": "Hiss",
+      "seconds": 2.0999999046325684,
+      "sampleHz": 240,
+      "samples": 505,
+      "minimumY": 0.0009664399042865774,
+      "rootDrift": 0,
+      "loopMaxError": 0,
+      "maxStanceDrift": {}
+    },
+    {
+      "clip": "Hit",
+      "seconds": 0.5,
+      "sampleHz": 240,
+      "samples": 121,
+      "minimumY": 0.0009946381316433093,
+      "rootDrift": 0,
+      "loopMaxError": 0,
+      "maxStanceDrift": {}
+    },
+    {
+      "clip": "Idle_Loop",
+      "seconds": 3,
+      "sampleHz": 240,
+      "samples": 721,
+      "minimumY": 0.000999906317964443,
+      "rootDrift": 0,
+      "loopMaxError": 5.7018597396787704e-8,
+      "maxStanceDrift": {}
+    },
+    {
+      "clip": "Pet",
+      "seconds": 1.600000023841858,
+      "sampleHz": 240,
+      "samples": 385,
+      "minimumY": 0.0009999825268531123,
+      "rootDrift": 0,
+      "loopMaxError": 0,
+      "maxStanceDrift": {}
+    },
+    {
+      "clip": "Run_Loop",
+      "seconds": 0.5,
+      "sampleHz": 240,
+      "samples": 121,
+      "minimumY": -0.0005884049231535379,
+      "rootDrift": 0,
+      "loopMaxError": 1.0690017357980447e-7,
+      "maxStanceDrift": {
+        "HandL": 0.000020791928814896375,
+        "HandR": 0.000017297380105096318,
+        "FootR": 0.0003148837700455249,
+        "FootL": 0.00024327782089612898
+      }
+    },
+    {
+      "clip": "Walk_Loop",
+      "seconds": 0.6833333373069763,
+      "sampleHz": 240,
+      "samples": 165,
+      "minimumY": 0.0008829292439475686,
+      "rootDrift": 0,
+      "loopMaxError": 9.439814583201035e-8,
+      "maxStanceDrift": {
+        "HandL": 0.00001877669961541071,
+        "FootR": 0.00204847018192326,
+        "FootL": 0.00002527018653981881,
+        "HandR": 0.000008313566643185547
+      }
+    }
+  ],
+  "low": [
+    {
+      "clip": "Happy",
+      "seconds": 1.600000023841858,
+      "sampleHz": 240,
+      "samples": 385,
+      "minimumY": 0.0006098210942855548,
+      "rootDrift": 0,
+      "loopMaxError": 0,
+      "maxStanceDrift": {}
+    },
+    {
+      "clip": "Hiss",
+      "seconds": 2.0999999046325684,
+      "sampleHz": 240,
+      "samples": 505,
+      "minimumY": 0.0005867824232901212,
+      "rootDrift": 0,
+      "loopMaxError": 0,
+      "maxStanceDrift": {}
+    },
+    {
+      "clip": "Hit",
+      "seconds": 0.5,
+      "sampleHz": 240,
+      "samples": 121,
+      "minimumY": 0.0006045879996048731,
+      "rootDrift": 0,
+      "loopMaxError": 0,
+      "maxStanceDrift": {}
+    },
+    {
+      "clip": "Idle_Loop",
+      "seconds": 3,
+      "sampleHz": 240,
+      "samples": 721,
+      "minimumY": 0.0006098210942855548,
+      "rootDrift": 0,
+      "loopMaxError": 5.732608888822803e-8,
+      "maxStanceDrift": {}
+    },
+    {
+      "clip": "Pet",
+      "seconds": 1.600000023841858,
+      "sampleHz": 240,
+      "samples": 385,
+      "minimumY": 0.0006098210942855548,
+      "rootDrift": 0,
+      "loopMaxError": 0,
+      "maxStanceDrift": {}
+    },
+    {
+      "clip": "Run_Loop",
+      "seconds": 0.5,
+      "sampleHz": 240,
+      "samples": 121,
+      "minimumY": -0.0005925104028477955,
+      "rootDrift": 0,
+      "loopMaxError": 1.1177942566148888e-7,
+      "maxStanceDrift": {
+        "HandL": 0.000020791928814896375,
+        "HandR": 0.000017297380105096318,
+        "FootR": 0.0003148837700455249,
+        "FootL": 0.00024327782089612898
+      }
+    },
+    {
+      "clip": "Walk_Loop",
+      "seconds": 0.6833333373069763,
+      "sampleHz": 240,
+      "samples": 165,
+      "minimumY": 0.0005023619803739079,
+      "rootDrift": 0,
+      "loopMaxError": 9.15785831594492e-8,
+      "maxStanceDrift": {
+        "HandL": 0.00001877669961541071,
+        "FootR": 0.00204847018192326,
+        "FootL": 0.00002527018653981881,
+        "HandR": 0.000008313566643185547
+      }
+    }
+  ],
+  "maximumSamplerReferenceError": 0,
+  "happy": {
+    "revision": "03",
+    "sha256": "2b303eb5967bcc5bb0fc1cc13c922ddc959fd08ddfc736366c6e05392fd2063f",
+    "seconds": 1.600000023841858,
+    "sampleHz": 480,
+    "samples": 769,
+    "entrySeam": 1.8396139699250916e-8,
+    "exitSeam": 5.346308392743778e-8,
+    "footDrift": 1.8347264692789958e-7,
+    "maximumHeadRotationDegrees": 15.644630883847467,
+    "maximumTailLiftMetres": 0.05888324583444521
+  }
+}

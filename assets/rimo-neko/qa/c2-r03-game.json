@@ -1,0 +1,71 @@
+{
+  "candidate": 2,
+  "surface": "01",
+  "revision": "03",
+  "sha256": "2b303eb5967bcc5bb0fc1cc13c922ddc959fd08ddfc736366c6e05392fd2063f",
+  "status": "passed",
+  "browserScreens": 2,
+  "protocolPeers": 3,
+  "allSevenClipsObserved": [
+    "Happy",
+    "Hiss",
+    "Hit",
+    "Idle_Loop",
+    "Pet",
+    "Run_Loop",
+    "Walk_Loop"
+  ],
+  "recordings": 7,
+  "renderedFrames": 79,
+  "captures": 15,
+  "settledPetContact": [
+    {
+      "record": 1,
+      "character": "cro-magnon-woman",
+      "samples": 5,
+      "maxContactGap": 2.1737717566788437e-7
+    },
+    {
+      "record": 3,
+      "character": "maruimo-octopus",
+      "samples": 1,
+      "maxContactGap": 0.00009167299085523972
+    }
+  ],
+  "firstApproachMaximumContactGap": 0.2940393805448357,
+  "maximumHeartsObserved": 4,
+  "excludedVisualCaptures": [
+    {
+      "file": "output/rimo-neko-c2-r03-game/1790989536844-front.png",
+      "reason": "Observer avatar obstructs the cat; replaced by the unobstructed front capture."
+    },
+    {
+      "file": "output/rimo-neko-c2-r03-game/1790989956170-normal.png",
+      "reason": "The canvas buffer is cleared outside the render callback; black saved PNG. Normal camera was verified separately in a live CUA browser screenshot after rejoin."
+    }
+  ],
+  "checks": [
+    "front-facing head and centred tail",
+    "high and low geometry",
+    "Pet → Happy with hearts → follow",
+    "walk/run/deceleration",
+    "Hit → Hiss",
+    "bridge floor",
+    "return to camp through game button",
+    "two screens and three protocol peers",
+    "reload and rejoin with the same observer id",
+    "normal camera"
+  ],
+  "methods": "CUA-operated actual game pet/return buttons on a local memory-only server. Placement, character, follow destination, bridge and hit use explicit QA fixtures. The production GLB and renderer are used.",
+  "limitations": [
+    "Background browser rendering is throttled between automation actions. This is not a sustained FPS measurement. The first approach has interpolation lag; settled strokes are reported separately.",
+    "Sparse rendered samples observe at most four of the five staggered hearts at once; no claim is made that every particle lifetime was captured.",
+    "No physical controller/device, small viewport, long-duration run or exhaustive self-intersection validation in this correction."
+  ],
+  "evidence": {
+    "captures": "output/rimo-neko-c2-r03-game/captures.json",
+    "records": "output/rimo-neko-c2-r03-game/records.json",
+    "delivery": "output/rimo-neko-c2-r03-game/delivery.json",
+    "rejoin": "output/rimo-neko-c2-r03-game/rejoin.json"
+  }
+}

@@ -1,0 +1,120 @@
+{
+  "modelKey": "rimo-neko",
+  "name": "りもねこ",
+  "kind": "companion",
+  "candidate": 2,
+  "status": "reviewed-prototype",
+  "url": "/models/rimo-neko/model-c02-r02.glb",
+  "sha256": "c336d59a52a5fc5594969ee97d8b4393b7e7f5a3ba7a8b176a6375ada41a3f57",
+  "bytes": 26079252,
+  "triangles": 140226,
+  "upAxis": "Y",
+  "forwardAxis": "+Z",
+  "heightMetres": 0.5199786842176763,
+  "widthMetres": 0.3086169958114624,
+  "lengthMetres": 0.5808424800634384,
+  "placement": {
+    "pivot": "ground-between-four-paws",
+    "scale": 1
+  },
+  "clips": [
+    {
+      "name": "Idle_Loop",
+      "seconds": 3,
+      "loop": true,
+      "rootMotion": "in-place",
+      "fps": 120
+    },
+    {
+      "name": "Walk_Loop",
+      "seconds": 0.6833333333333333,
+      "loop": true,
+      "rootMotion": "in-place",
+      "fps": 120
+    },
+    {
+      "name": "Run_Loop",
+      "seconds": 0.5,
+      "loop": true,
+      "rootMotion": "in-place",
+      "fps": 120
+    },
+    {
+      "name": "Pet",
+      "seconds": 1.6,
+      "loop": false,
+      "rootMotion": "in-place",
+      "fps": 120
+    },
+    {
+      "name": "Happy",
+      "seconds": 1.6,
+      "loop": false,
+      "rootMotion": "in-place",
+      "fps": 120
+    },
+    {
+      "name": "Hit",
+      "seconds": 0.5,
+      "loop": false,
+      "rootMotion": "in-place",
+      "fps": 120
+    },
+    {
+      "name": "Hiss",
+      "seconds": 2.1,
+      "loop": false,
+      "rootMotion": "in-place",
+      "fps": 120
+    }
+  ],
+  "locomotion": {
+    "Walk_Loop": {
+      "metresPerSecond": 0.4677073170731707,
+      "cycleSeconds": 0.6833333333333333,
+      "dutyFactor": 0.6,
+      "touchdownPhases": {
+        "BL": 0,
+        "FL": 0.75,
+        "BR": 0.5,
+        "FR": 0.25
+      }
+    },
+    "Run_Loop": {
+      "metresPerSecond": 2,
+      "cycleSeconds": 0.5,
+      "dutyFactor": 0.23333333333333334,
+      "touchdownPhases": {
+        "FL": 0,
+        "FR": 0.06666666666666667,
+        "BR": 0.5,
+        "BL": 0.5666666666666667
+      }
+    }
+  },
+  "lods": [
+    {
+      "url": "/models/rimo-neko/lod-c02-r02.glb",
+      "sha256": "50de7f30f0c61a7e83d0ef148c006d8d050f5578e263c1e70377d5ea47017a04",
+      "bytes": 1975020,
+      "triangles": 22436,
+      "distanceMetres": 6,
+      "purpose": "source-derived animated geometry; original skeleton/materials/clips retained"
+    }
+  ],
+  "provenance": {
+    "provider": "Codex built-in imagegen; local TRELLIS-2; measured surface reduction and body-specific quadruped rig",
+    "claudeUsed": false,
+    "source": "output/model-generation/models/rimo-neko/candidate-2/work/rig/revision-02/candidate.glb",
+    "sourceSha256": "c336d59a52a5fc5594969ee97d8b4393b7e7f5a3ba7a8b176a6375ada41a3f57",
+    "surface": "Candidate 2 / surface01",
+    "sourceSurfaceSha256": "284095b15d1e08fdfa7a7157ba5806c322e52d280d03a0f0436c8f2311761850",
+    "referenceImage": "assets/rimo-neko/source/reference-v2.png",
+    "referenceSha256": "8e4854b4d1a397a9b485fe2e5a063ae8f5ca0f59ce05b9eb7a43f0ae491ee5f2",
+    "visualReview": "assets/rimo-neko/adoption.json"
+  },
+  "notes": [
+    "The user selected Candidate 2 surface01. Its gray-white fur, green eyes and plume tail are retained; rigging adds a small lip seam and mouth lining for Hiss.",
+    "Original image, Candidate 1, interrupted generation, all C2 revisions and measured QA are retained."
+  ]
+}

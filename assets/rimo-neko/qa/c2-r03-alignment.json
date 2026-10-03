@@ -1,0 +1,158 @@
+{
+  "status": "passed",
+  "candidate": 2,
+  "revision": "03",
+  "sha256": "2b303eb5967bcc5bb0fc1cc13c922ddc959fd08ddfc736366c6e05392fd2063f",
+  "previousSha256": "c336d59a52a5fc5594969ee97d8b4393b7e7f5a3ba7a8b176a6375ada41a3f57",
+  "vertices": 191975,
+  "triangles": 140226,
+  "triangleConnectivityUvJointsWeightsRetained": true,
+  "exportedVertexOrderChanged": true,
+  "imageBytesRetained": true,
+  "images": [
+    "cdc1a858935806ec21acc29af297284c696e0e359b342c4bf9b351567c2ca2e3"
+  ],
+  "oldFace": {
+    "yawDegrees": 32.314425191004084,
+    "eyeSpan": 0.07822620556194576,
+    "eyeMidX": -0.06770398303338382,
+    "noseX": -0.08332801699082097
+  },
+  "newFace": {
+    "yawDegrees": -0.000023527508396249968,
+    "eyeSpan": 0.0782262072067149,
+    "eyeMidX": -4.960615945792668e-9,
+    "noseX": 0.003375736418918647
+  },
+  "tailRest": [
+    {
+      "name": "Tail1",
+      "oldX": -0.003000000026077032,
+      "newX": 1.2482691960215115e-14
+    },
+    {
+      "name": "Tail2",
+      "oldX": -0.01799997810690757,
+      "newX": 4.176419739166617e-10
+    },
+    {
+      "name": "Tail3",
+      "oldX": -0.04599995018488357,
+      "newX": -4.2557017102872905e-10
+    },
+    {
+      "name": "Tail4",
+      "oldX": -0.05999994642432494,
+      "newX": -2.5620005213696513e-9
+    },
+    {
+      "name": "Tail5",
+      "oldX": -0.06299994284221398,
+      "newX": -5.54751890708101e-9
+    }
+  ],
+  "idle": {
+    "samples": 180,
+    "meanYawDegrees": -0.000026509053278303552,
+    "yawRangeDegrees": [
+      -2.9537367030662254,
+      2.953685460426483
+    ],
+    "meanTailX": -4.2678708437907907e-10,
+    "tailRange": [
+      -0.0020293069990136286,
+      0.002029302335032611
+    ]
+  },
+  "correction": {
+    "request": "Face forward and tail centred, retaining the selected C2 surface",
+    "sourceSha256": "c336d59a52a5fc5594969ee97d8b4393b7e7f5a3ba7a8b176a6375ada41a3f57",
+    "headYawCorrectionDegrees": 32.3144481643561,
+    "headTranslationMetres": [
+      0.013073072871152253,
+      0,
+      0
+    ],
+    "oldTailCentres": [
+      [
+        -0.003,
+        0.171,
+        0.23
+      ],
+      [
+        -0.018,
+        0.238,
+        0.219
+      ],
+      [
+        -0.046,
+        0.282,
+        0.268
+      ],
+      [
+        -0.06,
+        0.28,
+        0.345
+      ],
+      [
+        -0.063,
+        0.269,
+        0.409
+      ],
+      [
+        -0.054,
+        0.257,
+        0.453
+      ]
+    ],
+    "newTailCentres": [
+      [
+        0,
+        0.171,
+        0.23
+      ],
+      [
+        0,
+        0.238,
+        0.219
+      ],
+      [
+        0,
+        0.282,
+        0.268
+      ],
+      [
+        0,
+        0.28,
+        0.345
+      ],
+      [
+        0,
+        0.269,
+        0.409
+      ],
+      [
+        0,
+        0.257,
+        0.453
+      ]
+    ],
+    "rigidFaceVertices": 12528,
+    "maximumRigidFaceError": 0,
+    "vertexCount": 62694,
+    "triangles": 140226,
+    "movedVertices": 46041,
+    "fixedSoleVertices": 4707,
+    "maximumSoleChange": 1.5515838457795457e-17,
+    "edgeLengthRatioQuantiles": [
+      0.2559098365593649,
+      0.7258925929010137,
+      1,
+      1.7340039958352773,
+      2.5013996233255953
+    ],
+    "method": "Rigid face yaw and centring with broad smooth neck transition; continuous lateral centreline correction retaining tail Y/Z and cross sections",
+    "topologyUvImageAndWeightsRetained": true
+  },
+  "scope": "Rest shape intentionally changes. Actual exported eye vertices and tail bones demonstrate forward/centred alignment; 180 idle poses measure absence of a constant lateral bias. UVs, topology, weights and embedded image bytes are unchanged."
+}

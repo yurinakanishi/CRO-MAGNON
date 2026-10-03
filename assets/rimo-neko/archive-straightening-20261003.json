@@ -1,0 +1,20 @@
+{
+  "date": "2026-10-03",
+  "candidate": 2,
+  "surface": "01",
+  "rigRevision": "03",
+  "decision": "head and tail straightened at explicit user request",
+  "previousArchive": "candidate-2/game-adoption-20261002",
+  "modelSha256": "2b303eb5967bcc5bb0fc1cc13c922ddc959fd08ddfc736366c6e05392fd2063f",
+  "files": 292,
+  "bytes": 378143810,
+  "playerSavesIncluded": false,
+  "filesVerifiedBySha256": true,
+  "limitations": [
+    "Background browser rendering is throttled between automation actions. This is not a sustained FPS measurement. The first approach has interpolation lag; settled strokes are reported separately.",
+    "Sparse rendered samples observe at most four of the five staggered hearts at once; no claim is made that every particle lifetime was captured.",
+    "No physical controller/device, small viewport, long-duration run or exhaustive self-intersection validation in this correction."
+  ],
+  "archive": "C:\\Users\\yurin\\Desktop\\projects\\threed-model-creation\\models\\rimo-neko\\candidate-2\\game-straightening-20261003",
+  "manifestSha256": "7742182072a066004063f2eaa69db7b4985efddf41b9b307986605f3d8a9ff1e"
+}

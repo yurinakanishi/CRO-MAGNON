@@ -1,0 +1,31 @@
+{
+  "baseUrl": "http://localhost:3000",
+  "checks": [
+    {
+      "url": "/models/rimo-neko/asset.json",
+      "bytes": 5407,
+      "sha256": "dbaed9641fa916a824baa743223d35e9add7402eb640ba27598c8573e99884d1",
+      "match": true
+    },
+    {
+      "url": "/models/rimo-neko/model-c02-r03.glb",
+      "bytes": 26079184,
+      "sha256": "2b303eb5967bcc5bb0fc1cc13c922ddc959fd08ddfc736366c6e05392fd2063f",
+      "match": true
+    },
+    {
+      "url": "/models/rimo-neko/lod-c02-r03.glb",
+      "bytes": 1973860,
+      "sha256": "ae8227092e0556b0642b1baae840cea8dae144a446b24087347a955d8b309495",
+      "match": true
+    },
+    {
+      "url": "/models/world-assets.json",
+      "bytes": 626332,
+      "sha256": "a6443b67ad15e3b97a64fa31e089b0450113c6122f4f0b54e6634e822c959493",
+      "match": true
+    }
+  ],
+  "serverRestarted": false,
+  "playerSaveFilesReadOrModified": false
+}

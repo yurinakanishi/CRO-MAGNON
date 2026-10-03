@@ -1,0 +1,30 @@
+{
+  "decision": "adopt",
+  "candidate": 2,
+  "revision": "02",
+  "sha256": "c336d59a52a5fc5594969ee97d8b4393b7e7f5a3ba7a8b176a6375ada41a3f57",
+  "source": "output/model-generation/models/rimo-neko/candidate-2/work/rig/revision-02/candidate.glb",
+  "triangles": 140226,
+  "bytes": 26079252,
+  "viewerQA": "output/model-generation/models/rimo-neko/candidate-2/qa/rig-02/browser/result.json",
+  "motionQA": "output/model-generation/models/rimo-neko/candidate-2/qa/rig-02/motion.json",
+  "lodMotionQA": "output/model-generation/models/rimo-neko/candidate-2/qa/rig-02/lod-motion.json",
+  "happyContactQA": "output/model-generation/models/rimo-neko/candidate-2/qa/rig-02/happy-contact.json",
+  "preservationQA": "output/model-generation/models/rimo-neko/candidate-2/qa/rig-02/preservation.json",
+  "gameValidation": "passed",
+  "gameQA": "assets/rimo-neko/qa/c2-game.json",
+  "allVertexPoses": 2403,
+  "testedLODs": 2,
+  "neutralAndMotionFrames": 126,
+  "tests": {
+    "passed": 821,
+    "failed": 0,
+    "log": "output/rimo-neko-c2-tests-final.log"
+  },
+  "localServerQA": "assets/rimo-neko/qa/c2-server.json",
+  "knownLimits": [
+    "Background browser rendering drops to about one frame per second between automation actions. These recordings do not measure sustained FPS.",
+    "Initial distant approaches in records 0 and 6 show renderer interpolation lag, up to 0.447 m hand/target gap during throttled rendering. Settled strokes and independent full-pose checks are reported separately.",
+    "No physical controller, small viewport, long-duration play or exhaustive self-intersection validation in this replacement."
+  ]
+}

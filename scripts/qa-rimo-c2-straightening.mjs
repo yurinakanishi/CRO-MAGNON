@@ -11,29 +11,44 @@ const processRecord=JSON.parse(await readFile(`${base}/work/rig/revision-${revis
 const measured=JSON.parse(await readFile(`${base}/qa/straightening-20261003/measurements.json`,'utf8'));
 const marks=JSON.parse(await readFile(`${base}/qa/face-landmarks.json`,'utf8'));
 const sha=b=>createHash('sha256').update(b).digest('hex');
-function accessor(g,i){const a=g.doc.accessors[i],v=g.doc.bufferViews[a.bufferView];assert.ok(!v.byteStride);return g.binary.subarray((v.byteOffset??0)+(a.byteOffset??0),(v.byteOffset??0)+v.byteLength);}
-const before=prior.doc.meshes.flatMap(m=>m.primitives),after=current.doc.meshes.flatMap(m=>m.primitives);
-assert.equal(before.length,after.length);
-let triangles=0,vertices=0;
-for(let i=0;i<before.length;i++){
-  const a=before[i],b=after[i];
-  assert.deepEqual(accessor(prior,a.indices),accessor(current,b.indices),'Triangle connectivity');
-  for(const key of ['TEXCOORD_0','JOINTS_0','WEIGHTS_0']){
-    if(a.attributes[key]!==undefined)assert.deepEqual(accessor(prior,a.attributes[key]),accessor(current,b.attributes[key]),key);
+const oldMeshes=[],newMeshes=[];
+prior.scene.traverse(m=>{if(m.isSkinnedMesh)oldMeshes.push(m);});current.scene.traverse(m=>{if(m.isSkinnedMesh)newMeshes.push(m);});
+assert.equal(oldMeshes.length,newMeshes.length);
+const uvKey=(uv,i)=>uv?`${uv.getX(i)},${uv.getY(i)}`:'none';
+function topology(mesh){const g=mesh.geometry,uv=g.attributes.uv,si=g.attributes.skinIndex,sw=g.attributes.skinWeight,keys=[];
+  for(let i=0;i<g.index.count;i+=3){const a=[0,1,2].map(k=>uvKey(uv,g.index.getX(i+k)));keys.push([a.join(';'),[a[1],a[2],a[0]].join(';'),[a[2],a[0],a[1]].join(';')].sort()[0]);}
+  const weights=[];
+  for(let i=0;i<g.attributes.position.count;i++){
+    const a=[0,1,2,3].map(k=>[si.getComponent(i,k),sw.getComponent(i,k)]).filter(a=>a[1]>0).sort((a,b)=>a[0]-b[0]);
+    weights.push(uvKey(uv,i)+'|'+JSON.stringify(a));
   }
-  assert.equal(prior.doc.accessors[a.attributes.POSITION].count,current.doc.accessors[b.attributes.POSITION].count);
-  vertices+=current.doc.accessors[b.attributes.POSITION].count;triangles+=current.doc.accessors[b.indices].count/3;
+  return {triangles:sha(keys.sort().join('\n')),weights:sha(weights.sort().join('\n'))};
+}
+let triangles=0,vertices=0;
+for(let i=0;i<oldMeshes.length;i++){
+  assert.deepEqual(topology(oldMeshes[i]),topology(newMeshes[i]),'UV triangle winding/connectivity and per-UV skin influence multiset');
+  assert.equal(oldMeshes[i].geometry.attributes.position.count,newMeshes[i].geometry.attributes.position.count);
+  assert.deepEqual(oldMeshes[i].skeleton.bones.map(b=>b.name),newMeshes[i].skeleton.bones.map(b=>b.name));
+  vertices+=newMeshes[i].geometry.attributes.position.count;triangles+=newMeshes[i].geometry.index.count/3;
 }
 function images(g){return g.doc.images.map(im=>{const v=g.doc.bufferViews[im.bufferView];return sha(g.binary.subarray(v.byteOffset??0,(v.byteOffset??0)+v.byteLength));});}
 assert.deepEqual(images(prior),images(current));
-const oldMeshes=[],newMeshes=[];
-prior.scene.traverse(m=>{if(m.isSkinnedMesh)oldMeshes.push(m);});current.scene.traverse(m=>{if(m.isSkinnedMesh)newMeshes.push(m);});
-function probe(at){const target=new THREE.Vector3(at[0],at[2],-at[1]);let best={distance:Infinity};const v=new THREE.Vector3();
-  oldMeshes.forEach((m,mesh)=>{for(let i=0;i<m.geometry.attributes.position.count;i++){v.fromBufferAttribute(m.geometry.attributes.position,i);m.localToWorld(v);const d=v.distanceTo(target);if(d<best.distance)best={mesh,index:i,distance:d};}});
-  assert.ok(best.distance<.002);return best;
+function probe(at){const target=new THREE.Vector3(at[0],at[2],-at[1]);let best={distance:Infinity};const tri=new THREE.Triangle(),near=new THREE.Vector3(),bary=new THREE.Vector3();
+  oldMeshes.forEach((m,mesh)=>{const p=m.geometry.attributes.position,index=m.geometry.index;for(let i=0;i<index.count;i+=3){
+    const ids=[index.getX(i),index.getX(i+1),index.getX(i+2)];
+    [tri.a,tri.b,tri.c].forEach((v,k)=>m.localToWorld(v.fromBufferAttribute(p,ids[k])));
+    tri.closestPointToPoint(target,near);const d=near.distanceTo(target);
+    if(d<best.distance){tri.getBarycoord(near,bary);best={mesh,ids,distance:d,bary:bary.toArray()};}
+  }});
+  assert.ok(best.distance<1e-5,`Surface probe distance ${best.distance}`);
+  best.newIds=best.ids.map(index=>{const key=uvKey(oldMeshes[best.mesh].geometry.attributes.uv,index),uv=newMeshes[best.mesh].geometry.attributes.uv;
+    const indices=[];for(let i=0;i<uv.count;i++)if(uvKey(uv,i)===key)indices.push(i);assert.ok(indices.length);
+    const p=newMeshes[best.mesh].geometry.attributes.position,first=new THREE.Vector3().fromBufferAttribute(p,indices[0]);
+    assert.ok(indices.every(i=>new THREE.Vector3().fromBufferAttribute(p,i).distanceTo(first)<1e-6));return indices[0];});
+  return best;
 }
 const probes={left:probe(measured.eyeImageLeft.at),right:probe(measured.eyeImageRight.at),nose:probe(marks.nose.at)};
-function point(meshes,p,skinned){const m=meshes[p.mesh],v=new THREE.Vector3();if(skinned)m.getVertexPosition(p.index,v);else v.fromBufferAttribute(m.geometry.attributes.position,p.index);return m.localToWorld(v);}
+function point(meshes,p,skinned){const m=meshes[p.mesh],v=new THREE.Vector3(),out=new THREE.Vector3(),indices=meshes===oldMeshes?p.ids:p.newIds;for(let i=0;i<3;i++){if(skinned)m.getVertexPosition(indices[i],v);else v.fromBufferAttribute(m.geometry.attributes.position,indices[i]);out.addScaledVector(v,p.bary[i]);}return m.localToWorld(out);}
 function face(meshes,skinned=false){const left=point(meshes,probes.left,skinned),right=point(meshes,probes.right,skinned),nose=point(meshes,probes.nose,skinned),line=right.clone().sub(left);return {yawDegrees:THREE.MathUtils.radToDeg(Math.atan2(line.z,line.x)),eyeSpan:line.length(),eyeMidX:(left.x+right.x)/2,noseX:nose.x};}
 const oldFace=face(oldMeshes),newFace=face(newMeshes);
 assert.ok(Math.abs(newFace.yawDegrees)<1,'Face looks forward');assert.ok(Math.abs(newFace.eyeMidX)<.002,'Face centred');
@@ -51,7 +66,7 @@ const mean=k=>samples.reduce((s,v)=>s+v[k],0)/samples.length;
 const idle={samples:samples.length,meanYawDegrees:mean('yawDegrees'),yawRangeDegrees:[Math.min(...samples.map(v=>v.yawDegrees)),Math.max(...samples.map(v=>v.yawDegrees))],meanTailX:mean('tailX'),tailRange:[Math.min(...samples.map(v=>v.tailX)),Math.max(...samples.map(v=>v.tailX))]};
 assert.ok(Math.abs(idle.meanYawDegrees)<1);assert.ok(Math.abs(idle.meanTailX)<.001);
 const result={status:'passed',candidate:2,revision,sha256:sha(current.bytes),previousSha256:sha(prior.bytes),vertices,triangles,
-  triangleConnectivityUvJointsWeightsByteIdentical:true,imageBytesRetained:true,images:images(current),oldFace,newFace,tailRest,idle,
+  triangleConnectivityUvJointsWeightsRetained:true,exportedVertexOrderChanged:true,imageBytesRetained:true,images:images(current),oldFace,newFace,tailRest,idle,
   correction:processRecord.straightening,scope:'Rest shape intentionally changes. Actual exported eye vertices and tail bones demonstrate forward/centred alignment; 180 idle poses measure absence of a constant lateral bias. UVs, topology, weights and embedded image bytes are unchanged.'};
 await mkdir(`${base}/qa/rig-${revision}`,{recursive:true});await writeFile(`${base}/qa/rig-${revision}/straightening.json`,JSON.stringify(result,null,2)+'\n');
 console.log(JSON.stringify(result));

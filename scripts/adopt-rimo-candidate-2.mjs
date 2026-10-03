@@ -32,7 +32,7 @@ assert.equal(browser.sourceSha256,digest); assert.deepEqual(browser.errors,[]);
 if(rig.straightening){
   const alignment=await read(`${base}/qa/rig-${revision}/straightening.json`);
   assert.equal(alignment.status,'passed');assert.equal(alignment.sha256,digest);
-  assert.ok(alignment.triangleConnectivityUvJointsWeightsByteIdentical);
+  assert.ok(alignment.triangleConnectivityUvJointsWeightsRetained);
 }
 assert.equal(doc.animations.length,7); assert.equal(lodDoc.animations?.length??0,0);
 assert.ok(doc.nodes.some(n=>n.name==='PetContact'));

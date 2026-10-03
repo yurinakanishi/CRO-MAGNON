@@ -1507,6 +1507,28 @@
       "bytes": 1975052,
       "maximumTextureEdge": 2048,
       "images": []
+    },
+    {
+      "sourceUrl": "/models/rimo-neko/model-c02-r03.glb",
+      "sourceSha256": "2b303eb5967bcc5bb0fc1cc13c922ddc959fd08ddfc736366c6e05392fd2063f",
+      "sourceBytes": 26079184,
+      "file": "assets/public-performance/models/rimo-neko-model-c02-r03-tex2048.glb",
+      "url": "/models/rimo-neko/model-web-2b303eb5967bcc5b.glb",
+      "sha256": "2b303eb5967bcc5bb0fc1cc13c922ddc959fd08ddfc736366c6e05392fd2063f",
+      "bytes": 26079184,
+      "maximumTextureEdge": 2048,
+      "images": []
+    },
+    {
+      "sourceUrl": "/models/rimo-neko/lod-c02-r03.glb",
+      "sourceSha256": "ae8227092e0556b0642b1baae840cea8dae144a446b24087347a955d8b309495",
+      "sourceBytes": 1973860,
+      "file": "assets/public-performance/models/rimo-neko-lod-c02-r03-tex2048.glb",
+      "url": "/models/rimo-neko/lod-web-a407c7f6e5cec773.glb",
+      "sha256": "a407c7f6e5cec7733ab9ff64b7470ae76e75769f404b866192b2195c6b426271",
+      "bytes": 1973892,
+      "maximumTextureEdge": 2048,
+      "images": []
     }
   ]
 }

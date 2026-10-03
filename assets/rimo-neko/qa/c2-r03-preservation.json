@@ -1,0 +1,18 @@
+{
+  "source": "C:\\Users\\yurin\\Desktop\\projects\\CRO-MAGNON\\output\\model-generation\\models\\rimo-neko\\candidate-2\\work\\straightening\\revision-03/candidate.glb",
+  "sourceSha256": "1757c0869f91221336f1cc6e1e97b8fe8ca8dfbe676e717b2eeb91bf19f606c3",
+  "sha256": "2b303eb5967bcc5bb0fc1cc13c922ddc959fd08ddfc736366c6e05392fd2063f",
+  "sourceVertices": 191975,
+  "rigVertices": 191975,
+  "maximumDistance": 0,
+  "maximumUVError": 0,
+  "missing": 0,
+  "imageBytesRetained": true,
+  "sourceImages": [
+    "cdc1a858935806ec21acc29af297284c696e0e359b342c4bf9b351567c2ca2e3"
+  ],
+  "rigImages": [
+    "cdc1a858935806ec21acc29af297284c696e0e359b342c4bf9b351567c2ca2e3"
+  ],
+  "scope": "The user-authorized corrected rest surface is retained exactly in the animated GLB. This is not a claim that positions equal the previously bent model. Original topology/UV/image checks are recorded separately in straightening.json."
+}

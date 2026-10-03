@@ -1,30 +1,31 @@
 {
   "decision": "adopt",
   "candidate": 2,
-  "revision": "02",
-  "sha256": "c336d59a52a5fc5594969ee97d8b4393b7e7f5a3ba7a8b176a6375ada41a3f57",
-  "source": "output/model-generation/models/rimo-neko/candidate-2/work/rig/revision-02/candidate.glb",
+  "revision": "03",
+  "sha256": "2b303eb5967bcc5bb0fc1cc13c922ddc959fd08ddfc736366c6e05392fd2063f",
+  "source": "output/model-generation/models/rimo-neko/candidate-2/work/rig/revision-03/candidate.glb",
   "triangles": 140226,
-  "bytes": 26079252,
-  "viewerQA": "output/model-generation/models/rimo-neko/candidate-2/qa/rig-02/browser/result.json",
-  "motionQA": "output/model-generation/models/rimo-neko/candidate-2/qa/rig-02/motion.json",
-  "lodMotionQA": "output/model-generation/models/rimo-neko/candidate-2/qa/rig-02/lod-motion.json",
-  "happyContactQA": "output/model-generation/models/rimo-neko/candidate-2/qa/rig-02/happy-contact.json",
-  "preservationQA": "output/model-generation/models/rimo-neko/candidate-2/qa/rig-02/preservation.json",
+  "bytes": 26079184,
+  "viewerQA": "output/model-generation/models/rimo-neko/candidate-2/qa/rig-03/browser/result.json",
+  "motionQA": "output/model-generation/models/rimo-neko/candidate-2/qa/rig-03/motion.json",
+  "lodMotionQA": "output/model-generation/models/rimo-neko/candidate-2/qa/rig-03/lod-motion.json",
+  "happyContactQA": "output/model-generation/models/rimo-neko/candidate-2/qa/rig-03/happy-contact.json",
+  "preservationQA": "output/model-generation/models/rimo-neko/candidate-2/qa/rig-03/preservation.json",
   "gameValidation": "passed",
-  "gameQA": "assets/rimo-neko/qa/c2-game.json",
-  "allVertexPoses": 2403,
+  "gameQA": "assets/rimo-neko/qa/c2-r03-game.json",
+  "alignmentQA": "assets/rimo-neko/qa/c2-r03-alignment.json",
+  "allVertexPosesPerLOD": 2403,
   "testedLODs": 2,
-  "neutralAndMotionFrames": 126,
+  "motionFramesReviewed": 126,
   "tests": {
-    "passed": 821,
+    "passed": 860,
     "failed": 0,
-    "log": "output/rimo-neko-c2-tests-final.log"
+    "log": "output/rimo-straight-tests.log"
   },
-  "localServerQA": "assets/rimo-neko/qa/c2-server.json",
+  "localServerQA": "assets/rimo-neko/qa/c2-r03-delivery.json",
   "knownLimits": [
-    "Background browser rendering drops to about one frame per second between automation actions. These recordings do not measure sustained FPS.",
-    "Initial distant approaches in records 0 and 6 show renderer interpolation lag, up to 0.447 m hand/target gap during throttled rendering. Settled strokes and independent full-pose checks are reported separately.",
-    "No physical controller, small viewport, long-duration play or exhaustive self-intersection validation in this replacement."
+    "Background browser rendering is throttled between automation actions. This is not a sustained FPS measurement. The first approach has interpolation lag; settled strokes are reported separately.",
+    "Sparse rendered samples observe at most four of the five staggered hearts at once; no claim is made that every particle lifetime was captured.",
+    "No physical controller/device, small viewport, long-duration run or exhaustive self-intersection validation in this correction."
   ]
 }

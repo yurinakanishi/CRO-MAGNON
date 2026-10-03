@@ -585,8 +585,8 @@
       "kind": "companion",
       "candidate": 2,
       "status": "integrated-reviewed-prototype",
-      "sha256": "c336d59a52a5fc5594969ee97d8b4393b7e7f5a3ba7a8b176a6375ada41a3f57",
-      "delivery": "/models/rimo-neko/model-c02-r02.glb",
+      "sha256": "2b303eb5967bcc5bb0fc1cc13c922ddc959fd08ddfc736366c6e05392fd2063f",
+      "delivery": "/models/rimo-neko/model-c02-r03.glb",
       "triangles": 140226,
       "gameQA": "assets/rimo-neko/README.md"
     },
