@@ -11,7 +11,12 @@ if (process.platform !== 'win32')
   );
 
 const root = path.dirname(path.dirname(fileURLToPath(import.meta.url)));
-const destination = path.resolve(root, process.argv[2] || 'output/exhibition');
+const local = process.argv.includes('--local');
+const destination = path.resolve(
+  root,
+  process.argv.slice(2).find((arg) => !arg.startsWith('--')) ||
+    (local ? 'output/local' : 'output/exhibition'),
+);
 const relative = path.relative(path.join(root, 'output'), destination);
 if (!relative || relative.startsWith('..') || path.isAbsolute(relative))
   throw new Error('Destination must be a subfolder of output/.');
@@ -43,18 +48,22 @@ for (const file of [
   'public/favicon.svg',
   'public/multiplayer-config.json',
   'public/models/world-assets.json',
-  'scripts/start-exhibition.mjs',
-  'scripts/exhibition-config.mjs',
   'scripts/exhibition-integrity.mjs',
-  'scripts/exhibition-station.ps1',
-  'start-exhibition-host.bat',
-  'start-exhibition-client.bat',
-  'README-EXHIBITION.md',
-  'README-EXHIBITION-3PC.md',
-  'README-EXHIBITION-4PC.md',
-  'README-EXHIBITION-SECURITY.md',
-  'assets/exhibition-lan/qa-summary.json',
-  'exhibition.env',
+  ...(local
+    ? ['scripts/start-local.mjs', 'start-local.cmd', 'README-LOCAL.md', 'local-visibility.json']
+    : [
+        'scripts/start-exhibition.mjs',
+        'scripts/exhibition-config.mjs',
+        'scripts/exhibition-station.ps1',
+        'start-exhibition-host.bat',
+        'start-exhibition-client.bat',
+        'README-EXHIBITION.md',
+        'README-EXHIBITION-3PC.md',
+        'README-EXHIBITION-4PC.md',
+        'README-EXHIBITION-SECURITY.md',
+        'assets/exhibition-lan/qa-summary.json',
+        'exhibition.env',
+      ]),
 ])
   add(file);
 const manifest = JSON.parse(
@@ -92,7 +101,7 @@ for (const asset of manifest.assets) {
     const file = `public${texture.url}`;
     if (
       (await sha256(path.join(root, file))) !== texture.sha256 ||
-      (await stat(path.join(root, file))).size !== texture.bytes
+      (texture.bytes !== undefined && (await stat(path.join(root, file))).size !== texture.bytes)
     )
       throw new Error(`Texture integrity failed: ${file}`);
     add(file);
@@ -115,7 +124,8 @@ for (const [file, source] of [...sources].sort(([a], [b]) => a.localeCompare(b))
   await copyFile(source, target);
   bytes += (await stat(target)).size;
   // Settings are intentionally editable, code/assets/runtime must match on both PCs.
-  if (file !== 'exhibition.env') files.push({ path: file, sha256: await sha256(target) });
+  if (!['exhibition.env', 'local-visibility.json'].includes(file))
+    files.push({ path: file, sha256: await sha256(target) });
 }
 const report = {
   buildId: buildId(files),
@@ -127,7 +137,19 @@ const report = {
   bytes,
   glbs,
 };
-await writeFile(path.join(destination, 'exhibition-build.json'), JSON.stringify(report, null, 2));
+await writeFile(
+  path.join(destination, local ? 'local-build.json' : 'exhibition-build.json'),
+  JSON.stringify(report, null, 2),
+);
+if (local)
+  await writeFile(
+    path.join(destination, 'public/local-build.json'),
+    JSON.stringify({
+      mode: 'local',
+      buildId: report.buildId,
+      builtAt: report.builtAt,
+    }),
+  );
 console.log(
-  `Offline exhibition ready: ${destination}\nBuild ${report.buildId}\n${files.length} verified files; ${glbs} GLBs; ${(bytes / 1024 / 1024).toFixed(1)} MiB. Deploy this same build to PC0, PC1, PC2 and PC3.`,
+  `${local ? 'Portable local game' : 'Offline exhibition'} ready: ${destination}\nBuild ${report.buildId}\n${files.length} verified files; ${glbs} GLBs; ${(bytes / 1024 / 1024).toFixed(1)} MiB.${local ? ' Open start-local.cmd on the destination PC.' : ' Deploy this same build to PC0, PC1, PC2 and PC3.'}`,
 );

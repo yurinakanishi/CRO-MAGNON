@@ -1,4 +1,3 @@
-import { controllerLabels } from './controller-labels.js';
 import { expeditionById } from '../shared/paleo-geography.mjs';
 import { ADVENTURE_REGIONS } from '../shared/adventure-regions.mjs';
 import { GULF } from '../shared/gulf-region.mjs';
@@ -15,7 +14,7 @@ export function warpRegionName(point: { id: string }): string {
   return stop?.continent ?? 'はじまりの地';
 }
 
-export const mapEmptyPrompt = () => `焚き火にポインタを合わせて ${controllerLabels().right}`;
+export const mapEmptyPrompt = () => '行き先を選ぶ';
 
 /** The player arrow as inline SVG: the same shape the minimap draws on its canvas. */
 export const mapArrowSvg = () =>
@@ -25,7 +24,7 @@ export const mapArrowSvg = () =>
  * Full-bleed atlas: one canvas, a free pointer, a small destination card at the bottom left
  * and the zoom controls at the bottom right. No toolbar, no list.
  */
-export function mapScreen(icon, controllerOnly = false) {
+export function mapScreen(icon, _controllerOnly = false) {
   return `<section class="atlas" aria-label="世界地図とワープ">
     <div class="warp-map-wrap">
       <canvas id="big-map" width="960" height="600" class="big-map earth-map" aria-label="世界地図。ポインタを焚き火に合わせて決定するとワープ先になります。"></canvas>
@@ -40,17 +39,17 @@ export function mapScreen(icon, controllerOnly = false) {
           <h3 id="map-destination" aria-live="polite">${mapEmptyPrompt()}</h3>
           <p id="map-selection"></p>
         </div>
-        <button id="map-warp" class="button button-accent" disabled>${controllerLabels().right} ワープ${controllerOnly ? '' : '<kbd>Enter</kbd>'}</button>
+        <button id="map-warp" class="button button-accent" disabled>ワープ</button>
         <small id="map-warp-status" role="status"></small>
         <div class="map-pin-actions">
-          <button id="map-pin-send" class="button button-outline" disabled>${controllerLabels().left} ここへ行こう</button>
+          <button id="map-pin-send" class="button button-outline" disabled>ここへ行こう</button>
           <button id="map-pin-clear" class="button button-outline" disabled>自分のピンを消す</button>
         </div>
         <small id="map-pin-status" role="status"></small>
       </div>
       <div class="atlas-zoom" aria-label="地図の拡大と縮小">
         <button id="map-zoom-in" aria-label="地図を拡大">＋</button><output id="map-zoom-level">4×</output><button id="map-zoom-out" aria-label="地図を縮小">−</button>
-        <button id="map-center" class="atlas-center" aria-label="現在地へ戻る">現在地へ<kbd>${controllerLabels().rightStick}</kbd></button>
+        <button id="map-center" class="atlas-center" aria-label="現在地へ戻る">現在地へ</button>
       </div>
     </div>
   </section>`;

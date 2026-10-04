@@ -179,16 +179,20 @@ export function returnCompanion524(c: Companion524) {
   c.followPlayerId = null;
   c.squadPlayerId = null;
   c.squadMode = null;
+  cancelCompanion524Pet(c);
+  startHomewardRoute(c);
+}
+
+function startHomewardRoute(c: Companion524) {
   c.mode = 'returning';
   c.path = [];
   c.goal = null;
   c.nextPathAt = 0;
   c.followSpeed = 0;
   c.ownerPosition = null;
-  cancelPet(c);
 }
 
-function cancelPet(c: Companion524) {
+export function cancelCompanion524Pet(c: Companion524) {
   c.petPlayerId = null;
   c.petContactAt = 0;
   c.petOrigin = null;
@@ -207,8 +211,9 @@ export function syncCompanion524Bot(c: Companion524, b: OrbBotSnapshot) {
   c.z = b.z;
   c.facing = b.facing;
   c.squadMode = b.mode;
-  if (companion524OnGround(c)) rememberRoute(c);
-  else c.velocityX = c.velocityZ = 0;
+  if (companion524OnGround(c)) {
+    if (c.mode !== 'returning') rememberRoute(c);
+  } else c.velocityX = c.velocityZ = 0;
 }
 
 export function handleCompanion524Action(
@@ -263,6 +268,9 @@ export function handleCompanion524Action(
   player.facing = facing;
   c.mode = 'following';
   c.followPlayerId = player.id;
+  // An accepted invitation establishes the bond before approach or strokes.
+  c.squadPlayerId = player.id;
+  c.squadMode = 'following';
   c.facing = Math.atan2(player.x - c.x, player.z - c.z);
   c.path = [];
   c.nextPathAt = 0;
@@ -273,7 +281,7 @@ export function handleCompanion524Action(
 
 /** A real, repeatable impact, without health, loot, retaliation or a death state. */
 export function hitCompanion524(c: Companion524, dx: number, dz: number, now: number) {
-  cancelPet(c);
+  cancelCompanion524Pet(c);
   c.followSpeed = 0;
   const length = Math.hypot(dx, dz) || 1;
   c.hitDirectionX = dx / length;
@@ -304,8 +312,27 @@ function rememberRoute(c: Companion524) {
 export function updateCompanion524(room: CompanionRoom, dt: number, now: number) {
   const c = room.companion524;
   if (!c || dt <= 0) return;
-  if (c.petPlayerId && !room.players.has(c.petPlayerId)) cancelPet(c);
+  if (c.petPlayerId && !room.players.has(c.petPlayerId)) cancelCompanion524Pet(c);
   const owner = c.followPlayerId ? room.players.get(c.followPlayerId) : null;
+  if (c.squadPlayerId && !c.petPlayerId) {
+    if (room.players.has(c.squadPlayerId)) {
+      if (c.mode !== 'following') {
+        c.mode = 'following';
+        c.path = [];
+        c.goal = null;
+        c.nextPathAt = 0;
+      }
+    } else if (
+      companion524OnGround(c) &&
+      c.squadMode !== 'waiting' &&
+      c.mode !== 'returning' &&
+      (c.mode !== 'idle' || distance(c, c.home) >= 0.08)
+    ) {
+      // Keep the friendship while making an absent owner's follower available
+      // at camp. A thrown body still waits at its landing spot until called.
+      startHomewardRoute(c);
+    }
+  }
   if (
     c.mode === 'following' &&
     !c.squadPlayerId &&
@@ -341,7 +368,7 @@ export function updateCompanion524(room: CompanionRoom, dt: number, now: number)
         !nearCompanion524(owner, c, room.collision, now) ||
         (!c.petContactAt && now - c.petAt > COMPANION_524.petApproachMs))
     ) {
-      cancelPet(c);
+      cancelCompanion524Pet(c);
     } else if (!c.petContactAt) {
       const length = distance(c, c.petGoal);
       const amount = Math.min(length, 1.6 * dt);
@@ -361,15 +388,13 @@ export function updateCompanion524(room: CompanionRoom, dt: number, now: number)
     } else if (now < c.petContactAt + COMPANION_524.petStrokeMs + COMPANION_524.happyMs) {
       return;
     } else {
-      c.squadPlayerId = c.petPlayerId;
-      c.squadMode = 'following';
-      cancelPet(c);
+      cancelCompanion524Pet(c);
     }
   }
 
-  // Recruitment has no timeout, including while the owner is disconnected.
-  // The shared dots simulation owns movement and recall on the original body.
-  if (c.squadPlayerId) return;
+  // The dots simulation owns active squads and deployed bodies. An offline
+  // follower uses the same safe homeward route as a goodbye, keeping its bond.
+  if (c.squadPlayerId && c.mode !== 'returning') return;
 
   let goal: Point, speed: number;
   if (c.mode === 'following' && owner) {
@@ -469,7 +494,7 @@ export function saveCompanion524(c?: Companion524, bot?: OrbBotSnapshot): Compan
   };
 }
 
-/** Keep completed recruitment for the saved player; unfinished pets do not create a bond. */
+/** Keep an accepted bond for the saved player without replaying the pet animation. */
 export function restoreCompanion524(room: CompanionRoom, saved: unknown) {
   const c = createCompanion524(room.collision);
   room.companion524 = c;

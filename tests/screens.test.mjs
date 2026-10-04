@@ -2,7 +2,6 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { readFile } from 'node:fs/promises';
 import { keyPrompts } from '../dist/src/screens.js';
-import { helpTabsMarkup } from '../dist/src/help-content.js';
 
 const root = new URL('../', import.meta.url);
 
@@ -19,19 +18,16 @@ test('the HUD omits menu prompts and never repeats a contextual button', async (
   assert.match(boat, /\$\('#boat-hint'\)\.hidden = !hint/);
 });
 
-test('there is no pre-play tutorial; the help dialog keeps both device tabs', async () => {
+test('manuals have no title, menu, or keyboard entry point', async () => {
   const main = await readFile(new URL('src/main.ts', root), 'utf8');
   const screens = await readFile(new URL('src/screens.ts', root), 'utf8');
   const css = await readFile(new URL('src/style.css', root), 'utf8');
   assert.doesNotMatch(main, /screen-guide|guideMarkup|cro-skip-guide|showGuide|finishGuide/);
   assert.doesNotMatch(screens, /guideMarkup|'guide'/);
   assert.doesNotMatch(css, /\.guide-/);
-  assert.match(main, /openHelp/, 'the help dialog stays reachable in game');
-  const help = helpTabsMarkup('pc');
-  assert.match(help, /W A S D/);
-  assert.match(help, /左スティック/);
-  assert.match(help, /data-help-tab="pc" aria-selected="true"/);
-  assert.match(helpTabsMarkup('pad'), /data-help-tab="pad" aria-selected="true"/);
+  assert.doesNotMatch(main, /openHelp|helpMarkup|help-content|title-howto|操作説明|あそびかた/);
+  assert.match(main, /new InputCues/);
+  assert.doesNotMatch(css, /\.help-/);
 });
 
 test('the interaction hint is a hidden text line that only names a real nearby action', async () => {
@@ -41,8 +37,6 @@ test('the interaction hint is a hidden text line that only names a real nearby a
   assert.match(main, /\$\('#interaction-hint'\)\.hidden = !target/);
   assert.match(main, /range: GATHER_RANGE/);
   assert.match(main, /renderer\.resourceVisible\?\.\(r\.id\)/);
-  const help = await readFile(new URL('src/help-content.ts', root), 'utf8');
-  assert.doesNotMatch(help, /近くのものを調べる/);
 });
 
 test('the mage recharge is a continuous bar without a numbered countdown', async () => {
@@ -102,7 +96,7 @@ test('setup asks character → difficulty → final はい with no fixed launch 
   assert.match(main, /data-difficulty=/);
   assert.match(main, /type: 'difficulty'/);
   assert.match(main, /cro-difficulty/);
-  assert.match(main, /敵の動きと攻撃時間は(?:仲間)?全員で共通です/);
+  assert.doesNotMatch(main, /敵の動きと攻撃時間は(?:仲間)?全員で共通です/);
   assert.doesNotMatch(main, /setup-submit|この谷へ出発する|difficultyChoicesMarkup/);
   assert.match(flow, /難易度はどれにしますか/);
   assert.match(flow, /これでいいですか/);
@@ -137,8 +131,9 @@ test('the atlas is a full-bleed canvas with a pointer, a small card and zoom con
   ])
     assert.match(html, new RegExp(`id="${id}"`), id);
   assert.match(html, new RegExp(mapEmptyPrompt()));
-  assert.match(html, /id="map-warp"[^>]*>○ ワープ<kbd>Enter<\/kbd>/);
-  assert.match(html, /id="map-center"[^>]*>現在地へ<kbd>R3<\/kbd>/);
+  assert.match(html, /id="map-warp"[^>]*>ワープ<\/button>/);
+  assert.match(html, /id="map-center"[^>]*>現在地へ<\/button>/);
+  assert.doesNotMatch(html, /<kbd>|ポインタを合わせて/);
   for (const removed of [
     'earth-map-toolbar',
     'map-overview',

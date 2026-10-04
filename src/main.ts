@@ -1,4 +1,10 @@
-import { controllerLabels, controllerMenuHint, setControllerLayout } from './controller-labels.js';
+import {
+  controllerLabels,
+  setControllerLayout,
+  setConnectedController,
+} from './controller-labels.js';
+import { InputCues } from './input-cues-ui.js';
+import type { CueAction } from './input-cues.js';
 import { graphicsSettingsMarkup, bindGraphicsSettings } from './graphics-settings.js';
 import { mapScreen } from './map-screen.js';
 import { installMapWarp, updateMapWarp, type MapInput } from './map-warp-ui.js';
@@ -45,7 +51,11 @@ import {
   BOT_DESIGNS,
   nearOrbBot,
   nearbyOrbBotsForPetting,
+  nearbyOrbBotsForWhistle,
+  canWhistleCompanion,
   pettingOrbBot,
+  canHandleBot,
+  nextOrbBot,
 } from '../shared/orb-bots.mjs';
 import { MotionPetHold, motionTarget } from './motion-interaction.js';
 import { combineMovement } from './gamepad-input.js';
@@ -71,6 +81,7 @@ import { caveFireInteraction } from '../shared/cave-fire.mjs';
 import { caveTorchAvailable, caveTorchLit } from '../shared/cave-light.mjs';
 import { nearRimoNeko, RIMO_NEKO } from '../shared/rimo-neko.mjs';
 import { nearMae } from '../shared/mae.mjs';
+import { nearKohaku } from '../shared/kohaku.mjs';
 import { playCatHiss } from './cat-hiss.js';
 import { nearCompanion524 } from '../shared/companion-524.mjs';
 import { ENEMY_GROUNDS, SCENERY } from '../shared/scenery-layout.mjs';
@@ -89,7 +100,6 @@ import { installGulfUI, gulfInteraction } from './gulf-ui.js';
 import { installVillageUI, residentInteraction } from './village-ui.js';
 import { inGulf } from '../shared/gulf-region.mjs';
 import { ScreenManager, AreaBanner, keyPrompts } from './screens.js';
-import { helpTabsMarkup, bindHelpTabs } from './help-content.js';
 import { titleCreditsMarkup } from './title-credits.js';
 import {
   DIFFICULTIES,
@@ -205,6 +215,7 @@ const blockedMovementKeys = new Set();
 const movementCommands = new MovementCommands();
 let gamepadControls: GamepadControls | undefined;
 let motionControls: MotionControls | undefined;
+let inputCues: InputCues | undefined;
 /** The open atlas, so the controller can hand it pointer, zoom and confirm frames. */
 let mapInput: MapInput | undefined;
 let usingGamepad = false;
@@ -241,7 +252,6 @@ $('#app').innerHTML = `
           <div class="title-welcome">
           <nav class="title-menu" aria-label="タイトルメニュー">
             <button id="title-start" class="menu-item">はじめる</button>
-            <button id="title-howto" class="menu-item">あそびかた</button>
             <button id="title-graphics" class="menu-item">画質</button>
           </nav>
           </div>
@@ -270,9 +280,65 @@ const orbBotUI = new OrbBotUI({
   closeModal: () => $('#modal').close(),
 });
 const screens = new ScreenManager($('#screens'), (id) => {
+  inputCues?.hide();
   if (id) motionControls?.stop();
   if (id) stopInput();
   else $('#world').focus({ preventScroll: true });
+});
+inputCues = new InputCues($('.game-viewport'), (command: CueAction) => {
+  if (!joined || renderUnavailable || screens.active || $('#modal').open || player()?.downedUntil)
+    return;
+  switch (command) {
+    case 'inspect':
+      renderer.viewCompanion();
+      break;
+    case 'zoomIn':
+      renderer.adjustZoom(0.15);
+      break;
+    case 'zoomOut':
+      renderer.adjustZoom(-0.15);
+      break;
+    case 'endInspect':
+      renderer.endCompanionView();
+      break;
+    case 'interact': {
+      const target = nearby();
+      if (target) action(target.action, target.targetId);
+      break;
+    }
+    case 'pet':
+      petNearbyCompanion();
+      break;
+    case 'ride':
+      ride();
+      break;
+    case 'board':
+      action('boardBoat');
+      break;
+    case 'attack':
+      attack();
+      break;
+    case 'jump':
+      jump();
+      break;
+    case 'throw':
+      orbBotUI.use();
+      break;
+    case 'recall':
+      orbBotUI.recall();
+      break;
+    case 'cancel':
+      stopInput();
+      if (player()?.cookingEndsAt) action('cancelCook');
+      break;
+    case 'torch':
+      action('toggleCaveTorch');
+      break;
+    case 'bag':
+      openInventory();
+      break;
+  }
+  if (!$('#modal').open) $('#world').focus({ preventScroll: true });
 });
 
 function showRenderError(text) {
@@ -311,6 +377,15 @@ try {
   renderer = new WorldRenderer($('#world'), {
     onAnimal: interactAnimal,
     onError: showRenderError,
+    onInspect: () => {
+      // Looking at a companion only stops walking, never its pet/joy animation.
+      for (const key of keys) blockedMovementKeys.add(key);
+      keys.clear();
+      dashing = false;
+      renderer.prediction?.stop();
+      movementCommands.reset();
+      send({ type: 'move', dx: 0, dz: 0, running: false });
+    },
   });
   renderer.prediction.enabled = multiplayer.mode === 'lan';
   // The full-screen atlas hides the world completely; its pan and zoom need the frame time.
@@ -325,6 +400,15 @@ try {
     setEmote() {},
     focusPlayer() {},
     adjustZoom() {},
+    viewCompanion() {
+      return false;
+    },
+    endCompanionView() {
+      return false;
+    },
+    companionViewChoice() {
+      return undefined;
+    },
     rotateCamera() {},
     destroy() {},
     getMovementDirection() {
@@ -414,6 +498,7 @@ function send(message) {
   if (socket?.readyState === WebSocket.OPEN) socket.send(JSON.stringify(message));
 }
 function stopInput() {
+  renderer?.endCompanionView();
   motionControls?.input.pause();
   clearMovementInput();
 }
@@ -854,6 +939,7 @@ function action(type, targetId?, cropId?) {
   if (!joined) return notify('サーバーへの接続を待っています。', 'error');
   if (renderUnavailable) return;
   if (player()?.downedUntil) return;
+  renderer.endCompanionView();
   if (type === 'cropFoodOpen') {
     cropFoodUI.open();
     return;
@@ -902,6 +988,7 @@ function canPetRimo() {
     !renderUnavailable &&
     !state.rimoNeko?.petPlayerId &&
     state.mae?.petPlayerId !== selfId &&
+    state.kohaku?.petPlayerId !== selfId &&
     state.companion524?.petPlayerId !== selfId &&
     !pettingOrbBot(state.orbBots, selfId) &&
     nearRimoNeko(player(), state.rimoNeko, renderer.collision, renderer.serverNow())
@@ -918,6 +1005,7 @@ function canPetMae() {
     joined &&
     !renderUnavailable &&
     !state.mae?.petPlayerId &&
+    state.kohaku?.petPlayerId !== selfId &&
     state.rimoNeko?.petPlayerId !== selfId &&
     state.companion524?.petPlayerId !== selfId &&
     !pettingOrbBot(state.orbBots, selfId) &&
@@ -930,11 +1018,30 @@ function petMae() {
 function dismissMae() {
   if (state.mae?.followPlayerId === selfId) action('dismissMae');
 }
+function canPetKohaku() {
+  return (
+    joined &&
+    !renderUnavailable &&
+    !state.kohaku?.petPlayerId &&
+    state.rimoNeko?.petPlayerId !== selfId &&
+    state.mae?.petPlayerId !== selfId &&
+    state.companion524?.petPlayerId !== selfId &&
+    !pettingOrbBot(state.orbBots, selfId) &&
+    nearKohaku(player(), state.kohaku, renderer.collision, renderer.serverNow())
+  );
+}
+function petKohaku() {
+  if (canPetKohaku()) action('petKohaku');
+}
+function dismissKohaku() {
+  if (state.kohaku?.followPlayerId === selfId) action('dismissKohaku');
+}
 function nearbyBotsForPetting() {
   if (
     !joined ||
     renderUnavailable ||
     state.mae?.petPlayerId === selfId ||
+    state.kohaku?.petPlayerId === selfId ||
     state.rimoNeko?.petPlayerId === selfId ||
     state.companion524?.petPlayerId === selfId
   )
@@ -944,6 +1051,7 @@ function nearbyBotsForPetting() {
     player(),
     renderer.collision,
     renderer.serverNow(),
+    new Set(state.players.map((p) => p.id)),
   );
 }
 function preferredPet() {
@@ -954,6 +1062,11 @@ function preferredPet() {
     choice: 'rimo' | '524' | { action: string; label: string; targetId?: string };
   }[] = [];
   if (canPetRimo()) candidates.push({ point: state.rimoNeko!, choice: 'rimo' });
+  if (canPetKohaku())
+    candidates.push({
+      point: state.kohaku!,
+      choice: { action: 'petKohaku', label: 'こはくちゃんを撫でる' },
+    });
   if (canPetMae())
     candidates.push({ point: state.mae!, choice: { action: 'petMae', label: 'maeを撫でる' } });
   if (canPet524()) candidates.push({ point: state.companion524!, choice: '524' });
@@ -966,6 +1079,7 @@ function preferredPet() {
   if (
     state.rimoNeko?.petPlayerId !== selfId &&
     state.mae?.petPlayerId !== selfId &&
+    state.kohaku?.petPlayerId !== selfId &&
     state.companion524?.petPlayerId !== selfId &&
     !pettingOrbBot(state.orbBots, selfId)
   ) {
@@ -1003,6 +1117,8 @@ function dismissNearbyCompanion() {
     .map((b) => ({ point: b, action: 'dismissBot', target: b.kind }));
   if (state.rimoNeko?.followPlayerId === selfId)
     candidates.push({ point: state.rimoNeko, action: 'dismissRimo' });
+  if (state.kohaku?.followPlayerId === selfId)
+    candidates.push({ point: state.kohaku, action: 'dismissKohaku' });
   if (state.mae?.followPlayerId === selfId)
     candidates.push({ point: state.mae, action: 'dismissMae' });
   if (state.companion524?.followPlayerId === selfId && !candidates.some((c) => c.target === '524'))
@@ -1029,6 +1145,7 @@ function canPet524() {
     !renderUnavailable &&
     !state.companion524?.petPlayerId &&
     state.mae?.petPlayerId !== selfId &&
+    state.kohaku?.petPlayerId !== selfId &&
     state.rimoNeko?.petPlayerId !== selfId &&
     !pettingOrbBot(state.orbBots, selfId) &&
     nearCompanion524(player(), state.companion524, renderer.collision, renderer.serverNow())
@@ -1088,6 +1205,10 @@ function ride() {
   action('ride', animal.id);
 }
 function interactAnimal(id) {
+  if (id === state.kohaku?.id) {
+    petKohaku();
+    return;
+  }
   if (id === state.mae?.id) {
     petMae();
     return;
@@ -1132,6 +1253,10 @@ function updateHuntingHUD() {
   $('#dismiss-rimo-button').hidden = !joined || state.rimoNeko?.followPlayerId !== selfId;
   $('#dismiss-rimo-button kbd').textContent = controllerHints() ? 'メニュー' : 'T';
   const menuRimo = $('[data-controller-menu="dismissRimo"]');
+  const menuKohaku = $('[data-controller-menu="dismissKohaku"]');
+  if (menuKohaku) menuKohaku.disabled = state.kohaku?.followPlayerId !== selfId;
+  const menuPetKohaku = $('[data-controller-menu="petKohaku"]');
+  if (menuPetKohaku) menuPetKohaku.disabled = !canPetKohaku();
   const menuMae = $('[data-controller-menu="dismissMae"]');
   if (menuMae) menuMae.disabled = state.mae?.followPlayerId !== selfId;
   const menuPetMae = $('[data-controller-menu="petMae"]');
@@ -1212,6 +1337,80 @@ function updateHuntingHUD() {
   const enemies = (state.enemies || []).filter((enemy) => enemy.hostile === true),
     nearestEnemy = me ? [...enemies].sort((a, b) => distance(me, a) - distance(me, b))[0] : null;
   const attackAvailable = joined && !renderUnavailable && canStartAttack(me, serverNow);
+  const ownBots = (state.orbBots ?? []).filter((bot) => bot.ownerId === selfId);
+  const presentOwners = new Set((state.players ?? []).map((p) => p.id));
+  const petLabel =
+    petChoice === 'rimo'
+      ? 'りもねこを撫でる'
+      : petChoice === '524'
+        ? '524を撫でる'
+        : petChoice?.action === 'petBots'
+          ? 'botたちを撫でる'
+          : petChoice?.label;
+  const closeAction = nearby();
+  const busy = cooking || fishing || !!coastal;
+  inputCues?.update(
+    {
+      inspect: renderer.companionViewChoice()?.label,
+      viewing: renderer.viewingCompanion,
+      pet: petLabel,
+      interaction: closeAction?.action.startsWith('pet') ? undefined : closeAction?.label,
+      ride: !rideButton.disabled ? rideButton.querySelector('span').textContent : undefined,
+      board: !$('#boat-board').disabled ? $('#boat-board span').textContent : undefined,
+      attack:
+        attackAvailable &&
+        !![...(state.animals ?? []), ...enemies].find(
+          (target) =>
+            target.phase === 'alive' && !target.riderId && me && distance(me, target) < 14,
+        ),
+      jump: canStartJump(me, serverNow),
+      throw:
+        canHandleBot(me, serverNow) && !!nextOrbBot(state.orbBots ?? [], me, orbBotUI.selected),
+      recall:
+        canHandleBot(me, serverNow) &&
+        (ownBots.some((bot) => ['waiting', 'airborne', 'landing'].includes(bot.mode)) ||
+          nearbyOrbBotsForWhistle(
+            state.orbBots ?? [],
+            me,
+            renderer.collision,
+            serverNow,
+            presentOwners,
+          ).length > 0 ||
+          canWhistleCompanion(
+            me,
+            state.rimoNeko,
+            'rimo-neko',
+            renderer.collision,
+            serverNow,
+            presentOwners,
+          ) ||
+          canWhistleCompanion(
+            me,
+            state.companion524,
+            '524',
+            renderer.collision,
+            serverNow,
+            presentOwners,
+          )),
+      busy,
+      torch: caveTorchAvailable(me)
+        ? caveTorchLit(me)
+          ? '松明をしまう'
+          : '松明を持つ'
+        : undefined,
+      needsFood: !!me && me.energy < 75,
+    },
+    joined &&
+      !!me &&
+      !renderUnavailable &&
+      !screens.active &&
+      !$('#modal').open &&
+      !downed &&
+      !document.hidden &&
+      document.hasFocus() &&
+      !motionControls?.ownsInput &&
+      !document.activeElement?.closest('input,textarea,select,[contenteditable]'),
+  );
   const combat = attackProfile(me ?? profile);
   const cooldownLeft =
     me?.attackSequence > 0 ? Math.max(0, combat.cooldownMs - (serverNow - me.attackAt)) : 0;
@@ -1316,6 +1515,7 @@ function drawMinimap(canvas = $('#minimap'), big = false) {
   drawWorldMap(canvas, state, selfId, big);
 }
 function openModal(content) {
+  inputCues?.hide();
   stopInput();
   $('#modal-body').innerHTML = content;
   if (!$('#modal').open) $('#modal').showModal();
@@ -1637,7 +1837,7 @@ function bindInventory() {
 }
 function craftingMarkup() {
   const me = player();
-  return `<h2>クラフト・ガイド</h2><p class="modal-intro">生肉はそのままでHP+15。焚き火で3秒焼くと、焼き肉（HP+45）になります。</p><div class="gulf-actions"><button id="modal-crop-food" class="button button-outline">火根と香草の食事</button></div><div class="recipe"><span class="resource-icon stone">${icon('axe')}</span><div><strong id="modal-axe-label">${me?.tool ? '石斧を装備中' : '石斧をつくる'}</strong><p>木材3 + 石2 ・ 採集量が増えます</p></div><button id="modal-craft" class="button button-accent" ${me?.tool ? 'disabled' : ''}>${me?.tool ? '装備中' : 'つくる'}</button></div><div class="recipe"><span class="resource-icon wood">${icon('wood')}</span><div><strong>丸木舟をつくる</strong><p>木材12 · 海岸で制作 · Bで乗船</p></div><button id="modal-boat-craft" class="button button-accent">船をつくる</button></div><p class="form-note">今の武器：${attackProfile(me ?? profile).noun}。相手を向いて F。</p>`;
+  return `<h2>クラフト</h2><div class="gulf-actions"><button id="modal-crop-food" class="button button-outline">食事</button></div><div class="recipe"><span class="resource-icon stone">${icon('axe')}</span><div><strong id="modal-axe-label">${me?.tool ? '石斧を装備中' : '石斧をつくる'}</strong><p>木材3 + 石2</p></div><button id="modal-craft" class="button button-accent" ${me?.tool ? 'disabled' : ''}>${me?.tool ? '装備中' : 'つくる'}</button></div><div class="recipe"><span class="resource-icon wood">${icon('wood')}</span><div><strong>丸木舟をつくる</strong><p>木材12 · 海岸</p></div><button id="modal-boat-craft" class="button button-accent">船をつくる</button></div>`;
 }
 function bindCrafting() {
   $('#modal-craft').onclick = () => {
@@ -1655,7 +1855,7 @@ function openInventory() {
   openPauseMenu('inventory');
 }
 function tribeMarkup() {
-  return `<h2>同じ火を囲む仲間。</h2><p class="modal-intro" id="tribe-summary">いま、この谷で暮らしている ${state.players.length} 人。</p><div id="tribe-list" class="tribe-list"></div><button id="tribe-invite" class="button button-accent wide">${icon('plus')} 仲間を招待する</button><p class="form-note">NPCのオルは参加人数に含まれません。ひとりでも採集や拠点づくりを楽しめます。</p>`;
+  return `<h2>同じ火を囲む仲間。</h2><p class="modal-intro" id="tribe-summary">いま、この谷で暮らしている ${state.players.length} 人。</p><div id="tribe-list" class="tribe-list"></div><button id="tribe-invite" class="button button-accent wide">${icon('plus')} 仲間を招待する</button>`;
 }
 function openTribe() {
   openModal(tribeMarkup());
@@ -1665,28 +1865,9 @@ function openTribe() {
 function openJournal() {
   adventureUI.open();
 }
-/** The PC / controller card tabs, with the enemy card once the sorcerer exists. */
-function helpMarkup() {
-  const extra = state.enemies?.length
-    ? [
-        {
-          key: '大城の赤い印',
-          title: '白羽教団',
-          note: '始まりの谷の東南、白羽教団の大聖城には教皇1体、空を飛ぶ司祭長3体、呪術師6体、破砕兵6体、城兵12体が集結しています。教皇と司祭長は武器と赤い魔法の両方を使います。力尽きても4秒後に焚き火で回復し、持ち物は残ります。',
-        },
-      ]
-    : [];
-  return helpTabsMarkup(controllerHints() ? 'pad' : 'pc', extra, fixedIdentity);
-}
-function openHelp() {
-  openModal(
-    `<div class="help-dialog"><h2>あそびかた</h2>${helpMarkup()}<button id="help-start" class="button button-accent wide">${joined ? '探索に戻る' : '閉じる'} ${icon('arrow')}</button></div>`,
-  );
-  bindHelpTabs($('#modal-body'));
-  $('#help-start').onclick = () => $('#modal').close();
-}
 function updateGamepadHints(active: boolean) {
   usingGamepad = active;
+  inputCues?.device(controllerHints());
   updateHintLabels();
   updateHuntingHUD();
 }
@@ -1699,6 +1880,9 @@ function updateHintLabels() {
     ['#chat-toggle kbd', pad ? '⌨' : 'Enter'],
   ])
     if ($(selector)) $(selector).textContent = label;
+  const mapKey = $('#map-button .map-key');
+  if (mapKey) mapKey.textContent = pad ? controllerLabels().map.split(' / ')[0] : 'M';
+  $('#map-button').title = '世界地図';
   updatePromptBar();
 }
 function updatePromptBar() {
@@ -1735,10 +1919,10 @@ function updateSaveStatus() {
         ? `自動保存済み ${new Date(localSaveStatus.savedAt).toLocaleTimeString()} · タイトルへ戻っても続きから再開できます。${localSaveStatus.recovered ? ' 予備の保存から復元しました。' : ''}`
         : '自動保存を準備しています。';
 }
-let pauseSubTab = 'help';
+let pauseSubTab = 'world';
 function difficultySettingsMarkup() {
   const selected = normalizeDifficulty(profile.difficulty);
-  return `<div class="settings-item difficulty-setting"><div><strong>難易度</strong><p>自分が敵から受けるダメージを調整します。敵の動きと攻撃時間は仲間全員で共通です。</p></div><div class="settings-buttons" role="group" aria-label="難易度">${DIFFICULTY_LEVELS.map((id) => `<button type="button" class="button button-outline" data-difficulty="${id}" aria-pressed="${selected === id}" title="${DIFFICULTIES[id].description}">${DIFFICULTIES[id].label}</button>`).join('')}</div></div>`;
+  return `<div class="settings-item difficulty-setting"><div><strong>難易度</strong></div><div class="settings-buttons" role="group" aria-label="難易度">${DIFFICULTY_LEVELS.map((id) => `<button type="button" class="button button-outline" data-difficulty="${id}" aria-pressed="${selected === id}" title="${DIFFICULTIES[id].description}">${DIFFICULTIES[id].label}</button>`).join('')}</div></div>`;
 }
 
 function setDifficulty(difficulty: Difficulty) {
@@ -1838,12 +2022,11 @@ function openPauseMenu(tab?: string) {
     : [
         ['inventory', 'bag', '持ち物'],
         ['warp', 'compass', 'ワープする'],
-        ['crafting', 'axe', 'クラフト・ガイド'],
-        ['info', 'compass', '世界・仲間・操作説明'],
+        ['crafting', 'axe', 'クラフト'],
+        ['info', 'compass', '世界・仲間'],
         ['settings', 'sound', '設定'],
       ];
   const subTabs: [string, string][] = [
-    ['help', '操作説明'],
     ['world', '世界'],
     ['tribe', '仲間'],
     ['objectives', '目標'],
@@ -1853,6 +2036,19 @@ function openPauseMenu(tab?: string) {
     ['journal', 'book', '探索手帳', openJournal],
     ['ride', 'target', '船・マンモス・肩に乗る／降りる', controllerRide],
     ['wave', 'wave', '手をふる', () => action('wave')],
+    ...(canPetKohaku()
+      ? [
+          [
+            'petKohaku',
+            'wave',
+            'こはくちゃんを撫でる',
+            () => {
+              petKohaku();
+              $('#modal').close();
+            },
+          ] as [string, string, string, () => void],
+        ]
+      : []),
     ...(canPetMae()
       ? [
           [
@@ -1868,6 +2064,19 @@ function openPauseMenu(tab?: string) {
       : []),
   ];
   const exits: [string, string, string, () => void][] = [
+    ...(state.kohaku?.followPlayerId === selfId
+      ? [
+          [
+            'dismissKohaku',
+            'wave',
+            'こはくちゃんをキャンプへ帰す',
+            () => {
+              dismissKohaku();
+              $('#modal').close();
+            },
+          ] as [string, string, string, () => void],
+        ]
+      : []),
     ...(state.mae?.followPlayerId === selfId
       ? [
           [
@@ -1956,7 +2165,7 @@ function openPauseMenu(tab?: string) {
   ];
   const initialTab = tab ?? (fixedIdentity ? 'warp' : 'inventory');
   let pauseTab = tabs.some(([id]) => id === initialTab) ? initialTab : tabs[0][0];
-  if (!subTabs.some(([id]) => id === pauseSubTab)) pauseSubTab = 'help';
+  if (!subTabs.some(([id]) => id === pauseSubTab)) pauseSubTab = 'world';
   const menuButton = ([id, glyph, label]: readonly [string, string, string, ...unknown[]]) =>
     `<button class="button button-outline" data-controller-menu="${id}">${icon(glyph)}<span>${label}</span></button>`;
   const panel = (id: string, body: string) =>
@@ -1978,19 +2187,19 @@ function openPauseMenu(tab?: string) {
       inventoryMarkup(),
     )}${panel('character', characterSwitchMarkup())}${panel('warp', exhibitionWarpMarkup())}${panel('crafting', craftingMarkup())}${panel(
       'info',
-      `<div class="help-tabs sub-tabs" role="tablist" aria-label="世界・仲間・操作説明の切り替え">${subTabs
+      `<div class="sub-tabs" role="tablist" aria-label="世界・仲間の切り替え">${subTabs
         .map(
           ([id, label]) =>
-            `<button type="button" class="help-tab sub-tab" role="tab" data-pause-subtab="${id}" data-controller-menu="sub-${id}" aria-selected="${pauseSubTab === id}" aria-controls="pause-subpanel-${id}">${label}</button>`,
+            `<button type="button" class="sub-tab" role="tab" data-pause-subtab="${id}" data-controller-menu="sub-${id}" aria-selected="${pauseSubTab === id}" aria-controls="pause-subpanel-${id}">${label}</button>`,
         )
-        .join('')}</div>${subPanel('help', `<h2>操作説明</h2>${helpMarkup()}`)}${subPanel(
+        .join('')}</div>${subPanel(
         'world',
-        `<h2>世界</h2><p class="modal-intro">地図・記録・各地の暮らしと、いまできる行動。</p><div class="controller-menu">${links.map(menuButton).join('')}</div>`,
+        `<h2>世界</h2><div class="controller-menu">${links.map(menuButton).join('')}</div>`,
       )}${subPanel('tribe', tribeMarkup())}${subPanel('objectives', objectivesMarkup())}`,
     )}${panel(
       'settings',
-      `<h2>設定</h2><p class="modal-intro">${fixedIdentity ? '' : '難易度・'}音・画面・視点の調整。</p><div class="settings-list">${graphicsSettingsMarkup()}${fixedIdentity ? '' : difficultySettingsMarkup()}<div class="settings-item"><div><strong>環境音</strong><p>谷の音を鳴らします。</p></div><button class="button button-outline" data-setting="sound" aria-pressed="${soundEnabled}">${icon(soundEnabled ? 'sound' : 'muted')} ${soundEnabled ? 'オン' : 'オフ'}</button></div><div class="settings-item"><div><strong>全画面表示</strong><p>ブラウザーの枠を隠して表示します。</p></div><button class="button button-outline" data-setting="fullscreen">${icon('expand')} 切り替え</button></div><div class="settings-item"><div><strong>視点</strong><p>カメラの距離を変え、キャラクターの後ろへ戻します。</p></div><div class="settings-buttons"><button class="button button-outline" data-setting="zoom-out">− 遠く</button><button class="button button-outline" data-setting="zoom-in">+ 近く</button><button class="button button-outline" data-setting="camera">${icon('target')} 視点を戻す</button></div></div><div class="settings-item"><div><strong>コントローラー</strong><p class="gamepad-connection" role="status">${usingGamepad ? '' : '未使用 · コントローラーをつないでボタンを押すと切り替わります。'}</p></div></div></div><p id="local-save-status" class="form-note" role="status" hidden></p>${localResetMarkup()}`,
-    )}<p class="pause-hint">${controllerHints() ? controllerMenuHint() : 'ESC で閉じる · ↑↓←→ で選ぶ · Enter で決定'}</p></div></div>`,
+      `<h2>設定</h2><div class="settings-list">${graphicsSettingsMarkup()}${fixedIdentity ? '' : difficultySettingsMarkup()}<div class="settings-item"><div><strong>環境音</strong></div><button class="button button-outline" data-setting="sound" aria-pressed="${soundEnabled}">${icon(soundEnabled ? 'sound' : 'muted')} ${soundEnabled ? 'オン' : 'オフ'}</button></div><div class="settings-item"><div><strong>全画面表示</strong></div><button class="button button-outline" data-setting="fullscreen">${icon('expand')} 切り替え</button></div><div class="settings-item"><div><strong>視点</strong></div><div class="settings-buttons"><button class="button button-outline" data-setting="zoom-out">− 遠く</button><button class="button button-outline" data-setting="zoom-in">+ 近く</button><button class="button button-outline" data-setting="camera">${icon('target')} 視点を戻す</button></div></div><div class="settings-item"><div><strong>コントローラー</strong><p class="gamepad-connection" role="status">${usingGamepad ? '' : '未接続'}</p></div></div></div><p id="local-save-status" class="form-note" role="status" hidden></p>${localResetMarkup()}`,
+    )}</div></div>`,
   );
   const root = $('#modal-body') as HTMLElement;
   bindGraphicsSettings(root, (mode) => renderer.setGraphicsMode?.(mode));
@@ -2037,7 +2246,6 @@ function openPauseMenu(tab?: string) {
   updateModalHUD();
   if (!fixedIdentity) {
     bindCrafting();
-    bindHelpTabs($('[data-pause-subpanel="help"]'));
     updateSaveStatus();
     $('#tribe-invite').onclick = openInvite;
     $('[data-setting="sound"]').onclick = toggleSound;
@@ -2156,7 +2364,6 @@ async function toggleFullscreen() {
   }
 }
 $('#title-start').onclick = () => showSetup();
-$('#title-howto').onclick = openHelp;
 $('#title-graphics').onclick = () => {
   openModal(`<h2>画質</h2><div class="settings-list">${graphicsSettingsMarkup()}</div>`);
   bindGraphicsSettings($('#modal-body'), (mode) => renderer.setGraphicsMode?.(mode));
@@ -2242,6 +2449,7 @@ document.addEventListener('keydown', (e) => {
     return;
   if (e.key === 'Escape' && joined) {
     e.preventDefault();
+    if (renderer.endCompanionView()) return;
     openPauseMenu();
     return;
   }
@@ -2252,6 +2460,16 @@ document.addEventListener('keydown', (e) => {
   )
     return;
   const k = movementKey(e);
+  if (k === 'x' && !e.repeat) {
+    e.preventDefault();
+    if (!renderer.endCompanionView()) renderer.viewCompanion();
+    return;
+  }
+  if (renderer.viewingCompanion && ['+', '=', '-', 'Subtract', 'Add'].includes(e.key)) {
+    e.preventDefault();
+    renderer.adjustZoom(e.key === '-' || e.key === 'Subtract' ? -0.15 : 0.15);
+    return;
+  }
   if (DIRECTION_KEYS.includes(k)) {
     e.preventDefault();
     if (player()?.downedUntil) blockedMovementKeys.add(k);
@@ -2325,7 +2543,6 @@ document.addEventListener('keydown', (e) => {
     setChatOpen(true);
     $('#chat-input').focus();
   }
-  if (k === '?' || k === 'h') openHelp();
   if (k === 'm') openMap();
   if (k === 'i') openInventory();
   if (k === 'j') openJournal();
@@ -2368,6 +2585,13 @@ gamepadControls = new GamepadControls({
     if (!motionControls?.ownsInput) stopInput();
   },
   onActivity: updateGamepadHints,
+  onFrame: (pad, _frame, mode) => {
+    if (setConnectedController(pad?.id ?? null, fixedIdentity)) {
+      inputCues?.device(controllerHints());
+      updateHintLabels();
+    }
+    inputCues?.frame(pad, mode === 'game');
+  },
   onMapInput: (frame, dt) =>
     frame.actions.includes('map') ? openMap() : mapInput?.input(frame, dt),
   onLook: (x, y, dt) => {
@@ -2405,6 +2629,7 @@ gamepadControls = new GamepadControls({
         jump();
         break;
       case 'cancel':
+        if (renderer.endCompanionView()) break;
         stopInput();
         if (player()?.cookingEndsAt) action('cancelCook');
         break;
@@ -2421,10 +2646,10 @@ gamepadControls = new GamepadControls({
         openJournal();
         break;
       case 'center':
-        renderer.focusPlayer();
+        if (!renderer.endCompanionView()) renderer.focusPlayer();
         break;
       case 'zoomIn':
-        renderer.adjustZoom(0.15);
+        if (!renderer.viewCompanion()) renderer.adjustZoom(0.15);
         break;
       case 'zoomOut':
         renderer.adjustZoom(-0.15);
@@ -2443,11 +2668,18 @@ motionControls = new MotionControls($('.game-viewport'), {
     !document.hidden &&
     !player()?.downedUntil,
   begin: () => {
+    renderer.endCompanionView();
     clearMovementInput();
     renderer.cancel?.();
   },
 });
-renderer.manualInputAllowed = () => !motionControls?.ownsInput;
+renderer.manualInputAllowed = () =>
+  joined &&
+  !renderUnavailable &&
+  !screens.active &&
+  !$('#modal').open &&
+  !player()?.downedUntil &&
+  !motionControls?.ownsInput;
 renderer.onFrameTiming = (ms) => motionControls.camera.metrics.record('renderFrameMs', ms);
 /** Read-only aggregate diagnostics. No images, body coordinates or event consumption. */
 export function motionDiagnostics() {
@@ -2493,6 +2725,7 @@ function updateMovementInput() {
     };
     const petting =
       state.mae?.petPlayerId === selfId ||
+      state.kohaku?.petPlayerId === selfId ||
       state.rimoNeko?.petPlayerId === selfId ||
       state.companion524?.petPlayerId === selfId ||
       !!pettingOrbBot(state.orbBots, selfId);
@@ -2537,6 +2770,7 @@ function updateMovementInput() {
           if (
             target.action === 'petRimo' ||
             target.action === 'petMae' ||
+            target.action === 'petKohaku' ||
             target.action === 'pet524' ||
             target.action === 'petBot' ||
             target.action === 'petBots'
@@ -2587,6 +2821,7 @@ function updateMovementInput() {
     wantsToRun(),
     canMove ? gamepadControls.movement : { x: 0, y: 0, running: false },
   );
+  if (motion.x || motion.y) renderer.endCompanionView();
   const running = motion.running || tuning.alwaysRun;
   if (running !== lastGait) {
     send({ type: 'gait', running });
@@ -2629,6 +2864,7 @@ window.addEventListener('beforeunload', () => {
   socket?.close();
   hudObserver.disconnect();
   gamepadControls.destroy();
+  inputCues?.destroy();
   motionControls?.destroy();
   screens.destroy();
   renderer.destroy();

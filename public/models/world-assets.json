@@ -25029,6 +25029,129 @@
         "Three loops and three reactions; shared skeleton, inverse bind matrices and material with LOD. PetContact follows the actual crown.",
         "The measured LOD retains 19,868 triangles because smaller candidates distorted the source silhouette."
       ]
+    },
+    {
+      "modelKey": "kohaku",
+      "name": "こはくちゃん",
+      "kind": "companion",
+      "candidate": 1,
+      "revision": "05",
+      "status": "integrated-unverified",
+      "url": "/models/kohaku/model-r05.glb",
+      "sha256": "225032577f552cc7da5837494897a60408e5941726f97b6c9a6d5bba9bc4cbfb",
+      "bytes": 31445164,
+      "triangles": 145046,
+      "bones": 36,
+      "upAxis": "Y",
+      "forwardAxis": "+Z",
+      "heightMetres": 0.5199786842176763,
+      "widthMetres": 0.43805145998342826,
+      "lengthMetres": 0.29210302443281033,
+      "placement": {
+        "pivot": "ground-between-shoes",
+        "scale": 1
+      },
+      "portrait": {
+        "url": "/models/kohaku/portrait-r05.png",
+        "sha256": "e1df6619300d50f3c8e0af0691f5b01e4a810abd658ff607a6f259d285352343"
+      },
+      "clips": [
+        {
+          "name": "Idle_Loop",
+          "seconds": 3,
+          "loop": true,
+          "fps": 60,
+          "rootMotion": "in-place"
+        },
+        {
+          "name": "Walk_Loop",
+          "seconds": 0.7166666666666667,
+          "loop": true,
+          "fps": 60,
+          "rootMotion": "in-place"
+        },
+        {
+          "name": "Run_Loop",
+          "seconds": 0.4,
+          "loop": true,
+          "fps": 60,
+          "rootMotion": "in-place"
+        },
+        {
+          "name": "Pet",
+          "seconds": 1.4,
+          "loop": false,
+          "fps": 60,
+          "rootMotion": "in-place"
+        },
+        {
+          "name": "Happy",
+          "seconds": 1.4,
+          "loop": false,
+          "fps": 60,
+          "rootMotion": "in-place"
+        },
+        {
+          "name": "Hit",
+          "seconds": 0.65,
+          "loop": false,
+          "fps": 60,
+          "rootMotion": "in-place"
+        },
+        {
+          "name": "Wave",
+          "seconds": 1.8,
+          "loop": false,
+          "fps": 60,
+          "rootMotion": "in-place"
+        },
+        {
+          "name": "Bow",
+          "seconds": 1.6,
+          "loop": false,
+          "fps": 60,
+          "rootMotion": "in-place"
+        }
+      ],
+      "locomotion": {
+        "Walk_Loop": {
+          "metresPerSecond": 0.18421827779414676,
+          "cycleSeconds": 0.72
+        },
+        "Run_Loop": {
+          "metresPerSecond": 0.6929316337380418,
+          "cycleSeconds": 0.4
+        }
+      },
+      "lods": [
+        {
+          "url": "/models/kohaku/lod-r05.glb",
+          "sha256": "6512213708f3b082d563911986dec2cbca2461bb572deca14a0856bc05834e96",
+          "bytes": 2884628,
+          "triangles": 36235,
+          "distanceMetres": 8,
+          "purpose": "source-derived animated geometry; same rig and original materials"
+        }
+      ],
+      "provenance": {
+        "provider": "Codex built-in imagegen; local TRELLIS-2; source-preserving reduction; body-specific biped rig",
+        "claudeUsed": false,
+        "referenceImage": "assets/kohaku/source/reference-v2.png",
+        "referenceSha256": "e1df6619300d50f3c8e0af0691f5b01e4a810abd658ff607a6f259d285352343",
+        "userReference": "assets/kohaku/source/kohaku-poses.jpg",
+        "userReferenceSha256": "e2bf47e34d832f465415c327a4eb922506b3aed7bc36e2ae6328a1b1edfb75d6",
+        "denseSha256": "6dadf1f9687e7b32169fcf3cd9eb871ac30ef716d6d6fd7b843db28a50e324a4",
+        "reconstruction": "TRELLIS-2 v0.8.1 CUDA, RTX A1000 6GB, resolution512, seed42, supplied alpha, atlas4096",
+        "source": "output/model-generation/models/kohaku/work/rig/revision-05/candidate.glb",
+        "sourceSha256": "225032577f552cc7da5837494897a60408e5941726f97b6c9a6d5bba9bc4cbfb",
+        "sourceUvAndAlbedoPreserved": true,
+        "surfaceRepair": null
+      },
+      "notes": [
+        "Height matches the current rimo-neko asset exactly. One independent pettable mascot, not a selectable player.",
+        "Petting starts the persistent bond. Eight authored clips, including pose-sheet wave and bow; head, skirt, ears and tail have dedicated joints.",
+        "Unit tests and browser/game validation were not run, following the user instruction. Production renders are retained separately."
+      ]
     }
   ],
   "status": "ready"

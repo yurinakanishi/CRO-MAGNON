@@ -4,6 +4,13 @@ import { walkHeight } from '../shared/terrain.mjs';
 import { VisibleActorGroup } from './visible-actor-group.js';
 import { updateActorPerformance } from './performance-lod.js';
 import { companionHeartTexture } from './companion-heart-texture.js';
+import {
+  botFlightPosition,
+  botGroundHeight,
+  ORB_BOTS,
+  type OrbBotSnapshot,
+} from '../shared/orb-bots.mjs';
+import { applyBotFlightTurn } from './bot-flight-pose.js';
 import type { WorldRenderer } from './world3d.js';
 
 /** Grounded quadruped. The delivered GLB owns all body/ear/tail/jaw motion. */
@@ -22,6 +29,17 @@ export class RimoNekoRenderer {
   private floor = 0;
   private reaction = 'idle';
   private renderedSpeed = 0;
+  private wasFlying = false;
+
+  get squadBot() {
+    return this.world.state.orbBots?.find(
+      (b) => b.kind === 'rimo-neko' && b.ownerId === this.world.state.rimoNeko?.squadPlayerId,
+    );
+  }
+
+  get inHand() {
+    return this.squadBot?.mode === 'windup';
+  }
 
   constructor(private world: WorldRenderer) {
     this.root.name = 'Rimo-neko ground companion';
@@ -55,6 +73,54 @@ export class RimoNekoRenderer {
     return this.contactBone.getWorldPosition(out);
   }
 
+  private updateFlight(bot: OrbBotSnapshot, now: number) {
+    const position = new THREE.Vector3(bot.x, bot.y, bot.z);
+    const owner = this.world.players.get(bot.ownerId);
+    let facing = bot.facing;
+    if (bot.mode === 'windup' && owner?.actor?.orbBotPose.weight > 0) {
+      position.copy(owner.actor.orbBotPose.contact);
+      if (bot.origin) {
+        const t = THREE.MathUtils.clamp((now - bot.throwAt) / ORB_BOTS.pickupMs, 0, 1);
+        position.lerpVectors(
+          new THREE.Vector3(bot.origin.x, bot.origin.y, bot.origin.z),
+          position,
+          t * t * (3 - 2 * t),
+        );
+      }
+      facing = owner.model.rotation.y;
+    }
+    const flight = bot.mode === 'airborne' ? botFlightPosition(bot, now) : null;
+    this.slope.rotation.set(0, 0, 0);
+    this.slope.scale.setScalar(1);
+    if (flight) {
+      position.set(flight.x, flight.y, flight.z);
+      applyBotFlightTurn(this.root, position, facing, flight.t, RIMO_NEKO.bodyHeight / 2);
+    } else {
+      this.root.position.copy(position);
+      this.root.rotation.set(0, facing, 0, 'YXZ');
+      if (bot.mode === 'landing') {
+        const t = THREE.MathUtils.clamp((now - bot.phaseAt) / ORB_BOTS.landMs, 0, 1);
+        const squash = Math.sin(Math.PI * t) * 0.08;
+        this.slope.scale.set(1 + squash / 2, 1 - squash, 1 + squash / 2);
+      }
+    }
+    this.actor.sampleOnce('Idle_Loop', 0);
+    this.floor = botGroundHeight(bot.x, bot.z);
+    this.renderedSpeed = 0;
+    this.happyAge = -1;
+    this.reaction = bot.mode;
+    this.wasFlying = true;
+    this.placed = false;
+    const distance = this.root.position.distanceTo(this.world.camera.position);
+    this.root.visible = distance < 85;
+    this.label.active = this.root.visible && distance < 18;
+    this.label.position.copy(position);
+    this.label.position.y += 0.72;
+    this.hissLabel.active = false;
+    for (const heart of this.hearts) heart.visible = false;
+    updateActorPerformance(this.actor.root, distance, this.world.graphics.tier);
+  }
+
   update(dt: number) {
     const c = this.world.state.rimoNeko;
     if (!c) {
@@ -66,6 +132,16 @@ export class RimoNekoRenderer {
     }
     const now = this.world.serverNow(),
       blend = 1 - Math.exp(-dt * 14);
+    const bot = this.squadBot;
+    if (bot && !bot.busy && ['windup', 'airborne', 'landing'].includes(bot.mode)) {
+      this.updateFlight(bot, now);
+      return;
+    }
+    if (this.wasFlying) {
+      this.root.rotation.set(0, c.facing, 0, 'YXZ');
+      this.slope.scale.setScalar(1);
+      this.wasFlying = false;
+    }
     const previous = this.root.position.clone();
     if (!this.placed || Math.hypot(c.x - previous.x, c.z - previous.z) > 20) {
       this.root.position.set(c.x, walkHeight(c.x, c.z), c.z);
@@ -91,7 +167,7 @@ export class RimoNekoRenderer {
     const x = this.root.position.x,
       z = this.root.position.z,
       yaw = this.root.rotation.y;
-    this.floor = walkHeight(x, z);
+    this.floor = bot ? botGroundHeight(x, z) : walkHeight(x, z);
     this.root.position.y = this.floor + 0.002;
     const front = walkHeight(x + Math.sin(yaw) * 0.2, z + Math.cos(yaw) * 0.2);
     const back = walkHeight(x - Math.sin(yaw) * 0.2, z - Math.cos(yaw) * 0.2);
@@ -100,7 +176,7 @@ export class RimoNekoRenderer {
     const left = walkHeight(x - Math.cos(yaw) * 0.12, z + Math.sin(yaw) * 0.12);
     this.slope.rotation.z = THREE.MathUtils.clamp(Math.atan2(right - left, 0.24), -0.3, 0.3);
     const distance = this.root.position.distanceTo(this.world.camera.position);
-    this.root.visible = distance < 85;
+    this.root.visible = distance < 85 && bot?.mode !== 'stowed';
     const hitAge = c.hitSequence ? now - c.hitAt : Infinity;
     const petAge = c.petPlayerId && c.petContactAt > 0 ? now - c.petContactAt : -1;
     this.happyAge = -1;
@@ -162,7 +238,16 @@ export class RimoNekoRenderer {
   }
 
   diagnostics() {
+    const bot = this.squadBot;
+    const owner = bot ? this.world.players.get(bot.ownerId) : null;
     return {
+      ownerId: bot?.ownerId ?? null,
+      mode: bot?.mode ?? null,
+      pitch: this.root.rotation.x,
+      handError:
+        this.inHand && owner?.actor?.orbBotPose.weight > 0
+          ? this.root.position.distanceTo(owner.actor.orbBotPose.contact)
+          : null,
       visible: this.root.visible,
       clip: this.actor.name,
       reaction: this.reaction,

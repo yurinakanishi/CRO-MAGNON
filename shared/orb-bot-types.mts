@@ -10,7 +10,8 @@ export type BotKind =
   | 'frog'
   | 'triangle'
   | 'heart'
-  | '524';
+  | '524'
+  | 'rimo-neko';
 export type BotMode =
   | 'home'
   | 'goingHome'
@@ -25,7 +26,7 @@ export type BotMode =
   | 'stowed';
 export interface OrbBotSnapshot extends Point {
   id: string;
-  /** Empty until a complete pet; one shared dot of each kind lives in the room. */
+  /** Empty until invited by petting or a whistle; each kind is shared by the room. */
   ownerId: string;
   kind: BotKind;
   mode: BotMode;

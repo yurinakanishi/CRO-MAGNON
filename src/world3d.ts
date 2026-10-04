@@ -6,14 +6,19 @@ import { activateMiddenObstacle } from '../shared/coastal-sites.mjs';
 import { CoastalRenderer } from './coastal-renderer.js';
 import { VillageRenderer } from './village-renderer.js';
 import { RimoNekoRenderer } from './rimo-neko-renderer.js';
+import { rimoNekoOnGround } from '../shared/rimo-neko.mjs';
 import { MaeRenderer } from './mae-renderer.js';
 import { MAE } from '../shared/mae.mjs';
+import { KohakuRenderer } from './kohaku-renderer.js';
+import { KOHAKU } from '../shared/kohaku.mjs';
 import { OrbBotRenderer } from './orb-bot-renderer.js';
 import { ORB_BOTS, pettingOrbBot, posingOrbBot } from '../shared/orb-bots.mjs';
 import { GroundPettingPose, groundPettingProgress } from './ground-petting-pose.js';
 import { CaveTorch } from './cave-torch.js';
 import { caveTorchLit } from '../shared/cave-light.mjs';
 import { Companion524Renderer } from './companion-524-renderer.js';
+import { COMPANION_524, companion524OnGround } from '../shared/companion-524.mjs';
+import { chooseCompanionView, companionViewDistances } from './companion-view.js';
 import { pettingProgress } from './petting-pose.js';
 import { isMesh } from './three-types.js';
 import { setText } from './dom-updates.js';
@@ -129,6 +134,18 @@ export class WorldRenderer {
 
   declare canvas: any;
   declare onAnimal: (id: string) => void;
+  private onInspect: () => void;
+  private companionView: {
+    id: string;
+    yaw: number;
+    pitch: number;
+    distance: number;
+    playerX: number;
+    playerZ: number;
+    warp: number;
+    hurt: number;
+    character: string;
+  } | null = null;
   declare onError: (text: string) => void;
   declare state: ViewState;
   declare selfId: any;
@@ -206,6 +223,7 @@ export class WorldRenderer {
   declare companion524Renderer: Companion524Renderer | undefined;
   declare rimoNekoRenderer: RimoNekoRenderer | undefined;
   declare maeRenderer: MaeRenderer | undefined;
+  declare kohakuRenderer: KohakuRenderer | undefined;
   declare orbBotRenderer: OrbBotRenderer | undefined;
   declare npcActor: any;
   declare npc: any;
@@ -236,9 +254,13 @@ export class WorldRenderer {
   declare simulationMs: any;
   declare submissionMs: any;
 
-  constructor(canvas, { onAnimal = (_id: string) => {}, onError = (_text: string) => {} } = {}) {
+  constructor(
+    canvas,
+    { onAnimal = (_id: string) => {}, onError = (_text: string) => {}, onInspect = () => {} } = {},
+  ) {
     this.canvas = canvas;
     this.onAnimal = onAnimal;
+    this.onInspect = onInspect;
     this.onError = onError;
     this.state = { players: [], resources: INITIAL_RESOURCES, camp: CAMP, npc: NPC };
     this.selfId = null;
@@ -455,6 +477,7 @@ export class WorldRenderer {
               this.companion524Renderer = new Companion524Renderer(this);
             if (asset.modelKey === 'rimo-neko') this.rimoNekoRenderer = new RimoNekoRenderer(this);
             if (asset.modelKey === 'mae') this.maeRenderer = new MaeRenderer(this);
+            if (asset.modelKey === 'kohaku') this.kohakuRenderer = new KohakuRenderer(this);
           }),
       );
       if (this.disposed) return;
@@ -719,7 +742,7 @@ export class WorldRenderer {
       this.canvas.style.cursor = 'crosshair';
       if (this.canvas.hasPointerCapture(e.pointerId))
         this.canvas.releasePointerCapture(e.pointerId);
-      if (click) {
+      if (click && !this.companionView) {
         const rect = this.canvas.getBoundingClientRect();
         this.raycaster.setFromCamera(
           new THREE.Vector2(
@@ -732,6 +755,7 @@ export class WorldRenderer {
           ...(this.companion524Renderer ? [this.companion524Renderer.root] : []),
           ...(this.rimoNekoRenderer ? [this.rimoNekoRenderer.root] : []),
           ...(this.maeRenderer ? [this.maeRenderer.root] : []),
+          ...(this.kohakuRenderer ? [this.kohakuRenderer.root] : []),
           ...[...(this.orbBotRenderer?.bots.values() ?? [])].map(({ actor }) => actor.root),
           ...this.mammoths.flatMap((animal) => [animal.model, animal.meat]),
           ...[...this.enemies.values()].map((enemy) => enemy.model),
@@ -754,7 +778,37 @@ export class WorldRenderer {
     this.wheel = (e) => {
       if (!this.manualInputAllowed()) return;
       e.preventDefault();
-      this.targetDistance = clamp(this.targetDistance + e.deltaY * 0.009, 3.2, 19);
+      if (!this.companionView && e.deltaY < 0) {
+        const rect = this.canvas.getBoundingClientRect();
+        this.raycaster.setFromCamera(
+          new THREE.Vector2(
+            ((e.clientX - rect.left) / rect.width) * 2 - 1,
+            (-(e.clientY - rect.top) / rect.height) * 2 + 1,
+          ),
+          this.camera,
+        );
+        const targets = this.companionViewTargets();
+        const hit = this.raycaster.intersectObjects(
+          targets.map((t) => t.root),
+          true,
+        )[0];
+        if (hit) {
+          let node = hit.object;
+          while (node && !node.userData.animalId) node = node.parent;
+          if (node && this.viewCompanion(node.userData.animalId)) return;
+        }
+      }
+      const target = this.companionViewTargets().find((t) => t.id === this.companionView?.id);
+      const limits = target
+        ? companionViewDistances(target.radius, this.camera.fov, this.camera.aspect)
+        : null;
+      this.targetDistance = limits
+        ? clamp(
+            this.targetDistance * Math.exp(clamp(e.deltaY, -400, 400) * 0.0015),
+            limits.near,
+            limits.far,
+          )
+        : clamp(this.targetDistance + e.deltaY * 0.009, 3.2, 19);
       this.zoom = DEFAULT_DISTANCE / this.targetDistance;
     };
     this.context = (e) => e.preventDefault();
@@ -768,6 +822,7 @@ export class WorldRenderer {
   }
 
   setState(state, selfId) {
+    if (this.selfId !== selfId) this.endCompanionView();
     const local = state.players.find((p) => p.id === selfId);
     const controlled = local?.boatId
       ? state.boats?.find((b) => b.id === local.boatId)
@@ -987,13 +1042,18 @@ export class WorldRenderer {
       : this.serverTime + performance.now() - this.stateReceivedAt;
   }
   setZoom(value) {
-    this.zoom = clamp(Number(value) || 1, DEFAULT_DISTANCE / 19, DEFAULT_DISTANCE / 3.2);
-    this.targetDistance = clamp(DEFAULT_DISTANCE / this.zoom, 3.2, 19);
+    const target = this.companionViewTargets().find((t) => t.id === this.companionView?.id);
+    const limits = target
+      ? companionViewDistances(target.radius, this.camera.fov, this.camera.aspect)
+      : { near: 3.2, far: 19 };
+    this.targetDistance = clamp(DEFAULT_DISTANCE / (Number(value) || 1), limits.near, limits.far);
+    this.zoom = DEFAULT_DISTANCE / this.targetDistance;
   }
   adjustZoom(delta) {
-    this.setZoom(this.zoom + delta);
+    this.setZoom(this.companionView ? this.zoom * (delta > 0 ? 1.2 : 1 / 1.2) : this.zoom + delta);
   }
   focusPlayer(yaw?: number) {
+    this.endCompanionView();
     const me = this.players.get(this.selfId);
     if (yaw !== undefined) this.yaw = yaw;
     else if (me?.state.moving) this.yaw = me.state.facing + Math.PI;
@@ -1007,6 +1067,134 @@ export class WorldRenderer {
           ? 4.5
           : DEFAULT_DISTANCE;
     this.zoom = DEFAULT_DISTANCE / this.targetDistance;
+  }
+
+  private companionViewTargets() {
+    const targets: {
+      id: string;
+      label: string;
+      root: THREE.Object3D;
+      point: THREE.Vector3;
+      radius: number;
+    }[] = [];
+    const add = (id, label, root, asset, scale = 1, centered = false) => {
+      if (!root?.visible || !asset) return;
+      const height = asset.heightMetres * scale;
+      const point = root.position.clone();
+      if (!centered) point.y += height * 0.5;
+      targets.push({
+        id,
+        label,
+        root,
+        point,
+        radius:
+          Math.hypot(
+            height,
+            (asset.widthMetres ?? asset.heightMetres) * scale,
+            (asset.lengthMetres ?? asset.heightMetres) * scale,
+          ) * 0.5,
+      });
+    };
+    if (this.state.rimoNeko && rimoNekoOnGround(this.state.rimoNeko) && this.rimoNekoRenderer)
+      add(
+        this.state.rimoNeko.id,
+        'りもねこ',
+        this.rimoNekoRenderer.root,
+        this.rimoNekoRenderer.actor.asset,
+      );
+    if (this.state.kohaku && this.kohakuRenderer)
+      add(
+        this.state.kohaku.id,
+        'こはくちゃん',
+        this.kohakuRenderer.root,
+        this.kohakuRenderer.actor.asset,
+      );
+    if (this.state.mae && this.maeRenderer)
+      add(this.state.mae.id, 'mae', this.maeRenderer.root, this.maeRenderer.actor.asset);
+    if (
+      this.state.companion524 &&
+      companion524OnGround(this.state.companion524) &&
+      this.companion524Renderer
+    )
+      add(
+        this.state.companion524.id,
+        '524',
+        this.companion524Renderer.root,
+        this.companion524Renderer.actor.asset,
+        COMPANION_524.scale,
+        true,
+      );
+    for (const [id, entry] of this.orbBotRenderer?.bots ?? [])
+      if (!['windup', 'airborne', 'landing', 'stowed'].includes(entry.state.mode))
+        add(id, entry.actor.asset.name, entry.actor.root, entry.actor.asset);
+    return targets;
+  }
+
+  companionViewChoice(id?: string) {
+    const me = this.players.get(this.selfId)?.state;
+    if (!me || me.downedUntil || me.boatId || me.mountId || me.carrierId) return;
+    return chooseCompanionView(
+      this.companionViewTargets()
+        .filter((t) => !id || t.id === id)
+        .map((t) => {
+          const screen = t.point.clone().project(this.camera);
+          return {
+            ...t,
+            x: t.point.x,
+            z: t.point.z,
+            screenX: screen.x,
+            screenY: screen.y,
+            screenZ: screen.z,
+            clear: this.collision.segmentFree(me, t.point, 0.05),
+          };
+        }),
+      me,
+    );
+  }
+
+  get viewingCompanion() {
+    return this.companionView !== null;
+  }
+
+  viewCompanion(id?: string) {
+    if (this.companionView || !this.manualInputAllowed()) return false;
+    const target = this.companionViewChoice(id);
+    const me = this.players.get(this.selfId)?.state;
+    if (!target || !me) return false;
+    this.onInspect();
+    this.companionView = {
+      id: target.id,
+      yaw: this.yaw,
+      pitch: this.pitch,
+      distance: this.targetDistance,
+      playerX: me.x,
+      playerZ: me.z,
+      warp: me.warpSequence ?? 0,
+      hurt: me.hurtSequence ?? 0,
+      character: characterModel(me).key,
+    };
+    this.yaw = target.root.rotation.y;
+    this.pitch = 0.2;
+    this.targetDistance = companionViewDistances(
+      target.radius,
+      this.camera.fov,
+      this.camera.aspect,
+    ).fit;
+    this.zoom = DEFAULT_DISTANCE / this.targetDistance;
+    this.canvas.dataset.companionView = target.id;
+    return true;
+  }
+
+  endCompanionView() {
+    const previous = this.companionView;
+    if (!previous) return false;
+    this.companionView = null;
+    this.yaw = previous.yaw;
+    this.pitch = previous.pitch;
+    this.targetDistance = previous.distance;
+    this.zoom = DEFAULT_DISTANCE / this.targetDistance;
+    this.canvas.dataset.companionView = '';
+    return true;
   }
   resize() {
     const r = this.canvas.getBoundingClientRect();
@@ -1158,8 +1346,9 @@ export class WorldRenderer {
     }
     this.boatRenderer?.update(time, dt);
     if (!this.companion524Renderer?.inHand) this.companion524Renderer?.update(dt);
-    this.rimoNekoRenderer?.update(dt);
+    if (!this.rimoNekoRenderer?.inHand) this.rimoNekoRenderer?.update(dt);
     this.maeRenderer?.update(dt);
+    this.kohakuRenderer?.update(dt);
     // Update the carrier's animated shoulder before its passenger, regardless of join order.
     for (const entity of [...this.players.values()].sort(
       (a, b) => Number(!!a.state.carrierId) - Number(!!b.state.carrierId),
@@ -1309,7 +1498,8 @@ export class WorldRenderer {
       const motionSpeed = p.moving ? p.speed : 0;
       const petDot = pettingOrbBot(this.state.orbBots, p.id);
       const petMae = this.state.mae?.petPlayerId === p.id ? this.state.mae : undefined;
-      const groundCompanion = petDot ?? petMae ?? this.state.rimoNeko;
+      const petKohaku = this.state.kohaku?.petPlayerId === p.id ? this.state.kohaku : undefined;
+      const groundCompanion = petDot ?? petKohaku ?? petMae ?? this.state.rimoNeko;
       const groundPetting = petDot
         ? pettingProgress(petDot, p, this.serverNow(), {
             ...ORB_BOTS,
@@ -1317,9 +1507,11 @@ export class WorldRenderer {
               ? ORB_BOTS.petGroupApproachMs
               : ORB_BOTS.petApproachMs,
           })
-        : petMae
-          ? pettingProgress(petMae, p, this.serverNow(), MAE)
-          : groundPettingProgress(this.state.rimoNeko, p, this.serverNow());
+        : petKohaku
+          ? pettingProgress(petKohaku, p, this.serverNow(), KOHAKU)
+          : petMae
+            ? pettingProgress(petMae, p, this.serverNow(), MAE)
+            : groundPettingProgress(this.state.rimoNeko, p, this.serverNow());
       if (entity.actor) {
         if (p.downedUntil || airborne !== null || p.mountId || p.boatId || p.carrierId) {
           entity.actor.groundPettingPose.weight = 0;
@@ -1369,7 +1561,8 @@ export class WorldRenderer {
           if (petDot) {
             if (this.orbBotRenderer) this.orbBotRenderer.petTarget(petDot, tempPoint);
             else tempPoint.set(petDot.x, petDot.y + ORB_BOTS.diameter * 0.9, petDot.z);
-          } else if (petMae && this.maeRenderer) this.maeRenderer.petTarget(tempPoint);
+          } else if (petKohaku && this.kohakuRenderer) this.kohakuRenderer.petTarget(tempPoint);
+          else if (petMae && this.maeRenderer) this.maeRenderer.petTarget(tempPoint);
           else if (this.state.rimoNeko?.petPlayerId === p.id && this.rimoNekoRenderer)
             this.rimoNekoRenderer.petTarget(tempPoint);
           else tempPoint.copy(entity.actor.groundPettingPose.requested);
@@ -1379,7 +1572,7 @@ export class WorldRenderer {
               tempPoint,
               groundPetting.weight,
               groundPetting.stroke,
-              !!petDot || !!petMae,
+              !!petDot || !!petMae || !!petKohaku,
             );
           else pose.update(tempPoint, groundPetting.weight, groundPetting.stroke);
         } else if (petting524.weight > 0 && this.companion524Renderer) {
@@ -1456,11 +1649,38 @@ export class WorldRenderer {
       );
     }
     if (this.companion524Renderer?.inHand) this.companion524Renderer.update(dt);
+    if (this.rimoNekoRenderer?.inHand) this.rimoNekoRenderer.update(dt);
     this.orbBotRenderer?.update(dt);
     const self = this.players.get(this.selfId);
+    const viewing = this.companionView;
+    let viewed = viewing && this.companionViewTargets().find((t) => t.id === viewing.id);
+    if (
+      viewing &&
+      (!self ||
+        !viewed ||
+        self.state.downedUntil ||
+        self.state.boatId ||
+        self.state.mountId ||
+        self.state.carrierId ||
+        (self.state.warpSequence ?? 0) !== viewing.warp ||
+        (self.state.hurtSequence ?? 0) !== viewing.hurt ||
+        characterModel(self.state).key !== viewing.character ||
+        Math.hypot(self.state.x - viewing.playerX, self.state.z - viewing.playerZ) > 0.8 ||
+        Math.hypot(viewed.point.x - self.state.x, viewed.point.z - self.state.z) > 12)
+    ) {
+      this.endCompanionView();
+      viewed = null;
+    }
     if (self) {
-      tempPoint.copy(self.model.position);
-      tempPoint.y += focusHeight(self.state);
+      if (viewed) {
+        tempPoint.copy(viewed.point);
+        self.model.visible = false;
+        const limits = companionViewDistances(viewed.radius, this.camera.fov, this.camera.aspect);
+        this.targetDistance = clamp(this.targetDistance, limits.near, limits.far);
+      } else {
+        tempPoint.copy(self.model.position);
+        tempPoint.y += focusHeight(self.state);
+      }
       this.focus.lerp(tempPoint, 1 - Math.exp(-dt * 11));
     }
     this.distance += (this.targetDistance - this.distance) * (1 - Math.exp(-dt * 10));
@@ -1716,6 +1936,7 @@ export class WorldRenderer {
       data.animals = JSON.stringify(this.state.animals || []);
       data.companion524 = JSON.stringify(this.companion524Renderer?.diagnostics() ?? null);
       data.rimoNeko = JSON.stringify(this.rimoNekoRenderer?.diagnostics() ?? null);
+      data.kohaku = JSON.stringify(this.kohakuRenderer?.diagnostics() ?? null);
       data.mae = JSON.stringify(this.maeRenderer?.diagnostics() ?? null);
       data.orbBots = JSON.stringify(this.orbBotRenderer?.diagnostics() ?? []);
       data.meatPiles = String(this.mammoths.filter((a) => a.meat.visible).length);
@@ -1765,6 +1986,9 @@ export class WorldRenderer {
       data.cameraYaw = this.yaw.toFixed(3);
       data.cameraPitch = this.pitch.toFixed(3);
       data.cameraDistance = cameraDistance.toFixed(2);
+      data.cameraFocus = [this.focus.x, this.focus.y, this.focus.z]
+        .map((n) => n.toFixed(3))
+        .join(',');
       data.drawCalls = String(info.render.calls);
       data.renderTriangles = String(info.render.triangles);
       data.activeFireLights = String(this.fires.filter((fire) => fire.light.visible).length);
@@ -1821,6 +2045,7 @@ export class WorldRenderer {
         label.active !== false &&
         distance < (label.kind === 'resource' ? 16 : label.kind === 'camp' ? 35 : 60);
       if (label.kind === 'self') visible = false;
+      if (this.companionView && label.kind === 'companion') visible = false;
       const toPoint = tempPoint.copy(label.position).sub(this.camera.position);
       if (toPoint.dot(viewDirection) < 0) visible = false;
       if (visible) {
@@ -1848,6 +2073,7 @@ export class WorldRenderer {
     this.companion524Renderer?.dispose();
     this.rimoNekoRenderer?.dispose();
     this.maeRenderer?.dispose();
+    this.kohakuRenderer?.dispose();
     this.orbBotRenderer?.dispose();
     this.contactShadows.dispose();
     this.regionalScenery?.dispose();

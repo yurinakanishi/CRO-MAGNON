@@ -12,6 +12,7 @@ import {
   damageableTargets,
 } from '../dist/shared/combat.mjs';
 import { attackProfile } from '../dist/shared/combat-profiles.mjs';
+import { updateOrbBots } from '../dist/shared/orb-bots.mjs';
 import {
   COMPANION_524,
   createCompanion524,
@@ -59,6 +60,7 @@ function fixture(obstacles = []) {
 function advance(room, from, seconds, dt = 0.05) {
   for (let elapsed = dt; elapsed < seconds + dt / 2; elapsed += dt) {
     updateCompanion524(room, dt, from + elapsed * 1000);
+    updateOrbBots(room, dt, from + elapsed * 1000);
     assert.ok(
       room.collision.free(room.companion524, room.companion524.radius),
       '524 never crosses a static obstacle',
@@ -292,6 +294,7 @@ test('follower stays behind a moving player and returns through its route around
     p.z += 0.15;
     now += 50;
     updateCompanion524(room, 0.05, now);
+    updateOrbBots(room, 0.05, now);
   }
   assert.ok(c.z < p.z);
   assert.ok(distance(c, p) < 3);
@@ -321,7 +324,7 @@ test('follower stays behind a moving player and returns through its route around
 });
 
 for (const reason of ['disconnect', 'downed', 'boat', 'warp'])
-  test(`${reason} releases ownership and returns without teleporting 524`, () => {
+  test(`${reason} retains the newly established bond and uses the existing squad transition`, () => {
     const { room, c, p } = fixture();
     handleCompanion524Action(room, p, 'pet524', 10000);
     p.facing = 0;
@@ -333,10 +336,12 @@ for (const reason of ['disconnect', 'downed', 'boat', 'warp'])
     if (reason === 'warp') p.x += 200;
     const before = { x: c.x, z: c.z };
     updateCompanion524(room, 0.05, 18000);
-    assert.equal(c.followPlayerId, null);
+    assert.equal(c.followPlayerId, p.id);
+    assert.equal(c.squadPlayerId, p.id);
     assert.ok(distance(before, c) < 0.3);
     advance(room, 18000, 12);
-    assert.equal(c.mode, 'idle');
+    if (reason === 'disconnect') assert.equal(c.mode, 'idle');
+    assert.equal(c.squadPlayerId, p.id);
   });
 
 test('a resource that regrows on the remembered route does not strand the returning companion', () => {

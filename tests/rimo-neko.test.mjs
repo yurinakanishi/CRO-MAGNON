@@ -59,14 +59,14 @@ test('the real camp has a safe ground position for Rimo-neko separate from 524',
   assert.ok(dist(c, { x: 46, z: 53.5 }) > 3);
   assert.equal(c.followPlayerId, null);
 });
-test('friendship requires finished strokes; walking away, hitting and racing another pet cancel or reject', () => {
+test('friendship starts immediately; walking away and hitting cancel only the gesture, while competing pets are rejected', () => {
   const { c, p, room } = fixture();
   assert.equal(handleRimoNekoAction(room, p, 'petRimo', 10000), true);
-  assert.equal(c.followPlayerId, null);
+  assert.equal(c.followPlayerId, p.id);
   advance(room, 10000, 1);
   assert.ok(c.petContactAt > 0);
   assert.equal(handleRimoNekoAction(room, { ...p, id: 'q' }, 'petRimo', 11000), false);
-  assert.equal(c.followPlayerId, null);
+  assert.equal(c.followPlayerId, p.id);
   advance(room, 11000, 2);
   assert.equal(c.followPlayerId, p.id);
   const f = fixture();
@@ -74,10 +74,10 @@ test('friendship requires finished strokes; walking away, hitting and racing ano
   advance(f.room, 10000, 0.4);
   f.p.x += 1;
   advance(f.room, 10400, 2);
-  assert.equal(f.c.followPlayerId, null);
+  assert.equal(f.c.followPlayerId, f.p.id);
   assert.equal(f.c.petPlayerId, null);
   hitRimoNeko(c, 0, 1, 15000);
-  assert.equal(c.followPlayerId, null);
+  assert.equal(c.followPlayerId, p.id);
   assert.equal(c.petPlayerId, null);
   assert.equal(nearRimoNeko(p, c, room.collision, 15000 + RIMO_NEKO.hitMs + 100), false);
   assert.equal(handleRimoNekoAction(room, p, 'petRimo', 18000), true);

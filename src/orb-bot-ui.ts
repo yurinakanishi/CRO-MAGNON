@@ -103,7 +103,7 @@ export class OrbBotUI {
   open() {
     const kinds = ownedBotKinds(this.hooks.bots(), this.hooks.player()?.id);
     this.hooks.openModal(
-      `<div class="orb-menu"><h2>仲間のbotたち · ${kinds.length}匹</h2><p data-bot-status></p><p>近くで V ／ コントローラーの下ボタンを1回押すと、集まったbotたちを一度に撫でます。全員が同時に喜んで仲間になります。歩き出すかQで中断できます。他の人の仲間は対象に入りません。1匹だけなら、その子をクリック・タップしてください。</p><button type="button" class="button button-accent" data-bot-action="petAll">近くのbotたちをまとめて撫でる</button><div class="orb-choices">${choices(this.selected, kinds)}</div><p>種類を選ぶと、その種類から順番に投げます。<br>C ／ 左スティック押し込み：1匹ずつ投げる<br>Q ／ 十字キー↑：投げた場所で待つ仲間を呼ぶ<br>T：いちばん近い仲間を元の場所へ帰す</p><div class="orb-actions"><button type="button" class="button" data-bot-action="use">投げる</button><button type="button" class="button button-outline" data-bot-action="recall">みんなを呼ぶ</button><button type="button" class="button button-outline" data-bot-action="dismiss">選んだ子を帰す</button><button type="button" class="button button-outline" data-bot-action="dismissAll">全員を元の場所へ帰す</button></div></div>`,
+      `<div class="orb-menu"><h2>仲間のbotたち · ${kinds.length}匹</h2><p data-bot-status></p><button type="button" class="button button-accent" data-bot-action="petAll">近くのbotたちをまとめて撫でる</button><div class="orb-choices">${choices(this.selected, kinds)}</div><div class="orb-actions"><button type="button" class="button" data-bot-action="use">投げる</button><button type="button" class="button button-outline" data-bot-action="recall">みんなを呼ぶ</button><button type="button" class="button button-outline" data-bot-action="dismiss">選んだ子を帰す</button><button type="button" class="button button-outline" data-bot-action="dismissAll">全員を元の場所へ帰す</button></div></div>`,
     );
     this.bind(document.querySelector('.orb-menu')!);
     this.update();
@@ -135,12 +135,13 @@ export class OrbBotUI {
       this.bindChoices(list);
     }
     menu.querySelector('[data-bot-status]')!.textContent = kinds.length
-      ? '撫でて仲間になった子だけが、いっしょに歩きます。帰した子はキャンプで待ち、また撫でると仲間になります。'
-      : '連れているbotはいません。ひとりで自由に歩けます。';
-    for (const name of ['recall', 'dismiss', 'dismissAll'])
+      ? 'いっしょに歩く仲間'
+      : '仲間のbotはいません';
+    for (const name of ['dismiss', 'dismissAll'])
       menu.querySelector<HTMLButtonElement>(`[data-bot-action="${name}"]`)!.disabled =
         !kinds.length && (name === 'dismiss' || !group.length);
     const available = canHandleBot(p, this.hooks.now());
+    menu.querySelector<HTMLButtonElement>('[data-bot-action="recall"]')!.disabled = !available;
     const use = menu.querySelector<HTMLButtonElement>('[data-bot-action="use"]')!;
     use.disabled = !available || !next || group.length > 0;
     menu.querySelectorAll('[data-bot-kind]').forEach((el) => {

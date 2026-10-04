@@ -615,7 +615,11 @@ test('five real command connections share throws, reject a sixth, and preserve p
       .orbBots.filter((b) => b.ownerId === p.id)
       .map((b) => b.recallAt),
   );
-  assert.ok(calls.every((times) => times.length === 9 && times.every((at) => at === now)));
+  const recalledCount = room.orbBots.filter((b) => b.ownerId === p.id).length;
+  assert.ok(recalledCount >= 9, 'the whistle also invites available NPC companions');
+  assert.ok(
+    calls.every((times) => times.length === recalledCount && times.every((at) => at === now)),
+  );
   for (let i = 0; i < 160; i++) {
     now += 50;
     core.tick();
@@ -632,5 +636,5 @@ test('five real command connections share throws, reject a sixth, and preserve p
   sockets[0].close();
   now += 50;
   core.tick();
-  assert.equal(room.orbBots.length, 9);
+  assert.equal(room.orbBots.filter((b) => b.home).length, 9);
 });

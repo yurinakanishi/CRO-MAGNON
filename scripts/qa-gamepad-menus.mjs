@@ -74,12 +74,12 @@ try {
         const el = document.querySelector('.gamepad-focus') ?? document.activeElement;
         return el
           ? el.id ||
-            el.dataset?.controllerMenu ||
-            el.dataset?.item ||
-            el.dataset?.helpTab ||
-            el.getAttribute('value') ||
-            el.getAttribute('name') ||
-            `${el.className}#${[...document.querySelectorAll('button,a[href],input,select,textarea,[role="button"],[tabindex="0"]')].indexOf(el)}`
+              el.dataset?.controllerMenu ||
+              el.dataset?.item ||
+              el.dataset?.helpTab ||
+              el.getAttribute('value') ||
+              el.getAttribute('name') ||
+              `${el.className}#${[...document.querySelectorAll('button,a[href],input,select,textarea,[role="button"],[tabindex="0"]')].indexOf(el)}`
           : '';
       });
     const visited = [];
@@ -111,7 +111,9 @@ try {
     }
     if (await reached()) return;
     // Exploration is a heuristic; a target it missed is focused directly and recorded.
-    console.log(`NOTE sweep missed ${selector} (visited ${visited.slice(-12).join(' > ')}); focusing directly`);
+    console.log(
+      `NOTE sweep missed ${selector} (visited ${visited.slice(-12).join(' > ')}); focusing directly`,
+    );
     detours.push(selector);
     await page.locator(selector).first().focus();
     await input();
@@ -170,7 +172,9 @@ try {
     assert.ok(!player().mountId && !player().boatId);
     await input();
   }
-  passed('All confirm buttons open inventory and confirm Back; held presses do not attack or mount');
+  passed(
+    'All confirm buttons open inventory and confirm Back; held presses do not attack or mount',
+  );
 
   // Keyboard users open the menu; pointer and keyboard users use the same visible Back button.
   await page.keyboard.press('Escape');
@@ -191,7 +195,7 @@ try {
     await tap(PAD.options);
     await select('[data-controller-menu="info"]');
     await tap(PAD.triangle);
-    await select('[data-controller-menu="sub-help"]');
+    await select('[data-controller-menu="sub-objectives"]');
     await tap(PAD.triangle);
     await input([], [0, 0, 0, 1]);
     await page.waitForTimeout(1200);
@@ -231,7 +235,7 @@ try {
     await tap(PAD.up);
     await tap(PAD.circle);
   }
-  passed('Back and focused menu items stay visible while help scrolls at 390×844 and 844×390');
+  passed('Back and focused menu items stay visible while objectives scroll at 390×844 and 844×390');
   await tap(PAD.options);
   await select('[data-controller-menu="title"]');
   await tap(PAD.square);

@@ -12,7 +12,12 @@ export function buildId(files) {
   return createHash('sha256').update(JSON.stringify(files)).digest('hex');
 }
 export async function verifyExhibition(root) {
-  const manifest = JSON.parse(await readFile(path.join(root, 'exhibition-build.json'), 'utf8'));
+  return verifyOfflineBuild(root, 'exhibition-build.json');
+}
+export async function verifyOfflineBuild(root, manifestName) {
+  if (!['exhibition-build.json', 'local-build.json'].includes(manifestName))
+    throw new Error('Unknown offline build manifest.');
+  const manifest = JSON.parse(await readFile(path.join(root, manifestName), 'utf8'));
   if (buildId(manifest.files) !== manifest.buildId)
     throw new Error('Invalid exhibition manifest. Recopy the build.');
   for (const file of manifest.files) {

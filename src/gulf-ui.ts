@@ -1,4 +1,3 @@
-import { controllerLabels } from './controller-labels.js';
 import {
   COUNTRIES,
   FARM_PLOTS,
@@ -82,7 +81,7 @@ export function installGulfUI(api) {
     }
     signature = '';
     openModal(
-      `<div class="gulf-panel"><span class="eyebrow">THREE SHORES · A SHARED LIFE</span><h2>三つの国、ひとつの湾。</h2><p class="modal-intro">植え、育て、海を渡る。旅先で得たものを、多くの炉へ持ち帰ろう。</p><div id="gulf-summary" class="gulf-summary"></div><div class="gulf-tabs" role="group" aria-label="湾の集落">${SETTLEMENTS.map((s) => `<button data-gulf-tab="${s.id}">${s.name}</button>`).join('')}</div><section id="gulf-detail"></section><details class="gulf-lore"><summary>この世界について</summary><p>三つの国は、谷・尾根・海岸で暮らす人々の創作の国です。所属と種族は別で、ネアンデルタール人も他の種族も参加できます。国境を閉ざす壁はなく、集い場には誰でも入れます。</p><p>国、農耕、急速な作物の成長、通年の水場、湾の形はファンタジーです。地域ごとの採集、素材、道具、小舟と季節の集会に考古学の発想を使っています。</p><p>共同の畑は誰でも植え、手入れし、収穫できます。集い場では争いを持ち込まず、炉を囲んで話し合うという架空の取り決めがあります。現在の参加上限は運用上の制限で、国の人口ではありません。</p></details></div>`,
+      `<div class="gulf-panel"><span class="eyebrow">THREE SHORES · A SHARED LIFE</span><h2>三つの国、ひとつの湾。</h2><div id="gulf-summary" class="gulf-summary"></div><div class="gulf-tabs" role="group" aria-label="湾の集落">${SETTLEMENTS.map((s) => `<button data-gulf-tab="${s.id}">${s.name}</button>`).join('')}</div><section id="gulf-detail"></section></div>`,
     );
     document.querySelectorAll<HTMLButtonElement>('[data-gulf-tab]').forEach(
       (button) =>
@@ -191,7 +190,7 @@ export function installGulfUI(api) {
       <section class="gulf-routes"><h4>湾を巡る道</h4><p>五つの浜と二つの沖の魚場で釣ろう。焼き魚1を食料3として宴に持ち寄れます。</p><button id="gulf-fishing" class="button button-outline">魚場と釣り方</button><p>湾奥を回る陸路はいつでも使えます。浜で木材12から小舟を作り、Bで乗降。対岸への短い航路も使えます。</p><div class="gulf-actions">${LANDINGS.map((l) => `<span class="gulf-card">${l.name}</span>`).join('')}</div></section>`;
     $('#gulf-detail').insertAdjacentHTML(
       'beforeend',
-      `<section class="gulf-routes"><h4>六つの休み場を巡る <small>${me?.gulf?.waymarks?.length ?? 0}/${GULF_STOPS.length}</small></h4><p>湾は1,480 × 1,340 m。炉のそばでE／${controllerLabels().right}を使い、道を記録しよう。各地で水と採集資源を補給できます。</p><div class="gulf-stop-list">${GULF_STOPS.map((s) => `<article class="gulf-card"><h4>${s.name}${me?.gulf?.waymarks?.includes(s.id) ? ' · 記録済み' : ''}</h4><p>${s.description}</p><div class="gulf-actions">${btn(`trail-record-${s.id}`, '旅路を記録する', !at(s, 8) || me?.gulf?.waymarks?.includes(s.id))}</div></article>`).join('')}</div><p>すべて巡って集い場へ戻ると、次の旅の木材6・種4を一度受け取れます。</p>${btn('gulf-trail-reward', me?.gulf?.trailRewarded ? '旅路のお礼は受取済み' : '集い場で旅路を伝える', !nearHearth || !!me?.gulf?.trailRewarded || !GULF_STOPS.every((s) => me?.gulf?.waymarks?.includes(s.id)))}</section>`,
+      `<section class="gulf-routes"><h4>六つの休み場を巡る <small>${me?.gulf?.waymarks?.length ?? 0}/${GULF_STOPS.length}</small></h4><div class="gulf-stop-list">${GULF_STOPS.map((s) => `<article class="gulf-card"><h4>${s.name}${me?.gulf?.waymarks?.includes(s.id) ? ' · 記録済み' : ''}</h4><p>${s.description}</p><div class="gulf-actions">${btn(`trail-record-${s.id}`, '旅路を記録する', !at(s, 8) || me?.gulf?.waymarks?.includes(s.id))}</div></article>`).join('')}</div><p>すべて巡って集い場へ戻ると、次の旅の木材6・種4を一度受け取れます。</p>${btn('gulf-trail-reward', me?.gulf?.trailRewarded ? '旅路のお礼は受取済み' : '集い場で旅路を伝える', !nearHearth || !!me?.gulf?.trailRewarded || !GULF_STOPS.every((s) => me?.gulf?.waymarks?.includes(s.id)))}</section>`,
     );
     $('#gulf-fishing').insertAdjacentHTML(
       'afterend',

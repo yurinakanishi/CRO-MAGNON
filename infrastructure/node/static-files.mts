@@ -2,6 +2,8 @@ import type { IncomingMessage, ServerResponse } from 'node:http';
 import { createReadStream } from 'node:fs';
 import { stat } from 'node:fs/promises';
 import path from 'node:path';
+import { ALL_CONTENT, type ContentVisibility } from '../../shared/content-visibility.mjs';
+import { localContentOverride } from './local-visibility.mjs';
 export const MIME: Readonly<Record<string, string>> = {
   '.html': 'text/html; charset=utf-8',
   '.js': 'text/javascript; charset=utf-8',
@@ -29,6 +31,7 @@ export async function serveStatic(
   response: ServerResponse,
   urlPath: string,
   root: string,
+  visibility: ContentVisibility = ALL_CONTENT,
 ): Promise<void> {
   const pathname = decodeURIComponent(urlPath);
   const mount = pathname.startsWith('/src/')
@@ -54,6 +57,20 @@ export async function serveStatic(
     !MIME[path.extname(filename)]
   ) {
     response.writeHead(403).end('Forbidden');
+    return;
+  }
+  const servedPath = `${mount === 'public' ? '' : `${mount}/`}${allowed.split(path.sep).join('/')}`;
+  const override = await localContentOverride(servedPath, root, visibility);
+  if (override === null) {
+    response.writeHead(404, { 'Cache-Control': 'no-store' }).end('Not found');
+    return;
+  }
+  if (override !== undefined) {
+    response.writeHead(200, {
+      'Content-Type': MIME[path.extname(filename).toLowerCase()],
+      'Cache-Control': 'no-store',
+    });
+    response.end(request.method === 'HEAD' ? undefined : override);
     return;
   }
   const info = await stat(filename);

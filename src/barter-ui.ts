@@ -56,7 +56,7 @@ export function installBarterUI({ player, state, available, send, openModal, col
     key = '';
     dismissed = '';
     openModal(
-      `<div id="barter-panel" class="gulf-panel"><p class="screen-eyebrow">多くの炉で、旅の品を並べる</p><h2>旅人と物々交換</h2><p class="modal-intro">二人で品物を見せ合い、同じ内容に同意してから交換します。成立するまで、品物は自分のもちものに残ります。</p><p id="barter-clock"></p><div id="barter-body"></div><div class="gulf-actions">${button('barter-back', '湾の旅の案内へ')}</div></div>`,
+      `<div id="barter-panel" class="gulf-panel"><p class="screen-eyebrow">多くの炉で、旅の品を並べる</p><h2>旅人と物々交換</h2><p id="barter-clock"></p><div id="barter-body"></div><div class="gulf-actions">${button('barter-back', '戻る')}</div></div>`,
     );
     viewing = true;
     $('barter-back').onclick = () => {

@@ -7,6 +7,7 @@ import { attackProfile } from './combat-profiles.mjs';
 import { characterModel } from './characters.mjs';
 import { jumpProgress } from './jumping.mjs';
 import type { RimoNeko, RimoNekoSnapshot } from './rimo-neko-types.mjs';
+import type { OrbBotSnapshot } from './orb-bot-types.mjs';
 export type { RimoNeko, RimoNekoSnapshot } from './rimo-neko-types.mjs';
 
 export const RIMO_NEKO = Object.freeze({
@@ -56,6 +57,7 @@ type CompanionRoom = {
   rimoNeko?: RimoNeko;
   collision: CollisionWorld;
   players: Map<string, PetPlayer & { facing: number; radius: number; speed: number }>;
+  sessions?: Map<string, { player: { id: string } }>;
 };
 const distance = (a: Point, b: Point) => Math.hypot(a.x - b.x, a.z - b.z);
 const point = (p: Point): Point => ({ x: p.x, z: p.z });
@@ -71,6 +73,8 @@ export function createRimoNeko(collision: CollisionWorld): RimoNeko {
     facing: 0,
     mode: 'idle',
     followPlayerId: null,
+    squadPlayerId: null,
+    squadMode: null,
     petSequence: 0,
     petAt: 0,
     petPlayerId: null,
@@ -106,6 +110,8 @@ export function rimoNekoSnapshot(c?: RimoNeko): RimoNekoSnapshot | undefined {
     radius,
     mode,
     followPlayerId,
+    squadPlayerId,
+    squadMode,
     petSequence,
     petAt,
     petPlayerId,
@@ -125,6 +131,8 @@ export function rimoNekoSnapshot(c?: RimoNeko): RimoNekoSnapshot | undefined {
     radius,
     mode,
     followPlayerId,
+    squadPlayerId,
+    squadMode,
     petSequence,
     petAt,
     petPlayerId,
@@ -148,6 +156,7 @@ export function nearRimoNeko(
   return (
     !!player &&
     !!c &&
+    rimoNekoOnGround(c) &&
     !(c.hitSequence > 0 && now - c.hitAt < RIMO_NEKO.hitMs + RIMO_NEKO.hissMs) &&
     !player.downedUntil &&
     !player.mountId &&
@@ -164,22 +173,40 @@ export function nearRimoNeko(
   );
 }
 
-export function returnRimoNeko(c: RimoNeko) {
-  c.followPlayerId = null;
+export function returnRimoNeko(c: RimoNeko, retainBond = false) {
+  if (!retainBond) {
+    c.followPlayerId = c.squadPlayerId = null;
+    c.squadMode = null;
+  }
   c.mode = 'returning';
   c.path = [];
   c.goal = null;
   c.nextPathAt = 0;
   c.followSpeed = 0;
   c.ownerPosition = null;
-  cancelPet(c);
+  cancelRimoNekoPet(c);
 }
 
-function cancelPet(c: RimoNeko) {
+export function cancelRimoNekoPet(c: RimoNeko) {
   c.petPlayerId = null;
   c.petContactAt = 0;
   c.petOrigin = null;
   c.petGoal = null;
+}
+
+export function rimoNekoOnGround(c: RimoNekoSnapshot) {
+  return !c.squadMode || !['windup', 'airborne', 'landing', 'stowed'].includes(c.squadMode);
+}
+
+/** The existing cat body and its return trail follow the one squad proxy. */
+export function syncRimoNekoBot(c: RimoNeko, b: OrbBotSnapshot) {
+  c.x = b.x;
+  c.z = b.z;
+  c.facing = b.facing;
+  c.squadMode = b.mode;
+  if (rimoNekoOnGround(c)) {
+    if (c.mode !== 'returning') rememberRoute(c);
+  } else c.velocityX = c.velocityZ = 0;
 }
 
 export function handleRimoNekoAction(
@@ -236,9 +263,11 @@ export function handleRimoNekoAction(
   c.petFacing = facing;
   c.petCharacter = `${player.species}/${player.gender}`;
   player.facing = facing;
-  // Trust starts only after the uninterrupted strokes actually finish.
-  c.mode = 'idle';
-  c.followPlayerId = null;
+  // Trust begins as soon as the invitation is accepted, before the animation.
+  c.mode = 'following';
+  c.followPlayerId = player.id;
+  c.squadPlayerId = player.id;
+  c.squadMode = 'following';
   c.facing = Math.atan2(player.x - c.x, player.z - c.z);
   c.path = [];
   c.nextPathAt = 0;
@@ -249,9 +278,8 @@ export function handleRimoNekoAction(
 
 /** Recoil, then face the attacker and hiss; no health, death or counterattack. */
 export function hitRimoNeko(c: RimoNeko, dx: number, dz: number, now: number) {
-  cancelPet(c);
-  c.followPlayerId = null;
-  c.mode = 'idle';
+  cancelRimoNekoPet(c);
+  c.mode = c.followPlayerId ? 'following' : 'idle';
   c.followSpeed = 0;
   const length = Math.hypot(dx, dz) || 1;
   c.hitDirectionX = dx / length;
@@ -277,6 +305,7 @@ function rememberRoute(c: RimoNeko) {
   const revisited = c.trail.findIndex((p) => distance(c, p) < 0.7);
   if (revisited >= 0) c.trail.length = revisited + 1;
   c.trail.push(point(c));
+  if (c.trail.length > 4096) c.trail.splice(1, 1);
 }
 
 export function updateRimoNeko(room: CompanionRoom, dt: number, now: number) {
@@ -284,15 +313,21 @@ export function updateRimoNeko(room: CompanionRoom, dt: number, now: number) {
   if (!c || dt <= 0) return;
   const ownerId = c.petPlayerId || c.followPlayerId;
   const owner = ownerId ? room.players.get(ownerId) : null;
+  const canFollow = owner && !owner.downedUntil && !owner.boatId && distance(owner, c) <= 60;
+  const squadControlled = c.squadPlayerId && c.squadMode && c.squadMode !== 'following';
   if (
-    c.mode === 'following' &&
-    (!owner ||
-      owner.downedUntil ||
-      owner.boatId ||
-      distance(owner, c) > 60 ||
-      c.trail.length >= 4096)
+    !squadControlled &&
+    c.followPlayerId &&
+    !canFollow &&
+    (c.mode === 'following' || c.petPlayerId)
   )
-    returnRimoNeko(c);
+    returnRimoNeko(c, true);
+  else if (!squadControlled && c.followPlayerId && canFollow && c.mode !== 'following') {
+    c.mode = 'following';
+    c.path = [];
+    c.goal = null;
+    c.nextPathAt = 0;
+  }
 
   const damping = Math.exp(-RIMO_NEKO.damping * dt);
   if (Math.hypot(c.velocityX, c.velocityZ) > 0.015) {
@@ -306,6 +341,9 @@ export function updateRimoNeko(room: CompanionRoom, dt: number, now: number) {
     c.velocityZ = 0;
   }
   if (c.hitSequence > 0 && now - c.hitAt < RIMO_NEKO.hitMs + RIMO_NEKO.hissMs) return;
+  // Keep natural walking while following; the shared dots solver owns throws,
+  // deployed waiting and the explicit reunion gesture.
+  if (squadControlled && !c.petPlayerId) return;
   if (c.mode === 'idle' && !c.petPlayerId) return;
 
   if (c.petPlayerId && c.petOrigin && c.petGoal) {
@@ -319,7 +357,7 @@ export function updateRimoNeko(room: CompanionRoom, dt: number, now: number) {
         !nearRimoNeko(owner, c, room.collision, now) ||
         (!c.petContactAt && now - c.petAt > RIMO_NEKO.petApproachMs))
     ) {
-      cancelPet(c);
+      cancelRimoNekoPet(c);
     } else if (!c.petContactAt) {
       const length = distance(c, c.petGoal);
       const amount = Math.min(length, 1.6 * dt);
@@ -342,7 +380,7 @@ export function updateRimoNeko(room: CompanionRoom, dt: number, now: number) {
         c.followPlayerId = owner.id;
       }
       if (now < c.petContactAt + RIMO_NEKO.petStrokeMs + RIMO_NEKO.happyMs) return;
-      cancelPet(c);
+      cancelRimoNekoPet(c);
     }
   }
 
@@ -431,12 +469,35 @@ export function updateRimoNeko(room: CompanionRoom, dt: number, now: number) {
   if (c.mode === 'following') rememberRoute(c);
 }
 
-/** Old saves gain a camp companion. A restored follower returns along its saved route. */
+/** Persist a released cat at its landing, without replaying the airborne gesture. */
+export function saveRimoNeko(c: RimoNeko | undefined, bot?: OrbBotSnapshot) {
+  if (!c?.squadPlayerId) return c;
+  const deployed = bot
+    ? !bot.recall && ['airborne', 'landing', 'waiting'].includes(bot.mode)
+    : c.squadMode === 'waiting';
+  const position =
+    bot?.mode === 'airborne' && bot.landing
+      ? bot.landing
+      : bot?.mode === 'windup' && bot.origin
+        ? bot.origin
+        : c;
+  return { ...c, ...point(position), squadMode: deployed ? 'waiting' : 'following' };
+}
+
+/** Preserve a known saved owner, including bonds made before cat throwing existed. */
 export function restoreRimoNeko(room: CompanionRoom, saved: unknown) {
   const c = createRimoNeko(room.collision);
   room.rimoNeko = c;
   if (!saved || typeof saved !== 'object') return;
   const record = saved as Partial<RimoNeko>;
+  const ownerId = record.squadPlayerId || record.followPlayerId;
+  if (
+    typeof ownerId === 'string' &&
+    ownerId &&
+    (room.players.has(ownerId) ||
+      [...(room.sessions?.values() ?? [])].some((s) => s.player.id === ownerId))
+  )
+    c.followPlayerId = c.squadPlayerId = ownerId;
   if (!Number.isFinite(record.x) || !Number.isFinite(record.z)) return;
   const position = { x: record.x!, z: record.z! };
   if (!room.collision.free(position, c.radius)) return;
@@ -449,5 +510,14 @@ export function restoreRimoNeko(room: CompanionRoom, saved: unknown) {
         .map(point)
     : [];
   c.trail = [point(c.home), ...trail];
-  if (record.mode !== 'idle') returnRimoNeko(c);
+  if (c.squadPlayerId) {
+    c.squadMode = ['airborne', 'landing', 'waiting'].includes(record.squadMode ?? '')
+      ? 'waiting'
+      : 'following';
+    if (c.squadMode === 'waiting') {
+      c.mode = 'following';
+      return;
+    }
+  }
+  if (record.mode !== 'idle' || c.followPlayerId) returnRimoNeko(c, true);
 }

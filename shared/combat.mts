@@ -1,7 +1,8 @@
 import { WORLD } from './world.mjs';
 import { attackProfile, ATTACK_PROFILES, shoulderMagic } from './combat-profiles.mjs';
-import { hitRimoNeko } from './rimo-neko.mjs';
+import { hitRimoNeko, rimoNekoOnGround } from './rimo-neko.mjs';
 import { hitMae } from './mae.mjs';
+import { hitKohaku } from './kohaku.mjs';
 import { hitCompanion524, companion524OnGround } from './companion-524.mjs';
 import { roomRules } from './room-rules.mjs';
 
@@ -54,8 +55,11 @@ const actors = (collection) =>
 export function damageableTargets(room) {
   const playerIds = new Set(room.players.keys());
   return [
-    ...(room.rimoNeko ? [{ target: room.rimoNeko, kind: 'rimoNeko' }] : []),
+    ...(room.rimoNeko && rimoNekoOnGround(room.rimoNeko)
+      ? [{ target: room.rimoNeko, kind: 'rimoNeko' }]
+      : []),
     ...(room.mae ? [{ target: room.mae, kind: 'mae' }] : []),
+    ...(room.kohaku ? [{ target: room.kohaku, kind: 'kohaku' }] : []),
     ...(room.companion524 && companion524OnGround(room.companion524)
       ? [{ target: room.companion524, kind: 'companion524' }]
       : []),
@@ -72,6 +76,7 @@ export function damageableTargets(room) {
       (target === room.companion524 ||
         target === room.rimoNeko ||
         target === room.mae ||
+        target === room.kohaku ||
         alive(target)) &&
       Number.isFinite(target.x) &&
       Number.isFinite(target.z) &&
@@ -203,6 +208,10 @@ function applyHit(
 ) {
   if (kind === 'rimoNeko') {
     hitRimoNeko(target, direction.x, direction.z, now);
+    return { hit: true, target, kind, killed: false, weapon: profile.key };
+  }
+  if (kind === 'kohaku') {
+    hitKohaku(target, direction.x, direction.z, now);
     return { hit: true, target, kind, killed: false, weapon: profile.key };
   }
   if (kind === 'mae') {

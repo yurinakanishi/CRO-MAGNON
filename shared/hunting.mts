@@ -226,6 +226,10 @@ export function updateHunting(
   let changed = false;
   const reportHit = (player, strike) => {
     changed = true;
+    if (strike.kind === 'kohaku') {
+      notify(player, 'こはくちゃんがびっくりして身を引いた。', 'info', false);
+      return;
+    }
     if (strike.kind === 'mae') {
       notify(player, 'maeがぽよんと身を引いた。', 'info', false);
       return;

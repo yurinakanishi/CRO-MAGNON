@@ -245,7 +245,7 @@ export function installMapWarp({
       ? `自分のピンを置いた · あと${Math.max(1, Math.ceil((mine.expiresAt - now()) / 60000))}分`
       : friends.length
         ? `仲間のピン：${friends.map((pin) => pin.name).join('、')}`
-        : 'ポインタの場所を仲間に知らせる · 5分間';
+        : '';
     refreshPointer();
   };
   canvas.addEventListener('mapdraw', update);

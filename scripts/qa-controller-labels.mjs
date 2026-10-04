@@ -61,24 +61,26 @@ async function shot(page, label) {
   await writeFile(path.join(folder, `${label}.txt`), await page.locator('body').ariaSnapshot());
   await page.screenshot({ path: path.join(folder, `${label}.png`), animations: 'disabled' });
 }
-async function help(page, layout, label) {
-  await page.locator('#title-howto').click();
-  assert.equal(await page.locator('[data-help-tab="pc"]').count(), 0);
-  await page.locator('[data-help-tab="pad"]').click();
-  const text = await page.locator('#help-panel-pad').innerText();
+async function diagram(page, layout, label) {
+  await page.locator('#input-cues[data-device="gamepad"]').waitFor();
+  const text = await page.locator('.controller-diagram').textContent();
   if (layout === 'switch-pro') {
     assert.doesNotMatch(text, /○|□|△|×|OPTIONS|SHARE|タッチパッド|R[123]|L[12]/);
-    for (const hint of ['Y / ZR', 'X（上）', 'B（下）', 'ZL', '右スティック押し込み'])
-      assert.ok(text.includes(hint));
-    assert.match(await page.locator('[data-help-tab="pad"]').innerText(), /Switch Pro/);
+    for (const hint of ['Y', 'X', 'B', 'ZL', 'ZR']) assert.ok(text.includes(hint));
   } else {
-    for (const hint of ['○', '□ / R2', '△（上）', '×（下）', 'OPTIONS', 'SHARE'])
-      assert.ok(text.includes(hint));
-    assert.match(await page.locator('[data-help-tab="pad"]').innerText(), /DUALSHOCK 4/);
+    for (const hint of ['○', '□', '△', '×', 'OPTIONS', 'SHARE']) assert.ok(text.includes(hint));
   }
+  assert.equal(await page.locator('#input-cues').getAttribute('data-layout'), layout);
   await shot(page, label);
-  await tap(page, 0);
-  await page.locator('#modal').waitFor({ state: 'hidden' });
+}
+async function enter(page) {
+  await page.locator('#title-start').click();
+  await tap(page, 1);
+  await page.locator('#setup-flow[data-step="spawn"]').waitFor();
+  await tap(page, 1);
+  await page
+    .locator('#world[data-world-asset="ready"][data-character-asset="ready"]')
+    .waitFor({ timeout: 120000 });
 }
 try {
   for (const [role, layout, right, bottom, left, menu] of [
@@ -118,17 +120,10 @@ try {
       if (message.type() === 'error') errors.push(message.text());
     });
     await page.goto(`http://127.0.0.1:${local.port}`);
-    await page.locator('#title-howto').waitFor();
-    await help(page, layout, `${layout}-title-help`);
-    pass(`${layout}: title help and bottom-button dismissal`);
-    await page.locator('#title-start').click();
-    console.log(await page.locator('#screen-setup').ariaSnapshot());
-    await tap(page, 1);
-    await page.locator('#setup-flow[data-step="spawn"]').waitFor();
-    await tap(page, 1);
-    await page
-      .locator('#world[data-world-asset="ready"][data-character-asset="ready"]')
-      .waitFor({ timeout: 120000 });
+    await page.locator('#title-start').waitFor();
+    assert.equal(await page.locator('#title-howto').count(), 0);
+    await enter(page);
+    await diagram(page, layout, `${layout}-live-input`);
     assert.match(await page.locator('#connection-label').innerText(), /LAN: Connected/);
     assert.deepEqual(await page.locator('#prompt-bar span').allTextContents(), [
       `${layout === 'ps4' ? 'SHARE / タッチパッド' : '−'}地図`,
@@ -138,11 +133,7 @@ try {
     pass(`${layout}: controller-only HUD before gameplay input`);
     await tap(page, 9);
     await page.locator('.pause-menu').waitFor();
-    assert.ok(
-      (await page.locator('.pause-hint').innerText()).includes(
-        `${right} で決定 · ${bottom}（下のボタン）か ${menu}`,
-      ),
-    );
+    assert.equal(await page.locator('.pause-hint').count(), 0);
     assert.deepEqual(
       await page
         .locator('[data-pause-tab]')
@@ -156,7 +147,7 @@ try {
     await page.locator('#modal').waitFor({ state: 'hidden' });
     await page.keyboard.press('Escape');
     await page.locator('.pause-menu').waitFor();
-    assert.match(await page.locator('.pause-hint').innerText(), new RegExp(menu));
+    assert.equal(await page.locator('.pause-hint').count(), 0);
     await page.keyboard.press('Escape');
     await page.locator('#modal').waitFor({ state: 'hidden' });
     assert.equal(
@@ -166,12 +157,9 @@ try {
     pass(`${layout}: right button selects character and spawn; menu hints agree`);
     await tap(page, 8);
     await page.locator('.atlas').waitFor();
-    assert.match(await page.locator('#map-warp').innerText(), new RegExp(`^${right} ワープ`));
-    assert.ok((await page.locator('#map-pin-send').innerText()).startsWith(left));
-    assert.equal(
-      await page.locator('#map-center kbd').innerText(),
-      layout === 'ps4' ? 'R3' : '右スティック押し込み',
-    );
+    assert.equal(await page.locator('#map-warp').innerText(), 'ワープ');
+    assert.equal(await page.locator('#map-pin-send').innerText(), 'ここへ行こう');
+    assert.equal(await page.locator('#map-center kbd').count(), 0);
     await shot(page, `${layout}-map`);
     await tap(page, 0);
     await page.locator('.atlas').waitFor({ state: 'hidden' });
@@ -188,8 +176,8 @@ try {
       dx: 0,
       dz: 0,
     });
-    await page.locator('#interaction-hint:not([hidden])').waitFor();
-    assert.equal(await page.locator('#interaction-hint kbd').innerText(), right);
+    await page.locator('[data-cue="interact"]').waitFor();
+    assert.equal(await page.locator('[data-cue="interact"] kbd').innerText(), right);
     assert.equal(await page.locator('#ride-button kbd').textContent(), bottom);
     assert.equal(await page.locator('#boat-board kbd').textContent(), bottom);
     assert.equal(await page.locator('#pet524-button, #dismiss524-button').count(), 0);
@@ -208,10 +196,12 @@ try {
   const switchPage = pages[1];
   await switchPage.reload();
   await switchPage.setViewportSize({ width: 390, height: 844 });
-  await help(switchPage, 'switch-pro', 'switch-pro-portrait-help');
+  await enter(switchPage);
+  await diagram(switchPage, 'switch-pro', 'switch-pro-portrait-input');
   await writeFile(path.join(folder, 'exhibition.local.env'), 'PC2_CONTROLLER_LAYOUT=ps4\n');
   await switchPage.reload();
-  await help(switchPage, 'ps4', 'pc2-changed-to-ps4-without-restart');
+  await enter(switchPage);
+  await diagram(switchPage, 'ps4', 'pc2-changed-to-ps4-without-restart');
   assert.equal(game.rooms.get('LABELS-QA'), room);
   assert.equal(room.players.get(pc1Player.id), pc1Player);
   assert.equal(

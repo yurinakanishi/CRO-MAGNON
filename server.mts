@@ -6,6 +6,8 @@ import { mkdir, realpath } from 'node:fs/promises';
 import { WebSocketServer } from 'ws';
 import { createGameCore } from './application/game-core.mjs';
 import { MIME, serveStatic } from './infrastructure/node/static-files.mjs';
+import { readLocalVisibility } from './infrastructure/node/local-visibility.mjs';
+import { ALL_CONTENT } from './shared/content-visibility.mjs';
 import { handleRoomReset, localResetRequest } from './infrastructure/node/room-reset.mjs';
 import { ADVENTURE_VERSION } from './shared/adventure-regions.mjs';
 import { BOATING } from './shared/boats.mjs';
@@ -28,7 +30,8 @@ export function createGameServer({
   resumeGraceMs = 120000,
   exhibition = process.env.EXHIBITION_RULES === '1',
   playerLimit = WORLD.maxPlayers,
-  core = createGameCore({ resumeGraceMs, exhibition, playerLimit }),
+  visibility = ALL_CONTENT,
+  core = createGameCore({ resumeGraceMs, exhibition, playerLimit, visibility }),
   serveAssets = true,
   expectedBuild = '',
   allowedOrigins = [] as string[],
@@ -106,7 +109,7 @@ export function createGameServer({
         response.end(request.method === 'HEAD' ? undefined : JSON.stringify(body));
         return;
       }
-      if (serveAssets) await serveStatic(request, response, url.pathname, ROOT);
+      if (serveAssets) await serveStatic(request, response, url.pathname, ROOT, core.visibility);
       else response.writeHead(404).end('Multiplayer synchronization only. Use your local client.');
     } catch (error) {
       response
@@ -230,7 +233,12 @@ export async function createPersistentGameServer({
     )
       throw new Error('Save directory must be outside public and dist');
   }
-  const makeCore = () => createGameCore({ persistentSessions: true, keepEmptyRooms: true });
+  const makeCore = () =>
+    createGameCore({
+      persistentSessions: true,
+      keepEmptyRooms: true,
+      visibility: options.visibility,
+    });
   let core = makeCore();
   const store = await openLocalSave(canonical, (state: any) => {
     if (
@@ -405,6 +413,10 @@ export async function startServer() {
   try {
     const game = await createPersistentGameServer({
       saveDirectory: process.env.CRO_SAVE_DIR || undefined,
+      visibility:
+        process.env.EXHIBITION_RULES === '1'
+          ? ALL_CONTENT
+          : await readLocalVisibility(path.join(ROOT, 'local-visibility.json')),
     });
     const { port } = await game.listen();
     console.log(`CRO-MAGNON running at http://localhost:${port} (local autosave every 10s)`);

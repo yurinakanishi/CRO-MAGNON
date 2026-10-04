@@ -15,7 +15,7 @@ export function installMaritimeUI({ player, state, available, openModal }) {
       <p id="sea-local"></p><p>漕ぐのをやめると、その場で留まります。メニューや釣りの間も漂流しません。陸にいるときは湾奥を回る道も使えます。</p>
       <div class="gulf-actions"><button class="button button-accent" id="sea-map">湾の地図を見る</button></div>
       <h3>次の上陸地</h3><p id="sea-landing-help"></p><div class="gulf-actions">${LANDINGS.map((l) => `<span class="gulf-card">${l.name}</span>`).join('')}</div>
-      <details class="gulf-lore"><summary>この世界について</summary><p>天候の周期、流れ、次の空模様の見通しは創作です。漕ぎ手が舟をその場に保つ操作を省略しています。</p></details></div>`);
+      </div>`);
     $('#sea-map').onclick = () => {
       $<HTMLDialogElement>('#modal').close();
       $('#map-button').click();

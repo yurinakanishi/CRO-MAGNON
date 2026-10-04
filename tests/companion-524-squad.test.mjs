@@ -98,17 +98,19 @@ function fixture() {
   };
 }
 
-test('524 joins only after the complete pet and happy reaction; home dots stay unowned', () => {
+test('524 joins when petting starts and remains busy during the original happy reaction; home dots stay unowned', () => {
   const f = fixture();
   assert.equal(f.room.orbBots.length, 9);
   assert.equal(f.action('throwBot', '524'), false);
   assert.ok(f.pet());
+  assert.equal(f.c.squadPlayerId, f.p.id);
   f.step(1.5);
   assert.ok(f.c.petContactAt > 0);
-  assert.equal(f.bot, undefined);
+  assert.equal(f.bot.ownerId, f.p.id);
+  assert.equal(f.bot.busy, true);
   const contact = f.c.petContactAt;
   while (f.now < contact + COMPANION_524.petStrokeMs + COMPANION_524.happyMs - 50) f.step(0.05);
-  assert.equal(f.bot, undefined);
+  assert.equal(f.bot.ownerId, f.p.id);
   f.step(0.1);
   assert.equal(f.bot.ownerId, f.p.id);
   assert.equal(f.c.petPlayerId, null);
@@ -122,7 +124,7 @@ test('524 joins only after the complete pet and happy reaction; home dots stay u
 });
 
 for (const reason of ['movement', 'hit'])
-  test(`an interrupted ${reason} pet does not recruit 524`, () => {
+  test(`an interrupted ${reason} pet retains 524 recruitment`, () => {
     const f = fixture();
     assert.ok(f.pet());
     f.step(1);
@@ -130,8 +132,8 @@ for (const reason of ['movement', 'hit'])
     else hitCompanion524(f.c, 1, 0, f.now);
     f.step(5);
     assert.equal(f.c.petPlayerId, null);
-    assert.equal(f.c.squadPlayerId, null);
-    assert.equal(f.bot, undefined);
+    assert.equal(f.c.squadPlayerId, f.p.id);
+    assert.equal(f.bot.ownerId, f.p.id);
   });
 
 test('one repeated button queues all ten; the original 524 travels from the hand and waits', () => {
@@ -143,7 +145,10 @@ test('one repeated button queues all ten; the original 524 travels from the hand
     assert.ok(f.action('throwBot'));
     f.step(0.05);
   }
-  assert.deepEqual(order, BOT_ORDER);
+  assert.deepEqual(
+    order,
+    BOT_ORDER.filter((kind) => kind !== 'rimo-neko'),
+  );
   assert.equal(f.action('throwBot'), false);
   f.step(5);
   assert.ok(f.room.orbBots.filter((b) => b.ownerId === f.p.id).every((b) => b.mode === 'waiting'));
@@ -230,7 +235,7 @@ test('held and airborne 524 cannot be petted or hit at a ground ghost position',
   assert.equal(gap(f.bot, f.c), 0);
 });
 
-test('a second completed pet transfers the same 524, while cancelling a pet keeps the first squad', () => {
+test('a second accepted pet transfers the same 524 immediately and interruption retains the new squad', () => {
   const f = fixture();
   f.recruit();
   const id = f.bot.id;
@@ -241,8 +246,8 @@ test('a second completed pet transfers the same 524, while cancelling a pet keep
   assert.notEqual(nextOrbBot(f.room.orbBots, f.p, '524')?.kind, '524');
   f.q.x += 0.5;
   f.step(1);
-  assert.equal(f.c.squadPlayerId, f.p.id);
-  assert.equal(f.c.followPlayerId, f.p.id);
+  assert.equal(f.c.squadPlayerId, f.q.id);
+  assert.equal(f.c.followPlayerId, f.q.id);
   Object.assign(f.q, { x: f.c.x, z: f.c.z + 1.5 });
   assert.ok(f.pet(f.q));
   f.step(5);
@@ -254,7 +259,7 @@ test('a second completed pet transfers the same 524, while cancelling a pet keep
   assert.equal(f.action('throwBot', '524'), false);
 });
 
-test('a visitor disconnecting during a pet leaves 524 in the existing squad', () => {
+test('a visitor disconnecting during a pet keeps the newly established 524 bond', () => {
   const f = fixture();
   f.recruit();
   Object.assign(f.q, { x: f.c.x, z: f.c.z + 1.5 });
@@ -263,11 +268,12 @@ test('a visitor disconnecting during a pet leaves 524 in the existing squad', ()
   f.room.players.delete(f.q.id);
   f.step(1);
   assert.equal(f.c.petPlayerId, null);
-  assert.equal(f.c.squadPlayerId, f.p.id);
-  assert.equal(f.bot.ownerId, f.p.id);
-  f.p.z += 5;
+  assert.equal(f.c.squadPlayerId, f.q.id);
+  assert.equal(f.bot.ownerId, f.q.id);
+  f.room.players.set(f.q.id, f.q);
+  f.q.z += 5;
   f.step(3);
-  assert.ok(gap(f.bot, f.p) < ORB_BOTS.pickupRange);
+  assert.ok(gap(f.bot, f.q) < ORB_BOTS.pickupRange);
   assert.equal(gap(f.c, f.bot), 0);
 });
 
@@ -351,4 +357,67 @@ test('restoring a recruited companion keeps its bond even if its saved position 
   assert.equal(f.room.companion524.squadPlayerId, f.p.id);
   assert.equal(f.room.companion524.mode, 'following');
   assert.ok(f.room.collision.free(f.room.companion524, COMPANION_524.radius));
+});
+
+test('an offline follower walks back to camp without losing its bond or moving other players', () => {
+  const f = fixture();
+  f.recruit();
+  f.p.x += 25;
+  f.step(8);
+  assert.ok(gap(f.c, f.c.home) > 20);
+  const guest = { ...f.q };
+  f.room.players.delete(f.p.id);
+  let before = { ...f.c };
+  for (let i = 0; i < 500; i++) {
+    f.step(0.05);
+    assert.ok(gap(f.c, before) <= 0.201, 'homeward movement stays continuous');
+    assert.equal(f.c.squadPlayerId, f.p.id);
+    assert.equal(gap(f.c, f.bot), 0);
+    before = { ...f.c };
+  }
+  assert.ok(gap(f.c, f.c.home) < 0.08, '524 must be available at camp');
+  assert.equal(f.c.mode, 'idle');
+  assert.deepEqual(f.q, guest);
+  assert.equal(f.room.orbBots.filter((b) => b.kind === '524').length, 1);
+  f.room.players.set(f.p.id, f.p);
+  f.step(8);
+  assert.equal(f.c.mode, 'following');
+  assert.ok(gap(f.c, f.p) < ORB_BOTS.pickupRange);
+  assert.ok(f.action('throwBot', '524'), 'returning owner needs no new pet');
+});
+
+test('a returning owner interrupts the campward route and resumes the same 524', () => {
+  const f = fixture();
+  f.recruit();
+  f.p.x += 25;
+  f.step(8);
+  f.room.players.delete(f.p.id);
+  const away = gap(f.c, f.c.home);
+  f.step(1);
+  assert.ok(gap(f.c, f.c.home) < away - 1);
+  f.room.players.set(f.p.id, f.p);
+  f.step(4);
+  assert.equal(f.c.mode, 'following');
+  assert.equal(f.c.squadPlayerId, f.p.id);
+  assert.ok(gap(f.c, f.p) < ORB_BOTS.pickupRange);
+});
+
+test('a stowed 524 becomes visible at camp when its owner disconnects', () => {
+  const f = fixture();
+  f.recruit();
+  f.p.x += 25;
+  f.step(8);
+  f.p.boatId = 'boat';
+  f.step(0.1);
+  assert.equal(f.bot.mode, 'stowed');
+  f.room.players.delete(f.p.id);
+  f.step(20);
+  assert.ok(gap(f.c, f.c.home) < 0.08);
+  assert.equal(f.c.squadPlayerId, f.p.id);
+  assert.equal(f.c.squadMode, 'following');
+  Object.assign(f.q, { x: f.c.x, z: f.c.z + 1.5 });
+  assert.ok(f.pet(f.q));
+  f.step(5);
+  assert.equal(f.c.squadPlayerId, f.q.id);
+  assert.equal(f.room.orbBots.filter((b) => b.kind === '524').length, 1);
 });

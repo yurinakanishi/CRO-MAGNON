@@ -280,38 +280,27 @@ try {
   await select('[data-controller-menu="info"]');
   await tap(PAD.circle);
   assert.equal(await page.locator('[data-pause-panel="info"]').evaluate((el) => !el.hidden), true);
-  await select('[data-controller-menu="sub-help"]');
-  await tap(PAD.circle);
-  const jumpCard = await page
-    .locator('#help-panel-pad .help-card')
-    .evaluateAll((cards) =>
-      cards
-        .filter((c) => c.querySelector('strong').textContent === 'ジャンプ')
-        .map((c) => c.querySelector('kbd').textContent),
-    );
-  assert.deepEqual(jumpCard, ['△（上）'], 'the controller help card names the top button');
-  await page.screenshot({ path: `${output}/04-help-tab.png`, animations: 'disabled' });
-  passed('Jump is on the top face button; the prompt bar and help card agree');
+  assert.equal(await page.locator('[data-controller-menu="sub-help"]').count(), 0);
+  assert.equal(await page.locator('#input-cues').isVisible(), false);
+  await page.screenshot({ path: `${output}/04-world-tab.png`, animations: 'disabled' });
+  passed('Jump is on the top face button; menus contain no manual');
 
   // 23: one tab holds guide / world / companions (and objectives) as sub-tabs.
   const tabs = await page
     .locator('.pause-tab')
     .evaluateAll((els) => els.map((el) => el.dataset.pauseTab));
-  assert.deepEqual(tabs, ['inventory', 'crafting', 'info', 'settings']);
+  assert.deepEqual(tabs, ['inventory', 'warp', 'crafting', 'info', 'settings']);
   const subTabs = await page
     .locator('.sub-tab')
     .evaluateAll((els) => els.map((el) => el.dataset.pauseSubtab));
-  assert.deepEqual(subTabs, ['help', 'world', 'tribe', 'objectives']);
+  assert.deepEqual(subTabs, ['world', 'tribe', 'objectives']);
   await select('[data-controller-menu="sub-world"]');
   await tap(PAD.circle);
   assert.equal(
     await page.locator('[data-pause-subpanel="world"]').evaluate((el) => !el.hidden),
     true,
   );
-  assert.equal(
-    await page.locator('[data-pause-subpanel="help"]').evaluate((el) => el.hidden),
-    true,
-  );
+  assert.equal(await page.locator('[data-pause-subpanel="help"]').count(), 0);
   await select('[data-controller-menu="journal"]');
   await focusInsideModal('world sub-tab');
   await select('[data-controller-menu="sub-tribe"]');
@@ -324,7 +313,7 @@ try {
   await select('#tribe-invite');
   await focusInsideModal('tribe sub-tab');
   await page.screenshot({ path: `${output}/05-info-tribe.png`, animations: 'disabled' });
-  passed('操作説明・世界・仲間 are sub-tabs of one tab and every sub-panel is reachable');
+  passed('World and companions remain reachable without the removed manual');
 
   // 22: character change sits directly above "back to exploring" and completes on the pad.
   const exits = await page

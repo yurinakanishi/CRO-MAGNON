@@ -157,7 +157,7 @@ for (const phase of ['following', 'airborne', 'waiting', 'returning'])
     assert.equal(wire.orbBots.filter((b) => b.kind === '524').length, 1);
   });
 
-test('an explicit goodbye persists, and an interrupted pet never becomes a saved bond', () => {
+test('an explicit goodbye persists, while a started pet immediately becomes a saved bond', () => {
   for (const complete of [false, true]) {
     const f = fixture();
     if (complete) {
@@ -170,10 +170,43 @@ test('an explicit goodbye persists, and an interrupted pet never becomes a saved
     f.restart();
     const next = f.join(f.owner.welcome.session);
     f.step(5);
-    assert.equal(f.room().companion524.squadPlayerId, null);
+    assert.equal(f.room().companion524.squadPlayerId, complete ? null : next.welcome.id);
     f.action('throwBot', '524', next.socket);
     f.step(2);
-    assert.equal(f.bot, undefined);
-    assert.equal(ownedBotKinds(f.core.snapshot(f.room()).orbBots, next.welcome.id).length, 0);
+    if (complete) assert.equal(f.bot, undefined);
+    else assert.equal(f.bot.mode, 'waiting');
+    assert.equal(
+      ownedBotKinds(f.core.snapshot(f.room()).orbBots, next.welcome.id).length,
+      complete ? 0 : 1,
+    );
   }
+});
+
+test('a saved offline follower returns to camp after restart with no proxy or owner connected', () => {
+  const f = fixture();
+  f.recruit();
+  const originalOwner = f.owner.welcome.id;
+  const c = f.room().companion524;
+  Object.assign(c, { x: 90.34324606935557, z: 34.88484921119597 });
+  c.trail = [{ ...c.home }, { x: c.x, z: c.z }];
+  f.restart();
+  assert.equal(f.bot, undefined, 'saved 524 has no online-owner proxy');
+  const sessionBefore = structuredClone(f.core.exportState().rooms[0].sessions);
+  f.step(2);
+  assert.equal(f.room().companion524.mode, 'returning');
+  f.restart();
+  f.step(120);
+  const restored = f.room().companion524;
+  assert.ok(Math.hypot(restored.x - restored.home.x, restored.z - restored.home.z) < 0.08);
+  assert.equal(restored.squadPlayerId, originalOwner);
+  assert.equal(restored.mode, 'idle');
+  assert.deepEqual(f.core.exportState().rooms[0].sessions, sessionBefore);
+  const next = f.join(f.owner.welcome.session);
+  assert.equal(next.welcome.id, originalOwner);
+  f.step(5);
+  assert.equal(f.bot.ownerId, originalOwner);
+  assert.equal(f.player().inventory.wood, 7);
+  f.action('throwBot', '524', next.socket);
+  f.step(2);
+  assert.equal(f.bot.mode, 'waiting');
 });

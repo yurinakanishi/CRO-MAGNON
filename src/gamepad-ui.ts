@@ -5,6 +5,7 @@ import {
   type PadAction,
   type PadFrame,
   type PadMovement,
+  type PadDevice,
 } from './gamepad-input.js';
 import { adjacentMenuItem, menuItems, menuKeyDirection } from './menu-navigation.js';
 
@@ -22,6 +23,8 @@ interface GamepadUIOptions {
   onLook: (x: number, y: number, dt: number) => void;
   onStop: () => void;
   onActivity: (active: boolean) => void;
+  /** Read-only visual feedback from the exact device used for this input frame. */
+  onFrame?: (pad: PadDevice | null, frame: PadFrame, mode: InputMode) => void;
   /** The open atlas receives every frame (pointer, zoom, actions) instead of focus navigation. */
   onMapInput?: (frame: PadFrame, dt: number) => void;
 }
@@ -40,6 +43,7 @@ export class GamepadControls {
   constructor(private options: GamepadUIOptions) {
     window.addEventListener('gamepaddisconnected', this.disconnected);
     document.addEventListener('pointerdown', this.otherInput);
+    document.addEventListener('click', this.cueClick);
     document.addEventListener('keydown', this.otherInput);
     document.addEventListener('keydown', this.keydown);
     document.addEventListener('focusin', this.focusChanged);
@@ -52,11 +56,17 @@ export class GamepadControls {
     this.movement = { x: 0, y: 0, running: false };
   }
 
-  private otherInput = () => {
+  private otherInput = (event?: Event) => {
+    // Run the cue's click before switching devices rebuilds its button.
+    if (event?.type === 'pointerdown' && (event.target as Element)?.closest('#input-cues')) return;
     if (this.active) {
       this.suspend();
       this.setActive(false);
     }
+  };
+
+  private cueClick = (event: MouseEvent) => {
+    if (event.isTrusted && (event.target as Element)?.closest('#input-cues')) this.otherInput();
   };
 
   private keydown = (event: KeyboardEvent) => {
@@ -153,6 +163,7 @@ export class GamepadControls {
       this.suspend();
       this.options.onStop();
     }
+    const newlyConnected = this.connectedIndex === null && frame.index !== null;
     this.previousMode = mode;
     this.connectedIndex = frame.index;
     this.movement = frame.move;
@@ -167,10 +178,11 @@ export class GamepadControls {
         unavailable: 'この画面では利用できません。HTTPSまたはlocalhostで開いてください。',
       } as Record<string, string>
     )[data.gamepadStatus];
-    // The pause menu shows the status in both its settings and help tabs.
+    // Keep connection state available in settings, without a separate help screen.
     for (const connection of document.querySelectorAll('.gamepad-connection'))
       if (connection.textContent !== label) connection.textContent = label;
-    if (frame.active) this.setActive(true);
+    if (frame.active || newlyConnected) this.setActive(true);
+    this.options.onFrame?.(devices.find((pad) => pad?.index === frame.index) ?? null, frame, mode);
     if (mode === 'menu' && this.active) {
       this.ensureFocus();
       if (frame.navigation) this.navigate(frame.navigation);
@@ -291,6 +303,7 @@ export class GamepadControls {
     cancelAnimationFrame(this.frameId);
     window.removeEventListener('gamepaddisconnected', this.disconnected);
     document.removeEventListener('pointerdown', this.otherInput);
+    document.removeEventListener('click', this.cueClick);
     document.removeEventListener('keydown', this.otherInput);
     document.removeEventListener('keydown', this.keydown);
     document.removeEventListener('focusin', this.focusChanged);

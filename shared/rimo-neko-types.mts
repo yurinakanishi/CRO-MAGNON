@@ -1,4 +1,5 @@
 import type { Point } from './types.mjs';
+import type { BotMode } from './orb-bot-types.mjs';
 
 export interface RimoNekoSnapshot extends Point {
   id: string;
@@ -6,6 +7,8 @@ export interface RimoNekoSnapshot extends Point {
   radius: number;
   mode: 'idle' | 'following' | 'returning';
   followPlayerId: string | null;
+  squadPlayerId?: string | null;
+  squadMode?: BotMode | null;
   petSequence: number;
   petAt: number;
   petPlayerId: string | null;

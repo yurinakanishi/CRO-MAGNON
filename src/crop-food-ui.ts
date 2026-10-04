@@ -12,7 +12,7 @@ export function installCropFoodUI({ player, state, available, action, openModal,
   const close = () => (document.getElementById('modal') as HTMLDialogElement).close();
   function open() {
     openModal(
-      `<div id="crop-food-panel"><span class="eyebrow">畑から、炉のそばへ</span><h2>火根と香草の食事</h2><p class="modal-intro">持っている根と香草を、炉で3秒焼こう。調理を中止したときは、材料を手元に残します。</p><p id="crop-food-inventory"></p><div class="crop-recipes">${ROOT_RECIPES.map((r) => `<section class="gulf-card"><h3>${r.name}</h3><p>${r.costText} → ${r.name}1 · 元気+${r.energy}</p><p id="crop-stock-${r.kind}"></p><div class="gulf-actions">${button('crop-cook-' + r.kind, r.name + 'を作る')}${button('crop-eat-' + r.kind, r.name + 'を食べる')}</div></section>`).join('')}</div><p id="crop-food-hint" role="status"></p><details><summary>この世界の作物</summary><p>火根草と香り草は創作植物です。農耕、育つ速さ、料理の効果はゲームの設定です。</p></details></div>`,
+      `<div id="crop-food-panel"><span class="eyebrow">畑から、炉のそばへ</span><h2>火根と香草の食事</h2><p id="crop-food-inventory"></p><div class="crop-recipes">${ROOT_RECIPES.map((r) => `<section class="gulf-card"><h3>${r.name}</h3><p>${r.costText} → ${r.name}1 · 元気+${r.energy}</p><p id="crop-stock-${r.kind}"></p><div class="gulf-actions">${button('crop-cook-' + r.kind, r.name + 'を作る')}${button('crop-eat-' + r.kind, r.name + 'を食べる')}</div></section>`).join('')}</div><p id="crop-food-hint" role="status"></p></div>`,
     );
     for (const r of ROOT_RECIPES) {
       $('crop-cook-' + r.kind).onclick = () => {

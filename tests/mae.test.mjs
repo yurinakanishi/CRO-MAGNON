@@ -64,7 +64,7 @@ test('completed strokes produce one shared happy phase before following', () => 
   assert.ok(handleMaeAction(room, p, 'petMae', 10000));
   advance(room, 10000, 1.5);
   assert.ok(c.petContactAt > 0);
-  assert.equal(c.followPlayerId, null);
+  assert.equal(c.followPlayerId, p.id);
   const happyAt = c.petContactAt + MAE.petStrokeMs;
   updateMae(room, 0.025, happyAt);
   assert.equal(c.followPlayerId, p.id);
@@ -117,7 +117,7 @@ for (const [label, interrupt] of [
     },
   ],
 ])
-  test(`interrupted ${label} neither starts affection nor steals an earlier owner`, () => {
+  test(`interrupted ${label} keeps the new bond established at the start`, () => {
     for (const alreadyOwned of [false, true]) {
       const f = fixture();
       if (alreadyOwned) {
@@ -131,7 +131,7 @@ for (const [label, interrupt] of [
       updateMae(f.room, 0.025, 11000);
       assert.equal(f.c.petPlayerId, null);
       assert.equal(f.c.petContactAt, 0);
-      assert.equal(f.c.followPlayerId, alreadyOwned ? 'earlier' : null);
+      assert.equal(f.c.followPlayerId, f.p.id);
     }
   });
 test('range, visibility, busy players and repeated requests are authoritative', () => {
@@ -187,7 +187,7 @@ test('melee recoil interrupts petting without health, loot or cat hissing', () =
   assert.ok(handleMaeAction(room, p, 'petMae', 12000));
   hitMae(c, 1, 0, 12500);
   assert.equal(c.petPlayerId, null);
-  assert.equal(c.followPlayerId, null);
+  assert.equal(c.followPlayerId, p.id);
 });
 test('old saves add mae; restoring a follower preserves position and returns home', () => {
   const { room } = fixture();

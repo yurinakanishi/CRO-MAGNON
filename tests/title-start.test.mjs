@@ -142,7 +142,7 @@ test('the title Start button opens setup even with a saved session', async () =>
   const main = await readFile(new URL('../dist/src/main.js', import.meta.url), 'utf8');
   const handler = main.slice(
     main.indexOf("$('#title-start').onclick"),
-    main.indexOf("$('#title-howto').onclick"),
+    main.indexOf("$('#title-graphics').onclick"),
   );
   const button = {};
   let setup = 0;

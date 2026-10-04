@@ -280,7 +280,7 @@ try {
   await tap(PAD.options);
   await arm(item('info'));
   await tap(PAD.square);
-  await arm(item('sub-help'));
+  await arm(item('sub-objectives'));
   await tap(PAD.square);
   await input([], [0, 0, 0, 1]);
   await page.waitForTimeout(1200);

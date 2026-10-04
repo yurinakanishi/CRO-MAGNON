@@ -40,8 +40,10 @@ export class OrbBotRenderer {
   update(dt: number) {
     const { world } = this;
     const now = world.serverNow();
-    // The recruited 524 keeps its original single NPC renderer and floating GLB.
-    const states = (world.state.orbBots ?? []).filter((b) => b.kind !== '524');
+    // Recruited NPC companions keep their original single renderer and GLB.
+    const states = (world.state.orbBots ?? []).filter(
+      (b) => b.kind !== '524' && b.kind !== 'rimo-neko',
+    );
     const ids = new Set(states.map((b) => b.id));
     for (const [id, entry] of this.bots)
       if (!ids.has(id)) {

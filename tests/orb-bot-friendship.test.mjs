@@ -85,7 +85,7 @@ function fixture() {
   };
 }
 
-test('one group action pets all nine together with shared contact, hearts and atomic recruitment', () => {
+test('one group action recruits all nine at the start with shared contact and hearts', () => {
   const f = fixture();
   const invited = nearbyOrbBotsForPetting(f.room.orbBots, f.p, f.room.collision, f.now);
   assert.equal(invited.length, 9);
@@ -93,7 +93,7 @@ test('one group action pets all nine together with shared contact, hearts and at
   const started = f.now;
   assert.ok(f.action('petBots'));
   assert.equal(f.room.orbBots.filter((b) => b.busy).length, 9);
-  assert.equal(f.room.orbBots.filter((b) => b.ownerId).length, 0);
+  assert.equal(f.room.orbBots.filter((b) => b.ownerId === f.p.id).length, 9);
   assert.ok(f.room.orbBots.every((b) => b.petAt === started));
   for (const a of f.room.orbBots)
     for (const b of f.room.orbBots)
@@ -119,7 +119,7 @@ test('one group action pets all nine together with shared contact, hearts and at
     assert.equal(new Set(pets.map((b) => b.petGroupLeaderId)).size, 1);
     assert.equal(new Set(pets.map((b) => b.petContactAt)).size, 1);
     if (pets[0].petContactAt) contacts.add(pets[0].petContactAt);
-    assert.equal(f.room.orbBots.filter((b) => b.ownerId).length, 0);
+    assert.equal(f.room.orbBots.filter((b) => b.ownerId === f.p.id).length, 9);
     f.step(0.05);
   }
   assert.equal(contacts.size, 1, 'one shared stroke and reaction for the whole group');
@@ -131,10 +131,10 @@ test('one group action pets all nine together with shared contact, hearts and at
 });
 
 for (const reason of ['movement', 'attack', 'character', 'disconnect', 'hurt', 'warp'])
-  test(`group ${reason} interruption cancels all new bonds and preserves the existing companion`, () => {
+  test(`group ${reason} interruption retains every accepted bond`, () => {
     const f = fixture();
     f.b.ownerId = f.p.id;
-    const completed = [f.b.id];
+    const completed = f.room.orbBots.map((b) => b.id);
     f.action('petBots');
     for (let i = 0; i < 100 && !f.b.petContactAt; i++) f.step(0.05);
     assert.ok(f.b.petContactAt, 'interrupt during the shared stroke');
@@ -178,29 +178,33 @@ test('group selection rejects other owners, occupied or flying dots, distant dot
   assert.equal(f.action('throwBot', eligible[0].kind), false);
 });
 
-test('one blocked approach cancels the entire group without partial recruitment', () => {
+test('one blocked approach cancels the group gesture while retaining every accepted bond', () => {
   const f = fixture();
   const blocked = nearbyOrbBotsForPetting(f.room.orbBots, f.p, f.room.collision, f.now)[1];
   assert.ok(f.action('petBots'));
   const move = f.room.collision.move.bind(f.room.collision);
   f.room.collision.move = (b, ...args) => (b === blocked ? { x: b.x, z: b.z } : move(b, ...args));
   f.step(8);
-  assert.ok(f.room.orbBots.every((b) => !b.ownerId));
+  assert.ok(f.room.orbBots.every((b) => b.ownerId === f.p.id));
   assert.ok(f.room.orbBots.every((b) => !b.petPlayerId && !b.busy));
 });
 
 for (const action of ['recallBots', 'dismissBots'])
-  test(`${action} cancels the entire group before recruitment`, () => {
+  test(`${action} cancels the gesture; only explicit dismissal removes the bonds`, () => {
     const f = fixture();
     f.action('petBots');
     f.step(0.1);
     assert.ok(f.action(action));
     f.step(50);
-    assert.ok(f.room.orbBots.every((b) => !b.ownerId && !b.petPlayerId && !b.busy));
+    assert.ok(
+      f.room.orbBots.every(
+        (b) => b.ownerId === (action === 'dismissBots' ? '' : f.p.id) && !b.petPlayerId && !b.busy,
+      ),
+    );
     assert.ok(f.action('petBots'), 'cancellation releases the group for another invitation');
   });
 
-test('dismissing a participating companion cancels the whole gesture without recruiting others', () => {
+test('dismissing one participating companion cancels the gesture but keeps the other accepted bonds', () => {
   const f = fixture();
   const existing = f.room.orbBots[5];
   existing.ownerId = f.p.id;
@@ -208,22 +212,28 @@ test('dismissing a participating companion cancels the whole gesture without rec
   f.step(0.2);
   assert.ok(f.action('dismissBot', existing.kind));
   f.step(8);
-  assert.ok(f.room.orbBots.every((b) => !b.ownerId && !b.busy && !b.petPlayerId));
+  assert.ok(
+    f.room.orbBots.every(
+      (b) => b.ownerId === (b === existing ? '' : f.p.id) && !b.busy && !b.petPlayerId,
+    ),
+  );
 });
 
-test('save and reconnect preserve all completed group bonds but never an unfinished gesture', () => {
+test('save and reconnect preserve all accepted group bonds without replaying an unfinished gesture', () => {
   const f = fixture();
   assert.ok(f.action('petBots'));
   for (let i = 0; i < 100 && !f.b.petContactAt; i++) f.step(0.05);
   assert.ok(f.b.petContactAt);
   const pending = saveOrbBots(f.room);
   assert.ok(
-    pending.every((b) => !b.ownerId && !('petGroupLeaderId' in b) && !('petPlayerId' in b)),
+    pending.every(
+      (b) => b.ownerId === f.p.id && !('petGroupLeaderId' in b) && !('petPlayerId' in b),
+    ),
   );
   assert.ok(orbBotSnapshots(f.room).every((b) => !('petWarpSequence' in b)));
   restoreOrbBots(f.room, pending, f.now);
   f.step(8);
-  assert.ok(f.room.orbBots.every((b) => !b.ownerId && !b.petPlayerId && !b.busy));
+  assert.ok(f.room.orbBots.every((b) => b.ownerId === f.p.id && !b.petPlayerId && !b.busy));
   assert.ok(f.action('petBots'));
   f.step(8);
   assert.equal(ownedBotKinds(f.room.orbBots, f.p.id).length, 9);
@@ -270,17 +280,17 @@ test('five connections share nine visible home dots, and a character can walk al
   assert.equal(orbBotSnapshots(f.room).length, 9);
 });
 
-test('each of the nine dots joins only after approach, strokes and happiness; original home stays fixed', () => {
+test('each of the nine dots joins at the start while approach, strokes and happiness keep their timing', () => {
   const f = fixture();
   for (const b of f.room.orbBots) {
     const home = { ...b.home };
     Object.assign(f.p, { x: b.x, z: b.z - 1.3 });
     assert.ok(f.action('petBot', b.id));
-    assert.equal(b.ownerId, '');
+    assert.equal(b.ownerId, f.p.id);
     assert.equal(f.action('petBot', f.room.orbBots.find((x) => x !== b).id), false);
     while (!b.petContactAt) f.step(0.05);
     while (f.now < b.petContactAt + ORB_BOTS.petStrokeMs + ORB_BOTS.happyMs - 50) f.step(0.05);
-    assert.equal(b.ownerId, '');
+    assert.equal(b.ownerId, f.p.id);
     assert.equal(b.busy, true);
     f.step(0.1);
     assert.equal(b.ownerId, f.p.id);
@@ -293,7 +303,7 @@ test('each of the nine dots joins only after approach, strokes and happiness; or
 });
 
 for (const reason of ['movement', 'attack', 'character', 'disconnect', 'hurt'])
-  test(`unfinished pet is cancelled on ${reason} without recruitment`, () => {
+  test(`unfinished pet is cancelled on ${reason} while retaining recruitment`, () => {
     const f = fixture(),
       b = f.b;
     assert.ok(f.action('petBot', b.id));
@@ -304,10 +314,9 @@ for (const reason of ['movement', 'attack', 'character', 'disconnect', 'hurt'])
     if (reason === 'disconnect') f.room.players.delete(f.p.id);
     if (reason === 'hurt') f.p.hurtAt = f.now;
     f.step(8);
-    assert.equal(b.ownerId, '');
+    assert.equal(b.ownerId, f.p.id);
     assert.equal(b.petPlayerId, null);
-    assert.equal(b.mode, 'home');
-    assert.ok(gap(b, b.home) < 0.01);
+    assert.equal(b.mode, reason === 'disconnect' ? 'home' : 'following');
   });
 
 test('distant, obstructed and airborne dots cannot be petted; foreign dismiss is rejected', () => {
@@ -332,7 +341,7 @@ test('distant, obstructed and airborne dots cannot be petted; foreign dismiss is
   assert.equal(nearOrbBot(f.q, b, f.room.collision, f.now), false);
 });
 
-test('another completed pet transfers one dot; cancellation and reconnect do not steal it', () => {
+test('another accepted pet transfers one dot immediately and survives cancellation or reconnect', () => {
   const f = fixture(),
     b = f.b,
     id = b.id;
@@ -342,7 +351,7 @@ test('another completed pet transfers one dot; cancellation and reconnect do not
   f.step(0.3);
   f.q.x += 0.5;
   f.step(3);
-  assert.equal(b.ownerId, f.p.id);
+  assert.equal(b.ownerId, f.q.id);
   f.room.players.delete(f.p.id);
   f.step(2);
   f.recruit(b, f.q);
@@ -401,7 +410,125 @@ test('home return navigates around obstacles and recovers from a blocked route',
   }
 });
 
-test('save/load retains completed bonds and landed positions, never partial pets or transient flight state', () => {
+test('offline followers return visibly to camp and resume their bonds when their owner rejoins', () => {
+  const f = fixture();
+  assert.ok(f.action('petBots'));
+  f.p.moving = true;
+  f.p.x -= 85;
+  f.step(3);
+  f.p.moving = false;
+  assert.ok(f.room.orbBots.every((b) => gap(b, b.home) > 70));
+  f.room.players.delete(f.p.id);
+  f.step(70);
+  assert.ok(f.room.orbBots.every((b) => b.mode === 'home' && gap(b, b.home) < 0.06));
+  assert.deepEqual(ownedBotKinds(orbBotSnapshots(f.room), f.p.id), BOT_KINDS);
+  const phase = f.b.phaseAt;
+  f.step(1);
+  assert.equal(f.b.phaseAt, phase, 'waiting at camp does not restart the arrival each tick');
+  f.room.players.set(f.p.id, f.p);
+  f.step(15);
+  assert.ok(f.room.orbBots.every((b) => b.mode === 'following' && gap(b, f.p) < 3));
+  assert.deepEqual(ownedBotKinds(orbBotSnapshots(f.room), f.p.id), BOT_KINDS);
+  assert.ok(f.action('throwBot', 'white'), 'rejoining needs no further petting');
+});
+
+test('offline home return keeps its route around a wall and can be interrupted by reconnecting', () => {
+  const f = fixture();
+  f.recruit(f.b);
+  Object.assign(f.b, { x: f.b.home.x, z: f.b.home.z + 6 });
+  f.room.collision = new CollisionWorld(
+    [{ id: 'rock', type: 'circle', x: f.b.home.x, z: f.b.home.z + 3, radius: 1 }],
+    { coast: false, river: false, walkSurfaces: [] },
+  );
+  f.room.players.delete(f.p.id);
+  f.step(0.2);
+  assert.equal(f.b.mode, 'goingHome');
+  let largestStep = 0;
+  for (let i = 0; i < 200; i++) {
+    const before = { x: f.b.x, z: f.b.z };
+    f.step(0.05);
+    largestStep = Math.max(largestStep, gap(before, f.b));
+    assert.ok(f.room.collision.free(f.b, ORB_BOTS.radius));
+  }
+  assert.ok(largestStep <= 0.151, 'walks the route without a fallback teleport');
+  assert.equal(f.b.mode, 'home');
+  assert.equal(f.b.ownerId, f.p.id);
+  Object.assign(f.b, { x: f.b.home.x + 10, mode: 'following' });
+  f.step(0.2);
+  assert.equal(f.b.mode, 'goingHome');
+  f.room.players.set(f.p.id, f.p);
+  f.step(4);
+  assert.equal(f.b.mode, 'following');
+  assert.ok(gap(f.b, f.p) < 3);
+});
+
+test('offline pending and stowed dots return home while deployed dots retain their landing positions', () => {
+  for (const mode of ['following', 'queued', 'windup', 'stowed', 'airborne']) {
+    const f = fixture();
+    f.recruit(f.b);
+    f.step(2);
+    assert.ok(f.action('throwBot', f.b.kind));
+    if (mode === 'airborne') f.step(0.4);
+    else {
+      f.b.mode = mode;
+      if (mode === 'stowed') f.p.mountId = 'mammoth';
+    }
+    const landing = f.b.landing && { ...f.b.landing };
+    f.room.players.delete(f.p.id);
+    f.step(30);
+    assert.equal(f.b.ownerId, f.p.id);
+    assert.equal(f.b.mode, mode === 'airborne' ? 'waiting' : 'home');
+    assert.ok(gap(f.b, mode === 'airborne' ? landing : f.b.home) < 0.06);
+    assert.equal(f.room.orbBots.length, 9);
+  }
+});
+
+test('restored offline followers return home; the old owner still has nine companions at any distance', () => {
+  const f = fixture();
+  f.action('petBots');
+  f.p.x -= 85;
+  f.step(3);
+  const saved = saveOrbBots(f.room);
+  f.room.sessions = new Map([['saved-owner', { player: { id: f.p.id } }]]);
+  f.room.players.delete(f.p.id);
+  restoreOrbBots(f.room, saved, f.now);
+  f.step(70);
+  assert.ok(f.room.orbBots.every((b) => b.mode === 'home' && gap(b, b.home) < 0.06));
+  for (const distance of [0, 65, 125, 800]) {
+    f.p.x = f.b.home.x - distance;
+    assert.deepEqual(ownedBotKinds(orbBotSnapshots(f.room), f.p.id), BOT_KINDS);
+  }
+  restoreOrbBots(f.room, saveOrbBots(f.room), f.now);
+  f.room.players.set(f.p.id, f.p);
+  f.action('recallBots');
+  f.step(15);
+  assert.ok(f.room.orbBots.every((b) => b.ownerId === f.p.id && gap(b, f.p) < 3));
+});
+
+test('one group pet can transfer available offline companions but never those of a connected owner', () => {
+  const f = fixture();
+  f.action('petBots');
+  f.step(8);
+  assert.equal(f.action('petBots', undefined, f.q), false);
+  f.room.players.delete(f.p.id);
+  f.step(10);
+  Object.assign(f.q, { x: 44, z: 54 });
+  const present = new Set(f.room.players.keys());
+  assert.equal(
+    nearbyOrbBotsForPetting(f.room.orbBots, f.q, f.room.collision, f.now, present).length,
+    9,
+  );
+  assert.ok(f.action('petBots', undefined, f.q));
+  assert.ok(f.room.orbBots.every((b) => b.ownerId === f.q.id));
+  f.q.moving = true;
+  f.step(0.1);
+  f.room.players.set(f.p.id, f.p);
+  f.step(2);
+  assert.deepEqual(ownedBotKinds(orbBotSnapshots(f.room), f.q.id), BOT_KINDS);
+  assert.deepEqual(ownedBotKinds(orbBotSnapshots(f.room), f.p.id), []);
+});
+
+test('save/load retains accepted bonds and landed positions without replaying partial pets or flights', () => {
   const f = fixture(),
     b = f.b;
   f.recruit(b);
@@ -423,8 +550,8 @@ test('save/load retains completed bonds and landed positions, never partial pets
   const partial = saveOrbBots(f.room);
   restoreOrbBots(f.room, partial, f.now);
   f.step(10);
-  assert.equal(f.room.orbBots[1].ownerId, '');
-  assert.equal(f.room.orbBots[1].mode, 'home');
+  assert.equal(f.room.orbBots[1].ownerId, f.q.id);
+  assert.equal(f.room.orbBots[1].mode, 'following');
   restoreOrbBots(f.room, [{ kind: 'white', ownerId: 'stranger', x: NaN, z: Infinity }], f.now);
   f.step(1);
   assert.ok(f.room.orbBots.every((b) => !b.ownerId && Number.isFinite(b.y)));

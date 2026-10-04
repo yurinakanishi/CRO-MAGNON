@@ -7,9 +7,11 @@ import { characterModel } from './characters.mjs';
 import { attackProfile } from './combat-profiles.mjs';
 import { jumpProgress } from './jumping.mjs';
 import { COMPANION_524, returnCompanion524, syncCompanion524Bot } from './companion-524.mjs';
+import { RIMO_NEKO, returnRimoNeko, syncRimoNekoBot } from './rimo-neko.mjs';
 import { CAMP } from './world.mjs';
 import { interactionVisible } from './interactions.mjs';
 import type { Companion524 } from './companion-524-types.mjs';
+import type { RimoNeko, RimoNekoSnapshot } from './rimo-neko-types.mjs';
 import type { BotKind, BotMode, OrbBot, OrbBotSnapshot } from './orb-bot-types.mjs';
 export type { BotKind, BotMode, OrbBot, OrbBotSnapshot } from './orb-bot-types.mjs';
 
@@ -24,9 +26,22 @@ export const BOT_KINDS = [
   'triangle',
   'heart',
 ] as const;
-export const BOT_ORDER: readonly BotKind[] = [...BOT_KINDS, '524'];
+export const BOT_ORDER: readonly BotKind[] = [...BOT_KINDS, '524', 'rimo-neko'];
+// A loose, uneven camp gathering, stable across connections and save restores.
+const BOT_CAMP_PLACES = {
+  white: { x: -5.2, z: 5.65, facing: 2.3 },
+  blue: { x: -6.3, z: 6.0, facing: 1.05 },
+  green: { x: -4.15, z: 6.28, facing: -1.6 },
+  purple: { x: -6.7, z: 7.15, facing: 0.7 },
+  orange: { x: -5.65, z: 6.8, facing: -0.4 },
+  beret: { x: -4.88, z: 7.05, facing: 2.8 },
+  frog: { x: -6.0, z: 7.86, facing: 2.1 },
+  triangle: { x: -4.55, z: 7.98, facing: -2.65 },
+  heart: { x: -3.85, z: 7.15, facing: -1.2 },
+} as const;
 export const BOT_DESIGNS = {
   '524': { name: '524', face: '524', color: '#ffdf58' },
+  'rimo-neko': { name: 'りもねこ', face: 'ねこ', color: '#d2c9c2' },
   white: { name: 'しろbot', face: '＾＾', color: '#f5f3ee' },
   blue: { name: 'あおbot', face: '＞＜', color: '#1172ef' },
   green: { name: 'みどりbot', face: '＋＋', color: '#18b653' },
@@ -66,6 +81,7 @@ export const ORB_BOTS = Object.freeze({
   throwIntervalMs: 360,
   followThroughMs: 300,
   callMs: 1100,
+  whistleRange: 12,
   flightMs: 900,
   landMs: 420,
   catchMs: 300,
@@ -83,8 +99,9 @@ type BotRoom = {
   orbBots?: OrbBot[];
   players: Map<string, PlayerSnapshot>;
   collision: CollisionWorld;
-  rimoNeko?: { petPlayerId: string | null };
+  rimoNeko?: RimoNeko;
   mae?: { petPlayerId: string | null };
+  kohaku?: { petPlayerId: string | null };
   companion524?: Companion524;
   sessions?: Map<string, { player: { id: string } }>;
 };
@@ -93,7 +110,22 @@ const point = (p: Point): Point => ({ x: p.x, z: p.z });
 const clamp = (v: number, a: number, b: number) => Math.max(a, Math.min(b, v));
 
 export const botRadius = (kind: BotKind) =>
-  kind === '524' ? COMPANION_524.radius : ORB_BOTS.radius;
+  kind === '524' ? COMPANION_524.radius : kind === 'rimo-neko' ? RIMO_NEKO.radius : ORB_BOTS.radius;
+export const isCompanionBot = (kind: BotKind) => kind === '524' || kind === 'rimo-neko';
+const companionForBot = (room: BotRoom, kind: BotKind) =>
+  kind === '524' ? room.companion524 : kind === 'rimo-neko' ? room.rimoNeko : undefined;
+function syncCompanionBot(room: BotRoom, b: OrbBotSnapshot) {
+  if (b.kind === '524' && room.companion524) syncCompanion524Bot(room.companion524, b);
+  else if (b.kind === 'rimo-neko' && room.rimoNeko) syncRimoNekoBot(room.rimoNeko, b);
+}
+function companionBusy(c: RimoNekoSnapshot, kind: BotKind, now: number) {
+  return (
+    !!c.petPlayerId ||
+    (c.hitSequence > 0 &&
+      now - c.hitAt <
+        (kind === 'rimo-neko' ? RIMO_NEKO.hitMs + RIMO_NEKO.hissMs : COMPANION_524.hitMs))
+  );
+}
 export const botHandOffset = (kind: BotKind) => (kind === '524' ? COMPANION_524.bodyHeight / 2 : 0);
 export const botRestHeight = (kind: BotKind, x: number, z: number) =>
   botGroundHeight(x, z) + (kind === '524' ? COMPANION_524.hoverHeight : 0);
@@ -181,14 +213,14 @@ function formationPoint(room: BotRoom, p: PlayerSnapshot, kind: BotKind) {
 
 /** Nine shared camp residents. Connections never create or automatically recruit dots. */
 export function syncOrbBots(room: BotRoom, now: number) {
-  const c = room.companion524;
   room.orbBots = (room.orbBots ?? []).filter((b) =>
-    b.kind === '524' ? !!c?.squadPlayerId : !!b.home,
+    isCompanionBot(b.kind) ? !!companionForBot(room, b.kind)?.squadPlayerId : !!b.home,
   );
-  for (const [i, kind] of BOT_KINDS.entries()) {
+  for (const kind of BOT_KINDS) {
     if (room.orbBots.some((b) => b.kind === kind)) continue;
+    const place = BOT_CAMP_PLACES[kind];
     const home = room.collision.nearestFree(
-      { x: CAMP.x - 6.2 + (i % 3) * 0.95, z: CAMP.z + 5.7 + Math.floor(i / 3) * 0.95 },
+      { x: CAMP.x + place.x, z: CAMP.z + place.z },
       ORB_BOTS.radius,
       [],
       3,
@@ -202,7 +234,7 @@ export function syncOrbBots(room: BotRoom, now: number) {
       home,
       ...home,
       y: botGroundHeight(home.x, home.z),
-      facing: Math.PI,
+      facing: place.facing,
       speed: 0,
       phaseAt: now,
       throwAt: 0,
@@ -224,54 +256,53 @@ export function syncOrbBots(room: BotRoom, now: number) {
       petFacing: 0,
     });
   }
-  for (const p of room.players.values())
-    for (const kind of c?.squadPlayerId === p.id ? ['524' as const] : []) {
-      const existing = room.orbBots.find(
-        (b) => b.kind === kind && (kind === '524' || b.ownerId === p.id),
-      );
-      if (existing) {
-        if (kind === '524' && c) {
-          if (existing.ownerId !== p.id) {
-            existing.ownerId = p.id;
-            existing.recall = false;
-            existing.recallAt = existing.throwAt = 0;
-            existing.origin = existing.landing = null;
-            existing.lastOwner = point(p);
-            existing.warpSequence = p.warpSequence ?? 0;
-            setMode(existing, 'following', now);
-          }
-          existing.busy =
-            !!c.petPlayerId || (c.hitSequence > 0 && now - c.hitAt < COMPANION_524.hitMs);
-        }
-        continue;
+  for (const kind of ['524', 'rimo-neko'] as const) {
+    const c = companionForBot(room, kind);
+    if (!c?.squadPlayerId) continue;
+    const ownerId = c.squadPlayerId;
+    const p = room.players.get(ownerId);
+    const existing = room.orbBots.find((b) => b.kind === kind);
+    if (!p && !existing && c.squadMode !== 'waiting') continue;
+    if (existing) {
+      if (existing.ownerId !== ownerId) {
+        existing.ownerId = ownerId;
+        existing.recall = false;
+        existing.recallAt = existing.throwAt = 0;
+        existing.origin = existing.landing = null;
+        existing.lastOwner = point(p ?? c);
+        existing.warpSequence = p?.warpSequence ?? 0;
+        Object.assign(existing, point(c), { y: botRestHeight(kind, c.x, c.z) });
+        setMode(existing, 'following', now);
       }
-      const start = kind === '524' && c ? point(c) : formationPoint(room, p, kind);
-      if (!start) continue;
-      room.orbBots.push({
-        id: kind === '524' ? 'orb:companion-524' : `orb:${p.id}:${kind}`,
-        ownerId: p.id,
-        kind,
-        mode: kind === '524' && c?.squadMode === 'waiting' ? 'waiting' : 'following',
-        ...start,
-        y: botRestHeight(kind, start.x, start.z),
-        facing: kind === '524' && c?.squadMode === 'waiting' ? c.facing : p.facing,
-        speed: 0,
-        phaseAt: now,
-        throwAt: 0,
-        sequence: 0,
-        origin: null,
-        landing: null,
-        landingY: 0,
-        recall: false,
-        recallAt: 0,
-        path: [],
-        nextPathAt: 0,
-        lastOwner: point(p),
-        warpSequence: p.warpSequence ?? 0,
-        stuckAt: 0,
-        ...(kind === '524' ? { busy: false } : {}),
-      });
+      existing.busy = companionBusy(c, kind, now);
+      continue;
     }
+    const start = point(c);
+    room.orbBots.push({
+      id: kind === '524' ? 'orb:companion-524' : 'orb:rimo-neko',
+      ownerId,
+      kind,
+      mode: c.squadMode === 'waiting' ? 'waiting' : 'following',
+      ...start,
+      y: botRestHeight(kind, start.x, start.z),
+      facing: c.facing,
+      speed: 0,
+      phaseAt: now,
+      throwAt: 0,
+      sequence: 0,
+      origin: null,
+      landing: null,
+      landingY: 0,
+      recall: false,
+      recallAt: 0,
+      path: [],
+      nextPathAt: 0,
+      lastOwner: point(p ?? c),
+      warpSequence: p?.warpSequence ?? 0,
+      stuckAt: 0,
+      busy: companionBusy(c, kind, now),
+    });
+  }
 }
 
 export function orbBotSnapshots(room: BotRoom): OrbBotSnapshot[] {
@@ -363,7 +394,7 @@ export function nearOrbBot(
 ) {
   return (
     !!p &&
-    b.kind !== '524' &&
+    !isCompanionBot(b.kind) &&
     canHandleBot(p, now) &&
     !['queued', 'windup', 'airborne', 'landing', 'stowed'].includes(b.mode) &&
     distance(p, b) <= range &&
@@ -398,13 +429,14 @@ function groupBotPetPlans(
   p: PlayerSnapshot | undefined | null,
   collision: CollisionWorld,
   now: number,
+  presentOwners?: ReadonlySet<string>,
 ) {
   if (!p || pettingOrbBot(bots, p.id)) return [];
   const candidates = bots
     .filter(
       (b) =>
         !b.busy &&
-        (!b.ownerId || b.ownerId === p.id) &&
+        (!b.ownerId || b.ownerId === p.id || presentOwners?.has(b.ownerId) === false) &&
         nearOrbBot(p, b, collision, now, ORB_BOTS.petGroupRange),
     )
     .sort(
@@ -441,14 +473,79 @@ function groupBotPetPlans(
   return plans;
 }
 
-/** Invite nearby free dots and one's own companions to the same petting action. */
+/** Invite nearby available dots; companions of another connected player stay with them. */
 export function nearbyOrbBotsForPetting(
   bots: readonly OrbBotSnapshot[],
   p: PlayerSnapshot | undefined | null,
   collision: CollisionWorld,
   now: number,
+  presentOwners?: ReadonlySet<string>,
 ) {
-  return groupBotPetPlans(bots, p, collision, now).map(({ bot }) => bot);
+  return groupBotPetPlans(bots, p, collision, now, presentOwners).map(({ bot }) => bot);
+}
+
+/** A whistle invites free or absent-owner dots within hearing and sight. */
+export function nearbyOrbBotsForWhistle<T extends OrbBotSnapshot>(
+  bots: readonly T[],
+  p: PlayerSnapshot | undefined | null,
+  collision: CollisionWorld,
+  now: number,
+  presentOwners: ReadonlySet<string>,
+) {
+  return bots.filter(
+    (b) =>
+      !b.busy &&
+      b.ownerId !== p?.id &&
+      (!b.ownerId || !presentOwners.has(b.ownerId)) &&
+      nearOrbBot(p, b, collision, now, ORB_BOTS.whistleRange),
+  );
+}
+
+export function canWhistleCompanion(
+  p: PlayerSnapshot | undefined | null,
+  c: RimoNekoSnapshot | undefined,
+  kind: '524' | 'rimo-neko',
+  collision: CollisionWorld,
+  now: number,
+  presentOwners: ReadonlySet<string>,
+) {
+  return (
+    !!p &&
+    !!c &&
+    canHandleBot(p, now) &&
+    !companionBusy(c, kind, now) &&
+    (!c.squadPlayerId || !presentOwners.has(c.squadPlayerId)) &&
+    !['queued', 'windup', 'airborne', 'landing', 'stowed'].includes(c.squadMode ?? '') &&
+    distance(p, c) <= ORB_BOTS.whistleRange &&
+    interactionVisible(collision, p, c)
+  );
+}
+
+function gatherNearbyBots(room: BotRoom, p: PlayerSnapshot, now: number) {
+  if (!canHandleBot(p, now)) return;
+  for (const b of nearbyOrbBotsForWhistle(
+    room.orbBots ?? [],
+    p,
+    room.collision,
+    now,
+    new Set(room.players.keys()),
+  )) {
+    bondBot(p, b);
+    setMode(b, 'returning', now);
+  }
+  for (const kind of ['524', 'rimo-neko'] as const) {
+    const c = companionForBot(room, kind);
+    if (!c || !canWhistleCompanion(p, c, kind, room.collision, now, new Set(room.players.keys())))
+      continue;
+    c.squadPlayerId = c.followPlayerId = p.id;
+    c.squadMode = 'following';
+    c.mode = 'following';
+    c.path = [];
+    c.goal = null;
+    c.nextPathAt = c.followSpeed = 0;
+    c.ownerPosition = point(p);
+  }
+  syncOrbBots(room, now);
 }
 
 function clearBotPet(b: OrbBot) {
@@ -492,6 +589,7 @@ function handleBotCare(
     for (const pet of unfinished) cancelBotPet(pet, now);
     for (const b of selected) {
       if (b.kind === '524' && room.companion524) returnCompanion524(room.companion524);
+      else if (b.kind === 'rimo-neko' && room.rimoNeko) returnRimoNeko(room.rimoNeko);
       else sendBotHome(b, now);
     }
     syncOrbBots(room, now);
@@ -501,12 +599,13 @@ function handleBotCare(
     pettingOrbBot(room.orbBots, p.id) ||
     room.rimoNeko?.petPlayerId === p.id ||
     room.mae?.petPlayerId === p.id ||
+    room.kohaku?.petPlayerId === p.id ||
     room.companion524?.petPlayerId === p.id
   )
     return false;
   const group = action === 'petBots';
   const plans = group
-    ? groupBotPetPlans(room.orbBots!, p, room.collision, now)
+    ? groupBotPetPlans(room.orbBots!, p, room.collision, now, new Set(room.players.keys()))
     : room
         .orbBots!.filter(
           (b) =>
@@ -521,6 +620,9 @@ function handleBotCare(
   p.facing = plans[0].facing;
   for (const { bot: candidate, goal, facing } of plans) {
     const b = room.orbBots!.find((bot) => bot.id === candidate.id)!;
+    // Every accepted member joins together, even if the shared gesture is interrupted.
+    bondBot(p, b);
+    setMode(b, 'following', now);
     b.petPlayerId = p.id;
     b.petAt = now;
     b.petContactAt = 0;
@@ -581,7 +683,7 @@ function approachBotPet(room: BotRoom, p: PlayerSnapshot, b: OrbBot, dt: number)
   return distance(b, goal) < 0.015;
 }
 
-function finishBotPet(p: PlayerSnapshot, b: OrbBot, now: number) {
+function bondBot(p: PlayerSnapshot, b: OrbBot) {
   b.ownerId = p.id;
   b.returnHome = false;
   b.lastOwner = point(p);
@@ -589,6 +691,10 @@ function finishBotPet(p: PlayerSnapshot, b: OrbBot, now: number) {
   b.throwAt = b.recallAt = 0;
   b.origin = b.landing = null;
   b.recall = false;
+}
+
+function finishBotPet(p: PlayerSnapshot, b: OrbBot, now: number) {
+  bondBot(p, b);
   clearBotPet(b);
   setMode(b, 'following', now);
 }
@@ -667,7 +773,10 @@ function updateBotHome(room: BotRoom, b: OrbBot, dt: number, now: number) {
   const goal = room.collision.nearestFree(b.home!, ORB_BOTS.radius, [], 3);
   if (!goal) return;
   if (distance(b, goal) < 0.06) {
-    Object.assign(b, goal, { y: botGroundHeight(goal.x, goal.z), facing: Math.PI });
+    Object.assign(b, goal, {
+      y: botGroundHeight(goal.x, goal.z),
+      facing: BOT_CAMP_PLACES[b.kind as (typeof BOT_KINDS)[number]]?.facing ?? 0,
+    });
     b.returnHome = false;
     b.origin = b.landing = null;
     b.throwAt = 0;
@@ -708,10 +817,10 @@ function updateBotHome(room: BotRoom, b: OrbBot, dt: number, now: number) {
   }
 }
 
-/** Persist completed bonds, never a half-finished pet or hand/flight animation. */
+/** Persist accepted bonds without replaying petting or hand/flight animations. */
 export function saveOrbBots(room: BotRoom) {
   return (room.orbBots ?? [])
-    .filter((b) => b.kind !== '524')
+    .filter((b) => !isCompanionBot(b.kind))
     .map((b) => {
       const waiting =
         !!b.ownerId && !b.recall && ['airborne', 'landing', 'waiting'].includes(b.mode);
@@ -742,7 +851,7 @@ export function restoreOrbBots(room: BotRoom, saved: unknown, now: number) {
   syncOrbBots(room, now);
   if (!Array.isArray(saved)) return;
   for (const b of room.orbBots) {
-    if (b.kind === '524') continue;
+    if (isCompanionBot(b.kind)) continue;
     const record = saved.find((r) => r && typeof r === 'object' && r.kind === b.kind);
     if (!record) continue;
     const ownerId = record.ownerId;
@@ -856,7 +965,7 @@ export function releaseHeldOrbBot(room: BotRoom, p: PlayerSnapshot, now: number)
       b.recall = true;
       setMode(b, 'returning', now);
     }
-    if (b.kind === '524' && room.companion524) syncCompanion524Bot(room.companion524, b);
+    syncCompanionBot(room, b);
   }
 }
 
@@ -882,6 +991,7 @@ export function handleOrbBotAction(
   syncOrbBots(room, now);
   if (['petBot', 'petBots', 'dismissBot', 'dismissBots'].includes(action))
     return handleBotCare(room, p, action, kind, now);
+  if (action === 'recallBots') gatherNearbyBots(room, p, now);
   const bots = room.orbBots!.filter((b) => b.ownerId === p.id);
   if (action === 'cancelBotThrows') {
     releaseHeldOrbBot(room, p, now);
@@ -897,12 +1007,14 @@ export function handleOrbBotAction(
         canHandleBot(p, now) &&
         room.rimoNeko?.petPlayerId !== p.id &&
         room.mae?.petPlayerId !== p.id &&
+        room.kohaku?.petPlayerId !== p.id &&
         room.companion524?.petPlayerId !== p.id &&
         !pettingOrbBot(room.orbBots, p.id)
           ? now
           : 0;
-      if (b.mode === 'waiting') setMode(b, 'returning', now);
-      if (b.kind === '524' && room.companion524) syncCompanion524Bot(room.companion524, b);
+      if (b.mode === 'waiting' || (b.kind === 'rimo-neko' && b.mode === 'following'))
+        setMode(b, 'returning', now);
+      syncCompanionBot(room, b);
     }
     return true;
   }
@@ -910,6 +1022,7 @@ export function handleOrbBotAction(
     !canHandleBot(p, now) ||
     room.rimoNeko?.petPlayerId === p.id ||
     room.mae?.petPlayerId === p.id ||
+    room.kohaku?.petPlayerId === p.id ||
     room.companion524?.petPlayerId === p.id ||
     pettingOrbBot(room.orbBots, p.id)
   )
@@ -931,7 +1044,7 @@ export function handleOrbBotAction(
   b.sequence++;
   b.recall = false;
   setMode(b, start > now ? 'queued' : 'windup', now);
-  if (b.kind === '524' && room.companion524) syncCompanion524Bot(room.companion524, b);
+  syncCompanionBot(room, b);
   return true;
 }
 
@@ -967,7 +1080,7 @@ export function updateOrbBots(room: BotRoom, dt: number, now: number) {
   dt = Math.min(dt, 0.15);
   updateBotPetGroups(room, dt, now);
   for (const b of room.orbBots!) {
-    if (b.kind !== '524') {
+    if (!isCompanionBot(b.kind)) {
       if (updateBotPet(room, b, dt, now)) continue;
       if (b.returnHome) {
         updateBotHome(room, b, dt, now);
@@ -980,11 +1093,16 @@ export function updateOrbBots(room: BotRoom, dt: number, now: number) {
     }
     const p = room.players.get(b.ownerId);
     const radius = botRadius(b.kind);
-    if (b.kind === '524' && room.companion524) {
-      const c = room.companion524;
-      b.busy = !!c.petPlayerId || (c.hitSequence > 0 && now - c.hitAt < COMPANION_524.hitMs);
+    const c = companionForBot(room, b.kind);
+    if (c) {
+      b.busy = companionBusy(c, b.kind, now);
       if (!['windup', 'airborne', 'landing', 'stowed'].includes(b.mode)) {
         Object.assign(b, point(c), { y: botRestHeight(b.kind, c.x, c.z) });
+      }
+      // Natural cat movement owns its heading; do not write an old squad heading back.
+      if (b.kind === 'rimo-neko' && b.mode === 'following') {
+        b.facing = c.facing;
+        b.speed = c.followSpeed;
       }
       if (b.busy) {
         b.recallAt = 0;
@@ -1002,18 +1120,27 @@ export function updateOrbBots(room: BotRoom, dt: number, now: number) {
     if (!p) {
       b.recallAt = 0;
       b.speed = 0;
-      b.path = [];
       if (!updateDeployedBot(b, now)) {
-        // Cancel only the unlaunched hand gesture; keep the friendship and wait
-        // for the same saved player to return, with no offline expiry.
+        // Cancel the unlaunched gesture without expiring the friendship.
         if (b.mode === 'windup' && b.origin) Object.assign(b, point(b.origin));
         b.y = botRestHeight(b.kind, b.x, b.z);
         b.throwAt = 0;
         b.origin = b.landing = null;
-        setMode(b, 'following', now);
+        if (!isCompanionBot(b.kind) && b.home) {
+          // Keep the saved owner, but make their following/stowed dots available
+          // at camp instead of leaving invisible companions far from later arrivals.
+          // Preserve the path between ticks so a detour can actually finish.
+          if (b.mode !== 'home') updateBotHome(room, b, dt, now);
+        } else {
+          // Original NPC bodies follow their own safe campward routes while offline.
+          setMode(b, 'following', now);
+          if (c) b.facing = c.facing;
+        }
       }
       continue;
     }
+    if (!isCompanionBot(b.kind) && (b.mode === 'home' || b.mode === 'goingHome'))
+      setMode(b, 'following', now);
     const warp = (p.warpSequence ?? 0) !== b.warpSequence || distance(p, b.lastOwner) > 12;
     if (warp || !canHandleBot(p, now) || (b.recallAt && now - b.recallAt >= ORB_BOTS.callMs))
       b.recallAt = 0;
@@ -1085,6 +1212,8 @@ export function updateOrbBots(room: BotRoom, dt: number, now: number) {
       setMode(b, 'following', now);
       b.recall = false;
     }
+    // Preserve the cat's original natural walking and comfortable following distance.
+    if (b.kind === 'rimo-neko' && b.mode === 'following') continue;
     const goal = formationPoint(room, p, b.kind);
     if (!goal) {
       b.speed = 0;
@@ -1139,6 +1268,5 @@ export function updateOrbBots(room: BotRoom, dt: number, now: number) {
       }
     }
   }
-  const recruited = room.orbBots!.find((b) => b.kind === '524');
-  if (recruited && room.companion524) syncCompanion524Bot(room.companion524, recruited);
+  for (const b of room.orbBots!) syncCompanionBot(room, b);
 }

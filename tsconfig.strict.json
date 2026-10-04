@@ -7,6 +7,7 @@
   "include": [
     "shared/types.mts",
     "shared/characters.mts",
+    "shared/content-visibility.mts",
     "application/ports.mts",
     "application/protocol.mts",
     "src/three-types.ts",
@@ -29,6 +30,9 @@
     "src/motion-debug.ts",
     "src/motion-debug-view.ts",
     "src/gamepad-ui.ts",
+    "src/input-cues.ts",
+    "src/input-cues-ui.ts",
+    "src/companion-view.ts",
     "src/multiplayer-config.ts",
     "src/screens.ts",
     "src/character-selection.ts",
@@ -48,6 +52,7 @@
     "cloudflare/free-budget.mts",
     "cloudflare/socket-adapter.mts",
     "infrastructure/node/static-files.mts",
+    "infrastructure/node/local-visibility.mts",
     "infrastructure/node/local-save.mts"
   ]
 }

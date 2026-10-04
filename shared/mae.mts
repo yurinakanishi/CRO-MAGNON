@@ -56,6 +56,7 @@ type CompanionRoom = {
   mae?: Mae;
   collision: CollisionWorld;
   players: Map<string, PetPlayer & { facing: number; radius: number; speed: number }>;
+  sessions?: Map<string, { player: { id: string } }>;
 };
 const distance = (a: Point, b: Point) => Math.hypot(a.x - b.x, a.z - b.z);
 const point = (p: Point): Point => ({ x: p.x, z: p.z });
@@ -164,8 +165,8 @@ export function nearMae(
   );
 }
 
-export function returnMae(c: Mae) {
-  c.followPlayerId = null;
+export function returnMae(c: Mae, retainBond = false) {
+  if (!retainBond) c.followPlayerId = null;
   c.mode = 'returning';
   c.path = [];
   c.goal = null;
@@ -231,7 +232,9 @@ export function handleMaeAction(
   c.petFacing = facing;
   c.petCharacter = `${player.species}/${player.gender}`;
   player.facing = facing;
-  // Keep the earlier affiliation until the complete new pet succeeds.
+  // An accepted invitation establishes trust before the approach and strokes.
+  c.mode = 'following';
+  c.followPlayerId = player.id;
   c.facing = Math.atan2(player.x - c.x, player.z - c.z);
   c.path = [];
   c.nextPathAt = 0;
@@ -243,8 +246,7 @@ export function handleMaeAction(
 /** A soft recoil, without health, death, loot or a counterattack. */
 export function hitMae(c: Mae, dx: number, dz: number, now: number) {
   cancelMaePet(c);
-  c.followPlayerId = null;
-  c.mode = 'idle';
+  c.mode = c.followPlayerId ? 'following' : 'idle';
   c.followSpeed = 0;
   const length = Math.hypot(dx, dz) || 1;
   c.hitDirectionX = dx / length;
@@ -270,6 +272,7 @@ function rememberRoute(c: Mae) {
   const revisited = c.trail.findIndex((p) => distance(c, p) < 0.7);
   if (revisited >= 0) c.trail.length = revisited + 1;
   c.trail.push(point(c));
+  if (c.trail.length > 4096) c.trail.splice(1, 1);
 }
 
 export function updateMae(room: CompanionRoom, dt: number, now: number) {
@@ -277,16 +280,15 @@ export function updateMae(room: CompanionRoom, dt: number, now: number) {
   if (!c || dt <= 0) return;
   const ownerId = c.petPlayerId || c.followPlayerId;
   const owner = ownerId ? room.players.get(ownerId) : null;
-  if (
-    c.mode === 'following' &&
-    !c.petPlayerId &&
-    (!owner ||
-      owner.downedUntil ||
-      owner.boatId ||
-      distance(owner, c) > 60 ||
-      c.trail.length >= 4096)
-  )
-    returnMae(c);
+  const canFollow = owner && !owner.downedUntil && !owner.boatId && distance(owner, c) <= 60;
+  if (c.followPlayerId && !canFollow && (c.mode === 'following' || c.petPlayerId))
+    returnMae(c, true);
+  else if (c.followPlayerId && canFollow && c.mode !== 'following') {
+    c.mode = 'following';
+    c.path = [];
+    c.goal = null;
+    c.nextPathAt = 0;
+  }
 
   const damping = Math.exp(-MAE.damping * dt);
   if (Math.hypot(c.velocityX, c.velocityZ) > 0.015) {
@@ -431,12 +433,20 @@ export function updateMae(room: CompanionRoom, dt: number, now: number) {
   if (c.mode === 'following') rememberRoute(c);
 }
 
-/** Old saves gain a camp companion. A restored follower returns along its saved route. */
+/** Preserve a known saved owner without replaying an unfinished pet animation. */
 export function restoreMae(room: CompanionRoom, saved: unknown) {
   const c = createMae(room.collision);
   room.mae = c;
   if (!saved || typeof saved !== 'object') return;
   const record = saved as Partial<Mae>;
+  const ownerId = record.followPlayerId;
+  if (
+    typeof ownerId === 'string' &&
+    ownerId &&
+    (room.players.has(ownerId) ||
+      [...(room.sessions?.values() ?? [])].some((s) => s.player.id === ownerId))
+  )
+    c.followPlayerId = ownerId;
   if (!Number.isFinite(record.x) || !Number.isFinite(record.z)) return;
   const position = { x: record.x!, z: record.z! };
   if (!room.collision.free(position, c.radius)) return;
@@ -449,5 +459,5 @@ export function restoreMae(room: CompanionRoom, saved: unknown) {
         .map(point)
     : [];
   c.trail = [point(c.home), ...trail];
-  if (record.mode !== 'idle') returnMae(c);
+  if (record.mode !== 'idle' || c.followPlayerId) returnMae(c, true);
 }

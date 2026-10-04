@@ -1,5 +1,11 @@
-import { createRimoNeko, updateRimoNeko, restoreRimoNeko } from '../shared/rimo-neko.mjs';
+import {
+  createRimoNeko,
+  updateRimoNeko,
+  restoreRimoNeko,
+  saveRimoNeko,
+} from '../shared/rimo-neko.mjs';
 import { createMae, updateMae, restoreMae } from '../shared/mae.mjs';
+import { createKohaku, updateKohaku, restoreKohaku } from '../shared/kohaku.mjs';
 import { updateOrbBots, saveOrbBots, restoreOrbBots } from '../shared/orb-bots.mjs';
 import { caveInteriorWeight } from '../shared/cave-light.mjs';
 import { updateFishing, cancelFishing } from '../shared/fishing.mjs';
@@ -33,6 +39,11 @@ import {
   updateBoats,
 } from '../shared/boats.mjs';
 import { characterModel, normalizeCharacter } from '../shared/characters.mjs';
+import {
+  ALL_CONTENT,
+  visibleCharacters,
+  type ContentVisibility,
+} from '../shared/content-visibility.mjs';
 import { CollisionWorld, overlap } from '../shared/collision.mjs';
 import { attackProfile } from '../shared/combat-profiles.mjs';
 import {
@@ -88,6 +99,7 @@ export function createGameCore({
   playerLimit = WORLD.maxPlayers,
   runtime = defaultRuntime,
   exhibition = false,
+  visibility: requestedVisibility = ALL_CONTENT,
 }: {
   resumeGraceMs?: number;
   keepEmptyRooms?: boolean;
@@ -96,10 +108,35 @@ export function createGameCore({
   playerLimit?: number;
   runtime?: Runtime;
   exhibition?: boolean;
+  visibility?: ContentVisibility;
 } = {}) {
   if (!Number.isInteger(playerLimit) || playerLimit < 1 || playerLimit > 64)
     throw new Error('playerLimit must be an integer from 1 to 64');
   const rooms = new Map();
+  const visibility = Object.freeze({
+    hiddenCharacters: Object.freeze([...requestedVisibility.hiddenCharacters]),
+    hideMae: requestedVisibility.hideMae,
+  });
+  const characters = visibleCharacters(visibility);
+  const fallback = characters.find((model) => model.species === 'cro');
+  if (!fallback) throw new Error('The default character must remain available');
+  function proposedAppearance(requested) {
+    const preferred = normalizeCharacter(requested);
+    const available = characters.some((model) => model.species === preferred.species);
+    // Keep the old look in the private save while its content is hidden. An explicit
+    // later choice replaces it; re-enabling the content can otherwise restore it.
+    const appearance = available
+      ? preferred
+      : normalizeCharacter({
+          species: fallback.species,
+          gender: preferred.gender,
+        });
+    return { ...appearance, unavailableCharacter: available ? undefined : preferred };
+  }
+  function applyAppearance(player, appearance) {
+    Object.assign(player, appearance);
+    if (!appearance.unavailableCharacter) delete player.unavailableCharacter;
+  }
   const resettingRooms = new Set<string>();
   let closing = false;
   const sessionExpiry = (now: number) =>
@@ -142,7 +179,7 @@ export function createGameCore({
     send(player.socket, { type: 'notice', text, tone, popup });
   }
 
-  const act = createActionHandler({ notice, broadcast, snapshot, systemChat, runtime });
+  const act = createActionHandler({ notice, broadcast, snapshot, systemChat, runtime, visibility });
 
   function ensureRoom(roomName) {
     let room = rooms.get(roomName);
@@ -183,7 +220,8 @@ export function createGameCore({
       room.animals = createAnimals(room.collision);
       room.companion524 = createCompanion524(room.collision);
       room.rimoNeko = createRimoNeko(room.collision);
-      room.mae = createMae(room.collision);
+      if (!visibility.hideMae) room.mae = createMae(room.collision);
+      room.kohaku = createKohaku(room.collision);
       room.enemies = createEnemies(room.collision, room.animals);
       createResidents(room, [], runtime.now());
       rooms.set(roomName, room);
@@ -270,9 +308,11 @@ export function createGameCore({
     // Only an explicit confirmed title start picks a new appearance and camp
     // spawn. A dropped connection continues with the saved player and position.
     const startAtCamp = params.get('startAtCamp') === '1';
-    const appearance = startAtCamp
-      ? normalizeCharacter({ species: params.get('species'), gender: params.get('gender') })
-      : normalizeCharacter(player);
+    const appearance = proposedAppearance(
+      startAtCamp
+        ? { species: params.get('species'), gender: params.get('gender') }
+        : (player.unavailableCharacter ?? player),
+    );
     const radius = characterModel(appearance).radius ?? WORLD.playerRadius;
     ensureAdventure(player);
     ensureGulfPlayer(player);
@@ -322,8 +362,9 @@ export function createGameCore({
       oldSocket.close(4004, 'Session replaced');
     }
     if (saved) room.sessions.delete(token);
+    // Commit a chosen or substituted look only after an arrival point succeeds.
+    applyAppearance(player, appearance);
     if (startAtCamp) {
-      Object.assign(player, appearance);
       player.name = cleanText(params.get('name'), 16) || player.name;
     }
     Object.assign(player, {
@@ -592,6 +633,7 @@ export function createGameCore({
         updateCompanion524(room, dt, now);
         updateRimoNeko(room, dt, now);
         updateMae(room, dt, now);
+        updateKohaku(room, dt, now);
         updateOrbBots(room, dt, now);
         updateBarters(room, now);
         for (const resident of room.residents) {
@@ -648,6 +690,7 @@ export function createGameCore({
       updateCompanion524(room, dt, now);
       updateRimoNeko(room, dt, now);
       updateMae(room, dt, now);
+      updateKohaku(room, dt, now);
       updateOrbBots(room, dt, now);
       updateAnimals(room, dt, now);
       const enemiesChanged = updateEnemies(room, dt, now, notice);
@@ -742,8 +785,12 @@ export function createGameCore({
                 room.companion524,
                 room.orbBots?.find((bot) => bot.kind === '524'),
               ),
-              rimoNeko: room.rimoNeko,
-              mae: room.mae,
+              rimoNeko: saveRimoNeko(
+                room.rimoNeko,
+                room.orbBots?.find((bot) => bot.kind === 'rimo-neko'),
+              ),
+              mae: room.mae ?? room.hiddenMae,
+              kohaku: room.kohaku,
               orbBots: saveOrbBots(room),
               enemies: room.enemies,
               boats: room.boats,
@@ -884,7 +931,7 @@ export function createGameCore({
         if (entry.expiresAt > runtime.now()) {
           const player = entry.player;
           // Restored profiles must belong to this build's available catalog too.
-          Object.assign(player, normalizeCharacter(player));
+          applyAppearance(player, proposedAppearance(player.unavailableCharacter ?? player));
           player.radius = characterModel(player).radius ?? WORLD.playerRadius;
           if (player.boatId) {
             const boat = room.boats.find((b) => b.id === player.boatId);
@@ -922,12 +969,15 @@ export function createGameCore({
       createResidents(room, record.residents, runtime.now());
       restoreCompanion524(room, record.companion524);
       restoreRimoNeko(room, record.rimoNeko);
-      restoreMae(room, record.mae);
+      if (visibility.hideMae) room.hiddenMae = record.mae;
+      else restoreMae(room, record.mae);
+      restoreKohaku(room, record.kohaku);
       restoreOrbBots(room, record.orbBots, runtime.now());
     }
   }
 
   return {
+    visibility,
     playerLimit,
     rooms,
     snapshot,

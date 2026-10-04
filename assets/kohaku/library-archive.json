@@ -1,0 +1,385 @@
+{
+  "target": "C:\\Users\\yurin\\Desktop\\projects\\threed-model-creation\\models\\kohaku",
+  "files": 75,
+  "bytes": 414089258,
+  "records": [
+    {
+      "path": "preview\\final-01\\bounds.json",
+      "bytes": 246,
+      "sha256": "c829af4bfbef996f11c984a7b4b38213949fe569aa9afe705a5e9c83180d429e"
+    },
+    {
+      "path": "preview\\final-01\\front.png",
+      "bytes": 807542,
+      "sha256": "74bd6e129c0fab446c16ce13a5dd4d221c62bccf4e2d6fcb52c70f2a2a6a1811"
+    },
+    {
+      "path": "preview\\final-01\\threequarter.png",
+      "bytes": 776797,
+      "sha256": "8a7bc9a3c7a83b9d895e2b09d01effc3991d9f75076fe748334777f9c6931c74"
+    },
+    {
+      "path": "preview\\happy-01\\bounds.json",
+      "bytes": 252,
+      "sha256": "7c86108fb76005928d4529db710dcaf6d5ec1da72e08f57eea283e8447baa8ac"
+    },
+    {
+      "path": "preview\\happy-01\\front.png",
+      "bytes": 530402,
+      "sha256": "09f1e0837c5d6edd3cacf805394edd69643b386f80fd86cfc9cef8618047c5b6"
+    },
+    {
+      "path": "preview\\happy-01\\threequarter.png",
+      "bytes": 509183,
+      "sha256": "1af7cb2cbf95c9c5143e4f695ca8945e2613e6f93c6a05905da6ae3e33d91d45"
+    },
+    {
+      "path": "preview\\surface\\back.png",
+      "bytes": 503330,
+      "sha256": "a9d5d649c85e5c3d8a286a5398b6feb6d95108f30473a59f2832ca1513f779ed"
+    },
+    {
+      "path": "preview\\surface\\bounds.json",
+      "bytes": 226,
+      "sha256": "d315a62fc44ff246fd3df2bb3ec134ffbd8a27d17fa94203ce07cd4a8a99f794"
+    },
+    {
+      "path": "preview\\surface\\front.png",
+      "bytes": 528111,
+      "sha256": "015f3cfff873f79061a303a26cb4c2b4de1fa5c9531ae8a2ffe64315efe0c324"
+    },
+    {
+      "path": "preview\\surface\\right.png",
+      "bytes": 490530,
+      "sha256": "fb55adadc0660328abff49099fe790ba41257bb9c9a244d000a8046b408992fe"
+    },
+    {
+      "path": "preview\\surface\\threequarter.png",
+      "bytes": 507226,
+      "sha256": "1bc81234ab9b71cdd76759c1a6e3a853509f3ef3da41bb8d8417d7bf9117b91c"
+    },
+    {
+      "path": "preview\\walk-01\\bounds.json",
+      "bytes": 255,
+      "sha256": "7ce00927e8870442b6bd71f4edfbee7c327d5662e2af5bf7c341d4b24567f9e7"
+    },
+    {
+      "path": "preview\\walk-01\\threequarter.png",
+      "bytes": 502878,
+      "sha256": "279c9633ba3f2b318b6b1d4156e1a2a07ad38bd457107ca12abae52e21b2af89"
+    },
+    {
+      "path": "preview\\wave-01\\bounds.json",
+      "bytes": 251,
+      "sha256": "e7143fc68286e97f75d81565c22c8cd01e8671238a0f2a39eb5dd4e884300d4c"
+    },
+    {
+      "path": "preview\\wave-01\\front.png",
+      "bytes": 531408,
+      "sha256": "b04bb1407286dd617ba941b73ebdf5f285410861fe1ba48242ddd28886ebcb31"
+    },
+    {
+      "path": "qa\\final-01\\viewer.html",
+      "bytes": 40725462,
+      "sha256": "d0e22f8ed708f9b1e02e9b07e4a5949cf268a3e572f8424bf0dc0a2f7468e40b"
+    },
+    {
+      "path": "qa\\final-01\\viewer.json",
+      "bytes": 601,
+      "sha256": "1177ba40ccfd3efc5ef1bfa0eb76ae29fa44355737f9a44e009920ed5e737887"
+    },
+    {
+      "path": "source\\kohaku-poses.jpg",
+      "bytes": 702432,
+      "sha256": "e2bf47e34d832f465415c327a4eb922506b3aed7bc36e2ae6328a1b1edfb75d6"
+    },
+    {
+      "path": "source\\reference-v1.png",
+      "bytes": 1584016,
+      "sha256": "f760daebf8e4f6cff7642d56b411faf6d8f5b450c820a5b24374029979a14564"
+    },
+    {
+      "path": "work\\prepare-surface-02.log",
+      "bytes": 8914,
+      "sha256": "a773a3e58e88209b395a68146a10834cfdb9d6bb4de7c8bb249aeac2c321ca88"
+    },
+    {
+      "path": "work\\prepare-surface.log",
+      "bytes": 8924,
+      "sha256": "4a760a5896b8911af5c47a55275b2549d64df15ca9818e1198e95699eb8905bc"
+    },
+    {
+      "path": "work\\render-final-01.log",
+      "bytes": 885,
+      "sha256": "d610e1eaed285584942ffb95deb9eb6b954a7dd336097ae59d8373219ffe9e0f"
+    },
+    {
+      "path": "work\\render-happy-01.log",
+      "bytes": 885,
+      "sha256": "7791e33024da9b852a1dbf5feb0e2044186d10190b07973fb96460a89fbc7376"
+    },
+    {
+      "path": "work\\render-surface.log",
+      "bytes": 1180,
+      "sha256": "f44eff7e25af0fbfb12a23b7029f93337377837d2b40c790687fd37bca39ca39"
+    },
+    {
+      "path": "work\\render-walk-01.log",
+      "bytes": 736,
+      "sha256": "dc8207ca20a34b2cda15c44b54600fd7b7ef937688044999facc248bed6a3ec3"
+    },
+    {
+      "path": "work\\render-wave-01.log",
+      "bytes": 729,
+      "sha256": "c4c73784f9344c44a28dd647fcd297dc038fd0e6c0057072226410e630a0e285"
+    },
+    {
+      "path": "work\\rig\\revision-01\\candidate.glb",
+      "bytes": 29738928,
+      "sha256": "a0bb112f12157e21bb226745c329c499c12ba5780b137dd817485dd0b0de3548"
+    },
+    {
+      "path": "work\\rig\\revision-01\\lod.glb",
+      "bytes": 3368208,
+      "sha256": "b003590e032f4071cbd2164a7ad49754549fbbf8049ea6b573a748acc5f4078f"
+    },
+    {
+      "path": "work\\rig\\revision-01\\rig-surface.npz",
+      "bytes": 1794059,
+      "sha256": "52810e19c21fa419cd72285f9375986c952867d586c56eb7d1081b8cde195162"
+    },
+    {
+      "path": "work\\rig\\revision-01\\rig.json",
+      "bytes": 24588,
+      "sha256": "b40ba0154f07cdbfaaaa8886433038f9755a24ad43483d6317e8c4a0b6997b6e"
+    },
+    {
+      "path": "work\\rig\\revision-01\\source.blend",
+      "bytes": 26864447,
+      "sha256": "45a49277b7aacd3d06ff4e01275b11b6aa5dddc716f0c7787cc2c109a0899f48"
+    },
+    {
+      "path": "work\\rig-01.log",
+      "bytes": 1567,
+      "sha256": "24cd2f9aa79c244c77f6bc1945b60a0e7b775c4a996d9af14c29c4dcc894bdcf"
+    },
+    {
+      "path": "work\\surface\\revision-01\\surface.blend",
+      "bytes": 29617614,
+      "sha256": "75f729d87e3f189b5ebacd491253df8491ecdde09e7404770b27b4e022fcba1d"
+    },
+    {
+      "path": "work\\surface\\revision-01\\surface.glb",
+      "bytes": 26312848,
+      "sha256": "69d24d99073ad37d19df06415f04d98bef36ae91d55fd6ea1ff578a426baccf8"
+    },
+    {
+      "path": "work\\surface\\revision-01\\surface.json",
+      "bytes": 8882,
+      "sha256": "e90e8be704384c3c9da4c48f08d9ed8ac5b3475fd4da5ab921f1c3b393e4b555"
+    },
+    {
+      "path": "work\\surface\\revision-01\\surface.npz",
+      "bytes": 1600948,
+      "sha256": "2d6317b4dd586ddd7c35b266f2adc8af75e8e99a517fa17ab0e5b195feac2776"
+    },
+    {
+      "path": "work\\surface\\revision-02\\surface.blend",
+      "bytes": 29616067,
+      "sha256": "8ad7b67c5687419ad31da01a3999fad9cb040ba68803c8de130953856ac8ea39"
+    },
+    {
+      "path": "work\\surface\\revision-02\\surface.glb",
+      "bytes": 26312852,
+      "sha256": "f9d80320d0dfdd760898abc1f5ed6795d4344e983490fc65db2cfeca4a64d987"
+    },
+    {
+      "path": "work\\surface\\revision-02\\surface.json",
+      "bytes": 8873,
+      "sha256": "c4d5d62913cf370f005511013c6d56443dd6682d25da5c28130bc8a4746fd454"
+    },
+    {
+      "path": "work\\surface\\revision-02\\surface.npz",
+      "bytes": 1598631,
+      "sha256": "2b6a59badeb11e051f7c0d639800a93f77e7fdcfca37c5feb9d29f3bdda734f8"
+    },
+    {
+      "path": "work\\trellis\\dense-attempt-01-res512-seed0042.json",
+      "bytes": 1424,
+      "sha256": "78fba49e3ea794f79cc4468a55e54c7b96ae8c7bc6b872da686f9bb4bacba514"
+    },
+    {
+      "path": "work\\trellis\\dense-attempt-01-res512-seed0042.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "work\\trellis\\dense-attempt-02-res512-seed0042.json",
+      "bytes": 1426,
+      "sha256": "e4c1fe9979c3f54ac0961beb1fe6b4f16be11a82a6dd122b62666394b35a3576"
+    },
+    {
+      "path": "work\\trellis\\dense-attempt-02-res512-seed0042.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "work\\trellis\\dense-attempt-03-res512-seed0042.glb",
+      "bytes": 32172088,
+      "sha256": "a56397208d1537bac5527695703d3cfcec43162ca448a80b450c1af05a957170"
+    },
+    {
+      "path": "work\\trellis\\dense-attempt-03-res512-seed0042.json",
+      "bytes": 1490,
+      "sha256": "0f197a5e0870027c2e2efd7cf97d0d41726dd43875c1bd346ab4bb599bf90cd5"
+    },
+    {
+      "path": "work\\trellis\\dense-attempt-03-res512-seed0042.log",
+      "bytes": 5465,
+      "sha256": "3efb82d6858081d8ba3fa7128c47b25a50d5aaaf95a6c7bc8e08571d4e747885"
+    },
+    {
+      "path": "work\\trellis\\dense-attempt-03-res512-seed0042.ply",
+      "bytes": 95572552,
+      "sha256": "6cbb80b5f560e63dfb6e0b56cccc586651897378ca173cba0fc0524e5040cf1f"
+    },
+    {
+      "path": "work\\trellis\\dense-attempt-03-res512-seed0042_base.png",
+      "bytes": 21395781,
+      "sha256": "4525817adea3a183e432ed856213ab93f0288fdaa8ffbff71e8c2093db39097f"
+    },
+    {
+      "path": "work\\trellis\\dense-attempt-03-res512-seed0042_cutout.png",
+      "bytes": 2171377,
+      "sha256": "b2086f76331bea5f595dd2a7d9d9456ab14c13b8d5d74fce62c6583814f6c44e"
+    },
+    {
+      "path": "game-adoption\\delivery.json",
+      "bytes": 3652,
+      "sha256": "eac40df1f8003fe24908e2ca847563ebf14beb11f67627c203534eef74fdb02e"
+    },
+    {
+      "path": "game-adoption\\source\\kohaku-poses.jpg",
+      "bytes": 702432,
+      "sha256": "e2bf47e34d832f465415c327a4eb922506b3aed7bc36e2ae6328a1b1edfb75d6"
+    },
+    {
+      "path": "game-adoption\\source\\reference-v1.png",
+      "bytes": 1584016,
+      "sha256": "f760daebf8e4f6cff7642d56b411faf6d8f5b450c820a5b24374029979a14564"
+    },
+    {
+      "path": "game-adoption\\source\\reference-v1.prompt.txt",
+      "bytes": 1730,
+      "sha256": "bffc2223926492a033791949cf23d8c08726dc4d96d9a5b5d940625e119cd38b"
+    },
+    {
+      "path": "game-adoption\\workflow\\archive.py",
+      "bytes": 2399,
+      "sha256": "2ab78601e92bb436c311e612c1a4c14eabe517a4a5d7f7b437bf84b59656e64d"
+    },
+    {
+      "path": "game-adoption\\workflow\\generate.py",
+      "bytes": 3421,
+      "sha256": "4e7b2b29d5e8d9c6b503e4e2de99105ed2ebc9c0b2a7d80349fb1e34a3e0e660"
+    },
+    {
+      "path": "game-adoption\\workflow\\integrate.mjs",
+      "bytes": 11469,
+      "sha256": "7779a895f79f9a6fbbb07b745c32777b1bf88d99c5f3cb6502d5f5c7e98b066a"
+    },
+    {
+      "path": "game-adoption\\workflow\\make-preview.py",
+      "bytes": 4763,
+      "sha256": "a2bcc8982a22f7a56aa34c887ed691c1db1addaad4a4fd34dc6a20e2b477e78a"
+    },
+    {
+      "path": "game-adoption\\workflow\\prepare-surface.py",
+      "bytes": 4269,
+      "sha256": "a1f36077950d638d6da682ec6fcc2dc8d0db71e77580846b9a7c369480eb7558"
+    },
+    {
+      "path": "game-adoption\\workflow\\render.py",
+      "bytes": 4086,
+      "sha256": "e658fc997815e64fc593690a5c50ea4813c6f6590552bc4d342c4aca92e65af9"
+    },
+    {
+      "path": "game-adoption\\workflow\\rig.py",
+      "bytes": 14583,
+      "sha256": "87a2fa0d2f1022c4d2cd33260d87126d83db726167429cbb3cede28c7e53bbed"
+    },
+    {
+      "path": "game-adoption\\workflow\\stage.mjs",
+      "bytes": 4543,
+      "sha256": "2b66be108939cd79d1cf9ac1bdc5c3a478c0f9cba11fd45963fe3eb8fe695992"
+    },
+    {
+      "path": "delivery\\asset.json",
+      "bytes": 3598,
+      "sha256": "9fb97c552426e9b697d946d637487f2728e4aed533ce8fa39de782826fec835d"
+    },
+    {
+      "path": "delivery\\lod-r01.glb",
+      "bytes": 3368208,
+      "sha256": "b003590e032f4071cbd2164a7ad49754549fbbf8049ea6b573a748acc5f4078f"
+    },
+    {
+      "path": "delivery\\model-r01.glb",
+      "bytes": 29738928,
+      "sha256": "a0bb112f12157e21bb226745c329c499c12ba5780b137dd817485dd0b0de3548"
+    },
+    {
+      "path": "delivery\\portrait.png",
+      "bytes": 1584016,
+      "sha256": "f760daebf8e4f6cff7642d56b411faf6d8f5b450c820a5b24374029979a14564"
+    },
+    {
+      "path": "README.md",
+      "bytes": 5003,
+      "sha256": "f3f6045c9dea298da6fd76b75ee8122324dd10fce605de0830826e6d39db72ac"
+    },
+    {
+      "path": "workflow\\lib\\align_apply.py",
+      "bytes": 2775,
+      "sha256": "ff04ae64da24a2169a2057d2055c682885ea0e513f8e3c371987b0b3773fb3e7"
+    },
+    {
+      "path": "workflow\\lib\\blender_reduce.py",
+      "bytes": 18407,
+      "sha256": "85e895de6f4e993b21f11affbf6e8c835fb52fb35b8fb906f2a517b6d656d9e2"
+    },
+    {
+      "path": "workflow\\lib\\blender_rig.py",
+      "bytes": 60126,
+      "sha256": "4aeb763b62743f99a9da468bbbf040ffeda440cbdb5a1bf8e36aaf96caaeb803"
+    },
+    {
+      "path": "workflow\\lib\\clips_data.py",
+      "bytes": 22262,
+      "sha256": "72e43f2a38024a08c273651fb73fd28eb7a2891e333ed284d36a244791d468d3"
+    },
+    {
+      "path": "workflow\\lib\\glb_skin.py",
+      "bytes": 8834,
+      "sha256": "57f44a9daba03f7a5b7d4df8043685ec4a67a772d669694548c31e34b16a2117"
+    },
+    {
+      "path": "workflow\\lib\\graph_tools.py",
+      "bytes": 5866,
+      "sha256": "c69c2d3a60fa7a511ac241c9b05d5adabe460c666afab89ac1e7b82c10466637"
+    },
+    {
+      "path": "workflow\\lib\\mesh_tools.py",
+      "bytes": 6079,
+      "sha256": "8c2e32d44412aa835a15cb55bccbc8162421af368848fbf95e756485b2bf123c"
+    },
+    {
+      "path": "workflow\\lib\\skin_weights.py",
+      "bytes": 10277,
+      "sha256": "30c7caf8c3d07ecb7c36d4d85c541404860093889cb023d388ad1a8acee78c56"
+    }
+  ],
+  "copiedSha256Verified": true,
+  "testsRun": false,
+  "browserValidationRun": false
+}

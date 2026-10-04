@@ -1,5 +1,7 @@
 import { handleWarpAction } from '../shared/warping.mjs';
 import { handleCharacterSwitch } from '../shared/character-switching.mjs';
+import { switchCharacterById } from '../shared/character-switch.mjs';
+import { ALL_CONTENT, characterVisible } from '../shared/content-visibility.mjs';
 import { handleAdventureAction, recordAdventureGather } from '../shared/adventures.mjs';
 import { handleBoatAction } from '../shared/boats.mjs';
 import { attackProfile, shoulderMagic } from '../shared/combat-profiles.mjs';
@@ -18,9 +20,10 @@ import { cancelBarter } from '../shared/barter.mjs';
 import { carrying, handleCarryAction } from '../shared/carrying.mjs';
 import { toggleCaveFire } from '../shared/cave-fire.mjs';
 import { toggleCaveTorch } from '../shared/cave-light.mjs';
-import { handleRimoNekoAction, returnRimoNeko } from '../shared/rimo-neko.mjs';
+import { handleRimoNekoAction, returnRimoNeko, cancelRimoNekoPet } from '../shared/rimo-neko.mjs';
 import { handleMaeAction, cancelMaePet } from '../shared/mae.mjs';
-import { handleCompanion524Action } from '../shared/companion-524.mjs';
+import { handleKohakuAction, cancelKohakuPet } from '../shared/kohaku.mjs';
+import { handleCompanion524Action, cancelCompanion524Pet } from '../shared/companion-524.mjs';
 import { stopActor } from '../shared/combat.mjs';
 import {
   handleOrbBotAction,
@@ -35,6 +38,7 @@ export function createActionHandler({
   snapshot,
   systemChat,
   runtime,
+  visibility = ALL_CONTENT,
 }) {
   // Unavailable world actions are quiet no-ops. Keep results and sound feedback on
   // the wire, without interrupting play with proximity or busy-state instructions.
@@ -47,6 +51,8 @@ export function createActionHandler({
       return;
     }
     if (action === 'travelAlone') {
+      if (room.kohaku?.petPlayerId === player.id) cancelKohakuPet(room.kohaku);
+      handleKohakuAction(room, player, 'dismissKohaku', now);
       if (room.mae?.petPlayerId === player.id) cancelMaePet(room.mae);
       handleMaeAction(room, player, 'dismissMae', now);
       handleOrbBotAction(room, player, 'dismissBots', null, now);
@@ -68,7 +74,12 @@ export function createActionHandler({
         'dismissBots',
       ].includes(action)
     ) {
-      if (action === 'recallBots' && room.mae?.petPlayerId === player.id) cancelMaePet(room.mae);
+      if (action === 'recallBots') {
+        if (room.kohaku?.petPlayerId === player.id) cancelKohakuPet(room.kohaku);
+        if (room.mae?.petPlayerId === player.id) cancelMaePet(room.mae);
+        if (room.rimoNeko?.petPlayerId === player.id) cancelRimoNekoPet(room.rimoNeko);
+        if (room.companion524?.petPlayerId === player.id) cancelCompanion524Pet(room.companion524);
+      }
       if (handleOrbBotAction(room, player, action, message.targetId, now)) {
         if (action === 'petBot' || action === 'petBots') stopActor(player);
         broadcast(room, snapshot(room));
@@ -78,10 +89,26 @@ export function createActionHandler({
     // A held companion never occupies the hand during another action.
     if (!['cancelCook', 'cancelFishing', 'cancelCoastal'].includes(action))
       releaseHeldOrbBot(room, player, now);
+    if (action === 'petKohaku' || action === 'dismissKohaku') {
+      if (
+        action === 'petKohaku' &&
+        (room.mae?.petPlayerId === player.id ||
+          room.companion524?.petPlayerId === player.id ||
+          room.rimoNeko?.petPlayerId === player.id ||
+          pettingOrbBot(room.orbBots, player.id))
+      )
+        return;
+      if (handleKohakuAction(room, player, action, now)) {
+        if (action === 'petKohaku') stopActor(player);
+        broadcast(room, snapshot(room));
+      }
+      return;
+    }
     if (action === 'petMae' || action === 'dismissMae') {
       if (
         action === 'petMae' &&
-        (room.companion524?.petPlayerId === player.id ||
+        (room.kohaku?.petPlayerId === player.id ||
+          room.companion524?.petPlayerId === player.id ||
           room.rimoNeko?.petPlayerId === player.id ||
           pettingOrbBot(room.orbBots, player.id))
       )
@@ -97,6 +124,7 @@ export function createActionHandler({
         action === 'petRimo' &&
         (room.companion524?.petPlayerId === player.id ||
           room.mae?.petPlayerId === player.id ||
+          room.kohaku?.petPlayerId === player.id ||
           pettingOrbBot(room.orbBots, player.id))
       )
         return;
@@ -111,6 +139,7 @@ export function createActionHandler({
         action === 'pet524' &&
         (room.rimoNeko?.petPlayerId === player.id ||
           room.mae?.petPlayerId === player.id ||
+          room.kohaku?.petPlayerId === player.id ||
           pettingOrbBot(room.orbBots, player.id))
       )
         return;
@@ -122,9 +151,14 @@ export function createActionHandler({
       return;
     }
     if (action === 'changeCharacter') {
+      const requested = switchCharacterById(message.targetId);
+      if (requested && !characterVisible(requested, visibility)) return;
       const result = handleCharacterSwitch(room, player, message, now);
       sendNotice(player, result.text, result.ok ? 'success' : 'error', true);
-      if (result.ok) broadcast(room, snapshot(room, true));
+      if (result.ok) {
+        delete player.unavailableCharacter;
+        broadcast(room, snapshot(room, true));
+      }
       return;
     }
     if (action === 'warp') {

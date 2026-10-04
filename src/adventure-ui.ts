@@ -69,7 +69,7 @@ export function installAdventureUI(api) {
     selected = regionById(id)?.id ?? regionAt(player()?.x, player()?.z)?.id ?? selected;
     signature = '';
     openModal(
-      `<div class="adventure-heading"><span class="eyebrow">BEYOND THE FIRST FIRE</span><h2>まだ見ぬ世界へ。</h2><p class="modal-intro">山の向こう、谷の奥、裂け目の先。旅の証を3つ集めて、影の世界を開こう。</p><div id="adventure-summary" class="adventure-summary"></div></div><div class="adventure-browser"><nav class="adventure-regions" aria-label="探索地域">${ADVENTURE_REGIONS.map((r) => `<button data-region="${r.id}" style="--region-color:${r.color}"><small>${r.kind}</small><strong>${r.name}</strong><span data-region-status="${r.id}">未発見</span></button>`).join('')}</nav><section id="adventure-detail" aria-live="polite"></section></div><p class="form-note">自分で各地を歩いて探索しよう。道標は近づくと記録。討伐は24 m以内の仲間も達成。報酬は各地域で一度だけ受け取れます。</p>`,
+      `<div class="adventure-heading"><span class="eyebrow">BEYOND THE FIRST FIRE</span><h2>まだ見ぬ世界へ。</h2><div id="adventure-summary" class="adventure-summary"></div></div><div class="adventure-browser"><nav class="adventure-regions" aria-label="探索地域">${ADVENTURE_REGIONS.map((r) => `<button data-region="${r.id}" style="--region-color:${r.color}"><small>${r.kind}</small><strong>${r.name}</strong><span data-region-status="${r.id}">未発見</span></button>`).join('')}</nav><section id="adventure-detail" aria-live="polite"></section></div>`,
     );
     for (const button of document.querySelectorAll<HTMLButtonElement>('[data-region]'))
       button.onclick = () => {
@@ -114,7 +114,7 @@ export function installAdventureUI(api) {
     signature = sig;
     const root = document.querySelector<HTMLButtonElement>('#adventure-detail');
     const next = nextObjective(region);
-    root.innerHTML = `<div class="adventure-panorama scene-${region.id}" aria-hidden="true"><span>${region.kind}</span><b>${region.realm ? '✧' : '△'}</b></div><small class="eyebrow">${region.kind} · ${region.kills ? '番人との遭遇あり' : '穏やかな探索'}</small><h3>${region.name}</h3><p>${region.description}</p><blockquote>${region.story}</blockquote><div class="adventure-checks">${region.checkpoints.map((c) => `<div class="${p.visited.includes(c.id) ? 'complete' : ''}">${p.visited.includes(c.id) ? '✓' : '○'} ${c.name}</div>`).join('')}${region.amount ? `<div class="${p.gathered >= region.amount ? 'complete' : ''}">${labels[region.material]}を現地で採集 <b>${p.gathered}/${region.amount}</b></div>` : ''}${region.kills ? `<div class="${p.kills >= region.kills ? 'complete' : ''}">番人を討伐 <b>${p.kills}/${region.kills}</b></div>` : ''}</div><p class="adventure-reward">報酬：${region.realm ? '称号「境界を渡る者」' : '旅の証 ×1'} · ${Object.entries(
+    root.innerHTML = `<div class="adventure-panorama scene-${region.id}" aria-hidden="true"><span>${region.kind}</span><b>${region.realm ? '✧' : '△'}</b></div><small class="eyebrow">${region.kind} · ${region.kills ? '番人との遭遇あり' : '穏やかな探索'}</small><h3>${region.name}</h3><div class="adventure-checks">${region.checkpoints.map((c) => `<div class="${p.visited.includes(c.id) ? 'complete' : ''}">${p.visited.includes(c.id) ? '✓' : '○'} ${c.name}</div>`).join('')}${region.amount ? `<div class="${p.gathered >= region.amount ? 'complete' : ''}">${labels[region.material]}を現地で採集 <b>${p.gathered}/${region.amount}</b></div>` : ''}${region.kills ? `<div class="${p.kills >= region.kills ? 'complete' : ''}">番人を討伐 <b>${p.kills}/${region.kills}</b></div>` : ''}</div><p class="adventure-reward">報酬：${region.realm ? '称号「境界を渡る者」' : '旅の証 ×1'} · ${Object.entries(
       region.reward,
     )
       .map(([k, v]) => `${labels[k]} ×${v}`)

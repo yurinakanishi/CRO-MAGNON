@@ -2935,40 +2935,7 @@ dialog:has(.character-switch) {
   color: #a0af94;
   margin: 0;
 }
-.help-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-  gap: 10px;
-}
-.help-grid > div {
-  background: #abc78d06;
-  border: 1px solid #abc78d1f;
-  border-radius: 8px;
-  padding: 14px;
-}
-.help-grid kbd {
-  font-size: 10px;
-  font-weight: 600;
-  width: auto;
-  padding: 5px 9px;
-  height: 26px;
-  color: #f0dfb6;
-  border-color: #f0dfb640;
-  margin-bottom: 12px;
-}
-.help-grid strong {
-  display: block;
-  font-size: 12px;
-  font-weight: 600;
-}
-.help-grid p {
-  font-size: 10px;
-  line-height: 1.85;
-  color: #92a382;
-  margin: 8px 0 0;
-}
-/* Help tabs of the in-game help dialog. */
-.help-tabs {
+.sub-tabs {
   display: flex;
   gap: 6px;
   margin: 0 0 14px;
@@ -2977,7 +2944,7 @@ dialog:has(.character-switch) {
   background: #0d1712;
   border: 1px solid #a3b58b22;
 }
-.help-tab {
+.sub-tab {
   flex: 1;
   min-height: 40px;
   padding: 8px 14px;
@@ -2991,111 +2958,25 @@ dialog:has(.character-switch) {
     background 0.16s,
     color 0.16s;
 }
-.help-tab:hover {
+.sub-tab:hover {
   color: #d8dcc9;
   background: #ffffff08;
 }
-.help-tab[aria-selected='true'] {
+.sub-tab[aria-selected='true'] {
   background: linear-gradient(180deg, #eabf83, #d5a069);
   color: var(--accent-ink);
   box-shadow:
     0 2px 0 #7a5530,
     0 6px 18px #0004;
 }
-.help-tab.gamepad-focus,
-.help-tab:focus-visible {
+.sub-tab.gamepad-focus,
+.sub-tab:focus-visible {
   outline: 2px solid var(--accent);
   outline-offset: 2px;
 }
-.help-panel[hidden] {
-  display: none;
-}
-.help-status {
-  margin: 0 0 10px;
-  font-size: 11px;
-  color: #c3d3b0;
-  min-height: 1em;
-}
-.help-status:empty {
-  display: none;
-}
-.help-dialog #help-start {
-  margin-top: 18px;
-}
-dialog:has(.help-dialog) {
-  width: min(1120px, calc(100vw - 32px));
-  max-width: 1120px;
-}
-@media (max-width: 640px) {
-  .help-tab {
-    font-size: 11px;
-    padding: 8px 6px;
-    letter-spacing: 0;
-  }
-  .help-grid {
-    grid-template-columns: 1fr 1fr;
-    gap: 8px;
-  }
-  .help-grid > div {
-    padding: 11px;
-  }
-}
-@media (max-width: 430px) {
-  .help-grid {
-    grid-template-columns: 1fr;
-  }
-}
-.help-tip {
-  background: #e0b07012;
-  color: #d9cfae;
-  font-size: 11px;
-  line-height: 2;
-  border-radius: 8px;
-  padding: 14px;
-  margin: 20px 0;
-}
-.help-tip .icon {
-  width: 17px;
-  height: 17px;
-  margin-right: 5px;
-  color: #e0b070;
-}
-.gamepad-help {
-  margin: 20px 0;
-  padding: 16px;
-  border: 1px solid #b6c79d38;
-  border-radius: 8px;
-  background: #b6c79d08;
-}
-.gamepad-help h3 {
-  margin: 0 0 10px;
-  font-size: 14px;
-}
-.gamepad-help p {
-  font-size: 11px;
-  line-height: 1.8;
-}
+
 .gamepad-connection {
   color: #d2dcae;
-}
-.gamepad-bindings {
-  margin: 14px 0;
-}
-.gamepad-bindings > div {
-  display: grid;
-  grid-template-columns: 145px 1fr;
-  gap: 10px;
-  padding: 7px 0;
-  border-bottom: 1px solid #b6c79d18;
-  font-size: 11px;
-  line-height: 1.7;
-}
-.gamepad-bindings dt {
-  font-weight: 600;
-  color: #e0d8b7;
-}
-.gamepad-bindings dd {
-  margin: 0;
 }
 .gamepad-focus {
   outline: 3px solid #efd18c !important;
@@ -3361,12 +3242,6 @@ dialog:has(.earth-map) {
   .recipe p {
     font-size: 8px;
   }
-  .help-grid {
-    gap: 10px;
-  }
-  .help-grid > div {
-    padding: 13px;
-  }
   .controller-menu .button {
     min-height: 42px;
     font-size: 11px;
@@ -3431,7 +3306,6 @@ dialog:has(.earth-map) {
     flex-basis: 100%;
     text-align: center;
   }
-  .help-grid,
   .controller-menu {
     grid-template-columns: 1fr;
   }
@@ -3471,13 +3345,6 @@ dialog:has(.earth-map) {
   .world-label.animal {
     min-width: 100px;
     font-size: 9px;
-  }
-  .gamepad-bindings > div {
-    grid-template-columns: 108px 1fr;
-    font-size: 10px;
-  }
-  .gamepad-help {
-    padding: 12px;
   }
   .title-logo h1 {
     font-size: 40px;

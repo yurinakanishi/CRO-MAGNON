@@ -709,6 +709,18 @@
       "sha256": "3fb4776d3830cda7b00dd1eeadaf4c000ebe7f41af38ccfe0ee55909e1309405",
       "delivery": "/models/mae/model-r01.glb",
       "subject": "Gray rounded soft pouch with two vertical eyes and a straight mouth, based on user mae.jpg."
+    },
+    {
+      "key": "kohaku",
+      "name": "こはくちゃん",
+      "kind": "companion",
+      "height": 0.5199786842176763,
+      "geometryResolution": 512,
+      "referenceVersion": 2,
+      "status": "integrated-unverified",
+      "sha256": "225032577f552cc7da5837494897a60408e5941726f97b6c9a6d5bba9bc4cbfb",
+      "delivery": "/models/kohaku/model-r05.glb",
+      "subject": "Chibi cat-eared girl mascot with cyan eyes, dark bob and cyan ribbons, black-white dress, striped tail; based on the supplied Kohaku pose sheet."
     }
   ],
   "reuse": {
