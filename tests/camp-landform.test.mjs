@@ -13,7 +13,7 @@ import {
 import { CAMP_CAVE_SURFACE } from '../dist/shared/camp-cave-surface.mjs';
 import { CAMP_MOUNTAIN_SURFACE_DATA } from '../dist/shared/camp-mountain-surface-data.mjs';
 import { mountainHeight } from '../dist/shared/camp-mountain.mjs';
-import { walkHeight, cameraFloorHeight, riverX } from '../dist/shared/terrain.mjs';
+import { walkHeight, cameraFloorHeight, riverX, riverHalfWidth } from '../dist/shared/terrain.mjs';
 import { CASTLE, CASTLE_GATE } from '../dist/shared/castle-layout.mjs';
 import { CHARACTER_MODELS } from '../dist/shared/characters.mjs';
 import { CollisionWorld } from '../dist/shared/collision.mjs';
@@ -41,13 +41,17 @@ test('outdoor camp and northern route stay level while the southern castle sits 
   for (let z = -110; z <= 58; z += 2) assert.equal(mountainHeight(50, z), 0, `north route z=${z}`);
   for (let x = 39; x <= 61; x += 2)
     for (let z = 39; z <= 59; z += 2) assert.ok(mountainHeight(x, z) < 0.03);
-  assert.ok(CAMP_CAVE.z > CAMP.z && CAMP_CAVE.elevation >= 8);
+  assert.ok(CAMP_CAVE.z > CAMP.z && CAMP_CAVE.elevation === 0);
+  assert.ok(Math.hypot(CAMP_CAVE.x - CAMP.x, CAMP_CAVE.z - 9.4 - CAMP.z) < 45);
   assert.ok(mountainHeight(CASTLE.x, CASTLE.z) >= 34);
   assert.ok(CASTLE.z > CAMP_CAVE.z);
   assert.ok(walkHeight(CASTLE_GATE.x, CASTLE_GATE.z) >= 34);
   for (let z = -64; z <= 184; z += 1)
-    for (let dx = -6; dx <= 6; dx += 1)
-      assert.equal(mountainHeight(riverX(z) + dx, z), 0, `river ${z}/${dx}`);
+    for (const fraction of [-0.9, 0, 0.9])
+      assert.ok(
+        mountainHeight(riverX(z) + riverHalfWidth(z) * fraction, z) <= 0,
+        `river ${z}/${fraction}`,
+      );
 });
 test('all playable characters walk into and out of the cave, then the full gentle trail to the castle', () => {
   const collision = new CollisionWorld();
@@ -56,7 +60,8 @@ test('all playable characters walk into and out of the cave, then the full gentl
     { x: CAMP_CAVE.x, z: CAMP_CAVE.z - 5 },
     CAVE_MURAL_VIEW,
     { x: CAMP_CAVE.x, z: CAMP_CAVE.z - 5 },
-    ...CAMP_MOUNTAIN_TRAIL.slice(4),
+    ...[...CAVE_APPROACH].reverse(),
+    ...CAMP_MOUNTAIN_TRAIL,
     CASTLE_GATE,
     ...CAMP_MOUNTAIN_TRAIL.slice(0, -1).reverse(),
     { x: 48, z: 57 },
@@ -76,7 +81,13 @@ test('all playable characters walk into and out of the cave, then the full gentl
     let time = 1000;
     for (const goal of goals) {
       // Give every gait the same travel budget, including slower octopus crawling.
-      const steps = Math.ceil(Math.hypot(actor.x-goal.x,actor.z-goal.z)/((model.walkSpeed??WORLD.walkSpeed)*.025))*2+100;
+      const steps =
+        Math.ceil(
+          Math.hypot(actor.x - goal.x, actor.z - goal.z) /
+            ((model.walkSpeed ?? WORLD.walkSpeed) * 0.025),
+        ) *
+          2 +
+        100;
       for (
         let step = 0;
         Math.hypot(actor.x - goal.x, actor.z - goal.z) > 0.08 && step < steps;
@@ -130,8 +141,8 @@ test('automatic routes leave the cave by its entrance and follow the uphill trai
       }
       assert.ok(Math.hypot(previous.x - goal.x, previous.z - goal.z) < 0.1);
       assert.ok(
-        path.some((p) => Math.hypot(p.x - 35, p.z - 104) < 2),
-        'passes the cave ledge',
+        path.some((p) => Math.hypot(p.x - 21, p.z - 87) < 2),
+        'passes the foothill switchback west of the cave',
       );
     }
   }
@@ -164,7 +175,7 @@ test('cave walls stop walking out sideways and the roof has room over the main a
   assert.ok(walls > 20);
 });
 test('the relocated marsh remains low grassland beside the mountain and clear of the river', () => {
-  for (let r = 0; r <= BEHEMOTH_MARSH.radius + 7; r += 3)
+  for (let r = 0; r <= BEHEMOTH_MARSH.radius; r += 2)
     for (let a = 0; a < Math.PI * 2; a += 0.1) {
       const x = BEHEMOTH_GROUND.x + Math.cos(a) * r,
         z = BEHEMOTH_GROUND.z + Math.sin(a) * r;

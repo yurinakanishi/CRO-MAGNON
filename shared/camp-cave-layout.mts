@@ -1,15 +1,15 @@
-// The outdoor camp stays at (50,50). All placements here are additions behind it.
-// Kept dependency-free so rendering, coast data, navigation and actions agree.
+import { riverX, riverHalfWidth, riverBankDrop } from './river-profile.mjs';
+// The outdoor camp stays at (50,50). Shared by rendering and terrain physics.
 export const CAMP_CAVE = Object.freeze({
   id: 'camp-cave',
   key: 'camp-cave',
-  name: 'はじまりの壁画洞窟',
-  x: 35,
-  z: 125.15,
+  name: 'アプデの洞窟',
+  x: 52,
+  z: 94,
   yaw: Math.PI,
   scale: 1,
   clearance: 50,
-  elevation: 8,
+  elevation: 0,
   groundOffset: -1.05,
 });
 // r25 retains the original rock mouth and apron, then joins the extended
@@ -58,30 +58,75 @@ export function caveLocal(x: number, z: number) {
 }
 export const CAMP_MOUNTAIN_TRAIL = Object.freeze([
   { x: 50, z: 62 },
-  { x: 49, z: 73 },
-  { x: 45, z: 84 },
-  { x: 42, z: 95 },
-  { x: 35, z: 104 },
-  { x: 22, z: 102 },
-  { x: 8, z: 97 },
-  { x: -10, z: 91 },
-  { x: -30, z: 87 },
-  { x: -50, z: 90 },
+  { x: 42, z: 70 },
+  { x: 34, z: 73 },
+  { x: 16, z: 84 },
+  { x: 18, z: 85 },
+  { x: 19, z: 86 },
+  { x: 21, z: 87 },
+  { x: -8, z: 88 },
+  { x: -29, z: 88 },
   { x: -68, z: 96 },
-  { x: -68, z: 116 },
+  { x: -68, z: 122 },
   { x: -68, z: 123 },
 ]);
-export const CAVE_APPROACH = CAMP_MOUNTAIN_TRAIL.slice(0, 5);
+// A separate level approach reaches the mountain foot without climbing the
+// castle trail. The original cave mouth is local Z=9.4; the apron begins at 18.
+export const CAVE_APPROACH = Object.freeze([
+  { x: 48, z: 60 },
+  { x: 52, z: 66 },
+  { x: CAMP_CAVE.x, z: CAMP_CAVE.z - 24 },
+  { x: CAMP_CAVE.x, z: CAMP_CAVE.z - 18 },
+  { x: CAMP_CAVE.x, z: CAMP_CAVE.z - 12 },
+]);
+export const CAVE_FOOT = Object.freeze({
+  minX: CAMP_CAVE.x - 15,
+  maxX: CAMP_CAVE.x + 15,
+  minZ: CAMP_CAVE.z - 29,
+  maxZ: CAMP_CAVE.z - 1,
+});
+export const CAVE_HILL = Object.freeze({ minX: -16, maxX: 145, minZ: 58, maxZ: 200 });
+function smooth(v: number) {
+  const t = Math.max(0, Math.min(1, v));
+  return t * t * (3 - 2 * t);
+}
+// Broaden the source mountain's eastern skirt to cover the complete cave.
+// The inverse is shared by measured terrain; both visual LODs retain their UVs.
+function caveHillWidth(z: number) {
+  return 1 + 1.6 * smooth((z - 58) / 22) * (1 - smooth((z - 140) / 60));
+}
+export function expandedCaveHillX(x: number, z: number) {
+  return x <= 0 ? x : x * caveHillWidth(z);
+}
+export function sourceCaveHillX(x: number, z: number) {
+  return x <= 0 ? x : x / caveHillWidth(z);
+}
+// Extend the main mountain's eastern slope, filling its former saddle. Height
+// increases toward the original massif, rather than peaking above the cave.
+export function caveFootHeight(x: number, z: number, height: number) {
+  if (z < CAVE_HILL.minZ || z > CAVE_HILL.maxZ) return height;
+  const shoulder = 1 - smooth((x - 28) / 82);
+  const foothill = 38 * shoulder * smooth((z - 59) / 77) * (1 - smooth((z - 138) / 62));
+  const delta = Math.max(0, foothill - height);
+  const joined = height + delta * smooth(delta / 2);
+  // A wide, shallow approach reaches the original ground-level mouth.
+  const approach =
+    (1 - smooth((Math.abs(x - CAMP_CAVE.x) - 4.2) / 14)) * (1 - smooth((z - 75) / 9));
+  const bankWidth = 20 + 12 * smooth((z - 94) / 28);
+  const bank = smooth((riverX(z) - riverHalfWidth(z) - x) / bankWidth);
+  return joined * (1 - approach) * bank - riverBankDrop(x, z);
+}
 export function campTrailDistance(x: number, z: number) {
   let distance = Infinity;
-  for (let i = 1; i < CAMP_MOUNTAIN_TRAIL.length; i++) {
-    const a = CAMP_MOUNTAIN_TRAIL[i - 1],
-      b = CAMP_MOUNTAIN_TRAIL[i],
-      dx = b.x - a.x,
-      dz = b.z - a.z;
-    const t = Math.max(0, Math.min(1, ((x - a.x) * dx + (z - a.z) * dz) / (dx * dx + dz * dz)));
-    distance = Math.min(distance, Math.hypot(x - a.x - dx * t, z - a.z - dz * t));
-  }
+  for (const trail of [CAMP_MOUNTAIN_TRAIL, CAVE_APPROACH])
+    for (let i = 1; i < trail.length; i++) {
+      const a = trail[i - 1],
+        b = trail[i],
+        dx = b.x - a.x,
+        dz = b.z - a.z;
+      const t = Math.max(0, Math.min(1, ((x - a.x) * dx + (z - a.z) * dz) / (dx * dx + dz * dz)));
+      distance = Math.min(distance, Math.hypot(x - a.x - dx * t, z - a.z - dz * t));
+    }
   return distance;
 }
 export function insideCaveGround(x: number, z: number) {

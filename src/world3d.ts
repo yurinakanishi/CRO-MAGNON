@@ -1,6 +1,7 @@
 import type { ViewState } from './view-state.js';
 import { LocalPrediction } from './local-prediction.js';
 import { wrapHeading } from './assisted-controls.js';
+import { TouchCameraFollow, touchFieldOfView } from './touch-input.js';
 import { mammothNavigation } from '../shared/mammoth-navigation.mjs';
 import { enemyIsSolid } from '../shared/combat.mjs';
 import { activateMiddenObstacle } from '../shared/coastal-sites.mjs';
@@ -156,6 +157,7 @@ export class WorldRenderer {
   onFrameTiming: ((ms: number) => void) | null = null;
   private automaticHeading: number | null = null;
   private automaticCameraActive = false;
+  private touchCamera = new TouchCameraFollow();
   private automaticDistance: number | null = null;
   private manualCamera: { pitch: number; distance: number } | null = null;
   private assistMarkers = new Map<
@@ -711,6 +713,7 @@ export class WorldRenderer {
     this.down = (e) => {
       if (!this.manualInputAllowed()) return;
       if (e.button !== 0 && e.button !== 2) return;
+      if (this.pointer) return;
       e.preventDefault();
       this.canvas.focus({ preventScroll: true });
       this.pointer = {
@@ -1041,6 +1044,15 @@ export class WorldRenderer {
   getMovementDirection(sx, sy) {
     return movementFromCamera(sx, sy, this.yaw);
   }
+  setTouchCamera(enabled: boolean) {
+    if (this.touchCamera.enabled === enabled) return;
+    this.touchCamera.enabled = enabled;
+    this.touchCamera.reset();
+    this.resize();
+  }
+  setTouchMovement(dx: number, dz: number) {
+    this.touchCamera.movement(dx, dz);
+  }
   setAutomaticCamera(heading: number | null, active = true) {
     if (heading !== null && this.automaticHeading === null) {
       this.endCompanionView();
@@ -1109,6 +1121,7 @@ export class WorldRenderer {
   rotateCamera(horizontal: number, vertical: number) {
     if (!this.manualCameraAllowed() || this.automaticHeading !== null) return;
     this.yaw -= horizontal;
+    this.touchCamera?.hold(performance.now());
     // Orbit below the look target; ground and water clearance keep the camera above the surface.
     this.pitch = clamp(this.pitch + vertical, -0.5, 1.05);
   }
@@ -1137,6 +1150,7 @@ export class WorldRenderer {
     else if (me?.state.moving) this.yaw = me.state.facing + Math.PI;
     else this.yaw = -0.28;
     this.pitch = 0.19;
+    this.touchCamera?.hold(performance.now());
     this.targetDistance = me?.state.mountId
       ? 9
       : me?.state.boatId
@@ -1286,6 +1300,7 @@ export class WorldRenderer {
     );
     this.renderer.setSize(this.width, this.height, false);
     this.camera.aspect = this.width / this.height;
+    this.camera.fov = touchFieldOfView(this.camera.aspect, this.touchCamera.enabled);
     this.camera.updateProjectionMatrix();
   }
 
@@ -1781,6 +1796,9 @@ export class WorldRenderer {
       );
       this.pitch += (0.32 - this.pitch) * (1 - Math.exp(-dt * 2.5));
     }
+    if (this.automaticHeading === null && !viewed) {
+      this.yaw = this.touchCamera.step(this.yaw, performance.now(), dt, !!this.pointer?.dragged);
+    }
     this.distance += (this.targetDistance - this.distance) * (1 - Math.exp(-dt * 10));
     const aim = this.focus.clone();
     const offset = new THREE.Vector3(
@@ -1799,7 +1817,7 @@ export class WorldRenderer {
       cameraDistance = this.landmarks.caveCamera.distance(aim, offset, cameraDistance);
       this.camera.position.copy(aim).addScaledVector(offset, cameraDistance);
     }
-    if (this.automaticHeading !== null && !viewed) {
+    if ((this.automaticHeading !== null || this.touchCamera.enabled) && !viewed) {
       // Obstructions pull in immediately; clearance releases the distance slowly.
       this.automaticDistance =
         this.automaticDistance === null || cameraDistance < this.automaticDistance
@@ -2100,6 +2118,8 @@ export class WorldRenderer {
         .sort()
         .join(',');
       data.cameraYaw = this.yaw.toFixed(3);
+      data.touchCamera = String(this.touchCamera.enabled);
+      data.cameraFov = this.camera.fov.toFixed(2);
       data.cameraPitch = this.pitch.toFixed(3);
       data.cameraDistance = cameraDistance.toFixed(2);
       data.cameraFocus = [this.focus.x, this.focus.y, this.focus.z]

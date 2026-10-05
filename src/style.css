@@ -954,147 +954,6 @@ body[data-screen] .world-labels {
   filter: drop-shadow(0 1px 1px #000a);
 }
 
-/* ---- objectives (pause menu) ---- */
-.quest-list {
-  padding: 12px 0 12px;
-  display: grid;
-  gap: 12px;
-  border-top: 1px solid #ffffff0a;
-}
-.quest {
-  display: flex;
-  gap: 10px;
-  align-items: flex-start;
-}
-.quest-check {
-  border: 1px solid #8b9a7a80;
-  border-radius: 50%;
-  display: grid;
-  place-items: center;
-  flex-shrink: 0;
-  width: 19px;
-  height: 19px;
-  font-size: 9px;
-  color: #aab98f;
-  margin-top: 1px;
-}
-.quest strong {
-  font-size: 10.5px;
-  color: #d5dccb;
-  font-weight: 500;
-}
-.quest p {
-  font-size: 8.5px;
-  line-height: 1.7;
-  margin: 3px 0 0;
-  color: #8a9886;
-}
-.quest.done .quest-check {
-  background: #a4c082;
-  color: #1e2622;
-  border-color: #a4c082;
-}
-.quest.done strong {
-  color: #c4d8a7;
-  text-decoration: line-through;
-  text-decoration-color: #c4d8a760;
-}
-.progress-track {
-  height: 3px;
-  width: 100%;
-  background: #ffffff10;
-  margin-top: 7px;
-  border-radius: 3px;
-}
-.progress-track span {
-  display: block;
-  height: 100%;
-  background: #c3d88f;
-  transition: width 0.3s;
-  width: 0;
-  border-radius: 3px;
-}
-.camp-row {
-  display: flex;
-  align-items: center;
-  gap: 9px;
-  border-top: 1px solid #ffffff0a;
-  padding: 10px 0 0;
-}
-.camp-icon {
-  display: grid;
-  place-items: center;
-  width: 26px;
-  height: 26px;
-  border-radius: 6px;
-  background: #e0b07020;
-  color: #e9be8c;
-  flex-shrink: 0;
-}
-.camp-icon .icon {
-  width: 14px;
-  height: 14px;
-}
-.camp-row > div:not(.camp-stats) {
-  min-width: 0;
-  flex: 1;
-}
-.camp-row strong {
-  display: block;
-  font-size: 10.5px;
-  font-weight: 500;
-  color: #e3dcc4;
-  white-space: nowrap;
-}
-.camp-row small {
-  display: block;
-  font-size: 7px;
-  letter-spacing: 1.4px;
-  color: #8c9a7d;
-  margin-top: 3px;
-}
-.camp-stats {
-  display: flex;
-  gap: 10px;
-  color: #b7a986;
-  font-size: 10px;
-}
-.camp-stats > span {
-  display: flex;
-  align-items: center;
-  gap: 4px;
-}
-.camp-stats .icon {
-  width: 12px;
-  height: 12px;
-}
-.camp-stats b {
-  color: #d9d2b6;
-  font-weight: 600;
-}
-.camp-stats em {
-  font-style: normal;
-  color: #6f796a;
-  font-size: 9px;
-}
-.camp-link {
-  background: none;
-  color: #d3bd90;
-  width: 100%;
-  padding: 9px 0 11px;
-  font-size: 9.5px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-}
-.camp-link .icon {
-  width: 13px;
-  height: 13px;
-}
-.camp-link:hover {
-  color: #efd7ad;
-}
-
 /* ---- HUD: map and connection (top-right) ---- */
 .map-hud {
   position: absolute;
@@ -1480,33 +1339,6 @@ body[data-screen] .world-labels {
 }
 .resource-icon.cookedMeat {
   color: #d1ac76;
-}
-.objectives .modal-intro {
-  margin-bottom: 6px;
-}
-.objectives .quest-list {
-  gap: 14px;
-  padding: 14px 0;
-}
-.objectives .quest strong {
-  font-size: 13px;
-}
-.objectives .quest p {
-  font-size: 11px;
-}
-.objectives .quest-check {
-  width: 22px;
-  height: 22px;
-  font-size: 11px;
-}
-.objectives .camp-row {
-  padding-top: 14px;
-}
-.objectives .camp-row strong {
-  font-size: 12px;
-}
-.objectives .camp-stats {
-  font-size: 12px;
 }
 .hunt-controls {
   display: flex;
@@ -1994,8 +1826,7 @@ dialog:has(.pause-menu) #modal-body {
 .pause-panel[hidden] {
   display: none;
 }
-.pause-panel > h2:first-child,
-.pause-panel > .objectives > h2 {
+.pause-panel > h2:first-child {
   padding-right: 96px;
 }
 .pause-panel .gulf-actions + h2 {
@@ -2006,25 +1837,6 @@ dialog:has(.pause-menu) #modal-body {
   font-size: 10px;
   color: #8a9886;
   letter-spacing: 0.3px;
-}
-.controller-menu {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 8px;
-}
-.controller-menu .button {
-  white-space: normal;
-  min-height: 46px;
-  justify-content: flex-start;
-  text-align: left;
-  gap: 12px;
-  padding: 10px 14px;
-  font-size: 12px;
-}
-.controller-menu .button .icon {
-  width: 17px;
-  height: 17px;
-  color: #d6c79a;
 }
 .settings-list {
   display: grid;
@@ -2938,46 +2750,6 @@ dialog:has(.character-switch) {
   color: #a0af94;
   margin: 0;
 }
-.sub-tabs {
-  display: flex;
-  gap: 6px;
-  margin: 0 0 14px;
-  padding: 4px;
-  border-radius: 9px;
-  background: #0d1712;
-  border: 1px solid #a3b58b22;
-}
-.sub-tab {
-  flex: 1;
-  min-height: 40px;
-  padding: 8px 14px;
-  border-radius: 6px;
-  background: none;
-  font-size: 12px;
-  font-weight: 600;
-  letter-spacing: 0.06em;
-  color: #93a08f;
-  transition:
-    background 0.16s,
-    color 0.16s;
-}
-.sub-tab:hover {
-  color: #d8dcc9;
-  background: #ffffff08;
-}
-.sub-tab[aria-selected='true'] {
-  background: linear-gradient(180deg, #eabf83, #d5a069);
-  color: var(--accent-ink);
-  box-shadow:
-    0 2px 0 #7a5530,
-    0 6px 18px #0004;
-}
-.sub-tab.gamepad-focus,
-.sub-tab:focus-visible {
-  outline: 2px solid var(--accent);
-  outline-offset: 2px;
-}
-
 .gamepad-connection {
   color: #d2dcae;
 }
@@ -3245,11 +3017,6 @@ dialog:has(.earth-map) {
   .recipe p {
     font-size: 8px;
   }
-  .controller-menu .button {
-    min-height: 42px;
-    font-size: 11px;
-    padding: 8px 11px;
-  }
 }
 @media (max-width: 520px) {
   .map-hud {
@@ -3308,9 +3075,6 @@ dialog:has(.earth-map) {
   .boat-controls #boat-hint {
     flex-basis: 100%;
     text-align: center;
-  }
-  .controller-menu {
-    grid-template-columns: 1fr;
   }
   .inventory-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -4370,18 +4134,4 @@ dialog:has(.atlas) #modal-body {
 }
 .pause-rail .pause-tabs {
   margin-top: 4px;
-}
-.sub-tabs {
-  margin-bottom: 18px;
-}
-.pause-subpanel[hidden] {
-  display: none;
-}
-.pause-subpanel > h2:first-child,
-.pause-subpanel > .objectives > h2 {
-  padding-right: 96px;
-}
-/* The sticky Back button sits over the panel's top-right corner; keep the sub-tabs clear of it. */
-.pause-panel > .sub-tabs {
-  margin-right: 96px;
 }

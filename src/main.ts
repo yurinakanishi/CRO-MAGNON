@@ -4,7 +4,9 @@ import {
   setConnectedController,
 } from './controller-labels.js';
 import { InputCues } from './input-cues-ui.js';
-import type { CueAction } from './input-cues.js';
+import type { CueContext } from './input-cues.js';
+import { TouchControls, touchDevice, type TouchAction } from './touch-controls.js';
+import { movementFromCamera } from '../shared/terrain.mjs';
 import { graphicsSettingsMarkup, bindGraphicsSettings } from './graphics-settings.js';
 import { mapScreen } from './map-screen.js';
 import { installMapWarp, updateMapWarp, type MapInput } from './map-warp-ui.js';
@@ -54,6 +56,7 @@ import {
 } from './assisted-controls.js';
 import { withinAttackReach } from '../shared/combat.mjs';
 import { OrbBotUI } from './orb-bot-ui.js';
+import { bindMascotMenu, mascotMenuMarkup, updateMascotMenu } from './mascot-menu.js';
 import {
   BOT_DESIGNS,
   nearOrbBot,
@@ -117,6 +120,7 @@ import {
 import { bindSetupFlow, closeSetupFlow, setupFlowBack, setupFlowOpen } from './setup-flow.js';
 
 const icons = {
+  menu: '<path d="M4 6h16M4 12h16M4 18h16"/>',
   unarmed:
     '<path d="M5 12V8a2 2 0 0 1 4 0V6a2 2 0 0 1 4 0v1a2 2 0 0 1 4 0v2a2 2 0 0 1 4 0v7l-4 5H9l-6-7a2 2 0 0 1 2-2Z"/>',
   shell:
@@ -222,6 +226,9 @@ const blockedMovementKeys = new Set();
 const movementCommands = new MovementCommands();
 let gamepadControls: GamepadControls | undefined;
 let motionControls: MotionControls | undefined;
+let touchControls: TouchControls | undefined;
+let touchYaw = 0;
+const touchMode = () => touchControls?.enabled ?? touchDevice();
 let easyControls = readAssistedControls();
 const assistedNavigation = new AssistedNavigation();
 const attackAssist = new StableAssistTarget<any>();
@@ -236,6 +243,7 @@ let mapInput: MapInput | undefined;
 let usingGamepad = false;
 const controllerHints = () => fixedIdentity || usingGamepad;
 document.body.classList.toggle('exhibition-mode', fixedIdentity);
+document.body.classList.toggle('touch-mode', touchMode());
 let selectedAnimalId = null,
   stateReceivedAt = performance.now(),
   hurtUntil = 0;
@@ -289,10 +297,7 @@ const orbBotUI = new OrbBotUI({
   player,
   now: () => renderer?.serverNow() ?? Date.now(),
   available: () => joined && !renderUnavailable && !screens.active,
-  pettable: nearbyBotsForPetting,
   action,
-  openModal,
-  closeModal: () => $('#modal').close(),
 });
 const screens = new ScreenManager($('#screens'), (id) => {
   inputCues?.hide();
@@ -300,12 +305,34 @@ const screens = new ScreenManager($('#screens'), (id) => {
   if (id) stopInput();
   else $('#world').focus({ preventScroll: true });
 });
-inputCues = new InputCues($('.game-viewport'), (command: CueAction) => {
-  if (!joined || renderUnavailable || screens.active || $('#modal').open || player()?.downedUntil)
+inputCues = new InputCues($('.game-viewport'), performCue);
+function performCue(command: TouchAction) {
+  if (
+    !joined ||
+    renderUnavailable ||
+    screens.active ||
+    $('#modal').open ||
+    (player()?.downedUntil && !['menu', 'map', 'journal', 'mascots', 'bag'].includes(command))
+  )
     return;
   if (assistedControls() && ['inspect', 'zoomIn', 'zoomOut', 'endInspect'].includes(command))
     return;
   switch (command) {
+    case 'menu':
+      openPauseMenu();
+      break;
+    case 'map':
+      openMap();
+      break;
+    case 'journal':
+      openJournal();
+      break;
+    case 'mascots':
+      openPauseMenu('mascots');
+      break;
+    case 'center':
+      if (!assistedControls()) renderer.focusPlayer(player()?.facing + Math.PI);
+      break;
     case 'inspect':
       renderer.viewCompanion();
       break;
@@ -356,7 +383,7 @@ inputCues = new InputCues($('.game-viewport'), (command: CueAction) => {
       break;
   }
   if (!$('#modal').open) $('#world').focus({ preventScroll: true });
-});
+}
 
 function showRenderError(text) {
   renderUnavailable = true;
@@ -395,6 +422,7 @@ try {
     onAnimal: interactAnimal,
     onError: showRenderError,
     onInspect: () => {
+      touchControls?.stop();
       // Looking at a companion only stops walking, never its pet/joy animation.
       for (const key of keys) blockedMovementKeys.add(key);
       keys.clear();
@@ -515,11 +543,14 @@ function send(message) {
   if (socket?.readyState === WebSocket.OPEN) socket.send(JSON.stringify(message));
 }
 function stopInput() {
+  touchControls?.hide();
   renderer?.endCompanionView();
   motionControls?.input.pause();
   clearMovementInput();
 }
 function clearMovementInput() {
+  touchControls?.stop();
+  renderer.setTouchMovement?.(0, 0);
   renderer.prediction?.stop();
   assistedNavigation.pause();
   attackAssist.reset();
@@ -571,7 +602,7 @@ function addChat(message) {
 }
 function connection(connected, label) {
   if (!connected)
-    motionControls?.pause('通信が切れました。再接続後、両手を確認して自動再開します。');
+    motionControls?.pause('通信が切れました。再接続後、操作する手を確認して自動再開します。');
   joined = connected;
   updateCharacterSwitch(player(), renderer.serverNow(), connected);
   if (!connected) renderer.prediction?.reset();
@@ -708,7 +739,7 @@ async function connect(automatic = false) {
         (previous?.mountId ?? previous?.boatId ?? null) !==
         (player()?.mountId ?? player()?.boatId ?? null)
       ) {
-        motionControls?.pause('乗り物が変わりました。両手を戻すと自動再開します。');
+        motionControls?.pause('乗り物が変わりました。操作する手を戻すと自動再開します。');
         movementCommands.reset();
         lastGait = null;
       }
@@ -783,6 +814,8 @@ async function connect(automatic = false) {
   });
   ws.addEventListener('close', () => {
     if (ws !== socket) return;
+    touchControls?.stop();
+    renderer.setTouchMovement?.(0, 0);
     connection(false, manualLeave ? '未接続' : '再接続中…');
     gamepadControls?.suspend();
     keys.clear();
@@ -884,7 +917,6 @@ function updateHUD() {
   $('#energy-label').textContent = `${energy} / 100`;
   $('#energy-bar').style.width = `${energy}%`;
   $('#energy-track').dataset.level = energy <= 25 ? 'critical' : energy <= 50 ? 'low' : 'ok';
-  updateObjectives();
   const target = nearby();
   $('#interaction-hint').hidden = !target;
   $('#interaction-hint span').textContent = target?.label ?? '';
@@ -910,31 +942,6 @@ function updateHUD() {
   villageUI.update();
   if ($('#modal').open && $('#big-map')) drawMinimap($('#big-map'), true);
 }
-/** The starter objectives live in the pause menu, not on the HUD. */
-function questStatus() {
-  const me = player(),
-    gathered = me?.gathered ?? 0;
-  const quests: [string, boolean][] = [
-    ['gather', gathered >= 3],
-    ['craft', !!me?.tool],
-    ['camp', state.camp.level > 0],
-  ];
-  return { gathered, quests, done: quests.filter(([, complete]) => complete).length };
-}
-function objectivesMarkup() {
-  return `<div class="objectives"><h2>目標</h2><p class="modal-intro">はじめての火を育てる · <span id="quest-count">0 / 3</span></p><div class="quest-list" id="quest-list"><div class="quest" id="quest-gather"><span class="quest-check">1</span><div><strong>森の恵みを集める</strong><p>木や石、ベリーを3つ採集</p><div class="progress-track"><span id="gather-progress"></span></div></div></div><div class="quest" id="quest-craft"><span class="quest-check">2</span><div><strong>はじめての道具</strong><p>木材3・石2で石斧をつくる</p></div></div><div class="quest" id="quest-camp"><span class="quest-check">3</span><div><strong>みんなの火を育てる</strong><p>拠点に木材12・石6を届ける</p></div></div></div><div class="camp-row"><span class="camp-icon">${icon('flame')}</span><div><strong id="camp-name">小さな野営地</strong><small id="camp-level">CAMP LEVEL 0</small></div><div class="camp-stats"><span>${icon('wood')} <b id="camp-wood">0</b><em>/ 12</em></span><span>${icon('stone')} <b id="camp-stone">0</b><em>/ 6</em></span></div></div></div>`;
-}
-function updateObjectives() {
-  if (!$('#quest-list')) return;
-  const { gathered, quests, done } = questStatus();
-  $('#gather-progress').style.width = `${Math.min(gathered / 3, 1) * 100}%`;
-  for (const [id, complete] of quests) $(`#quest-${id}`).classList.toggle('done', complete);
-  $('#quest-count').textContent = `${done} / 3`;
-  $('#camp-wood').textContent = state.camp.wood;
-  $('#camp-stone').textContent = state.camp.stone;
-  $('#camp-level').textContent = `CAMP LEVEL ${state.camp.level}`;
-  $('#camp-name').textContent = state.camp.level ? 'みんなの野営地' : '小さな野営地';
-}
 /** True while the player cannot act from a menu: not joined, downed, mounted, or mid-task. */
 function modalActionsBlocked() {
   const me = player();
@@ -957,6 +964,7 @@ function updateModalHUD() {
     inv = inventoryCounts(me?.inventory);
   const unavailable = modalActionsBlocked();
   updateInventory();
+  updateMascotMenu($('#modal-body'), state, selfId);
   if ($('#modal-fishing-kit'))
     $('#modal-fishing-kit').disabled =
       unavailable || !!me?.gulf?.fishingKit || inv.wood < 3 || inv.stone < 1;
@@ -1006,9 +1014,20 @@ function action(type, targetId?, cropId?) {
     villageUI.open(targetId);
     return;
   }
-  if (player()?.boatId && !['boardBoat', 'fish', 'cancelFishing', 'recallBots'].includes(type))
+  if (
+    player()?.boatId &&
+    ![
+      'boardBoat',
+      'fish',
+      'cancelFishing',
+      'recallBots',
+      'selectMascot',
+      'deselectMascot',
+    ].includes(type)
+  )
     return;
-  if (player()?.mountId && !['ride', 'recallBots'].includes(type)) return;
+  if (player()?.mountId && !['ride', 'recallBots', 'selectMascot', 'deselectMascot'].includes(type))
+    return;
   if (
     type === 'gulfOpen' ||
     (inGulf(player()?.x, player()?.z) && ['contribute', 'trade'].includes(type))
@@ -1135,9 +1154,6 @@ function canPetMae() {
 function petMae() {
   if (canPetMae()) action('petMae');
 }
-function dismissMae() {
-  if (state.mae?.followPlayerId === selfId) action('dismissMae');
-}
 function canPetKohaku() {
   return (
     joined &&
@@ -1152,9 +1168,6 @@ function canPetKohaku() {
 }
 function petKohaku() {
   if (canPetKohaku()) action('petKohaku');
-}
-function dismissKohaku() {
-  if (state.kohaku?.followPlayerId === selfId) action('dismissKohaku');
 }
 function nearbyBotsForPetting() {
   if (
@@ -1388,18 +1401,6 @@ function updateHuntingHUD() {
       : 'V';
   $('#dismiss-rimo-button').hidden = !joined || state.rimoNeko?.followPlayerId !== selfId;
   $('#dismiss-rimo-button kbd').textContent = controllerHints() ? 'メニュー' : 'T';
-  const menuRimo = $('[data-controller-menu="dismissRimo"]');
-  const menuKohaku = $('[data-controller-menu="dismissKohaku"]');
-  if (menuKohaku) menuKohaku.disabled = state.kohaku?.followPlayerId !== selfId;
-  const menuPetKohaku = $('[data-controller-menu="petKohaku"]');
-  if (menuPetKohaku) menuPetKohaku.disabled = !canPetKohaku();
-  const menuMae = $('[data-controller-menu="dismissMae"]');
-  if (menuMae) menuMae.disabled = state.mae?.followPlayerId !== selfId;
-  const menuPetMae = $('[data-controller-menu="petMae"]');
-  if (menuPetMae) menuPetMae.disabled = !canPetMae();
-  if (menuRimo) menuRimo.disabled = state.rimoNeko?.followPlayerId !== selfId;
-  const menuDismiss = $('[data-controller-menu="dismiss524"]');
-  if (menuDismiss) menuDismiss.disabled = state.companion524?.followPlayerId !== selfId;
   const me = player(),
     animal = me?.mountId ? (state.animals || []).find((a) => a.id === me.mountId) : huntTarget(),
     inv = inventoryCounts(me?.inventory),
@@ -1423,7 +1424,13 @@ function updateHuntingHUD() {
   rideButton.querySelector('span').textContent = mounted ? 'マンモスから降りる' : 'マンモスに乗る';
   $('.riding-controls').hidden = !mounted && !nearRide;
   // The button already names its key and action; the hint only adds what it cannot say.
-  let ridingHint = mounted ? (controllerHints() ? '左スティックで移動' : 'WASDで移動') : '';
+  let ridingHint = mounted
+    ? touchMode()
+      ? '移動パッドで移動'
+      : controllerHints()
+        ? '左スティックで移動'
+        : 'WASDで移動'
+    : '';
   const carryChoice = joined && !renderUnavailable && hasCarryChoice();
   if (carryChoice) {
     const partnerId = me.carryOfferFromId || me.carryOfferToId || me.carrierId || me.passengerId;
@@ -1485,68 +1492,66 @@ function updateHuntingHUD() {
           : petChoice?.label;
   const closeAction = nearby();
   const busy = cooking || fishing || !!coastal;
-  inputCues?.update(
-    {
-      inspect: renderer.companionViewChoice()?.label,
-      viewing: renderer.viewingCompanion,
-      automaticCamera: assistedControls(),
-      pet: petLabel,
-      interaction: closeAction?.action.startsWith('pet') ? undefined : closeAction?.label,
-      ride: !rideButton.disabled ? rideButton.querySelector('span').textContent : undefined,
-      board: !$('#boat-board').disabled ? $('#boat-board span').textContent : undefined,
-      attack:
-        attackAvailable &&
-        !![...(state.animals ?? []), ...enemies].find(
-          (target) =>
-            target.phase === 'alive' && !target.riderId && me && distance(me, target) < 14,
-        ),
-      jump: canStartJump(me, serverNow),
-      throw:
-        canHandleBot(me, serverNow) && !!nextOrbBot(state.orbBots ?? [], me, orbBotUI.selected),
-      recall:
-        canHandleBot(me, serverNow) &&
-        (ownBots.some((bot) => ['waiting', 'airborne', 'landing'].includes(bot.mode)) ||
-          nearbyOrbBotsForWhistle(
-            state.orbBots ?? [],
-            me,
-            renderer.collision,
-            serverNow,
-            presentOwners,
-          ).length > 0 ||
-          canWhistleCompanion(
-            me,
-            state.rimoNeko,
-            'rimo-neko',
-            renderer.collision,
-            serverNow,
-            presentOwners,
-          ) ||
-          canWhistleCompanion(
-            me,
-            state.companion524,
-            '524',
-            renderer.collision,
-            serverNow,
-            presentOwners,
-          )),
-      busy,
-      torch: caveTorchAvailable(me)
-        ? caveTorchLit(me)
-          ? '松明をしまう'
-          : '松明を持つ'
-        : undefined,
-      needsFood: !!me && me.energy < 75,
-    },
+  const cueContext: CueContext = {
+    inspect: renderer.companionViewChoice()?.label,
+    viewing: renderer.viewingCompanion,
+    automaticCamera: assistedControls(),
+    pet: petLabel,
+    interaction: closeAction?.action.startsWith('pet') ? undefined : closeAction?.label,
+    ride: !rideButton.disabled ? rideButton.querySelector('span').textContent : undefined,
+    board: !$('#boat-board').disabled ? $('#boat-board span').textContent : undefined,
+    attack:
+      attackAvailable &&
+      !![...(state.animals ?? []), ...enemies].find(
+        (target) => target.phase === 'alive' && !target.riderId && me && distance(me, target) < 14,
+      ),
+    jump: canStartJump(me, serverNow),
+    throw: canHandleBot(me, serverNow) && !!nextOrbBot(state.orbBots ?? [], me, orbBotUI.selected),
+    recall:
+      canHandleBot(me, serverNow) &&
+      (ownBots.some((bot) => ['waiting', 'airborne', 'landing'].includes(bot.mode)) ||
+        nearbyOrbBotsForWhistle(
+          state.orbBots ?? [],
+          me,
+          renderer.collision,
+          serverNow,
+          presentOwners,
+        ).length > 0 ||
+        canWhistleCompanion(
+          me,
+          state.rimoNeko,
+          'rimo-neko',
+          renderer.collision,
+          serverNow,
+          presentOwners,
+        ) ||
+        canWhistleCompanion(
+          me,
+          state.companion524,
+          '524',
+          renderer.collision,
+          serverNow,
+          presentOwners,
+        )),
+    busy,
+    torch: caveTorchAvailable(me) ? (caveTorchLit(me) ? '松明をしまう' : '松明を持つ') : undefined,
+    needsFood: !!me && me.energy < 75,
+  };
+  const playVisible =
     joined &&
-      !!me &&
-      !renderUnavailable &&
-      !screens.active &&
-      !$('#modal').open &&
-      !downed &&
-      !document.hidden &&
-      document.hasFocus() &&
-      !motionControls?.ownsInput &&
-      !document.activeElement?.closest('input,textarea,select,[contenteditable]'),
+    !!me &&
+    !renderUnavailable &&
+    !screens.active &&
+    !$('#modal').open &&
+    !downed &&
+    !document.hidden &&
+    document.hasFocus() &&
+    !motionControls?.ownsInput &&
+    !document.activeElement?.closest('input,textarea,select,[contenteditable]');
+  inputCues?.update(cueContext, playVisible && !touchMode());
+  touchControls?.update(
+    downed ? { automaticCamera: assistedControls() } : { ...cueContext, attack: attackAvailable },
+    touchPlayable('menu'),
   );
   const combat = attackProfile(me ?? profile);
   const cooldownLeft =
@@ -2004,6 +2009,7 @@ function openJournal() {
 }
 function updateGamepadHints(active: boolean) {
   usingGamepad = active;
+  if (active) touchControls?.setEnabled(false);
   inputCues?.device(controllerHints());
   updateHintLabels();
   updateHuntingHUD();
@@ -2020,6 +2026,11 @@ function updateHintLabels() {
   const mapKey = $('#map-button .map-key');
   if (mapKey) mapKey.textContent = pad ? controllerLabels().map.split(' / ')[0] : 'M';
   $('#map-button').title = '世界地図';
+  if (touchMode())
+    $('#world').setAttribute(
+      'aria-label',
+      '氷河時代の3Dワールド。移動パッドで歩く・走る。視点は追従し、画面をなぞると見渡せます。行動ボタンを直接押せます。',
+    );
   updatePromptBar();
 }
 function updatePromptBar() {
@@ -2056,7 +2067,6 @@ function updateSaveStatus() {
         ? `自動保存済み ${new Date(localSaveStatus.savedAt).toLocaleTimeString()} · タイトルへ戻っても続きから再開できます。${localSaveStatus.recovered ? ' 予備の保存から復元しました。' : ''}`
         : '自動保存を準備しています。';
 }
-let pauseSubTab = 'world';
 function difficultySettingsMarkup() {
   const selected = normalizeDifficulty(profile.difficulty);
   return `<div class="settings-item difficulty-setting"><div><strong>難易度</strong></div><div class="settings-buttons" role="group" aria-label="難易度">${DIFFICULTY_LEVELS.map((id) => `<button type="button" class="button button-outline" data-difficulty="${id}" aria-pressed="${selected === id}" title="${DIFFICULTIES[id].description}">${DIFFICULTIES[id].label}</button>`).join('')}</div></div>`;
@@ -2160,73 +2170,10 @@ function openPauseMenu(tab?: string) {
         ['inventory', 'bag', '持ち物'],
         ['warp', 'compass', 'ワープする'],
         ['crafting', 'axe', 'クラフト'],
-        ['info', 'compass', '世界・仲間'],
+        ['mascots', 'people', '連れていく仲間'],
         ['settings', 'sound', '設定'],
       ];
-  const subTabs: [string, string][] = [
-    ['world', '世界'],
-    ['tribe', '仲間'],
-    ['objectives', '目標'],
-  ];
-  const links: [string, string, string, () => void][] = [
-    ['map', 'expand', '世界地図', openMap],
-    ['journal', 'book', '探索手帳', openJournal],
-    ['ride', 'target', '船・マンモス・肩に乗る／降りる', controllerRide],
-    ['wave', 'wave', '手をふる', () => action('wave')],
-    ...(canPetKohaku()
-      ? [
-          [
-            'petKohaku',
-            'wave',
-            'こはくちゃんを撫でる',
-            () => {
-              petKohaku();
-              $('#modal').close();
-            },
-          ] as [string, string, string, () => void],
-        ]
-      : []),
-    ...(canPetMae()
-      ? [
-          [
-            'petMae',
-            'wave',
-            'maeを撫でる',
-            () => {
-              petMae();
-              $('#modal').close();
-            },
-          ] as [string, string, string, () => void],
-        ]
-      : []),
-  ];
   const exits: [string, string, string, () => void][] = [
-    ...(state.kohaku?.followPlayerId === selfId
-      ? [
-          [
-            'dismissKohaku',
-            'wave',
-            'こはくちゃんをキャンプへ帰す',
-            () => {
-              dismissKohaku();
-              $('#modal').close();
-            },
-          ] as [string, string, string, () => void],
-        ]
-      : []),
-    ...(state.mae?.followPlayerId === selfId
-      ? [
-          [
-            'dismissMae',
-            'wave',
-            'maeをキャンプへ帰す',
-            () => {
-              dismissMae();
-              $('#modal').close();
-            },
-          ] as [string, string, string, () => void],
-        ]
-      : []),
     ...(caveTorchAvailable(player())
       ? [
           [
@@ -2235,42 +2182,6 @@ function openPauseMenu(tab?: string) {
             caveTorchLit(player()) ? '松明をしまう' : '松明を持つ',
             () => {
               action('toggleCaveTorch');
-              $('#modal').close();
-            },
-          ] as [string, string, string, () => void],
-        ]
-      : []),
-    ['bots', 'people', 'botたちを選ぶ・呼ぶ・帰す', () => orbBotUI.open()],
-    [
-      'travelAlone',
-      'wave',
-      'みんなを帰してひとりで歩く',
-      () => {
-        action('travelAlone');
-        $('#modal').close();
-      },
-    ],
-    ...(state.rimoNeko?.followPlayerId === selfId
-      ? [
-          [
-            'dismissRimo',
-            'wave',
-            'りもねこをキャンプへ帰す',
-            () => {
-              dismissRimo();
-              $('#modal').close();
-            },
-          ] as [string, string, string, () => void],
-        ]
-      : []),
-    ...(state.companion524?.followPlayerId === selfId
-      ? [
-          [
-            'dismiss524',
-            'wave',
-            '524をキャンプへ帰す',
-            () => {
-              dismiss524();
               $('#modal').close();
             },
           ] as [string, string, string, () => void],
@@ -2302,15 +2213,12 @@ function openPauseMenu(tab?: string) {
   ];
   const initialTab = tab ?? (fixedIdentity ? 'warp' : 'inventory');
   let pauseTab = tabs.some(([id]) => id === initialTab) ? initialTab : tabs[0][0];
-  if (!subTabs.some(([id]) => id === pauseSubTab)) pauseSubTab = 'world';
   const menuButton = ([id, glyph, label]: readonly [string, string, string, ...unknown[]]) =>
     `<button class="button button-outline" data-controller-menu="${id}">${icon(glyph)}<span>${label}</span></button>`;
   const panel = (id: string, body: string) =>
     tabs.some(([key]) => key === id)
       ? `<section class="pause-panel" data-pause-panel="${id}" role="tabpanel" id="pause-panel-${id}" ${pauseTab === id ? '' : 'hidden'}>${body}</section>`
       : '';
-  const subPanel = (id: string, body: string) =>
-    `<section class="pause-subpanel" data-pause-subpanel="${id}" role="tabpanel" id="pause-subpanel-${id}" ${pauseSubTab === id ? '' : 'hidden'}>${body}</section>`;
   openModal(
     `<div class="pause-menu${fixedIdentity ? ' exhibition-menu' : ''}"><aside class="pause-rail"><nav class="pause-tabs" role="tablist" aria-label="メニューの項目">${tabs
       .map(
@@ -2322,18 +2230,7 @@ function openPauseMenu(tab?: string) {
       )}</nav><div class="pause-exits">${exits.map(menuButton).join('')}</div></aside><div class="pause-panels">${panel(
       'inventory',
       inventoryMarkup(),
-    )}${panel('character', characterSwitchMarkup())}${panel('warp', exhibitionWarpMarkup())}${panel('crafting', craftingMarkup())}${panel(
-      'info',
-      `<div class="sub-tabs" role="tablist" aria-label="世界・仲間の切り替え">${subTabs
-        .map(
-          ([id, label]) =>
-            `<button type="button" class="sub-tab" role="tab" data-pause-subtab="${id}" data-controller-menu="sub-${id}" aria-selected="${pauseSubTab === id}" aria-controls="pause-subpanel-${id}">${label}</button>`,
-        )
-        .join('')}</div>${subPanel(
-        'world',
-        `<h2>世界</h2><div class="controller-menu">${links.map(menuButton).join('')}</div>`,
-      )}${subPanel('tribe', tribeMarkup())}${subPanel('objectives', objectivesMarkup())}`,
-    )}${panel(
+    )}${panel('character', characterSwitchMarkup())}${panel('warp', exhibitionWarpMarkup())}${panel('crafting', craftingMarkup())}${panel('mascots', mascotMenuMarkup(state))}${panel(
       'settings',
       `<h2>設定</h2><div class="settings-list">${graphicsSettingsMarkup()}${fixedIdentity ? '' : difficultySettingsMarkup()}<div class="settings-item"><div><strong>環境音</strong></div><button class="button button-outline" data-setting="sound" aria-pressed="${soundEnabled}">${icon(soundEnabled ? 'sound' : 'muted')} ${soundEnabled ? 'オン' : 'オフ'}</button></div><div class="settings-item"><div><strong>全画面表示</strong></div><button class="button button-outline" data-setting="fullscreen">${icon('expand')} 切り替え</button></div><div class="settings-item"><div><strong>視点</strong></div><div class="settings-buttons"><button class="button button-outline" data-setting="zoom-out">− 遠く</button><button class="button button-outline" data-setting="zoom-in">+ 近く</button><button class="button button-outline" data-setting="camera">${icon('target')} 視点を戻す</button></div></div><div class="settings-item"><div><strong>コントローラー</strong><p class="gamepad-connection" role="status">${usingGamepad ? '' : '未接続'}</p></div></div></div><p id="local-save-status" class="form-note" role="status" hidden></p>${localResetMarkup()}`,
     )}</div></div>`,
@@ -2343,6 +2240,14 @@ function openPauseMenu(tab?: string) {
   const controlsSetting = document.createElement('div');
   controlsSetting.className = 'settings-item';
   controlsSetting.innerHTML = `<div><strong>操作</strong></div><div class="settings-buttons" role="group" aria-label="操作モード"><button class="button button-outline" data-controls="normal" aria-pressed="${!easyControls}">通常</button><button class="button button-outline" data-controls="easy" aria-pressed="${easyControls}">かんたん・視点自動</button></div>`;
+  if (touchMode()) {
+    controlsSetting.querySelector('[data-controls="normal"]').textContent = 'タッチ・視点追従';
+    const note = document.createElement('p');
+    note.textContent =
+      '移動パッドを浅く倒すと歩き、深く倒すと走ります。視点は移動に合わせて追従し、画面をなぞると見渡せます。';
+    controlsSetting.firstElementChild.append(note);
+    root.querySelector('.gamepad-connection')?.closest('.settings-item')?.remove();
+  }
   root.querySelector('#pause-panel-settings .settings-list')?.prepend(controlsSetting);
   const cameraButtons = root.querySelector('[data-setting="camera"]')?.parentElement;
   const automaticCameraLabel = document.createElement('span');
@@ -2389,16 +2294,7 @@ function openPauseMenu(tab?: string) {
     gamepadControls?.suspend();
   };
   for (const tab of tabButtons) tab.onclick = () => showTab(tab.dataset.pauseTab!);
-  const subTabButtons = [...root.querySelectorAll<HTMLButtonElement>('.sub-tab')];
-  const showSubTab = (id: string) => {
-    pauseSubTab = id;
-    for (const tab of subTabButtons)
-      tab.setAttribute('aria-selected', String(tab.dataset.pauseSubtab === id));
-    for (const section of root.querySelectorAll<HTMLElement>('.pause-subpanel'))
-      section.hidden = section.dataset.pauseSubpanel !== id;
-  };
-  for (const tab of subTabButtons) tab.onclick = () => showSubTab(tab.dataset.pauseSubtab!);
-  for (const [id, , , handler] of [...links, ...exits])
+  for (const [id, , , handler] of exits)
     if ($(`[data-controller-menu="${id}"]`))
       $(`[data-controller-menu="${id}"]`).onclick = () => handler();
   const menuActions = {
@@ -2410,12 +2306,11 @@ function openPauseMenu(tab?: string) {
   };
   if (fixedIdentity) bindCharacterSwitch(menuActions, false);
   bindExhibitionWarp(menuActions);
-  updateObjectives();
   updateModalHUD();
   if (!fixedIdentity) {
     bindCrafting();
+    bindMascotMenu(root, action);
     updateSaveStatus();
-    $('#tribe-invite').onclick = openInvite;
     $('[data-setting="sound"]').onclick = toggleSound;
     $('[data-setting="fullscreen"]').onclick = toggleFullscreen;
     $('[data-setting="camera"]').onclick = () => {
@@ -2855,6 +2750,39 @@ motionControls = new MotionControls($('.game-viewport'), {
     renderer.cancel?.();
   },
 });
+function touchPlayable(command?: TouchAction) {
+  return (
+    joined &&
+    !renderUnavailable &&
+    !screens.active &&
+    !$('#modal').open &&
+    !document.hidden &&
+    document.hasFocus() &&
+    !!player() &&
+    (!player()?.downedUntil ||
+      ['menu', 'map', 'journal', 'mascots', 'bag'].includes(command ?? '')) &&
+    !motionControls?.ownsInput &&
+    ($('#chat-content')?.hidden ?? true) &&
+    !document.activeElement?.closest('input,textarea,select,[contenteditable]')
+  );
+}
+touchControls = new TouchControls($('.game-viewport'), {
+  icon,
+  available: touchPlayable,
+  perform: performCue,
+  move: updateMovementInput,
+  beginMove: () => {
+    renderer.endCompanionView();
+    touchYaw = renderer.yaw;
+    $('#world').focus({ preventScroll: true });
+  },
+  changed: () => {
+    clearMovementInput();
+    inputCues?.hide();
+    updateHintLabels();
+    updateHuntingHUD();
+  },
+});
 renderer.manualInputAllowed = () =>
   joined &&
   !renderUnavailable &&
@@ -2923,7 +2851,9 @@ function updateMovementInput() {
       'aria-label',
       source
         ? '氷河時代の3Dワールド。前後に進み、左右で曲がります。視点は自動です。'
-        : '氷河時代の3Dワールド。WASDまたは左スティックで移動。右スティックまたはドラッグで見渡します。',
+        : touchMode()
+          ? '氷河時代の3Dワールド。移動パッドで歩く・走る。視点は追従し、画面をなぞると見渡せます。行動ボタンを直接押せます。'
+          : '氷河時代の3Dワールド。WASDまたは左スティックで移動。右スティックまたはドラッグで見渡します。',
     );
     assistedNavigation.reset();
     assistedDirection = '0,0';
@@ -2935,7 +2865,10 @@ function updateMovementInput() {
     renderer.setAssistMarker('interact', null);
     if (!source) renderer.setAutomaticCamera(null);
   }
+  renderer.setTouchCamera?.(touchMode());
   if (player()?.downedUntil || !joined || renderUnavailable) {
+    touchControls?.stop();
+    renderer.setTouchMovement?.(0, 0);
     motionControls?.pause('今は操作できません。操作可能になると自動再開します。');
     keys.clear();
     movementCommands.reset();
@@ -2973,7 +2906,7 @@ function updateMovementInput() {
       petting || motionPetHold.active
         ? 'なでています'
         : target
-          ? `${input.movementHand === 'left' ? '右手' : '左手'}を低く横ふり → ${target.label}`
+          ? `${input.actionHand === 'left' ? '左手' : '右手'}を低く横ふり → ${target.label}`
           : '';
     motionControls.attackStatus =
       attackBlockReason(player(), renderer.serverNow()) || '攻撃できます';
@@ -3051,12 +2984,17 @@ function updateMovementInput() {
     if (keys.has('a') || keys.has('arrowleft')) sx--;
     if (keys.has('d') || keys.has('arrowright')) sx++;
   }
-  const motion = combineMovement(
-    sx,
-    sy,
-    wantsToRun(),
-    canMove ? gamepadControls.movement : { x: 0, y: 0, running: false },
-  );
+  const motion =
+    touchMode() && touchControls
+      ? canMove && touchPlayable()
+        ? touchControls.movement
+        : { x: 0, y: 0, running: false }
+      : combineMovement(
+          sx,
+          sy,
+          wantsToRun(),
+          canMove ? gamepadControls.movement : { x: 0, y: 0, running: false },
+        );
   if (easyControls) {
     assistedMovement(
       -motion.y,
@@ -3076,8 +3014,11 @@ function updateMovementInput() {
     send({ type: 'gait', running });
     lastGait = running;
   }
-  const { dx, dz } = renderer.getMovementDirection(motion.x, motion.y),
-    changed = movementCommands.direction !== `${dx},${dz}`,
+  const { dx, dz } = touchMode()
+    ? movementFromCamera(motion.x, motion.y, touchYaw)
+    : renderer.getMovementDirection(motion.x, motion.y);
+  renderer.setTouchMovement?.(dx, dz);
+  const changed = movementCommands.direction !== `${dx},${dz}`,
     command = movementCommands.next({ dx, dz, running });
   const now = performance.now();
   if (renderer.prediction?.enabled) renderer.prediction.setInput(dx, dz, running, now);
@@ -3114,6 +3055,7 @@ window.addEventListener('beforeunload', () => {
   hudObserver.disconnect();
   gamepadControls.destroy();
   inputCues?.destroy();
+  touchControls?.destroy();
   motionControls?.destroy();
   screens.destroy();
   renderer.destroy();

@@ -33,6 +33,8 @@
     "src/gamepad-ui.ts",
     "src/input-cues.ts",
     "src/input-cues-ui.ts",
+    "src/touch-input.ts",
+    "src/touch-controls.ts",
     "src/companion-view.ts",
     "src/multiplayer-config.ts",
     "src/screens.ts",

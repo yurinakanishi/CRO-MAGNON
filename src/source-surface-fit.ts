@@ -1,7 +1,8 @@
 import * as THREE from 'three';
 import { mergeVertices } from 'three/addons/utils/BufferGeometryUtils.js';
-import { riverBankDrop } from '../shared/river-profile.mjs';
+import { riverBankDrop, riverX, RIVER_BOUNDS } from '../shared/river-profile.mjs';
 import { mountainRiverBed, mountainRiverIntersects } from '../shared/mountain-river.mjs';
+import { CAVE_FOOT, CAVE_HILL, caveFootHeight } from '../shared/camp-cave-layout.mjs';
 import {
   expandedMountainZ,
   expandedMountainX,
@@ -16,7 +17,11 @@ export function fitSourceRiverBank(source, maximumEdge = 0.5, mountainOnly = fal
   const projectedX = mountainOnly ? expandedMountainX : (x, z) => x;
   const overlaps = (minX, maxX, minZ, maxZ) =>
     mountainRiverIntersects(minX, maxX, minZ, maxZ) ||
-    (!mountainOnly && maxX >= 57 && minX <= 73 && maxZ >= -64 && minZ <= 184);
+    (!mountainOnly &&
+      maxX >= RIVER_BOUNDS.minX &&
+      minX <= RIVER_BOUNDS.maxX &&
+      maxZ >= RIVER_BOUNDS.minZ &&
+      minZ <= RIVER_BOUNDS.maxZ);
   if (
     !overlaps(
       source.boundingBox.min.x,
@@ -24,7 +29,11 @@ export function fitSourceRiverBank(source, maximumEdge = 0.5, mountainOnly = fal
       projectedZ(source.boundingBox.min.z),
       projectedZ(source.boundingBox.max.z),
     ) &&
-    !(mountainOnly && source.boundingBox.max.z > MOUNTAIN_EXPANSION.start)
+    !(
+      mountainOnly &&
+      (source.boundingBox.max.z > MOUNTAIN_EXPANSION.start ||
+        (source.boundingBox.max.z >= CAVE_HILL.minZ && source.boundingBox.min.z <= CAVE_HILL.maxZ))
+    )
   )
     return source;
   const names = Object.keys(source.attributes).filter(
@@ -56,11 +65,26 @@ export function fitSourceRiverBank(source, maximumEdge = 0.5, mountainOnly = fal
     const longest = Math.max(...distances),
       edge = distances.indexOf(longest);
     const fitWater = overlaps(Math.min(...xs), Math.max(...xs), Math.min(...zs), Math.max(...zs));
+    const fitFoot =
+      mountainOnly &&
+      [CAVE_FOOT, CAVE_HILL].some(
+        (bounds) =>
+          Math.max(...xs) >= bounds.minX &&
+          Math.min(...xs) <= bounds.maxX &&
+          Math.max(...zs) >= bounds.minZ &&
+          Math.min(...zs) <= bounds.maxZ,
+      );
     const expand =
       mountainOnly &&
       Math.max(...sourcePositions.map((p) => p[2])) > MOUNTAIN_EXPANSION.start &&
       Math.min(...sourcePositions.map((p) => p[2])) < MOUNTAIN_EXPANSION.end;
-    if ((fitWater || expand) && longest > (fitWater ? maximumEdge : 2) ** 2 && depth < 18) {
+    const footEdge =
+      fitFoot && positions.some((p) => Math.abs(p[0] - riverX(p[2])) < 6) ? 0.2 : 0.6;
+    if (
+      (fitWater || expand || fitFoot) &&
+      longest > (fitFoot ? Math.min(footEdge, maximumEdge) : fitWater ? maximumEdge : 2) ** 2 &&
+      depth < 18
+    ) {
       const p = vertices[edge],
         q = vertices[(edge + 1) % 3],
         r = vertices[(edge + 2) % 3],
@@ -88,8 +112,11 @@ export function fitSourceRiverBank(source, maximumEdge = 0.5, mountainOnly = fal
   for (let i = 0; i < positions.count; i++) {
     const x = projectedX(positions.getX(i), positions.getZ(i)),
       z = projectedZ(positions.getZ(i));
-    const y = mountainRiverBed(x, z, positions.getY(i) - (mountainOnly ? 0 : riverBankDrop(x, z)));
-    cut[i] = Math.max(0, positions.getY(i) - y);
+    const fitted = mountainOnly
+      ? caveFootHeight(x, z, positions.getY(i))
+      : positions.getY(i) - riverBankDrop(x, z);
+    const y = mountainRiverBed(x, z, fitted);
+    cut[i] = Math.max(0, fitted - y);
     positions.setY(i, y);
     positions.setX(i, x);
     positions.setZ(i, z);

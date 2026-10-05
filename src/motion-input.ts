@@ -42,8 +42,8 @@ interface HandsSample {
   right: HandSample | null;
 }
 interface Calibration {
-  left: HandSample;
-  right: HandSample;
+  left: HandSample | null;
+  right: HandSample | null;
   scale: number;
 }
 export const MOTION = Object.freeze({
@@ -101,6 +101,8 @@ export class MotionInputAdapter {
   state: MotionState = 'OFF';
   sessionId = 0;
   movementHand: Hand = 'left';
+  singleHand = false;
+  autoHand = false;
   reason = '';
   calibrationProgress = 0;
   calibrationStage: 'recognize' | 'neutral' = 'recognize';
@@ -139,6 +141,27 @@ export class MotionInputAdapter {
   private intent: MotionIntent = this.zero();
   private smoothed = { forward: 0, turn: 0 };
   private readAt: number | null = null;
+  private singleAction = false;
+  private singleRestAt: number | null = null;
+  private autoCandidate: Hand | null = null;
+  get detectedHand(): Hand | null {
+    if (!this.singleHand) return null;
+    if (!this.autoHand || this.calibration) return this.movementHand;
+    return this.calibrationStage === 'neutral' ? this.autoCandidate : null;
+  }
+  get actionHand(): Hand {
+    return this.singleHand ? this.movementHand : this.movementHand === 'left' ? 'right' : 'left';
+  }
+  get requiredHands(): Hand[] {
+    return this.singleHand ? [this.movementHand] : ['left', 'right'];
+  }
+  get handsLabel() {
+    if (this.singleHand && this.autoHand && !this.detectedHand) return '片手';
+    return this.singleHand ? (this.movementHand === 'left' ? '左手' : '右手') : '両手';
+  }
+  get returningFromAction() {
+    return this.singleHand && this.singleAction;
+  }
   get actionReady() {
     return this.actions.attackReady;
   }
@@ -184,6 +207,8 @@ export class MotionInputAdapter {
   }
   private interrupt() {
     this.clearMovement();
+    this.singleAction = false;
+    this.singleRestAt = null;
     this.intent = this.zero();
     this.jump.loseTracking();
     this.actions.loseTracking();
@@ -206,25 +231,29 @@ export class MotionInputAdapter {
     this.briefInterruptions = 0;
     this.transition('STARTING', 'カメラの許可を待っています。');
     this.calibration = null;
+    this.autoCandidate = null;
   }
   calibrate(hand: Hand = this.movementHand) {
     this.movementHand = hand;
     this.calibration = null;
+    this.autoCandidate = null;
     this.samples = [];
     this.calibrationStage = 'recognize';
     this.calibrationProgress = 0;
-    this.transition('CALIBRATING', 'まず両手のひらを見せてください。');
+    this.transition('CALIBRATING', `まず${this.handsLabel}のひらを見せてください。`);
     this.actions.reset();
     this.jump.reset();
   }
   stop() {
     this.transition('OFF', '');
     this.calibration = null;
+    this.autoCandidate = null;
     this.samples = [];
   }
   fail(reason: string) {
     this.transition('ERROR', reason);
     this.calibration = null;
+    this.autoCandidate = null;
     this.samples = [];
   }
   pause(reason = '停止位置へ手を戻すと再開します。') {
@@ -234,7 +263,7 @@ export class MotionInputAdapter {
   }
   resume() {
     if (!this.calibration) this.calibrate();
-    else this.transition('READY', '両手を停止位置へ戻してください。');
+    else this.transition('READY', `${this.handsLabel}を停止位置へ戻してください。`);
   }
   private recover(stale: boolean) {
     if (this.state !== 'RECOVERING') {
@@ -246,7 +275,7 @@ export class MotionInputAdapter {
     this.interrupt();
   }
   private stableHands(first: HandsSample, current: HandsSample) {
-    return (['left', 'right'] as const).every((side) => {
+    return this.requiredHands.every((side) => {
       const a = first[side],
         b = current[side];
       return (
@@ -257,6 +286,38 @@ export class MotionInputAdapter {
         Math.abs(b.palmLength / a.palmLength - 1) <= MOTION.pushCalibrationStability
       );
     });
+  }
+  private identifyHand(body: HandsSample, raw: HandPair | null) {
+    const candidates = (['left', 'right'] as const).filter((side) => {
+      const hand = body[side];
+      return (
+        hand?.open &&
+        hand.palmFacing >= 0.7 &&
+        hand.fingerLength !== null &&
+        (raw?.[side]?.handednessScore ?? 0) >= 0.75
+      );
+    });
+    // Keep the first usable candidate through setup. If both appear together,
+    // begin with the larger visible palm, then require the usual stable samples.
+    const side =
+      this.autoCandidate && candidates.includes(this.autoCandidate)
+        ? this.autoCandidate
+        : (candidates.sort(
+            (a, b) =>
+              body[b]!.palmWidth * body[b]!.palmLength - body[a]!.palmWidth * body[a]!.palmLength,
+          )[0] ?? null);
+    if (side !== this.autoCandidate) {
+      this.autoCandidate = side;
+      this.samples = [];
+      this.calibrationProgress = 0;
+      this.calibrationStage = 'recognize';
+    }
+    if (!side) {
+      this.reason = 'どちらか片手のひらを見せてください。';
+      return false;
+    }
+    this.movementHand = side;
+    return true;
   }
   private finishCalibration() {
     const mid = (side: Hand): HandSample => {
@@ -274,12 +335,17 @@ export class MotionInputAdapter {
         result[key] = median(values.map((s) => s[key]));
       return result;
     };
-    const left = mid('left'),
-      right = mid('right');
+    const left = this.requiredHands.includes('left') ? mid('left') : null,
+      right = this.requiredHands.includes('right') ? mid('right') : null;
+    const palms = [left, right].filter((hand): hand is HandSample => hand !== null);
     this.calibration = {
       left,
       right,
-      scale: clamp((left.palmWidth + right.palmWidth) * 1.5, 0.18, 0.48),
+      scale: clamp(
+        (palms.reduce((sum, hand) => sum + hand.palmWidth, 0) / palms.length) * 3,
+        0.18,
+        0.48,
+      ),
     };
     this.samples = [];
     this.state = 'READY';
@@ -363,17 +429,16 @@ export class MotionInputAdapter {
       }
     this.previous = observed;
     if (this.state === 'CALIBRATING') {
+      if (this.singleHand && this.autoHand && !this.identifyHand(body, frame.hands)) return true;
       if (
-        !body.left?.open ||
-        !body.right?.open ||
-        body.left.palmFacing < 0.7 ||
-        body.right.palmFacing < 0.7 ||
-        body.left.fingerLength === null ||
-        body.right.fingerLength === null
+        this.requiredHands.some((side) => {
+          const hand = body[side];
+          return !hand?.open || hand.palmFacing < 0.7 || hand.fingerLength === null;
+        })
       ) {
         this.samples = [];
         this.calibrationProgress = 0;
-        this.reason = '両手のひらと指先を映してください。';
+        this.reason = `${this.handsLabel}のひらと指先を映してください。`;
         return true;
       }
       if (
@@ -388,7 +453,7 @@ export class MotionInputAdapter {
           this.calibrationStage = 'neutral';
           this.samples = [];
           this.neutralAfter = at + 1000;
-          this.reason = '両手を楽な高さに戻し、少し止めてください。';
+          this.reason = `${this.handsLabel}を楽な高さに戻し、少し止めてください。`;
         }
       } else {
         this.reason = '楽な位置で停止位置を登録中';
@@ -398,17 +463,21 @@ export class MotionInputAdapter {
       return true;
     }
     if (!this.calibration) return false;
-    const actionHand = this.movementHand === 'left' ? 'right' : 'left';
+    const actionHand = this.actionHand;
     const movement = body[this.movementHand],
       hand = body[actionHand],
-      base = this.calibration[this.movementHand];
+      base = this.calibration[this.movementHand],
+      actionBase = this.calibration[actionHand];
+    if (!base || !actionBase) return false;
     const scale = this.calibration.scale;
     const offset = (p: HandSample, b: HandSample) => ({
       x: (p.x - b.x) / scale,
       y: (p.y - b.y) / scale,
     });
     const move = movement ? offset(movement, base) : null;
-    const act = hand ? offset(hand, this.calibration[actionHand]) : null;
+    // One hand shares the depth-corrected offset: a straight push must not jump
+    // or stroke merely because magnification moved the wrist in the image.
+    const act = this.singleHand ? move : hand ? offset(hand, actionBase) : null;
     this.actionOffset = act;
     this.actionFingers = hand?.fingers ?? null;
     const push = measurePush(movement, base);
@@ -422,7 +491,23 @@ export class MotionInputAdapter {
     const valid = !!move && push.push !== null && move.y < MOTION.downStop;
     const neutral =
       valid && Math.abs(push.push!) < 0.08 && Math.abs(move!.x) < 0.14 && Math.abs(move!.y) < 0.2;
-    if (!valid && holdMovement) this.edgeHolding = true;
+    const actionDepth = push.push !== null && Math.abs(push.push) < MOTION.pushEnter;
+    if (this.singleHand) {
+      if (
+        hand &&
+        act &&
+        (hand.pose === 'gun' ||
+          (actionDepth &&
+            hand.open &&
+            hand.fingers.slice(1).filter((finger) => finger === 'extended').length >= 3 &&
+            (act.y < -0.22 || act.y > 0.2)))
+      )
+        this.singleAction = true;
+      this.singleRestAt = this.singleAction && neutral ? (this.singleRestAt ?? at) : null;
+      if (this.singleRestAt !== null && at - this.singleRestAt >= 120) this.singleAction = false;
+    }
+    if (this.singleAction) this.clearMovement();
+    else if (!valid && holdMovement) this.edgeHolding = true;
     else if (!valid) this.clearMovement();
     else {
       if (this.edgeHolding) {
@@ -486,7 +571,12 @@ export class MotionInputAdapter {
     this.intent = { ...this.intent, active: true, sessionId: this.sessionId, sampledAtMainMs: at };
     if (this.state === 'READY') {
       const handsNeutral =
-        neutral && !!hand?.open && !!act && Math.abs(act.x) < 0.25 && Math.abs(act.y) < 0.2;
+        neutral &&
+        !!hand?.open &&
+        !!act &&
+        Math.abs(act.x) < 0.25 &&
+        Math.abs(act.y) < 0.2 &&
+        !this.singleAction;
       this.freshAt = handsNeutral ? (this.freshAt ?? at) : null;
       if (this.freshAt === null || at - this.freshAt < MOTION.freshMs) return true;
       this.state = 'ACTIVE';
@@ -501,13 +591,15 @@ export class MotionInputAdapter {
         this.jump.reacquire(act.y);
         this.actionSeen = true;
       }
-      const action = this.actions.update(hand, at, scale, act);
+      const actionAllowed = !this.singleHand || this.singleAction || actionDepth;
+      const action = this.actions.update(hand, at, scale, act, actionAllowed);
       const jumping = this.jump.update(
         act.y,
         hand.open &&
           hand.pose !== 'gun' &&
           hand.fingers.slice(1).filter((finger) => finger === 'extended').length >= 3,
         at,
+        actionAllowed,
       );
       this.candidate = this.actions.candidate ?? (this.jump.progress > 0 ? 'jump' : null);
       this.actionProgress = this.actions.candidate ? this.actions.progress : this.jump.progress;

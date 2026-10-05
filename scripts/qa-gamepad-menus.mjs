@@ -193,9 +193,7 @@ try {
   ]) {
     await page.setViewportSize(viewport);
     await tap(PAD.options);
-    await select('[data-controller-menu="info"]');
-    await tap(PAD.triangle);
-    await select('[data-controller-menu="sub-objectives"]');
+    await select('[data-controller-menu="settings"]');
     await tap(PAD.triangle);
     await input([], [0, 0, 0, 1]);
     await page.waitForTimeout(1200);
@@ -235,7 +233,7 @@ try {
     await tap(PAD.up);
     await tap(PAD.circle);
   }
-  passed('Back and focused menu items stay visible while objectives scroll at 390×844 and 844×390');
+  passed('Back and focused menu items stay visible while settings scroll at 390×844 and 844×390');
   await tap(PAD.options);
   await select('[data-controller-menu="title"]');
   await tap(PAD.square);

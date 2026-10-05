@@ -6,6 +6,10 @@ export const CAVE_MOTIFS = {
   creature524: [0, 0, 1254, 1254],
   // One unmodified transparent painting: Rimo, two horses, aurochs and deer.
   rimoFrieze: [0, 0, 2172, 724],
+  roundBots: [0, 0, 2172, 724],
+  shapeBots: [0, 0, 2172, 724],
+  maeKohaku: [0, 0, 2172, 724],
+  comingSoon: [0, 0, 2048, 512],
   bison: [805, 40, 1254, 418],
   redHorse: [3, 443, 431, 779],
   ochreHorse: [435, 442, 827, 779],
@@ -14,6 +18,22 @@ export const CAVE_MOTIFS = {
   hands: [444, 798, 813, 1205],
   signs: [832, 821, 1236, 1215],
 } as const;
+
+export const CAVE_EXTRA_PIGMENTS = {
+  roundBots: {
+    url: '/models/camp-cave/bot-round-lascaux-r31.png',
+    subjects: ['white', 'blue', 'green', 'purple', 'orange'],
+  },
+  shapeBots: {
+    url: '/models/camp-cave/bot-shapes-lascaux-r31.png',
+    subjects: ['beret', 'frog', 'triangle', 'heart'],
+  },
+  maeKohaku: { url: '/models/camp-cave/mae-kohaku-lascaux-r31.png', subjects: ['mae', 'kohaku'] },
+} as const;
+export type CaveExtraPigment = keyof typeof CAVE_EXTRA_PIGMENTS | 'comingSoon';
+// Only confirmed forthcoming characters belong to the preview, never released
+// mascots or invented silhouettes. Empty until the next cast is specified.
+export const CAVE_UPCOMING_CHARACTERS: readonly string[] = [];
 
 export type CaveMural = {
   motif: keyof typeof CAVE_MOTIFS;
@@ -24,16 +44,17 @@ export type CaveMural = {
   strength: number;
 };
 
-// Wall coordinates follow local Z into the cave. Every painting starts beyond
-// the midpoint of the walkable chamber. Rimo is painted among animals on the
+// Wall coordinates follow local Z into the cave. Released mascots are mixed
+// among animal processions. Rimo is painted among animals on the
 // east wall, at the same depth as the 524 painting on the opposite west wall.
 export const CAVE_MURALS: readonly CaveMural[] = [
+  { motif: 'roundBots', wall: 'east', centre: -7, bottom: 1.45, width: 9, strength: 0.86 },
+  { motif: 'shapeBots', wall: 'west', centre: -7, bottom: 1.45, width: 9, strength: 0.86 },
   { motif: 'hands', wall: 'east', centre: -13.8, bottom: 4.35, width: 0.95, strength: 0.64 },
   { motif: 'redHorse', wall: 'east', centre: -15.2, bottom: 1.65, width: 2.8, strength: 0.78 },
   { motif: 'rimoFrieze', wall: 'east', centre: -21.2, bottom: 1.6, width: 7.5, strength: 0.82 },
   { motif: 'signs', wall: 'east', centre: -24.2, bottom: 4.45, width: 1.05, strength: 0.57 },
-  { motif: 'deer', wall: 'east', centre: -26.1, bottom: 1.6, width: 1.7, strength: 0.72 },
-  { motif: 'ochreHorse', wall: 'east', centre: -29, bottom: 1.55, width: 1.85, strength: 0.72 },
+  { motif: 'maeKohaku', wall: 'east', centre: -28.5, bottom: 1.5, width: 6.4, strength: 0.86 },
   { motif: 'deer', wall: 'west', centre: -14, bottom: 1.6, width: 1.8, strength: 0.72 },
   { motif: 'mammoth', wall: 'west', centre: -17.4, bottom: 1.6, width: 3, strength: 0.81 },
   // The user requested half the neighbouring mammoth's 2.22 m painted height.
@@ -44,7 +65,7 @@ export const CAVE_MURALS: readonly CaveMural[] = [
   { motif: 'hands', wall: 'west', centre: -24.7, bottom: 4.5, width: 1.0, strength: 0.64 },
   { motif: 'bison', wall: 'west', centre: -28.6, bottom: 1.5, width: 2.7, strength: 0.79 },
   { motif: 'signs', wall: 'west', centre: -28.4, bottom: 4.5, width: 0.95, strength: 0.57 },
-  { motif: 'ochreHorse', wall: 'west', centre: -31.2, bottom: 1.5, width: 1.7, strength: 0.72 },
+  { motif: 'comingSoon', wall: 'west', centre: -31.4, bottom: 2.1, width: 2.5, strength: 0.9 },
 ];
 
 export function caveMuralHeight(mural: CaveMural) {
@@ -53,6 +74,7 @@ export function caveMuralHeight(mural: CaveMural) {
 }
 
 export function caveMuralPigment(mural: CaveMural) {
+  if (mural.motif in CAVE_EXTRA_PIGMENTS || mural.motif === 'comingSoon') return mural.motif;
   return mural.motif === 'creature524'
     ? 'character524'
     : mural.motif === 'rimoFrieze'
@@ -63,9 +85,15 @@ export function caveMuralPigment(mural: CaveMural) {
 const f = (n: number) => n.toFixed(6);
 export const caveMuralShader = CAVE_MURALS.map((m) => {
   const [x0, y0, x1, y1] = CAVE_MOTIFS[m.motif];
-  const [imageWidth, imageHeight] = m.motif === 'rimoFrieze' ? [2172, 724] : [1254, 1254];
-  const sampler =
-    m.motif === 'creature524'
+  const extra = m.motif in CAVE_EXTRA_PIGMENTS || m.motif === 'comingSoon';
+  const [imageWidth, imageHeight] = extra
+    ? [x1, y1]
+    : m.motif === 'rimoFrieze'
+      ? [2172, 724]
+      : [1254, 1254];
+  const sampler = extra
+    ? `cave_${m.motif}`
+    : m.motif === 'creature524'
       ? 'caveCharacter524'
       : m.motif === 'rimoFrieze'
         ? 'caveRimoPigment'

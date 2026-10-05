@@ -20,6 +20,7 @@ import { cancelBarter } from '../shared/barter.mjs';
 import { carrying, handleCarryAction } from '../shared/carrying.mjs';
 import { toggleCaveFire } from '../shared/cave-fire.mjs';
 import { toggleCaveTorch } from '../shared/cave-light.mjs';
+import { setMascotSelection } from '../shared/mascot-selection.mjs';
 import { handleRimoNekoAction, returnRimoNeko, cancelRimoNekoPet } from '../shared/rimo-neko.mjs';
 import { handleMaeAction, cancelMaePet } from '../shared/mae.mjs';
 import { handleKohakuAction, cancelKohakuPet } from '../shared/kohaku.mjs';
@@ -46,6 +47,11 @@ export function createActionHandler({
     sendNotice(player, text, tone, false);
   return function act(room, player, message, now) {
     const action = message.action;
+    if (action === 'selectMascot' || action === 'deselectMascot') {
+      if (setMascotSelection(room, player, message.targetId, action === 'selectMascot', now))
+        broadcast(room, snapshot(room));
+      return;
+    }
     if (action === 'toggleCaveTorch') {
       if (toggleCaveTorch(player)) broadcast(room, snapshot(room));
       return;

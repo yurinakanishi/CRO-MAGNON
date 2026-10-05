@@ -390,14 +390,15 @@ try {
   pass('real follow input crosses the bridge with aligned floor height');
   await place(a);
   await a.page.keyboard.press('Escape');
-  await a.page.locator('[data-pause-tab="info"]').click();
-  await a.page.locator('[data-pause-subtab="world"]').click();
-  await a.page.locator('[data-controller-menu="petMae"]').click();
-  await until(() => c.petContactAt > 0, 'menu pet contact');
+  assert.equal(await a.page.locator('[data-pause-tab="info"]').count(), 0);
+  assert.equal(await a.page.locator('[data-controller-menu="petMae"]').count(), 0);
+  await a.page.keyboard.press('Escape');
+  await a.page.keyboard.press('v');
+  await until(() => c.petContactAt > 0, 'pet contact');
   await a.page.keyboard.press('q');
   await until(() => !c.petPlayerId, 'Q cancels');
   assert.equal(c.followPlayerId, null);
-  pass('normal menu pet and Q interrupt before affection');
+  pass('removed menu page and V pet with Q interrupt before affection');
   await place(a);
   await a.page.evaluate(() => {
     qaPad.buttons[0] = { pressed: true, value: 1 };
@@ -416,8 +417,10 @@ try {
   await place(a);
   await pet(a, () => a.page.keyboard.press('v'), 'before-return');
   await a.page.keyboard.press('Escape');
-  await a.page.locator('[data-controller-menu="dismissMae"]').click();
+  await a.page.locator('[data-pause-tab="mascots"]').click();
+  await a.page.locator('[data-mascot="mae"]').click();
   await until(() => c.mode === 'returning', 'menu return');
+  await a.page.keyboard.press('Escape');
   assert.equal(c.followPlayerId, null);
   await until(() => c.mode === 'idle', 'returns to camp', 25000);
   assert.ok(dist(c, c.home) < 0.1);
@@ -456,17 +459,16 @@ try {
     await a.page.setViewportSize(size);
     await place(a);
     await a.page.keyboard.press('Escape');
-    await a.page.locator('[data-pause-tab="info"]').click();
-    await a.page.locator('[data-pause-subtab="world"]').click();
-    await a.page.locator('[data-controller-menu="petMae"]').scrollIntoViewIfNeeded();
+    assert.equal(await a.page.locator('[data-pause-tab="info"]').count(), 0);
     await sleep(250);
     await shot(a, `viewport-${size.width}`);
     assert.equal(
       await a.page.evaluate(() => document.documentElement.scrollWidth > innerWidth),
       false,
     );
-    await a.page.locator('[data-controller-menu="petMae"]').click();
-    await until(() => c.petContactAt > 0, 'small menu starts pet');
+    await a.page.keyboard.press('Escape');
+    await a.page.keyboard.press('v');
+    await until(() => c.petContactAt > 0, 'small viewport starts pet');
     await a.page.keyboard.press('q');
     await until(() => !c.petPlayerId, 'small menu cancel');
   }

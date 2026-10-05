@@ -155,14 +155,14 @@ test('the expanded summit keeps at least thirty metres of high land outside ever
   }
 });
 
-test('source expansion is smooth and reversible while all terrain before the castle rear stays fixed', () => {
+test('source expansion is reversible and leaves terrain outside the cave skirt and summit fixed', () => {
   for (let z = 30; z <= 450; z += 0.1) {
     assert.ok(Math.abs(sourceMountainZ(expandedMountainZ(z)) - z) < 1e-7);
     assert.ok(expandedMountainZ(z + 0.01) > expandedMountainZ(z));
     if (z <= 248) assert.equal(expandedMountainZ(z), z);
     for (const x of [-205, -75, 55]) {
       assert.ok(Math.abs(sourceMountainX(expandedMountainX(x, z), z) - x) < 1e-7);
-      if (z <= 248) assert.equal(expandedMountainX(x, z), x);
+      if (z <= 248 && (x <= 0 || z <= 58 || z >= 200)) assert.equal(expandedMountainX(x, z), x);
     }
   }
   assert.equal(expandedMountainZ(300), 420);

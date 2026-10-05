@@ -528,7 +528,7 @@
     },
     {
       "key": "camp-cave",
-      "name": "はじまりの壁画洞窟",
+      "name": "アプデの洞窟",
       "kind": "static",
       "height": 8.398508608341217,
       "status": "integrated-and-game-qa-passed",
@@ -536,8 +536,8 @@
       "sha256": "65dde1aa7311b88c159d524d93af82a770dac77e48ee1f35356e3000cad8a15f",
       "triangles": 74458,
       "delivery": "/models/camp-cave/model-r26.glb",
-      "gameQA": "output/cave-rimo-r30/game-review.json",
-      "galleryRevision": "30"
+      "gameQA": "output/playwright/update-cave-20261005/summary.json",
+      "galleryRevision": "31"
     },
     {
       "key": "yellow-524-mascot",

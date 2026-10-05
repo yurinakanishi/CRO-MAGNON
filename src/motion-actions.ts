@@ -38,6 +38,7 @@ export class MotionHandActions {
     at: number,
     scale: number,
     offset: { x: number; y: number },
+    allowed = true,
   ): MotionAction | null {
     this.candidate = null;
     this.progress = 0;
@@ -49,6 +50,11 @@ export class MotionHandActions {
       this.releaseAt ??= at;
       if (at - this.releaseAt >= 120) this.attackReady = true;
     } else this.releaseAt = null;
+    if (!allowed) {
+      this.gunAt = null;
+      this.stroke = null;
+      return null;
+    }
     if (sample.pose === 'gun' && chest && this.attackReady) {
       this.stroke = null;
       this.gunAt ??= at;
@@ -108,7 +114,7 @@ export class MotionJump {
   reacquire(_y: number) {
     this.loseTracking();
   }
-  update(y: number, open: boolean, at: number) {
+  update(y: number, open: boolean, at: number, allowed = true) {
     this.progress = 0;
     if (!this.ready) {
       if (y > -0.12 && open) {
@@ -117,7 +123,7 @@ export class MotionJump {
       } else this.loweredAt = null;
       return false;
     }
-    if (!open || y > -0.32) {
+    if (!allowed || !open || y > -0.32) {
       this.raisedAt = null;
       return false;
     }

@@ -83,6 +83,8 @@ try {
       export function handVideoReview() {
         const i = motionControls.input;
         return { ...motionDiagnostics(), forward: i.forward, turn: i.turn, edgeHolding: i.edgeHolding,
+          singleHand: i.singleHand, autoHand: i.autoHand, detectedHand: i.detectedHand,
+          movementHand: i.movementHand, actionHand: i.actionHand,
           heading: assistedNavigation.heading, cameraYaw: renderer.yaw,
           intent: i.read(performance.now()), reason: i.reason,
           me: player() && { x: player().x, z: player().z, facing: player().facing } };
@@ -124,6 +126,9 @@ try {
   });
   await page.addInitScript((beginnerUI) => {
     localStorage.setItem('cro-graphics-quality', 'low');
+    // The old manual preference must not override whichever hand is now shown.
+    localStorage.setItem('cro-magnon-hand-mode-v1', 'right');
+    window.reviewSetupHand = 'left';
     if (beginnerUI) localStorage.setItem('cro-magnon-assisted-controls-v1', 'on');
     navigator.getGamepads = () => (window.qaPad ? [window.qaPad] : []);
     window.qaCommands = [];
@@ -156,7 +161,21 @@ try {
       c.width = 640;
       c.height = 360;
       const ctx = c.getContext('2d');
-      const draw = () => ctx.drawImage(v, 0, 0, c.width, c.height);
+      const draw = () => {
+        ctx.drawImage(v, 0, 0, c.width, c.height);
+        // The held setup frame contains two hands. Hide the opposite image half
+        // so the real recognizer must calibrate from just one actual hand.
+        // Playback uses the complete, unchanged video again.
+        if (v.paused) {
+          ctx.fillStyle = 'black';
+          ctx.fillRect(
+            window.reviewSetupHand === 'left' ? 0 : c.width / 2,
+            0,
+            c.width / 2,
+            c.height,
+          );
+        }
+      };
       draw();
       window.reviewTimer = setInterval(draw, 1000 / 30);
       window.reviewVideo = v;
@@ -183,6 +202,29 @@ try {
   if (beginnerUI) uiChecks.push(await checkBeginnerUI(page, out, 'setup'));
   await page.locator('#motion-controls[data-state="ACTIVE"]').waitFor({ timeout: 45000 });
   console.log('Calibrated from held real 2.0 s frame');
+  const initial = await page.evaluate(async () => (await import('/src/main.js')).handVideoReview());
+  if (!initial.singleHand || !initial.autoHand || initial.detectedHand !== 'left')
+    throw new Error('The first visible left hand was not detected automatically');
+  if (await page.locator('#motion-mode, #motion-hand').count())
+    throw new Error('Manual hand selectors remain in the UI');
+  uiChecks.push({ phase: 'automatic-hand', hand: 'left', initial });
+  if (beginnerUI)
+    for (const side of ['right', 'left']) {
+      await page.locator('#motion-open').click();
+      await page.evaluate((side) => {
+        window.reviewSetupHand = side;
+      }, side);
+      await page.locator('#motion-settings > summary').click();
+      await page.locator('#motion-calibrate').click();
+      await page.locator('#motion-controls[data-state="ACTIVE"]').waitFor({ timeout: 20000 });
+      const selected = await page.evaluate(async () =>
+        (await import('/src/main.js')).handVideoReview(),
+      );
+      if (selected.detectedHand !== side || selected.forward !== 0 || selected.turn !== 0)
+        throw new Error(`Recalibration did not automatically select ${side} at rest`);
+      await page.screenshot({ path: path.join(out, `auto-${side}.png`) });
+      uiChecks.push({ phase: 'automatic-hand', hand: side, selected });
+    }
   if (beginnerUI) uiChecks.push(await checkBeginnerUI(page, out, 'play'));
   await page.evaluate(async (record) => {
     window.reviewApi = await import('/src/main.js');

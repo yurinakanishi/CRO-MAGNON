@@ -2,14 +2,19 @@ import assert from 'node:assert/strict';
 import { MotionInputAdapter } from '../../dist/src/motion-input.js';
 import { syntheticHands } from './motion-hands.mjs';
 
-export function motionDriver(hz = 15, swapped = false) {
+export function motionDriver(hz = 15, swapped = false, singleHand = false) {
   const input = new MotionInputAdapter();
+  input.singleHand = singleHand;
   input.start();
   input.calibrate(swapped ? 'right' : 'left');
   let time = 0,
     id = 0,
     intent;
-  const pair = (move, act) => syntheticHands(move, act, swapped);
+  const pair = (move, act) => {
+    const hands = syntheticHands(move, act, swapped);
+    if (singleHand) hands[swapped ? 'left' : 'right'] = null;
+    return hands;
+  };
   const frame = (hands = pair(), dt = 1000 / hz, extra = {}) => {
     time += dt;
     const f = {

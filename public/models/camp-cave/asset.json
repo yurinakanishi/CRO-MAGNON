@@ -1,6 +1,6 @@
 {
   "modelKey": "camp-cave",
-  "name": "はじまりの壁画洞窟",
+  "name": "アプデの洞窟",
   "kind": "static",
   "candidate": 1,
   "revision": "26",
@@ -34,7 +34,8 @@
     "The measured aisle is 54.91 m, 2.11 times the original 26.00 m. The original outdoor campfire, river, mountain mesh and castle path are unchanged.",
     "The separate transparent 524 pigment closely preserves the user image silhouette, ears, lower lobes, two drops, three white patches, exact digits and dark mouth. Its generated PNG is copied unchanged; other accepted animal art is retained.",
     "White calcite wall albedo retains real rock relief, pores and bedding; pigments are projected directly onto those existing triangles. Warm fire illuminates the same faintly visible paintings.",
-    "Gallery r30 restores the user-reference waving gray-white Rimo cat among two horses, an aurochs and a deer, directly opposite the unchanged west-wall 524. The cave geometry, walking surface and fire are unchanged."
+    "Gallery r30 restores the user-reference waving gray-white Rimo cat among two horses, an aurochs and a deer, directly opposite the unchanged west-wall 524. The cave geometry, walking surface and fire are unchanged.",
+    "Gallery r31 includes all 13 released mascots among animal friezes. Cave placement is at ground level at the mountain foot near camp. Coming Soon is reserved for confirmed upcoming characters. The source cave GLB and earlier pigment files are retained."
   ],
   "provenance": {
     "provider": "Codex",
@@ -89,7 +90,7 @@
       "sha256": "1cbdd091523b48fea81f70eba5cc3840c7328ccfab4b8d1ef63e44b49e0ff5af"
     }
   },
-  "gameQA": "output/cave-rimo-r30/game-review.json",
+  "gameQA": "output/playwright/update-cave-20261005/summary.json",
   "rockSurface": {
     "url": "/models/camp-cave/limestone-r05.png",
     "source": "assets/camp-cave/source/limestone-r05.png",
@@ -122,7 +123,7 @@
     "application": "One unchanged transparent ochre-pigment image on the right wall. At 1.34 m image width its painted height is about 1.11 m, half the neighbouring mammoth mural. Its raised baseline expresses floating. The actual companion keeps its existing 0.30 m body height.",
     "review": "assets/camp-cave/qa/gallery-r30.json"
   },
-  "galleryRevision": "30",
+  "galleryRevision": "31",
   "rimoPigment": {
     "source": "assets/camp-cave/source/rimo-lascaux-frieze-r30.png",
     "url": "/models/camp-cave/rimo-lascaux-frieze-r30.png",
@@ -148,5 +149,77 @@
     ],
     "application": "One 7.5 x 2.5 m transparent pigment frieze on the east wall, centred at local Z -21.2 opposite the existing 524. Direct projection on the existing limestone, no decal plane or opaque backing.",
     "review": "assets/camp-cave/qa/gallery-r30.json"
+  },
+  "mascotPigments": {
+    "roundBots": {
+      "url": "/models/camp-cave/bot-round-lascaux-r31.png",
+      "subjects": [
+        "white",
+        "blue",
+        "green",
+        "purple",
+        "orange"
+      ],
+      "source": "assets/camp-cave/source/bot-round-lascaux-r31.png",
+      "sha256": "94da10a2db5962f7e66af1617a310091c4852d9a1d6c9d322c09e6d01656c93c",
+      "bytes": 1885445,
+      "image": {
+        "width": 2172,
+        "height": 724
+      },
+      "generator": "Built-in imagegen",
+      "references": [
+        "public/models/orb-bot-white/portrait.png",
+        "public/models/orb-bot-blue/portrait.png",
+        "public/models/orb-bot-green/portrait.png",
+        "public/models/orb-bot-purple/portrait.png",
+        "public/models/orb-bot-orange/portrait.png"
+      ],
+      "application": "Unmodified transparent mineral-pigment frieze, projected on original cave wall triangles, interwoven with horses, aurochs and deer."
+    },
+    "shapeBots": {
+      "url": "/models/camp-cave/bot-shapes-lascaux-r31.png",
+      "subjects": [
+        "beret",
+        "frog",
+        "triangle",
+        "heart"
+      ],
+      "source": "assets/camp-cave/source/bot-shapes-lascaux-r31.png",
+      "sha256": "18cac2271a651fe11b223ac5fb3abab2a126ee25153ca0851f749ebd195e8dde",
+      "bytes": 2083858,
+      "image": {
+        "width": 2172,
+        "height": 724
+      },
+      "generator": "Built-in imagegen",
+      "references": [
+        "public/models/orb-bot-beret/portrait.png",
+        "public/models/orb-bot-frog/portrait.png",
+        "public/models/orb-bot-triangle/portrait.png",
+        "public/models/orb-bot-heart/portrait.png"
+      ],
+      "application": "Unmodified transparent mineral-pigment frieze, projected on original cave wall triangles, interwoven with horses, aurochs and deer."
+    },
+    "maeKohaku": {
+      "url": "/models/camp-cave/mae-kohaku-lascaux-r31.png",
+      "subjects": [
+        "mae",
+        "kohaku"
+      ],
+      "source": "assets/camp-cave/source/mae-kohaku-lascaux-r31.png",
+      "sha256": "f67ea277c3d42c93877139b44150ee6fddbb2eb41854418ea09ac4bd40eed732",
+      "bytes": 1953261,
+      "image": {
+        "width": 2172,
+        "height": 724
+      },
+      "generator": "Built-in imagegen",
+      "references": [
+        "public/models/mae/portrait.png",
+        "public/models/kohaku/portrait-r05.png"
+      ],
+      "application": "Unmodified transparent mineral-pigment frieze, projected on original cave wall triangles, interwoven with horses, aurochs and deer."
+    }
   }
 }

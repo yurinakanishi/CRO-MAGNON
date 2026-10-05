@@ -11,6 +11,8 @@ import { AdventureMaterials } from './adventure-materials.js';
 import { GULF_LANDMARKS } from '../shared/gulf-region.mjs';
 import { CAMP_CAVE, CAMP_MOUNTAIN, campMountainVisualLod } from '../shared/camp-cave-layout.mjs';
 import { prepareCaveMaterials } from './cave-materials.js';
+import { CAVE_EXTRA_PIGMENTS, type CaveExtraPigment } from './cave-gallery-layout.js';
+import { createCavePreviewLabel } from './cave-preview-label.js';
 import { prepareMountainMaterials } from './mountain-materials.js';
 import { prepareMountainRiverBed } from './mountain-river.js';
 
@@ -43,6 +45,7 @@ export class WorldLandmarks {
   declare caveCharacter524: THREE.Texture | undefined;
   declare caveRimoPigment: THREE.Texture | undefined;
   declare caveLimestone: THREE.Texture | undefined;
+  caveExtraPigments: Partial<Record<CaveExtraPigment, THREE.Texture>> = {};
 
   constructor(world, placements = PLACEMENTS) {
     this.world = world;
@@ -182,6 +185,24 @@ export class WorldLandmarks {
               this.world.renderer.capabilities.getMaxAnisotropy(),
             );
           }
+          for (const [key, pigment] of Object.entries(CAVE_EXTRA_PIGMENTS)) {
+            const texture = new THREE.TextureLoader().load(
+              pigment.url,
+              undefined,
+              undefined,
+              (error) => {
+                if (!this.disposed)
+                  this.world.failWorld(
+                    '洞窟の壁画を読み込めませんでした。再読み込みしてください。',
+                    error,
+                  );
+              },
+            );
+            texture.colorSpace = THREE.SRGBColorSpace;
+            texture.anisotropy = Math.min(8, this.world.renderer.capabilities.getMaxAnisotropy());
+            this.caveExtraPigments[key as CaveExtraPigment] = texture;
+          }
+          this.caveExtraPigments.comingSoon = createCavePreviewLabel();
           template.cavePrepared = true;
           for (const gltf of [template.gltf, ...template.lods])
             prepareCaveMaterials(
@@ -190,6 +211,7 @@ export class WorldLandmarks {
               this.caveLimestone,
               this.caveCharacter524,
               this.caveRimoPigment,
+              this.caveExtraPigments as Record<CaveExtraPigment, THREE.Texture>,
             );
         }
         if (item.key === CAMP_MOUNTAIN.key && !template.trailPrepared) {
@@ -273,6 +295,8 @@ export class WorldLandmarks {
           this.caveCharacter524 = undefined;
           this.caveRimoPigment?.dispose();
           this.caveRimoPigment = undefined;
+          Object.values(this.caveExtraPigments).forEach((texture) => texture.dispose());
+          this.caveExtraPigments = {};
         }
         this.used.delete(key);
         this.world.updateAssetDiagnostics();
@@ -297,6 +321,7 @@ export class WorldLandmarks {
     this.caveLimestone?.dispose();
     this.caveCharacter524?.dispose();
     this.caveRimoPigment?.dispose();
+    Object.values(this.caveExtraPigments).forEach((texture) => texture.dispose());
     this.caveCamera = this.castleCamera = null;
   }
 }

@@ -10,7 +10,8 @@ export async function checkBeginnerUI(page, out, phase) {
     });
     await page.waitForFunction(() => {
       const r = window.reviewApi.beginnerCameraReview();
-      return Math.abs(Math.sin(r.yaw - r.heading - Math.PI)) < 0.0001;
+      const delta = r.yaw - r.heading - Math.PI;
+      return r.manual === false && Math.abs(Math.atan2(Math.sin(delta), Math.cos(delta))) < 0.0001;
     });
     const before = await page.evaluate(() => window.reviewApi.beginnerCameraReview());
     await page.mouse.move(920, 420);
@@ -46,7 +47,11 @@ export async function checkBeginnerUI(page, out, phase) {
     const after = await page.evaluate(() => window.reviewApi.beginnerCameraReview());
     assert.equal(after.manual, false);
     assert.equal(after.viewing, false);
-    assert.ok(Math.abs(after.yaw - before.yaw) < 0.002);
+    const delta = after.yaw - before.yaw;
+    assert.ok(
+      Math.abs(Math.atan2(Math.sin(delta), Math.cos(delta))) < 0.002,
+      JSON.stringify({ before, after }),
+    );
     assert.ok(Math.abs(after.pitch - before.pitch) < 0.002);
     assert.equal(after.distance, before.distance);
     await screenshot('automatic-camera');

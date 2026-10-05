@@ -138,7 +138,7 @@ try {
     await page.setViewportSize(viewport);
     const size = `${viewport.width}x${viewport.height}`;
     for (const device of ['keyboard', 'pad']) {
-      for (const id of ['inventory', 'crafting', 'info', 'settings']) {
+      for (const id of ['inventory', 'crafting', 'mascots', 'settings']) {
         const selector = `[data-pause-tab="${id}"]`;
         await inspect(selector, device, `${size}-${device}-${id}`);
         if (device === 'pad') {
@@ -148,34 +148,42 @@ try {
         assert.equal(await page.locator(selector).getAttribute('aria-selected'), 'true');
         assert.equal(await page.locator(`[data-pause-panel="${id}"]`).isVisible(), true);
       }
-      await page.locator('[data-pause-tab="info"]').click();
-      for (const id of ['help', 'world', 'tribe', 'objectives']) {
-        const selector = `[data-pause-subtab="${id}"]`;
-        await inspect(selector, device, `${size}-${device}-sub-${id}`);
-        if (device === 'pad') {
-          await pad([1]);
-          await pad();
-        } else await page.keyboard.press('Enter');
-        assert.equal(await page.locator(selector).getAttribute('aria-selected'), 'true');
-      }
     }
-    pass(`${size}: main and sub-tabs activate from keyboard and simulated controller`);
+    assert.equal(await page.locator('[data-pause-tab="info"]').count(), 0);
+    assert.equal(await page.locator('[data-pause-subtab]').count(), 0);
+    pass(`${size}: all menu tabs activate from keyboard and simulated controller`);
   }
   await page.setViewportSize({ width: 1440, height: 900 });
   await page.keyboard.press('Shift');
   await page.locator('[data-pause-tab="inventory"]').focus();
   await page.keyboard.press('ArrowDown');
   assert.equal(
-    await page
-      .locator('[data-pause-tab="crafting"]')
-      .evaluate((el) => el === document.activeElement),
+    await page.locator('[data-pause-tab="warp"]').evaluate((el) => el === document.activeElement),
     true,
   );
   await pad();
   await pad([13]);
   await pad();
   assert.equal(
-    await page.locator('[data-pause-tab="info"]').evaluate((el) => el === document.activeElement),
+    await page
+      .locator('[data-pause-tab="crafting"]')
+      .evaluate((el) => el === document.activeElement),
+    true,
+  );
+  await pad([13]);
+  await pad();
+  assert.equal(
+    await page
+      .locator('[data-pause-tab="mascots"]')
+      .evaluate((el) => el === document.activeElement),
+    true,
+  );
+  await pad([13]);
+  await pad();
+  assert.equal(
+    await page
+      .locator('[data-pause-tab="settings"]')
+      .evaluate((el) => el === document.activeElement),
     true,
   );
   pass('Real keyboard and controller directional navigation still follows the tab rail');

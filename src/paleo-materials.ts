@@ -8,6 +8,9 @@ import { regionById } from '../shared/adventure-regions.mjs';
 import { BEHEMOTH_MARSH } from '../shared/behemoth-rules.mjs';
 import { GROUNDCOVER_TUFT_SHARE } from '../shared/scenery-layout.mjs';
 import { BLADE_ALBEDO } from './meadow-palette.js';
+import { CAMP_CAVE } from '../shared/camp-cave-layout.mjs';
+import { CAMP_CAVE_SURFACE_DATA as cave } from '../shared/camp-cave-surface-data.mjs';
+import { caveGroundShader } from './cave-ground-style.js';
 export { BLADE_ALBEDO } from './meadow-palette.js';
 const shadow = regionById('shadow-realm');
 // GLSL twin of marshDrop in behemoth-rules.mts: the drawn floor equals the walked floor.
@@ -54,12 +57,24 @@ export function createEarthTextures() {
   biomes.minFilter = biomes.magFilter = THREE.LinearFilter;
   biomes.generateMipmaps = false;
   biomes.needsUpdate = true;
+  // Omit the plain beneath the measured cave, including its floor-wall seams.
+  // Retain the ground below the far outside of its overhanging rock skin.
+  const caveFloor = new THREE.DataTexture(
+    Uint8Array.from(cave.roofs, (roof) => (roof > 0 ? 255 : 0)),
+    cave.nx,
+    cave.nz,
+    THREE.RedFormat,
+  );
+  caveFloor.generateMipmaps = false;
+  caveFloor.needsUpdate = true;
   return {
     coast,
     biomes,
+    caveFloor,
     dispose() {
       coast.dispose();
       biomes.dispose();
+      caveFloor.dispose();
     },
   };
 }
@@ -141,6 +156,7 @@ export function earthTerrainMaterial(original, biome, textures) {
   material.onBeforeCompile = (shader) => {
     shader.uniforms.earthCoast = { value: textures.coast };
     shader.uniforms.earthBiomes = { value: textures.biomes };
+    shader.uniforms.caveFloor = { value: textures.caveFloor };
     if (meadowUniforms) Object.assign(shader.uniforms, meadowUniforms);
     shader.vertexShader =
       earthShader +
@@ -164,13 +180,15 @@ export function earthTerrainMaterial(original, biome, textures) {
     shader.fragmentShader =
       earthShader +
       (marsh ? marshShader : '') +
-      (meadow ? meadowShader : '') +
-      'uniform sampler2D earthBiomes;\nvarying vec3 vTerrainWorld;\nvarying float vCoastal;\n' +
+      (meadow ? meadowShader + caveGroundShader : '') +
+      'uniform sampler2D earthBiomes;\nuniform sampler2D caveFloor;\nvarying vec3 vTerrainWorld;\nvarying float vCoastal;\n' +
       shader.fragmentShader;
     shader.fragmentShader = shader.fragmentShader.replace(
       '#include <color_fragment>',
       `#include <color_fragment>
       float coast=32.0;if(vCoastal>.5)coast=shoreline(vTerrainWorld.xz);if(coast<=0.0)discard;
+      vec2 caveUV=(vec2(${CAMP_CAVE.x.toFixed(2)},${CAMP_CAVE.z.toFixed(2)})-vTerrainWorld.xz-vec2(${cave.minX.toFixed(3)},${cave.minZ.toFixed(3)}))/vec2(${(cave.nx * cave.step).toFixed(3)},${(cave.nz * cave.step).toFixed(3)});
+      if(all(greaterThanEqual(caveUV,vec2(0.0))) && all(lessThanEqual(caveUV,vec2(1.0))) && texture2D(caveFloor,caveUV).r>.5)discard;
       ${meadow ? 'diffuseColor.rgb=meadowGreen(diffuseColor.rgb,vTerrainWorld.xz);' : ''}
       vec3 climate=texture2D(earthBiomes,earthUV(vTerrainWorld.xz)).rgb;
       vec3 sourceClimate=vec3(${base.r.toFixed(5)},${base.g.toFixed(5)},${base.b.toFixed(5)});
@@ -181,6 +199,16 @@ export function earthTerrainMaterial(original, biome, textures) {
       diffuseColor.rgb=mix(diffuseColor.rgb,${biome.id === 'ice' || biome.id === 'snow' ? 'climate*.8' : 'vec3(.38,.32,.20)'},beach*.55);
       float shadowGarden=1.0-smoothstep(${(shadow.radius - 18).toFixed(1)},${shadow.radius.toFixed(1)},distance(vTerrainWorld.xz,vec2(${shadow.x.toFixed(1)},${shadow.z.toFixed(1)})));
       diffuseColor.rgb=mix(diffuseColor.rgb,vec3(.045,.038,.09)*relief,shadowGarden);
+      ${
+        meadow
+          ? `
+      vec2 approach=vTerrainWorld.xz-vec2(${CAMP_CAVE.x.toFixed(2)},${CAMP_CAVE.z.toFixed(2)});
+      float dustPath=(1.0-smoothstep(4.5,8.0,abs(approach.x)+dustNoise(vTerrainWorld.xz*.45)*.7))
+        *smoothstep(-32.0,-18.0,approach.y)*(1.0-smoothstep(-7.0,1.0,approach.y));
+      diffuseColor.rgb=mix(diffuseColor.rgb,caveDust(diffuseColor.rgb,vTerrainWorld.xz),dustPath);
+      `
+          : ''
+      }
       ${
         marsh
           ? `float marsh=marshBasin(vTerrainWorld.xz);
@@ -206,7 +234,7 @@ export function earthTerrainMaterial(original, biome, textures) {
       totalEmissiveRadiance+=vec3(1.0,.16,.018)*lava*.7;`,
       );
   };
-  material.customProgramCacheKey = () => `paleo-terrain-${biome.id}-marsh-1-meadow-2-cave-1`;
+  material.customProgramCacheKey = () => `paleo-terrain-${biome.id}-marsh-1-meadow-2-cave-4`;
   return material;
 }
 

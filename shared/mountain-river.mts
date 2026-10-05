@@ -1,4 +1,4 @@
-import { riverX } from './river-profile.mjs';
+import { riverX, riverDiversion } from './river-profile.mjs';
 import {
   mountainLakeAt,
   mountainLakeBed,
@@ -30,10 +30,10 @@ export const MOUNTAIN_RIVER = Object.freeze(
     { x: 24, z: 191, y: 13.3, width: 2.8 },
     { x: 30, z: 187, y: 10.0, width: 2.4 },
     { x: 38, z: 182, y: 5.1, width: 2.3 },
-    { x: 45, z: 177, y: 0.6, width: 2.0 },
-    { x: 50, z: 172, y: -0.38, width: 2.0 },
-    { x: 53, z: 165, y: -0.42, width: 2.1 },
-    { x: 57, z: 157, y: -0.44, width: 2.3 },
+    { x: 45 + riverDiversion(177), z: 177, y: 0.6, width: 2.0 },
+    { x: 50 + riverDiversion(172), z: 172, y: -0.38, width: 2.0 },
+    { x: 53 + riverDiversion(165), z: 165, y: -0.42, width: 2.1 },
+    { x: 57 + riverDiversion(157), z: 157, y: -0.44, width: 2.3 },
     { x: riverX(150), z: 150, y: -0.45, width: 2.8 },
   ].map((p) => Object.freeze(p)),
 );

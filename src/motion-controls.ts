@@ -1,4 +1,4 @@
-import { MOTION, MotionInputAdapter, type Hand } from './motion-input.js';
+import { MOTION, MotionInputAdapter } from './motion-input.js';
 import { MotionCamera, type MotionDelegate, type MotionCameraDevice } from './motion-camera.js';
 import { MotionDebugView } from './motion-debug-view.js';
 import { motionControlsMarkup } from './motion-controls-markup.js';
@@ -38,6 +38,8 @@ export class MotionControls {
     parent.append(this.root);
     this.debugView = new MotionDebugView(this.root);
     const find = <T extends HTMLElement>(id: string) => this.root.querySelector<T>(id)!;
+    this.input.singleHand = true;
+    this.input.autoHand = true;
     this.camera = new MotionCamera(
       this.input,
       find<HTMLVideoElement>('#motion-video'),
@@ -79,7 +81,6 @@ export class MotionControls {
       find<HTMLDetailsElement>('#motion-settings').open = false;
       find<HTMLDetailsElement>('#motion-debug-details').open = false;
       hooks.begin();
-      this.input.movementHand = find<HTMLSelectElement>('#motion-hand').value as Hand;
       document.exitPointerLock?.();
       void this.camera.start({
         delegate: find<HTMLSelectElement>('#motion-delegate').value as MotionDelegate,
@@ -191,6 +192,9 @@ export class MotionControls {
     const state = this.input.state,
       on = this.input.ownsInput,
       phase = this.camera.phase;
+    const moveHand = this.input.movementHand === 'left' ? '左手' : '右手';
+    const actionHand = this.input.actionHand === 'left' ? '左手' : '右手';
+    const hands = this.input.handsLabel;
     if (state === 'ERROR') this.panel = 'setup';
     if (state === 'ACTIVE' && this.panel === 'setup') this.panel = 'none';
     const setup = this.panel === 'setup',
@@ -270,7 +274,7 @@ export class MotionControls {
               ? 'そのまま、もう少し'
               : neutralStage
                 ? '楽な位置で、少し止めてね'
-                : '両手をカメラに見せてね',
+                : `${hands}をカメラに見せてね`,
     );
     text(
       '#motion-setup-hint',
@@ -281,7 +285,7 @@ export class MotionControls {
           : phase === 'video' || phase === 'model'
             ? 'そのままお待ちください。'
             : neutralStage
-              ? '肘を下げて、両手が映る楽な位置へ。'
+              ? `肘を下げて、${hands}が映る楽な位置へ。`
               : '手のひらを画面に向け、指を開きます。',
     );
     for (const step of this.root.querySelectorAll<HTMLElement>('[data-step]'))
@@ -303,14 +307,11 @@ export class MotionControls {
     find('#motion-recovery-buttons').hidden = !!find('#motion-start').hidden;
     find('#motion-calibrate').hidden =
       !on || state === 'STARTING' || this.camera.options.delegate === 'preview';
-    for (const id of ['#motion-hand', '#motion-delegate', '#motion-hz'])
-      find<HTMLSelectElement>(id).disabled = on;
+    for (const id of ['#motion-delegate', '#motion-hz']) find<HTMLSelectElement>(id).disabled = on;
+    find('#motion-single-hint').hidden = !this.input.singleHand;
     find<HTMLProgressElement>('#motion-calibration').value = this.input.calibrationProgress;
     find('#motion-calibration').hidden = state !== 'CALIBRATING';
     find<HTMLProgressElement>('#motion-action-progress').value = this.input.actionProgress;
-    const left = this.input.movementHand === 'left';
-    const moveHand = left ? '左手' : '右手';
-    const actionHand = left ? '右手' : '左手';
     for (const button of this.root.querySelectorAll<HTMLButtonElement>('[data-lesson]')) {
       button.setAttribute('aria-pressed', String(button.dataset.lesson === this.lesson));
       button.textContent =
@@ -327,9 +328,11 @@ export class MotionControls {
       '#motion-live-status',
       state === 'PAUSED' || state === 'READY'
         ? '手を元の位置へ'
-        : needsHand
-          ? `${moveHand}を映してね`
-          : [motionLabel, turnLabel].filter(Boolean).join('・') || 'とまっています',
+        : this.input.returningFromAction
+          ? 'とまっています'
+          : needsHand
+            ? `${moveHand}を映してね`
+            : [motionLabel, turnLabel].filter(Boolean).join('・') || 'とまっています',
     );
     text(
       '#motion-direction',
@@ -354,12 +357,14 @@ export class MotionControls {
     const notice = this.input.edgeHolding
       ? '手が画面外です · 動きは続いています'
       : state === 'PAUSED' || state === 'READY'
-        ? '両手を楽な位置に戻すと再開します'
-        : needsHand
-          ? 'いまは止まっています'
-          : !forward && !turn
-            ? `${moveHand}を前へ押すとすすみます`
-            : '';
+        ? `${hands}を楽な位置に戻すと再開します`
+        : this.input.returningFromAction
+          ? '移動するには、手を元の位置へ'
+          : needsHand
+            ? 'いまは止まっています'
+            : !forward && !turn
+              ? `${moveHand}を前へ押すとすすみます`
+              : '';
     text('#motion-live-notice', notice);
     find('#motion-live-notice').hidden = !notice;
     text(
@@ -369,14 +374,21 @@ export class MotionControls {
         : `止まる：${moveHand}を戻す・下ろす`,
     );
     find('.motion-action-glance').setAttribute('aria-label', `${actionHand}の動き`);
-    text('#motion-action-caption', `${actionHand}でアクション`);
+    text(
+      '#motion-hand-caption',
+      this.input.singleHand ? `${moveHand}だけであそぶ` : '両手であそぶ',
+    );
+    text(
+      '#motion-action-caption',
+      this.input.singleHand ? '同じ手でアクション' : `${actionHand}でアクション`,
+    );
     for (const item of this.root.querySelectorAll<HTMLElement>('[data-action]'))
       item.classList.toggle('is-current', item.dataset.action === this.input.candidate);
-    text('#motion-move-label', `${left ? '左' : '右'}手 · 前後と旋回`);
-    text('#motion-action-label', `${left ? '右' : '左'}手 · アクション`);
+    text('#motion-move-label', `${moveHand} · 前後と旋回`);
+    text('#motion-action-label', `${actionHand} · アクション`);
     text(
       '#motion-instruction',
-      `${left ? '左' : '右'}手は押して前進、引いて後退、左右で曲がる。${left ? '右' : '左'}手はアクション。視点は自動。`,
+      `${moveHand}は押して前進、引いて後退、左右で曲がる。${actionHand}はアクション。視点は自動。`,
     );
     for (const [id, offset] of [
       [
@@ -483,7 +495,9 @@ export class MotionControls {
         : this.input.edgeHolding
           ? `${directions.join(' ＋ ')} · 画面外で継続`
           : !move
-            ? '移動の手を確認中 · 反対の手は使えます'
+            ? this.input.singleHand
+              ? '手を元の位置へ戻すと移動できます'
+              : '移動の手を確認中 · 反対の手は使えます'
             : directions.join(' ＋ ') || '停止 · 押す／引く／左右で操縦',
     );
     find('#motion-move-pad').dataset.forward = this.input.forward.toFixed(3);

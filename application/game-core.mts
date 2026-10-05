@@ -540,6 +540,8 @@ export function createGameCore({
           message.action === 'dismissBot' ||
           message.action === 'dismissBots' ||
           message.action === 'travelAlone' ||
+          message.action === 'selectMascot' ||
+          message.action === 'deselectMascot' ||
           message.action === 'rift' ||
           message.action === 'warp' ||
           message.action === 'changeCharacter' ||
@@ -556,6 +558,8 @@ export function createGameCore({
             'dismissBot',
             'dismissBots',
             'travelAlone',
+            'selectMascot',
+            'deselectMascot',
             'wave',
           ].includes(message.action)
         )
@@ -570,6 +574,8 @@ export function createGameCore({
             'dismissBot',
             'dismissBots',
             'travelAlone',
+            'selectMascot',
+            'deselectMascot',
             'jump',
           ].includes(message.action)
         )

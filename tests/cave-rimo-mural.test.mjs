@@ -3,10 +3,15 @@ import assert from 'node:assert/strict';
 import { readFile } from 'node:fs/promises';
 import { createHash } from 'node:crypto';
 import * as THREE from 'three';
-import { CAVE_MURALS, caveMuralHeight, caveMuralShader } from '../dist/src/cave-gallery-layout.js';
+import {
+  CAVE_MURALS,
+  CAVE_EXTRA_PIGMENTS,
+  caveMuralHeight,
+  caveMuralShader,
+} from '../dist/src/cave-gallery-layout.js';
 import { prepareCaveMaterials } from '../dist/src/cave-materials.js';
 
-test('Rimo frieze faces the unchanged 524 and preserves the other wall placements', async () => {
+test('Rimo frieze still faces 524 while all released mascots join the animal gallery', async () => {
   const old = JSON.parse(await readFile('assets/camp-cave/qa/gallery-r29.json'));
   const rimo = CAVE_MURALS.find((m) => m.motif === 'rimoFrieze');
   const figure = CAVE_MURALS.find((m) => m.motif === 'creature524');
@@ -14,12 +19,14 @@ test('Rimo frieze faces the unchanged 524 and preserves the other wall placement
   assert.equal(figure.wall, 'west');
   assert.equal(rimo.centre, figure.centre);
   assert.equal(caveMuralHeight(rimo), 2.5);
-  const preserved = old.layout.filter(
-    (m) => !(m.wall === 'east' && ['mammoth', 'bison'].includes(m.motif)),
-  );
   assert.deepEqual(
-    CAVE_MURALS.filter((m) => m.motif !== 'rimoFrieze'),
-    preserved,
+    figure,
+    old.layout.find((m) => m.motif === 'creature524'),
+  );
+  assert.equal(
+    new Set(['524', 'rimo-neko', ...Object.values(CAVE_EXTRA_PIGMENTS).flatMap((p) => p.subjects)])
+      .size,
+    13,
   );
 });
 
@@ -45,8 +52,11 @@ test('material uses the separate Rimo pigment on existing mesh triangles', () =>
   const root = new THREE.Group(),
     material = new THREE.MeshStandardMaterial();
   root.add(new THREE.Mesh(new THREE.BufferGeometry(), material));
-  const textures = Array.from({ length: 4 }, () => new THREE.Texture());
-  prepareCaveMaterials(root, ...textures);
+  const textures = Array.from({ length: 8 }, () => new THREE.Texture());
+  const extra = Object.fromEntries(
+    [...Object.keys(CAVE_EXTRA_PIGMENTS), 'comingSoon'].map((key, i) => [key, textures[i + 4]]),
+  );
+  prepareCaveMaterials(root, ...textures.slice(0, 4), extra);
   const shader = {
     uniforms: {},
     vertexShader: '#include <begin_vertex>',
@@ -55,6 +65,8 @@ test('material uses the separate Rimo pigment on existing mesh triangles', () =>
   };
   material.onBeforeCompile(shader, {});
   assert.equal(shader.uniforms.caveRimoPigment.value, textures[3]);
+  for (const key of Object.keys(extra))
+    assert.equal(shader.uniforms[`cave_${key}`].value, extra[key]);
   assert.ok(shader.fragmentShader.includes('texture2D(caveRimoPigment,atlasUV)'));
   assert.ok(shader.fragmentShader.includes('texture2D(caveCharacter524,atlasUV)'));
   assert.equal((caveMuralShader.match(/texture2D\(caveRimoPigment/g) || []).length, 1);

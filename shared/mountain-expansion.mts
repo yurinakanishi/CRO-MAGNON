@@ -1,5 +1,6 @@
-// Broaden the existing summit behind the castle. The inhabited approach and
-// all castle/cave coordinates stay fixed; only source terrain beyond z=248 moves.
+import { expandedCaveHillX, sourceCaveHillX } from './camp-cave-layout.mjs';
+// Broaden the existing summit behind the castle and its eastern cave skirt.
+// Castle/cave placements and the intervening inhabited approach stay fixed.
 export const MOUNTAIN_EXPANSION = Object.freeze({
   start: 248,
   end: 276,
@@ -14,12 +15,14 @@ function expansionWidth(z: number) {
 }
 export function expandedMountainX(sourceX: number, sourceZ: number) {
   return (
-    MOUNTAIN_EXPANSION.centreX + (sourceX - MOUNTAIN_EXPANSION.centreX) * expansionWidth(sourceZ)
+    MOUNTAIN_EXPANSION.centreX +
+    (expandedCaveHillX(sourceX, sourceZ) - MOUNTAIN_EXPANSION.centreX) * expansionWidth(sourceZ)
   );
 }
 export function sourceMountainX(worldX: number, sourceZ: number) {
-  return (
-    MOUNTAIN_EXPANSION.centreX + (worldX - MOUNTAIN_EXPANSION.centreX) / expansionWidth(sourceZ)
+  return sourceCaveHillX(
+    MOUNTAIN_EXPANSION.centreX + (worldX - MOUNTAIN_EXPANSION.centreX) / expansionWidth(sourceZ),
+    sourceZ,
   );
 }
 export function expandedMountainZ(sourceZ: number) {

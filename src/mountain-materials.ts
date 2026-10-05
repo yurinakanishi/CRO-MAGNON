@@ -1,5 +1,11 @@
 import * as THREE from 'three';
-import { CAMP_MOUNTAIN, CAMP_CAVE, CAMP_MOUNTAIN_TRAIL } from '../shared/camp-cave-layout.mjs';
+import {
+  CAMP_MOUNTAIN,
+  CAMP_CAVE,
+  CAMP_MOUNTAIN_TRAIL,
+  CAVE_APPROACH,
+  CAVE_BEND,
+} from '../shared/camp-cave-layout.mjs';
 import { isMesh } from './three-types.js';
 import { meadowShader, MEADOW_BLADE_ALBEDO, MEADOW_MATCH } from './paleo-materials.js';
 import { caveGroundShader } from './cave-ground-style.js';
@@ -17,11 +23,16 @@ export function prepareMountainMaterials(root: THREE.Object3D) {
   roof.minFilter = roof.magFilter = THREE.LinearFilter;
   roof.generateMipmaps = false;
   roof.needsUpdate = true;
-  const segments = CAMP_MOUNTAIN_TRAIL.slice(1)
-    .map((b, i) => {
-      const a = CAMP_MOUNTAIN_TRAIL[i];
-      return `trail=min(trail,trailSegment(p,vec2(${a.x.toFixed(1)},${a.z.toFixed(1)}),vec2(${b.x.toFixed(1)},${b.z.toFixed(1)})));`;
-    })
+  const segments = [CAMP_MOUNTAIN_TRAIL, CAVE_APPROACH]
+    .map((trail) =>
+      trail
+        .slice(1)
+        .map((b, i) => {
+          const a = trail[i];
+          return `trail=min(trail,trailSegment(p,vec2(${a.x.toFixed(1)},${a.z.toFixed(1)}),vec2(${b.x.toFixed(1)},${b.z.toFixed(1)})));`;
+        })
+        .join('\n'),
+    )
     .join('\n');
   const seen = new Set<THREE.Material>();
   root.traverse((node) => {
@@ -72,21 +83,30 @@ export function prepareMountainMaterials(root: THREE.Object3D) {
           vec2 caveUV=(caveLocal-vec2(${cave.minX.toFixed(3)},${cave.minZ.toFixed(3)}))/vec2(${(cave.nx * cave.step).toFixed(3)},${(cave.nz * cave.step).toFixed(3)});
           if(all(greaterThanEqual(caveUV,vec2(0.0))) && all(lessThanEqual(caveUV,vec2(1.0)))){
             float roofHeight=texture2D(caveRoof,caveUV).r;
-            if(roofHeight>1.3 && hillPosition.y<${(CAMP_CAVE.elevation + CAMP_CAVE.groundOffset).toFixed(2)}+roofHeight-.15)discard;
+            // The entrance atlas includes apron-only cells. Keep its full
+            // standing-height opening through the front slope as well.
+            if(caveLocal.y>7.0 && caveLocal.y<18.5 && abs(caveLocal.x)<6.0){
+              float portal=7.65-.11*caveLocal.x*caveLocal.x;
+              roofHeight=max(roofHeight,portal);
+            }
+            float bend=clamp(-caveLocal.y/${CAVE_BEND.depth.toFixed(6)},0.0,1.0);
+            float centre=${CAVE_BEND.offset.toFixed(6)}*bend*bend*(3.0-2.0*bend);
+            float innerWidth=mix(6.6,6.0,smoothstep(3.0,7.0,caveLocal.y));
+            if(abs(caveLocal.x-centre)<innerWidth && roofHeight>1.3 && hillPosition.y<${(CAMP_CAVE.elevation + CAMP_CAVE.groundOffset).toFixed(2)}+roofHeight-.15)discard;
           }
           diffuseColor.rgb=meadowGreen(diffuseColor.rgb,p);
           float trail=1000.0;${segments}
           float path=1.0-smoothstep(1.25,3.1,trail);
           float shade=dot(diffuseColor.rgb,vec3(.3,.59,.11));
           diffuseColor.rgb=mix(diffuseColor.rgb,caveDust(diffuseColor.rgb,p),path*.85);
-          float apron=(1.0-smoothstep(6.0,11.0,abs(p.x-35.0)))*smoothstep(98.0,106.0,p.y)*(1.0-smoothstep(116.0,124.0,p.y));
+          float apron=(1.0-smoothstep(6.0,11.0,abs(caveLocal.x)))*smoothstep(6.0,12.0,caveLocal.y)*(1.0-smoothstep(18.0,24.0,caveLocal.y));
           diffuseColor.rgb=mix(diffuseColor.rgb,caveDust(diffuseColor.rgb,p),apron);
           float riverRock=1.0-exp(-vRiverCut*2.5);
           diffuseColor.rgb=mix(diffuseColor.rgb,vec3(.22,.205,.17)*(shade*3.0+.3),riverRock*.88);
         `,
         );
       };
-      material.customProgramCacheKey = () => 'camp-mountain-river-v7';
+      material.customProgramCacheKey = () => 'camp-mountain-river-v10-broad-foothill';
       material.needsUpdate = true;
     }
   });

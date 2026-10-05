@@ -1,0 +1,379 @@
+/* Phone controls belong to the game, with their own semantic actions and thumb space. */
+#touch-controls {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  --touch-left: max(16px, env(safe-area-inset-left));
+  --touch-right: max(16px, env(safe-area-inset-right));
+  --touch-bottom: max(24px, env(safe-area-inset-bottom));
+  --touch-top: max(12px, env(safe-area-inset-top));
+}
+#touch-controls[hidden] {
+  display: none;
+}
+#touch-controls button {
+  pointer-events: auto;
+  touch-action: none;
+  user-select: none;
+  -webkit-user-select: none;
+  min-height: 48px;
+  border: 1px solid #f3ecd657;
+  color: #fff5df;
+  background: #15271fa3;
+  border-radius: 16px;
+  box-shadow: 0 3px 12px #06140d30;
+  text-shadow: 0 1px 3px #07150e;
+  font-size: 12px;
+  font-weight: 600;
+}
+#touch-controls button:active {
+  background: #dcc599ab;
+  color: #16251b;
+  text-shadow: none;
+}
+#touch-controls button:disabled {
+  opacity: 0.4;
+}
+.touch-toolbar {
+  position: absolute;
+  top: calc(var(--touch-top) + 92px);
+  left: var(--touch-left);
+  display: flex;
+  gap: 8px;
+}
+.touch-toolbar button {
+  width: 52px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  padding: 6px 2px;
+}
+.touch-toolbar button > .icon {
+  width: 22px;
+  height: 22px;
+}
+.touch-toolbar button > span:last-child {
+  font-size: 10px;
+}
+.touch-move {
+  position: absolute;
+  left: var(--touch-left);
+  bottom: var(--touch-bottom);
+  width: 136px;
+  text-align: center;
+}
+#touch-controls #touch-stick {
+  width: 136px;
+  height: 136px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  padding: 0;
+  background: #1733264a;
+  border: 1px solid #f3ecd647;
+}
+.touch-stick-ring {
+  width: 96px;
+  height: 96px;
+  border: 1px solid #fff2c84a;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  pointer-events: none;
+}
+.touch-stick-knob {
+  display: block;
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  background: #efe7cf73;
+  border: 1px solid #fff9e6a3;
+  box-shadow: 0 3px 12px #06140d40;
+}
+.is-active .touch-stick-knob {
+  background: #efe7cfa8;
+}
+.touch-gait {
+  display: block;
+  position: absolute;
+  bottom: -18px;
+  width: 100%;
+  color: #fff2db;
+  font-size: 11px;
+  text-shadow: 0 1px 4px #07180c;
+}
+.touch-base {
+  position: absolute;
+  right: var(--touch-right);
+  bottom: calc(var(--touch-bottom) + 2px);
+  display: flex;
+  gap: 10px;
+}
+#touch-controls .touch-base button {
+  width: 62px;
+  height: 62px;
+  border-radius: 50%;
+  font-size: 11px;
+}
+.touch-base [data-touch-action='attack'] {
+  background: #5e3025a3 !important;
+}
+.touch-context {
+  position: absolute;
+  right: var(--touch-right);
+  bottom: calc(var(--touch-bottom) + 84px);
+  width: 134px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  pointer-events: auto;
+}
+.touch-context button {
+  width: 100%;
+  padding: 9px 8px;
+  flex-shrink: 0;
+}
+.touch-context button:first-child {
+  border-color: #f1ce83a1 !important;
+  background: #493d25b0 !important;
+}
+.touch-utilities {
+  position: absolute;
+  left: var(--touch-left);
+  bottom: calc(var(--touch-bottom) + 170px);
+  width: 136px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.touch-utilities button {
+  flex: 1 1 60px;
+  padding: 8px 4px;
+  font-size: 10px !important;
+}
+#touch-controls .touch-center {
+  position: absolute;
+  right: var(--touch-right);
+  top: calc(var(--touch-top) + 148px);
+  padding: 8px 12px;
+  font-size: 10px;
+}
+#touch-controls[data-context-count='5'] .touch-center {
+  left: var(--touch-left);
+  right: auto;
+  top: calc(var(--touch-top) + 204px);
+}
+body.touch-mode {
+  overscroll-behavior: none;
+}
+.touch-mode kbd,
+.touch-mode #input-cues,
+.touch-mode #prompt-bar,
+.touch-mode #interaction-hint,
+.touch-mode #companion524-controls,
+.touch-mode .riding-controls,
+.touch-mode #boat-board,
+.touch-mode #boat-hint,
+.touch-mode .gamepad-connection {
+  display: none !important;
+}
+.touch-mode .status-plate {
+  top: max(12px, env(safe-area-inset-top));
+  left: max(16px, env(safe-area-inset-left));
+  max-width: calc(100% - 120px);
+}
+.touch-mode .status-text {
+  min-width: 0;
+}
+.touch-mode .status-text strong {
+  max-width: 130px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.touch-mode .energy-track {
+  width: min(208px, calc(100vw - 136px));
+}
+.touch-mode .map-hud {
+  top: max(12px, env(safe-area-inset-top));
+  right: max(16px, env(safe-area-inset-right));
+  width: 84px;
+}
+.touch-mode .minimap-button {
+  width: 84px;
+  height: 76px;
+}
+.touch-mode .minimap-button > canvas {
+  height: 54px;
+}
+.touch-mode .connection {
+  min-height: 18px;
+  font-size: 7px;
+  padding: 2px 4px;
+}
+.touch-mode .map-area {
+  padding-right: 3px;
+  font-size: 8px;
+}
+.touch-mode .area-banner {
+  top: 29%;
+  pointer-events: none;
+}
+.touch-mode .combat-status {
+  pointer-events: none;
+  top: calc(max(12px, env(safe-area-inset-top)) + 214px);
+  max-width: calc(100vw - 32px);
+  font-size: 11px;
+  padding: 8px 12px;
+}
+.touch-mode .toast-stack {
+  top: 32%;
+  pointer-events: none;
+}
+.touch-mode .toast {
+  min-width: 0;
+  max-width: calc(100vw - 32px);
+  font-size: 12px;
+}
+.touch-mode .chat-panel {
+  top: calc(max(12px, env(safe-area-inset-top)) + 150px);
+  left: max(16px, env(safe-area-inset-left));
+  bottom: auto;
+  width: min(320px, calc(100vw - 32px));
+}
+.touch-mode .chat-panel:has(#chat-content[hidden]) {
+  bottom: auto;
+  right: auto;
+  left: max(16px, env(safe-area-inset-left));
+  width: 76px;
+}
+.touch-mode .chat-heading {
+  min-height: 44px;
+}
+.touch-mode .chat-panel:has(#chat-content[hidden]) .chat-heading {
+  padding: 8px;
+}
+.touch-mode .chat-panel:has(#chat-content[hidden]) .chat-heading strong {
+  display: block;
+  font-size: 0;
+}
+.touch-mode .chat-panel:has(#chat-content[hidden]) .chat-heading strong:after {
+  content: '会話';
+  font-size: 11px;
+}
+.touch-mode #chat-input {
+  font-size: 16px;
+  min-height: 44px;
+}
+.touch-mode #chat-form button {
+  min-width: 44px;
+  min-height: 44px;
+}
+.touch-mode .hotbar-wrap {
+  bottom: calc(max(24px, env(safe-area-inset-bottom)) + 260px);
+  max-width: calc(100vw - 32px);
+}
+.touch-mode .hunt-button {
+  min-height: 44px;
+  font-size: 12px;
+}
+.touch-mode .boat-controls #boat-craft:disabled {
+  display: none;
+}
+.touch-mode .boat-controls #boat-weather[hidden] {
+  display: none;
+}
+.touch-mode #motion-controls[data-state='OFF'] {
+  display: none;
+}
+.touch-mode dialog {
+  max-height: calc(
+    100dvh - max(16px, env(safe-area-inset-top)) - max(16px, env(safe-area-inset-bottom))
+  );
+  overscroll-behavior: contain;
+}
+.touch-mode dialog button,
+.touch-mode dialog .item-actions .button,
+.touch-mode .setup-screen button {
+  min-height: 44px;
+}
+.touch-mode dialog .icon-button {
+  min-width: 44px;
+}
+.touch-mode .pause-tabs {
+  gap: 8px;
+}
+.touch-mode .pause-tab {
+  padding: 10px 12px;
+  min-height: 48px;
+}
+.touch-mode input,
+.touch-mode select {
+  font-size: 16px;
+}
+
+@media (max-width: 359px) {
+  #touch-controls {
+    --touch-left: max(10px, env(safe-area-inset-left));
+    --touch-right: max(10px, env(safe-area-inset-right));
+  }
+  .touch-move,
+  #touch-controls #touch-stick {
+    width: 122px;
+  }
+  #touch-controls #touch-stick {
+    height: 122px;
+  }
+  .touch-context {
+    width: 130px;
+  }
+  #touch-controls .touch-base button {
+    width: 58px;
+    height: 58px;
+  }
+}
+@media (max-height: 660px) and (orientation: portrait) {
+  .touch-mode .hotbar-wrap {
+    bottom: calc(max(24px, env(safe-area-inset-bottom)) + 215px);
+  }
+  .touch-mode .area-banner {
+    top: 35%;
+  }
+}
+@media (orientation: landscape) {
+  .touch-toolbar {
+    top: var(--touch-top);
+    left: 50%;
+    transform: translateX(-50%);
+  }
+  #touch-controls .touch-center {
+    left: 50%;
+    right: auto;
+    transform: translateX(-50%);
+    top: calc(var(--touch-top) + 56px);
+  }
+  #touch-controls[data-context-count='5'] .touch-center {
+    left: calc(var(--touch-left) + 148px);
+    right: auto;
+    top: calc(var(--touch-top) + 128px);
+    transform: none;
+  }
+  .touch-context {
+    width: 264px;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .touch-utilities {
+    bottom: var(--touch-bottom);
+    left: calc(var(--touch-left) + 148px);
+    width: 136px;
+  }
+  .touch-mode .chat-panel {
+    top: calc(max(12px, env(safe-area-inset-top)) + 88px);
+  }
+  .touch-mode .hotbar-wrap {
+    bottom: calc(max(24px, env(safe-area-inset-bottom)) + 140px);
+  }
+}

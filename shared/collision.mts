@@ -2,7 +2,7 @@ import type { Obstacle, Point } from './types.mjs';
 import { SCENERY, BRIDGE } from './scenery-layout.mjs';
 import { CASTLE_SURFACE } from './castle-surface.mjs';
 import { CAMP_CAVE_SURFACE } from './camp-cave-surface.mjs';
-import { CAMP_CAVE, CAVE_HEARTH, CAMP_MOUNTAIN_TRAIL } from './camp-cave-layout.mjs';
+import { CAMP_CAVE, CAVE_HEARTH, CAVE_APPROACH, CAMP_MOUNTAIN_TRAIL } from './camp-cave-layout.mjs';
 import { CASTLE_GATE, CASTLE_TIERS, castleTierOfHeight } from './castle-layout.mjs';
 import { MODEL_BOUNDS } from './model-bounds.mjs';
 import { LANDMARKS } from './landmarks.mjs';
@@ -411,7 +411,7 @@ export class CollisionWorld {
         downhill = byCastle(start) && (byCamp(goal) || inCave(goal));
       if (uphill || downhill) {
         const lower = uphill ? start : goal;
-        const nearest = CAMP_MOUNTAIN_TRAIL.slice(0, 5).reduce(
+        const nearest = CAMP_MOUNTAIN_TRAIL.reduce(
           (best, p, i, list) =>
             Math.hypot(p.x - lower.x, p.z - lower.z) <
             Math.hypot(list[best].x - lower.x, list[best].z - lower.z)
@@ -420,7 +420,11 @@ export class CollisionWorld {
           0,
         );
         const approach = inCave(lower)
-          ? [{ x: CAMP_CAVE.x, z: CAMP_CAVE.z - 5 }, ...CAMP_MOUNTAIN_TRAIL.slice(4)]
+          ? [
+              { x: CAMP_CAVE.x, z: CAMP_CAVE.z - 5 },
+              ...[...CAVE_APPROACH].reverse(),
+              ...CAMP_MOUNTAIN_TRAIL,
+            ]
           : [...CAMP_MOUNTAIN_TRAIL.slice(nearest)];
         const stops = uphill ? approach : [...approach].reverse();
         const route = [];

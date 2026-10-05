@@ -43,7 +43,14 @@ export const SPAWN_SITES: readonly SpawnSite[] = Object.freeze([
     CASTLE_GATE.z - 12,
     CASTLE_GATE,
   ),
-  site('cave', '壁画の洞窟', '奥に壁画がねむる洞窟', CAMP_CAVE.x + 1, CAMP_CAVE.z - 10, CAMP_CAVE),
+  site(
+    'cave',
+    CAMP_CAVE.name,
+    '仲間と動物の壁画、次の出会いの予告',
+    CAMP_CAVE.x + 1,
+    CAMP_CAVE.z - 12,
+    CAMP_CAVE,
+  ),
 ]);
 
 export const spawnSite = (id: unknown): SpawnSite =>

@@ -130,8 +130,8 @@ try {
   assert.equal(await a.page.locator('#modal').evaluate((el) => el.open), false);
   await a.page.keyboard.press('Escape');
   assert.equal(await a.page.locator('#input-cues').isVisible(), false);
-  await a.page.locator('[data-pause-tab="info"]').click();
-  assert.equal(await a.page.locator('[data-pause-subtab="help"]').count(), 0);
+  assert.equal(await a.page.locator('[data-pause-tab="info"]').count(), 0);
+  assert.equal(await a.page.locator('[data-pause-panel="info"]').count(), 0);
   assert.doesNotMatch(
     await a.page.locator('#modal-body').innerText(),
     /操作説明|あそびかた|ESC で|Enter で/,
@@ -142,9 +142,9 @@ try {
     await a.page.locator('#modal-body').innerText(),
     /HP\+15|Bで乗船|相手を向いて F|ガイド/,
   );
-  await a.page.locator('[data-controller-menu="bots"]').click();
+  await a.page.locator('[data-pause-tab="mascots"]').click();
   assert.doesNotMatch(
-    await a.page.locator('.orb-menu').innerText(),
+    await a.page.locator('.mascot-menu').innerText(),
     /コントローラー|C ／|Q ／|クリック|撫でて仲間になった子だけ/,
   );
   await a.page.locator('#modal-close').click();
@@ -193,6 +193,9 @@ try {
     );
   }
   await sleep(1000);
+  // Camp interactions fill the three cue slots; check jump in open ground.
+  await place(a, { x: 120, z: 120 });
+  await a.page.locator('[data-cue="jump"]').waitFor();
   const jumpSequence = a.player().jumpSequence;
   await a.page.locator('[data-cue="jump"]').click();
   await until(
@@ -224,6 +227,21 @@ try {
     'pad pet starts',
   );
   await until(() => room.orbBots.some((b) => b.ownerId === a.seen.id), 'pad pet completes');
+  await until(() => !room.orbBots.some((b) => b.petPlayerId === a.seen.id), 'pet gesture settles');
+  // The camp's pet/whistle/look cues fill three slots. Use the new roster to
+  // bring one bot into open ground before checking the throw cue.
+  await place(a, { x: 120, z: 120 });
+  await tap(a.page, 9);
+  await a.page.locator('[data-pause-tab="mascots"]').click();
+  await a.page.locator('[data-mascot="white"]').click();
+  await until(() => home.ownerId === '', 'white returns');
+  await a.page.locator('[data-mascot="white"]').click();
+  await until(
+    () =>
+      home.ownerId === a.seen.id && Math.hypot(home.x - a.player().x, home.z - a.player().z) < 3,
+    'white rejoins nearby',
+  );
+  await a.page.locator('#modal-close').click();
   await a.page.locator('[data-cue="throw"]').waitFor();
   await tap(a.page, 10);
   await until(
@@ -249,12 +267,13 @@ try {
 
   // Nearby recruited bots deliberately take E priority; dismiss them through the real menu.
   await tap(a.page, 9);
-  await a.page.locator('[data-controller-menu="bots"]').click();
-  await a.page.locator('[data-bot-action="dismissAll"]').click();
+  await a.page.locator('[data-pause-tab="mascots"]').click();
+  await a.page.locator('[data-mascot-all="clear"]').click();
   await until(
     () => !room.orbBots.some((bot) => bot.ownerId === a.seen.id),
     'dismiss before gathering',
   );
+  await a.page.locator('#modal-close').click();
   await input(a.page);
   await input(a.page, [], [0, 0, 0.4, 0]);
   await input(a.page);
@@ -414,7 +433,7 @@ try {
         failure: failure?.stack,
         url: `http://127.0.0.1:${port}`,
         fixture:
-        'Two real Chrome clients, three WebSocket peers, simulated standard gamepads; position fixtures beside camp bots and berries. No persistent saves.',
+          'Two real Chrome clients, three WebSocket peers, simulated standard gamepads; position fixtures beside camp bots and berries. No persistent saves.',
         screenshots: out,
       },
       null,

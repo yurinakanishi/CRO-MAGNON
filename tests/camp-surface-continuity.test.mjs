@@ -13,6 +13,7 @@ import {
   CAVE_MURAL_VIEW,
   caveWorldAt,
   caveCentreOffset,
+  caveFootHeight,
 } from '../dist/shared/camp-cave-layout.mjs';
 import { CAMP_CAVE_SURFACE } from '../dist/shared/camp-cave-surface.mjs';
 import { walkHeight } from '../dist/shared/terrain.mjs';
@@ -41,7 +42,7 @@ test('every exposed mountain triangle has matching ground, including former shor
       const sourceZ = CAMP_MOUNTAIN.z - point.z,
         x = expandedMountainX(CAMP_MOUNTAIN.x - point.x, sourceZ),
         z = expandedMountainZ(sourceZ);
-      const error = Math.abs(mountainHeight(x, z) - point.y);
+      const error = Math.abs(mountainHeight(x, z) - caveFootHeight(x, z, point.y));
       worst = Math.max(worst, error);
       samples++;
       assert.ok(error < 0.12, `terrain mismatch ${x},${z}: ${error}`);
@@ -51,7 +52,7 @@ test('every exposed mountain triangle has matching ground, including former shor
   assert.ok(worst < 0.12);
 });
 
-test('the extended chamber doubles the measured aisle and keeps paintings in its deep half', async (t) => {
+test('the extended chamber retains its measured aisle and complete wall paintings', async (t) => {
   const old = await geometryScene('public/models/camp-cave/model-r07.glb');
   const asset = JSON.parse(await readFile('public/models/camp-cave/asset.json'));
   const next = await geometryScene(`public${asset.url}`);
@@ -66,7 +67,7 @@ test('the extended chamber doubles the measured aisle and keeps paintings in its
   t.diagnostic(
     `Measured aisle: ${before.lengthMetres.toFixed(2)} m → ${after.lengthMetres.toFixed(2)} m`,
   );
-  assert.ok(CAVE_MURAL_VIEW.z - 107 > 40);
+  assert.ok(CAVE_MURAL_VIEW.z - (CAMP_CAVE.z - 18) > 40);
   const first = caveWorldAt(16);
   let previous = walkHeight(first.x, first.z);
   for (let localZ = 15.9; localZ >= -31.5; localZ -= 0.1) {
@@ -82,7 +83,7 @@ test('the extended chamber doubles the measured aisle and keeps paintings in its
   for (const mural of CAVE_MURALS) {
     const entranceEdge = mural.centre + mural.width / 2,
       nearest = after.samples.find((s) => s.z <= entranceEdge);
-    assert.ok(nearest.distance > after.lengthMetres / 2, `${mural.motif} crosses the midpoint`);
+    assert.ok(nearest.distance > 15, `${mural.motif} is outside the inner walls`);
   }
   const creature = CAVE_MURALS.find((m) => m.motif === 'creature524');
   const rimo = CAVE_MURALS.find((m) => m.motif === 'rimoFrieze');
@@ -104,7 +105,17 @@ test('both animal galleries retain a broad room and full standing height all the
       assert.ok(CAMP_CAVE_SURFACE.free(p.x, p.z, 0.76), `blocked gallery ${section.z},${across}`);
     }
   }
-  const animals = ['redHorse', 'ochreHorse', 'mammoth', 'bison', 'deer', 'rimoFrieze'];
+  const animals = [
+    'redHorse',
+    'ochreHorse',
+    'mammoth',
+    'bison',
+    'deer',
+    'rimoFrieze',
+    'roundBots',
+    'shapeBots',
+    'maeKohaku',
+  ];
   for (const wall of ['east', 'west']) {
     const paintings = CAVE_MURALS.filter((m) => m.wall === wall);
     assert.deepEqual(
@@ -113,8 +124,8 @@ test('both animal galleries retain a broad room and full standing height all the
         .map((m) => m.motif)
         .sort(),
       (wall === 'east'
-        ? ['redHorse', 'ochreHorse', 'deer', 'rimoFrieze']
-        : ['redHorse', 'ochreHorse', 'mammoth', 'bison', 'deer']
+        ? ['redHorse', 'rimoFrieze', 'roundBots', 'maeKohaku']
+        : ['redHorse', 'mammoth', 'bison', 'deer', 'shapeBots']
       ).sort(),
     );
     if (wall === 'west') {

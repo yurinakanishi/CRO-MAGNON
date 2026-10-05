@@ -244,19 +244,8 @@ try {
     ),
     'Right from the settings tab enters the settings panel',
   );
-  await page.locator(item('info')).focus();
-  await page.keyboard.press('Enter');
-  assert.equal(await page.locator('[data-pause-panel="info"]').evaluate((el) => !el.hidden), true);
-  await page.locator(item('sub-world')).focus();
-  await page.keyboard.press('Enter');
-  assert.equal(
-    await page.locator('[data-pause-subpanel="world"]').evaluate((el) => !el.hidden),
-    true,
-  );
-  await page.locator(item('journal')).focus();
-  await page.keyboard.press('Enter');
-  assert.equal(await page.locator('.pause-menu').count(), 0, 'Enter opens the journal');
-  assert.equal(await page.locator('#modal').evaluate((el) => el.open), true);
+  assert.equal(await page.locator(item('info')).count(), 0);
+  assert.equal(await page.locator('[data-pause-subtab]').count(), 0);
   await page.keyboard.press('Escape');
   assert.equal(await page.locator('#modal').evaluate((el) => el.open), false);
   assert.equal(await page.locator('#modal').evaluate((el) => getComputedStyle(el).display), 'none');
@@ -278,15 +267,13 @@ try {
   // A dialog closed by keyboard waits for a neutral controller frame before new presses count.
   await input();
   await tap(PAD.options);
-  await arm(item('info'));
-  await tap(PAD.square);
-  await arm(item('sub-objectives'));
+  await arm(item('settings'));
   await tap(PAD.square);
   await input([], [0, 0, 0, 1]);
   await page.waitForTimeout(1200);
   await input();
   assert.ok(await page.locator('.pause-panels').evaluate((el) => el.scrollTop > 0));
-  await arm(item('sub-objectives'));
+  await arm(item('settings'));
   await input([PAD.down]);
   await page.waitForTimeout(780);
   await input();
@@ -296,7 +283,7 @@ try {
     box: document.activeElement.getBoundingClientRect().toJSON(),
     back: document.querySelector('#modal-close').getBoundingClientRect().toJSON(),
   }));
-  assert.notEqual(held.item, 'sub-objectives', JSON.stringify(held));
+  assert.notEqual(held.item, 'settings', JSON.stringify(held));
   assert.ok(held.box.top >= 0 && held.box.bottom <= 390, JSON.stringify(held));
   assert.ok(held.back.top >= 0 && held.back.bottom <= 390 && held.back.right <= 844);
   await page.screenshot({ path: `${output}/held-down-scroll.png` });

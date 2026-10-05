@@ -17,7 +17,7 @@ import {
 import { LANDMARKS } from '../shared/landmarks.mjs';
 import { WARP_POINTS } from '../shared/warp-sites.mjs';
 import { CASTLE, CASTLE_GATE } from '../shared/castle-layout.mjs';
-import { CAMP_CAVE, CAMP_MOUNTAIN_TRAIL } from '../shared/camp-cave-layout.mjs';
+import { CAMP_CAVE, CAMP_MOUNTAIN_TRAIL, CAVE_APPROACH } from '../shared/camp-cave-layout.mjs';
 import { MOUNTAIN_RIVER_SAMPLES } from '../shared/mountain-river.mjs';
 import { mountainLakePoint } from '../shared/mountain-lake.mjs';
 import { ENEMY_RULES } from '../shared/enemies.mjs';
@@ -723,15 +723,17 @@ export function drawWorldMap(canvas, state, selfId, big = false) {
     ctx.strokeStyle = '#83c8cf';
     ctx.lineWidth = mini ? 1.5 : 2.5;
     ctx.stroke();
-    ctx.beginPath();
-    CAMP_MOUNTAIN_TRAIL.forEach((p, i) => {
-      const [px, py] = point(p.x, p.z);
-      if (i) ctx.lineTo(px, py);
-      else ctx.moveTo(px, py);
-    });
-    ctx.strokeStyle = '#c8a477';
-    ctx.lineWidth = mini ? 1 : 2;
-    ctx.stroke();
+    for (const trail of [CAMP_MOUNTAIN_TRAIL, CAVE_APPROACH]) {
+      ctx.beginPath();
+      trail.forEach((p, i) => {
+        const [px, py] = point(p.x, p.z);
+        if (i) ctx.lineTo(px, py);
+        else ctx.moveTo(px, py);
+      });
+      ctx.strokeStyle = '#c8a477';
+      ctx.lineWidth = mini ? 1 : 2;
+      ctx.stroke();
+    }
     dot(CAMP_CAVE.x, CAMP_CAVE.z, '#d5ae85', 3);
     if (places) {
       const [cx, cy] = point(CAMP_CAVE.x, CAMP_CAVE.z);

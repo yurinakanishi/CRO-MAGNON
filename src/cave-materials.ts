@@ -3,7 +3,8 @@ import { isMesh } from './three-types.js';
 import { CAMP_CAVE, CAVE_BEND } from '../shared/camp-cave-layout.mjs';
 import { caveGroundShader } from './cave-ground-style.js';
 import { caveRockShader } from './cave-rock-shader.js';
-import { caveMuralShader } from './cave-gallery-layout.js';
+import { caveMuralShader, type CaveExtraPigment } from './cave-gallery-layout.js';
+import { meadowShader, MEADOW_BLADE_ALBEDO, MEADOW_MATCH } from './paleo-materials.js';
 
 // Pigment is projected onto existing reconstructed wall triangles (no planes).
 // Only daylight is occluded:
@@ -14,6 +15,7 @@ export function prepareCaveMaterials(
   limestone: THREE.Texture,
   character524: THREE.Texture,
   rimoPigment: THREE.Texture,
+  extraPigments: Record<CaveExtraPigment, THREE.Texture>,
 ) {
   const materials = new Set<THREE.Material>();
   root.traverse((node) => {
@@ -33,6 +35,18 @@ export function prepareCaveMaterials(
         shader.uniforms.caveLimestone = { value: limestone };
         shader.uniforms.caveCharacter524 = { value: character524 };
         shader.uniforms.caveRimoPigment = { value: rimoPigment };
+        shader.uniforms.meadowBlade = {
+          value: new THREE.Vector3(
+            MEADOW_BLADE_ALBEDO.r,
+            MEADOW_BLADE_ALBEDO.g,
+            MEADOW_BLADE_ALBEDO.b,
+          ),
+        };
+        shader.uniforms.meadowMatch = {
+          value: new THREE.Vector2(MEADOW_MATCH.dirt, MEADOW_MATCH.turf),
+        };
+        for (const [key, texture] of Object.entries(extraPigments))
+          shader.uniforms[`cave_${key}`] = { value: texture };
         shader.vertexShader =
           'varying vec3 cavePosition;\nvarying vec3 caveNormal;\n' + shader.vertexShader;
         shader.vertexShader = shader.vertexShader.replace(
@@ -40,8 +54,12 @@ export function prepareCaveMaterials(
           '#include <begin_vertex>\ncavePosition=position;caveNormal=normal;',
         );
         shader.fragmentShader =
+          meadowShader +
           caveGroundShader +
           caveRockShader +
+          Object.keys(extraPigments)
+            .map((key) => `uniform sampler2D cave_${key};\n`)
+            .join('') +
           'uniform sampler2D cavePigment;\nuniform sampler2D caveCharacter524;\nuniform sampler2D caveRimoPigment;\nvarying vec3 cavePosition;\nvarying vec3 caveNormal;\n' +
           shader.fragmentShader;
         shader.fragmentShader = shader.fragmentShader.replace(
@@ -70,8 +88,12 @@ export function prepareCaveMaterials(
           vec3 limestoneColour=mix(rockColour,vec3(rockLuma),.8)*vec3(1.3,1.32,1.32)+vec3(.05);
           limestoneColour*=mix(1.0,.87,damp*.5)*(.94+.10*mineralVariation);
           limestoneColour=min(limestoneColour,vec3(.94));
-          diffuseColor.rgb=mix(diffuseColor.rgb,limestoneColour,insideRock);
           vec2 worldGround=vec2(${CAMP_CAVE.x.toFixed(2)}-cavePosition.x,${CAMP_CAVE.z.toFixed(2)}-cavePosition.z);
+          // Soil and turf continue over the exposed source lip at the riverbank.
+          // Only the outward skin changes; the inner limestone and pigments stay intact.
+          float sourceRelief=clamp(dot(diffuseColor.rgb,vec3(.3,.59,.11))*3.0,.65,1.25);
+          vec3 outerSoil=meadowGreen(vec3(.153,.122,.042)*sourceRelief,worldGround);
+          diffuseColor.rgb=mix(outerSoil,limestoneColour,insideRock);
           float floorDust=(1.0-smoothstep(1.4,2.8,cavePosition.y))*smoothstep(.1,.7,roomFacingNormal.y);
           float deepFloor=1.0-smoothstep(7.0,14.0,cavePosition.z);
           vec3 dustColour=caveDust(diffuseColor.rgb,worldGround)*mix(1.0,.6+rockLuma*1.8,deepFloor);
@@ -107,7 +129,7 @@ export function prepareCaveMaterials(
           '#include <lights_fragment_end>\nreflectedLight.indirectDiffuse*=caveDaylight;',
         );
       };
-      material.customProgramCacheKey = () => 'camp-cave-white-gallery-v16-torch-darkness';
+      material.customProgramCacheKey = () => 'camp-cave-white-gallery-v18-turf-exterior';
       material.needsUpdate = true;
     }
   });

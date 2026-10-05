@@ -17,7 +17,7 @@ export function motionControlsMarkup() {
     <button type="button" id="motion-quick-stop" hidden>やめる</button>
   </div>
   <div id="motion-hud" hidden>
-    <div class="motion-hud-caption"><span>手であそぶ</span><span>視点は自動</span></div>
+    <div class="motion-hud-caption"><span id="motion-hand-caption">片手であそぶ</span><span>視点は自動</span></div>
     <div class="motion-current"><span id="motion-direction" aria-hidden="true">●</span><strong id="motion-live-status">とまっています</strong></div>
     <p id="motion-live-notice" role="status" aria-live="polite" hidden></p>
     <p class="motion-stop-hint" id="motion-stop-hint">止まる：左手を戻す・下ろす</p>
@@ -37,7 +37,7 @@ export function motionControlsMarkup() {
       <progress id="motion-calibration" value="0" max="1" aria-label="手の位置を確認中"></progress>
     </div>
     <div id="motion-preview-wrap">
-      <div class="motion-preview"><video id="motion-video" muted playsinline aria-label="自分の手を確認する映像"></video><svg id="motion-guide" viewBox="0 0 320 240" aria-hidden="true"><circle cx="120" cy="158" r="15"/><circle cx="200" cy="158" r="15"/></svg><svg id="motion-skeleton" preserveAspectRatio="xMidYMid meet" aria-hidden="true"></svg><span id="motion-preview-placeholder">カメラを準備しています</span></div>
+      <div class="motion-preview"><video id="motion-video" muted playsinline aria-label="自分の手を確認する映像"></video><svg id="motion-guide" viewBox="0 0 320 240" aria-hidden="true"><circle cx="160" cy="158" r="15"/></svg><svg id="motion-skeleton" preserveAspectRatio="xMidYMid meet" aria-hidden="true"></svg><span id="motion-preview-placeholder">カメラを準備しています</span></div>
     </div>
     <div class="motion-buttons" id="motion-recovery-buttons"><button type="button" id="motion-start">もう一度ためす</button></div>
     <div id="motion-lessons" hidden>
@@ -54,17 +54,17 @@ export function motionControlsMarkup() {
         ${card(glyph(stroke), '低い位置で横ふり', 'なでる・調べる')}
       </div>
       <p class="motion-stop-hint">止まるときは、移動する手を元の位置へ戻すか下ろします。</p>
+      <p class="motion-help-note" id="motion-single-hint">アクション中は移動を止めます。手を元の位置に戻すと、また移動できます。</p>
       <p class="motion-help-note">手が画面外に出たら、直前の動きを続けます。止めるときは手を画面内へ。</p>
     </div>
     <details id="motion-settings"><summary>カメラ・手の位置を調整</summary>
       <label class="motion-option">カメラ <select id="motion-device"><option value="">ブラウザーの既定</option></select></label>
       <small id="motion-camera-status"></small><small id="motion-camera-help"></small>
-      <label class="motion-option">移動する手 <select id="motion-hand"><option value="left">左手</option><option value="right">右手</option></select></label>
       <div class="motion-buttons"><button type="button" id="motion-calibrate" hidden>手の位置を合わせ直す</button><button type="button" id="motion-stop" hidden>手の操作をやめる</button></div>
       <details id="motion-debug-details"><summary>詳しい設定・認識の確認</summary>
         <div class="motion-debug-toolbar"><strong id="motion-debug-detection"></strong><label><input type="checkbox" id="motion-show-skeleton"> 手の関節を表示</label><button type="button" id="motion-expand" aria-pressed="false">映像を拡大</button></div>
         <label class="motion-option">認識 <select id="motion-delegate"><option value="CPU">CPU</option><option value="GPU">GPU（比較用）</option><option value="preview">映像だけ（操作なし）</option></select></label>
-        <label class="motion-option">1秒の認識回数 <select id="motion-hz"><option value="10">10</option><option value="15" selected>15</option><option value="20">20</option></select></label><small id="motion-performance"></small><small>移動する手・認識処理の変更は終了してから行えます。</small>
+        <label class="motion-option">1秒の認識回数 <select id="motion-hz"><option value="10">10</option><option value="15" selected>15</option><option value="20">20</option></select></label><small id="motion-performance"></small><small>認識処理の変更は終了してから行えます。</small>
         <p id="motion-instruction"></p>
         <div class="motion-pads">
           <div class="motion-hand-card"><div class="motion-hand-heading"><strong id="motion-move-label"></strong><span id="motion-move-tracking"></span></div><div class="motion-push"><span id="motion-push-value"></span><progress id="motion-push-progress" value="0" max="1" aria-label="手の押し込み量"></progress><small id="motion-push-detail"></small></div><div class="motion-pad" id="motion-move-pad"><span class="motion-up">前進</span><span class="motion-left">左</span><span class="motion-right">右</span><span class="motion-down">後退</span><i class="motion-home"></i><i class="motion-dot"></i></div><div class="motion-hand-state" id="motion-move-state"></div></div>

@@ -2,7 +2,7 @@
 // Menu opens on the bag with the first food focused; decide → 使う heals; the bottom
 // face button backs out of the bag popup, the pause menu, the settings and the map;
 // the map buttons toggle the atlas; the top face button jumps; the character change
-// sits above "back to exploring"; guide / world / companions are sub-tabs of one tab.
+// sits above "back to exploring"; removed menu pages stay absent.
 import assert from 'node:assert/strict';
 import { mkdir, writeFile } from 'node:fs/promises';
 import { createGameServer } from '../server.mjs';
@@ -277,43 +277,28 @@ try {
   );
   assert.ok(!prompts.includes('×ジャンプ'));
   await tap(PAD.options);
-  await select('[data-controller-menu="info"]');
-  await tap(PAD.circle);
-  assert.equal(await page.locator('[data-pause-panel="info"]').evaluate((el) => !el.hidden), true);
-  assert.equal(await page.locator('[data-controller-menu="sub-help"]').count(), 0);
+  assert.equal(await page.locator('[data-pause-tab="info"]').count(), 0);
+  assert.equal(await page.locator('[data-pause-panel="info"]').count(), 0);
+  assert.equal(await page.locator('[data-pause-subtab]').count(), 0);
   assert.equal(await page.locator('#input-cues').isVisible(), false);
-  await page.screenshot({ path: `${output}/04-world-tab.png`, animations: 'disabled' });
-  passed('Jump is on the top face button; menus contain no manual');
+  await page.screenshot({ path: `${output}/04-menu.png`, animations: 'disabled' });
+  passed('Jump is on the top face button; removed menu pages stay absent');
 
-  // 23: one tab holds guide / world / companions (and objectives) as sub-tabs.
   const tabs = await page
     .locator('.pause-tab')
     .evaluateAll((els) => els.map((el) => el.dataset.pauseTab));
-  assert.deepEqual(tabs, ['inventory', 'warp', 'crafting', 'info', 'settings']);
-  const subTabs = await page
-    .locator('.sub-tab')
-    .evaluateAll((els) => els.map((el) => el.dataset.pauseSubtab));
-  assert.deepEqual(subTabs, ['world', 'tribe', 'objectives']);
-  await select('[data-controller-menu="sub-world"]');
+  assert.deepEqual(tabs, ['inventory', 'warp', 'crafting', 'mascots', 'settings']);
+  await select('[data-controller-menu="mascots"]');
   await tap(PAD.circle);
-  assert.equal(
-    await page.locator('[data-pause-subpanel="world"]').evaluate((el) => !el.hidden),
-    true,
-  );
-  assert.equal(await page.locator('[data-pause-subpanel="help"]').count(), 0);
-  await select('[data-controller-menu="journal"]');
-  await focusInsideModal('world sub-tab');
-  await select('[data-controller-menu="sub-tribe"]');
+  assert.equal(await page.locator('[data-mascot]').count(), 13);
+  assert.equal(await page.locator('[data-controller-menu="bots"]').count(), 0);
+  assert.equal(await page.locator('[data-controller-menu="travelAlone"]').count(), 0);
+  await select('[data-controller-menu="settings"]');
   await tap(PAD.circle);
-  assert.equal(
-    await page.locator('[data-pause-subpanel="tribe"] .tribe-member').count(),
-    1,
-    'companions list renders inside the sub-tab',
-  );
-  await select('#tribe-invite');
-  await focusInsideModal('tribe sub-tab');
-  await page.screenshot({ path: `${output}/05-info-tribe.png`, animations: 'disabled' });
-  passed('World and companions remain reachable without the removed manual');
+  assert.equal(await page.locator('[data-pause-panel="settings"]').isVisible(), true);
+  await focusInsideModal('settings tab');
+  await page.screenshot({ path: `${output}/05-settings.png`, animations: 'disabled' });
+  passed('Five menu tabs, including the unified mascot cards, work with the controller');
 
   // 22: character change sits directly above "back to exploring" and completes on the pad.
   const exits = await page

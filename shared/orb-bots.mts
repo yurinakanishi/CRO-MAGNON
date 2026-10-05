@@ -42,11 +42,36 @@ const BOT_CAMP_PLACES = {
 export const BOT_DESIGNS = {
   '524': { name: '524', face: '524', color: '#ffdf58' },
   'rimo-neko': { name: 'りもねこ', face: 'ねこ', color: '#d2c9c2' },
-  white: { name: 'しろbot', face: '＾＾', color: '#f5f3ee' },
-  blue: { name: 'あおbot', face: '＞＜', color: '#1172ef' },
-  green: { name: 'みどりbot', face: '＋＋', color: '#18b653' },
-  purple: { name: 'むらさきbot', face: '○○', color: '#a23ee8' },
-  orange: { name: 'オレンジbot', face: '－－', color: '#f58b28' },
+  white: {
+    name: 'しろbot',
+    face: '＾＾',
+    color: '#f5f3ee',
+    image: '/models/orb-bot-white/portrait.png',
+  },
+  blue: {
+    name: 'あおbot',
+    face: '＞＜',
+    color: '#1172ef',
+    image: '/models/orb-bot-blue/portrait.png',
+  },
+  green: {
+    name: 'みどりbot',
+    face: '＋＋',
+    color: '#18b653',
+    image: '/models/orb-bot-green/portrait.png',
+  },
+  purple: {
+    name: 'むらさきbot',
+    face: '○○',
+    color: '#a23ee8',
+    image: '/models/orb-bot-purple/portrait.png',
+  },
+  orange: {
+    name: 'オレンジbot',
+    face: '－－',
+    color: '#f58b28',
+    image: '/models/orb-bot-orange/portrait.png',
+  },
   beret: {
     name: 'ベレーbot',
     face: '••',
@@ -696,6 +721,36 @@ function bondBot(p: PlayerSnapshot, b: OrbBot) {
   b.throwAt = b.recallAt = 0;
   b.origin = b.landing = null;
   b.recall = false;
+}
+
+/** Select one camp dot from the roster, or send it home without changing any other dot. */
+export function setOrbBotSelected(
+  room: BotRoom,
+  p: PlayerSnapshot,
+  kind: unknown,
+  selected: boolean,
+  now: number,
+  near: Point | null = null,
+): boolean {
+  if (!BOT_KINDS.some((candidate) => candidate === kind)) return false;
+  syncOrbBots(room, now);
+  const b = room.orbBots?.find((candidate) => candidate.kind === kind);
+  if (!b) return false;
+  if (!selected) {
+    if (b.ownerId !== p.id) return false;
+    sendBotHome(b, now);
+    return true;
+  }
+  if (b.ownerId && b.ownerId !== p.id && room.players.has(b.ownerId)) return false;
+  if (b.petPlayerId && b.petPlayerId !== p.id && room.players.has(b.petPlayerId)) return false;
+  const far = distance(p, b) > 8;
+  if (far && !near) return false;
+  if (b.ownerId === p.id && b.mode === 'following' && !b.busy && distance(p, b) <= 8) return false;
+  clearBotPet(b);
+  bondBot(p, b);
+  setMode(b, 'following', now);
+  if (far && near) Object.assign(b, near, { y: botRestHeight(b.kind, near.x, near.z) });
+  return true;
 }
 
 function finishBotPet(p: PlayerSnapshot, b: OrbBot, now: number) {

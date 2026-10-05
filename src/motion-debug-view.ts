@@ -11,7 +11,7 @@ import {
 const states: Record<MotionState, string> = {
   OFF: '停止',
   STARTING: '準備中',
-  CALIBRATING: '両手を調整中',
+  CALIBRATING: '手を調整中',
   READY: '新しい手の認識を確認中',
   ACTIVE: '操作可能',
   RECOVERING: '認識が戻ると自動復帰',
@@ -55,6 +55,8 @@ export class MotionDebugView {
     const view = describeMotionDebug(frame, now);
     const live = camera.previewLive;
     const previewOnly = camera.options.delegate === 'preview';
+    const required = input.requiredHands.map((side) => (side === 'left' ? 0 : 21));
+    const missing = required.filter((index) => view.points[index].quality !== 'tracked');
     const enabled = this.root.querySelector<HTMLInputElement>('#motion-show-skeleton')!.checked;
     const visible = live && view.fresh && view.detected && enabled && !document.hidden;
     this.svg.style.display = visible ? '' : 'none';
@@ -71,10 +73,10 @@ export class MotionDebugView {
             : input.edgeHolding
               ? '画面外 · 移動を継続中'
               : view.detected
-                ? view.points[0].quality === 'tracked' && view.points[21].quality === 'tracked'
-                  ? '両手を認識中'
+                ? missing.length === 0
+                  ? `${input.handsLabel}を認識中`
                   : '手を確認中'
-                : '両手を映してください';
+                : `${input.handsLabel}を映してください`;
     this.text('#motion-debug-detection', detection);
     const badge = this.root.querySelector<HTMLElement>('#motion-debug-detection')!;
     badge.dataset.quality = view.detected && live ? 'tracked' : live ? 'uncertain' : 'missing';
@@ -96,7 +98,7 @@ export class MotionDebugView {
     );
     this.text(
       '#motion-debug-input',
-      `操作：${states[input.state]} · 手の認識 ${2 - view.missingInput.length}/2`,
+      `操作：${states[input.state]} · 手の認識 ${required.length - missing.length}/${required.length}`,
     );
     const pointText = (index: number) => {
       const point = view.points[index];
@@ -110,6 +112,7 @@ export class MotionDebugView {
       const text = pointText(index);
       if (node.textContent !== text) node.textContent = text;
       node.dataset.quality = view.points[index].quality;
+      node.hidden = !required.includes(index);
     }
     this.text(
       '#motion-debug-missing',
@@ -119,13 +122,13 @@ export class MotionDebugView {
           ? '結果が古いため手のガイドを消しています。新しい認識結果を待っています。'
           : !view.detected
             ? '映像は受信中ですが、手を検出できていません。'
-            : view.missingInput.length
-              ? `不足・不確か：${view.missingInput.join('・')}`
-              : '両手を確認できています。顔・肩・肘は使いません。',
+            : missing.length
+              ? `不足・不確か：${missing.map((index) => (index === 0 ? '左手' : '右手')).join('・')}`
+              : `${input.handsLabel}を確認できています。顔・肩・肘は使いません。`,
     );
     for (const [id, index] of [
       ['#motion-move-tracking', input.movementHand === 'left' ? 0 : 21],
-      ['#motion-action-tracking', input.movementHand === 'left' ? 21 : 0],
+      ['#motion-action-tracking', input.actionHand === 'left' ? 0 : 21],
     ] as const) {
       const point = view.points[index];
       this.text(

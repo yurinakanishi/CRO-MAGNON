@@ -1,4 +1,4 @@
-import { CAMP_MOUNTAIN } from './camp-cave-layout.mjs';
+import { CAMP_MOUNTAIN, CAVE_HILL, caveFootHeight } from './camp-cave-layout.mjs';
 import { CAMP_MOUNTAIN_SURFACE_DATA as D } from './camp-mountain-surface-data.mjs';
 import {
   expandedMountainZ,
@@ -8,6 +8,8 @@ import {
   MOUNTAIN_EXPANSION,
 } from './mountain-expansion.mjs';
 export function mountainHeight(x: number, z: number) {
+  const worldX = x,
+    worldZ = z;
   z = sourceMountainZ(z);
   x = sourceMountainX(x, z);
   const u = (CAMP_MOUNTAIN.x - x - D.minX) / D.step - 0.5;
@@ -19,9 +21,11 @@ export function mountainHeight(x: number, z: number) {
   if (ix < 0 || iz < 0 || ix + 1 >= D.nx || iz + 1 >= D.nz) return 0;
   const i = iz * D.nx + ix,
     h = D.heights;
-  return (
+  return caveFootHeight(
+    worldX,
+    worldZ,
     (h[i] * (1 - fx) + h[i + 1] * fx) * (1 - fz) +
-    (h[i + D.nx] * (1 - fx) + h[i + D.nx + 1] * fx) * fz
+      (h[i + D.nx] * (1 - fx) + h[i + D.nx + 1] * fx) * fz,
   );
 }
 // Transform the measured source boundary along with the visual mesh. Subdivide
@@ -34,7 +38,8 @@ for (let i = 0; i < D.footprint.length; i++) {
   const za = CAMP_MOUNTAIN.z - a[1],
     zb = CAMP_MOUNTAIN.z - b[1];
   const curved =
-    Math.max(za, zb) > MOUNTAIN_EXPANSION.start && Math.min(za, zb) < MOUNTAIN_EXPANSION.end;
+    (Math.max(za, zb) > MOUNTAIN_EXPANSION.start && Math.min(za, zb) < MOUNTAIN_EXPANSION.end) ||
+    (Math.max(za, zb) > CAVE_HILL.minZ && Math.min(za, zb) < CAVE_HILL.maxZ);
   const count = curved ? Math.max(1, Math.ceil(Math.hypot(b[0] - a[0], b[1] - a[1]) / 2)) : 1;
   for (let j = 0; j < count; j++) {
     const t = j / count;
