@@ -46,6 +46,13 @@ import { installCropFoodUI } from './crop-food-ui.js';
 import { canMount, ridingDistance } from '../shared/riding.mjs';
 import { GamepadControls } from './gamepad-ui.js';
 import { MotionControls } from './motion-controls.js';
+import {
+  AssistedNavigation,
+  StableAssistTarget,
+  ASSISTED_CONTROLS_KEY,
+  readAssistedControls,
+} from './assisted-controls.js';
+import { withinAttackReach } from '../shared/combat.mjs';
 import { OrbBotUI } from './orb-bot-ui.js';
 import {
   BOT_DESIGNS,
@@ -93,7 +100,7 @@ import { locationName } from '../shared/paleo-geography.mjs';
 import { regionAt } from '../shared/adventure-regions.mjs';
 import { installAdventureUI, adventureInteraction } from './adventure-ui.js';
 import { installFishingUI, fishingInteraction } from './fishing-ui.js';
-import { FISHING } from '../shared/fishing-sites.mjs';
+import { FISHING, FISHING_SITES } from '../shared/fishing-sites.mjs';
 import { COASTAL } from '../shared/coastal-sites.mjs';
 import { installCoastalUI, coastalInteraction } from './coastal-ui.js';
 import { installGulfUI, gulfInteraction } from './gulf-ui.js';
@@ -215,6 +222,14 @@ const blockedMovementKeys = new Set();
 const movementCommands = new MovementCommands();
 let gamepadControls: GamepadControls | undefined;
 let motionControls: MotionControls | undefined;
+let easyControls = readAssistedControls();
+const assistedNavigation = new AssistedNavigation();
+const attackAssist = new StableAssistTarget<any>();
+const petAssist = new StableAssistTarget<any>();
+const interactionAssist = new StableAssistTarget<any>();
+let assistedSource = '';
+let assistedDirection = '0,0';
+const assistedControls = () => easyControls || !!motionControls?.ownsInput;
 let inputCues: InputCues | undefined;
 /** The open atlas, so the controller can hand it pointer, zoom and confirm frames. */
 let mapInput: MapInput | undefined;
@@ -287,6 +302,8 @@ const screens = new ScreenManager($('#screens'), (id) => {
 });
 inputCues = new InputCues($('.game-viewport'), (command: CueAction) => {
   if (!joined || renderUnavailable || screens.active || $('#modal').open || player()?.downedUntil)
+    return;
+  if (assistedControls() && ['inspect', 'zoomIn', 'zoomOut', 'endInspect'].includes(command))
     return;
   switch (command) {
     case 'inspect':
@@ -504,6 +521,13 @@ function stopInput() {
 }
 function clearMovementInput() {
   renderer.prediction?.stop();
+  assistedNavigation.pause();
+  attackAssist.reset();
+  petAssist.reset();
+  interactionAssist.reset();
+  renderer.setAssistMarker('attack', null);
+  renderer.setAssistMarker('interact', null);
+  assistedDirection = '0,0';
   // Also cancels a cast sent just before a menu/blur, before its snapshot arrives.
   if (joined) {
     send({ type: 'action', action: 'cancelBotThrows' });
@@ -778,22 +802,37 @@ function distance(a, b) {
 function nearby(): { action: string; label: string; targetId?: string } | null {
   const me = player();
   if (!me || me.downedUntil || me.mountId) return null;
+  const assisting = assistedControls();
+  // Existing range checks remain in each interaction; add the same view/front gate.
+  const collision = assisting
+    ? {
+        segmentFree: (a, b, ...args) =>
+          renderer.collision.segmentFree(a, b, ...args) && assistScore(b) !== null,
+      }
+    : renderer.collision;
   const dot = preferredPet();
   if (dot && typeof dot === 'object') return dot;
-  const coastal = coastalInteraction(state, me, renderer.collision);
+  if (dot && assisting) return motionTarget(dot, null);
+  const coastal = coastalInteraction(state, me, collision);
   if (coastal) return coastal;
   const fishing = fishingInteraction(me);
-  if (fishing) return fishing;
+  if (
+    fishing &&
+    (!assisting ||
+      !fishing.targetId ||
+      assistScore(FISHING_SITES.find((s) => s.id === fishing.targetId)) !== null)
+  )
+    return fishing;
   if (me.boatId) return null;
-  const hunting = huntInteraction(state, me, renderer.collision);
+  const hunting = huntInteraction(state, me, collision);
   if (hunting) return hunting;
-  const caveFire = caveFireInteraction(state, me, renderer.collision);
+  const caveFire = caveFireInteraction(state, me, collision);
   if (caveFire) return caveFire;
-  const adventure = adventureInteraction(me, renderer.collision);
+  const adventure = adventureInteraction(me, collision);
   if (adventure) return adventure;
-  const resident = residentInteraction(state, me, renderer.collision);
+  const resident = residentInteraction(state, me, collision);
   if (resident) return resident;
-  const gulf = gulfInteraction(state, me, renderer.collision);
+  const gulf = gulfInteraction(state, me, collision);
   if (gulf) return gulf;
   const objects: { x: number; z: number; action: string; label: string; range: number }[] =
     state.resources
@@ -817,13 +856,24 @@ function nearby(): { action: string; label: string; targetId?: string } | null {
     });
   if (!fixedIdentity)
     objects.push({ ...state.npc, action: 'trade', label: 'オルと物々交換する', range: 10 });
-  return objects
+  const available = objects
     .filter(
-      (o) =>
-        distance(me, o) <= o.range &&
-        (!renderer.collision || interactionVisible(renderer.collision, me, o)),
+      (o) => distance(me, o) <= o.range && (!collision || interactionVisible(collision, me, o)),
     )
-    .sort((a, b) => distance(me, a) - distance(me, b))[0];
+    .sort((a, b) => distance(me, a) - distance(me, b));
+  if (assisting) {
+    const chosen = interactionAssist.choose(
+      available.map((o) => ({
+        id: `${o.action}:${o.x}:${o.z}`,
+        score: assistScore(o) ?? Infinity,
+        value: o,
+      })),
+      performance.now(),
+    );
+    renderer.setAssistMarker('interact', chosen, chosen?.action === 'gather' ? '採集' : '調べる');
+    return chosen;
+  }
+  return available[0];
 }
 function updateHUD() {
   const me = player();
@@ -980,7 +1030,77 @@ function huntTarget() {
   return selectedCombatTarget(state, player(), selectedAnimalId);
 }
 function attack() {
-  action('attack');
+  action('attack', assistedControls() ? assistedAttackTarget()?.id : undefined);
+}
+/** Only on-screen, reachable targets in the steering direction are assisted. */
+function assistScore(point) {
+  const me = player();
+  if (
+    !me ||
+    !point ||
+    !Number.isFinite(point.x) ||
+    !Number.isFinite(point.z) ||
+    !joined ||
+    renderUnavailable ||
+    $('#modal').open ||
+    screens.active ||
+    document.hidden ||
+    !document.hasFocus() ||
+    me.downedUntil ||
+    renderer.viewingCompanion ||
+    (motionControls?.ownsInput && motionControls.input.state !== 'ACTIVE')
+  )
+    return null;
+  const dx = point.x - me.x,
+    dz = point.z - me.z,
+    range = Math.hypot(dx, dz);
+  const front =
+    dx * Math.sin(assistedNavigation.heading) + dz * Math.cos(assistedNavigation.heading);
+  if (range > 0.1 && front / range < 0.35) return null;
+  if (!interactionVisible(renderer.collision, me, point)) return null;
+  const height = renderer.collision.surfaceHeight;
+  if (
+    height &&
+    Math.abs(height.call(renderer.collision, me) - height.call(renderer.collision, point)) > 1.4
+  )
+    return null;
+  const screen = renderer.assistScreenPoint(point);
+  return screen ? Math.abs(screen.x) * 2 + Math.abs(screen.y) * 0.35 + range * 0.15 : null;
+}
+function assistedAttackTarget() {
+  const me = player();
+  if (
+    !assistedControls() ||
+    !me ||
+    !joined ||
+    renderUnavailable ||
+    $('#modal').open ||
+    screens.active ||
+    document.hidden ||
+    !document.hasFocus() ||
+    renderer.viewingCompanion ||
+    (motionControls?.ownsInput && motionControls.input.state !== 'ACTIVE') ||
+    !canStartAttack(me, renderer.serverNow())
+  ) {
+    attackAssist.reset();
+    renderer.setAssistMarker('attack', null);
+    return null;
+  }
+  const candidates = (state.enemies ?? []).flatMap((enemy) => {
+    if (
+      !enemy.hostile ||
+      enemy.phase !== 'alive' ||
+      enemy.behavior === 'step' ||
+      !withinAttackReach(me, enemy)
+    )
+      return [];
+    const point = { ...enemy, height: Math.min(2.2, Math.max(0.65, enemy.radius)) };
+    const score = assistScore(point);
+    return score === null ? [] : [{ id: enemy.id, score, value: point }];
+  });
+  const target = attackAssist.choose(candidates, performance.now());
+  renderer.setAssistMarker('attack', target, '攻撃');
+  return target;
 }
 function canPetRimo() {
   return (
@@ -1073,7 +1193,9 @@ function preferredPet() {
   const group = nearbyBotsForPetting();
   if (group.length > 0)
     candidates.push({
-      point: group[0],
+      point: assistedControls()
+        ? [...group].sort((a, b) => (assistScore(a) ?? Infinity) - (assistScore(b) ?? Infinity))[0]
+        : group[0],
       choice: { action: 'petBots', label: `近くのbotたちをまとめて撫でる（${group.length}匹）` },
     });
   if (
@@ -1096,6 +1218,20 @@ function preferredPet() {
         choice: { action: 'petBot', targetId: b.id, label: `${BOT_DESIGNS[b.kind].name}を撫でる` },
       });
     }
+  }
+  if (assistedControls()) {
+    const selected = petAssist.choose(
+      candidates.flatMap((candidate) => {
+        const score = assistScore(candidate.point);
+        const choice = candidate.choice;
+        const id =
+          typeof choice === 'string' ? choice : `${choice.action}:${choice.targetId ?? ''}`;
+        return score === null ? [] : [{ id, score, value: candidate }];
+      }),
+      performance.now(),
+    );
+    renderer.setAssistMarker('interact', selected?.point ?? null, '撫でる');
+    return selected?.choice ?? null;
   }
   return (
     candidates.sort((a, b) => distance(me, a.point) - distance(me, b.point))[0]?.choice ?? null
@@ -1353,6 +1489,7 @@ function updateHuntingHUD() {
     {
       inspect: renderer.companionViewChoice()?.label,
       viewing: renderer.viewingCompanion,
+      automaticCamera: assistedControls(),
       pet: petLabel,
       interaction: closeAction?.action.startsWith('pet') ? undefined : closeAction?.label,
       ride: !rideButton.disabled ? rideButton.querySelector('span').textContent : undefined,
@@ -2203,6 +2340,37 @@ function openPauseMenu(tab?: string) {
   );
   const root = $('#modal-body') as HTMLElement;
   bindGraphicsSettings(root, (mode) => renderer.setGraphicsMode?.(mode));
+  const controlsSetting = document.createElement('div');
+  controlsSetting.className = 'settings-item';
+  controlsSetting.innerHTML = `<div><strong>操作</strong></div><div class="settings-buttons" role="group" aria-label="操作モード"><button class="button button-outline" data-controls="normal" aria-pressed="${!easyControls}">通常</button><button class="button button-outline" data-controls="easy" aria-pressed="${easyControls}">かんたん・視点自動</button></div>`;
+  root.querySelector('#pause-panel-settings .settings-list')?.prepend(controlsSetting);
+  const cameraButtons = root.querySelector('[data-setting="camera"]')?.parentElement;
+  const automaticCameraLabel = document.createElement('span');
+  automaticCameraLabel.textContent = '自動';
+  cameraButtons?.before(automaticCameraLabel);
+  const updateCameraSetting = () => {
+    if (cameraButtons) cameraButtons.hidden = assistedControls();
+    automaticCameraLabel.hidden = !assistedControls();
+  };
+  updateCameraSetting();
+  for (const button of controlsSetting.querySelectorAll<HTMLButtonElement>('[data-controls]')) {
+    button.onclick = () => {
+      clearMovementInput();
+      easyControls = button.dataset.controls === 'easy';
+      if (easyControls) renderer.endCompanionView();
+      updateCameraSetting();
+      try {
+        localStorage.setItem(ASSISTED_CONTROLS_KEY, easyControls ? 'on' : 'off');
+      } catch {
+        /* Current visit still works. */
+      }
+      for (const option of controlsSetting.querySelectorAll<HTMLElement>('[data-controls]'))
+        option.setAttribute(
+          'aria-pressed',
+          String((option.dataset.controls === 'easy') === easyControls),
+        );
+    };
+  }
   const tabButtons = [...root.querySelectorAll<HTMLButtonElement>('.pause-tab')];
   const showTab = (id: string) => {
     pauseTab = id;
@@ -2250,9 +2418,15 @@ function openPauseMenu(tab?: string) {
     $('#tribe-invite').onclick = openInvite;
     $('[data-setting="sound"]').onclick = toggleSound;
     $('[data-setting="fullscreen"]').onclick = toggleFullscreen;
-    $('[data-setting="camera"]').onclick = () => renderer.focusPlayer();
-    $('[data-setting="zoom-out"]').onclick = () => renderer.adjustZoom(-0.15);
-    $('[data-setting="zoom-in"]').onclick = () => renderer.adjustZoom(0.15);
+    $('[data-setting="camera"]').onclick = () => {
+      if (!assistedControls()) renderer.focusPlayer();
+    };
+    $('[data-setting="zoom-out"]').onclick = () => {
+      if (!assistedControls()) renderer.adjustZoom(-0.15);
+    };
+    $('[data-setting="zoom-in"]').onclick = () => {
+      if (!assistedControls()) renderer.adjustZoom(0.15);
+    };
     for (const button of root.querySelectorAll<HTMLButtonElement>('[data-difficulty]'))
       button.onclick = () => setDifficulty(normalizeDifficulty(button.dataset.difficulty));
     if ($('[data-setting="reset-room"]')) $('[data-setting="reset-room"]').onclick = openRoomReset;
@@ -2462,10 +2636,15 @@ document.addEventListener('keydown', (e) => {
   const k = movementKey(e);
   if (k === 'x' && !e.repeat) {
     e.preventDefault();
+    if (assistedControls()) return;
     if (!renderer.endCompanionView()) renderer.viewCompanion();
     return;
   }
-  if (renderer.viewingCompanion && ['+', '=', '-', 'Subtract', 'Add'].includes(e.key)) {
+  if (
+    !assistedControls() &&
+    renderer.viewingCompanion &&
+    ['+', '=', '-', 'Subtract', 'Add'].includes(e.key)
+  ) {
     e.preventDefault();
     renderer.adjustZoom(e.key === '-' || e.key === 'Subtract' ? -0.15 : 0.15);
     return;
@@ -2595,7 +2774,7 @@ gamepadControls = new GamepadControls({
   onMapInput: (frame, dt) =>
     frame.actions.includes('map') ? openMap() : mapInput?.input(frame, dt),
   onLook: (x, y, dt) => {
-    if (!motionControls?.ownsInput) renderer.rotateCamera(x * dt * 2.4, y * dt * 1.5);
+    if (!assistedControls()) renderer.rotateCamera(x * dt * 2.4, y * dt * 1.5);
   },
   onAction: (command) => {
     if (
@@ -2646,12 +2825,15 @@ gamepadControls = new GamepadControls({
         openJournal();
         break;
       case 'center':
+        if (assistedControls()) break;
         if (!renderer.endCompanionView()) renderer.focusPlayer();
         break;
       case 'zoomIn':
+        if (assistedControls()) break;
         if (!renderer.viewCompanion()) renderer.adjustZoom(0.15);
         break;
       case 'zoomOut':
+        if (assistedControls()) break;
         renderer.adjustZoom(-0.15);
         break;
     }
@@ -2680,6 +2862,7 @@ renderer.manualInputAllowed = () =>
   !$('#modal').open &&
   !player()?.downedUntil &&
   !motionControls?.ownsInput;
+renderer.manualCameraAllowed = () => !joined || !assistedControls();
 renderer.onFrameTiming = (ms) => motionControls.camera.metrics.record('renderFrameMs', ms);
 /** Read-only aggregate diagnostics. No images, body coordinates or event consumption. */
 export function motionDiagnostics() {
@@ -2697,13 +2880,69 @@ export function resetMotionMetrics() {
   motionControls.camera.resetMetrics();
 }
 let lastMoveSent = 0;
-let lastMotionDirection = '0,0';
 const motionPetHold = new MotionPetHold();
+function assistedMovement(
+  forward: number,
+  turn: number,
+  running: boolean,
+  now: number,
+  active: boolean,
+) {
+  const me = player();
+  if (!me) return;
+  const locked =
+    me.carrierId ||
+    me.downedUntil ||
+    (me.attackSequence > 0 && renderer.serverNow() - me.attackAt < attackProfile(me).durationMs);
+  if (!active || locked) forward = turn = 0;
+  const identity = `${me.id}:${me.warpSequence ?? 0}:${me.mountId ?? ''}:${me.boatId ?? ''}:${me.carrierId ?? ''}:${characterModel(me).key}`;
+  const { dx, dz, facing } = assistedNavigation.step(forward, turn, now, identity, me.facing);
+  renderer.setAutomaticCamera(assistedNavigation.heading, active && !locked);
+  if (forward || turn) renderer.endCompanionView();
+  renderer.prediction?.setInput(dx, dz, running, now, facing);
+  const direction = `${dx},${dz}${facing === undefined ? '' : `,${facing}`}`;
+  if (
+    (direction === '0,0' && assistedDirection !== '0,0') ||
+    (direction !== '0,0' && assistedDirection === '0,0') ||
+    ((forward || turn) && now - lastMoveSent >= (multiplayer.movementRefreshMs || 70))
+  ) {
+    send({ type: 'move', dx, dz, running, ...(facing === undefined ? {} : { facing }) });
+    lastMoveSent = now;
+    assistedDirection = direction;
+  }
+  if (running !== lastGait) {
+    send({ type: 'gait', running });
+    lastGait = running;
+  }
+}
 function updateMovementInput() {
+  const source = motionControls?.ownsInput ? 'hands' : easyControls ? 'easy' : '';
+  if (source !== assistedSource) {
+    assistedSource = source;
+    $('#world').setAttribute(
+      'aria-label',
+      source
+        ? '氷河時代の3Dワールド。前後に進み、左右で曲がります。視点は自動です。'
+        : '氷河時代の3Dワールド。WASDまたは左スティックで移動。右スティックまたはドラッグで見渡します。',
+    );
+    assistedNavigation.reset();
+    assistedDirection = '0,0';
+    movementCommands.reset();
+    attackAssist.reset();
+    petAssist.reset();
+    interactionAssist.reset();
+    renderer.setAssistMarker('attack', null);
+    renderer.setAssistMarker('interact', null);
+    if (!source) renderer.setAutomaticCamera(null);
+  }
   if (player()?.downedUntil || !joined || renderUnavailable) {
     motionControls?.pause('今は操作できません。操作可能になると自動再開します。');
     keys.clear();
     movementCommands.reset();
+    assistedNavigation.reset();
+    renderer.setAutomaticCamera(null);
+    renderer.setAssistMarker('attack', null);
+    renderer.setAssistMarker('interact', null);
     return;
   }
   let sx = 0,
@@ -2732,10 +2971,10 @@ function updateMovementInput() {
     const target = motionTarget(preferredPet(), nearby());
     motionControls.interactionHint =
       petting || motionPetHold.active
-        ? '撫でています · 移動する手を大きく動かすと中断'
+        ? 'なでています'
         : target
-          ? `手のひらを水平にして横なで → ${target.label}`
-          : '横なでする相手がいません · 近づいてください';
+          ? `${input.movementHand === 'left' ? '右手' : '左手'}を低く横ふり → ${target.label}`
+          : '';
     motionControls.attackStatus =
       attackBlockReason(player(), renderer.serverNow()) || '攻撃できます';
     for (const event of motionControls.input.consumeActions(now)) {
@@ -2779,7 +3018,7 @@ function updateMovementInput() {
             // Stop before the action reaches the server, so the first pet tick is stationary.
             renderer.prediction?.stop();
             send({ type: 'move', dx: 0, dz: 0, running: false });
-            lastMotionDirection = '0,0';
+            assistedDirection = '0,0';
             lastMoveSent = now;
           }
           action(target.action, target.targetId);
@@ -2793,18 +3032,15 @@ function updateMovementInput() {
       }
     }
     intent = motionPetHold.filter(intent, movement, petting, now);
-    const navigation = motionControls.navigation.step(intent, now);
-    renderer.rotateCamera(navigation.cameraDelta, navigation.cameraPitchDelta);
-    const { dx, dz } = renderer.getMovementDirection(navigation.sx, navigation.sy);
-    const running = tuning.alwaysRun;
-    renderer.prediction?.setInput(dx, dz, running, now);
-    const direction = `${dx},${dz}`;
-    const stopped = direction === '0,0' && lastMotionDirection !== '0,0';
-    if (stopped || now - lastMoveSent >= (multiplayer.movementRefreshMs || 70)) {
-      send({ type: 'move', dx, dz, running });
-      lastMoveSent = now;
-    }
-    lastMotionDirection = direction;
+    assistedMovement(
+      intent.forward,
+      intent.turn,
+      tuning.alwaysRun,
+      now,
+      gameFocused && intent.active,
+    );
+    assistedAttackTarget();
+    if (!gameFocused || !intent.active) renderer.setAssistMarker('interact', null);
     motionControls.camera.applied(now);
     return;
   }
@@ -2821,6 +3057,19 @@ function updateMovementInput() {
     wantsToRun(),
     canMove ? gamepadControls.movement : { x: 0, y: 0, running: false },
   );
+  if (easyControls) {
+    assistedMovement(
+      -motion.y,
+      motion.x,
+      motion.running || tuning.alwaysRun,
+      performance.now(),
+      canMove,
+    );
+    assistedAttackTarget();
+    if (canMove) nearby();
+    else renderer.setAssistMarker('interact', null);
+    return;
+  }
   if (motion.x || motion.y) renderer.endCompanionView();
   const running = motion.running || tuning.alwaysRun;
   if (running !== lastGait) {

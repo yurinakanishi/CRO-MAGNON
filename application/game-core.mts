@@ -3,10 +3,16 @@ import {
   updateRimoNeko,
   restoreRimoNeko,
   saveRimoNeko,
+  cancelRimoNekoPet,
 } from '../shared/rimo-neko.mjs';
-import { createMae, updateMae, restoreMae } from '../shared/mae.mjs';
-import { createKohaku, updateKohaku, restoreKohaku } from '../shared/kohaku.mjs';
-import { updateOrbBots, saveOrbBots, restoreOrbBots } from '../shared/orb-bots.mjs';
+import { createMae, updateMae, restoreMae, cancelMaePet } from '../shared/mae.mjs';
+import { createKohaku, updateKohaku, restoreKohaku, cancelKohakuPet } from '../shared/kohaku.mjs';
+import {
+  updateOrbBots,
+  saveOrbBots,
+  restoreOrbBots,
+  cancelPlayerBotPet,
+} from '../shared/orb-bots.mjs';
 import { caveInteriorWeight } from '../shared/cave-light.mjs';
 import { updateFishing, cancelFishing } from '../shared/fishing.mjs';
 import { DEFAULT_RULES, EXHIBITION_RULES, clientRules, roomRules } from '../shared/room-rules.mjs';
@@ -51,6 +57,7 @@ import {
   updateCompanion524,
   restoreCompanion524,
   saveCompanion524,
+  cancelCompanion524Pet,
 } from '../shared/companion-524.mjs';
 import { handleBarterCommand, cancelBarter, updateBarters } from '../shared/barter.mjs';
 import { updateSuppers } from '../shared/supper.mjs';
@@ -489,6 +496,16 @@ export function createGameCore({
         return;
       }
       if (message.type === 'move' && Number.isFinite(message.dx) && Number.isFinite(message.dz)) {
+        // An explicit steering input can turn in place; it is still an intentional
+        // departure from petting. Cancellation keeps each companion's owner.
+        if (message.facing !== undefined && controlled === player) {
+          if (room.rimoNeko?.petPlayerId === player.id) cancelRimoNekoPet(room.rimoNeko);
+          if (room.mae?.petPlayerId === player.id) cancelMaePet(room.mae);
+          if (room.kohaku?.petPlayerId === player.id) cancelKohakuPet(room.kohaku);
+          if (room.companion524?.petPlayerId === player.id)
+            cancelCompanion524Pet(room.companion524);
+          cancelPlayerBotPet(room, player.id, now);
+        }
         if (Math.hypot(message.dx, message.dz) > 0.01) {
           cancelBarter(room, player.id, now, '移動を始めたので、交換を中止しました。');
           cancelFishing(player);
@@ -499,7 +516,7 @@ export function createGameCore({
         const length = Math.max(1, Math.hypot(dx, dz));
         controlled.dx = dx / length;
         controlled.dz = dz / length;
-        // Optional idle heading uses the same owned actor and simulation locks as movement.
+        // Optional steering heading also keeps reverse travel facing forward.
         controlled.inputFacing = message.facing;
         controlled.lastInput = now;
         controlled.runningRequested = message.running === true || roomRules(room).alwaysRun;

@@ -2,104 +2,80 @@ import type { HandPose, HandSample } from './motion-hands.js';
 export type MotionAction = 'attack' | 'jump' | 'interact';
 const clamp = (n: number) => Math.max(0, Math.min(1, n));
 
-/** Right-hand modes are exclusive: a pose transition cannot also drag the camera. */
+/** Position gates are exclusive: chest = attack, high = jump, low = stroke. */
 export class MotionHandActions {
   candidate: MotionAction | null = null;
   progress = 0;
-  attackReady = true;
+  attackReady = false;
   pose: HandPose = 'unknown';
-  cameraDelta = { x: 0, y: 0 };
-  cameraTravel = { x: 0, y: 0 };
-  cameraDragging = false;
-  private poseAt = 0;
+  private gunAt: number | null = null;
   private releaseAt: number | null = null;
-  private cameraAnchor: { x: number; y: number } | null = null;
   private stroke: { x: number; y: number; at: number } | null = null;
   private strokeCooldown = -Infinity;
 
   get hint() {
-    if (this.pose === 'gun')
-      return this.attackReady ? '銃の形を確認中' : '次の攻撃は指を開いてから、もう一度銃の形へ';
-    if (this.pose === 'stroke') return '手のひらを水平にして横になでる → 撫でる・採取';
-    if (this.pose === 'camera') return '手を上下左右になぞる → 視点 · 止めると視点も停止';
-    if (this.pose === 'other') return '視点は停止 · 軽く握って手を戻し、開くと続けられます';
-    return '指先まで映してください · 親・人・中を伸ばし、薬・小を曲げると攻撃';
+    if (this.pose === 'gun') return this.attackReady ? '胸の前で攻撃' : '指を開くと次の攻撃';
+    return '上げる：ジャンプ · 低く横振り：調べる';
   }
   reset() {
-    this.attackReady = true;
-    this.cameraTravel = { x: 0, y: 0 };
     this.strokeCooldown = -Infinity;
-    this.interrupt();
+    this.loseTracking();
   }
-  private interrupt() {
+  loseTracking() {
     this.candidate = null;
     this.progress = 0;
     this.pose = 'unknown';
-    this.releaseAt = null;
-    this.cameraAnchor = this.stroke = null;
-    this.cameraDelta = { x: 0, y: 0 };
-    this.cameraDragging = false;
+    this.attackReady = false;
+    this.releaseAt = this.gunAt = null;
+    this.stroke = null;
   }
-  loseTracking() {
-    // Missing/uncertain fingers are not a release or a new gun pose.
-    if (this.pose === 'gun') this.attackReady = false;
-    this.interrupt();
-  }
-  reacquire(sample: HandSample, at: number) {
-    this.interrupt();
+  reacquire(sample: HandSample, _at: number) {
+    this.loseTracking();
     this.pose = sample.pose;
-    this.poseAt = at;
-    if (sample.pose === 'gun') this.attackReady = false;
   }
-  update(sample: HandSample, at: number, scale: number): MotionAction | null {
+  update(
+    sample: HandSample,
+    at: number,
+    scale: number,
+    offset: { x: number; y: number },
+  ): MotionAction | null {
     this.candidate = null;
     this.progress = 0;
-    this.cameraDelta = { x: 0, y: 0 };
-    this.cameraDragging = false;
-    if (sample.pose !== this.pose) {
-      this.pose = sample.pose;
-      this.poseAt = at;
-      this.cameraAnchor = this.stroke = null;
-    }
-    if (this.pose !== 'gun' && this.pose !== 'unknown') {
+    this.pose = sample.pose;
+    const chest = Math.abs(offset.x) <= 0.85 && offset.y >= -0.18 && offset.y <= 0.2;
+    const open =
+      sample.open && sample.fingers.slice(1).filter((finger) => finger === 'extended').length >= 3;
+    if (open && sample.pose !== 'gun') {
       this.releaseAt ??= at;
-      if (at - this.releaseAt >= 100) this.attackReady = true;
+      if (at - this.releaseAt >= 120) this.attackReady = true;
     } else this.releaseAt = null;
-    if (this.pose === 'gun') {
-      if (!this.attackReady) return null;
+    if (sample.pose === 'gun' && chest && this.attackReady) {
+      this.stroke = null;
+      this.gunAt ??= at;
       this.candidate = 'attack';
-      this.progress = clamp((at - this.poseAt) / 100);
+      this.progress = clamp((at - this.gunAt) / 140);
       if (this.progress < 1) return null;
       this.attackReady = false;
+      this.gunAt = null;
       return 'attack';
     }
-    if (this.pose === 'camera') {
-      if (at - this.poseAt < 70) return null;
-      this.cameraDragging = true;
-      const anchor = this.cameraAnchor;
-      if (!anchor || Math.hypot(sample.x - anchor.x, sample.y - anchor.y) > 0.12) {
-        this.cameraAnchor = { x: sample.x, y: sample.y };
-        return null;
-      }
-      // A small sticky dead zone removes stationary jitter without discarding slow strokes.
-      const travel = (delta: number) =>
-        Math.abs(delta) > 0.004 + 1e-9 ? Math.sign(delta) * (Math.abs(delta) - 0.004) : 0;
-      const dx = travel(sample.x - anchor.x),
-        dy = travel(sample.y - anchor.y);
-      anchor.x += dx;
-      anchor.y += dy;
-      this.cameraDelta = { x: dx * 4, y: dy * 3 };
-      this.cameraTravel.x += this.cameraDelta.x;
-      this.cameraTravel.y += this.cameraDelta.y;
+    this.gunAt = null;
+    // A low sweep does not require an exact downward palm normal.
+    if (
+      !open ||
+      sample.pose === 'gun' ||
+      offset.y < 0.22 ||
+      offset.y > 1.1 ||
+      at < this.strokeCooldown
+    ) {
+      this.stroke = null;
       return null;
     }
-    if (this.pose !== 'stroke') return null;
+    this.pose = 'stroke';
     if (
-      at - this.poseAt < 70 ||
-      at < this.strokeCooldown ||
       !this.stroke ||
-      at - this.stroke.at > 1400 ||
-      Math.abs(sample.y - this.stroke.y) > scale * 0.22
+      at - this.stroke.at > 1200 ||
+      Math.abs(sample.y - this.stroke.y) > scale * 0.18
     ) {
       this.stroke = { x: sample.x, y: sample.y, at };
       return null;
@@ -107,51 +83,49 @@ export class MotionHandActions {
     const distance = Math.abs(sample.x - this.stroke.x) / scale;
     if (distance < 0.07) return null;
     this.candidate = 'interact';
-    this.progress = Math.min(clamp(distance / 0.22), clamp((at - this.stroke.at) / 100));
+    this.progress = Math.min(clamp(distance / 0.24), clamp((at - this.stroke.at) / 120));
     if (this.progress < 1) return null;
-    this.strokeCooldown = at + 600;
+    this.strokeCooldown = at + 650;
     this.stroke = null;
     return 'interact';
   }
 }
 
-/** Raising the movement hand leaves both right-hand camera axes available. */
+/** A raised hand fires once, then must return below the release threshold. */
 export class MotionJump {
   progress = 0;
-  private ready = true;
+  private ready = false;
   private raisedAt: number | null = null;
   private loweredAt: number | null = null;
   reset() {
-    this.ready = true;
     this.loseTracking();
   }
   loseTracking() {
-    if (this.raisedAt !== null) this.ready = false;
+    this.ready = false;
     this.raisedAt = this.loweredAt = null;
     this.progress = 0;
   }
-  reacquire(y: number) {
+  reacquire(_y: number) {
     this.loseTracking();
-    if (y < -0.28) this.ready = false;
   }
   update(y: number, open: boolean, at: number) {
     this.progress = 0;
     if (!this.ready) {
       if (y > -0.12 && open) {
         this.loweredAt ??= at;
-        if (at - this.loweredAt >= 80) this.ready = true;
+        if (at - this.loweredAt >= 120) this.ready = true;
       } else this.loweredAt = null;
       return false;
     }
-    if (!open || y > -0.28) {
+    if (!open || y > -0.32) {
       this.raisedAt = null;
       return false;
     }
     this.raisedAt ??= at;
-    this.progress = clamp((at - this.raisedAt) / 200);
+    this.progress = clamp((at - this.raisedAt) / 180);
     if (this.progress < 1) return false;
     this.ready = false;
-    this.raisedAt = null;
+    this.raisedAt = this.loweredAt = null;
     return true;
   }
 }

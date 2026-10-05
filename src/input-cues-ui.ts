@@ -24,6 +24,7 @@ export class InputCues {
   private controls: SVGElement[] = [];
   private feedbackUntil = 0;
   private paintSignature = '';
+  private automaticCamera = false;
 
   constructor(
     parent: HTMLElement,
@@ -67,8 +68,15 @@ export class InputCues {
     if (!visible) return;
     this.renderDevice();
     this.root.classList.toggle('is-inspecting', !!context.viewing);
+    this.automaticCamera = !!context.automaticCamera;
+    const look = this.root.querySelector<HTMLElement>('.input-look');
+    if (look) look.hidden = this.automaticCamera;
+    const moveLabel = this.root.querySelector('.input-move > span:nth-child(2)');
+    if (moveLabel) moveLabel.textContent = this.automaticCamera ? '前後・旋回' : '歩く';
     const lookLabel = this.root.querySelector('.input-look span');
     if (lookLabel) lookLabel.textContent = context.viewing ? '回す' : '見渡す';
+    const captions = this.root.querySelectorAll('.pad-caption');
+    if (captions[1]) captions[1].textContent = this.automaticCamera ? '視点は自動' : '見渡す';
     const cues = contextCues(context, this.pad);
     const signature = JSON.stringify(cues);
     if (signature !== this.signature) {
@@ -106,7 +114,13 @@ export class InputCues {
       const cue = this.cues.find((item) => item.controls.includes(changed));
       const feedback = this.root.querySelector('.input-feedback');
       if (feedback) {
-        feedback.textContent = cue?.label ?? controlAction(changed);
+        feedback.textContent =
+          cue?.label ??
+          (this.automaticCamera && ['rs', 'b4', 'b5', 'b11'].includes(changed)
+            ? '視点は自動'
+            : this.automaticCamera && changed === 'ls'
+              ? '前後・旋回'
+              : controlAction(changed));
         this.feedbackUntil = performance.now() + 1400;
       }
     }
@@ -116,7 +130,7 @@ export class InputCues {
   }
 
   private paint() {
-    const signature = `${this.signature}|${[...this.pressed].join(',')}|${[...this.heldKeys].join(',')}`;
+    const signature = `${this.signature}|${this.automaticCamera}|${[...this.pressed].join(',')}|${[...this.heldKeys].join(',')}`;
     if (signature === this.paintSignature) return;
     this.paintSignature = signature;
     const suggested = new Set(this.cues.flatMap((cue) => cue.controls));
@@ -124,7 +138,10 @@ export class InputCues {
       const id = control.dataset.padControl!;
       control.classList.toggle('is-suggested', suggested.has(id));
       control.classList.toggle('is-pressed', this.pressed.has(id));
-      control.classList.toggle('is-movement', id === 'ls' || id === 'rs');
+      control.classList.toggle(
+        'is-movement',
+        id === 'ls' || (id === 'rs' && !this.automaticCamera),
+      );
     }
     for (const key of this.root.querySelectorAll<HTMLElement>('[data-key]'))
       key.classList.toggle('is-pressed', this.heldKeys.has(key.dataset.key!));

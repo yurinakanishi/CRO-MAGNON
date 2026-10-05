@@ -1,125 +1,83 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { MotionInputAdapter } from '../dist/src/motion-input.js';
-import { syntheticHands as hands } from './helpers/motion-hands.mjs';
+import { motionDriver } from './helpers/motion-driver.mjs';
 
-function driver(hz = 15, swapped = false) {
-  const input = new MotionInputAdapter();
-  let time = 0,
-    id = 0;
-  const events = [];
-  input.start();
-  input.calibrate(swapped ? 'right' : 'left');
-  const frame = (move = {}, act = {}, missing = null) => {
-    time += 1000 / hz;
-    const pair = hands(move, act, swapped);
-    if (missing) pair[missing] = null;
-    input.accept(
-      {
-        sessionId: input.sessionId,
-        frameId: ++id,
-        sampledAtMainMs: time,
-        width: 640,
-        height: 480,
-        hands: pair,
-      },
-      time,
-    );
-    events.push(...input.consumeActions(time).map((e) => e.action));
-  };
-  for (let i = 0; i < hz * 2.1; i++) frame();
-  assert.equal(input.state, 'ACTIVE');
-  return { input, frame, events };
-}
 for (const hz of [10, 15, 20])
   for (const swapped of [false, true]) {
-    const label = `${hz} Hz swapped=${swapped}`;
-    const hold = (d, move, act, count = Math.ceil(hz * 0.3), missing = null) => {
-      for (let i = 0; i < count; i++) d.frame(move, act, missing);
-    };
-    test(`${label}: gun pose fires once, a sustained finger release permits the next attack`, () => {
-      const d = driver(hz, swapped);
-      hold(d, { push: 0.4 }, { gun: true, x: 0.3, y: 0.1 });
-      assert.deepEqual(d.events, ['attack']);
-      assert.ok(d.input.forward > 0.7);
-      hold(d, {}, { gun: true }, hz);
-      assert.deepEqual(d.events, ['attack']);
-      d.frame(); // One detection flicker is not a release.
-      hold(d, {}, { gun: true });
-      assert.deepEqual(d.events, ['attack']);
-      hold(d, {}, {});
-      hold(d, {}, { gun: true });
-      assert.deepEqual(d.events, ['attack', 'attack']);
+    test(`${hz} Hz swapped=${swapped}: movement and attack coexist; held/reacquired gun never repeats`, () => {
+      const d = motionDriver(hz, swapped);
+      d.hold(d.pair({ push: 0.4 }, { gun: true }), 300);
+      assert.deepEqual(
+        d.input.consumeActions(d.time).map((e) => e.action),
+        ['attack'],
+      );
+      assert.ok(d.intent.forward > 0.6);
+      d.hold(d.pair({}, { gun: true }));
+      assert.deepEqual(d.input.consumeActions(d.time), []);
+      const p = d.pair();
+      p[swapped ? 'left' : 'right'] = null;
+      d.frame(p);
+      d.hold(d.pair({}, { gun: true }));
+      assert.deepEqual(d.input.consumeActions(d.time), []);
+      d.hold(d.pair());
+      d.hold(d.pair({}, { gun: true }), 300);
+      assert.deepEqual(
+        d.input.consumeActions(d.time).map((e) => e.action),
+        ['attack'],
+      );
     });
-    test(`${label}: open hand drags both camera axes, stops at rest, never attacks or waves`, () => {
-      const d = driver(hz, swapped);
-      for (let i = 1; i <= hz; i++) d.frame({}, { x: (i * 0.6) / hz, y: (-i * 0.4) / hz });
-      const yaw = d.input.cameraDelta.x;
-      assert.ok(yaw > 0);
-      assert.ok(d.input.cameraDelta.y < 0);
-      hold(d, {}, { x: 0.6, y: -0.4, push: 0.45 }, hz);
-      assert.equal(d.input.cameraDelta.x, 0);
-      assert.equal(d.input.cameraDelta.y, 0);
-      assert.deepEqual(d.events, []);
-      assert.equal(d.input.forward, 0);
-      assert.equal(d.input.strafe, 0);
+    test(`${hz} Hz swapped=${swapped}: only raised action hand jumps, once until lowered`, () => {
+      const d = motionDriver(hz, swapped);
+      d.hold(d.pair({ y: -0.4 }));
+      assert.deepEqual(d.input.consumeActions(d.time), []);
+      d.hold(d.pair({}, { y: -0.4 }), 300);
+      assert.deepEqual(
+        d.input.consumeActions(d.time).map((e) => e.action),
+        ['jump'],
+      );
+      d.hold(d.pair({}, { y: -0.4 }));
+      assert.deepEqual(d.input.consumeActions(d.time), []);
+      d.frame(null);
+      d.hold(d.pair({}, { y: -0.4 }));
+      assert.deepEqual(d.input.consumeActions(d.time), []);
+      d.hold(d.pair());
+      d.hold(d.pair({}, { y: -0.4 }), 300);
+      assert.deepEqual(
+        d.input.consumeActions(d.time).map((e) => e.action),
+        ['jump'],
+      );
     });
-    test(`${label}: a horizontal palm stroke interacts without a return stroke or camera motion`, () => {
-      const d = driver(hz, swapped);
-      hold(d, {}, { pitch: 1.3 });
-      for (let i = 1; i <= 6; i++) d.frame({}, { pitch: 1.3, x: i * 0.07 });
-      assert.deepEqual(d.events, ['interact']);
-      assert.equal(d.input.cameraDelta.x, 0);
-      assert.equal(d.input.cameraDelta.y, 0);
-      hold(d, {}, { pitch: 1.3, x: 0.42 }, hz);
-      assert.deepEqual(d.events, ['interact']);
-      for (let i = 1; i <= 6; i++) d.frame({}, { pitch: 1.3, x: 0.42 - i * 0.07 });
-      assert.deepEqual(d.events, ['interact', 'interact']);
-    });
-    test(`${label}: closing the hand clutches the view and reopening anchors at the new position`, () => {
-      const d = driver(hz, swapped);
-      for (const x of [0.1, 0.2, 0.3]) d.frame({}, { x });
-      assert.ok(d.input.cameraDelta.x > 0);
-      hold(d, {}, { fold: true, x: -0.4, y: -0.3 });
-      assert.equal(d.input.cameraDelta.x, 0);
-      hold(d, {}, { x: -0.4, y: -0.3 });
-      assert.equal(d.input.cameraDelta.x, 0);
-      assert.equal(d.input.cameraDelta.y, 0);
-      d.frame({}, { x: -0.3, y: -0.3 });
-      assert.ok(d.input.cameraDelta.x > 0);
-      assert.deepEqual(d.events, []);
-    });
-    test(`${label}: reacquiring a held gun cannot fire, and missing the movement hand does not block a new gun`, () => {
-      const d = driver(hz, swapped),
-        moveSide = swapped ? 'right' : 'left',
-        actSide = swapped ? 'left' : 'right';
-      d.frame({}, { gun: true });
-      hold(d, {}, {}, 4, actSide);
-      hold(d, {}, { gun: true });
-      assert.deepEqual(d.events, []);
-      hold(d, {}, {}, undefined, moveSide);
-      hold(d, {}, { gun: true }, undefined, moveSide);
-      assert.equal(d.input.state, 'ACTIVE');
-      assert.deepEqual(d.events, ['attack']);
+    test(`${hz} Hz swapped=${swapped}: low open-hand sweep interacts; chest sweep does not`, () => {
+      const d = motionDriver(hz, swapped),
+        events = [];
+      for (const y of [0, 0.5]) {
+        d.hold(d.pair({}, { y }), 400);
+        for (let i = 1; i <= 8; i++) {
+          d.frame(d.pair({}, { y, x: i * 0.055 }));
+          events.push(...d.input.consumeActions(d.time).map((e) => e.action));
+        }
+        assert.deepEqual(events, y ? ['interact'] : []);
+      }
+      assert.equal(d.intent.forward, 0);
+      assert.equal(d.intent.turn, 0);
     });
   }
-test('right-hand push, upright waving, wrist rocking and raising are camera gestures, not game actions', () => {
-  const d = driver();
-  for (const pose of [
-    { push: 0.6 },
-    { roll: 0.5 },
-    { roll: -0.5 },
-    { x: 0.3 },
-    { x: -0.3 },
-    { y: -0.4 },
-  ])
-    for (let i = 0; i < 7; i++) d.frame({}, pose);
-  assert.deepEqual(d.events, []);
+test('single-frame, high and low gun poses cannot fire', () => {
+  const d = motionDriver();
+  d.frame(d.pair({}, { gun: true }));
+  d.hold(d.pair());
+  assert.deepEqual(d.input.consumeActions(d.time), []);
+  for (const y of [-0.4, 0.5]) {
+    d.hold(d.pair({}, { gun: true, y }));
+    assert.deepEqual(d.input.consumeActions(d.time), []);
+  }
 });
-test('one gun frame and small or vertical movements of a horizontal palm do not fire actions', () => {
-  const d = driver();
-  d.frame({}, { gun: true });
-  d.frame();
-  for (let i = 0; i < 30; i++) d.frame({}, { pitch: 1.3, x: Math.sin(i) * 0.035, y: i * 0.02 });
-  assert.deepEqual(d.events, []);
+test('losing action hand discards an event while valid movement continues', () => {
+  const d = motionDriver();
+  d.hold(d.pair({ push: 0.5 }, { gun: true }), 300);
+  const p = d.pair({ push: 0.5 });
+  p.right = null;
+  d.frame(p);
+  assert.deepEqual(d.input.consumeActions(d.time), []);
+  assert.ok(d.intent.forward > 0.9);
 });

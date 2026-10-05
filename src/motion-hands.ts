@@ -12,7 +12,7 @@ export interface DetectedHand {
 }
 export type HandPair = Record<Hand, DetectedHand | null>;
 export type FingerState = 'extended' | 'folded' | 'unknown';
-export type HandPose = 'camera' | 'gun' | 'stroke' | 'other' | 'unknown';
+export type HandPose = 'open' | 'gun' | 'stroke' | 'other' | 'unknown';
 /** Thumb, index, middle, ring, little finger. */
 export type Fingers = [FingerState, FingerState, FingerState, FingerState, FingerState];
 export interface HandSample extends Point {
@@ -27,6 +27,7 @@ export interface HandSample extends Point {
   pose: HandPose;
   /** Absolute vertical component of the palm normal; 1 is a horizontal palm. */
   horizontal: number | null;
+  palmFacing: number;
 }
 export const HAND_POINTS = 21;
 export const HAND_CONNECTIONS = [
@@ -102,8 +103,7 @@ export function extractHands(result: {
   return hands;
 }
 
-/** Relative depth corrects foreshortening and supplies palm orientation.
- * Push still measures apparent hand scale, not absolute depth or world coordinates. */
+/** Relative depth supplies pose only; push uses the projected palm dimensions. */
 export function measureHand(
   hand: DetectedHand | null | undefined,
   width: number,
@@ -121,7 +121,23 @@ export function measureHand(
   )
     return null;
   const p = hand.landmarks;
-  if (![0, 5, 9, 13, 17].every((i) => inFrame(p[i]))) return null;
+  // Keep a visible palm at the border. Finger actions still use the inner margin.
+  // Clipped joints cannot supply new input; the adapter may hold the last edge command.
+  if (
+    ![0, 5, 9, 13, 17].every((i) => {
+      const v = p[i];
+      return (
+        v &&
+        Number.isFinite(v.x) &&
+        Number.isFinite(v.y) &&
+        v.x >= 0 &&
+        v.x <= 1 &&
+        v.y >= 0 &&
+        v.y <= 1
+      );
+    })
+  )
+    return null;
   const depth = p.every((point) => Number.isFinite(point.z));
   const vector = (a: number, b: number) => ({
     x: p[b].x - p[a].x,
@@ -129,9 +145,21 @@ export function measureHand(
     z: depth ? p[b].z! - p[a].z! : 0,
   });
   const distance = (a: number, b: number) => Math.hypot(...Object.values(vector(a, b)));
-  const palmWidth = distance(5, 17),
-    palmLength = distance(0, 9);
-  if (palmWidth < 0.018 || palmLength < 0.025 || palmWidth > 0.55 || palmLength > 0.65) return null;
+  const imageDistance = (a: number, b: number) => {
+    const v = vector(a, b);
+    return Math.hypot(v.x, v.y);
+  };
+  const palmWidth = imageDistance(5, 17),
+    palmLength = imageDistance(0, 9);
+  if (
+    distance(5, 17) < 0.018 ||
+    distance(0, 9) < 0.025 ||
+    palmWidth < 0.005 ||
+    palmLength < 0.005 ||
+    palmWidth > 0.55 ||
+    palmLength > 0.65
+  )
+    return null;
   const full = [6, 8, 10, 12, 14, 16, 18, 20].every((i) => inFrame(p[i]));
   const extended = full
     ? [5, 9, 13, 17].filter(
@@ -140,7 +168,9 @@ export function measureHand(
           distance(0, i + 3) > distance(0, i + 1) * 1.05,
       ).length
     : 0;
-  const aspect = palmWidth / palmLength;
+  // Shape validation is independent of foreshortening: a horizontal action palm
+  // stays open. Translation still requires a face-on palm in measurePush().
+  const aspect = distance(5, 17) / distance(0, 9);
   const up = vector(0, 9),
     across = vector(5, 17);
   const normal = {
@@ -173,7 +203,12 @@ export function measureHand(
       return 'extended';
     return bend < 0.25 || reach < 1.15 ? 'folded' : 'unknown';
   }) as Fingers;
-  const gun = fingers.every((state, i) => state === (i < 3 ? 'extended' : 'folded'));
+  const gun =
+    fingers[0] === 'extended' &&
+    fingers[1] === 'extended' &&
+    fingers[3] === 'folded' &&
+    fingers[4] === 'folded' &&
+    fingers[2] !== 'unknown';
   const spread = fingers.slice(1).every((state) => state === 'extended');
   const pose: HandPose = gun
     ? 'gun'
@@ -183,7 +218,7 @@ export function measureHand(
           horizontal !== null &&
           horizontal < 0.6 &&
           Math.abs(normal.z) / normalLength > 0.45
-        ? 'camera'
+        ? 'open'
         : fingers.every((state) => state !== 'unknown')
           ? 'other'
           : 'unknown';
@@ -193,7 +228,7 @@ export function measureHand(
       ? Math.atan2(-normal.x * Math.sign(normal.z), Math.abs(normal.z))
       : null;
   return {
-    x: 1 - p[0].x,
+    x: 1 - (p[0].x + p[5].x + p[9].x + p[17].x) / 4,
     y: (p[0].y * height) / width,
     palmWidth,
     palmLength,
@@ -206,6 +241,7 @@ export function measureHand(
     fingers,
     pose,
     horizontal,
+    palmFacing: depth && normalLength > 0.00001 ? Math.abs(normal.z) / normalLength : 0,
   };
 }
 
@@ -226,10 +262,21 @@ export function measurePush(hand: HandSample | null, neutral: HandSample) {
   ];
   const palmRatio = Math.min(ratios[0]!, ratios[1]!),
     fingerRatio = ratios[2];
-  const measured = ratios.filter((ratio): ratio is number => ratio !== null);
+  const measured = [ratios[0]!, ratios[1]!];
   const min = Math.min(...measured),
     max = Math.max(...measured);
-  // Finger extension alone cannot produce a push. Partial tips use the two palm dimensions.
-  const valid = hand.open && measured.every(Number.isFinite) && min > 0 && max / min < 1.35;
-  return { push: valid ? min - 1 : null, palmRatio, fingerRatio };
+  // Only projected palm dimensions drive depth. Relative landmark z describes pose,
+  // never the camera-to-hand distance. Large changes of pose invalidate translation.
+  const angle = (a: number, b: number) => Math.abs(Math.atan2(Math.sin(a - b), Math.cos(a - b)));
+  const valid =
+    hand.open &&
+    hand.palmFacing >= 0.7 &&
+    hand.yaw !== null &&
+    neutral.yaw !== null &&
+    angle(hand.yaw, neutral.yaw) < 0.35 &&
+    angle(hand.roll, neutral.roll) < 0.4 &&
+    measured.every(Number.isFinite) &&
+    min > 0 &&
+    max / min < 1.32;
+  return { push: valid ? Math.sqrt(measured[0] * measured[1]) - 1 : null, palmRatio, fingerRatio };
 }

@@ -110,17 +110,21 @@ test('cropped fingertips keep palm controls; clipping alone cannot imitate a pus
 });
 
 for (const side of ['left', 'right'])
-  test(`${side}: palm yaw and roll preserve scale; push works while tilted`, () => {
+  test(`${side}: small palm tilts stay below movement dead zones; large tilts are rejected`, () => {
     const neutral = measureHand(syntheticHand(side), 640, 480);
-    for (const yaw of [-0.7, -0.4, 0.4, 0.7])
-      for (const roll of [-0.5, 0, 0.5]) {
+    for (const yaw of [-0.2, 0.2])
+      for (const roll of [-0.25, 0, 0.25]) {
         const turned = measureHand(syntheticHand(side, { yaw, roll }), 640, 480);
-        assert.ok(Math.abs(measurePush(turned, neutral).push) < 1e-9);
+        assert.ok(Math.abs(measurePush(turned, neutral).push) < 0.03);
         assert.ok(Math.abs(turned.yaw + yaw) < 1e-9);
         assert.equal(Math.sign(turned.roll) || 0, -Math.sign(roll) || 0);
         const pushed = measureHand(syntheticHand(side, { yaw, roll, push: 0.4 }), 640, 480);
-        assert.ok(Math.abs(measurePush(pushed, neutral).push - 0.4) < 1e-9);
+        assert.ok(Math.abs(measurePush(pushed, neutral).push - 0.4) < 0.03);
       }
+    assert.equal(
+      measurePush(measureHand(syntheticHand(side, { yaw: 0.8 }), 640, 480), neutral).push,
+      null,
+    );
   });
 test('missing or invalid depth cannot rotate the view', () => {
   const h = syntheticHand('left');
@@ -150,14 +154,8 @@ for (const side of ['left', 'right'])
           ]);
         }
   });
-test('all five fingers are necessary for the requested gun; an open hand, V sign or hidden fingertip cannot attack', () => {
-  for (const options of [
-    {},
-    { gun: true, thumbFold: true },
-    { folded: [13] },
-    { folded: [9, 13, 17] },
-    { fold: true },
-  ])
+test('gun requires known fingers with thumb/index extended; open, V or hidden fingers cannot attack', () => {
+  for (const options of [{}, { gun: true, thumbFold: true }, { folded: [13] }, { fold: true }])
     assert.notEqual(measureHand(syntheticHand('right', options), 640, 480).pose, 'gun');
   for (const index of [4, 8, 12, 16, 20]) {
     const hand = syntheticHand('right', { gun: true });
@@ -167,10 +165,10 @@ test('all five fingers are necessary for the requested gun; an open hand, V sign
     assert.notEqual(sample.pose, 'gun');
   }
 });
-test('palm plane separates a face-on camera hand from a horizontal stroking hand, independently of handedness', () => {
+test('palm plane distinguishes open and horizontal hands independently of handedness', () => {
   for (const side of ['left', 'right']) {
     for (const yaw of [-0.5, 0, 0.5]) {
-      assert.equal(measureHand(syntheticHand(side, { yaw }), 640, 480).pose, 'camera');
+      assert.equal(measureHand(syntheticHand(side, { yaw }), 640, 480).pose, 'open');
       assert.equal(measureHand(syntheticHand(side, { yaw, pitch: 1.3 }), 640, 480).pose, 'stroke');
     }
     assert.equal(measureHand(syntheticHand(side, { pitch: 0.72 }), 640, 480).pose, 'other');

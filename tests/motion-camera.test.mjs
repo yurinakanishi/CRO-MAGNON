@@ -326,7 +326,7 @@ test('fresh actions reach the game without a render callback, before their 230ms
   const worker = r.workers[0];
   worker.hands = syntheticHands();
   worker.emit({ type: 'ready', modelLoadMs: 1 });
-  await r.tick(2200, true, false);
+  await r.tick(3800, true, false);
   assert.equal(r.input.state, 'ACTIVE');
   worker.hands = syntheticHands(undefined, { gun: true });
   await r.tick(1600, true, false);
@@ -340,4 +340,30 @@ test('fresh actions reach the game without a render callback, before their 230ms
   worker.hands = syntheticHands();
   await r.tick(500);
   assert.equal(applied, before);
+});
+
+test('fresh missing-hand results deliver held edge movement; stalled capture still cancels it', async (t) => {
+  const delivered = [];
+  const r = rig(t, (input, now) => delivered.push(input.read(now)));
+  await r.camera.start({ delegate: 'CPU', hz: 15 });
+  const worker = r.workers[0];
+  worker.hands = syntheticHands();
+  worker.emit({ type: 'ready', modelLoadMs: 1 });
+  await r.tick(3800);
+  worker.hands = syntheticHands({ push: 0.4 });
+  await r.tick(500);
+  for (let step = 1; step <= 10; step++) {
+    worker.hands = syntheticHands({ push: 0.4, x: (-1.35 * step) / 10 });
+    await r.tick(160);
+  }
+  assert.ok(r.input.forward > 0.5);
+  delivered.length = 0;
+  worker.hands = null;
+  await r.tick(1800);
+  assert.equal(r.input.edgeHolding, true);
+  assert.ok(delivered.length >= 15);
+  assert.ok(delivered.every((i) => i.active && i.forward > 0.5 && i.turn < 0));
+  await r.tick(300, false);
+  assert.equal(r.input.edgeHolding, false);
+  assert.equal(r.input.read(performance.now()).active, false);
 });

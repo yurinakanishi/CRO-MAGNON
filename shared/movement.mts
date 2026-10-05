@@ -64,10 +64,10 @@ export function movePlayer(...args: Parameters<typeof moveActor>) {
   // Collision sliding and depenetration change position, not the player's intent.
   // Keep the last direction when idle, including when another actor pushes us.
   const facing =
-    now - player.lastInput < 500 && Math.hypot(player.dx, player.dz) > 0
-      ? Math.atan2(player.dx, player.dz)
-      : now - player.lastInput < 500 && Number.isFinite(player.inputFacing)
-        ? player.inputFacing!
+    now - player.lastInput < 500 && Number.isFinite(player.inputFacing)
+      ? player.inputFacing!
+      : now - player.lastInput < 500 && Math.hypot(player.dx, player.dz) > 0
+        ? Math.atan2(player.dx, player.dz)
         : player.facing;
   player.target = null;
   player.path = [];

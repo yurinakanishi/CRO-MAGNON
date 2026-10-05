@@ -64,25 +64,21 @@ export class MotionPetHold {
     if (sample.offset) {
       if (!ref.offset) held.reference = { ...sample };
       else {
-        // View rotation remains available while petting. Only deliberate translation cancels.
+        // Deliberate forward/backward movement or a new steering gesture cancels.
         const deliberate =
           (Math.abs(intent.forward) > 0.1 &&
             sample.push !== null &&
             ref.push !== null &&
             Math.abs(sample.push - ref.push) >= 0.18) ||
-          (intent.forward < -0.1 && sample.offset.y - ref.offset.y >= 0.25) ||
-          (Math.abs(intent.strafe) > 0.35 &&
-            sample.roll !== null &&
-            ref.roll !== null &&
-            Math.abs(sample.roll - ref.roll) >= 0.25);
+          (Math.abs(intent.turn) > 0.35 && Math.abs(sample.offset.x - ref.offset.x) >= 0.25);
         this.changeAt = deliberate ? (this.changeAt ?? intent.sampledAtMainMs) : null;
         if (this.changeAt !== null && intent.sampledAtMainMs - this.changeAt >= 80) {
           this.reset();
           return intent;
         }
-        if (held.seen && !petting && intent.forward === 0 && intent.strafe === 0) this.reset();
+        if (held.seen && !petting && intent.forward === 0 && intent.turn === 0) this.reset();
       }
     }
-    return { ...intent, forward: 0, strafe: 0 };
+    return { ...intent, forward: 0, turn: 0 };
   }
 }

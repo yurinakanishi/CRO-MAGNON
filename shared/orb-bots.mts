@@ -648,6 +648,11 @@ function cancelBotPet(b: OrbBot, now: number) {
   else setMode(b, b.petMode === 'waiting' ? 'waiting' : 'following', now);
 }
 
+/** Steering away interrupts the stroke without releasing any existing bond. */
+export function cancelPlayerBotPet(room: BotRoom, playerId: string, now: number) {
+  for (const b of room.orbBots ?? []) if (b.petPlayerId === playerId) cancelBotPet(b, now);
+}
+
 function botPetInterrupted(p: PlayerSnapshot, b: OrbBot, now: number) {
   return (
     !canHandleBot(p, now) ||

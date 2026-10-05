@@ -68,11 +68,13 @@ export class MotionDebugView {
           ? '認識結果待ち'
           : !view.fresh
             ? '結果の更新待ち'
-            : view.detected
-              ? view.points[0].quality === 'tracked' && view.points[21].quality === 'tracked'
-                ? '両手を認識中'
-                : '手を確認中'
-              : '両手を映してください';
+            : input.edgeHolding
+              ? '画面外 · 移動を継続中'
+              : view.detected
+                ? view.points[0].quality === 'tracked' && view.points[21].quality === 'tracked'
+                  ? '両手を認識中'
+                  : '手を確認中'
+                : '両手を映してください';
     this.text('#motion-debug-detection', detection);
     const badge = this.root.querySelector<HTMLElement>('#motion-debug-detection')!;
     badge.dataset.quality = view.detected && live ? 'tracked' : live ? 'uncertain' : 'missing';
@@ -128,7 +130,13 @@ export class MotionDebugView {
       const point = view.points[index];
       this.text(
         id,
-        point.quality === 'tracked' ? '認識OK' : point.status === '枠外' ? '枠外' : '確認中',
+        id === '#motion-move-tracking' && input.edgeHolding
+          ? '画面外 · 継続'
+          : point.quality === 'tracked'
+            ? '認識OK'
+            : point.status === '枠外'
+              ? '枠外'
+              : '確認中',
       );
       this.root.querySelector<HTMLElement>(id)!.dataset.quality = point.quality;
     }

@@ -1,5 +1,6 @@
 import type { ViewState } from './view-state.js';
 import { LocalPrediction } from './local-prediction.js';
+import { wrapHeading } from './assisted-controls.js';
 import { mammothNavigation } from '../shared/mammoth-navigation.mjs';
 import { enemyIsSolid } from '../shared/combat.mjs';
 import { activateMiddenObstacle } from '../shared/coastal-sites.mjs';
@@ -151,7 +152,16 @@ export class WorldRenderer {
   declare selfId: any;
   declare yaw: number;
   manualInputAllowed = () => true;
+  manualCameraAllowed = () => true;
   onFrameTiming: ((ms: number) => void) | null = null;
+  private automaticHeading: number | null = null;
+  private automaticCameraActive = false;
+  private automaticDistance: number | null = null;
+  private manualCamera: { pitch: number; distance: number } | null = null;
+  private assistMarkers = new Map<
+    string,
+    { element: HTMLElement; point: { x: number; z: number; height?: number } }
+  >();
   private motionLastFrame: number | null = null;
   declare pitch: number;
   declare distance: number;
@@ -724,7 +734,7 @@ export class WorldRenderer {
         dx = e.clientX - p.lastX,
         dy = e.clientY - p.lastY;
       if (Math.hypot(e.clientX - p.x, e.clientY - p.y) > 4) p.dragged = true;
-      if (p.dragged) {
+      if (p.dragged && this.manualCameraAllowed()) {
         this.rotateCamera(dx * 0.006, dy * 0.0045);
         this.canvas.style.cursor = 'grabbing';
       }
@@ -776,7 +786,7 @@ export class WorldRenderer {
       this.canvas.style.cursor = 'crosshair';
     };
     this.wheel = (e) => {
-      if (!this.manualInputAllowed()) return;
+      if (!this.manualInputAllowed() || !this.manualCameraAllowed()) return;
       e.preventDefault();
       if (!this.companionView && e.deltaY < 0) {
         const rect = this.canvas.getBoundingClientRect();
@@ -1031,7 +1041,73 @@ export class WorldRenderer {
   getMovementDirection(sx, sy) {
     return movementFromCamera(sx, sy, this.yaw);
   }
+  setAutomaticCamera(heading: number | null, active = true) {
+    if (heading !== null && this.automaticHeading === null) {
+      this.endCompanionView();
+      this.cancel?.();
+      this.manualCamera = { pitch: this.pitch, distance: this.targetDistance };
+      this.targetDistance = 6.5;
+      this.automaticDistance = null;
+    } else if (heading === null && this.automaticHeading !== null) {
+      if (this.manualCamera) {
+        this.pitch = this.manualCamera.pitch;
+        this.targetDistance = this.manualCamera.distance;
+      }
+      this.manualCamera = null;
+      this.automaticDistance = null;
+    }
+    this.automaticHeading = heading;
+    this.automaticCameraActive = active;
+    this.zoom = DEFAULT_DISTANCE / this.targetDistance;
+  }
+  assistScreenPoint(point: { x: number; z: number; height?: number }) {
+    const target = new THREE.Vector3(
+      point.x,
+      walkHeight(point.x, point.z) + (point.height ?? 0.65),
+      point.z,
+    );
+    const screen = target.clone().project(this.camera);
+    if (screen.z <= -1 || screen.z >= 1 || Math.abs(screen.x) > 0.92 || Math.abs(screen.y) > 0.9)
+      return null;
+    const ray = this.camera.position.clone().sub(target);
+    const distance = ray.length();
+    ray.normalize();
+    if (
+      this.landmarks?.castleCamera &&
+      this.landmarks.castleCamera.distance(target, ray, distance) < distance - 0.3
+    )
+      return null;
+    if (
+      this.landmarks?.caveCamera &&
+      this.landmarks.caveCamera.distance(target, ray, distance) < distance - 0.3
+    )
+      return null;
+    return { x: screen.x, y: screen.y };
+  }
+  setAssistMarker(
+    kind: 'attack' | 'interact',
+    point: { x: number; z: number; height?: number } | null,
+    label = '',
+  ) {
+    let marker = this.assistMarkers.get(kind);
+    if (!point) {
+      if (marker) marker.element.hidden = true;
+      this.assistMarkers.delete(kind);
+      marker?.element.remove();
+      return;
+    }
+    if (!marker) {
+      const element = document.createElement('span');
+      element.className = `assist-target assist-target-${kind}`;
+      this.labelLayer.append(element);
+      marker = { element, point };
+      this.assistMarkers.set(kind, marker);
+    }
+    marker.point = point;
+    marker.element.textContent = label;
+  }
   rotateCamera(horizontal: number, vertical: number) {
+    if (!this.manualCameraAllowed() || this.automaticHeading !== null) return;
     this.yaw -= horizontal;
     // Orbit below the look target; ground and water clearance keep the camera above the surface.
     this.pitch = clamp(this.pitch + vertical, -0.5, 1.05);
@@ -1042,6 +1118,7 @@ export class WorldRenderer {
       : this.serverTime + performance.now() - this.stateReceivedAt;
   }
   setZoom(value) {
+    if (!this.manualCameraAllowed() || this.automaticHeading !== null) return;
     const target = this.companionViewTargets().find((t) => t.id === this.companionView?.id);
     const limits = target
       ? companionViewDistances(target.radius, this.camera.fov, this.camera.aspect)
@@ -1055,7 +1132,8 @@ export class WorldRenderer {
   focusPlayer(yaw?: number) {
     this.endCompanionView();
     const me = this.players.get(this.selfId);
-    if (yaw !== undefined) this.yaw = yaw;
+    if (this.automaticHeading !== null) this.yaw = this.automaticHeading + Math.PI;
+    else if (yaw !== undefined) this.yaw = yaw;
     else if (me?.state.moving) this.yaw = me.state.facing + Math.PI;
     else this.yaw = -0.28;
     this.pitch = 0.19;
@@ -1063,9 +1141,11 @@ export class WorldRenderer {
       ? 9
       : me?.state.boatId
         ? 7
-        : me?.state.species === 'bear'
-          ? 4.5
-          : DEFAULT_DISTANCE;
+        : this.automaticHeading !== null
+          ? 6.5
+          : me?.state.species === 'bear'
+            ? 4.5
+            : DEFAULT_DISTANCE;
     this.zoom = DEFAULT_DISTANCE / this.targetDistance;
   }
 
@@ -1157,7 +1237,8 @@ export class WorldRenderer {
   }
 
   viewCompanion(id?: string) {
-    if (this.companionView || !this.manualInputAllowed()) return false;
+    if (this.companionView || !this.manualInputAllowed() || !this.manualCameraAllowed())
+      return false;
     const target = this.companionViewChoice(id);
     const me = this.players.get(this.selfId)?.state;
     if (!target || !me) return false;
@@ -1679,9 +1760,26 @@ export class WorldRenderer {
         this.targetDistance = clamp(this.targetDistance, limits.near, limits.far);
       } else {
         tempPoint.copy(self.model.position);
+        if (
+          this.automaticHeading !== null &&
+          !self.state.mountId &&
+          !self.state.boatId &&
+          !self.state.carrierId
+        )
+          tempPoint.y = walkHeight(tempPoint.x, tempPoint.z);
         tempPoint.y += focusHeight(self.state);
       }
+      const focusY = this.focus.y;
       this.focus.lerp(tempPoint, 1 - Math.exp(-dt * 11));
+      if (this.automaticHeading !== null && !viewed)
+        this.focus.y = focusY + (tempPoint.y - focusY) * (1 - Math.exp(-dt * 4));
+    }
+    if (this.automaticHeading !== null && this.automaticCameraActive && !viewed) {
+      const delta = wrapHeading(this.automaticHeading + Math.PI - this.yaw);
+      this.yaw = wrapHeading(
+        this.yaw + (Math.abs(delta) < 0.001 ? delta : delta * (1 - Math.exp(-dt * 3.2))),
+      );
+      this.pitch += (0.32 - this.pitch) * (1 - Math.exp(-dt * 2.5));
     }
     this.distance += (this.targetDistance - this.distance) * (1 - Math.exp(-dt * 10));
     const aim = this.focus.clone();
@@ -1701,6 +1799,16 @@ export class WorldRenderer {
       cameraDistance = this.landmarks.caveCamera.distance(aim, offset, cameraDistance);
       this.camera.position.copy(aim).addScaledVector(offset, cameraDistance);
     }
+    if (this.automaticHeading !== null && !viewed) {
+      // Obstructions pull in immediately; clearance releases the distance slowly.
+      this.automaticDistance =
+        this.automaticDistance === null || cameraDistance < this.automaticDistance
+          ? cameraDistance
+          : this.automaticDistance +
+            (cameraDistance - this.automaticDistance) * (1 - Math.exp(-dt * 2.4));
+      cameraDistance = this.automaticDistance;
+      this.camera.position.copy(aim).addScaledVector(offset, cameraDistance);
+    } else this.automaticDistance = null;
     const aboveWater =
       !isLand(this.camera.position.x, this.camera.position.z) ||
       (riverHalfWidth(this.camera.position.z) > 0.7 &&
@@ -1715,6 +1823,14 @@ export class WorldRenderer {
     );
     this.camera.lookAt(aim);
     this.camera.updateMatrixWorld();
+    for (const marker of this.assistMarkers.values()) {
+      const screen = this.assistScreenPoint(marker.point);
+      marker.element.hidden = !screen || this.occluded() || !!viewed;
+      if (screen) {
+        marker.element.style.left = `${(screen.x + 1) * 50}%`;
+        marker.element.style.top = `${(1 - screen.y) * 50}%`;
+      }
+    }
     this.sun.position.set(this.focus.x - 32, this.focus.y + 48, this.focus.z - 25);
     this.sun.target.position.set(this.focus.x, this.focus.y, this.focus.z);
     this.openWorld?.update(this.camera, time);

@@ -3,79 +3,199 @@
   z-index: 25;
   left: 16px;
   top: 122px;
-  width: min(580px, calc(100% - 32px));
+  width: min(318px, calc(100% - 32px));
   pointer-events: auto;
-  color: #f0eadb;
+  color: #f5f2e7;
   font:
-    13px/1.5 system-ui,
+    14px/1.5 system-ui,
     sans-serif;
 }
-body:not(.in-game) #motion-controls {
-  display: none;
-}
+body:not(.in-game) #motion-controls,
 #motion-controls [hidden] {
   display: none !important;
+}
+#motion-controls[data-panel='setup'],
+#motion-controls[data-panel='help'] {
+  width: min(380px, calc(100% - 32px));
 }
 #motion-controls button,
 #motion-controls select {
   font: inherit;
-  color: #f0eadb;
-  background: #263e37;
-  border: 1px solid #7c9181;
-  border-radius: 7px;
+  color: inherit;
+  background: #233e34;
+  border: 1px solid #718b7d;
+  border-radius: 10px;
   min-height: 44px;
-  padding: 8px 11px;
+  padding: 8px 12px;
   cursor: pointer;
 }
-#motion-controls button:hover,
-#motion-controls button:focus-visible {
-  background: #35564c;
-  outline: 2px solid #e2c980;
+#motion-controls button:hover {
+  background: #355c4b;
+}
+#motion-controls :is(button, select, summary, input):focus-visible {
+  outline: 3px solid #f1d28b;
+  outline-offset: 2px;
 }
 #motion-controls button:disabled {
-  opacity: 0.5;
+  opacity: 0.6;
   cursor: default;
-}
-.motion-toolbar {
-  display: flex;
-  gap: 6px;
-  flex-wrap: wrap;
-}
-#motion-panel {
-  margin-top: 8px;
-  padding: 14px;
-  border: 1px solid #718375;
-  border-radius: 10px;
-  background: #162721f5;
-  max-height: calc(100dvh - 196px);
-  overflow-y: auto;
-  box-shadow: 0 8px 30px #0005;
-}
-.motion-heading {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 8px;
-}
-.motion-heading strong {
-  font-size: 17px;
 }
 #motion-controls p {
   margin: 8px 0;
 }
+.motion-toolbar {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+#motion-quick-stop {
+  margin-left: auto;
+}
+#motion-panel,
+#motion-hud {
+  margin-top: 8px;
+  padding: 16px;
+  border: 1px solid #77897c;
+  border-radius: 16px;
+  background: #142b23f5;
+  box-shadow: 0 8px 26px #0004;
+}
+#motion-panel {
+  max-height: calc(100dvh - 196px);
+  overflow-y: auto;
+  overscroll-behavior: contain;
+}
+.motion-heading {
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
+  align-items: center;
+}
+.motion-heading strong {
+  font-size: 18px;
+}
+#motion-fold {
+  padding: 6px 10px;
+  font-size: 12px;
+}
+.motion-hud-caption {
+  display: flex;
+  justify-content: space-between;
+  color: #c4d8c9;
+  font-size: 11px;
+  letter-spacing: 0.03em;
+}
+.motion-hud-caption span:last-child {
+  color: #95ddbc;
+}
+.motion-current {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 55px;
+}
+.motion-current strong {
+  font-size: 18px;
+  line-height: 1.4;
+}
+#motion-direction {
+  display: grid;
+  place-items: center;
+  flex: 0 0 34px;
+  height: 34px;
+  color: #a9efd0;
+  font-size: 28px;
+}
+#motion-controls .motion-stop-hint {
+  font-size: 12px;
+  color: #e8d9ac;
+  padding: 8px 0;
+  border-top: 1px solid #ffffff21;
+}
+#motion-live-notice {
+  font-size: 12px;
+  color: #ffd88d;
+}
+.motion-action-glance {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 5px;
+  margin-top: 6px;
+}
+.motion-action-glance > div {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  border-radius: 8px;
+  padding: 3px 0 5px;
+}
+.motion-action-glance span {
+  font-size: 10px;
+  white-space: nowrap;
+}
+.motion-action-glance .motion-gesture {
+  width: 45px;
+  height: 37px;
+}
+.motion-action-glance .is-current {
+  background: #42664e;
+  color: #c5ffe0;
+}
+.motion-gesture {
+  width: 70px;
+  height: 66px;
+  fill: #bddbc522;
+  stroke: #c5e8d0;
+  stroke-width: 2.5;
+  stroke-linejoin: round;
+  stroke-linecap: round;
+}
+.motion-gesture .motion-arrow {
+  fill: none;
+  stroke: #eed89b;
+  stroke-width: 2.7;
+}
+#motion-interaction-target {
+  font-size: 12px;
+  color: #a9efd0;
+  padding-top: 6px;
+  border-top: 1px solid #ffffff21;
+}
+.motion-steps {
+  display: flex;
+  gap: 8px;
+  margin: 18px 0 12px;
+  font-size: 11px;
+  color: #a9bcb0;
+}
+.motion-steps span {
+  padding: 5px 9px;
+  border-radius: 20px;
+  background: #ffffff08;
+}
+.motion-steps .is-current {
+  color: #c3f5d7;
+  background: #456c514f;
+  border: 1px solid #779b7c;
+}
+#motion-controls #motion-status {
+  font-size: 20px;
+  font-weight: 700;
+  line-height: 1.5;
+  margin: 12px 0 4px;
+}
+#motion-setup-hint {
+  font-size: 13px;
+  color: #c9d4c9;
+}
 .motion-preview {
   position: relative;
   width: 100%;
-  aspect-ratio: 4 / 3;
-  background: #0c1512;
-  border-radius: 8px;
+  aspect-ratio: 16/9;
+  margin: 14px 0 10px;
+  border-radius: 12px;
+  background: #0a1510;
   overflow: hidden;
-}
-.motion-live {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(230px, 1fr);
-  gap: 12px;
-  align-items: start;
 }
 .motion-preview video {
   width: 100%;
@@ -85,23 +205,16 @@ body:not(.in-game) #motion-controls {
 }
 .motion-preview svg {
   position: absolute;
+  inset: 0;
   width: 100%;
   height: 100%;
-  inset: 0;
   pointer-events: none;
 }
 #motion-guide {
   fill: none;
-  stroke: #e2d699a0;
+  stroke: #f3dd9999;
   stroke-width: 2;
   stroke-dasharray: 5 4;
-  pointer-events: none;
-}
-#motion-guide text {
-  fill: #fff;
-  stroke: none;
-  font-size: 13px;
-  paint-order: stroke;
 }
 #motion-skeleton {
   fill: none;
@@ -114,64 +227,12 @@ body:not(.in-game) #motion-controls {
   stroke: #11251e;
   stroke-width: 1.5;
 }
-#motion-skeleton [data-quality='uncertain'] {
-  stroke: #ffce68;
-}
-#motion-skeleton circle[data-quality='uncertain'] {
-  fill: #ffce68;
-}
 #motion-skeleton text {
   fill: #fff;
   stroke: #07110c;
   stroke-width: 3;
   paint-order: stroke;
   font-weight: 700;
-}
-.motion-debug-toolbar {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 6px;
-  margin: 8px 0;
-  flex-wrap: wrap;
-}
-.motion-debug-toolbar label {
-  cursor: pointer;
-  white-space: nowrap;
-}
-#motion-controls [data-quality='tracked'] {
-  color: #80f0c7;
-}
-#motion-controls [data-quality='uncertain'] {
-  color: #ffce68;
-}
-#motion-controls [data-quality='missing'] {
-  color: #d5b2ab;
-}
-#motion-debug {
-  display: grid;
-  gap: 5px;
-  background: #091910;
-  padding: 10px;
-  margin-top: 0;
-  border-radius: 8px;
-}
-#motion-debug-required {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 4px;
-  font-size: 12px;
-}
-#motion-debug-required > div {
-  padding: 4px;
-  background: #ffffff08;
-  border-radius: 4px;
-}
-#motion-controls.motion-expanded {
-  width: min(860px, calc(100% - 32px));
-}
-#motion-controls.motion-expanded #motion-panel {
-  max-height: calc(100dvh - 196px);
 }
 #motion-preview-placeholder {
   position: absolute;
@@ -181,99 +242,145 @@ body:not(.in-game) #motion-controls {
   padding: 20px;
   text-align: center;
   background: #0c1512e8;
+  color: #c9d4c9;
 }
-#motion-device {
-  min-width: 0;
-  max-width: 60%;
-  text-overflow: ellipsis;
+#motion-controls progress {
+  width: 100%;
+  height: 6px;
+  accent-color: #9ad9b0;
 }
-.motion-pads {
-  display: grid;
-  grid-template-columns: 1fr;
+.motion-buttons {
+  display: flex;
+  flex-wrap: wrap;
   gap: 8px;
+  margin: 12px 0;
+}
+.motion-lesson-tabs {
+  display: flex;
+  gap: 6px;
+  margin: 14px 0;
+}
+#motion-controls .motion-lesson-tabs button {
+  flex: 1;
+  font-size: 12px;
+  padding: 8px 5px;
+}
+#motion-controls .motion-lesson-tabs [aria-pressed='true'] {
+  background: #426c52;
+  border-color: #b1d9b7;
+}
+.motion-lesson-cards {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 6px;
+}
+.motion-lesson-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 12px 3px;
+  border: 1px solid #587760;
+  background: #ffffff05;
+  border-radius: 10px;
   text-align: center;
 }
-.motion-pad {
-  position: relative;
-  height: 88px;
-  margin-top: 4px;
-  border: 1px solid #577567;
-  border-radius: 10px;
-  background: #20372f;
+.motion-lesson-card span {
+  font-size: 10px;
+  color: #c9d4c9;
+  margin: 8px 0 4px;
+}
+.motion-lesson-card strong {
+  font-size: 13px;
+}
+.motion-help-note {
+  font-size: 12px;
+  color: #c9d4c9;
+}
+#motion-settings {
+  border-top: 1px solid #ffffff26;
+  margin-top: 14px;
+}
+#motion-controls summary {
+  cursor: pointer;
+  padding: 12px 0;
+  font-size: 12px;
+  color: #c9d4c9;
+}
+.motion-option {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  margin: 10px 0;
+}
+.motion-option select {
+  max-width: 65%;
+  min-width: 0;
+}
+#motion-controls small {
+  display: block;
   font-size: 11px;
+  color: #becbbe;
+  margin: 8px 0;
 }
-.motion-pad span {
-  position: absolute;
-  padding: 1px 4px;
-  border-radius: 4px;
+#motion-action-feedback {
+  padding: 12px 16px;
+  border: 1px solid #98c8a1;
+  border-radius: 12px;
+  background: #204d39;
 }
-.motion-pad .motion-selected {
-  color: #102b22;
-  background: #94edc7;
-  font-weight: 700;
+#motion-action-feedback[data-accepted='false'] {
+  background: #493b24;
+  border-color: #d2b371;
+}
+/* Diagnostics stay within the explicitly opened troubleshooting section. */
+.motion-debug-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  margin-top: 8px;
+}
+.motion-debug-toolbar label {
+  cursor: pointer;
+}
+#motion-controls [data-quality='tracked'] {
+  color: #a2edc5;
+}
+#motion-controls [data-quality='missing'] {
+  color: #eed19a;
+}
+.motion-pads,
+#motion-debug {
+  display: grid;
+  gap: 10px;
+  font-size: 11px;
+  margin-top: 12px;
+}
+.motion-hand-card {
+  border: 1px solid #577567;
+  border-radius: 8px;
+  padding: 10px;
 }
 .motion-hand-heading {
   display: flex;
   justify-content: space-between;
   gap: 5px;
-  align-items: center;
-}
-.motion-hand-heading span {
-  font-size: 11px;
-}
-.motion-hand-state {
-  min-height: 18px;
-  margin-top: 3px;
-  font-size: 11px;
-  color: #d9e5d9;
 }
 .motion-push {
-  margin-top: 7px;
-  padding: 7px 8px;
-  border: 1px solid #577567;
-  border-radius: 8px;
-  text-align: left;
-  background: #20372f;
-  font-size: 11px;
-}
-.motion-push > div {
-  display: flex;
-  justify-content: space-between;
-  flex-wrap: wrap;
-  gap: 3px;
-}
-.motion-push.motion-advancing {
-  border-color: #94edc7;
-  background: #315649;
-}
-#motion-controls .motion-push small {
-  margin-top: 2px;
-}
-#motion-move-pad .motion-up {
-  white-space: nowrap;
-  color: #c4cdbf;
-}
-#motion-status {
-  border-left: 3px solid #80dec1;
-  padding: 5px 9px;
-  background: #ffffff06;
-}
-#motion-action-feedback {
-  border: 1px solid #8cbdab;
-  border-radius: 6px;
-  padding: 7px 10px;
-  background: #2d5244;
-}
-#motion-action-feedback[data-accepted='false'] {
-  background: #4b3b20;
-  border-color: #bda76f;
-}
-#motion-debug-details,
-#motion-settings {
-  border-top: 1px solid #ffffff20;
-}
-#motion-debug-details {
   margin-top: 8px;
+}
+.motion-pad {
+  position: relative;
+  height: 88px;
+  margin-top: 6px;
+  background: #20372f;
+  border-radius: 8px;
+}
+.motion-pad span {
+  position: absolute;
+  padding: 1px 4px;
+  border-radius: 4px;
 }
 .motion-up {
   top: 5px;
@@ -293,201 +400,85 @@ body:not(.in-game) #motion-controls {
   right: 4px;
   top: 45%;
 }
-.motion-home {
+.motion-home,
+.motion-dot {
   position: absolute;
-  border: 1px dashed #d2c48f;
   border-radius: 50%;
+  transform: translate(-50%, -50%);
+}
+.motion-home {
+  border: 1px dashed #d2c48f;
   width: 25px;
   height: 25px;
   left: 50%;
   top: 50%;
-  transform: translate(-50%, -50%);
 }
 .motion-dot {
-  position: absolute;
   width: 11px;
   height: 11px;
   border: 2px solid #fff;
-  border-radius: 50%;
   background: #53e5ce;
-  transform: translate(-50%, -50%);
 }
-#motion-controls progress {
-  width: 100%;
-  height: 8px;
-  accent-color: #68d6bb;
+.motion-selected {
+  color: #102b22;
+  background: #94edc7;
 }
-.motion-buttons {
-  display: flex;
-  gap: 6px;
-  flex-wrap: wrap;
-  margin: 8px 0;
-}
-#motion-interaction-target {
-  padding: 8px;
-  border-left: 3px solid #68d6bb;
-  background: #68d6bb15;
-  font-weight: 600;
-}
-#motion-attack-availability {
-  font-size: 12px;
-  color: #d2c48f;
-}
-.motion-option {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin: 8px 0;
-  gap: 6px;
-}
-#motion-controls small {
-  display: block;
-  font-size: 11px;
-  color: #c4cdbf;
-  margin-top: 8px;
-}
-#motion-controls summary {
-  cursor: pointer;
-  padding: 8px 0;
-}
-@media (max-height: 600px) {
-  #motion-controls {
-    top: 98px;
-  }
-  #motion-panel,
-  #motion-controls.motion-expanded #motion-panel {
-    max-height: calc(100dvh - 182px);
-  }
-}
-@media (max-width: 760px) {
-  #motion-controls {
-    left: 8px;
-    top: 98px;
-    width: min(420px, calc(100% - 16px));
-  }
-  #motion-panel {
-    max-height: calc(100dvh - 182px);
-  }
-  #motion-controls.motion-expanded {
-    width: calc(100% - 16px);
-  }
-  #motion-controls.motion-expanded #motion-panel {
-    max-height: calc(100dvh - 182px);
-  }
-  .motion-live {
-    grid-template-columns: 1fr;
-  }
-  .motion-pads {
-    grid-template-columns: 1fr 1fr;
-  }
-  .motion-hand-heading {
-    flex-wrap: wrap;
-  }
-  .motion-preview {
-    height: min(190px, 26dvh);
-    aspect-ratio: auto;
-  }
-}
-.motion-view {
-  margin-top: 6px;
-  padding: 6px 8px;
-  background: #273947;
-  border: 1px solid #6e94a9;
-  border-radius: 8px;
-  font-size: 11px;
-}
-#motion-camera-pad {
-  position: relative;
-  height: 36px;
-  margin: 4px 10px;
-  border: 1px solid #6e94a9;
-  border-radius: 5px;
-  background: linear-gradient(transparent 49%, #6e94a950 49%, #6e94a950 51%, transparent 51%);
-}
-#motion-camera-pad::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  left: 50%;
-  border-left: 1px dashed #acccdf;
-}
-#motion-camera-dot {
-  position: absolute;
-  top: 50%;
-  width: 9px;
-  height: 9px;
-  background: #9bd7f4;
-  border-radius: 50%;
-  transform: translate(-50%, -50%);
-}
-#motion-status {
-  min-height: 3em;
-}
-#motion-move-pad .motion-down {
-  white-space: nowrap;
-}
-.motion-jump {
-  padding: 5px;
-  margin-top: 6px;
-  border: 1px solid #577567;
-  border-radius: 7px;
-}
-.motion-modes {
-  display: grid;
-  gap: 4px;
-  text-align: left;
+.motion-hand-state {
   margin-top: 5px;
 }
-.motion-modes > div {
-  padding: 5px 7px;
-  border: 1px solid #577567;
-  border-radius: 6px;
+.motion-modes {
+  display: flex;
+  gap: 8px;
+  margin: 8px 0;
 }
-.motion-modes > .motion-selected {
-  background: #31594a;
-  border-color: #94edc7;
-}
-#motion-controls .motion-modes small,
-#motion-controls .motion-jump small {
-  margin-top: 0;
-}
-#motion-pose {
-  display: block;
-  color: #a2e8d2;
-  margin-top: 6px;
-}
-#motion-fingers {
-  display: grid;
-  grid-template-columns: repeat(5, 1fr);
-  gap: 4px;
-  margin-top: 6px;
+#motion-fingers,
+#motion-debug-required {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
 }
 #motion-fingers span {
   white-space: pre-line;
-  font-size: 11px;
-  line-height: 1.3;
-  padding: 4px 0;
+  padding: 4px;
   border: 1px solid #52685c;
   border-radius: 5px;
 }
-#motion-fingers [data-gun='true'] {
-  border-color: #82dabc;
-  color: #9ef4d7;
-  background: #295243;
+#motion-controls.motion-expanded[data-panel='help'] {
+  width: min(600px, calc(100% - 32px));
 }
-#motion-fingers [data-finger='unknown'] {
-  color: #ffce68;
-}
-#motion-action-state {
-  min-height: 3em;
-}
-@media (max-width: 500px) {
-  .motion-pads {
-    grid-template-columns: 1fr;
+@media (max-width: 760px), (max-height: 600px) {
+  #motion-controls {
+    left: 8px;
+    top: 98px;
+    width: min(258px, calc(100% - 16px));
+  }
+  #motion-controls[data-panel='setup'],
+  #motion-controls[data-panel='help'] {
+    width: min(366px, calc(100% - 16px));
+  }
+  #motion-panel {
+    max-height: calc(100dvh - 164px);
+    padding: 14px;
+  }
+  #motion-hud {
+    padding: 12px;
+  }
+  .motion-current strong {
+    font-size: 16px;
+  }
+  .motion-action-glance span {
+    font-size: 9px;
+  }
+  .motion-current {
+    gap: 6px;
   }
 }
-
-.motion-action-card {
-  order: -1;
+@media (max-height: 500px) {
+  .motion-action-glance,
+  #motion-action-caption {
+    display: none;
+  }
+  .motion-preview {
+    max-height: 130px;
+  }
 }

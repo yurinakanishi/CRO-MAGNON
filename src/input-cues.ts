@@ -24,6 +24,7 @@ export interface InputCue {
   controls: readonly string[];
 }
 export interface CueContext {
+  automaticCamera?: boolean;
   pet?: string;
   interaction?: string;
   ride?: string;
@@ -44,7 +45,7 @@ export function contextCues(context: CueContext, pad: boolean): InputCue[] {
   const cues: InputCue[] = [];
   const add = (action: CueAction, label: string, key: string, ...controls: string[]) =>
     cues.push({ action, label, key, controls });
-  if (context.viewing) {
+  if (context.viewing && !context.automaticCamera) {
     add('zoomIn', '近く', '+', 'b5');
     add('zoomOut', '遠く', '−', 'b4');
     add('endInspect', '戻る', 'Esc', 'b11', 'b6');
@@ -56,7 +57,8 @@ export function contextCues(context: CueContext, pad: boolean): InputCue[] {
   }
   if (context.pet) add('pet', context.pet, 'V', 'b0');
   if (context.recall) add('recall', 'みんなを呼ぶ', 'Q', 'b12');
-  if (context.inspect) add('inspect', `${context.inspect}を見る`, 'X', 'b5');
+  if (context.inspect && !context.automaticCamera)
+    add('inspect', `${context.inspect}を見る`, 'X', 'b5');
   if (context.interaction && context.interaction !== context.pet)
     add('interact', context.interaction, 'E', 'b1');
   if (!pad || !context.pet) {

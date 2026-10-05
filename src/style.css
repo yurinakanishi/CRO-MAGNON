@@ -2073,6 +2073,9 @@ dialog:has(.pause-menu) #modal-body {
   gap: 6px;
   justify-content: flex-end;
 }
+.settings-buttons[hidden] {
+  display: none;
+}
 .settings-row {
   display: flex;
   flex-wrap: wrap;

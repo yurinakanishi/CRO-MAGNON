@@ -13,6 +13,9 @@
 .input-cues[hidden] {
   display: none;
 }
+.input-look[hidden] {
+  display: none;
+}
 .input-cues.is-inspecting .input-move {
   display: none;
 }
@@ -264,4 +267,38 @@
   .pad-part > rect {
     transition: none;
   }
+}
+.assist-target {
+  position: absolute;
+  transform: translate(-50%, -100%);
+  padding: 3px 8px;
+  border: 2px solid #f4df9b;
+  border-radius: 10px;
+  background: #182221e6;
+  color: #fff5d5;
+  font-size: 12px;
+  font-weight: 700;
+  white-space: nowrap;
+  pointer-events: none;
+}
+.assist-target[hidden] {
+  display: none;
+}
+.assist-target::after {
+  content: '';
+  position: absolute;
+  left: calc(50% - 4px);
+  bottom: -6px;
+  width: 6px;
+  height: 6px;
+  border-right: 2px solid #f4df9b;
+  border-bottom: 2px solid #f4df9b;
+  background: #182221;
+  transform: rotate(45deg);
+}
+.assist-target-attack {
+  border-color: #ffa18f;
+}
+.assist-target-attack::after {
+  border-color: #ffa18f;
 }

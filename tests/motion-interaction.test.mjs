@@ -9,17 +9,17 @@ import {
   updateCompanion524,
 } from '../dist/shared/companion-524.mjs';
 
-const intent = (time, forward = 0.1, strafe = 0.1, sessionId = 1) => ({
+const intent = (time, forward = 0.1, turn = 0.1, sessionId = 1) => ({
   active: true,
   forward,
-  strafe,
+  turn,
   cameraYaw: 0.6,
   cameraPitch: -0.2,
   cameraDragging: true,
   sessionId,
   sampledAtMainMs: time,
 });
-const sample = (push = 0.16, x = 0.08) => ({ push, offset: { x: 0, y: 0 }, roll: x });
+const sample = (push = 0.16, x = 0.08) => ({ push, offset: { x, y: 0 }, roll: 0 });
 test('one target supplies both the label and action, with petting before nearby resources', () => {
   const resource = { label: '木材を採集する', action: 'gather', targetId: 'wood' };
   assert.deepEqual(motionTarget('rimo', resource), {
@@ -70,7 +70,7 @@ for (const kind of ['rimo', '524'])
         time,
       );
       assert.equal(i.forward, 0);
-      assert.equal(i.strafe, 0);
+      assert.equal(i.turn, 0);
       p.moving = Math.abs(i.forward) > 0.01;
       p.z += i.forward * 0.15;
       update(room, 0.05, time);
@@ -78,7 +78,7 @@ for (const kind of ['rimo', '524'])
     assert.equal(c.followPlayerId, p.id);
     assert.equal(c.petPlayerId, null);
   });
-test('a deliberate new push or tilt cancels assistance, but repeated render frames cannot fake the dwell', () => {
+test('a deliberate new push or lateral gesture cancels assistance, but repeated render frames cannot fake the dwell', () => {
   for (const [input, position] of [
     [intent(1100, 0.7, 0), sample(0.55)],
     [intent(1100, 0, 0.8), sample(0.16, 0.5)],
@@ -103,19 +103,19 @@ test('rejected pet requests time out, and pause/session changes cannot retain a 
   assert.equal(hold.active, false);
 });
 
-test('camera orbit remains available throughout petting without cancelling it', () => {
+test('idle control heading does not cancel petting', () => {
   const hold = new MotionPetHold();
   hold.begin(1, 1000, sample());
   for (const at of [1100, 1200, 1300]) {
     const result = hold.filter(intent(at, 0, 0), sample(), true, at);
     assert.equal(result.cameraYaw, 0.6);
     assert.equal(result.forward, 0);
-    assert.equal(result.strafe, 0);
+    assert.equal(result.turn, 0);
     assert.equal(hold.active, true);
   }
 });
-test('deliberate retreat by pulling or lowering can interrupt petting', () => {
-  for (const s of [{ ...sample(-0.25) }, { ...sample(), offset: { x: 0, y: 0.5 } }]) {
+test('deliberate pulling interrupts petting', () => {
+  for (const s of [sample(-0.25)]) {
     const hold = new MotionPetHold();
     hold.begin(1, 1000, sample());
     assert.equal(hold.filter(intent(1100, -0.7, 0), s, true, 1100).forward, 0);

@@ -50,6 +50,7 @@ function fixture() {
     vm.runInNewContext(`${nearbySource}\nnearby()`, {
       state: core.snapshot(room, true),
       fixedIdentity: false,
+      assistedControls: () => false,
       player: () => player,
       preferredPet: () => null, // This fixture isolates the camp's resource interaction.
       renderer: { collision: room.collision, resourceVisible: () => true, serverNow: () => now },
