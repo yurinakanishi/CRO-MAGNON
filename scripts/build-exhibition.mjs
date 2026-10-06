@@ -2,7 +2,7 @@ import { mkdir, readdir, readFile, copyFile, stat, writeFile } from 'node:fs/pro
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { sha256, buildId } from './exhibition-integrity.mjs';
-import './prepare-vendor.mjs';
+import { prepareVendor } from './prepare-vendor.mjs';
 import './build.mjs';
 if (process.exitCode) throw new Error('TypeScript build failed');
 if (process.platform !== 'win32')
@@ -12,10 +12,19 @@ if (process.platform !== 'win32')
 
 const root = path.dirname(path.dirname(fileURLToPath(import.meta.url)));
 const local = process.argv.includes('--local');
+const {
+  browserBuildProfile,
+  environmentAsset,
+  auditEnvironmentAssets,
+  runtimeTextureRecords,
+  runtimeBotPortraitUrls,
+} = await import('./environment-assets.mjs');
+const profile = browserBuildProfile(local ? 'local' : 'exhibition', new Date().toISOString());
+await prepareVendor({ cameraControls: profile.cameraControls });
 const destination = path.resolve(
   root,
   process.argv.slice(2).find((arg) => !arg.startsWith('--')) ||
-    (local ? 'output/local' : 'output/exhibition'),
+    `output/environments/${profile.environment}/build-${profile.builtAt.replace(/[:.]/g, '-')}`,
 );
 const relative = path.relative(path.join(root, 'output'), destination);
 if (!relative || relative.startsWith('..') || path.isAbsolute(relative))
@@ -94,8 +103,7 @@ for (const asset of manifest.assets) {
   }
   // External runtime textures (for example cave pigment and limestone) are
   // declared directly on the accepted asset. Historical provenance is not shipped.
-  for (const texture of Object.values(asset)) {
-    if (!texture || typeof texture !== 'object' || !texture.url?.match(/\.(png|jpe?g)$/)) continue;
+  for (const texture of runtimeTextureRecords(asset)) {
     if (!/^\/models\/[a-z0-9-]+\/[a-z0-9-]+\.(png|jpe?g)$/.test(texture.url))
       throw new Error(`Unexpected texture: ${texture.url}`);
     const file = `public${texture.url}`;
@@ -108,6 +116,7 @@ for (const asset of manifest.assets) {
   }
 }
 for (const { key } of CHARACTER_MODELS) add(`public/models/${key}/portrait.png`);
+for (const url of runtimeBotPortraitUrls(manifest.assets)) add(`public${url}`);
 sources.set('runtime/node.exe', process.execPath);
 // Keep the license for the exact bundled runtime. New Node versions need their
 // matching license added during preparation, never fetched at exhibition startup.
@@ -118,16 +127,44 @@ sources.set(
 sources.set('public/vendor/THREE-LICENSE.txt', path.join(root, 'node_modules/three/LICENSE'));
 const files = [];
 let bytes = 0;
+await mkdir(path.join(destination, 'public'), { recursive: true });
+await writeFile(path.join(destination, 'public/build-profile.json'), JSON.stringify(profile));
+files.push({
+  path: 'public/build-profile.json',
+  sha256: await sha256(path.join(destination, 'public/build-profile.json')),
+});
 for (const [file, source] of [...sources].sort(([a], [b]) => a.localeCompare(b))) {
   const target = path.join(destination, file);
   await mkdir(path.dirname(target), { recursive: true });
-  await copyFile(source, target);
+  const publicPath = file.replace(/^(?:dist|public)\//, '');
+  if (['src/build-profile.js', 'src/hand-controls.js', 'index.html'].includes(publicPath))
+    await writeFile(target, environmentAsset(publicPath, await readFile(source), profile));
+  else await copyFile(source, target);
   bytes += (await stat(target)).size;
   // Settings are intentionally editable, code/assets/runtime must match on both PCs.
   if (!['exhibition.env', 'local-visibility.json'].includes(file))
     files.push({ path: file, sha256: await sha256(target) });
 }
+const publicFiles = files.filter(
+  (file) =>
+    /^(?:dist\/(?:src|shared)\/|public\/)/.test(file.path) &&
+    file.path !== 'dist/shared/game-core.mjs',
+);
+const audit = await auditEnvironmentAssets(
+  publicFiles.map((file) => file.path.replace(/^(?:dist|public)\//, '')),
+  (name) =>
+    readFile(
+      path.join(
+        destination,
+        name.startsWith('src/') || name.startsWith('shared/') ? 'dist' : 'public',
+        name,
+      ),
+    ),
+  profile,
+);
 const report = {
+  profile,
+  audit,
   buildId: buildId(files),
   builtAt: new Date().toISOString(),
   platform: process.platform,

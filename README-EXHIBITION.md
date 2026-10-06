@@ -28,7 +28,7 @@ PC1はゲームサーバーと自分の画面、PC2は自分の画面を実行�
 Windows x64、Node.js 22以上、インストール済みのこのリポジトリで
 `npm run build:exhibition` を実行します。準備段階で依存がなければ
 インターネットのある場所で `npm ci` を先に実行してください。
-完成する `output/exhibition` フォルダー全体をUSBまたはPC0からのSSH/SCPで
+完成する `output/environments/exhibition/build-<日時>` フォルダー全体をUSBまたはPC0からのSSH/SCPで
 PC1とPC2へコピーします。
 配布先にNode.js、npm、Cloudflare、開発ツールをインストールする必要はありません。
 ChromeまたはEdgeとGPUドライバーは事前にインストールしてください。
@@ -40,6 +40,10 @@ ChromeまたはEdgeとGPUドライバーは事前にインストールしてく�
 ビルドは参加できません。設定ファイルだけは編集できます。
 既存の出力を保護するため再ビルドは空の別フォルダーを指定します。
 例: `node scripts/build-exhibition.mjs output/exhibition-r02`。
+
+配布前に開発PCの1台で確認する場合は `npm run preview:exhibition -- <完成フォルダー>`。
+4173番で固定した展示版を起動します。ソース変更はそのフォルダーへ自動反映されません。
+ローカル検証・MMOとの分離は [環境の手順](docs/environments-2026-10-06.md) を参照してください。
 
 ## 展示当日
 

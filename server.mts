@@ -7,6 +7,7 @@ import { WebSocketServer } from 'ws';
 import { createGameCore } from './application/game-core.mjs';
 import { MIME, serveStatic } from './infrastructure/node/static-files.mjs';
 import { readLocalVisibility } from './infrastructure/node/local-visibility.mjs';
+import { localVerificationSettings } from './infrastructure/node/local-verification.mjs';
 import { ALL_CONTENT } from './shared/content-visibility.mjs';
 import { handleRoomReset, localResetRequest } from './infrastructure/node/room-reset.mjs';
 import { ADVENTURE_VERSION } from './shared/adventure-regions.mjs';
@@ -14,6 +15,7 @@ import { BOATING } from './shared/boats.mjs';
 import { EARTH } from './shared/paleo-geography.mjs';
 import { RIDING } from './shared/riding.mjs';
 import { WORLD } from './shared/world.mjs';
+import { environmentProfile, type EnvironmentId } from './shared/environment-profile.mjs';
 import { GULF } from './shared/gulf-region.mjs';
 import {
   openLocalSave,
@@ -40,6 +42,9 @@ export function createGameServer({
   onSessionChange = () => {},
   beforeClose = async () => {},
   resetRoom = null as null | ((room: string, session: string) => Promise<void>),
+  assetRoot = ROOT,
+  environment = null as EnvironmentId | null,
+  runtimeConfig = null as object | null,
 } = {}) {
   const { rooms, snapshot, tick } = core;
   let interval;
@@ -55,6 +60,11 @@ export function createGameServer({
       }
       if (request.method !== 'GET' && request.method !== 'HEAD') {
         response.writeHead(405, { Allow: 'GET, HEAD' }).end('Method not allowed');
+        return;
+      }
+      if (serveAssets && runtimeConfig && url.pathname === '/multiplayer-config.json') {
+        response.writeHead(200, { 'Content-Type': MIME['.json'], 'Cache-Control': 'no-store' });
+        response.end(request.method === 'HEAD' ? undefined : JSON.stringify(runtimeConfig));
         return;
       }
       if (
@@ -77,6 +87,7 @@ export function createGameServer({
             : url.pathname === '/api/health'
               ? {
                   ok: true,
+                  ...(environment ? { environment } : {}),
                   ...(expectedBuild ? { mode: 'lan', buildId: expectedBuild } : {}),
                   ...(exhibition ? { exhibition: true } : {}),
                   ridingVersion: RIDING.version,
@@ -109,7 +120,8 @@ export function createGameServer({
         response.end(request.method === 'HEAD' ? undefined : JSON.stringify(body));
         return;
       }
-      if (serveAssets) await serveStatic(request, response, url.pathname, ROOT, core.visibility);
+      if (serveAssets)
+        await serveStatic(request, response, url.pathname, assetRoot, core.visibility);
       else response.writeHead(404).end('Multiplayer synchronization only. Use your local client.');
     } catch (error) {
       response
@@ -411,8 +423,16 @@ export async function createPersistentGameServer({
 
 export async function startServer() {
   try {
+    const profile = process.env.CRO_ENVIRONMENT
+      ? environmentProfile(process.env.CRO_ENVIRONMENT)
+      : null;
+    if (profile && profile.id !== 'local')
+      throw new Error('Use the exhibition or MMO release launcher.');
     const game = await createPersistentGameServer({
       saveDirectory: process.env.CRO_SAVE_DIR || undefined,
+      ...(profile
+        ? localVerificationSettings(ROOT, process.env.CRO_LOCAL_VERIFY_PORT || profile.port)
+        : {}),
       visibility:
         process.env.EXHIBITION_RULES === '1'
           ? ALL_CONTENT

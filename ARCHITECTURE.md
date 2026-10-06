@@ -35,7 +35,9 @@ npm run build:cloudflare
 npm run check:cloudflare
 ```
 
-`start` and `test` build first. `dev` watches TypeScript and CSS, rebuilds, and restarts its own server only after a successful build. It keeps the previous server running on compiler errors. Like the old development watcher, successful restarts reset the default Node server's in-memory state; use this mode for development.
+`start` and `test` build first. `dev` watches TypeScript and CSS, rebuilds, and restarts its own server only after a successful build. It keeps the previous server running on compiler errors and saves before its own restart. `dev:local` selects loopback port 3100 and a dedicated verification save directory; the legacy 3000 entry stays compatible.
+
+Environment capabilities live in `shared/environment-profile.mts`. Release builders emit their own browser profile and audit the emitted import graph. MMO replaces the `hand-controls` entry with a disabled implementation and excludes hand recognition modules/assets entirely. Exhibition outputs are versioned, immutable folders; previewing an existing folder does not rebuild it. MMO local preview verifies assets and Worker modules and uses its own local Cloudflare persistence. See [environment operations](docs/environments-2026-10-06.md).
 
 `node server.mjs` remains a compatibility launcher after a build. Historical QA and generation scripts stay JavaScript and import compiled runtime modules, so run `npm run build` before invoking them directly. Data generators now write `.mts` source; rebuild after generating data.
 

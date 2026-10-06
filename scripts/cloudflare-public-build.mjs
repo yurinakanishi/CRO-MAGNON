@@ -2,7 +2,7 @@ import { mkdir, readFile, writeFile, readdir, stat, rename, cp } from 'node:fs/p
 import { createHash } from 'node:crypto';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
-import './prepare-vendor.mjs';
+import { prepareVendor } from './prepare-vendor.mjs';
 import './build.mjs';
 if (process.exitCode) throw new Error('TypeScript build failed');
 const { CHARACTER_MODELS } = await import('../dist/shared/characters.mjs');
@@ -10,11 +10,21 @@ const { TITLE_CREDITS, TITLE_GUEST, TITLE_SUPPORT } =
   await import('../dist/src/title-credit-profiles.js');
 
 const root = path.dirname(path.dirname(fileURLToPath(import.meta.url)));
+const {
+  browserBuildProfile,
+  environmentAsset,
+  auditEnvironmentDirectory,
+  runtimeTextureRecords,
+  runtimeBotPortraitUrls,
+} = await import('./environment-assets.mjs');
+const profile = browserBuildProfile('mmo', new Date().toISOString());
+await prepareVendor({ cameraControls: false });
 const destination = path.join(root, 'dist-cloudflare');
 const workerDestination = path.join(root, 'dist-cloudflare-worker');
 const stamp = new Date().toISOString().replace(/[:.]/g, '-');
 const staging = path.join(root, 'output/cloudflare-deploy', `build-${stamp}`);
 const workerStaging = path.join(root, 'output/cloudflare-deploy', `worker-build-${stamp}`);
+const workerFiles = [];
 const release = JSON.parse(
   await readFile(path.join(root, 'cloudflare/public-release.json'), 'utf8'),
 );
@@ -48,6 +58,8 @@ await mkdir(staging, { recursive: true });
 
 async function publish(url, bytes) {
   const name = url.replace(/^\//, '');
+  bytes = environmentAsset(name, bytes, profile);
+  if (bytes === undefined) return;
   if (!name || name.split('/').some((part) => !part || part === '.' || part === '..'))
     throw new Error(`Unexpected public path: ${url}`);
   if (bytes.length > fileLimit) throw new Error(`Static asset exceeds 25 MiB: ${url}`);
@@ -84,6 +96,14 @@ async function collect(directory, extensions, keep = () => true) {
       )
         continue;
       let bytes = await readFile(path.join(root, file));
+      if (!hasOctopus && file === 'dist/src/character-assets.js') {
+        const source = bytes.toString('utf8');
+        const optionalImport =
+          "asset.bodyPlan === 'octopus' ? await import('./octopus-pose.js') : null";
+        if (!source.includes(optionalImport))
+          throw new Error('Missing conditional public character import');
+        bytes = Buffer.from(source.replace(optionalImport, 'null'));
+      }
       if (file === 'dist/src/style.css') {
         const css = bytes
           .toString('utf8')
@@ -115,7 +135,6 @@ await publish(
 );
 for (const directory of ['dist/src', 'dist/shared']) await collect(directory, /\.(js|mjs|css)$/);
 await collect('public/vendor', /\.(js|mjs|wasm|txt)$/);
-await collect('public/motion', /\.(task|txt|json)$/);
 await collect('public/spawn', /\.jpg$/);
 await collect('public/title', /\.(png|jpe?g)$/, (name) => {
   const profile = /^(?:qr|avatar)-([a-z0-9]+)\./.exec(name);
@@ -123,6 +142,7 @@ await collect('public/title', /\.(png|jpe?g)$/, (name) => {
 });
 for (const file of ['index.html', 'favicon.svg'])
   await publish('/' + file, await readFile(path.join(root, 'public', file)));
+await publish('/build-profile.json', Buffer.from(JSON.stringify(profile)));
 await publish(
   '/multiplayer-config.json',
   Buffer.from(
@@ -158,13 +178,16 @@ for (const { key } of publicCharacters)
       JSON.parse(await readFile(path.join(root, `public/models/${key}/asset.json`), 'utf8')),
     );
 const downloads = new Map();
-const optimized = release.optimizedAssets
-  ? new Map(
-      JSON.parse(
-        await readFile(path.join(root, 'assets/public-performance/manifest.json'), 'utf8'),
-      ).records.map((record) => [record.sourceUrl, record]),
-    )
-  : null;
+// Exact assets permit local MMO verification while older optimization manifests
+// are being updated. The guarded production build keeps its existing policy.
+const optimized =
+  release.optimizedAssets && !process.argv.includes('--exact-assets')
+    ? new Map(
+        JSON.parse(
+          await readFile(path.join(root, 'assets/public-performance/manifest.json'), 'utf8'),
+        ).records.map((record) => [record.sourceUrl, record]),
+      )
+    : null;
 for (const asset of assets) {
   for (const record of [asset, ...(asset.lods || [])]) {
     if (
@@ -210,21 +233,15 @@ for (const asset of assets) {
     downloads.set(record.url, download);
     models.push(download);
   }
-  const textures = [
-    ...(asset.runtimeTextures || []),
-    ...Object.values(asset).filter(
-      (value) =>
-        value &&
-        typeof value === 'object' &&
-        typeof value.url === 'string' &&
-        value.url.endsWith('.png'),
-    ),
-  ];
+  const textures = runtimeTextureRecords(asset);
   for (const texture of textures) {
     if (!/^\/models\/[a-z0-9-]+\/[a-z0-9-]+\.png$/.test(texture.url))
       throw new Error(`Unexpected runtime texture: ${texture.url}`);
     const bytes = await readFile(path.join(root, `public${texture.url}`));
-    if (bytes.length !== texture.bytes || hash(bytes) !== texture.sha256)
+    if (
+      (texture.bytes !== undefined && bytes.length !== texture.bytes) ||
+      hash(bytes) !== texture.sha256
+    )
       throw new Error(`Runtime texture mismatch: ${texture.url}`);
     await publish(texture.url, bytes);
   }
@@ -252,13 +269,16 @@ for (const { key } of publicCharacters)
     `/models/${key}/portrait.png`,
     await readFile(path.join(root, `public/models/${key}/portrait.png`)),
   );
+for (const url of runtimeBotPortraitUrls(assets))
+  await publish(url, await readFile(path.join(root, `public${url}`)));
 await publish(
   '/_headers',
   Buffer.from(
-    '/*\n  X-Content-Type-Options: nosniff\n  Referrer-Policy: no-referrer\n  X-Frame-Options: DENY\n  Cache-Control: no-cache\n/models/*.bin\n  Cache-Control: public, max-age=31536000, immutable\n' +
+    '/*\n  X-Content-Type-Options: nosniff\n  Referrer-Policy: no-referrer\n  X-Frame-Options: DENY\n  Permissions-Policy: camera=(), microphone=()\n  Cache-Control: no-cache\n/models/*.bin\n  Cache-Control: public, max-age=31536000, immutable\n' +
       (optimized ? '/models/*.glb\n  Cache-Control: public, max-age=31536000, immutable\n' : ''),
   ),
 );
+const audit = await auditEnvironmentDirectory(staging, files.keys(), profile);
 if (files.size > 20000) throw new Error('Static asset file count exceeds the Free plan');
 // Server modules use the same filtered character list as the browser. Never bundle
 // the local-only catalog into the uploaded Worker or expose server modules as assets.
@@ -272,6 +292,13 @@ for (const directory of ['application', 'cloudflare']) {
     if (excludedSpecies.has('maruimo') && forbidden.test(bytes.toString('utf8')))
       throw new Error(`Excluded character in Worker module: ${directory}/${file}`);
     await writeFile(path.join(workerStaging, directory, file), bytes);
+  }
+}
+for (const directory of ['shared', 'application', 'cloudflare']) {
+  for (const file of await readdir(path.join(workerStaging, directory))) {
+    const name = `${directory}/${file}`;
+    const bytes = await readFile(path.join(workerStaging, name));
+    workerFiles.push({ path: name, bytes: bytes.length, sha256: hash(bytes) });
   }
 }
 async function retainAndSwap(source, target, previous) {
@@ -294,6 +321,9 @@ async function retainAndSwap(source, target, previous) {
 await retainAndSwap(workerStaging, workerDestination, 'previous-worker');
 await retainAndSwap(staging, destination, 'previous');
 const report = {
+  buildId: hash(Buffer.from(JSON.stringify({ publicFiles: [...files.values()], workerFiles }))),
+  profile,
+  audit,
   builtAt: new Date().toISOString(),
   credits: release.credits,
   optimizedAssets: !!optimized,
@@ -304,6 +334,7 @@ const report = {
   bytes: total,
   models,
   publicFiles: [...files.values()],
+  workerFiles,
 };
 await writeFile(path.join(root, 'output/cloudflare-build.json'), JSON.stringify(report, null, 2));
 console.log(

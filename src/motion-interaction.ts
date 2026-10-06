@@ -1,25 +1,10 @@
 import type { MotionIntent, Offset } from './motion-input.js';
 
-export type MotionPet = 'rimo' | '524' | MotionTarget;
-export interface MotionTarget {
-  action: string;
-  label: string;
-  targetId?: string;
-}
-/** The label and dispatched action always come from this same selection. */
-export function motionTarget(
-  pet: MotionPet | null,
-  nearby: MotionTarget | null,
-): MotionTarget | null {
-  if (pet)
-    return typeof pet === 'object'
-      ? pet
-      : {
-          action: pet === 'rimo' ? 'petRimo' : 'pet524',
-          label: pet === 'rimo' ? 'りもねこを撫でる' : '524を撫でる',
-        };
-  return nearby;
-}
+export { interactionTarget as motionTarget } from './interaction-target.js';
+export type {
+  PreferredPet as MotionPet,
+  InteractionTarget as MotionTarget,
+} from './interaction-target.js';
 interface MovementSample {
   offset: Offset | null;
   push: number | null;

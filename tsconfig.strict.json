@@ -8,6 +8,7 @@
     "shared/types.mts",
     "shared/characters.mts",
     "shared/content-visibility.mts",
+    "shared/environment-profile.mts",
     "application/ports.mts",
     "application/protocol.mts",
     "src/three-types.ts",
@@ -27,6 +28,9 @@
     "src/motion-worker.ts",
     "src/motion-camera.ts",
     "src/motion-controls.ts",
+    "src/build-profile.ts",
+    "src/hand-controls.ts",
+    "src/interaction-target.ts",
     "src/motion-metrics.ts",
     "src/motion-debug.ts",
     "src/motion-debug-view.ts",
@@ -56,6 +60,7 @@
     "cloudflare/socket-adapter.mts",
     "infrastructure/node/static-files.mts",
     "infrastructure/node/local-visibility.mts",
+    "infrastructure/node/local-verification.mts",
     "infrastructure/node/local-save.mts"
   ]
 }

@@ -47,7 +47,8 @@ import { CROP_INVENTORY, ROOT_RECIPES } from '../shared/crops.mjs';
 import { installCropFoodUI } from './crop-food-ui.js';
 import { canMount, ridingDistance } from '../shared/riding.mjs';
 import { GamepadControls } from './gamepad-ui.js';
-import { MotionControls } from './motion-controls.js';
+import type { MotionControls } from './motion-controls.js';
+import { createHandControls } from './hand-controls.js';
 import {
   AssistedNavigation,
   StableAssistTarget,
@@ -67,7 +68,7 @@ import {
   canHandleBot,
   nextOrbBot,
 } from '../shared/orb-bots.mjs';
-import { MotionPetHold, motionTarget } from './motion-interaction.js';
+import { interactionTarget } from './interaction-target.js';
 import { combineMovement } from './gamepad-input.js';
 import { canStartJump } from '../shared/jumping.mjs';
 import { installBoatControls } from './boat-ui.js';
@@ -845,7 +846,7 @@ function nearby(): { action: string; label: string; targetId?: string } | null {
     : renderer.collision;
   const dot = preferredPet();
   if (dot && typeof dot === 'object') return dot;
-  if (dot && assisting) return motionTarget(dot, null);
+  if (dot && assisting) return interactionTarget(dot, null);
   const coastal = coastalInteraction(state, me, collision);
   if (coastal) return coastal;
   const fishing = fishingInteraction(me);
@@ -2734,7 +2735,7 @@ gamepadControls = new GamepadControls({
     }
   },
 });
-motionControls = new MotionControls($('.game-viewport'), {
+const handFeature = createHandControls($('.game-viewport'), {
   stop: clearMovementInput,
   updateInput: updateMovementInput,
   canStart: () =>
@@ -2750,6 +2751,7 @@ motionControls = new MotionControls($('.game-viewport'), {
     renderer.cancel?.();
   },
 });
+motionControls = handFeature?.controls;
 function touchPlayable(command?: TouchAction) {
   return (
     joined &&
@@ -2791,9 +2793,10 @@ renderer.manualInputAllowed = () =>
   !player()?.downedUntil &&
   !motionControls?.ownsInput;
 renderer.manualCameraAllowed = () => !joined || !assistedControls();
-renderer.onFrameTiming = (ms) => motionControls.camera.metrics.record('renderFrameMs', ms);
+renderer.onFrameTiming = (ms) => motionControls?.camera.metrics.record('renderFrameMs', ms);
 /** Read-only aggregate diagnostics. No images, body coordinates or event consumption. */
 export function motionDiagnostics() {
+  if (!motionControls) return { state: 'UNAVAILABLE' };
   return {
     state: motionControls.input.state,
     options: {
@@ -2805,10 +2808,10 @@ export function motionDiagnostics() {
 }
 /** Starts a new aggregate-only performance window without changing input or calibration. */
 export function resetMotionMetrics() {
-  motionControls.camera.resetMetrics();
+  motionControls?.camera.resetMetrics();
 }
 let lastMoveSent = 0;
-const motionPetHold = new MotionPetHold();
+const motionPetHold = handFeature?.petHold;
 function assistedMovement(
   forward: number,
   turn: number,
@@ -2901,7 +2904,7 @@ function updateMovementInput() {
       state.rimoNeko?.petPlayerId === selfId ||
       state.companion524?.petPlayerId === selfId ||
       !!pettingOrbBot(state.orbBots, selfId);
-    const target = motionTarget(preferredPet(), nearby());
+    const target = interactionTarget(preferredPet(), nearby());
     motionControls.interactionHint =
       petting || motionPetHold.active
         ? 'なでています'
@@ -2977,7 +2980,7 @@ function updateMovementInput() {
     motionControls.camera.applied(now);
     return;
   }
-  motionPetHold.reset();
+  motionPetHold?.reset();
   if (canMove) {
     if (keys.has('w') || keys.has('arrowup')) sy--;
     if (keys.has('s') || keys.has('arrowdown')) sy++;

@@ -5,6 +5,10 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
+const localVerification = process.argv.includes('--local');
+const serverEnv = localVerification
+  ? { ...process.env, CRO_ENVIRONMENT: 'local', EXHIBITION_RULES: '0' }
+  : process.env;
 let server,
   builder,
   timer,
@@ -51,6 +55,7 @@ async function rebuild() {
         cwd: root,
         stdio: ['inherit', 'inherit', 'inherit', 'ipc'],
         windowsHide: true,
+        env: serverEnv,
       });
       server.once('exit', () => {
         server = undefined;
