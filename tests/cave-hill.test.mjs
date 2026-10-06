@@ -47,7 +47,7 @@ test('both delivered mountain meshes cover the cave and leave the river open', a
     scene.updateMatrixWorld(true);
     const ray = new THREE.Raycaster();
     let worst = 0;
-    for (const z of [86, 90, 98, 110, 122, 130])
+    for (const z of [80, 83, 84.6, 84.9, 85.2, 85.5, 85.8, 86, 90, 98, 110, 122, 130])
       for (const dx of [-6, 0, 6]) {
         const p = caveWorldAt(CAMP_CAVE.z - z, dx);
         ray.set(new THREE.Vector3(p.x, 60, p.z), new THREE.Vector3(0, -1, 0));

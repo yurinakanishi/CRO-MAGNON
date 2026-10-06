@@ -109,9 +109,14 @@ export function caveFootHeight(x: number, z: number, height: number) {
   const foothill = 38 * shoulder * smooth((z - 59) / 77) * (1 - smooth((z - 138) / 62));
   const delta = Math.max(0, foothill - height);
   const joined = height + delta * smooth(delta / 2);
-  // A wide, shallow approach reaches the original ground-level mouth.
-  const approach =
-    (1 - smooth((Math.abs(x - CAMP_CAVE.x) - 4.2) / 14)) * (1 - smooth((z - 75) / 9));
+  // The broad approach meets a narrow recess at the actual rock mouth (local Z=9.4).
+  // Raise the source slope inside that rim, where the measured cave roof covers it;
+  // an imaginary shader opening over the apron would expose the hollow hillside.
+  const across = Math.abs(x - CAMP_CAVE.x);
+  const approach = Math.max(
+    (1 - smooth((across - 4.2) / 14)) * (1 - smooth((z - 75) / 9)),
+    (1 - smooth((across - 4.2) / 3.8)) * (1 - smooth((z - (CAMP_CAVE.z - 9.4)) / 1.2)),
+  );
   const bankWidth = 20 + 12 * smooth((z - 94) / 28);
   const bank = smooth((riverX(z) - riverHalfWidth(z) - x) / bankWidth);
   return joined * (1 - approach) * bank - riverBankDrop(x, z);

@@ -536,8 +536,8 @@
       "sha256": "65dde1aa7311b88c159d524d93af82a770dac77e48ee1f35356e3000cad8a15f",
       "triangles": 74458,
       "delivery": "/models/camp-cave/model-r26.glb",
-      "gameQA": "output/playwright/cave-524-frieze-20261006/final-r02/summary.json",
-      "galleryRevision": "32"
+      "gameQA": "output/playwright/maruimo-mascot-20261007/mmo-assets-r03/summary.json",
+      "galleryRevision": "33"
     },
     {
       "key": "yellow-524-mascot",
@@ -721,6 +721,17 @@
       "sha256": "225032577f552cc7da5837494897a60408e5941726f97b6c9a6d5bba9bc4cbfb",
       "delivery": "/models/kohaku/model-r05.glb",
       "subject": "Chibi cat-eared girl mascot with cyan eyes, dark bob and cyan ribbons, black-white dress, striped tail; based on the supplied Kohaku pose sheet."
+    },
+    {
+      "key": "maruimo-mascot",
+      "name": "まるぃも",
+      "kind": "companion",
+      "height": 0.55,
+      "status": "integrated",
+      "delivery": "/models/maruimo-mascot/model-r01.glb",
+      "sha256": "7dc24164001b187d370b0726a4b6251b702c3d2f2bd06e198685e3018be066b9",
+      "triangles": 137602,
+      "gameQA": "output/playwright/maruimo-mascot-20261007/mmo-assets-r03/summary.json"
     }
   ],
   "reuse": {

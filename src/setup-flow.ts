@@ -173,6 +173,7 @@ export function bindSetupFlow(options: SetupFlowOptions) {
     } else if (event.key === 'Enter' && target.matches('input[name="name"],input[name="room"]')) {
       // Enter in a text field moves on to the cards instead of submitting nothing.
       event.preventDefault();
+      target.blur();
       (pickedCard(form) ?? form.querySelector<HTMLElement>('input[name="character"]'))?.focus({
         preventScroll: true,
       });

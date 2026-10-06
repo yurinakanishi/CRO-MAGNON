@@ -5,6 +5,7 @@ import { createRimoNeko } from '../dist/shared/rimo-neko.mjs';
 import { createCompanion524 } from '../dist/shared/companion-524.mjs';
 import { createMae } from '../dist/shared/mae.mjs';
 import { createKohaku } from '../dist/shared/kohaku.mjs';
+import { createMaruimo } from '../dist/shared/maruimo-mascot.mjs';
 import { BOT_KINDS, botRadius, syncOrbBots, updateOrbBots } from '../dist/shared/orb-bots.mjs';
 import { setMascotSelection } from '../dist/shared/mascot-selection.mjs';
 
@@ -35,6 +36,7 @@ function fixture() {
     companion524: createCompanion524(collision),
     mae: createMae(collision),
     kohaku: createKohaku(collision),
+    maruimo: createMaruimo(collision),
   };
   syncOrbBots(room, 10000);
   const select = (target, enabled, player = p) =>
@@ -55,20 +57,20 @@ test('one card selects exactly one mascot and returns it without changing the ot
   assert.equal(f.select('white', false), false);
 });
 
-test('all cards select and clear every available mascot, including the four unique companions', () => {
+test('all cards select and clear every available mascot, including the five unique companions', () => {
   const f = fixture();
   assert.ok(f.select('all', true));
   assert.equal(
     f.room.orbBots.filter((b) => BOT_KINDS.includes(b.kind) && b.ownerId === 'p').length,
     9,
   );
-  for (const key of ['rimoNeko', 'companion524', 'mae', 'kohaku'])
+  for (const key of ['rimoNeko', 'companion524', 'mae', 'kohaku', 'maruimo'])
     assert.equal(f.room[key].followPlayerId, 'p', key);
   assert.equal(f.room.orbBots.filter((b) => b.ownerId === 'p').length, 11);
   updateOrbBots(f.room, 0.05, 10050);
   assert.ok(f.select('all', false));
   assert.equal(f.room.orbBots.filter((b) => b.ownerId === 'p').length, 0);
-  for (const key of ['rimoNeko', 'companion524', 'mae', 'kohaku'])
+  for (const key of ['rimoNeko', 'companion524', 'mae', 'kohaku', 'maruimo'])
     assert.equal(f.room[key].followPlayerId, null, key);
 });
 
@@ -119,6 +121,7 @@ test('selecting from far away places companions safely near the player', () => {
     f.room.companion524,
     f.room.mae,
     f.room.kohaku,
+    f.room.maruimo,
   ];
   const radius = (mascot) => (mascot.kind ? botRadius(mascot.kind) : mascot.radius);
   for (const mascot of mascots) assert.ok(Math.hypot(mascot.x - f.p.x, mascot.z - f.p.z) < 6);

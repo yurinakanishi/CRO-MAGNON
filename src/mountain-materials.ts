@@ -83,12 +83,8 @@ export function prepareMountainMaterials(root: THREE.Object3D) {
           vec2 caveUV=(caveLocal-vec2(${cave.minX.toFixed(3)},${cave.minZ.toFixed(3)}))/vec2(${(cave.nx * cave.step).toFixed(3)},${(cave.nz * cave.step).toFixed(3)});
           if(all(greaterThanEqual(caveUV,vec2(0.0))) && all(lessThanEqual(caveUV,vec2(1.0)))){
             float roofHeight=texture2D(caveRoof,caveUV).r;
-            // The entrance atlas includes apron-only cells. Keep its full
-            // standing-height opening through the front slope as well.
-            if(caveLocal.y>7.0 && caveLocal.y<18.5 && abs(caveLocal.x)<6.0){
-              float portal=7.65-.11*caveLocal.x*caveLocal.x;
-              roofHeight=max(roofHeight,portal);
-            }
+            // Clip only where the measured rock envelope overlaps the hillside.
+            // Extending an imaginary portal over the apron exposes the hollow hill.
             float bend=clamp(-caveLocal.y/${CAVE_BEND.depth.toFixed(6)},0.0,1.0);
             float centre=${CAVE_BEND.offset.toFixed(6)}*bend*bend*(3.0-2.0*bend);
             float innerWidth=mix(6.6,6.0,smoothstep(3.0,7.0,caveLocal.y));
@@ -106,7 +102,7 @@ export function prepareMountainMaterials(root: THREE.Object3D) {
         `,
         );
       };
-      material.customProgramCacheKey = () => 'camp-mountain-river-v10-broad-foothill';
+      material.customProgramCacheKey = () => 'camp-mountain-river-v11-measured-mouth';
       material.needsUpdate = true;
     }
   });

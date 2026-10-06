@@ -3,25 +3,35 @@ import type { PlayerSnapshot } from './snapshots.mjs';
 import type { OrbBot } from './orb-bot-types.mjs';
 import type { Mae } from './mae-types.mjs';
 import type { Kohaku } from './kohaku-types.mjs';
+import type { Maruimo } from './maruimo-mascot-types.mjs';
 import type { RimoNeko } from './rimo-neko-types.mjs';
 import type { Companion524 } from './companion-524-types.mjs';
 import type { Point } from './types.mjs';
 import { BOT_KINDS, botRadius, setOrbBotSelected, syncOrbBots } from './orb-bots.mjs';
 import { cancelMaePet, returnMae } from './mae.mjs';
 import { cancelKohakuPet, returnKohaku } from './kohaku.mjs';
+import { cancelMaruimoPet, returnMaruimo } from './maruimo-mascot.mjs';
 import { cancelRimoNekoPet, returnRimoNeko } from './rimo-neko.mjs';
 import { cancelCompanion524Pet, returnCompanion524 } from './companion-524.mjs';
 
-export const MASCOT_KEYS = [...BOT_KINDS, 'rimo-neko', '524', 'mae', 'kohaku'] as const;
+export const MASCOT_KEYS = [
+  ...BOT_KINDS,
+  'rimo-neko',
+  '524',
+  'mae',
+  'kohaku',
+  'maruimo-mascot',
+] as const;
 export type MascotKey = (typeof MASCOT_KEYS)[number];
 
-type MascotBody = Mae | Kohaku | RimoNeko | Companion524;
+type MascotBody = Mae | Kohaku | Maruimo | RimoNeko | Companion524;
 type MascotRoom = {
   collision: CollisionWorld;
   players: Map<string, PlayerSnapshot>;
   orbBots?: OrbBot[];
   mae?: Mae;
   kohaku?: Kohaku;
+  maruimo?: Maruimo;
   rimoNeko?: RimoNeko;
   companion524?: Companion524;
   sessions?: Map<string, { player: { id: string } }>;
@@ -34,6 +44,7 @@ function mascotBody(room: MascotRoom, key: MascotKey) {
   if (BOT_KINDS.some((kind) => kind === key)) return room.orbBots?.find((bot) => bot.kind === key);
   if (key === 'mae') return room.mae;
   if (key === 'kohaku') return room.kohaku;
+  if (key === 'maruimo-mascot') return room.maruimo;
   if (key === 'rimo-neko') return room.rimoNeko;
   return room.companion524;
 }
@@ -48,6 +59,7 @@ function reunionPoint(room: MascotRoom, p: PlayerSnapshot, key: MascotKey): Poin
     room.companion524,
     room.mae,
     room.kohaku,
+    room.maruimo,
   ]
     .filter((other) => other && other !== body && distance(p, other) < 5)
     .map((other) => ({
@@ -77,11 +89,13 @@ function setBodySelected(
   const c =
     key === 'mae'
       ? room.mae
-      : key === 'kohaku'
-        ? room.kohaku
-        : key === 'rimo-neko'
-          ? room.rimoNeko
-          : room.companion524;
+      : key === 'maruimo-mascot'
+        ? room.maruimo
+        : key === 'kohaku'
+          ? room.kohaku
+          : key === 'rimo-neko'
+            ? room.rimoNeko
+            : room.companion524;
   if (!c) return false;
   const squadOwner =
     key === 'rimo-neko'
@@ -94,6 +108,7 @@ function setBodySelected(
     if (owner !== p.id) return false;
     if (key === 'mae') returnMae(room.mae!);
     else if (key === 'kohaku') returnKohaku(room.kohaku!);
+    else if (key === 'maruimo-mascot') returnMaruimo(room.maruimo!);
     else if (key === 'rimo-neko') returnRimoNeko(room.rimoNeko!);
     else returnCompanion524(room.companion524!);
     return true;
@@ -109,12 +124,14 @@ function setBodySelected(
     !far &&
     (key === 'mae' ||
       key === 'kohaku' ||
+      key === 'maruimo-mascot' ||
       (key === 'rimo-neko' ? room.rimoNeko?.squadMode : room.companion524?.squadMode) ===
         'following')
   )
     return false;
   if (key === 'mae') cancelMaePet(room.mae!);
   else if (key === 'kohaku') cancelKohakuPet(room.kohaku!);
+  else if (key === 'maruimo-mascot') cancelMaruimoPet(room.maruimo!);
   else if (key === 'rimo-neko') cancelRimoNekoPet(room.rimoNeko!);
   else cancelCompanion524Pet(room.companion524!);
   if (near) Object.assign(c, near);

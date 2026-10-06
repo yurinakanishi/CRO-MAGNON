@@ -29,7 +29,7 @@ test('camp reaches the relocated cave at ground level without the castle climb',
   assert.equal(CAMP_CAVE.elevation, 0);
   assert.ok(collision.free(spawnSite('cave'), 0.76));
 });
-test('all three extra friezes retain the original generated RGBA bytes and registered subjects', async () => {
+test('all extra friezes retain the original generated RGBA bytes and registered subjects', async () => {
   const asset = JSON.parse(await readFile('public/models/camp-cave/asset.json'));
   for (const [key, pigment] of Object.entries(CAVE_EXTRA_PIGMENTS)) {
     const record = asset.mascotPigments[key];

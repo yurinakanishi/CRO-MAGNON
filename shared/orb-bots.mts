@@ -128,6 +128,7 @@ type BotRoom = {
   rimoNeko?: RimoNeko;
   mae?: { petPlayerId: string | null };
   kohaku?: { petPlayerId: string | null };
+  maruimo?: { petPlayerId: string | null };
   companion524?: Companion524;
   sessions?: Map<string, { player: { id: string } }>;
 };
@@ -631,6 +632,7 @@ function handleBotCare(
     room.rimoNeko?.petPlayerId === p.id ||
     room.mae?.petPlayerId === p.id ||
     room.kohaku?.petPlayerId === p.id ||
+    room.maruimo?.petPlayerId === p.id ||
     room.companion524?.petPlayerId === p.id
   )
     return false;
@@ -1074,6 +1076,7 @@ export function handleOrbBotAction(
         room.rimoNeko?.petPlayerId !== p.id &&
         room.mae?.petPlayerId !== p.id &&
         room.kohaku?.petPlayerId !== p.id &&
+        room.maruimo?.petPlayerId !== p.id &&
         room.companion524?.petPlayerId !== p.id &&
         !pettingOrbBot(room.orbBots, p.id)
           ? now
@@ -1089,6 +1092,7 @@ export function handleOrbBotAction(
     room.rimoNeko?.petPlayerId === p.id ||
     room.mae?.petPlayerId === p.id ||
     room.kohaku?.petPlayerId === p.id ||
+    room.maruimo?.petPlayerId === p.id ||
     room.companion524?.petPlayerId === p.id ||
     pettingOrbBot(room.orbBots, p.id)
   )

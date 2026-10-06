@@ -6,13 +6,26 @@ const portraits: Partial<Record<MascotKey, { name: string; image: string; color:
   'rimo-neko': { name: 'りもねこ', image: '/title/avatar-rimo.jpg', color: '#d2c9c2' },
   '524': { name: '524', image: '/title/avatar-r524.jpg', color: '#ffdf58' },
   mae: { name: 'mae', image: '/models/mae/portrait.png', color: '#e4e5de' },
+  'maruimo-mascot': {
+    name: 'まるぃも',
+    image: '/models/maruimo-mascot/portrait.png',
+    color: '#ae6558',
+  },
   kohaku: { name: 'こはくちゃん', image: '/models/kohaku/portrait-r05.png', color: '#e9cfae' },
 };
-const cardOrder: readonly MascotKey[] = ['rimo-neko', '524', 'mae', 'kohaku', ...BOT_KINDS];
+const cardOrder: readonly MascotKey[] = [
+  'rimo-neko',
+  '524',
+  'mae',
+  'kohaku',
+  'maruimo-mascot',
+  ...BOT_KINDS,
+];
 
 function visibleKeys(state: ViewState) {
   return cardOrder.filter((key) => {
     if (key === 'mae') return !!state.mae;
+    if (key === 'maruimo-mascot') return !!state.maruimo;
     if (key === 'kohaku') return !!state.kohaku;
     if (key === 'rimo-neko') return !!state.rimoNeko;
     if (key === '524') return !!state.companion524;
@@ -25,13 +38,15 @@ function mascotState(state: ViewState, selfId: string | null, key: MascotKey) {
   const body =
     key === 'mae'
       ? state.mae
-      : key === 'kohaku'
-        ? state.kohaku
-        : key === 'rimo-neko'
-          ? state.rimoNeko
-          : key === '524'
-            ? state.companion524
-            : null;
+      : key === 'maruimo-mascot'
+        ? state.maruimo
+        : key === 'kohaku'
+          ? state.kohaku
+          : key === 'rimo-neko'
+            ? state.rimoNeko
+            : key === '524'
+              ? state.companion524
+              : null;
   const owner =
     bot?.ownerId ||
     (body && ('squadPlayerId' in body ? body.squadPlayerId : null)) ||

@@ -290,7 +290,7 @@ try {
   assert.deepEqual(tabs, ['inventory', 'warp', 'crafting', 'mascots', 'settings']);
   await select('[data-controller-menu="mascots"]');
   await tap(PAD.circle);
-  assert.equal(await page.locator('[data-mascot]').count(), 13);
+  assert.equal(await page.locator('[data-mascot]').count(), 14);
   assert.equal(await page.locator('[data-controller-menu="bots"]').count(), 0);
   assert.equal(await page.locator('[data-controller-menu="travelAlone"]').count(), 0);
   await select('[data-controller-menu="settings"]');

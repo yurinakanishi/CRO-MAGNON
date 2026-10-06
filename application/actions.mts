@@ -24,6 +24,7 @@ import { setMascotSelection } from '../shared/mascot-selection.mjs';
 import { handleRimoNekoAction, returnRimoNeko, cancelRimoNekoPet } from '../shared/rimo-neko.mjs';
 import { handleMaeAction, cancelMaePet } from '../shared/mae.mjs';
 import { handleKohakuAction, cancelKohakuPet } from '../shared/kohaku.mjs';
+import { handleMaruimoAction, cancelMaruimoPet } from '../shared/maruimo-mascot.mjs';
 import { handleCompanion524Action, cancelCompanion524Pet } from '../shared/companion-524.mjs';
 import { stopActor } from '../shared/combat.mjs';
 import {
@@ -58,7 +59,9 @@ export function createActionHandler({
     }
     if (action === 'travelAlone') {
       if (room.kohaku?.petPlayerId === player.id) cancelKohakuPet(room.kohaku);
+      if (room.maruimo?.petPlayerId === player.id) cancelMaruimoPet(room.maruimo);
       handleKohakuAction(room, player, 'dismissKohaku', now);
+      handleMaruimoAction(room, player, 'dismissMaruimo', now);
       if (room.mae?.petPlayerId === player.id) cancelMaePet(room.mae);
       handleMaeAction(room, player, 'dismissMae', now);
       handleOrbBotAction(room, player, 'dismissBots', null, now);
@@ -82,6 +85,7 @@ export function createActionHandler({
     ) {
       if (action === 'recallBots') {
         if (room.kohaku?.petPlayerId === player.id) cancelKohakuPet(room.kohaku);
+        if (room.maruimo?.petPlayerId === player.id) cancelMaruimoPet(room.maruimo);
         if (room.mae?.petPlayerId === player.id) cancelMaePet(room.mae);
         if (room.rimoNeko?.petPlayerId === player.id) cancelRimoNekoPet(room.rimoNeko);
         if (room.companion524?.petPlayerId === player.id) cancelCompanion524Pet(room.companion524);
@@ -95,10 +99,27 @@ export function createActionHandler({
     // A held companion never occupies the hand during another action.
     if (!['cancelCook', 'cancelFishing', 'cancelCoastal'].includes(action))
       releaseHeldOrbBot(room, player, now);
+    if (action === 'petMaruimo' || action === 'dismissMaruimo') {
+      if (
+        action === 'petMaruimo' &&
+        (room.kohaku?.petPlayerId === player.id ||
+          room.mae?.petPlayerId === player.id ||
+          room.companion524?.petPlayerId === player.id ||
+          room.rimoNeko?.petPlayerId === player.id ||
+          pettingOrbBot(room.orbBots, player.id))
+      )
+        return;
+      if (handleMaruimoAction(room, player, action, now)) {
+        if (action === 'petMaruimo') stopActor(player);
+        broadcast(room, snapshot(room));
+      }
+      return;
+    }
     if (action === 'petKohaku' || action === 'dismissKohaku') {
       if (
         action === 'petKohaku' &&
-        (room.mae?.petPlayerId === player.id ||
+        (room.maruimo?.petPlayerId === player.id ||
+          room.mae?.petPlayerId === player.id ||
           room.companion524?.petPlayerId === player.id ||
           room.rimoNeko?.petPlayerId === player.id ||
           pettingOrbBot(room.orbBots, player.id))
@@ -114,6 +135,7 @@ export function createActionHandler({
       if (
         action === 'petMae' &&
         (room.kohaku?.petPlayerId === player.id ||
+          room.maruimo?.petPlayerId === player.id ||
           room.companion524?.petPlayerId === player.id ||
           room.rimoNeko?.petPlayerId === player.id ||
           pettingOrbBot(room.orbBots, player.id))
@@ -131,6 +153,7 @@ export function createActionHandler({
         (room.companion524?.petPlayerId === player.id ||
           room.mae?.petPlayerId === player.id ||
           room.kohaku?.petPlayerId === player.id ||
+          room.maruimo?.petPlayerId === player.id ||
           pettingOrbBot(room.orbBots, player.id))
       )
         return;
@@ -146,6 +169,7 @@ export function createActionHandler({
         (room.rimoNeko?.petPlayerId === player.id ||
           room.mae?.petPlayerId === player.id ||
           room.kohaku?.petPlayerId === player.id ||
+          room.maruimo?.petPlayerId === player.id ||
           pettingOrbBot(room.orbBots, player.id))
       )
         return;

@@ -1,0 +1,113 @@
+CRO-MAGNON nature audio revision 2
+
+wind-field.wav
+Thimras
+https://opengameart.org/content/park-ambiences
+CC0-1.0 https://creativecommons.org/publicdomain/zero/1.0/
+
+river-field.wav
+Thimras
+https://opengameart.org/content/park-ambiences
+CC0-1.0 https://creativecommons.org/publicdomain/zero/1.0/
+
+rain-field.ogg
+Ove Melaa
+https://opengameart.org/content/rain-ambient-not-loopable-2-versions-available
+CC0-1.0 https://creativecommons.org/publicdomain/zero/1.0/
+
+drips.flac
+Independent.nu / qubodup
+https://opengameart.org/content/dripping-water-loop
+CC0-1.0 https://creativecommons.org/publicdomain/zero/1.0/
+
+LDFlute_susNV_C3_v1_1.wav
+Versilian Studios / Sam Gossner & Simon Dalzell; cutting: Elan Hickler
+https://versilian-studios.com/vsco-community/
+CC0-1.0 https://creativecommons.org/publicdomain/zero/1.0/
+
+LDFlute_susNV_E3_v1_1.wav
+Versilian Studios / Sam Gossner & Simon Dalzell; cutting: Elan Hickler
+https://versilian-studios.com/vsco-community/
+CC0-1.0 https://creativecommons.org/publicdomain/zero/1.0/
+
+LDFlute_susNV_A3_v1_1.wav
+Versilian Studios / Sam Gossner & Simon Dalzell; cutting: Elan Hickler
+https://versilian-studios.com/vsco-community/
+CC0-1.0 https://creativecommons.org/publicdomain/zero/1.0/
+
+LDFlute_susNV_C4_v1_1.wav
+Versilian Studios / Sam Gossner & Simon Dalzell; cutting: Elan Hickler
+https://versilian-studios.com/vsco-community/
+CC0-1.0 https://creativecommons.org/publicdomain/zero/1.0/
+
+LDFlute_susNV_E4_v1_1.wav
+Versilian Studios / Sam Gossner & Simon Dalzell; cutting: Elan Hickler
+https://versilian-studios.com/vsco-community/
+CC0-1.0 https://creativecommons.org/publicdomain/zero/1.0/
+
+KSHarp_D2_mf.wav
+Versilian Studios / Sam Gossner & Simon Dalzell; cutting: Elan Hickler
+https://versilian-studios.com/vsco-community/
+CC0-1.0 https://creativecommons.org/publicdomain/zero/1.0/
+
+KSHarp_A2_mf.wav
+Versilian Studios / Sam Gossner & Simon Dalzell; cutting: Elan Hickler
+https://versilian-studios.com/vsco-community/
+CC0-1.0 https://creativecommons.org/publicdomain/zero/1.0/
+
+KSHarp_C3_mf.wav
+Versilian Studios / Sam Gossner & Simon Dalzell; cutting: Elan Hickler
+https://versilian-studios.com/vsco-community/
+CC0-1.0 https://creativecommons.org/publicdomain/zero/1.0/
+
+KSHarp_E3_mf.wav
+Versilian Studios / Sam Gossner & Simon Dalzell; cutting: Elan Hickler
+https://versilian-studios.com/vsco-community/
+CC0-1.0 https://creativecommons.org/publicdomain/zero/1.0/
+
+KSHarp_G3_mf.wav
+Versilian Studios / Sam Gossner & Simon Dalzell; cutting: Elan Hickler
+https://versilian-studios.com/vsco-community/
+CC0-1.0 https://creativecommons.org/publicdomain/zero/1.0/
+
+KSHarp_B3_mf.wav
+Versilian Studios / Sam Gossner & Simon Dalzell; cutting: Elan Hickler
+https://versilian-studios.com/vsco-community/
+CC0-1.0 https://creativecommons.org/publicdomain/zero/1.0/
+
+KSHarp_D4_mf.wav
+Versilian Studios / Sam Gossner & Simon Dalzell; cutting: Elan Hickler
+https://versilian-studios.com/vsco-community/
+CC0-1.0 https://creativecommons.org/publicdomain/zero/1.0/
+
+KSHarp_F4_mf.wav
+Versilian Studios / Sam Gossner & Simon Dalzell; cutting: Elan Hickler
+https://versilian-studios.com/vsco-community/
+CC0-1.0 https://creativecommons.org/publicdomain/zero/1.0/
+
+KSHarp_A4_mf.wav
+Versilian Studios / Sam Gossner & Simon Dalzell; cutting: Elan Hickler
+https://versilian-studios.com/vsco-community/
+CC0-1.0 https://creativecommons.org/publicdomain/zero/1.0/
+
+LICENSE
+Versilian Studios / Sam Gossner & Simon Dalzell; cutting: Elan Hickler
+https://versilian-studios.com/vsco-community/
+CC0-1.0 https://creativecommons.org/publicdomain/zero/1.0/
+
+birds.ogg
+isaiah658
+https://opengameart.org/content/ambient-bird-sounds
+CC0-1.0 https://creativecommons.org/publicdomain/zero/1.0/
+
+fire.wav
+PagDev
+https://opengameart.org/content/fireplace-sound-loop
+CC0-1.0 https://creativecommons.org/publicdomain/zero/1.0/
+
+river.mp3
+RandomMind
+https://opengameart.org/content/sea-and-river-wave-sounds
+CC0-1.0 https://creativecommons.org/publicdomain/zero/1.0/
+
+Original three compositions arranged from VSCO 2 CE flute and harp recordings. See manifest.json for every note, sample, processing interval, level and SHA-256.

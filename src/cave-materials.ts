@@ -129,7 +129,7 @@ export function prepareCaveMaterials(
           '#include <lights_fragment_end>\nreflectedLight.indirectDiffuse*=caveDaylight;',
         );
       };
-      material.customProgramCacheKey = () => 'camp-cave-white-gallery-v19-524-frieze';
+      material.customProgramCacheKey = () => 'camp-cave-white-gallery-v20-maruimo-frieze';
       material.needsUpdate = true;
     }
   });

@@ -14,6 +14,7 @@ import { caveWorldAt } from '../dist/shared/camp-cave-layout.mjs';
 import { riverX, WATER_LEVEL } from '../dist/shared/terrain.mjs';
 import { MOUNTAIN_RIVER } from '../dist/shared/mountain-river.mjs';
 import { MIME } from '../dist/infrastructure/node/static-files.mjs';
+import { FOLEY_FILES } from '../dist/src/nature-foley.js';
 import { NATURE_FILES, musicRegion, soundFalloff } from '../dist/src/nature-audio-design.js';
 
 test('footfalls follow gait crossings and travel, excluding standstill, warps, air and mounts', () => {
@@ -69,7 +70,7 @@ test('wind field is continuous and audio settings reject corrupt values', () => 
   assert.deepEqual(normalizeAudioSettings(null), DEFAULT_AUDIO);
   assert.deepEqual(
     normalizeAudioSettings({ enabled: false, ambience: 7, music: -1, effects: NaN }),
-    { enabled: false, ambience: 1, music: 0 },
+    { enabled: false, ambience: 1, music: 0, effects: 0.5 },
   );
 });
 test('recorded audio and sampled score have provenance, headroom and bounded transfer/memory', async () => {
@@ -90,8 +91,13 @@ test('recorded audio and sampled score have provenance, headroom and bounded tra
     }
     if (item.loop) assert.ok(item.processing.crossfade >= 2);
   }
-  assert.deepEqual(manifest.files.map((f) => f.name).sort(), [...NATURE_FILES].sort());
-  assert.ok(manifest.files.every((f) => !/sand|stone/.test(f.url)));
+  assert.deepEqual(
+    manifest.files.map((f) => f.name).sort(),
+    [...NATURE_FILES, ...FOLEY_FILES].sort(),
+  );
+  assert.equal(FOLEY_FILES.length, 37);
+  assert.ok(manifest.files.find((f) => f.name === 'wind').lufs < -37);
+  assert.ok(manifest.files.find((f) => f.name === 'river').lufs < -28);
   assert.ok(bytes < 8_000_000);
   assert.ok(manifest.decodedBytesAt48000Hz < 128 * 1024 * 1024);
   assert.equal(MIME['.mp3'], 'audio/mpeg');

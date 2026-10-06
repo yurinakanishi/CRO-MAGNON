@@ -8,6 +8,7 @@ export const CAVE_MOTIFS = {
   rimoFrieze: [0, 0, 2172, 724],
   roundBots: [0, 0, 2172, 724],
   shapeBots: [0, 0, 2172, 724],
+  maruimoFrieze: [0, 0, 2172, 724],
   maeKohaku: [0, 0, 2172, 724],
   comingSoon: [0, 0, 2048, 512],
   bison: [805, 40, 1254, 418],
@@ -28,6 +29,7 @@ export const CAVE_EXTRA_PIGMENTS = {
     url: '/models/camp-cave/bot-shapes-lascaux-r31.png',
     subjects: ['beret', 'frog', 'triangle', 'heart'],
   },
+  maruimoFrieze: { url: '/models/camp-cave/maruimo-lascaux-r33.png', subjects: ['maruimo-mascot'] },
   maeKohaku: { url: '/models/camp-cave/mae-kohaku-lascaux-r31.png', subjects: ['mae', 'kohaku'] },
 } as const;
 export type CaveExtraPigment = keyof typeof CAVE_EXTRA_PIGMENTS | 'comingSoon';
@@ -51,7 +53,7 @@ export const CAVE_MURALS: readonly CaveMural[] = [
   { motif: 'roundBots', wall: 'east', centre: -7, bottom: 1.45, width: 9, strength: 0.86 },
   { motif: 'shapeBots', wall: 'west', centre: -7, bottom: 1.45, width: 9, strength: 0.86 },
   { motif: 'hands', wall: 'east', centre: -13.8, bottom: 4.35, width: 0.95, strength: 0.64 },
-  { motif: 'redHorse', wall: 'east', centre: -15.2, bottom: 1.65, width: 2.8, strength: 0.78 },
+  { motif: 'maruimoFrieze', wall: 'east', centre: -14.8, bottom: 1.45, width: 5, strength: 0.82 },
   { motif: 'rimoFrieze', wall: 'east', centre: -21.2, bottom: 1.6, width: 7.5, strength: 0.82 },
   { motif: 'signs', wall: 'east', centre: -24.2, bottom: 4.45, width: 1.05, strength: 0.57 },
   { motif: 'maeKohaku', wall: 'east', centre: -28.5, bottom: 1.5, width: 6.4, strength: 0.86 },

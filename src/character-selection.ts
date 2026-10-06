@@ -19,7 +19,7 @@ export function characterChoicesMarkup() {
       const [name, variant] = model.name.split(' ');
       return `<label class="character-choice"><input type="radio" name="character" value="${model.species}-${model.gender}" required><img class="character-art" src="/models/${model.key}/portrait.png" width="420" height="480" alt="" draggable="false"><span class="character-name"><strong>${name}</strong>${variant ? `<small>${variant}</small>` : ''}</span></label>`;
     },
-  ).join('')}</div></fieldset>`;
+  ).join('')}</div><p class="character-scroll-hint">左右にスワイプして選ぶ</p></fieldset>`;
 }
 
 export function bindCharacterSelection(form: HTMLFormElement, profile: CharacterProfile) {

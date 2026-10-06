@@ -35,7 +35,8 @@
     "White calcite wall albedo retains real rock relief, pores and bedding; pigments are projected directly onto those existing triangles. Warm fire illuminates the same faintly visible paintings.",
     "Gallery r30 restores the user-reference waving gray-white Rimo cat among two horses, an aurochs and a deer, directly opposite the unchanged west-wall 524. The cave geometry, walking surface and fire are unchanged.",
     "Gallery r31 includes all 13 released mascots among animal friezes. Cave placement is at ground level at the mountain foot near camp. Coming Soon is reserved for confirmed upcoming characters. The source cave GLB and earlier pigment files are retained.",
-    "Gallery r32 integrates the faithful small 524 with a mammoth, two horses and an aurochs in one weathered transparent frieze, matching the opposite Rimo frieze. It replaces three separated west-wall placements. Earlier paintings and source models remain archived."
+    "Gallery r32 integrates the faithful small 524 with a mammoth, two horses and an aurochs in one weathered transparent frieze, matching the opposite Rimo frieze. It replaces three separated west-wall placements. Earlier paintings and source models remain archived.",
+    "Gallery r33 adds Maruimo among a bison, horse and deer. All 14 released mascots are represented; the Coming Soon reserve and original GLB remain unchanged."
   ],
   "provenance": {
     "provider": "Codex",
@@ -90,7 +91,7 @@
       "sha256": "1cbdd091523b48fea81f70eba5cc3840c7328ccfab4b8d1ef63e44b49e0ff5af"
     }
   },
-  "gameQA": "output/playwright/cave-524-frieze-20261006/final-r02/summary.json",
+  "gameQA": "output/playwright/maruimo-mascot-20261007/mmo-assets-r03/summary.json",
   "rockSurface": {
     "url": "/models/camp-cave/limestone-r05.png",
     "source": "assets/camp-cave/source/limestone-r05.png",
@@ -140,7 +141,7 @@
     "application": "One 7.5 m wide transparent mineral-pigment frieze on the west wall opposite Rimo. The small floating 524 shares muted ochre, charcoal, worn edges and overlapping animal composition. Direct projection on original limestone triangles; no extra geometry or backing.",
     "review": "assets/camp-cave/qa/gallery-surfaces-r32.json"
   },
-  "galleryRevision": "32",
+  "galleryRevision": "33",
   "rimoPigment": {
     "source": "assets/camp-cave/source/rimo-lascaux-frieze-r30.png",
     "url": "/models/camp-cave/rimo-lascaux-frieze-r30.png",
@@ -237,6 +238,38 @@
         "public/models/kohaku/portrait-r05.png"
       ],
       "application": "Unmodified transparent mineral-pigment frieze, projected on original cave wall triangles, interwoven with horses, aurochs and deer."
+    },
+    "maruimoFrieze": {
+      "source": "assets/camp-cave/source/maruimo-lascaux-r33.png",
+      "url": "/models/camp-cave/maruimo-lascaux-r33.png",
+      "sha256": "eff36cf28d83cf69e61e2e345a4d90e08c790ae58306450be1ab657dd7614a1e",
+      "bytes": 1961184,
+      "image": {
+        "width": 2172,
+        "height": 724
+      },
+      "generator": "Built-in imagegen",
+      "prompt": "assets/camp-cave/maruimo-lascaux-prompt-r33.txt",
+      "subjects": [
+        "maruimo-mascot"
+      ],
+      "animals": [
+        "bison",
+        "wild horse",
+        "deer"
+      ],
+      "references": [
+        {
+          "path": "public/models/maruimo-octopus/portrait.png",
+          "sha256": "167b344c270543846d0a2870e94e0ac12320b57f23d702a8d2a32a99487a40bc"
+        },
+        {
+          "path": "assets/camp-cave/source/rimo-lascaux-frieze-r30.png",
+          "sha256": "b750045fda524816577747197874d173d41161e2b55d9acfe772a8f37f8d01df"
+        }
+      ],
+      "application": "5 m wide east-wall frieze. The small octopus shares earth pigments and overlapping composition with the animals. Unmodified transparent PNG projected onto the original limestone triangles.",
+      "review": "assets/camp-cave/qa/gallery-surfaces-r33.json"
     }
   }
 }

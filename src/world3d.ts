@@ -14,7 +14,9 @@ import { rimoNekoOnGround } from '../shared/rimo-neko.mjs';
 import { MaeRenderer } from './mae-renderer.js';
 import { MAE } from '../shared/mae.mjs';
 import { KohakuRenderer } from './kohaku-renderer.js';
+import { MaruimoRenderer } from './maruimo-mascot-renderer.js';
 import { KOHAKU } from '../shared/kohaku.mjs';
+import { MARUIMO } from '../shared/maruimo-mascot.mjs';
 import { OrbBotRenderer } from './orb-bot-renderer.js';
 import { ORB_BOTS, pettingOrbBot, posingOrbBot } from '../shared/orb-bots.mjs';
 import { GroundPettingPose, groundPettingProgress } from './ground-petting-pose.js';
@@ -241,6 +243,7 @@ export class WorldRenderer {
   declare rimoNekoRenderer: RimoNekoRenderer | undefined;
   declare maeRenderer: MaeRenderer | undefined;
   declare kohakuRenderer: KohakuRenderer | undefined;
+  declare maruimoRenderer: MaruimoRenderer | undefined;
   declare orbBotRenderer: OrbBotRenderer | undefined;
   declare npcActor: any;
   declare npc: any;
@@ -495,6 +498,8 @@ export class WorldRenderer {
             if (asset.modelKey === 'rimo-neko') this.rimoNekoRenderer = new RimoNekoRenderer(this);
             if (asset.modelKey === 'mae') this.maeRenderer = new MaeRenderer(this);
             if (asset.modelKey === 'kohaku') this.kohakuRenderer = new KohakuRenderer(this);
+            if (asset.modelKey === 'maruimo-mascot')
+              this.maruimoRenderer = new MaruimoRenderer(this);
           }),
       );
       if (this.disposed) return;
@@ -782,6 +787,7 @@ export class WorldRenderer {
           ...(this.rimoNekoRenderer ? [this.rimoNekoRenderer.root] : []),
           ...(this.maeRenderer ? [this.maeRenderer.root] : []),
           ...(this.kohakuRenderer ? [this.kohakuRenderer.root] : []),
+          ...(this.maruimoRenderer ? [this.maruimoRenderer.root] : []),
           ...[...(this.orbBotRenderer?.bots.values() ?? [])].map(({ actor }) => actor.root),
           ...this.mammoths.flatMap((animal) => [animal.model, animal.meat]),
           ...[...this.enemies.values()].map((enemy) => enemy.model),
@@ -1220,6 +1226,13 @@ export class WorldRenderer {
         this.kohakuRenderer.root,
         this.kohakuRenderer.actor.asset,
       );
+    if (this.state.maruimo && this.maruimoRenderer)
+      add(
+        this.state.maruimo.id,
+        'まるぃも',
+        this.maruimoRenderer.root,
+        this.maruimoRenderer.actor.asset,
+      );
     if (this.state.mae && this.maeRenderer)
       add(this.state.mae.id, 'mae', this.maeRenderer.root, this.maeRenderer.actor.asset);
     if (
@@ -1462,6 +1475,7 @@ export class WorldRenderer {
     if (!this.rimoNekoRenderer?.inHand) this.rimoNekoRenderer?.update(dt);
     this.maeRenderer?.update(dt);
     this.kohakuRenderer?.update(dt);
+    this.maruimoRenderer?.update(dt);
     // Update the carrier's animated shoulder before its passenger, regardless of join order.
     for (const entity of [...this.players.values()].sort(
       (a, b) => Number(!!a.state.carrierId) - Number(!!b.state.carrierId),
@@ -1612,7 +1626,8 @@ export class WorldRenderer {
       const petDot = pettingOrbBot(this.state.orbBots, p.id);
       const petMae = this.state.mae?.petPlayerId === p.id ? this.state.mae : undefined;
       const petKohaku = this.state.kohaku?.petPlayerId === p.id ? this.state.kohaku : undefined;
-      const groundCompanion = petDot ?? petKohaku ?? petMae ?? this.state.rimoNeko;
+      const petMaruimo = this.state.maruimo?.petPlayerId === p.id ? this.state.maruimo : undefined;
+      const groundCompanion = petDot ?? petMaruimo ?? petKohaku ?? petMae ?? this.state.rimoNeko;
       const groundPetting = petDot
         ? pettingProgress(petDot, p, this.serverNow(), {
             ...ORB_BOTS,
@@ -1620,11 +1635,13 @@ export class WorldRenderer {
               ? ORB_BOTS.petGroupApproachMs
               : ORB_BOTS.petApproachMs,
           })
-        : petKohaku
-          ? pettingProgress(petKohaku, p, this.serverNow(), KOHAKU)
-          : petMae
-            ? pettingProgress(petMae, p, this.serverNow(), MAE)
-            : groundPettingProgress(this.state.rimoNeko, p, this.serverNow());
+        : petMaruimo
+          ? pettingProgress(petMaruimo, p, this.serverNow(), MARUIMO)
+          : petKohaku
+            ? pettingProgress(petKohaku, p, this.serverNow(), KOHAKU)
+            : petMae
+              ? pettingProgress(petMae, p, this.serverNow(), MAE)
+              : groundPettingProgress(this.state.rimoNeko, p, this.serverNow());
       if (entity.actor) {
         if (p.downedUntil || airborne !== null || p.mountId || p.boatId || p.carrierId) {
           entity.actor.groundPettingPose.weight = 0;
@@ -1677,6 +1694,7 @@ export class WorldRenderer {
             if (this.orbBotRenderer) this.orbBotRenderer.petTarget(petDot, tempPoint);
             else tempPoint.set(petDot.x, petDot.y + ORB_BOTS.diameter * 0.9, petDot.z);
           } else if (petKohaku && this.kohakuRenderer) this.kohakuRenderer.petTarget(tempPoint);
+          else if (petMaruimo && this.maruimoRenderer) this.maruimoRenderer.petTarget(tempPoint);
           else if (petMae && this.maeRenderer) this.maeRenderer.petTarget(tempPoint);
           else if (this.state.rimoNeko?.petPlayerId === p.id && this.rimoNekoRenderer)
             this.rimoNekoRenderer.petTarget(tempPoint);
@@ -1687,7 +1705,7 @@ export class WorldRenderer {
               tempPoint,
               groundPetting.weight,
               groundPetting.stroke,
-              !!petDot || !!petMae || !!petKohaku,
+              !!petDot || !!petMae || !!petKohaku || !!petMaruimo,
             );
           else pose.update(tempPoint, groundPetting.weight, groundPetting.stroke);
         } else if (petting524.weight > 0 && this.companion524Renderer) {
@@ -2089,6 +2107,7 @@ export class WorldRenderer {
       data.companion524 = JSON.stringify(this.companion524Renderer?.diagnostics() ?? null);
       data.rimoNeko = JSON.stringify(this.rimoNekoRenderer?.diagnostics() ?? null);
       data.kohaku = JSON.stringify(this.kohakuRenderer?.diagnostics() ?? null);
+      data.maruimo = JSON.stringify(this.maruimoRenderer?.diagnostics() ?? null);
       data.mae = JSON.stringify(this.maeRenderer?.diagnostics() ?? null);
       data.orbBots = JSON.stringify(this.orbBotRenderer?.diagnostics() ?? []);
       data.meatPiles = String(this.mammoths.filter((a) => a.meat.visible).length);
@@ -2234,6 +2253,7 @@ export class WorldRenderer {
     this.rimoNekoRenderer?.dispose();
     this.maeRenderer?.dispose();
     this.kohakuRenderer?.dispose();
+    this.maruimoRenderer?.dispose();
     this.orbBotRenderer?.dispose();
     this.contactShadows.dispose();
     this.regionalScenery?.dispose();

@@ -130,7 +130,8 @@ test('torch-only hands reject companion throws and cancel a queued pickup on ent
     Object.assign(bot, { mode, throwAt: now, origin: { x: bot.x, y: bot.y, z: bot.z } });
     updateOrbBots(room, 0.05, now + 50);
     assert.ok(['following', 'returning'].includes(bot.mode));
-    assert.equal(bot.throwAt, 0);
+    if (mode === 'queued') assert.equal(bot.throwAt, 0);
+    assert.equal(bot.origin, null);
     assert.equal(bot.ownerId, player.id);
   }
   bot.mode = 'waiting';

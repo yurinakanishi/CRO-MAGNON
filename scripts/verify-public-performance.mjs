@@ -14,7 +14,7 @@ const manifest = JSON.parse(await readFile('assets/public-performance/manifest.j
 let views = 0,
   images = 0;
 for (const r of manifest.records) {
-  assert.doesNotMatch(JSON.stringify(r), /maruimo|まる[ぃい]も/i);
+  assert.doesNotMatch(r.sourceUrl, /\/maruimo-octopus\//i);
   const before = await readFile('public' + r.sourceUrl),
     after = await readFile(r.file);
   assert.equal(hash(before), r.sourceSha256);

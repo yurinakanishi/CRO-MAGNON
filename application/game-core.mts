@@ -8,6 +8,12 @@ import {
 import { createMae, updateMae, restoreMae, cancelMaePet } from '../shared/mae.mjs';
 import { createKohaku, updateKohaku, restoreKohaku, cancelKohakuPet } from '../shared/kohaku.mjs';
 import {
+  createMaruimo,
+  updateMaruimo,
+  restoreMaruimo,
+  cancelMaruimoPet,
+} from '../shared/maruimo-mascot.mjs';
+import {
   updateOrbBots,
   saveOrbBots,
   restoreOrbBots,
@@ -230,6 +236,7 @@ export function createGameCore({
       room.rimoNeko = createRimoNeko(room.collision);
       if (!visibility.hideMae) room.mae = createMae(room.collision);
       room.kohaku = createKohaku(room.collision);
+      room.maruimo = createMaruimo(room.collision);
       room.enemies = createEnemies(room.collision, room.animals);
       createResidents(room, [], runtime.now());
       rooms.set(roomName, room);
@@ -504,6 +511,7 @@ export function createGameCore({
           if (room.rimoNeko?.petPlayerId === player.id) cancelRimoNekoPet(room.rimoNeko);
           if (room.mae?.petPlayerId === player.id) cancelMaePet(room.mae);
           if (room.kohaku?.petPlayerId === player.id) cancelKohakuPet(room.kohaku);
+          if (room.maruimo?.petPlayerId === player.id) cancelMaruimoPet(room.maruimo);
           if (room.companion524?.petPlayerId === player.id)
             cancelCompanion524Pet(room.companion524);
           cancelPlayerBotPet(room, player.id, now);
@@ -660,6 +668,7 @@ export function createGameCore({
         updateRimoNeko(room, dt, now);
         updateMae(room, dt, now);
         updateKohaku(room, dt, now);
+        updateMaruimo(room, dt, now);
         updateOrbBots(room, dt, now);
         updateBarters(room, now);
         for (const resident of room.residents) {
@@ -717,6 +726,7 @@ export function createGameCore({
       updateRimoNeko(room, dt, now);
       updateMae(room, dt, now);
       updateKohaku(room, dt, now);
+      updateMaruimo(room, dt, now);
       updateOrbBots(room, dt, now);
       updateAnimals(room, dt, now);
       const enemiesChanged = updateEnemies(room, dt, now, notice);
@@ -817,6 +827,7 @@ export function createGameCore({
               ),
               mae: room.mae ?? room.hiddenMae,
               kohaku: room.kohaku,
+              maruimo: room.maruimo,
               orbBots: saveOrbBots(room),
               enemies: room.enemies,
               boats: room.boats,
@@ -999,6 +1010,7 @@ export function createGameCore({
       if (visibility.hideMae) room.hiddenMae = record.mae;
       else restoreMae(room, record.mae);
       restoreKohaku(room, record.kohaku);
+      restoreMaruimo(room, record.maruimo);
       restoreOrbBots(room, record.orbBots, runtime.now());
     }
   }

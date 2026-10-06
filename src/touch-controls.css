@@ -434,3 +434,364 @@ body.touch-mode {
     bottom: calc(max(24px, env(safe-area-inset-bottom)) + 140px);
   }
 }
+
+/* Phone start screens fit the visible viewport; only the card strips scroll. */
+html:has(body.touch-mode[data-screen]) {
+  overflow: hidden;
+  overscroll-behavior: none;
+}
+body.touch-mode[data-screen] {
+  overscroll-behavior: none;
+}
+.character-scroll-hint {
+  display: none;
+}
+.touch-mode .screens.active {
+  top: var(--screen-top, 0px);
+  bottom: auto;
+  height: var(--screen-height, 100dvh);
+}
+.touch-mode .screen {
+  overflow: clip;
+  overscroll-behavior: none;
+}
+.touch-mode #screen-title .title-content,
+.touch-mode #screen-title .title-content:has([data-credits='public']) {
+  flex: 1;
+  min-height: 0;
+  grid-template-columns: minmax(0, 1fr);
+  grid-template-rows: minmax(0, 1fr) auto;
+  grid-template-areas: 'hero' 'credits';
+  padding: max(56px, calc(env(safe-area-inset-top) + 48px)) max(16px, env(safe-area-inset-right)) 0
+    max(16px, env(safe-area-inset-left));
+  gap: 12px;
+}
+.touch-mode #screen-title .title-hero {
+  height: 100%;
+  min-height: 0;
+}
+.touch-mode #screen-title .title-logo {
+  flex: 1;
+  min-height: 0;
+  width: 100%;
+}
+.touch-mode #screen-title .title-art {
+  width: 100%;
+  height: 100%;
+  max-height: 100%;
+  object-fit: contain;
+}
+.touch-mode #screen-title .title-welcome {
+  flex-shrink: 0;
+  padding: 0;
+}
+.touch-mode #screen-title .menu-item {
+  min-height: 44px;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  font-size: 20px;
+}
+.touch-mode #screen-title .title-credits {
+  grid-area: credits;
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+  overflow-x: auto;
+  overflow-y: hidden;
+  min-width: 0;
+  padding: 4px 0 6px;
+  touch-action: pan-x;
+  overscroll-behavior: contain;
+  scrollbar-width: thin;
+}
+.touch-mode #screen-title .credit-production,
+.touch-mode #screen-title .credit-planning,
+.touch-mode #screen-title .credit-side {
+  flex-shrink: 0;
+  width: auto;
+  padding: 0;
+  border: 0;
+}
+.touch-mode #screen-title .credit-side,
+.touch-mode #screen-title .credit-people {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  gap: 16px;
+}
+.touch-mode #screen-title .title-credits h2 {
+  margin: 0 0 6px;
+  font-size: 12px;
+  line-height: 16px;
+}
+.touch-mode #screen-title .credit-person {
+  display: grid;
+  grid-template-columns: 44px 56px;
+  justify-content: center;
+  justify-items: center;
+  align-items: center;
+  gap: 6px;
+  width: 144px;
+}
+.touch-mode #screen-title .credit-avatar {
+  width: 40px;
+  height: 40px;
+}
+.touch-mode #screen-title .credit-qr {
+  width: 56px;
+  height: 56px;
+}
+.touch-mode #screen-title .credit-name {
+  grid-column: 1 / -1;
+  width: 144px;
+  font-size: 11px;
+  line-height: 14px;
+  letter-spacing: 0;
+}
+.touch-mode #screen-title .title-footer {
+  height: auto;
+  min-height: 30px;
+  padding: 8px max(16px, env(safe-area-inset-right)) max(8px, env(safe-area-inset-bottom));
+}
+.touch-mode .title-fullscreen {
+  top: max(8px, env(safe-area-inset-top));
+  right: max(16px, env(safe-area-inset-right));
+}
+.touch-mode .setup-screen {
+  padding: max(12px, env(safe-area-inset-top)) max(12px, env(safe-area-inset-right))
+    max(12px, env(safe-area-inset-bottom)) max(12px, env(safe-area-inset-left));
+  align-items: stretch;
+}
+.touch-mode .setup-card {
+  height: 100%;
+  min-height: 0;
+  padding: 16px;
+  gap: 12px;
+  margin: 0 auto;
+  overflow: hidden;
+}
+.touch-mode .setup-heading {
+  flex-shrink: 0;
+  gap: 6px;
+}
+.touch-mode .setup-heading h2 {
+  font-size: 22px;
+}
+.touch-mode .setup-heading h2::after {
+  margin-top: 4px;
+}
+.touch-mode .setup-eyebrow {
+  font-size: 10px;
+}
+.touch-mode .setup-identity {
+  flex-shrink: 0;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+}
+.touch-mode .setup-identity label {
+  display: flex;
+  flex-direction: column;
+  font-size: 11px;
+  letter-spacing: 0.12em;
+}
+.touch-mode .setup-identity label > span:not(.portrait) {
+  font-size: 9px;
+  margin: 4px 0;
+  letter-spacing: 0;
+}
+.touch-mode .setup-identity label > input:not([type='radio']):not([type='checkbox']) {
+  width: 100%;
+  min-width: 0;
+  min-height: 44px;
+  margin-top: auto;
+  padding: 8px 4px;
+  font-size: 16px;
+}
+.touch-mode .character-options {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-height: 0;
+}
+.touch-mode .character-legend {
+  margin-bottom: 6px;
+  font-size: 11px;
+  letter-spacing: 0.2em;
+}
+.touch-mode .character-choice-grid {
+  flex: 1;
+  min-height: 0;
+  grid-template-columns: none;
+  grid-template-rows: minmax(0, 1fr);
+  grid-auto-flow: column;
+  grid-auto-columns: min(48vw, 180px);
+  gap: 12px;
+  padding: 6px;
+  overflow-x: auto;
+  overflow-y: hidden;
+  touch-action: pan-x;
+  overscroll-behavior: contain;
+  scroll-snap-type: x proximity;
+  scroll-padding: 6px;
+  scrollbar-width: thin;
+}
+.touch-mode .character-choice {
+  min-height: 0;
+  scroll-snap-align: start;
+}
+.touch-mode .character-choice:focus-within {
+  transform: none;
+  outline-offset: -2px;
+}
+.touch-mode .character-art {
+  flex: 1;
+  min-height: 0;
+  height: 0;
+  object-fit: cover;
+  object-position: top;
+}
+.touch-mode .character-name {
+  flex-shrink: 0;
+  margin-top: 0;
+  padding: 10px 6px;
+  gap: 2px;
+}
+.touch-mode .character-name strong {
+  font-size: 14px;
+}
+.touch-mode .character-name small {
+  font-size: 11px;
+}
+.touch-mode .character-scroll-hint {
+  display: block;
+  flex-shrink: 0;
+  margin: 6px 0 0;
+  text-align: center;
+  font-size: 11px;
+  line-height: 16px;
+  color: var(--muted);
+}
+.touch-mode .setup-actions {
+  flex-shrink: 0;
+  margin: 0;
+}
+.touch-mode #setup-flow {
+  top: var(--screen-top, 0px);
+  bottom: auto;
+  height: var(--screen-height, 100dvh);
+  padding: max(12px, env(safe-area-inset-top)) max(12px, env(safe-area-inset-right))
+    max(12px, env(safe-area-inset-bottom)) max(12px, env(safe-area-inset-left));
+}
+.touch-mode .character-confirm-card {
+  flex-direction: column;
+  align-items: center;
+  max-height: 100%;
+  gap: 12px;
+  padding: 20px;
+}
+.touch-mode .character-confirm-art {
+  width: auto;
+  height: min(26dvh, 180px);
+}
+.touch-mode .character-confirm-body {
+  align-items: center;
+  width: 100%;
+  gap: 10px;
+  text-align: center;
+}
+.touch-mode .character-confirm-body h3 {
+  font-size: 24px;
+}
+.touch-mode .setup-flow-question {
+  font-size: 16px;
+}
+.touch-mode .setup-flow-choices,
+.touch-mode .character-confirm-actions {
+  width: 100%;
+  gap: 8px;
+}
+.touch-mode .setup-flow-choices .button,
+.touch-mode .character-confirm-actions .button {
+  min-height: 48px;
+  padding: 10px 8px;
+  font-size: 17px;
+  letter-spacing: 0.1em;
+}
+.touch-mode #setup-flow .spawn-picker {
+  height: min(620px, 100%);
+  min-height: 0;
+  padding: 20px 16px;
+  overflow: hidden;
+  gap: 10px;
+}
+.touch-mode #setup-flow .spawn-picker h3 {
+  font-size: 22px;
+}
+.touch-mode #setup-flow .spawn-grid {
+  flex: 1;
+  min-height: 0;
+  grid-template-columns: none;
+  grid-template-rows: minmax(0, 1fr);
+  grid-auto-flow: column;
+  grid-auto-columns: min(68vw, 260px);
+  overflow-x: auto;
+  overflow-y: hidden;
+  padding: 6px;
+  scroll-snap-type: x proximity;
+  touch-action: pan-x;
+  overscroll-behavior: contain;
+  scrollbar-width: thin;
+}
+.touch-mode #setup-flow .spawn-card {
+  min-height: 0;
+  scroll-snap-align: start;
+}
+.touch-mode #setup-flow .spawn-card img {
+  flex: 1;
+  min-height: 0;
+  height: 0;
+  object-fit: cover;
+}
+.touch-mode #setup-flow .spawn-card strong {
+  font-size: 18px;
+}
+.touch-mode #setup-flow .spawn-card small {
+  font-size: 12px;
+}
+.touch-mode #setup-flow .spawn-card:focus-visible {
+  transform: none;
+  outline-offset: -2px;
+}
+/* While typing, reserve the small visible area for the fields and back button. */
+.touch-mode
+  .screens[data-compact='true']
+  .setup-card:has(.setup-identity input:focus)
+  .character-options {
+  display: none;
+}
+@media (orientation: landscape) {
+  .touch-mode #screen-title .title-content,
+  .touch-mode #screen-title .title-content:has([data-credits='public']) {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    grid-template-rows: minmax(0, 1fr);
+    grid-template-areas: 'hero credits';
+    align-items: center;
+  }
+  .touch-mode .setup-card {
+    padding: 12px 16px;
+    gap: 8px;
+  }
+  .touch-mode .setup-heading {
+    display: none;
+  }
+  .touch-mode .setup-identity label span {
+    display: none;
+  }
+  .touch-mode .character-confirm-card {
+    flex-direction: row;
+    gap: 20px;
+  }
+  .touch-mode .character-confirm-art {
+    height: min(64dvh, 250px);
+  }
+}

@@ -2,7 +2,7 @@ import * as THREE from 'three';
 import { mergeVertices } from 'three/addons/utils/BufferGeometryUtils.js';
 import { riverBankDrop, riverX, RIVER_BOUNDS } from '../shared/river-profile.mjs';
 import { mountainRiverBed, mountainRiverIntersects } from '../shared/mountain-river.mjs';
-import { CAVE_FOOT, CAVE_HILL, caveFootHeight } from '../shared/camp-cave-layout.mjs';
+import { CAMP_CAVE, CAVE_FOOT, CAVE_HILL, caveFootHeight } from '../shared/camp-cave-layout.mjs';
 import {
   expandedMountainZ,
   expandedMountainX,
@@ -78,8 +78,19 @@ export function fitSourceRiverBank(source, maximumEdge = 0.5, mountainOnly = fal
       mountainOnly &&
       Math.max(...sourcePositions.map((p) => p[2])) > MOUNTAIN_EXPANSION.start &&
       Math.min(...sourcePositions.map((p) => p[2])) < MOUNTAIN_EXPANSION.end;
-    const footEdge =
-      fitFoot && positions.some((p) => Math.abs(p[0] - riverX(p[2])) < 6) ? 0.2 : 0.6;
+    // Resolve the short transition inside the measured mouth in both source LODs.
+    // Coarse triangles otherwise bridge its ground-level approach and rock rim.
+    const fitMouth =
+      fitFoot &&
+      Math.max(...xs) >= CAMP_CAVE.x - 8 &&
+      Math.min(...xs) <= CAMP_CAVE.x + 8 &&
+      Math.max(...zs) >= CAMP_CAVE.z - 10 &&
+      Math.min(...zs) <= CAMP_CAVE.z - 7.5;
+    const footEdge = fitMouth
+      ? 0.1
+      : fitFoot && positions.some((p) => Math.abs(p[0] - riverX(p[2])) < 6)
+        ? 0.2
+        : 0.6;
     if (
       (fitWater || expand || fitFoot) &&
       longest > (fitFoot ? Math.min(footEdge, maximumEdge) : fitWater ? maximumEdge : 2) ** 2 &&

@@ -317,7 +317,7 @@ try {
   assert.match(await phone.page.locator('#pause-panel-settings').innerText(), /なぞる/);
   await shot('04-touch-settings');
   await phone.tap('[data-pause-tab="mascots"]');
-  assert.equal(await phone.page.locator('[data-mascot]').count(), 13);
+  assert.equal(await phone.page.locator('[data-mascot]').count(), 14);
   await shot('05-touch-companions');
   await phone.tap('#modal-close');
   await phone.page.locator('#touch-controls').waitFor({ state: 'visible' });
@@ -347,7 +347,7 @@ try {
     await shot(`08-${size.width}x${size.height}`);
     await phone.tap('[data-touch-action="menu"]');
     await phone.tap('[data-pause-tab="mascots"]');
-    assert.equal(await phone.page.locator('[data-mascot]').count(), 13);
+    assert.equal(await phone.page.locator('[data-mascot]').count(), 14);
     assert.equal(
       await phone.page.evaluate(() => document.documentElement.scrollWidth > innerWidth),
       false,

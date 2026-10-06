@@ -54,8 +54,8 @@ try {
     assert.equal(await page.locator(`[data-controller-menu="${action}"]`).count(), 0, action);
   assert.equal(await page.locator('.orb-menu').count(), 0);
   await page.locator('[data-pause-tab="mascots"]').click();
-  assert.equal(await page.locator('[data-mascot]').count(), 13);
-  assert.equal(await page.locator('[data-mascot] img').count(), 13);
+  assert.equal(await page.locator('[data-mascot]').count(), 14);
+  assert.equal(await page.locator('[data-mascot] img').count(), 14);
   await until(
     () =>
       page
@@ -108,7 +108,7 @@ try {
       page
         .locator('#mascot-selection-count')
         .textContent()
-        .then((value) => value.includes('13 / 13')),
+        .then((value) => value.includes('14 / 14')),
     'all cards reflect server',
   );
   await page.screenshot({ path: `${output}/all-selected.png`, animations: 'disabled' });
@@ -116,7 +116,7 @@ try {
   await until(
     () =>
       room().orbBots.every((bot) => bot.ownerId !== playerId()) &&
-      [room().rimoNeko, room().companion524, room().mae, room().kohaku].every(
+      [room().rimoNeko, room().companion524, room().mae, room().kohaku, room().maruimo].every(
         (mascot) => mascot?.followPlayerId !== playerId(),
       ),
     'all mascots released',
@@ -126,7 +126,7 @@ try {
       page
         .locator('#mascot-selection-count')
         .textContent()
-        .then((value) => value.includes('0 / 13')),
+        .then((value) => value.includes('0 / 14')),
     'clear reflects server',
   );
   for (const viewport of [
@@ -134,7 +134,7 @@ try {
     { width: 844, height: 390 },
   ]) {
     await page.setViewportSize(viewport);
-    assert.equal(await page.locator('[data-mascot]').count(), 13);
+    assert.equal(await page.locator('[data-mascot]').count(), 14);
     assert.equal(
       await page.evaluate(() => document.documentElement.scrollWidth > innerWidth),
       false,

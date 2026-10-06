@@ -234,6 +234,10 @@ export function updateHunting(
       notify(player, 'こはくちゃんがびっくりして身を引いた。', 'info', false);
       return;
     }
+    if (strike.kind === 'maruimo') {
+      notify(player, 'まるぃもがびっくりして身を引いた。', 'info', false);
+      return;
+    }
     if (strike.kind === 'mae') {
       notify(player, 'maeがぽよんと身を引いた。', 'info', false);
       return;

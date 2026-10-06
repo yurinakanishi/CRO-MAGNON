@@ -3,6 +3,7 @@ import { createHash } from 'node:crypto';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { prepareVendor } from './prepare-vendor.mjs';
+import { assertPublicCharacterData } from './public-character-audit.mjs';
 import './build.mjs';
 if (process.exitCode) throw new Error('TypeScript build failed');
 const { CHARACTER_MODELS } = await import('../dist/shared/characters.mjs');
@@ -43,7 +44,6 @@ const publicCharacters = CHARACTER_MODELS.filter((model) => !excludedSpecies.has
 if (!publicCharacters.some((model) => model.species === 'cro'))
   throw new Error('Missing default public character');
 const hasOctopus = publicCharacters.some((model) => model.bodyPlan === 'octopus');
-const forbidden = /maruimo|まる[ぃい]も/i;
 const credits = release.credits === 'full' ? TITLE_CREDITS : TITLE_CREDITS.slice(0, 1);
 const visibleProfiles = new Set(
   [...credits, TITLE_GUEST, TITLE_SUPPORT].map((person) => person.qr),
@@ -63,13 +63,7 @@ async function publish(url, bytes) {
   if (!name || name.split('/').some((part) => !part || part === '.' || part === '..'))
     throw new Error(`Unexpected public path: ${url}`);
   if (bytes.length > fileLimit) throw new Error(`Static asset exceeds 25 MiB: ${url}`);
-  if (excludedKeys.has(name.split('/')[1])) throw new Error(`Excluded character file: ${url}`);
-  if (
-    excludedSpecies.has('maruimo') &&
-    (forbidden.test(name) ||
-      (/\.(js|mjs|css|json|html|txt)$/.test(name) && forbidden.test(bytes.toString('utf8'))))
-  )
-    throw new Error(`Excluded character data in public file: ${url}`);
+  assertPublicCharacterData(name, bytes, excludedKeys, excludedSpecies);
   const digest = hash(bytes);
   if (files.has(name)) {
     if (files.get(name).sha256 !== digest) throw new Error(`Conflicting public file: ${url}`);
@@ -135,7 +129,7 @@ await publish(
 );
 for (const directory of ['dist/src', 'dist/shared']) await collect(directory, /\.(js|mjs|css)$/);
 await collect('public/vendor', /\.(js|mjs|wasm|txt)$/);
-await collect('public/audio', /\.(wav|json|txt)$/);
+await collect('public/audio', /\.(wav|mp3|json|txt)$/);
 await collect('public/spawn', /\.jpg$/);
 await collect('public/title', /\.(png|jpe?g)$/, (name) => {
   const profile = /^(?:qr|avatar)-([a-z0-9]+)\./.exec(name);
@@ -290,8 +284,7 @@ for (const directory of ['application', 'cloudflare']) {
   for (const file of await readdir(path.join(root, 'dist', directory))) {
     if (!file.endsWith('.mjs')) continue;
     const bytes = await readFile(path.join(root, 'dist', directory, file));
-    if (excludedSpecies.has('maruimo') && forbidden.test(bytes.toString('utf8')))
-      throw new Error(`Excluded character in Worker module: ${directory}/${file}`);
+    assertPublicCharacterData(`${directory}/${file}`, bytes, excludedKeys, excludedSpecies);
     await writeFile(path.join(workerStaging, directory, file), bytes);
   }
 }

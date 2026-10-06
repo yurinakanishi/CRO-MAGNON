@@ -9,17 +9,20 @@ import {
   normalizeCharacter,
 } from '../dist-cloudflare-worker/shared/characters.mjs';
 import { createGameCore } from '../dist-cloudflare-worker/application/game-core.mjs';
+import { assertPublicCharacterData } from './public-character-audit.mjs';
 
-const forbidden = /maruimo|まる[ぃい]も/i;
+const excludedKeys = new Set(['maruimo-octopus']),
+  excludedSpecies = new Set(['maruimo']);
+const check = (name, bytes) =>
+  assertPublicCharacterData(name, Buffer.from(bytes), excludedKeys, excludedSpecies);
 let auditedFiles = 0;
 async function audit(directory) {
   for (const entry of await readdir(directory, { withFileTypes: true })) {
     const file = path.join(directory, entry.name);
-    assert.ok(!forbidden.test(entry.name), file);
+    assert.ok(!excludedKeys.has(entry.name), file);
     if (entry.isDirectory()) await audit(file);
     else {
-      if (/\.(m?js|css|json|html|txt)$/.test(file))
-        assert.ok(!forbidden.test(await readFile(file, 'utf8')), file);
+      if (/\.(m?js|css|json|html|txt)$/.test(file)) check(file, await readFile(file));
       auditedFiles++;
     }
   }
@@ -27,7 +30,7 @@ async function audit(directory) {
 await audit('dist-cloudflare');
 await audit('dist-cloudflare-worker');
 const upload = await readFile('output/cloudflare-dry-run/worker.js', 'utf8');
-assert.ok(!forbidden.test(upload), 'Private character data in bundled Worker');
+check('worker.js', upload);
 assert.equal(CHARACTER_MODELS.length, 9);
 assert.equal(characterModel({ species: 'maruimo' }).key, 'maruimo-octopus');
 assert.equal(publicCharacters.length, 8);
@@ -67,7 +70,7 @@ core.connect(
 );
 const welcome = first.messages.find((message) => message.type === 'welcome');
 assert.equal(welcome.profile.species, 'cro');
-assert.ok(!forbidden.test(JSON.stringify(first.messages)));
+check('messages.json', JSON.stringify(first.messages));
 const saved = JSON.parse(JSON.stringify(core.exportState()));
 saved.rooms[0].sessions[0].player.species = 'maruimo';
 saved.rooms[0].sessions[0].player.inventory.wood = 11;
@@ -82,7 +85,7 @@ const back = resumed.messages.find((message) => message.type === 'welcome');
 assert.equal(back.resumed, true);
 assert.equal(back.profile.species, 'cro');
 assert.equal(restored.rooms.get('EMBER').players.get(back.id).inventory.wood, 11);
-assert.ok(!forbidden.test(JSON.stringify(resumed.messages)));
+check('messages.json', JSON.stringify(resumed.messages));
 const report = {
   checkedAt: new Date().toISOString(),
   status: 'passed',

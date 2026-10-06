@@ -18,8 +18,10 @@ test('the cave joins the main massif without an isolated crown or intervening sa
       assert.ok(mountainHeight(x, z) >= cave - 0.15, `saddle at ${x},${z}`);
     assert.ok(mountainHeight(0, z) > cave + 3, 'the main mountain remains the higher landform');
   }
-  let previous = mountainHeight(CAMP_CAVE.x, 84);
-  for (let z = 84.25; z <= 122; z += 0.25) {
+  // The steep recess at the mouth is hidden inside the rock shell. Check the
+  // exposed slope behind that shell, rather than requiring an open front ramp.
+  let previous = mountainHeight(CAMP_CAVE.x, 86);
+  for (let z = 86.25; z <= 122; z += 0.25) {
     const next = mountainHeight(CAMP_CAVE.x, z);
     assert.ok(Math.abs(next - previous) / 0.25 < 0.8, `abrupt front/crown at ${z}`);
     previous = next;
@@ -62,4 +64,16 @@ test('real source triangles east of the former river bounds are carved under the
   source.dispose();
   fitted.dispose();
   material.dispose();
+});
+
+// A hillside rising over the roofless apron used to require a fake arch cut,
+// leaving several metres of open air between its cut edge and the actual cave.
+test('the approach stays below the apron until it reaches the real rock mouth', () => {
+  for (let z = CAMP_CAVE.z - 18; z <= CAMP_CAVE.z - 9.4; z += 0.1)
+    for (let across = -4.1; across <= 4.1; across += 0.25)
+      assert.ok(
+        Math.abs(mountainHeight(CAMP_CAVE.x + across, z)) < 0.001,
+        `floating entrance slope at ${across},${z}`,
+      );
+  assert.ok(mountainHeight(CAMP_CAVE.x, 86) > 8, 'the hillside still buries the cave roof');
 });

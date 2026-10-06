@@ -40,7 +40,7 @@ test('Rimo frieze still faces 524 while all released mascots join the animal gal
   assert.equal(
     new Set(['524', 'rimo-neko', ...Object.values(CAVE_EXTRA_PIGMENTS).flatMap((p) => p.subjects)])
       .size,
-    13,
+    14,
   );
 });
 
@@ -66,7 +66,10 @@ test('material uses the separate Rimo pigment on existing mesh triangles', () =>
   const root = new THREE.Group(),
     material = new THREE.MeshStandardMaterial();
   root.add(new THREE.Mesh(new THREE.BufferGeometry(), material));
-  const textures = Array.from({ length: 8 }, () => new THREE.Texture());
+  const textures = Array.from(
+    { length: 5 + Object.keys(CAVE_EXTRA_PIGMENTS).length },
+    () => new THREE.Texture(),
+  );
   const extra = Object.fromEntries(
     [...Object.keys(CAVE_EXTRA_PIGMENTS), 'comingSoon'].map((key, i) => [key, textures[i + 4]]),
   );

@@ -1599,6 +1599,41 @@
       "bytes": 2884628,
       "maximumTextureEdge": 1024,
       "images": []
+    },
+    {
+      "sourceUrl": "/models/maruimo-mascot/model-r01.glb",
+      "sourceSha256": "7dc24164001b187d370b0726a4b6251b702c3d2f2bd06e198685e3018be066b9",
+      "sourceBytes": 41068780,
+      "file": "assets/public-performance/models/maruimo-mascot-model-r01-tex2048.glb",
+      "url": "/models/maruimo-mascot/model-web-08aa754686cc38d9.glb",
+      "sha256": "08aa754686cc38d90bfa536fc396db0f31ddde47e287c1dbd3c92122860ccb69",
+      "bytes": 19547164,
+      "maximumTextureEdge": 2048,
+      "images": [
+        {
+          "before": [
+            4096,
+            4096
+          ],
+          "after": [
+            2048,
+            2048
+          ],
+          "beforeBytes": 27993828,
+          "afterBytes": 6472073
+        }
+      ]
+    },
+    {
+      "sourceUrl": "/models/maruimo-mascot/lod-r01.glb",
+      "sourceSha256": "e2d759aa7de1989806959bcb13e931ad2e95b550ab3c7eedb9d5b829323ccced",
+      "sourceBytes": 1377832,
+      "file": "assets/public-performance/models/maruimo-mascot-lod-r01-tex2048.glb",
+      "url": "/models/maruimo-mascot/lod-web-91bd66dc592212e7.glb",
+      "sha256": "91bd66dc592212e75fbc7ff5e58ab8d7e51e512550d82789b768cf4c9e5adae7",
+      "bytes": 1377972,
+      "maximumTextureEdge": 2048,
+      "images": []
     }
   ]
 }

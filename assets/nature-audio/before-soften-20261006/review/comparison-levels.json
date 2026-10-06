@@ -1,0 +1,184 @@
+[
+  {
+    "name": "wind",
+    "status": "before",
+    "gainDB": -1.3500000000000014,
+    "comparisonLUFS": -28.0,
+    "file": "audio/wind-before.mp3"
+  },
+  {
+    "name": "wind",
+    "status": "after",
+    "gainDB": 4.0,
+    "comparisonLUFS": -28.0,
+    "file": "audio/wind-after.mp3"
+  },
+  {
+    "name": "river",
+    "status": "before",
+    "gainDB": -2.370000000000001,
+    "comparisonLUFS": -28.0,
+    "file": "audio/river-before.mp3"
+  },
+  {
+    "name": "river",
+    "status": "after",
+    "gainDB": -3.0100000000000016,
+    "comparisonLUFS": -28.0,
+    "file": "audio/river-after.mp3"
+  },
+  {
+    "name": "shore",
+    "status": "before",
+    "gainDB": -0.21999999999999886,
+    "comparisonLUFS": -28.0,
+    "file": "audio/shore-before.mp3"
+  },
+  {
+    "name": "shore",
+    "status": "after",
+    "gainDB": -2.0100000000000016,
+    "comparisonLUFS": -28.0,
+    "file": "audio/shore-after.mp3"
+  },
+  {
+    "name": "fire",
+    "status": "before",
+    "gainDB": -0.9100000000000001,
+    "comparisonLUFS": -28.0,
+    "file": "audio/fire-before.mp3"
+  },
+  {
+    "name": "fire",
+    "status": "after",
+    "gainDB": 2.04,
+    "comparisonLUFS": -28.150000000000002,
+    "file": "audio/fire-after.mp3"
+  },
+  {
+    "name": "torch",
+    "status": "before",
+    "gainDB": -0.9100000000000001,
+    "comparisonLUFS": -28.0,
+    "file": "audio/torch-before.mp3"
+  },
+  {
+    "name": "torch",
+    "status": "after",
+    "gainDB": 1.9699999999999998,
+    "comparisonLUFS": -32.46,
+    "file": "audio/torch-after.mp3"
+  },
+  {
+    "name": "rain",
+    "status": "before",
+    "gainDB": -16.79,
+    "comparisonLUFS": -28.0,
+    "file": "audio/rain-before.mp3"
+  },
+  {
+    "name": "rain",
+    "status": "after",
+    "gainDB": -0.03999999999999915,
+    "comparisonLUFS": -28.0,
+    "file": "audio/rain-after.mp3"
+  },
+  {
+    "name": "drop-0",
+    "status": "before",
+    "gainDB": -4.030000000000001,
+    "comparisonLUFS": -28.0,
+    "file": "audio/drop-0-before.mp3"
+  },
+  {
+    "name": "drop-0",
+    "status": "after",
+    "gainDB": 1.7000000000000002,
+    "comparisonLUFS": -30.349999999999998,
+    "file": "audio/drop-0-after.mp3"
+  },
+  {
+    "name": "birds-0",
+    "status": "before",
+    "gainDB": 0.5799999999999983,
+    "comparisonLUFS": -28.0,
+    "file": "audio/birds-0-before.mp3"
+  },
+  {
+    "name": "birds-0",
+    "status": "after",
+    "gainDB": -2.0,
+    "comparisonLUFS": -28.0,
+    "file": "audio/birds-0-after.mp3"
+  },
+  {
+    "name": "birds-1",
+    "status": "before",
+    "gainDB": -2.4200000000000017,
+    "comparisonLUFS": -28.0,
+    "file": "audio/birds-1-before.mp3"
+  },
+  {
+    "name": "birds-1",
+    "status": "after",
+    "gainDB": -2.0100000000000016,
+    "comparisonLUFS": -28.0,
+    "file": "audio/birds-1-after.mp3"
+  },
+  {
+    "name": "birds-2",
+    "status": "before",
+    "gainDB": -3.9499999999999993,
+    "comparisonLUFS": -28.0,
+    "file": "audio/birds-2-before.mp3"
+  },
+  {
+    "name": "birds-2",
+    "status": "after",
+    "gainDB": -2.0700000000000003,
+    "comparisonLUFS": -28.0,
+    "file": "audio/birds-2-after.mp3"
+  },
+  {
+    "name": "bgm-explore",
+    "status": "before",
+    "gainDB": -6.600000000000001,
+    "comparisonLUFS": -28.0,
+    "file": "audio/bgm-explore-before.mp3"
+  },
+  {
+    "name": "bgm-explore",
+    "status": "after",
+    "gainDB": -2.0,
+    "comparisonLUFS": -28.0,
+    "file": "audio/bgm-explore-after.mp3"
+  },
+  {
+    "name": "bgm-camp",
+    "status": "before",
+    "gainDB": -4.379999999999999,
+    "comparisonLUFS": -28.0,
+    "file": "audio/bgm-camp-before.mp3"
+  },
+  {
+    "name": "bgm-camp",
+    "status": "after",
+    "gainDB": -1.9600000000000009,
+    "comparisonLUFS": -28.0,
+    "file": "audio/bgm-camp-after.mp3"
+  },
+  {
+    "name": "bgm-cave",
+    "status": "before",
+    "gainDB": -2.8200000000000003,
+    "comparisonLUFS": -28.0,
+    "file": "audio/bgm-cave-before.mp3"
+  },
+  {
+    "name": "bgm-cave",
+    "status": "after",
+    "gainDB": -2.0,
+    "comparisonLUFS": -28.0,
+    "file": "audio/bgm-cave-after.mp3"
+  }
+]

@@ -73,7 +73,7 @@ test('deployed companions and food needs take priority over a generic jump hint'
     [['b3']],
   );
   assert.ok(
-    contextCues({ torch: '松明をしまう' }, true).length === 0,
+    contextCues({ torch: '松明を消す' }, true).length === 0,
     'no invented pad torch binding',
   );
 });

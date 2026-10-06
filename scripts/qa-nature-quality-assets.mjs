@@ -8,7 +8,9 @@ const { chromium } = await import(
     'file:///C:/Users/yurin/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/node_modules/playwright/index.mjs'
 );
 const reviewOnly = process.argv.includes('--review-only');
-const out = `output/playwright/nature-audio-quality-20261006/${reviewOnly ? 'review-r02' : 'assets-r01'}`;
+const out =
+  process.env.AUDIO_QA_OUT ||
+  `output/playwright/nature-audio-quality-20261006/${reviewOnly ? 'review-r02' : 'assets-r01'}`;
 await mkdir(out, { recursive: true });
 const root = path.resolve('public/audio/nature');
 const manifest = JSON.parse(await readFile(path.join(root, 'manifest.json')));
@@ -102,7 +104,7 @@ try {
     const state = await players
       .nth(i)
       .evaluate((a) => ({ error: a.error?.message, duration: a.duration }));
-    assert.ok(!state.error && state.duration > 1);
+    assert.ok(!state.error && state.duration >= 0.49);
     await players.nth(i).evaluate((a) => a.pause());
   }
   await page.setViewportSize({ width: 390, height: 844 });

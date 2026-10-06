@@ -1,0 +1,59 @@
+{
+  "sources": [
+    {
+      "file": "impact.zip",
+      "author": "Kenney",
+      "page": "https://kenney.nl/assets/impact-sounds",
+      "url": "https://kenney.nl/media/pages/assets/impact-sounds/87b4ddecda-1677589768/kenney_impact-sounds.zip",
+      "license": "CC0-1.0",
+      "sha256": "029d734af1582474edf3a694d1b0cebc97c1c152f2f39fa34d4c2bafc5de77f8",
+      "bytes": 800850
+    },
+    {
+      "file": "cloth.zip",
+      "author": "HaelDB",
+      "page": "https://opengameart.org/content/footsteps-leather-cloth-armor",
+      "url": "https://opengameart.org/sites/default/files/footsteps.zip",
+      "license": "CC0-1.0",
+      "sha256": "94b5155d119d9378315c2b4457c00098d78a36f2a2c436d5145687d1d3bad257",
+      "bytes": 87827
+    },
+    {
+      "file": "snow.7z",
+      "author": "Corsica_S / Iwan Gabovitch",
+      "page": "https://opengameart.org/content/42-snow-and-gravel-footsteps",
+      "url": "https://opengameart.org/sites/default/files/corsica_s-walking_in_snow.7z",
+      "license": "CC0-1.0",
+      "sha256": "206306b51f8eeedf82043d6628174ec8ff9b16230dffb5192a5c74688e62abd4",
+      "bytes": 4041779
+    },
+    {
+      "file": "water.zip",
+      "author": "rubberduck",
+      "page": "https://opengameart.org/content/40-cc0-water-splash-slime-sfx",
+      "url": "https://opengameart.org/sites/default/files/water-splash-slime-sfx.zip",
+      "license": "CC0-1.0",
+      "sha256": "7cd39abb49d4362a37ba18dc0e454c7dc1d08029d4e5b683149046bc237b2eba",
+      "bytes": 2259262
+    },
+    {
+      "file": "swish.7z",
+      "author": "qubodup",
+      "page": "https://opengameart.org/content/swish-bamboo-stick-weapon-swhoshes",
+      "url": "https://opengameart.org/sites/default/files/swoshes.7z",
+      "license": "CC0-1.0",
+      "sha256": "2d55b26f918a4d8042e2c97a4db81392757195f5aaac9039f5ec2c557b6f11f2",
+      "bytes": 4858146
+    },
+    {
+      "file": "cat-hiss.mp3",
+      "author": "Zabuhailo",
+      "page": "https://freesound.org/people/Zabuhailo/sounds/146963/",
+      "url": "https://cdn.freesound.org/previews/146/146963_2580450-hq.mp3",
+      "license": "CC0-1.0",
+      "format": "public HQ MP3 preview of CC0 recording; original 96 kHz WAV requires login",
+      "sha256": "ccdeed8f1e35ef68c108f42eded3300743d5544e3102ce6941cbebf45537ee78",
+      "bytes": 35808
+    }
+  ]
+}

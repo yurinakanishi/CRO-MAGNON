@@ -115,6 +115,7 @@ test('both animal galleries retain a broad room and full standing height all the
     'roundBots',
     'shapeBots',
     'maeKohaku',
+    'maruimoFrieze',
     'creature524',
   ];
   for (const wall of ['east', 'west']) {
@@ -125,7 +126,7 @@ test('both animal galleries retain a broad room and full standing height all the
         .map((m) => m.motif)
         .sort(),
       (wall === 'east'
-        ? ['redHorse', 'rimoFrieze', 'roundBots', 'maeKohaku']
+        ? ['maruimoFrieze', 'rimoFrieze', 'roundBots', 'maeKohaku']
         : ['creature524', 'bison', 'deer', 'shapeBots']
       ).sort(),
     );

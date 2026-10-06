@@ -95,6 +95,7 @@ import { caveTorchAvailable, caveTorchLit } from '../shared/cave-light.mjs';
 import { nearRimoNeko } from '../shared/rimo-neko.mjs';
 import { nearMae } from '../shared/mae.mjs';
 import { nearKohaku } from '../shared/kohaku.mjs';
+import { nearMaruimo } from '../shared/maruimo-mascot.mjs';
 import { nearCompanion524 } from '../shared/companion-524.mjs';
 import { ENEMY_GROUNDS, SCENERY } from '../shared/scenery-layout.mjs';
 import { CASTLE_GATE } from '../shared/castle-layout.mjs';
@@ -576,6 +577,7 @@ function clearMovementInput() {
   send({ type: 'move', dx: 0, dz: 0, running: false });
 }
 function notify(text, tone = 'info') {
+  if (tone === 'success') renderer?.audio.confirm();
   const toast = document.createElement('div');
   toast.className = `toast ${tone}`;
   const mark = document.createElement('span');
@@ -1132,6 +1134,7 @@ function canPetRimo() {
     !state.rimoNeko?.petPlayerId &&
     state.mae?.petPlayerId !== selfId &&
     state.kohaku?.petPlayerId !== selfId &&
+    state.maruimo?.petPlayerId !== selfId &&
     state.companion524?.petPlayerId !== selfId &&
     !pettingOrbBot(state.orbBots, selfId) &&
     nearRimoNeko(player(), state.rimoNeko, renderer.collision, renderer.serverNow())
@@ -1149,6 +1152,7 @@ function canPetMae() {
     !renderUnavailable &&
     !state.mae?.petPlayerId &&
     state.kohaku?.petPlayerId !== selfId &&
+    state.maruimo?.petPlayerId !== selfId &&
     state.rimoNeko?.petPlayerId !== selfId &&
     state.companion524?.petPlayerId !== selfId &&
     !pettingOrbBot(state.orbBots, selfId) &&
@@ -1163,6 +1167,7 @@ function canPetKohaku() {
     joined &&
     !renderUnavailable &&
     !state.kohaku?.petPlayerId &&
+    state.maruimo?.petPlayerId !== selfId &&
     state.rimoNeko?.petPlayerId !== selfId &&
     state.mae?.petPlayerId !== selfId &&
     state.companion524?.petPlayerId !== selfId &&
@@ -1173,12 +1178,34 @@ function canPetKohaku() {
 function petKohaku() {
   if (canPetKohaku()) action('petKohaku');
 }
+function canPetMaruimo() {
+  return (
+    joined &&
+    !renderUnavailable &&
+    !state.maruimo?.petPlayerId &&
+    !(
+      state.maruimo?.followPlayerId &&
+      state.maruimo.followPlayerId !== selfId &&
+      state.players.some((p) => p.id === state.maruimo?.followPlayerId)
+    ) &&
+    state.kohaku?.petPlayerId !== selfId &&
+    state.rimoNeko?.petPlayerId !== selfId &&
+    state.mae?.petPlayerId !== selfId &&
+    state.companion524?.petPlayerId !== selfId &&
+    !pettingOrbBot(state.orbBots, selfId) &&
+    nearMaruimo(player(), state.maruimo, renderer.collision, renderer.serverNow())
+  );
+}
+function petMaruimo() {
+  if (canPetMaruimo()) action('petMaruimo');
+}
 function nearbyBotsForPetting() {
   if (
     !joined ||
     renderUnavailable ||
     state.mae?.petPlayerId === selfId ||
     state.kohaku?.petPlayerId === selfId ||
+    state.maruimo?.petPlayerId === selfId ||
     state.rimoNeko?.petPlayerId === selfId ||
     state.companion524?.petPlayerId === selfId
   )
@@ -1204,6 +1231,11 @@ function preferredPet() {
       point: state.kohaku!,
       choice: { action: 'petKohaku', label: 'こはくちゃんを撫でる' },
     });
+  if (canPetMaruimo())
+    candidates.push({
+      point: state.maruimo!,
+      choice: { action: 'petMaruimo', label: 'まるぃもを撫でる' },
+    });
   if (canPetMae())
     candidates.push({ point: state.mae!, choice: { action: 'petMae', label: 'maeを撫でる' } });
   if (canPet524()) candidates.push({ point: state.companion524!, choice: '524' });
@@ -1219,6 +1251,7 @@ function preferredPet() {
     state.rimoNeko?.petPlayerId !== selfId &&
     state.mae?.petPlayerId !== selfId &&
     state.kohaku?.petPlayerId !== selfId &&
+    state.maruimo?.petPlayerId !== selfId &&
     state.companion524?.petPlayerId !== selfId &&
     !pettingOrbBot(state.orbBots, selfId)
   ) {
@@ -1272,6 +1305,8 @@ function dismissNearbyCompanion() {
     candidates.push({ point: state.rimoNeko, action: 'dismissRimo' });
   if (state.kohaku?.followPlayerId === selfId)
     candidates.push({ point: state.kohaku, action: 'dismissKohaku' });
+  if (state.maruimo?.followPlayerId === selfId)
+    candidates.push({ point: state.maruimo, action: 'dismissMaruimo' });
   if (state.mae?.followPlayerId === selfId)
     candidates.push({ point: state.mae, action: 'dismissMae' });
   if (state.companion524?.followPlayerId === selfId && !candidates.some((c) => c.target === '524'))
@@ -1286,6 +1321,7 @@ function canPet524() {
     !state.companion524?.petPlayerId &&
     state.mae?.petPlayerId !== selfId &&
     state.kohaku?.petPlayerId !== selfId &&
+    state.maruimo?.petPlayerId !== selfId &&
     state.rimoNeko?.petPlayerId !== selfId &&
     !pettingOrbBot(state.orbBots, selfId) &&
     nearCompanion524(player(), state.companion524, renderer.collision, renderer.serverNow())
@@ -1347,6 +1383,10 @@ function ride() {
 function interactAnimal(id) {
   if (id === state.kohaku?.id) {
     petKohaku();
+    return;
+  }
+  if (id === state.maruimo?.id) {
+    petMaruimo();
     return;
   }
   if (id === state.mae?.id) {
@@ -2308,7 +2348,7 @@ function openPauseMenu(tab?: string) {
     $('[data-setting="sound"]').onclick = toggleSound;
     for (const input of root.querySelectorAll<HTMLInputElement>('[data-audio-volume]')) {
       input.oninput = () => {
-        const key = input.dataset.audioVolume as 'ambience' | 'music';
+        const key = input.dataset.audioVolume as 'ambience' | 'music' | 'effects';
         renderer.audio.setSettings({
           ...renderer.audio.settings,
           [key]: Number(input.value) / 100,
@@ -2874,6 +2914,7 @@ function updateMovementInput() {
     const petting =
       state.mae?.petPlayerId === selfId ||
       state.kohaku?.petPlayerId === selfId ||
+      state.maruimo?.petPlayerId === selfId ||
       state.rimoNeko?.petPlayerId === selfId ||
       state.companion524?.petPlayerId === selfId ||
       !!pettingOrbBot(state.orbBots, selfId);
@@ -2919,6 +2960,7 @@ function updateMovementInput() {
             target.action === 'petRimo' ||
             target.action === 'petMae' ||
             target.action === 'petKohaku' ||
+            target.action === 'petMaruimo' ||
             target.action === 'pet524' ||
             target.action === 'petBot' ||
             target.action === 'petBots'

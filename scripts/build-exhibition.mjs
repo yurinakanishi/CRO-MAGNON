@@ -48,7 +48,7 @@ for (const directory of ['dist/src', 'dist/shared', 'dist/application', 'dist/in
   await collect(directory, (file) => /\.(js|mjs|css)$/.test(file));
 add('dist/server.mjs');
 await collect('public/vendor', (file) => /\.(js|mjs|wasm)$/.test(file));
-await collect('public/audio', (file) => /\.(wav|json|txt)$/.test(file));
+await collect('public/audio', (file) => /\.(wav|mp3|json|txt)$/.test(file));
 await collect('public/motion', (file) => /\.(task|json|txt)$/.test(file));
 await collect('public/title', (file) => /\.(png|jpe?g)$/.test(file));
 await collect('public/spawn', (file) => /\.jpg$/.test(file));

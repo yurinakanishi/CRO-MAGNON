@@ -1,7 +1,9 @@
 import * as THREE from 'three';
+import { jumpProgress } from '../shared/jumping.mjs';
+import { FoleyEvents, FOLEY_FILES, FOLEY_VARIANTS } from './nature-foley.js';
 import { caveTorchLit } from '../shared/cave-light.mjs';
 import { CAMP } from '../shared/world.mjs';
-import { natureEnvironment, unit, type SoundPoint } from './nature-environment.js';
+import { FootstepClock, natureEnvironment, unit, type SoundPoint } from './nature-environment.js';
 import {
   readAudioSettings,
   saveAudioSettings,
@@ -27,7 +29,7 @@ type Voice = {
   source: AudioBufferSourceNode;
   gain: GainNode;
   nodes: AudioNode[];
-  bus: 'music' | 'ambience';
+  bus: 'music' | 'ambience' | 'effects';
   name: string;
   fading?: boolean;
 };
@@ -36,6 +38,9 @@ export class NatureAudio {
   settings = readAudioSettings();
   context: AudioContext | null = null;
   readonly stats = {
+    steps: 0,
+    events: 0,
+    surface: '',
     birds: 0,
     musicPhrases: 0,
     voices: 0,
@@ -54,12 +59,16 @@ export class NatureAudio {
   private loading: Promise<void> | null = null;
   private abort = new AbortController();
   private master: GainNode;
-  private buses: Record<'ambience' | 'music', GainNode>;
+  private buses: Record<'ambience' | 'music' | 'effects', GainNode>;
   private reverbSend: GainNode;
   private reverb: ConvolverNode;
   private buffers = new Map<string, AudioBuffer>();
   private loops = new Map<string, Loop>();
   private voices = new Set<Voice>();
+  private steps = new FootstepClock();
+  private events = new FoleyEvents();
+  private variants = new Map<string, number>();
+  private lastConfirm = -Infinity;
   private forward = new THREE.Vector3();
   private nextBird = 0;
   private nextDrop = 0;
@@ -107,6 +116,8 @@ export class NatureAudio {
     }
   }
   private resetTimeline() {
+    this.steps.reset();
+    this.events.reset();
     this.env = null;
     this.lastIdentity = '';
     this.nextEnvironment = this.nextMusic = 0;
@@ -119,7 +130,7 @@ export class NatureAudio {
   }
   private applyVolumes() {
     if (!this.context) return;
-    for (const name of ['ambience', 'music'] as const)
+    for (const name of ['ambience', 'music', 'effects'] as const)
       this.ramp(this.buses[name].gain, this.settings[name]);
   }
   async start() {
@@ -152,7 +163,7 @@ export class NatureAudio {
     limiter.attack.value = 0.003;
     limiter.release.value = 0.25;
     this.master.connect(limiter).connect(ctx.destination);
-    this.buses = { ambience: ctx.createGain(), music: ctx.createGain() };
+    this.buses = { ambience: ctx.createGain(), music: ctx.createGain(), effects: ctx.createGain() };
     for (const bus of Object.values(this.buses)) bus.connect(this.master);
     this.reverb = ctx.createConvolver();
     this.reverb.buffer = caveImpulse(ctx);
@@ -164,7 +175,7 @@ export class NatureAudio {
   }
   private async load() {
     // Decode sequentially to bound temporary memory on phones.
-    for (const name of NATURE_FILES) {
+    for (const name of [...NATURE_FILES, ...FOLEY_FILES]) {
       if (this.disposed) return;
       try {
         const response = await fetch(`/audio/nature/${name}.mp3?v=${NATURE_AUDIO_REVISION}`, {
@@ -245,7 +256,12 @@ export class NatureAudio {
     )
       return;
     const buffer = this.buffers.get(name);
-    if (!buffer || this.voices.size >= 8) return;
+    if (
+      !buffer ||
+      this.voices.size >= 12 ||
+      (bus === 'effects' && [...this.voices].filter((v) => v.bus === 'effects').length >= 4)
+    )
+      return;
     const source = this.context.createBufferSource(),
       gain = this.context.createGain();
     source.buffer = buffer;
@@ -360,10 +376,10 @@ export class NatureAudio {
         for (const voice of this.voices)
           if (voice.name.startsWith('birds-')) this.fadeVoice(voice, 1.5);
       this.ramp(this.reverbSend.gain, e.cave * 0.22, 0.8);
-      this.loop('wind', (0.38 + e.wind.strength * 0.3) * outdoors, undefined, 5200);
+      this.loop('wind', (0.32 + e.wind.strength * 0.14) * outdoors, undefined, 2400);
       this.loop(
         'river',
-        soundFalloff(e.river.distance, 3, 38) * 0.42 * outdoors,
+        soundFalloff(e.river.distance, 3, 38) * 0.34 * outdoors,
         e.river.point,
         2800 + soundFalloff(e.river.distance, 3, 38) * 6200,
         true,
@@ -403,6 +419,36 @@ export class NatureAudio {
       this.stats.place = this.place;
     }
     const e = this.env!;
+    this.stats.surface = e.surface;
+    const motion = p.id === world.predictedMotion?.id ? world.predictedMotion : p;
+    const animation = entity.actor.animation;
+    const gait = /^(Walk|Run)_Loop$/.test(animation.name);
+    const phase = gait ? (animation.current.time / animation.current.getClip().duration) % 1 : null;
+    if (
+      this.steps.update(
+        {
+          ...position,
+          id: p.id,
+          warp: p.warpSequence ?? 0,
+          moving: !!motion.moving && motion.speed > 0.03,
+          grounded:
+            !p.downedUntil &&
+            !p.mountId &&
+            !p.boatId &&
+            !p.carrierId &&
+            !p.passengerId &&
+            jumpProgress(p, world.serverNow()) === null,
+          phase,
+          clip: animation.name,
+        },
+        time,
+      )
+    ) {
+      if (this.effect('step-' + e.surface, motion.running ? 0.7 : 0.5)) this.stats.steps++;
+    }
+    this.events.update(world, p, world.serverNow(), baseline, (name, volume, point) => {
+      if (this.effect(name, volume, point)) this.stats.events++;
+    });
     if (!this.nextBird) this.nextBird = time + 3 + Math.random() * 6;
     if (time >= this.nextBird) {
       this.nextBird = time + 15 + Math.random() * 18;
@@ -469,6 +515,23 @@ export class NatureAudio {
       this.stats.musicPhrases++;
       this.nextMusic = time + buffer.duration + 28 + Math.random() * 18;
     }
+  }
+  private effect(name: string, volume: number, point?: SoundPoint) {
+    const count = FOLEY_VARIANTS[name];
+    let sample = 'fx-' + name;
+    if (count) {
+      const previous = this.variants.get(name) ?? -1;
+      const next = (previous + 1 + Math.floor(Math.random() * (count - 1))) % count;
+      this.variants.set(name, next);
+      sample += '-' + next;
+    }
+    return this.play(sample, volume, 'effects', 1, point);
+  }
+  confirm() {
+    const now = performance.now();
+    if (now - this.lastConfirm < 700) return;
+    this.lastConfirm = now;
+    this.effect('confirm', 0.5);
   }
   dispose() {
     if (this.disposed) return;

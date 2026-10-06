@@ -30,6 +30,8 @@ export class ScreenManager {
     private onChange: (id: ScreenId | null) => void,
   ) {
     document.addEventListener('keydown', this.keydown);
+    window.visualViewport?.addEventListener('resize', this.viewportChanged);
+    window.visualViewport?.addEventListener('scroll', this.viewportChanged);
   }
 
   get active(): ScreenId | null {
@@ -51,6 +53,16 @@ export class ScreenManager {
     this.root.classList.add('active');
     document.body.dataset.screen = id;
     this.onChange(id);
+    this.viewportChanged();
+    // Let a phone user choose a card before opening the software keyboard.
+    if (document.body.classList.contains('touch-mode')) {
+      const screen = this.element(id);
+      if (screen) {
+        screen.tabIndex = -1;
+        screen.focus({ preventScroll: true });
+      }
+      return;
+    }
     const items = this.items(id);
     (items.find((el) => el.hasAttribute('autofocus')) ?? items[0])?.focus({ preventScroll: true });
   }
@@ -60,8 +72,20 @@ export class ScreenManager {
     this.current = null;
     this.root.classList.remove('active');
     delete document.body.dataset.screen;
+    this.root.style.removeProperty('--screen-height');
+    this.root.style.removeProperty('--screen-top');
+    delete this.root.dataset.compact;
     this.onChange(null);
   }
+
+  private viewportChanged = () => {
+    if (!this.current) return;
+    const viewport = window.visualViewport;
+    const height = viewport?.height ?? window.innerHeight;
+    this.root.style.setProperty('--screen-height', `${height}px`);
+    this.root.style.setProperty('--screen-top', `${viewport?.offsetTop ?? 0}px`);
+    this.root.dataset.compact = String(height < 440);
+  };
 
   /** Focusable controls of a screen, skipping hidden ones such as an unavailable "continue". */
   private items(id: ScreenId): HTMLElement[] {
@@ -85,6 +109,8 @@ export class ScreenManager {
 
   destroy(): void {
     document.removeEventListener('keydown', this.keydown);
+    window.visualViewport?.removeEventListener('resize', this.viewportChanged);
+    window.visualViewport?.removeEventListener('scroll', this.viewportChanged);
   }
 }
 

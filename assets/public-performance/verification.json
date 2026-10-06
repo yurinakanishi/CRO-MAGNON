@@ -1,9 +1,9 @@
 {
-  "checkedAt": "2026-10-06T13:41:54.025Z",
+  "checkedAt": "2026-10-06T15:23:21.465Z",
   "status": "passed",
-  "models": 109,
-  "byteIdenticalGeometrySkinAnimationViews": 16348,
-  "embeddedImages": 104,
-  "sourceBytes": 665245856,
-  "bytes": 503494928
+  "models": 111,
+  "byteIdenticalGeometrySkinAnimationViews": 19296,
+  "embeddedImages": 105,
+  "sourceBytes": 707692468,
+  "bytes": 524420064
 }

@@ -65,6 +65,7 @@ export class ContactShadows {
     add(this.world.rimoNekoRenderer?.root, 0.28);
     add(this.world.maeRenderer?.root, 0.24);
     add(this.world.kohakuRenderer?.root, 0.2);
+    add(this.world.maruimoRenderer?.root, 0.2);
     add(this.world.companion524Renderer?.root, 0.18);
     this.mesh.count = count;
     this.mesh.instanceMatrix.clearUpdateRanges();

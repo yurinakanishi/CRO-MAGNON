@@ -17,7 +17,7 @@ export const NATURE_FILES = [
   'bgm-camp',
   'bgm-cave',
 ] as const;
-export const NATURE_AUDIO_REVISION = 'field-v2-20261006';
+export const NATURE_AUDIO_REVISION = 'soft-foley-v3-20261006';
 
 /** One smooth distance envelope. Panners provide direction only, not another attenuation. */
 export function soundFalloff(distance: number, near: number, far: number) {
