@@ -185,7 +185,7 @@ const sessionKey = (room: string) => multiplayerSessionKey(multiplayer, room);
 const fixedIdentity = multiplayer.mode === 'lan';
 const hudPlayerLimit = () =>
   fixedIdentity ? EXHIBITION_PLAYER_LIMIT : (state.playerLimit ?? WORLD.maxPlayers);
-const titleArtPath = '/title/cro-magnon-mmo-transparent.png';
+const titleArtPath = '/title/cro-magnon-mmo-transparent.webp';
 const cleanRoom = (value: string) =>
   value
     .toUpperCase()

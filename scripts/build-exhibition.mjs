@@ -50,7 +50,9 @@ add('dist/server.mjs');
 await collect('public/vendor', (file) => /\.(js|mjs|wasm)$/.test(file));
 await collect('public/audio', (file) => /\.(wav|mp3|json|txt)$/.test(file));
 await collect('public/motion', (file) => /\.(task|json|txt)$/.test(file));
-await collect('public/title', (file) => /\.(png|jpe?g)$/.test(file));
+await collect('public/title', (file) =>
+  /\.(png|jpe?g|webp)$/.test(file) && file !== 'public/title/cro-magnon-mmo-transparent.png',
+);
 await collect('public/spawn', (file) => /\.jpg$/.test(file));
 await collect('node_modules/ws');
 for (const file of [

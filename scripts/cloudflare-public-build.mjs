@@ -131,7 +131,8 @@ for (const directory of ['dist/src', 'dist/shared']) await collect(directory, /\
 await collect('public/vendor', /\.(js|mjs|wasm|txt)$/);
 await collect('public/audio', /\.(wav|mp3|json|txt)$/);
 await collect('public/spawn', /\.jpg$/);
-await collect('public/title', /\.(png|jpe?g)$/, (name) => {
+await collect('public/title', /\.(png|jpe?g|webp)$/, (name) => {
+  if (name === 'cro-magnon-mmo-transparent.png') return false;
   const profile = /^(?:qr|avatar)-([a-z0-9]+)\./.exec(name);
   return !profile || visibleProfiles.has(profile[1]);
 });
