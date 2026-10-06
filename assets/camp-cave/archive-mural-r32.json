@@ -32,10 +32,10 @@
     "The deep gallery keeps approximately 11 m width and 5.5 m centre headroom up to the back chamber. Existing measured source relief is expanded without moving the accepted mouth or replacing the cave with primitive geometry.",
     "Only the final 1.2 m rounds into a broad rear wall; the long tapered dead end is removed. The source boundary vertices remain shared across the wall, floor and ceiling joins.",
     "The measured aisle is 54.91 m, 2.11 times the original 26.00 m. The original outdoor campfire, river, mountain mesh and castle path are unchanged.",
+    "The separate transparent 524 pigment closely preserves the user image silhouette, ears, lower lobes, two drops, three white patches, exact digits and dark mouth. Its generated PNG is copied unchanged; other accepted animal art is retained.",
     "White calcite wall albedo retains real rock relief, pores and bedding; pigments are projected directly onto those existing triangles. Warm fire illuminates the same faintly visible paintings.",
     "Gallery r30 restores the user-reference waving gray-white Rimo cat among two horses, an aurochs and a deer, directly opposite the unchanged west-wall 524. The cave geometry, walking surface and fire are unchanged.",
-    "Gallery r31 includes all 13 released mascots among animal friezes. Cave placement is at ground level at the mountain foot near camp. Coming Soon is reserved for confirmed upcoming characters. The source cave GLB and earlier pigment files are retained.",
-    "Gallery r32 integrates the faithful small 524 with a mammoth, two horses and an aurochs in one weathered transparent frieze, matching the opposite Rimo frieze. It replaces three separated west-wall placements. Earlier paintings and source models remain archived."
+    "Gallery r31 includes all 13 released mascots among animal friezes. Cave placement is at ground level at the mountain foot near camp. Coming Soon is reserved for confirmed upcoming characters. The source cave GLB and earlier pigment files are retained."
   ],
   "provenance": {
     "provider": "Codex",
@@ -90,7 +90,7 @@
       "sha256": "1cbdd091523b48fea81f70eba5cc3840c7328ccfab4b8d1ef63e44b49e0ff5af"
     }
   },
-  "gameQA": "output/playwright/cave-524-frieze-20261006/final-r02/summary.json",
+  "gameQA": "output/playwright/update-cave-20261005/summary.json",
   "rockSurface": {
     "url": "/models/camp-cave/limestone-r05.png",
     "source": "assets/camp-cave/source/limestone-r05.png",
@@ -106,41 +106,24 @@
     "review": "assets/camp-cave/qa/gallery-r29.json"
   },
   "characterPigment": {
-    "source": "assets/camp-cave/source/524-lascaux-frieze-r32.png",
-    "url": "/models/camp-cave/524-lascaux-frieze-r32.png",
-    "sha256": "5fc419d77d0155133b0f231a07ad80a03c78ed99850ced492f79108bea5a765a",
-    "bytes": 2355756,
+    "url": "/models/camp-cave/character-524-mural-r06.png",
+    "source": "assets/camp-cave/source/character-524-mural-r06.png",
+    "bytes": 1757426,
+    "sha256": "9fc9d9d635989a1e928a5ccdac2a7ed3889a1442930ff07f8503c7d2832fd071",
     "image": {
-      "width": 2171,
-      "height": 724
+      "width": 1254,
+      "height": 1254
     },
     "generator": "Built-in imagegen",
-    "prompt": "assets/camp-cave/524-lascaux-prompt-r32.txt",
-    "references": [
-      {
-        "path": "assets/camp-cave/source/character-524-mural-r06.png",
-        "sha256": "9fc9d9d635989a1e928a5ccdac2a7ed3889a1442930ff07f8503c7d2832fd071"
-      },
-      {
-        "path": "assets/camp-cave/source/rimo-lascaux-frieze-r30.png",
-        "sha256": "b750045fda524816577747197874d173d41161e2b55d9acfe772a8f37f8d01df"
-      },
-      {
-        "path": "assets/camp-cave/source/character-524-reference-user.png",
-        "sha256": "8231914f43d9e8454823a923c8004df44c0bad1ee1aec9e2f140493d5f2af273"
-      }
-    ],
-    "subjects": [
-      "524",
-      "woolly mammoth",
-      "ochre wild horse",
-      "red wild horse",
-      "aurochs"
-    ],
-    "application": "One 7.5 m wide transparent mineral-pigment frieze on the west wall opposite Rimo. The small floating 524 shares muted ochre, charcoal, worn edges and overlapping animal composition. Direct projection on original limestone triangles; no extra geometry or backing.",
-    "review": "assets/camp-cave/qa/gallery-surfaces-r32.json"
+    "prompt": "assets/camp-cave/character-524-prompt-r06.txt",
+    "reference": {
+      "path": "assets/camp-cave/source/character-524-reference-r06.png",
+      "sha256": "8231914f43d9e8454823a923c8004df44c0bad1ee1aec9e2f140493d5f2af273"
+    },
+    "application": "One unchanged transparent ochre-pigment image on the right wall. At 1.34 m image width its painted height is about 1.11 m, half the neighbouring mammoth mural. Its raised baseline expresses floating. The actual companion keeps its existing 0.30 m body height.",
+    "review": "assets/camp-cave/qa/gallery-r30.json"
   },
-  "galleryRevision": "32",
+  "galleryRevision": "31",
   "rimoPigment": {
     "source": "assets/camp-cave/source/rimo-lascaux-frieze-r30.png",
     "url": "/models/camp-cave/rimo-lascaux-frieze-r30.png",

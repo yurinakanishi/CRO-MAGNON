@@ -536,8 +536,8 @@
       "sha256": "65dde1aa7311b88c159d524d93af82a770dac77e48ee1f35356e3000cad8a15f",
       "triangles": 74458,
       "delivery": "/models/camp-cave/model-r26.glb",
-      "gameQA": "output/playwright/update-cave-20261005/summary.json",
-      "galleryRevision": "31"
+      "gameQA": "output/playwright/cave-524-frieze-20261006/final-r02/summary.json",
+      "galleryRevision": "32"
     },
     {
       "key": "yellow-524-mascot",

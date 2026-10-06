@@ -12,17 +12,31 @@ import {
 import { prepareCaveMaterials } from '../dist/src/cave-materials.js';
 
 test('Rimo frieze still faces 524 while all released mascots join the animal gallery', async () => {
-  const old = JSON.parse(await readFile('assets/camp-cave/qa/gallery-r29.json'));
   const rimo = CAVE_MURALS.find((m) => m.motif === 'rimoFrieze');
   const figure = CAVE_MURALS.find((m) => m.motif === 'creature524');
   assert.equal(rimo.wall, 'east');
   assert.equal(figure.wall, 'west');
   assert.equal(rimo.centre, figure.centre);
   assert.equal(caveMuralHeight(rimo), 2.5);
-  assert.deepEqual(
-    figure,
-    old.layout.find((m) => m.motif === 'creature524'),
-  );
+  assert.equal(figure.width, rimo.width);
+  assert.equal(figure.strength, rimo.strength);
+  assert.ok(Math.abs(caveMuralHeight(figure) - caveMuralHeight(rimo)) < 0.01);
+  const asset = JSON.parse(await readFile('public/models/camp-cave/asset.json'));
+  const p = asset.characterPigment;
+  assert.deepEqual(p.subjects, [
+    '524',
+    'woolly mammoth',
+    'ochre wild horse',
+    'red wild horse',
+    'aurochs',
+  ]);
+  for (const file of [p.source, 'public' + p.url]) {
+    const bytes = await readFile(file);
+    assert.equal(createHash('sha256').update(bytes).digest('hex'), p.sha256);
+    assert.equal(bytes.readUInt32BE(16), 2171);
+    assert.equal(bytes.readUInt32BE(20), 724);
+    assert.equal(bytes[25], 6, '524 frieze must retain RGBA');
+  }
   assert.equal(
     new Set(['524', 'rimo-neko', ...Object.values(CAVE_EXTRA_PIGMENTS).flatMap((p) => p.subjects)])
       .size,

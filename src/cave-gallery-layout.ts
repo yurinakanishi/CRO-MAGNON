@@ -2,8 +2,8 @@ import { CAVE_BEND } from '../shared/camp-cave-layout.mjs';
 
 // Pixel bounds preserve each complete motif in the unmodified generated atlas.
 export const CAVE_MOTIFS = {
-  // The faithful 524 uses its own unmodified transparent image.
-  creature524: [0, 0, 1254, 1254],
+  // One unmodified painting: the small 524 amongst mammoth, horses and aurochs.
+  creature524: [0, 0, 2171, 724],
   // One unmodified transparent painting: Rimo, two horses, aurochs and deer.
   rimoFrieze: [0, 0, 2172, 724],
   roundBots: [0, 0, 2172, 724],
@@ -56,12 +56,9 @@ export const CAVE_MURALS: readonly CaveMural[] = [
   { motif: 'signs', wall: 'east', centre: -24.2, bottom: 4.45, width: 1.05, strength: 0.57 },
   { motif: 'maeKohaku', wall: 'east', centre: -28.5, bottom: 1.5, width: 6.4, strength: 0.86 },
   { motif: 'deer', wall: 'west', centre: -14, bottom: 1.6, width: 1.8, strength: 0.72 },
-  { motif: 'mammoth', wall: 'west', centre: -17.4, bottom: 1.6, width: 3, strength: 0.81 },
-  // The user requested half the neighbouring mammoth's 2.22 m painted height.
-  // A 1.34 m image width * 1042/1254 painted pixels gives about 1.11 m,
-  // excluding transparent margins. Its raised baseline still suggests floating.
-  { motif: 'creature524', wall: 'west', centre: -21.2, bottom: 2, width: 1.34, strength: 0.94 },
-  { motif: 'redHorse', wall: 'west', centre: -24.8, bottom: 1.65, width: 2.8, strength: 0.78 },
+  // Replaces the separated mammoth, 524 and horse with one continuous group.
+  // The small floating mascot is roughly half the mammoth's painted height.
+  { motif: 'creature524', wall: 'west', centre: -21.2, bottom: 1.6, width: 7.5, strength: 0.82 },
   { motif: 'hands', wall: 'west', centre: -24.7, bottom: 4.5, width: 1.0, strength: 0.64 },
   { motif: 'bison', wall: 'west', centre: -28.6, bottom: 1.5, width: 2.7, strength: 0.79 },
   { motif: 'signs', wall: 'west', centre: -28.4, bottom: 4.5, width: 0.95, strength: 0.57 },
@@ -86,11 +83,12 @@ const f = (n: number) => n.toFixed(6);
 export const caveMuralShader = CAVE_MURALS.map((m) => {
   const [x0, y0, x1, y1] = CAVE_MOTIFS[m.motif];
   const extra = m.motif in CAVE_EXTRA_PIGMENTS || m.motif === 'comingSoon';
-  const [imageWidth, imageHeight] = extra
-    ? [x1, y1]
-    : m.motif === 'rimoFrieze'
-      ? [2172, 724]
-      : [1254, 1254];
+  const [imageWidth, imageHeight] =
+    extra || m.motif === 'creature524'
+      ? [x1, y1]
+      : m.motif === 'rimoFrieze'
+        ? [2172, 724]
+        : [1254, 1254];
   const sampler = extra
     ? `cave_${m.motif}`
     : m.motif === 'creature524'
