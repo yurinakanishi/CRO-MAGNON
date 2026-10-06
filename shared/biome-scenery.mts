@@ -102,7 +102,7 @@ export function resourceAppearance(resource) {
     key,
     biome,
     surface: resource.id?.startsWith('gulf-') ? 'valley' : (palette.surface ?? null),
-    scale: resource.type === 'stone' ? 0.935 / palette.rockHeight : 1,
+    scale: 1,
     yaw: resource.x * 0.2,
   };
 }

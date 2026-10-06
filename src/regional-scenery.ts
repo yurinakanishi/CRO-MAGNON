@@ -223,6 +223,7 @@ export class RegionalScenery {
       if (regionalId(item.key, item.surface) !== id) continue;
       this.world.scene.remove(item.model);
       item.wood?.dispose();
+      item.stone?.dispose();
       // Resource instances have no labels; only their scene object belongs here.
       this.world.resources.delete(resourceId);
     }

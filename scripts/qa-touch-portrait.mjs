@@ -328,12 +328,12 @@ try {
   await phone.tap('#map-zoom-in');
   await shot('06-touch-map');
   await phone.tap('#modal-close');
-  await phone.tap('[data-touch-action="journal"]');
-  await phone.page.locator('#modal[open]').waitFor();
-  await shot('07-touch-journal');
-  await phone.tap('#modal-close');
+  assert.equal(
+    await phone.page.locator('[data-touch-action="journal"], #adventure-button').count(),
+    0,
+  );
   pass(
-    'Touch menu stops a held thumb; settings, all 13 companions, map and journal are directly usable',
+    'Touch menu stops a held thumb; settings, all 13 companions and map are directly usable; journal is absent',
   );
 
   for (const size of [
@@ -361,7 +361,7 @@ try {
 
   await phone.page.setViewportSize({ width: 390, height: 844 });
   await sleep(300);
-  await phone.tap('#chat-toggle');
+  await phone.tap('[data-touch-action="chat"]');
   await until(() => phone.page.locator('#touch-controls').isHidden(), 'chat stops controls');
   await phone.tap('#chat-toggle');
   const peer = await open(false);

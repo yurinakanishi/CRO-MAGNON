@@ -73,10 +73,18 @@ export function environmentAsset(name, bytes, profile) {
 export async function auditEnvironmentAssets(names, read, profile) {
   const files = new Set(names);
   for (const name of files) {
+    if (name === 'src/adventure-ui.js')
+      throw new Error(`Removed journal asset in ${profile.environment}: ${name}`);
     if (!profile.cameraControls && cameraAsset(name))
       throw new Error(`Camera asset in MMO: ${name}`);
-    if (!/\.(?:m?js|html)$/.test(name)) continue;
+    if (!/\.(?:m?js|html|css)$/.test(name)) continue;
     const code = (await read(name)).toString('utf8');
+    if (
+      /\bopenJournal\b|\binstallAdventureUI\b|adventure-browser|journal-entry|['"]journal['"]|手帳/.test(
+        code,
+      )
+    )
+      throw new Error(`Removed journal UI in ${profile.environment}: ${name}`);
     if (
       !profile.cameraControls &&
       /getUserMedia|HandLandmarker|\/vendor\/mediapipe\/|\/src\/motion-|\/motion\//.test(code)

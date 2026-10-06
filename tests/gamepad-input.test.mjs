@@ -357,3 +357,10 @@ test('d-pad up recalls bots once per press; the map stays on SHARE and the touch
   press(PAD.share);
   assert.deepEqual(sample().actions, ['map']);
 });
+
+test('the removed journal shortcut on d-pad right performs no game action', () => {
+  const { sample, press } = setup('game');
+  press(PAD.right);
+  assert.deepEqual(sample().actions, []);
+  assert.deepEqual(sample().actions, []);
+});

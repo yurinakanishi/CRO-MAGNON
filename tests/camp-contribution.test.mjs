@@ -11,7 +11,7 @@ import { coastalInteraction } from '../dist/src/coastal-ui.js';
 import { fishingInteraction } from '../dist/src/fishing-ui.js';
 import { huntInteraction } from '../dist/src/hunting-ui.js';
 import { caveFireInteraction } from '../dist/shared/cave-fire.mjs';
-import { adventureInteraction } from '../dist/src/adventure-ui.js';
+import { adventureInteraction } from '../dist/src/adventure-interaction.js';
 import { residentInteraction } from '../dist/src/village-ui.js';
 import { gulfInteraction } from '../dist/src/gulf-ui.js';
 

@@ -1476,11 +1476,25 @@ body[data-screen] .world-labels {
 .boat-controls .hunt-button {
   white-space: nowrap;
 }
+.boat-controls [hidden] {
+  display: none;
+}
+@media (max-width: 700px), (max-height: 540px) {
+  body:not(.touch-mode) .hotbar-wrap:has(#boat-launch:not([hidden]), #boat-recover:not([hidden])) {
+    bottom: 240px;
+    left: 50%;
+    right: auto;
+    transform: translateX(-50%);
+    width: max-content;
+    max-width: calc(100% - 24px);
+  }
+}
 .hotbar-wrap.boating .hunt-controls,
 .hotbar-wrap.boating .riding-controls,
 .hotbar-wrap.boating .interaction-hint,
 .hotbar-wrap.boating [data-action],
-.hotbar-wrap.boating #boat-craft,
+.hotbar-wrap.boating #boat-launch,
+.hotbar-wrap.boating #boat-recover,
 .hotbar-wrap.boating #boat-shore,
 .hotbar-wrap.riding .boat-controls {
   display: none;
@@ -1521,7 +1535,7 @@ body[data-screen] .world-labels {
 
 /* Secondary rows only appear when they can be used, so the bottom rows stay one line at rest. */
 .riding-controls:has(#ride-button:disabled),
-.boat-controls:has(#boat-board:disabled):has(#boat-craft:disabled),
+.boat-controls:has(#boat-board:disabled):has(#boat-launch:disabled):has(#boat-recover:disabled),
 .hunt-controls > #cook-button:disabled {
   display: none;
 }
@@ -2724,31 +2738,6 @@ dialog:has(.character-switch) {
   display: flex;
   gap: 6px;
   align-items: center;
-}
-.journal-entry {
-  display: flex;
-  gap: 19px;
-  border-top: 1px solid #a8be931a;
-  padding: 20px 0 12px;
-}
-.journal-entry > span {
-  font:
-    italic 25px Georgia,
-    serif;
-  color: #b9ad7f;
-  opacity: 0.7;
-}
-.journal-entry h3 {
-  font-size: 13px;
-  font-weight: 600;
-  margin: 2px 0 10px;
-  color: #d7dfc5;
-}
-.journal-entry p {
-  font-size: 11px;
-  line-height: 2;
-  color: #a0af94;
-  margin: 0;
 }
 .gamepad-connection {
   color: #d2dcae;
@@ -4134,4 +4123,29 @@ dialog:has(.atlas) #modal-body {
 }
 .pause-rail .pause-tabs {
   margin-top: 4px;
+}
+
+.audio-volume-control {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  max-width: 65%;
+}
+.audio-volume input {
+  width: 160px;
+  max-width: 100%;
+  min-width: 70px;
+  accent-color: #91ac79;
+  cursor: pointer;
+}
+.audio-volume output {
+  min-width: 3.1em;
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+.audio-volume label {
+  font-weight: 600;
+}
+.audio-status:empty {
+  display: none;
 }

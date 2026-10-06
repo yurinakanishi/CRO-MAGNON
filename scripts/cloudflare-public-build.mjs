@@ -135,6 +135,7 @@ await publish(
 );
 for (const directory of ['dist/src', 'dist/shared']) await collect(directory, /\.(js|mjs|css)$/);
 await collect('public/vendor', /\.(js|mjs|wasm|txt)$/);
+await collect('public/audio', /\.(wav|json|txt)$/);
 await collect('public/spawn', /\.jpg$/);
 await collect('public/title', /\.(png|jpe?g)$/, (name) => {
   const profile = /^(?:qr|avatar)-([a-z0-9]+)\./.exec(name);

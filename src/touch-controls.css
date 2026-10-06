@@ -44,18 +44,13 @@
 .touch-toolbar button {
   width: 52px;
   display: flex;
-  flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 2px;
-  padding: 6px 2px;
+  padding: 8px;
 }
 .touch-toolbar button > .icon {
   width: 22px;
   height: 22px;
-}
-.touch-toolbar button > span:last-child {
-  font-size: 10px;
 }
 .touch-move {
   position: absolute;
@@ -237,39 +232,110 @@ body.touch-mode {
   max-width: calc(100vw - 32px);
   font-size: 12px;
 }
-.touch-mode .chat-panel {
-  top: calc(max(12px, env(safe-area-inset-top)) + 150px);
-  left: max(16px, env(safe-area-inset-left));
-  bottom: auto;
-  width: min(320px, calc(100vw - 32px));
+.touch-mode .game-viewport > .chat-panel {
+  display: none;
 }
-.touch-mode .chat-panel:has(#chat-content[hidden]) {
-  bottom: auto;
-  right: auto;
-  left: max(16px, env(safe-area-inset-left));
-  width: 76px;
+#chat-dialog {
+  position: fixed;
+  inset: auto 0 var(--chat-keyboard, 0px);
+  margin: 0 auto;
+  padding: 0;
+  width: min(100%, 560px);
+  max-width: 100%;
+  height: min(440px, var(--chat-height, 100dvh));
+  max-height: var(--chat-height, 100dvh);
+  border: 1px solid #c5d0b740;
+  border-bottom: 0;
+  border-radius: 24px 24px 0 0;
+  background: #1d2c25;
+  overflow: hidden;
+  box-shadow: 0 -12px 50px #0005;
 }
-.touch-mode .chat-heading {
-  min-height: 44px;
+#chat-dialog[open] {
+  animation: chat-rise 180ms ease-out;
 }
-.touch-mode .chat-panel:has(#chat-content[hidden]) .chat-heading {
-  padding: 8px;
+#chat-dialog::backdrop {
+  background: #06130b70;
 }
-.touch-mode .chat-panel:has(#chat-content[hidden]) .chat-heading strong {
+.touch-mode #chat-dialog .chat-panel {
+  display: flex;
+  flex-direction: column;
+  position: static;
+  width: 100%;
+  max-width: none;
+  height: 100%;
+  border: 0;
+  border-radius: 0;
+  box-shadow: none;
+  background: none;
+}
+.touch-mode #chat-dialog .chat-heading {
+  flex-shrink: 0;
+  min-height: 56px;
+  padding: 12px max(20px, env(safe-area-inset-right)) 12px max(20px, env(safe-area-inset-left));
+}
+.touch-mode #chat-dialog .chat-heading strong {
   display: block;
+  font-size: 15px;
+}
+.touch-mode #chat-dialog .chat-heading > .icon {
+  width: 20px;
+  height: 20px;
+}
+.touch-mode #chat-dialog .chat-collapse {
   font-size: 0;
 }
-.touch-mode .chat-panel:has(#chat-content[hidden]) .chat-heading strong:after {
-  content: '会話';
-  font-size: 11px;
+.touch-mode #chat-dialog .chat-collapse:after {
+  content: '×';
+  font-size: 26px;
 }
-.touch-mode #chat-input {
+.touch-mode #chat-dialog #chat-content {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+}
+.touch-mode #chat-dialog .chat-messages {
+  flex: 1;
+  min-height: 0;
+  height: auto;
+  padding: 12px max(20px, env(safe-area-inset-left));
+  overscroll-behavior: contain;
+}
+.touch-mode #chat-dialog .chat-messages p {
+  font-size: 14px;
+  line-height: 1.7;
+  overflow-wrap: anywhere;
+}
+.touch-mode #chat-dialog #chat-form {
+  flex-shrink: 0;
+  gap: 8px;
+  padding: 12px max(16px, env(safe-area-inset-right)) max(12px, env(safe-area-inset-bottom))
+    max(16px, env(safe-area-inset-left));
+  background: #26372e;
+}
+.touch-mode #chat-dialog #chat-input {
+  min-width: 0;
+  min-height: 48px;
   font-size: 16px;
-  min-height: 44px;
+  padding: 12px;
 }
-.touch-mode #chat-form button {
-  min-width: 44px;
-  min-height: 44px;
+.touch-mode #chat-dialog #chat-form button {
+  min-width: 48px;
+  min-height: 48px;
+}
+@keyframes chat-rise {
+  from {
+    transform: translateY(100%);
+  }
+  to {
+    transform: translateY(0);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  #chat-dialog[open] {
+    animation: none;
+  }
 }
 .touch-mode .hotbar-wrap {
   bottom: calc(max(24px, env(safe-area-inset-bottom)) + 260px);
@@ -278,12 +344,6 @@ body.touch-mode {
 .touch-mode .hunt-button {
   min-height: 44px;
   font-size: 12px;
-}
-.touch-mode .boat-controls #boat-craft:disabled {
-  display: none;
-}
-.touch-mode .boat-controls #boat-weather[hidden] {
-  display: none;
 }
 .touch-mode #motion-controls[data-state='OFF'] {
   display: none;
@@ -369,9 +429,6 @@ body.touch-mode {
     bottom: var(--touch-bottom);
     left: calc(var(--touch-left) + 148px);
     width: 136px;
-  }
-  .touch-mode .chat-panel {
-    top: calc(max(12px, env(safe-area-inset-top)) + 88px);
   }
   .touch-mode .hotbar-wrap {
     bottom: calc(max(24px, env(safe-area-inset-bottom)) + 140px);

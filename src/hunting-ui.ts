@@ -27,6 +27,7 @@ export function inventoryCounts(inventory = {}) {
       'cookedShellfish',
       'shells',
       'obsidianBlade',
+      'boat',
     ].map((key) => [key, Math.max(0, Number(inventory[key]) || 0)]),
   );
 }

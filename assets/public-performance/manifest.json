@@ -1529,6 +1529,76 @@
       "bytes": 1973892,
       "maximumTextureEdge": 2048,
       "images": []
+    },
+    {
+      "sourceUrl": "/models/mae/model-r01.glb",
+      "sourceSha256": "3fb4776d3830cda7b00dd1eeadaf4c000ebe7f41af38ccfe0ee55909e1309405",
+      "sourceBytes": 17886104,
+      "file": "assets/public-performance/models/mae-model-r01-tex1024.glb",
+      "url": "/models/mae/model-web-1105c73b0a234947.glb",
+      "sha256": "1105c73b0a234947331fde827c2803ca3df2d74d4061eff89ac10938fcfb6c62",
+      "bytes": 3158852,
+      "maximumTextureEdge": 1024,
+      "images": [
+        {
+          "before": [
+            4096,
+            4096
+          ],
+          "after": [
+            1024,
+            1024
+          ],
+          "beforeBytes": 15837050,
+          "afterBytes": 1109871
+        }
+      ]
+    },
+    {
+      "sourceUrl": "/models/mae/lod-r01.glb",
+      "sourceSha256": "3fbb5c47bba03031a39e86b5af843895110cbcd800e7a7f6f57ebbcff81623c6",
+      "sourceBytes": 1668032,
+      "file": "assets/public-performance/models/mae-lod-r01-tex1024.glb",
+      "url": "/models/mae/lod-web-3fbb5c47bba03031.glb",
+      "sha256": "3fbb5c47bba03031a39e86b5af843895110cbcd800e7a7f6f57ebbcff81623c6",
+      "bytes": 1668032,
+      "maximumTextureEdge": 1024,
+      "images": []
+    },
+    {
+      "sourceUrl": "/models/kohaku/model-r05.glb",
+      "sourceSha256": "225032577f552cc7da5837494897a60408e5941726f97b6c9a6d5bba9bc4cbfb",
+      "sourceBytes": 31445164,
+      "file": "assets/public-performance/models/kohaku-model-r05-tex1024.glb",
+      "url": "/models/kohaku/model-web-4a234f29aac3f6ec.glb",
+      "sha256": "4a234f29aac3f6ecdc99d28c93d0b85ffdd38b877c5a112e0658b4e9d7a14dd8",
+      "bytes": 11958524,
+      "maximumTextureEdge": 1024,
+      "images": [
+        {
+          "before": [
+            4096,
+            4096
+          ],
+          "after": [
+            1024,
+            1024
+          ],
+          "beforeBytes": 21412156,
+          "afterBytes": 1925513
+        }
+      ]
+    },
+    {
+      "sourceUrl": "/models/kohaku/lod-r05.glb",
+      "sourceSha256": "6512213708f3b082d563911986dec2cbca2461bb572deca14a0856bc05834e96",
+      "sourceBytes": 2884628,
+      "file": "assets/public-performance/models/kohaku-lod-r05-tex1024.glb",
+      "url": "/models/kohaku/lod-web-6512213708f3b082.glb",
+      "sha256": "6512213708f3b082d563911986dec2cbca2461bb572deca14a0856bc05834e96",
+      "bytes": 2884628,
+      "maximumTextureEdge": 1024,
+      "images": []
     }
   ]
 }

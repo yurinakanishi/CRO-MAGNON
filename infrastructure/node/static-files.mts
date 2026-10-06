@@ -19,6 +19,7 @@ export const MIME: Readonly<Record<string, string>> = {
   '.woff2': 'font/woff2',
   '.mp3': 'audio/mpeg',
   '.ogg': 'audio/ogg',
+  '.wav': 'audio/wav',
   '.glb': 'model/gltf-binary',
   '.wasm': 'application/wasm',
   '.task': 'application/octet-stream',

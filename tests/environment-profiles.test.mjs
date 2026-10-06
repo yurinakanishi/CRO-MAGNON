@@ -55,6 +55,27 @@ test('nested declared cave textures are packaged with integrity while historical
   );
 });
 
+test('all environment releases reject removed journal code and stale incremental assets', async () => {
+  for (const environment of ['local', 'exhibition', 'mmo']) {
+    const profile = browserBuildProfile(environment);
+    for (const [name, code] of [
+      ['src/adventure-ui.js', 'export const old = true;'],
+      ['src/main.js', 'openJournal();'],
+      ['src/touch-controls.js', 'const action = "journal";'],
+      ['src/style.css', '.journal-entry {}'],
+    ]) {
+      const files = new Map([
+        ['build-profile.json', Buffer.from(JSON.stringify(profile))],
+        [name, Buffer.from(code)],
+      ]);
+      await assert.rejects(
+        auditEnvironmentAssets(files.keys(), async (file) => files.get(file), profile),
+        /Removed journal/,
+      );
+    }
+  }
+});
+
 test('environment profiles isolate local ports/storage and keep MMO camera controls disabled', () => {
   assert.equal(ENVIRONMENTS.local.cameraControls, true);
   assert.equal(ENVIRONMENTS.exhibition.cameraControls, true);

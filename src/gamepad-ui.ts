@@ -203,7 +203,7 @@ export class GamepadControls {
     } else if (mode === 'game') {
       // Opening a UI wins over every gameplay action arriving in the same frame.
       const opensMenu = frame.actions.find((action) =>
-        ['menu', 'inventory', 'map', 'journal'].includes(action),
+        ['menu', 'inventory', 'map'].includes(action),
       );
       if (!opensMenu && (frame.look.x || frame.look.y))
         this.options.onLook(frame.look.x, frame.look.y, dt);
@@ -274,6 +274,17 @@ export class GamepadControls {
 
   private navigate(direction: Direction) {
     const el = this.focused;
+    if (
+      (direction === 'left' || direction === 'right') &&
+      el instanceof HTMLInputElement &&
+      el.type === 'range'
+    ) {
+      if (direction === 'left') el.stepDown();
+      else el.stepUp();
+      el.dispatchEvent(new Event('input', { bubbles: true }));
+      el.dispatchEvent(new Event('change', { bubbles: true }));
+      return;
+    }
     if ((direction === 'left' || direction === 'right') && el instanceof HTMLSelectElement) {
       const options = [...el.options].filter(
         (o) => !o.disabled && !o.parentElement?.matches('optgroup:disabled'),

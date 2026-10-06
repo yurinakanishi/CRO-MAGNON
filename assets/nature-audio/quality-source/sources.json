@@ -1,0 +1,177 @@
+{
+  "downloaded": "2026-10-06",
+  "vscoCommit": "440300901dfe9275fd84e0b7763af1f8443ae62e",
+  "sources": [
+    {
+      "file": "wind-field.wav",
+      "url": "https://opengameart.org/sites/default/files/park_ambience_wind.wav",
+      "author": "Thimras",
+      "page": "https://opengameart.org/content/park-ambiences",
+      "license": "CC0-1.0",
+      "bytes": 73960096,
+      "sha256": "5c381856745b4706e7eba55eb9271a61a530e90c05df8126adb2db89ecfa6c5a"
+    },
+    {
+      "file": "river-field.wav",
+      "url": "https://opengameart.org/sites/default/files/park_ambience_river.wav",
+      "author": "Thimras",
+      "page": "https://opengameart.org/content/park-ambiences",
+      "license": "CC0-1.0",
+      "bytes": 99072736,
+      "sha256": "da0c0c9b1249a83a1611cc116d5737b0864a8db9f45f1ae8dcc079d0f7c0bbbf"
+    },
+    {
+      "file": "rain-field.ogg",
+      "url": "https://opengameart.org/sites/default/files/Ove%20Melaa%20-%20Rainy%20%28NOT%20loopable%29%20Long%20Version.ogg",
+      "author": "Ove Melaa",
+      "page": "https://opengameart.org/content/rain-ambient-not-loopable-2-versions-available",
+      "license": "CC0-1.0",
+      "bytes": 5470927,
+      "sha256": "0022bccf5a8ade5fdcbb7e99ca3437ee6520a3951fd1c442298c38d90a05e2a3"
+    },
+    {
+      "file": "drips.flac",
+      "url": "https://opengameart.org/sites/default/files/atmosbasement.mp3_.flac",
+      "author": "Independent.nu / qubodup",
+      "page": "https://opengameart.org/content/dripping-water-loop",
+      "license": "CC0-1.0",
+      "bytes": 1309638,
+      "sha256": "247c0ef181c8ba8d190a6194f6ea02d9defb23b70194c52c7f9187b5b7b1cc61"
+    },
+    {
+      "file": "LDFlute_susNV_C3_v1_1.wav",
+      "url": "https://raw.githubusercontent.com/sgossner/VSCO-2-CE/440300901dfe9275fd84e0b7763af1f8443ae62e/Woodwinds/Flute/susNV/LDFlute_susNV_C3_v1_1.wav",
+      "author": "Versilian Studios / Sam Gossner & Simon Dalzell; cutting: Elan Hickler",
+      "page": "https://versilian-studios.com/vsco-community/",
+      "license": "CC0-1.0",
+      "bytes": 2642490,
+      "sha256": "4f221909317e257e4d0bc49f10479643c80cb213a0486455c1bdc1d6ed13a450"
+    },
+    {
+      "file": "LDFlute_susNV_E3_v1_1.wav",
+      "url": "https://raw.githubusercontent.com/sgossner/VSCO-2-CE/440300901dfe9275fd84e0b7763af1f8443ae62e/Woodwinds/Flute/susNV/LDFlute_susNV_E3_v1_1.wav",
+      "author": "Versilian Studios / Sam Gossner & Simon Dalzell; cutting: Elan Hickler",
+      "page": "https://versilian-studios.com/vsco-community/",
+      "license": "CC0-1.0",
+      "bytes": 2874126,
+      "sha256": "87c667c2af888ed86dff87f2452248de3e3d958fc93848a4426b7c16f85f09da"
+    },
+    {
+      "file": "LDFlute_susNV_A3_v1_1.wav",
+      "url": "https://raw.githubusercontent.com/sgossner/VSCO-2-CE/440300901dfe9275fd84e0b7763af1f8443ae62e/Woodwinds/Flute/susNV/LDFlute_susNV_A3_v1_1.wav",
+      "author": "Versilian Studios / Sam Gossner & Simon Dalzell; cutting: Elan Hickler",
+      "page": "https://versilian-studios.com/vsco-community/",
+      "license": "CC0-1.0",
+      "bytes": 2706216,
+      "sha256": "6fc8d707afddfaaf3003551b95a83b52f514adbe488bfea1c8c5250080a07278"
+    },
+    {
+      "file": "LDFlute_susNV_C4_v1_1.wav",
+      "url": "https://raw.githubusercontent.com/sgossner/VSCO-2-CE/440300901dfe9275fd84e0b7763af1f8443ae62e/Woodwinds/Flute/susNV/LDFlute_susNV_C4_v1_1.wav",
+      "author": "Versilian Studios / Sam Gossner & Simon Dalzell; cutting: Elan Hickler",
+      "page": "https://versilian-studios.com/vsco-community/",
+      "license": "CC0-1.0",
+      "bytes": 2722056,
+      "sha256": "105a6dbced98de7ae04a317bdd3ba1a5c6b90dc94034439b68cce6635e2781df"
+    },
+    {
+      "file": "LDFlute_susNV_E4_v1_1.wav",
+      "url": "https://raw.githubusercontent.com/sgossner/VSCO-2-CE/440300901dfe9275fd84e0b7763af1f8443ae62e/Woodwinds/Flute/susNV/LDFlute_susNV_E4_v1_1.wav",
+      "author": "Versilian Studios / Sam Gossner & Simon Dalzell; cutting: Elan Hickler",
+      "page": "https://versilian-studios.com/vsco-community/",
+      "license": "CC0-1.0",
+      "bytes": 2591256,
+      "sha256": "b609d37fb577e2a0f64f20800fba4bed067151375349bf713c0d4e803f862580"
+    },
+    {
+      "file": "KSHarp_D2_mf.wav",
+      "url": "https://raw.githubusercontent.com/sgossner/VSCO-2-CE/440300901dfe9275fd84e0b7763af1f8443ae62e/Strings/Harp/KSHarp_D2_mf.wav",
+      "author": "Versilian Studios / Sam Gossner & Simon Dalzell; cutting: Elan Hickler",
+      "page": "https://versilian-studios.com/vsco-community/",
+      "license": "CC0-1.0",
+      "bytes": 1741118,
+      "sha256": "b9cbdc08e43fc0b28ac70246df991cb390f5cbd7f31519b3cc7f70d283b70566"
+    },
+    {
+      "file": "KSHarp_A2_mf.wav",
+      "url": "https://raw.githubusercontent.com/sgossner/VSCO-2-CE/440300901dfe9275fd84e0b7763af1f8443ae62e/Strings/Harp/KSHarp_A2_mf.wav",
+      "author": "Versilian Studios / Sam Gossner & Simon Dalzell; cutting: Elan Hickler",
+      "page": "https://versilian-studios.com/vsco-community/",
+      "license": "CC0-1.0",
+      "bytes": 2007670,
+      "sha256": "1df9f4d138ca3931fcb458bcdf01304cadf2e5f4eef67bbc17b0e42c0e60fce6"
+    },
+    {
+      "file": "KSHarp_C3_mf.wav",
+      "url": "https://raw.githubusercontent.com/sgossner/VSCO-2-CE/440300901dfe9275fd84e0b7763af1f8443ae62e/Strings/Harp/KSHarp_C3_mf.wav",
+      "author": "Versilian Studios / Sam Gossner & Simon Dalzell; cutting: Elan Hickler",
+      "page": "https://versilian-studios.com/vsco-community/",
+      "license": "CC0-1.0",
+      "bytes": 1586172,
+      "sha256": "e5d232771704e140959819de8cf2a3e0ba49d021ca77354c42664ce4fce6d9f3"
+    },
+    {
+      "file": "KSHarp_E3_mf.wav",
+      "url": "https://raw.githubusercontent.com/sgossner/VSCO-2-CE/440300901dfe9275fd84e0b7763af1f8443ae62e/Strings/Harp/KSHarp_E3_mf.wav",
+      "author": "Versilian Studios / Sam Gossner & Simon Dalzell; cutting: Elan Hickler",
+      "page": "https://versilian-studios.com/vsco-community/",
+      "license": "CC0-1.0",
+      "bytes": 2461138,
+      "sha256": "aafa9d41ec0f77da8f2891055af8b3f9557e0ba1f1df93d53ae6e1fda07afae5"
+    },
+    {
+      "file": "KSHarp_G3_mf.wav",
+      "url": "https://raw.githubusercontent.com/sgossner/VSCO-2-CE/440300901dfe9275fd84e0b7763af1f8443ae62e/Strings/Harp/KSHarp_G3_mf.wav",
+      "author": "Versilian Studios / Sam Gossner & Simon Dalzell; cutting: Elan Hickler",
+      "page": "https://versilian-studios.com/vsco-community/",
+      "license": "CC0-1.0",
+      "bytes": 1806874,
+      "sha256": "62600eb1b37bc2829ca65351f7ca7e506c9ae472abd5bea0765a8b8fa7df2772"
+    },
+    {
+      "file": "KSHarp_B3_mf.wav",
+      "url": "https://raw.githubusercontent.com/sgossner/VSCO-2-CE/440300901dfe9275fd84e0b7763af1f8443ae62e/Strings/Harp/KSHarp_B3_mf.wav",
+      "author": "Versilian Studios / Sam Gossner & Simon Dalzell; cutting: Elan Hickler",
+      "page": "https://versilian-studios.com/vsco-community/",
+      "license": "CC0-1.0",
+      "bytes": 1981130,
+      "sha256": "f6f71be8c640822ef48a448b245585659acdfcc7ed5774e10f37be2fc02fcab4"
+    },
+    {
+      "file": "KSHarp_D4_mf.wav",
+      "url": "https://raw.githubusercontent.com/sgossner/VSCO-2-CE/440300901dfe9275fd84e0b7763af1f8443ae62e/Strings/Harp/KSHarp_D4_mf.wav",
+      "author": "Versilian Studios / Sam Gossner & Simon Dalzell; cutting: Elan Hickler",
+      "page": "https://versilian-studios.com/vsco-community/",
+      "license": "CC0-1.0",
+      "bytes": 1921690,
+      "sha256": "ebfde8aab4411019e37e3426f4dd88d6a52a38c2d0261d7f10ec63d8ff584dc7"
+    },
+    {
+      "file": "KSHarp_F4_mf.wav",
+      "url": "https://raw.githubusercontent.com/sgossner/VSCO-2-CE/440300901dfe9275fd84e0b7763af1f8443ae62e/Strings/Harp/KSHarp_F4_mf.wav",
+      "author": "Versilian Studios / Sam Gossner & Simon Dalzell; cutting: Elan Hickler",
+      "page": "https://versilian-studios.com/vsco-community/",
+      "license": "CC0-1.0",
+      "bytes": 1913498,
+      "sha256": "db27ebbb37334c10e06f2ae63f4d9ff555e4d11704fcc6f0bcf503863867e577"
+    },
+    {
+      "file": "KSHarp_A4_mf.wav",
+      "url": "https://raw.githubusercontent.com/sgossner/VSCO-2-CE/440300901dfe9275fd84e0b7763af1f8443ae62e/Strings/Harp/KSHarp_A4_mf.wav",
+      "author": "Versilian Studios / Sam Gossner & Simon Dalzell; cutting: Elan Hickler",
+      "page": "https://versilian-studios.com/vsco-community/",
+      "license": "CC0-1.0",
+      "bytes": 2143618,
+      "sha256": "3665f3975cad4a33f46784aa4f896f4b4319ba2b7831e892d975bc38c9f09f23"
+    },
+    {
+      "file": "LICENSE",
+      "url": "https://raw.githubusercontent.com/sgossner/VSCO-2-CE/440300901dfe9275fd84e0b7763af1f8443ae62e/LICENSE",
+      "author": "Versilian Studios / Sam Gossner & Simon Dalzell; cutting: Elan Hickler",
+      "page": "https://versilian-studios.com/vsco-community/",
+      "license": "CC0-1.0",
+      "bytes": 6555,
+      "sha256": "36ffd9dc085d529a7e60e1276d73ae5a030b020313e6c5408593a6ae2af39673"
+    }
+  ]
+}

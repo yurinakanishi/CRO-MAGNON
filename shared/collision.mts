@@ -18,6 +18,7 @@ import { riverX, riverHalfWidth, terrainHeight } from './terrain.mjs';
 import { mountainRiverContains } from './mountain-river.mjs';
 import { resourceAppearance } from './biome-scenery.mjs';
 import { woodPileBounds } from './wood-pile-layout.mjs';
+import { stonePileBounds } from './stone-pile-layout.mjs';
 import { landBodyFree, isLand, landmassAt } from './paleo-geography.mjs';
 
 const CELL = 4,
@@ -25,7 +26,11 @@ const CELL = 4,
 const clamp = (n, a, b) => Math.max(a, Math.min(b, n));
 function modelBox(item) {
   const source =
-      item.key === 'firewood-log' ? woodPileBounds(item.maxAmount) : MODEL_BOUNDS[item.key],
+      item.key === 'firewood-log'
+        ? woodPileBounds(item.maxAmount)
+        : item.resourceType === 'stone'
+          ? stonePileBounds(item.maxAmount)
+          : MODEL_BOUNDS[item.key],
     bounds = item.key === 'valley-pine' ? source.trunk : source;
   const [sx, sy, sz] = Array.isArray(item.scale)
     ? item.scale
@@ -97,6 +102,7 @@ export function staticObstacles(): Obstacle[] {
           x: resource.x,
           z: resource.z,
           resourceId: resource.id,
+          resourceType: resource.type,
           maxAmount: resource.maxAmount,
         }),
       );

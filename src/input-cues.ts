@@ -56,11 +56,12 @@ export function contextCues(context: CueContext, pad: boolean): InputCue[] {
     return cues;
   }
   if (context.pet) add('pet', context.pet, 'V', 'b0');
+  // Keep a reachable world action visible alongside petting in the three cue slots.
+  if (context.interaction && context.interaction !== context.pet)
+    add('interact', context.interaction, 'E', 'b1');
   if (context.recall) add('recall', 'みんなを呼ぶ', 'Q', 'b12');
   if (context.inspect && !context.automaticCamera)
     add('inspect', `${context.inspect}を見る`, 'X', 'b5');
-  if (context.interaction && context.interaction !== context.pet)
-    add('interact', context.interaction, 'E', 'b1');
   if (!pad || !context.pet) {
     if (context.board) add('board', context.board, 'B', 'b0');
     else if (context.ride) add('ride', context.ride, 'R', 'b0');
@@ -128,7 +129,6 @@ export function controlAction(control: string): string {
     b12: 'みんなを呼ぶ',
     b13: 'メニュー',
     b14: 'もちもの',
-    b15: '手帳',
     b17: '地図',
   };
   return actions[control] ?? '';

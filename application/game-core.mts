@@ -39,6 +39,7 @@ import {
 import {
   BOATING,
   boardedBoat,
+  carriedBoats,
   initializeBoats,
   releaseBoat,
   restoreBoatMooring,
@@ -181,7 +182,7 @@ export function createGameCore({
   }
 
   function notice(player, text, tone = 'info', popup = tone !== 'success') {
-    // Completed actions are visible in animations, meters, inventory and journals.
+    // Completed actions are visible in animations, meters and inventory.
     // Keep their sound feedback; reserve popups for information the player needs to act on.
     send(player.socket, { type: 'notice', text, tone, popup });
   }
@@ -323,6 +324,7 @@ export function createGameCore({
     const radius = characterModel(appearance).radius ?? WORLD.playerRadius;
     ensureAdventure(player);
     ensureGulfPlayer(player);
+    player.inventory.boat = carriedBoats(player);
     ensureVillageProgress(player);
     if (active) cancelBarter(room, player.id, now, '接続が切り替わったので、交換を中止しました。');
     if (active?.boatId) releaseBoat(room, player);
@@ -975,6 +977,7 @@ export function createGameCore({
           cancelFishing(player);
           cancelCoastal(player);
           ensureGulfPlayer(player);
+          player.inventory.boat = carriedBoats(player);
           ensureVillageProgress(player);
           if (movedGulfPlayers.has(player) && !room.collision.free(player, player.radius ?? 0.32)) {
             const safe =

@@ -16,6 +16,7 @@ import { WorldRenderer } from '../dist/src/world3d.js';
 
 test('hunting controls normalize legacy inventory and prioritize harvest or cooking', () => {
   assert.deepEqual(inventoryCounts({ wood: 2 }), {
+    boat: 0,
     wood: 2,
     stone: 0,
     berry: 0,

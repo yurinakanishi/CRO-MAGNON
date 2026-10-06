@@ -167,10 +167,15 @@ test('a boat can return to a surviving coast and cannot drive through land', () 
   const r = fixture(),
     b = r.boats[0],
     p = r.players.get(b.riderId);
-  const shore={x:128,z:124,radius:.32},launch=launchPoint(r,shore);
+  const shore = { x: 138, z: 112, radius: 0.32 },
+    launch = launchPoint(r, shore);
   assert.ok(launch);
-  const d=Math.hypot(shore.x-launch.x,shore.z-launch.z);
-  Object.assign(b,launch,{dx:(shore.x-launch.x)/d,dz:(shore.z-launch.z)/d,runningRequested:true});
+  const d = Math.hypot(shore.x - launch.x, shore.z - launch.z);
+  Object.assign(b, launch, {
+    dx: (shore.x - launch.x) / d,
+    dz: (shore.z - launch.z) / d,
+    runningRequested: true,
+  });
   for (let t = 0; t < 120; t++) {
     b.lastInput = atPhase(2) + t * 100;
     updateBoats(r, 0.1, b.lastInput);
@@ -181,12 +186,21 @@ test('a boat can return to a surviving coast and cannot drive through land', () 
   assert.ok(r.collision.free(p, p.radius));
 });
 test('retired offshore fish sites reject requests without moving a boat or granting stock', () => {
-  const r=fixture(),b=r.boats[0],p=r.players.get(b.riderId),now=atPhase(2)-3000;
-  const before={x:b.x,z:b.z,inventory:{...p.inventory}};
-  assert.equal(FISHING_SITES.length,0);
-  assert.equal(handleFishingAction(r,p,{action:'fish',targetId:'fish-outer-water'},now).changed,false);
-  for(let t=0;t<=60;t++){updateBoats(r,.1,now+t*100);updateFishing(r,now+t*100);}
-  assert.deepEqual({x:b.x,z:b.z,inventory:p.inventory},before);
+  const r = fixture(),
+    b = r.boats[0],
+    p = r.players.get(b.riderId),
+    now = atPhase(2) - 3000;
+  const before = { x: b.x, z: b.z, inventory: { ...p.inventory } };
+  assert.equal(FISHING_SITES.length, 0);
+  assert.equal(
+    handleFishingAction(r, p, { action: 'fish', targetId: 'fish-outer-water' }, now).changed,
+    false,
+  );
+  for (let t = 0; t <= 60; t++) {
+    updateBoats(r, 0.1, now + t * 100);
+    updateFishing(r, now + t * 100);
+  }
+  assert.deepEqual({ x: b.x, z: b.z, inventory: p.inventory }, before);
 });
 class Socket {
   readyState = 1;

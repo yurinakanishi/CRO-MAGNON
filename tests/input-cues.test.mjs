@@ -145,7 +145,6 @@ test('menu manuals and expandable world explanations are removed at the source',
     'gulf-ui',
     'coastal-ui',
     'fishing-ui',
-    'maritime-ui',
     'crop-food-ui',
   ]) {
     const source = await readFile(new URL(`../src/${file}.ts`, import.meta.url), 'utf8');

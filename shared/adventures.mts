@@ -19,7 +19,7 @@ function discover(player, region, notify = (_player, _text: string, _tone?: stri
   const book = ensureAdventure(player);
   if (!book.regions[region.id]) {
     book.regions[region.id] = { visited: [], gathered: 0, kills: 0, defeated: [], claimed: false };
-    notify(player, `発見：${region.name}。探索手帳に依頼を記録しました。`, 'success');
+    notify(player, `発見：${region.name}。道標をたどり、現地の依頼に挑戦しよう。`, 'success');
   }
   return book.regions[region.id];
 }
@@ -150,7 +150,7 @@ export function handleAdventureAction(room, player, message, now = Date.now()) {
   const progress = adventureProgress(player, region.id);
   if (progress.claimed) return { ok: false, text: 'この依頼の報酬は受け取り済みです。' };
   if (!regionComplete(player, region))
-    return { ok: false, text: '探索手帳の道標・採集・討伐を終えてから報告しよう。' };
+    return { ok: false, text: 'この地域の道標・採集・討伐を終えてから報告しよう。' };
   for (const [key, amount] of Object.entries(region.reward))
     if ((player.inventory[key] ?? 0) + amount > 99)
       return { ok: false, text: '報酬を受け取るため、もちものに空きを作ろう。' };

@@ -10,7 +10,7 @@ export const FRUIT_SECTORS = 5;
 export const FRUIT_UPPER_FRACTION = 0.55;
 export const FRUIT_FALLBACK_HEIGHT = 0.75;
 export const FRUIT_FALLBACK_RADIUS = 0.35;
-export const STONE_MIN_SCALE = 0.55;
+export const OBSIDIAN_MIN_SCALE = 0.55;
 export const MEAT_RING_RADIUS = 0.45;
 
 /** FNV-1a hash of a resource id: a stable, cheap seed for per-resource variety. */
@@ -134,10 +134,10 @@ export function berryAnchors(
   return chosen;
 }
 
-/** Boulder scale for the remaining stone: volume follows the amount, never below 55 %. */
-export function stoneScale(baseScale: number, amount: number, maxAmount: number): number {
+/** Boulder scale for the remaining obsidian: volume follows the amount, never below 55 %. */
+export function obsidianScale(baseScale: number, amount: number, maxAmount: number): number {
   const ratio = maxAmount > 0 ? Math.min(1, Math.max(0, amount / maxAmount)) : 1;
-  return baseScale * Math.max(STONE_MIN_SCALE, Math.cbrt(ratio));
+  return baseScale * Math.max(OBSIDIAN_MIN_SCALE, Math.cbrt(ratio));
 }
 
 /** Which of the `total` meat pieces around a carcass are still there. */

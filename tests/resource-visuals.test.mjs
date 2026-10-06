@@ -4,13 +4,13 @@ import {
   FRUIT_RADIUS,
   FRUIT_FALLBACK_HEIGHT,
   FRUIT_FALLBACK_RADIUS,
-  STONE_MIN_SCALE,
+  OBSIDIAN_MIN_SCALE,
   berryAnchors,
   fruitCount,
   meatPieceVisibility,
   meatRingLayout,
   seedFromId,
-  stoneScale,
+  obsidianScale,
 } from '../dist/src/resource-visuals.js';
 
 // A synthetic bush: rings of vertices at several heights, radius growing with
@@ -100,13 +100,15 @@ test('fruit count follows the amount and is bounded by the maximum', () => {
   assert.equal(fruitCount(2, undefined), 0);
 });
 
-test('stone shrinks with the cube root of the remaining amount and never below 55 %', () => {
-  assert.equal(stoneScale(0.55, 8, 8), 0.55);
-  assert.ok(Math.abs(stoneScale(1, 1, 8) - 0.5) < 1e-9 || stoneScale(1, 1, 8) === STONE_MIN_SCALE);
-  assert.equal(stoneScale(1, 1, 8), STONE_MIN_SCALE);
-  assert.ok(Math.abs(stoneScale(1, 4, 8) - Math.cbrt(0.5)) < 1e-9);
-  assert.equal(stoneScale(0.55, 0, 8), 0.55 * STONE_MIN_SCALE);
-  assert.equal(stoneScale(0.55, 3, 0), 0.55);
+test('obsidian retains its cube-root scaling of the remaining amount and never below 55 %', () => {
+  assert.equal(obsidianScale(0.55, 8, 8), 0.55);
+  assert.ok(
+    Math.abs(obsidianScale(1, 1, 8) - 0.5) < 1e-9 || obsidianScale(1, 1, 8) === OBSIDIAN_MIN_SCALE,
+  );
+  assert.equal(obsidianScale(1, 1, 8), OBSIDIAN_MIN_SCALE);
+  assert.ok(Math.abs(obsidianScale(1, 4, 8) - Math.cbrt(0.5)) < 1e-9);
+  assert.equal(obsidianScale(0.55, 0, 8), 0.55 * OBSIDIAN_MIN_SCALE);
+  assert.equal(obsidianScale(0.55, 3, 0), 0.55);
 });
 
 test('meat pieces hide from the end as servings are taken', () => {

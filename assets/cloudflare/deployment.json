@@ -1,66 +1,72 @@
 {
-  "checkedAt": "2026-10-02T06:00:21.610Z",
+  "checkedAt": "2026-10-06T13:56:13.963Z",
   "status": "deployed-and-live-verified",
   "url": "https://cromagnonmmo.cro-magnon.workers.dev",
   "workerName": "cromagnonmmo",
   "accountId": "a211102818d484cb668c6b62bebff3f9",
   "accountName": "CRO-MAGNON Free",
   "workersPlan": "Free",
-  "versionId": "5802f152-ab5b-4cfd-b11d-d459297e3394",
-  "previousVersionId": "2024e6ad-e30e-47de-9679-1daa52789715",
-  "newPaidSubscription": false,
+  "versionId": "d525625d-e3bc-4438-b845-1777a28e9992",
+  "previousVersionId": "5802f152-ab5b-4cfd-b11d-d459297e3394",
+  "buildId": "3a79d34145b818149dd0e6542c1d39b79e7fe8410ad53a8e4f4e5517a0253423",
   "durableObjectNamespaceId": "9071351c3ff8445d8ce2eebdb7822cec",
   "workerNameAndStorageUnchanged": true,
+  "newPaidSubscription": false,
   "publicCredits": [
     "yuri",
-    "R-524"
+    "R-524",
+    "りも(Limo)"
   ],
-  "localCredits": "full",
   "excludedPublicCharacters": [
     "maruimo"
   ],
   "publicCharacterCount": 8,
   "localCharacterCount": 9,
   "optimizedPublicAssets": true,
-  "browser": {
-    "rendered3D": true,
-    "worldAssetsReady": true,
-    "companionAssetsReady": true,
-    "publicCharacterChoices": 8,
-    "publicCredits": [
-      "yuri",
-      "R-524"
-    ],
-    "lowDrawingBuffer": [
-      1402,
-      657
-    ],
-    "settingsFpsLimits": [
-      30,
-      60,
-      30
-    ],
-    "qualityRestoredToAuto": true,
-    "consoleWarningsOrErrors": 0,
-    "returnedToTitle": true
-  },
-  "networkQA": "live-qa.json",
-  "releaseQA": "public-release-qa.json",
-  "characterPrivacyQA": "character-privacy-qa.json",
-  "localStorageAndQuotaQA": "persistence-qa.json",
-  "legacyWorldVersion2Migration": true,
-  "testsPassed": 818,
-  "verifiedGLBs": 101,
+  "verifiedGLBs": 105,
   "splitGLBs": 2,
-  "staticFiles": 447,
-  "staticMiB": 469.8,
+  "staticFiles": 488,
+  "staticMiB": 485.3,
+  "workerModules": 127,
   "testConnectionsClosed": true,
-  "publicBrowserReturnedToTitle": true,
-  "playersAtStop": 0,
+  "playersAtStop": 1,
+  "browser": {
+    "titleAndEightCharacterChoicesVerified": true,
+    "returnedToTitle": true,
+    "live3DPlayNotRetested": true,
+    "homeScreenshot": "output/cloudflare-deploy/deploy-mmo-20261006/public-home.png",
+    "characterScreenshot": "output/cloudflare-deploy/deploy-mmo-20261006/public-character-choices.png"
+  },
+  "networkQA": "assets/cloudflare/live-qa.json",
+  "releaseQA": "assets/cloudflare/public-release-qa.json",
+  "characterPrivacyQA": "assets/cloudflare/character-privacy-qa.json",
+  "localStorageAndQuotaQA": "assets/cloudflare/persistence-qa.json",
+  "freePlanScreenshot": "output/cloudflare-deploy/deploy-mmo-20261006/free-plan.png",
+  "releaseNotes": "docs/mmo-deploy-2026-10-06.md",
+  "localPreviewBuildUnchanged": true,
+  "localPreviewBuildId": "99d7de738b4067d5f49035239844e02c3983bf6fcdfdd5d51f5a2687f40f6060",
   "workStatus": "complete",
-  "resumeReadonlyQA": "output/low-spec-20261002/public-browser-final.json",
-  "documentation": "CLOUDFLARE_DEPLOYMENT.md",
-  "releaseNotes": "docs/low-spec-public-2026-10-02.md",
-  "performanceQA": "assets/public-performance/browser-qa.json",
-  "pending": []
+  "checks": [
+    {
+      "path": "/api/health",
+      "status": 200,
+      "body": {
+        "ok": true,
+        "hosting": "cloudflare-free",
+        "worldVersion": 4,
+        "maxPlayers": 5,
+        "room": "EMBER"
+      }
+    },
+    {
+      "path": "/api/status",
+      "status": 200,
+      "body": {
+        "ok": true,
+        "room": "EMBER",
+        "players": 1,
+        "maxPlayers": 5
+      }
+    }
+  ]
 }

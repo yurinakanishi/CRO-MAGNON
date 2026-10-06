@@ -1,7 +1,7 @@
 import type { CueAction, CueContext } from './input-cues.js';
 import { touchActions, touchStick, type TouchMovement } from './touch-input.js';
 
-export type TouchAction = CueAction | 'menu' | 'map' | 'journal' | 'mascots' | 'center';
+export type TouchAction = CueAction | 'menu' | 'map' | 'chat' | 'mascots' | 'center';
 
 export const touchDevice = () =>
   navigator.maxTouchPoints > 0 && matchMedia('(pointer: coarse)').matches;
@@ -28,6 +28,7 @@ export class TouchControls {
       move(): void;
       beginMove(): void;
       icon(name: string): string;
+      chat: boolean;
     },
   ) {
     this.root = document.createElement('section');
@@ -37,12 +38,12 @@ export class TouchControls {
     this.root.innerHTML = `<nav class="touch-toolbar" aria-label="探索のメニュー">${[
       ['menu', 'menu', 'メニュー'],
       ['bag', 'bag', '持ち物'],
-      ['journal', 'book', '手帳'],
       ['mascots', 'people', '仲間'],
+      ...(hooks.chat ? [['chat', 'chat', '会話']] : []),
     ]
       .map(
         ([action, glyph, label]) =>
-          `<button type="button" data-touch-action="${action}" aria-label="${label}">${hooks.icon(glyph)}<span>${label}</span></button>`,
+          `<button type="button" data-touch-action="${action}" aria-label="${label}"${action === 'chat' ? ' aria-haspopup="dialog" aria-controls="chat-dialog"' : ''}>${hooks.icon(glyph)}</button>`,
       )
       .join('')}</nav>
       <div class="touch-move"><button type="button" id="touch-stick" aria-label="移動。浅く倒すと歩き、深く倒すと走ります"><span class="touch-stick-ring" aria-hidden="true"><i class="touch-stick-knob"></i></span></button><span class="touch-gait" aria-hidden="true">移動</span></div>

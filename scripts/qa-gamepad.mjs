@@ -250,9 +250,10 @@ try {
   );
   await back();
   await tap(PAD.right);
-  assert.equal(await page.locator('#modal').evaluate((d) => d.open), true);
-  await back();
-  passed('inventory crafting uses server costs; map select changes with left/right; journal opens');
+  assert.equal(await page.locator('#modal').evaluate((d) => d.open), false);
+  passed(
+    'inventory crafting uses server costs; map select changes with left/right; retired journal shortcut is inert',
+  );
 
   current = 'disconnect and focus';
   await axes(1);

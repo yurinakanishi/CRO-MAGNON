@@ -1,4 +1,6 @@
 import type { ViewState } from './view-state.js';
+import { NatureAudio } from './nature-audio.js';
+import { NatureEffects } from './nature-effects.js';
 import { LocalPrediction } from './local-prediction.js';
 import { wrapHeading } from './assisted-controls.js';
 import { TouchCameraFollow, touchFieldOfView } from './touch-input.js';
@@ -42,6 +44,7 @@ import { WORLD, CAMP, NPC, INITIAL_RESOURCES } from '../shared/world.mjs';
 import { mountainWaterHeight } from '../shared/mountain-river.mjs';
 import { WorldAssets } from './world-assets.js';
 import { buildWoodPile } from './wood-pile.js';
+import { buildStonePile } from './stone-pile.js';
 import { WorldLandmarks } from './world-landmarks.js';
 import {
   buildTerrainAssets,
@@ -92,7 +95,7 @@ import {
   fruitCount,
   meatPieceVisibility,
   seedFromId,
-  stoneScale,
+  obsidianScale,
 } from './resource-visuals.js';
 import { updateActorPerformance, updateSimplifiedShadow } from './performance-lod.js';
 
@@ -109,6 +112,8 @@ function mesh(geometry, material, parent, position: [number, number, number] = [
 }
 
 export class WorldRenderer {
+  readonly audio = new NatureAudio();
+  readonly natureEffects = new NatureEffects();
   readonly graphics = new GraphicsQuality(
     readGraphicsMode(),
     navigator.hardwareConcurrency ?? 8,
@@ -589,12 +594,16 @@ export class WorldRenderer {
           resource.type === 'wood'
             ? buildWoodPile(this.worldAssets, resource.maxAmount, surface)
             : null;
-        const model = wood?.root ?? this.worldAssets.createResource(key, surface);
+        const stone =
+          resource.type === 'stone'
+            ? buildStonePile(this.worldAssets, resource.maxAmount, surface)
+            : null;
+        const model = wood?.root ?? stone?.root ?? this.worldAssets.createResource(key, surface);
         model.scale.setScalar(scale);
         model.position.set(resource.x, walkHeight(resource.x, resource.z), resource.z);
         model.rotation.y = yaw;
         this.scene.add(model);
-        item = { model, key, surface, baseScale: scale, wood };
+        item = { model, key, surface, baseScale: scale, wood, stone };
         this.decorateResource(item, resource);
         this.resources.set(resource.id, item);
       }
@@ -634,15 +643,19 @@ export class WorldRenderer {
     }
   }
 
-  /** Makes the remaining amount visible: fruit, whole logs, boulder size. */
+  /** Makes the remaining amount visible: fruit, whole logs, whole stones, obsidian size. */
   applyResourceAmount(item, resource) {
     if (item.fruit) {
       const shown = fruitCount(resource.amount, resource.maxAmount);
       item.fruit.children.forEach((berry, index) => (berry.visible = index < shown));
     } else if (item.wood) {
       item.wood.setAmount(resource.amount);
-    } else if (resource.type === 'stone' || resource.type === 'obsidian') {
-      item.model.scale.setScalar(stoneScale(item.baseScale, resource.amount, resource.maxAmount));
+    } else if (item.stone) {
+      item.stone.setAmount(resource.amount);
+    } else if (resource.type === 'obsidian') {
+      item.model.scale.setScalar(
+        obsidianScale(item.baseScale, resource.amount, resource.maxAmount),
+      );
     }
   }
 
@@ -2019,6 +2032,8 @@ export class WorldRenderer {
     );
     this.updateLabels();
     this.contactShadows.update();
+    this.natureEffects.update(this, time);
+    this.audio.update(this, time);
     const simulationEnded = performance.now();
     if (!this.occluded()) this.renderer.render(this.scene, this.camera);
     this.simulationMs = (this.simulationMs ?? 0) * 0.8 + (simulationEnded - frameStarted) * 0.2;
@@ -2201,6 +2216,8 @@ export class WorldRenderer {
   }
 
   destroy() {
+    this.audio.dispose();
+    this.natureEffects.dispose();
     this.boatRenderer?.dispose();
     this.disposed = true;
     this.gulfRenderer?.dispose();

@@ -106,7 +106,7 @@ try {
   );
   await page.setViewportSize({ width: 1440, height: 900 });
   // Inspect every former travel panel through its ordinary menu.
-  for (const name of ['journal', 'gulf', 'fishing', 'coastal', 'residents', 'inventory']) {
+  for (const name of ['gulf', 'fishing', 'coastal', 'residents', 'inventory']) {
     await page.locator('#world').focus();
     await page.keyboard.press('Escape');
     await page.locator('[data-controller-menu="' + name + '"]').click();

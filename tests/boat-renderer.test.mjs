@@ -27,6 +27,10 @@ test('a large position correction keeps the local hull and seat available for ca
   world.focus.copy(seat);
   renderer.update(2, 0.1);
   assert.equal(renderer.boats.get('distant').model.visible, true);
+  world.state.boats = [];
+  renderer.update(3, 0.1);
+  assert.equal(renderer.boats.size, 0);
+  assert.equal(world.scene.children.length, 0);
   renderer.dispose();
   assert.equal(world.scene.children.length, 0);
 });

@@ -61,6 +61,7 @@ test('a transient disconnect restores identity, position, inventory and the sole
   assert.equal(resumed.resumed, true);
   assert.equal(resumed.profile.name, '旅人');
   assert.deepEqual(p.inventory, {
+    boat: 0,
     wood: 8,
     stone: 3,
     berry: 0,

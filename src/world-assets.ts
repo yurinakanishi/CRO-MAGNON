@@ -10,6 +10,7 @@ import { downloadVerifiedAsset } from './asset-download.js';
 import { ViewUpdateGate } from './view-update-gate.js';
 import { markActiveAttribute, markActiveInstances } from './instance-updates.js';
 import { applyMeadowGrassPalette, meadowGrassTint } from './meadow-palette.js';
+import { applyNatureWind } from './nature-wind.js';
 import { ActionBlender, gaitPhase } from './action-blender.js';
 import { applyBehemothPalette } from './behemoth-palette.js';
 import { installSkinnedBounds } from './skinned-bounds.js';
@@ -603,6 +604,7 @@ interface LandscapePlacement {
 }
 
 export class LandscapeInstances {
+  private windTime = { value: 0 };
   private density = 1;
   private viewUpdate = new ViewUpdateGate();
   private grassTints: WeakMap<LandscapePlacement, THREE.Color> | null = null;
@@ -679,6 +681,7 @@ export class LandscapeInstances {
         const grassMaterial = (source: THREE.Material) => {
           const material = source.clone();
           applyMeadowGrassPalette(material, key);
+          applyNatureWind(material, node.geometry, this.windTime);
           this.grassMaterials.add(material);
           return material;
         };
@@ -700,7 +703,10 @@ export class LandscapeInstances {
       this.levels.push(meshes);
     }
     this.impostor = renderImpostor(renderer, template.gltf.scene, surface ? 256 : 512);
-    if (this.grassTints) applyMeadowGrassPalette(this.impostor.material, key);
+    if (this.grassTints) {
+      applyMeadowGrassPalette(this.impostor.material, key);
+      applyNatureWind(this.impostor.material, this.impostor.geometry, this.windTime);
+    }
     const billboard = new THREE.InstancedMesh(
       this.impostor.geometry,
       this.impostor.material,
@@ -727,6 +733,7 @@ export class LandscapeInstances {
     this.projection = new THREE.Matrix4();
   }
   update(camera, time, riderFocus = null, foliageDensity = 1) {
+    if (this.windTime) this.windTime.value = time;
     const density = !this.castNearbyShadows ? foliageDensity : 1;
     const changed = density !== this.density;
     this.density = density;

@@ -121,9 +121,6 @@ dialog:has(.gulf-panel) .modal-top {
   padding: 10px 12px;
   font-size: 11px;
 }
-#sea-panel .gulf-actions .button {
-  flex: 1 1 140px;
-}
 #household-panel .gulf-actions .button {
   flex: 1 1 140px;
   white-space: normal;

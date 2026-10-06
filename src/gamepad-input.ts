@@ -34,7 +34,6 @@ export type PadAction =
   | 'map'
   | 'menu'
   | 'inventory'
-  | 'journal'
   | 'center'
   | 'zoomIn'
   | 'zoomOut'
@@ -189,7 +188,6 @@ export class GamepadInput {
         ['up', 'recallBots'],
         ['down', 'menu'],
         ['left', 'inventory'],
-        ['right', 'journal'],
       ] as const) {
         if (pressed(PAD[dir])) frame.actions.push(action);
       }

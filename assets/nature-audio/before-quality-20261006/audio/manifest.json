@@ -1,0 +1,150 @@
+{
+  "version": 1,
+  "prepared": "2026-10-06",
+  "format": "Mono PCM16 WAV, 22050 Hz; cropped, DC removed, level matched, loop overlap or end fades",
+  "sources": [
+    {
+      "file": "wind.wav",
+      "author": "Luke.RUSTLTD",
+      "page": "https://opengameart.org/content/wind1",
+      "kind": "Synthesized wind / PureData",
+      "sha256": "a2856f794fbf77e05f8241dc4adeade7f62fa21c3c9dc49f7725b6c6218060c3",
+      "license": "CC0-1.0"
+    },
+    {
+      "file": "birds.ogg",
+      "author": "isaiah658",
+      "page": "https://opengameart.org/content/ambient-bird-sounds",
+      "kind": "Bird field recording",
+      "sha256": "359e4e3f9da9d75aac64cede511c7e3ef8b461f9d9f8c230f8f80e44c4b3e35f",
+      "license": "CC0-1.0"
+    },
+    {
+      "file": "fire.wav",
+      "author": "PagDev",
+      "page": "https://opengameart.org/content/fireplace-sound-loop",
+      "kind": "Wood-burning fireplace sound loop",
+      "sha256": "85ca0cc60d0c037fff8b185e31ad1fcdbda6ce45eee17c3ee1318d1b8f59e330",
+      "license": "CC0-1.0"
+    },
+    {
+      "file": "river.mp3",
+      "author": "RandomMind",
+      "page": "https://opengameart.org/content/sea-and-river-wave-sounds",
+      "kind": "Vistula river field recording",
+      "sha256": "8c24607e41edd6f018ec3582a07e5a8dbc57347276339cb68440951a0fb4cfb1",
+      "license": "CC0-1.0"
+    }
+  ],
+  "files": [
+    {
+      "url": "/audio/nature/wind.wav",
+      "source": "wind.wav",
+      "extraction": {
+        "file": "wind.wav",
+        "name": "wind",
+        "start": 4,
+        "seconds": 23,
+        "loop": true
+      },
+      "rate": 22050,
+      "seconds": 21.5,
+      "rms": 0.04405584539343918,
+      "peak": 0.29937440156936646,
+      "sourceSeconds": 59.99891156462585,
+      "bytes": 948194,
+      "sha256": "0689c07e7c959fb8804586ae57aab17456b6c7cf98948ece3582f5ba26f47d83"
+    },
+    {
+      "url": "/audio/nature/fire.wav",
+      "source": "fire.wav",
+      "extraction": {
+        "file": "fire.wav",
+        "name": "fire",
+        "start": 2,
+        "seconds": 23,
+        "loop": true
+      },
+      "rate": 22050,
+      "seconds": 21.5,
+      "rms": 0.02988757494497895,
+      "peak": 0.3802087903022766,
+      "sourceSeconds": 29.263537414965988,
+      "bytes": 948194,
+      "sha256": "dac964db2ff9a4082c71ed6170b1e0b8391d34dbc4e9c36a17842cdd99a8e6ba"
+    },
+    {
+      "url": "/audio/nature/river.wav",
+      "source": "river.mp3",
+      "extraction": {
+        "file": "river.mp3",
+        "name": "river",
+        "start": 30,
+        "seconds": 27,
+        "loop": true
+      },
+      "rate": 22050,
+      "seconds": 25.5,
+      "rms": 0.09403998499653045,
+      "peak": 0.65,
+      "sourceSeconds": 300.0424489795918,
+      "bytes": 1124594,
+      "sha256": "03a1cd5a5c32f3527a4861be3bfc73d47dcb8139df991fa42dcd146d1aab6464"
+    },
+    {
+      "url": "/audio/nature/birds-0.wav",
+      "source": "birds.ogg",
+      "extraction": {
+        "file": "birds.ogg",
+        "name": "birds-0",
+        "start": 3,
+        "seconds": 5,
+        "loop": false
+      },
+      "rate": 22050,
+      "seconds": 5,
+      "rms": 0.05041242066133971,
+      "peak": 0.65,
+      "sourceSeconds": 30.688208616780045,
+      "bytes": 220544,
+      "sha256": "1e62cc3db85e375df32f53aa622af2721baab4c5baa9504eed9dc492a64e49e8"
+    },
+    {
+      "url": "/audio/nature/birds-1.wav",
+      "source": "birds.ogg",
+      "extraction": {
+        "file": "birds.ogg",
+        "name": "birds-1",
+        "start": 10,
+        "seconds": 5,
+        "loop": false
+      },
+      "rate": 22050,
+      "seconds": 5,
+      "rms": 0.04427116523949511,
+      "peak": 0.65,
+      "sourceSeconds": 30.688208616780045,
+      "bytes": 220544,
+      "sha256": "de2a4a002f5c2c1993344a2f49923e2691ab5add6550d7d7c9f08e59b1ab87e2"
+    },
+    {
+      "url": "/audio/nature/birds-2.wav",
+      "source": "birds.ogg",
+      "extraction": {
+        "file": "birds.ogg",
+        "name": "birds-2",
+        "start": 17,
+        "seconds": 5,
+        "loop": false
+      },
+      "rate": 22050,
+      "seconds": 5,
+      "rms": 0.05441242608552737,
+      "peak": 0.65,
+      "sourceSeconds": 30.688208616780045,
+      "bytes": 220544,
+      "sha256": "5f0beaffabf2699b4096a819745775c1c84afea6016d76284938d0ddd65dded9"
+    }
+  ],
+  "totalBytes": 3682614
+}

@@ -192,11 +192,6 @@ export function installGulfUI(api) {
       'beforeend',
       `<section class="gulf-routes"><h4>六つの休み場を巡る <small>${me?.gulf?.waymarks?.length ?? 0}/${GULF_STOPS.length}</small></h4><div class="gulf-stop-list">${GULF_STOPS.map((s) => `<article class="gulf-card"><h4>${s.name}${me?.gulf?.waymarks?.includes(s.id) ? ' · 記録済み' : ''}</h4><p>${s.description}</p><div class="gulf-actions">${btn(`trail-record-${s.id}`, '旅路を記録する', !at(s, 8) || me?.gulf?.waymarks?.includes(s.id))}</div></article>`).join('')}</div><p>すべて巡って集い場へ戻ると、次の旅の木材6・種4を一度受け取れます。</p>${btn('gulf-trail-reward', me?.gulf?.trailRewarded ? '旅路のお礼は受取済み' : '集い場で旅路を伝える', !nearHearth || !!me?.gulf?.trailRewarded || !GULF_STOPS.every((s) => me?.gulf?.waymarks?.includes(s.id)))}</section>`,
     );
-    $('#gulf-fishing').insertAdjacentHTML(
-      'afterend',
-      ' <button id="gulf-weather" class="button button-outline">空と航路</button>',
-    );
-    $('#gulf-weather').onclick = () => $('#boat-weather').click();
     const bind = (id, fn) => {
       const node = $<HTMLButtonElement>('#' + id);
       if (node) node.onclick = fn;

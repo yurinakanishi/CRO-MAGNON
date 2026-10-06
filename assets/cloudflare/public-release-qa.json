@@ -1,8 +1,8 @@
 {
-  "checkedAt": "2026-10-02T05:55:25.155Z",
+  "checkedAt": "2026-10-06T13:49:34.061Z",
   "base": "https://cromagnonmmo.cro-magnon.workers.dev",
   "status": "passed",
-  "servedFilesVerified": 30,
+  "servedFilesVerified": 49,
   "publicCreditsOnly": true,
   "excludedSupervisorFiles": [
     "/title/qr-ryuichi.png",
@@ -14,7 +14,7 @@
     "/title/qr-nukonuko.png",
     "/title/avatar-nukonuko.jpg"
   ],
-  "runtimeTexturesVerified": 3,
+  "runtimeTexturesVerified": 8,
   "publicCharacterCount": 8,
   "excludedCharacterFiles": [
     "/models/maruimo-octopus/asset.json",

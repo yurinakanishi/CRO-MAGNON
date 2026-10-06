@@ -1,0 +1,1101 @@
+{
+  "version": 2,
+  "prepared": "2026-10-06",
+  "format": "44.1 kHz MP3 VBR q2; stereo beds/music, mono positioned fire/birds/drops; lossless masters archived",
+  "sources": [
+    {
+      "file": "wind-field.wav",
+      "url": "https://opengameart.org/sites/default/files/park_ambience_wind.wav",
+      "author": "Thimras",
+      "page": "https://opengameart.org/content/park-ambiences",
+      "license": "CC0-1.0",
+      "bytes": 73960096,
+      "sha256": "5c381856745b4706e7eba55eb9271a61a530e90c05df8126adb2db89ecfa6c5a"
+    },
+    {
+      "file": "river-field.wav",
+      "url": "https://opengameart.org/sites/default/files/park_ambience_river.wav",
+      "author": "Thimras",
+      "page": "https://opengameart.org/content/park-ambiences",
+      "license": "CC0-1.0",
+      "bytes": 99072736,
+      "sha256": "da0c0c9b1249a83a1611cc116d5737b0864a8db9f45f1ae8dcc079d0f7c0bbbf"
+    },
+    {
+      "file": "rain-field.ogg",
+      "url": "https://opengameart.org/sites/default/files/Ove%20Melaa%20-%20Rainy%20%28NOT%20loopable%29%20Long%20Version.ogg",
+      "author": "Ove Melaa",
+      "page": "https://opengameart.org/content/rain-ambient-not-loopable-2-versions-available",
+      "license": "CC0-1.0",
+      "bytes": 5470927,
+      "sha256": "0022bccf5a8ade5fdcbb7e99ca3437ee6520a3951fd1c442298c38d90a05e2a3"
+    },
+    {
+      "file": "drips.flac",
+      "url": "https://opengameart.org/sites/default/files/atmosbasement.mp3_.flac",
+      "author": "Independent.nu / qubodup",
+      "page": "https://opengameart.org/content/dripping-water-loop",
+      "license": "CC0-1.0",
+      "bytes": 1309638,
+      "sha256": "247c0ef181c8ba8d190a6194f6ea02d9defb23b70194c52c7f9187b5b7b1cc61"
+    },
+    {
+      "file": "LDFlute_susNV_C3_v1_1.wav",
+      "url": "https://raw.githubusercontent.com/sgossner/VSCO-2-CE/440300901dfe9275fd84e0b7763af1f8443ae62e/Woodwinds/Flute/susNV/LDFlute_susNV_C3_v1_1.wav",
+      "author": "Versilian Studios / Sam Gossner & Simon Dalzell; cutting: Elan Hickler",
+      "page": "https://versilian-studios.com/vsco-community/",
+      "license": "CC0-1.0",
+      "bytes": 2642490,
+      "sha256": "4f221909317e257e4d0bc49f10479643c80cb213a0486455c1bdc1d6ed13a450"
+    },
+    {
+      "file": "LDFlute_susNV_E3_v1_1.wav",
+      "url": "https://raw.githubusercontent.com/sgossner/VSCO-2-CE/440300901dfe9275fd84e0b7763af1f8443ae62e/Woodwinds/Flute/susNV/LDFlute_susNV_E3_v1_1.wav",
+      "author": "Versilian Studios / Sam Gossner & Simon Dalzell; cutting: Elan Hickler",
+      "page": "https://versilian-studios.com/vsco-community/",
+      "license": "CC0-1.0",
+      "bytes": 2874126,
+      "sha256": "87c667c2af888ed86dff87f2452248de3e3d958fc93848a4426b7c16f85f09da"
+    },
+    {
+      "file": "LDFlute_susNV_A3_v1_1.wav",
+      "url": "https://raw.githubusercontent.com/sgossner/VSCO-2-CE/440300901dfe9275fd84e0b7763af1f8443ae62e/Woodwinds/Flute/susNV/LDFlute_susNV_A3_v1_1.wav",
+      "author": "Versilian Studios / Sam Gossner & Simon Dalzell; cutting: Elan Hickler",
+      "page": "https://versilian-studios.com/vsco-community/",
+      "license": "CC0-1.0",
+      "bytes": 2706216,
+      "sha256": "6fc8d707afddfaaf3003551b95a83b52f514adbe488bfea1c8c5250080a07278"
+    },
+    {
+      "file": "LDFlute_susNV_C4_v1_1.wav",
+      "url": "https://raw.githubusercontent.com/sgossner/VSCO-2-CE/440300901dfe9275fd84e0b7763af1f8443ae62e/Woodwinds/Flute/susNV/LDFlute_susNV_C4_v1_1.wav",
+      "author": "Versilian Studios / Sam Gossner & Simon Dalzell; cutting: Elan Hickler",
+      "page": "https://versilian-studios.com/vsco-community/",
+      "license": "CC0-1.0",
+      "bytes": 2722056,
+      "sha256": "105a6dbced98de7ae04a317bdd3ba1a5c6b90dc94034439b68cce6635e2781df"
+    },
+    {
+      "file": "LDFlute_susNV_E4_v1_1.wav",
+      "url": "https://raw.githubusercontent.com/sgossner/VSCO-2-CE/440300901dfe9275fd84e0b7763af1f8443ae62e/Woodwinds/Flute/susNV/LDFlute_susNV_E4_v1_1.wav",
+      "author": "Versilian Studios / Sam Gossner & Simon Dalzell; cutting: Elan Hickler",
+      "page": "https://versilian-studios.com/vsco-community/",
+      "license": "CC0-1.0",
+      "bytes": 2591256,
+      "sha256": "b609d37fb577e2a0f64f20800fba4bed067151375349bf713c0d4e803f862580"
+    },
+    {
+      "file": "KSHarp_D2_mf.wav",
+      "url": "https://raw.githubusercontent.com/sgossner/VSCO-2-CE/440300901dfe9275fd84e0b7763af1f8443ae62e/Strings/Harp/KSHarp_D2_mf.wav",
+      "author": "Versilian Studios / Sam Gossner & Simon Dalzell; cutting: Elan Hickler",
+      "page": "https://versilian-studios.com/vsco-community/",
+      "license": "CC0-1.0",
+      "bytes": 1741118,
+      "sha256": "b9cbdc08e43fc0b28ac70246df991cb390f5cbd7f31519b3cc7f70d283b70566"
+    },
+    {
+      "file": "KSHarp_A2_mf.wav",
+      "url": "https://raw.githubusercontent.com/sgossner/VSCO-2-CE/440300901dfe9275fd84e0b7763af1f8443ae62e/Strings/Harp/KSHarp_A2_mf.wav",
+      "author": "Versilian Studios / Sam Gossner & Simon Dalzell; cutting: Elan Hickler",
+      "page": "https://versilian-studios.com/vsco-community/",
+      "license": "CC0-1.0",
+      "bytes": 2007670,
+      "sha256": "1df9f4d138ca3931fcb458bcdf01304cadf2e5f4eef67bbc17b0e42c0e60fce6"
+    },
+    {
+      "file": "KSHarp_C3_mf.wav",
+      "url": "https://raw.githubusercontent.com/sgossner/VSCO-2-CE/440300901dfe9275fd84e0b7763af1f8443ae62e/Strings/Harp/KSHarp_C3_mf.wav",
+      "author": "Versilian Studios / Sam Gossner & Simon Dalzell; cutting: Elan Hickler",
+      "page": "https://versilian-studios.com/vsco-community/",
+      "license": "CC0-1.0",
+      "bytes": 1586172,
+      "sha256": "e5d232771704e140959819de8cf2a3e0ba49d021ca77354c42664ce4fce6d9f3"
+    },
+    {
+      "file": "KSHarp_E3_mf.wav",
+      "url": "https://raw.githubusercontent.com/sgossner/VSCO-2-CE/440300901dfe9275fd84e0b7763af1f8443ae62e/Strings/Harp/KSHarp_E3_mf.wav",
+      "author": "Versilian Studios / Sam Gossner & Simon Dalzell; cutting: Elan Hickler",
+      "page": "https://versilian-studios.com/vsco-community/",
+      "license": "CC0-1.0",
+      "bytes": 2461138,
+      "sha256": "aafa9d41ec0f77da8f2891055af8b3f9557e0ba1f1df93d53ae6e1fda07afae5"
+    },
+    {
+      "file": "KSHarp_G3_mf.wav",
+      "url": "https://raw.githubusercontent.com/sgossner/VSCO-2-CE/440300901dfe9275fd84e0b7763af1f8443ae62e/Strings/Harp/KSHarp_G3_mf.wav",
+      "author": "Versilian Studios / Sam Gossner & Simon Dalzell; cutting: Elan Hickler",
+      "page": "https://versilian-studios.com/vsco-community/",
+      "license": "CC0-1.0",
+      "bytes": 1806874,
+      "sha256": "62600eb1b37bc2829ca65351f7ca7e506c9ae472abd5bea0765a8b8fa7df2772"
+    },
+    {
+      "file": "KSHarp_B3_mf.wav",
+      "url": "https://raw.githubusercontent.com/sgossner/VSCO-2-CE/440300901dfe9275fd84e0b7763af1f8443ae62e/Strings/Harp/KSHarp_B3_mf.wav",
+      "author": "Versilian Studios / Sam Gossner & Simon Dalzell; cutting: Elan Hickler",
+      "page": "https://versilian-studios.com/vsco-community/",
+      "license": "CC0-1.0",
+      "bytes": 1981130,
+      "sha256": "f6f71be8c640822ef48a448b245585659acdfcc7ed5774e10f37be2fc02fcab4"
+    },
+    {
+      "file": "KSHarp_D4_mf.wav",
+      "url": "https://raw.githubusercontent.com/sgossner/VSCO-2-CE/440300901dfe9275fd84e0b7763af1f8443ae62e/Strings/Harp/KSHarp_D4_mf.wav",
+      "author": "Versilian Studios / Sam Gossner & Simon Dalzell; cutting: Elan Hickler",
+      "page": "https://versilian-studios.com/vsco-community/",
+      "license": "CC0-1.0",
+      "bytes": 1921690,
+      "sha256": "ebfde8aab4411019e37e3426f4dd88d6a52a38c2d0261d7f10ec63d8ff584dc7"
+    },
+    {
+      "file": "KSHarp_F4_mf.wav",
+      "url": "https://raw.githubusercontent.com/sgossner/VSCO-2-CE/440300901dfe9275fd84e0b7763af1f8443ae62e/Strings/Harp/KSHarp_F4_mf.wav",
+      "author": "Versilian Studios / Sam Gossner & Simon Dalzell; cutting: Elan Hickler",
+      "page": "https://versilian-studios.com/vsco-community/",
+      "license": "CC0-1.0",
+      "bytes": 1913498,
+      "sha256": "db27ebbb37334c10e06f2ae63f4d9ff555e4d11704fcc6f0bcf503863867e577"
+    },
+    {
+      "file": "KSHarp_A4_mf.wav",
+      "url": "https://raw.githubusercontent.com/sgossner/VSCO-2-CE/440300901dfe9275fd84e0b7763af1f8443ae62e/Strings/Harp/KSHarp_A4_mf.wav",
+      "author": "Versilian Studios / Sam Gossner & Simon Dalzell; cutting: Elan Hickler",
+      "page": "https://versilian-studios.com/vsco-community/",
+      "license": "CC0-1.0",
+      "bytes": 2143618,
+      "sha256": "3665f3975cad4a33f46784aa4f896f4b4319ba2b7831e892d975bc38c9f09f23"
+    },
+    {
+      "file": "LICENSE",
+      "url": "https://raw.githubusercontent.com/sgossner/VSCO-2-CE/440300901dfe9275fd84e0b7763af1f8443ae62e/LICENSE",
+      "author": "Versilian Studios / Sam Gossner & Simon Dalzell; cutting: Elan Hickler",
+      "page": "https://versilian-studios.com/vsco-community/",
+      "license": "CC0-1.0",
+      "bytes": 6555,
+      "sha256": "36ffd9dc085d529a7e60e1276d73ae5a030b020313e6c5408593a6ae2af39673"
+    },
+    {
+      "file": "birds.ogg",
+      "author": "isaiah658",
+      "page": "https://opengameart.org/content/ambient-bird-sounds",
+      "kind": "Bird field recording",
+      "sha256": "359e4e3f9da9d75aac64cede511c7e3ef8b461f9d9f8c230f8f80e44c4b3e35f",
+      "license": "CC0-1.0"
+    },
+    {
+      "file": "fire.wav",
+      "author": "PagDev",
+      "page": "https://opengameart.org/content/fireplace-sound-loop",
+      "kind": "Wood-burning fireplace sound loop",
+      "sha256": "85ca0cc60d0c037fff8b185e31ad1fcdbda6ce45eee17c3ee1318d1b8f59e330",
+      "license": "CC0-1.0"
+    },
+    {
+      "file": "river.mp3",
+      "author": "RandomMind",
+      "page": "https://opengameart.org/content/sea-and-river-wave-sounds",
+      "kind": "Vistula river field recording",
+      "sha256": "8c24607e41edd6f018ec3582a07e5a8dbc57347276339cb68440951a0fb4cfb1",
+      "license": "CC0-1.0"
+    }
+  ],
+  "files": [
+    {
+      "name": "wind",
+      "url": "/audio/nature/wind.mp3",
+      "source": "wind-field.wav",
+      "processing": {
+        "start": 70,
+        "seconds": 43,
+        "crossfade": 3,
+        "filters": "highpass=f=170,highpass=f=170,highshelf=f=1800:g=-5,lowpass=f=3400"
+      },
+      "loop": true,
+      "rate": 44100,
+      "channels": 2,
+      "seconds": 40.0,
+      "rmsDB": -35.3,
+      "peak": 0.3576,
+      "bands": {
+        "0-80": 0.00051,
+        "80-500": 0.36456,
+        "500-2500": 0.55183,
+        "2500-7000": 0.08286,
+        "7000-22050": 0.00024
+      },
+      "correlation": 0.068,
+      "rms": 0.017181605100631714,
+      "lufs": -32.0,
+      "truePeakDB": -8.92,
+      "masterGainDB": 19.74,
+      "bytes": 852896,
+      "sha256": "b6a16f4428f0b9f2efa0b390734525251901d9b731cc1be73c60b55cb8005058"
+    },
+    {
+      "name": "river",
+      "url": "/audio/nature/river.mp3",
+      "source": "river-field.wav",
+      "processing": {
+        "start": 16,
+        "seconds": 37,
+        "crossfade": 3,
+        "filters": "highpass=f=85,highshelf=f=4000:g=-3,lowpass=f=10000"
+      },
+      "loop": true,
+      "rate": 44100,
+      "channels": 2,
+      "seconds": 34.0,
+      "rmsDB": -29.11,
+      "peak": 0.21093,
+      "bands": {
+        "0-80": 0.00463,
+        "80-500": 0.21121,
+        "500-2500": 0.6009,
+        "2500-7000": 0.17015,
+        "7000-22050": 0.01311
+      },
+      "correlation": 0.807,
+      "rms": 0.035051487386226654,
+      "lufs": -24.99,
+      "truePeakDB": -13.49,
+      "masterGainDB": 14.95,
+      "bytes": 760396,
+      "sha256": "ad688f7b6a664636252d85a8b8d0955a815bc99bc3bea5efc1a368d92644782f"
+    },
+    {
+      "name": "shore",
+      "url": "/audio/nature/shore.mp3",
+      "source": "river.mp3",
+      "processing": {
+        "start": 74,
+        "seconds": 41,
+        "crossfade": 4,
+        "filters": "highpass=f=75,highshelf=f=4500:g=-3,lowpass=f=11000"
+      },
+      "loop": true,
+      "rate": 44100,
+      "channels": 2,
+      "seconds": 37.0,
+      "rmsDB": -29.06,
+      "peak": 0.36922,
+      "bands": {
+        "0-80": 0.00101,
+        "80-500": 0.34063,
+        "500-2500": 0.60658,
+        "2500-7000": 0.05112,
+        "7000-22050": 0.00066
+      },
+      "correlation": 0.802,
+      "rms": 0.03523092716932297,
+      "lufs": -25.99,
+      "truePeakDB": -8.64,
+      "masterGainDB": -9.42,
+      "bytes": 686935,
+      "sha256": "0db48f379cd4056c75980e4ecaf3f338fc5ea16330443ffec97789a31ba09edf"
+    },
+    {
+      "name": "fire",
+      "url": "/audio/nature/fire.mp3",
+      "source": "fire.wav",
+      "processing": {
+        "start": 1,
+        "seconds": 27,
+        "crossfade": 2,
+        "filters": "highpass=f=65,lowpass=f=7500"
+      },
+      "loop": true,
+      "rate": 44100,
+      "channels": 1,
+      "seconds": 25.0,
+      "rmsDB": -28.83,
+      "peak": 0.55765,
+      "bands": {
+        "0-80": 0.1004,
+        "80-500": 0.86349,
+        "500-2500": 0.0219,
+        "2500-7000": 0.01128,
+        "7000-22050": 0.00293
+      },
+      "correlation": 1,
+      "rms": 0.036167170852422714,
+      "lufs": -30.19,
+      "truePeakDB": -5.04,
+      "masterGainDB": 12.193,
+      "bytes": 321142,
+      "sha256": "9d652fe766aa2df98ab7fea12a6b032aee8739302de07e0e2f0d1fe1db832e56"
+    },
+    {
+      "name": "torch",
+      "url": "/audio/nature/torch.mp3",
+      "source": "fire.wav",
+      "processing": {
+        "start": 7,
+        "seconds": 16,
+        "crossfade": 2,
+        "filters": "highpass=f=240,highshelf=f=2000:g=-4,lowpass=f=4800"
+      },
+      "loop": true,
+      "rate": 44100,
+      "channels": 1,
+      "seconds": 14.0,
+      "rmsDB": -33.47,
+      "peak": 0.56069,
+      "bands": {
+        "0-80": 0.00728,
+        "80-500": 0.9046,
+        "500-2500": 0.06803,
+        "2500-7000": 0.0184,
+        "7000-22050": 0.00168
+      },
+      "correlation": 1,
+      "rms": 0.021213971078395844,
+      "lufs": -34.43,
+      "truePeakDB": -4.97,
+      "masterGainDB": 15.809,
+      "bytes": 172125,
+      "sha256": "1ea4c8afdba61fddc180e0b290c198e02ba7d71c598ef1f0b888103e64fc8cf8"
+    },
+    {
+      "name": "rain",
+      "url": "/audio/nature/rain.mp3",
+      "source": "rain-field.ogg",
+      "processing": {
+        "start": 5,
+        "seconds": 39,
+        "crossfade": 3,
+        "filters": "highpass=f=110,equalizer=f=1400:t=o:w=1.4:g=-3,lowpass=f=8500"
+      },
+      "loop": true,
+      "rate": 44100,
+      "channels": 2,
+      "seconds": 36.0,
+      "rmsDB": -31.61,
+      "peak": 0.25335,
+      "bands": {
+        "0-80": 0.01102,
+        "80-500": 0.41892,
+        "500-2500": 0.46587,
+        "2500-7000": 0.10129,
+        "7000-22050": 0.0029
+      },
+      "correlation": 0.985,
+      "rms": 0.026257503777742386,
+      "lufs": -27.96,
+      "truePeakDB": -11.82,
+      "masterGainDB": 8.86,
+      "bytes": 821347,
+      "sha256": "010a48060749f37289c4d61c5e078856851202e5d5114d66eb22826f3b00ca91"
+    },
+    {
+      "name": "birds-0",
+      "url": "/audio/nature/birds-0.mp3",
+      "source": "birds.ogg",
+      "processing": {
+        "start": 1,
+        "seconds": 6.5,
+        "fadeIn": 0.65,
+        "fadeOut": 0.9,
+        "filters": "highpass 1100; high shelf 5200 -4 dB; lowpass 10500"
+      },
+      "loop": false,
+      "rate": 44100,
+      "channels": 1,
+      "seconds": 6.5,
+      "rmsDB": -29.02,
+      "peak": 0.47228,
+      "bands": {
+        "0-80": 0.0,
+        "80-500": 0.0,
+        "500-2500": 0.10998,
+        "2500-7000": 0.84923,
+        "7000-22050": 0.04079
+      },
+      "correlation": 1,
+      "rms": 0.035407405346632004,
+      "lufs": -26.0,
+      "truePeakDB": -6.5,
+      "masterGainDB": 1.05,
+      "bytes": 72668,
+      "sha256": "f8f5dbbadd056ac34733744c75c1d427e89d68799de86f79e7a643722daebd86"
+    },
+    {
+      "name": "birds-1",
+      "url": "/audio/nature/birds-1.mp3",
+      "source": "birds.ogg",
+      "processing": {
+        "start": 10,
+        "seconds": 7,
+        "fadeIn": 0.65,
+        "fadeOut": 0.9,
+        "filters": "highpass 1100; high shelf 5200 -4 dB; lowpass 10500"
+      },
+      "loop": false,
+      "rate": 44100,
+      "channels": 1,
+      "seconds": 7.0,
+      "rmsDB": -30.35,
+      "peak": 0.41912,
+      "bands": {
+        "0-80": 0.0,
+        "80-500": 0.0,
+        "500-2500": 0.25144,
+        "2500-7000": 0.70154,
+        "7000-22050": 0.04702
+      },
+      "correlation": 1,
+      "rms": 0.030367538332939148,
+      "lufs": -25.99,
+      "truePeakDB": -7.4,
+      "masterGainDB": -0.55,
+      "bytes": 74158,
+      "sha256": "68ba91314e7a1839985f98692052143c1ee50090d99535c0b821f223e63ba5ed"
+    },
+    {
+      "name": "birds-2",
+      "url": "/audio/nature/birds-2.mp3",
+      "source": "birds.ogg",
+      "processing": {
+        "start": 20,
+        "seconds": 7.5,
+        "fadeIn": 0.65,
+        "fadeOut": 0.9,
+        "filters": "highpass 1100; high shelf 5200 -4 dB; lowpass 10500"
+      },
+      "loop": false,
+      "rate": 44100,
+      "channels": 1,
+      "seconds": 7.5,
+      "rmsDB": -32.61,
+      "peak": 0.29264,
+      "bands": {
+        "0-80": 0.0,
+        "80-500": 0.0,
+        "500-2500": 0.00475,
+        "2500-7000": 0.86602,
+        "7000-22050": 0.12922
+      },
+      "correlation": 1,
+      "rms": 0.023420823737978935,
+      "lufs": -25.93,
+      "truePeakDB": -10.61,
+      "masterGainDB": -2.55,
+      "bytes": 82055,
+      "sha256": "bdbfc2b05acf519e3bd2ec3e1d5d56999fcc9e3a69ff3a7f05d39709faa9a47e"
+    },
+    {
+      "name": "drop-0",
+      "url": "/audio/nature/drop-0.mp3",
+      "source": "drips.flac",
+      "processing": {
+        "start": 4.35,
+        "seconds": 1.2,
+        "fadeIn": 0.08,
+        "fadeOut": 0.35,
+        "filters": "highpass 250; lowpass 7200"
+      },
+      "loop": false,
+      "rate": 44100,
+      "channels": 1,
+      "seconds": 1.2,
+      "rmsDB": -35.45,
+      "peak": 0.56138,
+      "bands": {
+        "0-80": 0.00037,
+        "80-500": 0.07358,
+        "500-2500": 0.64549,
+        "2500-7000": 0.25633,
+        "7000-22050": 0.02423
+      },
+      "correlation": 1,
+      "rms": 0.016884315758943558,
+      "lufs": -32.05,
+      "truePeakDB": -4.7,
+      "masterGainDB": 13.755,
+      "bytes": 14052,
+      "sha256": "b6957f402540d0acbd754a9dd23156d4c1e8bb5c757adddb202b3613e72ccf46"
+    },
+    {
+      "name": "drop-1",
+      "url": "/audio/nature/drop-1.mp3",
+      "source": "drips.flac",
+      "processing": {
+        "start": 12.45,
+        "seconds": 1.2,
+        "fadeIn": 0.08,
+        "fadeOut": 0.35,
+        "filters": "highpass 250; lowpass 7200"
+      },
+      "loop": false,
+      "rate": 44100,
+      "channels": 1,
+      "seconds": 1.2,
+      "rmsDB": -33.3,
+      "peak": 0.5462,
+      "bands": {
+        "0-80": 7e-05,
+        "80-500": 0.01648,
+        "500-2500": 0.41661,
+        "2500-7000": 0.24675,
+        "7000-22050": 0.32009
+      },
+      "correlation": 1,
+      "rms": 0.02163759060204029,
+      "lufs": -29.94,
+      "truePeakDB": -5.04,
+      "masterGainDB": 10.32,
+      "bytes": 14573,
+      "sha256": "69bf43e2097a4005e61940ba9c2078b4480299bd18148b11d9c5dcb8f99c434c"
+    },
+    {
+      "name": "bgm-explore",
+      "url": "/audio/nature/bgm-explore.mp3",
+      "source": [
+        "KSHarp_B3_mf.wav",
+        "KSHarp_C3_mf.wav",
+        "KSHarp_D4_mf.wav",
+        "KSHarp_G3_mf.wav",
+        "LDFlute_susNV_A3_v1_1.wav",
+        "LDFlute_susNV_C3_v1_1.wav",
+        "LDFlute_susNV_E3_v1_1.wav"
+      ],
+      "processing": {
+        "score": [
+          {
+            "instrument": "harp",
+            "at": 0,
+            "midi": 50,
+            "duration": 7,
+            "velocity": 0.43,
+            "sample": "KSHarp_C3_mf.wav",
+            "rate": 1.125152367499646
+          },
+          {
+            "instrument": "harp",
+            "at": 0.25,
+            "midi": 57,
+            "duration": 6,
+            "velocity": 0.28,
+            "sample": "KSHarp_B3_mf.wav",
+            "rate": 0.8979591836734694
+          },
+          {
+            "instrument": "harp",
+            "at": 8,
+            "midi": 62,
+            "duration": 6,
+            "velocity": 0.24,
+            "sample": "KSHarp_D4_mf.wav",
+            "rate": 1.0074263050339882
+          },
+          {
+            "instrument": "harp",
+            "at": 13,
+            "midi": 55,
+            "duration": 8,
+            "velocity": 0.34,
+            "sample": "KSHarp_G3_mf.wav",
+            "rate": 1.0051165025173059
+          },
+          {
+            "instrument": "harp",
+            "at": 20,
+            "midi": 50,
+            "duration": 7,
+            "velocity": 0.35,
+            "sample": "KSHarp_C3_mf.wav",
+            "rate": 1.125152367499646
+          },
+          {
+            "instrument": "harp",
+            "at": 25,
+            "midi": 57,
+            "duration": 6,
+            "velocity": 0.27,
+            "sample": "KSHarp_B3_mf.wav",
+            "rate": 0.8979591836734694
+          },
+          {
+            "instrument": "harp",
+            "at": 33,
+            "midi": 55,
+            "duration": 7,
+            "velocity": 0.31,
+            "sample": "KSHarp_G3_mf.wav",
+            "rate": 1.0051165025173059
+          },
+          {
+            "instrument": "harp",
+            "at": 39,
+            "midi": 50,
+            "duration": 7,
+            "velocity": 0.32,
+            "sample": "KSHarp_C3_mf.wav",
+            "rate": 1.125152367499646
+          },
+          {
+            "instrument": "harp",
+            "at": 40.2,
+            "midi": 62,
+            "duration": 6,
+            "velocity": 0.2,
+            "sample": "KSHarp_D4_mf.wav",
+            "rate": 1.0074263050339882
+          },
+          {
+            "instrument": "flute",
+            "at": 2,
+            "midi": 62,
+            "duration": 2.5,
+            "velocity": 0.62,
+            "sample": "LDFlute_susNV_C3_v1_1.wav",
+            "rate": 1.125152367499646
+          },
+          {
+            "instrument": "flute",
+            "at": 6,
+            "midi": 69,
+            "duration": 2,
+            "velocity": 0.49,
+            "sample": "LDFlute_susNV_A3_v1_1.wav",
+            "rate": 1.0
+          },
+          {
+            "instrument": "flute",
+            "at": 9.2,
+            "midi": 67,
+            "duration": 2.6,
+            "velocity": 0.52,
+            "sample": "LDFlute_susNV_A3_v1_1.wav",
+            "rate": 0.8908987181403393
+          },
+          {
+            "instrument": "flute",
+            "at": 14,
+            "midi": 64,
+            "duration": 3,
+            "velocity": 0.56,
+            "sample": "LDFlute_susNV_E3_v1_1.wav",
+            "rate": 1.0019074678202733
+          },
+          {
+            "instrument": "flute",
+            "at": 21,
+            "midi": 62,
+            "duration": 2.6,
+            "velocity": 0.49,
+            "sample": "LDFlute_susNV_C3_v1_1.wav",
+            "rate": 1.125152367499646
+          },
+          {
+            "instrument": "flute",
+            "at": 26,
+            "midi": 64,
+            "duration": 2,
+            "velocity": 0.47,
+            "sample": "LDFlute_susNV_E3_v1_1.wav",
+            "rate": 1.0019074678202733
+          },
+          {
+            "instrument": "flute",
+            "at": 29,
+            "midi": 67,
+            "duration": 2.7,
+            "velocity": 0.53,
+            "sample": "LDFlute_susNV_A3_v1_1.wav",
+            "rate": 0.8908987181403393
+          },
+          {
+            "instrument": "flute",
+            "at": 34,
+            "midi": 69,
+            "duration": 3,
+            "velocity": 0.47,
+            "sample": "LDFlute_susNV_A3_v1_1.wav",
+            "rate": 1.0
+          },
+          {
+            "instrument": "flute",
+            "at": 39,
+            "midi": 62,
+            "duration": 3.5,
+            "velocity": 0.43,
+            "sample": "LDFlute_susNV_C3_v1_1.wav",
+            "rate": 1.125152367499646
+          }
+        ],
+        "reverbSeconds": 1.9,
+        "tailFade": 4
+      },
+      "loop": false,
+      "rate": 44100,
+      "channels": 2,
+      "seconds": 48.0,
+      "rmsDB": -29.33,
+      "peak": 0.17331,
+      "bands": {
+        "0-80": 1e-05,
+        "80-500": 0.94629,
+        "500-2500": 0.05336,
+        "2500-7000": 0.00034,
+        "7000-22050": 0.0
+      },
+      "correlation": 0.17,
+      "rms": 0.03417748957872391,
+      "lufs": -26.0,
+      "truePeakDB": -15.22,
+      "masterGainDB": 2.07,
+      "bytes": 880169,
+      "sha256": "b82edec211a0846043caad74ea056d79f3bfa3ba8d041f1bff220d415d7ab74e"
+    },
+    {
+      "name": "bgm-camp",
+      "url": "/audio/nature/bgm-camp.mp3",
+      "source": [
+        "KSHarp_B3_mf.wav",
+        "KSHarp_C3_mf.wav",
+        "KSHarp_D4_mf.wav",
+        "KSHarp_G3_mf.wav",
+        "LDFlute_susNV_A3_v1_1.wav",
+        "LDFlute_susNV_C3_v1_1.wav",
+        "LDFlute_susNV_E3_v1_1.wav"
+      ],
+      "processing": {
+        "score": [
+          {
+            "instrument": "harp",
+            "at": 0,
+            "midi": 50,
+            "duration": 7,
+            "velocity": 0.44,
+            "sample": "KSHarp_C3_mf.wav",
+            "rate": 1.125152367499646
+          },
+          {
+            "instrument": "harp",
+            "at": 0.32,
+            "midi": 57,
+            "duration": 7,
+            "velocity": 0.35,
+            "sample": "KSHarp_B3_mf.wav",
+            "rate": 0.8979591836734694
+          },
+          {
+            "instrument": "harp",
+            "at": 1.3,
+            "midi": 62,
+            "duration": 7,
+            "velocity": 0.26,
+            "sample": "KSHarp_D4_mf.wav",
+            "rate": 1.0074263050339882
+          },
+          {
+            "instrument": "harp",
+            "at": 6,
+            "midi": 59,
+            "duration": 6,
+            "velocity": 0.32,
+            "sample": "KSHarp_B3_mf.wav",
+            "rate": 1.007925104604335
+          },
+          {
+            "instrument": "harp",
+            "at": 10,
+            "midi": 54,
+            "duration": 7,
+            "velocity": 0.38,
+            "sample": "KSHarp_G3_mf.wav",
+            "rate": 0.9487036479785498
+          },
+          {
+            "instrument": "harp",
+            "at": 10.4,
+            "midi": 62,
+            "duration": 7,
+            "velocity": 0.22,
+            "sample": "KSHarp_D4_mf.wav",
+            "rate": 1.0074263050339882
+          },
+          {
+            "instrument": "harp",
+            "at": 17,
+            "midi": 55,
+            "duration": 7,
+            "velocity": 0.39,
+            "sample": "KSHarp_G3_mf.wav",
+            "rate": 1.0051165025173059
+          },
+          {
+            "instrument": "harp",
+            "at": 18.2,
+            "midi": 62,
+            "duration": 6,
+            "velocity": 0.3,
+            "sample": "KSHarp_D4_mf.wav",
+            "rate": 1.0074263050339882
+          },
+          {
+            "instrument": "harp",
+            "at": 22,
+            "midi": 59,
+            "duration": 7,
+            "velocity": 0.29,
+            "sample": "KSHarp_B3_mf.wav",
+            "rate": 1.007925104604335
+          },
+          {
+            "instrument": "harp",
+            "at": 28,
+            "midi": 57,
+            "duration": 7,
+            "velocity": 0.33,
+            "sample": "KSHarp_B3_mf.wav",
+            "rate": 0.8979591836734694
+          },
+          {
+            "instrument": "harp",
+            "at": 34,
+            "midi": 50,
+            "duration": 9,
+            "velocity": 0.43,
+            "sample": "KSHarp_C3_mf.wav",
+            "rate": 1.125152367499646
+          },
+          {
+            "instrument": "harp",
+            "at": 35.2,
+            "midi": 57,
+            "duration": 8,
+            "velocity": 0.29,
+            "sample": "KSHarp_B3_mf.wav",
+            "rate": 0.8979591836734694
+          },
+          {
+            "instrument": "harp",
+            "at": 38,
+            "midi": 62,
+            "duration": 7,
+            "velocity": 0.21,
+            "sample": "KSHarp_D4_mf.wav",
+            "rate": 1.0074263050339882
+          },
+          {
+            "instrument": "flute",
+            "at": 4,
+            "midi": 66,
+            "duration": 2.8,
+            "velocity": 0.47,
+            "sample": "LDFlute_susNV_E3_v1_1.wav",
+            "rate": 1.1246031085460013
+          },
+          {
+            "instrument": "flute",
+            "at": 8,
+            "midi": 64,
+            "duration": 2.1,
+            "velocity": 0.4,
+            "sample": "LDFlute_susNV_E3_v1_1.wav",
+            "rate": 1.0019074678202733
+          },
+          {
+            "instrument": "flute",
+            "at": 11,
+            "midi": 62,
+            "duration": 3,
+            "velocity": 0.5,
+            "sample": "LDFlute_susNV_C3_v1_1.wav",
+            "rate": 1.125152367499646
+          },
+          {
+            "instrument": "flute",
+            "at": 20,
+            "midi": 69,
+            "duration": 2.8,
+            "velocity": 0.42,
+            "sample": "LDFlute_susNV_A3_v1_1.wav",
+            "rate": 1.0
+          },
+          {
+            "instrument": "flute",
+            "at": 24,
+            "midi": 66,
+            "duration": 2.2,
+            "velocity": 0.43,
+            "sample": "LDFlute_susNV_E3_v1_1.wav",
+            "rate": 1.1246031085460013
+          },
+          {
+            "instrument": "flute",
+            "at": 28,
+            "midi": 64,
+            "duration": 2.7,
+            "velocity": 0.42,
+            "sample": "LDFlute_susNV_E3_v1_1.wav",
+            "rate": 1.0019074678202733
+          },
+          {
+            "instrument": "flute",
+            "at": 35,
+            "midi": 62,
+            "duration": 4,
+            "velocity": 0.44,
+            "sample": "LDFlute_susNV_C3_v1_1.wav",
+            "rate": 1.125152367499646
+          }
+        ],
+        "reverbSeconds": 1.9,
+        "tailFade": 4
+      },
+      "loop": false,
+      "rate": 44100,
+      "channels": 2,
+      "seconds": 48.0,
+      "rmsDB": -29.97,
+      "peak": 0.2173,
+      "bands": {
+        "0-80": 1e-05,
+        "80-500": 0.93386,
+        "500-2500": 0.06577,
+        "2500-7000": 0.00036,
+        "7000-22050": 0.0
+      },
+      "correlation": 0.26,
+      "rms": 0.03172246366739273,
+      "lufs": -26.04,
+      "truePeakDB": -13.25,
+      "masterGainDB": 2.04,
+      "bytes": 878399,
+      "sha256": "316ed0ef6d03c1d71e6c89b3cd2b9f4aca59e21b8c444435e6b36aa2617ab509"
+    },
+    {
+      "name": "bgm-cave",
+      "url": "/audio/nature/bgm-cave.mp3",
+      "source": [
+        "KSHarp_A2_mf.wav",
+        "KSHarp_B3_mf.wav",
+        "KSHarp_C3_mf.wav",
+        "KSHarp_D2_mf.wav",
+        "KSHarp_D4_mf.wav",
+        "LDFlute_susNV_C3_v1_1.wav",
+        "LDFlute_susNV_E3_v1_1.wav"
+      ],
+      "processing": {
+        "score": [
+          {
+            "instrument": "harp",
+            "at": 0,
+            "midi": 38,
+            "duration": 10,
+            "velocity": 0.44,
+            "sample": "KSHarp_D2_mf.wav",
+            "rate": 1.0057012599911217
+          },
+          {
+            "instrument": "harp",
+            "at": 1.8,
+            "midi": 57,
+            "duration": 8,
+            "velocity": 0.21,
+            "sample": "KSHarp_B3_mf.wav",
+            "rate": 0.8979591836734694
+          },
+          {
+            "instrument": "harp",
+            "at": 12,
+            "midi": 50,
+            "duration": 9,
+            "velocity": 0.33,
+            "sample": "KSHarp_C3_mf.wav",
+            "rate": 1.125152367499646
+          },
+          {
+            "instrument": "harp",
+            "at": 21,
+            "midi": 45,
+            "duration": 10,
+            "velocity": 0.34,
+            "sample": "KSHarp_A2_mf.wav",
+            "rate": 1.004566210045662
+          },
+          {
+            "instrument": "harp",
+            "at": 23,
+            "midi": 62,
+            "duration": 8,
+            "velocity": 0.18,
+            "sample": "KSHarp_D4_mf.wav",
+            "rate": 1.0074263050339882
+          },
+          {
+            "instrument": "harp",
+            "at": 33,
+            "midi": 50,
+            "duration": 10,
+            "velocity": 0.31,
+            "sample": "KSHarp_C3_mf.wav",
+            "rate": 1.125152367499646
+          },
+          {
+            "instrument": "flute",
+            "at": 5,
+            "midi": 62,
+            "duration": 3.3,
+            "velocity": 0.42,
+            "sample": "LDFlute_susNV_C3_v1_1.wav",
+            "rate": 1.125152367499646
+          },
+          {
+            "instrument": "flute",
+            "at": 15,
+            "midi": 57,
+            "duration": 3,
+            "velocity": 0.35,
+            "sample": "LDFlute_susNV_C3_v1_1.wav",
+            "rate": 0.842911877394636
+          },
+          {
+            "instrument": "flute",
+            "at": 24,
+            "midi": 64,
+            "duration": 2.8,
+            "velocity": 0.31,
+            "sample": "LDFlute_susNV_E3_v1_1.wav",
+            "rate": 1.0019074678202733
+          },
+          {
+            "instrument": "flute",
+            "at": 33,
+            "midi": 62,
+            "duration": 4,
+            "velocity": 0.35,
+            "sample": "LDFlute_susNV_C3_v1_1.wav",
+            "rate": 1.125152367499646
+          }
+        ],
+        "reverbSeconds": 3.1,
+        "tailFade": 4
+      },
+      "loop": false,
+      "rate": 44100,
+      "channels": 2,
+      "seconds": 48.0,
+      "rmsDB": -30.96,
+      "peak": 0.21621,
+      "bands": {
+        "0-80": 0.00059,
+        "80-500": 0.96103,
+        "500-2500": 0.03821,
+        "2500-7000": 0.00016,
+        "7000-22050": 0.0
+      },
+      "correlation": 0.159,
+      "rms": 0.02831791341304779,
+      "lufs": -26.0,
+      "truePeakDB": -13.3,
+      "masterGainDB": 3.4,
+      "bytes": 805013,
+      "sha256": "b1b2eed376b71968feb176ecb2d7460e94d7f90e39207dfd080a575aa532001c"
+    }
+  ],
+  "totalBytes": 6435928,
+  "decodedBytesAt48000Hz": 123724800
+}

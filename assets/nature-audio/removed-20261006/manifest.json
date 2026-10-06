@@ -1,0 +1,266 @@
+{
+  "version": 1,
+  "prepared": "2026-10-06",
+  "format": "Mono PCM16 WAV, 22050 Hz; cropped, DC removed, level matched, loop overlap or end fades",
+  "sources": [
+    {
+      "file": "wind.wav",
+      "author": "Luke.RUSTLTD",
+      "page": "https://opengameart.org/content/wind1",
+      "kind": "Synthesized wind / PureData",
+      "sha256": "a2856f794fbf77e05f8241dc4adeade7f62fa21c3c9dc49f7725b6c6218060c3",
+      "license": "CC0-1.0"
+    },
+    {
+      "file": "birds.ogg",
+      "author": "isaiah658",
+      "page": "https://opengameart.org/content/ambient-bird-sounds",
+      "kind": "Bird field recording",
+      "sha256": "359e4e3f9da9d75aac64cede511c7e3ef8b461f9d9f8c230f8f80e44c4b3e35f",
+      "license": "CC0-1.0"
+    },
+    {
+      "file": "fire.wav",
+      "author": "PagDev",
+      "page": "https://opengameart.org/content/fireplace-sound-loop",
+      "kind": "Wood-burning fireplace sound loop",
+      "sha256": "85ca0cc60d0c037fff8b185e31ad1fcdbda6ce45eee17c3ee1318d1b8f59e330",
+      "license": "CC0-1.0"
+    },
+    {
+      "file": "river.mp3",
+      "author": "RandomMind",
+      "page": "https://opengameart.org/content/sea-and-river-wave-sounds",
+      "kind": "Vistula river field recording",
+      "sha256": "8c24607e41edd6f018ec3582a07e5a8dbc57347276339cb68440951a0fb4cfb1",
+      "license": "CC0-1.0"
+    },
+    {
+      "file": "fantozzi.7z",
+      "author": "Fantozzi / edits by qubodup",
+      "page": "https://opengameart.org/content/fantozzis-footsteps-grasssand-stone",
+      "kind": "Recorded sand and stone footsteps",
+      "sha256": "415d360e0911c1c1c5355ee94023b772e6f4044f59b9b580610e7dbffd1840fd",
+      "license": "CC0-1.0"
+    }
+  ],
+  "files": [
+    {
+      "url": "/audio/nature/wind.wav",
+      "source": "wind.wav",
+      "extraction": {
+        "file": "wind.wav",
+        "name": "wind",
+        "start": 4,
+        "seconds": 23,
+        "loop": true
+      },
+      "rate": 22050,
+      "seconds": 21.5,
+      "rms": 0.04405584539343918,
+      "peak": 0.29937440156936646,
+      "sourceSeconds": 59.99891156462585,
+      "bytes": 948194,
+      "sha256": "0689c07e7c959fb8804586ae57aab17456b6c7cf98948ece3582f5ba26f47d83"
+    },
+    {
+      "url": "/audio/nature/fire.wav",
+      "source": "fire.wav",
+      "extraction": {
+        "file": "fire.wav",
+        "name": "fire",
+        "start": 2,
+        "seconds": 23,
+        "loop": true
+      },
+      "rate": 22050,
+      "seconds": 21.5,
+      "rms": 0.02988757494497895,
+      "peak": 0.3802087903022766,
+      "sourceSeconds": 29.263537414965988,
+      "bytes": 948194,
+      "sha256": "dac964db2ff9a4082c71ed6170b1e0b8391d34dbc4e9c36a17842cdd99a8e6ba"
+    },
+    {
+      "url": "/audio/nature/river.wav",
+      "source": "river.mp3",
+      "extraction": {
+        "file": "river.mp3",
+        "name": "river",
+        "start": 30,
+        "seconds": 27,
+        "loop": true
+      },
+      "rate": 22050,
+      "seconds": 25.5,
+      "rms": 0.09403998499653045,
+      "peak": 0.65,
+      "sourceSeconds": 300.0424489795918,
+      "bytes": 1124594,
+      "sha256": "03a1cd5a5c32f3527a4861be3bfc73d47dcb8139df991fa42dcd146d1aab6464"
+    },
+    {
+      "url": "/audio/nature/birds-0.wav",
+      "source": "birds.ogg",
+      "extraction": {
+        "file": "birds.ogg",
+        "name": "birds-0",
+        "start": 3,
+        "seconds": 5,
+        "loop": false
+      },
+      "rate": 22050,
+      "seconds": 5,
+      "rms": 0.05041242066133971,
+      "peak": 0.65,
+      "sourceSeconds": 30.688208616780045,
+      "bytes": 220544,
+      "sha256": "1e62cc3db85e375df32f53aa622af2721baab4c5baa9504eed9dc492a64e49e8"
+    },
+    {
+      "url": "/audio/nature/birds-1.wav",
+      "source": "birds.ogg",
+      "extraction": {
+        "file": "birds.ogg",
+        "name": "birds-1",
+        "start": 10,
+        "seconds": 5,
+        "loop": false
+      },
+      "rate": 22050,
+      "seconds": 5,
+      "rms": 0.04427116523949511,
+      "peak": 0.65,
+      "sourceSeconds": 30.688208616780045,
+      "bytes": 220544,
+      "sha256": "de2a4a002f5c2c1993344a2f49923e2691ab5add6550d7d7c9f08e59b1ab87e2"
+    },
+    {
+      "url": "/audio/nature/birds-2.wav",
+      "source": "birds.ogg",
+      "extraction": {
+        "file": "birds.ogg",
+        "name": "birds-2",
+        "start": 17,
+        "seconds": 5,
+        "loop": false
+      },
+      "rate": 22050,
+      "seconds": 5,
+      "rms": 0.05441242608552737,
+      "peak": 0.65,
+      "sourceSeconds": 30.688208616780045,
+      "bytes": 220544,
+      "sha256": "5f0beaffabf2699b4096a819745775c1c84afea6016d76284938d0ddd65dded9"
+    },
+    {
+      "url": "/audio/nature/sand-0.wav",
+      "source": "fantozzi.7z",
+      "extraction": {
+        "file": "footsteps/Fantozzi-footsteps/ogg/Fantozzi-SandL1.ogg",
+        "name": "sand-0",
+        "start": 0,
+        "seconds": 1.5,
+        "loop": false
+      },
+      "rate": 22050,
+      "seconds": 0.44253968253968257,
+      "rms": 0.04065571489195925,
+      "peak": 0.65,
+      "sourceSeconds": 0.44253968253968257,
+      "bytes": 19560,
+      "sha256": "4c72802b92a9d39b88618bac3c18492800a438b9646d6dbec1c8d384c17fba13"
+    },
+    {
+      "url": "/audio/nature/sand-1.wav",
+      "source": "fantozzi.7z",
+      "extraction": {
+        "file": "footsteps/Fantozzi-footsteps/ogg/Fantozzi-SandR2.ogg",
+        "name": "sand-1",
+        "start": 0,
+        "seconds": 1.5,
+        "loop": false
+      },
+      "rate": 22050,
+      "seconds": 0.3401814058956916,
+      "rms": 0.03508302563611067,
+      "peak": 0.65,
+      "sourceSeconds": 0.3401814058956916,
+      "bytes": 15046,
+      "sha256": "a18fc6fbb6e36f1b3b9409b5ded4d341127a92fd6fdef82d6cdb99a7a528a18b"
+    },
+    {
+      "url": "/audio/nature/sand-2.wav",
+      "source": "fantozzi.7z",
+      "extraction": {
+        "file": "footsteps/Fantozzi-footsteps/ogg/Fantozzi-SandL3.ogg",
+        "name": "sand-2",
+        "start": 0,
+        "seconds": 1.5,
+        "loop": false
+      },
+      "rate": 22050,
+      "seconds": 0.29895691609977326,
+      "rms": 0.03374690664653101,
+      "peak": 0.65,
+      "sourceSeconds": 0.29895691609977326,
+      "bytes": 13228,
+      "sha256": "f9d91b0b0bdbf7a892fa7ce941f371afedff2b675a7c0afff2b3565df809484f"
+    },
+    {
+      "url": "/audio/nature/stone-0.wav",
+      "source": "fantozzi.7z",
+      "extraction": {
+        "file": "footsteps/Fantozzi-footsteps/ogg/Fantozzi-StoneL1.ogg",
+        "name": "stone-0",
+        "start": 0,
+        "seconds": 1.5,
+        "loop": false
+      },
+      "rate": 22050,
+      "seconds": 0.3728798185941043,
+      "rms": 0.053340037543871385,
+      "peak": 0.65,
+      "sourceSeconds": 0.3728798185941043,
+      "bytes": 16488,
+      "sha256": "baf1cf0638f0294a66d381d146b52e760876f94fc747c2f76e00b6db80538bc4"
+    },
+    {
+      "url": "/audio/nature/stone-1.wav",
+      "source": "fantozzi.7z",
+      "extraction": {
+        "file": "footsteps/Fantozzi-footsteps/ogg/Fantozzi-StoneR2.ogg",
+        "name": "stone-1",
+        "start": 0,
+        "seconds": 1.5,
+        "loop": false
+      },
+      "rate": 22050,
+      "seconds": 0.3196825396825397,
+      "rms": 0.06889468112953703,
+      "peak": 0.65,
+      "sourceSeconds": 0.3196825396825397,
+      "bytes": 14142,
+      "sha256": "33ef097086f5dffb97f585590ec031585fb1b36943627da1af0bc7ed1bf0463f"
+    },
+    {
+      "url": "/audio/nature/stone-2.wav",
+      "source": "fantozzi.7z",
+      "extraction": {
+        "file": "footsteps/Fantozzi-footsteps/ogg/Fantozzi-StoneL3.ogg",
+        "name": "stone-2",
+        "start": 0,
+        "seconds": 1.5,
+        "loop": false
+      },
+      "rate": 22050,
+      "seconds": 0.3280272108843537,
+      "rms": 0.08469765433205012,
+      "peak": 0.65,
+      "sourceSeconds": 0.3280272108843537,
+      "bytes": 14510,
+      "sha256": "3c746a1e5cd5f51105b291696f7a8ca4396dd7a3d7469cd1b50799ca1b9cb11a"
+    }
+  ],
+  "totalBytes": 3775588
+}

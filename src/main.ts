@@ -8,6 +8,7 @@ import type { CueContext } from './input-cues.js';
 import { TouchControls, touchDevice, type TouchAction } from './touch-controls.js';
 import { movementFromCamera } from '../shared/terrain.mjs';
 import { graphicsSettingsMarkup, bindGraphicsSettings } from './graphics-settings.js';
+import { audioSettingsMarkup } from './nature-audio-settings.js';
 import { mapScreen } from './map-screen.js';
 import { installMapWarp, updateMapWarp, type MapInput } from './map-warp-ui.js';
 import {
@@ -90,10 +91,9 @@ import { GATHER_RANGE, interactionVisible } from '../shared/interactions.mjs';
 import { campContribution } from '../shared/camp-contribution.mjs';
 import { caveFireInteraction } from '../shared/cave-fire.mjs';
 import { caveTorchAvailable, caveTorchLit } from '../shared/cave-light.mjs';
-import { nearRimoNeko, RIMO_NEKO } from '../shared/rimo-neko.mjs';
+import { nearRimoNeko } from '../shared/rimo-neko.mjs';
 import { nearMae } from '../shared/mae.mjs';
 import { nearKohaku } from '../shared/kohaku.mjs';
-import { playCatHiss } from './cat-hiss.js';
 import { nearCompanion524 } from '../shared/companion-524.mjs';
 import { ENEMY_GROUNDS, SCENERY } from '../shared/scenery-layout.mjs';
 import { CASTLE_GATE } from '../shared/castle-layout.mjs';
@@ -102,7 +102,8 @@ import { biomeAt } from '../shared/biomes.mjs';
 import { drawWorldMap, setWorldMapSelection } from './world-map.js';
 import { locationName } from '../shared/paleo-geography.mjs';
 import { regionAt } from '../shared/adventure-regions.mjs';
-import { installAdventureUI, adventureInteraction } from './adventure-ui.js';
+import { adventureInteraction } from './adventure-interaction.js';
+import { ChatUI } from './chat-ui.js';
 import { installFishingUI, fishingInteraction } from './fishing-ui.js';
 import { FISHING, FISHING_SITES } from '../shared/fishing-sites.mjs';
 import { COASTAL } from '../shared/coastal-sites.mjs';
@@ -121,6 +122,7 @@ import {
 import { bindSetupFlow, closeSetupFlow, setupFlowBack, setupFlowOpen } from './setup-flow.js';
 
 const icons = {
+  boat: '<path d="M3 12h18l-3 6H6l-3-6Zm9-9v9M5 21c2-2 4 2 7 0s5 2 7 0"/>',
   menu: '<path d="M4 6h16M4 12h16M4 18h16"/>',
   unarmed:
     '<path d="M5 12V8a2 2 0 0 1 4 0V6a2 2 0 0 1 4 0v1a2 2 0 0 1 4 0v2a2 2 0 0 1 4 0v7l-4 5H9l-6-7a2 2 0 0 1 2-2Z"/>',
@@ -219,9 +221,6 @@ let connectAttempt = 0,
 let localRoomReset = false,
   roomResetVersion = 0;
 let renderUnavailable = false;
-let audioContext = null,
-  audioTimer = null,
-  soundEnabled = false;
 const keys = new Set();
 const blockedMovementKeys = new Set();
 const movementCommands = new MovementCommands();
@@ -307,13 +306,28 @@ const screens = new ScreenManager($('#screens'), (id) => {
   else $('#world').focus({ preventScroll: true });
 });
 inputCues = new InputCues($('.game-viewport'), performCue);
+const chatUI = fixedIdentity
+  ? null
+  : new ChatUI($('.chat-panel'), {
+      touch: touchMode,
+      stop: stopInput,
+      resume: () => $('#world').focus({ preventScroll: true }),
+      submit: (text) => {
+        if (!joined) {
+          notify('チャットの送信には接続が必要です。', 'error');
+          return false;
+        }
+        send({ type: 'chat', text });
+        return true;
+      },
+    });
 function performCue(command: TouchAction) {
   if (
     !joined ||
     renderUnavailable ||
     screens.active ||
     $('#modal').open ||
-    (player()?.downedUntil && !['menu', 'map', 'journal', 'mascots', 'bag'].includes(command))
+    (player()?.downedUntil && !['menu', 'map', 'chat', 'mascots', 'bag'].includes(command))
   )
     return;
   if (assistedControls() && ['inspect', 'zoomIn', 'zoomOut', 'endInspect'].includes(command))
@@ -325,8 +339,8 @@ function performCue(command: TouchAction) {
     case 'map':
       openMap();
       break;
-    case 'journal':
-      openJournal();
+    case 'chat':
+      chatUI?.setOpen(true);
       break;
     case 'mascots':
       openPauseMenu('mascots');
@@ -383,11 +397,12 @@ function performCue(command: TouchAction) {
       openInventory();
       break;
   }
-  if (!$('#modal').open) $('#world').focus({ preventScroll: true });
+  if (!$('#modal').open && !chatUI?.open) $('#world').focus({ preventScroll: true });
 }
 
 function showRenderError(text) {
   renderUnavailable = true;
+  renderer?.audio.setActive(false);
   stopInput();
   if ($('#render-error')) return;
   const message = document.createElement('div');
@@ -477,16 +492,6 @@ const boatUI = installBoatControls({
   renderer,
   openModal,
 });
-const adventureUI = installAdventureUI({
-  player,
-  state: () => state,
-  available: () => joined && !renderUnavailable,
-  action,
-  notify,
-  openModal,
-  send,
-  stopInput,
-});
 const fishingUI = installFishingUI({
   player,
   state: () => state,
@@ -532,10 +537,6 @@ $('.hotbar-wrap').insertAdjacentHTML(
   'afterbegin',
   `<div class="hunt-controls"><div id="magic-cooldown" class="hunt-button" hidden><span>魔法を再び使えるまで</span><progress id="magic-cooldown-progress" max="1" value="0" aria-label="魔法の再使用待ち"></progress></div><button id="cook-button" class="hunt-button" hidden>${icon('flame')}<span>肉を焼く</span></button></div><div id="cooking-status" class="cooking-status" hidden><span id="cooking-label">肉を焼いています…</span><progress id="cooking-progress" max="1" value="0" aria-label="肉を焼く進み具合"></progress><button id="cancel-cook">中止</button></div>`,
 );
-if (!fixedIdentity) {
-  $('#chat-content').hidden = true;
-  $('.chat-collapse').textContent = '+';
-}
 renderer.setState(state, selfId);
 $('#profile-name').textContent = profile.name;
 $('#room-label').textContent = profile.room;
@@ -602,9 +603,11 @@ function addChat(message) {
   box.scrollTop = box.scrollHeight;
 }
 function connection(connected, label) {
+  if (!connected) chatUI?.setOpen(false);
   if (!connected)
     motionControls?.pause('通信が切れました。再接続後、操作する手を確認して自動再開します。');
   joined = connected;
+  renderer.audio.setActive(connected);
   updateCharacterSwitch(player(), renderer.serverNow(), connected);
   if (!connected) renderer.prediction?.reset();
   $('#connection-dot').classList.toggle('offline', !connected);
@@ -788,7 +791,6 @@ async function connect(automatic = false) {
     if (message.type === 'emote') renderer.setEmote(message.id, message.emote);
     if (message.type === 'notice') {
       if (message.popup !== false) notify(message.text, message.tone);
-      if (message.tone === 'success') playNote();
     }
     if (message.type === 'chat') {
       addChat(message);
@@ -844,9 +846,7 @@ function nearby(): { action: string; label: string; targetId?: string } | null {
           renderer.collision.segmentFree(a, b, ...args) && assistScore(b) !== null,
       }
     : renderer.collision;
-  const dot = preferredPet();
-  if (dot && typeof dot === 'object') return dot;
-  if (dot && assisting) return interactionTarget(dot, null);
+  // Petting has its own input; companions must not consume the interact target.
   const coastal = coastalInteraction(state, me, collision);
   if (coastal) return coastal;
   const fishing = fishingInteraction(me);
@@ -935,7 +935,6 @@ function updateHUD() {
     );
   drawMinimap();
   updateModalHUD();
-  adventureUI.update();
   gulfUI.update();
   cropFoodUI.update();
   fishingUI.update();
@@ -969,7 +968,8 @@ function updateModalHUD() {
   if ($('#modal-fishing-kit'))
     $('#modal-fishing-kit').disabled =
       unavailable || !!me?.gulf?.fishingKit || inv.wood < 3 || inv.stone < 1;
-  if ($('#modal-boat-craft')) $('#modal-boat-craft').disabled = unavailable || inv.wood < 12;
+  if ($('#modal-boat-craft'))
+    $('#modal-boat-craft').disabled = unavailable || inv.wood < 12 || inv.boat >= 99;
   if ($('#modal-craft')) {
     $('#modal-craft').disabled = unavailable || me.tool || inv.wood < 3 || inv.stone < 2;
     $('#modal-craft').textContent = me?.tool ? '装備中' : 'つくる';
@@ -1276,19 +1276,6 @@ function dismissNearbyCompanion() {
   const nearest = candidates.sort((a, b) => distance(me, a.point) - distance(me, b.point))[0];
   if (nearest) action(nearest.action, nearest.target);
 }
-let lastCatHiss = '';
-function updateCatHiss() {
-  const c = state.rimoNeko,
-    me = player();
-  if (!c || !me || !c.hitSequence) return;
-  const age = renderer.serverNow() - c.hitAt - RIMO_NEKO.hitMs,
-    key = `${c.hitSequence}/${c.hitAt}`;
-  if (age < 0 || lastCatHiss === key) return;
-  lastCatHiss = key;
-  const separation = distance(me, c);
-  if (age < 400 && separation < 12 && soundEnabled && audioContext?.state === 'running')
-    playCatHiss(audioContext, 0.14 * (1 - separation / 12));
-}
 function canPet524() {
   return (
     joined &&
@@ -1392,7 +1379,6 @@ function interactAnimal(id) {
 function updateHuntingHUD() {
   orbBotUI.update();
   boatUI.update();
-  updateCatHiss();
   const petChoice = preferredPet();
   $('#pet-rimo-button').hidden = petChoice !== 'rimo';
   $('#pet-rimo-button kbd').textContent = motionControls?.ownsInput
@@ -1658,6 +1644,7 @@ function drawMinimap(canvas = $('#minimap'), big = false) {
   drawWorldMap(canvas, state, selfId, big);
 }
 function openModal(content) {
+  chatUI?.setOpen(false);
   inputCues?.hide();
   stopInput();
   $('#modal-body').innerHTML = content;
@@ -1690,11 +1677,13 @@ function applyProfileForm(form: HTMLFormElement) {
   $('#profile-name').textContent = profile.name;
 }
 function showTitle() {
+  chatUI?.setOpen(false);
   motionControls?.stop();
   $('#modal').close();
   screens.show('title');
 }
 function showSetup(error = '') {
+  chatUI?.setOpen(false);
   $('#modal').close();
   $('#retry-session')?.remove();
   const form = $('#setup-form');
@@ -1708,6 +1697,7 @@ function showSetup(error = '') {
   screens.show('setup');
 }
 function enterGame() {
+  void renderer.audio.start();
   $('#retry-session')?.remove();
   screens.hide();
   document.body.classList.add('in-game');
@@ -1788,6 +1778,7 @@ const INVENTORY_ITEMS: readonly [string, string, string][] = [
   ['obsidianBlade', '黒曜石の刃', ''],
   ['rootSeed', '火根草の種', ''],
   ['herbSeed', '香り草の種', ''],
+  ['boat', '丸木舟', '水辺で出して乗れる'],
 ];
 interface ItemUse {
   label: string;
@@ -1798,6 +1789,7 @@ interface ItemUse {
 }
 const eatUse = (action: string): ItemUse => ({ label: '使う（食べる）', action, eats: true });
 const ITEM_USES: Record<string, ItemUse[]> = {
+  boat: [{ label: '船を出す', action: 'launchBoat' }],
   berry: [eatUse('eat')],
   rawMeat: [
     eatUse('eatRawMeat'),
@@ -1858,6 +1850,7 @@ function itemUseReason(key: string, use: ItemUse) {
   const me = player();
   if (!(me?.inventory?.[key] > 0)) return '持っていません。';
   if (modalActionsBlocked()) return '今は使えません。';
+  if (key === 'boat') return boatUI.launchReason();
   if (use.eats && me.energy >= 100) return '体力は満タンです。';
   if (use.cooks && !usableCookingFire(state, me, renderer.collision)) return '焚き火の範囲外です。';
   if (use.output && me.inventory[use.output] >= HUNTING.inventoryLimit)
@@ -1953,7 +1946,7 @@ function openItemActions(card: HTMLElement) {
         return;
       }
       closeItemActions();
-      if (use.cooks) $('#modal').close();
+      if (use.cooks || use.action === 'launchBoat') $('#modal').close();
       action(use.action);
     };
   }
@@ -1980,7 +1973,7 @@ function bindInventory() {
 }
 function craftingMarkup() {
   const me = player();
-  return `<h2>クラフト</h2><div class="gulf-actions"><button id="modal-crop-food" class="button button-outline">食事</button></div><div class="recipe"><span class="resource-icon stone">${icon('axe')}</span><div><strong id="modal-axe-label">${me?.tool ? '石斧を装備中' : '石斧をつくる'}</strong><p>木材3 + 石2</p></div><button id="modal-craft" class="button button-accent" ${me?.tool ? 'disabled' : ''}>${me?.tool ? '装備中' : 'つくる'}</button></div><div class="recipe"><span class="resource-icon wood">${icon('wood')}</span><div><strong>丸木舟をつくる</strong><p>木材12 · 海岸</p></div><button id="modal-boat-craft" class="button button-accent">船をつくる</button></div>`;
+  return `<h2>クラフト</h2><div class="gulf-actions"><button id="modal-crop-food" class="button button-outline">食事</button></div><div class="recipe"><span class="resource-icon stone">${icon('axe')}</span><div><strong id="modal-axe-label">${me?.tool ? '石斧を装備中' : '石斧をつくる'}</strong><p>木材3 + 石2</p></div><button id="modal-craft" class="button button-accent" ${me?.tool ? 'disabled' : ''}>${me?.tool ? '装備中' : 'つくる'}</button></div><div class="recipe"><span class="resource-icon boat">${icon('boat')}</span><div><strong>丸木舟をつくる</strong><p>木材12 · 作ると持ち物へ</p></div><button id="modal-boat-craft" class="button button-accent">船をつくる</button></div>`;
 }
 function bindCrafting() {
   $('#modal-craft').onclick = () => {
@@ -2004,9 +1997,6 @@ function openTribe() {
   openModal(tribeMarkup());
   updateModalHUD();
   $('#tribe-invite').onclick = openInvite;
-}
-function openJournal() {
-  adventureUI.open();
 }
 function updateGamepadHints(active: boolean) {
   usingGamepad = active;
@@ -2233,7 +2223,7 @@ function openPauseMenu(tab?: string) {
       inventoryMarkup(),
     )}${panel('character', characterSwitchMarkup())}${panel('warp', exhibitionWarpMarkup())}${panel('crafting', craftingMarkup())}${panel('mascots', mascotMenuMarkup(state))}${panel(
       'settings',
-      `<h2>設定</h2><div class="settings-list">${graphicsSettingsMarkup()}${fixedIdentity ? '' : difficultySettingsMarkup()}<div class="settings-item"><div><strong>環境音</strong></div><button class="button button-outline" data-setting="sound" aria-pressed="${soundEnabled}">${icon(soundEnabled ? 'sound' : 'muted')} ${soundEnabled ? 'オン' : 'オフ'}</button></div><div class="settings-item"><div><strong>全画面表示</strong></div><button class="button button-outline" data-setting="fullscreen">${icon('expand')} 切り替え</button></div><div class="settings-item"><div><strong>視点</strong></div><div class="settings-buttons"><button class="button button-outline" data-setting="zoom-out">− 遠く</button><button class="button button-outline" data-setting="zoom-in">+ 近く</button><button class="button button-outline" data-setting="camera">${icon('target')} 視点を戻す</button></div></div><div class="settings-item"><div><strong>コントローラー</strong><p class="gamepad-connection" role="status">${usingGamepad ? '' : '未接続'}</p></div></div></div><p id="local-save-status" class="form-note" role="status" hidden></p>${localResetMarkup()}`,
+      `<h2>設定</h2><div class="settings-list">${graphicsSettingsMarkup()}${fixedIdentity ? '' : difficultySettingsMarkup()}${audioSettingsMarkup(renderer.audio.settings)}<div class="settings-item"><div><strong>全画面表示</strong></div><button class="button button-outline" data-setting="fullscreen">${icon('expand')} 切り替え</button></div><div class="settings-item"><div><strong>視点</strong></div><div class="settings-buttons"><button class="button button-outline" data-setting="zoom-out">− 遠く</button><button class="button button-outline" data-setting="zoom-in">+ 近く</button><button class="button button-outline" data-setting="camera">${icon('target')} 視点を戻す</button></div></div><div class="settings-item"><div><strong>コントローラー</strong><p class="gamepad-connection" role="status">${usingGamepad ? '' : '未接続'}</p></div></div></div><p id="local-save-status" class="form-note" role="status" hidden></p>${localResetMarkup()}`,
     )}</div></div>`,
   );
   const root = $('#modal-body') as HTMLElement;
@@ -2313,6 +2303,16 @@ function openPauseMenu(tab?: string) {
     bindMascotMenu(root, action);
     updateSaveStatus();
     $('[data-setting="sound"]').onclick = toggleSound;
+    for (const input of root.querySelectorAll<HTMLInputElement>('[data-audio-volume]')) {
+      input.oninput = () => {
+        const key = input.dataset.audioVolume as 'ambience' | 'music';
+        renderer.audio.setSettings({
+          ...renderer.audio.settings,
+          [key]: Number(input.value) / 100,
+        });
+        input.nextElementSibling.textContent = `${input.value}%`;
+      };
+    }
     $('[data-setting="fullscreen"]').onclick = toggleFullscreen;
     $('[data-setting="camera"]').onclick = () => {
       if (!assistedControls()) renderer.focusPlayer();
@@ -2365,39 +2365,24 @@ function cook() {
   if (!me || modalActionsBlocked() || !me.inventory.rawMeat) return;
   if (usableCookingFire(state, me, renderer.collision)) action('cook');
 }
-function playNote() {
-  if (!soundEnabled || !audioContext) return;
-  const osc = audioContext.createOscillator(),
-    gain = audioContext.createGain();
-  osc.type = 'sine';
-  osc.frequency.value = [220, 293.66, 329.63, 440, 587.33][Math.floor(Math.random() * 5)];
-  gain.gain.setValueAtTime(0, audioContext.currentTime);
-  gain.gain.linearRampToValueAtTime(0.035, audioContext.currentTime + 0.05);
-  gain.gain.exponentialRampToValueAtTime(0.001, audioContext.currentTime + 2);
-  osc.connect(gain);
-  gain.connect(audioContext.destination);
-  osc.start();
-  osc.stop(audioContext.currentTime + 2);
-}
-async function toggleSound() {
-  try {
-    audioContext ||= new (window.AudioContext || window.webkitAudioContext)();
-    await audioContext.resume();
-    soundEnabled = !soundEnabled;
-    clearInterval(audioTimer);
-    if (soundEnabled) {
-      playNote();
-      audioTimer = setInterval(playNote, 3200);
-    }
-    const button = $('[data-setting="sound"]');
-    if (button) {
-      button.innerHTML = `${icon(soundEnabled ? 'sound' : 'muted')} ${soundEnabled ? 'オン' : 'オフ'}`;
-      button.setAttribute('aria-pressed', String(soundEnabled));
-    }
-  } catch {
-    notify('このブラウザでは環境音を再生できません。');
+function toggleSound() {
+  renderer.audio.setSettings({
+    ...renderer.audio.settings,
+    enabled: !renderer.audio.settings.enabled,
+  });
+  const button = $('[data-setting="sound"]');
+  if (button) {
+    const enabled = renderer.audio.settings.enabled;
+    button.textContent = enabled ? 'オン' : 'オフ';
+    button.setAttribute('aria-pressed', String(enabled));
   }
 }
+// Browsers require a real user gesture. A controller can join before that gesture arrives.
+function unlockNatureAudio() {
+  if (joined && renderer.audio.context?.state !== 'running') void renderer.audio.start();
+}
+document.addEventListener('pointerdown', unlockNatureAudio);
+document.addEventListener('keydown', unlockNatureAudio);
 
 $('#status-plate').onclick = openTribe;
 $('#map-button').onclick = openMap;
@@ -2473,29 +2458,6 @@ $('#modal').addEventListener('click', (e) => {
       e.target.close();
   }
 });
-function setChatOpen(open) {
-  if (fixedIdentity) return;
-  $('#chat-content').hidden = !open;
-  $('.chat-collapse').textContent = open ? '−' : '+';
-  $('#chat-toggle').setAttribute('aria-expanded', String(open));
-  if (open) stopInput();
-  else $('#chat-input').blur();
-}
-if (!fixedIdentity) {
-  $('#chat-toggle').setAttribute('aria-label', 'チャットを開く／閉じる');
-  $('#chat-toggle').setAttribute('aria-expanded', String(!$('#chat-content').hidden));
-  $('#chat-toggle').onclick = () => setChatOpen($('#chat-content').hidden);
-  $('#chat-form').onsubmit = (e) => {
-    e.preventDefault();
-    const text = $('#chat-input').value.trim();
-    if (!text) return;
-    if (!joined) return notify('チャットの送信には接続が必要です。', 'error');
-    send({ type: 'chat', text });
-    $('#chat-input').value = '';
-    $('#chat-input').blur();
-  };
-  $('#chat-input').addEventListener('focus', stopInput);
-}
 document.addEventListener('keydown', (e) => {
   // The map key is a toggle: M with the atlas open closes it (2026-09-12).
   if (
@@ -2513,6 +2475,7 @@ document.addEventListener('keydown', (e) => {
     (e.target as Element)?.closest<HTMLElement>('input,textarea,select,[contenteditable]') ||
     !acceptsGameShortcut(e) ||
     $('#modal').open ||
+    chatUI?.dialog.open ||
     screens.active ||
     renderUnavailable
   )
@@ -2615,12 +2578,11 @@ document.addEventListener('keydown', (e) => {
     action(['gather', 'craft', 'contribute', 'trade'][Number(k) - 1]);
   if (k === 'enter' && !fixedIdentity) {
     e.preventDefault();
-    setChatOpen(true);
+    chatUI?.setOpen(true);
     $('#chat-input').focus();
   }
   if (k === 'm') openMap();
   if (k === 'i') openInventory();
-  if (k === 'j') openJournal();
   if (k === 'g') action('wave');
 });
 document.addEventListener('keyup', (e) => {
@@ -2636,12 +2598,15 @@ document.addEventListener('visibilitychange', () => {
 gamepadControls = new GamepadControls({
   dialog: $('#modal'),
   canvas: $('#world'),
-  menu: () => ($('#modal').open ? $('#modal') : screens.activeElement()),
+  menu: () =>
+    chatUI?.dialog.open ? chatUI.dialog : $('#modal').open ? $('#modal') : screens.activeElement(),
   closeMenu: () => {
-    if ($('#modal').open) $('#modal').close();
+    if (chatUI?.dialog.open) chatUI.setOpen(false);
+    else if ($('#modal').open) $('#modal').close();
     else if (screens.active === 'setup' && !setupFlowBack()) $('#setup-back').click();
   },
   cancelMenu: () => {
+    if (chatUI?.dialog.open) return chatUI.setOpen(false);
     if (cancelRoomReset()) return;
     if (closeCharacterConfirm()) {
       gamepadControls?.suspend();
@@ -2653,7 +2618,12 @@ gamepadControls = new GamepadControls({
     else if (screens.active === 'setup') $('#setup-back').click();
   },
   canPlay: () =>
-    joined && !renderUnavailable && !screens.active && !!player() && !player()?.downedUntil,
+    joined &&
+    !renderUnavailable &&
+    !screens.active &&
+    !chatUI?.dialog.open &&
+    !!player() &&
+    !player()?.downedUntil,
   onStop: () => {
     // A controller losing focus/connection cannot suspend the current camera
     // owner. Camera input handles its own menus, focus and text-field checks.
@@ -2673,10 +2643,7 @@ gamepadControls = new GamepadControls({
     if (!assistedControls()) renderer.rotateCamera(x * dt * 2.4, y * dt * 1.5);
   },
   onAction: (command) => {
-    if (
-      motionControls?.ownsInput &&
-      !['menu', 'inventory', 'map', 'journal', 'cancel'].includes(command)
-    )
+    if (motionControls?.ownsInput && !['menu', 'inventory', 'map', 'cancel'].includes(command))
       return;
     switch (command) {
       case 'bot':
@@ -2716,9 +2683,6 @@ gamepadControls = new GamepadControls({
         break;
       case 'inventory':
         openInventory();
-        break;
-      case 'journal':
-        openJournal();
         break;
       case 'center':
         if (assistedControls()) break;
@@ -2761,8 +2725,7 @@ function touchPlayable(command?: TouchAction) {
     !document.hidden &&
     document.hasFocus() &&
     !!player() &&
-    (!player()?.downedUntil ||
-      ['menu', 'map', 'journal', 'mascots', 'bag'].includes(command ?? '')) &&
+    (!player()?.downedUntil || ['menu', 'map', 'chat', 'mascots', 'bag'].includes(command ?? '')) &&
     !motionControls?.ownsInput &&
     ($('#chat-content')?.hidden ?? true) &&
     !document.activeElement?.closest('input,textarea,select,[contenteditable]')
@@ -2770,6 +2733,7 @@ function touchPlayable(command?: TouchAction) {
 }
 touchControls = new TouchControls($('.game-viewport'), {
   icon,
+  chat: !fixedIdentity,
   available: touchPlayable,
   perform: performCue,
   move: updateMovementInput,
@@ -2779,6 +2743,7 @@ touchControls = new TouchControls($('.game-viewport'), {
     $('#world').focus({ preventScroll: true });
   },
   changed: () => {
+    chatUI?.syncMode();
     clearMovementInput();
     inputCues?.hide();
     updateHintLabels();
@@ -2790,6 +2755,7 @@ renderer.manualInputAllowed = () =>
   !renderUnavailable &&
   !screens.active &&
   !$('#modal').open &&
+  !chatUI?.dialog.open &&
   !player()?.downedUntil &&
   !motionControls?.ownsInput;
 renderer.manualCameraAllowed = () => !joined || !assistedControls();
@@ -2884,7 +2850,11 @@ function updateMovementInput() {
   let sx = 0,
     sy = 0;
   const gameFocused =
-    !document.hidden && document.hasFocus() && !$('#modal').open && !screens.active;
+    !document.hidden &&
+    document.hasFocus() &&
+    !$('#modal').open &&
+    !chatUI?.dialog.open &&
+    !screens.active;
   const focusedField = document.activeElement?.closest('input,textarea,select,[contenteditable]');
   const canMove = gameFocused && !focusedField;
   if (motionControls?.ownsInput) {
@@ -3066,6 +3036,9 @@ window.addEventListener('beforeunload', () => {
 // The title screen slowly pans the camera around the world until play begins.
 let titleClock = 0;
 function titleIdle(now: number) {
+  const audioStatus = document.querySelector('[data-audio-status]');
+  if (audioStatus && audioStatus.textContent !== renderer.audio.status)
+    audioStatus.textContent = renderer.audio.status;
   if (screens.active === 'title')
     renderer.rotateCamera(Math.min(0.05, (now - titleClock) / 1000) * 0.05, 0);
   titleClock = now;
