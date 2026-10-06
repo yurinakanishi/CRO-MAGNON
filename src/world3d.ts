@@ -1036,7 +1036,11 @@ export class WorldRenderer {
       entity.actor = actor;
       pendingActor = null;
       this.updateAssetDiagnostics();
-      if (entity.state.attackAt && !entity.state.carrierId && caveInteriorWeight(entity.state) === 0)
+      if (
+        entity.state.attackAt &&
+        !entity.state.carrierId &&
+        caveInteriorWeight(entity.state) === 0
+      )
         actor.animation.playAttack(Math.max(0, (this.serverNow() - entity.state.attackAt) / 1000));
       this.canvas.dataset.characterAsset = 'ready';
       this.canvas.dataset.characterHash = actor.asset.sha256;
@@ -1645,6 +1649,8 @@ export class WorldRenderer {
       );
       model.rotation.y += diff * (1 - Math.exp(-dt * 24));
       if (entity.actor) {
+        if (caveInteriorWeight(p) > 0 && entity.actor.animation.name === 'Attack')
+          entity.actor.animation.change('Idle_Loop', 0.05);
         if (
           (p.cookingEndsAt > this.serverNow() || p.fishing || p.coastalActivity) &&
           !p.moving &&
@@ -2166,6 +2172,10 @@ export class WorldRenderer {
       data.attackStyle = self ? attackProfile(self.state).key : '';
       data.weaponModel = self?.weapon?.userData.assetKey ?? '';
       if (self) {
+        data.caveTorchHeld = String(!!self.torch?.root.visible);
+        data.caveTorchLit = String(!!self.torch?.light.visible);
+        data.weaponVisible = String(!!self.weapon?.visible);
+        data.toolVisible = String(!!self.axe?.visible);
         data.playerModel = self.actor?.asset.modelKey || 'loading';
         data.playerGender = self.state.gender;
         data.playerY = self.model.position.y.toFixed(3);

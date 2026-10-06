@@ -1,6 +1,7 @@
 import * as THREE from 'three';
 import { projectileHeight } from '../shared/terrain.mjs';
 import { attackProfile } from '../shared/combat-profiles.mjs';
+import { caveInteriorWeight } from '../shared/cave-light.mjs';
 import { PoisonEffects } from './poison-effects.js';
 
 const CAPACITY = 1024,
@@ -312,7 +313,13 @@ export class SpellEffects {
     for (const entity of players.values()) {
       const p = entity.state,
         profile = attackProfile(p);
-      if (!profile.projectileSpeed || !p.attackSequence || p.downedUntil) continue;
+      if (
+        !profile.projectileSpeed ||
+        !p.attackSequence ||
+        p.downedUntil ||
+        caveInteriorWeight(p) > 0
+      )
+        continue;
       const age = (now - p.attackAt) / 1000;
       if (age < 0 || age >= profile.impactMs / 1000) continue;
       entity.model.updateMatrixWorld(true);

@@ -151,7 +151,12 @@ export function resolveAttack(room, player, now = Date.now()) {
   if (!strike || now < strike.impactAt) return null;
   player.pendingStrike = null;
   // A warp or carried arrival during windup must not release an attack inside.
-  if (caveInteriorWeight(player) > 0) return { hit: false };
+  const carrierAtImpact = player.carrierId && room.players.get(player.carrierId);
+  if (
+    caveInteriorWeight(player) > 0 ||
+    (carrierAtImpact && caveInteriorWeight(carrierAtImpact) > 0)
+  )
+    return { hit: false };
   const profile = ATTACK_PROFILES[strike.kind || 'spear'];
   if (profile.key === 'magic' || profile.key === 'science') {
     // Start at the body centre and sweep the first segment too, so casting next

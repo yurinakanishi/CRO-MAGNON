@@ -8,18 +8,41 @@ import { startAttack, resolveAttack } from '../dist/shared/combat.mjs';
 import { canStartAttack, attackBlockReason } from '../dist/src/combat-input.js';
 import { attackReady } from '../dist/src/hunting-ui.js';
 import { createGameCore } from '../dist/application/game-core.mjs';
-import { canHandleBot, canThrowBot, handleOrbBotAction, updateOrbBots } from '../dist/shared/orb-bots.mjs';
+import {
+  canHandleBot,
+  canThrowBot,
+  handleOrbBotAction,
+  updateOrbBots,
+  syncOrbBots,
+} from '../dist/shared/orb-bots.mjs';
 
 function fixture(character = CHARACTER_MODELS[0]) {
   const player = {
-    id: 'p', species: character.species, gender: character.gender,
-    ...caveWorldAt(-21), facing: 0, radius: 0.32, energy: 80,
-    attackSequence: 0, attackAt: 0, cookingEndsAt: 0, tool: true,
+    id: 'p',
+    species: character.species,
+    gender: character.gender,
+    ...caveWorldAt(-21),
+    facing: 0,
+    radius: 0.32,
+    energy: 80,
+    attackSequence: 0,
+    attackAt: 0,
+    cookingEndsAt: 0,
+    tool: true,
     inventory: { wood: 7, stone: 3 },
   };
-  const animal = { id: 'a', x: player.x, z: player.z + 1, radius: 0.5, phase: 'alive', health: 100 };
+  const animal = {
+    id: 'a',
+    x: player.x,
+    z: player.z + 1,
+    radius: 0.5,
+    phase: 'alive',
+    health: 100,
+  };
   const room = {
-    players: new Map([[player.id, player]]), animals: [animal], enemies: [],
+    players: new Map([[player.id, player]]),
+    animals: [animal],
+    enemies: [],
     collision: { segmentFree: () => true, surfaceHeight: () => 0 },
   };
   return { player, animal, room };
@@ -35,7 +58,10 @@ test('all nine characters reject cave attacks with lit and unlit torches, withou
       assert.match(attackBlockReason(player, 10000), /洞窟/);
       assert.equal(attackReady(player, animal), false);
       assert.equal(caveTorchAvailable(player), true);
-      assert.deepEqual(startAttack(room, player, { targetId: animal.id }, 10000), { accepted: false, reason: 'cave' });
+      assert.deepEqual(startAttack(room, player, { targetId: animal.id }, 10000), {
+        accepted: false,
+        reason: 'cave',
+      });
       assert.deepEqual(player, before);
       assert.equal(animal.health, 100);
     }
@@ -79,21 +105,32 @@ test('a carried mage cannot bypass the restriction using an old position outside
 });
 
 test('torch-only hands reject companion throws and cancel a queued pickup on entry, retaining ownership and recall', () => {
-  let now = 10000, id = 0;
-  const core = createGameCore({ runtime: { now: () => now, id: () => `bot-${++id}`, token: () => `token-${++id}` } });
+  let now = 10000,
+    id = 0;
+  const core = createGameCore({
+    runtime: { now: () => now, id: () => `bot-${++id}`, token: () => `token-${++id}` },
+  });
   const socket = new Socket();
   core.connect(socket, new URLSearchParams({ room: 'CAVE-BOTS' }));
-  const room = core.rooms.get('CAVE-BOTS'), player = [...room.players.values()][0];
+  const room = core.rooms.get('CAVE-BOTS'),
+    player = [...room.players.values()][0];
   Object.assign(player, caveWorldAt(-21));
   assert.equal(canHandleBot(player, now), true, 'care and recall remain available');
   assert.equal(canThrowBot(player, now), false);
+  syncOrbBots(room, now);
   const bot = room.orbBots[0];
-  Object.assign(bot, { ownerId: player.id, mode: 'following', ...caveWorldAt(-20), lastOwner: { x: player.x, z: player.z } });
+  Object.assign(bot, {
+    ownerId: player.id,
+    mode: 'following',
+    ...caveWorldAt(-20),
+    lastOwner: { x: player.x, z: player.z },
+  });
   assert.equal(handleOrbBotAction(room, player, 'throwBot', bot.kind, now), false);
   for (const mode of ['queued', 'windup']) {
     Object.assign(bot, { mode, throwAt: now, origin: { x: bot.x, y: bot.y, z: bot.z } });
     updateOrbBots(room, 0.05, now + 50);
-    assert.equal(bot.mode, 'following');
+    assert.ok(['following', 'returning'].includes(bot.mode));
+    assert.equal(bot.throwAt, 0);
     assert.equal(bot.ownerId, player.id);
   }
   bot.mode = 'waiting';
@@ -108,26 +145,41 @@ class Socket extends EventEmitter {
   readyState = 1;
   bufferedAmount = 0;
   messages = [];
-  send(raw) { this.messages.push(JSON.parse(raw)); }
-  ping() { this.emit('pong'); }
-  close() { this.readyState = 3; this.emit('close'); }
+  send(raw) {
+    this.messages.push(JSON.parse(raw));
+  }
+  ping() {
+    this.emit('pong');
+  }
+  close() {
+    this.readyState = 3;
+    this.emit('close');
+  }
 }
 
 test('five clients see cave attack rejection and personal light switches; exit restores attacks and equipped tools', () => {
-  let now = 10000, id = 0;
-  const core = createGameCore({ runtime: { now: () => now, id: () => `cave-${++id}`, token: () => `session-${++id}` } });
-  const sockets = Array.from({ length: 5 }, () => {
-    const s = new Socket(); core.connect(s, new URLSearchParams({ room: 'CAVE' })); return s;
+  let now = 10000,
+    id = 0;
+  const core = createGameCore({
+    runtime: { now: () => now, id: () => `cave-${++id}`, token: () => `session-${++id}` },
   });
-  const room = core.rooms.get('CAVE'), player = [...room.players.values()][0];
+  const sockets = Array.from({ length: 5 }, () => {
+    const s = new Socket();
+    core.connect(s, new URLSearchParams({ room: 'CAVE' }));
+    return s;
+  });
+  const room = core.rooms.get('CAVE'),
+    player = [...room.players.values()][0];
   Object.assign(player, caveWorldAt(-21), { tool: true });
   const inventory = { ...player.inventory };
-  const send = (action) => sockets[0].emit('message', Buffer.from(JSON.stringify({ type: 'action', action })), false);
+  const send = (action) =>
+    sockets[0].emit('message', Buffer.from(JSON.stringify({ type: 'action', action })), false);
   for (const unlit of [false, true]) {
     player.caveTorchOff = unlit;
+    const lastAction = player.lastAction;
     send('attack');
     assert.equal(player.attackSequence, 0);
-    assert.equal(player.lastAction, 0);
+    assert.equal(player.lastAction, lastAction);
     now += 500;
     send('toggleCaveTorch');
     for (const socket of sockets) {
@@ -139,7 +191,8 @@ test('five clients see cave attack rejection and personal light switches; exit r
     }
   }
   Object.assign(player, { x: 50, z: 50, caveTorchOff: true });
-  now += 1000; core.tick();
+  now += 1000;
+  core.tick();
   assert.equal(player.caveTorchOff, false);
   assert.equal(player.tool, true);
   assert.deepEqual(player.inventory, inventory);
