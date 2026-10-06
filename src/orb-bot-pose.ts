@@ -2,6 +2,7 @@ import * as THREE from 'three';
 import type { PlayerSnapshot } from '../shared/snapshots.mjs';
 import type { OrbBotSnapshot } from '../shared/orb-bot-types.mjs';
 import { botHandPosition, canHandleBot, ORB_BOTS } from '../shared/orb-bots.mjs';
+import { caveInteriorWeight } from '../shared/cave-light.mjs';
 
 const up = new THREE.Vector3(0, 1, 0);
 const clamp = (n: number) => THREE.MathUtils.clamp(n, 0, 1);
@@ -87,6 +88,12 @@ export class OrbBotPose {
     model: THREE.Object3D,
   ) {
     this.restore();
+    if (caveInteriorWeight(player) > 0) {
+      this.key = '';
+      this.lastWeight = 0;
+      this.transition = null;
+      return;
+    }
     const callAge = bot?.recallAt ? now - bot.recallAt : -1;
     const calling = callAge >= 0 && callAge < ORB_BOTS.callMs;
     const age = calling ? callAge : now - (bot?.throwAt ?? 0);

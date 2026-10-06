@@ -129,7 +129,11 @@ export function handleHuntingAction(room, player, message, now = Date.now()) {
     const profile = attackProfile(player);
     if (!result.accepted)
       return response(
-        profile.key === 'spear' ? '槍を構え直しています。' : '次の攻撃を準備しています。',
+        result.reason === 'cave'
+          ? '洞窟の中では攻撃できません。'
+          : profile.key === 'spear'
+            ? '槍を構え直しています。'
+            : '次の攻撃を準備しています。',
         'info',
       );
     return response(

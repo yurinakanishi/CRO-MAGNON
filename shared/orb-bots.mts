@@ -6,6 +6,7 @@ import { mountainWaterHeight } from './mountain-river.mjs';
 import { characterModel } from './characters.mjs';
 import { attackProfile } from './combat-profiles.mjs';
 import { jumpProgress } from './jumping.mjs';
+import { caveInteriorWeight } from './cave-light.mjs';
 import { COMPANION_524, returnCompanion524, syncCompanion524Bot } from './companion-524.mjs';
 import { RIMO_NEKO, returnRimoNeko, syncRimoNekoBot } from './rimo-neko.mjs';
 import { CAMP } from './world.mjs';
@@ -187,6 +188,11 @@ export function canHandleBot(p: PlayerSnapshot | undefined | null, now: number) 
     jumpProgress(p, now) === null &&
     !(p.attackSequence > 0 && now - p.attackAt < attackProfile(p).durationMs)
   );
+}
+
+/** The cave reserves the held item for a torch; friendship and recall still work. */
+export function canThrowBot(p: PlayerSnapshot | undefined | null, now: number) {
+  return canHandleBot(p, now) && caveInteriorWeight(p!) === 0;
 }
 
 /** One shared target for the hand pose and authoritative release origin. */
@@ -1079,7 +1085,7 @@ export function handleOrbBotAction(
     return true;
   }
   if (
-    !canHandleBot(p, now) ||
+    !canThrowBot(p, now) ||
     room.rimoNeko?.petPlayerId === p.id ||
     room.mae?.petPlayerId === p.id ||
     room.kohaku?.petPlayerId === p.id ||
@@ -1227,7 +1233,7 @@ export function updateOrbBots(room: BotRoom, dt: number, now: number) {
       continue;
     }
     if (b.mode === 'queued') {
-      if (!canHandleBot(p, now)) {
+      if (!canThrowBot(p, now)) {
         releaseHeldOrbBot(room, p, now);
         continue;
       }
@@ -1246,7 +1252,7 @@ export function updateOrbBots(room: BotRoom, dt: number, now: number) {
       }
     }
     if (b.mode === 'windup') {
-      if (!canHandleBot(p, now)) {
+      if (!canThrowBot(p, now)) {
         releaseHeldOrbBot(room, p, now);
         continue;
       }

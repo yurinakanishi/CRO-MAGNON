@@ -549,6 +549,7 @@ export function createGameCore({
           message.action === 'changeCharacter' ||
           now - player.lastAction >= 450)
       ) {
+        if (message.action === 'attack' && caveInteriorWeight(player) > 0) return;
         if (message.action === 'jump' && !canStartJump(player, now)) return;
         if (
           ![

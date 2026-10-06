@@ -3,6 +3,7 @@ import assert from 'node:assert/strict';
 import * as THREE from 'three';
 import {
   caveInteriorWeight,
+  caveTorchAvailable,
   caveTorchLit,
   toggleCaveTorch,
   CAVE_TORCH,
@@ -36,6 +37,7 @@ test('cave entry equips a personal torch; switching it never changes someone els
   assert.equal(caveTorchLit(a), true);
   assert.equal(toggleCaveTorch(a), true);
   assert.equal(caveTorchLit(a), false);
+  assert.equal(caveTorchAvailable(a), true, 'an extinguished torch stays held');
   assert.equal(caveTorchLit(b), true);
   assert.equal(toggleCaveTorch(a), true);
   assert.equal(caveTorchLit(a), true);
@@ -250,6 +252,19 @@ test('the real torch has a slim shaft, follows its palm and releases the grip wh
     );
     assert.ok(new THREE.Vector3(0, 1, 0).applyQuaternion(torch.root.quaternion).y > 0.95);
   }
+  torch.update(true, 1, 1, 1, false);
+  assert.equal(torch.root.visible, true);
+  assert.equal(torch.light.visible, false);
+  assert.equal(torch.light.intensity, 0);
+  assert.equal(torch.root.children.at(-1).visible, false, 'no flame when extinguished');
+  assert.ok(torch.pose.weight > 0.99);
+  assert.ok(
+    torch.root.position.distanceTo(torch.pose.grip.getWorldPosition(new THREE.Vector3())) < 1e-9,
+  );
+  torch.update(true, 2, 1, 1, true);
+  assert.equal(torch.root.visible, true);
+  assert.equal(torch.light.visible, true);
+  assert.equal(torch.root.children.at(-1).visible, true);
   torch.hide();
   assert.equal(torch.root.visible, false);
   gltf.scene.traverse((mesh) => {

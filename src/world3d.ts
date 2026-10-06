@@ -19,7 +19,7 @@ import { OrbBotRenderer } from './orb-bot-renderer.js';
 import { ORB_BOTS, pettingOrbBot, posingOrbBot } from '../shared/orb-bots.mjs';
 import { GroundPettingPose, groundPettingProgress } from './ground-petting-pose.js';
 import { CaveTorch } from './cave-torch.js';
-import { caveTorchLit } from '../shared/cave-light.mjs';
+import { caveInteriorWeight, caveTorchAvailable, caveTorchLit } from '../shared/cave-light.mjs';
 import { Companion524Renderer } from './companion-524-renderer.js';
 import { COMPANION_524, companion524OnGround } from '../shared/companion-524.mjs';
 import { chooseCompanionView, companionViewDistances } from './companion-view.js';
@@ -932,7 +932,7 @@ export class WorldRenderer {
       const action = confirmedAction(entity.state, p);
       if (jumpProgress(p, this.serverNow()) === null)
         entity.actor?.jumpPose.leave(entity.actor.animation);
-      if (action === 'Attack' && !p.carrierId)
+      if (action === 'Attack' && !p.carrierId && caveInteriorWeight(p) === 0)
         entity.actor?.animation.playAttack(
           Math.max(0, (this.serverNow() - (p.attackAt ?? 0)) / 1000),
         );
@@ -1036,7 +1036,7 @@ export class WorldRenderer {
       entity.actor = actor;
       pendingActor = null;
       this.updateAssetDiagnostics();
-      if (entity.state.attackAt && !entity.state.carrierId)
+      if (entity.state.attackAt && !entity.state.carrierId && caveInteriorWeight(entity.state) === 0)
         actor.animation.playAttack(Math.max(0, (this.serverNow() - entity.state.attackAt) / 1000));
       this.canvas.dataset.characterAsset = 'ready';
       this.canvas.dataset.characterHash = actor.asset.sha256;
@@ -1700,21 +1700,17 @@ export class WorldRenderer {
           model,
         );
         entity.torch?.update(
-          caveTorchLit(p) &&
-            petting.weight === 0 &&
-            entity.actor.orbBotPose.weight === 0 &&
-            !entity.actor.animation.oneShot &&
-            !p.fishing &&
-            !p.coastalActivity &&
-            !p.cookingEndsAt,
+          caveTorchAvailable(p),
           time,
           dt,
           this.renderer.getPixelRatio(),
+          caveTorchLit(p),
         );
         if (entity.axe) {
           const attack = entity.actor.animation.name === 'Attack';
           const profile = attackProfile(p);
           entity.axe.visible =
+            caveInteriorWeight(p) === 0 &&
             entity.actor.orbBotPose.weight === 0 &&
             petting.weight === 0 &&
             !p.fishing &&
@@ -1725,6 +1721,7 @@ export class WorldRenderer {
               : entity.actor.animation.name === 'Gather');
           if (entity.weapon) {
             entity.weapon.visible =
+              caveInteriorWeight(p) === 0 &&
               entity.actor.orbBotPose.weight === 0 &&
               petting.weight === 0 &&
               !p.fishing &&

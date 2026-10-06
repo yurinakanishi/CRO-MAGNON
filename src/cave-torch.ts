@@ -163,13 +163,14 @@ export class CaveTorch {
     scene.add(this.root, this.light);
   }
 
-  update(active: boolean, time: number, dt: number, pixelRatio: number) {
+  update(active: boolean, time: number, dt: number, pixelRatio: number, lit = active) {
     if (!active) {
       this.hide();
       return;
     }
     this.pose.update(active, dt);
-    this.root.visible = this.light.visible = active;
+    this.root.visible = active;
+    this.flame.visible = this.light.visible = lit;
     this.pose.grip.getWorldPosition(this.root.position);
     // Follow the same hand rotation throughout the blended reach into the hold.
     this.pose.grip.getWorldQuaternion(this.root.quaternion).multiply(this.pose.attachment);
@@ -177,6 +178,10 @@ export class CaveTorch {
     this.light.position.copy(
       this.root.localToWorld(new THREE.Vector3(0, this.flameHeight + 0.08, 0)),
     );
+    if (!lit) {
+      this.light.intensity = 0;
+      return;
+    }
     this.light.intensity =
       CAVE_TORCH.intensity * (1 + Math.sin(time * 11) * 0.055 + Math.sin(time * 17.3) * 0.025);
     this.flame.material.uniforms.pixelScale.value = pixelRatio;

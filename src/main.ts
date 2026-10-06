@@ -67,6 +67,7 @@ import {
   canWhistleCompanion,
   pettingOrbBot,
   canHandleBot,
+  canThrowBot,
   nextOrbBot,
 } from '../shared/orb-bots.mjs';
 import { interactionTarget } from './interaction-target.js';
@@ -998,6 +999,8 @@ function action(type, targetId?, cropId?) {
   if (!joined) return notify('サーバーへの接続を待っています。', 'error');
   if (renderUnavailable) return;
   if (player()?.downedUntil) return;
+  if (type === 'attack' && !canStartAttack(player(), renderer.serverNow())) return;
+  if (type === 'throwBot' && !canThrowBot(player(), renderer.serverNow())) return;
   renderer.endCompanionView();
   if (type === 'cropFoodOpen') {
     cropFoodUI.open();
@@ -1493,7 +1496,7 @@ function updateHuntingHUD() {
         (target) => target.phase === 'alive' && !target.riderId && me && distance(me, target) < 14,
       ),
     jump: canStartJump(me, serverNow),
-    throw: canHandleBot(me, serverNow) && !!nextOrbBot(state.orbBots ?? [], me, orbBotUI.selected),
+    throw: canThrowBot(me, serverNow) && !!nextOrbBot(state.orbBots ?? [], me, orbBotUI.selected),
     recall:
       canHandleBot(me, serverNow) &&
       (ownBots.some((bot) => ['waiting', 'airborne', 'landing'].includes(bot.mode)) ||
@@ -1521,7 +1524,7 @@ function updateHuntingHUD() {
           presentOwners,
         )),
     busy,
-    torch: caveTorchAvailable(me) ? (caveTorchLit(me) ? '松明をしまう' : '松明を持つ') : undefined,
+    torch: caveTorchAvailable(me) ? (caveTorchLit(me) ? '松明を消す' : '松明を灯す') : undefined,
     needsFood: !!me && me.energy < 75,
   };
   const playVisible =
@@ -2170,7 +2173,7 @@ function openPauseMenu(tab?: string) {
           [
             'caveTorch',
             'sun',
-            caveTorchLit(player()) ? '松明をしまう' : '松明を持つ',
+            caveTorchLit(player()) ? '松明を消す' : '松明を灯す',
             () => {
               action('toggleCaveTorch');
               $('#modal').close();

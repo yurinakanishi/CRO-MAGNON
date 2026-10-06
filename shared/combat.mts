@@ -5,6 +5,7 @@ import { hitMae } from './mae.mjs';
 import { hitKohaku } from './kohaku.mjs';
 import { hitCompanion524, companion524OnGround } from './companion-524.mjs';
 import { roomRules } from './room-rules.mjs';
+import { caveInteriorWeight } from './cave-light.mjs';
 
 export const COMBAT = Object.freeze({
   attackDamage: 15,
@@ -104,6 +105,8 @@ export function startAttack(room, player, message: { targetId?: string } = {}, n
   const profile = attackProfile(player);
   if (player.downedUntil) return { accepted: false, reason: 'downed' };
   const carrier = player.carrierId && room.players.get(player.carrierId);
+  if (caveInteriorWeight(player) > 0 || (carrier && caveInteriorWeight(carrier) > 0))
+    return { accepted: false, reason: 'cave' };
   const seatedMagic =
     shoulderMagic(player) &&
     carrier?.species === 'ape' &&
@@ -147,6 +150,8 @@ export function resolveAttack(room, player, now = Date.now()) {
   const strike = player.pendingStrike;
   if (!strike || now < strike.impactAt) return null;
   player.pendingStrike = null;
+  // A warp or carried arrival during windup must not release an attack inside.
+  if (caveInteriorWeight(player) > 0) return { hit: false };
   const profile = ATTACK_PROFILES[strike.kind || 'spear'];
   if (profile.key === 'magic' || profile.key === 'science') {
     // Start at the body centre and sweep the first segment too, so casting next
