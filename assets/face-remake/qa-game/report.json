@@ -1,0 +1,95 @@
+{
+  "status": "passed",
+  "records": [
+    {
+      "key": "cro-magnon-hunter",
+      "sha256": "d460b5217aea1933dbbd584d61626692c8c3a6f201077064d7c2065a69588552",
+      "phases": [
+        {
+          "label": "walk",
+          "localFrames": 31,
+          "remoteFrames": 32
+        },
+        {
+          "label": "run",
+          "localFrames": 33,
+          "remoteFrames": 33
+        }
+      ],
+      "attack": true,
+      "jump": true,
+      "remote": true
+    },
+    {
+      "key": "cro-magnon-woman",
+      "sha256": "c8082f13995cebd42d674f6d4b5c87a61d441597d5670aec8803ca5006fdf2c1",
+      "phases": [
+        {
+          "label": "walk",
+          "localFrames": 36,
+          "remoteFrames": 37
+        },
+        {
+          "label": "run",
+          "localFrames": 50,
+          "remoteFrames": 50
+        }
+      ],
+      "attack": true,
+      "jump": true,
+      "remote": true
+    },
+    {
+      "key": "neanderthal-hunter",
+      "sha256": "6910fd3396bcde7934e9af23fa2130ca5c1bca9a08da0d00fe5582076b94352b",
+      "phases": [
+        {
+          "label": "walk",
+          "localFrames": 41,
+          "remoteFrames": 39
+        },
+        {
+          "label": "run",
+          "localFrames": 39,
+          "remoteFrames": 39
+        }
+      ],
+      "attack": true,
+      "jump": true,
+      "remote": true
+    },
+    {
+      "key": "neanderthal-woman",
+      "sha256": "b4c416900e972c8850892b7a5f886e62478894d1c958cf35830dc7ea1672dde9",
+      "phases": [
+        {
+          "label": "walk",
+          "localFrames": 42,
+          "remoteFrames": 43
+        },
+        {
+          "label": "run",
+          "localFrames": 41,
+          "remoteFrames": 41
+        }
+      ],
+      "attack": true,
+      "jump": true,
+      "remote": true
+    }
+  ],
+  "connections": 5,
+  "lodRoundTrip": [
+    "cro-magnon-woman",
+    "neanderthal-hunter",
+    "neanderthal-woman"
+  ],
+  "viewports": [
+    "1280x800",
+    "390x844",
+    "844x390"
+  ],
+  "reload": true,
+  "errors": [],
+  "fixtures": "Isolated in-memory room; combat enemies removed, start coordinates set, inspection camera for face views and a server-side move for the LOD round trip. Selection, walking, running, attack and jump use the real UI and keys."
+}

@@ -1,0 +1,53 @@
+{
+  "dense": "output/face-remake/cro-magnon-woman/trellis/reference-v1a-res1024-seed0042.glb",
+  "denseSha256": "a2da8a3e9de5ceb7218b0ae3cffb48d3178be171755847b253aae9f21c953f87",
+  "reference": "assets/face-remake/cro-magnon-woman/source/reference-v1a.png",
+  "referenceSha256": "8de01f5ca98215e100e5a5f659b558defa04b7dd79d88d62bdbf3c1dd9b850c9",
+  "registration": {
+    "scalePixelsPerUnit": 1186.7889685081088,
+    "cx": 614.1012418633904,
+    "cy": 634.5014456123035,
+    "silhouetteIoU": 0.9273742091490278,
+    "initialIoU": 0.9167562663799476
+  },
+  "landmarks": {
+    "eyeRow": 537.0,
+    "chinRow": 935.0,
+    "faceEllipse": {
+      "cx": 619.5,
+      "cy": 692.22,
+      "rx": 246.76,
+      "ry": 388.05
+    }
+  },
+  "warp": [
+    {
+      "iteration": 0,
+      "maxShiftPx": 60.00000801281844,
+      "movedVertices": 6546,
+      "maxShiftUnits": 0.05055659397326837
+    },
+    {
+      "iteration": 1,
+      "maxShiftPx": 55.15255927427849,
+      "movedVertices": 6288,
+      "maxShiftUnits": 0.046472086224065415
+    }
+  ],
+  "warpedGlb": "output\\face-remake\\cro-magnon-woman\\project-r02\\warped.glb",
+  "residualFlowMeanPx": 4.712060928344727,
+  "projectedTexels": 175054,
+  "fullTexels": 110496,
+  "coveredTexels": 2336427,
+  "mode": "detail",
+  "sigma": 48.0,
+  "facing": [
+    0.3,
+    0.6
+  ],
+  "occlusion": [
+    0.004,
+    0.012
+  ],
+  "atlas": 2048
+}

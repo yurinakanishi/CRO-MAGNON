@@ -7,10 +7,10 @@
       "group": "player-character",
       "kind": "player",
       "current": {
-        "url": "/models/cro-magnon-woman/model-c2.glb",
-        "sha256": "70906c8c538c4b15d20d615ea0c20f44234b5130c24cab8fcea49d34e83d9561",
-        "bytes": 11549512,
-        "triangles": 67133,
+        "url": "/models/cro-magnon-woman/model-face-r01.glb",
+        "sha256": "c8082f13995cebd42d674f6d4b5c87a61d441597d5670aec8803ca5006fdf2c1",
+        "bytes": 11552512,
+        "triangles": 85829,
         "heightMetres": 1.67,
         "clips": [
           "Craft",
@@ -25,7 +25,7 @@
           "Downed"
         ],
         "lods": [
-          "/models/cro-magnon-woman/lod-c2.glb"
+          "/models/cro-magnon-woman/lod-face-r01.glb"
         ]
       },
       "usage": "src/character-assets.ts → world3d.loadHuman / npc オル (nea male) / village-renderer residents; character-animation.ts clips; Grip.R/L weapons; riding-pose.ts / carry poses",
@@ -47,8 +47,8 @@
       "group": "player-character",
       "kind": "player",
       "current": {
-        "url": "/models/cro-magnon-hunter/model-c2.glb",
-        "sha256": "507db5d9e0e08cdb3c509da0e3f2574b0d8166838e278d7d58ead8d7ada421b1",
+        "url": "/models/cro-magnon-hunter/model-face-r01.glb",
+        "sha256": "d460b5217aea1933dbbd584d61626692c8c3a6f201077064d7c2065a69588552",
         "bytes": 12444656,
         "triangles": 50561,
         "heightMetres": 1.8,
@@ -65,7 +65,7 @@
           "Downed"
         ],
         "lods": [
-          "/models/cro-magnon-hunter/lod-c2.glb"
+          "/models/cro-magnon-hunter/lod-face-r01.glb"
         ]
       },
       "usage": "src/character-assets.ts → world3d.loadHuman / npc オル (nea male) / village-renderer residents; character-animation.ts clips; Grip.R/L weapons; riding-pose.ts / carry poses",
@@ -87,10 +87,10 @@
       "group": "player-character",
       "kind": "player",
       "current": {
-        "url": "/models/neanderthal-woman/model-c2.glb",
-        "sha256": "e7dab0a525aa566c96521ea135b0e884b0e751d8c815eeddd77d22efcffb73a8",
-        "bytes": 12128592,
-        "triangles": 66179,
+        "url": "/models/neanderthal-woman/model-face-r01.glb",
+        "sha256": "b4c416900e972c8850892b7a5f886e62478894d1c958cf35830dc7ea1672dde9",
+        "bytes": 10675488,
+        "triangles": 83447,
         "heightMetres": 1.6,
         "clips": [
           "Craft",
@@ -105,7 +105,7 @@
           "Downed"
         ],
         "lods": [
-          "/models/neanderthal-woman/lod-c2.glb"
+          "/models/neanderthal-woman/lod-face-r01.glb"
         ]
       },
       "usage": "src/character-assets.ts → world3d.loadHuman / npc オル (nea male) / village-renderer residents; character-animation.ts clips; Grip.R/L weapons; riding-pose.ts / carry poses",
@@ -127,10 +127,10 @@
       "group": "player-character",
       "kind": "player",
       "current": {
-        "url": "/models/neanderthal-hunter/model-c2.glb",
-        "sha256": "23b91d45cca119ecc9bb2696b47cc255dd5e8bc480243a301acb08184ae18ec7",
-        "bytes": 12902116,
-        "triangles": 53176,
+        "url": "/models/neanderthal-hunter/model-face-r01.glb",
+        "sha256": "6910fd3396bcde7934e9af23fa2130ca5c1bca9a08da0d00fe5582076b94352b",
+        "bytes": 15858864,
+        "triangles": 99893,
         "heightMetres": 1.7200000000000002,
         "clips": [
           "Idle_Loop",
@@ -145,7 +145,7 @@
           "Downed"
         ],
         "lods": [
-          "/models/neanderthal-hunter/lod-c2.glb"
+          "/models/neanderthal-hunter/lod-face-r01.glb"
         ]
       },
       "usage": "src/character-assets.ts → world3d.loadHuman / npc オル (nea male) / village-renderer residents; character-animation.ts clips; Grip.R/L weapons; riding-pose.ts / carry poses",

@@ -1,0 +1,215 @@
+{
+  "key": "cro-magnon-woman",
+  "decision": "adopt",
+  "sha256": "c8082f13995cebd42d674f6d4b5c87a61d441597d5670aec8803ca5006fdf2c1",
+  "lodSha256": "af0fdffd99f893e08b3fd3e5411b629d7dec8ac321495f4b1129ba9f45ce2eb4",
+  "revision": "r01",
+  "date": "2026-10-07",
+  "reviewer": "Claude Code (Opus 5.5)",
+  "request": "クロマニョン人とネアンデルタール人の男性女性の顔のクオリティが低いので、ちゃんとリアルでかっこいい／かわいい顔に。歩いたり走ったりするときに顔の形が崩れるバグも直す。",
+  "faceRemake": {
+    "revision": "r01",
+    "kind": "new-head",
+    "reference": {
+      "file": "assets/face-remake/cro-magnon-woman/source/reference-v1a.png",
+      "sha256": "8de01f5ca98215e100e5a5f659b558defa04b7dd79d88d62bdbf3c1dd9b850c9",
+      "generator": "Codex built-in image_gen (desktop app CLI 0.162, gpt-5.6-sol)",
+      "prompt": "Photorealistic premium AAA game character head (MetaHuman-quality sculpt and skin), clean image-to-3D reconstruction reference. HEAD AND NECK ONLY, direct FRONT VIEW, head perfectly upright and centred, eyes level and looking straight into the camera, relaxed neutral expression with the lips closed. Both ears fully visible. The hair is swept completely clear of the face, forehead, eyes and ears: no fringe, no bangs, no loose strands across the face; the hair forms coherent sculpted masses, not floating strands. Show the whole head and the entire neck, the neck ending in a clean straight horizontal cut just above the collarbones. No shoulders, chest, clothing, fur, jewellery, beads, paint, tattoos, scars, pedestal or accessories. Natural healthy skin with fine realistic pores, no makeup, even skin tone. Soft even diffuse neutral studio light from the front and both sides, no hard shadows, no rim light, no dramatic contrast. Head and neck fill about 85% of the image height, centred on a plain uniform light neutral grey background. A single head, one view only, no text, no panels. Subject: a very cute, pretty and natural adult Cro-Magnon young woman, about 22 years old. Soft oval face, smooth round cheeks, large clear almond-shaped warm brown eyes with natural lashes, softly arched dark-brown eyebrows, a small neat nose, soft full rosy natural lips with a hint of a gentle friendly smile while closed. Light warm fair skin with a healthy natural blush. Dark brown hair pulled back from the forehead into neat braids wrapped around the head like a crown, all gathered into a compact braided bun at the back of the head; nothing hangs below the nape. Gentle sweet expression.",
+      "choice": "variant A of two (reference-v1a.png chosen, reference-v1b.png kept)"
+    },
+    "reconstruction": {
+      "generator": "Local TRELLIS-2 C++ GGUF (trellis-studio runtime)",
+      "seed": 42,
+      "resolution": 1024,
+      "textureResolution": 512,
+      "atlas": 2048,
+      "seconds": 1051.56,
+      "denseSha256": "a2da8a3e9de5ceb7218b0ae3cffb48d3178be171755847b253aae9f21c953f87",
+      "record": "assets/face-remake/cro-magnon-woman/reconstruction-reference-v1a-seed0042.json"
+    },
+    "projection": {
+      "record": "assets/face-remake/cro-magnon-woman/projection-r01.json",
+      "run": "output/face-remake/final-projections.sh (project-r02)",
+      "method": "reference registered to the reconstruction silhouette; the face surface slid (optical flow inside a feathered face ellipse) so eyes, nose and mouth sit where the reference has them; reference detail finer than 48 px projected onto front-facing texels over the reconstruction low-frequency colour"
+    },
+    "graft": {
+      "record": "assets/face-remake/cro-magnon-woman/graft-report-r01.json",
+      "run": "output/face-remake/final-grafts.sh",
+      "attachment": "Zipped to the body neck ring (43 shared seam vertices) through a smooth sleeve; rim-following cut (the reconstruction ends in a U-shaped bust cut); the body neck-ring vertex normals take the sleeve normals; new hair graded toward the kept body braid colour.",
+      "placement": {
+        "scale": 0.2907334784661822,
+        "translation": [
+          -0.007866,
+          1.508615,
+          -0.111862
+        ],
+        "eyeRow": 537,
+        "chinRow": 935,
+        "eyeY": 1.5325,
+        "chinY": 1.435,
+        "neckRadiusAtCut": 0.04543193545041075,
+        "ringRadius": 0.04426840869759311,
+        "radiusRatio": 1.0262834555623161,
+        "extraOffset": [
+          0,
+          0,
+          0
+        ],
+        "neckTaper": {
+          "ratio": 0.9743896723465009,
+          "heightM": 0,
+          "applied": true
+        },
+        "cut": {
+          "shape": "rim",
+          "rimMarginM": 0.006,
+          "minHeightAboveRingM": 0.006,
+          "maxHeightAboveRingM": 0.04549602287908414,
+          "rimMinM": -0.033905692908984285,
+          "rimMaxM": 0.039496022879084144
+        }
+      },
+      "headTriangles": 52910,
+      "lodHeadTriangles": 4482,
+      "hiddenFacesRemoved": 147764,
+      "reduction": {
+        "clippedTriangles": 132932,
+        "headTriangles": 50408,
+        "meshopt": {
+          "skinAndFace": {
+            "before": 34770,
+            "after": 22000,
+            "error": 0.0029287387151271105,
+            "flags": [
+              "LockBorder"
+            ]
+          },
+          "hair": {
+            "before": 98162,
+            "after": 28408,
+            "error": 0.0698619857430458,
+            "flags": [
+              "LockBorder",
+              "Permissive"
+            ]
+          },
+          "otsuLuminance": 0.27058823529411763
+        },
+        "smearedHairTrianglesFixed": 5202
+      }
+    },
+    "weights": "Above the jaw curve (+2.5 cm blend) every head vertex is 100% Head; the neck blends Head -> Neck -> the body ring weights (or Chest/Neck inside the collar). Fixes the walk/run face shear.",
+    "faceRigidityBefore": [
+      {
+        "clip": "Attack",
+        "maxFaceDeviationM": 0.004213,
+        "atSeconds": 0.1633
+      },
+      {
+        "clip": "Craft",
+        "maxFaceDeviationM": 0.00123,
+        "atSeconds": 0.4667
+      },
+      {
+        "clip": "Downed",
+        "maxFaceDeviationM": 0.003056,
+        "atSeconds": 1.38
+      },
+      {
+        "clip": "Eat",
+        "maxFaceDeviationM": 0.001748,
+        "atSeconds": 1.08
+      },
+      {
+        "clip": "Gather",
+        "maxFaceDeviationM": 0.001568,
+        "atSeconds": 0.85
+      },
+      {
+        "clip": "Give",
+        "maxFaceDeviationM": 0.000413,
+        "atSeconds": 0.56
+      },
+      {
+        "clip": "Idle_Loop",
+        "maxFaceDeviationM": 0.000549,
+        "atSeconds": 2
+      },
+      {
+        "clip": "Run_Loop",
+        "maxFaceDeviationM": 0.0059,
+        "atSeconds": 0.3667
+      },
+      {
+        "clip": "Walk_Loop",
+        "maxFaceDeviationM": 0.003302,
+        "atSeconds": 1.0794
+      },
+      {
+        "clip": "Wave",
+        "maxFaceDeviationM": 0.002753,
+        "atSeconds": 0.6667
+      }
+    ],
+    "faceRigidityAfter": [
+      {
+        "clip": "Attack",
+        "maxFaceDeviationM": 0
+      },
+      {
+        "clip": "Craft",
+        "maxFaceDeviationM": 0
+      },
+      {
+        "clip": "Downed",
+        "maxFaceDeviationM": 0
+      },
+      {
+        "clip": "Eat",
+        "maxFaceDeviationM": 0
+      },
+      {
+        "clip": "Gather",
+        "maxFaceDeviationM": 0
+      },
+      {
+        "clip": "Give",
+        "maxFaceDeviationM": 0
+      },
+      {
+        "clip": "Idle_Loop",
+        "maxFaceDeviationM": 0
+      },
+      {
+        "clip": "Run_Loop",
+        "maxFaceDeviationM": 0
+      },
+      {
+        "clip": "Walk_Loop",
+        "maxFaceDeviationM": 0
+      },
+      {
+        "clip": "Wave",
+        "maxFaceDeviationM": 0
+      }
+    ],
+    "verification": "assets/face-remake/cro-magnon-woman/verify-r01.json",
+    "preserved": "all body/accent primitives (except the reported ring normals or removed shard faces), the skin, inverse bind matrices, node transforms, all 10 clips and all non-head images are byte-identical (verify-r01.json)",
+    "visual": [
+      "assets/face-remake/cro-magnon-woman/qa/before-after-r01.jpg",
+      "assets/face-remake/cro-magnon-woman/qa/front-combined.jpg"
+    ]
+  },
+  "provenance": {
+    "provider": "Claude Code (Opus 5.5); Codex built-in image_gen reference; local TRELLIS-2 reconstruction",
+    "claudeUsed": true,
+    "referenceGenerator": "Codex built-in image_gen",
+    "referenceImage": "assets/face-remake/cro-magnon-woman/source/reference-v1a.png",
+    "referenceSha256": "8de01f5ca98215e100e5a5f659b558defa04b7dd79d88d62bdbf3c1dd9b850c9",
+    "reconstruction": "Local TRELLIS-2 C++ GGUF, res 1024, seed 42 (head only); assets/face-remake/cro-magnon-woman/reconstruction-reference-v1a-seed0042.json",
+    "denseFile": "output/face-remake/cro-magnon-woman/trellis/reference-v1a-res1024-seed0042.glb",
+    "denseSha256": "a2da8a3e9de5ceb7218b0ae3cffb48d3178be171755847b253aae9f21c953f87",
+    "processReport": "assets/face-remake/cro-magnon-woman/graft-report-r01.json",
+    "pipeline": "scripts/face-remake/ (write-requests.mjs, reconstruct-head.mjs, project-reference.py, graft-head.py, verify-graft.py, write-review.mjs, adopt-face.mjs)"
+  }
+}

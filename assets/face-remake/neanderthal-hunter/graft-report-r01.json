@@ -1,0 +1,210 @@
+{
+  "key": "neanderthal-hunter",
+  "model": "public/models/neanderthal-hunter/model-c2.glb",
+  "modelSha256": "23b91d45cca119ecc9bb2696b47cc255dd5e8bc480243a301acb08184ae18ec7",
+  "lod": {
+    "triangles": 4291,
+    "meshopt": {
+      "before": 59898,
+      "after": 4291,
+      "error": 0.02357611246407032,
+      "flags": [
+        "Sloppy"
+      ]
+    }
+  },
+  "lodSha256": "a593c3acf1351c417e84cc2a639397e439e8f057a32ba06c8215b72279317bf2",
+  "dense": "output/face-remake/neanderthal-hunter/project-r03/warped.glb",
+  "denseSha256": "27cbb4b7baa26c42ea092e13cda0c2bdffe0901601c5304c9c6f8ae82d9f2996",
+  "args": {
+    "key": "neanderthal-hunter",
+    "model": "",
+    "lod": "",
+    "dense": "output/face-remake/neanderthal-hunter/project-r03/warped.glb",
+    "projection": "output/face-remake/neanderthal-hunter/project-r03",
+    "landmarks": "548,860",
+    "target": "1.5625,1.485",
+    "jaw": "-0.25:1.50,-0.12:1.49,-0.05:1.47,0.0:1.43,0.03:1.40,0.15:1.39",
+    "out": "output/face-remake/neanderthal-hunter/final-r03",
+    "budget": 24000,
+    "lod_budget": 5000,
+    "gap": 0.006,
+    "tone": 0.0,
+    "neck_tint": 0.05,
+    "blend": 0.025,
+    "offset": "0,0,0",
+    "scale_mul": 1.0,
+    "head_prim": 1,
+    "error": 0.02,
+    "debug": false,
+    "dump_placed": false,
+    "keep_ring_normals": false,
+    "hair_error": 0.12,
+    "hair_budget": 20000,
+    "attach": "overlap",
+    "cut_y": 1.44,
+    "remove_body": "1.43,0.10",
+    "no_cut": true,
+    "remove_body_hair": "",
+    "hair_match_body": "",
+    "nose_z": 0.11,
+    "extend": 0.04,
+    "cut_shape": "flat",
+    "rim_margin": 0.015,
+    "taper": 0.0
+  },
+  "bodyFacesRemoved": {
+    "count": 256,
+    "ymin": 1.43,
+    "radius": 0.1,
+    "skinOnly": false,
+    "axis": [
+      -0.003040347481146455,
+      -0.13510286808013916
+    ]
+  },
+  "ring": {
+    "vertices": 12,
+    "centre": [
+      -0.00092,
+      1.44,
+      -0.21654
+    ],
+    "normal": [
+      0.0,
+      1.0,
+      0.0
+    ],
+    "yRange": [
+      1.4778945446014404,
+      1.491835117340088
+    ],
+    "meanRadius": 0.019132474913181364
+  },
+  "placement": {
+    "scale": 0.3070088114840954,
+    "translation": [
+      -0.00079,
+      1.548565,
+      -0.017567
+    ],
+    "eyeRow": 548.0,
+    "chinRow": 860.0,
+    "eyeY": 1.5625,
+    "chinY": 1.485,
+    "neckRadiusAtCut": 0.08960622504680556,
+    "ringRadius": 0.06690547319900268,
+    "radiusRatio": 1.3392958866053017,
+    "extraOffset": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "neckTaper": {
+      "ratio": 0.746660995528545,
+      "heightM": 0.0,
+      "applied": false
+    },
+    "cut": {
+      "shape": "flat",
+      "rimMarginM": 0.015,
+      "minHeightAboveRingM": 0.014484058997650037,
+      "maxHeightAboveRingM": 0.014484058997650037,
+      "rimMinM": -0.04375294018618365,
+      "rimMaxM": 0.010116789805712052
+    }
+  },
+  "hiddenFacesRemoved": 91017,
+  "reduction": {
+    "clippedTriangles": 192900,
+    "headTriangles": 59898,
+    "meshopt": {
+      "skinAndFace": {
+        "before": 36929,
+        "after": 23999,
+        "error": 0.003520404454320669,
+        "flags": [
+          "LockBorder"
+        ]
+      },
+      "hair": {
+        "before": 155971,
+        "after": 35899,
+        "error": 0.11968673020601273,
+        "flags": [
+          "LockBorder",
+          "Permissive"
+        ]
+      },
+      "otsuLuminance": 0.19607843137254902
+    },
+    "smearedHairTrianglesFixed": 13325
+  },
+  "seam": {
+    "mode": "no-cut overlap: the reconstructed neck ends inside the collar"
+  },
+  "weights": {
+    "rigidHeadVertices": 110831,
+    "blendedVertices": 2541,
+    "neckVertices": 1048,
+    "seamCopies": 0,
+    "jaw": [
+      [
+        -0.25,
+        1.5
+      ],
+      [
+        -0.12,
+        1.49
+      ],
+      [
+        -0.05,
+        1.47
+      ],
+      [
+        0.0,
+        1.43
+      ],
+      [
+        0.03,
+        1.4
+      ],
+      [
+        0.15,
+        1.39
+      ]
+    ],
+    "blend": 0.025
+  },
+  "texture": {
+    "size": 2048,
+    "ringSkin": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "headNeckSkin": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "gain": [
+      1.0,
+      1.0,
+      1.0
+    ],
+    "tone": 0.0,
+    "neckTint": 0.05,
+    "webpBytes": 637020
+  },
+  "output": {
+    "model": "output\\face-remake\\neanderthal-hunter\\final-r03\\model.glb",
+    "modelSha256": "6910fd3396bcde7934e9af23fa2130ca5c1bca9a08da0d00fe5582076b94352b",
+    "modelBytes": 15858864,
+    "lod": "output\\face-remake\\neanderthal-hunter\\final-r03\\lod.glb",
+    "lodSha256": "27f7e96e7c3e377db6be2b38bb9c9740a907b5c5a412cd1731fe7ea6885faa89",
+    "lodBytes": 1006052,
+    "headTriangles": 59898,
+    "headVertices": 114420
+  }
+}

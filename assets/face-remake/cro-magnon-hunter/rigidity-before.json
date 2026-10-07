@@ -1,0 +1,59 @@
+{
+  "file": "public/models/cro-magnon-hunter/model-c2.glb",
+  "prim": 1,
+  "faceVertices": 22819,
+  "samplesPerClip": 31,
+  "clips": [
+    {
+      "clip": "Craft",
+      "maxFaceDeviationM": 0.012086,
+      "atSeconds": 0.4667
+    },
+    {
+      "clip": "Eat",
+      "maxFaceDeviationM": 0.020228,
+      "atSeconds": 1.08
+    },
+    {
+      "clip": "Gather",
+      "maxFaceDeviationM": 0.015542,
+      "atSeconds": 0.85
+    },
+    {
+      "clip": "Give",
+      "maxFaceDeviationM": 0.003944,
+      "atSeconds": 0.52
+    },
+    {
+      "clip": "Idle_Loop",
+      "maxFaceDeviationM": 0.007132,
+      "atSeconds": 2.0
+    },
+    {
+      "clip": "Run_Loop",
+      "maxFaceDeviationM": 0.08329,
+      "atSeconds": 0.3667
+    },
+    {
+      "clip": "Walk_Loop",
+      "maxFaceDeviationM": 0.035304,
+      "atSeconds": 1.0794
+    },
+    {
+      "clip": "Wave",
+      "maxFaceDeviationM": 0.020529,
+      "atSeconds": 0.6667
+    },
+    {
+      "clip": "Attack",
+      "maxFaceDeviationM": 0.051978,
+      "atSeconds": 0.1633
+    },
+    {
+      "clip": "Downed",
+      "maxFaceDeviationM": 0.080602,
+      "atSeconds": 0.84
+    }
+  ],
+  "worstM": 0.08329
+}

@@ -54,3 +54,59 @@
 - 洞窟内は攻撃・投擲禁止、松明だけの手持ち。
 - スマホは縦持ちの半透明パッドと直接操作ボタン、会話は下端のダイアログ。視点は自動追従＋なぞって調整。
 - ローカル版の非表示人物は直下 `local-visibility.json`（mae・maruimo・howkey）。素材は削除しない。
+
+## 動画の制作・同期の安全規則（Video Timing And Synchronization Safety）
+
+These rules apply only to video/audio creation, editing, rendering, assembly,
+and publication. Preserve this repository's existing scope and stricter rules;
+this section does not authorize unrelated code changes or publication.
+
+- Keep source time, edited output time, camera offsets, frame positions, and
+  audio sample positions separate. Check source coverage in source time; never
+  cap it with the shortened output duration.
+- Probe the actual selected video/audio streams, including their start times,
+  endpoints, time bases, frame rates, and sync offsets. Container/manifest
+  duration or a longer audio stream does not establish valid video coverage.
+- Validate every resolved source interval after edits, offsets, restoration,
+  and camera fallback. Reject missing or unverified coverage before rendering.
+- Use a verified synchronized alternate camera when the selected camera ends.
+  If none covers the interval, stop with an error; do not continue on a warning.
+  Do not conceal missing footage with truncation, `-shortest`, frozen frames,
+  silence, or an arbitrary audio delay. Padding requires an explicit edit.
+- Derive expected duration from the validated edit plan, not an older export.
+  For constant-frame-rate delivery, use the exact rational frame rate and one
+  global integer-frame schedule; derive section lengths from shared boundaries.
+  Align audio samples, captions, and overlays with it; handle VFR explicitly.
+- Validate each rendered section's planned frame count and audio coverage before
+  assembly. Stop on unexpected shortening instead of shifting later picture.
+- Preserve a common presentation-time origin at joins, accounting for decode
+  pre-roll and audio priming. Verify stream-copy/keyframe compatibility and run
+  a short join smoke test before full assembly.
+- Compare the final decoded frame count/duration against the edit plan. Define
+  tolerances using frame rate, sample rate, and codec priming, not arbitrary
+  seconds. Encoder success, full decode, or equal A/V length is not sync proof.
+- Verify rendered picture and delivered sound directly against original source
+  frames/recordings with the planned offsets. Old-export comparisons establish
+  preservation only. Check every camera/offset region, changed joins, recording
+  endpoints, and the ending; use audio windows that do not cross edit cuts.
+- Silence or weak correlation is inconclusive, not a pass. Clearly distinguish
+  automated sampling from full manual viewing/listening.
+- Produce a lightweight preview first and obtain user acceptance before the
+  production render. Publish only after coverage, timing, source-based sync,
+  and visual QA pass. This rule does not authorize uploading or replacing files.
+- Preserve the plan/config, probes, offsets, commands, expected/actual counts,
+  fallback decisions, and QA in the project's established report directory.
+  Revalidate reused intermediates against matching input/plan provenance.
+- Add regression tests for EOF after cuts, valid fallback, no available source,
+  uncut timelines, and inserted-card mapping. Timing/splice changes require a
+  join preview. Documentation is a required procedure, not proof that a
+  repository already implements these checks automatically.
+
+### Why These Rules Exist
+
+In the 2026-10-05 engineer-type delivery, a close-up requested 0.825967 seconds
+beyond its actual video endpoint. Picture shortened while external dialogue
+continued, making the final wide shot about 0.8 seconds early. The coverage
+checker mixed source/output time and continued without a fallback; QA compared
+against an already defective export. This was a render/verification failure,
+not an upload-service issue. Never use an old export as the only sync baseline.

@@ -1,0 +1,71 @@
+{
+  "old": "public/models/cro-magnon-hunter/model-c2.glb",
+  "oldSha256": "507db5d9e0e08cdb3c509da0e3f2574b0d8166838e278d7d58ead8d7ada421b1",
+  "new": "output/face-remake/cro-magnon-hunter/weights-r01/model.glb",
+  "newSha256": "d460b5217aea1933dbbd584d61626692c8c3a6f201077064d7c2065a69588552",
+  "preserved": {
+    "primitives": 2,
+    "accessors": 12,
+    "animations": 10,
+    "images": 6
+  },
+  "seam": {
+    "sharedVertices": 0,
+    "maxWeightDifference": 0.0,
+    "maxPosedGapM": 0.0
+  },
+  "weights": {
+    "minSum": 0.9999999670544639,
+    "maxSum": 1.0000000391155481,
+    "maxJoint": 10,
+    "joints": 22
+  },
+  "faceVertices": 22819,
+  "faceRigidity": [
+    {
+      "clip": "Craft",
+      "maxFaceDeviationM": 0.0
+    },
+    {
+      "clip": "Eat",
+      "maxFaceDeviationM": 0.0
+    },
+    {
+      "clip": "Gather",
+      "maxFaceDeviationM": 0.0
+    },
+    {
+      "clip": "Give",
+      "maxFaceDeviationM": 0.0
+    },
+    {
+      "clip": "Idle_Loop",
+      "maxFaceDeviationM": 0.0
+    },
+    {
+      "clip": "Run_Loop",
+      "maxFaceDeviationM": 0.0
+    },
+    {
+      "clip": "Walk_Loop",
+      "maxFaceDeviationM": 0.0
+    },
+    {
+      "clip": "Wave",
+      "maxFaceDeviationM": 0.0
+    },
+    {
+      "clip": "Attack",
+      "maxFaceDeviationM": 0.0
+    },
+    {
+      "clip": "Downed",
+      "maxFaceDeviationM": 0.0
+    }
+  ],
+  "samplesPerClip": 31,
+  "headTriangles": 13526,
+  "headVertices": 23911,
+  "issues": [],
+  "passed": true
+}

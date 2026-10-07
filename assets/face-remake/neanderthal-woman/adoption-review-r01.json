@@ -1,0 +1,215 @@
+{
+  "key": "neanderthal-woman",
+  "decision": "adopt",
+  "sha256": "b4c416900e972c8850892b7a5f886e62478894d1c958cf35830dc7ea1672dde9",
+  "lodSha256": "867a3908acf4a85918aded67c2ae4a0529c860f9455ec613337d707c0e044156",
+  "revision": "r01",
+  "date": "2026-10-07",
+  "reviewer": "Claude Code (Opus 5.5)",
+  "request": "クロマニョン人とネアンデルタール人の男性女性の顔のクオリティが低いので、ちゃんとリアルでかっこいい／かわいい顔に。歩いたり走ったりするときに顔の形が崩れるバグも直す。",
+  "faceRemake": {
+    "revision": "r01",
+    "kind": "new-head",
+    "reference": {
+      "file": "assets/face-remake/neanderthal-woman/source/reference-v1a.png",
+      "sha256": "ae4667b4a7a71a2180378c227304d625e8cf0543ed8b854b17228da7f0cc1426",
+      "generator": "Codex built-in image_gen (desktop app CLI 0.162, gpt-5.6-sol)",
+      "prompt": "Photorealistic premium AAA game character head (MetaHuman-quality sculpt and skin), clean image-to-3D reconstruction reference. HEAD AND NECK ONLY, direct FRONT VIEW, head perfectly upright and centred, eyes level and looking straight into the camera, relaxed neutral expression with the lips closed. Both ears fully visible. The hair is swept completely clear of the face, forehead, eyes and ears: no fringe, no bangs, no loose strands across the face; the hair forms coherent sculpted masses, not floating strands. Show the whole head and the entire neck, the neck ending in a clean straight horizontal cut just above the collarbones. No shoulders, chest, clothing, fur, jewellery, beads, paint, tattoos, scars, pedestal or accessories. Natural healthy skin with fine realistic pores, no makeup, even skin tone. Soft even diffuse neutral studio light from the front and both sides, no hard shadows, no rim light, no dramatic contrast. Head and neck fill about 85% of the image height, centred on a plain uniform light neutral grey background. A single head, one view only, no text, no panels. Subject: a cute, pretty, warm-hearted adult Neanderthal young woman, about 23 years old, with gently softened Neanderthal features: a softly rounded brow, a slightly broad cute nose, full cheeks with defined cheekbones, full soft natural lips with a hint of a friendly closed smile, large warm dark brown eyes with natural lashes, soft dark eyebrows. Warm medium tan skin with a natural healthy glow. Dark brown wavy hair pulled back from the forehead into a compact low bun at the back of the head; nothing hangs below the nape. Gentle kind expression.",
+      "choice": "variant A of two (reference-v1a.png chosen, reference-v1b.png kept)"
+    },
+    "reconstruction": {
+      "generator": "Local TRELLIS-2 C++ GGUF (trellis-studio runtime)",
+      "seed": 42,
+      "resolution": 1024,
+      "textureResolution": 512,
+      "atlas": 2048,
+      "seconds": 1147.777,
+      "denseSha256": "f9b4ba4022a867695163164ad6dc67d53d39230c9e7508dff8cf78a6aa277a07",
+      "record": "assets/face-remake/neanderthal-woman/reconstruction-reference-v1a-seed0042.json"
+    },
+    "projection": {
+      "record": "assets/face-remake/neanderthal-woman/projection-r01.json",
+      "run": "output/face-remake/final-projections.sh (project-r06)",
+      "method": "reference registered to the reconstruction silhouette; the face surface slid (optical flow inside a feathered face ellipse) so eyes, nose and mouth sit where the reference has them; reference detail finer than 48 px projected onto front-facing texels over the reconstruction low-frequency colour"
+    },
+    "graft": {
+      "record": "assets/face-remake/neanderthal-woman/graft-report-r01.json",
+      "run": "output/face-remake/final-grafts.sh",
+      "attachment": "Zipped to the body neck ring (47 shared seam vertices) through a smooth Hermite neck sleeve; flat cut just above the reconstruction rim; the body neck-ring vertex normals take the sleeve normals.",
+      "placement": {
+        "scale": 0.2812706020203891,
+        "translation": [
+          -0.002877,
+          1.438702,
+          -0.033337
+        ],
+        "eyeRow": 572,
+        "chinRow": 1000,
+        "eyeY": 1.451,
+        "chinY": 1.351,
+        "neckRadiusAtCut": 0.05280518201287207,
+        "ringRadius": 0.0480960179065769,
+        "radiusRatio": 1.0979117255703452,
+        "extraOffset": [
+          0,
+          0,
+          0
+        ],
+        "neckTaper": {
+          "ratio": 0.9108200383601133,
+          "heightM": 0,
+          "applied": true
+        },
+        "cut": {
+          "shape": "flat",
+          "rimMarginM": 0.015,
+          "minHeightAboveRingM": 0.03757450781657648,
+          "maxHeightAboveRingM": 0.03757450781657648,
+          "rimMinM": -0.0006194741592011021,
+          "rimMaxM": 0.033409375320056965
+        }
+      },
+      "headTriangles": 50800,
+      "lodHeadTriangles": 4756,
+      "hiddenFacesRemoved": 183785,
+      "reduction": {
+        "clippedTriangles": 98205,
+        "headTriangles": 49116,
+        "meshopt": {
+          "skinAndFace": {
+            "before": 17601,
+            "after": 17601,
+            "error": 0,
+            "flags": [
+              "LockBorder"
+            ]
+          },
+          "hair": {
+            "before": 80604,
+            "after": 31515,
+            "error": 0.06979987770318985,
+            "flags": [
+              "LockBorder",
+              "Permissive"
+            ]
+          },
+          "otsuLuminance": 0.2235294117647059
+        },
+        "smearedHairTrianglesFixed": 3950
+      }
+    },
+    "weights": "Above the jaw curve (+2.5 cm blend) every head vertex is 100% Head; the neck blends Head -> Neck -> the body ring weights (or Chest/Neck inside the collar). Fixes the walk/run face shear.",
+    "faceRigidityBefore": [
+      {
+        "clip": "Attack",
+        "maxFaceDeviationM": 0.00961,
+        "atSeconds": 0.1633
+      },
+      {
+        "clip": "Craft",
+        "maxFaceDeviationM": 0.002907,
+        "atSeconds": 0.4667
+      },
+      {
+        "clip": "Downed",
+        "maxFaceDeviationM": 0.00477,
+        "atSeconds": 0.84
+      },
+      {
+        "clip": "Eat",
+        "maxFaceDeviationM": 0.003444,
+        "atSeconds": 1.08
+      },
+      {
+        "clip": "Gather",
+        "maxFaceDeviationM": 0.003806,
+        "atSeconds": 0.85
+      },
+      {
+        "clip": "Give",
+        "maxFaceDeviationM": 0.000956,
+        "atSeconds": 0.44
+      },
+      {
+        "clip": "Idle_Loop",
+        "maxFaceDeviationM": 0.001101,
+        "atSeconds": 2
+      },
+      {
+        "clip": "Run_Loop",
+        "maxFaceDeviationM": 0.012458,
+        "atSeconds": 0.3667
+      },
+      {
+        "clip": "Walk_Loop",
+        "maxFaceDeviationM": 0.006566,
+        "atSeconds": 1.0794
+      },
+      {
+        "clip": "Wave",
+        "maxFaceDeviationM": 0.004955,
+        "atSeconds": 0.6667
+      }
+    ],
+    "faceRigidityAfter": [
+      {
+        "clip": "Attack",
+        "maxFaceDeviationM": 0
+      },
+      {
+        "clip": "Craft",
+        "maxFaceDeviationM": 0
+      },
+      {
+        "clip": "Downed",
+        "maxFaceDeviationM": 0
+      },
+      {
+        "clip": "Eat",
+        "maxFaceDeviationM": 0
+      },
+      {
+        "clip": "Gather",
+        "maxFaceDeviationM": 0
+      },
+      {
+        "clip": "Give",
+        "maxFaceDeviationM": 0
+      },
+      {
+        "clip": "Idle_Loop",
+        "maxFaceDeviationM": 0
+      },
+      {
+        "clip": "Run_Loop",
+        "maxFaceDeviationM": 0
+      },
+      {
+        "clip": "Walk_Loop",
+        "maxFaceDeviationM": 0
+      },
+      {
+        "clip": "Wave",
+        "maxFaceDeviationM": 0
+      }
+    ],
+    "verification": "assets/face-remake/neanderthal-woman/verify-r01.json",
+    "preserved": "all body/accent primitives (except the reported ring normals or removed shard faces), the skin, inverse bind matrices, node transforms, all 10 clips and all non-head images are byte-identical (verify-r01.json)",
+    "visual": [
+      "assets/face-remake/neanderthal-woman/qa/before-after-r01.jpg",
+      "assets/face-remake/neanderthal-woman/qa/front-combined.jpg"
+    ]
+  },
+  "provenance": {
+    "provider": "Claude Code (Opus 5.5); Codex built-in image_gen reference; local TRELLIS-2 reconstruction",
+    "claudeUsed": true,
+    "referenceGenerator": "Codex built-in image_gen",
+    "referenceImage": "assets/face-remake/neanderthal-woman/source/reference-v1a.png",
+    "referenceSha256": "ae4667b4a7a71a2180378c227304d625e8cf0543ed8b854b17228da7f0cc1426",
+    "reconstruction": "Local TRELLIS-2 C++ GGUF, res 1024, seed 42 (head only); assets/face-remake/neanderthal-woman/reconstruction-reference-v1a-seed0042.json",
+    "denseFile": "output/face-remake/neanderthal-woman/trellis/reference-v1a-res1024-seed0042.glb",
+    "denseSha256": "f9b4ba4022a867695163164ad6dc67d53d39230c9e7508dff8cf78a6aa277a07",
+    "processReport": "assets/face-remake/neanderthal-woman/graft-report-r01.json",
+    "pipeline": "scripts/face-remake/ (write-requests.mjs, reconstruct-head.mjs, project-reference.py, graft-head.py, verify-graft.py, write-review.mjs, adopt-face.mjs)"
+  }
+}

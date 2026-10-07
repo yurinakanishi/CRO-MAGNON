@@ -1,0 +1,230 @@
+{
+  "key": "cro-magnon-woman",
+  "model": "public/models/cro-magnon-woman/model-c2.glb",
+  "modelSha256": "70906c8c538c4b15d20d615ea0c20f44234b5130c24cab8fcea49d34e83d9561",
+  "lod": {
+    "triangles": 4482,
+    "meshopt": {
+      "before": 50408,
+      "after": 4482,
+      "error": 0.027152691036462784,
+      "flags": [
+        "Sloppy"
+      ]
+    }
+  },
+  "lodSha256": "1e7c3c0f113f1aa23ed65896d03d3574855ea21c286c2847473ac1d854dbfba5",
+  "dense": "output/face-remake/cro-magnon-woman/project-r02/warped.glb",
+  "denseSha256": "ddbe1ac76574f2b876cbe2b7beeb6a3dd340fcf63c48545886f016a2643770b4",
+  "args": {
+    "key": "cro-magnon-woman",
+    "model": "",
+    "lod": "",
+    "dense": "output/face-remake/cro-magnon-woman/project-r02/warped.glb",
+    "projection": "output/face-remake/cro-magnon-woman/project-r02",
+    "landmarks": "537,935",
+    "target": "1.5325,1.435",
+    "jaw": "-0.32:1.455,-0.19:1.455,-0.12:1.452,-0.06:1.435,-0.02:1.418,0.10:1.41",
+    "out": "output/face-remake/cro-magnon-woman/final",
+    "budget": 22000,
+    "lod_budget": 5000,
+    "gap": 0.006,
+    "tone": 0.25,
+    "neck_tint": 0.05,
+    "blend": 0.025,
+    "offset": "0,0,0",
+    "scale_mul": 1.0,
+    "head_prim": 1,
+    "error": 0.02,
+    "debug": false,
+    "dump_placed": false,
+    "keep_ring_normals": false,
+    "hair_error": 0.07,
+    "hair_budget": 22000,
+    "attach": "ring",
+    "cut_y": null,
+    "remove_body": "",
+    "no_cut": false,
+    "remove_body_hair": "",
+    "hair_match_body": "1.12,-0.15",
+    "nose_z": null,
+    "extend": 0.04,
+    "cut_shape": "rim",
+    "rim_margin": 0.006,
+    "taper": 0.0
+  },
+  "ring": {
+    "vertices": 42,
+    "centre": [
+      -0.00328,
+      1.4,
+      -0.12016
+    ],
+    "normal": [
+      -0.0,
+      1.0,
+      -0.0
+    ],
+    "yRange": [
+      1.3999998569488525,
+      1.4000003337860107
+    ],
+    "meanRadius": 0.04426840869759311
+  },
+  "placement": {
+    "scale": 0.2907334784661822,
+    "translation": [
+      -0.007866,
+      1.508615,
+      -0.111862
+    ],
+    "eyeRow": 537.0,
+    "chinRow": 935.0,
+    "eyeY": 1.5325,
+    "chinY": 1.435,
+    "neckRadiusAtCut": 0.04543193545041075,
+    "ringRadius": 0.04426840869759311,
+    "radiusRatio": 1.0262834555623161,
+    "extraOffset": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "neckTaper": {
+      "ratio": 0.9743896723465009,
+      "heightM": 0.0,
+      "applied": true
+    },
+    "cut": {
+      "shape": "rim",
+      "rimMarginM": 0.006,
+      "minHeightAboveRingM": 0.006,
+      "maxHeightAboveRingM": 0.04549602287908414,
+      "rimMinM": -0.033905692908984285,
+      "rimMaxM": 0.039496022879084144
+    }
+  },
+  "hiddenFacesRemoved": 147764,
+  "reduction": {
+    "clippedTriangles": 132932,
+    "headTriangles": 50408,
+    "meshopt": {
+      "skinAndFace": {
+        "before": 34770,
+        "after": 22000,
+        "error": 0.0029287387151271105,
+        "flags": [
+          "LockBorder"
+        ]
+      },
+      "hair": {
+        "before": 98162,
+        "after": 28408,
+        "error": 0.0698619857430458,
+        "flags": [
+          "LockBorder",
+          "Permissive"
+        ]
+      },
+      "otsuLuminance": 0.27058823529411763
+    },
+    "smearedHairTrianglesFixed": 5202
+  },
+  "seam": {
+    "headLoop": 220,
+    "bodyRing": 42,
+    "ringNormalsReplaced": 42,
+    "sleeveRows": 8,
+    "sleeveColumns": 160,
+    "stripTriangles": 2502,
+    "headWindingAgreement": 0.964866687827329,
+    "uvPatch": {
+      "x": 8,
+      "y": 2052,
+      "width": 2032,
+      "height": 8
+    },
+    "bodyRingNormalsChanged": 60
+  },
+  "weights": {
+    "rigidHeadVertices": 70965,
+    "blendedVertices": 1162,
+    "neckVertices": 1148,
+    "seamCopies": 43,
+    "jaw": [
+      [
+        -0.32,
+        1.455
+      ],
+      [
+        -0.19,
+        1.455
+      ],
+      [
+        -0.12,
+        1.452
+      ],
+      [
+        -0.06,
+        1.435
+      ],
+      [
+        -0.02,
+        1.418
+      ],
+      [
+        0.1,
+        1.41
+      ]
+    ],
+    "blend": 0.025
+  },
+  "hairGrade": {
+    "bodyHair": [
+      0.3255,
+      0.1765,
+      0.1137
+    ],
+    "headHair": [
+      0.0784,
+      0.0469,
+      0.0324
+    ],
+    "gain": [
+      1.9332,
+      1.9332,
+      1.9332
+    ]
+  },
+  "texture": {
+    "size": 2048,
+    "ringSkin": [
+      0.707,
+      0.4792,
+      0.3899
+    ],
+    "headNeckSkin": [
+      0.7287,
+      0.4873,
+      0.3421
+    ],
+    "gain": [
+      0.9702,
+      0.9835,
+      1.1398
+    ],
+    "tone": 0.25,
+    "neckTint": 0.05,
+    "webpBytes": 938720
+  },
+  "output": {
+    "model": "output\\face-remake\\cro-magnon-woman\\final\\model.glb",
+    "modelSha256": "c8082f13995cebd42d674f6d4b5c87a61d441597d5670aec8803ca5006fdf2c1",
+    "modelBytes": 11552512,
+    "lod": "output\\face-remake\\cro-magnon-woman\\final\\lod.glb",
+    "lodSha256": "af0fdffd99f893e08b3fd3e5411b629d7dec8ac321495f4b1129ba9f45ce2eb4",
+    "lodBytes": 736684,
+    "headTriangles": 52910,
+    "headVertices": 74666
+  }
+}
