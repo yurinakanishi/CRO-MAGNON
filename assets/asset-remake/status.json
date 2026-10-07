@@ -630,11 +630,22 @@
     "verification": "Rejected: same shape, yellower blades that would re-tint the meadow ground (output/asset-remake/compare/meadow-sprig/sheet.jpg). Kept the user-approved sprig."
   },
   "valley-pine": {
-    "issues": "Smooth-canopy pine (12,609 tris, LOD 5,043) adopted 2026-09-10 after the user rejected granular needle foliage as unsettling.",
-    "plan": "New reference + TRELLIS reconstruction evaluated against that requirement.",
+    "issues": "C1 smooth-canopy pine (12,609 tris, LOD 5,043; adopted 2026-09-10 after the user rejected granular needle foliage) looked artificial: egg-shaped blobs floating around a square trunk with a glowing lime tip. 2026-10-07 the user asked for a natural tree. The earlier remake attempt (output/asset-remake/compare/valley-pine/sheet.jpg) was rejected for granular needles.",
+    "plan": "Three Codex image_gen references of natural conifers with dense continuous foliage masses (A Norway spruce, B Scots pine, C boreal conifer); TRELLIS 1024 of A and C, A chosen (C crinkled); meshopt 18k + xatlas + 1024 albedo/normal, fully smooth shading, normal strength 0.4; LOD 6.8k from its own reduction of the dense surface.",
     "motions": "none",
-    "replacement": null,
-    "progress": "kept-with-reason",
-    "verification": "Rejected: the new reconstruction has granular clumped needles (the rejected look): output/asset-remake/compare/valley-pine/sheet.jpg. Kept the user-approved smooth canopy."
+    "replacement": {
+      "url": "/models/valley-pine/model-c2.glb",
+      "lod": "/models/valley-pine/lod-c2.glb"
+    },
+    "progress": "integrated",
+    "verification": "Dense/candidate renders output/model-generation/models/valley-pine/qa/dense-v3, qa/candidate-2-m0*; in-game before/after (5 players, behemoth QA host) output/playwright/pine-remake-20261007/{before,candidate-m01,candidate-m03,candidate-m05,after}; trunk collision re-measured in shared/model-bounds.mts.",
+    "previousDecision": {
+      "issues": "Smooth-canopy pine (12,609 tris, LOD 5,043) adopted 2026-09-10 after the user rejected granular needle foliage as unsettling.",
+      "plan": "New reference + TRELLIS reconstruction evaluated against that requirement.",
+      "motions": "none",
+      "replacement": null,
+      "progress": "kept-with-reason",
+      "verification": "Rejected: the new reconstruction has granular clumped needles (the rejected look): output/asset-remake/compare/valley-pine/sheet.jpg. Kept the user-approved smooth canopy."
+    }
   }
 }

@@ -59,6 +59,8 @@ ap.add_argument('--drop-white-below', type=float, default=None, help='after baki
 ap.add_argument('--neck-keep', default='', help='ztop,margin: below ztop keep only faces within the measured neck radius (+margin) of the neck axis')
 ap.add_argument('--drop-dark-above', type=float, default=None, help='after baking, delete very dark (old hair/beard) faces whose centre is above this z')
 ap.add_argument('--rebake', action='store_true', help='decimate without UV seams, Smart-UV unwrap, bake albedo+normal from the dense surface')
+ap.add_argument('--crease-deg', type=float, default=48.0, help='edges sharper than this stay hard; 180 = fully smooth (thin foliage sheets)')
+ap.add_argument('--normal-strength', type=float, default=1.0, help='blend the baked tangent normals toward flat (1 = as baked)')
 ap.add_argument('--fill-holes', type=int, default=0, help='fill boundary loops with at most N edges (bounded pin-hole repair)')
 ap.add_argument('--export-transform-only', default='', help='write the placement used to this JSON and exit')
 args = ap.parse_args(sys.argv[sys.argv.index('--') + 1:])
@@ -315,14 +317,14 @@ lp = positions(low.data)
 lf = tris(low.data)
 err = {'dense_to_low': distance_stats(dense_samples, lp, lf),
        'low_to_dense': distance_stats(surface_samples(lp, lf), p, dense_f)}
-# crease-aware smooth shading (48 deg), consistent outward winding
+# crease-aware smooth shading (--crease-deg, default 48), consistent outward winding
 bm = bmesh.new()
 bm.from_mesh(low.data)
 bmesh.ops.recalc_face_normals(bm, faces=list(bm.faces))
 for f in bm.faces:
     f.smooth = True
 for e in bm.edges:
-    e.smooth = len(e.link_faces) == 2 and e.calc_face_angle(0) < math.radians(48)
+    e.smooth = len(e.link_faces) == 2 and e.calc_face_angle(0) < math.radians(args.crease_deg)
 bm.to_mesh(low.data)
 bm.free()
 low.data.update()
@@ -536,6 +538,9 @@ if normal_img is not None:
                 low_z = v[:, :, 2] < .25
                 v[low_z, 2] = .25
                 v /= np.maximum(np.linalg.norm(v, axis=2, keepdims=True), 1e-6)
+                if args.normal_strength != 1.0:
+                    v[:, :, :2] *= args.normal_strength
+                    v /= np.maximum(np.linalg.norm(v, axis=2, keepdims=True), 1e-6)
                 rgb[:] = v * .5 + .5
         final = np.concatenate([rgb, np.ones(mask.shape + (1,), np.float32)], 2)
         target.pixels.foreach_set(final.ravel())
@@ -660,7 +665,7 @@ for k, frac in enumerate([float(x) for x in args.lods.split(',') if x]):
     for f in bm.faces:
         f.smooth = True
     for e in bm.edges:
-        e.smooth = len(e.link_faces) == 2 and e.calc_face_angle(0) < math.radians(48)
+        e.smooth = len(e.link_faces) == 2 and e.calc_face_angle(0) < math.radians(args.crease_deg)
     bm.to_mesh(lod.data)
     bm.free()
     if lod_mat is None:
@@ -693,7 +698,7 @@ report = {
                  'roughness_stats': rough_stats, 'roughness_constant': rough_const if rough_img is None else None, 'normal': [args.normal] * 2 if normal_img else None, 'normal_bake_seconds': bake_seconds, 'bake_fill': bake_fill,
                  'format': 'WebP q92 (EXT_texture_webp), MikkTSpace tangents', 'rebake': args.rebake,
                  'uv_source': ('low GLB UVs (xatlas_unwrap.py)' if args.keep_low_uv else 'smart_project') if args.rebake else 'dense UVs'},
-    'shading': 'welded positions, smooth with 48-degree crease edges', 'lods': lod_reports, 'outputs': outputs,
+    'shading': f'welded positions, smooth with {args.crease_deg:g}-degree crease edges', 'normal_strength': args.normal_strength, 'lods': lod_reports, 'outputs': outputs,
     'seconds': round(time.time() - t0, 1),
 }
 (out / 'process-report.json').write_text(json.dumps(report, indent=2) + '\n', encoding='utf-8')

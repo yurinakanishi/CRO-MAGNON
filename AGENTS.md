@@ -1,3 +1,14 @@
+## 2026-10-07 針葉樹を自然なトウヒへ作り直し
+
+ユーザー指摘「木の造形がおかしい」で `valley-pine` Candidate 2を採用。C1の卵形の葉の塊・四角い幹・光る先端を、自然なトウヒへ置換。
+Codex image_genの参照3案からA（トウヒ）を採用。B（アカマツ）は粒状化の恐れで復元せず、Cは復元後に葉の表面が縮れて不採用。
+TRELLIS-2 1024 seed42（294,800三角形）→meshopt 17,122＋xatlas＋1024色・法線焼き込み。全面なめらかな陰影・法線強さ0.4（ゲーム内のカクカクした光り方を解消）。
+中距離版6,839三角形は復元元から別に作成（Blender間引きの先端の曲がり・根元の欠けを回避）。2.9万三角形版は見分けがつかず不採用。
+`scripts/remake/remake_process.py` に `--crease-deg`／`--normal-strength` を追加（既定は従来値）。高さ10 m・接地中心で配置・縮尺は不変。枝の下端約2.05 m（旧2.42 m）。
+幹の当たり判定を新GLBで再計測（約0.69×0.78 m）。旧 `model.glb`／`lod1.glb` 保持、新規 `model-c2.glb`／`lod-c2.glb`。記録 `assets/asset-remake/reviews/valley-pine.json`、`docs/asset-remake/PROGRESS.md` 追補。
+全1026テスト中1023合格（失敗3件は既存と同じ）、check・verify-world-assets（71モデル）成功。実Chrome＋通信4人で群生・キャンプ・見上げ・遠景の前後比較、エラー0（`scripts/qa-pine-remake.mjs`、`output/playwright/pine-remake-20261007/`）。
+3000番・8787番は停止中で配信・再起動・公開デプロイ・commit／pushなし。fps・実スマホ・雪原の近景は未計測。
+
 ## 2026-10-07 全3Dアセットの再制作（Candidate 2）
 
 ユーザー依頼で全61素材を再検討し、再制作して組み込み49件、理由を記録して保持12件（地形タイル5・洞窟・山・川・旧石槍・草・ぱらぱら草・松）。コード製のカラス位階装備とベリー球はTRELLISの新素材10件（kind `prop`）へ置換。

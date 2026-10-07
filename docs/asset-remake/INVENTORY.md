@@ -1,6 +1,6 @@
 # 全3Dアセット一覧と旧→新対応表（自動生成）
 
-生成: 2026-10-07T02:11:15.941Z — `node scripts/remake/build-tracker.mjs`。進捗の正本は `assets/asset-remake/status.json`、詳細は `assets/asset-remake/tracker.json`。
+生成: 2026-10-07T05:43:36.819Z — `node scripts/remake/build-tracker.mjs`。進捗の正本は `assets/asset-remake/status.json`、詳細は `assets/asset-remake/tracker.json`。
 
 利用中GLB 70件（flint-spearはレビュー画面のみ）＋コード生成の代用品2件。
 
@@ -92,7 +92,7 @@
 
 | key | 現行GLB | 三角形 | クリップ | 依存データ | 進捗 | 新GLB | 検証 |
 |---|---|---:|---|---|---|---|---|
-| valley-pine | model.glb | 12609 | 0 | shared/model-bounds.mts | kept-with-reason |  | Rejected: the new reconstruction has granular clumped needles (the rejected look): output/asset-remake/compare/valley-pine/sheet.jpg. Kept the user-approved smooth canopy. |
+| valley-pine | model-c2.glb | 17122 | 0 | shared/model-bounds.mts | integrated | model-c2.glb | Dense/candidate renders output/model-generation/models/valley-pine/qa/dense-v3, qa/candidate-2-m0*; in-game before/after (5 players, behemoth QA host) output/playwright/pine-remake-20261007/{before,candidate-m01,candidate-m03,candidate-m05,after}; trunk collision re-measured in shared/model-bounds.mts. |
 | meadow-grass | model.glb | 42587 | 0 | tests/meadow-ground-tint.test.mjs | kept-with-reason |  | Rejected the new reconstruction (thin yellow wisps, disconnected blades; would also re-tint the meadow ground): output/asset-remake/compare/meadow-grass/sheet.jpg. Kept the user-approved tuft. |
 | berry-bush | model-c2.glb | 11691 | 0 |  | integrated-in-branch | model-c2.glb | output/asset-remake/berry-bush/compare-c3.jpg (c2 = rejected ref-a) |
 | desert-cactus | model-c2.glb | 8991 | 0 | shared/region-feature-bounds.mts, tests/region-features.test.mjs | integrated-in-branch | model-c2.glb | output/asset-remake/compare/desert-cactus/sheet.jpg; footprint 16 cells / 10 boxes (C1 see qa/footprint-rev03.json), 0 misses; region-features/adventures/paleo-world tests 23/23. In game: region loads and renders (output/asset-remake/game/final-r1/landmark-desert-cactus-1.png). |

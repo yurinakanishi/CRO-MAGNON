@@ -34,12 +34,12 @@
       "name": "針葉樹",
       "kind": "tree",
       "height": 10,
-      "status": "integrated-reviewed-prototype",
-      "subject": "Stylised evergreen conifer with smooth, rounded foliage tiers on a tapering brown trunk; soft readable masses instead of granular needle clumps.",
+      "status": "remake-candidate-2-integrated",
+      "subject": "Natural Norway spruce about 10 m tall: round tapering grey-brown trunk with a root flare, bare for the lower fifth, and a dense conical crown of drooping layered branch sprays that read as continuous masses instead of granular needle clumps.",
       "geometryResolution": 1024,
-      "sha256": "659a8624253f383bd40ca4b8461427e695a91e97a747d9507c949342b18e0dd8",
-      "delivery": "/models/valley-pine/model.glb",
-      "referenceVersion": 2
+      "sha256": "7636543c9ae2df6c302106c7d50787b83483f5603babcbadef096f2b645f6b02",
+      "delivery": "/models/valley-pine/model-c2.glb",
+      "referenceVersion": 3
     },
     {
       "key": "meadow-grass",
