@@ -6,7 +6,10 @@
 旧GLBは全て保持し新GLBは `model-c2.glb` 等の別名。採用レビュー `assets/asset-remake/reviews/`、一覧 `docs/asset-remake/INVENTORY.md`、経緯と制約 `docs/asset-remake/PROGRESS.md`、再現スクリプト `scripts/remake/`。
 全1026テスト中1023合格（失敗3件は未変更HEADでも同じ既存失敗）、check・verify-world-assets（71モデル）・build:mmo（561ファイル331.0 MiB）成功。GPU実Chrome＋通信4人でマンモス騎乗と狩り、カラス全位階、ベリー、仲間、ランドマーク、黒曜石の槍、丸木舟7項目、エラー0。
 同条件の前後比較で描画三角形−11〜18%、読込GLB 552→229 MB、JSヒープ−46%。fps差は測定の揺れ内で主張しない。貝・貝塚・黒曜石の刃は湾撤去で現在配置なし（画像のみ確認）。
-実スマホ／Safari／物理パッド／長時間負荷は未確認。ブランチ `remake/all-assets-20261007` を `main` へマージ。push・公開デプロイ・展示配布・3000/8787番の再起動なし。
+実スマホ／Safari／物理パッド／長時間負荷は未確認。ブランチ `remake/all-assets-20261007` を `main` へマージし、ユーザー指示で `d4611e9` をpush。
+同指示でローカルMMO 8787へ反映：別checkoutでbuild:mmoを作り、稼働中の配信フォルダーは入替えず差分のみ（public追加108／変更61／削除94、Worker変更5／旧未使用1削除）。
+前後とも記録と全SHA一致、HTTP 560/561一致（_headersは非配信）、旧URL404、wranglerの自動再読込のWorkerに新しい当たり判定を確認。タイトル画面のヘッドレス読込でGLB37・エラー0（未参加）。
+ID 51cd4502→20b304cd、控え `output/cloudflare-deploy/before-asset-remake-1791346335225`、記録 `output/asset-remake/mmo-8787-apply/`。参加者は前1／反映直後1／一時0／再び1。手動再起動・公開デプロイ・展示配布・3000番の操作なし。
 
 ## 2026-10-07 洞窟入口と斜面の空隙を解消
 
