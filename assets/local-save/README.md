@@ -1,6 +1,6 @@
 # 通常Nodeサーバーの自動保存
 
-2026-09-09。既存ゲームの続き。仕様は [LOCAL_SAVE_PLAN.md](../../LOCAL_SAVE_PLAN.md)。通常 `node server.mjs` と `npm start`、開発用 `npm run dev` に適用する。展示パッケージ・Cloudflare側の保存方式は変更しない。
+2026-09-09。既存ゲームの続き。仕様は [LOCAL_SAVE_PLAN.md](../../docs/history/LOCAL_SAVE_PLAN.md)。通常 `node server.mjs` と `npm start`、開発用 `npm run dev` に適用する。展示パッケージ・Cloudflare側の保存方式は変更しない。
 
 ## 遊ぶ人へ
 

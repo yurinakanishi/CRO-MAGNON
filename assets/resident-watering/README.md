@@ -1,6 +1,6 @@
 # 住人へ畑の水やりを頼む
 
-既存の三作物・48区画と、住人の採集・夕食・世帯の旅をつなぐ任意の手伝いです。実装計画は [RESIDENT_WATERING_PLAN.md](../../RESIDENT_WATERING_PLAN.md)。手動移動・ジャンプ・現在のタイトルと動作を継続します。
+既存の三作物・48区画と、住人の採集・夕食・世帯の旅をつなぐ任意の手伝いです。実装計画は [RESIDENT_WATERING_PLAN.md](../../docs/history/RESIDENT_WATERING_PLAN.md)。手動移動・ジャンプ・現在のタイトルと動作を継続します。
 
 ## 遊び方
 

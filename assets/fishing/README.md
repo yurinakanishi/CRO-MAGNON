@@ -1,6 +1,6 @@
 # Fishing in the expanded gulf
 
-An incremental addition to the existing game, planned in [FISHING_PLAN.md](../../FISHING_PLAN.md). The world remains 8,192 × 4,096 m and Three Shores remains 1,480 × 1,340 m. The countries, crops, obsidian routes, continents and existing activities remain available.
+An incremental addition to the existing game, planned in [FISHING_PLAN.md](../../docs/history/FISHING_PLAN.md). The world remains 8,192 × 4,096 m and Three Shores remains 1,480 × 1,340 m. The countries, crops, obsidian routes, continents and existing activities remain available.
 
 ## How to play
 

@@ -41,4 +41,4 @@
 
 並行するLAN展示作業を保持し、分離した既存ゲームを http://localhost:3011/ へ非表示起動した。別の実Chromeで通常の遠征と旅支度だけを使い、準備値なしに四集落全8住人の採集から夕食、プレイヤーの共同食料1個の保持、再読込・縦横画面、最終9配信ファイルを確認した。通常3000番のPID20716は再起動せず、古いチェックポイント・公開デプロイ・料金変更は適用していない。**今回の自動採集は3011番で確認でき、稼働中の3000番への反映は残る。**
 
-詳細は [assets/resident-foraging/README.md](assets/resident-foraging/README.md)、`qa-summary.json`、`preview-qa.json`、`preview-host.json`。自動農耕・漁労・狩猟や、長期の食料・人口のシミュレーションの完成を意味しない。
+詳細は [assets/resident-foraging/README.md](../../assets/resident-foraging/README.md)、`qa-summary.json`、`preview-qa.json`、`preview-host.json`。自動農耕・漁労・狩猟や、長期の食料・人口のシミュレーションの完成を意味しない。

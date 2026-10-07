@@ -22,7 +22,7 @@ Fishing and aquatic foods are a reasonable prehistoric inspiration. These partic
 - [x] Validate rules, multiplayer, browser play and existing content.
 - [x] Document the result and update the local game.
 
-Delivered seven fishing grounds, a reusable kit, raw/cooked fish, stock recovery, cooking/eating and food contributions. All 240 tests passed; the final 17 related checks passed after cancellation refinements. Real Chrome checks covered shore and canoe catches, travel, cooking, eating, sharing, controller input, reload and responsive layouts. The local server was empty before restarting with the final build; no old checkpoint was restored. See [fishing notes](assets/fishing/README.md) and [QA summary](assets/fishing/qa-summary.json).
+Delivered seven fishing grounds, a reusable kit, raw/cooked fish, stock recovery, cooking/eating and food contributions. All 240 tests passed; the final 17 related checks passed after cancellation refinements. Real Chrome checks covered shore and canoe catches, travel, cooking, eating, sharing, controller input, reload and responsive layouts. The local server was empty before restarting with the final build; no old checkpoint was restored. See [fishing notes](../../assets/fishing/README.md) and [QA summary](../../assets/fishing/qa-summary.json).
 
 NPC household schedules, further crop species and simulated maritime weather remain future work. Public hosting and billing are outside this increment.
 

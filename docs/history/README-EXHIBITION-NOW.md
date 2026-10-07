@@ -2,12 +2,12 @@
 
 > **履歴資料:** これは2026-09-09〜10の旧2台構成と実機名の記録です。現在の
 > PC0・PC1・PC2の役割、SSH、更新手順は
-> [展示3台運用手順](README-EXHIBITION-3PC.md) を正本としてください。
+> [展示3台運用手順](../../README-EXHIBITION-SETUP.md) を正本としてください。
 
 更新日: 2026-09-10。同じ手順書をPC1・PC2の `Desktop\projects\CRO-MAGNON` に配置。
 
 普段使うPCを来場者に操作してもらう際の専用ユーザー・キオスク制限・Home/Proの違いは
-[展示用の安全対策](README-EXHIBITION-SECURITY.md) を参照。安全対策は検討段階で未設定。
+[展示用の安全対策](../../README-EXHIBITION-SETUP.md) を参照。安全対策は検討段階で未設定。
 
 ## 毎回の起動
 

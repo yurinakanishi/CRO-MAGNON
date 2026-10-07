@@ -1,6 +1,6 @@
 # Four-area expansion of Three Shores
 
-**Closure, 2026-09-09:** This expansion and the subsequent changes through local autosave are complete for the current round. All outstanding extensions and verification are deferred to [FUTURE_WORK.md](FUTURE_WORK.md), to resume only on the user's instruction. Earlier rollout and scope statements below remain historical records.
+**Closure, 2026-09-09:** This expansion and the subsequent changes through local autosave are complete for the current round. All outstanding extensions and verification are deferred to [FUTURE_WORK.md](../../FUTURE_WORK.md), to resume only on the user's instruction. Earlier rollout and scope statements below remain historical records.
 
 Started 2026-09-08, following the user's instruction to continue the recommended scale expansion. This is an incremental change to the existing game.
 
@@ -24,7 +24,7 @@ Started 2026-09-08, following the user's instruction to continue the recommended
 
 World version 4 spans 8,192 × 4,096 m. The original 4,096 × 2,048 m Earth projection remains at the same coordinates. Gulf version 2 spans 1,480 × 1,340 m and adds six stopping places, nineteen rock formations, two extra boat landings and a six-stop journey reward. The main crossing is approximately 646 m. The five-player default, 48 existing farm plots, boat/character scales and original assets remain independent of the area expansion.
 
-All 230 tests pass. The final preservation audit matches all 14,685 original scenery placements outside the replaced version-1 gulf. Real browser checks covered land travel, water transport, records/reward, farming, obsidian, reload, and desktop/mobile viewports. Four distant stop arrivals, boat starting supplies and selected return positions were explicit QA fixtures; the records distinguish these from ordinary travel. See [QA](assets/gulf/expansion/qa-summary.json) and [local rollout](assets/gulf/expansion/rollout-qa.json).
+All 230 tests pass. The final preservation audit matches all 14,685 original scenery placements outside the replaced version-1 gulf. Real browser checks covered land travel, water transport, records/reward, farming, obsidian, reload, and desktop/mobile viewports. Four distant stop arrivals, boat starting supplies and selected return positions were explicit QA fixtures; the records distinguish these from ordinary travel. See [QA](../../assets/gulf/expansion/qa-summary.json) and [local rollout](../../assets/gulf/expansion/rollout-qa.json).
 
 The earlier live session had expired before rollout; the first fresh checkpoint contained no rooms or resumable players. Its earlier checkpoint remains an ignored local backup and was not reinstated. The final boundary correction preserved the newly created QA session through a second fresh checkpoint. No automatic local disk persistence was added.
 

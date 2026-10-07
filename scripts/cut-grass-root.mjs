@@ -1,4 +1,4 @@
-// Remove the root cap TRELLIS closed the grass tufts with (PLAYTEST_FEEDBACK_PLAN.md
+// Remove the root cap TRELLIS closed the grass tufts with (docs/history/PLAYTEST_FEEDBACK_PLAN.md
 // section 12 item 1, 2026-09-12):
 //   node scripts/cut-grass-root.mjs meadow-grass 05
 //   node scripts/cut-grass-root.mjs meadow-sprig 04 [--cut 0.04]

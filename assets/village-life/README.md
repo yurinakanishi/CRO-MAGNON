@@ -1,6 +1,6 @@
 # 集落の人びとと今日の手伝い
 
-2026-09-08。既存ゲームへの追加。先に [VILLAGE_LIFE_PLAN.md](../../VILLAGE_LIFE_PLAN.md) を作成し、三つの国と「多くの炉の集い場」に各2人を加えた。
+2026-09-08。既存ゲームへの追加。先に [VILLAGE_LIFE_PLAN.md](../../docs/history/VILLAGE_LIFE_PLAN.md) を作成し、三つの国と「多くの炉の集い場」に各2人を加えた。
 
 ## 遊び方
 

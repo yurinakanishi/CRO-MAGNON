@@ -1,6 +1,6 @@
 # 歩行・走行のかくつき修正
 
-2026-09-09。原因と反映状態は [MOVEMENT_SMOOTHING_PLAN.md](../../MOVEMENT_SMOOTHING_PLAN.md)。
+2026-09-09。原因と反映状態は [MOVEMENT_SMOOTHING_PLAN.md](../../docs/history/MOVEMENT_SMOOTHING_PLAN.md)。
 
 ## 再現と検査
 

@@ -39,6 +39,6 @@
 
 全252テスト、strictを含むビルド、5人接続、6種類の人物、再読み込み、スマートフォン寸法のUIと53配信GLBのSHAを検査した。2026-09-08、ローカル3000番へ反映済み。切替時点の部屋・参加者は0で、過去のチェックポイントは適用していない。
 
-通常の遊びとQA準備値、制作履歴と未検証の条件は [実装記録](assets/coastal-craft/README.md) に区別した。[最終反映の確認](assets/coastal-craft/rollout/report.json)も参照。
+通常の遊びとQA準備値、制作履歴と未検証の条件は [実装記録](../../assets/coastal-craft/README.md) に区別した。[最終反映の確認](../../assets/coastal-craft/rollout/report.json)も参照。
 
 NPCの日課、追加作物、天候・海流、大人数の負荷検証は残る項目。公開サイトと料金の変更はこのローカル実装に含めない。

@@ -37,4 +37,4 @@
 
 PC2への読み取り接続はタイムアウトしたが、PC2は今回の修正に必要ない。更新・転送・設定変更は0。別作業の `scripts/build-exhibition.mjs` と `README-EXHIBITION-NOW.md` の変更を保持する。
 
-詳細は [検証記録](assets/movement-smoothing/README.md)。物理コントローラー、物理PC2、長時間負荷、全地形の検証は今回行っていない。
+詳細は [検証記録](../../assets/movement-smoothing/README.md)。物理コントローラー、物理PC2、長時間負荷、全地形の検証は今回行っていない。
