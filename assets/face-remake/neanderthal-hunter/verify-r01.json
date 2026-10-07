@@ -1,0 +1,73 @@
+{
+  "old": "public/models/neanderthal-hunter/model-c2.glb",
+  "oldSha256": "23b91d45cca119ecc9bb2696b47cc255dd5e8bc480243a301acb08184ae18ec7",
+  "new": "output/face-remake/neanderthal-hunter/final/model.glb",
+  "newSha256": "6910fd3396bcde7934e9af23fa2130ca5c1bca9a08da0d00fe5582076b94352b",
+  "preserved": {
+    "primitives": 2,
+    "accessors": 12,
+    "animations": 10,
+    "images": 6
+  },
+  "bodyRingNormalsChanged": 0,
+  "bodyFacesRemoved": 256,
+  "seam": {
+    "sharedVertices": 0,
+    "maxWeightDifference": 0.0,
+    "maxPosedGapM": 0.0
+  },
+  "weights": {
+    "minSum": 0.999999962747097,
+    "maxSum": 1.0000000298023224,
+    "maxJoint": 5,
+    "joints": 22
+  },
+  "faceVertices": 109679,
+  "faceRigidity": [
+    {
+      "clip": "Craft",
+      "maxFaceDeviationM": 0.0
+    },
+    {
+      "clip": "Eat",
+      "maxFaceDeviationM": 0.0
+    },
+    {
+      "clip": "Gather",
+      "maxFaceDeviationM": 0.0
+    },
+    {
+      "clip": "Give",
+      "maxFaceDeviationM": 0.0
+    },
+    {
+      "clip": "Idle_Loop",
+      "maxFaceDeviationM": 0.0
+    },
+    {
+      "clip": "Run_Loop",
+      "maxFaceDeviationM": 0.0
+    },
+    {
+      "clip": "Walk_Loop",
+      "maxFaceDeviationM": 0.0
+    },
+    {
+      "clip": "Wave",
+      "maxFaceDeviationM": 0.0
+    },
+    {
+      "clip": "Attack",
+      "maxFaceDeviationM": 0.0
+    },
+    {
+      "clip": "Downed",
+      "maxFaceDeviationM": 0.0
+    }
+  ],
+  "samplesPerClip": 31,
+  "headTriangles": 59898,
+  "headVertices": 114420,
+  "issues": [],
+  "passed": true
+}

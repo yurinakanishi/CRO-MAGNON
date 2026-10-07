@@ -1,0 +1,59 @@
+{
+  "file": "public/models/neanderthal-hunter/model-c2.glb",
+  "prim": 1,
+  "faceVertices": 16621,
+  "samplesPerClip": 31,
+  "clips": [
+    {
+      "clip": "Craft",
+      "maxFaceDeviationM": 0.021825,
+      "atSeconds": 0.4667
+    },
+    {
+      "clip": "Eat",
+      "maxFaceDeviationM": 0.026836,
+      "atSeconds": 1.08
+    },
+    {
+      "clip": "Gather",
+      "maxFaceDeviationM": 0.028609,
+      "atSeconds": 0.85
+    },
+    {
+      "clip": "Give",
+      "maxFaceDeviationM": 0.007276,
+      "atSeconds": 0.6
+    },
+    {
+      "clip": "Idle_Loop",
+      "maxFaceDeviationM": 0.00654,
+      "atSeconds": 2.0
+    },
+    {
+      "clip": "Run_Loop",
+      "maxFaceDeviationM": 0.031524,
+      "atSeconds": 0.3667
+    },
+    {
+      "clip": "Walk_Loop",
+      "maxFaceDeviationM": 0.043166,
+      "atSeconds": 0.7444
+    },
+    {
+      "clip": "Wave",
+      "maxFaceDeviationM": 0.021648,
+      "atSeconds": 0.6667
+    },
+    {
+      "clip": "Attack",
+      "maxFaceDeviationM": 0.032475,
+      "atSeconds": 0.1633
+    },
+    {
+      "clip": "Downed",
+      "maxFaceDeviationM": 0.021373,
+      "atSeconds": 0.84
+    }
+  ],
+  "worstM": 0.043166
+}

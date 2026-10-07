@@ -1,0 +1,73 @@
+{
+  "old": "public/models/cro-magnon-woman/model-c2.glb",
+  "oldSha256": "70906c8c538c4b15d20d615ea0c20f44234b5130c24cab8fcea49d34e83d9561",
+  "new": "output/face-remake/cro-magnon-woman/final/model.glb",
+  "newSha256": "c8082f13995cebd42d674f6d4b5c87a61d441597d5670aec8803ca5006fdf2c1",
+  "preserved": {
+    "primitives": 1,
+    "accessors": 5,
+    "animations": 10,
+    "images": 2
+  },
+  "bodyRingNormalsChanged": 60,
+  "bodyFacesRemoved": 0,
+  "seam": {
+    "sharedVertices": 43,
+    "maxWeightDifference": 0.0,
+    "maxPosedGapM": 0.0
+  },
+  "weights": {
+    "minSum": 0.9999999050050974,
+    "maxSum": 1.0000001192092896,
+    "maxJoint": 11,
+    "joints": 22
+  },
+  "faceVertices": 70560,
+  "faceRigidity": [
+    {
+      "clip": "Attack",
+      "maxFaceDeviationM": 0.0
+    },
+    {
+      "clip": "Craft",
+      "maxFaceDeviationM": 0.0
+    },
+    {
+      "clip": "Downed",
+      "maxFaceDeviationM": 0.0
+    },
+    {
+      "clip": "Eat",
+      "maxFaceDeviationM": 0.0
+    },
+    {
+      "clip": "Gather",
+      "maxFaceDeviationM": 0.0
+    },
+    {
+      "clip": "Give",
+      "maxFaceDeviationM": 0.0
+    },
+    {
+      "clip": "Idle_Loop",
+      "maxFaceDeviationM": 0.0
+    },
+    {
+      "clip": "Run_Loop",
+      "maxFaceDeviationM": 0.0
+    },
+    {
+      "clip": "Walk_Loop",
+      "maxFaceDeviationM": 0.0
+    },
+    {
+      "clip": "Wave",
+      "maxFaceDeviationM": 0.0
+    }
+  ],
+  "samplesPerClip": 31,
+  "headTriangles": 52910,
+  "headVertices": 74666,
+  "issues": [],
+  "passed": true
+}

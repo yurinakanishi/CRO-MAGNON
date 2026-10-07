@@ -1,0 +1,59 @@
+{
+  "file": "public/models/cro-magnon-woman/model-c2.glb",
+  "prim": 1,
+  "faceVertices": 40560,
+  "samplesPerClip": 31,
+  "clips": [
+    {
+      "clip": "Attack",
+      "maxFaceDeviationM": 0.004213,
+      "atSeconds": 0.1633
+    },
+    {
+      "clip": "Craft",
+      "maxFaceDeviationM": 0.00123,
+      "atSeconds": 0.4667
+    },
+    {
+      "clip": "Downed",
+      "maxFaceDeviationM": 0.003056,
+      "atSeconds": 1.38
+    },
+    {
+      "clip": "Eat",
+      "maxFaceDeviationM": 0.001748,
+      "atSeconds": 1.08
+    },
+    {
+      "clip": "Gather",
+      "maxFaceDeviationM": 0.001568,
+      "atSeconds": 0.85
+    },
+    {
+      "clip": "Give",
+      "maxFaceDeviationM": 0.000413,
+      "atSeconds": 0.56
+    },
+    {
+      "clip": "Idle_Loop",
+      "maxFaceDeviationM": 0.000549,
+      "atSeconds": 2.0
+    },
+    {
+      "clip": "Run_Loop",
+      "maxFaceDeviationM": 0.0059,
+      "atSeconds": 0.3667
+    },
+    {
+      "clip": "Walk_Loop",
+      "maxFaceDeviationM": 0.003302,
+      "atSeconds": 1.0794
+    },
+    {
+      "clip": "Wave",
+      "maxFaceDeviationM": 0.002753,
+      "atSeconds": 0.6667
+    }
+  ],
+  "worstM": 0.0059
+}

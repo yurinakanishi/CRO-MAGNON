@@ -95,12 +95,22 @@
     "rigReport": "output/model-generation/models/cro-magnon-hunter/work/candidate-02/rig/r03/rig-report.json",
     "pipeline": "scripts/remake/ (trellis_queue.py, remake_process.py, rig_*.py); docs/asset-remake/PLAN.md",
     "previousDelivery": {
-      "url": "/models/cro-magnon-hunter/model-human-r10.glb",
-      "sha256": "b2d51d01d095bb5e995e6a6f7a9e9b084f2796e47f675370900dea7ac20d2720",
-      "triangles": 69990,
-      "bytes": 10712084,
-      "candidate": 1,
-      "revision": null
+      "url": "/models/cro-magnon-hunter/model-c2.glb",
+      "sha256": "507db5d9e0e08cdb3c509da0e3f2574b0d8166838e278d7d58ead8d7ada421b1",
+      "bytes": 12444656,
+      "triangles": 50561,
+      "candidate": 2,
+      "revision": "c2-r03",
+      "lods": [
+        {
+          "url": "/models/cro-magnon-hunter/lod-c2.glb",
+          "sha256": "b73650bd17e980002b89b7f9002bbbc9666e87f2d0b3cd10078f49a89a7e8794",
+          "bytes": 1041640,
+          "triangles": 10112,
+          "distanceMetres": 28,
+          "purpose": "animated-medium-lod-geometry"
+        }
+      ]
     },
     "previousProvenance": {
       "candidateFile": "output/creature-motion/revision-04/cro-magnon-hunter/model.glb",
@@ -120,13 +130,23 @@
       "previousMotionVisualReview": "output/model-generation/models/cro-magnon-hunter/qa/adoption-review.json",
       "previousVisualReview": "assets/creature-motion/models/cro-magnon-hunter-review.json"
     },
-    "visualReview": "assets/asset-remake/reviews/cro-magnon-hunter.json"
+    "visualReview": "assets/face-remake/cro-magnon-hunter/adoption-review-r01.json",
+    "previousDeliveries": [
+      {
+        "url": "/models/cro-magnon-hunter/model-human-r10.glb",
+        "sha256": "b2d51d01d095bb5e995e6a6f7a9e9b084f2796e47f675370900dea7ac20d2720",
+        "triangles": 69990,
+        "bytes": 10712084,
+        "candidate": 1,
+        "revision": null
+      }
+    ]
   },
-  "sha256": "507db5d9e0e08cdb3c509da0e3f2574b0d8166838e278d7d58ead8d7ada421b1",
+  "sha256": "d460b5217aea1933dbbd584d61626692c8c3a6f201077064d7c2065a69588552",
   "status": "remake-candidate-2-integrated",
   "triangles": 50561,
   "upAxis": "Y",
-  "url": "/models/cro-magnon-hunter/model-c2.glb",
+  "url": "/models/cro-magnon-hunter/model-face-r01.glb",
   "hunting": {
     "clip": {
       "name": "Attack",
@@ -273,8 +293,8 @@
   },
   "lods": [
     {
-      "url": "/models/cro-magnon-hunter/lod-c2.glb",
-      "sha256": "b73650bd17e980002b89b7f9002bbbc9666e87f2d0b3cd10078f49a89a7e8794",
+      "url": "/models/cro-magnon-hunter/lod-face-r01.glb",
+      "sha256": "91e6922796997a6f81f85fecf81accf5b6580e6710da672caa69f4a740baae83",
       "bytes": 1041640,
       "triangles": 10112,
       "distanceMetres": 28,
@@ -286,5 +306,138 @@
     "dense": "C:/Users/yurin/Desktop/projects/CRO-MAGNON/output/model-generation/models/cro-magnon-hunter/work/candidate-02/trellis/dense-head2a-res1024-tex512-seed0042.glb",
     "method": "Separate TRELLIS head reconstruction placed by similarity ICP on the body crown (scripts/remake/align_head.py), reduced with meshoptimizer, xatlas charts, albedo/normal baked; body cut at the neck; joined with a skin-tone gain (scripts/remake/merge_head.py); merged surface rescaled to the delivered height before rigging."
   },
-  "revision": "c2-r03"
+  "revision": "face-r01",
+  "faceRemake": {
+    "revision": "r01",
+    "kind": "weights-only",
+    "bug": "Lower face and beard carried up to 50% Chest and 30% Neck weight (head primitive mean Head weight 0.80); Chest/Neck rotate differently from Head in the CMU Walk/Run, so the face sheared up to 8.3 cm (Run), 3.5 cm (Walk), 5.2 cm (Attack), 8.1 cm (Downed).",
+    "fix": "scripts/face-remake/rigid-head-weights.py: vertices above a jaw-line curve traced under the beard, jaw and nape are 100% Head; a 3 cm smoothstep blends back to the delivered neck weights, which are unchanged at the neck seam. Same curve applied to the 28 m LOD.",
+    "jaw": [
+      [
+        -0.2,
+        1.56
+      ],
+      [
+        -0.13,
+        1.565
+      ],
+      [
+        -0.09,
+        1.585
+      ],
+      [
+        -0.03,
+        1.59
+      ],
+      [
+        0.02,
+        1.565
+      ],
+      [
+        0.05,
+        1.548
+      ],
+      [
+        0.14,
+        1.54
+      ]
+    ],
+    "faceRigidityBefore": [
+      {
+        "clip": "Craft",
+        "maxFaceDeviationM": 0.012086,
+        "atSeconds": 0.4667
+      },
+      {
+        "clip": "Eat",
+        "maxFaceDeviationM": 0.020228,
+        "atSeconds": 1.08
+      },
+      {
+        "clip": "Gather",
+        "maxFaceDeviationM": 0.015542,
+        "atSeconds": 0.85
+      },
+      {
+        "clip": "Give",
+        "maxFaceDeviationM": 0.003944,
+        "atSeconds": 0.52
+      },
+      {
+        "clip": "Idle_Loop",
+        "maxFaceDeviationM": 0.007132,
+        "atSeconds": 2
+      },
+      {
+        "clip": "Run_Loop",
+        "maxFaceDeviationM": 0.08329,
+        "atSeconds": 0.3667
+      },
+      {
+        "clip": "Walk_Loop",
+        "maxFaceDeviationM": 0.035304,
+        "atSeconds": 1.0794
+      },
+      {
+        "clip": "Wave",
+        "maxFaceDeviationM": 0.020529,
+        "atSeconds": 0.6667
+      },
+      {
+        "clip": "Attack",
+        "maxFaceDeviationM": 0.051978,
+        "atSeconds": 0.1633
+      },
+      {
+        "clip": "Downed",
+        "maxFaceDeviationM": 0.080602,
+        "atSeconds": 0.84
+      }
+    ],
+    "faceRigidityAfter": [
+      {
+        "clip": "Craft",
+        "maxFaceDeviationM": 0
+      },
+      {
+        "clip": "Eat",
+        "maxFaceDeviationM": 0
+      },
+      {
+        "clip": "Gather",
+        "maxFaceDeviationM": 0
+      },
+      {
+        "clip": "Give",
+        "maxFaceDeviationM": 0
+      },
+      {
+        "clip": "Idle_Loop",
+        "maxFaceDeviationM": 0
+      },
+      {
+        "clip": "Run_Loop",
+        "maxFaceDeviationM": 0
+      },
+      {
+        "clip": "Walk_Loop",
+        "maxFaceDeviationM": 0
+      },
+      {
+        "clip": "Wave",
+        "maxFaceDeviationM": 0
+      },
+      {
+        "clip": "Attack",
+        "maxFaceDeviationM": 0
+      },
+      {
+        "clip": "Downed",
+        "maxFaceDeviationM": 0
+      }
+    ],
+    "verification": "assets/face-remake/cro-magnon-hunter/verify-r01.json",
+    "preserved": "positions, normals, UVs, textures, body and accent primitives, skin, inverse bind matrices and all 10 clips are byte-identical (verify-r01.json)",
+    "visual": "assets/face-remake/cro-magnon-hunter/qa/run-walk-before-after.jpg (top: delivered C2, bottom: r01; Run_Loop 20% and Walk_Loop 95%)"
+  }
 }

@@ -1,0 +1,59 @@
+{
+  "file": "public/models/neanderthal-woman/model-c2.glb",
+  "prim": 1,
+  "faceVertices": 48286,
+  "samplesPerClip": 31,
+  "clips": [
+    {
+      "clip": "Attack",
+      "maxFaceDeviationM": 0.00961,
+      "atSeconds": 0.1633
+    },
+    {
+      "clip": "Craft",
+      "maxFaceDeviationM": 0.002907,
+      "atSeconds": 0.4667
+    },
+    {
+      "clip": "Downed",
+      "maxFaceDeviationM": 0.00477,
+      "atSeconds": 0.84
+    },
+    {
+      "clip": "Eat",
+      "maxFaceDeviationM": 0.003444,
+      "atSeconds": 1.08
+    },
+    {
+      "clip": "Gather",
+      "maxFaceDeviationM": 0.003806,
+      "atSeconds": 0.85
+    },
+    {
+      "clip": "Give",
+      "maxFaceDeviationM": 0.000956,
+      "atSeconds": 0.44
+    },
+    {
+      "clip": "Idle_Loop",
+      "maxFaceDeviationM": 0.001101,
+      "atSeconds": 2.0
+    },
+    {
+      "clip": "Run_Loop",
+      "maxFaceDeviationM": 0.012458,
+      "atSeconds": 0.3667
+    },
+    {
+      "clip": "Walk_Loop",
+      "maxFaceDeviationM": 0.006566,
+      "atSeconds": 1.0794
+    },
+    {
+      "clip": "Wave",
+      "maxFaceDeviationM": 0.004955,
+      "atSeconds": 0.6667
+    }
+  ],
+  "worstM": 0.012458
+}

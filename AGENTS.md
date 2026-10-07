@@ -1,3 +1,70 @@
+## Video Timing And Synchronization Safety
+
+These rules apply only to video/audio creation, editing, rendering, assembly,
+and publication. Preserve this repository's existing scope and stricter rules;
+this section does not authorize unrelated code changes or publication.
+
+- Keep source time, edited output time, camera offsets, frame positions, and
+  audio sample positions separate. Check source coverage in source time; never
+  cap it with the shortened output duration.
+- Probe the actual selected video/audio streams, including their start times,
+  endpoints, time bases, frame rates, and sync offsets. Container/manifest
+  duration or a longer audio stream does not establish valid video coverage.
+- Validate every resolved source interval after edits, offsets, restoration,
+  and camera fallback. Reject missing or unverified coverage before rendering.
+- Use a verified synchronized alternate camera when the selected camera ends.
+  If none covers the interval, stop with an error; do not continue on a warning.
+  Do not conceal missing footage with truncation, `-shortest`, frozen frames,
+  silence, or an arbitrary audio delay. Padding requires an explicit edit.
+- Derive expected duration from the validated edit plan, not an older export.
+  For constant-frame-rate delivery, use the exact rational frame rate and one
+  global integer-frame schedule; derive section lengths from shared boundaries.
+  Align audio samples, captions, and overlays with it; handle VFR explicitly.
+- Validate each rendered section's planned frame count and audio coverage before
+  assembly. Stop on unexpected shortening instead of shifting later picture.
+- Preserve a common presentation-time origin at joins, accounting for decode
+  pre-roll and audio priming. Verify stream-copy/keyframe compatibility and run
+  a short join smoke test before full assembly.
+- Compare the final decoded frame count/duration against the edit plan. Define
+  tolerances using frame rate, sample rate, and codec priming, not arbitrary
+  seconds. Encoder success, full decode, or equal A/V length is not sync proof.
+- Verify rendered picture and delivered sound directly against original source
+  frames/recordings with the planned offsets. Old-export comparisons establish
+  preservation only. Check every camera/offset region, changed joins, recording
+  endpoints, and the ending; use audio windows that do not cross edit cuts.
+- Silence or weak correlation is inconclusive, not a pass. Clearly distinguish
+  automated sampling from full manual viewing/listening.
+- Produce a lightweight preview first and obtain user acceptance before the
+  production render. Publish only after coverage, timing, source-based sync,
+  and visual QA pass. This rule does not authorize uploading or replacing files.
+- Preserve the plan/config, probes, offsets, commands, expected/actual counts,
+  fallback decisions, and QA in the project's established report directory.
+  Revalidate reused intermediates against matching input/plan provenance.
+- Add regression tests for EOF after cuts, valid fallback, no available source,
+  uncut timelines, and inserted-card mapping. Timing/splice changes require a
+  join preview. Documentation is a required procedure, not proof that a
+  repository already implements these checks automatically.
+
+### Why These Rules Exist
+
+In the 2026-10-05 engineer-type delivery, a close-up requested 0.825967 seconds
+beyond its actual video endpoint. Picture shortened while external dialogue
+continued, making the final wide shot about 0.8 seconds early. The coverage
+checker mixed source/output time and continued without a fallback; QA compared
+against an already defective export. This was a render/verification failure,
+not an upload-service issue. Never use an old export as the only sync baseline.
+
+
+## 2026-10-07 人物4体の顔の改善と、歩行・走行で顔が崩れる不具合の修正
+
+ユーザー依頼「両種族の男女の顔をリアルでかっこいい／かわいく、歩く・走ると顔の形が崩れるバグも直す」。追加指定「クロマニョン男性の顔は元から良い」により、同男性は顔を変えずウェイトだけ修正。
+崩れの原因は顔・あご・ひげの頂点がChest／Neckにも結び付き、CMU歩走で顔がせん断されていたこと。あご曲線より上を100% Head、首だけHead→Neck→胴体へ切替（`scripts/face-remake/rigid-head-weights.py`）。全10動作の顔の剛体ずれは最大8.33cm（クロマニョン男性の走行）→4体とも0。
+クロマニョン女性・ネアンデルタール男女は新しい頭部：Codex image_gen参照（各2案、A採用）→ローカルTRELLIS-2 1024 seed42→参照の目鼻口へ顔表面を光学フローで合わせ細部を投影→見えない内殻除去・削減→元の首へ接合（女性2体は首の輪へ縫合で全動作の隙間0、ネアンデルタール男性は襟の中へ差込み・隠れていた胴体片256三角形を削除）。
+体・骨・逆バインド行列・全10クリップ・頭部以外の画像はバイト一致（首の輪の法線と削除片のみ例外を記録）。旧GLB保持、新規`model-face-r01.glb`／`lod-face-r01.glb`、人物画像も更新（旧画像は`assets/face-remake/<key>/qa/portrait-before.png`）。
+近距離の三角形は女性85,829／83,447、ネアンデルタール男性99,893（旧67,133／66,179／53,176）、28m以遠のLODは旧来並み。FPS改善は主張しない。
+実Chrome4画面＋通信1の5接続で4体の実キー歩走・攻撃・ジャンプ・相手画面の同期・顔の近接・LOD往復・縦横画面・再読込、エラー0（`assets/face-remake/qa-game/`）。全1026テスト中1022合格、失敗はマンモス・資源の既存3件と、無視対象`dist/src/help-content.js`の残りを拾うenvironment-profiles 1件で、いずれも無関係。
+残る制約：首の薄い線・折れ目（至近のみ）、ネアンデルタール男性の襟のトゲと太い眉、髪揺れなし。詳細・SHA・再現手順 `assets/face-remake/README.md`。実スマホ／Safari／パッド未確認。サーバー再起動・MMO8787／展示／公開への反映・commit／pushなし。
+
 ## 2026-10-07 MMOのホームを洞窟の壁画中心に・展示はQRクレジットを維持
 
 ユーザー指定でContributors表示を分離。展示（LAN／展示ビルド）は従来のアイコン・名前・QRのまま、リンクなし。MMO・通常ローカルはQRを出さず、画面下に洞窟の壁画の帯、メニューに「関わってくれた人たち」ダイアログ。

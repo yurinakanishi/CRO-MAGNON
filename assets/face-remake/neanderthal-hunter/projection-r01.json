@@ -1,0 +1,76 @@
+{
+  "dense": "output/face-remake/neanderthal-hunter/trellis/reference-v1a-res1024-seed0042.glb",
+  "denseSha256": "2945d15be774758271590595789c9aaaf369171c6538acf657fab700e185b058",
+  "reference": "assets/face-remake/neanderthal-hunter/source/reference-v1a.png",
+  "referenceSha256": "6501c433c47ff7cbe9436a6c6b4ae9992ed59da3bbae7eab0577d6cb33a299d1",
+  "registration": {
+    "scalePixelsPerUnit": 1235.9580539746826,
+    "cx": 621.9929673261154,
+    "cy": 604.1005986338666,
+    "silhouetteIoU": 0.9096147362613786,
+    "initialIoU": 0.8994032263077736
+  },
+  "landmarks": {
+    "eyeRow": 548.0,
+    "chinRow": 980.0,
+    "faceEllipse": {
+      "cx": 621.5,
+      "cy": 681.92,
+      "rx": 267.84,
+      "ry": 369.35999999999996
+    }
+  },
+  "warp": [
+    {
+      "iteration": 0,
+      "maxShiftPx": 45.000006791319805,
+      "movedVertices": 44156,
+      "maxShiftUnits": 0.0364090080942517
+    },
+    {
+      "iteration": 1,
+      "maxShiftPx": 45.00000660093117,
+      "movedVertices": 42906,
+      "maxShiftUnits": 0.03640900794021037
+    }
+  ],
+  "warpedGlb": "output\\face-remake\\neanderthal-hunter\\project-r03\\warped.glb",
+  "residualFlowMeanPx": 13.403644561767578,
+  "projectedTexels": 208799,
+  "fullTexels": 123687,
+  "coveredTexels": 2042010,
+  "mode": "detail",
+  "sigma": 48.0,
+  "matchColour": 0.5,
+  "colourFit": [
+    [
+      -0.3664,
+      -0.2989,
+      -0.2012
+    ],
+    [
+      5.0556,
+      3.5173,
+      2.5068
+    ],
+    [
+      -5.4596,
+      -3.7261,
+      -2.6859
+    ],
+    [
+      0.4207,
+      0.2859,
+      0.2334
+    ]
+  ],
+  "facing": [
+    0.3,
+    0.6
+  ],
+  "occlusion": [
+    0.004,
+    0.012
+  ],
+  "atlas": 2048
+}

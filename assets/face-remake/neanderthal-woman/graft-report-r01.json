@@ -1,0 +1,216 @@
+{
+  "key": "neanderthal-woman",
+  "model": "public/models/neanderthal-woman/model-c2.glb",
+  "modelSha256": "e7dab0a525aa566c96521ea135b0e884b0e751d8c815eeddd77d22efcffb73a8",
+  "lod": {
+    "triangles": 4756,
+    "meshopt": {
+      "before": 49116,
+      "after": 4756,
+      "error": 0.029322722926735878,
+      "flags": [
+        "Sloppy"
+      ]
+    }
+  },
+  "lodSha256": "6514d5c26ce62faa070fa3b7eb82fc240583b1d80074e7a729aa70838bfdcec7",
+  "dense": "output/face-remake/neanderthal-woman/project-r06/warped.glb",
+  "denseSha256": "1d328fe9fe0139dfea3331a1a28abdc37d1cd1aa63816cd1c025652b6b63eefa",
+  "args": {
+    "key": "neanderthal-woman",
+    "model": "",
+    "lod": "",
+    "dense": "output/face-remake/neanderthal-woman/project-r06/warped.glb",
+    "projection": "output/face-remake/neanderthal-woman/project-r06",
+    "landmarks": "572,1000",
+    "target": "1.451,1.351",
+    "jaw": "-0.25:1.36,-0.14:1.375,-0.10:1.38,-0.05:1.375,0.0:1.345,0.03:1.325,0.15:1.32",
+    "out": "output/face-remake/neanderthal-woman/final",
+    "budget": 22000,
+    "lod_budget": 5000,
+    "gap": 0.006,
+    "tone": 0.25,
+    "neck_tint": 0.05,
+    "blend": 0.025,
+    "offset": "0,0,0",
+    "scale_mul": 1.0,
+    "head_prim": 1,
+    "error": 0.02,
+    "debug": false,
+    "dump_placed": false,
+    "keep_ring_normals": false,
+    "hair_error": 0.07,
+    "hair_budget": 22000,
+    "attach": "ring",
+    "cut_y": null,
+    "remove_body": "",
+    "no_cut": false,
+    "remove_body_hair": "",
+    "nose_z": null,
+    "extend": 0.04,
+    "cut_shape": "flat",
+    "rim_margin": 0.015,
+    "taper": 0.0
+  },
+  "ring": {
+    "vertices": 46,
+    "centre": [
+      -0.00275,
+      1.315,
+      -0.04809
+    ],
+    "normal": [
+      -0.0,
+      1.0,
+      -0.0
+    ],
+    "yRange": [
+      1.315000295639038,
+      1.3150007724761963
+    ],
+    "meanRadius": 0.0480960179065769
+  },
+  "placement": {
+    "scale": 0.2812706020203891,
+    "translation": [
+      -0.002877,
+      1.438702,
+      -0.033337
+    ],
+    "eyeRow": 572.0,
+    "chinRow": 1000.0,
+    "eyeY": 1.451,
+    "chinY": 1.351,
+    "neckRadiusAtCut": 0.05280518201287207,
+    "ringRadius": 0.0480960179065769,
+    "radiusRatio": 1.0979117255703452,
+    "extraOffset": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "neckTaper": {
+      "ratio": 0.9108200383601133,
+      "heightM": 0.0,
+      "applied": true
+    },
+    "cut": {
+      "shape": "flat",
+      "rimMarginM": 0.015,
+      "minHeightAboveRingM": 0.03757450781657648,
+      "maxHeightAboveRingM": 0.03757450781657648,
+      "rimMinM": -0.0006194741592011021,
+      "rimMaxM": 0.033409375320056965
+    }
+  },
+  "hiddenFacesRemoved": 183785,
+  "reduction": {
+    "clippedTriangles": 98205,
+    "headTriangles": 49116,
+    "meshopt": {
+      "skinAndFace": {
+        "before": 17601,
+        "after": 17601,
+        "error": 0,
+        "flags": [
+          "LockBorder"
+        ]
+      },
+      "hair": {
+        "before": 80604,
+        "after": 31515,
+        "error": 0.06979987770318985,
+        "flags": [
+          "LockBorder",
+          "Permissive"
+        ]
+      },
+      "otsuLuminance": 0.2235294117647059
+    },
+    "smearedHairTrianglesFixed": 3950
+  },
+  "seam": {
+    "headLoop": 126,
+    "bodyRing": 46,
+    "ringNormalsReplaced": 47,
+    "sleeveRows": 7,
+    "sleeveColumns": 126,
+    "stripTriangles": 1684,
+    "headWindingAgreement": 0.973796726117762,
+    "uvPatch": {
+      "x": 8,
+      "y": 2052,
+      "width": 2032,
+      "height": 8
+    },
+    "bodyRingNormalsChanged": 66
+  },
+  "weights": {
+    "rigidHeadVertices": 63972,
+    "blendedVertices": 2576,
+    "neckVertices": 684,
+    "seamCopies": 47,
+    "jaw": [
+      [
+        -0.25,
+        1.36
+      ],
+      [
+        -0.14,
+        1.375
+      ],
+      [
+        -0.1,
+        1.38
+      ],
+      [
+        -0.05,
+        1.375
+      ],
+      [
+        0.0,
+        1.345
+      ],
+      [
+        0.03,
+        1.325
+      ],
+      [
+        0.15,
+        1.32
+      ]
+    ],
+    "blend": 0.025
+  },
+  "texture": {
+    "size": 2048,
+    "ringSkin": [
+      0.6047,
+      0.4356,
+      0.3507
+    ],
+    "headNeckSkin": [
+      0.53,
+      0.3551,
+      0.2287
+    ],
+    "gain": [
+      1.141,
+      1.2267,
+      1.5337
+    ],
+    "tone": 0.25,
+    "neckTint": 0.05,
+    "webpBytes": 623620
+  },
+  "output": {
+    "model": "output\\face-remake\\neanderthal-woman\\final\\model.glb",
+    "modelSha256": "b4c416900e972c8850892b7a5f886e62478894d1c958cf35830dc7ea1672dde9",
+    "modelBytes": 10675488,
+    "lod": "output\\face-remake\\neanderthal-woman\\final\\lod.glb",
+    "lodSha256": "867a3908acf4a85918aded67c2ae4a0529c860f9455ec613337d707c0e044156",
+    "lodBytes": 716252,
+    "headTriangles": 50800,
+    "headVertices": 68168
+  }
+}

@@ -1,0 +1,73 @@
+{
+  "old": "public/models/neanderthal-woman/model-c2.glb",
+  "oldSha256": "e7dab0a525aa566c96521ea135b0e884b0e751d8c815eeddd77d22efcffb73a8",
+  "new": "output/face-remake/neanderthal-woman/final/model.glb",
+  "newSha256": "b4c416900e972c8850892b7a5f886e62478894d1c958cf35830dc7ea1672dde9",
+  "preserved": {
+    "primitives": 1,
+    "accessors": 5,
+    "animations": 10,
+    "images": 2
+  },
+  "bodyRingNormalsChanged": 66,
+  "bodyFacesRemoved": 0,
+  "seam": {
+    "sharedVertices": 47,
+    "maxWeightDifference": 0.0,
+    "maxPosedGapM": 0.0
+  },
+  "weights": {
+    "minSum": 0.9999999608844519,
+    "maxSum": 1.0000001080334187,
+    "maxJoint": 10,
+    "joints": 22
+  },
+  "faceVertices": 62899,
+  "faceRigidity": [
+    {
+      "clip": "Attack",
+      "maxFaceDeviationM": 0.0
+    },
+    {
+      "clip": "Craft",
+      "maxFaceDeviationM": 0.0
+    },
+    {
+      "clip": "Downed",
+      "maxFaceDeviationM": 0.0
+    },
+    {
+      "clip": "Eat",
+      "maxFaceDeviationM": 0.0
+    },
+    {
+      "clip": "Gather",
+      "maxFaceDeviationM": 0.0
+    },
+    {
+      "clip": "Give",
+      "maxFaceDeviationM": 0.0
+    },
+    {
+      "clip": "Idle_Loop",
+      "maxFaceDeviationM": 0.0
+    },
+    {
+      "clip": "Run_Loop",
+      "maxFaceDeviationM": 0.0
+    },
+    {
+      "clip": "Walk_Loop",
+      "maxFaceDeviationM": 0.0
+    },
+    {
+      "clip": "Wave",
+      "maxFaceDeviationM": 0.0
+    }
+  ],
+  "samplesPerClip": 31,
+  "headTriangles": 50800,
+  "headVertices": 68168,
+  "issues": [],
+  "passed": true
+}

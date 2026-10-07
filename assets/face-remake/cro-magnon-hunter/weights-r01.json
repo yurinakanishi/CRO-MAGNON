@@ -1,0 +1,45 @@
+{
+  "source": "public/models/cro-magnon-hunter/model-c2.glb",
+  "output": "output/face-remake/cro-magnon-hunter/weights-r01/model.glb",
+  "prim": 1,
+  "bone": "Head",
+  "jaw": [
+    [
+      -0.2,
+      1.56
+    ],
+    [
+      -0.13,
+      1.565
+    ],
+    [
+      -0.09,
+      1.585
+    ],
+    [
+      -0.03,
+      1.59
+    ],
+    [
+      0.02,
+      1.565
+    ],
+    [
+      0.05,
+      1.548
+    ],
+    [
+      0.14,
+      1.54
+    ]
+  ],
+  "blend": 0.03,
+  "vertices": 23911,
+  "rigid": 22819,
+  "blended": 1037,
+  "unchanged": 55,
+  "headWeightMeanBefore": 0.7984,
+  "headWeightMeanAfter": 0.9904,
+  "sha256": "d460b5217aea1933dbbd584d61626692c8c3a6f201077064d7c2065a69588552",
+  "bytes": 12444656
+}

@@ -1,0 +1,215 @@
+{
+  "key": "neanderthal-hunter",
+  "decision": "adopt",
+  "sha256": "6910fd3396bcde7934e9af23fa2130ca5c1bca9a08da0d00fe5582076b94352b",
+  "lodSha256": "27f7e96e7c3e377db6be2b38bb9c9740a907b5c5a412cd1731fe7ea6885faa89",
+  "revision": "r01",
+  "date": "2026-10-07",
+  "reviewer": "Claude Code (Opus 5.5)",
+  "request": "クロマニョン人とネアンデルタール人の男性女性の顔のクオリティが低いので、ちゃんとリアルでかっこいい／かわいい顔に。歩いたり走ったりするときに顔の形が崩れるバグも直す。",
+  "faceRemake": {
+    "revision": "r01",
+    "kind": "new-head",
+    "reference": {
+      "file": "assets/face-remake/neanderthal-hunter/source/reference-v1a.png",
+      "sha256": "6501c433c47ff7cbe9436a6c6b4ae9992ed59da3bbae7eab0577d6cb33a299d1",
+      "generator": "Codex built-in image_gen (desktop app CLI 0.162, gpt-5.6-sol)",
+      "prompt": "Photorealistic premium AAA game character head (MetaHuman-quality sculpt and skin), clean image-to-3D reconstruction reference. HEAD AND NECK ONLY, direct FRONT VIEW, head perfectly upright and centred, eyes level and looking straight into the camera, relaxed neutral expression with the lips closed. Both ears fully visible. The hair is swept completely clear of the face, forehead, eyes and ears: no fringe, no bangs, no loose strands across the face; the hair forms coherent sculpted masses, not floating strands. Show the whole head and the entire neck, the neck ending in a clean straight horizontal cut just above the collarbones. No shoulders, chest, clothing, fur, jewellery, beads, paint, tattoos, scars, pedestal or accessories. Natural healthy skin with fine realistic pores, no makeup, even skin tone. Soft even diffuse neutral studio light from the front and both sides, no hard shadows, no rim light, no dramatic contrast. Head and neck fill about 85% of the image height, centred on a plain uniform light neutral grey background. A single head, one view only, no text, no panels. Subject: a cool, imposing yet handsome adult Neanderthal warrior, about 35 years old, realistic paleo-anthropological features rendered attractively: a pronounced but smooth double-arched brow ridge, deep-set intelligent dark brown eyes, a broad strong nose, wide cheekbones, a powerful wide jaw. Warm medium tan weathered skin. Thick black hair pulled straight back and gathered into a compact topknot on the crown. Dense, neatly trimmed black full beard that follows the jaw and ends at the chin, so that the front and sides of the neck stay clean and visible. Steady, stoic, dependable gaze.",
+      "choice": "variant A of two (reference-v1a.png chosen, reference-v1b.png kept)"
+    },
+    "reconstruction": {
+      "generator": "Local TRELLIS-2 C++ GGUF (trellis-studio runtime)",
+      "seed": 42,
+      "resolution": 1024,
+      "textureResolution": 512,
+      "atlas": 2048,
+      "seconds": 1850.875,
+      "denseSha256": "2945d15be774758271590595789c9aaaf369171c6538acf657fab700e185b058",
+      "record": "assets/face-remake/neanderthal-hunter/reconstruction-reference-v1a-seed0042.json"
+    },
+    "projection": {
+      "record": "assets/face-remake/neanderthal-hunter/projection-r01.json",
+      "run": "output/face-remake/final-projections.sh (project-r03)",
+      "method": "reference registered to the reconstruction silhouette; the face surface slid (optical flow inside a feathered face ellipse) so eyes, nose and mouth sit where the reference has them; reference detail finer than 48 px projected onto front-facing texels over the reconstruction low-frequency colour"
+    },
+    "graft": {
+      "record": "assets/face-remake/neanderthal-hunter/graft-report-r01.json",
+      "run": "output/face-remake/final-grafts.sh",
+      "attachment": "Overlap: his body has no clean neck ring (jagged collar). The full reconstructed neck is kept and ends inside the fur collar; the body skin-shard triangles above 1.43 m inside the new neck (formerly hidden by the old long beard) are removed. Nose depth aligned to the old face (z = 0.11 m). Skin low-frequency colour moved halfway to the reference tone.",
+      "placement": {
+        "scale": 0.3070088114840954,
+        "translation": [
+          -0.00079,
+          1.548565,
+          -0.017567
+        ],
+        "eyeRow": 548,
+        "chinRow": 860,
+        "eyeY": 1.5625,
+        "chinY": 1.485,
+        "neckRadiusAtCut": 0.08960622504680556,
+        "ringRadius": 0.06690547319900268,
+        "radiusRatio": 1.3392958866053017,
+        "extraOffset": [
+          0,
+          0,
+          0
+        ],
+        "neckTaper": {
+          "ratio": 0.746660995528545,
+          "heightM": 0,
+          "applied": false
+        },
+        "cut": {
+          "shape": "flat",
+          "rimMarginM": 0.015,
+          "minHeightAboveRingM": 0.014484058997650037,
+          "maxHeightAboveRingM": 0.014484058997650037,
+          "rimMinM": -0.04375294018618365,
+          "rimMaxM": 0.010116789805712052
+        }
+      },
+      "headTriangles": 59898,
+      "lodHeadTriangles": 4291,
+      "hiddenFacesRemoved": 91017,
+      "reduction": {
+        "clippedTriangles": 192900,
+        "headTriangles": 59898,
+        "meshopt": {
+          "skinAndFace": {
+            "before": 36929,
+            "after": 23999,
+            "error": 0.003520404454320669,
+            "flags": [
+              "LockBorder"
+            ]
+          },
+          "hair": {
+            "before": 155971,
+            "after": 35899,
+            "error": 0.11968673020601273,
+            "flags": [
+              "LockBorder",
+              "Permissive"
+            ]
+          },
+          "otsuLuminance": 0.19607843137254902
+        },
+        "smearedHairTrianglesFixed": 13325
+      }
+    },
+    "weights": "Above the jaw curve (+2.5 cm blend) every head vertex is 100% Head; the neck blends Head -> Neck -> the body ring weights (or Chest/Neck inside the collar). Fixes the walk/run face shear.",
+    "faceRigidityBefore": [
+      {
+        "clip": "Craft",
+        "maxFaceDeviationM": 0.021825,
+        "atSeconds": 0.4667
+      },
+      {
+        "clip": "Eat",
+        "maxFaceDeviationM": 0.026836,
+        "atSeconds": 1.08
+      },
+      {
+        "clip": "Gather",
+        "maxFaceDeviationM": 0.028609,
+        "atSeconds": 0.85
+      },
+      {
+        "clip": "Give",
+        "maxFaceDeviationM": 0.007276,
+        "atSeconds": 0.6
+      },
+      {
+        "clip": "Idle_Loop",
+        "maxFaceDeviationM": 0.00654,
+        "atSeconds": 2
+      },
+      {
+        "clip": "Run_Loop",
+        "maxFaceDeviationM": 0.031524,
+        "atSeconds": 0.3667
+      },
+      {
+        "clip": "Walk_Loop",
+        "maxFaceDeviationM": 0.043166,
+        "atSeconds": 0.7444
+      },
+      {
+        "clip": "Wave",
+        "maxFaceDeviationM": 0.021648,
+        "atSeconds": 0.6667
+      },
+      {
+        "clip": "Attack",
+        "maxFaceDeviationM": 0.032475,
+        "atSeconds": 0.1633
+      },
+      {
+        "clip": "Downed",
+        "maxFaceDeviationM": 0.021373,
+        "atSeconds": 0.84
+      }
+    ],
+    "faceRigidityAfter": [
+      {
+        "clip": "Craft",
+        "maxFaceDeviationM": 0
+      },
+      {
+        "clip": "Eat",
+        "maxFaceDeviationM": 0
+      },
+      {
+        "clip": "Gather",
+        "maxFaceDeviationM": 0
+      },
+      {
+        "clip": "Give",
+        "maxFaceDeviationM": 0
+      },
+      {
+        "clip": "Idle_Loop",
+        "maxFaceDeviationM": 0
+      },
+      {
+        "clip": "Run_Loop",
+        "maxFaceDeviationM": 0
+      },
+      {
+        "clip": "Walk_Loop",
+        "maxFaceDeviationM": 0
+      },
+      {
+        "clip": "Wave",
+        "maxFaceDeviationM": 0
+      },
+      {
+        "clip": "Attack",
+        "maxFaceDeviationM": 0
+      },
+      {
+        "clip": "Downed",
+        "maxFaceDeviationM": 0
+      }
+    ],
+    "verification": "assets/face-remake/neanderthal-hunter/verify-r01.json",
+    "preserved": "all body/accent primitives (except the reported ring normals or removed shard faces), the skin, inverse bind matrices, node transforms, all 10 clips and all non-head images are byte-identical (verify-r01.json)",
+    "visual": [
+      "assets/face-remake/neanderthal-hunter/qa/before-after-r01.jpg",
+      "assets/face-remake/neanderthal-hunter/qa/front-combined.jpg"
+    ]
+  },
+  "provenance": {
+    "provider": "Claude Code (Opus 5.5); Codex built-in image_gen reference; local TRELLIS-2 reconstruction",
+    "claudeUsed": true,
+    "referenceGenerator": "Codex built-in image_gen",
+    "referenceImage": "assets/face-remake/neanderthal-hunter/source/reference-v1a.png",
+    "referenceSha256": "6501c433c47ff7cbe9436a6c6b4ae9992ed59da3bbae7eab0577d6cb33a299d1",
+    "reconstruction": "Local TRELLIS-2 C++ GGUF, res 1024, seed 42 (head only); assets/face-remake/neanderthal-hunter/reconstruction-reference-v1a-seed0042.json",
+    "denseFile": "output/face-remake/neanderthal-hunter/trellis/reference-v1a-res1024-seed0042.glb",
+    "denseSha256": "2945d15be774758271590595789c9aaaf369171c6538acf657fab700e185b058",
+    "processReport": "assets/face-remake/neanderthal-hunter/graft-report-r01.json",
+    "pipeline": "scripts/face-remake/ (write-requests.mjs, reconstruct-head.mjs, project-reference.py, graft-head.py, verify-graft.py, write-review.mjs, adopt-face.mjs)"
+  }
+}
