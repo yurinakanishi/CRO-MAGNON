@@ -1,5 +1,7 @@
 # 公開版の軽量化（2026-10-02）
 
+> 2026-10-07の方針（[GAME_IMPROVEMENT_PLAN.md](../GAME_IMPROVEMENT_PLAN.md)）により、ここに記す「自動／軽量／標準」の選択は撤去し、軽量を唯一の画質にする。本文は当時の実装と計測の記録。
+
 公開先は既存の `cromagnonmmo.cro-magnon.workers.dev`。同じWorkerとDurable Objectを使い、無料枠・5人上限・公開クレジット・非公開人物の除外を継続する。元のGLBとローカルの全9人物は保持する。
 
 ## 実装
