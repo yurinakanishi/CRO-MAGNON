@@ -24,11 +24,11 @@ export const TITLE_SUPPORT = {
 } as const;
 
 /**
- * Friends painted in the cave mural. An empty profile is shown without a link
- * until the X account is verified; their icon is then their mascot portrait.
- * They have no QR code, so the exhibition credits do not list them.
+ * Friends painted in the cave mural, named as on X. An empty profile would be
+ * shown without a link. They have no QR code, so the exhibition credits do not
+ * list them.
  */
 export const TITLE_FRIENDS = [
-  { name: 'まるぃも', profile: '', qr: 'maruimo' },
-  { name: 'mae', profile: '', qr: 'mae' },
+  { name: 'まるぃも', profile: 'https://x.com/marulimoai', qr: 'maruimo' },
+  { name: 'mae616 : 今川焼き', profile: 'https://x.com/mae616_', qr: 'mae' },
 ] as const;

@@ -37,12 +37,12 @@
 | --- | --- | --- |
 | りもねこ | りも(Limo) | https://x.com/vibe_walking（既存） |
 | 524 | R-524 | https://x.com/R5ni4（既存） |
-| まるぃも | まるぃも | **未確認** |
-| mae | mae | **未確認** |
+| まるぃも | まるぃも | https://x.com/marulimoai |
+| mae | mae616 : 今川焼き | https://x.com/mae616_ |
 | こはくちゃん | — | 関係者かどうか未確認のためリンク・名札なし |
 | bot 9種 | — | 人物に結びつかないためリンクなし |
 
-今回のセッションではClaude in Chromeが未接続で、アプリ内ブラウザーもXにログインしていないため、フォロワー一覧から確認できなかった。Web検索でも特定できず、推測でリンクを付けていない。まるぃも・maeのアイコンは仮にマスコットの肖像（`public/title/avatar-maruimo.jpg`／`avatar-mae.jpg`）。ハンドルが確定したら `src/title-credit-profiles.ts` の `TITLE_FRIENDS` に `https://x.com/<ハンドル>` を入れ、アイコンを本人のXアイコンへ差し替えると、壁画とダイアログの両方がリンクになる。
+まるぃも・maeのXはユーザーが提示。未ログインのアプリ内ブラウザーで公開プロフィールの題名とプロフィール写真のリンクを確認し、200×200の原JPEGを `public/title/avatar-maruimo.jpg`／`avatar-mae.jpg` に保存（来歴とSHAは `assets/title-credits/x-avatars-2026-10-07.json`）。最初の版ではX未確認のためマスコット肖像を仮アイコンにしていた。
 
 ## 検証
 
@@ -55,3 +55,5 @@
 
 `d8cdcf2` をmainへpush後、停止中だった8787へ反映。旧配信物と記録を `output/cloudflare-deploy/before-title-mural-1791365633` に控えてから `build:mmo`。差分はpublic追加5（壁画2・仮アイコン2・`cave-mural-strip.js`）と変更9（画面・読込・ビルド情報）のみ、Worker 128ファイルは不変。ビルドID c36db1f6→fe13ca83。
 `preview:mmo` を非表示で起動し、health／status 200（参加者0）、変更14ファイルのHTTP SHA一致。ヘッドレスのタイトル読込で、ローディング→メニュー3項目、壁画のリンク2件、ダイアログ5名（公開設定で監修は非表示）、エラー0を確認（部屋へは未参加）。証拠 `output/playwright/title-mural-20261007/mmo-8787/`。
+
+追補：まるぃも・maeのX設定後、自分が起動した8787（参加者0）を停止してbuild:mmo（public変更5のみ・Worker不変、ID fe13ca83→4da4b187）し再起動。health／status 200、8件のHTTP SHA一致、壁画リンク4件とダイアログ5名をヘッドレスで確認、エラー0。

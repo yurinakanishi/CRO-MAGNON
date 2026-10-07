@@ -1,0 +1,29 @@
+{
+  "verifiedOn": "2026-10-07",
+  "source": "Handles given by the user in chat. Each public X profile was opened in the app's built-in browser (not signed in); the page title and the profile-photo link were read there.",
+  "processing": "Original 200x200 JPEG bytes from the profile image URL; circular presentation is CSS only. Replaces the earlier mascot-portrait placeholders.",
+  "profiles": [
+    {
+      "key": "maruimo",
+      "name": "まるぃも",
+      "profile": "https://x.com/marulimoai",
+      "pageTitle": "まるぃも (@marulimoai) / X",
+      "source": "https://pbs.twimg.com/profile_images/2102574266378305536/VkDG4nZy_200x200.jpg",
+      "file": "public/title/avatar-maruimo.jpg",
+      "bytes": 12242,
+      "sha256": "64b1d56fdba21642de2690967025d19434d9be0a9d9cde4fde141ba827a577df",
+      "mural": "まるぃも"
+    },
+    {
+      "key": "mae",
+      "name": "mae616 : 今川焼き",
+      "profile": "https://x.com/mae616_",
+      "pageTitle": "mae616 : 今川焼き (@mae616_) / X",
+      "source": "https://pbs.twimg.com/profile_images/1865577173467426816/3QQHHAWv_200x200.jpg",
+      "file": "public/title/avatar-mae.jpg",
+      "bytes": 3674,
+      "sha256": "cda0225f532378f9911fadd9bef9d1f4dc22bc8673c93f0207538899c79abda5",
+      "mural": "mae"
+    }
+  ]
+}

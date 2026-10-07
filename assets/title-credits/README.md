@@ -6,7 +6,7 @@
 MMO・通常ローカルはQRを表示せず、壁画の帯 `public/title/cave-mural-strip.webp` をホームと初期ローディングに表示し、
 「関わってくれた人たち」ダイアログでXアイコンと名前を一覧する（x.comのみリンク）。
 帯の来歴・SHA・キャラクター範囲は `cave-mural-strip.json`、再生成は `scripts/build-cave-mural-strip.py`。
-まるぃも・maeは `src/title-credit-profiles.ts` の `TITLE_FRIENDS`（Xは未確認、仮アイコンはマスコット肖像の `avatar-maruimo.jpg`／`avatar-mae.jpg`）。
+まるぃも（https://x.com/marulimoai）・mae616 : 今川焼き（https://x.com/mae616_）は `src/title-credit-profiles.ts` の `TITLE_FRIENDS`。Xアイコンの来歴は `x-avatars-2026-10-07.json`。
 詳細は `docs/title-mural-2026-10-07.md`。
 
 ## 2026-10-02 MMOタイトルとりもの友情出演
