@@ -1,0 +1,26 @@
+{
+  "key": "firewood-pile",
+  "decision": "adopt",
+  "sha256": "544598e3c1e28491998e3ce73e36d64364a86855ef3e86c5fa314b5b96af4977",
+  "url": "/models/firewood-pile/model-c2.glb",
+  "bytes": 972828,
+  "triangles": 5907,
+  "candidate": 2,
+  "revision": "c2-m03",
+  "status": "remake-candidate-2-integrated",
+  "reviewer": "Claude Code (Opus 5.5)",
+  "date": "2026-10-07",
+  "issues": "C1: 24.6k tris, few long logs, 1024 albedo, constant roughness, no normal map.",
+  "plan": "New reference (nine split-end logs in a pyramid, moss); meshopt 6k + xatlas + baked albedo/normal; LOD 2.1k at 14 m. Logs are shorter (0.85 m): footprint 1.14x0.85 m (was 1.07x1.46), height 0.7 m kept; collision re-measured (smaller, no passage narrowed).",
+  "motions": "none",
+  "evidence": "output/asset-remake/firewood-pile/compare-c2.jpg, compare-xatlas.jpg",
+  "previousDelivery": {
+    "url": "/models/firewood-pile/model.glb",
+    "sha256": "88fdbe0514694b4b484e285dc6ffa85c8cebe134ea120d34f7486dc27d3d3d3a",
+    "triangles": 12282,
+    "bytes": 2566200,
+    "candidate": 1,
+    "revision": null
+  },
+  "note": "Adoption inside the remake branch; in-game multi-player QA and the performance comparison are tracked in docs/asset-remake/PROGRESS.md."
+}

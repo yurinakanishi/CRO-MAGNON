@@ -1,0 +1,26 @@
+{
+  "key": "mammoth-meat",
+  "decision": "adopt",
+  "sha256": "076b0a41f1311b4398de8b271387531913eef11f8c68b1c5a933523a84de4dae",
+  "url": "/models/mammoth-meat/model-c2.glb",
+  "bytes": 613928,
+  "triangles": 2996,
+  "candidate": 2,
+  "revision": "c2-m01",
+  "status": "remake-candidate-2-integrated",
+  "reviewer": "Claude Code (Opus 5.5)",
+  "date": "2026-10-07",
+  "issues": "C1: steak slab, 2,826 tris.",
+  "plan": "New reference (raw haunch with bone end); 3k + 1024; 0.55 m long like C1.",
+  "motions": "none",
+  "evidence": "output/asset-remake/mammoth-meat/compare-c2.jpg",
+  "previousDelivery": {
+    "url": "/models/mammoth-meat/model.glb",
+    "sha256": "50bf72d1dc5ff23b7eb206e7d0c6535d9a4ac1559190e6c4f5bbb94cd0ffaf2d",
+    "triangles": 2826,
+    "bytes": 579220,
+    "candidate": 1,
+    "revision": null
+  },
+  "note": "Adoption inside the remake branch; in-game multi-player QA and the performance comparison are tracked in docs/asset-remake/PROGRESS.md."
+}

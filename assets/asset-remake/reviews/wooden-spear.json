@@ -1,0 +1,26 @@
+{
+  "key": "wooden-spear",
+  "decision": "adopt",
+  "sha256": "ae70efd88d72c75f708cc64039b08ca7a197237a36718bfbc2de7163e46a8c35",
+  "url": "/models/wooden-spear/model-c2.glb",
+  "bytes": 298760,
+  "triangles": 2500,
+  "candidate": 2,
+  "revision": "c2-m01",
+  "status": "remake-candidate-2-integrated",
+  "reviewer": "Claude Code (Opus 5.5)",
+  "date": "2026-10-07",
+  "issues": "C1: plain stick, no point.",
+  "plan": "New reference (fire-hardened point, grip wrap); 2.5k + 1024; grip origin and +Y shaft with C1 lengths 0.714/0.900 m.",
+  "motions": "none",
+  "evidence": "output/asset-remake/wooden-spear/compare-c2.jpg",
+  "previousDelivery": {
+    "url": "/models/wooden-spear/model.glb",
+    "sha256": "ac2b1a3c8100b38a7753749fd6578b5f355247478cf9f44ea642c06eb858ee5d",
+    "triangles": 2837,
+    "bytes": 1462776,
+    "candidate": 1,
+    "revision": null
+  },
+  "note": "Adoption inside the remake branch; in-game multi-player QA and the performance comparison are tracked in docs/asset-remake/PROGRESS.md."
+}

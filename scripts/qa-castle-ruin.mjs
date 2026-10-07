@@ -167,8 +167,10 @@ try {
     channel: 'chrome',
     headless: true,
     viewport: { width: 1440, height: 900 },
+    // QA_SOFTWARE_GL=1: SwiftShader, so a long GPU job (TRELLIS) is not interrupted by this page.
     args: [
-      '--use-angle=d3d11',
+      process.env.QA_SOFTWARE_GL ? '--use-angle=swiftshader' : '--use-angle=d3d11',
+      ...(process.env.QA_SOFTWARE_GL ? ['--enable-unsafe-swiftshader'] : []),
       '--disable-background-timer-throttling',
       '--disable-renderer-backgrounding',
     ],

@@ -1,0 +1,26 @@
+{
+  "key": "crow-shaman",
+  "decision": "adopt",
+  "sha256": "4719f03aa5df820d70123e64e49ba88255182dbe34087ea7f315224cd4b8b89e",
+  "url": "/models/crow-shaman/model-c2.glb",
+  "bytes": 6691440,
+  "triangles": 33548,
+  "candidate": 2,
+  "revision": "c2-t01",
+  "status": "remake-candidate-2-integrated",
+  "reviewer": "Claude Code (Opus 5.5)",
+  "date": "2026-10-07",
+  "issues": "C1 motion-r04: 65,750 tris, single 2048 albedo, no normal map; LOD 9,862.",
+  "plan": "Approved design (user-selected 白羽の呪術師): transfer route — meshopt subset of the delivered rest surface, xatlas, albedo+normal bake, skin-weight transfer; 24 bones and 6 clips unchanged. Faction props (code-built primitives) are a separate item (__codeBuilt crow-faction-props).",
+  "motions": "Attack/Death/Hit/Idle_Loop/Run_Loop/Walk_Loop unchanged (60 Hz source)",
+  "evidence": "33,548 tris (LOD 10,064 @28 m); bake misses 2,472/1,504,543; unweighted 0; renders output/asset-remake/compare/crow-shaman/sheet-t01.jpg; tests/enemies.test.mjs 21/21. TRELLIS 0738 (new-reference crow) kept queued only for comparison. In game (output/asset-remake/game/final-r1): every rank loads with its props on the right bones, 0 page errors.",
+  "previousDelivery": {
+    "url": "/models/crow-shaman/model-motion-r04.glb",
+    "sha256": "0fdb13ce4ace078b93694a898e58aa4fc05ac64eb11d128ac83e7935a5a55e63",
+    "triangles": 65750,
+    "bytes": 8323452,
+    "candidate": 1,
+    "revision": null
+  },
+  "note": "Adoption inside the remake branch; in-game multi-player QA and the performance comparison are tracked in docs/asset-remake/PROGRESS.md."
+}

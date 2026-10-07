@@ -175,13 +175,14 @@ test('cave still refuses attacks and throwing while permitting Maruimo petting',
   assert.equal(c.petPlayerId, p.id);
 });
 
-test('scaled main and LOD preserve every original geometry, skin, UV, texture and animation buffer', async () => {
-  const source = JSON.parse(await readFile('public/models/maruimo-octopus/asset.json'));
-  const mascot = JSON.parse(await readFile('public/models/maruimo-mascot/asset.json'));
-  for (const [a, b] of [
-    [source, mascot],
-    [source.lods[0], mascot.lods[0]],
-  ]) {
+test('the retained pre-remake mascot preserves every original octopus geometry, skin, UV, texture and animation buffer', async () => {
+  const source = JSON.parse(await readFile('public/models/maruimo-octopus/asset.json')).provenance
+    .previousDelivery;
+  const mascot = JSON.parse(await readFile('public/models/maruimo-mascot/asset.json')).provenance
+    .previousDelivery;
+  assert.equal(source.url, '/models/maruimo-octopus/model-r10.glb');
+  assert.equal(mascot.url, '/models/maruimo-mascot/model-r01.glb');
+  for (const [a, b] of [[source, mascot]]) {
     const first = await readFile('public' + a.url),
       second = await readFile('public' + b.url);
     assert.equal(createHash('sha256').update(first).digest('hex'), a.sha256);
@@ -190,6 +191,27 @@ test('scaled main and LOD preserve every original geometry, skin, UV, texture an
     for (const key of ['meshes', 'skins', 'animations', 'accessors', 'bufferViews', 'materials'])
       assert.deepEqual(unpack(first).doc[key], unpack(second).doc[key]);
   }
+});
+
+test('the 2026-10 remake mascot keeps the octopus rig and clips at 55 cm with its head contact socket', async () => {
+  const octopus = JSON.parse(await readFile('public/models/maruimo-octopus/asset.json'));
+  const mascot = JSON.parse(await readFile('public/models/maruimo-mascot/asset.json'));
+  assert.equal(mascot.candidate, 2);
+  for (const record of [mascot, mascot.lods[0]]) {
+    const bytes = await readFile('public' + record.url);
+    assert.equal(createHash('sha256').update(bytes).digest('hex'), record.sha256);
+  }
+  assert.ok(mascot.triangles < mascot.provenance.previousDelivery.triangles / 3);
+  const doc = (bytes) => unpack(bytes).doc;
+  const a = doc(await readFile('public' + octopus.url)),
+    b = doc(await readFile('public' + mascot.url));
+  const joints = (d) => d.skins[0].joints.map((i) => d.nodes[i].name);
+  assert.deepEqual(joints(b), joints(a));
+  assert.deepEqual(
+    b.animations.map((clip) => clip.name),
+    a.animations.map((clip) => clip.name),
+  );
+  assert.ok(b.materials.every((m) => m.normalTexture));
   const gltf = await loadMotion('public' + mascot.url);
   const box = new THREE.Box3().setFromObject(gltf.scene);
   assert.ok(Math.abs(box.max.y - box.min.y - 0.55) < 0.001);

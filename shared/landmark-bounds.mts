@@ -1,1069 +1,1132 @@
 // Measured from the exact delivered GLBs; see each source hash and footprint method.
 export const LANDMARK_BOUNDS = {
   "glacier-spires": {
-    "sha256": "af945c2fec27252389a05ca2eabb6970003372a584a83cf18e2e6c34a42f6b53",
-    "source": "work/low-poly/candidate-01/candidate.glb",
+    "sha256": "33eaa7f3c25d1644053410d8db6205757cd76ebd461e631d2ae96a343153c816",
+    "source": "public/models/glacier-spires/model-c2.glb",
     "min": [
-      -7.309194087982178,
-      0.0006933604017831385,
-      -7.277850151062012
+      -7.356372833251953,
+      0.001555203110910952,
+      -7.1936540603637695
     ],
     "max": [
-      7.3116841316223145,
-      12.994847297668457,
-      7.29189920425415
+      7.347407341003418,
+      12.99177074432373,
+      7.198008060455322
     ],
     "method": "Exact GLB top-down BVH silhouette, five probes per 1-m cell, exclude columns lower than 0.10 m; merge contiguous row cells only within the same 0.5-m height band. Conservative footprint boundary error is at most one cell diagonal. No rectangular bounding-box obstacle.",
     "cellSize": 1,
-    "occupiedCells": 182,
+    "occupiedCells": 187,
     "boxes": [
       {
         "minX": -1,
         "maxX": 2,
         "minZ": -8,
         "maxZ": -7,
-        "height": 0.1946
+        "height": 0.3764
+      },
+      {
+        "minX": -4,
+        "maxX": -3,
+        "minZ": -7,
+        "maxZ": -6,
+        "height": 0.7222
       },
       {
         "minX": -3,
         "maxX": -2,
         "minZ": -7,
         "maxZ": -6,
-        "height": 0.2886
+        "height": 1.0616
       },
       {
         "minX": -2,
         "maxX": -1,
         "minZ": -7,
         "maxZ": -6,
-        "height": 1.1482
+        "height": 1.5367
       },
       {
         "minX": -1,
         "maxX": 0,
         "minZ": -7,
         "maxZ": -6,
-        "height": 2.2893
+        "height": 2.1397
       },
       {
         "minX": 0,
-        "maxX": 1,
-        "minZ": -7,
-        "maxZ": -6,
-        "height": 2.8931
-      },
-      {
-        "minX": 1,
         "maxX": 2,
         "minZ": -7,
         "maxZ": -6,
-        "height": 3.5605
+        "height": 1.8873
       },
       {
         "minX": 2,
         "maxX": 3,
         "minZ": -7,
         "maxZ": -6,
-        "height": 1.057
+        "height": 1.2694
       },
       {
         "minX": 3,
         "maxX": 4,
         "minZ": -7,
         "maxZ": -6,
-        "height": 0.7225
+        "height": 0.7704
+      },
+      {
+        "minX": -5,
+        "maxX": -4,
+        "minZ": -6,
+        "maxZ": -5,
+        "height": 0.7
       },
       {
         "minX": -4,
+        "maxX": -3,
+        "minZ": -6,
+        "maxZ": -5,
+        "height": 1.2814
+      },
+      {
+        "minX": -3,
         "maxX": -2,
         "minZ": -6,
         "maxZ": -5,
-        "height": 1.2254
+        "height": 2.3339
       },
       {
         "minX": -2,
         "maxX": -1,
         "minZ": -6,
         "maxZ": -5,
-        "height": 4.5064
+        "height": 7.0221
       },
       {
         "minX": -1,
         "maxX": 0,
         "minZ": -6,
         "maxZ": -5,
-        "height": 5.8759
+        "height": 8.3291
       },
       {
         "minX": 0,
         "maxX": 1,
         "minZ": -6,
         "maxZ": -5,
-        "height": 6.4366
+        "height": 8.7428
       },
       {
         "minX": 1,
         "maxX": 2,
         "minZ": -6,
         "maxZ": -5,
-        "height": 6.5297
+        "height": 8.4688
       },
       {
         "minX": 2,
         "maxX": 3,
         "minZ": -6,
         "maxZ": -5,
-        "height": 6.0078
+        "height": 7.5074
       },
       {
         "minX": 3,
         "maxX": 4,
         "minZ": -6,
         "maxZ": -5,
-        "height": 3.3684
+        "height": 1.7607
       },
       {
         "minX": 4,
         "maxX": 5,
         "minZ": -6,
         "maxZ": -5,
-        "height": 0.8491
+        "height": 1.1764
       },
       {
-        "minX": 5,
-        "maxX": 6,
-        "minZ": -6,
-        "maxZ": -5,
-        "height": 0.3947
-      },
-      {
-        "minX": -5,
+        "minX": -6,
         "maxX": -4,
         "minZ": -5,
         "maxZ": -4,
-        "height": 0.8717
+        "height": 0.9456
       },
       {
         "minX": -4,
         "maxX": -3,
         "minZ": -5,
         "maxZ": -4,
-        "height": 1.1718
+        "height": 1.9677
       },
       {
         "minX": -3,
         "maxX": -2,
         "minZ": -5,
         "maxZ": -4,
-        "height": 2.3428
+        "height": 4.4217
       },
       {
         "minX": -2,
         "maxX": -1,
         "minZ": -5,
         "maxZ": -4,
-        "height": 12.0499
+        "height": 7.8566
       },
       {
         "minX": -1,
+        "maxX": 0,
+        "minZ": -5,
+        "maxZ": -4,
+        "height": 8.9622
+      },
+      {
+        "minX": 0,
         "maxX": 1,
         "minZ": -5,
         "maxZ": -4,
-        "height": 12.9755
+        "height": 9.0918
       },
       {
         "minX": 1,
         "maxX": 2,
         "minZ": -5,
         "maxZ": -4,
-        "height": 6.5627
+        "height": 8.5026
       },
       {
         "minX": 2,
         "maxX": 3,
         "minZ": -5,
         "maxZ": -4,
-        "height": 6.4784
+        "height": 7.4263
       },
       {
         "minX": 3,
-        "maxX": 4,
-        "minZ": -5,
-        "maxZ": -4,
-        "height": 5.7784
-      },
-      {
-        "minX": 4,
         "maxX": 5,
         "minZ": -5,
         "maxZ": -4,
-        "height": 2.56
+        "height": 2.9752
       },
       {
         "minX": 5,
-        "maxX": 6,
+        "maxX": 7,
         "minZ": -5,
         "maxZ": -4,
-        "height": 0.7538
+        "height": 0.8011
       },
       {
         "minX": -6,
         "maxX": -5,
         "minZ": -4,
         "maxZ": -3,
-        "height": 0.9455
+        "height": 0.8344
       },
       {
         "minX": -5,
         "maxX": -4,
         "minZ": -4,
         "maxZ": -3,
-        "height": 1.2478
+        "height": 1.5057
       },
       {
         "minX": -4,
         "maxX": -3,
         "minZ": -4,
         "maxZ": -3,
-        "height": 2.5014
+        "height": 2.1096
       },
       {
         "minX": -3,
         "maxX": -2,
         "minZ": -4,
         "maxZ": -3,
-        "height": 11.1282
+        "height": 6.0604
       },
       {
         "minX": -2,
         "maxX": -1,
         "minZ": -4,
         "maxZ": -3,
-        "height": 11.9419
+        "height": 7.8717
       },
       {
         "minX": -1,
         "maxX": 1,
         "minZ": -4,
         "maxZ": -3,
-        "height": 12.8896
+        "height": 8.553
       },
       {
         "minX": 1,
         "maxX": 2,
         "minZ": -4,
         "maxZ": -3,
-        "height": 10.6731
+        "height": 7.4237
       },
       {
         "minX": 2,
         "maxX": 3,
         "minZ": -4,
         "maxZ": -3,
-        "height": 6.25
+        "height": 4.8351
       },
       {
         "minX": 3,
-        "maxX": 4,
-        "minZ": -4,
-        "maxZ": -3,
-        "height": 5.6358
-      },
-      {
-        "minX": 4,
         "maxX": 5,
         "minZ": -4,
         "maxZ": -3,
-        "height": 3.1235
+        "height": 3.421
       },
       {
         "minX": 5,
+        "maxX": 6,
+        "minZ": -4,
+        "maxZ": -3,
+        "height": 1.1457
+      },
+      {
+        "minX": 6,
         "maxX": 7,
         "minZ": -4,
         "maxZ": -3,
-        "height": 0.9882
+        "height": 0.8094
       },
       {
         "minX": -7,
         "maxX": -6,
         "minZ": -3,
         "maxZ": -2,
-        "height": 0.7181
+        "height": 0.655
       },
       {
         "minX": -6,
+        "maxX": -5,
+        "minZ": -3,
+        "maxZ": -2,
+        "height": 1.2742
+      },
+      {
+        "minX": -5,
         "maxX": -4,
         "minZ": -3,
         "maxZ": -2,
-        "height": 3.4742
+        "height": 1.6094
       },
       {
         "minX": -4,
         "maxX": -3,
         "minZ": -3,
         "maxZ": -2,
-        "height": 3.7159
+        "height": 2.5637
       },
       {
         "minX": -3,
-        "maxX": -2,
-        "minZ": -3,
-        "maxZ": -2,
-        "height": 10.7387
-      },
-      {
-        "minX": -2,
-        "maxX": -1,
-        "minZ": -3,
-        "maxZ": -2,
-        "height": 11.3491
-      },
-      {
-        "minX": -1,
-        "maxX": 0,
-        "minZ": -3,
-        "maxZ": -2,
-        "height": 11.9128
-      },
-      {
-        "minX": 0,
         "maxX": 1,
         "minZ": -3,
         "maxZ": -2,
-        "height": 12.1048
+        "height": 7.4393
       },
       {
         "minX": 1,
         "maxX": 2,
         "minZ": -3,
         "maxZ": -2,
-        "height": 10.607
+        "height": 7.8603
       },
       {
         "minX": 2,
         "maxX": 3,
         "minZ": -3,
         "maxZ": -2,
-        "height": 9.2899
+        "height": 5.236
       },
       {
         "minX": 3,
         "maxX": 4,
         "minZ": -3,
         "maxZ": -2,
-        "height": 2.6125
+        "height": 2.6299
       },
       {
         "minX": 4,
         "maxX": 5,
         "minZ": -3,
         "maxZ": -2,
-        "height": 1.601
+        "height": 2.2243
       },
       {
         "minX": 5,
         "maxX": 6,
         "minZ": -3,
         "maxZ": -2,
-        "height": 1.0908
+        "height": 1.4065
       },
       {
         "minX": 6,
         "maxX": 7,
         "minZ": -3,
         "maxZ": -2,
-        "height": 0.7567
+        "height": 0.8247
       },
       {
         "minX": -7,
         "maxX": -6,
         "minZ": -2,
         "maxZ": -1,
-        "height": 2.3644
+        "height": 0.9705
       },
       {
         "minX": -6,
         "maxX": -5,
         "minZ": -2,
         "maxZ": -1,
-        "height": 5.9397
+        "height": 1.3951
       },
       {
         "minX": -5,
+        "maxX": -4,
+        "minZ": -2,
+        "maxZ": -1,
+        "height": 1.5798
+      },
+      {
+        "minX": -4,
         "maxX": -3,
         "minZ": -2,
         "maxZ": -1,
-        "height": 12.9466
+        "height": 2.9777
       },
       {
         "minX": -3,
         "maxX": -2,
         "minZ": -2,
         "maxZ": -1,
-        "height": 9.1528
+        "height": 4.8539
       },
       {
         "minX": -2,
         "maxX": -1,
         "minZ": -2,
         "maxZ": -1,
-        "height": 10.7062
+        "height": 5.0428
       },
       {
         "minX": -1,
+        "maxX": 0,
+        "minZ": -2,
+        "maxZ": -1,
+        "height": 6.0517
+      },
+      {
+        "minX": 0,
         "maxX": 1,
         "minZ": -2,
         "maxZ": -1,
-        "height": 11.2061
+        "height": 8.7201
       },
       {
         "minX": 1,
         "maxX": 2,
         "minZ": -2,
         "maxZ": -1,
-        "height": 10.0247
+        "height": 9.4265
       },
       {
         "minX": 2,
         "maxX": 3,
         "minZ": -2,
         "maxZ": -1,
-        "height": 8.2687
+        "height": 8.9059
       },
       {
         "minX": 3,
         "maxX": 4,
         "minZ": -2,
         "maxZ": -1,
-        "height": 5.3714
+        "height": 3.5995
       },
       {
         "minX": 4,
+        "maxX": 5,
+        "minZ": -2,
+        "maxZ": -1,
+        "height": 1.7877
+      },
+      {
+        "minX": 5,
         "maxX": 6,
         "minZ": -2,
         "maxZ": -1,
-        "height": 1.2423
+        "height": 1.0876
       },
       {
         "minX": 6,
         "maxX": 7,
         "minZ": -2,
         "maxZ": -1,
-        "height": 0.6411
+        "height": 0.9189
       },
       {
         "minX": -8,
         "maxX": -7,
         "minZ": -1,
         "maxZ": 0,
-        "height": 0.1725
+        "height": 0.3871
       },
       {
         "minX": -7,
-        "maxX": -6,
-        "minZ": -1,
-        "maxZ": 0,
-        "height": 3.748
-      },
-      {
-        "minX": -6,
         "maxX": -5,
         "minZ": -1,
         "maxZ": 0,
-        "height": 6.0686
+        "height": 1.1262
       },
       {
         "minX": -5,
+        "maxX": -4,
+        "minZ": -1,
+        "maxZ": 0,
+        "height": 2.0585
+      },
+      {
+        "minX": -4,
         "maxX": -3,
         "minZ": -1,
         "maxZ": 0,
-        "height": 12.951
+        "height": 3.7478
       },
       {
         "minX": -3,
         "maxX": -2,
         "minZ": -1,
         "maxZ": 0,
-        "height": 11.7822
+        "height": 5.1704
       },
       {
         "minX": -2,
         "maxX": -1,
         "minZ": -1,
         "maxZ": 0,
-        "height": 10.7486
+        "height": 6.3722
       },
       {
         "minX": -1,
+        "maxX": 0,
+        "minZ": -1,
+        "maxZ": 0,
+        "height": 7.4672
+      },
+      {
+        "minX": 0,
         "maxX": 1,
         "minZ": -1,
         "maxZ": 0,
-        "height": 9.3724
+        "height": 8.9513
       },
       {
         "minX": 1,
         "maxX": 2,
         "minZ": -1,
         "maxZ": 0,
-        "height": 8.6178
+        "height": 10.6298
       },
       {
         "minX": 2,
         "maxX": 3,
         "minZ": -1,
         "maxZ": 0,
-        "height": 6.2998
+        "height": 10.3897
       },
       {
         "minX": 3,
         "maxX": 4,
         "minZ": -1,
         "maxZ": 0,
-        "height": 5.2044
+        "height": 4.7033
       },
       {
         "minX": 4,
         "maxX": 5,
         "minZ": -1,
         "maxZ": 0,
-        "height": 3.7872
+        "height": 2.3702
       },
       {
         "minX": 5,
+        "maxX": 6,
+        "minZ": -1,
+        "maxZ": 0,
+        "height": 1.2262
+      },
+      {
+        "minX": 6,
         "maxX": 7,
         "minZ": -1,
         "maxZ": 0,
-        "height": 1.0773
+        "height": 0.8062
+      },
+      {
+        "minX": 7,
+        "maxX": 8,
+        "minZ": -1,
+        "maxZ": 0,
+        "height": 0.3324
       },
       {
         "minX": -8,
         "maxX": -7,
         "minZ": 0,
         "maxZ": 1,
-        "height": 0.3125
+        "height": 0.3139
       },
       {
         "minX": -7,
         "maxX": -6,
         "minZ": 0,
         "maxZ": 1,
-        "height": 3.7474
+        "height": 0.9707
       },
       {
         "minX": -6,
         "maxX": -5,
         "minZ": 0,
         "maxZ": 1,
-        "height": 11.3478
+        "height": 1.1875
       },
       {
         "minX": -5,
         "maxX": -4,
         "minZ": 0,
         "maxZ": 1,
-        "height": 12.324
+        "height": 1.9967
       },
       {
         "minX": -4,
         "maxX": -3,
         "minZ": 0,
         "maxZ": 1,
-        "height": 12.5323
+        "height": 3.9277
       },
       {
         "minX": -3,
         "maxX": -2,
         "minZ": 0,
         "maxZ": 1,
-        "height": 11.9302
+        "height": 5.8715
       },
       {
         "minX": -2,
         "maxX": -1,
         "minZ": 0,
         "maxZ": 1,
-        "height": 10.9091
+        "height": 8.6961
       },
       {
         "minX": -1,
         "maxX": 0,
         "minZ": 0,
         "maxZ": 1,
-        "height": 9.5701
+        "height": 9.8655
       },
       {
         "minX": 0,
         "maxX": 1,
         "minZ": 0,
         "maxZ": 1,
-        "height": 7.3781
+        "height": 10.1724
       },
       {
         "minX": 1,
-        "maxX": 2,
-        "minZ": 0,
-        "maxZ": 1,
-        "height": 6.5806
-      },
-      {
-        "minX": 2,
         "maxX": 3,
         "minZ": 0,
         "maxZ": 1,
-        "height": 5.5569
+        "height": 11.814
       },
       {
         "minX": 3,
         "maxX": 4,
         "minZ": 0,
         "maxZ": 1,
-        "height": 4.6943
+        "height": 6.7778
       },
       {
         "minX": 4,
         "maxX": 5,
         "minZ": 0,
         "maxZ": 1,
-        "height": 3.6971
+        "height": 3.1492
       },
       {
         "minX": 5,
         "maxX": 6,
         "minZ": 0,
         "maxZ": 1,
-        "height": 1.7922
+        "height": 1.1661
       },
       {
         "minX": 6,
         "maxX": 7,
         "minZ": 0,
         "maxZ": 1,
-        "height": 1.0773
+        "height": 0.8885
       },
       {
         "minX": 7,
         "maxX": 8,
         "minZ": 0,
         "maxZ": 1,
-        "height": 0.6279
+        "height": 0.3782
       },
       {
         "minX": -8,
         "maxX": -7,
         "minZ": 1,
         "maxZ": 2,
-        "height": 0.2076
+        "height": 0.3346
       },
       {
         "minX": -7,
         "maxX": -6,
         "minZ": 1,
         "maxZ": 2,
-        "height": 3.0758
+        "height": 0.7956
       },
       {
         "minX": -6,
         "maxX": -5,
         "minZ": 1,
         "maxZ": 2,
-        "height": 10.2706
+        "height": 1.2904
       },
       {
         "minX": -5,
-        "maxX": -4,
-        "minZ": 1,
-        "maxZ": 2,
-        "height": 11.5026
-      },
-      {
-        "minX": -4,
         "maxX": -3,
         "minZ": 1,
         "maxZ": 2,
-        "height": 11.4738
+        "height": 1.9085
       },
       {
         "minX": -3,
         "maxX": -2,
         "minZ": 1,
         "maxZ": 2,
-        "height": 11.5576
+        "height": 6.1854
       },
       {
         "minX": -2,
         "maxX": -1,
         "minZ": 1,
         "maxZ": 2,
-        "height": 10.3199
+        "height": 9.7593
       },
       {
         "minX": -1,
         "maxX": 0,
         "minZ": 1,
         "maxZ": 2,
-        "height": 9.3459
+        "height": 11.0734
       },
       {
         "minX": 0,
-        "maxX": 1,
-        "minZ": 1,
-        "maxZ": 2,
-        "height": 5.7151
-      },
-      {
-        "minX": 1,
         "maxX": 2,
         "minZ": 1,
         "maxZ": 2,
-        "height": 4.9772
+        "height": 12.3697
       },
       {
         "minX": 2,
         "maxX": 3,
         "minZ": 1,
         "maxZ": 2,
-        "height": 5.4295
+        "height": 12.5396
       },
       {
         "minX": 3,
         "maxX": 4,
         "minZ": 1,
         "maxZ": 2,
-        "height": 5.9191
+        "height": 7.4833
       },
       {
         "minX": 4,
         "maxX": 5,
         "minZ": 1,
         "maxZ": 2,
-        "height": 5.3986
+        "height": 4.9146
       },
       {
         "minX": 5,
         "maxX": 6,
         "minZ": 1,
         "maxZ": 2,
-        "height": 3.5172
+        "height": 1.4131
       },
       {
         "minX": 6,
-        "maxX": 7,
-        "minZ": 1,
-        "maxZ": 2,
-        "height": 1.081
-      },
-      {
-        "minX": 7,
         "maxX": 8,
         "minZ": 1,
         "maxZ": 2,
-        "height": 0.6129
+        "height": 0.8845
+      },
+      {
+        "minX": -8,
+        "maxX": -7,
+        "minZ": 2,
+        "maxZ": 3,
+        "height": 0.3132
       },
       {
         "minX": -7,
         "maxX": -6,
         "minZ": 2,
         "maxZ": 3,
-        "height": 2.3798
+        "height": 0.6483
       },
       {
         "minX": -6,
+        "maxX": -5,
+        "minZ": 2,
+        "maxZ": 3,
+        "height": 1.4533
+      },
+      {
+        "minX": -5,
+        "maxX": -4,
+        "minZ": 2,
+        "maxZ": 3,
+        "height": 1.8437
+      },
+      {
+        "minX": -4,
         "maxX": -2,
         "minZ": 2,
         "maxZ": 3,
-        "height": 9.1671
+        "height": 4.4697
       },
       {
         "minX": -2,
         "maxX": -1,
         "minZ": 2,
         "maxZ": 3,
-        "height": 8.7415
+        "height": 9.8309
       },
       {
         "minX": -1,
         "maxX": 0,
         "minZ": 2,
         "maxZ": 3,
-        "height": 7.2375
+        "height": 11.8447
       },
       {
         "minX": 0,
         "maxX": 1,
         "minZ": 2,
         "maxZ": 3,
-        "height": 6.8135
+        "height": 12.9451
       },
       {
         "minX": 1,
+        "maxX": 2,
+        "minZ": 2,
+        "maxZ": 3,
+        "height": 11.7715
+      },
+      {
+        "minX": 2,
         "maxX": 3,
         "minZ": 2,
         "maxZ": 3,
-        "height": 5.8452
+        "height": 12.7026
       },
       {
         "minX": 3,
-        "maxX": 4,
-        "minZ": 2,
-        "maxZ": 3,
-        "height": 6.0519
-      },
-      {
-        "minX": 4,
         "maxX": 5,
         "minZ": 2,
         "maxZ": 3,
-        "height": 5.3148
+        "height": 5.3287
       },
       {
         "minX": 5,
         "maxX": 6,
         "minZ": 2,
         "maxZ": 3,
-        "height": 3.0517
+        "height": 1.7009
       },
       {
         "minX": 6,
-        "maxX": 7,
-        "minZ": 2,
-        "maxZ": 3,
-        "height": 1.0533
-      },
-      {
-        "minX": 7,
         "maxX": 8,
         "minZ": 2,
         "maxZ": 3,
-        "height": 0.5764
+        "height": 0.8255
       },
       {
         "minX": -7,
         "maxX": -6,
         "minZ": 3,
         "maxZ": 4,
-        "height": 0.8863
+        "height": 0.5603
       },
       {
         "minX": -6,
         "maxX": -5,
         "minZ": 3,
         "maxZ": 4,
-        "height": 3.9117
+        "height": 1.353
       },
       {
         "minX": -5,
         "maxX": -4,
         "minZ": 3,
         "maxZ": 4,
-        "height": 6.6988
-      },
-      {
-        "minX": -4,
-        "maxX": -1,
-        "minZ": 3,
-        "maxZ": 4,
-        "height": 7.1949
-      },
-      {
-        "minX": -1,
-        "maxX": 1,
-        "minZ": 3,
-        "maxZ": 4,
-        "height": 8.9592
-      },
-      {
-        "minX": 1,
-        "maxX": 2,
-        "minZ": 3,
-        "maxZ": 4,
-        "height": 6.6211
-      },
-      {
-        "minX": 2,
-        "maxX": 3,
-        "minZ": 3,
-        "maxZ": 4,
-        "height": 5.5363
-      },
-      {
-        "minX": 3,
-        "maxX": 4,
-        "minZ": 3,
-        "maxZ": 4,
-        "height": 5.3669
-      },
-      {
-        "minX": 4,
-        "maxX": 5,
-        "minZ": 3,
-        "maxZ": 4,
-        "height": 4.7738
-      },
-      {
-        "minX": 5,
-        "maxX": 6,
-        "minZ": 3,
-        "maxZ": 4,
-        "height": 1.2637
-      },
-      {
-        "minX": 6,
-        "maxX": 7,
-        "minZ": 3,
-        "maxZ": 4,
-        "height": 0.8325
-      },
-      {
-        "minX": -6,
-        "maxX": -5,
-        "minZ": 4,
-        "maxZ": 5,
-        "height": 1.927
-      },
-      {
-        "minX": -5,
-        "maxX": -4,
-        "minZ": 4,
-        "maxZ": 5,
-        "height": 3.9634
-      },
-      {
-        "minX": -4,
-        "maxX": -2,
-        "minZ": 4,
-        "maxZ": 5,
-        "height": 5.1982
-      },
-      {
-        "minX": -2,
-        "maxX": -1,
-        "minZ": 4,
-        "maxZ": 5,
-        "height": 7.9
-      },
-      {
-        "minX": -1,
-        "maxX": 1,
-        "minZ": 4,
-        "maxZ": 5,
-        "height": 8.9765
-      },
-      {
-        "minX": 1,
-        "maxX": 2,
-        "minZ": 4,
-        "maxZ": 5,
-        "height": 7.5239
-      },
-      {
-        "minX": 2,
-        "maxX": 4,
-        "minZ": 4,
-        "maxZ": 5,
-        "height": 1.5932
-      },
-      {
-        "minX": 4,
-        "maxX": 6,
-        "minZ": 4,
-        "maxZ": 5,
-        "height": 0.9378
-      },
-      {
-        "minX": 6,
-        "maxX": 7,
-        "minZ": 4,
-        "maxZ": 5,
-        "height": 0.1259
-      },
-      {
-        "minX": -5,
-        "maxX": -4,
-        "minZ": 5,
-        "maxZ": 6,
-        "height": 0.7545
-      },
-      {
-        "minX": -4,
-        "maxX": -2,
-        "minZ": 5,
-        "maxZ": 6,
-        "height": 2.9022
-      },
-      {
-        "minX": -2,
-        "maxX": -1,
-        "minZ": 5,
-        "maxZ": 6,
-        "height": 3.2508
-      },
-      {
-        "minX": -1,
-        "maxX": 0,
-        "minZ": 5,
-        "maxZ": 6,
-        "height": 4.2473
-      },
-      {
-        "minX": 0,
-        "maxX": 1,
-        "minZ": 5,
-        "maxZ": 6,
-        "height": 7.0863
-      },
-      {
-        "minX": 1,
-        "maxX": 2,
-        "minZ": 5,
-        "maxZ": 6,
-        "height": 1.3599
-      },
-      {
-        "minX": 2,
-        "maxX": 3,
-        "minZ": 5,
-        "maxZ": 6,
-        "height": 0.9336
-      },
-      {
-        "minX": 3,
-        "maxX": 4,
-        "minZ": 5,
-        "maxZ": 6,
-        "height": 1.0132
-      },
-      {
-        "minX": 4,
-        "maxX": 5,
-        "minZ": 5,
-        "maxZ": 6,
-        "height": 0.7562
+        "height": 1.9212
       },
       {
         "minX": -4,
         "maxX": -3,
+        "minZ": 3,
+        "maxZ": 4,
+        "height": 4.3776
+      },
+      {
+        "minX": -3,
+        "maxX": -2,
+        "minZ": 3,
+        "maxZ": 4,
+        "height": 4.8524
+      },
+      {
+        "minX": -2,
+        "maxX": -1,
+        "minZ": 3,
+        "maxZ": 4,
+        "height": 6.1262
+      },
+      {
+        "minX": -1,
+        "maxX": 0,
+        "minZ": 3,
+        "maxZ": 4,
+        "height": 6.6578
+      },
+      {
+        "minX": 0,
+        "maxX": 1,
+        "minZ": 3,
+        "maxZ": 4,
+        "height": 12.9818
+      },
+      {
+        "minX": 1,
+        "maxX": 2,
+        "minZ": 3,
+        "maxZ": 4,
+        "height": 11.2975
+      },
+      {
+        "minX": 2,
+        "maxX": 3,
+        "minZ": 3,
+        "maxZ": 4,
+        "height": 5.0138
+      },
+      {
+        "minX": 3,
+        "maxX": 5,
+        "minZ": 3,
+        "maxZ": 4,
+        "height": 4.7221
+      },
+      {
+        "minX": 5,
+        "maxX": 6,
+        "minZ": 3,
+        "maxZ": 4,
+        "height": 1.1608
+      },
+      {
+        "minX": 6,
+        "maxX": 7,
+        "minZ": 3,
+        "maxZ": 4,
+        "height": 0.8994
+      },
+      {
+        "minX": -6,
+        "maxX": -5,
+        "minZ": 4,
+        "maxZ": 5,
+        "height": 0.8977
+      },
+      {
+        "minX": -5,
+        "maxX": -4,
+        "minZ": 4,
+        "maxZ": 5,
+        "height": 2.4623
+      },
+      {
+        "minX": -4,
+        "maxX": -3,
+        "minZ": 4,
+        "maxZ": 5,
+        "height": 2.9179
+      },
+      {
+        "minX": -3,
+        "maxX": -2,
+        "minZ": 4,
+        "maxZ": 5,
+        "height": 5.6346
+      },
+      {
+        "minX": -2,
+        "maxX": -1,
+        "minZ": 4,
+        "maxZ": 5,
+        "height": 6.1521
+      },
+      {
+        "minX": -1,
+        "maxX": 0,
+        "minZ": 4,
+        "maxZ": 5,
+        "height": 6.5649
+      },
+      {
+        "minX": 0,
+        "maxX": 2,
+        "minZ": 4,
+        "maxZ": 5,
+        "height": 7.3244
+      },
+      {
+        "minX": 2,
+        "maxX": 3,
+        "minZ": 4,
+        "maxZ": 5,
+        "height": 5.6636
+      },
+      {
+        "minX": 3,
+        "maxX": 4,
+        "minZ": 4,
+        "maxZ": 5,
+        "height": 2.3628
+      },
+      {
+        "minX": 4,
+        "maxX": 5,
+        "minZ": 4,
+        "maxZ": 5,
+        "height": 1.3173
+      },
+      {
+        "minX": 5,
+        "maxX": 6,
+        "minZ": 4,
+        "maxZ": 5,
+        "height": 0.9473
+      },
+      {
+        "minX": -6,
+        "maxX": -4,
+        "minZ": 5,
+        "maxZ": 6,
+        "height": 0.8311
+      },
+      {
+        "minX": -4,
+        "maxX": -3,
+        "minZ": 5,
+        "maxZ": 6,
+        "height": 1.5756
+      },
+      {
+        "minX": -3,
+        "maxX": -2,
+        "minZ": 5,
+        "maxZ": 6,
+        "height": 3.5383
+      },
+      {
+        "minX": -2,
+        "maxX": -1,
+        "minZ": 5,
+        "maxZ": 6,
+        "height": 4.3271
+      },
+      {
+        "minX": -1,
+        "maxX": 0,
+        "minZ": 5,
+        "maxZ": 6,
+        "height": 4.5155
+      },
+      {
+        "minX": 0,
+        "maxX": 1,
+        "minZ": 5,
+        "maxZ": 6,
+        "height": 6.0927
+      },
+      {
+        "minX": 1,
+        "maxX": 2,
+        "minZ": 5,
+        "maxZ": 6,
+        "height": 5.7513
+      },
+      {
+        "minX": 2,
+        "maxX": 3,
+        "minZ": 5,
+        "maxZ": 6,
+        "height": 4.1492
+      },
+      {
+        "minX": 3,
+        "maxX": 5,
+        "minZ": 5,
+        "maxZ": 6,
+        "height": 1.2541
+      },
+      {
+        "minX": -5,
+        "maxX": -4,
         "minZ": 6,
         "maxZ": 7,
-        "height": 0.4468
+        "height": 0.4161
       },
       {
-        "minX": -3,
-        "maxX": 4,
+        "minX": -4,
+        "maxX": -2,
         "minZ": 6,
         "maxZ": 7,
-        "height": 0.7834
+        "height": 0.9497
       },
       {
         "minX": -2,
+        "maxX": 3,
+        "minZ": 6,
+        "maxZ": 7,
+        "height": 1.3483
+      },
+      {
+        "minX": 3,
+        "maxX": 4,
+        "minZ": 6,
+        "maxZ": 7,
+        "height": 0.6624
+      },
+      {
+        "minX": -1,
         "maxX": 1,
         "minZ": 7,
         "maxZ": 8,
-        "height": 0.3117
+        "height": 0.2355
       }
     ]
   },
   "volcanic-cone": {
-    "sha256": "868c062028af62fedf491ed7391602991dbc76b1ddbbd09494ee958a7898cd5b",
+    "sha256": "a52f4e2b2c3f4e9d576f480b878c51576193222a9be4b23bf898bfccf392d515",
     "source": "work/low-poly/candidate-01/candidate.glb",
     "min": [
       -55.65746307373047,

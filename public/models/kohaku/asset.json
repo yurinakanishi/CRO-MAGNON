@@ -2,13 +2,13 @@
   "modelKey": "kohaku",
   "name": "こはくちゃん",
   "kind": "companion",
-  "candidate": 1,
-  "revision": "05",
-  "status": "integrated-unverified",
-  "url": "/models/kohaku/model-r05.glb",
-  "sha256": "225032577f552cc7da5837494897a60408e5941726f97b6c9a6d5bba9bc4cbfb",
-  "bytes": 31445164,
-  "triangles": 145046,
+  "candidate": 2,
+  "revision": "c2-t02",
+  "status": "remake-candidate-2-integrated",
+  "url": "/models/kohaku/model-c2.glb",
+  "sha256": "37f67aee50db574a24206f602aa3b02bc6b21d2a720f9f055499bffcceea28ca",
+  "bytes": 6401032,
+  "triangles": 29058,
   "bones": 36,
   "upAxis": "Y",
   "forwardAxis": "+Z",
@@ -93,31 +93,52 @@
   },
   "lods": [
     {
-      "url": "/models/kohaku/lod-r05.glb",
-      "sha256": "6512213708f3b082d563911986dec2cbca2461bb572deca14a0856bc05834e96",
-      "bytes": 2884628,
-      "triangles": 36235,
+      "url": "/models/kohaku/lod-c2.glb",
+      "sha256": "d3771210276f0283d4261d0a9b3ab6e9fecd8b2f6f6ba29ce91bd8645c62048f",
+      "bytes": 763636,
+      "triangles": 8717,
       "distanceMetres": 8,
-      "purpose": "source-derived animated geometry; same rig and original materials"
+      "purpose": "animated-medium-lod-geometry"
     }
   ],
   "provenance": {
-    "provider": "Codex built-in imagegen; local TRELLIS-2; source-preserving reduction; body-specific biped rig",
-    "claudeUsed": false,
-    "referenceImage": "assets/kohaku/source/reference-v2.png",
-    "referenceSha256": "e1df6619300d50f3c8e0af0691f5b01e4a810abd658ff607a6f259d285352343",
-    "userReference": "assets/kohaku/source/kohaku-poses.jpg",
-    "userReferenceSha256": "e2bf47e34d832f465415c327a4eb922506b3aed7bc36e2ae6328a1b1edfb75d6",
-    "denseSha256": "6dadf1f9687e7b32169fcf3cd9eb871ac30ef716d6d6fd7b843db28a50e324a4",
-    "reconstruction": "TRELLIS-2 v0.8.1 CUDA, RTX A1000 6GB, resolution512, seed42, supplied alpha, atlas4096",
-    "source": "output/model-generation/models/kohaku/work/rig/revision-05/candidate.glb",
-    "sourceSha256": "225032577f552cc7da5837494897a60408e5941726f97b6c9a6d5bba9bc4cbfb",
-    "sourceUvAndAlbedoPreserved": true,
-    "surfaceRepair": null
+    "provider": "Claude Code (Opus 5.5)",
+    "claudeUsed": true,
+    "referenceGenerator": "none: derived from the delivered, user-approved surface (identity unchanged)",
+    "referenceImage": "public/models/kohaku/model-r05.glb",
+    "referenceSha256": "225032577f552cc7da5837494897a60408e5941726f97b6c9a6d5bba9bc4cbfb",
+    "reconstruction": "no new reconstruction; the delivered rest surface is the bake and skin-weight source",
+    "denseFile": "public/models/kohaku/model-r05.glb",
+    "denseSha256": "225032577f552cc7da5837494897a60408e5941726f97b6c9a6d5bba9bc4cbfb",
+    "processReport": "output/model-generation/models/kohaku/work/candidate-02/transfer/t02/report.json",
+    "rigReport": null,
+    "pipeline": "scripts/remake/ (trellis_queue.py, remake_process.py, rig_*.py); docs/asset-remake/PLAN.md",
+    "previousDelivery": {
+      "url": "/models/kohaku/model-r05.glb",
+      "sha256": "225032577f552cc7da5837494897a60408e5941726f97b6c9a6d5bba9bc4cbfb",
+      "triangles": 145046,
+      "bytes": 31445164,
+      "candidate": 1,
+      "revision": "05"
+    },
+    "previousProvenance": {
+      "provider": "Codex built-in imagegen; local TRELLIS-2; source-preserving reduction; body-specific biped rig",
+      "claudeUsed": false,
+      "referenceImage": "assets/kohaku/source/reference-v2.png",
+      "referenceSha256": "e1df6619300d50f3c8e0af0691f5b01e4a810abd658ff607a6f259d285352343",
+      "userReference": "assets/kohaku/source/kohaku-poses.jpg",
+      "userReferenceSha256": "e2bf47e34d832f465415c327a4eb922506b3aed7bc36e2ae6328a1b1edfb75d6",
+      "denseSha256": "6dadf1f9687e7b32169fcf3cd9eb871ac30ef716d6d6fd7b843db28a50e324a4",
+      "reconstruction": "TRELLIS-2 v0.8.1 CUDA, RTX A1000 6GB, resolution512, seed42, supplied alpha, atlas4096",
+      "source": "output/model-generation/models/kohaku/work/rig/revision-05/candidate.glb",
+      "sourceSha256": "225032577f552cc7da5837494897a60408e5941726f97b6c9a6d5bba9bc4cbfb",
+      "sourceUvAndAlbedoPreserved": true,
+      "surfaceRepair": null
+    },
+    "transfer": "scripts/remake/transfer_reduce.py (meshopt subset of delivered vertices, xatlas charts, albedo/normal bake with miss fill and back-face flip, Data Transfer skin weights; armature, bone names and clips re-exported unchanged)",
+    "visualReview": "assets/asset-remake/reviews/kohaku.json"
   },
   "notes": [
-    "Height matches the current rimo-neko asset exactly. One independent pettable mascot, not a selectable player.",
-    "Petting starts the persistent bond. Eight authored clips, including pose-sheet wave and bow; head, skirt, ears and tail have dedicated joints.",
-    "Unit tests and browser/game validation were not run, following the user instruction. Production renders are retained separately."
+    "Remake C2 of the delivered kohaku rig05: same surface reduced from 145,046 triangles, 4096 texture replaced by 2048 albedo + baked normal; 36 bones and 8 clips unchanged. Posed deviation from the delivered skin 0 m (kept vertices are a subset); clip curves within 0.04 deg (resampling). 29058 triangles (was 145046), textures 2048 WebP + baked normal."
   ]
 }

@@ -1,0 +1,26 @@
+{
+  "key": "giant-ape",
+  "decision": "adopt",
+  "sha256": "9bfd996eec87c77af99d32c642564cd987548563bcbfe905a252d935f763e0b9",
+  "url": "/models/giant-ape/model-c2.glb",
+  "bytes": 10566148,
+  "triangles": 58216,
+  "candidate": 2,
+  "revision": "c2-t01",
+  "status": "remake-candidate-2-integrated",
+  "reviewer": "Claude Code (Opus 5.5)",
+  "date": "2026-10-07",
+  "issues": "C1: 106,357 tris, no normal map.",
+  "plan": "Identity-preserving remake from the delivered surface: 58k + 2048 (player). scripts/remake/transfer_reduce.py (delivered rest surface reduced with meshopt, xatlas charts, albedo + tangent normal baked from the delivered surface, skin weights by Data Transfer; armature, bone names and clips re-exported at the source key rate).",
+  "motions": "13 clips",
+  "evidence": "posed deviation 0 m vs delivered skin (kept vertices are a subset); clip curves within 0.05-0.2 deg; render compare output/asset-remake/guests/giant-ape/compare-views.jpg",
+  "previousDelivery": {
+    "url": "/models/giant-ape/model-run-r05.glb",
+    "sha256": "ae9cee5355ca661235b4c310df8feb03f00dc447ab479c7de5446a9429d3faca",
+    "triangles": 106357,
+    "bytes": 16751356,
+    "candidate": 1,
+    "revision": null
+  },
+  "note": "Adoption inside the remake branch; in-game multi-player QA and the performance comparison are tracked in docs/asset-remake/PROGRESS.md."
+}

@@ -1,0 +1,26 @@
+{
+  "key": "glacier-spires",
+  "decision": "adopt",
+  "sha256": "33eaa7f3c25d1644053410d8db6205757cd76ebd461e631d2ae96a343153c816",
+  "url": "/models/glacier-spires/model-c2.glb",
+  "bytes": 2124228,
+  "triangles": 11999,
+  "candidate": 2,
+  "revision": "c2-m01",
+  "status": "remake-candidate-2-integrated",
+  "reviewer": "Claude Code (Opus 5.5)",
+  "date": "2026-10-07",
+  "issues": "C1: soft, rounded ice slabs, no normal map.",
+  "plan": "New reference -> TRELLIS -> 11,999 tris + LODs 1,799/419, 2048 albedo + baked normal; footprint re-measured with the C1 algorithm (scripts/remake/measure_landmark_footprint.py, reproduces the C1 footprint byte-for-byte on the C1 GLB).",
+  "motions": "none",
+  "evidence": "output/asset-remake/compare/glacier-spires/sheet.jpg; footprint 187 cells / 158 boxes (C1 182 / 149), plan envelope within 5 cm; tests/landmarks, paleo-world, open-world 17/17. A few dark crevices read as deep concavities. In game: renders at glacier-gate (output/asset-remake/game/final-r1/landmark-glacier-gate.png).",
+  "previousDelivery": {
+    "url": "/models/glacier-spires/model.glb",
+    "sha256": "af945c2fec27252389a05ca2eabb6970003372a584a83cf18e2e6c34a42f6b53",
+    "triangles": 12582,
+    "bytes": 2190204,
+    "candidate": 1,
+    "revision": null
+  },
+  "note": "Adoption inside the remake branch; in-game multi-player QA and the performance comparison are tracked in docs/asset-remake/PROGRESS.md."
+}

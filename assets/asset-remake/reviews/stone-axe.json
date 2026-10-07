@@ -1,0 +1,26 @@
+{
+  "key": "stone-axe",
+  "decision": "adopt",
+  "sha256": "f195cd97f8b1a2e88a6b0cf1e928a432d103c9ba415c996396ba7cd10f7ba81e",
+  "url": "/models/stone-axe/model-c2.glb",
+  "bytes": 817044,
+  "triangles": 3941,
+  "candidate": 2,
+  "revision": "c2-m03",
+  "status": "remake-candidate-2-integrated",
+  "reviewer": "Claude Code (Opus 5.5)",
+  "date": "2026-10-07",
+  "issues": "C1: 6,405 tris, no normal map.",
+  "plan": "New reference; 3.9k + 1024; grip origin, +Y shaft, head toward +X, C1 grip lengths 0.209/0.741 m.",
+  "motions": "none",
+  "evidence": "output/asset-remake/stone-axe/compare-c2.jpg; first BiRefNet run crashed (GPU contention), requeued",
+  "previousDelivery": {
+    "url": "/models/stone-axe/model.glb",
+    "sha256": "12dc3f23f8ec2acfb9fb6f770ab05f59c21584be00795f9b8cf272a2f6cf5ac0",
+    "triangles": 6405,
+    "bytes": 743996,
+    "candidate": 1,
+    "revision": null
+  },
+  "note": "Adoption inside the remake branch; in-game multi-player QA and the performance comparison are tracked in docs/asset-remake/PROGRESS.md."
+}

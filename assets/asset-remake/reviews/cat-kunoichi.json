@@ -1,0 +1,26 @@
+{
+  "key": "cat-kunoichi",
+  "decision": "adopt",
+  "sha256": "0f2fecf9409bfea07ea0eadb25d3038ebe0cd8f9ca64e37214c4a4a42b4eb90e",
+  "url": "/models/cat-kunoichi/model-c2.glb",
+  "bytes": 12754684,
+  "triangles": 52420,
+  "candidate": 2,
+  "revision": "c2-r02",
+  "status": "remake-candidate-2-integrated",
+  "reviewer": "Claude Code (Opus 5.5)",
+  "date": "2026-10-07",
+  "issues": "C1 human-r10: 66,766 tris, single 2048 JPEG; smeared eyes and blob-like face at full-body resolution; putty hair.",
+  "plan": "New body + dedicated head references -> TRELLIS -> graft (shape ICP incl. ears; skin-only ICP failed, kept in graft/failed-align-r01) -> rig_human_c2 at 1.68 m with --accent none (C1 has no TribeAccent) -> Downed / CMU locomotion -> katana Attack retargeted from the delivered clip (scripts/remake/retarget_clip.py). Transfer t01 (43,946 tris) kept as fallback only: it preserves the smeared face.",
+  "motions": "Attack (katana, retargeted, 0.6 s), Idle_Loop, Walk_Loop, Run_Loop, Gather, Craft, Give, Eat, Wave, Downed",
+  "evidence": "52,420 tris (LOD 10,484); neck seam iterations r02-r11 kept (output/asset-remake/compare/cat-kunoichi/neck-r0*.jpg); clips and head before/after c2-sheet.jpg; 42 character/human/downed/fantasy/katana tests pass. Known: a small dark notch at the throat front in close-up. In game: one of five synced players at camp holding the katana (output/asset-remake/game/final-r1/players-front.png).",
+  "previousDelivery": {
+    "url": "/models/cat-kunoichi/model-human-r10.glb",
+    "sha256": "c81c37512be0502decf46495868a0c8521470098117b422b167ffce8da59cd9b",
+    "triangles": 66766,
+    "bytes": 7951312,
+    "candidate": 1,
+    "revision": null
+  },
+  "note": "Adoption inside the remake branch; in-game multi-player QA and the performance comparison are tracked in docs/asset-remake/PROGRESS.md."
+}

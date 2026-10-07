@@ -3,15 +3,15 @@
   "name": "まるぃも タコ人間",
   "kind": "humanoid",
   "bodyPlan": "octopus",
-  "candidate": 1,
-  "revision": "10",
-  "status": "game-integrated",
+  "candidate": 2,
+  "revision": "c2-t02",
+  "status": "remake-candidate-2-integrated",
   "species": "maruimo",
   "gender": "male",
-  "url": "/models/maruimo-octopus/model-r10.glb",
-  "sha256": "09366f85545b6e79967e52977e04f25a6a75e5833c51e00f5e05565e5d661ac5",
-  "bytes": 41068700,
-  "triangles": 137602,
+  "url": "/models/maruimo-octopus/model-c2.glb",
+  "sha256": "12886dd609a4415736390ffb46521b20887967037f8255c54107c58cd3d34c59",
+  "bytes": 10811624,
+  "triangles": 58030,
   "bones": 75,
   "upAxis": "Y",
   "forwardAxis": "+Z",
@@ -121,28 +121,50 @@
   },
   "lods": [
     {
-      "url": "/models/maruimo-octopus/lod-r10-bind-r03.glb",
-      "sha256": "2d03dd4342e11107569de43adcacf38a02685a4c130d8b651fb4a7f2e349019e",
-      "bytes": 1377616,
-      "triangles": 16512,
+      "url": "/models/maruimo-octopus/lod-c2.glb",
+      "sha256": "46c1a189b5989a3016f9c4be08378b6a2bdb9b854503a273bf3894d403b9ae9a",
+      "bytes": 971756,
+      "triangles": 11606,
       "distanceMetres": 28,
       "purpose": "animated-medium-lod-geometry"
     }
   ],
   "provenance": {
-    "provider": "Codex",
-    "claudeUsed": false,
-    "referenceGenerator": "Built-in imagegen",
-    "referenceImage": "assets/maruimo-octopus/source/reference-v2.png",
-    "referenceSha256": "9d1003ff88cd0a3b194d685c70590cc25e042fb221f81adcada10c1a990a697b",
-    "userReference": "assets/maruimo-octopus/source/user-reference.png",
-    "userReferenceSha256": "69fcad371823afb72eb8a15413ebf830387c636e3d7e260b24431c6d5ca49fa7",
-    "reconstruction": "Local TRELLIS-2 v0.8.1; retained dense mesh, source-preserving reduction, source-measured octopus rig.",
-    "candidateFile": "output/model-generation/models/maruimo-octopus/work/rig/revision-10/candidate.glb",
-    "visualReview": "assets/maruimo-octopus/adoption.json"
+    "provider": "Claude Code (Opus 5.5)",
+    "claudeUsed": true,
+    "referenceGenerator": "none: derived from the delivered, user-approved surface (identity unchanged)",
+    "referenceImage": "public/models/maruimo-octopus/model-r10.glb",
+    "referenceSha256": "09366f85545b6e79967e52977e04f25a6a75e5833c51e00f5e05565e5d661ac5",
+    "reconstruction": "no new reconstruction; the delivered rest surface is the bake and skin-weight source",
+    "denseFile": "public/models/maruimo-octopus/model-r10.glb",
+    "denseSha256": "09366f85545b6e79967e52977e04f25a6a75e5833c51e00f5e05565e5d661ac5",
+    "processReport": "output/model-generation/models/maruimo-octopus/work/candidate-02/transfer/t02/report.json",
+    "rigReport": null,
+    "pipeline": "scripts/remake/ (trellis_queue.py, remake_process.py, rig_*.py); docs/asset-remake/PLAN.md",
+    "previousDelivery": {
+      "url": "/models/maruimo-octopus/model-r10.glb",
+      "sha256": "09366f85545b6e79967e52977e04f25a6a75e5833c51e00f5e05565e5d661ac5",
+      "triangles": 137602,
+      "bytes": 41068700,
+      "candidate": 1,
+      "revision": "10"
+    },
+    "previousProvenance": {
+      "provider": "Codex",
+      "claudeUsed": false,
+      "referenceGenerator": "Built-in imagegen",
+      "referenceImage": "assets/maruimo-octopus/source/reference-v2.png",
+      "referenceSha256": "9d1003ff88cd0a3b194d685c70590cc25e042fb221f81adcada10c1a990a697b",
+      "userReference": "assets/maruimo-octopus/source/user-reference.png",
+      "userReferenceSha256": "69fcad371823afb72eb8a15413ebf830387c636e3d7e260b24431c6d5ca49fa7",
+      "reconstruction": "Local TRELLIS-2 v0.8.1; retained dense mesh, source-preserving reduction, source-measured octopus rig.",
+      "candidateFile": "output/model-generation/models/maruimo-octopus/work/rig/revision-10/candidate.glb",
+      "visualReview": "assets/maruimo-octopus/adoption.json"
+    },
+    "transfer": "scripts/remake/transfer_reduce.py (meshopt subset of delivered vertices, xatlas charts, albedo/normal bake with miss fill and back-face flip, Data Transfer skin weights; armature, bone names and clips re-exported unchanged)",
+    "visualReview": "assets/asset-remake/reviews/maruimo-octopus.json"
   },
   "notes": [
-    "The side-reaching appendage is interpreted as the right arm. The back is inferred from the supplied single image.",
-    "Original visible geometry, UVs and texture retained through rigging; no primitive-built substitute."
+    "Remake C2 of the delivered maruimo rig r10: same surface reduced from 137,602 triangles, 4096 texture replaced by 2048 albedo + baked normal; 75 bones and 13 clips unchanged. Posed deviation from the delivered skin 0 m (kept vertices are a subset); clip curves within 0.04 deg (resampling). 58030 triangles (was 137602), textures 2048 WebP + baked normal."
   ]
 }

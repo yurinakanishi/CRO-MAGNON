@@ -178,7 +178,12 @@ for (const key of huntingKeys) {
   if (manifest.motionReview) assert.equal(hash(huntingBytes), manifest.motionReview.sourceSha256);
   const old = glbParts(oldBytes),
     current = glbParts(huntingBytes);
-  assert.equal(manifest.provenance.previousDeliverySha256, hash(oldBytes));
+  // A 2026-10 remake (candidate 2) keeps the historical hunting provenance under previousProvenance; the
+  // historical bytes below are checked against that retained earlier delivery, the remake against its review.
+  const historical = manifest.status?.startsWith('remake-')
+    ? manifest.provenance.previousProvenance
+    : manifest.provenance;
+  assert.equal(historical.previousDeliverySha256, hash(oldBytes));
   assert.equal(manifest.sha256, hash(currentBytes));
   assert.deepEqual(
     current.binary.subarray(0, old.binary.length),

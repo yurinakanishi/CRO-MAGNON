@@ -1,0 +1,19 @@
+{
+  "key": "crow-hide-shield",
+  "decision": "adopt",
+  "sha256": "ec9868c7b5ccf590da1920d6f8430bd4af04de9f017259f8e1f09c3ff8623fe3",
+  "url": "/models/crow-hide-shield/model-c2.glb",
+  "bytes": 863500,
+  "triangles": 2372,
+  "candidate": 2,
+  "revision": "c2-m01",
+  "status": "remake-candidate-2-integrated",
+  "reviewer": "Claude Code (Opus 5.5)",
+  "date": "2026-10-07",
+  "issues": null,
+  "plan": null,
+  "motions": null,
+  "evidence": null,
+  "previousDelivery": null,
+  "note": "Adoption inside the remake branch; in-game multi-player QA and the performance comparison are tracked in docs/asset-remake/PROGRESS.md."
+}

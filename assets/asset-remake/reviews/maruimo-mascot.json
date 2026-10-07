@@ -1,0 +1,25 @@
+{
+  "key": "maruimo-mascot",
+  "decision": "adopt",
+  "sha256": "bbeeb99315f45ffcfb257077366ca830929377d22beb385acbec1b22759c7eda",
+  "url": "/models/maruimo-mascot/model-c2.glb",
+  "bytes": 8230884,
+  "triangles": 28911,
+  "candidate": 2,
+  "revision": "c2-t02",
+  "status": "remake-candidate-2-integrated",
+  "reviewer": "Claude Code (Opus 5.5)",
+  "date": "2026-10-07",
+  "issues": "C1: 137,602 tris, 4096 texture, no normal map.",
+  "plan": "Identity-preserving remake from the delivered surface: 28.9k + 2048 (55 cm companion). scripts/remake/transfer_reduce.py (delivered rest surface reduced with meshopt, xatlas charts, albedo + tangent normal baked from the delivered surface, skin weights by Data Transfer; armature, bone names and clips re-exported at the source key rate).",
+  "motions": "13 clips",
+  "evidence": "posed deviation 0 m vs delivered skin (kept vertices are a subset); clip curves within 0.05-0.2 deg; render compare output/asset-remake/guests/maruimo-mascot/compare-views.jpg",
+  "previousDelivery": {
+    "url": "/models/maruimo-mascot/model-r01.glb",
+    "sha256": "7dc24164001b187d370b0726a4b6251b702c3d2f2bd06e198685e3018be066b9",
+    "triangles": 137602,
+    "bytes": 41068780,
+    "revision": "01"
+  },
+  "note": "Adoption inside the remake branch; in-game multi-player QA and the performance comparison are tracked in docs/asset-remake/PROGRESS.md."
+}

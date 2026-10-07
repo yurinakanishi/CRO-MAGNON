@@ -1,0 +1,26 @@
+{
+  "key": "cro-magnon-hunter",
+  "decision": "adopt",
+  "sha256": "507db5d9e0e08cdb3c509da0e3f2574b0d8166838e278d7d58ead8d7ada421b1",
+  "url": "/models/cro-magnon-hunter/model-c2.glb",
+  "bytes": 12444656,
+  "triangles": 50561,
+  "candidate": 2,
+  "revision": "c2-r03",
+  "status": "remake-candidate-2-integrated",
+  "reviewer": "Claude Code (Opus 5.5)",
+  "date": "2026-10-07",
+  "issues": "C1: crude face at full-body resolution, dark low-contrast texture, no normal map.",
+  "plan": "Representative humanoid. New body reference B + dedicated head reference -> TRELLIS body + head -> similarity-ICP head graft at the neck -> processing with baked normals -> 22-bone humanoid rig (scripts/remake/rig_human_c2.py) -> spear thrust / downed / CMU locomotion builders. Head graft: head reduced with meshoptimizer (non-manifold hair shells stall Blender collapse) and re-baked; plinth removed by plane at the neck base; collar junction cleaned (old beard/nape faces, chin band).",
+  "motions": "Idle_Loop, Walk_Loop, Run_Loop, Gather, Craft, Give, Eat, Wave, Attack (333 ms hit), Downed",
+  "evidence": "87 character tests pass; pose sheet output/asset-remake/motion/cro-magnon-hunter/clips-sheet.jpg; head close-ups .../graft/merged-r12-head.jpg; game QA before/after output/asset-remake/game/compare-cro-male.jpg, 5 players, 0 errors Head re-baked on xatlas charts (merged-r13: sharper beard/lips, less orange skin) and body normal map repaired; rig r02 + spear/downed/locomotion rebuilt.",
+  "previousDelivery": {
+    "url": "/models/cro-magnon-hunter/model-human-r10.glb",
+    "sha256": "b2d51d01d095bb5e995e6a6f7a9e9b084f2796e47f675370900dea7ac20d2720",
+    "triangles": 69990,
+    "bytes": 10712084,
+    "candidate": 1,
+    "revision": null
+  },
+  "note": "Adoption inside the remake branch; in-game multi-player QA and the performance comparison are tracked in docs/asset-remake/PROGRESS.md."
+}

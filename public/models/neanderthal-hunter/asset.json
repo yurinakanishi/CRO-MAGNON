@@ -2,65 +2,65 @@
   "modelKey": "neanderthal-hunter",
   "name": "ネアンデルタール人とオル",
   "kind": "humanoid",
-  "candidate": 1,
-  "status": "reviewed-prototype",
-  "url": "/models/neanderthal-hunter/model-human-r10.glb",
-  "sha256": "93047f04342a5880dc4574956846f130b3d97c5041408c07f790d2ae09f55000",
-  "bytes": 11260680,
-  "triangles": 54422,
+  "candidate": 2,
+  "status": "remake-candidate-2-integrated",
+  "url": "/models/neanderthal-hunter/model-c2.glb",
+  "sha256": "23b91d45cca119ecc9bb2696b47cc255dd5e8bc480243a301acb08184ae18ec7",
+  "bytes": 12902116,
+  "triangles": 53176,
   "upAxis": "Y",
   "forwardAxis": "+Z",
-  "heightMetres": 1.72,
+  "heightMetres": 1.7200000000000002,
   "widthMetres": null,
   "placement": {
     "pivot": "ground-centred"
   },
   "clips": [
     {
-      "name": "Craft",
-      "seconds": 2,
-      "loop": false
-    },
-    {
-      "name": "Eat",
-      "seconds": 1.7999999523162842,
-      "loop": false
-    },
-    {
-      "name": "Gather",
-      "seconds": 1.5,
-      "loop": false
-    },
-    {
-      "name": "Give",
-      "seconds": 1.2000000476837158,
-      "loop": false
-    },
-    {
       "name": "Idle_Loop",
-      "seconds": 4,
-      "loop": true
-    },
-    {
-      "name": "Run_Loop",
-      "seconds": 0.7333333333333333,
       "loop": true,
-      "fps": 120,
-      "frames": 89,
-      "description": "CMU 09_01 human running retargeted to the existing skeleton with stable anatomical joint planes and sole contact."
+      "seconds": 4
     },
     {
       "name": "Walk_Loop",
-      "seconds": 1.1166666666666667,
       "loop": true,
+      "seconds": 1.1166666666666667,
       "fps": 120,
       "frames": 135,
       "description": "CMU 35_01 human walking retargeted to the existing skeleton with stable anatomical joint planes and sole contact."
     },
     {
+      "name": "Run_Loop",
+      "loop": true,
+      "seconds": 0.7333333333333333,
+      "fps": 120,
+      "frames": 89,
+      "description": "CMU 09_01 human running retargeted to the existing skeleton with stable anatomical joint planes and sole contact."
+    },
+    {
+      "name": "Gather",
+      "loop": false,
+      "seconds": 1.5
+    },
+    {
+      "name": "Craft",
+      "loop": false,
+      "seconds": 2
+    },
+    {
+      "name": "Give",
+      "loop": false,
+      "seconds": 1.2
+    },
+    {
+      "name": "Eat",
+      "loop": false,
+      "seconds": 1.8
+    },
+    {
       "name": "Wave",
-      "seconds": 2,
-      "loop": false
+      "loop": false,
+      "seconds": 2
     },
     {
       "name": "Attack",
@@ -74,30 +74,50 @@
     }
   ],
   "notes": [
-    "Exact final GLB reviewed across all eight clips, rear/TPS and side views; all eight 30 fps MP4 files reopen with verified hashes, dimensions and frame counts. Stocky 1.72 m hunter, 22 bones, Grip.L/R and max four weights. Torso/garment skin weights repaired; 5569 covered interior triangles removed only after source-albedo classification and nine outward occlusion rays per face, fixing orange interior surface patches during running. All remaining geometry attributes, materials, rig and clip bytes are preserved from repaired-03. Contact minima are within 4.2 mm of ground; two duplicate threshold edges in Wave remain a minor local armpit limitation.",
-    "Hunting revision 03 adds Attack; original mesh, rig, textures and earlier clips retained byte-for-byte. Previous delivery archived.",
-    "Source-derived 8,163-triangle animated LOD is used beyond 28 m; the adopted close model, skeleton, clips, materials and collision are unchanged."
+    "Candidate 2: new body reference + dedicated head reference, TRELLIS body/head graft (head cut 1.40 m, body neck 1.48 m, chin band 1.38-1.48 m, white plinth and bust trimmed), 22-bone rig at the delivered 1.72 m, spear thrust / Downed / CMU locomotion rebuilt. Replaces the putty-like C1 head."
   ],
   "provenance": {
-    "provider": "Codex",
-    "claudeUsed": false,
-    "referenceGenerator": "Built-in imagegen",
-    "referenceImage": "output/model-generation/models/neanderthal-hunter/source/original/reference-v1.png",
-    "referenceSha256": "a25cfee8c4ce4559950f218663017d83b18658ce2226ec0bec3df685af4ba973",
-    "reconstruction": "Local TRELLIS-2; settings and dense SHA in model workspace",
-    "candidateFile": "output/creature-motion/revision-04/neanderthal-hunter/model.glb",
-    "visualReview": "assets/human-locomotion/reviews/neanderthal-hunter-r10.json",
-    "previousDeliverySha256": "55232891640fed7e15bb75f3ad985ae53b5a8b19b31013e85d8c5d5f70619c65",
-    "huntingAnimationAuthor": "Codex; appended keyframes, previous surface/rig/materials/animation bytes preserved",
-    "previousMotionVisualReview": "output/model-generation/models/neanderthal-hunter/qa/adoption-review.json",
-    "previousVisualReview": "assets/creature-motion/models/neanderthal-hunter-review.json"
+    "provider": "Claude Code (Opus 5.5)",
+    "claudeUsed": true,
+    "referenceGenerator": "Codex CLI built-in image_gen (gpt-5.6-sol, medium), earlier approved reference attached for identity",
+    "referenceImage": "C:/Users/yurin/Desktop/projects/CRO-MAGNON/output/model-generation/models/neanderthal-hunter/source/original/candidate2-ref-a.png",
+    "referenceSha256": "4ae70fcdec27e902d9ae0e34d2170a12f3975cb24fbb1ab9c3b6e3da49749605",
+    "reconstruction": "Local TRELLIS-2 v0.8.1, res 1024, tex 1024, seed recorded in dense JSON",
+    "denseFile": "C:/Users/yurin/Desktop/projects/CRO-MAGNON/output/model-generation/models/neanderthal-hunter/work/candidate-02/trellis/dense-ref2a-res1024-tex1024-seed0042.glb",
+    "denseSha256": "3c31d4391e02b21e929ff90ae439ee0360cef16f5383acf78c4850b8d64ea86f",
+    "processReport": "output/model-generation/models/neanderthal-hunter/work/candidate-02/graft",
+    "rigReport": "output/model-generation/models/neanderthal-hunter/work/candidate-02/rig/r01/rig-report.json",
+    "pipeline": "scripts/remake/ (trellis_queue.py, remake_process.py, rig_*.py); docs/asset-remake/PLAN.md",
+    "previousDelivery": {
+      "url": "/models/neanderthal-hunter/model-human-r10.glb",
+      "sha256": "93047f04342a5880dc4574956846f130b3d97c5041408c07f790d2ae09f55000",
+      "triangles": 54422,
+      "bytes": 11260680,
+      "candidate": 1,
+      "revision": null
+    },
+    "previousProvenance": {
+      "provider": "Codex",
+      "claudeUsed": false,
+      "referenceGenerator": "Built-in imagegen",
+      "referenceImage": "output/model-generation/models/neanderthal-hunter/source/original/reference-v1.png",
+      "referenceSha256": "a25cfee8c4ce4559950f218663017d83b18658ce2226ec0bec3df685af4ba973",
+      "reconstruction": "Local TRELLIS-2; settings and dense SHA in model workspace",
+      "candidateFile": "output/creature-motion/revision-04/neanderthal-hunter/model.glb",
+      "visualReview": "assets/human-locomotion/reviews/neanderthal-hunter-r10.json",
+      "previousDeliverySha256": "55232891640fed7e15bb75f3ad985ae53b5a8b19b31013e85d8c5d5f70619c65",
+      "huntingAnimationAuthor": "Codex; appended keyframes, previous surface/rig/materials/animation bytes preserved",
+      "previousMotionVisualReview": "output/model-generation/models/neanderthal-hunter/qa/adoption-review.json",
+      "previousVisualReview": "assets/creature-motion/models/neanderthal-hunter-review.json"
+    },
+    "visualReview": "assets/asset-remake/reviews/neanderthal-hunter.json"
   },
   "lods": [
     {
-      "url": "/models/neanderthal-hunter/lod-performance.glb",
-      "sha256": "40635a6831b871023541cc6830814399a2946c54333a2df5439e6c9895b46f67",
-      "bytes": 711464,
-      "triangles": 8163,
+      "url": "/models/neanderthal-hunter/lod-c2.glb",
+      "sha256": "a593c3acf1351c417e84cc2a639397e439e8f057a32ba06c8215b72279317bf2",
+      "bytes": 1049084,
+      "triangles": 10635,
       "distanceMetres": 28,
       "purpose": "animated-medium-lod-geometry"
     }
@@ -105,15 +125,15 @@
   "bones": 22,
   "locomotion": {
     "Walk_Loop": {
-      "metresPerSecond": 1.2144910764127108,
-      "strideMetres": 1.3561817019941937,
+      "metresPerSecond": 1.2041603317714396,
+      "strideMetres": 1.3446457038114408,
       "cycleSeconds": 1.1166666666666667,
       "dutyFactor": 0.61,
       "method": "CMU measured human locomotion, anatomical retarget and sole contact"
     },
     "Run_Loop": {
-      "metresPerSecond": 3.4765966597007814,
-      "strideMetres": 2.549504217113906,
+      "metresPerSecond": 3.44702391683786,
+      "strideMetres": 2.5278175390144306,
       "cycleSeconds": 0.7333333333333333,
       "dutyFactor": 0.36,
       "method": "CMU measured human locomotion, anatomical retarget and sole contact"
@@ -162,8 +182,8 @@
   },
   "downedMotion": {
     "revision": "revision-01",
-    "sourceUrl": "/models/neanderthal-hunter/model-motion-r04.glb",
-    "sourceSha256": "883ddd1465fd103efaaa4d9bd6d8f1e00fd01d0177c667e927a14e7a14c475db",
+    "sourceUrl": "/models/neanderthal-hunter/stage0.glb",
+    "sourceSha256": "58ac6dd276f34e80c0680e4ac0437dfffbeecdd83bd5f9da8d179818fbc61a2e",
     "clip": "Downed",
     "seconds": 1.8,
     "fps": 60,
@@ -205,20 +225,19 @@
     "supersededBy": "humanLocomotion"
   },
   "spearThrust": {
-    "revision": "revision-02",
-    "status": "adopted",
-    "sourceSha256": "e475072a87ffbcfc2501a03c4cdb2517fef912358e935753fde4ce61cfe78b0c",
-    "sourceDelivery": "/models/neanderthal-hunter/model-gaits-r02.glb",
+    "revision": "r1",
+    "status": "candidate-unreviewed",
+    "sourceSha256": "0193d448ab31e9fd6f0535144e2bd6aae7189b0355a2f208fc5f3502404bf93c",
+    "sourceDelivery": "/models/neanderthal-hunter/stage0.glb",
     "clip": "Attack",
     "seconds": 0.7,
     "impactSeconds": 0.333,
     "frames": 86,
     "sampleRate": 120,
-    "leftStepMetres": 0.48160000000000003,
-    "handSpacingMetres": 0.34400000000000003,
+    "leftStepMetres": 0.4816000000000001,
+    "handSpacingMetres": 0.3440000000000001,
     "attachment": "authored-grip",
-    "author": "Codex",
-    "review": "assets/spear-thrusts/README.md"
+    "author": "Claude Code (Opus 5.5) via the existing spear-thrust builder"
   },
   "playerRun": {
     "revision": "revision-05",
@@ -232,10 +251,10 @@
     "supersededBy": "humanLocomotion"
   },
   "humanLocomotion": {
-    "revision": "revision-10",
-    "sourceDelivery": "/models/neanderthal-hunter/model-run-r05.glb",
-    "sourceSha256": "3a7c008bfd8bd7bbf2f2010387373215aee67cf93c5387ccd6561d03c935ac2a",
-    "status": "adopted",
+    "revision": "r1",
+    "sourceDelivery": "/models/neanderthal-hunter/model-downed-r01.glb",
+    "sourceSha256": "2c7a2fbf4d5c407c3f4c0cc2f6be7658617dc4b32123a088bc7fcd86516c57f0",
+    "status": "candidate-unreviewed",
     "changes": [
       {
         "clip": "Walk_Loop",
@@ -246,8 +265,8 @@
         "sampleRate": 120,
         "frames": 135,
         "seconds": 1.1166666666666667,
-        "legScale": 0.9408955983634594,
-        "strideMetres": 1.3561817019941937
+        "legScale": 0.9328921207343772,
+        "strideMetres": 1.3446457038114408
       },
       {
         "clip": "Run_Loop",
@@ -258,11 +277,16 @@
         "sampleRate": 120,
         "frames": 89,
         "seconds": 0.7333333333333333,
-        "legScale": 0.9555397268076466,
-        "strideMetres": 2.549504217113906
+        "legScale": 0.9474116828030767,
+        "strideMetres": 2.5278175390144306
       }
     ],
-    "reference": "assets/human-locomotion/README.md",
-    "previousVisualReview": "assets/player-gaits/reviews/neanderthal-hunter-run-r05.json"
+    "reference": "assets/human-locomotion/README.md"
+  },
+  "revision": "c2-r01",
+  "headGraft": {
+    "reference": "C:/Users/yurin/Desktop/projects/CRO-MAGNON/output/model-generation/models/neanderthal-hunter/source/original/candidate2-head-a.png",
+    "dense": "C:/Users/yurin/Desktop/projects/CRO-MAGNON/output/model-generation/models/neanderthal-hunter/work/candidate-02/trellis/dense-head2a-res1024-tex512-seed0042.glb",
+    "method": "Separate TRELLIS head reconstruction placed by similarity ICP on the body crown (scripts/remake/align_head.py), reduced with meshoptimizer, xatlas charts, albedo/normal baked; body cut at the neck; joined with a skin-tone gain (scripts/remake/merge_head.py); merged surface rescaled to the delivered height before rigging."
   }
 }

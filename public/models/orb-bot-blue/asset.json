@@ -2,13 +2,13 @@
   "modelKey": "orb-bot-blue",
   "name": "あおbot",
   "kind": "companion",
-  "candidate": 1,
-  "revision": "03",
-  "status": "integrated-reviewed-prototype",
-  "url": "/models/orb-bot-blue/model-r03.glb",
-  "sha256": "dee691fc7c35bde8079cd394744a2bdf050380528d30e86ec823cf8269806304",
-  "bytes": 508596,
-  "triangles": 5227,
+  "candidate": 2,
+  "revision": "c2-t01",
+  "status": "remake-candidate-2-integrated",
+  "url": "/models/orb-bot-blue/model-c2.glb",
+  "sha256": "58aafc5fd984e95a1286aa73c284bebd2acedf2285eae8cbb77eaad517786988",
+  "bytes": 281820,
+  "triangles": 4000,
   "bones": 2,
   "upAxis": "Y",
   "forwardAxis": "+Z",
@@ -82,46 +82,67 @@
   },
   "lods": [
     {
-      "url": "/models/orb-bot-blue/lod-r02.glb",
-      "sha256": "446ca81625dff165d40596cf63005fa04fe5c8f1d039fbd7c8a2c7b0b1018a8c",
-      "bytes": 73228,
-      "triangles": 1829,
+      "url": "/models/orb-bot-blue/lod-c2.glb",
+      "sha256": "ddda5aa8619bb28c6f4193c280c62af69f49e8c07dc20f857afbaea567a79177",
+      "bytes": 71116,
+      "triangles": 1599,
       "distanceMetres": 9,
       "purpose": "animated-medium-lod-geometry"
     }
   ],
   "provenance": {
-    "provider": "Codex",
-    "claudeUsed": false,
-    "referenceGenerator": "Built-in imagegen",
-    "referenceImage": "assets/orb-bots/source/blue-reference-v1.png",
-    "referenceSha256": "970b5110a724b5dfb86b80b2f0adecbf6896d9e995c8f4a0dd3108ee2c13a7c1",
-    "userReference": "assets/orb-bots/source/user-reference.png",
-    "userReferenceSha256": "c26fcc4d555b7cf586249114fb0a118c82baade3c3836e3cd745babe2c076a40",
-    "reconstruction": "Local TRELLIS-2 v0.8.1 official Vulkan / 512 / seed42; adaptive source-preserving surface reduction; immutable reference-PNG face ink rebaked into repaired UVs.",
-    "denseSha256": "8b554f55512a3b209db107f5db799c449663e8ce43c5cc5068dd60bd11a0d1c1",
-    "materialRepair": {
-      "method": "Source-PNG ink projection on the source-derived TRELLIS surface, lighting removed, front-normal mask; Cycles emission bake",
-      "source": "C:\\Users\\yurin\\Desktop\\projects\\CRO-MAGNON\\assets\\orb-bots\\source\\blue-reference-v1.png",
-      "sourceAlphaBounds": [
-        0.1076555023923445,
-        0.8915470494417863,
-        0.09968102073365231,
-        0.8851674641148325
-      ],
-      "atlas": 4096,
-      "inferredBackColour": "1172ef",
-      "unusedAtlasColour": "1172ef",
-      "sourcePngUnmodified": true,
-      "analyticEyes": false
+    "provider": "Claude Code (Opus 5.5)",
+    "claudeUsed": true,
+    "referenceGenerator": "none: derived from the delivered, user-approved surface (identity unchanged)",
+    "referenceImage": "public/models/orb-bot-blue/model-r03.glb",
+    "referenceSha256": "dee691fc7c35bde8079cd394744a2bdf050380528d30e86ec823cf8269806304",
+    "reconstruction": "no new reconstruction; the delivered rest surface is the bake and skin-weight source",
+    "denseFile": "public/models/orb-bot-blue/model-r03.glb",
+    "denseSha256": "dee691fc7c35bde8079cd394744a2bdf050380528d30e86ec823cf8269806304",
+    "processReport": "output/model-generation/models/orb-bot-blue/work/candidate-02/transfer/t01/report.json",
+    "rigReport": null,
+    "pipeline": "scripts/remake/ (trellis_queue.py, remake_process.py, rig_*.py); docs/asset-remake/PLAN.md",
+    "previousDelivery": {
+      "url": "/models/orb-bot-blue/model-r03.glb",
+      "sha256": "dee691fc7c35bde8079cd394744a2bdf050380528d30e86ec823cf8269806304",
+      "triangles": 5227,
+      "bytes": 508596,
+      "candidate": 1,
+      "revision": "03"
     },
-    "candidateFile": "output/model-generation/models/orb-bot-blue/work/rig/revision-03/candidate.glb",
-    "visualReview": "assets/orb-bots/reviews/blue-r03.json"
+    "previousProvenance": {
+      "provider": "Codex",
+      "claudeUsed": false,
+      "referenceGenerator": "Built-in imagegen",
+      "referenceImage": "assets/orb-bots/source/blue-reference-v1.png",
+      "referenceSha256": "970b5110a724b5dfb86b80b2f0adecbf6896d9e995c8f4a0dd3108ee2c13a7c1",
+      "userReference": "assets/orb-bots/source/user-reference.png",
+      "userReferenceSha256": "c26fcc4d555b7cf586249114fb0a118c82baade3c3836e3cd745babe2c076a40",
+      "reconstruction": "Local TRELLIS-2 v0.8.1 official Vulkan / 512 / seed42; adaptive source-preserving surface reduction; immutable reference-PNG face ink rebaked into repaired UVs.",
+      "denseSha256": "8b554f55512a3b209db107f5db799c449663e8ce43c5cc5068dd60bd11a0d1c1",
+      "materialRepair": {
+        "method": "Source-PNG ink projection on the source-derived TRELLIS surface, lighting removed, front-normal mask; Cycles emission bake",
+        "source": "C:\\Users\\yurin\\Desktop\\projects\\CRO-MAGNON\\assets\\orb-bots\\source\\blue-reference-v1.png",
+        "sourceAlphaBounds": [
+          0.1076555023923445,
+          0.8915470494417863,
+          0.09968102073365231,
+          0.8851674641148325
+        ],
+        "atlas": 4096,
+        "inferredBackColour": "1172ef",
+        "unusedAtlasColour": "1172ef",
+        "sourcePngUnmodified": true,
+        "analyticEyes": false
+      },
+      "candidateFile": "output/model-generation/models/orb-bot-blue/work/rig/revision-03/candidate.glb",
+      "visualReview": "assets/orb-bots/reviews/blue-r03.json"
+    },
+    "transfer": "scripts/remake/transfer_reduce.py (meshopt subset of delivered vertices, xatlas charts, albedo/normal bake with miss fill and back-face flip, Data Transfer skin weights; armature, bone names and clips re-exported unchanged)",
+    "visualReview": "assets/asset-remake/reviews/orb-bot-blue.json"
   },
   "notes": [
-    "Each colour was reconstructed separately from its own reference. No primitive-built visible bot geometry.",
-    "Squash and hop rig; five loop clips and two one-shots. Ground placement and held/flight paths use the shared server clock.",
-    "Two Chrome renderers and three protocol peers verified shared throws and return. Physical controller, physical mobile device and sustained FPS remain unverified."
+    "Remake C2 of the delivered orb bot: same surface reduced to at most 4,000 triangles, 4096 texture replaced by 1024 albedo + baked normal; 2 bones and 7 clips unchanged. Posed deviation from the delivered skin 0 m (kept vertices are a subset); clip curves within 0.04 deg (resampling). 4000 triangles (was 5227), textures 1024 WebP + baked normal."
   ],
   "gameQA": "output/playwright/orb-bots/verified-20261001"
 }

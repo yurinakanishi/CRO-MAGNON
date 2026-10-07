@@ -1,0 +1,26 @@
+{
+  "key": "obsidian-blade",
+  "decision": "adopt",
+  "sha256": "87e6167887fdab6e2a0331837ef305b0470078b9e3afcd450dfae8ea1080b66b",
+  "url": "/models/obsidian-blade/model-c2.glb",
+  "bytes": 185140,
+  "triangles": 1500,
+  "candidate": 2,
+  "revision": "c2-m01",
+  "status": "remake-candidate-2-integrated",
+  "reviewer": "Claude Code (Opus 5.5)",
+  "date": "2026-10-07",
+  "issues": "C1: the obsidian spear head cut out of the spear mesh (1,501 tris), crude wavy faces.",
+  "plan": "Candidate 2 reference (Codex image_gen) -> TRELLIS-2 1024 -> meshopt -> xatlas -> albedo + baked normal. Reference shows a lying knapped blade; scaled by its length (0.291 m) and stood tip-up in the spear grip frame (base 1.094 m) by a root node transform so the knapping-table placement is unchanged.",
+  "motions": "none",
+  "evidence": "1,500 tris, p95 0.5 mm; output/asset-remake/compare/weapons/blade.jpg (faint ochre matte fringe on the edges). Not placed in the current world: SHELL_BEDS / MIDDEN_SITES / KNAPPING_SITES (shared/coastal-sites.mts) are filtered to the gulf region removed on 2026-09-22, so they are all empty and src/coastal-renderer.ts never requests this asset; verified by renders only.",
+  "previousDelivery": {
+    "url": "/models/obsidian-blade/model.glb",
+    "sha256": "3319075637b3714f836a59d9381fa23f0fb943ed8969a6c193f11e5152590f60",
+    "triangles": 1501,
+    "bytes": 2816960,
+    "candidate": 1,
+    "revision": null
+  },
+  "note": "Adoption inside the remake branch; in-game multi-player QA and the performance comparison are tracked in docs/asset-remake/PROGRESS.md."
+}

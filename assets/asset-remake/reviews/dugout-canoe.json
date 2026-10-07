@@ -1,0 +1,26 @@
+{
+  "key": "dugout-canoe",
+  "decision": "adopt",
+  "sha256": "099fb402d549d886e37a7e8999bdd3d3e56d80a68e94286f7764400164a69cc8",
+  "url": "/models/dugout-canoe/model-c2.glb",
+  "bytes": 1324432,
+  "triangles": 13998,
+  "candidate": 2,
+  "revision": "c2-m01",
+  "status": "remake-candidate-2-integrated",
+  "reviewer": "Claude Code (Opus 5.5)",
+  "date": "2026-10-07",
+  "issues": "C1: 62,145 tris, no normal map.",
+  "plan": "New reference (adzed dugout); 14k + 2048, LOD 4.2k at 18 m; 3.8 m, hull-bottom pivot, seat and waterline kept (boating QA pending).",
+  "motions": "none",
+  "evidence": "output/asset-remake/dugout-canoe/compare-c2.jpg",
+  "previousDelivery": {
+    "url": "/models/dugout-canoe/model.glb",
+    "sha256": "6e77ae6df54f19a450d460b70ee35596e9703942d5d18bcdbf6b35f066e964e4",
+    "triangles": 62145,
+    "bytes": 4732516,
+    "candidate": 1,
+    "revision": null
+  },
+  "note": "Adoption inside the remake branch; in-game multi-player QA and the performance comparison are tracked in docs/asset-remake/PROGRESS.md."
+}

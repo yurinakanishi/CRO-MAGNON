@@ -1,0 +1,26 @@
+{
+  "key": "cro-magnon-woman",
+  "decision": "adopt",
+  "sha256": "70906c8c538c4b15d20d615ea0c20f44234b5130c24cab8fcea49d34e83d9561",
+  "url": "/models/cro-magnon-woman/model-c2.glb",
+  "bytes": 11549512,
+  "triangles": 67133,
+  "candidate": 2,
+  "revision": "c2-t03",
+  "status": "remake-candidate-2-integrated",
+  "reviewer": "Claude Code (Opus 5.5)",
+  "date": "2026-10-07",
+  "issues": "C1 face-r10: 190,402 tris (55.6 MB); the user-approved face-repair head is a near-dense 135-165k-triangle surface.",
+  "plan": "Identity-preserving remake of the approved face-r10: body and head split by material, reduced separately with meshopt LockBorder (shared neck border kept), joined and welded before baking, each with its own 2048 albedo + baked normal atlas; rig, bones and 10 clips (spear thrust, Downed, CMU locomotion) unchanged. A new-reference body + approved-head graft was tried first and rejected: the 16k head lost the approved face softness (output/model-generation/models/cro-magnon-woman/work/candidate-02/graft/face-compare.jpg).",
+  "motions": "Idle_Loop, Walk_Loop, Run_Loop, Gather, Craft, Give, Eat, Wave, Attack, Downed (unchanged)",
+  "evidence": "67,133 tris; posed deviation 0 m; clip curves within 0.14 deg; face close-up compare (cro: .../graft/face-compare3.jpg, neanderthal: output/asset-remake/guests/neanderthal-woman/face-compare.jpg); delivered heights kept",
+  "previousDelivery": {
+    "url": "/models/cro-magnon-woman/model-face-r10.glb",
+    "sha256": "55c0728b99376581695712f4010bcf948b3d4cc23ca64922dd000234f22c9b5a",
+    "triangles": 190402,
+    "bytes": 55574540,
+    "candidate": 1,
+    "revision": null
+  },
+  "note": "Adoption inside the remake branch; in-game multi-player QA and the performance comparison are tracked in docs/asset-remake/PROGRESS.md."
+}

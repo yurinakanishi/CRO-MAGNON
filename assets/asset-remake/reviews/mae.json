@@ -1,0 +1,26 @@
+{
+  "key": "mae",
+  "decision": "adopt",
+  "sha256": "0da0055ef3dbd6c6dda1cf6312e9d098c6eb34c63529891e9a4dc8b1bc5d4563",
+  "url": "/models/mae/model-c2.glb",
+  "bytes": 1715504,
+  "triangles": 10843,
+  "candidate": 2,
+  "revision": "c2-t02",
+  "status": "remake-candidate-2-integrated",
+  "reviewer": "Claude Code (Opus 5.5)",
+  "date": "2026-10-07",
+  "issues": "C1: 4096 texture, no normal map.",
+  "plan": "Identity-preserving remake from the delivered surface: 10.8k + 2048. scripts/remake/transfer_reduce.py (delivered rest surface reduced with meshopt, xatlas charts, albedo + tangent normal baked from the delivered surface, skin weights by Data Transfer; armature, bone names and clips re-exported at the source key rate).",
+  "motions": "6 clips",
+  "evidence": "posed deviation 0 m vs delivered skin (kept vertices are a subset); clip curves within 0.05-0.2 deg; render compare output/asset-remake/guests/mae/compare-views.jpg",
+  "previousDelivery": {
+    "url": "/models/mae/model-r01.glb",
+    "sha256": "3fb4776d3830cda7b00dd1eeadaf4c000ebe7f41af38ccfe0ee55909e1309405",
+    "triangles": 24836,
+    "bytes": 17886104,
+    "candidate": 1,
+    "revision": "01"
+  },
+  "note": "Adoption inside the remake branch; in-game multi-player QA and the performance comparison are tracked in docs/asset-remake/PROGRESS.md."
+}

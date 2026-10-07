@@ -382,8 +382,10 @@ export class WorldAssets {
       this.equipmentLoads.set(
         key,
         (async () => {
+          // Held weapons and rig-attached props (crow rank regalia, berry clusters) load the same way.
           const asset = this.catalog.assets.find(
-            (record) => record.modelKey === key && record.kind === 'equipment',
+            (record) =>
+              record.modelKey === key && (record.kind === 'equipment' || record.kind === 'prop'),
           );
           if (!asset) throw new Error(`Missing verified equipment ${key}`);
           const gltf = await loadVerifiedGLB(asset);

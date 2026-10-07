@@ -1,0 +1,26 @@
+{
+  "key": "berry-bush",
+  "decision": "adopt",
+  "sha256": "4b145e254ee604e1563784d08bf59b5181e70c40e617bcb0a6936bd39a710c3b",
+  "url": "/models/berry-bush/model-c2.glb",
+  "bytes": 2415948,
+  "triangles": 11691,
+  "candidate": 2,
+  "revision": "c2-m02",
+  "status": "remake-candidate-2-integrated",
+  "reviewer": "Claude Code (Opus 5.5)",
+  "date": "2026-10-07",
+  "issues": "C1: 103,563 tris + 12,427 LOD; dark baked berries always visible, even when the bush is picked clean.",
+  "plan": "New reference without fruit (Codex v3, candidate2-ref-c): the visible berries are only the harvestable amount drawn by the game; meshopt 11.7k + xatlas + 1024 albedo/normal; no LOD. An earlier ref-a reconstruction (brown berry blobs) was rejected.",
+  "motions": "none",
+  "evidence": "output/asset-remake/berry-bush/compare-c3.jpg (c2 = rejected ref-a)",
+  "previousDelivery": {
+    "url": "/models/berry-bush/model.glb",
+    "sha256": "3d405ba99daa2d984810e9a2cf4418ad2008c0ee9279c0157fb68fc5a3008ee1",
+    "triangles": 103563,
+    "bytes": 9032376,
+    "candidate": 1,
+    "revision": null
+  },
+  "note": "Adoption inside the remake branch; in-game multi-player QA and the performance comparison are tracked in docs/asset-remake/PROGRESS.md."
+}

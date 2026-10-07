@@ -2,13 +2,13 @@
   "modelKey": "sabertooth-tiger",
   "name": "剣牙の大虎",
   "kind": "enemy",
-  "candidate": 1,
-  "revision": "13",
-  "status": "integrated-and-game-qa-passed",
-  "url": "/models/sabertooth-tiger/model-r13.glb",
-  "sha256": "54db205315086d109bd34b6cf35d31df25cca7472dddb95c7fdbeea6c868021d",
-  "bytes": 20224888,
-  "triangles": 72892,
+  "candidate": 2,
+  "revision": "c2-r07",
+  "status": "remake-candidate-2-integrated",
+  "url": "/models/sabertooth-tiger/model-c2.glb",
+  "sha256": "e6ec30cbd18aab4bf5b7f2f4972658f191c9f168d667501f7032f6f69b203ab0",
+  "bytes": 6843576,
+  "triangles": 38535,
   "upAxis": "Y",
   "forwardAxis": "+Z",
   "heightMetres": 1.6476876735687256,
@@ -110,27 +110,49 @@
   },
   "lods": [
     {
-      "url": "/models/sabertooth-tiger/lod-performance.glb",
-      "sha256": "cccd444673cf8dc6eba0238cfa15990985fc4b4bcfa500c9c95c9afcaf4352cd",
-      "bytes": 964560,
-      "triangles": 10933,
+      "url": "/models/sabertooth-tiger/lod-c2.glb",
+      "sha256": "29b91f5cb8733200017eeac875504519d8c5f554cf262ec89cc7ff298d31bf1b",
+      "bytes": 690408,
+      "triangles": 8477,
       "distanceMetres": 28,
       "purpose": "animated-medium-lod-geometry"
     }
   ],
   "source": "output/model-generation/models/sabertooth-tiger/work/rig/revision-13/candidate.glb",
   "provenance": {
-    "provider": "Codex CLI image_gen reference (gpt-5.6-sol, medium) and local TRELLIS-2; rig and clips by Claude Code",
-    "referenceGenerator": "Codex CLI built-in image_gen (gpt-5.6-sol, reasoning medium), run from Claude Code at user request",
+    "provider": "Claude Code (Opus 5.5)",
     "claudeUsed": true,
-    "referenceImage": "output/model-generation/models/sabertooth-tiger/source/original/reference-v1.png",
+    "referenceGenerator": "Codex image_gen (user-selected candidate 01 of 3, 2026-09-11); unchanged for identity",
+    "referenceImage": "C:/Users/yurin/Desktop/projects/CRO-MAGNON/output/model-generation/models/sabertooth-tiger/source/original/candidate-01.png",
     "referenceSha256": "2affce6595a797c07686821e73dfd87c6364917f803532d1d857cf1185bc0de9",
-    "visualReview": "assets/sabertooth-tiger/visual-review.json"
+    "reconstruction": "Reused the approved Candidate 1 TRELLIS-2 dense (res 1024, seed 42, same reference); no new GPU run",
+    "denseFile": "C:/Users/yurin/Desktop/projects/CRO-MAGNON/output/model-generation/models/sabertooth-tiger/work/candidate-02/trellis/dense-reused-c1-res1024-seed0042.glb",
+    "denseSha256": "d1867955795f08357d7a60e078dea80a2ba3a0d8aa72db6dd19353d52c0b69f0",
+    "processReport": "output/model-generation/models/sabertooth-tiger/work/candidate-02/low-poly/m07/process-report.json",
+    "rigReport": "output/model-generation/models/sabertooth-tiger/work/candidate-02/rig/r07/process.json",
+    "pipeline": "scripts/remake/ (trellis_queue.py, remake_process.py, rig_*.py); docs/asset-remake/PLAN.md",
+    "previousDelivery": {
+      "url": "/models/sabertooth-tiger/model-r13.glb",
+      "sha256": "54db205315086d109bd34b6cf35d31df25cca7472dddb95c7fdbeea6c868021d",
+      "triangles": 72892,
+      "bytes": 20224888,
+      "candidate": 1,
+      "revision": "13"
+    },
+    "previousProvenance": {
+      "provider": "Codex CLI image_gen reference (gpt-5.6-sol, medium) and local TRELLIS-2; rig and clips by Claude Code",
+      "referenceGenerator": "Codex CLI built-in image_gen (gpt-5.6-sol, reasoning medium), run from Claude Code at user request",
+      "claudeUsed": true,
+      "referenceImage": "output/model-generation/models/sabertooth-tiger/source/original/reference-v1.png",
+      "referenceSha256": "2affce6595a797c07686821e73dfd87c6364917f803532d1d857cf1185bc0de9",
+      "visualReview": "assets/sabertooth-tiger/visual-review.json"
+    },
+    "denseReuseReason": "same user-approved reference and settings would reproduce the same reconstruction",
+    "visualReview": "assets/asset-remake/reviews/sabertooth-tiger.json"
   },
   "notes": [
-    "User-selected candidate 01 of three Codex image_gen references (tawny, faint stripes). Local TRELLIS-2 1024 reconstruction, source-preserving QEM to 72,892 triangles; no visible replacement geometry.",
-    "Quadruped rig of 26 bones with two-bone IK planted paws and a gliding scapula; 60 fps keys. Pounce and Step bake body height only: the server moves the body horizontally.",
-    "Revision 13 (2026-09-12): weakened at the user's request and every strike announced. Crouch (0.8 s) precedes the pounce, whose own clip keeps a 0.2 s final dip; Snarl (0.7 s) precedes the claw combo. Surface, weights and the nine earlier clips are unchanged.",
-    "Source-derived 10,933-triangle animated LOD is used beyond 28 m; the adopted close model, skeleton, clips, materials and collision are unchanged."
+    "2026-10-07 remake Candidate 2: same approved surface reprocessed: meshopt reduction to 38535 triangles (was 72,892), xatlas charts, albedo and tangent normal baked from the dense surface (back-face hits flipped, misses filled; p95 2.3 mm), WebP; 2048 albedo/normal.",
+    "Rig: the delivered revision-13 bone plan reused bit-for-bit (scripts/remake/rig_sabertooth_c2.py --plan-from), skin weights re-solved on the new surface; same 11 clips, durations, gaits and telegraphs (Crouch, Snarl). Death now settles onto the ground (delivered r13 rested 0.10 m above it).",
+    "Actor LOD 28 m: 8477 triangles (scripts/build-performance-lods.py ratio 0.22)."
   ]
 }

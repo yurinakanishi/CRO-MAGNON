@@ -1,0 +1,23 @@
+{
+  "key": "volcanic-cone",
+  "decision": "adopt",
+  "sha256": "a52f4e2b2c3f4e9d576f480b878c51576193222a9be4b23bf898bfccf392d515",
+  "url": "/models/volcanic-cone/model-c1-normal.glb",
+  "bytes": 2793924,
+  "triangles": 13382,
+  "candidate": 1,
+  "revision": null,
+  "status": "remake-normal-upgrade-integrated",
+  "reviewer": "Claude Code (Opus 5.5)",
+  "date": "2026-10-07",
+  "issues": "C1: 13,382 tris, smooth clay-like flanks, no normal map; lava is read from the albedo by the landmark shader.",
+  "plan": "New reference + TRELLIS tried and rejected (lava channels and crater glow lost, 11% taller). Geometry-preserving normal upgrade from the C1 TRELLIS dense instead (fit + bake on the delivered UVs, appended WebP normal map).",
+  "motions": "none",
+  "evidence": "Accessor bytes identical (4); bake misses 729 / 2,162,402 texels; footprint unchanged (hash updated in shared/landmark-bounds.mts); output/asset-remake/compare/volcanic-cone/sheet.jpg (rejected TRELLIS) and normal-sheet.jpg (adopted). tests/landmarks pass. In game: renders with the lava glow at volcano-main (output/asset-remake/game/final-r1/landmark-volcano-main.png).",
+  "previousDelivery": {
+    "url": "/models/volcanic-cone/model.glb",
+    "sha256": "868c062028af62fedf491ed7391602991dbc76b1ddbbd09494ee958a7898cd5b",
+    "bytes": 2081908
+  },
+  "note": "Adoption inside the remake branch; in-game multi-player QA and the performance comparison are tracked in docs/asset-remake/PROGRESS.md."
+}

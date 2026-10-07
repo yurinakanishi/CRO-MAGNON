@@ -2,29 +2,29 @@
   "modelKey": "dugout-canoe",
   "name": "丸木舟",
   "kind": "boat",
-  "candidate": 1,
-  "status": "reviewed-prototype",
+  "candidate": 2,
+  "status": "remake-candidate-2-integrated",
   "environment": true,
-  "url": "/models/dugout-canoe/model.glb",
-  "sha256": "6e77ae6df54f19a450d460b70ee35596e9703942d5d18bcdbf6b35f066e964e4",
-  "bytes": 4732516,
-  "triangles": 62145,
+  "url": "/models/dugout-canoe/model-c2.glb",
+  "sha256": "099fb402d549d886e37a7e8999bdd3d3e56d80a68e94286f7764400164a69cc8",
+  "bytes": 1324432,
+  "triangles": 13998,
   "upAxis": "Y",
   "forwardAxis": "+Z",
-  "heightMetres": 0.9070984612335451,
+  "heightMetres": 0.9483,
   "widthMetres": 0.997280091047287,
   "lengthMetres": 3.7999484539031982,
   "placement": {
     "pivot": "hull-bottom-centred",
     "min": [
-      -0.4986916184425354,
-      -0.00023799046175554395,
-      -1.8999485969543457
+      -0.47700669743228663,
+      0,
+      -1.9
     ],
     "max": [
-      0.4985884726047516,
-      0.9068604707717896,
-      1.8999998569488525
+      0.47700669743228663,
+      0.94899987825071,
+      1.9
     ],
     "seat": [
       0,
@@ -34,16 +34,50 @@
     "waterlineOffset": -0.28
   },
   "clips": [],
-  "lods": [],
-  "notes": "Open dugout cavity, raised stern seating ledge, bow/stern silhouette and wood texture retained against the source and normalized dense reconstruction. Seven directions in textured and neutral clay Chrome renders; no browser errors. 282486 to 62145 triangles. Revision 02 preserves every non-image buffer from revision 01; embedded JPEG PSNR 49.66/51.02 dB. Rigid hull with runtime buoyancy; no unnecessary rig. Shared geometry and textures for up to five boats. Game QA is tracked separately.",
+  "lods": [
+    {
+      "url": "/models/dugout-canoe/lod-c2.glb",
+      "sha256": "451733b716f7599889f7b0f38e94997ace2e24ce0ef5fe8dd166b7c13059f475",
+      "bytes": 691268,
+      "triangles": 4200,
+      "distanceMetres": 18,
+      "purpose": "medium-distance-lod"
+    }
+  ],
+  "notes": [
+    "2026-10-07 remake Candidate 2: new reference (adzed dugout canoe with charred interior); 3.8 m long, hull-bottom pivot, seat and waterline kept. TRELLIS-2 1024/tex1024; 13998 triangles (meshopt reduction, xatlas charts, albedo and tangent-space normal baked from the 299961-triangle dense surface; p95 surface error 1.8 mm). Candidate 1 files retained."
+  ],
   "provenance": {
-    "provider": "Codex",
-    "claudeUsed": false,
-    "referenceGenerator": "Built-in imagegen",
-    "referenceImage": "assets/boat/model/source/reference-v1.png",
-    "referenceSha256": "06f319eb15d7daa924dde2f5f760c3480ffb0c4fb39ffecbce15a984e5e1d855",
-    "reconstruction": "Local TRELLIS-2 1024, seed 42, texture 512, atlas 2048",
-    "candidateFile": "assets/boat/model/work/revision-02/candidate.glb",
-    "visualReview": "assets/boat/model/qa/adoption-review.json"
-  }
+    "provider": "Claude Code (Opus 5.5)",
+    "claudeUsed": true,
+    "referenceGenerator": "Codex CLI built-in image_gen (gpt-5.6-sol, medium), earlier approved reference attached for identity",
+    "referenceImage": "C:/Users/yurin/Desktop/projects/CRO-MAGNON/output/model-generation/models/dugout-canoe/source/original/candidate2-ref-a.png",
+    "referenceSha256": "9dffd31c7856c835d4d7b48f1b223ab6bebba6b6d0ac90452e5f6993a8bb1c7a",
+    "reconstruction": "Local TRELLIS-2 v0.8.1, res 1024, tex 1024, seed recorded in dense JSON",
+    "denseFile": "C:/Users/yurin/Desktop/projects/CRO-MAGNON/output/model-generation/models/dugout-canoe/work/candidate-02/trellis/dense-ref2a-res1024-tex1024-seed0042.glb",
+    "denseSha256": "ef5f839fb1171d4fe217021300417732ce1516e1c42e5e4fa7de6aa193025ade",
+    "processReport": "output/model-generation/models/dugout-canoe/work/candidate-02/low-poly/m01/process-report.json",
+    "rigReport": null,
+    "pipeline": "scripts/remake/ (trellis_queue.py, remake_process.py, rig_*.py); docs/asset-remake/PLAN.md",
+    "previousDelivery": {
+      "url": "/models/dugout-canoe/model.glb",
+      "sha256": "6e77ae6df54f19a450d460b70ee35596e9703942d5d18bcdbf6b35f066e964e4",
+      "triangles": 62145,
+      "bytes": 4732516,
+      "candidate": 1,
+      "revision": null
+    },
+    "previousProvenance": {
+      "provider": "Codex",
+      "claudeUsed": false,
+      "referenceGenerator": "Built-in imagegen",
+      "referenceImage": "assets/boat/model/source/reference-v1.png",
+      "referenceSha256": "06f319eb15d7daa924dde2f5f760c3480ffb0c4fb39ffecbce15a984e5e1d855",
+      "reconstruction": "Local TRELLIS-2 1024, seed 42, texture 512, atlas 2048",
+      "candidateFile": "assets/boat/model/work/revision-02/candidate.glb",
+      "visualReview": "assets/boat/model/qa/adoption-review.json"
+    },
+    "visualReview": "assets/asset-remake/reviews/dugout-canoe.json"
+  },
+  "revision": "c2-m01"
 }

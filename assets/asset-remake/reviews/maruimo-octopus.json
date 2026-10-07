@@ -1,0 +1,26 @@
+{
+  "key": "maruimo-octopus",
+  "decision": "adopt",
+  "sha256": "12886dd609a4415736390ffb46521b20887967037f8255c54107c58cd3d34c59",
+  "url": "/models/maruimo-octopus/model-c2.glb",
+  "bytes": 10811624,
+  "triangles": 58030,
+  "candidate": 2,
+  "revision": "c2-t02",
+  "status": "remake-candidate-2-integrated",
+  "reviewer": "Claude Code (Opus 5.5)",
+  "date": "2026-10-07",
+  "issues": "C1: 137,602 tris, 4096 texture, no normal map.",
+  "plan": "Identity-preserving remake from the delivered surface: 58k + 2048 (player). scripts/remake/transfer_reduce.py (delivered rest surface reduced with meshopt, xatlas charts, albedo + tangent normal baked from the delivered surface, skin weights by Data Transfer; armature, bone names and clips re-exported at the source key rate).",
+  "motions": "13 clips, 75 bones",
+  "evidence": "posed deviation 0 m vs delivered skin (kept vertices are a subset); clip curves within 0.05-0.2 deg; render compare output/asset-remake/guests/maruimo-octopus/compare-views.jpg",
+  "previousDelivery": {
+    "url": "/models/maruimo-octopus/model-r10.glb",
+    "sha256": "09366f85545b6e79967e52977e04f25a6a75e5833c51e00f5e05565e5d661ac5",
+    "triangles": 137602,
+    "bytes": 41068700,
+    "candidate": 1,
+    "revision": "10"
+  },
+  "note": "Adoption inside the remake branch; in-game multi-player QA and the performance comparison are tracked in docs/asset-remake/PROGRESS.md."
+}

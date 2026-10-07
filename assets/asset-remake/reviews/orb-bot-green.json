@@ -1,0 +1,26 @@
+{
+  "key": "orb-bot-green",
+  "decision": "adopt",
+  "sha256": "7688b80b2910f2fd6b95bb281ed66f7c558c06bf801c8ce62b843e74dddf0238",
+  "url": "/models/orb-bot-green/model-c2.glb",
+  "bytes": 272528,
+  "triangles": 4000,
+  "candidate": 2,
+  "revision": "c2-t01",
+  "status": "remake-candidate-2-integrated",
+  "reviewer": "Claude Code (Opus 5.5)",
+  "date": "2026-10-07",
+  "issues": "C1: 4096 texture on a 0.28 m bot (45 instances share 9 textures), up to 41.6k tris, no normal map.",
+  "plan": "<=4k tris + 1024 albedo/normal from the delivered surface; scripts/remake/transfer_reduce.py (delivered rest surface reduced with meshopt, xatlas charts, albedo + tangent normal baked from the delivered surface, skin weights by Data Transfer; armature, bone names and clips re-exported at the source key rate).",
+  "motions": "7 clips, 2 bones",
+  "evidence": "posed deviation 0 m vs delivered skin (kept vertices are a subset); clip curves within 0.05-0.2 deg; render compare output/asset-remake/guests/orb-bot-green/compare-views.jpg",
+  "previousDelivery": {
+    "url": "/models/orb-bot-green/model-r03.glb",
+    "sha256": "4f7461ab063fce7aae319745520523bb2d84938ba7a11b765f3ea6b34dbb12ce",
+    "triangles": 5214,
+    "bytes": 497696,
+    "candidate": 1,
+    "revision": "03"
+  },
+  "note": "Adoption inside the remake branch; in-game multi-player QA and the performance comparison are tracked in docs/asset-remake/PROGRESS.md."
+}

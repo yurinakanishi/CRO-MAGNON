@@ -1,0 +1,79 @@
+{
+ "version": 2,
+ "assets": [
+  {
+   "key": "cro-magnon-woman",
+   "attach": [
+    "C:/Users/yurin/Desktop/projects/CRO-MAGNON/output/model-generation/models/cro-magnon-woman/source/original/reference-v3.png",
+    "assets/female-face-repair/cro-magnon-woman/source/reference-v1.png"
+   ],
+   "identity": "the default playable character, an adult Cro-Magnon woman with an attractive idol-like youthful adult face (second image is her approved face), feminine figure, dark hair, primitive tan hide and fur clothing exactly as in the first image.",
+   "subject": "ONE adult Cro-Magnon woman, 1.66 m, slim athletic feminine figure, attractive soft adult face with clear eyes and gentle smile, long dark brown hair tied back with a few loose strands behind the ears (not over the face, not touching the shoulders). Primitive clothing clearly layered and separate in depth: a one-shoulder tan hide top with fringed edge and visible stitching, a short layered fur and hide skirt with a leather belt and small pouch, soft hide wrap sandals laced to the ankles. Bare arms and legs, open relaxed hands with separated fingers, palms facing the thighs. POSE: symmetrical A-pose for rigging, standing straight, facing the camera directly, arms straight out and down at about 40 degrees from the body with clear empty space between arms and torso, legs straight and apart with a clear gap between the thighs, feet flat and forward.",
+   "camera": "straight-on front view at chest height, orthographic-like, entire body from hair to soles uncropped with generous margin, centered.",
+   "variants": [
+    "Warm tan hides and sandy fur."
+   ]
+  },
+  {
+   "key": "neanderthal-hunter",
+   "identity": "a stocky adult Neanderthal man with a heavy brow, broad nose, dark shaggy hair and beard, fur-and-hide clothing and wrapped boots.",
+   "subject": "ONE adult Neanderthal male hunter, 1.70 m, very stocky powerful barrel-chested build with short thick limbs. Face: prominent heavy brow ridge, broad wide nose, deep-set eyes looking forward, strong jaw, full dark shaggy beard, calm expression. Hair: dark brown, thick and shaggy, pushed back from the face, shoulder-length but not covering the face. Clothing, clearly layered and separate in depth: a heavy brown hide tunic with a fur collar and rough stitching, a thick leather belt with a knot and bone toggle, fur-lined hide leggings to the knee, wrapped hide boots with lacing. Bare thick forearms, open relaxed hands with separated fingers, palms facing the thighs. POSE: symmetrical A-pose for rigging, standing straight, facing the camera directly, arms straight out and down at about 40 degrees from the body with clear empty space between arms and torso, legs straight and apart with a clear gap between the thighs, feet flat and forward.",
+   "camera": "straight-on front view at chest height, orthographic-like, entire body uncropped with generous margin, centered.",
+   "variants": [
+    "Dark brown hide, grey-brown fur collar."
+   ]
+  },
+  {
+   "key": "neanderthal-woman",
+   "attach": [
+    "C:/Users/yurin/Desktop/projects/CRO-MAGNON/output/model-generation/models/neanderthal-woman/source/original/reference-v4.png",
+    "assets/female-face-repair/neanderthal-woman/source/reference-v1.png"
+   ],
+   "identity": "an adult Neanderthal woman with an attractive idol-like adult face (second image is her approved face), sturdy feminine figure, dark hair, primitive one-shoulder hide top and fur skirt exactly as in the first image.",
+   "subject": "ONE adult Neanderthal woman, 1.60 m, sturdy feminine figure with strong shoulders, attractive adult face with gentle brow and warm eyes, dark brown wavy hair tied back (not over the face, not touching the shoulders). Primitive clothing clearly layered and separate in depth: a one-shoulder brown fur-trimmed hide top, a layered shaggy fur and hide skirt with a leather belt, laced hide sandals. Bare arms and legs, open relaxed hands with separated fingers, palms facing the thighs. POSE: symmetrical A-pose for rigging, standing straight, facing the camera directly, arms straight out and down at about 40 degrees from the body with clear empty space between arms and torso, legs straight and apart with a clear gap between the thighs, feet flat and forward.",
+   "camera": "straight-on front view at chest height, orthographic-like, entire body uncropped with generous margin, centered.",
+   "variants": [
+    "Mid-brown hides and dark brown shaggy fur."
+   ]
+  },
+  {
+   "key": "cat-kunoichi",
+   "identity": "an adult woman with black cat ears, long black hair in a high ponytail, a dark navy ninja outfit with a belt sash, arm wraps and dark boots.",
+   "subject": "ONE adult cat-eared kunoichi woman, 1.68 m, slim athletic figure, attractive adult face with sharp amber eyes, two black upright cat ears on top of the head, long black hair in a high ponytail that hangs straight down behind the back (not touching the arms). Outfit clearly layered and separate in depth: a dark navy fitted wrap top with a deep blue sash belt knotted at the side, fitted dark trousers, wrapped forearm guards, dark knee-high soft boots, a slim cat tail is NOT present. Open relaxed hands with separated fingers, palms facing the thighs. POSE: symmetrical A-pose for rigging, standing straight, facing the camera directly, arms straight out and down at about 40 degrees from the body with clear empty space between arms and torso, legs straight and apart with a clear gap between the thighs, feet flat and forward. No sword, no weapon.",
+   "camera": "straight-on front view at chest height, orthographic-like, entire body from ear tips to soles uncropped with generous margin, centered.",
+   "variants": [
+    "Dark navy and charcoal cloth with deep blue sash."
+   ]
+  },
+  {
+   "key": "sabertooth-tiger",
+   "identity": "a powerful golden-tawny saber-toothed cat with faint darker stripes, cream belly, long ivory sabers and a short bobbed tail.",
+   "subject": "ONE adult saber-toothed cat (Smilodon), about 1.2 m at the shoulder and 2.4 m long: massive muscular forelimbs and shoulders, deep chest, back sloping down to the hips, short thick bobbed tail, big paws with claws retracted. Head level and looking forward, mouth closed, two very long curved ivory sabers hanging well below the lower jaw, fierce amber eyes, small rounded ears. Short dense fur in readable clumps: golden-tawny with faint darker brown stripes on the back and flanks, cream belly, chest and muzzle. Neutral standing pose with all four legs vertical, clearly separated and fully visible.",
+   "camera": "left side three-quarter view (about 35 degrees from pure side), eye level at mid-body, entire animal uncropped with generous margin, centered.",
+   "variants": [
+    "Golden-tawny coat, faint brown stripes."
+   ]
+  },
+  {
+   "key": "violet-behemoth",
+   "attach": [
+    "C:/Users/yurin/Desktop/projects/CRO-MAGNON/output/model-generation/models/violet-behemoth-quadruped/source/original/reference-v1.png"
+   ],
+   "identity": "a huge purple four-legged lizard-like beast with two curved horns, a wide toothy jaw, thick armoured hide with darker spots and a long heavy tail.",
+   "subject": "ONE huge fantasy four-legged beast about 6 m long including a long heavy tail: low powerful lizard-like body on four thick bowed legs with clawed feet, broad head with two forward-curving horns, a wide jaw with visible teeth and a slight underbite, small fierce yellow eyes, a ridge of short dorsal spikes from neck to tail. Thick pebbled violet-purple hide with darker purple spots and a paler lilac belly, rugged and non-shiny. Neutral standing pose, all four legs clearly separated and visible, tail extended behind and slightly curved, mouth closed.",
+   "camera": "left side three-quarter view (about 35 degrees from pure side), slightly above eye level, entire beast including tail tip uncropped with generous margin, centered.",
+   "variants": [
+    "Violet-purple hide with darker spots, lilac belly."
+   ]
+  },
+  {
+   "key": "crow-shaman",
+   "identity": "a black crow-headed humanoid shaman with a white feather crest, black feathered robes, a bone necklace and a wooden staff topped with a stone.",
+   "subject": "ONE crow-headed humanoid shaman, 1.85 m: a black crow head with a sharp grey beak, glossy dark eyes and a tall white feather crest, a body covered by layered ragged black feather robes reaching the shins, a necklace of small bones and beads, bird-like grey scaled feet with talons, black feathered arms ending in grey clawed hands. POSE: symmetrical A-pose for rigging, standing straight, facing the camera directly, arms straight out and down at about 40 degrees from the body with clear empty space between arms and robe, legs apart with a visible gap below the robe hem, feet flat and forward. The right hand holds a tall gnarled wooden staff topped with a lashed grey stone, held vertically and slightly away from the body so the staff never touches the robe or leg, its foot just above the ground beside the right foot. Left hand empty and open.",
+   "camera": "straight-on front view at chest height, orthographic-like, entire figure uncropped with generous margin, centered.",
+   "variants": [
+    "Glossy black feathers, white crest, grey beak."
+   ]
+  }
+ ]
+}

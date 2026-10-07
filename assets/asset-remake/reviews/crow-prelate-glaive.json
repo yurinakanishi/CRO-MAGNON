@@ -1,0 +1,19 @@
+{
+  "key": "crow-prelate-glaive",
+  "decision": "adopt",
+  "sha256": "566ce63c6c13172099f2bc251405e2e28459fb96ed0327c41c0e691f58f291c5",
+  "url": "/models/crow-prelate-glaive/model-c2.glb",
+  "bytes": 599076,
+  "triangles": 2949,
+  "candidate": 2,
+  "revision": "c2-m01",
+  "status": "remake-candidate-2-integrated",
+  "reviewer": "Claude Code (Opus 5.5)",
+  "date": "2026-10-07",
+  "issues": null,
+  "plan": null,
+  "motions": null,
+  "evidence": null,
+  "previousDelivery": null,
+  "note": "Adoption inside the remake branch; in-game multi-player QA and the performance comparison are tracked in docs/asset-remake/PROGRESS.md."
+}

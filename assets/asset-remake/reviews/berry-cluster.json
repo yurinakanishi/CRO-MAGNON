@@ -1,0 +1,19 @@
+{
+  "key": "berry-cluster",
+  "decision": "adopt",
+  "sha256": "6586133f70088e383be623c028dd0d39b2c9db5a9aa3cb86cc1b4d0a9cc3732c",
+  "url": "/models/berry-cluster/model-c2.glb",
+  "bytes": 277940,
+  "triangles": 1172,
+  "candidate": 2,
+  "revision": "c2-m02",
+  "status": "remake-candidate-2-integrated",
+  "reviewer": "Claude Code (Opus 5.5)",
+  "date": "2026-10-07",
+  "issues": null,
+  "plan": null,
+  "motions": null,
+  "evidence": null,
+  "previousDelivery": null,
+  "note": "Adoption inside the remake branch; in-game multi-player QA and the performance comparison are tracked in docs/asset-remake/PROGRESS.md."
+}

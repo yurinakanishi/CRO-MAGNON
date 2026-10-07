@@ -3,12 +3,12 @@
   "name": "火口の山",
   "kind": "static",
   "candidate": 1,
-  "status": "reviewed-prototype",
+  "status": "remake-normal-upgrade-integrated",
   "environment": true,
   "onDemand": true,
-  "url": "/models/volcanic-cone/model.glb",
-  "sha256": "868c062028af62fedf491ed7391602991dbc76b1ddbbd09494ee958a7898cd5b",
-  "bytes": 2081908,
+  "url": "/models/volcanic-cone/model-c1-normal.glb",
+  "sha256": "a52f4e2b2c3f4e9d576f480b878c51576193222a9be4b23bf898bfccf392d515",
+  "bytes": 2793924,
   "triangles": 13382,
   "upAxis": "Y",
   "forwardAxis": "+Z",
@@ -38,6 +38,32 @@
     "referenceSha256": "f6d4b8c6a48ef90c380d34e2115c06aec02e5c675d4eab7258f0180cf9ca0770",
     "reconstruction": "Local TRELLIS-2; preserved dense reconstruction, source-derived reduction and separate revisions.",
     "candidateFile": "output/model-generation/models/volcanic-cone/work/low-poly/candidate-01/candidate.glb",
-    "visualReview": "output/model-generation/models/volcanic-cone/qa/adoption-review.json"
+    "visualReview": "assets/asset-remake/reviews/volcanic-cone.json"
+  },
+  "normalUpgrade": {
+    "method": "Tangent-space normal map baked from the TRELLIS dense surface (similarity-ICP placed on the delivered mesh, scripts/remake/fit_to_delivered.py) onto the delivered UVs and normals (scripts/remake/normal_upgrade.py), injected as an appended WebP image + normalTexture (scripts/remake/inject_normal_map.py). Geometry bytes unchanged.",
+    "date": "2026-10-07",
+    "previousGlb": {
+      "url": "/models/volcanic-cone/model.glb",
+      "sha256": "868c062028af62fedf491ed7391602991dbc76b1ddbbd09494ee958a7898cd5b",
+      "bytes": 2081908
+    },
+    "dense": "C:/Users/yurin/Desktop/projects/CRO-MAGNON/output/model-generation/models/volcanic-cone/work/trellis/dense-res1024-seed0042.glb",
+    "denseSha256": "79e643ad6ff97163452c9757548e5b5a1b129fde3f6b66a4ad7a187e451f1096",
+    "fit": {
+      "rmsMetres": 0.9946793870668773,
+      "p95Metres": 1.8369599878787988,
+      "scale": 110.83349663545289
+    },
+    "bake": {
+      "size": 2048,
+      "islandTexels": 2162402,
+      "firstPassMisses": 729,
+      "neighbourFilled": 212,
+      "flippedBackfacing": 5065,
+      "extrusionFrac": 0.004
+    },
+    "geometryAccessorsCompared": 4,
+    "geometryIdentical": true
   }
 }

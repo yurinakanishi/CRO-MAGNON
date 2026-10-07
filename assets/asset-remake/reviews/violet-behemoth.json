@@ -1,0 +1,26 @@
+{
+  "key": "violet-behemoth",
+  "decision": "adopt",
+  "sha256": "85b3a6393ce569c81d75557201b510afc1b278529e1ffa65806ed6c0c17e4fda",
+  "url": "/models/violet-behemoth/model-c2.glb",
+  "bytes": 7168980,
+  "triangles": 39825,
+  "candidate": 2,
+  "revision": "c2-t01",
+  "status": "remake-candidate-2-integrated",
+  "reviewer": "Claude Code (Opus 5.5)",
+  "date": "2026-10-07",
+  "issues": "C1: no normal map, no normal map.",
+  "plan": "Identity-preserving remake from the delivered surface: 39.8k + 2048; user-directed design and measured mouth sockets preserved. scripts/remake/transfer_reduce.py (delivered rest surface reduced with meshopt, xatlas charts, albedo + tangent normal baked from the delivered surface, skin weights by Data Transfer; armature, bone names and clips re-exported at the source key rate).",
+  "motions": "14 clips",
+  "evidence": "posed deviation 0 m vs delivered skin (kept vertices are a subset); clip curves within 0.05-0.2 deg; render compare output/asset-remake/guests/violet-behemoth/compare-views.jpg",
+  "previousDelivery": {
+    "url": "/models/violet-behemoth/model-quadruped-r04.glb",
+    "sha256": "6dd28210973bdccc543c0e2805ced82c838b95df2535218a652fda8ca869aa55",
+    "triangles": 47789,
+    "bytes": 15320936,
+    "candidate": 1,
+    "revision": "04"
+  },
+  "note": "Adoption inside the remake branch; in-game multi-player QA and the performance comparison are tracked in docs/asset-remake/PROGRESS.md."
+}

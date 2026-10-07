@@ -1,0 +1,640 @@
+{
+  "hide-tent": {
+    "issues": "C1: 24.6k tris, 1024 albedo downsampled from TRELLIS 2048, constant roughness 0.87, no normal map; plain uniform hides.",
+    "plan": "Representative static asset. New Codex reference B (patchwork hides, sinew stitching, fur ridge, hem stones) -> TRELLIS 1024/tex1024 seed42 -> 18k tris + baked 2048 normal + 2048 albedo + 1024 roughness, dense-derived LOD.",
+    "motions": "none (static)",
+    "replacement": {
+      "url": "/models/hide-tent/model-c2.glb",
+      "lod": "/models/hide-tent/lod-c2.glb"
+    },
+    "progress": "integrated-in-branch",
+    "verification": "neutral review compare (output/asset-remake/hide-tent/compare-r01.jpg); collision bounds re-measured; in game at camp (output/asset-remake/game/final-r1/players-front.png, player-run.png) and in both perf comparisons; 2026-10-07 later: normal map repaired (back-face hits from overlapping layers flipped, z>=0.25; scripts/remake/repair_normal_maps.py), other bytes unchanged. Later: r02 scaled uniformly to 3.176 m so the collision footprint stays within C1 (x 1.000, z 0.931 of C1)."
+  },
+  "woolly-mammoth": {
+    "issues": "C1: smooth plush look (fur silhouette lost in reduction), 1024 albedo, no normal map, tail repaired 3 times; 24-bone rig.",
+    "plan": "Representative quadruped. New reference B -> TRELLIS seed42 has twin pale rear spikes (same twin-tail failure as C1) -> alternative seeds/ref queued. New rig scripts/remake/rig_mammoth_c2.py (Spine kept for riding), 5 clips.",
+    "motions": "Idle_Loop 4.0, Walk_Loop 2.4 (0.354 m/s), Run_Loop 1.2 (1.125 m/s), Graze_Loop 5.0, Death 1.2 hold",
+    "replacement": {
+      "url": "/models/woolly-mammoth/model-c2.glb",
+      "lod": "/models/woolly-mammoth/lod-c2.glb"
+    },
+    "progress": "integrated-in-branch",
+    "verification": "seed 7 dense (seed 42 rejected: twin tails); rig r05 pose sheets; game QA: R mount, W/Shift ride 6.6-7.7 m, F hunt -> Death -> meat, 0 errors; riding/hunting/motion tests pass (pre-existing failures unchanged) 2026-10-07 later: normal map repaired (back-face hits from overlapping layers flipped, z>=0.25; scripts/remake/repair_normal_maps.py), other bytes unchanged. Gameplay body radius pinned to the C1 value in shared/animals.mts (MAMMOTH_BODY_RADIUS) so the hit size is unchanged by the wider remade fur."
+  },
+  "cro-magnon-hunter": {
+    "issues": "C1: crude face at full-body resolution, dark low-contrast texture, no normal map.",
+    "plan": "Representative humanoid. New body reference B + dedicated head reference -> TRELLIS body + head -> similarity-ICP head graft at the neck -> processing with baked normals -> 22-bone humanoid rig (scripts/remake/rig_human_c2.py) -> spear thrust / downed / CMU locomotion builders. Head graft: head reduced with meshoptimizer (non-manifold hair shells stall Blender collapse) and re-baked; plinth removed by plane at the neck base; collar junction cleaned (old beard/nape faces, chin band).",
+    "motions": "Idle_Loop, Walk_Loop, Run_Loop, Gather, Craft, Give, Eat, Wave, Attack (333 ms hit), Downed",
+    "replacement": {
+      "url": "/models/cro-magnon-hunter/model-c2.glb",
+      "lod": "/models/cro-magnon-hunter/lod-c2.glb"
+    },
+    "progress": "integrated-in-branch",
+    "verification": "87 character tests pass; pose sheet output/asset-remake/motion/cro-magnon-hunter/clips-sheet.jpg; head close-ups .../graft/merged-r12-head.jpg; game QA before/after output/asset-remake/game/compare-cro-male.jpg, 5 players, 0 errors Head re-baked on xatlas charts (merged-r13: sharper beard/lips, less orange skin) and body normal map repaired; rig r02 + spear/downed/locomotion rebuilt."
+  },
+  "__codeBuilt": [
+    {
+      "id": "crow-faction-props",
+      "where": "src/crow-faction-visuals.ts:20-41",
+      "what": "Cylinder/Cone/Sphere/Torus spears, axe, shield, crown, halo, mantle, staff orb on crow bones",
+      "progress": "integrated-in-branch",
+      "replacement": "TRELLIS props (kind prop): crow-soldier-spear, crow-hide-shield, crow-brute-axe, crow-bone-pauldrons, crow-prelate-glaive, crow-red-mantle, crow-pontiff-crozier, crow-ivory-vestment, crow-pontiff-crown; src/crow-faction-visuals.ts CROW_RANK_PARTS + crowPropKeys, src/world3d.ts loadEnemy loads them with the actor; red focus orbs kept as emissive spell light",
+      "verification": "Rest-pose composites on the crow rig: output/asset-remake/compare/crow-props/compose-a.jpg, prelate-sheet.jpg, pontiff-sheet.jpg, crown.jpg; tests/crow-faction-visuals.test.mjs 2/2. In game: all five ranks show their props (output/asset-remake/game/final-r1/report.json)."
+    },
+    {
+      "id": "berry-spheres",
+      "where": "src/world3d.ts:624-640",
+      "what": "red sphere berries placed on berry-bush vertices (resource amount display)",
+      "progress": "integrated-in-branch",
+      "replacement": "berry-cluster prop (1,172 tris, 512 textures, 14 cm) cloned per berryAnchors anchor in src/world3d.ts attachBerryClusters; count still equals fruitCount(amount); shared material emits 0.35 of its albedo for readability like the old emissive spheres",
+      "verification": "output/asset-remake/compare/crow-props/berry.jpg; in game 5/5 clusters shown on berry-24 (output/asset-remake/game/final-r1/berry-bush.png)."
+    }
+  ],
+  "stone-firepit": {
+    "issues": "C1: 31.5k tris, 1024 albedo, constant roughness, no normal map; stones uniformly pale.",
+    "plan": "New reference; meshopt reduction to 8.6k, xatlas charts, albedo/normal baked with miss fill and back-face flip; LOD 3.1k at 14 m; footprint kept at 1.62 m.",
+    "motions": "none",
+    "replacement": {
+      "url": "/models/stone-firepit/model-c2.glb",
+      "lod": "/models/stone-firepit/lod-c2.glb"
+    },
+    "progress": "integrated-in-branch",
+    "verification": "neutral compare output/asset-remake/stone-firepit/compare-c2r04.jpg and compare-xatlas.jpg (Smart UV vs xatlas)"
+  },
+  "firewood-pile": {
+    "issues": "C1: 24.6k tris, few long logs, 1024 albedo, constant roughness, no normal map.",
+    "plan": "New reference (nine split-end logs in a pyramid, moss); meshopt 6k + xatlas + baked albedo/normal; LOD 2.1k at 14 m. Logs are shorter (0.85 m): footprint 1.14x0.85 m (was 1.07x1.46), height 0.7 m kept; collision re-measured (smaller, no passage narrowed).",
+    "motions": "none",
+    "replacement": {
+      "url": "/models/firewood-pile/model-c2.glb",
+      "lod": "/models/firewood-pile/lod-c2.glb"
+    },
+    "progress": "integrated-in-branch",
+    "verification": "output/asset-remake/firewood-pile/compare-c2.jpg, compare-xatlas.jpg"
+  },
+  "drying-rack": {
+    "issues": "C1: 23.9k tris, saturated red hides, no normal map.",
+    "plan": "New reference (forked posts, lashings, natural scraped hides); meshopt 12k + xatlas + 2048 albedo/normal; LOD 4k at 14 m. Width 2.9 m (was 3.3 m), height 2.4 m kept.",
+    "motions": "none",
+    "replacement": {
+      "url": "/models/drying-rack/model-c2.glb",
+      "lod": "/models/drying-rack/lod-c2.glb"
+    },
+    "progress": "integrated-in-branch",
+    "verification": "output/asset-remake/drying-rack/compare-c2.jpg"
+  },
+  "valley-boulder": {
+    "issues": "C1: 2,953 tris, smeared texture on top, no normal map, no LOD (heavily instanced: rocks, stone piles, coast, gulf).",
+    "plan": "New reference (weathered granite with fracture facets); meshopt 3.5k + xatlas + 1024 albedo/normal; LOD 1,050 at 18 m. Footprint within 2 cm of C1 (stone-pile stacking derives from the re-measured bounds).",
+    "motions": "none",
+    "replacement": {
+      "url": "/models/valley-boulder/model-c2.glb",
+      "lod": "/models/valley-boulder/lod-c2.glb"
+    },
+    "progress": "integrated-in-branch",
+    "verification": "output/asset-remake/valley-boulder/compare-c2.jpg; stone-pile tests pass Later: m03 scaled x0.975 so the footprint stays within C1 (open-world-restore test position no longer nudged)."
+  },
+  "sabertooth-tiger": {
+    "issues": "C1 r13: 72,892 tris (TRELLIS atlas seams block further reduction), 12 MB PNG texture, no normal map; Death rested 0.10 m above the floor.",
+    "plan": "Same user-approved surface (reused C1 dense, same reference/settings): meshopt 39.6k, xatlas charts, 2048 WebP albedo + baked normal; delivered r13 bone plan reused bit-for-bit (rig_sabertooth_c2.py --plan-from), weights re-solved; same 11 clips; Death settles to the ground; actor LOD 8.5k.",
+    "motions": "Idle_Loop 3.0, Walk_Loop 0.8, Run_Loop 0.4, Alert 0.6, Crouch 0.8, Snarl 0.7, Pounce 1.3, Step 0.35, Attack 1.0, Hit 0.3, Death 1.5",
+    "replacement": {
+      "url": "/models/sabertooth-tiger/model-c2.glb",
+      "lod": "/models/sabertooth-tiger/lod-c2.glb"
+    },
+    "progress": "integrated-in-branch",
+    "verification": "16 sabertooth tests pass; pose sheets output/asset-remake/motion/sabertooth-tiger/sheet-r06-*.jpg; head close-up cmp-head-zoom3.jpg; Death min z 0.001 m (r13 0.10 m). qa-sabertooth.mjs: all behaviour checks pass but the final \"Alert rendered\" sample fails under GPU load - the unchanged baseline fails identically now; rerun when the TRELLIS queue is idle. r07: bake on welded xatlas seams, same 48-degree crease as the rig."
+  },
+  "yellow-524-mascot": {
+    "issues": "C1: 449,022 tris (full dense), 1620 px texture, no normal map.",
+    "plan": "Identity-preserving remake from the delivered surface: 25k + 1024 albedo/normal; Floating_Ripple, 20 bones. scripts/remake/transfer_reduce.py (delivered rest surface reduced with meshopt, xatlas charts, albedo + tangent normal baked from the delivered surface, skin weights by Data Transfer; armature, bone names and clips re-exported at the source key rate).",
+    "motions": "Floating_Ripple",
+    "replacement": {
+      "url": "/models/yellow-524-mascot/model-c2.glb",
+      "lod": "/models/yellow-524-mascot/lod-c2.glb"
+    },
+    "progress": "integrated-in-branch",
+    "verification": "posed deviation 0 m vs delivered skin (kept vertices are a subset); clip curves within 0.05-0.2 deg; render compare output/asset-remake/guests/yellow-524-mascot/compare-views.jpg"
+  },
+  "rimo-neko": {
+    "issues": "C1: 140,226 tris, no normal map.",
+    "plan": "Identity-preserving remake from the delivered surface: 27.5k + 2048; close-up face checked (shading-before-bake fix). scripts/remake/transfer_reduce.py (delivered rest surface reduced with meshopt, xatlas charts, albedo + tangent normal baked from the delivered surface, skin weights by Data Transfer; armature, bone names and clips re-exported at the source key rate).",
+    "motions": "7 clips",
+    "replacement": {
+      "url": "/models/rimo-neko/model-c2.glb",
+      "lod": "/models/rimo-neko/lod-c2.glb"
+    },
+    "progress": "integrated-in-branch",
+    "verification": "posed deviation 0 m vs delivered skin (kept vertices are a subset); clip curves within 0.05-0.2 deg; render compare output/asset-remake/guests/rimo-neko/compare-views.jpg"
+  },
+  "kohaku": {
+    "issues": "C1: 145,046 tris, 4096 texture, no normal map.",
+    "plan": "Identity-preserving remake from the delivered surface: 29k + 2048. scripts/remake/transfer_reduce.py (delivered rest surface reduced with meshopt, xatlas charts, albedo + tangent normal baked from the delivered surface, skin weights by Data Transfer; armature, bone names and clips re-exported at the source key rate).",
+    "motions": "8 clips",
+    "replacement": {
+      "url": "/models/kohaku/model-c2.glb",
+      "lod": "/models/kohaku/lod-c2.glb"
+    },
+    "progress": "integrated-in-branch",
+    "verification": "posed deviation 0 m vs delivered skin (kept vertices are a subset); clip curves within 0.05-0.2 deg; render compare output/asset-remake/guests/kohaku/compare-views.jpg"
+  },
+  "mae": {
+    "issues": "C1: 4096 texture, no normal map.",
+    "plan": "Identity-preserving remake from the delivered surface: 10.8k + 2048. scripts/remake/transfer_reduce.py (delivered rest surface reduced with meshopt, xatlas charts, albedo + tangent normal baked from the delivered surface, skin weights by Data Transfer; armature, bone names and clips re-exported at the source key rate).",
+    "motions": "6 clips",
+    "replacement": {
+      "url": "/models/mae/model-c2.glb",
+      "lod": "/models/mae/lod-c2.glb"
+    },
+    "progress": "integrated-in-branch",
+    "verification": "posed deviation 0 m vs delivered skin (kept vertices are a subset); clip curves within 0.05-0.2 deg; render compare output/asset-remake/guests/mae/compare-views.jpg"
+  },
+  "maruimo-octopus": {
+    "issues": "C1: 137,602 tris, 4096 texture, no normal map.",
+    "plan": "Identity-preserving remake from the delivered surface: 58k + 2048 (player). scripts/remake/transfer_reduce.py (delivered rest surface reduced with meshopt, xatlas charts, albedo + tangent normal baked from the delivered surface, skin weights by Data Transfer; armature, bone names and clips re-exported at the source key rate).",
+    "motions": "13 clips, 75 bones",
+    "replacement": {
+      "url": "/models/maruimo-octopus/model-c2.glb",
+      "lod": "/models/maruimo-octopus/lod-c2.glb"
+    },
+    "progress": "integrated-in-branch",
+    "verification": "posed deviation 0 m vs delivered skin (kept vertices are a subset); clip curves within 0.05-0.2 deg; render compare output/asset-remake/guests/maruimo-octopus/compare-views.jpg"
+  },
+  "maruimo-mascot": {
+    "issues": "C1: 137,602 tris, 4096 texture, no normal map.",
+    "plan": "Identity-preserving remake from the delivered surface: 28.9k + 2048 (55 cm companion). scripts/remake/transfer_reduce.py (delivered rest surface reduced with meshopt, xatlas charts, albedo + tangent normal baked from the delivered surface, skin weights by Data Transfer; armature, bone names and clips re-exported at the source key rate).",
+    "motions": "13 clips",
+    "replacement": {
+      "url": "/models/maruimo-mascot/model-c2.glb",
+      "lod": "/models/maruimo-mascot/lod-c2.glb"
+    },
+    "progress": "integrated-in-branch",
+    "verification": "posed deviation 0 m vs delivered skin (kept vertices are a subset); clip curves within 0.05-0.2 deg; render compare output/asset-remake/guests/maruimo-mascot/compare-views.jpg"
+  },
+  "howkey-scientist": {
+    "issues": "C1: 4096 texture, no normal map.",
+    "plan": "Identity-preserving remake from the delivered surface: 49k + 2048 (player). scripts/remake/transfer_reduce.py (delivered rest surface reduced with meshopt, xatlas charts, albedo + tangent normal baked from the delivered surface, skin weights by Data Transfer; armature, bone names and clips re-exported at the source key rate).",
+    "motions": "10 clips",
+    "replacement": {
+      "url": "/models/howkey-scientist/model-c2.glb",
+      "lod": "/models/howkey-scientist/lod-c2.glb"
+    },
+    "progress": "integrated-in-branch",
+    "verification": "posed deviation 0 m vs delivered skin (kept vertices are a subset); clip curves within 0.05-0.2 deg; render compare output/asset-remake/guests/howkey-scientist/compare-views.jpg"
+  },
+  "desert-fennec-mage": {
+    "issues": "C1: 103,314 tris, no normal map.",
+    "plan": "Identity-preserving remake from the delivered surface: 53k + 2048 (player). scripts/remake/transfer_reduce.py (delivered rest surface reduced with meshopt, xatlas charts, albedo + tangent normal baked from the delivered surface, skin weights by Data Transfer; armature, bone names and clips re-exported at the source key rate).",
+    "motions": "10 clips",
+    "replacement": {
+      "url": "/models/desert-fennec-mage/model-c2.glb",
+      "lod": "/models/desert-fennec-mage/lod-c2.glb"
+    },
+    "progress": "integrated-in-branch",
+    "verification": "posed deviation 0 m vs delivered skin (kept vertices are a subset); clip curves within 0.05-0.2 deg; render compare output/asset-remake/guests/desert-fennec-mage/compare-views.jpg"
+  },
+  "giant-ape": {
+    "issues": "C1: 106,357 tris, no normal map.",
+    "plan": "Identity-preserving remake from the delivered surface: 58k + 2048 (player). scripts/remake/transfer_reduce.py (delivered rest surface reduced with meshopt, xatlas charts, albedo + tangent normal baked from the delivered surface, skin weights by Data Transfer; armature, bone names and clips re-exported at the source key rate).",
+    "motions": "13 clips",
+    "replacement": {
+      "url": "/models/giant-ape/model-c2.glb",
+      "lod": "/models/giant-ape/lod-c2.glb"
+    },
+    "progress": "integrated-in-branch",
+    "verification": "posed deviation 0 m vs delivered skin (kept vertices are a subset); clip curves within 0.05-0.2 deg; render compare output/asset-remake/guests/giant-ape/compare-views.jpg"
+  },
+  "violet-behemoth": {
+    "issues": "C1: no normal map, no normal map.",
+    "plan": "Identity-preserving remake from the delivered surface: 39.8k + 2048; user-directed design and measured mouth sockets preserved. scripts/remake/transfer_reduce.py (delivered rest surface reduced with meshopt, xatlas charts, albedo + tangent normal baked from the delivered surface, skin weights by Data Transfer; armature, bone names and clips re-exported at the source key rate).",
+    "motions": "14 clips",
+    "replacement": {
+      "url": "/models/violet-behemoth/model-c2.glb",
+      "lod": "/models/violet-behemoth/lod-c2.glb"
+    },
+    "progress": "integrated-in-branch",
+    "verification": "posed deviation 0 m vs delivered skin (kept vertices are a subset); clip curves within 0.05-0.2 deg; render compare output/asset-remake/guests/violet-behemoth/compare-views.jpg"
+  },
+  "orb-bot-white": {
+    "issues": "C1: 4096 texture on a 0.28 m bot (45 instances share 9 textures), up to 41.6k tris, no normal map.",
+    "plan": "<=4k tris + 1024 albedo/normal from the delivered surface; scripts/remake/transfer_reduce.py (delivered rest surface reduced with meshopt, xatlas charts, albedo + tangent normal baked from the delivered surface, skin weights by Data Transfer; armature, bone names and clips re-exported at the source key rate).",
+    "motions": "7 clips, 2 bones",
+    "replacement": {
+      "url": "/models/orb-bot-white/model-c2.glb",
+      "lod": "/models/orb-bot-white/lod-c2.glb"
+    },
+    "progress": "integrated-in-branch",
+    "verification": "posed deviation 0 m vs delivered skin (kept vertices are a subset); clip curves within 0.05-0.2 deg; render compare output/asset-remake/guests/orb-bot-white/compare-views.jpg"
+  },
+  "orb-bot-blue": {
+    "issues": "C1: 4096 texture on a 0.28 m bot (45 instances share 9 textures), up to 41.6k tris, no normal map.",
+    "plan": "<=4k tris + 1024 albedo/normal from the delivered surface; scripts/remake/transfer_reduce.py (delivered rest surface reduced with meshopt, xatlas charts, albedo + tangent normal baked from the delivered surface, skin weights by Data Transfer; armature, bone names and clips re-exported at the source key rate).",
+    "motions": "7 clips, 2 bones",
+    "replacement": {
+      "url": "/models/orb-bot-blue/model-c2.glb",
+      "lod": "/models/orb-bot-blue/lod-c2.glb"
+    },
+    "progress": "integrated-in-branch",
+    "verification": "posed deviation 0 m vs delivered skin (kept vertices are a subset); clip curves within 0.05-0.2 deg; render compare output/asset-remake/guests/orb-bot-blue/compare-views.jpg"
+  },
+  "orb-bot-green": {
+    "issues": "C1: 4096 texture on a 0.28 m bot (45 instances share 9 textures), up to 41.6k tris, no normal map.",
+    "plan": "<=4k tris + 1024 albedo/normal from the delivered surface; scripts/remake/transfer_reduce.py (delivered rest surface reduced with meshopt, xatlas charts, albedo + tangent normal baked from the delivered surface, skin weights by Data Transfer; armature, bone names and clips re-exported at the source key rate).",
+    "motions": "7 clips, 2 bones",
+    "replacement": {
+      "url": "/models/orb-bot-green/model-c2.glb",
+      "lod": "/models/orb-bot-green/lod-c2.glb"
+    },
+    "progress": "integrated-in-branch",
+    "verification": "posed deviation 0 m vs delivered skin (kept vertices are a subset); clip curves within 0.05-0.2 deg; render compare output/asset-remake/guests/orb-bot-green/compare-views.jpg"
+  },
+  "orb-bot-purple": {
+    "issues": "C1: 4096 texture on a 0.28 m bot (45 instances share 9 textures), up to 41.6k tris, no normal map.",
+    "plan": "<=4k tris + 1024 albedo/normal from the delivered surface; scripts/remake/transfer_reduce.py (delivered rest surface reduced with meshopt, xatlas charts, albedo + tangent normal baked from the delivered surface, skin weights by Data Transfer; armature, bone names and clips re-exported at the source key rate).",
+    "motions": "7 clips, 2 bones",
+    "replacement": {
+      "url": "/models/orb-bot-purple/model-c2.glb",
+      "lod": "/models/orb-bot-purple/lod-c2.glb"
+    },
+    "progress": "integrated-in-branch",
+    "verification": "posed deviation 0 m vs delivered skin (kept vertices are a subset); clip curves within 0.05-0.2 deg; render compare output/asset-remake/guests/orb-bot-purple/compare-views.jpg"
+  },
+  "orb-bot-orange": {
+    "issues": "C1: 4096 texture on a 0.28 m bot (45 instances share 9 textures), up to 41.6k tris, no normal map.",
+    "plan": "<=4k tris + 1024 albedo/normal from the delivered surface; scripts/remake/transfer_reduce.py (delivered rest surface reduced with meshopt, xatlas charts, albedo + tangent normal baked from the delivered surface, skin weights by Data Transfer; armature, bone names and clips re-exported at the source key rate).",
+    "motions": "7 clips, 2 bones",
+    "replacement": {
+      "url": "/models/orb-bot-orange/model-c2.glb",
+      "lod": "/models/orb-bot-orange/lod-c2.glb"
+    },
+    "progress": "integrated-in-branch",
+    "verification": "posed deviation 0 m vs delivered skin (kept vertices are a subset); clip curves within 0.05-0.2 deg; render compare output/asset-remake/guests/orb-bot-orange/compare-views.jpg"
+  },
+  "orb-bot-beret": {
+    "issues": "C1: 4096 texture on a 0.28 m bot (45 instances share 9 textures), up to 41.6k tris, no normal map.",
+    "plan": "<=4k tris + 1024 albedo/normal from the delivered surface; scripts/remake/transfer_reduce.py (delivered rest surface reduced with meshopt, xatlas charts, albedo + tangent normal baked from the delivered surface, skin weights by Data Transfer; armature, bone names and clips re-exported at the source key rate).",
+    "motions": "7 clips, 2 bones",
+    "replacement": {
+      "url": "/models/orb-bot-beret/model-c2.glb",
+      "lod": "/models/orb-bot-beret/lod-c2.glb"
+    },
+    "progress": "integrated-in-branch",
+    "verification": "posed deviation 0 m vs delivered skin (kept vertices are a subset); clip curves within 0.05-0.2 deg; render compare output/asset-remake/guests/orb-bot-beret/compare-views.jpg"
+  },
+  "orb-bot-frog": {
+    "issues": "C1: 4096 texture on a 0.28 m bot (45 instances share 9 textures), up to 41.6k tris, no normal map.",
+    "plan": "<=4k tris + 1024 albedo/normal from the delivered surface; scripts/remake/transfer_reduce.py (delivered rest surface reduced with meshopt, xatlas charts, albedo + tangent normal baked from the delivered surface, skin weights by Data Transfer; armature, bone names and clips re-exported at the source key rate).",
+    "motions": "7 clips, 2 bones",
+    "replacement": {
+      "url": "/models/orb-bot-frog/model-c2.glb",
+      "lod": "/models/orb-bot-frog/lod-c2.glb"
+    },
+    "progress": "integrated-in-branch",
+    "verification": "posed deviation 0 m vs delivered skin (kept vertices are a subset); clip curves within 0.05-0.2 deg; render compare output/asset-remake/guests/orb-bot-frog/compare-views.jpg"
+  },
+  "orb-bot-triangle": {
+    "issues": "C1: 4096 texture on a 0.28 m bot (45 instances share 9 textures), up to 41.6k tris, no normal map.",
+    "plan": "<=4k tris + 1024 albedo/normal from the delivered surface; scripts/remake/transfer_reduce.py (delivered rest surface reduced with meshopt, xatlas charts, albedo + tangent normal baked from the delivered surface, skin weights by Data Transfer; armature, bone names and clips re-exported at the source key rate).",
+    "motions": "7 clips, 2 bones",
+    "replacement": {
+      "url": "/models/orb-bot-triangle/model-c2.glb",
+      "lod": "/models/orb-bot-triangle/lod-c2.glb"
+    },
+    "progress": "integrated-in-branch",
+    "verification": "posed deviation 0 m vs delivered skin (kept vertices are a subset); clip curves within 0.05-0.2 deg; render compare output/asset-remake/guests/orb-bot-triangle/compare-views.jpg"
+  },
+  "orb-bot-heart": {
+    "issues": "C1: 4096 texture on a 0.28 m bot (45 instances share 9 textures), up to 41.6k tris, no normal map.",
+    "plan": "<=4k tris + 1024 albedo/normal from the delivered surface; scripts/remake/transfer_reduce.py (delivered rest surface reduced with meshopt, xatlas charts, albedo + tangent normal baked from the delivered surface, skin weights by Data Transfer; armature, bone names and clips re-exported at the source key rate).",
+    "motions": "7 clips, 2 bones",
+    "replacement": {
+      "url": "/models/orb-bot-heart/model-c2.glb",
+      "lod": "/models/orb-bot-heart/lod-c2.glb"
+    },
+    "progress": "integrated-in-branch",
+    "verification": "posed deviation 0 m vs delivered skin (kept vertices are a subset); clip curves within 0.05-0.2 deg; render compare output/asset-remake/guests/orb-bot-heart/compare-views.jpg"
+  },
+  "wood-footbridge": {
+    "issues": "C1: 5,876 tris, no normal map.",
+    "plan": "New reference (weathered log bridge: split planks, round posts, lashed rails); meshopt 9k + xatlas + 2048; scaled x1.05 so the flat deck between rails is 2.34 m wide (C1 2.33); BRIDGE/walkBounds passage unchanged, deckHeightMetres re-measured 0.657 by downward rays.",
+    "motions": "none",
+    "replacement": {
+      "url": "/models/wood-footbridge/model-c2.glb",
+      "lod": "/models/wood-footbridge/lod-c2.glb"
+    },
+    "progress": "integrated-in-branch",
+    "verification": "output/asset-remake/wood-footbridge/compare-c2.jpg; scripts/remake/measure_bridge.py, output/asset-remake/bridge-width.py"
+  },
+  "firewood-log": {
+    "issues": "C1: 13,340 tris.",
+    "plan": "New reference; 1.2 m along +X; 3k + 1024 + LODs 900/240 at 10/22 m; collision footprint within C1.",
+    "motions": "none",
+    "replacement": {
+      "url": "/models/firewood-log/model-c2.glb",
+      "lod": "/models/firewood-log/lod-c2.glb"
+    },
+    "progress": "integrated-in-branch",
+    "verification": "output/asset-remake/firewood-log/compare-c2.jpg"
+  },
+  "dugout-canoe": {
+    "issues": "C1: 62,145 tris, no normal map.",
+    "plan": "New reference (adzed dugout); 14k + 2048, LOD 4.2k at 18 m; 3.8 m, hull-bottom pivot, seat and waterline kept (boating QA pending).",
+    "motions": "none",
+    "replacement": {
+      "url": "/models/dugout-canoe/model-c2.glb",
+      "lod": "/models/dugout-canoe/lod-c2.glb"
+    },
+    "progress": "integrated-in-branch",
+    "verification": "output/asset-remake/dugout-canoe/compare-c2.jpg"
+  },
+  "mammoth-meat": {
+    "issues": "C1: steak slab, 2,826 tris.",
+    "plan": "New reference (raw haunch with bone end); 3k + 1024; 0.55 m long like C1.",
+    "motions": "none",
+    "replacement": {
+      "url": "/models/mammoth-meat/model-c2.glb"
+    },
+    "progress": "integrated-in-branch",
+    "verification": "output/asset-remake/mammoth-meat/compare-c2.jpg"
+  },
+  "wooden-spear": {
+    "issues": "C1: plain stick, no point.",
+    "plan": "New reference (fire-hardened point, grip wrap); 2.5k + 1024; grip origin and +Y shaft with C1 lengths 0.714/0.900 m.",
+    "motions": "none",
+    "replacement": {
+      "url": "/models/wooden-spear/model-c2.glb"
+    },
+    "progress": "integrated-in-branch",
+    "verification": "output/asset-remake/wooden-spear/compare-c2.jpg"
+  },
+  "cro-magnon-woman": {
+    "issues": "C1 face-r10: 190,402 tris (55.6 MB); the user-approved face-repair head is a near-dense 135-165k-triangle surface.",
+    "plan": "Identity-preserving remake of the approved face-r10: body and head split by material, reduced separately with meshopt LockBorder (shared neck border kept), joined and welded before baking, each with its own 2048 albedo + baked normal atlas; rig, bones and 10 clips (spear thrust, Downed, CMU locomotion) unchanged. A new-reference body + approved-head graft was tried first and rejected: the 16k head lost the approved face softness (output/model-generation/models/cro-magnon-woman/work/candidate-02/graft/face-compare.jpg).",
+    "motions": "Idle_Loop, Walk_Loop, Run_Loop, Gather, Craft, Give, Eat, Wave, Attack, Downed (unchanged)",
+    "replacement": {
+      "url": "/models/cro-magnon-woman/model-c2.glb",
+      "lod": "/models/cro-magnon-woman/lod-c2.glb"
+    },
+    "progress": "integrated-in-branch",
+    "verification": "67,133 tris; posed deviation 0 m; clip curves within 0.14 deg; face close-up compare (cro: .../graft/face-compare3.jpg, neanderthal: output/asset-remake/guests/neanderthal-woman/face-compare.jpg); delivered heights kept"
+  },
+  "neanderthal-woman": {
+    "issues": "C1 face-r10: 218,163 tris (42.7 MB); the user-approved face-repair head is a near-dense 135-165k-triangle surface.",
+    "plan": "Identity-preserving remake of the approved face-r10: body and head split by material, reduced separately with meshopt LockBorder (shared neck border kept), joined and welded before baking, each with its own 2048 albedo + baked normal atlas; rig, bones and 10 clips (spear thrust, Downed, CMU locomotion) unchanged. A new-reference body + approved-head graft was tried first and rejected: the 16k head lost the approved face softness (output/model-generation/models/cro-magnon-woman/work/candidate-02/graft/face-compare.jpg).",
+    "motions": "Idle_Loop, Walk_Loop, Run_Loop, Gather, Craft, Give, Eat, Wave, Attack, Downed (unchanged)",
+    "replacement": {
+      "url": "/models/neanderthal-woman/model-c2.glb",
+      "lod": "/models/neanderthal-woman/lod-c2.glb"
+    },
+    "progress": "integrated-in-branch",
+    "verification": "66,179 tris; posed deviation 0 m; clip curves within 0.14 deg; face close-up compare (cro: .../graft/face-compare3.jpg, neanderthal: output/asset-remake/guests/neanderthal-woman/face-compare.jpg); delivered heights kept"
+  },
+  "berry-bush": {
+    "issues": "C1: 103,563 tris + 12,427 LOD; dark baked berries always visible, even when the bush is picked clean.",
+    "plan": "New reference without fruit (Codex v3, candidate2-ref-c): the visible berries are only the harvestable amount drawn by the game; meshopt 11.7k + xatlas + 1024 albedo/normal; no LOD. An earlier ref-a reconstruction (brown berry blobs) was rejected.",
+    "motions": "none",
+    "replacement": {
+      "url": "/models/berry-bush/model-c2.glb"
+    },
+    "progress": "integrated-in-branch",
+    "verification": "output/asset-remake/berry-bush/compare-c3.jpg (c2 = rejected ref-a)"
+  },
+  "stone-axe": {
+    "issues": "C1: 6,405 tris, no normal map.",
+    "plan": "New reference; 3.9k + 1024; grip origin, +Y shaft, head toward +X, C1 grip lengths 0.209/0.741 m.",
+    "motions": "none",
+    "replacement": {
+      "url": "/models/stone-axe/model-c2.glb"
+    },
+    "progress": "integrated-in-branch",
+    "verification": "output/asset-remake/stone-axe/compare-c2.jpg; first BiRefNet run crashed (GPU contention), requeued"
+  },
+  "valley-castle": {
+    "issues": "C1 r13: 127,254 tris, one 2048 albedo, no normal map; stone courses and carving only in the albedo.",
+    "plan": "Geometry is the measured walk atlas (shared/castle-surface-data.mts, 0.35 m grid) and the camera ray grid, so the triangles stay byte-identical; add a tangent-space normal map baked from the TRELLIS dense (ref04) placed by similarity ICP.",
+    "motions": "none",
+    "replacement": {
+      "url": "/models/valley-castle/model-r13-normal.glb"
+    },
+    "progress": "integrated-in-branch",
+    "verification": "fit rms 0.52 m / p95 1.10 m (dense vs delivered, 110 m wide); 2048 bake, first-pass misses 5,753 of 2,120,288 texels; accessor bytes identical (4 accessors); tests/castle.test.mjs 3/3; renders output/asset-remake/compare/valley-castle/pair*.png"
+  },
+  "meadow-ground": {
+    "issues": "Flat modular terrain tile, albedo only, instanced 32 m with biome shader blending (src/open-world.ts, src/paleo-materials.ts).",
+    "plan": "Evaluated geometry-preserving normal upgrade.",
+    "motions": "none",
+    "replacement": null,
+    "progress": "kept-with-reason",
+    "verification": "Delivered tile is a modular 20 m square whose walking top was deliberately flattened (top relief ~1.2 cm, opposite-edge mismatch ~1e-5 m) and whose placement.heightField drives authoritative terrain height. The TRELLIS dense is a thick slab with ~2 m relief: the 2026-10-07 trial (scripts/remake/normal_pipeline.sh) fitted at RMS 2.38 m with 2.07M of 3.34M texels unhit, so a dense-derived normal map would paint hills that the flat walk surface does not have. Rebuilding the tile would change the heightField (walk height = game spec). Kept; not adopted. Trial outputs output/model-generation/models/meadow-ground/work/candidate-02/."
+  },
+  "snow-ground": {
+    "issues": "Flat modular terrain tile, albedo only, instanced 32 m with biome shader blending (src/open-world.ts, src/paleo-materials.ts).",
+    "plan": "Evaluated geometry-preserving normal upgrade.",
+    "motions": "none",
+    "replacement": null,
+    "progress": "kept-with-reason",
+    "verification": "Delivered tile is a modular 20 m square whose walking top was deliberately flattened (top relief ~1.2 cm, opposite-edge mismatch ~1e-5 m) and whose placement.heightField drives authoritative terrain height. The TRELLIS dense is a thick slab with ~2 m relief: the 2026-10-07 trial (scripts/remake/normal_pipeline.sh) fitted at RMS 2.38 m with 2.07M of 3.34M texels unhit, so a dense-derived normal map would paint hills that the flat walk surface does not have. Rebuilding the tile would change the heightField (walk height = game spec). Kept; not adopted. Same tile construction as meadow-ground (heightField placement)."
+  },
+  "ice-ground": {
+    "issues": "Flat modular terrain tile, albedo only, instanced 32 m with biome shader blending (src/open-world.ts, src/paleo-materials.ts).",
+    "plan": "Evaluated geometry-preserving normal upgrade.",
+    "motions": "none",
+    "replacement": null,
+    "progress": "kept-with-reason",
+    "verification": "Delivered tile is a modular 20 m square whose walking top was deliberately flattened (top relief ~1.2 cm, opposite-edge mismatch ~1e-5 m) and whose placement.heightField drives authoritative terrain height. The TRELLIS dense is a thick slab with ~2 m relief: the 2026-10-07 trial (scripts/remake/normal_pipeline.sh) fitted at RMS 2.38 m with 2.07M of 3.34M texels unhit, so a dense-derived normal map would paint hills that the flat walk surface does not have. Rebuilding the tile would change the heightField (walk height = game spec). Kept; not adopted. Same tile construction as meadow-ground (heightField placement)."
+  },
+  "desert-ground": {
+    "issues": "Flat modular terrain tile, albedo only, instanced 32 m with biome shader blending (src/open-world.ts, src/paleo-materials.ts).",
+    "plan": "Evaluated geometry-preserving normal upgrade.",
+    "motions": "none",
+    "replacement": null,
+    "progress": "kept-with-reason",
+    "verification": "Delivered tile is a modular 20 m square whose walking top was deliberately flattened (top relief ~1.2 cm, opposite-edge mismatch ~1e-5 m) and whose placement.heightField drives authoritative terrain height. The TRELLIS dense is a thick slab with ~2 m relief: the 2026-10-07 trial (scripts/remake/normal_pipeline.sh) fitted at RMS 2.38 m with 2.07M of 3.34M texels unhit, so a dense-derived normal map would paint hills that the flat walk surface does not have. Rebuilding the tile would change the heightField (walk height = game spec). Kept; not adopted. Same tile construction as meadow-ground (heightField placement)."
+  },
+  "volcanic-ground": {
+    "issues": "Flat modular terrain tile, albedo only, instanced 32 m with biome shader blending (src/open-world.ts, src/paleo-materials.ts).",
+    "plan": "Evaluated geometry-preserving normal upgrade.",
+    "motions": "none",
+    "replacement": null,
+    "progress": "kept-with-reason",
+    "verification": "Delivered tile is a modular 20 m square whose walking top was deliberately flattened (top relief ~1.2 cm, opposite-edge mismatch ~1e-5 m) and whose placement.heightField drives authoritative terrain height. The TRELLIS dense is a thick slab with ~2 m relief: the 2026-10-07 trial (scripts/remake/normal_pipeline.sh) fitted at RMS 2.38 m with 2.07M of 3.34M texels unhit, so a dense-derived normal map would paint hills that the flat walk surface does not have. Rebuilding the tile would change the heightField (walk height = game spec). Kept; not adopted. Same tile construction as meadow-ground (heightField placement)."
+  },
+  "camp-cave": {
+    "issues": "",
+    "plan": "",
+    "motions": "none",
+    "replacement": null,
+    "progress": "kept-with-reason",
+    "verification": "Walkable cave (shared walk/floor/ceiling data and camera grid measured from model-r26 in tests/camp-landform.test.mjs) with projected murals; its TRELLIS dense (work/trellis/dense-res1024-seed42.glb per assets/camp-cave/README.md) is not on this host, so a lineage-preserving re-bake is impossible here. Kept."
+  },
+  "camp-mountain": {
+    "issues": "",
+    "plan": "",
+    "motions": "none",
+    "replacement": null,
+    "progress": "kept-with-reason",
+    "verification": "Ray-projected TRELLIS massif (r15) with measured LOD switching and cave roof fitting; its source massif-v2-res1024-seed42.glb is not on this host and the surface is hash-locked by tests/camp-landform.test.mjs. Kept."
+  },
+  "river-water": {
+    "issues": "",
+    "plan": "",
+    "motions": "none",
+    "replacement": null,
+    "progress": "kept-with-reason",
+    "verification": "Water sheet whose look comes from runtime shaders (ocean waves, shoreline discard, marsh pools in src/paleo-materials.ts/src/world-scenery.ts); a baked normal would fight the animated water. Kept."
+  },
+  "flint-spear": {
+    "issues": "",
+    "plan": "",
+    "motions": "none",
+    "replacement": null,
+    "progress": "kept-with-reason",
+    "verification": "Legacy asset referenced only by src/model-review.ts; not equipped or placed in the game (wooden/obsidian spears are). Kept."
+  },
+  "crow-shaman": {
+    "issues": "C1 motion-r04: 65,750 tris, single 2048 albedo, no normal map; LOD 9,862.",
+    "plan": "Approved design (user-selected 白羽の呪術師): transfer route — meshopt subset of the delivered rest surface, xatlas, albedo+normal bake, skin-weight transfer; 24 bones and 6 clips unchanged. Faction props (code-built primitives) are a separate item (__codeBuilt crow-faction-props).",
+    "motions": "Attack/Death/Hit/Idle_Loop/Run_Loop/Walk_Loop unchanged (60 Hz source)",
+    "replacement": {
+      "url": "/models/crow-shaman/model-c2.glb"
+    },
+    "progress": "integrated-in-branch",
+    "verification": "33,548 tris (LOD 10,064 @28 m); bake misses 2,472/1,504,543; unweighted 0; renders output/asset-remake/compare/crow-shaman/sheet-t01.jpg; tests/enemies.test.mjs 21/21. TRELLIS 0738 (new-reference crow) kept queued only for comparison. In game (output/asset-remake/game/final-r1): every rank loads with its props on the right bones, 0 page errors."
+  },
+  "neanderthal-hunter": {
+    "issues": "C1 human-r10: 54,422 tris; putty-like grey hair, faceted face and beard at full-body resolution; no normal map. Also used by the NPC Oru (nea male).",
+    "plan": "Same route as the Cro-Magnon male: new body reference + dedicated head reference (Codex image_gen) -> TRELLIS body (res1024/tex1024) and head (res1024/tex512) -> similarity-ICP head graft (body neck cut 1.48 m, head cut 1.40 m to keep the reconstructed beard, chin band 1.38-1.48 m, head white plinth/bust trimmed) -> rig_human_c2 at the delivered 1.72 m -> spear thrust / Downed / CMU locomotion -> LOD 0.2.",
+    "motions": "Idle_Loop, Walk_Loop, Run_Loop, Gather, Craft, Give, Eat, Wave, Attack (spear), Downed",
+    "replacement": {
+      "url": "/models/neanderthal-hunter/model-c2.glb",
+      "lod": "/models/neanderthal-hunter/lod-c2.glb"
+    },
+    "progress": "integrated-in-branch",
+    "verification": "53,176 tris (LOD 10,635); head graft r01-r03 kept (r01 blocky body beard, r02 clipped collar + white plinth, r03 adopted): output/asset-remake/compare/neanderthal-hunter/head-r0*.jpg; clip poses c2-clips-sheet.jpg; 37 character/human/downed/spear tests pass. In game: one of five synced players at camp (output/asset-remake/game/final-r1/players-front.png)."
+  },
+  "cat-kunoichi": {
+    "issues": "C1 human-r10: 66,766 tris, single 2048 JPEG; smeared eyes and blob-like face at full-body resolution; putty hair.",
+    "plan": "New body + dedicated head references -> TRELLIS -> graft (shape ICP incl. ears; skin-only ICP failed, kept in graft/failed-align-r01) -> rig_human_c2 at 1.68 m with --accent none (C1 has no TribeAccent) -> Downed / CMU locomotion -> katana Attack retargeted from the delivered clip (scripts/remake/retarget_clip.py). Transfer t01 (43,946 tris) kept as fallback only: it preserves the smeared face.",
+    "motions": "Attack (katana, retargeted, 0.6 s), Idle_Loop, Walk_Loop, Run_Loop, Gather, Craft, Give, Eat, Wave, Downed",
+    "replacement": {
+      "url": "/models/cat-kunoichi/model-c2.glb",
+      "lod": "/models/cat-kunoichi/lod-c2.glb"
+    },
+    "progress": "integrated-in-branch",
+    "verification": "52,420 tris (LOD 10,484); neck seam iterations r02-r11 kept (output/asset-remake/compare/cat-kunoichi/neck-r0*.jpg); clips and head before/after c2-sheet.jpg; 42 character/human/downed/fantasy/katana tests pass. Known: a small dark notch at the throat front in close-up. In game: one of five synced players at camp holding the katana (output/asset-remake/game/final-r1/players-front.png)."
+  },
+  "obsidian-spear": {
+    "issues": "C1: 5,679 tris; spear shaft and head from the old flint-spear lineage, no normal map.",
+    "plan": "Candidate 2 reference (Codex image_gen) -> TRELLIS-2 1024 -> meshopt -> xatlas -> albedo + baked normal. Grip origin at 0.340 of the length (C1 frame), shaft +Y.",
+    "motions": "none (held at Grip.R)",
+    "replacement": {
+      "url": "/models/obsidian-spear/model-c2.glb"
+    },
+    "progress": "integrated-in-branch",
+    "verification": "3,995 tris, p95 0.6 mm; grip-to-butt 0.7133 / grip-to-tip 1.3853 m (C1 0.7136 / 1.3854). In game: held at GripR when an obsidian head is fitted, visible at idle and in the real F thrust (output/asset-remake/game/final-weapons)."
+  },
+  "kunoichi-katana": {
+    "issues": "C1: 22,201 tris for a hand weapon.",
+    "plan": "Candidate 2 reference (Codex image_gen) -> TRELLIS-2 1024 -> meshopt -> xatlas -> albedo + baked normal. Grip origin at 0.1508 of the length (C1), shaft +Y.",
+    "motions": "none (held at Grip.R; katana-pose.ts)",
+    "replacement": {
+      "url": "/models/kunoichi-katana/model-c2.glb"
+    },
+    "progress": "integrated-in-branch",
+    "verification": "5,997 tris, p95 0.3 mm; grip-to-butt 0.1583 / grip-to-tip 0.8917 m (C1 0.1583 / 0.8917). In game: held by the cat kunoichi peer (output/asset-remake/game/final-r1/players-front.png)."
+  },
+  "obsidian-blade": {
+    "issues": "C1: the obsidian spear head cut out of the spear mesh (1,501 tris), crude wavy faces.",
+    "plan": "Candidate 2 reference (Codex image_gen) -> TRELLIS-2 1024 -> meshopt -> xatlas -> albedo + baked normal. Reference shows a lying knapped blade; scaled by its length (0.291 m) and stood tip-up in the spear grip frame (base 1.094 m) by a root node transform so the knapping-table placement is unchanged.",
+    "motions": "none",
+    "replacement": {
+      "url": "/models/obsidian-blade/model-c2.glb"
+    },
+    "progress": "integrated-in-branch",
+    "verification": "1,500 tris, p95 0.5 mm; output/asset-remake/compare/weapons/blade.jpg (faint ochre matte fringe on the edges). Not placed in the current world: SHELL_BEDS / MIDDEN_SITES / KNAPPING_SITES (shared/coastal-sites.mts) are filtered to the gulf region removed on 2026-09-22, so they are all empty and src/coastal-renderer.ts never requests this asset; verified by renders only."
+  },
+  "cockle-shell": {
+    "issues": "C1: 35,645 tris for a 16 cm instanced shell (up to 12 per bed), no normal map, small black specks.",
+    "plan": "New reference + TRELLIS compared against reducing the delivered surface; the reduction kept the good closed two-valve cockle.",
+    "motions": "none",
+    "replacement": {
+      "url": "/models/cockle-shell/model-c2.glb"
+    },
+    "progress": "integrated-in-branch",
+    "verification": "1,474 tris, p95 1.6 mm; output/asset-remake/compare/cockle-shell/sheet.jpg (new TRELLIS rejected: flat, black slit) and sheet2.jpg (adopted reduction ~identical to C1). Not placed in the current world: SHELL_BEDS / MIDDEN_SITES / KNAPPING_SITES (shared/coastal-sites.mts) are filtered to the gulf region removed on 2026-09-22, so they are all empty and src/coastal-renderer.ts never requests this asset; verified by renders only."
+  },
+  "shell-midden": {
+    "issues": "C1: 92,239 tris, pale lumpy shells, no normal map.",
+    "plan": "New reference + TRELLIS vs reduction of the C1 surface; TRELLIS chosen.",
+    "motions": "none",
+    "replacement": {
+      "url": "/models/shell-midden/model-c2.glb"
+    },
+    "progress": "integrated-in-branch",
+    "verification": "8,940 tris, p95 6.0 mm, 1.5 m wide (height 0.43 vs 0.39 m; no collision footprint); output/asset-remake/compare/shell-midden/sheet.jpg. Not placed in the current world: SHELL_BEDS / MIDDEN_SITES / KNAPPING_SITES (shared/coastal-sites.mts) are filtered to the gulf region removed on 2026-09-22, so they are all empty and src/coastal-renderer.ts never requests this asset; verified by renders only."
+  },
+  "desert-cactus": {
+    "issues": "C1: 24,435 tris, smooth ribs, reddish blob base, no normal map.",
+    "plan": "New reference -> TRELLIS -> 8,991 tris + 2 LODs, 2048 albedo + baked normal; collision footprint re-measured with the same tool.",
+    "motions": "none",
+    "replacement": {
+      "url": "/models/desert-cactus/model-c2.glb"
+    },
+    "progress": "integrated-in-branch",
+    "verification": "output/asset-remake/compare/desert-cactus/sheet.jpg; footprint 16 cells / 10 boxes (C1 see qa/footprint-rev03.json), 0 misses; region-features/adventures/paleo-world tests 23/23. In game: region loads and renders (output/asset-remake/game/final-r1/landmark-desert-cactus-1.png)."
+  },
+  "glacier-spires": {
+    "issues": "C1: soft, rounded ice slabs, no normal map.",
+    "plan": "New reference -> TRELLIS -> 11,999 tris + LODs 1,799/419, 2048 albedo + baked normal; footprint re-measured with the C1 algorithm (scripts/remake/measure_landmark_footprint.py, reproduces the C1 footprint byte-for-byte on the C1 GLB).",
+    "motions": "none",
+    "replacement": {
+      "url": "/models/glacier-spires/model-c2.glb"
+    },
+    "progress": "integrated-in-branch",
+    "verification": "output/asset-remake/compare/glacier-spires/sheet.jpg; footprint 187 cells / 158 boxes (C1 182 / 149), plan envelope within 5 cm; tests/landmarks, paleo-world, open-world 17/17. A few dark crevices read as deep concavities. In game: renders at glacier-gate (output/asset-remake/game/final-r1/landmark-glacier-gate.png)."
+  },
+  "volcanic-cone": {
+    "issues": "C1: 13,382 tris, smooth clay-like flanks, no normal map; lava is read from the albedo by the landmark shader.",
+    "plan": "New reference + TRELLIS tried and rejected (lava channels and crater glow lost, 11% taller). Geometry-preserving normal upgrade from the C1 TRELLIS dense instead (fit + bake on the delivered UVs, appended WebP normal map).",
+    "motions": "none",
+    "replacement": {
+      "url": "/models/volcanic-cone/model-c1-normal.glb"
+    },
+    "progress": "integrated-in-branch",
+    "verification": "Accessor bytes identical (4); bake misses 729 / 2,162,402 texels; footprint unchanged (hash updated in shared/landmark-bounds.mts); output/asset-remake/compare/volcanic-cone/sheet.jpg (rejected TRELLIS) and normal-sheet.jpg (adopted). tests/landmarks pass. In game: renders with the lava glow at volcano-main (output/asset-remake/game/final-r1/landmark-volcano-main.png)."
+  },
+  "volcanic-basalt-columns": {
+    "issues": "C1: 62,337 tris, flat dark columns, no normal map.",
+    "plan": "New reference -> TRELLIS -> 13,608 tris + LOD 4,199, 2048 albedo + baked normal; scaled by the C1 plan width (3.86 m) to keep the collision footprint inside C1 (height 4.22 vs 4.60 m); footprint re-measured.",
+    "motions": "none",
+    "replacement": {
+      "url": "/models/volcanic-basalt-columns/model-c2.glb"
+    },
+    "progress": "integrated-in-branch",
+    "verification": "output/asset-remake/compare/volcanic-basalt-columns/sheet.jpg (m01 shown at 4.6 m; adopted m02 is the same mesh at 0.917 scale); footprint 53 cells / 36 boxes (C1 58 / 35), 0 misses; region/adventure/paleo tests 23/23. In game: region loads (output/asset-remake/game/final-r1/landmark-volcanic-basalt-columns-1.png)."
+  },
+  "meadow-grass": {
+    "issues": "Instanced tuft (42,587 tris near, impostor beyond 1.1 m). Its look was tuned with the user over several rounds (wide smooth blades, root caps cut to the placement sink, leaf-green), and BLADE_ALBEDO (measured from its texture) drives the meadow ground tint.",
+    "plan": "New reference + TRELLIS reconstruction evaluated.",
+    "motions": "none",
+    "replacement": null,
+    "progress": "kept-with-reason",
+    "verification": "Rejected the new reconstruction (thin yellow wisps, disconnected blades; would also re-tint the meadow ground): output/asset-remake/compare/meadow-grass/sheet.jpg. Kept the user-approved tuft."
+  },
+  "meadow-sprig": {
+    "issues": "Instanced two-blade sprig (11,546 tris near); user-approved shape and green, root cap cut to the 4 cm sink, its blade albedo feeds the meadow ground tint.",
+    "plan": "New reference + TRELLIS reconstruction evaluated.",
+    "motions": "none",
+    "replacement": null,
+    "progress": "kept-with-reason",
+    "verification": "Rejected: same shape, yellower blades that would re-tint the meadow ground (output/asset-remake/compare/meadow-sprig/sheet.jpg). Kept the user-approved sprig."
+  },
+  "valley-pine": {
+    "issues": "Smooth-canopy pine (12,609 tris, LOD 5,043) adopted 2026-09-10 after the user rejected granular needle foliage as unsettling.",
+    "plan": "New reference + TRELLIS reconstruction evaluated against that requirement.",
+    "motions": "none",
+    "replacement": null,
+    "progress": "kept-with-reason",
+    "verification": "Rejected: the new reconstruction has granular clumped needles (the rejected look): output/asset-remake/compare/valley-pine/sheet.jpg. Kept the user-approved smooth canopy."
+  }
+}

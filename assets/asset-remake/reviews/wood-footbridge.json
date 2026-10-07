@@ -1,0 +1,26 @@
+{
+  "key": "wood-footbridge",
+  "decision": "adopt",
+  "sha256": "88a56d09a717e9ae0a2b01c9c3635d69a4bf219aa0d7a0630c0ddc0609feddfe",
+  "url": "/models/wood-footbridge/model-c2.glb",
+  "bytes": 1814304,
+  "triangles": 8987,
+  "candidate": 2,
+  "revision": "c2-m02",
+  "status": "remake-candidate-2-integrated",
+  "reviewer": "Claude Code (Opus 5.5)",
+  "date": "2026-10-07",
+  "issues": "C1: 5,876 tris, no normal map.",
+  "plan": "New reference (weathered log bridge: split planks, round posts, lashed rails); meshopt 9k + xatlas + 2048; scaled x1.05 so the flat deck between rails is 2.34 m wide (C1 2.33); BRIDGE/walkBounds passage unchanged, deckHeightMetres re-measured 0.657 by downward rays.",
+  "motions": "none",
+  "evidence": "output/asset-remake/wood-footbridge/compare-c2.jpg; scripts/remake/measure_bridge.py, output/asset-remake/bridge-width.py",
+  "previousDelivery": {
+    "url": "/models/wood-footbridge/model.glb",
+    "sha256": "629a8ec5db3dd16b7a126b1c8ea4877a5ec0bc4037017e0a2a53ec2f63e3a369",
+    "triangles": 5876,
+    "bytes": 1821888,
+    "candidate": 1,
+    "revision": null
+  },
+  "note": "Adoption inside the remake branch; in-game multi-player QA and the performance comparison are tracked in docs/asset-remake/PROGRESS.md."
+}

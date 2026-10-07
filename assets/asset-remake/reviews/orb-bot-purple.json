@@ -1,0 +1,26 @@
+{
+  "key": "orb-bot-purple",
+  "decision": "adopt",
+  "sha256": "d6ed48cf1f7a8b5e7a2cd1fa492312350b2987c33a4cf5027dbca863d2b04847",
+  "url": "/models/orb-bot-purple/model-c2.glb",
+  "bytes": 277544,
+  "triangles": 4000,
+  "candidate": 2,
+  "revision": "c2-t01",
+  "status": "remake-candidate-2-integrated",
+  "reviewer": "Claude Code (Opus 5.5)",
+  "date": "2026-10-07",
+  "issues": "C1: 4096 texture on a 0.28 m bot (45 instances share 9 textures), up to 41.6k tris, no normal map.",
+  "plan": "<=4k tris + 1024 albedo/normal from the delivered surface; scripts/remake/transfer_reduce.py (delivered rest surface reduced with meshopt, xatlas charts, albedo + tangent normal baked from the delivered surface, skin weights by Data Transfer; armature, bone names and clips re-exported at the source key rate).",
+  "motions": "7 clips, 2 bones",
+  "evidence": "posed deviation 0 m vs delivered skin (kept vertices are a subset); clip curves within 0.05-0.2 deg; render compare output/asset-remake/guests/orb-bot-purple/compare-views.jpg",
+  "previousDelivery": {
+    "url": "/models/orb-bot-purple/model-r03.glb",
+    "sha256": "5cc2232ba84cacbd2616ec6979757f41822cb4d845c7cbe873888756f6059e96",
+    "triangles": 5206,
+    "bytes": 549020,
+    "candidate": 1,
+    "revision": "03"
+  },
+  "note": "Adoption inside the remake branch; in-game multi-player QA and the performance comparison are tracked in docs/asset-remake/PROGRESS.md."
+}

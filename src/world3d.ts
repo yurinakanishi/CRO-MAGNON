@@ -63,6 +63,7 @@ import { orientKatana } from './katana-pose.js';
 import { SpellEffects } from './spell-effects.js';
 import {
   createPrayerSeal,
+  crowPropKeys,
   decorateCrowFaction,
   disposePrayerSeal,
   pulsePrayerSeal,
@@ -92,7 +93,6 @@ import { BOATING, SeaCollision } from '../shared/boats.mjs';
 import { RIDING } from '../shared/riding.mjs';
 import { seaBoatSpeed } from '../shared/maritime-weather.mjs';
 import {
-  FRUIT_RADIUS,
   berryAnchors,
   fruitCount,
   meatPieceVisibility,
@@ -196,8 +196,6 @@ export class WorldRenderer {
   declare fpsFrames: number;
   declare lastFpsTime: number;
   declare renderer: THREE.WebGLRenderer;
-  declare fruitGeometry: THREE.SphereGeometry | undefined;
-  declare fruitMaterial: THREE.MeshStandardMaterial | undefined;
   declare scene: THREE.Scene<THREE.Object3DEventMap>;
   declare spells: SpellEffects;
   declare camera: THREE.PerspectiveCamera;
@@ -621,30 +619,53 @@ export class WorldRenderer {
   /** Berry fruit is attached once to the verified bush. */
   decorateResource(item, resource) {
     if (resource.type === 'berry') {
-      this.fruitGeometry ??= new THREE.SphereGeometry(FRUIT_RADIUS, 10, 8);
-      this.fruitMaterial ??= new THREE.MeshStandardMaterial({
-        color: '#d0202c',
-        emissive: '#8a0a14',
-        emissiveIntensity: 0.55,
-        roughness: 0.4,
-        metalness: 0,
-      });
+      const seed = seedFromId(String(resource.id));
       const anchors = berryAnchors(
         this.worldAssets.modelPoints(item.key, item.surface),
         fruitCount(resource.maxAmount, resource.maxAmount),
-        seedFromId(String(resource.id)),
+        seed,
       );
       const fruit = new THREE.Group();
       fruit.name = 'berry-fruit';
-      for (const [x, y, z] of anchors) {
-        const berry = new THREE.Mesh(this.fruitGeometry, this.fruitMaterial);
-        berry.position.set(x, y, z);
-        berry.castShadow = false;
-        fruit.add(berry);
-      }
       // A direct child of the LOD root stays visible at every level.
       item.model.add(fruit);
       item.fruit = fruit;
+      this.attachBerryClusters(item, fruit, anchors, seed);
+    }
+  }
+
+  /** One TRELLIS berry-cluster prop per fruit anchor; the count still shows the remaining amount. */
+  async attachBerryClusters(item, fruit, anchors, seed) {
+    try {
+      const template = await this.worldAssets.createEquipment('berry-cluster');
+      if (!template || this.disposed || item.fruit !== fruit) return;
+      template.updateMatrixWorld(true);
+      const box = new THREE.Box3().setFromObject(template);
+      template.traverse((node) => {
+        if (!isMesh(node)) return;
+        node.castShadow = false;
+        // The fruit marks a harvestable bush from afar, as the earlier glowing spheres did: the
+        // shared material emits its own albedo a little.
+        const material = node.material as THREE.MeshStandardMaterial;
+        if (!material.userData.berryGlow) {
+          material.emissive.set('#ffffff');
+          material.emissiveMap = material.map;
+          material.emissiveIntensity = 0.35;
+          material.userData.berryGlow = true;
+          material.needsUpdate = true;
+        }
+      });
+      anchors.forEach(([x, y, z], index) => {
+        const cluster = index ? template.clone() : template;
+        // Anchors are fruit centres; the prop's pivot is its bottom centre.
+        cluster.position.set(x, y - (box.max.y - box.min.y) / 2, z);
+        cluster.rotation.y = (seed + index * 2.399963) % (Math.PI * 2);
+        fruit.add(cluster);
+      });
+      if (item.resource) this.applyResourceAmount(item, item.resource);
+    } catch (error) {
+      if (!this.disposed)
+        this.failWorld('検証済みの3D素材を読み込めませんでした。再読み込みしてください。', error);
     }
   }
 
@@ -711,13 +732,21 @@ export class WorldRenderer {
     try {
       const actor = await this.worldAssets.createEnemy(entity.state.modelKey);
       if (!actor) return;
-      if (this.disposed || this.enemies.get(id) !== entity) {
+      // Crow rank regalia are prop assets loaded with the actor, so a rank never shows bare.
+      const crow = entity.state.modelKey === 'crow-shaman';
+      const propKeys = crow ? crowPropKeys(entity.state.crowRole) : [];
+      const props = await Promise.all(propKeys.map((key) => this.worldAssets.createEquipment(key)));
+      if (this.disposed || this.enemies.get(id) !== entity || props.some((prop) => !prop)) {
         actor.dispose();
         return;
       }
       entity.actor = actor;
-      if (entity.state.modelKey === 'crow-shaman')
-        decorateCrowFaction(actor.root, entity.state.crowRole);
+      if (crow)
+        decorateCrowFaction(
+          actor.root,
+          entity.state.crowRole,
+          Object.fromEntries(propKeys.map((key, index) => [key, props[index]])),
+        );
       entity.model.add(actor.root);
       entity.model.scale.setScalar(entity.state.scale ?? 1);
       this.updateAssetDiagnostics();
@@ -1390,7 +1419,7 @@ export class WorldRenderer {
               clip: predicted.moving ? (predicted.running ? 'Run_Loop' : 'Walk_Loop') : 'Idle_Loop',
             }
           : raw;
-      animal.seat ??= mammothSeat(animal.actor.root);
+      animal.seat ??= mammothSeat(animal.actor.root, animal.actor.asset);
       const phase = state?.phase ?? 'alive';
       animal.model.visible = !!state && (phase === 'alive' || phase === 'dying');
       animal.meat.visible = !!state && phase === 'meat';

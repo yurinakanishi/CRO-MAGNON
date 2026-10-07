@@ -1,0 +1,23 @@
+{
+  "key": "valley-castle",
+  "decision": "adopt",
+  "sha256": "7073c6f763aa5d65efe2cb2ba1f772028b9c805c4f4d3ce00d9d8d9f9178a26f",
+  "url": "/models/valley-castle/model-r13-normal.glb",
+  "bytes": 10615036,
+  "triangles": 127254,
+  "candidate": 1,
+  "revision": "13",
+  "status": "remake-normal-upgrade-integrated",
+  "reviewer": "Claude Code (Opus 5.5)",
+  "date": "2026-10-07",
+  "issues": "C1 r13: 127,254 tris, one 2048 albedo, no normal map; stone courses and carving only in the albedo.",
+  "plan": "Geometry is the measured walk atlas (shared/castle-surface-data.mts, 0.35 m grid) and the camera ray grid, so the triangles stay byte-identical; add a tangent-space normal map baked from the TRELLIS dense (ref04) placed by similarity ICP.",
+  "motions": "none",
+  "evidence": "fit rms 0.52 m / p95 1.10 m (dense vs delivered, 110 m wide); 2048 bake, first-pass misses 5,753 of 2,120,288 texels; accessor bytes identical (4 accessors); tests/castle.test.mjs 3/3; renders output/asset-remake/compare/valley-castle/pair*.png",
+  "previousDelivery": {
+    "url": "/models/valley-castle/model-r13.glb",
+    "sha256": "2a271bbc12e1b331da6468d5f84f1db173beeb284fdebfdde7c56b613e48dc90",
+    "bytes": 8889164
+  },
+  "note": "Adoption inside the remake branch; in-game multi-player QA and the performance comparison are tracked in docs/asset-remake/PROGRESS.md."
+}

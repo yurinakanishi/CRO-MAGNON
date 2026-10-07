@@ -1,0 +1,26 @@
+{
+  "key": "stone-firepit",
+  "decision": "adopt",
+  "sha256": "62d5e610354e665a29c069ba1e121cf1ddd519ac12da1311c8b24236289a9cb0",
+  "url": "/models/stone-firepit/model-c2.glb",
+  "bytes": 1412152,
+  "triangles": 8356,
+  "candidate": 2,
+  "revision": "c2-m02",
+  "status": "remake-candidate-2-integrated",
+  "reviewer": "Claude Code (Opus 5.5)",
+  "date": "2026-10-07",
+  "issues": "C1: 31.5k tris, 1024 albedo, constant roughness, no normal map; stones uniformly pale.",
+  "plan": "New reference; meshopt reduction to 8.6k, xatlas charts, albedo/normal baked with miss fill and back-face flip; LOD 3.1k at 14 m; footprint kept at 1.62 m.",
+  "motions": "none",
+  "evidence": "neutral compare output/asset-remake/stone-firepit/compare-c2r04.jpg and compare-xatlas.jpg (Smart UV vs xatlas)",
+  "previousDelivery": {
+    "url": "/models/stone-firepit/model.glb",
+    "sha256": "d47aa67f9987cacd61d523d53622e33ebf0778c9a03f9e68559ad3f6db20f65a",
+    "triangles": 31466,
+    "bytes": 4326524,
+    "candidate": 1,
+    "revision": null
+  },
+  "note": "Adoption inside the remake branch; in-game multi-player QA and the performance comparison are tracked in docs/asset-remake/PROGRESS.md."
+}

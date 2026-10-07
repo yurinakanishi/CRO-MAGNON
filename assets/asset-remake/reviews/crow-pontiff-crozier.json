@@ -1,0 +1,19 @@
+{
+  "key": "crow-pontiff-crozier",
+  "decision": "adopt",
+  "sha256": "b7869b75d0cc2aa2a5fb99bebcddb2405dbaf8e1e207ec0dddac1cb93a203937",
+  "url": "/models/crow-pontiff-crozier/model-c2.glb",
+  "bytes": 676740,
+  "triangles": 3494,
+  "candidate": 2,
+  "revision": "c2-m01",
+  "status": "remake-candidate-2-integrated",
+  "reviewer": "Claude Code (Opus 5.5)",
+  "date": "2026-10-07",
+  "issues": null,
+  "plan": null,
+  "motions": null,
+  "evidence": null,
+  "previousDelivery": null,
+  "note": "Adoption inside the remake branch; in-game multi-player QA and the performance comparison are tracked in docs/asset-remake/PROGRESS.md."
+}

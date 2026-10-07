@@ -2,15 +2,15 @@
   "modelKey": "howkey-scientist",
   "name": "Howkey 科学使い",
   "kind": "humanoid",
-  "candidate": 1,
-  "revision": "11",
-  "status": "integrated-reviewed-prototype",
+  "candidate": 2,
+  "revision": "c2-t01",
+  "status": "remake-candidate-2-integrated",
   "species": "howkey",
   "gender": "female",
-  "url": "/models/howkey-scientist/model-r11.glb",
-  "sha256": "f6366ce469d719b2456de06d776bf029e2fdc0a80e9f0ed7c4a51c6bb0ad8c83",
-  "bytes": 29530492,
-  "triangles": 66406,
+  "url": "/models/howkey-scientist/model-c2.glb",
+  "sha256": "229a82a35ddaec11ad82ab5e616e8952f1740ecd9c441c259aba8c6cd121a509",
+  "bytes": 10170824,
+  "triangles": 49079,
   "bones": 28,
   "upAxis": "Y",
   "forwardAxis": "+Z",
@@ -20,7 +20,7 @@
     "pivot": "ground-centred",
     "min": [
       -0.3870612117523622,
-      -9.275617246731705e-08,
+      -9.275617246731705e-8,
       -0.23046672605980648
     ],
     "max": [
@@ -141,33 +141,49 @@
   },
   "lods": [
     {
-      "url": "/models/howkey-scientist/lod-performance-r02.glb",
-      "sha256": "7e0fe5d847dcb1956ee575941e7396a63f663a40d43db08fe2e5a06996d0e2d2",
-      "bytes": 912884,
-      "triangles": 9960,
+      "url": "/models/howkey-scientist/lod-c2.glb",
+      "sha256": "8269f0fc24906fcc51e4758823370b4b6da60185d3cbd3eca665330ca4dc000b",
+      "bytes": 803776,
+      "triangles": 9815,
       "distanceMetres": 28,
       "purpose": "animated-medium-lod-geometry"
     }
   ],
   "provenance": {
-    "provider": "Codex",
-    "claudeUsed": false,
-    "referenceGenerator": "Built-in imagegen",
-    "referenceImage": "assets/howkey-scientist/source/reference-v2.png",
-    "referenceSha256": "5907781a465bcb50cde4ecdc650d5028f71b8d69c0b79c121ce9e37b3aeffaad",
-    "reconstruction": "Local TRELLIS-2 v0.8.1; retained dense geometry, source-preserving reduction and 28-joint skin.",
-    "candidateFile": "output/model-generation/models/howkey-scientist/work/final/revision-11/howkey-scientist/model-downed-r01.glb",
-    "visualReview": "assets/howkey-scientist/adoption.json"
+    "provider": "Claude Code (Opus 5.5)",
+    "claudeUsed": true,
+    "referenceGenerator": "none: derived from the delivered, user-approved surface (identity unchanged)",
+    "referenceImage": "public/models/howkey-scientist/model-r11.glb",
+    "referenceSha256": "f6366ce469d719b2456de06d776bf029e2fdc0a80e9f0ed7c4a51c6bb0ad8c83",
+    "reconstruction": "no new reconstruction; the delivered rest surface is the bake and skin-weight source",
+    "denseFile": "public/models/howkey-scientist/model-r11.glb",
+    "denseSha256": "f6366ce469d719b2456de06d776bf029e2fdc0a80e9f0ed7c4a51c6bb0ad8c83",
+    "processReport": "output/model-generation/models/howkey-scientist/work/candidate-02/transfer/t01/report.json",
+    "rigReport": null,
+    "pipeline": "scripts/remake/ (trellis_queue.py, remake_process.py, rig_*.py); docs/asset-remake/PLAN.md",
+    "previousDelivery": {
+      "url": "/models/howkey-scientist/model-r11.glb",
+      "sha256": "f6366ce469d719b2456de06d776bf029e2fdc0a80e9f0ed7c4a51c6bb0ad8c83",
+      "triangles": 66406,
+      "bytes": 29530492,
+      "candidate": 1,
+      "revision": "11"
+    },
+    "previousProvenance": {
+      "provider": "Codex",
+      "claudeUsed": false,
+      "referenceGenerator": "Built-in imagegen",
+      "referenceImage": "assets/howkey-scientist/source/reference-v2.png",
+      "referenceSha256": "5907781a465bcb50cde4ecdc650d5028f71b8d69c0b79c121ce9e37b3aeffaad",
+      "reconstruction": "Local TRELLIS-2 v0.8.1; retained dense geometry, source-preserving reduction and 28-joint skin.",
+      "candidateFile": "output/model-generation/models/howkey-scientist/work/final/revision-11/howkey-scientist/model-downed-r01.glb",
+      "visualReview": "assets/howkey-scientist/adoption.json"
+    },
+    "transfer": "scripts/remake/transfer_reduce.py (meshopt subset of delivered vertices, xatlas charts, albedo/normal bake with miss fill and back-face flip, Data Transfer skin weights; armature, bone names and clips re-exported unchanged)",
+    "visualReview": "assets/asset-remake/reviews/howkey-scientist.json"
   },
   "notes": [
-    "One completed Candidate 1; rejected reconstructions and intermediate rigs retained.",
-    "Generated full-body interpretation of two user portraits; trousers, shoes and back are inferred.",
-    "28 joints, maximum four influences. Coat and hair secondary bones; rigid facial features and glasses.",
-    "CMU 35_01 walking and 09_01 running; original clips and geometry preserved through motion retargeting.",
-    "Double-sided coat with repaired spatially continuous skin; this is a skinned garment, not cloth simulation.",
-    "Browser confirms exact SHA, 10 clips, normal/half-speed playback from two views, pause/scrub, quarter speed, rotation/zoom/reset and mobile controls. Zero external requests and page errors.",
-    "Source-derived medium geometry for 28 m distance and simplified shadows. Runtime shares the exact close-model materials and animated skeleton.",
-    "Game QA passed in an isolated, unsaved world: two renderers and three additional peers, actions, science hit synchronization, pets, riding, recovery, reload and mobile layouts. Physical controllers and long-duration exhibition use remain untested."
+    "Remake C2 of the delivered Howkey r11: same surface, 4096 texture replaced by 2048 albedo + baked normal; 28 bones and 10 clips (left-hand science pulse) unchanged. Posed deviation from the delivered skin 0 m (kept vertices are a subset); clip curves within 0.04 deg (resampling). 49079 triangles (was 66406), textures 2048 WebP + baked normal."
   ],
   "gameQA": "assets/howkey-scientist/README.md"
 }

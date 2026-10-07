@@ -1,12 +1,14 @@
 import { SCENERY } from './scenery-layout.mjs';
-import { MODEL_BOUNDS } from './model-bounds.mjs';
 import { moveActor } from './movement.mjs';
 import { animalIsSolid, initialHuntState, stopActor } from './hunting.mjs';
 import { enemyIsSolid } from './combat.mjs';
 import { updateRiddenAnimal } from './riding.mjs';
 import { mammothNavigation } from './mammoth-navigation.mjs';
 
-export const animalRadius = (scale) => MODEL_BOUNDS['woolly-mammoth'].radius * scale + 0.08;
+// Gameplay body radius of the mammoth at scale 1: the Candidate 1 delivery's measured horizontal radius. The
+// 2026-10 asset remake keeps hit sizes unchanged, so this no longer follows the remade (slightly wider) mesh.
+export const MAMMOTH_BODY_RADIUS = 2.8673143603559734;
+export const animalRadius = (scale) => MAMMOTH_BODY_RADIUS * scale + 0.08;
 export const actorObstacle = (actor) => ({
   id: actor.id,
   type: 'circle',

@@ -1,0 +1,19 @@
+{
+  "key": "crow-ivory-vestment",
+  "decision": "adopt",
+  "sha256": "492aa9059767549c9436dbd71846751cead5b3becc97a5eda9d3a60bac4867fa",
+  "url": "/models/crow-ivory-vestment/model-c2.glb",
+  "bytes": 892864,
+  "triangles": 2584,
+  "candidate": 2,
+  "revision": "c2-m01",
+  "status": "remake-candidate-2-integrated",
+  "reviewer": "Claude Code (Opus 5.5)",
+  "date": "2026-10-07",
+  "issues": null,
+  "plan": null,
+  "motions": null,
+  "evidence": null,
+  "previousDelivery": null,
+  "note": "Adoption inside the remake branch; in-game multi-player QA and the performance comparison are tracked in docs/asset-remake/PROGRESS.md."
+}

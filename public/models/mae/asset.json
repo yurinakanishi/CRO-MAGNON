@@ -2,13 +2,13 @@
   "modelKey": "mae",
   "name": "mae",
   "kind": "companion",
-  "candidate": 1,
-  "revision": "01",
-  "status": "integrated-reviewed-prototype",
-  "url": "/models/mae/model-r01.glb",
-  "sha256": "3fb4776d3830cda7b00dd1eeadaf4c000ebe7f41af38ccfe0ee55909e1309405",
-  "bytes": 17886104,
-  "triangles": 24836,
+  "candidate": 2,
+  "revision": "c2-t02",
+  "status": "remake-candidate-2-integrated",
+  "url": "/models/mae/model-c2.glb",
+  "sha256": "0da0055ef3dbd6c6dda1cf6312e9d098c6eb34c63529891e9a4dc8b1bc5d4563",
+  "bytes": 1715504,
+  "triangles": 10843,
   "bones": 4,
   "upAxis": "Y",
   "forwardAxis": "+Z",
@@ -81,31 +81,52 @@
   },
   "lods": [
     {
-      "url": "/models/mae/lod-r01.glb",
-      "sha256": "3fbb5c47bba03031a39e86b5af843895110cbcd800e7a7f6f57ebbcff81623c6",
-      "bytes": 1668032,
-      "triangles": 19868,
+      "url": "/models/mae/lod-c2.glb",
+      "sha256": "0b3b12b80aa3da4dd9b081ae949e407d3a5b2f37f2648dd29e350d25b9fb1492",
+      "bytes": 220768,
+      "triangles": 3252,
       "distanceMetres": 9,
       "purpose": "animated-medium-lod-geometry"
     }
   ],
   "provenance": {
-    "provider": "Codex",
-    "claudeUsed": false,
-    "referenceGenerator": "Built-in imagegen",
-    "referenceImage": "assets/mae/source/reference-v1.png",
-    "referenceSha256": "861ac733cc0a6e1868ae4a5ae9d85984daa534cbe61c08d481ce4efdae6383fa",
-    "userReference": "assets/mae/source/mae.jpg",
-    "userReferenceSha256": "ed917b016d8aab12ccd7f7b1521f5d5e314a99d18f70de23ddd82cf1ce6d149a",
-    "reconstruction": "Local TRELLIS-2 v0.8.1 Vulkan / GPU 1 / 512 / seed42 / threshold cutout; measured source-preserving reduction and soft pouch rig.",
-    "denseSha256": "6ee7f824fb254f709bea0f59234bb35ef4f7bf34ea0bdc651c18c73f4c259069",
-    "sourceUvAndAlbedoPreserved": true,
-    "candidateFile": "output/model-generation/models/mae/work/rig/revision-01/candidate.glb",
-    "visualReview": "assets/mae/adoption-review.json"
+    "provider": "Claude Code (Opus 5.5)",
+    "claudeUsed": true,
+    "referenceGenerator": "none: derived from the delivered, user-approved surface (identity unchanged)",
+    "referenceImage": "public/models/mae/model-r01.glb",
+    "referenceSha256": "3fb4776d3830cda7b00dd1eeadaf4c000ebe7f41af38ccfe0ee55909e1309405",
+    "reconstruction": "no new reconstruction; the delivered rest surface is the bake and skin-weight source",
+    "denseFile": "public/models/mae/model-r01.glb",
+    "denseSha256": "3fb4776d3830cda7b00dd1eeadaf4c000ebe7f41af38ccfe0ee55909e1309405",
+    "processReport": "output/model-generation/models/mae/work/candidate-02/transfer/t02/report.json",
+    "rigReport": null,
+    "pipeline": "scripts/remake/ (trellis_queue.py, remake_process.py, rig_*.py); docs/asset-remake/PLAN.md",
+    "previousDelivery": {
+      "url": "/models/mae/model-r01.glb",
+      "sha256": "3fb4776d3830cda7b00dd1eeadaf4c000ebe7f41af38ccfe0ee55909e1309405",
+      "triangles": 24836,
+      "bytes": 17886104,
+      "candidate": 1,
+      "revision": "01"
+    },
+    "previousProvenance": {
+      "provider": "Codex",
+      "claudeUsed": false,
+      "referenceGenerator": "Built-in imagegen",
+      "referenceImage": "assets/mae/source/reference-v1.png",
+      "referenceSha256": "861ac733cc0a6e1868ae4a5ae9d85984daa534cbe61c08d481ce4efdae6383fa",
+      "userReference": "assets/mae/source/mae.jpg",
+      "userReferenceSha256": "ed917b016d8aab12ccd7f7b1521f5d5e314a99d18f70de23ddd82cf1ce6d149a",
+      "reconstruction": "Local TRELLIS-2 v0.8.1 Vulkan / GPU 1 / 512 / seed42 / threshold cutout; measured source-preserving reduction and soft pouch rig.",
+      "denseSha256": "6ee7f824fb254f709bea0f59234bb35ef4f7bf34ea0bdc651c18c73f4c259069",
+      "sourceUvAndAlbedoPreserved": true,
+      "candidateFile": "output/model-generation/models/mae/work/rig/revision-01/candidate.glb",
+      "visualReview": "assets/mae/adoption-review.json"
+    },
+    "transfer": "scripts/remake/transfer_reduce.py (meshopt subset of delivered vertices, xatlas charts, albedo/normal bake with miss fill and back-face flip, Data Transfer skin weights; armature, bone names and clips re-exported unchanged)",
+    "visualReview": "assets/asset-remake/reviews/mae.json"
   },
   "notes": [
-    "One continuous reconstructed pouch surface; no added visible primitive geometry, limbs or accessories.",
-    "Three loops and three reactions; shared skeleton, inverse bind matrices and material with LOD. PetContact follows the actual crown.",
-    "The measured LOD retains 19,868 triangles because smaller candidates distorted the source silhouette."
+    "Remake C2 of the delivered mae r01: same surface, 4096 texture replaced by 2048 albedo + baked normal; 4 bones and 6 clips unchanged. Posed deviation from the delivered skin 0 m (kept vertices are a subset); clip curves within 0.04 deg (resampling). 10843 triangles (was 24836), textures 2048 WebP + baked normal."
   ]
 }

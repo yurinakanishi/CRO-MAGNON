@@ -1,0 +1,2262 @@
+{
+  "generated": "2026-10-07T02:11:15.940Z",
+  "assets": [
+    {
+      "key": "cro-magnon-woman",
+      "name": "クロマニョン人 女性",
+      "group": "player-character",
+      "kind": "player",
+      "current": {
+        "url": "/models/cro-magnon-woman/model-c2.glb",
+        "sha256": "70906c8c538c4b15d20d615ea0c20f44234b5130c24cab8fcea49d34e83d9561",
+        "bytes": 11549512,
+        "triangles": 67133,
+        "heightMetres": 1.67,
+        "clips": [
+          "Craft",
+          "Eat",
+          "Gather",
+          "Give",
+          "Idle_Loop",
+          "Run_Loop",
+          "Walk_Loop",
+          "Wave",
+          "Attack",
+          "Downed"
+        ],
+        "lods": [
+          "/models/cro-magnon-woman/lod-c2.glb"
+        ]
+      },
+      "usage": "src/character-assets.ts → world3d.loadHuman / npc オル (nea male) / village-renderer residents; character-animation.ts clips; Grip.R/L weapons; riding-pose.ts / carry poses",
+      "derivedData": [],
+      "reference": "output/model-generation/models/cro-magnon-woman/source/original/",
+      "issues": "C1 face-r10: 190,402 tris (55.6 MB); the user-approved face-repair head is a near-dense 135-165k-triangle surface.",
+      "motions": "Idle_Loop, Walk_Loop, Run_Loop, Gather, Craft, Give, Eat, Wave, Attack, Downed (unchanged)",
+      "plan": "Identity-preserving remake of the approved face-r10: body and head split by material, reduced separately with meshopt LockBorder (shared neck border kept), joined and welded before baking, each with its own 2048 albedo + baked normal atlas; rig, bones and 10 clips (spear thrust, Downed, CMU locomotion) unchanged. A new-reference body + approved-head graft was tried first and rejected: the 16k head lost the approved face softness (output/model-generation/models/cro-magnon-woman/work/candidate-02/graft/face-compare.jpg).",
+      "replacement": {
+        "url": "/models/cro-magnon-woman/model-c2.glb",
+        "lod": "/models/cro-magnon-woman/lod-c2.glb"
+      },
+      "progress": "integrated-in-branch",
+      "verification": "67,133 tris; posed deviation 0 m; clip curves within 0.14 deg; face close-up compare (cro: .../graft/face-compare3.jpg, neanderthal: output/asset-remake/guests/neanderthal-woman/face-compare.jpg); delivered heights kept"
+    },
+    {
+      "key": "cro-magnon-hunter",
+      "name": "cro-magnon-hunter",
+      "group": "player-character",
+      "kind": "player",
+      "current": {
+        "url": "/models/cro-magnon-hunter/model-c2.glb",
+        "sha256": "507db5d9e0e08cdb3c509da0e3f2574b0d8166838e278d7d58ead8d7ada421b1",
+        "bytes": 12444656,
+        "triangles": 50561,
+        "heightMetres": 1.8,
+        "clips": [
+          "Idle_Loop",
+          "Walk_Loop",
+          "Run_Loop",
+          "Gather",
+          "Craft",
+          "Give",
+          "Eat",
+          "Wave",
+          "Attack",
+          "Downed"
+        ],
+        "lods": [
+          "/models/cro-magnon-hunter/lod-c2.glb"
+        ]
+      },
+      "usage": "src/character-assets.ts → world3d.loadHuman / npc オル (nea male) / village-renderer residents; character-animation.ts clips; Grip.R/L weapons; riding-pose.ts / carry poses",
+      "derivedData": [],
+      "reference": "output/model-generation/models/cro-magnon-hunter/source/original/",
+      "issues": "C1: crude face at full-body resolution, dark low-contrast texture, no normal map.",
+      "motions": "Idle_Loop, Walk_Loop, Run_Loop, Gather, Craft, Give, Eat, Wave, Attack (333 ms hit), Downed",
+      "plan": "Representative humanoid. New body reference B + dedicated head reference -> TRELLIS body + head -> similarity-ICP head graft at the neck -> processing with baked normals -> 22-bone humanoid rig (scripts/remake/rig_human_c2.py) -> spear thrust / downed / CMU locomotion builders. Head graft: head reduced with meshoptimizer (non-manifold hair shells stall Blender collapse) and re-baked; plinth removed by plane at the neck base; collar junction cleaned (old beard/nape faces, chin band).",
+      "replacement": {
+        "url": "/models/cro-magnon-hunter/model-c2.glb",
+        "lod": "/models/cro-magnon-hunter/lod-c2.glb"
+      },
+      "progress": "integrated-in-branch",
+      "verification": "87 character tests pass; pose sheet output/asset-remake/motion/cro-magnon-hunter/clips-sheet.jpg; head close-ups .../graft/merged-r12-head.jpg; game QA before/after output/asset-remake/game/compare-cro-male.jpg, 5 players, 0 errors Head re-baked on xatlas charts (merged-r13: sharper beard/lips, less orange skin) and body normal map repaired; rig r02 + spear/downed/locomotion rebuilt."
+    },
+    {
+      "key": "neanderthal-woman",
+      "name": "ネアンデルタール人 女性",
+      "group": "player-character",
+      "kind": "player",
+      "current": {
+        "url": "/models/neanderthal-woman/model-c2.glb",
+        "sha256": "e7dab0a525aa566c96521ea135b0e884b0e751d8c815eeddd77d22efcffb73a8",
+        "bytes": 12128592,
+        "triangles": 66179,
+        "heightMetres": 1.6,
+        "clips": [
+          "Craft",
+          "Eat",
+          "Gather",
+          "Give",
+          "Idle_Loop",
+          "Run_Loop",
+          "Walk_Loop",
+          "Wave",
+          "Attack",
+          "Downed"
+        ],
+        "lods": [
+          "/models/neanderthal-woman/lod-c2.glb"
+        ]
+      },
+      "usage": "src/character-assets.ts → world3d.loadHuman / npc オル (nea male) / village-renderer residents; character-animation.ts clips; Grip.R/L weapons; riding-pose.ts / carry poses",
+      "derivedData": [],
+      "reference": "output/model-generation/models/neanderthal-woman/source/original/",
+      "issues": "C1 face-r10: 218,163 tris (42.7 MB); the user-approved face-repair head is a near-dense 135-165k-triangle surface.",
+      "motions": "Idle_Loop, Walk_Loop, Run_Loop, Gather, Craft, Give, Eat, Wave, Attack, Downed (unchanged)",
+      "plan": "Identity-preserving remake of the approved face-r10: body and head split by material, reduced separately with meshopt LockBorder (shared neck border kept), joined and welded before baking, each with its own 2048 albedo + baked normal atlas; rig, bones and 10 clips (spear thrust, Downed, CMU locomotion) unchanged. A new-reference body + approved-head graft was tried first and rejected: the 16k head lost the approved face softness (output/model-generation/models/cro-magnon-woman/work/candidate-02/graft/face-compare.jpg).",
+      "replacement": {
+        "url": "/models/neanderthal-woman/model-c2.glb",
+        "lod": "/models/neanderthal-woman/lod-c2.glb"
+      },
+      "progress": "integrated-in-branch",
+      "verification": "66,179 tris; posed deviation 0 m; clip curves within 0.14 deg; face close-up compare (cro: .../graft/face-compare3.jpg, neanderthal: output/asset-remake/guests/neanderthal-woman/face-compare.jpg); delivered heights kept"
+    },
+    {
+      "key": "neanderthal-hunter",
+      "name": "ネアンデルタール人とオル",
+      "group": "player-character",
+      "kind": "player",
+      "current": {
+        "url": "/models/neanderthal-hunter/model-c2.glb",
+        "sha256": "23b91d45cca119ecc9bb2696b47cc255dd5e8bc480243a301acb08184ae18ec7",
+        "bytes": 12902116,
+        "triangles": 53176,
+        "heightMetres": 1.7200000000000002,
+        "clips": [
+          "Idle_Loop",
+          "Walk_Loop",
+          "Run_Loop",
+          "Gather",
+          "Craft",
+          "Give",
+          "Eat",
+          "Wave",
+          "Attack",
+          "Downed"
+        ],
+        "lods": [
+          "/models/neanderthal-hunter/lod-c2.glb"
+        ]
+      },
+      "usage": "src/character-assets.ts → world3d.loadHuman / npc オル (nea male) / village-renderer residents; character-animation.ts clips; Grip.R/L weapons; riding-pose.ts / carry poses",
+      "derivedData": [],
+      "reference": "output/model-generation/models/neanderthal-hunter/source/original/",
+      "issues": "C1 human-r10: 54,422 tris; putty-like grey hair, faceted face and beard at full-body resolution; no normal map. Also used by the NPC Oru (nea male).",
+      "motions": "Idle_Loop, Walk_Loop, Run_Loop, Gather, Craft, Give, Eat, Wave, Attack (spear), Downed",
+      "plan": "Same route as the Cro-Magnon male: new body reference + dedicated head reference (Codex image_gen) -> TRELLIS body (res1024/tex1024) and head (res1024/tex512) -> similarity-ICP head graft (body neck cut 1.48 m, head cut 1.40 m to keep the reconstructed beard, chin band 1.38-1.48 m, head white plinth/bust trimmed) -> rig_human_c2 at the delivered 1.72 m -> spear thrust / Downed / CMU locomotion -> LOD 0.2.",
+      "replacement": {
+        "url": "/models/neanderthal-hunter/model-c2.glb",
+        "lod": "/models/neanderthal-hunter/lod-c2.glb"
+      },
+      "progress": "integrated-in-branch",
+      "verification": "53,176 tris (LOD 10,635); head graft r01-r03 kept (r01 blocky body beard, r02 clipped collar + white plinth, r03 adopted): output/asset-remake/compare/neanderthal-hunter/head-r0*.jpg; clip poses c2-clips-sheet.jpg; 37 character/human/downed/spear tests pass. In game: one of five synced players at camp (output/asset-remake/game/final-r1/players-front.png)."
+    },
+    {
+      "key": "cat-kunoichi",
+      "name": "猫耳のクノイチ",
+      "group": "player-character",
+      "kind": "player",
+      "current": {
+        "url": "/models/cat-kunoichi/model-c2.glb",
+        "sha256": "0f2fecf9409bfea07ea0eadb25d3038ebe0cd8f9ca64e37214c4a4a42b4eb90e",
+        "bytes": 12754684,
+        "triangles": 52420,
+        "heightMetres": 1.68,
+        "clips": [
+          "Attack",
+          "Idle_Loop",
+          "Walk_Loop",
+          "Run_Loop",
+          "Gather",
+          "Craft",
+          "Give",
+          "Eat",
+          "Wave",
+          "Downed"
+        ],
+        "lods": [
+          "/models/cat-kunoichi/lod-c2.glb"
+        ]
+      },
+      "usage": "src/character-assets.ts → world3d.loadHuman / npc オル (nea male) / village-renderer residents; character-animation.ts clips; Grip.R/L weapons; riding-pose.ts / carry poses",
+      "derivedData": [],
+      "reference": "output/model-generation/models/cat-kunoichi/source/original/",
+      "issues": "C1 human-r10: 66,766 tris, single 2048 JPEG; smeared eyes and blob-like face at full-body resolution; putty hair.",
+      "motions": "Attack (katana, retargeted, 0.6 s), Idle_Loop, Walk_Loop, Run_Loop, Gather, Craft, Give, Eat, Wave, Downed",
+      "plan": "New body + dedicated head references -> TRELLIS -> graft (shape ICP incl. ears; skin-only ICP failed, kept in graft/failed-align-r01) -> rig_human_c2 at 1.68 m with --accent none (C1 has no TribeAccent) -> Downed / CMU locomotion -> katana Attack retargeted from the delivered clip (scripts/remake/retarget_clip.py). Transfer t01 (43,946 tris) kept as fallback only: it preserves the smeared face.",
+      "replacement": {
+        "url": "/models/cat-kunoichi/model-c2.glb",
+        "lod": "/models/cat-kunoichi/lod-c2.glb"
+      },
+      "progress": "integrated-in-branch",
+      "verification": "52,420 tris (LOD 10,484); neck seam iterations r02-r11 kept (output/asset-remake/compare/cat-kunoichi/neck-r0*.jpg); clips and head before/after c2-sheet.jpg; 42 character/human/downed/fantasy/katana tests pass. Known: a small dark notch at the throat front in close-up. In game: one of five synced players at camp holding the katana (output/asset-remake/game/final-r1/players-front.png)."
+    },
+    {
+      "key": "desert-fennec-mage",
+      "name": "砂耳の魔法使い",
+      "group": "player-character",
+      "kind": "player",
+      "current": {
+        "url": "/models/desert-fennec-mage/model-c2.glb",
+        "sha256": "82ec1d4303e25bb37bef594c118861b9d7216d1b3b996091a93b89f62c0cc3b5",
+        "bytes": 8843048,
+        "triangles": 53151,
+        "heightMetres": 0.7799997875884851,
+        "clips": [
+          "Attack",
+          "Craft",
+          "Eat",
+          "Gather",
+          "Give",
+          "Idle_Loop",
+          "Run_Loop",
+          "Walk_Loop",
+          "Wave",
+          "Downed"
+        ],
+        "lods": [
+          "/models/desert-fennec-mage/lod-c2.glb"
+        ]
+      },
+      "usage": "src/character-assets.ts → world3d.loadHuman / npc オル (nea male) / village-renderer residents; character-animation.ts clips; Grip.R/L weapons; riding-pose.ts / carry poses",
+      "derivedData": [],
+      "reference": "output/model-generation/models/desert-fennec-mage/source/original/",
+      "issues": "C1: 103,314 tris, no normal map.",
+      "motions": "10 clips",
+      "plan": "Identity-preserving remake from the delivered surface: 53k + 2048 (player). scripts/remake/transfer_reduce.py (delivered rest surface reduced with meshopt, xatlas charts, albedo + tangent normal baked from the delivered surface, skin weights by Data Transfer; armature, bone names and clips re-exported at the source key rate).",
+      "replacement": {
+        "url": "/models/desert-fennec-mage/model-c2.glb",
+        "lod": "/models/desert-fennec-mage/lod-c2.glb"
+      },
+      "progress": "integrated-in-branch",
+      "verification": "posed deviation 0 m vs delivered skin (kept vertices are a subset); clip curves within 0.05-0.2 deg; render compare output/asset-remake/guests/desert-fennec-mage/compare-views.jpg"
+    },
+    {
+      "key": "giant-ape",
+      "name": "巨腕の大猿",
+      "group": "player-character",
+      "kind": "player",
+      "current": {
+        "url": "/models/giant-ape/model-c2.glb",
+        "sha256": "9bfd996eec87c77af99d32c642564cd987548563bcbfe905a252d935f763e0b9",
+        "bytes": 10566148,
+        "triangles": 58216,
+        "heightMetres": 1.9999998637763565,
+        "clips": [
+          "Attack",
+          "Craft",
+          "Eat",
+          "Gather",
+          "Give",
+          "Idle_Loop",
+          "Run_Loop",
+          "Sit_Down",
+          "Sit_Loop",
+          "Stand_Up",
+          "Walk_Loop",
+          "Wave",
+          "Downed"
+        ],
+        "lods": [
+          "/models/giant-ape/lod-c2.glb"
+        ]
+      },
+      "usage": "src/character-assets.ts → world3d.loadHuman / npc オル (nea male) / village-renderer residents; character-animation.ts clips; Grip.R/L weapons; riding-pose.ts / carry poses",
+      "derivedData": [],
+      "reference": "output/model-generation/models/giant-ape/source/original/",
+      "issues": "C1: 106,357 tris, no normal map.",
+      "motions": "13 clips",
+      "plan": "Identity-preserving remake from the delivered surface: 58k + 2048 (player). scripts/remake/transfer_reduce.py (delivered rest surface reduced with meshopt, xatlas charts, albedo + tangent normal baked from the delivered surface, skin weights by Data Transfer; armature, bone names and clips re-exported at the source key rate).",
+      "replacement": {
+        "url": "/models/giant-ape/model-c2.glb",
+        "lod": "/models/giant-ape/lod-c2.glb"
+      },
+      "progress": "integrated-in-branch",
+      "verification": "posed deviation 0 m vs delivered skin (kept vertices are a subset); clip curves within 0.05-0.2 deg; render compare output/asset-remake/guests/giant-ape/compare-views.jpg"
+    },
+    {
+      "key": "howkey-scientist",
+      "name": "Howkey 科学使い",
+      "group": "player-character",
+      "kind": "player",
+      "current": {
+        "url": "/models/howkey-scientist/model-c2.glb",
+        "sha256": "229a82a35ddaec11ad82ab5e616e8952f1740ecd9c441c259aba8c6cd121a509",
+        "bytes": 10170824,
+        "triangles": 49079,
+        "heightMetres": 1.549999901917819,
+        "clips": [
+          "Attack",
+          "Craft",
+          "Eat",
+          "Gather",
+          "Give",
+          "Idle_Loop",
+          "Run_Loop",
+          "Walk_Loop",
+          "Wave",
+          "Downed"
+        ],
+        "lods": [
+          "/models/howkey-scientist/lod-c2.glb"
+        ]
+      },
+      "usage": "src/character-assets.ts → world3d.loadHuman / npc オル (nea male) / village-renderer residents; character-animation.ts clips; Grip.R/L weapons; riding-pose.ts / carry poses",
+      "derivedData": [],
+      "reference": "output/model-generation/models/howkey-scientist/source/original/",
+      "issues": "C1: 4096 texture, no normal map.",
+      "motions": "10 clips",
+      "plan": "Identity-preserving remake from the delivered surface: 49k + 2048 (player). scripts/remake/transfer_reduce.py (delivered rest surface reduced with meshopt, xatlas charts, albedo + tangent normal baked from the delivered surface, skin weights by Data Transfer; armature, bone names and clips re-exported at the source key rate).",
+      "replacement": {
+        "url": "/models/howkey-scientist/model-c2.glb",
+        "lod": "/models/howkey-scientist/lod-c2.glb"
+      },
+      "progress": "integrated-in-branch",
+      "verification": "posed deviation 0 m vs delivered skin (kept vertices are a subset); clip curves within 0.05-0.2 deg; render compare output/asset-remake/guests/howkey-scientist/compare-views.jpg"
+    },
+    {
+      "key": "maruimo-octopus",
+      "name": "まるぃも タコ人間",
+      "group": "player-character",
+      "kind": "player",
+      "current": {
+        "url": "/models/maruimo-octopus/model-c2.glb",
+        "sha256": "12886dd609a4415736390ffb46521b20887967037f8255c54107c58cd3d34c59",
+        "bytes": 10811624,
+        "triangles": 58030,
+        "heightMetres": 1.5499999496785313,
+        "clips": [
+          "Attack",
+          "Boat_Loop",
+          "Craft",
+          "Downed",
+          "Eat",
+          "Gather",
+          "Give",
+          "Idle_Loop",
+          "Jump",
+          "Ride_Loop",
+          "Run_Loop",
+          "Walk_Loop",
+          "Wave"
+        ],
+        "lods": [
+          "/models/maruimo-octopus/lod-c2.glb"
+        ]
+      },
+      "usage": "src/character-assets.ts → world3d.loadHuman / npc オル (nea male) / village-renderer residents; character-animation.ts clips; Grip.R/L weapons; riding-pose.ts / carry poses",
+      "derivedData": [],
+      "reference": "output/model-generation/models/maruimo-octopus/source/original/",
+      "issues": "C1: 137,602 tris, 4096 texture, no normal map.",
+      "motions": "13 clips, 75 bones",
+      "plan": "Identity-preserving remake from the delivered surface: 58k + 2048 (player). scripts/remake/transfer_reduce.py (delivered rest surface reduced with meshopt, xatlas charts, albedo + tangent normal baked from the delivered surface, skin weights by Data Transfer; armature, bone names and clips re-exported at the source key rate).",
+      "replacement": {
+        "url": "/models/maruimo-octopus/model-c2.glb",
+        "lod": "/models/maruimo-octopus/lod-c2.glb"
+      },
+      "progress": "integrated-in-branch",
+      "verification": "posed deviation 0 m vs delivered skin (kept vertices are a subset); clip curves within 0.05-0.2 deg; render compare output/asset-remake/guests/maruimo-octopus/compare-views.jpg"
+    },
+    {
+      "key": "woolly-mammoth",
+      "name": "マンモス",
+      "group": "animal",
+      "kind": "quadruped",
+      "current": {
+        "url": "/models/woolly-mammoth/model-c2.glb",
+        "sha256": "1a4b70113c94aec36e6a24f1216f9c1b9d2f6975a7a4604b861fbce783b907d5",
+        "bytes": 8468828,
+        "triangles": 39982,
+        "heightMetres": 3.6,
+        "clips": [
+          "Idle_Loop",
+          "Walk_Loop",
+          "Run_Loop",
+          "Graze_Loop",
+          "Death"
+        ],
+        "lods": [
+          "/models/woolly-mammoth/lod-c2.glb"
+        ]
+      },
+      "usage": "world-scenery.ts:376 createAnimal; shared/animals.mts; riding seat on Spine (riding-pose.ts:6); model-bounds.mts radius; hunting Death→meat",
+      "derivedData": [
+        "shared/model-bounds.mts"
+      ],
+      "reference": "output/model-generation/models/woolly-mammoth/source/original/",
+      "issues": "C1: smooth plush look (fur silhouette lost in reduction), 1024 albedo, no normal map, tail repaired 3 times; 24-bone rig.",
+      "motions": "Idle_Loop 4.0, Walk_Loop 2.4 (0.354 m/s), Run_Loop 1.2 (1.125 m/s), Graze_Loop 5.0, Death 1.2 hold",
+      "plan": "Representative quadruped. New reference B -> TRELLIS seed42 has twin pale rear spikes (same twin-tail failure as C1) -> alternative seeds/ref queued. New rig scripts/remake/rig_mammoth_c2.py (Spine kept for riding), 5 clips.",
+      "replacement": {
+        "url": "/models/woolly-mammoth/model-c2.glb",
+        "lod": "/models/woolly-mammoth/lod-c2.glb"
+      },
+      "progress": "integrated-in-branch",
+      "verification": "seed 7 dense (seed 42 rejected: twin tails); rig r05 pose sheets; game QA: R mount, W/Shift ride 6.6-7.7 m, F hunt -> Death -> meat, 0 errors; riding/hunting/motion tests pass (pre-existing failures unchanged) 2026-10-07 later: normal map repaired (back-face hits from overlapping layers flipped, z>=0.25; scripts/remake/repair_normal_maps.py), other bytes unchanged. Gameplay body radius pinned to the C1 value in shared/animals.mts (MAMMOTH_BODY_RADIUS) so the hit size is unchanged by the wider remade fur."
+    },
+    {
+      "key": "valley-pine",
+      "name": "針葉樹",
+      "group": "vegetation",
+      "kind": "tree",
+      "current": {
+        "url": "/models/valley-pine/model.glb",
+        "sha256": "659a8624253f383bd40ca4b8461427e695a91e97a747d9507c949342b18e0dd8",
+        "bytes": 1127004,
+        "triangles": 12609,
+        "heightMetres": 9.998863366548903,
+        "clips": [],
+        "lods": [
+          "/models/valley-pine/lod1.glb"
+        ]
+      },
+      "usage": "LandscapeInstances (3 levels incl. impostor); model-bounds pine + trunk",
+      "derivedData": [
+        "shared/model-bounds.mts"
+      ],
+      "reference": "output/model-generation/models/valley-pine/source/original/",
+      "issues": "Smooth-canopy pine (12,609 tris, LOD 5,043) adopted 2026-09-10 after the user rejected granular needle foliage as unsettling.",
+      "motions": "none",
+      "plan": "New reference + TRELLIS reconstruction evaluated against that requirement.",
+      "replacement": null,
+      "progress": "kept-with-reason",
+      "verification": "Rejected: the new reconstruction has granular clumped needles (the rejected look): output/asset-remake/compare/valley-pine/sheet.jpg. Kept the user-approved smooth canopy."
+    },
+    {
+      "key": "meadow-grass",
+      "name": "草の株",
+      "group": "vegetation",
+      "kind": "foliage",
+      "current": {
+        "url": "/models/meadow-grass/model.glb",
+        "sha256": "24b41b18d4c5ea40ca660d7eda16f2154ca856828ebfc721d6c3489efe63f9c0",
+        "bytes": 3392616,
+        "triangles": 42587,
+        "heightMetres": 0.5501837610190705,
+        "clips": [],
+        "lods": []
+      },
+      "usage": "LandscapeInstances; crops recolour; cut-grass-root revision",
+      "derivedData": [
+        "tests/meadow-ground-tint.test.mjs"
+      ],
+      "reference": "output/model-generation/models/meadow-grass/source/original/",
+      "issues": "Instanced tuft (42,587 tris near, impostor beyond 1.1 m). Its look was tuned with the user over several rounds (wide smooth blades, root caps cut to the placement sink, leaf-green), and BLADE_ALBEDO (measured from its texture) drives the meadow ground tint.",
+      "motions": "none",
+      "plan": "New reference + TRELLIS reconstruction evaluated.",
+      "replacement": null,
+      "progress": "kept-with-reason",
+      "verification": "Rejected the new reconstruction (thin yellow wisps, disconnected blades; would also re-tint the meadow ground): output/asset-remake/compare/meadow-grass/sheet.jpg. Kept the user-approved tuft."
+    },
+    {
+      "key": "valley-boulder",
+      "name": "岩と石資源",
+      "group": "prop-structure",
+      "kind": "static",
+      "current": {
+        "url": "/models/valley-boulder/model-c2.glb",
+        "sha256": "8a1f64562cb4b27bcd89516f4fc85317bfca54050f22cf8dfa0b668fb2196a3a",
+        "bytes": 658708,
+        "triangles": 3498,
+        "heightMetres": 1.6564,
+        "clips": [],
+        "lods": [
+          "/models/valley-boulder/lod-c2.glb"
+        ]
+      },
+      "usage": "LandscapeInstances; stone-pile-layout (fixed 0.22 scale); gulf farm-plot markers; model-bounds",
+      "derivedData": [
+        "shared/model-bounds.mts"
+      ],
+      "reference": "output/model-generation/models/valley-boulder/source/original/",
+      "issues": "C1: 2,953 tris, smeared texture on top, no normal map, no LOD (heavily instanced: rocks, stone piles, coast, gulf).",
+      "motions": "none",
+      "plan": "New reference (weathered granite with fracture facets); meshopt 3.5k + xatlas + 1024 albedo/normal; LOD 1,050 at 18 m. Footprint within 2 cm of C1 (stone-pile stacking derives from the re-measured bounds).",
+      "replacement": {
+        "url": "/models/valley-boulder/model-c2.glb",
+        "lod": "/models/valley-boulder/lod-c2.glb"
+      },
+      "progress": "integrated-in-branch",
+      "verification": "output/asset-remake/valley-boulder/compare-c2.jpg; stone-pile tests pass Later: m03 scaled x0.975 so the footprint stays within C1 (open-world-restore test position no longer nudged)."
+    },
+    {
+      "key": "firewood-pile",
+      "name": "薪と木材資源",
+      "group": "prop-structure",
+      "kind": "static",
+      "current": {
+        "url": "/models/firewood-pile/model-c2.glb",
+        "sha256": "544598e3c1e28491998e3ce73e36d64364a86855ef3e86c5fa314b5b96af4977",
+        "bytes": 972828,
+        "triangles": 5907,
+        "heightMetres": 0.6971,
+        "clips": [],
+        "lods": [
+          "/models/firewood-pile/lod-c2.glb"
+        ]
+      },
+      "usage": "camp scenery; model-bounds",
+      "derivedData": [
+        "shared/model-bounds.mts"
+      ],
+      "reference": "output/model-generation/models/firewood-pile/source/original/",
+      "issues": "C1: 24.6k tris, few long logs, 1024 albedo, constant roughness, no normal map.",
+      "motions": "none",
+      "plan": "New reference (nine split-end logs in a pyramid, moss); meshopt 6k + xatlas + baked albedo/normal; LOD 2.1k at 14 m. Logs are shorter (0.85 m): footprint 1.14x0.85 m (was 1.07x1.46), height 0.7 m kept; collision re-measured (smaller, no passage narrowed).",
+      "replacement": {
+        "url": "/models/firewood-pile/model-c2.glb",
+        "lod": "/models/firewood-pile/lod-c2.glb"
+      },
+      "progress": "integrated-in-branch",
+      "verification": "output/asset-remake/firewood-pile/compare-c2.jpg, compare-xatlas.jpg"
+    },
+    {
+      "key": "berry-bush",
+      "name": "ベリーの茂み",
+      "group": "vegetation",
+      "kind": "foliage",
+      "current": {
+        "url": "/models/berry-bush/model-c2.glb",
+        "sha256": "4b145e254ee604e1563784d08bf59b5181e70c40e617bcb0a6936bd39a710c3b",
+        "bytes": 2415948,
+        "triangles": 11691,
+        "heightMetres": 1.1933,
+        "clips": [],
+        "lods": []
+      },
+      "usage": "resource LOD; berry spheres sampled from GLB vertices",
+      "derivedData": [],
+      "reference": "output/model-generation/models/berry-bush/source/original/",
+      "issues": "C1: 103,563 tris + 12,427 LOD; dark baked berries always visible, even when the bush is picked clean.",
+      "motions": "none",
+      "plan": "New reference without fruit (Codex v3, candidate2-ref-c): the visible berries are only the harvestable amount drawn by the game; meshopt 11.7k + xatlas + 1024 albedo/normal; no LOD. An earlier ref-a reconstruction (brown berry blobs) was rejected.",
+      "replacement": {
+        "url": "/models/berry-bush/model-c2.glb"
+      },
+      "progress": "integrated-in-branch",
+      "verification": "output/asset-remake/berry-bush/compare-c3.jpg (c2 = rejected ref-a)"
+    },
+    {
+      "key": "hide-tent",
+      "name": "皮のテント",
+      "group": "prop-structure",
+      "kind": "static",
+      "current": {
+        "url": "/models/hide-tent/model-c2.glb",
+        "sha256": "e3fa5084524b3fd141f8aa05838e9da2f612f2987d35f04c4743209c4bc29120",
+        "bytes": 4508752,
+        "triangles": 17991,
+        "heightMetres": 3.1749,
+        "clips": [],
+        "lods": [
+          "/models/hide-tent/lod-c2.glb"
+        ]
+      },
+      "usage": "camp scenery (world-scenery camp :309); model-bounds tent",
+      "derivedData": [
+        "shared/model-bounds.mts"
+      ],
+      "reference": "output/model-generation/models/hide-tent/source/original/",
+      "issues": "C1: 24.6k tris, 1024 albedo downsampled from TRELLIS 2048, constant roughness 0.87, no normal map; plain uniform hides.",
+      "motions": "none (static)",
+      "plan": "Representative static asset. New Codex reference B (patchwork hides, sinew stitching, fur ridge, hem stones) -> TRELLIS 1024/tex1024 seed42 -> 18k tris + baked 2048 normal + 2048 albedo + 1024 roughness, dense-derived LOD.",
+      "replacement": {
+        "url": "/models/hide-tent/model-c2.glb",
+        "lod": "/models/hide-tent/lod-c2.glb"
+      },
+      "progress": "integrated-in-branch",
+      "verification": "neutral review compare (output/asset-remake/hide-tent/compare-r01.jpg); collision bounds re-measured; in game at camp (output/asset-remake/game/final-r1/players-front.png, player-run.png) and in both perf comparisons; 2026-10-07 later: normal map repaired (back-face hits from overlapping layers flipped, z>=0.25; scripts/remake/repair_normal_maps.py), other bytes unchanged. Later: r02 scaled uniformly to 3.176 m so the collision footprint stays within C1 (x 1.000, z 0.931 of C1)."
+    },
+    {
+      "key": "drying-rack",
+      "name": "乾燥棚",
+      "group": "prop-structure",
+      "kind": "static",
+      "current": {
+        "url": "/models/drying-rack/model-c2.glb",
+        "sha256": "35c7daa486dad72790dcb01b17b5da72353edb5c63c74fcb4c2230e46739e986",
+        "bytes": 2599104,
+        "triangles": 11816,
+        "heightMetres": 2.3985,
+        "clips": [],
+        "lods": [
+          "/models/drying-rack/lod-c2.glb"
+        ]
+      },
+      "usage": "camp scenery; model-bounds rack",
+      "derivedData": [
+        "shared/model-bounds.mts"
+      ],
+      "reference": "output/model-generation/models/drying-rack/source/original/",
+      "issues": "C1: 23.9k tris, saturated red hides, no normal map.",
+      "motions": "none",
+      "plan": "New reference (forked posts, lashings, natural scraped hides); meshopt 12k + xatlas + 2048 albedo/normal; LOD 4k at 14 m. Width 2.9 m (was 3.3 m), height 2.4 m kept.",
+      "replacement": {
+        "url": "/models/drying-rack/model-c2.glb",
+        "lod": "/models/drying-rack/lod-c2.glb"
+      },
+      "progress": "integrated-in-branch",
+      "verification": "output/asset-remake/drying-rack/compare-c2.jpg"
+    },
+    {
+      "key": "stone-firepit",
+      "name": "焚き火の薪と石",
+      "group": "prop-structure",
+      "kind": "static",
+      "current": {
+        "url": "/models/stone-firepit/model-c2.glb",
+        "sha256": "62d5e610354e665a29c069ba1e121cf1ddd519ac12da1311c8b24236289a9cb0",
+        "bytes": 1412152,
+        "triangles": 8356,
+        "heightMetres": 0.4404,
+        "clips": [],
+        "lods": [
+          "/models/stone-firepit/lod-c2.glb"
+        ]
+      },
+      "usage": "camp + village fires; model-bounds firepit; fire particles",
+      "derivedData": [
+        "shared/model-bounds.mts"
+      ],
+      "reference": "output/model-generation/models/stone-firepit/source/original/",
+      "issues": "C1: 31.5k tris, 1024 albedo, constant roughness, no normal map; stones uniformly pale.",
+      "motions": "none",
+      "plan": "New reference; meshopt reduction to 8.6k, xatlas charts, albedo/normal baked with miss fill and back-face flip; LOD 3.1k at 14 m; footprint kept at 1.62 m.",
+      "replacement": {
+        "url": "/models/stone-firepit/model-c2.glb",
+        "lod": "/models/stone-firepit/lod-c2.glb"
+      },
+      "progress": "integrated-in-branch",
+      "verification": "neutral compare output/asset-remake/stone-firepit/compare-c2r04.jpg and compare-xatlas.jpg (Smart UV vs xatlas)"
+    },
+    {
+      "key": "flint-spear",
+      "name": "石槍",
+      "group": "equipment",
+      "kind": "equipment",
+      "current": {
+        "url": "/models/flint-spear/model.glb",
+        "sha256": "1a10db6d1b44da1e982f88e5ae9ef6be8fb74f5900ebd9258380ad200e53ed3d",
+        "bytes": 2816964,
+        "triangles": 5679,
+        "heightMetres": 2.1,
+        "clips": [],
+        "lods": []
+      },
+      "usage": "model-review.ts only (legacy; not equipped in game)",
+      "derivedData": [],
+      "reference": "output/model-generation/models/flint-spear/source/original/",
+      "issues": "",
+      "motions": "none",
+      "plan": "",
+      "replacement": null,
+      "progress": "kept-with-reason",
+      "verification": "Legacy asset referenced only by src/model-review.ts; not equipped or placed in the game (wooden/obsidian spears are). Kept."
+    },
+    {
+      "key": "stone-axe",
+      "name": "石斧",
+      "group": "equipment",
+      "kind": "equipment",
+      "current": {
+        "url": "/models/stone-axe/model-c2.glb",
+        "sha256": "f195cd97f8b1a2e88a6b0cf1e928a432d103c9ba415c996396ba7cd10f7ba81e",
+        "bytes": 817044,
+        "triangles": 3941,
+        "heightMetres": 0.9494,
+        "clips": [],
+        "lods": []
+      },
+      "usage": "world3d.ts:1007-1026 attackProfile().modelKey / stone-axe; spear-pose.ts / katana-pose.ts orientation",
+      "derivedData": [],
+      "reference": "output/model-generation/models/stone-axe/source/original/",
+      "issues": "C1: 6,405 tris, no normal map.",
+      "motions": "none",
+      "plan": "New reference; 3.9k + 1024; grip origin, +Y shaft, head toward +X, C1 grip lengths 0.209/0.741 m.",
+      "replacement": {
+        "url": "/models/stone-axe/model-c2.glb"
+      },
+      "progress": "integrated-in-branch",
+      "verification": "output/asset-remake/stone-axe/compare-c2.jpg; first BiRefNet run crashed (GPU contention), requeued"
+    },
+    {
+      "key": "meadow-ground",
+      "name": "草地・道・地形",
+      "group": "terrain-water",
+      "kind": "terrain",
+      "current": {
+        "url": "/models/meadow-ground/model.glb",
+        "sha256": "6c6b41bdec1631236027c567635623aa9cdd1e0d92c0ae9e89f77764b52995e1",
+        "bytes": 2126388,
+        "triangles": 2720,
+        "heightMetres": null,
+        "clips": [],
+        "lods": []
+      },
+      "usage": "open-world.ts:161 instanced 32 m tiles; placement.surfaceHeightMetres; river-bank-builder / source-surface-fit",
+      "derivedData": [
+        "tests/meadow-ground-tint.test.mjs"
+      ],
+      "reference": "output/model-generation/models/meadow-ground/source/original/",
+      "issues": "Flat modular terrain tile, albedo only, instanced 32 m with biome shader blending (src/open-world.ts, src/paleo-materials.ts).",
+      "motions": "none",
+      "plan": "Evaluated geometry-preserving normal upgrade.",
+      "replacement": null,
+      "progress": "kept-with-reason",
+      "verification": "Delivered tile is a modular 20 m square whose walking top was deliberately flattened (top relief ~1.2 cm, opposite-edge mismatch ~1e-5 m) and whose placement.heightField drives authoritative terrain height. The TRELLIS dense is a thick slab with ~2 m relief: the 2026-10-07 trial (scripts/remake/normal_pipeline.sh) fitted at RMS 2.38 m with 2.07M of 3.34M texels unhit, so a dense-derived normal map would paint hills that the flat walk surface does not have. Rebuilding the tile would change the heightField (walk height = game spec). Kept; not adopted. Trial outputs output/model-generation/models/meadow-ground/work/candidate-02/."
+    },
+    {
+      "key": "river-water",
+      "name": "川の水面",
+      "group": "terrain-water",
+      "kind": "water",
+      "current": {
+        "url": "/models/river-water/model.glb",
+        "sha256": "8575faa5fd988da815d622ebbd03d49390339df5eeafd0eb794e1b0368ec0274",
+        "bytes": 1905036,
+        "triangles": 2693,
+        "heightMetres": null,
+        "clips": [],
+        "lods": []
+      },
+      "usage": "world-scenery rivers/marsh, mountain-river, mountain-lake, EarthOcean (paleo-materials), springs",
+      "derivedData": [],
+      "reference": "output/model-generation/models/river-water/source/original/",
+      "issues": "",
+      "motions": "none",
+      "plan": "",
+      "replacement": null,
+      "progress": "kept-with-reason",
+      "verification": "Water sheet whose look comes from runtime shaders (ocean waves, shoreline discard, marsh pools in src/paleo-materials.ts/src/world-scenery.ts); a baked normal would fight the animated water. Kept."
+    },
+    {
+      "key": "wood-footbridge",
+      "name": "木造の橋",
+      "group": "prop-structure",
+      "kind": "bridge",
+      "current": {
+        "url": "/models/wood-footbridge/model-c2.glb",
+        "sha256": "88a56d09a717e9ae0a2b01c9c3635d69a4bf219aa0d7a0630c0ddc0609feddfe",
+        "bytes": 1814304,
+        "triangles": 8987,
+        "heightMetres": 1.5245,
+        "clips": [],
+        "lods": [
+          "/models/wood-footbridge/lod-c2.glb"
+        ]
+      },
+      "usage": "world-scenery bridges; placement.deckHeightMetres/walkBounds; model-bounds bridge",
+      "derivedData": [
+        "shared/model-bounds.mts",
+        "placement.deckHeightMetres"
+      ],
+      "reference": "output/model-generation/models/wood-footbridge/source/original/",
+      "issues": "C1: 5,876 tris, no normal map.",
+      "motions": "none",
+      "plan": "New reference (weathered log bridge: split planks, round posts, lashed rails); meshopt 9k + xatlas + 2048; scaled x1.05 so the flat deck between rails is 2.34 m wide (C1 2.33); BRIDGE/walkBounds passage unchanged, deckHeightMetres re-measured 0.657 by downward rays.",
+      "replacement": {
+        "url": "/models/wood-footbridge/model-c2.glb",
+        "lod": "/models/wood-footbridge/lod-c2.glb"
+      },
+      "progress": "integrated-in-branch",
+      "verification": "output/asset-remake/wood-footbridge/compare-c2.jpg; scripts/remake/measure_bridge.py, output/asset-remake/bridge-width.py"
+    },
+    {
+      "key": "mammoth-meat",
+      "name": "マンモスの生肉",
+      "group": "prop-structure",
+      "kind": "static",
+      "current": {
+        "url": "/models/mammoth-meat/model-c2.glb",
+        "sha256": "076b0a41f1311b4398de8b271387531913eef11f8c68b1c5a933523a84de4dae",
+        "bytes": 613928,
+        "triangles": 2996,
+        "heightMetres": 0.2265,
+        "clips": [],
+        "lods": []
+      },
+      "usage": "world-scenery.ts:360 meat ring after Death",
+      "derivedData": [],
+      "reference": "output/model-generation/models/mammoth-meat/source/original/",
+      "issues": "C1: steak slab, 2,826 tris.",
+      "motions": "none",
+      "plan": "New reference (raw haunch with bone end); 3k + 1024; 0.55 m long like C1.",
+      "replacement": {
+        "url": "/models/mammoth-meat/model-c2.glb"
+      },
+      "progress": "integrated-in-branch",
+      "verification": "output/asset-remake/mammoth-meat/compare-c2.jpg"
+    },
+    {
+      "key": "crow-shaman",
+      "name": "白羽の呪術師",
+      "group": "enemy",
+      "kind": "enemy",
+      "current": {
+        "url": "/models/crow-shaman/model-c2.glb",
+        "sha256": "4719f03aa5df820d70123e64e49ba88255182dbe34087ea7f315224cd4b8b89e",
+        "bytes": 6691440,
+        "triangles": 33548,
+        "heightMetres": 1.8500001471790228,
+        "clips": [
+          "Attack",
+          "Death",
+          "Hit",
+          "Idle_Loop",
+          "Run_Loop",
+          "Walk_Loop"
+        ],
+        "lods": [
+          "/models/crow-shaman/lod-c2.glb"
+        ]
+      },
+      "usage": "world3d.loadEnemy → createEnemy; crow-faction-visuals.ts props on Staff/Head/Chest/HandL; 28 castle crows",
+      "derivedData": [],
+      "reference": "output/model-generation/models/crow-shaman/source/original/",
+      "issues": "C1 motion-r04: 65,750 tris, single 2048 albedo, no normal map; LOD 9,862.",
+      "motions": "Attack/Death/Hit/Idle_Loop/Run_Loop/Walk_Loop unchanged (60 Hz source)",
+      "plan": "Approved design (user-selected 白羽の呪術師): transfer route — meshopt subset of the delivered rest surface, xatlas, albedo+normal bake, skin-weight transfer; 24 bones and 6 clips unchanged. Faction props (code-built primitives) are a separate item (__codeBuilt crow-faction-props).",
+      "replacement": {
+        "url": "/models/crow-shaman/model-c2.glb"
+      },
+      "progress": "integrated-in-branch",
+      "verification": "33,548 tris (LOD 10,064 @28 m); bake misses 2,472/1,504,543; unweighted 0; renders output/asset-remake/compare/crow-shaman/sheet-t01.jpg; tests/enemies.test.mjs 21/21. TRELLIS 0738 (new-reference crow) kept queued only for comparison. In game (output/asset-remake/game/final-r1): every rank loads with its props on the right bones, 0 page errors."
+    },
+    {
+      "key": "kunoichi-katana",
+      "name": "クノイチの刀",
+      "group": "equipment",
+      "kind": "equipment",
+      "current": {
+        "url": "/models/kunoichi-katana/model-c2.glb",
+        "sha256": "4d3c2edeaaba853a4cb4cf658e4541812ad6249e1363f649469d81afe6f797cb",
+        "bytes": 530840,
+        "triangles": 5997,
+        "heightMetres": 1.0499798208475113,
+        "clips": [],
+        "lods": []
+      },
+      "usage": "world3d.ts:1007-1026 attackProfile().modelKey / stone-axe; spear-pose.ts / katana-pose.ts orientation",
+      "derivedData": [],
+      "reference": "output/model-generation/models/kunoichi-katana/source/original/",
+      "issues": "C1: 22,201 tris for a hand weapon.",
+      "motions": "none (held at Grip.R; katana-pose.ts)",
+      "plan": "Candidate 2 reference (Codex image_gen) -> TRELLIS-2 1024 -> meshopt -> xatlas -> albedo + baked normal. Grip origin at 0.1508 of the length (C1), shaft +Y.",
+      "replacement": {
+        "url": "/models/kunoichi-katana/model-c2.glb"
+      },
+      "progress": "integrated-in-branch",
+      "verification": "5,997 tris, p95 0.3 mm; grip-to-butt 0.1583 / grip-to-tip 0.8917 m (C1 0.1583 / 0.8917). In game: held by the cat kunoichi peer (output/asset-remake/game/final-r1/players-front.png)."
+    },
+    {
+      "key": "snow-ground",
+      "name": "雪原の地面",
+      "group": "terrain-water",
+      "kind": "terrain",
+      "current": {
+        "url": "/models/snow-ground/model.glb",
+        "sha256": "ddf7037c1cd52801d7c5f1a71492c496d7885f407372edb275e445ce0e009f44",
+        "bytes": 3092188,
+        "triangles": 5903,
+        "heightMetres": 0.4015480689704418,
+        "clips": [],
+        "lods": [
+          "/models/snow-ground/lod1.glb",
+          "/models/snow-ground/lod2.glb"
+        ]
+      },
+      "usage": "open-world.ts:161 instanced 32 m tiles; placement.surfaceHeightMetres; river-bank-builder / source-surface-fit",
+      "derivedData": [],
+      "reference": "output/model-generation/models/snow-ground/source/original/",
+      "issues": "Flat modular terrain tile, albedo only, instanced 32 m with biome shader blending (src/open-world.ts, src/paleo-materials.ts).",
+      "motions": "none",
+      "plan": "Evaluated geometry-preserving normal upgrade.",
+      "replacement": null,
+      "progress": "kept-with-reason",
+      "verification": "Delivered tile is a modular 20 m square whose walking top was deliberately flattened (top relief ~1.2 cm, opposite-edge mismatch ~1e-5 m) and whose placement.heightField drives authoritative terrain height. The TRELLIS dense is a thick slab with ~2 m relief: the 2026-10-07 trial (scripts/remake/normal_pipeline.sh) fitted at RMS 2.38 m with 2.07M of 3.34M texels unhit, so a dense-derived normal map would paint hills that the flat walk surface does not have. Rebuilding the tile would change the heightField (walk height = game spec). Kept; not adopted. Same tile construction as meadow-ground (heightField placement)."
+    },
+    {
+      "key": "ice-ground",
+      "name": "氷原の地面",
+      "group": "terrain-water",
+      "kind": "terrain",
+      "current": {
+        "url": "/models/ice-ground/model.glb",
+        "sha256": "30eeb7ceea111e33576b497e8341f9f01bf232fc598c6bbefa79a9867df51cce",
+        "bytes": 2151736,
+        "triangles": 5500,
+        "heightMetres": 0.3511239290237427,
+        "clips": [],
+        "lods": [
+          "/models/ice-ground/lod1.glb",
+          "/models/ice-ground/lod2.glb"
+        ]
+      },
+      "usage": "open-world.ts:161 instanced 32 m tiles; placement.surfaceHeightMetres; river-bank-builder / source-surface-fit",
+      "derivedData": [],
+      "reference": "output/model-generation/models/ice-ground/source/original/",
+      "issues": "Flat modular terrain tile, albedo only, instanced 32 m with biome shader blending (src/open-world.ts, src/paleo-materials.ts).",
+      "motions": "none",
+      "plan": "Evaluated geometry-preserving normal upgrade.",
+      "replacement": null,
+      "progress": "kept-with-reason",
+      "verification": "Delivered tile is a modular 20 m square whose walking top was deliberately flattened (top relief ~1.2 cm, opposite-edge mismatch ~1e-5 m) and whose placement.heightField drives authoritative terrain height. The TRELLIS dense is a thick slab with ~2 m relief: the 2026-10-07 trial (scripts/remake/normal_pipeline.sh) fitted at RMS 2.38 m with 2.07M of 3.34M texels unhit, so a dense-derived normal map would paint hills that the flat walk surface does not have. Rebuilding the tile would change the heightField (walk height = game spec). Kept; not adopted. Same tile construction as meadow-ground (heightField placement)."
+    },
+    {
+      "key": "desert-ground",
+      "name": "砂漠の砂地",
+      "group": "terrain-water",
+      "kind": "terrain",
+      "current": {
+        "url": "/models/desert-ground/model.glb",
+        "sha256": "fcf25dfc8bed6ce7ecfbdf445674e3c092f36d353462685cb5730ba3ef00005e",
+        "bytes": 2082132,
+        "triangles": 9600,
+        "heightMetres": 2.3142130374908447,
+        "clips": [],
+        "lods": [
+          "/models/desert-ground/lod1.glb",
+          "/models/desert-ground/lod2.glb"
+        ]
+      },
+      "usage": "open-world.ts:161 instanced 32 m tiles; placement.surfaceHeightMetres; river-bank-builder / source-surface-fit",
+      "derivedData": [],
+      "reference": "output/model-generation/models/desert-ground/source/original/",
+      "issues": "Flat modular terrain tile, albedo only, instanced 32 m with biome shader blending (src/open-world.ts, src/paleo-materials.ts).",
+      "motions": "none",
+      "plan": "Evaluated geometry-preserving normal upgrade.",
+      "replacement": null,
+      "progress": "kept-with-reason",
+      "verification": "Delivered tile is a modular 20 m square whose walking top was deliberately flattened (top relief ~1.2 cm, opposite-edge mismatch ~1e-5 m) and whose placement.heightField drives authoritative terrain height. The TRELLIS dense is a thick slab with ~2 m relief: the 2026-10-07 trial (scripts/remake/normal_pipeline.sh) fitted at RMS 2.38 m with 2.07M of 3.34M texels unhit, so a dense-derived normal map would paint hills that the flat walk surface does not have. Rebuilding the tile would change the heightField (walk height = game spec). Kept; not adopted. Same tile construction as meadow-ground (heightField placement)."
+    },
+    {
+      "key": "volcanic-ground",
+      "name": "火山の玄武岩地面",
+      "group": "terrain-water",
+      "kind": "terrain",
+      "current": {
+        "url": "/models/volcanic-ground/model.glb",
+        "sha256": "2bca15ffc01cce6148f8569a60b3fbecd16ac0c7946014f7b48f267b5eaffb88",
+        "bytes": 1506956,
+        "triangles": 5594,
+        "heightMetres": 0.44992197304964066,
+        "clips": [],
+        "lods": [
+          "/models/volcanic-ground/lod1.glb",
+          "/models/volcanic-ground/lod2.glb"
+        ]
+      },
+      "usage": "open-world.ts:161 instanced 32 m tiles; placement.surfaceHeightMetres; river-bank-builder / source-surface-fit",
+      "derivedData": [],
+      "reference": "output/model-generation/models/volcanic-ground/source/original/",
+      "issues": "Flat modular terrain tile, albedo only, instanced 32 m with biome shader blending (src/open-world.ts, src/paleo-materials.ts).",
+      "motions": "none",
+      "plan": "Evaluated geometry-preserving normal upgrade.",
+      "replacement": null,
+      "progress": "kept-with-reason",
+      "verification": "Delivered tile is a modular 20 m square whose walking top was deliberately flattened (top relief ~1.2 cm, opposite-edge mismatch ~1e-5 m) and whose placement.heightField drives authoritative terrain height. The TRELLIS dense is a thick slab with ~2 m relief: the 2026-10-07 trial (scripts/remake/normal_pipeline.sh) fitted at RMS 2.38 m with 2.07M of 3.34M texels unhit, so a dense-derived normal map would paint hills that the flat walk surface does not have. Rebuilding the tile would change the heightField (walk height = game spec). Kept; not adopted. Same tile construction as meadow-ground (heightField placement)."
+    },
+    {
+      "key": "glacier-spires",
+      "name": "青氷の氷壁",
+      "group": "landmark",
+      "kind": "static",
+      "current": {
+        "url": "/models/glacier-spires/model-c2.glb",
+        "sha256": "33eaa7f3c25d1644053410d8db6205757cd76ebd461e631d2ae96a343153c816",
+        "bytes": 2124228,
+        "triangles": 11999,
+        "heightMetres": 12.9902,
+        "clips": [],
+        "lods": [
+          "/models/glacier-spires/lod-c2-1.glb",
+          "/models/glacier-spires/lod-c2-2.glb"
+        ]
+      },
+      "usage": "regional landmarks; landmark-bounds.mts",
+      "derivedData": [
+        "shared/landmark-bounds.mts",
+        "tests/landmarks.test.mjs"
+      ],
+      "reference": "output/model-generation/models/glacier-spires/source/original/",
+      "issues": "C1: soft, rounded ice slabs, no normal map.",
+      "motions": "none",
+      "plan": "New reference -> TRELLIS -> 11,999 tris + LODs 1,799/419, 2048 albedo + baked normal; footprint re-measured with the C1 algorithm (scripts/remake/measure_landmark_footprint.py, reproduces the C1 footprint byte-for-byte on the C1 GLB).",
+      "replacement": {
+        "url": "/models/glacier-spires/model-c2.glb"
+      },
+      "progress": "integrated-in-branch",
+      "verification": "output/asset-remake/compare/glacier-spires/sheet.jpg; footprint 187 cells / 158 boxes (C1 182 / 149), plan envelope within 5 cm; tests/landmarks, paleo-world, open-world 17/17. A few dark crevices read as deep concavities. In game: renders at glacier-gate (output/asset-remake/game/final-r1/landmark-glacier-gate.png)."
+    },
+    {
+      "key": "volcanic-cone",
+      "name": "火口の山",
+      "group": "landmark",
+      "kind": "static",
+      "current": {
+        "url": "/models/volcanic-cone/model-c1-normal.glb",
+        "sha256": "a52f4e2b2c3f4e9d576f480b878c51576193222a9be4b23bf898bfccf392d515",
+        "bytes": 2793924,
+        "triangles": 13382,
+        "heightMetres": 24.034038949757814,
+        "clips": [],
+        "lods": []
+      },
+      "usage": "regional landmarks; landmark-bounds.mts",
+      "derivedData": [
+        "shared/landmark-bounds.mts",
+        "tests/landmarks.test.mjs"
+      ],
+      "reference": "output/model-generation/models/volcanic-cone/source/original/",
+      "issues": "C1: 13,382 tris, smooth clay-like flanks, no normal map; lava is read from the albedo by the landmark shader.",
+      "motions": "none",
+      "plan": "New reference + TRELLIS tried and rejected (lava channels and crater glow lost, 11% taller). Geometry-preserving normal upgrade from the C1 TRELLIS dense instead (fit + bake on the delivered UVs, appended WebP normal map).",
+      "replacement": {
+        "url": "/models/volcanic-cone/model-c1-normal.glb"
+      },
+      "progress": "integrated-in-branch",
+      "verification": "Accessor bytes identical (4); bake misses 729 / 2,162,402 texels; footprint unchanged (hash updated in shared/landmark-bounds.mts); output/asset-remake/compare/volcanic-cone/sheet.jpg (rejected TRELLIS) and normal-sheet.jpg (adopted). tests/landmarks pass. In game: renders with the lava glow at volcano-main (output/asset-remake/game/final-r1/landmark-volcano-main.png)."
+    },
+    {
+      "key": "volcanic-basalt-columns",
+      "name": "火山の柱状玄武岩",
+      "group": "landmark",
+      "kind": "static",
+      "current": {
+        "url": "/models/volcanic-basalt-columns/model-c2.glb",
+        "sha256": "d5c1538864da0fbc702243cd665f4e95053d2851182b53c7a8d5db0689ae7e40",
+        "bytes": 4061564,
+        "triangles": 13608,
+        "heightMetres": 4.2067,
+        "clips": [],
+        "lods": [
+          "/models/volcanic-basalt-columns/lod-c2.glb"
+        ]
+      },
+      "usage": "regional scenery; region-feature-bounds.mts",
+      "derivedData": [
+        "shared/region-feature-bounds.mts",
+        "tests/region-features.test.mjs"
+      ],
+      "reference": "output/model-generation/models/volcanic-basalt-columns/source/original/",
+      "issues": "C1: 62,337 tris, flat dark columns, no normal map.",
+      "motions": "none",
+      "plan": "New reference -> TRELLIS -> 13,608 tris + LOD 4,199, 2048 albedo + baked normal; scaled by the C1 plan width (3.86 m) to keep the collision footprint inside C1 (height 4.22 vs 4.60 m); footprint re-measured.",
+      "replacement": {
+        "url": "/models/volcanic-basalt-columns/model-c2.glb"
+      },
+      "progress": "integrated-in-branch",
+      "verification": "output/asset-remake/compare/volcanic-basalt-columns/sheet.jpg (m01 shown at 4.6 m; adopted m02 is the same mesh at 0.917 scale); footprint 53 cells / 36 boxes (C1 58 / 35), 0 misses; region/adventure/paleo tests 23/23. In game: region loads (output/asset-remake/game/final-r1/landmark-volcanic-basalt-columns-1.png)."
+    },
+    {
+      "key": "desert-cactus",
+      "name": "砂漠のサボテン",
+      "group": "vegetation",
+      "kind": "static",
+      "current": {
+        "url": "/models/desert-cactus/model-c2.glb",
+        "sha256": "ca57c5fe7c1db72ade391ac7a5709169e90b47be95b26258598a0a138f266473",
+        "bytes": 1895208,
+        "triangles": 8991,
+        "heightMetres": 2.4,
+        "clips": [],
+        "lods": [
+          "/models/desert-cactus/lod-c2-1.glb",
+          "/models/desert-cactus/lod-c2-2.glb"
+        ]
+      },
+      "usage": "regional scenery; region-feature-bounds.mts",
+      "derivedData": [
+        "shared/region-feature-bounds.mts",
+        "tests/region-features.test.mjs"
+      ],
+      "reference": "output/model-generation/models/desert-cactus/source/original/",
+      "issues": "C1: 24,435 tris, smooth ribs, reddish blob base, no normal map.",
+      "motions": "none",
+      "plan": "New reference -> TRELLIS -> 8,991 tris + 2 LODs, 2048 albedo + baked normal; collision footprint re-measured with the same tool.",
+      "replacement": {
+        "url": "/models/desert-cactus/model-c2.glb"
+      },
+      "progress": "integrated-in-branch",
+      "verification": "output/asset-remake/compare/desert-cactus/sheet.jpg; footprint 16 cells / 10 boxes (C1 see qa/footprint-rev03.json), 0 misses; region-features/adventures/paleo-world tests 23/23. In game: region loads and renders (output/asset-remake/game/final-r1/landmark-desert-cactus-1.png)."
+    },
+    {
+      "key": "dugout-canoe",
+      "name": "丸木舟",
+      "group": "prop-structure",
+      "kind": "boat",
+      "current": {
+        "url": "/models/dugout-canoe/model-c2.glb",
+        "sha256": "099fb402d549d886e37a7e8999bdd3d3e56d80a68e94286f7764400164a69cc8",
+        "bytes": 1324432,
+        "triangles": 13998,
+        "heightMetres": 0.9483,
+        "clips": [],
+        "lods": [
+          "/models/dugout-canoe/lod-c2.glb"
+        ]
+      },
+      "usage": "boat-renderer.ts:20; riders seated",
+      "derivedData": [],
+      "reference": "output/model-generation/models/dugout-canoe/source/original/",
+      "issues": "C1: 62,145 tris, no normal map.",
+      "motions": "none",
+      "plan": "New reference (adzed dugout); 14k + 2048, LOD 4.2k at 18 m; 3.8 m, hull-bottom pivot, seat and waterline kept (boating QA pending).",
+      "replacement": {
+        "url": "/models/dugout-canoe/model-c2.glb",
+        "lod": "/models/dugout-canoe/lod-c2.glb"
+      },
+      "progress": "integrated-in-branch",
+      "verification": "output/asset-remake/dugout-canoe/compare-c2.jpg"
+    },
+    {
+      "key": "cockle-shell",
+      "name": "浜の貝",
+      "group": "prop-structure",
+      "kind": "static",
+      "current": {
+        "url": "/models/cockle-shell/model-c2.glb",
+        "sha256": "dc8defa88c3a04a5c34f48b80d62ada720de98c6960349965a33d9fb79bab2fe",
+        "bytes": 248456,
+        "triangles": 1474,
+        "heightMetres": 0.12,
+        "clips": [],
+        "lods": []
+      },
+      "usage": "coastal-renderer.ts:43 instanced",
+      "derivedData": [],
+      "reference": "output/model-generation/models/cockle-shell/source/original/",
+      "issues": "C1: 35,645 tris for a 16 cm instanced shell (up to 12 per bed), no normal map, small black specks.",
+      "motions": "none",
+      "plan": "New reference + TRELLIS compared against reducing the delivered surface; the reduction kept the good closed two-valve cockle.",
+      "replacement": {
+        "url": "/models/cockle-shell/model-c2.glb"
+      },
+      "progress": "integrated-in-branch",
+      "verification": "1,474 tris, p95 1.6 mm; output/asset-remake/compare/cockle-shell/sheet.jpg (new TRELLIS rejected: flat, black slit) and sheet2.jpg (adopted reduction ~identical to C1). Not placed in the current world: SHELL_BEDS / MIDDEN_SITES / KNAPPING_SITES (shared/coastal-sites.mts) are filtered to the gulf region removed on 2026-09-22, so they are all empty and src/coastal-renderer.ts never requests this asset; verified by renders only."
+    },
+    {
+      "key": "shell-midden",
+      "name": "貝塚",
+      "group": "prop-structure",
+      "kind": "static",
+      "current": {
+        "url": "/models/shell-midden/model-c2.glb",
+        "sha256": "d45280c759dde06ac2a21b75b54953753648ff1585ba16319da7bf1e15bfa444",
+        "bytes": 3343096,
+        "triangles": 8940,
+        "heightMetres": 0.4294,
+        "clips": [],
+        "lods": []
+      },
+      "usage": "coastal-renderer middens (3 growth stages)",
+      "derivedData": [],
+      "reference": "output/model-generation/models/shell-midden/source/original/",
+      "issues": "C1: 92,239 tris, pale lumpy shells, no normal map.",
+      "motions": "none",
+      "plan": "New reference + TRELLIS vs reduction of the C1 surface; TRELLIS chosen.",
+      "replacement": {
+        "url": "/models/shell-midden/model-c2.glb"
+      },
+      "progress": "integrated-in-branch",
+      "verification": "8,940 tris, p95 6.0 mm, 1.5 m wide (height 0.43 vs 0.39 m; no collision footprint); output/asset-remake/compare/shell-midden/sheet.jpg. Not placed in the current world: SHELL_BEDS / MIDDEN_SITES / KNAPPING_SITES (shared/coastal-sites.mts) are filtered to the gulf region removed on 2026-09-22, so they are all empty and src/coastal-renderer.ts never requests this asset; verified by renders only."
+    },
+    {
+      "key": "wooden-spear",
+      "name": "木槍",
+      "group": "equipment",
+      "kind": "equipment",
+      "current": {
+        "url": "/models/wooden-spear/model-c2.glb",
+        "sha256": "ae70efd88d72c75f708cc64039b08ca7a197237a36718bfbc2de7163e46a8c35",
+        "bytes": 298760,
+        "triangles": 2500,
+        "heightMetres": 1.6134,
+        "clips": [],
+        "lods": []
+      },
+      "usage": "world3d.ts:1007-1026 attackProfile().modelKey / stone-axe; spear-pose.ts / katana-pose.ts orientation",
+      "derivedData": [],
+      "reference": "output/model-generation/models/wooden-spear/source/original/",
+      "issues": "C1: plain stick, no point.",
+      "motions": "none",
+      "plan": "New reference (fire-hardened point, grip wrap); 2.5k + 1024; grip origin and +Y shaft with C1 lengths 0.714/0.900 m.",
+      "replacement": {
+        "url": "/models/wooden-spear/model-c2.glb"
+      },
+      "progress": "integrated-in-branch",
+      "verification": "output/asset-remake/wooden-spear/compare-c2.jpg"
+    },
+    {
+      "key": "obsidian-spear",
+      "name": "黒曜石の槍",
+      "group": "equipment",
+      "kind": "equipment",
+      "current": {
+        "url": "/models/obsidian-spear/model-c2.glb",
+        "sha256": "960e9caffed55beb1599c6330e5920cf27b16c9fe1312fa1cad105880700cd95",
+        "bytes": 422412,
+        "triangles": 3995,
+        "heightMetres": 2.0986164808273315,
+        "clips": [],
+        "lods": []
+      },
+      "usage": "world3d.ts:1007-1026 attackProfile().modelKey / stone-axe; spear-pose.ts / katana-pose.ts orientation",
+      "derivedData": [],
+      "reference": "output/model-generation/models/obsidian-spear/source/original/",
+      "issues": "C1: 5,679 tris; spear shaft and head from the old flint-spear lineage, no normal map.",
+      "motions": "none (held at Grip.R)",
+      "plan": "Candidate 2 reference (Codex image_gen) -> TRELLIS-2 1024 -> meshopt -> xatlas -> albedo + baked normal. Grip origin at 0.340 of the length (C1 frame), shaft +Y.",
+      "replacement": {
+        "url": "/models/obsidian-spear/model-c2.glb"
+      },
+      "progress": "integrated-in-branch",
+      "verification": "3,995 tris, p95 0.6 mm; grip-to-butt 0.7133 / grip-to-tip 1.3853 m (C1 0.7136 / 1.3854). In game: held at GripR when an obsidian head is fitted, visible at idle and in the real F thrust (output/asset-remake/game/final-weapons)."
+    },
+    {
+      "key": "obsidian-blade",
+      "name": "黒曜石の刃",
+      "group": "equipment",
+      "kind": "static",
+      "current": {
+        "url": "/models/obsidian-blade/model-c2.glb",
+        "sha256": "87e6167887fdab6e2a0331837ef305b0470078b9e3afcd450dfae8ea1080b66b",
+        "bytes": 185140,
+        "triangles": 1500,
+        "heightMetres": 0.2908,
+        "clips": [],
+        "lods": []
+      },
+      "usage": "coastal-renderer / inventory item",
+      "derivedData": [],
+      "reference": "output/model-generation/models/obsidian-blade/source/original/",
+      "issues": "C1: the obsidian spear head cut out of the spear mesh (1,501 tris), crude wavy faces.",
+      "motions": "none",
+      "plan": "Candidate 2 reference (Codex image_gen) -> TRELLIS-2 1024 -> meshopt -> xatlas -> albedo + baked normal. Reference shows a lying knapped blade; scaled by its length (0.291 m) and stood tip-up in the spear grip frame (base 1.094 m) by a root node transform so the knapping-table placement is unchanged.",
+      "replacement": {
+        "url": "/models/obsidian-blade/model-c2.glb"
+      },
+      "progress": "integrated-in-branch",
+      "verification": "1,500 tris, p95 0.5 mm; output/asset-remake/compare/weapons/blade.jpg (faint ochre matte fringe on the edges). Not placed in the current world: SHELL_BEDS / MIDDEN_SITES / KNAPPING_SITES (shared/coastal-sites.mts) are filtered to the gulf region removed on 2026-09-22, so they are all empty and src/coastal-renderer.ts never requests this asset; verified by renders only."
+    },
+    {
+      "key": "violet-behemoth",
+      "name": "紫尾の巨獣",
+      "group": "enemy",
+      "kind": "enemy",
+      "current": {
+        "url": "/models/violet-behemoth/model-c2.glb",
+        "sha256": "85b3a6393ce569c81d75557201b510afc1b278529e1ffa65806ed6c0c17e4fda",
+        "bytes": 7168980,
+        "triangles": 39825,
+        "heightMetres": 3.119311809539795,
+        "clips": [
+          "Alert",
+          "Attack",
+          "Charge",
+          "Death",
+          "Gape",
+          "Hit",
+          "Idle_Loop",
+          "Roar",
+          "Run_Loop",
+          "Spit",
+          "SpitWindup",
+          "TailSpin",
+          "Tremble",
+          "Walk_Loop"
+        ],
+        "lods": [
+          "/models/violet-behemoth/lod-c2.glb"
+        ]
+      },
+      "usage": "world3d.loadEnemy; BEHEMOTH_CLIPS + BEHEMOTH_CLIP_TIMING; behemoth-mouth.mts Head/Jaw sockets",
+      "derivedData": [],
+      "reference": "output/model-generation/models/violet-behemoth/source/original/",
+      "issues": "C1: no normal map, no normal map.",
+      "motions": "14 clips",
+      "plan": "Identity-preserving remake from the delivered surface: 39.8k + 2048; user-directed design and measured mouth sockets preserved. scripts/remake/transfer_reduce.py (delivered rest surface reduced with meshopt, xatlas charts, albedo + tangent normal baked from the delivered surface, skin weights by Data Transfer; armature, bone names and clips re-exported at the source key rate).",
+      "replacement": {
+        "url": "/models/violet-behemoth/model-c2.glb",
+        "lod": "/models/violet-behemoth/lod-c2.glb"
+      },
+      "progress": "integrated-in-branch",
+      "verification": "posed deviation 0 m vs delivered skin (kept vertices are a subset); clip curves within 0.05-0.2 deg; render compare output/asset-remake/guests/violet-behemoth/compare-views.jpg"
+    },
+    {
+      "key": "meadow-sprig",
+      "name": "ぱらぱら草",
+      "group": "vegetation",
+      "kind": "foliage",
+      "current": {
+        "url": "/models/meadow-sprig/model.glb",
+        "sha256": "4a4c9060a5d95f0db3dcf3c4ff050c78c86f543b942ec62273471326959483de",
+        "bytes": 894776,
+        "triangles": 11546,
+        "heightMetres": 0.45013082993318676,
+        "clips": [],
+        "lods": []
+      },
+      "usage": "LandscapeInstances",
+      "derivedData": [],
+      "reference": "output/model-generation/models/meadow-sprig/source/original/",
+      "issues": "Instanced two-blade sprig (11,546 tris near); user-approved shape and green, root cap cut to the 4 cm sink, its blade albedo feeds the meadow ground tint.",
+      "motions": "none",
+      "plan": "New reference + TRELLIS reconstruction evaluated.",
+      "replacement": null,
+      "progress": "kept-with-reason",
+      "verification": "Rejected: same shape, yellower blades that would re-tint the meadow ground (output/asset-remake/compare/meadow-sprig/sheet.jpg). Kept the user-approved sprig."
+    },
+    {
+      "key": "sabertooth-tiger",
+      "name": "剣牙の大虎",
+      "group": "enemy",
+      "kind": "enemy",
+      "current": {
+        "url": "/models/sabertooth-tiger/model-c2.glb",
+        "sha256": "e6ec30cbd18aab4bf5b7f2f4972658f191c9f168d667501f7032f6f69b203ab0",
+        "bytes": 6843576,
+        "triangles": 38535,
+        "heightMetres": 1.6476876735687256,
+        "clips": [
+          "Idle_Loop",
+          "Walk_Loop",
+          "Run_Loop",
+          "Alert",
+          "Crouch",
+          "Snarl",
+          "Pounce",
+          "Step",
+          "Attack",
+          "Hit",
+          "Death"
+        ],
+        "lods": [
+          "/models/sabertooth-tiger/lod-c2.glb"
+        ]
+      },
+      "usage": "world3d.loadEnemy; enemy-state.ts SABERTOOTH_CLIPS; sabertooth-rules timings",
+      "derivedData": [],
+      "reference": "output/model-generation/models/sabertooth-tiger/source/original/",
+      "issues": "C1 r13: 72,892 tris (TRELLIS atlas seams block further reduction), 12 MB PNG texture, no normal map; Death rested 0.10 m above the floor.",
+      "motions": "Idle_Loop 3.0, Walk_Loop 0.8, Run_Loop 0.4, Alert 0.6, Crouch 0.8, Snarl 0.7, Pounce 1.3, Step 0.35, Attack 1.0, Hit 0.3, Death 1.5",
+      "plan": "Same user-approved surface (reused C1 dense, same reference/settings): meshopt 39.6k, xatlas charts, 2048 WebP albedo + baked normal; delivered r13 bone plan reused bit-for-bit (rig_sabertooth_c2.py --plan-from), weights re-solved; same 11 clips; Death settles to the ground; actor LOD 8.5k.",
+      "replacement": {
+        "url": "/models/sabertooth-tiger/model-c2.glb",
+        "lod": "/models/sabertooth-tiger/lod-c2.glb"
+      },
+      "progress": "integrated-in-branch",
+      "verification": "16 sabertooth tests pass; pose sheets output/asset-remake/motion/sabertooth-tiger/sheet-r06-*.jpg; head close-up cmp-head-zoom3.jpg; Death min z 0.001 m (r13 0.10 m). qa-sabertooth.mjs: all behaviour checks pass but the final \"Alert rendered\" sample fails under GPU load - the unchanged baseline fails identically now; rerun when the TRELLIS queue is idle. r07: bake on welded xatlas seams, same 48-degree crease as the rig."
+    },
+    {
+      "key": "valley-castle",
+      "name": "白羽教団の大聖城",
+      "group": "landmark",
+      "kind": "static",
+      "current": {
+        "url": "/models/valley-castle/model-r13-normal.glb",
+        "sha256": "7073c6f763aa5d65efe2cb2ba1f772028b9c805c4f4d3ce00d9d8d9f9178a26f",
+        "bytes": 10615036,
+        "triangles": 127254,
+        "heightMetres": 52.89262724603607,
+        "clips": [],
+        "lods": []
+      },
+      "usage": "world-landmarks; castle-surface-data walk atlas (SHA-pinned); camera rays",
+      "derivedData": [
+        "shared/castle-surface-data.mts",
+        "tests/castle.test.mjs"
+      ],
+      "reference": "output/model-generation/models/valley-castle/source/original/",
+      "issues": "C1 r13: 127,254 tris, one 2048 albedo, no normal map; stone courses and carving only in the albedo.",
+      "motions": "none",
+      "plan": "Geometry is the measured walk atlas (shared/castle-surface-data.mts, 0.35 m grid) and the camera ray grid, so the triangles stay byte-identical; add a tangent-space normal map baked from the TRELLIS dense (ref04) placed by similarity ICP.",
+      "replacement": {
+        "url": "/models/valley-castle/model-r13-normal.glb"
+      },
+      "progress": "integrated-in-branch",
+      "verification": "fit rms 0.52 m / p95 1.10 m (dense vs delivered, 110 m wide); 2048 bake, first-pass misses 5,753 of 2,120,288 texels; accessor bytes identical (4 accessors); tests/castle.test.mjs 3/3; renders output/asset-remake/compare/valley-castle/pair*.png"
+    },
+    {
+      "key": "firewood-log",
+      "name": "丸太1本",
+      "group": "prop-structure",
+      "kind": "static",
+      "current": {
+        "url": "/models/firewood-log/model-c2.glb",
+        "sha256": "cb98b8bb0017fd43a82ae29db8bdd4de6d32e265ae5e39037cedbc5a2b0bcebf",
+        "bytes": 805748,
+        "triangles": 2984,
+        "heightMetres": 0.3771,
+        "clips": [],
+        "lods": [
+          "/models/firewood-log/lod-c2-1.glb",
+          "/models/firewood-log/lod-c2-2.glb"
+        ]
+      },
+      "usage": "wood-pile.ts instanced logs; wood-pile-layout collision from GLB dims",
+      "derivedData": [
+        "shared/model-bounds.mts",
+        "shared/wood-pile-layout.mts"
+      ],
+      "reference": "output/model-generation/models/firewood-log/source/original/",
+      "issues": "C1: 13,340 tris.",
+      "motions": "none",
+      "plan": "New reference; 1.2 m along +X; 3k + 1024 + LODs 900/240 at 10/22 m; collision footprint within C1.",
+      "replacement": {
+        "url": "/models/firewood-log/model-c2.glb",
+        "lod": "/models/firewood-log/lod-c2.glb"
+      },
+      "progress": "integrated-in-branch",
+      "verification": "output/asset-remake/firewood-log/compare-c2.jpg"
+    },
+    {
+      "key": "camp-mountain",
+      "name": "白羽の丘陵",
+      "group": "landmark",
+      "kind": "static",
+      "current": {
+        "url": "/models/camp-mountain/model-r15.glb",
+        "sha256": "193127fbde284f036864996060cb3b85578ab7a595384151dad858e569eb9202",
+        "bytes": 8929000,
+        "triangles": 245000,
+        "heightMetres": 40.25746309757233,
+        "clips": [],
+        "lods": [
+          "/models/camp-mountain/lod-performance.glb"
+        ]
+      },
+      "usage": "world-landmarks; camp-mountain-surface-data; mammoth-navigation; mountain-materials offsets",
+      "derivedData": [
+        "shared/camp-mountain-surface-data.mts",
+        "tests/camp-landform.test.mjs"
+      ],
+      "reference": "output/model-generation/models/camp-mountain/source/original/",
+      "issues": "",
+      "motions": "none",
+      "plan": "",
+      "replacement": null,
+      "progress": "kept-with-reason",
+      "verification": "Ray-projected TRELLIS massif (r15) with measured LOD switching and cave roof fitting; its source massif-v2-res1024-seed42.glb is not on this host and the surface is hash-locked by tests/camp-landform.test.mjs. Kept."
+    },
+    {
+      "key": "camp-cave",
+      "name": "アプデの洞窟",
+      "group": "landmark",
+      "kind": "static",
+      "current": {
+        "url": "/models/camp-cave/model-r26.glb",
+        "sha256": "65dde1aa7311b88c159d524d93af82a770dac77e48ee1f35356e3000cad8a15f",
+        "bytes": 5393776,
+        "triangles": 74458,
+        "heightMetres": 8.398508608341217,
+        "clips": [],
+        "lods": []
+      },
+      "usage": "world-landmarks; camp-cave-surface-data (SHA-pinned); cave murals projected (cave-gallery-layout); tests pin SHA",
+      "derivedData": [
+        "shared/camp-cave-surface-data.mts",
+        "tests/cave-rimo-mural.test.mjs",
+        "tests/update-cave.test.mjs",
+        "cave mural coordinates"
+      ],
+      "reference": "output/model-generation/models/camp-cave/source/original/",
+      "issues": "",
+      "motions": "none",
+      "plan": "",
+      "replacement": null,
+      "progress": "kept-with-reason",
+      "verification": "Walkable cave (shared walk/floor/ceiling data and camera grid measured from model-r26 in tests/camp-landform.test.mjs) with projected murals; its TRELLIS dense (work/trellis/dense-res1024-seed42.glb per assets/camp-cave/README.md) is not on this host, so a lineage-preserving re-bake is impossible here. Kept."
+    },
+    {
+      "key": "yellow-524-mascot",
+      "name": "524",
+      "group": "companion",
+      "kind": "companion",
+      "current": {
+        "url": "/models/yellow-524-mascot/model-c2.glb",
+        "sha256": "cc25400bd45deb7b7fabf7723698c445b150710eb0b5921f92e43a30de45a143",
+        "bytes": 1648020,
+        "triangles": 24997,
+        "heightMetres": 0.3,
+        "clips": [
+          "Floating_Ripple"
+        ],
+        "lods": [
+          "/models/yellow-524-mascot/lod-c2.glb"
+        ]
+      },
+      "usage": "companion-524-renderer.ts; companion-524.mts radius/scale; heart sprites; PetContact",
+      "derivedData": [
+        "tests/companion-524.test.mjs"
+      ],
+      "reference": "output/model-generation/models/yellow-524-mascot/source/original/",
+      "issues": "C1: 449,022 tris (full dense), 1620 px texture, no normal map.",
+      "motions": "Floating_Ripple",
+      "plan": "Identity-preserving remake from the delivered surface: 25k + 1024 albedo/normal; Floating_Ripple, 20 bones. scripts/remake/transfer_reduce.py (delivered rest surface reduced with meshopt, xatlas charts, albedo + tangent normal baked from the delivered surface, skin weights by Data Transfer; armature, bone names and clips re-exported at the source key rate).",
+      "replacement": {
+        "url": "/models/yellow-524-mascot/model-c2.glb",
+        "lod": "/models/yellow-524-mascot/lod-c2.glb"
+      },
+      "progress": "integrated-in-branch",
+      "verification": "posed deviation 0 m vs delivered skin (kept vertices are a subset); clip curves within 0.05-0.2 deg; render compare output/asset-remake/guests/yellow-524-mascot/compare-views.jpg"
+    },
+    {
+      "key": "rimo-neko",
+      "name": "りもねこ",
+      "group": "companion",
+      "kind": "companion",
+      "current": {
+        "url": "/models/rimo-neko/model-c2.glb",
+        "sha256": "2ee2164b4c47ddbf89d73c1b58d9a61adea868ef7998967023cca6ebba056048",
+        "bytes": 7705604,
+        "triangles": 27474,
+        "heightMetres": 0.5199786842176763,
+        "clips": [
+          "Idle_Loop",
+          "Walk_Loop",
+          "Run_Loop",
+          "Pet",
+          "Happy",
+          "Hit",
+          "Hiss"
+        ],
+        "lods": [
+          "/models/rimo-neko/lod-c2.glb"
+        ]
+      },
+      "usage": "rimo-neko-renderer; Pet/Happy/Hit/Hiss/Held/Thrown/Catch/Land clips; PetContact",
+      "derivedData": [],
+      "reference": "output/model-generation/models/rimo-neko/source/original/",
+      "issues": "C1: 140,226 tris, no normal map.",
+      "motions": "7 clips",
+      "plan": "Identity-preserving remake from the delivered surface: 27.5k + 2048; close-up face checked (shading-before-bake fix). scripts/remake/transfer_reduce.py (delivered rest surface reduced with meshopt, xatlas charts, albedo + tangent normal baked from the delivered surface, skin weights by Data Transfer; armature, bone names and clips re-exported at the source key rate).",
+      "replacement": {
+        "url": "/models/rimo-neko/model-c2.glb",
+        "lod": "/models/rimo-neko/lod-c2.glb"
+      },
+      "progress": "integrated-in-branch",
+      "verification": "posed deviation 0 m vs delivered skin (kept vertices are a subset); clip curves within 0.05-0.2 deg; render compare output/asset-remake/guests/rimo-neko/compare-views.jpg"
+    },
+    {
+      "key": "orb-bot-white",
+      "name": "しろbot",
+      "group": "companion",
+      "kind": "companion",
+      "current": {
+        "url": "/models/orb-bot-white/model-c2.glb",
+        "sha256": "ce163f967da25e0382cee50008ee9dd5e36bd6bd3723f3647bf106d8477efcab",
+        "bytes": 280084,
+        "triangles": 4000,
+        "heightMetres": 0.28,
+        "clips": [
+          "Catch",
+          "Held_Loop",
+          "Idle_Loop",
+          "Land",
+          "Run_Loop",
+          "Thrown_Loop",
+          "Walk_Loop"
+        ],
+        "lods": [
+          "/models/orb-bot-white/lod-c2.glb"
+        ]
+      },
+      "usage": "orb-bot-renderer.ts:59 `orb-bot-${kind}`; Held/Thrown/Catch/Land; 45 instances in a full room",
+      "derivedData": [],
+      "reference": "output/model-generation/models/orb-bot-white/source/original/",
+      "issues": "C1: 4096 texture on a 0.28 m bot (45 instances share 9 textures), up to 41.6k tris, no normal map.",
+      "motions": "7 clips, 2 bones",
+      "plan": "<=4k tris + 1024 albedo/normal from the delivered surface; scripts/remake/transfer_reduce.py (delivered rest surface reduced with meshopt, xatlas charts, albedo + tangent normal baked from the delivered surface, skin weights by Data Transfer; armature, bone names and clips re-exported at the source key rate).",
+      "replacement": {
+        "url": "/models/orb-bot-white/model-c2.glb",
+        "lod": "/models/orb-bot-white/lod-c2.glb"
+      },
+      "progress": "integrated-in-branch",
+      "verification": "posed deviation 0 m vs delivered skin (kept vertices are a subset); clip curves within 0.05-0.2 deg; render compare output/asset-remake/guests/orb-bot-white/compare-views.jpg"
+    },
+    {
+      "key": "orb-bot-blue",
+      "name": "あおbot",
+      "group": "companion",
+      "kind": "companion",
+      "current": {
+        "url": "/models/orb-bot-blue/model-c2.glb",
+        "sha256": "58aafc5fd984e95a1286aa73c284bebd2acedf2285eae8cbb77eaad517786988",
+        "bytes": 281820,
+        "triangles": 4000,
+        "heightMetres": 0.28,
+        "clips": [
+          "Catch",
+          "Held_Loop",
+          "Idle_Loop",
+          "Land",
+          "Run_Loop",
+          "Thrown_Loop",
+          "Walk_Loop"
+        ],
+        "lods": [
+          "/models/orb-bot-blue/lod-c2.glb"
+        ]
+      },
+      "usage": "orb-bot-renderer.ts:59 `orb-bot-${kind}`; Held/Thrown/Catch/Land; 45 instances in a full room",
+      "derivedData": [],
+      "reference": "output/model-generation/models/orb-bot-blue/source/original/",
+      "issues": "C1: 4096 texture on a 0.28 m bot (45 instances share 9 textures), up to 41.6k tris, no normal map.",
+      "motions": "7 clips, 2 bones",
+      "plan": "<=4k tris + 1024 albedo/normal from the delivered surface; scripts/remake/transfer_reduce.py (delivered rest surface reduced with meshopt, xatlas charts, albedo + tangent normal baked from the delivered surface, skin weights by Data Transfer; armature, bone names and clips re-exported at the source key rate).",
+      "replacement": {
+        "url": "/models/orb-bot-blue/model-c2.glb",
+        "lod": "/models/orb-bot-blue/lod-c2.glb"
+      },
+      "progress": "integrated-in-branch",
+      "verification": "posed deviation 0 m vs delivered skin (kept vertices are a subset); clip curves within 0.05-0.2 deg; render compare output/asset-remake/guests/orb-bot-blue/compare-views.jpg"
+    },
+    {
+      "key": "orb-bot-green",
+      "name": "みどりbot",
+      "group": "companion",
+      "kind": "companion",
+      "current": {
+        "url": "/models/orb-bot-green/model-c2.glb",
+        "sha256": "7688b80b2910f2fd6b95bb281ed66f7c558c06bf801c8ce62b843e74dddf0238",
+        "bytes": 272528,
+        "triangles": 4000,
+        "heightMetres": 0.28,
+        "clips": [
+          "Catch",
+          "Held_Loop",
+          "Idle_Loop",
+          "Land",
+          "Run_Loop",
+          "Thrown_Loop",
+          "Walk_Loop"
+        ],
+        "lods": [
+          "/models/orb-bot-green/lod-c2.glb"
+        ]
+      },
+      "usage": "orb-bot-renderer.ts:59 `orb-bot-${kind}`; Held/Thrown/Catch/Land; 45 instances in a full room",
+      "derivedData": [],
+      "reference": "output/model-generation/models/orb-bot-green/source/original/",
+      "issues": "C1: 4096 texture on a 0.28 m bot (45 instances share 9 textures), up to 41.6k tris, no normal map.",
+      "motions": "7 clips, 2 bones",
+      "plan": "<=4k tris + 1024 albedo/normal from the delivered surface; scripts/remake/transfer_reduce.py (delivered rest surface reduced with meshopt, xatlas charts, albedo + tangent normal baked from the delivered surface, skin weights by Data Transfer; armature, bone names and clips re-exported at the source key rate).",
+      "replacement": {
+        "url": "/models/orb-bot-green/model-c2.glb",
+        "lod": "/models/orb-bot-green/lod-c2.glb"
+      },
+      "progress": "integrated-in-branch",
+      "verification": "posed deviation 0 m vs delivered skin (kept vertices are a subset); clip curves within 0.05-0.2 deg; render compare output/asset-remake/guests/orb-bot-green/compare-views.jpg"
+    },
+    {
+      "key": "orb-bot-purple",
+      "name": "むらさきbot",
+      "group": "companion",
+      "kind": "companion",
+      "current": {
+        "url": "/models/orb-bot-purple/model-c2.glb",
+        "sha256": "d6ed48cf1f7a8b5e7a2cd1fa492312350b2987c33a4cf5027dbca863d2b04847",
+        "bytes": 277544,
+        "triangles": 4000,
+        "heightMetres": 0.28,
+        "clips": [
+          "Catch",
+          "Held_Loop",
+          "Idle_Loop",
+          "Land",
+          "Run_Loop",
+          "Thrown_Loop",
+          "Walk_Loop"
+        ],
+        "lods": [
+          "/models/orb-bot-purple/lod-c2.glb"
+        ]
+      },
+      "usage": "orb-bot-renderer.ts:59 `orb-bot-${kind}`; Held/Thrown/Catch/Land; 45 instances in a full room",
+      "derivedData": [],
+      "reference": "output/model-generation/models/orb-bot-purple/source/original/",
+      "issues": "C1: 4096 texture on a 0.28 m bot (45 instances share 9 textures), up to 41.6k tris, no normal map.",
+      "motions": "7 clips, 2 bones",
+      "plan": "<=4k tris + 1024 albedo/normal from the delivered surface; scripts/remake/transfer_reduce.py (delivered rest surface reduced with meshopt, xatlas charts, albedo + tangent normal baked from the delivered surface, skin weights by Data Transfer; armature, bone names and clips re-exported at the source key rate).",
+      "replacement": {
+        "url": "/models/orb-bot-purple/model-c2.glb",
+        "lod": "/models/orb-bot-purple/lod-c2.glb"
+      },
+      "progress": "integrated-in-branch",
+      "verification": "posed deviation 0 m vs delivered skin (kept vertices are a subset); clip curves within 0.05-0.2 deg; render compare output/asset-remake/guests/orb-bot-purple/compare-views.jpg"
+    },
+    {
+      "key": "orb-bot-orange",
+      "name": "オレンジbot",
+      "group": "companion",
+      "kind": "companion",
+      "current": {
+        "url": "/models/orb-bot-orange/model-c2.glb",
+        "sha256": "1a92cdfe97bc542f5c96cc09f902bc99842114b1460fc87cb1d49d23242830be",
+        "bytes": 189144,
+        "triangles": 2531,
+        "heightMetres": 0.28,
+        "clips": [
+          "Catch",
+          "Held_Loop",
+          "Idle_Loop",
+          "Land",
+          "Run_Loop",
+          "Thrown_Loop",
+          "Walk_Loop"
+        ],
+        "lods": [
+          "/models/orb-bot-orange/lod-c2.glb"
+        ]
+      },
+      "usage": "orb-bot-renderer.ts:59 `orb-bot-${kind}`; Held/Thrown/Catch/Land; 45 instances in a full room",
+      "derivedData": [],
+      "reference": "output/model-generation/models/orb-bot-orange/source/original/",
+      "issues": "C1: 4096 texture on a 0.28 m bot (45 instances share 9 textures), up to 41.6k tris, no normal map.",
+      "motions": "7 clips, 2 bones",
+      "plan": "<=4k tris + 1024 albedo/normal from the delivered surface; scripts/remake/transfer_reduce.py (delivered rest surface reduced with meshopt, xatlas charts, albedo + tangent normal baked from the delivered surface, skin weights by Data Transfer; armature, bone names and clips re-exported at the source key rate).",
+      "replacement": {
+        "url": "/models/orb-bot-orange/model-c2.glb",
+        "lod": "/models/orb-bot-orange/lod-c2.glb"
+      },
+      "progress": "integrated-in-branch",
+      "verification": "posed deviation 0 m vs delivered skin (kept vertices are a subset); clip curves within 0.05-0.2 deg; render compare output/asset-remake/guests/orb-bot-orange/compare-views.jpg"
+    },
+    {
+      "key": "orb-bot-beret",
+      "name": "ベレーbot",
+      "group": "companion",
+      "kind": "companion",
+      "current": {
+        "url": "/models/orb-bot-beret/model-c2.glb",
+        "sha256": "5a6a97633fb56bbe95eead6e976a1bb13b596833bbf2ea5ed6812d155006722e",
+        "bytes": 600312,
+        "triangles": 3914,
+        "heightMetres": 0.28,
+        "clips": [
+          "Catch",
+          "Held_Loop",
+          "Idle_Loop",
+          "Land",
+          "Run_Loop",
+          "Thrown_Loop",
+          "Walk_Loop"
+        ],
+        "lods": [
+          "/models/orb-bot-beret/lod-c2.glb"
+        ]
+      },
+      "usage": "orb-bot-renderer.ts:59 `orb-bot-${kind}`; Held/Thrown/Catch/Land; 45 instances in a full room",
+      "derivedData": [],
+      "reference": "output/model-generation/models/orb-bot-beret/source/original/",
+      "issues": "C1: 4096 texture on a 0.28 m bot (45 instances share 9 textures), up to 41.6k tris, no normal map.",
+      "motions": "7 clips, 2 bones",
+      "plan": "<=4k tris + 1024 albedo/normal from the delivered surface; scripts/remake/transfer_reduce.py (delivered rest surface reduced with meshopt, xatlas charts, albedo + tangent normal baked from the delivered surface, skin weights by Data Transfer; armature, bone names and clips re-exported at the source key rate).",
+      "replacement": {
+        "url": "/models/orb-bot-beret/model-c2.glb",
+        "lod": "/models/orb-bot-beret/lod-c2.glb"
+      },
+      "progress": "integrated-in-branch",
+      "verification": "posed deviation 0 m vs delivered skin (kept vertices are a subset); clip curves within 0.05-0.2 deg; render compare output/asset-remake/guests/orb-bot-beret/compare-views.jpg"
+    },
+    {
+      "key": "orb-bot-frog",
+      "name": "かえるbot",
+      "group": "companion",
+      "kind": "companion",
+      "current": {
+        "url": "/models/orb-bot-frog/model-c2.glb",
+        "sha256": "db6173c04dbfee63acec4d76291414a3cfaa9068ee5e9dcfcf796ac189a7c7a5",
+        "bytes": 737732,
+        "triangles": 3624,
+        "heightMetres": 0.2678865952403118,
+        "clips": [
+          "Catch",
+          "Held_Loop",
+          "Idle_Loop",
+          "Land",
+          "Run_Loop",
+          "Thrown_Loop",
+          "Walk_Loop"
+        ],
+        "lods": [
+          "/models/orb-bot-frog/lod-c2.glb"
+        ]
+      },
+      "usage": "orb-bot-renderer.ts:59 `orb-bot-${kind}`; Held/Thrown/Catch/Land; 45 instances in a full room",
+      "derivedData": [],
+      "reference": "output/model-generation/models/orb-bot-frog/source/original/",
+      "issues": "C1: 4096 texture on a 0.28 m bot (45 instances share 9 textures), up to 41.6k tris, no normal map.",
+      "motions": "7 clips, 2 bones",
+      "plan": "<=4k tris + 1024 albedo/normal from the delivered surface; scripts/remake/transfer_reduce.py (delivered rest surface reduced with meshopt, xatlas charts, albedo + tangent normal baked from the delivered surface, skin weights by Data Transfer; armature, bone names and clips re-exported at the source key rate).",
+      "replacement": {
+        "url": "/models/orb-bot-frog/model-c2.glb",
+        "lod": "/models/orb-bot-frog/lod-c2.glb"
+      },
+      "progress": "integrated-in-branch",
+      "verification": "posed deviation 0 m vs delivered skin (kept vertices are a subset); clip curves within 0.05-0.2 deg; render compare output/asset-remake/guests/orb-bot-frog/compare-views.jpg"
+    },
+    {
+      "key": "orb-bot-triangle",
+      "name": "さんかくbot",
+      "group": "companion",
+      "kind": "companion",
+      "current": {
+        "url": "/models/orb-bot-triangle/model-c2.glb",
+        "sha256": "3b817e9ad2466dfee568e14916f571bd9492ef50cc95442c310f24a4f3068d77",
+        "bytes": 473148,
+        "triangles": 3993,
+        "heightMetres": 0.25344121781436846,
+        "clips": [
+          "Catch",
+          "Held_Loop",
+          "Idle_Loop",
+          "Land",
+          "Run_Loop",
+          "Thrown_Loop",
+          "Walk_Loop"
+        ],
+        "lods": [
+          "/models/orb-bot-triangle/lod-c2.glb"
+        ]
+      },
+      "usage": "orb-bot-renderer.ts:59 `orb-bot-${kind}`; Held/Thrown/Catch/Land; 45 instances in a full room",
+      "derivedData": [],
+      "reference": "output/model-generation/models/orb-bot-triangle/source/original/",
+      "issues": "C1: 4096 texture on a 0.28 m bot (45 instances share 9 textures), up to 41.6k tris, no normal map.",
+      "motions": "7 clips, 2 bones",
+      "plan": "<=4k tris + 1024 albedo/normal from the delivered surface; scripts/remake/transfer_reduce.py (delivered rest surface reduced with meshopt, xatlas charts, albedo + tangent normal baked from the delivered surface, skin weights by Data Transfer; armature, bone names and clips re-exported at the source key rate).",
+      "replacement": {
+        "url": "/models/orb-bot-triangle/model-c2.glb",
+        "lod": "/models/orb-bot-triangle/lod-c2.glb"
+      },
+      "progress": "integrated-in-branch",
+      "verification": "posed deviation 0 m vs delivered skin (kept vertices are a subset); clip curves within 0.05-0.2 deg; render compare output/asset-remake/guests/orb-bot-triangle/compare-views.jpg"
+    },
+    {
+      "key": "orb-bot-heart",
+      "name": "ハートbot",
+      "group": "companion",
+      "kind": "companion",
+      "current": {
+        "url": "/models/orb-bot-heart/model-c2.glb",
+        "sha256": "4564c3b0d15ddc7d57a387d832e1f0a98a83e7957ae9255d8122ae5d790ebc73",
+        "bytes": 558784,
+        "triangles": 3935,
+        "heightMetres": 0.2440195634964502,
+        "clips": [
+          "Catch",
+          "Held_Loop",
+          "Idle_Loop",
+          "Land",
+          "Run_Loop",
+          "Thrown_Loop",
+          "Walk_Loop"
+        ],
+        "lods": [
+          "/models/orb-bot-heart/lod-c2.glb"
+        ]
+      },
+      "usage": "orb-bot-renderer.ts:59 `orb-bot-${kind}`; Held/Thrown/Catch/Land; 45 instances in a full room",
+      "derivedData": [],
+      "reference": "output/model-generation/models/orb-bot-heart/source/original/",
+      "issues": "C1: 4096 texture on a 0.28 m bot (45 instances share 9 textures), up to 41.6k tris, no normal map.",
+      "motions": "7 clips, 2 bones",
+      "plan": "<=4k tris + 1024 albedo/normal from the delivered surface; scripts/remake/transfer_reduce.py (delivered rest surface reduced with meshopt, xatlas charts, albedo + tangent normal baked from the delivered surface, skin weights by Data Transfer; armature, bone names and clips re-exported at the source key rate).",
+      "replacement": {
+        "url": "/models/orb-bot-heart/model-c2.glb",
+        "lod": "/models/orb-bot-heart/lod-c2.glb"
+      },
+      "progress": "integrated-in-branch",
+      "verification": "posed deviation 0 m vs delivered skin (kept vertices are a subset); clip curves within 0.05-0.2 deg; render compare output/asset-remake/guests/orb-bot-heart/compare-views.jpg"
+    },
+    {
+      "key": "mae",
+      "name": "mae",
+      "group": "companion",
+      "kind": "companion",
+      "current": {
+        "url": "/models/mae/model-c2.glb",
+        "sha256": "0da0055ef3dbd6c6dda1cf6312e9d098c6eb34c63529891e9a4dc8b1bc5d4563",
+        "bytes": 1715504,
+        "triangles": 10843,
+        "heightMetres": 0.38,
+        "clips": [
+          "Happy",
+          "Hit",
+          "Idle_Loop",
+          "Pet",
+          "Run_Loop",
+          "Walk_Loop"
+        ],
+        "lods": [
+          "/models/mae/lod-c2.glb"
+        ]
+      },
+      "usage": "mae renderer; Pet/Happy/Held/Thrown/Catch/Land",
+      "derivedData": [],
+      "reference": "output/model-generation/models/mae/source/original/",
+      "issues": "C1: 4096 texture, no normal map.",
+      "motions": "6 clips",
+      "plan": "Identity-preserving remake from the delivered surface: 10.8k + 2048. scripts/remake/transfer_reduce.py (delivered rest surface reduced with meshopt, xatlas charts, albedo + tangent normal baked from the delivered surface, skin weights by Data Transfer; armature, bone names and clips re-exported at the source key rate).",
+      "replacement": {
+        "url": "/models/mae/model-c2.glb",
+        "lod": "/models/mae/lod-c2.glb"
+      },
+      "progress": "integrated-in-branch",
+      "verification": "posed deviation 0 m vs delivered skin (kept vertices are a subset); clip curves within 0.05-0.2 deg; render compare output/asset-remake/guests/mae/compare-views.jpg"
+    },
+    {
+      "key": "kohaku",
+      "name": "こはくちゃん",
+      "group": "companion",
+      "kind": "companion",
+      "current": {
+        "url": "/models/kohaku/model-c2.glb",
+        "sha256": "37f67aee50db574a24206f602aa3b02bc6b21d2a720f9f055499bffcceea28ca",
+        "bytes": 6401032,
+        "triangles": 29058,
+        "heightMetres": 0.5199786842176763,
+        "clips": [
+          "Idle_Loop",
+          "Walk_Loop",
+          "Run_Loop",
+          "Pet",
+          "Happy",
+          "Hit",
+          "Wave",
+          "Bow"
+        ],
+        "lods": [
+          "/models/kohaku/lod-c2.glb"
+        ]
+      },
+      "usage": "kohaku renderer; Pet/Happy/Wave/Bow",
+      "derivedData": [],
+      "reference": "output/model-generation/models/kohaku/source/original/",
+      "issues": "C1: 145,046 tris, 4096 texture, no normal map.",
+      "motions": "8 clips",
+      "plan": "Identity-preserving remake from the delivered surface: 29k + 2048. scripts/remake/transfer_reduce.py (delivered rest surface reduced with meshopt, xatlas charts, albedo + tangent normal baked from the delivered surface, skin weights by Data Transfer; armature, bone names and clips re-exported at the source key rate).",
+      "replacement": {
+        "url": "/models/kohaku/model-c2.glb",
+        "lod": "/models/kohaku/lod-c2.glb"
+      },
+      "progress": "integrated-in-branch",
+      "verification": "posed deviation 0 m vs delivered skin (kept vertices are a subset); clip curves within 0.05-0.2 deg; render compare output/asset-remake/guests/kohaku/compare-views.jpg"
+    },
+    {
+      "key": "maruimo-mascot",
+      "name": "まるぃも",
+      "group": "companion",
+      "kind": "companion",
+      "current": {
+        "url": "/models/maruimo-mascot/model-c2.glb",
+        "sha256": "bbeeb99315f45ffcfb257077366ca830929377d22beb385acbec1b22759c7eda",
+        "bytes": 8230884,
+        "triangles": 28911,
+        "heightMetres": 0.55,
+        "clips": [
+          "Attack",
+          "Boat_Loop",
+          "Craft",
+          "Downed",
+          "Eat",
+          "Gather",
+          "Give",
+          "Idle_Loop",
+          "Jump",
+          "Ride_Loop",
+          "Run_Loop",
+          "Walk_Loop",
+          "Wave"
+        ],
+        "lods": [
+          "/models/maruimo-mascot/lod-c2.glb"
+        ]
+      },
+      "usage": "maruimo-mascot renderer; 13 clips",
+      "derivedData": [],
+      "reference": "output/model-generation/models/maruimo-mascot/source/original/",
+      "issues": "C1: 137,602 tris, 4096 texture, no normal map.",
+      "motions": "13 clips",
+      "plan": "Identity-preserving remake from the delivered surface: 28.9k + 2048 (55 cm companion). scripts/remake/transfer_reduce.py (delivered rest surface reduced with meshopt, xatlas charts, albedo + tangent normal baked from the delivered surface, skin weights by Data Transfer; armature, bone names and clips re-exported at the source key rate).",
+      "replacement": {
+        "url": "/models/maruimo-mascot/model-c2.glb",
+        "lod": "/models/maruimo-mascot/lod-c2.glb"
+      },
+      "progress": "integrated-in-branch",
+      "verification": "posed deviation 0 m vs delivered skin (kept vertices are a subset); clip curves within 0.05-0.2 deg; render compare output/asset-remake/guests/maruimo-mascot/compare-views.jpg"
+    },
+    {
+      "key": "crow-soldier-spear",
+      "name": "白羽教団の門徒の槍",
+      "group": "prop-structure",
+      "kind": "prop",
+      "current": {
+        "url": "/models/crow-soldier-spear/model-c2.glb",
+        "sha256": "397a0fa02d74ffea1b4d5399f61a1644e26c912828b95ebc31e3445f840bfb01",
+        "bytes": 558616,
+        "triangles": 2993,
+        "heightMetres": 2.1462,
+        "clips": [],
+        "lods": []
+      },
+      "usage": "(see world-scenery / regional-scenery)",
+      "derivedData": [],
+      "reference": "output/model-generation/models/crow-soldier-spear/source/original/",
+      "issues": null,
+      "motions": null,
+      "plan": null,
+      "replacement": null,
+      "progress": "not-started",
+      "verification": null
+    },
+    {
+      "key": "crow-brute-axe",
+      "name": "白羽教団の戦僧の両刃斧",
+      "group": "prop-structure",
+      "kind": "prop",
+      "current": {
+        "url": "/models/crow-brute-axe/model-c2.glb",
+        "sha256": "c07c503db575adaf1f9f30e6855fd5679e46068c5b8566656dd51075a28dfac5",
+        "bytes": 812224,
+        "triangles": 3457,
+        "heightMetres": 1.4991,
+        "clips": [],
+        "lods": []
+      },
+      "usage": "(see world-scenery / regional-scenery)",
+      "derivedData": [],
+      "reference": "output/model-generation/models/crow-brute-axe/source/original/",
+      "issues": null,
+      "motions": null,
+      "plan": null,
+      "replacement": null,
+      "progress": "not-started",
+      "verification": null
+    },
+    {
+      "key": "crow-prelate-glaive",
+      "name": "白羽教団の大司祭の薙刀",
+      "group": "prop-structure",
+      "kind": "prop",
+      "current": {
+        "url": "/models/crow-prelate-glaive/model-c2.glb",
+        "sha256": "566ce63c6c13172099f2bc251405e2e28459fb96ed0327c41c0e691f58f291c5",
+        "bytes": 599076,
+        "triangles": 2949,
+        "heightMetres": 1.9981,
+        "clips": [],
+        "lods": []
+      },
+      "usage": "(see world-scenery / regional-scenery)",
+      "derivedData": [],
+      "reference": "output/model-generation/models/crow-prelate-glaive/source/original/",
+      "issues": null,
+      "motions": null,
+      "plan": null,
+      "replacement": null,
+      "progress": "not-started",
+      "verification": null
+    },
+    {
+      "key": "crow-pontiff-crozier",
+      "name": "白羽教皇の司教杖",
+      "group": "prop-structure",
+      "kind": "prop",
+      "current": {
+        "url": "/models/crow-pontiff-crozier/model-c2.glb",
+        "sha256": "b7869b75d0cc2aa2a5fb99bebcddb2405dbaf8e1e207ec0dddac1cb93a203937",
+        "bytes": 676740,
+        "triangles": 3494,
+        "heightMetres": 2.0985,
+        "clips": [],
+        "lods": []
+      },
+      "usage": "(see world-scenery / regional-scenery)",
+      "derivedData": [],
+      "reference": "output/model-generation/models/crow-pontiff-crozier/source/original/",
+      "issues": null,
+      "motions": null,
+      "plan": null,
+      "replacement": null,
+      "progress": "not-started",
+      "verification": null
+    },
+    {
+      "key": "crow-hide-shield",
+      "name": "白羽教団の門徒の獣皮の盾",
+      "group": "prop-structure",
+      "kind": "prop",
+      "current": {
+        "url": "/models/crow-hide-shield/model-c2.glb",
+        "sha256": "ec9868c7b5ccf590da1920d6f8430bd4af04de9f017259f8e1f09c3ff8623fe3",
+        "bytes": 863500,
+        "triangles": 2372,
+        "heightMetres": 0.8967,
+        "clips": [],
+        "lods": []
+      },
+      "usage": "(see world-scenery / regional-scenery)",
+      "derivedData": [],
+      "reference": "output/model-generation/models/crow-hide-shield/source/original/",
+      "issues": null,
+      "motions": null,
+      "plan": null,
+      "replacement": null,
+      "progress": "not-started",
+      "verification": null
+    },
+    {
+      "key": "crow-red-mantle",
+      "name": "白羽教団の大司祭の赤い肩衣",
+      "group": "prop-structure",
+      "kind": "prop",
+      "current": {
+        "url": "/models/crow-red-mantle/model-c2.glb",
+        "sha256": "2a78152741b13cd5ef6681d4db5836becd7c4a2ed496e8db743dfee8670d2c01",
+        "bytes": 876912,
+        "triangles": 2596,
+        "heightMetres": 0.6462,
+        "clips": [],
+        "lods": []
+      },
+      "usage": "(see world-scenery / regional-scenery)",
+      "derivedData": [],
+      "reference": "output/model-generation/models/crow-red-mantle/source/original/",
+      "issues": null,
+      "motions": null,
+      "plan": null,
+      "replacement": null,
+      "progress": "not-started",
+      "verification": null
+    },
+    {
+      "key": "crow-ivory-vestment",
+      "name": "白羽教皇の象牙色の祭服",
+      "group": "prop-structure",
+      "kind": "prop",
+      "current": {
+        "url": "/models/crow-ivory-vestment/model-c2.glb",
+        "sha256": "492aa9059767549c9436dbd71846751cead5b3becc97a5eda9d3a60bac4867fa",
+        "bytes": 892864,
+        "triangles": 2584,
+        "heightMetres": 0.8921,
+        "clips": [],
+        "lods": []
+      },
+      "usage": "(see world-scenery / regional-scenery)",
+      "derivedData": [],
+      "reference": "output/model-generation/models/crow-ivory-vestment/source/original/",
+      "issues": null,
+      "motions": null,
+      "plan": null,
+      "replacement": null,
+      "progress": "not-started",
+      "verification": null
+    },
+    {
+      "key": "crow-pontiff-crown",
+      "name": "白羽教皇の冠",
+      "group": "prop-structure",
+      "kind": "prop",
+      "current": {
+        "url": "/models/crow-pontiff-crown/model-c2.glb",
+        "sha256": "2c229f2d05ee8cd15532553b8f0497dea6ed89e6796448c11ad757788184a388",
+        "bytes": 866568,
+        "triangles": 2929,
+        "heightMetres": 0.3886,
+        "clips": [],
+        "lods": []
+      },
+      "usage": "(see world-scenery / regional-scenery)",
+      "derivedData": [],
+      "reference": "output/model-generation/models/crow-pontiff-crown/source/original/",
+      "issues": null,
+      "motions": null,
+      "plan": null,
+      "replacement": null,
+      "progress": "not-started",
+      "verification": null
+    },
+    {
+      "key": "berry-cluster",
+      "name": "野いちごの房",
+      "group": "prop-structure",
+      "kind": "prop",
+      "current": {
+        "url": "/models/berry-cluster/model-c2.glb",
+        "sha256": "6586133f70088e383be623c028dd0d39b2c9db5a9aa3cb86cc1b4d0a9cc3732c",
+        "bytes": 277940,
+        "triangles": 1172,
+        "heightMetres": 0.0985,
+        "clips": [],
+        "lods": []
+      },
+      "usage": "(see world-scenery / regional-scenery)",
+      "derivedData": [],
+      "reference": "output/model-generation/models/berry-cluster/source/original/",
+      "issues": null,
+      "motions": null,
+      "plan": null,
+      "replacement": null,
+      "progress": "not-started",
+      "verification": null
+    },
+    {
+      "key": "crow-bone-pauldrons",
+      "name": "白羽教団の戦僧の骨の肩当て",
+      "group": "prop-structure",
+      "kind": "prop",
+      "current": {
+        "url": "/models/crow-bone-pauldrons/model-c2.glb",
+        "sha256": "5355ffab11b7f97856d512388ff0fa8dd8273c19222f53b16aa944a2e6e6f5e6",
+        "bytes": 1073412,
+        "triangles": 2677,
+        "heightMetres": 0.7366,
+        "clips": [],
+        "lods": []
+      },
+      "usage": "(see world-scenery / regional-scenery)",
+      "derivedData": [],
+      "reference": "output/model-generation/models/crow-bone-pauldrons/source/original/",
+      "issues": null,
+      "motions": null,
+      "plan": null,
+      "replacement": null,
+      "progress": "not-started",
+      "verification": null
+    }
+  ],
+  "codeBuilt": [
+    {
+      "id": "crow-faction-props",
+      "where": "src/crow-faction-visuals.ts:20-41",
+      "what": "Cylinder/Cone/Sphere/Torus spears, axe, shield, crown, halo, mantle, staff orb on crow bones",
+      "progress": "integrated-in-branch",
+      "replacement": "TRELLIS props (kind prop): crow-soldier-spear, crow-hide-shield, crow-brute-axe, crow-bone-pauldrons, crow-prelate-glaive, crow-red-mantle, crow-pontiff-crozier, crow-ivory-vestment, crow-pontiff-crown; src/crow-faction-visuals.ts CROW_RANK_PARTS + crowPropKeys, src/world3d.ts loadEnemy loads them with the actor; red focus orbs kept as emissive spell light",
+      "verification": "Rest-pose composites on the crow rig: output/asset-remake/compare/crow-props/compose-a.jpg, prelate-sheet.jpg, pontiff-sheet.jpg, crown.jpg; tests/crow-faction-visuals.test.mjs 2/2. In game: all five ranks show their props (output/asset-remake/game/final-r1/report.json).",
+      "group": "code-built-stand-in"
+    },
+    {
+      "id": "berry-spheres",
+      "where": "src/world3d.ts:624-640",
+      "what": "red sphere berries placed on berry-bush vertices (resource amount display)",
+      "progress": "integrated-in-branch",
+      "replacement": "berry-cluster prop (1,172 tris, 512 textures, 14 cm) cloned per berryAnchors anchor in src/world3d.ts attachBerryClusters; count still equals fruitCount(amount); shared material emits 0.35 of its albedo for readability like the old emissive spheres",
+      "verification": "output/asset-remake/compare/crow-props/berry.jpg; in game 5/5 clusters shown on berry-24 (output/asset-remake/game/final-r1/berry-bush.png).",
+      "group": "code-built-stand-in"
+    }
+  ]
+}

@@ -1,0 +1,26 @@
+{
+  "key": "woolly-mammoth",
+  "decision": "adopt",
+  "sha256": "1a4b70113c94aec36e6a24f1216f9c1b9d2f6975a7a4604b861fbce783b907d5",
+  "url": "/models/woolly-mammoth/model-c2.glb",
+  "bytes": 8468828,
+  "triangles": 39982,
+  "candidate": 2,
+  "revision": "c2-r05",
+  "status": "remake-candidate-2-integrated",
+  "reviewer": "Claude Code (Opus 5.5)",
+  "date": "2026-10-07",
+  "issues": "C1: smooth plush look (fur silhouette lost in reduction), 1024 albedo, no normal map, tail repaired 3 times; 24-bone rig.",
+  "plan": "Representative quadruped. New reference B -> TRELLIS seed42 has twin pale rear spikes (same twin-tail failure as C1) -> alternative seeds/ref queued. New rig scripts/remake/rig_mammoth_c2.py (Spine kept for riding), 5 clips.",
+  "motions": "Idle_Loop 4.0, Walk_Loop 2.4 (0.354 m/s), Run_Loop 1.2 (1.125 m/s), Graze_Loop 5.0, Death 1.2 hold",
+  "evidence": "seed 7 dense (seed 42 rejected: twin tails); rig r05 pose sheets; game QA: R mount, W/Shift ride 6.6-7.7 m, F hunt -> Death -> meat, 0 errors; riding/hunting/motion tests pass (pre-existing failures unchanged) 2026-10-07 later: normal map repaired (back-face hits from overlapping layers flipped, z>=0.25; scripts/remake/repair_normal_maps.py), other bytes unchanged. Gameplay body radius pinned to the C1 value in shared/animals.mts (MAMMOTH_BODY_RADIUS) so the hit size is unchanged by the wider remade fur.",
+  "previousDelivery": {
+    "url": "/models/woolly-mammoth/model-tail-r12.glb",
+    "sha256": "dc8ddadd93b9ef078cf75e0e6c182521ad167a30d4ecae57b75daf5d01e13ba8",
+    "triangles": 26067,
+    "bytes": 7280948,
+    "candidate": 1,
+    "revision": null
+  },
+  "note": "Adoption inside the remake branch; in-game multi-player QA and the performance comparison are tracked in docs/asset-remake/PROGRESS.md."
+}

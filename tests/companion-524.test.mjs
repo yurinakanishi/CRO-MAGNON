@@ -436,13 +436,12 @@ test('retained original C14 keeps its exact hash, four-second floating clip and 
   assert.equal(Math.max(...j.animations[0].samplers.map((s) => j.accessors[s.input].max[0])), 4);
 });
 
-test('the selected midpoint delivery keeps all C14 geometry, skin and animation buffers at a 30cm game scale', async () => {
+test('the retained midpoint delivery keeps all C14 geometry, skin and animation buffers at a 30cm game scale', async () => {
   const manifest = JSON.parse(await readFile('public/models/yellow-524-mascot/asset.json', 'utf8'));
-  assert.equal(manifest.revision, 'midpoint-r01');
-  assert.equal(manifest.heightMetres, 0.3);
-  assert.equal(manifest.placement.scale, COMPANION_524.scale);
-  const data = await readFile(`public${manifest.url}`);
-  assert.equal(createHash('sha256').update(data).digest('hex'), manifest.sha256);
+  const midpoint = manifest.provenance.previousDelivery;
+  assert.equal(midpoint.url, '/models/yellow-524-mascot/model-midpoint-r01.glb');
+  const data = await readFile(`public${midpoint.url}`);
+  assert.equal(createHash('sha256').update(data).digest('hex'), midpoint.sha256);
   const original = await readFile('public/models/yellow-524-mascot/model-c14.glb');
   const parse = (b) => {
     const length = b.readUInt32LE(12),
@@ -466,6 +465,41 @@ test('the selected midpoint delivery keeps all C14 geometry, skin and animation 
     assert.deepEqual(a.doc[key], b.doc[key]);
   const position = b.doc.accessors[b.doc.meshes[0].primitives[0].attributes.POSITION];
   assert.ok(Math.abs((position.max[1] - position.min[1]) * COMPANION_524.scale - 0.3) < 1e-8);
+});
+
+test('the 2026-10 remake (candidate 2) keeps the midpoint rig, clip and 30cm game scale with a lighter baked surface', async () => {
+  const manifest = JSON.parse(await readFile('public/models/yellow-524-mascot/asset.json', 'utf8'));
+  assert.equal(manifest.candidate, 2);
+  assert.equal(manifest.heightMetres, 0.3);
+  assert.equal(manifest.placement.scale, COMPANION_524.scale);
+  const data = await readFile(`public${manifest.url}`);
+  assert.equal(createHash('sha256').update(data).digest('hex'), manifest.sha256);
+  const read = (b) => JSON.parse(b.subarray(20, 20 + b.readUInt32LE(12)));
+  const remake = read(data),
+    midpoint = read(await readFile(`public${manifest.provenance.previousDelivery.url}`));
+  const jointNames = (doc) => doc.skins[0].joints.map((i) => doc.nodes[i].name);
+  assert.deepEqual(jointNames(remake), jointNames(midpoint));
+  for (const [i, j] of remake.skins[0].joints.map((n, k) => [n, midpoint.skins[0].joints[k]])) {
+    const r = remake.nodes[i],
+      m = midpoint.nodes[j];
+    const rest = { translation: [0, 0, 0], rotation: [0, 0, 0, 1], scale: [1, 1, 1] };
+    for (const key of Object.keys(rest))
+      (r[key] ?? rest[key]).forEach((v, k) =>
+        assert.ok(Math.abs(v - (m[key] ?? rest[key])[k]) < 1e-4, `${r.name}.${key}`),
+      );
+  }
+  const seconds = (doc) =>
+    doc.animations.map((a) => [
+      a.name,
+      Math.max(...a.samplers.map((s) => doc.accessors[s.input].max[0])),
+    ]);
+  assert.deepEqual(seconds(remake), seconds(midpoint));
+  const position = remake.accessors[remake.meshes[0].primitives[0].attributes.POSITION];
+  assert.ok(Math.abs((position.max[1] - position.min[1]) * COMPANION_524.scale - 0.3) < 0.002);
+  assert.ok(
+    remake.materials.every((m) => m.normalTexture && m.pbrMetallicRoughness.baseColorTexture),
+  );
+  assert.ok(manifest.triangles < manifest.provenance.previousDelivery.triangles / 10);
 });
 
 test('restoring an older metre-tall 524 keeps its position but uses the new small-body radius', () => {

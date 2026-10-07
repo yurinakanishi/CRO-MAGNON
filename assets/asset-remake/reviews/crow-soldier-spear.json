@@ -1,0 +1,19 @@
+{
+  "key": "crow-soldier-spear",
+  "decision": "adopt",
+  "sha256": "397a0fa02d74ffea1b4d5399f61a1644e26c912828b95ebc31e3445f840bfb01",
+  "url": "/models/crow-soldier-spear/model-c2.glb",
+  "bytes": 558616,
+  "triangles": 2993,
+  "candidate": 2,
+  "revision": "c2-m01",
+  "status": "remake-candidate-2-integrated",
+  "reviewer": "Claude Code (Opus 5.5)",
+  "date": "2026-10-07",
+  "issues": null,
+  "plan": null,
+  "motions": null,
+  "evidence": null,
+  "previousDelivery": null,
+  "note": "Adoption inside the remake branch; in-game multi-player QA and the performance comparison are tracked in docs/asset-remake/PROGRESS.md."
+}

@@ -1,0 +1,26 @@
+{
+  "key": "firewood-log",
+  "decision": "adopt",
+  "sha256": "cb98b8bb0017fd43a82ae29db8bdd4de6d32e265ae5e39037cedbc5a2b0bcebf",
+  "url": "/models/firewood-log/model-c2.glb",
+  "bytes": 805748,
+  "triangles": 2984,
+  "candidate": 2,
+  "revision": "c2-m01",
+  "status": "remake-candidate-2-integrated",
+  "reviewer": "Claude Code (Opus 5.5)",
+  "date": "2026-10-07",
+  "issues": "C1: 13,340 tris.",
+  "plan": "New reference; 1.2 m along +X; 3k + 1024 + LODs 900/240 at 10/22 m; collision footprint within C1.",
+  "motions": "none",
+  "evidence": "output/asset-remake/firewood-log/compare-c2.jpg",
+  "previousDelivery": {
+    "url": "/models/firewood-log/model.glb",
+    "sha256": "8a32826636cfc198cc1776ebec499b1bc036779c08143cf256ad7e4d8a186cd3",
+    "triangles": 13340,
+    "bytes": 2156672,
+    "candidate": 1,
+    "revision": null
+  },
+  "note": "Adoption inside the remake branch; in-game multi-player QA and the performance comparison are tracked in docs/asset-remake/PROGRESS.md."
+}

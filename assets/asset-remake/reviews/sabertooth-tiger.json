@@ -1,0 +1,26 @@
+{
+  "key": "sabertooth-tiger",
+  "decision": "adopt",
+  "sha256": "e6ec30cbd18aab4bf5b7f2f4972658f191c9f168d667501f7032f6f69b203ab0",
+  "url": "/models/sabertooth-tiger/model-c2.glb",
+  "bytes": 6843576,
+  "triangles": 38535,
+  "candidate": 2,
+  "revision": "c2-r07",
+  "status": "remake-candidate-2-integrated",
+  "reviewer": "Claude Code (Opus 5.5)",
+  "date": "2026-10-07",
+  "issues": "C1 r13: 72,892 tris (TRELLIS atlas seams block further reduction), 12 MB PNG texture, no normal map; Death rested 0.10 m above the floor.",
+  "plan": "Same user-approved surface (reused C1 dense, same reference/settings): meshopt 39.6k, xatlas charts, 2048 WebP albedo + baked normal; delivered r13 bone plan reused bit-for-bit (rig_sabertooth_c2.py --plan-from), weights re-solved; same 11 clips; Death settles to the ground; actor LOD 8.5k.",
+  "motions": "Idle_Loop 3.0, Walk_Loop 0.8, Run_Loop 0.4, Alert 0.6, Crouch 0.8, Snarl 0.7, Pounce 1.3, Step 0.35, Attack 1.0, Hit 0.3, Death 1.5",
+  "evidence": "16 sabertooth tests pass; pose sheets output/asset-remake/motion/sabertooth-tiger/sheet-r06-*.jpg; head close-up cmp-head-zoom3.jpg; Death min z 0.001 m (r13 0.10 m). qa-sabertooth.mjs: all behaviour checks pass but the final \"Alert rendered\" sample fails under GPU load - the unchanged baseline fails identically now; rerun when the TRELLIS queue is idle. r07: bake on welded xatlas seams, same 48-degree crease as the rig.",
+  "previousDelivery": {
+    "url": "/models/sabertooth-tiger/model-r13.glb",
+    "sha256": "54db205315086d109bd34b6cf35d31df25cca7472dddb95c7fdbeea6c868021d",
+    "triangles": 72892,
+    "bytes": 20224888,
+    "candidate": 1,
+    "revision": "13"
+  },
+  "note": "Adoption inside the remake branch; in-game multi-player QA and the performance comparison are tracked in docs/asset-remake/PROGRESS.md."
+}

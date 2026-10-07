@@ -1,0 +1,26 @@
+{
+  "key": "desert-cactus",
+  "decision": "adopt",
+  "sha256": "ca57c5fe7c1db72ade391ac7a5709169e90b47be95b26258598a0a138f266473",
+  "url": "/models/desert-cactus/model-c2.glb",
+  "bytes": 1895208,
+  "triangles": 8991,
+  "candidate": 2,
+  "revision": "c2-m01",
+  "status": "remake-candidate-2-integrated",
+  "reviewer": "Claude Code (Opus 5.5)",
+  "date": "2026-10-07",
+  "issues": "C1: 24,435 tris, smooth ribs, reddish blob base, no normal map.",
+  "plan": "New reference -> TRELLIS -> 8,991 tris + 2 LODs, 2048 albedo + baked normal; collision footprint re-measured with the same tool.",
+  "motions": "none",
+  "evidence": "output/asset-remake/compare/desert-cactus/sheet.jpg; footprint 16 cells / 10 boxes (C1 see qa/footprint-rev03.json), 0 misses; region-features/adventures/paleo-world tests 23/23. In game: region loads and renders (output/asset-remake/game/final-r1/landmark-desert-cactus-1.png).",
+  "previousDelivery": {
+    "url": "/models/desert-cactus/model.glb",
+    "sha256": "df3e780323fd45808d92b2f7edcd2c7d9ee8000f1ea0c67b29baab73c939d7ed",
+    "triangles": 24435,
+    "bytes": 2122540,
+    "candidate": 1,
+    "revision": null
+  },
+  "note": "Adoption inside the remake branch; in-game multi-player QA and the performance comparison are tracked in docs/asset-remake/PROGRESS.md."
+}

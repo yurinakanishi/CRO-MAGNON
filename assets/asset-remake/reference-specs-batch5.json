@@ -1,0 +1,85 @@
+{
+  "version": 2,
+  "assets": [
+    {
+      "key": "crow-soldier-spear",
+      "attach": ["C:/Users/yurin/Desktop/projects/CRO-MAGNON/output/model-generation/models/crow-shaman/source/original/candidate2-ref-a.png"],
+      "styleNote": "a long war spear of the lowest-rank crow cultists.",
+      "subject": "ONE long primitive war spear about 2.2 m long standing perfectly vertical, point up: a straight dark weathered wooden shaft about 4 cm thick with two rawhide grip wraps, topped by a large knapped black obsidian leaf-shaped spearhead about 35 cm long with conchoidal flake scars and a sharp glossy edge, bound to the shaft with dark sinew lashings, three black crow feathers and a small bone bead tied below the head.",
+      "camera": "straight side view at eye level with the whole spear vertical and centered, entire spear uncropped top to bottom with generous margin.",
+      "variants": ["Dark brown wood, glossy black obsidian, black feathers, pale bone bead."]
+    },
+    {
+      "key": "crow-brute-axe",
+      "attach": ["C:/Users/yurin/Desktop/projects/CRO-MAGNON/output/model-generation/models/crow-shaman/source/original/candidate2-ref-a.png"],
+      "styleNote": "the heavy double-bladed axe of the brute crow warrior-monks.",
+      "subject": "ONE heavy primitive double-bladed war axe about 1.5 m tall standing vertical, haft down: a thick dark wooden haft about 5 cm wide wrapped with rawhide near the bottom, and at the top two large crescent-shaped knapped black obsidian blades, one on each side, symmetric, together about 75 cm wide, lashed to the haft with thick sinew and a bone collar, a tuft of black crow feathers hanging from the top.",
+      "camera": "straight front view at eye level with the blades spread left and right, entire axe uncropped with generous margin.",
+      "variants": ["Dark wood, glossy black obsidian blades, pale bone collar, black feathers."]
+    },
+    {
+      "key": "crow-prelate-glaive",
+      "attach": ["C:/Users/yurin/Desktop/projects/CRO-MAGNON/output/model-generation/models/crow-shaman/source/original/candidate2-ref-a.png"],
+      "styleNote": "the ceremonial glaive of the red-mantled crow prelates.",
+      "subject": "ONE ceremonial primitive glaive about 2.0 m long standing vertical, blade up: a straight dark wooden shaft about 4 cm thick, at the top a single large curved black obsidian blade about 45 cm long sweeping to one side like a raven beak, set in a hammered bronze collar with a bronze ring above it, red-dyed leather strips and two black crow feathers hanging from the collar.",
+      "camera": "straight side view at eye level with the whole glaive vertical and centered, the curved blade in profile, entire object uncropped with generous margin.",
+      "variants": ["Dark wood, glossy black obsidian, warm aged bronze, dark red leather."]
+    },
+    {
+      "key": "crow-pontiff-crozier",
+      "attach": ["C:/Users/yurin/Desktop/projects/CRO-MAGNON/output/model-generation/models/crow-shaman/source/original/candidate2-ref-a.png"],
+      "styleNote": "the crozier of the white-feathered crow pontiff.",
+      "subject": "ONE tall ceremonial crozier staff about 2.1 m long standing vertical: a straight polished dark wooden shaft about 4 cm thick with bronze bands, topped by a curled hook of carved pale bone bound with bronze wire, inside the curl a hammered bronze ring about 25 cm across, small white feathers and bone beads hanging from the curl.",
+      "camera": "straight side view at eye level with the whole crozier vertical and centered, the curl in profile, entire object uncropped with generous margin.",
+      "variants": ["Dark wood, aged bronze, ivory-pale bone, white feathers."]
+    },
+    {
+      "key": "crow-hide-shield",
+      "attach": ["C:/Users/yurin/Desktop/projects/CRO-MAGNON/output/model-generation/models/crow-shaman/source/original/candidate2-ref-a.png"],
+      "styleNote": "the hide shield of the crow foot soldiers.",
+      "subject": "ONE primitive oval hide shield about 76 cm wide, 90 cm tall and 8 cm thick: dark brown rawhide stretched over a bent wooden hoop and laced around the rim with sinew, a carved pale bone boss in the centre, a painted black crow-claw sign, three black crow feathers hanging from the bottom edge.",
+      "camera": "front three-quarter view slightly from the left, showing the full front face and a little of the rim thickness, entire shield uncropped with generous margin, centered.",
+      "variants": ["Dark brown hide, pale bone boss, black paint and feathers."]
+    },
+    {
+      "key": "crow-bone-pauldrons",
+      "attach": ["C:/Users/yurin/Desktop/projects/CRO-MAGNON/output/model-generation/models/crow-shaman/source/original/candidate2-ref-a.png"],
+      "styleNote": "the shoulder armour of the brute crow warrior-monks, worn over the shoulders of that character.",
+      "subject": "ONE shoulder armour yoke shown on its own as if worn by an invisible person: two large rounded shoulder guards made of overlapping curved mammoth-bone plates lashed together with rawhide, joined across the upper chest and upper back by thick hide straps, leaving an open round neck hole in the middle. About 1.2 m wide from shoulder tip to shoulder tip, 45 cm deep, 30 cm tall.",
+      "camera": "front three-quarter view from slightly above showing both shoulder guards and the neck opening, entire object uncropped with generous margin, centered.",
+      "variants": ["Pale ivory-yellow bone, dark brown rawhide."]
+    },
+    {
+      "key": "crow-red-mantle",
+      "attach": ["C:/Users/yurin/Desktop/projects/CRO-MAGNON/output/model-generation/models/crow-shaman/source/original/candidate2-ref-a.png"],
+      "styleNote": "the shoulder mantle of the crow prelates, worn over the shoulders of that character.",
+      "subject": "ONE short shoulder mantle shown on its own as if worn by an invisible person: two thick rounded shoulder pads of deep red-dyed felted hide with stitched bone-bead edges, joined by a short red capelet over the upper back and a bone toggle at the front, open round neck hole in the middle, ragged lower edge. About 1.15 m wide, 45 cm deep, 30 cm tall.",
+      "camera": "front three-quarter view from slightly above showing both shoulders and the neck opening, entire object uncropped with generous margin, centered.",
+      "variants": ["Deep oxblood red hide, pale bone beads and toggle."]
+    },
+    {
+      "key": "crow-ivory-vestment",
+      "attach": ["C:/Users/yurin/Desktop/projects/CRO-MAGNON/output/model-generation/models/crow-shaman/source/original/candidate2-ref-a.png"],
+      "styleNote": "the ceremonial shoulder vestment of the crow pontiff, worn over the shoulders of that character.",
+      "subject": "ONE ceremonial shoulder vestment shown on its own as if worn by an invisible person: two broad rounded shoulder pieces of pale ivory-white hide trimmed with hammered bronze plates and small white feathers along the edges, joined over the upper back and chest, open round neck hole in the middle. About 1.25 m wide, 45 cm deep, 30 cm tall.",
+      "camera": "front three-quarter view from slightly above showing both shoulders and the neck opening, entire object uncropped with generous margin, centered.",
+      "variants": ["Ivory white hide, aged bronze trim, white feathers."]
+    },
+    {
+      "key": "crow-pontiff-crown",
+      "attach": ["C:/Users/yurin/Desktop/projects/CRO-MAGNON/output/model-generation/models/crow-shaman/source/original/candidate2-ref-a.png"],
+      "styleNote": "the crown of the crow pontiff, worn on that bird head.",
+      "subject": "ONE ceremonial crown shown on its own: a ring band of hammered bronze about 34 cm across, with seven tall spikes rising from it, alternating long white crow feathers and pointed carved pale bone spires, a thin bronze halo ring behind the spikes. About 45 cm across and 30 cm tall.",
+      "camera": "front three-quarter view from slightly above showing the whole ring of spikes, entire crown uncropped with generous margin, centered.",
+      "variants": ["Aged bronze, ivory bone, white feathers."]
+    },
+    {
+      "key": "berry-cluster",
+      "attach": ["C:/Users/yurin/Desktop/projects/CRO-MAGNON/output/model-generation/models/berry-bush/source/original/candidate2-ref-a.png"],
+      "styleNote": "a cluster of the wild berries that grow on this bush.",
+      "subject": "ONE small cluster of five to seven glossy round wild red berries, each about 1.2 cm across, on short thin green stems joined to a tiny twig with two small green leaves. About 6 cm across in total.",
+      "camera": "three-quarter view from slightly above, entire cluster uncropped with generous margin, centered, filling most of the frame.",
+      "variants": ["Deep glossy red berries, green stems and leaves."]
+    }
+  ]
+}

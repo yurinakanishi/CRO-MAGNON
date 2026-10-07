@@ -3,11 +3,13 @@ import * as THREE from 'three';
 const up = new THREE.Vector3(0, 1, 0);
 // Socket measured on the delivered mammoth GLB at the base of its neck. Its
 // inverse bind transform makes the seat follow the existing animated spine.
-export function mammothSeat(root) {
+// Remade bodies record their own measured seat in the manifest (placement.ridingSeat).
+export function mammothSeat(root, asset = null) {
   root.updateMatrixWorld(true);
   const bone = root.getObjectByName('Spine');
   if (!bone) throw new Error('The verified mammoth is missing its spine');
-  const local = bone.worldToLocal(root.localToWorld(new THREE.Vector3(0, 3.51, 0.6)));
+  const seat = asset?.placement?.ridingSeat ?? [0, 3.51, 0.6];
+  const local = bone.worldToLocal(root.localToWorld(new THREE.Vector3(...seat)));
   return {
     bone,
     local,

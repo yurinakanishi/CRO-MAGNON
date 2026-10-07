@@ -1,0 +1,19 @@
+{
+  "key": "crow-brute-axe",
+  "decision": "adopt",
+  "sha256": "c07c503db575adaf1f9f30e6855fd5679e46068c5b8566656dd51075a28dfac5",
+  "url": "/models/crow-brute-axe/model-c2.glb",
+  "bytes": 812224,
+  "triangles": 3457,
+  "candidate": 2,
+  "revision": "c2-m01",
+  "status": "remake-candidate-2-integrated",
+  "reviewer": "Claude Code (Opus 5.5)",
+  "date": "2026-10-07",
+  "issues": null,
+  "plan": null,
+  "motions": null,
+  "evidence": null,
+  "previousDelivery": null,
+  "note": "Adoption inside the remake branch; in-game multi-player QA and the performance comparison are tracked in docs/asset-remake/PROGRESS.md."
+}

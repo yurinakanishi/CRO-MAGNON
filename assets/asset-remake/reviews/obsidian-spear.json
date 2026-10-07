@@ -1,0 +1,26 @@
+{
+  "key": "obsidian-spear",
+  "decision": "adopt",
+  "sha256": "960e9caffed55beb1599c6330e5920cf27b16c9fe1312fa1cad105880700cd95",
+  "url": "/models/obsidian-spear/model-c2.glb",
+  "bytes": 422412,
+  "triangles": 3995,
+  "candidate": 2,
+  "revision": "c2-m01",
+  "status": "remake-candidate-2-integrated",
+  "reviewer": "Claude Code (Opus 5.5)",
+  "date": "2026-10-07",
+  "issues": "C1: 5,679 tris; spear shaft and head from the old flint-spear lineage, no normal map.",
+  "plan": "Candidate 2 reference (Codex image_gen) -> TRELLIS-2 1024 -> meshopt -> xatlas -> albedo + baked normal. Grip origin at 0.340 of the length (C1 frame), shaft +Y.",
+  "motions": "none (held at Grip.R)",
+  "evidence": "3,995 tris, p95 0.6 mm; grip-to-butt 0.7133 / grip-to-tip 1.3853 m (C1 0.7136 / 1.3854). In game: held at GripR when an obsidian head is fitted, visible at idle and in the real F thrust (output/asset-remake/game/final-weapons).",
+  "previousDelivery": {
+    "url": "/models/obsidian-spear/model.glb",
+    "sha256": "d89b680a1519081cb5725ae543ebf1ce7e81c1fdf7f844e060eb17b4f42ca7bc",
+    "triangles": 5679,
+    "bytes": 2816996,
+    "candidate": 1,
+    "revision": null
+  },
+  "note": "Adoption inside the remake branch; in-game multi-player QA and the performance comparison are tracked in docs/asset-remake/PROGRESS.md."
+}

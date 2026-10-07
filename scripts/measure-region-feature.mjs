@@ -21,9 +21,11 @@ export function triangleTouchesCell(points,x,z,step) {
 }
 
 if(process.argv[1]?.endsWith('measure-region-feature.mjs')){
+  // node scripts/measure-region-feature.mjs <key> [revision] [glb]: the 2026-10 remake passes its delivered GLB
+  // and a 'c2-...' revision; the measurement itself is unchanged.
   const key=process.argv[2],revision=process.argv[3]??'01';
-  assert.ok(['desert-cactus','volcanic-basalt-columns'].includes(key));assert.match(revision,/^\d{2}$/);
-  const file=`output/model-generation/models/${key}/work/low-poly/candidate-${revision}/candidate.glb`;
+  assert.ok(['desert-cactus','volcanic-basalt-columns'].includes(key));assert.match(revision,/^(\d{2}|c2-[\w-]+)$/);
+  const file=process.argv[4]??`output/model-generation/models/${key}/work/low-poly/candidate-${revision}/candidate.glb`;
   const gltf=await geometryScene(file);gltf.scene.updateMatrixWorld(true);
   const bounds=new THREE.Box3().setFromObject(gltf.scene,true),step=key==='desert-cactus'?.25:.5;
   const cells=new Map(),triangles=[];

@@ -1,0 +1,26 @@
+{
+  "key": "neanderthal-hunter",
+  "decision": "adopt",
+  "sha256": "23b91d45cca119ecc9bb2696b47cc255dd5e8bc480243a301acb08184ae18ec7",
+  "url": "/models/neanderthal-hunter/model-c2.glb",
+  "bytes": 12902116,
+  "triangles": 53176,
+  "candidate": 2,
+  "revision": "c2-r01",
+  "status": "remake-candidate-2-integrated",
+  "reviewer": "Claude Code (Opus 5.5)",
+  "date": "2026-10-07",
+  "issues": "C1 human-r10: 54,422 tris; putty-like grey hair, faceted face and beard at full-body resolution; no normal map. Also used by the NPC Oru (nea male).",
+  "plan": "Same route as the Cro-Magnon male: new body reference + dedicated head reference (Codex image_gen) -> TRELLIS body (res1024/tex1024) and head (res1024/tex512) -> similarity-ICP head graft (body neck cut 1.48 m, head cut 1.40 m to keep the reconstructed beard, chin band 1.38-1.48 m, head white plinth/bust trimmed) -> rig_human_c2 at the delivered 1.72 m -> spear thrust / Downed / CMU locomotion -> LOD 0.2.",
+  "motions": "Idle_Loop, Walk_Loop, Run_Loop, Gather, Craft, Give, Eat, Wave, Attack (spear), Downed",
+  "evidence": "53,176 tris (LOD 10,635); head graft r01-r03 kept (r01 blocky body beard, r02 clipped collar + white plinth, r03 adopted): output/asset-remake/compare/neanderthal-hunter/head-r0*.jpg; clip poses c2-clips-sheet.jpg; 37 character/human/downed/spear tests pass. In game: one of five synced players at camp (output/asset-remake/game/final-r1/players-front.png).",
+  "previousDelivery": {
+    "url": "/models/neanderthal-hunter/model-human-r10.glb",
+    "sha256": "93047f04342a5880dc4574956846f130b3d97c5041408c07f790d2ae09f55000",
+    "triangles": 54422,
+    "bytes": 11260680,
+    "candidate": 1,
+    "revision": null
+  },
+  "note": "Adoption inside the remake branch; in-game multi-player QA and the performance comparison are tracked in docs/asset-remake/PROGRESS.md."
+}

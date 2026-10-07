@@ -1,0 +1,26 @@
+{
+  "key": "volcanic-basalt-columns",
+  "decision": "adopt",
+  "sha256": "d5c1538864da0fbc702243cd665f4e95053d2851182b53c7a8d5db0689ae7e40",
+  "url": "/models/volcanic-basalt-columns/model-c2.glb",
+  "bytes": 4061564,
+  "triangles": 13608,
+  "candidate": 2,
+  "revision": "c2-m02",
+  "status": "remake-candidate-2-integrated",
+  "reviewer": "Claude Code (Opus 5.5)",
+  "date": "2026-10-07",
+  "issues": "C1: 62,337 tris, flat dark columns, no normal map.",
+  "plan": "New reference -> TRELLIS -> 13,608 tris + LOD 4,199, 2048 albedo + baked normal; scaled by the C1 plan width (3.86 m) to keep the collision footprint inside C1 (height 4.22 vs 4.60 m); footprint re-measured.",
+  "motions": "none",
+  "evidence": "output/asset-remake/compare/volcanic-basalt-columns/sheet.jpg (m01 shown at 4.6 m; adopted m02 is the same mesh at 0.917 scale); footprint 53 cells / 36 boxes (C1 58 / 35), 0 misses; region/adventure/paleo tests 23/23. In game: region loads (output/asset-remake/game/final-r1/landmark-volcanic-basalt-columns-1.png).",
+  "previousDelivery": {
+    "url": "/models/volcanic-basalt-columns/model.glb",
+    "sha256": "a3cf5fa909494f4250e4cacd9bc9529b9780f9d7292fc1bfd6bf6235ae71c0fc",
+    "triangles": 62337,
+    "bytes": 5454964,
+    "candidate": 1,
+    "revision": null
+  },
+  "note": "Adoption inside the remake branch; in-game multi-player QA and the performance comparison are tracked in docs/asset-remake/PROGRESS.md."
+}

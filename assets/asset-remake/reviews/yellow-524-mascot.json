@@ -1,0 +1,26 @@
+{
+  "key": "yellow-524-mascot",
+  "decision": "adopt",
+  "sha256": "cc25400bd45deb7b7fabf7723698c445b150710eb0b5921f92e43a30de45a143",
+  "url": "/models/yellow-524-mascot/model-c2.glb",
+  "bytes": 1648020,
+  "triangles": 24997,
+  "candidate": 2,
+  "revision": "c2-t02",
+  "status": "remake-candidate-2-integrated",
+  "reviewer": "Claude Code (Opus 5.5)",
+  "date": "2026-10-07",
+  "issues": "C1: 449,022 tris (full dense), 1620 px texture, no normal map.",
+  "plan": "Identity-preserving remake from the delivered surface: 25k + 1024 albedo/normal; Floating_Ripple, 20 bones. scripts/remake/transfer_reduce.py (delivered rest surface reduced with meshopt, xatlas charts, albedo + tangent normal baked from the delivered surface, skin weights by Data Transfer; armature, bone names and clips re-exported at the source key rate).",
+  "motions": "Floating_Ripple",
+  "evidence": "posed deviation 0 m vs delivered skin (kept vertices are a subset); clip curves within 0.05-0.2 deg; render compare output/asset-remake/guests/yellow-524-mascot/compare-views.jpg",
+  "previousDelivery": {
+    "url": "/models/yellow-524-mascot/model-midpoint-r01.glb",
+    "sha256": "77faeb7e7b0a34cd1aa6e23b728cbaf295227998791bb437977a8ff2abfbb3b9",
+    "triangles": 449022,
+    "bytes": 19046100,
+    "candidate": 14,
+    "revision": "midpoint-r01"
+  },
+  "note": "Adoption inside the remake branch; in-game multi-player QA and the performance comparison are tracked in docs/asset-remake/PROGRESS.md."
+}

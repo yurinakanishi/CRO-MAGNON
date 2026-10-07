@@ -9,7 +9,20 @@ const world = await json('public/models/world-assets.json'),
   catalog = await json('assets/world-models.json');
 const results = [];
 for (const key of MOTION_KEYS) {
-  const asset = await json(`public/models/${key}/asset.json`);
+  const current = await json(`public/models/${key}/asset.json`);
+  // A 2026-10 remake (candidate 2) serves new geometry and rig exports. The historical motion chain below is then
+  // verified on the earlier delivery it replaced (kept in public/models, recorded in provenance.previousDelivery and
+  // previousProvenance); the remake itself is covered by verify-world-assets.mjs, its adoption review,
+  // scripts/remake/check_clip_parity.mjs and the tests. Catalog/world consistency is checked on the current record.
+  const remade = current.status?.startsWith('remake-');
+  const asset = remade
+    ? {
+        ...current,
+        ...current.provenance.previousDelivery,
+        provenance: current.provenance.previousProvenance,
+        clips: null,
+      }
+    : current;
   assert.equal(asset.motionReview.status, 'adopted');
   // Later adoptions (player run gaits r05, the 2026-09-13 single-tail mammoth
   // r05) serve newer files that still carry revision 04's motion bytes as a
@@ -20,7 +33,7 @@ for (const key of MOTION_KEYS) {
   );
   const file = `public${asset.url}`,
     bytes = await readFile(file);
-  assert.equal(bytes.length, asset.bytes);
+  if (asset.bytes !== undefined) assert.equal(bytes.length, asset.bytes);
   assert.equal(hash(bytes), asset.sha256);
   // The archived source under output/ is byte-identical to the served
   // model.glb; hosts without the archive verify against that copy by hash.
@@ -105,11 +118,11 @@ for (const key of MOTION_KEYS) {
   assert.equal(review.sha256, asset.sha256);
   const spec = catalog.assets.find((a) => a.key === key);
   if (spec) {
-    assert.equal(spec.sha256, asset.sha256);
-    assert.equal(spec.delivery, asset.url);
+    assert.equal(spec.sha256, current.sha256);
+    assert.equal(spec.delivery, current.url);
   }
   const record = world.assets.find((a) => a.modelKey === key);
-  if (record) assert.deepEqual(record, asset);
+  if (record) assert.deepEqual(record, current);
   const flags =
     key === 'crow-shaman'
       ? ['--enemy']
@@ -123,15 +136,16 @@ for (const key of MOTION_KEYS) {
   );
   assert.equal(inspection.validation, 'passed');
   assert.equal(inspection.triangles, asset.triangles);
-  for (const clip of asset.clips)
+  for (const clip of asset.clips ?? [])
     assert.ok(
       Math.abs(inspection.animations.find((c) => c.name === clip.name).duration - clip.seconds) <
         0.0001,
     );
   results.push({
     key,
+    ...(remade ? { remake: { url: current.url, sha256: current.sha256 } } : {}),
     sha256: asset.sha256,
-    clips: asset.clips.length,
+    clips: (asset.clips ?? current.clips).length,
     preservedClips: preserved,
     triangles: asset.triangles,
   });

@@ -1,0 +1,26 @@
+{
+  "key": "howkey-scientist",
+  "decision": "adopt",
+  "sha256": "229a82a35ddaec11ad82ab5e616e8952f1740ecd9c441c259aba8c6cd121a509",
+  "url": "/models/howkey-scientist/model-c2.glb",
+  "bytes": 10170824,
+  "triangles": 49079,
+  "candidate": 2,
+  "revision": "c2-t01",
+  "status": "remake-candidate-2-integrated",
+  "reviewer": "Claude Code (Opus 5.5)",
+  "date": "2026-10-07",
+  "issues": "C1: 4096 texture, no normal map.",
+  "plan": "Identity-preserving remake from the delivered surface: 49k + 2048 (player). scripts/remake/transfer_reduce.py (delivered rest surface reduced with meshopt, xatlas charts, albedo + tangent normal baked from the delivered surface, skin weights by Data Transfer; armature, bone names and clips re-exported at the source key rate).",
+  "motions": "10 clips",
+  "evidence": "posed deviation 0 m vs delivered skin (kept vertices are a subset); clip curves within 0.05-0.2 deg; render compare output/asset-remake/guests/howkey-scientist/compare-views.jpg",
+  "previousDelivery": {
+    "url": "/models/howkey-scientist/model-r11.glb",
+    "sha256": "f6366ce469d719b2456de06d776bf029e2fdc0a80e9f0ed7c4a51c6bb0ad8c83",
+    "triangles": 66406,
+    "bytes": 29530492,
+    "candidate": 1,
+    "revision": "11"
+  },
+  "note": "Adoption inside the remake branch; in-game multi-player QA and the performance comparison are tracked in docs/asset-remake/PROGRESS.md."
+}

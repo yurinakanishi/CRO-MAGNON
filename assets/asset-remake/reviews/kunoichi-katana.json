@@ -1,0 +1,26 @@
+{
+  "key": "kunoichi-katana",
+  "decision": "adopt",
+  "sha256": "4d3c2edeaaba853a4cb4cf658e4541812ad6249e1363f649469d81afe6f797cb",
+  "url": "/models/kunoichi-katana/model-c2.glb",
+  "bytes": 530840,
+  "triangles": 5997,
+  "candidate": 2,
+  "revision": "c2-m01",
+  "status": "remake-candidate-2-integrated",
+  "reviewer": "Claude Code (Opus 5.5)",
+  "date": "2026-10-07",
+  "issues": "C1: 22,201 tris for a hand weapon.",
+  "plan": "Candidate 2 reference (Codex image_gen) -> TRELLIS-2 1024 -> meshopt -> xatlas -> albedo + baked normal. Grip origin at 0.1508 of the length (C1), shaft +Y.",
+  "motions": "none (held at Grip.R; katana-pose.ts)",
+  "evidence": "5,997 tris, p95 0.3 mm; grip-to-butt 0.1583 / grip-to-tip 0.8917 m (C1 0.1583 / 0.8917). In game: held by the cat kunoichi peer (output/asset-remake/game/final-r1/players-front.png).",
+  "previousDelivery": {
+    "url": "/models/kunoichi-katana/model.glb",
+    "sha256": "3e6e061fc02779d3516d114b53629fa0d5b585e815d4683ce74dd7d9c2822e0e",
+    "triangles": 22201,
+    "bytes": 2019308,
+    "candidate": 1,
+    "revision": null
+  },
+  "note": "Adoption inside the remake branch; in-game multi-player QA and the performance comparison are tracked in docs/asset-remake/PROGRESS.md."
+}

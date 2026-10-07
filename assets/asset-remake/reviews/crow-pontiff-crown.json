@@ -1,0 +1,19 @@
+{
+  "key": "crow-pontiff-crown",
+  "decision": "adopt",
+  "sha256": "2c229f2d05ee8cd15532553b8f0497dea6ed89e6796448c11ad757788184a388",
+  "url": "/models/crow-pontiff-crown/model-c2.glb",
+  "bytes": 866568,
+  "triangles": 2929,
+  "candidate": 2,
+  "revision": "c2-m01",
+  "status": "remake-candidate-2-integrated",
+  "reviewer": "Claude Code (Opus 5.5)",
+  "date": "2026-10-07",
+  "issues": null,
+  "plan": null,
+  "motions": null,
+  "evidence": null,
+  "previousDelivery": null,
+  "note": "Adoption inside the remake branch; in-game multi-player QA and the performance comparison are tracked in docs/asset-remake/PROGRESS.md."
+}

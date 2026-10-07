@@ -1,0 +1,26 @@
+{
+  "key": "hide-tent",
+  "decision": "adopt",
+  "sha256": "e3fa5084524b3fd141f8aa05838e9da2f612f2987d35f04c4743209c4bc29120",
+  "url": "/models/hide-tent/model-c2.glb",
+  "bytes": 4508752,
+  "triangles": 17991,
+  "candidate": 2,
+  "revision": "c2-r02",
+  "status": "remake-candidate-2-integrated",
+  "reviewer": "Claude Code (Opus 5.5)",
+  "date": "2026-10-07",
+  "issues": "C1: 24.6k tris, 1024 albedo downsampled from TRELLIS 2048, constant roughness 0.87, no normal map; plain uniform hides.",
+  "plan": "Representative static asset. New Codex reference B (patchwork hides, sinew stitching, fur ridge, hem stones) -> TRELLIS 1024/tex1024 seed42 -> 18k tris + baked 2048 normal + 2048 albedo + 1024 roughness, dense-derived LOD.",
+  "motions": "none (static)",
+  "evidence": "neutral review compare (output/asset-remake/hide-tent/compare-r01.jpg); collision bounds re-measured; in game at camp (output/asset-remake/game/final-r1/players-front.png, player-run.png) and in both perf comparisons; 2026-10-07 later: normal map repaired (back-face hits from overlapping layers flipped, z>=0.25; scripts/remake/repair_normal_maps.py), other bytes unchanged. Later: r02 scaled uniformly to 3.176 m so the collision footprint stays within C1 (x 1.000, z 0.931 of C1).",
+  "previousDelivery": {
+    "url": "/models/hide-tent/model.glb",
+    "sha256": "7c7aef410b4f8eee268cd32f75faa65f0b7ea3f2d8e4cf53b6d810e5a1e20de7",
+    "triangles": 24603,
+    "bytes": 3426740,
+    "candidate": 1,
+    "revision": null
+  },
+  "note": "Adoption inside the remake branch; in-game multi-player QA and the performance comparison are tracked in docs/asset-remake/PROGRESS.md."
+}

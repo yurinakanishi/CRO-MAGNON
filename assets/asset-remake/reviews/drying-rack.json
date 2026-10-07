@@ -1,0 +1,26 @@
+{
+  "key": "drying-rack",
+  "decision": "adopt",
+  "sha256": "35c7daa486dad72790dcb01b17b5da72353edb5c63c74fcb4c2230e46739e986",
+  "url": "/models/drying-rack/model-c2.glb",
+  "bytes": 2599104,
+  "triangles": 11816,
+  "candidate": 2,
+  "revision": "c2-m02",
+  "status": "remake-candidate-2-integrated",
+  "reviewer": "Claude Code (Opus 5.5)",
+  "date": "2026-10-07",
+  "issues": "C1: 23.9k tris, saturated red hides, no normal map.",
+  "plan": "New reference (forked posts, lashings, natural scraped hides); meshopt 12k + xatlas + 2048 albedo/normal; LOD 4k at 14 m. Width 2.9 m (was 3.3 m), height 2.4 m kept.",
+  "motions": "none",
+  "evidence": "output/asset-remake/drying-rack/compare-c2.jpg",
+  "previousDelivery": {
+    "url": "/models/drying-rack/model.glb",
+    "sha256": "b106d53d89e9fa51ee38d3baa2c3a0b898fd39658f5718728ef12844b9f1d65d",
+    "triangles": 23901,
+    "bytes": 3022452,
+    "candidate": 1,
+    "revision": null
+  },
+  "note": "Adoption inside the remake branch; in-game multi-player QA and the performance comparison are tracked in docs/asset-remake/PROGRESS.md."
+}

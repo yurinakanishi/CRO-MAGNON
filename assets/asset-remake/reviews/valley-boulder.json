@@ -1,0 +1,26 @@
+{
+  "key": "valley-boulder",
+  "decision": "adopt",
+  "sha256": "8a1f64562cb4b27bcd89516f4fc85317bfca54050f22cf8dfa0b668fb2196a3a",
+  "url": "/models/valley-boulder/model-c2.glb",
+  "bytes": 658708,
+  "triangles": 3498,
+  "candidate": 2,
+  "revision": "c2-m03",
+  "status": "remake-candidate-2-integrated",
+  "reviewer": "Claude Code (Opus 5.5)",
+  "date": "2026-10-07",
+  "issues": "C1: 2,953 tris, smeared texture on top, no normal map, no LOD (heavily instanced: rocks, stone piles, coast, gulf).",
+  "plan": "New reference (weathered granite with fracture facets); meshopt 3.5k + xatlas + 1024 albedo/normal; LOD 1,050 at 18 m. Footprint within 2 cm of C1 (stone-pile stacking derives from the re-measured bounds).",
+  "motions": "none",
+  "evidence": "output/asset-remake/valley-boulder/compare-c2.jpg; stone-pile tests pass Later: m03 scaled x0.975 so the footprint stays within C1 (open-world-restore test position no longer nudged).",
+  "previousDelivery": {
+    "url": "/models/valley-boulder/model.glb",
+    "sha256": "f46449aa51814b9037c8ed3c43179845e63c6f9b48b94e02c7979266cb09bb1d",
+    "triangles": 2953,
+    "bytes": 2443928,
+    "candidate": 1,
+    "revision": null
+  },
+  "note": "Adoption inside the remake branch; in-game multi-player QA and the performance comparison are tracked in docs/asset-remake/PROGRESS.md."
+}

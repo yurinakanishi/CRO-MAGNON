@@ -9,7 +9,8 @@ import { CollisionWorld } from '../dist/shared/collision.mjs';
 
 test('ice and volcano collision footprints are tied to the exact delivered geometry',async()=>{
   for(const [key,footprint] of Object.entries(LANDMARK_BOUNDS)){
-    const bytes=await readFile(new URL(`../public/models/${key}/model.glb`,import.meta.url));
+    const manifest=JSON.parse(await readFile(new URL(`../public/models/${key}/asset.json`,import.meta.url),'utf8'));
+    const bytes=await readFile(new URL(`../public${manifest.url}`,import.meta.url));
     assert.equal(createHash('sha256').update(bytes).digest('hex'),footprint.sha256);
     assert.ok(footprint.boxes.length>20,'Use the measured silhouette, not a single enclosing box');
     assert.ok(footprint.boxes.every(b=>b.height>0&&b.height<=footprint.max[1]+.001));

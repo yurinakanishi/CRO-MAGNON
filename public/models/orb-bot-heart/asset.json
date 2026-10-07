@@ -2,13 +2,13 @@
   "modelKey": "orb-bot-heart",
   "name": "ハートbot",
   "kind": "companion",
-  "candidate": 1,
-  "revision": "02",
-  "status": "integrated-reviewed-prototype",
-  "url": "/models/orb-bot-heart/model-r02.glb",
-  "sha256": "fe294cdc517abb4485b4379ffd4619fe4ff37a535d5463850f87b6ba612defc7",
-  "bytes": 18235068,
-  "triangles": 24624,
+  "candidate": 2,
+  "revision": "c2-t01",
+  "status": "remake-candidate-2-integrated",
+  "url": "/models/orb-bot-heart/model-c2.glb",
+  "sha256": "4564c3b0d15ddc7d57a387d832e1f0a98a83e7957ae9255d8122ae5d790ebc73",
+  "bytes": 558784,
+  "triangles": 3935,
   "bones": 2,
   "upAxis": "Y",
   "forwardAxis": "+Z",
@@ -87,55 +87,77 @@
   },
   "lods": [
     {
-      "url": "/models/orb-bot-heart/lod-r02.glb",
-      "sha256": "dc5b5a69e1d838f8b2c45f10ded323ec83c65e67fa429e56f502430338559fc2",
-      "bytes": 499512,
-      "triangles": 8618,
+      "url": "/models/orb-bot-heart/lod-c2.glb",
+      "sha256": "b04fa3b818ac6c9da08a11e5533b6f60d90a4598c02e8b519840943854765ed4",
+      "bytes": 104404,
+      "triangles": 1574,
       "distanceMetres": 9,
       "purpose": "animated-medium-lod-geometry"
     }
   ],
   "provenance": {
-    "provider": "Codex",
-    "claudeUsed": false,
-    "referenceGenerator": "Built-in imagegen",
-    "referenceImage": "assets/shape-bots/source/heart-reference-v1.png",
-    "referenceSha256": "ab989e7959bf932e715cbb9c61c6f9e067ec6a475f2eed136287a04efd7d1935",
-    "userReference": "assets/shape-bots/source/user-reference.png",
-    "userReferenceSha256": "9836ed1b161feba83535854a67235b74ceb1c4dbe26a2098e53a33559c69ad77",
-    "reconstruction": "Local TRELLIS-2 v0.8.1 official Vulkan / 512 / seed42; measured source-preserving reduction and squash/hop rig.",
-    "denseSha256": "9fabb7f446efdcdbeadec589db72aba3e7ddb0edeb902a612d39c29ffbe76fd3",
-    "sourceUvAndAlbedoPreserved": false,
-    "sourceUvPreserved": true,
-    "materialRepair": {
-      "method": "Reference-derived body-colour calibration of source albedo; neutral white/black features retained",
-      "records": [
-        {
-          "reference": "C:\\Users\\yurin\\Desktop\\projects\\CRO-MAGNON\\assets\\shape-bots\\source\\heart-reference-v1.png",
-          "targetHsv": [
-            0.8961474299430847,
-            0.9798387289047241,
-            0.9529412388801575
-          ],
-          "denseHsv": [
-            0.9078341126441956,
-            0.9523809552192688,
-            0.9019608497619629
-          ],
-          "hueShift": -0.01168668270111084,
-          "changedPixels": 15553164,
-          "unchangedPixels": 1224052,
-          "alphaExact": true,
-          "originalUVsExact": true
-        }
-      ]
+    "provider": "Claude Code (Opus 5.5)",
+    "claudeUsed": true,
+    "referenceGenerator": "none: derived from the delivered, user-approved surface (identity unchanged)",
+    "referenceImage": "public/models/orb-bot-heart/model-r02.glb",
+    "referenceSha256": "fe294cdc517abb4485b4379ffd4619fe4ff37a535d5463850f87b6ba612defc7",
+    "reconstruction": "no new reconstruction; the delivered rest surface is the bake and skin-weight source",
+    "denseFile": "public/models/orb-bot-heart/model-r02.glb",
+    "denseSha256": "fe294cdc517abb4485b4379ffd4619fe4ff37a535d5463850f87b6ba612defc7",
+    "processReport": "output/model-generation/models/orb-bot-heart/work/candidate-02/transfer/t01/report.json",
+    "rigReport": null,
+    "pipeline": "scripts/remake/ (trellis_queue.py, remake_process.py, rig_*.py); docs/asset-remake/PLAN.md",
+    "previousDelivery": {
+      "url": "/models/orb-bot-heart/model-r02.glb",
+      "sha256": "fe294cdc517abb4485b4379ffd4619fe4ff37a535d5463850f87b6ba612defc7",
+      "triangles": 24624,
+      "bytes": 18235068,
+      "candidate": 1,
+      "revision": "02"
     },
-    "candidateFile": "output/model-generation/models/orb-bot-heart/work/rig/revision-02/candidate.glb",
-    "visualReview": "assets/shape-bots/reviews/heart-r02.json"
+    "previousProvenance": {
+      "provider": "Codex",
+      "claudeUsed": false,
+      "referenceGenerator": "Built-in imagegen",
+      "referenceImage": "assets/shape-bots/source/heart-reference-v1.png",
+      "referenceSha256": "ab989e7959bf932e715cbb9c61c6f9e067ec6a475f2eed136287a04efd7d1935",
+      "userReference": "assets/shape-bots/source/user-reference.png",
+      "userReferenceSha256": "9836ed1b161feba83535854a67235b74ceb1c4dbe26a2098e53a33559c69ad77",
+      "reconstruction": "Local TRELLIS-2 v0.8.1 official Vulkan / 512 / seed42; measured source-preserving reduction and squash/hop rig.",
+      "denseSha256": "9fabb7f446efdcdbeadec589db72aba3e7ddb0edeb902a612d39c29ffbe76fd3",
+      "sourceUvAndAlbedoPreserved": false,
+      "sourceUvPreserved": true,
+      "materialRepair": {
+        "method": "Reference-derived body-colour calibration of source albedo; neutral white/black features retained",
+        "records": [
+          {
+            "reference": "C:\\Users\\yurin\\Desktop\\projects\\CRO-MAGNON\\assets\\shape-bots\\source\\heart-reference-v1.png",
+            "targetHsv": [
+              0.8961474299430847,
+              0.9798387289047241,
+              0.9529412388801575
+            ],
+            "denseHsv": [
+              0.9078341126441956,
+              0.9523809552192688,
+              0.9019608497619629
+            ],
+            "hueShift": -0.01168668270111084,
+            "changedPixels": 15553164,
+            "unchangedPixels": 1224052,
+            "alphaExact": true,
+            "originalUVsExact": true
+          }
+        ]
+      },
+      "candidateFile": "output/model-generation/models/orb-bot-heart/work/rig/revision-02/candidate.glb",
+      "visualReview": "assets/shape-bots/reviews/heart-r02.json"
+    },
+    "transfer": "scripts/remake/transfer_reduce.py (meshopt subset of delivered vertices, xatlas charts, albedo/normal bake with miss fill and back-face flip, Data Transfer skin weights; armature, bone names and clips re-exported unchanged)",
+    "visualReview": "assets/asset-remake/reviews/orb-bot-heart.json"
   },
   "notes": [
-    "Each of the four subjects has its own independent image and dense reconstruction. No visible primitive-built geometry.",
-    "Five loop clips and two one-shots; in-place, server-timed throws and return; original skeleton and material shared with LOD."
+    "Remake C2 of the delivered orb bot: same surface reduced to at most 4,000 triangles, 4096 texture replaced by 1024 albedo + baked normal; 2 bones and 7 clips unchanged. Posed deviation from the delivered skin 0 m (kept vertices are a subset); clip curves within 0.04 deg (resampling). 3935 triangles (was 24624), textures 1024 WebP + baked normal."
   ],
   "gameQA": "output/playwright/shape-bots/game-1790867552591"
 }

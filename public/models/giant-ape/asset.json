@@ -2,12 +2,12 @@
   "modelKey": "giant-ape",
   "name": "巨腕の大猿",
   "kind": "humanoid",
-  "candidate": 1,
-  "status": "locally-integrated-and-game-qa-passed",
-  "url": "/models/giant-ape/model-run-r05.glb",
-  "sha256": "ae9cee5355ca661235b4c310df8feb03f00dc447ab479c7de5446a9429d3faca",
-  "bytes": 16751356,
-  "triangles": 106357,
+  "candidate": 2,
+  "status": "remake-candidate-2-integrated",
+  "url": "/models/giant-ape/model-c2.glb",
+  "sha256": "9bfd996eec87c77af99d32c642564cd987548563bcbfe905a252d935f763e0b9",
+  "bytes": 10566148,
+  "triangles": 58216,
   "upAxis": "Y",
   "forwardAxis": "+Z",
   "heightMetres": 1.9999998637763565,
@@ -94,10 +94,10 @@
   ],
   "lods": [
     {
-      "url": "/models/giant-ape/lod-performance.glb",
-      "sha256": "f8b1033c49b5179c79c5581d4899f4789c074f8154a8e937986e88b192d00fbd",
-      "bytes": 1326948,
-      "triangles": 15953,
+      "url": "/models/giant-ape/lod-c2.glb",
+      "sha256": "8a5c25d064261114e015ccb0447e88a9383598ffac3c747891fc39128cb29d07",
+      "bytes": 944420,
+      "triangles": 11643,
       "distanceMetres": 28,
       "purpose": "animated-medium-lod-geometry"
     }
@@ -123,26 +123,43 @@
     }
   },
   "provenance": {
-    "provider": "Codex",
-    "claudeUsed": false,
-    "referenceGenerator": "Built-in imagegen; user selected candidate 4",
-    "originalImage": "output/model-generation/models/giant-ape/source/original/user-selected-04.png",
-    "originalSha256": "a7e4a2b0cbaec007868147092ff68acaf3ec2a4ac42da133764fac49439c129b",
-    "referenceImage": "output/model-generation/models/giant-ape/source/original/reference-v1.png",
-    "referenceSha256": "71d710a68a80caec0ab0c76b9cd7cff0221373cec7afbb7bb0246b892abd0053",
-    "reconstruction": "Local TRELLIS-2 1024 seed 42; source-preserving measured reduction.",
-    "candidateFile": "output/model-generation/models/giant-ape/work/rig/revision-13/candidate.glb",
-    "visualReview": "assets/player-gaits/reviews/giant-ape-run-r05.json",
-    "previousVisualReview": "assets/shoulder-carry/adoption.json"
+    "provider": "Claude Code (Opus 5.5)",
+    "claudeUsed": true,
+    "referenceGenerator": "none: derived from the delivered, user-approved surface (identity unchanged)",
+    "referenceImage": "public/models/giant-ape/model-run-r05.glb",
+    "referenceSha256": "ae9cee5355ca661235b4c310df8feb03f00dc447ab479c7de5446a9429d3faca",
+    "reconstruction": "no new reconstruction; the delivered rest surface is the bake and skin-weight source",
+    "denseFile": "public/models/giant-ape/model-run-r05.glb",
+    "denseSha256": "ae9cee5355ca661235b4c310df8feb03f00dc447ab479c7de5446a9429d3faca",
+    "processReport": "output/model-generation/models/giant-ape/work/candidate-02/transfer/t01/report.json",
+    "rigReport": null,
+    "pipeline": "scripts/remake/ (trellis_queue.py, remake_process.py, rig_*.py); docs/asset-remake/PLAN.md",
+    "previousDelivery": {
+      "url": "/models/giant-ape/model-run-r05.glb",
+      "sha256": "ae9cee5355ca661235b4c310df8feb03f00dc447ab479c7de5446a9429d3faca",
+      "triangles": 106357,
+      "bytes": 16751356,
+      "candidate": 1,
+      "revision": null
+    },
+    "previousProvenance": {
+      "provider": "Codex",
+      "claudeUsed": false,
+      "referenceGenerator": "Built-in imagegen; user selected candidate 4",
+      "originalImage": "output/model-generation/models/giant-ape/source/original/user-selected-04.png",
+      "originalSha256": "a7e4a2b0cbaec007868147092ff68acaf3ec2a4ac42da133764fac49439c129b",
+      "referenceImage": "output/model-generation/models/giant-ape/source/original/reference-v1.png",
+      "referenceSha256": "71d710a68a80caec0ab0c76b9cd7cff0221373cec7afbb7bb0246b892abd0053",
+      "reconstruction": "Local TRELLIS-2 1024 seed 42; source-preserving measured reduction.",
+      "candidateFile": "output/model-generation/models/giant-ape/work/rig/revision-13/candidate.glb",
+      "visualReview": "assets/player-gaits/reviews/giant-ape-run-r05.json",
+      "previousVisualReview": "assets/shoulder-carry/adoption.json"
+    },
+    "transfer": "scripts/remake/transfer_reduce.py (meshopt subset of delivered vertices, xatlas charts, albedo/normal bake with miss fill and back-face flip, Data Transfer skin weights; armature, bone names and clips re-exported unchanged)",
+    "visualReview": "assets/asset-remake/reviews/giant-ape.json"
   },
   "notes": [
-    "User selected image candidate 4 and the name 巨腕の大猿. Candidate 1, local TRELLIS-2 1024 seed 42, measured source-preserving reduction; original and all revisions retained.",
-    "2 m red-furred broad biped; 106357 triangles. Original source roughness restored with non-metallic fur/hide, base-color JPEG PSNR 43.34 dB; geometry and other buffers retained during packing.",
-    "Source-specific skin and 12 clips. All 360 frames reviewed as 6-direction/5-time contact sheets, selected full-size views and real-browser playback; 12 video files generated. Independent 60 Hz full-skin validation passed.",
-    "Existing 0.78 m mage used unchanged for a measured lap comparison. This is a size fixture, not a networked lap-sitting feature.",
-    "Actual two-screen/three-socket-peer game QA: five players, walking/running, jump, strike, wave, riding and dismount. Profiles, keyboard sequence and mammoth proximity/wait are fixtures. Physical devices, long-duration load, and all-terrain mesh contact are not verified.",
-    "2026-09-09 stride revision 13: walking stride +55%, running stride +30%; actual movement speeds 1.8 and 5.4 m/s. Both gaits validated at 60 Hz and reviewed in 60 images; other 10 clips and original geometry/materials/skin unchanged. Shoulder carrying added through server-authoritative mutual acceptance and the real animated shoulder socket.",
-    "Source-derived 15,953-triangle animated LOD is used beyond 28 m; the adopted close model, skeleton, clips, materials and collision are unchanged."
+    "Remake C2 of the delivered giant ape run-r05: same surface reduced from 106,357 triangles + baked normal; 22 bones and 13 clips (shoulder carry) unchanged. Posed deviation from the delivered skin 0 m (kept vertices are a subset); clip curves within 0.04 deg (resampling). 58216 triangles (was 106357), textures 2048 WebP + baked normal."
   ],
   "downedMotion": {
     "revision": "revision-01",
@@ -196,5 +213,6 @@
     "stanceFraction": 0.36,
     "peakAuthoredSwingKneeDegrees": 104,
     "review": "assets/player-gaits/RUN_REPAIR.md"
-  }
+  },
+  "revision": "c2-t01"
 }

@@ -1,0 +1,26 @@
+{
+  "key": "rimo-neko",
+  "decision": "adopt",
+  "sha256": "2ee2164b4c47ddbf89d73c1b58d9a61adea868ef7998967023cca6ebba056048",
+  "url": "/models/rimo-neko/model-c2.glb",
+  "bytes": 7705604,
+  "triangles": 27474,
+  "candidate": 2,
+  "revision": "c2-t06",
+  "status": "remake-candidate-2-integrated",
+  "reviewer": "Claude Code (Opus 5.5)",
+  "date": "2026-10-07",
+  "issues": "C1: 140,226 tris, no normal map.",
+  "plan": "Identity-preserving remake from the delivered surface: 27.5k + 2048; close-up face checked (shading-before-bake fix). scripts/remake/transfer_reduce.py (delivered rest surface reduced with meshopt, xatlas charts, albedo + tangent normal baked from the delivered surface, skin weights by Data Transfer; armature, bone names and clips re-exported at the source key rate).",
+  "motions": "7 clips",
+  "evidence": "posed deviation 0 m vs delivered skin (kept vertices are a subset); clip curves within 0.05-0.2 deg; render compare output/asset-remake/guests/rimo-neko/compare-views.jpg",
+  "previousDelivery": {
+    "url": "/models/rimo-neko/model-c02-r03.glb",
+    "sha256": "2b303eb5967bcc5bb0fc1cc13c922ddc959fd08ddfc736366c6e05392fd2063f",
+    "triangles": 140226,
+    "bytes": 26079184,
+    "candidate": 2,
+    "revision": null
+  },
+  "note": "Adoption inside the remake branch; in-game multi-player QA and the performance comparison are tracked in docs/asset-remake/PROGRESS.md."
+}

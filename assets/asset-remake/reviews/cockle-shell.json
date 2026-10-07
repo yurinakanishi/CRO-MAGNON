@@ -1,0 +1,26 @@
+{
+  "key": "cockle-shell",
+  "decision": "adopt",
+  "sha256": "dc8defa88c3a04a5c34f48b80d62ada720de98c6960349965a33d9fb79bab2fe",
+  "url": "/models/cockle-shell/model-c2.glb",
+  "bytes": 248456,
+  "triangles": 1474,
+  "candidate": 2,
+  "revision": "c2-m02",
+  "status": "remake-candidate-2-integrated",
+  "reviewer": "Claude Code (Opus 5.5)",
+  "date": "2026-10-07",
+  "issues": "C1: 35,645 tris for a 16 cm instanced shell (up to 12 per bed), no normal map, small black specks.",
+  "plan": "New reference + TRELLIS compared against reducing the delivered surface; the reduction kept the good closed two-valve cockle.",
+  "motions": "none",
+  "evidence": "1,474 tris, p95 1.6 mm; output/asset-remake/compare/cockle-shell/sheet.jpg (new TRELLIS rejected: flat, black slit) and sheet2.jpg (adopted reduction ~identical to C1). Not placed in the current world: SHELL_BEDS / MIDDEN_SITES / KNAPPING_SITES (shared/coastal-sites.mts) are filtered to the gulf region removed on 2026-09-22, so they are all empty and src/coastal-renderer.ts never requests this asset; verified by renders only.",
+  "previousDelivery": {
+    "url": "/models/cockle-shell/model.glb",
+    "sha256": "7e4f448274b346dd8a3705901cccf0e7e4d49be2bc09b683cd85cdc740122a81",
+    "triangles": 35645,
+    "bytes": 10177512,
+    "candidate": 1,
+    "revision": null
+  },
+  "note": "Adoption inside the remake branch; in-game multi-player QA and the performance comparison are tracked in docs/asset-remake/PROGRESS.md."
+}

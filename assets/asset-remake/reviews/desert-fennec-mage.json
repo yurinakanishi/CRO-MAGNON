@@ -1,0 +1,26 @@
+{
+  "key": "desert-fennec-mage",
+  "decision": "adopt",
+  "sha256": "82ec1d4303e25bb37bef594c118861b9d7216d1b3b996091a93b89f62c0cc3b5",
+  "url": "/models/desert-fennec-mage/model-c2.glb",
+  "bytes": 8843048,
+  "triangles": 53151,
+  "candidate": 2,
+  "revision": "c2-t02",
+  "status": "remake-candidate-2-integrated",
+  "reviewer": "Claude Code (Opus 5.5)",
+  "date": "2026-10-07",
+  "issues": "C1: 103,314 tris, no normal map.",
+  "plan": "Identity-preserving remake from the delivered surface: 53k + 2048 (player). scripts/remake/transfer_reduce.py (delivered rest surface reduced with meshopt, xatlas charts, albedo + tangent normal baked from the delivered surface, skin weights by Data Transfer; armature, bone names and clips re-exported at the source key rate).",
+  "motions": "10 clips",
+  "evidence": "posed deviation 0 m vs delivered skin (kept vertices are a subset); clip curves within 0.05-0.2 deg; render compare output/asset-remake/guests/desert-fennec-mage/compare-views.jpg",
+  "previousDelivery": {
+    "url": "/models/desert-fennec-mage/model-run-r05.glb",
+    "sha256": "1df80588345196a75382afbd437b6ec9349bc717688433801dc3fdd72c8e0841",
+    "triangles": 103314,
+    "bytes": 15792420,
+    "candidate": 1,
+    "revision": null
+  },
+  "note": "Adoption inside the remake branch; in-game multi-player QA and the performance comparison are tracked in docs/asset-remake/PROGRESS.md."
+}

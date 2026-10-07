@@ -1,0 +1,19 @@
+{
+  "key": "crow-red-mantle",
+  "decision": "adopt",
+  "sha256": "2a78152741b13cd5ef6681d4db5836becd7c4a2ed496e8db743dfee8670d2c01",
+  "url": "/models/crow-red-mantle/model-c2.glb",
+  "bytes": 876912,
+  "triangles": 2596,
+  "candidate": 2,
+  "revision": "c2-m01",
+  "status": "remake-candidate-2-integrated",
+  "reviewer": "Claude Code (Opus 5.5)",
+  "date": "2026-10-07",
+  "issues": null,
+  "plan": null,
+  "motions": null,
+  "evidence": null,
+  "previousDelivery": null,
+  "note": "Adoption inside the remake branch; in-game multi-player QA and the performance comparison are tracked in docs/asset-remake/PROGRESS.md."
+}
