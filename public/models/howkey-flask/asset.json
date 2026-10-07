@@ -1,0 +1,65 @@
+{
+  "modelKey": "howkey-flask",
+  "name": "Howkeyの三角フラスコ",
+  "kind": "equipment",
+  "candidate": 1,
+  "revision": "r01",
+  "status": "friend-prop-integrated",
+  "url": "/models/howkey-flask/model-r01.glb",
+  "sha256": "85c376f2ffb2def8249cb1f0c56426ceb03144fadb6dfe55575741d7df0f2f80",
+  "bytes": 1194284,
+  "triangles": 4997,
+  "upAxis": "Y",
+  "forwardAxis": "+Z",
+  "heightMetres": 0.15,
+  "widthMetres": 0.10123039257517313,
+  "onDemand": true,
+  "placement": {
+    "pivot": "grip",
+    "gripNode": "Grip.R",
+    "gripMetresAboveBase": 0.111,
+    "orientation": "kept upright with the character (src/flask-pose.ts)",
+    "boundsMin": [
+      -0.050401557236909866,
+      -0.11100000143051147,
+      -0.05085756257176399
+    ],
+    "boundsMax": [
+      0.050828833132982254,
+      0.039000004529953,
+      0.05032170191407204
+    ]
+  },
+  "clips": [],
+  "lods": [],
+  "portrait": {
+    "url": "/models/howkey-flask/portrait.png",
+    "sha256": "0fb8cdab138660948b1a2c397dd9b72ff91d320adc380b731962f11bd2235aff"
+  },
+  "provenance": {
+    "provider": "Claude Code (Opus 5.5)",
+    "claudeUsed": true,
+    "referenceGenerator": "Codex CLI 0.162.0-alpha.2 built-in image_gen (configured default model); Howkey portrait attached for palette",
+    "referenceImage": "assets/friend-mascots/howkey-flask/source/reference-v1.png",
+    "referenceSha256": "0fb8cdab138660948b1a2c397dd9b72ff91d320adc380b731962f11bd2235aff",
+    "reconstruction": "Local TRELLIS-2 v0.8.1, res 512, tex 512, seed 42",
+    "denseSha256": "ed6b5b7383ec14bfda2e260f241994162027987776cb2fa3207f5ac2abe218b4",
+    "reduction": "meshoptimizer position-only reduction; Smart UV; 1024 diffuse-colour bake from the dense TRELLIS albedo; translated so the neck grip is the origin",
+    "deviationMetres": {
+      "denseToLow": {
+        "rms": 0.0001821000760521644,
+        "p95": 0.0003281535432889634,
+        "max": 0.0005991879496736051
+      },
+      "lowToDense": {
+        "rms": 0.0001755300059893761,
+        "p95": 0.0002925176051702768,
+        "max": 0.0007913840208356971
+      }
+    },
+    "pipeline": "assets/friend-mascots/README.md"
+  },
+  "notes": [
+    "Erlenmeyer flask held by the neck in Howkey's right hand (Grip.R). Hidden while that hand gathers, pets, throws a dot, fishes or works the shore."
+  ]
+}

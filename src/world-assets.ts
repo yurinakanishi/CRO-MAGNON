@@ -151,20 +151,32 @@ export class WorldAssets {
     this.environmentActive = 0;
     this.disposed = false;
   }
+  async loadCatalog() {
+    if (this.catalog) return this.catalog;
+    const response = await fetch('/models/world-assets.json');
+    if (!response.ok) throw new Error(`World assets: HTTP ${response.status}`);
+    const catalog = await response.json();
+    if (catalog.status !== 'ready' || !Array.isArray(catalog.assets))
+      throw new Error('World model catalog is not ready');
+    this.catalog = catalog;
+    return catalog;
+  }
   async load({
     deferCompanions = false,
     onProgress,
-  }: { deferCompanions?: boolean; onProgress?: (loaded: number, total: number) => void } = {}) {
+    background = false,
+  }: {
+    deferCompanions?: boolean;
+    onProgress?: (loaded: number, total: number) => void;
+    background?: boolean;
+  } = {}) {
     const started = performance.now();
-    const response = await fetch('/models/world-assets.json');
-    if (!response.ok) throw new Error(`World assets: HTTP ${response.status}`);
-    this.catalog = await response.json();
-    if (this.catalog.status !== 'ready' || !Array.isArray(this.catalog.assets))
-      throw new Error('World model catalog is not ready');
+    await this.loadCatalog();
     const pending = this.catalog.assets.filter(
       (asset) =>
         asset.kind !== 'enemy' &&
         !asset.onDemand &&
+        !this.templates.has(asset.modelKey) &&
         !(deferCompanions && asset.kind === 'companion'),
     );
     // Byte totals come from the verified records, so progress is known up front.
@@ -181,7 +193,7 @@ export class WorldAssets {
     onProgress?.(0, total);
     // Bound concurrent texture decoding while keeping independent downloads busy.
     await Promise.all(
-      Array.from({ length: 3 }, async () => {
+      Array.from({ length: background ? 1 : 3 }, async () => {
         while (pending.length && !this.disposed) {
           const asset = pending.shift(),
             gltf = await loadVerifiedGLB(asset);
@@ -211,6 +223,7 @@ export class WorldAssets {
             });
           }
           this.templates.set(asset.modelKey, { gltf, lods, asset });
+          if (background) await new Promise((resolve) => setTimeout(resolve, 0));
         }
       }),
     ).catch((error) => {
@@ -273,16 +286,25 @@ export class WorldAssets {
   ensureEnvironment(key) {
     return this.ensureQueued(key, false);
   }
+  /** Load one startup asset ahead of the rest, retaining the same verified template. */
+  ensureInitial(key) {
+    return this.ensureQueued(key, false, true);
+  }
   ensureCompanion(key) {
     return this.ensureQueued(key, true);
   }
-  private ensureQueued(key, companion: boolean) {
+  private ensureQueued(key, companion: boolean, initial = false) {
     if (this.disposed) return Promise.reject(new Error('World assets disposed'));
     if (this.templates.has(key)) return Promise.resolve(this.get(key));
     if (this.environmentLoads.has(key)) return this.environmentLoads.get(key);
     const asset = this.catalog.assets.find(
       (record) =>
-        record.modelKey === key && (companion ? record.kind === 'companion' : record.environment),
+        record.modelKey === key &&
+        (initial
+          ? !record.onDemand && record.kind !== 'enemy' && record.kind !== 'companion'
+          : companion
+            ? record.kind === 'companion'
+            : record.environment),
     );
     if (!asset) return Promise.reject(new Error(`Missing verified environment ${key}`));
     const promise = new Promise((resolve, reject) =>

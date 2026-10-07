@@ -1,0 +1,86 @@
+{
+  "name": "フェアリー",
+  "credit": "fairy",
+  "subject": "Chibi mascot of 吉澤フェアリー (@Fairy_Yoshizawa): chestnut bob, lavender blouse with bow scarf, cream skirt, small lilac fairy wings.",
+  "identitySources": [
+    "assets/friend-mascots/fairy-mascot/source/x-avatar-400.jpg"
+  ],
+  "landmarks": {
+    "pelvis": 0.3,
+    "spine": 0.38,
+    "chest": 0.46,
+    "neck": 0.555,
+    "head": 0.62,
+    "head_tip": 0.95,
+    "hip": [
+      0.068,
+      0.27
+    ],
+    "knee": [
+      0.073,
+      0.115
+    ],
+    "ankle": [
+      0.075,
+      0.045
+    ],
+    "foot": [
+      0.075,
+      0.022
+    ],
+    "toe": [
+      0.075,
+      0.016
+    ],
+    "shoulder_in": 0.04,
+    "shoulder": [
+      0.125,
+      0.465
+    ],
+    "elbow": [
+      0.21,
+      0.45
+    ],
+    "wrist": [
+      0.285,
+      0.44
+    ],
+    "hand": [
+      0.335,
+      0.433
+    ]
+  },
+  "headRigidZ": 0.55,
+  "armGate": {
+    "x": 0.115,
+    "zLow": 0.39,
+    "zHigh": 0.53,
+    "radius": 0.05
+  },
+  "legGate": {
+    "zTop": 0.2,
+    "xMax": 0.12
+  },
+  "skirt": {
+    "top": 0.4,
+    "hem": 0.2,
+    "x": 0.06,
+    "hemX": 0.16,
+    "depth": 0.07
+  },
+  "rigidZones": [
+    {
+      "bone": "Chest",
+      "box": [
+        -0.32,
+        0.32,
+        0.07,
+        0.34,
+        0.4,
+        0.555
+      ],
+      "afterSmooth": true,
+      "note": "fairy wings ride on the upper back"
+    }
+  ]
+}

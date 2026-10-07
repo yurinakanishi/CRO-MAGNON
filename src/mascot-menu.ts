@@ -1,5 +1,6 @@
 import { BOT_DESIGNS, BOT_KINDS } from '../shared/orb-bots.mjs';
 import { MASCOT_KEYS, type MascotKey } from '../shared/mascot-selection.mjs';
+import { FRIEND_MASCOTS } from '../shared/friend-mascots.mjs';
 import type { ViewState } from './view-state.js';
 
 const portraits: Partial<Record<MascotKey, { name: string; image: string; color: string }>> = {
@@ -12,6 +13,12 @@ const portraits: Partial<Record<MascotKey, { name: string; image: string; color:
     color: '#ae6558',
   },
   kohaku: { name: 'こはくちゃん', image: '/models/kohaku/portrait-r05.png', color: '#e9cfae' },
+  ...Object.fromEntries(
+    FRIEND_MASCOTS.map((f) => [
+      f.key,
+      { name: f.name, image: `/models/${f.key}/portrait.png`, color: f.color },
+    ]),
+  ),
 };
 const cardOrder: readonly MascotKey[] = [
   'rimo-neko',
@@ -19,6 +26,7 @@ const cardOrder: readonly MascotKey[] = [
   'mae',
   'kohaku',
   'maruimo-mascot',
+  ...FRIEND_MASCOTS.map((f) => f.key),
   ...BOT_KINDS,
 ];
 
@@ -26,6 +34,8 @@ function visibleKeys(state: ViewState) {
   return cardOrder.filter((key) => {
     if (key === 'mae') return !!state.mae;
     if (key === 'maruimo-mascot') return !!state.maruimo;
+    if (FRIEND_MASCOTS.some((f) => f.key === key))
+      return !!state.friends?.some((f) => f.key === key);
     if (key === 'kohaku') return !!state.kohaku;
     if (key === 'rimo-neko') return !!state.rimoNeko;
     if (key === '524') return !!state.companion524;
@@ -36,7 +46,8 @@ function visibleKeys(state: ViewState) {
 function mascotState(state: ViewState, selfId: string | null, key: MascotKey) {
   const bot = state.orbBots?.find((candidate) => candidate.kind === key);
   const body =
-    key === 'mae'
+    state.friends?.find((f) => f.key === key) ??
+    (key === 'mae'
       ? state.mae
       : key === 'maruimo-mascot'
         ? state.maruimo
@@ -46,7 +57,7 @@ function mascotState(state: ViewState, selfId: string | null, key: MascotKey) {
             ? state.rimoNeko
             : key === '524'
               ? state.companion524
-              : null;
+              : null);
   const owner =
     bot?.ownerId ||
     (body && ('squadPlayerId' in body ? body.squadPlayerId : null)) ||

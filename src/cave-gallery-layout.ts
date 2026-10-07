@@ -10,6 +10,9 @@ export const CAVE_MOTIFS = {
   shapeBots: [0, 0, 2172, 724],
   maruimoFrieze: [0, 0, 2172, 724],
   maeKohaku: [0, 0, 2172, 724],
+  // Contributors' companions among horses, an ibex, a stag, an aurochs and a bison.
+  friendsMeadow: [0, 0, 2172, 724],
+  friendsRiver: [0, 0, 2172, 724],
   comingSoon: [0, 0, 2048, 512],
   bison: [805, 40, 1254, 418],
   redHorse: [3, 443, 431, 779],
@@ -31,6 +34,14 @@ export const CAVE_EXTRA_PIGMENTS = {
   },
   maruimoFrieze: { url: '/models/camp-cave/maruimo-lascaux-r33.png', subjects: ['maruimo-mascot'] },
   maeKohaku: { url: '/models/camp-cave/mae-kohaku-lascaux-r31.png', subjects: ['mae', 'kohaku'] },
+  friendsMeadow: {
+    url: '/models/camp-cave/friends-meadow-lascaux-r34.png',
+    subjects: ['saber-mascot', 'fairy-mascot', 'nukonuko-mascot', 'sagasa-mascot'],
+  },
+  friendsRiver: {
+    url: '/models/camp-cave/friends-river-lascaux-r35.png',
+    subjects: ['otani-mascot', 'urata-mascot', 'howkey-scientist', 'rei-mascot'],
+  },
 } as const;
 export type CaveExtraPigment = keyof typeof CAVE_EXTRA_PIGMENTS | 'comingSoon';
 // Only confirmed forthcoming characters belong to the preview, never released
@@ -57,12 +68,14 @@ export const CAVE_MURALS: readonly CaveMural[] = [
   { motif: 'rimoFrieze', wall: 'east', centre: -21.2, bottom: 1.6, width: 7.5, strength: 0.82 },
   { motif: 'signs', wall: 'east', centre: -24.2, bottom: 4.45, width: 1.05, strength: 0.57 },
   { motif: 'maeKohaku', wall: 'east', centre: -28.5, bottom: 1.5, width: 6.4, strength: 0.86 },
-  { motif: 'deer', wall: 'west', centre: -14, bottom: 1.6, width: 1.8, strength: 0.72 },
+  // The contributors' procession replaces the lone deer; its stag stays in the frieze.
+  { motif: 'friendsMeadow', wall: 'west', centre: -14.3, bottom: 1.5, width: 5.6, strength: 0.84 },
   // Replaces the separated mammoth, 524 and horse with one continuous group.
   // The small floating mascot is roughly half the mammoth's painted height.
   { motif: 'creature524', wall: 'west', centre: -21.2, bottom: 1.6, width: 7.5, strength: 0.82 },
   { motif: 'hands', wall: 'west', centre: -24.7, bottom: 4.5, width: 1.0, strength: 0.64 },
-  { motif: 'bison', wall: 'west', centre: -28.6, bottom: 1.5, width: 2.7, strength: 0.79 },
+  // The second procession (duck, Urata, Howkey, Rei) replaces the lone bison with an aurochs, a bison and a horse.
+  { motif: 'friendsRiver', wall: 'west', centre: -27.6, bottom: 1.5, width: 5.0, strength: 0.84 },
   { motif: 'signs', wall: 'west', centre: -28.4, bottom: 4.5, width: 0.95, strength: 0.57 },
   { motif: 'comingSoon', wall: 'west', centre: -31.4, bottom: 2.1, width: 2.5, strength: 0.9 },
 ];

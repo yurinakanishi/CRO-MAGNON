@@ -1,0 +1,20 @@
+{
+  "delivered": [
+    "saber-mascot",
+    "fairy-mascot",
+    "sagasa-mascot",
+    "nukonuko-mascot",
+    "otani-mascot",
+    "urata-mascot",
+    "rei-mascot"
+  ],
+  "checks": [
+    "Howkey holds the Erlenmeyer flask in her right hand"
+  ],
+  "shots": [
+    "howkey-flask-front",
+    "howkey-flask-side"
+  ],
+  "errors": [],
+  "failure": null
+}

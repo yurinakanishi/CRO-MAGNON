@@ -1,0 +1,1278 @@
+{
+  "key": "urata-mascot",
+  "revision": "02",
+  "heightMetres": 0.52,
+  "widthMetres": 0.4377224722984491,
+  "lengthMetres": 0.23777674432475082,
+  "scale": 0.5182602963822095,
+  "origin": [
+    -0.00017128132452758071,
+    -0.017314739436175435,
+    0.0
+  ],
+  "sha256": "39c47be2d4bcb2232a7e3bd67329f2ce3db4adb25f2c939c4f42572cfabd5f45",
+  "source": "C:\\Users\\yurin\\Desktop\\projects\\CRO-MAGNON\\output\\model-generation\\models\\urata-mascot\\work\\candidate-01\\trellis\\dense-ref1-res1024-tex1024-seed0042.glb",
+  "sourceSha256": "96abd7e0d1fa1647ca341af56f7518aa1a44a950a9f3a9865f3c061399335995",
+  "low": "C:/Users/yurin/Desktop/projects/CRO-MAGNON/output/model-generation/models/urata-mascot/work/candidate-01/low-poly/meshopt-24000.glb",
+  "lowSha256": "317f2d9a4019e53c2efbd4c84bd71b92bd4d6f58c992519b8de130c42dad6276",
+  "denseTriangles": 285056,
+  "triangles": 23877,
+  "deviationMetres": {
+    "denseToLow": {
+      "rms": 0.0004399838518772896,
+      "p95": 0.0008460937011491458,
+      "max": 0.0019532272249356765
+    },
+    "lowToDense": {
+      "rms": 0.00044066578142119524,
+      "p95": 0.0008452856899274894,
+      "max": 0.0023389897556501983
+    }
+  },
+  "weld": {
+    "weld_distance": 1e-05,
+    "vertices_before": 11883,
+    "vertices_after": 11883,
+    "faces_before": 23884,
+    "faces_after": 23884
+  },
+  "islands": {
+    "components": 7,
+    "largest_faces": 23593,
+    "removed_components": 4,
+    "removed_faces": 7,
+    "keep_fraction": 0.004
+  },
+  "unwrap": {
+    "method": "Smart UV Project",
+    "chart_angle_degrees": 66.0,
+    "island_margin": 0.003
+  },
+  "bake": {
+    "method": "selected-to-active diffuse-colour projection from the exact dense TRELLIS mesh",
+    "dense_source": "C:\\Users\\yurin\\Desktop\\projects\\CRO-MAGNON\\output\\model-generation\\models\\urata-mascot\\work\\candidate-01\\trellis\\dense-ref1-res1024-tex1024-seed0042.glb",
+    "texture": "C:\\Users\\yurin\\Desktop\\projects\\CRO-MAGNON\\output\\model-generation\\models\\urata-mascot\\work\\surface\\revision-02\\albedo.png",
+    "size": [
+      2048,
+      2048
+    ],
+    "cage_extrusion": 0.004,
+    "max_ray_distance": 0.014,
+    "bake_margin": 16,
+    "samples": 8,
+    "denseMetallic": "unlinked and set to 0 before the diffuse-colour projection"
+  },
+  "albedoSha256": "98a62b98c8c49eb5eba89fba2417e650df07de665141ccafeb916d3afebf040c",
+  "render": {
+    "spanMetres": 0.598,
+    "pixels": 1024,
+    "centreHeightMetres": 0.26
+  },
+  "bands": [
+    {
+      "heightFraction": 0.02,
+      "count": 123,
+      "min": [
+        -0.187,
+        -0.1037,
+        0.0215
+      ],
+      "max": [
+        0.1876,
+        0.101,
+        0.028
+      ]
+    },
+    {
+      "heightFraction": 0.04,
+      "count": 143,
+      "min": [
+        -0.1799,
+        -0.0963,
+        0.0335
+      ],
+      "max": [
+        0.1802,
+        0.104,
+        0.048
+      ]
+    },
+    {
+      "heightFraction": 0.06,
+      "count": 307,
+      "min": [
+        -0.1644,
+        -0.0842,
+        0.052
+      ],
+      "max": [
+        0.167,
+        0.1052,
+        0.0679
+      ]
+    },
+    {
+      "heightFraction": 0.08,
+      "count": 98,
+      "min": [
+        -0.1435,
+        -0.014,
+        0.0722
+      ],
+      "max": [
+        0.1412,
+        0.1109,
+        0.0874
+      ]
+    },
+    {
+      "heightFraction": 0.1,
+      "count": 42,
+      "min": [
+        -0.1364,
+        -0.0109,
+        0.0922
+      ],
+      "max": [
+        0.1361,
+        0.1117,
+        0.1077
+      ]
+    },
+    {
+      "heightFraction": 0.12,
+      "count": 46,
+      "min": [
+        -0.1362,
+        -0.0144,
+        0.1121
+      ],
+      "max": [
+        0.1328,
+        0.1073,
+        0.1268
+      ]
+    },
+    {
+      "heightFraction": 0.14,
+      "count": 28,
+      "min": [
+        -0.1322,
+        -0.0103,
+        0.132
+      ],
+      "max": [
+        0.1321,
+        0.1,
+        0.148
+      ]
+    },
+    {
+      "heightFraction": 0.16,
+      "count": 18,
+      "min": [
+        -0.1222,
+        -0.0125,
+        0.1522
+      ],
+      "max": [
+        0.1141,
+        0.1027,
+        0.1669
+      ]
+    },
+    {
+      "heightFraction": 0.18,
+      "count": 29,
+      "min": [
+        -0.1073,
+        -0.0263,
+        0.1731
+      ],
+      "max": [
+        0.1162,
+        0.0995,
+        0.187
+      ]
+    },
+    {
+      "heightFraction": 0.2,
+      "count": 34,
+      "min": [
+        -0.1215,
+        -0.0301,
+        0.1927
+      ],
+      "max": [
+        0.124,
+        0.1005,
+        0.2078
+      ]
+    },
+    {
+      "heightFraction": 0.22,
+      "count": 31,
+      "min": [
+        -0.1132,
+        -0.022,
+        0.2124
+      ],
+      "max": [
+        0.1212,
+        0.0992,
+        0.228
+      ]
+    },
+    {
+      "heightFraction": 0.24,
+      "count": 44,
+      "min": [
+        -0.1242,
+        -0.0502,
+        0.2326
+      ],
+      "max": [
+        0.1235,
+        0.1098,
+        0.2479
+      ]
+    },
+    {
+      "heightFraction": 0.26,
+      "count": 25,
+      "min": [
+        -0.1138,
+        -0.056,
+        0.2524
+      ],
+      "max": [
+        0.109,
+        0.1113,
+        0.2678
+      ]
+    },
+    {
+      "heightFraction": 0.28,
+      "count": 32,
+      "min": [
+        -0.1177,
+        -0.0511,
+        0.2721
+      ],
+      "max": [
+        0.1182,
+        0.111,
+        0.2867
+      ]
+    },
+    {
+      "heightFraction": 0.3,
+      "count": 216,
+      "min": [
+        -0.1228,
+        -0.072,
+        0.2921
+      ],
+      "max": [
+        0.1237,
+        0.1302,
+        0.3078
+      ]
+    },
+    {
+      "heightFraction": 0.32,
+      "count": 62,
+      "min": [
+        -0.1121,
+        -0.0566,
+        0.3124
+      ],
+      "max": [
+        0.1119,
+        0.1138,
+        0.3276
+      ]
+    },
+    {
+      "heightFraction": 0.34,
+      "count": 25,
+      "min": [
+        -0.1061,
+        -0.0615,
+        0.3324
+      ],
+      "max": [
+        0.1122,
+        0.0943,
+        0.346
+      ]
+    },
+    {
+      "heightFraction": 0.36,
+      "count": 102,
+      "min": [
+        -0.406,
+        -0.0636,
+        0.352
+      ],
+      "max": [
+        0.4068,
+        0.1187,
+        0.3678
+      ]
+    },
+    {
+      "heightFraction": 0.38,
+      "count": 92,
+      "min": [
+        -0.4205,
+        -0.0271,
+        0.372
+      ],
+      "max": [
+        0.4212,
+        0.1054,
+        0.3879
+      ]
+    },
+    {
+      "heightFraction": 0.4,
+      "count": 124,
+      "min": [
+        -0.4177,
+        -0.0554,
+        0.3923
+      ],
+      "max": [
+        0.4183,
+        0.1198,
+        0.4079
+      ]
+    },
+    {
+      "heightFraction": 0.42,
+      "count": 169,
+      "min": [
+        -0.4193,
+        -0.0582,
+        0.4121
+      ],
+      "max": [
+        0.4201,
+        0.1237,
+        0.428
+      ]
+    },
+    {
+      "heightFraction": 0.44,
+      "count": 156,
+      "min": [
+        -0.3634,
+        -0.0532,
+        0.4321
+      ],
+      "max": [
+        0.3634,
+        0.1212,
+        0.448
+      ]
+    },
+    {
+      "heightFraction": 0.46,
+      "count": 135,
+      "min": [
+        -0.3663,
+        -0.0486,
+        0.4527
+      ],
+      "max": [
+        0.3674,
+        0.1171,
+        0.4679
+      ]
+    },
+    {
+      "heightFraction": 0.48,
+      "count": 92,
+      "min": [
+        -0.1896,
+        -0.0419,
+        0.4721
+      ],
+      "max": [
+        0.1892,
+        0.1156,
+        0.4878
+      ]
+    },
+    {
+      "heightFraction": 0.5,
+      "count": 111,
+      "min": [
+        -0.1895,
+        -0.0223,
+        0.492
+      ],
+      "max": [
+        0.1912,
+        0.1081,
+        0.5077
+      ]
+    },
+    {
+      "heightFraction": 0.52,
+      "count": 144,
+      "min": [
+        -0.1233,
+        -0.1149,
+        0.512
+      ],
+      "max": [
+        0.1234,
+        0.1027,
+        0.5278
+      ]
+    },
+    {
+      "heightFraction": 0.54,
+      "count": 83,
+      "min": [
+        -0.0697,
+        -0.1178,
+        0.5322
+      ],
+      "max": [
+        0.0861,
+        0.1801,
+        0.5478
+      ]
+    },
+    {
+      "heightFraction": 0.56,
+      "count": 153,
+      "min": [
+        -0.14,
+        -0.1123,
+        0.5524
+      ],
+      "max": [
+        0.1325,
+        0.1992,
+        0.568
+      ]
+    },
+    {
+      "heightFraction": 0.58,
+      "count": 230,
+      "min": [
+        -0.1576,
+        -0.1235,
+        0.572
+      ],
+      "max": [
+        0.1629,
+        0.207,
+        0.5879
+      ]
+    },
+    {
+      "heightFraction": 0.6,
+      "count": 266,
+      "min": [
+        -0.2076,
+        -0.1092,
+        0.5921
+      ],
+      "max": [
+        0.213,
+        0.2096,
+        0.6079
+      ]
+    },
+    {
+      "heightFraction": 0.62,
+      "count": 382,
+      "min": [
+        -0.214,
+        -0.1488,
+        0.6121
+      ],
+      "max": [
+        0.2158,
+        0.228,
+        0.628
+      ]
+    },
+    {
+      "heightFraction": 0.64,
+      "count": 374,
+      "min": [
+        -0.2081,
+        -0.1455,
+        0.632
+      ],
+      "max": [
+        0.2121,
+        0.2333,
+        0.6479
+      ]
+    },
+    {
+      "heightFraction": 0.66,
+      "count": 343,
+      "min": [
+        -0.2417,
+        -0.1679,
+        0.6521
+      ],
+      "max": [
+        0.2183,
+        0.2285,
+        0.668
+      ]
+    },
+    {
+      "heightFraction": 0.68,
+      "count": 500,
+      "min": [
+        -0.2519,
+        -0.1743,
+        0.672
+      ],
+      "max": [
+        0.247,
+        0.2536,
+        0.6879
+      ]
+    },
+    {
+      "heightFraction": 0.7,
+      "count": 519,
+      "min": [
+        -0.254,
+        -0.1641,
+        0.692
+      ],
+      "max": [
+        0.2525,
+        0.258,
+        0.708
+      ]
+    },
+    {
+      "heightFraction": 0.72,
+      "count": 471,
+      "min": [
+        -0.2525,
+        -0.1552,
+        0.7122
+      ],
+      "max": [
+        0.255,
+        0.2607,
+        0.728
+      ]
+    },
+    {
+      "heightFraction": 0.74,
+      "count": 506,
+      "min": [
+        -0.2613,
+        -0.165,
+        0.732
+      ],
+      "max": [
+        0.2675,
+        0.2535,
+        0.748
+      ]
+    },
+    {
+      "heightFraction": 0.76,
+      "count": 416,
+      "min": [
+        -0.2729,
+        -0.1893,
+        0.752
+      ],
+      "max": [
+        0.2702,
+        0.2419,
+        0.768
+      ]
+    },
+    {
+      "heightFraction": 0.78,
+      "count": 318,
+      "min": [
+        -0.2706,
+        -0.1961,
+        0.7721
+      ],
+      "max": [
+        0.2608,
+        0.2388,
+        0.7879
+      ]
+    },
+    {
+      "heightFraction": 0.8,
+      "count": 266,
+      "min": [
+        -0.2505,
+        -0.1915,
+        0.7922
+      ],
+      "max": [
+        0.2511,
+        0.2438,
+        0.8079
+      ]
+    },
+    {
+      "heightFraction": 0.82,
+      "count": 274,
+      "min": [
+        -0.2524,
+        -0.1882,
+        0.812
+      ],
+      "max": [
+        0.2493,
+        0.2424,
+        0.828
+      ]
+    },
+    {
+      "heightFraction": 0.84,
+      "count": 251,
+      "min": [
+        -0.242,
+        -0.1911,
+        0.832
+      ],
+      "max": [
+        0.2397,
+        0.2414,
+        0.8478
+      ]
+    },
+    {
+      "heightFraction": 0.86,
+      "count": 287,
+      "min": [
+        -0.2269,
+        -0.1942,
+        0.852
+      ],
+      "max": [
+        0.2323,
+        0.2333,
+        0.8679
+      ]
+    },
+    {
+      "heightFraction": 0.88,
+      "count": 278,
+      "min": [
+        -0.2118,
+        -0.1938,
+        0.872
+      ],
+      "max": [
+        0.2271,
+        0.2193,
+        0.888
+      ]
+    },
+    {
+      "heightFraction": 0.9,
+      "count": 289,
+      "min": [
+        -0.2097,
+        -0.1956,
+        0.892
+      ],
+      "max": [
+        0.1941,
+        0.1901,
+        0.908
+      ]
+    },
+    {
+      "heightFraction": 0.92,
+      "count": 280,
+      "min": [
+        -0.204,
+        -0.1858,
+        0.912
+      ],
+      "max": [
+        0.1853,
+        0.1815,
+        0.928
+      ]
+    },
+    {
+      "heightFraction": 0.94,
+      "count": 151,
+      "min": [
+        -0.1869,
+        -0.1708,
+        0.932
+      ],
+      "max": [
+        0.1634,
+        0.1645,
+        0.948
+      ]
+    },
+    {
+      "heightFraction": 0.96,
+      "count": 124,
+      "min": [
+        -0.1416,
+        -0.1444,
+        0.952
+      ],
+      "max": [
+        0.1239,
+        0.152,
+        0.968
+      ]
+    },
+    {
+      "heightFraction": 0.98,
+      "count": 121,
+      "min": [
+        -0.117,
+        -0.0963,
+        0.972
+      ],
+      "max": [
+        0.1251,
+        0.1385,
+        0.9871
+      ]
+    }
+  ],
+  "blender": "3.6.2",
+  "surfaceRevision": "02",
+  "modelKey": "urata-mascot",
+  "bytes": 6444916,
+  "bones": [
+    "Root",
+    "Hips",
+    "Spine",
+    "Chest",
+    "Neck",
+    "Head",
+    "Shoulder.L",
+    "UpperArm.L",
+    "LowerArm.L",
+    "Hand.L",
+    "UpperLeg.L",
+    "LowerLeg.L",
+    "Foot.L",
+    "Toe.L",
+    "Shoulder.R",
+    "UpperArm.R",
+    "LowerArm.R",
+    "Hand.R",
+    "UpperLeg.R",
+    "LowerLeg.R",
+    "Foot.R",
+    "Toe.R",
+    "PetContact"
+  ],
+  "landmarks": {
+    "pelvis": [
+      0,
+      0.015541617311537267,
+      0.156
+    ],
+    "spine": [
+      0,
+      0.01575082838535309,
+      0.1872
+    ],
+    "chest": [
+      0,
+      0.018668190017342566,
+      0.2236
+    ],
+    "neck": [
+      0,
+      0.022018103348091247,
+      0.26
+    ],
+    "head": [
+      0,
+      0.021605326160788536,
+      0.28600000000000003
+    ],
+    "head_tip": [
+      0,
+      0.0074507658928632745,
+      0.5044
+    ],
+    "hip_L": [
+      0.033800000000000004,
+      0.014327742680907248,
+      0.14040000000000002
+    ],
+    "knee_L": [
+      0.0364,
+      0.003556597529202699,
+      0.0728
+    ],
+    "ankle_L": [
+      0.039,
+      0.0037236961722373965,
+      0.0234
+    ],
+    "foot_L": [
+      0.041600000000000005,
+      -0.01614864046812058,
+      0.010400000000000001
+    ],
+    "toe_L": [
+      0.041600000000000005,
+      -0.025775648170113564,
+      0.00728
+    ],
+    "shoulder_in_L": [
+      0.026000000000000002,
+      0.018668190017342566,
+      0.234
+    ],
+    "shoulder_L": [
+      0.078,
+      0.022726574703119697,
+      0.234
+    ],
+    "elbow_L": [
+      0.14040000000000002,
+      0.02029041824862361,
+      0.21423999999999999
+    ],
+    "wrist_L": [
+      0.1872,
+      0.01857861690223217,
+      0.20384000000000002
+    ],
+    "hand_L": [
+      0.2132,
+      0.01853298768401146,
+      0.20020000000000002
+    ],
+    "hip_R": [
+      -0.033800000000000004,
+      0.020398184899240734,
+      0.14040000000000002
+    ],
+    "knee_R": [
+      -0.0364,
+      0.01707728967837989,
+      0.0728
+    ],
+    "ankle_R": [
+      -0.039,
+      0.004784839600324633,
+      0.0234
+    ],
+    "foot_R": [
+      -0.041600000000000005,
+      -0.01732488292396069,
+      0.010400000000000001
+    ],
+    "toe_R": [
+      -0.041600000000000005,
+      -0.02807558987379074,
+      0.00728
+    ],
+    "shoulder_in_R": [
+      -0.026000000000000002,
+      0.018668190017342566,
+      0.234
+    ],
+    "shoulder_R": [
+      -0.078,
+      0.021488763351226226,
+      0.234
+    ],
+    "elbow_R": [
+      -0.14040000000000002,
+      0.019824164221063256,
+      0.21423999999999999
+    ],
+    "wrist_R": [
+      -0.1872,
+      0.01911919331178069,
+      0.20384000000000002
+    ],
+    "hand_R": [
+      -0.2132,
+      0.019183384347707035,
+      0.20020000000000002
+    ]
+  },
+  "config": {
+    "name": "\u3046\u3089\u305f",
+    "credit": "urata",
+    "subject": "Mascot of \u6d66\u7530 \u52c7\u6a39 (@yuki_urata) after the gachapon keychain figure in his X icon: voluminous black curly hair, round glasses, big smile, black T-shirt, navy jeans, white sneakers.",
+    "identitySources": [
+      "assets/friend-mascots/urata-mascot/source/x-avatar-400.jpg"
+    ],
+    "landmarks": {
+      "pelvis": 0.3,
+      "spine": 0.36,
+      "chest": 0.43,
+      "neck": 0.5,
+      "head": 0.55,
+      "head_tip": 0.97,
+      "hip": [
+        0.065,
+        0.27
+      ],
+      "knee": [
+        0.07,
+        0.14
+      ],
+      "ankle": [
+        0.075,
+        0.045
+      ],
+      "foot": [
+        0.08,
+        0.02
+      ],
+      "toe": [
+        0.08,
+        0.014
+      ],
+      "shoulder_in": 0.05,
+      "shoulder": [
+        0.15,
+        0.45
+      ],
+      "elbow": [
+        0.27,
+        0.412
+      ],
+      "wrist": [
+        0.36,
+        0.392
+      ],
+      "hand": [
+        0.41,
+        0.385
+      ]
+    },
+    "armRest": 50,
+    "headRigidZ": 0.505,
+    "armGate": {
+      "x": 0.14,
+      "zLow": 0.34,
+      "zHigh": 0.5,
+      "radius": 0.05
+    },
+    "legGate": {
+      "zTop": 0.28,
+      "xMax": 0.15
+    }
+  },
+  "petContactBlender": [
+    0.00643150182440877,
+    0.021601269021630287,
+    0.5199999809265137
+  ],
+  "petContactHeight": 0.5199999809265137,
+  "weights": {
+    "method": "geodesic surface skinning: fitted per-bone capsule radii, Euclidean-nearest cores, Dijkstra distance over the welded surface graph, compact quadratic falloff, smooth opposite-side limb gate and surface Laplacian weight smoothing",
+    "falloff_radius_m": 0.032,
+    "falloff_power": 2.0,
+    "core_quantile": 0.5,
+    "core_floor_m": 0.003,
+    "smoothing": {
+      "iterations": 18,
+      "factor": 0.55,
+      "domain": "mesh surface graph only"
+    },
+    "surface_graph": {
+      "vertices": 11874,
+      "edges": 35767,
+      "components_before": 3,
+      "bridges": 2,
+      "forced_bridges": 2,
+      "max_bridge_m": 0.00211
+    },
+    "geodesic_cap_m": 0.1429,
+    "max_distance_to_any_core_m": 0.1093,
+    "opposite_side_gate": {
+      "full_influence_below_m": 0.008,
+      "zero_influence_above_m": 0.02
+    },
+    "max_influences": 4,
+    "vertices_clipped_to_max": 2047,
+    "influence_histogram": {
+      "1": 5573,
+      "2": 2188,
+      "3": 544,
+      "4": 3569
+    },
+    "weight_sum_min": 1.0,
+    "weight_sum_max": 1.0,
+    "bones": [
+      {
+        "bone": "Hips",
+        "capsule_radius_m": 0.047,
+        "owned": 224,
+        "core": 155,
+        "core_limit_m": 0.003
+      },
+      {
+        "bone": "Spine",
+        "capsule_radius_m": 0.0492,
+        "owned": 267,
+        "core": 134,
+        "core_limit_m": 0.00304
+      },
+      {
+        "bone": "Chest",
+        "capsule_radius_m": 0.03234,
+        "owned": 163,
+        "core": 105,
+        "core_limit_m": 0.003
+      },
+      {
+        "bone": "Neck",
+        "capsule_radius_m": 0.02784,
+        "owned": 349,
+        "core": 175,
+        "core_limit_m": 0.03905
+      },
+      {
+        "bone": "Head",
+        "capsule_radius_m": 0.02565,
+        "owned": 8022,
+        "core": 4011,
+        "core_limit_m": 0.06761
+      },
+      {
+        "bone": "Shoulder.L",
+        "capsule_radius_m": 0.0271,
+        "owned": 374,
+        "core": 187,
+        "core_limit_m": 0.00702
+      },
+      {
+        "bone": "UpperArm.L",
+        "capsule_radius_m": 0.02357,
+        "owned": 63,
+        "core": 63,
+        "core_limit_m": 0.003
+      },
+      {
+        "bone": "LowerArm.L",
+        "capsule_radius_m": 0.02352,
+        "owned": 147,
+        "core": 117,
+        "core_limit_m": 0.003
+      },
+      {
+        "bone": "Hand.L",
+        "capsule_radius_m": 0.02163,
+        "owned": 95,
+        "core": 95,
+        "core_limit_m": 0.003
+      },
+      {
+        "bone": "Shoulder.R",
+        "capsule_radius_m": 0.02636,
+        "owned": 388,
+        "core": 194,
+        "core_limit_m": 0.00958
+      },
+      {
+        "bone": "UpperArm.R",
+        "capsule_radius_m": 0.02321,
+        "owned": 70,
+        "core": 69,
+        "core_limit_m": 0.003
+      },
+      {
+        "bone": "LowerArm.R",
+        "capsule_radius_m": 0.02388,
+        "owned": 143,
+        "core": 113,
+        "core_limit_m": 0.003
+      },
+      {
+        "bone": "Hand.R",
+        "capsule_radius_m": 0.02208,
+        "owned": 95,
+        "core": 95,
+        "core_limit_m": 0.003
+      },
+      {
+        "bone": "UpperLeg.L",
+        "capsule_radius_m": 0.03388,
+        "owned": 248,
+        "core": 149,
+        "core_limit_m": 0.003
+      },
+      {
+        "bone": "LowerLeg.L",
+        "capsule_radius_m": 0.0253,
+        "owned": 68,
+        "core": 59,
+        "core_limit_m": 0.003
+      },
+      {
+        "bone": "Foot.L",
+        "capsule_radius_m": 0.02994,
+        "owned": 237,
+        "core": 119,
+        "core_limit_m": 0.01098
+      },
+      {
+        "bone": "Toe.L",
+        "capsule_radius_m": 0.03811,
+        "owned": 188,
+        "core": 101,
+        "core_limit_m": 0.003
+      },
+      {
+        "bone": "UpperLeg.R",
+        "capsule_radius_m": 0.03384,
+        "owned": 260,
+        "core": 176,
+        "core_limit_m": 0.003
+      },
+      {
+        "bone": "LowerLeg.R",
+        "capsule_radius_m": 0.02615,
+        "owned": 149,
+        "core": 96,
+        "core_limit_m": 0.003
+      },
+      {
+        "bone": "Foot.R",
+        "capsule_radius_m": 0.02862,
+        "owned": 148,
+        "core": 74,
+        "core_limit_m": 0.01132
+      },
+      {
+        "bone": "Toe.R",
+        "capsule_radius_m": 0.03801,
+        "owned": 176,
+        "core": 97,
+        "core_limit_m": 0.003
+      }
+    ]
+  },
+  "clips": [
+    {
+      "name": "Idle_Loop",
+      "seconds": 3.0,
+      "loop": true,
+      "fps": 60,
+      "rootMotion": "in-place"
+    },
+    {
+      "name": "Walk_Loop",
+      "seconds": 0.7166666666666667,
+      "loop": true,
+      "fps": 60,
+      "rootMotion": "in-place"
+    },
+    {
+      "name": "Run_Loop",
+      "seconds": 0.4,
+      "loop": true,
+      "fps": 60,
+      "rootMotion": "in-place"
+    },
+    {
+      "name": "Pet",
+      "seconds": 1.4,
+      "loop": false,
+      "fps": 60,
+      "rootMotion": "in-place"
+    },
+    {
+      "name": "Happy",
+      "seconds": 1.4,
+      "loop": false,
+      "fps": 60,
+      "rootMotion": "in-place"
+    },
+    {
+      "name": "Hit",
+      "seconds": 0.65,
+      "loop": false,
+      "fps": 60,
+      "rootMotion": "in-place"
+    },
+    {
+      "name": "Wave",
+      "seconds": 1.8,
+      "loop": false,
+      "fps": 60,
+      "rootMotion": "in-place"
+    },
+    {
+      "name": "Bow",
+      "seconds": 1.6,
+      "loop": false,
+      "fps": 60,
+      "rootMotion": "in-place"
+    }
+  ],
+  "lowestAuthoredVertexMetres": 0.001,
+  "lod": {
+    "sha256": "1888b45a8326590c1d8ea966acd464ca415f295e255d2a625480ca3477bc9388",
+    "triangles": 4773,
+    "trials": [
+      {
+        "ratio": 0.2,
+        "triangles": 4773,
+        "forward": {
+          "samples": 14000,
+          "max_units": 0.004843756090849638,
+          "rms_units": 0.001030465090054871,
+          "mean_units": 0.0008031356049489147,
+          "p95_units": 0.0020824601175263523,
+          "max_mm_at_1p80m": 16.767,
+          "rms_mm_at_1p80m": 3.567,
+          "p95_mm_at_1p80m": 7.209
+        },
+        "reverse": {
+          "samples": 14000,
+          "max_units": 0.004925922956317663,
+          "rms_units": 0.0009396084414238481,
+          "mean_units": 0.0007228394288523167,
+          "p95_units": 0.0019294146099127817,
+          "max_mm_at_1p80m": 17.051,
+          "rms_mm_at_1p80m": 3.252,
+          "p95_mm_at_1p80m": 6.679
+        },
+        "passed": true
+      }
+    ],
+    "distanceMetres": 8,
+    "originalRig": true
+  },
+  "locomotion": {
+    "Walk_Loop": {
+      "metresPerSecond": 0.1800452947540748,
+      "cycleSeconds": 0.72
+    },
+    "Run_Loop": {
+      "metresPerSecond": 0.6772350807676065,
+      "cycleSeconds": 0.4
+    }
+  }
+}

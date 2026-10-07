@@ -1,6 +1,7 @@
 import * as THREE from 'three';
 import { isMesh } from './three-types.js';
 import { fitSourceRiverBank } from './source-surface-fit.js';
+import type { RiverBankBuilder } from './river-bank-builder.js';
 import { buildMountainLake } from './mountain-lake.js';
 import { CAMP_MOUNTAIN } from '../shared/camp-cave-layout.mjs';
 import {
@@ -28,6 +29,37 @@ export function prepareMountainRiverBed(root: THREE.Object3D) {
     node.geometry.dispose();
     node.geometry = geometry;
   });
+}
+
+/** The same source fit off the UI thread while the loading cave is playable. */
+export async function prepareMountainRiverBedAsync(
+  root: THREE.Object3D,
+  builder: RiverBankBuilder,
+  active = () => true,
+) {
+  root.updateMatrixWorld(true);
+  const placement = new THREE.Matrix4()
+    .makeRotationY(CAMP_MOUNTAIN.yaw)
+    .setPosition(CAMP_MOUNTAIN.x, 0, CAMP_MOUNTAIN.z);
+  const meshes: THREE.Mesh[] = [];
+  root.traverse((node) => {
+    if (isMesh(node)) meshes.push(node);
+  });
+  for (const node of meshes) {
+    if (!active()) return;
+    const matrix = placement.clone().multiply(node.matrixWorld);
+    const source = node.geometry.clone().applyMatrix4(matrix);
+    const geometry = await builder.build(source, { maximumEdge: 0.45, mountainOnly: true });
+    if (!active()) {
+      geometry.dispose();
+      return;
+    }
+    geometry.applyMatrix4(matrix.invert());
+    geometry.computeBoundingBox();
+    geometry.computeBoundingSphere();
+    node.geometry.dispose();
+    node.geometry = geometry;
+  }
 }
 
 function flowingMaterial(map: THREE.Texture | null, time: { value: number }) {

@@ -1,4 +1,5 @@
 import type { ViewState } from './view-state.js';
+import type { LoadingCave } from './loading-cave.js';
 import { NatureAudio } from './nature-audio.js';
 import { NatureEffects } from './nature-effects.js';
 import { LocalPrediction } from './local-prediction.js';
@@ -14,6 +15,9 @@ import { rimoNekoOnGround } from '../shared/rimo-neko.mjs';
 import { MaeRenderer } from './mae-renderer.js';
 import { MAE } from '../shared/mae.mjs';
 import { KohakuRenderer } from './kohaku-renderer.js';
+import { FriendMascotRenderer } from './friend-mascot-renderer.js';
+import { flaskVisible, orientFlask } from './flask-pose.js';
+import { FRIEND_MASCOTS, FRIEND_TIMING, pettingFriend } from '../shared/friend-mascots.mjs';
 import { MaruimoRenderer } from './maruimo-mascot-renderer.js';
 import { KOHAKU } from '../shared/kohaku.mjs';
 import { MARUIMO } from '../shared/maruimo-mascot.mjs';
@@ -247,6 +251,7 @@ export class WorldRenderer {
   declare rimoNekoRenderer: RimoNekoRenderer | undefined;
   declare maeRenderer: MaeRenderer | undefined;
   declare kohakuRenderer: KohakuRenderer | undefined;
+  readonly friendRenderers = new Map<string, FriendMascotRenderer>();
   declare maruimoRenderer: MaruimoRenderer | undefined;
   declare orbBotRenderer: OrbBotRenderer | undefined;
   declare npcActor: any;
@@ -277,10 +282,16 @@ export class WorldRenderer {
   declare height: number | undefined;
   declare simulationMs: any;
   declare submissionMs: any;
+  loadingCave: LoadingCave | null = null;
 
   constructor(
     canvas,
-    { onAnimal = (_id: string) => {}, onError = (_text: string) => {}, onInspect = () => {} } = {},
+    {
+      onAnimal = (_id: string) => {},
+      onError = (_text: string) => {},
+      onInspect = () => {},
+      deferWorld = false,
+    } = {},
   ) {
     this.canvas = canvas;
     this.onAnimal = onAnimal;
@@ -400,8 +411,14 @@ export class WorldRenderer {
     this.loadingLabel.textContent = '渓谷を準備しています…';
     canvas.parentElement.append(this.loadingLabel);
     this.loadProgress = { loaded: 0, total: 0, phase: 'download' };
-    this.assetsPromise = this.initializeWorld();
+    this.loadingLabel.hidden = deferWorld;
+    if (!deferWorld) this.startWorld();
+  }
+
+  startWorld() {
+    this.assetsPromise ??= this.initializeWorld();
     this.assetsPromise.catch(() => {});
+    return this.assetsPromise;
   }
 
   setupLighting() {
@@ -445,11 +462,13 @@ export class WorldRenderer {
 
   async initializeWorld() {
     const started = performance.now();
+    const background = !!this.loadingCave;
     try {
       await Promise.all([
         this.worldAssets.load({
           deferCompanions: true,
           onProgress: (loaded, total) => Object.assign(this.loadProgress, { loaded, total }),
+          background,
         }),
         this.npcAssets.load(),
       ]);
@@ -461,8 +480,9 @@ export class WorldRenderer {
       buildCampAssets(this);
       buildAnimalAssets(this);
       this.landmarks = new WorldLandmarks(this);
+      if (background) await this.landmarks.prepareInitial();
+      if (this.disposed) return;
       this.assetsReady = true;
-      this.loadProgress.phase = 'ready';
       this.syncResources();
       this.syncEnemies();
       this.campLabel.element.classList.toggle('complete', this.state.camp.level > 0);
@@ -483,10 +503,13 @@ export class WorldRenderer {
       this.npc.position.set(NPC.x, walkHeight(NPC.x, NPC.z), NPC.z);
       this.npc.rotation.y = -1.9;
       this.scene.add(this.npc);
+      if (background) await this.prepareEntry();
+      if (this.disposed || this.failed) return;
       this.updateAssetDiagnostics();
       this.canvas.dataset.worldAsset = 'ready';
       this.canvas.dataset.worldLoadMs = this.worldAssets.loadMilliseconds.toFixed(0);
       this.canvas.dataset.worldSceneReadyMs = (performance.now() - started).toFixed(0);
+      this.loadProgress.phase = 'ready';
       this.loadingLabel.remove();
       this.graphics.ready(performance.now());
       void this.initializeCompanions();
@@ -494,6 +517,39 @@ export class WorldRenderer {
       if (this.disposed) return;
       this.failWorld('検証済みの3D素材を読み込めませんでした。再読み込みしてください。', error);
       throw error;
+    }
+  }
+
+  /** Prepare the camp's first frames before a connection's timeout clock starts. */
+  private async prepareEntry() {
+    const started = performance.now();
+    const nextFrame = () => new Promise<void>((resolve) => requestAnimationFrame(() => resolve()));
+    const target = new THREE.WebGLRenderTarget(8, 8);
+    try {
+      for (let pass = 0; pass < 3; pass++) {
+        if (this.disposed || this.failed) return;
+        await nextFrame();
+        if (this.disposed || this.failed) return;
+        if (this.landmarks) this.landmarks.next = 0;
+        this.renderWorld(performance.now() / 1000, 0, true);
+        await Promise.all([...this.landmarks.pending.values(), ...this.openWorld.pending.values()]);
+        if (this.disposed || this.failed) return;
+        await this.renderer.compileAsync(this.scene, this.camera);
+        await nextFrame();
+        if (this.disposed || this.failed) return;
+        // Texture upload and shadow programs also need a first draw. Keep it
+        // offscreen so the visitor sees their cave throughout preparation.
+        const previous = this.renderer.getRenderTarget();
+        this.renderer.setRenderTarget(target);
+        try {
+          this.renderer.render(this.scene, this.camera);
+        } finally {
+          this.renderer.setRenderTarget(previous);
+        }
+      }
+      this.canvas.dataset.worldPreparedMs = (performance.now() - started).toFixed(0);
+    } finally {
+      target.dispose();
     }
   }
 
@@ -511,6 +567,12 @@ export class WorldRenderer {
             if (asset.modelKey === 'rimo-neko') this.rimoNekoRenderer = new RimoNekoRenderer(this);
             if (asset.modelKey === 'mae') this.maeRenderer = new MaeRenderer(this);
             if (asset.modelKey === 'kohaku') this.kohakuRenderer = new KohakuRenderer(this);
+            const friend = FRIEND_MASCOTS.findIndex((f) => f.key === asset.modelKey);
+            if (friend >= 0)
+              this.friendRenderers.set(
+                asset.modelKey,
+                new FriendMascotRenderer(this, FRIEND_MASCOTS[friend], friend),
+              );
             if (asset.modelKey === 'maruimo-mascot')
               this.maruimoRenderer = new MaruimoRenderer(this);
           }),
@@ -833,6 +895,7 @@ export class WorldRenderer {
           ...(this.maeRenderer ? [this.maeRenderer.root] : []),
           ...(this.kohakuRenderer ? [this.kohakuRenderer.root] : []),
           ...(this.maruimoRenderer ? [this.maruimoRenderer.root] : []),
+          ...[...this.friendRenderers.values()].map((friend) => friend.root),
           ...[...(this.orbBotRenderer?.bots.values() ?? [])].map(({ actor }) => actor.root),
           ...this.mammoths.flatMap((animal) => [animal.model, animal.meat]),
           ...[...this.enemies.values()].map((enemy) => enemy.model),
@@ -1076,6 +1139,16 @@ export class WorldRenderer {
         }
         if (entity.state.species === 'bear') entity.axe.scale.setScalar(0.55);
         entity.axe.visible = false;
+        // Howkey's right hand carries her Erlenmeyer flask by the neck.
+        entity.flask =
+          entity.state.species === 'howkey'
+            ? await this.worldAssets.createEquipment('howkey-flask')
+            : null;
+        if (this.disposed || this.players.get(id) !== entity) {
+          actor.dispose();
+          return;
+        }
+        if (entity.flask) grip.add(entity.flask);
       }
       previous.add(actor.root);
       entity.torch = new CaveTorch(
@@ -1280,6 +1353,10 @@ export class WorldRenderer {
       );
     if (this.state.mae && this.maeRenderer)
       add(this.state.mae.id, 'mae', this.maeRenderer.root, this.maeRenderer.actor.asset);
+    for (const friend of this.state.friends ?? []) {
+      const renderer = this.friendRenderers.get(friend.key);
+      if (renderer) add(friend.id, renderer.def.name, renderer.root, renderer.actor.asset);
+    }
     if (
       this.state.companion524 &&
       companion524OnGround(this.state.companion524) &&
@@ -1392,6 +1469,14 @@ export class WorldRenderer {
   }
 
   render(time, dt) {
+    if (this.loadingCave) {
+      this.loadingCave.render(dt);
+      return;
+    }
+    this.renderWorld(time, dt);
+  }
+
+  private renderWorld(time, dt, preparing = false) {
     const frameStarted = performance.now();
     this.actorBudget.begin(this.camera);
     let predicted = null;
@@ -1520,6 +1605,7 @@ export class WorldRenderer {
     if (!this.rimoNekoRenderer?.inHand) this.rimoNekoRenderer?.update(dt);
     this.maeRenderer?.update(dt);
     this.kohakuRenderer?.update(dt);
+    for (const friend of this.friendRenderers.values()) friend.update(dt);
     this.maruimoRenderer?.update(dt);
     // Update the carrier's animated shoulder before its passenger, regardless of join order.
     for (const entity of [...this.players.values()].sort(
@@ -1589,6 +1675,7 @@ export class WorldRenderer {
         model.position.copy(tempPoint).sub(offset);
         if (entity.weapon) entity.weapon.visible = false;
         if (entity.axe) entity.axe.visible = false;
+        if (entity.flask) entity.flask.visible = false;
         entity.wasMounted = true;
         entity.label.position.copy(model.position);
         entity.label.position.y += entity.actor.asset.heightMetres + 0.3;
@@ -1609,6 +1696,7 @@ export class WorldRenderer {
         model.position.copy(tempPoint).sub(offset);
         if (entity.weapon) entity.weapon.visible = false;
         if (entity.axe) entity.axe.visible = false;
+        if (entity.flask) entity.flask.visible = false;
         entity.wasMounted = true;
         entity.label.position.copy(model.position);
         entity.label.position.y += entity.actor.asset.heightMetres + 0.3;
@@ -1632,6 +1720,7 @@ export class WorldRenderer {
         model.position.copy(tempPoint).sub(offset);
         if (entity.weapon) entity.weapon.visible = false;
         if (entity.axe) entity.axe.visible = false;
+        if (entity.flask) entity.flask.visible = false;
         entity.wasMounted = true;
         entity.label.position.copy(model.position);
         entity.label.position.y += entity.actor.asset.heightMetres + 0.3;
@@ -1672,7 +1761,9 @@ export class WorldRenderer {
       const petMae = this.state.mae?.petPlayerId === p.id ? this.state.mae : undefined;
       const petKohaku = this.state.kohaku?.petPlayerId === p.id ? this.state.kohaku : undefined;
       const petMaruimo = this.state.maruimo?.petPlayerId === p.id ? this.state.maruimo : undefined;
-      const groundCompanion = petDot ?? petMaruimo ?? petKohaku ?? petMae ?? this.state.rimoNeko;
+      const petFriend = pettingFriend(this.state.friends, p.id);
+      const groundCompanion =
+        petDot ?? petFriend ?? petMaruimo ?? petKohaku ?? petMae ?? this.state.rimoNeko;
       const groundPetting = petDot
         ? pettingProgress(petDot, p, this.serverNow(), {
             ...ORB_BOTS,
@@ -1680,13 +1771,15 @@ export class WorldRenderer {
               ? ORB_BOTS.petGroupApproachMs
               : ORB_BOTS.petApproachMs,
           })
-        : petMaruimo
-          ? pettingProgress(petMaruimo, p, this.serverNow(), MARUIMO)
-          : petKohaku
-            ? pettingProgress(petKohaku, p, this.serverNow(), KOHAKU)
-            : petMae
-              ? pettingProgress(petMae, p, this.serverNow(), MAE)
-              : groundPettingProgress(this.state.rimoNeko, p, this.serverNow());
+        : petFriend
+          ? pettingProgress(petFriend, p, this.serverNow(), FRIEND_TIMING)
+          : petMaruimo
+            ? pettingProgress(petMaruimo, p, this.serverNow(), MARUIMO)
+            : petKohaku
+              ? pettingProgress(petKohaku, p, this.serverNow(), KOHAKU)
+              : petMae
+                ? pettingProgress(petMae, p, this.serverNow(), MAE)
+                : groundPettingProgress(this.state.rimoNeko, p, this.serverNow());
       if (entity.actor) {
         if (p.downedUntil || airborne !== null || p.mountId || p.boatId || p.carrierId) {
           entity.actor.groundPettingPose.weight = 0;
@@ -1738,7 +1831,9 @@ export class WorldRenderer {
           if (petDot) {
             if (this.orbBotRenderer) this.orbBotRenderer.petTarget(petDot, tempPoint);
             else tempPoint.set(petDot.x, petDot.y + ORB_BOTS.diameter * 0.9, petDot.z);
-          } else if (petKohaku && this.kohakuRenderer) this.kohakuRenderer.petTarget(tempPoint);
+          } else if (petFriend && this.friendRenderers.has(petFriend.key))
+            this.friendRenderers.get(petFriend.key)!.petTarget(tempPoint);
+          else if (petKohaku && this.kohakuRenderer) this.kohakuRenderer.petTarget(tempPoint);
           else if (petMaruimo && this.maruimoRenderer) this.maruimoRenderer.petTarget(tempPoint);
           else if (petMae && this.maeRenderer) this.maeRenderer.petTarget(tempPoint);
           else if (this.state.rimoNeko?.petPlayerId === p.id && this.rimoNekoRenderer)
@@ -1750,7 +1845,7 @@ export class WorldRenderer {
               tempPoint,
               groundPetting.weight,
               groundPetting.stroke,
-              !!petDot || !!petMae || !!petKohaku || !!petMaruimo,
+              !!petDot || !!petMae || !!petKohaku || !!petMaruimo || !!petFriend,
             );
           else pose.update(tempPoint, groundPetting.weight, groundPetting.stroke);
         } else if (petting524.weight > 0 && this.companion524Renderer) {
@@ -1815,6 +1910,15 @@ export class WorldRenderer {
                 entity.actor.animation.current?.time ?? 0,
               );
           }
+        }
+        if (entity.flask) {
+          entity.flask.visible = flaskVisible(
+            p,
+            entity.actor.animation.name,
+            !!entity.actor.animation.oneShot,
+            !!entity.axe?.visible || entity.actor.orbBotPose.weight > 0 || petting.weight > 0,
+          );
+          if (entity.flask.visible) orientFlask(entity.flask, entity.model);
         }
       }
       entity.label.position.set(
@@ -2101,7 +2205,7 @@ export class WorldRenderer {
     this.natureEffects.update(this, time);
     this.audio.update(this, time);
     const simulationEnded = performance.now();
-    if (!this.occluded()) this.renderer.render(this.scene, this.camera);
+    if (!preparing && !this.occluded()) this.renderer.render(this.scene, this.camera);
     this.simulationMs = (this.simulationMs ?? 0) * 0.8 + (simulationEnded - frameStarted) * 0.2;
     this.submissionMs =
       (this.submissionMs ?? 0) * 0.8 + (performance.now() - simulationEnded) * 0.2;
@@ -2152,6 +2256,9 @@ export class WorldRenderer {
       data.companion524 = JSON.stringify(this.companion524Renderer?.diagnostics() ?? null);
       data.rimoNeko = JSON.stringify(this.rimoNekoRenderer?.diagnostics() ?? null);
       data.kohaku = JSON.stringify(this.kohakuRenderer?.diagnostics() ?? null);
+      data.friends = JSON.stringify(
+        [...this.friendRenderers.values()].map((friend) => friend.diagnostics()),
+      );
       data.maruimo = JSON.stringify(this.maruimoRenderer?.diagnostics() ?? null);
       data.mae = JSON.stringify(this.maeRenderer?.diagnostics() ?? null);
       data.orbBots = JSON.stringify(this.orbBotRenderer?.diagnostics() ?? []);
@@ -2298,6 +2405,8 @@ export class WorldRenderer {
     this.rimoNekoRenderer?.dispose();
     this.maeRenderer?.dispose();
     this.kohakuRenderer?.dispose();
+    for (const friend of this.friendRenderers.values()) friend.dispose();
+    this.friendRenderers.clear();
     this.maruimoRenderer?.dispose();
     this.orbBotRenderer?.dispose();
     this.contactShadows.dispose();

@@ -1,0 +1,12 @@
+Use your built-in image generation tool (image_gen) to create exactly ONE image. Do not write code, do not use Python/PIL or any drawing library, and do not create or edit any files other than the PNG and the prompt text named below.
+
+Use the attached image only as the identity reference.
+
+Prompt:
+"Identity-preserving 3D mascot of the man shown as the gachapon keychain figure in the attached profile picture. Keep: voluminous black curly hair, round dark-brown glasses, a big cheerful open-mouthed smile, a black crew-neck short-sleeve T-shirt; add dark navy straight jeans and white sneakers. No keychain, ball chain, ring, packaging or background figures. Pose: standing upright, straight-on front view, full body. Both arms extend strongly sideways, about 15 degrees below horizontal from the shoulders, elbows straight, hands open with fingers together. Leave a LARGE CLEAR AIR GAP, at least the width of a whole hand, between each arm, sleeve and hand and the torso, hair, clothing and tail. Nothing connects the arms to the body below the armpit. Feet slightly apart and parallel with flat soles. Render it as a real rounded-volume matte collectible 3D vinyl figure (cute chibi proportions, about 2.3 heads tall, big head, short limbs), continuous solid surfaces, crisp readable forms, soft even neutral studio light from all sides, no harsh highlights or cast shadows. The whole character centred inside the frame with a small margin; all ears, hair, hat, feet and tail inside the frame. Transparent background. No floor, base, pedestal, text, logo, watermark, props, second character or multiple views. This image is the input for single-image 3D reconstruction and skinning, so the separation of each arm from the body silhouette is essential."
+
+Save the generated image as a PNG exactly at:
+C:/Users/yurin/Desktop/projects/CRO-MAGNON/output/model-generation/models/urata-mascot/source/original/reference-v1.png
+(copy it from wherever the image tool stores its outputs). Then write the exact full prompt you sent to the image tool to:
+C:/Users/yurin/Desktop/projects/CRO-MAGNON/output/model-generation/models/urata-mascot/source/original/reference-v1.prompt.txt
+Reply with the saved path.

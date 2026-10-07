@@ -1,0 +1,22 @@
+{
+  "name": "ぬこぬこ",
+  "credit": "nukonuko",
+  "subject": "Chibi mascot of ぬこぬこ / NUKO (@nukonuko) from the X icon: long wavy dark-brown hair, cat ears, amber eyes, black collar with a gold star medallion, cream blouse and brown pinafore, dark cat tail.",
+  "identitySources": ["assets/friend-mascots/nukonuko-mascot/source/x-avatar-400.jpg"],
+  "landmarks": {
+    "pelvis": 0.32, "spine": 0.39, "chest": 0.46, "neck": 0.55, "head": 0.6, "head_tip": 0.95,
+    "hip": [0.06, 0.27], "knee": [0.065, 0.13], "ankle": [0.07, 0.055], "foot": [0.07, 0.025], "toe": [0.07, 0.016],
+    "shoulder_in": 0.045, "shoulder": [0.14, 0.45], "elbow": [0.25, 0.422], "wrist": [0.33, 0.405], "hand": [0.39, 0.398]
+  },
+  "headRigidZ": 0.555,
+  "armGate": { "x": 0.16, "zLow": 0.36, "zHigh": 0.52, "radius": 0.045 },
+  "legGate": { "zTop": 0.22, "xMax": 0.13 },
+  "skirt": { "top": 0.38, "hem": 0.22, "x": 0.06, "hemX": 0.18, "depth": 0.085 },
+  "ears": [{ "base": [0.16, 0.86], "tip": [0.22, 0.99] }],
+  "tail": { "points": [[0.0, 0.18, 0.3], [-0.1, 0.32, 0.25], [-0.22, 0.38, 0.3], [-0.27, 0.39, 0.4], [-0.29, 0.4, 0.5], [-0.37, 0.42, 0.57], [-0.43, 0.44, 0.58]] },
+  "hairBack": { "points": [[0.0, 0.08, 0.6], [0.0, 0.14, 0.45], [0.0, 0.16, 0.3]] },
+  "rigidZones": [
+    { "bone": "HairBack1", "box": [-0.2, 0.26, 0.05, 0.3, 0.45, 0.555], "afterSmooth": true, "strength": 0.85, "note": "upper back hair" },
+    { "bone": "HairBack2", "box": [-0.2, 0.26, 0.06, 0.28, 0.32, 0.45], "afterSmooth": true, "strength": 0.9, "note": "lower back hair, clear of the tail column" }
+  ]
+}

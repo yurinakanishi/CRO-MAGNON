@@ -1,0 +1,20 @@
+{
+  "delivered": [
+    "saber-mascot",
+    "fairy-mascot",
+    "sagasa-mascot",
+    "nukonuko-mascot",
+    "otani-mascot",
+    "urata-mascot",
+    "rei-mascot"
+  ],
+  "checks": [
+    "both contributor friezes rendered in the cave"
+  ],
+  "shots": [
+    "cave-friendsMeadow",
+    "cave-friendsRiver"
+  ],
+  "errors": [],
+  "failure": null
+}

@@ -34,7 +34,7 @@ test('bank construction serializes jobs and transfers only private geometry buff
   assert.equal(worker.sent.length, 1);
   assert.ok(worker.sent[0].transfers.includes(a.attributes.position.array.buffer));
   assert.ok(!worker.sent[0].transfers.includes(template.attributes.position.array.buffer));
-  assert.ok(!worker.sent[0].data.attributes.normal, 'worker recomputes normals');
+  assert.ok(worker.sent[0].data.attributes.normal, 'a no-op fit retains source normals');
   worker.finish();
   const result = await first;
   assert.deepEqual(result.attributes.position.array, template.attributes.position.array);

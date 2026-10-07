@@ -4,6 +4,7 @@ import { hitRimoNeko, rimoNekoOnGround } from './rimo-neko.mjs';
 import { hitMae } from './mae.mjs';
 import { hitKohaku } from './kohaku.mjs';
 import { hitMaruimo } from './maruimo-mascot.mjs';
+import { hitFriend } from './friend-mascots.mjs';
 import { hitCompanion524, companion524OnGround } from './companion-524.mjs';
 import { roomRules } from './room-rules.mjs';
 import { caveInteriorWeight } from './cave-light.mjs';
@@ -63,6 +64,7 @@ export function damageableTargets(room) {
     ...(room.mae ? [{ target: room.mae, kind: 'mae' }] : []),
     ...(room.kohaku ? [{ target: room.kohaku, kind: 'kohaku' }] : []),
     ...(room.maruimo ? [{ target: room.maruimo, kind: 'maruimo' }] : []),
+    ...(room.friends ?? []).map((target) => ({ target, kind: 'friend' })),
     ...(room.companion524 && companion524OnGround(room.companion524)
       ? [{ target: room.companion524, kind: 'companion524' }]
       : []),
@@ -81,6 +83,7 @@ export function damageableTargets(room) {
         target === room.mae ||
         target === room.kohaku ||
         target === room.maruimo ||
+        room.friends?.includes(target) ||
         alive(target)) &&
       Number.isFinite(target.x) &&
       Number.isFinite(target.z) &&
@@ -229,6 +232,10 @@ function applyHit(
   }
   if (kind === 'maruimo') {
     hitMaruimo(target, direction.x, direction.z, now);
+    return { hit: true, target, kind, killed: false, weapon: profile.key };
+  }
+  if (kind === 'friend') {
+    hitFriend(target, direction.x, direction.z, now);
     return { hit: true, target, kind, killed: false, weapon: profile.key };
   }
   if (kind === 'mae') {

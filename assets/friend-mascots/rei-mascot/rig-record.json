@@ -1,0 +1,1368 @@
+{
+  "key": "rei-mascot",
+  "revision": "01",
+  "heightMetres": 0.52,
+  "widthMetres": 0.4126099314209898,
+  "lengthMetres": 0.19587706870451357,
+  "scale": 0.5181781994643566,
+  "origin": [
+    0.0024670286366859084,
+    -0.02884427189809625,
+    0.0
+  ],
+  "sha256": "556ef3186a560fd430ce0b31a7f564d6995feff4c5c48426453b2e2b5d7a5b68",
+  "source": "C:\\Users\\yurin\\Desktop\\projects\\CRO-MAGNON\\output\\model-generation\\models\\rei-mascot\\work\\candidate-01\\trellis\\dense-ref1-res1024-tex1024-seed0042.glb",
+  "sourceSha256": "c27b32c8e407771f9e4c34b717def401bb27ccc75b049b69e5d4449575cd2443",
+  "low": "C:/Users/yurin/Desktop/projects/CRO-MAGNON/output/model-generation/models/rei-mascot/work/candidate-01/low-poly/meshopt-24000.glb",
+  "lowSha256": "434b5ce092d58537f9d1fd8ee5d998357ce6612d0badf5ab28cfbfa0f20a7408",
+  "denseTriangles": 296362,
+  "triangles": 23178,
+  "deviationMetres": {
+    "denseToLow": {
+      "rms": 0.0004141844430521419,
+      "p95": 0.0008056633310784431,
+      "max": 0.0025604859029427066
+    },
+    "lowToDense": {
+      "rms": 0.00040277039154647026,
+      "p95": 0.0007992730291701551,
+      "max": 0.0020262053105291394
+    }
+  },
+  "weld": {
+    "weld_distance": 1e-05,
+    "vertices_before": 11067,
+    "vertices_after": 11067,
+    "faces_before": 23226,
+    "faces_after": 23226
+  },
+  "islands": {
+    "components": 13,
+    "largest_faces": 22925,
+    "removed_components": 11,
+    "removed_faces": 48,
+    "keep_fraction": 0.004
+  },
+  "unwrap": {
+    "method": "Smart UV Project",
+    "chart_angle_degrees": 66.0,
+    "island_margin": 0.003
+  },
+  "bake": {
+    "method": "selected-to-active diffuse-colour projection from the exact dense TRELLIS mesh",
+    "dense_source": "C:\\Users\\yurin\\Desktop\\projects\\CRO-MAGNON\\output\\model-generation\\models\\rei-mascot\\work\\candidate-01\\trellis\\dense-ref1-res1024-tex1024-seed0042.glb",
+    "texture": "C:\\Users\\yurin\\Desktop\\projects\\CRO-MAGNON\\output\\model-generation\\models\\rei-mascot\\work\\surface\\revision-02\\albedo.png",
+    "size": [
+      2048,
+      2048
+    ],
+    "cage_extrusion": 0.004,
+    "max_ray_distance": 0.014,
+    "bake_margin": 16,
+    "samples": 8,
+    "denseMetallic": "unlinked and set to 0 before the diffuse-colour projection"
+  },
+  "albedoSha256": "70ca70a7b1db69d751354450382dc0e1979b52932226d1c3b11180a7a7a2113a",
+  "render": {
+    "spanMetres": 0.598,
+    "pixels": 1024,
+    "centreHeightMetres": 0.26
+  },
+  "bands": [
+    {
+      "heightFraction": 0.02,
+      "count": 72,
+      "min": [
+        -0.1266,
+        -0.0814,
+        0.0121
+      ],
+      "max": [
+        0.1308,
+        0.0734,
+        0.028
+      ]
+    },
+    {
+      "heightFraction": 0.04,
+      "count": 100,
+      "min": [
+        -0.1198,
+        -0.0789,
+        0.0322
+      ],
+      "max": [
+        0.1228,
+        0.0733,
+        0.0478
+      ]
+    },
+    {
+      "heightFraction": 0.06,
+      "count": 79,
+      "min": [
+        -0.1108,
+        -0.0639,
+        0.052
+      ],
+      "max": [
+        0.1118,
+        0.0609,
+        0.0679
+      ]
+    },
+    {
+      "heightFraction": 0.08,
+      "count": 87,
+      "min": [
+        -0.1126,
+        -0.0169,
+        0.0721
+      ],
+      "max": [
+        0.1125,
+        0.0583,
+        0.088
+      ]
+    },
+    {
+      "heightFraction": 0.1,
+      "count": 53,
+      "min": [
+        -0.1089,
+        -0.0148,
+        0.0922
+      ],
+      "max": [
+        0.1078,
+        0.0633,
+        0.1078
+      ]
+    },
+    {
+      "heightFraction": 0.12,
+      "count": 156,
+      "min": [
+        -0.1199,
+        -0.0191,
+        0.1127
+      ],
+      "max": [
+        0.1189,
+        0.0659,
+        0.1278
+      ]
+    },
+    {
+      "heightFraction": 0.14,
+      "count": 65,
+      "min": [
+        -0.11,
+        -0.0063,
+        0.1323
+      ],
+      "max": [
+        0.109,
+        0.0558,
+        0.1479
+      ]
+    },
+    {
+      "heightFraction": 0.16,
+      "count": 7,
+      "min": [
+        -0.1031,
+        0.0022,
+        0.1529
+      ],
+      "max": [
+        0.1004,
+        0.0134,
+        0.1611
+      ]
+    },
+    {
+      "heightFraction": 0.18,
+      "count": 41,
+      "min": [
+        -0.1104,
+        -0.001,
+        0.1725
+      ],
+      "max": [
+        0.1078,
+        0.0572,
+        0.1876
+      ]
+    },
+    {
+      "heightFraction": 0.2,
+      "count": 32,
+      "min": [
+        -0.1113,
+        -0.0235,
+        0.1941
+      ],
+      "max": [
+        0.1059,
+        0.0532,
+        0.2077
+      ]
+    },
+    {
+      "heightFraction": 0.22,
+      "count": 57,
+      "min": [
+        -0.1056,
+        -0.0295,
+        0.212
+      ],
+      "max": [
+        0.0875,
+        0.0357,
+        0.2278
+      ]
+    },
+    {
+      "heightFraction": 0.24,
+      "count": 99,
+      "min": [
+        -0.0995,
+        -0.0439,
+        0.2322
+      ],
+      "max": [
+        0.0956,
+        0.0373,
+        0.2479
+      ]
+    },
+    {
+      "heightFraction": 0.26,
+      "count": 59,
+      "min": [
+        -0.1318,
+        -0.0796,
+        0.2522
+      ],
+      "max": [
+        0.1226,
+        0.0308,
+        0.2679
+      ]
+    },
+    {
+      "heightFraction": 0.28,
+      "count": 19,
+      "min": [
+        -0.1259,
+        -0.079,
+        0.2721
+      ],
+      "max": [
+        0.1166,
+        0.0269,
+        0.2867
+      ]
+    },
+    {
+      "heightFraction": 0.3,
+      "count": 20,
+      "min": [
+        -0.127,
+        -0.0691,
+        0.2923
+      ],
+      "max": [
+        0.1178,
+        0.0317,
+        0.3077
+      ]
+    },
+    {
+      "heightFraction": 0.32,
+      "count": 18,
+      "min": [
+        -0.0977,
+        -0.0786,
+        0.313
+      ],
+      "max": [
+        0.0865,
+        0.0291,
+        0.3273
+      ]
+    },
+    {
+      "heightFraction": 0.34,
+      "count": 38,
+      "min": [
+        -0.0967,
+        -0.0825,
+        0.334
+      ],
+      "max": [
+        0.0859,
+        0.1833,
+        0.3474
+      ]
+    },
+    {
+      "heightFraction": 0.36,
+      "count": 253,
+      "min": [
+        -0.1497,
+        -0.0814,
+        0.3521
+      ],
+      "max": [
+        0.1415,
+        0.2226,
+        0.368
+      ]
+    },
+    {
+      "heightFraction": 0.38,
+      "count": 346,
+      "min": [
+        -0.1843,
+        -0.0836,
+        0.372
+      ],
+      "max": [
+        0.1718,
+        0.2343,
+        0.3879
+      ]
+    },
+    {
+      "heightFraction": 0.4,
+      "count": 268,
+      "min": [
+        -0.1973,
+        -0.0827,
+        0.392
+      ],
+      "max": [
+        0.1851,
+        0.2375,
+        0.408
+      ]
+    },
+    {
+      "heightFraction": 0.42,
+      "count": 256,
+      "min": [
+        -0.1996,
+        -0.1095,
+        0.4121
+      ],
+      "max": [
+        0.185,
+        0.2414,
+        0.428
+      ]
+    },
+    {
+      "heightFraction": 0.44,
+      "count": 339,
+      "min": [
+        -0.4009,
+        -0.0986,
+        0.432
+      ],
+      "max": [
+        0.3895,
+        0.2417,
+        0.448
+      ]
+    },
+    {
+      "heightFraction": 0.46,
+      "count": 408,
+      "min": [
+        -0.3924,
+        -0.095,
+        0.4521
+      ],
+      "max": [
+        0.3574,
+        0.2423,
+        0.468
+      ]
+    },
+    {
+      "heightFraction": 0.48,
+      "count": 366,
+      "min": [
+        -0.3572,
+        -0.0985,
+        0.472
+      ],
+      "max": [
+        0.3444,
+        0.2368,
+        0.488
+      ]
+    },
+    {
+      "heightFraction": 0.5,
+      "count": 290,
+      "min": [
+        -0.3198,
+        -0.0983,
+        0.4921
+      ],
+      "max": [
+        0.3112,
+        0.2386,
+        0.508
+      ]
+    },
+    {
+      "heightFraction": 0.52,
+      "count": 259,
+      "min": [
+        -0.3115,
+        -0.0912,
+        0.5121
+      ],
+      "max": [
+        0.3025,
+        0.232,
+        0.5279
+      ]
+    },
+    {
+      "heightFraction": 0.54,
+      "count": 253,
+      "min": [
+        -0.2963,
+        -0.0928,
+        0.532
+      ],
+      "max": [
+        0.2879,
+        0.2138,
+        0.5479
+      ]
+    },
+    {
+      "heightFraction": 0.56,
+      "count": 177,
+      "min": [
+        -0.2545,
+        -0.0953,
+        0.5521
+      ],
+      "max": [
+        0.2102,
+        0.2192,
+        0.568
+      ]
+    },
+    {
+      "heightFraction": 0.58,
+      "count": 242,
+      "min": [
+        -0.221,
+        -0.0963,
+        0.572
+      ],
+      "max": [
+        0.2094,
+        0.2249,
+        0.5878
+      ]
+    },
+    {
+      "heightFraction": 0.6,
+      "count": 217,
+      "min": [
+        -0.1941,
+        -0.0862,
+        0.592
+      ],
+      "max": [
+        0.1845,
+        0.2165,
+        0.6078
+      ]
+    },
+    {
+      "heightFraction": 0.62,
+      "count": 170,
+      "min": [
+        -0.1827,
+        -0.0697,
+        0.6123
+      ],
+      "max": [
+        0.1716,
+        0.2162,
+        0.6279
+      ]
+    },
+    {
+      "heightFraction": 0.64,
+      "count": 225,
+      "min": [
+        -0.1846,
+        -0.062,
+        0.6321
+      ],
+      "max": [
+        0.1733,
+        0.2121,
+        0.648
+      ]
+    },
+    {
+      "heightFraction": 0.66,
+      "count": 202,
+      "min": [
+        -0.1752,
+        -0.0599,
+        0.6521
+      ],
+      "max": [
+        0.1681,
+        0.2118,
+        0.668
+      ]
+    },
+    {
+      "heightFraction": 0.68,
+      "count": 153,
+      "min": [
+        -0.1688,
+        -0.065,
+        0.6721
+      ],
+      "max": [
+        0.168,
+        0.2042,
+        0.6878
+      ]
+    },
+    {
+      "heightFraction": 0.7,
+      "count": 121,
+      "min": [
+        -0.1642,
+        -0.0686,
+        0.6922
+      ],
+      "max": [
+        0.1599,
+        0.2029,
+        0.7072
+      ]
+    },
+    {
+      "heightFraction": 0.72,
+      "count": 156,
+      "min": [
+        -0.161,
+        -0.0851,
+        0.712
+      ],
+      "max": [
+        0.1442,
+        0.1989,
+        0.7279
+      ]
+    },
+    {
+      "heightFraction": 0.74,
+      "count": 197,
+      "min": [
+        -0.1754,
+        -0.0943,
+        0.732
+      ],
+      "max": [
+        0.1501,
+        0.1915,
+        0.7479
+      ]
+    },
+    {
+      "heightFraction": 0.76,
+      "count": 230,
+      "min": [
+        -0.1865,
+        -0.1086,
+        0.7521
+      ],
+      "max": [
+        0.1524,
+        0.1926,
+        0.768
+      ]
+    },
+    {
+      "heightFraction": 0.78,
+      "count": 265,
+      "min": [
+        -0.187,
+        -0.1249,
+        0.7721
+      ],
+      "max": [
+        0.1418,
+        0.1888,
+        0.7879
+      ]
+    },
+    {
+      "heightFraction": 0.8,
+      "count": 219,
+      "min": [
+        -0.1841,
+        -0.1316,
+        0.792
+      ],
+      "max": [
+        0.1462,
+        0.1919,
+        0.8079
+      ]
+    },
+    {
+      "heightFraction": 0.82,
+      "count": 139,
+      "min": [
+        -0.1569,
+        -0.1343,
+        0.8121
+      ],
+      "max": [
+        0.1455,
+        0.1867,
+        0.828
+      ]
+    },
+    {
+      "heightFraction": 0.84,
+      "count": 204,
+      "min": [
+        -0.1701,
+        -0.1325,
+        0.832
+      ],
+      "max": [
+        0.1412,
+        0.1811,
+        0.848
+      ]
+    },
+    {
+      "heightFraction": 0.86,
+      "count": 219,
+      "min": [
+        -0.158,
+        -0.1299,
+        0.852
+      ],
+      "max": [
+        0.1372,
+        0.1735,
+        0.8678
+      ]
+    },
+    {
+      "heightFraction": 0.88,
+      "count": 256,
+      "min": [
+        -0.1486,
+        -0.128,
+        0.872
+      ],
+      "max": [
+        0.1349,
+        0.1683,
+        0.8879
+      ]
+    },
+    {
+      "heightFraction": 0.9,
+      "count": 217,
+      "min": [
+        -0.1415,
+        -0.1132,
+        0.892
+      ],
+      "max": [
+        0.1278,
+        0.1553,
+        0.908
+      ]
+    },
+    {
+      "heightFraction": 0.92,
+      "count": 259,
+      "min": [
+        -0.1324,
+        -0.1092,
+        0.912
+      ],
+      "max": [
+        0.1216,
+        0.1453,
+        0.928
+      ]
+    },
+    {
+      "heightFraction": 0.94,
+      "count": 284,
+      "min": [
+        -0.1232,
+        -0.1019,
+        0.9322
+      ],
+      "max": [
+        0.1094,
+        0.1351,
+        0.948
+      ]
+    },
+    {
+      "heightFraction": 0.96,
+      "count": 262,
+      "min": [
+        -0.1062,
+        -0.0802,
+        0.952
+      ],
+      "max": [
+        0.0913,
+        0.1224,
+        0.9679
+      ]
+    },
+    {
+      "heightFraction": 0.98,
+      "count": 158,
+      "min": [
+        -0.0848,
+        -0.0611,
+        0.972
+      ],
+      "max": [
+        0.0706,
+        0.101,
+        0.9879
+      ]
+    }
+  ],
+  "blender": "3.6.2",
+  "surfaceRevision": "02",
+  "modelKey": "rei-mascot",
+  "bytes": 6498892,
+  "bones": [
+    "Root",
+    "Hips",
+    "Spine",
+    "Chest",
+    "Neck",
+    "Head",
+    "Shoulder.L",
+    "UpperArm.L",
+    "LowerArm.L",
+    "Hand.L",
+    "UpperLeg.L",
+    "LowerLeg.L",
+    "Foot.L",
+    "Toe.L",
+    "Shoulder.R",
+    "UpperArm.R",
+    "LowerArm.R",
+    "Hand.R",
+    "UpperLeg.R",
+    "LowerLeg.R",
+    "Foot.R",
+    "Toe.R",
+    "PetContact",
+    "HairBack1",
+    "HairBack2"
+  ],
+  "landmarks": {
+    "pelvis": [
+      0,
+      0.03915317811071872,
+      0.2028
+    ],
+    "spine": [
+      0,
+      0.036023557558655744,
+      0.23920000000000002
+    ],
+    "chest": [
+      0,
+      0.03483289204537869,
+      0.2756
+    ],
+    "neck": [
+      0,
+      0.035244058072567,
+      0.3172
+    ],
+    "head": [
+      0,
+      0.03194078579545022,
+      0.3432
+    ],
+    "head_tip": [
+      0,
+      0.011318208761513236,
+      0.5044
+    ],
+    "hip_L": [
+      0.0312,
+      0.03338801357895136,
+      0.1872
+    ],
+    "knee_L": [
+      0.033800000000000004,
+      0.000862663256227969,
+      0.10400000000000001
+    ],
+    "ankle_L": [
+      0.0364,
+      0.008592711407691241,
+      0.0364
+    ],
+    "foot_L": [
+      0.039,
+      -0.01849342229902745,
+      0.0156
+    ],
+    "toe_L": [
+      0.039,
+      -0.02950169365942478,
+      0.010400000000000001
+    ],
+    "shoulder_in_L": [
+      0.0234,
+      0.03483289204537869,
+      0.27456
+    ],
+    "shoulder_L": [
+      0.078,
+      0.02357881870120764,
+      0.27456
+    ],
+    "elbow_L": [
+      0.13,
+      0.005282267881557346,
+      0.26
+    ],
+    "wrist_L": [
+      0.16640000000000002,
+      0.001241185329854488,
+      0.24544
+    ],
+    "hand_L": [
+      0.19240000000000002,
+      -0.0011167594697326418,
+      0.23504000000000003
+    ],
+    "hip_R": [
+      -0.0312,
+      0.038367347382009025,
+      0.1872
+    ],
+    "knee_R": [
+      -0.033800000000000004,
+      0.0006366046315431605,
+      0.10400000000000001
+    ],
+    "ankle_R": [
+      -0.0364,
+      0.009028633981943132,
+      0.0364
+    ],
+    "foot_R": [
+      -0.039,
+      -0.017440056457519535,
+      0.0156
+    ],
+    "toe_R": [
+      -0.039,
+      -0.02822443705141544,
+      0.010400000000000001
+    ],
+    "shoulder_in_R": [
+      -0.0234,
+      0.03483289204537869,
+      0.27456
+    ],
+    "shoulder_R": [
+      -0.078,
+      0.025012479163706303,
+      0.27456
+    ],
+    "elbow_R": [
+      -0.13,
+      0.005025154445320367,
+      0.26
+    ],
+    "wrist_R": [
+      -0.16640000000000002,
+      0.0022063030861318124,
+      0.24544
+    ],
+    "hand_R": [
+      -0.19240000000000002,
+      -0.0016787622589617968,
+      0.23504000000000003
+    ]
+  },
+  "config": {
+    "name": "\u601c\u3061\u3083\u3093",
+    "credit": "asahina",
+    "subject": "Chibi mascot of \u601c\u3061\u3083\u3093 (Rei-chan), the AI writer character of \u671d\u65e5\u5357 (@asahina_AIauto), from the supplied character sheet and illustration: very long black hair, amber eyes, black techwear jacket with neon-orange circuit lines and straps, black trousers, boots with glowing orange soles.",
+    "identitySources": [
+      "assets/friend-mascots/rei-mascot/source/user-reference-sheet.png",
+      "assets/friend-mascots/rei-mascot/source/user-reference-illustration.jpg"
+    ],
+    "landmarks": {
+      "pelvis": 0.39,
+      "spine": 0.46,
+      "chest": 0.53,
+      "neck": 0.61,
+      "head": 0.66,
+      "head_tip": 0.97,
+      "hip": [
+        0.06,
+        0.36
+      ],
+      "knee": [
+        0.065,
+        0.2
+      ],
+      "ankle": [
+        0.07,
+        0.07
+      ],
+      "foot": [
+        0.075,
+        0.03
+      ],
+      "toe": [
+        0.075,
+        0.02
+      ],
+      "shoulder_in": 0.045,
+      "shoulder": [
+        0.15,
+        0.528
+      ],
+      "elbow": [
+        0.25,
+        0.5
+      ],
+      "wrist": [
+        0.32,
+        0.472
+      ],
+      "hand": [
+        0.37,
+        0.452
+      ]
+    },
+    "headRigidZ": 0.615,
+    "armGate": {
+      "x": 0.17,
+      "zLow": 0.42,
+      "zHigh": 0.6,
+      "radius": 0.045
+    },
+    "legGate": {
+      "zTop": 0.37,
+      "xMax": 0.13
+    },
+    "hairBack": {
+      "points": [
+        [
+          0.0,
+          0.06,
+          0.66
+        ],
+        [
+          0.0,
+          0.1,
+          0.5
+        ],
+        [
+          0.0,
+          0.12,
+          0.33
+        ]
+      ]
+    },
+    "rigidZones": [
+      {
+        "bone": "HairBack1",
+        "box": [
+          -0.24,
+          0.24,
+          0.04,
+          0.3,
+          0.5,
+          0.615
+        ],
+        "afterSmooth": true,
+        "strength": 0.85,
+        "note": "upper back hair"
+      },
+      {
+        "bone": "HairBack2",
+        "box": [
+          -0.24,
+          0.24,
+          0.05,
+          0.3,
+          0.3,
+          0.5
+        ],
+        "afterSmooth": true,
+        "strength": 0.9,
+        "note": "lower back hair"
+      }
+    ]
+  },
+  "petContactBlender": [
+    -0.01522380206733942,
+    0.01794852502644062,
+    0.5199999809265137
+  ],
+  "petContactHeight": 0.5199999809265137,
+  "weights": {
+    "method": "geodesic surface skinning: fitted per-bone capsule radii, Euclidean-nearest cores, Dijkstra distance over the welded surface graph, compact quadratic falloff, smooth opposite-side limb gate and surface Laplacian weight smoothing",
+    "falloff_radius_m": 0.032,
+    "falloff_power": 2.0,
+    "core_quantile": 0.5,
+    "core_floor_m": 0.003,
+    "smoothing": {
+      "iterations": 18,
+      "factor": 0.55,
+      "domain": "mesh surface graph only"
+    },
+    "surface_graph": {
+      "vertices": 11031,
+      "edges": 34522,
+      "components_before": 2,
+      "bridges": 1,
+      "forced_bridges": 1,
+      "max_bridge_m": 0.00125
+    },
+    "geodesic_cap_m": 0.20998,
+    "max_distance_to_any_core_m": 0.17638,
+    "opposite_side_gate": {
+      "full_influence_below_m": 0.008,
+      "zero_influence_above_m": 0.02
+    },
+    "max_influences": 4,
+    "vertices_clipped_to_max": 5939,
+    "influence_histogram": {
+      "1": 281,
+      "2": 1356,
+      "3": 1135,
+      "4": 8259
+    },
+    "weight_sum_min": 1.0,
+    "weight_sum_max": 1.0,
+    "bones": [
+      {
+        "bone": "Hips",
+        "capsule_radius_m": 0.03571,
+        "owned": 351,
+        "core": 176,
+        "core_limit_m": 0.01907
+      },
+      {
+        "bone": "Spine",
+        "capsule_radius_m": 0.03556,
+        "owned": 35,
+        "core": 30,
+        "core_limit_m": 0.003
+      },
+      {
+        "bone": "Chest",
+        "capsule_radius_m": 0.04101,
+        "owned": 677,
+        "core": 339,
+        "core_limit_m": 0.02849
+      },
+      {
+        "bone": "Neck",
+        "capsule_radius_m": 0.03434,
+        "owned": 684,
+        "core": 342,
+        "core_limit_m": 0.02952
+      },
+      {
+        "bone": "Head",
+        "capsule_radius_m": 0.0212,
+        "owned": 3610,
+        "core": 1805,
+        "core_limit_m": 0.04081
+      },
+      {
+        "bone": "HairBack1",
+        "capsule_radius_m": 0.03217,
+        "owned": 85,
+        "core": 43,
+        "core_limit_m": 0.02992
+      },
+      {
+        "bone": "HairBack2",
+        "capsule_radius_m": 0.03149,
+        "owned": 861,
+        "core": 431,
+        "core_limit_m": 0.0196
+      },
+      {
+        "bone": "Shoulder.L",
+        "capsule_radius_m": 0.03195,
+        "owned": 946,
+        "core": 473,
+        "core_limit_m": 0.0192
+      },
+      {
+        "bone": "UpperArm.L",
+        "capsule_radius_m": 0.02424,
+        "owned": 161,
+        "core": 127,
+        "core_limit_m": 0.003
+      },
+      {
+        "bone": "LowerArm.L",
+        "capsule_radius_m": 0.01517,
+        "owned": 52,
+        "core": 49,
+        "core_limit_m": 0.003
+      },
+      {
+        "bone": "Hand.L",
+        "capsule_radius_m": 0.01911,
+        "owned": 129,
+        "core": 127,
+        "core_limit_m": 0.003
+      },
+      {
+        "bone": "Shoulder.R",
+        "capsule_radius_m": 0.0336,
+        "owned": 1084,
+        "core": 542,
+        "core_limit_m": 0.02311
+      },
+      {
+        "bone": "UpperArm.R",
+        "capsule_radius_m": 0.02728,
+        "owned": 193,
+        "core": 125,
+        "core_limit_m": 0.003
+      },
+      {
+        "bone": "LowerArm.R",
+        "capsule_radius_m": 0.01706,
+        "owned": 70,
+        "core": 66,
+        "core_limit_m": 0.003
+      },
+      {
+        "bone": "Hand.R",
+        "capsule_radius_m": 0.0172,
+        "owned": 120,
+        "core": 119,
+        "core_limit_m": 0.003
+      },
+      {
+        "bone": "UpperLeg.L",
+        "capsule_radius_m": 0.02327,
+        "owned": 455,
+        "core": 228,
+        "core_limit_m": 0.01479
+      },
+      {
+        "bone": "LowerLeg.L",
+        "capsule_radius_m": 0.01812,
+        "owned": 157,
+        "core": 100,
+        "core_limit_m": 0.003
+      },
+      {
+        "bone": "Foot.L",
+        "capsule_radius_m": 0.02126,
+        "owned": 176,
+        "core": 97,
+        "core_limit_m": 0.003
+      },
+      {
+        "bone": "Toe.L",
+        "capsule_radius_m": 0.02992,
+        "owned": 179,
+        "core": 139,
+        "core_limit_m": 0.003
+      },
+      {
+        "bone": "UpperLeg.R",
+        "capsule_radius_m": 0.02463,
+        "owned": 488,
+        "core": 244,
+        "core_limit_m": 0.01599
+      },
+      {
+        "bone": "LowerLeg.R",
+        "capsule_radius_m": 0.01823,
+        "owned": 163,
+        "core": 103,
+        "core_limit_m": 0.003
+      },
+      {
+        "bone": "Foot.R",
+        "capsule_radius_m": 0.02111,
+        "owned": 188,
+        "core": 97,
+        "core_limit_m": 0.003
+      },
+      {
+        "bone": "Toe.R",
+        "capsule_radius_m": 0.02831,
+        "owned": 167,
+        "core": 132,
+        "core_limit_m": 0.003
+      }
+    ]
+  },
+  "clips": [
+    {
+      "name": "Idle_Loop",
+      "seconds": 3.0,
+      "loop": true,
+      "fps": 60,
+      "rootMotion": "in-place"
+    },
+    {
+      "name": "Walk_Loop",
+      "seconds": 0.7166666666666667,
+      "loop": true,
+      "fps": 60,
+      "rootMotion": "in-place"
+    },
+    {
+      "name": "Run_Loop",
+      "seconds": 0.4,
+      "loop": true,
+      "fps": 60,
+      "rootMotion": "in-place"
+    },
+    {
+      "name": "Pet",
+      "seconds": 1.4,
+      "loop": false,
+      "fps": 60,
+      "rootMotion": "in-place"
+    },
+    {
+      "name": "Happy",
+      "seconds": 1.4,
+      "loop": false,
+      "fps": 60,
+      "rootMotion": "in-place"
+    },
+    {
+      "name": "Hit",
+      "seconds": 0.65,
+      "loop": false,
+      "fps": 60,
+      "rootMotion": "in-place"
+    },
+    {
+      "name": "Wave",
+      "seconds": 1.8,
+      "loop": false,
+      "fps": 60,
+      "rootMotion": "in-place"
+    },
+    {
+      "name": "Bow",
+      "seconds": 1.6,
+      "loop": false,
+      "fps": 60,
+      "rootMotion": "in-place"
+    }
+  ],
+  "lowestAuthoredVertexMetres": 0.001,
+  "lod": {
+    "sha256": "ae22058eccecafcdded06469d849a22736ad9d723addd41793a90d92c6212a48",
+    "triangles": 6947,
+    "trials": [
+      {
+        "ratio": 0.2,
+        "triangles": 4628,
+        "forward": {
+          "samples": 14000,
+          "max_units": 0.022939113900065422,
+          "rms_units": 0.00273924347380464,
+          "mean_units": 0.0018394064189720942,
+          "p95_units": 0.005874731391668319,
+          "max_mm_at_1p80m": 79.405,
+          "rms_mm_at_1p80m": 9.482,
+          "p95_mm_at_1p80m": 20.336
+        },
+        "reverse": {
+          "samples": 14000,
+          "max_units": 0.016562914475798607,
+          "rms_units": 0.0025681187349414895,
+          "mean_units": 0.001647381916423552,
+          "p95_units": 0.005919069726951418,
+          "max_mm_at_1p80m": 57.333,
+          "rms_mm_at_1p80m": 8.89,
+          "p95_mm_at_1p80m": 20.489
+        },
+        "passed": false
+      },
+      {
+        "ratio": 0.3,
+        "triangles": 6947,
+        "forward": {
+          "samples": 14000,
+          "max_units": 0.009041054174304008,
+          "rms_units": 0.0010239616991562421,
+          "mean_units": 0.0007622591822175678,
+          "p95_units": 0.002030177705455571,
+          "max_mm_at_1p80m": 31.296,
+          "rms_mm_at_1p80m": 3.544,
+          "p95_mm_at_1p80m": 7.028
+        },
+        "reverse": {
+          "samples": 14000,
+          "max_units": 0.004400178324431181,
+          "rms_units": 0.0008730549294777509,
+          "mean_units": 0.0006634600821256439,
+          "p95_units": 0.0018220262019895015,
+          "max_mm_at_1p80m": 15.231,
+          "rms_mm_at_1p80m": 3.022,
+          "p95_mm_at_1p80m": 6.307
+        },
+        "passed": true
+      }
+    ],
+    "distanceMetres": 8,
+    "originalRig": true
+  },
+  "locomotion": {
+    "Walk_Loop": {
+      "metresPerSecond": 0.234214390835946,
+      "cycleSeconds": 0.72
+    },
+    "Run_Loop": {
+      "metresPerSecond": 0.8809905424708567,
+      "cycleSeconds": 0.4
+    }
+  }
+}

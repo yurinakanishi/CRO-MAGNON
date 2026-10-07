@@ -10,6 +10,7 @@ const { createGameCore } = await import(
 import { CollisionWorld } from '../dist/shared/collision.mjs';
 import { caveWorldAt } from '../dist/shared/camp-cave-layout.mjs';
 import { MASCOT_KEYS } from '../dist/shared/mascot-selection.mjs';
+import { FRIEND_MASCOTS } from '../dist/shared/friend-mascots.mjs';
 import { mascotMenuMarkup } from '../dist/src/mascot-menu.js';
 import { CAVE_EXTRA_PIGMENTS } from '../dist/src/cave-gallery-layout.js';
 import { loadMotion, unpack, pose } from '../scripts/motion-glb.mjs';
@@ -89,7 +90,7 @@ function fixture() {
 test('the fourteenth mascot is selectable, follows, returns, and preserves another player’s ownership', () => {
   const f = fixture(),
     c = f.room().maruimo;
-  assert.equal(MASCOT_KEYS.length, 14);
+  assert.equal(MASCOT_KEYS.length, 14 + FRIEND_MASCOTS.length);
   assert.match(mascotMenuMarkup(f.core.snapshot(f.room())), /data-mascot="maruimo-mascot"/);
   f.action('selectMascot', 'maruimo-mascot');
   assert.equal(c.followPlayerId, f.owner.welcome.id);
@@ -228,7 +229,8 @@ test('the 2026-10 remake mascot keeps the octopus rig and clips at 55 cm with it
   }
   assert.deepEqual(
     new Set(['rimo-neko', '524', ...Object.values(CAVE_EXTRA_PIGMENTS).flatMap((p) => p.subjects)]),
-    new Set(MASCOT_KEYS),
+    // Every mascot is painted; Howkey is the one playable character in a frieze.
+    new Set([...MASCOT_KEYS, 'howkey-scientist']),
   );
 });
 

@@ -156,12 +156,11 @@ try {
     const tag = `${size.width}x${size.height}`;
     await newPage(size);
     await layout(`title-${tag}`, ['#title-start', '#title-graphics', '#title-contributors']);
-    // 2026-10-07: online credits live in the panning cave mural and its dialog.
-    const tags = await page
-      .locator('.mural-panel:not([aria-hidden]) .mural-tag b')
-      .allTextContents();
-    assert.ok(tags.length >= 2);
-    await swipe('.mural-viewport', -Math.min(180, size.width / 2), 0);
+    // Online home has no mural; the contributor dialog remains available.
+    assert.equal(await page.locator('.cave-mural').count(), 0);
+    await page.locator('#title-contributors').tap();
+    assert.ok((await page.locator('.contributor').count()) >= 5);
+    await page.locator('#modal-close').tap();
     assert.equal(await page.evaluate(() => document.scrollingElement.scrollLeft), 0);
     await swipe('#screen-title .title-hero', 0, -80);
     await layout(`title-after-swipe-${tag}`, [

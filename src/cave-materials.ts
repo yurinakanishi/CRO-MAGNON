@@ -16,6 +16,7 @@ export function prepareCaveMaterials(
   character524: THREE.Texture,
   rimoPigment: THREE.Texture,
   extraPigments: Record<CaveExtraPigment, THREE.Texture>,
+  brightInterior = false,
 ) {
   const materials = new Set<THREE.Material>();
   root.traverse((node) => {
@@ -117,7 +118,7 @@ export function prepareCaveMaterials(
           `
           float facingRoom=1.0-smoothstep(-0.15,0.3,dot(roomFacingNormal,normalize(roomToRock)));
           float depth=1.0-smoothstep(1.0,11.0,cavePosition.z);
-          float caveDaylight=mix(1.0,0.006,facingRoom*depth);
+          float caveDaylight=mix(1.0,${brightInterior ? '1.0' : '0.006'},facingRoom*depth);
           ${THREE.ShaderChunk.lights_fragment_begin.replace(
             'getDirectionalLightInfo( directionalLight, directLight );',
             'getDirectionalLightInfo( directionalLight, directLight ); directLight.color *= caveDaylight;',
@@ -129,7 +130,8 @@ export function prepareCaveMaterials(
           '#include <lights_fragment_end>\nreflectedLight.indirectDiffuse*=caveDaylight;',
         );
       };
-      material.customProgramCacheKey = () => 'camp-cave-white-gallery-v20-maruimo-frieze';
+      material.customProgramCacheKey = () =>
+        `camp-cave-white-gallery-v21-friends-frieze-${brightInterior}`;
       material.needsUpdate = true;
     }
   });

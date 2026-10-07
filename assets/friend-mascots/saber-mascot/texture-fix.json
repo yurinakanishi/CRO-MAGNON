@@ -1,0 +1,7 @@
+{
+  "note": "TRELLIS textured the fluffy tail as dark mottled noise (visible in the dense reconstruction itself). Repaint only the tail's darker texels with her own blonde hair colour.",
+  "regions": [
+    { "name": "tail", "box": [0.17, 0.42, 0.0, 0.42, 0.22, 0.47], "skipBrighterThan": 0.5, "colourFrom": [-0.15, 0.15, 0.1, 0.32, 0.45, 0.6], "shading": 0.45 },
+    { "name": "tail-base", "box": [0.0, 0.17, 0.08, 0.42, 0.22, 0.36], "skipBrighterThan": 0.5, "colourFrom": [-0.15, 0.15, 0.1, 0.32, 0.45, 0.6], "shading": 0.45 }
+  ]
+}

@@ -1,0 +1,116 @@
+{
+  "verifiedOn": "2026-10-07",
+  "source": "Handles given by the user in chat. Each public X profile was opened in the app built-in browser (not signed in); page title and profile-photo URL read there.",
+  "processing": "Original 200x200 JPEG bytes for the credits; the 400x400 originals are kept under assets/friend-mascots/<key>/source/ as mascot identity references.",
+  "note": "On this date @Sagasa8045 shows the straw-hat cat girl of the user-supplied HPqk-oibgAA8hy8.jpg, which the request assigned to @Saber5656; used as assigned.",
+  "profiles": [
+    {
+      "key": "risa",
+      "name": "りさ",
+      "profile": "https://x.com/eerm16g",
+      "pageTitle": "りさ (@eerm16g) / X",
+      "source": "https://pbs.twimg.com/profile_images/2106906250592358400/L2q3yeZ0_200x200.jpg",
+      "mascotReference": "https://pbs.twimg.com/profile_images/2106906250592358400/L2q3yeZ0_400x400.jpg",
+      "file": "public/title/avatar-risa.jpg",
+      "bytes": 15106,
+      "sha256": "b84ff387f024f22b593f4a4a9c90b885905e50beea17fd3be4f47cdb36675f41",
+      "character": "こはくちゃん (existing companion)"
+    },
+    {
+      "key": "saber",
+      "name": "Saber@codexer",
+      "profile": "https://x.com/Saber5656",
+      "pageTitle": "Saber@codexer (@Saber5656) / X",
+      "source": "https://pbs.twimg.com/profile_images/2105262513147580417/jQAElo5h_200x200.jpg",
+      "mascotReference": "https://pbs.twimg.com/profile_images/2105262513147580417/jQAElo5h_400x400.jpg",
+      "file": "public/title/avatar-saber.jpg",
+      "bytes": 15157,
+      "sha256": "71ba55c099b41cd51d0ac2cbe3306820365d749be035170328957aaebe2d7d18",
+      "character": "Saber (saber-mascot)"
+    },
+    {
+      "key": "fairy",
+      "name": "吉澤フェアリー🇯🇵",
+      "profile": "https://x.com/Fairy_Yoshizawa",
+      "pageTitle": "吉澤フェアリー🇯🇵 (@Fairy_Yoshizawa) / X",
+      "source": "https://pbs.twimg.com/profile_images/2105958934691655680/ZvEw0zRM_200x200.jpg",
+      "mascotReference": "https://pbs.twimg.com/profile_images/2105958934691655680/ZvEw0zRM_400x400.jpg",
+      "file": "public/title/avatar-fairy.jpg",
+      "bytes": 9446,
+      "sha256": "f5055d7c6083f4b0812f49b502204a472c7816f7802446acc5b3be8637c596a3",
+      "character": "フェアリー (fairy-mascot)"
+    },
+    {
+      "key": "sagasa",
+      "name": "さが@迷えるインドア派アニオタSEおじ",
+      "profile": "https://x.com/Sagasa8045",
+      "pageTitle": "さが@迷えるインドア派アニオタSEおじ (@Sagasa8045) / X",
+      "source": "https://pbs.twimg.com/profile_images/2088162277459660800/2WiQuv0S_200x200.jpg",
+      "mascotReference": "https://pbs.twimg.com/profile_images/2088162277459660800/2WiQuv0S_400x400.jpg",
+      "file": "public/title/avatar-sagasa.jpg",
+      "bytes": 16074,
+      "sha256": "f616e50c087ff3898a839c4fbffeab09b3baa26ddf8bb382cdcdf381df474b14",
+      "character": "さが (sagasa-mascot)"
+    },
+    {
+      "key": "hawkie",
+      "name": "ほーきー(Hawkie)",
+      "profile": "https://x.com/hawkymisc",
+      "pageTitle": "ほーきー(Hawkie) | AI× ||||||||||||||||||||||||||||| (@hawkymisc) / X",
+      "source": "https://pbs.twimg.com/profile_images/2104202910758494208/0QYXnACh_200x200.jpg",
+      "mascotReference": "https://pbs.twimg.com/profile_images/2104202910758494208/0QYXnACh_400x400.jpg",
+      "file": "public/title/avatar-hawkie.jpg",
+      "bytes": 7208,
+      "sha256": "c60cbdd3acdb17d553e16449e3abaf1c6f60a94df226e95568be6df78ecef590",
+      "character": "Howkey (playable) with the Erlenmeyer flask"
+    },
+    {
+      "key": "otani",
+      "name": "オータニ@AI駆動開発",
+      "profile": "https://x.com/otani_ai_memo",
+      "pageTitle": "オータニ@AI駆動開発 (@otani_ai_memo) / X",
+      "source": "https://pbs.twimg.com/profile_images/2085737294255017984/PKIV79Qt_200x200.jpg",
+      "mascotReference": "https://pbs.twimg.com/profile_images/2085737294255017984/PKIV79Qt_400x400.jpg",
+      "file": "public/title/avatar-otani.jpg",
+      "bytes": 13718,
+      "sha256": "9f79702e5d49b9a2178d9fc1154bd654c18f335ce57698be36c822e41cc6b9ae",
+      "character": "オータニ (otani-mascot); icon unchanged since 2026-09-22"
+    },
+    {
+      "key": "urata",
+      "name": "浦田 勇樹 | 生成AI×新規プロダクト開発@ブレインパッド",
+      "profile": "https://x.com/yuki_urata",
+      "pageTitle": "浦田 勇樹 | 生成AI×新規プロダクト開発@ブレインパッド (@yuki_urata) / X",
+      "source": "https://pbs.twimg.com/profile_images/2088111762751303680/d07iPgGL_200x200.jpg",
+      "mascotReference": "https://pbs.twimg.com/profile_images/2088111762751303680/d07iPgGL_400x400.jpg",
+      "file": "public/title/avatar-urata.jpg",
+      "bytes": 11987,
+      "sha256": "811faa362ca844e2db5e74bf9dabb253d1f048214e01ca5c3e35ec3dcbaff059",
+      "character": "うらた (urata-mascot); icon unchanged since 2026-09-22"
+    },
+    {
+      "key": "nukonuko",
+      "name": "ぬこぬこ / NUKO 🇯🇵",
+      "profile": "https://x.com/nukonuko",
+      "pageTitle": "ぬこぬこ / NUKO 🇯🇵 (@nukonuko) / X",
+      "source": "https://pbs.twimg.com/profile_images/2051950657809362944/x6v0T-f1_200x200.jpg",
+      "mascotReference": "https://pbs.twimg.com/profile_images/2051950657809362944/x6v0T-f1_400x400.jpg",
+      "file": "public/title/avatar-nukonuko.jpg",
+      "bytes": 13782,
+      "sha256": "c1ba1357ca632ff79899b0593f2815c38898d04e197ab3e383afc4f5f6181c6e",
+      "character": "ぬこぬこ (nukonuko-mascot); icon unchanged since 2026-09-22"
+    },
+    {
+      "key": "asahina",
+      "name": "朝日南",
+      "profile": "https://x.com/asahina_AIauto",
+      "pageTitle": "朝日南 (@asahina_AIauto) / X",
+      "source": "https://pbs.twimg.com/profile_images/2047998846182338560/kCaSmC3p_200x200.jpg",
+      "mascotReference": "https://pbs.twimg.com/profile_images/2047998846182338560/kCaSmC3p_400x400.jpg",
+      "file": "public/title/avatar-asahina.jpg",
+      "bytes": 16591,
+      "sha256": "ae7e8cc6ca8280f39f4575ceb3f94bcefecd00835f14935c59260d07e77c045c",
+      "character": "怜ちゃん (rei-mascot), from the user-supplied character sheet and illustration (verified 2026-10-08)"
+    }
+  ]
+}

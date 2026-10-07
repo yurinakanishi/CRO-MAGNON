@@ -14,6 +14,12 @@ import {
   cancelMaruimoPet,
 } from '../shared/maruimo-mascot.mjs';
 import {
+  createFriendMascots,
+  updateFriendMascots,
+  restoreFriendMascots,
+  cancelFriendPetsBy,
+} from '../shared/friend-mascots.mjs';
+import {
   updateOrbBots,
   saveOrbBots,
   restoreOrbBots,
@@ -237,6 +243,7 @@ export function createGameCore({
       if (!visibility.hideMae) room.mae = createMae(room.collision);
       room.kohaku = createKohaku(room.collision);
       room.maruimo = createMaruimo(room.collision);
+      room.friends = createFriendMascots(room.collision);
       room.enemies = createEnemies(room.collision, room.animals);
       createResidents(room, [], runtime.now());
       rooms.set(roomName, room);
@@ -512,6 +519,7 @@ export function createGameCore({
           if (room.mae?.petPlayerId === player.id) cancelMaePet(room.mae);
           if (room.kohaku?.petPlayerId === player.id) cancelKohakuPet(room.kohaku);
           if (room.maruimo?.petPlayerId === player.id) cancelMaruimoPet(room.maruimo);
+          cancelFriendPetsBy(room, player.id);
           if (room.companion524?.petPlayerId === player.id)
             cancelCompanion524Pet(room.companion524);
           cancelPlayerBotPet(room, player.id, now);
@@ -669,6 +677,7 @@ export function createGameCore({
         updateMae(room, dt, now);
         updateKohaku(room, dt, now);
         updateMaruimo(room, dt, now);
+        updateFriendMascots(room, dt, now);
         updateOrbBots(room, dt, now);
         updateBarters(room, now);
         for (const resident of room.residents) {
@@ -727,6 +736,7 @@ export function createGameCore({
       updateMae(room, dt, now);
       updateKohaku(room, dt, now);
       updateMaruimo(room, dt, now);
+      updateFriendMascots(room, dt, now);
       updateOrbBots(room, dt, now);
       updateAnimals(room, dt, now);
       const enemiesChanged = updateEnemies(room, dt, now, notice);
@@ -828,6 +838,7 @@ export function createGameCore({
               mae: room.mae ?? room.hiddenMae,
               kohaku: room.kohaku,
               maruimo: room.maruimo,
+              friends: room.friends,
               orbBots: saveOrbBots(room),
               enemies: room.enemies,
               boats: room.boats,
@@ -1011,6 +1022,7 @@ export function createGameCore({
       else restoreMae(room, record.mae);
       restoreKohaku(room, record.kohaku);
       restoreMaruimo(room, record.maruimo);
+      restoreFriendMascots(room, record.friends);
       restoreOrbBots(room, record.orbBots, runtime.now());
     }
   }

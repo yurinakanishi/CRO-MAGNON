@@ -23950,7 +23950,9 @@
         "Gallery r30 restores the user-reference waving gray-white Rimo cat among two horses, an aurochs and a deer, directly opposite the unchanged west-wall 524. The cave geometry, walking surface and fire are unchanged.",
         "Gallery r31 includes all 13 released mascots among animal friezes. Cave placement is at ground level at the mountain foot near camp. Coming Soon is reserved for confirmed upcoming characters. The source cave GLB and earlier pigment files are retained.",
         "Gallery r32 integrates the faithful small 524 with a mammoth, two horses and an aurochs in one weathered transparent frieze, matching the opposite Rimo frieze. It replaces three separated west-wall placements. Earlier paintings and source models remain archived.",
-        "Gallery r33 adds Maruimo among a bison, horse and deer. All 14 released mascots are represented; the Coming Soon reserve and original GLB remain unchanged."
+        "Gallery r33 adds Maruimo among a bison, horse and deer. All 14 released mascots are represented; the Coming Soon reserve and original GLB remain unchanged.",
+        "Gallery r34 adds two contributor processions on the west wall (Saber, Fairy, nukonuko, Saga; the Otani duck, Urata, Howkey). They replace the lone deer and bison, whose species reappear inside the friezes. The original GLB is unchanged.",
+        "Gallery r35 repaints the west-wall river procession to add Rei-chan beside the Otani duck, Urata and Howkey; the r34 friezes (Saber, Fairy, nukonuko, Saga; duck, Urata, Howkey) replaced the lone deer and bison. The original GLB is unchanged."
       ],
       "provenance": {
         "provider": "Codex",
@@ -24055,7 +24057,7 @@
         "application": "One 7.5 m wide transparent mineral-pigment frieze on the west wall opposite Rimo. The small floating 524 shares muted ochre, charcoal, worn edges and overlapping animal composition. Direct projection on original limestone triangles; no extra geometry or backing.",
         "review": "assets/camp-cave/qa/gallery-surfaces-r32.json"
       },
-      "galleryRevision": "33",
+      "galleryRevision": "35",
       "rimoPigment": {
         "source": "assets/camp-cave/source/rimo-lascaux-frieze-r30.png",
         "url": "/models/camp-cave/rimo-lascaux-frieze-r30.png",
@@ -24184,6 +24186,104 @@
           ],
           "application": "5 m wide east-wall frieze. The small octopus shares earth pigments and overlapping composition with the animals. Unmodified transparent PNG projected onto the original limestone triangles.",
           "review": "assets/camp-cave/qa/gallery-surfaces-r33.json"
+        },
+        "friendsMeadow": {
+          "source": "assets/camp-cave/source/friends-meadow-lascaux-r34.png",
+          "url": "/models/camp-cave/friends-meadow-lascaux-r34.png",
+          "sha256": "707e1920df0342a1806082874b8baa3ab33cc2c8ecea9311d3c6ff364caea148",
+          "bytes": 2071821,
+          "image": {
+            "width": 2172,
+            "height": 724
+          },
+          "generator": "Codex CLI 0.162.0-alpha.2 built-in image_gen (configured default model)",
+          "prompt": "assets/camp-cave/friends-meadow-lascaux-prompt-r34.txt",
+          "subjects": [
+            "saber-mascot",
+            "fairy-mascot",
+            "nukonuko-mascot",
+            "sagasa-mascot"
+          ],
+          "animals": [
+            "wild horse",
+            "ibex",
+            "red deer stag"
+          ],
+          "references": [
+            {
+              "path": "assets/friend-mascots/saber-mascot/source/reference-v1.png",
+              "sha256": "3cc39bfe25ef085f33cb88e1f2628868c08f414a0288d5a61bc0a25167becf42"
+            },
+            {
+              "path": "assets/friend-mascots/fairy-mascot/source/reference-v1.png",
+              "sha256": "11c8f34f854dc95652a141940923fa56a0e8b73966e7ef74c57af0625048fa17"
+            },
+            {
+              "path": "assets/friend-mascots/nukonuko-mascot/source/reference-v1.png",
+              "sha256": "7c8bcdcc1fc0101d920ffa77720128901b19fea5413313674ffe14328bc796d5"
+            },
+            {
+              "path": "assets/friend-mascots/sagasa-mascot/source/reference-v1.png",
+              "sha256": "1a0c52e325c8d4666476757918916ea69a44eec7ba847574028fc4de79202e70"
+            },
+            {
+              "path": "public/models/camp-cave/mae-kohaku-lascaux-r31.png",
+              "sha256": "f67ea277c3d42c93877139b44150ee6fddbb2eb41854418ea09ac4bd40eed732"
+            }
+          ],
+          "application": "5.6 m wide west-wall frieze replacing the lone deer: Saber, Fairy, nukonuko and Saga among a horse, an ibex and a stag. Unmodified transparent PNG projected onto the original limestone triangles.",
+          "review": "assets/camp-cave/qa/gallery-surfaces-r35.json"
+        },
+        "friendsRiver": {
+          "source": "assets/camp-cave/source/friends-river-lascaux-r35.png",
+          "url": "/models/camp-cave/friends-river-lascaux-r35.png",
+          "sha256": "fb4fead40844b3ca672b191e2771e6e3904f88a28964e4249f4b6bb57996f04c",
+          "bytes": 2119578,
+          "image": {
+            "width": 2172,
+            "height": 724
+          },
+          "generator": "Codex CLI 0.162.0-alpha.2 built-in image_gen (configured default model)",
+          "prompt": "assets/camp-cave/friends-river-lascaux-prompt-r35.txt",
+          "subjects": [
+            "otani-mascot",
+            "urata-mascot",
+            "howkey-scientist",
+            "rei-mascot"
+          ],
+          "animals": [
+            "aurochs",
+            "bison",
+            "wild horse"
+          ],
+          "references": [
+            {
+              "path": "assets/friend-mascots/otani-mascot/source/reference-v1.png",
+              "sha256": "e6ac386f6f560e0eeca784441715c2962e8e4986312bf21142ca2d71dc568639"
+            },
+            {
+              "path": "assets/friend-mascots/urata-mascot/source/reference-v1.png",
+              "sha256": "cbba1e464914d8f51f7b537b4b2bac9817ce08c7445e2583acb2b13669be9c88"
+            },
+            {
+              "path": "public/models/howkey-scientist/portrait.png",
+              "sha256": "62f60254e41ef1cab392847f976d91d91df00850bfb178db0d3130f85d17020c"
+            },
+            {
+              "path": "assets/friend-mascots/rei-mascot/source/reference-v1.png",
+              "sha256": "3f47898c4e427b94af22a441f7decf3898327d59dd9030301aa5bf88915f8b57"
+            },
+            {
+              "path": "assets/camp-cave/source/friends-river-lascaux-r34.png",
+              "sha256": "faad98ddff2b01878a34cb0bbbbf83021c1b84a8a452f0ecc95d87900d2cf684"
+            },
+            {
+              "path": "public/models/camp-cave/mae-kohaku-lascaux-r31.png",
+              "sha256": "f67ea277c3d42c93877139b44150ee6fddbb2eb41854418ea09ac4bd40eed732"
+            }
+          ],
+          "application": "5 m wide west-wall frieze replacing the lone bison: the Otani duck, Urata, Howkey with her Erlenmeyer flask and Rei-chan with a book among an aurochs, a bison and a horse (r35 repaints r34 to add Rei). Unmodified transparent PNG projected onto the original limestone triangles.",
+          "review": "assets/camp-cave/qa/gallery-surfaces-r35.json"
         }
       }
     },
@@ -26879,6 +26979,1038 @@
         "previousDelivery": null,
         "visualReview": "assets/asset-remake/reviews/crow-bone-pauldrons.json"
       }
+    },
+    {
+      "modelKey": "fairy-mascot",
+      "name": "フェアリー",
+      "kind": "companion",
+      "candidate": 1,
+      "revision": "r01",
+      "status": "friend-mascot-integrated",
+      "url": "/models/fairy-mascot/model-r01.glb",
+      "sha256": "45d20640bd4c3a3bf032e5bb356405260774d69e981149b690751b75f77cff02",
+      "bytes": 7424528,
+      "triangles": 22035,
+      "bones": 27,
+      "upAxis": "Y",
+      "forwardAxis": "+Z",
+      "heightMetres": 0.52,
+      "widthMetres": 0.3549452125880601,
+      "lengthMetres": 0.22642866698484754,
+      "petContactMetres": 0.5196784734725952,
+      "placement": {
+        "pivot": "ground-between-shoes",
+        "scale": 1
+      },
+      "portrait": {
+        "url": "/models/fairy-mascot/portrait.png",
+        "sha256": "fc3cf9d6f8c0a0a2b90f596c804ce8f90f022248d879147c37d8e651053897a6"
+      },
+      "clips": [
+        {
+          "name": "Idle_Loop",
+          "seconds": 3,
+          "loop": true,
+          "fps": 60,
+          "rootMotion": "in-place"
+        },
+        {
+          "name": "Walk_Loop",
+          "seconds": 0.7166666666666667,
+          "loop": true,
+          "fps": 60,
+          "rootMotion": "in-place"
+        },
+        {
+          "name": "Run_Loop",
+          "seconds": 0.4,
+          "loop": true,
+          "fps": 60,
+          "rootMotion": "in-place"
+        },
+        {
+          "name": "Pet",
+          "seconds": 1.4,
+          "loop": false,
+          "fps": 60,
+          "rootMotion": "in-place"
+        },
+        {
+          "name": "Happy",
+          "seconds": 1.4,
+          "loop": false,
+          "fps": 60,
+          "rootMotion": "in-place"
+        },
+        {
+          "name": "Hit",
+          "seconds": 0.65,
+          "loop": false,
+          "fps": 60,
+          "rootMotion": "in-place"
+        },
+        {
+          "name": "Wave",
+          "seconds": 1.8,
+          "loop": false,
+          "fps": 60,
+          "rootMotion": "in-place"
+        },
+        {
+          "name": "Bow",
+          "seconds": 1.6,
+          "loop": false,
+          "fps": 60,
+          "rootMotion": "in-place"
+        }
+      ],
+      "locomotion": {
+        "Walk_Loop": {
+          "metresPerSecond": 0.1794118951083273,
+          "cycleSeconds": 0.72
+        },
+        "Run_Loop": {
+          "metresPerSecond": 0.6748525666295286,
+          "cycleSeconds": 0.4
+        }
+      },
+      "lods": [
+        {
+          "url": "/models/fairy-mascot/lod-r01.glb",
+          "sha256": "395e5a839f65bbf6f78a6c39a50bbc62965d5286d351575881aa5302bc908c58",
+          "bytes": 971560,
+          "triangles": 9882,
+          "distanceMetres": 8,
+          "purpose": "animated-medium-lod-geometry"
+        }
+      ],
+      "provenance": {
+        "provider": "Claude Code (Opus 5.5)",
+        "claudeUsed": true,
+        "referenceGenerator": "Codex CLI 0.162.0-alpha.2 built-in image_gen (configured default model, unelevated sandbox); request and prompt saved beside the reference",
+        "referenceImage": "assets/friend-mascots/fairy-mascot/source/reference-v1.png",
+        "referenceSha256": "11c8f34f854dc95652a141940923fa56a0e8b73966e7ef74c57af0625048fa17",
+        "identitySources": [
+          "assets/friend-mascots/fairy-mascot/source/x-avatar-400.jpg"
+        ],
+        "reconstruction": "Local TRELLIS-2 v0.8.1, res 1024, tex 1024, seed 42",
+        "denseSha256": "23d267266627fa95649dc1598c2edf70d4b5845e6fa2726101fd0d37f9f92cc2",
+        "reduction": "meshoptimizer position-only quadric reduction of the dense surface; fresh Smart UV; 2048 diffuse-colour bake from the dense TRELLIS albedo (Blender 3.6 Cycles, selected to active)",
+        "deviationMetres": {
+          "denseToLow": {
+            "rms": 0.0007610215038317626,
+            "p95": 0.001191323482401595,
+            "max": 0.010147112476439844
+          },
+          "lowToDense": {
+            "rms": 0.0004981920171967118,
+            "p95": 0.0009449754273644511,
+            "max": 0.0022546676811400607
+          }
+        },
+        "surfaceSha256": "bcd113b092c9d66a189d023439c84460605b5bed39c55e1af18a432b5e3974ba",
+        "rig": "assets/friend-mascots/workflow/rig.py with assets/friend-mascots/fairy-mascot/rig.json",
+        "rigSha256": "45d20640bd4c3a3bf032e5bb356405260774d69e981149b690751b75f77cff02",
+        "pipeline": "assets/friend-mascots/README.md",
+        "visualReview": "output/model-generation/models/fairy-mascot/work/rig/revision-01/poses"
+      },
+      "notes": [
+        "Contributor companion. 22035 triangles, 27 bones, 8 in-place 60 fps clips; LOD 9882 triangles shares the skeleton from 8 m. Lowest authored vertex 0.0009 m."
+      ]
+    },
+    {
+      "modelKey": "howkey-flask",
+      "name": "Howkeyの三角フラスコ",
+      "kind": "equipment",
+      "candidate": 1,
+      "revision": "r01",
+      "status": "friend-prop-integrated",
+      "url": "/models/howkey-flask/model-r01.glb",
+      "sha256": "85c376f2ffb2def8249cb1f0c56426ceb03144fadb6dfe55575741d7df0f2f80",
+      "bytes": 1194284,
+      "triangles": 4997,
+      "upAxis": "Y",
+      "forwardAxis": "+Z",
+      "heightMetres": 0.15,
+      "widthMetres": 0.10123039257517313,
+      "onDemand": true,
+      "placement": {
+        "pivot": "grip",
+        "gripNode": "Grip.R",
+        "gripMetresAboveBase": 0.111,
+        "orientation": "kept upright with the character (src/flask-pose.ts)",
+        "boundsMin": [
+          -0.050401557236909866,
+          -0.11100000143051147,
+          -0.05085756257176399
+        ],
+        "boundsMax": [
+          0.050828833132982254,
+          0.039000004529953,
+          0.05032170191407204
+        ]
+      },
+      "clips": [],
+      "lods": [],
+      "portrait": {
+        "url": "/models/howkey-flask/portrait.png",
+        "sha256": "0fb8cdab138660948b1a2c397dd9b72ff91d320adc380b731962f11bd2235aff"
+      },
+      "provenance": {
+        "provider": "Claude Code (Opus 5.5)",
+        "claudeUsed": true,
+        "referenceGenerator": "Codex CLI 0.162.0-alpha.2 built-in image_gen (configured default model); Howkey portrait attached for palette",
+        "referenceImage": "assets/friend-mascots/howkey-flask/source/reference-v1.png",
+        "referenceSha256": "0fb8cdab138660948b1a2c397dd9b72ff91d320adc380b731962f11bd2235aff",
+        "reconstruction": "Local TRELLIS-2 v0.8.1, res 512, tex 512, seed 42",
+        "denseSha256": "ed6b5b7383ec14bfda2e260f241994162027987776cb2fa3207f5ac2abe218b4",
+        "reduction": "meshoptimizer position-only reduction; Smart UV; 1024 diffuse-colour bake from the dense TRELLIS albedo; translated so the neck grip is the origin",
+        "deviationMetres": {
+          "denseToLow": {
+            "rms": 0.0001821000760521644,
+            "p95": 0.0003281535432889634,
+            "max": 0.0005991879496736051
+          },
+          "lowToDense": {
+            "rms": 0.0001755300059893761,
+            "p95": 0.0002925176051702768,
+            "max": 0.0007913840208356971
+          }
+        },
+        "pipeline": "assets/friend-mascots/README.md"
+      },
+      "notes": [
+        "Erlenmeyer flask held by the neck in Howkey's right hand (Grip.R). Hidden while that hand gathers, pets, throws a dot, fishes or works the shore."
+      ]
+    },
+    {
+      "modelKey": "saber-mascot",
+      "name": "Saber",
+      "kind": "companion",
+      "candidate": 1,
+      "revision": "r01",
+      "status": "friend-mascot-integrated",
+      "url": "/models/saber-mascot/model-r01.glb",
+      "sha256": "f219a9907e641df0b1eee9abbd69997744526b3b7910f9491163dbdfd45809de",
+      "bytes": 7781548,
+      "triangles": 23687,
+      "bones": 34,
+      "upAxis": "Y",
+      "forwardAxis": "+Z",
+      "heightMetres": 0.52,
+      "widthMetres": 0.3936793996486181,
+      "lengthMetres": 0.2788612142944775,
+      "petContactMetres": 0.50621497631073,
+      "placement": {
+        "pivot": "ground-between-shoes",
+        "scale": 1
+      },
+      "portrait": {
+        "url": "/models/saber-mascot/portrait.png",
+        "sha256": "7ee2db91cc07b35ae5f1602ede9f00483ef2ba4bf5781fd9886b0e632c664c1b"
+      },
+      "clips": [
+        {
+          "name": "Idle_Loop",
+          "seconds": 3,
+          "loop": true,
+          "fps": 60,
+          "rootMotion": "in-place"
+        },
+        {
+          "name": "Walk_Loop",
+          "seconds": 0.7166666666666667,
+          "loop": true,
+          "fps": 60,
+          "rootMotion": "in-place"
+        },
+        {
+          "name": "Run_Loop",
+          "seconds": 0.4,
+          "loop": true,
+          "fps": 60,
+          "rootMotion": "in-place"
+        },
+        {
+          "name": "Pet",
+          "seconds": 1.4,
+          "loop": false,
+          "fps": 60,
+          "rootMotion": "in-place"
+        },
+        {
+          "name": "Happy",
+          "seconds": 1.4,
+          "loop": false,
+          "fps": 60,
+          "rootMotion": "in-place"
+        },
+        {
+          "name": "Hit",
+          "seconds": 0.65,
+          "loop": false,
+          "fps": 60,
+          "rootMotion": "in-place"
+        },
+        {
+          "name": "Wave",
+          "seconds": 1.8,
+          "loop": false,
+          "fps": 60,
+          "rootMotion": "in-place"
+        },
+        {
+          "name": "Bow",
+          "seconds": 1.6,
+          "loop": false,
+          "fps": 60,
+          "rootMotion": "in-place"
+        }
+      ],
+      "locomotion": {
+        "Walk_Loop": {
+          "metresPerSecond": 0.22740114800201874,
+          "cycleSeconds": 0.72
+        },
+        "Run_Loop": {
+          "metresPerSecond": 0.8553627299405345,
+          "cycleSeconds": 0.4
+        }
+      },
+      "lods": [
+        {
+          "url": "/models/saber-mascot/lod-r01.glb",
+          "sha256": "949ffb97167bba8633dae80a617c14eebd1816063a2e42f6823fb78d5b38ac25",
+          "bytes": 682620,
+          "triangles": 7102,
+          "distanceMetres": 8,
+          "purpose": "animated-medium-lod-geometry"
+        }
+      ],
+      "provenance": {
+        "provider": "Claude Code (Opus 5.5)",
+        "claudeUsed": true,
+        "referenceGenerator": "Codex CLI 0.162.0-alpha.2 built-in image_gen (configured default model, unelevated sandbox); request and prompt saved beside the reference",
+        "referenceImage": "assets/friend-mascots/saber-mascot/source/reference-v1.png",
+        "referenceSha256": "3cc39bfe25ef085f33cb88e1f2628868c08f414a0288d5a61bc0a25167becf42",
+        "identitySources": [
+          "assets/friend-mascots/saber-mascot/source/user-reference.jpg"
+        ],
+        "reconstruction": "Local TRELLIS-2 v0.8.1, res 1024, tex 1024, seed 42",
+        "denseSha256": "e9ad3467d553c77da34d55d2f971ae43b9f1deae7944d44a56d70b674aecfe62",
+        "reduction": "meshoptimizer position-only quadric reduction of the dense surface; fresh Smart UV; 2048 diffuse-colour bake from the dense TRELLIS albedo (Blender 3.6 Cycles, selected to active)",
+        "deviationMetres": {
+          "denseToLow": {
+            "rms": 0.0004890144342150775,
+            "p95": 0.0009507239643432152,
+            "max": 0.004501872743541533
+          },
+          "lowToDense": {
+            "rms": 0.0004724455762311529,
+            "p95": 0.0009285340687819707,
+            "max": 0.00209924413343737
+          }
+        },
+        "surfaceSha256": "f5b671bae4946d5fb3645f17a9492806dbcb68479775b066d28956ff724ceef0",
+        "rig": "assets/friend-mascots/workflow/rig.py with assets/friend-mascots/saber-mascot/rig.json",
+        "rigSha256": "f219a9907e641df0b1eee9abbd69997744526b3b7910f9491163dbdfd45809de",
+        "pipeline": "assets/friend-mascots/README.md",
+        "visualReview": "output/model-generation/models/saber-mascot/work/rig/revision-01/poses"
+      },
+      "notes": [
+        "Contributor companion. 23687 triangles, 34 bones, 8 in-place 60 fps clips; LOD 7102 triangles shares the skeleton from 8 m. Lowest authored vertex 0.0010 m."
+      ]
+    },
+    {
+      "modelKey": "sagasa-mascot",
+      "name": "さが",
+      "kind": "companion",
+      "candidate": 1,
+      "revision": "r03",
+      "status": "friend-mascot-integrated",
+      "url": "/models/sagasa-mascot/model-r03.glb",
+      "sha256": "4f06be7e91e280d8db6d21edba5bb39c044c614075464c04e42396c84b0b57b3",
+      "bytes": 6685712,
+      "triangles": 23632,
+      "bones": 23,
+      "upAxis": "Y",
+      "forwardAxis": "+Z",
+      "heightMetres": 0.52,
+      "widthMetres": 0.35802693829694204,
+      "lengthMetres": 0.24144445918466795,
+      "petContactMetres": 0.5097366571426392,
+      "placement": {
+        "pivot": "ground-between-shoes",
+        "scale": 1
+      },
+      "portrait": {
+        "url": "/models/sagasa-mascot/portrait.png",
+        "sha256": "3a03ef57b016844d60322cb856c844950a1584c03e2fbb90583bbdaaf97ee053"
+      },
+      "clips": [
+        {
+          "name": "Idle_Loop",
+          "seconds": 3,
+          "loop": true,
+          "fps": 60,
+          "rootMotion": "in-place"
+        },
+        {
+          "name": "Walk_Loop",
+          "seconds": 0.7166666666666667,
+          "loop": true,
+          "fps": 60,
+          "rootMotion": "in-place"
+        },
+        {
+          "name": "Run_Loop",
+          "seconds": 0.4,
+          "loop": true,
+          "fps": 60,
+          "rootMotion": "in-place"
+        },
+        {
+          "name": "Pet",
+          "seconds": 1.4,
+          "loop": false,
+          "fps": 60,
+          "rootMotion": "in-place"
+        },
+        {
+          "name": "Happy",
+          "seconds": 1.4,
+          "loop": false,
+          "fps": 60,
+          "rootMotion": "in-place"
+        },
+        {
+          "name": "Hit",
+          "seconds": 0.65,
+          "loop": false,
+          "fps": 60,
+          "rootMotion": "in-place"
+        },
+        {
+          "name": "Wave",
+          "seconds": 1.8,
+          "loop": false,
+          "fps": 60,
+          "rootMotion": "in-place"
+        },
+        {
+          "name": "Bow",
+          "seconds": 1.6,
+          "loop": false,
+          "fps": 60,
+          "rootMotion": "in-place"
+        }
+      ],
+      "locomotion": {
+        "Walk_Loop": {
+          "metresPerSecond": 0.18334048110473924,
+          "cycleSeconds": 0.72
+        },
+        "Run_Loop": {
+          "metresPerSecond": 0.6896298273083851,
+          "cycleSeconds": 0.4
+        }
+      },
+      "lods": [
+        {
+          "url": "/models/sagasa-mascot/lod-r03.glb",
+          "sha256": "c34b9f0c9b91d0b2dba5e8cda0d770cb3df2a9952f035aaf47c6f1dee32363eb",
+          "bytes": 1113972,
+          "triangles": 10624,
+          "distanceMetres": 8,
+          "purpose": "animated-medium-lod-geometry"
+        }
+      ],
+      "provenance": {
+        "provider": "Claude Code (Opus 5.5)",
+        "claudeUsed": true,
+        "referenceGenerator": "Codex CLI 0.162.0-alpha.2 built-in image_gen (configured default model, unelevated sandbox); request and prompt saved beside the reference",
+        "referenceImage": "assets/friend-mascots/sagasa-mascot/source/reference-v1.png",
+        "referenceSha256": "1a0c52e325c8d4666476757918916ea69a44eec7ba847574028fc4de79202e70",
+        "identitySources": [
+          "assets/friend-mascots/sagasa-mascot/source/user-reference.jpg"
+        ],
+        "reconstruction": "Local TRELLIS-2 v0.8.1, res 1024, tex 1024, seed 42",
+        "denseSha256": "5eb6b0bf011c63ec24594c9fcbf117fbe84747196383749cb999c03a74ffe656",
+        "reduction": "meshoptimizer position-only quadric reduction of the dense surface; fresh Smart UV; 2048 diffuse-colour bake from the dense TRELLIS albedo (Blender 3.6 Cycles, selected to active)",
+        "deviationMetres": {
+          "denseToLow": {
+            "rms": 0.0007266427229576913,
+            "p95": 0.0014193980950271707,
+            "max": 0.0032137111817056585
+          },
+          "lowToDense": {
+            "rms": 0.000654093704992657,
+            "p95": 0.0012221765099306892,
+            "max": 0.004254678714231838
+          }
+        },
+        "surfaceSha256": "62c806cd0631de502db7ad958163ac8a4a23c1f62c5e066150f867ad24ba4b73",
+        "rig": "assets/friend-mascots/workflow/rig.py with assets/friend-mascots/sagasa-mascot/rig.json",
+        "rigSha256": "4f06be7e91e280d8db6d21edba5bb39c044c614075464c04e42396c84b0b57b3",
+        "pipeline": "assets/friend-mascots/README.md",
+        "visualReview": "output/model-generation/models/sagasa-mascot/work/rig/revision-03/poses"
+      },
+      "notes": [
+        "Contributor companion. 23632 triangles, 23 bones, 8 in-place 60 fps clips; LOD 10624 triangles shares the skeleton from 8 m. Lowest authored vertex 0.0010 m."
+      ]
+    },
+    {
+      "modelKey": "otani-mascot",
+      "name": "オータニ",
+      "kind": "companion",
+      "candidate": 1,
+      "revision": "r02",
+      "status": "friend-mascot-integrated",
+      "url": "/models/otani-mascot/model-r02.glb",
+      "sha256": "16c87d4ba64622cb08610919f7b989298e1332c65364b6ee219823b3fa943e5d",
+      "bytes": 6785896,
+      "triangles": 23453,
+      "bones": 23,
+      "upAxis": "Y",
+      "forwardAxis": "+Z",
+      "heightMetres": 0.52,
+      "widthMetres": 0.31933017182844636,
+      "lengthMetres": 0.36058293859594903,
+      "petContactMetres": 0.49878835678100586,
+      "placement": {
+        "pivot": "ground-between-shoes",
+        "scale": 1
+      },
+      "portrait": {
+        "url": "/models/otani-mascot/portrait.png",
+        "sha256": "86610c8cc86bafac4d8c4e98904301d892a771c99eacbea169b3bc03b8b2012f"
+      },
+      "clips": [
+        {
+          "name": "Idle_Loop",
+          "seconds": 3,
+          "loop": true,
+          "fps": 60,
+          "rootMotion": "in-place"
+        },
+        {
+          "name": "Walk_Loop",
+          "seconds": 0.7166666666666667,
+          "loop": true,
+          "fps": 60,
+          "rootMotion": "in-place"
+        },
+        {
+          "name": "Run_Loop",
+          "seconds": 0.4,
+          "loop": true,
+          "fps": 60,
+          "rootMotion": "in-place"
+        },
+        {
+          "name": "Pet",
+          "seconds": 1.4,
+          "loop": false,
+          "fps": 60,
+          "rootMotion": "in-place"
+        },
+        {
+          "name": "Happy",
+          "seconds": 1.4,
+          "loop": false,
+          "fps": 60,
+          "rootMotion": "in-place"
+        },
+        {
+          "name": "Hit",
+          "seconds": 0.65,
+          "loop": false,
+          "fps": 60,
+          "rootMotion": "in-place"
+        },
+        {
+          "name": "Wave",
+          "seconds": 1.8,
+          "loop": false,
+          "fps": 60,
+          "rootMotion": "in-place"
+        },
+        {
+          "name": "Bow",
+          "seconds": 1.6,
+          "loop": false,
+          "fps": 60,
+          "rootMotion": "in-place"
+        }
+      ],
+      "locomotion": {
+        "Walk_Loop": {
+          "metresPerSecond": 0.11396263904800105,
+          "cycleSeconds": 0.72
+        },
+        "Run_Loop": {
+          "metresPerSecond": 0.42866711493673093,
+          "cycleSeconds": 0.4
+        }
+      },
+      "lods": [
+        {
+          "url": "/models/otani-mascot/lod-r02.glb",
+          "sha256": "a204449b42b2289c3118d23071df4d6990187afbeeaac10bf2bfda299058cdd3",
+          "bytes": 412524,
+          "triangles": 4684,
+          "distanceMetres": 8,
+          "purpose": "animated-medium-lod-geometry"
+        }
+      ],
+      "provenance": {
+        "provider": "Claude Code (Opus 5.5)",
+        "claudeUsed": true,
+        "referenceGenerator": "Codex CLI 0.162.0-alpha.2 built-in image_gen (configured default model, unelevated sandbox); request and prompt saved beside the reference",
+        "referenceImage": "assets/friend-mascots/otani-mascot/source/reference-v1.png",
+        "referenceSha256": "e6ac386f6f560e0eeca784441715c2962e8e4986312bf21142ca2d71dc568639",
+        "identitySources": [
+          "assets/friend-mascots/otani-mascot/source/x-avatar-400.jpg"
+        ],
+        "reconstruction": "Local TRELLIS-2 v0.8.1, res 1024, tex 1024, seed 42",
+        "denseSha256": "7b585ac0d6cf7482b01065db18a3fbefb65317a337e5c46974721f46eae26049",
+        "reduction": "meshoptimizer position-only quadric reduction of the dense surface; fresh Smart UV; 2048 diffuse-colour bake from the dense TRELLIS albedo (Blender 3.6 Cycles, selected to active)",
+        "deviationMetres": {
+          "denseToLow": {
+            "rms": 0.0004129177193718708,
+            "p95": 0.0007707895102879829,
+            "max": 0.0036602571224943863
+          },
+          "lowToDense": {
+            "rms": 0.00040360217155227285,
+            "p95": 0.0007630664152784982,
+            "max": 0.0014996210226097043
+          }
+        },
+        "surfaceSha256": "5169430d000e1f7c8ac57c9f15fe2d51e2a6fc7f248ab85ecbca138cbddf0daa",
+        "rig": "assets/friend-mascots/workflow/rig.py with assets/friend-mascots/otani-mascot/rig.json",
+        "rigSha256": "16c87d4ba64622cb08610919f7b989298e1332c65364b6ee219823b3fa943e5d",
+        "pipeline": "assets/friend-mascots/README.md",
+        "visualReview": "output/model-generation/models/otani-mascot/work/rig/revision-02/poses"
+      },
+      "notes": [
+        "Contributor companion. 23453 triangles, 23 bones, 8 in-place 60 fps clips; LOD 4684 triangles shares the skeleton from 8 m. Lowest authored vertex -0.0002 m."
+      ]
+    },
+    {
+      "modelKey": "urata-mascot",
+      "name": "うらた",
+      "kind": "companion",
+      "candidate": 1,
+      "revision": "r02",
+      "status": "friend-mascot-integrated",
+      "url": "/models/urata-mascot/model-r02.glb",
+      "sha256": "39c47be2d4bcb2232a7e3bd67329f2ce3db4adb25f2c939c4f42572cfabd5f45",
+      "bytes": 6444916,
+      "triangles": 23877,
+      "bones": 23,
+      "upAxis": "Y",
+      "forwardAxis": "+Z",
+      "heightMetres": 0.52,
+      "widthMetres": 0.4377224722984491,
+      "lengthMetres": 0.23777674432475082,
+      "petContactMetres": 0.5199999809265137,
+      "placement": {
+        "pivot": "ground-between-shoes",
+        "scale": 1
+      },
+      "portrait": {
+        "url": "/models/urata-mascot/portrait.png",
+        "sha256": "1491de9f3047f99263f7b542495d8f16a2ac59000e8780417b0bb2b39cff3936"
+      },
+      "clips": [
+        {
+          "name": "Idle_Loop",
+          "seconds": 3,
+          "loop": true,
+          "fps": 60,
+          "rootMotion": "in-place"
+        },
+        {
+          "name": "Walk_Loop",
+          "seconds": 0.7166666666666667,
+          "loop": true,
+          "fps": 60,
+          "rootMotion": "in-place"
+        },
+        {
+          "name": "Run_Loop",
+          "seconds": 0.4,
+          "loop": true,
+          "fps": 60,
+          "rootMotion": "in-place"
+        },
+        {
+          "name": "Pet",
+          "seconds": 1.4,
+          "loop": false,
+          "fps": 60,
+          "rootMotion": "in-place"
+        },
+        {
+          "name": "Happy",
+          "seconds": 1.4,
+          "loop": false,
+          "fps": 60,
+          "rootMotion": "in-place"
+        },
+        {
+          "name": "Hit",
+          "seconds": 0.65,
+          "loop": false,
+          "fps": 60,
+          "rootMotion": "in-place"
+        },
+        {
+          "name": "Wave",
+          "seconds": 1.8,
+          "loop": false,
+          "fps": 60,
+          "rootMotion": "in-place"
+        },
+        {
+          "name": "Bow",
+          "seconds": 1.6,
+          "loop": false,
+          "fps": 60,
+          "rootMotion": "in-place"
+        }
+      ],
+      "locomotion": {
+        "Walk_Loop": {
+          "metresPerSecond": 0.1800452947540748,
+          "cycleSeconds": 0.72
+        },
+        "Run_Loop": {
+          "metresPerSecond": 0.6772350807676065,
+          "cycleSeconds": 0.4
+        }
+      },
+      "lods": [
+        {
+          "url": "/models/urata-mascot/lod-r02.glb",
+          "sha256": "1888b45a8326590c1d8ea966acd464ca415f295e255d2a625480ca3477bc9388",
+          "bytes": 409068,
+          "triangles": 4773,
+          "distanceMetres": 8,
+          "purpose": "animated-medium-lod-geometry"
+        }
+      ],
+      "provenance": {
+        "provider": "Claude Code (Opus 5.5)",
+        "claudeUsed": true,
+        "referenceGenerator": "Codex CLI 0.162.0-alpha.2 built-in image_gen (configured default model, unelevated sandbox); request and prompt saved beside the reference",
+        "referenceImage": "assets/friend-mascots/urata-mascot/source/reference-v1.png",
+        "referenceSha256": "cbba1e464914d8f51f7b537b4b2bac9817ce08c7445e2583acb2b13669be9c88",
+        "identitySources": [
+          "assets/friend-mascots/urata-mascot/source/x-avatar-400.jpg"
+        ],
+        "reconstruction": "Local TRELLIS-2 v0.8.1, res 1024, tex 1024, seed 42",
+        "denseSha256": "96abd7e0d1fa1647ca341af56f7518aa1a44a950a9f3a9865f3c061399335995",
+        "reduction": "meshoptimizer position-only quadric reduction of the dense surface; fresh Smart UV; 2048 diffuse-colour bake from the dense TRELLIS albedo (Blender 3.6 Cycles, selected to active)",
+        "deviationMetres": {
+          "denseToLow": {
+            "rms": 0.0004399838518772896,
+            "p95": 0.0008460937011491458,
+            "max": 0.0019532272249356765
+          },
+          "lowToDense": {
+            "rms": 0.00044066578142119524,
+            "p95": 0.0008452856899274894,
+            "max": 0.0023389897556501983
+          }
+        },
+        "surfaceSha256": "5967a908b504b7bcd03eea2b39cef4db83ce5924ae9f04bfe9f5aa832a112159",
+        "rig": "assets/friend-mascots/workflow/rig.py with assets/friend-mascots/urata-mascot/rig.json",
+        "rigSha256": "39c47be2d4bcb2232a7e3bd67329f2ce3db4adb25f2c939c4f42572cfabd5f45",
+        "pipeline": "assets/friend-mascots/README.md",
+        "visualReview": "output/model-generation/models/urata-mascot/work/rig/revision-02/poses"
+      },
+      "notes": [
+        "Contributor companion. 23877 triangles, 23 bones, 8 in-place 60 fps clips; LOD 4773 triangles shares the skeleton from 8 m. Lowest authored vertex 0.0010 m."
+      ]
+    },
+    {
+      "modelKey": "nukonuko-mascot",
+      "name": "ぬこぬこ",
+      "kind": "companion",
+      "candidate": 1,
+      "revision": "r02",
+      "status": "friend-mascot-integrated",
+      "url": "/models/nukonuko-mascot/model-r02.glb",
+      "sha256": "af3322a2f91ee749b9c142892f59380dbf3cd7c41260a53cc83d316ee6c85f20",
+      "bytes": 7168968,
+      "triangles": 21998,
+      "bones": 37,
+      "upAxis": "Y",
+      "forwardAxis": "+Z",
+      "heightMetres": 0.52,
+      "widthMetres": 0.4524031744046208,
+      "lengthMetres": 0.34984821792295806,
+      "petContactMetres": 0.48943981528282166,
+      "placement": {
+        "pivot": "ground-between-shoes",
+        "scale": 1
+      },
+      "portrait": {
+        "url": "/models/nukonuko-mascot/portrait.png",
+        "sha256": "beb9264c379b7e6d17976c953acb292af9ebdf4fbce634664d13c1a44c3f4bb9"
+      },
+      "clips": [
+        {
+          "name": "Idle_Loop",
+          "seconds": 3,
+          "loop": true,
+          "fps": 60,
+          "rootMotion": "in-place"
+        },
+        {
+          "name": "Walk_Loop",
+          "seconds": 0.7166666666666667,
+          "loop": true,
+          "fps": 60,
+          "rootMotion": "in-place"
+        },
+        {
+          "name": "Run_Loop",
+          "seconds": 0.4,
+          "loop": true,
+          "fps": 60,
+          "rootMotion": "in-place"
+        },
+        {
+          "name": "Pet",
+          "seconds": 1.4,
+          "loop": false,
+          "fps": 60,
+          "rootMotion": "in-place"
+        },
+        {
+          "name": "Happy",
+          "seconds": 1.4,
+          "loop": false,
+          "fps": 60,
+          "rootMotion": "in-place"
+        },
+        {
+          "name": "Hit",
+          "seconds": 0.65,
+          "loop": false,
+          "fps": 60,
+          "rootMotion": "in-place"
+        },
+        {
+          "name": "Wave",
+          "seconds": 1.8,
+          "loop": false,
+          "fps": 60,
+          "rootMotion": "in-place"
+        },
+        {
+          "name": "Bow",
+          "seconds": 1.6,
+          "loop": false,
+          "fps": 60,
+          "rootMotion": "in-place"
+        }
+      ],
+      "locomotion": {
+        "Walk_Loop": {
+          "metresPerSecond": 0.19634941472968798,
+          "cycleSeconds": 0.72
+        },
+        "Run_Loop": {
+          "metresPerSecond": 0.7385625485229349,
+          "cycleSeconds": 0.4
+        }
+      },
+      "lods": [
+        {
+          "url": "/models/nukonuko-mascot/lod-r02.glb",
+          "sha256": "92fc767dda398ee66ce498bc73221d62e0985121e618f050eab7676210a0171c",
+          "bytes": 955832,
+          "triangles": 9863,
+          "distanceMetres": 8,
+          "purpose": "animated-medium-lod-geometry"
+        }
+      ],
+      "provenance": {
+        "provider": "Claude Code (Opus 5.5)",
+        "claudeUsed": true,
+        "referenceGenerator": "Codex CLI 0.162.0-alpha.2 built-in image_gen (configured default model, unelevated sandbox); request and prompt saved beside the reference",
+        "referenceImage": "assets/friend-mascots/nukonuko-mascot/source/reference-v1.png",
+        "referenceSha256": "7c8bcdcc1fc0101d920ffa77720128901b19fea5413313674ffe14328bc796d5",
+        "identitySources": [
+          "assets/friend-mascots/nukonuko-mascot/source/x-avatar-400.jpg"
+        ],
+        "reconstruction": "Local TRELLIS-2 v0.8.1, res 1024, tex 1024, seed 42",
+        "denseSha256": "1503aa87a6ffc267e15bd7144582cb02ec4b52853f96d6b9e004dd07e38bdf8a",
+        "reduction": "meshoptimizer position-only quadric reduction of the dense surface; fresh Smart UV; 2048 diffuse-colour bake from the dense TRELLIS albedo (Blender 3.6 Cycles, selected to active)",
+        "deviationMetres": {
+          "denseToLow": {
+            "rms": 0.0007419982371596663,
+            "p95": 0.0012507780443774604,
+            "max": 0.00838534170295027
+          },
+          "lowToDense": {
+            "rms": 0.0005317649689827043,
+            "p95": 0.001008547024514646,
+            "max": 0.0029849423298368076
+          }
+        },
+        "surfaceSha256": "9b58f3aa8ceaff0cafe43e18e761e660e4af6358093d1b2d5954426120f22e60",
+        "rig": "assets/friend-mascots/workflow/rig.py with assets/friend-mascots/nukonuko-mascot/rig.json",
+        "rigSha256": "af3322a2f91ee749b9c142892f59380dbf3cd7c41260a53cc83d316ee6c85f20",
+        "pipeline": "assets/friend-mascots/README.md",
+        "visualReview": "output/model-generation/models/nukonuko-mascot/work/rig/revision-02/poses"
+      },
+      "notes": [
+        "Contributor companion. 21998 triangles, 37 bones, 8 in-place 60 fps clips; LOD 9863 triangles shares the skeleton from 8 m. Lowest authored vertex -0.0073 m."
+      ]
+    },
+    {
+      "modelKey": "rei-mascot",
+      "name": "怜ちゃん",
+      "kind": "companion",
+      "candidate": 1,
+      "revision": "r01",
+      "status": "friend-mascot-integrated",
+      "url": "/models/rei-mascot/model-r01.glb",
+      "sha256": "556ef3186a560fd430ce0b31a7f564d6995feff4c5c48426453b2e2b5d7a5b68",
+      "bytes": 6498892,
+      "triangles": 23178,
+      "bones": 25,
+      "upAxis": "Y",
+      "forwardAxis": "+Z",
+      "heightMetres": 0.52,
+      "widthMetres": 0.4126099314209898,
+      "lengthMetres": 0.19587706870451357,
+      "petContactMetres": 0.5199999809265137,
+      "placement": {
+        "pivot": "ground-between-shoes",
+        "scale": 1
+      },
+      "portrait": {
+        "url": "/models/rei-mascot/portrait.png",
+        "sha256": "c69e87710c67628b8cef896756360b4ad55e2af7a4f9f3b0c03fbbd8f9f4e8f2"
+      },
+      "clips": [
+        {
+          "name": "Idle_Loop",
+          "seconds": 3,
+          "loop": true,
+          "fps": 60,
+          "rootMotion": "in-place"
+        },
+        {
+          "name": "Walk_Loop",
+          "seconds": 0.7166666666666667,
+          "loop": true,
+          "fps": 60,
+          "rootMotion": "in-place"
+        },
+        {
+          "name": "Run_Loop",
+          "seconds": 0.4,
+          "loop": true,
+          "fps": 60,
+          "rootMotion": "in-place"
+        },
+        {
+          "name": "Pet",
+          "seconds": 1.4,
+          "loop": false,
+          "fps": 60,
+          "rootMotion": "in-place"
+        },
+        {
+          "name": "Happy",
+          "seconds": 1.4,
+          "loop": false,
+          "fps": 60,
+          "rootMotion": "in-place"
+        },
+        {
+          "name": "Hit",
+          "seconds": 0.65,
+          "loop": false,
+          "fps": 60,
+          "rootMotion": "in-place"
+        },
+        {
+          "name": "Wave",
+          "seconds": 1.8,
+          "loop": false,
+          "fps": 60,
+          "rootMotion": "in-place"
+        },
+        {
+          "name": "Bow",
+          "seconds": 1.6,
+          "loop": false,
+          "fps": 60,
+          "rootMotion": "in-place"
+        }
+      ],
+      "locomotion": {
+        "Walk_Loop": {
+          "metresPerSecond": 0.234214390835946,
+          "cycleSeconds": 0.72
+        },
+        "Run_Loop": {
+          "metresPerSecond": 0.8809905424708567,
+          "cycleSeconds": 0.4
+        }
+      },
+      "lods": [
+        {
+          "url": "/models/rei-mascot/lod-r01.glb",
+          "sha256": "ae22058eccecafcdded06469d849a22736ad9d723addd41793a90d92c6212a48",
+          "bytes": 634808,
+          "triangles": 6947,
+          "distanceMetres": 8,
+          "purpose": "animated-medium-lod-geometry"
+        }
+      ],
+      "provenance": {
+        "provider": "Claude Code (Opus 5.5)",
+        "claudeUsed": true,
+        "referenceGenerator": "Codex CLI 0.162.0-alpha.2 built-in image_gen (configured default model, unelevated sandbox); request and prompt saved beside the reference",
+        "referenceImage": "assets/friend-mascots/rei-mascot/source/reference-v1.png",
+        "referenceSha256": "3f47898c4e427b94af22a441f7decf3898327d59dd9030301aa5bf88915f8b57",
+        "identitySources": [
+          "assets/friend-mascots/rei-mascot/source/user-reference-sheet.png",
+          "assets/friend-mascots/rei-mascot/source/user-reference-illustration.jpg"
+        ],
+        "reconstruction": "Local TRELLIS-2 v0.8.1, res 1024, tex 1024, seed 42",
+        "denseSha256": "c27b32c8e407771f9e4c34b717def401bb27ccc75b049b69e5d4449575cd2443",
+        "reduction": "meshoptimizer position-only quadric reduction of the dense surface; fresh Smart UV; 2048 diffuse-colour bake from the dense TRELLIS albedo (Blender 3.6 Cycles, selected to active)",
+        "deviationMetres": {
+          "denseToLow": {
+            "rms": 0.0004141844430521419,
+            "p95": 0.0008056633310784431,
+            "max": 0.0025604859029427066
+          },
+          "lowToDense": {
+            "rms": 0.00040277039154647026,
+            "p95": 0.0007992730291701551,
+            "max": 0.0020262053105291394
+          }
+        },
+        "surfaceSha256": "26fc2548c3b21fc412532786bef1dfedc8899d8bc30b9f2598be0d2974cf0e73",
+        "rig": "assets/friend-mascots/workflow/rig.py with assets/friend-mascots/rei-mascot/rig.json",
+        "rigSha256": "556ef3186a560fd430ce0b31a7f564d6995feff4c5c48426453b2e2b5d7a5b68",
+        "pipeline": "assets/friend-mascots/README.md",
+        "visualReview": "output/model-generation/models/rei-mascot/work/rig/revision-01/poses"
+      },
+      "notes": [
+        "Contributor companion. 23178 triangles, 25 bones, 8 in-place 60 fps clips; LOD 6947 triangles shares the skeleton from 8 m. Lowest authored vertex 0.0010 m."
+      ]
     }
   ],
   "status": "ready"

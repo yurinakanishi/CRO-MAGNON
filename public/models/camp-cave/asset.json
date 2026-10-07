@@ -36,7 +36,9 @@
     "Gallery r30 restores the user-reference waving gray-white Rimo cat among two horses, an aurochs and a deer, directly opposite the unchanged west-wall 524. The cave geometry, walking surface and fire are unchanged.",
     "Gallery r31 includes all 13 released mascots among animal friezes. Cave placement is at ground level at the mountain foot near camp. Coming Soon is reserved for confirmed upcoming characters. The source cave GLB and earlier pigment files are retained.",
     "Gallery r32 integrates the faithful small 524 with a mammoth, two horses and an aurochs in one weathered transparent frieze, matching the opposite Rimo frieze. It replaces three separated west-wall placements. Earlier paintings and source models remain archived.",
-    "Gallery r33 adds Maruimo among a bison, horse and deer. All 14 released mascots are represented; the Coming Soon reserve and original GLB remain unchanged."
+    "Gallery r33 adds Maruimo among a bison, horse and deer. All 14 released mascots are represented; the Coming Soon reserve and original GLB remain unchanged.",
+    "Gallery r34 adds two contributor processions on the west wall (Saber, Fairy, nukonuko, Saga; the Otani duck, Urata, Howkey). They replace the lone deer and bison, whose species reappear inside the friezes. The original GLB is unchanged.",
+    "Gallery r35 repaints the west-wall river procession to add Rei-chan beside the Otani duck, Urata and Howkey; the r34 friezes (Saber, Fairy, nukonuko, Saga; duck, Urata, Howkey) replaced the lone deer and bison. The original GLB is unchanged."
   ],
   "provenance": {
     "provider": "Codex",
@@ -141,7 +143,7 @@
     "application": "One 7.5 m wide transparent mineral-pigment frieze on the west wall opposite Rimo. The small floating 524 shares muted ochre, charcoal, worn edges and overlapping animal composition. Direct projection on original limestone triangles; no extra geometry or backing.",
     "review": "assets/camp-cave/qa/gallery-surfaces-r32.json"
   },
-  "galleryRevision": "33",
+  "galleryRevision": "35",
   "rimoPigment": {
     "source": "assets/camp-cave/source/rimo-lascaux-frieze-r30.png",
     "url": "/models/camp-cave/rimo-lascaux-frieze-r30.png",
@@ -270,6 +272,104 @@
       ],
       "application": "5 m wide east-wall frieze. The small octopus shares earth pigments and overlapping composition with the animals. Unmodified transparent PNG projected onto the original limestone triangles.",
       "review": "assets/camp-cave/qa/gallery-surfaces-r33.json"
+    },
+    "friendsMeadow": {
+      "source": "assets/camp-cave/source/friends-meadow-lascaux-r34.png",
+      "url": "/models/camp-cave/friends-meadow-lascaux-r34.png",
+      "sha256": "707e1920df0342a1806082874b8baa3ab33cc2c8ecea9311d3c6ff364caea148",
+      "bytes": 2071821,
+      "image": {
+        "width": 2172,
+        "height": 724
+      },
+      "generator": "Codex CLI 0.162.0-alpha.2 built-in image_gen (configured default model)",
+      "prompt": "assets/camp-cave/friends-meadow-lascaux-prompt-r34.txt",
+      "subjects": [
+        "saber-mascot",
+        "fairy-mascot",
+        "nukonuko-mascot",
+        "sagasa-mascot"
+      ],
+      "animals": [
+        "wild horse",
+        "ibex",
+        "red deer stag"
+      ],
+      "references": [
+        {
+          "path": "assets/friend-mascots/saber-mascot/source/reference-v1.png",
+          "sha256": "3cc39bfe25ef085f33cb88e1f2628868c08f414a0288d5a61bc0a25167becf42"
+        },
+        {
+          "path": "assets/friend-mascots/fairy-mascot/source/reference-v1.png",
+          "sha256": "11c8f34f854dc95652a141940923fa56a0e8b73966e7ef74c57af0625048fa17"
+        },
+        {
+          "path": "assets/friend-mascots/nukonuko-mascot/source/reference-v1.png",
+          "sha256": "7c8bcdcc1fc0101d920ffa77720128901b19fea5413313674ffe14328bc796d5"
+        },
+        {
+          "path": "assets/friend-mascots/sagasa-mascot/source/reference-v1.png",
+          "sha256": "1a0c52e325c8d4666476757918916ea69a44eec7ba847574028fc4de79202e70"
+        },
+        {
+          "path": "public/models/camp-cave/mae-kohaku-lascaux-r31.png",
+          "sha256": "f67ea277c3d42c93877139b44150ee6fddbb2eb41854418ea09ac4bd40eed732"
+        }
+      ],
+      "application": "5.6 m wide west-wall frieze replacing the lone deer: Saber, Fairy, nukonuko and Saga among a horse, an ibex and a stag. Unmodified transparent PNG projected onto the original limestone triangles.",
+      "review": "assets/camp-cave/qa/gallery-surfaces-r35.json"
+    },
+    "friendsRiver": {
+      "source": "assets/camp-cave/source/friends-river-lascaux-r35.png",
+      "url": "/models/camp-cave/friends-river-lascaux-r35.png",
+      "sha256": "fb4fead40844b3ca672b191e2771e6e3904f88a28964e4249f4b6bb57996f04c",
+      "bytes": 2119578,
+      "image": {
+        "width": 2172,
+        "height": 724
+      },
+      "generator": "Codex CLI 0.162.0-alpha.2 built-in image_gen (configured default model)",
+      "prompt": "assets/camp-cave/friends-river-lascaux-prompt-r35.txt",
+      "subjects": [
+        "otani-mascot",
+        "urata-mascot",
+        "howkey-scientist",
+        "rei-mascot"
+      ],
+      "animals": [
+        "aurochs",
+        "bison",
+        "wild horse"
+      ],
+      "references": [
+        {
+          "path": "assets/friend-mascots/otani-mascot/source/reference-v1.png",
+          "sha256": "e6ac386f6f560e0eeca784441715c2962e8e4986312bf21142ca2d71dc568639"
+        },
+        {
+          "path": "assets/friend-mascots/urata-mascot/source/reference-v1.png",
+          "sha256": "cbba1e464914d8f51f7b537b4b2bac9817ce08c7445e2583acb2b13669be9c88"
+        },
+        {
+          "path": "public/models/howkey-scientist/portrait.png",
+          "sha256": "62f60254e41ef1cab392847f976d91d91df00850bfb178db0d3130f85d17020c"
+        },
+        {
+          "path": "assets/friend-mascots/rei-mascot/source/reference-v1.png",
+          "sha256": "3f47898c4e427b94af22a441f7decf3898327d59dd9030301aa5bf88915f8b57"
+        },
+        {
+          "path": "assets/camp-cave/source/friends-river-lascaux-r34.png",
+          "sha256": "faad98ddff2b01878a34cb0bbbbf83021c1b84a8a452f0ecc95d87900d2cf684"
+        },
+        {
+          "path": "public/models/camp-cave/mae-kohaku-lascaux-r31.png",
+          "sha256": "f67ea277c3d42c93877139b44150ee6fddbb2eb41854418ea09ac4bd40eed732"
+        }
+      ],
+      "application": "5 m wide west-wall frieze replacing the lone bison: the Otani duck, Urata, Howkey with her Erlenmeyer flask and Rei-chan with a book among an aurochs, a bison and a horse (r35 repaints r34 to add Rei). Unmodified transparent PNG projected onto the original limestone triangles.",
+      "review": "assets/camp-cave/qa/gallery-surfaces-r35.json"
     }
   }
 }

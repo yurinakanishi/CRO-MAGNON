@@ -6,7 +6,7 @@ const modules = Promise.all([
 ]);
 // Install the listener synchronously: a posted job may arrive during imports.
 self.onmessage = async ({ data }) => {
-  const { id, attributes, index } = data;
+  const { id, attributes, index, groups, drawRange, maximumEdge, mountainOnly } = data;
   let source, geometry;
   try {
     const [core, { fitSourceRiverBank }] = await modules;
@@ -17,7 +17,9 @@ self.onmessage = async ({ data }) => {
         new core.BufferAttribute(value.array, value.itemSize, value.normalized),
       );
     if (index) source.setIndex(new core.BufferAttribute(index, 1));
-    geometry = fitSourceRiverBank(source);
+    if (groups) source.groups = groups;
+    if (drawRange) source.drawRange = drawRange;
+    geometry = fitSourceRiverBank(source, maximumEdge, mountainOnly);
     const result = Object.fromEntries(
       Object.entries(geometry.attributes).map(([name, a]: [string, any]) => [
         name,
@@ -28,7 +30,16 @@ self.onmessage = async ({ data }) => {
     const transfers = Object.values(result).map((a: any) => a.array.buffer);
     if (resultIndex) transfers.push(resultIndex.buffer);
     // WorkerGlobalScope's transfer overload is not in the browser DOM lib.
-    (self as any).postMessage({ id, attributes: result, index: resultIndex }, transfers);
+    (self as any).postMessage(
+      {
+        id,
+        attributes: result,
+        index: resultIndex,
+        groups: geometry.groups,
+        drawRange: geometry.drawRange,
+      },
+      [...new Set(transfers)],
+    );
   } catch (error) {
     (self as any).postMessage({ id, error: String(error) });
   } finally {

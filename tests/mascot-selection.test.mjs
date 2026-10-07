@@ -6,6 +6,7 @@ import { createCompanion524 } from '../dist/shared/companion-524.mjs';
 import { createMae } from '../dist/shared/mae.mjs';
 import { createKohaku } from '../dist/shared/kohaku.mjs';
 import { createMaruimo } from '../dist/shared/maruimo-mascot.mjs';
+import { createFriendMascots } from '../dist/shared/friend-mascots.mjs';
 import { BOT_KINDS, botRadius, syncOrbBots, updateOrbBots } from '../dist/shared/orb-bots.mjs';
 import { setMascotSelection } from '../dist/shared/mascot-selection.mjs';
 
@@ -37,6 +38,7 @@ function fixture() {
     mae: createMae(collision),
     kohaku: createKohaku(collision),
     maruimo: createMaruimo(collision),
+    friends: createFriendMascots(collision),
   };
   syncOrbBots(room, 10000);
   const select = (target, enabled, player = p) =>
@@ -66,12 +68,14 @@ test('all cards select and clear every available mascot, including the five uniq
   );
   for (const key of ['rimoNeko', 'companion524', 'mae', 'kohaku', 'maruimo'])
     assert.equal(f.room[key].followPlayerId, 'p', key);
+  for (const friend of f.room.friends) assert.equal(friend.followPlayerId, 'p', friend.key);
   assert.equal(f.room.orbBots.filter((b) => b.ownerId === 'p').length, 11);
   updateOrbBots(f.room, 0.05, 10050);
   assert.ok(f.select('all', false));
   assert.equal(f.room.orbBots.filter((b) => b.ownerId === 'p').length, 0);
   for (const key of ['rimoNeko', 'companion524', 'mae', 'kohaku', 'maruimo'])
     assert.equal(f.room[key].followPlayerId, null, key);
+  for (const friend of f.room.friends) assert.equal(friend.followPlayerId, null, friend.key);
 });
 
 test('another connected player keeps their mascots during individual and bulk selection', () => {
@@ -122,6 +126,7 @@ test('selecting from far away places companions safely near the player', () => {
     f.room.mae,
     f.room.kohaku,
     f.room.maruimo,
+    ...f.room.friends,
   ];
   const radius = (mascot) => (mascot.kind ? botRadius(mascot.kind) : mascot.radius);
   for (const mascot of mascots) assert.ok(Math.hypot(mascot.x - f.p.x, mascot.z - f.p.z) < 6);

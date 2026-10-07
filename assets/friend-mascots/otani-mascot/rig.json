@@ -1,0 +1,20 @@
+{
+  "name": "オータニ",
+  "credit": "otani",
+  "subject": "Chibi duck mascot of オータニ@AI駆動開発 (@otani_ai_memo) from the pixel-art X icon: white duck, green knit cap with a cursor badge, headset, green scarf, black vest.",
+  "identitySources": ["assets/friend-mascots/otani-mascot/source/x-avatar-400.jpg"],
+  "landmarks": {
+    "pelvis": 0.2, "spine": 0.28, "chest": 0.37, "neck": 0.45, "head": 0.5, "head_tip": 0.97,
+    "hip": [0.07, 0.15], "knee": [0.07, 0.09], "ankle": [0.072, 0.035], "foot": [0.075, 0.016], "toe": [0.075, 0.01],
+    "shoulder_in": 0.05, "shoulder": [0.11, 0.36], "elbow": [0.14, 0.34], "wrist": [0.16, 0.32], "hand": [0.17, 0.31]
+  },
+  "armless": true,
+  "headRigidZ": 0.47,
+  "armGate": { "x": 0.6, "zLow": 0.3, "zHigh": 0.4, "radius": 0.01 },
+  "legGate": { "zTop": 0.135, "xMax": 0.16 },
+  "footForward": 0.02,
+  "toeForward": 0.05,
+  "rigidZones": [
+    { "bone": "Hips", "box": [-0.3, 0.3, 0.16, 0.5, 0.12, 0.42], "afterSmooth": true, "note": "wings and tail feathers folded behind the body" }
+  ]
+}

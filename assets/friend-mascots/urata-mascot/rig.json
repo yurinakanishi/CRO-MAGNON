@@ -1,0 +1,15 @@
+{
+  "name": "うらた",
+  "credit": "urata",
+  "subject": "Mascot of 浦田 勇樹 (@yuki_urata) after the gachapon keychain figure in his X icon: voluminous black curly hair, round glasses, big smile, black T-shirt, navy jeans, white sneakers.",
+  "identitySources": ["assets/friend-mascots/urata-mascot/source/x-avatar-400.jpg"],
+  "landmarks": {
+    "pelvis": 0.3, "spine": 0.36, "chest": 0.43, "neck": 0.5, "head": 0.55, "head_tip": 0.97,
+    "hip": [0.065, 0.27], "knee": [0.07, 0.14], "ankle": [0.075, 0.045], "foot": [0.08, 0.02], "toe": [0.08, 0.014],
+    "shoulder_in": 0.05, "shoulder": [0.15, 0.45], "elbow": [0.27, 0.412], "wrist": [0.36, 0.392], "hand": [0.41, 0.385]
+  },
+  "armRest": 50,
+  "headRigidZ": 0.505,
+  "armGate": { "x": 0.14, "zLow": 0.34, "zHigh": 0.5, "radius": 0.05 },
+  "legGate": { "zTop": 0.28, "xMax": 0.15 }
+}

@@ -183,6 +183,7 @@ export interface GameSnapshot {
   mae?: import('./mae-types.mjs').MaeSnapshot;
   kohaku?: import('./kohaku-types.mjs').KohakuSnapshot;
   maruimo?: import('./maruimo-mascot-types.mjs').MaruimoSnapshot;
+  friends?: import('./friend-mascot-types.mjs').FriendMascotSnapshot[];
   orbBots?: import('./orb-bot-types.mjs').OrbBotSnapshot[];
   mapPins?: import('./map-pins.mjs').MapPin[];
   type: 'state';

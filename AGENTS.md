@@ -55,6 +55,30 @@ against an already defective export. This was a render/verification failure,
 not an upload-service issue. Never use an old export as the only sync baseline.
 
 
+## 2026-10-08 朝日南さんの怜ちゃんを追加・暗い焼き込みを修正
+
+追加依頼で @asahina_AIauto（X名「朝日南」）を友情出演に追加（200px原JPEG・リンク）。支給の設定画とイラストから7体目の仲間「怜ちゃん」`rei-mascot`（長い黒髪・琥珀の目・オレンジ回路の黒いテックウェア・光る靴底）を同じ工程で制作、家は焚き火の北(0,4.1)。川の壁画をr34から描き直して怜ちゃん（本を持つ）を追加しgallery r35（r34画像は保持、壁面221/221）。
+制作中に、TRELLISが光沢のある黒革や髪を金属扱い（怜0.89・ぬこぬこ0.32・さが0.28）にし、拡散色の焼き込みが base×(1−metallic) で暗く潰れていたと判明。焼き込み前に密メッシュ側のmetallicを0にする修正を `prepare_surface.py` に入れ、怜・ぬこぬこ・さが・うらた・アヒルを同一形状のまま再焼き込み・再リグ・再採用（Saber・フェアリーは≈0で不変）。未コミットの旧GLBと公開manifest旧記録は削除。
+全1039中1036合格（既存3失敗）、check成功。実Chrome＋通信4人で7体のV撫で・ハート同期・カード全選択・追従、Howkeyのフラスコ、洞窟は炉をEで点火し5人の松明で壁画2面を撮影（明るさ検査付き）、エラー0。以前の洞窟撮影が黒かったのは炉の状態をサーバー側だけで変えて配信していなかったため（記録保持）。3000/8787・公開・commit／pushなし。
+
+## 2026-10-08 関わってくれた人たちの仲間6体・Howkeyのフラスコ・洞窟壁画2面
+
+ユーザー指定の8アカウントに対応（後続で朝日南さんの怜ちゃんを追加、上記）。新しい仲間6体（Saber／フェアリー／さが／ぬこぬこ／オータニ（アヒル）／うらた）を初期キャンプに追加、りさ(@eerm16g)＝既存こはくちゃん、ほーきー(@hawkymisc)＝既存Howkeyに三角フラスコを追加。HPqk画像→Saber、HT8ce画像→さが は依頼どおり（同日の@Sagasa8045のX画像はHPqkの麦わら猫耳少女、@Saber5656は金髪三つ編み少女。入替は `shared/friend-mascots.mts` のcredit/nameのみ）。
+関わってくれた人たちに りさ・Saber@codexer・吉澤フェアリー🇯🇵・さが・ほーきー(Hawkie) を友情出演で追加（X 200px原JPEG、`x.com/<handle>`リンク、`assets/title-credits/x-avatars-2026-10-07b.json`）。オータニ・浦田・ぬこぬこは既存の監修。各カードに「仲間・壁画：名前」（Howkeyは「キャラクター・壁画」）。展示QRと公開版の監修非表示は不変。
+仲間は1つのカタログ型モジュール `shared/friend-mascots.mts`＋`src/friend-mascot-renderer.ts`（撫でる受付で所属・1.4秒撫で＋ハート・追従・帰還・被弾の身引き・保存復帰・カード/全選択・見る・洞窟規則）。行動 `petFriend`/`dismissFriend`。家は焚き火周りの衝突スイープで選んだ開けた位置。
+制作：Codex CLI 0.162.0-alpha.2の内蔵image_gen（昇格サンドボックスが起動失敗・gpt-5.6-solが混雑のため既定モデル＋unelevated、失敗ログ保持）→ローカルTRELLIS-2 1024 seed42（約17〜19分/体）→meshopt位置削減約2.3万三角形→Blender 3.6でSmart UV＋dense albedo 2048ベイク→Kohaku由来の設定型リグ（`assets/friend-mascots/workflow/`、各`rig.json`）。Blender decimateとUV固定meshoptの失敗版を保持。Saberの尾はTRELLIS自体の黒い斑を自身の髪色で塗り直し。アヒルは2種のseedとも翼が背後の羽根扇になったため腰に固定（腕なし）。
+フラスコ（4,997三角形、15cm）は首を握る原点で右Grip.Rに付け、`src/flask-pose.ts`で常に直立、採集・撫で・投擲・釣り等では非表示。Howkeyは通常ローカルでは `local-visibility.json` の howkey=false のまま（trueで表示）。
+壁画：同じimage_genでLascaux風の2面（Saber・フェアリー・ぬこぬこ・さが＋馬・アイベックス・鹿／アヒル・うらた・フラスコを掲げるHowkey＋オーロックス・バイソン・馬）。西壁の単独の鹿・バイソンを置換、gallery r34、221/221測点が壁面・欠損0。
+全1039中1036合格（失敗は既存の資源・マンモス3件）、新規5テスト、check成功。実Chrome＋通信4人の独立メモリ世界で6体のV撫で・ハート・5画面の接触時刻一致、20枚カードの全選択、W歩行の追従、壁画2面、Howkeyのフラスコ、エラー0（`scripts/qa-friend-mascots.mjs`、証拠 `assets/friend-mascots/qa/`、`output/playwright/friend-mascots-20261007/`）。公開軽量化manifestに13GLB追加。
+実スマホ／Safari／物理パッド／長時間は未確認。全素材検証はこのホストにないremake参照画像で停止（既存）。3000/8787の操作・MMO反映・公開デプロイ・展示配布・commit／pushなし。詳細 `assets/friend-mascots/README.md`。
+
+## 2026-10-07 タイトルの壁画帯を撤去し、開始後に歩けるローディング洞窟
+
+ユーザーの修正指定で、通常ローカル／MMOは従来の開始メニューへ戻し「関わってくれた人たち」を保持。展示QRは保持。開始確認後に既存GLBと壁画の明るいアプデの洞窟を先行表示し、クロマニョン男性で歩走・見回しながら世界を裏で準備。追加回答どおり完了後も自動移動せず「世界へ進む」で参加。洞窟内では未接続、保存位置・本編の昼夜と松明は変更なし。
+山の初回変形計算による約25秒のUI停止を既存workerへ移動。実GLB両LODの頂点・法線・UV・indexなどが元の計算と完全一致。元モデル・画像・変形アルゴリズムは未変更。初回GPU準備等の2〜5秒程度の引っかかりは観測され、完全な無停止は未達。
+実Chromeの開始フロー8項目（背景読込中の歩走、模擬パッド、手動参加、タッチ、戻ると再入場、世界／壁画の失敗）と既存モバイル7項目、エラー0。worker後の関連15＋追加後14テスト、実形状3比較、check成功。中間全体1,033中1,030合格、既存の資源・マンモス3失敗。証拠 `output/playwright/loading-cave-20261007/`、詳細 `docs/loading-cave-2026-10-07.md`。実スマホ／Safari／物理パッド未確認。
+独立した保存なしプレビューのみ起動（`output/loading-cave-preview/server.json`）。既存3000／8787の手動操作・配信更新・公開デプロイ・展示配布・commit／pushなし。
+
 ## 2026-10-07 人物4体の顔の改善と、歩行・走行で顔が崩れる不具合の修正
 
 ユーザー依頼「両種族の男女の顔をリアルでかっこいい／かわいく、歩く・走ると顔の形が崩れるバグも直す」。追加指定「クロマニョン男性の顔は元から良い」により、同男性は顔を変えずウェイトだけ修正。

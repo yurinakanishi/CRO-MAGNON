@@ -101,6 +101,7 @@ export class FoleyEvents {
       world.state.mae,
       world.state.kohaku,
       world.state.maruimo,
+      ...(world.state.friends ?? []),
       world.state.companion524,
       ...bots,
     ].filter(Boolean);

@@ -4,7 +4,7 @@ import {
   TITLE_GUEST,
   TITLE_SUPPORT,
 } from './title-credit-profiles.js';
-import { CAVE_MURAL_SPOTS, CAVE_MURAL_STRIP } from './cave-mural-strip.js';
+import { FRIEND_MASCOTS } from '../shared/friend-mascots.mjs';
 export {
   TITLE_CREDITS,
   TITLE_FRIENDS,
@@ -47,7 +47,27 @@ export interface Contributor {
   avatar: string;
   /** The character painted for this person in the cave mural, if any. */
   mural?: string;
+  /** How that character also appears in the game: a camp companion or a playable character. */
+  appears?: '仲間' | 'キャラクター';
 }
+
+/**
+ * Each contributor's character, keyed by credit id: painted in the Update Cave
+ * and met in the game. The contributors' companions come from FRIEND_MASCOTS.
+ */
+export const CONTRIBUTOR_CHARACTERS: Readonly<
+  Record<string, { name: string; appears: '仲間' | 'キャラクター' }>
+> = {
+  rimo: { name: 'りもねこ', appears: '仲間' },
+  r524: { name: '524', appears: '仲間' },
+  maruimo: { name: 'まるぃも', appears: '仲間' },
+  mae: { name: 'mae', appears: '仲間' },
+  risa: { name: 'こはくちゃん', appears: '仲間' },
+  hawkie: { name: 'Howkey', appears: 'キャラクター' },
+  ...Object.fromEntries(
+    FRIEND_MASCOTS.map((f) => [f.credit, { name: f.name, appears: '仲間' as const }]),
+  ),
+};
 
 const PROFILE = /^https:\/\/x\.com\/([A-Za-z0-9_]{1,15})$/;
 const escape = (text: string) =>
@@ -64,7 +84,6 @@ export function contributorHandle(profile: string): string | null {
 
 /** Everyone credited in this build, in credit order, with their mural character. */
 export function titleContributors(): Contributor[] {
-  const painted = new Map(CAVE_MURAL_SPOTS.map((spot) => [spot.subject, spot.label]));
   const person = (
     credit: { name: string; profile: string; qr: string },
     role: Contributor['role'],
@@ -74,7 +93,12 @@ export function titleContributors(): Contributor[] {
     role,
     profile: contributorHandle(credit.profile) ? credit.profile : '',
     avatar: `/title/avatar-${credit.qr}.jpg`,
-    ...(painted.has(credit.qr) ? { mural: painted.get(credit.qr) } : {}),
+    ...(CONTRIBUTOR_CHARACTERS[credit.qr]
+      ? {
+          mural: CONTRIBUTOR_CHARACTERS[credit.qr].name,
+          appears: CONTRIBUTOR_CHARACTERS[credit.qr].appears,
+        }
+      : {}),
   });
   return [
     person(TITLE_CREDITS[0], TITLE_CREDITS.length > 1 ? '制作' : '開発者'),
@@ -83,45 +107,12 @@ export function titleContributors(): Contributor[] {
   ];
 }
 
-function muralSpots(people: Contributor[], copy: boolean) {
-  const byKey = new Map(people.map((p) => [p.key, p]));
-  const pct = (n: number) => `${(n * 100).toFixed(3)}%`;
-  return CAVE_MURAL_SPOTS.flatMap((spot) => {
-    const person = byKey.get(spot.subject);
-    if (!person) return [];
-    const style = `left:${pct(spot.x)};top:${pct(spot.y)};width:${pct(spot.w)};height:${pct(spot.h)}`;
-    const tag = `<span class="mural-tag"><img src="${person.avatar}" width="20" height="20" alt="" decoding="async"><b>${escape(person.name)}</b>${person.profile ? xGlyph : ''}</span>`;
-    // The duplicate copy only exists for the seamless loop: it stays clickable
-    // but out of the accessibility tree; neither copy joins arrow/Tab focus.
-    const label = copy
-      ? ''
-      : ` aria-label="${escape(`${person.name}（壁画の${spot.label}）のXプロフィールを開く`)}"`;
-    return person.profile
-      ? `<a class="mural-spot" data-contributor="${person.key}" href="${person.profile}" target="_blank" rel="noopener noreferrer" tabindex="-1" data-nav-skip style="${style}"${label}>${tag}</a>`
-      : `<span class="mural-spot" data-contributor="${person.key}" style="${style}">${tag}</span>`;
-  }).join('');
-}
-
-/**
- * MMO title and loading screen visual: the long cave frieze slowly panning,
- * where each contributor's character links to their X profile.
- */
-export function titleMuralMarkup(people = titleContributors()): string {
-  const { url, preview, width, height } = CAVE_MURAL_STRIP;
-  const panel = (copy: boolean) =>
-    `<div class="mural-panel" style="background-image:url('${preview}')"${copy ? ' aria-hidden="true"' : ''}><img class="mural-image" src="${url}" width="${width}" height="${height}" alt="" decoding="async" fetchpriority="high" draggable="false">${muralSpots(people, copy)}</div>`;
-  return `<section class="cave-mural" aria-label="洞窟の壁画。この世界に関わってくれた人たちが描かれています">
-    <div class="mural-viewport"><div class="mural-track">${panel(false)}${panel(true)}</div></div>
-    <p class="mural-caption">関わってくれた人たちが、洞窟の壁画に残っています</p>
-  </section>`;
-}
-
 /** Dialog listing every contributor with their X icon; names link to X. */
 export function contributorsDialogMarkup(people = titleContributors()): string {
   const roles: Contributor['role'][] = ['制作', '開発者', '監修', '友情出演'];
   const card = (person: Contributor) => {
     const handle = contributorHandle(person.profile);
-    const body = `<img class="contributor-avatar" src="${person.avatar}" width="56" height="56" alt="" decoding="async"><span class="contributor-text"><strong>${escape(person.name)}</strong>${handle ? `<small>@${handle}</small>` : ''}${person.mural ? `<em>壁画：${escape(person.mural)}</em>` : ''}</span>`;
+    const body = `<img class="contributor-avatar" src="${person.avatar}" width="56" height="56" alt="" decoding="async"><span class="contributor-text"><strong>${escape(person.name)}</strong>${handle ? `<small>@${handle}</small>` : ''}${person.mural ? `<em>${person.appears ? `${person.appears}・` : ''}壁画：${escape(person.mural)}</em>` : ''}</span>`;
     return handle
       ? `<li><a class="contributor" href="${person.profile}" target="_blank" rel="noopener noreferrer" aria-label="${escape(`${person.name}のXプロフィールを開く`)}">${body}${xGlyph}</a></li>`
       : `<li><div class="contributor">${body}</div></li>`;
@@ -134,5 +125,5 @@ export function contributorsDialogMarkup(people = titleContributors()): string {
         `<section class="contributor-group"><h3>${role}</h3><ul class="contributor-list">${list.map(card).join('')}</ul></section>`,
     )
     .join('');
-  return `<div class="contributors-dialog"><span class="contributors-mark" aria-hidden="true"></span><h2>関わってくれた人たち</h2><p class="modal-intro">この世界は、たくさんの人の手で描かれました。友情出演の仲間たちは、アプデの洞窟の壁画にも残っています。</p>${groups}</div>`;
+  return `<div class="contributors-dialog"><span class="contributors-mark" aria-hidden="true"></span><h2>関わってくれた人たち</h2><p class="modal-intro">この世界は、たくさんの人の手で描かれました。みんなの分身がキャンプの仲間やキャラクターとして暮らし、アプデの洞窟の壁画にも残っています。</p>${groups}</div>`;
 }

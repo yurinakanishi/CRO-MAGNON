@@ -39,6 +39,7 @@ import {
   parseCharacterValue,
 } from './character-selection.js';
 import { WorldRenderer } from './world3d.js';
+import { LoadingCave } from './loading-cave.js';
 
 import { WORLD, CAMP, NPC, INITIAL_RESOURCES } from '../shared/world.mjs';
 import { EXHIBITION_PLAYER_LIMIT } from '../shared/room-rules.mjs';
@@ -96,6 +97,8 @@ import { nearRimoNeko } from '../shared/rimo-neko.mjs';
 import { nearMae } from '../shared/mae.mjs';
 import { nearKohaku } from '../shared/kohaku.mjs';
 import { nearMaruimo } from '../shared/maruimo-mascot.mjs';
+import { friendDefinition, nearFriend, pettingFriend } from '../shared/friend-mascots.mjs';
+import type { FriendMascotSnapshot } from '../shared/friend-mascot-types.mjs';
 import { nearCompanion524 } from '../shared/companion-524.mjs';
 import { ENEMY_GROUNDS, SCENERY } from '../shared/scenery-layout.mjs';
 import { CASTLE_GATE } from '../shared/castle-layout.mjs';
@@ -114,7 +117,7 @@ import { installGulfUI, gulfInteraction } from './gulf-ui.js';
 import { installVillageUI, residentInteraction } from './village-ui.js';
 import { inGulf } from '../shared/gulf-region.mjs';
 import { ScreenManager, AreaBanner, keyPrompts } from './screens.js';
-import { titleCreditsMarkup, titleMuralMarkup, contributorsDialogMarkup } from './title-credits.js';
+import { titleCreditsMarkup, contributorsDialogMarkup } from './title-credits.js';
 import { BUILD_PROFILE } from './build-profile.js';
 import {
   DIFFICULTIES,
@@ -184,9 +187,8 @@ const sessionKey = (room: string) => multiplayerSessionKey(multiplayer, room);
 // The exhibition LAN build never asks for a name or room: each PC is a fixed
 // player in the fixed exhibition room, and only the character is chosen.
 const fixedIdentity = multiplayer.mode === 'lan';
-// Exhibition PCs keep scannable QR credits. Online play shows the cave mural,
-// waits on it while the world loads, and lists contributors in a dialog.
-const muralTitle = !fixedIdentity && BUILD_PROFILE.environment !== 'exhibition';
+// Exhibition PCs keep scannable QR credits; online credits live in their dialog.
+const onlineTitle = !fixedIdentity && BUILD_PROFILE.environment !== 'exhibition';
 const hudPlayerLimit = () =>
   fixedIdentity ? EXHIBITION_PLAYER_LIMIT : (state.playerLimit ?? WORLD.maxPlayers);
 const titleArtPath = '/title/cro-magnon-mmo-transparent.webp';
@@ -274,20 +276,19 @@ $('#app').innerHTML = `
     <div class="hotbar-wrap"><div id="companion524-controls"><button type="button" class="hunt-button" id="pet-rimo-button" hidden><kbd>V</kbd><span>りもねこを撫でる</span></button><button type="button" class="hunt-button" id="dismiss-rimo-button" hidden><kbd>T</kbd><span>りもねこをキャンプへ帰す</span></button></div><div class="interaction-hint" id="interaction-hint" hidden><kbd>E</kbd><span></span></div></div>
     <div id="prompt-bar" class="prompt-bar" aria-label="操作の案内"></div>
     <div id="screens" class="screens">
-      <section id="screen-title" class="screen title-screen"${muralTitle ? ' data-variant="mural" data-loading' : ''} hidden>
+      <section id="screen-title" class="screen title-screen"${onlineTitle ? ' data-variant="classic"' : ''} hidden>
         <div class="title-content">
           <div class="title-hero">
           <div class="title-logo" style="--title-art: url('${titleArtPath}')"><h1>${GAME_TITLE}</h1><img class="title-art" src="${titleArtPath}" width="1536" height="1024" alt="${GAME_TITLE} — 氷河時代の旅人たちとマンモス" fetchpriority="high"></div>
           <div class="title-welcome">
-          ${muralTitle ? '<div class="title-loading" role="status" tabindex="-1"><span class="title-loading-text">世界を準備しています</span><span class="title-loading-bar" aria-hidden="true"><i></i></span><span class="title-loading-percent">0%</span></div>' : ''}
-          <nav class="title-menu" aria-label="タイトルメニュー"${muralTitle ? ' hidden' : ''}>
+          <nav class="title-menu" aria-label="タイトルメニュー">
             <button id="title-start" class="menu-item">はじめる</button>
             <button id="title-graphics" class="menu-item">画質</button>
-            ${muralTitle ? '<button id="title-contributors" class="menu-item">関わってくれた人たち</button>' : ''}
+            ${onlineTitle ? '<button id="title-contributors" class="menu-item">関わってくれた人たち</button>' : ''}
           </nav>
           </div>
           </div>
-          ${muralTitle ? titleMuralMarkup() : titleCreditsMarkup()}
+          ${onlineTitle ? '' : titleCreditsMarkup()}
         </div>
         <button id="title-fullscreen" class="title-fullscreen" type="button" aria-label="全画面表示" aria-pressed="false">${icon('expand')}</button>
         <div class="title-footer"><span>v0.1</span></div>
@@ -410,6 +411,7 @@ function performCue(command: TouchAction) {
 
 function showRenderError(text) {
   renderUnavailable = true;
+  if (loadingCave) closeLoadingCave();
   renderer?.audio.setActive(false);
   stopInput();
   if ($('#render-error')) return;
@@ -441,8 +443,10 @@ let spawnChoice = spawnSite(readSaved('cro-spawn', 'camp')).id;
 const wantsToRun = () => runMode || dashing || tuning.alwaysRun;
 let lastGait = false;
 let renderer;
+let loadingCave: LoadingCave | null = null;
 try {
   renderer = new WorldRenderer($('#world'), {
+    deferWorld: onlineTitle && query.get('autostart') !== '1',
     onAnimal: interactAnimal,
     onError: showRenderError,
     onInspect: () => {
@@ -1142,6 +1146,7 @@ function canPetRimo() {
     state.kohaku?.petPlayerId !== selfId &&
     state.maruimo?.petPlayerId !== selfId &&
     state.companion524?.petPlayerId !== selfId &&
+    !pettingFriend(state.friends, selfId) &&
     !pettingOrbBot(state.orbBots, selfId) &&
     nearRimoNeko(player(), state.rimoNeko, renderer.collision, renderer.serverNow())
   );
@@ -1161,6 +1166,7 @@ function canPetMae() {
     state.maruimo?.petPlayerId !== selfId &&
     state.rimoNeko?.petPlayerId !== selfId &&
     state.companion524?.petPlayerId !== selfId &&
+    !pettingFriend(state.friends, selfId) &&
     !pettingOrbBot(state.orbBots, selfId) &&
     nearMae(player(), state.mae, renderer.collision, renderer.serverNow())
   );
@@ -1177,6 +1183,7 @@ function canPetKohaku() {
     state.rimoNeko?.petPlayerId !== selfId &&
     state.mae?.petPlayerId !== selfId &&
     state.companion524?.petPlayerId !== selfId &&
+    !pettingFriend(state.friends, selfId) &&
     !pettingOrbBot(state.orbBots, selfId) &&
     nearKohaku(player(), state.kohaku, renderer.collision, renderer.serverNow())
   );
@@ -1198,12 +1205,37 @@ function canPetMaruimo() {
     state.rimoNeko?.petPlayerId !== selfId &&
     state.mae?.petPlayerId !== selfId &&
     state.companion524?.petPlayerId !== selfId &&
+    !pettingFriend(state.friends, selfId) &&
     !pettingOrbBot(state.orbBots, selfId) &&
     nearMaruimo(player(), state.maruimo, renderer.collision, renderer.serverNow())
   );
 }
 function petMaruimo() {
   if (canPetMaruimo()) action('petMaruimo');
+}
+function canPetFriend(friend: FriendMascotSnapshot | undefined) {
+  return (
+    !!friend &&
+    joined &&
+    !renderUnavailable &&
+    !friend.petPlayerId &&
+    !(
+      friend.followPlayerId &&
+      friend.followPlayerId !== selfId &&
+      state.players.some((p) => p.id === friend.followPlayerId)
+    ) &&
+    !pettingFriend(state.friends, selfId) &&
+    state.kohaku?.petPlayerId !== selfId &&
+    state.maruimo?.petPlayerId !== selfId &&
+    state.rimoNeko?.petPlayerId !== selfId &&
+    state.mae?.petPlayerId !== selfId &&
+    state.companion524?.petPlayerId !== selfId &&
+    !pettingOrbBot(state.orbBots, selfId) &&
+    nearFriend(player(), friend, renderer.collision, renderer.serverNow())
+  );
+}
+function petFriend(friend: FriendMascotSnapshot | undefined) {
+  if (canPetFriend(friend)) action('petFriend', friend!.key);
 }
 function nearbyBotsForPetting() {
   if (
@@ -1213,7 +1245,8 @@ function nearbyBotsForPetting() {
     state.kohaku?.petPlayerId === selfId ||
     state.maruimo?.petPlayerId === selfId ||
     state.rimoNeko?.petPlayerId === selfId ||
-    state.companion524?.petPlayerId === selfId
+    state.companion524?.petPlayerId === selfId ||
+    !!pettingFriend(state.friends, selfId)
   )
     return [];
   return nearbyOrbBotsForPetting(
@@ -1244,6 +1277,16 @@ function preferredPet() {
     });
   if (canPetMae())
     candidates.push({ point: state.mae!, choice: { action: 'petMae', label: 'maeを撫でる' } });
+  for (const friend of state.friends ?? [])
+    if (canPetFriend(friend))
+      candidates.push({
+        point: friend,
+        choice: {
+          action: 'petFriend',
+          targetId: friend.key,
+          label: `${friendDefinition(friend.key)?.name ?? '仲間'}を撫でる`,
+        },
+      });
   if (canPet524()) candidates.push({ point: state.companion524!, choice: '524' });
   const group = nearbyBotsForPetting();
   if (group.length > 0)
@@ -1259,6 +1302,7 @@ function preferredPet() {
     state.kohaku?.petPlayerId !== selfId &&
     state.maruimo?.petPlayerId !== selfId &&
     state.companion524?.petPlayerId !== selfId &&
+    !pettingFriend(state.friends, selfId) &&
     !pettingOrbBot(state.orbBots, selfId)
   ) {
     for (const b of state.orbBots ?? []) {
@@ -1315,6 +1359,9 @@ function dismissNearbyCompanion() {
     candidates.push({ point: state.maruimo, action: 'dismissMaruimo' });
   if (state.mae?.followPlayerId === selfId)
     candidates.push({ point: state.mae, action: 'dismissMae' });
+  for (const friend of state.friends ?? [])
+    if (friend.followPlayerId === selfId)
+      candidates.push({ point: friend, action: 'dismissFriend', target: friend.key });
   if (state.companion524?.followPlayerId === selfId && !candidates.some((c) => c.target === '524'))
     candidates.push({ point: state.companion524, action: 'dismiss524' });
   const nearest = candidates.sort((a, b) => distance(me, a.point) - distance(me, b.point))[0];
@@ -1329,6 +1376,7 @@ function canPet524() {
     state.kohaku?.petPlayerId !== selfId &&
     state.maruimo?.petPlayerId !== selfId &&
     state.rimoNeko?.petPlayerId !== selfId &&
+    !pettingFriend(state.friends, selfId) &&
     !pettingOrbBot(state.orbBots, selfId) &&
     nearCompanion524(player(), state.companion524, renderer.collision, renderer.serverNow())
   );
@@ -1393,6 +1441,11 @@ function interactAnimal(id) {
   }
   if (id === state.maruimo?.id) {
     petMaruimo();
+    return;
+  }
+  const friend = state.friends?.find((f) => f.id === id);
+  if (friend) {
+    petFriend(friend);
     return;
   }
   if (id === state.mae?.id) {
@@ -1730,50 +1783,6 @@ function showTitle() {
   motionControls?.stop();
   $('#modal').close();
   screens.show('title');
-  // While the world loads, focus the status rather than the corner fullscreen button.
-  if (titleLoading()) $('.title-loading')?.focus({ preventScroll: true });
-}
-/** True while the online title still waits on the initial world download. */
-function titleLoading() {
-  return !!$('#screen-title[data-loading]');
-}
-let shownLoadPercent = -1;
-/** Drives the online title's loading bar until the world is ready, then reveals the menu. */
-function updateTitleLoading() {
-  if (!titleLoading()) return;
-  const progress = renderer.loadProgress;
-  // A missing renderer or a failed world shows its own error; never trap the menu.
-  const done = !progress || progress.phase === 'ready' || progress.phase === 'error';
-  if (!done) {
-    const fraction =
-      progress.phase === 'build'
-        ? 0.96
-        : progress.total
-          ? (0.92 * progress.loaded) / progress.total
-          : 0;
-    const percent = Math.max(shownLoadPercent, Math.floor(fraction * 100));
-    if (percent !== shownLoadPercent) {
-      shownLoadPercent = percent;
-      $('.title-loading-bar').style.setProperty('--progress', String(percent / 100));
-      $('.title-loading-percent').textContent = `${percent}%`;
-      $('.title-loading-text').textContent =
-        progress.phase === 'build' ? '世界を組み立てています' : '世界を準備しています';
-    }
-    return;
-  }
-  const title = $('#screen-title');
-  const hadFocus =
-    title.contains(document.activeElement) || document.activeElement === document.body;
-  delete title.dataset.loading;
-  $('.title-loading').hidden = true;
-  const menu = $('.title-menu');
-  menu.hidden = false;
-  menu.classList.add('menu-reveal');
-  menu.addEventListener('animationend', () => menu.classList.remove('menu-reveal'), {
-    once: true,
-  });
-  if (screens.active === 'title' && hadFocus && !touchMode() && !$('#modal').open)
-    $('#title-start').focus({ preventScroll: true });
 }
 function showSetup(error = '') {
   chatUI?.setOpen(false);
@@ -1789,7 +1798,51 @@ function showSetup(error = '') {
   $('#setup-back').textContent = joined ? '探索に戻る' : '戻る';
   screens.show('setup');
 }
-function enterGame() {
+function closeLoadingCave() {
+  loadingCave?.dispose();
+  loadingCave = null;
+  renderer.loadingCave = null;
+  clearMovementInput();
+  gamepadControls?.suspend();
+}
+function enterGame(skipGallery = false) {
+  if (renderUnavailable || loadingCave) return;
+  if (onlineTitle && !skipGallery && !joined && renderer.loadProgress.phase !== 'ready') {
+    screens.hide();
+    stopInput();
+    const cave = new LoadingCave(
+      renderer,
+      () => {
+        closeLoadingCave();
+        beginGame();
+      },
+      () => {
+        closeLoadingCave();
+        showTitle();
+      },
+    );
+    loadingCave = renderer.loadingCave = cave;
+    void (async () => {
+      try {
+        await cave.load();
+        if (loadingCave !== cave) return;
+        await Promise.all([
+          renderer.startWorld(),
+          renderer.humanAssets.get(characterModel(profile).key).load(),
+        ]);
+        if (loadingCave === cave) cave.markWorldReady();
+      } catch (error) {
+        if (loadingCave !== cave) return;
+        closeLoadingCave();
+        renderer.failWorld('洞窟または世界を読み込めませんでした。再読み込みしてください。', error);
+      }
+    })();
+    return;
+  }
+  void renderer.startWorld?.();
+  beginGame();
+}
+function beginGame() {
   void renderer.audio.start();
   $('#retry-session')?.remove();
   screens.hide();
@@ -2553,6 +2606,7 @@ $('#modal').addEventListener('click', (e) => {
   }
 });
 document.addEventListener('keydown', (e) => {
+  if (loadingCave) return;
   // The map key is a toggle: M with the atlas open closes it (2026-09-12).
   if (
     $('#modal').open &&
@@ -2968,6 +3022,7 @@ function updateMovementInput() {
       state.maruimo?.petPlayerId === selfId ||
       state.rimoNeko?.petPlayerId === selfId ||
       state.companion524?.petPlayerId === selfId ||
+      !!pettingFriend(state.friends, selfId) ||
       !!pettingOrbBot(state.orbBots, selfId);
     const target = interactionTarget(preferredPet(), nearby());
     motionControls.interactionHint =
@@ -3012,6 +3067,7 @@ function updateMovementInput() {
             target.action === 'petMae' ||
             target.action === 'petKohaku' ||
             target.action === 'petMaruimo' ||
+            target.action === 'petFriend' ||
             target.action === 'pet524' ||
             target.action === 'petBot' ||
             target.action === 'petBots'
@@ -3127,6 +3183,7 @@ window.addEventListener('beforeunload', () => {
   touchControls?.destroy();
   motionControls?.destroy();
   screens.destroy();
+  closeLoadingCave();
   renderer.destroy();
 });
 // The title screen slowly pans the camera around the world until play begins.
@@ -3137,12 +3194,11 @@ function titleIdle(now: number) {
     audioStatus.textContent = renderer.audio.status;
   if (screens.active === 'title')
     renderer.rotateCamera(Math.min(0.05, (now - titleClock) / 1000) * 0.05, 0);
-  updateTitleLoading();
   titleClock = now;
   requestAnimationFrame(titleIdle);
 }
 requestAnimationFrame(titleIdle);
 if (query.get('autostart') === '1') {
   // QA scripts and local shortcuts skip the title and setup screens.
-  enterGame();
+  enterGame(true);
 } else showTitle();

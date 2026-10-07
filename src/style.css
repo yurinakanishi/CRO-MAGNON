@@ -462,6 +462,9 @@ progress::-moz-progress-bar {
   letter-spacing: 0.08em;
   pointer-events: none;
 }
+.world-loading[hidden] {
+  display: none;
+}
 .render-error {
   position: absolute;
   left: 50%;
@@ -523,7 +526,9 @@ progress::-moz-progress-bar {
 /* Before play, only the world, its loading label and the screens are visible. */
 body:not(.in-game)
   .game-viewport
-  > :not(#world):not(.scene-shade):not(.screens):not(.world-loading):not(.render-error) {
+  > :not(#world):not(.scene-shade):not(.screens):not(.world-loading):not(.render-error):not(
+    #loading-cave
+  ) {
   display: none;
 }
 body[data-screen] .world-loading,

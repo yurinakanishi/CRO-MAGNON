@@ -1,0 +1,21 @@
+{
+  "name": "Saber",
+  "credit": "saber",
+  "subject": "Chibi mascot of Saber@codexer (@Saber5656) from the supplied illustration: blonde cat-eared girl, wide straw sun hat with white ribbon, white sundress with sash, golden cat tail.",
+  "identitySources": ["assets/friend-mascots/saber-mascot/source/user-reference.jpg"],
+  "landmarks": {
+    "pelvis": 0.36, "spine": 0.44, "chest": 0.52, "neck": 0.615, "head": 0.68, "head_tip": 0.97,
+    "hip": [0.065, 0.33], "knee": [0.06, 0.15], "ankle": [0.07, 0.05], "foot": [0.07, 0.024], "toe": [0.07, 0.016],
+    "shoulder_in": 0.045, "shoulder": [0.125, 0.556], "elbow": [0.22, 0.525], "wrist": [0.31, 0.496], "hand": [0.36, 0.48]
+  },
+  "headRigidZ": 0.615,
+  "armGate": { "x": 0.16, "zLow": 0.44, "zHigh": 0.6, "radius": 0.045 },
+  "legGate": { "zTop": 0.26, "xMax": 0.13 },
+  "skirt": { "top": 0.44, "hem": 0.27, "x": 0.07, "hemX": 0.2, "depth": 0.09 },
+  "tail": { "points": [[0.04, 0.12, 0.31], [0.13, 0.2, 0.27], [0.22, 0.23, 0.27], [0.3, 0.22, 0.31], [0.33, 0.18, 0.38], [0.29, 0.14, 0.45]] },
+  "hairBack": { "points": [[0.0, 0.1, 0.64], [0.0, 0.16, 0.5], [0.0, 0.18, 0.34]] },
+  "rigidZones": [
+    { "bone": "HairBack1", "box": [-0.26, 0.26, 0.05, 0.4, 0.5, 0.615], "afterSmooth": true, "strength": 0.85, "note": "upper back hair" },
+    { "bone": "HairBack2", "box": [-0.26, 0.26, 0.07, 0.4, 0.3, 0.5], "afterSmooth": true, "strength": 0.9, "note": "lower back hair, clear of the tail chain below" }
+  ]
+}

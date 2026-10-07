@@ -537,7 +537,7 @@
       "triangles": 74458,
       "delivery": "/models/camp-cave/model-r26.glb",
       "gameQA": "output/playwright/maruimo-mascot-20261007/mmo-assets-r03/summary.json",
-      "galleryRevision": "33"
+      "galleryRevision": "35"
     },
     {
       "key": "yellow-524-mascot",
@@ -852,6 +852,102 @@
       "sha256": "5355ffab11b7f97856d512388ff0fa8dd8273c19222f53b16aa944a2e6e6f5e6",
       "delivery": "/models/crow-bone-pauldrons/model-c2.glb",
       "replaces": "code-built primitives: CrowBrutePauldronL/R (two half-spheres)"
+    },
+    {
+      "key": "fairy-mascot",
+      "name": "フェアリー",
+      "kind": "companion",
+      "height": 0.52,
+      "geometryResolution": 1024,
+      "referenceVersion": 1,
+      "status": "friend-mascot-integrated",
+      "sha256": "45d20640bd4c3a3bf032e5bb356405260774d69e981149b690751b75f77cff02",
+      "delivery": "/models/fairy-mascot/model-r01.glb",
+      "subject": "Chibi mascot of 吉澤フェアリー (@Fairy_Yoshizawa): chestnut bob, lavender blouse with bow scarf, cream skirt, small lilac fairy wings."
+    },
+    {
+      "key": "howkey-flask",
+      "name": "Howkeyの三角フラスコ",
+      "kind": "equipment",
+      "height": 0.15,
+      "geometryResolution": 512,
+      "referenceVersion": 1,
+      "status": "friend-prop-integrated",
+      "sha256": "85c376f2ffb2def8249cb1f0c56426ceb03144fadb6dfe55575741d7df0f2f80",
+      "delivery": "/models/howkey-flask/model-r01.glb",
+      "subject": "Stylised Erlenmeyer flask with teal liquid and cork, held by Howkey (@hawkymisc)."
+    },
+    {
+      "key": "saber-mascot",
+      "name": "Saber",
+      "kind": "companion",
+      "height": 0.52,
+      "geometryResolution": 1024,
+      "referenceVersion": 1,
+      "status": "friend-mascot-integrated",
+      "sha256": "f219a9907e641df0b1eee9abbd69997744526b3b7910f9491163dbdfd45809de",
+      "delivery": "/models/saber-mascot/model-r01.glb",
+      "subject": "Chibi mascot of Saber@codexer (@Saber5656) from the supplied illustration: blonde cat-eared girl, wide straw sun hat with white ribbon, white sundress with sash, golden cat tail."
+    },
+    {
+      "key": "sagasa-mascot",
+      "name": "さが",
+      "kind": "companion",
+      "height": 0.52,
+      "geometryResolution": 1024,
+      "referenceVersion": 1,
+      "status": "friend-mascot-integrated",
+      "sha256": "4f06be7e91e280d8db6d21edba5bb39c044c614075464c04e42396c84b0b57b3",
+      "delivery": "/models/sagasa-mascot/model-r03.glb",
+      "subject": "Chibi mascot of さが (@Sagasa8045) from the supplied YASUSHI TAKAGI turnaround: curly dark hair, black glasses, black hoodie under a blue vest, black cargo pants, black-and-white sneakers."
+    },
+    {
+      "key": "otani-mascot",
+      "name": "オータニ",
+      "kind": "companion",
+      "height": 0.52,
+      "geometryResolution": 1024,
+      "referenceVersion": 1,
+      "status": "friend-mascot-integrated",
+      "sha256": "16c87d4ba64622cb08610919f7b989298e1332c65364b6ee219823b3fa943e5d",
+      "delivery": "/models/otani-mascot/model-r02.glb",
+      "subject": "Chibi duck mascot of オータニ@AI駆動開発 (@otani_ai_memo) from the pixel-art X icon: white duck, green knit cap with a cursor badge, headset, green scarf, black vest."
+    },
+    {
+      "key": "urata-mascot",
+      "name": "うらた",
+      "kind": "companion",
+      "height": 0.52,
+      "geometryResolution": 1024,
+      "referenceVersion": 1,
+      "status": "friend-mascot-integrated",
+      "sha256": "39c47be2d4bcb2232a7e3bd67329f2ce3db4adb25f2c939c4f42572cfabd5f45",
+      "delivery": "/models/urata-mascot/model-r02.glb",
+      "subject": "Mascot of 浦田 勇樹 (@yuki_urata) after the gachapon keychain figure in his X icon: voluminous black curly hair, round glasses, big smile, black T-shirt, navy jeans, white sneakers."
+    },
+    {
+      "key": "nukonuko-mascot",
+      "name": "ぬこぬこ",
+      "kind": "companion",
+      "height": 0.52,
+      "geometryResolution": 1024,
+      "referenceVersion": 1,
+      "status": "friend-mascot-integrated",
+      "sha256": "af3322a2f91ee749b9c142892f59380dbf3cd7c41260a53cc83d316ee6c85f20",
+      "delivery": "/models/nukonuko-mascot/model-r02.glb",
+      "subject": "Chibi mascot of ぬこぬこ / NUKO (@nukonuko) from the X icon: long wavy dark-brown hair, cat ears, amber eyes, black collar with a gold star medallion, cream blouse and brown pinafore, dark cat tail."
+    },
+    {
+      "key": "rei-mascot",
+      "name": "怜ちゃん",
+      "kind": "companion",
+      "height": 0.52,
+      "geometryResolution": 1024,
+      "referenceVersion": 1,
+      "status": "friend-mascot-integrated",
+      "sha256": "556ef3186a560fd430ce0b31a7f564d6995feff4c5c48426453b2e2b5d7a5b68",
+      "delivery": "/models/rei-mascot/model-r01.glb",
+      "subject": "Chibi mascot of 怜ちゃん (Rei-chan), the AI writer character of 朝日南 (@asahina_AIauto), from the supplied character sheet and illustration: very long black hair, amber eyes, black techwear jacket with neon-orange circuit lines and straps, black trousers, boots with glowing orange soles."
     }
   ],
   "reuse": {

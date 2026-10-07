@@ -16,6 +16,7 @@ import {
 import { attackProfile } from './combat-profiles.mjs';
 import { interactionVisible } from './interactions.mjs';
 import { mammothNavigation } from './mammoth-navigation.mjs';
+import { friendDefinition } from './friend-mascots.mjs';
 export { withinSpearReach, stopActor } from './combat.mjs';
 
 // Distances use the same body radii as authoritative movement collision.
@@ -232,6 +233,11 @@ export function updateHunting(
     changed = true;
     if (strike.kind === 'kohaku') {
       notify(player, 'こはくちゃんがびっくりして身を引いた。', 'info', false);
+      return;
+    }
+    if (strike.kind === 'friend') {
+      const name = friendDefinition(strike.target.key)?.name ?? '仲間';
+      notify(player, `${name}がびっくりして身を引いた。`, 'info', false);
       return;
     }
     if (strike.kind === 'maruimo') {

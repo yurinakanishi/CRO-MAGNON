@@ -1,0 +1,46 @@
+{
+  "delivered": [
+    "saber-mascot",
+    "fairy-mascot",
+    "sagasa-mascot",
+    "nukonuko-mascot",
+    "otani-mascot",
+    "urata-mascot",
+    "rei-mascot"
+  ],
+  "checks": [
+    "Saber: V petting, hearts, synchronized on five clients, bonded",
+    "フェアリー: V petting, hearts, synchronized on five clients, bonded",
+    "さが: V petting, hearts, synchronized on five clients, bonded",
+    "ぬこぬこ: V petting, hearts, synchronized on five clients, bonded",
+    "オータニ: V petting, hearts, synchronized on five clients, bonded",
+    "うらた: V petting, hearts, synchronized on five clients, bonded",
+    "怜ちゃん: V petting, hearts, synchronized on five clients, bonded",
+    "friend cards listed and 全選択 bonds every friend",
+    "selected friends follow a real W walk",
+    "both contributor friezes rendered in the cave"
+  ],
+  "shots": [
+    "camp-overview",
+    "saber-mascot-home",
+    "saber-mascot-happy",
+    "fairy-mascot-home",
+    "fairy-mascot-happy",
+    "sagasa-mascot-home",
+    "sagasa-mascot-happy",
+    "nukonuko-mascot-home",
+    "nukonuko-mascot-happy",
+    "otani-mascot-home",
+    "otani-mascot-happy",
+    "urata-mascot-home",
+    "urata-mascot-happy",
+    "rei-mascot-home",
+    "rei-mascot-happy",
+    "mascot-cards",
+    "friends-following",
+    "cave-friendsMeadow",
+    "cave-friendsRiver"
+  ],
+  "errors": [],
+  "failure": "locator.click: Timeout 30000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('[data-choose-difficulty=\"normal\"]')\u001b[22m\n\u001b[2m    - locator resolved to <button type=\"button\" aria-pressed=\"true\" class=\"button button-accent\" data-choose-difficulty=\"normal\">普通</button>\u001b[22m\n\u001b[2m  - attempting click action\u001b[22m\n\u001b[2m    2 × waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m      - element is not stable\u001b[22m\n\u001b[2m    - retrying click action\u001b[22m\n\u001b[2m    - waiting 20ms\u001b[22m\n\u001b[2m    2 × waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m      - element is not stable\u001b[22m\n\u001b[2m    - retrying click action\u001b[22m\n\u001b[2m      - waiting 100ms\u001b[22m\n\u001b[2m    - waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m    - element is visible, enabled and stable\u001b[22m\n\u001b[2m    - scrolling into view if needed\u001b[22m\n\u001b[2m    - done scrolling\u001b[22m\n\u001b[2m    - performing click action\u001b[22m\n\u001b[2m    - click action done\u001b[22m\n\u001b[2m    - waiting for scheduled navigations to finish\u001b[22m\n\n    at openPage (C:\\Users\\yurin\\Desktop\\projects\\CRO-MAGNON\\scripts\\qa-friend-mascots.mjs:84:59)\n    at async file:///C:/Users/yurin/Desktop/projects/CRO-MAGNON/scripts/qa-friend-mascots.mjs:302:18"
+}

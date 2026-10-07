@@ -1634,6 +1634,171 @@
       "bytes": 1377972,
       "maximumTextureEdge": 2048,
       "images": []
+    },
+    {
+      "sourceUrl": "/models/saber-mascot/model-r01.glb",
+      "sourceSha256": "f219a9907e641df0b1eee9abbd69997744526b3b7910f9491163dbdfd45809de",
+      "sourceBytes": 7781548,
+      "file": "assets/public-performance/models/saber-mascot-model-r01-tex2048.glb",
+      "url": "/models/saber-mascot/model-web-f219a9907e641df0.glb",
+      "sha256": "f219a9907e641df0b1eee9abbd69997744526b3b7910f9491163dbdfd45809de",
+      "bytes": 7781548,
+      "maximumTextureEdge": 2048,
+      "images": []
+    },
+    {
+      "sourceUrl": "/models/saber-mascot/lod-r01.glb",
+      "sourceSha256": "949ffb97167bba8633dae80a617c14eebd1816063a2e42f6823fb78d5b38ac25",
+      "sourceBytes": 682620,
+      "file": "assets/public-performance/models/saber-mascot-lod-r01-tex2048.glb",
+      "url": "/models/saber-mascot/lod-web-949ffb97167bba86.glb",
+      "sha256": "949ffb97167bba8633dae80a617c14eebd1816063a2e42f6823fb78d5b38ac25",
+      "bytes": 682620,
+      "maximumTextureEdge": 2048,
+      "images": []
+    },
+    {
+      "sourceUrl": "/models/fairy-mascot/model-r01.glb",
+      "sourceSha256": "45d20640bd4c3a3bf032e5bb356405260774d69e981149b690751b75f77cff02",
+      "sourceBytes": 7424528,
+      "file": "assets/public-performance/models/fairy-mascot-model-r01-tex2048.glb",
+      "url": "/models/fairy-mascot/model-web-45d20640bd4c3a3b.glb",
+      "sha256": "45d20640bd4c3a3bf032e5bb356405260774d69e981149b690751b75f77cff02",
+      "bytes": 7424528,
+      "maximumTextureEdge": 2048,
+      "images": []
+    },
+    {
+      "sourceUrl": "/models/fairy-mascot/lod-r01.glb",
+      "sourceSha256": "395e5a839f65bbf6f78a6c39a50bbc62965d5286d351575881aa5302bc908c58",
+      "sourceBytes": 971560,
+      "file": "assets/public-performance/models/fairy-mascot-lod-r01-tex2048.glb",
+      "url": "/models/fairy-mascot/lod-web-395e5a839f65bbf6.glb",
+      "sha256": "395e5a839f65bbf6f78a6c39a50bbc62965d5286d351575881aa5302bc908c58",
+      "bytes": 971560,
+      "maximumTextureEdge": 2048,
+      "images": []
+    },
+    {
+      "sourceUrl": "/models/howkey-flask/model-r01.glb",
+      "sourceSha256": "85c376f2ffb2def8249cb1f0c56426ceb03144fadb6dfe55575741d7df0f2f80",
+      "sourceBytes": 1194284,
+      "file": "assets/public-performance/models/howkey-flask-model-r01-tex2048.glb",
+      "url": "/models/howkey-flask/model-web-2d91c50cec6379db.glb",
+      "sha256": "2d91c50cec6379dbc87fbd03b86d7d664f222211168448fe7a36fe7834e1cd59",
+      "bytes": 1194284,
+      "maximumTextureEdge": 2048,
+      "images": []
+    },
+    {
+      "sourceUrl": "/models/sagasa-mascot/model-r03.glb",
+      "sourceSha256": "4f06be7e91e280d8db6d21edba5bb39c044c614075464c04e42396c84b0b57b3",
+      "sourceBytes": 6685712,
+      "file": "assets/public-performance/models/sagasa-mascot-model-r03-tex2048.glb",
+      "url": "/models/sagasa-mascot/model-web-4f06be7e91e280d8.glb",
+      "sha256": "4f06be7e91e280d8db6d21edba5bb39c044c614075464c04e42396c84b0b57b3",
+      "bytes": 6685712,
+      "maximumTextureEdge": 2048,
+      "images": []
+    },
+    {
+      "sourceUrl": "/models/sagasa-mascot/lod-r03.glb",
+      "sourceSha256": "c34b9f0c9b91d0b2dba5e8cda0d770cb3df2a9952f035aaf47c6f1dee32363eb",
+      "sourceBytes": 1113972,
+      "file": "assets/public-performance/models/sagasa-mascot-lod-r03-tex2048.glb",
+      "url": "/models/sagasa-mascot/lod-web-c34b9f0c9b91d0b2.glb",
+      "sha256": "c34b9f0c9b91d0b2dba5e8cda0d770cb3df2a9952f035aaf47c6f1dee32363eb",
+      "bytes": 1113972,
+      "maximumTextureEdge": 2048,
+      "images": []
+    },
+    {
+      "sourceUrl": "/models/nukonuko-mascot/model-r02.glb",
+      "sourceSha256": "af3322a2f91ee749b9c142892f59380dbf3cd7c41260a53cc83d316ee6c85f20",
+      "sourceBytes": 7168968,
+      "file": "assets/public-performance/models/nukonuko-mascot-model-r02-tex2048.glb",
+      "url": "/models/nukonuko-mascot/model-web-af3322a2f91ee749.glb",
+      "sha256": "af3322a2f91ee749b9c142892f59380dbf3cd7c41260a53cc83d316ee6c85f20",
+      "bytes": 7168968,
+      "maximumTextureEdge": 2048,
+      "images": []
+    },
+    {
+      "sourceUrl": "/models/nukonuko-mascot/lod-r02.glb",
+      "sourceSha256": "92fc767dda398ee66ce498bc73221d62e0985121e618f050eab7676210a0171c",
+      "sourceBytes": 955832,
+      "file": "assets/public-performance/models/nukonuko-mascot-lod-r02-tex2048.glb",
+      "url": "/models/nukonuko-mascot/lod-web-92fc767dda398ee6.glb",
+      "sha256": "92fc767dda398ee66ce498bc73221d62e0985121e618f050eab7676210a0171c",
+      "bytes": 955832,
+      "maximumTextureEdge": 2048,
+      "images": []
+    },
+    {
+      "sourceUrl": "/models/otani-mascot/model-r02.glb",
+      "sourceSha256": "16c87d4ba64622cb08610919f7b989298e1332c65364b6ee219823b3fa943e5d",
+      "sourceBytes": 6785896,
+      "file": "assets/public-performance/models/otani-mascot-model-r02-tex2048.glb",
+      "url": "/models/otani-mascot/model-web-16c87d4ba64622cb.glb",
+      "sha256": "16c87d4ba64622cb08610919f7b989298e1332c65364b6ee219823b3fa943e5d",
+      "bytes": 6785896,
+      "maximumTextureEdge": 2048,
+      "images": []
+    },
+    {
+      "sourceUrl": "/models/otani-mascot/lod-r02.glb",
+      "sourceSha256": "a204449b42b2289c3118d23071df4d6990187afbeeaac10bf2bfda299058cdd3",
+      "sourceBytes": 412524,
+      "file": "assets/public-performance/models/otani-mascot-lod-r02-tex2048.glb",
+      "url": "/models/otani-mascot/lod-web-a204449b42b2289c.glb",
+      "sha256": "a204449b42b2289c3118d23071df4d6990187afbeeaac10bf2bfda299058cdd3",
+      "bytes": 412524,
+      "maximumTextureEdge": 2048,
+      "images": []
+    },
+    {
+      "sourceUrl": "/models/urata-mascot/model-r02.glb",
+      "sourceSha256": "39c47be2d4bcb2232a7e3bd67329f2ce3db4adb25f2c939c4f42572cfabd5f45",
+      "sourceBytes": 6444916,
+      "file": "assets/public-performance/models/urata-mascot-model-r02-tex2048.glb",
+      "url": "/models/urata-mascot/model-web-39c47be2d4bcb223.glb",
+      "sha256": "39c47be2d4bcb2232a7e3bd67329f2ce3db4adb25f2c939c4f42572cfabd5f45",
+      "bytes": 6444916,
+      "maximumTextureEdge": 2048,
+      "images": []
+    },
+    {
+      "sourceUrl": "/models/urata-mascot/lod-r02.glb",
+      "sourceSha256": "1888b45a8326590c1d8ea966acd464ca415f295e255d2a625480ca3477bc9388",
+      "sourceBytes": 409068,
+      "file": "assets/public-performance/models/urata-mascot-lod-r02-tex2048.glb",
+      "url": "/models/urata-mascot/lod-web-1888b45a8326590c.glb",
+      "sha256": "1888b45a8326590c1d8ea966acd464ca415f295e255d2a625480ca3477bc9388",
+      "bytes": 409068,
+      "maximumTextureEdge": 2048,
+      "images": []
+    },
+    {
+      "sourceUrl": "/models/rei-mascot/model-r01.glb",
+      "sourceSha256": "556ef3186a560fd430ce0b31a7f564d6995feff4c5c48426453b2e2b5d7a5b68",
+      "sourceBytes": 6498892,
+      "file": "assets/public-performance/models/rei-mascot-model-r01-tex2048.glb",
+      "url": "/models/rei-mascot/model-web-556ef3186a560fd4.glb",
+      "sha256": "556ef3186a560fd430ce0b31a7f564d6995feff4c5c48426453b2e2b5d7a5b68",
+      "bytes": 6498892,
+      "maximumTextureEdge": 2048,
+      "images": []
+    },
+    {
+      "sourceUrl": "/models/rei-mascot/lod-r01.glb",
+      "sourceSha256": "ae22058eccecafcdded06469d849a22736ad9d723addd41793a90d92c6212a48",
+      "sourceBytes": 634808,
+      "file": "assets/public-performance/models/rei-mascot-lod-r01-tex2048.glb",
+      "url": "/models/rei-mascot/lod-web-ae22058eccecafcd.glb",
+      "sha256": "ae22058eccecafcdded06469d849a22736ad9d723addd41793a90d92c6212a48",
+      "bytes": 634808,
+      "maximumTextureEdge": 2048,
+      "images": []
     }
   ]
 }

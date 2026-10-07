@@ -24,11 +24,21 @@ export const TITLE_SUPPORT = {
 } as const;
 
 /**
- * Friends painted in the cave mural, named as on X. An empty profile would be
- * shown without a link. They have no QR code, so the exhibition credits do not
- * list them.
+ * Friends with a companion, character or cave painting in the game, named as on
+ * X. An empty profile would be shown without a link. They have no QR code, so the
+ * exhibition credits do not list them.
  */
 export const TITLE_FRIENDS = [
   { name: 'まるぃも', profile: 'https://x.com/marulimoai', qr: 'maruimo' },
   { name: 'mae616 : 今川焼き', profile: 'https://x.com/mae616_', qr: 'mae' },
+  { name: 'りさ', profile: 'https://x.com/eerm16g', qr: 'risa' },
+  { name: 'Saber@codexer', profile: 'https://x.com/Saber5656', qr: 'saber' },
+  { name: '吉澤フェアリー🇯🇵', profile: 'https://x.com/Fairy_Yoshizawa', qr: 'fairy' },
+  {
+    name: 'さが@迷えるインドア派アニオタSEおじ',
+    profile: 'https://x.com/Sagasa8045',
+    qr: 'sagasa',
+  },
+  { name: 'ほーきー(Hawkie)', profile: 'https://x.com/hawkymisc', qr: 'hawkie' },
+  { name: '朝日南', profile: 'https://x.com/asahina_AIauto', qr: 'asahina' },
 ] as const;

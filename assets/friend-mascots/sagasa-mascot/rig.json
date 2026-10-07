@@ -1,0 +1,16 @@
+{
+  "name": "さが",
+  "credit": "sagasa",
+  "subject": "Chibi mascot of さが (@Sagasa8045) from the supplied YASUSHI TAKAGI turnaround: curly dark hair, black glasses, black hoodie under a blue vest, black cargo pants, black-and-white sneakers.",
+  "identitySources": ["assets/friend-mascots/sagasa-mascot/source/user-reference.jpg"],
+  "landmarks": {
+    "pelvis": 0.32, "spine": 0.39, "chest": 0.46, "neck": 0.545, "head": 0.6, "head_tip": 0.97,
+    "hip": [0.065, 0.29], "knee": [0.07, 0.15], "ankle": [0.075, 0.06], "foot": [0.08, 0.03], "toe": [0.08, 0.02],
+    "shoulder_in": 0.045, "shoulder": [0.135, 0.47], "elbow": [0.22, 0.455], "wrist": [0.29, 0.445], "hand": [0.335, 0.44]
+  },
+  "headRigidZ": 0.555,
+  "armGate": { "x": 0.125, "zLow": 0.38, "zHigh": 0.53, "radius": 0.055 },
+  "legGate": { "zTop": 0.3, "xMax": 0.16 },
+  "footForward": 0.04,
+  "toeForward": 0.07
+}

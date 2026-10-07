@@ -14,7 +14,8 @@ import { prepareCaveMaterials } from './cave-materials.js';
 import { CAVE_EXTRA_PIGMENTS, type CaveExtraPigment } from './cave-gallery-layout.js';
 import { createCavePreviewLabel } from './cave-preview-label.js';
 import { prepareMountainMaterials } from './mountain-materials.js';
-import { prepareMountainRiverBed } from './mountain-river.js';
+import { prepareMountainRiverBed, prepareMountainRiverBedAsync } from './mountain-river.js';
+import { RiverBankBuilder } from './river-bank-builder.js';
 
 const PLACEMENTS = Object.freeze([
   ...LANDMARKS,
@@ -46,6 +47,7 @@ export class WorldLandmarks {
   declare caveRimoPigment: THREE.Texture | undefined;
   declare caveLimestone: THREE.Texture | undefined;
   caveExtraPigments: Partial<Record<CaveExtraPigment, THREE.Texture>> = {};
+  private mountainBuilder: RiverBankBuilder | null = null;
 
   constructor(world, placements = PLACEMENTS) {
     this.world = world;
@@ -58,6 +60,21 @@ export class WorldLandmarks {
     this.next = 0;
     this.disposed = false;
     this.coatings = new AdventureMaterials();
+  }
+  async prepareInitial() {
+    const template = this.assets.get(CAMP_MOUNTAIN.key);
+    if (template.riverBedPrepared || this.disposed) return;
+    const builder = (this.mountainBuilder = new RiverBankBuilder());
+    try {
+      for (const gltf of [template.gltf, ...template.lods]) {
+        await prepareMountainRiverBedAsync(gltf.scene, builder, () => !this.disposed);
+        if (this.disposed) return;
+      }
+      template.riverBedPrepared = true;
+    } finally {
+      builder.dispose();
+      this.mountainBuilder = null;
+    }
   }
   update(camera, time) {
     if (this.disposed || time < this.next) return;
@@ -217,7 +234,7 @@ export class WorldLandmarks {
         if (item.key === CAMP_MOUNTAIN.key && !template.trailPrepared) {
           template.trailPrepared = true;
           for (const gltf of [template.gltf, ...template.lods]) {
-            prepareMountainRiverBed(gltf.scene);
+            if (!template.riverBedPrepared) prepareMountainRiverBed(gltf.scene);
             template.caveRoofTexture = prepareMountainMaterials(gltf.scene);
           }
         }
@@ -310,6 +327,7 @@ export class WorldLandmarks {
   }
   dispose() {
     this.disposed = true;
+    this.mountainBuilder?.dispose();
     for (const root of this.instances.values()) {
       this.world.scene.remove(root);
       for (const material of root.userData.ownedMaterials ?? []) material.dispose();

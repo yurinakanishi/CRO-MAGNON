@@ -40,7 +40,7 @@ test('Rimo frieze still faces 524 while all released mascots join the animal gal
   assert.equal(
     new Set(['524', 'rimo-neko', ...Object.values(CAVE_EXTRA_PIGMENTS).flatMap((p) => p.subjects)])
       .size,
-    14,
+    22,
   );
 });
 

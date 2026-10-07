@@ -25,6 +25,12 @@ import { handleRimoNekoAction, returnRimoNeko, cancelRimoNekoPet } from '../shar
 import { handleMaeAction, cancelMaePet } from '../shared/mae.mjs';
 import { handleKohakuAction, cancelKohakuPet } from '../shared/kohaku.mjs';
 import { handleMaruimoAction, cancelMaruimoPet } from '../shared/maruimo-mascot.mjs';
+import {
+  handleFriendAction,
+  cancelFriendPetsBy,
+  dismissFriendsOf,
+  pettingFriend,
+} from '../shared/friend-mascots.mjs';
 import { handleCompanion524Action, cancelCompanion524Pet } from '../shared/companion-524.mjs';
 import { stopActor } from '../shared/combat.mjs';
 import {
@@ -62,6 +68,7 @@ export function createActionHandler({
       if (room.maruimo?.petPlayerId === player.id) cancelMaruimoPet(room.maruimo);
       handleKohakuAction(room, player, 'dismissKohaku', now);
       handleMaruimoAction(room, player, 'dismissMaruimo', now);
+      dismissFriendsOf(room, player.id);
       if (room.mae?.petPlayerId === player.id) cancelMaePet(room.mae);
       handleMaeAction(room, player, 'dismissMae', now);
       handleOrbBotAction(room, player, 'dismissBots', null, now);
@@ -86,6 +93,7 @@ export function createActionHandler({
       if (action === 'recallBots') {
         if (room.kohaku?.petPlayerId === player.id) cancelKohakuPet(room.kohaku);
         if (room.maruimo?.petPlayerId === player.id) cancelMaruimoPet(room.maruimo);
+        cancelFriendPetsBy(room, player.id);
         if (room.mae?.petPlayerId === player.id) cancelMaePet(room.mae);
         if (room.rimoNeko?.petPlayerId === player.id) cancelRimoNekoPet(room.rimoNeko);
         if (room.companion524?.petPlayerId === player.id) cancelCompanion524Pet(room.companion524);
@@ -99,6 +107,24 @@ export function createActionHandler({
     // A held companion never occupies the hand during another action.
     if (!['cancelCook', 'cancelFishing', 'cancelCoastal'].includes(action))
       releaseHeldOrbBot(room, player, now);
+    if (action === 'petFriend' || action === 'dismissFriend') {
+      if (
+        action === 'petFriend' &&
+        (room.kohaku?.petPlayerId === player.id ||
+          room.maruimo?.petPlayerId === player.id ||
+          room.mae?.petPlayerId === player.id ||
+          room.companion524?.petPlayerId === player.id ||
+          room.rimoNeko?.petPlayerId === player.id ||
+          room.friends?.some((f) => f.petPlayerId === player.id && f.key !== message.targetId) ||
+          pettingOrbBot(room.orbBots, player.id))
+      )
+        return;
+      if (handleFriendAction(room, player, action, message.targetId, now)) {
+        if (action === 'petFriend') stopActor(player);
+        broadcast(room, snapshot(room));
+      }
+      return;
+    }
     if (action === 'petMaruimo' || action === 'dismissMaruimo') {
       if (
         action === 'petMaruimo' &&
@@ -106,6 +132,7 @@ export function createActionHandler({
           room.mae?.petPlayerId === player.id ||
           room.companion524?.petPlayerId === player.id ||
           room.rimoNeko?.petPlayerId === player.id ||
+          pettingFriend(room.friends, player.id) ||
           pettingOrbBot(room.orbBots, player.id))
       )
         return;
@@ -122,6 +149,7 @@ export function createActionHandler({
           room.mae?.petPlayerId === player.id ||
           room.companion524?.petPlayerId === player.id ||
           room.rimoNeko?.petPlayerId === player.id ||
+          pettingFriend(room.friends, player.id) ||
           pettingOrbBot(room.orbBots, player.id))
       )
         return;
@@ -138,6 +166,7 @@ export function createActionHandler({
           room.maruimo?.petPlayerId === player.id ||
           room.companion524?.petPlayerId === player.id ||
           room.rimoNeko?.petPlayerId === player.id ||
+          pettingFriend(room.friends, player.id) ||
           pettingOrbBot(room.orbBots, player.id))
       )
         return;
@@ -154,6 +183,7 @@ export function createActionHandler({
           room.mae?.petPlayerId === player.id ||
           room.kohaku?.petPlayerId === player.id ||
           room.maruimo?.petPlayerId === player.id ||
+          pettingFriend(room.friends, player.id) ||
           pettingOrbBot(room.orbBots, player.id))
       )
         return;
@@ -170,6 +200,7 @@ export function createActionHandler({
           room.mae?.petPlayerId === player.id ||
           room.kohaku?.petPlayerId === player.id ||
           room.maruimo?.petPlayerId === player.id ||
+          pettingFriend(room.friends, player.id) ||
           pettingOrbBot(room.orbBots, player.id))
       )
         return;

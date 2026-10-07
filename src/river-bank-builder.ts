@@ -1,5 +1,7 @@
 import * as THREE from 'three';
 
+export type RiverBankOptions = { maximumEdge?: number; mountainOnly?: boolean };
+
 // One worker per world, one job in flight. Queued geometry stays cancellable;
 // transferred buffers are owned by the worker, never the shared GLB template.
 export class RiverBankBuilder {
@@ -9,6 +11,7 @@ export class RiverBankBuilder {
     number,
     {
       source: THREE.BufferGeometry;
+      options: RiverBankOptions;
       resolve: (geometry: THREE.BufferGeometry) => void;
       reject: (error: Error) => void;
     }
@@ -20,13 +23,16 @@ export class RiverBankBuilder {
       new Worker(new URL('./river-bank-worker.js', import.meta.url), { type: 'module' }),
   ) {}
 
-  build(source: THREE.BufferGeometry): Promise<THREE.BufferGeometry> {
+  build(
+    source: THREE.BufferGeometry,
+    options: RiverBankOptions = {},
+  ): Promise<THREE.BufferGeometry> {
     if (this.stopped) {
       source.dispose();
       return Promise.reject(new Error('River bank builder disposed'));
     }
     return new Promise((resolve, reject) => {
-      this.jobs.set(++this.serial, { source, resolve, reject });
+      this.jobs.set(++this.serial, { source, options, resolve, reject });
       this.dispatch();
     });
   }
@@ -43,9 +49,8 @@ export class RiverBankBuilder {
       const [id, job] = this.jobs.entries().next().value!;
       this.active = id;
       const attributes = Object.fromEntries(
-        Object.entries(job.source.attributes)
-          .filter(([name]) => name !== 'normal' && name !== 'tangent')
-          .map(([name, a]: [string, THREE.BufferAttribute | THREE.InterleavedBufferAttribute]) => {
+        Object.entries(job.source.attributes).map(
+          ([name, a]: [string, THREE.BufferAttribute | THREE.InterleavedBufferAttribute]) => {
             if (a instanceof THREE.InterleavedBufferAttribute) {
               const array = new Float32Array(a.count * a.itemSize);
               for (let i = 0; i < a.count; i++)
@@ -54,13 +59,24 @@ export class RiverBankBuilder {
               return [name, { array, itemSize: a.itemSize, normalized: false }];
             }
             return [name, { array: a.array, itemSize: a.itemSize, normalized: a.normalized }];
-          }),
+          },
+        ),
       );
       const index = job.source.index?.array;
       const transfers = Object.values(attributes).map((a) => a.array.buffer as ArrayBuffer);
       if (index) transfers.push(index.buffer as ArrayBuffer);
       try {
-        this.worker.postMessage({ id, attributes, index }, [...new Set(transfers)]);
+        this.worker.postMessage(
+          {
+            id,
+            attributes,
+            index,
+            groups: job.source.groups,
+            drawRange: job.source.drawRange,
+            ...job.options,
+          },
+          [...new Set(transfers)],
+        );
       } finally {
         job.source.dispose();
       }
@@ -79,6 +95,8 @@ export class RiverBankBuilder {
       for (const [name, a] of Object.entries(data.attributes) as [string, any][])
         geometry.setAttribute(name, new THREE.BufferAttribute(a.array, a.itemSize, a.normalized));
       if (data.index) geometry.setIndex(new THREE.BufferAttribute(data.index, 1));
+      if (data.groups) geometry.groups = data.groups;
+      if (data.drawRange) geometry.drawRange = data.drawRange;
       geometry.computeBoundingSphere();
       job.resolve(geometry);
     }
