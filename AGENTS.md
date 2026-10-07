@@ -6,7 +6,9 @@
 MMOタイトルは起動直後に暗い洞窟・暖色の光輪のロゴ・進捗バー（`WorldAssets.load` の `onProgress`、`WorldRenderer.loadProgress`）・壁画を表示し、世界の準備完了でメニューを一度だけ浮上。失敗時は既存エラーを優先。
 リンクは `x.com/<handle>` 形式のみ。りも(Limo)・R-524は既存URL。まるぃも・maeは `TITLE_FRIENDS` に追加したがXは未確認（Claude in Chrome未接続・アプリ内ブラウザー未ログイン・検索でも特定不可）で、リンクなし・仮アイコンはマスコット肖像。こはくちゃん・botはリンクなし。公開ビルド生成に `TITLE_FRIENDS` とアイコンを追加、`credits: public` は維持。
 全1031テスト中1028合格（失敗3件は既存の資源・マンモス）、check成功。実Chromeの `scripts/qa-title-mural.mjs` 15項目（PC・390×844・320×568・844×390・動き軽減・展示QR、Xは遮断し代替応答）、更新した `qa-mobile-start.mjs` 7項目、エラー0。証拠 `output/playwright/title-mural-20261007/`。
-通常3000番は既存devの自動更新で新配信SHA一致（参加者0）。build:mmo（稼働中8787の配信物を書換）・公開デプロイ・展示配布・commit／pushなし。詳細 `docs/title-mural-2026-10-07.md`。実スマホ・Safari・物理パッド未確認。
+通常3000番は既存devの自動更新で新配信SHA一致（参加者0）。詳細 `docs/title-mural-2026-10-07.md`。実スマホ・Safari・物理パッド未確認。
+後続指示「commit then push to main, local mmo devに反映」で `d8cdcf2` をmainへpush。停止中だった8787へ反映：控え `output/cloudflare-deploy/before-title-mural-1791365633`（旧配信物・記録）、build:mmoの差分はpublic追加5／変更9のみ・Worker128不変、ID c36db1f6→fe13ca83。
+`preview:mmo` を非表示起動しhealth／status 200（参加者0）、変更14ファイルのHTTP SHA一致。タイトルのヘッドレス読込で壁画・メニュー3項目・ダイアログ5名（公開版は監修非表示）・エラー0（部屋へは未参加）。公開デプロイ・展示配布なし。
 
 ## 2026-10-07 針葉樹を自然なトウヒへ作り直し
 
