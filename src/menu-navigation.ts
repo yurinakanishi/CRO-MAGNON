@@ -46,7 +46,8 @@ export function menuItems(root: HTMLElement): HTMLElement[] {
     ),
   ].filter(
     (el) =>
-      !el.matches(':disabled,[type="hidden"]') &&
+      // Moving targets (the title mural) stay pointer-only; a dialog lists the same links.
+      !el.matches(':disabled,[type="hidden"],[data-nav-skip]') &&
       !el.closest('[hidden],[inert]') &&
       !!el.getClientRects().length &&
       getComputedStyle(el).visibility !== 'hidden',

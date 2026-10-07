@@ -6,6 +6,12 @@
       "runtimeExecutable": "npm",
       "runtimeArgs": ["run", "dev"],
       "port": 3000
+    },
+    {
+      "name": "cro-magnon-mmo",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": ["run", "preview:mmo"],
+      "port": 8787
     }
   ]
 }

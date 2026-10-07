@@ -151,7 +151,10 @@ export class WorldAssets {
     this.environmentActive = 0;
     this.disposed = false;
   }
-  async load({ deferCompanions = false } = {}) {
+  async load({
+    deferCompanions = false,
+    onProgress,
+  }: { deferCompanions?: boolean; onProgress?: (loaded: number, total: number) => void } = {}) {
     const started = performance.now();
     const response = await fetch('/models/world-assets.json');
     if (!response.ok) throw new Error(`World assets: HTTP ${response.status}`);
@@ -164,17 +167,31 @@ export class WorldAssets {
         !asset.onDemand &&
         !(deferCompanions && asset.kind === 'companion'),
     );
+    // Byte totals come from the verified records, so progress is known up front.
+    const total = pending.reduce(
+      (sum, asset) =>
+        sum + asset.bytes + (asset.lods ?? []).reduce((n, lod) => n + (lod.bytes ?? 0), 0),
+      0,
+    );
+    let loaded = 0;
+    const advance = (record) => {
+      loaded += record.bytes ?? 0;
+      onProgress?.(loaded, total);
+    };
+    onProgress?.(0, total);
     // Bound concurrent texture decoding while keeping independent downloads busy.
     await Promise.all(
       Array.from({ length: 3 }, async () => {
         while (pending.length && !this.disposed) {
           const asset = pending.shift(),
             gltf = await loadVerifiedGLB(asset);
+          advance(asset);
           const lods = [];
           try {
             for (const lod of asset.lods ?? []) {
               if (this.disposed) break;
               lods.push(await loadVerifiedGLB(lod));
+              advance(lod);
             }
           } catch (error) {
             disposeTemplates([gltf, ...lods]);

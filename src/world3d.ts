@@ -208,6 +208,12 @@ export class WorldRenderer {
   declare animate: (now: any) => void;
   declare frame: number;
   declare loadingLabel: HTMLDivElement;
+  /** Initial world download, read by the title's loading screen. */
+  declare loadProgress: {
+    loaded: number;
+    total: number;
+    phase: 'download' | 'build' | 'ready' | 'error';
+  };
   declare assetsPromise: Promise<void>;
   declare hemisphere: THREE.HemisphereLight | undefined;
   declare sun: THREE.DirectionalLight | undefined;
@@ -393,6 +399,7 @@ export class WorldRenderer {
     this.loadingLabel.className = 'world-loading';
     this.loadingLabel.textContent = '渓谷を準備しています…';
     canvas.parentElement.append(this.loadingLabel);
+    this.loadProgress = { loaded: 0, total: 0, phase: 'download' };
     this.assetsPromise = this.initializeWorld();
     this.assetsPromise.catch(() => {});
   }
@@ -439,8 +446,15 @@ export class WorldRenderer {
   async initializeWorld() {
     const started = performance.now();
     try {
-      await Promise.all([this.worldAssets.load({ deferCompanions: true }), this.npcAssets.load()]);
+      await Promise.all([
+        this.worldAssets.load({
+          deferCompanions: true,
+          onProgress: (loaded, total) => Object.assign(this.loadProgress, { loaded, total }),
+        }),
+        this.npcAssets.load(),
+      ]);
       if (this.disposed) return;
+      this.loadProgress.phase = 'build';
       await buildTerrainAssets(this);
       if (this.disposed) return;
       buildForestAssets(this);
@@ -448,6 +462,7 @@ export class WorldRenderer {
       buildAnimalAssets(this);
       this.landmarks = new WorldLandmarks(this);
       this.assetsReady = true;
+      this.loadProgress.phase = 'ready';
       this.syncResources();
       this.syncEnemies();
       this.campLabel.element.classList.toggle('complete', this.state.camp.level > 0);
@@ -555,6 +570,7 @@ export class WorldRenderer {
   failWorld(message, error) {
     this.failed = true;
     this.assetsReady = false;
+    if (this.loadProgress) this.loadProgress.phase = 'error';
     cancelAnimationFrame(this.frame);
     this.canvas.dataset.worldAsset = 'error';
     this.canvas.style.visibility = 'hidden';

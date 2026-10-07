@@ -7,7 +7,7 @@ import { assertPublicCharacterData } from './public-character-audit.mjs';
 import './build.mjs';
 if (process.exitCode) throw new Error('TypeScript build failed');
 const { CHARACTER_MODELS } = await import('../dist/shared/characters.mjs');
-const { TITLE_CREDITS, TITLE_GUEST, TITLE_SUPPORT } =
+const { TITLE_CREDITS, TITLE_GUEST, TITLE_SUPPORT, TITLE_FRIENDS } =
   await import('../dist/src/title-credit-profiles.js');
 
 const root = path.dirname(path.dirname(fileURLToPath(import.meta.url)));
@@ -46,7 +46,7 @@ if (!publicCharacters.some((model) => model.species === 'cro'))
 const hasOctopus = publicCharacters.some((model) => model.bodyPlan === 'octopus');
 const credits = release.credits === 'full' ? TITLE_CREDITS : TITLE_CREDITS.slice(0, 1);
 const visibleProfiles = new Set(
-  [...credits, TITLE_GUEST, TITLE_SUPPORT].map((person) => person.qr),
+  [...credits, TITLE_GUEST, TITLE_SUPPORT, ...TITLE_FRIENDS].map((person) => person.qr),
 );
 const fileLimit = 25 * 1024 * 1024;
 const partSize = 24 * 1024 * 1024;
@@ -157,7 +157,7 @@ await publish(
 await publish(
   '/src/title-credit-profiles.js',
   Buffer.from(
-    `export const TITLE_CREDITS = ${JSON.stringify(credits)};\nexport const TITLE_GUEST = ${JSON.stringify(TITLE_GUEST)};\nexport const TITLE_SUPPORT = ${JSON.stringify(TITLE_SUPPORT)};\n`,
+    `export const TITLE_CREDITS = ${JSON.stringify(credits)};\nexport const TITLE_GUEST = ${JSON.stringify(TITLE_GUEST)};\nexport const TITLE_SUPPORT = ${JSON.stringify(TITLE_SUPPORT)};\nexport const TITLE_FRIENDS = ${JSON.stringify(TITLE_FRIENDS)};\n`,
   ),
 );
 

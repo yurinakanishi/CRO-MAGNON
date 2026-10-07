@@ -1,0 +1,109 @@
+{
+  "generator": "scripts/build-cave-mural-strip.py",
+  "rock": {
+    "file": "public/models/camp-cave/limestone-r05.png",
+    "sha256": "574372b875437977f226564a2bc1a8cd7149695582b1bbb6c806f7e83a075cee"
+  },
+  "output": {
+    "file": "public/title/cave-mural-strip.webp",
+    "width": 7600,
+    "height": 400,
+    "bytes": 607848,
+    "sha256": "6dd2dc4f35f44f5495f87bffb64a158c9fc8bfb86e4daf3a298f2e482d29ca3e"
+  },
+  "preview": {
+    "file": "public/title/cave-mural-strip-preview.webp",
+    "width": 684,
+    "height": 36,
+    "bytes": 6376,
+    "sha256": "6a59f6414b0d11f33c47ac6fbd86026efa150eb152c8e7254949880e19618f8e"
+  },
+  "baseWidth": 13756,
+  "baseHeight": 724,
+  "friezes": [
+    {
+      "motif": "rimoFrieze",
+      "file": "public/models/camp-cave/rimo-lascaux-frieze-r30.png",
+      "sha256": "b750045fda524816577747197874d173d41161e2b55d9acfe772a8f37f8d01df",
+      "left": 60,
+      "width": 2172
+    },
+    {
+      "motif": "roundBots",
+      "file": "public/models/camp-cave/bot-round-lascaux-r31.png",
+      "sha256": "94da10a2db5962f7e66af1617a310091c4852d9a1d6c9d322c09e6d01656c93c",
+      "left": 2353,
+      "width": 2172
+    },
+    {
+      "motif": "creature524",
+      "file": "public/models/camp-cave/524-lascaux-frieze-r32.png",
+      "sha256": "5fc419d77d0155133b0f231a07ad80a03c78ed99850ced492f79108bea5a765a",
+      "left": 4646,
+      "width": 2171
+    },
+    {
+      "motif": "maruimoFrieze",
+      "file": "public/models/camp-cave/maruimo-lascaux-r33.png",
+      "sha256": "eff36cf28d83cf69e61e2e345a4d90e08c790ae58306450be1ab657dd7614a1e",
+      "left": 6938,
+      "width": 2172
+    },
+    {
+      "motif": "shapeBots",
+      "file": "public/models/camp-cave/bot-shapes-lascaux-r31.png",
+      "sha256": "18cac2271a651fe11b223ac5fb3abab2a126ee25153ca0851f749ebd195e8dde",
+      "left": 9231,
+      "width": 2172
+    },
+    {
+      "motif": "maeKohaku",
+      "file": "public/models/camp-cave/mae-kohaku-lascaux-r31.png",
+      "sha256": "f67ea277c3d42c93877139b44150ee6fddbb2eb41854418ea09ac4bd40eed732",
+      "left": 11524,
+      "width": 2172
+    }
+  ],
+  "spots": [
+    {
+      "subject": "rimo",
+      "label": "りもねこ",
+      "x": 0.0647,
+      "y": 0.24862,
+      "w": 0.03308,
+      "h": 0.67956
+    },
+    {
+      "subject": "r524",
+      "label": "524",
+      "x": 0.41407,
+      "y": 0.48343,
+      "w": 0.02072,
+      "h": 0.37983
+    },
+    {
+      "subject": "maruimo",
+      "label": "まるぃも",
+      "x": 0.59269,
+      "y": 0.38674,
+      "w": 0.02871,
+      "h": 0.53177
+    },
+    {
+      "subject": "mae",
+      "label": "mae",
+      "x": 0.88027,
+      "y": 0.62155,
+      "w": 0.02108,
+      "h": 0.30663
+    },
+    {
+      "subject": "kohaku",
+      "label": "こはくちゃん",
+      "x": 0.92934,
+      "y": 0.39365,
+      "w": 0.02944,
+      "h": 0.55249
+    }
+  ]
+}

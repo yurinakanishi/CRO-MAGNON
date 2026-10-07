@@ -1,3 +1,13 @@
+## 2026-10-07 MMOのホームを洞窟の壁画中心に・展示はQRクレジットを維持
+
+ユーザー指定でContributors表示を分離。展示（LAN／展示ビルド）は従来のアイコン・名前・QRのまま、リンクなし。MMO・通常ローカルはQRを出さず、画面下に洞窟の壁画の帯、メニューに「関わってくれた人たち」ダイアログ。
+`scripts/build-cave-mural-strip.py` が洞窟の6壁画PNGを無加工で石灰岩へ焼き込み、岩19枚分の継ぎ目なし帯 `public/title/cave-mural-strip.webp`（7600×400、608KB＋6KBプレビュー）。記録 `assets/title-credits/cave-mural-strip.json`。
+同じパネル2枚をCSSで1枚分ずらしてループ（220秒）。クリック領域はパネル内の割合配置で壁画と完全同期、ホバー／押下で停止、名札とXマーク、新規タブ。矢印・パッド移動からは `data-nav-skip` で除外、動きを減らす設定では停止＋横スクロール。
+MMOタイトルは起動直後に暗い洞窟・暖色の光輪のロゴ・進捗バー（`WorldAssets.load` の `onProgress`、`WorldRenderer.loadProgress`）・壁画を表示し、世界の準備完了でメニューを一度だけ浮上。失敗時は既存エラーを優先。
+リンクは `x.com/<handle>` 形式のみ。りも(Limo)・R-524は既存URL。まるぃも・maeは `TITLE_FRIENDS` に追加したがXは未確認（Claude in Chrome未接続・アプリ内ブラウザー未ログイン・検索でも特定不可）で、リンクなし・仮アイコンはマスコット肖像。こはくちゃん・botはリンクなし。公開ビルド生成に `TITLE_FRIENDS` とアイコンを追加、`credits: public` は維持。
+全1031テスト中1028合格（失敗3件は既存の資源・マンモス）、check成功。実Chromeの `scripts/qa-title-mural.mjs` 15項目（PC・390×844・320×568・844×390・動き軽減・展示QR、Xは遮断し代替応答）、更新した `qa-mobile-start.mjs` 7項目、エラー0。証拠 `output/playwright/title-mural-20261007/`。
+通常3000番は既存devの自動更新で新配信SHA一致（参加者0）。build:mmo（稼働中8787の配信物を書換）・公開デプロイ・展示配布・commit／pushなし。詳細 `docs/title-mural-2026-10-07.md`。実スマホ・Safari・物理パッド未確認。
+
 ## 2026-10-07 針葉樹を自然なトウヒへ作り直し
 
 ユーザー指摘「木の造形がおかしい」で `valley-pine` Candidate 2を採用。C1の卵形の葉の塊・四角い幹・光る先端を、自然なトウヒへ置換。
@@ -7,7 +17,10 @@ TRELLIS-2 1024 seed42（294,800三角形）→meshopt 17,122＋xatlas＋1024色�
 `scripts/remake/remake_process.py` に `--crease-deg`／`--normal-strength` を追加（既定は従来値）。高さ10 m・接地中心で配置・縮尺は不変。枝の下端約2.05 m（旧2.42 m）。
 幹の当たり判定を新GLBで再計測（約0.69×0.78 m）。旧 `model.glb`／`lod1.glb` 保持、新規 `model-c2.glb`／`lod-c2.glb`。記録 `assets/asset-remake/reviews/valley-pine.json`、`docs/asset-remake/PROGRESS.md` 追補。
 全1026テスト中1023合格（失敗3件は既存と同じ）、check・verify-world-assets（71モデル）成功。実Chrome＋通信4人で群生・キャンプ・見上げ・遠景の前後比較、エラー0（`scripts/qa-pine-remake.mjs`、`output/playwright/pine-remake-20261007/`）。
-3000番・8787番は停止中で配信・再起動・公開デプロイ・commit／pushなし。fps・実スマホ・雪原の近景は未計測。
+fps・実スマホ・雪原の近景は未計測。`77c77f4` でmainへpush。
+後続指示「反映・再起動」で、停止中だった両サーバーを起動。控え `output/cloudflare-deploy/before-pine-remake-1791354616`（旧MMO配信物・記録と両保存）。
+build:mmoの初回は `dist/` に残った9月の旧出力2件（削除済みソースの `riding-input`／`expeditions`）を拾ったため削除して再ビルド。差分は木の4GLB入替・当たり判定・素材一覧とビルド情報のみ（561 public／128 Worker）、ID 20b304cd→c36db1f6。
+8787（`preview:mmo`）と3000（`dev`、保存3部屋を読込・復旧なし）でhealth／status 200、新GLB2件のHTTP SHA一致・旧URL404・新しい幹の当たり判定を配信。タイトルのヘッドレス読込で両方GLB37・エラー0（部屋へは未参加）。公開デプロイ・展示配布なし。
 
 ## 2026-10-07 全3Dアセットの再制作（Candidate 2）
 

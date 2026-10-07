@@ -268,3 +268,456 @@
     animation: none;
   }
 }
+
+/* ---- Online title: the cave mural is the main visual (exhibition keeps QR credits) ---- */
+#screen-title[data-variant='mural'] {
+  --mural-h: clamp(140px, 28dvh, 300px);
+  isolation: isolate;
+}
+/* The torch-lit cave stands in for the world until its first download finishes. */
+#screen-title[data-variant='mural']::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background:
+    radial-gradient(ellipse 60% 48% at 50% 34%, #4a3420 0%, #24180f 46%, #0c0806 100%), #0c0806;
+  opacity: 0;
+  transition: opacity 1.6s ease;
+}
+#screen-title[data-variant='mural'][data-loading]::before {
+  opacity: 1;
+  transition: none;
+}
+#screen-title[data-variant='mural'] .title-content {
+  grid-template-columns: minmax(0, 1fr);
+  grid-template-areas: 'hero' 'credits';
+  grid-template-rows: minmax(0, 1fr) auto;
+  max-width: none;
+  padding: 24px 0 0;
+  gap: clamp(10px, 2.2dvh, 22px);
+  align-items: stretch;
+}
+#screen-title[data-variant='mural'] .title-hero {
+  padding: 0 24px;
+  justify-content: center;
+}
+#screen-title[data-variant='mural'] .title-art {
+  height: clamp(140px, calc(100dvh - var(--mural-h) - 270px), 560px);
+}
+/* On the dark loading cave, a warm torchlit halo keeps the dark lettering legible. */
+#screen-title[data-variant='mural'] .title-logo::before {
+  /* Match the art's object-fit: contain, or a letterboxed phone logo glows as a box. */
+  background-size: contain;
+  transition:
+    opacity 1.6s ease,
+    filter 1.6s ease;
+}
+#screen-title[data-variant='mural'][data-loading] .title-logo::before {
+  opacity: 0.78;
+  filter: brightness(0) invert(0.96) sepia(0.55) saturate(1.6) blur(clamp(9px, 1.6vw, 20px));
+}
+/* The menu rises in once, when the world finishes loading. */
+#screen-title[data-variant='mural'] .title-menu.menu-reveal {
+  animation: title-rise 0.6s ease-out;
+}
+#screen-title .title-menu[hidden] {
+  display: none;
+}
+#screen-title[data-variant='mural'] .title-welcome {
+  width: min(320px, 100%);
+}
+#screen-title[data-variant='mural'] .menu-item {
+  padding-left: 24px;
+  padding-right: 24px;
+  letter-spacing: 0.14em;
+  white-space: nowrap;
+}
+.title-loading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  min-height: 144px;
+  justify-content: center;
+  color: #efe2c0;
+  outline: none;
+}
+.title-loading[hidden] {
+  display: none;
+}
+.title-loading-text {
+  font: 500 15px/1.4 var(--display);
+  letter-spacing: 0.24em;
+  text-shadow: 0 2px 10px #000c;
+}
+.title-loading-bar {
+  position: relative;
+  width: min(260px, 70vw);
+  height: 3px;
+  overflow: hidden;
+  border-radius: 3px;
+  background: #ffffff1c;
+}
+.title-loading-bar i {
+  position: absolute;
+  inset: 0;
+  transform-origin: left center;
+  transform: scaleX(var(--progress, 0));
+  background: linear-gradient(90deg, #a5642a, #f3c77a);
+  box-shadow: 0 0 12px #f3c77a99;
+  transition: transform 0.45s ease;
+}
+.title-loading-bar::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, transparent, #fff3d466, transparent);
+  transform: translateX(-100%);
+  animation: ember-sweep 1.8s ease-in-out infinite;
+}
+@keyframes ember-sweep {
+  to {
+    transform: translateX(100%);
+  }
+}
+.title-loading-percent {
+  color: #cdbb92;
+  font-size: 11px;
+  letter-spacing: 0.2em;
+  font-variant-numeric: tabular-nums;
+}
+.cave-mural {
+  grid-area: credits;
+  position: relative;
+  min-width: 0;
+}
+.mural-viewport {
+  position: relative;
+  height: var(--mural-h);
+  overflow: hidden;
+  /* Soft rock edges: fade the band into the scene on every side. */
+  -webkit-mask-image:
+    linear-gradient(90deg, transparent, #000 6%, #000 94%, transparent),
+    linear-gradient(transparent, #000 9%, #000 91%, transparent);
+  -webkit-mask-composite: source-in;
+  mask-image:
+    linear-gradient(90deg, transparent, #000 6%, #000 94%, transparent),
+    linear-gradient(transparent, #000 9%, #000 91%, transparent);
+  mask-composite: intersect;
+  scrollbar-width: none;
+}
+/* Torchlight: a warm pool in the middle, rock darkening towards the edges. */
+.mural-viewport::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(ellipse 58% 135% at 50% 52%, #ffc8800f 0%, transparent 38%, #140b0480 100%),
+    linear-gradient(#1a0f0655, transparent 26%, transparent 74%, #0d080477);
+  animation: torch-flicker 4.6s ease-in-out infinite alternate;
+}
+@keyframes torch-flicker {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  45% {
+    opacity: 0.86;
+  }
+  70% {
+    opacity: 0.95;
+  }
+}
+/* Two identical panels; moving the track by one panel width loops without a seam.
+   Hotspots live inside the panels, so they move with the painting exactly. */
+.mural-track {
+  display: flex;
+  width: max-content;
+  height: 100%;
+  animation: mural-pan var(--mural-duration, 220s) linear infinite;
+  will-change: transform;
+}
+@keyframes mural-pan {
+  to {
+    transform: translate3d(-50%, 0, 0);
+  }
+}
+@media (hover: hover) {
+  .mural-viewport:hover .mural-track {
+    animation-play-state: paused;
+  }
+}
+.mural-viewport:active .mural-track {
+  animation-play-state: paused;
+}
+.mural-panel {
+  position: relative;
+  flex: none;
+  height: 100%;
+  aspect-ratio: 19 / 1;
+  background: #6f6253 center / 100% 100% no-repeat;
+}
+.mural-image {
+  display: block;
+  width: 100%;
+  height: 100%;
+  user-select: none;
+  -webkit-user-drag: none;
+  filter: sepia(0.1) brightness(0.9) contrast(1.05);
+}
+.mural-spot {
+  position: absolute;
+  display: block;
+  border-radius: 46%;
+  -webkit-tap-highlight-color: transparent;
+}
+a.mural-spot::before {
+  content: '';
+  position: absolute;
+  inset: -4% -10%;
+  border-radius: 50%;
+  transition:
+    box-shadow 0.25s,
+    background 0.25s;
+}
+a.mural-spot:hover::before,
+a.mural-spot:focus-visible::before,
+a.mural-spot:active::before {
+  background: radial-gradient(closest-side, #ffd49a33, transparent);
+  box-shadow:
+    0 0 0 2px #f3c77acc,
+    0 0 30px 6px #ffb45466;
+}
+a.mural-spot:focus-visible {
+  outline: none;
+}
+/* Museum-style name tags above each painted contributor. */
+.mural-tag {
+  position: absolute;
+  left: 50%;
+  bottom: 100%;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 2px 9px 2px 2px;
+  transform: translate(-50%, -3px);
+  border: 1px solid #e4c48a66;
+  border-radius: 999px;
+  background: #160f0ae0;
+  color: #f6ecd6;
+  font-size: clamp(10px, calc(var(--mural-h) * 0.05), 13px);
+  line-height: 1.5;
+  white-space: nowrap;
+  opacity: 0.88;
+  box-shadow: 0 4px 14px #0008;
+  transition:
+    opacity 0.2s,
+    transform 0.2s;
+}
+.mural-tag img {
+  width: 1.7em;
+  height: 1.7em;
+  border-radius: 50%;
+  object-fit: cover;
+}
+.mural-tag b {
+  font-weight: 600;
+}
+.mural-tag .x-glyph {
+  width: 0.95em;
+  height: 0.95em;
+  opacity: 0.75;
+}
+a.mural-spot:hover .mural-tag,
+a.mural-spot:focus-visible .mural-tag {
+  opacity: 1;
+  transform: translate(-50%, -7px);
+  border-color: #f3c77a;
+}
+.mural-caption {
+  margin: 4px 0 0;
+  padding: 0 16px;
+  color: #d8c9a3cc;
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  text-align: center;
+  text-shadow: 0 1px 6px #000c;
+}
+/* Phones: full-bleed band below the logo; the touch layout pads only the hero. */
+.touch-mode #screen-title[data-variant='mural'] {
+  --mural-h: clamp(112px, 24dvh, 220px);
+}
+/* Beats the touch layouts' two-column landscape grid: the wall always spans the bottom. */
+.touch-mode #screen-title[data-variant='mural'] .title-content {
+  grid-template-columns: minmax(0, 1fr);
+  grid-template-rows: minmax(0, 1fr) auto;
+  grid-template-areas: 'hero' 'credits';
+  align-items: stretch;
+  padding-left: 0;
+  padding-right: 0;
+}
+.touch-mode #screen-title[data-variant='mural'] .title-hero {
+  padding: 0 max(16px, env(safe-area-inset-right)) 0 max(16px, env(safe-area-inset-left));
+}
+@media (max-width: 700px) {
+  #screen-title[data-variant='mural'] {
+    --mural-h: clamp(112px, 24dvh, 220px);
+  }
+  #screen-title[data-variant='mural'] .title-content {
+    padding-top: 60px;
+  }
+  .mural-caption {
+    font-size: 10px;
+    letter-spacing: 0.06em;
+  }
+  #screen-title[data-variant='mural'] .title-art {
+    width: min(620px, 100%);
+    height: auto;
+    max-height: calc(100dvh - var(--mural-h) - 280px);
+  }
+}
+/* Short landscape screens: logo and menu side by side above a slimmer band. */
+@media (max-height: 520px) and (orientation: landscape) {
+  #screen-title[data-variant='mural'],
+  .touch-mode #screen-title[data-variant='mural'] {
+    --mural-h: clamp(84px, 25dvh, 130px);
+  }
+  #screen-title[data-variant='mural'] .title-content,
+  .touch-mode #screen-title[data-variant='mural'] .title-content {
+    padding-top: max(10px, env(safe-area-inset-top));
+    gap: 6px;
+  }
+  #screen-title[data-variant='mural'] .title-hero {
+    flex-direction: row;
+    gap: clamp(12px, 4vw, 40px);
+  }
+  #screen-title[data-variant='mural'] .title-logo,
+  .touch-mode #screen-title[data-variant='mural'] .title-logo {
+    flex: 0 1 auto;
+    width: auto;
+    height: 100%;
+    max-height: calc(100dvh - var(--mural-h) - 50px);
+  }
+  #screen-title[data-variant='mural'] .title-art,
+  .touch-mode #screen-title[data-variant='mural'] .title-art {
+    width: auto;
+    height: 100%;
+    max-height: calc(100dvh - var(--mural-h) - 50px);
+  }
+  #screen-title[data-variant='mural'] .title-welcome {
+    width: min(260px, 40vw);
+  }
+  #screen-title[data-variant='mural'] .title-loading {
+    min-height: 0;
+  }
+  .mural-caption {
+    display: none;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .mural-track,
+  .mural-viewport::after,
+  .title-loading-bar::after,
+  .contributors-mark {
+    animation: none;
+  }
+  /* Without the pan the whole wall stays reachable by scrolling. */
+  .mural-viewport {
+    overflow-x: auto;
+  }
+}
+
+/* ---- Contributors dialog ---- */
+.contributors-mark {
+  display: block;
+  height: 84px;
+  margin: 0 0 16px;
+  border-radius: 10px;
+  background: url('/title/cave-mural-strip.webp') 0 0 / auto 100% repeat-x;
+  -webkit-mask-image: linear-gradient(90deg, transparent, #000 10%, #000 90%, transparent);
+  mask-image: linear-gradient(90deg, transparent, #000 10%, #000 90%, transparent);
+  filter: sepia(0.1) brightness(0.88);
+  animation: contributors-mark-pan 150s linear infinite;
+}
+@keyframes contributors-mark-pan {
+  to {
+    background-position: -1596px 0;
+  }
+}
+.contributor-group h3 {
+  margin: 18px 0 10px;
+  color: #d6c79a;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.3em;
+}
+.contributor-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
+  gap: 10px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.contributor {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-height: 72px;
+  padding: 10px 12px;
+  border: 1px solid #e0c99a26;
+  border-radius: 12px;
+  background: #ffffff06;
+  color: inherit;
+  text-decoration: none;
+}
+a.contributor:hover,
+a.contributor:focus-visible,
+a.contributor.gamepad-focus {
+  border-color: #f3c77a99;
+  background: #f3c77a14;
+  outline: none;
+}
+.contributor-avatar {
+  flex: none;
+  width: 52px;
+  height: 52px;
+  border: 2px solid #dbc895b3;
+  border-radius: 50%;
+  background: #17221c;
+  object-fit: cover;
+}
+.contributor-text {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+.contributor-text strong {
+  color: #f2ead4;
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 1.4;
+  overflow-wrap: anywhere;
+}
+.contributor-text small {
+  color: #a8b49b;
+  font-size: 11px;
+}
+.contributor-text em {
+  color: #e3b979;
+  font-size: 10px;
+  font-style: normal;
+  letter-spacing: 0.08em;
+}
+.contributor .x-glyph {
+  flex: none;
+  width: 16px;
+  height: 16px;
+  margin-left: auto;
+  color: #d8cfb8;
+  opacity: 0.7;
+}

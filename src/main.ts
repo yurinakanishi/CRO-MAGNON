@@ -114,7 +114,8 @@ import { installGulfUI, gulfInteraction } from './gulf-ui.js';
 import { installVillageUI, residentInteraction } from './village-ui.js';
 import { inGulf } from '../shared/gulf-region.mjs';
 import { ScreenManager, AreaBanner, keyPrompts } from './screens.js';
-import { titleCreditsMarkup } from './title-credits.js';
+import { titleCreditsMarkup, titleMuralMarkup, contributorsDialogMarkup } from './title-credits.js';
+import { BUILD_PROFILE } from './build-profile.js';
 import {
   DIFFICULTIES,
   DIFFICULTY_LEVELS,
@@ -183,6 +184,9 @@ const sessionKey = (room: string) => multiplayerSessionKey(multiplayer, room);
 // The exhibition LAN build never asks for a name or room: each PC is a fixed
 // player in the fixed exhibition room, and only the character is chosen.
 const fixedIdentity = multiplayer.mode === 'lan';
+// Exhibition PCs keep scannable QR credits. Online play shows the cave mural,
+// waits on it while the world loads, and lists contributors in a dialog.
+const muralTitle = !fixedIdentity && BUILD_PROFILE.environment !== 'exhibition';
 const hudPlayerLimit = () =>
   fixedIdentity ? EXHIBITION_PLAYER_LIMIT : (state.playerLimit ?? WORLD.maxPlayers);
 const titleArtPath = '/title/cro-magnon-mmo-transparent.webp';
@@ -270,18 +274,20 @@ $('#app').innerHTML = `
     <div class="hotbar-wrap"><div id="companion524-controls"><button type="button" class="hunt-button" id="pet-rimo-button" hidden><kbd>V</kbd><span>りもねこを撫でる</span></button><button type="button" class="hunt-button" id="dismiss-rimo-button" hidden><kbd>T</kbd><span>りもねこをキャンプへ帰す</span></button></div><div class="interaction-hint" id="interaction-hint" hidden><kbd>E</kbd><span></span></div></div>
     <div id="prompt-bar" class="prompt-bar" aria-label="操作の案内"></div>
     <div id="screens" class="screens">
-      <section id="screen-title" class="screen title-screen" hidden>
+      <section id="screen-title" class="screen title-screen"${muralTitle ? ' data-variant="mural" data-loading' : ''} hidden>
         <div class="title-content">
           <div class="title-hero">
           <div class="title-logo" style="--title-art: url('${titleArtPath}')"><h1>${GAME_TITLE}</h1><img class="title-art" src="${titleArtPath}" width="1536" height="1024" alt="${GAME_TITLE} — 氷河時代の旅人たちとマンモス" fetchpriority="high"></div>
           <div class="title-welcome">
-          <nav class="title-menu" aria-label="タイトルメニュー">
+          ${muralTitle ? '<div class="title-loading" role="status" tabindex="-1"><span class="title-loading-text">世界を準備しています</span><span class="title-loading-bar" aria-hidden="true"><i></i></span><span class="title-loading-percent">0%</span></div>' : ''}
+          <nav class="title-menu" aria-label="タイトルメニュー"${muralTitle ? ' hidden' : ''}>
             <button id="title-start" class="menu-item">はじめる</button>
             <button id="title-graphics" class="menu-item">画質</button>
+            ${muralTitle ? '<button id="title-contributors" class="menu-item">関わってくれた人たち</button>' : ''}
           </nav>
           </div>
           </div>
-          ${titleCreditsMarkup()}
+          ${muralTitle ? titleMuralMarkup() : titleCreditsMarkup()}
         </div>
         <button id="title-fullscreen" class="title-fullscreen" type="button" aria-label="全画面表示" aria-pressed="false">${icon('expand')}</button>
         <div class="title-footer"><span>v0.1</span></div>
@@ -1724,6 +1730,50 @@ function showTitle() {
   motionControls?.stop();
   $('#modal').close();
   screens.show('title');
+  // While the world loads, focus the status rather than the corner fullscreen button.
+  if (titleLoading()) $('.title-loading')?.focus({ preventScroll: true });
+}
+/** True while the online title still waits on the initial world download. */
+function titleLoading() {
+  return !!$('#screen-title[data-loading]');
+}
+let shownLoadPercent = -1;
+/** Drives the online title's loading bar until the world is ready, then reveals the menu. */
+function updateTitleLoading() {
+  if (!titleLoading()) return;
+  const progress = renderer.loadProgress;
+  // A missing renderer or a failed world shows its own error; never trap the menu.
+  const done = !progress || progress.phase === 'ready' || progress.phase === 'error';
+  if (!done) {
+    const fraction =
+      progress.phase === 'build'
+        ? 0.96
+        : progress.total
+          ? (0.92 * progress.loaded) / progress.total
+          : 0;
+    const percent = Math.max(shownLoadPercent, Math.floor(fraction * 100));
+    if (percent !== shownLoadPercent) {
+      shownLoadPercent = percent;
+      $('.title-loading-bar').style.setProperty('--progress', String(percent / 100));
+      $('.title-loading-percent').textContent = `${percent}%`;
+      $('.title-loading-text').textContent =
+        progress.phase === 'build' ? '世界を組み立てています' : '世界を準備しています';
+    }
+    return;
+  }
+  const title = $('#screen-title');
+  const hadFocus =
+    title.contains(document.activeElement) || document.activeElement === document.body;
+  delete title.dataset.loading;
+  $('.title-loading').hidden = true;
+  const menu = $('.title-menu');
+  menu.hidden = false;
+  menu.classList.add('menu-reveal');
+  menu.addEventListener('animationend', () => menu.classList.remove('menu-reveal'), {
+    once: true,
+  });
+  if (screens.active === 'title' && hadFocus && !touchMode() && !$('#modal').open)
+    $('#title-start').focus({ preventScroll: true });
 }
 function showSetup(error = '') {
   chatUI?.setOpen(false);
@@ -2466,6 +2516,7 @@ $('#title-graphics').onclick = () => {
   openModal(`<h2>画質</h2><div class="settings-list">${graphicsSettingsMarkup()}</div>`);
   bindGraphicsSettings($('#modal-body'), (mode) => renderer.setGraphicsMode?.(mode));
 };
+$('#title-contributors')?.addEventListener('click', () => openModal(contributorsDialogMarkup()));
 $('#title-fullscreen').onclick = toggleFullscreen;
 document.addEventListener('fullscreenchange', () => {
   const active = !!document.fullscreenElement;
@@ -3086,6 +3137,7 @@ function titleIdle(now: number) {
     audioStatus.textContent = renderer.audio.status;
   if (screens.active === 'title')
     renderer.rotateCamera(Math.min(0.05, (now - titleClock) / 1000) * 0.05, 0);
+  updateTitleLoading();
   titleClock = now;
   requestAnimationFrame(titleIdle);
 }

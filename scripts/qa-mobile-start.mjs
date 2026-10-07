@@ -155,15 +155,20 @@ try {
       ]) {
     const tag = `${size.width}x${size.height}`;
     await newPage(size);
-    await layout(`title-${tag}`, ['#title-start', '#title-graphics']);
-    const names = await page.locator('.credit-name').allTextContents();
-    assert.ok(names.length >= 3);
-    const strip = page.locator('.title-credits');
-    await swipe('.title-credits', -Math.min(180, size.width / 2), 0);
-    assert.ok(await strip.evaluate((e) => e.scrollLeft > 0));
-    assert.deepEqual(await page.locator('.credit-name').allTextContents(), names);
+    await layout(`title-${tag}`, ['#title-start', '#title-graphics', '#title-contributors']);
+    // 2026-10-07: online credits live in the panning cave mural and its dialog.
+    const tags = await page
+      .locator('.mural-panel:not([aria-hidden]) .mural-tag b')
+      .allTextContents();
+    assert.ok(tags.length >= 2);
+    await swipe('.mural-viewport', -Math.min(180, size.width / 2), 0);
+    assert.equal(await page.evaluate(() => document.scrollingElement.scrollLeft), 0);
     await swipe('#screen-title .title-hero', 0, -80);
-    await layout(`title-after-swipe-${tag}`, ['#title-start', '#title-graphics']);
+    await layout(`title-after-swipe-${tag}`, [
+      '#title-start',
+      '#title-graphics',
+      '#title-contributors',
+    ]);
     await page.locator('#title-start').tap();
     assert.equal(await page.evaluate(() => document.activeElement.id), 'screen-setup');
     await layout(`characters-${tag}`, ['input[name="name"]', 'input[name="room"]', '#setup-back']);

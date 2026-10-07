@@ -22,3 +22,13 @@ export const TITLE_SUPPORT = {
   profile: 'https://x.com/vibe_walking',
   qr: 'rimo',
 } as const;
+
+/**
+ * Friends painted in the cave mural. An empty profile is shown without a link
+ * until the X account is verified; their icon is then their mascot portrait.
+ * They have no QR code, so the exhibition credits do not list them.
+ */
+export const TITLE_FRIENDS = [
+  { name: 'まるぃも', profile: '', qr: 'maruimo' },
+  { name: 'mae', profile: '', qr: 'mae' },
+] as const;
