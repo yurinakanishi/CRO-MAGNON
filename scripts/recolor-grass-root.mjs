@@ -1,5 +1,5 @@
 // Recolour the brown/ochre root band that TRELLIS baked into the grass tuft
-// textures (PLAYTEST_FEEDBACK_PLAN.md section 6, 2026-09-11):
+// textures (docs/history/PLAYTEST_FEEDBACK_PLAN.md section 6, 2026-09-11):
 //   node scripts/recolor-grass-root.mjs meadow-grass 03
 //   node scripts/recolor-grass-root.mjs meadow-sprig 02
 // Reads public/models/<key>/model.glb (single mesh, one embedded 8-bit RGBA

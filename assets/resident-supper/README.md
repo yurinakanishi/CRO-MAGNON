@@ -1,6 +1,6 @@
 # 住人が炉で分け合う夕食
 
-既存の食料と住人の日課をつなぐ改善。先に [RESIDENT_SUPPER_PLAN.md](../../RESIDENT_SUPPER_PLAN.md) を作成した。
+既存の食料と住人の日課をつなぐ改善。先に [RESIDENT_SUPPER_PLAN.md](../../docs/history/RESIDENT_SUPPER_PLAN.md) を作成した。
 
 ## 遊び方
 

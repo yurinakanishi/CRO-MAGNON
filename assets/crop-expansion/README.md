@@ -1,6 +1,6 @@
 # 共同畑の追加作物と料理
 
-既存の湾・48区画・三つの国・8人の住人へ追加する農耕の拡張。実装前の計画は [CROP_EXPANSION_PLAN.md](../../CROP_EXPANSION_PLAN.md)。新しい地域やGLBは追加しない。
+既存の湾・48区画・三つの国・8人の住人へ追加する農耕の拡張。実装前の計画は [CROP_EXPANSION_PLAN.md](../../docs/history/CROP_EXPANSION_PLAN.md)。新しい地域やGLBは追加しない。
 
 ## 遊び方
 

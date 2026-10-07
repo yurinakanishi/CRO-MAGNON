@@ -1,6 +1,6 @@
 # 三つの岸の湾：空と航路
 
-2026-09-08。既存の丸木舟、五つの浜、湾奥の陸路に天候と海流による航路選びを追加。計画は [WEATHER_CURRENT_PLAN.md](../../WEATHER_CURRENT_PLAN.md)。実装・ローカル反映・実ブラウザー検証を完了。
+2026-09-08。既存の丸木舟、五つの浜、湾奥の陸路に天候と海流による航路選びを追加。計画は [WEATHER_CURRENT_PLAN.md](../../docs/history/WEATHER_CURRENT_PLAN.md)。実装・ローカル反映・実ブラウザー検証を完了。
 
 ## 遊び方
 

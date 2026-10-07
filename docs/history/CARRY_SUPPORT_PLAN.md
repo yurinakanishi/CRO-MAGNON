@@ -9,4 +9,4 @@
 
 検証は実モデルでの接点・復元・歩行／走行、対象フラグと既存の通信テスト、ブラウザー2人での表示と肩乗りを対象にする。関連差分だけをコミットする。
 
-完了内容・検証結果は [assets/shoulder-carry/README.md](assets/shoulder-carry/README.md) の追加指定の節へ記録。既存GLB・速度と他の作業の差分を保持した。
+完了内容・検証結果は [assets/shoulder-carry/README.md](../../assets/shoulder-carry/README.md) の追加指定の節へ記録。既存GLB・速度と他の作業の差分を保持した。

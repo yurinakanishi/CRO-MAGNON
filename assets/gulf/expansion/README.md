@@ -1,6 +1,6 @@
 # Four-area expansion verification
 
-This extends the existing game. `WORLD_EXPANSION_PLAN.md` records the scope; the parent `README.md` describes the current playable region. The original version-1 QA records remain in the parent directory.
+This extends the existing game. `../../../docs/history/WORLD_EXPANSION_PLAN.md` records the scope; the parent `README.md` describes the current playable region. The original version-1 QA records remain in the parent directory.
 
 - `qa-summary.json`: scope, tests, limitations and browser fixtures.
 - `routes-qa.json`: shared-collider path lengths, launch points, every original scenery placement, and sampled terrain orientation.

@@ -1,6 +1,6 @@
 # 浜の貝と、石の刃
 
-既存の三つの岸の湾へ加えた暮らしと道具の遊び。世界の作り直しは行わず、拡張済みの大陸・湾・三つの国・畑・釣りを引き継ぐ。計画は [COASTAL_CRAFT_PLAN.md](../../COASTAL_CRAFT_PLAN.md)。
+既存の三つの岸の湾へ加えた暮らしと道具の遊び。世界の作り直しは行わず、拡張済みの大陸・湾・三つの国・畑・釣りを引き継ぐ。計画は [COASTAL_CRAFT_PLAN.md](../../docs/history/COASTAL_CRAFT_PLAN.md)。
 
 ## 遊び方
 

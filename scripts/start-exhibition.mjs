@@ -56,7 +56,7 @@ async function main() {
   console.log(`Multiplayer: ${settings.serverUrl} | Room: ${settings.room}`);
   if (role === 'host' && !addresses.includes(settings.host))
     throw new Error(
-      `This host does not have ${settings.host}. Check the selected host and static Ethernet IP (README-EXHIBITION-4PC.md). No server was started.`,
+      `This host does not have ${settings.host}. Check the selected host and static Ethernet IP (README-EXHIBITION.md). No server was started.`,
     );
   if (role === 'host') {
     const { createGameServer } = await import('../dist/server.mjs');

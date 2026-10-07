@@ -58,7 +58,7 @@ Farm stages and deadlines, gathering supplies, feast cycles and personal progres
 
 Version 3 saves migrate gulf positions into the enlarged region once. Players near the original four camps retain their local camp offsets; travelling players and boat moorings follow the enlarged coast. An obstructed migrated arrival is moved to safe ground. Original continental player coordinates remain unchanged. Resource IDs restore depletion onto the new authored positions; crops, supplies, affiliation, items and achievements persist. Journey records and their once-only reward are included in future saves.
 
-Current expansion checks and local rollout are recorded in [expansion/qa-summary.json](expansion/qa-summary.json) and [expansion/rollout-qa.json](expansion/rollout-qa.json). The [expansion plan](../../WORLD_EXPANSION_PLAN.md) lists the completed scope and remaining worldbuilding work.
+Current expansion checks and local rollout are recorded in [expansion/qa-summary.json](expansion/qa-summary.json) and [expansion/rollout-qa.json](expansion/rollout-qa.json). The [expansion plan](../../docs/history/WORLD_EXPANSION_PLAN.md) lists the completed scope and remaining worldbuilding work.
 
 ### Original gulf verification (version 1, retained history)
 
@@ -70,4 +70,4 @@ See [delivery-qa.json](delivery-qa.json) for the 48 delivered GLBs' SHA and stru
 
 ## Subsequent maritime increment
 
-[Weather and currents](../weather-current/README.md) add shared calm, breeze, rain and mist; current-dependent paddling speed; sheltered shoreline routes; a forecast panel; and map arrows. All weather timings, flows, forecasts and station keeping are deliberate fantasy. The same boats, shores and overland alternatives remain usable. See [plan and verification](../../WEATHER_CURRENT_PLAN.md).
+[Weather and currents](../weather-current/README.md) add shared calm, breeze, rain and mist; current-dependent paddling speed; sheltered shoreline routes; a forecast panel; and map arrows. All weather timings, flows, forecasts and station keeping are deliberate fantasy. The same boats, shores and overland alternatives remain usable. See [plan and verification](../../docs/history/WEATHER_CURRENT_PLAN.md).

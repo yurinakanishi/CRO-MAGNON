@@ -44,4 +44,4 @@
 
 既存39モデル・54GLBのSHAを保持し、新規GLB・依存0。通常3000番は反映直前の部屋0・参加者0、PID18104と開始時刻を照合して更新し、PID20716の `node server.mjs` を非表示起動した。古いチェックポイントや保存の再適用は0。実Chromeで通常の遠征と旅支度のベリー3個だけを使い、共同食料への返却・二人分の夕食を準備。時計を変えずに夕べを待ってアルとセノの食事、共同食料の保持、再読込・住人一覧・縦横画面と8配信ファイルの一致を確認した。
 
-詳細は [assets/resident-supper/README.md](assets/resident-supper/README.md)、`qa-summary.json`、`rollout.json`。物理端末・物理コントローラー・大人数負荷・長時間稼働・常時60FPSは未検証。持ち寄りの自動消費を追加した段階であり、住人の生産や長期食料収支・人口変化・政治の完成ではない。
+詳細は [assets/resident-supper/README.md](../../assets/resident-supper/README.md)、`qa-summary.json`、`rollout.json`。物理端末・物理コントローラー・大人数負荷・長時間稼働・常時60FPSは未検証。持ち寄りの自動消費を追加した段階であり、住人の生産や長期食料収支・人口変化・政治の完成ではない。

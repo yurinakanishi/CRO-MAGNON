@@ -1,6 +1,6 @@
 # 世帯の旅と集い場での滞在
 
-2026-09-08。計画は [HOUSEHOLD_JOURNEYS_PLAN.md](../../HOUSEHOLD_JOURNEYS_PLAN.md)。既存の住人8人・三つの国・集い場・地形を使い、共同生活の場を一時的に移す旅を追加する。
+2026-09-08。計画は [HOUSEHOLD_JOURNEYS_PLAN.md](../../docs/history/HOUSEHOLD_JOURNEYS_PLAN.md)。既存の住人8人・三つの国・集い場・地形を使い、共同生活の場を一時的に移す旅を追加する。
 
 ## 遊び方
 
