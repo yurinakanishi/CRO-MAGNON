@@ -10,7 +10,7 @@ MMOタイトルは起動直後に暗い洞窟・暖色の光輪のロゴ・進�
 後続指示「commit then push to main, local mmo devに反映」で `d8cdcf2` をmainへpush。停止中だった8787へ反映：控え `output/cloudflare-deploy/before-title-mural-1791365633`（旧配信物・記録）、build:mmoの差分はpublic追加5／変更9のみ・Worker128不変、ID c36db1f6→fe13ca83。
 `preview:mmo` を非表示起動しhealth／status 200（参加者0）、変更14ファイルのHTTP SHA一致。タイトルのヘッドレス読込で壁画・メニュー3項目・ダイアログ5名（公開版は監修非表示）・エラー0（部屋へは未参加）。公開デプロイ・展示配布なし。
 追補：ユーザー提示のX `https://x.com/marulimoai`（まるぃも）・`https://x.com/mae616_`（表示名「mae616 : 今川焼き」）を設定。未ログインのアプリ内ブラウザーで公開プロフィールの題名と写真リンクを確認し、200×200の原JPEGで仮アイコンを置換（`assets/title-credits/x-avatars-2026-10-07.json`）。壁画4キャラすべてリンク。
-タイトル5テスト・実Chrome15項目再合格（`r08`）。自分が起動した8787（参加者0）を停止→build:mmo（public変更5のみ・Worker不変、ID fe13ca83→4da4b187）→再起動、health／status 200・8件HTTP SHA一致・壁画リンク4件とダイアログ5名を確認、エラー0。3000番も自動更新でSHA一致。
+タイトル5テスト・実Chrome15項目再合格（`r08`）。自分が起動した8787（参加者0）を停止→build:mmo（public変更5のみ・Worker不変、ID fe13ca83→4da4b187）→再起動、health／status 200・8件HTTP SHA一致・壁画リンク4件とダイアログ5名を確認、エラー0。この時点で通常3000番（別チャットのdev）は停止しており未反映・未起動（8787の停止対象には含めていない）。
 
 ## 2026-10-07 針葉樹を自然なトウヒへ作り直し
 
