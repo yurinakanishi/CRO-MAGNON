@@ -23,6 +23,7 @@ import { meatRingLayout } from './resource-visuals.js';
 import { CAVE_HEARTH } from '../shared/camp-cave-layout.mjs';
 import { SIMPLIFIED_SHADOW_KEYS } from './performance-lod.js';
 import { buildMountainRiver } from './mountain-river.js';
+import { DECORATIVE_GRASS_ENABLED } from './scenery-visibility.js';
 
 const TAU = Math.PI * 2;
 const random = seededRandom;
@@ -232,8 +233,6 @@ export function buildForestAssets(world) {
     }));
   const groundcover = (key) =>
     SCENERY.grass.filter((item) => (item.key ?? 'meadow-grass') === key).map(grassPlacement);
-  const grass = groundcover('meadow-grass'),
-    sprigs = groundcover('meadow-sprig');
   const rocks = SCENERY.rocks
     .filter((item) => !item.surface)
     .map((item) => ({
@@ -251,32 +250,36 @@ export function buildForestAssets(world) {
       scene: world.scene,
       distances: [14, 38, 110],
     }),
-    new LandscapeInstances({
-      assets: world.worldAssets,
-      key: 'meadow-grass',
-      placements: grass,
-      renderer: world.renderer,
-      scene: world.scene,
-      distances: [1.1, 1.1, 28],
-      foliage: true,
-      generateCell: (x, z) =>
-        grassForChunk(x - WORLD.minX / 32, z - WORLD.minZ / 32)
-          .filter((item) => !item.surface && item.key === 'meadow-grass')
-          .map(grassPlacement),
-    }),
-    new LandscapeInstances({
-      assets: world.worldAssets,
-      key: 'meadow-sprig',
-      placements: sprigs,
-      renderer: world.renderer,
-      scene: world.scene,
-      distances: [1.1, 1.1, 24],
-      foliage: true,
-      generateCell: (x, z) =>
-        grassForChunk(x - WORLD.minX / 32, z - WORLD.minZ / 32)
-          .filter((item) => !item.surface && item.key === 'meadow-sprig')
-          .map(grassPlacement),
-    }),
+    ...(DECORATIVE_GRASS_ENABLED
+      ? [
+          new LandscapeInstances({
+            assets: world.worldAssets,
+            key: 'meadow-grass',
+            placements: groundcover('meadow-grass'),
+            renderer: world.renderer,
+            scene: world.scene,
+            distances: [1.1, 1.1, 28],
+            foliage: true,
+            generateCell: (x, z) =>
+              grassForChunk(x - WORLD.minX / 32, z - WORLD.minZ / 32)
+                .filter((item) => !item.surface && item.key === 'meadow-grass')
+                .map(grassPlacement),
+          }),
+          new LandscapeInstances({
+            assets: world.worldAssets,
+            key: 'meadow-sprig',
+            placements: groundcover('meadow-sprig'),
+            renderer: world.renderer,
+            scene: world.scene,
+            distances: [1.1, 1.1, 24],
+            foliage: true,
+            generateCell: (x, z) =>
+              grassForChunk(x - WORLD.minX / 32, z - WORLD.minZ / 32)
+                .filter((item) => !item.surface && item.key === 'meadow-sprig')
+                .map(grassPlacement),
+          }),
+        ]
+      : []),
     new LandscapeInstances({
       assets: world.worldAssets,
       key: 'valley-boulder',

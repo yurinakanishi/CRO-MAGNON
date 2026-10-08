@@ -7,6 +7,7 @@ import { terrainHeight, walkHeight } from '../shared/terrain.mjs';
 import { LandscapeInstances } from './world-assets.js';
 import { WORLD } from '../shared/world.mjs';
 import { disposeSimplifiedShadow } from './performance-lod.js';
+import { groundcoverVisible } from './scenery-visibility.js';
 
 export const regionalId = (key, surface) => `${key}:${surface}`;
 // Source-space metres for the complete 8 cm root-disc cut; scale with the plant.
@@ -54,7 +55,7 @@ export class RegionalScenery {
       }
     }
     for (const palette of Object.values(BIOME_SCENERY)) {
-      if (palette.surface && palette.groundcover)
+      if (palette.surface && palette.groundcover && groundcoverVisible(palette.groundcover))
         groupFor(palette.groundcover, palette.surface).groundcover = true;
     }
     for (const group of this.groups.values())
@@ -92,7 +93,7 @@ export class RegionalScenery {
     }
     for (const chunk of nearbyChunks(position.x, position.z, 48)) {
       const palette = BIOME_SCENERY[chunk.biome];
-      if (palette.surface && palette.groundcover)
+      if (palette.surface && palette.groundcover && groundcoverVisible(palette.groundcover))
         this.desired.add(regionalId(palette.groundcover, palette.surface));
     }
     for (const id of this.desired) this.lastUsed.set(id, time);

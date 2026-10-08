@@ -16,6 +16,7 @@ import {
 import { markActiveAttribute, markActiveInstances } from './instance-updates.js';
 import { applyMeadowGrassPalette, meadowGrassTint } from './meadow-palette.js';
 import { applyNatureWind } from './nature-wind.js';
+import { groundcoverVisible } from './scenery-visibility.js';
 import { ActionBlender, gaitPhase } from './action-blender.js';
 import { applyBehemothPalette } from './behemoth-palette.js';
 import { installSkinnedBounds } from './skinned-bounds.js';
@@ -192,6 +193,7 @@ export class WorldAssets {
       (asset) =>
         asset.kind !== 'enemy' &&
         !asset.onDemand &&
+        groundcoverVisible(asset.modelKey) &&
         !this.templates.has(asset.modelKey) &&
         !(deferCompanions && asset.kind === 'companion'),
     );
