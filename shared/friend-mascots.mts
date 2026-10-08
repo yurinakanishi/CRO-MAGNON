@@ -24,6 +24,10 @@ export interface FriendMascotDefinition {
   headHeight: number;
   /** Selection card accent. */
   color: string;
+  /** Reuse the original human rig's head and clips without changing the GLB. */
+  contactBone?: string;
+  reactions?: { pet: string; happy: string; hit: string; bow: string };
+  equipment?: { key: string; grip: string };
 }
 
 /**
@@ -101,6 +105,19 @@ export const FRIEND_MASCOTS: readonly FriendMascotDefinition[] = Object.freeze([
     bodyHeight: 0.52,
     headHeight: 0.508,
     color: '#ff8c00',
+  },
+  {
+    key: 'howkey-scientist',
+    credit: 'hawkie',
+    name: 'Howkey',
+    home: { x: -4.4, z: 1.6 },
+    radius: 0.32,
+    bodyHeight: 1.55,
+    headHeight: 1.34075,
+    color: '#b5cec2',
+    contactBone: 'Head',
+    reactions: { pet: 'Idle_Loop', happy: 'Wave', hit: 'Idle_Loop', bow: 'Wave' },
+    equipment: { key: 'howkey-flask', grip: 'Grip.R' },
   },
 ]);
 export const FRIEND_MASCOT_KEYS = FRIEND_MASCOTS.map((f) => f.key);
@@ -198,8 +215,13 @@ function createFriend(def: FriendMascotDefinition, collision: CollisionWorld): F
   };
 }
 
-export function createFriendMascots(collision: CollisionWorld): FriendMascot[] {
-  return FRIEND_MASCOTS.map((def) => createFriend(def, collision));
+export function createFriendMascots(
+  collision: CollisionWorld,
+  modelKeys: readonly string[] = FRIEND_MASCOT_KEYS,
+): FriendMascot[] {
+  return FRIEND_MASCOTS.filter((def) => modelKeys.includes(def.key)).map((def) =>
+    createFriend(def, collision),
+  );
 }
 
 /** Public data deliberately omits routing, velocities and the return trail. */
@@ -587,8 +609,12 @@ export function updateFriendMascots(room: FriendRoom, dt: number, now: number) {
 }
 
 /** Preserve known saved owners without replaying an unfinished pet animation. */
-export function restoreFriendMascots(room: FriendRoom, saved: unknown) {
-  room.friends = createFriendMascots(room.collision);
+export function restoreFriendMascots(
+  room: FriendRoom,
+  saved: unknown,
+  modelKeys: readonly string[] = FRIEND_MASCOT_KEYS,
+) {
+  room.friends = createFriendMascots(room.collision, modelKeys);
   if (!Array.isArray(saved)) return;
   for (const c of room.friends) {
     const record = saved.find(

@@ -107,7 +107,7 @@ async function play(ctx, name, resume = false) {
   const page = ctx.pages()[0] || (await ctx.newPage()),
     seen = observe(page);
   await page.goto(base + '/?room=SAVE-CHROME');
-  assert.equal(await page.locator('#screen-title .menu-item').count(), 2);
+  assert.equal(await page.locator('#screen-title .menu-item').count(), 3);
   assert.equal(await page.locator('#screen-title a').count(), 0);
   await page.locator('#title-start').click();
   await page.locator('#setup-form input[name="name"]').fill(name);

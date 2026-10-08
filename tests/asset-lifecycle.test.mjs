@@ -3,6 +3,7 @@ import assert from 'node:assert/strict';
 import * as THREE from 'three';
 import { createHash } from 'node:crypto';
 import { WorldAssets } from '../dist/src/world-assets.js';
+import { ACTIVE_MASCOT_MODELS } from '../dist/shared/mascot-roster.mjs';
 
 const record = (key) => ({ modelKey: key, environment: true, onDemand: true, lods: [] });
 const deferred = () => {
@@ -113,13 +114,15 @@ test('shutdown stops the initial loading workers before remaining models and LOD
   const sha256 = createHash('sha256').update(bytes).digest('hex');
   const catalog = {
     status: 'ready',
-    assets: ['a', 'b', 'c', 'd'].map((key) => ({
-      modelKey: key,
-      url: `/${key}.glb`,
-      bytes: bytes.length,
-      sha256,
-      lods: [{ url: `/${key}-lod.glb`, bytes: bytes.length, sha256 }],
-    })),
+    assets: ['a', 'b', 'c', 'd']
+      .map((key) => ({
+        modelKey: key,
+        url: `/${key}.glb`,
+        bytes: bytes.length,
+        sha256,
+        lods: [{ url: `/${key}-lod.glb`, bytes: bytes.length, sha256 }],
+      }))
+      .concat(ACTIVE_MASCOT_MODELS.map(record)),
   };
   const previous = Object.getOwnPropertyDescriptor(globalThis, 'location');
   Object.defineProperty(globalThis, 'location', {

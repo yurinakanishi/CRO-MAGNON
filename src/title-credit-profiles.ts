@@ -2,13 +2,13 @@
 export const TITLE_CREDITS = [
   { name: 'yuri', profile: 'https://x.com/yurinakanishi33', qr: 'yuri' },
   { name: 'Ryuichi-typeR', profile: 'https://x.com/WabisukeTyper', qr: 'ryuichi' },
+  { name: 'ぬこぬこ / NUKO 🇯🇵', profile: 'https://x.com/nukonuko', qr: 'nukonuko' },
   { name: 'オータニ@AI駆動開発', profile: 'https://x.com/otani_ai_memo', qr: 'otani' },
   {
     name: '浦田 勇樹 | 生成AI×新規プロダクト開発@ブレインパッド',
     profile: 'https://x.com/yuki_urata',
     qr: 'urata',
   },
-  { name: 'ぬこぬこ / NUKO 🇯🇵', profile: 'https://x.com/nukonuko', qr: 'nukonuko' },
 ] as const;
 
 export const TITLE_GUEST = {
@@ -24,9 +24,9 @@ export const TITLE_SUPPORT = {
 } as const;
 
 /**
- * Friends with a companion, character or cave painting in the game, named as on
- * X. An empty profile would be shown without a link. They have no QR code, so the
- * exhibition credits do not list them.
+ * Retained guest profiles for future releases, named as on X. The mascot roster
+ * controls which guests appear in the dialog and MMO asset manifest. They have
+ * no QR code; all credit displays use the contributors dialog.
  */
 export const TITLE_FRIENDS = [
   { name: 'まるぃも', profile: 'https://x.com/marulimoai', qr: 'maruimo' },

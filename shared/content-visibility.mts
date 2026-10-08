@@ -20,5 +20,7 @@ export function characterVisible(
   model: Readonly<CharacterModel> | undefined,
   visibility: ContentVisibility,
 ) {
-  return !!model && !visibility.hiddenCharacters.includes(model.species);
+  return (
+    !!model && model.playable !== false && !visibility.hiddenCharacters.includes(model.species)
+  );
 }

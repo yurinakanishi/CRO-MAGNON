@@ -46,6 +46,8 @@ export async function localContentOverride(
   root: string,
   visibility: ContentVisibility,
 ): Promise<string | null | undefined> {
+  if (servedPath.toLowerCase() === 'shared/character-profiles.mjs')
+    return `export const CHARACTER_MODELS = Object.freeze(${JSON.stringify(visibleCharacters(visibility))}.map(Object.freeze));\n`;
   if (!visibility.hiddenCharacters.length && !visibility.hideMae) return undefined;
   const hiddenModels = CHARACTER_MODELS.filter((model) =>
     visibility.hiddenCharacters.includes(model.species),

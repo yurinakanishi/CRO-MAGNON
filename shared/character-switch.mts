@@ -1,8 +1,9 @@
-import { CHARACTER_MODELS, characterModel } from './characters.mjs';
+import { PLAYABLE_CHARACTER_MODELS, characterModel } from './characters.mjs';
 import { jumpProgress } from './jumping.mjs';
 import { attackProfile } from './combat-profiles.mjs';
 
-export const switchCharacterById = (id) => CHARACTER_MODELS.find((model) => model.key === id);
+export const switchCharacterById = (id) =>
+  PLAYABLE_CHARACTER_MODELS.find((model) => model.key === id);
 
 export function characterSwitchUnavailable(player, model, now) {
   if (!player) return '接続を待っています。';

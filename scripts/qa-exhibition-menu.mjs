@@ -110,13 +110,15 @@ try {
       };
     });
     await page.goto(`http://127.0.0.1:${local.port}`);
+    await page.locator('#title-contributors').click();
     await page.waitForFunction(() => {
-      const avatars = [...document.querySelectorAll('.credit-avatar')];
+      const avatars = [...document.querySelectorAll('.contributor-avatar')];
       return (
-        avatars.length === 6 &&
-        avatars.every((image) => image.complete && image.naturalWidth === 200)
+        avatars.length === 7 && avatars.every((image) => image.complete && image.naturalWidth > 0)
       );
     });
+    assert.equal(await page.locator('.contributors-dialog a, img[src*="/qr-"]').count(), 0);
+    await page.locator('#modal-close').click();
     await page.locator('#title-start').click();
     if (process.env.QA_CHARACTER)
       await page.locator(`#setup-form input[value="${process.env.QA_CHARACTER}"]`).focus();

@@ -53,7 +53,7 @@ const target = (id, x, z) => ({
   phase: 'alive',
 });
 
-test('Howkey is a distinct selectable scientist and normalizes through saved profile values', () => {
+test('Howkey retains its original scientist rig metadata but is no longer a player choice', () => {
   assert.deepEqual(normalizeCharacter({ species: 'howkey', gender: 'male' }), {
     species: 'howkey',
     gender: 'female',
@@ -62,8 +62,8 @@ test('Howkey is a distinct selectable scientist and normalizes through saved pro
   assert.equal(characterModel({ species: 'howkey' }).key, 'howkey-scientist');
   assert.equal(isCarryable({ species: 'howkey' }), false);
   assert.equal(attackProfile({ species: 'howkey', spearHead: 'obsidian' }).key, 'science');
-  assert.match(characterChoicesMarkup(), /value="howkey-female"/);
-  assert.match(characterChoicesMarkup(), /models\/howkey-scientist\/portrait.png/);
+  assert.doesNotMatch(characterChoicesMarkup(), /value="howkey-female"/);
+  assert.doesNotMatch(characterChoicesMarkup(), /models\/howkey-scientist\/portrait.png/);
 });
 
 test('science pulse obeys server windup, damage, one hit, energy and recharge', () => {
@@ -115,15 +115,16 @@ test('science cannot pass thin walls, hurt players, or survive its maximum range
   assert.equal(clear.room.projectiles.length, 0);
 });
 
-test('changing to and from Howkey retains inventory and returns to the proper attack profile', () => {
+test('changing to Howkey is refused, while leaving a legacy Howkey profile retains inventory', () => {
   const { p, room } = fixture();
   p.species = 'cro';
   p.tool = true;
   p.spearHead = 'obsidian';
   const inventory = p.inventory;
-  assert.equal(handleCharacterSwitch(room, p, { targetId: 'howkey-scientist' }, 10000).ok, true);
+  assert.equal(handleCharacterSwitch(room, p, { targetId: 'howkey-scientist' }, 10000).ok, false);
   assert.equal(p.inventory, inventory);
-  assert.equal(p.species, 'howkey');
+  assert.equal(p.species, 'cro');
+  p.species = 'howkey';
   assert.equal(attackProfile(p).key, 'science');
   assert.equal(handleCharacterSwitch(room, p, { targetId: 'cro-magnon-woman' }, 11000).ok, true);
   assert.equal(attackProfile(p).id, 'obsidianSpear');

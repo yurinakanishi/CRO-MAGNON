@@ -6,6 +6,7 @@ import { VisibleActorGroup } from './visible-actor-group.js';
 import { updateActorPerformance } from './performance-lod.js';
 import { companionHeartTexture } from './companion-heart-texture.js';
 import type { WorldRenderer } from './world3d.js';
+import { orientFlask } from './flask-pose.js';
 
 /**
  * One contributor's rigged mascot: its biped gait, pet/happy/hit reactions,
@@ -32,11 +33,19 @@ export class FriendMascotRenderer {
     private world: WorldRenderer,
     readonly def: FriendMascotDefinition,
     index: number,
+    private readonly equipment?: THREE.Object3D,
   ) {
     this.root.name = `${def.key} ground companion`;
     this.actor = world.worldAssets.createAnimal(def.key);
-    this.contactBone = this.actor.root.getObjectByName('PetContact')!;
+    this.contactBone = this.actor.root.getObjectByName(def.contactBone ?? 'PetContact')!;
     if (!this.contactBone) throw new Error(`${def.key} is missing the head contact socket`);
+    if (equipment && def.equipment) {
+      const grip = this.actor.root.getObjectByName(
+        THREE.PropertyBinding.sanitizeNodeName(def.equipment.grip),
+      );
+      if (!grip) throw new Error(`${def.key} is missing the equipment grip`);
+      grip.add(equipment);
+    }
     this.root.userData.animalId = def.key;
     this.slope.add(this.actor.root);
     this.root.add(this.slope);
@@ -118,16 +127,19 @@ export class FriendMascotRenderer {
     const petAge = c.petPlayerId && c.petContactAt > 0 ? now - c.petContactAt : -1;
     this.happyAge = -1;
     if (hitAge >= 0 && hitAge < FRIEND_TIMING.hitMs) {
-      this.actor.sampleOnce('Hit', hitAge / 1000);
+      this.actor.sampleOnce(this.def.reactions?.hit ?? 'Hit', hitAge / 1000);
       this.reaction = 'hit';
     } else if (petAge >= 0 && petAge < FRIEND_TIMING.petStrokeMs) {
-      this.actor.sampleOnce('Pet', petAge / 1000);
+      this.actor.sampleOnce(this.def.reactions?.pet ?? 'Pet', petAge / 1000);
       this.reaction = 'pet';
     } else if (
       petAge >= FRIEND_TIMING.petStrokeMs &&
       petAge < FRIEND_TIMING.petStrokeMs + FRIEND_TIMING.happyMs
     ) {
-      this.actor.sampleOnce('Happy', (petAge - FRIEND_TIMING.petStrokeMs) / 1000);
+      this.actor.sampleOnce(
+        this.def.reactions?.happy ?? 'Happy',
+        (petAge - FRIEND_TIMING.petStrokeMs) / 1000,
+      );
       this.reaction = 'happy';
       this.happyAge = petAge - FRIEND_TIMING.petStrokeMs;
     } else {
@@ -138,7 +150,7 @@ export class FriendMascotRenderer {
       if (speed === 0 && gestureTime < 1.8) {
         this.actor.sampleOnce('Wave', gestureTime);
       } else if (speed === 0 && gestureTime >= 12 && gestureTime < 13.6) {
-        this.actor.sampleOnce('Bow', gestureTime - 12);
+        this.actor.sampleOnce(this.def.reactions?.bow ?? 'Bow', gestureTime - 12);
       } else {
         this.actor.play(clip, speed > 0 ? speed / reference : 1);
         if (this.root.visible) {
@@ -154,6 +166,7 @@ export class FriendMascotRenderer {
       }
       this.reaction = speed > 0 ? 'moving' : 'idle';
     }
+    if (this.equipment) orientFlask(this.equipment, this.actor.root);
     // Derive every particle from the shared contact time, so late joins and
     // distance culling cannot replay a completed reaction or leave hearts behind.
     if (this.happyAge >= 0) this.petTarget(this.heartOrigin);

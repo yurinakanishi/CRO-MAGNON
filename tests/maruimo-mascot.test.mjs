@@ -11,6 +11,7 @@ import { CollisionWorld } from '../dist/shared/collision.mjs';
 import { caveWorldAt } from '../dist/shared/camp-cave-layout.mjs';
 import { MASCOT_KEYS } from '../dist/shared/mascot-selection.mjs';
 import { FRIEND_MASCOTS } from '../dist/shared/friend-mascots.mjs';
+import { ALL_MASCOT_MODELS } from '../dist/shared/mascot-roster.mjs';
 import { mascotMenuMarkup } from '../dist/src/mascot-menu.js';
 import { CAVE_EXTRA_PIGMENTS } from '../dist/src/cave-gallery-layout.js';
 import { loadMotion, unpack, pose } from '../scripts/motion-glb.mjs';
@@ -35,6 +36,7 @@ function fixture() {
   let now = 10000,
     id = 0;
   const options = {
+    mascotModels: ALL_MASCOT_MODELS,
     runtime: { now: () => now, id: () => `m-${++id}`, token: () => `s-${++id}` },
     persistentSessions: true,
     keepEmptyRooms: true,

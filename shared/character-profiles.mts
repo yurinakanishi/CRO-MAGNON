@@ -70,6 +70,7 @@ export const CHARACTER_MODELS: readonly Readonly<CharacterModel>[] = Object.free
     species: 'howkey',
     gender: 'female',
     key: 'howkey-scientist',
+    playable: false,
     carryable: false,
     name: 'Howkey 科学使い',
     weapon: 'science',

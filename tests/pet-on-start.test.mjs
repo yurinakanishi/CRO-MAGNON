@@ -2,6 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { EventEmitter } from 'node:events';
 import { createGameCore } from '../dist/application/game-core.mjs';
+import { ALL_MASCOT_MODELS } from '../dist/shared/mascot-roster.mjs';
 import { CollisionWorld } from '../dist/shared/collision.mjs';
 
 class Socket extends EventEmitter {
@@ -30,6 +31,7 @@ function fixture(key) {
   let now = 10000,
     serial = 0;
   const options = {
+    mascotModels: ALL_MASCOT_MODELS,
     persistentSessions: true,
     keepEmptyRooms: true,
     runtime: { now: () => now, id: () => `start-${++serial}`, token: () => `session-${++serial}` },

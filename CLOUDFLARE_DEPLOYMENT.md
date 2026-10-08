@@ -18,23 +18,31 @@ Billing follow-up on the unrelated original account on 2026-09-07: an active bil
 
 ## Public and local credits
 
-The local source `src/title-credit-profiles.ts` retains yuri, all four supervisors and guest R-524. Local builds always use that full list and the existing QR/avatar files.
+The local source `src/title-credit-profiles.ts` retains yuri, all four supervisors and all guest profiles and images. All home screens put the developer, supervisors and guests in the **関わってくれた人たち** dialog, with icons and names and no QR codes. Online cards link to X; exhibition cards have no external links. The local contributor dialog retains the supervisors; guest icons and links follow the currently enabled mascot roster. The MMO asset manifest omits unused QR images while their source files remain in the repository.
 
 `cloudflare/public-release.json` controls only the Cloudflare build:
 
 ```json
-{ "credits": "public", "excludedCharacters": ["maruimo"] }
+{ "credits": "full", "excludedCharacters": ["maruimo"] }
 ```
 
-`public` publishes **developer yuri and guest R-524**. It generates a filtered profile module and excludes the four supervisors' QR/avatar files from the deployed asset manifest. All eight excluded image URLs were verified as 404. `full` restores all local profiles and images in the public build.
+The current `full` setting publishes **yuri, supervisors Ryuichi-typeR / ぬこぬこ / オータニ / 浦田, and guests R-524 and りも(Limo)**. The supervisors appear in that order in **監修**, with their existing X icons and links. Dormant guests still follow the mascot roster and stay excluded. The alternative `public` setting publishes only yuri and the enabled guests and excludes supervisors' avatars. Neither setting includes QR images.
 
-To restore supervisors publicly, change `credits` to `full`, verify the exact account is still Free as described above, and run `npm run deploy:cloudflare`. Inspect all credit cards at the live URL. Set it back to `public` and repeat the same process to hide them again. No source profiles or local images need to be recreated. `qa-cloudflare-release.mjs` is specifically for the `public` setting and intentionally rejects `full`.
+As of 2026-10-08, `shared/mascot-roster.mts` enables only **Dots (all nine), りもねこ and 524**. Mae, Kohaku, the Maruimo mascot, all seven contributor mascots and Howkey stay in the repository with their accepted GLBs, LODs, rigs, animations, portraits and production history. They are not generated in default rooms, downloaded by the browser, or copied to the MMO release. Howkey's flask is also omitted. All cave paintings and their textures stay unchanged. Hidden companion checkpoints remain private in saves and can restore their owners and positions when enabled later.
+
+To restore one retained mascot, set its `enabled` flag to `true` in `shared/mascot-roster.mts`, rebuild and verify the release, then deploy only when requested. This restores the camp companion, selection card, guest credit and MMO model files together. The existing local visibility switches must also permit Mae or Howkey when restoring either locally. Supervisor credits remain independent of their dormant mascots.
+
+Howkey is now a **mascot**, not a selectable player. Its original scientist model, 1.55 m scale, skin, clips and flask are unchanged. The companion adapter uses its existing Head bone for pet contact, Idle_Loop while being petted or hit, and Wave for happiness/idle gestures. Its retained character definition has `playable: false`, so choices, character switches and joins refuse it even when the local switch is true. A legacy Howkey player save resumes as a valid player while keeping possessions and its original private appearance record. Enabling the mascot does not turn it back into a player.
+
+For isolated verification without replacing the preview's upload folders, use `npm run build:mmo -- --output-root=output/<new-build-name>`, then `node scripts/verify-mascot-release.mjs output/<new-build-name>`. The output root must be a new subfolder of `output/`. The normal deploy command still assembles the canonical upload folders and enforces its optimization/account guards.
+
+User instruction on 2026-10-08 restored the four supervisors in the public build configuration. Deploy only when requested, after verifying that the exact account is still Free as described above. To hide supervisors again, change `credits` to `public`, rebuild and verify. No source profiles or local images need to be recreated. `qa-cloudflare-release.mjs` verifies the selected setting, including supervisor avatars and the absence of QR images.
 
 ## Local-only characters
 
 `shared/character-profiles.mts` retains all nine local character definitions. The public build filters `excludedCharacters` before reading character models, copying portraits or generating manifests. Maruimo's GLB, LOD, split parts, portrait, manifest, profile and dedicated octopus pose module are omitted. Its portrait CSS is also removed. All seven former file URLs were checked as 404 at the new URL.
 
-The browser and uploaded Worker use the same eight-character catalog. The Worker entry is assembled under `dist-cloudflare-worker`, using filtered shared modules rather than the local catalog. The deploy guard audits both upload directories and the actual bundled Worker before uploading. This prevents hiding the card while still uploading its data. Confirming a removed character through a forged request, or resuming an old saved appearance, uses a valid public character and retains possessions. Local normalization and all nine choices remain supported.
+The browser and uploaded Worker use the same seven-character catalog (Howkey is retained as a dormant mascot). The Worker entry is assembled under `dist-cloudflare-worker`, using filtered shared modules rather than the local catalog. The deploy guard audits both upload directories and the actual bundled Worker before uploading. This prevents hiding the card while still uploading its data. Confirming a removed character through a forged request, or resuming an old saved appearance, uses a valid public character and retains possessions. Local normalization retains all nine historical definitions, with Howkey excluded from player choices.
 
 The previous release had already included Maruimo. This update excludes it from the current serving paths and new uploads; it does not claim to erase files already received by visitors or Cloudflare's private version history. Preview URLs remain disabled. Do not upload the ordinary local `public` directory or `dist/shared/character-profiles.mjs` directly.
 

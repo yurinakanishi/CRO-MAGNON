@@ -50,7 +50,7 @@ async function launch() {
     }),
   );
   await page.goto(base + '/?room=SAVE-LOCAL');
-  assert.equal(await page.locator('#screen-title .menu-item').count(), 2);
+  assert.equal(await page.locator('#screen-title .menu-item').count(), 3);
   assert.equal(await page.locator('#screen-title a').count(), 0);
   return page;
 }

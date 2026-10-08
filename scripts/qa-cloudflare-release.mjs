@@ -4,7 +4,8 @@ import { readFile, writeFile } from 'node:fs/promises';
 
 const base = process.argv[2] || 'https://cromagnonmmo.cro-magnon.workers.dev';
 const build = JSON.parse(await readFile('output/cloudflare-build.json', 'utf8'));
-assert.equal(build.credits, 'public', 'This check expects the public credits profile');
+assert.ok(['public', 'full'].includes(build.credits), 'Unknown credits profile');
+const includeSupervisors = build.credits === 'full';
 const paths = new Set([
   'src/main.js',
   'src/asset-download.js',
@@ -35,13 +36,18 @@ const profiles = await fetch(`${base}/src/title-credit-profiles.js`).then((r) =>
 assert.match(profiles, /yuri/);
 assert.match(profiles, /R-524/);
 assert.match(profiles, /vibe_walking/);
-assert.doesNotMatch(profiles, /WabisukeTyper|otani_ai_memo|yuki_urata|nukonuko/);
+for (const handle of ['WabisukeTyper', 'nukonuko', 'otani_ai_memo', 'yuki_urata'])
+  if (includeSupervisors) assert.ok(profiles.includes(handle), handle);
+  else assert.ok(!profiles.includes(handle), handle);
 const excluded = [];
-for (const name of ['ryuichi', 'otani', 'urata', 'nukonuko']) {
+const includedSupervisorFiles = [];
+for (const name of ['ryuichi', 'nukonuko', 'otani', 'urata']) {
   for (const file of [`qr-${name}.png`, `avatar-${name}.jpg`]) {
     const url = `/title/${file}`;
-    assert.equal((await fetch(base + url)).status, 404, url);
-    excluded.push(url);
+    const included = includeSupervisors && file.startsWith('avatar-');
+    assert.equal((await fetch(base + url)).status, included ? 200 : 404, url);
+    if (included) includedSupervisorFiles.push(url);
+    else excluded.push(url);
   }
 }
 const config = await fetch(`${base}/multiplayer-config.json`).then((r) => r.json());
@@ -68,7 +74,9 @@ const report = {
   base,
   status: 'passed',
   servedFilesVerified: files.length,
-  publicCreditsOnly: true,
+  publicCreditsOnly: !includeSupervisors,
+  supervisorCreditsIncluded: includeSupervisors,
+  includedSupervisorFiles,
   excludedSupervisorFiles: excluded,
   runtimeTexturesVerified: files.filter((file) => /^models\/camp-cave\/.*\.png$/.test(file.path))
     .length,

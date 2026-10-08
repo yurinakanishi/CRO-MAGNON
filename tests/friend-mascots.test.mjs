@@ -5,6 +5,7 @@ import { readFile } from 'node:fs/promises';
 import { existsSync } from 'node:fs';
 import { createHash } from 'node:crypto';
 const { createGameCore } = await import('../dist/application/game-core.mjs');
+import { ALL_MASCOT_MODELS } from '../dist/shared/mascot-roster.mjs';
 import { CollisionWorld } from '../dist/shared/collision.mjs';
 import { CAMP } from '../dist/shared/world.mjs';
 import {
@@ -37,6 +38,7 @@ function fixture(key = 'saber-mascot') {
   let now = 10000,
     id = 0;
   const options = {
+    mascotModels: ALL_MASCOT_MODELS,
     runtime: { now: () => now, id: () => `f-${++id}`, token: () => `s-${++id}` },
     persistentSessions: true,
     keepEmptyRooms: true,
@@ -90,7 +92,10 @@ function fixture(key = 'saber-mascot') {
 
 test('every contributor friend stands apart at the first camp in the real world', () => {
   let now = 10000;
-  const core = createGameCore({ runtime: { now: () => now, id: () => 'w', token: () => 't' } });
+  const core = createGameCore({
+    mascotModels: ALL_MASCOT_MODELS,
+    runtime: { now: () => now, id: () => 'w', token: () => 't' },
+  });
   core.connect(new Socket(), new URLSearchParams({ room: 'CAMPFRIENDS' }));
   const room = core.rooms.get('CAMPFRIENDS');
   const collision = room.collision;
@@ -195,7 +200,7 @@ test('a strike makes a friend recoil without health or loot, and saves restore i
   assert.equal(f.core.rooms.get('FRIENDS').friends.length, FRIEND_MASCOTS.length);
 });
 
-test('friends are selectable cards, credited, painted, and delivered as verified GLBs', async () => {
+test('retained friends can be restored as selectable cards and keep credits, paintings and verified GLBs', async () => {
   for (const def of FRIEND_MASCOTS) assert.ok(MASCOT_KEYS.includes(def.key));
   const f = fixture();
   const markup = mascotMenuMarkup(f.core.snapshot(f.room()));
@@ -203,7 +208,7 @@ test('friends are selectable cards, credited, painted, and delivered as verified
   const people = new Map(titleContributors().map((p) => [p.key, p]));
   for (const def of FRIEND_MASCOTS) {
     const person = people.get(def.credit);
-    assert.ok(person?.profile.startsWith('https://x.com/'), def.credit);
+    if (person) assert.ok(person.profile.startsWith('https://x.com/'), def.credit);
     assert.equal(CONTRIBUTOR_CHARACTERS[def.credit].name, def.name);
     assert.ok(
       Object.values(CAVE_EXTRA_PIGMENTS).some((p) => p.subjects.includes(def.key)),
@@ -212,7 +217,7 @@ test('friends are selectable cards, credited, painted, and delivered as verified
     const assetPath = `public/models/${def.key}/asset.json`;
     if (!existsSync(assetPath)) continue;
     const asset = JSON.parse(await readFile(assetPath, 'utf8'));
-    assert.equal(asset.kind, 'companion');
+    assert.equal(asset.kind, def.key === 'howkey-scientist' ? 'humanoid' : 'companion');
     for (const record of [asset, ...asset.lods]) {
       const bytes = await readFile('public' + record.url);
       assert.equal(createHash('sha256').update(bytes).digest('hex'), record.sha256);
@@ -221,6 +226,8 @@ test('friends are selectable cards, credited, painted, and delivered as verified
   }
   for (const key of ['friendsMeadow', 'friendsRiver'])
     assert.ok(CAVE_MURALS.some((m) => m.motif === key && m.wall === 'west'));
-  assert.ok(people.get('risa')?.mural === 'こはくちゃん');
-  assert.ok(people.get('hawkie')?.mural === 'Howkey');
+  assert.equal(people.has('risa'), false);
+  assert.equal(people.has('hawkie'), false);
+  assert.equal(CONTRIBUTOR_CHARACTERS.risa.name, 'こはくちゃん');
+  assert.equal(CONTRIBUTOR_CHARACTERS.hawkie.name, 'Howkey');
 });

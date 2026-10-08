@@ -5,38 +5,13 @@ import {
   TITLE_SUPPORT,
 } from './title-credit-profiles.js';
 import { FRIEND_MASCOTS } from '../shared/friend-mascots.mjs';
+import { mascotCreditReleased } from '../shared/mascot-roster.mjs';
 export {
   TITLE_CREDITS,
   TITLE_FRIENDS,
   TITLE_GUEST,
   TITLE_SUPPORT,
 } from './title-credit-profiles.js';
-
-/** Exhibition title: icon, name and a scannable QR code; nothing navigates away. */
-export function titleCreditsMarkup(): string {
-  const card = (
-    credit: (typeof TITLE_CREDITS)[number] | typeof TITLE_GUEST | typeof TITLE_SUPPORT,
-    size = 74,
-    avatarSize = 56,
-  ) =>
-    `<figure class="credit-person"><img class="credit-avatar" src="/title/avatar-${credit.qr}.jpg" width="${avatarSize}" height="${avatarSize}" alt="${credit.name}のXアイコン" decoding="async"><img class="credit-qr" src="/title/qr-${credit.qr}.png" width="${size}" height="${size}" alt="${credit.name}のXプロフィールのQRコード" decoding="async"><figcaption class="credit-name">${credit.name}</figcaption></figure>`;
-  return `<section class="title-credits" data-credits="${TITLE_CREDITS.length > 1 ? 'full' : 'public'}" aria-label="クレジット">
-    <div class="credit-production"><h2>${TITLE_CREDITS.length > 1 ? '制作' : '開発者'}</h2>${card(TITLE_CREDITS[0], 148, 112)}</div>
-    ${
-      TITLE_CREDITS.length > 1
-        ? `<div class="credit-planning"><h2>監修</h2><div class="credit-people">${TITLE_CREDITS.slice(
-            1,
-          )
-            .map((credit) => card(credit))
-            .join('')}</div></div>`
-        : ''
-    }
-    <div class="credit-side">
-      <div class="credit-guest"><h2>友情出演</h2>${card(TITLE_GUEST)}</div>
-      <div class="credit-support"><h2>友情出演</h2>${card(TITLE_SUPPORT)}</div>
-    </div>
-  </section>`;
-}
 
 export interface Contributor {
   key: string;
@@ -52,8 +27,8 @@ export interface Contributor {
 }
 
 /**
- * Each contributor's character, keyed by credit id: painted in the Update Cave
- * and met in the game. The contributors' companions come from FRIEND_MASCOTS.
+ * Retained characters keyed by credit id. Their paintings remain in the cave;
+ * only released companions are described as living in the camp.
  */
 export const CONTRIBUTOR_CHARACTERS: Readonly<
   Record<string, { name: string; appears: '仲間' | 'キャラクター' }>
@@ -63,7 +38,7 @@ export const CONTRIBUTOR_CHARACTERS: Readonly<
   maruimo: { name: 'まるぃも', appears: '仲間' },
   mae: { name: 'mae', appears: '仲間' },
   risa: { name: 'こはくちゃん', appears: '仲間' },
-  hawkie: { name: 'Howkey', appears: 'キャラクター' },
+  hawkie: { name: 'Howkey', appears: '仲間' },
   ...Object.fromEntries(
     FRIEND_MASCOTS.map((f) => [f.credit, { name: f.name, appears: '仲間' as const }]),
   ),
@@ -96,24 +71,31 @@ export function titleContributors(): Contributor[] {
     ...(CONTRIBUTOR_CHARACTERS[credit.qr]
       ? {
           mural: CONTRIBUTOR_CHARACTERS[credit.qr].name,
-          appears: CONTRIBUTOR_CHARACTERS[credit.qr].appears,
+          ...(mascotCreditReleased(credit.qr)
+            ? { appears: CONTRIBUTOR_CHARACTERS[credit.qr].appears }
+            : {}),
         }
       : {}),
   });
   return [
     person(TITLE_CREDITS[0], TITLE_CREDITS.length > 1 ? '制作' : '開発者'),
     ...TITLE_CREDITS.slice(1).map((credit) => person(credit, '監修')),
-    ...[TITLE_GUEST, TITLE_SUPPORT, ...TITLE_FRIENDS].map((credit) => person(credit, '友情出演')),
+    ...[TITLE_GUEST, TITLE_SUPPORT, ...TITLE_FRIENDS]
+      .filter((credit) => mascotCreditReleased(credit.qr))
+      .map((credit) => person(credit, '友情出演')),
   ];
 }
 
-/** Dialog listing every contributor with their X icon; names link to X. */
-export function contributorsDialogMarkup(people = titleContributors()): string {
+/** All credits live in this QR-free dialog; exhibition cards never navigate away. */
+export function contributorsDialogMarkup(
+  people = titleContributors(),
+  { links = true }: { links?: boolean } = {},
+): string {
   const roles: Contributor['role'][] = ['制作', '開発者', '監修', '友情出演'];
   const card = (person: Contributor) => {
     const handle = contributorHandle(person.profile);
     const body = `<img class="contributor-avatar" src="${person.avatar}" width="56" height="56" alt="" decoding="async"><span class="contributor-text"><strong>${escape(person.name)}</strong>${handle ? `<small>@${handle}</small>` : ''}${person.mural ? `<em>${person.appears ? `${person.appears}・` : ''}壁画：${escape(person.mural)}</em>` : ''}</span>`;
-    return handle
+    return links && handle
       ? `<li><a class="contributor" href="${person.profile}" target="_blank" rel="noopener noreferrer" aria-label="${escape(`${person.name}のXプロフィールを開く`)}">${body}${xGlyph}</a></li>`
       : `<li><div class="contributor">${body}</div></li>`;
   };
@@ -125,5 +107,5 @@ export function contributorsDialogMarkup(people = titleContributors()): string {
         `<section class="contributor-group"><h3>${role}</h3><ul class="contributor-list">${list.map(card).join('')}</ul></section>`,
     )
     .join('');
-  return `<div class="contributors-dialog"><span class="contributors-mark" aria-hidden="true"></span><h2>関わってくれた人たち</h2><p class="modal-intro">この世界は、たくさんの人の手で描かれました。みんなの分身がキャンプの仲間やキャラクターとして暮らし、アプデの洞窟の壁画にも残っています。</p>${groups}</div>`;
+  return `<div class="contributors-dialog"><span class="contributors-mark" aria-hidden="true"></span><h2>関わってくれた人たち</h2><p class="modal-intro">この世界は、たくさんの人の手で描かれました。キャンプの仲間と、アプデの洞窟に残る壁画に会いに来てください。</p>${groups}</div>`;
 }

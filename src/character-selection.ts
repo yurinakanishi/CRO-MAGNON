@@ -1,4 +1,4 @@
-import { CHARACTER_MODELS, normalizeCharacter } from '../shared/characters.mjs';
+import { PLAYABLE_CHARACTER_MODELS, normalizeCharacter } from '../shared/characters.mjs';
 import type { CharacterProfile } from '../shared/types.mjs';
 
 // One card per playable look. Humans are listed as separate female/male cards so
@@ -14,7 +14,7 @@ export function parseCharacterValue(value: unknown) {
 }
 
 export function characterChoicesMarkup() {
-  return `<fieldset class="character-options"><legend class="character-legend">キャラクターを選ぶ</legend><div class="character-choice-grid">${CHARACTER_MODELS.map(
+  return `<fieldset class="character-options"><legend class="character-legend">キャラクターを選ぶ</legend><div class="character-choice-grid">${PLAYABLE_CHARACTER_MODELS.map(
     (model) => {
       const [name, variant] = model.name.split(' ');
       return `<label class="character-choice"><input type="radio" name="character" value="${model.species}-${model.gender}" required><img class="character-art" src="/models/${model.key}/portrait.png" width="420" height="480" alt="" draggable="false"><span class="character-name"><strong>${name}</strong>${variant ? `<small>${variant}</small>` : ''}</span></label>`;

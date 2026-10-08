@@ -5,12 +5,21 @@ import { mkdtemp, readFile, writeFile } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import path from 'node:path';
 import WebSocket from 'ws';
-import { createGameCore } from '../dist/application/game-core.mjs';
-import { createGameServer, createPersistentGameServer } from '../dist/server.mjs';
+import { createGameCore as createCore } from '../dist/application/game-core.mjs';
+import {
+  createGameServer as createServer,
+  createPersistentGameServer as createPersistentServer,
+} from '../dist/server.mjs';
+import { ALL_MASCOT_MODELS } from '../dist/shared/mascot-roster.mjs';
 import { readLocalVisibility } from '../dist/infrastructure/node/local-visibility.mjs';
 import { ALL_CONTENT } from '../dist/shared/content-visibility.mjs';
 
 const hidden = { hiddenCharacters: ['maruimo', 'howkey'], hideMae: true };
+// These tests exercise the independent local switches with the retained cast enabled.
+const createGameCore = (options) => createCore({ mascotModels: ALL_MASCOT_MODELS, ...options });
+const createGameServer = (options) => createServer({ mascotModels: ALL_MASCOT_MODELS, ...options });
+const createPersistentGameServer = (options) =>
+  createPersistentServer({ mascotModels: ALL_MASCOT_MODELS, ...options });
 class Socket extends EventEmitter {
   readyState = 1;
   bufferedAmount = 0;
@@ -89,7 +98,7 @@ test('hidden content is absent from joins and snapshots, including stale/forged 
   core.close();
 });
 
-for (const species of ['maruimo', 'howkey'])
+for (const species of ['maruimo'])
   test(`hiding ${species} preserves the private appearance, mae checkpoint, and player progress across saves`, () => {
     const source = fixture();
     const a = join(source.core, { species, gender: species === 'howkey' ? 'female' : 'male' });
@@ -189,14 +198,14 @@ test('three local toggles independently control the served catalog and direct mo
           const { CHARACTER_MODELS } = await import(
             `data:text/javascript,${encodeURIComponent(module)}`
           );
-          assert.equal(CHARACTER_MODELS.length, 7 + Number(maruimo) + Number(howkey));
+          assert.equal(CHARACTER_MODELS.length, 7 + Number(maruimo));
           assert.equal(
             CHARACTER_MODELS.some((p) => p.species === 'maruimo'),
             maruimo,
           );
           assert.equal(
             CHARACTER_MODELS.some((p) => p.species === 'howkey'),
-            howkey,
+            false,
           );
           const catalog = await fetch(`${base}/models/world-assets.json`).then((r) => r.json());
           assert.equal(
@@ -237,7 +246,7 @@ test('three local toggles independently control the served catalog and direct mo
           assert.equal((await fetch(`${base}/local-visibility.json`)).status, 404);
           for (const [species, visible, gender] of [
             ['maruimo', maruimo, 'male'],
-            ['howkey', howkey, 'female'],
+            ['howkey', false, 'female'],
           ]) {
             const socket = new WebSocket(
               `ws://127.0.0.1:${port}/ws?room=VISIBILITY&species=${species}&gender=${gender}`,
@@ -289,7 +298,7 @@ test('invalid local settings fail closed rather than silently restoring hidden c
   assert.deepEqual(await readLocalVisibility(filename), hidden);
 });
 
-for (const species of ['maruimo', 'howkey'])
+for (const species of ['maruimo'])
   test(`persistent Node hosts apply ${species} visibility during disk restore and retain the reversible save`, async () => {
     const saveDirectory = await mkdtemp(path.join(tmpdir(), 'cro-visibility-save-'));
     let game = await createPersistentGameServer({ saveDirectory, port: 0 });

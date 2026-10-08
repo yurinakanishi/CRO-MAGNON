@@ -8,6 +8,11 @@ import { createSurfaceTemplate } from './biome-surfaces.js';
 import { sha256 } from './asset-hash.js';
 import { downloadVerifiedAsset } from './asset-download.js';
 import { ViewUpdateGate } from './view-update-gate.js';
+import {
+  ACTIVE_MASCOT_MODELS,
+  mascotModelReleased,
+  mascotAsset,
+} from '../shared/mascot-roster.mjs';
 import { markActiveAttribute, markActiveInstances } from './instance-updates.js';
 import { applyMeadowGrassPalette, meadowGrassTint } from './meadow-palette.js';
 import { applyNatureWind } from './nature-wind.js';
@@ -158,6 +163,17 @@ export class WorldAssets {
     const catalog = await response.json();
     if (catalog.status !== 'ready' || !Array.isArray(catalog.assets))
       throw new Error('World model catalog is not ready');
+    for (const key of ACTIVE_MASCOT_MODELS) {
+      if (catalog.assets.some((asset) => asset.modelKey === key)) continue;
+      const extra = await fetch(`/models/${key}/asset.json`);
+      if (!extra.ok) throw new Error(`Companion manifest: HTTP ${extra.status}`);
+      const asset = await extra.json();
+      if (asset.modelKey !== key) throw new Error(`Companion manifest mismatch: ${key}`);
+      catalog.assets.push(asset);
+    }
+    catalog.assets = catalog.assets
+      .filter((asset) => mascotModelReleased(asset.modelKey))
+      .map(mascotAsset);
     this.catalog = catalog;
     return catalog;
   }

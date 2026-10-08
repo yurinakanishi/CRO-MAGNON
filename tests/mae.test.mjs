@@ -13,9 +13,12 @@ import {
 import { createRimoNeko } from '../dist/shared/rimo-neko.mjs';
 import { createCompanion524 } from '../dist/shared/companion-524.mjs';
 import { startAttack, resolveAttack } from '../dist/shared/combat.mjs';
-import { createGameCore } from '../dist/application/game-core.mjs';
+import { createGameCore as createCore } from '../dist/application/game-core.mjs';
+import { ALL_MASCOT_MODELS } from '../dist/shared/mascot-roster.mjs';
 import { syncOrbBots } from '../dist/shared/orb-bots.mjs';
 import { EventEmitter } from 'node:events';
+
+const createGameCore = (options) => createCore({ mascotModels: ALL_MASCOT_MODELS, ...options });
 
 const distance = (a, b) => Math.hypot(a.x - b.x, a.z - b.z);
 function fixture() {

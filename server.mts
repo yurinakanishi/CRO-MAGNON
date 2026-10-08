@@ -9,6 +9,7 @@ import { MIME, serveStatic } from './infrastructure/node/static-files.mjs';
 import { readLocalVisibility } from './infrastructure/node/local-visibility.mjs';
 import { localVerificationSettings } from './infrastructure/node/local-verification.mjs';
 import { ALL_CONTENT } from './shared/content-visibility.mjs';
+import { ACTIVE_MASCOT_MODELS } from './shared/mascot-roster.mjs';
 import { handleRoomReset, localResetRequest } from './infrastructure/node/room-reset.mjs';
 import { ADVENTURE_VERSION } from './shared/adventure-regions.mjs';
 import { BOATING } from './shared/boats.mjs';
@@ -33,7 +34,8 @@ export function createGameServer({
   exhibition = process.env.EXHIBITION_RULES === '1',
   playerLimit = WORLD.maxPlayers,
   visibility = ALL_CONTENT,
-  core = createGameCore({ resumeGraceMs, exhibition, playerLimit, visibility }),
+  mascotModels = ACTIVE_MASCOT_MODELS,
+  core = createGameCore({ resumeGraceMs, exhibition, playerLimit, visibility, mascotModels }),
   serveAssets = true,
   expectedBuild = '',
   allowedOrigins = [] as string[],
@@ -250,6 +252,7 @@ export async function createPersistentGameServer({
       persistentSessions: true,
       keepEmptyRooms: true,
       visibility: options.visibility,
+      mascotModels: options.mascotModels,
     });
   let core = makeCore();
   const store = await openLocalSave(canonical, (state: any) => {

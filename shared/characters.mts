@@ -1,6 +1,9 @@
 import type { CharacterModel, CharacterProfile, Species, Gender } from './types.mjs';
 import { CHARACTER_MODELS } from './character-profiles.mjs';
 export { CHARACTER_MODELS } from './character-profiles.mjs';
+export const PLAYABLE_CHARACTER_MODELS = CHARACTER_MODELS.filter(
+  (model) => model.playable !== false,
+);
 
 // Missing choices (including profiles saved before gender existed) start female.
 export function normalizeCharacter({ species, gender }: CharacterProfile = {}): {

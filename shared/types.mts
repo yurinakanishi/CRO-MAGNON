@@ -14,6 +14,8 @@ export interface CharacterProfile {
   difficulty?: Difficulty;
 }
 export interface CharacterModel {
+  /** False for retained player rigs now used only by a mascot. */
+  playable?: boolean;
   carryable: boolean;
   species: Species;
   gender: Gender;

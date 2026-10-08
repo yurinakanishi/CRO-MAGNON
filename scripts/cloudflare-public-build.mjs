@@ -7,6 +7,9 @@ import { assertPublicCharacterData } from './public-character-audit.mjs';
 import './build.mjs';
 if (process.exitCode) throw new Error('TypeScript build failed');
 const { CHARACTER_MODELS } = await import('../dist/shared/characters.mjs');
+const { FRIEND_MASCOTS } = await import('../dist/shared/friend-mascots.mjs');
+const { mascotModelReleased, mascotCreditReleased, mascotAsset, ACTIVE_MASCOT_MODELS } =
+  await import('../dist/shared/mascot-roster.mjs');
 const { TITLE_CREDITS, TITLE_GUEST, TITLE_SUPPORT, TITLE_FRIENDS } =
   await import('../dist/src/title-credit-profiles.js');
 
@@ -20,8 +23,17 @@ const {
 } = await import('./environment-assets.mjs');
 const profile = browserBuildProfile('mmo', new Date().toISOString());
 await prepareVendor({ cameraControls: false });
-const destination = path.join(root, 'dist-cloudflare');
-const workerDestination = path.join(root, 'dist-cloudflare-worker');
+// A separate output root permits QA without replacing an active preview's files.
+const outputArg = process.argv.find((arg) => arg.startsWith('--output-root='));
+const buildRoot = outputArg ? path.resolve(root, outputArg.slice('--output-root='.length)) : root;
+if (outputArg) {
+  const relative = path.relative(path.join(root, 'output'), buildRoot);
+  if (!relative || relative.startsWith('..') || path.isAbsolute(relative))
+    throw new Error('MMO output root must be a subfolder of output/.');
+  await mkdir(buildRoot, { recursive: true });
+}
+const destination = path.join(buildRoot, 'dist-cloudflare');
+const workerDestination = path.join(buildRoot, 'dist-cloudflare-worker');
 const stamp = new Date().toISOString().replace(/[:.]/g, '-');
 const staging = path.join(root, 'output/cloudflare-deploy', `build-${stamp}`);
 const workerStaging = path.join(root, 'output/cloudflare-deploy', `worker-build-${stamp}`);
@@ -40,13 +52,16 @@ if (
 const excludedSpecies = new Set(release.excludedCharacters);
 const excludedModels = CHARACTER_MODELS.filter((model) => excludedSpecies.has(model.species));
 const excludedKeys = new Set(excludedModels.map((model) => model.key));
-const publicCharacters = CHARACTER_MODELS.filter((model) => !excludedSpecies.has(model.species));
+const publicCharacters = CHARACTER_MODELS.filter(
+  (model) => model.playable !== false && !excludedSpecies.has(model.species),
+);
 if (!publicCharacters.some((model) => model.species === 'cro'))
   throw new Error('Missing default public character');
 const hasOctopus = publicCharacters.some((model) => model.bodyPlan === 'octopus');
 const credits = release.credits === 'full' ? TITLE_CREDITS : TITLE_CREDITS.slice(0, 1);
+const friends = TITLE_FRIENDS.filter((person) => mascotCreditReleased(person.qr));
 const visibleProfiles = new Set(
-  [...credits, TITLE_GUEST, TITLE_SUPPORT, ...TITLE_FRIENDS].map((person) => person.qr),
+  [...credits, TITLE_GUEST, TITLE_SUPPORT, ...friends].map((person) => person.qr),
 );
 const fileLimit = 25 * 1024 * 1024;
 const partSize = 24 * 1024 * 1024;
@@ -58,6 +73,8 @@ await mkdir(staging, { recursive: true });
 
 async function publish(url, bytes) {
   const name = url.replace(/^\//, '');
+  if (name.startsWith('models/') && !mascotModelReleased(name.split('/')[1]))
+    throw new Error(`Dormant mascot file in MMO release: ${url}`);
   bytes = environmentAsset(name, bytes, profile);
   if (bytes === undefined) return;
   if (!name || name.split('/').some((part) => !part || part === '.' || part === '..'))
@@ -133,7 +150,8 @@ await collect('public/audio', /\.(wav|mp3|json|txt)$/);
 await collect('public/spawn', /\.jpg$/);
 await collect('public/title', /\.(png|jpe?g|webp)$/, (name) => {
   if (name === 'cro-magnon-mmo-transparent.png') return false;
-  const profile = /^(?:qr|avatar)-([a-z0-9]+)\./.exec(name);
+  if (name.startsWith('qr-')) return false;
+  const profile = /^avatar-([a-z0-9]+)\./.exec(name);
   return !profile || visibleProfiles.has(profile[1]);
 });
 for (const file of ['index.html', 'favicon.svg'])
@@ -157,16 +175,27 @@ await publish(
 await publish(
   '/src/title-credit-profiles.js',
   Buffer.from(
-    `export const TITLE_CREDITS = ${JSON.stringify(credits)};\nexport const TITLE_GUEST = ${JSON.stringify(TITLE_GUEST)};\nexport const TITLE_SUPPORT = ${JSON.stringify(TITLE_SUPPORT)};\nexport const TITLE_FRIENDS = ${JSON.stringify(TITLE_FRIENDS)};\n`,
+    `export const TITLE_CREDITS = ${JSON.stringify(credits)};\nexport const TITLE_GUEST = ${JSON.stringify(TITLE_GUEST)};\nexport const TITLE_SUPPORT = ${JSON.stringify(TITLE_SUPPORT)};\nexport const TITLE_FRIENDS = ${JSON.stringify(friends)};\n`,
   ),
 );
 
 const catalog = JSON.parse(
   await readFile(path.join(root, 'public/models/world-assets.json'), 'utf8'),
 );
-const worldAssets = catalog.assets.filter(
-  (asset) => !excludedKeys.has(asset.modelKey) && !excludedSpecies.has(asset.species),
-);
+for (const key of ACTIVE_MASCOT_MODELS) {
+  if (!catalog.assets.some((asset) => asset.modelKey === key))
+    catalog.assets.push(
+      JSON.parse(await readFile(path.join(root, `public/models/${key}/asset.json`), 'utf8')),
+    );
+}
+const worldAssets = catalog.assets
+  .filter(
+    (asset) =>
+      !excludedKeys.has(asset.modelKey) &&
+      !excludedSpecies.has(asset.species) &&
+      mascotModelReleased(asset.modelKey),
+  )
+  .map(mascotAsset);
 const assets = [...worldAssets];
 for (const { key } of publicCharacters)
   if (!assets.some((asset) => asset.modelKey === key))
@@ -253,7 +282,7 @@ for (const asset of assets) {
   );
   await publish(
     `/models/${asset.modelKey}/asset.json`,
-    Buffer.from(JSON.stringify(transform(source), null, 2)),
+    Buffer.from(JSON.stringify(transform(mascotAsset(source)), null, 2)),
   );
 }
 await publish(
@@ -267,6 +296,10 @@ for (const { key } of publicCharacters)
   );
 for (const url of runtimeBotPortraitUrls(assets))
   await publish(url, await readFile(path.join(root, `public${url}`)));
+for (const friend of FRIEND_MASCOTS.filter((friend) => ACTIVE_MASCOT_MODELS.includes(friend.key))) {
+  const url = `/models/${friend.key}/portrait.png`;
+  await publish(url, await readFile(path.join(root, `public${url}`)));
+}
 await publish(
   '/_headers',
   Buffer.from(
@@ -299,7 +332,7 @@ for (const directory of ['shared', 'application', 'cloudflare']) {
 async function retainAndSwap(source, target, previous) {
   const archive = path.join(root, 'output/cloudflare-deploy', `${previous}-${stamp}`);
   if (
-    path.dirname(target) !== root ||
+    path.dirname(target) !== buildRoot ||
     path.dirname(source) !== path.join(root, 'output/cloudflare-deploy') ||
     path.dirname(archive) !== path.join(root, 'output/cloudflare-deploy')
   )
@@ -323,15 +356,23 @@ const report = {
   credits: release.credits,
   optimizedAssets: !!optimized,
   excludedCharacters: [...excludedSpecies],
+  activeMascotModels: ACTIVE_MASCOT_MODELS,
   characters: publicCharacters,
-  workerMain: 'dist-cloudflare-worker/cloudflare/worker.mjs',
+  workerMain: path
+    .relative(root, path.join(workerDestination, 'cloudflare/worker.mjs'))
+    .replaceAll('\\', '/'),
   files: files.size,
   bytes: total,
   models,
   publicFiles: [...files.values()],
   workerFiles,
 };
-await writeFile(path.join(root, 'output/cloudflare-build.json'), JSON.stringify(report, null, 2));
+await writeFile(
+  outputArg
+    ? path.join(buildRoot, 'cloudflare-build.json')
+    : path.join(root, 'output/cloudflare-build.json'),
+  JSON.stringify(report, null, 2),
+);
 console.log(
   `Cloudflare assets: ${files.size} files, ${(total / 1024 / 1024).toFixed(1)} MiB; ${models.length} exact GLBs, ${models.filter((model) => model.parts).length} split. Credits: ${release.credits}.`,
 );

@@ -7,9 +7,7 @@ import {
   contributorHandle,
   contributorsDialogMarkup,
   titleContributors,
-  titleCreditsMarkup,
   TITLE_CREDITS,
-  TITLE_FRIENDS,
 } from '../dist/src/title-credits.js';
 import { CAVE_MURAL_SPOTS, CAVE_MURAL_STRIP } from '../dist/src/cave-mural-strip.js';
 
@@ -39,7 +37,15 @@ test('the title mural is the baked strip of the unmodified cave friezes', async 
 test('contributors link only to verified x.com profiles', () => {
   const people = titleContributors();
   assert.equal(people[0].name, 'yuri');
-  assert.equal(people.length, TITLE_CREDITS.length + 2 + TITLE_FRIENDS.length);
+  assert.equal(people.length, TITLE_CREDITS.length + 2);
+  assert.deepEqual(
+    people.filter((p) => p.role === '監修').map((p) => p.key),
+    ['ryuichi', 'nukonuko', 'otani', 'urata'],
+  );
+  assert.deepEqual(
+    people.filter((p) => p.role === '友情出演').map((p) => p.key),
+    ['r524', 'rimo'],
+  );
   for (const person of people) {
     assert.ok(person.profile === '' || contributorHandle(person.profile), person.name);
     assert.match(person.avatar, /^\/title\/avatar-[a-z0-9]+\.jpg$/);
@@ -54,21 +60,13 @@ test('contributors link only to verified x.com profiles', () => {
     nukonuko: 'ぬこぬこ',
     r524: '524',
     rimo: 'りもねこ',
-    maruimo: 'まるぃも',
-    mae: 'mae',
-    risa: 'こはくちゃん',
-    saber: 'Saber',
-    fairy: 'フェアリー',
-    sagasa: 'さが',
-    hawkie: 'Howkey',
-    asahina: '怜ちゃん',
   });
   // Everyone listed has a delivered X icon.
   for (const person of people)
     assert.ok(existsSync(new URL(`public${person.avatar}`, root)), person.avatar);
 });
 
-test('the dialog lists every contributor with an X icon and the exhibition keeps QR codes', () => {
+test('the dialog lists every contributor without QR codes and exhibition cards have no links', () => {
   const dialog = contributorsDialogMarkup();
   const people = titleContributors();
   assert.equal((dialog.match(/class="contributor-avatar"/g) ?? []).length, people.length);
@@ -77,19 +75,21 @@ test('the dialog lists every contributor with an X icon and the exhibition keeps
     people.filter((p) => p.profile).length,
   );
   assert.doesNotMatch(dialog, /qr-/);
-  const exhibition = titleCreditsMarkup();
-  assert.match(exhibition, /class="credit-qr"/);
+  const exhibition = contributorsDialogMarkup(undefined, { links: false });
+  assert.equal((exhibition.match(/class="contributor-avatar"/g) ?? []).length, people.length);
+  assert.doesNotMatch(exhibition, /qr-/);
   assert.doesNotMatch(exhibition, /<a\b/);
 });
 
-test('the online title offers contributors immediately without a mural or loading gate', async () => {
+test('every title offers contributors immediately without home credit cards or a loading gate', async () => {
   const main = await readFile(new URL('src/main.ts', root), 'utf8');
   const nav = await readFile(new URL('src/menu-navigation.ts', root), 'utf8');
   assert.match(
     main,
     /const onlineTitle = !fixedIdentity && BUILD_PROFILE\.environment !== 'exhibition';/,
   );
-  assert.match(main, /\$\{onlineTitle \? '' : titleCreditsMarkup\(\)\}/);
+  assert.match(main, /class="screen title-screen" data-variant="classic" hidden/);
+  assert.doesNotMatch(main, /titleCreditsMarkup|onlineTitle \? '<button id="title-contributors"/);
   assert.match(main, /id="title-contributors" class="menu-item">関わってくれた人たち/);
   assert.doesNotMatch(main, /titleMuralMarkup|titleLoading|data-loading/);
   assert.match(nav, /\[data-nav-skip\]/);

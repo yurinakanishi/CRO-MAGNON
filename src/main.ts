@@ -117,7 +117,7 @@ import { installGulfUI, gulfInteraction } from './gulf-ui.js';
 import { installVillageUI, residentInteraction } from './village-ui.js';
 import { inGulf } from '../shared/gulf-region.mjs';
 import { ScreenManager, AreaBanner, keyPrompts } from './screens.js';
-import { titleCreditsMarkup, contributorsDialogMarkup } from './title-credits.js';
+import { contributorsDialogMarkup } from './title-credits.js';
 import { BUILD_PROFILE } from './build-profile.js';
 import {
   DIFFICULTIES,
@@ -187,7 +187,7 @@ const sessionKey = (room: string) => multiplayerSessionKey(multiplayer, room);
 // The exhibition LAN build never asks for a name or room: each PC is a fixed
 // player in the fixed exhibition room, and only the character is chosen.
 const fixedIdentity = multiplayer.mode === 'lan';
-// Exhibition PCs keep scannable QR credits; online credits live in their dialog.
+// Online starts use the loading cave; exhibition starts retain their existing flow.
 const onlineTitle = !fixedIdentity && BUILD_PROFILE.environment !== 'exhibition';
 const hudPlayerLimit = () =>
   fixedIdentity ? EXHIBITION_PLAYER_LIMIT : (state.playerLimit ?? WORLD.maxPlayers);
@@ -276,7 +276,7 @@ $('#app').innerHTML = `
     <div class="hotbar-wrap"><div id="companion524-controls"><button type="button" class="hunt-button" id="pet-rimo-button" hidden><kbd>V</kbd><span>りもねこを撫でる</span></button><button type="button" class="hunt-button" id="dismiss-rimo-button" hidden><kbd>T</kbd><span>りもねこをキャンプへ帰す</span></button></div><div class="interaction-hint" id="interaction-hint" hidden><kbd>E</kbd><span></span></div></div>
     <div id="prompt-bar" class="prompt-bar" aria-label="操作の案内"></div>
     <div id="screens" class="screens">
-      <section id="screen-title" class="screen title-screen"${onlineTitle ? ' data-variant="classic"' : ''} hidden>
+      <section id="screen-title" class="screen title-screen" data-variant="classic" hidden>
         <div class="title-content">
           <div class="title-hero">
           <div class="title-logo" style="--title-art: url('${titleArtPath}')"><h1>${GAME_TITLE}</h1><img class="title-art" src="${titleArtPath}" width="1536" height="1024" alt="${GAME_TITLE} — 氷河時代の旅人たちとマンモス" fetchpriority="high"></div>
@@ -284,11 +284,10 @@ $('#app').innerHTML = `
           <nav class="title-menu" aria-label="タイトルメニュー">
             <button id="title-start" class="menu-item">はじめる</button>
             <button id="title-graphics" class="menu-item">画質</button>
-            ${onlineTitle ? '<button id="title-contributors" class="menu-item">関わってくれた人たち</button>' : ''}
+            <button id="title-contributors" class="menu-item">関わってくれた人たち</button>
           </nav>
           </div>
           </div>
-          ${onlineTitle ? '' : titleCreditsMarkup()}
         </div>
         <button id="title-fullscreen" class="title-fullscreen" type="button" aria-label="全画面表示" aria-pressed="false">${icon('expand')}</button>
         <div class="title-footer"><span>v0.1</span></div>
@@ -2569,7 +2568,9 @@ $('#title-graphics').onclick = () => {
   openModal(`<h2>画質</h2><div class="settings-list">${graphicsSettingsMarkup()}</div>`);
   bindGraphicsSettings($('#modal-body'), (mode) => renderer.setGraphicsMode?.(mode));
 };
-$('#title-contributors')?.addEventListener('click', () => openModal(contributorsDialogMarkup()));
+$('#title-contributors').addEventListener('click', () =>
+  openModal(contributorsDialogMarkup(undefined, { links: onlineTitle })),
+);
 $('#title-fullscreen').onclick = toggleFullscreen;
 document.addEventListener('fullscreenchange', () => {
   const active = !!document.fullscreenElement;

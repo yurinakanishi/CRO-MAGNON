@@ -58,6 +58,7 @@ import {
   updateBoats,
 } from '../shared/boats.mjs';
 import { characterModel, normalizeCharacter } from '../shared/characters.mjs';
+import { ACTIVE_MASCOT_MODELS } from '../shared/mascot-roster.mjs';
 import {
   ALL_CONTENT,
   visibleCharacters,
@@ -120,6 +121,7 @@ export function createGameCore({
   runtime = defaultRuntime,
   exhibition = false,
   visibility: requestedVisibility = ALL_CONTENT,
+  mascotModels = ACTIVE_MASCOT_MODELS,
 }: {
   resumeGraceMs?: number;
   keepEmptyRooms?: boolean;
@@ -129,6 +131,7 @@ export function createGameCore({
   runtime?: Runtime;
   exhibition?: boolean;
   visibility?: ContentVisibility;
+  mascotModels?: readonly string[];
 } = {}) {
   if (!Number.isInteger(playerLimit) || playerLimit < 1 || playerLimit > 64)
     throw new Error('playerLimit must be an integer from 1 to 64');
@@ -138,6 +141,10 @@ export function createGameCore({
     hideMae: requestedVisibility.hideMae,
   });
   const characters = visibleCharacters(visibility);
+  const mascotEnabled = (key: string) =>
+    mascotModels.includes(key) &&
+    (key !== 'howkey-scientist' || !visibility.hiddenCharacters.includes('howkey'));
+  const enabledMascots = mascotModels.filter(mascotEnabled);
   const fallback = characters.find((model) => model.species === 'cro');
   if (!fallback) throw new Error('The default character must remain available');
   function proposedAppearance(requested) {
@@ -240,10 +247,10 @@ export function createGameCore({
       room.animals = createAnimals(room.collision);
       room.companion524 = createCompanion524(room.collision);
       room.rimoNeko = createRimoNeko(room.collision);
-      if (!visibility.hideMae) room.mae = createMae(room.collision);
-      room.kohaku = createKohaku(room.collision);
-      room.maruimo = createMaruimo(room.collision);
-      room.friends = createFriendMascots(room.collision);
+      if (!visibility.hideMae && mascotEnabled('mae')) room.mae = createMae(room.collision);
+      if (mascotEnabled('kohaku')) room.kohaku = createKohaku(room.collision);
+      if (mascotEnabled('maruimo-mascot')) room.maruimo = createMaruimo(room.collision);
+      room.friends = createFriendMascots(room.collision, enabledMascots);
       room.enemies = createEnemies(room.collision, room.animals);
       createResidents(room, [], runtime.now());
       rooms.set(roomName, room);
@@ -836,9 +843,9 @@ export function createGameCore({
                 room.orbBots?.find((bot) => bot.kind === 'rimo-neko'),
               ),
               mae: room.mae ?? room.hiddenMae,
-              kohaku: room.kohaku,
-              maruimo: room.maruimo,
-              friends: room.friends,
+              kohaku: room.kohaku ?? room.hiddenKohaku,
+              maruimo: room.maruimo ?? room.hiddenMaruimo,
+              friends: [...(room.friends ?? []), ...(room.hiddenFriends ?? [])],
               orbBots: saveOrbBots(room),
               enemies: room.enemies,
               boats: room.boats,
@@ -1018,11 +1025,16 @@ export function createGameCore({
       createResidents(room, record.residents, runtime.now());
       restoreCompanion524(room, record.companion524);
       restoreRimoNeko(room, record.rimoNeko);
-      if (visibility.hideMae) room.hiddenMae = record.mae;
+      if (visibility.hideMae || !mascotEnabled('mae')) room.hiddenMae = record.mae;
       else restoreMae(room, record.mae);
-      restoreKohaku(room, record.kohaku);
-      restoreMaruimo(room, record.maruimo);
-      restoreFriendMascots(room, record.friends);
+      if (mascotEnabled('kohaku')) restoreKohaku(room, record.kohaku);
+      else room.hiddenKohaku = record.kohaku;
+      if (mascotEnabled('maruimo-mascot')) restoreMaruimo(room, record.maruimo);
+      else room.hiddenMaruimo = record.maruimo;
+      restoreFriendMascots(room, record.friends, enabledMascots);
+      room.hiddenFriends = Array.isArray(record.friends)
+        ? record.friends.filter((friend) => !mascotEnabled(friend.key))
+        : [];
       restoreOrbBots(room, record.orbBots, runtime.now());
     }
   }

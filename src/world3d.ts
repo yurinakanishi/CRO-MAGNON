@@ -568,11 +568,17 @@ export class WorldRenderer {
             if (asset.modelKey === 'mae') this.maeRenderer = new MaeRenderer(this);
             if (asset.modelKey === 'kohaku') this.kohakuRenderer = new KohakuRenderer(this);
             const friend = FRIEND_MASCOTS.findIndex((f) => f.key === asset.modelKey);
-            if (friend >= 0)
+            if (friend >= 0) {
+              const def = FRIEND_MASCOTS[friend];
+              const equipment = def.equipment
+                ? await this.worldAssets.createEquipment(def.equipment.key)
+                : undefined;
+              if (this.disposed) return;
               this.friendRenderers.set(
                 asset.modelKey,
-                new FriendMascotRenderer(this, FRIEND_MASCOTS[friend], friend),
+                new FriendMascotRenderer(this, def, friend, equipment ?? undefined),
               );
+            }
             if (asset.modelKey === 'maruimo-mascot')
               this.maruimoRenderer = new MaruimoRenderer(this);
           }),

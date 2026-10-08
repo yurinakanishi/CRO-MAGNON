@@ -1,7 +1,11 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { EventEmitter } from 'node:events';
-import { CHARACTER_MODELS, characterModel } from '../dist/shared/characters.mjs';
+import {
+  CHARACTER_MODELS,
+  PLAYABLE_CHARACTER_MODELS,
+  characterModel,
+} from '../dist/shared/characters.mjs';
 import { handleCharacterSwitch } from '../dist/shared/character-switching.mjs';
 import { CollisionWorld } from '../dist/shared/collision.mjs';
 import { WORLD } from '../dist/shared/world.mjs';
@@ -67,9 +71,9 @@ const retained = (p) =>
     ].map((key) => [key, structuredClone(p[key])]),
   );
 
-test('all 42 character changes keep exact position, possessions, energy, progress and identity', () => {
+test('all playable character changes keep exact position, possessions, energy, progress and identity', () => {
   for (const from of CHARACTER_MODELS)
-    for (const to of CHARACTER_MODELS) {
+    for (const to of PLAYABLE_CHARACTER_MODELS) {
       if (from === to) continue;
       const p = player(from),
         r = room(p),
