@@ -2,7 +2,20 @@ import { CAMP_CAVE, caveLocal } from './camp-cave-layout.mjs';
 import { CAMP_CAVE_SURFACE } from './camp-cave-surface.mjs';
 import { CAMP_CAVE_SURFACE_DATA } from './camp-cave-surface-data.mjs';
 
-export const CAVE_TORCH = Object.freeze({ distance: 3.2, intensity: 9, decay: 2 });
+// Shared by the waiting gallery and the live world, including fog and stone shading.
+export const CAVE_LIGHT = Object.freeze({
+  sky: '#c0ccd2',
+  ground: '#69675c',
+  sun: '#e4e9df',
+  sunDirection: [-45, 47, -32] as const,
+  background: '#1b2328',
+  hemisphere: 0.9,
+  directional: 0.18,
+  stoneDaylight: 0.5,
+  fogNear: 12,
+  fogFar: 55,
+});
+export const CAVE_TORCH = Object.freeze({ distance: 5, intensity: 12, decay: 2 });
 
 /** Measured roof/floor exclude the open apron and the mountain above the cave. */
 export function caveInteriorWeight(p: { x: number; z: number; y?: number }) {

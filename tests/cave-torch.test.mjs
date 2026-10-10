@@ -56,7 +56,7 @@ test('cave entry equips a personal torch; switching it never changes someone els
   const attenuation = (d) =>
     Math.max(0, 1 - (d / CAVE_TORCH.distance) ** 4) ** 2 / d ** CAVE_TORCH.decay;
   assert.ok(
-    attenuation(3.5) < attenuation(1) * 0.035,
+    attenuation(4.5) < attenuation(1) * 0.035,
     'far wall is only a small fraction of the close light',
   );
   assert.equal(attenuation(5), 0);

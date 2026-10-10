@@ -465,6 +465,13 @@ body #screen-title[data-variant='classic'] .menu-item {
   display: none;
   place-items: center;
 }
+.loading-cave-torch {
+  position: absolute;
+  right: max(24px, env(safe-area-inset-right));
+  bottom: 170px;
+  min-height: 48px;
+  background: #1b211dcc;
+}
 .loading-cave-stick i {
   width: 44px;
   height: 44px;
@@ -546,5 +553,8 @@ body #screen-title[data-variant='classic'] .menu-item {
     bottom: 104px;
     width: 88px;
     height: 88px;
+  }
+  .loading-cave-torch {
+    bottom: 104px;
   }
 }

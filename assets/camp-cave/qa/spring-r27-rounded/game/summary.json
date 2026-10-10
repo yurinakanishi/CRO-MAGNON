@@ -1,0 +1,409 @@
+{
+  "checks": [
+    "Waiting: held torch, keyboard and button switching, readable unlit stone, actual walking toward spring",
+    "Live: same spring and dim environment; actual L switches personal lighting without blacking out cave",
+    "Bank movement reaches the server from real keyboard input",
+    "Five connected players retain independent torches; actual movement at spring has a valid measured floor"
+  ],
+  "captures": [
+    {
+      "label": "waiting-lit",
+      "mean": 37.58672899203536,
+      "black": 0.0001827485380116959,
+      "lights": [
+        {
+          "type": "HemisphereLight",
+          "intensity": 0.9,
+          "color": "c0ccd2"
+        },
+        {
+          "type": "DirectionalLight",
+          "intensity": 0.18,
+          "color": "e4e9df"
+        },
+        {
+          "type": "PointLight",
+          "intensity": 11.506927915509806,
+          "color": "ffd09a",
+          "distance": 5
+        }
+      ],
+      "spring": true
+    },
+    {
+      "label": "waiting-off",
+      "mean": 37.13918267543363,
+      "black": 0.0001827485380116959,
+      "lights": [
+        {
+          "type": "HemisphereLight",
+          "intensity": 0.9,
+          "color": "c0ccd2"
+        },
+        {
+          "type": "DirectionalLight",
+          "intensity": 0.18,
+          "color": "e4e9df"
+        },
+        {
+          "type": "PointLight",
+          "intensity": 0,
+          "color": "ffd09a",
+          "distance": 5
+        }
+      ],
+      "spring": true
+    },
+    {
+      "label": "live-lit",
+      "mean": 38.24727138970009,
+      "black": 0.0002233593242365172,
+      "lights": [
+        {
+          "type": "HemisphereLight",
+          "intensity": 0.9000207457361284,
+          "color": "c0ccd2"
+        },
+        {
+          "type": "DirectionalLight",
+          "intensity": 0.18004658360748807,
+          "color": "e4e9df"
+        },
+        {
+          "type": "PointLight",
+          "intensity": 3.6509026804397817,
+          "color": "ffad57",
+          "distance": 11
+        },
+        {
+          "type": "PointLight",
+          "intensity": 3.683944255517103,
+          "color": "ffad57",
+          "distance": 11
+        },
+        {
+          "type": "PointLight",
+          "intensity": 4,
+          "color": "ffad57",
+          "distance": 11
+        },
+        {
+          "type": "PointLight",
+          "intensity": 4,
+          "color": "ffad57",
+          "distance": 11
+        },
+        {
+          "type": "PointLight",
+          "intensity": 4,
+          "color": "ffad57",
+          "distance": 11
+        },
+        {
+          "type": "PointLight",
+          "intensity": 4,
+          "color": "ffad57",
+          "distance": 11
+        },
+        {
+          "type": "PointLight",
+          "intensity": 4,
+          "color": "ffad57",
+          "distance": 11
+        },
+        {
+          "type": "PointLight",
+          "intensity": 4,
+          "color": "ffad57",
+          "distance": 11
+        },
+        {
+          "type": "PointLight",
+          "intensity": 4,
+          "color": "ffad57",
+          "distance": 11
+        },
+        {
+          "type": "PointLight",
+          "intensity": 4,
+          "color": "ffad57",
+          "distance": 11
+        },
+        {
+          "type": "PointLight",
+          "intensity": 4,
+          "color": "ffad57",
+          "distance": 11
+        },
+        {
+          "type": "PointLight",
+          "intensity": 4,
+          "color": "ffad57",
+          "distance": 11
+        },
+        {
+          "type": "PointLight",
+          "intensity": 4,
+          "color": "ffad57",
+          "distance": 11
+        },
+        {
+          "type": "PointLight",
+          "intensity": 4,
+          "color": "ffd6a4",
+          "distance": 5
+        },
+        {
+          "type": "PointLight",
+          "intensity": 12.248435428733613,
+          "color": "ffd09a",
+          "distance": 5
+        }
+      ],
+      "spring": true
+    },
+    {
+      "label": "live-off",
+      "mean": 37.987598984729104,
+      "black": 0.00024366471734892786,
+      "lights": [
+        {
+          "type": "HemisphereLight",
+          "intensity": 0.9000100998516718,
+          "color": "c0ccd2"
+        },
+        {
+          "type": "DirectionalLight",
+          "intensity": 0.1800226787578446,
+          "color": "e4e9df"
+        },
+        {
+          "type": "PointLight",
+          "intensity": 3.6509026804397817,
+          "color": "ffad57",
+          "distance": 11
+        },
+        {
+          "type": "PointLight",
+          "intensity": 3.683944255517103,
+          "color": "ffad57",
+          "distance": 11
+        },
+        {
+          "type": "PointLight",
+          "intensity": 4,
+          "color": "ffad57",
+          "distance": 11
+        },
+        {
+          "type": "PointLight",
+          "intensity": 4,
+          "color": "ffad57",
+          "distance": 11
+        },
+        {
+          "type": "PointLight",
+          "intensity": 4,
+          "color": "ffad57",
+          "distance": 11
+        },
+        {
+          "type": "PointLight",
+          "intensity": 4,
+          "color": "ffad57",
+          "distance": 11
+        },
+        {
+          "type": "PointLight",
+          "intensity": 4,
+          "color": "ffad57",
+          "distance": 11
+        },
+        {
+          "type": "PointLight",
+          "intensity": 4,
+          "color": "ffad57",
+          "distance": 11
+        },
+        {
+          "type": "PointLight",
+          "intensity": 4,
+          "color": "ffad57",
+          "distance": 11
+        },
+        {
+          "type": "PointLight",
+          "intensity": 4,
+          "color": "ffad57",
+          "distance": 11
+        },
+        {
+          "type": "PointLight",
+          "intensity": 4,
+          "color": "ffad57",
+          "distance": 11
+        },
+        {
+          "type": "PointLight",
+          "intensity": 4,
+          "color": "ffad57",
+          "distance": 11
+        },
+        {
+          "type": "PointLight",
+          "intensity": 4,
+          "color": "ffad57",
+          "distance": 11
+        },
+        {
+          "type": "PointLight",
+          "intensity": 4,
+          "color": "ffd6a4",
+          "distance": 5
+        },
+        {
+          "type": "PointLight",
+          "intensity": 0,
+          "color": "ffd09a",
+          "distance": 5
+        }
+      ],
+      "spring": true
+    },
+    {
+      "label": "five-players",
+      "mean": 38.25634567901107,
+      "black": 0.0002233593242365172,
+      "lights": [
+        {
+          "type": "HemisphereLight",
+          "intensity": 0.9000003674752676,
+          "color": "c0ccd2"
+        },
+        {
+          "type": "DirectionalLight",
+          "intensity": 0.18000082514900947,
+          "color": "e4e9df"
+        },
+        {
+          "type": "PointLight",
+          "intensity": 3.6509026804397817,
+          "color": "ffad57",
+          "distance": 11
+        },
+        {
+          "type": "PointLight",
+          "intensity": 3.683944255517103,
+          "color": "ffad57",
+          "distance": 11
+        },
+        {
+          "type": "PointLight",
+          "intensity": 4,
+          "color": "ffad57",
+          "distance": 11
+        },
+        {
+          "type": "PointLight",
+          "intensity": 4,
+          "color": "ffad57",
+          "distance": 11
+        },
+        {
+          "type": "PointLight",
+          "intensity": 4,
+          "color": "ffad57",
+          "distance": 11
+        },
+        {
+          "type": "PointLight",
+          "intensity": 4,
+          "color": "ffad57",
+          "distance": 11
+        },
+        {
+          "type": "PointLight",
+          "intensity": 4,
+          "color": "ffad57",
+          "distance": 11
+        },
+        {
+          "type": "PointLight",
+          "intensity": 4,
+          "color": "ffad57",
+          "distance": 11
+        },
+        {
+          "type": "PointLight",
+          "intensity": 4,
+          "color": "ffad57",
+          "distance": 11
+        },
+        {
+          "type": "PointLight",
+          "intensity": 4,
+          "color": "ffad57",
+          "distance": 11
+        },
+        {
+          "type": "PointLight",
+          "intensity": 4,
+          "color": "ffad57",
+          "distance": 11
+        },
+        {
+          "type": "PointLight",
+          "intensity": 4,
+          "color": "ffad57",
+          "distance": 11
+        },
+        {
+          "type": "PointLight",
+          "intensity": 4,
+          "color": "ffad57",
+          "distance": 11
+        },
+        {
+          "type": "PointLight",
+          "intensity": 4,
+          "color": "ffd6a4",
+          "distance": 5
+        },
+        {
+          "type": "PointLight",
+          "intensity": 12.479527888194378,
+          "color": "ffd09a",
+          "distance": 5
+        },
+        {
+          "type": "PointLight",
+          "intensity": 12.479527888194378,
+          "color": "ffd09a",
+          "distance": 5
+        },
+        {
+          "type": "PointLight",
+          "intensity": 12.479527888194378,
+          "color": "ffd09a",
+          "distance": 5
+        },
+        {
+          "type": "PointLight",
+          "intensity": 12.479527888194378,
+          "color": "ffd09a",
+          "distance": 5
+        },
+        {
+          "type": "PointLight",
+          "intensity": 12.479527888194378,
+          "color": "ffd09a",
+          "distance": 5
+        }
+      ],
+      "spring": true
+    }
+  ],
+  "errors": [],
+  "browser": "154.0.8037.93",
+  "fixture": "server placement only; keyboard walking and switching; one real Chrome and four WebSocket peers; phone viewport is not a physical device"
+}

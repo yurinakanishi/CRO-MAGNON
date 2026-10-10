@@ -2,6 +2,7 @@
 // the decoded size checked against the manifest, and every texture, decoded image
 // and blob URL released exactly once, whoever leaves or fails first.
 import test from 'node:test';
+import { createGalleryActor } from './cave-gallery-actor.mjs';
 import assert from 'node:assert/strict';
 import { createHash } from 'node:crypto';
 import { readFile } from 'node:fs/promises';
@@ -749,11 +750,6 @@ test('leaving the world while cave images load releases them once as they arrive
 
 /** The gallery's view of the world, as the context tests build it. */
 function galleryWorld(manifest) {
-  const avatar = {
-    root: new THREE.Group(),
-    animation: { name: 'Idle_Loop', update() {} },
-    dispose() {},
-  };
   const cave = () => {
     const scene = new THREE.Group();
     const geometry = new THREE.BoxGeometry(30, 6, 80);
@@ -767,10 +763,11 @@ function galleryWorld(manifest) {
       ensureInitial: async () => ({ asset: manifest }),
       create: cave,
     },
-    humanAssets: new Map([['cro-magnon-woman', { create: async () => avatar }]]),
+    humanAssets: new Map([['cro-magnon-woman', { create: createGalleryActor }]]),
     renderer: {
       // A lost context: compiling waits for a restore, as in context-recovery.test.
       getContext: () => ({ isContextLost: () => true }),
+      getPixelRatio: () => 1,
       compile: () => new Set(),
       render() {},
       capabilities: { getMaxAnisotropy: () => 4 },
@@ -799,7 +796,7 @@ test('the gallery paints only verified images and releases them when it closes',
   assert.equal(requests.length, 10);
   let mesh = null;
   cave.scene.traverse((node) => {
-    if (node.isMesh) mesh = node;
+    if (node.isMesh && node.material.customProgramCacheKey().startsWith('camp-cave-')) mesh = node;
   });
   const uniforms = caveUniforms(mesh.material);
   const samplers = [

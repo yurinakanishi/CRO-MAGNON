@@ -26,6 +26,7 @@ import { RiverBankBuilder } from './river-bank-builder.js';
 import { LoadDemand, isLoadCancelled, type LoadTicket } from './asset-load-queue.js';
 import { landmarkPriority } from './startup-plan.js';
 import { chunkMountainSurface } from './surface-chunks.js';
+import { CaveSpring } from './cave-spring.js';
 
 const RADIUS = 125,
   // A requested landmark stays wanted this much beyond the streaming radius.
@@ -161,6 +162,7 @@ export class WorldLandmarks {
   caveImages: VerifiedTextureBatch<CaveTextureKey> | null = null;
   /** The cave's images failed once: the world failed and nothing is requested again. */
   private caveFailed = false;
+  private caveSpring: CaveSpring | null = null;
   private readonly imageOptions: VerifiedTextureOptions;
   /** Landmark requests by key, prioritized by the nearest footprint edge. */
   readonly demand = new LoadDemand();
@@ -359,6 +361,7 @@ export class WorldLandmarks {
     return model;
   }
   update(camera, time) {
+    this.caveSpring?.update(time);
     if (this.disposed || time < this.next) return;
     this.next = time + 0.3;
     const desired = [],
@@ -381,7 +384,11 @@ export class WorldLandmarks {
         for (const material of root.userData.ownedMaterials ?? []) material.dispose();
         this.instances.delete(id);
         if (id === CASTLE.id) this.castleCamera = null;
-        if (id === CAMP_CAVE.id) this.caveCamera = null;
+        if (id === CAMP_CAVE.id) {
+          this.caveCamera = null;
+          this.caveSpring?.dispose();
+          this.caveSpring = null;
+        }
       }
     for (const item of desired) {
       this.used.set(item.key, time);
@@ -455,7 +462,12 @@ export class WorldLandmarks {
         this.instances.set(item.id, root);
         this.world.scene.add(root);
         if (item.id === CASTLE.id) this.castleCamera = new MeshRayGrid(root);
-        if (item.id === CAMP_CAVE.id) this.caveCamera = new MeshRayGrid(root);
+        if (item.id === CAMP_CAVE.id) {
+          this.caveCamera = new MeshRayGrid(root);
+          this.caveSpring = new CaveSpring();
+          root.add(this.caveSpring.root);
+          this.caveSpring.update(time);
+        }
       }
       const instance = this.instances.get(item.id);
       if (item.id === CAMP_MOUNTAIN.id && instance.levels.length > 1) {
@@ -512,6 +524,8 @@ export class WorldLandmarks {
   }
   dispose() {
     this.disposed = true;
+    this.caveSpring?.dispose();
+    this.caveSpring = null;
     // Queued landmarks nobody else wants are cancelled; running fits stop.
     this.demand.clear();
     for (const builder of this.builders) builder.dispose();

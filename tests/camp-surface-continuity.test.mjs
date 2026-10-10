@@ -63,7 +63,8 @@ test('the extended chamber retains its measured aisle and complete wall painting
   const before = measureCaveAisle(old.scene),
     after = measureCaveAisle(next.scene, caveCentreOffset),
     ratio = after.lengthMetres / before.lengthMetres;
-  assert.ok(ratio > 1.95 && ratio < 2.15, `walkable length ratio ${ratio}`);
+  // The rounded spring adds about four metres beyond the r26 gallery.
+  assert.ok(ratio > 2.2 && ratio < 2.3, `walkable length ratio ${ratio}`);
   t.diagnostic(
     `Measured aisle: ${before.lengthMetres.toFixed(2)} m → ${after.lengthMetres.toFixed(2)} m`,
   );
@@ -75,10 +76,15 @@ test('the extended chamber retains its measured aisle and complete wall painting
     assert.ok(CAMP_CAVE_SURFACE.free(p.x, p.z, 0.76), `blocked interior ${localZ}`);
     const h = walkHeight(p.x, p.z);
     assert.ok(Math.abs(h - previous) < 0.08, `floor discontinuity ${localZ}`);
-    assert.ok(Math.abs(h - CAMP_CAVE.elevation) < 0.65);
+    if (localZ >= -29.5) assert.ok(Math.abs(h - CAMP_CAVE.elevation) < 0.65);
+    else
+      assert.ok(
+        h >= CAMP_CAVE.elevation - 0.81 && h < CAMP_CAVE.elevation + 0.65,
+        'shallow spring basin',
+      );
     previous = h;
   }
-  const end = caveWorldAt(-33.5);
+  const end = caveWorldAt(-37.6);
   assert.equal(CAMP_CAVE_SURFACE.free(end.x, end.z, 0.32), false);
   for (const mural of CAVE_MURALS) {
     const entranceEdge = mural.centre + mural.width / 2,

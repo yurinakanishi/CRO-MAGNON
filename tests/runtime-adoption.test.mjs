@@ -82,6 +82,7 @@ import {
 } from '../scripts/runtime-graph.mjs';
 import { CHUNKS, compressedGlb, pngFile, sceneGlb } from './exact-repack-fixtures.mjs';
 import { assertGuardedHistoryStep } from './fixtures/guarded/lineage.mjs';
+import { assertAppliedOrRevisedSource } from './fixtures/guarded/source-revision.mjs';
 
 const REVISION = 'assets/optimized-runtime/20991231-r01',
   REVISION_NAME = '20991231-r01',
@@ -3937,7 +3938,7 @@ test('the intended r05 scope derives from the applied base originals and leaves 
   // The r06 exact repack on the r05 chain: the chain it repacked is checked through it.
   if (active.recipe === 'guarded-surface@1') {
     const report = await auditAdoption(REPO_ROOT, id);
-    assert.equal(report.status, 'passed', failedChecks(report));
+    await assertAppliedOrRevisedSource(REPO_ROOT, id, report);
     let base = await assertGuardedHistoryStep(REPO_ROOT, active);
     while (base.recipe === 'guarded-surface@1')
       base = await assertGuardedHistoryStep(REPO_ROOT, base);
@@ -3996,22 +3997,14 @@ test('the intended r05 scope derives from the applied base originals and leaves 
   );
 });
 
-test('the accepted r04 revision plans the contract graph, or audits clean once applied', async () => {
+test('the accepted r04 revision proves its contract graph and any explicitly reviewed source successor', async () => {
   const catalog = JSON.parse(await readFile(file(REPO_ROOT, CATALOG), 'utf8')),
     applied = catalog.assets.find((asset) => asset[RUNTIME_FIELD])?.[RUNTIME_FIELD].adoption;
   if (applied) {
     // The active adoption: r04's own, or a chain that inherits r04's graph (its audit checks the
     // base record; the base's own audit then reports its manifests as history).
     const report = await auditAdoption(REPO_ROOT, applied);
-    assert.equal(
-      report.status,
-      'passed',
-      JSON.stringify(
-        report.checks.filter((item) => item.status === 'failed'),
-        null,
-        2,
-      ),
-    );
+    await assertAppliedOrRevisedSource(REPO_ROOT, applied, report);
     const active = JSON.parse(
         await readFile(file(REPO_ROOT, `assets/runtime-adoption/${applied}/plan.json`), 'utf8'),
       ),

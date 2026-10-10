@@ -15,7 +15,7 @@ export class LoadingCaveMovement {
     const next = collision.move(before, dx * distance, dz * distance, 0.35);
     const local = caveLocal(next.x, next.z);
     // Keep the visitor inside the measured gallery, away from the unloaded outside.
-    if (local.z >= -34 && local.z <= -1) this.position = next;
+    if (local.z >= -38 && local.z <= -1) this.position = next;
     const mx = this.position.x - before.x,
       mz = this.position.z - before.z;
     this.speed = elapsed ? Math.hypot(mx, mz) / elapsed : 0;

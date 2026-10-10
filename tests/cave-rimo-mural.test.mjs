@@ -63,7 +63,9 @@ test('the Rimo pigment and the cave model keep their originals, serve verified f
     asset,
   );
   await verifyRgbaImage(asset.rimoPigment, 'rimoPigment', FRIEZE_RIMO);
-  const model = await verifyCaveModel(asset);
+  await verifyCaveModel(asset);
+  const prior = JSON.parse(await readFile('assets/camp-cave/archive-geometry-r26-20261010.json'));
+  const model = await verifyCaveModel(prior);
   assert.equal(model.original.url, ORIGINAL_CAVE_GLB.url);
   assert.equal(model.original.sha256, ORIGINAL_CAVE_GLB.sha256);
 });

@@ -1,0 +1,644 @@
+{
+  "modelKey": "camp-cave",
+  "name": "アプデの洞窟",
+  "kind": "static",
+  "candidate": 1,
+  "revision": "26",
+  "status": "integrated-and-game-qa-passed",
+  "url": "/models/camp-cave/model-r26.opt-1debf5dafc216ce0.glb",
+  "sha256": "1debf5dafc216ce01c46bd620e43d232026e0b5a4ad282a91e25676078384005",
+  "bytes": 2120208,
+  "triangles": 74458,
+  "upAxis": "Y",
+  "forwardAxis": "+Z",
+  "heightMetres": 8.398508608341217,
+  "widthMetres": 32.259888648986816,
+  "placement": {
+    "pivot": "ground-centred",
+    "min": [
+      -8.94336223602295,
+      0.9497227072715759,
+      -38.599998474121094
+    ],
+    "max": [
+      23.316526412963867,
+      9.348231315612793,
+      18.207656860351562
+    ]
+  },
+  "clips": [],
+  "lods": [],
+  "notes": [
+    "The deep gallery keeps approximately 11 m width and 5.5 m centre headroom up to the back chamber. Existing measured source relief is expanded without moving the accepted mouth or replacing the cave with primitive geometry.",
+    "Only the final 1.2 m rounds into a broad rear wall; the long tapered dead end is removed. The source boundary vertices remain shared across the wall, floor and ceiling joins.",
+    "The measured aisle is 54.91 m, 2.11 times the original 26.00 m. The original outdoor campfire, river, mountain mesh and castle path are unchanged.",
+    "White calcite wall albedo retains real rock relief, pores and bedding; pigments are projected directly onto those existing triangles. Warm fire illuminates the same faintly visible paintings.",
+    "Gallery r30 restores the user-reference waving gray-white Rimo cat among two horses, an aurochs and a deer, directly opposite the unchanged west-wall 524. The cave geometry, walking surface and fire are unchanged.",
+    "Gallery r31 includes all 13 released mascots among animal friezes. Cave placement is at ground level at the mountain foot near camp. Coming Soon is reserved for confirmed upcoming characters. The source cave GLB and earlier pigment files are retained.",
+    "Gallery r32 integrates the faithful small 524 with a mammoth, two horses and an aurochs in one weathered transparent frieze, matching the opposite Rimo frieze. It replaces three separated west-wall placements. Earlier paintings and source models remain archived.",
+    "Gallery r33 adds Maruimo among a bison, horse and deer. All 14 released mascots are represented; the Coming Soon reserve and original GLB remain unchanged.",
+    "Gallery r34 adds two contributor processions on the west wall (Saber, Fairy, nukonuko, Saga; the Otani duck, Urata, Howkey). They replace the lone deer and bison, whose species reappear inside the friezes. The original GLB is unchanged.",
+    "Gallery r35 repaints the west-wall river procession to add Rei-chan beside the Otani duck, Urata and Howkey; the r34 friezes (Saber, Fairy, nukonuko, Saga; duck, Urata, Howkey) replaced the lone deer and bison. The original GLB is unchanged."
+  ],
+  "provenance": {
+    "provider": "Codex",
+    "claudeUsed": false,
+    "referenceGenerator": "Built-in imagegen",
+    "referenceImage": "assets/camp-cave/source/reference-v1.png",
+    "referenceSha256": "6ce31118ad3f35b1c0cd25bef9cfd3c6d5e67174957b8a1d76105410e6baa509",
+    "reconstruction": "Local TRELLIS.2 (GGUF/C++), 1024 geometry, seed 42, 512 texture flow, 2048 atlas",
+    "sourceGeometry": "assets/camp-cave/work/trellis/reduced-res1024-seed42.glb",
+    "sourceGeometrySha256": "5024f96c96a53c054b213508d84f90a267cc725da64eed1d096274d6d9168459",
+    "visualReview": "assets/camp-cave/qa/adoption-r26.json",
+    "modelWorkspace": "assets/camp-cave",
+    "workflow": "Source image → TRELLIS.2 → source-preserving QEM → terrain fitting/UV/materials → exact GLB QA → source-shell refinement and measured walk surface",
+    "derivedInputs": [
+      {
+        "path": "public/models/camp-cave/model-r07.glb",
+        "sha256": "13e1c3655e05f03e44823ccd377e1a930cef82d833e008ca0ef175cadf7923a7"
+      }
+    ],
+    "refinementWorkflow": "assets/camp-cave/workflow/refine-landforms.py"
+  },
+  "pigment": {
+    "url": "/models/camp-cave/mural-atlas-r05.opt-94ca1aebe422e2a0.png",
+    "source": "assets/camp-cave/source/mural-atlas-r05.png",
+    "sha256": "94ca1aebe422e2a0de6582654e9475167c895acd227cb28526e9873d8b3a4e85",
+    "bytes": 1276113,
+    "image": {
+      "width": 1024,
+      "height": 1024
+    },
+    "generator": "Built-in imagegen",
+    "prompt": "assets/camp-cave/mural-atlas-prompt-r05.txt",
+    "references": [
+      {
+        "path": "assets/camp-cave/source/cat-reference-user.png",
+        "sha256": "e00722b68d4147b34e51937c2d1172458cae9e36113f6313a4f774a074384df6",
+        "role": "User-provided subject reference"
+      },
+      {
+        "path": "assets/camp-cave/source/character-524-reference-user.png",
+        "sha256": "8231914f43d9e8454823a923c8004df44c0bad1ee1aec9e2f140493d5f2af273",
+        "role": "User-provided subject reference"
+      }
+    ],
+    "styleReference": "assets/camp-cave/source/mural-side-r04.png",
+    "application": "Existing animal, hand and sign motifs frame the new Rimo/Lascaux frieze. Two east-wall animal placements are replaced by one continuous five-subject frieze; remaining twelve placements and the 524 scale are retained.",
+    "layout": "src/cave-gallery-layout.ts",
+    "review": "assets/camp-cave/qa/gallery-r30.json",
+    "previous": {
+      "url": "/models/camp-cave/mural-side-r04.png",
+      "source": "assets/camp-cave/source/mural-side-r04.png",
+      "sha256": "1cbdd091523b48fea81f70eba5cc3840c7328ccfab4b8d1ef63e44b49e0ff5af"
+    },
+    "uvSource": {
+      "width": 1254,
+      "height": 1254
+    },
+    "provenance": {
+      "runtimeOptimization": {
+        "adoption": "20261010-r07-a01",
+        "candidateRevision": "assets/optimized-runtime/20261009-r04",
+        "original": {
+          "url": "/models/camp-cave/mural-atlas-r05.png",
+          "sha256": "6efe80a19056af4f5a9ce50d7309b578f4c3e914fa9543c51a8fc629842e6889",
+          "bytes": 1851771,
+          "image": {
+            "width": 1254,
+            "height": 1254
+          }
+        },
+        "adoptedBy": "20261009-r04-a01"
+      }
+    }
+  },
+  "gameQA": "output/playwright/maruimo-mascot-20261007/mmo-assets-r03/summary.json",
+  "rockSurface": {
+    "url": "/models/camp-cave/limestone-r05.opt-373ad7d95a04bc2c.png",
+    "source": "assets/camp-cave/source/limestone-r05.png",
+    "sha256": "373ad7d95a04bc2cd56303ebae90eca3045353323949f081615f2bc996dbdbbd",
+    "bytes": 2228940,
+    "image": {
+      "width": 1024,
+      "height": 1024
+    },
+    "generator": "Built-in imagegen",
+    "prompt": "assets/camp-cave/limestone-prompt-r05.txt",
+    "application": "White calcite limestone colour with 2.8m triplanar pores, bedding and surface-gradient relief, mineral mottling and damp roughness; warm fire reveals the pigments on the same triangles.",
+    "review": "assets/camp-cave/qa/gallery-r29.json",
+    "uvSource": {
+      "width": 1254,
+      "height": 1254
+    },
+    "provenance": {
+      "runtimeOptimization": {
+        "adoption": "20261010-r07-a01",
+        "candidateRevision": "assets/optimized-runtime/20261010-r06",
+        "original": {
+          "url": "/models/camp-cave/limestone-r05.png",
+          "sha256": "574372b875437977f226564a2bc1a8cd7149695582b1bbb6c806f7e83a075cee",
+          "bytes": 3425333,
+          "image": {
+            "width": 1254,
+            "height": 1254
+          }
+        },
+        "adoptedBy": "20261010-r06-a02",
+        "supersedes": {
+          "adoption": "20261009-r04-a01",
+          "candidateRevision": "assets/optimized-runtime/20261009-r04",
+          "url": "/models/camp-cave/limestone-r05.opt-61e9536d1415d066.png",
+          "sha256": "61e9536d1415d066ecf3c3867e5d438419bd42de8253eeb67f598e76f1f2f5a2",
+          "bytes": 2284797
+        }
+      }
+    }
+  },
+  "characterPigment": {
+    "source": "assets/camp-cave/source/524-lascaux-frieze-r32.png",
+    "url": "/models/camp-cave/524-lascaux-frieze-r32.opt-2f9a4a74cb9c0e9d.png",
+    "sha256": "2f9a4a74cb9c0e9d3a94cf394a3b843655a273690b94dbb1d9c406fb40da3c51",
+    "bytes": 560426,
+    "image": {
+      "width": 1024,
+      "height": 341
+    },
+    "generator": "Built-in imagegen",
+    "prompt": "assets/camp-cave/524-lascaux-prompt-r32.txt",
+    "references": [
+      {
+        "path": "assets/camp-cave/source/character-524-mural-r06.png",
+        "sha256": "9fc9d9d635989a1e928a5ccdac2a7ed3889a1442930ff07f8503c7d2832fd071"
+      },
+      {
+        "path": "assets/camp-cave/source/rimo-lascaux-frieze-r30.png",
+        "sha256": "b750045fda524816577747197874d173d41161e2b55d9acfe772a8f37f8d01df"
+      },
+      {
+        "path": "assets/camp-cave/source/character-524-reference-user.png",
+        "sha256": "8231914f43d9e8454823a923c8004df44c0bad1ee1aec9e2f140493d5f2af273"
+      }
+    ],
+    "subjects": [
+      "524",
+      "woolly mammoth",
+      "ochre wild horse",
+      "red wild horse",
+      "aurochs"
+    ],
+    "application": "One 7.5 m wide transparent mineral-pigment frieze on the west wall opposite Rimo. The small floating 524 shares muted ochre, charcoal, worn edges and overlapping animal composition. Direct projection on original limestone triangles; no extra geometry or backing.",
+    "review": "assets/camp-cave/qa/gallery-surfaces-r32.json",
+    "uvSource": {
+      "width": 2171,
+      "height": 724
+    },
+    "provenance": {
+      "runtimeOptimization": {
+        "adoption": "20261010-r07-a01",
+        "candidateRevision": "assets/optimized-runtime/20261010-r06",
+        "original": {
+          "url": "/models/camp-cave/524-lascaux-frieze-r32.png",
+          "sha256": "5fc419d77d0155133b0f231a07ad80a03c78ed99850ced492f79108bea5a765a",
+          "bytes": 2355756,
+          "image": {
+            "width": 2171,
+            "height": 724
+          }
+        },
+        "adoptedBy": "20261010-r06-a02",
+        "supersedes": {
+          "adoption": "20261009-r04-a01",
+          "candidateRevision": "assets/optimized-runtime/20261009-r04",
+          "url": "/models/camp-cave/524-lascaux-frieze-r32.opt-78de0e1c4a23835d.png",
+          "sha256": "78de0e1c4a23835dc5b0b95a6a8bd08d8a5cba27a9a50bad5552e3386e5f564c",
+          "bytes": 565002
+        }
+      }
+    }
+  },
+  "galleryRevision": "35",
+  "rimoPigment": {
+    "source": "assets/camp-cave/source/rimo-lascaux-frieze-r30.png",
+    "url": "/models/camp-cave/rimo-lascaux-frieze-r30.opt-8a2acbfbfaa6d2c2.png",
+    "sha256": "8a2acbfbfaa6d2c22c83e38cda85615a4da7064b52e3231f7b8a83bcc890ec25",
+    "bytes": 560138,
+    "image": {
+      "width": 1024,
+      "height": 341
+    },
+    "generator": "Built-in imagegen",
+    "prompt": "assets/camp-cave/rimo-lascaux-prompt-r30.txt",
+    "reference": {
+      "path": "assets/rimo-neko/source/user-reference.jpg",
+      "sha256": "3a0ebdfadbb383d170318a0cd4d3cb9540ccb113822bc0a44836dfcaeeebdf41"
+    },
+    "styleReference": "assets/camp-cave/source/mural-atlas-r05.png",
+    "subjects": [
+      "Rimo-neko",
+      "ochre wild horse",
+      "red wild horse",
+      "aurochs",
+      "red deer"
+    ],
+    "application": "One 7.5 x 2.5 m transparent pigment frieze on the east wall, centred at local Z -21.2 opposite the existing 524. Direct projection on the existing limestone, no decal plane or opaque backing.",
+    "review": "assets/camp-cave/qa/gallery-r30.json",
+    "uvSource": {
+      "width": 2172,
+      "height": 724
+    },
+    "provenance": {
+      "runtimeOptimization": {
+        "adoption": "20261010-r07-a01",
+        "candidateRevision": "assets/optimized-runtime/20261010-r06",
+        "original": {
+          "url": "/models/camp-cave/rimo-lascaux-frieze-r30.png",
+          "sha256": "b750045fda524816577747197874d173d41161e2b55d9acfe772a8f37f8d01df",
+          "bytes": 2272546,
+          "image": {
+            "width": 2172,
+            "height": 724
+          }
+        },
+        "adoptedBy": "20261010-r06-a02",
+        "supersedes": {
+          "adoption": "20261009-r04-a01",
+          "candidateRevision": "assets/optimized-runtime/20261009-r04",
+          "url": "/models/camp-cave/rimo-lascaux-frieze-r30.opt-65fa961cf8b88827.png",
+          "sha256": "65fa961cf8b888270eeb3f7bbeb93fc454a89139a06a456fd14a4efd2fed02b2",
+          "bytes": 560607
+        }
+      }
+    }
+  },
+  "mascotPigments": {
+    "roundBots": {
+      "url": "/models/camp-cave/bot-round-lascaux-r31.opt-9dc5292302335e65.png",
+      "subjects": [
+        "white",
+        "blue",
+        "green",
+        "purple",
+        "orange"
+      ],
+      "source": "assets/camp-cave/source/bot-round-lascaux-r31.png",
+      "sha256": "9dc5292302335e65a6b3dafc7c22a6a2691261a08c7193832b64cbc79854fb7c",
+      "bytes": 463714,
+      "image": {
+        "width": 1024,
+        "height": 341
+      },
+      "generator": "Built-in imagegen",
+      "references": [
+        "public/models/orb-bot-white/portrait.png",
+        "public/models/orb-bot-blue/portrait.png",
+        "public/models/orb-bot-green/portrait.png",
+        "public/models/orb-bot-purple/portrait.png",
+        "public/models/orb-bot-orange/portrait.png"
+      ],
+      "application": "Unmodified transparent mineral-pigment frieze, projected on original cave wall triangles, interwoven with horses, aurochs and deer.",
+      "uvSource": {
+        "width": 2172,
+        "height": 724
+      },
+      "provenance": {
+        "runtimeOptimization": {
+          "adoption": "20261010-r07-a01",
+          "candidateRevision": "assets/optimized-runtime/20261009-r04",
+          "original": {
+            "url": "/models/camp-cave/bot-round-lascaux-r31.png",
+            "sha256": "94da10a2db5962f7e66af1617a310091c4852d9a1d6c9d322c09e6d01656c93c",
+            "bytes": 1885445,
+            "image": {
+              "width": 2172,
+              "height": 724
+            }
+          },
+          "adoptedBy": "20261009-r04-a01"
+        }
+      }
+    },
+    "shapeBots": {
+      "url": "/models/camp-cave/bot-shapes-lascaux-r31.opt-86a06da8e6789d84.png",
+      "subjects": [
+        "beret",
+        "frog",
+        "triangle",
+        "heart"
+      ],
+      "source": "assets/camp-cave/source/bot-shapes-lascaux-r31.png",
+      "sha256": "86a06da8e6789d8443800509043ad58ac300960fdd5eb01ba93d54d180dc1cb9",
+      "bytes": 499457,
+      "image": {
+        "width": 1024,
+        "height": 341
+      },
+      "generator": "Built-in imagegen",
+      "references": [
+        "public/models/orb-bot-beret/portrait.png",
+        "public/models/orb-bot-frog/portrait.png",
+        "public/models/orb-bot-triangle/portrait.png",
+        "public/models/orb-bot-heart/portrait.png"
+      ],
+      "application": "Unmodified transparent mineral-pigment frieze, projected on original cave wall triangles, interwoven with horses, aurochs and deer.",
+      "uvSource": {
+        "width": 2172,
+        "height": 724
+      },
+      "provenance": {
+        "runtimeOptimization": {
+          "adoption": "20261010-r07-a01",
+          "candidateRevision": "assets/optimized-runtime/20261010-r06",
+          "original": {
+            "url": "/models/camp-cave/bot-shapes-lascaux-r31.png",
+            "sha256": "18cac2271a651fe11b223ac5fb3abab2a126ee25153ca0851f749ebd195e8dde",
+            "bytes": 2083858,
+            "image": {
+              "width": 2172,
+              "height": 724
+            }
+          },
+          "adoptedBy": "20261010-r06-a02",
+          "supersedes": {
+            "adoption": "20261009-r04-a01",
+            "candidateRevision": "assets/optimized-runtime/20261009-r04",
+            "url": "/models/camp-cave/bot-shapes-lascaux-r31.opt-b6ee4b02e4be9c02.png",
+            "sha256": "b6ee4b02e4be9c02226776ebf7828096b4184475f9dcbefd7b90c66e49f887a1",
+            "bytes": 501873
+          }
+        }
+      }
+    },
+    "maeKohaku": {
+      "url": "/models/camp-cave/mae-kohaku-lascaux-r31.opt-b265fa99d4bf3980.png",
+      "subjects": [
+        "mae",
+        "kohaku"
+      ],
+      "source": "assets/camp-cave/source/mae-kohaku-lascaux-r31.png",
+      "sha256": "b265fa99d4bf398007245e0290d37a3be6645881e435cb5da4171d3852e69559",
+      "bytes": 467125,
+      "image": {
+        "width": 1024,
+        "height": 341
+      },
+      "generator": "Built-in imagegen",
+      "references": [
+        "public/models/mae/portrait.png",
+        "public/models/kohaku/portrait-r05.png"
+      ],
+      "application": "Unmodified transparent mineral-pigment frieze, projected on original cave wall triangles, interwoven with horses, aurochs and deer.",
+      "uvSource": {
+        "width": 2172,
+        "height": 724
+      },
+      "provenance": {
+        "runtimeOptimization": {
+          "adoption": "20261010-r07-a01",
+          "candidateRevision": "assets/optimized-runtime/20261010-r06",
+          "original": {
+            "url": "/models/camp-cave/mae-kohaku-lascaux-r31.png",
+            "sha256": "f67ea277c3d42c93877139b44150ee6fddbb2eb41854418ea09ac4bd40eed732",
+            "bytes": 1953261,
+            "image": {
+              "width": 2172,
+              "height": 724
+            }
+          },
+          "adoptedBy": "20261010-r06-a02",
+          "supersedes": {
+            "adoption": "20261009-r04-a01",
+            "candidateRevision": "assets/optimized-runtime/20261009-r04",
+            "url": "/models/camp-cave/mae-kohaku-lascaux-r31.opt-a9fee23d61be6387.png",
+            "sha256": "a9fee23d61be63879e45a96a1e59d11276a0be25238085bf15f30f55928d5fc7",
+            "bytes": 468227
+          }
+        }
+      }
+    },
+    "maruimoFrieze": {
+      "source": "assets/camp-cave/source/maruimo-lascaux-r33.png",
+      "url": "/models/camp-cave/maruimo-lascaux-r33.opt-60597acdd04df58d.png",
+      "sha256": "60597acdd04df58d8dfa5da63a1f4a7b2d99e717d297a7543582cf7c44a299cf",
+      "bytes": 498678,
+      "image": {
+        "width": 1024,
+        "height": 341
+      },
+      "generator": "Built-in imagegen",
+      "prompt": "assets/camp-cave/maruimo-lascaux-prompt-r33.txt",
+      "subjects": [
+        "maruimo-mascot"
+      ],
+      "animals": [
+        "bison",
+        "wild horse",
+        "deer"
+      ],
+      "references": [
+        {
+          "path": "public/models/maruimo-octopus/portrait.png",
+          "sha256": "167b344c270543846d0a2870e94e0ac12320b57f23d702a8d2a32a99487a40bc"
+        },
+        {
+          "path": "assets/camp-cave/source/rimo-lascaux-frieze-r30.png",
+          "sha256": "b750045fda524816577747197874d173d41161e2b55d9acfe772a8f37f8d01df"
+        }
+      ],
+      "application": "5 m wide east-wall frieze. The small octopus shares earth pigments and overlapping composition with the animals. Unmodified transparent PNG projected onto the original limestone triangles.",
+      "review": "assets/camp-cave/qa/gallery-surfaces-r33.json",
+      "uvSource": {
+        "width": 2172,
+        "height": 724
+      },
+      "provenance": {
+        "runtimeOptimization": {
+          "adoption": "20261010-r07-a01",
+          "candidateRevision": "assets/optimized-runtime/20261010-r06",
+          "original": {
+            "url": "/models/camp-cave/maruimo-lascaux-r33.png",
+            "sha256": "eff36cf28d83cf69e61e2e345a4d90e08c790ae58306450be1ab657dd7614a1e",
+            "bytes": 1961184,
+            "image": {
+              "width": 2172,
+              "height": 724
+            }
+          },
+          "adoptedBy": "20261010-r06-a02",
+          "supersedes": {
+            "adoption": "20261009-r04-a01",
+            "candidateRevision": "assets/optimized-runtime/20261009-r04",
+            "url": "/models/camp-cave/maruimo-lascaux-r33.opt-cf90962462cefa64.png",
+            "sha256": "cf90962462cefa648cbef2fc9c74390e8365bd355bc2791a8a324053023522c2",
+            "bytes": 500299
+          }
+        }
+      }
+    },
+    "friendsMeadow": {
+      "source": "assets/camp-cave/source/friends-meadow-lascaux-r34.png",
+      "url": "/models/camp-cave/friends-meadow-lascaux-r34.opt-d730fdda31b98b8b.png",
+      "sha256": "d730fdda31b98b8bc225cc60451a6e3502a79cd0b597e5ab01b84e030dc0e405",
+      "bytes": 472897,
+      "image": {
+        "width": 1024,
+        "height": 341
+      },
+      "generator": "Codex CLI 0.162.0-alpha.2 built-in image_gen (configured default model)",
+      "prompt": "assets/camp-cave/friends-meadow-lascaux-prompt-r34.txt",
+      "subjects": [
+        "saber-mascot",
+        "fairy-mascot",
+        "nukonuko-mascot",
+        "sagasa-mascot"
+      ],
+      "animals": [
+        "wild horse",
+        "ibex",
+        "red deer stag"
+      ],
+      "references": [
+        {
+          "path": "assets/friend-mascots/saber-mascot/source/reference-v1.png",
+          "sha256": "3cc39bfe25ef085f33cb88e1f2628868c08f414a0288d5a61bc0a25167becf42"
+        },
+        {
+          "path": "assets/friend-mascots/fairy-mascot/source/reference-v1.png",
+          "sha256": "11c8f34f854dc95652a141940923fa56a0e8b73966e7ef74c57af0625048fa17"
+        },
+        {
+          "path": "assets/friend-mascots/nukonuko-mascot/source/reference-v1.png",
+          "sha256": "7c8bcdcc1fc0101d920ffa77720128901b19fea5413313674ffe14328bc796d5"
+        },
+        {
+          "path": "assets/friend-mascots/sagasa-mascot/source/reference-v1.png",
+          "sha256": "1a0c52e325c8d4666476757918916ea69a44eec7ba847574028fc4de79202e70"
+        },
+        {
+          "path": "public/models/camp-cave/mae-kohaku-lascaux-r31.png",
+          "sha256": "f67ea277c3d42c93877139b44150ee6fddbb2eb41854418ea09ac4bd40eed732"
+        }
+      ],
+      "application": "5.6 m wide west-wall frieze replacing the lone deer: Saber, Fairy, nukonuko and Saga among a horse, an ibex and a stag. Unmodified transparent PNG projected onto the original limestone triangles.",
+      "review": "assets/camp-cave/qa/gallery-surfaces-r35.json",
+      "uvSource": {
+        "width": 2172,
+        "height": 724
+      },
+      "provenance": {
+        "runtimeOptimization": {
+          "adoption": "20261010-r07-a01",
+          "candidateRevision": "assets/optimized-runtime/20261010-r06",
+          "original": {
+            "url": "/models/camp-cave/friends-meadow-lascaux-r34.png",
+            "sha256": "707e1920df0342a1806082874b8baa3ab33cc2c8ecea9311d3c6ff364caea148",
+            "bytes": 2071821,
+            "image": {
+              "width": 2172,
+              "height": 724
+            }
+          },
+          "adoptedBy": "20261010-r06-a02",
+          "supersedes": {
+            "adoption": "20261009-r04-a01",
+            "candidateRevision": "assets/optimized-runtime/20261009-r04",
+            "url": "/models/camp-cave/friends-meadow-lascaux-r34.opt-e6153063bca167d1.png",
+            "sha256": "e6153063bca167d1d618581f1065725d2e90d28d60a8a22d5c4962a58a9069ed",
+            "bytes": 475063
+          }
+        }
+      }
+    },
+    "friendsRiver": {
+      "source": "assets/camp-cave/source/friends-river-lascaux-r35.png",
+      "url": "/models/camp-cave/friends-river-lascaux-r35.opt-7eb5d96e7f0afd5a.png",
+      "sha256": "7eb5d96e7f0afd5a063e711860fa41cfe00739f205cf8a029b1813bd2d47dec1",
+      "bytes": 482100,
+      "image": {
+        "width": 1024,
+        "height": 341
+      },
+      "generator": "Codex CLI 0.162.0-alpha.2 built-in image_gen (configured default model)",
+      "prompt": "assets/camp-cave/friends-river-lascaux-prompt-r35.txt",
+      "subjects": [
+        "otani-mascot",
+        "urata-mascot",
+        "howkey-scientist",
+        "rei-mascot"
+      ],
+      "animals": [
+        "aurochs",
+        "bison",
+        "wild horse"
+      ],
+      "references": [
+        {
+          "path": "assets/friend-mascots/otani-mascot/source/reference-v1.png",
+          "sha256": "e6ac386f6f560e0eeca784441715c2962e8e4986312bf21142ca2d71dc568639"
+        },
+        {
+          "path": "assets/friend-mascots/urata-mascot/source/reference-v1.png",
+          "sha256": "cbba1e464914d8f51f7b537b4b2bac9817ce08c7445e2583acb2b13669be9c88"
+        },
+        {
+          "path": "public/models/howkey-scientist/portrait.png",
+          "sha256": "62f60254e41ef1cab392847f976d91d91df00850bfb178db0d3130f85d17020c"
+        },
+        {
+          "path": "assets/friend-mascots/rei-mascot/source/reference-v1.png",
+          "sha256": "3f47898c4e427b94af22a441f7decf3898327d59dd9030301aa5bf88915f8b57"
+        },
+        {
+          "path": "assets/camp-cave/source/friends-river-lascaux-r34.png",
+          "sha256": "faad98ddff2b01878a34cb0bbbbf83021c1b84a8a452f0ecc95d87900d2cf684"
+        },
+        {
+          "path": "public/models/camp-cave/mae-kohaku-lascaux-r31.png",
+          "sha256": "f67ea277c3d42c93877139b44150ee6fddbb2eb41854418ea09ac4bd40eed732"
+        }
+      ],
+      "application": "5 m wide west-wall frieze replacing the lone bison: the Otani duck, Urata, Howkey with her Erlenmeyer flask and Rei-chan with a book among an aurochs, a bison and a horse (r35 repaints r34 to add Rei). Unmodified transparent PNG projected onto the original limestone triangles.",
+      "review": "assets/camp-cave/qa/gallery-surfaces-r35.json",
+      "uvSource": {
+        "width": 2172,
+        "height": 724
+      },
+      "provenance": {
+        "runtimeOptimization": {
+          "adoption": "20261010-r07-a01",
+          "candidateRevision": "assets/optimized-runtime/20261010-r06",
+          "original": {
+            "url": "/models/camp-cave/friends-river-lascaux-r35.png",
+            "sha256": "fb4fead40844b3ca672b191e2771e6e3904f88a28964e4249f4b6bb57996f04c",
+            "bytes": 2119578,
+            "image": {
+              "width": 2172,
+              "height": 724
+            }
+          },
+          "adoptedBy": "20261010-r06-a02",
+          "supersedes": {
+            "adoption": "20261009-r04-a01",
+            "candidateRevision": "assets/optimized-runtime/20261009-r04",
+            "url": "/models/camp-cave/friends-river-lascaux-r35.opt-62aa0628be8c4b05.png",
+            "sha256": "62aa0628be8c4b054a17b571ea8efa35c9f9d6f619e93f7a1c756e49f07e84a8",
+            "bytes": 487174
+          }
+        }
+      }
+    }
+  },
+  "runtimeOptimization": {
+    "adoption": "20261010-r07-a01",
+    "candidateRevision": "assets/optimized-runtime/20261009-r04",
+    "selection": "ordinary-compressed",
+    "original": {
+      "url": "/models/camp-cave/model-r26.glb",
+      "sha256": "65dde1aa7311b88c159d524d93af82a770dac77e48ee1f35356e3000cad8a15f",
+      "bytes": 5393776,
+      "triangles": 74458,
+      "lods": []
+    },
+    "adoptedBy": "20261009-r04-a01"
+  }
+}

@@ -1,4 +1,5 @@
 import test from 'node:test';
+import { createGalleryActor } from './cave-gallery-actor.mjs';
 import assert from 'node:assert/strict';
 import * as THREE from 'three';
 import {
@@ -319,11 +320,7 @@ test('the gallery finishes preparing while the context is lost and holds no keys
     requestAnimationFrame: (callback) => setImmediate(() => callback(0)),
   });
   let compiled = 0;
-  const avatar = {
-    root: new THREE.Group(),
-    animation: { name: 'Idle_Loop', update() {} },
-    dispose() {},
-  };
+  const avatar = await createGalleryActor();
   // The ten images pass the game's verified download and decoder; only the network
   // and the image element are stand-ins (camp-cave-fixture.mjs).
   const asset = caveGalleryImages(),
@@ -344,6 +341,7 @@ test('the gallery finishes preparing while the context is lost and holds no keys
     humanAssets: new Map([['cro-magnon-woman', { create: async () => avatar }]]),
     renderer: {
       getContext: () => ({ isContextLost: () => true }),
+      getPixelRatio: () => 1,
       compile: () => {
         compiled++;
         return new Set();

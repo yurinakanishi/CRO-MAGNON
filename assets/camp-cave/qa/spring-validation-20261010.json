@@ -1,0 +1,235 @@
+{
+  "date": "2026-10-10",
+  "model": "/models/camp-cave/model-r27-rounded.glb",
+  "sha256": "f3e513c9f311ba2bafdc8ebb8a846a9de0eba15be4c1f35b302e10efbd58b75b",
+  "checks": {
+    "unit": {
+      "passed": 1407,
+      "failed": 0,
+      "skipped": 4,
+      "log": "output/cave-spring-final-tests.log"
+    },
+    "check": {
+      "status": "passed",
+      "javascript": 597,
+      "log": "output/cave-spring-check.log"
+    },
+    "game": {
+      "status": "passed",
+      "browser": "154.0.8037.93",
+      "checks": [
+        "Waiting: held torch, keyboard and button switching, readable unlit stone, actual walking toward spring",
+        "Live: same spring and dim environment; actual L switches personal lighting without blacking out cave",
+        "Bank movement reaches the server from real keyboard input",
+        "Five connected players retain independent torches; actual movement at spring has a valid measured floor"
+      ]
+    },
+    "waiting": {
+      "status": "passed",
+      "checks": [
+        "Immediate mural-free menu and contributor dialog; no world GLB requested on title",
+        "Walk, run and orbit while world download is held; no room connection",
+        "Simulated gamepad moves the local visitor",
+        "Background loading frame timing (single local Chrome run)",
+        "Ready cave waits for explicit continue; game connects and displays the chosen player",
+        "Phone portrait/landscape controls fit; real touch movement, release, orbit, back and re-entry work",
+        "World download failure closes the gallery and reports the reload error without joining",
+        "Missing cave painting stops at the reload error without joining"
+      ]
+    },
+    "assets": {
+      "status": "passed",
+      "manifests": 78,
+      "verifiedFiles": 151,
+      "log": "output/cave-spring-delivered-assets.json"
+    }
+  },
+  "limitations": [
+    "One real Chrome renderer and four WebSocket peers, not five rendering devices.",
+    "Mobile touch emulation, not a physical smartphone or gamepad.",
+    "Legacy verify:assets stops at an unrelated original/optimized SHA comparison; recorded in output/cave-spring-assets.log.",
+    "No performance improvement claim."
+  ],
+  "files": [
+    {
+      "path": "assets/camp-cave/qa/spring-r27-rounded/geometry/bottom-clay.png",
+      "bytes": 60296,
+      "sha256": "3c8d7a6931c9c1f024b76f8a287a76fdd7342641e1bfa12f1f4cabd5afcca8cd"
+    },
+    {
+      "path": "assets/camp-cave/qa/spring-r27-rounded/geometry/bottom.png",
+      "bytes": 91806,
+      "sha256": "bd8649831a827a5366581ba70227725fa4adb71cbfbe987e93ded80b3c330998"
+    },
+    {
+      "path": "assets/camp-cave/qa/spring-r27-rounded/geometry/browser.json",
+      "bytes": 970,
+      "sha256": "c1011d1c29181e964aa7a000d958d5591efa38fb5e2bf40754df272ad8cc61e0"
+    },
+    {
+      "path": "assets/camp-cave/qa/spring-r27-rounded/geometry/front-clay.png",
+      "bytes": 48158,
+      "sha256": "4bca52f4a44acf1a0942ebb6d796f2209e706f1d97cefc9a552e82c12eac2cb4"
+    },
+    {
+      "path": "assets/camp-cave/qa/spring-r27-rounded/geometry/front.png",
+      "bytes": 70436,
+      "sha256": "132164f6d718e39f4a113ecbbbe005fc0a00366a613f89b1f73d6f7c5c103e0d"
+    },
+    {
+      "path": "assets/camp-cave/qa/spring-r27-rounded/geometry/left-clay.png",
+      "bytes": 46792,
+      "sha256": "791962efc041da4fcca53320950617a4b93021b2f0906b00434914872e3b178c"
+    },
+    {
+      "path": "assets/camp-cave/qa/spring-r27-rounded/geometry/left.png",
+      "bytes": 60844,
+      "sha256": "5429ea6edf2267a3989f0a9c5e66478269b0dcae22f02a9034629f181360bf75"
+    },
+    {
+      "path": "assets/camp-cave/qa/spring-r27-rounded/geometry/quarter-clay.png",
+      "bytes": 69416,
+      "sha256": "1a5fd7a7e0acd92cccfa328ca92b6b26e7ee5e058c91685a9c528e65b8660e73"
+    },
+    {
+      "path": "assets/camp-cave/qa/spring-r27-rounded/geometry/quarter.png",
+      "bytes": 102392,
+      "sha256": "8030e7e2074d6187f677c5bbf16c0c75a7c390a6785904f0cc95679d8307c72f"
+    },
+    {
+      "path": "assets/camp-cave/qa/spring-r27-rounded/geometry/rear-clay.png",
+      "bytes": 48235,
+      "sha256": "4e6350ea60008f2cb6d2e1019c621422aef159a9f5941f0db667a12bccc627a7"
+    },
+    {
+      "path": "assets/camp-cave/qa/spring-r27-rounded/geometry/rear.png",
+      "bytes": 60063,
+      "sha256": "1c00d1c8192693925343e76955e90618044ef5894c61a6e4673a27c315f80541"
+    },
+    {
+      "path": "assets/camp-cave/qa/spring-r27-rounded/geometry/right-clay.png",
+      "bytes": 48199,
+      "sha256": "f76d1f9d513871968370b60e253b0020d9df8acabd1c3a47d771ee406b080928"
+    },
+    {
+      "path": "assets/camp-cave/qa/spring-r27-rounded/geometry/right.png",
+      "bytes": 62445,
+      "sha256": "2e17b82f90ad53a21ad40da2d7691f597012bc2e0375462df858aa52f06f7b86"
+    },
+    {
+      "path": "assets/camp-cave/qa/spring-r27-rounded/geometry/top-clay.png",
+      "bytes": 81636,
+      "sha256": "cdb1732acd5c8b8c8549c64e208dbc3d7b3d14b935ef4df96febf7646c73b4c7"
+    },
+    {
+      "path": "assets/camp-cave/qa/spring-r27-rounded/geometry/top.png",
+      "bytes": 123784,
+      "sha256": "127caf5aa82845ca98c585ba224ea98ecabca114f50e8df746dc1ac87e158f95"
+    },
+    {
+      "path": "assets/camp-cave/qa/spring-r27-rounded/game/five-players.png",
+      "bytes": 1015881,
+      "sha256": "e0eca1c14e7055af88818b2e07a3f1ba509b06bc54ee4f6783cd84debda47b75"
+    },
+    {
+      "path": "assets/camp-cave/qa/spring-r27-rounded/game/live-lit.png",
+      "bytes": 1000355,
+      "sha256": "5cc263b41474db53da71236f2d8642e949de122da3a2d6dd618668bc414ec565"
+    },
+    {
+      "path": "assets/camp-cave/qa/spring-r27-rounded/game/live-off.png",
+      "bytes": 997154,
+      "sha256": "3e0dd497ec9b3c7a00a28633e0cdff4eec1a98b863b2080996b8ac7f5d9019af"
+    },
+    {
+      "path": "assets/camp-cave/qa/spring-r27-rounded/game/live-portrait.png",
+      "bytes": 367439,
+      "sha256": "3a7e5d93e5b8afb8e5b44193886999e6b182f8e0320c4e94a62ed043405196ac"
+    },
+    {
+      "path": "assets/camp-cave/qa/spring-r27-rounded/game/summary.json",
+      "bytes": 9663,
+      "sha256": "e894c8b749e756c66c46d419c3d1ec553e236dd2ee5de23aaf203c947fe87a90"
+    },
+    {
+      "path": "assets/camp-cave/qa/spring-r27-rounded/game/waiting-lit.png",
+      "bytes": 1049203,
+      "sha256": "bf25e834726f0962fbda46ae23e83fed405104c0a6c47651073f36f83c0a256f"
+    },
+    {
+      "path": "assets/camp-cave/qa/spring-r27-rounded/game/waiting-normal.png",
+      "bytes": 1194048,
+      "sha256": "50ae4c9624081443a903a63357f93be971a55d39557781a070709d983895cb4e"
+    },
+    {
+      "path": "assets/camp-cave/qa/spring-r27-rounded/game/waiting-off.png",
+      "bytes": 1026307,
+      "sha256": "a2466e79ac038e8b81abb46514ff8219d104f0df69499c3fd893a18748fc4f1a"
+    },
+    {
+      "path": "assets/camp-cave/qa/spring-r27-rounded/waiting/after-continue.png",
+      "bytes": 1061514,
+      "sha256": "971bd38aa4ba4cd55a4da391a9c64d4796b07a709bdefcc0c1a3ef19e9fab03c"
+    },
+    {
+      "path": "assets/camp-cave/qa/spring-r27-rounded/waiting/cave-before.png",
+      "bytes": 1409120,
+      "sha256": "d6703a8316f63e5f38ec16290a39e86e24d35d5c7ed3bfd0583ed378cbe82863"
+    },
+    {
+      "path": "assets/camp-cave/qa/spring-r27-rounded/waiting/cave-landscape.png",
+      "bytes": 445339,
+      "sha256": "c43625f8e0fd1ade92d73a274120897f70f9322d52aea29a88e311d175bf9204"
+    },
+    {
+      "path": "assets/camp-cave/qa/spring-r27-rounded/waiting/cave-mobile.png",
+      "bytes": 508646,
+      "sha256": "a8b5fecb3b1dc95cd8c7295dcda52df244e640fb43cdf62d20deb0604ab66b0b"
+    },
+    {
+      "path": "assets/camp-cave/qa/spring-r27-rounded/waiting/cave-ready.png",
+      "bytes": 1495080,
+      "sha256": "98a33825fa8068c90bcde3155509d6bad6b90b4ac5385a7a0a2855f38f9056c0"
+    },
+    {
+      "path": "assets/camp-cave/qa/spring-r27-rounded/waiting/cave-west.png",
+      "bytes": 1497958,
+      "sha256": "338905b0bab45a04d39530d8e01795ad06229748351ce181b2ff64f0a1281645"
+    },
+    {
+      "path": "assets/camp-cave/qa/spring-r27-rounded/waiting/error.png",
+      "bytes": 28127,
+      "sha256": "f29b3bbfaa8f5614d9e7241b77dbe8d1ccf67ab37d45876f66051a964de95619"
+    },
+    {
+      "path": "assets/camp-cave/qa/spring-r27-rounded/waiting/game.png",
+      "bytes": 1086772,
+      "sha256": "267d43c100cc08d199dfdccb86ad4631261b6b82e0240799555345f5da0d3f2c"
+    },
+    {
+      "path": "assets/camp-cave/qa/spring-r27-rounded/waiting/report.json",
+      "bytes": 1898,
+      "sha256": "9455151702f79c514ab89aee7f4aaae3f3da9f19e62bb2b1556e83eff1ee6add"
+    },
+    {
+      "path": "assets/camp-cave/qa/spring-r27-rounded/waiting/title-320.png",
+      "bytes": 88737,
+      "sha256": "c324d1bc183e83bf5106c4b86ea6ffb49b8dff4688806398ea5f1dc62676a0fd"
+    },
+    {
+      "path": "assets/camp-cave/qa/spring-r27-rounded/waiting/title-390.png",
+      "bytes": 307812,
+      "sha256": "3c64f194511ce6882901357d30817c689de4ebcf755d90061e2e414155ad8201"
+    },
+    {
+      "path": "assets/camp-cave/qa/spring-r27-rounded/waiting/title-844.png",
+      "bytes": 301471,
+      "sha256": "98012503080d27454c1f581a9ab8fdb09f418d75828edf8801ce9305bebb4352"
+    },
+    {
+      "path": "assets/camp-cave/qa/spring-r27-rounded/waiting/title-desktop.png",
+      "bytes": 955931,
+      "sha256": "48e0461587aff81b30d30017e7e08832411d23f80c5a2a93540af746699d039c"
+    }
+  ]
+}

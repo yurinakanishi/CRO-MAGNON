@@ -515,6 +515,15 @@ function worldAssets(closed, counter) {
     gltf: runtimeModel(cave),
     lods: [],
   });
+  const wood = new THREE.Group();
+  wood.add(
+    new THREE.Mesh(new THREE.BoxGeometry(1.2, 0.37, 0.37), new THREE.MeshStandardMaterial()),
+  );
+  assets.templates.set('firewood-log', {
+    asset: { modelKey: 'firewood-log' },
+    gltf: runtimeModel(wood),
+    lods: [runtimeModel(wood.clone(true))],
+  });
   const boulder = new THREE.Group();
   boulder.add(
     new THREE.Mesh(

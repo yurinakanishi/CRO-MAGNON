@@ -5,6 +5,8 @@ import { caveGroundShader } from './cave-ground-style.js';
 import { caveRockShader } from './cave-rock-shader.js';
 import { caveMuralShader, type CaveExtraPigment } from './cave-gallery-layout.js';
 import { meadowShader, MEADOW_BLADE_ALBEDO, MEADOW_MATCH } from './paleo-materials.js';
+import { CAVE_LIGHT } from '../shared/cave-light.mjs';
+import { CAVE_SPRING } from '../shared/cave-spring.mjs';
 
 // Pigment is projected onto existing reconstructed wall triangles (no planes).
 // Only daylight is occluded:
@@ -16,7 +18,6 @@ export function prepareCaveMaterials(
   character524: THREE.Texture,
   rimoPigment: THREE.Texture,
   extraPigments: Record<CaveExtraPigment, THREE.Texture>,
-  brightInterior = false,
 ) {
   const materials = new Set<THREE.Material>();
   root.traverse((node) => {
@@ -73,7 +74,7 @@ export function prepareCaveMaterials(
           // Follow the curved chamber when classifying inner rock. A fixed
           // origin misclassifies the far left wall as exterior and exposes
           // untextured source/lining patches at the terminal join.
-          float roomZ=clamp(cavePosition.z,-24.5,12.0);
+          float roomZ=clamp(cavePosition.z,-31.8,12.0);
           float roomT=clamp(-roomZ/${CAVE_BEND.depth.toFixed(6)},0.0,1.0);
           float roomX=${CAVE_BEND.offset.toFixed(6)}*roomT*roomT*(3.0-2.0*roomT);
           vec3 roomToRock=cavePosition-vec3(roomX,2.8,roomZ);
@@ -99,12 +100,17 @@ export function prepareCaveMaterials(
           float deepFloor=1.0-smoothstep(7.0,14.0,cavePosition.z);
           vec3 dustColour=caveDust(diffuseColor.rgb,worldGround)*mix(1.0,.6+rockLuma*1.8,deepFloor);
           diffuseColor.rgb=mix(diffuseColor.rgb,dustColour,floorDust);
+          vec2 springDelta=(cavePosition.xz-vec2(${CAVE_SPRING.x},${CAVE_SPRING.z}))/vec2(${CAVE_SPRING.radiusX},${CAVE_SPRING.radiusZ});
+          float springAngle=atan(springDelta.y,springDelta.x);
+          float springRadius=length(springDelta)/(1.0+.055*sin(springAngle*3.0+.4)+.03*sin(springAngle*5.0-.8));
+          float wetStone=(1.0-smoothstep(1.08,1.38,springRadius))*(1.0-smoothstep(1.15,1.8,cavePosition.y));
+          diffuseColor.rgb=mix(diffuseColor.rgb,limestoneColour*vec3(.40,.49,.47),wetStone*insideRock);
           ${caveMuralShader}
         `,
         );
         shader.fragmentShader = shader.fragmentShader.replace(
           '#include <roughnessmap_fragment>',
-          '#include <roughnessmap_fragment>\nroughnessFactor=mix(roughnessFactor,clamp(.94-damp*.25+(.35-rockLuma)*.15,.66,.98),insideRock);',
+          '#include <roughnessmap_fragment>\nroughnessFactor=mix(roughnessFactor,clamp(.94-damp*.25+(.35-rockLuma)*.15,.66,.98),insideRock);roughnessFactor=mix(roughnessFactor,.48,wetStone*insideRock);',
         );
         shader.fragmentShader = shader.fragmentShader.replace(
           '#include <normal_fragment_maps>',
@@ -118,7 +124,7 @@ export function prepareCaveMaterials(
           `
           float facingRoom=1.0-smoothstep(-0.15,0.3,dot(roomFacingNormal,normalize(roomToRock)));
           float depth=1.0-smoothstep(1.0,11.0,cavePosition.z);
-          float caveDaylight=mix(1.0,${brightInterior ? '1.0' : '0.006'},facingRoom*depth);
+          float caveDaylight=mix(1.0,${CAVE_LIGHT.stoneDaylight},facingRoom*depth);
           ${THREE.ShaderChunk.lights_fragment_begin.replace(
             'getDirectionalLightInfo( directionalLight, directLight );',
             'getDirectionalLightInfo( directionalLight, directLight ); directLight.color *= caveDaylight;',
@@ -130,8 +136,7 @@ export function prepareCaveMaterials(
           '#include <lights_fragment_end>\nreflectedLight.indirectDiffuse*=caveDaylight;',
         );
       };
-      material.customProgramCacheKey = () =>
-        `camp-cave-white-gallery-v21-friends-frieze-${brightInterior}`;
+      material.customProgramCacheKey = () => 'camp-cave-dim-spring-v22';
       material.needsUpdate = true;
     }
   });

@@ -3,7 +3,7 @@ import { BIOMES, biomeWeights, biomeAt } from '../shared/biomes.mjs';
 import { WORLD } from '../shared/world.mjs';
 import { ADVENTURE_REGIONS, regionAt, regionWeight } from '../shared/adventure-regions.mjs';
 import { SEA_WEATHER, maritimeWeight } from '../shared/maritime-weather.mjs';
-import { caveInteriorWeight } from '../shared/cave-light.mjs';
+import { CAVE_LIGHT, caveInteriorWeight } from '../shared/cave-light.mjs';
 
 export class WorldAtmosphere {
   declare world: any;
@@ -17,7 +17,14 @@ export class WorldAtmosphere {
   declare seaFog: THREE.Color;
   declare seaSky: THREE.Color;
   declare seaLight: THREE.Color;
-  private caveDark = new THREE.Color('#020202');
+  private caveDark = new THREE.Color(CAVE_LIGHT.background);
+  private caveSky = new THREE.Color(CAVE_LIGHT.sky);
+  private caveGround = new THREE.Color(CAVE_LIGHT.ground);
+  private caveSun = new THREE.Color(CAVE_LIGHT.sun);
+  private outdoorSky = new THREE.Color('#dce7d7');
+  private outdoorGround = new THREE.Color('#546047');
+  private hemisphereSky = new THREE.Color();
+  private hemisphereGround = new THREE.Color();
   declare uniforms: {
     time: {
       value: number;
@@ -131,10 +138,25 @@ export class WorldAtmosphere {
     this.sky.lerp(this.seaSky, Math.max(mist, dim));
     this.light.lerp(this.seaLight, dim);
     this.target.lerp(this.caveDark, cave);
+    this.light.lerp(this.caveSun, cave);
     world.sun.intensity +=
-      ((2.65 - shadow * 1.7 - dim * 2) * (1 - cave * 0.997) - world.sun.intensity) * alpha;
+      ((2.65 - shadow * 1.7 - dim * 2) * (1 - cave) +
+        CAVE_LIGHT.directional * cave -
+        world.sun.intensity) *
+      alpha;
     world.hemisphere.intensity +=
-      ((2 - shadow * 1.1 - dim * 0.6) * (1 - cave * 0.994) - world.hemisphere.intensity) * alpha;
+      ((2 - shadow * 1.1 - dim * 0.6) * (1 - cave) +
+        CAVE_LIGHT.hemisphere * cave -
+        world.hemisphere.intensity) *
+      alpha;
+    world.hemisphere.color.lerp(
+      this.hemisphereSky.copy(this.outdoorSky).lerp(this.caveSky, cave),
+      alpha,
+    );
+    world.hemisphere.groundColor.lerp(
+      this.hemisphereGround.copy(this.outdoorGround).lerp(this.caveGround, cave),
+      alpha,
+    );
     world.skyUniforms.shadowRealm.value += (shadow - world.skyUniforms.shadowRealm.value) * alpha;
     world.scene.fog.color.lerp(this.target, alpha);
     world.sun.color.lerp(this.light, alpha);
@@ -145,9 +167,9 @@ export class WorldAtmosphere {
       WORLD.maxZ - position.z,
     );
     world.scene.fog.near +=
-      ((45 - mist * 23) * (1 - cave) + 5 * cave - world.scene.fog.near) * alpha;
+      ((45 - mist * 23) * (1 - cave) + CAVE_LIGHT.fogNear * cave - world.scene.fog.near) * alpha;
     world.scene.fog.far +=
-      ((118 - mist * 52) * (1 - cave) + 26 * cave - world.scene.fog.far) * alpha;
+      ((118 - mist * 52) * (1 - cave) + CAVE_LIGHT.fogFar * cave - world.scene.fog.far) * alpha;
     world.scene.fog.near = Math.min(world.scene.fog.near, Math.max(5, edge * 0.4));
     world.scene.fog.far = Math.min(world.scene.fog.far, Math.max(12, edge + 8));
     world.skyUniforms.biomeFog.value.copy(world.scene.fog.color);

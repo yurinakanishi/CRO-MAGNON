@@ -41,7 +41,7 @@ test('long input, diagonal movement and resumed frames cannot leave the cave or 
       );
       assert.ok(collision.free(visitor.position, 0.35));
       const local = caveLocal(visitor.position.x, visitor.position.z);
-      assert.ok(local.z >= -34 && local.z <= -1);
+      assert.ok(local.z >= -38 && local.z <= -1);
     }
   }
   const visitor = new LoadingCaveMovement();

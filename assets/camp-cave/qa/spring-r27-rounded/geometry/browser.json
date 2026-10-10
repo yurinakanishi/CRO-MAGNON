@@ -1,0 +1,44 @@
+{
+  "bounds": [
+    {
+      "min": [
+        -8.94336223602295,
+        0.9497227072715759,
+        -38.599998474121094
+      ],
+      "max": [
+        23.316526412963867,
+        9.348231315612793,
+        18.207656860351562
+      ]
+    },
+    {
+      "min": [
+        -8.94336223602295,
+        0.25,
+        -42.599998474121094
+      ],
+      "max": [
+        26.44704818725586,
+        9.348231315612793,
+        18.207656860351562
+      ]
+    }
+  ],
+  "errors": [],
+  "views": 14,
+  "files": [
+    {
+      "label": "r26 retained TRELLIS shell",
+      "url": "/public/models/camp-cave/model-r26.opt-1debf5dafc216ce0.glb",
+      "sha256": "1debf5dafc216ce01c46bd620e43d232026e0b5a4ad282a91e25676078384005",
+      "bytes": 2120208
+    },
+    {
+      "label": "r27 rounded spring basin",
+      "url": "/public/models/camp-cave/model-r27-rounded.glb",
+      "sha256": "f3e513c9f311ba2bafdc8ebb8a846a9de0eba15be4c1f35b302e10efbd58b75b",
+      "bytes": 2122080
+    }
+  ]
+}

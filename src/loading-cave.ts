@@ -18,6 +18,9 @@ import { CHARACTER_MODELS } from '../shared/characters.mjs';
 import { LOAD_TIER, LoadTicket } from './asset-load-queue.js';
 import { compileScene } from './context-recovery.js';
 import { startupMarks } from './startup-marks.js';
+import { CaveTorch } from './cave-torch.js';
+import { CAVE_LIGHT } from '../shared/cave-light.mjs';
+import { CaveSpring } from './cave-spring.js';
 
 /** A small, locally controlled scene using the game's verified cave and the
  * visitor's selected character. Its verified template is the one the world
@@ -36,6 +39,10 @@ export class LoadingCave {
   private readonly events = new AbortController();
   private readonly keys = new Set<string>();
   private actor: Awaited<ReturnType<WorldRenderer['npcAssets']['create']>> | null = null;
+  private torch: CaveTorch | null = null;
+  private spring: CaveSpring | null = null;
+  private torchLit = true;
+  private elapsed = 0;
   private walls: MeshRayGrid | null = null;
   private ready = false;
   private disposed = false;
@@ -74,20 +81,20 @@ export class LoadingCave {
     // The world's camera focus heights: the small fennec mage, the tall ape.
     const species = CHARACTER_MODELS.find((model) => model.key === character)?.species;
     this.eyeHeight = species === 'bear' ? 0.64 : species === 'ape' ? 1.55 : 1.45;
-    this.scene.background = new THREE.Color('#292923');
-    // Constant gallery illumination, independent of the world's day and torches.
-    this.scene.add(new THREE.HemisphereLight('#fff3dc', '#b6a995', 2.1));
-    const light = new THREE.DirectionalLight('#fff3d9', 1.5);
-    light.position.set(20, 40, 70);
-    this.scene.add(light);
-    const fill = new THREE.DirectionalLight('#ddeaff', 0.8);
-    fill.position.set(70, 20, 170);
-    this.scene.add(fill);
+    this.scene.background = new THREE.Color(CAVE_LIGHT.background);
+    this.scene.fog = new THREE.Fog(CAVE_LIGHT.background, CAVE_LIGHT.fogNear, CAVE_LIGHT.fogFar);
+    this.scene.add(
+      new THREE.HemisphereLight(CAVE_LIGHT.sky, CAVE_LIGHT.ground, CAVE_LIGHT.hemisphere),
+    );
+    const light = new THREE.DirectionalLight(CAVE_LIGHT.sun, CAVE_LIGHT.directional);
+    light.position.set(...CAVE_LIGHT.sunDirection);
+    this.scene.add(light, light.target);
     this.overlay.id = 'loading-cave';
     this.overlay.setAttribute('aria-label', 'アプデの洞窟');
     this.overlay.innerHTML = `<header class="loading-cave-heading"><div><small>世界への旅支度</small><h2>アプデの洞窟</h2></div><button class="button button-outline" data-cave-back>タイトルへ戻る</button></header>
       <div class="loading-cave-wait" role="status">洞窟を準備しています…</div>
       <div class="loading-cave-stick" aria-label="ドラッグして移動"><i></i><span>移動</span></div>
+      <button class="button button-outline loading-cave-torch" data-cave-torch aria-pressed="true">松明を消す</button>
       <footer class="loading-cave-footer"><p class="loading-cave-help">WASDで移動 · ドラッグで見回す · Shiftで走る</p><div class="loading-cave-load"><span data-cave-status role="status">洞窟を準備しています</span><progress max="1" value="0" aria-label="世界の読み込み"></progress><button class="button button-accent" data-cave-proceed disabled>世界へ進む</button></div></footer>`;
     this.status = this.overlay.querySelector('[data-cave-status]')!;
     this.progress = this.overlay.querySelector('progress')!;
@@ -95,6 +102,8 @@ export class LoadingCave {
     this.world.canvas.parentElement!.append(this.overlay);
     document.body.classList.add('loading-cave-active');
     this.proceed.onclick = () => this.continue();
+    this.overlay.querySelector<HTMLButtonElement>('[data-cave-torch]')!.onclick = () =>
+      this.toggleTorch();
     this.overlay.querySelector<HTMLButtonElement>('[data-cave-back]')!.onclick = onBack;
     const signal = this.events.signal;
     document.addEventListener('keydown', this.keydown, { signal, capture: true });
@@ -131,6 +140,7 @@ export class LoadingCave {
         else this.actor = actor;
         return actor;
       }),
+      this.world.worldAssets.ensureInitial('firewood-log', this.ticket),
     ]);
     if (this.disposed) {
       actor?.dispose();
@@ -178,21 +188,22 @@ export class LoadingCave {
     const comingSoon = createCavePreviewLabel();
     this.textures.add(comingSoon);
     const extraPigments = { ...extras, comingSoon } as Record<CaveExtraPigment, THREE.Texture>;
-    prepareCaveMaterials(
-      cave,
-      pigment,
-      rockSurface,
-      characterPigment,
-      rimoPigment,
-      extraPigments,
-      true,
-    );
+    prepareCaveMaterials(cave, pigment, rockSurface, characterPigment, rimoPigment, extraPigments);
     cave.position.set(CAMP_CAVE.x, CAMP_CAVE.elevation + CAMP_CAVE.groundOffset, CAMP_CAVE.z);
     cave.rotation.y = CAMP_CAVE.yaw;
     cave.scale.setScalar(CAMP_CAVE.scale);
     this.scene.add(cave, actor.root);
     this.walls = new MeshRayGrid(cave);
+    this.spring = new CaveSpring();
+    cave.add(this.spring.root);
+    this.torch = new CaveTorch(
+      this.scene,
+      this.world.worldAssets,
+      actor.root,
+      actor.asset.heightMetres,
+    );
     this.updateCamera();
+    this.torch.update(true, 0, 1, this.world.renderer.getPixelRatio(), this.torchLit);
     // Ends early if the WebGL context is lost; a restored context compiles on first draw.
     await compileScene(this.world.renderer, this.scene, this.camera);
     if (this.disposed) return;
@@ -243,8 +254,21 @@ export class LoadingCave {
     this.showStick();
   }
 
+  private toggleTorch() {
+    if (!this.ready) return;
+    this.torchLit = !this.torchLit;
+    const button = this.overlay.querySelector<HTMLButtonElement>('[data-cave-torch]')!;
+    button.textContent = this.torchLit ? '松明を消す' : '松明を灯す';
+    button.setAttribute('aria-pressed', String(this.torchLit));
+  }
+
   private keydown = (e: KeyboardEvent) => {
     const key = e.key.toLowerCase();
+    if (key === 'l' && !e.ctrlKey && !e.metaKey && !e.altKey) {
+      e.preventDefault();
+      e.stopImmediatePropagation();
+      if (!e.repeat) this.toggleTorch();
+    }
     if (
       ['w', 'a', 's', 'd', 'arrowup', 'arrowdown', 'arrowleft', 'arrowright', 'shift'].includes(key)
     ) {
@@ -313,6 +337,8 @@ export class LoadingCave {
   render(dt: number) {
     if (this.disposed) return;
     dt = Math.min(dt, 0.05);
+    this.elapsed += dt;
+    this.torch?.pose.restore();
     if (this.ready && !document.hidden && document.hasFocus()) {
       const pad = [...(navigator.getGamepads?.() ?? [])].find((p) => p?.connected);
       const axis = (index: number) =>
@@ -338,6 +364,8 @@ export class LoadingCave {
     } else this.actor?.animation.update(dt, 0, false);
     if (this.disposed) return;
     this.updateCamera();
+    this.torch?.update(true, this.elapsed, dt, this.world.renderer.getPixelRatio(), this.torchLit);
+    this.spring?.update(this.elapsed);
     if (!this.worldReady && this.ready) {
       const { phase, loaded, total } = this.world.loadProgress;
       const fraction = phase === 'build' ? 0.96 : total ? (0.92 * loaded) / total : 0;
@@ -354,6 +382,8 @@ export class LoadingCave {
       cavePosition: `${this.movement.position.x.toFixed(3)},${this.movement.position.z.toFixed(3)}`,
       caveAnimation: this.actor?.animation.name ?? 'loading',
       caveCameraYaw: this.yaw.toFixed(3),
+      caveTorchHeld: String(!!this.torch?.root.visible),
+      caveTorchLit: String(!!this.torch?.light.visible),
     });
   }
 
@@ -365,6 +395,8 @@ export class LoadingCave {
     this.events.abort();
     this.stop();
     this.overlay.remove();
+    this.torch?.dispose();
+    this.spring?.dispose();
     this.actor?.dispose();
     this.materials.forEach((material) => material.dispose());
     // Images still loading are released by their batch, now or as they arrive.

@@ -16,6 +16,7 @@
 import { createHash } from 'node:crypto';
 import { open, readFile } from 'node:fs/promises';
 import path from 'node:path';
+import { readSourceModelRevisions, matchesSourceModelRevision } from './source-model-revision.mjs';
 
 const sha256 = (bytes) => createHash('sha256').update(bytes).digest('hex');
 
@@ -174,7 +175,8 @@ export async function activeAdoption(root, assets, textureRecords) {
     plan.graph.adoption !== id
   )
     throw new Error(`${where}/plan.json is not a runtime adoption plan for ${id}`);
-  return { id, planSha256, graph: plan.graph };
+  const adoption = { id, planSha256, graph: plan.graph };
+  return { ...adoption, sourceRevisions: await readSourceModelRevisions(root, assets, adoption) };
 }
 
 const sameFile = (record, expected) =>
@@ -234,7 +236,11 @@ export function checkRuntimeGraph(
     if (typeof key !== 'string' || !/^[a-z0-9-]+$/.test(key))
       throw new Error(`A shipped asset has an unusable modelKey ${JSON.stringify(key)}`);
     const records = [asset, ...(asset.lods ?? [])],
-      entry = graph && Object.hasOwn(graph.models, key) ? graph.models[key] : null;
+      sourceRevision = matchesSourceModelRevision(asset, adoption),
+      entry =
+        !sourceRevision && graph && Object.hasOwn(graph.models, key) ? graph.models[key] : null;
+    if (asset.sourceRevision !== undefined && !sourceRevision)
+      throw new Error(`${key}: source revision has no verified acceptance record`);
     const hashed = records.map((record) => checkModelUrl(record.url, record.sha256));
     if (entry) {
       const expected = [entry.primary, ...entry.lods],
@@ -275,9 +281,11 @@ export function checkRuntimeGraph(
       });
       originals.push({
         modelKey: key,
-        reason: graph
-          ? (graph.notAdopted?.[key] ?? 'not-in-candidate-revision')
-          : 'no-runtime-adoption',
+        reason: sourceRevision
+          ? 'accepted-source-revision'
+          : graph
+            ? (graph.notAdopted?.[key] ?? 'not-in-candidate-revision')
+            : 'no-runtime-adoption',
       });
     }
     records.forEach((record, index) =>

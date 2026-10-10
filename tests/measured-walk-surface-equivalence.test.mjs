@@ -16,102 +16,105 @@ import { WORLD } from '../dist/shared/world.mjs';
 // measured-walk-surface.mjs (only `export` and the source-map comment removed). Every query of
 // the current module must return the same value, by SameValue, or throw the same error.
 function baselineMeasuredWalkSurface(data, placement) {
-    const { step, minX, minZ, nx, nz, heights } = data;
-    if (!(step > 0) ||
-        !Number.isInteger(nx) ||
-        !Number.isInteger(nz) ||
-        heights.length !== nx * nz ||
-        !heights.every((h) => h === null || Number.isFinite(h)))
-        throw new Error('Invalid measured walk surface');
-    const c = Math.cos(placement.yaw), s = Math.sin(placement.yaw), scale = placement.scale ?? 1;
-    const local = (x, z) => ({
-        x: (c * (x - placement.x) - s * (z - placement.z)) / scale,
-        z: (s * (x - placement.x) + c * (z - placement.z)) / scale,
-    });
-    const world = (x, z) => ({
-        x: placement.x + (c * x + s * z) * scale,
-        z: placement.z + (-s * x + c * z) * scale,
-    });
-    function cell(x, z) {
-        const p = local(x, z), ix = Math.floor((p.x - minX) / step), iz = Math.floor((p.z - minZ) / step);
-        return ix < 0 || iz < 0 || ix >= nx || iz >= nz ? null : { ix, iz, index: iz * nx + ix, p };
+  const { step, minX, minZ, nx, nz, heights } = data;
+  if (
+    !(step > 0) ||
+    !Number.isInteger(nx) ||
+    !Number.isInteger(nz) ||
+    heights.length !== nx * nz ||
+    !heights.every((h) => h === null || Number.isFinite(h))
+  )
+    throw new Error('Invalid measured walk surface');
+  const c = Math.cos(placement.yaw),
+    s = Math.sin(placement.yaw),
+    scale = placement.scale ?? 1;
+  const local = (x, z) => ({
+    x: (c * (x - placement.x) - s * (z - placement.z)) / scale,
+    z: (s * (x - placement.x) + c * (z - placement.z)) / scale,
+  });
+  const world = (x, z) => ({
+    x: placement.x + (c * x + s * z) * scale,
+    z: placement.z + (-s * x + c * z) * scale,
+  });
+  function cell(x, z) {
+    const p = local(x, z),
+      ix = Math.floor((p.x - minX) / step),
+      iz = Math.floor((p.z - minZ) / step);
+    return ix < 0 || iz < 0 || ix >= nx || iz >= nz ? null : { ix, iz, index: iz * nx + ix, p };
+  }
+  function height(x, z) {
+    const sample = cell(x, z);
+    if (!sample) return undefined;
+    const h = heights[sample.index];
+    if (h === null) return null;
+    // Smooth within the measured neighbouring stair/floor samples, never across a wall.
+    const u = (sample.p.x - minX) / step - 0.5,
+      v = (sample.p.z - minZ) / step - 0.5,
+      ix = Math.floor(u),
+      iz = Math.floor(v),
+      fx = u - ix,
+      fz = v - iz;
+    if (ix < 0 || iz < 0 || ix + 1 >= nx || iz + 1 >= nz) return h * scale;
+    const q = [
+      heights[iz * nx + ix],
+      heights[iz * nx + ix + 1],
+      heights[(iz + 1) * nx + ix],
+      heights[(iz + 1) * nx + ix + 1],
+    ];
+    // A solid neighbour or a wall-sized jump (over 1.2 m) does not take part;
+    // it reads as the centre height so the field stays continuous up to the
+    // wall. Tall risers the raster missed become steep ramps rather than
+    // invisible steps that stop a walking body.
+    const r = q.map((y) => (y === null || Math.abs(y - h) > 1.2 ? h : y));
+    return ((r[0] * (1 - fx) + r[1] * fx) * (1 - fz) + (r[2] * (1 - fx) + r[3] * fx) * fz) * scale;
+  }
+  // The largest height difference between the body centre and its eight-point
+  // ring; null when any sample is solid. Walls and drops show as large values.
+  // The ring is capped at the width of a broad human shoulder: the great ape
+  // still collides with walls and other bodies at its full radius, but the
+  // 0.35 m atlas cannot describe corridors finely enough for a 1.5 m ring
+  // without pockets that trap it on the side stairs.
+  const RING_CAP = 0.5;
+  function deviation(x, z, radius = 0) {
+    const centre = height(x, z);
+    if (centre === null) return null;
+    const ring = Math.min(radius, RING_CAP);
+    let worst = 0;
+    for (let i = 0; i < 8; i++) {
+      const angle = (i * Math.PI) / 4,
+        h = height(x + Math.cos(angle) * ring, z + Math.sin(angle) * ring);
+      if (h === null) return null;
+      if (centre !== undefined && h !== undefined) worst = Math.max(worst, Math.abs(h - centre));
     }
-    function height(x, z) {
-        const sample = cell(x, z);
-        if (!sample)
-            return undefined;
-        const h = heights[sample.index];
-        if (h === null)
-            return null;
-        // Smooth within the measured neighbouring stair/floor samples, never across a wall.
-        const u = (sample.p.x - minX) / step - 0.5, v = (sample.p.z - minZ) / step - 0.5, ix = Math.floor(u), iz = Math.floor(v), fx = u - ix, fz = v - iz;
-        if (ix < 0 || iz < 0 || ix + 1 >= nx || iz + 1 >= nz)
-            return h * scale;
-        const q = [
-            heights[iz * nx + ix],
-            heights[iz * nx + ix + 1],
-            heights[(iz + 1) * nx + ix],
-            heights[(iz + 1) * nx + ix + 1],
-        ];
-        // A solid neighbour or a wall-sized jump (over 1.2 m) does not take part;
-        // it reads as the centre height so the field stays continuous up to the
-        // wall. Tall risers the raster missed become steep ramps rather than
-        // invisible steps that stop a walking body.
-        const r = q.map((y) => (y === null || Math.abs(y - h) > 1.2 ? h : y));
-        return ((r[0] * (1 - fx) + r[1] * fx) * (1 - fz) + (r[2] * (1 - fx) + r[3] * fx) * fz) * scale;
-    }
-    // The largest height difference between the body centre and its eight-point
-    // ring; null when any sample is solid. Walls and drops show as large values.
-    // The ring is capped at the width of a broad human shoulder: the great ape
-    // still collides with walls and other bodies at its full radius, but the
-    // 0.35 m atlas cannot describe corridors finely enough for a 1.5 m ring
-    // without pockets that trap it on the side stairs.
-    const RING_CAP = 0.5;
-    function deviation(x, z, radius = 0) {
-        const centre = height(x, z);
-        if (centre === null)
-            return null;
-        const ring = Math.min(radius, RING_CAP);
-        let worst = 0;
-        for (let i = 0; i < 8; i++) {
-            const angle = (i * Math.PI) / 4, h = height(x + Math.cos(angle) * ring, z + Math.sin(angle) * ring);
-            if (h === null)
-                return null;
-            if (centre !== undefined && h !== undefined)
-                worst = Math.max(worst, Math.abs(h - centre));
-        }
-        return worst;
-    }
-    // 2026-09-13: the limits were tuned on the 1.2x ruin (0.84 m ring, 0.9 m
-    // step); they are body limits, not model limits, so they no longer scale.
-    const ringLimit = (radius) => Math.max(0.84, radius * 1.5);
-    function free(x, z, radius = 0) {
-        const worst = deviation(x, z, radius);
-        return worst !== null && worst <= ringLimit(radius);
-    }
-    // A step is allowed when the destination is free, or when the body is already
-    // brushing a ledge and the step does not bring it any closer (so a stair edge
-    // never traps a player who reached it legally). Drops stay with transition().
-    function allows(from, to, radius = 0) {
-        if (free(to.x, to.z, radius))
-            return true;
-        const next = deviation(to.x, to.z, radius);
-        if (next === null)
-            return false;
-        const current = deviation(from.x, from.z, radius);
-        return current !== null && next <= Math.min(current + 0.25, ringLimit(radius) + 0.6);
-    }
-    function transition(a, b) {
-        const ah = height(a.x, a.z), bh = height(b.x, b.z);
-        if (ah === null || bh === null)
-            return false;
-        if (ah === undefined && bh === undefined)
-            return true;
-        // A tall step (the top riser of the side stairs reads as 0.7 m where the
-        // smoothing stops at a wall) is climbable; a 0.9 m ledge is not, even at a run.
-        return Math.abs((ah ?? 0) - (bh ?? 0)) <= 0.9 + Math.hypot(a.x - b.x, a.z - b.z) * 0.6;
-    }
-    return { local, world, cell, height, free, deviation, allows, transition, data, placement };
+    return worst;
+  }
+  // 2026-09-13: the limits were tuned on the 1.2x ruin (0.84 m ring, 0.9 m
+  // step); they are body limits, not model limits, so they no longer scale.
+  const ringLimit = (radius) => Math.max(0.84, radius * 1.5);
+  function free(x, z, radius = 0) {
+    const worst = deviation(x, z, radius);
+    return worst !== null && worst <= ringLimit(radius);
+  }
+  // A step is allowed when the destination is free, or when the body is already
+  // brushing a ledge and the step does not bring it any closer (so a stair edge
+  // never traps a player who reached it legally). Drops stay with transition().
+  function allows(from, to, radius = 0) {
+    if (free(to.x, to.z, radius)) return true;
+    const next = deviation(to.x, to.z, radius);
+    if (next === null) return false;
+    const current = deviation(from.x, from.z, radius);
+    return current !== null && next <= Math.min(current + 0.25, ringLimit(radius) + 0.6);
+  }
+  function transition(a, b) {
+    const ah = height(a.x, a.z),
+      bh = height(b.x, b.z);
+    if (ah === null || bh === null) return false;
+    if (ah === undefined && bh === undefined) return true;
+    // A tall step (the top riser of the side stairs reads as 0.7 m where the
+    // smoothing stops at a wall) is climbable; a 0.9 m ledge is not, even at a run.
+    return Math.abs((ah ?? 0) - (bh ?? 0)) <= 0.9 + Math.hypot(a.x - b.x, a.z - b.z) * 0.6;
+  }
+  return { local, world, cell, height, free, deviation, allows, transition, data, placement };
 }
 
 // A seeded generator, so every run compares the same inputs.
@@ -144,7 +147,11 @@ function expectSame(actual, expected, describe) {
   if (!isDeepStrictEqual(actual, expected)) assert.deepStrictEqual(actual, expected, describe());
 }
 const show = (value) =>
-  typeof value === 'bigint' ? `${value}n` : typeof value === 'string' ? `'${value}'` : String(value);
+  typeof value === 'bigint'
+    ? `${value}n`
+    : typeof value === 'string'
+      ? `'${value}'`
+      : String(value);
 
 function pair(data, placement) {
   return {
@@ -272,7 +279,8 @@ function sweep(surfaces, rng, label, counts) {
       for (const half of [0, 0.5])
         for (const e of [-1e-9, 0, 1e-9]) {
           const p = world(f.minX + (i + half) * f.step + e, f.minZ + (j + half) * f.step - e);
-          for (const radius of [0, 0.32, 0.5]) comparePoint(surfaces, p.x, p.z, radius, `${label} lattice`);
+          for (const radius of [0, 0.32, 0.5])
+            comparePoint(surfaces, p.x, p.z, radius, `${label} lattice`);
         }
   // Far from the atlas, where deviation() no longer samples.
   const cx = (box.minX + box.maxX) / 2,
@@ -302,7 +310,12 @@ function sweep(surfaces, rng, label, counts) {
   }
 }
 
-function specialValues(surfaces, centre, label, radii = [NaN, Infinity, -Infinity, -0, undefined, 0.32, 1e300, -1e300]) {
+function specialValues(
+  surfaces,
+  centre,
+  label,
+  radii = [NaN, Infinity, -Infinity, -0, undefined, 0.32, 1e300, -1e300],
+) {
   const xs = [...SPECIAL, centre.x],
     zs = [...SPECIAL, centre.z];
   for (const x of xs)
@@ -316,7 +329,10 @@ function specialValues(surfaces, centre, label, radii = [NaN, Infinity, -Infinit
   for (const [from, to] of [
     [centre, { x: NaN, z: centre.z }],
     [{ x: Infinity, z: -Infinity }, centre],
-    [{ x: -0, z: -0 }, { x: 0, z: 0 }],
+    [
+      { x: -0, z: -0 },
+      { x: 0, z: 0 },
+    ],
     [{}, centre],
     [centre, { x: '52', z: centre.z }],
   ])
@@ -343,7 +359,13 @@ test('the castle and cave atlases answer every query exactly as the frozen imple
       next: surface,
       base: baselineMeasuredWalkSurface(surface.data, surface.placement),
     };
-    sweep(surfaces, rng, 'module instance', { random: 3000, boundary: 1, lattice: 2, far: 300, steps: 1000 });
+    sweep(surfaces, rng, 'module instance', {
+      random: 3000,
+      boundary: 1,
+      lattice: 2,
+      far: 300,
+      steps: 1000,
+    });
   }
   t.diagnostic(`${queries} queries compared`);
 });
@@ -429,7 +451,13 @@ test('degenerate and unusually valued atlases the validation accepts behave as b
         const x = Number(placement.x) + rng.range(-25, 25),
           z = Number(placement.z) + rng.range(-25, 25);
         comparePoint(surfaces, x, z, rng.pick(RADII), label);
-        compareStep(surfaces, { x, z }, { x: x + rng.range(-1, 1), z: z + rng.range(-1, 1) }, 0.32, label);
+        compareStep(
+          surfaces,
+          { x, z },
+          { x: x + rng.range(-1, 1), z: z + rng.range(-1, 1) },
+          0.32,
+          label,
+        );
       }
       // (Placements that make every query throw are covered by the loop above.)
       if (typeof placement.x === 'number' && typeof placement.scale !== 'bigint')
@@ -563,7 +591,16 @@ test('castle stairs, the cave aisle and movement near both atlases are bit-ident
   // and back down. As there, every character reaches every waypoint.
   for (const model of chosen)
     for (const side of [-1, 1]) {
-      const route = [[-2, 52], [0, 44], [0, 40], [0, 24], [0, 21], [0, 9], [-2, 9], [side * 5, 6]];
+      const route = [
+        [-2, 52],
+        [0, 44],
+        [0, 40],
+        [0, 24],
+        [0, 21],
+        [0, 9],
+        [-2, 9],
+        [side * 5, 6],
+      ];
       route.push([0, 8], [0, -2], [-2, -6], [-3, -11], [-8, -12], [-3, -11], [-2, -6], [0, -2]);
       route.push([0, 8], [0, 9], [0, 21], [0, 24], [0, 40], [0, 44], [-2, 52], [-2, 62]);
       const result = lockstep(
@@ -590,7 +627,10 @@ test('castle stairs, the cave aisle and movement near both atlases are bit-ident
   let compared = 0;
   for (let i = 0; i < 500; i++) {
     const box = rng.pick(boxes),
-      start = { x: rng.range(box.minX - 4, box.maxX + 4), z: rng.range(box.minZ - 4, box.maxZ + 4) },
+      start = {
+        x: rng.range(box.minX - 4, box.maxX + 4),
+        z: rng.range(box.minZ - 4, box.maxZ + 4),
+      },
       radius = rng.pick([0.28, 0.32, 0.36, 0.48, 0.76, 1.2, 1.9]);
     const same = (name, ...args) => {
       compared++;
@@ -636,7 +676,10 @@ test('canonical outcomes: open ground reads level, a solid cell blocks, a wall s
     assert.equal(surface.free(50, 30, 1.9), true);
     const { nx, heights, minX, minZ, step } = surface.data,
       solid = heights.indexOf(null),
-      wall = surface.world(minX + ((solid % nx) + 0.5) * step, minZ + (Math.floor(solid / nx) + 0.5) * step);
+      wall = surface.world(
+        minX + ((solid % nx) + 0.5) * step,
+        minZ + (Math.floor(solid / nx) + 0.5) * step,
+      );
     assert.ok(solid >= 0, 'the atlas has solid cells');
     assert.equal(surface.height(wall.x, wall.z), null);
     assert.equal(surface.deviation(wall.x, wall.z, 0.32), null);
@@ -647,7 +690,7 @@ test('canonical outcomes: open ground reads level, a solid cell blocks, a wall s
     const p = caveWorldAt(localZ);
     assert.ok(CAMP_CAVE_SURFACE.free(p.x, p.z, 0.76), `blocked aisle ${localZ}`);
   }
-  const end = caveWorldAt(-33.5);
+  const end = caveWorldAt(-37.6);
   assert.equal(CAMP_CAVE_SURFACE.free(end.x, end.z, 0.32), false, 'the natural blind end is solid');
 });
 
@@ -662,7 +705,9 @@ test(
       pairOfWorlds = worlds(),
       boxes = Object.values(atlases).map((surfaces) => frame(surfaces.base).box);
     const outside = (p) =>
-      boxes.every((b) => p.x < b.minX - 2 || p.x > b.maxX + 2 || p.z < b.minZ - 2 || p.z > b.maxZ + 2);
+      boxes.every(
+        (b) => p.x < b.minX - 2 || p.x > b.maxX + 2 || p.z < b.minZ - 2 || p.z > b.maxZ + 2,
+      );
     const far = [],
       near = [],
       sights = [];
@@ -695,7 +740,10 @@ test(
         rounds.push(((performance.now() - started) * 1e6) / calls);
       }
       rounds.sort((a, b) => a - b);
-      return { nsPerCall: Number(rounds[4].toFixed(1)), sink: Number.isFinite(sink) ? 'finite' : 'other' };
+      return {
+        nsPerCall: Number(rounds[4].toFixed(1)),
+        sink: Number.isFinite(sink) ? 'finite' : 'other',
+      };
     };
     const results = {};
     for (const [name, surfaces] of Object.entries(atlases))

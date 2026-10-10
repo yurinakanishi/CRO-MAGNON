@@ -253,6 +253,7 @@ function galleryWorld(humanAssets) {
     humanAssets,
     renderer: {
       getContext: () => ({ isContextLost: () => false }),
+      getPixelRatio: () => 1,
       compile: () => new Set(),
       properties: { get: () => ({}) },
       extensions: { has: () => false },

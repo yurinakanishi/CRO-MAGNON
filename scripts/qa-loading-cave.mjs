@@ -55,7 +55,7 @@ async function start(page, mobile = false) {
   const click = (selector) =>
     mobile ? page.locator(selector).tap() : page.locator(selector).click();
   await click('#title-start');
-  await click('.character-choice:first-child');
+  await click('.character-choice:has(input[value="cro-male"])');
   await click('#setup-flow-yes');
 }
 async function caveReady(page) {
@@ -112,7 +112,7 @@ try {
     const held = new Promise((r) => (release = r));
     let worldRequests = 0;
     await page.route('**/*.glb', async (route) => {
-      if (!/\/models\/(camp-cave|cro-magnon-hunter)\//.test(route.request().url())) {
+      if (!/\/models\/(camp-cave|cro-magnon-hunter|firewood-log)\//.test(route.request().url())) {
         worldRequests++;
         await held;
       }
@@ -256,7 +256,8 @@ try {
     let release;
     const held = new Promise((r) => (release = r));
     await page.route('**/*.glb', async (route) => {
-      if (!/\/models\/(camp-cave|cro-magnon-hunter)\//.test(route.request().url())) await held;
+      if (!/\/models\/(camp-cave|cro-magnon-hunter|firewood-log)\//.test(route.request().url()))
+        await held;
       await route.continue().catch(() => {});
     });
     await home(page);
@@ -272,7 +273,17 @@ try {
     }
     await start(page, true);
     await caveReady(page);
-    await fit(page, ['[data-cave-back]', '[data-cave-proceed]', '.loading-cave-stick']);
+    await fit(page, [
+      '[data-cave-back]',
+      '[data-cave-proceed]',
+      '.loading-cave-stick',
+      '[data-cave-torch]',
+    ]);
+    assert.equal(await page.locator('[data-cave-torch]').getAttribute('aria-pressed'), 'true');
+    await page.locator('[data-cave-torch]').tap();
+    assert.equal(await page.locator('[data-cave-torch]').getAttribute('aria-pressed'), 'false');
+    await page.locator('[data-cave-torch]').tap();
+    assert.equal(await page.locator('[data-cave-torch]').getAttribute('aria-pressed'), 'true');
     const before = await position(page);
     const stick = await page.locator('.loading-cave-stick').boundingBox();
     await drag(page, stick.x + stick.width / 2, stick.y + stick.height / 2, 0, -40, true);
@@ -306,7 +317,8 @@ try {
   }
   {
     const { context, page, sockets } = await open({ expectedError: true });
-    await page.route('**/models/woolly-mammoth/*.glb', (route) =>
+    // The herd now streams after entry. Fail the required arrival floor instead.
+    await page.route('**/models/meadow-ground/*.glb', (route) =>
       route.fulfill({ status: 503, body: 'world download QA failure' }),
     );
     await home(page);

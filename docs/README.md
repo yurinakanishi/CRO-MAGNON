@@ -92,6 +92,7 @@
 | [cave-entrance-seam-2026-10-07.md](cave-entrance-seam-2026-10-07.md) | 洞窟入口と山の隙間を修正（2026-10-07） |
 | [cave-foothill-2026-10-06.md](cave-foothill-2026-10-06.md) | アプデの洞窟を右奥の山へ一体化（2026-10-06） |
 | [cave-hill-2026-10-05.md](cave-hill-2026-10-05.md) | アプデの洞窟を覆う丘（2026-10-05） |
+| [cave-spring-2026-10-10.md](cave-spring-2026-10-10.md) | 薄暗い洞窟と丸い奥室の泉を待機中とゲーム中で共通化 |
 | [cave-torch-2026-10-02.md](cave-torch-2026-10-02.md) | 暗い洞窟と手持ちの松明 |
 | [cave-torch-hold-2026-10-03.md](cave-torch-hold-2026-10-03.md) | 松明を持つ腕・手首・握りと柄の太さ |
 | [cave-torch-only-2026-10-06.md](cave-torch-only-2026-10-06.md) | 洞窟内の攻撃禁止と松明だけの手持ち（2026-10-06） |

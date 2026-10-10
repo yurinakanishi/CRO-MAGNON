@@ -530,14 +530,15 @@
       "key": "camp-cave",
       "name": "アプデの洞窟",
       "kind": "static",
-      "height": 8.398508608341217,
+      "height": 9.098231315612793,
       "status": "integrated-and-game-qa-passed",
       "geometryResolution": 1024,
-      "sha256": "65dde1aa7311b88c159d524d93af82a770dac77e48ee1f35356e3000cad8a15f",
+      "sha256": "f3e513c9f311ba2bafdc8ebb8a846a9de0eba15be4c1f35b302e10efbd58b75b",
       "triangles": 74458,
-      "delivery": "/models/camp-cave/model-r26.glb",
-      "gameQA": "output/playwright/maruimo-mascot-20261007/mmo-assets-r03/summary.json",
-      "galleryRevision": "35"
+      "delivery": "/models/camp-cave/model-r27-rounded.glb",
+      "gameQA": "assets/camp-cave/qa/adoption-r27-rounded.json",
+      "galleryRevision": "35",
+      "revision": "27-rounded"
     },
     {
       "key": "yellow-524-mascot",

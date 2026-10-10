@@ -198,7 +198,7 @@ test('cave walls stop walking out sideways and the roof has room over the main a
     const aisle = caveWorldAt(localZ);
     assert.ok(CAMP_CAVE_SURFACE.free(aisle.x, aisle.z, 0.76), `aisle ${localZ}`);
   }
-  const blindEnd = caveWorldAt(-33.5);
+  const blindEnd = caveWorldAt(-37.6);
   assert.equal(collision.free(blindEnd, 0.32), false, 'natural blind end is solid');
   for (const localZ of [-20, -25, -31]) {
     const aisle = caveWorldAt(localZ);

@@ -1,0 +1,67 @@
+{
+  "ok": true,
+  "checks": [
+    {
+      "label": "Immediate mural-free menu and contributor dialog; no world GLB requested on title"
+    },
+    {
+      "label": "Walk, run and orbit while world download is held; no room connection",
+      "data": {
+        "before": [
+          44.944,
+          114
+        ],
+        "after": [
+          46.522,
+          116.075
+        ],
+        "walk": "Walk_Loop",
+        "run": "Run_Loop",
+        "requests": [
+          "/models/camp-cave/model-r27-rounded.glb",
+          "/models/cro-magnon-hunter/startup.opt-d9197fbdf6e1ae99.glb",
+          "/models/firewood-log/model-c2.opt-918a0a8e4b0fa911.glb",
+          "/models/firewood-log/lod-c2-1.opt-e6a789165ffa682e.glb",
+          "/models/firewood-log/lod-c2-2.opt-b1060354eba097ae.glb",
+          "/models/wooden-spear/model-c2.opt-71a3a7ecb4d2e570.glb",
+          "/models/obsidian-spear/model-c2.opt-418e6cd8a2c74400.glb"
+        ]
+      }
+    },
+    {
+      "label": "Simulated gamepad moves the local visitor",
+      "data": {
+        "padBefore": [
+          49.048,
+          114.111
+        ],
+        "padAfter": [
+          48.413,
+          113.294
+        ]
+      }
+    },
+    {
+      "label": "Background loading frame timing (single local Chrome run)",
+      "data": {
+        "frames": 681,
+        "maxFrameMs": 1375,
+        "p95FrameMs": 4.300000000001091,
+        "worldPreparedMs": "2054"
+      }
+    },
+    {
+      "label": "Ready cave waits for explicit continue; game connects and displays the chosen player"
+    },
+    {
+      "label": "Phone portrait/landscape controls fit; real touch movement, release, orbit, back and re-entry work"
+    },
+    {
+      "label": "World download failure closes the gallery and reports the reload error without joining"
+    },
+    {
+      "label": "Missing cave painting stops at the reload error without joining"
+    }
+  ],
+  "errors": []
+}

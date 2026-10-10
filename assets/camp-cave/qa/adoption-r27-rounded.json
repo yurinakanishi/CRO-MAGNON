@@ -1,0 +1,58 @@
+{
+  "schema": "cro-magnon/cave-spring-review@1",
+  "date": "2026-10-10",
+  "decision": "adopt",
+  "modelKey": "camp-cave",
+  "sha256": "f3e513c9f311ba2bafdc8ebb8a846a9de0eba15be4c1f35b302e10efbd58b75b",
+  "revision": "r27-rounded",
+  "geometry": {
+    "revision": "r27-rounded",
+    "source": "public/models/camp-cave/model-r26.opt-1debf5dafc216ce0.glb",
+    "sourceSha256": "1debf5dafc216ce01c46bd620e43d232026e0b5a4ad282a91e25676078384005",
+    "url": "/models/camp-cave/model-r27-rounded.glb",
+    "sha256": "f3e513c9f311ba2bafdc8ebb8a846a9de0eba15be4c1f35b302e10efbd58b75b",
+    "bytes": 2122080,
+    "vertices": 47437,
+    "triangles": 74458,
+    "changedVertices": 13896,
+    "basinVertices": 1073,
+    "min": [
+      -8.94336223602295,
+      0.25,
+      -42.599998474121094
+    ],
+    "max": [
+      26.44704818725586,
+      9.348231315612793,
+      18.207656860351562
+    ],
+    "preserved": [
+      "source topology and indices",
+      "all UVs",
+      "all 1024px embedded textures",
+      "entrance and gallery vertices through Z=-29.5"
+    ],
+    "method": "source-shell vertex refinement; no primitive or replacement rock"
+  },
+  "measurement": "assets/camp-cave/work/spring/r27-rounded/room.json",
+  "browser": "154.0.8037.93",
+  "checks": [
+    "Waiting: held torch, keyboard and button switching, readable unlit stone, actual walking toward spring",
+    "Live: same spring and dim environment; actual L switches personal lighting without blacking out cave",
+    "Five connected players retain independent torches; actual movement at spring has a valid measured floor"
+  ],
+  "evidence": "output/playwright/cave-spring-20261010/candidate-accepted/summary.json",
+  "screenshots": [
+    "output/playwright/cave-spring-20261010/candidate-accepted/waiting-lit.png",
+    "output/playwright/cave-spring-20261010/candidate-accepted/waiting-off.png",
+    "output/playwright/cave-spring-20261010/candidate-accepted/live-lit.png",
+    "output/playwright/cave-spring-20261010/candidate-accepted/live-off.png",
+    "output/playwright/cave-spring-20261010/candidate-accepted/five-players.png",
+    "output/playwright/cave-spring-20261010/candidate-accepted/live-portrait.png"
+  ],
+  "limits": "One real Chrome renderer plus four WebSocket peers. Placed in cave by fixture, then actual keyboard movement and torch operations. Portrait viewport, not a physical smartphone. No FPS claim.",
+  "references": [
+    "https://infobohol.com/hinagdanan-cave-in-panglao-bohol/",
+    "https://www.globetrove.com/hinagdanan-cave/"
+  ]
+}

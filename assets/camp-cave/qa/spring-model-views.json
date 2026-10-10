@@ -1,0 +1,13 @@
+{
+  "out": "output/playwright/cave-spring-20261010/exact-glb",
+  "records": [
+    [
+      "r26 retained TRELLIS shell",
+      "/public/models/camp-cave/model-r26.opt-1debf5dafc216ce0.glb"
+    ],
+    [
+      "r27 rounded spring basin",
+      "/public/models/camp-cave/model-r27-rounded.glb"
+    ]
+  ]
+}

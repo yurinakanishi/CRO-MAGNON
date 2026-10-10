@@ -149,7 +149,15 @@ export async function r04AdoptedCave(current) {
   const stamp = (original) => ({
     [RUNTIME_FIELD]: { adoption: 'r04-proof', candidateRevision: '20261009-r04', original },
   });
-  const original = modelIdentities(current).original,
+  // The later spring is an intentional geometry revision; r04 still proves its
+  // immutable r26 source. Standalone murals continue to use the current records.
+  const beforeR04 = JSON.parse(
+    await readFile(
+      'assets/runtime-adoption/20261009-r04-a01/before/public/models/camp-cave/asset.json',
+      'utf8',
+    ),
+  );
+  const original = modelIdentities(beforeR04).original,
     model = index.files[original.url];
   assert.ok(model, `${R04} has no candidate for ${original.url}`);
   assert.deepEqual([model.sourceSha256, model.sourceBytes], [original.sha256, original.bytes]);
