@@ -15,8 +15,8 @@
 | [CREATURE_MOTION_GUIDE.md](../CREATURE_MOTION_GUIDE.md) | 生き物の動きの制作指針 |
 | [ARCHITECTURE.md](../ARCHITECTURE.md) | コード構成と依存境界 |
 | [CLOUDFLARE_DEPLOYMENT.md](../CLOUDFLARE_DEPLOYMENT.md) | 公開（Cloudflare）の手順と料金条件 |
-| [README-EXHIBITION.md](../README-EXHIBITION.md) | 展示の現行運用（4台）と基本起動 |
-| [README-EXHIBITION-SETUP.md](../README-EXHIBITION-SETUP.md) | 展示の初期設定・SSH・配布・安全対策 |
+| [README-EXHIBITION.md](../README-EXHIBITION.md) | 終了した展示の運用（4台）・基本起動の保存記録。通常更新時のビルド・配布義務は終了 |
+| [README-EXHIBITION-SETUP.md](../README-EXHIBITION-SETUP.md) | 終了した展示の初期設定・SSH・配布・安全対策の保存記録 |
 | [README-LOCAL.md](../README-LOCAL.md) | 持ち運び版の説明 |
 
 ## 作業記録（月別）
