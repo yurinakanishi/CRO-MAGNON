@@ -78,7 +78,6 @@ async function start(user, value) {
   await user.page
     .locator('#setup-form .character-choice:has(input[value="' + value + '"])')
     .click();
-  await user.page.locator('#setup-flow [data-choose-difficulty="normal"]').click();
   await user.page.locator('#setup-flow-yes').click();
   await user.page
     .locator(

@@ -83,7 +83,6 @@ async function open(name, character) {
   await page.locator('#title-start').click();
   assert.equal(await page.locator('#setup-form .character-choice').count(), 9);
   await page.locator(`#setup-form .character-choice:has(input[value="${character}"])`).click();
-  await page.locator('#setup-flow [data-choose-difficulty="normal"]').click();
   await page.locator('#setup-flow-yes').click();
   await page
     .locator('#world[data-world-asset="ready"][data-character-asset="ready"]')
@@ -473,7 +472,6 @@ try {
   await a.page
     .locator(`#setup-form .character-choice:has(input[value="${a.p.species}-${a.p.gender}"])`)
     .click();
-  await a.page.locator('#setup-flow [data-choose-difficulty="normal"]').click();
   await a.page.locator('#setup-flow-yes').click();
   await a.page
     .locator('#world[data-world-asset="ready"][data-character-asset="ready"]')

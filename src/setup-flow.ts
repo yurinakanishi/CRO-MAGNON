@@ -1,30 +1,21 @@
 import { characterModel } from '../shared/characters.mjs';
-import {
-  DIFFICULTIES,
-  DIFFICULTY_LEVELS,
-  normalizeDifficulty,
-  type Difficulty,
-} from '../shared/difficulty.mjs';
 import { spawnSite } from '../shared/spawn-sites.mjs';
 import { spawnCardsMarkup } from './spawn-picker.js';
 import { parseCharacterValue } from './character-selection.js';
 
 /**
- * Start flow without a fixed launch button: picking a character card immediately asks
- * for the difficulty (簡単・普通・難しい only), then shows one final "これでいいですか？"
- * whose はい submits the setup form. Escape, いいえ, the backdrop and the controller's
- * cancel button each step back one screen; backing out of the difficulty step returns
- * to the card grid with the pick still highlighted.
+ * Start flow without a fixed launch button: picking a character card immediately
+ * shows one final "これでいいですか？" whose はい submits the setup form. Escape,
+ * いいえ, the backdrop and the controller's cancel button each return to the card
+ * grid with the pick still highlighted.
  *
- * The exhibition build has no difficulty: the card instead asks where to begin, as a
- * grid of pictured sights, and picking one starts the game at once.
+ * The exhibition build instead asks where to begin, as a grid of pictured sights,
+ * and picking one starts the game at once.
  */
-type Step = 'difficulty' | 'confirm' | 'spawn';
+type Step = 'confirm' | 'spawn';
 
 interface SetupFlowOptions {
   form: HTMLFormElement;
-  /** Difficulty to preselect when the question opens (the player's last choice). */
-  difficulty: () => Difficulty;
   /** True when the room lets the visitor choose a starting sight instead. */
   spawnChoice?: () => boolean;
   /** Starting sight to preselect (the visitor's last choice). */
@@ -34,9 +25,6 @@ interface SetupFlowOptions {
 }
 
 let current: SetupFlowOptions | null = null;
-
-const hiddenDifficulty = (form: HTMLFormElement) =>
-  form.querySelector<HTMLInputElement>('input[name="difficulty"]');
 
 const hiddenSpawn = (form: HTMLFormElement) =>
   form.querySelector<HTMLInputElement>('input[name="spawn"]');
@@ -56,10 +44,6 @@ export function setupFlowBack(): boolean {
   const { form } = current;
   const flow = overlay(form);
   if (!flow) return false;
-  if (flow.dataset.step === 'confirm') {
-    render('difficulty');
-    return true;
-  }
   flow.remove();
   pickedCard(form)?.focus({ preventScroll: true });
   current.settle?.();
@@ -78,16 +62,9 @@ function render(step: Step) {
   if (!card) return;
   const model = characterModel(parseCharacterValue(card.value));
   const [name, variant] = model.name.split(' ');
-  const difficulty = normalizeDifficulty(hiddenDifficulty(form)?.value || current.difficulty());
   if (step === 'spawn') return renderSpawn(`${name}${variant ? ` ${variant}` : ''}`);
-  const who = `<p class="setup-flow-eyebrow">${step === 'difficulty' ? 'Character' : 'Ready'}</p><h3 id="setup-flow-title"><strong>${name}</strong>${variant ? `<small>${variant}</small>` : ''}</h3>`;
-  const body =
-    step === 'difficulty'
-      ? `${who}<p class="setup-flow-question">難易度はどれにしますか？</p><div class="setup-flow-choices" role="group" aria-label="難易度">${DIFFICULTY_LEVELS.map(
-          (id) =>
-            `<button type="button" class="button ${id === difficulty ? 'button-accent' : 'button-outline'}" data-choose-difficulty="${id}" aria-pressed="${id === difficulty}">${DIFFICULTIES[id].label}</button>`,
-        ).join('')}</div>`
-      : `${who}<p class="setup-flow-summary"><span>難易度</span><strong>${DIFFICULTIES[difficulty].label}</strong></p><p class="setup-flow-question">これでいいですか？</p><div class="character-confirm-actions"><button id="setup-flow-yes" class="button button-accent" type="submit">はい</button><button id="setup-flow-no" class="button button-outline" type="button">いいえ</button></div>`;
+  const who = `<p class="setup-flow-eyebrow">Ready</p><h3 id="setup-flow-title"><strong>${name}</strong>${variant ? `<small>${variant}</small>` : ''}</h3>`;
+  const body = `${who}<p class="setup-flow-question">これでいいですか？</p><div class="character-confirm-actions"><button id="setup-flow-yes" class="button button-accent" type="submit">はい</button><button id="setup-flow-no" class="button button-outline" type="button">いいえ</button></div>`;
   overlay(form)?.remove();
   form.insertAdjacentHTML(
     'beforeend',
@@ -100,18 +77,9 @@ function render(step: Step) {
       setupFlowBack();
       return;
     }
-    const choice = target.closest<HTMLButtonElement>('[data-choose-difficulty]');
-    if (choice) {
-      const input = hiddenDifficulty(form);
-      if (input) input.value = normalizeDifficulty(choice.dataset.chooseDifficulty);
-      render('confirm');
-    } else if (target.closest('#setup-flow-no')) setupFlowBack();
+    if (target.closest('#setup-flow-no')) setupFlowBack();
   };
-  const first =
-    step === 'difficulty'
-      ? flow.querySelector<HTMLElement>(`[data-choose-difficulty="${difficulty}"]`)
-      : flow.querySelector<HTMLElement>('#setup-flow-yes');
-  first?.focus({ preventScroll: true });
+  flow.querySelector<HTMLElement>('#setup-flow-yes')?.focus({ preventScroll: true });
   current.settle?.();
 }
 
@@ -146,16 +114,12 @@ function renderSpawn(who: string) {
 export function bindSetupFlow(options: SetupFlowOptions) {
   current = options;
   const { form } = options;
-  if (!hiddenDifficulty(form))
-    form.insertAdjacentHTML('afterbegin', '<input type="hidden" name="difficulty">');
   if (!hiddenSpawn(form))
     form.insertAdjacentHTML('afterbegin', '<input type="hidden" name="spawn">');
   const open = () => {
-    const input = hiddenDifficulty(form);
-    if (input) input.value = normalizeDifficulty(options.difficulty());
     // The name and room fields are validated before the questions start.
     if (!form.reportValidity()) return;
-    render(options.spawnChoice?.() ? 'spawn' : 'difficulty');
+    render(options.spawnChoice?.() ? 'spawn' : 'confirm');
   };
   form.addEventListener('click', (event) => {
     const target = event.target as HTMLElement;

@@ -2194,19 +2194,12 @@ dialog:has(.character-switch) {
   line-height: 1.7;
   color: #e0b4a3;
 }
-.setup-flow-choices,
 .character-confirm-actions {
   display: grid;
   gap: 12px;
   margin-top: 6px;
-}
-.setup-flow-choices {
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-}
-.character-confirm-actions {
   grid-template-columns: 1fr 1fr;
 }
-.setup-flow-choices .button,
 .character-confirm-actions .button {
   min-height: 62px;
   padding: 12px 16px;
@@ -2215,18 +2208,15 @@ dialog:has(.character-switch) {
   letter-spacing: 0.2em;
   padding-left: calc(16px + 0.2em);
 }
-.setup-flow-choices .button-outline,
 .character-confirm-actions .button-outline {
   background: #ffffff05;
   border: 1px solid #e0b07033;
   color: #e6e0c8;
 }
-.setup-flow-choices .button-outline:hover,
 .character-confirm-actions .button-outline:hover {
   background: #e0b07012;
   border-color: #e0b07077;
 }
-.setup-flow-choices .button-accent,
 .character-confirm-actions .button-accent {
   border: 1px solid #f7dfb0;
   background: linear-gradient(180deg, #f2cf94 0%, #dcab6d 55%, #c8925a 100%);
@@ -2236,31 +2226,10 @@ dialog:has(.character-switch) {
     0 0 40px #e0b07040,
     inset 0 1px 0 #fff6;
 }
-.setup-flow-choices .button:focus-visible,
-.setup-flow-choices .button.gamepad-focus,
 .character-confirm-actions .button:focus-visible,
 .character-confirm-actions .button.gamepad-focus {
   outline: 2px solid var(--accent);
   outline-offset: 4px;
-}
-.setup-flow-summary {
-  display: inline-flex;
-  align-items: center;
-  gap: 12px;
-  width: max-content;
-  margin: 0;
-  padding: 8px 16px;
-  border: 1px solid #e0b07044;
-  border-radius: 999px;
-  background: #e0b0700e;
-  font-size: 14px;
-  letter-spacing: 0.24em;
-  color: #d6c79a;
-}
-.setup-flow-summary strong {
-  font: 500 18px/1 var(--display);
-  letter-spacing: 0.2em;
-  color: #f7ecd0;
 }
 /* Exhibition start: a grid of pictured sights; picking one begins the game. */
 .spawn-picker {
@@ -2387,7 +2356,6 @@ dialog:has(.character-switch) {
   .character-confirm-body h3 {
     font-size: 24px;
   }
-  .setup-flow-choices .button,
   .character-confirm-actions .button {
     min-height: 54px;
     font-size: 17px;

@@ -72,7 +72,6 @@ try {
   await page.goto(base);
   await page.locator('#title-start').click();
   await page.locator('#setup-form .character-choice:has(input[value="cro-female"])').click();
-  await page.locator('[data-choose-difficulty="normal"]').click();
   await page.locator('#setup-flow-yes').click();
   await ready();
   const room = game.rooms.get('LOCAL_VERIFY');
@@ -144,7 +143,6 @@ try {
   // The local profile returns to the title; re-enter through its visible UI.
   await page.locator('#title-start').click();
   await page.locator('#setup-form .character-choice:has(input[value="cro-female"])').click();
-  await page.locator('[data-choose-difficulty="normal"]').click();
   await page.locator('#setup-flow-yes').click();
   await ready();
   assert.equal(

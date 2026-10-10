@@ -56,7 +56,6 @@ async function start(page, mobile = false) {
     mobile ? page.locator(selector).tap() : page.locator(selector).click();
   await click('#title-start');
   await click('.character-choice:first-child');
-  await click('[data-choose-difficulty="normal"]');
   await click('#setup-flow-yes');
 }
 async function caveReady(page) {

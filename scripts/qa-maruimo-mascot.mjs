@@ -109,7 +109,6 @@ await page.route('**/src/world3d.js', async (route) => {
 async function enter() {
   await page.locator('#title-start').click();
   await page.locator('#setup-form .character-choice:has(input[value="cro-female"])').click();
-  await page.locator('[data-choose-difficulty="normal"]').click();
   await page.locator('#setup-flow-yes').click();
   await page
     .locator(

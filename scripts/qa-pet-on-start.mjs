@@ -95,7 +95,6 @@ async function open(name) {
 async function enter(user) {
   await user.page.locator('#title-start').click();
   await user.page.locator('#setup-form .character-choice:has(input[value="cro-female"])').click();
-  await user.page.locator('#setup-flow [data-choose-difficulty="normal"]').click();
   await user.page.locator('#setup-flow-yes').click();
   await user.page
     .locator(

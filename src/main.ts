@@ -120,12 +120,7 @@ import { inGulf } from '../shared/gulf-region.mjs';
 import { ScreenManager, AreaBanner, keyPrompts } from './screens.js';
 import { contributorsDialogMarkup } from './title-credits.js';
 import { BUILD_PROFILE } from './build-profile.js';
-import {
-  DIFFICULTIES,
-  DIFFICULTY_LEVELS,
-  normalizeDifficulty,
-  type Difficulty,
-} from '../shared/difficulty.mjs';
+import { FIXED_DIFFICULTY } from '../shared/difficulty.mjs';
 import { bindSetupFlow, closeSetupFlow, setupFlowBack, setupFlowOpen } from './setup-flow.js';
 import { icon } from './icons.js';
 import {
@@ -170,7 +165,7 @@ let profile = {
     species: readSaved('cro-species', 'cro'),
     gender: readSaved('cro-gender', 'female'),
   }),
-  difficulty: normalizeDifficulty(readSaved('cro-difficulty', 'normal')),
+  difficulty: FIXED_DIFFICULTY,
   room: fixedIdentity
     ? cleanRoom(multiplayer.room || '') || 'EXHIBITION'
     : cleanRoom(query.get('room') || multiplayer.room || readSaved('cro-room', 'EMBER')) || 'EMBER',
@@ -785,7 +780,12 @@ async function connect(automatic = false) {
       startupMarks.mark('welcome', marks);
       retryCount = 0;
       selfId = message.id;
-      profile = { ...profile, ...message.profile, room: message.room };
+      profile = {
+        ...profile,
+        ...message.profile,
+        room: message.room,
+        difficulty: FIXED_DIFFICULTY,
+      };
       persistentSession = message.persistentSession === true;
       resumeStored = saveSession(sessionKey(profile.room), message.session, persistentSession);
       if (persistentSession && !resumeStored)
@@ -1865,7 +1865,7 @@ function applyProfileForm(form: HTMLFormElement) {
     name: fixedIdentity ? profile.name : String(data.get('name')).trim() || '旅人',
     room,
     ...parseCharacterValue(data.get('character')),
-    difficulty: normalizeDifficulty(data.get('difficulty')),
+    difficulty: FIXED_DIFFICULTY,
   };
   spawnChoice = spawnSite(data.get('spawn')).id;
   save('cro-spawn', spawnChoice);
@@ -2351,19 +2351,6 @@ function updateSaveStatus() {
         ? `自動保存済み ${new Date(localSaveStatus.savedAt).toLocaleTimeString()} · タイトルへ戻っても続きから再開できます。${localSaveStatus.recovered ? ' 予備の保存から復元しました。' : ''}`
         : '自動保存を準備しています。';
 }
-function difficultySettingsMarkup() {
-  const selected = normalizeDifficulty(profile.difficulty);
-  return `<div class="settings-item difficulty-setting"><div><strong>難易度</strong></div><div class="settings-buttons" role="group" aria-label="難易度">${DIFFICULTY_LEVELS.map((id) => `<button type="button" class="button button-outline" data-difficulty="${id}" aria-pressed="${selected === id}" title="${DIFFICULTIES[id].description}">${DIFFICULTIES[id].label}</button>`).join('')}</div></div>`;
-}
-
-function setDifficulty(difficulty: Difficulty) {
-  profile.difficulty = normalizeDifficulty(difficulty);
-  save('cro-difficulty', profile.difficulty);
-  send({ type: 'difficulty', difficulty: profile.difficulty });
-  for (const button of document.querySelectorAll<HTMLButtonElement>('[data-difficulty]'))
-    button.setAttribute('aria-pressed', String(button.dataset.difficulty === profile.difficulty));
-  notify(`難易度を「${DIFFICULTIES[profile.difficulty].label}」に変更しました。`, 'success');
-}
 function openCharacterSwitchMenu() {
   openCharacterSwitch({
     openModal,
@@ -2516,7 +2503,7 @@ function openPauseMenu(tab?: string) {
       inventoryMarkup(),
     )}${panel('character', characterSwitchMarkup())}${panel('warp', exhibitionWarpMarkup())}${panel('crafting', craftingMarkup())}${panel('mascots', mascotMenuMarkup(state))}${panel(
       'settings',
-      `<h2>設定</h2><div class="settings-list">${fixedIdentity ? '' : difficultySettingsMarkup()}${audioSettingsMarkup(renderer.audio.settings)}<div class="settings-item"><div><strong>全画面表示</strong></div><button class="button button-outline" data-setting="fullscreen">${icon('expand')} 切り替え</button></div><div class="settings-item"><div><strong>視点</strong></div><div class="settings-buttons"><button class="button button-outline" data-setting="zoom-out">− 遠く</button><button class="button button-outline" data-setting="zoom-in">+ 近く</button><button class="button button-outline" data-setting="camera">${icon('target')} 視点を戻す</button></div></div><div class="settings-item"><div><strong>コントローラー</strong><p class="gamepad-connection" role="status">${usingGamepad ? '' : '未接続'}</p></div></div></div><p id="local-save-status" class="form-note" role="status" hidden></p>${localResetMarkup()}`,
+      `<h2>設定</h2><div class="settings-list">${audioSettingsMarkup(renderer.audio.settings)}<div class="settings-item"><div><strong>全画面表示</strong></div><button class="button button-outline" data-setting="fullscreen">${icon('expand')} 切り替え</button></div><div class="settings-item"><div><strong>視点</strong></div><div class="settings-buttons"><button class="button button-outline" data-setting="zoom-out">− 遠く</button><button class="button button-outline" data-setting="zoom-in">+ 近く</button><button class="button button-outline" data-setting="camera">${icon('target')} 視点を戻す</button></div></div><div class="settings-item"><div><strong>コントローラー</strong><p class="gamepad-connection" role="status">${usingGamepad ? '' : '未接続'}</p></div></div></div><p id="local-save-status" class="form-note" role="status" hidden></p>${localResetMarkup()}`,
     )}</div></div>`,
   );
   const root = $('#modal-body') as HTMLElement;
@@ -2615,8 +2602,6 @@ function openPauseMenu(tab?: string) {
     $('[data-setting="zoom-in"]').onclick = () => {
       if (!assistedControls()) renderer.adjustZoom(0.15);
     };
-    for (const button of root.querySelectorAll<HTMLButtonElement>('[data-difficulty]'))
-      button.onclick = () => setDifficulty(normalizeDifficulty(button.dataset.difficulty));
     if ($('[data-setting="reset-room"]')) $('[data-setting="reset-room"]').onclick = openRoomReset;
   }
   // The exhibition menu opens on its first tab; the bag shortcut still focuses a usable item.
@@ -2741,7 +2726,6 @@ document.addEventListener('fullscreenchange', () => {
 $('#setup-back').onclick = () => (joined ? screens.hide() : showTitle());
 bindSetupFlow({
   form: $('#setup-form'),
-  difficulty: () => normalizeDifficulty(profile.difficulty),
   spawnChoice: () => fixedIdentity,
   spawn: () => spawnChoice,
   settle: () => gamepadControls?.suspend(),

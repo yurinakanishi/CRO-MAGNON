@@ -27,36 +27,25 @@ class Socket {
   }
 }
 
-test('difficulty names and personal damage multipliers have a safe normal fallback', () => {
-  assert.deepEqual(
-    Object.values(DIFFICULTIES).map(({ label }) => label),
-    ['簡単', '普通', '難しい'],
-  );
-  assert.equal(normalizeDifficulty('easy'), 'easy');
-  assert.equal(normalizeDifficulty('hard'), 'hard');
-  for (const invalid of [undefined, null, '', 'expert', 1, {}])
-    assert.equal(normalizeDifficulty(invalid), 'normal');
-  assert.equal(incomingDamage({ difficulty: 'easy' }, 15), 11);
-  assert.equal(incomingDamage({ difficulty: 'normal' }, 15), 15);
-  assert.equal(incomingDamage({ difficulty: 'hard' }, 15), 21);
-  assert.equal(incomingDamage({ difficulty: 'easy' }, 1), 1);
-  assert.ok(
-    Object.values(DIFFICULTIES).every((difficulty) => !('enemyMovementSpeed' in difficulty)),
-    'personal difficulty cannot carry a shared-world movement multiplier',
-  );
+test('normal damage is fixed for current, legacy and invalid difficulty values', () => {
+  assert.deepEqual(Object.keys(DIFFICULTIES), ['normal']);
+  assert.equal(DIFFICULTIES.normal.incomingDamage, 1);
+  for (const value of ['easy', 'normal', 'hard', undefined, null, '', 'expert', 1, {}]) {
+    assert.equal(normalizeDifficulty(value), 'normal');
+    assert.equal(incomingDamage({ difficulty: value }, 15), 15);
+    assert.equal(incomingDamage({ difficulty: value }, 1), 1);
+    assert.equal(incomingDamage({ difficulty: value }, 15, 0.1), 2);
+  }
+  assert.equal(incomingDamage(null, 15), 15);
+  for (const amount of [0, -1, NaN, Infinity]) assert.equal(incomingDamage(null, amount), 0);
 });
 
-test('difficulty command accepts only the three public values', () => {
-  for (const difficulty of ['easy', 'normal', 'hard'])
-    assert.deepEqual(decodeCommand(JSON.stringify({ type: 'difficulty', difficulty })), {
-      type: 'difficulty',
-      difficulty,
-    });
-  for (const difficulty of ['expert', '', null, 1, {}, ['easy']])
+test('difficulty change commands are no longer accepted', () => {
+  for (const difficulty of ['easy', 'normal', 'hard', 'expert', '', null, 1, {}, ['easy']])
     assert.equal(decodeCommand(JSON.stringify({ type: 'difficulty', difficulty })), null);
 });
 
-test('the server owns, updates and restores each player difficulty', () => {
+test('joins, rejected commands and legacy saved sessions all use normal difficulty', () => {
   let id = 0;
   const runtime = {
     now: () => 1000,
@@ -71,14 +60,18 @@ test('the server owns, updates and restores each player difficulty', () => {
   );
   const welcome = socket.messages.find((message) => message.type === 'welcome');
   const player = core.rooms.get('DIFFICULTY').players.get(welcome.id);
-  assert.equal(welcome.profile.difficulty, 'easy');
-  assert.equal(player.difficulty, 'easy');
+  assert.equal(welcome.profile.difficulty, 'normal');
+  assert.equal(player.difficulty, 'normal');
 
   socket.command({ type: 'difficulty', difficulty: 'hard' });
-  assert.equal(player.difficulty, 'hard');
+  assert.equal(player.difficulty, 'normal');
   socket.command({ type: 'difficulty', difficulty: 'expert' });
-  assert.equal(player.difficulty, 'hard', 'invalid values do not alter server state');
+  assert.equal(player.difficulty, 'normal', 'invalid values do not alter server state');
 
+  // Prepare an old-format session in the test world, never a user's save.
+  player.difficulty = 'hard';
+  player.inventory.wood = 7;
+  player.energy = 63;
   const saved = core.exportState();
   const restored = createGameCore({ runtime, persistentSessions: true, keepEmptyRooms: true });
   restored.importState(saved);
@@ -93,10 +86,15 @@ test('the server owns, updates and restores each player difficulty', () => {
   );
   const resumed = resumedSocket.messages.find((message) => message.type === 'welcome');
   assert.equal(resumed.resumed, true);
-  assert.equal(resumed.profile.difficulty, 'hard');
+  assert.equal(resumed.profile.difficulty, 'normal');
+  const restoredPlayer = restored.rooms.get('DIFFICULTY').players.get(resumed.id);
+  assert.equal(restoredPlayer.inventory.wood, 7);
+  assert.equal(restoredPlayer.energy, 63);
+  core.close();
+  restored.close();
 });
 
-test('co-op peers receive one authoritative enemy state when personal difficulty changes', () => {
+test('co-op peers receive one authoritative enemy state when legacy difficulty changes are rejected', () => {
   let now = 1000,
     serial = 0;
   const runtime = {
@@ -170,7 +168,8 @@ test('co-op peers receive one authoritative enemy state when personal difficulty
     );
 
     easySocket.command({ type: 'difficulty', difficulty: 'hard' });
-    assert.equal(easy.difficulty, 'hard');
+    assert.equal(easy.difficulty, 'normal');
+    assert.equal(hard.difficulty, 'normal');
     now += 100;
     core.tick();
     const changedEasy = easySocket.messages.findLast((message) => message.type === 'state'),
@@ -188,7 +187,7 @@ test('co-op peers receive one authoritative enemy state when personal difficulty
   }
 });
 
-test('enemy hits apply the target player difficulty without changing another player', () => {
+test('enemy hits use normal damage even for legacy easy and hard players', () => {
   const hit = (difficulty) => {
     const collision = new CollisionWorld([], { river: false });
     const enemy = createEnemies(collision, [], 1000)[0];
@@ -226,9 +225,9 @@ test('enemy hits apply the target player difficulty without changing another pla
     return player.energy;
   };
   const staff = CROW_ROLE_RULES.shaman.attackDamage;
-  assert.equal(hit('easy'), 100 - Math.max(1, Math.round(staff * 0.7)));
+  assert.equal(hit('easy'), 100 - staff);
   assert.equal(hit('normal'), 100 - staff);
-  assert.equal(hit('hard'), 100 - Math.max(1, Math.round(staff * 1.4)));
+  assert.equal(hit('hard'), 100 - staff);
 });
 
 test('crow, behemoth and sabertooth movement is independent of the target difficulty', () => {

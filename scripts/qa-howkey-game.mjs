@@ -72,7 +72,6 @@ const observe=WorldRenderer.prototype.render;WorldRenderer.prototype.render=func
   const selector = scientist ? 'howkey-female' : 'cro-male';
   await page.locator(`#setup-form .character-choice:has(input[value="${selector}"])`).click();
   if (scientist) await page.screenshot({ path: `${out}/selection.png` });
-  await page.locator('#setup-flow [data-choose-difficulty="normal"]').click();
   await page.locator('#setup-flow-yes').click();
   await page
     .locator('#world[data-world-asset="ready"][data-character-asset="ready"]')
@@ -455,7 +454,6 @@ try {
   await a.page.locator('#title-start').click();
   assert.equal(await a.page.locator('#setup-form input[value="howkey-female"]').isChecked(), true);
   await a.page.locator('#setup-form .character-choice:has(input[value="howkey-female"])').click();
-  await a.page.locator('#setup-flow [data-choose-difficulty="normal"]').click();
   await a.page.locator('#setup-flow-yes').click();
   await a.page
     .locator('#world[data-world-asset="ready"][data-character-asset="ready"]')

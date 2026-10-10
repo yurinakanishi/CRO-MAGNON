@@ -95,7 +95,6 @@ async function enter(mobile, name) {
     mobile ? page.locator(selector).tap() : page.locator(selector).click();
   await use('#title-start');
   await use('#setup-form .character-choice:has(input[value="cro-female"])');
-  await use('[data-choose-difficulty="normal"]');
   await use('#setup-flow-yes');
   await page
     .locator('#world[data-world-asset="ready"][data-character-asset="ready"]')

@@ -102,23 +102,22 @@ test('the game opens on a title screen and only joins after Start or ?autostart=
   assert.doesNotMatch(main, /data-panel=/, 'no top navigation dock');
 });
 
-test('setup asks character → difficulty → final はい with no fixed launch button', async () => {
+test('setup asks character → final はい with no difficulty controls', async () => {
   const main = await readFile(new URL('src/main.ts', root), 'utf8');
   const flow = await readFile(new URL('src/setup-flow.ts', root), 'utf8');
   const css = await readFile(new URL('src/style.css', root), 'utf8');
   assert.match(main, /bindSetupFlow\(\{/);
-  assert.match(main, /difficultySettingsMarkup\(\)/);
-  assert.match(main, /data-difficulty=/);
-  assert.match(main, /type: 'difficulty'/);
-  assert.match(main, /cro-difficulty/);
+  assert.doesNotMatch(
+    main,
+    /difficultySettingsMarkup|data-difficulty|type: 'difficulty'|cro-difficulty/,
+  );
+  assert.match(main, /difficulty: FIXED_DIFFICULTY/);
   assert.doesNotMatch(main, /敵の動きと攻撃時間は(?:仲間)?全員で共通です/);
   assert.doesNotMatch(main, /setup-submit|この谷へ出発する|difficultyChoicesMarkup/);
-  assert.match(flow, /難易度はどれにしますか/);
+  assert.doesNotMatch(flow, /難易度|difficulty|data-choose-difficulty/);
   assert.match(flow, /これでいいですか/);
-  assert.match(flow, /data-choose-difficulty=/);
-  assert.doesNotMatch(flow, /\.description/, 'difficulty buttons show only the label');
   assert.match(flow, /id="setup-flow-yes"[^>]*type="submit"/);
-  assert.match(css, /\.setup-flow-choices/);
+  assert.doesNotMatch(css, /\.setup-flow-choices|\.setup-flow-summary/);
   assert.doesNotMatch(css, /\.difficulty-choice-grid|\.setup-launch/);
 });
 

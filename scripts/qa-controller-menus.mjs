@@ -128,7 +128,6 @@ try {
   await tap(PAD.circle);
   await select('#setup-form input[name="character"]:checked');
   await tap(PAD.circle);
-  await select('#setup-flow [data-choose-difficulty="normal"]');
   await tap(PAD.circle);
   await select('#setup-flow-yes');
   await tap(PAD.circle);

@@ -152,7 +152,6 @@ try {
     await tap('#setup-form .character-choice:has(input[value="cro-female"])');
     if (lan) await tap('[data-choose-spawn="camp"]');
     else {
-      await tap('#setup-flow [data-choose-difficulty="normal"]');
       await tap('#setup-flow-yes');
     }
     await page

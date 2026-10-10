@@ -30,10 +30,12 @@ const pass = (text) => {
   checks.push(text);
   console.log(`PASS ${text}`);
 };
-async function select(page, character, difficulty) {
+async function select(page, character) {
   await page.locator(`#setup-form .character-choice:has(input[value="${character}"])`).click();
-  await page.locator(`#setup-flow [data-choose-difficulty="${difficulty}"]`).click();
   await page.locator('#setup-flow-yes').click();
+  // Fresh starts include the current loading cave before joining the world.
+  if (await page.locator('#loading-cave').count())
+    await page.locator('[data-cave-proceed]').click({ timeout: 180000 });
   await page
     .locator('#world[data-world-asset="ready"][data-character-asset="ready"]')
     .waitFor({ timeout: 90000 });
@@ -57,11 +59,12 @@ async function open(name) {
   page.on('console', (message) => {
     if (message.type() === 'error') errors.push(message.text());
   });
+  await page.addInitScript(() => localStorage.setItem('cro-difficulty', 'hard'));
   await page.goto(`http://127.0.0.1:${port}/?room=TITLE-QA`);
   assert.equal(await page.locator('#screen-title').isVisible(), true);
   await page.locator('#title-start').click();
   await page.locator('#setup-form input[name="name"]').fill(name);
-  await select(page, 'cro-female', 'normal');
+  await select(page, 'cro-female');
   await until(
     () => [...(game.rooms.get('TITLE-QA')?.players.values() ?? [])].some((p) => p.name === name),
     'player joined',
@@ -75,7 +78,18 @@ async function open(name) {
 try {
   const a = await open('TitleA');
   await shot(a.page, '01-started');
-  pass('Game renders in Chrome without an error overlay');
+  assert.equal(a.player.difficulty, 'normal');
+  assert.equal(await a.page.evaluate(() => localStorage.getItem('cro-difficulty')), 'normal');
+  await a.page.locator('#world').focus();
+  await a.page.keyboard.press('Escape');
+  await a.page.locator('[data-pause-tab="settings"]').click();
+  assert.equal(await a.page.locator('[data-difficulty], [data-choose-difficulty]').count(), 0);
+  assert.doesNotMatch(await a.page.locator('[data-pause-panel="settings"]').innerText(), /難易度/);
+  await shot(a.page, '01-settings-without-difficulty');
+  await a.page.keyboard.press('Escape');
+  pass(
+    'Chrome starts with normal difficulty despite a legacy hard preference; settings offer no difficulty choice',
+  );
   const b = await open('TitleB');
   const room = game.rooms.get('TITLE-QA');
   // Explicit preparation only: inventory and resource fixtures. Movement and all
@@ -109,10 +123,12 @@ try {
   await a.page.locator('#setup-back').click();
   await a.page.locator('#title-start').click();
   await a.page.locator('#setup-form .character-choice:has(input[value="bear-female"])').click();
-  await shot(a.page, '03-difficulty');
-  await a.page.locator('#setup-flow [data-choose-difficulty="hard"]').click();
+  await shot(a.page, '03-confirmation');
+  assert.equal(await a.page.locator('#setup-flow').getAttribute('data-step'), 'confirm');
+  assert.equal(await a.page.locator('[data-choose-difficulty]').count(), 0);
   await a.page.locator('#setup-flow-no').click();
-  await a.page.locator('#setup-flow [data-choose-difficulty="easy"]').click();
+  assert.equal(await a.page.locator('#setup-flow').count(), 0);
+  await a.page.locator('#setup-form .character-choice:has(input[value="bear-female"])').click();
   await a.page.locator('#setup-flow-yes').click();
   await until(() => room.players.has(a.player.id), 'title start reconnects');
   await a.page
@@ -122,7 +138,7 @@ try {
     .locator('#world[data-player-model="desert-fennec-mage"]')
     .waitFor({ timeout: 90000 });
   assert.equal(a.player.species, 'bear');
-  assert.equal(a.player.difficulty, 'easy');
+  assert.equal(a.player.difficulty, 'normal');
   assert.ok(Math.hypot(a.player.x - 49.1, a.player.z - 58) < 1);
   assert.ok(Math.hypot(a.player.x - moved.x, a.player.z - moved.z) > 0.5);
   assert.deepEqual(a.player.inventory, inventory);
@@ -131,7 +147,7 @@ try {
   assert.equal(room.resources[0].amount, 1);
   await shot(a.page, '04-new-character-at-camp');
   pass(
-    'Title Start always asks character and difficulty, supports Back, and returns to camp with supplies and the peer unchanged',
+    'Title Start asks character and confirmation with normal difficulty, supports Back, and returns to camp with supplies and the peer unchanged',
   );
 
   await a.page.locator('#world').focus();
@@ -157,9 +173,9 @@ try {
   await a.page.locator('#title-start').click();
   await a.page.setViewportSize({ width: 390, height: 844 });
   await shot(a.page, '05-small-setup');
-  await select(a.page, 'cat-female', 'hard');
+  await select(a.page, 'cat-female');
   await until(() => room.players.has(a.player.id) && a.player.species === 'cat', 'second start');
-  assert.equal(a.player.difficulty, 'hard');
+  assert.equal(a.player.difficulty, 'normal');
   assert.deepEqual(a.player.inventory, inventory);
   assert.ok(Math.hypot(a.player.x - 49.1, a.player.z - 58) < 1);
   pass(

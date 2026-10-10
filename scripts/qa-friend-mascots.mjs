@@ -83,7 +83,6 @@ async function openPage(name, character) {
   await page.goto(`${base}/?room=FRIENDS`);
   await page.locator('#title-start').click();
   await page.locator(`#setup-form .character-choice:has(input[value="${character}"])`).click();
-  await page.locator('[data-choose-difficulty="normal"]').click();
   await page.locator('#setup-flow-yes').click();
   // The online start shows the walkable loading cave; join when the world is ready.
   const ready =

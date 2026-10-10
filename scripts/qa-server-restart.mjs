@@ -71,9 +71,8 @@ try {
   });
   await page.goto(`${base}/?room=RESTART-QA`);
   await page.locator('#title-start').click();
-  // Checking the card opens the difficulty question straight away.
+  // Checking the card opens the confirmation straight away.
   await page.locator('#setup-form input[name="character"][value="cro-male"]').check();
-  await page.locator('#setup-flow [data-choose-difficulty="normal"]').click();
   await page.locator('#setup-flow-yes').click();
   await page
     .locator('#world[data-world-asset="ready"][data-character-asset="ready"]')

@@ -35,7 +35,6 @@ const bot524 = () => bots().find((bot) => bot.kind === '524');
 async function enter(viewer) {
   await viewer.page.locator('#title-start').click();
   await viewer.page.locator('#setup-form .character-choice:has(input[value="cro-female"])').click();
-  await viewer.page.locator('#setup-flow [data-choose-difficulty="normal"]').click();
   await viewer.page.locator('#setup-flow-yes').click();
   await viewer.page
     .locator('#world[data-world-asset="ready"][data-character-asset="ready"]')

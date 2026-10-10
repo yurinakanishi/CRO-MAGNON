@@ -18,7 +18,6 @@ const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 const observer = `\nconst faceOriginalRender=WorldRenderer.prototype.render;WorldRenderer.prototype.render=function(...args){const result=faceOriginalRender.apply(this,args);window.faceRenderer=this;window.faceFrames??=[];const players=[...this.players.values()].filter(e=>e.actor).map(e=>({name:e.state.name,key:e.actor.asset.modelKey,sha:e.actor.asset.sha256,clip:e.actor.animation.name,jumpHeight:jumpHeight(e.state,this.serverNow()),cameraDistance:e.model.position.distanceTo(this.camera.position),lod:e.actor.root.userData.actorDetail?.level,meshes:e.actor.root.userData.actorDetail?.meshes.length}));window.faceFrames.push({t:performance.now(),players});if(window.faceFrames.length>1000)window.faceFrames.shift();return result;};`;
 async function select(page, value) {
   await page.locator(`#setup-form .character-choice:has(input[value="${value}"])`).click();
-  await page.locator('#setup-flow [data-choose-difficulty="normal"]').click();
   await page.locator('#setup-flow-yes').click();
   await page.waitForSelector('#world[data-world-asset="ready"][data-character-asset="ready"]', {
     timeout: 90000,

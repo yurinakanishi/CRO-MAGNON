@@ -131,7 +131,6 @@ try {
   await page.locator('#title-start').click();
   await page.locator('#setup-form input[name="name"]').fill('Monster A');
   await page.locator('#setup-form .character-choice:has(input:checked)').click();
-  await page.locator('#setup-flow [data-choose-difficulty="normal"]').click();
   await page.locator('#setup-flow-yes').click();
   await page.waitForSelector('body.in-game', { timeout: 60000 });
   await page
@@ -168,7 +167,6 @@ try {
   await other.locator('#title-start').click();
   await other.locator('#setup-form input[name="name"]').fill('Monster B');
   await other.locator('#setup-form .character-choice:has(input:checked)').click();
-  await other.locator('#setup-flow [data-choose-difficulty="normal"]').click();
   await other.locator('#setup-flow-yes').click();
   await other.waitForSelector('#world[data-world-asset="ready"][data-character-asset="ready"]', {
     timeout: 120000,
@@ -278,7 +276,6 @@ try {
   await page.locator('#title-start').click();
   if (await page.locator('#setup-back').isVisible()) {
     await page.locator('#setup-form .character-choice:has(input:checked)').click();
-    await page.locator('#setup-flow [data-choose-difficulty="normal"]').click();
     await page.locator('#setup-flow-yes').click();
   }
   await page.waitForSelector('#world[data-world-asset="ready"][data-character-asset="ready"]', {

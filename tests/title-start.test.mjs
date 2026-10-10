@@ -41,7 +41,7 @@ function fixture(options = {}) {
 }
 
 for (const persistentSessions of [false, true]) {
-  test(`title start reselects appearance and difficulty at a safe camp spawn, preserving possessions and peers (persistent=${persistentSessions})`, () => {
+  test(`title start reselects appearance with fixed normal difficulty at a safe camp spawn, preserving possessions and peers (persistent=${persistentSessions})`, () => {
     const { core, join } = fixture({ persistentSessions, exhibition: !persistentSessions });
     const first = join();
     const peer = join({ name: '相棒' });
@@ -65,7 +65,7 @@ for (const persistentSessions of [false, true]) {
     });
     assert.equal(next.welcome.id, first.welcome.id);
     assert.equal(next.p.species, 'ape');
-    assert.equal(next.p.difficulty, 'hard');
+    assert.equal(next.p.difficulty, 'normal');
     assert.equal(next.p.radius, characterModel(next.p).radius);
     assert.ok(Math.hypot(next.p.x - 49.1, next.p.z - 58) < 10);
     assert.ok(room.collision.free(next.p, next.p.radius, [actorObstacle(peer.p)]));
@@ -134,7 +134,7 @@ test('starting from a persisted title session preserves items after a server res
   assert.equal(next.welcome.id, first.welcome.id);
   assert.equal(next.p.inventory.shells, 6);
   assert.equal(next.p.species, 'bear');
-  assert.equal(next.p.difficulty, 'easy');
+  assert.equal(next.p.difficulty, 'normal');
   assert.ok(Math.hypot(next.p.x - 48, next.p.z - 57) < 10);
   next.socket.close();
 });
@@ -151,7 +151,7 @@ test('the title Start button opens setup even with a saved session', async () =>
     savedSession: () => 'existing-session',
     sessionKey: () => 'TITLE',
     profile: { room: 'TITLE' },
-    enterGame: () => assert.fail('Start skipped character and difficulty selection'),
+    enterGame: () => assert.fail('Start skipped character selection'),
     showSetup: () => setup++,
   });
   button.onclick();
@@ -223,7 +223,7 @@ for (const persistentSessions of [false, true]) {
     arrival.socket.command({ type: 'action', action: 'warp', targetId: 'spawn-cave' });
     assert.equal(arrival.welcome.id, first.welcome.id);
     assert.equal(arrival.p.species, 'bear');
-    assert.equal(arrival.p.difficulty, 'easy');
+    assert.equal(arrival.p.difficulty, 'normal');
     assert.equal(arrival.p.energy, 64);
     assert.equal(arrival.p.gathered, 9);
     assert.deepEqual(arrival.p.inventory, inventory);

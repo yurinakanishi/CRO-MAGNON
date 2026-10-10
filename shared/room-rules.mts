@@ -16,7 +16,7 @@ export type RoomRules = {
   speedScale: number;
   /** Multiplies every blow a player lands. */
   playerDamageScale: number;
-  /** Replaces the personal difficulty multiplier when set. */
+  /** Replaces the fixed normal damage multiplier when set. */
   incomingDamageScale: number | null;
   /** Damage never lowers a player's energy below this; 0 allows being downed. */
   minimumEnergy: number;

@@ -55,7 +55,6 @@ try {
   await page.goto(`http://127.0.0.1:${port}`);
   await page.locator('#title-start').click();
   await page.locator('#setup-form .character-choice:has(input[value="cro-female"])').click();
-  await page.locator('[data-choose-difficulty="normal"]').click();
   await page.locator('#setup-flow-yes').click();
   await page
     .locator('#world[data-world-asset="ready"][data-character-asset="ready"]')
@@ -142,7 +141,6 @@ try {
   await page.reload();
   await page.locator('#title-start').click();
   await page.locator('#setup-form .character-choice:has(input[value="cro-female"])').click();
-  await page.locator('[data-choose-difficulty="normal"]').click();
   await page.locator('#setup-flow-yes').click();
   await page
     .locator('#world[data-world-asset="ready"][data-character-asset="ready"]')
@@ -209,7 +207,6 @@ try {
   await touchPage.goto(`http://127.0.0.1:${port}`);
   await touchPage.locator('#title-start').tap();
   await touchPage.locator('#setup-form .character-choice:has(input[value="cro-female"])').tap();
-  await touchPage.locator('[data-choose-difficulty="normal"]').tap();
   await touchPage.locator('#setup-flow-yes').tap();
   await touchPage
     .locator('#world[data-world-asset="ready"][data-character-asset="ready"]')

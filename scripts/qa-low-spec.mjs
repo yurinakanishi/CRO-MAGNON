@@ -68,7 +68,6 @@ try {
   console.log('title loaded');
   await page.locator('#title-start').click();
   await page.locator('#setup-form .character-choice:has(input[value="cro-female"])').click();
-  await page.locator('#setup-flow [data-choose-difficulty="normal"]').click();
   await page.locator('#setup-flow-yes').click();
   // Drawn frames per second: every frame of either scene is one renderer.render call.
   const drawnFps = (ms) =>

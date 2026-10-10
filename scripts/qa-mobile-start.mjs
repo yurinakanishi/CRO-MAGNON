@@ -127,7 +127,8 @@ async function layout(label, selectors) {
       control.y >= -1 && control.bottom <= data.viewport.height + 1,
       `${label}: ${control.selector} height`,
     );
-    assert.ok(control.height >= 44, `${label}: ${control.selector} target`);
+    // DOMRect can report a 44px transformed button as 43.99998474121094px.
+    assert.ok(control.height >= 44 - 0.0001, `${label}: ${control.selector} target`);
   }
   await page.screenshot({ path: `${out}/${label}.png` });
 }
@@ -190,15 +191,9 @@ try {
     });
     await sleep(250);
     await grid.locator('.character-choice').last().tap();
-    await layout(`difficulty-${tag}`, [
-      '[data-choose-difficulty="easy"]',
-      '[data-choose-difficulty="normal"]',
-      '[data-choose-difficulty="hard"]',
-    ]);
-    await page.locator('[data-choose-difficulty="normal"]').tap();
+    assert.equal(await page.locator('[data-choose-difficulty]').count(), 0);
     await layout(`confirm-${tag}`, ['#setup-flow-yes', '#setup-flow-no']);
     await page.locator('#setup-flow-no').tap();
-    await page.keyboard.press('Escape');
     assert.equal(await page.locator('#setup-flow').count(), 0);
     await page.locator('#setup-back').tap();
     await layout(`back-${tag}`, ['#title-start', '#title-contributors']);
@@ -239,7 +234,6 @@ try {
     original.replaceWith(form);
     bindSetupFlow({
       form,
-      difficulty: () => 'normal',
       spawnChoice: () => true,
     });
   });
@@ -275,8 +269,6 @@ try {
   assert.equal(await page.evaluate(() => document.activeElement.name), 'name');
   await page.keyboard.press('Enter');
   await page.keyboard.press('ArrowRight');
-  await page.keyboard.press('Enter');
-  await page.locator('[data-choose-difficulty="normal"]').waitFor();
   await page.keyboard.press('Enter');
   await page.locator('#setup-flow-yes').waitFor();
   await page.screenshot({ path: `${out}/desktop-confirm.png` });

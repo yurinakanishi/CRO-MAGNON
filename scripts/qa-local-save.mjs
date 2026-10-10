@@ -112,7 +112,6 @@ async function play(ctx, name, resume = false) {
   await page.locator('#title-start').click();
   await page.locator('#setup-form input[name="name"]').fill(name);
   await page.locator('#setup-form .character-choice:has(input:checked)').click();
-  await page.locator('#setup-flow [data-choose-difficulty="normal"]').click();
   await page.locator('#setup-flow-yes').click();
   await page.waitForSelector('body.in-game', { timeout: 60000 });
   await page
@@ -182,7 +181,6 @@ try {
   await a.page.locator('[data-controller-menu="title"]').click();
   await a.page.locator('#title-start').click();
   await a.page.locator('#setup-form .character-choice:has(input:checked)').click();
-  await a.page.locator('#setup-flow [data-choose-difficulty="normal"]').click();
   await a.page.locator('#setup-flow-yes').click();
   await until(
     () =>
@@ -193,7 +191,7 @@ try {
   );
   assert.equal(a.seen.id, originalIds[0]);
   pass(
-    'Save updates preserve menu selection; title Start asks for character and difficulty again, retaining identity and supplies',
+    'Save updates preserve menu selection; title Start asks for character confirmation again, retaining identity and supplies',
   );
   await context.close();
   context = null;

@@ -33,7 +33,6 @@ try {
   await page.goto(`http://127.0.0.1:${port}/?room=RIVER-QA`);
   await page.locator('#title-start').click();
   await page.locator('#setup-form .character-choice:has(input:checked)').click();
-  await page.locator('#setup-flow [data-choose-difficulty="normal"]').click();
   await page.locator('#setup-flow-yes').click();
   await page
     .locator('#world[data-world-asset="ready"][data-character-asset="ready"]')
@@ -264,7 +263,6 @@ try {
   async function start(p) {
     await p.locator('#title-start').click();
     await p.locator('#setup-form .character-choice:has(input:checked)').click();
-    await p.locator('#setup-flow [data-choose-difficulty="normal"]').click();
     await p.locator('#setup-flow-yes').click();
     await p
       .locator('#world[data-world-asset="ready"][data-character-asset="ready"]')

@@ -150,11 +150,8 @@ try {
   await page.locator('#setup-form input[name="name"]').fill('Direction QA');
   await page.keyboard.press('ArrowLeft');
   await focused('#setup-form input[name="name"]');
-  // Picking a card asks the difficulty, then one final はい starts the adventure.
+  // Picking a card asks for confirmation; はい starts the adventure.
   await arm(card('cro-female'));
-  await tap(PAD.square);
-  await page.waitForSelector('#setup-flow[data-step="difficulty"]');
-  await focused('#setup-flow [data-choose-difficulty="normal"]');
   await tap(PAD.square);
   await page.waitForSelector('#setup-flow[data-step="confirm"]');
   await focused('#setup-flow-yes');
@@ -162,7 +159,7 @@ try {
   await page.waitForSelector('#world[data-world-asset="ready"][data-character-asset="ready"]', {
     timeout: 60000,
   });
-  passed('Name editing remains native; card → difficulty → はい starts the adventure directly');
+  passed('Name editing remains native; card → はい starts the adventure directly');
 
   // Pause menu: a vertical tab rail on a PC, a horizontal tab strip at 860px and below.
   for (const viewport of [

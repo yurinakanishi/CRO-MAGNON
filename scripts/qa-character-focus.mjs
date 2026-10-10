@@ -29,17 +29,20 @@ async function open(options = {}, lan = false) {
   page.on('console', (message) => {
     if (message.type() === 'error') errors.push(message.text());
   });
-  await page.addInitScript(() => {
-    window.qaPad = {
-      id: 'Wireless Controller',
-      index: 0,
-      connected: true,
-      mapping: 'standard',
-      axes: [0, 0, 0, 0],
-      buttons: Array.from({ length: 18 }, () => ({ pressed: false, value: 0 })),
-    };
-    Object.defineProperty(navigator, 'getGamepads', { value: () => [window.qaPad] });
-  });
+  // The phone scenario uses touch from the title onward, without an active fake pad
+  // switching the layout from controller to touch in the middle of its first tap.
+  if (!options.hasTouch)
+    await page.addInitScript(() => {
+      window.qaPad = {
+        id: 'Wireless Controller',
+        index: 0,
+        connected: true,
+        mapping: 'standard',
+        axes: [0, 0, 0, 0],
+        buttons: Array.from({ length: 18 }, () => ({ pressed: false, value: 0 })),
+      };
+      Object.defineProperty(navigator, 'getGamepads', { value: () => [window.qaPad] });
+    });
   if (lan)
     await page.route('**/multiplayer-config.json', (route) =>
       route.fulfill({
@@ -52,7 +55,8 @@ async function open(options = {}, lan = false) {
       }),
     );
   await page.goto(`http://127.0.0.1:${port}/?room=FOCUS-QA`);
-  await page.locator('#title-start').click();
+  if (options.hasTouch) await page.locator('#title-start').tap();
+  else await page.locator('#title-start').click();
   await page.waitForFunction(() =>
     [...document.querySelectorAll('#setup-form .character-art')].every(
       (img) => img.complete && img.naturalWidth,
@@ -107,13 +111,13 @@ async function tap(page, button) {
     await sleep(180);
   }
 }
-async function who(page, value, scope = '#setup-flow') {
+async function who(page, value, scope = '#setup-flow', step = 'confirm') {
   await page.locator(scope).waitFor();
   assert.equal(
     await page.locator('#setup-form input[name="character"]:checked').inputValue(),
     value,
   );
-  assert.equal(await page.locator(scope).getAttribute('data-step'), 'difficulty');
+  assert.equal(await page.locator(scope).getAttribute('data-step'), step);
 }
 try {
   const page = await open();
@@ -133,7 +137,7 @@ try {
   await page.keyboard.press('Enter');
   await who(page, 'nea-female');
   await page.keyboard.press('Escape');
-  await cursor(page, 'nea-female', '04-back-from-difficulty');
+  await cursor(page, 'nea-female', '04-back-from-confirmation');
   pass(
     'Keys move the only highlight despite a stationary mouse; Enter and Back keep the correct character',
   );
@@ -142,9 +146,7 @@ try {
   await cursor(page, 'nea-male', '05-controller-male-only');
   await tap(page, 1);
   await who(page, 'nea-male');
-  await page.locator('[data-choose-difficulty="hard"]').click();
   await page.locator('#setup-flow-no').click();
-  await page.keyboard.press('Escape');
   await cursor(page, 'nea-male', '06-back-from-final-confirmation');
   pass(
     'Simulated controller navigation, circle confirmation and cancellation use the highlighted character',
@@ -154,8 +156,9 @@ try {
   await cursor(page, 'bear-female', '07-mouse-after-controller');
   await page.locator(card('bear-female')).click();
   await who(page, 'bear-female');
-  await page.locator('[data-choose-difficulty="easy"]').click();
   await page.locator('#setup-flow-yes').click();
+  if (await page.locator('#loading-cave').count())
+    await page.locator('[data-cave-proceed]').click({ timeout: 180000 });
   await page
     .locator(
       '#world[data-world-asset="ready"][data-character-asset="ready"][data-player-model="desert-fennec-mage"]',
@@ -206,7 +209,7 @@ try {
   await tap(lan, 15);
   await cursor(lan, 'cro-male', '14-exhibition-controller');
   await tap(lan, 1);
-  await who(lan, 'cro-male');
+  await who(lan, 'cro-male', '#setup-flow', 'spawn');
   pass('Exhibition layout starts with one cursor and moves it cleanly from the first woman');
 
   const narrow = await open({ viewport: { width: 390, height: 844 }, hasTouch: true });

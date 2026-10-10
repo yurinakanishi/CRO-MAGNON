@@ -69,7 +69,6 @@ async function open(name) {
   await page.goto(`http://127.0.0.1:${port}/?room=${roomName}`);
   await page.locator('#title-start').click();
   await page.locator('#setup-form .character-choice:has(input:checked)').click();
-  await page.locator('#setup-flow [data-choose-difficulty="normal"]').click();
   await page.locator('#setup-flow-yes').click();
   await ready(page);
   return page;

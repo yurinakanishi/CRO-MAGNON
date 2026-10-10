@@ -823,7 +823,7 @@ test('five ranks hold their own levels of the stepped fortress: followers in the
   assert.ok(CROW_ROLE_RULES.shaman.attackDamage < CROW_ROLE_RULES.shaman.boltDamage);
 });
 
-test('a hard-difficulty player defeats a first-rank follower with one basic spear attack', () => {
+test('a player with legacy hard difficulty defeats a first-rank follower with one basic spear attack', () => {
   const { room, player, byRole, tick } = castleFixture();
   const soldier = byRole('soldier')[0];
   const now = 2000;

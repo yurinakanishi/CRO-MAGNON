@@ -28,7 +28,6 @@ try {
   await page.goto(`http://127.0.0.1:${port}/?room=SHAPE-FLIGHT-QA`);
   await page.locator('#title-start').click();
   await page.locator('#setup-form .character-choice:has(input[value="cro-female"])').click();
-  await page.locator('#setup-flow [data-choose-difficulty="normal"]').click();
   await page.locator('#setup-flow-yes').click();
   await page
     .locator('#world[data-world-asset="ready"][data-character-asset="ready"]')

@@ -68,7 +68,6 @@ async function open(mobile) {
   await tap('#title-start');
   if (mobile) await page.screenshot({ path: `${out}/01-selection.png` });
   await tap('#setup-form .character-choice:has(input[value="cro-female"])');
-  await tap('#setup-flow [data-choose-difficulty="normal"]');
   await tap('#setup-flow-yes');
   await enterPreparedWorld(page, mobile);
   await until(() => seen.id && game.rooms.get('TOUCH-QA')?.players.has(seen.id), 'join');
@@ -400,7 +399,6 @@ try {
   await phone.page.locator('#title-start').waitFor();
   await phone.tap('#title-start');
   await phone.tap('#setup-form .character-choice:has(input[value="cro-female"])');
-  await phone.tap('#setup-flow [data-choose-difficulty="normal"]');
   await phone.tap('#setup-flow-yes');
   await enterPreparedWorld(phone.page, true);
   await phone.page.locator('#touch-controls').waitFor({ timeout: 120000 });

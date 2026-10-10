@@ -84,7 +84,6 @@ try {
   await page.locator('#title-start').click();
   assert.equal(await page.locator('input[value="howkey-female"]').count(), 0);
   await page.locator('.character-choice:first-child').click();
-  await page.locator('[data-choose-difficulty="normal"]').click();
   await page.locator('#setup-flow-yes').click();
   await page.locator('[data-cave-proceed]:enabled').waitFor({ timeout: 240000 });
   await page.screenshot({ path: `${out}/loading-cave.png` });

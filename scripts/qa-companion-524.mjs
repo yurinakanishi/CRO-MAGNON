@@ -71,7 +71,6 @@ async function open(name, autostart = false) {
   if (!autostart) {
     await page.locator('#title-start').click();
     await page.locator('#setup-form .character-choice:has(input[value="cro-female"])').click();
-    await page.locator('#setup-flow [data-choose-difficulty="normal"]').click();
     await page.locator('#setup-flow-yes').click();
   }
   await page
@@ -356,7 +355,6 @@ try {
   await a.page.reload();
   await a.page.locator('#title-start').click();
   await a.page.locator('#setup-form .character-choice:has(input[value="cro-female"])').click();
-  await a.page.locator('#setup-flow [data-choose-difficulty="normal"]').click();
   await a.page.locator('#setup-flow-yes').click();
   await a.page
     .locator('#world[data-world-asset="ready"][data-character-asset="ready"]')

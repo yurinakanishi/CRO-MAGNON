@@ -495,10 +495,6 @@ export function createGameCore({
         socket.close(1000, 'Explicit leave');
         return;
       }
-      if (message.type === 'difficulty') {
-        player.difficulty = message.difficulty;
-        return;
-      }
       if (message.type === 'barter') {
         if (message.kind !== 'cancel' && (carrying(player) || jumpProgress(player, now) !== null)) {
           notice(player, '地面に降りてから交換しよう。');

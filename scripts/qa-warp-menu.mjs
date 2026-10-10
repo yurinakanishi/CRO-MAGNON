@@ -53,7 +53,6 @@ async function pageAt(url, lan = false) {
   await page.locator('#setup-form .character-choice:has(input[value="cro-female"])').click();
   if (lan) await page.locator('[data-choose-spawn="camp"]').click();
   else {
-    await page.locator('[data-choose-difficulty="normal"]').click();
     await page.locator('#setup-flow-yes').click();
   }
   await page
@@ -143,16 +142,13 @@ try {
       'ordinary menu has all six pictured destinations; every click arrives safely with possessions and synchronized observer',
     );
     pass('three-second cooldown disables the cards and displays its explanation');
-    for (const difficulty of ['easy', 'hard']) {
-      await page.keyboard.press('Escape');
-      await page.locator('[data-pause-tab="settings"]').click();
-      await page.locator(`[data-difficulty="${difficulty}"]`).click();
-      await until(() => p.difficulty === difficulty, 'difficulty changed');
-      await page.locator('[data-pause-tab="warp"]').click();
-      await choose(user, room, 'camp');
-      assert.equal(p.difficulty, difficulty);
-    }
-    pass('easy, normal and hard all allow menu warps and preserve the selected difficulty');
+    await page.keyboard.press('Escape');
+    await page.locator('[data-pause-tab="settings"]').click();
+    assert.equal(await page.locator('[data-difficulty]').count(), 0);
+    await page.locator('[data-pause-tab="warp"]').click();
+    await choose(user, room, 'camp');
+    assert.equal(p.difficulty, 'normal');
+    pass('menu warps preserve fixed normal difficulty and settings offer no difficulty choice');
   } else await page.keyboard.press('Escape');
   for (const viewport of [
     { width: 390, height: 844 },

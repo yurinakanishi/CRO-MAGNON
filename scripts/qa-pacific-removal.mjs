@@ -41,7 +41,6 @@ try {
     console.log('TITLE', i, errors);
     await page.locator('#title-start').click();
     await page.locator('#setup-form .character-choice:has(input[value="cro-male"])').click();
-    await page.locator('#setup-flow [data-choose-difficulty="normal"]').click();
     await page.locator('#setup-flow-yes').click();
     await page.waitForSelector('#world[data-world-asset="ready"][data-character-asset="ready"]', {
       timeout: 120000,
