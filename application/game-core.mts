@@ -206,7 +206,15 @@ export function createGameCore({
     send(player.socket, { type: 'notice', text, tone, popup });
   }
 
-  const act = createActionHandler({ notice, broadcast, snapshot, systemChat, runtime, visibility });
+  const act = createActionHandler({
+    notice,
+    broadcast,
+    snapshot,
+    systemChat,
+    runtime,
+    visibility,
+    reply: (player, message) => send(player.socket, message),
+  });
 
   function ensureRoom(roomName) {
     let room = rooms.get(roomName);
@@ -509,7 +517,11 @@ export function createGameCore({
       }
       if (player.carrierId && ['move', 'gait'].includes(message.type)) return;
       const controlled = boardedBoat(room, player) || mountedAnimal(room, player) || player;
-      if (player.downedUntil && ['move', 'gait', 'action'].includes(message.type)) {
+      if (
+        player.downedUntil &&
+        ['move', 'gait', 'action'].includes(message.type) &&
+        !(message.type === 'action' && message.action === 'inventoryCraft')
+      ) {
         if (message.type === 'action')
           notice(player, '回復を待っています。間もなく焚き火へ戻ります。', 'info');
         return;
@@ -550,7 +562,8 @@ export function createGameCore({
       } else if (
         message.type === 'action' &&
         typeof message.action === 'string' &&
-        (message.action === 'attack' ||
+        (message.action === 'inventoryCraft' ||
+          message.action === 'attack' ||
           message.action === 'jump' ||
           message.action === 'cancelCook' ||
           message.action === 'cancelFishing' ||

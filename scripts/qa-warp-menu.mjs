@@ -54,6 +54,8 @@ async function pageAt(url, lan = false) {
   if (lan) await page.locator('[data-choose-spawn="camp"]').click();
   else {
     await page.locator('#setup-flow-yes').click();
+    if (await page.locator('#loading-cave').count())
+      await page.locator('[data-cave-proceed]').click({ timeout: 180000 });
   }
   await page
     .locator('#world[data-world-asset="ready"][data-character-asset="ready"]')
@@ -111,7 +113,7 @@ try {
     await page
       .locator('[data-pause-tab]')
       .evaluateAll((nodes) => nodes.map((node) => node.dataset.pauseTab)),
-    ['inventory', 'warp', 'crafting', 'info', 'settings'],
+    ['inventory', 'warp', 'mascots', 'settings'],
   );
   await page.screenshot({ path: `${out}/ordinary-menu.png` });
   if (!layoutOnly) {

@@ -4,6 +4,7 @@ import { switchCharacterById } from '../shared/character-switch.mjs';
 import { ALL_CONTENT, characterVisible } from '../shared/content-visibility.mjs';
 import { handleAdventureAction, recordAdventureGather } from '../shared/adventures.mjs';
 import { handleBoatAction } from '../shared/boats.mjs';
+import { craftInventory } from '../shared/inventory-crafting.mjs';
 import { attackProfile, shoulderMagic } from '../shared/combat-profiles.mjs';
 import { handleHuntingAction } from '../shared/hunting.mjs';
 import { GATHER_RANGE, interactionVisible } from '../shared/interactions.mjs';
@@ -47,6 +48,7 @@ export function createActionHandler({
   systemChat,
   runtime,
   visibility = ALL_CONTENT,
+  reply = (_player, _message) => {},
 }) {
   // Unavailable world actions are quiet no-ops. Keep results and sound feedback on
   // the wire, without interrupting play with proximity or busy-state instructions.
@@ -54,6 +56,12 @@ export function createActionHandler({
     sendNotice(player, text, tone, false);
   return function act(room, player, message, now) {
     const action = message.action;
+    if (action === 'inventoryCraft') {
+      const result = craftInventory(room, player, message.targetId, now);
+      if (result.ok) broadcast(room, snapshot(room, true));
+      reply(player, { type: 'inventoryCraftResult', recipeId: message.targetId, ...result });
+      return;
+    }
     if (action === 'selectMascot' || action === 'deselectMascot') {
       if (setMascotSelection(room, player, message.targetId, action === 'selectMascot', now))
         broadcast(room, snapshot(room));

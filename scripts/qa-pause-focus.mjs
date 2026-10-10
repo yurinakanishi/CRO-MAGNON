@@ -138,7 +138,7 @@ try {
     await page.setViewportSize(viewport);
     const size = `${viewport.width}x${viewport.height}`;
     for (const device of ['keyboard', 'pad']) {
-      for (const id of ['inventory', 'crafting', 'mascots', 'settings']) {
+      for (const id of ['inventory', 'mascots', 'settings']) {
         const selector = `[data-pause-tab="${id}"]`;
         await inspect(selector, device, `${size}-${device}-${id}`);
         if (device === 'pad') {
@@ -162,14 +162,6 @@ try {
     true,
   );
   await pad();
-  await pad([13]);
-  await pad();
-  assert.equal(
-    await page
-      .locator('[data-pause-tab="crafting"]')
-      .evaluate((el) => el === document.activeElement),
-    true,
-  );
   await pad([13]);
   await pad();
   assert.equal(

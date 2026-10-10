@@ -56,6 +56,8 @@ try {
   await page.locator('#title-start').click();
   await page.locator('#setup-form .character-choice:has(input[value="cro-female"])').click();
   await page.locator('#setup-flow-yes').click();
+  if (await page.locator('#loading-cave').count())
+    await page.locator('[data-cave-proceed]').click({ timeout: 180000 });
   await page
     .locator('#world[data-world-asset="ready"][data-character-asset="ready"]')
     .waitFor({ timeout: 180000 });
@@ -73,12 +75,11 @@ try {
   pass('removed weather/route buttons and dialog are absent');
   assert.equal(await page.locator('#boat-craft').count(), 0);
   await page.keyboard.press('Escape');
-  await page.locator('[data-pause-tab="crafting"]').click();
-  await page.locator('#modal-boat-craft').click();
+  await page.locator('[data-craft="boat"]').click();
   await until(() => p.inventory.boat === 1, 'inland craft');
   assert.equal(p.inventory.wood, 12);
   assert.equal(room.boats.length, 0);
-  await page.keyboard.press('i');
+  assert.equal(await page.locator('#modal').evaluate((dialog) => dialog.open), true);
   await page.locator('[data-item="boat"]').click();
   assert.equal(await page.locator('[data-item-action="launchBoat"]').isDisabled(), true);
   await page.screenshot({ path: `${out}/inland-inventory.png` });
@@ -142,6 +143,8 @@ try {
   await page.locator('#title-start').click();
   await page.locator('#setup-form .character-choice:has(input[value="cro-female"])').click();
   await page.locator('#setup-flow-yes').click();
+  if (await page.locator('#loading-cave').count())
+    await page.locator('[data-cave-proceed]').click({ timeout: 180000 });
   await page
     .locator('#world[data-world-asset="ready"][data-character-asset="ready"]')
     .waitFor({ timeout: 180000 });
@@ -208,6 +211,8 @@ try {
   await touchPage.locator('#title-start').tap();
   await touchPage.locator('#setup-form .character-choice:has(input[value="cro-female"])').tap();
   await touchPage.locator('#setup-flow-yes').tap();
+  if (await touchPage.locator('#loading-cave').count())
+    await touchPage.locator('[data-cave-proceed]').tap({ timeout: 180000 });
   await touchPage
     .locator('#world[data-world-asset="ready"][data-character-asset="ready"]')
     .waitFor({ timeout: 180000 });
@@ -220,9 +225,10 @@ try {
   await sleep(800);
   assert.equal(await touchPage.locator('#boat-craft').count(), 0);
   await touchPage.locator('[data-touch-action="menu"]').tap();
-  await touchPage.locator('[data-pause-tab="crafting"]').tap();
-  await touchPage.locator('#modal-boat-craft').tap();
+  await touchPage.locator('[data-craft="boat"]').tap();
   await until(() => touchPlayer.inventory.boat === 1, 'touch craft');
+  assert.equal(await touchPage.locator('#modal').evaluate((dialog) => dialog.open), true);
+  await touchPage.locator('#modal-close').tap();
   for (const [width, height] of [
     [390, 844],
     [844, 390],

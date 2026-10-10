@@ -25,12 +25,15 @@ export function confirmedAction(before, after) {
     after.coastalActivity.startedAt !== before.coastalActivity?.startedAt
   )
     return after.coastalActivity.kind === 'shells' ? 'Gather' : 'Craft';
-  if (after.spearHead === 'obsidian' && before.spearHead !== 'obsidian') return 'Craft';
+  if (after.spearHead === 'obsidian' && before.spearHead !== 'obsidian') return null;
   const a = before.inventory,
     b = after.inventory;
   if (!a || !b) return null;
-  if (!before.tool && after.tool) return 'Craft';
-  if ((b.obsidianBlade ?? 0) > (a.obsidianBlade ?? 0)) return 'Craft';
+  // Inventory crafting completes without a character action. In particular, a
+  // boat's material cost must not be mistaken for a donation (Give).
+  if (!before.tool && after.tool) return null;
+  if (!before.gulf?.fishingKit && after.gulf?.fishingKit) return null;
+  if (['boat', 'obsidianBlade'].some((key) => (b[key] ?? 0) > (a[key] ?? 0))) return null;
   if ((b.shells ?? 0) < (a.shells ?? 0)) return 'Give';
   if (
     ['cookedFish', 'cookedShellfish', 'cookedRoot', 'herbRoot'].some(

@@ -123,6 +123,7 @@ import { BUILD_PROFILE } from './build-profile.js';
 import { FIXED_DIFFICULTY } from '../shared/difficulty.mjs';
 import { bindSetupFlow, closeSetupFlow, setupFlowBack, setupFlowOpen } from './setup-flow.js';
 import { icon } from './icons.js';
+import { installInventoryCrafting } from './inventory-crafting-ui.js';
 import {
   GAME_TITLE,
   modalMarkup,
@@ -589,6 +590,13 @@ const cropFoodUI = installCropFoodUI({
   openModal,
   collision: renderer.collision,
 });
+const inventoryCrafting = installInventoryCrafting({
+  player,
+  world: () => ({ ...state, collision: renderer.collision }),
+  now: () => renderer.serverNow(),
+  connected: () => joined && !renderUnavailable,
+  request: (id: string) => send({ type: 'action', action: 'inventoryCraft', targetId: id }),
+});
 const villageUI = installVillageUI({
   player,
   state: () => state,
@@ -882,6 +890,7 @@ async function connect(automatic = false) {
     if (message.type === 'notice') {
       if (message.popup !== false) notify(message.text, message.tone);
     }
+    if (message.type === 'inventoryCraftResult') inventoryCrafting.result(message);
     if (message.type === 'chat') {
       addChat(message);
       if (message.mapPin) notify(`${message.name}：${message.text}`);
@@ -1054,21 +1063,9 @@ function modalActionsBlocked() {
   );
 }
 function updateModalHUD() {
-  const me = player(),
-    inv = inventoryCounts(me?.inventory);
-  const unavailable = modalActionsBlocked();
   updateInventory();
+  inventoryCrafting.update();
   updateMascotMenu($('#modal-body'), state, selfId);
-  if ($('#modal-fishing-kit'))
-    $('#modal-fishing-kit').disabled =
-      unavailable || !!me?.gulf?.fishingKit || inv.wood < 3 || inv.stone < 1;
-  if ($('#modal-boat-craft'))
-    $('#modal-boat-craft').disabled = unavailable || inv.wood < 12 || inv.boat >= 99;
-  if ($('#modal-craft')) {
-    $('#modal-craft').disabled = unavailable || me.tool || inv.wood < 3 || inv.stone < 2;
-    $('#modal-craft').textContent = me?.tool ? '装備中' : 'つくる';
-    $('#modal-axe-label').textContent = me?.tool ? '石斧を装備中' : '石斧をつくる';
-  }
   const list = $('#tribe-list');
   if (list) {
     const signature = JSON.stringify(
@@ -2130,7 +2127,7 @@ function inventoryEntries() {
 }
 function inventoryMarkup() {
   const model = characterModel(player() ?? profile);
-  return `<header class="inventory-header"><span class="portrait ${model.species} ${model.key}" role="img" aria-label="${model.name}"><i></i></span><div class="inventory-status"><h2>持ち物</h2><div id="inventory-energy-track" class="energy-track" role="progressbar" aria-label="体力" aria-valuemin="0" aria-valuemax="100"><span id="inventory-energy-bar" class="energy-fill"></span><em class="energy-label">${icon('leaf')}<b>体力</b><span id="inventory-energy-label"></span></em></div></div></header><div class="inventory-grid" aria-label="所持品"></div>`;
+  return `<header class="inventory-header"><span class="portrait ${model.species} ${model.key}" role="img" aria-label="${model.name}"><i></i></span><div class="inventory-status"><h2>持ち物</h2><div id="inventory-energy-track" class="energy-track" role="progressbar" aria-label="体力" aria-valuemin="0" aria-valuemax="100"><span id="inventory-energy-bar" class="energy-fill"></span><em class="energy-label">${icon('leaf')}<b>体力</b><span id="inventory-energy-label"></span></em></div></div></header><div class="inventory-workspace"><section class="inventory-storage" aria-label="所持品"><div class="inventory-section-heading"><h3>持っているもの</h3></div><div class="inventory-grid"></div></section>${inventoryCrafting.markup()}</div>`;
 }
 function itemChoices(key: string) {
   const me = player();
@@ -2239,8 +2236,13 @@ function openItemActions(card: HTMLElement) {
         return;
       }
       closeItemActions();
-      if (use.cooks || use.action === 'launchBoat') $('#modal').close();
-      action(use.action);
+      if (use.cooks) {
+        const recipe = { cook: 'meat', cookFish: 'fish', cookShellfish: 'shellfish' }[use.action];
+        document.querySelector<HTMLButtonElement>(`[data-craft="${recipe}"]`)?.click();
+      } else {
+        if (use.action === 'launchBoat') $('#modal').close();
+        action(use.action);
+      }
     };
   }
   popup.querySelector<HTMLButtonElement>('.item-actions-close')!.onclick = () => closeItemActions();
@@ -2263,21 +2265,6 @@ function bindInventory() {
       }
     };
   }
-}
-function craftingMarkup() {
-  const me = player();
-  return `<h2>クラフト</h2><div class="gulf-actions"><button id="modal-crop-food" class="button button-outline">食事</button></div><div class="recipe"><span class="resource-icon stone">${icon('axe')}</span><div><strong id="modal-axe-label">${me?.tool ? '石斧を装備中' : '石斧をつくる'}</strong><p>木材3 + 石2</p></div><button id="modal-craft" class="button button-accent" ${me?.tool ? 'disabled' : ''}>${me?.tool ? '装備中' : 'つくる'}</button></div><div class="recipe"><span class="resource-icon boat">${icon('boat')}</span><div><strong>丸木舟をつくる</strong><p>木材12 · 作ると持ち物へ</p></div><button id="modal-boat-craft" class="button button-accent">船をつくる</button></div>`;
-}
-function bindCrafting() {
-  $('#modal-craft').onclick = () => {
-    action('craft');
-    $('#modal').close();
-  };
-  $('#modal-crop-food').onclick = () => cropFoodUI.open();
-  $('#modal-boat-craft').onclick = () => {
-    action('craftBoat');
-    $('#modal').close();
-  };
 }
 /** The inventory shortcut opens the bag directly in either menu layout. */
 function openInventory() {
@@ -2440,7 +2427,6 @@ function openPauseMenu(tab?: string) {
     : [
         ['inventory', 'bag', '持ち物'],
         ['warp', 'compass', 'ワープする'],
-        ['crafting', 'axe', 'クラフト'],
         ['mascots', 'people', '連れていく仲間'],
         ['settings', 'sound', '設定'],
       ];
@@ -2498,15 +2484,21 @@ function openPauseMenu(tab?: string) {
       )
       .join(
         '',
-      )}</nav><div class="pause-exits">${exits.map(menuButton).join('')}</div></aside><div class="pause-panels">${panel(
+      )}</nav><button type="button" class="pause-more button button-outline" aria-expanded="false" aria-controls="pause-menu-actions">その他の操作</button><div id="pause-menu-actions" class="pause-exits">${exits.map(menuButton).join('')}</div></aside><div class="pause-panels">${panel(
       'inventory',
       inventoryMarkup(),
-    )}${panel('character', characterSwitchMarkup())}${panel('warp', exhibitionWarpMarkup())}${panel('crafting', craftingMarkup())}${panel('mascots', mascotMenuMarkup(state))}${panel(
+    )}${panel('character', characterSwitchMarkup())}${panel('warp', exhibitionWarpMarkup())}${panel('mascots', mascotMenuMarkup(state))}${panel(
       'settings',
       `<h2>設定</h2><div class="settings-list">${audioSettingsMarkup(renderer.audio.settings)}<div class="settings-item"><div><strong>全画面表示</strong></div><button class="button button-outline" data-setting="fullscreen">${icon('expand')} 切り替え</button></div><div class="settings-item"><div><strong>視点</strong></div><div class="settings-buttons"><button class="button button-outline" data-setting="zoom-out">− 遠く</button><button class="button button-outline" data-setting="zoom-in">+ 近く</button><button class="button button-outline" data-setting="camera">${icon('target')} 視点を戻す</button></div></div><div class="settings-item"><div><strong>コントローラー</strong><p class="gamepad-connection" role="status">${usingGamepad ? '' : '未接続'}</p></div></div></div><p id="local-save-status" class="form-note" role="status" hidden></p>${localResetMarkup()}`,
     )}</div></div>`,
   );
   const root = $('#modal-body') as HTMLElement;
+  const more = root.querySelector<HTMLButtonElement>('.pause-more')!;
+  more.onclick = () => {
+    const expanded = more.getAttribute('aria-expanded') !== 'true';
+    more.setAttribute('aria-expanded', String(expanded));
+    root.querySelector('.pause-rail')?.classList.toggle('pause-actions-open', expanded);
+  };
   const controlsSetting = document.createElement('div');
   controlsSetting.className = 'settings-item';
   controlsSetting.innerHTML = `<div><strong>操作</strong></div><div class="settings-buttons" role="group" aria-label="操作モード"><button class="button button-outline" data-controls="normal" aria-pressed="${!easyControls}">通常</button><button class="button button-outline" data-controls="easy" aria-pressed="${easyControls}">かんたん・視点自動</button></div>`;
@@ -2577,8 +2569,8 @@ function openPauseMenu(tab?: string) {
   if (fixedIdentity) bindCharacterSwitch(menuActions, false);
   bindExhibitionWarp(menuActions);
   updateModalHUD();
+  inventoryCrafting.bind();
   if (!fixedIdentity) {
-    bindCrafting();
     bindMascotMenu(root, action);
     updateSaveStatus();
     $('[data-setting="sound"]').onclick = toggleSound;

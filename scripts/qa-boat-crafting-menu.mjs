@@ -62,6 +62,8 @@ async function enter(name, options = {}) {
   await use('#title-start');
   await use('#setup-form .character-choice:has(input[value="cro-female"])');
   await use('#setup-flow-yes');
+  if (await page.locator('#loading-cave').count())
+    await page.locator('[data-cave-proceed]').click({ timeout: 180000 });
   await page
     .locator('#world[data-world-asset="ready"][data-character-asset="ready"]')
     .waitFor({ timeout: 180000 });
@@ -150,7 +152,7 @@ async function padSelect(selector) {
 async function made(p, before) {
   await until(() => p.inventory.boat === before.boat + 1, 'one carried boat');
   assert.equal(p.inventory.wood, before.wood - 12);
-  assert.equal(await page.locator('#modal').evaluate((el) => el.open), false);
+  assert.equal(await page.locator('#modal').evaluate((el) => el.open), true);
   assert.equal(await page.locator('#boat-craft').count(), 0);
   assert.equal(game.rooms.get('LOCAL_VERIFY').boats.length, 0);
   await sleep(550);
@@ -158,9 +160,7 @@ async function made(p, before) {
 try {
   const { p } = await enter('CraftMenuDesktop', { viewport: { width: 1280, height: 800 } });
   await page.keyboard.press('Escape');
-  await keyboardSelect('[data-pause-tab="crafting"]');
-  await page.keyboard.press('Enter');
-  await keyboardSelect('#modal-boat-craft');
+  await keyboardSelect('[data-craft="boat"]');
   await page.screenshot({ path: `${out}/keyboard-craft.png` });
   const before = { ...p.inventory };
   await page.keyboard.press('Enter');
@@ -172,12 +172,11 @@ try {
     [1280, 800],
     [844, 390],
   ]) {
+    await page.locator('#modal-close').click();
     await page.setViewportSize({ width, height });
     await padTap(PAD.options);
     await until(() => page.locator('#modal').evaluate((el) => el.open), 'pad menu opens');
-    await padSelect('[data-pause-tab="crafting"]');
-    await padTap(PAD.circle);
-    await padSelect('#modal-boat-craft');
+    await padSelect('[data-craft="boat"]');
     await page.screenshot({ path: `${out}/controller-craft-${width}x${height}.png` });
     const stock = { ...p.inventory };
     await padTap(PAD.circle);
@@ -186,21 +185,20 @@ try {
   }
   p.inventory.wood = 11;
   await sleep(600);
-  await page.keyboard.press('Escape');
-  await keyboardSelect('[data-pause-tab="crafting"]');
-  await page.keyboard.press('Enter');
   await until(
-    () => page.locator('#modal-boat-craft').isDisabled(),
+    async () =>
+      (await page.locator('[data-craft="boat"]').getAttribute('aria-disabled')) === 'true',
     'insufficient wood disables craft',
   );
   const boats = p.inventory.boat;
   p.inventory.wood = 12;
   p.inventory.boat = 99;
   await sleep(600);
-  assert.equal(await page.locator('#modal-boat-craft').isDisabled(), true);
+  assert.equal(await page.locator('[data-craft="boat"]').getAttribute('aria-disabled'), 'true');
   p.inventory.boat = boats;
   await until(
-    async () => !(await page.locator('#modal-boat-craft').isDisabled()),
+    async () =>
+      (await page.locator('[data-craft="boat"]').getAttribute('aria-disabled')) === 'false',
     '12 wood enables craft',
   );
   pass('menu recipe keeps material and inventory capacity conditions');
@@ -217,18 +215,22 @@ try {
     await page.setViewportSize({ width, height });
     await sleep(600);
     await page.locator('[data-touch-action="menu"]').tap();
-    await page.locator('[data-pause-tab="crafting"]').tap();
     await page.screenshot({ path: `${out}/touch-craft-${width}x${height}.png` });
     const stock = { ...touch.p.inventory };
-    await page.locator('#modal-boat-craft').tap();
+    await page.locator('[data-craft="boat"]').tap();
     await made(touch.p, stock);
+    await page.locator('#modal-close').tap();
     assert.equal(
       await page.evaluate(() => document.documentElement.scrollWidth > innerWidth),
       false,
     );
     pass(`actual emulated touch taps craft through the menu at ${width}x${height}`);
   }
-  assert.equal(actions.filter((action) => action.action === 'craftBoat').length, 5);
+  assert.equal(
+    actions.filter((action) => action.action === 'inventoryCraft' && action.targetId === 'boat')
+      .length,
+    5,
+  );
   assert.deepEqual(errors, []);
   pass('five confirmations send five craft actions; page and console errors zero');
 } catch (error) {

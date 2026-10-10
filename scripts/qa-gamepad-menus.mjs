@@ -160,7 +160,7 @@ try {
     await tap(PAD.options);
     await select('[data-controller-menu="inventory"]');
     await tap(face);
-    assert.equal(await page.locator('#modal-craft').count(), 1);
+    assert.equal(await page.locator('[data-craft="axe"]').count(), 1);
     await select('#modal-close');
     assert.equal(await page.locator('#modal-close').innerText(), '戻る');
     const attack = player().attackSequence;

@@ -136,7 +136,8 @@ try {
     /操作説明|あそびかた|ESC で|Enter で/,
   );
   await shot(a.page, '02-menu');
-  await a.page.locator('[data-pause-tab="crafting"]').click();
+  assert.equal(await a.page.locator('[data-pause-tab="crafting"]').count(), 0);
+  assert.ok(await a.page.locator('#inventory-crafting').isVisible());
   assert.doesNotMatch(
     await a.page.locator('#modal-body').innerText(),
     /HP\+15|Bで乗船|相手を向いて F|ガイド/,

@@ -143,10 +143,11 @@ try {
     'axe',
     'fishingKit',
   ]);
-  assert.ok(!/つくる|作る|共同|食事|焼き方|釣り方|相手を向いて/.test(await inventory.innerText()));
+  assert.ok(await inventory.locator('#inventory-crafting').isVisible());
+  assert.equal(await page.locator('[data-pause-tab="crafting"]').count(), 0);
   await page.screenshot({ path: `${output}/01-carried-items.png` });
   pass(
-    'Inventory lists carried food in order, materials and owned equipment; crafting has its own section',
+    'Inventory lists carried food in order, materials and owned equipment; crafting shares the bag panel',
   );
 
   await tap(PAD.right);
@@ -216,19 +217,15 @@ try {
   assert.equal(await page.locator('[data-item-action="cook"]').isVisible(), true);
   await focus('[data-item-action="cook"]');
   await tap(PAD.circle);
-  await until(() => me.cookingEndsAt > 0, 'cooking starts');
-  assert.equal(await closed(), true);
+  assert.equal(await closed(), false);
   await until(
     () => me.cookingEndsAt === 0 && me.inventory.cookedMeat === 3,
     'cooking completes',
     6000,
   );
   assert.equal(me.inventory.rawMeat, 1);
-  pass(
-    'Cooking is offered at the usable fire, consumes raw meat only after three seconds and produces cooked meat',
-  );
+  pass('Inventory cooking is instant at the usable fire and keeps the bag open');
 
-  await tap(PAD.options);
   await focus('[data-item="rawMeat"]');
   await tap(PAD.circle);
   // A live position change while the dialog is open must invalidate an offered cook action.
@@ -277,16 +274,14 @@ try {
     'near the fire without raw meat',
   );
   await tap(PAD.options);
-  await focus('[data-controller-menu="crafting"]');
-  await tap(PAD.circle);
-  assert.ok(await page.locator('[data-pause-panel="crafting"]').isVisible());
+  assert.equal(await page.locator('[data-pause-tab="crafting"]').count(), 0);
+  assert.ok(await page.locator('#inventory-crafting').isVisible());
   for (const selector of [
-    '#modal-craft',
-    '#modal-boat-craft',
-    '#modal-fishing',
-    '#modal-crop-food',
-    '#modal-crop-farms',
-    '#modal-coastal',
+    '[data-craft="axe"]',
+    '[data-craft="boat"]',
+    '[data-craft="blade"]',
+    '[data-craft="spear"]',
+    '[data-craft="root"]',
   ])
     assert.ok(await page.locator(selector).isVisible(), selector);
   await page.screenshot({ path: `${output}/02-crafting-guide.png` });

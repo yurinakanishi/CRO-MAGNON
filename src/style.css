@@ -1816,6 +1816,9 @@ dialog:has(.pause-menu) #modal-body {
   padding-top: 16px;
   border-top: 1px solid #ffffff0c;
 }
+.pause-more {
+  display: none;
+}
 .pause-exits .button {
   min-width: 0;
   justify-content: flex-start;
@@ -1943,6 +1946,17 @@ dialog:has(.pause-menu) #modal-body {
   color: #dcecc2;
 }
 @media (max-width: 860px) {
+  .pause-more {
+    display: flex;
+    align-self: flex-start;
+    margin-top: 6px;
+    min-height: 36px;
+    padding: 6px 12px;
+    font-size: 11px;
+  }
+  .pause-rail:not(.pause-actions-open) .pause-exits {
+    display: none;
+  }
   .pause-menu {
     grid-template-columns: minmax(0, 1fr);
     grid-template-rows: auto minmax(0, 1fr);
@@ -2616,6 +2630,170 @@ dialog:has(.character-switch) {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
   gap: 10px;
+}
+.inventory-workspace {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(290px, 1fr);
+  gap: 24px;
+  align-items: start;
+}
+.inventory-storage {
+  position: sticky;
+  top: 100px;
+  min-width: 0;
+}
+.inventory-storage .inventory-grid {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  align-content: start;
+  max-height: calc(min(760px, 92dvh) - 208px);
+  overflow-y: auto;
+  scrollbar-width: thin;
+  padding: 4px;
+}
+.inventory-section-heading {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+.inventory-section-heading h3 {
+  margin: 0;
+  color: #f2ead4;
+  font-size: 15px;
+}
+.inventory-section-heading > span {
+  font-size: 11px;
+  color: #a7b3a2;
+}
+#inventory-crafting {
+  min-width: 0;
+}
+#inventory-craft-result {
+  position: sticky;
+  top: 100px;
+  z-index: 1;
+  min-height: 44px;
+  margin: 0 0 10px;
+  padding: 10px 12px;
+  border-radius: 8px;
+  background: #1c281e;
+  color: #afbea3;
+  font-size: 12px;
+  line-height: 1.7;
+}
+#inventory-craft-result[data-tone='success'] {
+  color: #d2e9ad;
+  background: #293722;
+}
+.inventory-recipes {
+  display: grid;
+  gap: 10px;
+}
+.inventory-recipe {
+  display: grid;
+  grid-template-columns: 26px minmax(0, 1fr) auto;
+  gap: 10px;
+  align-items: start;
+  padding: 14px 12px;
+  background: #e0b07008;
+  border: 1px solid #e0b07028;
+  border-radius: 10px;
+}
+.inventory-recipe > .resource-icon {
+  margin: 0;
+  color: #d8c28c;
+}
+.inventory-recipe-info {
+  min-width: 0;
+}
+.inventory-recipe h4 {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 4px 10px;
+  margin: 0;
+  font-size: 13px;
+  color: #f2ead4;
+}
+.inventory-recipe h4 small {
+  font-weight: 400;
+  font-size: 11px;
+  color: #afbea3;
+}
+.inventory-recipe p {
+  margin: 6px 0 0;
+  font-size: 11px;
+  line-height: 1.7;
+}
+.inventory-recipe-note {
+  color: #a7b3a2;
+}
+.inventory-recipe-materials {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2px 12px;
+  color: #c6d4b5;
+}
+.inventory-recipe-materials b {
+  font-variant-numeric: tabular-nums;
+}
+.inventory-recipe .material-short,
+.inventory-recipe-reason {
+  color: #e3b29b;
+}
+.inventory-recipe-reason {
+  min-height: 19px;
+}
+.inventory-recipe .button {
+  min-height: 44px;
+  min-width: 64px;
+  padding: 8px 10px;
+  font-size: 12px;
+  scroll-margin-top: 170px !important;
+}
+.inventory-recipe .button[aria-disabled='true'] {
+  background: #ffffff08;
+  border-color: #a7b3a233;
+  color: #a7b3a2;
+  cursor: default;
+}
+@media (max-width: 1040px) and (min-width: 861px), (max-width: 700px) {
+  .inventory-header {
+    position: static;
+  }
+  #inventory-craft-result {
+    top: 0;
+  }
+  .inventory-recipe .button {
+    scroll-margin-top: 70px !important;
+  }
+  .inventory-workspace {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 22px;
+  }
+  .inventory-storage {
+    position: static;
+  }
+  .inventory-storage .inventory-grid {
+    height: clamp(150px, 27dvh, 230px);
+    max-height: none;
+  }
+}
+@media (max-height: 500px) and (min-width: 701px) {
+  .inventory-header {
+    position: static;
+  }
+  .inventory-storage,
+  #inventory-craft-result {
+    top: 0;
+  }
+  .inventory-recipe .button {
+    scroll-margin-top: 60px !important;
+  }
+  .inventory-storage .inventory-grid {
+    max-height: 190px;
+  }
 }
 .local-reset-setting {
   margin-top: 24px;
