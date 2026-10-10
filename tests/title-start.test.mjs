@@ -6,6 +6,7 @@ import vm from 'node:vm';
 import { createGameCore } from '../dist/application/game-core.mjs';
 import { actorObstacle } from '../dist/shared/animals.mjs';
 import { characterModel } from '../dist/shared/characters.mjs';
+import { spawnSite } from '../dist/shared/spawn-sites.mjs';
 
 class Socket extends EventEmitter {
   readyState = 1;
@@ -140,10 +141,9 @@ test('starting from a persisted title session preserves items after a server res
 
 test('the title Start button opens setup even with a saved session', async () => {
   const main = await readFile(new URL('../dist/src/main.js', import.meta.url), 'utf8');
-  const handler = main.slice(
-    main.indexOf("$('#title-start').onclick"),
-    main.indexOf("$('#title-graphics').onclick"),
-  );
+  const start = main.indexOf("$('#title-start').onclick");
+  const handler = main.slice(start, main.indexOf("$('#title-contributors')", start));
+  assert.ok(start >= 0 && handler.length > 0);
   const button = {};
   let setup = 0;
   vm.runInNewContext(handler, {
@@ -158,3 +158,77 @@ test('the title Start button opens setup even with a saved session', async () =>
   button.onclick();
   assert.equal(setup, 2);
 });
+
+test('the contributors cave button starts once at the cave without an extra setup or loading-gallery choice', async () => {
+  const main = await readFile(new URL('../dist/src/main.js', import.meta.url), 'utf8');
+  // The visit is bound by a function the title-shell handoff also uses.
+  const start = main.indexOf('function bindContributorsVisit(');
+  const handler = main.slice(start, main.indexOf("$('#title-fullscreen').onclick", start));
+  assert.ok(start >= 0 && handler.includes("$('#title-contributors').addEventListener"));
+  const visit = { disabled: false };
+  const calls = [];
+  let open;
+  const context = {
+    $: (selector) =>
+      selector === '#title-contributors'
+        ? {
+            addEventListener: (_event, callback) => {
+              open = callback;
+            },
+          }
+        : selector === '#contributors-cave'
+          ? visit
+          : { close: () => calls.push('close') },
+    openModal: () => calls.push('dialog'),
+    contributorsDialogMarkup: () => '',
+    onlineTitle: true,
+    renderUnavailable: false,
+    loadingCave: null,
+    spawnChoice: 'camp',
+    startAtCamp: false,
+    contributorsCavePending: false,
+    enterGame: (skipGallery) => calls.push(['enterGame', skipGallery]),
+  };
+  vm.runInNewContext(handler, context);
+  open();
+  context.renderUnavailable = true;
+  visit.onclick();
+  assert.equal(visit.disabled, false);
+  context.renderUnavailable = false;
+  visit.onclick();
+  visit.onclick();
+  assert.equal(context.spawnChoice, 'cave');
+  assert.equal(context.startAtCamp, true);
+  assert.equal(context.contributorsCavePending, true);
+  assert.deepEqual(calls, ['dialog', 'close', ['enterGame', true]]);
+});
+
+for (const persistentSessions of [false, true]) {
+  test(`visiting the contributors cave resumes the same person and possessions (persistent=${persistentSessions})`, () => {
+    const { core, join } = fixture({ persistentSessions, exhibition: !persistentSessions });
+    const first = join({ species: 'bear', difficulty: 'easy' });
+    Object.assign(first.p, { x: 100, z: 120, energy: 64, gathered: 9 });
+    first.p.inventory.wood = 8;
+    first.p.inventory.shells = 6;
+    const inventory = structuredClone(first.p.inventory);
+    first.socket.command({ type: 'leave', keepSession: true });
+    const arrival = join({
+      session: first.welcome.session,
+      startAtCamp: '1',
+      spawn: 'cave',
+      species: 'bear',
+      difficulty: 'easy',
+    });
+    const cave = spawnSite('cave');
+    arrival.socket.command({ type: 'action', action: 'warp', targetId: 'spawn-cave' });
+    assert.equal(arrival.welcome.id, first.welcome.id);
+    assert.equal(arrival.p.species, 'bear');
+    assert.equal(arrival.p.difficulty, 'easy');
+    assert.equal(arrival.p.energy, 64);
+    assert.equal(arrival.p.gathered, 9);
+    assert.deepEqual(arrival.p.inventory, inventory);
+    assert.ok(Math.hypot(arrival.p.x - cave.x, arrival.p.z - cave.z) <= 8);
+    assert.ok(core.rooms.get('TITLE').collision.free(arrival.p, arrival.p.radius));
+    arrival.socket.close();
+  });
+}

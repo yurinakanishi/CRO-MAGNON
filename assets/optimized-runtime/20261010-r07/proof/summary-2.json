@@ -1,0 +1,3544 @@
+{
+  "schema": "cro-magnon/lowpoly-proof@1",
+  "tool": "proof-lowpoly-high-r04",
+  "status": "output-only proof; nothing adopted, no manifest or public file written",
+  "meshoptimizer": "1.1.1",
+  "node": "v24.15.0",
+  "implementation": {
+    "digest": "c7ee69f6a2c0fd96f159e5356ce75b8cc59389340bc56925ac83691db00b7806",
+    "files": [
+      {
+        "file": "output/optimization-audit-20261009/proof-lowpoly-high-r04.mjs",
+        "sha256": "8a8038fc040197ed8d45e146ff937398fb1b7d8b6303cb3b5a845e9798856213",
+        "bytes": 15931
+      },
+      {
+        "file": "output/optimization-audit-20261009/lowpoly-high-tools-r04/checks.mjs",
+        "sha256": "02e749337f72856523cc2419e031866e9a6724413bb6710b8cc0f289819f92d5",
+        "bytes": 13655
+      },
+      {
+        "file": "output/optimization-audit-20261009/lowpoly-high-tools-r04/document.mjs",
+        "sha256": "9e99406ddd2be3a0e2acdd4acc9b31e1aa8f35f7138899d467e0cfacca028784",
+        "bytes": 14413
+      },
+      {
+        "file": "output/optimization-audit-20261009/lowpoly-high-tools-r04/packing.mjs",
+        "sha256": "5e88fc2fe15bfb8bbe024230d11aff38c2ab5e7beb396fdfbefa096747ac27db",
+        "bytes": 5819
+      },
+      {
+        "file": "output/optimization-audit-20261009/lowpoly-high-tools-r04/policy.mjs",
+        "sha256": "b7b3d94ceae17a55043e3decd61bb272af43df70c5214da569ffdd3e2ba30274",
+        "bytes": 19342
+      },
+      {
+        "file": "output/optimization-audit-20261009/lowpoly-high-tools-r04/pose.mjs",
+        "sha256": "eaeaad5d554f69f9e3b79230a2fea0f554fce535cc6659849a65bfeaf64c96db",
+        "bytes": 19629
+      },
+      {
+        "file": "output/optimization-audit-20261009/lowpoly-high-tools-r04/proof-core.mjs",
+        "sha256": "7847948b6e0689b1833483398a33a7a56ad241e18d3d1ca0632acde9a31fc119",
+        "bytes": 26222
+      },
+      {
+        "file": "output/optimization-audit-20261009/lowpoly-high-tools-r04/proof.test.mjs",
+        "sha256": "a16db2ddc499fadf97f7adb1416958dba05e06eeadc1eb2f05da23defddea9db",
+        "bytes": 64278
+      },
+      {
+        "file": "output/optimization-audit-20261009/lowpoly-high-tools-r04/structure.mjs",
+        "sha256": "59083cacbd36c48ab9e325bbeb769a8600659301ef5c7e52e851a18862c4a755",
+        "bytes": 7354
+      },
+      {
+        "file": "output/optimization-audit-20261009/lowpoly-high-tools-r04/surface.mjs",
+        "sha256": "983eb374865e54e24e771a73b32f9ba0c39aaa4406447cb51ba7f9745ad7aeb5",
+        "bytes": 12315
+      },
+      {
+        "file": "output/optimization-audit-20261009/lowpoly-high-tools-r04/topology.mjs",
+        "sha256": "f2418a10f7bb9ee2b563190e66384fa1483db4e7dbe6c01379c9eef4624c7f7c",
+        "bytes": 9537
+      },
+      {
+        "file": "output/optimization-audit-20261009/lowpoly-high-tools-r04/transforms.mjs",
+        "sha256": "fa3b840fe323ced5a4974ebb14b36e36410a82bd9fa2966494ce3a46bc5a4fc4",
+        "bytes": 4415
+      }
+    ]
+  },
+  "policy": {
+    "variants": {
+      "guarded-body": {
+        "method": "meshoptimizer 1.1.1 MeshoptSimplifier.simplifyWithAttributes (index-only), then compactMesh",
+        "flags": [
+          "LockBorder",
+          "ErrorAbsolute"
+        ],
+        "maxAttributes": 32,
+        "minimumReduction": 0.05,
+        "maxPasses": 8,
+        "kind": "candidate",
+        "description": "head primitives retained; every other primitive reduced at a 4 mm bound with head-weighted (face, neck junction), neck, hand and foot vertices locked by skin weight, cross-primitive seams and borders locked",
+        "head": "retain",
+        "targetRatio": 0.35,
+        "errorMetres": 0.004,
+        "tolerances": {
+          "normal": 0.05,
+          "uv": 0.0009765625,
+          "skinWeight": 0.02
+        },
+        "familyLocks": {
+          "head": 0.3,
+          "neck": 0.1,
+          "hands": 0.2,
+          "feet": 0.2
+        }
+      }
+    },
+    "overrides": {},
+    "gates": {
+      "p99Multiple": 2,
+      "maxMultiple": 6,
+      "protectedMaxMetres": 0,
+      "componentAreaRatio": 0.9
+    },
+    "pose": {
+      "clips": "all delivered clips",
+      "fractions": [
+        0.33,
+        0.66
+      ],
+      "surfaceStride": 1,
+      "scope": "sampled poses only, not every frame"
+    }
+  },
+  "notVerified": [
+    "native Chrome/WebKit rendering, shading and texture appearance",
+    "near-view face, neck, hand and silhouette acceptance by a reviewer",
+    "GPU memory and transfer/startup time in the game",
+    "collision, footprint and floor fitting for geometry-coupled models"
+  ],
+  "keys": [
+    {
+      "key": "bear-mage",
+      "coupling": null,
+      "served": {
+        "url": "/models/bear-mage/model.glb",
+        "sha256": "3b58124a53297cf5974b340c941fb22ac9e7be1ed9eae6d0cd1362943f70aadf",
+        "bytes": 7711648,
+        "triangles": 66795
+      },
+      "scenes": 1,
+      "meshesNotVerifiable": [],
+      "baseline": {
+        "rawBytes": 7711648,
+        "gzip6Bytes": 4320902,
+        "triangles": 66795,
+        "vertices": 86861
+      },
+      "variants": [
+        {
+          "variant": "guarded-body",
+          "status": "proof-pass-not-visually-reviewed",
+          "rawBytes": 7181716,
+          "gzip6Bytes": 4024630,
+          "triangles": 57289,
+          "vertices": 78863,
+          "savedGzip6Bytes": 296272,
+          "problems": 0,
+          "proof": "passed",
+          "storage": {
+            "chosen": "source/plain",
+            "verified": "source/plain",
+            "reason": "source/plain: 7181716 raw bytes <= the source's 7711648, gzip -6 4024630 < the source's 4320902"
+          },
+          "passes": [
+            {
+              "mesh": 0,
+              "primitive": 0,
+              "passes": 3,
+              "action": "reduced"
+            }
+          ],
+          "sceneCoverage": [
+            {
+              "scene": 0,
+              "comparedPrimitiveInstances": 1,
+              "poses": 19
+            }
+          ],
+          "file": {
+            "file": "bear-mage/guarded-body.glb",
+            "sha256": "6739192e227d194c222fb755e25acead967345ba06e3303a85cef063e7878979",
+            "bytes": 7181716
+          }
+        }
+      ],
+      "evidence": {
+        "file": "bear-mage/evidence.json",
+        "sha256": "09c7dbbf93eebf544f2127157b5a75409d872744f3961439a946e3e5d616d2bf",
+        "bytes": 95935
+      }
+    },
+    {
+      "key": "berry-cluster",
+      "coupling": null,
+      "served": {
+        "url": "/models/berry-cluster/model-c2.opt-88ed3b12e7713e6f.glb",
+        "sha256": "88ed3b12e7713e6f367d86aec394644cc882ef5cca7fa1e1b2a0a869f1c13b00",
+        "bytes": 256136,
+        "triangles": 1172
+      },
+      "scenes": 1,
+      "meshesNotVerifiable": [],
+      "baseline": {
+        "rawBytes": 256136,
+        "gzip6Bytes": 248509,
+        "triangles": 1172,
+        "vertices": 1699
+      },
+      "variants": [
+        {
+          "variant": "guarded-body",
+          "status": "proof-pass-not-visually-reviewed",
+          "rawBytes": 251136,
+          "gzip6Bytes": 244039,
+          "triangles": 1036,
+          "vertices": 1581,
+          "savedGzip6Bytes": 4470,
+          "problems": 0,
+          "proof": "passed",
+          "storage": {
+            "chosen": "source/meshopt",
+            "verified": "source/meshopt",
+            "reason": "source/meshopt: 251136 raw bytes <= the source's 256136, gzip -6 244039 < the source's 248509"
+          },
+          "passes": [
+            {
+              "mesh": 0,
+              "primitive": 0,
+              "passes": 2,
+              "action": "reduced"
+            }
+          ],
+          "sceneCoverage": [
+            {
+              "scene": 0,
+              "comparedPrimitiveInstances": 1,
+              "poses": 1
+            }
+          ],
+          "file": {
+            "file": "berry-cluster/guarded-body.glb",
+            "sha256": "0b2979057196f2ef91aa96a4c30f4c016c7a1847136af5d0ee06cc60bd2a2f14",
+            "bytes": 251136
+          }
+        }
+      ],
+      "evidence": {
+        "file": "berry-cluster/evidence.json",
+        "sha256": "4d5ac5b8ca85fe17f0ee5f95d042198cef291d6ee1e2be8e0e5da55325f84102",
+        "bytes": 19964
+      }
+    },
+    {
+      "key": "cat-kunoichi",
+      "coupling": null,
+      "served": {
+        "url": "/models/cat-kunoichi/startup.opt-ca2213d32f027f41.glb",
+        "sha256": "ca2213d32f027f41011d32ee2d35401f9ceeea0e2ad58cb8558e2cf1b599006a",
+        "bytes": 6616668,
+        "triangles": 51576
+      },
+      "scenes": 1,
+      "meshesNotVerifiable": [],
+      "baseline": {
+        "rawBytes": 6616668,
+        "gzip6Bytes": 5970472,
+        "triangles": 51576,
+        "vertices": 91785
+      },
+      "variants": [
+        {
+          "variant": "guarded-body",
+          "status": "retained",
+          "reason": "no primitive reached a useful reduction under this variant; nothing is written"
+        }
+      ],
+      "evidence": {
+        "file": "cat-kunoichi/evidence.json",
+        "sha256": "2bf9ee7adbbf3b91e753c4528e20db7aee3d2011932235e858c5b3f255a1637a",
+        "bytes": 10972
+      }
+    },
+    {
+      "key": "cockle-shell",
+      "coupling": null,
+      "served": {
+        "url": "/models/cockle-shell/model-c2.opt-16d1634c87d7806d.glb",
+        "sha256": "16d1634c87d7806d571da425e7edcbb4fe45f87e4d41720b6c568fe700aa9efa",
+        "bytes": 228772,
+        "triangles": 1474
+      },
+      "scenes": 1,
+      "meshesNotVerifiable": [],
+      "baseline": {
+        "rawBytes": 228772,
+        "gzip6Bytes": 222271,
+        "triangles": 1474,
+        "vertices": 1521
+      },
+      "variants": [
+        {
+          "variant": "guarded-body",
+          "status": "proof-pass-not-visually-reviewed",
+          "rawBytes": 219300,
+          "gzip6Bytes": 213385,
+          "triangles": 1140,
+          "vertices": 1301,
+          "savedGzip6Bytes": 8886,
+          "problems": 0,
+          "proof": "passed",
+          "storage": {
+            "chosen": "source/meshopt",
+            "verified": "source/meshopt",
+            "reason": "source/meshopt: 219300 raw bytes <= the source's 228772, gzip -6 213385 < the source's 222271"
+          },
+          "passes": [
+            {
+              "mesh": 0,
+              "primitive": 0,
+              "passes": 2,
+              "action": "reduced"
+            }
+          ],
+          "sceneCoverage": [
+            {
+              "scene": 0,
+              "comparedPrimitiveInstances": 1,
+              "poses": 1
+            }
+          ],
+          "file": {
+            "file": "cockle-shell/guarded-body.glb",
+            "sha256": "b6f88569775436506d40d845c3893cd5a044b3c7dc81473dee74733f2ac068f0",
+            "bytes": 219300
+          }
+        }
+      ],
+      "evidence": {
+        "file": "cockle-shell/evidence.json",
+        "sha256": "78630b36dad83629cda9b6f2298709541e96b9756e07a738864feb4e956c6c36",
+        "bytes": 19965
+      }
+    },
+    {
+      "key": "cro-magnon-hunter",
+      "coupling": null,
+      "served": {
+        "url": "/models/cro-magnon-hunter/startup.opt-d9197fbdf6e1ae99.glb",
+        "sha256": "d9197fbdf6e1ae9968c5b88422761a5420b14db1f085c611906abb8f9a6e9b9f",
+        "bytes": 6359688,
+        "triangles": 50051
+      },
+      "scenes": 1,
+      "meshesNotVerifiable": [],
+      "baseline": {
+        "rawBytes": 6359688,
+        "gzip6Bytes": 5775844,
+        "triangles": 50051,
+        "vertices": 92352
+      },
+      "variants": [
+        {
+          "variant": "guarded-body",
+          "status": "retained",
+          "reason": "no primitive reached a useful reduction under this variant; nothing is written"
+        }
+      ],
+      "evidence": {
+        "file": "cro-magnon-hunter/evidence.json",
+        "sha256": "5fce307b692a2869ef8a1a56958a41541b5c3a0fcf8e88f8a33ff2619d01c5c8",
+        "bytes": 16751
+      }
+    },
+    {
+      "key": "crow-bone-pauldrons",
+      "coupling": null,
+      "served": {
+        "url": "/models/crow-bone-pauldrons/model-c2.opt-57cdbc4c1ba00594.glb",
+        "sha256": "57cdbc4c1ba0059406d9d002b5c013ced145153077457cfb08096e1b09c7b32c",
+        "bytes": 1007732,
+        "triangles": 2677
+      },
+      "scenes": 1,
+      "meshesNotVerifiable": [],
+      "baseline": {
+        "rawBytes": 1007732,
+        "gzip6Bytes": 988936,
+        "triangles": 2677,
+        "vertices": 4928
+      },
+      "variants": [
+        {
+          "variant": "guarded-body",
+          "status": "retained",
+          "reason": "no primitive reached a useful reduction under this variant; nothing is written"
+        }
+      ],
+      "evidence": {
+        "file": "crow-bone-pauldrons/evidence.json",
+        "sha256": "1662e99a500334b43f6b26686cca61f594d4a85079f82a81ff48ecba90b26c21",
+        "bytes": 7386
+      }
+    },
+    {
+      "key": "crow-brute-axe",
+      "coupling": null,
+      "served": {
+        "url": "/models/crow-brute-axe/model-c2.opt-c0bb141f6955dc0e.glb",
+        "sha256": "c0bb141f6955dc0e9f99016ec7f12d01b3975bc65f8dddf8514fb7b34e091d10",
+        "bytes": 757952,
+        "triangles": 3457
+      },
+      "scenes": 1,
+      "meshesNotVerifiable": [],
+      "baseline": {
+        "rawBytes": 757952,
+        "gzip6Bytes": 742283,
+        "triangles": 3457,
+        "vertices": 4141
+      },
+      "variants": [
+        {
+          "variant": "guarded-body",
+          "status": "proof-pass-not-visually-reviewed",
+          "rawBytes": 740416,
+          "gzip6Bytes": 726150,
+          "triangles": 2941,
+          "vertices": 3727,
+          "savedGzip6Bytes": 16133,
+          "problems": 0,
+          "proof": "passed",
+          "storage": {
+            "chosen": "source/meshopt",
+            "verified": "source/meshopt",
+            "reason": "source/meshopt: 740416 raw bytes <= the source's 757952, gzip -6 726150 < the source's 742283"
+          },
+          "passes": [
+            {
+              "mesh": 0,
+              "primitive": 0,
+              "passes": 2,
+              "action": "reduced"
+            }
+          ],
+          "sceneCoverage": [
+            {
+              "scene": 0,
+              "comparedPrimitiveInstances": 1,
+              "poses": 1
+            }
+          ],
+          "file": {
+            "file": "crow-brute-axe/guarded-body.glb",
+            "sha256": "801a430cf6998928a833a70e850cf9d49af8514cbbb78ce0cd7f442fb8a8fe67",
+            "bytes": 740416
+          }
+        }
+      ],
+      "evidence": {
+        "file": "crow-brute-axe/evidence.json",
+        "sha256": "f8fca364af379232f84b1ec2987524864ede47eb49a1ec481002af0fad2f869d",
+        "bytes": 19989
+      }
+    },
+    {
+      "key": "crow-hide-shield",
+      "coupling": null,
+      "served": {
+        "url": "/models/crow-hide-shield/model-c2.opt-537f3b54e5b3ada6.glb",
+        "sha256": "537f3b54e5b3ada65f796a4d5951942c978da69832c03a6de1345bb35a2a5799",
+        "bytes": 815204,
+        "triangles": 2372
+      },
+      "scenes": 1,
+      "meshesNotVerifiable": [],
+      "baseline": {
+        "rawBytes": 815204,
+        "gzip6Bytes": 800287,
+        "triangles": 2372,
+        "vertices": 3774
+      },
+      "variants": [
+        {
+          "variant": "guarded-body",
+          "status": "retained",
+          "reason": "no primitive reached a useful reduction under this variant; nothing is written"
+        }
+      ],
+      "evidence": {
+        "file": "crow-hide-shield/evidence.json",
+        "sha256": "e6c5c6c82462d9f68153823a27b121313c4a880b714225ff2a8e64de1f3aee32",
+        "bytes": 8162
+      }
+    },
+    {
+      "key": "crow-ivory-vestment",
+      "coupling": null,
+      "served": {
+        "url": "/models/crow-ivory-vestment/model-c2.opt-002ce6bd45b0d351.glb",
+        "sha256": "002ce6bd45b0d351f644064b3375a8e2c403a5518a653c5acab0559e70c18018",
+        "bytes": 836900,
+        "triangles": 2584
+      },
+      "scenes": 1,
+      "meshesNotVerifiable": [],
+      "baseline": {
+        "rawBytes": 836900,
+        "gzip6Bytes": 819866,
+        "triangles": 2584,
+        "vertices": 4298
+      },
+      "variants": [
+        {
+          "variant": "guarded-body",
+          "status": "retained",
+          "reason": "no primitive reached a useful reduction under this variant; nothing is written"
+        }
+      ],
+      "evidence": {
+        "file": "crow-ivory-vestment/evidence.json",
+        "sha256": "d0a9111b6ff545b359f77591406f99be964799f137da02f528452af184d90064",
+        "bytes": 8177
+      }
+    },
+    {
+      "key": "crow-pontiff-crown",
+      "coupling": null,
+      "served": {
+        "url": "/models/crow-pontiff-crown/model-c2.opt-2d08c7f7cbcd36ae.glb",
+        "sha256": "2d08c7f7cbcd36ae4a798ab20643c3ed78a5d073cf5c83b02823acae56b4d8c5",
+        "bytes": 813380,
+        "triangles": 2929
+      },
+      "scenes": 1,
+      "meshesNotVerifiable": [],
+      "baseline": {
+        "rawBytes": 813380,
+        "gzip6Bytes": 797539,
+        "triangles": 2929,
+        "vertices": 4242
+      },
+      "variants": [
+        {
+          "variant": "guarded-body",
+          "status": "proof-pass-not-visually-reviewed",
+          "rawBytes": 793608,
+          "gzip6Bytes": 779422,
+          "triangles": 2415,
+          "vertices": 3771,
+          "savedGzip6Bytes": 18117,
+          "problems": 0,
+          "proof": "passed",
+          "storage": {
+            "chosen": "source/meshopt",
+            "verified": "source/meshopt",
+            "reason": "source/meshopt: 793608 raw bytes <= the source's 813380, gzip -6 779422 < the source's 797539"
+          },
+          "passes": [
+            {
+              "mesh": 0,
+              "primitive": 0,
+              "passes": 2,
+              "action": "reduced"
+            }
+          ],
+          "sceneCoverage": [
+            {
+              "scene": 0,
+              "comparedPrimitiveInstances": 1,
+              "poses": 1
+            }
+          ],
+          "file": {
+            "file": "crow-pontiff-crown/guarded-body.glb",
+            "sha256": "6cd6301778b4126a3d798c0af38735c605a0bd3ae3af7b1f79e7fc3735f09fbd",
+            "bytes": 793608
+          }
+        }
+      ],
+      "evidence": {
+        "file": "crow-pontiff-crown/evidence.json",
+        "sha256": "48ca933cc51254dbdef7af74337c51f0a976f25d4d67afe44c4a7cb3f9b9aa58",
+        "bytes": 20016
+      }
+    },
+    {
+      "key": "crow-pontiff-crozier",
+      "coupling": null,
+      "served": {
+        "url": "/models/crow-pontiff-crozier/model-c2.opt-93eab7263c91dde9.glb",
+        "sha256": "93eab7263c91dde944ae386bf9b1ceb1e0da64a160e978bc1bae31f053ece7a6",
+        "bytes": 624764,
+        "triangles": 3494
+      },
+      "scenes": 1,
+      "meshesNotVerifiable": [],
+      "baseline": {
+        "rawBytes": 624764,
+        "gzip6Bytes": 609958,
+        "triangles": 3494,
+        "vertices": 3702
+      },
+      "variants": [
+        {
+          "variant": "guarded-body",
+          "status": "proof-pass-not-visually-reviewed",
+          "rawBytes": 603172,
+          "gzip6Bytes": 589954,
+          "triangles": 2776,
+          "vertices": 3198,
+          "savedGzip6Bytes": 20004,
+          "problems": 0,
+          "proof": "passed",
+          "storage": {
+            "chosen": "source/meshopt",
+            "verified": "source/meshopt",
+            "reason": "source/meshopt: 603172 raw bytes <= the source's 624764, gzip -6 589954 < the source's 609958"
+          },
+          "passes": [
+            {
+              "mesh": 0,
+              "primitive": 0,
+              "passes": 1,
+              "action": "reduced"
+            }
+          ],
+          "sceneCoverage": [
+            {
+              "scene": 0,
+              "comparedPrimitiveInstances": 1,
+              "poses": 1
+            }
+          ],
+          "file": {
+            "file": "crow-pontiff-crozier/guarded-body.glb",
+            "sha256": "96a0a3ad418a5df8e9e70dccca2e2e44ed636419db78eb566d787fef43074610",
+            "bytes": 603172
+          }
+        }
+      ],
+      "evidence": {
+        "file": "crow-pontiff-crozier/evidence.json",
+        "sha256": "fefa70b5a5da93adc7802f8ca1d0b275e3cd3e6864506fb1eeb96069385ae934",
+        "bytes": 19233
+      }
+    },
+    {
+      "key": "crow-prelate-glaive",
+      "coupling": null,
+      "served": {
+        "url": "/models/crow-prelate-glaive/model-c2.opt-142517a572596582.glb",
+        "sha256": "142517a57259658220c59acc30a417d05bd79460809977805330a28bfaa99126",
+        "bytes": 554084,
+        "triangles": 2949
+      },
+      "scenes": 1,
+      "meshesNotVerifiable": [],
+      "baseline": {
+        "rawBytes": 554084,
+        "gzip6Bytes": 541519,
+        "triangles": 2949,
+        "vertices": 3282
+      },
+      "variants": [
+        {
+          "variant": "guarded-body",
+          "status": "proof-pass-not-visually-reviewed",
+          "rawBytes": 535120,
+          "gzip6Bytes": 523912,
+          "triangles": 2359,
+          "vertices": 2830,
+          "savedGzip6Bytes": 17607,
+          "problems": 0,
+          "proof": "passed",
+          "storage": {
+            "chosen": "source/meshopt",
+            "verified": "source/meshopt",
+            "reason": "source/meshopt: 535120 raw bytes <= the source's 554084, gzip -6 523912 < the source's 541519"
+          },
+          "passes": [
+            {
+              "mesh": 0,
+              "primitive": 0,
+              "passes": 2,
+              "action": "reduced"
+            }
+          ],
+          "sceneCoverage": [
+            {
+              "scene": 0,
+              "comparedPrimitiveInstances": 1,
+              "poses": 1
+            }
+          ],
+          "file": {
+            "file": "crow-prelate-glaive/guarded-body.glb",
+            "sha256": "13c4b69fdad3e6c4ba9197e9a5fd450aafa0c014dc95e3d1d8d8c63bd14de407",
+            "bytes": 535120
+          }
+        }
+      ],
+      "evidence": {
+        "file": "crow-prelate-glaive/evidence.json",
+        "sha256": "243bc69d35c4a1d4a81395d6ada6748fd8bad7871a9741a230a1d2ef53bf9e65",
+        "bytes": 20020
+      }
+    },
+    {
+      "key": "crow-red-mantle",
+      "coupling": null,
+      "served": {
+        "url": "/models/crow-red-mantle/model-c2.opt-f2b1411d9a2d9f75.glb",
+        "sha256": "f2b1411d9a2d9f750ef197012ec4771e4d27245c268707f6bf2d3c39fe3937e1",
+        "bytes": 825504,
+        "triangles": 2596
+      },
+      "scenes": 1,
+      "meshesNotVerifiable": [],
+      "baseline": {
+        "rawBytes": 825504,
+        "gzip6Bytes": 809221,
+        "triangles": 2596,
+        "vertices": 3962
+      },
+      "variants": [
+        {
+          "variant": "guarded-body",
+          "status": "retained",
+          "reason": "no primitive reached a useful reduction under this variant; nothing is written"
+        }
+      ],
+      "evidence": {
+        "file": "crow-red-mantle/evidence.json",
+        "sha256": "d25dd11067cfd897d4b29da7479cb8a2954a2cd161255fae45b4eb7798b3d67a",
+        "bytes": 8168
+      }
+    },
+    {
+      "key": "crow-shaman",
+      "coupling": null,
+      "served": {
+        "url": "/models/crow-shaman/model-c2.opt-fe59e1be880f3297.glb",
+        "sha256": "fe59e1be880f329707ef6028a83ab6bbd5ce516135b8b3b0a5e9f8e9273310c5",
+        "bytes": 3435160,
+        "triangles": 33548
+      },
+      "scenes": 1,
+      "meshesNotVerifiable": [],
+      "baseline": {
+        "rawBytes": 3435160,
+        "gzip6Bytes": 2968089,
+        "triangles": 33548,
+        "vertices": 51087
+      },
+      "variants": [
+        {
+          "variant": "guarded-body",
+          "status": "retained",
+          "reason": "no primitive reached a useful reduction under this variant; nothing is written"
+        }
+      ],
+      "evidence": {
+        "file": "crow-shaman/evidence.json",
+        "sha256": "75ef59752c2cadb0d308476631b209d060a29960b524e27cc585a432cbbb7c6a",
+        "bytes": 9812
+      }
+    },
+    {
+      "key": "crow-soldier-spear",
+      "coupling": null,
+      "served": {
+        "url": "/models/crow-soldier-spear/model-c2.opt-79e6dcb333d1b232.glb",
+        "sha256": "79e6dcb333d1b2326f32cae47d84f9a5845969d48416c51fbdc9a4c418b4dcb8",
+        "bytes": 515608,
+        "triangles": 2993
+      },
+      "scenes": 1,
+      "meshesNotVerifiable": [],
+      "baseline": {
+        "rawBytes": 515608,
+        "gzip6Bytes": 503225,
+        "triangles": 2993,
+        "vertices": 3147
+      },
+      "variants": [
+        {
+          "variant": "guarded-body",
+          "status": "proof-pass-not-visually-reviewed",
+          "rawBytes": 496104,
+          "gzip6Bytes": 485210,
+          "triangles": 2363,
+          "vertices": 2684,
+          "savedGzip6Bytes": 18015,
+          "problems": 0,
+          "proof": "passed",
+          "storage": {
+            "chosen": "source/meshopt",
+            "verified": "source/meshopt",
+            "reason": "source/meshopt: 496104 raw bytes <= the source's 515608, gzip -6 485210 < the source's 503225"
+          },
+          "passes": [
+            {
+              "mesh": 0,
+              "primitive": 0,
+              "passes": 2,
+              "action": "reduced"
+            }
+          ],
+          "sceneCoverage": [
+            {
+              "scene": 0,
+              "comparedPrimitiveInstances": 1,
+              "poses": 1
+            }
+          ],
+          "file": {
+            "file": "crow-soldier-spear/guarded-body.glb",
+            "sha256": "a2eaa91ce99c3457f72849a08f85bf8e28e753cd4ee9169dbab00019095b2b7a",
+            "bytes": 496104
+          }
+        }
+      ],
+      "evidence": {
+        "file": "crow-soldier-spear/evidence.json",
+        "sha256": "9e355386ac22d988681baebd729912ad1194f8ade5b89eb73ce1aa8dbc187fea",
+        "bytes": 19993
+      }
+    },
+    {
+      "key": "desert-cactus",
+      "coupling": "regional shapes are measured from the delivered mesh (shared/region-features.mts)",
+      "served": {
+        "url": "/models/desert-cactus/model-c2.opt-5139edee824a728f.glb",
+        "sha256": "5139edee824a728faf5391cbd793ebdbcfd3e50233fa6c088858b31fe6c8a504",
+        "bytes": 846200,
+        "triangles": 8991
+      },
+      "scenes": 1,
+      "meshesNotVerifiable": [],
+      "baseline": {
+        "rawBytes": 846200,
+        "gzip6Bytes": 810114,
+        "triangles": 8991,
+        "vertices": 9806
+      },
+      "variants": [
+        {
+          "variant": "guarded-body",
+          "status": "proof-failed",
+          "rawBytes": 821376,
+          "gzip6Bytes": 787284,
+          "triangles": 8201,
+          "vertices": 9219,
+          "savedGzip6Bytes": 22830,
+          "problems": 1,
+          "proof": "failed",
+          "storage": {
+            "chosen": "source/meshopt",
+            "verified": "source/meshopt",
+            "reason": "source/meshopt: 821376 raw bytes <= the source's 846200, gzip -6 787284 < the source's 810114"
+          },
+          "passes": [
+            {
+              "mesh": 0,
+              "primitive": 0,
+              "passes": 1,
+              "action": "reduced"
+            }
+          ],
+          "sceneCoverage": [
+            {
+              "scene": 0,
+              "comparedPrimitiveInstances": 1,
+              "poses": 1
+            }
+          ],
+          "file": {
+            "file": "desert-cactus/guarded-body.glb",
+            "sha256": "5c1d7fb0a92919bfc7365a752db363ee47afcc515904c81ae709c856a88b3e08",
+            "bytes": 821376
+          }
+        }
+      ],
+      "evidence": {
+        "file": "desert-cactus/evidence.json",
+        "sha256": "d10a06dcb8db583687016996d3b0bb456110477ff3ced742e3810b2e6975cf54",
+        "bytes": 19980
+      }
+    },
+    {
+      "key": "desert-fennec-mage",
+      "coupling": null,
+      "served": {
+        "url": "/models/desert-fennec-mage/startup.opt-ae024100e9484a99.glb",
+        "sha256": "ae024100e9484a998346d4c7e3e0246319648982424fd2a0a1acc1cd4a5ff213",
+        "bytes": 4533712,
+        "triangles": 53151
+      },
+      "scenes": 1,
+      "meshesNotVerifiable": [],
+      "baseline": {
+        "rawBytes": 4533712,
+        "gzip6Bytes": 3836253,
+        "triangles": 53151,
+        "vertices": 73164
+      },
+      "variants": [
+        {
+          "variant": "guarded-body",
+          "status": "proof-pass-not-visually-reviewed",
+          "rawBytes": 4126308,
+          "gzip6Bytes": 3466394,
+          "triangles": 43901,
+          "vertices": 65548,
+          "savedGzip6Bytes": 369859,
+          "problems": 0,
+          "proof": "passed",
+          "storage": {
+            "chosen": "source/meshopt",
+            "verified": "source/meshopt",
+            "reason": "source/meshopt: 4126308 raw bytes <= the source's 4533712, gzip -6 3466394 < the source's 3836253"
+          },
+          "passes": [
+            {
+              "mesh": 0,
+              "primitive": 0,
+              "passes": 3,
+              "action": "reduced"
+            }
+          ],
+          "sceneCoverage": [
+            {
+              "scene": 0,
+              "comparedPrimitiveInstances": 1,
+              "poses": 21
+            }
+          ],
+          "file": {
+            "file": "desert-fennec-mage/guarded-body.glb",
+            "sha256": "3a6ce65bf5d2c4ab9da606555fa3183fe5491139717d46dee651be5f4ff41616",
+            "bytes": 4126308
+          }
+        }
+      ],
+      "evidence": {
+        "file": "desert-fennec-mage/evidence.json",
+        "sha256": "4d00b05234491cf50d0cd9538ece0c0cd18c5fa51fbb524fdf8e465f2017218e",
+        "bytes": 104415
+      }
+    },
+    {
+      "key": "desert-ground",
+      "coupling": null,
+      "served": {
+        "url": "/models/desert-ground/model.opt-93baac2941ceb23a.glb",
+        "sha256": "93baac2941ceb23a9fa308adfc027980503037c1f7d489b686f13ad3b4ee2b36",
+        "bytes": 920244,
+        "triangles": 9600
+      },
+      "scenes": 1,
+      "meshesNotVerifiable": [],
+      "baseline": {
+        "rawBytes": 920244,
+        "gzip6Bytes": 844558,
+        "triangles": 9600,
+        "vertices": 16331
+      },
+      "variants": [
+        {
+          "variant": "guarded-body",
+          "status": "proof-pass-not-visually-reviewed",
+          "rawBytes": 903284,
+          "gzip6Bytes": 838857,
+          "triangles": 8574,
+          "vertices": 15742,
+          "savedGzip6Bytes": 5701,
+          "problems": 0,
+          "proof": "passed",
+          "storage": {
+            "chosen": "source/meshopt",
+            "verified": "source/meshopt",
+            "reason": "source/meshopt: 903284 raw bytes <= the source's 920244, gzip -6 838857 < the source's 844558"
+          },
+          "passes": [
+            {
+              "mesh": 0,
+              "primitive": 0,
+              "passes": 1,
+              "action": "reduced"
+            }
+          ],
+          "sceneCoverage": [
+            {
+              "scene": 0,
+              "comparedPrimitiveInstances": 1,
+              "poses": 1
+            }
+          ],
+          "file": {
+            "file": "desert-ground/guarded-body.glb",
+            "sha256": "d58d0dd84c2ef38752769699b5e77854d0b38aa48655e03fc56311735da6b375",
+            "bytes": 903284
+          }
+        }
+      ],
+      "evidence": {
+        "file": "desert-ground/evidence.json",
+        "sha256": "821c16ed785a0390e18c96974a3c9e56b295411951988956a80a39fae7664747",
+        "bytes": 19118
+      }
+    },
+    {
+      "key": "dugout-canoe",
+      "coupling": null,
+      "served": {
+        "url": "/models/dugout-canoe/model-c2.opt-dd78603029e5bfbc.glb",
+        "sha256": "dd78603029e5bfbc737dcebf0545c0636fe753f49f730ead15e62864eb68e5b7",
+        "bytes": 638784,
+        "triangles": 13998
+      },
+      "scenes": 1,
+      "meshesNotVerifiable": [],
+      "baseline": {
+        "rawBytes": 638784,
+        "gzip6Bytes": 612945,
+        "triangles": 13998,
+        "vertices": 9036
+      },
+      "variants": [
+        {
+          "variant": "guarded-body",
+          "status": "proof-pass-not-visually-reviewed",
+          "rawBytes": 480856,
+          "gzip6Bytes": 462883,
+          "triangles": 7466,
+          "vertices": 5381,
+          "savedGzip6Bytes": 150062,
+          "problems": 0,
+          "proof": "passed",
+          "storage": {
+            "chosen": "source/meshopt",
+            "verified": "source/meshopt",
+            "reason": "source/meshopt: 480856 raw bytes <= the source's 638784, gzip -6 462883 < the source's 612945"
+          },
+          "passes": [
+            {
+              "mesh": 0,
+              "primitive": 0,
+              "passes": 2,
+              "action": "reduced"
+            }
+          ],
+          "sceneCoverage": [
+            {
+              "scene": 0,
+              "comparedPrimitiveInstances": 1,
+              "poses": 1
+            }
+          ],
+          "file": {
+            "file": "dugout-canoe/guarded-body.glb",
+            "sha256": "a7fab0685e610bdb2b21a1fd05327f64dceae476761b5c4615372769605d9b2a",
+            "bytes": 480856
+          }
+        }
+      ],
+      "evidence": {
+        "file": "dugout-canoe/evidence.json",
+        "sha256": "c67a83ef170218b93621ed7fce850f8b1364a68773caf4bc99b08ffb048cee08",
+        "bytes": 20171
+      }
+    },
+    {
+      "key": "fairy-mascot",
+      "coupling": null,
+      "served": {
+        "url": "/models/fairy-mascot/model-r01.glb",
+        "sha256": "45d20640bd4c3a3bf032e5bb356405260774d69e981149b690751b75f77cff02",
+        "bytes": 7424528,
+        "triangles": 22035
+      },
+      "scenes": 1,
+      "meshesNotVerifiable": [],
+      "baseline": {
+        "rawBytes": 7424528,
+        "gzip6Bytes": 5605866,
+        "triangles": 22035,
+        "vertices": 31445
+      },
+      "variants": [
+        {
+          "variant": "guarded-body",
+          "status": "proof-pass-not-visually-reviewed",
+          "rawBytes": 7359440,
+          "gzip6Bytes": 5566050,
+          "triangles": 20693,
+          "vertices": 30347,
+          "savedGzip6Bytes": 39816,
+          "problems": 0,
+          "proof": "passed",
+          "storage": {
+            "chosen": "source/plain",
+            "verified": "source/plain",
+            "reason": "source/plain: 7359440 raw bytes <= the source's 7424528, gzip -6 5566050 < the source's 5605866"
+          },
+          "passes": [
+            {
+              "mesh": 0,
+              "primitive": 0,
+              "passes": 2,
+              "action": "reduced"
+            }
+          ],
+          "sceneCoverage": [
+            {
+              "scene": 0,
+              "comparedPrimitiveInstances": 1,
+              "poses": 17
+            }
+          ],
+          "file": {
+            "file": "fairy-mascot/guarded-body.glb",
+            "sha256": "93aca034f355bc38827c3660c5075b1643d2777dee36c8b321e46fa1c21155f5",
+            "bytes": 7359440
+          }
+        }
+      ],
+      "evidence": {
+        "file": "fairy-mascot/evidence.json",
+        "sha256": "5438ce7b9c28f80751144ac89ff5c80b8ca0cf9b18ac3901a899813f5e7fdb95",
+        "bytes": 84069
+      }
+    },
+    {
+      "key": "flint-spear",
+      "coupling": null,
+      "served": {
+        "url": "/models/flint-spear/model.opt-7012db17d1a72567.glb",
+        "sha256": "7012db17d1a7256749609736b0c2637c0036ab42a4aebd23a97348876c7d6b7a",
+        "bytes": 934232,
+        "triangles": 5679
+      },
+      "scenes": 1,
+      "meshesNotVerifiable": [],
+      "baseline": {
+        "rawBytes": 934232,
+        "gzip6Bytes": 914776,
+        "triangles": 5679,
+        "vertices": 6207
+      },
+      "variants": [
+        {
+          "variant": "guarded-body",
+          "status": "proof-pass-not-visually-reviewed",
+          "rawBytes": 874712,
+          "gzip6Bytes": 860672,
+          "triangles": 3065,
+          "vertices": 4067,
+          "savedGzip6Bytes": 54104,
+          "problems": 0,
+          "proof": "passed",
+          "storage": {
+            "chosen": "source/meshopt",
+            "verified": "source/meshopt",
+            "reason": "source/meshopt: 874712 raw bytes <= the source's 934232, gzip -6 860672 < the source's 914776"
+          },
+          "passes": [
+            {
+              "mesh": 0,
+              "primitive": 0,
+              "passes": 2,
+              "action": "reduced"
+            },
+            {
+              "mesh": 0,
+              "primitive": 1,
+              "passes": 2,
+              "action": "reduced"
+            }
+          ],
+          "sceneCoverage": [
+            {
+              "scene": 0,
+              "comparedPrimitiveInstances": 2,
+              "poses": 1
+            }
+          ],
+          "file": {
+            "file": "flint-spear/guarded-body.glb",
+            "sha256": "26577c4c03479da4246040201ac5574fc5cd91127b9c44e7a0389a37a4305391",
+            "bytes": 874712
+          }
+        }
+      ],
+      "evidence": {
+        "file": "flint-spear/evidence.json",
+        "sha256": "c7653814893f218eba9b43efa47e5cef842ae8356f285f8a699883f37f72a01e",
+        "bytes": 32633
+      }
+    },
+    {
+      "key": "floppy-ear-mage",
+      "coupling": null,
+      "served": {
+        "url": "/models/floppy-ear-mage/model.glb",
+        "sha256": "60a247305f0b698654a9e61fd991470535128362e94be5d2b047be592e46e1ef",
+        "bytes": 14125456,
+        "triangles": 68212
+      },
+      "scenes": 1,
+      "meshesNotVerifiable": [],
+      "baseline": {
+        "rawBytes": 14125456,
+        "gzip6Bytes": 10630002,
+        "triangles": 68212,
+        "vertices": 88647
+      },
+      "variants": [
+        {
+          "variant": "guarded-body",
+          "status": "proof-pass-not-visually-reviewed",
+          "rawBytes": 13489872,
+          "gzip6Bytes": 10275120,
+          "triangles": 56796,
+          "vertices": 79058,
+          "savedGzip6Bytes": 354882,
+          "problems": 0,
+          "proof": "passed",
+          "storage": {
+            "chosen": "source/plain",
+            "verified": "source/plain",
+            "reason": "source/plain: 13489872 raw bytes <= the source's 14125456, gzip -6 10275120 < the source's 10630002"
+          },
+          "passes": [
+            {
+              "mesh": 0,
+              "primitive": 0,
+              "passes": 3,
+              "action": "reduced"
+            }
+          ],
+          "sceneCoverage": [
+            {
+              "scene": 0,
+              "comparedPrimitiveInstances": 1,
+              "poses": 19
+            }
+          ],
+          "file": {
+            "file": "floppy-ear-mage/guarded-body.glb",
+            "sha256": "ff68c88cb571694c9e0139b5cea12754f71b8ac710e815f6b38d95b6838bece0",
+            "bytes": 13489872
+          }
+        }
+      ],
+      "evidence": {
+        "file": "floppy-ear-mage/evidence.json",
+        "sha256": "38734109d53e47ab6cf6d87d37585614ca3cfcc56657b05fa7edfdc58424a773",
+        "bytes": 88929
+      }
+    },
+    {
+      "key": "giant-ape",
+      "coupling": null,
+      "served": {
+        "url": "/models/giant-ape/startup.opt-ace0a32ae71949af.glb",
+        "sha256": "ace0a32ae71949afe0c5718d7a40f4b481b349ce7bcccf6afc032e6aee92276d",
+        "bytes": 5202164,
+        "triangles": 58216
+      },
+      "scenes": 1,
+      "meshesNotVerifiable": [],
+      "baseline": {
+        "rawBytes": 5202164,
+        "gzip6Bytes": 4383367,
+        "triangles": 58216,
+        "vertices": 69802
+      },
+      "variants": [
+        {
+          "variant": "guarded-body",
+          "status": "proof-pass-not-visually-reviewed",
+          "rawBytes": 4886300,
+          "gzip6Bytes": 4093838,
+          "triangles": 50670,
+          "vertices": 63967,
+          "savedGzip6Bytes": 289529,
+          "problems": 0,
+          "proof": "passed",
+          "storage": {
+            "chosen": "source/meshopt",
+            "verified": "source/meshopt",
+            "reason": "source/meshopt: 4886300 raw bytes <= the source's 5202164, gzip -6 4093838 < the source's 4383367"
+          },
+          "passes": [
+            {
+              "mesh": 0,
+              "primitive": 0,
+              "passes": 2,
+              "action": "reduced"
+            }
+          ],
+          "sceneCoverage": [
+            {
+              "scene": 0,
+              "comparedPrimitiveInstances": 1,
+              "poses": 27
+            }
+          ],
+          "file": {
+            "file": "giant-ape/guarded-body.glb",
+            "sha256": "4aabd7de9803082467b19f2709bfdd182cc652c9ae43416a3c8757e4b0953843",
+            "bytes": 4886300
+          }
+        }
+      ],
+      "evidence": {
+        "file": "giant-ape/evidence.json",
+        "sha256": "420d0fc47925141a572a67575c11c47ab9ee04ca25211d5315b8d1c073720e6e",
+        "bytes": 116014
+      }
+    },
+    {
+      "key": "glacier-spires",
+      "coupling": "landmark bounds are measured from the delivered mesh (shared/landmark-bounds.mts)",
+      "served": {
+        "url": "/models/glacier-spires/model-c2.opt-dec38817dc18eb0e.glb",
+        "sha256": "dec38817dc18eb0e5d513d12e8e80292a315cc8152860b773c15a4bc1df2aae0",
+        "bytes": 889772,
+        "triangles": 11999
+      },
+      "scenes": 1,
+      "meshesNotVerifiable": [],
+      "baseline": {
+        "rawBytes": 889772,
+        "gzip6Bytes": 853730,
+        "triangles": 11999,
+        "vertices": 10142
+      },
+      "variants": [
+        {
+          "variant": "guarded-body",
+          "status": "retained",
+          "reason": "no primitive reached a useful reduction under this variant; nothing is written"
+        }
+      ],
+      "evidence": {
+        "file": "glacier-spires/evidence.json",
+        "sha256": "51a6144ea103d11d338c59202f4238e6e250df9f0b283382961b3593a1d5af85",
+        "bytes": 7871
+      }
+    },
+    {
+      "key": "howkey-flask",
+      "coupling": null,
+      "served": {
+        "url": "/models/howkey-flask/model-r01.glb",
+        "sha256": "85c376f2ffb2def8249cb1f0c56426ceb03144fadb6dfe55575741d7df0f2f80",
+        "bytes": 1194284,
+        "triangles": 4997
+      },
+      "scenes": 1,
+      "meshesNotVerifiable": [],
+      "baseline": {
+        "rawBytes": 1194284,
+        "gzip6Bytes": 1153001,
+        "triangles": 4997,
+        "vertices": 3810
+      },
+      "variants": [
+        {
+          "variant": "guarded-body",
+          "status": "proof-pass-not-visually-reviewed",
+          "rawBytes": 1094192,
+          "gzip6Bytes": 1088258,
+          "triangles": 2061,
+          "vertices": 1853,
+          "savedGzip6Bytes": 64743,
+          "problems": 0,
+          "proof": "passed",
+          "storage": {
+            "chosen": "source/meshopt",
+            "verified": "source/meshopt",
+            "reason": "source/meshopt: 1094192 raw bytes <= the source's 1194284, gzip -6 1088258 < the source's 1153001"
+          },
+          "passes": [
+            {
+              "mesh": 0,
+              "primitive": 0,
+              "passes": 8,
+              "action": "reduced"
+            }
+          ],
+          "sceneCoverage": [
+            {
+              "scene": 0,
+              "comparedPrimitiveInstances": 1,
+              "poses": 1
+            }
+          ],
+          "file": {
+            "file": "howkey-flask/guarded-body.glb",
+            "sha256": "00c4087ca2656bfa04e0b7b4f6da5bfce9944f0f962120ada59ad781ab025879",
+            "bytes": 1094192
+          }
+        }
+      ],
+      "evidence": {
+        "file": "howkey-flask/evidence.json",
+        "sha256": "6ac28e628cee6c1bdf32fc410cde9a460b7f72d33fb5ac3e1bf3f47cc722d189",
+        "bytes": 24599
+      }
+    },
+    {
+      "key": "howkey-scientist",
+      "coupling": null,
+      "served": {
+        "url": "/models/howkey-scientist/model-c2.glb",
+        "sha256": "229a82a35ddaec11ad82ab5e616e8952f1740ecd9c441c259aba8c6cd121a509",
+        "bytes": 10170824,
+        "triangles": 49079
+      },
+      "scenes": 1,
+      "meshesNotVerifiable": [],
+      "baseline": {
+        "rawBytes": 10170824,
+        "gzip6Bytes": 5449102,
+        "triangles": 49079,
+        "vertices": 75214
+      },
+      "variants": [
+        {
+          "variant": "guarded-body",
+          "status": "proof-failed",
+          "rawBytes": 9953908,
+          "gzip6Bytes": 5319553,
+          "triangles": 45681,
+          "vertices": 72623,
+          "savedGzip6Bytes": 129549,
+          "problems": 4,
+          "proof": "failed",
+          "storage": {
+            "chosen": "source/plain",
+            "verified": "source/plain",
+            "reason": "source/plain: 9953908 raw bytes <= the source's 10170824, gzip -6 5319553 < the source's 5449102"
+          },
+          "passes": [
+            {
+              "mesh": 0,
+              "primitive": 0,
+              "passes": 3,
+              "action": "reduced"
+            }
+          ],
+          "sceneCoverage": [
+            {
+              "scene": 0,
+              "comparedPrimitiveInstances": 1,
+              "poses": 21
+            }
+          ],
+          "file": {
+            "file": "howkey-scientist/guarded-body.glb",
+            "sha256": "781d59886ada6d375180ca4477ce475a1a295057eba6cbd9bd922f554135992d",
+            "bytes": 9953908
+          }
+        }
+      ],
+      "evidence": {
+        "file": "howkey-scientist/evidence.json",
+        "sha256": "e9058c4f93392b7988333e80798c87a5550a14facd7c005bc6a38819602e5d0f",
+        "bytes": 101372
+      }
+    },
+    {
+      "key": "ice-ground",
+      "coupling": null,
+      "served": {
+        "url": "/models/ice-ground/model.opt-528ac05be46e809e.glb",
+        "sha256": "528ac05be46e809edbb3128b3a107bf5badd233b1ebbfee945a4847edcb550c7",
+        "bytes": 2106428,
+        "triangles": 5500
+      },
+      "scenes": 1,
+      "meshesNotVerifiable": [],
+      "baseline": {
+        "rawBytes": 2106428,
+        "gzip6Bytes": 2096419,
+        "triangles": 5500,
+        "vertices": 3982
+      },
+      "variants": [
+        {
+          "variant": "guarded-body",
+          "status": "proof-pass-not-visually-reviewed",
+          "rawBytes": 2099860,
+          "gzip6Bytes": 2060718,
+          "triangles": 3416,
+          "vertices": 2750,
+          "savedGzip6Bytes": 35701,
+          "problems": 0,
+          "proof": "passed",
+          "storage": {
+            "chosen": "source/plain",
+            "verified": "source/plain",
+            "reason": "source/plain: 2099860 raw bytes <= the source's 2106428, gzip -6 2060718 < the source's 2096419"
+          },
+          "passes": [
+            {
+              "mesh": 0,
+              "primitive": 0,
+              "passes": 2,
+              "action": "reduced"
+            }
+          ],
+          "sceneCoverage": [
+            {
+              "scene": 0,
+              "comparedPrimitiveInstances": 1,
+              "poses": 1
+            }
+          ],
+          "file": {
+            "file": "ice-ground/guarded-body.glb",
+            "sha256": "12ed3972cf034ee90ceaf72bbaed148eb96b216ce7f05a4c7e9b120ef8cf452f",
+            "bytes": 2099860
+          }
+        }
+      ],
+      "evidence": {
+        "file": "ice-ground/evidence.json",
+        "sha256": "a60e0cd418dd3d0643783b83dfa29b2c3d8f051ef006273755b27cf9c7a0148f",
+        "bytes": 20046
+      }
+    },
+    {
+      "key": "kohaku",
+      "coupling": null,
+      "served": {
+        "url": "/models/kohaku/model-c2.glb",
+        "sha256": "37f67aee50db574a24206f602aa3b02bc6b21d2a720f9f055499bffcceea28ca",
+        "bytes": 6401032,
+        "triangles": 29058
+      },
+      "scenes": 1,
+      "meshesNotVerifiable": [],
+      "baseline": {
+        "rawBytes": 6401032,
+        "gzip6Bytes": 4136686,
+        "triangles": 29058,
+        "vertices": 39660
+      },
+      "variants": [
+        {
+          "variant": "guarded-body",
+          "status": "proof-pass-not-visually-reviewed",
+          "rawBytes": 6259052,
+          "gzip6Bytes": 4043066,
+          "triangles": 26806,
+          "vertices": 37770,
+          "savedGzip6Bytes": 93620,
+          "problems": 0,
+          "proof": "passed",
+          "storage": {
+            "chosen": "source/plain",
+            "verified": "source/plain",
+            "reason": "source/plain: 6259052 raw bytes <= the source's 6401032, gzip -6 4043066 < the source's 4136686"
+          },
+          "passes": [
+            {
+              "mesh": 0,
+              "primitive": 0,
+              "passes": 2,
+              "action": "reduced"
+            }
+          ],
+          "sceneCoverage": [
+            {
+              "scene": 0,
+              "comparedPrimitiveInstances": 1,
+              "poses": 17
+            }
+          ],
+          "file": {
+            "file": "kohaku/guarded-body.glb",
+            "sha256": "e81d252f1436ad63d9db1c82e8a7bed4634a945ae243d66914a4596d6c685ec5",
+            "bytes": 6259052
+          }
+        }
+      ],
+      "evidence": {
+        "file": "kohaku/evidence.json",
+        "sha256": "4ae2d83dd87a92aa0346e292ed46c628096a2422a3ccd7c36843cad17169e02e",
+        "bytes": 92054
+      }
+    },
+    {
+      "key": "kunoichi-katana",
+      "coupling": null,
+      "served": {
+        "url": "/models/kunoichi-katana/model-c2.opt-0b7db07e795f0ac3.glb",
+        "sha256": "0b7db07e795f0ac392d79ab1a389e55584c3d05c84d6e71fb4676d68cd59f50a",
+        "bytes": 283844,
+        "triangles": 5997
+      },
+      "scenes": 1,
+      "meshesNotVerifiable": [],
+      "baseline": {
+        "rawBytes": 283844,
+        "gzip6Bytes": 268538,
+        "triangles": 5997,
+        "vertices": 4584
+      },
+      "variants": [
+        {
+          "variant": "guarded-body",
+          "status": "proof-pass-not-visually-reviewed",
+          "rawBytes": 201432,
+          "gzip6Bytes": 164762,
+          "triangles": 2097,
+          "vertices": 1945,
+          "savedGzip6Bytes": 103776,
+          "problems": 0,
+          "proof": "passed",
+          "storage": {
+            "chosen": "source/plain",
+            "verified": "source/plain",
+            "reason": "source/plain: 201432 raw bytes <= the source's 283844, gzip -6 164762 < the source's 268538"
+          },
+          "passes": [
+            {
+              "mesh": 0,
+              "primitive": 0,
+              "passes": 3,
+              "action": "reduced"
+            }
+          ],
+          "sceneCoverage": [
+            {
+              "scene": 0,
+              "comparedPrimitiveInstances": 1,
+              "poses": 1
+            }
+          ],
+          "file": {
+            "file": "kunoichi-katana/guarded-body.glb",
+            "sha256": "624f6bbc73dc6fdeae4758fefe31113f2da6b982f62fcedba56f95a571429c35",
+            "bytes": 201432
+          }
+        }
+      ],
+      "evidence": {
+        "file": "kunoichi-katana/evidence.json",
+        "sha256": "9e190887c3eb736b6b4a198c6b4f2e2935cd42930dd2bbd86b93c01de2a7009b",
+        "bytes": 20492
+      }
+    },
+    {
+      "key": "mae",
+      "coupling": null,
+      "served": {
+        "url": "/models/mae/model-c2.glb",
+        "sha256": "0da0055ef3dbd6c6dda1cf6312e9d098c6eb34c63529891e9a4dc8b1bc5d4563",
+        "bytes": 1715504,
+        "triangles": 10843
+      },
+      "scenes": 1,
+      "meshesNotVerifiable": [],
+      "baseline": {
+        "rawBytes": 1715504,
+        "gzip6Bytes": 1139601,
+        "triangles": 10843,
+        "vertices": 12910
+      },
+      "variants": [
+        {
+          "variant": "guarded-body",
+          "status": "proof-pass-not-visually-reviewed",
+          "rawBytes": 1577840,
+          "gzip6Bytes": 1053556,
+          "triangles": 7877,
+          "vertices": 11147,
+          "savedGzip6Bytes": 86045,
+          "problems": 0,
+          "proof": "passed",
+          "storage": {
+            "chosen": "source/plain",
+            "verified": "source/plain",
+            "reason": "source/plain: 1577840 raw bytes <= the source's 1715504, gzip -6 1053556 < the source's 1139601"
+          },
+          "passes": [
+            {
+              "mesh": 0,
+              "primitive": 0,
+              "passes": 2,
+              "action": "reduced"
+            }
+          ],
+          "sceneCoverage": [
+            {
+              "scene": 0,
+              "comparedPrimitiveInstances": 1,
+              "poses": 13
+            }
+          ],
+          "file": {
+            "file": "mae/guarded-body.glb",
+            "sha256": "11b608ba98f374f9ebbf1b38ff28eb1a579b02bd943c9690dfa68cda7bb28b0e",
+            "bytes": 1577840
+          }
+        }
+      ],
+      "evidence": {
+        "file": "mae/evidence.json",
+        "sha256": "dd1de3addba3e9ded4633e83025172a77ac941bdc98069f555543d154b0cf4bf",
+        "bytes": 48093
+      }
+    },
+    {
+      "key": "mammoth-meat",
+      "coupling": null,
+      "served": {
+        "url": "/models/mammoth-meat/model-c2.opt-4b49e324b633cf3f.glb",
+        "sha256": "4b49e324b633cf3f78b647c9d922db5f1c9d0a66bef21d17336727ce915cd4e0",
+        "bytes": 577312,
+        "triangles": 2996
+      },
+      "scenes": 1,
+      "meshesNotVerifiable": [],
+      "baseline": {
+        "rawBytes": 577312,
+        "gzip6Bytes": 567387,
+        "triangles": 2996,
+        "vertices": 2691
+      },
+      "variants": [
+        {
+          "variant": "guarded-body",
+          "status": "proof-pass-not-visually-reviewed",
+          "rawBytes": 554340,
+          "gzip6Bytes": 545837,
+          "triangles": 2192,
+          "vertices": 2159,
+          "savedGzip6Bytes": 21550,
+          "problems": 0,
+          "proof": "passed",
+          "storage": {
+            "chosen": "source/meshopt",
+            "verified": "source/meshopt",
+            "reason": "source/meshopt: 554340 raw bytes <= the source's 577312, gzip -6 545837 < the source's 567387"
+          },
+          "passes": [
+            {
+              "mesh": 0,
+              "primitive": 0,
+              "passes": 2,
+              "action": "reduced"
+            }
+          ],
+          "sceneCoverage": [
+            {
+              "scene": 0,
+              "comparedPrimitiveInstances": 1,
+              "poses": 1
+            }
+          ],
+          "file": {
+            "file": "mammoth-meat/guarded-body.glb",
+            "sha256": "0bd4fbb82d7c92e95d7d8299c7ea1bd103c44cde11fa75cad7f9bd837a930540",
+            "bytes": 554340
+          }
+        }
+      ],
+      "evidence": {
+        "file": "mammoth-meat/evidence.json",
+        "sha256": "21cfa1566f2d5a209a8d48d5fffa0535672279b92f26f58fda36730f62c9805d",
+        "bytes": 19923
+      }
+    },
+    {
+      "key": "maruimo-mascot",
+      "coupling": null,
+      "served": {
+        "url": "/models/maruimo-mascot/model-c2.glb",
+        "sha256": "bbeeb99315f45ffcfb257077366ca830929377d22beb385acbec1b22759c7eda",
+        "bytes": 8230884,
+        "triangles": 28911
+      },
+      "scenes": 1,
+      "meshesNotVerifiable": [],
+      "baseline": {
+        "rawBytes": 8230884,
+        "gzip6Bytes": 4441439,
+        "triangles": 28911,
+        "vertices": 37767
+      },
+      "variants": [
+        {
+          "variant": "guarded-body",
+          "status": "proof-failed",
+          "rawBytes": 8136812,
+          "gzip6Bytes": 4383056,
+          "triangles": 27287,
+          "vertices": 36528,
+          "savedGzip6Bytes": 58383,
+          "problems": 1,
+          "proof": "failed",
+          "storage": {
+            "chosen": "source/plain",
+            "verified": "source/plain",
+            "reason": "source/plain: 8136812 raw bytes <= the source's 8230884, gzip -6 4383056 < the source's 4441439"
+          },
+          "passes": [
+            {
+              "mesh": 0,
+              "primitive": 0,
+              "passes": 2,
+              "action": "reduced"
+            }
+          ],
+          "sceneCoverage": [
+            {
+              "scene": 0,
+              "comparedPrimitiveInstances": 1,
+              "poses": 27
+            }
+          ],
+          "file": {
+            "file": "maruimo-mascot/guarded-body.glb",
+            "sha256": "4753d3a7eea0450eab5ce30e51ee34b2af44eab704b7c3fa62032ab67a7b3163",
+            "bytes": 8136812
+          }
+        }
+      ],
+      "evidence": {
+        "file": "maruimo-mascot/evidence.json",
+        "sha256": "0b6a36517e23545043efc25125d2f69fc41e96f5ab3efbf140dd219dbc21316b",
+        "bytes": 115739
+      }
+    },
+    {
+      "key": "maruimo-octopus",
+      "coupling": null,
+      "served": {
+        "url": "/models/maruimo-octopus/model-c2.glb",
+        "sha256": "12886dd609a4415736390ffb46521b20887967037f8255c54107c58cd3d34c59",
+        "bytes": 10811624,
+        "triangles": 58030
+      },
+      "scenes": 1,
+      "meshesNotVerifiable": [],
+      "baseline": {
+        "rawBytes": 10811624,
+        "gzip6Bytes": 5660992,
+        "triangles": 58030,
+        "vertices": 67323
+      },
+      "variants": [
+        {
+          "variant": "guarded-body",
+          "status": "retained",
+          "reason": "no primitive reached a useful reduction under this variant; nothing is written"
+        }
+      ],
+      "evidence": {
+        "file": "maruimo-octopus/evidence.json",
+        "sha256": "e6fb883513ac93186d2963629e822debc8a57739dbd89bf0260d8389e1859430",
+        "bytes": 9285
+      }
+    },
+    {
+      "key": "meadow-grass",
+      "coupling": null,
+      "served": {
+        "url": "/models/meadow-grass/model.glb",
+        "sha256": "24b41b18d4c5ea40ca660d7eda16f2154ca856828ebfc721d6c3489efe63f9c0",
+        "bytes": 3392616,
+        "triangles": 42587
+      },
+      "scenes": 1,
+      "meshesNotVerifiable": [],
+      "baseline": {
+        "rawBytes": 3392616,
+        "gzip6Bytes": 1859610,
+        "triangles": 42587,
+        "vertices": 85695
+      },
+      "variants": [
+        {
+          "variant": "guarded-body",
+          "status": "proof-failed",
+          "rawBytes": 3199168,
+          "gzip6Bytes": 1744568,
+          "triangles": 39575,
+          "vertices": 80778,
+          "savedGzip6Bytes": 115042,
+          "problems": 4,
+          "proof": "failed",
+          "storage": {
+            "chosen": "source/plain",
+            "verified": "source/plain",
+            "reason": "source/plain: 3199168 raw bytes <= the source's 3392616, gzip -6 1744568 < the source's 1859610"
+          },
+          "passes": [
+            {
+              "mesh": 0,
+              "primitive": 0,
+              "passes": 3,
+              "action": "reduced"
+            }
+          ],
+          "sceneCoverage": [
+            {
+              "scene": 0,
+              "comparedPrimitiveInstances": 1,
+              "poses": 1
+            }
+          ],
+          "file": {
+            "file": "meadow-grass/guarded-body.glb",
+            "sha256": "4adab14d99b9bcf1e5c6b24195ed6895795d8c6fdce0afae3db1abae9f3f11ab",
+            "bytes": 3199168
+          }
+        }
+      ],
+      "evidence": {
+        "file": "meadow-grass/evidence.json",
+        "sha256": "9a090c55036b33491e2c9e5ac071e3c3c030429d0d89564d289ad58288afe45e",
+        "bytes": 20837
+      }
+    },
+    {
+      "key": "meadow-sprig",
+      "coupling": null,
+      "served": {
+        "url": "/models/meadow-sprig/model.glb",
+        "sha256": "4a4c9060a5d95f0db3dcf3c4ff050c78c86f543b942ec62273471326959483de",
+        "bytes": 894776,
+        "triangles": 11546
+      },
+      "scenes": 1,
+      "meshesNotVerifiable": [],
+      "baseline": {
+        "rawBytes": 894776,
+        "gzip6Bytes": 581306,
+        "triangles": 11546,
+        "vertices": 20739
+      },
+      "variants": [
+        {
+          "variant": "guarded-body",
+          "status": "proof-failed",
+          "rawBytes": 759752,
+          "gzip6Bytes": 495186,
+          "triangles": 8848,
+          "vertices": 17024,
+          "savedGzip6Bytes": 86120,
+          "problems": 4,
+          "proof": "failed",
+          "storage": {
+            "chosen": "source/plain",
+            "verified": "source/plain",
+            "reason": "source/plain: 759752 raw bytes <= the source's 894776, gzip -6 495186 < the source's 581306"
+          },
+          "passes": [
+            {
+              "mesh": 0,
+              "primitive": 0,
+              "passes": 3,
+              "action": "reduced"
+            }
+          ],
+          "sceneCoverage": [
+            {
+              "scene": 0,
+              "comparedPrimitiveInstances": 1,
+              "poses": 1
+            }
+          ],
+          "file": {
+            "file": "meadow-sprig/guarded-body.glb",
+            "sha256": "a3b695f02d9541ec6acadd76f587bca1c5102e3b03824a6822de0dc6d834d2d6",
+            "bytes": 759752
+          }
+        }
+      ],
+      "evidence": {
+        "file": "meadow-sprig/evidence.json",
+        "sha256": "14295ec2c98ba7bd68eb660d5dd0b8ce3e8ab0e04eafc73e1c27fc4783fcb100",
+        "bytes": 20750
+      }
+    },
+    {
+      "key": "neanderthal-hunter",
+      "coupling": null,
+      "served": {
+        "url": "/models/neanderthal-hunter/startup.opt-ef3e3fa2f2931daf.glb",
+        "sha256": "ef3e3fa2f2931dafe233560f29715b484440b46460f225dfd44c31c6e44faaeb",
+        "bytes": 8091164,
+        "triangles": 99379
+      },
+      "scenes": 1,
+      "meshesNotVerifiable": [],
+      "baseline": {
+        "rawBytes": 8091164,
+        "gzip6Bytes": 7367472,
+        "triangles": 99379,
+        "vertices": 185077
+      },
+      "variants": [
+        {
+          "variant": "guarded-body",
+          "status": "retained",
+          "reason": "no primitive reached a useful reduction under this variant; nothing is written"
+        }
+      ],
+      "evidence": {
+        "file": "neanderthal-hunter/evidence.json",
+        "sha256": "97fb9eaf708ecc14ed5e36d150fd7122278436eaa910b03d3d0c04e64e7247fc",
+        "bytes": 15804
+      }
+    },
+    {
+      "key": "neanderthal-woman",
+      "coupling": null,
+      "served": {
+        "url": "/models/neanderthal-woman/startup.opt-caf50f3f8aa971be.glb",
+        "sha256": "caf50f3f8aa971be2119d5399bfe3226cfe3d0d283cc965c0beafcac0d6a1a21",
+        "bytes": 4922092,
+        "triangles": 78675
+      },
+      "scenes": 1,
+      "meshesNotVerifiable": [],
+      "baseline": {
+        "rawBytes": 4922092,
+        "gzip6Bytes": 4375015,
+        "triangles": 78675,
+        "vertices": 97550
+      },
+      "variants": [
+        {
+          "variant": "guarded-body",
+          "status": "proof-pass-not-visually-reviewed",
+          "rawBytes": 4530988,
+          "gzip6Bytes": 4004347,
+          "triangles": 68553,
+          "vertices": 89905,
+          "savedGzip6Bytes": 370668,
+          "problems": 0,
+          "proof": "passed",
+          "storage": {
+            "chosen": "source/meshopt",
+            "verified": "source/meshopt",
+            "reason": "source/meshopt: 4530988 raw bytes <= the source's 4922092, gzip -6 4004347 < the source's 4375015"
+          },
+          "passes": [
+            {
+              "mesh": 0,
+              "primitive": 0,
+              "passes": 3,
+              "action": "reduced"
+            }
+          ],
+          "sceneCoverage": [
+            {
+              "scene": 0,
+              "comparedPrimitiveInstances": 1,
+              "poses": 21
+            }
+          ],
+          "file": {
+            "file": "neanderthal-woman/guarded-body.glb",
+            "sha256": "fabb21a67061a199d24efac0e6196a0477cba02d73eab259bb6810a70e6ecd8d",
+            "bytes": 4530988
+          }
+        }
+      ],
+      "evidence": {
+        "file": "neanderthal-woman/evidence.json",
+        "sha256": "b36557241120e896912573c013afb451154f370686d9fc9de7cf265a99845edb",
+        "bytes": 88296
+      }
+    },
+    {
+      "key": "nukonuko-mascot",
+      "coupling": null,
+      "served": {
+        "url": "/models/nukonuko-mascot/model-r02.glb",
+        "sha256": "af3322a2f91ee749b9c142892f59380dbf3cd7c41260a53cc83d316ee6c85f20",
+        "bytes": 7168968,
+        "triangles": 21998
+      },
+      "scenes": 1,
+      "meshesNotVerifiable": [],
+      "baseline": {
+        "rawBytes": 7168968,
+        "gzip6Bytes": 5308584,
+        "triangles": 21998,
+        "vertices": 30364
+      },
+      "variants": [
+        {
+          "variant": "guarded-body",
+          "status": "proof-pass-not-visually-reviewed",
+          "rawBytes": 5773420,
+          "gzip6Bytes": 5238339,
+          "triangles": 19960,
+          "vertices": 28604,
+          "savedGzip6Bytes": 70245,
+          "problems": 0,
+          "proof": "passed",
+          "storage": {
+            "chosen": "source/meshopt",
+            "verified": "source/meshopt",
+            "reason": "source/meshopt: 5773420 raw bytes <= the source's 7168968, gzip -6 5238339 < the source's 5308584"
+          },
+          "passes": [
+            {
+              "mesh": 0,
+              "primitive": 0,
+              "passes": 3,
+              "action": "reduced"
+            }
+          ],
+          "sceneCoverage": [
+            {
+              "scene": 0,
+              "comparedPrimitiveInstances": 1,
+              "poses": 17
+            }
+          ],
+          "file": {
+            "file": "nukonuko-mascot/guarded-body.glb",
+            "sha256": "de8f76016f13394d8218ec3c2b8c34644488430d884a5d37d8e1ca3022b50878",
+            "bytes": 5773420
+          }
+        }
+      ],
+      "evidence": {
+        "file": "nukonuko-mascot/evidence.json",
+        "sha256": "14a7fb0823a1ba34471bef86d14e203e4b38b6b65238de8d43e48af04ed577fd",
+        "bytes": 92383
+      }
+    },
+    {
+      "key": "obsidian-blade",
+      "coupling": null,
+      "served": {
+        "url": "/models/obsidian-blade/model-c2.opt-2869bf2d3c3fff93.glb",
+        "sha256": "2869bf2d3c3fff93bbb9f6d50f8b1c70edaf926aa1192d70161a7050791e8c4d",
+        "bytes": 170456,
+        "triangles": 1500
+      },
+      "scenes": 1,
+      "meshesNotVerifiable": [],
+      "baseline": {
+        "rawBytes": 170456,
+        "gzip6Bytes": 165284,
+        "triangles": 1500,
+        "vertices": 1173
+      },
+      "variants": [
+        {
+          "variant": "guarded-body",
+          "status": "proof-pass-not-visually-reviewed",
+          "rawBytes": 146988,
+          "gzip6Bytes": 137974,
+          "triangles": 524,
+          "vertices": 499,
+          "savedGzip6Bytes": 27310,
+          "problems": 0,
+          "proof": "passed",
+          "storage": {
+            "chosen": "source/plain",
+            "verified": "source/plain",
+            "reason": "source/plain: 146988 raw bytes <= the source's 170456, gzip -6 137974 < the source's 165284"
+          },
+          "passes": [
+            {
+              "mesh": 0,
+              "primitive": 0,
+              "passes": 1,
+              "action": "reduced"
+            }
+          ],
+          "sceneCoverage": [
+            {
+              "scene": 0,
+              "comparedPrimitiveInstances": 1,
+              "poses": 1
+            }
+          ],
+          "file": {
+            "file": "obsidian-blade/guarded-body.glb",
+            "sha256": "76f281876580c9d5be10ca33d709f6290bd64e1eefeb805bd3ba58ceb7095822",
+            "bytes": 146988
+          }
+        }
+      ],
+      "evidence": {
+        "file": "obsidian-blade/evidence.json",
+        "sha256": "bbdf2ca7610b19c5038b6884ac3cce1ba5978d8c3004def90d24968e7dbe103e",
+        "bytes": 18550
+      }
+    },
+    {
+      "key": "obsidian-spear",
+      "coupling": null,
+      "served": {
+        "url": "/models/obsidian-spear/model-c2.opt-ac18526ceb1f0514.glb",
+        "sha256": "ac18526ceb1f0514006d66aef967047d4ad1fdd11f3506e55811a9c068bac498",
+        "bytes": 210168,
+        "triangles": 3995
+      },
+      "scenes": 1,
+      "meshesNotVerifiable": [],
+      "baseline": {
+        "rawBytes": 210168,
+        "gzip6Bytes": 199388,
+        "triangles": 3995,
+        "vertices": 3073
+      },
+      "variants": [
+        {
+          "variant": "guarded-body",
+          "status": "proof-pass-not-visually-reviewed",
+          "rawBytes": 138084,
+          "gzip6Bytes": 132004,
+          "triangles": 1397,
+          "vertices": 1369,
+          "savedGzip6Bytes": 67384,
+          "problems": 0,
+          "proof": "passed",
+          "storage": {
+            "chosen": "source/meshopt",
+            "verified": "source/meshopt",
+            "reason": "source/meshopt: 138084 raw bytes <= the source's 210168, gzip -6 132004 < the source's 199388"
+          },
+          "passes": [
+            {
+              "mesh": 0,
+              "primitive": 0,
+              "passes": 2,
+              "action": "reduced"
+            }
+          ],
+          "sceneCoverage": [
+            {
+              "scene": 0,
+              "comparedPrimitiveInstances": 1,
+              "poses": 1
+            }
+          ],
+          "file": {
+            "file": "obsidian-spear/guarded-body.glb",
+            "sha256": "418e6cd8a2c744003b3be807be09844b50fb4cb67b2d264cded15e14ba8a324a",
+            "bytes": 138084
+          }
+        }
+      ],
+      "evidence": {
+        "file": "obsidian-spear/evidence.json",
+        "sha256": "544bd08f225e787cdabc43e2d0fe50701f8fd2f820ddf348096e2852f1037aad",
+        "bytes": 19967
+      }
+    },
+    {
+      "key": "orb-bot-beret",
+      "coupling": null,
+      "served": {
+        "url": "/models/orb-bot-beret/model-c2.opt-67aa3569b08433a9.glb",
+        "sha256": "67aa3569b08433a9d061e3902e3ac9fe358eaea1eec8756350265681034c43c5",
+        "bytes": 469592,
+        "triangles": 3914
+      },
+      "scenes": 1,
+      "meshesNotVerifiable": [],
+      "baseline": {
+        "rawBytes": 469592,
+        "gzip6Bytes": 435321,
+        "triangles": 3914,
+        "vertices": 3514
+      },
+      "variants": [
+        {
+          "variant": "guarded-body",
+          "status": "proof-pass-not-visually-reviewed",
+          "rawBytes": 435908,
+          "gzip6Bytes": 404211,
+          "triangles": 2672,
+          "vertices": 2744,
+          "savedGzip6Bytes": 31110,
+          "problems": 0,
+          "proof": "passed",
+          "storage": {
+            "chosen": "source/meshopt",
+            "verified": "source/meshopt",
+            "reason": "source/meshopt: 435908 raw bytes <= the source's 469592, gzip -6 404211 < the source's 435321"
+          },
+          "passes": [
+            {
+              "mesh": 0,
+              "primitive": 0,
+              "passes": 2,
+              "action": "reduced"
+            }
+          ],
+          "sceneCoverage": [
+            {
+              "scene": 0,
+              "comparedPrimitiveInstances": 1,
+              "poses": 15
+            }
+          ],
+          "file": {
+            "file": "orb-bot-beret/guarded-body.glb",
+            "sha256": "822ea8338b5d8c9091a8e2b3a2e799af76749f78332e7154543b43404fe3c167",
+            "bytes": 435908
+          }
+        }
+      ],
+      "evidence": {
+        "file": "orb-bot-beret/evidence.json",
+        "sha256": "0d29437fc8f5b73161aafe8b4a03a3966648b4f7623b37b4972027ecfcd125c5",
+        "bytes": 53261
+      }
+    },
+    {
+      "key": "orb-bot-blue",
+      "coupling": null,
+      "served": {
+        "url": "/models/orb-bot-blue/model-c2.opt-26b5c7764ea04bdd.glb",
+        "sha256": "26b5c7764ea04bddf7ed18328a587ee1d51f7662ea5b0a24a94031044538a877",
+        "bytes": 181036,
+        "triangles": 4000
+      },
+      "scenes": 1,
+      "meshesNotVerifiable": [],
+      "baseline": {
+        "rawBytes": 181036,
+        "gzip6Bytes": 153747,
+        "triangles": 4000,
+        "vertices": 2346
+      },
+      "variants": [
+        {
+          "variant": "guarded-body",
+          "status": "proof-pass-not-visually-reviewed",
+          "rawBytes": 122340,
+          "gzip6Bytes": 97457,
+          "triangles": 1400,
+          "vertices": 1005,
+          "savedGzip6Bytes": 56290,
+          "problems": 0,
+          "proof": "passed",
+          "storage": {
+            "chosen": "source/meshopt",
+            "verified": "source/meshopt",
+            "reason": "source/meshopt: 122340 raw bytes <= the source's 181036, gzip -6 97457 < the source's 153747"
+          },
+          "passes": [
+            {
+              "mesh": 0,
+              "primitive": 0,
+              "passes": 1,
+              "action": "reduced"
+            }
+          ],
+          "sceneCoverage": [
+            {
+              "scene": 0,
+              "comparedPrimitiveInstances": 1,
+              "poses": 15
+            }
+          ],
+          "file": {
+            "file": "orb-bot-blue/guarded-body.glb",
+            "sha256": "b0e706f21eed20c849383b1d0342050f320a12ecd9fbe4cb66a15a648cb8e836",
+            "bytes": 122340
+          }
+        }
+      ],
+      "evidence": {
+        "file": "orb-bot-blue/evidence.json",
+        "sha256": "c6bfda5882738ad77fde7b47835dce2633500e8fdecb97eadd4828b8988d8140",
+        "bytes": 49101
+      }
+    },
+    {
+      "key": "orb-bot-frog",
+      "coupling": null,
+      "served": {
+        "url": "/models/orb-bot-frog/model-c2.opt-0840299e1a568e62.glb",
+        "sha256": "0840299e1a568e62caaa4d4c419d983f904c9d2a9587cdecf573b7fc34bbabad",
+        "bytes": 588132,
+        "triangles": 3624
+      },
+      "scenes": 1,
+      "meshesNotVerifiable": [],
+      "baseline": {
+        "rawBytes": 588132,
+        "gzip6Bytes": 551731,
+        "triangles": 3624,
+        "vertices": 4089
+      },
+      "variants": [
+        {
+          "variant": "guarded-body",
+          "status": "retained",
+          "reason": "no primitive reached a useful reduction under this variant; nothing is written"
+        }
+      ],
+      "evidence": {
+        "file": "orb-bot-frog/evidence.json",
+        "sha256": "ef2972ed051143a5c78576673666251d1dfdc6501a1715e06b7a28645163ce33",
+        "bytes": 8694
+      }
+    },
+    {
+      "key": "orb-bot-green",
+      "coupling": null,
+      "served": {
+        "url": "/models/orb-bot-green/model-c2.opt-be0f8d03776ccd9c.glb",
+        "sha256": "be0f8d03776ccd9c193d264634689c45f7a9412f3dde328c2c2a3ac3449d96b8",
+        "bytes": 169800,
+        "triangles": 4000
+      },
+      "scenes": 1,
+      "meshesNotVerifiable": [],
+      "baseline": {
+        "rawBytes": 169800,
+        "gzip6Bytes": 142131,
+        "triangles": 4000,
+        "vertices": 2383
+      },
+      "variants": [
+        {
+          "variant": "guarded-body",
+          "status": "proof-pass-not-visually-reviewed",
+          "rawBytes": 110864,
+          "gzip6Bytes": 85893,
+          "triangles": 1400,
+          "vertices": 1028,
+          "savedGzip6Bytes": 56238,
+          "problems": 0,
+          "proof": "passed",
+          "storage": {
+            "chosen": "source/meshopt",
+            "verified": "source/meshopt",
+            "reason": "source/meshopt: 110864 raw bytes <= the source's 169800, gzip -6 85893 < the source's 142131"
+          },
+          "passes": [
+            {
+              "mesh": 0,
+              "primitive": 0,
+              "passes": 1,
+              "action": "reduced"
+            }
+          ],
+          "sceneCoverage": [
+            {
+              "scene": 0,
+              "comparedPrimitiveInstances": 1,
+              "poses": 15
+            }
+          ],
+          "file": {
+            "file": "orb-bot-green/guarded-body.glb",
+            "sha256": "84eaabe0bc40a9850b82b56ea63809b7def006728d7cbf8fcf26104fdbcbd771",
+            "bytes": 110864
+          }
+        }
+      ],
+      "evidence": {
+        "file": "orb-bot-green/evidence.json",
+        "sha256": "617c720d1099b64ee929586e596d8b5d19515c0c72f31d1318a57183492acfb6",
+        "bytes": 49104
+      }
+    },
+    {
+      "key": "orb-bot-heart",
+      "coupling": null,
+      "served": {
+        "url": "/models/orb-bot-heart/model-c2.opt-24b0af3b99e52a3a.glb",
+        "sha256": "24b0af3b99e52a3ad6985af4d11036d5507f7687a56a034dd2ff70f106f1d903",
+        "bytes": 430568,
+        "triangles": 3935
+      },
+      "scenes": 1,
+      "meshesNotVerifiable": [],
+      "baseline": {
+        "rawBytes": 430568,
+        "gzip6Bytes": 397585,
+        "triangles": 3935,
+        "vertices": 3414
+      },
+      "variants": [
+        {
+          "variant": "guarded-body",
+          "status": "proof-failed",
+          "rawBytes": 381456,
+          "gzip6Bytes": 351707,
+          "triangles": 2119,
+          "vertices": 2279,
+          "savedGzip6Bytes": 45878,
+          "problems": 1,
+          "proof": "failed",
+          "storage": {
+            "chosen": "source/meshopt",
+            "verified": "source/meshopt",
+            "reason": "source/meshopt: 381456 raw bytes <= the source's 430568, gzip -6 351707 < the source's 397585"
+          },
+          "passes": [
+            {
+              "mesh": 0,
+              "primitive": 0,
+              "passes": 3,
+              "action": "reduced"
+            }
+          ],
+          "sceneCoverage": [
+            {
+              "scene": 0,
+              "comparedPrimitiveInstances": 1,
+              "poses": 15
+            }
+          ],
+          "file": {
+            "file": "orb-bot-heart/guarded-body.glb",
+            "sha256": "2115b1741dc8d1f10b0ed59a4dcad674d452b18f864ae14e12a7a1b915993248",
+            "bytes": 381456
+          }
+        }
+      ],
+      "evidence": {
+        "file": "orb-bot-heart/evidence.json",
+        "sha256": "8b094aa64fb6678b8d938c8dc62a50fd3ba95d843727e329c3dba295af94596d",
+        "bytes": 54221
+      }
+    },
+    {
+      "key": "orb-bot-orange",
+      "coupling": null,
+      "served": {
+        "url": "/models/orb-bot-orange/model-c2.opt-8cb2e35cbf824478.glb",
+        "sha256": "8cb2e35cbf824478ec035b52eb8e81fe6ae6c65666ba8d04b13c1f6628439852",
+        "bytes": 124640,
+        "triangles": 2531
+      },
+      "scenes": 1,
+      "meshesNotVerifiable": [],
+      "baseline": {
+        "rawBytes": 124640,
+        "gzip6Bytes": 99109,
+        "triangles": 2531,
+        "vertices": 1434
+      },
+      "variants": [
+        {
+          "variant": "guarded-body",
+          "status": "proof-pass-not-visually-reviewed",
+          "rawBytes": 87788,
+          "gzip6Bytes": 63779,
+          "triangles": 885,
+          "vertices": 591,
+          "savedGzip6Bytes": 35330,
+          "problems": 0,
+          "proof": "passed",
+          "storage": {
+            "chosen": "source/meshopt",
+            "verified": "source/meshopt",
+            "reason": "source/meshopt: 87788 raw bytes <= the source's 124640, gzip -6 63779 < the source's 99109"
+          },
+          "passes": [
+            {
+              "mesh": 0,
+              "primitive": 0,
+              "passes": 1,
+              "action": "reduced"
+            }
+          ],
+          "sceneCoverage": [
+            {
+              "scene": 0,
+              "comparedPrimitiveInstances": 1,
+              "poses": 15
+            }
+          ],
+          "file": {
+            "file": "orb-bot-orange/guarded-body.glb",
+            "sha256": "bfd5e993edc3a174c1e6bdcbeddf44a5c8d296426b628e13e81af6791f0c4e5c",
+            "bytes": 87788
+          }
+        }
+      ],
+      "evidence": {
+        "file": "orb-bot-orange/evidence.json",
+        "sha256": "dfeec2ef5377ce4be5fb8f0dfae768782dac1e26acc3a17c135ab3e8b080c95b",
+        "bytes": 52305
+      }
+    },
+    {
+      "key": "orb-bot-purple",
+      "coupling": null,
+      "served": {
+        "url": "/models/orb-bot-purple/model-c2.opt-8ed72224b184825f.glb",
+        "sha256": "8ed72224b184825f7d0ccd9f27cb42f9e5793b2883e3742adbb07f98ea4db04c",
+        "bytes": 176072,
+        "triangles": 4000
+      },
+      "scenes": 1,
+      "meshesNotVerifiable": [],
+      "baseline": {
+        "rawBytes": 176072,
+        "gzip6Bytes": 148831,
+        "triangles": 4000,
+        "vertices": 2357
+      },
+      "variants": [
+        {
+          "variant": "guarded-body",
+          "status": "proof-pass-not-visually-reviewed",
+          "rawBytes": 116896,
+          "gzip6Bytes": 92056,
+          "triangles": 1400,
+          "vertices": 1007,
+          "savedGzip6Bytes": 56775,
+          "problems": 0,
+          "proof": "passed",
+          "storage": {
+            "chosen": "source/meshopt",
+            "verified": "source/meshopt",
+            "reason": "source/meshopt: 116896 raw bytes <= the source's 176072, gzip -6 92056 < the source's 148831"
+          },
+          "passes": [
+            {
+              "mesh": 0,
+              "primitive": 0,
+              "passes": 1,
+              "action": "reduced"
+            }
+          ],
+          "sceneCoverage": [
+            {
+              "scene": 0,
+              "comparedPrimitiveInstances": 1,
+              "poses": 15
+            }
+          ],
+          "file": {
+            "file": "orb-bot-purple/guarded-body.glb",
+            "sha256": "96892c56a05dbc1e288becde3b2cf06036475ba97f168566c2fc248da8379d35",
+            "bytes": 116896
+          }
+        }
+      ],
+      "evidence": {
+        "file": "orb-bot-purple/evidence.json",
+        "sha256": "38e1f3b1cd144f197c20483ddc8d18891570983380595429da736e63c3dc2ca1",
+        "bytes": 49095
+      }
+    },
+    {
+      "key": "orb-bot-triangle",
+      "coupling": null,
+      "served": {
+        "url": "/models/orb-bot-triangle/model-c2.opt-d654497256da8a14.glb",
+        "sha256": "d654497256da8a146f7b6b7a3513b0dd9465b71b033a015fcbe76aae7da2e7bf",
+        "bytes": 357600,
+        "triangles": 3993
+      },
+      "scenes": 1,
+      "meshesNotVerifiable": [],
+      "baseline": {
+        "rawBytes": 357600,
+        "gzip6Bytes": 326947,
+        "triangles": 3993,
+        "vertices": 2990
+      },
+      "variants": [
+        {
+          "variant": "guarded-body",
+          "status": "proof-pass-not-visually-reviewed",
+          "rawBytes": 288288,
+          "gzip6Bytes": 262156,
+          "triangles": 1397,
+          "vertices": 1372,
+          "savedGzip6Bytes": 64791,
+          "problems": 0,
+          "proof": "passed",
+          "storage": {
+            "chosen": "source/meshopt",
+            "verified": "source/meshopt",
+            "reason": "source/meshopt: 288288 raw bytes <= the source's 357600, gzip -6 262156 < the source's 326947"
+          },
+          "passes": [
+            {
+              "mesh": 0,
+              "primitive": 0,
+              "passes": 2,
+              "action": "reduced"
+            }
+          ],
+          "sceneCoverage": [
+            {
+              "scene": 0,
+              "comparedPrimitiveInstances": 1,
+              "poses": 15
+            }
+          ],
+          "file": {
+            "file": "orb-bot-triangle/guarded-body.glb",
+            "sha256": "47bc08356ee7913ba141efac484d0ffa5f52fc860ddc3f424eeef52053923184",
+            "bytes": 288288
+          }
+        }
+      ],
+      "evidence": {
+        "file": "orb-bot-triangle/evidence.json",
+        "sha256": "c45d2866f7f2116fca6fcf8e43b9e50286fb638b8f5387516b5cae3160f214be",
+        "bytes": 53223
+      }
+    },
+    {
+      "key": "orb-bot-white",
+      "coupling": null,
+      "served": {
+        "url": "/models/orb-bot-white/model-c2.opt-c7b6b6878646330a.glb",
+        "sha256": "c7b6b6878646330a8769fa0f0e1f5ea829d75fd480ed3031c049f58a8aec1236",
+        "bytes": 176448,
+        "triangles": 4000
+      },
+      "scenes": 1,
+      "meshesNotVerifiable": [],
+      "baseline": {
+        "rawBytes": 176448,
+        "gzip6Bytes": 148668,
+        "triangles": 4000,
+        "vertices": 2426
+      },
+      "variants": [
+        {
+          "variant": "guarded-body",
+          "status": "proof-pass-not-visually-reviewed",
+          "rawBytes": 116456,
+          "gzip6Bytes": 91103,
+          "triangles": 1400,
+          "vertices": 1064,
+          "savedGzip6Bytes": 57565,
+          "problems": 0,
+          "proof": "passed",
+          "storage": {
+            "chosen": "source/meshopt",
+            "verified": "source/meshopt",
+            "reason": "source/meshopt: 116456 raw bytes <= the source's 176448, gzip -6 91103 < the source's 148668"
+          },
+          "passes": [
+            {
+              "mesh": 0,
+              "primitive": 0,
+              "passes": 1,
+              "action": "reduced"
+            }
+          ],
+          "sceneCoverage": [
+            {
+              "scene": 0,
+              "comparedPrimitiveInstances": 1,
+              "poses": 15
+            }
+          ],
+          "file": {
+            "file": "orb-bot-white/guarded-body.glb",
+            "sha256": "01e43c87f62b8fd17b95bee23c3d7d3af2ad7d12d4ea80076e67f16abdc3a74d",
+            "bytes": 116456
+          }
+        }
+      ],
+      "evidence": {
+        "file": "orb-bot-white/evidence.json",
+        "sha256": "99c5bea49ff112dad80cc951ed8d577c97bb59f9cac657513d63d982a6a9348f",
+        "bytes": 49100
+      }
+    },
+    {
+      "key": "otani-mascot",
+      "coupling": null,
+      "served": {
+        "url": "/models/otani-mascot/model-r02.glb",
+        "sha256": "16c87d4ba64622cb08610919f7b989298e1332c65364b6ee219823b3fa943e5d",
+        "bytes": 6785896,
+        "triangles": 23453
+      },
+      "scenes": 1,
+      "meshesNotVerifiable": [],
+      "baseline": {
+        "rawBytes": 6785896,
+        "gzip6Bytes": 5392628,
+        "triangles": 23453,
+        "vertices": 24055
+      },
+      "variants": [
+        {
+          "variant": "guarded-body",
+          "status": "proof-pass-not-visually-reviewed",
+          "rawBytes": 5601560,
+          "gzip6Bytes": 5285970,
+          "triangles": 19395,
+          "vertices": 20943,
+          "savedGzip6Bytes": 106658,
+          "problems": 0,
+          "proof": "passed",
+          "storage": {
+            "chosen": "source/meshopt",
+            "verified": "source/meshopt",
+            "reason": "source/meshopt: 5601560 raw bytes <= the source's 6785896, gzip -6 5285970 < the source's 5392628"
+          },
+          "passes": [
+            {
+              "mesh": 0,
+              "primitive": 0,
+              "passes": 3,
+              "action": "reduced"
+            }
+          ],
+          "sceneCoverage": [
+            {
+              "scene": 0,
+              "comparedPrimitiveInstances": 1,
+              "poses": 17
+            }
+          ],
+          "file": {
+            "file": "otani-mascot/guarded-body.glb",
+            "sha256": "0d2992830274fa498cbe5151960e6fd3a7bd1d168d836c2137e939d0fec4c7f8",
+            "bytes": 5601560
+          }
+        }
+      ],
+      "evidence": {
+        "file": "otani-mascot/evidence.json",
+        "sha256": "ed56d2e39a4fedb097fcea33bfb5b75eef59c9c39903dd5daaa5c3084d3a2aba",
+        "bytes": 81086
+      }
+    },
+    {
+      "key": "rei-mascot",
+      "coupling": null,
+      "served": {
+        "url": "/models/rei-mascot/model-r01.glb",
+        "sha256": "556ef3186a560fd430ce0b31a7f564d6995feff4c5c48426453b2e2b5d7a5b68",
+        "bytes": 6498892,
+        "triangles": 23178
+      },
+      "scenes": 1,
+      "meshesNotVerifiable": [],
+      "baseline": {
+        "rawBytes": 6498892,
+        "gzip6Bytes": 4884505,
+        "triangles": 23178,
+        "vertices": 29513
+      },
+      "variants": [
+        {
+          "variant": "guarded-body",
+          "status": "proof-pass-not-visually-reviewed",
+          "rawBytes": 6357368,
+          "gzip6Bytes": 4801774,
+          "triangles": 20476,
+          "vertices": 27102,
+          "savedGzip6Bytes": 82731,
+          "problems": 0,
+          "proof": "passed",
+          "storage": {
+            "chosen": "source/plain",
+            "verified": "source/plain",
+            "reason": "source/plain: 6357368 raw bytes <= the source's 6498892, gzip -6 4801774 < the source's 4884505"
+          },
+          "passes": [
+            {
+              "mesh": 0,
+              "primitive": 0,
+              "passes": 3,
+              "action": "reduced"
+            }
+          ],
+          "sceneCoverage": [
+            {
+              "scene": 0,
+              "comparedPrimitiveInstances": 1,
+              "poses": 17
+            }
+          ],
+          "file": {
+            "file": "rei-mascot/guarded-body.glb",
+            "sha256": "bf2f14f4894293f1e6ed5a5eb820ab30ee3ff95c6d1c87c518d2e6d6434026be",
+            "bytes": 6357368
+          }
+        }
+      ],
+      "evidence": {
+        "file": "rei-mascot/evidence.json",
+        "sha256": "5d938e22e4837a3d6a10db75a4174f5042c9609e4bf2821940395f5dc7f95c03",
+        "bytes": 84725
+      }
+    },
+    {
+      "key": "rimo-neko",
+      "coupling": null,
+      "served": {
+        "url": "/models/rimo-neko/model-c2.opt-858fbf0413ae556b.glb",
+        "sha256": "858fbf0413ae556b29fcf681f3c1a8459ae920fd1dccf7bd5b0df6de6dfd604d",
+        "bytes": 3600960,
+        "triangles": 27474
+      },
+      "scenes": 1,
+      "meshesNotVerifiable": [],
+      "baseline": {
+        "rawBytes": 3600960,
+        "gzip6Bytes": 3031994,
+        "triangles": 27474,
+        "vertices": 46239
+      },
+      "variants": [
+        {
+          "variant": "guarded-body",
+          "status": "proof-pass-not-visually-reviewed",
+          "rawBytes": 3502368,
+          "gzip6Bytes": 2943551,
+          "triangles": 25590,
+          "vertices": 44358,
+          "savedGzip6Bytes": 88443,
+          "problems": 0,
+          "proof": "passed",
+          "storage": {
+            "chosen": "source/meshopt",
+            "verified": "source/meshopt",
+            "reason": "source/meshopt: 3502368 raw bytes <= the source's 3600960, gzip -6 2943551 < the source's 3031994"
+          },
+          "passes": [
+            {
+              "mesh": 0,
+              "primitive": 0,
+              "passes": 2,
+              "action": "reduced"
+            }
+          ],
+          "sceneCoverage": [
+            {
+              "scene": 0,
+              "comparedPrimitiveInstances": 1,
+              "poses": 15
+            }
+          ],
+          "file": {
+            "file": "rimo-neko/guarded-body.glb",
+            "sha256": "5787091de92988bd62db552ad5519c80792438e49f3be06874e352a779a5798e",
+            "bytes": 3502368
+          }
+        }
+      ],
+      "evidence": {
+        "file": "rimo-neko/evidence.json",
+        "sha256": "3e7c2631c206f19ce2eac72b2bd9af6583e4abd8f8eaf5094af886c1f3f60d6a",
+        "bytes": 82658
+      }
+    },
+    {
+      "key": "saber-mascot",
+      "coupling": null,
+      "served": {
+        "url": "/models/saber-mascot/model-r01.glb",
+        "sha256": "f219a9907e641df0b1eee9abbd69997744526b3b7910f9491163dbdfd45809de",
+        "bytes": 7781548,
+        "triangles": 23687
+      },
+      "scenes": 1,
+      "meshesNotVerifiable": [],
+      "baseline": {
+        "rawBytes": 7781548,
+        "gzip6Bytes": 5927842,
+        "triangles": 23687,
+        "vertices": 31234
+      },
+      "variants": [
+        {
+          "variant": "guarded-body",
+          "status": "proof-pass-not-visually-reviewed",
+          "rawBytes": 6341672,
+          "gzip6Bytes": 5849029,
+          "triangles": 21359,
+          "vertices": 29153,
+          "savedGzip6Bytes": 78813,
+          "problems": 0,
+          "proof": "passed",
+          "storage": {
+            "chosen": "source/meshopt",
+            "verified": "source/meshopt",
+            "reason": "source/meshopt: 6341672 raw bytes <= the source's 7781548, gzip -6 5849029 < the source's 5927842"
+          },
+          "passes": [
+            {
+              "mesh": 0,
+              "primitive": 0,
+              "passes": 3,
+              "action": "reduced"
+            }
+          ],
+          "sceneCoverage": [
+            {
+              "scene": 0,
+              "comparedPrimitiveInstances": 1,
+              "poses": 17
+            }
+          ],
+          "file": {
+            "file": "saber-mascot/guarded-body.glb",
+            "sha256": "214d4eeee3e266945efdc428ca8364c4b2ffe10e01518a408a7806708c27d87f",
+            "bytes": 6341672
+          }
+        }
+      ],
+      "evidence": {
+        "file": "saber-mascot/evidence.json",
+        "sha256": "7b0b6b663377dc82e2a43d42e55f4933053a2f0a009698cceeb4a1b2d290233c",
+        "bytes": 92050
+      }
+    },
+    {
+      "key": "sabertooth-tiger",
+      "coupling": null,
+      "served": {
+        "url": "/models/sabertooth-tiger/model-c2.opt-8cb907166a4f9fdb.glb",
+        "sha256": "8cb907166a4f9fdb691c95da3a5f90b6ab804f61326c942f5f5e81b97e788cd2",
+        "bytes": 3691560,
+        "triangles": 38535
+      },
+      "scenes": 1,
+      "meshesNotVerifiable": [],
+      "baseline": {
+        "rawBytes": 3691560,
+        "gzip6Bytes": 3079542,
+        "triangles": 38535,
+        "vertices": 49320
+      },
+      "variants": [
+        {
+          "variant": "guarded-body",
+          "status": "proof-failed",
+          "rawBytes": 3607804,
+          "gzip6Bytes": 3004722,
+          "triangles": 36587,
+          "vertices": 47846,
+          "savedGzip6Bytes": 74820,
+          "problems": 4,
+          "proof": "failed",
+          "storage": {
+            "chosen": "source/meshopt",
+            "verified": "source/meshopt",
+            "reason": "source/meshopt: 3607804 raw bytes <= the source's 3691560, gzip -6 3004722 < the source's 3079542"
+          },
+          "passes": [
+            {
+              "mesh": 0,
+              "primitive": 0,
+              "passes": 2,
+              "action": "reduced"
+            }
+          ],
+          "sceneCoverage": [
+            {
+              "scene": 0,
+              "comparedPrimitiveInstances": 1,
+              "poses": 23
+            }
+          ],
+          "file": {
+            "file": "sabertooth-tiger/guarded-body.glb",
+            "sha256": "f900d52e85f472cfe6389f047a1a3d426fc66eab37dd6cd72ba2af98d8d87288",
+            "bytes": 3607804
+          }
+        }
+      ],
+      "evidence": {
+        "file": "sabertooth-tiger/evidence.json",
+        "sha256": "bab10466cb296213d4def38c4b9201ca2c544c042ba5c23b6d0706cc7a1c0b1c",
+        "bytes": 112130
+      }
+    },
+    {
+      "key": "sagasa-mascot",
+      "coupling": null,
+      "served": {
+        "url": "/models/sagasa-mascot/model-r03.glb",
+        "sha256": "4f06be7e91e280d8db6d21edba5bb39c044c614075464c04e42396c84b0b57b3",
+        "bytes": 6685712,
+        "triangles": 23632
+      },
+      "scenes": 1,
+      "meshesNotVerifiable": [],
+      "baseline": {
+        "rawBytes": 6685712,
+        "gzip6Bytes": 4711662,
+        "triangles": 23632,
+        "vertices": 36422
+      },
+      "variants": [
+        {
+          "variant": "guarded-body",
+          "status": "retained",
+          "reason": "no primitive reached a useful reduction under this variant; nothing is written"
+        }
+      ],
+      "evidence": {
+        "file": "sagasa-mascot/evidence.json",
+        "sha256": "bdd74117fa04a6a775f6d8a29b74785b467b6a1be69e610b96e526a474d3522d",
+        "bytes": 9554
+      }
+    },
+    {
+      "key": "shell-midden",
+      "coupling": null,
+      "served": {
+        "url": "/models/shell-midden/model-c2.opt-2d1fa0d48b759d83.glb",
+        "sha256": "2d1fa0d48b759d83b51fe3f10069d51f1afa08ac1b4bb6907335d212e61eaacb",
+        "bytes": 1382268,
+        "triangles": 8940
+      },
+      "scenes": 1,
+      "meshesNotVerifiable": [],
+      "baseline": {
+        "rawBytes": 1382268,
+        "gzip6Bytes": 1329914,
+        "triangles": 8940,
+        "vertices": 13525
+      },
+      "variants": [
+        {
+          "variant": "guarded-body",
+          "status": "retained",
+          "reason": "no primitive reached a useful reduction under this variant; nothing is written"
+        }
+      ],
+      "evidence": {
+        "file": "shell-midden/evidence.json",
+        "sha256": "186705537b1a4f21c1613c7eed351e63fc4c8f96f326c80b63827738fdebdaf8",
+        "bytes": 7368
+      }
+    },
+    {
+      "key": "urata-mascot",
+      "coupling": null,
+      "served": {
+        "url": "/models/urata-mascot/model-r02.glb",
+        "sha256": "39c47be2d4bcb2232a7e3bd67329f2ce3db4adb25f2c939c4f42572cfabd5f45",
+        "bytes": 6444916,
+        "triangles": 23877
+      },
+      "scenes": 1,
+      "meshesNotVerifiable": [],
+      "baseline": {
+        "rawBytes": 6444916,
+        "gzip6Bytes": 5026907,
+        "triangles": 23877,
+        "vertices": 24323
+      },
+      "variants": [
+        {
+          "variant": "guarded-body",
+          "status": "proof-pass-not-visually-reviewed",
+          "rawBytes": 5285780,
+          "gzip6Bytes": 4969286,
+          "triangles": 22287,
+          "vertices": 23098,
+          "savedGzip6Bytes": 57621,
+          "problems": 0,
+          "proof": "passed",
+          "storage": {
+            "chosen": "source/meshopt",
+            "verified": "source/meshopt",
+            "reason": "source/meshopt: 5285780 raw bytes <= the source's 6444916, gzip -6 4969286 < the source's 5026907"
+          },
+          "passes": [
+            {
+              "mesh": 0,
+              "primitive": 0,
+              "passes": 2,
+              "action": "reduced"
+            }
+          ],
+          "sceneCoverage": [
+            {
+              "scene": 0,
+              "comparedPrimitiveInstances": 1,
+              "poses": 17
+            }
+          ],
+          "file": {
+            "file": "urata-mascot/guarded-body.glb",
+            "sha256": "b6798a9dd75be016915b803d6381f963009f618a798b3b4ca4d6637279374e5a",
+            "bytes": 5285780
+          }
+        }
+      ],
+      "evidence": {
+        "file": "urata-mascot/evidence.json",
+        "sha256": "35c7dfe5045ba9e81502a725240d66fe215d51c0f46ac6da65bc94142334fbc0",
+        "bytes": 84301
+      }
+    },
+    {
+      "key": "valley-castle",
+      "coupling": "castle floor atlas is measured from the delivered mesh (tests/castle.test.mjs)",
+      "served": {
+        "url": "/models/valley-castle/model-r13-normal.opt-91e2120315e99a29.glb",
+        "sha256": "91e2120315e99a291827bd2d328f28942b058df1b712b185fffe6b91f3a3c86b",
+        "bytes": 6719356,
+        "triangles": 127254
+      },
+      "scenes": 1,
+      "meshesNotVerifiable": [],
+      "baseline": {
+        "rawBytes": 6719356,
+        "gzip6Bytes": 6270826,
+        "triangles": 127254,
+        "vertices": 180315
+      },
+      "variants": [
+        {
+          "variant": "guarded-body",
+          "status": "retained",
+          "reason": "no primitive reached a useful reduction under this variant; nothing is written"
+        }
+      ],
+      "evidence": {
+        "file": "valley-castle/evidence.json",
+        "sha256": "af313061d5e4289c14724f69dd7dd84ffc3522752d7532682c071a34390acc56",
+        "bytes": 7471
+      }
+    },
+    {
+      "key": "violet-behemoth",
+      "coupling": null,
+      "served": {
+        "url": "/models/violet-behemoth/model-c2.opt-bcd866c42f134d3a.glb",
+        "sha256": "bcd866c42f134d3a14b75236a77fd18bb87b12d5fa70c89cb29e6d778b78b925",
+        "bytes": 3835212,
+        "triangles": 39825
+      },
+      "scenes": 1,
+      "meshesNotVerifiable": [],
+      "baseline": {
+        "rawBytes": 3835212,
+        "gzip6Bytes": 3085486,
+        "triangles": 39825,
+        "vertices": 36790
+      },
+      "variants": [
+        {
+          "variant": "guarded-body",
+          "status": "retained",
+          "reason": "no primitive reached a useful reduction under this variant; nothing is written"
+        }
+      ],
+      "evidence": {
+        "file": "violet-behemoth/evidence.json",
+        "sha256": "93e48ddc8a239f257af562f003a0a19c033d593ba18d28c3b5688f89eb8e325e",
+        "bytes": 9187
+      }
+    },
+    {
+      "key": "volcanic-basalt-columns",
+      "coupling": "regional shapes are measured from the delivered mesh (shared/region-features.mts)",
+      "served": {
+        "url": "/models/volcanic-basalt-columns/model-c2.opt-8ed4d0195a42662b.glb",
+        "sha256": "8ed4d0195a42662bd1c508e408d3e71d085b85ba0cf7489503d70879d1fa8b7b",
+        "bytes": 1751796,
+        "triangles": 13608
+      },
+      "scenes": 1,
+      "meshesNotVerifiable": [],
+      "baseline": {
+        "rawBytes": 1751796,
+        "gzip6Bytes": 1668121,
+        "triangles": 13608,
+        "vertices": 23538
+      },
+      "variants": [
+        {
+          "variant": "guarded-body",
+          "status": "retained",
+          "reason": "no primitive reached a useful reduction under this variant; nothing is written"
+        }
+      ],
+      "evidence": {
+        "file": "volcanic-basalt-columns/evidence.json",
+        "sha256": "70e865e7eb511268f72f3976ae09fa98ed06b9eaeea4ad34bbe1f47b194a8c11",
+        "bytes": 7714
+      }
+    },
+    {
+      "key": "volcanic-cone",
+      "coupling": "landmark bounds are measured from the delivered mesh (shared/landmark-bounds.mts)",
+      "served": {
+        "url": "/models/volcanic-cone/model-c1-normal.opt-75dee9d1cf9b1f4c.glb",
+        "sha256": "75dee9d1cf9b1f4cebc68e8eae0c8a2ec14dda1b198d19c1c29865940bab6325",
+        "bytes": 2149252,
+        "triangles": 13382
+      },
+      "scenes": 1,
+      "meshesNotVerifiable": [],
+      "baseline": {
+        "rawBytes": 2149252,
+        "gzip6Bytes": 2104054,
+        "triangles": 13382,
+        "vertices": 15708
+      },
+      "variants": [
+        {
+          "variant": "guarded-body",
+          "status": "retained",
+          "reason": "no primitive reached a useful reduction under this variant; nothing is written"
+        }
+      ],
+      "evidence": {
+        "file": "volcanic-cone/evidence.json",
+        "sha256": "ca2bdd63c576bbf8f882fac2db15c5491e762f810f3c75012d84d462d1411871",
+        "bytes": 7264
+      }
+    },
+    {
+      "key": "volcanic-ground",
+      "coupling": null,
+      "served": {
+        "url": "/models/volcanic-ground/model.opt-7190ebc39878ee0c.glb",
+        "sha256": "7190ebc39878ee0c1969cbdc9af15dbc6aaa8c24017dd01fc287285a6d12f58f",
+        "bytes": 1456068,
+        "triangles": 5594
+      },
+      "scenes": 1,
+      "meshesNotVerifiable": [],
+      "baseline": {
+        "rawBytes": 1456068,
+        "gzip6Bytes": 1443111,
+        "triangles": 5594,
+        "vertices": 4706
+      },
+      "variants": [
+        {
+          "variant": "guarded-body",
+          "status": "proof-pass-not-visually-reviewed",
+          "rawBytes": 1443480,
+          "gzip6Bytes": 1431467,
+          "triangles": 5004,
+          "vertices": 4283,
+          "savedGzip6Bytes": 11644,
+          "problems": 0,
+          "proof": "passed",
+          "storage": {
+            "chosen": "source/meshopt",
+            "verified": "source/meshopt",
+            "reason": "source/meshopt: 1443480 raw bytes <= the source's 1456068, gzip -6 1431467 < the source's 1443111"
+          },
+          "passes": [
+            {
+              "mesh": 0,
+              "primitive": 0,
+              "passes": 2,
+              "action": "reduced"
+            }
+          ],
+          "sceneCoverage": [
+            {
+              "scene": 0,
+              "comparedPrimitiveInstances": 1,
+              "poses": 1
+            }
+          ],
+          "file": {
+            "file": "volcanic-ground/guarded-body.glb",
+            "sha256": "617119273b74748f10e74a5ea6e8eda71afab06bd545233b13f01f71844f326a",
+            "bytes": 1443480
+          }
+        }
+      ],
+      "evidence": {
+        "file": "volcanic-ground/evidence.json",
+        "sha256": "2a6c36fe325b472224c487809064032c7cfe1474a0e172f2b2b02f8ded44b96a",
+        "bytes": 20416
+      }
+    },
+    {
+      "key": "wooden-spear",
+      "coupling": null,
+      "served": {
+        "url": "/models/wooden-spear/model-c2.opt-0b7e1417d8d1948c.glb",
+        "sha256": "0b7e1417d8d1948c05cce074a28232384ced61a6543971c41f26f2cd7623747b",
+        "bytes": 140588,
+        "triangles": 2500
+      },
+      "scenes": 1,
+      "meshesNotVerifiable": [],
+      "baseline": {
+        "rawBytes": 140588,
+        "gzip6Bytes": 134247,
+        "triangles": 2500,
+        "vertices": 1742
+      },
+      "variants": [
+        {
+          "variant": "guarded-body",
+          "status": "proof-pass-not-visually-reviewed",
+          "rawBytes": 97860,
+          "gzip6Bytes": 93908,
+          "triangles": 874,
+          "vertices": 752,
+          "savedGzip6Bytes": 40339,
+          "problems": 0,
+          "proof": "passed",
+          "storage": {
+            "chosen": "source/meshopt",
+            "verified": "source/meshopt",
+            "reason": "source/meshopt: 97860 raw bytes <= the source's 140588, gzip -6 93908 < the source's 134247"
+          },
+          "passes": [
+            {
+              "mesh": 0,
+              "primitive": 0,
+              "passes": 3,
+              "action": "reduced"
+            }
+          ],
+          "sceneCoverage": [
+            {
+              "scene": 0,
+              "comparedPrimitiveInstances": 1,
+              "poses": 1
+            }
+          ],
+          "file": {
+            "file": "wooden-spear/guarded-body.glb",
+            "sha256": "71a3a7ecb4d2e570667c3b44f2a49d3b4647221de887f708fbca8188dd1838be",
+            "bytes": 97860
+          }
+        }
+      ],
+      "evidence": {
+        "file": "wooden-spear/evidence.json",
+        "sha256": "c7c230f8e3d946cc66fd6bbeb08cdf95519acf5b64d60838d82c0b26a3dd8b65",
+        "bytes": 20616
+      }
+    },
+    {
+      "key": "woolly-mammoth",
+      "coupling": null,
+      "served": {
+        "url": "/models/woolly-mammoth/model-c2.opt-123d25330b9ae714.glb",
+        "sha256": "123d25330b9ae7149ba7ff2eddb733b326f95c888f68d19951706929466caeda",
+        "bytes": 4337632,
+        "triangles": 39982
+      },
+      "scenes": 1,
+      "meshesNotVerifiable": [],
+      "baseline": {
+        "rawBytes": 4337632,
+        "gzip6Bytes": 3701513,
+        "triangles": 39982,
+        "vertices": 72944
+      },
+      "variants": [
+        {
+          "variant": "guarded-body",
+          "status": "retained",
+          "reason": "no primitive reached a useful reduction under this variant; nothing is written"
+        }
+      ],
+      "evidence": {
+        "file": "woolly-mammoth/evidence.json",
+        "sha256": "027e806ecd533516ee52b3655c0831485f339e640d18b868943e6a0247776cff",
+        "bytes": 9343
+      }
+    },
+    {
+      "key": "yellow-524-mascot",
+      "coupling": null,
+      "served": {
+        "url": "/models/yellow-524-mascot/model-c2.opt-b5f96efd14f833f9.glb",
+        "sha256": "b5f96efd14f833f94ccf9bf12a5563fe4ab9e976dd9ab899b75a2bb83f81064d",
+        "bytes": 1012232,
+        "triangles": 24997
+      },
+      "scenes": 1,
+      "meshesNotVerifiable": [],
+      "baseline": {
+        "rawBytes": 1012232,
+        "gzip6Bytes": 906203,
+        "triangles": 24997,
+        "vertices": 16255
+      },
+      "variants": [
+        {
+          "variant": "guarded-body",
+          "status": "proof-pass-not-visually-reviewed",
+          "rawBytes": 587740,
+          "gzip6Bytes": 511128,
+          "triangles": 8747,
+          "vertices": 6452,
+          "savedGzip6Bytes": 395075,
+          "problems": 0,
+          "proof": "passed",
+          "storage": {
+            "chosen": "source/meshopt",
+            "verified": "source/meshopt",
+            "reason": "source/meshopt: 587740 raw bytes <= the source's 1012232, gzip -6 511128 < the source's 906203"
+          },
+          "passes": [
+            {
+              "mesh": 0,
+              "primitive": 0,
+              "passes": 2,
+              "action": "reduced"
+            }
+          ],
+          "sceneCoverage": [
+            {
+              "scene": 0,
+              "comparedPrimitiveInstances": 1,
+              "poses": 3
+            }
+          ],
+          "file": {
+            "file": "yellow-524-mascot/guarded-body.glb",
+            "sha256": "69c4fa0d21c8f2406f1b73f180612e928b2f16ca7b5f5e46e2e579a64f74edf5",
+            "bytes": 587740
+          }
+        }
+      ],
+      "evidence": {
+        "file": "yellow-524-mascot/evidence.json",
+        "sha256": "010de12a736cb79e01b301a0288a53c45b091eddf21c6bb68c26b52971957f0c",
+        "bytes": 27984
+      }
+    }
+  ],
+  "implementationAfterRun": {
+    "digest": "c7ee69f6a2c0fd96f159e5356ce75b8cc59389340bc56925ac83691db00b7806",
+    "changedDuringRun": false,
+    "changedFiles": []
+  }
+}

@@ -1,0 +1,64 @@
+{
+  "modelKey": "crow-ivory-vestment",
+  "name": "白羽教皇の象牙色の祭服",
+  "kind": "prop",
+  "candidate": 2,
+  "revision": "c2-m01",
+  "status": "remake-candidate-2-integrated",
+  "url": "/models/crow-ivory-vestment/model-c2.opt-002ce6bd45b0d351.glb",
+  "sha256": "002ce6bd45b0d351f644064b3375a8e2c403a5518a653c5acab0559e70c18018",
+  "bytes": 836900,
+  "triangles": 2584,
+  "upAxis": "Y",
+  "forwardAxis": "+Z",
+  "heightMetres": 0.8921,
+  "widthMetres": 1.2499,
+  "placement": {
+    "pivot": "ground-centred",
+    "min": [
+      -0.625,
+      0.0013056867755949497,
+      -0.5146658420562744
+    ],
+    "max": [
+      0.6248699426651001,
+      0.8933765888214111,
+      0.5145100355148315
+    ],
+    "attachment": "crow rig bone (src/crow-faction-visuals.ts CROW_RANK_PARTS)"
+  },
+  "clips": [],
+  "lods": [],
+  "notes": [
+    "Replaces the code-built primitive CrowPontiffVestmentL/R (two half-spheres). Codex image_gen reference -> TRELLIS-2 1024 -> meshopt 2584 tris -> xatlas -> albedo + baked normal. Ground-centred pivot, +Y up."
+  ],
+  "onDemand": true,
+  "replaces": "code-built primitives: CrowPontiffVestmentL/R (two half-spheres)",
+  "provenance": {
+    "provider": "Claude Code (Opus 5.5)",
+    "claudeUsed": true,
+    "referenceGenerator": "Codex CLI built-in image_gen (gpt-5.6-sol, medium)",
+    "referenceImage": "C:/Users/yurin/Desktop/projects/CRO-MAGNON/output/model-generation/models/crow-ivory-vestment/source/original/candidate2-ref-a.png",
+    "referenceSha256": "340619856c7c01ae731dbc9a334a283e0dac9635a00899cf818404ddeb48b3e8",
+    "reconstruction": "Local TRELLIS-2 v0.8.1, res 1024, tex 1024, seed recorded in dense JSON",
+    "denseFile": "C:/Users/yurin/Desktop/projects/CRO-MAGNON/output/model-generation/models/crow-ivory-vestment/work/candidate-02/trellis/dense-ref2a-res1024-tex1024-seed0042.glb",
+    "denseSha256": "5e3e2a348ae07bc22d92511bf9f8297bd0c4e1da8bc8d78225af865de096944e",
+    "processReport": "output/model-generation/models/crow-ivory-vestment/work/candidate-02/low-poly/m01/process-report.json",
+    "pipeline": "scripts/remake/ (trellis_queue.py, meshopt_reduce.mjs, xatlas_unwrap.py, remake_process.py); docs/asset-remake/PLAN.md",
+    "previousDelivery": null,
+    "visualReview": "assets/asset-remake/reviews/crow-ivory-vestment.json"
+  },
+  "runtimeOptimization": {
+    "adoption": "20261010-r05-a02",
+    "candidateRevision": "assets/optimized-runtime/20261009-r04",
+    "selection": "ordinary-compressed",
+    "original": {
+      "url": "/models/crow-ivory-vestment/model-c2.glb",
+      "sha256": "492aa9059767549c9436dbd71846751cead5b3becc97a5eda9d3a60bac4867fa",
+      "bytes": 892864,
+      "triangles": 2584,
+      "lods": []
+    },
+    "adoptedBy": "20261009-r04-a01"
+  }
+}

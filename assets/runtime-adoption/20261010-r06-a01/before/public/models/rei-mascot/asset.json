@@ -1,0 +1,139 @@
+{
+  "modelKey": "rei-mascot",
+  "name": "怜ちゃん",
+  "kind": "companion",
+  "candidate": 1,
+  "revision": "r01",
+  "status": "friend-mascot-integrated",
+  "url": "/models/rei-mascot/model-r01.glb",
+  "sha256": "556ef3186a560fd430ce0b31a7f564d6995feff4c5c48426453b2e2b5d7a5b68",
+  "bytes": 6498892,
+  "triangles": 23178,
+  "bones": 25,
+  "upAxis": "Y",
+  "forwardAxis": "+Z",
+  "heightMetres": 0.52,
+  "widthMetres": 0.4126099314209898,
+  "lengthMetres": 0.19587706870451357,
+  "petContactMetres": 0.5199999809265137,
+  "placement": {
+    "pivot": "ground-between-shoes",
+    "scale": 1
+  },
+  "portrait": {
+    "url": "/models/rei-mascot/portrait.png",
+    "sha256": "c69e87710c67628b8cef896756360b4ad55e2af7a4f9f3b0c03fbbd8f9f4e8f2"
+  },
+  "clips": [
+    {
+      "name": "Idle_Loop",
+      "seconds": 3,
+      "loop": true,
+      "fps": 60,
+      "rootMotion": "in-place"
+    },
+    {
+      "name": "Walk_Loop",
+      "seconds": 0.7166666666666667,
+      "loop": true,
+      "fps": 60,
+      "rootMotion": "in-place"
+    },
+    {
+      "name": "Run_Loop",
+      "seconds": 0.4,
+      "loop": true,
+      "fps": 60,
+      "rootMotion": "in-place"
+    },
+    {
+      "name": "Pet",
+      "seconds": 1.4,
+      "loop": false,
+      "fps": 60,
+      "rootMotion": "in-place"
+    },
+    {
+      "name": "Happy",
+      "seconds": 1.4,
+      "loop": false,
+      "fps": 60,
+      "rootMotion": "in-place"
+    },
+    {
+      "name": "Hit",
+      "seconds": 0.65,
+      "loop": false,
+      "fps": 60,
+      "rootMotion": "in-place"
+    },
+    {
+      "name": "Wave",
+      "seconds": 1.8,
+      "loop": false,
+      "fps": 60,
+      "rootMotion": "in-place"
+    },
+    {
+      "name": "Bow",
+      "seconds": 1.6,
+      "loop": false,
+      "fps": 60,
+      "rootMotion": "in-place"
+    }
+  ],
+  "locomotion": {
+    "Walk_Loop": {
+      "metresPerSecond": 0.234214390835946,
+      "cycleSeconds": 0.72
+    },
+    "Run_Loop": {
+      "metresPerSecond": 0.8809905424708567,
+      "cycleSeconds": 0.4
+    }
+  },
+  "lods": [
+    {
+      "url": "/models/rei-mascot/lod-r01.glb",
+      "sha256": "ae22058eccecafcdded06469d849a22736ad9d723addd41793a90d92c6212a48",
+      "bytes": 634808,
+      "triangles": 6947,
+      "distanceMetres": 8,
+      "purpose": "animated-medium-lod-geometry"
+    }
+  ],
+  "provenance": {
+    "provider": "Claude Code (Opus 5.5)",
+    "claudeUsed": true,
+    "referenceGenerator": "Codex CLI 0.162.0-alpha.2 built-in image_gen (configured default model, unelevated sandbox); request and prompt saved beside the reference",
+    "referenceImage": "assets/friend-mascots/rei-mascot/source/reference-v1.png",
+    "referenceSha256": "3f47898c4e427b94af22a441f7decf3898327d59dd9030301aa5bf88915f8b57",
+    "identitySources": [
+      "assets/friend-mascots/rei-mascot/source/user-reference-sheet.png",
+      "assets/friend-mascots/rei-mascot/source/user-reference-illustration.jpg"
+    ],
+    "reconstruction": "Local TRELLIS-2 v0.8.1, res 1024, tex 1024, seed 42",
+    "denseSha256": "c27b32c8e407771f9e4c34b717def401bb27ccc75b049b69e5d4449575cd2443",
+    "reduction": "meshoptimizer position-only quadric reduction of the dense surface; fresh Smart UV; 2048 diffuse-colour bake from the dense TRELLIS albedo (Blender 3.6 Cycles, selected to active)",
+    "deviationMetres": {
+      "denseToLow": {
+        "rms": 0.0004141844430521419,
+        "p95": 0.0008056633310784431,
+        "max": 0.0025604859029427066
+      },
+      "lowToDense": {
+        "rms": 0.00040277039154647026,
+        "p95": 0.0007992730291701551,
+        "max": 0.0020262053105291394
+      }
+    },
+    "surfaceSha256": "26fc2548c3b21fc412532786bef1dfedc8899d8bc30b9f2598be0d2974cf0e73",
+    "rig": "assets/friend-mascots/workflow/rig.py with assets/friend-mascots/rei-mascot/rig.json",
+    "rigSha256": "556ef3186a560fd430ce0b31a7f564d6995feff4c5c48426453b2e2b5d7a5b68",
+    "pipeline": "assets/friend-mascots/README.md",
+    "visualReview": "output/model-generation/models/rei-mascot/work/rig/revision-01/poses"
+  },
+  "notes": [
+    "Contributor companion. 23178 triangles, 25 bones, 8 in-place 60 fps clips; LOD 6947 triangles shares the skeleton from 8 m. Lowest authored vertex 0.0010 m."
+  ]
+}

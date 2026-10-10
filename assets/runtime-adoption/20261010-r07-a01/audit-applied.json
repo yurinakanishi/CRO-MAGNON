@@ -1,0 +1,401 @@
+{
+  "schema": "cro-magnon/runtime-adoption-audit@1",
+  "adoption": "20261010-r07-a01",
+  "planSha256": "73870b1350ab872299152473622475f2c5c4d1958e97ec16fe357c444fc0862a",
+  "base": {
+    "adoption": "20261010-r06-a02",
+    "planSha256": "db0c29cdc80a6cc9ce45080ccd7b6700f61cf5ccad9055d03c920b9a3b6d60bb"
+  },
+  "state": "applied",
+  "applied": true,
+  "status": "passed",
+  "checks": [
+    {
+      "name": "the saved pre-apply and planned manifest bytes match the plan",
+      "status": "passed"
+    },
+    {
+      "name": "the candidate revision manifest, runtime index and verification are unchanged",
+      "status": "passed"
+    },
+    {
+      "name": "the saved manifests are the base adoption's applied bytes, its record is unchanged, and the planned bytes are exactly their chained rewrite",
+      "status": "passed"
+    },
+    {
+      "name": "the current runtime still loads the base adoption's standalone images with unchanged meaning (re-planned from its revision and saved pre-apply manifests), and the graph serves them as recorded",
+      "status": "passed"
+    },
+    {
+      "name": "the acceptance documents are unchanged",
+      "status": "passed"
+    },
+    {
+      "name": "every original model and image still matches its recorded identity",
+      "status": "passed"
+    },
+    {
+      "name": "every adopted candidate in the revision is unchanged",
+      "status": "passed"
+    },
+    {
+      "name": "every retired candidate (rejected LODs, unused full files) stays unchanged in the revision",
+      "status": "passed"
+    },
+    {
+      "name": "the evidence of every LOD rejection is unchanged",
+      "status": "passed"
+    },
+    {
+      "name": "every adopted file is in public/models under its hash-named URL",
+      "status": "passed"
+    },
+    {
+      "name": "every file the graph serves, retained from the base or copied now, matches its recorded identity in public/models",
+      "status": "passed"
+    },
+    {
+      "name": "the current manifests hold exactly the adopted bytes",
+      "status": "passed"
+    },
+    {
+      "name": "every startup actor serves only its startup file, with no LOD",
+      "status": "passed"
+    },
+    {
+      "name": "every model whose old LOD was rejected serves only its full candidate, with no LOD",
+      "status": "passed"
+    },
+    {
+      "name": "every adopted record serves exactly the planned candidate",
+      "status": "passed"
+    },
+    {
+      "name": "no runtime record names a replaced original, an unused candidate or a cleared LOD",
+      "status": "passed"
+    },
+    {
+      "name": "cave texture records serve the candidate with uvSource set to the original size",
+      "status": "passed"
+    },
+    {
+      "name": "Three's bundled meshopt decoder is the one the plan recorded",
+      "status": "passed"
+    }
+  ],
+  "runtimeCompatibility": {
+    "rule": "re-planned from the current runtime files; only runtimeEntry and configuredBy may differ from the revision's image plans",
+    "inputs": [
+      {
+        "path": "public/models/camp-cave/asset.json",
+        "sha256": "d8129ea573ec031814016c9ed2a99b00d4d677dafe77178051106d8bb5ff10a1"
+      },
+      {
+        "path": "public/models/world-assets.json",
+        "sha256": "6f32fb50c623c5a42b0a1010d7ad6c4dab62d6b05e5082f2d82207758b9ff897"
+      },
+      {
+        "path": "src/cave-gallery-layout.ts",
+        "sha256": "211185f877272f1970c8de20a59cbaa5ba148ef09e925bfeeacd05d1f7e7244c"
+      },
+      {
+        "path": "src/loading-cave.ts",
+        "sha256": "358a63b6ef0d741e97080a4f365bda05422cef4eb51d755573c88dcf2e662dcf"
+      },
+      {
+        "path": "src/world-landmarks.ts",
+        "sha256": "aecaf98756cf07e68917234b335d41248a99fba3513aeabd4933766e6245d205"
+      },
+      {
+        "path": "src/verified-texture.ts",
+        "sha256": "96c95e6570911c2cbfc64238b5c10770bad8aba0c82658dfe04abda1ddc55bf5"
+      }
+    ],
+    "recordedInputs": [
+      {
+        "path": "public/models/camp-cave/asset.json",
+        "sha256": "d8129ea573ec031814016c9ed2a99b00d4d677dafe77178051106d8bb5ff10a1"
+      },
+      {
+        "path": "public/models/world-assets.json",
+        "sha256": "6f32fb50c623c5a42b0a1010d7ad6c4dab62d6b05e5082f2d82207758b9ff897"
+      },
+      {
+        "path": "src/cave-gallery-layout.ts",
+        "sha256": "f4c5cfa069e73cee77885071b979a1541d01932986f030687e26661843320f0e"
+      },
+      {
+        "path": "src/loading-cave.ts",
+        "sha256": "49d8b996bb8852007a4a04afc7ce97bdd3c9af290dba65f14f40db349f31859a"
+      },
+      {
+        "path": "src/world-landmarks.ts",
+        "sha256": "8c9a1f0547f82d36d174a5fd4b2857b90173cf88e584e6df3fd8de7fc88ebcfe"
+      }
+    ],
+    "images": [
+      {
+        "id": "image:/models/camp-cave/524-lascaux-frieze-r32.png",
+        "recorded": {
+          "runtimeEntry": "template.asset.characterPigment.url",
+          "configuredBy": [
+            "src/loading-cave.ts template.asset.characterPigment.url",
+            "src/world-landmarks.ts template.asset.characterPigment.url"
+          ]
+        },
+        "current": {
+          "runtimeEntry": "caveImageRecords(template.asset).characterPigment",
+          "configuredBy": [
+            "src/loading-cave.ts loadCaveTextures(template.asset)",
+            "src/world-landmarks.ts loadCaveTextures(template.asset)",
+            "src/cave-gallery-layout.ts caveMuralImages asset.characterPigment"
+          ]
+        },
+        "descriptorsChanged": true
+      },
+      {
+        "id": "image:/models/camp-cave/mural-atlas-r05.png",
+        "recorded": {
+          "runtimeEntry": "template.asset.pigment.url",
+          "configuredBy": [
+            "src/loading-cave.ts template.asset.pigment.url",
+            "src/world-landmarks.ts template.asset.pigment.url"
+          ]
+        },
+        "current": {
+          "runtimeEntry": "caveImageRecords(template.asset).pigment",
+          "configuredBy": [
+            "src/loading-cave.ts loadCaveTextures(template.asset)",
+            "src/world-landmarks.ts loadCaveTextures(template.asset)",
+            "src/cave-gallery-layout.ts caveMuralImages asset.pigment"
+          ]
+        },
+        "descriptorsChanged": true
+      },
+      {
+        "id": "image:/models/camp-cave/rimo-lascaux-frieze-r30.png",
+        "recorded": {
+          "runtimeEntry": "template.asset.rimoPigment.url",
+          "configuredBy": [
+            "src/loading-cave.ts template.asset.rimoPigment.url",
+            "src/world-landmarks.ts template.asset.rimoPigment.url"
+          ]
+        },
+        "current": {
+          "runtimeEntry": "caveImageRecords(template.asset).rimoPigment",
+          "configuredBy": [
+            "src/loading-cave.ts loadCaveTextures(template.asset)",
+            "src/world-landmarks.ts loadCaveTextures(template.asset)",
+            "src/cave-gallery-layout.ts caveMuralImages asset.rimoPigment"
+          ]
+        },
+        "descriptorsChanged": true
+      },
+      {
+        "id": "image:/models/camp-cave/limestone-r05.png",
+        "recorded": {
+          "runtimeEntry": "template.asset.rockSurface.url",
+          "configuredBy": [
+            "src/loading-cave.ts template.asset.rockSurface.url",
+            "src/world-landmarks.ts template.asset.rockSurface.url"
+          ]
+        },
+        "current": {
+          "runtimeEntry": "caveImageRecords(template.asset).rockSurface",
+          "configuredBy": [
+            "src/loading-cave.ts loadCaveTextures(template.asset)",
+            "src/world-landmarks.ts loadCaveTextures(template.asset)",
+            "src/verified-texture.ts caveImageRecords asset.rockSurface"
+          ]
+        },
+        "descriptorsChanged": true
+      },
+      {
+        "id": "image:/models/camp-cave/friends-meadow-lascaux-r34.png",
+        "recorded": {
+          "runtimeEntry": "CAVE_EXTRA_PIGMENTS.friendsMeadow.url",
+          "configuredBy": [
+            "src/cave-gallery-layout.ts CAVE_EXTRA_PIGMENTS.friendsMeadow",
+            "src/loading-cave.ts Object.*(CAVE_EXTRA_PIGMENTS)",
+            "src/world-landmarks.ts Object.*(CAVE_EXTRA_PIGMENTS)"
+          ]
+        },
+        "current": {
+          "runtimeEntry": "caveImageRecords(template.asset).friendsMeadow",
+          "configuredBy": [
+            "src/loading-cave.ts loadCaveTextures(template.asset)",
+            "src/world-landmarks.ts loadCaveTextures(template.asset)",
+            "src/cave-gallery-layout.ts caveMuralImages asset.mascotPigments[key of CAVE_EXTRA_PIGMENTS]"
+          ]
+        },
+        "descriptorsChanged": true
+      },
+      {
+        "id": "image:/models/camp-cave/friends-river-lascaux-r35.png",
+        "recorded": {
+          "runtimeEntry": "CAVE_EXTRA_PIGMENTS.friendsRiver.url",
+          "configuredBy": [
+            "src/cave-gallery-layout.ts CAVE_EXTRA_PIGMENTS.friendsRiver",
+            "src/loading-cave.ts Object.*(CAVE_EXTRA_PIGMENTS)",
+            "src/world-landmarks.ts Object.*(CAVE_EXTRA_PIGMENTS)"
+          ]
+        },
+        "current": {
+          "runtimeEntry": "caveImageRecords(template.asset).friendsRiver",
+          "configuredBy": [
+            "src/loading-cave.ts loadCaveTextures(template.asset)",
+            "src/world-landmarks.ts loadCaveTextures(template.asset)",
+            "src/cave-gallery-layout.ts caveMuralImages asset.mascotPigments[key of CAVE_EXTRA_PIGMENTS]"
+          ]
+        },
+        "descriptorsChanged": true
+      },
+      {
+        "id": "image:/models/camp-cave/mae-kohaku-lascaux-r31.png",
+        "recorded": {
+          "runtimeEntry": "CAVE_EXTRA_PIGMENTS.maeKohaku.url",
+          "configuredBy": [
+            "src/cave-gallery-layout.ts CAVE_EXTRA_PIGMENTS.maeKohaku",
+            "src/loading-cave.ts Object.*(CAVE_EXTRA_PIGMENTS)",
+            "src/world-landmarks.ts Object.*(CAVE_EXTRA_PIGMENTS)"
+          ]
+        },
+        "current": {
+          "runtimeEntry": "caveImageRecords(template.asset).maeKohaku",
+          "configuredBy": [
+            "src/loading-cave.ts loadCaveTextures(template.asset)",
+            "src/world-landmarks.ts loadCaveTextures(template.asset)",
+            "src/cave-gallery-layout.ts caveMuralImages asset.mascotPigments[key of CAVE_EXTRA_PIGMENTS]"
+          ]
+        },
+        "descriptorsChanged": true
+      },
+      {
+        "id": "image:/models/camp-cave/maruimo-lascaux-r33.png",
+        "recorded": {
+          "runtimeEntry": "CAVE_EXTRA_PIGMENTS.maruimoFrieze.url",
+          "configuredBy": [
+            "src/cave-gallery-layout.ts CAVE_EXTRA_PIGMENTS.maruimoFrieze",
+            "src/loading-cave.ts Object.*(CAVE_EXTRA_PIGMENTS)",
+            "src/world-landmarks.ts Object.*(CAVE_EXTRA_PIGMENTS)"
+          ]
+        },
+        "current": {
+          "runtimeEntry": "caveImageRecords(template.asset).maruimoFrieze",
+          "configuredBy": [
+            "src/loading-cave.ts loadCaveTextures(template.asset)",
+            "src/world-landmarks.ts loadCaveTextures(template.asset)",
+            "src/cave-gallery-layout.ts caveMuralImages asset.mascotPigments[key of CAVE_EXTRA_PIGMENTS]"
+          ]
+        },
+        "descriptorsChanged": true
+      },
+      {
+        "id": "image:/models/camp-cave/bot-round-lascaux-r31.png",
+        "recorded": {
+          "runtimeEntry": "CAVE_EXTRA_PIGMENTS.roundBots.url",
+          "configuredBy": [
+            "src/cave-gallery-layout.ts CAVE_EXTRA_PIGMENTS.roundBots",
+            "src/loading-cave.ts Object.*(CAVE_EXTRA_PIGMENTS)",
+            "src/world-landmarks.ts Object.*(CAVE_EXTRA_PIGMENTS)"
+          ]
+        },
+        "current": {
+          "runtimeEntry": "caveImageRecords(template.asset).roundBots",
+          "configuredBy": [
+            "src/loading-cave.ts loadCaveTextures(template.asset)",
+            "src/world-landmarks.ts loadCaveTextures(template.asset)",
+            "src/cave-gallery-layout.ts caveMuralImages asset.mascotPigments[key of CAVE_EXTRA_PIGMENTS]"
+          ]
+        },
+        "descriptorsChanged": true
+      },
+      {
+        "id": "image:/models/camp-cave/bot-shapes-lascaux-r31.png",
+        "recorded": {
+          "runtimeEntry": "CAVE_EXTRA_PIGMENTS.shapeBots.url",
+          "configuredBy": [
+            "src/cave-gallery-layout.ts CAVE_EXTRA_PIGMENTS.shapeBots",
+            "src/loading-cave.ts Object.*(CAVE_EXTRA_PIGMENTS)",
+            "src/world-landmarks.ts Object.*(CAVE_EXTRA_PIGMENTS)"
+          ]
+        },
+        "current": {
+          "runtimeEntry": "caveImageRecords(template.asset).shapeBots",
+          "configuredBy": [
+            "src/loading-cave.ts loadCaveTextures(template.asset)",
+            "src/world-landmarks.ts loadCaveTextures(template.asset)",
+            "src/cave-gallery-layout.ts caveMuralImages asset.mascotPigments[key of CAVE_EXTRA_PIGMENTS]"
+          ]
+        },
+        "descriptorsChanged": true
+      }
+    ],
+    "inherited": {
+      "adoption": "20261009-r04-a01",
+      "candidateRevision": "assets/optimized-runtime/20261009-r04",
+      "manifests": "assets/runtime-adoption/20261009-r04-a01/before",
+      "changedSinceBase": true
+    },
+    "changedSincePlan": false
+  },
+  "farTriangles": [
+    {
+      "modelKey": "violet-behemoth",
+      "selection": "full-sole-primary",
+      "before": 7965,
+      "after": 39825,
+      "added": 31860,
+      "rejection": "output/optimization-audit-20261009/adoption-contract-r04.md (native review addendum)"
+    },
+    {
+      "modelKey": "cat-kunoichi",
+      "selection": "startup-sole-primary",
+      "before": 10484,
+      "after": 51576,
+      "added": 41092
+    },
+    {
+      "modelKey": "cro-magnon-hunter",
+      "selection": "startup-sole-primary",
+      "before": 10112,
+      "after": 50051,
+      "added": 39939
+    },
+    {
+      "modelKey": "cro-magnon-woman",
+      "selection": "startup-sole-primary",
+      "before": 12627,
+      "after": 72851,
+      "added": 60224
+    },
+    {
+      "modelKey": "desert-fennec-mage",
+      "selection": "startup-sole-primary",
+      "before": 10630,
+      "after": 43901,
+      "added": 33271
+    },
+    {
+      "modelKey": "giant-ape",
+      "selection": "startup-sole-primary",
+      "before": 11643,
+      "after": 50670,
+      "added": 39027
+    },
+    {
+      "modelKey": "neanderthal-hunter",
+      "selection": "startup-sole-primary",
+      "before": 13413,
+      "after": 99379,
+      "added": 85966
+    },
+    {
+      "modelKey": "neanderthal-woman",
+      "selection": "startup-sole-primary",
+      "before": 12894,
+      "after": 68553,
+      "added": 55659
+    }
+  ]
+}

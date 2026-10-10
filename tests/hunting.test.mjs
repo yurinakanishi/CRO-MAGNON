@@ -2,6 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { CollisionWorld } from '../dist/shared/collision.mjs';
 import { createAnimals, updateAnimals, actorObstacle } from '../dist/shared/animals.mjs';
+import { mammothGroundFree } from '../dist/shared/mammoth-navigation.mjs';
 import { HUNTING_GROUNDS } from '../dist/shared/scenery-layout.mjs';
 import { HUNTING, handleHuntingAction, updateHunting, initialHuntState, animalIsSolid, withinSpearReach } from '../dist/shared/hunting.mjs';
 
@@ -15,7 +16,7 @@ function fixture() {
 test('both mammoth grounds have a continuous body-clear roaming area and substantial natural movement', () => {
   const collision = new CollisionWorld(), animals = createAnimals(collision, 1000);
   const room = { collision, animals, players: new Map() };
-  const extents = animals.map(animal => ({ minX: animal.x, maxX: animal.x, minZ: animal.z, maxZ: animal.z }));
+  const trails = animals.map(animal => [{ x: animal.x, z: animal.z }]);
   for (const [i, ground] of HUNTING_GROUNDS.entries()) {
     for (let x = -5; x <= 5; x += .5) for (let z = -5; z <= 5; z += .5) {
       if (Math.hypot(x, z) <= 5) assert.ok(collision.free({ x: ground.x + x, z: ground.z + z }, animals[i].radius), `Blocked roaming position ${i}: ${x},${z}`);
@@ -24,12 +25,22 @@ test('both mammoth grounds have a continuous body-clear roaming area and substan
   for (let i = 0; i < 2400; i++) {
     updateAnimals(room, .05, 1000 + i * 50);
     for (const [j, animal] of animals.entries()) {
+      assert.ok(mammothGroundFree(animal, animal.radius), `${animal.id} on a slope at ${animal.x},${animal.z}`);
       assert.ok(collision.free(animal, animal.radius, animals.filter(other => other !== animal).map(actorObstacle)));
       assert.ok(Math.hypot(animal.x - animal.home.x, animal.z - animal.home.z) <= animal.roamRadius + .01);
-      const e = extents[j]; e.minX = Math.min(e.minX, animal.x); e.maxX = Math.max(e.maxX, animal.x); e.minZ = Math.min(e.minZ, animal.z); e.maxZ = Math.max(e.maxZ, animal.z);
+      const last = trails[j].at(-1);
+      if (animal.x !== last.x || animal.z !== last.z) trails[j].push({ x: animal.x, z: animal.z });
     }
   }
-  for (const e of extents) assert.ok(e.maxX - e.minX > 5 && e.maxZ - e.minZ > 5, JSON.stringify(e));
+  // Spawning moves the northern herd off the cave foothill to the uphill edge of gentle ground, so it grazes
+  // only downhill of home and its north-south span is bounded by one roam radius. Measure the widest span in
+  // any direction instead: a straight leg out from home covers at most one roam radius, so a wider footprint
+  // means the herd went on to further goals, which a stuck, jittering or single-leg mammoth cannot do.
+  for (const [j, animal] of animals.entries()) {
+    let widest = 0;
+    for (const a of trails[j]) for (const b of trails[j]) widest = Math.max(widest, Math.hypot(a.x - b.x, a.z - b.z));
+    assert.ok(widest > animal.roamRadius + .01, `${animal.id} roamed only ${widest} m across`);
+  }
 });
 
 test('spear damage, body reach, cooldown and solid-obstacle occlusion are authoritative', () => {

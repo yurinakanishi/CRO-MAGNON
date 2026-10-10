@@ -1,0 +1,64 @@
+{
+  "modelKey": "berry-cluster",
+  "name": "野いちごの房",
+  "kind": "prop",
+  "candidate": 2,
+  "revision": "c2-m02",
+  "status": "remake-candidate-2-integrated",
+  "url": "/models/berry-cluster/model-c2.opt-88ed3b12e7713e6f.glb",
+  "sha256": "88ed3b12e7713e6f367d86aec394644cc882ef5cca7fa1e1b2a0a869f1c13b00",
+  "bytes": 256136,
+  "triangles": 1172,
+  "upAxis": "Y",
+  "forwardAxis": "+Z",
+  "heightMetres": 0.0985,
+  "widthMetres": 0.1393,
+  "placement": {
+    "pivot": "ground-centred",
+    "min": [
+      -0.06991531699895859,
+      0.00007440421177307144,
+      -0.05370195209980011
+    ],
+    "max": [
+      0.06936454027891159,
+      0.09861035645008087,
+      0.05434652417898178
+    ],
+    "attachment": "resource LOD root at berryAnchors (src/world3d.ts decorateResource)"
+  },
+  "clips": [],
+  "lods": [],
+  "notes": [
+    "Replaces the code-built primitive berry-fruit spheres in src/world3d.ts decorateResource. Codex image_gen reference -> TRELLIS-2 1024 -> meshopt 1172 tris -> xatlas -> albedo + baked normal. Ground-centred pivot, +Y up."
+  ],
+  "onDemand": true,
+  "replaces": "code-built primitives: berry-fruit spheres in src/world3d.ts decorateResource",
+  "provenance": {
+    "provider": "Claude Code (Opus 5.5)",
+    "claudeUsed": true,
+    "referenceGenerator": "Codex CLI built-in image_gen (gpt-5.6-sol, medium)",
+    "referenceImage": "C:/Users/yurin/Desktop/projects/CRO-MAGNON/output/model-generation/models/berry-cluster/source/original/candidate2-ref-a.png",
+    "referenceSha256": "f3eaeefda9333294333dfc7d475e186b093730207785bad86751dd8ea278567c",
+    "reconstruction": "Local TRELLIS-2 v0.8.1, res 1024, tex 1024, seed recorded in dense JSON",
+    "denseFile": "C:/Users/yurin/Desktop/projects/CRO-MAGNON/output/model-generation/models/berry-cluster/work/candidate-02/trellis/dense-ref2a-res1024-tex1024-seed0042.glb",
+    "denseSha256": "b82815ba0b96f4bc2204c9eaa3ddfa8cb68e8abd810b162451cdbabf4e5f0d90",
+    "processReport": "output/model-generation/models/berry-cluster/work/candidate-02/low-poly/m02/process-report.json",
+    "pipeline": "scripts/remake/ (trellis_queue.py, meshopt_reduce.mjs, xatlas_unwrap.py, remake_process.py); docs/asset-remake/PLAN.md",
+    "previousDelivery": null,
+    "visualReview": "assets/asset-remake/reviews/berry-cluster.json"
+  },
+  "runtimeOptimization": {
+    "adoption": "20261010-r06-a02",
+    "candidateRevision": "assets/optimized-runtime/20261009-r04",
+    "selection": "ordinary-compressed",
+    "original": {
+      "url": "/models/berry-cluster/model-c2.glb",
+      "sha256": "6586133f70088e383be623c028dd0d39b2c9db5a9aa3cb86cc1b4d0a9cc3732c",
+      "bytes": 277940,
+      "triangles": 1172,
+      "lods": []
+    },
+    "adoptedBy": "20261009-r04-a01"
+  }
+}

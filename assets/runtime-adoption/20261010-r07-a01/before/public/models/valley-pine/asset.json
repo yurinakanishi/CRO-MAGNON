@@ -1,0 +1,115 @@
+{
+  "modelKey": "valley-pine",
+  "name": "針葉樹",
+  "kind": "tree",
+  "candidate": 2,
+  "status": "remake-candidate-2-integrated",
+  "url": "/models/valley-pine/model-c2.opt-b08a6550011bcd90.glb",
+  "sha256": "b08a6550011bcd90c7a3cfd47f42a19dcf8f0a40fecfdbc14c6fb06d5f45cb9d",
+  "bytes": 1260612,
+  "triangles": 17122,
+  "upAxis": "Y",
+  "forwardAxis": "+Z",
+  "heightMetres": 9.9922,
+  "widthMetres": 3.6337450742721558,
+  "placement": {
+    "pivot": "ground-centred",
+    "min": [
+      -1.7163680791854858,
+      0.0025803495664149523,
+      -1.8099726438522339
+    ],
+    "max": [
+      1.7242456674575806,
+      9.994746208190918,
+      1.8237724304199219
+    ]
+  },
+  "clips": [],
+  "notes": [
+    "2026-10-07 natural-tree rework requested by the user (the Candidate 1 egg-shaped foliage tiers around a square trunk looked artificial). Candidate 2 is a Norway spruce: reference A of three Codex image_gen references (B, an open Scots pine, risked the rejected granular look; C reconstructed with crinkled lettuce-like foliage).",
+    "Local TRELLIS-2 1024 / tex 1024, seed 42 (294391 triangles) -> meshopt 17122 triangles, fresh xatlas UVs, albedo and tangent normal baked from the dense surface (p95 surface error 37.7 mm). Fully smooth shading (crease 180 deg) and normal map at strength 0.4 so the thin drooping branch sprays do not glitter as faceted crumpled paper in game.",
+    "Medium-distance LOD baked the same way from its own 6839-triangle meshopt reduction of the dense surface (the Blender-decimated LOD bent the leader and lost the root flare). A 29k-triangle variant (m03) looked the same in game and was not adopted.",
+    "Height 10 m, ground-centred pivot: placements and scale rules unchanged; collision uses the re-measured trunk. Candidate 1 files (model.glb, lod1.glb) retained."
+  ],
+  "provenance": {
+    "provider": "Claude Code (Opus 5.5)",
+    "claudeUsed": true,
+    "referenceGenerator": "Codex CLI built-in image_gen (gpt-5.6-sol, medium), no earlier reference attached; source/original/codex-request-v3.txt, prompts-v3.json (image A of three: Norway spruce)",
+    "referenceImage": "C:/Users/yurin/Desktop/projects/CRO-MAGNON/output/model-generation/models/valley-pine/source/original/reference-v3-a.png",
+    "referenceSha256": "c2b5b1b5f1770405c34d9c88bfb44aaa697de0a27dad58639ff16f3bcb9f4122",
+    "reconstruction": "Local TRELLIS-2 v0.8.1, res 1024, tex 1024, seed recorded in dense JSON",
+    "denseFile": "C:/Users/yurin/Desktop/projects/CRO-MAGNON/output/model-generation/models/valley-pine/work/candidate-02/trellis/dense-ref3a-res1024-tex1024-seed0042.glb",
+    "denseSha256": "dc593baedce27a8dfdb8b88a7dc5165020f4b45cc0544d4cd98220daedf2287a",
+    "processReport": "output/model-generation/models/valley-pine/work/candidate-02/low-poly/m05/process-report.json",
+    "rigReport": null,
+    "pipeline": "scripts/remake/ (trellis_queue.py, remake_process.py, rig_*.py); docs/asset-remake/PLAN.md",
+    "previousDelivery": {
+      "url": "/models/valley-pine/model.glb",
+      "sha256": "659a8624253f383bd40ca4b8461427e695a91e97a747d9507c949342b18e0dd8",
+      "triangles": 12609,
+      "bytes": 1127004,
+      "candidate": 1,
+      "revision": null
+    },
+    "previousProvenance": {
+      "provider": "Claude Fable 5.1 (Claude Code)",
+      "claudeUsed": true,
+      "referenceGenerator": "Art-directed Blender 5.2 render (no local image generator on this host); see source/original/reference-v2.json",
+      "referenceImage": "output/model-generation/models/valley-pine/source/original/reference-v2.png",
+      "referenceSha256": "6b0496c2f5012d6ae1997645ba857ae35a836c614c63dc1cf21b9bd1f107cbf8",
+      "reconstruction": "Local TRELLIS-2 1024, seed 42 (work/trellis/dense-v2-res1024-seed0042.glb); source-derived weld + quadric reduction with retained UV/albedo; foliage-only albedo luminance calibration; no replacement geometry.",
+      "candidateFile": "output/model-generation/models/valley-pine/work/low-poly/candidate-04/candidate.glb",
+      "visualReview": "output/model-generation/models/valley-pine/qa/adoption-review-rev04.json"
+    },
+    "lodProcessReport": "output/model-generation/models/valley-pine/work/candidate-02/low-poly/m04/process-report.json",
+    "visualReview": "assets/asset-remake/reviews/valley-pine.json"
+  },
+  "lods": [
+    {
+      "url": "/models/valley-pine/lod-c2.opt-e1c740f6790b30d0.glb",
+      "sha256": "e1c740f6790b30d03441b27ec8de16fe9cb1df4bee7b358fab37559f41077ae0",
+      "bytes": 686388,
+      "triangles": 6839,
+      "distanceMetres": 14,
+      "purpose": "medium-distance-lod"
+    }
+  ],
+  "revision": "c2-m05",
+  "runtimeOptimization": {
+    "adoption": "20261010-r06-a02",
+    "candidateRevision": "assets/optimized-runtime/20261010-r05",
+    "selection": "ordinary-compressed",
+    "original": {
+      "url": "/models/valley-pine/model-c2.glb",
+      "sha256": "7636543c9ae2df6c302106c7d50787b83483f5603babcbadef096f2b645f6b02",
+      "bytes": 2149136,
+      "triangles": 17122,
+      "lods": [
+        {
+          "url": "/models/valley-pine/lod-c2.glb",
+          "sha256": "4fd06946db879d27ff0c27aee1e2fe46f522587e409052ccee01d086347ec000",
+          "bytes": 905208,
+          "triangles": 6839,
+          "distanceMetres": 14,
+          "purpose": "medium-distance-lod"
+        }
+      ]
+    },
+    "supersedes": {
+      "adoption": "20261009-r04-a01",
+      "candidateRevision": "assets/optimized-runtime/20261009-r04",
+      "url": "/models/valley-pine/model-c2.opt-22013bcd256918ae.glb",
+      "sha256": "22013bcd256918ae51e2114da1414a16bccd7635926594e0a5c80a91ebd009bf",
+      "bytes": 1685752,
+      "lods": [
+        {
+          "url": "/models/valley-pine/lod-c2.opt-e1c740f6790b30d0.glb",
+          "sha256": "e1c740f6790b30d03441b27ec8de16fe9cb1df4bee7b358fab37559f41077ae0",
+          "bytes": 686388
+        }
+      ]
+    },
+    "adoptedBy": "20261010-r05-a02"
+  }
+}

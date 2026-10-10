@@ -1,0 +1,600 @@
+{
+  "schema": "cro-magnon/runtime-candidate-index@1",
+  "revision": "20261010-r05",
+  "status": "candidate-pending-visual-qa",
+  "adopted": false,
+  "base": {
+    "adoption": "20261009-r04-a01",
+    "planSha256": "3be1a8bf493027043676335614e17057a3e1b518cf0d8bb91092fe02d5d0ecc8",
+    "candidateRevision": "assets/optimized-runtime/20261009-r04"
+  },
+  "scope": {
+    "complete": false,
+    "only": [
+      "berry-bush",
+      "drying-rack",
+      "firewood-log",
+      "firewood-pile",
+      "flint-spear",
+      "hide-tent",
+      "kunoichi-katana",
+      "obsidian-spear",
+      "orb-bot-blue",
+      "orb-bot-green",
+      "orb-bot-orange",
+      "orb-bot-purple",
+      "orb-bot-white",
+      "stone-axe",
+      "stone-firepit",
+      "valley-boulder",
+      "valley-pine",
+      "wood-footbridge",
+      "wooden-spear"
+    ]
+  },
+  "decoder": {
+    "extension": "EXT_meshopt_compression",
+    "required": true,
+    "module": "three/addons/libs/meshopt_decoder.module.js",
+    "loader": "GLTFLoader.setMeshoptDecoder(MeshoptDecoder) before parseAsync"
+  },
+  "files": {
+    "/models/berry-bush/model-c2.glb": {
+      "sourceSha256": "4b145e254ee604e1563784d08bf59b5181e70c40e617bcb0a6936bd39a710c3b",
+      "sourceBytes": 2415948,
+      "url": "/models/berry-bush/model-c2.opt-11d2fb5e1a87bfca.glb",
+      "sha256": "11d2fb5e1a87bfcaac3c9a6f5c7737395830ca1e81a39d1aadf0dcaa3e636f83",
+      "bytes": 1559636,
+      "maximumTextureEdge": 1024,
+      "textureEdges": {
+        "color": 1024,
+        "normal": 512,
+        "data": 512
+      },
+      "extensionsRequired": [
+        "EXT_texture_webp",
+        "EXT_meshopt_compression"
+      ]
+    },
+    "/models/drying-rack/lod-c2.glb": {
+      "sourceSha256": "514fee559fef26e2026daa453974c7e6661d9718c6f75a45be9e0f4fc8425029",
+      "sourceBytes": 1189340,
+      "url": "/models/drying-rack/lod-c2.opt-16ab63a12c5e2918.glb",
+      "sha256": "16ab63a12c5e2918add9fe6c83ba7e87cdb249020c0395555e5c46f5d967f052",
+      "bytes": 488804,
+      "maximumTextureEdge": 1024,
+      "textureEdges": {
+        "color": 1024,
+        "normal": 512,
+        "data": 512
+      },
+      "extensionsRequired": [
+        "EXT_texture_webp",
+        "EXT_meshopt_compression"
+      ]
+    },
+    "/models/drying-rack/model-c2.glb": {
+      "sourceSha256": "35c7daa486dad72790dcb01b17b5da72353edb5c63c74fcb4c2230e46739e986",
+      "sourceBytes": 2599104,
+      "url": "/models/drying-rack/model-c2.opt-6c486d2848e290e9.glb",
+      "sha256": "6c486d2848e290e9fb8befaecf0a95555d4cde53696b18f937b1fbb395429d9a",
+      "bytes": 982720,
+      "maximumTextureEdge": 1024,
+      "textureEdges": {
+        "color": 1024,
+        "normal": 512,
+        "data": 512
+      },
+      "extensionsRequired": [
+        "EXT_texture_webp",
+        "EXT_meshopt_compression"
+      ]
+    },
+    "/models/firewood-log/lod-c2-1.glb": {
+      "sourceSha256": "b453bcd9493c1b153634f9d2de6c738d47d35454c3627ee256bf8c488b5ac212",
+      "sourceBytes": 365064,
+      "url": "/models/firewood-log/lod-c2-1.opt-e6a789165ffa682e.glb",
+      "sha256": "e6a789165ffa682e1122bcbea48220ab00266029f5d69dcfc0b17440de7ceb36",
+      "bytes": 353856,
+      "maximumTextureEdge": 1024,
+      "textureEdges": {
+        "color": 1024,
+        "normal": 512,
+        "data": 512
+      },
+      "extensionsRequired": [
+        "EXT_texture_webp",
+        "EXT_meshopt_compression"
+      ]
+    },
+    "/models/firewood-log/lod-c2-2.glb": {
+      "sourceSha256": "dc614ea91f11ab553f88b933a70baf2b4be0b05a3c1a267b7073fcefb0e0bf53",
+      "sourceBytes": 339432,
+      "url": "/models/firewood-log/lod-c2-2.opt-b1060354eba097ae.glb",
+      "sha256": "b1060354eba097ae7c2676ca66ce01a9ac1f5df5198133dcab8f71b24cfbb351",
+      "bytes": 335588,
+      "maximumTextureEdge": 1024,
+      "textureEdges": {
+        "color": 1024,
+        "normal": 512,
+        "data": 512
+      },
+      "extensionsRequired": [
+        "EXT_texture_webp",
+        "EXT_meshopt_compression"
+      ]
+    },
+    "/models/firewood-log/model-c2.glb": {
+      "sourceSha256": "cb98b8bb0017fd43a82ae29db8bdd4de6d32e265ae5e39037cedbc5a2b0bcebf",
+      "sourceBytes": 805748,
+      "url": "/models/firewood-log/model-c2.opt-97e3211c37b11def.glb",
+      "sha256": "97e3211c37b11defeffc8fd563dc6be14b317c50d0b9c2408f99855c76022075",
+      "bytes": 559552,
+      "maximumTextureEdge": 1024,
+      "textureEdges": {
+        "color": 1024,
+        "normal": 512,
+        "data": 512
+      },
+      "extensionsRequired": [
+        "EXT_texture_webp",
+        "EXT_meshopt_compression"
+      ]
+    },
+    "/models/firewood-pile/lod-c2.glb": {
+      "sourceSha256": "162d96c102f037b38d7ed3cc49e07929f2e8549dfb27a2cc73ef791f92fdbeb2",
+      "sourceBytes": 429888,
+      "url": "/models/firewood-pile/lod-c2.opt-ddc029e192c91fb9.glb",
+      "sha256": "ddc029e192c91fb91ecb99a569d9dd89bcb250d0348bb50ebd2ca3849ec74510",
+      "bytes": 405968,
+      "maximumTextureEdge": 1024,
+      "textureEdges": {
+        "color": 1024,
+        "normal": 512,
+        "data": 512
+      },
+      "extensionsRequired": [
+        "EXT_texture_webp",
+        "EXT_meshopt_compression"
+      ]
+    },
+    "/models/firewood-pile/model-c2.glb": {
+      "sourceSha256": "544598e3c1e28491998e3ce73e36d64364a86855ef3e86c5fa314b5b96af4977",
+      "sourceBytes": 972828,
+      "url": "/models/firewood-pile/model-c2.opt-085ae5c774f9238d.glb",
+      "sha256": "085ae5c774f9238d768ac4526b76d3a46a789d379ac5046e42647db6d80ab819",
+      "bytes": 671976,
+      "maximumTextureEdge": 1024,
+      "textureEdges": {
+        "color": 1024,
+        "normal": 512,
+        "data": 512
+      },
+      "extensionsRequired": [
+        "EXT_texture_webp",
+        "EXT_meshopt_compression"
+      ]
+    },
+    "/models/flint-spear/model.glb": {
+      "sourceSha256": "1a10db6d1b44da1e982f88e5ae9ef6be8fb74f5900ebd9258380ad200e53ed3d",
+      "sourceBytes": 2816964,
+      "url": "/models/flint-spear/model.opt-7012db17d1a72567.glb",
+      "sha256": "7012db17d1a7256749609736b0c2637c0036ab42a4aebd23a97348876c7d6b7a",
+      "bytes": 934232,
+      "maximumTextureEdge": 512,
+      "textureEdges": {
+        "color": 512,
+        "normal": 512,
+        "data": 512
+      },
+      "extensionsRequired": [
+        "EXT_meshopt_compression"
+      ]
+    },
+    "/models/hide-tent/lod-c2.glb": {
+      "sourceSha256": "5932dd616ad5c13d52683c689a64c17f5071104b1477bf6fd5d7334341225e69",
+      "sourceBytes": 1786616,
+      "url": "/models/hide-tent/lod-c2.opt-9290eb05f57d052d.glb",
+      "sha256": "9290eb05f57d052d586534cfd6242f17a4183f53a85556ad91aed09ed1f21e40",
+      "bytes": 756756,
+      "maximumTextureEdge": 1024,
+      "textureEdges": {
+        "color": 1024,
+        "normal": 512,
+        "data": 512
+      },
+      "extensionsRequired": [
+        "EXT_texture_webp",
+        "EXT_meshopt_compression"
+      ]
+    },
+    "/models/hide-tent/model-c2.glb": {
+      "sourceSha256": "e3fa5084524b3fd141f8aa05838e9da2f612f2987d35f04c4743209c4bc29120",
+      "sourceBytes": 4508752,
+      "url": "/models/hide-tent/model-c2.opt-b5c28634111da93e.glb",
+      "sha256": "b5c28634111da93eeda88f8713beb3d9e1b500ab0285a0f9c4cf6d1dba458bdf",
+      "bytes": 1781652,
+      "maximumTextureEdge": 1024,
+      "textureEdges": {
+        "color": 1024,
+        "normal": 512,
+        "data": 512
+      },
+      "extensionsRequired": [
+        "EXT_texture_webp",
+        "EXT_meshopt_compression"
+      ]
+    },
+    "/models/kunoichi-katana/model-c2.glb": {
+      "sourceSha256": "4d3c2edeaaba853a4cb4cf658e4541812ad6249e1363f649469d81afe6f797cb",
+      "sourceBytes": 530840,
+      "url": "/models/kunoichi-katana/model-c2.opt-0b7db07e795f0ac3.glb",
+      "sha256": "0b7db07e795f0ac392d79ab1a389e55584c3d05c84d6e71fb4676d68cd59f50a",
+      "bytes": 283844,
+      "maximumTextureEdge": 512,
+      "textureEdges": {
+        "color": 512,
+        "normal": 512,
+        "data": 512
+      },
+      "extensionsRequired": [
+        "EXT_texture_webp",
+        "EXT_meshopt_compression"
+      ]
+    },
+    "/models/obsidian-spear/model-c2.glb": {
+      "sourceSha256": "960e9caffed55beb1599c6330e5920cf27b16c9fe1312fa1cad105880700cd95",
+      "sourceBytes": 422412,
+      "url": "/models/obsidian-spear/model-c2.opt-ac18526ceb1f0514.glb",
+      "sha256": "ac18526ceb1f0514006d66aef967047d4ad1fdd11f3506e55811a9c068bac498",
+      "bytes": 210168,
+      "maximumTextureEdge": 512,
+      "textureEdges": {
+        "color": 512,
+        "normal": 512,
+        "data": 512
+      },
+      "extensionsRequired": [
+        "EXT_texture_webp",
+        "EXT_meshopt_compression"
+      ]
+    },
+    "/models/orb-bot-blue/lod-c2.glb": {
+      "sourceSha256": "ddda5aa8619bb28c6f4193c280c62af69f49e8c07dc20f857afbaea567a79177",
+      "sourceBytes": 71116,
+      "url": "/models/orb-bot-blue/lod-c2.opt-cb6345d01b995260.glb",
+      "sha256": "cb6345d01b995260a2909cc0c7f2def24f537ebf70b2c0ce1f70f5b6157fff42",
+      "bytes": 39444,
+      "maximumTextureEdge": 1024,
+      "textureEdges": {
+        "color": 1024,
+        "normal": 512,
+        "data": 512
+      },
+      "extensionsRequired": [
+        "EXT_meshopt_compression"
+      ]
+    },
+    "/models/orb-bot-blue/model-c2.glb": {
+      "sourceSha256": "58aafc5fd984e95a1286aa73c284bebd2acedf2285eae8cbb77eaad517786988",
+      "sourceBytes": 281820,
+      "url": "/models/orb-bot-blue/model-c2.opt-26b5c7764ea04bdd.glb",
+      "sha256": "26b5c7764ea04bddf7ed18328a587ee1d51f7662ea5b0a24a94031044538a877",
+      "bytes": 181036,
+      "maximumTextureEdge": 1024,
+      "textureEdges": {
+        "color": 1024,
+        "normal": 512,
+        "data": 512
+      },
+      "extensionsRequired": [
+        "EXT_texture_webp",
+        "EXT_meshopt_compression"
+      ]
+    },
+    "/models/orb-bot-green/lod-c2.glb": {
+      "sourceSha256": "f0ec7ee96a73ffeb4331a18dee19dfb4e7824d70e1c8810d4643360182f509b9",
+      "sourceBytes": 72728,
+      "url": "/models/orb-bot-green/lod-c2.opt-0b7eb03299dc34a4.glb",
+      "sha256": "0b7eb03299dc34a43bdcda1a62bbaaf682bdc2998ee0127121baf5e4eb5cf1e9",
+      "bytes": 40304,
+      "maximumTextureEdge": 1024,
+      "textureEdges": {
+        "color": 1024,
+        "normal": 512,
+        "data": 512
+      },
+      "extensionsRequired": [
+        "EXT_meshopt_compression"
+      ]
+    },
+    "/models/orb-bot-green/model-c2.glb": {
+      "sourceSha256": "7688b80b2910f2fd6b95bb281ed66f7c558c06bf801c8ce62b843e74dddf0238",
+      "sourceBytes": 272528,
+      "url": "/models/orb-bot-green/model-c2.opt-be0f8d03776ccd9c.glb",
+      "sha256": "be0f8d03776ccd9c193d264634689c45f7a9412f3dde328c2c2a3ac3449d96b8",
+      "bytes": 169800,
+      "maximumTextureEdge": 1024,
+      "textureEdges": {
+        "color": 1024,
+        "normal": 512,
+        "data": 512
+      },
+      "extensionsRequired": [
+        "EXT_texture_webp",
+        "EXT_meshopt_compression"
+      ]
+    },
+    "/models/orb-bot-orange/lod-c2.glb": {
+      "sourceSha256": "df77e30e57f304da22e312971c82e3dde686d7f4219acd77ecbab2df03e239c6",
+      "sourceBytes": 42996,
+      "url": "/models/orb-bot-orange/lod-c2.opt-22329782023eb470.glb",
+      "sha256": "22329782023eb470cb18cdb279b87e396e9cd4f2f13939a82ceffa9110a522d8",
+      "bytes": 24804,
+      "maximumTextureEdge": 1024,
+      "textureEdges": {
+        "color": 1024,
+        "normal": 512,
+        "data": 512
+      },
+      "extensionsRequired": [
+        "EXT_meshopt_compression"
+      ]
+    },
+    "/models/orb-bot-orange/model-c2.glb": {
+      "sourceSha256": "1a92cdfe97bc542f5c96cc09f902bc99842114b1460fc87cb1d49d23242830be",
+      "sourceBytes": 189144,
+      "url": "/models/orb-bot-orange/model-c2.opt-8cb2e35cbf824478.glb",
+      "sha256": "8cb2e35cbf824478ec035b52eb8e81fe6ae6c65666ba8d04b13c1f6628439852",
+      "bytes": 124640,
+      "maximumTextureEdge": 1024,
+      "textureEdges": {
+        "color": 1024,
+        "normal": 512,
+        "data": 512
+      },
+      "extensionsRequired": [
+        "EXT_texture_webp",
+        "EXT_meshopt_compression"
+      ]
+    },
+    "/models/orb-bot-purple/lod-c2.glb": {
+      "sourceSha256": "28dcfec64fba9abea1510339af25a972fd3d32379eacdcc7b60b46183c89b672",
+      "sourceBytes": 71796,
+      "url": "/models/orb-bot-purple/lod-c2.opt-29d4b43ec880dadc.glb",
+      "sha256": "29d4b43ec880dadc08f1e70acd46227866dca0e66bb51dff16000146ed641f42",
+      "bytes": 39868,
+      "maximumTextureEdge": 1024,
+      "textureEdges": {
+        "color": 1024,
+        "normal": 512,
+        "data": 512
+      },
+      "extensionsRequired": [
+        "EXT_meshopt_compression"
+      ]
+    },
+    "/models/orb-bot-purple/model-c2.glb": {
+      "sourceSha256": "d6ed48cf1f7a8b5e7a2cd1fa492312350b2987c33a4cf5027dbca863d2b04847",
+      "sourceBytes": 277544,
+      "url": "/models/orb-bot-purple/model-c2.opt-8ed72224b184825f.glb",
+      "sha256": "8ed72224b184825f7d0ccd9f27cb42f9e5793b2883e3742adbb07f98ea4db04c",
+      "bytes": 176072,
+      "maximumTextureEdge": 1024,
+      "textureEdges": {
+        "color": 1024,
+        "normal": 512,
+        "data": 512
+      },
+      "extensionsRequired": [
+        "EXT_texture_webp",
+        "EXT_meshopt_compression"
+      ]
+    },
+    "/models/orb-bot-white/lod-c2.glb": {
+      "sourceSha256": "165d3024d63719843f5f48b9730f29becdf57b39d8783d7d3f0f1f78d359bc2b",
+      "sourceBytes": 75232,
+      "url": "/models/orb-bot-white/lod-c2.opt-551e0f7e3a90b7a3.glb",
+      "sha256": "551e0f7e3a90b7a3b1d82a8712f1c8b699a91919f42dd5c99af79b46f1222379",
+      "bytes": 41664,
+      "maximumTextureEdge": 1024,
+      "textureEdges": {
+        "color": 1024,
+        "normal": 512,
+        "data": 512
+      },
+      "extensionsRequired": [
+        "EXT_meshopt_compression"
+      ]
+    },
+    "/models/orb-bot-white/model-c2.glb": {
+      "sourceSha256": "ce163f967da25e0382cee50008ee9dd5e36bd6bd3723f3647bf106d8477efcab",
+      "sourceBytes": 280084,
+      "url": "/models/orb-bot-white/model-c2.opt-c7b6b6878646330a.glb",
+      "sha256": "c7b6b6878646330a8769fa0f0e1f5ea829d75fd480ed3031c049f58a8aec1236",
+      "bytes": 176448,
+      "maximumTextureEdge": 1024,
+      "textureEdges": {
+        "color": 1024,
+        "normal": 512,
+        "data": 512
+      },
+      "extensionsRequired": [
+        "EXT_texture_webp",
+        "EXT_meshopt_compression"
+      ]
+    },
+    "/models/stone-axe/model-c2.glb": {
+      "sourceSha256": "f195cd97f8b1a2e88a6b0cf1e928a432d103c9ba415c996396ba7cd10f7ba81e",
+      "sourceBytes": 817044,
+      "url": "/models/stone-axe/model-c2.opt-0ac298a6e8a08f59.glb",
+      "sha256": "0ac298a6e8a08f5920f8791184eb0d7eaa76678455a24d80e1894652e24d76f0",
+      "bytes": 559308,
+      "maximumTextureEdge": 1024,
+      "textureEdges": {
+        "color": 1024,
+        "normal": 512,
+        "data": 512
+      },
+      "extensionsRequired": [
+        "EXT_texture_webp",
+        "EXT_meshopt_compression"
+      ]
+    },
+    "/models/stone-firepit/lod-c2.glb": {
+      "sourceSha256": "6deeb617524d87709c943aab7198f1ef071b6ae6de1d80ed64e65d7c88f9c4bb",
+      "sourceBytes": 547584,
+      "url": "/models/stone-firepit/lod-c2.opt-6019ecfb7bc28fbb.glb",
+      "sha256": "6019ecfb7bc28fbbf0328b0a26c348048a42abaaf7244d16ddf7062758d22276",
+      "bytes": 492456,
+      "maximumTextureEdge": 1024,
+      "textureEdges": {
+        "color": 1024,
+        "normal": 512,
+        "data": 512
+      },
+      "extensionsRequired": [
+        "EXT_texture_webp",
+        "EXT_meshopt_compression"
+      ]
+    },
+    "/models/stone-firepit/model-c2.glb": {
+      "sourceSha256": "62d5e610354e665a29c069ba1e121cf1ddd519ac12da1311c8b24236289a9cb0",
+      "sourceBytes": 1412152,
+      "url": "/models/stone-firepit/model-c2.opt-82f56697a8d9f0b0.glb",
+      "sha256": "82f56697a8d9f0b061037f8d5ae69dc5ae4a1d2a465b4f9974b63dcacd3f6844",
+      "bytes": 944040,
+      "maximumTextureEdge": 1024,
+      "textureEdges": {
+        "color": 1024,
+        "normal": 512,
+        "data": 512
+      },
+      "extensionsRequired": [
+        "EXT_texture_webp",
+        "EXT_meshopt_compression"
+      ]
+    },
+    "/models/valley-boulder/lod-c2.glb": {
+      "sourceSha256": "e28c98f42ff6e8afb6d42a5ff01601f96b5792dc5b7494edc372503c54a1a1b3",
+      "sourceBytes": 388760,
+      "url": "/models/valley-boulder/lod-c2.opt-9e417f894185122d.glb",
+      "sha256": "9e417f894185122dc34badf9c990115919721d0dcf1a393ecebf303faa46058b",
+      "bytes": 378352,
+      "maximumTextureEdge": 1024,
+      "textureEdges": {
+        "color": 1024,
+        "normal": 512,
+        "data": 512
+      },
+      "extensionsRequired": [
+        "EXT_texture_webp",
+        "EXT_meshopt_compression"
+      ]
+    },
+    "/models/valley-boulder/model-c2.glb": {
+      "sourceSha256": "8a1f64562cb4b27bcd89516f4fc85317bfca54050f22cf8dfa0b668fb2196a3a",
+      "sourceBytes": 658708,
+      "url": "/models/valley-boulder/model-c2.opt-8090c81ce97b3202.glb",
+      "sha256": "8090c81ce97b3202bae4963d91b7a4cfe44fe6c05e826adb4c78971c18aa5ad5",
+      "bytes": 516332,
+      "maximumTextureEdge": 1024,
+      "textureEdges": {
+        "color": 1024,
+        "normal": 512,
+        "data": 512
+      },
+      "extensionsRequired": [
+        "EXT_texture_webp",
+        "EXT_meshopt_compression"
+      ]
+    },
+    "/models/valley-pine/lod-c2.glb": {
+      "sourceSha256": "4fd06946db879d27ff0c27aee1e2fe46f522587e409052ccee01d086347ec000",
+      "sourceBytes": 905208,
+      "url": "/models/valley-pine/lod-c2.opt-e1c740f6790b30d0.glb",
+      "sha256": "e1c740f6790b30d03441b27ec8de16fe9cb1df4bee7b358fab37559f41077ae0",
+      "bytes": 686388,
+      "maximumTextureEdge": 1024,
+      "textureEdges": {
+        "color": 1024,
+        "normal": 512,
+        "data": 512
+      },
+      "extensionsRequired": [
+        "EXT_texture_webp",
+        "EXT_meshopt_compression"
+      ]
+    },
+    "/models/valley-pine/model-c2.glb": {
+      "sourceSha256": "7636543c9ae2df6c302106c7d50787b83483f5603babcbadef096f2b645f6b02",
+      "sourceBytes": 2149136,
+      "url": "/models/valley-pine/model-c2.opt-b08a6550011bcd90.glb",
+      "sha256": "b08a6550011bcd90c7a3cfd47f42a19dcf8f0a40fecfdbc14c6fb06d5f45cb9d",
+      "bytes": 1260612,
+      "maximumTextureEdge": 1024,
+      "textureEdges": {
+        "color": 1024,
+        "normal": 512,
+        "data": 512
+      },
+      "extensionsRequired": [
+        "EXT_texture_webp",
+        "EXT_meshopt_compression"
+      ]
+    },
+    "/models/wood-footbridge/lod-c2.glb": {
+      "sourceSha256": "a901811113428ab6108241bccf0bbfc15864ee7869d9d31e8f346296e09e7576",
+      "sourceBytes": 794156,
+      "url": "/models/wood-footbridge/lod-c2.opt-59ea980f0d34210a.glb",
+      "sha256": "59ea980f0d34210a00f31053c3ca5b652bdec4c08085506b03314374461c8110",
+      "bytes": 335096,
+      "maximumTextureEdge": 1024,
+      "textureEdges": {
+        "color": 1024,
+        "normal": 512,
+        "data": 512
+      },
+      "extensionsRequired": [
+        "EXT_texture_webp",
+        "EXT_meshopt_compression"
+      ]
+    },
+    "/models/wood-footbridge/model-c2.glb": {
+      "sourceSha256": "88a56d09a717e9ae0a2b01c9c3635d69a4bf219aa0d7a0630c0ddc0609feddfe",
+      "sourceBytes": 1814304,
+      "url": "/models/wood-footbridge/model-c2.opt-dd0462f9a42c73b8.glb",
+      "sha256": "dd0462f9a42c73b8857693369400fcf9b9d82d7daa6babdcda150a610eaf7bd3",
+      "bytes": 673068,
+      "maximumTextureEdge": 1024,
+      "textureEdges": {
+        "color": 1024,
+        "normal": 512,
+        "data": 512
+      },
+      "extensionsRequired": [
+        "EXT_texture_webp",
+        "EXT_meshopt_compression"
+      ]
+    },
+    "/models/wooden-spear/model-c2.glb": {
+      "sourceSha256": "ae70efd88d72c75f708cc64039b08ca7a197237a36718bfbc2de7163e46a8c35",
+      "sourceBytes": 298760,
+      "url": "/models/wooden-spear/model-c2.opt-0b7e1417d8d1948c.glb",
+      "sha256": "0b7e1417d8d1948c05cce074a28232384ced61a6543971c41f26f2cd7623747b",
+      "bytes": 140588,
+      "maximumTextureEdge": 512,
+      "textureEdges": {
+        "color": 512,
+        "normal": 512,
+        "data": 512
+      },
+      "extensionsRequired": [
+        "EXT_texture_webp",
+        "EXT_meshopt_compression"
+      ]
+    }
+  },
+  "startupActors": {},
+  "textures": {}
+}

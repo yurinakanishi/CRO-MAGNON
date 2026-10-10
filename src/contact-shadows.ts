@@ -43,8 +43,6 @@ export class ContactShadows {
     world.scene.add(this.mesh);
   }
   update() {
-    this.mesh.visible = this.world.graphics.tier === 'low';
-    if (!this.mesh.visible) return;
     let count = 0;
     const add = (root: THREE.Object3D | undefined, radius: number) => {
       if (!root?.visible || count >= 128) return;

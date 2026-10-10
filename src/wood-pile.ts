@@ -2,7 +2,6 @@ import * as THREE from 'three';
 import { isMesh } from './three-types.js';
 import { woodPileLayout } from '../shared/wood-pile-layout.mjs';
 import { WorldAssets } from './world-assets.js';
-import { attachSimplifiedShadow, disposeSimplifiedShadow } from './performance-lod.js';
 
 /** Each instance is one entire verified image-to-3D log, including both ends. */
 export function buildWoodPile(assets: WorldAssets, total: number, surface: string | null) {
@@ -39,7 +38,6 @@ export function buildWoodPile(assets: WorldAssets, total: number, surface: strin
     });
     root.addLevel(group, level === 0 ? 0 : level === 1 ? 10 : 22, 0.15);
   }
-  attachSimplifiedShadow(root, key);
   return {
     root,
     setAmount(amount: number) {
@@ -50,7 +48,6 @@ export function buildWoodPile(assets: WorldAssets, total: number, surface: strin
     dispose() {
       // Only the instance buffers belong to this pile. Templates own the mesh and material.
       for (const batch of batches) batch.dispose();
-      disposeSimplifiedShadow(root);
     },
   };
 }

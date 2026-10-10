@@ -1,4 +1,4 @@
-export interface CompanionViewCandidate {
+export interface CompanionViewPlacement {
   id: string;
   label: string;
   x: number;
@@ -6,23 +6,30 @@ export interface CompanionViewCandidate {
   screenX: number;
   screenY: number;
   screenZ: number;
+}
+
+export interface CompanionViewCandidate extends CompanionViewPlacement {
   clear: boolean;
 }
 
-/** Only offer nearby companions that can actually be seen from this camera. */
-export function chooseCompanionView<T extends CompanionViewCandidate>(
+/** Only offer nearby companions that can actually be seen from this camera. `clear` (by
+ * default the candidate's own flag) is asked last, once per companion in range and on screen:
+ * a sight line through the colliders costs far more than the other tests. */
+export function chooseCompanionView<T extends CompanionViewPlacement>(
   candidates: readonly T[],
   player: { x: number; z: number },
+  clear: (candidate: T) => boolean = (candidate) =>
+    !!(candidate as Partial<CompanionViewCandidate>).clear,
 ): T | undefined {
   return candidates
     .filter(
       (c) =>
-        c.clear &&
         Math.hypot(c.x - player.x, c.z - player.z) <= 8 &&
         c.screenZ > -1 &&
         c.screenZ < 1 &&
         Math.abs(c.screenX) <= 1 &&
-        Math.abs(c.screenY) <= 1,
+        Math.abs(c.screenY) <= 1 &&
+        clear(c),
     )
     .sort(
       (a, b) =>

@@ -1,0 +1,1416 @@
+{
+  "key": "orb-bot-green",
+  "manifest": "public/models/orb-bot-green/asset.json",
+  "served": {
+    "url": "/models/orb-bot-green/model-c2.opt-be0f8d03776ccd9c.glb",
+    "sha256": "be0f8d03776ccd9c193d264634689c45f7a9412f3dde328c2c2a3ac3449d96b8",
+    "bytes": 169800,
+    "triangles": 4000
+  },
+  "original": {
+    "url": "/models/orb-bot-green/model-c2.glb",
+    "sha256": "7688b80b2910f2fd6b95bb281ed66f7c558c06bf801c8ce62b843e74dddf0238",
+    "bytes": 272528
+  },
+  "servedBy": {
+    "adoption": "20261010-r06-a02",
+    "candidateRevision": "assets/optimized-runtime/20261010-r05",
+    "selection": "ordinary-compressed"
+  },
+  "levels": {
+    "processed": "primary file only",
+    "lods": [
+      {
+        "url": "/models/orb-bot-green/lod-c2.opt-0b7eb03299dc34a4.glb",
+        "sha256": "0b7eb03299dc34a43bdcda1a62bbaaf682bdc2998ee0127121baf5e4eb5cf1e9",
+        "bytes": 40304
+      }
+    ],
+    "packedScene": null,
+    "oldLodsUsed": false
+  },
+  "coupling": null,
+  "baseline": {
+    "rawBytes": 169800,
+    "gzip6Bytes": 142131,
+    "sha256": "be0f8d03776ccd9c193d264634689c45f7a9412f3dde328c2c2a3ac3449d96b8",
+    "jsonChunkBytes": 20116,
+    "categories": {
+      "meshAttributes": {
+        "views": 6,
+        "storedBytes": 88211,
+        "gzip6Bytes": 83415
+      },
+      "meshIndices": {
+        "views": 1,
+        "storedBytes": 13665,
+        "gzip6Bytes": 12157
+      },
+      "animation": {
+        "views": 49,
+        "storedBytes": 12294,
+        "gzip6Bytes": 8007
+      },
+      "skin": {
+        "views": 1,
+        "storedBytes": 128,
+        "gzip6Bytes": 94
+      },
+      "images": {
+        "views": 2,
+        "storedBytes": 35252,
+        "gzip6Bytes": 35165
+      },
+      "other": {
+        "views": 0,
+        "storedBytes": 0,
+        "gzip6Bytes": 0
+      }
+    },
+    "geometry": {
+      "primitives": [
+        {
+          "mesh": 0,
+          "primitive": 0,
+          "vertices": 2383,
+          "triangles": 4000
+        }
+      ],
+      "vertices": 2383,
+      "triangles": 4000
+    }
+  },
+  "scenes": 1,
+  "coverage": [
+    {
+      "mesh": 0,
+      "instances": [
+        {
+          "scene": 0,
+          "node": 2,
+          "skin": 0,
+          "path": [
+            3,
+            2
+          ]
+        }
+      ],
+      "skin": 0,
+      "unrenderedNodes": [],
+      "verifiable": true,
+      "reasons": []
+    }
+  ],
+  "diagnosis": [
+    {
+      "mesh": 0,
+      "forward": null,
+      "primitives": [
+        {
+          "primitive": 0,
+          "headShare": 0,
+          "welded": {
+            "triangles": 4000,
+            "edges": 6000,
+            "border": 0,
+            "nonmanifold": 0,
+            "inconsistent": 0,
+            "degenerate": 0
+          },
+          "splits": {
+            "vertices": 2383,
+            "positions": 2004,
+            "verticesPerPosition": 1.189121756487026,
+            "splitPositions": 355,
+            "splitsDifferingBy": {
+              "NORMAL": 3,
+              "TEXCOORD_0": 352,
+              "TANGENT": 355,
+              "JOINTS_0": 0,
+              "WEIGHTS_0": 0
+            },
+            "exactDuplicateVertices": 0
+          },
+          "nearDuplicates": {
+            "epsilonMetres": 4.848318817979042e-7,
+            "positionsWithNearDuplicate": 0
+          },
+          "border": {
+            "borderVertices": 0,
+            "share": 0
+          },
+          "boundsDiagonalMetres": 0.48483188179790426
+        }
+      ]
+    }
+  ],
+  "variants": [
+    {
+      "variant": "guarded-body",
+      "kind": "candidate",
+      "description": "head primitives retained; every other primitive reduced at a 4 mm bound with head-weighted (face, neck junction), neck, hand and foot vertices locked by skin weight, cross-primitive seams and borders locked",
+      "custom": null,
+      "primitives": [
+        {
+          "mesh": 0,
+          "primitive": 0,
+          "instances": 1,
+          "mode": "reduce",
+          "settings": {
+            "flags": [
+              "LockBorder",
+              "ErrorAbsolute"
+            ],
+            "targetRatio": 0.35,
+            "targetIndexCount": 4200,
+            "errorMetres": 0.004,
+            "localErrorMetres": 0.004,
+            "maxInstanceStretch": 1.000000017114274,
+            "worldGateMetres": {
+              "p99": 0.008,
+              "max": 0.024
+            },
+            "tolerances": {
+              "normal": 0.05,
+              "uv": 0.0009765625,
+              "skinWeight": 0.02
+            },
+            "attributeColumns": [
+              "NORMAL.x",
+              "NORMAL.y",
+              "NORMAL.z",
+              "TEXCOORD_0.u",
+              "TEXCOORD_0.v",
+              "weight:Body"
+            ],
+            "maxPasses": 8
+          },
+          "locks": {
+            "lockedVertices": 0,
+            "byReason": {
+              "crossPrimitive": 0,
+              "jointBudget": 0,
+              "face": 0,
+              "head": 0,
+              "neck": 0,
+              "hands": 0,
+              "feet": 0,
+              "singularEdge": 0,
+              "defectRings": 0
+            },
+            "headRadiusMetres": null,
+            "border": "LockBorder flag: every open-border vertex"
+          },
+          "sourceTriangles": 4000,
+          "achievedTriangles": 1400,
+          "simplifierErrorMetres": 0.0020672245882451534,
+          "passes": [
+            {
+              "pass": 1,
+              "lockedVertices": 0,
+              "targetIndexCount": 4200,
+              "achievedTriangles": 1400,
+              "simplifierErrorMetres": 0.0020672245882451534,
+              "defects": {
+                "newNonmanifoldEdges": 0,
+                "newInconsistentEdges": 0,
+                "newBorderEdges": 0,
+                "lostBorderEdges": 0,
+                "newFlippedTriangles": 0,
+                "newDegenerateTriangles": 0,
+                "mergedComponents": 0,
+                "splitComponents": 0,
+                "vanishedComponents": 0
+              }
+            }
+          ],
+          "stall": [
+            {
+              "label": "as-policy",
+              "achievedTriangles": 1400,
+              "ratio": 0.35,
+              "errorMetres": 0.0020672245882451534
+            },
+            {
+              "label": "without-LockBorder",
+              "achievedTriangles": 1400,
+              "ratio": 0.35,
+              "errorMetres": 0.0020672245882451534
+            },
+            {
+              "label": "without-vertex-locks",
+              "achievedTriangles": 1400,
+              "ratio": 0.35,
+              "errorMetres": 0.0020672245882451534
+            },
+            {
+              "label": "without-attributes",
+              "achievedTriangles": 1400,
+              "ratio": 0.35,
+              "errorMetres": 0.0019470310071483254
+            },
+            {
+              "label": "error-x4",
+              "achievedTriangles": 1400,
+              "ratio": 0.35,
+              "errorMetres": 0.0028760789427906275
+            },
+            {
+              "label": "positions-only-unlocked-x4",
+              "achievedTriangles": 1400,
+              "ratio": 0.35,
+              "errorMetres": 0.0019470310071483254
+            }
+          ],
+          "action": "reduced",
+          "sourceVertices": 2383,
+          "achievedVertices": 1028
+        }
+      ],
+      "status": "proof-pass-not-visually-reviewed",
+      "problems": [],
+      "proof": {
+        "structuralAndPosed": "passed",
+        "posesChecked": true
+      },
+      "storage": {
+        "budget": {
+          "rawBytes": 169800,
+          "gzip6Bytes": 142131,
+          "rule": "raw <= source raw AND whole-file gzip -6 < source gzip -6"
+        },
+        "chosen": "source/meshopt",
+        "verifiedOption": "source/meshopt",
+        "reason": "source/meshopt: 110864 raw bytes <= the source's 169800, gzip -6 85893 < the source's 142131",
+        "alternatives": [
+          {
+            "label": "first-use/meshopt",
+            "order": "first-use",
+            "storage": "meshopt",
+            "rawBytes": 112488,
+            "gzip6Bytes": 88360,
+            "sha256": "4dd4f0d49279dc7de3ad8bfc6013ac025346fb1a2ad3a74bb1dd6388afee1a49",
+            "indexSha256": [
+              "201210db504006088f4809017d4a3a14fb878c01271bb99178e2a576ebdb328b"
+            ],
+            "withinRawBudget": true,
+            "belowSourceGzip": true
+          },
+          {
+            "label": "source/meshopt",
+            "order": "source",
+            "storage": "meshopt",
+            "rawBytes": 110864,
+            "gzip6Bytes": 85893,
+            "sha256": "84eaabe0bc40a9850b82b56ea63809b7def006728d7cbf8fcf26104fdbcbd771",
+            "indexSha256": [
+              "060be4cf8aa362b0842978207a00e0074b47a187471e339fbcb1d7d16b45fe10"
+            ],
+            "withinRawBudget": true,
+            "belowSourceGzip": true
+          },
+          {
+            "label": "first-use/plain",
+            "order": "first-use",
+            "storage": "plain",
+            "rawBytes": 158756,
+            "gzip6Bytes": 88672,
+            "sha256": "122844e91c99f48fd8bda10a715d326987ceb3d767b1a2d0dd627453df4d1fef",
+            "indexSha256": [
+              "201210db504006088f4809017d4a3a14fb878c01271bb99178e2a576ebdb328b"
+            ],
+            "withinRawBudget": true,
+            "belowSourceGzip": true
+          },
+          {
+            "label": "source/plain",
+            "order": "source",
+            "storage": "plain",
+            "rawBytes": 158756,
+            "gzip6Bytes": 88312,
+            "sha256": "9d5adba80ef5adfa3c80768d514a2716783d8a4d4d38aa8d5c209e07169c42f9",
+            "indexSha256": [
+              "060be4cf8aa362b0842978207a00e0074b47a187471e339fbcb1d7d16b45fe10"
+            ],
+            "withinRawBudget": true,
+            "belowSourceGzip": true
+          }
+        ]
+      },
+      "candidate": {
+        "rawBytes": 110864,
+        "gzip6Bytes": 85893,
+        "sha256": "84eaabe0bc40a9850b82b56ea63809b7def006728d7cbf8fcf26104fdbcbd771",
+        "jsonChunkBytes": 20076,
+        "categories": {
+          "meshAttributes": {
+            "views": 6,
+            "storedBytes": 38262,
+            "gzip6Bytes": 34886
+          },
+          "meshIndices": {
+            "views": 1,
+            "storedBytes": 4718,
+            "gzip6Bytes": 4140
+          },
+          "animation": {
+            "views": 49,
+            "storedBytes": 12294,
+            "gzip6Bytes": 8007
+          },
+          "skin": {
+            "views": 1,
+            "storedBytes": 128,
+            "gzip6Bytes": 94
+          },
+          "images": {
+            "views": 2,
+            "storedBytes": 35252,
+            "gzip6Bytes": 35165
+          },
+          "other": {
+            "views": 0,
+            "storedBytes": 0,
+            "gzip6Bytes": 0
+          }
+        },
+        "geometry": {
+          "primitives": [
+            {
+              "mesh": 0,
+              "primitive": 0,
+              "vertices": 1028,
+              "triangles": 1400
+            }
+          ],
+          "vertices": 1028,
+          "triangles": 1400
+        }
+      },
+      "packing": {
+        "views": 59,
+        "compressedViews": 50,
+        "modes": {
+          "ATTRIBUTES": 49,
+          "INDICES": 1
+        },
+        "keptViews": {
+          "image": 2,
+          "no-gain": 7
+        },
+        "triangleRotationFallbacks": 1,
+        "logicalViewBytes": 145604,
+        "compressedStreamBytes": 54318,
+        "storedBinBytes": 90758,
+        "fallbackBufferBytes": 109268
+      },
+      "garbage": {
+        "accessors": 7,
+        "views": 7
+      },
+      "topology": [
+        {
+          "mesh": 0,
+          "primitive": 0,
+          "problems": [],
+          "source": {
+            "triangles": 4000,
+            "edges": 6000,
+            "border": 0,
+            "nonmanifold": 0,
+            "inconsistent": 0,
+            "degenerate": 0,
+            "components": 2
+          },
+          "candidate": {
+            "triangles": 1400,
+            "edges": 2100,
+            "border": 0,
+            "nonmanifold": 0,
+            "inconsistent": 0,
+            "degenerate": 0
+          },
+          "defects": {
+            "newNonmanifoldEdges": 0,
+            "newInconsistentEdges": 0,
+            "newBorderEdges": 0,
+            "lostBorderEdges": 0,
+            "newFlippedTriangles": 0,
+            "newDegenerateTriangles": 0,
+            "mergedComponents": 0,
+            "splitComponents": 0,
+            "vanishedComponents": 0
+          },
+          "newBadEdges": [],
+          "newBorderEdges": 0,
+          "lostBorderEdges": 0,
+          "crossPrimitiveSeamPositionsLost": 0,
+          "protectedTriangles": 0,
+          "protectedTrianglesLost": 0,
+          "shrunkComponents": 0,
+          "faceNormalDisagreement": {
+            "source": 0,
+            "candidate": 0
+          }
+        }
+      ],
+      "poses": {
+        "scenes": [
+          {
+            "scene": 0,
+            "instances": 1,
+            "primitiveInstances": 1,
+            "comparedPrimitiveInstances": 1,
+            "slotIdentity": "1 of 1 slot(s) identified by exact positions and indices",
+            "clips": [
+              "Catch",
+              "Held_Loop",
+              "Idle_Loop",
+              "Land",
+              "Run_Loop",
+              "Thrown_Loop",
+              "Walk_Loop"
+            ],
+            "clipTracks": [
+              {
+                "clip": "Catch",
+                "applicableChannels": 6,
+                "appliedTracksSource": 6,
+                "appliedTracksCandidate": 6
+              },
+              {
+                "clip": "Held_Loop",
+                "applicableChannels": 6,
+                "appliedTracksSource": 6,
+                "appliedTracksCandidate": 6
+              },
+              {
+                "clip": "Idle_Loop",
+                "applicableChannels": 6,
+                "appliedTracksSource": 6,
+                "appliedTracksCandidate": 6
+              },
+              {
+                "clip": "Land",
+                "applicableChannels": 6,
+                "appliedTracksSource": 6,
+                "appliedTracksCandidate": 6
+              },
+              {
+                "clip": "Run_Loop",
+                "applicableChannels": 6,
+                "appliedTracksSource": 6,
+                "appliedTracksCandidate": 6
+              },
+              {
+                "clip": "Thrown_Loop",
+                "applicableChannels": 6,
+                "appliedTracksSource": 6,
+                "appliedTracksCandidate": 6
+              },
+              {
+                "clip": "Walk_Loop",
+                "applicableChannels": 6,
+                "appliedTracksSource": 6,
+                "appliedTracksCandidate": 6
+              }
+            ],
+            "clipsNotAnimatingThisScene": [],
+            "clipsBeyondMaxClips": [],
+            "poses": [
+              "rest",
+              "Catch@0.33",
+              "Catch@0.66",
+              "Held_Loop@0.33",
+              "Held_Loop@0.66",
+              "Idle_Loop@0.33",
+              "Idle_Loop@0.66",
+              "Land@0.33",
+              "Land@0.66",
+              "Run_Loop@0.33",
+              "Run_Loop@0.66",
+              "Thrown_Loop@0.33",
+              "Thrown_Loop@0.66",
+              "Walk_Loop@0.33",
+              "Walk_Loop@0.66"
+            ]
+          }
+        ],
+        "scope": "rest plus every clip that animates a scene's nodes (fractions 0.33, 0.66); sampled poses, not every frame",
+        "primitives": [
+          {
+            "mesh": 0,
+            "primitive": 0,
+            "instances": [
+              {
+                "scene": 0,
+                "node": 2,
+                "path": [
+                  3,
+                  2
+                ],
+                "skin": 0,
+                "restWorldMatrix": [
+                  1,
+                  0,
+                  0,
+                  0,
+                  0,
+                  1,
+                  0,
+                  0,
+                  0,
+                  0,
+                  1,
+                  0,
+                  0,
+                  0,
+                  0,
+                  1
+                ],
+                "transformEqual": true,
+                "stretch": {
+                  "max": 1,
+                  "min": 1
+                },
+                "correspondenceMaxMetres": 0,
+                "poses": [
+                  {
+                    "pose": "rest",
+                    "holes": {
+                      "all": {
+                        "count": 2383,
+                        "max": 0.0025964496843755543,
+                        "p99": 0.00207577433183453,
+                        "mean": 0.0004973947296039778
+                      },
+                      "body": {
+                        "count": 2383,
+                        "max": 0.0025964496843755543,
+                        "p99": 0.00207577433183453,
+                        "mean": 0.0004973947296039778
+                      }
+                    },
+                    "interiors": {
+                      "all": {
+                        "count": 4000,
+                        "max": 0.0024790912246359454,
+                        "p99": 0.0017295235116962246,
+                        "mean": 0.0005379612611811648
+                      },
+                      "body": {
+                        "count": 4000,
+                        "max": 0.0024790912246359454,
+                        "p99": 0.0017295235116962246,
+                        "mean": 0.0005379612611811648
+                      }
+                    },
+                    "webbing": {
+                      "all": {
+                        "count": 5600,
+                        "max": 0.0029250745332714922,
+                        "p99": 0.001921818111309696,
+                        "mean": 0.00043763850196314706
+                      },
+                      "body": {
+                        "count": 5600,
+                        "max": 0.0029250745332714922,
+                        "p99": 0.001921818111309696,
+                        "mean": 0.00043763850196314706
+                      }
+                    },
+                    "shortcuts": {
+                      "holes": 1028,
+                      "interiors": 156,
+                      "webbing": 624,
+                      "enabled": true
+                    }
+                  },
+                  {
+                    "pose": "Catch@0.33",
+                    "holes": {
+                      "all": {
+                        "count": 2383,
+                        "max": 0.002589810924734593,
+                        "p99": 0.002101457486501452,
+                        "mean": 0.0004971970603249816
+                      },
+                      "body": {
+                        "count": 2383,
+                        "max": 0.002589810924734593,
+                        "p99": 0.002101457486501452,
+                        "mean": 0.0004971970603249816
+                      }
+                    },
+                    "interiors": {
+                      "all": {
+                        "count": 4000,
+                        "max": 0.0023742919216112805,
+                        "p99": 0.0017613577939805884,
+                        "mean": 0.0005373918360939321
+                      },
+                      "body": {
+                        "count": 4000,
+                        "max": 0.0023742919216112805,
+                        "p99": 0.0017613577939805884,
+                        "mean": 0.0005373918360939321
+                      }
+                    },
+                    "webbing": {
+                      "all": {
+                        "count": 5600,
+                        "max": 0.0027818251224520844,
+                        "p99": 0.0019296391040177763,
+                        "mean": 0.0004371686204378509
+                      },
+                      "body": {
+                        "count": 5600,
+                        "max": 0.0027818251224520844,
+                        "p99": 0.0019296391040177763,
+                        "mean": 0.0004371686204378509
+                      }
+                    },
+                    "shortcuts": {
+                      "holes": 1028,
+                      "interiors": 156,
+                      "webbing": 624,
+                      "enabled": true
+                    }
+                  },
+                  {
+                    "pose": "Catch@0.66",
+                    "holes": {
+                      "all": {
+                        "count": 2383,
+                        "max": 0.002591881081476369,
+                        "p99": 0.0021026504836551755,
+                        "mean": 0.0004971819120812488
+                      },
+                      "body": {
+                        "count": 2383,
+                        "max": 0.002591881081476369,
+                        "p99": 0.0021026504836551755,
+                        "mean": 0.0004971819120812488
+                      }
+                    },
+                    "interiors": {
+                      "all": {
+                        "count": 4000,
+                        "max": 0.002372262758406213,
+                        "p99": 0.001762645649976168,
+                        "mean": 0.0005373691198095861
+                      },
+                      "body": {
+                        "count": 4000,
+                        "max": 0.002372262758406213,
+                        "p99": 0.001762645649976168,
+                        "mean": 0.0005373691198095861
+                      }
+                    },
+                    "webbing": {
+                      "all": {
+                        "count": 5600,
+                        "max": 0.002779113165117777,
+                        "p99": 0.0019307342682910243,
+                        "mean": 0.0004371476593925752
+                      },
+                      "body": {
+                        "count": 5600,
+                        "max": 0.002779113165117777,
+                        "p99": 0.0019307342682910243,
+                        "mean": 0.0004371476593925752
+                      }
+                    },
+                    "shortcuts": {
+                      "holes": 1028,
+                      "interiors": 156,
+                      "webbing": 624,
+                      "enabled": true
+                    }
+                  },
+                  {
+                    "pose": "Held_Loop@0.33",
+                    "holes": {
+                      "all": {
+                        "count": 2383,
+                        "max": 0.002613791232277975,
+                        "p99": 0.00207609539655932,
+                        "mean": 0.0004973030581581968
+                      },
+                      "body": {
+                        "count": 2383,
+                        "max": 0.002613791232277975,
+                        "p99": 0.00207609539655932,
+                        "mean": 0.0004973030581581968
+                      }
+                    },
+                    "interiors": {
+                      "all": {
+                        "count": 4000,
+                        "max": 0.002495648941692883,
+                        "p99": 0.0017275092604033429,
+                        "mean": 0.0005379226621380073
+                      },
+                      "body": {
+                        "count": 4000,
+                        "max": 0.002495648941692883,
+                        "p99": 0.0017275092604033429,
+                        "mean": 0.0005379226621380073
+                      }
+                    },
+                    "webbing": {
+                      "all": {
+                        "count": 5600,
+                        "max": 0.0029484012973538037,
+                        "p99": 0.0019260653905756472,
+                        "mean": 0.0004375833631388077
+                      },
+                      "body": {
+                        "count": 5600,
+                        "max": 0.0029484012973538037,
+                        "p99": 0.0019260653905756472,
+                        "mean": 0.0004375833631388077
+                      }
+                    },
+                    "shortcuts": {
+                      "holes": 1028,
+                      "interiors": 156,
+                      "webbing": 624,
+                      "enabled": true
+                    }
+                  },
+                  {
+                    "pose": "Held_Loop@0.66",
+                    "holes": {
+                      "all": {
+                        "count": 2383,
+                        "max": 0.0025789506583897876,
+                        "p99": 0.002070446841237499,
+                        "mean": 0.0004974485888112947
+                      },
+                      "body": {
+                        "count": 2383,
+                        "max": 0.0025789506583897876,
+                        "p99": 0.002070446841237499,
+                        "mean": 0.0004974485888112947
+                      }
+                    },
+                    "interiors": {
+                      "all": {
+                        "count": 4000,
+                        "max": 0.002462383147440391,
+                        "p99": 0.0017332229029010649,
+                        "mean": 0.0005379594597110035
+                      },
+                      "body": {
+                        "count": 4000,
+                        "max": 0.002462383147440391,
+                        "p99": 0.0017332229029010649,
+                        "mean": 0.0005379594597110035
+                      }
+                    },
+                    "webbing": {
+                      "all": {
+                        "count": 5600,
+                        "max": 0.002901757132279477,
+                        "p99": 0.001917170849269363,
+                        "mean": 0.0004376531852614397
+                      },
+                      "body": {
+                        "count": 5600,
+                        "max": 0.002901757132279477,
+                        "p99": 0.001917170849269363,
+                        "mean": 0.0004376531852614397
+                      }
+                    },
+                    "shortcuts": {
+                      "holes": 1028,
+                      "interiors": 156,
+                      "webbing": 624,
+                      "enabled": true
+                    }
+                  },
+                  {
+                    "pose": "Idle_Loop@0.33",
+                    "holes": {
+                      "all": {
+                        "count": 2383,
+                        "max": 0.0026112496033179763,
+                        "p99": 0.0020777498216105086,
+                        "mean": 0.0004973190106619303
+                      },
+                      "body": {
+                        "count": 2383,
+                        "max": 0.0026112496033179763,
+                        "p99": 0.0020777498216105086,
+                        "mean": 0.0004973190106619303
+                      }
+                    },
+                    "interiors": {
+                      "all": {
+                        "count": 4000,
+                        "max": 0.002493222193318409,
+                        "p99": 0.0017287463334219966,
+                        "mean": 0.0005379308910550509
+                      },
+                      "body": {
+                        "count": 4000,
+                        "max": 0.002493222193318409,
+                        "p99": 0.0017287463334219966,
+                        "mean": 0.0005379308910550509
+                      }
+                    },
+                    "webbing": {
+                      "all": {
+                        "count": 5600,
+                        "max": 0.002944967989343939,
+                        "p99": 0.0019254663009180947,
+                        "mean": 0.000437594063301642
+                      },
+                      "body": {
+                        "count": 5600,
+                        "max": 0.002944967989343939,
+                        "p99": 0.0019254663009180947,
+                        "mean": 0.000437594063301642
+                      }
+                    },
+                    "shortcuts": {
+                      "holes": 1028,
+                      "interiors": 156,
+                      "webbing": 624,
+                      "enabled": true
+                    }
+                  },
+                  {
+                    "pose": "Idle_Loop@0.66",
+                    "holes": {
+                      "all": {
+                        "count": 2383,
+                        "max": 0.002581611896650225,
+                        "p99": 0.0020711607646136418,
+                        "mean": 0.0004974427109378814
+                      },
+                      "body": {
+                        "count": 2383,
+                        "max": 0.002581611896650225,
+                        "p99": 0.0020711607646136418,
+                        "mean": 0.0004974427109378814
+                      }
+                    },
+                    "interiors": {
+                      "all": {
+                        "count": 4000,
+                        "max": 0.0024649240988240543,
+                        "p99": 0.0017335713351919423,
+                        "mean": 0.0005379622114204784
+                      },
+                      "body": {
+                        "count": 4000,
+                        "max": 0.0024649240988240543,
+                        "p99": 0.0017335713351919423,
+                        "mean": 0.0005379622114204784
+                      }
+                    },
+                    "webbing": {
+                      "all": {
+                        "count": 5600,
+                        "max": 0.0029052896510719556,
+                        "p99": 0.0019178998605202465,
+                        "mean": 0.0004376534302580017
+                      },
+                      "body": {
+                        "count": 5600,
+                        "max": 0.0029052896510719556,
+                        "p99": 0.0019178998605202465,
+                        "mean": 0.0004376534302580017
+                      }
+                    },
+                    "shortcuts": {
+                      "holes": 1028,
+                      "interiors": 156,
+                      "webbing": 624,
+                      "enabled": true
+                    }
+                  },
+                  {
+                    "pose": "Land@0.33",
+                    "holes": {
+                      "all": {
+                        "count": 2383,
+                        "max": 0.0026189552735861213,
+                        "p99": 0.002118006621147105,
+                        "mean": 0.0004969469193604652
+                      },
+                      "body": {
+                        "count": 2383,
+                        "max": 0.0026189552735861213,
+                        "p99": 0.002118006621147105,
+                        "mean": 0.0004969469193604652
+                      }
+                    },
+                    "interiors": {
+                      "all": {
+                        "count": 4000,
+                        "max": 0.002345489550324161,
+                        "p99": 0.0017776543767048863,
+                        "mean": 0.0005370302374901747
+                      },
+                      "body": {
+                        "count": 4000,
+                        "max": 0.002345489550324161,
+                        "p99": 0.0017776543767048863,
+                        "mean": 0.0005370302374901747
+                      }
+                    },
+                    "webbing": {
+                      "all": {
+                        "count": 5600,
+                        "max": 0.002743514041193767,
+                        "p99": 0.0019255368277060886,
+                        "mean": 0.0004368338733938661
+                      },
+                      "body": {
+                        "count": 5600,
+                        "max": 0.002743514041193767,
+                        "p99": 0.0019255368277060886,
+                        "mean": 0.0004368338733938661
+                      }
+                    },
+                    "shortcuts": {
+                      "holes": 1028,
+                      "interiors": 156,
+                      "webbing": 624,
+                      "enabled": true
+                    }
+                  },
+                  {
+                    "pose": "Land@0.66",
+                    "holes": {
+                      "all": {
+                        "count": 2383,
+                        "max": 0.002549311135113922,
+                        "p99": 0.0020882980181974394,
+                        "mean": 0.0004974125707016269
+                      },
+                      "body": {
+                        "count": 2383,
+                        "max": 0.002549311135113922,
+                        "p99": 0.0020882980181974394,
+                        "mean": 0.0004974125707016269
+                      }
+                    },
+                    "interiors": {
+                      "all": {
+                        "count": 4000,
+                        "max": 0.0024134490048829055,
+                        "p99": 0.0017419935627140857,
+                        "mean": 0.000537752129339511
+                      },
+                      "body": {
+                        "count": 4000,
+                        "max": 0.0024134490048829055,
+                        "p99": 0.0017419935627140857,
+                        "mean": 0.000537752129339511
+                      }
+                    },
+                    "webbing": {
+                      "all": {
+                        "count": 5600,
+                        "max": 0.0028345718880444337,
+                        "p99": 0.0019308152118884061,
+                        "mean": 0.0004374925347637421
+                      },
+                      "body": {
+                        "count": 5600,
+                        "max": 0.0028345718880444337,
+                        "p99": 0.0019308152118884061,
+                        "mean": 0.0004374925347637421
+                      }
+                    },
+                    "shortcuts": {
+                      "holes": 1028,
+                      "interiors": 156,
+                      "webbing": 624,
+                      "enabled": true
+                    }
+                  },
+                  {
+                    "pose": "Run_Loop@0.33",
+                    "holes": {
+                      "all": {
+                        "count": 2383,
+                        "max": 0.0027983277257399015,
+                        "p99": 0.0020756577917603377,
+                        "mean": 0.0004955151458287653
+                      },
+                      "body": {
+                        "count": 2383,
+                        "max": 0.0027983277257399015,
+                        "p99": 0.0020756577917603377,
+                        "mean": 0.0004955151458287653
+                      }
+                    },
+                    "interiors": {
+                      "all": {
+                        "count": 4000,
+                        "max": 0.002599698401777465,
+                        "p99": 0.0017378422249233851,
+                        "mean": 0.0005364232652028111
+                      },
+                      "body": {
+                        "count": 4000,
+                        "max": 0.002599698401777465,
+                        "p99": 0.0017378422249233851,
+                        "mean": 0.0005364232652028111
+                      }
+                    },
+                    "webbing": {
+                      "all": {
+                        "count": 5600,
+                        "max": 0.0031019517898543164,
+                        "p99": 0.0019326372712654338,
+                        "mean": 0.0004359388205279464
+                      },
+                      "body": {
+                        "count": 5600,
+                        "max": 0.0031019517898543164,
+                        "p99": 0.0019326372712654338,
+                        "mean": 0.0004359388205279464
+                      }
+                    },
+                    "shortcuts": {
+                      "holes": 1028,
+                      "interiors": 156,
+                      "webbing": 624,
+                      "enabled": true
+                    }
+                  },
+                  {
+                    "pose": "Run_Loop@0.66",
+                    "holes": {
+                      "all": {
+                        "count": 2383,
+                        "max": 0.002660367296684301,
+                        "p99": 0.002128798506002065,
+                        "mean": 0.0004964716142845571
+                      },
+                      "body": {
+                        "count": 2383,
+                        "max": 0.002660367296684301,
+                        "p99": 0.002128798506002065,
+                        "mean": 0.0004964716142845571
+                      }
+                    },
+                    "interiors": {
+                      "all": {
+                        "count": 4000,
+                        "max": 0.0023040072077938193,
+                        "p99": 0.0017881415914550506,
+                        "mean": 0.0005363925598849816
+                      },
+                      "body": {
+                        "count": 4000,
+                        "max": 0.0023040072077938193,
+                        "p99": 0.0017881415914550506,
+                        "mean": 0.0005363925598849816
+                      }
+                    },
+                    "webbing": {
+                      "all": {
+                        "count": 5600,
+                        "max": 0.0027122165519561153,
+                        "p99": 0.001940806759475619,
+                        "mean": 0.0004362352857056569
+                      },
+                      "body": {
+                        "count": 5600,
+                        "max": 0.0027122165519561153,
+                        "p99": 0.001940806759475619,
+                        "mean": 0.0004362352857056569
+                      }
+                    },
+                    "shortcuts": {
+                      "holes": 1028,
+                      "interiors": 156,
+                      "webbing": 624,
+                      "enabled": true
+                    }
+                  },
+                  {
+                    "pose": "Thrown_Loop@0.33",
+                    "holes": {
+                      "all": {
+                        "count": 2383,
+                        "max": 0.0026717074153297863,
+                        "p99": 0.002055080763675833,
+                        "mean": 0.0004966647059130292
+                      },
+                      "body": {
+                        "count": 2383,
+                        "max": 0.0026717074153297863,
+                        "p99": 0.002055080763675833,
+                        "mean": 0.0004966647059130292
+                      }
+                    },
+                    "interiors": {
+                      "all": {
+                        "count": 4000,
+                        "max": 0.0025509473370487474,
+                        "p99": 0.0017317922196758472,
+                        "mean": 0.0005374514834509061
+                      },
+                      "body": {
+                        "count": 4000,
+                        "max": 0.0025509473370487474,
+                        "p99": 0.0017317922196758472,
+                        "mean": 0.0005374514834509061
+                      }
+                    },
+                    "webbing": {
+                      "all": {
+                        "count": 5600,
+                        "max": 0.0030282182402663147,
+                        "p99": 0.0019230189639194196,
+                        "mean": 0.00043704711222533057
+                      },
+                      "body": {
+                        "count": 5600,
+                        "max": 0.0030282182402663147,
+                        "p99": 0.0019230189639194196,
+                        "mean": 0.00043704711222533057
+                      }
+                    },
+                    "shortcuts": {
+                      "holes": 1028,
+                      "interiors": 156,
+                      "webbing": 624,
+                      "enabled": true
+                    }
+                  },
+                  {
+                    "pose": "Thrown_Loop@0.66",
+                    "holes": {
+                      "all": {
+                        "count": 2383,
+                        "max": 0.002671707350821742,
+                        "p99": 0.0020550807312059703,
+                        "mean": 0.0004966646970271267
+                      },
+                      "body": {
+                        "count": 2383,
+                        "max": 0.002671707350821742,
+                        "p99": 0.0020550807312059703,
+                        "mean": 0.0004966646970271267
+                      }
+                    },
+                    "interiors": {
+                      "all": {
+                        "count": 4000,
+                        "max": 0.002550947275456477,
+                        "p99": 0.00173179218021394,
+                        "mean": 0.0005374514739458396
+                      },
+                      "body": {
+                        "count": 4000,
+                        "max": 0.002550947275456477,
+                        "p99": 0.00173179218021394,
+                        "mean": 0.0005374514739458396
+                      }
+                    },
+                    "webbing": {
+                      "all": {
+                        "count": 5600,
+                        "max": 0.003028218191356761,
+                        "p99": 0.0019230189541606746,
+                        "mean": 0.0004370471044849943
+                      },
+                      "body": {
+                        "count": 5600,
+                        "max": 0.003028218191356761,
+                        "p99": 0.0019230189541606746,
+                        "mean": 0.0004370471044849943
+                      }
+                    },
+                    "shortcuts": {
+                      "holes": 1028,
+                      "interiors": 156,
+                      "webbing": 624,
+                      "enabled": true
+                    }
+                  },
+                  {
+                    "pose": "Walk_Loop@0.33",
+                    "holes": {
+                      "all": {
+                        "count": 2383,
+                        "max": 0.0026844992427290364,
+                        "p99": 0.002061104814088424,
+                        "mean": 0.0004964780270108783
+                      },
+                      "body": {
+                        "count": 2383,
+                        "max": 0.0026844992427290364,
+                        "p99": 0.002061104814088424,
+                        "mean": 0.0004964780270108783
+                      }
+                    },
+                    "interiors": {
+                      "all": {
+                        "count": 4000,
+                        "max": 0.002561260705346001,
+                        "p99": 0.0017395641962723262,
+                        "mean": 0.0005372929230826447
+                      },
+                      "body": {
+                        "count": 4000,
+                        "max": 0.002561260705346001,
+                        "p99": 0.0017395641962723262,
+                        "mean": 0.0005372929230826447
+                      }
+                    },
+                    "webbing": {
+                      "all": {
+                        "count": 5600,
+                        "max": 0.003043500318118319,
+                        "p99": 0.0019344980080799254,
+                        "mean": 0.0004368736515606228
+                      },
+                      "body": {
+                        "count": 5600,
+                        "max": 0.003043500318118319,
+                        "p99": 0.0019344980080799254,
+                        "mean": 0.0004368736515606228
+                      }
+                    },
+                    "shortcuts": {
+                      "holes": 1028,
+                      "interiors": 156,
+                      "webbing": 624,
+                      "enabled": true
+                    }
+                  },
+                  {
+                    "pose": "Walk_Loop@0.66",
+                    "holes": {
+                      "all": {
+                        "count": 2383,
+                        "max": 0.002587321869741939,
+                        "p99": 0.0021000219845055458,
+                        "mean": 0.0004972167552280627
+                      },
+                      "body": {
+                        "count": 2383,
+                        "max": 0.002587321869741939,
+                        "p99": 0.0021000219845055458,
+                        "mean": 0.0004972167552280627
+                      }
+                    },
+                    "interiors": {
+                      "all": {
+                        "count": 4000,
+                        "max": 0.0023767471417255473,
+                        "p99": 0.0017598087622666618,
+                        "mean": 0.0005374207759848914
+                      },
+                      "body": {
+                        "count": 4000,
+                        "max": 0.0023767471417255473,
+                        "p99": 0.0017598087622666618,
+                        "mean": 0.0005374207759848914
+                      }
+                    },
+                    "webbing": {
+                      "all": {
+                        "count": 5600,
+                        "max": 0.0027851077052205753,
+                        "p99": 0.0019283213361447552,
+                        "mean": 0.0004371950531719676
+                      },
+                      "body": {
+                        "count": 5600,
+                        "max": 0.0027851077052205753,
+                        "p99": 0.0019283213361447552,
+                        "mean": 0.0004371950531719676
+                      }
+                    },
+                    "shortcuts": {
+                      "holes": 1028,
+                      "interiors": 156,
+                      "webbing": 624,
+                      "enabled": true
+                    }
+                  }
+                ],
+                "worst": {
+                  "holes": {
+                    "all": {
+                      "max": 0.0027983277257399015,
+                      "p99": 0.002128798506002065,
+                      "mean": 0.0004974485888112947,
+                      "worstPose": "Run_Loop@0.33"
+                    },
+                    "body": {
+                      "max": 0.0027983277257399015,
+                      "p99": 0.002128798506002065,
+                      "mean": 0.0004974485888112947,
+                      "worstPose": "Run_Loop@0.33"
+                    }
+                  },
+                  "interiors": {
+                    "all": {
+                      "max": 0.002599698401777465,
+                      "p99": 0.0017881415914550506,
+                      "mean": 0.0005379622114204784,
+                      "worstPose": "Run_Loop@0.33"
+                    },
+                    "body": {
+                      "max": 0.002599698401777465,
+                      "p99": 0.0017881415914550506,
+                      "mean": 0.0005379622114204784,
+                      "worstPose": "Run_Loop@0.33"
+                    }
+                  },
+                  "webbing": {
+                    "all": {
+                      "max": 0.0031019517898543164,
+                      "p99": 0.001940806759475619,
+                      "mean": 0.0004376534302580017,
+                      "worstPose": "Run_Loop@0.33"
+                    },
+                    "body": {
+                      "max": 0.0031019517898543164,
+                      "p99": 0.001940806759475619,
+                      "mean": 0.0004376534302580017,
+                      "worstPose": "Run_Loop@0.33"
+                    }
+                  }
+                },
+                "gateMetres": {
+                  "p99": 0.008,
+                  "max": 0.024,
+                  "unit": "world metres, fixed per policy"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "file": {
+        "file": "orb-bot-green/guarded-body.glb",
+        "sha256": "84eaabe0bc40a9850b82b56ea63809b7def006728d7cbf8fcf26104fdbcbd771",
+        "bytes": 110864
+      },
+      "mappingFiles": [
+        {
+          "mesh": 0,
+          "primitive": 0,
+          "meaning": "candidate vertex i is served-file vertex u32le[i] of this primitive",
+          "file": "orb-bot-green/guarded-body.m0p0.source-vertices.u32le",
+          "sha256": "f1165a93403a15e97bd1bc887b6f6dec40e659e23d56a1b356fdfbc759f2851c",
+          "bytes": 4112
+        }
+      ]
+    }
+  ],
+  "implementation": "c7ee69f6a2c0fd96f159e5356ce75b8cc59389340bc56925ac83691db00b7806"
+}

@@ -4,6 +4,12 @@ import { RESIDENTS } from '../shared/village-sites.mjs';
 import { COUNTRIES } from '../shared/gulf-region.mjs';
 import { walkHeight } from '../shared/terrain.mjs';
 import { updateActorPerformance } from './performance-lod.js';
+import { LoadTicket, isLoadCancelled } from './asset-load-queue.js';
+import { RESIDENCY, residencyPriority } from './actor-residency.js';
+
+// Residents load within 65 m, so their priority never falls to background prefetch.
+const residentPriority = (distance: number) =>
+  residencyPriority(Math.min(distance, RESIDENCY.admit), false, true)!;
 
 /** Separate actors, shared adopted geometry/textures and existing character providers. */
 export class VillageRenderer {
@@ -16,6 +22,8 @@ export class VillageRenderer {
   remove(id: string) {
     const entity = this.entities.get(id);
     if (!entity) return;
+    // A resident that leaves before loading withdraws its queued load.
+    entity.ticket?.release();
     entity.actor?.root.removeFromParent();
     entity.actor?.dispose();
     if (entity.label) {
@@ -29,12 +37,13 @@ export class VillageRenderer {
     try {
       const provider = this.world.humanAssets.get(characterModel(definition).key);
       const color = COUNTRIES.find((c) => c.id === definition.settlementId)?.color ?? '#dfbe80';
-      const actor = await provider.create({ color });
+      const actor = await provider.create({ color, ticket: entity.ticket });
       if (this.disposed || this.entities.get(definition.id) !== entity) {
         actor?.dispose();
         return;
       }
       if (!actor) throw new Error(`Resident model unavailable: ${definition.id}`);
+      entity.ticket.release();
       entity.actor = actor;
       entity.label = this.world.createLabel(
         definition.name,
@@ -49,8 +58,10 @@ export class VillageRenderer {
       this.world.scene.add(actor.root);
       this.world.updateAssetDiagnostics();
     } catch (error) {
-      if (!this.disposed)
-        this.world.failWorld('住人の3D素材を読み込めませんでした。再読み込みしてください。', error);
+      // A withdrawn or replaced resident is not an asset failure.
+      if (this.disposed || this.entities.get(definition.id) !== entity || isLoadCancelled(error))
+        return;
+      this.world.failWorld('住人の3D素材を読み込めませんでした。再読み込みしてください。', error);
     }
   }
   obstacles(exceptId?: string) {
@@ -69,14 +80,21 @@ export class VillageRenderer {
       const definition = RESIDENTS.find((d) => d.id === p.id);
       if (!definition) continue;
       present.add(p.id);
-      const near = Math.hypot(p.x - w.focus.x, p.z - w.focus.z) < 65;
+      const distance = Math.hypot(p.x - w.focus.x, p.z - w.focus.z),
+        near = distance < 65;
       let entity = this.entities.get(p.id);
       if (!entity && near) {
-        entity = { state: p, lastUsed: time, clip: '' };
+        entity = {
+          state: p,
+          lastUsed: time,
+          clip: '',
+          ticket: new LoadTicket(residentPriority(distance)),
+        };
         this.entities.set(p.id, entity);
         void this.load(definition, entity);
       }
       if (!entity) continue;
+      if (!entity.actor) entity.ticket.priority = residentPriority(distance);
       entity.state = p;
       if (near) entity.lastUsed = time;
       else if (time - entity.lastUsed > 12) {

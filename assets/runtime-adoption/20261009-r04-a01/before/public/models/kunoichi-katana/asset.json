@@ -1,0 +1,61 @@
+{
+  "modelKey": "kunoichi-katana",
+  "name": "クノイチの刀",
+  "kind": "equipment",
+  "candidate": 2,
+  "status": "remake-candidate-2-integrated",
+  "url": "/models/kunoichi-katana/model-c2.glb",
+  "sha256": "4d3c2edeaaba853a4cb4cf658e4541812ad6249e1363f649469d81afe6f797cb",
+  "bytes": 530840,
+  "triangles": 5997,
+  "upAxis": "Y",
+  "forwardAxis": "+Z",
+  "heightMetres": 1.0499798208475113,
+  "widthMetres": 0.14215365052223206,
+  "placement": {
+    "pivot": "grip",
+    "gripNode": "Grip.R",
+    "shaftAxis": "+Y",
+    "gripToButtMetres": 0.1583198457956314,
+    "gripToTipMetres": 0.8916599750518799
+  },
+  "clips": [],
+  "lods": [],
+  "notes": [
+    "Candidate 2: new reference -> TRELLIS-2 1024 -> meshopt -> xatlas -> albedo + baked normal; grip origin at the same fraction of the length as C1, shaft +Y; grip-to-butt 0.1583 m, grip-to-tip 0.8917 m (C1 values kept within 1 cm)."
+  ],
+  "provenance": {
+    "provider": "Claude Code (Opus 5.5)",
+    "claudeUsed": true,
+    "referenceGenerator": "Codex CLI built-in image_gen (gpt-5.6-sol, medium), earlier approved reference attached for identity",
+    "referenceImage": "C:/Users/yurin/Desktop/projects/CRO-MAGNON/output/model-generation/models/kunoichi-katana/source/original/candidate2-ref-a.png",
+    "referenceSha256": "8b9b78cc82c56a87fde431a20ffeafe1158f0574c269083094a114ff13f19016",
+    "reconstruction": "Local TRELLIS-2 v0.8.1, res 1024, tex 1024, seed recorded in dense JSON",
+    "denseFile": "C:/Users/yurin/Desktop/projects/CRO-MAGNON/output/model-generation/models/kunoichi-katana/work/candidate-02/trellis/dense-ref2a-res1024-tex1024-seed0042.glb",
+    "denseSha256": "03f6d0cf2c54226489955deddd88069d4ce59281024cc21a957b5b58d6e976fe",
+    "processReport": "output/model-generation/models/kunoichi-katana/work/candidate-02/low-poly/m01/process-report.json",
+    "rigReport": null,
+    "pipeline": "scripts/remake/ (trellis_queue.py, remake_process.py, rig_*.py); docs/asset-remake/PLAN.md",
+    "previousDelivery": {
+      "url": "/models/kunoichi-katana/model.glb",
+      "sha256": "3e6e061fc02779d3516d114b53629fa0d5b585e815d4683ce74dd7d9c2822e0e",
+      "triangles": 22201,
+      "bytes": 2019308,
+      "candidate": 1,
+      "revision": null
+    },
+    "previousProvenance": {
+      "provider": "Codex",
+      "claudeUsed": false,
+      "referenceGenerator": "Built-in imagegen",
+      "referenceImage": "output/model-generation/models/kunoichi-katana/source/original/reference-v1.png",
+      "referenceSha256": "3b0d5d4606f60389875cf4fca9dfe14933e7f06ae25db2f55b70b0129676e313",
+      "reconstruction": "Local TRELLIS-2; preserved dense reconstruction and measured reduction.",
+      "candidateFile": "output/model-generation/models/kunoichi-katana/work/low-poly/revision-08/candidate.glb",
+      "visualReview": "output/model-generation/models/kunoichi-katana/qa/adoption-review.json"
+    },
+    "visualReview": "assets/asset-remake/reviews/kunoichi-katana.json"
+  },
+  "onDemand": true,
+  "revision": "c2-m01"
+}

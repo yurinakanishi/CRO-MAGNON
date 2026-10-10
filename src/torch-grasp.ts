@@ -39,7 +39,6 @@ export class TorchGrasp {
     actor.traverse((mesh) => {
       if (!isSkinnedMesh(mesh)) return;
       this.meshes.push(mesh);
-      if (mesh.userData.shadowOnly) return;
       this.handVertices(mesh, mesh.geometry, (point, weight) => {
         if (weight > 0.65) points.push(point.clone());
       });
@@ -86,8 +85,7 @@ export class TorchGrasp {
         entry.high = this.geometry(mesh, entry.high);
         entry.low = this.geometry(mesh, entry.low);
         mesh.geometry = detail.level ? entry.low : entry.high;
-        if (entry.shadow) entry.shadow.geometry = entry.low;
-      } else if (!mesh.userData.shadowOnly) mesh.geometry = this.geometry(mesh, mesh.geometry);
+      } else mesh.geometry = this.geometry(mesh, mesh.geometry);
       mesh.updateMorphTargets();
       this.previous.get(mesh)?.influences?.forEach((value, i) => {
         mesh.morphTargetInfluences![i] = value;

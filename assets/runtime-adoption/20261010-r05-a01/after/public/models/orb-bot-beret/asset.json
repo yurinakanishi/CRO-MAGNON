@@ -1,0 +1,185 @@
+{
+  "modelKey": "orb-bot-beret",
+  "name": "ベレーbot",
+  "kind": "companion",
+  "candidate": 2,
+  "revision": "c2-t01",
+  "status": "remake-candidate-2-integrated",
+  "url": "/models/orb-bot-beret/model-c2.opt-67aa3569b08433a9.glb",
+  "sha256": "67aa3569b08433a9d061e3902e3ac9fe358eaea1eec8756350265681034c43c5",
+  "bytes": 469592,
+  "triangles": 3914,
+  "bones": 2,
+  "upAxis": "Y",
+  "forwardAxis": "+Z",
+  "heightMetres": 0.28,
+  "widthMetres": 0.2553956419059432,
+  "lengthMetres": 0.21192581770742053,
+  "placement": {
+    "pivot": "ground-centred",
+    "scale": 1
+  },
+  "portrait": {
+    "url": "/models/orb-bot-beret/portrait.png",
+    "sha256": "0b9b7c2accf86d2a0fcbe3db4a586ba716bcd15c5519ef189758a06202c3e33d",
+    "bytes": 1357885
+  },
+  "clips": [
+    {
+      "name": "Catch",
+      "seconds": 0.30000001192092896,
+      "loop": false,
+      "rootMotion": "in-place",
+      "fps": 60
+    },
+    {
+      "name": "Held_Loop",
+      "seconds": 1.2000000476837158,
+      "loop": true,
+      "rootMotion": "in-place",
+      "fps": 60
+    },
+    {
+      "name": "Idle_Loop",
+      "seconds": 2.4000000953674316,
+      "loop": true,
+      "rootMotion": "in-place",
+      "fps": 60
+    },
+    {
+      "name": "Land",
+      "seconds": 0.4166666567325592,
+      "loop": false,
+      "rootMotion": "in-place",
+      "fps": 60
+    },
+    {
+      "name": "Run_Loop",
+      "seconds": 0.4000000059604645,
+      "loop": true,
+      "rootMotion": "in-place",
+      "fps": 60
+    },
+    {
+      "name": "Thrown_Loop",
+      "seconds": 0.8999999761581421,
+      "loop": true,
+      "rootMotion": "in-place",
+      "fps": 60
+    },
+    {
+      "name": "Walk_Loop",
+      "seconds": 0.6000000238418579,
+      "loop": true,
+      "rootMotion": "in-place",
+      "fps": 60
+    }
+  ],
+  "locomotion": {
+    "Walk_Loop": {
+      "metresPerSecond": 3,
+      "cycleSeconds": 0.6
+    },
+    "Run_Loop": {
+      "metresPerSecond": 3,
+      "cycleSeconds": 0.4
+    }
+  },
+  "lods": [
+    {
+      "url": "/models/orb-bot-beret/lod-c2.opt-f4899300099cd789.glb",
+      "sha256": "f4899300099cd789cf6fc1f0f91cd47c603e7aa307dab057ac37294b38381fbe",
+      "bytes": 58004,
+      "triangles": 1565,
+      "distanceMetres": 9,
+      "purpose": "animated-medium-lod-geometry"
+    }
+  ],
+  "provenance": {
+    "provider": "Claude Code (Opus 5.5)",
+    "claudeUsed": true,
+    "referenceGenerator": "none: derived from the delivered, user-approved surface (identity unchanged)",
+    "referenceImage": "public/models/orb-bot-beret/model-r03.glb",
+    "referenceSha256": "0c18e377dc69de6c1fce9bd2baaade3fb20914f2e547d382ec5a6a8b24e304e0",
+    "reconstruction": "no new reconstruction; the delivered rest surface is the bake and skin-weight source",
+    "denseFile": "public/models/orb-bot-beret/model-r03.glb",
+    "denseSha256": "0c18e377dc69de6c1fce9bd2baaade3fb20914f2e547d382ec5a6a8b24e304e0",
+    "processReport": "output/model-generation/models/orb-bot-beret/work/candidate-02/transfer/t01/report.json",
+    "rigReport": null,
+    "pipeline": "scripts/remake/ (trellis_queue.py, remake_process.py, rig_*.py); docs/asset-remake/PLAN.md",
+    "previousDelivery": {
+      "url": "/models/orb-bot-beret/model-r03.glb",
+      "sha256": "0c18e377dc69de6c1fce9bd2baaade3fb20914f2e547d382ec5a6a8b24e304e0",
+      "triangles": 23581,
+      "bytes": 17676368,
+      "candidate": 1,
+      "revision": "03"
+    },
+    "previousProvenance": {
+      "provider": "Codex",
+      "claudeUsed": false,
+      "referenceGenerator": "Built-in imagegen",
+      "referenceImage": "assets/shape-bots/source/beret-reference-v1.png",
+      "referenceSha256": "0b9b7c2accf86d2a0fcbe3db4a586ba716bcd15c5519ef189758a06202c3e33d",
+      "userReference": "assets/shape-bots/source/user-reference.png",
+      "userReferenceSha256": "9836ed1b161feba83535854a67235b74ceb1c4dbe26a2098e53a33559c69ad77",
+      "reconstruction": "Local TRELLIS-2 v0.8.1 official Vulkan / 512 / seed42; measured source-preserving reduction and squash/hop rig.",
+      "denseSha256": "d310b8466391c55d1c69c790f1ea44acc67ac6db7e8cd51bb6f851cf26e39036",
+      "sourceUvAndAlbedoPreserved": false,
+      "sourceUvPreserved": true,
+      "materialRepair": {
+        "method": "Reference-derived body-colour calibration of source albedo; neutral white/black features retained",
+        "records": [
+          {
+            "reference": "C:\\Users\\yurin\\Desktop\\projects\\CRO-MAGNON\\assets\\shape-bots\\source\\beret-reference-v1.png",
+            "targetHsv": [
+              0.5953333377838135,
+              1,
+              0.960784375667572
+            ],
+            "denseHsv": [
+              0.5362319350242615,
+              0.9709302186965942,
+              0.8431373238563538
+            ],
+            "hueShift": 0.059101402759552,
+            "changedPixels": 12362109,
+            "unchangedPixels": 4415107,
+            "alphaExact": true,
+            "originalUVsExact": true
+          }
+        ]
+      },
+      "candidateFile": "output/model-generation/models/orb-bot-beret/work/rig/revision-03/candidate.glb",
+      "visualReview": "assets/shape-bots/reviews/beret-r03.json"
+    },
+    "transfer": "scripts/remake/transfer_reduce.py (meshopt subset of delivered vertices, xatlas charts, albedo/normal bake with miss fill and back-face flip, Data Transfer skin weights; armature, bone names and clips re-exported unchanged)",
+    "visualReview": "assets/asset-remake/reviews/orb-bot-beret.json"
+  },
+  "notes": [
+    "Remake C2 of the delivered orb bot: same surface reduced to at most 4,000 triangles, 4096 texture replaced by 1024 albedo + baked normal; 2 bones and 7 clips unchanged. Posed deviation from the delivered skin 0 m (kept vertices are a subset); clip curves within 0.04 deg (resampling). 3914 triangles (was 23581), textures 1024 WebP + baked normal."
+  ],
+  "gameQA": "output/playwright/shape-bots/game-1790867552591",
+  "runtimeOptimization": {
+    "adoption": "20261010-r05-a01",
+    "candidateRevision": "assets/optimized-runtime/20261009-r04",
+    "selection": "ordinary-compressed",
+    "original": {
+      "url": "/models/orb-bot-beret/model-c2.glb",
+      "sha256": "5a6a97633fb56bbe95eead6e976a1bb13b596833bbf2ea5ed6812d155006722e",
+      "bytes": 600312,
+      "triangles": 3914,
+      "lods": [
+        {
+          "url": "/models/orb-bot-beret/lod-c2.glb",
+          "sha256": "2688cfd8f92371ab35805e111797128119802c902f57070731d50e01d00024a0",
+          "bytes": 103312,
+          "triangles": 1565,
+          "distanceMetres": 9,
+          "purpose": "animated-medium-lod-geometry"
+        }
+      ]
+    },
+    "adoptedBy": "20261009-r04-a01"
+  }
+}

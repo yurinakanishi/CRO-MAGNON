@@ -1,0 +1,556 @@
+{
+  "modelKey": "neanderthal-woman",
+  "name": "ネアンデルタール人 女性",
+  "kind": "humanoid",
+  "candidate": 2,
+  "status": "remake-candidate-2-integrated",
+  "url": "/models/neanderthal-woman/startup.opt-caf50f3f8aa971be.glb",
+  "sha256": "caf50f3f8aa971be2119d5399bfe3226cfe3d0d283cc965c0beafcac0d6a1a21",
+  "bytes": 4922092,
+  "triangles": 78675,
+  "upAxis": "Y",
+  "forwardAxis": "+Z",
+  "heightMetres": 1.6,
+  "widthMetres": null,
+  "placement": {
+    "pivot": "ground-centred",
+    "upAxis": "Y",
+    "forwardAxis": "+Z"
+  },
+  "clips": [
+    {
+      "name": "Craft",
+      "seconds": 2,
+      "loop": false
+    },
+    {
+      "name": "Eat",
+      "seconds": 1.7999999523162842,
+      "loop": false
+    },
+    {
+      "name": "Gather",
+      "seconds": 1.5,
+      "loop": false
+    },
+    {
+      "name": "Give",
+      "seconds": 1.2000000476837158,
+      "loop": false
+    },
+    {
+      "name": "Idle_Loop",
+      "seconds": 4,
+      "loop": true
+    },
+    {
+      "name": "Run_Loop",
+      "seconds": 0.7333333333333333,
+      "loop": true,
+      "fps": 120,
+      "frames": 89,
+      "description": "CMU 09_01 human running retargeted to the existing skeleton with stable anatomical joint planes and sole contact."
+    },
+    {
+      "name": "Walk_Loop",
+      "seconds": 1.1166666666666667,
+      "loop": true,
+      "fps": 120,
+      "frames": 135,
+      "description": "CMU 35_01 human walking retargeted to the existing skeleton with stable anatomical joint planes and sole contact."
+    },
+    {
+      "name": "Wave",
+      "seconds": 2,
+      "loop": false
+    },
+    {
+      "name": "Attack",
+      "seconds": 0.7,
+      "loop": false
+    },
+    {
+      "name": "Downed",
+      "seconds": 1.8,
+      "loop": false
+    }
+  ],
+  "gender": "female",
+  "species": "nea",
+  "notes": [
+    "Remake C2 of the user-approved face-repair r10 (approved head and body kept): body and head reduced separately with locked shared borders (53,338+164,812 -> 32,913+34,389 triangles), welded at the neck, each with its own 2048 albedo + baked normal atlas; 22 bones and 10 clips unchanged. Posed deviation from the delivered skin 0 m (kept vertices are a subset); clip curves within 0.04 deg (resampling). 66179 triangles (was 218163), textures 2048 WebP + baked normal."
+  ],
+  "provenance": {
+    "provider": "Claude Code (Opus 5.5); Codex built-in image_gen reference; local TRELLIS-2 reconstruction",
+    "claudeUsed": true,
+    "referenceGenerator": "Codex built-in image_gen",
+    "referenceImage": "assets/face-remake/neanderthal-woman/source/reference-v1a.png",
+    "referenceSha256": "ae4667b4a7a71a2180378c227304d625e8cf0543ed8b854b17228da7f0cc1426",
+    "reconstruction": "Local TRELLIS-2 C++ GGUF, res 1024, seed 42 (head only); assets/face-remake/neanderthal-woman/reconstruction-reference-v1a-seed0042.json",
+    "denseFile": "output/face-remake/neanderthal-woman/trellis/reference-v1a-res1024-seed0042.glb",
+    "denseSha256": "f9b4ba4022a867695163164ad6dc67d53d39230c9e7508dff8cf78a6aa277a07",
+    "processReport": "assets/face-remake/neanderthal-woman/graft-report-r01.json",
+    "rigReport": null,
+    "pipeline": "scripts/face-remake/ (write-requests.mjs, reconstruct-head.mjs, project-reference.py, graft-head.py, verify-graft.py, adopt-face.mjs)",
+    "previousDelivery": {
+      "url": "/models/neanderthal-woman/model-c2.glb",
+      "sha256": "e7dab0a525aa566c96521ea135b0e884b0e751d8c815eeddd77d22efcffb73a8",
+      "bytes": 12128592,
+      "triangles": 66179,
+      "candidate": 2,
+      "revision": "c2-t01",
+      "lods": [
+        {
+          "url": "/models/neanderthal-woman/lod-c2.glb",
+          "sha256": "6514d5c26ce62faa070fa3b7eb82fc240583b1d80074e7a729aa70838bfdcec7",
+          "bytes": 1061568,
+          "triangles": 13235,
+          "distanceMetres": 28,
+          "purpose": "animated-medium-lod-geometry"
+        }
+      ]
+    },
+    "previousProvenance": {
+      "provider": "Codex",
+      "claudeUsed": false,
+      "referenceGenerator": "Built-in imagegen",
+      "referenceImage": "assets/female-face-repair/neanderthal-woman/source/reference-v1.png",
+      "referenceSha256": "d10c2ad54faacbecb015d5e1aab904e3b2529245984e7bd8bb6a8a29686be9c9",
+      "reconstruction": "Local TRELLIS-2; settings and dense SHA in model workspace",
+      "candidateFile": "public/models/neanderthal-woman/model-face-r10.glb",
+      "visualReview": "assets/female-face-repair/neanderthal-woman/adoption-review-r10.json",
+      "previousDeliverySha256": "ea63762e435024d4f907fdca86946e48b449d1d3a9d0e07856fc77395f0ba1ea",
+      "huntingAnimationAuthor": "Codex; appended keyframes, previous surface/rig/materials/animation bytes preserved",
+      "previousMotionVisualReview": "output/model-generation/models/neanderthal-woman/qa/adoption-review.json",
+      "previousVisualReview": "assets/creature-motion/models/neanderthal-woman-review.json",
+      "previousFaceReference": {
+        "path": "output/model-generation/models/neanderthal-woman/source/original/reference-v4.png",
+        "sha256": "34cc4d5fa6b4ca64fbef85cf1560011d705ab11d582883bc3955fe3e6d305222"
+      },
+      "previousFaceVisualReview": "assets/human-locomotion/reviews/neanderthal-woman-r10.json",
+      "previousFaceCandidate": "output/creature-motion/revision-04/neanderthal-woman/model.glb"
+    },
+    "transfer": "scripts/remake/transfer_reduce.py (meshopt subset of delivered vertices, xatlas charts, albedo/normal bake with miss fill and back-face flip, Data Transfer skin weights; armature, bone names and clips re-exported unchanged)",
+    "visualReview": "assets/face-remake/neanderthal-woman/adoption-review-r01.json",
+    "previousDeliveries": [
+      {
+        "url": "/models/neanderthal-woman/model-face-r10.glb",
+        "sha256": "21da70ddc2c5cfc7a2199dad4782b7d4822c3451d33d0d2275b405a2f3a78311",
+        "triangles": 218163,
+        "bytes": 42680492,
+        "candidate": 1,
+        "revision": null
+      }
+    ]
+  },
+  "lods": [],
+  "bones": 22,
+  "locomotion": {
+    "Walk_Loop": {
+      "metresPerSecond": 1.1105029315718766,
+      "strideMetres": 1.240061606921929,
+      "cycleSeconds": 1.1166666666666667,
+      "dutyFactor": 0.61,
+      "method": "CMU measured human locomotion, anatomical retarget and sole contact"
+    },
+    "Run_Loop": {
+      "metresPerSecond": 3.1789206668314267,
+      "strideMetres": 2.331208489009713,
+      "cycleSeconds": 0.7333333333333333,
+      "dutyFactor": 0.36,
+      "method": "CMU measured human locomotion, anatomical retarget and sole contact"
+    }
+  },
+  "hunting": {
+    "clip": {
+      "name": "Attack",
+      "seconds": 0.7,
+      "fps": 30,
+      "frames": 22,
+      "loop": false,
+      "description": "Right hand draws to shoulder, sharply extends spear forward, then recovers. Left arm guards; both feet remain planted.",
+      "hitTimeSeconds": 0.3333333333333333,
+      "forwardAxis": "+Z",
+      "contact": "fixed reviewed idle legs and hips"
+    },
+    "visualReview": "output/model-generation/models/neanderthal-woman/work/hunting/revision-03/qa/visual-review.json"
+  },
+  "motionReview": {
+    "revision": "revision-04",
+    "sourceSha256": "63ab98a62b2706e76b4cc551d2a0c8bd23363072258598b606d5129ad32a9ff9",
+    "changes": [
+      {
+        "clip": "Run_Loop",
+        "frames": 43,
+        "sampleRate": 60.00000102179393,
+        "stride": 1.7268299705922603,
+        "duty": 0.34,
+        "lift": 0.187811712872416,
+        "bodyClearance": 0.12092101333803829
+      },
+      {
+        "clip": "Walk_Loop",
+        "frames": 61,
+        "sampleRate": 60,
+        "stride": 0.8264,
+        "duty": 0.62,
+        "lift": 0.09766209069365632,
+        "bodyClearance": 0.06367924782741097
+      }
+    ],
+    "status": "adopted",
+    "sourceDelivery": "output/creature-motion/baseline/neanderthal-woman/model.glb",
+    "review": "assets/creature-motion/models/neanderthal-woman-review.json"
+  },
+  "downedMotion": {
+    "revision": "revision-01",
+    "sourceUrl": "/models/neanderthal-woman/model-motion-r04.glb",
+    "sourceSha256": "037e1c9ba7181ca94fba97d59f85d4a39326f043b8be4ccdfd8ccedefaa97038",
+    "clip": "Downed",
+    "seconds": 1.8,
+    "fps": 60,
+    "review": "assets/downed-motion/README.md"
+  },
+  "playerGaits": {
+    "revision": "revision-02",
+    "sourceSha256": "58156f4088fba4740a03b2a71428a5d9cc5cabf8262a848e2667b3fd840a05d7",
+    "changes": [
+      {
+        "clip": "Run_Loop",
+        "frames": 44,
+        "sampleRate": 59.72222222222222,
+        "stride": 2.3664275821924416,
+        "duty": 0.36,
+        "lift": 0.3605984887150387,
+        "bodyClearance": 0.3075495945691774,
+        "armSwingRadians": 0.68,
+        "elbowBendRadians": 1.3,
+        "forwardLeanRadians": 0.16
+      },
+      {
+        "clip": "Walk_Loop",
+        "frames": 67,
+        "sampleRate": 59.99999999999999,
+        "stride": 0.9390585643620799,
+        "duty": 0.6,
+        "lift": 0.045074811089379836,
+        "bodyClearance": 0.0763314095722234,
+        "armSwingRadians": 0.27,
+        "elbowBendRadians": 0.2,
+        "forwardLeanRadians": 0.015
+      }
+    ],
+    "status": "adopted",
+    "review": "assets/player-gaits/README.md",
+    "sourceDelivery": "/models/neanderthal-woman/model-downed-r01.glb",
+    "author": "Codex",
+    "supersededBy": "humanLocomotion"
+  },
+  "spearThrust": {
+    "revision": "revision-02",
+    "status": "adopted",
+    "sourceSha256": "a89fc69b6c03588fa520a806d762a8156c6ba1dae0b61a998f792b9599aa7559",
+    "sourceDelivery": "/models/neanderthal-woman/model-gaits-r02.glb",
+    "clip": "Attack",
+    "seconds": 0.7,
+    "impactSeconds": 0.333,
+    "frames": 86,
+    "sampleRate": 120,
+    "leftStepMetres": 0.44800000000000006,
+    "handSpacingMetres": 0.32000000000000006,
+    "attachment": "authored-grip",
+    "author": "Codex",
+    "review": "assets/spear-thrusts/README.md"
+  },
+  "playerRun": {
+    "revision": "revision-05",
+    "sourceSha256": "9792b2d0b5cfff406b8341759c5a36c720139c467bcccdd5e6bbb3e48c2e8ad4",
+    "sourceDelivery": "/models/neanderthal-woman/model-thrust-r02.glb",
+    "status": "adopted",
+    "method": "Bounded sagittal joint recovery, grounded flexion/extension stance, independent flight pelvis, stable bone twist",
+    "stanceFraction": 0.36,
+    "peakAuthoredSwingKneeDegrees": 104,
+    "review": "assets/player-gaits/RUN_REPAIR.md",
+    "supersededBy": "humanLocomotion"
+  },
+  "humanLocomotion": {
+    "revision": "revision-10",
+    "sourceDelivery": "/models/neanderthal-woman/model-run-r05.glb",
+    "sourceSha256": "cf1259d975dd4873b8923889c59fb8fb8f88d59cd13cb4d83eb0e1ff4a23c2b3",
+    "status": "adopted",
+    "changes": [
+      {
+        "clip": "Walk_Loop",
+        "trial": "35_01",
+        "startFrame": 140,
+        "endFrame": 274,
+        "phaseOffsetFrames": 0,
+        "sampleRate": 120,
+        "frames": 135,
+        "seconds": 1.1166666666666667,
+        "legScale": 0.8603334685438462,
+        "strideMetres": 1.240061606921929
+      },
+      {
+        "clip": "Run_Loop",
+        "trial": "09_01",
+        "startFrame": 1,
+        "endFrame": 89,
+        "phaseOffsetFrames": 80,
+        "sampleRate": 120,
+        "frames": 89,
+        "seconds": 0.7333333333333333,
+        "legScale": 0.8737237254863836,
+        "strideMetres": 2.331208489009713
+      }
+    ],
+    "reference": "assets/human-locomotion/README.md",
+    "previousVisualReview": "assets/player-gaits/reviews/neanderthal-woman-run-r05.json"
+  },
+  "faceRepair": {
+    "revision": "10",
+    "source": "public/models/neanderthal-woman/model-human-r10.glb",
+    "sourceSha256": "b1cd6f89291d3d71adb7be0a7f245c746a32691fba2df0e62faccb905a0af1a8",
+    "headReference": "assets/female-face-repair/neanderthal-woman/source/reference-v1.png",
+    "headReconstruction": "assets/female-face-repair/neanderthal-woman/work/trellis/reconstruction.json",
+    "build": "assets/female-face-repair/neanderthal-woman/work/revision-10/build.json",
+    "validation": "assets/female-face-repair/validation-r10.json",
+    "visualReview": "assets/female-face-repair/visual-review-r10.json",
+    "status": "adopted",
+    "gameQA": "assets/female-face-repair/qa/game/report.json",
+    "portrait": {
+      "file": "public/models/neanderthal-woman/portrait.png",
+      "sha256": "54176f4c67c368d8e81960e996928a989e768606cc32264d241e7e991842a604",
+      "modelSha256": "21da70ddc2c5cfc7a2199dad4782b7d4822c3451d33d0d2275b405a2f3a78311"
+    }
+  },
+  "revision": "face-r01",
+  "faceRemake": {
+    "revision": "r01",
+    "kind": "new-head",
+    "reference": {
+      "file": "assets/face-remake/neanderthal-woman/source/reference-v1a.png",
+      "sha256": "ae4667b4a7a71a2180378c227304d625e8cf0543ed8b854b17228da7f0cc1426",
+      "generator": "Codex built-in image_gen (desktop app CLI 0.162, gpt-5.6-sol)",
+      "prompt": "Photorealistic premium AAA game character head (MetaHuman-quality sculpt and skin), clean image-to-3D reconstruction reference. HEAD AND NECK ONLY, direct FRONT VIEW, head perfectly upright and centred, eyes level and looking straight into the camera, relaxed neutral expression with the lips closed. Both ears fully visible. The hair is swept completely clear of the face, forehead, eyes and ears: no fringe, no bangs, no loose strands across the face; the hair forms coherent sculpted masses, not floating strands. Show the whole head and the entire neck, the neck ending in a clean straight horizontal cut just above the collarbones. No shoulders, chest, clothing, fur, jewellery, beads, paint, tattoos, scars, pedestal or accessories. Natural healthy skin with fine realistic pores, no makeup, even skin tone. Soft even diffuse neutral studio light from the front and both sides, no hard shadows, no rim light, no dramatic contrast. Head and neck fill about 85% of the image height, centred on a plain uniform light neutral grey background. A single head, one view only, no text, no panels. Subject: a cute, pretty, warm-hearted adult Neanderthal young woman, about 23 years old, with gently softened Neanderthal features: a softly rounded brow, a slightly broad cute nose, full cheeks with defined cheekbones, full soft natural lips with a hint of a friendly closed smile, large warm dark brown eyes with natural lashes, soft dark eyebrows. Warm medium tan skin with a natural healthy glow. Dark brown wavy hair pulled back from the forehead into a compact low bun at the back of the head; nothing hangs below the nape. Gentle kind expression.",
+      "choice": "variant A of two (reference-v1a.png chosen, reference-v1b.png kept)"
+    },
+    "reconstruction": {
+      "generator": "Local TRELLIS-2 C++ GGUF (trellis-studio runtime)",
+      "seed": 42,
+      "resolution": 1024,
+      "textureResolution": 512,
+      "atlas": 2048,
+      "seconds": 1147.777,
+      "denseSha256": "f9b4ba4022a867695163164ad6dc67d53d39230c9e7508dff8cf78a6aa277a07",
+      "record": "assets/face-remake/neanderthal-woman/reconstruction-reference-v1a-seed0042.json"
+    },
+    "projection": {
+      "record": "assets/face-remake/neanderthal-woman/projection-r01.json",
+      "run": "output/face-remake/final-projections.sh (project-r06)",
+      "method": "reference registered to the reconstruction silhouette; the face surface slid (optical flow inside a feathered face ellipse) so eyes, nose and mouth sit where the reference has them; reference detail finer than 48 px projected onto front-facing texels over the reconstruction low-frequency colour"
+    },
+    "graft": {
+      "record": "assets/face-remake/neanderthal-woman/graft-report-r01.json",
+      "run": "output/face-remake/final-grafts.sh",
+      "attachment": "Zipped to the body neck ring (47 shared seam vertices) through a smooth Hermite neck sleeve; flat cut just above the reconstruction rim; the body neck-ring vertex normals take the sleeve normals.",
+      "placement": {
+        "scale": 0.2812706020203891,
+        "translation": [
+          -0.002877,
+          1.438702,
+          -0.033337
+        ],
+        "eyeRow": 572,
+        "chinRow": 1000,
+        "eyeY": 1.451,
+        "chinY": 1.351,
+        "neckRadiusAtCut": 0.05280518201287207,
+        "ringRadius": 0.0480960179065769,
+        "radiusRatio": 1.0979117255703452,
+        "extraOffset": [
+          0,
+          0,
+          0
+        ],
+        "neckTaper": {
+          "ratio": 0.9108200383601133,
+          "heightM": 0,
+          "applied": true
+        },
+        "cut": {
+          "shape": "flat",
+          "rimMarginM": 0.015,
+          "minHeightAboveRingM": 0.03757450781657648,
+          "maxHeightAboveRingM": 0.03757450781657648,
+          "rimMinM": -0.0006194741592011021,
+          "rimMaxM": 0.033409375320056965
+        }
+      },
+      "headTriangles": 50800,
+      "lodHeadTriangles": 4756,
+      "hiddenFacesRemoved": 183785,
+      "reduction": {
+        "clippedTriangles": 98205,
+        "headTriangles": 49116,
+        "meshopt": {
+          "skinAndFace": {
+            "before": 17601,
+            "after": 17601,
+            "error": 0,
+            "flags": [
+              "LockBorder"
+            ]
+          },
+          "hair": {
+            "before": 80604,
+            "after": 31515,
+            "error": 0.06979987770318985,
+            "flags": [
+              "LockBorder",
+              "Permissive"
+            ]
+          },
+          "otsuLuminance": 0.2235294117647059
+        },
+        "smearedHairTrianglesFixed": 3950
+      }
+    },
+    "weights": "Above the jaw curve (+2.5 cm blend) every head vertex is 100% Head; the neck blends Head -> Neck -> the body ring weights (or Chest/Neck inside the collar). Fixes the walk/run face shear.",
+    "faceRigidityBefore": [
+      {
+        "clip": "Attack",
+        "maxFaceDeviationM": 0.00961,
+        "atSeconds": 0.1633
+      },
+      {
+        "clip": "Craft",
+        "maxFaceDeviationM": 0.002907,
+        "atSeconds": 0.4667
+      },
+      {
+        "clip": "Downed",
+        "maxFaceDeviationM": 0.00477,
+        "atSeconds": 0.84
+      },
+      {
+        "clip": "Eat",
+        "maxFaceDeviationM": 0.003444,
+        "atSeconds": 1.08
+      },
+      {
+        "clip": "Gather",
+        "maxFaceDeviationM": 0.003806,
+        "atSeconds": 0.85
+      },
+      {
+        "clip": "Give",
+        "maxFaceDeviationM": 0.000956,
+        "atSeconds": 0.44
+      },
+      {
+        "clip": "Idle_Loop",
+        "maxFaceDeviationM": 0.001101,
+        "atSeconds": 2
+      },
+      {
+        "clip": "Run_Loop",
+        "maxFaceDeviationM": 0.012458,
+        "atSeconds": 0.3667
+      },
+      {
+        "clip": "Walk_Loop",
+        "maxFaceDeviationM": 0.006566,
+        "atSeconds": 1.0794
+      },
+      {
+        "clip": "Wave",
+        "maxFaceDeviationM": 0.004955,
+        "atSeconds": 0.6667
+      }
+    ],
+    "faceRigidityAfter": [
+      {
+        "clip": "Attack",
+        "maxFaceDeviationM": 0
+      },
+      {
+        "clip": "Craft",
+        "maxFaceDeviationM": 0
+      },
+      {
+        "clip": "Downed",
+        "maxFaceDeviationM": 0
+      },
+      {
+        "clip": "Eat",
+        "maxFaceDeviationM": 0
+      },
+      {
+        "clip": "Gather",
+        "maxFaceDeviationM": 0
+      },
+      {
+        "clip": "Give",
+        "maxFaceDeviationM": 0
+      },
+      {
+        "clip": "Idle_Loop",
+        "maxFaceDeviationM": 0
+      },
+      {
+        "clip": "Run_Loop",
+        "maxFaceDeviationM": 0
+      },
+      {
+        "clip": "Walk_Loop",
+        "maxFaceDeviationM": 0
+      },
+      {
+        "clip": "Wave",
+        "maxFaceDeviationM": 0
+      }
+    ],
+    "verification": "assets/face-remake/neanderthal-woman/verify-r01.json",
+    "preserved": "all body/accent primitives (except the reported ring normals or removed shard faces), the skin, inverse bind matrices, node transforms, all 10 clips and all non-head images are byte-identical (verify-r01.json)",
+    "visual": [
+      "assets/face-remake/neanderthal-woman/qa/before-after-r01.jpg",
+      "assets/face-remake/neanderthal-woman/qa/front-combined.jpg"
+    ],
+    "portrait": {
+      "file": "public/models/neanderthal-woman/portrait.png",
+      "sha256": "e5dc88179fa2e8f44c3b18152d0464d30f2dca34fc808bf82db777b4826f5a71",
+      "modelSha256": "b4c416900e972c8850892b7a5f886e62478894d1c958cf35830dc7ea1672dde9",
+      "previousSha256": "54176f4c67c368d8e81960e996928a989e768606cc32264d241e7e991842a604",
+      "renderer": "scripts/qa-female-faces.mjs (FACE_QA_PORTRAIT=1, Idle_Loop 20%, 420x480, three.js)"
+    }
+  },
+  "runtimeOptimization": {
+    "adoption": "20261010-r05-a02",
+    "candidateRevision": "assets/optimized-runtime/20261009-r04",
+    "selection": "startup-sole-primary",
+    "original": {
+      "url": "/models/neanderthal-woman/model-face-r01.glb",
+      "sha256": "b4c416900e972c8850892b7a5f886e62478894d1c958cf35830dc7ea1672dde9",
+      "bytes": 10675488,
+      "triangles": 83447,
+      "lods": [
+        {
+          "url": "/models/neanderthal-woman/lod-face-r01.glb",
+          "sha256": "867a3908acf4a85918aded67c2ae4a0529c860f9455ec613337d707c0e044156",
+          "bytes": 716252,
+          "triangles": 12894,
+          "distanceMetres": 28,
+          "purpose": "animated-medium-lod-geometry"
+        }
+      ]
+    },
+    "startupCandidate": {
+      "record": "startup:neanderthal-woman",
+      "url": "/models/neanderthal-woman/startup.opt-caf50f3f8aa971be.glb",
+      "sha256": "caf50f3f8aa971be2119d5399bfe3226cfe3d0d283cc965c0beafcac0d6a1a21",
+      "bytes": 4922092
+    },
+    "adoptedBy": "20261009-r04-a01"
+  }
+}

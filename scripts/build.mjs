@@ -32,8 +32,13 @@ for (const configName of ['tsconfig.json', 'tsconfig.cloudflare.json', 'tsconfig
 if (failed) process.exitCode = 1;
 else if (!checkOnly) {
   for (const program of programs) program.emit();
-  // Removed journal modules must not survive incremental builds or be packaged.
-  for (const file of ['adventure-ui.js', 'adventure-ui.js.map'])
+  // Removed journal and graphics-selector modules must not survive incremental builds or be packaged.
+  for (const file of [
+    'adventure-ui.js',
+    'adventure-ui.js.map',
+    'graphics-settings.js',
+    'graphics-settings.js.map',
+  ])
     await rm(path.join(root, 'dist/src', file), { force: true });
   // Module workers do not inherit the document's import map. Publish the exact
   // same fitter and Three utility with explicit relative URLs, no second algorithm.

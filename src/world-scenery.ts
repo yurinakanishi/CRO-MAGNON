@@ -21,17 +21,50 @@ import { BEHEMOTH_MARSH } from '../shared/behemoth-rules.mjs';
 import { HUNTING } from '../shared/hunting.mjs';
 import { meatRingLayout } from './resource-visuals.js';
 import { CAVE_HEARTH } from '../shared/camp-cave-layout.mjs';
-import { SIMPLIFIED_SHADOW_KEYS } from './performance-lod.js';
 import { buildMountainRiver } from './mountain-river.js';
-import { DECORATIVE_GRASS_ENABLED } from './scenery-visibility.js';
+import { DECORATIVE_GRASS_ENABLED, groundcoverVisible } from './scenery-visibility.js';
+import { BIOME_SCENERY } from '../shared/biome-scenery.mjs';
 
 const TAU = Math.PI * 2;
 const random = seededRandom;
 // Source-space metres; scale the sink with each tuft to bury the cut blade roots.
 export const GRASS_SINK = 0.08;
+// Camp props built like resources, switching to their verified distance LODs.
+const LOD_PROPS = new Set([
+  'berry-bush',
+  'hide-tent',
+  'firewood-pile',
+  'firewood-log',
+  'stone-firepit',
+]);
+
+/** Templates the builders below, regional variants, resources and every player's
+ * held tools create synchronously: each placed tree, rock, ridge, tent, prop and
+ * hearth, every biome palette's models, the river tiles (also the ocean), the
+ * footbridge (whose deck is walkable), the axe and the torch wood. These are the
+ * camp's props; arrival also needs its floor and landmarks (startup-plan.ts). */
+export function sceneryTemplateKeys(): string[] {
+  const keys = new Set(['river-water', 'wood-footbridge', 'stone-axe', 'firewood-log']);
+  for (const category of ['trees', 'rocks', 'ridges', 'tents', 'props', 'fires'])
+    for (const item of SCENERY[category]) keys.add(item.key);
+  // Retained decorative cover, filtered below while it is switched off.
+  for (const item of SCENERY.grass) keys.add(item.key ?? 'meadow-grass');
+  for (const palette of Object.values(BIOME_SCENERY))
+    for (const key of [
+      palette.tree,
+      palette.rock,
+      palette.shelter,
+      palette.hearth,
+      palette.wood,
+      palette.berry,
+      palette.groundcover,
+    ])
+      if (key) keys.add(key);
+  return [...keys].filter(groundcoverVisible);
+}
 
 function addModel(world, key, x, z, yaw = 0, scale = 1, surface = null) {
-  const model = SIMPLIFIED_SHADOW_KEYS.has(key)
+  const model = LOD_PROPS.has(key)
     ? world.worldAssets.createResource(key, surface)
     : world.worldAssets.create(key, 0, surface);
   model.position.set(x, walkHeight(x, z), z);
@@ -55,11 +88,32 @@ function surfaceMeshes(root) {
   return result;
 }
 
-export async function buildTerrainAssets(world) {
+export async function buildTerrainAssets(world, cancelled = () => false) {
   world.openWorld = new OpenWorldTerrain(world);
   await world.openWorld.initialize(world.focus);
-  if (world.disposed) return;
+  if (world.disposed || world.failed || cancelled()) return;
+  buildWaterAssets(world);
+  world.bridge = addModel(world, 'wood-footbridge', riverX(43.5), 43.5);
+  const bridgeAsset = world.worldAssets.get('wood-footbridge').asset;
+  world.bridge.position.y = 0.3 - bridgeAsset.placement.deckHeightMetres;
+  world.releaseBridgeSampler = installSourceBridge(bridgeAsset.placement.walkBounds);
+}
 
+/** A subtree whose transforms never change once it is placed in the scene: its exact
+ * local and world matrices are computed now, and only their automatic recomputation on
+ * every frame stops. Unlike freezeStatic it adds no distance culling; visibility, bounds,
+ * materials and shader time are untouched, and a parent's explicit updateMatrix() still
+ * propagates through it. */
+function fixPlacement(root: THREE.Object3D) {
+  root.updateWorldMatrix(true, true);
+  root.traverse((node) => {
+    node.matrixAutoUpdate = false;
+  });
+}
+
+/** The valley river tiles, the mountain lake, waterfall and tributary, and the marsh pools:
+ * deformed copies of the river-water GLB, placed once. Only their shader time changes. */
+export function buildWaterAssets(world) {
   const waterTemplate = world.worldAssets.get('river-water').gltf.scene;
   const waterBounds = new THREE.Box3().setFromObject(waterTemplate),
     waterSize = waterBounds.getSize(new THREE.Vector3()),
@@ -103,13 +157,11 @@ export async function buildTerrainAssets(world) {
       world.water.add(new THREE.Mesh(geometry, world.waterMaterial));
     }
   world.scene.add(world.water);
+  fixPlacement(world.water);
   world.mountainRiver = buildMountainRiver(waterTemplate, world.waterMaterial.userData.time);
   world.scene.add(world.mountainRiver);
+  fixPlacement(world.mountainRiver);
   buildMarshAssets(world);
-  world.bridge = addModel(world, 'wood-footbridge', riverX(43.5), 43.5);
-  const bridgeAsset = world.worldAssets.get('wood-footbridge').asset;
-  world.bridge.position.y = 0.3 - bridgeAsset.placement.deckHeightMetres;
-  world.releaseBridgeSampler = installSourceBridge(bridgeAsset.placement.walkBounds);
 }
 
 // The behemoth's marsh: each pool reuses the accepted river-water GLB as a flat
@@ -178,6 +230,7 @@ function buildMarshAssets(world) {
     pools.add(root);
   }
   world.scene.add(pools);
+  fixPlacement(pools);
   const rng = random(95110),
     count = 260,
     positions = new Float32Array(count * 3),
@@ -326,6 +379,8 @@ export function buildCampAssets(world) {
     new THREE.Vector3(NPC.x, walkHeight(NPC.x, NPC.z) + 2.17, NPC.z),
     'ネアンデルタール人 · 交易',
   );
+  // The NPC streams in as a nearby actor; its label waits for its body.
+  world.npcLabel.active = false;
   world.regionalScenery = new RegionalScenery(world, { buildFireEffect });
   world.regionalScenery.initialize(world.focus);
 }
@@ -374,6 +429,7 @@ export function buildMeatPile(assets, animalId, total = HUNTING.meatPerAnimal) {
   return meat;
 }
 
+/** The herd, once its verified mammoth and meat templates have streamed in. */
 export function buildAnimalAssets(world) {
   for (const spec of SCENERY.animals) {
     const actor = world.worldAssets.createAnimal('woolly-mammoth'),
@@ -401,9 +457,13 @@ export function buildAnimalAssets(world) {
       initialized: false,
     });
   }
+}
+
+export function buildMotes(world) {
   const rng = random(623),
     points = [];
-  for (let i = 0; i < 65; i++) points.push(rng() * 80 + 10, rng() * 5 + 1, rng() * 80 + 10);
+  // The one graphics profile's floating-mote budget.
+  for (let i = 0; i < 24; i++) points.push(rng() * 80 + 10, rng() * 5 + 1, rng() * 80 + 10);
   const geometry = new THREE.BufferGeometry();
   geometry.setAttribute('position', new THREE.Float32BufferAttribute(points, 3));
   world.motes = new THREE.Points(

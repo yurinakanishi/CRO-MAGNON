@@ -1,84 +1,75 @@
-export type GraphicsMode = 'auto' | 'low' | 'standard';
-export type GraphicsTier = Exclude<GraphicsMode, 'auto'>;
-export const GRAPHICS_KEY = 'cro-graphics-quality';
-export const GRAPHICS_LABELS = { auto: '自動', low: '軽量', standard: '標準' } as const;
+/** The game's only graphics profile, formerly 軽量. No player setting, stored
+ * preference or device probe selects another one: every host uses these values. */
+export const FRAME_RATE = 30;
+/** Drawing-buffer budget: 1280×720 pixels, at a device pixel ratio no higher than 1. */
+export const MAX_DRAWING_PIXELS = 1280 * 720;
+/** Hidden per-axis buffer scale after sustained overload. It is not a quality option. */
+export const SAFETY_BUFFER_SCALE = 0.75;
 
-export function graphicsMode(value: unknown): GraphicsMode {
-  return value === 'low' || value === 'standard' ? value : 'auto';
+const WARMUP_MS = 8000;
+const RESUME_WARMUP_MS = 2000;
+const WINDOW_MS = 3000;
+const SLOW_WINDOWS = 3;
+// A longer interval is a timing gap (stall, suspended tab), not a frame rate.
+const GAP_MS = 250;
+// 20 FPS is the vsync step below the 30 FPS cap on 60 Hz displays. The 2% margin
+// keeps that step (50.05 ms at 59.94 Hz) from counting as falling below it.
+const SLOW_FRAME_MS = (1000 / 20) * 1.02;
+// The longest tenth of a window's intervals are isolated stalls, not its pace.
+const STALL_SHARE = 0.1;
+
+/** Drawing-buffer pixels per CSS pixel. The DOM size itself is never reduced. */
+export function graphicsPixelRatio(width: number, height: number, dpr: number, scale = 1) {
+  const fit = Math.sqrt(MAX_DRAWING_PIXELS / (Math.max(1, width) * Math.max(1, height)));
+  return scale * Math.min(Math.max(0.1, dpr || 1), 1, fit);
 }
 
-export function readGraphicsMode(): GraphicsMode {
-  try {
-    return graphicsMode(localStorage.getItem(GRAPHICS_KEY));
-  } catch {
-    return 'auto';
-  }
+function typicalFrameMs(intervals: number[]) {
+  const kept = intervals
+    .slice()
+    .sort((a, b) => a - b)
+    .slice(0, intervals.length - Math.floor(intervals.length * STALL_SHARE));
+  return kept.reduce((sum, ms) => sum + ms, 0) / kept.length;
 }
 
-export function graphicsPixelRatio(width: number, height: number, dpr: number, tier: GraphicsTier) {
-  const pixels = tier === 'low' ? 1280 * 720 : 1920 * 1080;
-  return Math.min(
-    Math.max(0.1, dpr || 1),
-    tier === 'low' ? 1 : 1.25,
-    Math.sqrt(pixels / (Math.max(1, width) * Math.max(1, height))),
-  );
-}
-
-/** Auto starts conservatively on small CPUs. Sustained slow frames downgrade
- * once per session; it never oscillates or mistakes a 30 FPS cap for spare GPU. */
-export class GraphicsQuality {
-  mode: GraphicsMode;
-  tier: GraphicsTier;
+/** The fixed 30 FPS cap and the drawing buffer's hidden safety scale. Only
+ * sustained, active rendering below 20 FPS lowers the scale, once per session.
+ * Loading, hidden or covered views, stalls and timing gaps restart the
+ * measurement, and frames paced by the 30 FPS cap never count as overload. */
+export class GraphicsBudget {
+  readonly fps = FRAME_RATE;
+  /** Effective drawing-buffer safety scale: 1, or SAFETY_BUFFER_SCALE. */
+  scale = 1;
   private warmupUntil = Infinity;
   private elapsed = 0;
-  private frames = 0;
+  private intervals: number[] = [];
   private slowWindows = 0;
 
-  constructor(
-    mode: GraphicsMode,
-    private cores = 8,
-    private memoryGB = 8,
-  ) {
-    this.mode = mode;
-    this.tier = this.initialTier();
-  }
-  private initialTier(): GraphicsTier {
-    return this.mode === 'auto'
-      ? this.cores <= 4 || this.memoryGB <= 4
-        ? 'low'
-        : 'standard'
-      : this.mode;
-  }
-  get fps() {
-    return this.tier === 'low' ? 30 : 60;
-  }
-  setMode(mode: GraphicsMode, now: number) {
-    this.mode = mode;
-    this.tier = this.initialTier();
-    this.ready(now);
-  }
+  /** The world became ready; measure only after its first frames have settled. */
   ready(now: number) {
-    this.warmupUntil = now + 8000;
-    this.resetWindow();
+    this.warmupUntil = now + WARMUP_MS;
+    this.restart();
   }
-  private resetWindow() {
-    this.elapsed = this.frames = this.slowWindows = 0;
+  private restart() {
+    this.elapsed = this.slowWindows = 0;
+    this.intervals.length = 0;
   }
+  /** Record one drawn frame. Returns true when the buffer scale changed. */
   observe(now: number, frameMs: number, active: boolean): boolean {
-    if (!active || frameMs > 250 || frameMs <= 0) {
-      this.resetWindow();
-      this.warmupUntil = Math.max(this.warmupUntil, now + 2000);
+    if (!active || !(frameMs > 0 && frameMs <= GAP_MS)) {
+      this.restart();
+      this.warmupUntil = Math.max(this.warmupUntil, now + RESUME_WARMUP_MS);
       return false;
     }
-    if (this.mode !== 'auto' || this.tier === 'low' || now < this.warmupUntil) return false;
+    if (this.scale !== 1 || now < this.warmupUntil) return false;
+    this.intervals.push(frameMs);
     this.elapsed += frameMs;
-    this.frames++;
-    if (this.elapsed < 3000) return false;
-    const slow = (this.frames * 1000) / this.elapsed < 45;
-    this.slowWindows = slow ? this.slowWindows + 1 : 0;
-    this.elapsed = this.frames = 0;
-    if (this.slowWindows < 2) return false;
-    this.tier = 'low';
+    if (this.elapsed < WINDOW_MS) return false;
+    this.slowWindows = typicalFrameMs(this.intervals) > SLOW_FRAME_MS ? this.slowWindows + 1 : 0;
+    this.elapsed = 0;
+    this.intervals.length = 0;
+    if (this.slowWindows < SLOW_WINDOWS) return false;
+    this.scale = SAFETY_BUFFER_SCALE;
     return true;
   }
 }

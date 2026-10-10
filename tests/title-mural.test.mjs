@@ -75,6 +75,9 @@ test('the dialog lists every contributor without QR codes and exhibition cards h
     people.filter((p) => p.profile).length,
   );
   assert.doesNotMatch(dialog, /qr-/);
+  assert.doesNotMatch(dialog, /contributors-mark|この世界は|たくさんの人|<em>|壁画：/);
+  assert.match(dialog, /アプレノ洞窟に残る壁画に会いに来てください。/);
+  assert.match(dialog, /id="contributors-cave"[^>]*>アプレノ洞窟に行く<\/button>/);
   const exhibition = contributorsDialogMarkup(undefined, { links: false });
   assert.equal((exhibition.match(/class="contributor-avatar"/g) ?? []).length, people.length);
   assert.doesNotMatch(exhibition, /qr-/);
@@ -83,14 +86,25 @@ test('the dialog lists every contributor without QR codes and exhibition cards h
 
 test('every title offers contributors immediately without home credit cards or a loading gate', async () => {
   const main = await readFile(new URL('src/main.ts', root), 'utf8');
+  const shell = await readFile(new URL('src/title-shell.ts', root), 'utf8');
   const nav = await readFile(new URL('src/menu-navigation.ts', root), 'utf8');
   assert.match(
     main,
     /const onlineTitle = !fixedIdentity && BUILD_PROFILE\.environment !== 'exhibition';/,
   );
-  assert.match(main, /class="screen title-screen" data-variant="classic" hidden/);
-  assert.doesNotMatch(main, /titleCreditsMarkup|onlineTitle \? '<button id="title-contributors"/);
-  assert.match(main, /id="title-contributors" class="menu-item">関わってくれた人たち/);
-  assert.doesNotMatch(main, /titleMuralMarkup|titleLoading|data-loading/);
+  // The shell opens the same credits before the game loads, with the same link rule.
+  assert.match(
+    shell,
+    /return config\.mode !== 'lan' && BUILD_PROFILE\.environment !== 'exhibition';/,
+  );
+  assert.match(shell, /class="screen title-screen" data-variant="classic" hidden/);
+  for (const source of [main, shell]) {
+    assert.doesNotMatch(
+      source,
+      /titleCreditsMarkup|onlineTitle \? '<button id="title-contributors"/,
+    );
+    assert.doesNotMatch(source, /titleMuralMarkup|titleLoading|data-loading/);
+  }
+  assert.match(shell, /id="title-contributors" class="menu-item">関わってくれた人たち/);
   assert.match(nav, /\[data-nav-skip\]/);
 });

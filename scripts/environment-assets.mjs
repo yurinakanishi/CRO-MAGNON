@@ -75,6 +75,8 @@ export async function auditEnvironmentAssets(names, read, profile) {
   for (const name of files) {
     if (name === 'src/adventure-ui.js')
       throw new Error(`Removed journal asset in ${profile.environment}: ${name}`);
+    if (name === 'src/graphics-settings.js')
+      throw new Error(`Removed graphics selector asset in ${profile.environment}: ${name}`);
     if (!profile.cameraControls && cameraAsset(name))
       throw new Error(`Camera asset in MMO: ${name}`);
     if (!/\.(?:m?js|html|css)$/.test(name)) continue;
@@ -85,6 +87,9 @@ export async function auditEnvironmentAssets(names, read, profile) {
       )
     )
       throw new Error(`Removed journal UI in ${profile.environment}: ${name}`);
+    // One fixed graphics profile: no selector, and no stored preference is read or written.
+    if (/cro-graphics-quality|data-graphics|title-graphics|setGraphicsMode/.test(code))
+      throw new Error(`Removed graphics selector in ${profile.environment}: ${name}`);
     if (
       !profile.cameraControls &&
       /getUserMedia|HandLandmarker|\/vendor\/mediapipe\/|\/src\/motion-|\/motion\//.test(code)

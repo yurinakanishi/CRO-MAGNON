@@ -1,7 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { readFile } from 'node:fs/promises';
-import { createHash } from 'node:crypto';
 import { CAMP, WORLD } from '../dist/shared/world.mjs';
 import {
   CAMP_CAVE,
@@ -23,18 +22,61 @@ import { BEHEMOTH_GROUND, BEHEMOTH_MARSH } from '../dist/shared/behemoth-rules.m
 import { createGameCore } from '../dist/application/game-core.mjs';
 import { EventEmitter } from 'node:events';
 import { waterBodyFree } from '../dist/shared/boats.mjs';
+import { verifyModelSource, assertSameGeometry } from './runtime-model-identity.mjs';
+
+const R04_ADOPTION = 'assets/runtime-adoption/20261009-r04-a01';
 
 test('cave and hill physics describe the exact delivered source meshes', async () => {
   for (const [key, data] of [
     ['camp-cave', CAMP_CAVE_SURFACE.data],
     ['camp-mountain', CAMP_MOUNTAIN_SURFACE_DATA],
   ]) {
-    const asset = JSON.parse(await readFile(`public/models/${key}/asset.json`));
-    const sha = createHash('sha256')
-      .update(await readFile(`public${asset.url}`))
-      .digest('hex');
-    assert.equal(sha, data.sourceSha256 ?? data.sha256);
+    // Measured from the original GLB; an adopted derivative must decode to its geometry.
+    const { original } = await verifyModelSource(key);
+    assert.equal(original.sha256, data.sourceSha256 ?? data.sha256);
   }
+});
+test('the source proof rejects partial stamps, wrong provenance and corrupt served bytes', async () => {
+  const key = 'camp-mountain',
+    saved = async (side) =>
+      JSON.parse(await readFile(`${R04_ADOPTION}/${side}/public/models/${key}/asset.json`, 'utf8'));
+  const before = await saved('before'),
+    after = await saved('after'),
+    stamp = after.runtimeOptimization,
+    lod = stamp.original.lods[0];
+  // The unadopted record is its own original, the measured file.
+  const unadopted = await verifyModelSource(key, { asset: before });
+  assert.equal(unadopted.adopted, false);
+  assert.equal(unadopted.original.sha256, CAMP_MOUNTAIN_SURFACE_DATA.sha256);
+  const unstamped = { ...after };
+  delete unstamped.runtimeOptimization;
+  const restamp = (fields) => ({ ...after, runtimeOptimization: { ...stamp, ...fields } });
+  for (const [asset, message] of [
+    [unstamped, /derivative URL without an adoption stamp/],
+    [{ ...after, runtimeOptimization: null }, /stamp is not an object/],
+    [restamp({ selection: undefined }), /no selection/],
+    [restamp({ original: { url: stamp.original.url } }), /no complete original/],
+    [restamp({ original: lod }), /not hash-addressed/],
+    [
+      restamp({ original: { ...stamp.original, sha256: lod.sha256, bytes: lod.bytes } }),
+      /not the replaced original/,
+    ],
+    [{ ...before, runtimeOptimization: stamp }, /serves the original/],
+  ])
+    await assert.rejects(verifyModelSource(key, { asset }), { code: 'ERR_ASSERTION', message });
+  await assert.rejects(
+    verifyModelSource(key, { asset: restamp({ adoption: '20261009-r04-a99' }) }),
+    { code: 'ENOENT' },
+  );
+  // Correct provenance, but the served path holds other bytes or other geometry.
+  await assert.rejects(verifyModelSource(key, { asset: after, serve: () => `public${lod.url}` }), {
+    code: 'ERR_ASSERTION',
+    message: /lod-performance\.glb: length/,
+  });
+  await assert.rejects(assertSameGeometry(`public${before.url}`, `public${lod.url}`, key), {
+    code: 'ERR_ASSERTION',
+    message: /^camp-mountain\b/,
+  });
 });
 test('outdoor camp and northern route stay level while the southern castle sits uphill', () => {
   assert.deepEqual([CAMP.x, CAMP.z], [50, 50]);

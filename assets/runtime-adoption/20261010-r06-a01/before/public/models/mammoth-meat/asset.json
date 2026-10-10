@@ -1,0 +1,71 @@
+{
+  "modelKey": "mammoth-meat",
+  "name": "マンモスの生肉",
+  "kind": "static",
+  "candidate": 2,
+  "status": "remake-candidate-2-integrated",
+  "url": "/models/mammoth-meat/model-c2.opt-4b49e324b633cf3f.glb",
+  "sha256": "4b49e324b633cf3f78b647c9d922db5f1c9d0a66bef21d17336727ce915cd4e0",
+  "bytes": 577312,
+  "triangles": 2996,
+  "upAxis": "Y",
+  "forwardAxis": "+Z",
+  "heightMetres": 0.2265,
+  "widthMetres": 0.55,
+  "placement": {
+    "pivot": "ground-centred"
+  },
+  "clips": [],
+  "gender": null,
+  "species": null,
+  "notes": [
+    "2026-10-07 remake Candidate 2: new reference (raw mammoth haunch with marbled fat and a cut bone end, more readable than the C1 slab); 0.55 m long like C1 (0.23 m tall, C1 0.13 m); xatlas charts; TRELLIS-2 1024/tex1024; 2996 triangles (meshopt reduction, fresh UVs, albedo and tangent-space normal baked from the 288437-triangle dense surface; p95 surface error 2.0 mm). Candidate 1 files retained."
+  ],
+  "provenance": {
+    "provider": "Claude Code (Opus 5.5)",
+    "claudeUsed": true,
+    "referenceGenerator": "Codex CLI built-in image_gen (gpt-5.6-sol, medium), earlier approved reference attached for identity",
+    "referenceImage": "C:/Users/yurin/Desktop/projects/CRO-MAGNON/output/model-generation/models/mammoth-meat/source/original/candidate2-ref-a.png",
+    "referenceSha256": "0076e75d4d6e3c6fe25d195249b87783b2754da0520cc39765be23be38e9a54c",
+    "reconstruction": "Local TRELLIS-2 v0.8.1, res 1024, tex 1024, seed recorded in dense JSON",
+    "denseFile": "C:/Users/yurin/Desktop/projects/CRO-MAGNON/output/model-generation/models/mammoth-meat/work/candidate-02/trellis/dense-ref2a-res1024-tex1024-seed0042.glb",
+    "denseSha256": "a8cbb0064f99f36fb23eeeaaeeb4fddf710f731d93779f56e24a8a6ffe738ec2",
+    "processReport": "output/model-generation/models/mammoth-meat/work/candidate-02/low-poly/m01/process-report.json",
+    "rigReport": null,
+    "pipeline": "scripts/remake/ (trellis_queue.py, remake_process.py, rig_*.py); docs/asset-remake/PLAN.md",
+    "previousDelivery": {
+      "url": "/models/mammoth-meat/model.glb",
+      "sha256": "50bf72d1dc5ff23b7eb206e7d0c6535d9a4ac1559190e6c4f5bbb94cd0ffaf2d",
+      "triangles": 2826,
+      "bytes": 579220,
+      "candidate": 1,
+      "revision": null
+    },
+    "previousProvenance": {
+      "provider": "Codex",
+      "claudeUsed": false,
+      "referenceGenerator": "Built-in imagegen",
+      "referenceImage": "output/model-generation/models/mammoth-meat/source/original/reference-v1.png",
+      "referenceSha256": "f883f52206d01d9108ed6868de483c9ed2c7ec6237f1cbcad4424993354827fd",
+      "reconstruction": "Local TRELLIS-2; settings and dense SHA in model workspace",
+      "candidateFile": "output/model-generation/models/mammoth-meat/work/low-poly/candidate-01/candidate.glb",
+      "visualReview": "output/model-generation/models/mammoth-meat/qa/adoption-review.json"
+    },
+    "visualReview": "assets/asset-remake/reviews/mammoth-meat.json"
+  },
+  "lods": [],
+  "revision": "c2-m01",
+  "runtimeOptimization": {
+    "adoption": "20261010-r05-a02",
+    "candidateRevision": "assets/optimized-runtime/20261009-r04",
+    "selection": "ordinary-compressed",
+    "original": {
+      "url": "/models/mammoth-meat/model-c2.glb",
+      "sha256": "076b0a41f1311b4398de8b271387531913eef11f8c68b1c5a933523a84de4dae",
+      "bytes": 613928,
+      "triangles": 2996,
+      "lods": []
+    },
+    "adoptedBy": "20261009-r04-a01"
+  }
+}

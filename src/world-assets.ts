@@ -1,12 +1,10 @@
 import { isTexture, isMesh, isSkinnedMesh } from './three-types.js';
 import * as THREE from 'three';
-import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
 import { clone as cloneSkeleton } from 'three/addons/utils/SkeletonUtils.js';
 import { requireEnemyClips } from './enemy-state.js';
 import { PlacementGrid } from '../shared/spatial-grid.mjs';
 import { createSurfaceTemplate } from './biome-surfaces.js';
-import { sha256 } from './asset-hash.js';
-import { downloadVerifiedAsset } from './asset-download.js';
+import { coalesceTextures, disposeModels, loadVerifiedGLB } from './embedded-glb.js';
 import { ViewUpdateGate } from './view-update-gate.js';
 import {
   ACTIVE_MASCOT_MODELS,
@@ -20,118 +18,23 @@ import { groundcoverVisible } from './scenery-visibility.js';
 import { ActionBlender, gaitPhase } from './action-blender.js';
 import { applyBehemothPalette } from './behemoth-palette.js';
 import { installSkinnedBounds } from './skinned-bounds.js';
+import { configureActorPerformance, disposeActorPerformance } from './performance-lod.js';
+import { AssetLoadQueue, LOAD_TIER, LoadTicket } from './asset-load-queue.js';
 import {
-  attachSimplifiedShadow,
-  configureActorPerformance,
-  disposeActorPerformance,
-} from './performance-lod.js';
+  packedLevels,
+  requireSeparateLevels,
+  templateDownloadBytes,
+  templateLevels,
+} from './world-asset-levels.js';
 
-function disposeTemplates(models) {
-  const resources = new Set<
-    THREE.BufferGeometry | THREE.Material | THREE.Texture | THREE.Skeleton
-  >();
-  const images = new Set<ImageBitmap>();
-  for (const model of models)
-    model.scene.traverse((node) => {
-      if (node.geometry) resources.add(node.geometry);
-      if (node.skeleton) resources.add(node.skeleton);
-      for (const material of [node.material].flat().filter(Boolean)) {
-        resources.add(material);
-        for (const value of Object.values(material)) if (isTexture(value)) resources.add(value);
-      }
-    });
-  for (const value of resources) {
-    value.dispose();
-    if (isTexture(value) && value.source?.data) images.add(value.source.data as ImageBitmap);
-  }
-  // LODs share textures; distinct texture slots may also share one ImageBitmap.
-  for (const data of images) data.close?.();
-}
-
-export async function loadVerifiedGLB(record) {
-  const bytes = await downloadVerifiedAsset(record);
-  const manager = new THREE.LoadingManager();
-  manager.setURLModifier((url) => {
-    if (!url.startsWith('blob:') && !url.startsWith('data:'))
-      throw new Error('GLB must embed its resources');
-    return url;
-  });
-  const gltf = await new GLTFLoader(manager).parseAsync(bytes, '');
-  {
-    const view = new DataView(bytes),
-      jsonEnd = 20 + view.getUint32(12, true),
-      binaryStart = jsonEnd + 8;
-    const hashes = await Promise.all(
-      (gltf.parser.json.images ?? []).map(async (image) => {
-        const range = gltf.parser.json.bufferViews[image.bufferView];
-        if (!range) return null;
-        return sha256(
-          new Uint8Array(bytes, binaryStart + (range.byteOffset ?? 0), range.byteLength),
-        );
-      }),
-    );
-    gltf.scene.traverse((node) => {
-      if (!isMesh(node)) return;
-      for (const material of [node.material].flat().filter(Boolean))
-        for (const value of Object.values(material))
-          if (isTexture(value)) {
-            const index = gltf.parser.associations.get(value)?.textures,
-              source = gltf.parser.json.textures?.[index]?.source;
-            if (hashes[source]) value.userData.embeddedSha256 = hashes[source];
-          }
-    });
-  }
-  return gltf;
-}
-
-function shareLodTextures(models) {
-  const canonical = new Map(),
-    retired = new Set<THREE.Texture>(),
-    images = new Set();
-  for (const model of models)
-    model.scene.traverse((node) => {
-      for (const material of [node.material].flat().filter(Boolean))
-        for (const [slot, texture] of Object.entries(material)) {
-          if (!isTexture(texture)) continue;
-          const hash = texture.userData.embeddedSha256;
-          if (!hash) {
-            images.add(texture.source?.data);
-            continue;
-          }
-          const key = [
-            hash,
-            texture.colorSpace,
-            texture.wrapS,
-            texture.wrapT,
-            texture.minFilter,
-            texture.magFilter,
-            texture.flipY,
-            texture.channel,
-            ...texture.offset.toArray(),
-            ...texture.repeat.toArray(),
-            texture.rotation,
-          ].join(':');
-          if (canonical.has(key) && canonical.get(key) !== texture) {
-            material[slot] = canonical.get(key);
-            retired.add(texture);
-          } else {
-            canonical.set(key, texture);
-            images.add(texture.source?.data);
-          }
-        }
-    });
-  const closed = new Set();
-  for (const texture of retired) {
-    texture.dispose();
-    const data = texture.source?.data;
-    if (!images.has(data) && !closed.has(data)) {
-      (data as ImageBitmap | undefined)?.close?.();
-      closed.add(data);
-    }
-  }
-}
+// Verified GLB loading, image identity, texture sharing and disposal live in
+// embedded-glb.ts; CharacterAssets loads its templates the same way.
+export { loadVerifiedGLB };
 
 export class WorldAssets {
+  /** Verified GLB loader for every queued template: environment, companion,
+   * startup, enemy and equipment; called once for all levels of a packed
+   * template (world-asset-levels.ts). Tests inject delayed loaders here. */
   declare environmentLoader: typeof loadVerifiedGLB;
   declare templates: Map<any, any>;
   declare surfaceTemplates: Map<any, any>;
@@ -139,8 +42,16 @@ export class WorldAssets {
   declare enemyLoads: Map<any, any>;
   declare equipmentLoads: Map<any, any>;
   declare environmentLoads: Map<any, any>;
-  declare environmentQueue: any[];
-  declare environmentActive: number;
+  /** The one bounded, prioritized queue for on-demand GLB work, shared with
+   * the character providers. */
+  declare loadQueue: AssetLoadQueue;
+  /** Loads this provider started on the queue (as opposed to recorded ones). */
+  declare queuedLoads: WeakSet<Promise<unknown>>;
+  /** Live actors plus pending creations per template key. */
+  declare actorUsers: Map<string, number>;
+  declare actorIdleSince: Map<string, number>;
+  declare actorTouched: Set<string>;
+  declare evictedTemplates: number;
   declare disposed: boolean;
   declare catalog: any;
   declare loadMilliseconds: number | undefined;
@@ -153,9 +64,17 @@ export class WorldAssets {
     this.enemyLoads = new Map();
     this.equipmentLoads = new Map();
     this.environmentLoads = new Map();
-    this.environmentQueue = [];
-    this.environmentActive = 0;
+    this.loadQueue = new AssetLoadQueue();
+    this.queuedLoads = new WeakSet();
+    this.actorUsers = new Map();
+    this.actorIdleSince = new Map();
+    this.actorTouched = new Set();
+    this.evictedTemplates = 0;
     this.disposed = false;
+  }
+  /** Queued, not yet started loads of every kind. */
+  get environmentQueue() {
+    return this.loadQueue.queued;
   }
   async loadCatalog() {
     if (this.catalog) return this.catalog;
@@ -178,76 +97,73 @@ export class WorldAssets {
     this.catalog = catalog;
     return catalog;
   }
+  /** Every non-enemy startup record (and companions unless deferred), through
+   * the shared queue. The world loads only its critical set with loadStartup(). */
   async load({
     deferCompanions = false,
     onProgress,
-    background = false,
   }: {
     deferCompanions?: boolean;
     onProgress?: (loaded: number, total: number) => void;
+    /** Retained for callers; the shared queue bounds concurrency. */
     background?: boolean;
   } = {}) {
-    const started = performance.now();
     await this.loadCatalog();
-    const pending = this.catalog.assets.filter(
-      (asset) =>
-        asset.kind !== 'enemy' &&
-        !asset.onDemand &&
-        groundcoverVisible(asset.modelKey) &&
-        !this.templates.has(asset.modelKey) &&
-        !(deferCompanions && asset.kind === 'companion'),
-    );
-    // Byte totals come from the verified records, so progress is known up front.
-    const total = pending.reduce(
-      (sum, asset) =>
-        sum + asset.bytes + (asset.lods ?? []).reduce((n, lod) => n + (lod.bytes ?? 0), 0),
-      0,
-    );
-    let loaded = 0;
-    const advance = (record) => {
-      loaded += record.bytes ?? 0;
-      onProgress?.(loaded, total);
-    };
-    onProgress?.(0, total);
-    // Bound concurrent texture decoding while keeping independent downloads busy.
-    await Promise.all(
-      Array.from({ length: background ? 1 : 3 }, async () => {
-        while (pending.length && !this.disposed) {
-          const asset = pending.shift(),
-            gltf = await loadVerifiedGLB(asset);
-          advance(asset);
-          const lods = [];
-          try {
-            for (const lod of asset.lods ?? []) {
-              if (this.disposed) break;
-              lods.push(await loadVerifiedGLB(lod));
-              advance(lod);
-            }
-          } catch (error) {
-            disposeTemplates([gltf, ...lods]);
-            throw error;
-          }
-          if (this.disposed) {
-            disposeTemplates([gltf, ...lods]);
-            continue;
-          }
-          shareLodTextures([gltf, ...lods]);
-          for (const model of [gltf, ...lods]) {
-            model.scene.updateMatrixWorld(true);
-            model.scene.traverse((node) => {
-              if (!isMesh(node)) return;
-              node.castShadow = true;
-              node.receiveShadow = true;
-            });
-          }
-          this.templates.set(asset.modelKey, { gltf, lods, asset });
-          if (background) await new Promise((resolve) => setTimeout(resolve, 0));
-        }
-      }),
-    ).catch((error) => {
+    const keys = this.catalog.assets
+      .filter(
+        (asset) =>
+          asset.kind !== 'enemy' &&
+          !asset.onDemand &&
+          groundcoverVisible(asset.modelKey) &&
+          !(deferCompanions && asset.kind === 'companion'),
+      )
+      .map((asset) => asset.modelKey);
+    try {
+      return await this.loadStartup(keys, { onProgress });
+    } catch (error) {
       this.dispose();
       throw error;
+    }
+  }
+  /** Exactly these templates, ahead of streamed work, with progress over their
+   * verified byte totals (known up front, so the total never grows). A missing
+   * record or a failed download, integrity check or decode rejects. */
+  async loadStartup(
+    keys: readonly string[],
+    {
+      onProgress,
+      ticket = LoadTicket.of(LOAD_TIER.initial),
+    }: { onProgress?: (loaded: number, total: number) => void; ticket?: LoadTicket } = {},
+  ) {
+    const started = performance.now();
+    await this.loadCatalog();
+    if (this.disposed) return this;
+    const records = [...new Set(keys)].map((key) => {
+      const record = this.catalog.assets.find((asset) => asset.modelKey === key);
+      if (!record) throw new Error(`Missing verified model ${key}`);
+      return record;
     });
+    const pending = records.filter((record) => !this.templates.has(record.modelKey));
+    // A packed file counts once, not once per level. An invalid packed record is
+    // refused here, before any model is requested.
+    const sizes = new Map(pending.map((record) => [record, templateDownloadBytes(record)]));
+    const total = pending.reduce((sum, record) => sum + sizes.get(record), 0);
+    let loaded = 0;
+    onProgress?.(0, total);
+    try {
+      await Promise.all(
+        pending.map((record) =>
+          this.requestTemplate(record.modelKey, record, ticket).then(() => {
+            loaded += sizes.get(record);
+            onProgress?.(loaded, total);
+          }),
+        ),
+      );
+    } catch (error) {
+      // Shutdown settles the remaining loads; that is not a startup failure.
+      if (this.disposed) return this;
+      throw error;
+    }
     this.loadMilliseconds = performance.now() - started;
     return this;
   }
@@ -301,71 +217,105 @@ export class WorldAssets {
       extraTextures: [...variantTextures].filter((value) => !sourceTextures.has(value)).length,
     };
   }
-  ensureEnvironment(key) {
-    return this.ensureQueued(key, false);
+  /** A streamed world template: regional environments and the startup scenery,
+   * grounds and landmarks. `ticket` carries the requester's priority; without one
+   * the request is never withdrawn. */
+  ensureEnvironment(key, ticket = LoadTicket.of(LOAD_TIER.scene)) {
+    return this.ensureQueued(key, 'environment', ticket);
   }
   /** Load one startup asset ahead of the rest, retaining the same verified template. */
-  ensureInitial(key) {
-    return this.ensureQueued(key, false, true);
+  ensureInitial(key, ticket = LoadTicket.of(LOAD_TIER.initial)) {
+    return this.ensureQueued(key, 'initial', ticket);
   }
-  ensureCompanion(key) {
-    return this.ensureQueued(key, true);
+  ensureCompanion(key, ticket = LoadTicket.of(LOAD_TIER.companion)) {
+    return this.ensureQueued(key, 'companion', ticket);
   }
-  private ensureQueued(key, companion: boolean, initial = false) {
+  private ensureQueued(key, kind: 'environment' | 'initial' | 'companion', ticket: LoadTicket) {
     if (this.disposed) return Promise.reject(new Error('World assets disposed'));
     if (this.templates.has(key)) return Promise.resolve(this.get(key));
-    if (this.environmentLoads.has(key)) return this.environmentLoads.get(key);
+    const startup = (record) =>
+      !record.onDemand && record.kind !== 'enemy' && record.kind !== 'companion';
     const asset = this.catalog.assets.find(
       (record) =>
         record.modelKey === key &&
-        (initial
-          ? !record.onDemand && record.kind !== 'enemy' && record.kind !== 'companion'
-          : companion
+        (kind === 'initial'
+          ? startup(record)
+          : kind === 'companion'
             ? record.kind === 'companion'
-            : record.environment),
+            : record.environment || startup(record)),
     );
     if (!asset) return Promise.reject(new Error(`Missing verified environment ${key}`));
-    const promise = new Promise((resolve, reject) =>
-      this.environmentQueue.push({ asset, resolve, reject }),
-    );
-    this.environmentLoads.set(key, promise);
-    this.pumpEnvironment();
-    return promise;
+    return this.requestTemplate(key, asset, ticket);
   }
-  pumpEnvironment() {
-    while (this.environmentActive < 2 && this.environmentQueue.length) {
-      const job = this.environmentQueue.shift();
-      this.environmentActive++;
-      (async () => {
-        const models = [];
-        try {
+  /** One verified template per key through the shared queue. A request joins the
+   * queued or running load of its key; a new load starts only when none is live
+   * (a load every requester withdrew from settled with LoadCancelled). */
+  private requestTemplate(key, asset, ticket: LoadTicket) {
+    if (this.templates.has(key)) return Promise.resolve(this.get(key));
+    return this.joinOrRequest(
+      this.environmentLoads,
+      key,
+      `template:${key}`,
+      () => this.loadTemplate(asset),
+      ticket,
+    );
+  }
+  /** Join the load recorded for `key` while the queue still holds it, or start
+   * one. A recorded load the queue no longer holds was cancelled or failed (a
+   * completed one has already installed its template), so it is replaced even
+   * before its settlement is observed; only in-flight loads stay recorded. */
+  private joinOrRequest(
+    loads: Map<string, Promise<unknown>>,
+    key: string,
+    job: string,
+    start: () => Promise<unknown>,
+    ticket: LoadTicket,
+  ) {
+    const live = loads.get(key);
+    if (live && (!this.queuedLoads.has(live) || this.loadQueue.join(job, ticket))) return live;
+    const load = this.loadQueue.request(job, start, ticket);
+    this.queuedLoads.add(load);
+    loads.set(key, load);
+    const settled = () => {
+      if (loads.get(key) === load) loads.delete(key);
+    };
+    load.then(settled, settled);
+    return load;
+  }
+  private async loadTemplate(asset) {
+    const models = [];
+    try {
+      if (this.disposed) throw new Error('World assets disposed');
+      const plan = templateLevels(asset);
+      if ('file' in plan) {
+        // One download and parse for every level. The parsed model stays whole
+        // until its levels are accepted, so a refusal releases all of its scenes.
+        const model = await this.environmentLoader(plan.file);
+        models.push(model);
+        if (this.disposed) throw new Error('World assets disposed');
+        models.splice(0, 1, ...packedLevels(model, plan.levels, asset.modelKey));
+      } else
+        for (const record of plan.files) {
+          models.push(await this.environmentLoader(record));
           if (this.disposed) throw new Error('World assets disposed');
-          for (const record of [job.asset, ...(job.asset.lods ?? [])]) {
-            models.push(await this.environmentLoader(record));
-            if (this.disposed) throw new Error('World assets disposed');
-          }
-          shareLodTextures(models);
-          for (const model of models) {
-            model.scene.updateMatrixWorld(true);
-            model.scene.traverse((node) => {
-              if (isMesh(node)) {
-                node.castShadow = true;
-                node.receiveShadow = true;
-              }
-            });
-          }
-          const template = { asset: job.asset, gltf: models[0], lods: models.slice(1) };
-          this.templates.set(job.asset.modelKey, template);
-          job.resolve(template);
-        } catch (error) {
-          disposeTemplates(models);
-          job.reject(error);
-        } finally {
-          this.environmentActive--;
-          this.environmentLoads.delete(job.asset.modelKey);
-          this.pumpEnvironment();
         }
-      })();
+      // One cohort: the template's LODs share its textures where image and state agree.
+      coalesceTextures(models);
+      for (const model of models) {
+        model.scene.updateMatrixWorld(true);
+        model.scene.traverse((node) => {
+          if (isMesh(node)) {
+            node.castShadow = true;
+            node.receiveShadow = true;
+          }
+        });
+      }
+      const template = { asset, gltf: models[0], lods: models.slice(1) };
+      this.templates.set(asset.modelKey, template);
+      return template;
+    } catch (error) {
+      disposeModels(models);
+      throw error;
     }
   }
   releaseEnvironment(key) {
@@ -376,7 +326,7 @@ export class WorldAssets {
         surface.dispose();
         this.surfaceTemplates.delete(id);
       }
-    disposeTemplates([template.gltf, ...template.lods]);
+    disposeModels([template.gltf, ...template.lods]);
     this.templates.delete(key);
   }
   create(key, level = 0, surface = null) {
@@ -390,11 +340,7 @@ export class WorldAssets {
   }
   createResource(key, surface = null) {
     const template = this.get(key, surface);
-    if (!template.lods.length) {
-      const root = this.create(key, 0, surface);
-      attachSimplifiedShadow(root, key);
-      return root;
-    }
+    if (!template.lods.length) return this.create(key, 0, surface);
     const root = new THREE.LOD();
     root.userData.assetKey = key;
     root.userData.regionalSurface = surface;
@@ -403,7 +349,6 @@ export class WorldAssets {
       const distance = template.asset.lods?.[index]?.distanceMetres ?? (index === 0 ? 10 : 22);
       root.addLevel(this.create(key, index + 1, surface), distance, 0.15);
     }
-    attachSimplifiedShadow(root, key);
     return root;
   }
   /**
@@ -432,36 +377,49 @@ export class WorldAssets {
     }
     return points;
   }
-  async createEquipment(key) {
+  /** A held weapon or rig-attached prop. `ticket` carries the requester's
+   * priority; when every requester withdraws before the load starts it settles
+   * with LoadCancelled, and a withdrawn requester receives null. */
+  async createEquipment(key, ticket = LoadTicket.of(LOAD_TIER.scene)) {
     if (this.disposed) return null;
     if (this.templates.has(key)) return this.create(key);
-    if (!this.equipmentLoads.has(key))
-      this.equipmentLoads.set(
-        key,
-        (async () => {
-          // Held weapons and rig-attached props (crow rank regalia, berry clusters) load the same way.
-          const asset = this.catalog.assets.find(
-            (record) =>
-              record.modelKey === key && (record.kind === 'equipment' || record.kind === 'prop'),
-          );
-          if (!asset) throw new Error(`Missing verified equipment ${key}`);
-          const gltf = await loadVerifiedGLB(asset);
-          if (this.disposed) {
-            disposeTemplates([gltf]);
-            return;
-          }
-          gltf.scene.updateMatrixWorld(true);
-          gltf.scene.traverse((node) => {
-            if (isMesh(node)) {
-              node.castShadow = true;
-              node.receiveShadow = true;
-            }
-          });
-          this.templates.set(key, { gltf, lods: [], asset });
-        })(),
-      );
-    await this.equipmentLoads.get(key);
-    return this.disposed ? null : this.create(key);
+    await this.ensureEquipment(key, ticket);
+    return this.disposed || ticket.released ? null : this.create(key);
+  }
+  /** A held weapon or prop's verified template, loaded once without a copy (an
+   * arrival prepares the local character's props ahead of its snapshot). */
+  ensureEquipment(key, ticket = LoadTicket.of(LOAD_TIER.scene)) {
+    if (this.disposed) return Promise.reject(new Error('World assets disposed'));
+    if (this.templates.has(key)) return Promise.resolve(this.get(key));
+    return this.joinOrRequest(
+      this.equipmentLoads,
+      key,
+      `equipment:${key}`,
+      () => this.loadEquipmentTemplate(key),
+      ticket,
+    );
+  }
+  private async loadEquipmentTemplate(key) {
+    // Held weapons and rig-attached props (crow rank regalia, berry clusters) load the same way.
+    const asset = this.catalog.assets.find(
+      (record) =>
+        record.modelKey === key && (record.kind === 'equipment' || record.kind === 'prop'),
+    );
+    if (!asset) throw new Error(`Missing verified equipment ${key}`);
+    requireSeparateLevels(asset, 'equipment');
+    const gltf = await this.environmentLoader(asset);
+    if (this.disposed) {
+      disposeModels([gltf]);
+      return;
+    }
+    gltf.scene.updateMatrixWorld(true);
+    gltf.scene.traverse((node) => {
+      if (isMesh(node)) {
+        node.castShadow = true;
+        node.receiveShadow = true;
+      }
+    });
+    this.templates.set(key, { gltf, lods: [], asset });
   }
   createAnimal(key, initialClip = 'Idle_Loop') {
     const { gltf, lods, asset } = this.get(key),
@@ -533,70 +491,129 @@ export class WorldAssets {
         root.traverse((node) => {
           if (isSkinnedMesh(node)) node.skeleton.dispose();
         });
+        this.holdActor(key, -1);
       },
     };
     this.animals.add(actor);
-    actor.play(initialClip);
+    this.holdActor(key, 1);
+    try {
+      actor.play(initialClip);
+    } catch (error) {
+      actor.dispose();
+      throw error;
+    }
     return actor;
   }
-  async createEnemy(key) {
+  /** Count a live actor or pending creation of a template (delta ±1). */
+  private holdActor(key, delta: number) {
+    const users = (this.actorUsers.get(key) ?? 0) + delta;
+    if (users > 0) this.actorUsers.set(key, users);
+    else this.actorUsers.delete(key);
+    this.actorTouched.add(key);
+  }
+  /** One animated enemy actor. The template loads once per key through the
+   * queue with the requester's `ticket`; a withdrawn requester receives null. */
+  async createEnemy(key, ticket = LoadTicket.of(LOAD_TIER.visible)) {
     if (this.disposed) return null;
-    // Older servers have no enemies: only require this verified model when a
-    // snapshot actually contains one. Concurrent instances share one download.
-    if (!this.enemyLoads.has(key))
-      this.enemyLoads.set(
-        key,
-        (async () => {
-          const asset = this.catalog.assets.find(
-            (record) => record.modelKey === key && record.kind === 'enemy',
-          );
-          if (!asset) throw new Error(`Missing verified enemy ${key}`);
-          const models = [];
-          try {
-            for (const record of [asset, ...(asset.lods ?? [])])
-              models.push(await loadVerifiedGLB(record));
-          } catch (error) {
-            disposeTemplates(models);
-            throw error;
-          }
-          const gltf = models[0];
-          try {
-            requireEnemyClips(gltf.animations, key);
-          } catch (error) {
-            disposeTemplates(models);
-            throw error;
-          }
-          if (this.disposed) {
-            disposeTemplates(models);
-            return;
-          }
-          gltf.scene.updateMatrixWorld(true);
-          gltf.scene.traverse((node) => {
-            if (isMesh(node)) {
-              node.castShadow = true;
-              node.receiveShadow = true;
-              if (key === 'violet-behemoth')
-                for (const material of [node.material].flat()) applyBehemothPalette(material);
-            }
-          });
-          this.templates.set(key, { gltf, lods: models.slice(1), asset });
-        })(),
-      );
-    await this.enemyLoads.get(key);
-    return this.disposed ? null : this.createAnimal(key);
+    // The pending creation keeps the template from eviction until its actor exists.
+    this.holdActor(key, 1);
+    try {
+      // Older servers have no enemies: only require this verified model when a
+      // snapshot actually contains one. Concurrent instances share one download.
+      if (!this.templates.has(key))
+        await this.joinOrRequest(
+          this.enemyLoads,
+          key,
+          `enemy:${key}`,
+          () => this.loadEnemyTemplate(key),
+          ticket,
+        );
+      return this.disposed || ticket.released ? null : this.createAnimal(key);
+    } finally {
+      this.holdActor(key, -1);
+    }
+  }
+  private async loadEnemyTemplate(key) {
+    const asset = this.catalog.assets.find(
+      (record) => record.modelKey === key && record.kind === 'enemy',
+    );
+    if (!asset) throw new Error(`Missing verified enemy ${key}`);
+    requireSeparateLevels(asset, 'enemy');
+    const models = [];
+    try {
+      for (const record of [asset, ...(asset.lods ?? [])]) {
+        models.push(await this.environmentLoader(record));
+        if (this.disposed) {
+          disposeModels(models);
+          return;
+        }
+      }
+      requireEnemyClips(models[0].animations, key);
+      coalesceTextures(models);
+    } catch (error) {
+      disposeModels(models);
+      throw error;
+    }
+    const [gltf, ...lods] = models;
+    gltf.scene.updateMatrixWorld(true);
+    gltf.scene.traverse((node) => {
+      if (isMesh(node)) {
+        node.castShadow = true;
+        node.receiveShadow = true;
+        if (key === 'violet-behemoth')
+          for (const material of [node.material].flat()) applyBehemothPalette(material);
+      }
+    });
+    this.templates.set(key, { gltf, lods, asset });
+  }
+  /** Evict enemy templates that no actor or pending creation has used for
+   * `grace` seconds; a later createEnemy() loads them again. Startup,
+   * environment, companion and equipment templates keep their own lifecycles. */
+  collectActors(now: number, grace: number) {
+    let evicted = 0;
+    for (const [key, template] of this.templates) {
+      if (template.asset?.kind !== 'enemy') continue;
+      const touched = this.actorTouched.delete(key);
+      if (this.actorUsers.has(key)) {
+        this.actorIdleSince.delete(key);
+        continue;
+      }
+      const since = this.actorIdleSince.get(key);
+      if (since === undefined || touched) {
+        this.actorIdleSince.set(key, now);
+        continue;
+      }
+      if (now - since < grace) continue;
+      disposeModels([template.gltf, ...template.lods]);
+      this.templates.delete(key);
+      this.actorIdleSince.delete(key);
+      this.evictedTemplates++;
+      evicted++;
+    }
+    return evicted;
+  }
+  actorTemplateDiagnostics() {
+    return {
+      loaded: [...this.templates]
+        .filter(([, template]) => template.asset?.kind === 'enemy')
+        .map(([key]) => key),
+      loading: [...this.enemyLoads.keys()],
+      evicted: this.evictedTemplates,
+    };
   }
   dispose() {
     this.disposed = true;
-    // Queued work must settle even when the two active requests never finish.
-    for (const job of this.environmentQueue.splice(0)) {
-      this.environmentLoads.delete(job.asset.modelKey);
-      job.reject(new Error('World assets disposed'));
-    }
+    // Queued callers settle now; running loads discard their late results.
+    this.loadQueue.dispose();
     for (const template of this.surfaceTemplates.values()) template.dispose();
     this.surfaceTemplates.clear();
-    for (const actor of this.animals) actor.dispose();
-    disposeTemplates([...this.templates.values()].flatMap(({ gltf, lods }) => [gltf, ...lods]));
+    for (const actor of [...this.animals]) actor.dispose();
+    disposeModels(
+      [...this.templates.values()].flatMap(({ gltf, lods }) => [gltf, ...(lods ?? [])]),
+    );
     this.templates.clear();
+    this.actorIdleSince.clear();
+    this.actorTouched.clear();
   }
 }
 
@@ -632,15 +649,20 @@ function renderImpostor(renderer, root, resolution = 512) {
     : THREE.UnsignedByteType;
   const target = new THREE.WebGLRenderTarget(resolution, resolution, { depthBuffer: true, type });
   target.texture.colorSpace = THREE.LinearSRGBColorSpace;
-  const previous = renderer.getRenderTarget(),
-    clear = renderer.getClearColor(new THREE.Color()),
-    alpha = renderer.getClearAlpha();
-  renderer.setRenderTarget(target);
-  renderer.setClearColor(0x000000, 0);
-  renderer.clear();
-  renderer.render(scene, camera);
-  renderer.setRenderTarget(previous);
-  renderer.setClearColor(clear, alpha);
+  // The render exists only on the GPU: a restored WebGL context draws it again
+  // from the retained source scene.
+  const draw = () => {
+    const previous = renderer.getRenderTarget(),
+      clear = renderer.getClearColor(new THREE.Color()),
+      alpha = renderer.getClearAlpha();
+    renderer.setRenderTarget(target);
+    renderer.setClearColor(0x000000, 0);
+    renderer.clear();
+    renderer.render(scene, camera);
+    renderer.setRenderTarget(previous);
+    renderer.setClearColor(clear, alpha);
+  };
+  draw();
   const geometry = new THREE.PlaneGeometry(halfWidth * 2, halfHeight * 2);
   geometry.translate(centre.x, centre.y, 0);
   const material = new THREE.MeshBasicMaterial({
@@ -650,7 +672,7 @@ function renderImpostor(renderer, root, resolution = 512) {
     toneMapped: true,
     fog: true,
   });
-  return { target, geometry, material };
+  return { target, geometry, material, draw };
 }
 
 interface LandscapePlacement {
@@ -689,6 +711,8 @@ export class LandscapeInstances {
     target: THREE.WebGLRenderTarget<THREE.Texture<unknown, THREE.TextureEventMap>>;
     geometry: THREE.PlaneGeometry;
     material: THREE.MeshBasicMaterial;
+    /** Draw the far-view render again (after a WebGL context restore). */
+    draw: () => void;
   };
   declare matrix: THREE.Matrix4;
   declare composed: THREE.Matrix4;

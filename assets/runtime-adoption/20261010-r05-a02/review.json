@@ -1,0 +1,41 @@
+{
+  "adoption": "20261010-r05-a02",
+  "base": "20261009-r04-a01",
+  "note": "informational; not part of plan.json and not compared by apply",
+  "targets": {
+    "absent": 19,
+    "present": 0
+  },
+  "runtimeLiterals": [
+    {
+      "file": "src/cave-gallery-layout.ts",
+      "url": "/models/camp-cave/bot-round-lascaux-r31.png",
+      "replacedBy": "/models/camp-cave/bot-round-lascaux-r31.opt-9dc5292302335e65.png"
+    },
+    {
+      "file": "src/cave-gallery-layout.ts",
+      "url": "/models/camp-cave/bot-shapes-lascaux-r31.png",
+      "replacedBy": "/models/camp-cave/bot-shapes-lascaux-r31.opt-b6ee4b02e4be9c02.png"
+    },
+    {
+      "file": "src/cave-gallery-layout.ts",
+      "url": "/models/camp-cave/maruimo-lascaux-r33.png",
+      "replacedBy": "/models/camp-cave/maruimo-lascaux-r33.opt-cf90962462cefa64.png"
+    },
+    {
+      "file": "src/cave-gallery-layout.ts",
+      "url": "/models/camp-cave/mae-kohaku-lascaux-r31.png",
+      "replacedBy": "/models/camp-cave/mae-kohaku-lascaux-r31.opt-a9fee23d61be6387.png"
+    },
+    {
+      "file": "src/cave-gallery-layout.ts",
+      "url": "/models/camp-cave/friends-meadow-lascaux-r34.png",
+      "replacedBy": "/models/camp-cave/friends-meadow-lascaux-r34.opt-e6153063bca167d1.png"
+    },
+    {
+      "file": "src/cave-gallery-layout.ts",
+      "url": "/models/camp-cave/friends-river-lascaux-r35.png",
+      "replacedBy": "/models/camp-cave/friends-river-lascaux-r35.opt-62aa0628be8c4b05.png"
+    }
+  ]
+}

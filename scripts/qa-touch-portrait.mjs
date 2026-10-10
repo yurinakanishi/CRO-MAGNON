@@ -2,16 +2,19 @@
 // Preparation only places actors; each validated command comes from a finger event.
 import assert from 'node:assert/strict';
 import { mkdir, writeFile } from 'node:fs/promises';
-import { createGameServer } from '../dist/server.mjs';
+import { qaGamePackage } from './qa-game-package.mjs';
 import { stopActor } from '../dist/shared/combat.mjs';
 import { RIMO_NEKO } from '../dist/shared/rimo-neko.mjs';
+import { BOT_KINDS } from '../dist/shared/orb-bots.mjs';
+import { enterPreparedWorld } from './qa-game-entry.mjs';
 const { chromium } = await import(
   process.env.PLAYWRIGHT_MODULE ||
     'file:///C:/Users/yurin/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/node_modules/playwright/index.mjs'
 );
 const out = process.argv[2] || `output/playwright/touch-portrait-20261006/${Date.now()}`;
+const { createGameServer, packageRoot, packageId } = await qaGamePackage();
 await mkdir(out, { recursive: true });
-const game = createGameServer({ port: 0, host: '127.0.0.1' });
+const game = createGameServer({ port: 0, host: '127.0.0.1', assetRoot: packageRoot });
 const { port } = await game.listen();
 const browser = await chromium.launch({
   channel: 'chrome',
@@ -67,9 +70,7 @@ async function open(mobile) {
   await tap('#setup-form .character-choice:has(input[value="cro-female"])');
   await tap('#setup-flow [data-choose-difficulty="normal"]');
   await tap('#setup-flow-yes');
-  await page
-    .locator('#world[data-world-asset="ready"][data-character-asset="ready"]')
-    .waitFor({ timeout: 120000 });
+  await enterPreparedWorld(page, mobile);
   await until(() => seen.id && game.rooms.get('TOUCH-QA')?.players.has(seen.id), 'join');
   room = game.rooms.get('TOUCH-QA');
   return {
@@ -317,7 +318,14 @@ try {
   assert.match(await phone.page.locator('#pause-panel-settings').innerText(), /なぞる/);
   await shot('04-touch-settings');
   await phone.tap('[data-pause-tab="mascots"]');
-  assert.equal(await phone.page.locator('[data-mascot]').count(), 14);
+  assert.deepEqual(
+    new Set(
+      await phone.page
+        .locator('[data-mascot]')
+        .evaluateAll((cards) => cards.map((c) => c.dataset.mascot)),
+    ),
+    new Set([...BOT_KINDS, 'rimo-neko', '524']),
+  );
   await shot('05-touch-companions');
   await phone.tap('#modal-close');
   await phone.page.locator('#touch-controls').waitFor({ state: 'visible' });
@@ -333,7 +341,7 @@ try {
     0,
   );
   pass(
-    'Touch menu stops a held thumb; settings, all 13 companions and map are directly usable; journal is absent',
+    'Touch menu stops a held thumb; settings, the released companion roster and map are directly usable; journal is absent',
   );
 
   for (const size of [
@@ -347,7 +355,14 @@ try {
     await shot(`08-${size.width}x${size.height}`);
     await phone.tap('[data-touch-action="menu"]');
     await phone.tap('[data-pause-tab="mascots"]');
-    assert.equal(await phone.page.locator('[data-mascot]').count(), 14);
+    assert.deepEqual(
+      new Set(
+        await phone.page
+          .locator('[data-mascot]')
+          .evaluateAll((cards) => cards.map((c) => c.dataset.mascot)),
+      ),
+      new Set([...BOT_KINDS, 'rimo-neko', '524']),
+    );
     assert.equal(
       await phone.page.evaluate(() => document.documentElement.scrollWidth > innerWidth),
       false,
@@ -387,6 +402,7 @@ try {
   await phone.tap('#setup-form .character-choice:has(input[value="cro-female"])');
   await phone.tap('#setup-flow [data-choose-difficulty="normal"]');
   await phone.tap('#setup-flow-yes');
+  await enterPreparedWorld(phone.page, true);
   await phone.page.locator('#touch-controls').waitFor({ timeout: 120000 });
   await shot('10-reconnected');
   pass(
@@ -407,7 +423,7 @@ try {
 } finally {
   await writeFile(
     `${out}/result.json`,
-    JSON.stringify({ checks, errors, failure, physicalDeviceTested: false }, null, 2),
+    JSON.stringify({ packageId, checks, errors, failure, physicalDeviceTested: false }, null, 2),
   );
   await browser.close();
   await game.close();

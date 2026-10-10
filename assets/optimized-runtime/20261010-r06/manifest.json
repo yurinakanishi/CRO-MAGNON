@@ -1,0 +1,2473 @@
+{
+  "schema": "cro-magnon/optimized-runtime-candidates@1",
+  "recipe": "exact-repack@1",
+  "revision": "20261010-r06",
+  "directory": "assets/optimized-runtime/20261010-r06",
+  "status": "candidate",
+  "adoption": "not-adopted",
+  "visualQa": "pending-native-review",
+  "gpuValidation": "not-performed",
+  "scope": {
+    "complete": false,
+    "only": [
+      "camp-cave",
+      "camp-mountain",
+      "meadow-ground",
+      "river-water",
+      "snow-ground"
+    ],
+    "models": [
+      "snow-ground",
+      "camp-mountain",
+      "meadow-ground",
+      "river-water"
+    ],
+    "packed": [
+      "snow-ground",
+      "camp-mountain"
+    ],
+    "imageOwner": "camp-cave",
+    "images": 10
+  },
+  "base": {
+    "adoption": "20261010-r05-a02",
+    "directory": "assets/runtime-adoption/20261010-r05-a02",
+    "planSha256": "2697ba7246fc06f764989ede94a58cb4f8324765befc6fae0db11ed6430ce444",
+    "state": "applied",
+    "candidateRevision": {
+      "directory": "assets/optimized-runtime/20261010-r05",
+      "revision": "20261010-r05",
+      "files": [
+        {
+          "path": "assets/optimized-runtime/20261010-r05/manifest.json",
+          "sha256": "0363617513090b4a641999a2b2605c779b50ff3992c462f653f607a20cef2db4",
+          "bytes": 260010
+        },
+        {
+          "path": "assets/optimized-runtime/20261010-r05/runtime-index.json",
+          "sha256": "bfa84fbec63f6795a42b30200d201a6338e49ca91d2dbea84c528d7401fd7aad",
+          "bytes": 20063
+        },
+        {
+          "path": "assets/optimized-runtime/20261010-r05/verification.json",
+          "sha256": "38d12984005940d0edd408821ef810e52ba9fb5de21b44b86630075a048bb022",
+          "bytes": 19263
+        }
+      ]
+    },
+    "base": {
+      "adoption": "20261009-r04-a01",
+      "planSha256": "3be1a8bf493027043676335614e17057a3e1b518cf0d8bb91092fe02d5d0ecc8"
+    },
+    "rewrittenManifests": [
+      {
+        "path": "public/models/world-assets.json",
+        "before": {
+          "sha256": "262d61fd69a6f358ad8c6600095f671cbe09e99bba98d79a007f4b6aa00f275d",
+          "bytes": 819967
+        },
+        "after": {
+          "sha256": "71bb8e3e45dd54ea971b0b5865c31a549066e20da9311e474f973eb7c31c229e",
+          "bytes": 832942
+        }
+      },
+      {
+        "path": "public/models/berry-bush/asset.json",
+        "before": {
+          "sha256": "256ecd0691b04e54423ea08c4acdb3e8864b6b4c6328e59f5d46c3f5fb61bfd4",
+          "bytes": 3451
+        },
+        "after": {
+          "sha256": "66be3fea971103d8f21ba621555a2516e61ffb817a462df1e2d40ff58b539a15",
+          "bytes": 3815
+        }
+      },
+      {
+        "path": "public/models/berry-cluster/asset.json",
+        "before": {
+          "sha256": "92ae6fb88c6ef58bcbaeba80ab637bfbce0d1a8ef113f376d3247e3a993d343b",
+          "bytes": 2708
+        },
+        "after": {
+          "sha256": "fa0f38189d5c21147b374e9c723883f3dbc58c6b4d85aa5d4a08cd30088b659e",
+          "bytes": 2745
+        }
+      },
+      {
+        "path": "public/models/camp-cave/asset.json",
+        "before": {
+          "sha256": "5df36b67722c1323089f97b2e5237d59c515812cc00e858ab881b5811f9b0874",
+          "bytes": 23011
+        },
+        "after": {
+          "sha256": "76dd0497c63a42430b735a51893774ecd88cba2008cf4697298b43194c4a889f",
+          "bytes": 23470
+        }
+      },
+      {
+        "path": "public/models/camp-mountain/asset.json",
+        "before": {
+          "sha256": "6849aa77cac1fdc744a2a9506ebfa819969ae2a5fcfa71dc507174bea82ba6a8",
+          "bytes": 3952
+        },
+        "after": {
+          "sha256": "a6ace86b9c1358b3249c8e4a5e2bbeac07f9645c9e092ce0069e038056b9a8a2",
+          "bytes": 3989
+        }
+      },
+      {
+        "path": "public/models/cat-kunoichi/asset.json",
+        "before": {
+          "sha256": "ee360be622cc3e23363fccd8f04754d03b173675502e7b41180b10b86de4e2b1",
+          "bytes": 10634
+        },
+        "after": {
+          "sha256": "f72bef2e7552bbbdb2be241ed6e6d7eb517787acc2eda0ebaedd398efa5fe22e",
+          "bytes": 10671
+        }
+      },
+      {
+        "path": "public/models/cockle-shell/asset.json",
+        "before": {
+          "sha256": "5f5080aab2f429ec822dd9dcc17e5b9522bc628616420cf04c50ea71fd87c8d9",
+          "bytes": 3601
+        },
+        "after": {
+          "sha256": "d3092759ded24374186be554536d35f064ad5b0ce2ada9698187db14f8e5f006",
+          "bytes": 3638
+        }
+      },
+      {
+        "path": "public/models/cro-magnon-hunter/asset.json",
+        "before": {
+          "sha256": "a01e341bebb3cde4cf2508bac68e1ccc3d685c6ef5be7f1ead3a2f5dfaf793c5",
+          "bytes": 15853
+        },
+        "after": {
+          "sha256": "0aee6e382341e3c6e3b143df113767153de383fd359a0158695b1d1536694e29",
+          "bytes": 15890
+        }
+      },
+      {
+        "path": "public/models/cro-magnon-woman/asset.json",
+        "before": {
+          "sha256": "dce351685d0e2b5c17c0da61e0e010c9411451064217fd76102cff0712792c5f",
+          "bytes": 21409
+        },
+        "after": {
+          "sha256": "ef336153b83c621e13cdefd5d85079f44ce203394a02a706ea7caaca21114f60",
+          "bytes": 21446
+        }
+      },
+      {
+        "path": "public/models/crow-bone-pauldrons/asset.json",
+        "before": {
+          "sha256": "2a923a77489d670c82238ca68725c23782695fee955bd7ad6c4852242baf444e",
+          "bytes": 2729
+        },
+        "after": {
+          "sha256": "36418bb1d7b921b1be3a64724b731d4370f741b61d76031b826d8353660e4481",
+          "bytes": 2766
+        }
+      },
+      {
+        "path": "public/models/crow-brute-axe/asset.json",
+        "before": {
+          "sha256": "39ed15c57f8a080f81b24f8eadac8bb643edab474b31c3bde9afdcd4bbf66b14",
+          "bytes": 2734
+        },
+        "after": {
+          "sha256": "31c7915f9cf4ef42753ca7cf260b20fb23fd440a758c23c2993bf33435177324",
+          "bytes": 2771
+        }
+      },
+      {
+        "path": "public/models/crow-hide-shield/asset.json",
+        "before": {
+          "sha256": "19edb067761e1fdf93bea44bfa4efa4bac7fe987fc3689e53e73f88278cc821c",
+          "bytes": 2710
+        },
+        "after": {
+          "sha256": "c496c2db12af1652532ea2a7a02d014c405acb2837cd9e4b422854706857d0e7",
+          "bytes": 2747
+        }
+      },
+      {
+        "path": "public/models/crow-ivory-vestment/asset.json",
+        "before": {
+          "sha256": "f0c3cf0ebe776ff0702d0cc6f08c5d59aa3d1a735c1a2e7e722c2ffb829fd1eb",
+          "bytes": 2712
+        },
+        "after": {
+          "sha256": "61efd45f3bb8b1722d2f64cc715e999606cb7b22f371ce8c8050fc515d286583",
+          "bytes": 2749
+        }
+      },
+      {
+        "path": "public/models/crow-pontiff-crown/asset.json",
+        "before": {
+          "sha256": "6bf9185e1cf544376ca74208bf80d97ab6dc648d84ade22e6e2b04db38cc22d4",
+          "bytes": 2696
+        },
+        "after": {
+          "sha256": "0d228468bd64c122fae8de77e3454310bf0921d2bb993c8f8b1d74f420ada980",
+          "bytes": 2733
+        }
+      },
+      {
+        "path": "public/models/crow-pontiff-crozier/asset.json",
+        "before": {
+          "sha256": "e0ca6e01260ce8304070a19327b6a8ef82467b9688aa4a753c9f98d0349a7bb6",
+          "bytes": 2753
+        },
+        "after": {
+          "sha256": "3b19fe01b65a5116151171852cf49b2e782e57c57536b4d61fd090dc1604902d",
+          "bytes": 2790
+        }
+      },
+      {
+        "path": "public/models/crow-prelate-glaive/asset.json",
+        "before": {
+          "sha256": "97778169f30ca50fa3081a0d89f65c7677509c28cd848e621afe1a2549df4cab",
+          "bytes": 2736
+        },
+        "after": {
+          "sha256": "9be3e87ad13f63c2a2b25a04fe5b4f6efd0c98759c7d582e3fd05b22df24b8eb",
+          "bytes": 2773
+        }
+      },
+      {
+        "path": "public/models/crow-red-mantle/asset.json",
+        "before": {
+          "sha256": "7b6cb0deb33d9608c6af2e8397952ae29877f1c4bffa13807b0053f363d213c3",
+          "bytes": 2708
+        },
+        "after": {
+          "sha256": "4cdf90edf707b01a76f49323797ccb95630b869d18cb0143ff7c6e1c2b8f0f40",
+          "bytes": 2745
+        }
+      },
+      {
+        "path": "public/models/crow-shaman/asset.json",
+        "before": {
+          "sha256": "9b96402749db471a7119272f5ba0c42d07528cde643fbccd0d7ba79051ad9868",
+          "bytes": 6631
+        },
+        "after": {
+          "sha256": "f7ee95f6cb311b9aecf8e12a7f1b2df2711db9560c883588b944537b71e21fcd",
+          "bytes": 6668
+        }
+      },
+      {
+        "path": "public/models/crow-soldier-spear/asset.json",
+        "before": {
+          "sha256": "0c6ac9520d57edd3fe69560005be89932c4149dc5578769d34606cf6c567725e",
+          "bytes": 2755
+        },
+        "after": {
+          "sha256": "0b27adb13317469ec2a1f2199b71c328cc945c6ef58309d0e1672c01589118ee",
+          "bytes": 2792
+        }
+      },
+      {
+        "path": "public/models/desert-cactus/asset.json",
+        "before": {
+          "sha256": "bab3f1b0ee14618c72c5c80809ac55c5d2682c5848c4cf1b7cf5a161e43711df",
+          "bytes": 4575
+        },
+        "after": {
+          "sha256": "29ce05ba4aa32f6ce863a3ad32ca81258ee791fa59bb343a972ef783bdec0f9f",
+          "bytes": 4612
+        }
+      },
+      {
+        "path": "public/models/desert-fennec-mage/asset.json",
+        "before": {
+          "sha256": "637d88a74ed6a76b05bdf416d5c292e209536c20354eb0a0ecb500b397eeacff",
+          "bytes": 9490
+        },
+        "after": {
+          "sha256": "e14eb77703f27571efe9fec716d0a176fd7eed123a2a4543b38ae60a6c76a825",
+          "bytes": 9527
+        }
+      },
+      {
+        "path": "public/models/desert-ground/asset.json",
+        "before": {
+          "sha256": "0bf9b355a21806ded2c4a019246ab88f9838be2a19754034386a796551c09106",
+          "bytes": 82385
+        },
+        "after": {
+          "sha256": "24467713836e54ea9782ee5bed238d4d5b95943786bcf765af4fcd0ed3299d0e",
+          "bytes": 82422
+        }
+      },
+      {
+        "path": "public/models/drying-rack/asset.json",
+        "before": {
+          "sha256": "fd72e3b1c5aee13b81e9014e4190f95bcd37167241d012bd3d97e4258e472595",
+          "bytes": 3884
+        },
+        "after": {
+          "sha256": "ac12858b007834571cd585c815315afae58fbefa99a8dc203460992a71c3ba1b",
+          "bytes": 4461
+        }
+      },
+      {
+        "path": "public/models/dugout-canoe/asset.json",
+        "before": {
+          "sha256": "a3771d32898e7e0e3ec7e51d6b551dfd60a84862bbf3ccd5494d0412d55d425f",
+          "bytes": 4106
+        },
+        "after": {
+          "sha256": "50591dfe0620e597c3757510251e79f2493cf96c3a50f17c6b97f6b942f95c6a",
+          "bytes": 4143
+        }
+      },
+      {
+        "path": "public/models/firewood-log/asset.json",
+        "before": {
+          "sha256": "94533093bdf744049c3a069f2769f831daccc0d1fb0a698978dbad76289a228a",
+          "bytes": 4698
+        },
+        "after": {
+          "sha256": "175b1afcd0940961433af0228dbfe15fd7a44b6d31ba18103edd7b7a0ce9242e",
+          "bytes": 5489
+        }
+      },
+      {
+        "path": "public/models/firewood-pile/asset.json",
+        "before": {
+          "sha256": "77465bfac9d692c16bbe4ed58661c4b2e773cf333f773be4e15ea77a1b417f2d",
+          "bytes": 3891
+        },
+        "after": {
+          "sha256": "c50412a70f755457264cf56146b0a198edc890596464555be7c1dd7b814e4545",
+          "bytes": 4472
+        }
+      },
+      {
+        "path": "public/models/flint-spear/asset.json",
+        "before": {
+          "sha256": "119d67e435a69db1071e895f1224ac59db282a47bb5c862fcfe199e19171d344",
+          "bytes": 2114
+        },
+        "after": {
+          "sha256": "51f3baec841dddbcae5cdfdeadb75cfd9de43643c72e8e8eb28e85bd8fa7bdf9",
+          "bytes": 2475
+        }
+      },
+      {
+        "path": "public/models/giant-ape/asset.json",
+        "before": {
+          "sha256": "64c82f6492998530f5a76b7270cc801de314e444304ad7832110932488867f11",
+          "bytes": 8428
+        },
+        "after": {
+          "sha256": "71d97f93bc7b0ac1d50c622c4e4cb6773e6de3edf26988e1795ae126b6af6562",
+          "bytes": 8465
+        }
+      },
+      {
+        "path": "public/models/glacier-spires/asset.json",
+        "before": {
+          "sha256": "407313f2ceed05e4dad80b1cd0b649ce8600cd9e1be437b0fa7445a739e3da65",
+          "bytes": 4641
+        },
+        "after": {
+          "sha256": "eefc662cd6bc47c6f23cb54f0ba555242311658f3743573be6e386ecad4f7e50",
+          "bytes": 4678
+        }
+      },
+      {
+        "path": "public/models/hide-tent/asset.json",
+        "before": {
+          "sha256": "6879e4021463c13c52fdecf9d0de1ea440b008fc77431e5ad9a9bd7605ff7361",
+          "bytes": 4204
+        },
+        "after": {
+          "sha256": "50e38c4681aba0f0de6018624f64f7f3a684042901fc4e643c64f9227567cd3b",
+          "bytes": 4778
+        }
+      },
+      {
+        "path": "public/models/ice-ground/asset.json",
+        "before": {
+          "sha256": "666d191f2d3712c29323315bca762d821d56d1f813d4568c4f18dfa7abd7da82",
+          "bytes": 78071
+        },
+        "after": {
+          "sha256": "a23defc22a289b7f1502fa69bc521402a98f558c6dbb108491b9db689b5710fa",
+          "bytes": 78108
+        }
+      },
+      {
+        "path": "public/models/kunoichi-katana/asset.json",
+        "before": {
+          "sha256": "1d5f5b558730ffa7af2a07f3d3d766237a4e3d96617f65af8152b18c040279e0",
+          "bytes": 3421
+        },
+        "after": {
+          "sha256": "8ba011833aa6d7f0ddbb3c5704221450abd51f98628a4191ea158cd457849d77",
+          "bytes": 3789
+        }
+      },
+      {
+        "path": "public/models/mammoth-meat/asset.json",
+        "before": {
+          "sha256": "983e7f172e2f36c7c11c343ee38171b7fd020b6f7d33a1d4e160806d3925f715",
+          "bytes": 3407
+        },
+        "after": {
+          "sha256": "e721e09c2741f3702739dff18534aa5a03e15b9394e662dbeff8afd21f55ec05",
+          "bytes": 3444
+        }
+      },
+      {
+        "path": "public/models/meadow-ground/asset.json",
+        "before": {
+          "sha256": "97093a50acd8fe92c85c8650962a134a5ae59b6ca7148d28b6056d3cce346285",
+          "bytes": 75667
+        },
+        "after": {
+          "sha256": "7cd5598a264d6affc006f7baab444eb5d93c0a636d365658a0023fe28bcd3759",
+          "bytes": 75704
+        }
+      },
+      {
+        "path": "public/models/neanderthal-hunter/asset.json",
+        "before": {
+          "sha256": "320c99b9c6f578bbebee8646ab5b5732793a934b866f327d832065b0dcad3491",
+          "bytes": 20441
+        },
+        "after": {
+          "sha256": "acea928e08179fba2201f6a408119c49c21a18ff1789f94ac28e165f52998bd0",
+          "bytes": 20478
+        }
+      },
+      {
+        "path": "public/models/neanderthal-woman/asset.json",
+        "before": {
+          "sha256": "07848fe30a737dce9b3eb3eba5f4e31d345038f4b99db204f32fbff9b21cc74d",
+          "bytes": 21373
+        },
+        "after": {
+          "sha256": "9d7d6bcf90a2e84c52f05388a70980771b8e9ab5023243bf2ba87e166ac270a8",
+          "bytes": 21410
+        }
+      },
+      {
+        "path": "public/models/obsidian-blade/asset.json",
+        "before": {
+          "sha256": "b44f6dd772f55e09ba77c189acb62cd70d1625358c417c4cd7240f5fa34574b2",
+          "bytes": 3730
+        },
+        "after": {
+          "sha256": "9a3c373688cb2e15f8f613eecfefadafb926bea881bb8c843cae7996c65b1de3",
+          "bytes": 3767
+        }
+      },
+      {
+        "path": "public/models/obsidian-spear/asset.json",
+        "before": {
+          "sha256": "6f0cb35e2465ac22bf0ea2f6b73982fd276be88882b7f525efb1b0aff67ac54c",
+          "bytes": 4000
+        },
+        "after": {
+          "sha256": "f3c46f56e941ae9dc4bac10d77ef5e36dddb8b8b8b101d2344a994b2af93ca70",
+          "bytes": 4367
+        }
+      },
+      {
+        "path": "public/models/orb-bot-beret/asset.json",
+        "before": {
+          "sha256": "a04ad1d368a1a110c816066317fef289124914d76402a3ac9b38a0af0bd860d5",
+          "bytes": 6583
+        },
+        "after": {
+          "sha256": "1e3399e6bbda283be308b47c87d6309483b090ea651b6a020d8ce8e4dc87649b",
+          "bytes": 6620
+        }
+      },
+      {
+        "path": "public/models/orb-bot-blue/asset.json",
+        "before": {
+          "sha256": "791f69c5e9f6d9c94c3fe5aac49de0be138073117ab95e025f3ced6e0b006921",
+          "bytes": 6185
+        },
+        "after": {
+          "sha256": "438ccf28d38ef5a55a5dc28f49c2faaab763a84cf3c88f182f767ab485681882",
+          "bytes": 6763
+        }
+      },
+      {
+        "path": "public/models/orb-bot-frog/asset.json",
+        "before": {
+          "sha256": "59e07828cf8a5bd6aba6fa0e9875d501147d6f47af7736ba0e3d1b4e54ecc9b3",
+          "bytes": 6589
+        },
+        "after": {
+          "sha256": "dd8b8dc2988867bae7048f353288d3d8629839afdb620b060a592fed15d7ebde",
+          "bytes": 6626
+        }
+      },
+      {
+        "path": "public/models/orb-bot-green/asset.json",
+        "before": {
+          "sha256": "808d08befec63f57b34bfa3101d3037925517b8506546e0824f334f4a7bff30a",
+          "bytes": 6204
+        },
+        "after": {
+          "sha256": "9155e1dafb5d6bdb8d47b584fbeb85a9b9b28155a58b0094bb0779ebbb86480f",
+          "bytes": 6784
+        }
+      },
+      {
+        "path": "public/models/orb-bot-heart/asset.json",
+        "before": {
+          "sha256": "545fe32fdb25fe9aa0568396559dc96b45b6d049cf8be87322d377c88bbd167b",
+          "bytes": 6604
+        },
+        "after": {
+          "sha256": "78fd4e8bcf3e6507ae02f4020dde9532c4a3f3a6205ebf874d070ec21529640f",
+          "bytes": 6641
+        }
+      },
+      {
+        "path": "public/models/orb-bot-orange/asset.json",
+        "before": {
+          "sha256": "9b12b84a39805e77f9e9cfb66aa94e80d4a1cfbe58ed63485c3bbac56cd2cd55",
+          "bytes": 7218
+        },
+        "after": {
+          "sha256": "af2d598ecd249e12d857d464779e4b8090a71ecb9d169d1147ec0bd60bee9a7e",
+          "bytes": 7800
+        }
+      },
+      {
+        "path": "public/models/orb-bot-purple/asset.json",
+        "before": {
+          "sha256": "b0dd0c72e9ad47e4cc2568f0ede9493fcd4eb7aaa20da45a6595bbae4add5ef6",
+          "bytes": 6222
+        },
+        "after": {
+          "sha256": "b6df7a404ee28060ebd15746b407e9c1f964ba02c95f9554e39c661970131ba8",
+          "bytes": 6804
+        }
+      },
+      {
+        "path": "public/models/orb-bot-triangle/asset.json",
+        "before": {
+          "sha256": "f5bb3f8c13a473fb61b85170ad1ddc8c3378dceeb812c19b311799ca713c9d29",
+          "bytes": 7226
+        },
+        "after": {
+          "sha256": "b871b595ec704136b95c6b705f62e84aa887558b7aeda5ae52a8c44d913610c3",
+          "bytes": 7263
+        }
+      },
+      {
+        "path": "public/models/orb-bot-white/asset.json",
+        "before": {
+          "sha256": "7236f30332a30ef76e449594a26fa73c138ee58eb97344b930a6917d8708e6b4",
+          "bytes": 6200
+        },
+        "after": {
+          "sha256": "efbc19dfb2dfa81933f13966b5d8e9ec0082b7afe169c28de896baf0bd73d6a2",
+          "bytes": 6780
+        }
+      },
+      {
+        "path": "public/models/rimo-neko/asset.json",
+        "before": {
+          "sha256": "ada862830e696cc3ff72ca4d8238380d8cc2cb174eb049429c86a35ae23ca11f",
+          "bytes": 7766
+        },
+        "after": {
+          "sha256": "1f0c0d92b52e48f14baff70d200439a59935d0032f4cd122c57bc10b573968c9",
+          "bytes": 7803
+        }
+      },
+      {
+        "path": "public/models/river-water/asset.json",
+        "before": {
+          "sha256": "4a128481ebd0252d170d0279e0c7ee4ee3fece55c8eae638741fe3f9ea081980",
+          "bytes": 1959
+        },
+        "after": {
+          "sha256": "f14e5a4a78f1b1693d56a10316484881d0e0f20458ae1e16d51ee3d5503f7618",
+          "bytes": 1996
+        }
+      },
+      {
+        "path": "public/models/sabertooth-tiger/asset.json",
+        "before": {
+          "sha256": "9a95727a629d7beb5ec71f78fd952336e773b80cd0a17c41b7cbd1b38e0c5f31",
+          "bytes": 6231
+        },
+        "after": {
+          "sha256": "8079129bf3d42ac3b7f298d8487305d18b4ba9f3d9b4ebaffed0cf3edd1c6b03",
+          "bytes": 6268
+        }
+      },
+      {
+        "path": "public/models/shell-midden/asset.json",
+        "before": {
+          "sha256": "2f02694bd27f646498a8c094e746d8bfb27e7419da2c0ac9ed5dee0b039c61b0",
+          "bytes": 3372
+        },
+        "after": {
+          "sha256": "34149d055c453e203113968d7379427c8a11cd5367ebd28cbb365c8d566cef8c",
+          "bytes": 3409
+        }
+      },
+      {
+        "path": "public/models/snow-ground/asset.json",
+        "before": {
+          "sha256": "3edf838d55eafb441b0aa72eecb6a30503621263e6205c5239031baf02b4bf48",
+          "bytes": 81834
+        },
+        "after": {
+          "sha256": "1022a79c5bf9d11b1225ae25ac367125f86157bad724027be43c37e93ce4bfa5",
+          "bytes": 81871
+        }
+      },
+      {
+        "path": "public/models/stone-axe/asset.json",
+        "before": {
+          "sha256": "0c9a8ba7f8cbd300ebbc3fe5b3ecdb680b2a6a4447cae0d9797ffcf038f54553",
+          "bytes": 3567
+        },
+        "after": {
+          "sha256": "53aa73dda8f52c7c44cdbe3dc403001fc384d785fcb10c74f98654e099006c83",
+          "bytes": 3929
+        }
+      },
+      {
+        "path": "public/models/stone-firepit/asset.json",
+        "before": {
+          "sha256": "36760567891bb17c8509cc5f0c97d8d227e4bf48fdb165882887a0a15960143f",
+          "bytes": 3945
+        },
+        "after": {
+          "sha256": "1aa2922aed09b1567cc7a5043de5b26963eeba78af02e49b3e19bbc2737d8fdc",
+          "bytes": 4526
+        }
+      },
+      {
+        "path": "public/models/valley-boulder/asset.json",
+        "before": {
+          "sha256": "600de3a211adefcb0de1819185f06acc1554379493e0a5c8cd4a428cf85379ef",
+          "bytes": 3981
+        },
+        "after": {
+          "sha256": "d4e2e3ee6726923117b2cacab3131b46972239c90bee566168741a656ee29f22",
+          "bytes": 4564
+        }
+      },
+      {
+        "path": "public/models/valley-castle/asset.json",
+        "before": {
+          "sha256": "dd747f5f01c6dd96941159c30c0def2ec2f0da467c010a707fd549fcbff139b4",
+          "bytes": 4475
+        },
+        "after": {
+          "sha256": "cbbaf3f10479a5c933d99052732889333d3619a48ef38677fb68aea103f24750",
+          "bytes": 4512
+        }
+      },
+      {
+        "path": "public/models/valley-pine/asset.json",
+        "before": {
+          "sha256": "939a7c9d7812c98d76a1cef5c29e0f3442d13385ec69c02ee296de0f490dbf0d",
+          "bytes": 5308
+        },
+        "after": {
+          "sha256": "16810fb58e3ad7862e77b6efe98f0533224f4df9877c456d7d0216934e2eaddf",
+          "bytes": 5886
+        }
+      },
+      {
+        "path": "public/models/violet-behemoth/asset.json",
+        "before": {
+          "sha256": "a333dbc832622d29bc32a3ef779139de9747ece3a7c0be5c533bb611799b021b",
+          "bytes": 6403
+        },
+        "after": {
+          "sha256": "9fc905ba2c3c7b839763d1a8bbb050a0f0b32bf3cd393c98082a71bea5a23a6b",
+          "bytes": 6440
+        }
+      },
+      {
+        "path": "public/models/volcanic-basalt-columns/asset.json",
+        "before": {
+          "sha256": "ce5077a135d0cc528e0bbc49efcfe99d5eef78ebd52d9ee44e36e9ff895c3dd0",
+          "bytes": 4254
+        },
+        "after": {
+          "sha256": "4ac85a9e68eacbdb65806f8497b17ef2b3289f3f9695318fe5356a3eb780e746",
+          "bytes": 4291
+        }
+      },
+      {
+        "path": "public/models/volcanic-cone/asset.json",
+        "before": {
+          "sha256": "46655f02608124be8314ad61a93f8d354d618b4f221bdecc13a70e839b6f6bb5",
+          "bytes": 3616
+        },
+        "after": {
+          "sha256": "ee5609cea969b58408a80823c9058a8e883c3ded23d0310c7d7bfc782f83562e",
+          "bytes": 3653
+        }
+      },
+      {
+        "path": "public/models/volcanic-ground/asset.json",
+        "before": {
+          "sha256": "12bb6dbd4b77c91c29c0aa4e7e1b249709263d8e39dc6c392bb0a1faef0811dd",
+          "bytes": 80807
+        },
+        "after": {
+          "sha256": "e1a772b856c9fa014f3f0e01b3c83b4d629c0195494d50aab3a7c41dfa0b0095",
+          "bytes": 80844
+        }
+      },
+      {
+        "path": "public/models/wood-footbridge/asset.json",
+        "before": {
+          "sha256": "190aca33f35bc49a187a29e195fd72344ade482e8fd137bfaa2307e9134f8318",
+          "bytes": 4333
+        },
+        "after": {
+          "sha256": "ae161cdd6489fb831d6dff8ad53c99193e81fef9b4424df04b8497981901f0c9",
+          "bytes": 4918
+        }
+      },
+      {
+        "path": "public/models/wooden-spear/asset.json",
+        "before": {
+          "sha256": "834ef255bfdae05dba90577a77fa9e2c023ee8fd268bd99f2341f2b9efab30c1",
+          "bytes": 4121
+        },
+        "after": {
+          "sha256": "43f99d2ac8fca48674caf3d215f5a7b7bca0dc894175262b3e49e131ce040831",
+          "bytes": 4486
+        }
+      },
+      {
+        "path": "public/models/woolly-mammoth/asset.json",
+        "before": {
+          "sha256": "dc3248a182df5842e84cd19d343fe4856f153eac4d37678144817008e2d948d1",
+          "bytes": 9336
+        },
+        "after": {
+          "sha256": "3eceb1de19c04b3469c889f227df86a2e0391417c0afdd64535fcd0ff6d04d97",
+          "bytes": 9373
+        }
+      },
+      {
+        "path": "public/models/yellow-524-mascot/asset.json",
+        "before": {
+          "sha256": "9f7866bd0f661fa786a849da930d5742b028597980151c5265bd3b88e05990b1",
+          "bytes": 4685
+        },
+        "after": {
+          "sha256": "725dcabc09ee0690a3a9889164c2f2eed82aec50a899747058adee886b1a13a7",
+          "bytes": 4722
+        }
+      }
+    ]
+  },
+  "policy": {
+    "recipe": "the files the base serves, repacked without changing a decoded value: lossless PNG IDAT rewrites (strictly smaller only) and multi-scene packing of the listed templates; no geometry, image format, size or quality change; non-PNG images and every other stored byte verbatim",
+    "png": {
+      "level": 9,
+      "windowBits": 15,
+      "strategies": [
+        "DEFAULT",
+        "FILTERED",
+        "RLE",
+        "FIXED"
+      ],
+      "memLevels": [
+        9,
+        8
+      ],
+      "zlib": "1.3.1-e00f703"
+    },
+    "packing": "one GLB per listed template, scene i is level i; per-level nodes, meshes, materials, textures and samplers; identical image views stored once; samplers shared only where Three would share one Texture with one colour space",
+    "unchanged": "a model with no changed PNG and no packing keeps its served file; an image whose rewrite is not smaller keeps its served file"
+  },
+  "inputs": {
+    "manifests": [
+      {
+        "path": "public/models/world-assets.json",
+        "sha256": "71bb8e3e45dd54ea971b0b5865c31a549066e20da9311e474f973eb7c31c229e"
+      },
+      {
+        "path": "public/models/bear-mage/asset.json",
+        "sha256": "4719b6aa34a1ec616c09b0cb73a96bc816f33d75492d16c3ee4ebda225884c1c"
+      },
+      {
+        "path": "public/models/berry-bush/asset.json",
+        "sha256": "66be3fea971103d8f21ba621555a2516e61ffb817a462df1e2d40ff58b539a15"
+      },
+      {
+        "path": "public/models/berry-cluster/asset.json",
+        "sha256": "fa0f38189d5c21147b374e9c723883f3dbc58c6b4d85aa5d4a08cd30088b659e"
+      },
+      {
+        "path": "public/models/camp-cave/asset.json",
+        "sha256": "76dd0497c63a42430b735a51893774ecd88cba2008cf4697298b43194c4a889f"
+      },
+      {
+        "path": "public/models/camp-mountain/asset.json",
+        "sha256": "a6ace86b9c1358b3249c8e4a5e2bbeac07f9645c9e092ce0069e038056b9a8a2"
+      },
+      {
+        "path": "public/models/cat-kunoichi/asset.json",
+        "sha256": "f72bef2e7552bbbdb2be241ed6e6d7eb517787acc2eda0ebaedd398efa5fe22e"
+      },
+      {
+        "path": "public/models/cockle-shell/asset.json",
+        "sha256": "d3092759ded24374186be554536d35f064ad5b0ce2ada9698187db14f8e5f006"
+      },
+      {
+        "path": "public/models/cro-magnon-hunter/asset.json",
+        "sha256": "0aee6e382341e3c6e3b143df113767153de383fd359a0158695b1d1536694e29"
+      },
+      {
+        "path": "public/models/cro-magnon-woman/asset.json",
+        "sha256": "ef336153b83c621e13cdefd5d85079f44ce203394a02a706ea7caaca21114f60"
+      },
+      {
+        "path": "public/models/crow-bone-pauldrons/asset.json",
+        "sha256": "36418bb1d7b921b1be3a64724b731d4370f741b61d76031b826d8353660e4481"
+      },
+      {
+        "path": "public/models/crow-brute-axe/asset.json",
+        "sha256": "31c7915f9cf4ef42753ca7cf260b20fb23fd440a758c23c2993bf33435177324"
+      },
+      {
+        "path": "public/models/crow-hide-shield/asset.json",
+        "sha256": "c496c2db12af1652532ea2a7a02d014c405acb2837cd9e4b422854706857d0e7"
+      },
+      {
+        "path": "public/models/crow-ivory-vestment/asset.json",
+        "sha256": "61efd45f3bb8b1722d2f64cc715e999606cb7b22f371ce8c8050fc515d286583"
+      },
+      {
+        "path": "public/models/crow-pontiff-crown/asset.json",
+        "sha256": "0d228468bd64c122fae8de77e3454310bf0921d2bb993c8f8b1d74f420ada980"
+      },
+      {
+        "path": "public/models/crow-pontiff-crozier/asset.json",
+        "sha256": "3b19fe01b65a5116151171852cf49b2e782e57c57536b4d61fd090dc1604902d"
+      },
+      {
+        "path": "public/models/crow-prelate-glaive/asset.json",
+        "sha256": "9be3e87ad13f63c2a2b25a04fe5b4f6efd0c98759c7d582e3fd05b22df24b8eb"
+      },
+      {
+        "path": "public/models/crow-red-mantle/asset.json",
+        "sha256": "4cdf90edf707b01a76f49323797ccb95630b869d18cb0143ff7c6e1c2b8f0f40"
+      },
+      {
+        "path": "public/models/crow-shaman/asset.json",
+        "sha256": "f7ee95f6cb311b9aecf8e12a7f1b2df2711db9560c883588b944537b71e21fcd"
+      },
+      {
+        "path": "public/models/crow-soldier-spear/asset.json",
+        "sha256": "0b27adb13317469ec2a1f2199b71c328cc945c6ef58309d0e1672c01589118ee"
+      },
+      {
+        "path": "public/models/desert-cactus/asset.json",
+        "sha256": "29ce05ba4aa32f6ce863a3ad32ca81258ee791fa59bb343a972ef783bdec0f9f"
+      },
+      {
+        "path": "public/models/desert-fennec-mage/asset.json",
+        "sha256": "e14eb77703f27571efe9fec716d0a176fd7eed123a2a4543b38ae60a6c76a825"
+      },
+      {
+        "path": "public/models/desert-ground/asset.json",
+        "sha256": "24467713836e54ea9782ee5bed238d4d5b95943786bcf765af4fcd0ed3299d0e"
+      },
+      {
+        "path": "public/models/drying-rack/asset.json",
+        "sha256": "ac12858b007834571cd585c815315afae58fbefa99a8dc203460992a71c3ba1b"
+      },
+      {
+        "path": "public/models/dugout-canoe/asset.json",
+        "sha256": "50591dfe0620e597c3757510251e79f2493cf96c3a50f17c6b97f6b942f95c6a"
+      },
+      {
+        "path": "public/models/fairy-mascot/asset.json",
+        "sha256": "2c128e58509c7a1faa03d947d47d9f5f2673064d74be5516100093673d5ae6f0"
+      },
+      {
+        "path": "public/models/firewood-log/asset.json",
+        "sha256": "175b1afcd0940961433af0228dbfe15fd7a44b6d31ba18103edd7b7a0ce9242e"
+      },
+      {
+        "path": "public/models/firewood-pile/asset.json",
+        "sha256": "c50412a70f755457264cf56146b0a198edc890596464555be7c1dd7b814e4545"
+      },
+      {
+        "path": "public/models/flint-spear/asset.json",
+        "sha256": "51f3baec841dddbcae5cdfdeadb75cfd9de43643c72e8e8eb28e85bd8fa7bdf9"
+      },
+      {
+        "path": "public/models/floppy-ear-mage/asset.json",
+        "sha256": "93d86012479ae5b7dc81167d178b87f1a3f58cd58f62cf5544f623a3dbd27276"
+      },
+      {
+        "path": "public/models/giant-ape/asset.json",
+        "sha256": "71d97f93bc7b0ac1d50c622c4e4cb6773e6de3edf26988e1795ae126b6af6562"
+      },
+      {
+        "path": "public/models/glacier-spires/asset.json",
+        "sha256": "eefc662cd6bc47c6f23cb54f0ba555242311658f3743573be6e386ecad4f7e50"
+      },
+      {
+        "path": "public/models/hide-tent/asset.json",
+        "sha256": "50e38c4681aba0f0de6018624f64f7f3a684042901fc4e643c64f9227567cd3b"
+      },
+      {
+        "path": "public/models/howkey-flask/asset.json",
+        "sha256": "2c70a4fc29f86ff3a2445991b88a9b1b781c82efeec8c4f54df2359dca4db401"
+      },
+      {
+        "path": "public/models/howkey-scientist/asset.json",
+        "sha256": "5cb346870e760599e63c1a42a7aee25cc4a1d488436c64d071ba54c9209bb904"
+      },
+      {
+        "path": "public/models/ice-ground/asset.json",
+        "sha256": "a23defc22a289b7f1502fa69bc521402a98f558c6dbb108491b9db689b5710fa"
+      },
+      {
+        "path": "public/models/kohaku/asset.json",
+        "sha256": "34d52f6ae1c7ba1158a89fbe2a9e97847276929f4d67795139520cc09aa1279c"
+      },
+      {
+        "path": "public/models/kunoichi-katana/asset.json",
+        "sha256": "8ba011833aa6d7f0ddbb3c5704221450abd51f98628a4191ea158cd457849d77"
+      },
+      {
+        "path": "public/models/mae/asset.json",
+        "sha256": "fcd6e4e352948c2d88f1c704b2243bd30c14853197b25023868badf52ff7ff45"
+      },
+      {
+        "path": "public/models/mammoth-meat/asset.json",
+        "sha256": "e721e09c2741f3702739dff18534aa5a03e15b9394e662dbeff8afd21f55ec05"
+      },
+      {
+        "path": "public/models/maruimo-mascot/asset.json",
+        "sha256": "70d71140c412316808f48177b3cc170e185551cf13286d2c1e0bb20a700418ae"
+      },
+      {
+        "path": "public/models/maruimo-octopus/asset.json",
+        "sha256": "2a3ec6130f07a252717fc7eaabaaaa61e6a8bef1155e97eebfda42f7e53dc5da"
+      },
+      {
+        "path": "public/models/meadow-grass/asset.json",
+        "sha256": "4017d57e0ff2e55b48746abf8e578f9366e0a6615978432afa0c790cb9dcf99b"
+      },
+      {
+        "path": "public/models/meadow-ground/asset.json",
+        "sha256": "7cd5598a264d6affc006f7baab444eb5d93c0a636d365658a0023fe28bcd3759"
+      },
+      {
+        "path": "public/models/meadow-sprig/asset.json",
+        "sha256": "7672a8fa69f27ccce25272ead64bf7e299bf4b220dc1ffeeeb29c0d725645e91"
+      },
+      {
+        "path": "public/models/neanderthal-hunter/asset.json",
+        "sha256": "acea928e08179fba2201f6a408119c49c21a18ff1789f94ac28e165f52998bd0"
+      },
+      {
+        "path": "public/models/neanderthal-woman/asset.json",
+        "sha256": "9d7d6bcf90a2e84c52f05388a70980771b8e9ab5023243bf2ba87e166ac270a8"
+      },
+      {
+        "path": "public/models/nukonuko-mascot/asset.json",
+        "sha256": "5f1c8c2b0fe8ef63f33fd9273f5dc98bebc3c5f488c5c739e0888b9c595ea701"
+      },
+      {
+        "path": "public/models/obsidian-blade/asset.json",
+        "sha256": "9a3c373688cb2e15f8f613eecfefadafb926bea881bb8c843cae7996c65b1de3"
+      },
+      {
+        "path": "public/models/obsidian-spear/asset.json",
+        "sha256": "f3c46f56e941ae9dc4bac10d77ef5e36dddb8b8b8b101d2344a994b2af93ca70"
+      },
+      {
+        "path": "public/models/orb-bot-beret/asset.json",
+        "sha256": "1e3399e6bbda283be308b47c87d6309483b090ea651b6a020d8ce8e4dc87649b"
+      },
+      {
+        "path": "public/models/orb-bot-blue/asset.json",
+        "sha256": "438ccf28d38ef5a55a5dc28f49c2faaab763a84cf3c88f182f767ab485681882"
+      },
+      {
+        "path": "public/models/orb-bot-frog/asset.json",
+        "sha256": "dd8b8dc2988867bae7048f353288d3d8629839afdb620b060a592fed15d7ebde"
+      },
+      {
+        "path": "public/models/orb-bot-green/asset.json",
+        "sha256": "9155e1dafb5d6bdb8d47b584fbeb85a9b9b28155a58b0094bb0779ebbb86480f"
+      },
+      {
+        "path": "public/models/orb-bot-heart/asset.json",
+        "sha256": "78fd4e8bcf3e6507ae02f4020dde9532c4a3f3a6205ebf874d070ec21529640f"
+      },
+      {
+        "path": "public/models/orb-bot-orange/asset.json",
+        "sha256": "af2d598ecd249e12d857d464779e4b8090a71ecb9d169d1147ec0bd60bee9a7e"
+      },
+      {
+        "path": "public/models/orb-bot-purple/asset.json",
+        "sha256": "b6df7a404ee28060ebd15746b407e9c1f964ba02c95f9554e39c661970131ba8"
+      },
+      {
+        "path": "public/models/orb-bot-triangle/asset.json",
+        "sha256": "b871b595ec704136b95c6b705f62e84aa887558b7aeda5ae52a8c44d913610c3"
+      },
+      {
+        "path": "public/models/orb-bot-white/asset.json",
+        "sha256": "efbc19dfb2dfa81933f13966b5d8e9ec0082b7afe169c28de896baf0bd73d6a2"
+      },
+      {
+        "path": "public/models/otani-mascot/asset.json",
+        "sha256": "1a8b85f51ecec64521bc8b83db1ac104be21f111017c7dd73cca518fe645c7c1"
+      },
+      {
+        "path": "public/models/rei-mascot/asset.json",
+        "sha256": "163a26d930ca024695a3a66012dd03f647c33612b35b6ea4a083bb7360fae5a2"
+      },
+      {
+        "path": "public/models/rimo-neko/asset.json",
+        "sha256": "1f0c0d92b52e48f14baff70d200439a59935d0032f4cd122c57bc10b573968c9"
+      },
+      {
+        "path": "public/models/river-water/asset.json",
+        "sha256": "f14e5a4a78f1b1693d56a10316484881d0e0f20458ae1e16d51ee3d5503f7618"
+      },
+      {
+        "path": "public/models/saber-mascot/asset.json",
+        "sha256": "0d51e521869bff9cca3113012c15660ec6a16ee08a43b3db9f8135bf8f1dbfe4"
+      },
+      {
+        "path": "public/models/sabertooth-tiger/asset.json",
+        "sha256": "8079129bf3d42ac3b7f298d8487305d18b4ba9f3d9b4ebaffed0cf3edd1c6b03"
+      },
+      {
+        "path": "public/models/sagasa-mascot/asset.json",
+        "sha256": "10fb1f3bef426ef5036247f845827aeeadccbec43e87e997979b878ca2d2059f"
+      },
+      {
+        "path": "public/models/shell-midden/asset.json",
+        "sha256": "34149d055c453e203113968d7379427c8a11cd5367ebd28cbb365c8d566cef8c"
+      },
+      {
+        "path": "public/models/snow-ground/asset.json",
+        "sha256": "1022a79c5bf9d11b1225ae25ac367125f86157bad724027be43c37e93ce4bfa5"
+      },
+      {
+        "path": "public/models/stone-axe/asset.json",
+        "sha256": "53aa73dda8f52c7c44cdbe3dc403001fc384d785fcb10c74f98654e099006c83"
+      },
+      {
+        "path": "public/models/stone-firepit/asset.json",
+        "sha256": "1aa2922aed09b1567cc7a5043de5b26963eeba78af02e49b3e19bbc2737d8fdc"
+      },
+      {
+        "path": "public/models/urata-mascot/asset.json",
+        "sha256": "0c24216ecff9f049b83e79a6b4ca5cc31a3a4ae960572f543e17edb6bd982fac"
+      },
+      {
+        "path": "public/models/valley-boulder/asset.json",
+        "sha256": "d4e2e3ee6726923117b2cacab3131b46972239c90bee566168741a656ee29f22"
+      },
+      {
+        "path": "public/models/valley-castle/asset.json",
+        "sha256": "cbbaf3f10479a5c933d99052732889333d3619a48ef38677fb68aea103f24750"
+      },
+      {
+        "path": "public/models/valley-pine/asset.json",
+        "sha256": "16810fb58e3ad7862e77b6efe98f0533224f4df9877c456d7d0216934e2eaddf"
+      },
+      {
+        "path": "public/models/violet-behemoth/asset.json",
+        "sha256": "9fc905ba2c3c7b839763d1a8bbb050a0f0b32bf3cd393c98082a71bea5a23a6b"
+      },
+      {
+        "path": "public/models/volcanic-basalt-columns/asset.json",
+        "sha256": "4ac85a9e68eacbdb65806f8497b17ef2b3289f3f9695318fe5356a3eb780e746"
+      },
+      {
+        "path": "public/models/volcanic-cone/asset.json",
+        "sha256": "ee5609cea969b58408a80823c9058a8e883c3ded23d0310c7d7bfc782f83562e"
+      },
+      {
+        "path": "public/models/volcanic-ground/asset.json",
+        "sha256": "e1a772b856c9fa014f3f0e01b3c83b4d629c0195494d50aab3a7c41dfa0b0095"
+      },
+      {
+        "path": "public/models/wood-footbridge/asset.json",
+        "sha256": "ae161cdd6489fb831d6dff8ad53c99193e81fef9b4424df04b8497981901f0c9"
+      },
+      {
+        "path": "public/models/wooden-spear/asset.json",
+        "sha256": "43f99d2ac8fca48674caf3d215f5a7b7bca0dc894175262b3e49e131ce040831"
+      },
+      {
+        "path": "public/models/woolly-mammoth/asset.json",
+        "sha256": "3eceb1de19c04b3469c889f227df86a2e0391417c0afdd64535fcd0ff6d04d97"
+      },
+      {
+        "path": "public/models/yellow-524-mascot/asset.json",
+        "sha256": "725dcabc09ee0690a3a9889164c2f2eed82aec50a899747058adee886b1a13a7"
+      }
+    ]
+  },
+  "toolchain": {
+    "node": "v24.15.0",
+    "zlib": "1.3.1-e00f703",
+    "meshoptimizer": "1.1.1"
+  },
+  "models": [
+    {
+      "modelKey": "snow-ground",
+      "packed": true,
+      "levels": [
+        {
+          "level": 0,
+          "url": "/models/snow-ground/model.opt-152de77614b9dff4.glb",
+          "sha256": "152de77614b9dff44669952e04618aa2ed23c1f3ac1ccfb9f898e44b5bb9b88f",
+          "bytes": 2557764,
+          "triangles": 5903
+        },
+        {
+          "level": 1,
+          "url": "/models/snow-ground/lod1.opt-9bc89f21b3b4edc6.glb",
+          "sha256": "9bc89f21b3b4edc6c442202a3ae44927183910cc79ebae94b455f19eb9d1e446",
+          "bytes": 2433372,
+          "triangles": 825
+        },
+        {
+          "level": 2,
+          "url": "/models/snow-ground/lod2.opt-41be00def31a39f4.glb",
+          "sha256": "41be00def31a39f4551d1a8f5fb0e8742886e206ff8b8d84ecb3a2a558f9a292",
+          "bytes": 2413924,
+          "triangles": 203
+        }
+      ],
+      "output": "/models/snow-ground/model-levels.opt-88ef8ee88da3c0bb.glb"
+    },
+    {
+      "modelKey": "camp-mountain",
+      "packed": true,
+      "levels": [
+        {
+          "level": 0,
+          "url": "/models/camp-mountain/model-r15.opt-ee6b106610ff88a4.glb",
+          "sha256": "ee6b106610ff88a46540c500341e905980f5ccb0dc7d224efd8b7f87e5085f45",
+          "bytes": 4427636,
+          "triangles": 245000
+        },
+        {
+          "level": 1,
+          "url": "/models/camp-mountain/lod-performance.opt-4d25b780075a2bbe.glb",
+          "sha256": "4d25b780075a2bbedf441f108ae9d4172b51c759dc10efadb5a1475d3791eb26",
+          "bytes": 2449664,
+          "triangles": 24499
+        }
+      ],
+      "output": "/models/camp-mountain/model-levels.opt-7c5f3f0733a148f0.glb"
+    },
+    {
+      "modelKey": "meadow-ground",
+      "packed": false,
+      "levels": [
+        {
+          "level": 0,
+          "url": "/models/meadow-ground/model.opt-b2df848b39f6d60e.glb",
+          "sha256": "b2df848b39f6d60e5679ff69067278878e4cd4b87158320395f57e41bc805876",
+          "bytes": 2105700,
+          "triangles": 2720
+        }
+      ],
+      "output": "/models/meadow-ground/model.opt-713b02ae14e35fd0.glb"
+    },
+    {
+      "modelKey": "river-water",
+      "packed": false,
+      "levels": [
+        {
+          "level": 0,
+          "url": "/models/river-water/model.opt-47cb975f8278144b.glb",
+          "sha256": "47cb975f8278144bd17d1c8513e1688b2f218d37ea4825b5baa47f9b31fa4534",
+          "bytes": 1888804,
+          "triangles": 2693
+        }
+      ],
+      "output": "/models/river-water/model.opt-2fa2f55fb0135409.glb"
+    }
+  ],
+  "files": [
+    {
+      "id": "model:snow-ground",
+      "role": "packed-levels",
+      "status": "candidate-pending-visual-qa",
+      "modelKey": "snow-ground",
+      "uses": [
+        {
+          "modelKey": "snow-ground",
+          "role": "model",
+          "lodIndex": null
+        },
+        {
+          "modelKey": "snow-ground",
+          "role": "lod",
+          "lodIndex": 0
+        },
+        {
+          "modelKey": "snow-ground",
+          "role": "lod",
+          "lodIndex": 1
+        }
+      ],
+      "source": {
+        "levels": [
+          {
+            "level": 0,
+            "url": "/models/snow-ground/model.opt-152de77614b9dff4.glb",
+            "sha256": "152de77614b9dff44669952e04618aa2ed23c1f3ac1ccfb9f898e44b5bb9b88f",
+            "bytes": 2557764,
+            "triangles": 5903,
+            "original": {
+              "url": "/models/snow-ground/model.glb",
+              "sha256": "ddf7037c1cd52801d7c5f1a71492c496d7885f407372edb275e445ce0e009f44",
+              "bytes": 3092188
+            }
+          },
+          {
+            "level": 1,
+            "url": "/models/snow-ground/lod1.opt-9bc89f21b3b4edc6.glb",
+            "sha256": "9bc89f21b3b4edc6c442202a3ae44927183910cc79ebae94b455f19eb9d1e446",
+            "bytes": 2433372,
+            "triangles": 825,
+            "original": {
+              "url": "/models/snow-ground/lod1.glb",
+              "sha256": "e822a8dd99fb95c3589b161a5ac95a931a7bb04edff30d8571ea8973a34fb412",
+              "bytes": 2907308
+            }
+          },
+          {
+            "level": 2,
+            "url": "/models/snow-ground/lod2.opt-41be00def31a39f4.glb",
+            "sha256": "41be00def31a39f4551d1a8f5fb0e8742886e206ff8b8d84ecb3a2a558f9a292",
+            "bytes": 2413924,
+            "triangles": 203,
+            "original": {
+              "url": "/models/snow-ground/lod2.glb",
+              "sha256": "8173f329c3fef54d0cf60cbfc61b5e9326bec395d9a002d6c118eb8fcd70fad3",
+              "bytes": 2877800
+            }
+          }
+        ]
+      },
+      "output": {
+        "file": "models/snow-ground/model-levels.opt-88ef8ee88da3c0bb.glb",
+        "url": "/models/snow-ground/model-levels.opt-88ef8ee88da3c0bb.glb",
+        "sha256": "88ef8ee88da3c0bb6522514300cc645c6bafb4d8d87c6667be81f346333e80be",
+        "bytes": 2343840,
+        "packed": true,
+        "scenes": [
+          {
+            "scene": 0,
+            "level": 0,
+            "triangles": 5903
+          },
+          {
+            "scene": 1,
+            "level": 1,
+            "triangles": 825
+          },
+          {
+            "scene": 2,
+            "level": 2,
+            "triangles": 203
+          }
+        ],
+        "triangles": 5903,
+        "extensionsUsed": [
+          "EXT_meshopt_compression"
+        ],
+        "extensionsRequired": [
+          "EXT_meshopt_compression"
+        ]
+      },
+      "images": [
+        {
+          "level": 0,
+          "image": 0,
+          "sha256": "d0ac3101f080411702dd9ddb70aa4c3ae9f15f0337edd160c3d4fa7377a58dcc",
+          "bytes": 1472448,
+          "rewrite": {
+            "sha256": "1036f029d6bcd8631fcc0ec3a5705851ae86fd311a70340c311a468de3a9a859",
+            "bytes": 1217859
+          }
+        },
+        {
+          "level": 0,
+          "image": 1,
+          "sha256": "f8129f38e7a4202a51131b4eb31256fb54b90a0ecf4c001a95a2e12839f184d6",
+          "bytes": 930366,
+          "rewrite": null
+        },
+        {
+          "level": 1,
+          "image": 0,
+          "sha256": "d0ac3101f080411702dd9ddb70aa4c3ae9f15f0337edd160c3d4fa7377a58dcc",
+          "bytes": 1472448,
+          "rewrite": {
+            "sha256": "1036f029d6bcd8631fcc0ec3a5705851ae86fd311a70340c311a468de3a9a859",
+            "bytes": 1217859
+          }
+        },
+        {
+          "level": 1,
+          "image": 1,
+          "sha256": "f8129f38e7a4202a51131b4eb31256fb54b90a0ecf4c001a95a2e12839f184d6",
+          "bytes": 930366,
+          "rewrite": null
+        },
+        {
+          "level": 2,
+          "image": 0,
+          "sha256": "d0ac3101f080411702dd9ddb70aa4c3ae9f15f0337edd160c3d4fa7377a58dcc",
+          "bytes": 1472448,
+          "rewrite": {
+            "sha256": "1036f029d6bcd8631fcc0ec3a5705851ae86fd311a70340c311a468de3a9a859",
+            "bytes": 1217859
+          }
+        },
+        {
+          "level": 2,
+          "image": 1,
+          "sha256": "f8129f38e7a4202a51131b4eb31256fb54b90a0ecf4c001a95a2e12839f184d6",
+          "bytes": 930366,
+          "rewrite": null
+        }
+      ],
+      "packing": {
+        "deduplicatedImageViews": [
+          {
+            "level": 1,
+            "sourceView": 4,
+            "intoView": 4,
+            "bytes": 1217859,
+            "sha256": "1036f029d6bcd8631fcc0ec3a5705851ae86fd311a70340c311a468de3a9a859",
+            "mimeType": "image/png"
+          },
+          {
+            "level": 1,
+            "sourceView": 9,
+            "intoView": 9,
+            "bytes": 930366,
+            "sha256": "f8129f38e7a4202a51131b4eb31256fb54b90a0ecf4c001a95a2e12839f184d6",
+            "mimeType": "image/png"
+          },
+          {
+            "level": 2,
+            "sourceView": 4,
+            "intoView": 4,
+            "bytes": 1217859,
+            "sha256": "1036f029d6bcd8631fcc0ec3a5705851ae86fd311a70340c311a468de3a9a859",
+            "mimeType": "image/png"
+          },
+          {
+            "level": 2,
+            "sourceView": 9,
+            "intoView": 9,
+            "bytes": 930366,
+            "sha256": "f8129f38e7a4202a51131b4eb31256fb54b90a0ecf4c001a95a2e12839f184d6",
+            "mimeType": "image/png"
+          }
+        ],
+        "notDeduplicated": [],
+        "textureSharing": {
+          "groups": [
+            {
+              "view": 4,
+              "textures": [
+                0,
+                2,
+                4
+              ],
+              "levels": [
+                0,
+                1,
+                2
+              ],
+              "colorSpaces": [
+                "srgb"
+              ],
+              "shared": true,
+              "sampler": 0,
+              "reason": "equal sampler, one colour space: one Three texture"
+            },
+            {
+              "view": 9,
+              "textures": [
+                1,
+                3,
+                5
+              ],
+              "levels": [
+                0,
+                1,
+                2
+              ],
+              "colorSpaces": [
+                "srgb"
+              ],
+              "shared": true,
+              "sampler": 1,
+              "reason": "equal sampler, one colour space: one Three texture"
+            }
+          ],
+          "unreferencedSamplers": [
+            2,
+            3,
+            4,
+            5
+          ]
+        },
+        "differingRootMetadata": [],
+        "droppedBufferMetadata": []
+      },
+      "verification": {
+        "status": "passed",
+        "scenes": [
+          {
+            "scene": 0,
+            "triangles": 5903,
+            "canonicalSha256": "a29bf7c791324ece21360e159efc3c511289fc0abc26ed32490be8c96cb6349e"
+          },
+          {
+            "scene": 1,
+            "triangles": 825,
+            "canonicalSha256": "e69a69a3de088409eea279b953a427685d49d832661096cfa5ab4c21f6b4afb0"
+          },
+          {
+            "scene": 2,
+            "triangles": 203,
+            "canonicalSha256": "8c5e40f59f3a96d579072bc124bf4ee3e07e01a4d4f67ba89c10a1107c24010a"
+          }
+        ],
+        "sharedTextureGroups": 2,
+        "threeFileWideRenames": 5,
+        "compressedViews": 23
+      },
+      "knownRisks": [
+        "One file serves every level: the runtime must select scene i for level i, as the packed-level contract defines. Native per-level review is still required."
+      ]
+    },
+    {
+      "id": "model:camp-mountain",
+      "role": "packed-levels",
+      "status": "candidate-pending-visual-qa",
+      "modelKey": "camp-mountain",
+      "uses": [
+        {
+          "modelKey": "camp-mountain",
+          "role": "model",
+          "lodIndex": null
+        },
+        {
+          "modelKey": "camp-mountain",
+          "role": "lod",
+          "lodIndex": 0
+        }
+      ],
+      "source": {
+        "levels": [
+          {
+            "level": 0,
+            "url": "/models/camp-mountain/model-r15.opt-ee6b106610ff88a4.glb",
+            "sha256": "ee6b106610ff88a46540c500341e905980f5ccb0dc7d224efd8b7f87e5085f45",
+            "bytes": 4427636,
+            "triangles": 245000,
+            "original": {
+              "url": "/models/camp-mountain/model-r15.glb",
+              "sha256": "193127fbde284f036864996060cb3b85578ab7a595384151dad858e569eb9202",
+              "bytes": 8929000
+            }
+          },
+          {
+            "level": 1,
+            "url": "/models/camp-mountain/lod-performance.opt-4d25b780075a2bbe.glb",
+            "sha256": "4d25b780075a2bbedf441f108ae9d4172b51c759dc10efadb5a1475d3791eb26",
+            "bytes": 2449664,
+            "triangles": 24499,
+            "original": {
+              "url": "/models/camp-mountain/lod-performance.glb",
+              "sha256": "6d4db4974cd16bd7ccc8ad53a199197ada18166dba1d3aae116f98c526496b2d",
+              "bytes": 2596720
+            }
+          }
+        ]
+      },
+      "output": {
+        "file": "models/camp-mountain/model-levels.opt-7c5f3f0733a148f0.glb",
+        "url": "/models/camp-mountain/model-levels.opt-7c5f3f0733a148f0.glb",
+        "sha256": "7c5f3f0733a148f070bfa077d404c37b642bf56a70c5382bd4c539370cf8f96d",
+        "bytes": 4071620,
+        "packed": true,
+        "scenes": [
+          {
+            "scene": 0,
+            "level": 0,
+            "triangles": 245000
+          },
+          {
+            "scene": 1,
+            "level": 1,
+            "triangles": 24499
+          }
+        ],
+        "triangles": 245000,
+        "extensionsUsed": [
+          "EXT_meshopt_compression"
+        ],
+        "extensionsRequired": [
+          "EXT_meshopt_compression"
+        ]
+      },
+      "images": [
+        {
+          "level": 0,
+          "image": 0,
+          "sha256": "ef3816a73c6d5cc0cdc7b4f4fedcd6ce5e0361d2f135d0e80b8b5de48cfd061d",
+          "bytes": 2045159,
+          "rewrite": {
+            "sha256": "fea7a86e43feb5ddaebf8ab5ffaa0d285fe75dd8767f9b0b27306a614815e9f8",
+            "bytes": 1285111
+          }
+        },
+        {
+          "level": 1,
+          "image": 0,
+          "sha256": "ef3816a73c6d5cc0cdc7b4f4fedcd6ce5e0361d2f135d0e80b8b5de48cfd061d",
+          "bytes": 2045159,
+          "rewrite": {
+            "sha256": "fea7a86e43feb5ddaebf8ab5ffaa0d285fe75dd8767f9b0b27306a614815e9f8",
+            "bytes": 1285111
+          }
+        }
+      ],
+      "packing": {
+        "deduplicatedImageViews": [
+          {
+            "level": 1,
+            "sourceView": 4,
+            "intoView": 4,
+            "bytes": 1285111,
+            "sha256": "fea7a86e43feb5ddaebf8ab5ffaa0d285fe75dd8767f9b0b27306a614815e9f8",
+            "mimeType": "image/png"
+          }
+        ],
+        "notDeduplicated": [],
+        "textureSharing": {
+          "groups": [
+            {
+              "view": 4,
+              "textures": [
+                0,
+                1
+              ],
+              "levels": [
+                0,
+                1
+              ],
+              "colorSpaces": [
+                "srgb"
+              ],
+              "shared": true,
+              "sampler": 0,
+              "reason": "equal sampler, one colour space: one Three texture"
+            }
+          ],
+          "unreferencedSamplers": [
+            1
+          ]
+        },
+        "differingRootMetadata": [
+          {
+            "level": 1,
+            "key": "asset",
+            "value": {
+              "generator": "Khronos glTF Blender I/O v5.2.39",
+              "version": "2.0"
+            }
+          }
+        ],
+        "droppedBufferMetadata": []
+      },
+      "verification": {
+        "status": "passed",
+        "scenes": [
+          {
+            "scene": 0,
+            "triangles": 245000,
+            "canonicalSha256": "23e652e58903d1fed42424f09554cb698ba748a2b35b491e440ce65cfa09b3dc"
+          },
+          {
+            "scene": 1,
+            "triangles": 24499,
+            "canonicalSha256": "0fed21e4b82a6f7c0984072e1a92ecd91e58477a8cbd64b42373776fbe673dae"
+          }
+        ],
+        "sharedTextureGroups": 1,
+        "threeFileWideRenames": 2,
+        "compressedViews": 8
+      },
+      "knownRisks": [
+        "One file serves every level: the runtime must select scene i for level i, as the packed-level contract defines. Native per-level review is still required."
+      ]
+    },
+    {
+      "id": "model:meadow-ground",
+      "role": "model",
+      "status": "candidate-pending-visual-qa",
+      "modelKey": "meadow-ground",
+      "uses": [
+        {
+          "modelKey": "meadow-ground",
+          "role": "model",
+          "lodIndex": null
+        }
+      ],
+      "source": {
+        "levels": [
+          {
+            "level": 0,
+            "url": "/models/meadow-ground/model.opt-b2df848b39f6d60e.glb",
+            "sha256": "b2df848b39f6d60e5679ff69067278878e4cd4b87158320395f57e41bc805876",
+            "bytes": 2105700,
+            "triangles": 2720,
+            "original": {
+              "url": "/models/meadow-ground/model.glb",
+              "sha256": "6c6b41bdec1631236027c567635623aa9cdd1e0d92c0ae9e89f77764b52995e1",
+              "bytes": 2126388
+            }
+          }
+        ]
+      },
+      "output": {
+        "file": "models/meadow-ground/model.opt-713b02ae14e35fd0.glb",
+        "url": "/models/meadow-ground/model.opt-713b02ae14e35fd0.glb",
+        "sha256": "713b02ae14e35fd0feccdb5274685310f3d00e61b1907cac4226d48a11132859",
+        "bytes": 1345652,
+        "packed": false,
+        "scenes": [
+          {
+            "scene": 0,
+            "level": 0,
+            "triangles": 2720
+          }
+        ],
+        "triangles": 2720,
+        "extensionsUsed": [
+          "EXT_meshopt_compression"
+        ],
+        "extensionsRequired": [
+          "EXT_meshopt_compression"
+        ]
+      },
+      "images": [
+        {
+          "level": 0,
+          "image": 0,
+          "sha256": "ef3816a73c6d5cc0cdc7b4f4fedcd6ce5e0361d2f135d0e80b8b5de48cfd061d",
+          "bytes": 2045159,
+          "rewrite": {
+            "sha256": "fea7a86e43feb5ddaebf8ab5ffaa0d285fe75dd8767f9b0b27306a614815e9f8",
+            "bytes": 1285111
+          }
+        }
+      ],
+      "packing": null,
+      "verification": {
+        "status": "passed",
+        "scenes": [
+          {
+            "scene": 0,
+            "triangles": 2720,
+            "canonicalSha256": "ae92325f672c8e16cd0fdfa314f07e440931688e9165f280cc4594f4c8081b17"
+          }
+        ],
+        "sharedTextureGroups": 0,
+        "threeFileWideRenames": 0,
+        "compressedViews": 4
+      },
+      "knownRisks": []
+    },
+    {
+      "id": "model:river-water",
+      "role": "model",
+      "status": "candidate-pending-visual-qa",
+      "modelKey": "river-water",
+      "uses": [
+        {
+          "modelKey": "river-water",
+          "role": "model",
+          "lodIndex": null
+        }
+      ],
+      "source": {
+        "levels": [
+          {
+            "level": 0,
+            "url": "/models/river-water/model.opt-47cb975f8278144b.glb",
+            "sha256": "47cb975f8278144bd17d1c8513e1688b2f218d37ea4825b5baa47f9b31fa4534",
+            "bytes": 1888804,
+            "triangles": 2693,
+            "original": {
+              "url": "/models/river-water/model.glb",
+              "sha256": "8575faa5fd988da815d622ebbd03d49390339df5eeafd0eb794e1b0368ec0274",
+              "bytes": 1905036
+            }
+          }
+        ]
+      },
+      "output": {
+        "file": "models/river-water/model.opt-2fa2f55fb0135409.glb",
+        "url": "/models/river-water/model.opt-2fa2f55fb0135409.glb",
+        "sha256": "2fa2f55fb01354092e87a9b84776aa2492dcf4729317514ead507e3eb55c12f3",
+        "bytes": 1317376,
+        "packed": false,
+        "scenes": [
+          {
+            "scene": 0,
+            "level": 0,
+            "triangles": 2693
+          }
+        ],
+        "triangles": 2693,
+        "extensionsUsed": [
+          "EXT_meshopt_compression"
+        ],
+        "extensionsRequired": [
+          "EXT_meshopt_compression"
+        ]
+      },
+      "images": [
+        {
+          "level": 0,
+          "image": 0,
+          "sha256": "9a15be3e2fe167f3ec349ed894b60f1c971858da0024d3f11dad605a093ee74c",
+          "bytes": 1825032,
+          "rewrite": {
+            "sha256": "3e095361da954be89234ba64eb1959877fdb5f47ab3b2ea50b8f5a5f3e2d6996",
+            "bytes": 1253604
+          }
+        }
+      ],
+      "packing": null,
+      "verification": {
+        "status": "passed",
+        "scenes": [
+          {
+            "scene": 0,
+            "triangles": 2693,
+            "canonicalSha256": "3356c8f4e5972d592770998b0bb7552acabac976513151bd667ec3c2860077df"
+          }
+        ],
+        "sharedTextureGroups": 0,
+        "threeFileWideRenames": 0,
+        "compressedViews": 4
+      },
+      "knownRisks": []
+    }
+  ],
+  "images": [
+    {
+      "id": "image:/models/camp-cave/524-lascaux-frieze-r32.png",
+      "role": "standalone-texture",
+      "status": "candidate-pending-visual-qa",
+      "owner": "camp-cave",
+      "manifestEntry": "characterPigment",
+      "png": "78de0e1c4a23835dc5b0b95a6a8bd08d8a5cba27a9a50bad5552e3386e5f564c",
+      "source": {
+        "url": "/models/camp-cave/524-lascaux-frieze-r32.opt-78de0e1c4a23835d.png",
+        "sha256": "78de0e1c4a23835dc5b0b95a6a8bd08d8a5cba27a9a50bad5552e3386e5f564c",
+        "bytes": 565002,
+        "width": 1024,
+        "height": 341
+      },
+      "original": {
+        "url": "/models/camp-cave/524-lascaux-frieze-r32.png",
+        "sha256": "5fc419d77d0155133b0f231a07ad80a03c78ed99850ced492f79108bea5a765a",
+        "bytes": 2355756
+      },
+      "output": {
+        "file": "models/camp-cave/524-lascaux-frieze-r32.opt-2f9a4a74cb9c0e9d.png",
+        "url": "/models/camp-cave/524-lascaux-frieze-r32.opt-2f9a4a74cb9c0e9d.png",
+        "sha256": "2f9a4a74cb9c0e9d3a94cf394a3b843655a273690b94dbb1d9c406fb40da3c51",
+        "bytes": 560426,
+        "width": 1024,
+        "height": 341
+      },
+      "verification": {
+        "status": "passed",
+        "identity": "lossless IDAT rewrite: IHDR, non-IDAT chunks and filtered scanlines identical",
+        "width": 1024,
+        "height": 341
+      },
+      "reason": null,
+      "knownRisks": []
+    },
+    {
+      "id": "image:/models/camp-cave/mural-atlas-r05.png",
+      "role": "standalone-texture",
+      "status": "original-within-edge",
+      "owner": "camp-cave",
+      "manifestEntry": "pigment",
+      "png": "94ca1aebe422e2a0de6582654e9475167c895acd227cb28526e9873d8b3a4e85",
+      "source": {
+        "url": "/models/camp-cave/mural-atlas-r05.opt-94ca1aebe422e2a0.png",
+        "sha256": "94ca1aebe422e2a0de6582654e9475167c895acd227cb28526e9873d8b3a4e85",
+        "bytes": 1276113,
+        "width": 1024,
+        "height": 1024
+      },
+      "original": {
+        "url": "/models/camp-cave/mural-atlas-r05.png",
+        "sha256": "6efe80a19056af4f5a9ce50d7309b578f4c3e914fa9543c51a8fc629842e6889",
+        "bytes": 1851771
+      },
+      "output": null,
+      "verification": null,
+      "reason": "the rebuilt PNG (1277890 B) is not smaller",
+      "knownRisks": []
+    },
+    {
+      "id": "image:/models/camp-cave/rimo-lascaux-frieze-r30.png",
+      "role": "standalone-texture",
+      "status": "candidate-pending-visual-qa",
+      "owner": "camp-cave",
+      "manifestEntry": "rimoPigment",
+      "png": "65fa961cf8b888270eeb3f7bbeb93fc454a89139a06a456fd14a4efd2fed02b2",
+      "source": {
+        "url": "/models/camp-cave/rimo-lascaux-frieze-r30.opt-65fa961cf8b88827.png",
+        "sha256": "65fa961cf8b888270eeb3f7bbeb93fc454a89139a06a456fd14a4efd2fed02b2",
+        "bytes": 560607,
+        "width": 1024,
+        "height": 341
+      },
+      "original": {
+        "url": "/models/camp-cave/rimo-lascaux-frieze-r30.png",
+        "sha256": "b750045fda524816577747197874d173d41161e2b55d9acfe772a8f37f8d01df",
+        "bytes": 2272546
+      },
+      "output": {
+        "file": "models/camp-cave/rimo-lascaux-frieze-r30.opt-8a2acbfbfaa6d2c2.png",
+        "url": "/models/camp-cave/rimo-lascaux-frieze-r30.opt-8a2acbfbfaa6d2c2.png",
+        "sha256": "8a2acbfbfaa6d2c22c83e38cda85615a4da7064b52e3231f7b8a83bcc890ec25",
+        "bytes": 560138,
+        "width": 1024,
+        "height": 341
+      },
+      "verification": {
+        "status": "passed",
+        "identity": "lossless IDAT rewrite: IHDR, non-IDAT chunks and filtered scanlines identical",
+        "width": 1024,
+        "height": 341
+      },
+      "reason": null,
+      "knownRisks": []
+    },
+    {
+      "id": "image:/models/camp-cave/limestone-r05.png",
+      "role": "standalone-texture",
+      "status": "candidate-pending-visual-qa",
+      "owner": "camp-cave",
+      "manifestEntry": "rockSurface",
+      "png": "61e9536d1415d066ecf3c3867e5d438419bd42de8253eeb67f598e76f1f2f5a2",
+      "source": {
+        "url": "/models/camp-cave/limestone-r05.opt-61e9536d1415d066.png",
+        "sha256": "61e9536d1415d066ecf3c3867e5d438419bd42de8253eeb67f598e76f1f2f5a2",
+        "bytes": 2284797,
+        "width": 1024,
+        "height": 1024
+      },
+      "original": {
+        "url": "/models/camp-cave/limestone-r05.png",
+        "sha256": "574372b875437977f226564a2bc1a8cd7149695582b1bbb6c806f7e83a075cee",
+        "bytes": 3425333
+      },
+      "output": {
+        "file": "models/camp-cave/limestone-r05.opt-373ad7d95a04bc2c.png",
+        "url": "/models/camp-cave/limestone-r05.opt-373ad7d95a04bc2c.png",
+        "sha256": "373ad7d95a04bc2cd56303ebae90eca3045353323949f081615f2bc996dbdbbd",
+        "bytes": 2228940,
+        "width": 1024,
+        "height": 1024
+      },
+      "verification": {
+        "status": "passed",
+        "identity": "lossless IDAT rewrite: IHDR, non-IDAT chunks and filtered scanlines identical",
+        "width": 1024,
+        "height": 1024
+      },
+      "reason": null,
+      "knownRisks": []
+    },
+    {
+      "id": "image:/models/camp-cave/friends-meadow-lascaux-r34.png",
+      "role": "standalone-texture",
+      "status": "candidate-pending-visual-qa",
+      "owner": "camp-cave",
+      "manifestEntry": "mascotPigments.friendsMeadow",
+      "png": "e6153063bca167d1d618581f1065725d2e90d28d60a8a22d5c4962a58a9069ed",
+      "source": {
+        "url": "/models/camp-cave/friends-meadow-lascaux-r34.opt-e6153063bca167d1.png",
+        "sha256": "e6153063bca167d1d618581f1065725d2e90d28d60a8a22d5c4962a58a9069ed",
+        "bytes": 475063,
+        "width": 1024,
+        "height": 341
+      },
+      "original": {
+        "url": "/models/camp-cave/friends-meadow-lascaux-r34.png",
+        "sha256": "707e1920df0342a1806082874b8baa3ab33cc2c8ecea9311d3c6ff364caea148",
+        "bytes": 2071821
+      },
+      "output": {
+        "file": "models/camp-cave/friends-meadow-lascaux-r34.opt-d730fdda31b98b8b.png",
+        "url": "/models/camp-cave/friends-meadow-lascaux-r34.opt-d730fdda31b98b8b.png",
+        "sha256": "d730fdda31b98b8bc225cc60451a6e3502a79cd0b597e5ab01b84e030dc0e405",
+        "bytes": 472897,
+        "width": 1024,
+        "height": 341
+      },
+      "verification": {
+        "status": "passed",
+        "identity": "lossless IDAT rewrite: IHDR, non-IDAT chunks and filtered scanlines identical",
+        "width": 1024,
+        "height": 341
+      },
+      "reason": null,
+      "knownRisks": []
+    },
+    {
+      "id": "image:/models/camp-cave/friends-river-lascaux-r35.png",
+      "role": "standalone-texture",
+      "status": "candidate-pending-visual-qa",
+      "owner": "camp-cave",
+      "manifestEntry": "mascotPigments.friendsRiver",
+      "png": "62aa0628be8c4b054a17b571ea8efa35c9f9d6f619e93f7a1c756e49f07e84a8",
+      "source": {
+        "url": "/models/camp-cave/friends-river-lascaux-r35.opt-62aa0628be8c4b05.png",
+        "sha256": "62aa0628be8c4b054a17b571ea8efa35c9f9d6f619e93f7a1c756e49f07e84a8",
+        "bytes": 487174,
+        "width": 1024,
+        "height": 341
+      },
+      "original": {
+        "url": "/models/camp-cave/friends-river-lascaux-r35.png",
+        "sha256": "fb4fead40844b3ca672b191e2771e6e3904f88a28964e4249f4b6bb57996f04c",
+        "bytes": 2119578
+      },
+      "output": {
+        "file": "models/camp-cave/friends-river-lascaux-r35.opt-7eb5d96e7f0afd5a.png",
+        "url": "/models/camp-cave/friends-river-lascaux-r35.opt-7eb5d96e7f0afd5a.png",
+        "sha256": "7eb5d96e7f0afd5a063e711860fa41cfe00739f205cf8a029b1813bd2d47dec1",
+        "bytes": 482100,
+        "width": 1024,
+        "height": 341
+      },
+      "verification": {
+        "status": "passed",
+        "identity": "lossless IDAT rewrite: IHDR, non-IDAT chunks and filtered scanlines identical",
+        "width": 1024,
+        "height": 341
+      },
+      "reason": null,
+      "knownRisks": []
+    },
+    {
+      "id": "image:/models/camp-cave/mae-kohaku-lascaux-r31.png",
+      "role": "standalone-texture",
+      "status": "candidate-pending-visual-qa",
+      "owner": "camp-cave",
+      "manifestEntry": "mascotPigments.maeKohaku",
+      "png": "a9fee23d61be63879e45a96a1e59d11276a0be25238085bf15f30f55928d5fc7",
+      "source": {
+        "url": "/models/camp-cave/mae-kohaku-lascaux-r31.opt-a9fee23d61be6387.png",
+        "sha256": "a9fee23d61be63879e45a96a1e59d11276a0be25238085bf15f30f55928d5fc7",
+        "bytes": 468227,
+        "width": 1024,
+        "height": 341
+      },
+      "original": {
+        "url": "/models/camp-cave/mae-kohaku-lascaux-r31.png",
+        "sha256": "f67ea277c3d42c93877139b44150ee6fddbb2eb41854418ea09ac4bd40eed732",
+        "bytes": 1953261
+      },
+      "output": {
+        "file": "models/camp-cave/mae-kohaku-lascaux-r31.opt-b265fa99d4bf3980.png",
+        "url": "/models/camp-cave/mae-kohaku-lascaux-r31.opt-b265fa99d4bf3980.png",
+        "sha256": "b265fa99d4bf398007245e0290d37a3be6645881e435cb5da4171d3852e69559",
+        "bytes": 467125,
+        "width": 1024,
+        "height": 341
+      },
+      "verification": {
+        "status": "passed",
+        "identity": "lossless IDAT rewrite: IHDR, non-IDAT chunks and filtered scanlines identical",
+        "width": 1024,
+        "height": 341
+      },
+      "reason": null,
+      "knownRisks": []
+    },
+    {
+      "id": "image:/models/camp-cave/maruimo-lascaux-r33.png",
+      "role": "standalone-texture",
+      "status": "candidate-pending-visual-qa",
+      "owner": "camp-cave",
+      "manifestEntry": "mascotPigments.maruimoFrieze",
+      "png": "cf90962462cefa648cbef2fc9c74390e8365bd355bc2791a8a324053023522c2",
+      "source": {
+        "url": "/models/camp-cave/maruimo-lascaux-r33.opt-cf90962462cefa64.png",
+        "sha256": "cf90962462cefa648cbef2fc9c74390e8365bd355bc2791a8a324053023522c2",
+        "bytes": 500299,
+        "width": 1024,
+        "height": 341
+      },
+      "original": {
+        "url": "/models/camp-cave/maruimo-lascaux-r33.png",
+        "sha256": "eff36cf28d83cf69e61e2e345a4d90e08c790ae58306450be1ab657dd7614a1e",
+        "bytes": 1961184
+      },
+      "output": {
+        "file": "models/camp-cave/maruimo-lascaux-r33.opt-60597acdd04df58d.png",
+        "url": "/models/camp-cave/maruimo-lascaux-r33.opt-60597acdd04df58d.png",
+        "sha256": "60597acdd04df58d8dfa5da63a1f4a7b2d99e717d297a7543582cf7c44a299cf",
+        "bytes": 498678,
+        "width": 1024,
+        "height": 341
+      },
+      "verification": {
+        "status": "passed",
+        "identity": "lossless IDAT rewrite: IHDR, non-IDAT chunks and filtered scanlines identical",
+        "width": 1024,
+        "height": 341
+      },
+      "reason": null,
+      "knownRisks": []
+    },
+    {
+      "id": "image:/models/camp-cave/bot-round-lascaux-r31.png",
+      "role": "standalone-texture",
+      "status": "original-within-edge",
+      "owner": "camp-cave",
+      "manifestEntry": "mascotPigments.roundBots",
+      "png": "9dc5292302335e65a6b3dafc7c22a6a2691261a08c7193832b64cbc79854fb7c",
+      "source": {
+        "url": "/models/camp-cave/bot-round-lascaux-r31.opt-9dc5292302335e65.png",
+        "sha256": "9dc5292302335e65a6b3dafc7c22a6a2691261a08c7193832b64cbc79854fb7c",
+        "bytes": 463714,
+        "width": 1024,
+        "height": 341
+      },
+      "original": {
+        "url": "/models/camp-cave/bot-round-lascaux-r31.png",
+        "sha256": "94da10a2db5962f7e66af1617a310091c4852d9a1d6c9d322c09e6d01656c93c",
+        "bytes": 1885445
+      },
+      "output": null,
+      "verification": null,
+      "reason": "the rebuilt PNG (463877 B) is not smaller",
+      "knownRisks": []
+    },
+    {
+      "id": "image:/models/camp-cave/bot-shapes-lascaux-r31.png",
+      "role": "standalone-texture",
+      "status": "candidate-pending-visual-qa",
+      "owner": "camp-cave",
+      "manifestEntry": "mascotPigments.shapeBots",
+      "png": "b6ee4b02e4be9c02226776ebf7828096b4184475f9dcbefd7b90c66e49f887a1",
+      "source": {
+        "url": "/models/camp-cave/bot-shapes-lascaux-r31.opt-b6ee4b02e4be9c02.png",
+        "sha256": "b6ee4b02e4be9c02226776ebf7828096b4184475f9dcbefd7b90c66e49f887a1",
+        "bytes": 501873,
+        "width": 1024,
+        "height": 341
+      },
+      "original": {
+        "url": "/models/camp-cave/bot-shapes-lascaux-r31.png",
+        "sha256": "18cac2271a651fe11b223ac5fb3abab2a126ee25153ca0851f749ebd195e8dde",
+        "bytes": 2083858
+      },
+      "output": {
+        "file": "models/camp-cave/bot-shapes-lascaux-r31.opt-86a06da8e6789d84.png",
+        "url": "/models/camp-cave/bot-shapes-lascaux-r31.opt-86a06da8e6789d84.png",
+        "sha256": "86a06da8e6789d8443800509043ad58ac300960fdd5eb01ba93d54d180dc1cb9",
+        "bytes": 499457,
+        "width": 1024,
+        "height": 341
+      },
+      "verification": {
+        "status": "passed",
+        "identity": "lossless IDAT rewrite: IHDR, non-IDAT chunks and filtered scanlines identical",
+        "width": 1024,
+        "height": 341
+      },
+      "reason": null,
+      "knownRisks": []
+    }
+  ],
+  "png": [
+    {
+      "sha256": "61e9536d1415d066ecf3c3867e5d438419bd42de8253eeb67f598e76f1f2f5a2",
+      "bytes": 2284797,
+      "references": [
+        {
+          "kind": "texture",
+          "owner": "camp-cave",
+          "manifestEntry": "rockSurface"
+        }
+      ],
+      "status": "candidate",
+      "candidate": {
+        "sha256": "373ad7d95a04bc2cd56303ebae90eca3045353323949f081615f2bc996dbdbbd",
+        "bytes": 2228940
+      },
+      "reason": null
+    },
+    {
+      "sha256": "62aa0628be8c4b054a17b571ea8efa35c9f9d6f619e93f7a1c756e49f07e84a8",
+      "bytes": 487174,
+      "references": [
+        {
+          "kind": "texture",
+          "owner": "camp-cave",
+          "manifestEntry": "mascotPigments.friendsRiver"
+        }
+      ],
+      "status": "candidate",
+      "candidate": {
+        "sha256": "7eb5d96e7f0afd5a063e711860fa41cfe00739f205cf8a029b1813bd2d47dec1",
+        "bytes": 482100
+      },
+      "reason": null
+    },
+    {
+      "sha256": "65fa961cf8b888270eeb3f7bbeb93fc454a89139a06a456fd14a4efd2fed02b2",
+      "bytes": 560607,
+      "references": [
+        {
+          "kind": "texture",
+          "owner": "camp-cave",
+          "manifestEntry": "rimoPigment"
+        }
+      ],
+      "status": "candidate",
+      "candidate": {
+        "sha256": "8a2acbfbfaa6d2c22c83e38cda85615a4da7064b52e3231f7b8a83bcc890ec25",
+        "bytes": 560138
+      },
+      "reason": null
+    },
+    {
+      "sha256": "78de0e1c4a23835dc5b0b95a6a8bd08d8a5cba27a9a50bad5552e3386e5f564c",
+      "bytes": 565002,
+      "references": [
+        {
+          "kind": "texture",
+          "owner": "camp-cave",
+          "manifestEntry": "characterPigment"
+        }
+      ],
+      "status": "candidate",
+      "candidate": {
+        "sha256": "2f9a4a74cb9c0e9d3a94cf394a3b843655a273690b94dbb1d9c406fb40da3c51",
+        "bytes": 560426
+      },
+      "reason": null
+    },
+    {
+      "sha256": "94ca1aebe422e2a0de6582654e9475167c895acd227cb28526e9873d8b3a4e85",
+      "bytes": 1276113,
+      "references": [
+        {
+          "kind": "texture",
+          "owner": "camp-cave",
+          "manifestEntry": "pigment"
+        }
+      ],
+      "status": "original-retained",
+      "candidate": null,
+      "reason": "the rebuilt PNG (1277890 B) is not smaller"
+    },
+    {
+      "sha256": "9a15be3e2fe167f3ec349ed894b60f1c971858da0024d3f11dad605a093ee74c",
+      "bytes": 1825032,
+      "references": [
+        {
+          "kind": "glb",
+          "modelKey": "river-water",
+          "level": 0,
+          "image": 0
+        }
+      ],
+      "status": "candidate",
+      "candidate": {
+        "sha256": "3e095361da954be89234ba64eb1959877fdb5f47ab3b2ea50b8f5a5f3e2d6996",
+        "bytes": 1253604
+      },
+      "reason": null
+    },
+    {
+      "sha256": "9dc5292302335e65a6b3dafc7c22a6a2691261a08c7193832b64cbc79854fb7c",
+      "bytes": 463714,
+      "references": [
+        {
+          "kind": "texture",
+          "owner": "camp-cave",
+          "manifestEntry": "mascotPigments.roundBots"
+        }
+      ],
+      "status": "original-retained",
+      "candidate": null,
+      "reason": "the rebuilt PNG (463877 B) is not smaller"
+    },
+    {
+      "sha256": "a9fee23d61be63879e45a96a1e59d11276a0be25238085bf15f30f55928d5fc7",
+      "bytes": 468227,
+      "references": [
+        {
+          "kind": "texture",
+          "owner": "camp-cave",
+          "manifestEntry": "mascotPigments.maeKohaku"
+        }
+      ],
+      "status": "candidate",
+      "candidate": {
+        "sha256": "b265fa99d4bf398007245e0290d37a3be6645881e435cb5da4171d3852e69559",
+        "bytes": 467125
+      },
+      "reason": null
+    },
+    {
+      "sha256": "b6ee4b02e4be9c02226776ebf7828096b4184475f9dcbefd7b90c66e49f887a1",
+      "bytes": 501873,
+      "references": [
+        {
+          "kind": "texture",
+          "owner": "camp-cave",
+          "manifestEntry": "mascotPigments.shapeBots"
+        }
+      ],
+      "status": "candidate",
+      "candidate": {
+        "sha256": "86a06da8e6789d8443800509043ad58ac300960fdd5eb01ba93d54d180dc1cb9",
+        "bytes": 499457
+      },
+      "reason": null
+    },
+    {
+      "sha256": "cf90962462cefa648cbef2fc9c74390e8365bd355bc2791a8a324053023522c2",
+      "bytes": 500299,
+      "references": [
+        {
+          "kind": "texture",
+          "owner": "camp-cave",
+          "manifestEntry": "mascotPigments.maruimoFrieze"
+        }
+      ],
+      "status": "candidate",
+      "candidate": {
+        "sha256": "60597acdd04df58d8dfa5da63a1f4a7b2d99e717d297a7543582cf7c44a299cf",
+        "bytes": 498678
+      },
+      "reason": null
+    },
+    {
+      "sha256": "d0ac3101f080411702dd9ddb70aa4c3ae9f15f0337edd160c3d4fa7377a58dcc",
+      "bytes": 1472448,
+      "references": [
+        {
+          "kind": "glb",
+          "modelKey": "snow-ground",
+          "level": 0,
+          "image": 0
+        },
+        {
+          "kind": "glb",
+          "modelKey": "snow-ground",
+          "level": 1,
+          "image": 0
+        },
+        {
+          "kind": "glb",
+          "modelKey": "snow-ground",
+          "level": 2,
+          "image": 0
+        }
+      ],
+      "status": "candidate",
+      "candidate": {
+        "sha256": "1036f029d6bcd8631fcc0ec3a5705851ae86fd311a70340c311a468de3a9a859",
+        "bytes": 1217859
+      },
+      "reason": null
+    },
+    {
+      "sha256": "e6153063bca167d1d618581f1065725d2e90d28d60a8a22d5c4962a58a9069ed",
+      "bytes": 475063,
+      "references": [
+        {
+          "kind": "texture",
+          "owner": "camp-cave",
+          "manifestEntry": "mascotPigments.friendsMeadow"
+        }
+      ],
+      "status": "candidate",
+      "candidate": {
+        "sha256": "d730fdda31b98b8bc225cc60451a6e3502a79cd0b597e5ab01b84e030dc0e405",
+        "bytes": 472897
+      },
+      "reason": null
+    },
+    {
+      "sha256": "ef3816a73c6d5cc0cdc7b4f4fedcd6ce5e0361d2f135d0e80b8b5de48cfd061d",
+      "bytes": 2045159,
+      "references": [
+        {
+          "kind": "glb",
+          "modelKey": "camp-mountain",
+          "level": 0,
+          "image": 0
+        },
+        {
+          "kind": "glb",
+          "modelKey": "camp-mountain",
+          "level": 1,
+          "image": 0
+        },
+        {
+          "kind": "glb",
+          "modelKey": "meadow-ground",
+          "level": 0,
+          "image": 0
+        }
+      ],
+      "status": "candidate",
+      "candidate": {
+        "sha256": "fea7a86e43feb5ddaebf8ab5ffaa0d285fe75dd8767f9b0b27306a614815e9f8",
+        "bytes": 1285111
+      },
+      "reason": null
+    },
+    {
+      "sha256": "f8129f38e7a4202a51131b4eb31256fb54b90a0ecf4c001a95a2e12839f184d6",
+      "bytes": 930366,
+      "references": [
+        {
+          "kind": "glb",
+          "modelKey": "snow-ground",
+          "level": 0,
+          "image": 1
+        },
+        {
+          "kind": "glb",
+          "modelKey": "snow-ground",
+          "level": 1,
+          "image": 1
+        },
+        {
+          "kind": "glb",
+          "modelKey": "snow-ground",
+          "level": 2,
+          "image": 1
+        }
+      ],
+      "status": "original-retained",
+      "candidate": null,
+      "reason": "the rebuilt PNG (932182 B) is not smaller"
+    }
+  ],
+  "totals": {
+    "rule": "unique physical files actually served before and after this revision (not a sum of earlier proofs)",
+    "before": {
+      "files": 17,
+      "bytes": 25859733
+    },
+    "after": {
+      "files": 14,
+      "bytes": 16588076
+    },
+    "savedBytes": 9271657,
+    "models": [
+      {
+        "modelKey": "snow-ground",
+        "packed": true,
+        "before": {
+          "files": 3,
+          "bytes": 7405060
+        },
+        "after": {
+          "files": 1,
+          "bytes": 2343840
+        }
+      },
+      {
+        "modelKey": "camp-mountain",
+        "packed": true,
+        "before": {
+          "files": 2,
+          "bytes": 6877300
+        },
+        "after": {
+          "files": 1,
+          "bytes": 4071620
+        }
+      },
+      {
+        "modelKey": "meadow-ground",
+        "packed": false,
+        "before": {
+          "files": 1,
+          "bytes": 2105700
+        },
+        "after": {
+          "files": 1,
+          "bytes": 1345652
+        }
+      },
+      {
+        "modelKey": "river-water",
+        "packed": false,
+        "before": {
+          "files": 1,
+          "bytes": 1888804
+        },
+        "after": {
+          "files": 1,
+          "bytes": 1317376
+        }
+      }
+    ],
+    "textures": {
+      "images": 10,
+      "replaced": 8,
+      "before": 7582869,
+      "after": 7509588
+    },
+    "distinctPngs": 14
+  }
+}

@@ -2,7 +2,7 @@
 import assert from 'node:assert/strict';
 import { mkdir, writeFile, symlink, copyFile } from 'node:fs/promises';
 import path from 'node:path';
-import { createGameServer } from '../dist/server.mjs';
+import { qaGamePackage } from './qa-game-package.mjs';
 import { localVerificationSettings } from '../dist/infrastructure/node/local-verification.mjs';
 const { chromium } = await import(
   process.env.PLAYWRIGHT_MODULE ||
@@ -10,6 +10,8 @@ const { chromium } = await import(
 );
 const out = process.argv[2] || `output/playwright/mobile-start-20261007/${Date.now()}`;
 const assets = process.argv[3];
+const { createGameServer, packageRoot, packageId } = await qaGamePackage();
+assert.ok(!(packageRoot && assets), 'Choose a package or source overlay, not both');
 await mkdir(out, { recursive: true });
 let browserRoot;
 if (assets) {
@@ -34,7 +36,7 @@ if (assets) {
 const game = createGameServer({
   ...localVerificationSettings(out),
   port: 0,
-  ...(browserRoot ? { assetRoot: browserRoot } : {}),
+  ...(packageRoot || browserRoot ? { assetRoot: packageRoot || browserRoot } : {}),
 });
 const { port } = await game.listen();
 const browser = await chromium.launch({ channel: 'chrome', headless: true });
@@ -155,7 +157,8 @@ try {
       ]) {
     const tag = `${size.width}x${size.height}`;
     await newPage(size);
-    await layout(`title-${tag}`, ['#title-start', '#title-graphics', '#title-contributors']);
+    await layout(`title-${tag}`, ['#title-start', '#title-contributors']);
+    assert.equal(await page.locator('#title-graphics, [data-graphics]').count(), 0);
     // Online home has no mural; the contributor dialog remains available.
     assert.equal(await page.locator('.cave-mural').count(), 0);
     await page.locator('#title-contributors').tap();
@@ -163,11 +166,7 @@ try {
     await page.locator('#modal-close').tap();
     assert.equal(await page.evaluate(() => document.scrollingElement.scrollLeft), 0);
     await swipe('#screen-title .title-hero', 0, -80);
-    await layout(`title-after-swipe-${tag}`, [
-      '#title-start',
-      '#title-graphics',
-      '#title-contributors',
-    ]);
+    await layout(`title-after-swipe-${tag}`, ['#title-start', '#title-contributors']);
     await page.locator('#title-start').tap();
     assert.equal(await page.evaluate(() => document.activeElement.id), 'screen-setup');
     await layout(`characters-${tag}`, ['input[name="name"]', 'input[name="room"]', '#setup-back']);
@@ -202,7 +201,7 @@ try {
     await page.keyboard.press('Escape');
     assert.equal(await page.locator('#setup-flow').count(), 0);
     await page.locator('#setup-back').tap();
-    await layout(`back-${tag}`, ['#title-start', '#title-graphics']);
+    await layout(`back-${tag}`, ['#title-start', '#title-contributors']);
     pass(
       `${tag}: title/back/confirmation fit; native horizontal swipes; vertical swipes stay still`,
     );
@@ -293,11 +292,12 @@ try {
     `${out}/result.json`,
     JSON.stringify(
       {
+        packageId,
         checks,
         layouts,
         errors,
         failure,
-        assets: assets || 'compiled source',
+        assets: packageRoot || assets || 'compiled source',
         physicalPhone: false,
         keyboard: 'simulated visualViewport; native Chrome finger gestures',
       },

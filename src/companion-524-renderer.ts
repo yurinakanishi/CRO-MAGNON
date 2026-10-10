@@ -190,7 +190,7 @@ export class Companion524Renderer {
           (!!bot && ['windup', 'airborne', 'landing', 'catching'].includes(bot.mode)),
       );
       if (step !== null) this.actor.mixer.setTime((now / 1000) % 4);
-      updateActorPerformance(this.actor.root, distance, this.world.graphics.tier);
+      updateActorPerformance(this.actor.root, distance);
     }
     this.label.active = this.root.visible && distance < 20;
     this.label.position.copy(this.root.position);

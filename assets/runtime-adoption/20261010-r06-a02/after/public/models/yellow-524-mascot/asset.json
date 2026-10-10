@@ -1,0 +1,105 @@
+{
+  "modelKey": "yellow-524-mascot",
+  "name": "524",
+  "kind": "companion",
+  "candidate": 2,
+  "status": "remake-candidate-2-integrated",
+  "url": "/models/yellow-524-mascot/model-c2.opt-b5f96efd14f833f9.glb",
+  "sha256": "b5f96efd14f833f94ccf9bf12a5563fe4ab9e976dd9ab899b75a2bb83f81064d",
+  "bytes": 1012232,
+  "triangles": 24997,
+  "upAxis": "Y",
+  "forwardAxis": "+Z",
+  "heightMetres": 0.3,
+  "widthMetres": 0.3449484712228878,
+  "placement": {
+    "pivot": "original-body-centre",
+    "scale": 0.3326795608548851,
+    "hoverHeightMetres": 0.94,
+    "hoverAmplitudeMetres": 0.12,
+    "hoverPeriodMs": 4000
+  },
+  "clips": [
+    {
+      "name": "Floating_Ripple",
+      "seconds": 4,
+      "loop": true
+    }
+  ],
+  "lods": [
+    {
+      "url": "/models/yellow-524-mascot/lod-c2.opt-12c399d8784d3a02.glb",
+      "sha256": "12c399d8784d3a021f0ae6b4729dac1f8d81d1b2868ca3788e0f86ad67564491",
+      "bytes": 224704,
+      "triangles": 7498,
+      "distanceMetres": 3.5,
+      "purpose": "animated-medium-lod-geometry"
+    }
+  ],
+  "notes": [
+    "Remake C2 of the user-adopted midpoint-colour 524: same surface reduced from 449,022 triangles; Floating_Ripple and the 20-bone rig unchanged. Posed deviation from the delivered skin 0 m (kept vertices are a subset); clip curves within 0.04 deg (resampling). 24997 triangles (was 449022), textures 1024 WebP + baked normal."
+  ],
+  "provenance": {
+    "provider": "Claude Code (Opus 5.5)",
+    "claudeUsed": true,
+    "referenceGenerator": "none: derived from the delivered, user-approved surface (identity unchanged)",
+    "referenceImage": "public/models/yellow-524-mascot/model-midpoint-r01.glb",
+    "referenceSha256": "77faeb7e7b0a34cd1aa6e23b728cbaf295227998791bb437977a8ff2abfbb3b9",
+    "reconstruction": "no new reconstruction; the delivered rest surface is the bake and skin-weight source",
+    "denseFile": "public/models/yellow-524-mascot/model-midpoint-r01.glb",
+    "denseSha256": "77faeb7e7b0a34cd1aa6e23b728cbaf295227998791bb437977a8ff2abfbb3b9",
+    "processReport": "output/model-generation/models/yellow-524-mascot/work/candidate-02/transfer/t02/report.json",
+    "rigReport": null,
+    "pipeline": "scripts/remake/ (trellis_queue.py, remake_process.py, rig_*.py); docs/asset-remake/PLAN.md",
+    "previousDelivery": {
+      "url": "/models/yellow-524-mascot/model-midpoint-r01.glb",
+      "sha256": "77faeb7e7b0a34cd1aa6e23b728cbaf295227998791bb437977a8ff2abfbb3b9",
+      "triangles": 449022,
+      "bytes": 19046100,
+      "candidate": 14,
+      "revision": "midpoint-r01"
+    },
+    "previousProvenance": {
+      "provider": "Codex imagegen and local TRELLIS-2 lineage; original C13/C14 midpoint color baked by Codex",
+      "claudeUsed": false,
+      "source": "../threed-model-creation/models/yellow-524-mascot/work/low-poly/batch-016/run-01/attempt-01/candidate.glb",
+      "sourceSha256": "2652765f480973f6d974d0c51b2bd294c6e4c81e32e369814e09ba6c03c3e418",
+      "referenceImage": "assets/companion-524/reference.png",
+      "referenceSha256": "1327aec1bebbe9f1df13bfb0000ad8aee9d967c38687588c401a5d870e32fb41",
+      "visualReview": "assets/companion-524/adoption-midpoint-r01.json",
+      "colorSources": [
+        "../threed-model-creation/models/yellow-524-mascot/work/low-poly/batch-015/run-01/attempt-01/candidate.glb",
+        "../threed-model-creation/models/yellow-524-mascot/work/low-poly/batch-016/run-01/attempt-01/candidate.glb"
+      ],
+      "colorSourceHashes": [
+        "04b54fad6ab5f59ee342f3b98dbd902ef8a4f4fe9bb53816fc91879291e32b3a",
+        "2652765f480973f6d974d0c51b2bd294c6e4c81e32e369814e09ba6c03c3e418"
+      ]
+    },
+    "transfer": "scripts/remake/transfer_reduce.py (meshopt subset of delivered vertices, xatlas charts, albedo/normal bake with miss fill and back-face flip, Data Transfer skin weights; armature, bone names and clips re-exported unchanged)",
+    "visualReview": "assets/asset-remake/reviews/yellow-524-mascot.json"
+  },
+  "revision": "c2-t02",
+  "runtimeOptimization": {
+    "adoption": "20261010-r06-a02",
+    "candidateRevision": "assets/optimized-runtime/20261009-r04",
+    "selection": "ordinary-compressed",
+    "original": {
+      "url": "/models/yellow-524-mascot/model-c2.glb",
+      "sha256": "cc25400bd45deb7b7fabf7723698c445b150710eb0b5921f92e43a30de45a143",
+      "bytes": 1648020,
+      "triangles": 24997,
+      "lods": [
+        {
+          "url": "/models/yellow-524-mascot/lod-c2.glb",
+          "sha256": "15e3e89a7e41df4bfdc8583a4b3ce648543ddba7aa400c8ba3ea105d404d5586",
+          "bytes": 401716,
+          "triangles": 7498,
+          "distanceMetres": 3.5,
+          "purpose": "animated-medium-lod-geometry"
+        }
+      ]
+    },
+    "adoptedBy": "20261009-r04-a01"
+  }
+}

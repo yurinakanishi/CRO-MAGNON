@@ -2,15 +2,18 @@
 import assert from 'node:assert/strict';
 import { mkdir, readFile, writeFile, symlink, copyFile } from 'node:fs/promises';
 import path from 'node:path';
-import { createGameServer } from '../dist/server.mjs';
+import { qaGamePackage } from './qa-game-package.mjs';
 import { localVerificationSettings } from '../dist/infrastructure/node/local-verification.mjs';
 import { regionById, adventureProgress } from '../dist/shared/adventure-regions.mjs';
+import { enterPreparedWorld } from './qa-game-entry.mjs';
 const { chromium } = await import(
   process.env.PLAYWRIGHT_MODULE ||
     'file:///C:/Users/yurin/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/node_modules/playwright/index.mjs'
 );
 const out = process.argv[2] || `output/playwright/mobile-chat-20261006/${Date.now()}`;
 const browserAssets = process.argv[3];
+const { createGameServer, packageRoot, packageId } = await qaGamePackage();
+assert.ok(!(packageRoot && browserAssets), 'Choose a package or source overlay, not both');
 await mkdir(out, { recursive: true });
 let browserRoot;
 if (browserAssets) {
@@ -38,7 +41,7 @@ if (browserAssets) {
 const game = createGameServer({
   ...localVerificationSettings(out),
   port: 0,
-  ...(browserRoot ? { assetRoot: browserRoot } : {}),
+  ...(packageRoot || browserRoot ? { assetRoot: packageRoot || browserRoot } : {}),
 });
 const { port } = await game.listen();
 const browser = await chromium.launch({ channel: 'chrome', headless: true });
@@ -83,9 +86,7 @@ async function enter(mobile, name) {
   await use('#setup-form .character-choice:has(input[value="cro-female"])');
   await use('[data-choose-difficulty="normal"]');
   await use('#setup-flow-yes');
-  await page
-    .locator('#world[data-world-asset="ready"][data-character-asset="ready"]')
-    .waitFor({ timeout: 180000 });
+  await enterPreparedWorld(page, mobile);
   return page;
 }
 async function closeChat(page = phone) {
@@ -290,13 +291,14 @@ try {
     `${out}/result.json`,
     JSON.stringify(
       {
+        packageId,
         checks,
         errors,
         layouts,
         failure,
         physicalDeviceTested: false,
         keyboardViewport: 'simulated visualViewport height; no physical OS keyboard',
-        browserAssets: browserAssets || 'compiled local source',
+        browserAssets: packageRoot || browserAssets || 'compiled local source',
       },
       null,
       2,

@@ -1,0 +1,64 @@
+{
+  "modelKey": "crow-red-mantle",
+  "name": "白羽教団の大司祭の赤い肩衣",
+  "kind": "prop",
+  "candidate": 2,
+  "revision": "c2-m01",
+  "status": "remake-candidate-2-integrated",
+  "url": "/models/crow-red-mantle/model-c2.opt-f2b1411d9a2d9f75.glb",
+  "sha256": "f2b1411d9a2d9f750ef197012ec4771e4d27245c268707f6bf2d3c39fe3937e1",
+  "bytes": 825504,
+  "triangles": 2596,
+  "upAxis": "Y",
+  "forwardAxis": "+Z",
+  "heightMetres": 0.6462,
+  "widthMetres": 1.1465,
+  "placement": {
+    "pivot": "ground-centred",
+    "min": [
+      -0.5730507969856262,
+      0.00017036062490660697,
+      -0.40115711092948914
+    ],
+    "max": [
+      0.5734716057777405,
+      0.6464117765426636,
+      0.40197357535362244
+    ],
+    "attachment": "crow rig bone (src/crow-faction-visuals.ts CROW_RANK_PARTS)"
+  },
+  "clips": [],
+  "lods": [],
+  "notes": [
+    "Replaces the code-built primitive CrowPrelateRedMantleL/R (two half-spheres). Codex image_gen reference -> TRELLIS-2 1024 -> meshopt 2596 tris -> xatlas -> albedo + baked normal. Ground-centred pivot, +Y up."
+  ],
+  "onDemand": true,
+  "replaces": "code-built primitives: CrowPrelateRedMantleL/R (two half-spheres)",
+  "provenance": {
+    "provider": "Claude Code (Opus 5.5)",
+    "claudeUsed": true,
+    "referenceGenerator": "Codex CLI built-in image_gen (gpt-5.6-sol, medium)",
+    "referenceImage": "C:/Users/yurin/Desktop/projects/CRO-MAGNON/output/model-generation/models/crow-red-mantle/source/original/candidate2-ref-a.png",
+    "referenceSha256": "f821cd51014afb0bf63749b704e05f9c02087ee231ad316aee594d42b48d16d1",
+    "reconstruction": "Local TRELLIS-2 v0.8.1, res 1024, tex 1024, seed recorded in dense JSON",
+    "denseFile": "C:/Users/yurin/Desktop/projects/CRO-MAGNON/output/model-generation/models/crow-red-mantle/work/candidate-02/trellis/dense-ref2a-res1024-tex1024-seed0042.glb",
+    "denseSha256": "bd8b570c417ed5f8cde5a8b7661fe0a64d9e28901742b2430158676bfd673860",
+    "processReport": "output/model-generation/models/crow-red-mantle/work/candidate-02/low-poly/m01/process-report.json",
+    "pipeline": "scripts/remake/ (trellis_queue.py, meshopt_reduce.mjs, xatlas_unwrap.py, remake_process.py); docs/asset-remake/PLAN.md",
+    "previousDelivery": null,
+    "visualReview": "assets/asset-remake/reviews/crow-red-mantle.json"
+  },
+  "runtimeOptimization": {
+    "adoption": "20261010-r05-a02",
+    "candidateRevision": "assets/optimized-runtime/20261009-r04",
+    "selection": "ordinary-compressed",
+    "original": {
+      "url": "/models/crow-red-mantle/model-c2.glb",
+      "sha256": "2a78152741b13cd5ef6681d4db5836becd7c4a2ed496e8db743dfee8670d2c01",
+      "bytes": 876912,
+      "triangles": 2596,
+      "lods": []
+    },
+    "adoptedBy": "20261009-r04-a01"
+  }
+}

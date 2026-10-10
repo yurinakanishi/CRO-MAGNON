@@ -74,7 +74,7 @@ export class OrbBotRenderer {
       if (!actor.root.visible) continue;
       actor.root.rotation.x = actor.root.rotation.z = 0;
       const distance = actor.root.position.distanceTo(world.camera.position);
-      updateActorPerformance(actor.root, distance, world.graphics.tier);
+      updateActorPerformance(actor.root, distance);
       const position = new THREE.Vector3(b.x, b.y, b.z);
       if (b.mode === 'windup' && owner?.actor?.orbBotPose.weight > 0) {
         position.copy(owner.actor.orbBotPose.contact);

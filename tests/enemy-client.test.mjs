@@ -1,7 +1,13 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import * as THREE from 'three';
-import { ENEMY_CLIPS, enemyAnimationState, requireEnemyClips, playerDamageEvent, playerRecovered } from '../dist/src/enemy-state.js';
+import {
+  ENEMY_CLIPS,
+  enemyAnimationState,
+  requireEnemyClips,
+  playerDamageEvent,
+  playerRecovered,
+} from '../dist/src/enemy-state.js';
 import { selectedCombatTarget, attackReady, huntInteraction } from '../dist/src/hunting-ui.js';
 import { canStartAttack } from '../dist/src/combat-input.js';
 import { WorldAssets } from '../dist/src/world-assets.js';
@@ -35,78 +41,161 @@ test('hostile threat replaces a distant mammoth selection without targeting frie
 });
 
 test('enemy one-shots seek authoritative attack, hit and death times, while hidden phases stop', () => {
-  const enemy={modelKey:'crow-shaman',phase:'alive',clip:'Attack',attackAt:1000,hitAt:1600,phaseStartedAt:2000};
-  assert.deepEqual(enemyAnimationState(enemy,1450),{clip:'Attack',elapsed:.45});
-  assert.deepEqual(enemyAnimationState({...enemy,clip:'Hit'},1800),{clip:'Hit',elapsed:.2});
-  assert.deepEqual(enemyAnimationState({...enemy,phase:'dead'},2700),{clip:'Death',elapsed:.7});
-  assert.equal(enemyAnimationState({...enemy,phase:'respawning'},9000),null);
-  assert.deepEqual(enemyAnimationState({...enemy,clip:'Run_Loop'},2400),{clip:'Run_Loop',elapsed:null});
-  assert.deepEqual(enemyAnimationState(enemy,900),{clip:'Attack',elapsed:0});
-  assert.throws(()=>enemyAnimationState({...enemy,clip:'Invented'},2000),/unsupported enemy clip/);
+  const enemy = {
+    modelKey: 'crow-shaman',
+    phase: 'alive',
+    clip: 'Attack',
+    attackAt: 1000,
+    hitAt: 1600,
+    phaseStartedAt: 2000,
+  };
+  assert.deepEqual(enemyAnimationState(enemy, 1450), { clip: 'Attack', elapsed: 0.45 });
+  assert.deepEqual(enemyAnimationState({ ...enemy, clip: 'Hit' }, 1800), {
+    clip: 'Hit',
+    elapsed: 0.2,
+  });
+  assert.deepEqual(enemyAnimationState({ ...enemy, phase: 'dead' }, 2700), {
+    clip: 'Death',
+    elapsed: 0.7,
+  });
+  assert.equal(enemyAnimationState({ ...enemy, phase: 'respawning' }, 9000), null);
+  assert.deepEqual(enemyAnimationState({ ...enemy, clip: 'Run_Loop' }, 2400), {
+    clip: 'Run_Loop',
+    elapsed: null,
+  });
+  assert.deepEqual(enemyAnimationState(enemy, 900), { clip: 'Attack', elapsed: 0 });
+  assert.throws(
+    () => enemyAnimationState({ ...enemy, clip: 'Invented' }, 2000),
+    /unsupported enemy clip/,
+  );
 });
 
 test('enemy requires all six real clips and missing catalog entries reject without fallback', async () => {
-  const animations=ENEMY_CLIPS.map(name=>({name}));
-  assert.doesNotThrow(()=>requireEnemyClips(animations,'crow-shaman'));
-  assert.throws(()=>requireEnemyClips(animations.filter(clip=>clip.name!=='Hit'),'crow-shaman'),/missing clips Hit/);
-  const assets=new WorldAssets();assets.catalog={assets:[]};
-  await assert.rejects(assets.createEnemy('crow-shaman'),/Missing verified enemy/);
-  assert.equal(assets.templates.size,0);assert.equal(assets.animals.size,0);
+  const animations = ENEMY_CLIPS.map((name) => ({ name }));
+  assert.doesNotThrow(() => requireEnemyClips(animations, 'crow-shaman'));
+  assert.throws(
+    () =>
+      requireEnemyClips(
+        animations.filter((clip) => clip.name !== 'Hit'),
+        'crow-shaman',
+      ),
+    /missing clips Hit/,
+  );
+  const assets = new WorldAssets();
+  assets.catalog = { assets: [] };
+  await assert.rejects(assets.createEnemy('crow-shaman'), /Missing verified enemy/);
+  assert.equal(assets.templates.size, 0);
+  assert.equal(assets.animals.size, 0);
 });
 
 test('enemy actor replaces clips, clamps death and resets the next lifetime', () => {
-  const root=new THREE.Group(),joint=new THREE.Bone();joint.name='Body';root.add(joint);
-  const clips=ENEMY_CLIPS.map((name,index)=>new THREE.AnimationClip(name,name==='Death'?1.2:1,[new THREE.NumberKeyframeTrack('Body.position[y]',[0,1],[0,index])]));
-  const assets=new WorldAssets();assets.templates.set('crow-shaman',{gltf:{scene:root,animations:clips},asset:{}});
-  const actor=assets.createAnimal('crow-shaman');
-  actor.play('Run_Loop');actor.update(.6);actor.sampleOnce('Attack',.45);
-  assert.ok(Math.abs(actor.root.getObjectByName('Body').position.y-1.35)<1e-6);
-  actor.sampleOnce('Hit',.2);assert.ok(Math.abs(actor.root.getObjectByName('Body').position.y-.8)<1e-6);
-  actor.sampleOnce('Death',9);assert.equal(actor.root.getObjectByName('Body').position.y,5);
-  actor.stop();actor.play('Idle_Loop');actor.update(.1);assert.equal(actor.root.getObjectByName('Body').position.y,0);
-  actor.dispose();assert.equal(assets.animals.size,0);
+  const root = new THREE.Group(),
+    joint = new THREE.Bone();
+  joint.name = 'Body';
+  root.add(joint);
+  const clips = ENEMY_CLIPS.map(
+    (name, index) =>
+      new THREE.AnimationClip(name, name === 'Death' ? 1.2 : 1, [
+        new THREE.NumberKeyframeTrack('Body.position[y]', [0, 1], [0, index]),
+      ]),
+  );
+  const assets = new WorldAssets();
+  assets.templates.set('crow-shaman', { gltf: { scene: root, animations: clips }, asset: {} });
+  const actor = assets.createAnimal('crow-shaman');
+  actor.play('Run_Loop');
+  actor.update(0.6);
+  actor.sampleOnce('Attack', 0.45);
+  assert.ok(Math.abs(actor.root.getObjectByName('Body').position.y - 1.35) < 1e-6);
+  actor.sampleOnce('Hit', 0.2);
+  assert.ok(Math.abs(actor.root.getObjectByName('Body').position.y - 0.8) < 1e-6);
+  actor.sampleOnce('Death', 9);
+  assert.equal(actor.root.getObjectByName('Body').position.y, 5);
+  actor.stop();
+  actor.play('Idle_Loop');
+  actor.update(0.1);
+  assert.equal(actor.root.getObjectByName('Body').position.y, 0);
+  actor.dispose();
+  assert.equal(assets.animals.size, 0);
 });
 
 test('hurt feedback uses server sequences, not costs of gathering or free attacks', () => {
-  const player={id:'p',energy:100,hurtSequence:0,defeatSequence:0};
-  assert.equal(playerDamageEvent(player,{...player,energy:98,attackSequence:1}),null);
-  assert.equal(playerDamageEvent(null,{...player,hurtSequence:9}),null);
-  assert.equal(playerDamageEvent(player,{...player,energy:85,hurtSequence:1}),'hurt');
-  assert.equal(playerDamageEvent(player,{...player,energy:0,hurtSequence:1,defeatSequence:1,downedUntil:5000}),'defeat');
+  const player = { id: 'p', energy: 100, hurtSequence: 0, defeatSequence: 0 };
+  assert.equal(playerDamageEvent(player, { ...player, energy: 98, attackSequence: 1 }), null);
+  assert.equal(playerDamageEvent(null, { ...player, hurtSequence: 9 }), null);
+  assert.equal(playerDamageEvent(player, { ...player, energy: 85, hurtSequence: 1 }), 'hurt');
+  assert.equal(
+    playerDamageEvent(player, {
+      ...player,
+      energy: 0,
+      hurtSequence: 1,
+      defeatSequence: 1,
+      downedUntil: 5000,
+    }),
+    'defeat',
+  );
 });
 
 test('downed controls resume on authoritative recovery and camp relocation snaps only on recovery', () => {
-  const before={id:'p',downedUntil:5000,attackSequence:0};
-  assert.equal(canStartAttack(before,4000),false);
-  assert.equal(canStartAttack(before,6000),false);
-  assert.equal(canStartAttack({...before,downedUntil:0,cookingEndsAt:6000},4000),true);
-  assert.equal(playerRecovered(before,{id:'p',downedUntil:0}),true);
-  assert.equal(playerRecovered(before,{id:'q',downedUntil:0}),false);
-  assert.equal(playerRecovered({id:'p',downedUntil:0},{id:'p',downedUntil:0}),false);
+  const before = { id: 'p', downedUntil: 5000, attackSequence: 0 };
+  assert.equal(canStartAttack(before, 4000), false);
+  assert.equal(canStartAttack(before, 6000), false);
+  assert.equal(canStartAttack({ ...before, downedUntil: 0, cookingEndsAt: 6000 }, 4000), true);
+  assert.equal(playerRecovered(before, { id: 'p', downedUntil: 0 }), true);
+  assert.equal(playerRecovered(before, { id: 'q', downedUntil: 0 }), false);
+  assert.equal(playerRecovered({ id: 'p', downedUntil: 0 }, { id: 'p', downedUntil: 0 }), false);
 });
 
-test('render clock caps high refresh displays and tolerates normal60Hz timestamp jitter', () => {
-  for(const hz of [60,120,144,240]){
-    const clock=new FrameClock(0),frames=[];
-    for(let index=0;index<hz*5;index++){
-      const now=index*1000/hz+(index?(index%2?.7:-.7):0),dt=clock.advance(now);
-      if(dt!==null)frames.push(dt);
+test('render clock caps every refresh rate at 30 FPS and tolerates normal60Hz timestamp jitter', () => {
+  for (const hz of [60, 120, 144, 240]) {
+    const clock = new FrameClock(0),
+      frames = [];
+    for (let index = 0; index < hz * 5; index++) {
+      const now = (index * 1000) / hz + (index ? (index % 2 ? 0.7 : -0.7) : 0),
+        dt = clock.advance(now);
+      if (dt !== null) frames.push(dt);
     }
-    assert.ok(frames.length>=299&&frames.length<=301,`${hz}Hz yielded ${frames.length} frames instead of300`);
-    assert.ok(frames.every(dt=>dt>=0&&dt<=.06));
+    assert.ok(
+      frames.length >= 149 && frames.length <= 151,
+      `${hz}Hz yielded ${frames.length} frames instead of150`,
+    );
+    assert.ok(frames.every((dt) => dt >= 0 && dt <= 0.06));
   }
-  const clock=new FrameClock(0);assert.notEqual(clock.advance(0),null);
-  for(const time of [100,1000,9000])assert.equal(clock.advance(time,true),null);
-  assert.ok(clock.advance(9016)<=.06);
+  const clock = new FrameClock(0);
+  assert.notEqual(clock.advance(0), null);
+  for (const time of [100, 1000, 9000]) assert.equal(clock.advance(time, true), null);
+  assert.ok(clock.advance(9016) <= 0.06);
 });
 
 test('five enemy mixers remain independent and release each actor without affecting shared templates', () => {
-  const root=new THREE.Group(),joint=new THREE.Bone();joint.name='Body';root.add(joint);
-  const clips=ENEMY_CLIPS.map((name,index)=>new THREE.AnimationClip(name,1,[new THREE.NumberKeyframeTrack('Body.position[y]',[0,1],[0,index])]));
-  const assets=new WorldAssets();assets.templates.set('crow-shaman',{gltf:{scene:root,animations:clips},asset:{},lods:[]});
-  const actors=Array.from({length:5},()=>assets.createAnimal('crow-shaman'));
-  actors[0].sampleOnce('Attack',.5);actors[1].sampleOnce('Hit',.5);actors[2].sampleOnce('Death',.5);
-  assert.deepEqual(actors.map(actor=>actor.root.getObjectByName('Body').position.y),[1.5,2,2.5,0,0]);
-  actors[0].dispose();actors[0].dispose();assert.equal(assets.animals.size,4);assert.equal(assets.templates.size,1);
-  assets.dispose();assert.equal(assets.animals.size,0);assert.equal(assets.templates.size,0);
+  const root = new THREE.Group(),
+    joint = new THREE.Bone();
+  joint.name = 'Body';
+  root.add(joint);
+  const clips = ENEMY_CLIPS.map(
+    (name, index) =>
+      new THREE.AnimationClip(name, 1, [
+        new THREE.NumberKeyframeTrack('Body.position[y]', [0, 1], [0, index]),
+      ]),
+  );
+  const assets = new WorldAssets();
+  assets.templates.set('crow-shaman', {
+    gltf: { scene: root, animations: clips },
+    asset: {},
+    lods: [],
+  });
+  const actors = Array.from({ length: 5 }, () => assets.createAnimal('crow-shaman'));
+  actors[0].sampleOnce('Attack', 0.5);
+  actors[1].sampleOnce('Hit', 0.5);
+  actors[2].sampleOnce('Death', 0.5);
+  assert.deepEqual(
+    actors.map((actor) => actor.root.getObjectByName('Body').position.y),
+    [1.5, 2, 2.5, 0, 0],
+  );
+  actors[0].dispose();
+  actors[0].dispose();
+  assert.equal(assets.animals.size, 4);
+  assert.equal(assets.templates.size, 1);
+  assets.dispose();
+  assert.equal(assets.animals.size, 0);
+  assert.equal(assets.templates.size, 0);
 });

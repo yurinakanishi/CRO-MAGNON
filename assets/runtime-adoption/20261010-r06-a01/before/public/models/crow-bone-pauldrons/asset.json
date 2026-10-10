@@ -1,0 +1,64 @@
+{
+  "modelKey": "crow-bone-pauldrons",
+  "name": "白羽教団の戦僧の骨の肩当て",
+  "kind": "prop",
+  "candidate": 2,
+  "revision": "c2-m01",
+  "status": "remake-candidate-2-integrated",
+  "url": "/models/crow-bone-pauldrons/model-c2.opt-57cdbc4c1ba00594.glb",
+  "sha256": "57cdbc4c1ba0059406d9d002b5c013ced145153077457cfb08096e1b09c7b32c",
+  "bytes": 1007732,
+  "triangles": 2677,
+  "upAxis": "Y",
+  "forwardAxis": "+Z",
+  "heightMetres": 0.7366,
+  "widthMetres": 1.1875,
+  "placement": {
+    "pivot": "ground-centred",
+    "min": [
+      -0.5948911905288696,
+      0.0030485540628433228,
+      -0.3628695607185364
+    ],
+    "max": [
+      0.5925915241241455,
+      0.7396423816680908,
+      0.3660500943660736
+    ],
+    "attachment": "crow rig bone (src/crow-faction-visuals.ts CROW_RANK_PARTS)"
+  },
+  "clips": [],
+  "lods": [],
+  "notes": [
+    "Replaces the code-built primitive CrowBrutePauldronL/R (two half-spheres). Codex image_gen reference -> TRELLIS-2 1024 -> meshopt 2677 tris -> xatlas -> albedo + baked normal. Ground-centred pivot, +Y up."
+  ],
+  "onDemand": true,
+  "replaces": "code-built primitives: CrowBrutePauldronL/R (two half-spheres)",
+  "provenance": {
+    "provider": "Claude Code (Opus 5.5)",
+    "claudeUsed": true,
+    "referenceGenerator": "Codex CLI built-in image_gen (gpt-5.6-sol, medium)",
+    "referenceImage": "C:/Users/yurin/Desktop/projects/CRO-MAGNON/output/model-generation/models/crow-bone-pauldrons/source/original/candidate2-ref-a.png",
+    "referenceSha256": "9c2eba4b311d982924d83d5a26b66d3aef5b6090e904df999d7f1078516d40d9",
+    "reconstruction": "Local TRELLIS-2 v0.8.1, res 1024, tex 1024, seed recorded in dense JSON",
+    "denseFile": "C:/Users/yurin/Desktop/projects/CRO-MAGNON/output/model-generation/models/crow-bone-pauldrons/work/candidate-02/trellis/dense-ref2a-res1024-tex1024-seed0042.glb",
+    "denseSha256": "4f2476da6263a929e3b76d649b74fcabb9408bc0b597183c387f93da2343a563",
+    "processReport": "output/model-generation/models/crow-bone-pauldrons/work/candidate-02/low-poly/m01/process-report.json",
+    "pipeline": "scripts/remake/ (trellis_queue.py, meshopt_reduce.mjs, xatlas_unwrap.py, remake_process.py); docs/asset-remake/PLAN.md",
+    "previousDelivery": null,
+    "visualReview": "assets/asset-remake/reviews/crow-bone-pauldrons.json"
+  },
+  "runtimeOptimization": {
+    "adoption": "20261010-r05-a02",
+    "candidateRevision": "assets/optimized-runtime/20261009-r04",
+    "selection": "ordinary-compressed",
+    "original": {
+      "url": "/models/crow-bone-pauldrons/model-c2.glb",
+      "sha256": "5355ffab11b7f97856d512388ff0fa8dd8273c19222f53b16aa944a2e6e6f5e6",
+      "bytes": 1073412,
+      "triangles": 2677,
+      "lods": []
+    },
+    "adoptedBy": "20261009-r04-a01"
+  }
+}

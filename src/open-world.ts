@@ -5,16 +5,50 @@ import { WORLD } from '../shared/world.mjs';
 import { BIOMES, biomeById, nearbyChunks } from '../shared/biomes.mjs';
 import { installBiomeTerrain } from '../shared/terrain.mjs';
 import { fitSourceRiverBank } from './source-surface-fit.js';
-import { coastDistance } from '../shared/paleo-geography.mjs';
+import { coastTextureData } from '../shared/paleo-geography.mjs';
 import { ViewUpdateGate } from './view-update-gate.js';
 import { RiverBankBuilder } from './river-bank-builder.js';
 import { mountainRiverIntersects } from '../shared/mountain-river.mjs';
+import { LoadDemand, isLoadCancelled, type LoadTicket } from './asset-load-queue.js';
+import { STARTUP, criticalFloorKeys, terrainPriority } from './startup-plan.js';
 
 const RADIUS = 128,
-  CAPACITY = 100;
-import { createEarthTextures, earthTerrainMaterial, EarthOcean } from './paleo-materials.js';
+  CAPACITY = 100,
+  // A requested ground stays wanted until its biome is this much farther than
+  // the planning radius, so walking along a border does not cancel and repeat it.
+  RETAIN_MARGIN = 32;
+import {
+  COAST_TREATMENT_METRES,
+  createEarthTextures,
+  earthTerrainMaterial,
+  EarthOcean,
+  OCEAN_SURFACE_Y,
+} from './paleo-materials.js';
 const matrix = new THREE.Matrix4(),
   sphere = new THREE.Sphere();
+// Whether a chunk's tile needs the ground's coast treatment (clipped at sea, lowered within 4 m,
+// beach within COAST_TREATMENT_METRES): its ground instance is then shaded with the coast field
+// (earthCoastal) and it gets an ocean tile. The field is bilinear between its grid values, so
+// every sample over the tile is a convex combination of the values of the cells it overlaps; when
+// all of them lie COAST_TREATMENT_METRES or more inland, the plain shading is exactly the coastal
+// one. The field is not Lipschitz everywhere (the measured Earth grid stops at open water), so a
+// centre far inland does not by itself keep a tile clear of the sea.
+const coast = coastTextureData(),
+  // The field's encoding, (byte - 128) / 4 metres (shared/paleo-geography.mts).
+  inlandByte = 128 + 4 * COAST_TREATMENT_METRES;
+const coastIndex = (position, origin, count) =>
+  Math.min(count - 1, Math.max(0, Math.floor((position - origin) / coast.cell - 0.5)));
+export function coastalChunk(chunk) {
+  const half = WORLD.chunkSize / 2,
+    x0 = coastIndex(chunk.x - half, coast.minX, coast.width),
+    x1 = Math.min(coast.width - 1, coastIndex(chunk.x + half, coast.minX, coast.width) + 1),
+    z0 = coastIndex(chunk.z - half, coast.minZ, coast.height),
+    z1 = Math.min(coast.height - 1, coastIndex(chunk.z + half, coast.minZ, coast.height) + 1);
+  for (let z = z0; z <= z1; z++)
+    for (let x = x0, row = z * coast.width; x <= x1; x++)
+      if (coast.data[row + x] < inlandByte) return true;
+  return false;
+}
 
 export class OpenWorldTerrain {
   declare world: any;
@@ -35,6 +69,10 @@ export class OpenWorldTerrain {
   private planX = NaN;
   private planZ = NaN;
   private bankJobs = new Map<string, Promise<void>>();
+  /** Ground requests by key, prioritized by the nearest desired chunk. */
+  readonly demand = new LoadDemand();
+  /** Nearest land chunk per ground key within the retain radius. */
+  private retained = new Map<string, number>();
   declare disposed: boolean;
   declare frustum: THREE.Frustum;
   declare projection: THREE.Matrix4;
@@ -81,12 +119,23 @@ export class OpenWorldTerrain {
       ]),
     );
     this.world.releaseTerrainSampler = installBiomeTerrain(fields);
-    this.plan(position.x, position.z, 0);
-    await Promise.all([...this.pending.values()]);
+    await this.arrive(position);
+  }
+  /** Plan around an arrival point and hold until its floor exists: only the
+   * ground within STARTUP.floorRadius is awaited, and the nearest chunks are
+   * admitted before characters become visible. Farther ground keeps loading
+   * nearest first and is admitted in a bounded amount of work each frame. */
+  async arrive(position, time = 0) {
+    this.plan(position.x, position.z, time);
+    const floor = criticalFloorKeys(
+      this.desired.map((chunk) => ({ ...chunk, ground: biomeById(chunk.biome).ground })),
+    );
+    await Promise.all(floor.map((key) => this.pending.get(key)));
     if (this.disposed) return;
-    // The nearest floor exists before characters become visible; distant chunks
-    // are then admitted in a bounded amount of work each frame.
-    for (const chunk of this.desired.filter((c) => c.distance < 55)) this.admit(chunk);
+    const missing = floor.filter((key) => !this.assets.templates.has(key));
+    if (missing.length) throw new Error(`Missing verified terrain floor ${missing.join(', ')}`);
+    for (const chunk of this.desired.filter((c) => c.distance < STARTUP.admitRadius))
+      this.admit(chunk);
     await Promise.all(this.bankJobs.values());
   }
   plan(x, z, time) {
@@ -103,29 +152,29 @@ export class OpenWorldTerrain {
           this.removeChunk(chunk);
           this.chunks.delete(key);
         }
+      this.retained.clear();
+      for (const chunk of nearbyChunks(x, z, RADIUS + RETAIN_MARGIN)) {
+        if (!chunk.land) continue;
+        const key = biomeById(chunk.biome).ground;
+        this.retained.set(key, Math.min(this.retained.get(key) ?? Infinity, chunk.distance));
+      }
     }
     // Retain request retries, usage timestamps and eviction while stationary.
+    // Requests follow the nearest desired chunk of each ground: the local floor
+    // first, then the visible band, then fogged ground.
+    const wanted = new Map<string, number>();
     for (const chunk of this.desired) {
       const key = biomeById(chunk.biome).ground;
       this.lastUsed.set(key, time);
-      if (this.assets.templates.has(key) || this.pending.has(key)) continue;
-      const promise = this.assets
-        .ensureEnvironment(key)
-        .then(() => {
-          if (!this.disposed) this.world.updateAssetDiagnostics();
-        })
-        .catch((error) => {
-          if (!this.disposed)
-            this.world.failWorld(
-              '地域の3D素材を読み込めませんでした。再読み込みしてください。',
-              error,
-            );
-          throw error;
-        })
-        .finally(() => this.pending.delete(key));
-      this.pending.set(key, promise);
-      promise.catch(() => {});
+      if (this.assets.templates.has(key)) continue;
+      wanted.set(key, Math.min(wanted.get(key) ?? Infinity, terrainPriority(chunk.distance)));
     }
+    for (const key of this.demand.keys())
+      if (!wanted.has(key) && this.retained.has(key) && !this.assets.templates.has(key))
+        wanted.set(key, terrainPriority(this.retained.get(key)));
+    // A ground leaving the retained area is withdrawn: its queued load is cancelled.
+    this.demand.update(wanted, (key, ticket) => this.request(key, ticket));
+    this.assets.loadQueue?.pump();
     for (const [key, last] of this.lastUsed)
       if (time - last > 12 && !this.pending.has(key)) {
         this.releasePrepared(key);
@@ -133,6 +182,30 @@ export class OpenWorldTerrain {
         this.lastUsed.delete(key);
         this.world.updateAssetDiagnostics();
       }
+  }
+  private request(key: string, ticket: LoadTicket) {
+    const promise = this.assets
+      .ensureEnvironment(key, ticket)
+      .then(() => {
+        if (!this.disposed) this.world.updateAssetDiagnostics();
+      })
+      .catch((error) => {
+        // Ground withdrawn after travel is not an asset failure; a needed one is.
+        if (isLoadCancelled(error)) return;
+        if (!this.disposed)
+          this.world.failWorld(
+            '地域の3D素材を読み込めませんでした。再読み込みしてください。',
+            error,
+          );
+        throw error;
+      })
+      .finally(() => {
+        this.demand.settle(key, ticket);
+        // A newer request for the same ground keeps its own entry.
+        if (this.pending.get(key) === promise) this.pending.delete(key);
+      });
+    this.pending.set(key, promise);
+    promise.catch(() => {});
   }
   prepare(key) {
     if (this.prepared.has(key)) return this.prepared.get(key);
@@ -236,7 +309,11 @@ export class OpenWorldTerrain {
   }
   update(camera, time) {
     if (this.disposed) return;
-    if (time >= this.nextPlan) {
+    // A warp, boat crossing or new spawn replans at once: its floor becomes urgent.
+    const jumped =
+      Math.hypot(camera.position.x - this.planX, camera.position.z - this.planZ) >
+      STARTUP.jumpMetres;
+    if (time >= this.nextPlan || jumped) {
       this.plan(camera.position.x, camera.position.z, time);
       this.nextPlan = time + 0.3;
     }
@@ -262,9 +339,10 @@ export class OpenWorldTerrain {
     this.uploadBytes +=
       this.ocean?.update(
         this.surroundings.filter((c) => {
-          sphere.center.set(c.x, -0.52, c.z);
+          sphere.center.set(c.x, OCEAN_SURFACE_Y, c.z);
           sphere.radius = 25;
-          return coastDistance(c.x, c.z) < 26 && this.frustum.intersectsSphere(sphere);
+          // Each plan's chunk objects are fresh, so the scan runs once per chunk and plan.
+          return this.frustum.intersectsSphere(sphere) && (c.coastal ??= coastalChunk(c));
         }),
         time,
       ) ?? 0;
@@ -285,14 +363,13 @@ export class OpenWorldTerrain {
       }
       const distance = Math.hypot(camera.position.x - chunk.x, camera.position.z - chunk.z),
         levels = this.prepared.get(chunk.assetKey);
-      const level = Math.min(levels.length - 1, distance < 44 ? 0 : distance < 82 ? 1 : 2);
+      // An admitted chunk keeps its record, so its tile is scanned once.
+      const level = Math.min(levels.length - 1, distance < 44 ? 0 : distance < 82 ? 1 : 2),
+        coastal = (chunk.coastal ??= coastalChunk(chunk)) ? 1 : 0;
       matrix.makeRotationY(chunk.yaw).setPosition(chunk.x, 0, chunk.z);
       for (const part of levels[level]) {
         part.mesh.setMatrixAt(part.mesh.count, matrix);
-        part.geometry?.attributes.earthCoastal?.setX(
-          part.mesh.count,
-          coastDistance(chunk.x, chunk.z) < 26 ? 1 : 0,
-        );
+        part.geometry?.attributes.earthCoastal?.setX(part.mesh.count, coastal);
         part.mesh.count++;
       }
     }
@@ -343,7 +420,10 @@ export class OpenWorldTerrain {
     this.cullDirty = true;
   }
   dispose() {
+    if (this.disposed) return;
     this.disposed = true;
+    // Queued ground nobody else wants is cancelled.
+    this.demand.clear();
     this.bankBuilder?.dispose();
     for (const chunk of this.chunks.values()) this.removeChunk(chunk);
     this.chunks.clear();

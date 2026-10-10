@@ -1,0 +1,138 @@
+{
+  "modelKey": "sagasa-mascot",
+  "name": "さが",
+  "kind": "companion",
+  "candidate": 1,
+  "revision": "r03",
+  "status": "friend-mascot-integrated",
+  "url": "/models/sagasa-mascot/model-r03.glb",
+  "sha256": "4f06be7e91e280d8db6d21edba5bb39c044c614075464c04e42396c84b0b57b3",
+  "bytes": 6685712,
+  "triangles": 23632,
+  "bones": 23,
+  "upAxis": "Y",
+  "forwardAxis": "+Z",
+  "heightMetres": 0.52,
+  "widthMetres": 0.35802693829694204,
+  "lengthMetres": 0.24144445918466795,
+  "petContactMetres": 0.5097366571426392,
+  "placement": {
+    "pivot": "ground-between-shoes",
+    "scale": 1
+  },
+  "portrait": {
+    "url": "/models/sagasa-mascot/portrait.png",
+    "sha256": "3a03ef57b016844d60322cb856c844950a1584c03e2fbb90583bbdaaf97ee053"
+  },
+  "clips": [
+    {
+      "name": "Idle_Loop",
+      "seconds": 3,
+      "loop": true,
+      "fps": 60,
+      "rootMotion": "in-place"
+    },
+    {
+      "name": "Walk_Loop",
+      "seconds": 0.7166666666666667,
+      "loop": true,
+      "fps": 60,
+      "rootMotion": "in-place"
+    },
+    {
+      "name": "Run_Loop",
+      "seconds": 0.4,
+      "loop": true,
+      "fps": 60,
+      "rootMotion": "in-place"
+    },
+    {
+      "name": "Pet",
+      "seconds": 1.4,
+      "loop": false,
+      "fps": 60,
+      "rootMotion": "in-place"
+    },
+    {
+      "name": "Happy",
+      "seconds": 1.4,
+      "loop": false,
+      "fps": 60,
+      "rootMotion": "in-place"
+    },
+    {
+      "name": "Hit",
+      "seconds": 0.65,
+      "loop": false,
+      "fps": 60,
+      "rootMotion": "in-place"
+    },
+    {
+      "name": "Wave",
+      "seconds": 1.8,
+      "loop": false,
+      "fps": 60,
+      "rootMotion": "in-place"
+    },
+    {
+      "name": "Bow",
+      "seconds": 1.6,
+      "loop": false,
+      "fps": 60,
+      "rootMotion": "in-place"
+    }
+  ],
+  "locomotion": {
+    "Walk_Loop": {
+      "metresPerSecond": 0.18334048110473924,
+      "cycleSeconds": 0.72
+    },
+    "Run_Loop": {
+      "metresPerSecond": 0.6896298273083851,
+      "cycleSeconds": 0.4
+    }
+  },
+  "lods": [
+    {
+      "url": "/models/sagasa-mascot/lod-r03.glb",
+      "sha256": "c34b9f0c9b91d0b2dba5e8cda0d770cb3df2a9952f035aaf47c6f1dee32363eb",
+      "bytes": 1113972,
+      "triangles": 10624,
+      "distanceMetres": 8,
+      "purpose": "animated-medium-lod-geometry"
+    }
+  ],
+  "provenance": {
+    "provider": "Claude Code (Opus 5.5)",
+    "claudeUsed": true,
+    "referenceGenerator": "Codex CLI 0.162.0-alpha.2 built-in image_gen (configured default model, unelevated sandbox); request and prompt saved beside the reference",
+    "referenceImage": "assets/friend-mascots/sagasa-mascot/source/reference-v1.png",
+    "referenceSha256": "1a0c52e325c8d4666476757918916ea69a44eec7ba847574028fc4de79202e70",
+    "identitySources": [
+      "assets/friend-mascots/sagasa-mascot/source/user-reference.jpg"
+    ],
+    "reconstruction": "Local TRELLIS-2 v0.8.1, res 1024, tex 1024, seed 42",
+    "denseSha256": "5eb6b0bf011c63ec24594c9fcbf117fbe84747196383749cb999c03a74ffe656",
+    "reduction": "meshoptimizer position-only quadric reduction of the dense surface; fresh Smart UV; 2048 diffuse-colour bake from the dense TRELLIS albedo (Blender 3.6 Cycles, selected to active)",
+    "deviationMetres": {
+      "denseToLow": {
+        "rms": 0.0007266427229576913,
+        "p95": 0.0014193980950271707,
+        "max": 0.0032137111817056585
+      },
+      "lowToDense": {
+        "rms": 0.000654093704992657,
+        "p95": 0.0012221765099306892,
+        "max": 0.004254678714231838
+      }
+    },
+    "surfaceSha256": "62c806cd0631de502db7ad958163ac8a4a23c1f62c5e066150f867ad24ba4b73",
+    "rig": "assets/friend-mascots/workflow/rig.py with assets/friend-mascots/sagasa-mascot/rig.json",
+    "rigSha256": "4f06be7e91e280d8db6d21edba5bb39c044c614075464c04e42396c84b0b57b3",
+    "pipeline": "assets/friend-mascots/README.md",
+    "visualReview": "output/model-generation/models/sagasa-mascot/work/rig/revision-03/poses"
+  },
+  "notes": [
+    "Contributor companion. 23632 triangles, 23 bones, 8 in-place 60 fps clips; LOD 10624 triangles shares the skeleton from 8 m. Lowest authored vertex 0.0010 m."
+  ]
+}

@@ -6,7 +6,21 @@ const base = process.argv[2] || 'https://cromagnonmmo.cro-magnon.workers.dev';
 const build = JSON.parse(await readFile('output/cloudflare-build.json', 'utf8'));
 assert.ok(['public', 'full'].includes(build.credits), 'Unknown credits profile');
 const includeSupervisors = build.credits === 'full';
+// The page entry is the title shell; it imports main.js once the title is painted.
+const titleShellFiles = [
+  'src/boot.js',
+  'src/title-shell.js',
+  'src/icons.js',
+  'src/startup-marks.js',
+  'shared/friend-mascot-roster.mjs',
+];
+for (const required of titleShellFiles)
+  assert.ok(
+    build.publicFiles.some((file) => file.path === required),
+    `release omits ${required}`,
+  );
 const paths = new Set([
+  ...titleShellFiles,
   'src/main.js',
   'src/asset-download.js',
   'src/title-credits.js',
@@ -32,6 +46,12 @@ for (const file of files) {
   assert.equal(bytes.length, file.bytes, file.path);
   assert.equal(createHash('sha256').update(bytes).digest('hex'), file.sha256, file.path);
 }
+const page = await fetch(`${base}/`).then((r) => r.text());
+assert.deepEqual(
+  [...page.matchAll(/<script type="module" src="([^"]+)"/g)].map((match) => match[1]),
+  ['/src/boot.js'],
+  'the released page starts from the title shell',
+);
 const profiles = await fetch(`${base}/src/title-credit-profiles.js`).then((r) => r.text());
 assert.match(profiles, /yuri/);
 assert.match(profiles, /R-524/);
@@ -74,6 +94,7 @@ const report = {
   base,
   status: 'passed',
   servedFilesVerified: files.length,
+  titleShellFilesVerified: titleShellFiles.length,
   publicCreditsOnly: !includeSupervisors,
   supervisorCreditsIncluded: includeSupervisors,
   includedSupervisorFiles,

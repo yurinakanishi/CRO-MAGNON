@@ -1,12 +1,19 @@
-import { isTexture, isMesh, isSkinnedMesh } from './three-types.js';
+import { isMesh, isSkinnedMesh } from './three-types.js';
 import { CHARACTER_MODELS } from '../shared/characters.mjs';
 import * as THREE from 'three';
-import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
 import { clone } from 'three/addons/utils/SkeletonUtils.js';
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 import { handGripPlacement } from './character-assets.js';
-import { loadVerifiedGLB } from './world-assets.js';
+import { disposeModels, loadVerifiedGLB, parseEmbeddedGLB } from './embedded-glb.js';
+import { downloadVerifiedAsset } from './asset-download.js';
 import { sha256 } from './asset-hash.js';
+import {
+  choiceLevel,
+  reviewChoices,
+  reviewedModel,
+  type ReviewChoice,
+} from './model-review-levels.js';
+import { requireSeparateLevels } from './world-asset-levels.js';
 import { HUMAN_CLIPS } from './character-animation.js';
 import { ENEMY_CLIPS } from './enemy-state.js';
 import { orientSpear } from './spear-pose.js';
@@ -84,15 +91,10 @@ floor.receiveShadow = true;
 const grid = new THREE.GridHelper(30, 30, '#aaa98f', '#787e71');
 scene.add(floor, grid);
 
-const manager = new THREE.LoadingManager();
-manager.setURLModifier((url) => {
-  if (url.startsWith('blob:') || url.startsWith('data:')) return url;
-  throw new Error(
-    '外部ファイルを参照するモデルです。テクスチャを埋め込んだGLBを使用してください。',
-  );
-});
-const loader = new GLTFLoader(manager);
+// `model` is what the review shows. `owner` is the whole parse it came from (the same
+// model, or for a packed level the file with every scene), released as one.
 let model = null,
+  owner = null,
   actors = [],
   selected = null,
   playing = true,
@@ -118,27 +120,6 @@ function clearActors() {
     scene.remove(actor.root, actor.helper);
   }
   actors = [];
-}
-
-function disposeModel(gltf) {
-  if (!gltf) return;
-  const geometries = new Set<THREE.BufferGeometry>(),
-    materials = new Set<THREE.Material>(),
-    textures = new Set<THREE.Texture>(),
-    skeletons = new Set<THREE.Skeleton>();
-  gltf.scene.traverse((object) => {
-    if (object.geometry) geometries.add(object.geometry);
-    if (object.skeleton) skeletons.add(object.skeleton);
-    for (const material of [object.material].flat().filter(Boolean)) {
-      materials.add(material);
-      for (const value of Object.values(material)) if (isTexture(value)) textures.add(value);
-    }
-  });
-  for (const resource of [...geometries, ...materials, ...skeletons]) resource.dispose();
-  for (const texture of textures) {
-    texture.dispose();
-    (texture.source?.data as ImageBitmap | undefined)?.close?.();
-  }
 }
 
 function setCamera() {
@@ -313,7 +294,7 @@ function populateActors() {
   setCamera();
 }
 
-async function openBuffer(buffer, name) {
+async function openBuffer(buffer, name, choice: ReviewChoice | null = null) {
   const ownLoad = ++loadId,
     started = performance.now();
   ui.status.textContent = `${name} を読み込み中…`;
@@ -321,15 +302,21 @@ async function openBuffer(buffer, name) {
   try {
     if (buffer.byteLength < 20 || new DataView(buffer).getUint32(0, true) !== 0x46546c67)
       throw new Error('GLB形式のファイルを選んでください。');
-    loaded = await loader.parseAsync(buffer, '');
+    // The game's own parser: meshopt geometry, the image GLTFLoader selects, and
+    // no external resource. The bytes reviewed and hashed are the bytes given.
+    loaded = await parseEmbeddedGLB(buffer, name);
     const digest = await sha256(buffer);
     if (ownLoad !== loadId) {
-      disposeModel(loaded);
+      disposeModels([loaded]);
       return;
     }
+    // A packed level is exactly its scene, after the game's checks; a refusal releases
+    // the whole parse (below).
+    const shown = reviewedModel(loaded, choice);
     clearActors();
-    disposeModel(model);
-    model = loaded;
+    disposeModels([owner]);
+    owner = loaded;
+    model = shown;
     const bounds = new THREE.Box3().setFromObject(model.scene),
       size = bounds.getSize(new THREE.Vector3());
     height = Math.max(0.2, size.y);
@@ -379,18 +366,28 @@ async function openBuffer(buffer, name) {
       : expected.length
         ? `${expected.length}クリップを検出。動き・接地・貫通・ループの継ぎ目を確認してください。`
         : '静物モデル。形状、材質、裏側、原点と寸法を確認してください。';
+    // A packed level's own record names its triangle count; the size is the whole file's.
+    let packedInfo = '';
+    if (choice?.packed) {
+      const recorded = choiceLevel(choice)?.triangles,
+        counted = Math.round(triangles);
+      packedInfo = ` / パック済みファイル ${choice.packed.levels} シーン中 scene ${choice.packed.level}`;
+      if (typeof recorded === 'number')
+        packedInfo += ` / 記録 ${recorded.toLocaleString()} triangles${recorded === counted ? '' : ' — 不一致'}`;
+    }
     ui['model-info'].textContent =
-      `${name} / ${(buffer.byteLength / 1048576).toFixed(2)} MB / ${Math.round(triangles).toLocaleString()} triangles / ${meshes} meshes / ${bones.size} bones / 寸法 ${size.x.toFixed(2)} × ${size.y.toFixed(2)} × ${size.z.toFixed(2)} m / 最下点 Y=${bounds.min.y.toFixed(3)} m`;
+      `${name} / ${(buffer.byteLength / 1048576).toFixed(2)} MB / ${Math.round(triangles).toLocaleString()} triangles / ${meshes} meshes / ${bones.size} bones / 寸法 ${size.x.toFixed(2)} × ${size.y.toFixed(2)} × ${size.z.toFixed(2)} m / 最下点 Y=${bounds.min.y.toFixed(3)} m` +
+      packedInfo;
     ui.hash.textContent = `SHA-256 ${digest}`;
     populateActors();
     loadDuration = performance.now() - started;
     ui.status.textContent = '候補を表示中 — 形状、リグ、全動作を確認';
   } catch (error) {
-    if (loaded && loaded !== model) disposeModel(loaded);
+    if (loaded && loaded !== owner) disposeModels([loaded]);
     if (ownLoad === loadId) {
       clearActors();
-      disposeModel(model);
-      model = null;
+      disposeModels([owner]);
+      owner = model = null;
       selected = null;
       ui.status.textContent = `読込失敗: ${error.message}`;
       ui.hash.textContent = '';
@@ -418,9 +415,11 @@ ui.equipment.addEventListener('change', async () => {
     if (key && !equipmentModels.has(key)) {
       const response = await fetch(`/models/${key}/asset.json`);
       if (!response.ok) throw new Error(`HTTP ${response.status}`);
-      const asset = await response.json(),
-        gltf = await loadVerifiedGLB(asset);
-      if (equipmentModels.has(key)) disposeModel(gltf);
+      const asset = await response.json();
+      // As in the game (WorldAssets), held equipment is never read from a packed scene.
+      requireSeparateLevels(asset, 'equipment');
+      const gltf = await loadVerifiedGLB(asset);
+      if (equipmentModels.has(key)) disposeModels([gltf]);
       else equipmentModels.set(key, { asset, gltf });
     }
     if (key !== ui.equipment.value) return;
@@ -513,11 +512,26 @@ async function openServedModel(modelPath) {
   } else {
     ui.status.textContent = '選択したモデルを読み込み中…';
     try {
+      const file = () => decodeURIComponent(url.pathname.split('/').pop());
+      if (url.hash) {
+        // A scene is reviewed only as a checked catalog record names it, from that record's
+        // verified file; any other scene address is refused before anything is fetched.
+        await menu;
+        const choice = packedChoices.get(modelPath);
+        if (!choice) throw new Error(`${modelPath} はカタログのパック済みLODではありません`);
+        const bytes = await downloadVerifiedAsset(choice.packed.record);
+        if (request === requestId)
+          await openBuffer(
+            bytes,
+            `${file()} · scene ${choice.packed.level}/${choice.packed.levels}`,
+            choice,
+          );
+        return;
+      }
       const response = await fetch(url);
       if (!response.ok) throw new Error(`HTTP ${response.status}`);
       const bytes = await response.arrayBuffer();
-      if (request === requestId)
-        await openBuffer(bytes, decodeURIComponent(url.pathname.split('/').pop()));
+      if (request === requestId) await openBuffer(bytes, file());
     } catch (error) {
       if (request === requestId) ui.status.textContent = `読込失敗: ${error.message}`;
     }
@@ -527,6 +541,8 @@ const assetSelect = document.querySelector<HTMLSelectElement>('#asset-model');
 assetSelect.addEventListener('change', () => {
   if (assetSelect.value) openServedModel(assetSelect.value);
 });
+/** Menu values that address a scene of a packed file, by value. */
+const packedChoices = new Map<string, ReviewChoice>();
 async function populateAssetMenu() {
   const sources = [
     ...CHARACTER_MODELS.map((model) => `/models/${model.key}/asset.json`),
@@ -538,18 +554,16 @@ async function populateAssetMenu() {
       if (!response.ok) continue;
       const record = await response.json();
       for (const asset of record.assets ?? [record]) {
-        assetSelect.add(
-          new Option(
-            CHARACTER_MODELS.find((model) => model.key === asset.modelKey)?.name ??
-              asset.name ??
-              asset.modelKey,
-            asset.url,
-          ),
-        );
-        for (const [index, lod] of (asset.lods ?? []).entries())
-          assetSelect.add(
-            new Option(`${asset.name ?? asset.modelKey} · LOD ${index + 1}`, lod.url),
-          );
+        const title =
+          CHARACTER_MODELS.find((model) => model.key === asset.modelKey)?.name ??
+          asset.name ??
+          asset.modelKey;
+        for (const choice of reviewChoices(asset, title)) {
+          const option = new Option(choice.label, choice.value);
+          if (choice.disabled) option.disabled = true;
+          assetSelect.add(option);
+          if (choice.packed) packedChoices.set(choice.value, choice);
+        }
       }
     } catch {
       /* Local file review remains available if the delivery catalog is absent. */
@@ -558,6 +572,6 @@ async function populateAssetMenu() {
   const selectedPath = new URLSearchParams(location.search).get('model');
   if (selectedPath) assetSelect.value = selectedPath;
 }
-populateAssetMenu();
+const menu = populateAssetMenu();
 const modelPath = new URLSearchParams(location.search).get('model');
 if (modelPath) await openServedModel(modelPath);

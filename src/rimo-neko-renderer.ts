@@ -118,7 +118,7 @@ export class RimoNekoRenderer {
     this.label.position.y += 0.72;
     this.hissLabel.active = false;
     for (const heart of this.hearts) heart.visible = false;
-    updateActorPerformance(this.actor.root, distance, this.world.graphics.tier);
+    updateActorPerformance(this.actor.root, distance);
   }
 
   update(dt: number) {
@@ -229,7 +229,7 @@ export class RimoNekoRenderer {
       heart.scale.setScalar(0.075 + Math.sin(age * Math.PI) * 0.035);
       heart.material.opacity = Math.sin(age * Math.PI);
     }
-    updateActorPerformance(this.actor.root, distance, this.world.graphics.tier);
+    updateActorPerformance(this.actor.root, distance);
     this.label.active = this.root.visible && distance < 18 && this.reaction !== 'hiss';
     this.label.position.copy(this.root.position);
     this.label.position.y += 0.72;

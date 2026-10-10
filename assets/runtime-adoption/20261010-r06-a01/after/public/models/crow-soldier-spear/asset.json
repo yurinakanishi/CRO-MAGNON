@@ -1,0 +1,64 @@
+{
+  "modelKey": "crow-soldier-spear",
+  "name": "白羽教団の門徒の槍",
+  "kind": "prop",
+  "candidate": 2,
+  "revision": "c2-m01",
+  "status": "remake-candidate-2-integrated",
+  "url": "/models/crow-soldier-spear/model-c2.opt-79e6dcb333d1b232.glb",
+  "sha256": "79e6dcb333d1b2326f32cae47d84f9a5845969d48416c51fbdc9a4c418b4dcb8",
+  "bytes": 515608,
+  "triangles": 2993,
+  "upAxis": "Y",
+  "forwardAxis": "+Z",
+  "heightMetres": 2.1462,
+  "widthMetres": 0.4115,
+  "placement": {
+    "pivot": "ground-centred",
+    "min": [
+      -0.206666499376297,
+      0.00090973568148911,
+      -0.10682697594165802
+    ],
+    "max": [
+      0.2048412710428238,
+      2.1471526622772217,
+      0.10717608034610748
+    ],
+    "attachment": "crow rig bone (src/crow-faction-visuals.ts CROW_RANK_PARTS)"
+  },
+  "clips": [],
+  "lods": [],
+  "notes": [
+    "Replaces the code-built primitive CrowSoldierShaft/CrowSoldierSpearhead (cylinder + 4-sided cone). Codex image_gen reference -> TRELLIS-2 1024 -> meshopt 2993 tris -> xatlas -> albedo + baked normal. Ground-centred pivot, +Y up."
+  ],
+  "onDemand": true,
+  "replaces": "code-built primitives: CrowSoldierShaft/CrowSoldierSpearhead (cylinder + 4-sided cone)",
+  "provenance": {
+    "provider": "Claude Code (Opus 5.5)",
+    "claudeUsed": true,
+    "referenceGenerator": "Codex CLI built-in image_gen (gpt-5.6-sol, medium)",
+    "referenceImage": "C:/Users/yurin/Desktop/projects/CRO-MAGNON/output/model-generation/models/crow-soldier-spear/source/original/candidate2-ref-a.png",
+    "referenceSha256": "55d05a894199dc9ebe1912979ea7fea767d62d3120770e07c284cf4ba3a891cf",
+    "reconstruction": "Local TRELLIS-2 v0.8.1, res 1024, tex 1024, seed recorded in dense JSON",
+    "denseFile": "C:/Users/yurin/Desktop/projects/CRO-MAGNON/output/model-generation/models/crow-soldier-spear/work/candidate-02/trellis/dense-ref2a-res1024-tex1024-seed0042.glb",
+    "denseSha256": "be9c296b041848505bd59d8c4ae84eb411c9e08b8661afece8c9b6d346781d16",
+    "processReport": "output/model-generation/models/crow-soldier-spear/work/candidate-02/low-poly/m01/process-report.json",
+    "pipeline": "scripts/remake/ (trellis_queue.py, meshopt_reduce.mjs, xatlas_unwrap.py, remake_process.py); docs/asset-remake/PLAN.md",
+    "previousDelivery": null,
+    "visualReview": "assets/asset-remake/reviews/crow-soldier-spear.json"
+  },
+  "runtimeOptimization": {
+    "adoption": "20261010-r06-a01",
+    "candidateRevision": "assets/optimized-runtime/20261009-r04",
+    "selection": "ordinary-compressed",
+    "original": {
+      "url": "/models/crow-soldier-spear/model-c2.glb",
+      "sha256": "397a0fa02d74ffea1b4d5399f61a1644e26c912828b95ebc31e3445f840bfb01",
+      "bytes": 558616,
+      "triangles": 2993,
+      "lods": []
+    },
+    "adoptedBy": "20261009-r04-a01"
+  }
+}

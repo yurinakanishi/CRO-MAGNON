@@ -62,7 +62,7 @@ async function open(name) {
       }
       const originalTorchFrame=WorldRenderer.prototype.render;
       WorldRenderer.prototype.render=function(...args){const r=originalTorchFrame.apply(this,args);window.qa=this;if(window.caveReview)this.renderer.render(this.scene,caveReviewCamera(this));return r;};
-      window.cavePixels=()=>{const w=window.qa;w.renderer.render(w.scene,caveReviewCamera(w));const gl=w.renderer.getContext(),width=w.canvas.width,height=w.canvas.height,p=new Uint8Array(width*height*4);gl.readPixels(0,0,width,height,gl.RGBA,gl.UNSIGNED_BYTE,p);let n=0,sum=0,bright=0,black=0;for(let y=Math.floor(height*.15);y<height*.85;y+=3)for(let x=Math.floor(width*.1);x<width*.9;x+=3){const i=(y*width+x)*4,l=p[i]*.2126+p[i+1]*.7152+p[i+2]*.0722;sum+=l;n++;if(l>30)bright++;if(l<6)black++;}return{mean:sum/n,bright:bright/n,black:black/n,tier:w.graphics.tier};};
+      window.cavePixels=()=>{const w=window.qa;w.renderer.render(w.scene,caveReviewCamera(w));const gl=w.renderer.getContext(),width=w.canvas.width,height=w.canvas.height,p=new Uint8Array(width*height*4);gl.readPixels(0,0,width,height,gl.RGBA,gl.UNSIGNED_BYTE,p);let n=0,sum=0,bright=0,black=0;for(let y=Math.floor(height*.15);y<height*.85;y+=3)for(let x=Math.floor(width*.1);x<width*.9;x+=3){const i=(y*width+x)*4,l=p[i]*.2126+p[i+1]*.7152+p[i+2]*.0722;sum+=l;n++;if(l>30)bright++;if(l<6)black++;}return{mean:sum/n,bright:bright/n,black:black/n,safetyScale:w.graphics.scale};};
     `,
     });
   });
@@ -217,13 +217,12 @@ try {
   await until(() => !room.camp.caveFireLit, 'hearth E off');
   pass('the shared hearth still lights and extinguishes with E');
   await place(a, caveWorldAt(-21.2, -3.35));
-  for (const mode of ['low', 'standard']) {
-    await a.page.keyboard.press('Escape');
-    await a.page.locator('[data-pause-tab="settings"]').click();
-    await a.page.locator(`[data-graphics="${mode}"]`).click();
-    await a.page.locator('#modal-close').click();
-    await capture(`mural-${mode}`, false);
-  }
+  // One fixed graphics profile: the settings panel offers no quality selector.
+  await a.page.keyboard.press('Escape');
+  await a.page.locator('[data-pause-tab="settings"]').click();
+  assert.equal(await a.page.locator('[data-graphics]').count(), 0);
+  await a.page.locator('#modal-close').click();
+  await capture('mural-fixed-profile', false);
   for (const [width, height] of [
     [390, 844],
     [844, 390],
@@ -250,7 +249,7 @@ try {
     () => a.page.evaluate(() => qa.players.get(qa.selfId).torch.root.visible),
     'reentry lights',
   );
-  pass('low/standard, phone portrait/landscape, exit daylight restoration and re-entry work');
+  pass('fixed profile, phone portrait/landscape, exit daylight restoration and re-entry work');
   assert.deepEqual(errors, []);
   pass('no browser page or console errors');
 } catch (error) {

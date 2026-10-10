@@ -1,0 +1,325 @@
+{
+  "at": "2026-10-10T08:05:34.580Z",
+  "scope": "Verified Codex runtime r07 delta; whole optimization unfinished",
+  "assetAdoption": "20261010-r06-a02",
+  "cpu": [
+    {
+      "name": "camp",
+      "fps": 30.05202913631634,
+      "frameMs": {
+        "p50": 33.30000000000291,
+        "p95": 41.69999999999709,
+        "p99": 45.900000000001455,
+        "max": 50.099999999998545
+      },
+      "drawCalls": {
+        "min": 94,
+        "max": 95
+      },
+      "triangles": {
+        "min": 735435,
+        "max": 740232
+      },
+      "normalGcHeapMB": 310.751331,
+      "textureAllocatedBytes": 315582806
+    },
+    {
+      "name": "mammoth",
+      "fps": 29.99375130181212,
+      "frameMs": {
+        "p50": 33.30000000000291,
+        "p95": 33.5,
+        "p99": 37.60000000000582,
+        "max": 41.70000000001164
+      },
+      "drawCalls": {
+        "min": 45,
+        "max": 45
+      },
+      "triangles": {
+        "min": 590316,
+        "max": 590316
+      },
+      "normalGcHeapMB": 342.988851,
+      "textureAllocatedBytes": 323097598
+    },
+    {
+      "name": "overview",
+      "fps": 30.00980930060647,
+      "frameMs": {
+        "p50": 33.30000000000291,
+        "p95": 37.5,
+        "p99": 41.70000000001164,
+        "max": 45.89999999999418
+      },
+      "drawCalls": {
+        "min": 118,
+        "max": 118
+      },
+      "triangles": {
+        "min": 899868,
+        "max": 899868
+      },
+      "normalGcHeapMB": 308.01444,
+      "textureAllocatedBytes": 397579050
+    }
+  ],
+  "network": [
+    {
+      "label": "codex-r07-paired-control-r01",
+      "packageId": "4410cdaa50d8c8f04c88bfaedf39faf7aa55f45bcf89af03dde3b0784c4cfd8e",
+      "profile": {
+        "downloadMbps": 10,
+        "uploadMbps": 5,
+        "latencyMs": 50,
+        "cpuSlowdown": 4,
+        "coldCache": true,
+        "viewport": [
+          390,
+          844
+        ],
+        "dpr": 1
+      },
+      "calibration": {
+        "sizes": [
+          2097152,
+          2097152
+        ],
+        "durationMs": 3492.899999976158,
+        "aggregateTheoreticalMinMs": 3355.4431999999997
+      },
+      "titleMs": 732.5,
+      "setupMs": 6822.299999952316,
+      "controlsObservedSinceQaTapStartMs": 42947.699999928474,
+      "appEventsSinceConfirm": {
+        "cro:title-interactive": -7396.700000047684,
+        "cro:game-module-ready": -1667.7000000476837,
+        "cro:confirm": 0,
+        "cro:cave-load-start": 11.5,
+        "cro:cave-catalog": 221.5,
+        "cro:cave-template": 6739.700000047684,
+        "cro:cave-images": 12904.600000023842,
+        "cro:cave-playable": 13979.299999952316,
+        "cro:world-start": 13980.700000047684,
+        "cro:world-critical-loaded": 33511.60000002384,
+        "cro:world-build-start": 33511.799999952316,
+        "cro:world-build-end": 35710.89999997616,
+        "cro:world-fit": 35712.5,
+        "cro:world-prepare-start": 35812.60000002384,
+        "cro:world-ready": 37848.60000002384,
+        "cro:proceed": 38063.89999997616,
+        "cro:status": 40814.299999952316,
+        "cro:socket-open": 40877.10000002384,
+        "cro:welcome": 40960.299999952316,
+        "cro:first-state": 41036.200000047684,
+        "cro:arrival-ready": 41183.799999952316,
+        "cro:controls": 41899,
+        "cro:first-move-sent": 43210.39999997616,
+        "cro:first-move-confirmed": 44153.200000047684
+      },
+      "browserCompletedBodyBytes": 47706044,
+      "firstMovement": {
+        "start": {
+          "x": 48,
+          "z": 57
+        },
+        "end": {
+          "x": 53.02419619828878,
+          "z": 58.44472935019431
+        },
+        "distance": 5.227790196078288
+      },
+      "scriptRequests": 262
+    },
+    {
+      "label": "codex-r07-paired-candidate-r01",
+      "packageId": "b6a45024c57a2beb872d91a9683089e958db9f749060f84cc7f155d2def9a1d2",
+      "profile": {
+        "downloadMbps": 10,
+        "uploadMbps": 5,
+        "latencyMs": 50,
+        "cpuSlowdown": 4,
+        "coldCache": true,
+        "viewport": [
+          390,
+          844
+        ],
+        "dpr": 1
+      },
+      "calibration": {
+        "sizes": [
+          2097152,
+          2097152
+        ],
+        "durationMs": 3504.7000000476837,
+        "aggregateTheoreticalMinMs": 3355.4431999999997
+      },
+      "titleMs": 581.5,
+      "setupMs": 5942.299999952316,
+      "controlsObservedSinceQaTapStartMs": 41182.60000002384,
+      "appEventsSinceConfirm": {
+        "cro:title-interactive": -6558.799999952316,
+        "cro:game-module-ready": -1551.5999999046326,
+        "cro:confirm": 0,
+        "cro:cave-load-start": 11.5,
+        "cro:cave-catalog": 220.60000002384186,
+        "cro:cave-template": 6133.200000047684,
+        "cro:cave-images": 12353.700000047684,
+        "cro:cave-playable": 13506,
+        "cro:world-start": 13507.100000023842,
+        "cro:world-critical-loaded": 31202.5,
+        "cro:world-build-start": 31203,
+        "cro:world-build-end": 33978.40000009537,
+        "cro:world-fit": 33980,
+        "cro:world-prepare-start": 34138.60000002384,
+        "cro:world-ready": 37202.800000071526,
+        "cro:proceed": 37403.200000047684,
+        "cro:status": 38182.90000009537,
+        "cro:socket-open": 38253.60000002384,
+        "cro:welcome": 38416.300000071526,
+        "cro:first-state": 38499.40000009537,
+        "cro:arrival-ready": 38730.300000071526,
+        "cro:controls": 38750.200000047684,
+        "cro:first-move-sent": 42084.60000002384,
+        "cro:first-move-confirmed": 43146.40000009537
+      },
+      "browserCompletedBodyBytes": 39936279,
+      "firstMovement": {
+        "start": {
+          "x": 48,
+          "z": 57
+        },
+        "end": {
+          "x": 53.388973269800594,
+          "z": 58.54962257503903
+        },
+        "distance": 5.607349019607742
+      },
+      "scriptRequests": 27
+    }
+  ],
+  "native": [
+    {
+      "label": "codex-r07-bundled-context-chrome-r01",
+      "checks": 11,
+      "maximumActualCacheBodyAndIndexBytes": 65286164,
+      "contextCycles": 3,
+      "packageId": "b6a45024c57a2beb872d91a9683089e958db9f749060f84cc7f155d2def9a1d2"
+    },
+    {
+      "label": "codex-r07-bundled-context-webkit-r01",
+      "checks": 11,
+      "maximumActualCacheBodyAndIndexBytes": 66414675,
+      "contextCycles": 3,
+      "packageId": "b6a45024c57a2beb872d91a9683089e958db9f749060f84cc7f155d2def9a1d2"
+    },
+    {
+      "label": "codex-r07-bundled-touch-r01",
+      "checks": 10,
+      "packageId": "b6a45024c57a2beb872d91a9683089e958db9f749060f84cc7f155d2def9a1d2"
+    },
+    {
+      "label": "codex-r07-bundled-chat-r01",
+      "checks": 5,
+      "packageId": "b6a45024c57a2beb872d91a9683089e958db9f749060f84cc7f155d2def9a1d2"
+    },
+    {
+      "label": "codex-r07-bundled-start-r01",
+      "checks": 7,
+      "packageId": "b6a45024c57a2beb872d91a9683089e958db9f749060f84cc7f155d2def9a1d2"
+    }
+  ],
+  "limits": [
+    "Windows Chrome/WebKit; no physical Android/iPhone/thermal/battery/gamepad/fleet proof.",
+    "Normal FPS and instrumented GPU allocation are separate runs.",
+    "5 seconds, initial 4 MB and GPU textures 200 MB are not achieved. Camp p95 still exceeds 40 ms.",
+    "No publication, fleet deployment, commit, push, paid API, Cloud session or Claude implementation job."
+  ],
+  "packages": [
+    {
+      "profile": "local",
+      "buildId": "b6a45024c57a2beb872d91a9683089e958db9f749060f84cc7f155d2def9a1d2",
+      "fileHashesVerified": 694,
+      "workerFiles": 0,
+      "listedBytes": 413660507,
+      "actualPublicFiles": 353,
+      "adoptedCopies": 12,
+      "adoptedModelRecords": 64,
+      "immutableModelCache": null,
+      "supervisorCreditsIncluded": true,
+      "retainedQrFiles": [
+        "title/qr-nukonuko.png",
+        "title/qr-otani.png",
+        "title/qr-r524.png",
+        "title/qr-rimo.png",
+        "title/qr-ryuichi.png",
+        "title/qr-urata.png",
+        "title/qr-yuri.png"
+      ],
+      "qrLimitation": "Offline packages preserve legacy source files; no displayed/requested QR requires independent browser verification."
+    },
+    {
+      "profile": "exhibition",
+      "buildId": "ad6fb70d9583bb2a6bc441f0e204a127a812210fff53e0fc905968dbb76534ee",
+      "fileHashesVerified": 699,
+      "workerFiles": 0,
+      "listedBytes": 413764258,
+      "actualPublicFiles": 352,
+      "adoptedCopies": 12,
+      "adoptedModelRecords": 64,
+      "immutableModelCache": null,
+      "supervisorCreditsIncluded": true,
+      "retainedQrFiles": [
+        "title/qr-nukonuko.png",
+        "title/qr-otani.png",
+        "title/qr-r524.png",
+        "title/qr-rimo.png",
+        "title/qr-ryuichi.png",
+        "title/qr-urata.png",
+        "title/qr-yuri.png"
+      ],
+      "qrLimitation": "Offline packages preserve legacy source files; no displayed/requested QR requires independent browser verification."
+    },
+    {
+      "profile": "mmo",
+      "buildId": "34c22e2a3a81d5c0cdfd655847a46c2239b9a960f3e7d7adf6680bc424b721cb",
+      "fileHashesVerified": 568,
+      "workerFiles": 132,
+      "listedBytes": 193569319,
+      "actualPublicFiles": 568,
+      "adoptedCopies": 12,
+      "adoptedModelRecords": 64,
+      "immutableModelCache": false,
+      "supervisorCreditsIncluded": true,
+      "retainedQrFiles": [],
+      "qrLimitation": "Offline packages preserve legacy source files; no displayed/requested QR requires independent browser verification."
+    }
+  ],
+  "packageBrowserChecks": [
+    "local: actual package, supervisors/no QR, gallery, adopted actor/murals, portrait touch movement/stop",
+    "exhibition: actual package, supervisors/no QR, direct exhibition entry, adopted actor/murals, portrait touch movement/stop",
+    "mmo: actual package, supervisors/no QR, gallery, adopted actor/murals, portrait touch movement/stop"
+  ],
+  "tests": {
+    "passed": 1377,
+    "failed": 0,
+    "optionalBenchmarksSkipped": 2,
+    "javascriptSyntaxFiles": 588,
+    "typesStrictArchitectureFormattingPassed": true
+  },
+  "preservation": {
+    "at": "2026-10-10T08:03:30.577Z",
+    "protectedFiles": 985,
+    "r06PlanSha256": "db0c29cdc80a6cc9ce45080ccd7b6700f61cf5ccad9055d03c920b9a3b6d60bb",
+    "compiledSourceFiles": 290,
+    "failures": [],
+    "passed": true
+  },
+  "safety": {
+    "before": "before-codex-takeover-r01",
+    "after": "after-codex-r07-r01",
+    "files": 695,
+    "endpoints": 9,
+    "identical": true
+  }
+}

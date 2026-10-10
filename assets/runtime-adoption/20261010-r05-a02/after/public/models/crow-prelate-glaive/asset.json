@@ -1,0 +1,64 @@
+{
+  "modelKey": "crow-prelate-glaive",
+  "name": "白羽教団の大司祭の薙刀",
+  "kind": "prop",
+  "candidate": 2,
+  "revision": "c2-m01",
+  "status": "remake-candidate-2-integrated",
+  "url": "/models/crow-prelate-glaive/model-c2.opt-142517a572596582.glb",
+  "sha256": "142517a57259658220c59acc30a417d05bd79460809977805330a28bfaa99126",
+  "bytes": 554084,
+  "triangles": 2949,
+  "upAxis": "Y",
+  "forwardAxis": "+Z",
+  "heightMetres": 1.9981,
+  "widthMetres": 0.6391,
+  "placement": {
+    "pivot": "ground-centred",
+    "min": [
+      -0.31927207112312317,
+      0.0017068530432879925,
+      -0.09340128302574158
+    ],
+    "max": [
+      0.31980282068252563,
+      1.9998507499694824,
+      0.0931905135512352
+    ],
+    "attachment": "crow rig bone (src/crow-faction-visuals.ts CROW_RANK_PARTS)"
+  },
+  "clips": [],
+  "lods": [],
+  "notes": [
+    "Replaces the code-built primitive CrowPrelateBlade (one cone on the crow staff). Codex image_gen reference -> TRELLIS-2 1024 -> meshopt 2949 tris -> xatlas -> albedo + baked normal. Ground-centred pivot, +Y up."
+  ],
+  "onDemand": true,
+  "replaces": "code-built primitives: CrowPrelateBlade (one cone on the crow staff)",
+  "provenance": {
+    "provider": "Claude Code (Opus 5.5)",
+    "claudeUsed": true,
+    "referenceGenerator": "Codex CLI built-in image_gen (gpt-5.6-sol, medium)",
+    "referenceImage": "C:/Users/yurin/Desktop/projects/CRO-MAGNON/output/model-generation/models/crow-prelate-glaive/source/original/candidate2-ref-a.png",
+    "referenceSha256": "7d478b742d76d73855dec95baacbae4102bb1a613dd1dd5f52a0f1a233d31f20",
+    "reconstruction": "Local TRELLIS-2 v0.8.1, res 1024, tex 1024, seed recorded in dense JSON",
+    "denseFile": "C:/Users/yurin/Desktop/projects/CRO-MAGNON/output/model-generation/models/crow-prelate-glaive/work/candidate-02/trellis/dense-ref2a-res1024-tex1024-seed0042.glb",
+    "denseSha256": "623059add1ddd845070e3e8c1d821bd2a889f3ed6885aa02e13cab2fa0c46969",
+    "processReport": "output/model-generation/models/crow-prelate-glaive/work/candidate-02/low-poly/m01/process-report.json",
+    "pipeline": "scripts/remake/ (trellis_queue.py, meshopt_reduce.mjs, xatlas_unwrap.py, remake_process.py); docs/asset-remake/PLAN.md",
+    "previousDelivery": null,
+    "visualReview": "assets/asset-remake/reviews/crow-prelate-glaive.json"
+  },
+  "runtimeOptimization": {
+    "adoption": "20261010-r05-a02",
+    "candidateRevision": "assets/optimized-runtime/20261009-r04",
+    "selection": "ordinary-compressed",
+    "original": {
+      "url": "/models/crow-prelate-glaive/model-c2.glb",
+      "sha256": "566ce63c6c13172099f2bc251405e2e28459fb96ed0327c41c0e691f58f291c5",
+      "bytes": 599076,
+      "triangles": 2949,
+      "lods": []
+    },
+    "adoptedBy": "20261009-r04-a01"
+  }
+}

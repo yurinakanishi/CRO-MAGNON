@@ -7,12 +7,19 @@ import {
   CAVE_BEND,
 } from '../shared/camp-cave-layout.mjs';
 import { isMesh } from './three-types.js';
-import { meadowShader, MEADOW_BLADE_ALBEDO, MEADOW_MATCH } from './paleo-materials.js';
+import { meadowShader, MEADOW_BLADE_ALBEDO, MEADOW_MATCH, clipAtCoast } from './paleo-materials.js';
 import { caveGroundShader } from './cave-ground-style.js';
 import { CAMP_CAVE_SURFACE_DATA as cave } from '../shared/camp-cave-surface-data.mjs';
 
 // Tint the existing source surface along the measured, walkable switchback.
-export function prepareMountainMaterials(root: THREE.Object3D) {
+// The 280 m source square reaches past the measured shoreline: it ends at the sea, and its flat
+// apron gives way near the shore to the coast-lowered streamed ground (clipAtCoast). The coast
+// field stays owned by the open world that created it.
+export function prepareMountainMaterials(
+  root: THREE.Object3D,
+  earthTextures: { coast: THREE.DataTexture },
+) {
+  if (!earthTextures?.coast) throw new Error('The camp mountain needs the measured coast field');
   const roof = new THREE.DataTexture(
     new Float32Array(cave.roofs),
     cave.nx,
@@ -41,6 +48,7 @@ export function prepareMountainMaterials(root: THREE.Object3D) {
       if (seen.has(material)) continue;
       seen.add(material);
       material.onBeforeCompile = (shader) => {
+        clipAtCoast(shader, earthTextures, { flatGround: true });
         shader.uniforms.caveRoof = { value: roof };
         shader.uniforms.meadowBlade = {
           value: new THREE.Vector3(
@@ -102,7 +110,7 @@ export function prepareMountainMaterials(root: THREE.Object3D) {
         `,
         );
       };
-      material.customProgramCacheKey = () => 'camp-mountain-river-v11-measured-mouth';
+      material.customProgramCacheKey = () => 'camp-mountain-river-v11-measured-mouth-coast-1';
       material.needsUpdate = true;
     }
   });

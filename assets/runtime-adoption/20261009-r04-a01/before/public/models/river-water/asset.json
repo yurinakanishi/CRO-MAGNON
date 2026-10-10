@@ -1,0 +1,33 @@
+{
+  "modelKey": "river-water",
+  "name": "川の水面",
+  "kind": "water",
+  "candidate": 1,
+  "status": "reviewed-prototype",
+  "url": "/models/river-water/model.glb",
+  "sha256": "8575faa5fd988da815d622ebbd03d49390339df5eeafd0eb794e1b0368ec0274",
+  "bytes": 1905036,
+  "triangles": 2693,
+  "upAxis": "Y",
+  "forwardAxis": "+Z",
+  "heightMetres": null,
+  "widthMetres": 6,
+  "placement": {
+    "pivot": "ground-centred"
+  },
+  "clips": [],
+  "notes": [
+    "Exact revision 03 six-view comparison passed. Continuous cyan rippled rectangular surface, long axis +Z, visible texture from both sides. Removed the hallucinated white underside and overlapping hidden sheet by source height, orientation and BVH visibility; no replacement mesh. Revisions 01/02 retain rejected underside artifacts. 2693 source-derived triangles; reduced 6 m wide surface is fitted to river sections at runtime, with flow shader and shallow wave relief."
+  ],
+  "provenance": {
+    "provider": "Codex",
+    "claudeUsed": false,
+    "referenceGenerator": "Built-in imagegen",
+    "referenceImage": "output/model-generation/models/river-water/source/original/reference-v1.png",
+    "referenceSha256": "b73d563050dd0421a618e77d298e3c822fd9786edb5edf771accc71dcf5d767d",
+    "reconstruction": "Local TRELLIS-2; settings and dense SHA in model workspace",
+    "candidateFile": "output/model-generation/models/river-water/work/low-poly/candidate-03/candidate.glb",
+    "visualReview": "output/model-generation/models/river-water/qa/adoption-review.json"
+  },
+  "lods": []
+}

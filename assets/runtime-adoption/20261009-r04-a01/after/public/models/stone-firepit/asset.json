@@ -1,0 +1,86 @@
+{
+  "modelKey": "stone-firepit",
+  "name": "焚き火の薪と石",
+  "kind": "static",
+  "candidate": 2,
+  "status": "remake-candidate-2-integrated",
+  "url": "/models/stone-firepit/model-c2.opt-e41691b8703404e4.glb",
+  "sha256": "e41691b8703404e461145cabd53ff499d4c5ce4df82aa064eef2cec4efc4ed28",
+  "bytes": 1252948,
+  "triangles": 8356,
+  "upAxis": "Y",
+  "forwardAxis": "+Z",
+  "heightMetres": 0.4404,
+  "widthMetres": null,
+  "placement": {
+    "pivot": "ground-centred"
+  },
+  "clips": [],
+  "notes": [
+    "2026-10-07 remake Candidate 2: new reference (ring of rounded river stones, soot on the inner faces, charred crossed logs and ash); xatlas charts, footprint kept at 1.62 m; TRELLIS-2 1024/tex1024; 8356 triangles (meshopt reduction, fresh UVs, albedo and tangent-space normal baked from the 258452-triangle dense surface; p95 surface error 9.0 mm). Candidate 1 files retained."
+  ],
+  "provenance": {
+    "provider": "Claude Code (Opus 5.5)",
+    "claudeUsed": true,
+    "referenceGenerator": "Codex CLI built-in image_gen (gpt-5.6-sol, medium), earlier approved reference attached for identity",
+    "referenceImage": "C:/Users/yurin/Desktop/projects/CRO-MAGNON/output/model-generation/models/stone-firepit/source/original/candidate2-ref-a.png",
+    "referenceSha256": "1ab8b72cb736c62c0138538b9c7687a34d588c7a65bbbe1ca9ce2788330cf04c",
+    "reconstruction": "Local TRELLIS-2 v0.8.1, res 1024, tex 1024, seed recorded in dense JSON",
+    "denseFile": "C:/Users/yurin/Desktop/projects/CRO-MAGNON/output/model-generation/models/stone-firepit/work/candidate-02/trellis/dense-ref2a-res1024-tex1024-seed0042.glb",
+    "denseSha256": "3ee4090e40b78d75a9c4f9fd0f31abfd6a80cb430af034b4bf9548c349355161",
+    "processReport": "output/model-generation/models/stone-firepit/work/candidate-02/low-poly/m02/process-report.json",
+    "rigReport": null,
+    "pipeline": "scripts/remake/ (trellis_queue.py, remake_process.py, rig_*.py); docs/asset-remake/PLAN.md",
+    "previousDelivery": {
+      "url": "/models/stone-firepit/model.glb",
+      "sha256": "d47aa67f9987cacd61d523d53622e33ebf0778c9a03f9e68559ad3f6db20f65a",
+      "triangles": 31466,
+      "bytes": 4326524,
+      "candidate": 1,
+      "revision": null
+    },
+    "previousProvenance": {
+      "provider": "Codex",
+      "claudeUsed": false,
+      "referenceGenerator": "Built-in imagegen",
+      "referenceImage": "output/model-generation/models/stone-firepit/source/original/reference-v1.png",
+      "referenceSha256": "791db8b2eca331ce7cc0574bd38faa302e7ae8e9796a46b695f2ada4b6417734",
+      "reconstruction": "Local TRELLIS-2; settings and dense SHA in model workspace",
+      "candidateFile": "output/model-generation/models/stone-firepit/work/low-poly/candidate-01/candidate.glb",
+      "visualReview": "output/model-generation/models/stone-firepit/qa/adoption-review.json"
+    },
+    "visualReview": "assets/asset-remake/reviews/stone-firepit.json"
+  },
+  "lods": [
+    {
+      "url": "/models/stone-firepit/lod-c2.opt-6019ecfb7bc28fbb.glb",
+      "sha256": "6019ecfb7bc28fbbf0328b0a26c348048a42abaaf7244d16ddf7062758d22276",
+      "bytes": 492456,
+      "triangles": 3081,
+      "distanceMetres": 14,
+      "purpose": "medium-distance-lod"
+    }
+  ],
+  "revision": "c2-m02",
+  "runtimeOptimization": {
+    "adoption": "20261009-r04-a01",
+    "candidateRevision": "assets/optimized-runtime/20261009-r04",
+    "selection": "ordinary-compressed",
+    "original": {
+      "url": "/models/stone-firepit/model-c2.glb",
+      "sha256": "62d5e610354e665a29c069ba1e121cf1ddd519ac12da1311c8b24236289a9cb0",
+      "bytes": 1412152,
+      "triangles": 8356,
+      "lods": [
+        {
+          "url": "/models/stone-firepit/lod-c2.glb",
+          "sha256": "6deeb617524d87709c943aab7198f1ef071b6ae6de1d80ed64e65d7c88f9c4bb",
+          "bytes": 547584,
+          "triangles": 3081,
+          "distanceMetres": 14,
+          "purpose": "medium-distance-lod"
+        }
+      ]
+    }
+  }
+}

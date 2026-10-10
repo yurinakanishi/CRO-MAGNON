@@ -1,0 +1,232 @@
+{
+  "modelKey": "desert-fennec-mage",
+  "name": "砂耳の魔法使い",
+  "kind": "humanoid",
+  "candidate": 2,
+  "status": "remake-candidate-2-integrated",
+  "url": "/models/desert-fennec-mage/model-c2.glb",
+  "sha256": "82ec1d4303e25bb37bef594c118861b9d7216d1b3b996091a93b89f62c0cc3b5",
+  "bytes": 8843048,
+  "triangles": 53151,
+  "upAxis": "Y",
+  "forwardAxis": "+Z",
+  "heightMetres": 0.7799997875884851,
+  "widthMetres": 0.3915809282854757,
+  "placement": {
+    "pivot": "ground-centred",
+    "min": [
+      -0.21255625186896718,
+      5.5505816141005146e-8,
+      -0.26347975874488405
+    ],
+    "max": [
+      0.17902467641650852,
+      0.7799998430943013,
+      0.1191401584168565
+    ]
+  },
+  "clips": [
+    {
+      "name": "Attack",
+      "seconds": 0.800000011920929,
+      "loop": false
+    },
+    {
+      "name": "Craft",
+      "seconds": 2,
+      "loop": false
+    },
+    {
+      "name": "Eat",
+      "seconds": 1.7999999523162842,
+      "loop": false
+    },
+    {
+      "name": "Gather",
+      "seconds": 1.5,
+      "loop": false
+    },
+    {
+      "name": "Give",
+      "seconds": 1.2000000476837158,
+      "loop": false
+    },
+    {
+      "name": "Idle_Loop",
+      "seconds": 4,
+      "loop": true
+    },
+    {
+      "name": "Run_Loop",
+      "seconds": 0.76,
+      "loop": true
+    },
+    {
+      "name": "Walk_Loop",
+      "seconds": 0.9,
+      "loop": true
+    },
+    {
+      "name": "Wave",
+      "seconds": 2,
+      "loop": false
+    },
+    {
+      "name": "Downed",
+      "seconds": 1.8,
+      "loop": false
+    }
+  ],
+  "lods": [
+    {
+      "url": "/models/desert-fennec-mage/lod-c2.glb",
+      "sha256": "1fd295fc6261305b911fa28134143e8dc8a8a34e96ebf9b7fa6903f9e06bf5a9",
+      "bytes": 890624,
+      "triangles": 10630,
+      "distanceMetres": 28,
+      "purpose": "animated-medium-lod-geometry"
+    }
+  ],
+  "species": "bear",
+  "gender": "female",
+  "bones": 25,
+  "locomotion": {
+    "Walk_Loop": {
+      "metresPerSecond": 0.2851932624246279,
+      "strideMetres": 0.2566739361821651,
+      "dutyFactor": 0.6,
+      "method": "Distinct upright low-step walk and bent-elbow high-recovery run; limb-length IK refined against skinned soles",
+      "swingLiftMetres": 0.012320348936743924,
+      "cycleSeconds": 0.9
+    },
+    "Run_Loop": {
+      "metresPerSecond": 0.5268570269002336,
+      "strideMetres": 0.40041134044417753,
+      "dutyFactor": 0.36,
+      "method": "Bounded sagittal joint recovery, grounded flexion/extension stance, independent flight pelvis, stable bone twist",
+      "cycleSeconds": 0.76
+    }
+  },
+  "notes": [
+    "Remake C2 of the delivered sand-eared mage run-r05: same surface reduced from 103,314 triangles + baked normal; 25 bones and 10 clips unchanged. Clips copied verbatim from the previous delivery (scripts/remake/copy_animations.mjs) after the 120 fps re-export shortened an off-grid clip. Posed deviation from the delivered skin 0 m (kept vertices are a subset); clip curves within 0.04 deg (resampling). 53151 triangles (was 103314), textures 2048 WebP + baked normal."
+  ],
+  "provenance": {
+    "provider": "Claude Code (Opus 5.5)",
+    "claudeUsed": true,
+    "referenceGenerator": "none: derived from the delivered, user-approved surface (identity unchanged)",
+    "referenceImage": "public/models/desert-fennec-mage/model-run-r05.glb",
+    "referenceSha256": "1df80588345196a75382afbd437b6ec9349bc717688433801dc3fdd72c8e0841",
+    "reconstruction": "no new reconstruction; the delivered rest surface is the bake and skin-weight source",
+    "denseFile": "public/models/desert-fennec-mage/model-run-r05.glb",
+    "denseSha256": "1df80588345196a75382afbd437b6ec9349bc717688433801dc3fdd72c8e0841",
+    "processReport": "output/model-generation/models/desert-fennec-mage/work/candidate-02/transfer/t02/report.json",
+    "rigReport": null,
+    "pipeline": "scripts/remake/ (trellis_queue.py, remake_process.py, rig_*.py); docs/asset-remake/PLAN.md",
+    "previousDelivery": {
+      "url": "/models/desert-fennec-mage/model-run-r05.glb",
+      "sha256": "1df80588345196a75382afbd437b6ec9349bc717688433801dc3fdd72c8e0841",
+      "triangles": 103314,
+      "bytes": 15792420,
+      "candidate": 1,
+      "revision": null
+    },
+    "previousProvenance": {
+      "provider": "Codex",
+      "claudeUsed": false,
+      "referenceGenerator": "Built-in imagegen original concept; image candidate 2 selected by user",
+      "originalImage": "output/model-generation/models/desert-fennec-mage/source/original/user-original.png",
+      "originalSha256": "aa89e5f3e32de72d75709596719bf65371efc2e70bc7c863911225375391be57",
+      "referenceImage": "output/model-generation/models/desert-fennec-mage/source/original/reference-v1.png",
+      "referenceSha256": "aa89e5f3e32de72d75709596719bf65371efc2e70bc7c863911225375391be57",
+      "reconstruction": "Local TRELLIS-2; preserved dense reconstruction and measured reduction.",
+      "candidateFile": "output/creature-motion/revision-04/desert-fennec-mage/model.glb",
+      "visualReview": "assets/player-gaits/reviews/desert-fennec-mage-run-r05.json",
+      "replaces": "floppy-ear-mage",
+      "previousMotionVisualReview": "output/model-generation/models/desert-fennec-mage/qa/adoption-review.json",
+      "previousVisualReview": "assets/creature-motion/models/desert-fennec-mage-review.json"
+    },
+    "transfer": "scripts/remake/transfer_reduce.py (meshopt subset of delivered vertices, xatlas charts, albedo/normal bake with miss fill and back-face flip, Data Transfer skin weights; armature, bone names and clips re-exported unchanged)",
+    "visualReview": "assets/asset-remake/reviews/desert-fennec-mage.json"
+  },
+  "motionReview": {
+    "revision": "revision-04",
+    "sourceSha256": "06d14d55aa779ac1bbccbfa91bd36b8e175309abcdf6cf5deafbcea103890bdd",
+    "changes": [
+      {
+        "clip": "Run_Loop",
+        "frames": 43,
+        "sampleRate": 60.00000102179393,
+        "stride": 0.6946533387861762,
+        "duty": 0.34,
+        "lift": 0.03080087234185981,
+        "bodyClearance": 0.09867810229550956
+      },
+      {
+        "clip": "Walk_Loop",
+        "frames": 61,
+        "sampleRate": 60,
+        "stride": 0.31219478171365117,
+        "duty": 0.62,
+        "lift": 0.02669408936294517,
+        "bodyClearance": 0.021266523162787487
+      }
+    ],
+    "status": "adopted",
+    "sourceDelivery": "output/creature-motion/baseline/desert-fennec-mage/model.glb",
+    "review": "assets/creature-motion/models/desert-fennec-mage-review.json"
+  },
+  "downedMotion": {
+    "revision": "revision-01",
+    "sourceUrl": "/models/desert-fennec-mage/model-motion-r04.glb",
+    "sourceSha256": "9e02e1d7ac81a349012d5de080c95c80dc0a9bad41d2c621fb99953e5d5edbed",
+    "clip": "Downed",
+    "seconds": 1.8,
+    "fps": 60,
+    "review": "assets/downed-motion/README.md"
+  },
+  "playerGaits": {
+    "revision": "revision-02",
+    "sourceSha256": "34ff0f203944fade432484dd7d385e5bc68a105f8d3ac9a0dbd87d6f740126a4",
+    "changes": [
+      {
+        "clip": "Run_Loop",
+        "frames": 37,
+        "sampleRate": 60,
+        "stride": 0.646818319179056,
+        "duty": 0.36,
+        "lift": 0.09856279149395139,
+        "bodyClearance": 0.083655243355362,
+        "armSwingRadians": 0.68,
+        "elbowBendRadians": 1.3,
+        "forwardLeanRadians": 0.16
+      },
+      {
+        "clip": "Walk_Loop",
+        "frames": 55,
+        "sampleRate": 60,
+        "stride": 0.2566739361821651,
+        "duty": 0.6,
+        "lift": 0.012320348936743924,
+        "bodyClearance": 0.01632578853180347,
+        "armSwingRadians": 0.27,
+        "elbowBendRadians": 0.2,
+        "forwardLeanRadians": 0.015
+      }
+    ],
+    "status": "adopted",
+    "review": "assets/player-gaits/README.md",
+    "sourceDelivery": "/models/desert-fennec-mage/model-downed-r01.glb",
+    "author": "Codex"
+  },
+  "playerRun": {
+    "revision": "revision-05",
+    "sourceSha256": "402f60a6182e1204ce33ac643556bc3d5118a63f0490b1be97f2124e5207f174",
+    "sourceDelivery": "/models/desert-fennec-mage/model-gaits-r02.glb",
+    "status": "adopted",
+    "method": "Bounded sagittal joint recovery, grounded flexion/extension stance, independent flight pelvis, stable bone twist",
+    "stanceFraction": 0.36,
+    "peakAuthoredSwingKneeDegrees": 104,
+    "review": "assets/player-gaits/RUN_REPAIR.md"
+  },
+  "revision": "c2-t02"
+}

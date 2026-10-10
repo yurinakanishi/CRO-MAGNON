@@ -1,0 +1,64 @@
+{
+  "modelKey": "crow-pontiff-crozier",
+  "name": "白羽教皇の司教杖",
+  "kind": "prop",
+  "candidate": 2,
+  "revision": "c2-m01",
+  "status": "remake-candidate-2-integrated",
+  "url": "/models/crow-pontiff-crozier/model-c2.opt-93eab7263c91dde9.glb",
+  "sha256": "93eab7263c91dde944ae386bf9b1ceb1e0da64a160e978bc1bae31f053ece7a6",
+  "bytes": 624764,
+  "triangles": 3494,
+  "upAxis": "Y",
+  "forwardAxis": "+Z",
+  "heightMetres": 2.0985,
+  "widthMetres": 0.4368,
+  "placement": {
+    "pivot": "ground-centred",
+    "min": [
+      -0.21840894222259521,
+      0.0014945782022550702,
+      -0.06144563853740692
+    ],
+    "max": [
+      0.21841278672218323,
+      2.0999999046325684,
+      0.06130122393369675
+    ],
+    "attachment": "crow rig bone (src/crow-faction-visuals.ts CROW_RANK_PARTS)"
+  },
+  "clips": [],
+  "lods": [],
+  "notes": [
+    "Replaces the code-built primitive CrowPontiffCrozierShaft/CrozierRing (cylinder + torus). Codex image_gen reference -> TRELLIS-2 1024 -> meshopt 3494 tris -> xatlas -> albedo + baked normal. Ground-centred pivot, +Y up."
+  ],
+  "onDemand": true,
+  "replaces": "code-built primitives: CrowPontiffCrozierShaft/CrozierRing (cylinder + torus)",
+  "provenance": {
+    "provider": "Claude Code (Opus 5.5)",
+    "claudeUsed": true,
+    "referenceGenerator": "Codex CLI built-in image_gen (gpt-5.6-sol, medium)",
+    "referenceImage": "C:/Users/yurin/Desktop/projects/CRO-MAGNON/output/model-generation/models/crow-pontiff-crozier/source/original/candidate2-ref-a.png",
+    "referenceSha256": "bb343cec54f0eb67c11f48b2baf2140d91807a87cf9886f479f96b2c2205c9d8",
+    "reconstruction": "Local TRELLIS-2 v0.8.1, res 1024, tex 1024, seed recorded in dense JSON",
+    "denseFile": "C:/Users/yurin/Desktop/projects/CRO-MAGNON/output/model-generation/models/crow-pontiff-crozier/work/candidate-02/trellis/dense-ref2a-res1024-tex1024-seed0042.glb",
+    "denseSha256": "9c317d01bd1d3228e2a1b24ed51b3a8ba7934844f7d6beaf57468776ec8e07b3",
+    "processReport": "output/model-generation/models/crow-pontiff-crozier/work/candidate-02/low-poly/m01/process-report.json",
+    "pipeline": "scripts/remake/ (trellis_queue.py, meshopt_reduce.mjs, xatlas_unwrap.py, remake_process.py); docs/asset-remake/PLAN.md",
+    "previousDelivery": null,
+    "visualReview": "assets/asset-remake/reviews/crow-pontiff-crozier.json"
+  },
+  "runtimeOptimization": {
+    "adoption": "20261010-r06-a02",
+    "candidateRevision": "assets/optimized-runtime/20261009-r04",
+    "selection": "ordinary-compressed",
+    "original": {
+      "url": "/models/crow-pontiff-crozier/model-c2.glb",
+      "sha256": "b7869b75d0cc2aa2a5fb99bebcddb2405dbaf8e1e207ec0dddac1cb93a203937",
+      "bytes": 676740,
+      "triangles": 3494,
+      "lods": []
+    },
+    "adoptedBy": "20261009-r04-a01"
+  }
+}

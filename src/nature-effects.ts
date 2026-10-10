@@ -3,6 +3,10 @@ import { jumpProgress } from '../shared/jumping.mjs';
 import { caveInteriorWeight, caveTorchLit } from '../shared/cave-light.mjs';
 import { FootstepClock, natureWind, waterAt, type SoundPoint } from './nature-environment.js';
 
+// The one graphics profile's particle budgets.
+const SMOKE_PARTICLES = 6;
+const CAVE_DUST_PARTICLES = 16;
+
 function particles(count: number, smoke = false) {
   const geometry = new THREE.BufferGeometry();
   geometry.setAttribute('position', new THREE.BufferAttribute(new Float32Array(count * 3), 3));
@@ -29,7 +33,7 @@ function particles(count: number, smoke = false) {
 export class NatureEffects {
   readonly stats = { smoke: 0, dust: 0, ripples: 0, footfalls: 0 };
   private smoke = new Map<any, ReturnType<typeof particles>>();
-  private dust = particles(40);
+  private dust = particles(CAVE_DUST_PARTICLES);
   private ripples: { mesh: THREE.Mesh<THREE.PlaneGeometry, THREE.ShaderMaterial>; at: number }[] =
     [];
   private steps = new FootstepClock();
@@ -68,8 +72,7 @@ export class NatureEffects {
       world.scene.add(this.dust, ...this.ripples.map((r) => r.mesh));
       this.attached = true;
     }
-    const low = world.graphics.tier === 'low',
-      scale = world.height * world.renderer.getPixelRatio();
+    const scale = world.height * world.renderer.getPixelRatio();
     this.stats.smoke = 0;
     const activeFires = new Set(world.fires);
     for (const [fire, smoke] of this.smoke)
@@ -81,14 +84,13 @@ export class NatureEffects {
       if (fire.cave) continue;
       let smoke = this.smoke.get(fire);
       if (!smoke) {
-        smoke = particles(12, true);
+        smoke = particles(SMOKE_PARTICLES, true);
         fire.root.add(smoke);
         this.smoke.set(fire, smoke);
       }
       smoke.visible = fire.light.visible && !world.occluded();
       if (!smoke.visible) continue;
-      const count = low ? 6 : 12;
-      smoke.geometry.setDrawRange(0, count);
+      const count = SMOKE_PARTICLES;
       smoke.material.uniforms.scale.value = scale;
       const pos = smoke.geometry.getAttribute('position'),
         life = smoke.geometry.getAttribute('life');
@@ -118,12 +120,11 @@ export class NatureEffects {
           (f) => f.cave && f.light.visible && f.root.position.distanceTo(position) < 7,
         ));
     this.dust.visible = cave > 0.1 && !!lit;
-    this.stats.dust = this.dust.visible ? (low ? 16 : 40) : 0;
+    this.stats.dust = this.dust.visible ? CAVE_DUST_PARTICLES : 0;
     if (this.dust.visible) {
       const count = this.stats.dust,
         pos = this.dust.geometry.getAttribute('position'),
         life = this.dust.geometry.getAttribute('life');
-      this.dust.geometry.setDrawRange(0, count);
       this.dust.position.copy(position);
       this.dust.material.uniforms.scale.value = scale;
       this.dust.material.uniforms.alpha.value = cave;

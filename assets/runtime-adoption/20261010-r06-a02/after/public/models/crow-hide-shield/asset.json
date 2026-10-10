@@ -1,0 +1,64 @@
+{
+  "modelKey": "crow-hide-shield",
+  "name": "白羽教団の門徒の獣皮の盾",
+  "kind": "prop",
+  "candidate": 2,
+  "revision": "c2-m01",
+  "status": "remake-candidate-2-integrated",
+  "url": "/models/crow-hide-shield/model-c2.opt-537f3b54e5b3ada6.glb",
+  "sha256": "537f3b54e5b3ada65f796a4d5951942c978da69832c03a6de1345bb35a2a5799",
+  "bytes": 815204,
+  "triangles": 2372,
+  "upAxis": "Y",
+  "forwardAxis": "+Z",
+  "heightMetres": 0.8967,
+  "widthMetres": 0.6402,
+  "placement": {
+    "pivot": "ground-centred",
+    "min": [
+      -0.318662166595459,
+      0,
+      -0.09778950363397598
+    ],
+    "max": [
+      0.3215281069278717,
+      0.8967279195785522,
+      0.09714154154062271
+    ],
+    "attachment": "crow rig bone (src/crow-faction-visuals.ts CROW_RANK_PARTS)"
+  },
+  "clips": [],
+  "lods": [],
+  "notes": [
+    "Replaces the code-built primitive CrowSoldierHideShield/ShieldBoss (cylinder + sphere). Codex image_gen reference -> TRELLIS-2 1024 -> meshopt 2372 tris -> xatlas -> albedo + baked normal. Ground-centred pivot, +Y up."
+  ],
+  "onDemand": true,
+  "replaces": "code-built primitives: CrowSoldierHideShield/ShieldBoss (cylinder + sphere)",
+  "provenance": {
+    "provider": "Claude Code (Opus 5.5)",
+    "claudeUsed": true,
+    "referenceGenerator": "Codex CLI built-in image_gen (gpt-5.6-sol, medium)",
+    "referenceImage": "C:/Users/yurin/Desktop/projects/CRO-MAGNON/output/model-generation/models/crow-hide-shield/source/original/candidate2-ref-a.png",
+    "referenceSha256": "74cfda1ce61e3f5ba5b1260c08e87fc9113ba64b2c7a515047f9a43c40c3d147",
+    "reconstruction": "Local TRELLIS-2 v0.8.1, res 1024, tex 1024, seed recorded in dense JSON",
+    "denseFile": "C:/Users/yurin/Desktop/projects/CRO-MAGNON/output/model-generation/models/crow-hide-shield/work/candidate-02/trellis/dense-ref2a-res1024-tex1024-seed0042.glb",
+    "denseSha256": "bc22de0a55dcd075acca02444c11a8cfa94a97b599283cb6edac93fd164c8683",
+    "processReport": "output/model-generation/models/crow-hide-shield/work/candidate-02/low-poly/m01/process-report.json",
+    "pipeline": "scripts/remake/ (trellis_queue.py, meshopt_reduce.mjs, xatlas_unwrap.py, remake_process.py); docs/asset-remake/PLAN.md",
+    "previousDelivery": null,
+    "visualReview": "assets/asset-remake/reviews/crow-hide-shield.json"
+  },
+  "runtimeOptimization": {
+    "adoption": "20261010-r06-a02",
+    "candidateRevision": "assets/optimized-runtime/20261009-r04",
+    "selection": "ordinary-compressed",
+    "original": {
+      "url": "/models/crow-hide-shield/model-c2.glb",
+      "sha256": "ec9868c7b5ccf590da1920d6f8430bd4af04de9f017259f8e1f09c3ff8623fe3",
+      "bytes": 863500,
+      "triangles": 2372,
+      "lods": []
+    },
+    "adoptedBy": "20261009-r04-a01"
+  }
+}

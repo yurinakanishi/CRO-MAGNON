@@ -11,7 +11,12 @@ import {
 import { orientSpear } from '../dist/src/spear-pose.js';
 import { WorldAssets } from '../dist/src/world-assets.js';
 import { buildMeatPile } from '../dist/src/world-scenery.js';
-import { meatPieceVisibility } from '../dist/src/resource-visuals.js';
+import {
+  berryAnchors,
+  fruitCount,
+  meatPieceVisibility,
+  seedFromId,
+} from '../dist/src/resource-visuals.js';
 import { WorldRenderer } from '../dist/src/world3d.js';
 
 test('hunting controls normalize legacy inventory and prioritize harvest or cooking', () => {
@@ -118,12 +123,13 @@ test('animal death seeks to server phase time, clamps, and resets after respawn'
   actor.dispose();
 });
 
-test('resource models deplete visibly: fruit count and boulder scale', () => {
+test('resource models deplete visibly: fruit count and boulder scale', async (t) => {
   const bush = new THREE.Group(),
     leaves = new THREE.Mesh(new THREE.SphereGeometry(0.5, 12, 8), new THREE.MeshStandardMaterial());
   leaves.position.y = 0.7;
   bush.add(leaves);
   const assets = new WorldAssets();
+  t.after(() => assets.dispose());
   assets.templates.set('berry-bush', {
     gltf: { scene: bush },
     lods: [{ scene: bush.clone(true) }],
@@ -132,27 +138,117 @@ test('resource models deplete visibly: fruit count and boulder scale', () => {
   const points = assets.modelPoints('berry-bush');
   assert.ok(points.length > 50 && points.every(([, y]) => y >= 0.19), 'points are in model space');
   assert.deepEqual(assets.modelPoints('missing'), []);
-  const world = Object.create(WorldRenderer.prototype);
-  world.worldAssets = assets;
-  const berryModel = assets.createResource('berry-bush');
+  // Test-only stand-in for the verified TRELLIS berry-cluster prop. Like the
+  // delivered GLB, its pivot is the bottom centre. Power-of-two extents are exact
+  // in the Float32 position buffer, so the pivot is exactly y = 0. (A 0.06 radius
+  // stores its bottom as float32(-0.06) + 0.06 = 1.34e-9, raising every centre.)
+  const clusterGeometry = new THREE.BoxGeometry(0.125, 0.125, 0.125).translate(0, 0.0625, 0),
+    clusterScene = new THREE.Group();
+  clusterScene.add(new THREE.Mesh(clusterGeometry, new THREE.MeshStandardMaterial()));
+  // The shared in-flight equipment load that createEquipment awaits. It stays pending
+  // until released, then installs the template as the verified loader does.
+  let release;
+  assets.equipmentLoads.set(
+    'berry-cluster',
+    new Promise((resolve) => (release = resolve)).then(() => {
+      assets.templates.set('berry-cluster', {
+        gltf: { scene: clusterScene },
+        lods: [],
+        asset: { modelKey: 'berry-cluster', kind: 'prop' },
+      });
+    }),
+  );
+  const attachments = [];
+  const renderer = () => {
+    const world = Object.create(WorldRenderer.prototype);
+    world.worldAssets = assets;
+    world.disposed = false;
+    // Reject the tracked attachment instead of reaching browser-only failWorld state.
+    world.failWorld = (message, error) => {
+      throw new Error(message, { cause: error });
+    };
+    world.attachBerryClusters = (...args) => {
+      const attached = WorldRenderer.prototype.attachBerryClusters.apply(world, args);
+      attachments.push(attached);
+      return attached;
+    };
+    return world;
+  };
+  const bushItem = () => ({
+    model: assets.createResource('berry-bush'),
+    key: 'berry-bush',
+    surface: null,
+    baseScale: 1,
+  });
+  const world = renderer();
+  const full = { id: 'berry-1', type: 'berry', amount: 5, maxAmount: 5 };
+  const berry = { ...bushItem(), resource: full },
+    berryModel = berry.model;
   assert.ok(berryModel.isLOD);
-  const berry = { model: berryModel, key: 'berry-bush', surface: null, baseScale: 1 };
-  world.decorateResource(berry, { id: 'berry-1', type: 'berry', amount: 5, maxAmount: 5 });
+  world.decorateResource(berry, full);
   assert.equal(berry.fruit.parent, berryModel, 'fruit hangs off the LOD root, not a level');
-  assert.equal(berry.fruit.children.length, 5);
-  world.applyResourceAmount(berry, { type: 'berry', amount: 2, maxAmount: 5 });
+  // Harvests that arrive while the prop is still loading.
+  for (const amount of [4, 2]) {
+    berry.resource = { ...full, amount };
+    world.applyResourceAmount(berry, berry.resource);
+  }
+  assert.equal(berry.fruit.children.length, 0, 'no fruit is drawn before the verified prop loads');
+  // A fruit target replaced during the load, and a renderer disposed during it.
+  const replaced = bushItem();
+  world.decorateResource(replaced, { id: 'berry-2', type: 'berry', amount: 5, maxAmount: 5 });
+  const stale = replaced.fruit;
+  world.decorateResource(replaced, { id: 'berry-2', type: 'berry', amount: 5, maxAmount: 5 });
+  const closed = renderer(),
+    orphan = bushItem();
+  closed.decorateResource(orphan, { id: 'berry-3', type: 'berry', amount: 5, maxAmount: 5 });
+  closed.disposed = true;
+  assert.equal(attachments.length, 4);
+  release();
+  await Promise.all(attachments);
+  assert.equal(berry.fruit.children.length, 5, 'one verified cluster per berry');
   assert.deepEqual(
     berry.fruit.children.map((f) => f.visible),
     [true, true, false, false, false],
+    'the latest amount applies once the clusters attach',
   );
-  for (const fruit of berry.fruit.children)
-    assert.ok(fruit.position.y > 0.45 && Math.hypot(fruit.position.x, fruit.position.z) > 0.3);
-  const stone = { model: new THREE.Group(), key: 'valley-boulder', surface: null, baseScale: 0.55 };
-  world.decorateResource(stone, { id: 'stone-1', type: 'stone', amount: 8, maxAmount: 8 });
-  world.applyResourceAmount(stone, { type: 'stone', amount: 1, maxAmount: 8 });
-  assert.ok(Math.abs(stone.model.scale.x - 0.55 * 0.55) < 1e-9);
-  world.applyResourceAmount(stone, { type: 'stone', amount: 8, maxAmount: 8 });
-  assert.ok(Math.abs(stone.model.scale.x - 0.55) < 1e-9);
+  const anchors = berryAnchors(
+    assets.modelPoints('berry-bush'),
+    fruitCount(full.maxAmount, full.maxAmount),
+    seedFromId(full.id),
+  );
+  berryModel.updateMatrixWorld(true);
+  berry.fruit.children.forEach((cluster, index) => {
+    const meshes = [];
+    cluster.traverse((node) => {
+      if (node.isMesh) meshes.push(node);
+    });
+    assert.ok(
+      meshes.length > 0 && meshes.every((mesh) => mesh.geometry === clusterGeometry),
+      'each berry is an instance of the verified prop, not a substitute',
+    );
+    // Anchors are fruit centres on the upper, outer foliage.
+    const centre = new THREE.Box3().setFromObject(cluster).getCenter(new THREE.Vector3());
+    assert.ok(centre.distanceTo(new THREE.Vector3(...anchors[index])) < 1e-9);
+    assert.ok(centre.y > 0.45 && Math.hypot(centre.x, centre.z) > 0.3);
+  });
+  assert.equal(stale.children.length, 0, 'a replaced fruit target never receives late clusters');
+  assert.equal(replaced.fruit.children.length, 5);
+  assert.equal(orphan.fruit.children.length, 0, 'a disposed renderer attaches nothing');
+  // Obsidian is the boulder whose volume follows its amount (resourceAppearance:
+  // valley-boulder at 0.55). Gathered stones remove whole pieces instead
+  // (tests/stone-pile.test.mjs).
+  const boulder = {
+    model: new THREE.Group(),
+    key: 'valley-boulder',
+    surface: 'obsidian',
+    baseScale: 0.55,
+  };
+  world.decorateResource(boulder, { id: 'obsidian-1', type: 'obsidian', amount: 8, maxAmount: 8 });
+  world.applyResourceAmount(boulder, { type: 'obsidian', amount: 1, maxAmount: 8 });
+  assert.ok(Math.abs(boulder.model.scale.x - 0.55 * 0.55) < 1e-9);
+  world.applyResourceAmount(boulder, { type: 'obsidian', amount: 8, maxAmount: 8 });
+  assert.ok(Math.abs(boulder.model.scale.x - 0.55) < 1e-9);
+  assert.equal(attachments.length, 4, 'only berries load clusters');
 });
 
 test('a carcass leaves one meat piece per serving, hidden from the end and clickable', () => {

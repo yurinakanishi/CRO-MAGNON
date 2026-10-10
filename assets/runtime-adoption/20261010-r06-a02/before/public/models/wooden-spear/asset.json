@@ -1,0 +1,87 @@
+{
+  "modelKey": "wooden-spear",
+  "name": "木槍",
+  "kind": "equipment",
+  "candidate": 2,
+  "status": "remake-candidate-2-integrated",
+  "url": "/models/wooden-spear/model-c2.opt-0b7e1417d8d1948c.glb",
+  "sha256": "0b7e1417d8d1948c05cce074a28232384ced61a6543971c41f26f2cd7623747b",
+  "bytes": 140588,
+  "triangles": 2500,
+  "upAxis": "Y",
+  "forwardAxis": "+Z",
+  "heightMetres": 1.6134,
+  "widthMetres": 0.081,
+  "onDemand": true,
+  "placement": {
+    "pivot": "grip",
+    "gripNode": "Grip.R",
+    "shaftAxis": "+Y",
+    "gripToButtMetres": 0.7136262059211731,
+    "gripToTipMetres": 0.8999999761581421,
+    "gripMeasurement": "The GLB origin is the grip (no Grip.R node inside the file; Grip.R is the hand bone it attaches to). Distances are the mesh extent below and above the origin along the shaft axis, measured 2026-09-13 from the served GLB."
+  },
+  "clips": [],
+  "lods": [],
+  "provenance": {
+    "provider": "Claude Code (Opus 5.5)",
+    "claudeUsed": true,
+    "referenceGenerator": "Codex CLI built-in image_gen (gpt-5.6-sol, medium), earlier approved reference attached for identity",
+    "referenceImage": "C:/Users/yurin/Desktop/projects/CRO-MAGNON/output/model-generation/models/wooden-spear/source/original/candidate2-ref-a.png",
+    "referenceSha256": "4cc65b27786497f6cd098281a547e58087549c473bad8e57d287503bfea55993",
+    "reconstruction": "Local TRELLIS-2 v0.8.1, res 1024, tex 1024, seed recorded in dense JSON",
+    "denseFile": "C:/Users/yurin/Desktop/projects/CRO-MAGNON/output/model-generation/models/wooden-spear/work/candidate-02/trellis/dense-ref2a-res1024-tex1024-seed0042.glb",
+    "denseSha256": "0383441d5e5c60daee8f04c8e1d912daf06ee13e6903f31e3493acdf20bb1239",
+    "processReport": "output/model-generation/models/wooden-spear/work/candidate-02/low-poly/m01/process-report.json",
+    "rigReport": null,
+    "pipeline": "scripts/remake/ (trellis_queue.py, remake_process.py, rig_*.py); docs/asset-remake/PLAN.md",
+    "previousDelivery": {
+      "url": "/models/wooden-spear/model.glb",
+      "sha256": "ac2b1a3c8100b38a7753749fd6578b5f355247478cf9f44ea642c06eb858ee5d",
+      "triangles": 2837,
+      "bytes": 1462776,
+      "candidate": 1,
+      "revision": null
+    },
+    "previousProvenance": {
+      "provider": "Codex",
+      "claudeUsed": false,
+      "referenceGenerator": "Existing imagegen → TRELLIS flint-spear lineage",
+      "referenceImage": "public/models/flint-spear/model.glb",
+      "reconstruction": "Source-derived variant of the retained flint-spear GLB",
+      "candidateFile": "assets/coastal-craft/models/wooden-spear/work/revision-02/candidate.glb",
+      "visualReview": "assets/coastal-craft/models/wooden-spear/qa/adoption-review.json",
+      "sourceAsset": "assets/coastal-craft/models/wooden-spear/source/flint-spear.glb",
+      "sourceAssetSha256": "1a10db6d1b44da1e982f88e5ae9ef6be8fb74f5900ebd9258380ad200e53ed3d",
+      "weaponQA": "assets/coastal-craft/weapon-qa/adoption-review.json",
+      "referenceSha256": "1a10db6d1b44da1e982f88e5ae9ef6be8fb74f5900ebd9258380ad200e53ed3d",
+      "referenceNote": "No image reference: the retained flint-spear GLB was the source model (historical reference recorded in its asset.json)."
+    },
+    "visualReview": "assets/asset-remake/reviews/wooden-spear.json"
+  },
+  "notes": [
+    "2026-10-07 remake Candidate 2: new reference (straight shaft with a fire-hardened point and a rawhide grip wrap); origin at the grip, +Y shaft, 0.714 m below / 0.900 m above the grip as C1; TRELLIS-2 1024/tex1024; 2500 triangles (meshopt reduction, fresh UVs, albedo and tangent-space normal baked from the 295484-triangle dense surface; p95 surface error 0.7 mm). Candidate 1 files retained."
+  ],
+  "revision": "c2-m01",
+  "runtimeOptimization": {
+    "adoption": "20261010-r05-a02",
+    "candidateRevision": "assets/optimized-runtime/20261010-r05",
+    "selection": "ordinary-compressed",
+    "original": {
+      "url": "/models/wooden-spear/model-c2.glb",
+      "sha256": "ae70efd88d72c75f708cc64039b08ca7a197237a36718bfbc2de7163e46a8c35",
+      "bytes": 298760,
+      "triangles": 2500,
+      "lods": []
+    },
+    "supersedes": {
+      "adoption": "20261009-r04-a01",
+      "candidateRevision": "assets/optimized-runtime/20261009-r04",
+      "url": "/models/wooden-spear/model-c2.opt-cb7a2ff24c5ac977.glb",
+      "sha256": "cb7a2ff24c5ac977ec9f26f7d30747621a68c8d1c43971822270e26258b951d0",
+      "bytes": 274092,
+      "lods": []
+    },
+    "adoptedBy": "20261010-r05-a02"
+  }
+}

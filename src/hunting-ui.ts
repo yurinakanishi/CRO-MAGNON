@@ -66,16 +66,28 @@ export function selectedCombatTarget(state, player, selectedId) {
   );
 }
 
-export function huntInteraction(state, player, collision) {
-  if (!player || player.mountId || player.downedUntil) return null;
-  if (player.cookingEndsAt) return { action: 'cancelCook', label: '調理を中止する' };
-  const meat = nearestHuntTarget(
-    (state.animals || []).filter(
-      (animal) => !collision || collision.segmentFree(player, animal, 0.12),
-    ),
+// The nearest visible meat, chosen by nearestHuntTarget as before but without tracing visibility
+// (a stepped collision walk) to animals that cannot be harvested. Only meat is ever chosen, and
+// when meat within harvestRange is visible the nearest visible meat is within it, so with every
+// distance a number the result for the range check below is unchanged.
+function nearestVisibleMeat(animals, player, collision) {
+  const meat = animals.filter((animal) => animal.phase === 'meat');
+  // A NaN distance chosen first is never replaced (x < NaN is false) and then fails the range
+  // check; all meat is traced when one occurs, so that order-dependent result is kept too.
+  const candidates = meat.some((animal) => Number.isNaN(huntingDistance(player, animal)))
+    ? meat
+    : meat.filter((animal) => huntingDistance(player, animal) <= HUNTING.harvestRange);
+  return nearestHuntTarget(
+    candidates.filter((animal) => !collision || collision.segmentFree(player, animal, 0.12)),
     player,
     'meat',
   );
+}
+
+export function huntInteraction(state, player, collision) {
+  if (!player || player.mountId || player.downedUntil) return null;
+  if (player.cookingEndsAt) return { action: 'cancelCook', label: '調理を中止する' };
+  const meat = nearestVisibleMeat(state.animals || [], player, collision);
   if (meat && huntingDistance(player, meat) <= HUNTING.harvestRange) {
     return {
       action: 'harvest',

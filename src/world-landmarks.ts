@@ -11,13 +11,123 @@ import { AdventureMaterials } from './adventure-materials.js';
 import { GULF_LANDMARKS } from '../shared/gulf-region.mjs';
 import { CAMP_CAVE, CAMP_MOUNTAIN, campMountainVisualLod } from '../shared/camp-cave-layout.mjs';
 import { prepareCaveMaterials } from './cave-materials.js';
-import { CAVE_EXTRA_PIGMENTS, type CaveExtraPigment } from './cave-gallery-layout.js';
+import { type CaveExtraPigment } from './cave-gallery-layout.js';
+import {
+  loadCaveTextures,
+  releaseVerifiedTexture,
+  type CaveTextureKey,
+  type VerifiedTextureBatch,
+  type VerifiedTextureOptions,
+} from './verified-texture.js';
 import { createCavePreviewLabel } from './cave-preview-label.js';
 import { prepareMountainMaterials } from './mountain-materials.js';
-import { prepareMountainRiverBed, prepareMountainRiverBedAsync } from './mountain-river.js';
+import { prepareMountainRiverBedAsync } from './mountain-river.js';
 import { RiverBankBuilder } from './river-bank-builder.js';
+import { LoadDemand, isLoadCancelled, type LoadTicket } from './asset-load-queue.js';
+import { landmarkPriority } from './startup-plan.js';
+import { chunkMountainSurface } from './surface-chunks.js';
 
-const PLACEMENTS = Object.freeze([
+const RADIUS = 125,
+  // A requested landmark stays wanted this much beyond the streaming radius.
+  RETAIN_MARGIN = 32;
+
+type MountainBed = { prepared: Set<number>; jobs: Map<number, Promise<void>> };
+
+/** Whoever starts a mountain fit: its running builders are stopped at its disposal, and
+ * nothing is marked fitted once it is disposed. */
+export type MountainFitOwner = {
+  readonly builders: Set<RiverBankBuilder>;
+  readonly disposed: boolean;
+};
+
+/** Fit the camp mountain's river bed for these LOD levels off the UI thread, once each per
+ * template: a level being fitted, by any owner, is joined and a fitted one skipped. Arrival
+ * waits only for the level it sees; the others follow, and a level is never drawn before its
+ * own fit has finished. */
+export function fitCampMountain(
+  template,
+  levels: readonly number[],
+  owner: MountainFitOwner,
+): Promise<void> {
+  if (!template || owner.disposed) return Promise.resolve();
+  const bed: MountainBed = (template.riverBed ??= { prepared: new Set(), jobs: new Map() });
+  const jobs = levels
+    .filter((level) => level <= template.lods.length && !bed.prepared.has(level))
+    .map((level) => {
+      let job = bed.jobs.get(level);
+      if (!job) {
+        const gltf = level ? template.lods[level - 1] : template.gltf,
+          builder = new RiverBankBuilder();
+        owner.builders.add(builder);
+        job = prepareMountainRiverBedAsync(gltf.scene, builder, () => !owner.disposed)
+          .then(() => {
+            if (!owner.disposed) bed.prepared.add(level);
+          })
+          .finally(() => {
+            builder.dispose();
+            owner.builders.delete(builder);
+            bed.jobs.delete(level);
+          });
+        bed.jobs.set(level, job);
+      }
+      return job;
+    });
+  return Promise.all(jobs).then(() => undefined);
+}
+
+/** The arrival's mountain fit, started by world startup once the camp mountain's verified
+ * template is installed, while the rest of the startup set downloads. It requests nothing:
+ * it fits the template the startup set loaded and records the job there, where
+ * WorldLandmarks.prepareMountain later joins or skips it. The world owns and disposes it. */
+export class StartupMountainFit implements MountainFitOwner {
+  readonly builders = new Set<RiverBankBuilder>();
+  disposed = false;
+  /** Resolves once the levels are fitted, when none is wanted or no template came, and at
+   * disposal; rejects with the fit's failure. */
+  readonly done: Promise<void>;
+  private started = false;
+  private resolve!: () => void;
+  private reject!: (error: unknown) => void;
+
+  constructor(
+    private readonly assets: { templates: Map<string, any> },
+    private readonly levels: readonly number[],
+  ) {
+    this.done = new Promise<void>((resolve, reject) => {
+      this.resolve = resolve;
+      this.reject = reject;
+    });
+    // The startup awaits it; a failure after the startup stopped is not unhandled.
+    this.done.catch(() => {});
+    if (!levels.length) this.settle();
+  }
+  /** Start once the template is installed; later calls do nothing. `last`: the startup set
+   * has loaded, so a missing template will not come. */
+  poll(last = false) {
+    if (this.started || this.disposed) return;
+    const template = this.assets.templates.get(CAMP_MOUNTAIN.key);
+    if (!template) {
+      if (last) this.settle();
+      return;
+    }
+    this.started = true;
+    fitCampMountain(template, this.levels, this).then(this.resolve, this.reject);
+  }
+  /** Stop the running fit: its workers end and no level is marked fitted. */
+  dispose() {
+    if (this.disposed) return;
+    this.disposed = true;
+    for (const builder of this.builders) builder.dispose();
+    this.builders.clear();
+    this.settle();
+  }
+  private settle() {
+    this.started = true;
+    this.resolve();
+  }
+}
+
+export const LANDMARK_PLACEMENTS = Object.freeze([
   ...LANDMARKS,
   ...REGION_FEATURES,
   CASTLE,
@@ -47,9 +157,21 @@ export class WorldLandmarks {
   declare caveRimoPigment: THREE.Texture | undefined;
   declare caveLimestone: THREE.Texture | undefined;
   caveExtraPigments: Partial<Record<CaveExtraPigment, THREE.Texture>> = {};
-  private mountainBuilder: RiverBankBuilder | null = null;
+  /** The cave's verified images while they load; lost-context cleanup reaches them here. */
+  caveImages: VerifiedTextureBatch<CaveTextureKey> | null = null;
+  /** The cave's images failed once: the world failed and nothing is requested again. */
+  private caveFailed = false;
+  private readonly imageOptions: VerifiedTextureOptions;
+  /** Landmark requests by key, prioritized by the nearest footprint edge. */
+  readonly demand = new LoadDemand();
+  /** Running mountain fits this instance started (fitCampMountain). */
+  readonly builders = new Set<RiverBankBuilder>();
 
-  constructor(world, placements = PLACEMENTS) {
+  constructor(
+    world,
+    placements = LANDMARK_PLACEMENTS,
+    { images = {} }: { images?: VerifiedTextureOptions } = {},
+  ) {
     this.world = world;
     this.assets = world.worldAssets;
     this.placements = placements;
@@ -60,29 +182,197 @@ export class WorldLandmarks {
     this.next = 0;
     this.disposed = false;
     this.coatings = new AdventureMaterials();
+    this.imageOptions = images;
+    // An arrival beside the cave verifies its images while the mountain is fitted,
+    // so the cave can be drawn from the first frames.
+    const focus = world.focus,
+      cave = placements.find((item) => item.id === CAMP_CAVE.id);
+    if (
+      focus &&
+      cave &&
+      this.assets.templates?.has(cave.key) &&
+      Math.hypot(focus.x - cave.x, focus.z - cave.z) < RADIUS + cave.clearance
+    )
+      this.prepareCave();
   }
-  async prepareInitial() {
-    const template = this.assets.get(CAMP_MOUNTAIN.key);
-    if (template.riverBedPrepared || this.disposed) return;
-    const builder = (this.mountainBuilder = new RiverBankBuilder());
+  /** Fit the camp mountain's river bed for these LOD levels off the UI thread,
+   * once each (fitCampMountain); a level the startup is fitting is joined. */
+  prepareMountain(levels: readonly number[]): Promise<void> {
+    return fitCampMountain(this.assets.templates.get(CAMP_MOUNTAIN.key), levels, this);
+  }
+  /** Whether every listed landmark is instanced (arrival preparation). */
+  hasInstances(ids: readonly string[]) {
+    return ids.every((id) => this.instances.has(id));
+  }
+  private request(key: string, ticket: LoadTicket) {
+    const promise = this.assets
+      .ensureEnvironment(key, ticket)
+      .then(() => {
+        if (!this.disposed) this.world.updateAssetDiagnostics();
+      })
+      .catch((error) => {
+        // A landmark withdrawn after travel is not an asset failure; a needed one is.
+        if (!this.disposed && !isLoadCancelled(error))
+          this.world.failWorld(
+            '地域の3D素材を読み込めませんでした。再読み込みしてください。',
+            error,
+          );
+      })
+      .finally(() => {
+        this.demand.settle(key, ticket);
+        if (this.pending.get(key) === promise) this.pending.delete(key);
+      });
+    this.pending.set(key, promise);
+  }
+  private failMountain = (error) => {
+    if (!this.disposed)
+      this.world.failWorld('山の地形を準備できませんでした。再読み込みしてください。', error);
+  };
+  /** Whether the cave's verified images are installed in its template's materials.
+   * The first call loads them, once; the cave is instanced only after that. */
+  private prepareCave(): boolean {
+    const template = this.assets.get(CAMP_CAVE.key);
+    if (template.cavePrepared) return true;
+    if (this.caveImages || this.caveFailed || this.disposed) return false;
+    let images: VerifiedTextureBatch<CaveTextureKey>;
     try {
-      for (const gltf of [template.gltf, ...template.lods]) {
-        await prepareMountainRiverBedAsync(gltf.scene, builder, () => !this.disposed);
-        if (this.disposed) return;
-      }
-      template.riverBedPrepared = true;
-    } finally {
-      builder.dispose();
-      this.mountainBuilder = null;
+      const anisotropy = Math.min(8, this.world.renderer.capabilities.getMaxAnisotropy());
+      images = loadCaveTextures(template.asset, anisotropy, this.imageOptions);
+    } catch (error) {
+      this.failCave(null, error);
+      return false;
     }
+    this.caveImages = images;
+    const preparing = images.ready
+      .then(
+        () => {
+          // A cancelled batch (disposal) has released its textures itself.
+          if (this.caveImages !== images) return;
+          this.caveImages = null;
+          this.installCave(template, images.take());
+        },
+        (error) => {
+          if (this.caveImages !== images) return;
+          this.caveImages = null;
+          this.failCave(images.failedKey, error);
+        },
+      )
+      .finally(() => {
+        if (this.pending.get(CAMP_CAVE.key) === preparing) this.pending.delete(CAMP_CAVE.key);
+      });
+    // In flight like a landmark load: the cave is not released meanwhile.
+    this.pending.set(CAMP_CAVE.key, preparing);
+    return false;
+  }
+  /** Install the taken textures in the template's materials, all or nothing. Never
+   * throws: when installing fails (a browser without a 2D canvas for the label) every
+   * taken texture and the label are released once and the world fails once. */
+  private installCave(template, textures: Record<CaveTextureKey, THREE.Texture>) {
+    const taken: THREE.Texture[] = Object.values(textures);
+    if (this.disposed || this.assets.templates.get(CAMP_CAVE.key) !== template) {
+      taken.forEach(releaseVerifiedTexture);
+      return;
+    }
+    try {
+      const comingSoon = createCavePreviewLabel();
+      taken.push(comingSoon);
+      const { pigment, rockSurface, characterPigment, rimoPigment, ...extras } = textures;
+      const extraPigments = { ...extras, comingSoon };
+      for (const gltf of [template.gltf, ...template.lods])
+        prepareCaveMaterials(
+          gltf.scene,
+          pigment,
+          rockSurface,
+          characterPigment,
+          rimoPigment,
+          extraPigments as Record<CaveExtraPigment, THREE.Texture>,
+        );
+      // Installed: from here the fields own them.
+      this.releaseCaveTextures();
+      this.cavePigment = pigment;
+      this.caveLimestone = rockSurface;
+      this.caveCharacter524 = characterPigment;
+      this.caveRimoPigment = rimoPigment;
+      this.caveExtraPigments = extraPigments;
+      template.cavePrepared = true;
+    } catch (error) {
+      // A template material set up before the failure is never drawn: the world fails.
+      taken.forEach(releaseVerifiedTexture);
+      this.failCave(null, error);
+    }
+  }
+  private failCave(image: CaveTextureKey | null, error) {
+    if (this.caveFailed) return;
+    this.caveFailed = true;
+    if (this.disposed) return;
+    this.world.failWorld(
+      image === 'rockSurface'
+        ? '洞窟の岩肌を読み込めませんでした。再読み込みしてください。'
+        : image === 'rimoPigment'
+          ? 'りもねこの壁画を読み込めませんでした。再読み込みしてください。'
+          : '洞窟の壁画を読み込めませんでした。再読み込みしてください。',
+      error,
+    );
+  }
+  private caveTextures(): THREE.Texture[] {
+    return [
+      this.cavePigment,
+      this.caveLimestone,
+      this.caveCharacter524,
+      this.caveRimoPigment,
+      ...Object.values(this.caveExtraPigments),
+    ].filter((texture): texture is THREE.Texture => !!texture);
+  }
+  /** The cave's own images, each released once: verified textures and the label. */
+  private releaseCaveTextures() {
+    for (const texture of this.caveTextures()) releaseVerifiedTexture(texture);
+    this.cavePigment = this.caveLimestone = undefined;
+    this.caveCharacter524 = this.caveRimoPigment = undefined;
+    this.caveExtraPigments = {};
+  }
+  /** A mountain level's own copy, once its river bed is fitted. */
+  private fillMountainLevel(root: THREE.LOD, template, item, level: number, time: number) {
+    const holder = root.levels[level]?.object;
+    if (!holder || holder.children.length || !template.riverBed?.prepared.has(level)) return;
+    const scene = (level ? template.lods[level - 1] : template.gltf).scene;
+    if (!scene.userData.mountainMaterials) {
+      // The open world owns (and disposes) the coast field; only the roof data is ours.
+      const roof = prepareMountainMaterials(scene, this.world.openWorld.earthTextures);
+      chunkMountainSurface(scene);
+      scene.userData.mountainMaterials = true;
+      (template.caveRoofTextures ??= []).push(roof);
+    }
+    const model = this.levelModel(item, level, time);
+    holder.add(model);
+    holder.updateMatrixWorld(true);
+    model.traverse((node) => (node.matrixAutoUpdate = false));
+  }
+  private levelModel(item, level: number, time: number) {
+    const model = this.assets.create(item.key, level);
+    if (item.surface) this.coatings.apply(model, item.surface, item.key, time);
+    model.traverse((node) => {
+      if (isMesh(node)) {
+        node.castShadow = level === 0;
+        node.receiveShadow = true;
+      }
+    });
+    return model;
   }
   update(camera, time) {
     if (this.disposed || time < this.next) return;
     this.next = time + 0.3;
-    const desired = this.placements.filter(
-      (item) =>
-        Math.hypot(camera.position.x - item.x, camera.position.z - item.z) < 125 + item.clearance,
-    );
+    const desired = [],
+      retained = new Map<string, number>();
+    for (const item of this.placements) {
+      const distance = Math.hypot(camera.position.x - item.x, camera.position.z - item.z);
+      if (distance < RADIUS + item.clearance) desired.push(item);
+      else if (distance < RADIUS + RETAIN_MARGIN + item.clearance && this.demand.has(item.key))
+        retained.set(
+          item.key,
+          Math.min(retained.get(item.key) ?? Infinity, distance - item.clearance),
+        );
+    }
+    const wanted = new Map<string, number>();
     let created = 0;
     const ids = new Set(desired.map((item) => item.id));
     for (const [id, root] of this.instances)
@@ -97,25 +387,23 @@ export class WorldLandmarks {
       this.used.set(item.key, time);
       if (item.surface) this.coatings.touch(item.key, time);
       if (!this.assets.templates.has(item.key)) {
-        if (!this.pending.has(item.key)) {
-          const promise = this.assets
-            .ensureEnvironment(item.key)
-            .then(() => {
-              if (!this.disposed) this.world.updateAssetDiagnostics();
-            })
-            .catch((error) => {
-              if (!this.disposed)
-                this.world.failWorld(
-                  '地域の3D素材を読み込めませんでした。再読み込みしてください。',
-                  error,
-                );
-            })
-            .finally(() => this.pending.delete(item.key));
-          this.pending.set(item.key, promise);
-        }
+        const distance = Math.hypot(camera.position.x - item.x, camera.position.z - item.z);
+        wanted.set(
+          item.key,
+          Math.min(wanted.get(item.key) ?? Infinity, landmarkPriority(distance - item.clearance)),
+        );
+        continue;
+      }
+      const mountain = item.key === CAMP_MOUNTAIN.key;
+      if (mountain && !this.assets.get(item.key).riverBed?.prepared.size) {
+        // Never fit the mountain on the UI thread: draw it once a level is fitted.
+        const level = campMountainVisualLod(camera.position.x, camera.position.z);
+        this.prepareMountain([level]).catch(this.failMountain);
         continue;
       }
       if (!this.instances.has(item.id)) {
+        // The cave is drawn only once its verified images are installed.
+        if (item.key === CAMP_CAVE.key && !this.prepareCave()) continue;
         if (created >= 4) continue;
         created++;
         const template = this.assets.get(item.key),
@@ -124,120 +412,6 @@ export class WorldLandmarks {
         root.userData.landmarkId = item.id;
         if (this.featureKeys.has(item.key)) root.userData.regionFeature = item.key;
         if (item.id === CAMP_MOUNTAIN.id) root.autoUpdate = false;
-        if (item.key === CAMP_CAVE.key && !template.cavePrepared) {
-          if (!this.cavePigment) {
-            this.cavePigment = new THREE.TextureLoader().load(
-              template.asset.pigment.url,
-              undefined,
-              undefined,
-              (error) => {
-                if (!this.disposed)
-                  this.world.failWorld(
-                    '洞窟の壁画を読み込めませんでした。再読み込みしてください。',
-                    error,
-                  );
-              },
-            );
-            this.cavePigment.colorSpace = THREE.SRGBColorSpace;
-            this.cavePigment.anisotropy = Math.min(
-              8,
-              this.world.renderer.capabilities.getMaxAnisotropy(),
-            );
-          }
-          if (!this.caveLimestone) {
-            this.caveLimestone = new THREE.TextureLoader().load(
-              template.asset.rockSurface.url,
-              undefined,
-              undefined,
-              (error) => {
-                if (!this.disposed)
-                  this.world.failWorld(
-                    '洞窟の岩肌を読み込めませんでした。再読み込みしてください。',
-                    error,
-                  );
-              },
-            );
-            this.caveLimestone.colorSpace = THREE.SRGBColorSpace;
-            this.caveLimestone.wrapS = this.caveLimestone.wrapT = THREE.RepeatWrapping;
-            this.caveLimestone.anisotropy = Math.min(
-              8,
-              this.world.renderer.capabilities.getMaxAnisotropy(),
-            );
-          }
-          if (!this.caveCharacter524) {
-            this.caveCharacter524 = new THREE.TextureLoader().load(
-              template.asset.characterPigment.url,
-              undefined,
-              undefined,
-              (error) => {
-                if (!this.disposed)
-                  this.world.failWorld(
-                    '洞窟の壁画を読み込めませんでした。再読み込みしてください。',
-                    error,
-                  );
-              },
-            );
-            this.caveCharacter524.colorSpace = THREE.SRGBColorSpace;
-            this.caveCharacter524.anisotropy = Math.min(
-              8,
-              this.world.renderer.capabilities.getMaxAnisotropy(),
-            );
-          }
-          if (!this.caveRimoPigment) {
-            this.caveRimoPigment = new THREE.TextureLoader().load(
-              template.asset.rimoPigment.url,
-              undefined,
-              undefined,
-              (error) => {
-                if (!this.disposed)
-                  this.world.failWorld(
-                    'りもねこの壁画を読み込めませんでした。再読み込みしてください。',
-                    error,
-                  );
-              },
-            );
-            this.caveRimoPigment.colorSpace = THREE.SRGBColorSpace;
-            this.caveRimoPigment.anisotropy = Math.min(
-              8,
-              this.world.renderer.capabilities.getMaxAnisotropy(),
-            );
-          }
-          for (const [key, pigment] of Object.entries(CAVE_EXTRA_PIGMENTS)) {
-            const texture = new THREE.TextureLoader().load(
-              pigment.url,
-              undefined,
-              undefined,
-              (error) => {
-                if (!this.disposed)
-                  this.world.failWorld(
-                    '洞窟の壁画を読み込めませんでした。再読み込みしてください。',
-                    error,
-                  );
-              },
-            );
-            texture.colorSpace = THREE.SRGBColorSpace;
-            texture.anisotropy = Math.min(8, this.world.renderer.capabilities.getMaxAnisotropy());
-            this.caveExtraPigments[key as CaveExtraPigment] = texture;
-          }
-          this.caveExtraPigments.comingSoon = createCavePreviewLabel();
-          template.cavePrepared = true;
-          for (const gltf of [template.gltf, ...template.lods])
-            prepareCaveMaterials(
-              gltf.scene,
-              this.cavePigment,
-              this.caveLimestone,
-              this.caveCharacter524,
-              this.caveRimoPigment,
-              this.caveExtraPigments as Record<CaveExtraPigment, THREE.Texture>,
-            );
-        }
-        if (item.key === CAMP_MOUNTAIN.key && !template.trailPrepared) {
-          template.trailPrepared = true;
-          for (const gltf of [template.gltf, ...template.lods]) {
-            if (!template.riverBedPrepared) prepareMountainRiverBed(gltf.scene);
-            template.caveRoofTexture = prepareMountainMaterials(gltf.scene);
-          }
-        }
         if (item.key === 'volcanic-cone' && !template.lavaPrepared) {
           template.lavaPrepared = true;
           for (const gltf of [template.gltf, ...template.lods])
@@ -266,14 +440,8 @@ export class WorldLandmarks {
         root.rotation.y = item.yaw;
         root.scale.setScalar(item.scale);
         for (let level = 0; level <= template.lods.length; level++) {
-          const model = this.assets.create(item.key, level);
-          if (item.surface) this.coatings.apply(model, item.surface, item.key, time);
-          model.traverse((node) => {
-            if (isMesh(node)) {
-              node.castShadow = level === 0;
-              node.receiveShadow = true;
-            }
-          });
+          // Mountain levels are filled once their river bed is fitted.
+          const model = mountain ? new THREE.Group() : this.levelModel(item, level, time);
           // Measure distance beyond the landmark's footprint. A mountain's
           // centre can be far away while its nearest visible face is close.
           root.addLevel(
@@ -291,29 +459,46 @@ export class WorldLandmarks {
       }
       const instance = this.instances.get(item.id);
       if (item.id === CAMP_MOUNTAIN.id && instance.levels.length > 1) {
-        const previous = instance.userData.performanceLod ?? 0,
-          level = campMountainVisualLod(camera.position.x, camera.position.z, previous);
+        const template = this.assets.get(item.key),
+          bed: MountainBed = template.riverBed;
+        for (let level = 0; level < instance.levels.length; level++)
+          this.fillMountainLevel(instance, template, item, level, time);
+        const previous = instance.userData.performanceLod ?? 0;
+        let level = campMountainVisualLod(camera.position.x, camera.position.z, previous);
+        if (!bed.prepared.has(level)) {
+          // Keep drawing the fitted level until this one is fitted as well.
+          this.prepareMountain([level]).catch(this.failMountain);
+          level = bed.prepared.has(previous) ? previous : [...bed.prepared][0];
+        }
         for (const [index, record] of instance.levels.entries())
           record.object.visible = index === level;
         instance.userData.performanceLod = level;
         this.world.canvas.dataset.campMountainLod = String(level);
       } else instance.update(camera);
     }
+    for (const [key, distance] of retained)
+      if (!wanted.has(key) && !this.assets.templates.has(key))
+        wanted.set(key, landmarkPriority(distance));
+    // A landmark leaving the retained area is withdrawn: its queued load is cancelled.
+    this.demand.update(wanted, (key, ticket) => this.request(key, ticket));
+    this.assets.loadQueue?.pump();
     for (const [key, last] of this.used)
       if (time - last > 12 && !this.pending.has(key)) {
-        this.assets.templates.get(key)?.caveRoofTexture?.dispose();
+        const template = this.assets.templates.get(key);
         this.assets.releaseEnvironment(key);
+        // Only a released template's roof data goes; the mountain stays resident.
+        if (template && !this.assets.templates.has(key))
+          for (const roof of template.caveRoofTextures ?? []) roof.dispose();
         if (key === CAMP_CAVE.key) {
-          this.cavePigment?.dispose();
-          this.cavePigment = undefined;
-          this.caveLimestone?.dispose();
-          this.caveLimestone = undefined;
-          this.caveCharacter524?.dispose();
-          this.caveCharacter524 = undefined;
-          this.caveRimoPigment?.dispose();
-          this.caveRimoPigment = undefined;
-          Object.values(this.caveExtraPigments).forEach((texture) => texture.dispose());
-          this.caveExtraPigments = {};
+          if (template && !this.assets.templates.has(key)) {
+            // The cave left with its template: its own images go too.
+            this.caveImages?.cancel();
+            this.caveImages = null;
+            this.releaseCaveTextures();
+          }
+          // A resident cave keeps its installed images; only their GPU copies go,
+          // uploaded again when it is drawn.
+          else for (const texture of this.caveTextures()) texture.dispose();
         }
         this.used.delete(key);
         this.world.updateAssetDiagnostics();
@@ -327,19 +512,22 @@ export class WorldLandmarks {
   }
   dispose() {
     this.disposed = true;
-    this.mountainBuilder?.dispose();
+    // Queued landmarks nobody else wants are cancelled; running fits stop.
+    this.demand.clear();
+    for (const builder of this.builders) builder.dispose();
+    this.builders.clear();
     for (const root of this.instances.values()) {
       this.world.scene.remove(root);
       for (const material of root.userData.ownedMaterials ?? []) material.dispose();
     }
     this.instances.clear();
     this.coatings.dispose();
-    this.assets.templates.get(CAMP_MOUNTAIN.key)?.caveRoofTexture?.dispose();
-    this.cavePigment?.dispose();
-    this.caveLimestone?.dispose();
-    this.caveCharacter524?.dispose();
-    this.caveRimoPigment?.dispose();
-    Object.values(this.caveExtraPigments).forEach((texture) => texture.dispose());
+    for (const roof of this.assets.templates?.get(CAMP_MOUNTAIN.key)?.caveRoofTextures ?? [])
+      roof.dispose();
+    // Images still loading are released by their batch, now or as they arrive.
+    this.caveImages?.cancel();
+    this.caveImages = null;
+    this.releaseCaveTextures();
     this.caveCamera = this.castleCamera = null;
   }
 }

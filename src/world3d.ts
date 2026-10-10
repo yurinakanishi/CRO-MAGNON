@@ -51,13 +51,30 @@ import { mountainWaterHeight } from '../shared/mountain-river.mjs';
 import { WorldAssets } from './world-assets.js';
 import { buildWoodPile } from './wood-pile.js';
 import { buildStonePile } from './stone-pile.js';
-import { WorldLandmarks } from './world-landmarks.js';
+import { LANDMARK_PLACEMENTS, StartupMountainFit, WorldLandmarks } from './world-landmarks.js';
+import { StartupTerrain } from './startup-terrain.js';
 import {
   buildTerrainAssets,
   buildForestAssets,
   buildCampAssets,
   buildAnimalAssets,
+  buildMotes,
+  sceneryTemplateKeys,
 } from './world-scenery.js';
+import { biomeById, nearbyChunks } from '../shared/biomes.mjs';
+import { SCENERY } from '../shared/scenery-layout.mjs';
+import { CAMP_MOUNTAIN, campMountainVisualLod } from '../shared/camp-cave-layout.mjs';
+import { RIMO_NEKO } from '../shared/rimo-neko.mjs';
+import { STARTUP, criticalStartup, type CriticalStartup } from './startup-plan.js';
+import { startupMarks } from './startup-marks.js';
+import {
+  GraphicsContextState,
+  compileScene,
+  recordEngineResources,
+  releaseLostContext,
+  type ContextEvent,
+  type EngineResource,
+} from './context-recovery.js';
 import { resourceAppearance } from '../shared/biome-scenery.mjs';
 import { CharacterAssets } from './character-assets.js';
 import { confirmedAction } from './character-animation.js';
@@ -79,12 +96,7 @@ import { CHARACTER_MODELS, characterModel } from '../shared/characters.mjs';
 import { enemyAnimationState, playerRecovered } from './enemy-state.js';
 import { isLand } from '../shared/paleo-geography.mjs';
 import { FrameClock } from './frame-clock.js';
-import {
-  GraphicsQuality,
-  graphicsPixelRatio,
-  readGraphicsMode,
-  type GraphicsMode,
-} from './graphics-quality.js';
+import { GraphicsBudget, graphicsPixelRatio } from './graphics-quality.js';
 import { ActorUpdateBudget } from './actor-update-budget.js';
 import { ContactShadows } from './contact-shadows.js';
 import { WorldAtmosphere } from './world-atmosphere.js';
@@ -103,10 +115,30 @@ import {
   seedFromId,
   obsidianScale,
 } from './resource-visuals.js';
-import { updateActorPerformance, updateSimplifiedShadow } from './performance-lod.js';
+import { updateActorPerformance } from './performance-lod.js';
+import {
+  LOAD_TIER,
+  LoadCancelled,
+  LoadDemand,
+  LoadTicket,
+  isLoadCancelled,
+  loadPriority,
+} from './asset-load-queue.js';
+import {
+  ActorResidency,
+  RESIDENCY,
+  essentialActorIds,
+  releaseResidency,
+  residencyAttached,
+  residencyPriority,
+  stepResidency,
+} from './actor-residency.js';
 
 const DEFAULT_DISTANCE = 5.5;
+// Decorative ground cover is drawn at half density in the one graphics profile.
+const GROUNDCOVER_DENSITY = 0.5;
 const tempPoint = new THREE.Vector3();
+const drawingSize = new THREE.Vector2();
 const focusHeight = (profile) =>
   profile.species === 'bear' ? 0.64 : profile.species === 'ape' ? 1.55 : 1.4;
 
@@ -120,11 +152,7 @@ function mesh(geometry, material, parent, position: [number, number, number] = [
 export class WorldRenderer {
   readonly audio = new NatureAudio();
   readonly natureEffects = new NatureEffects();
-  readonly graphics = new GraphicsQuality(
-    readGraphicsMode(),
-    navigator.hardwareConcurrency ?? 8,
-    (navigator as Navigator & { deviceMemory?: number }).deviceMemory ?? 8,
-  );
+  readonly graphics = new GraphicsBudget();
   readonly actorBudget = new ActorUpdateBudget();
   private contactShadows: ContactShadows;
   prediction = new LocalPrediction();
@@ -142,6 +170,7 @@ export class WorldRenderer {
   declare waterMaterial: THREE.ShaderMaterial;
   declare mountainRiver: THREE.Group;
   declare motes: THREE.Object3D;
+  declare marsh: { mist: THREE.Points<THREE.BufferGeometry, THREE.ShaderMaterial> } | undefined;
   declare releaseTerrainSampler: () => void;
   declare releaseBridgeSampler: () => void;
 
@@ -194,6 +223,18 @@ export class WorldRenderer {
   declare humanAssets: Map<any, any>;
   declare npcAssets: any;
   declare worldAssets: WorldAssets;
+  /** Resident render actors released by distance (diagnostics). */
+  declare actorEvictions: number;
+  /** The arrival's critical startup set (preparation and diagnostics). */
+  declare startupPlan: CriticalStartup | undefined;
+  /** Distance-owned templates of the herd, boats and companions. */
+  readonly streamDemand = new LoadDemand();
+  /** The camp NPC is one actor: it loads and releases by distance like a player. */
+  readonly npcResidency = new ActorResidency();
+  /** Set once the post-arrival burst of streamed loads has drained. */
+  private streamingSettled = false;
+  /** Optional streamed actors must not consume the entry handshake's bandwidth. */
+  private arrivalLoadRelease: (() => void) | null = null;
   declare landscapes: any[];
   declare disposables: any[];
   declare disposed: boolean;
@@ -208,6 +249,18 @@ export class WorldRenderer {
   declare atmosphere: WorldAtmosphere;
   declare resizeObserver: ResizeObserver;
   declare contextLost: (e: any) => void;
+  declare contextRestored: () => void;
+  /** WebGL context loss and restoration (context-recovery.ts). */
+  readonly graphicsContext = new GraphicsContextState();
+  /** The module-level geometry crow-faction-visuals.ts shares among every crow's
+   * focus orbs and prayer seals. No crow owns it, so the world keeps it reachable:
+   * a lost context releases it even while no crow is near (context-recovery.ts). */
+  private readonly crowGeometry = new Set<THREE.BufferGeometry>();
+  /** Three's own singletons this renderer uploads (context-recovery.ts
+   * recordEngineResources): released at every loss and let go at shutdown. */
+  private readonly engineResources = new Map<string, EngineResource>();
+  /** Told when the context is lost, restored, or not restored within the visible wait. */
+  declare onGraphicsContext: (event: ContextEvent) => void;
   declare frameClock: FrameClock;
   declare animate: (now: any) => void;
   declare frame: number;
@@ -241,6 +294,10 @@ export class WorldRenderer {
       }
     | undefined;
   declare landmarks: WorldLandmarks | undefined;
+  /** The arrival's mountain fit started while the startup set downloads; stopped at
+   * shutdown or when the startup fails. */
+  declare startupFit: StartupMountainFit | undefined;
+  declare startupTerrain: StartupTerrain | undefined;
   declare assetsReady: boolean | undefined;
   declare boatRenderer: BoatRenderer | undefined;
   declare adventureEffects: AdventureEffects | undefined;
@@ -256,6 +313,9 @@ export class WorldRenderer {
   declare orbBotRenderer: OrbBotRenderer | undefined;
   declare npcActor: any;
   declare npc: any;
+  declare npcLabel: ReturnType<WorldRenderer['createLabel']> | undefined;
+  /** Active companion models in the catalog (dormant mascots are not listed). */
+  declare companionKeys: Set<string> | undefined;
   declare failed: boolean | undefined;
   declare down: ((e: any) => void) | undefined;
   declare pointer:
@@ -290,6 +350,7 @@ export class WorldRenderer {
       onAnimal = (_id: string) => {},
       onError = (_text: string) => {},
       onInspect = () => {},
+      onGraphicsContext = (_event: ContextEvent) => {},
       deferWorld = false,
     } = {},
   ) {
@@ -297,6 +358,7 @@ export class WorldRenderer {
     this.onAnimal = onAnimal;
     this.onInspect = onInspect;
     this.onError = onError;
+    this.onGraphicsContext = onGraphicsContext;
     this.state = { players: [], resources: INITIAL_RESOURCES, camp: CAMP, npc: NPC };
     this.selfId = null;
     this.yaw = -0.28;
@@ -321,14 +383,18 @@ export class WorldRenderer {
     this.enemies = new Map();
     this.staticScenery = [];
     this.nextStaticCull = 0;
+    this.worldAssets = new WorldAssets();
+    // Character templates share the world's bounded, prioritized load queue.
     this.humanAssets = new Map(
       CHARACTER_MODELS.map((model) => [
         model.key,
-        new CharacterAssets(`/models/${model.key}/asset.json`),
+        new CharacterAssets(`/models/${model.key}/asset.json`, {
+          queue: this.worldAssets.loadQueue,
+        }),
       ]),
     );
     this.npcAssets = this.humanAssets.get(characterModel(NPC).key);
-    this.worldAssets = new WorldAssets();
+    this.actorEvictions = 0;
     this.landscapes = [];
     this.canvas.dataset.characterAsset = 'not-loaded';
     this.canvas.dataset.worldAsset = 'loading';
@@ -342,14 +408,10 @@ export class WorldRenderer {
       alpha: false,
       powerPreference: 'high-performance',
     });
-    this.renderer.setPixelRatio(Math.min(devicePixelRatio, 1.25));
     // Firewood piles are clipped from the top by a per-pile plane as they are gathered.
     this.renderer.localClippingEnabled = true;
-    this.renderer.shadowMap.enabled = true;
-    // Animated skins and their shadow depth must describe the same frame.
-    // Reusing a 15 Hz shadow on a moving 60 Hz character makes its surface flash.
-    this.renderer.shadowMap.autoUpdate = true;
-    this.renderer.shadowMap.type = THREE.PCFShadowMap;
+    // The one graphics profile has no sun shadow map; ContactShadows grounds actors.
+    this.renderer.shadowMap.enabled = false;
     this.renderer.outputColorSpace = THREE.SRGBColorSpace;
     this.renderer.toneMapping = THREE.ACESFilmicToneMapping;
     this.renderer.toneMappingExposure = 1.18;
@@ -373,34 +435,20 @@ export class WorldRenderer {
     this.resizeObserver = new ResizeObserver(() => this.resize());
     this.resizeObserver.observe(canvas);
     this.resize();
+    // A lost context is temporary: drawing pauses and resumes once the browser
+    // restores it (Three's own listeners, registered first, rebuild its state).
+    // A genuine asset failure still stops the world through failWorld().
     this.contextLost = (e) => {
       e.preventDefault();
-      this.failWorld(
-        '3D描画が一時停止しました。ページを再読み込みしてください。',
-        new Error('WebGL context lost'),
-      );
+      this.loseGraphicsContext();
     };
+    this.contextRestored = () => this.restoreGraphicsContext();
     canvas.addEventListener('webglcontextlost', this.contextLost);
-    this.frameClock = new FrameClock(performance.now(), this.graphics.fps);
-    this.applyGraphics();
+    canvas.addEventListener('webglcontextrestored', this.contextRestored);
+    this.frameClock = new FrameClock(performance.now());
     this.animate = (now) => {
       if (this.disposed || this.failed) return;
-      const dt = this.frameClock.advance(now, document.hidden);
-      if (dt !== null) {
-        if (
-          this.motionLastFrame !== null &&
-          this.graphics.observe(
-            now,
-            now - this.motionLastFrame,
-            !!this.selfId && !!this.assetsReady && !this.occluded() && !document.hidden,
-          )
-        )
-          this.applyGraphics();
-        if (this.motionLastFrame !== null && !document.hidden)
-          this.onFrameTiming?.(now - this.motionLastFrame);
-        this.motionLastFrame = now;
-        this.render(now / 1000, dt);
-      } else if (document.hidden) this.motionLastFrame = null;
+      this.tick(now);
       this.frame = requestAnimationFrame(this.animate);
     };
     this.frame = requestAnimationFrame(this.animate);
@@ -421,21 +469,74 @@ export class WorldRenderer {
     return this.assetsPromise;
   }
 
+  /** The browser took the GPU context away (a driver reset, GPU memory pressure,
+   * a long-backgrounded tab). Drawing pauses in the one animation loop; the
+   * session, the loaded models and their CPU-side geometry, material and texture
+   * sources stay for Three to upload again once the context is restored. Their
+   * bookkeeping in the lost context is released now, a failed world's included,
+   * so no later dispose deletes an obsolete handle. A failed world stays failed;
+   * a disposed one no longer listens. */
+  loseGraphicsContext() {
+    if (this.disposed || !this.graphicsContext.lose()) return;
+    if (!this.failed) {
+      this.cancel?.();
+      this.motionLastFrame = null;
+      this.canvas.dataset.webglContext = 'lost';
+      this.canvas.dataset.webglLosses = String(this.graphicsContext.losses);
+      this.onGraphicsContext('lost');
+    }
+    this.releaseLostResources();
+  }
+
+  /** Three has rebuilt its GL state. Frame timing, the drawing buffer and the
+   * safety-scale warmup start over, and the far-view renders that existed only
+   * on the GPU are drawn again; everything else is uploaded from its retained
+   * source on first use. Never revives a failed or disposed world. */
+  restoreGraphicsContext() {
+    // A failed world still counts the restore, so its next loss is released too.
+    if (this.disposed || !this.graphicsContext.restore() || this.failed) return;
+    const now = performance.now();
+    this.frameClock = new FrameClock(now);
+    this.motionLastFrame = null;
+    this.resize(true);
+    if (this.assetsReady) this.graphics.ready(now);
+    for (const landscape of this.landscapes) landscape.impostor?.draw();
+    this.canvas.dataset.webglContext = 'restored';
+    this.canvas.dataset.webglRestores = String(this.graphicsContext.restores);
+    this.onGraphicsContext('restored');
+  }
+
+  /** Release what the lost context uploaded for everything the world holds: its
+   * scene, templates and character providers, far views, effects, pools, the
+   * crow geometry, the gallery while it is open, what their programs bound and
+   * Three's own singletons (context-recovery.ts). Three's own count of the lost
+   * context's textures and geometries left afterwards is reported in
+   * data-webgl-released; zero means none was missed. */
+  private releaseLostResources() {
+    const released = releaseLostContext(this.renderer, [this], this.engineResources);
+    if (released) this.canvas.dataset.webglReleased = JSON.stringify(released);
+  }
+
+  /** At shutdown Three's own singletons let go of this renderer: their GPU copies
+   * and its listeners on them, which would otherwise keep its texture and
+   * geometry managers alive for the page. Found while the drawn materials still
+   * know their programs; Three uploads them again for any later renderer. */
+  private releaseEngineResources() {
+    const materials = new Set<THREE.Material>();
+    for (const scene of [this.scene, this.loadingCave?.scene])
+      scene?.traverse((node: any) => {
+        for (const material of [node.material ?? []].flat()) materials.add(material);
+      });
+    recordEngineResources(this.renderer, materials, this.engineResources);
+    for (const resource of this.engineResources.values()) resource.dispose();
+  }
+
   setupLighting() {
     this.hemisphere = new THREE.HemisphereLight('#dce7d7', '#546047', 2.0);
     this.scene.add(this.hemisphere);
+    // Light only: the sun casts no shadow map in the one graphics profile.
     this.sun = new THREE.DirectionalLight('#ffe4b5', 2.65);
     this.sun.position.set(5, 47, 18);
-    this.sun.castShadow = true;
-    this.sun.shadow.mapSize.set(1024, 1024);
-    this.sun.shadow.camera.left = -22;
-    this.sun.shadow.camera.right = 22;
-    this.sun.shadow.camera.top = 22;
-    this.sun.shadow.camera.bottom = -22;
-    this.sun.shadow.camera.near = 0.5;
-    this.sun.shadow.camera.far = 135;
-    this.sun.shadow.bias = -0.00025;
-    this.sun.shadow.normalBias = 0.055;
     this.sun.target.position.set(50, 0, 50);
     this.scene.add(this.sun, this.sun.target);
     // Full-screen atmospheric shader: sky, sun and clouds are runtime effects.
@@ -460,33 +561,168 @@ export class WorldRenderer {
     this.scene.add(sky);
   }
 
+  /** Where the next arrival is expected before its snapshot (a title start).
+   * Startup is planned around it; a ready world streams toward it at once. */
+  anticipateArrival(point: { x: number; z: number }) {
+    if (this.selfId || this.disposed) return;
+    this.focus.set(point.x, walkHeight(point.x, point.z) + 1.4, point.z);
+  }
+
+  /** The local character's verified template and the props its actor holds (the
+   * weapon, the other spear, Howkey's flask), loaded ahead of its snapshot so the
+   * body is complete the moment the world names it. A failure is fatal to entry;
+   * another character is never substituted. */
+  async prepareSelf(profile) {
+    const ticket = LoadTicket.of(LOAD_TIER.essential),
+      model = characterModel(profile),
+      attack = attackProfile(profile),
+      provider = this.humanAssets.get(model.key);
+    if (!provider) throw new Error(`Missing verified character ${model.key}`);
+    await this.worldAssets.loadCatalog();
+    const props = new Set<string>();
+    if (attack.modelKey) props.add(attack.modelKey);
+    // A spear bearer carries both spears; the snapshot picks the head.
+    if (attack.key === 'spear')
+      for (const key of ['wooden-spear', 'obsidian-spear']) props.add(key);
+    if (model.species === 'howkey') props.add('howkey-flask');
+    await Promise.all([
+      provider.load(ticket),
+      ...[...props].map((key) => this.worldAssets.ensureEquipment(key, ticket)),
+    ]);
+  }
+
+  prioritizeArrivalLoads() {
+    this.arrivalLoadRelease ??= this.worldAssets.loadQueue.deferFrom(loadPriority(LOAD_TIER.near));
+  }
+
+  releaseArrivalLoads() {
+    const release = this.arrivalLoadRelease;
+    this.arrivalLoadRelease = null;
+    release?.();
+  }
+
+  /** The local player's actor is attached in a ready world. */
+  selfRenderReady() {
+    return !!this.assetsReady && !!this.selfId && !!this.players.get(this.selfId)?.actor;
+  }
+
+  /** Resolves once the local player can be shown: its snapshot has arrived, the
+   * floor around it exists and its actor (with held props) is attached. Other
+   * actors and farther scenery never delay it. Rejects with LoadCancelled when
+   * `current()` turns false (the visitor left), with the cause if the world fails. */
+  async arrival(current: () => boolean = () => true) {
+    const pause = () => new Promise((resolve) => setTimeout(resolve, 50));
+    const check = () => {
+      if (this.failed) throw new Error('The world failed before arrival');
+      if (this.disposed || !current()) throw new LoadCancelled('arrival', 'the visitor left');
+    };
+    let self = null;
+    while (!this.assetsReady || !(self = this.players.get(this.selfId))) {
+      check();
+      await pause();
+    }
+    try {
+      // The prepared arrival usually covers this; another spawn makes its floor urgent.
+      await this.openWorld?.arrive(self.state, performance.now() / 1000);
+    } catch (error) {
+      // A genuine floor failure has already stopped the world.
+      if (this.failed) throw error;
+    }
+    while (!this.selfRenderReady()) {
+      check();
+      await pause();
+    }
+  }
+
+  /** The bounded set an arrival at the current focus needs (startup-plan.ts):
+   * its floor, the camp's scenery and props, the landmarks framing its view and
+   * the mountain level it sees. Farther ground and landmarks, the NPC, herd,
+   * boats and companions stream nearest first afterwards; the local character
+   * loads through its own provider (the loading cave shows it first). */
+  planStartup(): CriticalStartup {
+    const focus = { x: this.focus.x, z: this.focus.z };
+    return criticalStartup({
+      focus,
+      chunks: nearbyChunks(focus.x, focus.z, STARTUP.floorRadius).map((chunk) => ({
+        ...chunk,
+        ground: biomeById(chunk.biome).ground,
+      })),
+      placements: LANDMARK_PLACEMENTS,
+      sceneryKeys: sceneryTemplateKeys(),
+      mountainKey: CAMP_MOUNTAIN.key,
+      mountainLevel: campMountainVisualLod(focus.x, focus.z),
+    });
+  }
+
   async initializeWorld() {
     const started = performance.now();
     const background = !!this.loadingCave;
+    // One world load per page: its boundaries are page marks (startup-marks.ts).
+    startupMarks.page('world-start');
     try {
-      await Promise.all([
-        this.worldAssets.load({
-          deferCompanions: true,
-          onProgress: (loaded, total) => Object.assign(this.loadProgress, { loaded, total }),
-          background,
-        }),
-        this.npcAssets.load(),
-      ]);
+      const catalog = await this.worldAssets.loadCatalog();
+      if (this.disposed) return;
+      this.companionKeys = new Set(
+        catalog.assets.filter((a) => a.kind === 'companion').map((a) => a.modelKey),
+      );
+      const plan = (this.startupPlan = this.planStartup());
+      this.canvas.dataset.worldStartup = JSON.stringify({
+        focus: plan.focus,
+        floorRadius: STARTUP.floorRadius,
+        viewRadius: STARTUP.viewRadius,
+        keys: plan.keys,
+        floor: plan.floorKeys,
+        landmarks: plan.landmarkIds,
+        mountainLevels: plan.mountainLevels,
+      });
+      // Progress covers exactly this set; streamed work never extends it. The mountain
+      // level the arrival sees is fitted off the UI thread as soon as its verified template
+      // is installed, while the rest downloads.
+      const fit = (this.startupFit = new StartupMountainFit(this.worldAssets, plan.mountainLevels));
+      const terrain = (this.startupTerrain ??= new StartupTerrain(
+        this,
+        plan.floorKeys,
+        async (cancelled) => {
+          startupMarks.page('world-terrain-start');
+          await buildTerrainAssets(this, cancelled);
+          if (!cancelled()) startupMarks.page('world-terrain-end');
+        },
+      ));
+      const startup = this.worldAssets
+        .loadStartup(plan.keys, {
+          onProgress: (loaded, total) => {
+            Object.assign(this.loadProgress, { loaded, total });
+            fit.poll();
+            terrain.poll();
+          },
+        })
+        .then(() => {
+          fit.poll(true);
+          terrain.poll(true);
+          if (!this.disposed) startupMarks.page('world-critical-loaded');
+        });
+      // A failed fit ends the startup at once; one still running is awaited below.
+      const prepared = Promise.all([startup, terrain.done]);
+      await Promise.race([prepared, fit.done.then(() => prepared)]);
       if (this.disposed) return;
       this.loadProgress.phase = 'build';
-      await buildTerrainAssets(this);
-      if (this.disposed) return;
+      startupMarks.page('world-build-start');
       buildForestAssets(this);
       buildCampAssets(this);
-      buildAnimalAssets(this);
+      buildMotes(this);
       this.landmarks = new WorldLandmarks(this);
-      if (background) await this.landmarks.prepareInitial();
+      startupMarks.page('world-build-end');
+      // Only the mountain level the arrival sees is fitted first: the startup's fit, whose
+      // failure stops here; prepareMountain then finds it fitted and never fits it again.
+      await fit.done;
+      await this.landmarks.prepareMountain(plan.mountainLevels);
       if (this.disposed) return;
+      startupMarks.page('world-fit');
       this.assetsReady = true;
       this.syncResources();
       this.syncEnemies();
+      this.updateActorResidency();
       this.campLabel.element.classList.toggle('complete', this.state.camp.level > 0);
-      this.boatRenderer = new BoatRenderer(this);
       this.adventureEffects = new AdventureEffects(this);
       if (COUNTRIES.length) {
         this.gulfRenderer = new GulfRenderer(this);
@@ -494,51 +730,60 @@ export class WorldRenderer {
         this.villageRenderer = new VillageRenderer(this);
       }
       this.orbBotRenderer = new OrbBotRenderer(this);
-      this.npcActor = await this.npcAssets.create({ color: '#ad9d79' });
-      if (this.disposed) {
-        this.npcActor?.dispose();
-        return;
-      }
-      this.npc = this.npcActor.root;
-      this.npc.position.set(NPC.x, walkHeight(NPC.x, NPC.z), NPC.z);
-      this.npc.rotation.y = -1.9;
-      this.scene.add(this.npc);
-      if (background) await this.prepareEntry();
+      startupMarks.page('world-prepare-start');
+      if (background) await this.prepareEntry(plan);
       if (this.disposed || this.failed) return;
       this.updateAssetDiagnostics();
       this.canvas.dataset.worldAsset = 'ready';
-      this.canvas.dataset.worldLoadMs = this.worldAssets.loadMilliseconds.toFixed(0);
+      this.canvas.dataset.worldLoadMs = (this.worldAssets.loadMilliseconds ?? 0).toFixed(0);
       this.canvas.dataset.worldSceneReadyMs = (performance.now() - started).toFixed(0);
       this.loadProgress.phase = 'ready';
+      startupMarks.page('world-ready');
       this.loadingLabel.remove();
       this.graphics.ready(performance.now());
-      void this.initializeCompanions();
+      this.updateStreamedTemplates(performance.now() / 1000);
+      // The mountain's other detail level is fitted in the background.
+      this.landmarks.prepareMountain([0, 1]).catch((error) => {
+        if (!this.disposed)
+          this.failWorld('山の地形を準備できませんでした。再読み込みしてください。', error);
+      });
     } catch (error) {
       if (this.disposed) return;
+      // A fit still running when another part of the startup failed is not left behind.
+      this.startupFit?.dispose();
+      this.startupTerrain?.dispose();
       this.failWorld('検証済みの3D素材を読み込めませんでした。再読み込みしてください。', error);
       throw error;
     }
   }
 
-  /** Prepare the camp's first frames before a connection's timeout clock starts. */
-  private async prepareEntry() {
+  /** Prepare the arrival's first frames before a connection's timeout clock
+   * starts: the critical landmarks and floor, their programs and one offscreen
+   * draw. Nothing beyond the critical set is awaited; the rest keeps streaming
+   * behind the gallery. */
+  private async prepareEntry(plan: CriticalStartup) {
     const started = performance.now();
     const nextFrame = () => new Promise<void>((resolve) => requestAnimationFrame(() => resolve()));
     const target = new THREE.WebGLRenderTarget(8, 8);
     try {
-      for (let pass = 0; pass < 3; pass++) {
+      // Each landmark update instances at most four; their templates are loaded.
+      const passes = 1 + Math.ceil(plan.landmarkIds.length / 4);
+      for (let pass = 0; pass < passes; pass++) {
         if (this.disposed || this.failed) return;
         await nextFrame();
         if (this.disposed || this.failed) return;
         if (this.landmarks) this.landmarks.next = 0;
         this.renderWorld(performance.now() / 1000, 0, true);
-        await Promise.all([...this.landmarks.pending.values(), ...this.openWorld.pending.values()]);
-        if (this.disposed || this.failed) return;
-        await this.renderer.compileAsync(this.scene, this.camera);
-        await nextFrame();
-        if (this.disposed || this.failed) return;
-        // Texture upload and shadow programs also need a first draw. Keep it
-        // offscreen so the visitor sees their cave throughout preparation.
+        if (this.landmarks.hasInstances(plan.landmarkIds)) break;
+      }
+      if (this.disposed || this.failed) return;
+      // Ends early if the context is lost: a restored context compiles on first use.
+      await compileScene(this.renderer, this.scene, this.camera);
+      await nextFrame();
+      if (this.disposed || this.failed) return;
+      // Texture upload also needs a first draw. Keep it offscreen so the visitor
+      // sees their cave throughout preparation (a lost context uploads after restore).
+      if (!this.graphicsContext.lost) {
         const previous = this.renderer.getRenderTarget();
         this.renderer.setRenderTarget(target);
         try {
@@ -553,75 +798,183 @@ export class WorldRenderer {
     }
   }
 
-  private async initializeCompanions() {
-    this.canvas.dataset.companionAssets = 'loading';
-    try {
-      await Promise.all(
-        this.worldAssets.catalog.assets
-          .filter((a) => a.kind === 'companion')
-          .map(async (asset) => {
-            await this.worldAssets.ensureCompanion(asset.modelKey);
-            if (this.disposed) return;
-            if (asset.modelKey === 'yellow-524-mascot')
-              this.companion524Renderer = new Companion524Renderer(this);
-            if (asset.modelKey === 'rimo-neko') this.rimoNekoRenderer = new RimoNekoRenderer(this);
-            if (asset.modelKey === 'mae') this.maeRenderer = new MaeRenderer(this);
-            if (asset.modelKey === 'kohaku') this.kohakuRenderer = new KohakuRenderer(this);
-            const friend = FRIEND_MASCOTS.findIndex((f) => f.key === asset.modelKey);
-            if (friend >= 0) {
-              const def = FRIEND_MASCOTS[friend];
-              const equipment = def.equipment
-                ? await this.worldAssets.createEquipment(def.equipment.key)
-                : undefined;
-              if (this.disposed) return;
-              this.friendRenderers.set(
-                asset.modelKey,
-                new FriendMascotRenderer(this, def, friend, equipment ?? undefined),
-              );
-            }
-            if (asset.modelKey === 'maruimo-mascot')
-              this.maruimoRenderer = new MaruimoRenderer(this);
-          }),
+  /** Actor templates owned by distance (RESIDENCY bands): the herd, boats and
+   * active companions load nearest first once within actor range, the local
+   * player's mount, boat and squad first of all, and are kept once loaded.
+   * Renderers are built when their verified template arrives. */
+  private updateStreamedTemplates(time: number) {
+    if (this.disposed || this.failed || !this.assetsReady) return;
+    const self = this.state.players.find((p) => p.id === this.selfId);
+    const wanted = new Map<string, number>();
+    const want = (key: string, point, essential = false) => {
+      if (!point || this.worldAssets.templates.has(key)) return;
+      const priority = residencyPriority(
+        this.residencyDistance(point),
+        essential,
+        this.streamDemand.has(key),
       );
-      if (this.disposed) return;
-      this.canvas.dataset.companionAssets = 'ready';
-      this.updateAssetDiagnostics();
-      this.graphics.ready(performance.now());
+      if (priority !== null) wanted.set(key, Math.min(wanted.get(key) ?? Infinity, priority));
+    };
+    if (!this.mammoths.length)
+      for (const animal of this.state.animals ?? SCENERY.animals) {
+        const mounted = self?.mountId === animal.id;
+        want('woolly-mammoth', animal, mounted);
+        want('mammoth-meat', animal, mounted);
+      }
+    if (!this.boatRenderer)
+      for (const boat of this.state.boats ?? [])
+        want('dugout-canoe', boat, self?.boatId === boat.id);
+    const companion = (key: string, point, own = false) => {
+      if (this.companionKeys?.has(key)) want(key, point, own);
+    };
+    const { companion524, rimoNeko } = this.state;
+    companion(COMPANION_524.modelKey, companion524, companion524?.squadPlayerId === this.selfId);
+    companion(RIMO_NEKO.modelKey, rimoNeko, rimoNeko?.squadPlayerId === this.selfId);
+    companion(MAE.modelKey, this.state.mae);
+    companion(KOHAKU.modelKey, this.state.kohaku);
+    companion(MARUIMO.modelKey, this.state.maruimo);
+    for (const friend of this.state.friends ?? []) companion(friend.key, friend);
+    for (const bot of this.state.orbBots ?? [])
+      companion(
+        bot.kind === '524'
+          ? COMPANION_524.modelKey
+          : bot.kind === 'rimo-neko'
+            ? RIMO_NEKO.modelKey
+            : `orb-bot-${bot.kind}`,
+        bot,
+        bot.ownerId === this.selfId,
+      );
+    this.streamDemand.update(wanted, (key, ticket) => this.requestStreamed(key, ticket));
+    // Ready once every companion wanted within actor range has its renderer.
+    const companions = [...this.streamDemand.keys()].some((key) => this.companionKeys?.has(key))
+      ? 'loading'
+      : 'ready';
+    if (this.canvas.dataset.companionAssets !== companions)
+      this.canvas.dataset.companionAssets = companions;
+    this.updateNpc(time);
+  }
+
+  private requestStreamed(key: string, ticket: LoadTicket) {
+    const companion = !!this.companionKeys?.has(key);
+    (companion
+      ? this.worldAssets.ensureCompanion(key, ticket)
+      : this.worldAssets.ensureInitial(key, ticket)
+    )
+      .then(() => {
+        if (!this.disposed) this.installStreamed(key);
+      })
+      .catch((error) => {
+        // A request withdrawn by distance is not an asset failure.
+        if (this.disposed || isLoadCancelled(error)) return;
+        this.failWorld(
+          companion
+            ? '仲間の3D素材を読み込めませんでした。再読み込みしてください。'
+            : '検証済みの3D素材を読み込めませんでした。再読み込みしてください。',
+          error,
+        );
+      })
+      .finally(() => this.streamDemand.settle(key, ticket));
+  }
+
+  private installStreamed(key: string) {
+    const loaded = (name: string) => this.worldAssets.templates.has(name);
+    if (!this.mammoths.length && loaded('woolly-mammoth') && loaded('mammoth-meat'))
+      buildAnimalAssets(this);
+    if (key === 'dugout-canoe' && !this.boatRenderer) this.boatRenderer = new BoatRenderer(this);
+    if (key === COMPANION_524.modelKey)
+      this.companion524Renderer ??= new Companion524Renderer(this);
+    if (key === RIMO_NEKO.modelKey) this.rimoNekoRenderer ??= new RimoNekoRenderer(this);
+    if (key === MAE.modelKey) this.maeRenderer ??= new MaeRenderer(this);
+    if (key === KOHAKU.modelKey) this.kohakuRenderer ??= new KohakuRenderer(this);
+    if (key === MARUIMO.modelKey) this.maruimoRenderer ??= new MaruimoRenderer(this);
+    const friend = FRIEND_MASCOTS.findIndex((f) => f.key === key);
+    if (friend >= 0) void this.installFriend(friend);
+    this.updateAssetDiagnostics();
+  }
+
+  private async installFriend(index: number) {
+    const def = FRIEND_MASCOTS[index];
+    try {
+      const equipment = def.equipment
+        ? await this.worldAssets.createEquipment(def.equipment.key)
+        : undefined;
+      if (this.disposed || this.friendRenderers.has(def.key)) return;
+      this.friendRenderers.set(
+        def.key,
+        new FriendMascotRenderer(this, def, index, equipment ?? undefined),
+      );
     } catch (error) {
-      if (!this.disposed)
+      if (!this.disposed && !isLoadCancelled(error))
         this.failWorld('仲間の3D素材を読み込めませんでした。再読み込みしてください。', error);
     }
   }
 
-  setGraphicsMode(mode: GraphicsMode) {
-    this.graphics.setMode(mode, performance.now());
-    this.applyGraphics();
+  /** The camp's trading NPC loads within actor range and is released after the
+   * grace period beyond it, as a remote player is. */
+  private updateNpc(time: number) {
+    const residency = this.npcResidency;
+    const action = stepResidency(
+      residency,
+      residencyPriority(this.residencyDistance(NPC), false, residency.state !== 'absent'),
+      time,
+    );
+    if (action === 'load') void this.loadNpc();
+    else if (action) {
+      if (action === 'evict') this.actorEvictions++;
+      this.releaseNpc();
+    }
   }
 
-  private applyGraphics() {
-    const low = this.graphics.tier === 'low';
-    const shadowsChanged = this.renderer.shadowMap.enabled === low;
-    this.renderer.shadowMap.enabled = !low;
-    if (shadowsChanged) {
-      // USE_SHADOWMAP is a shader variant. Toggling the renderer alone leaves
-      // existing materials using the old program and a disposed shadow texture.
-      const materials = new Set<THREE.Material>();
-      this.scene.traverse((node) => {
-        if (isMesh(node)) for (const material of [node.material].flat()) materials.add(material);
-      });
-      for (const material of materials) material.needsUpdate = true;
+  private async loadNpc() {
+    const residency = this.npcResidency,
+      token = residency.token,
+      ticket = residency.ticket;
+    if (!token || !ticket) return;
+    const current = () => !this.disposed && residency.token === token;
+    let actor = null,
+      attached = false;
+    try {
+      actor = await this.npcAssets.create({ color: '#ad9d79', ticket });
+      if (!actor || !current()) return;
+      this.npcActor = actor;
+      this.npc = actor.root;
+      this.npc.position.set(NPC.x, walkHeight(NPC.x, NPC.z), NPC.z);
+      this.npc.rotation.y = -1.9;
+      this.scene.add(this.npc);
+      if (this.npcLabel) this.npcLabel.active = true;
+      attached = true;
+      residencyAttached(residency, token);
+      this.updateAssetDiagnostics();
+    } catch (error) {
+      if (!current() || isLoadCancelled(error)) return;
+      this.failWorld('人物の3D素材を読み込めませんでした。再読み込みしてください。', error);
+    } finally {
+      if (!attached) {
+        actor?.dispose();
+        if (residency.token === token) releaseResidency(residency);
+      }
     }
-    this.frameClock?.setRate(performance.now(), this.graphics.fps);
-    this.canvas.dataset.graphicsMode = this.graphics.mode;
-    this.canvas.dataset.graphicsTier = this.graphics.tier;
-    this.canvas.dataset.fpsLimit = String(this.graphics.fps);
-    const shadowSize = low ? 512 : 1024;
-    if (this.sun.shadow.mapSize.x !== shadowSize) {
-      this.sun.shadow.map?.dispose();
-      this.sun.shadow.map = null;
-      this.sun.shadow.mapSize.set(shadowSize, shadowSize);
-    }
-    this.resize();
+  }
+
+  private releaseNpc() {
+    releaseResidency(this.npcResidency);
+    if (this.npc) this.scene.remove(this.npc);
+    this.npcActor?.dispose();
+    this.npc = this.npcActor = null;
+    // No label without its body.
+    if (this.npcLabel) this.npcLabel.active = false;
+  }
+
+  /** Whether the shared queue, terrain and landmarks have nothing in flight. */
+  private streamingIdle() {
+    const queue = this.worldAssets.loadQueue;
+    return (
+      !queue.active &&
+      !queue.queued.length &&
+      !this.openWorld?.pending.size &&
+      !this.landmarks?.pending.size &&
+      !this.streamDemand.size
+    );
   }
 
   updateAssetDiagnostics() {
@@ -714,14 +1067,18 @@ export class WorldRenderer {
       // A direct child of the LOD root stays visible at every level.
       item.model.add(fruit);
       item.fruit = fruit;
-      this.attachBerryClusters(item, fruit, anchors, seed);
+      // The bush owns its interest in the shared cluster load: replacing or
+      // evicting the bush withdraws it, so a late cluster never attaches.
+      item.fruitTicket?.release();
+      item.fruitTicket = LoadTicket.of(LOAD_TIER.scene);
+      this.attachBerryClusters(item, fruit, anchors, seed, item.fruitTicket);
     }
   }
 
   /** One TRELLIS berry-cluster prop per fruit anchor; the count still shows the remaining amount. */
-  async attachBerryClusters(item, fruit, anchors, seed) {
+  async attachBerryClusters(item, fruit, anchors, seed, ticket = LoadTicket.of(LOAD_TIER.scene)) {
     try {
-      const template = await this.worldAssets.createEquipment('berry-cluster');
+      const template = await this.worldAssets.createEquipment('berry-cluster', ticket);
       if (!template || this.disposed || item.fruit !== fruit) return;
       template.updateMatrixWorld(true);
       const box = new THREE.Box3().setFromObject(template);
@@ -748,8 +1105,9 @@ export class WorldRenderer {
       });
       if (item.resource) this.applyResourceAmount(item, item.resource);
     } catch (error) {
-      if (!this.disposed)
-        this.failWorld('検証済みの3D素材を読み込めませんでした。再読み込みしてください。', error);
+      // A withdrawn, replaced or evicted bush is not an asset failure.
+      if (this.disposed || item.fruit !== fruit || isLoadCancelled(error)) return;
+      this.failWorld('検証済みの3D素材を読み込めませんでした。再読み込みしてください。', error);
     }
   }
 
@@ -789,9 +1147,18 @@ export class WorldRenderer {
         const health = document.createElement('progress');
         health.setAttribute('aria-label', `${state.name}の体力`);
         label.element.append(health);
-        entity = { model, label, health, state, actor: null, seal: null, sealSize: '' };
+        // The holder keeps state, label and target; residency loads its actor nearby.
+        entity = {
+          model,
+          label,
+          health,
+          state,
+          actor: null,
+          seal: null,
+          sealSize: '',
+          residency: new ActorResidency(),
+        };
         this.enemies.set(state.id, entity);
-        this.loadEnemy(entity, state.id);
       }
       entity.state = state;
     }
@@ -801,42 +1168,82 @@ export class WorldRenderer {
   removeEnemy(id) {
     const entity = this.enemies.get(id);
     if (!entity) return;
+    this.releaseEnemyActor(entity);
     this.scene.remove(entity.model);
-    if (entity.seal) {
-      this.scene.remove(entity.seal);
-      disposePrayerSeal(entity.seal);
-    }
-    entity.actor?.dispose();
     entity.label.element.remove();
     this.labels.splice(this.labels.indexOf(entity.label), 1);
     this.enemies.delete(id);
   }
 
+  /** Free an enemy's render actor and seal; its holder, label and target stay. */
+  private releaseEnemyActor(entity) {
+    if (entity.residency) releaseResidency(entity.residency);
+    if (entity.seal) {
+      this.scene.remove(entity.seal);
+      disposePrayerSeal(entity.seal);
+      entity.seal = null;
+      entity.sealSize = '';
+    }
+    if (entity.actor) {
+      entity.actor.root.removeFromParent();
+      entity.actor.dispose();
+      entity.actor = null;
+    }
+    // A later actor starts from the current server state, not this one's pose.
+    entity.model.visible = false;
+    entity.label.active = false;
+    entity.initialized = false;
+    entity.phase = entity.phaseStartedAt = undefined;
+  }
+
   async loadEnemy(entity, id) {
+    const residency = entity.residency,
+      token = residency?.token,
+      ticket = residency?.ticket ?? LoadTicket.of(LOAD_TIER.visible);
+    // Only the load that residency started for this holder may attach.
+    if (residency && !token) return;
+    const current = () =>
+      !this.disposed &&
+      this.enemies.get(id) === entity &&
+      (!residency || residency.token === token);
+    let actor = null,
+      attached = false;
     try {
-      const actor = await this.worldAssets.createEnemy(entity.state.modelKey);
-      if (!actor) return;
+      actor = await this.worldAssets.createEnemy(entity.state.modelKey, ticket);
+      if (!actor || !current()) return;
       // Crow rank regalia are prop assets loaded with the actor, so a rank never shows bare.
       const crow = entity.state.modelKey === 'crow-shaman';
       const propKeys = crow ? crowPropKeys(entity.state.crowRole) : [];
-      const props = await Promise.all(propKeys.map((key) => this.worldAssets.createEquipment(key)));
-      if (this.disposed || this.enemies.get(id) !== entity || props.some((prop) => !prop)) {
-        actor.dispose();
-        return;
-      }
-      entity.actor = actor;
-      if (crow)
-        decorateCrowFaction(
+      const props = await Promise.all(
+        propKeys.map((key) => this.worldAssets.createEquipment(key, ticket)),
+      );
+      if (!current() || props.some((prop) => !prop)) return;
+      if (crow) {
+        const parts = decorateCrowFaction(
           actor.root,
           entity.state.crowRole,
           Object.fromEntries(propKeys.map((key, index) => [key, props[index]])),
         );
+        // A part's own meshes are its focus orbs (props are model roots).
+        for (const part of parts)
+          for (const child of part.children)
+            if (isMesh(child)) this.crowGeometry.add(child.geometry);
+      }
       entity.model.add(actor.root);
       entity.model.scale.setScalar(entity.state.scale ?? 1);
+      entity.actor = actor;
+      attached = true;
+      if (residency) residencyAttached(residency, token);
       this.updateAssetDiagnostics();
     } catch (error) {
-      if (!this.disposed && this.enemies.get(id) === entity)
-        this.failWorld('敵の検証済み3D素材を読み込めませんでした。再読み込みしてください。', error);
+      // A load nobody wants any more is not an asset failure.
+      if (!current() || isLoadCancelled(error)) return;
+      this.failWorld('敵の検証済み3D素材を読み込めませんでした。再読み込みしてください。', error);
+    } finally {
+      if (!attached) {
+        actor?.dispose();
+        if (residency && residency.token === token) releaseResidency(residency);
+      }
     }
   }
 
@@ -1012,9 +1419,8 @@ export class WorldRenderer {
       let entity = this.players.get(p.id);
       const changedCharacter = entity && characterModel(entity.state).key !== characterModel(p).key;
       if (changedCharacter) {
+        this.releasePlayerActor(entity);
         this.scene.remove(entity.model);
-        entity.torch?.dispose();
-        entity.actor?.dispose();
         entity.label.element.remove();
         this.labels.splice(this.labels.indexOf(entity.label), 1);
         this.players.delete(p.id);
@@ -1037,9 +1443,9 @@ export class WorldRenderer {
         );
         const countryLabel = document.createElement('small');
         label.element.append(countryLabel);
-        entity = { model, label, countryLabel, state: p };
+        // The holder keeps state for gameplay; residency loads its actor nearby.
+        entity = { model, label, countryLabel, state: p, residency: new ActorResidency() };
         this.players.set(p.id, entity);
-        this.loadHuman(entity, p.id);
       }
       if (
         playerRecovered(entity.state, p) ||
@@ -1085,46 +1491,70 @@ export class WorldRenderer {
     }
     for (const [id, entity] of this.players)
       if (!present.has(id)) {
+        this.releasePlayerActor(entity);
         this.scene.remove(entity.model);
-        entity.torch?.dispose();
-        entity.actor?.dispose();
         entity.label.element.remove();
         this.labels.splice(this.labels.indexOf(entity.label), 1);
         this.players.delete(id);
       }
     this.campLabel?.element.classList.toggle('complete', state.camp.level > 0);
+    this.updateActorResidency();
+  }
+
+  /** Free a player's render actor, torch and held props; the state holder and
+   * label stay, so gameplay, the map and targets are unchanged. */
+  private releasePlayerActor(entity) {
+    if (entity.residency) releaseResidency(entity.residency);
+    entity.torch?.dispose();
+    entity.torch = null;
+    if (entity.actor) {
+      entity.actor.root.removeFromParent();
+      entity.actor.dispose();
+      entity.actor = null;
+    }
+    entity.weapon = entity.axe = entity.flask = entity.spears = null;
+    entity.gripRight = entity.gripLeft = null;
+    entity.wasMounted = false;
   }
 
   async loadHuman(entity, id) {
-    this.canvas.dataset.characterAsset = 'loading';
-    let pendingActor;
+    const residency = entity.residency,
+      token = residency?.token,
+      ticket = residency?.ticket ?? LoadTicket.of(LOAD_TIER.essential);
+    // Only the load that residency started for this holder may attach.
+    if (residency && !token) return;
+    const current = () =>
+      !this.disposed &&
+      this.players.get(id) === entity &&
+      (!residency || residency.token === token);
+    // Readiness describes the local player only, never optional remote actors.
+    const self = id === this.selfId;
+    if (self) this.canvas.dataset.characterAsset = 'loading';
+    let actor = null,
+      attached = false;
     try {
       await this.assetsPromise;
-      if (this.disposed || this.players.get(id) !== entity || !this.assetsReady) return;
+      if (!current() || !this.assetsReady) return;
       const provider = this.humanAssets.get(characterModel(entity.state).key);
-      const actor = (pendingActor = await provider.create({ color: entity.state.color }));
-      if (!actor) return;
-      if (this.disposed || this.players.get(id) !== entity) {
-        actor.dispose();
-        return;
-      }
-      const previous = entity.model;
+      actor = await provider.create({ color: entity.state.color, ticket });
+      if (!actor || !current()) return;
       actor.root.position.set(0, 0, 0);
       const grip = actor.root.getObjectByName(THREE.PropertyBinding.sanitizeNodeName('Grip.R'));
-      entity.gripRight = grip;
-      entity.gripLeft = actor.root.getObjectByName(
-        THREE.PropertyBinding.sanitizeNodeName('Grip.L'),
-      );
+      const gripLeft = actor.root.getObjectByName(THREE.PropertyBinding.sanitizeNodeName('Grip.L'));
+      let weapon = null,
+        spears = null,
+        axe = null,
+        flask = null;
       if (grip) {
         const profile = attackProfile(entity.state);
-        entity.weapon = profile.modelKey
-          ? await this.worldAssets.createEquipment(profile.modelKey)
+        weapon = profile.modelKey
+          ? await this.worldAssets.createEquipment(profile.modelKey, ticket)
           : null;
         if (profile.key === 'spear') {
           const otherKey = profile.modelKey === 'wooden-spear' ? 'obsidian-spear' : 'wooden-spear';
-          const other = await this.worldAssets.createEquipment(otherKey);
-          entity.spears = new Map([
-            [profile.modelKey, entity.weapon],
+          const other = await this.worldAssets.createEquipment(otherKey, ticket);
+          spears = new Map([
+            [profile.modelKey, weapon],
             [otherKey, other],
           ]);
           if (other) {
@@ -1133,54 +1563,149 @@ export class WorldRenderer {
             other.visible = false;
           }
         }
-        if (this.disposed || this.players.get(id) !== entity) {
-          actor.dispose();
-          return;
-        }
-        entity.axe = this.worldAssets.create('stone-axe');
-        for (const tool of [entity.weapon, entity.axe].filter(Boolean)) {
+        if (!current()) return;
+        axe = this.worldAssets.create('stone-axe');
+        for (const tool of [weapon, axe].filter(Boolean)) {
           grip.add(tool);
           tool.position.set(0, 0, 0);
           tool.quaternion.copy(actor.gripUp);
         }
-        if (entity.state.species === 'bear') entity.axe.scale.setScalar(0.55);
-        entity.axe.visible = false;
+        if (entity.state.species === 'bear') axe.scale.setScalar(0.55);
+        axe.visible = false;
         // Howkey's right hand carries her Erlenmeyer flask by the neck.
-        entity.flask =
+        flask =
           entity.state.species === 'howkey'
-            ? await this.worldAssets.createEquipment('howkey-flask')
+            ? await this.worldAssets.createEquipment('howkey-flask', ticket)
             : null;
-        if (this.disposed || this.players.get(id) !== entity) {
-          actor.dispose();
-          return;
-        }
-        if (entity.flask) grip.add(entity.flask);
+        if (!current()) return;
+        if (flask) grip.add(flask);
       }
-      previous.add(actor.root);
-      entity.torch = new CaveTorch(
+      const torch = new CaveTorch(
         this.scene,
         this.worldAssets,
         actor.root,
         actor.asset.heightMetres,
       );
+      entity.model.add(actor.root);
+      Object.assign(entity, { gripRight: grip, gripLeft, weapon, spears, axe, flask, torch });
       entity.actor = actor;
-      pendingActor = null;
+      attached = true;
+      if (residency) residencyAttached(residency, token);
       this.updateAssetDiagnostics();
+      // The actor starts from the current server state, including an attack in progress.
       if (
         entity.state.attackAt &&
         !entity.state.carrierId &&
         caveInteriorWeight(entity.state) === 0
       )
         actor.animation.playAttack(Math.max(0, (this.serverNow() - entity.state.attackAt) / 1000));
-      this.canvas.dataset.characterAsset = 'ready';
-      this.canvas.dataset.characterHash = actor.asset.sha256;
-      this.canvas.dataset.modelLoadMs = provider.loadMilliseconds.toFixed(0);
+      if (self) {
+        this.canvas.dataset.characterAsset = 'ready';
+        this.canvas.dataset.characterHash = actor.asset.sha256;
+        this.canvas.dataset.modelLoadMs = provider.loadMilliseconds.toFixed(0);
+      }
     } catch (error) {
-      pendingActor?.dispose();
-      if (this.disposed || this.players.get(id) !== entity) return;
-      this.canvas.dataset.characterAsset = 'error';
+      // A load nobody wants any more is not an asset failure.
+      if (!current() || isLoadCancelled(error)) return;
+      if (self) this.canvas.dataset.characterAsset = 'error';
       this.failWorld('人物の3D素材を読み込めませんでした。再読み込みしてください。', error);
+    } finally {
+      if (!attached) {
+        actor?.dispose();
+        if (residency && residency.token === token) releaseResidency(residency);
+      }
     }
+  }
+
+  /** Admit, prioritize and release render actors around the local focus (see
+   * RESIDENCY). State holders always stay; only their actors come and go. */
+  updateActorResidency(time = performance.now() / 1000) {
+    // A failed world has already reported its error: start nothing new. Before
+    // the world is ready, holders wait; initializeWorld() admits them.
+    if (this.disposed || this.failed || !this.assetsReady) return;
+    const essentials = essentialActorIds(this.state.players ?? [], this.selfId),
+      wanted = new Map<string, number>();
+    for (const [id, entity] of this.players) {
+      const priority = residencyPriority(
+        this.residencyDistance(entity.state),
+        essentials.has(id),
+        entity.residency.state !== 'absent',
+      );
+      if (priority !== null) wanted.set(id, priority);
+    }
+    // A passenger is drawn on its carrier's shoulder: the carrier is wanted at least as much.
+    for (const [id, priority] of [...wanted]) {
+      const carrier = this.players.get(id)?.state.carrierId;
+      if (carrier && this.players.has(carrier))
+        wanted.set(carrier, Math.min(wanted.get(carrier) ?? Infinity, priority));
+    }
+    for (const [id, entity] of this.players) {
+      const action = stepResidency(entity.residency, wanted.get(id) ?? null, time);
+      if (action === 'load') void this.loadHuman(entity, id);
+      else if (action) {
+        if (action === 'evict') this.actorEvictions++;
+        this.releasePlayerActor(entity);
+      }
+    }
+    for (const [id, enemy] of this.enemies) {
+      const priority = residencyPriority(
+        this.residencyDistance(enemy.state),
+        false,
+        enemy.residency.state !== 'absent',
+      );
+      const action = stepResidency(enemy.residency, priority, time);
+      if (action === 'load') void this.loadEnemy(enemy, id);
+      else if (action) {
+        if (action === 'evict') this.actorEvictions++;
+        this.releaseEnemyActor(enemy);
+      }
+    }
+    // Reassigned priorities reorder queued work: a warp puts the new scene first.
+    this.worldAssets.loadQueue.pump();
+    // Templates are evicted only while a local player is in the world: the title
+    // and the loading cave keep a character preloaded for the coming join.
+    if (this.selfId) {
+      // A loading holder may still be waiting to call create(): keep its model.
+      const needed = new Set<string>();
+      for (const entity of this.players.values())
+        if (entity.residency.state === 'loading') needed.add(characterModel(entity.state).key);
+      for (const [key, provider] of this.humanAssets)
+        provider.collect(time, RESIDENCY.graceSeconds, needed.has(key));
+      this.worldAssets.collectActors(time, RESIDENCY.graceSeconds);
+    }
+  }
+
+  private residencyDistance(state) {
+    return Math.hypot(state.x - this.focus.x, state.z - this.focus.z);
+  }
+
+  /** Resident, loading and absent render actors, their templates and the queue. */
+  residencyDiagnostics() {
+    const count = (holders) => {
+      const counts = { resident: 0, loading: 0, absent: 0 };
+      for (const holder of holders) {
+        const state = holder.actor
+          ? 'resident'
+          : holder.residency?.state === 'loading'
+            ? 'loading'
+            : 'absent';
+        counts[state]++;
+      }
+      return counts;
+    };
+    const characters = { loaded: [], loading: [], evicted: 0 };
+    for (const [key, provider] of this.humanAssets) {
+      if (provider.template) characters.loaded.push(key);
+      else if (provider.pending) characters.loading.push(key);
+      characters.evicted += provider.evictions ?? 0;
+    }
+    return {
+      players: count(this.players.values()),
+      enemies: count(this.enemies.values()),
+      evictedActors: this.actorEvictions,
+      characterTemplates: characters,
+      enemyTemplates: this.worldAssets.actorTemplateDiagnostics(),
+    };
   }
 
   setEmote(id, emote) {
@@ -1397,10 +1922,11 @@ export class WorldRenderer {
             screenX: screen.x,
             screenY: screen.y,
             screenZ: screen.z,
-            clear: this.collision.segmentFree(me, t.point, 0.05),
           };
         }),
       me,
+      // Traced now, only for a companion in range and on screen.
+      (t) => this.collision.segmentFree(me, t.point, 0.05),
     );
   }
 
@@ -1449,14 +1975,32 @@ export class WorldRenderer {
     this.canvas.dataset.companionView = '';
     return true;
   }
-  resize() {
+  /** `force` reapplies the drawing buffer even at an unchanged size (a restored context). */
+  resize(force = false) {
     const r = this.canvas.getBoundingClientRect();
     this.width = Math.max(1, r.width);
     this.height = Math.max(1, r.height);
-    this.renderer.setPixelRatio(
-      graphicsPixelRatio(this.width, this.height, devicePixelRatio, this.graphics.tier),
+    const ratio = graphicsPixelRatio(
+      this.width,
+      this.height,
+      devicePixelRatio,
+      this.graphics.scale,
     );
-    this.renderer.setSize(this.width, this.height, false);
+    const size = this.renderer.getSize(drawingSize);
+    const ratioChanged = this.renderer.getPixelRatio() !== ratio;
+    // Reallocating the drawing buffer clears it: resize it in one step, and only
+    // when the canvas size or the effective pixel ratio actually changed.
+    if (force || ratioChanged || size.x !== this.width || size.y !== this.height)
+      this.renderer.setDrawingBufferSize(this.width, this.height, ratio);
+    if (ratioChanged) {
+      // Point sprites sized at creation keep their on-screen size at the new ratio.
+      for (const fire of this.fires) fire.sparks.material.uniforms.scale.value = ratio;
+      if (this.marsh) this.marsh.mist.material.uniforms.pixelScale.value = ratio;
+    }
+    const data = this.canvas.dataset;
+    data.safetyScale = String(this.graphics.scale);
+    data.pixelRatio = ratio.toFixed(3);
+    data.drawingBuffer = `${this.canvas.width}x${this.canvas.height}`;
     this.camera.aspect = this.width / this.height;
     this.camera.fov = touchFieldOfView(this.camera.aspect, this.touchCamera.enabled);
     this.camera.updateProjectionMatrix();
@@ -1474,6 +2018,34 @@ export class WorldRenderer {
     );
   }
 
+  /** One display refresh. The loading cave and the world both draw here, at the
+   * fixed frame cap; only active world frames inform the buffer safety scale. */
+  tick(now: number) {
+    if (this.graphicsContext?.lost) {
+      // Nothing can be drawn. Only visible waiting counts toward offering a reload.
+      if (this.graphicsContext.frame(now, document.hidden)) {
+        this.canvas.dataset.webglContext = 'stalled';
+        this.onGraphicsContext('stalled');
+      }
+      return;
+    }
+    const dt = this.frameClock.advance(now, document.hidden);
+    if (dt === null) {
+      if (document.hidden) this.motionLastFrame = null;
+      return;
+    }
+    // The first frame after a hidden tab has no interval: a discontinuity.
+    const frameMs = this.motionLastFrame === null ? NaN : now - this.motionLastFrame;
+    const active = !!this.selfId && !!this.assetsReady && !this.loadingCave && !this.occluded();
+    if (this.graphics.observe(now, frameMs, active)) this.resize();
+    if (this.motionLastFrame !== null) this.onFrameTiming?.(frameMs);
+    this.motionLastFrame = now;
+    this.render(now / 1000, dt);
+    // The first normal frame and the local body are now presented. The held
+    // distance-priority requests may resume without delaying status/socket/input.
+    if (active && this.arrivalLoadRelease && this.selfRenderReady()) this.releaseArrivalLoads();
+  }
+
   render(time, dt) {
     if (this.loadingCave) {
       this.loadingCave.render(dt);
@@ -1484,6 +2056,14 @@ export class WorldRenderer {
 
   private renderWorld(time, dt, preparing = false) {
     const frameStarted = performance.now();
+    this.updateActorResidency(time);
+    this.updateStreamedTemplates(time);
+    // The burst of loads after arrival is loading, not sustained overload:
+    // the safety-scale measurement restarts once it has drained.
+    if (!this.streamingSettled && this.selfId && this.assetsReady && this.streamingIdle()) {
+      this.streamingSettled = true;
+      this.graphics.ready(performance.now());
+    }
     this.actorBudget.begin(this.camera);
     let predicted = null;
     if (this.prediction.enabled && this.prediction.actor) {
@@ -1546,7 +2126,6 @@ export class WorldRenderer {
       updateActorPerformance(
         animal.actor.root,
         animal.model.position.distanceTo(this.camera.position),
-        this.graphics.tier,
       );
       if (
         phase !== animal.phase ||
@@ -1631,8 +2210,10 @@ export class WorldRenderer {
         entity.actor?.carrySupportPose?.reset();
         entity.actor?.leanPose?.reset();
       }
+      // An unloaded actor shows nothing: no label or ground contact without its body.
       model.visible =
-        p.id === this.selfId || Math.hypot(p.x - this.focus.x, p.z - this.focus.z) < 95;
+        !!entity.actor &&
+        (p.id === this.selfId || Math.hypot(p.x - this.focus.x, p.z - this.focus.z) < 95);
       if (!model.visible) {
         model.position.set(p.x, walkHeight(p.x, p.z), p.z);
         model.rotation.y = p.facing;
@@ -1640,11 +2221,7 @@ export class WorldRenderer {
         continue;
       }
       if (entity.actor)
-        updateActorPerformance(
-          entity.actor.root,
-          model.position.distanceTo(this.camera.position),
-          this.graphics.tier,
-        );
+        updateActorPerformance(entity.actor.root, model.position.distanceTo(this.camera.position));
       entity.label.active = true;
       const airborne = jumpProgress(p, this.serverNow());
       if (airborne === null) entity.actor?.jumpPose.leave(entity.actor.animation);
@@ -2057,7 +2634,6 @@ export class WorldRenderer {
             root.position.z - this.camera.position.z,
           ) <
           (this.scene.fog as THREE.Fog).far + radius;
-        if (root.visible) updateSimplifiedShadow(root, this.camera);
       }
     }
     for (const item of this.resources.values()) {
@@ -2065,7 +2641,6 @@ export class WorldRenderer {
         item.resource.amount > 0 &&
         item.model.position.distanceTo(this.camera.position) <
           (this.scene.fog as THREE.Fog).far + 5;
-      if (item.model.visible) updateSimplifiedShadow(item.model, this.camera);
     }
     if (this.waterMaterial) this.waterMaterial.userData.time.value = time;
     if (this.npc) {
@@ -2075,25 +2650,18 @@ export class WorldRenderer {
           updateActorPerformance(
             this.npcActor.root,
             this.npc.position.distanceTo(this.camera.position),
-            this.graphics.tier,
           );
         this.npcActor?.animation.update(dt, 0);
       }
     }
     for (const landscape of this.landscapes)
-      landscape.update(
-        this.camera,
-        time,
-        self ? this.focus : null,
-        this.graphics.tier === 'low' ? 0.5 : 1,
-      );
+      landscape.update(this.camera, time, self ? this.focus : null, GROUNDCOVER_DENSITY);
     for (const fire of this.fires) {
       const visible =
         fire.root.position.distanceTo(this.camera.position) < 65 &&
         (!fire.cave || this.state.camp.caveFireLit);
       fire.light.visible = visible;
       fire.sparks.visible = visible;
-      updateSimplifiedShadow(fire.root, this.camera);
       if (!visible) continue;
       fire.light.intensity =
         (fire.cave ? 8 : 4.1) + Math.sin(time * 9 + fire.seed) * (fire.cave ? 0.55 : 0.5);
@@ -2139,11 +2707,7 @@ export class WorldRenderer {
         );
         continue;
       }
-      updateActorPerformance(
-        actor.root,
-        model.position.distanceTo(this.camera.position),
-        this.graphics.tier,
-      );
+      updateActorPerformance(actor.root, model.position.distanceTo(this.camera.position));
       const factor = 1 - Math.exp(-dt * 20),
         next = this.collision.move(
           model.position,
@@ -2175,6 +2739,9 @@ export class WorldRenderer {
           sealHeight = (actor.asset.heightMetres ?? 1.85) * (state.scale ?? 1) + 0.4;
         if (!enemy.seal) {
           enemy.seal = createPrayerSeal(sealRadius, sealHeight);
+          enemy.seal.traverse((node) => {
+            if (isMesh(node)) this.crowGeometry.add(node.geometry);
+          });
           enemy.sealSize = `${sealRadius}:${sealHeight}`;
           this.scene.add(enemy.seal);
         } else if (enemy.sealSize !== `${sealRadius}:${sealHeight}`) {
@@ -2195,10 +2762,7 @@ export class WorldRenderer {
         actor.update(dt);
       }
     }
-    if (this.motes) {
-      this.motes.rotation.y = Math.sin(time * 0.02) * 0.03;
-      (this.motes as THREE.Points).geometry.setDrawRange(0, this.graphics.tier === 'low' ? 24 : 65);
-    }
+    if (this.motes) this.motes.rotation.y = Math.sin(time * 0.02) * 0.03;
     this.spells.update(
       this.state,
       this.players,
@@ -2238,6 +2802,15 @@ export class WorldRenderer {
       data.frameSubmissionMs = this.submissionMs.toFixed(2);
       data.animationSamples = String(this.actorBudget.samples);
       data.animationSkipped = String(this.actorBudget.skipped);
+      data.actorResidency = JSON.stringify(this.residencyDiagnostics());
+      data.assetQueue = JSON.stringify(this.worldAssets.loadQueue.diagnostics());
+      data.worldStreaming = JSON.stringify({
+        idle: this.streamingIdle(),
+        settled: this.streamingSettled,
+        terrain: [...(this.openWorld?.pending.keys() ?? [])],
+        landmarks: [...(this.landmarks?.pending.keys() ?? [])],
+        actors: [...this.streamDemand.keys()],
+      });
       data.documentFocus = String(document.hasFocus());
       data.cameraPosition = [this.camera.position.x, this.camera.position.y, this.camera.position.z]
         .map((n) => n.toFixed(2))
@@ -2400,10 +2973,14 @@ export class WorldRenderer {
   }
 
   destroy() {
+    // First: providers below dispose the materials whose programs name them.
+    this.releaseEngineResources();
     this.audio.dispose();
     this.natureEffects.dispose();
     this.boatRenderer?.dispose();
     this.disposed = true;
+    // Queued streamed templates nobody else wants are cancelled.
+    this.streamDemand?.clear();
     this.gulfRenderer?.dispose();
     this.coastalRenderer?.dispose();
     this.villageRenderer?.dispose();
@@ -2417,6 +2994,8 @@ export class WorldRenderer {
     this.orbBotRenderer?.dispose();
     this.contactShadows.dispose();
     this.regionalScenery?.dispose();
+    this.startupFit?.dispose();
+    this.startupTerrain?.dispose();
     this.landmarks?.dispose();
     this.openWorld?.dispose();
     this.releaseTerrainSampler?.();
@@ -2432,6 +3011,7 @@ export class WorldRenderer {
     for (const landscape of this.landscapes) landscape.dispose();
     for (const provider of this.humanAssets.values()) provider.dispose();
     this.worldAssets.dispose();
+    this.releaseArrivalLoads();
     this.spells.dispose();
     this.atmosphere.dispose();
     this.adventureEffects?.dispose();
@@ -2444,6 +3024,7 @@ export class WorldRenderer {
       ['wheel', this.wheel],
       ['contextmenu', this.context],
       ['webglcontextlost', this.contextLost],
+      ['webglcontextrestored', this.contextRestored],
     ])
       this.canvas.removeEventListener(event, handler);
     const geometries = new Set<THREE.BufferGeometry>(),

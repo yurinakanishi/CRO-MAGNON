@@ -4,6 +4,9 @@ import { readFile } from 'node:fs/promises';
 import { keyPrompts } from '../dist/src/screens.js';
 
 const root = new URL('../', import.meta.url);
+// Since r11 the HUD writes `hidden` through hud-dom's setFlag, which leaves exactly the DOM of
+// `element.hidden = value` (tests/hud-dom.test.mjs); a local helper must not shadow it.
+const HUD_FLAG_IMPORT = /import \{[^}]*\bsetFlag\b[^}]*\} from '\.\/hud-dom\.js';/;
 
 test('the HUD omits menu prompts and never repeats a contextual button', async () => {
   assert.deepEqual(keyPrompts(false), []);
@@ -14,7 +17,9 @@ test('the HUD omits menu prompts and never repeats a contextual button', async (
   const boat = await readFile(new URL('src/boat-ui.ts', root), 'utf8');
   assert.doesNotMatch(main + boat, /を押すと(マンモス|船)に乗れます/);
   assert.doesNotMatch(main + boat, /[R×B] ?で(降りる|降ろす|肩に乗る)|岸で [B×]/);
-  assert.match(main, /\$\('#riding-hint'\)\.hidden = !ridingHint/);
+  assert.match(main, HUD_FLAG_IMPORT);
+  assert.doesNotMatch(main, /function setFlag\b/);
+  assert.match(main, /setFlag\(\$\('#riding-hint'\), 'hidden', !ridingHint\)/);
   assert.match(boat, /\$\('#boat-hint'\)\.hidden = !hint/);
 });
 
@@ -34,7 +39,15 @@ test('the interaction hint is a hidden text line that only names a real nearby a
   const main = await readFile(new URL('src/main.ts', root), 'utf8');
   assert.match(main, /id="interaction-hint" hidden><kbd>E<\/kbd><span><\/span>/);
   assert.doesNotMatch(main, /近くのものを調べる/);
-  assert.match(main, /\$\('#interaction-hint'\)\.hidden = !target/);
+  // Hidden exactly when nearby() finds no real action, labelled with that action; the one writer.
+  assert.match(main, HUD_FLAG_IMPORT);
+  assert.doesNotMatch(main, /function setFlag\b/);
+  assert.match(
+    main,
+    /const target = nearby\(\);\s*setFlag\(\$\('#interaction-hint'\), 'hidden', !target\);\s*setText\(\$\('#interaction-hint span'\), target\?\.label \?\? ''\);/,
+  );
+  assert.equal(main.match(/#interaction-hint'\), 'hidden'/g)?.length, 1);
+  assert.doesNotMatch(main, /\$\('#interaction-hint'\)\.hidden =/);
   assert.match(main, /range: GATHER_RANGE/);
   assert.match(main, /renderer\.resourceVisible\?\.\(r\.id\)/);
 });
@@ -77,11 +90,13 @@ test('the map button, M and SHARE toggle the atlas closed when it is already ope
 
 test('the game opens on a title screen and only joins after Start or ?autostart=1', async () => {
   const main = await readFile(new URL('src/main.ts', root), 'utf8');
-  assert.match(main, /id="screen-title"/);
-  assert.match(main, /id="title-start"/);
+  const shell = await readFile(new URL('src/title-shell.ts', root), 'utf8');
+  assert.match(shell, /id="screen-title"/);
+  assert.match(shell, /id="title-start"/);
   assert.match(main, /id="setup-form"/);
   assert.match(main, /query\.get\('autostart'\) === '1'/);
-  assert.match(main, /\} else showTitle\(\);\s*$/);
+  // resumeTitle shows the title (tests/title-shell.test.mjs runs its cases).
+  assert.match(main, /\} else resumeTitle\(titleHandoff\);\s*$/);
   assert.doesNotMatch(main, /\nconnect\(\);\s*$/);
   assert.doesNotMatch(main, /class="brand"/, 'no persistent web-app brand header');
   assert.doesNotMatch(main, /data-panel=/, 'no top navigation dock');

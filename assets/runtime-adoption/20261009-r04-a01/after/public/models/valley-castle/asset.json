@@ -1,0 +1,86 @@
+{
+  "modelKey": "valley-castle",
+  "name": "白羽教団の大聖城",
+  "kind": "static",
+  "candidate": 1,
+  "revision": "13",
+  "status": "remake-normal-upgrade-integrated",
+  "environment": true,
+  "onDemand": true,
+  "url": "/models/valley-castle/model-r13-normal.opt-91e2120315e99a29.glb",
+  "sha256": "91e2120315e99a291827bd2d328f28942b058df1b712b185fffe6b91f3a3c86b",
+  "bytes": 6719356,
+  "triangles": 127254,
+  "upAxis": "Y",
+  "forwardAxis": "+Z",
+  "heightMetres": 52.89262724603607,
+  "widthMetres": 110,
+  "placement": {
+    "pivot": "ground-centred",
+    "min": [
+      -55,
+      0,
+      -63.98344164509722
+    ],
+    "max": [
+      55,
+      52.89262724603607,
+      63.98344164509722
+    ],
+    "groundOffset": -13.4,
+    "note": "The forecourt floor is 13.4 m above the model base (the outer walls continue down to an apron); placed 13.4 m below the terrain so the forecourt meets the valley floor."
+  },
+  "clips": [],
+  "lods": [],
+  "notes": "Rebuilt 2026-09-13 as a stepped temple-fortress: a walled forecourt behind a collapsed arch gate, three progressively smaller roofless terraces and a summit altar with a ruined throne, joined by grand central stairs and side stairs; the crow cult is fought one level at a time with the pontiff on the summit. Full mesh shared; the coarse LODs are not adopted.",
+  "provenance": {
+    "provider": "Codex CLI image_gen reference (gpt-5.6-sol, medium) and local TRELLIS-2; reduction, walk atlas and integration by Claude Code",
+    "claudeUsed": true,
+    "referenceGenerator": "Codex built-in image_gen",
+    "referenceImage": "output/model-generation/models/valley-castle/source/original/reference-v4.png",
+    "referenceSha256": "6ab1f45748219bf78385f4018e0ce51d9e2d318062f737ea60ab7a4ed7bf09b2",
+    "referencePrompt": "Ruined stepped temple-fortress of five ascending open terraces: a broad walled forecourt behind a collapsed arch gate, three progressively smaller roofless terraces stacked like a ziggurat, and a small summit altar platform with a ruined throne dais and four broken pillars; every level joined by one grand central stair and two flanking side stairs. User request 2026-09-13: rebuild the crow cult's castle so it is wider, climbed by many stairs in stages, with the pontiff at the very top. Candidate 01 of two Codex image_gen references selected by Claude Code (user not available); candidate 02 retained as history.",
+    "reconstruction": "Local TRELLIS-2 1024 seed 42 (reference v4); shape-preserving quadric reduction at p95 0.065 m to 127254 triangles with the source UV and albedo.",
+    "candidateFile": "output/model-generation/models/valley-castle/work/low-poly/candidate-13/candidate.glb",
+    "visualReview": "assets/asset-remake/reviews/valley-castle.json",
+    "walkAtlas": "output/model-generation/models/valley-castle/qa/walk-rev13.json"
+  },
+  "normalUpgrade": {
+    "method": "Tangent-space normal map baked from the TRELLIS dense surface (similarity-ICP placed on the delivered mesh, scripts/remake/fit_to_delivered.py) onto the delivered UVs and normals (scripts/remake/normal_upgrade.py), injected as an appended WebP image + normalTexture (scripts/remake/inject_normal_map.py). Geometry bytes unchanged.",
+    "date": "2026-10-07",
+    "previousGlb": {
+      "url": "/models/valley-castle/model-r13.glb",
+      "sha256": "2a271bbc12e1b331da6468d5f84f1db173beeb284fdebfdde7c56b613e48dc90",
+      "bytes": 8889164
+    },
+    "dense": "C:/Users/yurin/Desktop/projects/CRO-MAGNON/output/model-generation/models/valley-castle/work/trellis/dense-res1024-seed0042-ref04.glb",
+    "denseSha256": "3d00f599c48ff8dc039546c77c469d6cc4da29c7aa9d4b61aa76ada0c2e93dee",
+    "fit": {
+      "rmsMetres": 0.52487554313211,
+      "p95Metres": 1.098553454875946,
+      "scale": 127.69816545470718
+    },
+    "bake": {
+      "size": 2048,
+      "islandTexels": 2120288,
+      "firstPassMisses": 5753,
+      "neighbourFilled": 1472,
+      "flippedBackfacing": 108872,
+      "extrusionFrac": 0.0015
+    },
+    "geometryAccessorsCompared": 4,
+    "geometryIdentical": true
+  },
+  "runtimeOptimization": {
+    "adoption": "20261009-r04-a01",
+    "candidateRevision": "assets/optimized-runtime/20261009-r04",
+    "selection": "ordinary-compressed",
+    "original": {
+      "url": "/models/valley-castle/model-r13-normal.glb",
+      "sha256": "7073c6f763aa5d65efe2cb2ba1f772028b9c805c4f4d3ce00d9d8d9f9178a26f",
+      "bytes": 10615036,
+      "triangles": 127254,
+      "lods": []
+    }
+  }
+}

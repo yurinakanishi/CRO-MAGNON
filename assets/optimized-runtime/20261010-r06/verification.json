@@ -1,0 +1,261 @@
+{
+  "schema": "cro-magnon/optimized-runtime-verification@1",
+  "revision": "20261010-r06",
+  "recipe": "exact-repack@1",
+  "base": {
+    "adoption": "20261010-r05-a02",
+    "planSha256": "2697ba7246fc06f764989ede94a58cb4f8324765befc6fae0db11ed6430ce444"
+  },
+  "scope": {
+    "complete": false,
+    "only": [
+      "camp-cave",
+      "camp-mountain",
+      "meadow-ground",
+      "river-water",
+      "snow-ground"
+    ],
+    "models": [
+      "snow-ground",
+      "camp-mountain",
+      "meadow-ground",
+      "river-water"
+    ],
+    "packed": [
+      "snow-ground",
+      "camp-mountain"
+    ],
+    "imageOwner": "camp-cave",
+    "images": 10
+  },
+  "status": "passed",
+  "candidateStatus": "candidate-pending-visual-qa",
+  "verified": "local files only: base still applied, served sources by hash, every output re-derived byte for byte, canonical scenes against the original levels with lossless-aware PNG identity, image byte mapping, non-image bytes, both meshopt decoders and a Three r185 decode",
+  "notVerified": [
+    "native browser decoding and GPU upload",
+    "runtime selection of packed scenes",
+    "transfer and startup time",
+    "mobile devices"
+  ],
+  "checks": [
+    {
+      "name": "the base adoption is still applied with the recorded records",
+      "status": "passed"
+    },
+    {
+      "name": "the inputs are the base's current manifests",
+      "status": "passed"
+    },
+    {
+      "name": "runtime-index.json is exactly derived from manifest.json",
+      "status": "passed"
+    },
+    {
+      "name": "the decoders are meshoptimizer 1.1.1",
+      "status": "passed"
+    },
+    {
+      "name": "every record is an unadopted candidate",
+      "status": "passed"
+    },
+    {
+      "name": "the scope is the recorded scope",
+      "status": "passed"
+    },
+    {
+      "name": "the PNG records are exactly the scope's PNGs",
+      "status": "passed"
+    },
+    {
+      "name": "no record outside the scope or twice",
+      "status": "passed"
+    },
+    {
+      "name": "no image record outside the scope",
+      "status": "passed"
+    },
+    {
+      "name": "the totals are the actual served bytes before and after",
+      "status": "passed"
+    },
+    {
+      "name": "the revision folder holds only recorded files",
+      "status": "passed"
+    }
+  ],
+  "files": [
+    {
+      "id": "model:snow-ground",
+      "status": "passed",
+      "verification": {
+        "status": "passed",
+        "scenes": [
+          {
+            "scene": 0,
+            "triangles": 5903,
+            "canonicalSha256": "a29bf7c791324ece21360e159efc3c511289fc0abc26ed32490be8c96cb6349e"
+          },
+          {
+            "scene": 1,
+            "triangles": 825,
+            "canonicalSha256": "e69a69a3de088409eea279b953a427685d49d832661096cfa5ab4c21f6b4afb0"
+          },
+          {
+            "scene": 2,
+            "triangles": 203,
+            "canonicalSha256": "8c5e40f59f3a96d579072bc124bf4ee3e07e01a4d4f67ba89c10a1107c24010a"
+          }
+        ],
+        "sharedTextureGroups": 2,
+        "threeFileWideRenames": 5,
+        "compressedViews": 23
+      }
+    },
+    {
+      "id": "model:camp-mountain",
+      "status": "passed",
+      "verification": {
+        "status": "passed",
+        "scenes": [
+          {
+            "scene": 0,
+            "triangles": 245000,
+            "canonicalSha256": "23e652e58903d1fed42424f09554cb698ba748a2b35b491e440ce65cfa09b3dc"
+          },
+          {
+            "scene": 1,
+            "triangles": 24499,
+            "canonicalSha256": "0fed21e4b82a6f7c0984072e1a92ecd91e58477a8cbd64b42373776fbe673dae"
+          }
+        ],
+        "sharedTextureGroups": 1,
+        "threeFileWideRenames": 2,
+        "compressedViews": 8
+      }
+    },
+    {
+      "id": "model:meadow-ground",
+      "status": "passed",
+      "verification": {
+        "status": "passed",
+        "scenes": [
+          {
+            "scene": 0,
+            "triangles": 2720,
+            "canonicalSha256": "ae92325f672c8e16cd0fdfa314f07e440931688e9165f280cc4594f4c8081b17"
+          }
+        ],
+        "sharedTextureGroups": 0,
+        "threeFileWideRenames": 0,
+        "compressedViews": 4
+      }
+    },
+    {
+      "id": "model:river-water",
+      "status": "passed",
+      "verification": {
+        "status": "passed",
+        "scenes": [
+          {
+            "scene": 0,
+            "triangles": 2693,
+            "canonicalSha256": "3356c8f4e5972d592770998b0bb7552acabac976513151bd667ec3c2860077df"
+          }
+        ],
+        "sharedTextureGroups": 0,
+        "threeFileWideRenames": 0,
+        "compressedViews": 4
+      }
+    },
+    {
+      "id": "image:/models/camp-cave/524-lascaux-frieze-r32.png",
+      "status": "passed",
+      "verification": {
+        "status": "passed",
+        "identity": "lossless IDAT rewrite: IHDR, non-IDAT chunks and filtered scanlines identical",
+        "width": 1024,
+        "height": 341
+      }
+    },
+    {
+      "id": "image:/models/camp-cave/mural-atlas-r05.png",
+      "status": "passed",
+      "verification": null
+    },
+    {
+      "id": "image:/models/camp-cave/rimo-lascaux-frieze-r30.png",
+      "status": "passed",
+      "verification": {
+        "status": "passed",
+        "identity": "lossless IDAT rewrite: IHDR, non-IDAT chunks and filtered scanlines identical",
+        "width": 1024,
+        "height": 341
+      }
+    },
+    {
+      "id": "image:/models/camp-cave/limestone-r05.png",
+      "status": "passed",
+      "verification": {
+        "status": "passed",
+        "identity": "lossless IDAT rewrite: IHDR, non-IDAT chunks and filtered scanlines identical",
+        "width": 1024,
+        "height": 1024
+      }
+    },
+    {
+      "id": "image:/models/camp-cave/friends-meadow-lascaux-r34.png",
+      "status": "passed",
+      "verification": {
+        "status": "passed",
+        "identity": "lossless IDAT rewrite: IHDR, non-IDAT chunks and filtered scanlines identical",
+        "width": 1024,
+        "height": 341
+      }
+    },
+    {
+      "id": "image:/models/camp-cave/friends-river-lascaux-r35.png",
+      "status": "passed",
+      "verification": {
+        "status": "passed",
+        "identity": "lossless IDAT rewrite: IHDR, non-IDAT chunks and filtered scanlines identical",
+        "width": 1024,
+        "height": 341
+      }
+    },
+    {
+      "id": "image:/models/camp-cave/mae-kohaku-lascaux-r31.png",
+      "status": "passed",
+      "verification": {
+        "status": "passed",
+        "identity": "lossless IDAT rewrite: IHDR, non-IDAT chunks and filtered scanlines identical",
+        "width": 1024,
+        "height": 341
+      }
+    },
+    {
+      "id": "image:/models/camp-cave/maruimo-lascaux-r33.png",
+      "status": "passed",
+      "verification": {
+        "status": "passed",
+        "identity": "lossless IDAT rewrite: IHDR, non-IDAT chunks and filtered scanlines identical",
+        "width": 1024,
+        "height": 341
+      }
+    },
+    {
+      "id": "image:/models/camp-cave/bot-round-lascaux-r31.png",
+      "status": "passed",
+      "verification": null
+    },
+    {
+      "id": "image:/models/camp-cave/bot-shapes-lascaux-r31.png",
+      "status": "passed",
+      "verification": {
+        "status": "passed",
+        "identity": "lossless IDAT rewrite: IHDR, non-IDAT chunks and filtered scanlines identical",
+        "width": 1024,
+        "height": 341
+      }
+    }
+  ]
+}

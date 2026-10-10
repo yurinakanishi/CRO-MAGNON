@@ -1,0 +1,1808 @@
+{
+  "schema": "cro-magnon/runtime-candidate-index@1",
+  "revision": "20261009-r04",
+  "status": "candidate-pending-visual-qa",
+  "adopted": false,
+  "decoder": {
+    "extension": "EXT_meshopt_compression",
+    "required": true,
+    "module": "three/addons/libs/meshopt_decoder.module.js",
+    "loader": "GLTFLoader.setMeshoptDecoder(MeshoptDecoder) before parseAsync"
+  },
+  "files": {
+    "/models/berry-bush/model-c2.glb": {
+      "sourceSha256": "4b145e254ee604e1563784d08bf59b5181e70c40e617bcb0a6936bd39a710c3b",
+      "sourceBytes": 2415948,
+      "url": "/models/berry-bush/model-c2.opt-8b9da70146d6f3c7.glb",
+      "sha256": "8b9da70146d6f3c7b947467fe282be955437ea6b7b1373ca405c2be8ab1a1b7a",
+      "bytes": 2048808,
+      "maximumTextureEdge": 1024,
+      "extensionsRequired": [
+        "EXT_texture_webp",
+        "EXT_meshopt_compression"
+      ]
+    },
+    "/models/berry-cluster/model-c2.glb": {
+      "sourceSha256": "6586133f70088e383be623c028dd0d39b2c9db5a9aa3cb86cc1b4d0a9cc3732c",
+      "sourceBytes": 277940,
+      "url": "/models/berry-cluster/model-c2.opt-88ed3b12e7713e6f.glb",
+      "sha256": "88ed3b12e7713e6f367d86aec394644cc882ef5cca7fa1e1b2a0a869f1c13b00",
+      "bytes": 256136,
+      "maximumTextureEdge": 1024,
+      "extensionsRequired": [
+        "EXT_texture_webp",
+        "EXT_meshopt_compression"
+      ]
+    },
+    "/models/camp-cave/model-r26.glb": {
+      "sourceSha256": "65dde1aa7311b88c159d524d93af82a770dac77e48ee1f35356e3000cad8a15f",
+      "sourceBytes": 5393776,
+      "url": "/models/camp-cave/model-r26.opt-1debf5dafc216ce0.glb",
+      "sha256": "1debf5dafc216ce01c46bd620e43d232026e0b5a4ad282a91e25676078384005",
+      "bytes": 2120208,
+      "maximumTextureEdge": 1024,
+      "extensionsRequired": [
+        "EXT_meshopt_compression"
+      ]
+    },
+    "/models/camp-mountain/lod-performance.glb": {
+      "sourceSha256": "6d4db4974cd16bd7ccc8ad53a199197ada18166dba1d3aae116f98c526496b2d",
+      "sourceBytes": 2596720,
+      "url": "/models/camp-mountain/lod-performance.opt-4d25b780075a2bbe.glb",
+      "sha256": "4d25b780075a2bbedf441f108ae9d4172b51c759dc10efadb5a1475d3791eb26",
+      "bytes": 2449664,
+      "maximumTextureEdge": 1024,
+      "extensionsRequired": [
+        "EXT_meshopt_compression"
+      ]
+    },
+    "/models/camp-mountain/model-r15.glb": {
+      "sourceSha256": "193127fbde284f036864996060cb3b85578ab7a595384151dad858e569eb9202",
+      "sourceBytes": 8929000,
+      "url": "/models/camp-mountain/model-r15.opt-ee6b106610ff88a4.glb",
+      "sha256": "ee6b106610ff88a46540c500341e905980f5ccb0dc7d224efd8b7f87e5085f45",
+      "bytes": 4427636,
+      "maximumTextureEdge": 1024,
+      "extensionsRequired": [
+        "EXT_meshopt_compression"
+      ]
+    },
+    "/models/cat-kunoichi/lod-c2.glb": {
+      "sourceSha256": "89addc6db3f18f48d5145ceb69fddeae9e9e23c8bb73e282de4595a40f1f0a49",
+      "sourceBytes": 998028,
+      "url": "/models/cat-kunoichi/lod-c2.opt-b52c7c2a235dfd7e.glb",
+      "sha256": "b52c7c2a235dfd7e327a90c3975c980329a8268614012f705c03bce84cb2f06a",
+      "bytes": 735524,
+      "maximumTextureEdge": 1024,
+      "extensionsRequired": [
+        "EXT_meshopt_compression"
+      ]
+    },
+    "/models/cat-kunoichi/model-c2.glb": {
+      "sourceSha256": "0f2fecf9409bfea07ea0eadb25d3038ebe0cd8f9ca64e37214c4a4a42b4eb90e",
+      "sourceBytes": 12754684,
+      "url": "/models/cat-kunoichi/model-c2.opt-eb8b428e076b89ff.glb",
+      "sha256": "eb8b428e076b89ff30e0c9b4a5a0dec2b1212dc43504a7980d1e23f12ca50382",
+      "bytes": 6213892,
+      "maximumTextureEdge": 1024,
+      "extensionsRequired": [
+        "EXT_texture_webp",
+        "EXT_meshopt_compression"
+      ]
+    },
+    "/models/cockle-shell/model-c2.glb": {
+      "sourceSha256": "dc8defa88c3a04a5c34f48b80d62ada720de98c6960349965a33d9fb79bab2fe",
+      "sourceBytes": 248456,
+      "url": "/models/cockle-shell/model-c2.opt-16d1634c87d7806d.glb",
+      "sha256": "16d1634c87d7806d571da425e7edcbb4fe45f87e4d41720b6c568fe700aa9efa",
+      "bytes": 228772,
+      "maximumTextureEdge": 1024,
+      "extensionsRequired": [
+        "EXT_texture_webp",
+        "EXT_meshopt_compression"
+      ]
+    },
+    "/models/cro-magnon-hunter/lod-face-r01.glb": {
+      "sourceSha256": "91e6922796997a6f81f85fecf81accf5b6580e6710da672caa69f4a740baae83",
+      "sourceBytes": 1041640,
+      "url": "/models/cro-magnon-hunter/lod-face-r01.opt-1eaafb6dc79d93e9.glb",
+      "sha256": "1eaafb6dc79d93e914363554b337519049bfc39f026ba58e7cd311f914498272",
+      "bytes": 744456,
+      "maximumTextureEdge": 1024,
+      "extensionsRequired": [
+        "EXT_meshopt_compression"
+      ]
+    },
+    "/models/cro-magnon-hunter/model-face-r01.glb": {
+      "sourceSha256": "d460b5217aea1933dbbd584d61626692c8c3a6f201077064d7c2065a69588552",
+      "sourceBytes": 12444656,
+      "url": "/models/cro-magnon-hunter/model-face-r01.opt-95ab97b223a82665.glb",
+      "sha256": "95ab97b223a826656e40adc1e017f4eb930acc4630de867fc4d864767148c257",
+      "bytes": 5977300,
+      "maximumTextureEdge": 1024,
+      "extensionsRequired": [
+        "EXT_texture_webp",
+        "EXT_meshopt_compression"
+      ]
+    },
+    "/models/cro-magnon-woman/lod-face-r01.glb": {
+      "sourceSha256": "af0fdffd99f893e08b3fd3e5411b629d7dec8ac321495f4b1129ba9f45ce2eb4",
+      "sourceBytes": 736684,
+      "url": "/models/cro-magnon-woman/lod-face-r01.opt-8a3e48d88a752db2.glb",
+      "sha256": "8a3e48d88a752db2415ae6eae632d0b6f76cfacb56aae4bc704cb85a7c6c56a6",
+      "bytes": 535520,
+      "maximumTextureEdge": 1024,
+      "extensionsRequired": [
+        "EXT_meshopt_compression"
+      ]
+    },
+    "/models/cro-magnon-woman/model-face-r01.glb": {
+      "sourceSha256": "c8082f13995cebd42d674f6d4b5c87a61d441597d5670aec8803ca5006fdf2c1",
+      "sourceBytes": 11552512,
+      "url": "/models/cro-magnon-woman/model-face-r01.opt-b8c0126909757c30.glb",
+      "sha256": "b8c0126909757c303cf30951befa6fc1beefd2bb1fdbfbe84e960a808f45e47a",
+      "bytes": 5405972,
+      "maximumTextureEdge": 1024,
+      "extensionsRequired": [
+        "EXT_texture_webp",
+        "EXT_meshopt_compression"
+      ]
+    },
+    "/models/crow-bone-pauldrons/model-c2.glb": {
+      "sourceSha256": "5355ffab11b7f97856d512388ff0fa8dd8273c19222f53b16aa944a2e6e6f5e6",
+      "sourceBytes": 1073412,
+      "url": "/models/crow-bone-pauldrons/model-c2.opt-57cdbc4c1ba00594.glb",
+      "sha256": "57cdbc4c1ba0059406d9d002b5c013ced145153077457cfb08096e1b09c7b32c",
+      "bytes": 1007732,
+      "maximumTextureEdge": 1024,
+      "extensionsRequired": [
+        "EXT_texture_webp",
+        "EXT_meshopt_compression"
+      ]
+    },
+    "/models/crow-brute-axe/model-c2.glb": {
+      "sourceSha256": "c07c503db575adaf1f9f30e6855fd5679e46068c5b8566656dd51075a28dfac5",
+      "sourceBytes": 812224,
+      "url": "/models/crow-brute-axe/model-c2.opt-c0bb141f6955dc0e.glb",
+      "sha256": "c0bb141f6955dc0e9f99016ec7f12d01b3975bc65f8dddf8514fb7b34e091d10",
+      "bytes": 757952,
+      "maximumTextureEdge": 1024,
+      "extensionsRequired": [
+        "EXT_texture_webp",
+        "EXT_meshopt_compression"
+      ]
+    },
+    "/models/crow-hide-shield/model-c2.glb": {
+      "sourceSha256": "ec9868c7b5ccf590da1920d6f8430bd4af04de9f017259f8e1f09c3ff8623fe3",
+      "sourceBytes": 863500,
+      "url": "/models/crow-hide-shield/model-c2.opt-537f3b54e5b3ada6.glb",
+      "sha256": "537f3b54e5b3ada65f796a4d5951942c978da69832c03a6de1345bb35a2a5799",
+      "bytes": 815204,
+      "maximumTextureEdge": 1024,
+      "extensionsRequired": [
+        "EXT_texture_webp",
+        "EXT_meshopt_compression"
+      ]
+    },
+    "/models/crow-ivory-vestment/model-c2.glb": {
+      "sourceSha256": "492aa9059767549c9436dbd71846751cead5b3becc97a5eda9d3a60bac4867fa",
+      "sourceBytes": 892864,
+      "url": "/models/crow-ivory-vestment/model-c2.opt-002ce6bd45b0d351.glb",
+      "sha256": "002ce6bd45b0d351f644064b3375a8e2c403a5518a653c5acab0559e70c18018",
+      "bytes": 836900,
+      "maximumTextureEdge": 1024,
+      "extensionsRequired": [
+        "EXT_texture_webp",
+        "EXT_meshopt_compression"
+      ]
+    },
+    "/models/crow-pontiff-crown/model-c2.glb": {
+      "sourceSha256": "2c229f2d05ee8cd15532553b8f0497dea6ed89e6796448c11ad757788184a388",
+      "sourceBytes": 866568,
+      "url": "/models/crow-pontiff-crown/model-c2.opt-2d08c7f7cbcd36ae.glb",
+      "sha256": "2d08c7f7cbcd36ae4a798ab20643c3ed78a5d073cf5c83b02823acae56b4d8c5",
+      "bytes": 813380,
+      "maximumTextureEdge": 1024,
+      "extensionsRequired": [
+        "EXT_texture_webp",
+        "EXT_meshopt_compression"
+      ]
+    },
+    "/models/crow-pontiff-crozier/model-c2.glb": {
+      "sourceSha256": "b7869b75d0cc2aa2a5fb99bebcddb2405dbaf8e1e207ec0dddac1cb93a203937",
+      "sourceBytes": 676740,
+      "url": "/models/crow-pontiff-crozier/model-c2.opt-93eab7263c91dde9.glb",
+      "sha256": "93eab7263c91dde944ae386bf9b1ceb1e0da64a160e978bc1bae31f053ece7a6",
+      "bytes": 624764,
+      "maximumTextureEdge": 1024,
+      "extensionsRequired": [
+        "EXT_texture_webp",
+        "EXT_meshopt_compression"
+      ]
+    },
+    "/models/crow-prelate-glaive/model-c2.glb": {
+      "sourceSha256": "566ce63c6c13172099f2bc251405e2e28459fb96ed0327c41c0e691f58f291c5",
+      "sourceBytes": 599076,
+      "url": "/models/crow-prelate-glaive/model-c2.opt-142517a572596582.glb",
+      "sha256": "142517a57259658220c59acc30a417d05bd79460809977805330a28bfaa99126",
+      "bytes": 554084,
+      "maximumTextureEdge": 1024,
+      "extensionsRequired": [
+        "EXT_texture_webp",
+        "EXT_meshopt_compression"
+      ]
+    },
+    "/models/crow-red-mantle/model-c2.glb": {
+      "sourceSha256": "2a78152741b13cd5ef6681d4db5836becd7c4a2ed496e8db743dfee8670d2c01",
+      "sourceBytes": 876912,
+      "url": "/models/crow-red-mantle/model-c2.opt-f2b1411d9a2d9f75.glb",
+      "sha256": "f2b1411d9a2d9f750ef197012ec4771e4d27245c268707f6bf2d3c39fe3937e1",
+      "bytes": 825504,
+      "maximumTextureEdge": 1024,
+      "extensionsRequired": [
+        "EXT_texture_webp",
+        "EXT_meshopt_compression"
+      ]
+    },
+    "/models/crow-shaman/lod-c2.glb": {
+      "sourceSha256": "3c05ba2c8cd0654894fa71b53fd61bc1cbb6fa05515a7e66e56c4037c4ff104e",
+      "sourceBytes": 926720,
+      "url": "/models/crow-shaman/lod-c2.opt-5eff5b0e45bed48a.glb",
+      "sha256": "5eff5b0e45bed48ad50977c03a32afe8c9bd9a78ea2d855cd19b5c5e350f9328",
+      "bytes": 724812,
+      "maximumTextureEdge": 1024,
+      "extensionsRequired": [
+        "EXT_meshopt_compression"
+      ]
+    },
+    "/models/crow-shaman/model-c2.glb": {
+      "sourceSha256": "4719f03aa5df820d70123e64e49ba88255182dbe34087ea7f315224cd4b8b89e",
+      "sourceBytes": 6691440,
+      "url": "/models/crow-shaman/model-c2.opt-fe59e1be880f3297.glb",
+      "sha256": "fe59e1be880f329707ef6028a83ab6bbd5ce516135b8b3b0a5e9f8e9273310c5",
+      "bytes": 3435160,
+      "maximumTextureEdge": 1024,
+      "extensionsRequired": [
+        "EXT_texture_webp",
+        "EXT_meshopt_compression"
+      ]
+    },
+    "/models/crow-soldier-spear/model-c2.glb": {
+      "sourceSha256": "397a0fa02d74ffea1b4d5399f61a1644e26c912828b95ebc31e3445f840bfb01",
+      "sourceBytes": 558616,
+      "url": "/models/crow-soldier-spear/model-c2.opt-79e6dcb333d1b232.glb",
+      "sha256": "79e6dcb333d1b2326f32cae47d84f9a5845969d48416c51fbdc9a4c418b4dcb8",
+      "bytes": 515608,
+      "maximumTextureEdge": 1024,
+      "extensionsRequired": [
+        "EXT_texture_webp",
+        "EXT_meshopt_compression"
+      ]
+    },
+    "/models/desert-cactus/lod-c2-1.glb": {
+      "sourceSha256": "9027f42c87d5300ed0c1df240251580bb55404e6039da689a8683b425af5a8c4",
+      "sourceBytes": 827000,
+      "url": "/models/desert-cactus/lod-c2-1.opt-88c85d1b6692fd7c.glb",
+      "sha256": "88c85d1b6692fd7c7cfaf974fa72d0580e63cda414a10370f97ed95a3bdf2403",
+      "bytes": 355904,
+      "maximumTextureEdge": 1024,
+      "extensionsRequired": [
+        "EXT_texture_webp",
+        "EXT_meshopt_compression"
+      ]
+    },
+    "/models/desert-cactus/lod-c2-2.glb": {
+      "sourceSha256": "fb81102495233710003d85cc198f61e186ae16d062d0149d63fc705274a6e614",
+      "sourceBytes": 731448,
+      "url": "/models/desert-cactus/lod-c2-2.opt-7ab66b3dd54dee80.glb",
+      "sha256": "7ab66b3dd54dee809c9645f851df3f825998ce498c7fb76083a8ef40cf1b2ca7",
+      "bytes": 285000,
+      "maximumTextureEdge": 1024,
+      "extensionsRequired": [
+        "EXT_texture_webp",
+        "EXT_meshopt_compression"
+      ]
+    },
+    "/models/desert-cactus/model-c2.glb": {
+      "sourceSha256": "ca57c5fe7c1db72ade391ac7a5709169e90b47be95b26258598a0a138f266473",
+      "sourceBytes": 1895208,
+      "url": "/models/desert-cactus/model-c2.opt-5139edee824a728f.glb",
+      "sha256": "5139edee824a728faf5391cbd793ebdbcfd3e50233fa6c088858b31fe6c8a504",
+      "bytes": 846200,
+      "maximumTextureEdge": 1024,
+      "extensionsRequired": [
+        "EXT_texture_webp",
+        "EXT_meshopt_compression"
+      ]
+    },
+    "/models/desert-fennec-mage/lod-c2.glb": {
+      "sourceSha256": "1fd295fc6261305b911fa28134143e8dc8a8a34e96ebf9b7fa6903f9e06bf5a9",
+      "sourceBytes": 890624,
+      "url": "/models/desert-fennec-mage/lod-c2.opt-1a909de4377569c9.glb",
+      "sha256": "1a909de4377569c9ef5a4692768c9d610fd1c19e875331f217dd2d5e85db7849",
+      "bytes": 681268,
+      "maximumTextureEdge": 1024,
+      "extensionsRequired": [
+        "EXT_meshopt_compression"
+      ]
+    },
+    "/models/desert-fennec-mage/model-c2.glb": {
+      "sourceSha256": "82ec1d4303e25bb37bef594c118861b9d7216d1b3b996091a93b89f62c0cc3b5",
+      "sourceBytes": 8843048,
+      "url": "/models/desert-fennec-mage/model-c2.opt-ae024100e9484a99.glb",
+      "sha256": "ae024100e9484a998346d4c7e3e0246319648982424fd2a0a1acc1cd4a5ff213",
+      "bytes": 4533712,
+      "maximumTextureEdge": 1024,
+      "extensionsRequired": [
+        "EXT_texture_webp",
+        "EXT_meshopt_compression"
+      ]
+    },
+    "/models/desert-ground/lod1.glb": {
+      "sourceSha256": "fb7f7b45c67bf8c1e62b0bf77a6ac52b57b8917aed3e1c6956461cd939e34882",
+      "sourceBytes": 1654188,
+      "url": "/models/desert-ground/lod1.opt-ce0d214f4e1a4651.glb",
+      "sha256": "ce0d214f4e1a465168e5c2150214dec305a4a1ae60f4394bb0815e11419a3923",
+      "bytes": 694672,
+      "maximumTextureEdge": 1024,
+      "extensionsRequired": [
+        "EXT_meshopt_compression"
+      ]
+    },
+    "/models/desert-ground/lod2.glb": {
+      "sourceSha256": "733979092eeedff1984acdf3395576b616db477f580ec708bbfe0a27b7fe87df",
+      "sourceBytes": 1542504,
+      "url": "/models/desert-ground/lod2.opt-dcb8145f700f47f3.glb",
+      "sha256": "dcb8145f700f47f3a658206794254c956b895efc523094581c065fe55884d02a",
+      "bytes": 635736,
+      "maximumTextureEdge": 1024,
+      "extensionsRequired": [
+        "EXT_meshopt_compression"
+      ]
+    },
+    "/models/desert-ground/model.glb": {
+      "sourceSha256": "fcf25dfc8bed6ce7ecfbdf445674e3c092f36d353462685cb5730ba3ef00005e",
+      "sourceBytes": 2082132,
+      "url": "/models/desert-ground/model.opt-93baac2941ceb23a.glb",
+      "sha256": "93baac2941ceb23a9fa308adfc027980503037c1f7d489b686f13ad3b4ee2b36",
+      "bytes": 920244,
+      "maximumTextureEdge": 1024,
+      "extensionsRequired": [
+        "EXT_meshopt_compression"
+      ]
+    },
+    "/models/drying-rack/lod-c2.glb": {
+      "sourceSha256": "514fee559fef26e2026daa453974c7e6661d9718c6f75a45be9e0f4fc8425029",
+      "sourceBytes": 1189340,
+      "url": "/models/drying-rack/lod-c2.opt-16ab63a12c5e2918.glb",
+      "sha256": "16ab63a12c5e2918add9fe6c83ba7e87cdb249020c0395555e5c46f5d967f052",
+      "bytes": 488804,
+      "maximumTextureEdge": 1024,
+      "extensionsRequired": [
+        "EXT_texture_webp",
+        "EXT_meshopt_compression"
+      ]
+    },
+    "/models/drying-rack/model-c2.glb": {
+      "sourceSha256": "35c7daa486dad72790dcb01b17b5da72353edb5c63c74fcb4c2230e46739e986",
+      "sourceBytes": 2599104,
+      "url": "/models/drying-rack/model-c2.opt-3838196fe4930dfa.glb",
+      "sha256": "3838196fe4930dfa88f4e0a4a47ab53b5267b2b95f76753b8c9eff4b0e762542",
+      "bytes": 1170356,
+      "maximumTextureEdge": 1024,
+      "extensionsRequired": [
+        "EXT_texture_webp",
+        "EXT_meshopt_compression"
+      ]
+    },
+    "/models/dugout-canoe/lod-c2.glb": {
+      "sourceSha256": "451733b716f7599889f7b0f38e94997ace2e24ce0ef5fe8dd166b7c13059f475",
+      "sourceBytes": 691268,
+      "url": "/models/dugout-canoe/lod-c2.opt-a864ed946f9df1b7.glb",
+      "sha256": "a864ed946f9df1b704e65a14187b88fba2e842b118b77f805e1027f6bebda4ff",
+      "bytes": 282948,
+      "maximumTextureEdge": 1024,
+      "extensionsRequired": [
+        "EXT_texture_webp",
+        "EXT_meshopt_compression"
+      ]
+    },
+    "/models/dugout-canoe/model-c2.glb": {
+      "sourceSha256": "099fb402d549d886e37a7e8999bdd3d3e56d80a68e94286f7764400164a69cc8",
+      "sourceBytes": 1324432,
+      "url": "/models/dugout-canoe/model-c2.opt-dd78603029e5bfbc.glb",
+      "sha256": "dd78603029e5bfbc737dcebf0545c0636fe753f49f730ead15e62864eb68e5b7",
+      "bytes": 638784,
+      "maximumTextureEdge": 1024,
+      "extensionsRequired": [
+        "EXT_texture_webp",
+        "EXT_meshopt_compression"
+      ]
+    },
+    "/models/firewood-log/lod-c2-1.glb": {
+      "sourceSha256": "b453bcd9493c1b153634f9d2de6c738d47d35454c3627ee256bf8c488b5ac212",
+      "sourceBytes": 365064,
+      "url": "/models/firewood-log/lod-c2-1.opt-e6a789165ffa682e.glb",
+      "sha256": "e6a789165ffa682e1122bcbea48220ab00266029f5d69dcfc0b17440de7ceb36",
+      "bytes": 353856,
+      "maximumTextureEdge": 1024,
+      "extensionsRequired": [
+        "EXT_texture_webp",
+        "EXT_meshopt_compression"
+      ]
+    },
+    "/models/firewood-log/lod-c2-2.glb": {
+      "sourceSha256": "dc614ea91f11ab553f88b933a70baf2b4be0b05a3c1a267b7073fcefb0e0bf53",
+      "sourceBytes": 339432,
+      "url": "/models/firewood-log/lod-c2-2.opt-b1060354eba097ae.glb",
+      "sha256": "b1060354eba097ae7c2676ca66ce01a9ac1f5df5198133dcab8f71b24cfbb351",
+      "bytes": 335588,
+      "maximumTextureEdge": 1024,
+      "extensionsRequired": [
+        "EXT_texture_webp",
+        "EXT_meshopt_compression"
+      ]
+    },
+    "/models/firewood-log/model-c2.glb": {
+      "sourceSha256": "cb98b8bb0017fd43a82ae29db8bdd4de6d32e265ae5e39037cedbc5a2b0bcebf",
+      "sourceBytes": 805748,
+      "url": "/models/firewood-log/model-c2.opt-54eb160152338453.glb",
+      "sha256": "54eb160152338453b8c6a2d89cbff2d3f4aede70094cca8cbd19952a04faf2c7",
+      "bytes": 761000,
+      "maximumTextureEdge": 1024,
+      "extensionsRequired": [
+        "EXT_texture_webp",
+        "EXT_meshopt_compression"
+      ]
+    },
+    "/models/firewood-pile/lod-c2.glb": {
+      "sourceSha256": "162d96c102f037b38d7ed3cc49e07929f2e8549dfb27a2cc73ef791f92fdbeb2",
+      "sourceBytes": 429888,
+      "url": "/models/firewood-pile/lod-c2.opt-ddc029e192c91fb9.glb",
+      "sha256": "ddc029e192c91fb91ecb99a569d9dd89bcb250d0348bb50ebd2ca3849ec74510",
+      "bytes": 405968,
+      "maximumTextureEdge": 1024,
+      "extensionsRequired": [
+        "EXT_texture_webp",
+        "EXT_meshopt_compression"
+      ]
+    },
+    "/models/firewood-pile/model-c2.glb": {
+      "sourceSha256": "544598e3c1e28491998e3ce73e36d64364a86855ef3e86c5fa314b5b96af4977",
+      "sourceBytes": 972828,
+      "url": "/models/firewood-pile/model-c2.opt-842b22efdf2b8b73.glb",
+      "sha256": "842b22efdf2b8b7349bde70dec46cff5df494a178e957bd4565857dc7136facc",
+      "bytes": 895528,
+      "maximumTextureEdge": 1024,
+      "extensionsRequired": [
+        "EXT_texture_webp",
+        "EXT_meshopt_compression"
+      ]
+    },
+    "/models/flint-spear/model.glb": {
+      "sourceSha256": "1a10db6d1b44da1e982f88e5ae9ef6be8fb74f5900ebd9258380ad200e53ed3d",
+      "sourceBytes": 2816964,
+      "url": "/models/flint-spear/model.opt-49650d888ddcd679.glb",
+      "sha256": "49650d888ddcd6795aa11f3ca99c24c26e71eba015dacbdda4e1cf5c644dac9c",
+      "bytes": 2740344,
+      "maximumTextureEdge": 1024,
+      "extensionsRequired": [
+        "EXT_meshopt_compression"
+      ]
+    },
+    "/models/giant-ape/lod-c2.glb": {
+      "sourceSha256": "8a5c25d064261114e015ccb0447e88a9383598ffac3c747891fc39128cb29d07",
+      "sourceBytes": 944420,
+      "url": "/models/giant-ape/lod-c2.opt-717d31848e7b9424.glb",
+      "sha256": "717d31848e7b9424fc0b48c17f7f454d94a91b6c568dc229be7854fe7644f025",
+      "bytes": 768168,
+      "maximumTextureEdge": 1024,
+      "extensionsRequired": [
+        "EXT_meshopt_compression"
+      ]
+    },
+    "/models/giant-ape/model-c2.glb": {
+      "sourceSha256": "9bfd996eec87c77af99d32c642564cd987548563bcbfe905a252d935f763e0b9",
+      "sourceBytes": 10566148,
+      "url": "/models/giant-ape/model-c2.opt-ace0a32ae71949af.glb",
+      "sha256": "ace0a32ae71949afe0c5718d7a40f4b481b349ce7bcccf6afc032e6aee92276d",
+      "bytes": 5202164,
+      "maximumTextureEdge": 1024,
+      "extensionsRequired": [
+        "EXT_texture_webp",
+        "EXT_meshopt_compression"
+      ]
+    },
+    "/models/glacier-spires/lod-c2-1.glb": {
+      "sourceSha256": "8434ec07aa8530e166f775678a6c2d8e8b2897714548c9715d4d1c2d94b86c13",
+      "sourceBytes": 1087640,
+      "url": "/models/glacier-spires/lod-c2-1.opt-ba77b7db21bec811.glb",
+      "sha256": "ba77b7db21bec811ab960561761974693482ddb7df839b6c4668f27b96ec9a39",
+      "bytes": 359820,
+      "maximumTextureEdge": 1024,
+      "extensionsRequired": [
+        "EXT_texture_webp",
+        "EXT_meshopt_compression"
+      ]
+    },
+    "/models/glacier-spires/lod-c2-2.glb": {
+      "sourceSha256": "c3d452ce14409ac8fe74b94c4b6ca5378ca9de3207591ee9fdb968271aa4448a",
+      "sourceBytes": 1024248,
+      "url": "/models/glacier-spires/lod-c2-2.opt-5bc553700b3fdc81.glb",
+      "sha256": "5bc553700b3fdc81e907f726ea6f9cb864632d586394f60e651af5e87f33dbab",
+      "bytes": 313024,
+      "maximumTextureEdge": 1024,
+      "extensionsRequired": [
+        "EXT_texture_webp",
+        "EXT_meshopt_compression"
+      ]
+    },
+    "/models/glacier-spires/model-c2.glb": {
+      "sourceSha256": "33eaa7f3c25d1644053410d8db6205757cd76ebd461e631d2ae96a343153c816",
+      "sourceBytes": 2124228,
+      "url": "/models/glacier-spires/model-c2.opt-dec38817dc18eb0e.glb",
+      "sha256": "dec38817dc18eb0e5d513d12e8e80292a315cc8152860b773c15a4bc1df2aae0",
+      "bytes": 889772,
+      "maximumTextureEdge": 1024,
+      "extensionsRequired": [
+        "EXT_texture_webp",
+        "EXT_meshopt_compression"
+      ]
+    },
+    "/models/hide-tent/lod-c2.glb": {
+      "sourceSha256": "5932dd616ad5c13d52683c689a64c17f5071104b1477bf6fd5d7334341225e69",
+      "sourceBytes": 1786616,
+      "url": "/models/hide-tent/lod-c2.opt-9290eb05f57d052d.glb",
+      "sha256": "9290eb05f57d052d586534cfd6242f17a4183f53a85556ad91aed09ed1f21e40",
+      "bytes": 756756,
+      "maximumTextureEdge": 1024,
+      "extensionsRequired": [
+        "EXT_texture_webp",
+        "EXT_meshopt_compression"
+      ]
+    },
+    "/models/hide-tent/model-c2.glb": {
+      "sourceSha256": "e3fa5084524b3fd141f8aa05838e9da2f612f2987d35f04c4743209c4bc29120",
+      "sourceBytes": 4508752,
+      "url": "/models/hide-tent/model-c2.opt-4d0c634ae45b31db.glb",
+      "sha256": "4d0c634ae45b31db097471a8469dbb9f9f9a975fae3466a308a5c446775a91ea",
+      "bytes": 2223204,
+      "maximumTextureEdge": 1024,
+      "extensionsRequired": [
+        "EXT_texture_webp",
+        "EXT_meshopt_compression"
+      ]
+    },
+    "/models/ice-ground/lod1.glb": {
+      "sourceSha256": "239f235f9df4e4ab55f41668b9dfd3b7eba920e06a7cc53db2a1740365228707",
+      "sourceBytes": 2016248,
+      "url": "/models/ice-ground/lod1.opt-9d82ecc3861a720e.glb",
+      "sha256": "9d82ecc3861a720e193292194887652c27fc3efac9281e327abd7151451eafe7",
+      "bytes": 2009104,
+      "maximumTextureEdge": 1024,
+      "extensionsRequired": [
+        "EXT_meshopt_compression"
+      ]
+    },
+    "/models/ice-ground/lod2.glb": {
+      "sourceSha256": "58932f8b217650af1a596c8de6863e373d6b76bf2671a81f282cbdb8fc74c5c4",
+      "sourceBytes": 1998100,
+      "url": "/models/ice-ground/lod2.opt-fcc32d83de0d458b.glb",
+      "sha256": "fcc32d83de0d458b65129492e5f4640e6106f2fd5f25b6572be682dfb6d21e89",
+      "bytes": 1996632,
+      "maximumTextureEdge": 1024,
+      "extensionsRequired": [
+        "EXT_meshopt_compression"
+      ]
+    },
+    "/models/ice-ground/model.glb": {
+      "sourceSha256": "30eeb7ceea111e33576b497e8341f9f01bf232fc598c6bbefa79a9867df51cce",
+      "sourceBytes": 2151736,
+      "url": "/models/ice-ground/model.opt-528ac05be46e809e.glb",
+      "sha256": "528ac05be46e809edbb3128b3a107bf5badd233b1ebbfee945a4847edcb550c7",
+      "bytes": 2106428,
+      "maximumTextureEdge": 1024,
+      "extensionsRequired": [
+        "EXT_meshopt_compression"
+      ]
+    },
+    "/models/kunoichi-katana/model-c2.glb": {
+      "sourceSha256": "4d3c2edeaaba853a4cb4cf658e4541812ad6249e1363f649469d81afe6f797cb",
+      "sourceBytes": 530840,
+      "url": "/models/kunoichi-katana/model-c2.opt-4f74268d2afc061d.glb",
+      "sha256": "4f74268d2afc061de38b720f5845e26c5973931900685413674adefdf74b78e8",
+      "bytes": 463244,
+      "maximumTextureEdge": 1024,
+      "extensionsRequired": [
+        "EXT_texture_webp",
+        "EXT_meshopt_compression"
+      ]
+    },
+    "/models/mammoth-meat/model-c2.glb": {
+      "sourceSha256": "076b0a41f1311b4398de8b271387531913eef11f8c68b1c5a933523a84de4dae",
+      "sourceBytes": 613928,
+      "url": "/models/mammoth-meat/model-c2.opt-4b49e324b633cf3f.glb",
+      "sha256": "4b49e324b633cf3f78b647c9d922db5f1c9d0a66bef21d17336727ce915cd4e0",
+      "bytes": 577312,
+      "maximumTextureEdge": 1024,
+      "extensionsRequired": [
+        "EXT_texture_webp",
+        "EXT_meshopt_compression"
+      ]
+    },
+    "/models/meadow-ground/model.glb": {
+      "sourceSha256": "6c6b41bdec1631236027c567635623aa9cdd1e0d92c0ae9e89f77764b52995e1",
+      "sourceBytes": 2126388,
+      "url": "/models/meadow-ground/model.opt-b2df848b39f6d60e.glb",
+      "sha256": "b2df848b39f6d60e5679ff69067278878e4cd4b87158320395f57e41bc805876",
+      "bytes": 2105700,
+      "maximumTextureEdge": 1024,
+      "extensionsRequired": [
+        "EXT_meshopt_compression"
+      ]
+    },
+    "/models/neanderthal-hunter/lod-face-r01.glb": {
+      "sourceSha256": "27f7e96e7c3e377db6be2b38bb9c9740a907b5c5a412cd1731fe7ea6885faa89",
+      "sourceBytes": 1006052,
+      "url": "/models/neanderthal-hunter/lod-face-r01.opt-b15cc3957fcca73e.glb",
+      "sha256": "b15cc3957fcca73ec62654b3c7852b5685e326228e59a4181e5a9c9dfc4efbb2",
+      "bytes": 730428,
+      "maximumTextureEdge": 1024,
+      "extensionsRequired": [
+        "EXT_meshopt_compression"
+      ]
+    },
+    "/models/neanderthal-hunter/model-face-r01.glb": {
+      "sourceSha256": "6910fd3396bcde7934e9af23fa2130ca5c1bca9a08da0d00fe5582076b94352b",
+      "sourceBytes": 15858864,
+      "url": "/models/neanderthal-hunter/model-face-r01.opt-c926af86a81cd254.glb",
+      "sha256": "c926af86a81cd254bc0c353f85d54e9993a7730597b871ba33e220a1df30dee7",
+      "bytes": 7635076,
+      "maximumTextureEdge": 1024,
+      "extensionsRequired": [
+        "EXT_texture_webp",
+        "EXT_meshopt_compression"
+      ]
+    },
+    "/models/neanderthal-woman/lod-face-r01.glb": {
+      "sourceSha256": "867a3908acf4a85918aded67c2ae4a0529c860f9455ec613337d707c0e044156",
+      "sourceBytes": 716252,
+      "url": "/models/neanderthal-woman/lod-face-r01.opt-6afb0669ac10d473.glb",
+      "sha256": "6afb0669ac10d473aa80618ace28ef8e9adb87517c8d909c0678d9112497f3df",
+      "bytes": 501204,
+      "maximumTextureEdge": 1024,
+      "extensionsRequired": [
+        "EXT_meshopt_compression"
+      ]
+    },
+    "/models/neanderthal-woman/model-face-r01.glb": {
+      "sourceSha256": "b4c416900e972c8850892b7a5f886e62478894d1c958cf35830dc7ea1672dde9",
+      "sourceBytes": 10675488,
+      "url": "/models/neanderthal-woman/model-face-r01.opt-922c0e29accdb2c7.glb",
+      "sha256": "922c0e29accdb2c783d2e238e700da6e127f649eceb0d37189a9838e7747a143",
+      "bytes": 5014268,
+      "maximumTextureEdge": 1024,
+      "extensionsRequired": [
+        "EXT_texture_webp",
+        "EXT_meshopt_compression"
+      ]
+    },
+    "/models/obsidian-blade/model-c2.glb": {
+      "sourceSha256": "87e6167887fdab6e2a0331837ef305b0470078b9e3afcd450dfae8ea1080b66b",
+      "sourceBytes": 185140,
+      "url": "/models/obsidian-blade/model-c2.opt-2869bf2d3c3fff93.glb",
+      "sha256": "2869bf2d3c3fff93bbb9f6d50f8b1c70edaf926aa1192d70161a7050791e8c4d",
+      "bytes": 170456,
+      "maximumTextureEdge": 1024,
+      "extensionsRequired": [
+        "EXT_texture_webp",
+        "EXT_meshopt_compression"
+      ]
+    },
+    "/models/obsidian-spear/model-c2.glb": {
+      "sourceSha256": "960e9caffed55beb1599c6330e5920cf27b16c9fe1312fa1cad105880700cd95",
+      "sourceBytes": 422412,
+      "url": "/models/obsidian-spear/model-c2.opt-60cddabf4f7a57bc.glb",
+      "sha256": "60cddabf4f7a57bc20f27a6ba8e028f0ffeda95bba9a9625b915d8946fb09d5d",
+      "bytes": 378180,
+      "maximumTextureEdge": 1024,
+      "extensionsRequired": [
+        "EXT_texture_webp",
+        "EXT_meshopt_compression"
+      ]
+    },
+    "/models/orb-bot-beret/lod-c2.glb": {
+      "sourceSha256": "2688cfd8f92371ab35805e111797128119802c902f57070731d50e01d00024a0",
+      "sourceBytes": 103312,
+      "url": "/models/orb-bot-beret/lod-c2.opt-f4899300099cd789.glb",
+      "sha256": "f4899300099cd789cf6fc1f0f91cd47c603e7aa307dab057ac37294b38381fbe",
+      "bytes": 58004,
+      "maximumTextureEdge": 1024,
+      "extensionsRequired": [
+        "EXT_meshopt_compression"
+      ]
+    },
+    "/models/orb-bot-beret/model-c2.glb": {
+      "sourceSha256": "5a6a97633fb56bbe95eead6e976a1bb13b596833bbf2ea5ed6812d155006722e",
+      "sourceBytes": 600312,
+      "url": "/models/orb-bot-beret/model-c2.opt-67aa3569b08433a9.glb",
+      "sha256": "67aa3569b08433a9d061e3902e3ac9fe358eaea1eec8756350265681034c43c5",
+      "bytes": 469592,
+      "maximumTextureEdge": 1024,
+      "extensionsRequired": [
+        "EXT_texture_webp",
+        "EXT_meshopt_compression"
+      ]
+    },
+    "/models/orb-bot-blue/lod-c2.glb": {
+      "sourceSha256": "ddda5aa8619bb28c6f4193c280c62af69f49e8c07dc20f857afbaea567a79177",
+      "sourceBytes": 71116,
+      "url": "/models/orb-bot-blue/lod-c2.opt-cb6345d01b995260.glb",
+      "sha256": "cb6345d01b995260a2909cc0c7f2def24f537ebf70b2c0ce1f70f5b6157fff42",
+      "bytes": 39444,
+      "maximumTextureEdge": 1024,
+      "extensionsRequired": [
+        "EXT_meshopt_compression"
+      ]
+    },
+    "/models/orb-bot-blue/model-c2.glb": {
+      "sourceSha256": "58aafc5fd984e95a1286aa73c284bebd2acedf2285eae8cbb77eaad517786988",
+      "sourceBytes": 281820,
+      "url": "/models/orb-bot-blue/model-c2.opt-75577442755bc127.glb",
+      "sha256": "75577442755bc12779be7ad6e73906f392c688198082cd72f14224be2195c98d",
+      "bytes": 186580,
+      "maximumTextureEdge": 1024,
+      "extensionsRequired": [
+        "EXT_texture_webp",
+        "EXT_meshopt_compression"
+      ]
+    },
+    "/models/orb-bot-frog/lod-c2.glb": {
+      "sourceSha256": "2ed6f85dfc70e29b58454d6ada2e28fb310c15f327e37a2be221961918600b82",
+      "sourceBytes": 104640,
+      "url": "/models/orb-bot-frog/lod-c2.opt-f71bde69739adeaf.glb",
+      "sha256": "f71bde69739adeaf159f8f3585f9f47ea88f5cdd4a69dee60d86ceb9b2bf34b1",
+      "bytes": 57388,
+      "maximumTextureEdge": 1024,
+      "extensionsRequired": [
+        "EXT_meshopt_compression"
+      ]
+    },
+    "/models/orb-bot-frog/model-c2.glb": {
+      "sourceSha256": "db6173c04dbfee63acec4d76291414a3cfaa9068ee5e9dcfcf796ac189a7c7a5",
+      "sourceBytes": 737732,
+      "url": "/models/orb-bot-frog/model-c2.opt-0840299e1a568e62.glb",
+      "sha256": "0840299e1a568e62caaa4d4c419d983f904c9d2a9587cdecf573b7fc34bbabad",
+      "bytes": 588132,
+      "maximumTextureEdge": 1024,
+      "extensionsRequired": [
+        "EXT_texture_webp",
+        "EXT_meshopt_compression"
+      ]
+    },
+    "/models/orb-bot-green/lod-c2.glb": {
+      "sourceSha256": "f0ec7ee96a73ffeb4331a18dee19dfb4e7824d70e1c8810d4643360182f509b9",
+      "sourceBytes": 72728,
+      "url": "/models/orb-bot-green/lod-c2.opt-0b7eb03299dc34a4.glb",
+      "sha256": "0b7eb03299dc34a43bdcda1a62bbaaf682bdc2998ee0127121baf5e4eb5cf1e9",
+      "bytes": 40304,
+      "maximumTextureEdge": 1024,
+      "extensionsRequired": [
+        "EXT_meshopt_compression"
+      ]
+    },
+    "/models/orb-bot-green/model-c2.glb": {
+      "sourceSha256": "7688b80b2910f2fd6b95bb281ed66f7c558c06bf801c8ce62b843e74dddf0238",
+      "sourceBytes": 272528,
+      "url": "/models/orb-bot-green/model-c2.opt-67dba21dba2f7082.glb",
+      "sha256": "67dba21dba2f70828d9f18698f96ee3e9d9ec293f74c6e2af14287c4623d859a",
+      "bytes": 175864,
+      "maximumTextureEdge": 1024,
+      "extensionsRequired": [
+        "EXT_texture_webp",
+        "EXT_meshopt_compression"
+      ]
+    },
+    "/models/orb-bot-heart/lod-c2.glb": {
+      "sourceSha256": "b04fa3b818ac6c9da08a11e5533b6f60d90a4598c02e8b519840943854765ed4",
+      "sourceBytes": 104404,
+      "url": "/models/orb-bot-heart/lod-c2.opt-1063808d702b9b1d.glb",
+      "sha256": "1063808d702b9b1de1031c739c6326509f77cd326ef517d5b673c0ee2a95eea4",
+      "bytes": 58312,
+      "maximumTextureEdge": 1024,
+      "extensionsRequired": [
+        "EXT_meshopt_compression"
+      ]
+    },
+    "/models/orb-bot-heart/model-c2.glb": {
+      "sourceSha256": "4564c3b0d15ddc7d57a387d832e1f0a98a83e7957ae9255d8122ae5d790ebc73",
+      "sourceBytes": 558784,
+      "url": "/models/orb-bot-heart/model-c2.opt-24b0af3b99e52a3a.glb",
+      "sha256": "24b0af3b99e52a3ad6985af4d11036d5507f7687a56a034dd2ff70f106f1d903",
+      "bytes": 430568,
+      "maximumTextureEdge": 1024,
+      "extensionsRequired": [
+        "EXT_texture_webp",
+        "EXT_meshopt_compression"
+      ]
+    },
+    "/models/orb-bot-orange/lod-c2.glb": {
+      "sourceSha256": "df77e30e57f304da22e312971c82e3dde686d7f4219acd77ecbab2df03e239c6",
+      "sourceBytes": 42996,
+      "url": "/models/orb-bot-orange/lod-c2.opt-22329782023eb470.glb",
+      "sha256": "22329782023eb470cb18cdb279b87e396e9cd4f2f13939a82ceffa9110a522d8",
+      "bytes": 24804,
+      "maximumTextureEdge": 1024,
+      "extensionsRequired": [
+        "EXT_meshopt_compression"
+      ]
+    },
+    "/models/orb-bot-orange/model-c2.glb": {
+      "sourceSha256": "1a92cdfe97bc542f5c96cc09f902bc99842114b1460fc87cb1d49d23242830be",
+      "sourceBytes": 189144,
+      "url": "/models/orb-bot-orange/model-c2.opt-59d466b4d610ba10.glb",
+      "sha256": "59d466b4d610ba1090d89502f7a16de66bb01de261ed7d37e3cf120b35a805c9",
+      "bytes": 126048,
+      "maximumTextureEdge": 1024,
+      "extensionsRequired": [
+        "EXT_texture_webp",
+        "EXT_meshopt_compression"
+      ]
+    },
+    "/models/orb-bot-purple/lod-c2.glb": {
+      "sourceSha256": "28dcfec64fba9abea1510339af25a972fd3d32379eacdcc7b60b46183c89b672",
+      "sourceBytes": 71796,
+      "url": "/models/orb-bot-purple/lod-c2.opt-29d4b43ec880dadc.glb",
+      "sha256": "29d4b43ec880dadc08f1e70acd46227866dca0e66bb51dff16000146ed641f42",
+      "bytes": 39868,
+      "maximumTextureEdge": 1024,
+      "extensionsRequired": [
+        "EXT_meshopt_compression"
+      ]
+    },
+    "/models/orb-bot-purple/model-c2.glb": {
+      "sourceSha256": "d6ed48cf1f7a8b5e7a2cd1fa492312350b2987c33a4cf5027dbca863d2b04847",
+      "sourceBytes": 277544,
+      "url": "/models/orb-bot-purple/model-c2.opt-7be19319f08ab7f6.glb",
+      "sha256": "7be19319f08ab7f6f34b4d7bc555de891bb97acd3e84913a658f61861d23f398",
+      "bytes": 181848,
+      "maximumTextureEdge": 1024,
+      "extensionsRequired": [
+        "EXT_texture_webp",
+        "EXT_meshopt_compression"
+      ]
+    },
+    "/models/orb-bot-triangle/lod-c2.glb": {
+      "sourceSha256": "1311530ed90f89d926fcc5824d10d82587978dc5a42830e170e09b9dd8c6d943",
+      "sourceBytes": 95336,
+      "url": "/models/orb-bot-triangle/lod-c2.opt-f1951d18abc6a533.glb",
+      "sha256": "f1951d18abc6a53351f19954948213fd2a6eb74278ceb9d2d773b2b1ac3291f9",
+      "bytes": 52960,
+      "maximumTextureEdge": 1024,
+      "extensionsRequired": [
+        "EXT_meshopt_compression"
+      ]
+    },
+    "/models/orb-bot-triangle/model-c2.glb": {
+      "sourceSha256": "3b817e9ad2466dfee568e14916f571bd9492ef50cc95442c310f24a4f3068d77",
+      "sourceBytes": 473148,
+      "url": "/models/orb-bot-triangle/model-c2.opt-d654497256da8a14.glb",
+      "sha256": "d654497256da8a146f7b6b7a3513b0dd9465b71b033a015fcbe76aae7da2e7bf",
+      "bytes": 357600,
+      "maximumTextureEdge": 1024,
+      "extensionsRequired": [
+        "EXT_texture_webp",
+        "EXT_meshopt_compression"
+      ]
+    },
+    "/models/orb-bot-white/lod-c2.glb": {
+      "sourceSha256": "165d3024d63719843f5f48b9730f29becdf57b39d8783d7d3f0f1f78d359bc2b",
+      "sourceBytes": 75232,
+      "url": "/models/orb-bot-white/lod-c2.opt-551e0f7e3a90b7a3.glb",
+      "sha256": "551e0f7e3a90b7a3b1d82a8712f1c8b699a91919f42dd5c99af79b46f1222379",
+      "bytes": 41664,
+      "maximumTextureEdge": 1024,
+      "extensionsRequired": [
+        "EXT_meshopt_compression"
+      ]
+    },
+    "/models/orb-bot-white/model-c2.glb": {
+      "sourceSha256": "ce163f967da25e0382cee50008ee9dd5e36bd6bd3723f3647bf106d8477efcab",
+      "sourceBytes": 280084,
+      "url": "/models/orb-bot-white/model-c2.opt-4449a0ae121bf747.glb",
+      "sha256": "4449a0ae121bf74792071a24bef3134df3c75de1a1de1d28984f5275b4ce8a5a",
+      "bytes": 182256,
+      "maximumTextureEdge": 1024,
+      "extensionsRequired": [
+        "EXT_texture_webp",
+        "EXT_meshopt_compression"
+      ]
+    },
+    "/models/rimo-neko/lod-c2.glb": {
+      "sourceSha256": "343908970676da4b9c4f86a3f30503cdc460049b8594da5b146bb8f589fe1ae0",
+      "sourceBytes": 881680,
+      "url": "/models/rimo-neko/lod-c2.opt-3a81eb41a2d86949.glb",
+      "sha256": "3a81eb41a2d86949cdff870d6db601f7c285628175b50f32e7482e484cd717db",
+      "bytes": 688620,
+      "maximumTextureEdge": 1024,
+      "extensionsRequired": [
+        "EXT_meshopt_compression"
+      ]
+    },
+    "/models/rimo-neko/model-c2.glb": {
+      "sourceSha256": "2ee2164b4c47ddbf89d73c1b58d9a61adea868ef7998967023cca6ebba056048",
+      "sourceBytes": 7705604,
+      "url": "/models/rimo-neko/model-c2.opt-858fbf0413ae556b.glb",
+      "sha256": "858fbf0413ae556b29fcf681f3c1a8459ae920fd1dccf7bd5b0df6de6dfd604d",
+      "bytes": 3600960,
+      "maximumTextureEdge": 1024,
+      "extensionsRequired": [
+        "EXT_texture_webp",
+        "EXT_meshopt_compression"
+      ]
+    },
+    "/models/river-water/model.glb": {
+      "sourceSha256": "8575faa5fd988da815d622ebbd03d49390339df5eeafd0eb794e1b0368ec0274",
+      "sourceBytes": 1905036,
+      "url": "/models/river-water/model.opt-47cb975f8278144b.glb",
+      "sha256": "47cb975f8278144bd17d1c8513e1688b2f218d37ea4825b5baa47f9b31fa4534",
+      "bytes": 1888804,
+      "maximumTextureEdge": 1024,
+      "extensionsRequired": [
+        "EXT_meshopt_compression"
+      ]
+    },
+    "/models/sabertooth-tiger/lod-c2.glb": {
+      "sourceSha256": "29b91f5cb8733200017eeac875504519d8c5f554cf262ec89cc7ff298d31bf1b",
+      "sourceBytes": 690408,
+      "url": "/models/sabertooth-tiger/lod-c2.opt-b0bbf5ea96776c36.glb",
+      "sha256": "b0bbf5ea96776c36c0ce539ebe1a3481cc860d36f381332522df1ab96a6f6ec3",
+      "bytes": 555024,
+      "maximumTextureEdge": 1024,
+      "extensionsRequired": [
+        "EXT_meshopt_compression"
+      ]
+    },
+    "/models/sabertooth-tiger/model-c2.glb": {
+      "sourceSha256": "e6ec30cbd18aab4bf5b7f2f4972658f191c9f168d667501f7032f6f69b203ab0",
+      "sourceBytes": 6843576,
+      "url": "/models/sabertooth-tiger/model-c2.opt-8cb907166a4f9fdb.glb",
+      "sha256": "8cb907166a4f9fdb691c95da3a5f90b6ab804f61326c942f5f5e81b97e788cd2",
+      "bytes": 3691560,
+      "maximumTextureEdge": 1024,
+      "extensionsRequired": [
+        "EXT_texture_webp",
+        "EXT_meshopt_compression"
+      ]
+    },
+    "/models/shell-midden/model-c2.glb": {
+      "sourceSha256": "d45280c759dde06ac2a21b75b54953753648ff1585ba16319da7bf1e15bfa444",
+      "sourceBytes": 3343096,
+      "url": "/models/shell-midden/model-c2.opt-2d1fa0d48b759d83.glb",
+      "sha256": "2d1fa0d48b759d83b51fe3f10069d51f1afa08ac1b4bb6907335d212e61eaacb",
+      "bytes": 1382268,
+      "maximumTextureEdge": 1024,
+      "extensionsRequired": [
+        "EXT_texture_webp",
+        "EXT_meshopt_compression"
+      ]
+    },
+    "/models/snow-ground/lod1.glb": {
+      "sourceSha256": "e822a8dd99fb95c3589b161a5ac95a931a7bb04edff30d8571ea8973a34fb412",
+      "sourceBytes": 2907308,
+      "url": "/models/snow-ground/lod1.opt-9bc89f21b3b4edc6.glb",
+      "sha256": "9bc89f21b3b4edc6c442202a3ae44927183910cc79ebae94b455f19eb9d1e446",
+      "bytes": 2433372,
+      "maximumTextureEdge": 1024,
+      "extensionsRequired": [
+        "EXT_meshopt_compression"
+      ]
+    },
+    "/models/snow-ground/lod2.glb": {
+      "sourceSha256": "8173f329c3fef54d0cf60cbfc61b5e9326bec395d9a002d6c118eb8fcd70fad3",
+      "sourceBytes": 2877800,
+      "url": "/models/snow-ground/lod2.opt-41be00def31a39f4.glb",
+      "sha256": "41be00def31a39f4551d1a8f5fb0e8742886e206ff8b8d84ecb3a2a558f9a292",
+      "bytes": 2413924,
+      "maximumTextureEdge": 1024,
+      "extensionsRequired": [
+        "EXT_meshopt_compression"
+      ]
+    },
+    "/models/snow-ground/model.glb": {
+      "sourceSha256": "ddf7037c1cd52801d7c5f1a71492c496d7885f407372edb275e445ce0e009f44",
+      "sourceBytes": 3092188,
+      "url": "/models/snow-ground/model.opt-152de77614b9dff4.glb",
+      "sha256": "152de77614b9dff44669952e04618aa2ed23c1f3ac1ccfb9f898e44b5bb9b88f",
+      "bytes": 2557764,
+      "maximumTextureEdge": 1024,
+      "extensionsRequired": [
+        "EXT_meshopt_compression"
+      ]
+    },
+    "/models/stone-axe/model-c2.glb": {
+      "sourceSha256": "f195cd97f8b1a2e88a6b0cf1e928a432d103c9ba415c996396ba7cd10f7ba81e",
+      "sourceBytes": 817044,
+      "url": "/models/stone-axe/model-c2.opt-dd29370a26645b9a.glb",
+      "sha256": "dd29370a26645b9ad78aa0a2941b410789b4504a29e43a5e4aea117439fa304b",
+      "bytes": 754124,
+      "maximumTextureEdge": 1024,
+      "extensionsRequired": [
+        "EXT_texture_webp",
+        "EXT_meshopt_compression"
+      ]
+    },
+    "/models/stone-firepit/lod-c2.glb": {
+      "sourceSha256": "6deeb617524d87709c943aab7198f1ef071b6ae6de1d80ed64e65d7c88f9c4bb",
+      "sourceBytes": 547584,
+      "url": "/models/stone-firepit/lod-c2.opt-6019ecfb7bc28fbb.glb",
+      "sha256": "6019ecfb7bc28fbbf0328b0a26c348048a42abaaf7244d16ddf7062758d22276",
+      "bytes": 492456,
+      "maximumTextureEdge": 1024,
+      "extensionsRequired": [
+        "EXT_texture_webp",
+        "EXT_meshopt_compression"
+      ]
+    },
+    "/models/stone-firepit/model-c2.glb": {
+      "sourceSha256": "62d5e610354e665a29c069ba1e121cf1ddd519ac12da1311c8b24236289a9cb0",
+      "sourceBytes": 1412152,
+      "url": "/models/stone-firepit/model-c2.opt-e41691b8703404e4.glb",
+      "sha256": "e41691b8703404e461145cabd53ff499d4c5ce4df82aa064eef2cec4efc4ed28",
+      "bytes": 1252948,
+      "maximumTextureEdge": 1024,
+      "extensionsRequired": [
+        "EXT_texture_webp",
+        "EXT_meshopt_compression"
+      ]
+    },
+    "/models/valley-boulder/lod-c2.glb": {
+      "sourceSha256": "e28c98f42ff6e8afb6d42a5ff01601f96b5792dc5b7494edc372503c54a1a1b3",
+      "sourceBytes": 388760,
+      "url": "/models/valley-boulder/lod-c2.opt-9e417f894185122d.glb",
+      "sha256": "9e417f894185122dc34badf9c990115919721d0dcf1a393ecebf303faa46058b",
+      "bytes": 378352,
+      "maximumTextureEdge": 1024,
+      "extensionsRequired": [
+        "EXT_texture_webp",
+        "EXT_meshopt_compression"
+      ]
+    },
+    "/models/valley-boulder/model-c2.glb": {
+      "sourceSha256": "8a1f64562cb4b27bcd89516f4fc85317bfca54050f22cf8dfa0b668fb2196a3a",
+      "sourceBytes": 658708,
+      "url": "/models/valley-boulder/model-c2.opt-4a90f42af8cd54a2.glb",
+      "sha256": "4a90f42af8cd54a20dc325493e3bdb18d4a3c17322f3e08ab52767464e8fde4c",
+      "bytes": 617496,
+      "maximumTextureEdge": 1024,
+      "extensionsRequired": [
+        "EXT_texture_webp",
+        "EXT_meshopt_compression"
+      ]
+    },
+    "/models/valley-castle/model-r13-normal.glb": {
+      "sourceSha256": "7073c6f763aa5d65efe2cb2ba1f772028b9c805c4f4d3ce00d9d8d9f9178a26f",
+      "sourceBytes": 10615036,
+      "url": "/models/valley-castle/model-r13-normal.opt-91e2120315e99a29.glb",
+      "sha256": "91e2120315e99a291827bd2d328f28942b058df1b712b185fffe6b91f3a3c86b",
+      "bytes": 6719356,
+      "maximumTextureEdge": 1024,
+      "extensionsRequired": [
+        "EXT_meshopt_compression"
+      ]
+    },
+    "/models/valley-pine/lod-c2.glb": {
+      "sourceSha256": "4fd06946db879d27ff0c27aee1e2fe46f522587e409052ccee01d086347ec000",
+      "sourceBytes": 905208,
+      "url": "/models/valley-pine/lod-c2.opt-e1c740f6790b30d0.glb",
+      "sha256": "e1c740f6790b30d03441b27ec8de16fe9cb1df4bee7b358fab37559f41077ae0",
+      "bytes": 686388,
+      "maximumTextureEdge": 1024,
+      "extensionsRequired": [
+        "EXT_texture_webp",
+        "EXT_meshopt_compression"
+      ]
+    },
+    "/models/valley-pine/model-c2.glb": {
+      "sourceSha256": "7636543c9ae2df6c302106c7d50787b83483f5603babcbadef096f2b645f6b02",
+      "sourceBytes": 2149136,
+      "url": "/models/valley-pine/model-c2.opt-22013bcd256918ae.glb",
+      "sha256": "22013bcd256918ae51e2114da1414a16bccd7635926594e0a5c80a91ebd009bf",
+      "bytes": 1685752,
+      "maximumTextureEdge": 1024,
+      "extensionsRequired": [
+        "EXT_texture_webp",
+        "EXT_meshopt_compression"
+      ]
+    },
+    "/models/violet-behemoth/lod-c2.glb": {
+      "sourceSha256": "dcf10984d40d4ea4deaa38424c3cc2b438cfa0a4c4a5b5be1fea4925c24e153c",
+      "sourceBytes": 550636,
+      "url": "/models/violet-behemoth/lod-c2.opt-bca4d60d2b326d3c.glb",
+      "sha256": "bca4d60d2b326d3ca95c3476a86be5dc16d8b4f93b398ea6f0f6bc584efb8521",
+      "bytes": 438464,
+      "maximumTextureEdge": 1024,
+      "extensionsRequired": [
+        "EXT_meshopt_compression"
+      ]
+    },
+    "/models/violet-behemoth/model-c2.glb": {
+      "sourceSha256": "85b3a6393ce569c81d75557201b510afc1b278529e1ffa65806ed6c0c17e4fda",
+      "sourceBytes": 7168980,
+      "url": "/models/violet-behemoth/model-c2.opt-bcd866c42f134d3a.glb",
+      "sha256": "bcd866c42f134d3a14b75236a77fd18bb87b12d5fa70c89cb29e6d778b78b925",
+      "bytes": 3835212,
+      "maximumTextureEdge": 1024,
+      "extensionsRequired": [
+        "EXT_texture_webp",
+        "EXT_meshopt_compression"
+      ]
+    },
+    "/models/volcanic-basalt-columns/lod-c2.glb": {
+      "sourceSha256": "2e27fd2fa8c7edd1122435943022bc50443d1a4748eb8279de14872abc5c8c0e",
+      "sourceBytes": 1513960,
+      "url": "/models/volcanic-basalt-columns/lod-c2.opt-8a9348dda21b6170.glb",
+      "sha256": "8a9348dda21b6170a3a9d17b3223cd079dfaa0d28c5262aafa316c2bccdff03e",
+      "bytes": 578796,
+      "maximumTextureEdge": 1024,
+      "extensionsRequired": [
+        "EXT_texture_webp",
+        "EXT_meshopt_compression"
+      ]
+    },
+    "/models/volcanic-basalt-columns/model-c2.glb": {
+      "sourceSha256": "d5c1538864da0fbc702243cd665f4e95053d2851182b53c7a8d5db0689ae7e40",
+      "sourceBytes": 4061564,
+      "url": "/models/volcanic-basalt-columns/model-c2.opt-8ed4d0195a42662b.glb",
+      "sha256": "8ed4d0195a42662bd1c508e408d3e71d085b85ba0cf7489503d70879d1fa8b7b",
+      "bytes": 1751796,
+      "maximumTextureEdge": 1024,
+      "extensionsRequired": [
+        "EXT_texture_webp",
+        "EXT_meshopt_compression"
+      ]
+    },
+    "/models/volcanic-cone/model-c1-normal.glb": {
+      "sourceSha256": "a52f4e2b2c3f4e9d576f480b878c51576193222a9be4b23bf898bfccf392d515",
+      "sourceBytes": 2793924,
+      "url": "/models/volcanic-cone/model-c1-normal.opt-75dee9d1cf9b1f4c.glb",
+      "sha256": "75dee9d1cf9b1f4cebc68e8eae0c8a2ec14dda1b198d19c1c29865940bab6325",
+      "bytes": 2149252,
+      "maximumTextureEdge": 1024,
+      "extensionsRequired": [
+        "EXT_meshopt_compression"
+      ]
+    },
+    "/models/volcanic-ground/lod1.glb": {
+      "sourceSha256": "dd46d5d0bd30c0d98f8c4aff2fbb907d91585e1e11dda60a6f1ff08000c207f2",
+      "sourceBytes": 1354216,
+      "url": "/models/volcanic-ground/lod1.opt-eec64336d00db142.glb",
+      "sha256": "eec64336d00db1425abd5f418c686f22c986087118fdb90c8626cbbcafe23513",
+      "bytes": 1345216,
+      "maximumTextureEdge": 1024,
+      "extensionsRequired": [
+        "EXT_meshopt_compression"
+      ]
+    },
+    "/models/volcanic-ground/lod2.glb": {
+      "sourceSha256": "ff9d0530565596a465f6dbf8d17f4d2788e541df44d09e017ef8f499805ef2ac",
+      "sourceBytes": 1332664,
+      "url": "/models/volcanic-ground/lod2.opt-7222c704d69bacd3.glb",
+      "sha256": "7222c704d69bacd3b4109109ffdd22625f6e1649f147bfd64ebb685f06799a04",
+      "bytes": 1329752,
+      "maximumTextureEdge": 1024,
+      "extensionsRequired": [
+        "EXT_meshopt_compression"
+      ]
+    },
+    "/models/volcanic-ground/model.glb": {
+      "sourceSha256": "2bca15ffc01cce6148f8569a60b3fbecd16ac0c7946014f7b48f267b5eaffb88",
+      "sourceBytes": 1506956,
+      "url": "/models/volcanic-ground/model.opt-7190ebc39878ee0c.glb",
+      "sha256": "7190ebc39878ee0c1969cbdc9af15dbc6aaa8c24017dd01fc287285a6d12f58f",
+      "bytes": 1456068,
+      "maximumTextureEdge": 1024,
+      "extensionsRequired": [
+        "EXT_meshopt_compression"
+      ]
+    },
+    "/models/wood-footbridge/lod-c2.glb": {
+      "sourceSha256": "a901811113428ab6108241bccf0bbfc15864ee7869d9d31e8f346296e09e7576",
+      "sourceBytes": 794156,
+      "url": "/models/wood-footbridge/lod-c2.opt-59ea980f0d34210a.glb",
+      "sha256": "59ea980f0d34210a00f31053c3ca5b652bdec4c08085506b03314374461c8110",
+      "bytes": 335096,
+      "maximumTextureEdge": 1024,
+      "extensionsRequired": [
+        "EXT_texture_webp",
+        "EXT_meshopt_compression"
+      ]
+    },
+    "/models/wood-footbridge/model-c2.glb": {
+      "sourceSha256": "88a56d09a717e9ae0a2b01c9c3635d69a4bf219aa0d7a0630c0ddc0609feddfe",
+      "sourceBytes": 1814304,
+      "url": "/models/wood-footbridge/model-c2.opt-6ec7bca35b5e07b9.glb",
+      "sha256": "6ec7bca35b5e07b9863a73d9ece6083fea4243636750da7917e65a568773f413",
+      "bytes": 811604,
+      "maximumTextureEdge": 1024,
+      "extensionsRequired": [
+        "EXT_texture_webp",
+        "EXT_meshopt_compression"
+      ]
+    },
+    "/models/wooden-spear/model-c2.glb": {
+      "sourceSha256": "ae70efd88d72c75f708cc64039b08ca7a197237a36718bfbc2de7163e46a8c35",
+      "sourceBytes": 298760,
+      "url": "/models/wooden-spear/model-c2.opt-cb7a2ff24c5ac977.glb",
+      "sha256": "cb7a2ff24c5ac977ec9f26f7d30747621a68c8d1c43971822270e26258b951d0",
+      "bytes": 274092,
+      "maximumTextureEdge": 1024,
+      "extensionsRequired": [
+        "EXT_texture_webp",
+        "EXT_meshopt_compression"
+      ]
+    },
+    "/models/woolly-mammoth/lod-c2.glb": {
+      "sourceSha256": "a6ceb7e85a8a2115da1c175ba753909fdb62d90e82ec91273cde4c65139915f0",
+      "sourceBytes": 482624,
+      "url": "/models/woolly-mammoth/lod-c2.opt-1400da13468a828b.glb",
+      "sha256": "1400da13468a828b2721aa9ea2e826917ce23fcecabd9371d33c008d0d97b0de",
+      "bytes": 396376,
+      "maximumTextureEdge": 1024,
+      "extensionsRequired": [
+        "EXT_meshopt_compression"
+      ]
+    },
+    "/models/woolly-mammoth/model-c2.glb": {
+      "sourceSha256": "1a4b70113c94aec36e6a24f1216f9c1b9d2f6975a7a4604b861fbce783b907d5",
+      "sourceBytes": 8468828,
+      "url": "/models/woolly-mammoth/model-c2.opt-123d25330b9ae714.glb",
+      "sha256": "123d25330b9ae7149ba7ff2eddb733b326f95c888f68d19951706929466caeda",
+      "bytes": 4337632,
+      "maximumTextureEdge": 1024,
+      "extensionsRequired": [
+        "EXT_texture_webp",
+        "EXT_meshopt_compression"
+      ]
+    },
+    "/models/yellow-524-mascot/lod-c2.glb": {
+      "sourceSha256": "15e3e89a7e41df4bfdc8583a4b3ce648543ddba7aa400c8ba3ea105d404d5586",
+      "sourceBytes": 401716,
+      "url": "/models/yellow-524-mascot/lod-c2.opt-12c399d8784d3a02.glb",
+      "sha256": "12c399d8784d3a021f0ae6b4729dac1f8d81d1b2868ca3788e0f86ad67564491",
+      "bytes": 224704,
+      "maximumTextureEdge": 1024,
+      "extensionsRequired": [
+        "EXT_meshopt_compression"
+      ]
+    },
+    "/models/yellow-524-mascot/model-c2.glb": {
+      "sourceSha256": "cc25400bd45deb7b7fabf7723698c445b150710eb0b5921f92e43a30de45a143",
+      "sourceBytes": 1648020,
+      "url": "/models/yellow-524-mascot/model-c2.opt-b5f96efd14f833f9.glb",
+      "sha256": "b5f96efd14f833f94ccf9bf12a5563fe4ab9e976dd9ab899b75a2bb83f81064d",
+      "bytes": 1012232,
+      "maximumTextureEdge": 1024,
+      "extensionsRequired": [
+        "EXT_texture_webp",
+        "EXT_meshopt_compression"
+      ]
+    }
+  },
+  "startupActors": {
+    "cat-kunoichi": {
+      "url": "/models/cat-kunoichi/startup.opt-ca2213d32f027f41.glb",
+      "sha256": "ca2213d32f027f41011d32ee2d35401f9ceeea0e2ad58cb8558e2cf1b599006a",
+      "bytes": 6616668,
+      "maximumTextureEdge": 1024,
+      "extensionsRequired": [
+        "EXT_texture_webp",
+        "EXT_meshopt_compression"
+      ],
+      "geometrySource": {
+        "url": "/models/cat-kunoichi/lod-c2.glb",
+        "sha256": "89addc6db3f18f48d5145ceb69fddeae9e9e23c8bb73e282de4595a40f1f0a49"
+      },
+      "fullSource": {
+        "url": "/models/cat-kunoichi/model-c2.glb",
+        "sha256": "0f2fecf9409bfea07ea0eadb25d3038ebe0cd8f9ca64e37214c4a4a42b4eb90e"
+      },
+      "upgrade": {
+        "url": "/models/cat-kunoichi/model-c2.opt-eb8b428e076b89ff.glb",
+        "sha256": "eb8b428e076b89ff30e0c9b4a5a0dec2b1212dc43504a7980d1e23f12ca50382",
+        "bytes": 6213892
+      },
+      "lodDistanceMetres": 28,
+      "structure": "same nodes, skins, joint order, mesh/primitive order, glTF materials, textures and clips as the upgrade; geometry per primitive from the full model (retained) or the adopted LOD, as listed in geometry",
+      "lowLevel": "this geometry is the player's low level: a runtime distance or far level must not use the adopted LOD file for any primitive; retained primitives (heads, the whole primitive of single-primitive actors, unreduced primitives) stay full and source-simplified primitives keep exactly this file's geometry, so no level may swap retained primitives back to the adopted LOD; the full upgrade replaces geometry only, keeping pose and root",
+      "geometry": [
+        {
+          "mesh": 0,
+          "primitive": 0,
+          "material": "BodySurface",
+          "source": "source-simplified",
+          "retention": null
+        },
+        {
+          "mesh": 0,
+          "primitive": 1,
+          "material": "HeadSurface",
+          "source": "full-model",
+          "retention": "head-primitive"
+        }
+      ],
+      "materialPairing": {
+        "rule": "keep each geometry with the material GLTFLoader assigns to it in its own file: the derivative-tangent clone (normalScale.y negated) for startup geometry without TANGENT, the authored material for upgrade geometry with TANGENT; never move one onto the other",
+        "primitives": []
+      }
+    },
+    "cro-magnon-hunter": {
+      "url": "/models/cro-magnon-hunter/startup.opt-d9197fbdf6e1ae99.glb",
+      "sha256": "d9197fbdf6e1ae9968c5b88422761a5420b14db1f085c611906abb8f9a6e9b9f",
+      "bytes": 6359688,
+      "maximumTextureEdge": 1024,
+      "extensionsRequired": [
+        "EXT_texture_webp",
+        "EXT_meshopt_compression"
+      ],
+      "geometrySource": {
+        "url": "/models/cro-magnon-hunter/lod-face-r01.glb",
+        "sha256": "91e6922796997a6f81f85fecf81accf5b6580e6710da672caa69f4a740baae83"
+      },
+      "fullSource": {
+        "url": "/models/cro-magnon-hunter/model-face-r01.glb",
+        "sha256": "d460b5217aea1933dbbd584d61626692c8c3a6f201077064d7c2065a69588552"
+      },
+      "upgrade": {
+        "url": "/models/cro-magnon-hunter/model-face-r01.opt-95ab97b223a82665.glb",
+        "sha256": "95ab97b223a826656e40adc1e017f4eb930acc4630de867fc4d864767148c257",
+        "bytes": 5977300
+      },
+      "lodDistanceMetres": 28,
+      "structure": "same nodes, skins, joint order, mesh/primitive order, glTF materials, textures and clips as the upgrade; geometry per primitive from the full model (retained) or the adopted LOD, as listed in geometry",
+      "lowLevel": "this geometry is the player's low level: a runtime distance or far level must not use the adopted LOD file for any primitive; retained primitives (heads, the whole primitive of single-primitive actors, unreduced primitives) stay full and source-simplified primitives keep exactly this file's geometry, so no level may swap retained primitives back to the adopted LOD; the full upgrade replaces geometry only, keeping pose and root",
+      "geometry": [
+        {
+          "mesh": 0,
+          "primitive": 0,
+          "material": "BodySurface",
+          "source": "source-simplified",
+          "retention": null
+        },
+        {
+          "mesh": 0,
+          "primitive": 1,
+          "material": "HeadSurface",
+          "source": "full-model",
+          "retention": "head-primitive"
+        },
+        {
+          "mesh": 0,
+          "primitive": 2,
+          "material": "TribeAccent",
+          "source": "full-model",
+          "retention": "unreduced-whole-primitive"
+        }
+      ],
+      "materialPairing": {
+        "rule": "keep each geometry with the material GLTFLoader assigns to it in its own file: the derivative-tangent clone (normalScale.y negated) for startup geometry without TANGENT, the authored material for upgrade geometry with TANGENT; never move one onto the other",
+        "primitives": []
+      }
+    },
+    "cro-magnon-woman": {
+      "url": "/models/cro-magnon-woman/startup.opt-7d7616b26f06a2ac.glb",
+      "sha256": "7d7616b26f06a2ac950141233d975151d6496e7c0d32722d2dd67234bd5e1eb5",
+      "bytes": 5412384,
+      "maximumTextureEdge": 1024,
+      "extensionsRequired": [
+        "EXT_texture_webp",
+        "EXT_meshopt_compression"
+      ],
+      "geometrySource": {
+        "url": "/models/cro-magnon-woman/lod-face-r01.glb",
+        "sha256": "af0fdffd99f893e08b3fd3e5411b629d7dec8ac321495f4b1129ba9f45ce2eb4"
+      },
+      "fullSource": {
+        "url": "/models/cro-magnon-woman/model-face-r01.glb",
+        "sha256": "c8082f13995cebd42d674f6d4b5c87a61d441597d5670aec8803ca5006fdf2c1"
+      },
+      "upgrade": {
+        "url": "/models/cro-magnon-woman/model-face-r01.opt-b8c0126909757c30.glb",
+        "sha256": "b8c0126909757c303cf30951befa6fc1beefd2bb1fdbfbe84e960a808f45e47a",
+        "bytes": 5405972
+      },
+      "lodDistanceMetres": 28,
+      "structure": "same nodes, skins, joint order, mesh/primitive order, glTF materials, textures and clips as the upgrade; geometry per primitive from the full model (retained) or the adopted LOD, as listed in geometry",
+      "lowLevel": "this geometry is the player's low level: a runtime distance or far level must not use the adopted LOD file for any primitive; retained primitives (heads, the whole primitive of single-primitive actors, unreduced primitives) stay full and source-simplified primitives keep exactly this file's geometry, so no level may swap retained primitives back to the adopted LOD; the full upgrade replaces geometry only, keeping pose and root",
+      "geometry": [
+        {
+          "mesh": 0,
+          "primitive": 0,
+          "material": "Original body with matched braid colour",
+          "source": "source-simplified",
+          "retention": null
+        },
+        {
+          "mesh": 0,
+          "primitive": 1,
+          "material": "C2 face remake head (TRELLIS + projected reference)",
+          "source": "full-model",
+          "retention": "head-primitive"
+        }
+      ],
+      "materialPairing": {
+        "rule": "keep each geometry with the material GLTFLoader assigns to it in its own file: the derivative-tangent clone (normalScale.y negated) for startup geometry without TANGENT, the authored material for upgrade geometry with TANGENT; never move one onto the other",
+        "primitives": []
+      }
+    },
+    "desert-fennec-mage": {
+      "url": "/models/desert-fennec-mage/startup.opt-ae024100e9484a99.glb",
+      "sha256": "ae024100e9484a998346d4c7e3e0246319648982424fd2a0a1acc1cd4a5ff213",
+      "bytes": 4533712,
+      "maximumTextureEdge": 1024,
+      "extensionsRequired": [
+        "EXT_texture_webp",
+        "EXT_meshopt_compression"
+      ],
+      "geometrySource": {
+        "url": "/models/desert-fennec-mage/lod-c2.glb",
+        "sha256": "1fd295fc6261305b911fa28134143e8dc8a8a34e96ebf9b7fa6903f9e06bf5a9"
+      },
+      "fullSource": {
+        "url": "/models/desert-fennec-mage/model-c2.glb",
+        "sha256": "82ec1d4303e25bb37bef594c118861b9d7216d1b3b996091a93b89f62c0cc3b5"
+      },
+      "upgrade": {
+        "url": "/models/desert-fennec-mage/model-c2.opt-ae024100e9484a99.glb",
+        "sha256": "ae024100e9484a998346d4c7e3e0246319648982424fd2a0a1acc1cd4a5ff213",
+        "bytes": 4533712
+      },
+      "lodDistanceMetres": 28,
+      "structure": "same nodes, skins, joint order, mesh/primitive order, glTF materials, textures and clips as the upgrade; geometry per primitive from the full model (retained) or the adopted LOD, as listed in geometry",
+      "lowLevel": "this geometry is the player's low level: a runtime distance or far level must not use the adopted LOD file for any primitive; retained primitives (heads, the whole primitive of single-primitive actors, unreduced primitives) stay full and source-simplified primitives keep exactly this file's geometry, so no level may swap retained primitives back to the adopted LOD; the full upgrade replaces geometry only, keeping pose and root",
+      "geometry": [
+        {
+          "mesh": 0,
+          "primitive": 0,
+          "material": "DesertFennecMageSurface",
+          "source": "full-model",
+          "retention": "whole-single-primitive"
+        }
+      ],
+      "materialPairing": {
+        "rule": "keep each geometry with the material GLTFLoader assigns to it in its own file: the derivative-tangent clone (normalScale.y negated) for startup geometry without TANGENT, the authored material for upgrade geometry with TANGENT; never move one onto the other",
+        "primitives": []
+      }
+    },
+    "giant-ape": {
+      "url": "/models/giant-ape/startup.opt-ace0a32ae71949af.glb",
+      "sha256": "ace0a32ae71949afe0c5718d7a40f4b481b349ce7bcccf6afc032e6aee92276d",
+      "bytes": 5202164,
+      "maximumTextureEdge": 1024,
+      "extensionsRequired": [
+        "EXT_texture_webp",
+        "EXT_meshopt_compression"
+      ],
+      "geometrySource": {
+        "url": "/models/giant-ape/lod-c2.glb",
+        "sha256": "8a5c25d064261114e015ccb0447e88a9383598ffac3c747891fc39128cb29d07"
+      },
+      "fullSource": {
+        "url": "/models/giant-ape/model-c2.glb",
+        "sha256": "9bfd996eec87c77af99d32c642564cd987548563bcbfe905a252d935f763e0b9"
+      },
+      "upgrade": {
+        "url": "/models/giant-ape/model-c2.opt-ace0a32ae71949af.glb",
+        "sha256": "ace0a32ae71949afe0c5718d7a40f4b481b349ce7bcccf6afc032e6aee92276d",
+        "bytes": 5202164
+      },
+      "lodDistanceMetres": 28,
+      "structure": "same nodes, skins, joint order, mesh/primitive order, glTF materials, textures and clips as the upgrade; geometry per primitive from the full model (retained) or the adopted LOD, as listed in geometry",
+      "lowLevel": "this geometry is the player's low level: a runtime distance or far level must not use the adopted LOD file for any primitive; retained primitives (heads, the whole primitive of single-primitive actors, unreduced primitives) stay full and source-simplified primitives keep exactly this file's geometry, so no level may swap retained primitives back to the adopted LOD; the full upgrade replaces geometry only, keeping pose and root",
+      "geometry": [
+        {
+          "mesh": 0,
+          "primitive": 0,
+          "material": "GiantApeSurface",
+          "source": "full-model",
+          "retention": "whole-single-primitive"
+        }
+      ],
+      "materialPairing": {
+        "rule": "keep each geometry with the material GLTFLoader assigns to it in its own file: the derivative-tangent clone (normalScale.y negated) for startup geometry without TANGENT, the authored material for upgrade geometry with TANGENT; never move one onto the other",
+        "primitives": []
+      }
+    },
+    "neanderthal-hunter": {
+      "url": "/models/neanderthal-hunter/startup.opt-ef3e3fa2f2931daf.glb",
+      "sha256": "ef3e3fa2f2931dafe233560f29715b484440b46460f225dfd44c31c6e44faaeb",
+      "bytes": 8091164,
+      "maximumTextureEdge": 1024,
+      "extensionsRequired": [
+        "EXT_texture_webp",
+        "EXT_meshopt_compression"
+      ],
+      "geometrySource": {
+        "url": "/models/neanderthal-hunter/lod-face-r01.glb",
+        "sha256": "27f7e96e7c3e377db6be2b38bb9c9740a907b5c5a412cd1731fe7ea6885faa89"
+      },
+      "fullSource": {
+        "url": "/models/neanderthal-hunter/model-face-r01.glb",
+        "sha256": "6910fd3396bcde7934e9af23fa2130ca5c1bca9a08da0d00fe5582076b94352b"
+      },
+      "upgrade": {
+        "url": "/models/neanderthal-hunter/model-face-r01.opt-c926af86a81cd254.glb",
+        "sha256": "c926af86a81cd254bc0c353f85d54e9993a7730597b871ba33e220a1df30dee7",
+        "bytes": 7635076
+      },
+      "lodDistanceMetres": 28,
+      "structure": "same nodes, skins, joint order, mesh/primitive order, glTF materials, textures and clips as the upgrade; geometry per primitive from the full model (retained) or the adopted LOD, as listed in geometry",
+      "lowLevel": "this geometry is the player's low level: a runtime distance or far level must not use the adopted LOD file for any primitive; retained primitives (heads, the whole primitive of single-primitive actors, unreduced primitives) stay full and source-simplified primitives keep exactly this file's geometry, so no level may swap retained primitives back to the adopted LOD; the full upgrade replaces geometry only, keeping pose and root",
+      "geometry": [
+        {
+          "mesh": 0,
+          "primitive": 0,
+          "material": "BodySurface",
+          "source": "source-simplified",
+          "retention": null
+        },
+        {
+          "mesh": 0,
+          "primitive": 1,
+          "material": "C2 face remake head (TRELLIS + projected reference)",
+          "source": "full-model",
+          "retention": "head-primitive"
+        },
+        {
+          "mesh": 0,
+          "primitive": 2,
+          "material": "TribeAccent",
+          "source": "full-model",
+          "retention": "unreduced-whole-primitive"
+        }
+      ],
+      "materialPairing": {
+        "rule": "keep each geometry with the material GLTFLoader assigns to it in its own file: the derivative-tangent clone (normalScale.y negated) for startup geometry without TANGENT, the authored material for upgrade geometry with TANGENT; never move one onto the other",
+        "primitives": []
+      }
+    },
+    "neanderthal-woman": {
+      "url": "/models/neanderthal-woman/startup.opt-caf50f3f8aa971be.glb",
+      "sha256": "caf50f3f8aa971be2119d5399bfe3226cfe3d0d283cc965c0beafcac0d6a1a21",
+      "bytes": 4922092,
+      "maximumTextureEdge": 1024,
+      "extensionsRequired": [
+        "EXT_texture_webp",
+        "EXT_meshopt_compression"
+      ],
+      "geometrySource": {
+        "url": "/models/neanderthal-woman/lod-face-r01.glb",
+        "sha256": "867a3908acf4a85918aded67c2ae4a0529c860f9455ec613337d707c0e044156"
+      },
+      "fullSource": {
+        "url": "/models/neanderthal-woman/model-face-r01.glb",
+        "sha256": "b4c416900e972c8850892b7a5f886e62478894d1c958cf35830dc7ea1672dde9"
+      },
+      "upgrade": {
+        "url": "/models/neanderthal-woman/model-face-r01.opt-922c0e29accdb2c7.glb",
+        "sha256": "922c0e29accdb2c783d2e238e700da6e127f649eceb0d37189a9838e7747a143",
+        "bytes": 5014268
+      },
+      "lodDistanceMetres": 28,
+      "structure": "same nodes, skins, joint order, mesh/primitive order, glTF materials, textures and clips as the upgrade; geometry per primitive from the full model (retained) or the adopted LOD, as listed in geometry",
+      "lowLevel": "this geometry is the player's low level: a runtime distance or far level must not use the adopted LOD file for any primitive; retained primitives (heads, the whole primitive of single-primitive actors, unreduced primitives) stay full and source-simplified primitives keep exactly this file's geometry, so no level may swap retained primitives back to the adopted LOD; the full upgrade replaces geometry only, keeping pose and root",
+      "geometry": [
+        {
+          "mesh": 0,
+          "primitive": 0,
+          "material": "NeanderthalWoman_Body",
+          "source": "source-simplified",
+          "retention": null
+        },
+        {
+          "mesh": 0,
+          "primitive": 1,
+          "material": "C2 face remake head (TRELLIS + projected reference)",
+          "source": "full-model",
+          "retention": "head-primitive"
+        }
+      ],
+      "materialPairing": {
+        "rule": "keep each geometry with the material GLTFLoader assigns to it in its own file: the derivative-tangent clone (normalScale.y negated) for startup geometry without TANGENT, the authored material for upgrade geometry with TANGENT; never move one onto the other",
+        "primitives": []
+      }
+    }
+  },
+  "textures": {
+    "/models/camp-cave/524-lascaux-frieze-r32.png": {
+      "owner": "camp-cave",
+      "manifestEntry": "characterPigment",
+      "sourceSha256": "5fc419d77d0155133b0f231a07ad80a03c78ed99850ced492f79108bea5a765a",
+      "sourceBytes": 2355756,
+      "url": "/models/camp-cave/524-lascaux-frieze-r32.opt-78de0e1c4a23835d.png",
+      "sha256": "78de0e1c4a23835dc5b0b95a6a8bd08d8a5cba27a9a50bad5552e3386e5f564c",
+      "bytes": 565002,
+      "mimeType": "image/png",
+      "width": 1024,
+      "height": 341,
+      "uvSource": {
+        "width": 2171,
+        "height": 724
+      },
+      "alpha": true,
+      "colorSpace": "srgb",
+      "wrap": "clamp-to-edge"
+    },
+    "/models/camp-cave/mural-atlas-r05.png": {
+      "owner": "camp-cave",
+      "manifestEntry": "pigment",
+      "sourceSha256": "6efe80a19056af4f5a9ce50d7309b578f4c3e914fa9543c51a8fc629842e6889",
+      "sourceBytes": 1851771,
+      "url": "/models/camp-cave/mural-atlas-r05.opt-94ca1aebe422e2a0.png",
+      "sha256": "94ca1aebe422e2a0de6582654e9475167c895acd227cb28526e9873d8b3a4e85",
+      "bytes": 1276113,
+      "mimeType": "image/png",
+      "width": 1024,
+      "height": 1024,
+      "uvSource": {
+        "width": 1254,
+        "height": 1254
+      },
+      "alpha": true,
+      "colorSpace": "srgb",
+      "wrap": "clamp-to-edge"
+    },
+    "/models/camp-cave/rimo-lascaux-frieze-r30.png": {
+      "owner": "camp-cave",
+      "manifestEntry": "rimoPigment",
+      "sourceSha256": "b750045fda524816577747197874d173d41161e2b55d9acfe772a8f37f8d01df",
+      "sourceBytes": 2272546,
+      "url": "/models/camp-cave/rimo-lascaux-frieze-r30.opt-65fa961cf8b88827.png",
+      "sha256": "65fa961cf8b888270eeb3f7bbeb93fc454a89139a06a456fd14a4efd2fed02b2",
+      "bytes": 560607,
+      "mimeType": "image/png",
+      "width": 1024,
+      "height": 341,
+      "uvSource": {
+        "width": 2172,
+        "height": 724
+      },
+      "alpha": true,
+      "colorSpace": "srgb",
+      "wrap": "clamp-to-edge"
+    },
+    "/models/camp-cave/limestone-r05.png": {
+      "owner": "camp-cave",
+      "manifestEntry": "rockSurface",
+      "sourceSha256": "574372b875437977f226564a2bc1a8cd7149695582b1bbb6c806f7e83a075cee",
+      "sourceBytes": 3425333,
+      "url": "/models/camp-cave/limestone-r05.opt-61e9536d1415d066.png",
+      "sha256": "61e9536d1415d066ecf3c3867e5d438419bd42de8253eeb67f598e76f1f2f5a2",
+      "bytes": 2284797,
+      "mimeType": "image/png",
+      "width": 1024,
+      "height": 1024,
+      "uvSource": {
+        "width": 1254,
+        "height": 1254
+      },
+      "alpha": false,
+      "colorSpace": "srgb",
+      "wrap": "repeat"
+    },
+    "/models/camp-cave/friends-meadow-lascaux-r34.png": {
+      "owner": "camp-cave",
+      "manifestEntry": "mascotPigments.friendsMeadow",
+      "sourceSha256": "707e1920df0342a1806082874b8baa3ab33cc2c8ecea9311d3c6ff364caea148",
+      "sourceBytes": 2071821,
+      "url": "/models/camp-cave/friends-meadow-lascaux-r34.opt-e6153063bca167d1.png",
+      "sha256": "e6153063bca167d1d618581f1065725d2e90d28d60a8a22d5c4962a58a9069ed",
+      "bytes": 475063,
+      "mimeType": "image/png",
+      "width": 1024,
+      "height": 341,
+      "uvSource": {
+        "width": 2172,
+        "height": 724
+      },
+      "alpha": true,
+      "colorSpace": "srgb",
+      "wrap": "clamp-to-edge"
+    },
+    "/models/camp-cave/friends-river-lascaux-r35.png": {
+      "owner": "camp-cave",
+      "manifestEntry": "mascotPigments.friendsRiver",
+      "sourceSha256": "fb4fead40844b3ca672b191e2771e6e3904f88a28964e4249f4b6bb57996f04c",
+      "sourceBytes": 2119578,
+      "url": "/models/camp-cave/friends-river-lascaux-r35.opt-62aa0628be8c4b05.png",
+      "sha256": "62aa0628be8c4b054a17b571ea8efa35c9f9d6f619e93f7a1c756e49f07e84a8",
+      "bytes": 487174,
+      "mimeType": "image/png",
+      "width": 1024,
+      "height": 341,
+      "uvSource": {
+        "width": 2172,
+        "height": 724
+      },
+      "alpha": true,
+      "colorSpace": "srgb",
+      "wrap": "clamp-to-edge"
+    },
+    "/models/camp-cave/mae-kohaku-lascaux-r31.png": {
+      "owner": "camp-cave",
+      "manifestEntry": "mascotPigments.maeKohaku",
+      "sourceSha256": "f67ea277c3d42c93877139b44150ee6fddbb2eb41854418ea09ac4bd40eed732",
+      "sourceBytes": 1953261,
+      "url": "/models/camp-cave/mae-kohaku-lascaux-r31.opt-a9fee23d61be6387.png",
+      "sha256": "a9fee23d61be63879e45a96a1e59d11276a0be25238085bf15f30f55928d5fc7",
+      "bytes": 468227,
+      "mimeType": "image/png",
+      "width": 1024,
+      "height": 341,
+      "uvSource": {
+        "width": 2172,
+        "height": 724
+      },
+      "alpha": true,
+      "colorSpace": "srgb",
+      "wrap": "clamp-to-edge"
+    },
+    "/models/camp-cave/maruimo-lascaux-r33.png": {
+      "owner": "camp-cave",
+      "manifestEntry": "mascotPigments.maruimoFrieze",
+      "sourceSha256": "eff36cf28d83cf69e61e2e345a4d90e08c790ae58306450be1ab657dd7614a1e",
+      "sourceBytes": 1961184,
+      "url": "/models/camp-cave/maruimo-lascaux-r33.opt-cf90962462cefa64.png",
+      "sha256": "cf90962462cefa648cbef2fc9c74390e8365bd355bc2791a8a324053023522c2",
+      "bytes": 500299,
+      "mimeType": "image/png",
+      "width": 1024,
+      "height": 341,
+      "uvSource": {
+        "width": 2172,
+        "height": 724
+      },
+      "alpha": true,
+      "colorSpace": "srgb",
+      "wrap": "clamp-to-edge"
+    },
+    "/models/camp-cave/bot-round-lascaux-r31.png": {
+      "owner": "camp-cave",
+      "manifestEntry": "mascotPigments.roundBots",
+      "sourceSha256": "94da10a2db5962f7e66af1617a310091c4852d9a1d6c9d322c09e6d01656c93c",
+      "sourceBytes": 1885445,
+      "url": "/models/camp-cave/bot-round-lascaux-r31.opt-9dc5292302335e65.png",
+      "sha256": "9dc5292302335e65a6b3dafc7c22a6a2691261a08c7193832b64cbc79854fb7c",
+      "bytes": 463714,
+      "mimeType": "image/png",
+      "width": 1024,
+      "height": 341,
+      "uvSource": {
+        "width": 2172,
+        "height": 724
+      },
+      "alpha": true,
+      "colorSpace": "srgb",
+      "wrap": "clamp-to-edge"
+    },
+    "/models/camp-cave/bot-shapes-lascaux-r31.png": {
+      "owner": "camp-cave",
+      "manifestEntry": "mascotPigments.shapeBots",
+      "sourceSha256": "18cac2271a651fe11b223ac5fb3abab2a126ee25153ca0851f749ebd195e8dde",
+      "sourceBytes": 2083858,
+      "url": "/models/camp-cave/bot-shapes-lascaux-r31.opt-b6ee4b02e4be9c02.png",
+      "sha256": "b6ee4b02e4be9c02226776ebf7828096b4184475f9dcbefd7b90c66e49f887a1",
+      "bytes": 501873,
+      "mimeType": "image/png",
+      "width": 1024,
+      "height": 341,
+      "uvSource": {
+        "width": 2172,
+        "height": 724
+      },
+      "alpha": true,
+      "colorSpace": "srgb",
+      "wrap": "clamp-to-edge"
+    }
+  }
+}

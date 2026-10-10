@@ -1,0 +1,86 @@
+{
+  "modelKey": "firewood-pile",
+  "name": "薪と木材資源",
+  "kind": "static",
+  "candidate": 2,
+  "status": "remake-candidate-2-integrated",
+  "url": "/models/firewood-pile/model-c2.opt-842b22efdf2b8b73.glb",
+  "sha256": "842b22efdf2b8b7349bde70dec46cff5df494a178e957bd4565857dc7136facc",
+  "bytes": 895528,
+  "triangles": 5907,
+  "upAxis": "Y",
+  "forwardAxis": "+Z",
+  "heightMetres": 0.6971,
+  "widthMetres": null,
+  "placement": {
+    "pivot": "ground-centred"
+  },
+  "clips": [],
+  "notes": [
+    "2026-10-07 remake Candidate 2: new reference (stacked pyramid of nine split-end logs, bark and moss detail); xatlas charts; TRELLIS-2 1024/tex1024; 5907 triangles (meshopt reduction, fresh UVs, albedo and tangent-space normal baked from the 289655-triangle dense surface; p95 surface error 4.3 mm). Candidate 1 files retained."
+  ],
+  "provenance": {
+    "provider": "Claude Code (Opus 5.5)",
+    "claudeUsed": true,
+    "referenceGenerator": "Codex CLI built-in image_gen (gpt-5.6-sol, medium), earlier approved reference attached for identity",
+    "referenceImage": "C:/Users/yurin/Desktop/projects/CRO-MAGNON/output/model-generation/models/firewood-pile/source/original/candidate2-ref-a.png",
+    "referenceSha256": "0aba62890d9119065ff15145014f81e6e5ca1c47d6c0e0a252d4a30644239ead",
+    "reconstruction": "Local TRELLIS-2 v0.8.1, res 1024, tex 1024, seed recorded in dense JSON",
+    "denseFile": "C:/Users/yurin/Desktop/projects/CRO-MAGNON/output/model-generation/models/firewood-pile/work/candidate-02/trellis/dense-ref2a-res1024-tex1024-seed0042.glb",
+    "denseSha256": "39240b157e3c527133ed9c449a3a27cd2b5980651889664bb11c4d9a6e2e9492",
+    "processReport": "output/model-generation/models/firewood-pile/work/candidate-02/low-poly/m03/process-report.json",
+    "rigReport": null,
+    "pipeline": "scripts/remake/ (trellis_queue.py, remake_process.py, rig_*.py); docs/asset-remake/PLAN.md",
+    "previousDelivery": {
+      "url": "/models/firewood-pile/model.glb",
+      "sha256": "88fdbe0514694b4b484e285dc6ffa85c8cebe134ea120d34f7486dc27d3d3d3a",
+      "triangles": 12282,
+      "bytes": 2566200,
+      "candidate": 1,
+      "revision": null
+    },
+    "previousProvenance": {
+      "provider": "Codex",
+      "claudeUsed": false,
+      "referenceGenerator": "Built-in imagegen",
+      "referenceImage": "output/model-generation/models/firewood-pile/source/original/reference-v1.png",
+      "referenceSha256": "71003fe9cd41aa8ef1bbc163cbf7033fc53f07da600d53d024eee39dddab6a23",
+      "reconstruction": "Local TRELLIS-2; settings and dense SHA in model workspace",
+      "candidateFile": "output/model-generation/models/firewood-pile/work/low-poly/candidate-01/candidate.glb",
+      "visualReview": "output/model-generation/models/firewood-pile/qa/adoption-review.json"
+    },
+    "visualReview": "assets/asset-remake/reviews/firewood-pile.json"
+  },
+  "lods": [
+    {
+      "url": "/models/firewood-pile/lod-c2.opt-ddc029e192c91fb9.glb",
+      "sha256": "ddc029e192c91fb91ecb99a569d9dd89bcb250d0348bb50ebd2ca3849ec74510",
+      "bytes": 405968,
+      "triangles": 2097,
+      "distanceMetres": 14,
+      "purpose": "medium-distance-lod"
+    }
+  ],
+  "revision": "c2-m03",
+  "runtimeOptimization": {
+    "adoption": "20261009-r04-a01",
+    "candidateRevision": "assets/optimized-runtime/20261009-r04",
+    "selection": "ordinary-compressed",
+    "original": {
+      "url": "/models/firewood-pile/model-c2.glb",
+      "sha256": "544598e3c1e28491998e3ce73e36d64364a86855ef3e86c5fa314b5b96af4977",
+      "bytes": 972828,
+      "triangles": 5907,
+      "lods": [
+        {
+          "url": "/models/firewood-pile/lod-c2.glb",
+          "sha256": "162d96c102f037b38d7ed3cc49e07929f2e8549dfb27a2cc73ef791f92fdbeb2",
+          "bytes": 429888,
+          "triangles": 2097,
+          "distanceMetres": 14,
+          "purpose": "medium-distance-lod"
+        }
+      ]
+    }
+  }
+}

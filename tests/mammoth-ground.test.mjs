@@ -2,7 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { EventEmitter } from 'node:events';
 import { createGameCore } from '../dist/application/game-core.mjs';
-import { CollisionWorld } from '../dist/shared/collision.mjs';
+import { CollisionWorld, overlap } from '../dist/shared/collision.mjs';
 import { mammothGroundFree, mammothNavigation } from '../dist/shared/mammoth-navigation.mjs';
 import { createAnimals, updateAnimals, restoreAnimalGround } from '../dist/shared/animals.mjs';
 import { updateHunting, HUNTING } from '../dist/shared/hunting.mjs';
@@ -104,10 +104,20 @@ test('old cliff positions and homes migrate once while health and safe riding lo
   const valid = { x: animal.x, z: animal.z };
   restoreAnimalGround(room, animal, { x: 25, z: 21 });
   assert.deepEqual({ x: animal.x, z: animal.z }, valid);
-  animal.home = { x: 24, z: 57 }; // Ground is gentle, but a wood pile occupies the body footprint.
+  // Gentle ground under a regrown firewood pile is no home either. A body saved mid-ride two
+  // metres down the pasture stays put while its home returns to the post.
+  const ridden = { x: valid.x, z: valid.z - 2 },
+    pile = collision.obstacles.find((o) => o.resourceId === 'wood-5'),
+    underPile = { x: pile.groundX, z: pile.groundZ };
+  assert.ok(mammothNavigation(collision).free(ridden, animal.radius));
+  assert.ok(mammothGroundFree(underPile, animal.radius));
+  assert.equal(collision.free(underPile, animal.radius), false);
+  assert.ok(overlap(underPile, animal.radius, pile));
+  Object.assign(animal, ridden, { home: underPile });
   restoreAnimalGround(room, animal, safePost);
   assert.deepEqual(animal.home, safePost);
-  assert.deepEqual({ x: animal.x, z: animal.z }, valid);
+  assert.deepEqual({ x: animal.x, z: animal.z }, ridden);
+  assert.equal(animal.health, 41);
   animal.phase = 'respawning';
   animal.phaseStartedAt = 0;
   Object.assign(animal, cliff);

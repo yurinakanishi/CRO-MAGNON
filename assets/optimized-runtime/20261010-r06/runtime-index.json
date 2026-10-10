@@ -1,0 +1,211 @@
+{
+  "schema": "cro-magnon/runtime-candidate-index@1",
+  "revision": "20261010-r06",
+  "status": "candidate-pending-visual-qa",
+  "adopted": false,
+  "recipe": "exact-repack@1",
+  "base": {
+    "adoption": "20261010-r05-a02",
+    "planSha256": "2697ba7246fc06f764989ede94a58cb4f8324765befc6fae0db11ed6430ce444"
+  },
+  "scope": {
+    "complete": false,
+    "only": [
+      "camp-cave",
+      "camp-mountain",
+      "meadow-ground",
+      "river-water",
+      "snow-ground"
+    ],
+    "models": [
+      "snow-ground",
+      "camp-mountain",
+      "meadow-ground",
+      "river-water"
+    ],
+    "packed": [
+      "snow-ground",
+      "camp-mountain"
+    ],
+    "imageOwner": "camp-cave",
+    "images": 10
+  },
+  "decoder": {
+    "extension": "EXT_meshopt_compression",
+    "required": true,
+    "module": "three/addons/libs/meshopt_decoder.module.js",
+    "loader": "GLTFLoader.setMeshoptDecoder(MeshoptDecoder) before parseAsync"
+  },
+  "models": {
+    "snow-ground": {
+      "url": "/models/snow-ground/model-levels.opt-88ef8ee88da3c0bb.glb",
+      "sha256": "88ef8ee88da3c0bb6522514300cc645c6bafb4d8d87c6667be81f346333e80be",
+      "bytes": 2343840,
+      "extensionsRequired": [
+        "EXT_meshopt_compression"
+      ],
+      "levels": [
+        {
+          "scene": 0,
+          "triangles": 5903,
+          "sourceUrl": "/models/snow-ground/model.opt-152de77614b9dff4.glb",
+          "sourceSha256": "152de77614b9dff44669952e04618aa2ed23c1f3ac1ccfb9f898e44b5bb9b88f"
+        },
+        {
+          "scene": 1,
+          "triangles": 825,
+          "sourceUrl": "/models/snow-ground/lod1.opt-9bc89f21b3b4edc6.glb",
+          "sourceSha256": "9bc89f21b3b4edc6c442202a3ae44927183910cc79ebae94b455f19eb9d1e446"
+        },
+        {
+          "scene": 2,
+          "triangles": 203,
+          "sourceUrl": "/models/snow-ground/lod2.opt-41be00def31a39f4.glb",
+          "sourceSha256": "41be00def31a39f4551d1a8f5fb0e8742886e206ff8b8d84ecb3a2a558f9a292"
+        }
+      ]
+    },
+    "camp-mountain": {
+      "url": "/models/camp-mountain/model-levels.opt-7c5f3f0733a148f0.glb",
+      "sha256": "7c5f3f0733a148f070bfa077d404c37b642bf56a70c5382bd4c539370cf8f96d",
+      "bytes": 4071620,
+      "extensionsRequired": [
+        "EXT_meshopt_compression"
+      ],
+      "levels": [
+        {
+          "scene": 0,
+          "triangles": 245000,
+          "sourceUrl": "/models/camp-mountain/model-r15.opt-ee6b106610ff88a4.glb",
+          "sourceSha256": "ee6b106610ff88a46540c500341e905980f5ccb0dc7d224efd8b7f87e5085f45"
+        },
+        {
+          "scene": 1,
+          "triangles": 24499,
+          "sourceUrl": "/models/camp-mountain/lod-performance.opt-4d25b780075a2bbe.glb",
+          "sourceSha256": "4d25b780075a2bbedf441f108ae9d4172b51c759dc10efadb5a1475d3791eb26"
+        }
+      ]
+    },
+    "meadow-ground": {
+      "url": "/models/meadow-ground/model.opt-713b02ae14e35fd0.glb",
+      "sha256": "713b02ae14e35fd0feccdb5274685310f3d00e61b1907cac4226d48a11132859",
+      "bytes": 1345652,
+      "extensionsRequired": [
+        "EXT_meshopt_compression"
+      ],
+      "levels": [
+        {
+          "triangles": 2720,
+          "sourceUrl": "/models/meadow-ground/model.opt-b2df848b39f6d60e.glb",
+          "sourceSha256": "b2df848b39f6d60e5679ff69067278878e4cd4b87158320395f57e41bc805876"
+        }
+      ]
+    },
+    "river-water": {
+      "url": "/models/river-water/model.opt-2fa2f55fb0135409.glb",
+      "sha256": "2fa2f55fb01354092e87a9b84776aa2492dcf4729317514ead507e3eb55c12f3",
+      "bytes": 1317376,
+      "extensionsRequired": [
+        "EXT_meshopt_compression"
+      ],
+      "levels": [
+        {
+          "triangles": 2693,
+          "sourceUrl": "/models/river-water/model.opt-47cb975f8278144b.glb",
+          "sourceSha256": "47cb975f8278144bd17d1c8513e1688b2f218d37ea4825b5baa47f9b31fa4534"
+        }
+      ]
+    }
+  },
+  "textures": {
+    "/models/camp-cave/524-lascaux-frieze-r32.png": {
+      "owner": "camp-cave",
+      "manifestEntry": "characterPigment",
+      "sourceUrl": "/models/camp-cave/524-lascaux-frieze-r32.opt-78de0e1c4a23835d.png",
+      "sourceSha256": "78de0e1c4a23835dc5b0b95a6a8bd08d8a5cba27a9a50bad5552e3386e5f564c",
+      "url": "/models/camp-cave/524-lascaux-frieze-r32.opt-2f9a4a74cb9c0e9d.png",
+      "sha256": "2f9a4a74cb9c0e9d3a94cf394a3b843655a273690b94dbb1d9c406fb40da3c51",
+      "bytes": 560426,
+      "width": 1024,
+      "height": 341
+    },
+    "/models/camp-cave/rimo-lascaux-frieze-r30.png": {
+      "owner": "camp-cave",
+      "manifestEntry": "rimoPigment",
+      "sourceUrl": "/models/camp-cave/rimo-lascaux-frieze-r30.opt-65fa961cf8b88827.png",
+      "sourceSha256": "65fa961cf8b888270eeb3f7bbeb93fc454a89139a06a456fd14a4efd2fed02b2",
+      "url": "/models/camp-cave/rimo-lascaux-frieze-r30.opt-8a2acbfbfaa6d2c2.png",
+      "sha256": "8a2acbfbfaa6d2c22c83e38cda85615a4da7064b52e3231f7b8a83bcc890ec25",
+      "bytes": 560138,
+      "width": 1024,
+      "height": 341
+    },
+    "/models/camp-cave/limestone-r05.png": {
+      "owner": "camp-cave",
+      "manifestEntry": "rockSurface",
+      "sourceUrl": "/models/camp-cave/limestone-r05.opt-61e9536d1415d066.png",
+      "sourceSha256": "61e9536d1415d066ecf3c3867e5d438419bd42de8253eeb67f598e76f1f2f5a2",
+      "url": "/models/camp-cave/limestone-r05.opt-373ad7d95a04bc2c.png",
+      "sha256": "373ad7d95a04bc2cd56303ebae90eca3045353323949f081615f2bc996dbdbbd",
+      "bytes": 2228940,
+      "width": 1024,
+      "height": 1024
+    },
+    "/models/camp-cave/friends-meadow-lascaux-r34.png": {
+      "owner": "camp-cave",
+      "manifestEntry": "mascotPigments.friendsMeadow",
+      "sourceUrl": "/models/camp-cave/friends-meadow-lascaux-r34.opt-e6153063bca167d1.png",
+      "sourceSha256": "e6153063bca167d1d618581f1065725d2e90d28d60a8a22d5c4962a58a9069ed",
+      "url": "/models/camp-cave/friends-meadow-lascaux-r34.opt-d730fdda31b98b8b.png",
+      "sha256": "d730fdda31b98b8bc225cc60451a6e3502a79cd0b597e5ab01b84e030dc0e405",
+      "bytes": 472897,
+      "width": 1024,
+      "height": 341
+    },
+    "/models/camp-cave/friends-river-lascaux-r35.png": {
+      "owner": "camp-cave",
+      "manifestEntry": "mascotPigments.friendsRiver",
+      "sourceUrl": "/models/camp-cave/friends-river-lascaux-r35.opt-62aa0628be8c4b05.png",
+      "sourceSha256": "62aa0628be8c4b054a17b571ea8efa35c9f9d6f619e93f7a1c756e49f07e84a8",
+      "url": "/models/camp-cave/friends-river-lascaux-r35.opt-7eb5d96e7f0afd5a.png",
+      "sha256": "7eb5d96e7f0afd5a063e711860fa41cfe00739f205cf8a029b1813bd2d47dec1",
+      "bytes": 482100,
+      "width": 1024,
+      "height": 341
+    },
+    "/models/camp-cave/mae-kohaku-lascaux-r31.png": {
+      "owner": "camp-cave",
+      "manifestEntry": "mascotPigments.maeKohaku",
+      "sourceUrl": "/models/camp-cave/mae-kohaku-lascaux-r31.opt-a9fee23d61be6387.png",
+      "sourceSha256": "a9fee23d61be63879e45a96a1e59d11276a0be25238085bf15f30f55928d5fc7",
+      "url": "/models/camp-cave/mae-kohaku-lascaux-r31.opt-b265fa99d4bf3980.png",
+      "sha256": "b265fa99d4bf398007245e0290d37a3be6645881e435cb5da4171d3852e69559",
+      "bytes": 467125,
+      "width": 1024,
+      "height": 341
+    },
+    "/models/camp-cave/maruimo-lascaux-r33.png": {
+      "owner": "camp-cave",
+      "manifestEntry": "mascotPigments.maruimoFrieze",
+      "sourceUrl": "/models/camp-cave/maruimo-lascaux-r33.opt-cf90962462cefa64.png",
+      "sourceSha256": "cf90962462cefa648cbef2fc9c74390e8365bd355bc2791a8a324053023522c2",
+      "url": "/models/camp-cave/maruimo-lascaux-r33.opt-60597acdd04df58d.png",
+      "sha256": "60597acdd04df58d8dfa5da63a1f4a7b2d99e717d297a7543582cf7c44a299cf",
+      "bytes": 498678,
+      "width": 1024,
+      "height": 341
+    },
+    "/models/camp-cave/bot-shapes-lascaux-r31.png": {
+      "owner": "camp-cave",
+      "manifestEntry": "mascotPigments.shapeBots",
+      "sourceUrl": "/models/camp-cave/bot-shapes-lascaux-r31.opt-b6ee4b02e4be9c02.png",
+      "sourceSha256": "b6ee4b02e4be9c02226776ebf7828096b4184475f9dcbefd7b90c66e49f887a1",
+      "url": "/models/camp-cave/bot-shapes-lascaux-r31.opt-86a06da8e6789d84.png",
+      "sha256": "86a06da8e6789d8443800509043ad58ac300960fdd5eb01ba93d54d180dc1cb9",
+      "bytes": 499457,
+      "width": 1024,
+      "height": 341
+    }
+  }
+}

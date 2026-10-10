@@ -3,7 +3,22 @@ import { createHash } from 'node:crypto';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { prepareVendor } from './prepare-vendor.mjs';
+import { bundleBrowser, bundledIndex } from './bundle-browser.mjs';
 import { assertPublicCharacterData } from './public-character-audit.mjs';
+import {
+  DECODER,
+  MESHOPT_EXTENSION,
+  activeAdoption,
+  assertSameDigests,
+  checkDecoder,
+  checkModelUrl,
+  checkRuntimeGraph,
+  checkTextureImage,
+  checkTextureUrl,
+  glbExtensionsRequired,
+  manifestDigests,
+  retiredLiteralsIn,
+} from './runtime-graph.mjs';
 import './build.mjs';
 if (process.exitCode) throw new Error('TypeScript build failed');
 const { CHARACTER_MODELS } = await import('../dist/shared/characters.mjs');
@@ -154,7 +169,7 @@ await collect('public/title', /\.(png|jpe?g|webp)$/, (name) => {
   const profile = /^avatar-([a-z0-9]+)\./.exec(name);
   return !profile || visibleProfiles.has(profile[1]);
 });
-for (const file of ['index.html', 'favicon.svg'])
+for (const file of ['favicon.svg'])
   await publish('/' + file, await readFile(path.join(root, 'public', file)));
 await publish('/build-profile.json', Buffer.from(JSON.stringify(profile)));
 await publish(
@@ -178,6 +193,12 @@ await publish(
     `export const TITLE_CREDITS = ${JSON.stringify(credits)};\nexport const TITLE_GUEST = ${JSON.stringify(TITLE_GUEST)};\nexport const TITLE_SUPPORT = ${JSON.stringify(TITLE_SUPPORT)};\nexport const TITLE_FRIENDS = ${JSON.stringify(friends)};\n`,
   ),
 );
+
+// The public character/credit tables and camera-free module replacements above
+// must be applied before bundling. Never bundle the unfiltered source tree.
+const browserBundle = await bundleBrowser(staging);
+for (const file of browserBundle.files) await publish('/' + file.name, file.bytes);
+await publish('/index.html', bundledIndex(await readFile(path.join(root, 'public/index.html'))));
 
 const catalog = JSON.parse(
   await readFile(path.join(root, 'public/models/world-assets.json'), 'utf8'),
@@ -203,42 +224,30 @@ for (const { key } of publicCharacters)
       JSON.parse(await readFile(path.join(root, `public/models/${key}/asset.json`), 'utf8')),
     );
 const downloads = new Map();
-// Exact assets permit local MMO verification while older optimization manifests
-// are being updated. The guarded production build keeps its existing policy.
-const optimized =
-  release.optimizedAssets && !process.argv.includes('--exact-assets')
-    ? new Map(
-        JSON.parse(
-          await readFile(path.join(root, 'assets/public-performance/manifest.json'), 'utf8'),
-        ).records.map((record) => [record.sourceUrl, record]),
-      )
-    : null;
+// The shipped graph is exactly what the manifests name. With optimizedAssets the manifests
+// must carry an applied, audited runtime adoption (scripts/optimization/adopt-candidates.mjs),
+// and every adopted record must be that adoption's file. The legacy
+// assets/public-performance mapping is not consulted. --exact-assets drops only the adoption
+// requirement (local MMO checks before adoption); every file is still verified.
+const requireAdoption = !!release.optimizedAssets && !process.argv.includes('--exact-assets');
+const sourceManifests = await manifestDigests(root, assets);
+const adoption = await activeAdoption(root, assets, runtimeTextureRecords);
+const runtimeGraph = checkRuntimeGraph(assets, adoption, {
+  requireAdoption,
+  textureRecords: runtimeTextureRecords,
+  textureExtensions: ['png'],
+});
+let compressedModels = false;
 for (const asset of assets) {
   for (const record of [asset, ...(asset.lods || [])]) {
-    if (
-      !/^\/models\/[a-z0-9-]+\/(model(?:-[a-z0-9]+)*|lod(?:\d+|-[a-z0-9-]+))\.glb$/.test(record.url)
-    )
-      throw new Error(`Unexpected model URL: ${record.url}`);
+    checkModelUrl(record.url, record.sha256);
     if (downloads.has(record.url)) continue;
-    let bytes = await readFile(path.join(root, `public${record.url}`));
+    const bytes = await readFile(path.join(root, `public${record.url}`));
     if (hash(bytes) !== record.sha256 || bytes.length !== record.bytes)
       throw new Error(`Model mismatch: ${record.url}`);
+    if (glbExtensionsRequired(bytes, record.url).includes(MESHOPT_EXTENSION))
+      compressedModels = true;
     const download = { url: record.url, sha256: record.sha256, bytes: record.bytes };
-    if (optimized) {
-      const derived = optimized.get(record.url);
-      if (
-        !derived ||
-        derived.sourceSha256 !== record.sha256 ||
-        derived.sourceBytes !== record.bytes
-      )
-        throw new Error(`Missing or stale public optimization: ${record.url}`);
-      if (!/^assets\/public-performance\/models\/[a-z0-9-]+\.glb$/.test(derived.file))
-        throw new Error(`Invalid optimized path: ${derived.file}`);
-      bytes = await readFile(path.join(root, derived.file));
-      if (bytes.length !== derived.bytes || hash(bytes) !== derived.sha256)
-        throw new Error(`Optimized model mismatch: ${record.url}`);
-      Object.assign(download, { url: derived.url, sha256: derived.sha256, bytes: derived.bytes });
-    }
     if (bytes.length > fileLimit) {
       download.parts = [];
       for (let offset = 0, part = 0; offset < bytes.length; offset += partSize, part++) {
@@ -260,29 +269,59 @@ for (const asset of assets) {
   }
   const textures = runtimeTextureRecords(asset);
   for (const texture of textures) {
-    if (!/^\/models\/[a-z0-9-]+\/[a-z0-9-]+\.png$/.test(texture.url))
-      throw new Error(`Unexpected runtime texture: ${texture.url}`);
+    checkTextureUrl(texture.url, texture.sha256, ['png']);
     const bytes = await readFile(path.join(root, `public${texture.url}`));
     if (
       (texture.bytes !== undefined && bytes.length !== texture.bytes) ||
       hash(bytes) !== texture.sha256
     )
       throw new Error(`Runtime texture mismatch: ${texture.url}`);
+    checkTextureImage(texture, bytes, texture.url);
     await publish(texture.url, bytes);
   }
 }
+// Compressed models load only through the decoder Three ships with the published GLTFLoader.
+const decoder = await checkDecoder(
+  root,
+  files.has(DECODER.published)
+    ? await readFile(path.join(staging, ...DECODER.published.split('/')))
+    : undefined,
+  { required: compressedModels, adoption },
+);
 const transform = (asset) => ({
   ...asset,
   ...downloads.get(asset.url),
   ...(asset.lods ? { lods: asset.lods.map((lod) => ({ ...lod, ...downloads.get(lod.url) })) } : {}),
 });
 for (const asset of assets) {
-  const source = JSON.parse(
-    await readFile(path.join(root, `public/models/${asset.modelKey}/asset.json`), 'utf8'),
+  const source = mascotAsset(
+    JSON.parse(
+      await readFile(path.join(root, `public/models/${asset.modelKey}/asset.json`), 'utf8'),
+    ),
   );
+  // A model's own manifest must name exactly the files shipped for it, never a stale one.
+  if (typeof source.url === 'string') {
+    checkRuntimeGraph([source], adoption, {
+      requireAdoption,
+      textureRecords: runtimeTextureRecords,
+      textureExtensions: ['png'],
+    });
+    for (const record of [source, ...(source.lods || [])]) {
+      const shipped = downloads.get(record.url);
+      if (!shipped || shipped.sha256 !== record.sha256 || shipped.bytes !== record.bytes)
+        throw new Error(
+          `/models/${asset.modelKey}/asset.json names ${record.url}, which this build does not ship`,
+        );
+    }
+    for (const texture of runtimeTextureRecords(source))
+      if (files.get(texture.url.slice(1))?.sha256 !== texture.sha256)
+        throw new Error(
+          `/models/${asset.modelKey}/asset.json names ${texture.url}, which this build does not ship`,
+        );
+  }
   await publish(
     `/models/${asset.modelKey}/asset.json`,
-    Buffer.from(JSON.stringify(transform(mascotAsset(source)), null, 2)),
+    Buffer.from(JSON.stringify(transform(source), null, 2)),
   );
 }
 await publish(
@@ -300,13 +339,28 @@ for (const friend of FRIEND_MASCOTS.filter((friend) => ACTIVE_MASCOT_MODELS.incl
   const url = `/models/${friend.key}/portrait.png`;
   await publish(url, await readFile(path.join(root, `public${url}`)));
 }
+// A year-long immutable cache is only safe when every shipped GLB name is content-addressed.
+const immutableModels =
+  !!adoption && models.every((model) => checkModelUrl(model.url, model.sha256));
 await publish(
   '/_headers',
   Buffer.from(
     '/*\n  X-Content-Type-Options: nosniff\n  Referrer-Policy: no-referrer\n  X-Frame-Options: DENY\n  Permissions-Policy: camera=(), microphone=()\n  Cache-Control: no-cache\n/models/*.bin\n  Cache-Control: public, max-age=31536000, immutable\n' +
-      (optimized ? '/models/*.glb\n  Cache-Control: public, max-age=31536000, immutable\n' : ''),
+      (immutableModels
+        ? '/models/*.glb\n  Cache-Control: public, max-age=31536000, immutable\n'
+        : ''),
   ),
 );
+// Quoted literals of files the adoption replaced, reported for review rather than refused: the
+// runtime loads models and cave images from their verified manifest records, and the remaining
+// literals (CAVE_EXTRA_PIGMENTS) name each frieze's original image. The graph checks above are
+// the shipped-file proof.
+const retiredLiterals = [];
+for (const name of files.keys())
+  if (/\.(?:m?js|css|html)$/.test(name))
+    for (const url of retiredLiteralsIn(await readFile(path.join(staging, name), 'utf8'), adoption))
+      retiredLiterals.push({ file: name, url });
+assertSameDigests(sourceManifests, await manifestDigests(root, assets));
 const audit = await auditEnvironmentDirectory(staging, files.keys(), profile);
 if (files.size > 20000) throw new Error('Static asset file count exceeds the Free plan');
 // Server modules use the same filtered character list as the browser. Never bundle
@@ -352,9 +406,16 @@ const report = {
   buildId: hash(Buffer.from(JSON.stringify({ publicFiles: [...files.values()], workerFiles }))),
   profile,
   audit,
+  browserBundle: browserBundle.record,
   builtAt: new Date().toISOString(),
   credits: release.credits,
-  optimizedAssets: !!optimized,
+  optimizedAssets: !!adoption,
+  runtimeAdoption: runtimeGraph.adoption,
+  runtimeGraph,
+  decoder,
+  immutableModelCache: immutableModels,
+  retiredLiterals,
+  sourceManifests,
   excludedCharacters: [...excludedSpecies],
   activeMascotModels: ACTIVE_MASCOT_MODELS,
   characters: publicCharacters,
@@ -374,5 +435,5 @@ await writeFile(
   JSON.stringify(report, null, 2),
 );
 console.log(
-  `Cloudflare assets: ${files.size} files, ${(total / 1024 / 1024).toFixed(1)} MiB; ${models.length} exact GLBs, ${models.filter((model) => model.parts).length} split. Credits: ${release.credits}.`,
+  `Cloudflare assets: ${files.size} files, ${(total / 1024 / 1024).toFixed(1)} MiB; ${models.length} exact GLBs, ${models.filter((model) => model.parts).length} split. Credits: ${release.credits}. Runtime adoption: ${adoption ? adoption.id : 'none (exact manifest files)'}; meshopt decoder ${decoder.required ? 'included' : 'not needed'}; immutable GLB cache ${immutableModels ? 'on' : 'off'}; ${retiredLiterals.length} quoted literal(s) of replaced files in shipped code (listed in the report).`,
 );

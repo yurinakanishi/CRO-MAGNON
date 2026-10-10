@@ -1,7 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { readFile } from 'node:fs/promises';
-import { createHash } from 'node:crypto';
 import {
   CASTLE,
   CASTLE_GATE,
@@ -24,13 +23,15 @@ import { SABERTOOTH_GROUND } from '../dist/shared/sabertooth-rules.mjs';
 import { MeshRayGrid } from '../dist/src/mesh-ray-grid.js';
 import * as THREE from 'three';
 import { geometryScene } from '../scripts/measure-collision-bounds.mjs';
+import { verifyModelSource } from './runtime-model-identity.mjs';
 
 const CASTLE_GLB = JSON.parse(
   await readFile('public/models/valley-castle/asset.json', 'utf8'),
 ).url.replace(/^\//, 'public/');
 test('castle floor atlas is measured from the delivered mesh and clears the starting valley', async () => {
-  const bytes = await readFile(CASTLE_GLB);
-  assert.equal(createHash('sha256').update(bytes).digest('hex'), CASTLE_SURFACE.data.sourceSha256);
+  // Measured from the original GLB; an adopted derivative must decode to its geometry.
+  const { original } = await verifyModelSource('valley-castle');
+  assert.equal(original.sha256, CASTLE_SURFACE.data.sourceSha256);
   for (let x = -55; x <= 55; x += 2)
     for (let z = -64; z <= 64; z += 2) {
       const p = castleWorld(x, z);

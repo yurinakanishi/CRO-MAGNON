@@ -1,0 +1,101 @@
+{
+  "modelKey": "drying-rack",
+  "name": "乾燥棚",
+  "kind": "static",
+  "candidate": 2,
+  "status": "remake-candidate-2-integrated",
+  "url": "/models/drying-rack/model-c2.opt-6c486d2848e290e9.glb",
+  "sha256": "6c486d2848e290e9fb8befaecf0a95555d4cde53696b18f937b1fbb395429d9a",
+  "bytes": 982720,
+  "triangles": 11816,
+  "upAxis": "Y",
+  "forwardAxis": "+Z",
+  "heightMetres": 2.3985,
+  "widthMetres": null,
+  "placement": {
+    "pivot": "ground-centred"
+  },
+  "clips": [],
+  "notes": [
+    "2026-10-07 remake Candidate 2: new reference (forked posts, lashed crossbar, natural pale scraped hides instead of saturated red); xatlas charts; TRELLIS-2 1024/tex1024; 11816 triangles (meshopt reduction, fresh UVs, albedo and tangent-space normal baked from the 277303-triangle dense surface; p95 surface error 4.5 mm). Candidate 1 files retained."
+  ],
+  "provenance": {
+    "provider": "Claude Code (Opus 5.5)",
+    "claudeUsed": true,
+    "referenceGenerator": "Codex CLI built-in image_gen (gpt-5.6-sol, medium), earlier approved reference attached for identity",
+    "referenceImage": "C:/Users/yurin/Desktop/projects/CRO-MAGNON/output/model-generation/models/drying-rack/source/original/candidate2-ref-a.png",
+    "referenceSha256": "cd03c23ee2e04302c2f63a1ba5d34aed34bcae4948184d293c32f3fec75c798f",
+    "reconstruction": "Local TRELLIS-2 v0.8.1, res 1024, tex 1024, seed recorded in dense JSON",
+    "denseFile": "C:/Users/yurin/Desktop/projects/CRO-MAGNON/output/model-generation/models/drying-rack/work/candidate-02/trellis/dense-ref2a-res1024-tex1024-seed0042.glb",
+    "denseSha256": "ecd8dbcb18a996a9e8331dd6271cc9df1395421b91ad4ea71ef858fb06a9921b",
+    "processReport": "output/model-generation/models/drying-rack/work/candidate-02/low-poly/m02/process-report.json",
+    "rigReport": null,
+    "pipeline": "scripts/remake/ (trellis_queue.py, remake_process.py, rig_*.py); docs/asset-remake/PLAN.md",
+    "previousDelivery": {
+      "url": "/models/drying-rack/model.glb",
+      "sha256": "b106d53d89e9fa51ee38d3baa2c3a0b898fd39658f5718728ef12844b9f1d65d",
+      "triangles": 23901,
+      "bytes": 3022452,
+      "candidate": 1,
+      "revision": null
+    },
+    "previousProvenance": {
+      "provider": "Codex",
+      "claudeUsed": false,
+      "referenceGenerator": "Built-in imagegen",
+      "referenceImage": "output/model-generation/models/drying-rack/source/original/reference-v1.png",
+      "referenceSha256": "a7c151a06a289d584879ce1a88fdeb1dfb0c617478d25764afa486702c3c374a",
+      "reconstruction": "Local TRELLIS-2; settings and dense SHA in model workspace",
+      "candidateFile": "output/model-generation/models/drying-rack/work/low-poly/candidate-01/candidate.glb",
+      "visualReview": "output/model-generation/models/drying-rack/qa/adoption-review.json"
+    },
+    "visualReview": "assets/asset-remake/reviews/drying-rack.json"
+  },
+  "lods": [
+    {
+      "url": "/models/drying-rack/lod-c2.opt-16ab63a12c5e2918.glb",
+      "sha256": "16ab63a12c5e2918add9fe6c83ba7e87cdb249020c0395555e5c46f5d967f052",
+      "bytes": 488804,
+      "triangles": 3928,
+      "distanceMetres": 14,
+      "purpose": "medium-distance-lod"
+    }
+  ],
+  "revision": "c2-m02",
+  "runtimeOptimization": {
+    "adoption": "20261010-r06-a01",
+    "candidateRevision": "assets/optimized-runtime/20261010-r05",
+    "selection": "ordinary-compressed",
+    "original": {
+      "url": "/models/drying-rack/model-c2.glb",
+      "sha256": "35c7daa486dad72790dcb01b17b5da72353edb5c63c74fcb4c2230e46739e986",
+      "bytes": 2599104,
+      "triangles": 11816,
+      "lods": [
+        {
+          "url": "/models/drying-rack/lod-c2.glb",
+          "sha256": "514fee559fef26e2026daa453974c7e6661d9718c6f75a45be9e0f4fc8425029",
+          "bytes": 1189340,
+          "triangles": 3928,
+          "distanceMetres": 14,
+          "purpose": "medium-distance-lod"
+        }
+      ]
+    },
+    "supersedes": {
+      "adoption": "20261009-r04-a01",
+      "candidateRevision": "assets/optimized-runtime/20261009-r04",
+      "url": "/models/drying-rack/model-c2.opt-3838196fe4930dfa.glb",
+      "sha256": "3838196fe4930dfa88f4e0a4a47ab53b5267b2b95f76753b8c9eff4b0e762542",
+      "bytes": 1170356,
+      "lods": [
+        {
+          "url": "/models/drying-rack/lod-c2.opt-16ab63a12c5e2918.glb",
+          "sha256": "16ab63a12c5e2918add9fe6c83ba7e87cdb249020c0395555e5c46f5d967f052",
+          "bytes": 488804
+        }
+      ]
+    },
+    "adoptedBy": "20261010-r05-a02"
+  }
+}

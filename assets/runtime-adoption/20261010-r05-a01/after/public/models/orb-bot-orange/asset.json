@@ -1,0 +1,218 @@
+{
+  "modelKey": "orb-bot-orange",
+  "name": "オレンジbot",
+  "kind": "companion",
+  "candidate": 2,
+  "revision": "c2-t02",
+  "status": "remake-candidate-2-integrated",
+  "url": "/models/orb-bot-orange/model-c2.opt-8cb2e35cbf824478.glb",
+  "sha256": "8cb2e35cbf824478ec035b52eb8e81fe6ae6c65666ba8d04b13c1f6628439852",
+  "bytes": 124640,
+  "triangles": 2531,
+  "bones": 2,
+  "upAxis": "Y",
+  "forwardAxis": "+Z",
+  "heightMetres": 0.28,
+  "widthMetres": 0.2835914118287309,
+  "lengthMetres": 0.2727892712736467,
+  "placement": {
+    "pivot": "ground-centred",
+    "scale": 1
+  },
+  "clips": [
+    {
+      "name": "Catch",
+      "seconds": 0.30000001192092896,
+      "loop": false,
+      "rootMotion": "in-place",
+      "fps": 60
+    },
+    {
+      "name": "Held_Loop",
+      "seconds": 1.2000000476837158,
+      "loop": true,
+      "rootMotion": "in-place",
+      "fps": 60
+    },
+    {
+      "name": "Idle_Loop",
+      "seconds": 2.4000000953674316,
+      "loop": true,
+      "rootMotion": "in-place",
+      "fps": 60
+    },
+    {
+      "name": "Land",
+      "seconds": 0.4166666567325592,
+      "loop": false,
+      "rootMotion": "in-place",
+      "fps": 60
+    },
+    {
+      "name": "Run_Loop",
+      "seconds": 0.4000000059604645,
+      "loop": true,
+      "rootMotion": "in-place",
+      "fps": 60
+    },
+    {
+      "name": "Thrown_Loop",
+      "seconds": 0.8999999761581421,
+      "loop": true,
+      "rootMotion": "in-place",
+      "fps": 60
+    },
+    {
+      "name": "Walk_Loop",
+      "seconds": 0.6000000238418579,
+      "loop": true,
+      "rootMotion": "in-place",
+      "fps": 60
+    }
+  ],
+  "locomotion": {
+    "Walk_Loop": {
+      "metresPerSecond": 3,
+      "cycleSeconds": 0.6
+    },
+    "Run_Loop": {
+      "metresPerSecond": 3,
+      "cycleSeconds": 0.4
+    }
+  },
+  "lods": [
+    {
+      "url": "/models/orb-bot-orange/lod-c2.opt-22329782023eb470.glb",
+      "sha256": "22329782023eb470cb18cdb279b87e396e9cd4f2f13939a82ceffa9110a522d8",
+      "bytes": 24804,
+      "triangles": 1012,
+      "distanceMetres": 9,
+      "purpose": "animated-medium-lod-geometry"
+    }
+  ],
+  "provenance": {
+    "provider": "Claude Code (Opus 5.5)",
+    "claudeUsed": true,
+    "referenceGenerator": "none: derived from the delivered, user-approved surface (identity unchanged)",
+    "referenceImage": "public/models/orb-bot-orange/model-r08.glb",
+    "referenceSha256": "35a5de83fc555c537e918000b6c2f0fabed5ce6ac2f837aa78930e7547f99d55",
+    "reconstruction": "no new reconstruction; the delivered rest surface is the bake and skin-weight source",
+    "denseFile": "public/models/orb-bot-orange/model-r08.glb",
+    "denseSha256": "35a5de83fc555c537e918000b6c2f0fabed5ce6ac2f837aa78930e7547f99d55",
+    "processReport": "output/model-generation/models/orb-bot-orange/work/candidate-02/transfer/t02/report.json",
+    "rigReport": null,
+    "pipeline": "scripts/remake/ (trellis_queue.py, remake_process.py, rig_*.py); docs/asset-remake/PLAN.md",
+    "previousDelivery": {
+      "url": "/models/orb-bot-orange/model-r08.glb",
+      "sha256": "35a5de83fc555c537e918000b6c2f0fabed5ce6ac2f837aa78930e7547f99d55",
+      "triangles": 2531,
+      "bytes": 454820,
+      "candidate": 1,
+      "revision": "08"
+    },
+    "previousProvenance": {
+      "provider": "Codex",
+      "claudeUsed": false,
+      "referenceGenerator": "Built-in imagegen",
+      "referenceImage": "assets/orb-bots/source/orange-reference-v1.png",
+      "referenceSha256": "63b79e6486d03482e32c33ca00eb9d3e44a04441796adb7e62098460e2c78352",
+      "userReference": "assets/orb-bots/source/user-reference.png",
+      "userReferenceSha256": "c26fcc4d555b7cf586249114fb0a118c82baade3c3836e3cd745babe2c076a40",
+      "reconstruction": "Local TRELLIS-2 v0.8.1 official Vulkan / 512 / seed42; adaptive source-preserving surface reduction; immutable reference-PNG face ink rebaked into repaired UVs.",
+      "denseSha256": "6e1de6960f1da83841ce40f0b6d615240060c1ee136d2c70cf1d22b38d99fbb9",
+      "materialRepair": {
+        "method": "Source-PNG ink projection on the source-derived TRELLIS surface, lighting removed, front-normal mask; Cycles emission bake",
+        "source": "C:\\Users\\yurin\\Desktop\\projects\\CRO-MAGNON\\assets\\orb-bots\\source\\orange-reference-v1.png",
+        "sourceAlphaBounds": [
+          0.05980861244019139,
+          0.9362041467304625,
+          0.058213716108452954,
+          0.9258373205741627
+        ],
+        "atlas": 4096,
+        "inferredBackColour": "f58b28",
+        "unusedAtlasColour": "f58b28",
+        "sourcePngUnmodified": true,
+        "analyticEyes": false
+      },
+      "surfaceRepair": {
+        "method": "Constrained local eye topology replacement; depth interpolated from unchanged TRELLIS neighbourhood",
+        "boxesNormalized": [
+          [
+            -0.31859617137648133,
+            -0.09617137648131269,
+            -0.013812154696132617,
+            0.047882136279926324
+          ],
+          [
+            0.0724703737465816,
+            0.3003646308113036,
+            -0.0036832412523020164,
+            0.05432780847145491
+          ]
+        ],
+        "removedTriangles": 77886,
+        "originalTriangles": 143055,
+        "invisibleInteriorTrianglesRemoved": 64134,
+        "patches": [
+          {
+            "boundaryVertices": 130,
+            "triangles": 3628
+          },
+          {
+            "boundaryVertices": 118,
+            "triangles": 3568
+          }
+        ],
+        "outsidePositionsExact": true,
+        "boundaryPositionsExact": true,
+        "newNonManifoldEdges": 0,
+        "fittedPrimitive": false
+      },
+      "candidateFile": "output/model-generation/models/orb-bot-orange/work/rig/revision-08/candidate.glb",
+      "visualReview": "assets/orb-bots/reviews/orange-r08.json"
+    },
+    "transfer": "scripts/remake/transfer_reduce.py (meshopt subset of delivered vertices, xatlas charts, albedo/normal bake with miss fill and back-face flip, Data Transfer skin weights; armature, bone names and clips re-exported unchanged)",
+    "visualReview": "assets/asset-remake/reviews/orb-bot-orange.json"
+  },
+  "notes": [
+    "Remake C2 of the delivered orb bot: same surface reduced to at most 4,000 triangles, 4096 texture replaced by 1024 albedo + baked normal; 2 bones and 7 clips unchanged. Posed deviation from the delivered skin 0 m (kept vertices are a subset); clip curves within 0.04 deg (resampling). 2531 triangles (was 2531), textures 1024 WebP + baked normal."
+  ],
+  "gameQA": "output/playwright/orb-bots/verified-20261001",
+  "runtimeOptimization": {
+    "adoption": "20261010-r05-a01",
+    "candidateRevision": "assets/optimized-runtime/20261010-r05",
+    "selection": "ordinary-compressed",
+    "original": {
+      "url": "/models/orb-bot-orange/model-c2.glb",
+      "sha256": "1a92cdfe97bc542f5c96cc09f902bc99842114b1460fc87cb1d49d23242830be",
+      "bytes": 189144,
+      "triangles": 2531,
+      "lods": [
+        {
+          "url": "/models/orb-bot-orange/lod-c2.glb",
+          "sha256": "df77e30e57f304da22e312971c82e3dde686d7f4219acd77ecbab2df03e239c6",
+          "bytes": 42996,
+          "triangles": 1012,
+          "distanceMetres": 9,
+          "purpose": "animated-medium-lod-geometry"
+        }
+      ]
+    },
+    "supersedes": {
+      "adoption": "20261009-r04-a01",
+      "candidateRevision": "assets/optimized-runtime/20261009-r04",
+      "url": "/models/orb-bot-orange/model-c2.opt-59d466b4d610ba10.glb",
+      "sha256": "59d466b4d610ba1090d89502f7a16de66bb01de261ed7d37e3cf120b35a805c9",
+      "bytes": 126048,
+      "lods": [
+        {
+          "url": "/models/orb-bot-orange/lod-c2.opt-22329782023eb470.glb",
+          "sha256": "22329782023eb470cb18cdb279b87e396e9cd4f2f13939a82ceffa9110a522d8",
+          "bytes": 24804
+        }
+      ]
+    },
+    "adoptedBy": "20261010-r05-a01"
+  }
+}

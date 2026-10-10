@@ -1,0 +1,72 @@
+{
+  "modelKey": "cockle-shell",
+  "name": "浜の貝",
+  "kind": "static",
+  "candidate": 2,
+  "status": "remake-candidate-2-integrated",
+  "url": "/models/cockle-shell/model-c2.opt-16d1634c87d7806d.glb",
+  "sha256": "16d1634c87d7806d571da425e7edcbb4fe45f87e4d41720b6c568fe700aa9efa",
+  "bytes": 228772,
+  "triangles": 1474,
+  "upAxis": "Y",
+  "forwardAxis": "+Z",
+  "heightMetres": 0.12,
+  "widthMetres": 0.16,
+  "onDemand": true,
+  "environment": true,
+  "placement": {
+    "pivot": "ground-centred"
+  },
+  "clips": [],
+  "lods": [],
+  "provenance": {
+    "provider": "Claude Code (Opus 5.5)",
+    "claudeUsed": true,
+    "referenceGenerator": "none: the delivered C1 surface is the bake source (identity unchanged)",
+    "referenceImage": "C:/Users/yurin/Desktop/projects/CRO-MAGNON/output/model-generation/models/cockle-shell/work/candidate-02/trellis/c1-delivered.glb",
+    "referenceSha256": "7e4f448274b346dd8a3705901cccf0e7e4d49be2bc09b683cd85cdc740122a81",
+    "reconstruction": "no new reconstruction adopted; the new TRELLIS candidate (low-poly/m01, new reference candidate2-ref-a.png) was rejected: flatter valves, a black slit artifact and blotchy texture",
+    "denseFile": "C:/Users/yurin/Desktop/projects/CRO-MAGNON/output/model-generation/models/cockle-shell/work/candidate-02/trellis/c1-delivered.glb",
+    "denseSha256": "7e4f448274b346dd8a3705901cccf0e7e4d49be2bc09b683cd85cdc740122a81",
+    "processReport": "output/model-generation/models/cockle-shell/work/candidate-02/low-poly/m02/process-report.json",
+    "rigReport": null,
+    "pipeline": "scripts/remake/ (trellis_queue.py, remake_process.py, rig_*.py); docs/asset-remake/PLAN.md",
+    "previousDelivery": {
+      "url": "/models/cockle-shell/model.glb",
+      "sha256": "7e4f448274b346dd8a3705901cccf0e7e4d49be2bc09b683cd85cdc740122a81",
+      "triangles": 35645,
+      "bytes": 10177512,
+      "candidate": 1,
+      "revision": null
+    },
+    "previousProvenance": {
+      "provider": "Codex",
+      "claudeUsed": false,
+      "referenceGenerator": "Built-in imagegen",
+      "referenceImage": "assets/coastal-craft/models/cockle-shell/source/reference-v1.png",
+      "reconstruction": "Local TRELLIS-2, resolution 1024, seed 42",
+      "candidateFile": "assets/coastal-craft/models/cockle-shell/work/revision-02/candidate.glb",
+      "visualReview": "assets/coastal-craft/models/cockle-shell/qa/adoption-review.json",
+      "referenceSha256": "b00df78d86e6d7d9f7b72a4540d9ff5e1c7d3dc2f79a0ef30ef0f01fc978086f",
+      "denseSha256": "32c227435572a5185b268a9e76b273647c4658628406fde0414d531c6e6ddafa"
+    },
+    "transfer": "meshopt subset of the delivered vertices (scripts/remake/process_static.sh with the delivered GLB as source), xatlas charts, 512 albedo + baked normal",
+    "visualReview": "assets/asset-remake/reviews/cockle-shell.json"
+  },
+  "revision": "c2-m02",
+  "notes": [
+    "Candidate 2: the delivered cockle reduced 35,645 -> 1,474 triangles with xatlas charts and baked 512 albedo/normal; same 16 cm size and ground-centred pivot for the instanced shell beds (src/coastal-renderer.ts). The new TRELLIS reconstruction was compared and rejected (output/asset-remake/compare/cockle-shell/sheet.jpg)."
+  ],
+  "runtimeOptimization": {
+    "adoption": "20261009-r04-a01",
+    "candidateRevision": "assets/optimized-runtime/20261009-r04",
+    "selection": "ordinary-compressed",
+    "original": {
+      "url": "/models/cockle-shell/model-c2.glb",
+      "sha256": "dc8defa88c3a04a5c34f48b80d62ada720de98c6960349965a33d9fb79bab2fe",
+      "bytes": 248456,
+      "triangles": 1474,
+      "lods": []
+    }
+  }
+}

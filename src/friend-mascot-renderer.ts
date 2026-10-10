@@ -183,7 +183,7 @@ export class FriendMascotRenderer {
       heart.scale.setScalar(0.075 + Math.sin(age * Math.PI) * 0.035);
       heart.material.opacity = Math.sin(age * Math.PI);
     }
-    updateActorPerformance(this.actor.root, distance, this.world.graphics.tier);
+    updateActorPerformance(this.actor.root, distance);
     this.label.active = this.root.visible && distance < 18;
     this.label.position.copy(this.root.position);
     this.label.position.y += this.def.bodyHeight + 0.18;

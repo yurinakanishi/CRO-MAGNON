@@ -96,7 +96,7 @@ test('a disposed asset provider does not start new enemy or equipment loads', as
   assert.equal(assets.equipmentLoads.size, 0);
 });
 
-test('shutdown stops the initial loading workers before remaining models and LODs start', async (t) => {
+test('shutdown stops the startup loads before remaining models and LODs start', async (t) => {
   const json = JSON.stringify({
     asset: { version: '2.0' },
     scene: 0,
@@ -146,10 +146,13 @@ test('shutdown stops the initial loading workers before remaining models and LOD
   });
   const assets = new WorldAssets(),
     loading = assets.load();
-  while (pending.length < 3) await new Promise(setImmediate);
+  // Startup shares the world's queue: two downloads run while the rest wait.
+  while (pending.length < 2) await new Promise(setImmediate);
   assets.dispose();
   for (const work of pending) work.resolve();
   await loading;
-  assert.deepEqual(requests, ['/a.glb', '/b.glb', '/c.glb']);
+  // The two running downloads finish and are discarded; nothing else starts.
+  while (assets.loadQueue.active) await new Promise(setImmediate);
+  assert.deepEqual(requests, ['/a.glb', '/b.glb'], 'no queued model or LOD starts after shutdown');
   assert.equal(assets.templates.size, 0);
 });

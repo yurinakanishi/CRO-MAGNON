@@ -1,0 +1,2138 @@
+{
+  "schema": "cro-magnon/optimized-runtime-verification@1",
+  "revision": "20261009-r02",
+  "status": "passed",
+  "candidateStatus": "candidate-pending-visual-qa",
+  "verified": "local files only: hashes, ranges, extension headers, decoded bytes, accessors, skins, clips, images, standalone texture plans, sizes, alpha and aspect",
+  "notVerified": [
+    "GPU upload or rendering",
+    "visual appearance, UV-island bleeding, mural edges and tile seams, and LOD transitions",
+    "runtime loader integration, caching and memory",
+    "mobile devices"
+  ],
+  "checks": [
+    {
+      "name": "the installed meshoptimizer is exactly 1.1.1",
+      "status": "passed"
+    },
+    {
+      "name": "every record is still an unadopted candidate pending visual QA",
+      "status": "passed"
+    },
+    {
+      "name": "runtime-index.json is exactly derived from manifest.json",
+      "status": "passed"
+    },
+    {
+      "name": "every currently eligible GLB has a candidate",
+      "status": "passed"
+    },
+    {
+      "name": "every public player character has a startup actor",
+      "status": "passed"
+    },
+    {
+      "name": "every current model is recorded as eligible or excluded",
+      "status": "passed"
+    },
+    {
+      "name": "standalone textures are exactly the currently configured runtime images",
+      "status": "passed"
+    },
+    {
+      "name": "the revision folder holds only recorded files",
+      "status": "passed"
+    }
+  ],
+  "files": [
+    {
+      "id": "/models/berry-bush/model-c2.glb",
+      "status": "passed",
+      "verification": {
+        "status": "passed",
+        "nonImageViewsByteIdentical": 5,
+        "imagesResized": 0,
+        "imagesUnchanged": 2,
+        "compressedViews": 5,
+        "accessors": 5,
+        "skins": 0,
+        "clips": 0,
+        "triangles": 11691,
+        "alignmentPaddingBytes": 9
+      }
+    },
+    {
+      "id": "/models/berry-cluster/model-c2.glb",
+      "status": "passed",
+      "verification": {
+        "status": "passed",
+        "nonImageViewsByteIdentical": 5,
+        "imagesResized": 0,
+        "imagesUnchanged": 2,
+        "compressedViews": 5,
+        "accessors": 5,
+        "skins": 0,
+        "clips": 0,
+        "triangles": 1172,
+        "alignmentPaddingBytes": 5
+      }
+    },
+    {
+      "id": "/models/camp-cave/model-r26.glb",
+      "status": "passed",
+      "verification": {
+        "status": "passed",
+        "nonImageViewsByteIdentical": 4,
+        "imagesResized": 2,
+        "imagesUnchanged": 0,
+        "compressedViews": 4,
+        "accessors": 4,
+        "skins": 0,
+        "clips": 0,
+        "triangles": 74458,
+        "alignmentPaddingBytes": 10
+      }
+    },
+    {
+      "id": "/models/camp-mountain/lod-performance.glb",
+      "status": "passed",
+      "verification": {
+        "status": "passed",
+        "nonImageViewsByteIdentical": 4,
+        "imagesResized": 0,
+        "imagesUnchanged": 1,
+        "compressedViews": 4,
+        "accessors": 4,
+        "skins": 0,
+        "clips": 0,
+        "triangles": 24499,
+        "alignmentPaddingBytes": 7
+      }
+    },
+    {
+      "id": "/models/camp-mountain/model-r15.glb",
+      "status": "passed",
+      "verification": {
+        "status": "passed",
+        "nonImageViewsByteIdentical": 4,
+        "imagesResized": 0,
+        "imagesUnchanged": 1,
+        "compressedViews": 4,
+        "accessors": 4,
+        "skins": 0,
+        "clips": 0,
+        "triangles": 245000,
+        "alignmentPaddingBytes": 8
+      }
+    },
+    {
+      "id": "/models/cat-kunoichi/lod-c2.glb",
+      "status": "passed",
+      "verification": {
+        "status": "passed",
+        "nonImageViewsByteIdentical": 13,
+        "imagesResized": 0,
+        "imagesUnchanged": 0,
+        "compressedViews": 13,
+        "accessors": 13,
+        "skins": 1,
+        "clips": 0,
+        "triangles": 10484,
+        "alignmentPaddingBytes": 23
+      }
+    },
+    {
+      "id": "/models/cat-kunoichi/model-c2.glb",
+      "status": "passed",
+      "verification": {
+        "status": "passed",
+        "nonImageViewsByteIdentical": 673,
+        "imagesResized": 4,
+        "imagesUnchanged": 1,
+        "compressedViews": 673,
+        "accessors": 673,
+        "skins": 1,
+        "clips": 10,
+        "triangles": 52420,
+        "alignmentPaddingBytes": 1209
+      }
+    },
+    {
+      "id": "/models/cockle-shell/model-c2.glb",
+      "status": "passed",
+      "verification": {
+        "status": "passed",
+        "nonImageViewsByteIdentical": 5,
+        "imagesResized": 0,
+        "imagesUnchanged": 2,
+        "compressedViews": 5,
+        "accessors": 5,
+        "skins": 0,
+        "clips": 0,
+        "triangles": 1474,
+        "alignmentPaddingBytes": 9
+      }
+    },
+    {
+      "id": "/models/cro-magnon-hunter/lod-face-r01.glb",
+      "status": "passed",
+      "verification": {
+        "status": "passed",
+        "nonImageViewsByteIdentical": 19,
+        "imagesResized": 0,
+        "imagesUnchanged": 0,
+        "compressedViews": 19,
+        "accessors": 19,
+        "skins": 1,
+        "clips": 0,
+        "triangles": 10112,
+        "alignmentPaddingBytes": 36
+      }
+    },
+    {
+      "id": "/models/cro-magnon-hunter/model-face-r01.glb",
+      "status": "passed",
+      "verification": {
+        "status": "passed",
+        "nonImageViewsByteIdentical": 795,
+        "imagesResized": 4,
+        "imagesUnchanged": 1,
+        "compressedViews": 783,
+        "accessors": 795,
+        "skins": 1,
+        "clips": 10,
+        "triangles": 50561,
+        "alignmentPaddingBytes": 1611
+      }
+    },
+    {
+      "id": "/models/cro-magnon-woman/lod-face-r01.glb",
+      "status": "passed",
+      "verification": {
+        "status": "passed",
+        "nonImageViewsByteIdentical": 13,
+        "imagesResized": 0,
+        "imagesUnchanged": 0,
+        "compressedViews": 13,
+        "accessors": 13,
+        "skins": 1,
+        "clips": 0,
+        "triangles": 12627,
+        "alignmentPaddingBytes": 25
+      }
+    },
+    {
+      "id": "/models/cro-magnon-woman/model-face-r01.glb",
+      "status": "passed",
+      "verification": {
+        "status": "passed",
+        "nonImageViewsByteIdentical": 667,
+        "imagesResized": 3,
+        "imagesUnchanged": 0,
+        "compressedViews": 667,
+        "accessors": 667,
+        "skins": 1,
+        "clips": 10,
+        "triangles": 85829,
+        "alignmentPaddingBytes": 1156
+      }
+    },
+    {
+      "id": "/models/crow-bone-pauldrons/model-c2.glb",
+      "status": "passed",
+      "verification": {
+        "status": "passed",
+        "nonImageViewsByteIdentical": 5,
+        "imagesResized": 0,
+        "imagesUnchanged": 2,
+        "compressedViews": 5,
+        "accessors": 5,
+        "skins": 0,
+        "clips": 0,
+        "triangles": 2677,
+        "alignmentPaddingBytes": 6
+      }
+    },
+    {
+      "id": "/models/crow-brute-axe/model-c2.glb",
+      "status": "passed",
+      "verification": {
+        "status": "passed",
+        "nonImageViewsByteIdentical": 5,
+        "imagesResized": 0,
+        "imagesUnchanged": 2,
+        "compressedViews": 5,
+        "accessors": 5,
+        "skins": 0,
+        "clips": 0,
+        "triangles": 3457,
+        "alignmentPaddingBytes": 16
+      }
+    },
+    {
+      "id": "/models/crow-hide-shield/model-c2.glb",
+      "status": "passed",
+      "verification": {
+        "status": "passed",
+        "nonImageViewsByteIdentical": 5,
+        "imagesResized": 0,
+        "imagesUnchanged": 2,
+        "compressedViews": 5,
+        "accessors": 5,
+        "skins": 0,
+        "clips": 0,
+        "triangles": 2372,
+        "alignmentPaddingBytes": 8
+      }
+    },
+    {
+      "id": "/models/crow-ivory-vestment/model-c2.glb",
+      "status": "passed",
+      "verification": {
+        "status": "passed",
+        "nonImageViewsByteIdentical": 5,
+        "imagesResized": 0,
+        "imagesUnchanged": 2,
+        "compressedViews": 5,
+        "accessors": 5,
+        "skins": 0,
+        "clips": 0,
+        "triangles": 2584,
+        "alignmentPaddingBytes": 9
+      }
+    },
+    {
+      "id": "/models/crow-pontiff-crown/model-c2.glb",
+      "status": "passed",
+      "verification": {
+        "status": "passed",
+        "nonImageViewsByteIdentical": 5,
+        "imagesResized": 0,
+        "imagesUnchanged": 2,
+        "compressedViews": 5,
+        "accessors": 5,
+        "skins": 0,
+        "clips": 0,
+        "triangles": 2929,
+        "alignmentPaddingBytes": 4
+      }
+    },
+    {
+      "id": "/models/crow-pontiff-crozier/model-c2.glb",
+      "status": "passed",
+      "verification": {
+        "status": "passed",
+        "nonImageViewsByteIdentical": 5,
+        "imagesResized": 0,
+        "imagesUnchanged": 2,
+        "compressedViews": 5,
+        "accessors": 5,
+        "skins": 0,
+        "clips": 0,
+        "triangles": 3494,
+        "alignmentPaddingBytes": 10
+      }
+    },
+    {
+      "id": "/models/crow-prelate-glaive/model-c2.glb",
+      "status": "passed",
+      "verification": {
+        "status": "passed",
+        "nonImageViewsByteIdentical": 5,
+        "imagesResized": 0,
+        "imagesUnchanged": 2,
+        "compressedViews": 5,
+        "accessors": 5,
+        "skins": 0,
+        "clips": 0,
+        "triangles": 2949,
+        "alignmentPaddingBytes": 9
+      }
+    },
+    {
+      "id": "/models/crow-red-mantle/model-c2.glb",
+      "status": "passed",
+      "verification": {
+        "status": "passed",
+        "nonImageViewsByteIdentical": 5,
+        "imagesResized": 0,
+        "imagesUnchanged": 2,
+        "compressedViews": 5,
+        "accessors": 5,
+        "skins": 0,
+        "clips": 0,
+        "triangles": 2596,
+        "alignmentPaddingBytes": 7
+      }
+    },
+    {
+      "id": "/models/crow-shaman/lod-c2.glb",
+      "status": "passed",
+      "verification": {
+        "status": "passed",
+        "nonImageViewsByteIdentical": 7,
+        "imagesResized": 0,
+        "imagesUnchanged": 0,
+        "compressedViews": 7,
+        "accessors": 7,
+        "skins": 1,
+        "clips": 0,
+        "triangles": 10064,
+        "alignmentPaddingBytes": 15
+      }
+    },
+    {
+      "id": "/models/crow-shaman/model-c2.glb",
+      "status": "passed",
+      "verification": {
+        "status": "passed",
+        "nonImageViewsByteIdentical": 418,
+        "imagesResized": 2,
+        "imagesUnchanged": 0,
+        "compressedViews": 416,
+        "accessors": 418,
+        "skins": 1,
+        "clips": 6,
+        "triangles": 33548,
+        "alignmentPaddingBytes": 803
+      }
+    },
+    {
+      "id": "/models/crow-soldier-spear/model-c2.glb",
+      "status": "passed",
+      "verification": {
+        "status": "passed",
+        "nonImageViewsByteIdentical": 5,
+        "imagesResized": 0,
+        "imagesUnchanged": 2,
+        "compressedViews": 5,
+        "accessors": 5,
+        "skins": 0,
+        "clips": 0,
+        "triangles": 2993,
+        "alignmentPaddingBytes": 10
+      }
+    },
+    {
+      "id": "/models/desert-cactus/lod-c2-1.glb",
+      "status": "passed",
+      "verification": {
+        "status": "passed",
+        "nonImageViewsByteIdentical": 4,
+        "imagesResized": 1,
+        "imagesUnchanged": 0,
+        "compressedViews": 4,
+        "accessors": 4,
+        "skins": 0,
+        "clips": 0,
+        "triangles": 3590,
+        "alignmentPaddingBytes": 5
+      }
+    },
+    {
+      "id": "/models/desert-cactus/lod-c2-2.glb",
+      "status": "passed",
+      "verification": {
+        "status": "passed",
+        "nonImageViewsByteIdentical": 4,
+        "imagesResized": 1,
+        "imagesUnchanged": 0,
+        "compressedViews": 4,
+        "accessors": 4,
+        "skins": 0,
+        "clips": 0,
+        "triangles": 1340,
+        "alignmentPaddingBytes": 8
+      }
+    },
+    {
+      "id": "/models/desert-cactus/model-c2.glb",
+      "status": "passed",
+      "verification": {
+        "status": "passed",
+        "nonImageViewsByteIdentical": 5,
+        "imagesResized": 2,
+        "imagesUnchanged": 0,
+        "compressedViews": 5,
+        "accessors": 5,
+        "skins": 0,
+        "clips": 0,
+        "triangles": 8991,
+        "alignmentPaddingBytes": 12
+      }
+    },
+    {
+      "id": "/models/desert-fennec-mage/lod-c2.glb",
+      "status": "passed",
+      "verification": {
+        "status": "passed",
+        "nonImageViewsByteIdentical": 7,
+        "imagesResized": 0,
+        "imagesUnchanged": 0,
+        "compressedViews": 7,
+        "accessors": 7,
+        "skins": 1,
+        "clips": 0,
+        "triangles": 10630,
+        "alignmentPaddingBytes": 14
+      }
+    },
+    {
+      "id": "/models/desert-fennec-mage/model-c2.glb",
+      "status": "passed",
+      "verification": {
+        "status": "passed",
+        "nonImageViewsByteIdentical": 737,
+        "imagesResized": 2,
+        "imagesUnchanged": 0,
+        "compressedViews": 732,
+        "accessors": 737,
+        "skins": 1,
+        "clips": 10,
+        "triangles": 53151,
+        "alignmentPaddingBytes": 1531
+      }
+    },
+    {
+      "id": "/models/desert-ground/lod1.glb",
+      "status": "passed",
+      "verification": {
+        "status": "passed",
+        "nonImageViewsByteIdentical": 4,
+        "imagesResized": 1,
+        "imagesUnchanged": 0,
+        "compressedViews": 4,
+        "accessors": 4,
+        "skins": 0,
+        "clips": 0,
+        "triangles": 2496,
+        "alignmentPaddingBytes": 4
+      }
+    },
+    {
+      "id": "/models/desert-ground/lod2.glb",
+      "status": "passed",
+      "verification": {
+        "status": "passed",
+        "nonImageViewsByteIdentical": 4,
+        "imagesResized": 1,
+        "imagesUnchanged": 0,
+        "compressedViews": 4,
+        "accessors": 4,
+        "skins": 0,
+        "clips": 0,
+        "triangles": 672,
+        "alignmentPaddingBytes": 7
+      }
+    },
+    {
+      "id": "/models/desert-ground/model.glb",
+      "status": "passed",
+      "verification": {
+        "status": "passed",
+        "nonImageViewsByteIdentical": 4,
+        "imagesResized": 1,
+        "imagesUnchanged": 0,
+        "compressedViews": 4,
+        "accessors": 4,
+        "skins": 0,
+        "clips": 0,
+        "triangles": 9600,
+        "alignmentPaddingBytes": 6
+      }
+    },
+    {
+      "id": "/models/drying-rack/lod-c2.glb",
+      "status": "passed",
+      "verification": {
+        "status": "passed",
+        "nonImageViewsByteIdentical": 4,
+        "imagesResized": 1,
+        "imagesUnchanged": 0,
+        "compressedViews": 4,
+        "accessors": 4,
+        "skins": 0,
+        "clips": 0,
+        "triangles": 3928,
+        "alignmentPaddingBytes": 4
+      }
+    },
+    {
+      "id": "/models/drying-rack/model-c2.glb",
+      "status": "passed",
+      "verification": {
+        "status": "passed",
+        "nonImageViewsByteIdentical": 5,
+        "imagesResized": 2,
+        "imagesUnchanged": 0,
+        "compressedViews": 5,
+        "accessors": 5,
+        "skins": 0,
+        "clips": 0,
+        "triangles": 11816,
+        "alignmentPaddingBytes": 12
+      }
+    },
+    {
+      "id": "/models/dugout-canoe/lod-c2.glb",
+      "status": "passed",
+      "verification": {
+        "status": "passed",
+        "nonImageViewsByteIdentical": 4,
+        "imagesResized": 1,
+        "imagesUnchanged": 0,
+        "compressedViews": 4,
+        "accessors": 4,
+        "skins": 0,
+        "clips": 0,
+        "triangles": 4200,
+        "alignmentPaddingBytes": 8
+      }
+    },
+    {
+      "id": "/models/dugout-canoe/model-c2.glb",
+      "status": "passed",
+      "verification": {
+        "status": "passed",
+        "nonImageViewsByteIdentical": 5,
+        "imagesResized": 2,
+        "imagesUnchanged": 0,
+        "compressedViews": 5,
+        "accessors": 5,
+        "skins": 0,
+        "clips": 0,
+        "triangles": 13998,
+        "alignmentPaddingBytes": 7
+      }
+    },
+    {
+      "id": "/models/firewood-log/lod-c2-1.glb",
+      "status": "passed",
+      "verification": {
+        "status": "passed",
+        "nonImageViewsByteIdentical": 4,
+        "imagesResized": 0,
+        "imagesUnchanged": 1,
+        "compressedViews": 4,
+        "accessors": 4,
+        "skins": 0,
+        "clips": 0,
+        "triangles": 900,
+        "alignmentPaddingBytes": 8
+      }
+    },
+    {
+      "id": "/models/firewood-log/lod-c2-2.glb",
+      "status": "passed",
+      "verification": {
+        "status": "passed",
+        "nonImageViewsByteIdentical": 4,
+        "imagesResized": 0,
+        "imagesUnchanged": 1,
+        "compressedViews": 4,
+        "accessors": 4,
+        "skins": 0,
+        "clips": 0,
+        "triangles": 240,
+        "alignmentPaddingBytes": 7
+      }
+    },
+    {
+      "id": "/models/firewood-log/model-c2.glb",
+      "status": "passed",
+      "verification": {
+        "status": "passed",
+        "nonImageViewsByteIdentical": 5,
+        "imagesResized": 0,
+        "imagesUnchanged": 2,
+        "compressedViews": 5,
+        "accessors": 5,
+        "skins": 0,
+        "clips": 0,
+        "triangles": 2984,
+        "alignmentPaddingBytes": 10
+      }
+    },
+    {
+      "id": "/models/firewood-pile/lod-c2.glb",
+      "status": "passed",
+      "verification": {
+        "status": "passed",
+        "nonImageViewsByteIdentical": 4,
+        "imagesResized": 0,
+        "imagesUnchanged": 1,
+        "compressedViews": 4,
+        "accessors": 4,
+        "skins": 0,
+        "clips": 0,
+        "triangles": 2097,
+        "alignmentPaddingBytes": 5
+      }
+    },
+    {
+      "id": "/models/firewood-pile/model-c2.glb",
+      "status": "passed",
+      "verification": {
+        "status": "passed",
+        "nonImageViewsByteIdentical": 5,
+        "imagesResized": 0,
+        "imagesUnchanged": 2,
+        "compressedViews": 5,
+        "accessors": 5,
+        "skins": 0,
+        "clips": 0,
+        "triangles": 5907,
+        "alignmentPaddingBytes": 15
+      }
+    },
+    {
+      "id": "/models/flint-spear/model.glb",
+      "status": "passed",
+      "verification": {
+        "status": "passed",
+        "nonImageViewsByteIdentical": 8,
+        "imagesResized": 0,
+        "imagesUnchanged": 2,
+        "compressedViews": 8,
+        "accessors": 8,
+        "skins": 0,
+        "clips": 0,
+        "triangles": 5679,
+        "alignmentPaddingBytes": 15
+      }
+    },
+    {
+      "id": "/models/giant-ape/lod-c2.glb",
+      "status": "passed",
+      "verification": {
+        "status": "passed",
+        "nonImageViewsByteIdentical": 7,
+        "imagesResized": 0,
+        "imagesUnchanged": 0,
+        "compressedViews": 7,
+        "accessors": 7,
+        "skins": 1,
+        "clips": 0,
+        "triangles": 11643,
+        "alignmentPaddingBytes": 8
+      }
+    },
+    {
+      "id": "/models/giant-ape/model-c2.glb",
+      "status": "passed",
+      "verification": {
+        "status": "passed",
+        "nonImageViewsByteIdentical": 851,
+        "imagesResized": 2,
+        "imagesUnchanged": 0,
+        "compressedViews": 851,
+        "accessors": 851,
+        "skins": 1,
+        "clips": 13,
+        "triangles": 58216,
+        "alignmentPaddingBytes": 1614
+      }
+    },
+    {
+      "id": "/models/glacier-spires/lod-c2-1.glb",
+      "status": "passed",
+      "verification": {
+        "status": "passed",
+        "nonImageViewsByteIdentical": 4,
+        "imagesResized": 1,
+        "imagesUnchanged": 0,
+        "compressedViews": 4,
+        "accessors": 4,
+        "skins": 0,
+        "clips": 0,
+        "triangles": 1799,
+        "alignmentPaddingBytes": 8
+      }
+    },
+    {
+      "id": "/models/glacier-spires/lod-c2-2.glb",
+      "status": "passed",
+      "verification": {
+        "status": "passed",
+        "nonImageViewsByteIdentical": 4,
+        "imagesResized": 1,
+        "imagesUnchanged": 0,
+        "compressedViews": 4,
+        "accessors": 4,
+        "skins": 0,
+        "clips": 0,
+        "triangles": 419,
+        "alignmentPaddingBytes": 6
+      }
+    },
+    {
+      "id": "/models/glacier-spires/model-c2.glb",
+      "status": "passed",
+      "verification": {
+        "status": "passed",
+        "nonImageViewsByteIdentical": 5,
+        "imagesResized": 2,
+        "imagesUnchanged": 0,
+        "compressedViews": 5,
+        "accessors": 5,
+        "skins": 0,
+        "clips": 0,
+        "triangles": 11999,
+        "alignmentPaddingBytes": 8
+      }
+    },
+    {
+      "id": "/models/hide-tent/lod-c2.glb",
+      "status": "passed",
+      "verification": {
+        "status": "passed",
+        "nonImageViewsByteIdentical": 4,
+        "imagesResized": 1,
+        "imagesUnchanged": 0,
+        "compressedViews": 4,
+        "accessors": 4,
+        "skins": 0,
+        "clips": 0,
+        "triangles": 8550,
+        "alignmentPaddingBytes": 7
+      }
+    },
+    {
+      "id": "/models/hide-tent/model-c2.glb",
+      "status": "passed",
+      "verification": {
+        "status": "passed",
+        "nonImageViewsByteIdentical": 5,
+        "imagesResized": 2,
+        "imagesUnchanged": 1,
+        "compressedViews": 5,
+        "accessors": 5,
+        "skins": 0,
+        "clips": 0,
+        "triangles": 17991,
+        "alignmentPaddingBytes": 12
+      }
+    },
+    {
+      "id": "/models/ice-ground/lod1.glb",
+      "status": "passed",
+      "verification": {
+        "status": "passed",
+        "nonImageViewsByteIdentical": 4,
+        "imagesResized": 0,
+        "imagesUnchanged": 1,
+        "compressedViews": 4,
+        "accessors": 4,
+        "skins": 0,
+        "clips": 0,
+        "triangles": 744,
+        "alignmentPaddingBytes": 14
+      }
+    },
+    {
+      "id": "/models/ice-ground/lod2.glb",
+      "status": "passed",
+      "verification": {
+        "status": "passed",
+        "nonImageViewsByteIdentical": 4,
+        "imagesResized": 0,
+        "imagesUnchanged": 1,
+        "compressedViews": 4,
+        "accessors": 4,
+        "skins": 0,
+        "clips": 0,
+        "triangles": 184,
+        "alignmentPaddingBytes": 12
+      }
+    },
+    {
+      "id": "/models/ice-ground/model.glb",
+      "status": "passed",
+      "verification": {
+        "status": "passed",
+        "nonImageViewsByteIdentical": 4,
+        "imagesResized": 0,
+        "imagesUnchanged": 1,
+        "compressedViews": 4,
+        "accessors": 4,
+        "skins": 0,
+        "clips": 0,
+        "triangles": 5500,
+        "alignmentPaddingBytes": 8
+      }
+    },
+    {
+      "id": "/models/kunoichi-katana/model-c2.glb",
+      "status": "passed",
+      "verification": {
+        "status": "passed",
+        "nonImageViewsByteIdentical": 5,
+        "imagesResized": 0,
+        "imagesUnchanged": 2,
+        "compressedViews": 5,
+        "accessors": 5,
+        "skins": 0,
+        "clips": 0,
+        "triangles": 5997,
+        "alignmentPaddingBytes": 11
+      }
+    },
+    {
+      "id": "/models/mammoth-meat/model-c2.glb",
+      "status": "passed",
+      "verification": {
+        "status": "passed",
+        "nonImageViewsByteIdentical": 5,
+        "imagesResized": 0,
+        "imagesUnchanged": 2,
+        "compressedViews": 5,
+        "accessors": 5,
+        "skins": 0,
+        "clips": 0,
+        "triangles": 2996,
+        "alignmentPaddingBytes": 10
+      }
+    },
+    {
+      "id": "/models/meadow-ground/model.glb",
+      "status": "passed",
+      "verification": {
+        "status": "passed",
+        "nonImageViewsByteIdentical": 4,
+        "imagesResized": 0,
+        "imagesUnchanged": 1,
+        "compressedViews": 4,
+        "accessors": 4,
+        "skins": 0,
+        "clips": 0,
+        "triangles": 2720,
+        "alignmentPaddingBytes": 6
+      }
+    },
+    {
+      "id": "/models/neanderthal-hunter/lod-face-r01.glb",
+      "status": "passed",
+      "verification": {
+        "status": "passed",
+        "nonImageViewsByteIdentical": 19,
+        "imagesResized": 0,
+        "imagesUnchanged": 0,
+        "compressedViews": 18,
+        "accessors": 19,
+        "skins": 1,
+        "clips": 0,
+        "triangles": 13413,
+        "alignmentPaddingBytes": 27
+      }
+    },
+    {
+      "id": "/models/neanderthal-hunter/model-face-r01.glb",
+      "status": "passed",
+      "verification": {
+        "status": "passed",
+        "nonImageViewsByteIdentical": 662,
+        "imagesResized": 3,
+        "imagesUnchanged": 1,
+        "compressedViews": 661,
+        "accessors": 662,
+        "skins": 1,
+        "clips": 10,
+        "triangles": 99893,
+        "alignmentPaddingBytes": 1342
+      }
+    },
+    {
+      "id": "/models/neanderthal-woman/lod-face-r01.glb",
+      "status": "passed",
+      "verification": {
+        "status": "passed",
+        "nonImageViewsByteIdentical": 13,
+        "imagesResized": 0,
+        "imagesUnchanged": 0,
+        "compressedViews": 13,
+        "accessors": 13,
+        "skins": 1,
+        "clips": 0,
+        "triangles": 12894,
+        "alignmentPaddingBytes": 22
+      }
+    },
+    {
+      "id": "/models/neanderthal-woman/model-face-r01.glb",
+      "status": "passed",
+      "verification": {
+        "status": "passed",
+        "nonImageViewsByteIdentical": 673,
+        "imagesResized": 3,
+        "imagesUnchanged": 0,
+        "compressedViews": 673,
+        "accessors": 673,
+        "skins": 1,
+        "clips": 10,
+        "triangles": 83447,
+        "alignmentPaddingBytes": 1156
+      }
+    },
+    {
+      "id": "/models/obsidian-blade/model-c2.glb",
+      "status": "passed",
+      "verification": {
+        "status": "passed",
+        "nonImageViewsByteIdentical": 5,
+        "imagesResized": 0,
+        "imagesUnchanged": 2,
+        "compressedViews": 5,
+        "accessors": 5,
+        "skins": 0,
+        "clips": 0,
+        "triangles": 1500,
+        "alignmentPaddingBytes": 11
+      }
+    },
+    {
+      "id": "/models/obsidian-spear/model-c2.glb",
+      "status": "passed",
+      "verification": {
+        "status": "passed",
+        "nonImageViewsByteIdentical": 5,
+        "imagesResized": 0,
+        "imagesUnchanged": 2,
+        "compressedViews": 5,
+        "accessors": 5,
+        "skins": 0,
+        "clips": 0,
+        "triangles": 3995,
+        "alignmentPaddingBytes": 13
+      }
+    },
+    {
+      "id": "/models/orb-bot-beret/lod-c2.glb",
+      "status": "passed",
+      "verification": {
+        "status": "passed",
+        "nonImageViewsByteIdentical": 7,
+        "imagesResized": 0,
+        "imagesUnchanged": 0,
+        "compressedViews": 6,
+        "accessors": 7,
+        "skins": 1,
+        "clips": 0,
+        "triangles": 1565,
+        "alignmentPaddingBytes": 12
+      }
+    },
+    {
+      "id": "/models/orb-bot-beret/model-c2.glb",
+      "status": "passed",
+      "verification": {
+        "status": "passed",
+        "nonImageViewsByteIdentical": 57,
+        "imagesResized": 0,
+        "imagesUnchanged": 2,
+        "compressedViews": 50,
+        "accessors": 57,
+        "skins": 1,
+        "clips": 7,
+        "triangles": 3914,
+        "alignmentPaddingBytes": 107
+      }
+    },
+    {
+      "id": "/models/orb-bot-blue/lod-c2.glb",
+      "status": "passed",
+      "verification": {
+        "status": "passed",
+        "nonImageViewsByteIdentical": 7,
+        "imagesResized": 0,
+        "imagesUnchanged": 0,
+        "compressedViews": 6,
+        "accessors": 7,
+        "skins": 1,
+        "clips": 0,
+        "triangles": 1599,
+        "alignmentPaddingBytes": 13
+      }
+    },
+    {
+      "id": "/models/orb-bot-blue/model-c2.glb",
+      "status": "passed",
+      "verification": {
+        "status": "passed",
+        "nonImageViewsByteIdentical": 57,
+        "imagesResized": 0,
+        "imagesUnchanged": 2,
+        "compressedViews": 50,
+        "accessors": 57,
+        "skins": 1,
+        "clips": 7,
+        "triangles": 4000,
+        "alignmentPaddingBytes": 114
+      }
+    },
+    {
+      "id": "/models/orb-bot-frog/lod-c2.glb",
+      "status": "passed",
+      "verification": {
+        "status": "passed",
+        "nonImageViewsByteIdentical": 7,
+        "imagesResized": 0,
+        "imagesUnchanged": 0,
+        "compressedViews": 6,
+        "accessors": 7,
+        "skins": 1,
+        "clips": 0,
+        "triangles": 1448,
+        "alignmentPaddingBytes": 12
+      }
+    },
+    {
+      "id": "/models/orb-bot-frog/model-c2.glb",
+      "status": "passed",
+      "verification": {
+        "status": "passed",
+        "nonImageViewsByteIdentical": 57,
+        "imagesResized": 0,
+        "imagesUnchanged": 2,
+        "compressedViews": 49,
+        "accessors": 57,
+        "skins": 1,
+        "clips": 7,
+        "triangles": 3624,
+        "alignmentPaddingBytes": 115
+      }
+    },
+    {
+      "id": "/models/orb-bot-green/lod-c2.glb",
+      "status": "passed",
+      "verification": {
+        "status": "passed",
+        "nonImageViewsByteIdentical": 7,
+        "imagesResized": 0,
+        "imagesUnchanged": 0,
+        "compressedViews": 6,
+        "accessors": 7,
+        "skins": 1,
+        "clips": 0,
+        "triangles": 1599,
+        "alignmentPaddingBytes": 12
+      }
+    },
+    {
+      "id": "/models/orb-bot-green/model-c2.glb",
+      "status": "passed",
+      "verification": {
+        "status": "passed",
+        "nonImageViewsByteIdentical": 57,
+        "imagesResized": 0,
+        "imagesUnchanged": 2,
+        "compressedViews": 50,
+        "accessors": 57,
+        "skins": 1,
+        "clips": 7,
+        "triangles": 4000,
+        "alignmentPaddingBytes": 108
+      }
+    },
+    {
+      "id": "/models/orb-bot-heart/lod-c2.glb",
+      "status": "passed",
+      "verification": {
+        "status": "passed",
+        "nonImageViewsByteIdentical": 7,
+        "imagesResized": 0,
+        "imagesUnchanged": 0,
+        "compressedViews": 6,
+        "accessors": 7,
+        "skins": 1,
+        "clips": 0,
+        "triangles": 1574,
+        "alignmentPaddingBytes": 11
+      }
+    },
+    {
+      "id": "/models/orb-bot-heart/model-c2.glb",
+      "status": "passed",
+      "verification": {
+        "status": "passed",
+        "nonImageViewsByteIdentical": 57,
+        "imagesResized": 0,
+        "imagesUnchanged": 2,
+        "compressedViews": 48,
+        "accessors": 57,
+        "skins": 1,
+        "clips": 7,
+        "triangles": 3935,
+        "alignmentPaddingBytes": 113
+      }
+    },
+    {
+      "id": "/models/orb-bot-orange/lod-c2.glb",
+      "status": "passed",
+      "verification": {
+        "status": "passed",
+        "nonImageViewsByteIdentical": 7,
+        "imagesResized": 0,
+        "imagesUnchanged": 0,
+        "compressedViews": 6,
+        "accessors": 7,
+        "skins": 1,
+        "clips": 0,
+        "triangles": 1012,
+        "alignmentPaddingBytes": 10
+      }
+    },
+    {
+      "id": "/models/orb-bot-orange/model-c2.glb",
+      "status": "passed",
+      "verification": {
+        "status": "passed",
+        "nonImageViewsByteIdentical": 57,
+        "imagesResized": 0,
+        "imagesUnchanged": 2,
+        "compressedViews": 50,
+        "accessors": 57,
+        "skins": 1,
+        "clips": 7,
+        "triangles": 2531,
+        "alignmentPaddingBytes": 109
+      }
+    },
+    {
+      "id": "/models/orb-bot-purple/lod-c2.glb",
+      "status": "passed",
+      "verification": {
+        "status": "passed",
+        "nonImageViewsByteIdentical": 7,
+        "imagesResized": 0,
+        "imagesUnchanged": 0,
+        "compressedViews": 6,
+        "accessors": 7,
+        "skins": 1,
+        "clips": 0,
+        "triangles": 1599,
+        "alignmentPaddingBytes": 14
+      }
+    },
+    {
+      "id": "/models/orb-bot-purple/model-c2.glb",
+      "status": "passed",
+      "verification": {
+        "status": "passed",
+        "nonImageViewsByteIdentical": 57,
+        "imagesResized": 0,
+        "imagesUnchanged": 2,
+        "compressedViews": 50,
+        "accessors": 57,
+        "skins": 1,
+        "clips": 7,
+        "triangles": 4000,
+        "alignmentPaddingBytes": 109
+      }
+    },
+    {
+      "id": "/models/orb-bot-triangle/lod-c2.glb",
+      "status": "passed",
+      "verification": {
+        "status": "passed",
+        "nonImageViewsByteIdentical": 7,
+        "imagesResized": 0,
+        "imagesUnchanged": 0,
+        "compressedViews": 6,
+        "accessors": 7,
+        "skins": 1,
+        "clips": 0,
+        "triangles": 1597,
+        "alignmentPaddingBytes": 15
+      }
+    },
+    {
+      "id": "/models/orb-bot-triangle/model-c2.glb",
+      "status": "passed",
+      "verification": {
+        "status": "passed",
+        "nonImageViewsByteIdentical": 57,
+        "imagesResized": 0,
+        "imagesUnchanged": 2,
+        "compressedViews": 48,
+        "accessors": 57,
+        "skins": 1,
+        "clips": 7,
+        "triangles": 3993,
+        "alignmentPaddingBytes": 107
+      }
+    },
+    {
+      "id": "/models/orb-bot-white/lod-c2.glb",
+      "status": "passed",
+      "verification": {
+        "status": "passed",
+        "nonImageViewsByteIdentical": 7,
+        "imagesResized": 0,
+        "imagesUnchanged": 0,
+        "compressedViews": 6,
+        "accessors": 7,
+        "skins": 1,
+        "clips": 0,
+        "triangles": 1600,
+        "alignmentPaddingBytes": 9
+      }
+    },
+    {
+      "id": "/models/orb-bot-white/model-c2.glb",
+      "status": "passed",
+      "verification": {
+        "status": "passed",
+        "nonImageViewsByteIdentical": 57,
+        "imagesResized": 0,
+        "imagesUnchanged": 2,
+        "compressedViews": 50,
+        "accessors": 57,
+        "skins": 1,
+        "clips": 7,
+        "triangles": 4000,
+        "alignmentPaddingBytes": 110
+      }
+    },
+    {
+      "id": "/models/rimo-neko/lod-c2.glb",
+      "status": "passed",
+      "verification": {
+        "status": "passed",
+        "nonImageViewsByteIdentical": 7,
+        "imagesResized": 0,
+        "imagesUnchanged": 0,
+        "compressedViews": 7,
+        "accessors": 7,
+        "skins": 1,
+        "clips": 0,
+        "triangles": 8241,
+        "alignmentPaddingBytes": 9
+      }
+    },
+    {
+      "id": "/models/rimo-neko/model-c2.glb",
+      "status": "passed",
+      "verification": {
+        "status": "passed",
+        "nonImageViewsByteIdentical": 622,
+        "imagesResized": 2,
+        "imagesUnchanged": 0,
+        "compressedViews": 622,
+        "accessors": 622,
+        "skins": 1,
+        "clips": 7,
+        "triangles": 27474,
+        "alignmentPaddingBytes": 1164
+      }
+    },
+    {
+      "id": "/models/river-water/model.glb",
+      "status": "passed",
+      "verification": {
+        "status": "passed",
+        "nonImageViewsByteIdentical": 4,
+        "imagesResized": 0,
+        "imagesUnchanged": 1,
+        "compressedViews": 4,
+        "accessors": 4,
+        "skins": 0,
+        "clips": 0,
+        "triangles": 2693,
+        "alignmentPaddingBytes": 7
+      }
+    },
+    {
+      "id": "/models/sabertooth-tiger/lod-c2.glb",
+      "status": "passed",
+      "verification": {
+        "status": "passed",
+        "nonImageViewsByteIdentical": 7,
+        "imagesResized": 0,
+        "imagesUnchanged": 0,
+        "compressedViews": 7,
+        "accessors": 7,
+        "skins": 1,
+        "clips": 0,
+        "triangles": 8477,
+        "alignmentPaddingBytes": 6
+      }
+    },
+    {
+      "id": "/models/sabertooth-tiger/model-c2.glb",
+      "status": "passed",
+      "verification": {
+        "status": "passed",
+        "nonImageViewsByteIdentical": 805,
+        "imagesResized": 2,
+        "imagesUnchanged": 0,
+        "compressedViews": 774,
+        "accessors": 805,
+        "skins": 1,
+        "clips": 11,
+        "triangles": 38535,
+        "alignmentPaddingBytes": 1351
+      }
+    },
+    {
+      "id": "/models/shell-midden/model-c2.glb",
+      "status": "passed",
+      "verification": {
+        "status": "passed",
+        "nonImageViewsByteIdentical": 5,
+        "imagesResized": 2,
+        "imagesUnchanged": 0,
+        "compressedViews": 5,
+        "accessors": 5,
+        "skins": 0,
+        "clips": 0,
+        "triangles": 8940,
+        "alignmentPaddingBytes": 11
+      }
+    },
+    {
+      "id": "/models/snow-ground/lod1.glb",
+      "status": "passed",
+      "verification": {
+        "status": "passed",
+        "nonImageViewsByteIdentical": 8,
+        "imagesResized": 1,
+        "imagesUnchanged": 1,
+        "compressedViews": 8,
+        "accessors": 8,
+        "skins": 0,
+        "clips": 0,
+        "triangles": 825,
+        "alignmentPaddingBytes": 13
+      }
+    },
+    {
+      "id": "/models/snow-ground/lod2.glb",
+      "status": "passed",
+      "verification": {
+        "status": "passed",
+        "nonImageViewsByteIdentical": 8,
+        "imagesResized": 1,
+        "imagesUnchanged": 1,
+        "compressedViews": 7,
+        "accessors": 8,
+        "skins": 0,
+        "clips": 0,
+        "triangles": 203,
+        "alignmentPaddingBytes": 9
+      }
+    },
+    {
+      "id": "/models/snow-ground/model.glb",
+      "status": "passed",
+      "verification": {
+        "status": "passed",
+        "nonImageViewsByteIdentical": 8,
+        "imagesResized": 1,
+        "imagesUnchanged": 1,
+        "compressedViews": 8,
+        "accessors": 8,
+        "skins": 0,
+        "clips": 0,
+        "triangles": 5903,
+        "alignmentPaddingBytes": 14
+      }
+    },
+    {
+      "id": "/models/stone-axe/model-c2.glb",
+      "status": "passed",
+      "verification": {
+        "status": "passed",
+        "nonImageViewsByteIdentical": 5,
+        "imagesResized": 0,
+        "imagesUnchanged": 2,
+        "compressedViews": 5,
+        "accessors": 5,
+        "skins": 0,
+        "clips": 0,
+        "triangles": 3941,
+        "alignmentPaddingBytes": 11
+      }
+    },
+    {
+      "id": "/models/stone-firepit/lod-c2.glb",
+      "status": "passed",
+      "verification": {
+        "status": "passed",
+        "nonImageViewsByteIdentical": 4,
+        "imagesResized": 0,
+        "imagesUnchanged": 1,
+        "compressedViews": 4,
+        "accessors": 4,
+        "skins": 0,
+        "clips": 0,
+        "triangles": 3081,
+        "alignmentPaddingBytes": 7
+      }
+    },
+    {
+      "id": "/models/stone-firepit/model-c2.glb",
+      "status": "passed",
+      "verification": {
+        "status": "passed",
+        "nonImageViewsByteIdentical": 5,
+        "imagesResized": 0,
+        "imagesUnchanged": 2,
+        "compressedViews": 5,
+        "accessors": 5,
+        "skins": 0,
+        "clips": 0,
+        "triangles": 8356,
+        "alignmentPaddingBytes": 14
+      }
+    },
+    {
+      "id": "/models/valley-boulder/lod-c2.glb",
+      "status": "passed",
+      "verification": {
+        "status": "passed",
+        "nonImageViewsByteIdentical": 4,
+        "imagesResized": 0,
+        "imagesUnchanged": 1,
+        "compressedViews": 4,
+        "accessors": 4,
+        "skins": 0,
+        "clips": 0,
+        "triangles": 1050,
+        "alignmentPaddingBytes": 11
+      }
+    },
+    {
+      "id": "/models/valley-boulder/model-c2.glb",
+      "status": "passed",
+      "verification": {
+        "status": "passed",
+        "nonImageViewsByteIdentical": 5,
+        "imagesResized": 0,
+        "imagesUnchanged": 2,
+        "compressedViews": 5,
+        "accessors": 5,
+        "skins": 0,
+        "clips": 0,
+        "triangles": 3498,
+        "alignmentPaddingBytes": 9
+      }
+    },
+    {
+      "id": "/models/valley-castle/model-r13-normal.glb",
+      "status": "passed",
+      "verification": {
+        "status": "passed",
+        "nonImageViewsByteIdentical": 4,
+        "imagesResized": 1,
+        "imagesUnchanged": 1,
+        "compressedViews": 4,
+        "accessors": 4,
+        "skins": 0,
+        "clips": 0,
+        "triangles": 127254,
+        "alignmentPaddingBytes": 12
+      }
+    },
+    {
+      "id": "/models/valley-pine/lod-c2.glb",
+      "status": "passed",
+      "verification": {
+        "status": "passed",
+        "nonImageViewsByteIdentical": 5,
+        "imagesResized": 0,
+        "imagesUnchanged": 2,
+        "compressedViews": 5,
+        "accessors": 5,
+        "skins": 0,
+        "clips": 0,
+        "triangles": 6839,
+        "alignmentPaddingBytes": 4
+      }
+    },
+    {
+      "id": "/models/valley-pine/model-c2.glb",
+      "status": "passed",
+      "verification": {
+        "status": "passed",
+        "nonImageViewsByteIdentical": 5,
+        "imagesResized": 0,
+        "imagesUnchanged": 2,
+        "compressedViews": 5,
+        "accessors": 5,
+        "skins": 0,
+        "clips": 0,
+        "triangles": 17122,
+        "alignmentPaddingBytes": 13
+      }
+    },
+    {
+      "id": "/models/violet-behemoth/lod-c2.glb",
+      "status": "passed",
+      "verification": {
+        "status": "passed",
+        "nonImageViewsByteIdentical": 7,
+        "imagesResized": 0,
+        "imagesUnchanged": 0,
+        "compressedViews": 7,
+        "accessors": 7,
+        "skins": 1,
+        "clips": 0,
+        "triangles": 7965,
+        "alignmentPaddingBytes": 10
+      }
+    },
+    {
+      "id": "/models/violet-behemoth/model-c2.glb",
+      "status": "passed",
+      "verification": {
+        "status": "passed",
+        "nonImageViewsByteIdentical": 1182,
+        "imagesResized": 2,
+        "imagesUnchanged": 0,
+        "compressedViews": 1181,
+        "accessors": 1182,
+        "skins": 1,
+        "clips": 14,
+        "triangles": 39825,
+        "alignmentPaddingBytes": 2045
+      }
+    },
+    {
+      "id": "/models/volcanic-basalt-columns/lod-c2.glb",
+      "status": "passed",
+      "verification": {
+        "status": "passed",
+        "nonImageViewsByteIdentical": 4,
+        "imagesResized": 1,
+        "imagesUnchanged": 0,
+        "compressedViews": 4,
+        "accessors": 4,
+        "skins": 0,
+        "clips": 0,
+        "triangles": 4093,
+        "alignmentPaddingBytes": 6
+      }
+    },
+    {
+      "id": "/models/volcanic-basalt-columns/model-c2.glb",
+      "status": "passed",
+      "verification": {
+        "status": "passed",
+        "nonImageViewsByteIdentical": 5,
+        "imagesResized": 2,
+        "imagesUnchanged": 0,
+        "compressedViews": 5,
+        "accessors": 5,
+        "skins": 0,
+        "clips": 0,
+        "triangles": 13608,
+        "alignmentPaddingBytes": 12
+      }
+    },
+    {
+      "id": "/models/volcanic-cone/model-c1-normal.glb",
+      "status": "passed",
+      "verification": {
+        "status": "passed",
+        "nonImageViewsByteIdentical": 4,
+        "imagesResized": 1,
+        "imagesUnchanged": 1,
+        "compressedViews": 4,
+        "accessors": 4,
+        "skins": 0,
+        "clips": 0,
+        "triangles": 13382,
+        "alignmentPaddingBytes": 4
+      }
+    },
+    {
+      "id": "/models/volcanic-ground/lod1.glb",
+      "status": "passed",
+      "verification": {
+        "status": "passed",
+        "nonImageViewsByteIdentical": 4,
+        "imagesResized": 0,
+        "imagesUnchanged": 1,
+        "compressedViews": 4,
+        "accessors": 4,
+        "skins": 0,
+        "clips": 0,
+        "triangles": 784,
+        "alignmentPaddingBytes": 10
+      }
+    },
+    {
+      "id": "/models/volcanic-ground/lod2.glb",
+      "status": "passed",
+      "verification": {
+        "status": "passed",
+        "nonImageViewsByteIdentical": 4,
+        "imagesResized": 0,
+        "imagesUnchanged": 1,
+        "compressedViews": 4,
+        "accessors": 4,
+        "skins": 0,
+        "clips": 0,
+        "triangles": 196,
+        "alignmentPaddingBytes": 7
+      }
+    },
+    {
+      "id": "/models/volcanic-ground/model.glb",
+      "status": "passed",
+      "verification": {
+        "status": "passed",
+        "nonImageViewsByteIdentical": 4,
+        "imagesResized": 0,
+        "imagesUnchanged": 1,
+        "compressedViews": 4,
+        "accessors": 4,
+        "skins": 0,
+        "clips": 0,
+        "triangles": 5594,
+        "alignmentPaddingBytes": 10
+      }
+    },
+    {
+      "id": "/models/wood-footbridge/lod-c2.glb",
+      "status": "passed",
+      "verification": {
+        "status": "passed",
+        "nonImageViewsByteIdentical": 4,
+        "imagesResized": 1,
+        "imagesUnchanged": 0,
+        "compressedViews": 4,
+        "accessors": 4,
+        "skins": 0,
+        "clips": 0,
+        "triangles": 2969,
+        "alignmentPaddingBytes": 9
+      }
+    },
+    {
+      "id": "/models/wood-footbridge/model-c2.glb",
+      "status": "passed",
+      "verification": {
+        "status": "passed",
+        "nonImageViewsByteIdentical": 5,
+        "imagesResized": 2,
+        "imagesUnchanged": 0,
+        "compressedViews": 5,
+        "accessors": 5,
+        "skins": 0,
+        "clips": 0,
+        "triangles": 8987,
+        "alignmentPaddingBytes": 12
+      }
+    },
+    {
+      "id": "/models/wooden-spear/model-c2.glb",
+      "status": "passed",
+      "verification": {
+        "status": "passed",
+        "nonImageViewsByteIdentical": 5,
+        "imagesResized": 0,
+        "imagesUnchanged": 2,
+        "compressedViews": 5,
+        "accessors": 5,
+        "skins": 0,
+        "clips": 0,
+        "triangles": 2500,
+        "alignmentPaddingBytes": 6
+      }
+    },
+    {
+      "id": "/models/woolly-mammoth/lod-c2.glb",
+      "status": "passed",
+      "verification": {
+        "status": "passed",
+        "nonImageViewsByteIdentical": 7,
+        "imagesResized": 0,
+        "imagesUnchanged": 0,
+        "compressedViews": 7,
+        "accessors": 7,
+        "skins": 1,
+        "clips": 0,
+        "triangles": 4797,
+        "alignmentPaddingBytes": 11
+      }
+    },
+    {
+      "id": "/models/woolly-mammoth/model-c2.glb",
+      "status": "passed",
+      "verification": {
+        "status": "passed",
+        "nonImageViewsByteIdentical": 399,
+        "imagesResized": 2,
+        "imagesUnchanged": 0,
+        "compressedViews": 398,
+        "accessors": 399,
+        "skins": 1,
+        "clips": 5,
+        "triangles": 39982,
+        "alignmentPaddingBytes": 609
+      }
+    },
+    {
+      "id": "/models/yellow-524-mascot/lod-c2.glb",
+      "status": "passed",
+      "verification": {
+        "status": "passed",
+        "nonImageViewsByteIdentical": 7,
+        "imagesResized": 0,
+        "imagesUnchanged": 0,
+        "compressedViews": 7,
+        "accessors": 7,
+        "skins": 1,
+        "clips": 0,
+        "triangles": 7498,
+        "alignmentPaddingBytes": 8
+      }
+    },
+    {
+      "id": "/models/yellow-524-mascot/model-c2.glb",
+      "status": "passed",
+      "verification": {
+        "status": "passed",
+        "nonImageViewsByteIdentical": 69,
+        "imagesResized": 0,
+        "imagesUnchanged": 2,
+        "compressedViews": 69,
+        "accessors": 69,
+        "skins": 1,
+        "clips": 1,
+        "triangles": 24997,
+        "alignmentPaddingBytes": 119
+      }
+    },
+    {
+      "id": "startup:cat-kunoichi",
+      "status": "passed",
+      "verification": {
+        "status": "passed",
+        "triangles": 10484,
+        "clips": 10,
+        "channels": 660,
+        "keyframes": 133320,
+        "skins": 1,
+        "images": 5,
+        "remappedJointComponents": 0,
+        "omittedOptionalAttributes": 2,
+        "compressedViews": 671,
+        "alignmentPaddingBytes": 1212
+      }
+    },
+    {
+      "id": "startup:cro-magnon-hunter",
+      "status": "passed",
+      "verification": {
+        "status": "passed",
+        "triangles": 10112,
+        "clips": 10,
+        "channels": 638,
+        "keyframes": 50402,
+        "skins": 1,
+        "images": 5,
+        "remappedJointComponents": 0,
+        "omittedOptionalAttributes": 3,
+        "compressedViews": 657,
+        "alignmentPaddingBytes": 1403
+      }
+    },
+    {
+      "id": "startup:cro-magnon-woman",
+      "status": "passed",
+      "verification": {
+        "status": "passed",
+        "triangles": 12627,
+        "clips": 10,
+        "channels": 660,
+        "keyframes": 134112,
+        "skins": 1,
+        "images": 3,
+        "remappedJointComponents": 0,
+        "omittedOptionalAttributes": 1,
+        "compressedViews": 666,
+        "alignmentPaddingBytes": 1156
+      }
+    },
+    {
+      "id": "startup:desert-fennec-mage",
+      "status": "passed",
+      "verification": {
+        "status": "passed",
+        "triangles": 10630,
+        "clips": 10,
+        "channels": 725,
+        "keyframes": 46925,
+        "skins": 1,
+        "images": 2,
+        "remappedJointComponents": 0,
+        "omittedOptionalAttributes": 1,
+        "compressedViews": 731,
+        "alignmentPaddingBytes": 1530
+      }
+    },
+    {
+      "id": "startup:giant-ape",
+      "status": "passed",
+      "verification": {
+        "status": "passed",
+        "triangles": 11643,
+        "clips": 13,
+        "channels": 858,
+        "keyframes": 183810,
+        "skins": 1,
+        "images": 2,
+        "remappedJointComponents": 0,
+        "omittedOptionalAttributes": 1,
+        "compressedViews": 850,
+        "alignmentPaddingBytes": 1608
+      }
+    },
+    {
+      "id": "startup:neanderthal-hunter",
+      "status": "passed",
+      "verification": {
+        "status": "passed",
+        "triangles": 13413,
+        "clips": 10,
+        "channels": 638,
+        "keyframes": 50402,
+        "skins": 1,
+        "images": 4,
+        "remappedJointComponents": 0,
+        "omittedOptionalAttributes": 2,
+        "compressedViews": 658,
+        "alignmentPaddingBytes": 1344
+      }
+    },
+    {
+      "id": "startup:neanderthal-woman",
+      "status": "passed",
+      "verification": {
+        "status": "passed",
+        "triangles": 12894,
+        "clips": 10,
+        "channels": 660,
+        "keyframes": 134112,
+        "skins": 1,
+        "images": 3,
+        "remappedJointComponents": 0,
+        "omittedOptionalAttributes": 1,
+        "compressedViews": 672,
+        "alignmentPaddingBytes": 1159
+      }
+    },
+    {
+      "id": "image:/models/camp-cave/524-lascaux-frieze-r32.png",
+      "status": "passed",
+      "verification": {
+        "status": "passed",
+        "format": "png",
+        "width": 1024,
+        "height": 341,
+        "alpha": true,
+        "aspectError": 0.0014385845948525766,
+        "checks": [
+          "original SHA-256/length",
+          "candidate SHA-256/length",
+          "format and mime",
+          "planned size, no upscale, edge",
+          "alpha",
+          "PNG colour chunks and bit depth",
+          "aspect within pixel rounding"
+        ]
+      }
+    },
+    {
+      "id": "image:/models/camp-cave/mural-atlas-r05.png",
+      "status": "passed",
+      "verification": {
+        "status": "passed",
+        "format": "png",
+        "width": 1024,
+        "height": 1024,
+        "alpha": true,
+        "aspectError": 0,
+        "checks": [
+          "original SHA-256/length",
+          "candidate SHA-256/length",
+          "format and mime",
+          "planned size, no upscale, edge",
+          "alpha",
+          "PNG colour chunks and bit depth",
+          "aspect within pixel rounding"
+        ]
+      }
+    },
+    {
+      "id": "image:/models/camp-cave/rimo-lascaux-frieze-r30.png",
+      "status": "passed",
+      "verification": {
+        "status": "passed",
+        "format": "png",
+        "width": 1024,
+        "height": 341,
+        "alpha": true,
+        "aspectError": 0.0009775171065493637,
+        "checks": [
+          "original SHA-256/length",
+          "candidate SHA-256/length",
+          "format and mime",
+          "planned size, no upscale, edge",
+          "alpha",
+          "PNG colour chunks and bit depth",
+          "aspect within pixel rounding"
+        ]
+      }
+    },
+    {
+      "id": "image:/models/camp-cave/limestone-r05.png",
+      "status": "passed",
+      "verification": {
+        "status": "passed",
+        "format": "png",
+        "width": 1024,
+        "height": 1024,
+        "alpha": false,
+        "aspectError": 0,
+        "checks": [
+          "original SHA-256/length",
+          "candidate SHA-256/length",
+          "format and mime",
+          "planned size, no upscale, edge",
+          "alpha",
+          "PNG colour chunks and bit depth",
+          "aspect within pixel rounding"
+        ]
+      }
+    },
+    {
+      "id": "image:/models/camp-cave/friends-meadow-lascaux-r34.png",
+      "status": "passed",
+      "verification": {
+        "status": "passed",
+        "format": "png",
+        "width": 1024,
+        "height": 341,
+        "alpha": true,
+        "aspectError": 0.0009775171065493637,
+        "checks": [
+          "original SHA-256/length",
+          "candidate SHA-256/length",
+          "format and mime",
+          "planned size, no upscale, edge",
+          "alpha",
+          "PNG colour chunks and bit depth",
+          "aspect within pixel rounding"
+        ]
+      }
+    },
+    {
+      "id": "image:/models/camp-cave/friends-river-lascaux-r35.png",
+      "status": "passed",
+      "verification": {
+        "status": "passed",
+        "format": "png",
+        "width": 1024,
+        "height": 341,
+        "alpha": true,
+        "aspectError": 0.0009775171065493637,
+        "checks": [
+          "original SHA-256/length",
+          "candidate SHA-256/length",
+          "format and mime",
+          "planned size, no upscale, edge",
+          "alpha",
+          "PNG colour chunks and bit depth",
+          "aspect within pixel rounding"
+        ]
+      }
+    },
+    {
+      "id": "image:/models/camp-cave/mae-kohaku-lascaux-r31.png",
+      "status": "passed",
+      "verification": {
+        "status": "passed",
+        "format": "png",
+        "width": 1024,
+        "height": 341,
+        "alpha": true,
+        "aspectError": 0.0009775171065493637,
+        "checks": [
+          "original SHA-256/length",
+          "candidate SHA-256/length",
+          "format and mime",
+          "planned size, no upscale, edge",
+          "alpha",
+          "PNG colour chunks and bit depth",
+          "aspect within pixel rounding"
+        ]
+      }
+    },
+    {
+      "id": "image:/models/camp-cave/maruimo-lascaux-r33.png",
+      "status": "passed",
+      "verification": {
+        "status": "passed",
+        "format": "png",
+        "width": 1024,
+        "height": 341,
+        "alpha": true,
+        "aspectError": 0.0009775171065493637,
+        "checks": [
+          "original SHA-256/length",
+          "candidate SHA-256/length",
+          "format and mime",
+          "planned size, no upscale, edge",
+          "alpha",
+          "PNG colour chunks and bit depth",
+          "aspect within pixel rounding"
+        ]
+      }
+    },
+    {
+      "id": "image:/models/camp-cave/bot-round-lascaux-r31.png",
+      "status": "passed",
+      "verification": {
+        "status": "passed",
+        "format": "png",
+        "width": 1024,
+        "height": 341,
+        "alpha": true,
+        "aspectError": 0.0009775171065493637,
+        "checks": [
+          "original SHA-256/length",
+          "candidate SHA-256/length",
+          "format and mime",
+          "planned size, no upscale, edge",
+          "alpha",
+          "PNG colour chunks and bit depth",
+          "aspect within pixel rounding"
+        ]
+      }
+    },
+    {
+      "id": "image:/models/camp-cave/bot-shapes-lascaux-r31.png",
+      "status": "passed",
+      "verification": {
+        "status": "passed",
+        "format": "png",
+        "width": 1024,
+        "height": 341,
+        "alpha": true,
+        "aspectError": 0.0009775171065493637,
+        "checks": [
+          "original SHA-256/length",
+          "candidate SHA-256/length",
+          "format and mime",
+          "planned size, no upscale, edge",
+          "alpha",
+          "PNG colour chunks and bit depth",
+          "aspect within pixel rounding"
+        ]
+      }
+    }
+  ]
+}

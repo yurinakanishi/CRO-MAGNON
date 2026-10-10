@@ -30,17 +30,60 @@ test('all nine catalog bot portraits are included only when their models are rel
 });
 
 test('nested declared cave textures are packaged with integrity while historical provenance stays out', async () => {
-  const cave = JSON.parse(await readFile('public/models/camp-cave/asset.json', 'utf8'));
-  const records = runtimeTextureRecords(cave);
-  for (const name of [
-    'bot-round-lascaux-r31.png',
-    'bot-shapes-lascaux-r31.png',
-    'mae-kohaku-lascaux-r31.png',
-  ])
-    assert.ok(
-      records.some((record) => record.url.endsWith(name)),
-      name,
+  const cave = JSON.parse(await readFile('public/models/camp-cave/asset.json', 'utf8')),
+    catalog = JSON.parse(await readFile('public/models/world-assets.json', 'utf8')).assets.find(
+      (asset) => asset.modelKey === 'camp-cave',
+    ),
+    records = runtimeTextureRecords(cave);
+  // Exactly the active records the manifest declares: the four direct images, every mascot
+  // frieze, and the declared previous atlas (packaged as before). They name originals before
+  // adoption and hash-named candidates after it.
+  for (const key of ['roundBots', 'shapeBots', 'maeKohaku'])
+    assert.ok(Object.hasOwn(cave.mascotPigments, key), key);
+  const declared = [
+    cave.pigment,
+    cave.rockSurface,
+    cave.characterPigment,
+    cave.rimoPigment,
+    ...Object.values(cave.mascotPigments),
+    cave.pigment.previous,
+  ];
+  assert.deepEqual(
+    records.map((record) => record.url).sort(),
+    declared.map((record) => record.url).sort(),
+  );
+  assert.deepEqual(runtimeTextureRecords(catalog), records, 'both runtime manifests agree');
+  // Every URL inside a provenance record is historical: an adopted image's original, a reference.
+  const historical = new Set();
+  const visit = (value, inside) => {
+    if (!value || typeof value !== 'object') return;
+    if (inside && typeof value.url === 'string') historical.add(value.url);
+    for (const [key, child] of Object.entries(value)) visit(child, inside || key === 'provenance');
+  };
+  visit(cave, false);
+  for (const record of records) {
+    assert.ok(!historical.has(record.url), `${record.url} is historical`);
+    const file = path.join('public', ...record.url.slice(1).split('/')),
+      bytes = await readFile(file);
+    assert.equal(await sha256(file), record.sha256, record.url);
+    if (record.bytes !== undefined) assert.equal(bytes.length, record.bytes, record.url);
+    const original = record.provenance?.runtimeOptimization?.original;
+    assert.equal(
+      /\.opt-[0-9a-f]{16}\.png$/.test(record.url),
+      !!original,
+      `${record.url}: hash-named exactly when adopted`,
     );
+    if (original) {
+      // Adopted: the served size, plus the original size its rectangles are measured in.
+      assert.deepEqual(
+        [bytes.readUInt32BE(16), bytes.readUInt32BE(20)],
+        [record.image.width, record.image.height],
+        record.url,
+      );
+      assert.deepEqual(record.uvSource, original.image, record.url);
+      assert.ok(!records.some((other) => other.url === original.url), original.url);
+    } else assert.equal(record.uvSource, undefined, record.url);
+  }
   const record = { url: '/models/test/pigment.png', sha256: 'a'.repeat(64) };
   assert.deepEqual(
     runtimeTextureRecords({
@@ -49,6 +92,18 @@ test('nested declared cave textures are packaged with integrity while historical
     }),
     [record],
   );
+  // An adopted record ships; the original it replaced, kept under its provenance, does not.
+  const adopted = {
+    url: `/models/test/pigment.opt-${'c'.repeat(16)}.png`,
+    sha256: 'c'.repeat(64),
+    bytes: 10,
+    image: { width: 512, height: 256 },
+    uvSource: { width: 2048, height: 1024 },
+    provenance: {
+      runtimeOptimization: { original: { ...record, image: { width: 2048, height: 1024 } } },
+    },
+  };
+  assert.deepEqual(runtimeTextureRecords({ pigment: adopted }), [adopted]);
   assert.throws(
     () => runtimeTextureRecords({ a: record, b: { ...record, sha256: 'b'.repeat(64) } }),
     /Conflicting/,
@@ -71,6 +126,28 @@ test('all environment releases reject removed journal code and stale incremental
       await assert.rejects(
         auditEnvironmentAssets(files.keys(), async (file) => files.get(file), profile),
         /Removed journal/,
+      );
+    }
+  }
+});
+
+test('all environment releases reject the removed graphics selector and its stored preference', async () => {
+  for (const environment of ['local', 'exhibition', 'mmo']) {
+    const profile = browserBuildProfile(environment);
+    for (const [name, code] of [
+      ['src/graphics-settings.js', 'export {};'],
+      ['src/main.js', "localStorage.getItem('cro-graphics-quality');"],
+      ['src/main.js', '<button id="title-graphics" class="menu-item">画質</button>'],
+      ['src/main.js', "root.querySelectorAll('[data-graphics]');"],
+      ['src/world3d.js', 'renderer.setGraphicsMode?.(mode);'],
+    ]) {
+      const files = new Map([
+        ['build-profile.json', Buffer.from(JSON.stringify(profile))],
+        [name, Buffer.from(code)],
+      ]);
+      await assert.rejects(
+        auditEnvironmentAssets(files.keys(), async (file) => files.get(file), profile),
+        /Removed graphics selector/,
       );
     }
   }

@@ -1,0 +1,28 @@
+{
+  "schema": "cro-magnon/runtime-adoption-journal@1",
+  "adoption": "20261010-r06-a01",
+  "planSha256": "2e9bb7d2149c102fb7dab3e031f6cb52c9f019101bfed6b2ee366a6493fd458d",
+  "base": {
+    "adoption": "20261010-r05-a02",
+    "planSha256": "2697ba7246fc06f764989ede94a58cb4f8324765befc6fae0db11ed6430ce444"
+  },
+  "state": "restored",
+  "history": [
+    {
+      "state": "planned",
+      "at": "2026-10-10T05:34:35.686Z"
+    },
+    {
+      "state": "applying",
+      "at": "2026-10-10T05:36:47.611Z"
+    },
+    {
+      "state": "restoring",
+      "at": "2026-10-10T05:37:16.965Z"
+    },
+    {
+      "state": "restored",
+      "at": "2026-10-10T05:37:16.969Z"
+    }
+  ]
+}

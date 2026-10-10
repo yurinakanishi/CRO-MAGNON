@@ -1,0 +1,138 @@
+{
+  "modelKey": "nukonuko-mascot",
+  "name": "ぬこぬこ",
+  "kind": "companion",
+  "candidate": 1,
+  "revision": "r02",
+  "status": "friend-mascot-integrated",
+  "url": "/models/nukonuko-mascot/model-r02.glb",
+  "sha256": "af3322a2f91ee749b9c142892f59380dbf3cd7c41260a53cc83d316ee6c85f20",
+  "bytes": 7168968,
+  "triangles": 21998,
+  "bones": 37,
+  "upAxis": "Y",
+  "forwardAxis": "+Z",
+  "heightMetres": 0.52,
+  "widthMetres": 0.4524031744046208,
+  "lengthMetres": 0.34984821792295806,
+  "petContactMetres": 0.48943981528282166,
+  "placement": {
+    "pivot": "ground-between-shoes",
+    "scale": 1
+  },
+  "portrait": {
+    "url": "/models/nukonuko-mascot/portrait.png",
+    "sha256": "beb9264c379b7e6d17976c953acb292af9ebdf4fbce634664d13c1a44c3f4bb9"
+  },
+  "clips": [
+    {
+      "name": "Idle_Loop",
+      "seconds": 3,
+      "loop": true,
+      "fps": 60,
+      "rootMotion": "in-place"
+    },
+    {
+      "name": "Walk_Loop",
+      "seconds": 0.7166666666666667,
+      "loop": true,
+      "fps": 60,
+      "rootMotion": "in-place"
+    },
+    {
+      "name": "Run_Loop",
+      "seconds": 0.4,
+      "loop": true,
+      "fps": 60,
+      "rootMotion": "in-place"
+    },
+    {
+      "name": "Pet",
+      "seconds": 1.4,
+      "loop": false,
+      "fps": 60,
+      "rootMotion": "in-place"
+    },
+    {
+      "name": "Happy",
+      "seconds": 1.4,
+      "loop": false,
+      "fps": 60,
+      "rootMotion": "in-place"
+    },
+    {
+      "name": "Hit",
+      "seconds": 0.65,
+      "loop": false,
+      "fps": 60,
+      "rootMotion": "in-place"
+    },
+    {
+      "name": "Wave",
+      "seconds": 1.8,
+      "loop": false,
+      "fps": 60,
+      "rootMotion": "in-place"
+    },
+    {
+      "name": "Bow",
+      "seconds": 1.6,
+      "loop": false,
+      "fps": 60,
+      "rootMotion": "in-place"
+    }
+  ],
+  "locomotion": {
+    "Walk_Loop": {
+      "metresPerSecond": 0.19634941472968798,
+      "cycleSeconds": 0.72
+    },
+    "Run_Loop": {
+      "metresPerSecond": 0.7385625485229349,
+      "cycleSeconds": 0.4
+    }
+  },
+  "lods": [
+    {
+      "url": "/models/nukonuko-mascot/lod-r02.glb",
+      "sha256": "92fc767dda398ee66ce498bc73221d62e0985121e618f050eab7676210a0171c",
+      "bytes": 955832,
+      "triangles": 9863,
+      "distanceMetres": 8,
+      "purpose": "animated-medium-lod-geometry"
+    }
+  ],
+  "provenance": {
+    "provider": "Claude Code (Opus 5.5)",
+    "claudeUsed": true,
+    "referenceGenerator": "Codex CLI 0.162.0-alpha.2 built-in image_gen (configured default model, unelevated sandbox); request and prompt saved beside the reference",
+    "referenceImage": "assets/friend-mascots/nukonuko-mascot/source/reference-v1.png",
+    "referenceSha256": "7c8bcdcc1fc0101d920ffa77720128901b19fea5413313674ffe14328bc796d5",
+    "identitySources": [
+      "assets/friend-mascots/nukonuko-mascot/source/x-avatar-400.jpg"
+    ],
+    "reconstruction": "Local TRELLIS-2 v0.8.1, res 1024, tex 1024, seed 42",
+    "denseSha256": "1503aa87a6ffc267e15bd7144582cb02ec4b52853f96d6b9e004dd07e38bdf8a",
+    "reduction": "meshoptimizer position-only quadric reduction of the dense surface; fresh Smart UV; 2048 diffuse-colour bake from the dense TRELLIS albedo (Blender 3.6 Cycles, selected to active)",
+    "deviationMetres": {
+      "denseToLow": {
+        "rms": 0.0007419982371596663,
+        "p95": 0.0012507780443774604,
+        "max": 0.00838534170295027
+      },
+      "lowToDense": {
+        "rms": 0.0005317649689827043,
+        "p95": 0.001008547024514646,
+        "max": 0.0029849423298368076
+      }
+    },
+    "surfaceSha256": "9b58f3aa8ceaff0cafe43e18e761e660e4af6358093d1b2d5954426120f22e60",
+    "rig": "assets/friend-mascots/workflow/rig.py with assets/friend-mascots/nukonuko-mascot/rig.json",
+    "rigSha256": "af3322a2f91ee749b9c142892f59380dbf3cd7c41260a53cc83d316ee6c85f20",
+    "pipeline": "assets/friend-mascots/README.md",
+    "visualReview": "output/model-generation/models/nukonuko-mascot/work/rig/revision-02/poses"
+  },
+  "notes": [
+    "Contributor companion. 21998 triangles, 37 bones, 8 in-place 60 fps clips; LOD 9863 triangles shares the skeleton from 8 m. Lowest authored vertex -0.0073 m."
+  ]
+}

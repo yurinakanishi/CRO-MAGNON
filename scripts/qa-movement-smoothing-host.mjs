@@ -13,9 +13,18 @@ game.server.on('request', async (req, res) => {
       JSON.stringify({ mode: 'lan', serverUrl: `ws://127.0.0.1:${port}/ws`, room: 'SMOOTH-QA' }),
     );
   } else if (url.pathname === '/') {
+    // The page entry is the title shell (/src/boot.js). This QA page deliberately
+    // replaces it: the observer instruments WorldRenderer, then imports main.js
+    // directly, which renders its own title without a shell (title-shell.ts).
     const html = await readFile(new URL('../public/index.html', import.meta.url), 'utf8');
+    const entry = /<script type="module" src="\/src\/(?:boot|main)\.js"><\/script>/;
+    if (!entry.test(html)) {
+      res.writeHead(500, { 'Content-Type': 'text/plain', 'Cache-Control': 'no-store' });
+      res.end('Movement QA: public/index.html has no /src/boot.js entry to replace');
+      return;
+    }
     res.writeHead(200, { 'Content-Type': 'text/html', 'Cache-Control': 'no-store' });
-    res.end(html.replace('src="/src/main.js"', 'src="/motion-observer.js"'));
+    res.end(html.replace(entry, '<script type="module" src="/motion-observer.js"></script>'));
   } else if (url.pathname === '/motion-observer.js') {
     res.writeHead(200, { 'Content-Type': 'text/javascript', 'Cache-Control': 'no-store' });
     res.end(`

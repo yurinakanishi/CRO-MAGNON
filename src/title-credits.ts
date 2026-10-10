@@ -4,7 +4,8 @@ import {
   TITLE_GUEST,
   TITLE_SUPPORT,
 } from './title-credit-profiles.js';
-import { FRIEND_MASCOTS } from '../shared/friend-mascots.mjs';
+// The roster, not friend-mascots.mjs: the title's credits load no world data.
+import { FRIEND_MASCOTS } from '../shared/friend-mascot-roster.mjs';
 import { mascotCreditReleased } from '../shared/mascot-roster.mjs';
 export {
   TITLE_CREDITS,
@@ -94,7 +95,7 @@ export function contributorsDialogMarkup(
   const roles: Contributor['role'][] = ['制作', '開発者', '監修', '友情出演'];
   const card = (person: Contributor) => {
     const handle = contributorHandle(person.profile);
-    const body = `<img class="contributor-avatar" src="${person.avatar}" width="56" height="56" alt="" decoding="async"><span class="contributor-text"><strong>${escape(person.name)}</strong>${handle ? `<small>@${handle}</small>` : ''}${person.mural ? `<em>${person.appears ? `${person.appears}・` : ''}壁画：${escape(person.mural)}</em>` : ''}</span>`;
+    const body = `<img class="contributor-avatar" src="${person.avatar}" width="56" height="56" alt="" decoding="async"><span class="contributor-text"><strong>${escape(person.name)}</strong>${handle ? `<small>@${handle}</small>` : ''}</span>`;
     return links && handle
       ? `<li><a class="contributor" href="${person.profile}" target="_blank" rel="noopener noreferrer" aria-label="${escape(`${person.name}のXプロフィールを開く`)}">${body}${xGlyph}</a></li>`
       : `<li><div class="contributor">${body}</div></li>`;
@@ -107,5 +108,5 @@ export function contributorsDialogMarkup(
         `<section class="contributor-group"><h3>${role}</h3><ul class="contributor-list">${list.map(card).join('')}</ul></section>`,
     )
     .join('');
-  return `<div class="contributors-dialog"><span class="contributors-mark" aria-hidden="true"></span><h2>関わってくれた人たち</h2><p class="modal-intro">この世界は、たくさんの人の手で描かれました。キャンプの仲間と、アプデの洞窟に残る壁画に会いに来てください。</p>${groups}</div>`;
+  return `<div class="contributors-dialog"><h2>関わってくれた人たち</h2><p class="modal-intro">アプレノ洞窟に残る壁画に会いに来てください。</p><button id="contributors-cave" type="button" class="button button-accent">アプレノ洞窟に行く</button>${groups}</div>`;
 }

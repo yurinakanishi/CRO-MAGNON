@@ -1,0 +1,82 @@
+{
+  "modelKey": "stone-axe",
+  "name": "石斧",
+  "kind": "equipment",
+  "candidate": 2,
+  "status": "remake-candidate-2-integrated",
+  "url": "/models/stone-axe/model-c2.opt-0ac298a6e8a08f59.glb",
+  "sha256": "0ac298a6e8a08f5920f8791184eb0d7eaa76678455a24d80e1894652e24d76f0",
+  "bytes": 559308,
+  "triangles": 3941,
+  "upAxis": "Y",
+  "forwardAxis": "+Z",
+  "heightMetres": 0.9494,
+  "widthMetres": null,
+  "placement": {
+    "pivot": "grip",
+    "gripNode": "Grip.R",
+    "shaftAxis": "+Y",
+    "gripToButtMetres": 0.2091411054134369,
+    "gripToTipMetres": 0.7411690950393677,
+    "attachment": "Rigid child of the character hand grip; the mesh already carries its grip-relative offset."
+  },
+  "clips": [],
+  "notes": [
+    "2026-10-07 remake Candidate 2: new reference (knapped flint head lashed to a bent haft, rawhide grip wrap); origin at the grip, +Y shaft, head toward +X, 0.209 m below / 0.741 m above the grip as C1; TRELLIS-2 1024/tex1024; 3941 triangles (meshopt reduction, fresh UVs, albedo and tangent-space normal baked from the 295532-triangle dense surface; p95 surface error 1.7 mm). Candidate 1 files retained."
+  ],
+  "provenance": {
+    "provider": "Claude Code (Opus 5.5)",
+    "claudeUsed": true,
+    "referenceGenerator": "Codex CLI built-in image_gen (gpt-5.6-sol, medium), earlier approved reference attached for identity",
+    "referenceImage": "C:/Users/yurin/Desktop/projects/CRO-MAGNON/output/model-generation/models/stone-axe/source/original/candidate2-ref-a.png",
+    "referenceSha256": "1f78a6e74f6026d0ee7f8274db38c5910c14e1cd04ad67d6e13700808bc6014b",
+    "reconstruction": "Local TRELLIS-2 v0.8.1, res 1024, tex 1024, seed recorded in dense JSON",
+    "denseFile": "C:/Users/yurin/Desktop/projects/CRO-MAGNON/output/model-generation/models/stone-axe/work/candidate-02/trellis/dense-ref2a-res1024-tex1024-seed0042.glb",
+    "denseSha256": "a9a3aca87d9ac4ae55b5703d673715e134ad1c72dbbc7df590624874b1cafa63",
+    "processReport": "output/model-generation/models/stone-axe/work/candidate-02/low-poly/m03/process-report.json",
+    "rigReport": null,
+    "pipeline": "scripts/remake/ (trellis_queue.py, remake_process.py, rig_*.py); docs/asset-remake/PLAN.md",
+    "previousDelivery": {
+      "url": "/models/stone-axe/model.glb",
+      "sha256": "12dc3f23f8ec2acfb9fb6f770ab05f59c21584be00795f9b8cf272a2f6cf5ac0",
+      "triangles": 6405,
+      "bytes": 743996,
+      "candidate": 1,
+      "revision": null
+    },
+    "previousProvenance": {
+      "provider": "Codex",
+      "claudeUsed": false,
+      "referenceGenerator": "Built-in imagegen",
+      "referenceImage": "output/model-generation/models/stone-axe/source/original/reference-v1.png",
+      "referenceSha256": "e8b90c316db88246e2e113aba4e22d5244bcadfad817e0c66b98008d264680e4",
+      "reconstruction": "Local TRELLIS-2; settings and dense SHA in model workspace",
+      "candidateFile": "output/model-generation/models/stone-axe/work/low-poly/candidate-01/candidate.glb",
+      "visualReview": "output/model-generation/models/stone-axe/qa/adoption-review.json"
+    },
+    "visualReview": "assets/asset-remake/reviews/stone-axe.json"
+  },
+  "lods": [],
+  "revision": "c2-m03",
+  "runtimeOptimization": {
+    "adoption": "20261010-r05-a02",
+    "candidateRevision": "assets/optimized-runtime/20261010-r05",
+    "selection": "ordinary-compressed",
+    "original": {
+      "url": "/models/stone-axe/model-c2.glb",
+      "sha256": "f195cd97f8b1a2e88a6b0cf1e928a432d103c9ba415c996396ba7cd10f7ba81e",
+      "bytes": 817044,
+      "triangles": 3941,
+      "lods": []
+    },
+    "supersedes": {
+      "adoption": "20261009-r04-a01",
+      "candidateRevision": "assets/optimized-runtime/20261009-r04",
+      "url": "/models/stone-axe/model-c2.opt-dd29370a26645b9a.glb",
+      "sha256": "dd29370a26645b9ad78aa0a2941b410789b4504a29e43a5e4aea117439fa304b",
+      "bytes": 754124,
+      "lods": []
+    },
+    "adoptedBy": "20261010-r05-a02"
+  }
+}

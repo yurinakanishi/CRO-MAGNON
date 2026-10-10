@@ -3,91 +3,109 @@ import { isMesh, isSkinnedMesh } from './three-types.js';
 
 export const ACTOR_LOD_DISTANCE = 28;
 export const ACTOR_LOD_HYSTERESIS = 2;
-export const ACTOR_SHADOW_LOD_DISTANCE = 18;
-export const ACTOR_SHADOW_DISTANCE = 34;
-export const SIMPLIFIED_SHADOW_KEYS = new Set([
-  'berry-bush',
-  'hide-tent',
-  'firewood-pile',
-  'firewood-log',
-  'stone-firepit',
-]);
+/** The one graphics profile switches actors at half their authored LOD distance. */
+export const ACTOR_LOD_SCALE = 0.5;
+
+type ActorMaterial = THREE.Material | THREE.Material[];
 
 type ActorMeshLevel = {
   mesh: THREE.Mesh;
   high: THREE.BufferGeometry;
   low: THREE.BufferGeometry;
-  shadow: THREE.Mesh | null;
-  castShadow: boolean;
-  receiveShadow: boolean;
+  /** The adopted material (tinted or recompiled per actor), worn with the close geometry. */
+  highMaterial: ActorMaterial;
+  /** Worn with the reduced geometry: highMaterial itself, or this actor's compatible variant. */
+  lowMaterial: ActorMaterial;
 };
 
 type ActorDetail = {
   level: 0 | 1;
   meshes: ActorMeshLevel[];
-  shadowLevel: 0 | 1;
+  /** Materials this actor owns, released by disposeActorPerformance. */
+  variants: THREE.Material[];
 };
 
 type ActorAsset = { modelKey: string; lods?: { distanceMetres?: number }[] };
 
-function shadowOnlyMaterial() {
-  const material = new THREE.MeshBasicMaterial();
-  // The inexpensive proxy participates in the directional-light depth pass,
-  // but contributes neither colour nor depth to the normal camera pass.
-  material.colorWrite = false;
-  material.depthWrite = false;
-  material.toneMapped = false;
-  material.side = THREE.DoubleSide;
-  return material;
+// GLTFLoader.assignFinalMaterial (three r185) finalizes a glTF material for the geometry it is
+// drawn with: without a tangent attribute the normal map uses derivative tangents, so it negates
+// normalScale.y and clearcoatNormalScale.y; with a colour attribute it sets vertexColors; without
+// normals it sets flatShading. A reduced GLB can differ from the close one in these attributes
+// while the actor keeps the close mesh's material, so the reduced level wears that material
+// finalized again for its own geometry.
+function finalState(geometry: THREE.BufferGeometry) {
+  const { tangent, color, normal } = geometry.attributes;
+  return { derivativeTangents: !tangent, vertexColors: !!color, flatShading: !normal };
 }
 
-function boundsOf(root: THREE.Object3D) {
-  root.updateMatrixWorld(true);
-  return new THREE.Box3().setFromObject(root).applyMatrix4(root.matrixWorld.clone().invert());
-}
-
-function actorShadowMesh(source: THREE.Mesh, geometry: THREE.BufferGeometry) {
-  // Keep cutouts, sidedness and displacement consistent with the visible mesh.
-  const invisible = (original: THREE.Material) => {
-    const material = original.clone();
-    material.colorWrite = false;
-    material.depthWrite = false;
-    return material;
+// The adopted material for the reduced geometry: the same object when the two geometries need the
+// same final state, otherwise one variant per adopted material and change, owned by this actor. A
+// variant keeps everything the adopted material has (textures by reference, colour, the
+// onBeforeCompile/customProgramCacheKey hooks Material.copy drops, and its userData object).
+function compatibleMaterial(
+  material: ActorMaterial,
+  from: THREE.BufferGeometry,
+  to: THREE.BufferGeometry,
+  owned: Map<THREE.Material, Map<string, THREE.Material>>,
+  variants: THREE.Material[],
+): ActorMaterial {
+  const close = finalState(from),
+    far = finalState(to);
+  const flip = close.derivativeTangents !== far.derivativeTangents,
+    colors = close.vertexColors !== far.vertexColors,
+    flat = close.flatShading !== far.flatShading;
+  if (!flip && !colors && !flat) return material;
+  const change = `${+flip}${+colors}${+flat}`;
+  const variant = (source: THREE.Material) => {
+    const standard = source as THREE.Material & {
+      normalScale?: THREE.Vector2;
+      clearcoatNormalScale?: THREE.Vector2;
+      flatShading?: boolean;
+    };
+    if (
+      !(flip && (standard.normalScale || standard.clearcoatNormalScale)) &&
+      !(colors && source.vertexColors !== far.vertexColors) &&
+      !(flat && (standard.flatShading ?? false) !== far.flatShading)
+    )
+      return source;
+    const byChange = owned.get(source) ?? new Map<string, THREE.Material>();
+    owned.set(source, byChange);
+    const existing = byChange.get(change);
+    if (existing) return existing;
+    const copy = source.clone() as typeof standard;
+    const hooks = source as unknown as Record<string, unknown>,
+      target = copy as unknown as Record<string, unknown>;
+    for (const key of Object.keys(hooks))
+      if (typeof hooks[key] === 'function') target[key] = hooks[key];
+    copy.userData = source.userData;
+    if (source.defines) copy.defines = { ...source.defines };
+    if (flip) {
+      if (copy.normalScale) copy.normalScale.y *= -1;
+      if (copy.clearcoatNormalScale) copy.clearcoatNormalScale.y *= -1;
+    }
+    if (colors) copy.vertexColors = far.vertexColors;
+    if (flat) copy.flatShading = far.flatShading;
+    byChange.set(change, copy);
+    variants.push(copy);
+    return copy;
   };
-  const material = Array.isArray(source.material)
-    ? source.material.map(invisible)
-    : invisible(source.material);
-  let shadow: THREE.Mesh;
-  if (isSkinnedMesh(source)) {
-    const skin = new THREE.SkinnedMesh(geometry, material);
-    skin.skeleton = source.skeleton;
-    skin.bindMode = source.bindMode;
-    skin.bindMatrix.copy(source.bindMatrix);
-    skin.bindMatrixInverse.copy(source.bindMatrixInverse);
-    shadow = skin;
-  } else shadow = new THREE.Mesh(geometry, material);
-  shadow.name = `${source.name}-lod-shadow`;
-  shadow.userData.shadowOnly = true;
-  shadow.castShadow = true;
-  shadow.visible = false;
-  shadow.matrixAutoUpdate = false;
-  shadow.morphTargetInfluences = source.morphTargetInfluences;
-  // Picking uses the visible animal surface, including when this helper is hidden.
-  shadow.raycast = () => {};
-  // Identity child transform keeps animated mesh transforms and the shared
-  // skeleton in exactly the same world space, including rider/runtime poses.
-  source.add(shadow);
-  return shadow;
+  if (!Array.isArray(material)) return variant(material);
+  const list = material.map(variant);
+  return list.every((entry, i) => entry === material[i]) ? material : list;
 }
 
 /** Bind a reduced, geometry-only GLB to the adopted animated meshes. The
  * skeleton, clips, materials, transforms and gameplay collision remain those
- * of the close model. */
+ * of the close model; a material changes only where the reduced geometry needs
+ * another final state (compatibleMaterial). There is no sun shadow map, so no
+ * shadow-only helper. */
 export function configureActorPerformance(
   root: THREE.Object3D,
   lowRoot: THREE.Object3D | null | undefined,
   asset: ActorAsset,
 ) {
+  // A repeated configuration starts from the adopted state and releases its earlier variants.
+  disposeActorPerformance(root);
   const highMeshes: THREE.Mesh[] = [],
     lowMeshes: THREE.Mesh[] = [];
   root.traverse((node) => {
@@ -98,7 +116,7 @@ export function configureActorPerformance(
     if (isMesh(node)) lowMeshes.push(node);
   });
   const lowByName = new Map(lowMeshes.map((mesh) => [mesh.name, mesh]));
-  const meshes: ActorMeshLevel[] = [];
+  const pairs: [THREE.Mesh, THREE.BufferGeometry][] = [];
   for (const [index, mesh] of highMeshes.entries()) {
     const reduced = lowByName.get(mesh.name) ?? lowMeshes[index];
     if (!reduced && lowRoot) continue;
@@ -110,33 +128,29 @@ export function configureActorPerformance(
       (!reduced.geometry.attributes.skinIndex || !reduced.geometry.attributes.skinWeight)
     )
       throw new Error(`${asset.modelKey}: actor LOD lost weights for ${mesh.name}`);
-    meshes.push({
-      mesh,
-      high: mesh.geometry,
-      low: reduced?.geometry ?? mesh.geometry,
-      shadow: null,
-      castShadow: mesh.castShadow,
-      receiveShadow: mesh.receiveShadow,
-    });
+    pairs.push([mesh, reduced?.geometry ?? mesh.geometry]);
   }
-  if (lowRoot && meshes.length !== highMeshes.length)
+  if (lowRoot && pairs.length !== highMeshes.length)
     throw new Error(`${asset.modelKey}: actor LOD mesh count mismatch`);
-  for (const entry of meshes) {
-    entry.mesh.castShadow = true;
-    entry.mesh.receiveShadow = true;
-    if (entry.low !== entry.high) entry.shadow = actorShadowMesh(entry.mesh, entry.low);
-  }
-  const detail: ActorDetail = { level: 0, meshes, shadowLevel: 0 };
+  const owned = new Map<THREE.Material, Map<string, THREE.Material>>(),
+    variants: THREE.Material[] = [];
+  const meshes: ActorMeshLevel[] = pairs.map(([mesh, low]) => ({
+    mesh,
+    high: mesh.geometry,
+    low,
+    highMaterial: mesh.material,
+    lowMaterial: compatibleMaterial(mesh.material, mesh.geometry, low, owned, variants),
+  }));
+  const detail: ActorDetail = { level: 0, meshes, variants };
   root.userData.actorDetail = detail;
   root.userData.actorLodDistance = asset.lods?.[0]?.distanceMetres ?? ACTOR_LOD_DISTANCE;
   return detail;
 }
 
-export function updateActorPerformance(root: THREE.Object3D, distance: number, tier = 'standard') {
+export function updateActorPerformance(root: THREE.Object3D, distance: number) {
   const detail = root.userData.actorDetail as ActorDetail | undefined;
   if (!detail) return 0;
-  const threshold =
-    (root.userData.actorLodDistance ?? ACTOR_LOD_DISTANCE) * (tier === 'low' ? 0.5 : 1);
+  const threshold = (root.userData.actorLodDistance ?? ACTOR_LOD_DISTANCE) * ACTOR_LOD_SCALE;
   const hysteresis = Math.min(ACTOR_LOD_HYSTERESIS, threshold * 0.2);
   const level = (
     detail.level === 0 ? distance > threshold + hysteresis : distance >= threshold - hysteresis
@@ -144,24 +158,11 @@ export function updateActorPerformance(root: THREE.Object3D, distance: number, t
     ? 1
     : 0;
   if (level !== detail.level) {
-    for (const entry of detail.meshes) entry.mesh.geometry = level ? entry.low : entry.high;
+    for (const entry of detail.meshes) {
+      entry.mesh.geometry = level ? entry.low : entry.high;
+      entry.mesh.material = level ? entry.lowMaterial : entry.highMaterial;
+    }
     detail.level = level;
-  }
-  detail.shadowLevel = (
-    detail.shadowLevel === 0
-      ? distance > (tier === 'low' ? 0 : ACTOR_SHADOW_LOD_DISTANCE + ACTOR_LOD_HYSTERESIS)
-      : distance >= (tier === 'low' ? 0 : ACTOR_SHADOW_LOD_DISTANCE - ACTOR_LOD_HYSTERESIS)
-  )
-    ? 1
-    : 0;
-  const castsShadow = distance < (tier === 'low' ? 20 : ACTOR_SHADOW_DISTANCE);
-  for (const entry of detail.meshes) {
-    // When the visible mesh already uses the low geometry, cast it directly.
-    // Never draw both the source and its shadow-only copy into the shadow map.
-    const separate =
-      castsShadow && detail.shadowLevel === 1 && detail.level === 0 && !!entry.shadow;
-    entry.mesh.castShadow = castsShadow && !separate;
-    if (entry.shadow) entry.shadow.visible = separate;
   }
   return detail.level;
 }
@@ -169,78 +170,12 @@ export function updateActorPerformance(root: THREE.Object3D, distance: number, t
 export function disposeActorPerformance(root: THREE.Object3D) {
   const detail = root.userData.actorDetail as ActorDetail | undefined;
   if (!detail) return;
+  // Geometry, textures, skeleton and the adopted materials are owned by the actor/template;
+  // only this actor's variants are released.
   for (const entry of detail.meshes) {
     entry.mesh.geometry = entry.high;
-    entry.mesh.castShadow = entry.castShadow;
-    entry.mesh.receiveShadow = entry.receiveShadow;
-    if (!entry.shadow) continue;
-    entry.shadow.removeFromParent();
-    for (const material of [entry.shadow.material].flat()) material.dispose();
-    // Geometry, textures and skeleton are owned by the actor/template.
+    entry.mesh.material = entry.highMaterial;
   }
+  for (const material of detail.variants) material.dispose();
   delete root.userData.actorDetail;
-}
-
-const shadowDistances: Record<string, number> = {
-  'berry-bush': 18,
-  'hide-tent': 32,
-  'firewood-pile': 22,
-  'firewood-log': 22,
-  'stone-firepit': 24,
-};
-
-export function attachSimplifiedShadow(root: THREE.Object3D, key: string) {
-  if (!SIMPLIFIED_SHADOW_KEYS.has(key) || root.userData.simplifiedShadow) return null;
-  const bounds = boundsOf(root),
-    size = bounds.getSize(new THREE.Vector3()),
-    centre = bounds.getCenter(new THREE.Vector3());
-  let geometry: THREE.BufferGeometry;
-  if (key === 'berry-bush') geometry = new THREE.SphereGeometry(0.5, 8, 5);
-  else if (key === 'stone-firepit')
-    geometry = new THREE.CylinderGeometry(
-      Math.max(size.x, size.z) * 0.48,
-      Math.max(size.x, size.z) * 0.44,
-      Math.max(0.08, size.y * 0.72),
-      12,
-      1,
-    );
-  else
-    geometry = new THREE.BoxGeometry(
-      Math.max(0.08, size.x * 0.86),
-      Math.max(0.08, size.y * 0.78),
-      Math.max(0.08, size.z * 0.86),
-    );
-  const proxy = new THREE.Mesh(geometry, shadowOnlyMaterial());
-  proxy.name = `${key}-simplified-shadow`;
-  proxy.position.copy(centre);
-  if (key === 'berry-bush') proxy.scale.copy(size);
-  proxy.castShadow = true;
-  proxy.receiveShadow = false;
-  root.traverse((node) => {
-    if (isMesh(node)) node.castShadow = false;
-  });
-  root.add(proxy);
-  root.userData.simplifiedShadow = {
-    proxy,
-    distance: shadowDistances[key],
-  };
-  return proxy;
-}
-
-const shadowPosition = new THREE.Vector3();
-export function updateSimplifiedShadow(root: THREE.Object3D, camera: THREE.Camera) {
-  const detail = root.userData.simplifiedShadow;
-  if (!detail) return;
-  root.getWorldPosition(shadowPosition);
-  detail.proxy.castShadow =
-    shadowPosition.distanceToSquared(camera.position) < detail.distance * detail.distance;
-}
-
-export function disposeSimplifiedShadow(root: THREE.Object3D) {
-  const detail = root.userData.simplifiedShadow;
-  if (!detail) return;
-  detail.proxy.removeFromParent();
-  detail.proxy.geometry.dispose();
-  for (const material of [detail.proxy.material].flat()) material.dispose();
-  delete root.userData.simplifiedShadow;
 }

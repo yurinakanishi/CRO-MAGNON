@@ -1,0 +1,151 @@
+{
+  "modelKey": "maruimo-mascot",
+  "name": "まるぃも",
+  "kind": "companion",
+  "revision": "c2-t02",
+  "status": "remake-candidate-2-integrated",
+  "url": "/models/maruimo-mascot/model-c2.glb",
+  "sha256": "bbeeb99315f45ffcfb257077366ca830929377d22beb385acbec1b22759c7eda",
+  "bytes": 8230884,
+  "triangles": 28911,
+  "bones": 75,
+  "upAxis": "Y",
+  "forwardAxis": "+Z",
+  "heightMetres": 0.55,
+  "widthMetres": 0.9750964582901769,
+  "lengthMetres": 0.4494473549798804,
+  "placement": {
+    "pivot": "ground-centred",
+    "scale": 1
+  },
+  "portrait": {
+    "url": "/models/maruimo-mascot/portrait.png",
+    "sha256": "167b344c270543846d0a2870e94e0ac12320b57f23d702a8d2a32a99487a40bc"
+  },
+  "clips": [
+    {
+      "name": "Attack",
+      "seconds": 1,
+      "loop": false
+    },
+    {
+      "name": "Boat_Loop",
+      "seconds": 2,
+      "loop": true
+    },
+    {
+      "name": "Craft",
+      "seconds": 1.5,
+      "loop": false
+    },
+    {
+      "name": "Downed",
+      "seconds": 1.399999976158142,
+      "loop": false
+    },
+    {
+      "name": "Eat",
+      "seconds": 1.5,
+      "loop": false
+    },
+    {
+      "name": "Gather",
+      "seconds": 1.399999976158142,
+      "loop": false
+    },
+    {
+      "name": "Give",
+      "seconds": 1.100000023841858,
+      "loop": false
+    },
+    {
+      "name": "Idle_Loop",
+      "seconds": 3,
+      "loop": true
+    },
+    {
+      "name": "Jump",
+      "seconds": 1,
+      "loop": false
+    },
+    {
+      "name": "Ride_Loop",
+      "seconds": 2,
+      "loop": true
+    },
+    {
+      "name": "Run_Loop",
+      "seconds": 0.30000001192092896,
+      "loop": true
+    },
+    {
+      "name": "Walk_Loop",
+      "seconds": 0.5,
+      "loop": true
+    },
+    {
+      "name": "Wave",
+      "seconds": 1.7999999523162842,
+      "loop": false
+    }
+  ],
+  "locomotion": {
+    "Walk_Loop": {
+      "metresPerSecond": 0.2838709769579384,
+      "strideMetres": 0.1419354884789692,
+      "cycleSeconds": 0.5,
+      "dutyFactor": 0.68,
+      "stanceTravelMetres": 0.09651613216569906
+    },
+    "Run_Loop": {
+      "metresPerSecond": 0.7806451866343307,
+      "strideMetres": 0.23419355599029917,
+      "cycleSeconds": 0.3,
+      "dutyFactor": 0.52,
+      "stanceTravelMetres": 0.12178064911495558
+    }
+  },
+  "lods": [
+    {
+      "url": "/models/maruimo-mascot/lod-c2.glb",
+      "sha256": "c9f0f737e0fd3a618479e4c18986286b124ff08c0ae0ca7e163762541dc9c4ab",
+      "bytes": 782484,
+      "triangles": 8673,
+      "distanceMetres": 8,
+      "purpose": "animated-medium-lod-geometry"
+    }
+  ],
+  "provenance": {
+    "provider": "Claude Code (Opus 5.5)",
+    "claudeUsed": true,
+    "referenceGenerator": "none: derived from the delivered, user-approved surface (identity unchanged)",
+    "referenceImage": "public/models/maruimo-mascot/model-r01.glb",
+    "referenceSha256": "7dc24164001b187d370b0726a4b6251b702c3d2f2bd06e198685e3018be066b9",
+    "reconstruction": "no new reconstruction; the delivered rest surface is the bake and skin-weight source",
+    "denseFile": "public/models/maruimo-mascot/model-r01.glb",
+    "denseSha256": "7dc24164001b187d370b0726a4b6251b702c3d2f2bd06e198685e3018be066b9",
+    "processReport": "output/model-generation/models/maruimo-mascot/work/candidate-02/transfer/t02/report.json",
+    "rigReport": null,
+    "pipeline": "scripts/remake/ (trellis_queue.py, remake_process.py, rig_*.py); docs/asset-remake/PLAN.md",
+    "previousDelivery": {
+      "url": "/models/maruimo-mascot/model-r01.glb",
+      "sha256": "7dc24164001b187d370b0726a4b6251b702c3d2f2bd06e198685e3018be066b9",
+      "triangles": 137602,
+      "bytes": 41068780,
+      "revision": "01"
+    },
+    "previousProvenance": {
+      "sourceSha256": "09366f85545b6e79967e52977e04f25a6a75e5833c51e00f5e05565e5d661ac5",
+      "sourceLodSha256": "2d03dd4342e11107569de43adcacf38a02685a4c130d8b651fb4a7f2e349019e",
+      "uniformScale": 0.354838721197423,
+      "method": "One scene parent scale and an animated head contact socket. All source binary buffers are unchanged."
+    },
+    "transfer": "scripts/remake/transfer_reduce.py (meshopt subset of delivered vertices, xatlas charts, albedo/normal bake with miss fill and back-face flip, Data Transfer skin weights; armature, bone names and clips re-exported unchanged)",
+    "visualReview": "assets/asset-remake/reviews/maruimo-mascot.json"
+  },
+  "gameQA": "output/playwright/maruimo-mascot-20261007/mmo-assets-r03/summary.json",
+  "candidate": 2,
+  "notes": [
+    "Remake C2 of the delivered maruimo mascot r01 (55 cm companion): same surface reduced from 137,602 triangles; bones, head socket and 13 clips unchanged. Posed deviation from the delivered skin 0 m (kept vertices are a subset); clip curves within 0.04 deg (resampling). 28911 triangles (was 137602), textures 2048 WebP + baked normal."
+  ]
+}

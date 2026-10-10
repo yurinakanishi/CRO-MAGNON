@@ -27,7 +27,7 @@ export class LocomotionGrounding {
       y: number;
     }[] = [];
     root.traverse((mesh) => {
-      if (!isSkinnedMesh(mesh) || mesh.userData.shadowOnly) return;
+      if (!isSkinnedMesh(mesh)) return;
       this.meshes.push(mesh);
       const a = mesh.geometry.attributes;
       for (let i = 0; i < a.position.count; i++) {

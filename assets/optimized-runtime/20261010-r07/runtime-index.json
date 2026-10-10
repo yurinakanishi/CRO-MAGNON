@@ -1,0 +1,443 @@
+{
+  "schema": "cro-magnon/runtime-candidate-index@1",
+  "revision": "20261010-r07",
+  "status": "candidate-pending-visual-qa",
+  "adopted": false,
+  "recipe": "guarded-surface@1",
+  "base": {
+    "adoption": "20261010-r06-a02",
+    "planSha256": "db0c29cdc80a6cc9ce45080ccd7b6700f61cf5ccad9055d03c920b9a3b6d60bb"
+  },
+  "scope": {
+    "complete": false,
+    "only": [
+      "berry-cluster",
+      "cockle-shell",
+      "cro-magnon-woman",
+      "crow-brute-axe",
+      "crow-pontiff-crown",
+      "crow-pontiff-crozier",
+      "crow-prelate-glaive",
+      "crow-soldier-spear",
+      "desert-fennec-mage",
+      "drying-rack",
+      "dugout-canoe",
+      "firewood-log",
+      "firewood-pile",
+      "flint-spear",
+      "giant-ape",
+      "kunoichi-katana",
+      "mammoth-meat",
+      "neanderthal-woman",
+      "obsidian-blade",
+      "obsidian-spear",
+      "orb-bot-beret",
+      "orb-bot-blue",
+      "orb-bot-green",
+      "orb-bot-orange",
+      "orb-bot-purple",
+      "orb-bot-white",
+      "rimo-neko",
+      "wooden-spear"
+    ],
+    "models": [
+      "berry-cluster",
+      "cockle-shell",
+      "cro-magnon-woman",
+      "crow-brute-axe",
+      "crow-pontiff-crown",
+      "crow-pontiff-crozier",
+      "crow-prelate-glaive",
+      "crow-soldier-spear",
+      "desert-fennec-mage",
+      "drying-rack",
+      "dugout-canoe",
+      "firewood-log",
+      "firewood-pile",
+      "flint-spear",
+      "giant-ape",
+      "kunoichi-katana",
+      "mammoth-meat",
+      "neanderthal-woman",
+      "obsidian-blade",
+      "obsidian-spear",
+      "orb-bot-beret",
+      "orb-bot-blue",
+      "orb-bot-green",
+      "orb-bot-orange",
+      "orb-bot-purple",
+      "orb-bot-white",
+      "rimo-neko",
+      "wooden-spear"
+    ]
+  },
+  "decoder": {
+    "extension": "EXT_meshopt_compression",
+    "required": true,
+    "module": "three/addons/libs/meshopt_decoder.module.js",
+    "loader": "GLTFLoader.setMeshoptDecoder(MeshoptDecoder) before parseAsync"
+  },
+  "models": {
+    "berry-cluster": {
+      "selection": "ordinary-compressed",
+      "url": "/models/berry-cluster/model-c2.opt-0b2979057196f2ef.glb",
+      "sha256": "0b2979057196f2ef91aa96a4c30f4c016c7a1847136af5d0ee06cc60bd2a2f14",
+      "bytes": 251136,
+      "triangles": 1036,
+      "extensionsRequired": [
+        "EXT_texture_webp",
+        "EXT_meshopt_compression"
+      ],
+      "sourceUrl": "/models/berry-cluster/model-c2.opt-88ed3b12e7713e6f.glb",
+      "sourceSha256": "88ed3b12e7713e6f367d86aec394644cc882ef5cca7fa1e1b2a0a869f1c13b00"
+    },
+    "cockle-shell": {
+      "selection": "ordinary-compressed",
+      "url": "/models/cockle-shell/model-c2.opt-b6f8856977543650.glb",
+      "sha256": "b6f88569775436506d40d845c3893cd5a044b3c7dc81473dee74733f2ac068f0",
+      "bytes": 219300,
+      "triangles": 1140,
+      "extensionsRequired": [
+        "EXT_texture_webp",
+        "EXT_meshopt_compression"
+      ],
+      "sourceUrl": "/models/cockle-shell/model-c2.opt-16d1634c87d7806d.glb",
+      "sourceSha256": "16d1634c87d7806d571da425e7edcbb4fe45f87e4d41720b6c568fe700aa9efa"
+    },
+    "cro-magnon-woman": {
+      "selection": "startup-sole-primary",
+      "url": "/models/cro-magnon-woman/startup.opt-f414686fe312f6e3.glb",
+      "sha256": "f414686fe312f6e3d67855644dc0d3b79a1c942484e2a60b0c977e4af370fb2b",
+      "bytes": 5023664,
+      "triangles": 72851,
+      "extensionsRequired": [
+        "EXT_texture_webp",
+        "EXT_meshopt_compression"
+      ],
+      "sourceUrl": "/models/cro-magnon-woman/startup.opt-7d7616b26f06a2ac.glb",
+      "sourceSha256": "7d7616b26f06a2ac950141233d975151d6496e7c0d32722d2dd67234bd5e1eb5"
+    },
+    "crow-brute-axe": {
+      "selection": "ordinary-compressed",
+      "url": "/models/crow-brute-axe/model-c2.opt-801a430cf6998928.glb",
+      "sha256": "801a430cf6998928a833a70e850cf9d49af8514cbbb78ce0cd7f442fb8a8fe67",
+      "bytes": 740416,
+      "triangles": 2941,
+      "extensionsRequired": [
+        "EXT_texture_webp",
+        "EXT_meshopt_compression"
+      ],
+      "sourceUrl": "/models/crow-brute-axe/model-c2.opt-c0bb141f6955dc0e.glb",
+      "sourceSha256": "c0bb141f6955dc0e9f99016ec7f12d01b3975bc65f8dddf8514fb7b34e091d10"
+    },
+    "crow-pontiff-crown": {
+      "selection": "ordinary-compressed",
+      "url": "/models/crow-pontiff-crown/model-c2.opt-6cd6301778b4126a.glb",
+      "sha256": "6cd6301778b4126a3d798c0af38735c605a0bd3ae3af7b1f79e7fc3735f09fbd",
+      "bytes": 793608,
+      "triangles": 2415,
+      "extensionsRequired": [
+        "EXT_texture_webp",
+        "EXT_meshopt_compression"
+      ],
+      "sourceUrl": "/models/crow-pontiff-crown/model-c2.opt-2d08c7f7cbcd36ae.glb",
+      "sourceSha256": "2d08c7f7cbcd36ae4a798ab20643c3ed78a5d073cf5c83b02823acae56b4d8c5"
+    },
+    "crow-pontiff-crozier": {
+      "selection": "ordinary-compressed",
+      "url": "/models/crow-pontiff-crozier/model-c2.opt-96a0a3ad418a5df8.glb",
+      "sha256": "96a0a3ad418a5df8e9e70dccca2e2e44ed636419db78eb566d787fef43074610",
+      "bytes": 603172,
+      "triangles": 2776,
+      "extensionsRequired": [
+        "EXT_texture_webp",
+        "EXT_meshopt_compression"
+      ],
+      "sourceUrl": "/models/crow-pontiff-crozier/model-c2.opt-93eab7263c91dde9.glb",
+      "sourceSha256": "93eab7263c91dde944ae386bf9b1ceb1e0da64a160e978bc1bae31f053ece7a6"
+    },
+    "crow-prelate-glaive": {
+      "selection": "ordinary-compressed",
+      "url": "/models/crow-prelate-glaive/model-c2.opt-13c4b69fdad3e6c4.glb",
+      "sha256": "13c4b69fdad3e6c4ba9197e9a5fd450aafa0c014dc95e3d1d8d8c63bd14de407",
+      "bytes": 535120,
+      "triangles": 2359,
+      "extensionsRequired": [
+        "EXT_texture_webp",
+        "EXT_meshopt_compression"
+      ],
+      "sourceUrl": "/models/crow-prelate-glaive/model-c2.opt-142517a572596582.glb",
+      "sourceSha256": "142517a57259658220c59acc30a417d05bd79460809977805330a28bfaa99126"
+    },
+    "crow-soldier-spear": {
+      "selection": "ordinary-compressed",
+      "url": "/models/crow-soldier-spear/model-c2.opt-a2eaa91ce99c3457.glb",
+      "sha256": "a2eaa91ce99c3457f72849a08f85bf8e28e753cd4ee9169dbab00019095b2b7a",
+      "bytes": 496104,
+      "triangles": 2363,
+      "extensionsRequired": [
+        "EXT_texture_webp",
+        "EXT_meshopt_compression"
+      ],
+      "sourceUrl": "/models/crow-soldier-spear/model-c2.opt-79e6dcb333d1b232.glb",
+      "sourceSha256": "79e6dcb333d1b2326f32cae47d84f9a5845969d48416c51fbdc9a4c418b4dcb8"
+    },
+    "desert-fennec-mage": {
+      "selection": "startup-sole-primary",
+      "url": "/models/desert-fennec-mage/startup.opt-3a6ce65bf5d2c4ab.glb",
+      "sha256": "3a6ce65bf5d2c4ab9da606555fa3183fe5491139717d46dee651be5f4ff41616",
+      "bytes": 4126308,
+      "triangles": 43901,
+      "extensionsRequired": [
+        "EXT_texture_webp",
+        "EXT_meshopt_compression"
+      ],
+      "sourceUrl": "/models/desert-fennec-mage/startup.opt-ae024100e9484a99.glb",
+      "sourceSha256": "ae024100e9484a998346d4c7e3e0246319648982424fd2a0a1acc1cd4a5ff213"
+    },
+    "drying-rack": {
+      "selection": "ordinary-compressed",
+      "url": "/models/drying-rack/model-c2.opt-0f8cbf2efb8c6c6e.glb",
+      "sha256": "0f8cbf2efb8c6c6e140b50157534cede23ecfb0c6d0b41179bee4a1303f1d4bc",
+      "bytes": 961388,
+      "triangles": 11154,
+      "extensionsRequired": [
+        "EXT_texture_webp",
+        "EXT_meshopt_compression"
+      ],
+      "sourceUrl": "/models/drying-rack/model-c2.opt-6c486d2848e290e9.glb",
+      "sourceSha256": "6c486d2848e290e9fb8befaecf0a95555d4cde53696b18f937b1fbb395429d9a"
+    },
+    "dugout-canoe": {
+      "selection": "ordinary-compressed",
+      "url": "/models/dugout-canoe/model-c2.opt-a7fab0685e610bdb.glb",
+      "sha256": "a7fab0685e610bdb2b21a1fd05327f64dceae476761b5c4615372769605d9b2a",
+      "bytes": 480856,
+      "triangles": 7466,
+      "extensionsRequired": [
+        "EXT_texture_webp",
+        "EXT_meshopt_compression"
+      ],
+      "sourceUrl": "/models/dugout-canoe/model-c2.opt-dd78603029e5bfbc.glb",
+      "sourceSha256": "dd78603029e5bfbc737dcebf0545c0636fe753f49f730ead15e62864eb68e5b7"
+    },
+    "firewood-log": {
+      "selection": "ordinary-compressed",
+      "url": "/models/firewood-log/model-c2.opt-918a0a8e4b0fa911.glb",
+      "sha256": "918a0a8e4b0fa91138912ce3d35dac1efbcfa224f44d2f33e56c82c2d4a2247c",
+      "bytes": 549400,
+      "triangles": 2622,
+      "extensionsRequired": [
+        "EXT_texture_webp",
+        "EXT_meshopt_compression"
+      ],
+      "sourceUrl": "/models/firewood-log/model-c2.opt-97e3211c37b11def.glb",
+      "sourceSha256": "97e3211c37b11defeffc8fd563dc6be14b317c50d0b9c2408f99855c76022075"
+    },
+    "firewood-pile": {
+      "selection": "ordinary-compressed",
+      "url": "/models/firewood-pile/model-c2.opt-3bd4571d0a2975a6.glb",
+      "sha256": "3bd4571d0a2975a6bcca8438a4e0cd87193cf20254e7bc3303015141785bf236",
+      "bytes": 649888,
+      "triangles": 5049,
+      "extensionsRequired": [
+        "EXT_texture_webp",
+        "EXT_meshopt_compression"
+      ],
+      "sourceUrl": "/models/firewood-pile/model-c2.opt-085ae5c774f9238d.glb",
+      "sourceSha256": "085ae5c774f9238d768ac4526b76d3a46a789d379ac5046e42647db6d80ab819"
+    },
+    "flint-spear": {
+      "selection": "ordinary-compressed",
+      "url": "/models/flint-spear/model.opt-26577c4c03479da4.glb",
+      "sha256": "26577c4c03479da4246040201ac5574fc5cd91127b9c44e7a0389a37a4305391",
+      "bytes": 874712,
+      "triangles": 3065,
+      "extensionsRequired": [
+        "EXT_meshopt_compression"
+      ],
+      "sourceUrl": "/models/flint-spear/model.opt-7012db17d1a72567.glb",
+      "sourceSha256": "7012db17d1a7256749609736b0c2637c0036ab42a4aebd23a97348876c7d6b7a"
+    },
+    "giant-ape": {
+      "selection": "startup-sole-primary",
+      "url": "/models/giant-ape/startup.opt-4aabd7de98030824.glb",
+      "sha256": "4aabd7de9803082467b19f2709bfdd182cc652c9ae43416a3c8757e4b0953843",
+      "bytes": 4886300,
+      "triangles": 50670,
+      "extensionsRequired": [
+        "EXT_texture_webp",
+        "EXT_meshopt_compression"
+      ],
+      "sourceUrl": "/models/giant-ape/startup.opt-ace0a32ae71949af.glb",
+      "sourceSha256": "ace0a32ae71949afe0c5718d7a40f4b481b349ce7bcccf6afc032e6aee92276d"
+    },
+    "kunoichi-katana": {
+      "selection": "ordinary-compressed",
+      "url": "/models/kunoichi-katana/model-c2.opt-624f6bbc73dc6fde.glb",
+      "sha256": "624f6bbc73dc6fdeae4758fefe31113f2da6b982f62fcedba56f95a571429c35",
+      "bytes": 201432,
+      "triangles": 2097,
+      "extensionsRequired": [
+        "EXT_texture_webp"
+      ],
+      "sourceUrl": "/models/kunoichi-katana/model-c2.opt-0b7db07e795f0ac3.glb",
+      "sourceSha256": "0b7db07e795f0ac392d79ab1a389e55584c3d05c84d6e71fb4676d68cd59f50a"
+    },
+    "mammoth-meat": {
+      "selection": "ordinary-compressed",
+      "url": "/models/mammoth-meat/model-c2.opt-0bd4fbb82d7c92e9.glb",
+      "sha256": "0bd4fbb82d7c92e95d7d8299c7ea1bd103c44cde11fa75cad7f9bd837a930540",
+      "bytes": 554340,
+      "triangles": 2192,
+      "extensionsRequired": [
+        "EXT_texture_webp",
+        "EXT_meshopt_compression"
+      ],
+      "sourceUrl": "/models/mammoth-meat/model-c2.opt-4b49e324b633cf3f.glb",
+      "sourceSha256": "4b49e324b633cf3f78b647c9d922db5f1c9d0a66bef21d17336727ce915cd4e0"
+    },
+    "neanderthal-woman": {
+      "selection": "startup-sole-primary",
+      "url": "/models/neanderthal-woman/startup.opt-fabb21a67061a199.glb",
+      "sha256": "fabb21a67061a199d24efac0e6196a0477cba02d73eab259bb6810a70e6ecd8d",
+      "bytes": 4530988,
+      "triangles": 68553,
+      "extensionsRequired": [
+        "EXT_texture_webp",
+        "EXT_meshopt_compression"
+      ],
+      "sourceUrl": "/models/neanderthal-woman/startup.opt-caf50f3f8aa971be.glb",
+      "sourceSha256": "caf50f3f8aa971be2119d5399bfe3226cfe3d0d283cc965c0beafcac0d6a1a21"
+    },
+    "obsidian-blade": {
+      "selection": "ordinary-compressed",
+      "url": "/models/obsidian-blade/model-c2.opt-76f281876580c9d5.glb",
+      "sha256": "76f281876580c9d5be10ca33d709f6290bd64e1eefeb805bd3ba58ceb7095822",
+      "bytes": 146988,
+      "triangles": 524,
+      "extensionsRequired": [
+        "EXT_texture_webp"
+      ],
+      "sourceUrl": "/models/obsidian-blade/model-c2.opt-2869bf2d3c3fff93.glb",
+      "sourceSha256": "2869bf2d3c3fff93bbb9f6d50f8b1c70edaf926aa1192d70161a7050791e8c4d"
+    },
+    "obsidian-spear": {
+      "selection": "ordinary-compressed",
+      "url": "/models/obsidian-spear/model-c2.opt-418e6cd8a2c74400.glb",
+      "sha256": "418e6cd8a2c744003b3be807be09844b50fb4cb67b2d264cded15e14ba8a324a",
+      "bytes": 138084,
+      "triangles": 1397,
+      "extensionsRequired": [
+        "EXT_texture_webp",
+        "EXT_meshopt_compression"
+      ],
+      "sourceUrl": "/models/obsidian-spear/model-c2.opt-ac18526ceb1f0514.glb",
+      "sourceSha256": "ac18526ceb1f0514006d66aef967047d4ad1fdd11f3506e55811a9c068bac498"
+    },
+    "orb-bot-beret": {
+      "selection": "ordinary-compressed",
+      "url": "/models/orb-bot-beret/model-c2.opt-822ea8338b5d8c90.glb",
+      "sha256": "822ea8338b5d8c9091a8e2b3a2e799af76749f78332e7154543b43404fe3c167",
+      "bytes": 435908,
+      "triangles": 2672,
+      "extensionsRequired": [
+        "EXT_texture_webp",
+        "EXT_meshopt_compression"
+      ],
+      "sourceUrl": "/models/orb-bot-beret/model-c2.opt-67aa3569b08433a9.glb",
+      "sourceSha256": "67aa3569b08433a9d061e3902e3ac9fe358eaea1eec8756350265681034c43c5"
+    },
+    "orb-bot-blue": {
+      "selection": "ordinary-compressed",
+      "url": "/models/orb-bot-blue/model-c2.opt-b0e706f21eed20c8.glb",
+      "sha256": "b0e706f21eed20c849383b1d0342050f320a12ecd9fbe4cb66a15a648cb8e836",
+      "bytes": 122340,
+      "triangles": 1400,
+      "extensionsRequired": [
+        "EXT_texture_webp",
+        "EXT_meshopt_compression"
+      ],
+      "sourceUrl": "/models/orb-bot-blue/model-c2.opt-26b5c7764ea04bdd.glb",
+      "sourceSha256": "26b5c7764ea04bddf7ed18328a587ee1d51f7662ea5b0a24a94031044538a877"
+    },
+    "orb-bot-green": {
+      "selection": "ordinary-compressed",
+      "url": "/models/orb-bot-green/model-c2.opt-84eaabe0bc40a985.glb",
+      "sha256": "84eaabe0bc40a9850b82b56ea63809b7def006728d7cbf8fcf26104fdbcbd771",
+      "bytes": 110864,
+      "triangles": 1400,
+      "extensionsRequired": [
+        "EXT_texture_webp",
+        "EXT_meshopt_compression"
+      ],
+      "sourceUrl": "/models/orb-bot-green/model-c2.opt-be0f8d03776ccd9c.glb",
+      "sourceSha256": "be0f8d03776ccd9c193d264634689c45f7a9412f3dde328c2c2a3ac3449d96b8"
+    },
+    "orb-bot-orange": {
+      "selection": "ordinary-compressed",
+      "url": "/models/orb-bot-orange/model-c2.opt-bfd5e993edc3a174.glb",
+      "sha256": "bfd5e993edc3a174c1e6bdcbeddf44a5c8d296426b628e13e81af6791f0c4e5c",
+      "bytes": 87788,
+      "triangles": 885,
+      "extensionsRequired": [
+        "EXT_texture_webp",
+        "EXT_meshopt_compression"
+      ],
+      "sourceUrl": "/models/orb-bot-orange/model-c2.opt-8cb2e35cbf824478.glb",
+      "sourceSha256": "8cb2e35cbf824478ec035b52eb8e81fe6ae6c65666ba8d04b13c1f6628439852"
+    },
+    "orb-bot-purple": {
+      "selection": "ordinary-compressed",
+      "url": "/models/orb-bot-purple/model-c2.opt-96892c56a05dbc1e.glb",
+      "sha256": "96892c56a05dbc1e288becde3b2cf06036475ba97f168566c2fc248da8379d35",
+      "bytes": 116896,
+      "triangles": 1400,
+      "extensionsRequired": [
+        "EXT_texture_webp",
+        "EXT_meshopt_compression"
+      ],
+      "sourceUrl": "/models/orb-bot-purple/model-c2.opt-8ed72224b184825f.glb",
+      "sourceSha256": "8ed72224b184825f7d0ccd9f27cb42f9e5793b2883e3742adbb07f98ea4db04c"
+    },
+    "orb-bot-white": {
+      "selection": "ordinary-compressed",
+      "url": "/models/orb-bot-white/model-c2.opt-01e43c87f62b8fd1.glb",
+      "sha256": "01e43c87f62b8fd17b95bee23c3d7d3af2ad7d12d4ea80076e67f16abdc3a74d",
+      "bytes": 116456,
+      "triangles": 1400,
+      "extensionsRequired": [
+        "EXT_texture_webp",
+        "EXT_meshopt_compression"
+      ],
+      "sourceUrl": "/models/orb-bot-white/model-c2.opt-c7b6b6878646330a.glb",
+      "sourceSha256": "c7b6b6878646330a8769fa0f0e1f5ea829d75fd480ed3031c049f58a8aec1236"
+    },
+    "rimo-neko": {
+      "selection": "ordinary-compressed",
+      "url": "/models/rimo-neko/model-c2.opt-5787091de92988bd.glb",
+      "sha256": "5787091de92988bd62db552ad5519c80792438e49f3be06874e352a779a5798e",
+      "bytes": 3502368,
+      "triangles": 25590,
+      "extensionsRequired": [
+        "EXT_texture_webp",
+        "EXT_meshopt_compression"
+      ],
+      "sourceUrl": "/models/rimo-neko/model-c2.opt-858fbf0413ae556b.glb",
+      "sourceSha256": "858fbf0413ae556b29fcf681f3c1a8459ae920fd1dccf7bd5b0df6de6dfd604d"
+    },
+    "wooden-spear": {
+      "selection": "ordinary-compressed",
+      "url": "/models/wooden-spear/model-c2.opt-71a3a7ecb4d2e570.glb",
+      "sha256": "71a3a7ecb4d2e570667c3b44f2a49d3b4647221de887f708fbca8188dd1838be",
+      "bytes": 97860,
+      "triangles": 874,
+      "extensionsRequired": [
+        "EXT_texture_webp",
+        "EXT_meshopt_compression"
+      ],
+      "sourceUrl": "/models/wooden-spear/model-c2.opt-0b7e1417d8d1948c.glb",
+      "sourceSha256": "0b7e1417d8d1948c05cce074a28232384ced61a6543971c41f26f2cd7623747b"
+    }
+  }
+}

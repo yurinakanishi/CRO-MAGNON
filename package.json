@@ -47,6 +47,8 @@
     "@types/node": "^22.20.1",
     "@types/three": "^0.185.4",
     "@types/ws": "^8.18.1",
+    "esbuild": "0.28.1",
+    "meshoptimizer": "1.1.1",
     "miniflare": "5.20260903.0-alpha",
     "prettier": "^3.9.6",
     "typescript": "^6.0.2",

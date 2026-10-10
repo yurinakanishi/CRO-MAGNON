@@ -465,7 +465,8 @@ progress::-moz-progress-bar {
 .world-loading[hidden] {
   display: none;
 }
-.render-error {
+.render-error,
+.context-recovery {
   position: absolute;
   left: 50%;
   top: 50%;
@@ -478,14 +479,23 @@ progress::-moz-progress-bar {
   width: min(380px, 80%);
   text-align: center;
 }
-.render-error strong {
+/* A temporary loss of the 3D context covers the gallery and title too. */
+.context-recovery {
+  z-index: 45;
+}
+.render-error strong,
+.context-recovery strong {
   font-size: 17px;
 }
-.render-error p {
+.render-error p,
+.context-recovery p {
   font-size: 11px;
   line-height: 1.9;
   color: #aaba9e;
   margin: 18px 0;
+}
+.context-recovery button[hidden] {
+  display: none;
 }
 .damage-flash {
   position: absolute;
@@ -528,7 +538,7 @@ body:not(.in-game)
   .game-viewport
   > :not(#world):not(.scene-shade):not(.screens):not(.world-loading):not(.render-error):not(
     #loading-cave
-  ) {
+  ):not(.context-recovery) {
   display: none;
 }
 body[data-screen] .world-loading,

@@ -23,6 +23,8 @@ export const CAVE_MOTIFS = {
   signs: [832, 821, 1236, 1215],
 } as const;
 
+// Each frieze's original image. The game loads the camp-cave manifest's record
+// of it (caveMuralImages), which may be a resized copy.
 export const CAVE_EXTRA_PIGMENTS = {
   roundBots: {
     url: '/models/camp-cave/bot-round-lascaux-r31.png',
@@ -94,16 +96,122 @@ export function caveMuralPigment(mural: CaveMural) {
       : 'atlas';
 }
 
-const f = (n: number) => n.toFixed(6);
-export const caveMuralShader = CAVE_MURALS.map((m) => {
-  const [x0, y0, x1, y1] = CAVE_MOTIFS[m.motif];
-  const extra = m.motif in CAVE_EXTRA_PIGMENTS || m.motif === 'comingSoon';
+export type CaveMotif = keyof typeof CAVE_MOTIFS;
+export type CaveImageSize = { readonly width: number; readonly height: number };
+export type CaveExtraKey = keyof typeof CAVE_EXTRA_PIGMENTS;
+
+/** The pixel size a motif's rectangle is measured in: the original size of the
+ * image it is painted in. Full-image friezes span their own rectangle. */
+export function caveMotifSource(motif: CaveMotif): CaveImageSize {
+  const [, , x1, y1] = CAVE_MOTIFS[motif];
+  const extra = motif in CAVE_EXTRA_PIGMENTS || motif === 'comingSoon';
   const [imageWidth, imageHeight] =
-    extra || m.motif === 'creature524'
+    extra || motif === 'creature524'
       ? [x1, y1]
-      : m.motif === 'rimoFrieze'
+      : motif === 'rimoFrieze'
         ? [2172, 724]
         : [1254, 1254];
+  return { width: imageWidth, height: imageHeight };
+}
+
+/** A motif's UV offset and scale in its image (V up, as sampled). Rectangles are
+ * normalised by the image's original size, so a whole-image resize keeps them. */
+export function caveMotifUV(motif: CaveMotif, source = caveMotifSource(motif)) {
+  const [x0, y0, x1, y1] = CAVE_MOTIFS[motif];
+  return {
+    offset: [x0 / source.width, 1 - y1 / source.height],
+    scale: [(x1 - x0) / source.width, (y1 - y0) / source.height],
+  } as const;
+}
+
+/** A served cave image as the camp-cave manifest records it. */
+export type CaveImageRecord = {
+  readonly url: string;
+  /** The served file, verified before it is decoded (verified-texture.ts). */
+  readonly sha256: string;
+  readonly bytes: number;
+  readonly image: CaveImageSize;
+  /** The original size, recorded when the served image was resized. */
+  readonly uvSource?: CaveImageSize;
+};
+export type CaveMuralImages = {
+  readonly pigment: CaveImageRecord;
+  readonly characterPigment: CaveImageRecord;
+  readonly rimoPigment: CaveImageRecord;
+  readonly extras: Readonly<Record<CaveExtraKey, CaveImageRecord>>;
+};
+
+const isSize = (size: unknown): size is CaveImageSize =>
+  Number.isSafeInteger((size as CaveImageSize)?.width) &&
+  Number.isSafeInteger((size as CaveImageSize)?.height) &&
+  (size as CaveImageSize).width > 0 &&
+  (size as CaveImageSize).height > 0;
+
+/** The pixel space of a served image's motif rectangles: `uvSource` when the
+ * image was resized, else its own size. Never the resized width and height. A
+ * resize must keep the whole image and its aspect, within a pixel of rounding. */
+export function caveUvSource(record: CaveImageRecord, where = record?.url): CaveImageSize {
+  const image = record?.image,
+    uvSource = record?.uvSource;
+  if (!isSize(image)) throw new Error(`${where}: no image width and height`);
+  if (uvSource === undefined) return { width: image.width, height: image.height };
+  if (!isSize(uvSource)) throw new Error(`${where}: uvSource needs a width and a height`);
+  const slack = Math.max(uvSource.width, uvSource.height);
+  if (
+    image.width > uvSource.width ||
+    image.height > uvSource.height ||
+    Math.abs(image.width * uvSource.height - image.height * uvSource.width) > slack
+  )
+    throw new Error(
+      `${where}: a ${image.width}x${image.height} image is not a whole-image resize of its ${uvSource.width}x${uvSource.height} uvSource`,
+    );
+  return { width: uvSource.width, height: uvSource.height };
+}
+
+/** The camp-cave manifest's mural images: the records the loaders load, each
+ * checked against the rectangles that sample it. Fails, rather than mapping any
+ * artwork through the wrong pixel space, when a record is missing or its UV
+ * source is not the size CAVE_MOTIFS was measured in. */
+export function caveMuralImages(asset): CaveMuralImages {
+  const record = (where: string, value) => {
+    if (typeof value?.url !== 'string' || !value.url)
+      throw new Error(`camp-cave ${where}: the manifest records no image`);
+    caveUvSource(value, `camp-cave ${where}`);
+    return value as CaveImageRecord;
+  };
+  const extras = {} as Record<CaveExtraKey, CaveImageRecord>;
+  for (const key of Object.keys(CAVE_EXTRA_PIGMENTS) as CaveExtraKey[])
+    extras[key] = record(`mascotPigments.${key}`, asset?.mascotPigments?.[key]);
+  const images: CaveMuralImages = {
+    pigment: record('pigment', asset?.pigment),
+    characterPigment: record('characterPigment', asset?.characterPigment),
+    rimoPigment: record('rimoPigment', asset?.rimoPigment),
+    extras,
+  };
+  for (const motif of Object.keys(CAVE_MOTIFS) as CaveMotif[]) {
+    if (motif === 'comingSoon') continue;
+    const [where, image]: [string, CaveImageRecord] =
+      motif in CAVE_EXTRA_PIGMENTS
+        ? [`mascotPigments.${motif}`, extras[motif as CaveExtraKey]]
+        : motif === 'creature524'
+          ? ['characterPigment', images.characterPigment]
+          : motif === 'rimoFrieze'
+            ? ['rimoPigment', images.rimoPigment]
+            : ['pigment', images.pigment];
+    const measured = caveMotifSource(motif),
+      mapped = caveUvSource(image, `camp-cave ${where}`);
+    if (mapped.width !== measured.width || mapped.height !== measured.height)
+      throw new Error(
+        `camp-cave ${where}: ${image.url} maps CAVE_MOTIFS.${motif} by ${mapped.width}x${mapped.height}; its rectangle is measured in ${measured.width}x${measured.height} pixels`,
+      );
+  }
+  return images;
+}
+
+const f = (n: number) => n.toFixed(6);
+export const caveMuralShader = CAVE_MURALS.map((m) => {
+  const extra = m.motif in CAVE_EXTRA_PIGMENTS || m.motif === 'comingSoon';
+  const { offset, scale } = caveMotifUV(m.motif);
   const sampler = extra
     ? `cave_${m.motif}`
     : m.motif === 'creature524'
@@ -126,7 +234,7 @@ export const caveMuralShader = CAVE_MURALS.map((m) => {
     vec2 muralUV=vec2(${u},(cavePosition.y-${f(m.bottom)})/${f(caveMuralHeight(m))});
     float muralSide=${wall};
     if(muralSide>0.0 && all(greaterThanEqual(muralUV,vec2(0.0))) && all(lessThanEqual(muralUV,vec2(1.0)))) {
-      vec2 atlasUV=vec2(${f(x0 / imageWidth)},${f(1 - y1 / imageHeight)})+clamp(muralUV,.001,.999)*vec2(${f((x1 - x0) / imageWidth)},${f((y1 - y0) / imageHeight)});
+      vec2 atlasUV=vec2(${f(offset[0])},${f(offset[1])})+clamp(muralUV,.001,.999)*vec2(${f(scale[0])},${f(scale[1])});
       vec4 paint=texture2D(${sampler},atlasUV);
       vec3 mineralPaint=paint.rgb*(.84+.24*rockLuma);
       diffuseColor.rgb=mix(diffuseColor.rgb,mineralPaint,paint.a*muralSide*${f(m.strength)});

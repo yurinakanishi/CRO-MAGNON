@@ -1,6 +1,9 @@
 import { readFile } from 'node:fs/promises';
 import * as THREE from 'three';
 import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
+// The meshopt decoder three bundles with its GLTFLoader, the one the game decodes with
+// (src/embedded-glb.ts). Original GLBs need none; compressed deliveries require it.
+import { MeshoptDecoder } from 'three/addons/libs/meshopt_decoder.module.js';
 
 export const MOTION_KEYS = [
   'cro-magnon-woman',
@@ -36,10 +39,12 @@ export function pack(doc, binary) {
   return out;
 }
 
-// CPU inspection uses the exact skin and animation buffers; only texture decoding
-// is omitted. Browser review loads the unchanged textured delivery separately.
+// CPU inspection uses the exact skin, geometry and animation buffers, decoding
+// EXT_meshopt_compression with three's bundled decoder; only texture decoding is
+// omitted. Browser review loads the unchanged textured delivery separately.
+// `file` is a path or the GLB's bytes (for example, bytes a test has verified).
 export async function loadMotion(file) {
-  const bytes = await readFile(file),
+  const bytes = Buffer.isBuffer(file) ? file : await readFile(file),
     { doc, binary } = unpack(bytes);
   const inspection = structuredClone(doc);
   inspection.materials = [
@@ -50,10 +55,10 @@ export async function loadMotion(file) {
   delete inspection.textures;
   delete inspection.samplers;
   const clean = pack(inspection, binary);
-  const gltf = await new GLTFLoader().parseAsync(
-    clean.buffer.slice(clean.byteOffset, clean.byteOffset + clean.byteLength),
-    '',
-  );
+  await MeshoptDecoder.ready;
+  const gltf = await new GLTFLoader()
+    .setMeshoptDecoder(MeshoptDecoder)
+    .parseAsync(clean.buffer.slice(clean.byteOffset, clean.byteOffset + clean.byteLength), '');
   gltf.scene.updateMatrixWorld(true);
   return { bytes, doc, binary, ...gltf };
 }

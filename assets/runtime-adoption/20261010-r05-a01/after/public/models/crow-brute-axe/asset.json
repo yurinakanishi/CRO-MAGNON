@@ -1,0 +1,64 @@
+{
+  "modelKey": "crow-brute-axe",
+  "name": "白羽教団の戦僧の両刃斧",
+  "kind": "prop",
+  "candidate": 2,
+  "revision": "c2-m01",
+  "status": "remake-candidate-2-integrated",
+  "url": "/models/crow-brute-axe/model-c2.opt-c0bb141f6955dc0e.glb",
+  "sha256": "c0bb141f6955dc0e9f99016ec7f12d01b3975bc65f8dddf8514fb7b34e091d10",
+  "bytes": 757952,
+  "triangles": 3457,
+  "upAxis": "Y",
+  "forwardAxis": "+Z",
+  "heightMetres": 1.4991,
+  "widthMetres": 0.7755,
+  "placement": {
+    "pivot": "ground-centred",
+    "min": [
+      -0.38775092363357544,
+      0.0008574328385293484,
+      -0.08353818207979202
+    ],
+    "max": [
+      0.38772937655448914,
+      1.4999881982803345,
+      0.08117486536502838
+    ],
+    "attachment": "crow rig bone (src/crow-faction-visuals.ts CROW_RANK_PARTS)"
+  },
+  "clips": [],
+  "lods": [],
+  "notes": [
+    "Replaces the code-built primitive CrowBruteAxeShaft/CrowBruteAxeBladeL/R (cylinder + two cones). Codex image_gen reference -> TRELLIS-2 1024 -> meshopt 3457 tris -> xatlas -> albedo + baked normal. Ground-centred pivot, +Y up."
+  ],
+  "onDemand": true,
+  "replaces": "code-built primitives: CrowBruteAxeShaft/CrowBruteAxeBladeL/R (cylinder + two cones)",
+  "provenance": {
+    "provider": "Claude Code (Opus 5.5)",
+    "claudeUsed": true,
+    "referenceGenerator": "Codex CLI built-in image_gen (gpt-5.6-sol, medium)",
+    "referenceImage": "C:/Users/yurin/Desktop/projects/CRO-MAGNON/output/model-generation/models/crow-brute-axe/source/original/candidate2-ref-a.png",
+    "referenceSha256": "c0f12d7268901e7ae1eb0761f093dfcde0c288e8e91918c493acc35c77b3ae68",
+    "reconstruction": "Local TRELLIS-2 v0.8.1, res 1024, tex 1024, seed recorded in dense JSON",
+    "denseFile": "C:/Users/yurin/Desktop/projects/CRO-MAGNON/output/model-generation/models/crow-brute-axe/work/candidate-02/trellis/dense-ref2a-res1024-tex1024-seed0042.glb",
+    "denseSha256": "18687d177bdf580f5d4708a5d7b5b6febafb364760380c934c2495447878dce3",
+    "processReport": "output/model-generation/models/crow-brute-axe/work/candidate-02/low-poly/m01/process-report.json",
+    "pipeline": "scripts/remake/ (trellis_queue.py, meshopt_reduce.mjs, xatlas_unwrap.py, remake_process.py); docs/asset-remake/PLAN.md",
+    "previousDelivery": null,
+    "visualReview": "assets/asset-remake/reviews/crow-brute-axe.json"
+  },
+  "runtimeOptimization": {
+    "adoption": "20261010-r05-a01",
+    "candidateRevision": "assets/optimized-runtime/20261009-r04",
+    "selection": "ordinary-compressed",
+    "original": {
+      "url": "/models/crow-brute-axe/model-c2.glb",
+      "sha256": "c07c503db575adaf1f9f30e6855fd5679e46068c5b8566656dd51075a28dfac5",
+      "bytes": 812224,
+      "triangles": 3457,
+      "lods": []
+    },
+    "adoptedBy": "20261009-r04-a01"
+  }
+}

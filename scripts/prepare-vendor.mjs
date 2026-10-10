@@ -12,6 +12,8 @@ export async function prepareVendor({ cameraControls = true } = {}) {
   );
   const addons = [
     'loaders/GLTFLoader.js',
+    // The meshopt decoder this Three release ships for GLTFLoader (embedded-glb.ts).
+    'libs/meshopt_decoder.module.js',
     'utils/BufferGeometryUtils.js',
     'utils/SkeletonUtils.js',
     'controls/OrbitControls.js',

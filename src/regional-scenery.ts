@@ -6,7 +6,6 @@ import { PlacementGrid } from '../shared/spatial-grid.mjs';
 import { terrainHeight, walkHeight } from '../shared/terrain.mjs';
 import { LandscapeInstances } from './world-assets.js';
 import { WORLD } from '../shared/world.mjs';
-import { disposeSimplifiedShadow } from './performance-lod.js';
 import { groundcoverVisible } from './scenery-visibility.js';
 
 export const regionalId = (key, surface) => `${key}:${surface}`;
@@ -209,7 +208,6 @@ export class RegionalScenery {
     for (const [instanceId, item] of this.props) {
       if (item.id !== id) continue;
       this.world.scene.remove(item.root);
-      disposeSimplifiedShadow(item.root);
       this.world.staticScenery.splice(this.world.staticScenery.indexOf(item.record), 1);
       if (item.fire) {
         this.world.scene.remove(item.fire.light);
@@ -222,6 +220,11 @@ export class RegionalScenery {
     }
     for (const [resourceId, item] of this.world.resources) {
       if (regionalId(item.key, item.surface) !== id) continue;
+      // An evicted bush owns no fruit: a berry-cluster load still queued for it is
+      // withdrawn, and one still running cannot attach to it. Re-admission builds
+      // a new item from the current amount.
+      item.fruitTicket?.release();
+      item.fruit = null;
       this.world.scene.remove(item.model);
       item.wood?.dispose();
       item.stone?.dispose();

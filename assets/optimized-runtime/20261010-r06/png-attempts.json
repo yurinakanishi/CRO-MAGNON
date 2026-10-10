@@ -1,0 +1,2804 @@
+{
+  "png": [
+    {
+      "sha256": "d0ac3101f080411702dd9ddb70aa4c3ae9f15f0337edd160c3d4fa7377a58dcc",
+      "status": "candidate",
+      "reason": null,
+      "record": {
+        "sha256": "d0ac3101f080411702dd9ddb70aa4c3ae9f15f0337edd160c3d4fa7377a58dcc",
+        "bytes": 1472448,
+        "ihdr": {
+          "width": 1024,
+          "height": 1024,
+          "bitDepth": 8,
+          "colourType": 6,
+          "compression": 0,
+          "filter": 0,
+          "interlace": 0
+        },
+        "idat": {
+          "chunks": 180,
+          "compressedBytes": 1470062,
+          "rawBytes": 4195328,
+          "rawSha256": "a15dbf3e63123fb20a7fb70b323479a6c8dbc161328b6a016cfdefe9569b3b39",
+          "filters": {
+            "none": 0,
+            "sub": 1,
+            "up": 3,
+            "average": 10,
+            "paeth": 1010
+          }
+        },
+        "settings": {
+          "level": 9,
+          "windowBits": 15,
+          "zlib": "1.3.1-e00f703"
+        },
+        "attempts": [
+          {
+            "strategy": "DEFAULT",
+            "memLevel": 9,
+            "bytes": 1217621,
+            "runs": [
+              {
+                "ms": 1165.844,
+                "bytes": 1217621,
+                "sha256": "c11fc52fff6384a469907d835a6710398d3b351c4473f7a178435d1dd02abd77"
+              },
+              {
+                "ms": 1156.395,
+                "bytes": 1217621,
+                "sha256": "c11fc52fff6384a469907d835a6710398d3b351c4473f7a178435d1dd02abd77"
+              }
+            ],
+            "identical": true,
+            "exact": true
+          },
+          {
+            "strategy": "DEFAULT",
+            "memLevel": 8,
+            "bytes": 1218548,
+            "runs": [
+              {
+                "ms": 1159.203,
+                "bytes": 1218548,
+                "sha256": "bffc99584fae1d356e163481ee4861c4453908cc8f43679bca3598e8cfc472b9"
+              },
+              {
+                "ms": 1143.298,
+                "bytes": 1218548,
+                "sha256": "bffc99584fae1d356e163481ee4861c4453908cc8f43679bca3598e8cfc472b9"
+              }
+            ],
+            "identical": true,
+            "exact": true
+          },
+          {
+            "strategy": "FILTERED",
+            "memLevel": 9,
+            "bytes": 1233340,
+            "runs": [
+              {
+                "ms": 1137.775,
+                "bytes": 1233340,
+                "sha256": "62e87ef286ae22aad2696358361dc92aa7371e3325a19b2418bf0010218b9b94"
+              },
+              {
+                "ms": 1145.734,
+                "bytes": 1233340,
+                "sha256": "62e87ef286ae22aad2696358361dc92aa7371e3325a19b2418bf0010218b9b94"
+              }
+            ],
+            "identical": true,
+            "exact": true
+          },
+          {
+            "strategy": "FILTERED",
+            "memLevel": 8,
+            "bytes": 1234771,
+            "runs": [
+              {
+                "ms": 1251.117,
+                "bytes": 1234771,
+                "sha256": "822fcca5af669277ed4fb87ce3a13db67420188e042083a2802e77d87a37fe00"
+              },
+              {
+                "ms": 1183.431,
+                "bytes": 1234771,
+                "sha256": "822fcca5af669277ed4fb87ce3a13db67420188e042083a2802e77d87a37fe00"
+              }
+            ],
+            "identical": true,
+            "exact": true
+          },
+          {
+            "strategy": "RLE",
+            "memLevel": 9,
+            "bytes": 1348673,
+            "runs": [
+              {
+                "ms": 27.837,
+                "bytes": 1348673,
+                "sha256": "e161db172ebf6b934023caf0c93c8079f1b3c8bc72a74bdcdc8869ac46fbab85"
+              },
+              {
+                "ms": 28.172,
+                "bytes": 1348673,
+                "sha256": "e161db172ebf6b934023caf0c93c8079f1b3c8bc72a74bdcdc8869ac46fbab85"
+              }
+            ],
+            "identical": true,
+            "exact": true
+          },
+          {
+            "strategy": "RLE",
+            "memLevel": 8,
+            "bytes": 1351864,
+            "runs": [
+              {
+                "ms": 28.982,
+                "bytes": 1351864,
+                "sha256": "4a6adfccc29ed1b1c106c6b17d8dbcef27b485db106e04e5e31f4fcd3aac5fbf"
+              },
+              {
+                "ms": 27.693,
+                "bytes": 1351864,
+                "sha256": "4a6adfccc29ed1b1c106c6b17d8dbcef27b485db106e04e5e31f4fcd3aac5fbf"
+              }
+            ],
+            "identical": true,
+            "exact": true
+          },
+          {
+            "strategy": "FIXED",
+            "memLevel": 9,
+            "bytes": 1483796,
+            "runs": [
+              {
+                "ms": 1158.892,
+                "bytes": 1483796,
+                "sha256": "75e1c0364a404f400d77797150b4ff542a2e930010ed9af684f6d30b5dfe15dd"
+              },
+              {
+                "ms": 1156.392,
+                "bytes": 1483796,
+                "sha256": "75e1c0364a404f400d77797150b4ff542a2e930010ed9af684f6d30b5dfe15dd"
+              }
+            ],
+            "identical": true,
+            "exact": true
+          },
+          {
+            "strategy": "FIXED",
+            "memLevel": 8,
+            "bytes": 1483823,
+            "runs": [
+              {
+                "ms": 1161.872,
+                "bytes": 1483823,
+                "sha256": "6f0e1902965121012816114352294c5b3dd14e75764e77fb62ed806c2522d0c9"
+              },
+              {
+                "ms": 1164.019,
+                "bytes": 1483823,
+                "sha256": "6f0e1902965121012816114352294c5b3dd14e75764e77fb62ed806c2522d0c9"
+              }
+            ],
+            "identical": true,
+            "exact": true
+          }
+        ],
+        "selected": {
+          "strategy": "DEFAULT",
+          "memLevel": 9,
+          "streamBytes": 1217621,
+          "streamSha256": "c11fc52fff6384a469907d835a6710398d3b351c4473f7a178435d1dd02abd77"
+        },
+        "rebuilt": {
+          "sha256": "1036f029d6bcd8631fcc0ec3a5705851ae86fd311a70340c311a468de3a9a859",
+          "bytes": 1217859
+        }
+      }
+    },
+    {
+      "sha256": "f8129f38e7a4202a51131b4eb31256fb54b90a0ecf4c001a95a2e12839f184d6",
+      "status": "original-retained",
+      "reason": "the rebuilt PNG (932182 B) is not smaller",
+      "record": {
+        "sha256": "f8129f38e7a4202a51131b4eb31256fb54b90a0ecf4c001a95a2e12839f184d6",
+        "bytes": 930366,
+        "ihdr": {
+          "width": 1024,
+          "height": 1024,
+          "bitDepth": 8,
+          "colourType": 2,
+          "compression": 0,
+          "filter": 0,
+          "interlace": 0
+        },
+        "idat": {
+          "chunks": 15,
+          "compressedBytes": 930141,
+          "rawBytes": 3146752,
+          "rawSha256": "4281a5ad5f44baf030bcf9b09081b3eb3be3e5734f41eba0fc0753d795062172",
+          "filters": {
+            "none": 0,
+            "sub": 57,
+            "up": 149,
+            "average": 0,
+            "paeth": 818
+          }
+        },
+        "settings": {
+          "level": 9,
+          "windowBits": 15,
+          "zlib": "1.3.1-e00f703"
+        },
+        "attempts": [
+          {
+            "strategy": "DEFAULT",
+            "memLevel": 9,
+            "bytes": 943196,
+            "runs": [
+              {
+                "ms": 1600.228,
+                "bytes": 943196,
+                "sha256": "cbc0c127d80a13518da423cdd8610ff8c7ecb0c7cc33a589e0d2cc273e53b3ff"
+              },
+              {
+                "ms": 1614.783,
+                "bytes": 943196,
+                "sha256": "cbc0c127d80a13518da423cdd8610ff8c7ecb0c7cc33a589e0d2cc273e53b3ff"
+              }
+            ],
+            "identical": true,
+            "exact": true
+          },
+          {
+            "strategy": "DEFAULT",
+            "memLevel": 8,
+            "bytes": 942513,
+            "runs": [
+              {
+                "ms": 1609.774,
+                "bytes": 942513,
+                "sha256": "6b580b9662f814186ec150a2f177ec03789bcb7f929f0aa2141f19b765c7ec21"
+              },
+              {
+                "ms": 1627.215,
+                "bytes": 942513,
+                "sha256": "6b580b9662f814186ec150a2f177ec03789bcb7f929f0aa2141f19b765c7ec21"
+              }
+            ],
+            "identical": true,
+            "exact": true
+          },
+          {
+            "strategy": "FILTERED",
+            "memLevel": 9,
+            "bytes": 932125,
+            "runs": [
+              {
+                "ms": 1623.31,
+                "bytes": 932125,
+                "sha256": "f0327e0288c7075e260df6970394bd7acd2afd91ee029dd14185e25eff6cf16a"
+              },
+              {
+                "ms": 1619.238,
+                "bytes": 932125,
+                "sha256": "f0327e0288c7075e260df6970394bd7acd2afd91ee029dd14185e25eff6cf16a"
+              }
+            ],
+            "identical": true,
+            "exact": true
+          },
+          {
+            "strategy": "FILTERED",
+            "memLevel": 8,
+            "bytes": 932605,
+            "runs": [
+              {
+                "ms": 1665.991,
+                "bytes": 932605,
+                "sha256": "6d099b493c3a45ff57a03148cc170552703a9c7d5eb82eecb6192839a2d9b94d"
+              },
+              {
+                "ms": 1659.039,
+                "bytes": 932605,
+                "sha256": "6d099b493c3a45ff57a03148cc170552703a9c7d5eb82eecb6192839a2d9b94d"
+              }
+            ],
+            "identical": true,
+            "exact": true
+          },
+          {
+            "strategy": "RLE",
+            "memLevel": 9,
+            "bytes": 971741,
+            "runs": [
+              {
+                "ms": 24.148,
+                "bytes": 971741,
+                "sha256": "04cd3795869c0a490fc76c2ae9c0f3821110ec50243438f2365daf0cfee42b8b"
+              },
+              {
+                "ms": 23.577,
+                "bytes": 971741,
+                "sha256": "04cd3795869c0a490fc76c2ae9c0f3821110ec50243438f2365daf0cfee42b8b"
+              }
+            ],
+            "identical": true,
+            "exact": true
+          },
+          {
+            "strategy": "RLE",
+            "memLevel": 8,
+            "bytes": 973709,
+            "runs": [
+              {
+                "ms": 23.65,
+                "bytes": 973709,
+                "sha256": "f2da3a73eaf57e75b01b379d45e5334620b02a82027a9ef8b2297dd5f865e075"
+              },
+              {
+                "ms": 23.644,
+                "bytes": 973709,
+                "sha256": "f2da3a73eaf57e75b01b379d45e5334620b02a82027a9ef8b2297dd5f865e075"
+              }
+            ],
+            "identical": true,
+            "exact": true
+          },
+          {
+            "strategy": "FIXED",
+            "memLevel": 9,
+            "bytes": 1222797,
+            "runs": [
+              {
+                "ms": 1646.215,
+                "bytes": 1222797,
+                "sha256": "7b3612c8b7c3f5c0be3f794b03fff0cf295578933a31e3a9fb594786649bd81b"
+              },
+              {
+                "ms": 1632.316,
+                "bytes": 1222797,
+                "sha256": "7b3612c8b7c3f5c0be3f794b03fff0cf295578933a31e3a9fb594786649bd81b"
+              }
+            ],
+            "identical": true,
+            "exact": true
+          },
+          {
+            "strategy": "FIXED",
+            "memLevel": 8,
+            "bytes": 1222818,
+            "runs": [
+              {
+                "ms": 1630.742,
+                "bytes": 1222818,
+                "sha256": "5954f758ca63beb1acd8d43cf53e687c487b158c23ca38a6cc47e3d8eb950822"
+              },
+              {
+                "ms": 1633.835,
+                "bytes": 1222818,
+                "sha256": "5954f758ca63beb1acd8d43cf53e687c487b158c23ca38a6cc47e3d8eb950822"
+              }
+            ],
+            "identical": true,
+            "exact": true
+          }
+        ],
+        "selected": {
+          "strategy": "FILTERED",
+          "memLevel": 9,
+          "streamBytes": 932125,
+          "streamSha256": "f0327e0288c7075e260df6970394bd7acd2afd91ee029dd14185e25eff6cf16a"
+        },
+        "rebuilt": {
+          "sha256": "e16949033320eefbd9ea4e93fa0bca226ed0fc50fdc33675cb35099347026208",
+          "bytes": 932182
+        }
+      }
+    },
+    {
+      "sha256": "ef3816a73c6d5cc0cdc7b4f4fedcd6ce5e0361d2f135d0e80b8b5de48cfd061d",
+      "status": "candidate",
+      "reason": null,
+      "record": {
+        "sha256": "ef3816a73c6d5cc0cdc7b4f4fedcd6ce5e0361d2f135d0e80b8b5de48cfd061d",
+        "bytes": 2045159,
+        "ihdr": {
+          "width": 1024,
+          "height": 1024,
+          "bitDepth": 8,
+          "colourType": 6,
+          "compression": 0,
+          "filter": 0,
+          "interlace": 0
+        },
+        "idat": {
+          "chunks": 1,
+          "compressedBytes": 2045102,
+          "rawBytes": 4195328,
+          "rawSha256": "5522a59be9325ed8e643a4ca1d94927762c1173674ddff3636a919feeb366a86",
+          "filters": {
+            "none": 0,
+            "sub": 23,
+            "up": 2,
+            "average": 119,
+            "paeth": 880
+          }
+        },
+        "settings": {
+          "level": 9,
+          "windowBits": 15,
+          "zlib": "1.3.1-e00f703"
+        },
+        "attempts": [
+          {
+            "strategy": "DEFAULT",
+            "memLevel": 9,
+            "bytes": 1304046,
+            "runs": [
+              {
+                "ms": 580.955,
+                "bytes": 1304046,
+                "sha256": "bff4f931aac9a08aeeb78f1aa905733d30a25a2055e7faabbab179ba0be3deab"
+              },
+              {
+                "ms": 586.927,
+                "bytes": 1304046,
+                "sha256": "bff4f931aac9a08aeeb78f1aa905733d30a25a2055e7faabbab179ba0be3deab"
+              }
+            ],
+            "identical": true,
+            "exact": true
+          },
+          {
+            "strategy": "DEFAULT",
+            "memLevel": 8,
+            "bytes": 1303870,
+            "runs": [
+              {
+                "ms": 575.084,
+                "bytes": 1303870,
+                "sha256": "75cc39798e0db3805024bb74e3e19de903068cac13173125a8b734317f9116ae"
+              },
+              {
+                "ms": 586.068,
+                "bytes": 1303870,
+                "sha256": "75cc39798e0db3805024bb74e3e19de903068cac13173125a8b734317f9116ae"
+              }
+            ],
+            "identical": true,
+            "exact": true
+          },
+          {
+            "strategy": "FILTERED",
+            "memLevel": 9,
+            "bytes": 1285054,
+            "runs": [
+              {
+                "ms": 583.83,
+                "bytes": 1285054,
+                "sha256": "6642b6d0d5d71ac72566ee185c4abcf431f0c2bfac27ec258bfa72551430676a"
+              },
+              {
+                "ms": 582.369,
+                "bytes": 1285054,
+                "sha256": "6642b6d0d5d71ac72566ee185c4abcf431f0c2bfac27ec258bfa72551430676a"
+              }
+            ],
+            "identical": true,
+            "exact": true
+          },
+          {
+            "strategy": "FILTERED",
+            "memLevel": 8,
+            "bytes": 1285450,
+            "runs": [
+              {
+                "ms": 587.354,
+                "bytes": 1285450,
+                "sha256": "83e9b6d665c4e8d9c809de3ac1faa61e0423a787149b2780df90f9e8b4dce98e"
+              },
+              {
+                "ms": 581.695,
+                "bytes": 1285450,
+                "sha256": "83e9b6d665c4e8d9c809de3ac1faa61e0423a787149b2780df90f9e8b4dce98e"
+              }
+            ],
+            "identical": true,
+            "exact": true
+          },
+          {
+            "strategy": "RLE",
+            "memLevel": 9,
+            "bytes": 1415653,
+            "runs": [
+              {
+                "ms": 30.007,
+                "bytes": 1415653,
+                "sha256": "bc88c1054ded2473a09e7afe351834eb26c54987623b01d87529f1fb886fd8ce"
+              },
+              {
+                "ms": 29.837,
+                "bytes": 1415653,
+                "sha256": "bc88c1054ded2473a09e7afe351834eb26c54987623b01d87529f1fb886fd8ce"
+              }
+            ],
+            "identical": true,
+            "exact": true
+          },
+          {
+            "strategy": "RLE",
+            "memLevel": 8,
+            "bytes": 1417399,
+            "runs": [
+              {
+                "ms": 31.898,
+                "bytes": 1417399,
+                "sha256": "70518f8f798cc376568e1be12ec7654f196cdde46ea13a3f85df66d3b1309ff6"
+              },
+              {
+                "ms": 30.301,
+                "bytes": 1417399,
+                "sha256": "70518f8f798cc376568e1be12ec7654f196cdde46ea13a3f85df66d3b1309ff6"
+              }
+            ],
+            "identical": true,
+            "exact": true
+          },
+          {
+            "strategy": "FIXED",
+            "memLevel": 9,
+            "bytes": 1683330,
+            "runs": [
+              {
+                "ms": 590.867,
+                "bytes": 1683330,
+                "sha256": "bba2e224a8db0f5e36790bca2c440bc60331bbb0aa7905a18dcee1e4de626e7a"
+              },
+              {
+                "ms": 575.433,
+                "bytes": 1683330,
+                "sha256": "bba2e224a8db0f5e36790bca2c440bc60331bbb0aa7905a18dcee1e4de626e7a"
+              }
+            ],
+            "identical": true,
+            "exact": true
+          },
+          {
+            "strategy": "FIXED",
+            "memLevel": 8,
+            "bytes": 1683359,
+            "runs": [
+              {
+                "ms": 576.962,
+                "bytes": 1683359,
+                "sha256": "fd5c06bc300503b8671c3cdc148e8688159e54e301d0353ca92927f6ea910b80"
+              },
+              {
+                "ms": 574.48,
+                "bytes": 1683359,
+                "sha256": "fd5c06bc300503b8671c3cdc148e8688159e54e301d0353ca92927f6ea910b80"
+              }
+            ],
+            "identical": true,
+            "exact": true
+          }
+        ],
+        "selected": {
+          "strategy": "FILTERED",
+          "memLevel": 9,
+          "streamBytes": 1285054,
+          "streamSha256": "6642b6d0d5d71ac72566ee185c4abcf431f0c2bfac27ec258bfa72551430676a"
+        },
+        "rebuilt": {
+          "sha256": "fea7a86e43feb5ddaebf8ab5ffaa0d285fe75dd8767f9b0b27306a614815e9f8",
+          "bytes": 1285111
+        }
+      }
+    },
+    {
+      "sha256": "9a15be3e2fe167f3ec349ed894b60f1c971858da0024d3f11dad605a093ee74c",
+      "status": "candidate",
+      "reason": null,
+      "record": {
+        "sha256": "9a15be3e2fe167f3ec349ed894b60f1c971858da0024d3f11dad605a093ee74c",
+        "bytes": 1825032,
+        "ihdr": {
+          "width": 1024,
+          "height": 1024,
+          "bitDepth": 8,
+          "colourType": 6,
+          "compression": 0,
+          "filter": 0,
+          "interlace": 0
+        },
+        "idat": {
+          "chunks": 1,
+          "compressedBytes": 1824975,
+          "rawBytes": 4195328,
+          "rawSha256": "0ae7f028a4d7d1360f09d72cd729a53e7af3337e7389b842bd3c019d4f28b465",
+          "filters": {
+            "none": 0,
+            "sub": 1,
+            "up": 1,
+            "average": 285,
+            "paeth": 737
+          }
+        },
+        "settings": {
+          "level": 9,
+          "windowBits": 15,
+          "zlib": "1.3.1-e00f703"
+        },
+        "attempts": [
+          {
+            "strategy": "DEFAULT",
+            "memLevel": 9,
+            "bytes": 1253547,
+            "runs": [
+              {
+                "ms": 1534.328,
+                "bytes": 1253547,
+                "sha256": "646f7619f668b6d62a891b02db31bc44d797a9a5b3ae90e4df54f5e34f55abc6"
+              },
+              {
+                "ms": 1543.198,
+                "bytes": 1253547,
+                "sha256": "646f7619f668b6d62a891b02db31bc44d797a9a5b3ae90e4df54f5e34f55abc6"
+              }
+            ],
+            "identical": true,
+            "exact": true
+          },
+          {
+            "strategy": "DEFAULT",
+            "memLevel": 8,
+            "bytes": 1254638,
+            "runs": [
+              {
+                "ms": 1534.66,
+                "bytes": 1254638,
+                "sha256": "019f1c6227e67517f8170ebe69483a05a924699310ec1ee51aea53752dfb185f"
+              },
+              {
+                "ms": 1528.183,
+                "bytes": 1254638,
+                "sha256": "019f1c6227e67517f8170ebe69483a05a924699310ec1ee51aea53752dfb185f"
+              }
+            ],
+            "identical": true,
+            "exact": true
+          },
+          {
+            "strategy": "FILTERED",
+            "memLevel": 9,
+            "bytes": 1292439,
+            "runs": [
+              {
+                "ms": 1543.316,
+                "bytes": 1292439,
+                "sha256": "510639219a058564778a17b6f6259dcb2a7d69f2d725ac2c41c1609d913f4832"
+              },
+              {
+                "ms": 1563.926,
+                "bytes": 1292439,
+                "sha256": "510639219a058564778a17b6f6259dcb2a7d69f2d725ac2c41c1609d913f4832"
+              }
+            ],
+            "identical": true,
+            "exact": true
+          },
+          {
+            "strategy": "FILTERED",
+            "memLevel": 8,
+            "bytes": 1294185,
+            "runs": [
+              {
+                "ms": 1550.874,
+                "bytes": 1294185,
+                "sha256": "a4715260268b1e9fa1cbdceb47d713d38f37c57ba09bdbe6b98b2b5e316fef5a"
+              },
+              {
+                "ms": 1565.16,
+                "bytes": 1294185,
+                "sha256": "a4715260268b1e9fa1cbdceb47d713d38f37c57ba09bdbe6b98b2b5e316fef5a"
+              }
+            ],
+            "identical": true,
+            "exact": true
+          },
+          {
+            "strategy": "RLE",
+            "memLevel": 9,
+            "bytes": 1452914,
+            "runs": [
+              {
+                "ms": 29.069,
+                "bytes": 1452914,
+                "sha256": "119e6954c2d953d62f7691f0e3a77808a62989f760d0de950079321a536d6911"
+              },
+              {
+                "ms": 27.177,
+                "bytes": 1452914,
+                "sha256": "119e6954c2d953d62f7691f0e3a77808a62989f760d0de950079321a536d6911"
+              }
+            ],
+            "identical": true,
+            "exact": true
+          },
+          {
+            "strategy": "RLE",
+            "memLevel": 8,
+            "bytes": 1455994,
+            "runs": [
+              {
+                "ms": 28.541,
+                "bytes": 1455994,
+                "sha256": "b522ab8093e3d1108cbecb397f5c705b270dbf8a46337484f207d99dde0002b5"
+              },
+              {
+                "ms": 28.993,
+                "bytes": 1455994,
+                "sha256": "b522ab8093e3d1108cbecb397f5c705b270dbf8a46337484f207d99dde0002b5"
+              }
+            ],
+            "identical": true,
+            "exact": true
+          },
+          {
+            "strategy": "FIXED",
+            "memLevel": 9,
+            "bytes": 1540752,
+            "runs": [
+              {
+                "ms": 1565.481,
+                "bytes": 1540752,
+                "sha256": "64ee9914eb34abdbac76bc0f37dbe25a48dcbb56a03aae6bf3a3a6511144cbe9"
+              },
+              {
+                "ms": 1534.037,
+                "bytes": 1540752,
+                "sha256": "64ee9914eb34abdbac76bc0f37dbe25a48dcbb56a03aae6bf3a3a6511144cbe9"
+              }
+            ],
+            "identical": true,
+            "exact": true
+          },
+          {
+            "strategy": "FIXED",
+            "memLevel": 8,
+            "bytes": 1540781,
+            "runs": [
+              {
+                "ms": 1545.174,
+                "bytes": 1540781,
+                "sha256": "e72d06781719b53f0007c128c62e8b26eed38bbd01f120f6813efb468c93a1af"
+              },
+              {
+                "ms": 1571.822,
+                "bytes": 1540781,
+                "sha256": "e72d06781719b53f0007c128c62e8b26eed38bbd01f120f6813efb468c93a1af"
+              }
+            ],
+            "identical": true,
+            "exact": true
+          }
+        ],
+        "selected": {
+          "strategy": "DEFAULT",
+          "memLevel": 9,
+          "streamBytes": 1253547,
+          "streamSha256": "646f7619f668b6d62a891b02db31bc44d797a9a5b3ae90e4df54f5e34f55abc6"
+        },
+        "rebuilt": {
+          "sha256": "3e095361da954be89234ba64eb1959877fdb5f47ab3b2ea50b8f5a5f3e2d6996",
+          "bytes": 1253604
+        }
+      }
+    },
+    {
+      "sha256": "78de0e1c4a23835dc5b0b95a6a8bd08d8a5cba27a9a50bad5552e3386e5f564c",
+      "status": "candidate",
+      "reason": null,
+      "record": {
+        "sha256": "78de0e1c4a23835dc5b0b95a6a8bd08d8a5cba27a9a50bad5552e3386e5f564c",
+        "bytes": 565002,
+        "ihdr": {
+          "width": 1024,
+          "height": 341,
+          "bitDepth": 8,
+          "colourType": 6,
+          "compression": 0,
+          "filter": 0,
+          "interlace": 0
+        },
+        "idat": {
+          "chunks": 9,
+          "compressedBytes": 564849,
+          "rawBytes": 1397077,
+          "rawSha256": "07cdad67a897dbc1ad3fb20f22615ad0ecd38d411b1b9424c74e4d8565a6471d",
+          "filters": {
+            "none": 28,
+            "sub": 29,
+            "up": 7,
+            "average": 264,
+            "paeth": 13
+          }
+        },
+        "settings": {
+          "level": 9,
+          "windowBits": 15,
+          "zlib": "1.3.1-e00f703"
+        },
+        "attempts": [
+          {
+            "strategy": "DEFAULT",
+            "memLevel": 9,
+            "bytes": 560369,
+            "runs": [
+              {
+                "ms": 52.777,
+                "bytes": 560369,
+                "sha256": "51308064dc2f91618cfda52f868a64f82d2931038d2302d6b5a44459a501f7af"
+              },
+              {
+                "ms": 53.021,
+                "bytes": 560369,
+                "sha256": "51308064dc2f91618cfda52f868a64f82d2931038d2302d6b5a44459a501f7af"
+              }
+            ],
+            "identical": true,
+            "exact": true
+          },
+          {
+            "strategy": "DEFAULT",
+            "memLevel": 8,
+            "bytes": 561846,
+            "runs": [
+              {
+                "ms": 59.962,
+                "bytes": 561846,
+                "sha256": "61e2036bbf40b709305aefec6fc78ae310e7cd27ecaf0f1b59ff7c1a5d2dda4b"
+              },
+              {
+                "ms": 54.811,
+                "bytes": 561846,
+                "sha256": "61e2036bbf40b709305aefec6fc78ae310e7cd27ecaf0f1b59ff7c1a5d2dda4b"
+              }
+            ],
+            "identical": true,
+            "exact": true
+          },
+          {
+            "strategy": "FILTERED",
+            "memLevel": 9,
+            "bytes": 565260,
+            "runs": [
+              {
+                "ms": 52.878,
+                "bytes": 565260,
+                "sha256": "a5d3ef7d3f3b9a3bc6c9f8fa637941959500346bd47e71fd0e111474fc8ded0d"
+              },
+              {
+                "ms": 54.321,
+                "bytes": 565260,
+                "sha256": "a5d3ef7d3f3b9a3bc6c9f8fa637941959500346bd47e71fd0e111474fc8ded0d"
+              }
+            ],
+            "identical": true,
+            "exact": true
+          },
+          {
+            "strategy": "FILTERED",
+            "memLevel": 8,
+            "bytes": 567070,
+            "runs": [
+              {
+                "ms": 54.987,
+                "bytes": 567070,
+                "sha256": "163cf7a377b85378b45c798b3d9b4cb90c214c6cd149f4dbff3348db9b8f03ef"
+              },
+              {
+                "ms": 55.582,
+                "bytes": 567070,
+                "sha256": "163cf7a377b85378b45c798b3d9b4cb90c214c6cd149f4dbff3348db9b8f03ef"
+              }
+            ],
+            "identical": true,
+            "exact": true
+          },
+          {
+            "strategy": "RLE",
+            "memLevel": 9,
+            "bytes": 569922,
+            "runs": [
+              {
+                "ms": 6.72,
+                "bytes": 569922,
+                "sha256": "b830a204003e81fddc0aa45d8a0912eeb2c75def8205ce1885a5c59bed8758ed"
+              },
+              {
+                "ms": 6.713,
+                "bytes": 569922,
+                "sha256": "b830a204003e81fddc0aa45d8a0912eeb2c75def8205ce1885a5c59bed8758ed"
+              }
+            ],
+            "identical": true,
+            "exact": true
+          },
+          {
+            "strategy": "RLE",
+            "memLevel": 8,
+            "bytes": 571574,
+            "runs": [
+              {
+                "ms": 7.301,
+                "bytes": 571574,
+                "sha256": "0bbdbf6386710c451926901161fe700646e0e461ecd5b9303845589480083ad4"
+              },
+              {
+                "ms": 7.244,
+                "bytes": 571574,
+                "sha256": "0bbdbf6386710c451926901161fe700646e0e461ecd5b9303845589480083ad4"
+              }
+            ],
+            "identical": true,
+            "exact": true
+          },
+          {
+            "strategy": "FIXED",
+            "memLevel": 9,
+            "bytes": 690968,
+            "runs": [
+              {
+                "ms": 51.359,
+                "bytes": 690968,
+                "sha256": "0d6b0e5fb7546f209bee9699f79721998e52f3338635231baf3da25515d102f1"
+              },
+              {
+                "ms": 51.221,
+                "bytes": 690968,
+                "sha256": "0d6b0e5fb7546f209bee9699f79721998e52f3338635231baf3da25515d102f1"
+              }
+            ],
+            "identical": true,
+            "exact": true
+          },
+          {
+            "strategy": "FIXED",
+            "memLevel": 8,
+            "bytes": 690967,
+            "runs": [
+              {
+                "ms": 54.487,
+                "bytes": 690967,
+                "sha256": "e7571772d71f31bd2e094f5b731bdff578b61cea9dd58affebfe732d728cb3b8"
+              },
+              {
+                "ms": 53.769,
+                "bytes": 690967,
+                "sha256": "e7571772d71f31bd2e094f5b731bdff578b61cea9dd58affebfe732d728cb3b8"
+              }
+            ],
+            "identical": true,
+            "exact": true
+          }
+        ],
+        "selected": {
+          "strategy": "DEFAULT",
+          "memLevel": 9,
+          "streamBytes": 560369,
+          "streamSha256": "51308064dc2f91618cfda52f868a64f82d2931038d2302d6b5a44459a501f7af"
+        },
+        "rebuilt": {
+          "sha256": "2f9a4a74cb9c0e9d3a94cf394a3b843655a273690b94dbb1d9c406fb40da3c51",
+          "bytes": 560426
+        }
+      }
+    },
+    {
+      "sha256": "94ca1aebe422e2a0de6582654e9475167c895acd227cb28526e9873d8b3a4e85",
+      "status": "original-retained",
+      "reason": "the rebuilt PNG (1277890 B) is not smaller",
+      "record": {
+        "sha256": "94ca1aebe422e2a0de6582654e9475167c895acd227cb28526e9873d8b3a4e85",
+        "bytes": 1276113,
+        "ihdr": {
+          "width": 1024,
+          "height": 1024,
+          "bitDepth": 8,
+          "colourType": 6,
+          "compression": 0,
+          "filter": 0,
+          "interlace": 0
+        },
+        "idat": {
+          "chunks": 20,
+          "compressedBytes": 1275828,
+          "rawBytes": 4195328,
+          "rawSha256": "d2d58425494099edba5c529b521d2831786948f47a33ca79d59cadbfeb2a5b2b",
+          "filters": {
+            "none": 138,
+            "sub": 48,
+            "up": 104,
+            "average": 464,
+            "paeth": 270
+          }
+        },
+        "settings": {
+          "level": 9,
+          "windowBits": 15,
+          "zlib": "1.3.1-e00f703"
+        },
+        "attempts": [
+          {
+            "strategy": "DEFAULT",
+            "memLevel": 9,
+            "bytes": 1281044,
+            "runs": [
+              {
+                "ms": 162.915,
+                "bytes": 1281044,
+                "sha256": "2e7ace3043c43ad92d61428e7e45c0bbe84b041f5663d2924d90e4d2628442a5"
+              },
+              {
+                "ms": 161.103,
+                "bytes": 1281044,
+                "sha256": "2e7ace3043c43ad92d61428e7e45c0bbe84b041f5663d2924d90e4d2628442a5"
+              }
+            ],
+            "identical": true,
+            "exact": true
+          },
+          {
+            "strategy": "DEFAULT",
+            "memLevel": 8,
+            "bytes": 1284275,
+            "runs": [
+              {
+                "ms": 171.154,
+                "bytes": 1284275,
+                "sha256": "4a8d8d0969d6b845ce4fd89fb80e1104cdd16dd85cd6471e94c39f3536f030ab"
+              },
+              {
+                "ms": 169.8,
+                "bytes": 1284275,
+                "sha256": "4a8d8d0969d6b845ce4fd89fb80e1104cdd16dd85cd6471e94c39f3536f030ab"
+              }
+            ],
+            "identical": true,
+            "exact": true
+          },
+          {
+            "strategy": "FILTERED",
+            "memLevel": 9,
+            "bytes": 1277833,
+            "runs": [
+              {
+                "ms": 161.445,
+                "bytes": 1277833,
+                "sha256": "b2b42acf401882bb4910e1e97fce6360b79bf15e89da7d7743a03ae5cda20522"
+              },
+              {
+                "ms": 164.643,
+                "bytes": 1277833,
+                "sha256": "b2b42acf401882bb4910e1e97fce6360b79bf15e89da7d7743a03ae5cda20522"
+              }
+            ],
+            "identical": true,
+            "exact": true
+          },
+          {
+            "strategy": "FILTERED",
+            "memLevel": 8,
+            "bytes": 1281410,
+            "runs": [
+              {
+                "ms": 169.475,
+                "bytes": 1281410,
+                "sha256": "f0983efa3959d935b7befbf87206aa5f776870f25022d2047b0a380429eee0d4"
+              },
+              {
+                "ms": 170.136,
+                "bytes": 1281410,
+                "sha256": "f0983efa3959d935b7befbf87206aa5f776870f25022d2047b0a380429eee0d4"
+              }
+            ],
+            "identical": true,
+            "exact": true
+          },
+          {
+            "strategy": "RLE",
+            "memLevel": 9,
+            "bytes": 1286575,
+            "runs": [
+              {
+                "ms": 16.136,
+                "bytes": 1286575,
+                "sha256": "3a7bc6c3e31ffb3f6d4a06a72801c99a1830d3190bb8953300316ba2a5502ee3"
+              },
+              {
+                "ms": 17.423,
+                "bytes": 1286575,
+                "sha256": "3a7bc6c3e31ffb3f6d4a06a72801c99a1830d3190bb8953300316ba2a5502ee3"
+              }
+            ],
+            "identical": true,
+            "exact": true
+          },
+          {
+            "strategy": "RLE",
+            "memLevel": 8,
+            "bytes": 1289955,
+            "runs": [
+              {
+                "ms": 17.173,
+                "bytes": 1289955,
+                "sha256": "fa882ccf2b7e96c1643cb1409848bb768e5d04d4e55935043ffee1a34319c2d2"
+              },
+              {
+                "ms": 16.959,
+                "bytes": 1289955,
+                "sha256": "fa882ccf2b7e96c1643cb1409848bb768e5d04d4e55935043ffee1a34319c2d2"
+              }
+            ],
+            "identical": true,
+            "exact": true
+          },
+          {
+            "strategy": "FIXED",
+            "memLevel": 9,
+            "bytes": 1589934,
+            "runs": [
+              {
+                "ms": 159.784,
+                "bytes": 1589934,
+                "sha256": "04bcea3ae1719b618cce1d23952900ffb612c82d81b3f0c87e41ffcf75b2f76f"
+              },
+              {
+                "ms": 159.588,
+                "bytes": 1589934,
+                "sha256": "04bcea3ae1719b618cce1d23952900ffb612c82d81b3f0c87e41ffcf75b2f76f"
+              }
+            ],
+            "identical": true,
+            "exact": true
+          },
+          {
+            "strategy": "FIXED",
+            "memLevel": 8,
+            "bytes": 1589929,
+            "runs": [
+              {
+                "ms": 167.548,
+                "bytes": 1589929,
+                "sha256": "59bc75551d3760149832751f00ceb4062fb554c54d290df94ac74e0103c65c0d"
+              },
+              {
+                "ms": 166.565,
+                "bytes": 1589929,
+                "sha256": "59bc75551d3760149832751f00ceb4062fb554c54d290df94ac74e0103c65c0d"
+              }
+            ],
+            "identical": true,
+            "exact": true
+          }
+        ],
+        "selected": {
+          "strategy": "FILTERED",
+          "memLevel": 9,
+          "streamBytes": 1277833,
+          "streamSha256": "b2b42acf401882bb4910e1e97fce6360b79bf15e89da7d7743a03ae5cda20522"
+        },
+        "rebuilt": {
+          "sha256": "02d233090905283a43de20ed83f73428ef502d55d5a7e6ac5a594a86a21113f1",
+          "bytes": 1277890
+        }
+      }
+    },
+    {
+      "sha256": "65fa961cf8b888270eeb3f7bbeb93fc454a89139a06a456fd14a4efd2fed02b2",
+      "status": "candidate",
+      "reason": null,
+      "record": {
+        "sha256": "65fa961cf8b888270eeb3f7bbeb93fc454a89139a06a456fd14a4efd2fed02b2",
+        "bytes": 560607,
+        "ihdr": {
+          "width": 1024,
+          "height": 341,
+          "bitDepth": 8,
+          "colourType": 6,
+          "compression": 0,
+          "filter": 0,
+          "interlace": 0
+        },
+        "idat": {
+          "chunks": 9,
+          "compressedBytes": 560454,
+          "rawBytes": 1397077,
+          "rawSha256": "1195f090ce9348bb91a8c65d57a02031caea65dff91173249d2be2d6273afbe1",
+          "filters": {
+            "none": 22,
+            "sub": 23,
+            "up": 16,
+            "average": 241,
+            "paeth": 39
+          }
+        },
+        "settings": {
+          "level": 9,
+          "windowBits": 15,
+          "zlib": "1.3.1-e00f703"
+        },
+        "attempts": [
+          {
+            "strategy": "DEFAULT",
+            "memLevel": 9,
+            "bytes": 560081,
+            "runs": [
+              {
+                "ms": 63.11,
+                "bytes": 560081,
+                "sha256": "032f223c923ac7b18e7c02d86682492240d5c96003f343f178fc1c7543fc0a97"
+              },
+              {
+                "ms": 62.74,
+                "bytes": 560081,
+                "sha256": "032f223c923ac7b18e7c02d86682492240d5c96003f343f178fc1c7543fc0a97"
+              }
+            ],
+            "identical": true,
+            "exact": true
+          },
+          {
+            "strategy": "DEFAULT",
+            "memLevel": 8,
+            "bytes": 561565,
+            "runs": [
+              {
+                "ms": 65.21,
+                "bytes": 561565,
+                "sha256": "820b8ebbe6b2a8368cce21dc5dfff4300b4d84be3d27692ef7a08e537e7637fb"
+              },
+              {
+                "ms": 65.546,
+                "bytes": 561565,
+                "sha256": "820b8ebbe6b2a8368cce21dc5dfff4300b4d84be3d27692ef7a08e537e7637fb"
+              }
+            ],
+            "identical": true,
+            "exact": true
+          },
+          {
+            "strategy": "FILTERED",
+            "memLevel": 9,
+            "bytes": 561092,
+            "runs": [
+              {
+                "ms": 62.306,
+                "bytes": 561092,
+                "sha256": "56e86ed066480dc833750b4bb6f162820a35fc3631eee67316bafafedb09eea7"
+              },
+              {
+                "ms": 62.13,
+                "bytes": 561092,
+                "sha256": "56e86ed066480dc833750b4bb6f162820a35fc3631eee67316bafafedb09eea7"
+              }
+            ],
+            "identical": true,
+            "exact": true
+          },
+          {
+            "strategy": "FILTERED",
+            "memLevel": 8,
+            "bytes": 562868,
+            "runs": [
+              {
+                "ms": 65.16,
+                "bytes": 562868,
+                "sha256": "108e06066fb9fc15b52d9ab1e5615669d77916809de5c56162b92acaab3c3de9"
+              },
+              {
+                "ms": 66.873,
+                "bytes": 562868,
+                "sha256": "108e06066fb9fc15b52d9ab1e5615669d77916809de5c56162b92acaab3c3de9"
+              }
+            ],
+            "identical": true,
+            "exact": true
+          },
+          {
+            "strategy": "RLE",
+            "memLevel": 9,
+            "bytes": 568523,
+            "runs": [
+              {
+                "ms": 6.291,
+                "bytes": 568523,
+                "sha256": "dc12da8d16c58c5ec6967b00f42609d9606239007c3de0d0aa746aeca5e1d2f6"
+              },
+              {
+                "ms": 6.417,
+                "bytes": 568523,
+                "sha256": "dc12da8d16c58c5ec6967b00f42609d9606239007c3de0d0aa746aeca5e1d2f6"
+              }
+            ],
+            "identical": true,
+            "exact": true
+          },
+          {
+            "strategy": "RLE",
+            "memLevel": 8,
+            "bytes": 570098,
+            "runs": [
+              {
+                "ms": 7.23,
+                "bytes": 570098,
+                "sha256": "d168f080a390652de525ad7698ebf337ddc61eed21a1fe0ce7fb0b96ae42df77"
+              },
+              {
+                "ms": 7.221,
+                "bytes": 570098,
+                "sha256": "d168f080a390652de525ad7698ebf337ddc61eed21a1fe0ce7fb0b96ae42df77"
+              }
+            ],
+            "identical": true,
+            "exact": true
+          },
+          {
+            "strategy": "FIXED",
+            "memLevel": 9,
+            "bytes": 683093,
+            "runs": [
+              {
+                "ms": 61.827,
+                "bytes": 683093,
+                "sha256": "1781e3a888a06ba082dcdf6af57e6a6ee8dbea05b0e46f829acac0616aa85841"
+              },
+              {
+                "ms": 62.954,
+                "bytes": 683093,
+                "sha256": "1781e3a888a06ba082dcdf6af57e6a6ee8dbea05b0e46f829acac0616aa85841"
+              }
+            ],
+            "identical": true,
+            "exact": true
+          },
+          {
+            "strategy": "FIXED",
+            "memLevel": 8,
+            "bytes": 683109,
+            "runs": [
+              {
+                "ms": 65.517,
+                "bytes": 683109,
+                "sha256": "426446a93ec49db2b429f9937c0f78eae44320d5a3bf3d4a1b3ff0e4ecd2021f"
+              },
+              {
+                "ms": 66.324,
+                "bytes": 683109,
+                "sha256": "426446a93ec49db2b429f9937c0f78eae44320d5a3bf3d4a1b3ff0e4ecd2021f"
+              }
+            ],
+            "identical": true,
+            "exact": true
+          }
+        ],
+        "selected": {
+          "strategy": "DEFAULT",
+          "memLevel": 9,
+          "streamBytes": 560081,
+          "streamSha256": "032f223c923ac7b18e7c02d86682492240d5c96003f343f178fc1c7543fc0a97"
+        },
+        "rebuilt": {
+          "sha256": "8a2acbfbfaa6d2c22c83e38cda85615a4da7064b52e3231f7b8a83bcc890ec25",
+          "bytes": 560138
+        }
+      }
+    },
+    {
+      "sha256": "61e9536d1415d066ecf3c3867e5d438419bd42de8253eeb67f598e76f1f2f5a2",
+      "status": "candidate",
+      "reason": null,
+      "record": {
+        "sha256": "61e9536d1415d066ecf3c3867e5d438419bd42de8253eeb67f598e76f1f2f5a2",
+        "bytes": 2284797,
+        "ihdr": {
+          "width": 1024,
+          "height": 1024,
+          "bitDepth": 8,
+          "colourType": 2,
+          "compression": 0,
+          "filter": 0,
+          "interlace": 0
+        },
+        "idat": {
+          "chunks": 35,
+          "compressedBytes": 2284332,
+          "rawBytes": 3146752,
+          "rawSha256": "1ed8b90967a4281685aed44e671b2f691e51fdaf5edad627e64b375f888186d0",
+          "filters": {
+            "none": 0,
+            "sub": 3,
+            "up": 0,
+            "average": 1017,
+            "paeth": 4
+          }
+        },
+        "settings": {
+          "level": 9,
+          "windowBits": 15,
+          "zlib": "1.3.1-e00f703"
+        },
+        "attempts": [
+          {
+            "strategy": "DEFAULT",
+            "memLevel": 9,
+            "bytes": 2228883,
+            "runs": [
+              {
+                "ms": 56.326,
+                "bytes": 2228883,
+                "sha256": "6b977bf501b573c051fcb3a84c191510778963fe3747f3464eea5b6a5497a492"
+              },
+              {
+                "ms": 57.599,
+                "bytes": 2228883,
+                "sha256": "6b977bf501b573c051fcb3a84c191510778963fe3747f3464eea5b6a5497a492"
+              }
+            ],
+            "identical": true,
+            "exact": true
+          },
+          {
+            "strategy": "DEFAULT",
+            "memLevel": 8,
+            "bytes": 2232545,
+            "runs": [
+              {
+                "ms": 67.937,
+                "bytes": 2232545,
+                "sha256": "e040c4843a8a2ae79d841c07b91d4e17a8242f998337db30cee98d6b80e1efac"
+              },
+              {
+                "ms": 64.129,
+                "bytes": 2232545,
+                "sha256": "e040c4843a8a2ae79d841c07b91d4e17a8242f998337db30cee98d6b80e1efac"
+              }
+            ],
+            "identical": true,
+            "exact": true
+          },
+          {
+            "strategy": "FILTERED",
+            "memLevel": 9,
+            "bytes": 2284332,
+            "runs": [
+              {
+                "ms": 65.968,
+                "bytes": 2284332,
+                "sha256": "4618372f7d243911c82652da2e8d22b0e032b1341989da9df1752e24124e9bfd"
+              },
+              {
+                "ms": 66.951,
+                "bytes": 2284332,
+                "sha256": "4618372f7d243911c82652da2e8d22b0e032b1341989da9df1752e24124e9bfd"
+              }
+            ],
+            "identical": true,
+            "exact": true
+          },
+          {
+            "strategy": "FILTERED",
+            "memLevel": 8,
+            "bytes": 2289017,
+            "runs": [
+              {
+                "ms": 69.66,
+                "bytes": 2289017,
+                "sha256": "02f84563f85ccc8d87b888dd21db1d61ecdfcbfe8ab761e5f6947af8c811f3f8"
+              },
+              {
+                "ms": 69.526,
+                "bytes": 2289017,
+                "sha256": "02f84563f85ccc8d87b888dd21db1d61ecdfcbfe8ab761e5f6947af8c811f3f8"
+              }
+            ],
+            "identical": true,
+            "exact": true
+          },
+          {
+            "strategy": "RLE",
+            "memLevel": 9,
+            "bytes": 2285826,
+            "runs": [
+              {
+                "ms": 24.948,
+                "bytes": 2285826,
+                "sha256": "87c5afe079e65063f6e230f684609ae918b62d23d36ee2261f66062193c693ed"
+              },
+              {
+                "ms": 25.266,
+                "bytes": 2285826,
+                "sha256": "87c5afe079e65063f6e230f684609ae918b62d23d36ee2261f66062193c693ed"
+              }
+            ],
+            "identical": true,
+            "exact": true
+          },
+          {
+            "strategy": "RLE",
+            "memLevel": 8,
+            "bytes": 2290073,
+            "runs": [
+              {
+                "ms": 24.729,
+                "bytes": 2290073,
+                "sha256": "473586c2a90b850be565d26ca61b26fbf59cf521f4056e9f4613e2204e839773"
+              },
+              {
+                "ms": 25.114,
+                "bytes": 2290073,
+                "sha256": "473586c2a90b850be565d26ca61b26fbf59cf521f4056e9f4613e2204e839773"
+              }
+            ],
+            "identical": true,
+            "exact": true
+          },
+          {
+            "strategy": "FIXED",
+            "memLevel": 9,
+            "bytes": 2963239,
+            "runs": [
+              {
+                "ms": 56.092,
+                "bytes": 2963239,
+                "sha256": "1a166e14257ff2b17061b5559db5bd5e3b3a6387eb0723debc60594fcc2f4325"
+              },
+              {
+                "ms": 57.399,
+                "bytes": 2963239,
+                "sha256": "1a166e14257ff2b17061b5559db5bd5e3b3a6387eb0723debc60594fcc2f4325"
+              }
+            ],
+            "identical": true,
+            "exact": true
+          },
+          {
+            "strategy": "FIXED",
+            "memLevel": 8,
+            "bytes": 2963328,
+            "runs": [
+              {
+                "ms": 62.899,
+                "bytes": 2963328,
+                "sha256": "800c13dae98f372b54e7ab9dd2ce02db38457d95bbe39c2e3a2572b06562a0f2"
+              },
+              {
+                "ms": 63.914,
+                "bytes": 2963328,
+                "sha256": "800c13dae98f372b54e7ab9dd2ce02db38457d95bbe39c2e3a2572b06562a0f2"
+              }
+            ],
+            "identical": true,
+            "exact": true
+          }
+        ],
+        "selected": {
+          "strategy": "DEFAULT",
+          "memLevel": 9,
+          "streamBytes": 2228883,
+          "streamSha256": "6b977bf501b573c051fcb3a84c191510778963fe3747f3464eea5b6a5497a492"
+        },
+        "rebuilt": {
+          "sha256": "373ad7d95a04bc2cd56303ebae90eca3045353323949f081615f2bc996dbdbbd",
+          "bytes": 2228940
+        }
+      }
+    },
+    {
+      "sha256": "e6153063bca167d1d618581f1065725d2e90d28d60a8a22d5c4962a58a9069ed",
+      "status": "candidate",
+      "reason": null,
+      "record": {
+        "sha256": "e6153063bca167d1d618581f1065725d2e90d28d60a8a22d5c4962a58a9069ed",
+        "bytes": 475063,
+        "ihdr": {
+          "width": 1024,
+          "height": 341,
+          "bitDepth": 8,
+          "colourType": 6,
+          "compression": 0,
+          "filter": 0,
+          "interlace": 0
+        },
+        "idat": {
+          "chunks": 8,
+          "compressedBytes": 474922,
+          "rawBytes": 1397077,
+          "rawSha256": "b2e91a1fce273959fd39d83e718bd47b70140bdae239e838c6904b435e2bc12e",
+          "filters": {
+            "none": 27,
+            "sub": 27,
+            "up": 30,
+            "average": 160,
+            "paeth": 97
+          }
+        },
+        "settings": {
+          "level": 9,
+          "windowBits": 15,
+          "zlib": "1.3.1-e00f703"
+        },
+        "attempts": [
+          {
+            "strategy": "DEFAULT",
+            "memLevel": 9,
+            "bytes": 472840,
+            "runs": [
+              {
+                "ms": 55.5,
+                "bytes": 472840,
+                "sha256": "927ac66352408b1c3d5ae3fab2c6955fa441e0f7a4e4ff7414c8a198b8e6e999"
+              },
+              {
+                "ms": 56.207,
+                "bytes": 472840,
+                "sha256": "927ac66352408b1c3d5ae3fab2c6955fa441e0f7a4e4ff7414c8a198b8e6e999"
+              }
+            ],
+            "identical": true,
+            "exact": true
+          },
+          {
+            "strategy": "DEFAULT",
+            "memLevel": 8,
+            "bytes": 474001,
+            "runs": [
+              {
+                "ms": 62.703,
+                "bytes": 474001,
+                "sha256": "0835398bc3f60a24bf3f989bf1aa6f4d3b4cca7cc0f72f6cc3a5360dec73c274"
+              },
+              {
+                "ms": 58.289,
+                "bytes": 474001,
+                "sha256": "0835398bc3f60a24bf3f989bf1aa6f4d3b4cca7cc0f72f6cc3a5360dec73c274"
+              }
+            ],
+            "identical": true,
+            "exact": true
+          },
+          {
+            "strategy": "FILTERED",
+            "memLevel": 9,
+            "bytes": 475524,
+            "runs": [
+              {
+                "ms": 56.685,
+                "bytes": 475524,
+                "sha256": "a372cb295221d8679cdb2f94379fe82b473e026a5c947c97526b4ea140678444"
+              },
+              {
+                "ms": 56.992,
+                "bytes": 475524,
+                "sha256": "a372cb295221d8679cdb2f94379fe82b473e026a5c947c97526b4ea140678444"
+              }
+            ],
+            "identical": true,
+            "exact": true
+          },
+          {
+            "strategy": "FILTERED",
+            "memLevel": 8,
+            "bytes": 476962,
+            "runs": [
+              {
+                "ms": 59.618,
+                "bytes": 476962,
+                "sha256": "05adc8fd49c8ba2f9513870055876c635f1044cc436e0e1268be1d17ae4dc3ec"
+              },
+              {
+                "ms": 66.781,
+                "bytes": 476962,
+                "sha256": "05adc8fd49c8ba2f9513870055876c635f1044cc436e0e1268be1d17ae4dc3ec"
+              }
+            ],
+            "identical": true,
+            "exact": true
+          },
+          {
+            "strategy": "RLE",
+            "memLevel": 9,
+            "bytes": 479533,
+            "runs": [
+              {
+                "ms": 6.365,
+                "bytes": 479533,
+                "sha256": "59da3ae2adc4984f9410a1e47f6c09dc88aa48e68a23f1c11ef8814586828b37"
+              },
+              {
+                "ms": 6.097,
+                "bytes": 479533,
+                "sha256": "59da3ae2adc4984f9410a1e47f6c09dc88aa48e68a23f1c11ef8814586828b37"
+              }
+            ],
+            "identical": true,
+            "exact": true
+          },
+          {
+            "strategy": "RLE",
+            "memLevel": 8,
+            "bytes": 480873,
+            "runs": [
+              {
+                "ms": 7.061,
+                "bytes": 480873,
+                "sha256": "0d61e07b67984fb51ea1c5fe1d8ee1b7172f7553f7d8a13c35cca19ef7d963d5"
+              },
+              {
+                "ms": 6.648,
+                "bytes": 480873,
+                "sha256": "0d61e07b67984fb51ea1c5fe1d8ee1b7172f7553f7d8a13c35cca19ef7d963d5"
+              }
+            ],
+            "identical": true,
+            "exact": true
+          },
+          {
+            "strategy": "FIXED",
+            "memLevel": 9,
+            "bytes": 575888,
+            "runs": [
+              {
+                "ms": 55.895,
+                "bytes": 575888,
+                "sha256": "796b282baae9164ad8ee8a4a4b3297af5530a798923a8bd3a407ce47877a721b"
+              },
+              {
+                "ms": 54.737,
+                "bytes": 575888,
+                "sha256": "796b282baae9164ad8ee8a4a4b3297af5530a798923a8bd3a407ce47877a721b"
+              }
+            ],
+            "identical": true,
+            "exact": true
+          },
+          {
+            "strategy": "FIXED",
+            "memLevel": 8,
+            "bytes": 575887,
+            "runs": [
+              {
+                "ms": 57.807,
+                "bytes": 575887,
+                "sha256": "0a0739025a7cb7e94a77df87f6c5cd2e40431616362d3b677f3ca5ec554c0526"
+              },
+              {
+                "ms": 57.309,
+                "bytes": 575887,
+                "sha256": "0a0739025a7cb7e94a77df87f6c5cd2e40431616362d3b677f3ca5ec554c0526"
+              }
+            ],
+            "identical": true,
+            "exact": true
+          }
+        ],
+        "selected": {
+          "strategy": "DEFAULT",
+          "memLevel": 9,
+          "streamBytes": 472840,
+          "streamSha256": "927ac66352408b1c3d5ae3fab2c6955fa441e0f7a4e4ff7414c8a198b8e6e999"
+        },
+        "rebuilt": {
+          "sha256": "d730fdda31b98b8bc225cc60451a6e3502a79cd0b597e5ab01b84e030dc0e405",
+          "bytes": 472897
+        }
+      }
+    },
+    {
+      "sha256": "62aa0628be8c4b054a17b571ea8efa35c9f9d6f619e93f7a1c756e49f07e84a8",
+      "status": "candidate",
+      "reason": null,
+      "record": {
+        "sha256": "62aa0628be8c4b054a17b571ea8efa35c9f9d6f619e93f7a1c756e49f07e84a8",
+        "bytes": 487174,
+        "ihdr": {
+          "width": 1024,
+          "height": 341,
+          "bitDepth": 8,
+          "colourType": 6,
+          "compression": 0,
+          "filter": 0,
+          "interlace": 0
+        },
+        "idat": {
+          "chunks": 8,
+          "compressedBytes": 487033,
+          "rawBytes": 1397077,
+          "rawSha256": "1a27f2c391796ac87ea71749e4c3c57b010d91cfc749758bc5f6f0accae38ed1",
+          "filters": {
+            "none": 62,
+            "sub": 25,
+            "up": 13,
+            "average": 227,
+            "paeth": 14
+          }
+        },
+        "settings": {
+          "level": 9,
+          "windowBits": 15,
+          "zlib": "1.3.1-e00f703"
+        },
+        "attempts": [
+          {
+            "strategy": "DEFAULT",
+            "memLevel": 9,
+            "bytes": 482043,
+            "runs": [
+              {
+                "ms": 41.278,
+                "bytes": 482043,
+                "sha256": "dd7a01f4eb7db052b7c29ec011cd2a62d19cd0e613d3f029b71058447b568bd7"
+              },
+              {
+                "ms": 41.435,
+                "bytes": 482043,
+                "sha256": "dd7a01f4eb7db052b7c29ec011cd2a62d19cd0e613d3f029b71058447b568bd7"
+              }
+            ],
+            "identical": true,
+            "exact": true
+          },
+          {
+            "strategy": "DEFAULT",
+            "memLevel": 8,
+            "bytes": 483088,
+            "runs": [
+              {
+                "ms": 46.008,
+                "bytes": 483088,
+                "sha256": "8aa09201e6165f65cb9202fcb453ea956d2dc84a0d1118176a91d161a67f3f87"
+              },
+              {
+                "ms": 43.346,
+                "bytes": 483088,
+                "sha256": "8aa09201e6165f65cb9202fcb453ea956d2dc84a0d1118176a91d161a67f3f87"
+              }
+            ],
+            "identical": true,
+            "exact": true
+          },
+          {
+            "strategy": "FILTERED",
+            "memLevel": 9,
+            "bytes": 487357,
+            "runs": [
+              {
+                "ms": 42.983,
+                "bytes": 487357,
+                "sha256": "1ea362d1ac8f182a7b1abd9f265a5f0707b8f25f0af9b0198d3854f42a755c4d"
+              },
+              {
+                "ms": 42.993,
+                "bytes": 487357,
+                "sha256": "1ea362d1ac8f182a7b1abd9f265a5f0707b8f25f0af9b0198d3854f42a755c4d"
+              }
+            ],
+            "identical": true,
+            "exact": true
+          },
+          {
+            "strategy": "FILTERED",
+            "memLevel": 8,
+            "bytes": 488750,
+            "runs": [
+              {
+                "ms": 45.639,
+                "bytes": 488750,
+                "sha256": "f3b1c46f764556850255767d63a69c9330ee2598e27a13219f10e122ba4af6c4"
+              },
+              {
+                "ms": 45.409,
+                "bytes": 488750,
+                "sha256": "f3b1c46f764556850255767d63a69c9330ee2598e27a13219f10e122ba4af6c4"
+              }
+            ],
+            "identical": true,
+            "exact": true
+          },
+          {
+            "strategy": "RLE",
+            "memLevel": 9,
+            "bytes": 489892,
+            "runs": [
+              {
+                "ms": 5.821,
+                "bytes": 489892,
+                "sha256": "c374aab504fdf2b6cddd127fb802a3fc727b351a19dc1be7631d721ce277204b"
+              },
+              {
+                "ms": 5.944,
+                "bytes": 489892,
+                "sha256": "c374aab504fdf2b6cddd127fb802a3fc727b351a19dc1be7631d721ce277204b"
+              }
+            ],
+            "identical": true,
+            "exact": true
+          },
+          {
+            "strategy": "RLE",
+            "memLevel": 8,
+            "bytes": 491123,
+            "runs": [
+              {
+                "ms": 6.84,
+                "bytes": 491123,
+                "sha256": "e4df3e2410a02df4ce7e61efc5c1e68eff4209e6e63fb1843a0b9f998d3a0d99"
+              },
+              {
+                "ms": 6.314,
+                "bytes": 491123,
+                "sha256": "e4df3e2410a02df4ce7e61efc5c1e68eff4209e6e63fb1843a0b9f998d3a0d99"
+              }
+            ],
+            "identical": true,
+            "exact": true
+          },
+          {
+            "strategy": "FIXED",
+            "memLevel": 9,
+            "bytes": 590913,
+            "runs": [
+              {
+                "ms": 41.602,
+                "bytes": 590913,
+                "sha256": "00624bc35f79c78aaa66499630067a5cb4282b65b31b4a87599d4b64a277536a"
+              },
+              {
+                "ms": 41.711,
+                "bytes": 590913,
+                "sha256": "00624bc35f79c78aaa66499630067a5cb4282b65b31b4a87599d4b64a277536a"
+              }
+            ],
+            "identical": true,
+            "exact": true
+          },
+          {
+            "strategy": "FIXED",
+            "memLevel": 8,
+            "bytes": 590921,
+            "runs": [
+              {
+                "ms": 43.51,
+                "bytes": 590921,
+                "sha256": "c8ad7c327fb832a2a319f39b5735d5f35ed1278bda01ca964b8affca7ed6c959"
+              },
+              {
+                "ms": 43.565,
+                "bytes": 590921,
+                "sha256": "c8ad7c327fb832a2a319f39b5735d5f35ed1278bda01ca964b8affca7ed6c959"
+              }
+            ],
+            "identical": true,
+            "exact": true
+          }
+        ],
+        "selected": {
+          "strategy": "DEFAULT",
+          "memLevel": 9,
+          "streamBytes": 482043,
+          "streamSha256": "dd7a01f4eb7db052b7c29ec011cd2a62d19cd0e613d3f029b71058447b568bd7"
+        },
+        "rebuilt": {
+          "sha256": "7eb5d96e7f0afd5a063e711860fa41cfe00739f205cf8a029b1813bd2d47dec1",
+          "bytes": 482100
+        }
+      }
+    },
+    {
+      "sha256": "a9fee23d61be63879e45a96a1e59d11276a0be25238085bf15f30f55928d5fc7",
+      "status": "candidate",
+      "reason": null,
+      "record": {
+        "sha256": "a9fee23d61be63879e45a96a1e59d11276a0be25238085bf15f30f55928d5fc7",
+        "bytes": 468227,
+        "ihdr": {
+          "width": 1024,
+          "height": 341,
+          "bitDepth": 8,
+          "colourType": 6,
+          "compression": 0,
+          "filter": 0,
+          "interlace": 0
+        },
+        "idat": {
+          "chunks": 8,
+          "compressedBytes": 468086,
+          "rawBytes": 1397077,
+          "rawSha256": "40b7650c021d732625a793f78226fac36363538e2ca769c2051033bba0177e36",
+          "filters": {
+            "none": 10,
+            "sub": 80,
+            "up": 49,
+            "average": 161,
+            "paeth": 41
+          }
+        },
+        "settings": {
+          "level": 9,
+          "windowBits": 15,
+          "zlib": "1.3.1-e00f703"
+        },
+        "attempts": [
+          {
+            "strategy": "DEFAULT",
+            "memLevel": 9,
+            "bytes": 467068,
+            "runs": [
+              {
+                "ms": 56.001,
+                "bytes": 467068,
+                "sha256": "67d928f974c31983dd49493270be92841d7c41f0221ef2d4082d70d4ade4f950"
+              },
+              {
+                "ms": 56.188,
+                "bytes": 467068,
+                "sha256": "67d928f974c31983dd49493270be92841d7c41f0221ef2d4082d70d4ade4f950"
+              }
+            ],
+            "identical": true,
+            "exact": true
+          },
+          {
+            "strategy": "DEFAULT",
+            "memLevel": 8,
+            "bytes": 468251,
+            "runs": [
+              {
+                "ms": 58.502,
+                "bytes": 468251,
+                "sha256": "6ea8f9c16c0110f7e77565e8e8402b052d5adae12761d01b4b113a3c775e9bd3"
+              },
+              {
+                "ms": 57.523,
+                "bytes": 468251,
+                "sha256": "6ea8f9c16c0110f7e77565e8e8402b052d5adae12761d01b4b113a3c775e9bd3"
+              }
+            ],
+            "identical": true,
+            "exact": true
+          },
+          {
+            "strategy": "FILTERED",
+            "memLevel": 9,
+            "bytes": 468753,
+            "runs": [
+              {
+                "ms": 55.494,
+                "bytes": 468753,
+                "sha256": "ac41691ec286fbbed51536244d0cf17e1346c13fb37dac9531bb78e54a17b612"
+              },
+              {
+                "ms": 55.511,
+                "bytes": 468753,
+                "sha256": "ac41691ec286fbbed51536244d0cf17e1346c13fb37dac9531bb78e54a17b612"
+              }
+            ],
+            "identical": true,
+            "exact": true
+          },
+          {
+            "strategy": "FILTERED",
+            "memLevel": 8,
+            "bytes": 470232,
+            "runs": [
+              {
+                "ms": 58.495,
+                "bytes": 470232,
+                "sha256": "82a8142076eea1f0620a3f877177d5c570b3687675e042605f7b2d1c1fd986d5"
+              },
+              {
+                "ms": 57.961,
+                "bytes": 470232,
+                "sha256": "82a8142076eea1f0620a3f877177d5c570b3687675e042605f7b2d1c1fd986d5"
+              }
+            ],
+            "identical": true,
+            "exact": true
+          },
+          {
+            "strategy": "RLE",
+            "memLevel": 9,
+            "bytes": 473043,
+            "runs": [
+              {
+                "ms": 5.699,
+                "bytes": 473043,
+                "sha256": "32243118458d9dad1481c0d6263805a21f53f23b47b10195149c080562bd13fe"
+              },
+              {
+                "ms": 5.862,
+                "bytes": 473043,
+                "sha256": "32243118458d9dad1481c0d6263805a21f53f23b47b10195149c080562bd13fe"
+              }
+            ],
+            "identical": true,
+            "exact": true
+          },
+          {
+            "strategy": "RLE",
+            "memLevel": 8,
+            "bytes": 474400,
+            "runs": [
+              {
+                "ms": 6.467,
+                "bytes": 474400,
+                "sha256": "9b9f2d4534223bc4a2f7ebd5fda495874328021b17c70d8460b9604584b8bb2f"
+              },
+              {
+                "ms": 6.32,
+                "bytes": 474400,
+                "sha256": "9b9f2d4534223bc4a2f7ebd5fda495874328021b17c70d8460b9604584b8bb2f"
+              }
+            ],
+            "identical": true,
+            "exact": true
+          },
+          {
+            "strategy": "FIXED",
+            "memLevel": 9,
+            "bytes": 569985,
+            "runs": [
+              {
+                "ms": 55.99,
+                "bytes": 569985,
+                "sha256": "10f94c7db6c2cd8311183538e1ac2a1b09dc4db8de59d3baacb22c54e721e46e"
+              },
+              {
+                "ms": 55.04,
+                "bytes": 569985,
+                "sha256": "10f94c7db6c2cd8311183538e1ac2a1b09dc4db8de59d3baacb22c54e721e46e"
+              }
+            ],
+            "identical": true,
+            "exact": true
+          },
+          {
+            "strategy": "FIXED",
+            "memLevel": 8,
+            "bytes": 569976,
+            "runs": [
+              {
+                "ms": 58.195,
+                "bytes": 569976,
+                "sha256": "8696e47089f781a8e6bac493a3c84804f2b4016d2b23066a5e621564630531ac"
+              },
+              {
+                "ms": 57.881,
+                "bytes": 569976,
+                "sha256": "8696e47089f781a8e6bac493a3c84804f2b4016d2b23066a5e621564630531ac"
+              }
+            ],
+            "identical": true,
+            "exact": true
+          }
+        ],
+        "selected": {
+          "strategy": "DEFAULT",
+          "memLevel": 9,
+          "streamBytes": 467068,
+          "streamSha256": "67d928f974c31983dd49493270be92841d7c41f0221ef2d4082d70d4ade4f950"
+        },
+        "rebuilt": {
+          "sha256": "b265fa99d4bf398007245e0290d37a3be6645881e435cb5da4171d3852e69559",
+          "bytes": 467125
+        }
+      }
+    },
+    {
+      "sha256": "cf90962462cefa648cbef2fc9c74390e8365bd355bc2791a8a324053023522c2",
+      "status": "candidate",
+      "reason": null,
+      "record": {
+        "sha256": "cf90962462cefa648cbef2fc9c74390e8365bd355bc2791a8a324053023522c2",
+        "bytes": 500299,
+        "ihdr": {
+          "width": 1024,
+          "height": 341,
+          "bitDepth": 8,
+          "colourType": 6,
+          "compression": 0,
+          "filter": 0,
+          "interlace": 0
+        },
+        "idat": {
+          "chunks": 8,
+          "compressedBytes": 500158,
+          "rawBytes": 1397077,
+          "rawSha256": "40f7bca90e0512f8aa5c93ededcfa3126a1a77a10874356e0e1a5eb38ee9b079",
+          "filters": {
+            "none": 70,
+            "sub": 19,
+            "up": 18,
+            "average": 188,
+            "paeth": 46
+          }
+        },
+        "settings": {
+          "level": 9,
+          "windowBits": 15,
+          "zlib": "1.3.1-e00f703"
+        },
+        "attempts": [
+          {
+            "strategy": "DEFAULT",
+            "memLevel": 9,
+            "bytes": 498621,
+            "runs": [
+              {
+                "ms": 54.523,
+                "bytes": 498621,
+                "sha256": "c22cba4b1ec825f69c39a39d80ba5688403e8b5f9008bc042444fb2b35826210"
+              },
+              {
+                "ms": 54.656,
+                "bytes": 498621,
+                "sha256": "c22cba4b1ec825f69c39a39d80ba5688403e8b5f9008bc042444fb2b35826210"
+              }
+            ],
+            "identical": true,
+            "exact": true
+          },
+          {
+            "strategy": "DEFAULT",
+            "memLevel": 8,
+            "bytes": 499771,
+            "runs": [
+              {
+                "ms": 57.884,
+                "bytes": 499771,
+                "sha256": "4997ca43e39aa1704fa1c2885fc3094ee1238bf83d6829127c9729cb6e4fd150"
+              },
+              {
+                "ms": 57.762,
+                "bytes": 499771,
+                "sha256": "4997ca43e39aa1704fa1c2885fc3094ee1238bf83d6829127c9729cb6e4fd150"
+              }
+            ],
+            "identical": true,
+            "exact": true
+          },
+          {
+            "strategy": "FILTERED",
+            "memLevel": 9,
+            "bytes": 500701,
+            "runs": [
+              {
+                "ms": 54.253,
+                "bytes": 500701,
+                "sha256": "56763b53b15da8150935ec8846abdd4d4e7da8d7d0441cce7ae8642ab9f0e831"
+              },
+              {
+                "ms": 56.275,
+                "bytes": 500701,
+                "sha256": "56763b53b15da8150935ec8846abdd4d4e7da8d7d0441cce7ae8642ab9f0e831"
+              }
+            ],
+            "identical": true,
+            "exact": true
+          },
+          {
+            "strategy": "FILTERED",
+            "memLevel": 8,
+            "bytes": 502012,
+            "runs": [
+              {
+                "ms": 57.824,
+                "bytes": 502012,
+                "sha256": "941182f16bce86e74cf151a69656b8e07901f998040b754c5d769aff025b3de3"
+              },
+              {
+                "ms": 56.357,
+                "bytes": 502012,
+                "sha256": "941182f16bce86e74cf151a69656b8e07901f998040b754c5d769aff025b3de3"
+              }
+            ],
+            "identical": true,
+            "exact": true
+          },
+          {
+            "strategy": "RLE",
+            "memLevel": 9,
+            "bytes": 506825,
+            "runs": [
+              {
+                "ms": 6.204,
+                "bytes": 506825,
+                "sha256": "37fa1e6deb8b251d47d5459e468b391f7bc1e4f0ec079c701da5c34fe6c4a21e"
+              },
+              {
+                "ms": 5.804,
+                "bytes": 506825,
+                "sha256": "37fa1e6deb8b251d47d5459e468b391f7bc1e4f0ec079c701da5c34fe6c4a21e"
+              }
+            ],
+            "identical": true,
+            "exact": true
+          },
+          {
+            "strategy": "RLE",
+            "memLevel": 8,
+            "bytes": 508027,
+            "runs": [
+              {
+                "ms": 6.261,
+                "bytes": 508027,
+                "sha256": "143745fe318d4e4c8bbd8f58aa0656572a88537e0a8fd956269ebd4b089eaf05"
+              },
+              {
+                "ms": 6.249,
+                "bytes": 508027,
+                "sha256": "143745fe318d4e4c8bbd8f58aa0656572a88537e0a8fd956269ebd4b089eaf05"
+              }
+            ],
+            "identical": true,
+            "exact": true
+          },
+          {
+            "strategy": "FIXED",
+            "memLevel": 9,
+            "bytes": 598192,
+            "runs": [
+              {
+                "ms": 53.589,
+                "bytes": 598192,
+                "sha256": "61809fdd860e3740ea055753baf0c54ee2d6647df609f7d93727d974f204a6f9"
+              },
+              {
+                "ms": 55.751,
+                "bytes": 598192,
+                "sha256": "61809fdd860e3740ea055753baf0c54ee2d6647df609f7d93727d974f204a6f9"
+              }
+            ],
+            "identical": true,
+            "exact": true
+          },
+          {
+            "strategy": "FIXED",
+            "memLevel": 8,
+            "bytes": 598181,
+            "runs": [
+              {
+                "ms": 55.833,
+                "bytes": 598181,
+                "sha256": "bbadf73f6409c548e9441a6b3b8efd4aa023a3d2c1611abc8ac6e5f31da420ad"
+              },
+              {
+                "ms": 55.78,
+                "bytes": 598181,
+                "sha256": "bbadf73f6409c548e9441a6b3b8efd4aa023a3d2c1611abc8ac6e5f31da420ad"
+              }
+            ],
+            "identical": true,
+            "exact": true
+          }
+        ],
+        "selected": {
+          "strategy": "DEFAULT",
+          "memLevel": 9,
+          "streamBytes": 498621,
+          "streamSha256": "c22cba4b1ec825f69c39a39d80ba5688403e8b5f9008bc042444fb2b35826210"
+        },
+        "rebuilt": {
+          "sha256": "60597acdd04df58d8dfa5da63a1f4a7b2d99e717d297a7543582cf7c44a299cf",
+          "bytes": 498678
+        }
+      }
+    },
+    {
+      "sha256": "9dc5292302335e65a6b3dafc7c22a6a2691261a08c7193832b64cbc79854fb7c",
+      "status": "original-retained",
+      "reason": "the rebuilt PNG (463877 B) is not smaller",
+      "record": {
+        "sha256": "9dc5292302335e65a6b3dafc7c22a6a2691261a08c7193832b64cbc79854fb7c",
+        "bytes": 463714,
+        "ihdr": {
+          "width": 1024,
+          "height": 341,
+          "bitDepth": 8,
+          "colourType": 6,
+          "compression": 0,
+          "filter": 0,
+          "interlace": 0
+        },
+        "idat": {
+          "chunks": 8,
+          "compressedBytes": 463573,
+          "rawBytes": 1397077,
+          "rawSha256": "a81d330929e2c623a306ce9dfb4293757d2b08aee8ffc699aebb0a17f304307c",
+          "filters": {
+            "none": 53,
+            "sub": 53,
+            "up": 40,
+            "average": 101,
+            "paeth": 94
+          }
+        },
+        "settings": {
+          "level": 9,
+          "windowBits": 15,
+          "zlib": "1.3.1-e00f703"
+        },
+        "attempts": [
+          {
+            "strategy": "DEFAULT",
+            "memLevel": 9,
+            "bytes": 463820,
+            "runs": [
+              {
+                "ms": 62.167,
+                "bytes": 463820,
+                "sha256": "d1196659f465f745a089675e29c6336e69849c766cc3e870d8398f59a4486f58"
+              },
+              {
+                "ms": 62.962,
+                "bytes": 463820,
+                "sha256": "d1196659f465f745a089675e29c6336e69849c766cc3e870d8398f59a4486f58"
+              }
+            ],
+            "identical": true,
+            "exact": true
+          },
+          {
+            "strategy": "DEFAULT",
+            "memLevel": 8,
+            "bytes": 464936,
+            "runs": [
+              {
+                "ms": 65.354,
+                "bytes": 464936,
+                "sha256": "ffd6a90d2496242d7a405bcb3e37e25ec946e1764a255a5eb6ae5abf598dd40b"
+              },
+              {
+                "ms": 64.949,
+                "bytes": 464936,
+                "sha256": "ffd6a90d2496242d7a405bcb3e37e25ec946e1764a255a5eb6ae5abf598dd40b"
+              }
+            ],
+            "identical": true,
+            "exact": true
+          },
+          {
+            "strategy": "FILTERED",
+            "memLevel": 9,
+            "bytes": 464060,
+            "runs": [
+              {
+                "ms": 63.414,
+                "bytes": 464060,
+                "sha256": "be869919212710bedebd5d72a62c5c256526a08db11cf8bb7fa77caf5f5a64c9"
+              },
+              {
+                "ms": 62.986,
+                "bytes": 464060,
+                "sha256": "be869919212710bedebd5d72a62c5c256526a08db11cf8bb7fa77caf5f5a64c9"
+              }
+            ],
+            "identical": true,
+            "exact": true
+          },
+          {
+            "strategy": "FILTERED",
+            "memLevel": 8,
+            "bytes": 465413,
+            "runs": [
+              {
+                "ms": 67.066,
+                "bytes": 465413,
+                "sha256": "82fd7b7dc53a96f341b140f97012a85056e975bf9552ea5f37051d23cb831b30"
+              },
+              {
+                "ms": 75.862,
+                "bytes": 465413,
+                "sha256": "82fd7b7dc53a96f341b140f97012a85056e975bf9552ea5f37051d23cb831b30"
+              }
+            ],
+            "identical": true,
+            "exact": true
+          },
+          {
+            "strategy": "RLE",
+            "memLevel": 9,
+            "bytes": 471853,
+            "runs": [
+              {
+                "ms": 7.657,
+                "bytes": 471853,
+                "sha256": "557da49b880796f0e13b0ab74aecb2672c2c283288e5edcd7ab91b8037e8ce5b"
+              },
+              {
+                "ms": 7.938,
+                "bytes": 471853,
+                "sha256": "557da49b880796f0e13b0ab74aecb2672c2c283288e5edcd7ab91b8037e8ce5b"
+              }
+            ],
+            "identical": true,
+            "exact": true
+          },
+          {
+            "strategy": "RLE",
+            "memLevel": 8,
+            "bytes": 473088,
+            "runs": [
+              {
+                "ms": 8.807,
+                "bytes": 473088,
+                "sha256": "19a97ca99a9a254c0add70a166a72b3e4943774303a677fff702a3fe866d85ed"
+              },
+              {
+                "ms": 7.55,
+                "bytes": 473088,
+                "sha256": "19a97ca99a9a254c0add70a166a72b3e4943774303a677fff702a3fe866d85ed"
+              }
+            ],
+            "identical": true,
+            "exact": true
+          },
+          {
+            "strategy": "FIXED",
+            "memLevel": 9,
+            "bytes": 568441,
+            "runs": [
+              {
+                "ms": 75.21,
+                "bytes": 568441,
+                "sha256": "0cf8b4e2c9879e01036ad0b00b99bb44b776cda49ff8aaddf10fb610266a5e78"
+              },
+              {
+                "ms": 71.656,
+                "bytes": 568441,
+                "sha256": "0cf8b4e2c9879e01036ad0b00b99bb44b776cda49ff8aaddf10fb610266a5e78"
+              }
+            ],
+            "identical": true,
+            "exact": true
+          },
+          {
+            "strategy": "FIXED",
+            "memLevel": 8,
+            "bytes": 568441,
+            "runs": [
+              {
+                "ms": 67.412,
+                "bytes": 568441,
+                "sha256": "bbaf591b56ae7d7443bd62b8bad225a9fea07e5ca7c0d31289ab357603d53e5e"
+              },
+              {
+                "ms": 67.522,
+                "bytes": 568441,
+                "sha256": "bbaf591b56ae7d7443bd62b8bad225a9fea07e5ca7c0d31289ab357603d53e5e"
+              }
+            ],
+            "identical": true,
+            "exact": true
+          }
+        ],
+        "selected": {
+          "strategy": "DEFAULT",
+          "memLevel": 9,
+          "streamBytes": 463820,
+          "streamSha256": "d1196659f465f745a089675e29c6336e69849c766cc3e870d8398f59a4486f58"
+        },
+        "rebuilt": {
+          "sha256": "90c3ff3af9ca3d9df9ecb7897aa00120dd4c92a45ee20b168e21a7f828822f45",
+          "bytes": 463877
+        }
+      }
+    },
+    {
+      "sha256": "b6ee4b02e4be9c02226776ebf7828096b4184475f9dcbefd7b90c66e49f887a1",
+      "status": "candidate",
+      "reason": null,
+      "record": {
+        "sha256": "b6ee4b02e4be9c02226776ebf7828096b4184475f9dcbefd7b90c66e49f887a1",
+        "bytes": 501873,
+        "ihdr": {
+          "width": 1024,
+          "height": 341,
+          "bitDepth": 8,
+          "colourType": 6,
+          "compression": 0,
+          "filter": 0,
+          "interlace": 0
+        },
+        "idat": {
+          "chunks": 8,
+          "compressedBytes": 501732,
+          "rawBytes": 1397077,
+          "rawSha256": "ec9e58334a8133796d373d4cca96a53896c5156419c29af4506ff8645d627406",
+          "filters": {
+            "none": 25,
+            "sub": 35,
+            "up": 53,
+            "average": 160,
+            "paeth": 68
+          }
+        },
+        "settings": {
+          "level": 9,
+          "windowBits": 15,
+          "zlib": "1.3.1-e00f703"
+        },
+        "attempts": [
+          {
+            "strategy": "DEFAULT",
+            "memLevel": 9,
+            "bytes": 499400,
+            "runs": [
+              {
+                "ms": 64.509,
+                "bytes": 499400,
+                "sha256": "f3e4b33faefc12529f9370778a43f9ca689d5c96dfd089be1d5be386da0924da"
+              },
+              {
+                "ms": 62.802,
+                "bytes": 499400,
+                "sha256": "f3e4b33faefc12529f9370778a43f9ca689d5c96dfd089be1d5be386da0924da"
+              }
+            ],
+            "identical": true,
+            "exact": true
+          },
+          {
+            "strategy": "DEFAULT",
+            "memLevel": 8,
+            "bytes": 500617,
+            "runs": [
+              {
+                "ms": 67.069,
+                "bytes": 500617,
+                "sha256": "753ec4cf0be712def63ad1e6d0373716d8970e5c3a4d9f744045e6f2a0633066"
+              },
+              {
+                "ms": 67.293,
+                "bytes": 500617,
+                "sha256": "753ec4cf0be712def63ad1e6d0373716d8970e5c3a4d9f744045e6f2a0633066"
+              }
+            ],
+            "identical": true,
+            "exact": true
+          },
+          {
+            "strategy": "FILTERED",
+            "memLevel": 9,
+            "bytes": 502461,
+            "runs": [
+              {
+                "ms": 69.146,
+                "bytes": 502461,
+                "sha256": "9f166ffe4fe796a8a3d90df53a8e06a695e61d37481f26c6582b0e455bef2748"
+              },
+              {
+                "ms": 62.935,
+                "bytes": 502461,
+                "sha256": "9f166ffe4fe796a8a3d90df53a8e06a695e61d37481f26c6582b0e455bef2748"
+              }
+            ],
+            "identical": true,
+            "exact": true
+          },
+          {
+            "strategy": "FILTERED",
+            "memLevel": 8,
+            "bytes": 503947,
+            "runs": [
+              {
+                "ms": 66.134,
+                "bytes": 503947,
+                "sha256": "2d555b6cf28da9ea8cbe7f845ea3b2e90b8a3e2e9dc7b0013f9c568185423c7a"
+              },
+              {
+                "ms": 65.788,
+                "bytes": 503947,
+                "sha256": "2d555b6cf28da9ea8cbe7f845ea3b2e90b8a3e2e9dc7b0013f9c568185423c7a"
+              }
+            ],
+            "identical": true,
+            "exact": true
+          },
+          {
+            "strategy": "RLE",
+            "memLevel": 9,
+            "bytes": 509479,
+            "runs": [
+              {
+                "ms": 6.143,
+                "bytes": 509479,
+                "sha256": "33ab92b0b1a790e3bec15d0b948addcce706f7709938069aa89e4bd1fda9b720"
+              },
+              {
+                "ms": 6.109,
+                "bytes": 509479,
+                "sha256": "33ab92b0b1a790e3bec15d0b948addcce706f7709938069aa89e4bd1fda9b720"
+              }
+            ],
+            "identical": true,
+            "exact": true
+          },
+          {
+            "strategy": "RLE",
+            "memLevel": 8,
+            "bytes": 510816,
+            "runs": [
+              {
+                "ms": 6.869,
+                "bytes": 510816,
+                "sha256": "48963eeaa115145a74ca10f760d2a2e24a684dcc2899ea15bff18950cb97b50f"
+              },
+              {
+                "ms": 6.851,
+                "bytes": 510816,
+                "sha256": "48963eeaa115145a74ca10f760d2a2e24a684dcc2899ea15bff18950cb97b50f"
+              }
+            ],
+            "identical": true,
+            "exact": true
+          },
+          {
+            "strategy": "FIXED",
+            "memLevel": 9,
+            "bytes": 608275,
+            "runs": [
+              {
+                "ms": 62.478,
+                "bytes": 608275,
+                "sha256": "24f9cf3fcc1f0b95b009d8e3e021216a03eb866e87946c22ca1bbfa4c6273a65"
+              },
+              {
+                "ms": 62.106,
+                "bytes": 608275,
+                "sha256": "24f9cf3fcc1f0b95b009d8e3e021216a03eb866e87946c22ca1bbfa4c6273a65"
+              }
+            ],
+            "identical": true,
+            "exact": true
+          },
+          {
+            "strategy": "FIXED",
+            "memLevel": 8,
+            "bytes": 608262,
+            "runs": [
+              {
+                "ms": 63.475,
+                "bytes": 608262,
+                "sha256": "0d57b54ef2925c7a55b6ee218ce4c6add4104209df6838b74ba52a8223a2d88a"
+              },
+              {
+                "ms": 63.675,
+                "bytes": 608262,
+                "sha256": "0d57b54ef2925c7a55b6ee218ce4c6add4104209df6838b74ba52a8223a2d88a"
+              }
+            ],
+            "identical": true,
+            "exact": true
+          }
+        ],
+        "selected": {
+          "strategy": "DEFAULT",
+          "memLevel": 9,
+          "streamBytes": 499400,
+          "streamSha256": "f3e4b33faefc12529f9370778a43f9ca689d5c96dfd089be1d5be386da0924da"
+        },
+        "rebuilt": {
+          "sha256": "86a06da8e6789d8443800509043ad58ac300960fdd5eb01ba93d54d180dc1cb9",
+          "bytes": 499457
+        }
+      }
+    }
+  ]
+}

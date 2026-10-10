@@ -1,8 +1,22 @@
+import { existsSync } from 'node:fs';
 import { mkdir, readdir, readFile, copyFile, stat, writeFile } from 'node:fs/promises';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { sha256, buildId } from './exhibition-integrity.mjs';
 import { prepareVendor } from './prepare-vendor.mjs';
+import { bundleBrowser, bundledIndex } from './bundle-browser.mjs';
+import {
+  DECODER,
+  activeAdoption,
+  assertSameDigests,
+  checkDecoder,
+  checkRuntimeGraph,
+  checkTextureImage,
+  checkTextureUrl,
+  manifestDigests,
+  retiredLiteralsIn,
+} from './runtime-graph.mjs';
+import { checkPhysicalModels, runtimeFiles } from './packaged-models.mjs';
 import './build.mjs';
 if (process.exitCode) throw new Error('TypeScript build failed');
 if (process.platform !== 'win32')
@@ -50,8 +64,10 @@ add('dist/server.mjs');
 await collect('public/vendor', (file) => /\.(js|mjs|wasm)$/.test(file));
 await collect('public/audio', (file) => /\.(wav|mp3|json|txt)$/.test(file));
 await collect('public/motion', (file) => /\.(task|json|txt)$/.test(file));
-await collect('public/title', (file) =>
-  /\.(png|jpe?g|webp)$/.test(file) && file !== 'public/title/cro-magnon-mmo-transparent.png',
+await collect(
+  'public/title',
+  (file) =>
+    /\.(png|jpe?g|webp)$/.test(file) && file !== 'public/title/cro-magnon-mmo-transparent.png',
 );
 await collect('public/spawn', (file) => /\.jpg$/.test(file));
 await collect('node_modules/ws');
@@ -85,37 +101,70 @@ for (const { key } of CHARACTER_MODELS)
     manifest.assets.push(
       JSON.parse(await readFile(path.join(root, `public/models/${key}/asset.json`), 'utf8')),
     );
-let glbs = 0;
+// The packaged graph is exactly what the manifests name. When they carry an applied runtime
+// adoption (scripts/optimization/adopt-candidates.mjs), every record must be that adoption's
+// file; without one, nothing content-addressed is packaged.
+const textureExtensions = ['png', 'jpg', 'jpeg'];
+const sourceManifests = await manifestDigests(root, manifest.assets);
+const adoption = await activeAdoption(root, manifest.assets, runtimeTextureRecords);
+const runtimeGraph = checkRuntimeGraph(manifest.assets, adoption, {
+  textureRecords: runtimeTextureRecords,
+  textureExtensions,
+});
+// Each physical GLB is checked and packaged once: a packed template's levels are scenes of one
+// file. runtimeGraph.models keeps every logical level record with its scene.
+const physicalModels = await checkPhysicalModels(root, runtimeGraph);
+for (const file of physicalModels.files) add(file);
+const glbs = physicalModels.files.length,
+  compressedModels = physicalModels.compressed;
 for (const asset of manifest.assets) {
+  // The copied manifest of each model must name exactly the files and scenes packaged for it.
+  const own = path.join(root, `public/models/${asset.modelKey}/asset.json`);
+  const parsed = existsSync(own) ? JSON.parse(await readFile(own, 'utf8')) : null;
+  const source = typeof parsed?.url === 'string' ? parsed : null;
+  if (
+    source &&
+    runtimeFiles(source, runtimeTextureRecords) !== runtimeFiles(asset, runtimeTextureRecords)
+  )
+    throw new Error(
+      `public/models/${asset.modelKey}/asset.json and world-assets.json name different runtime files`,
+    );
+  if (source)
+    checkRuntimeGraph([source], adoption, {
+      textureRecords: runtimeTextureRecords,
+      textureExtensions,
+    });
   add(`public/models/${asset.modelKey}/asset.json`);
-  for (const model of [asset, ...(asset.lods || [])]) {
-    if (
-      !/^\/models\/[a-z0-9-]+\/(model(?:-[a-z0-9]+)*|lod(?:\d+|-[a-z0-9-]+))\.glb$/.test(model.url)
-    )
-      throw new Error(`Unexpected model: ${model.url}`);
-    const file = `public${model.url}`;
-    if (
-      (await sha256(path.join(root, file))) !== model.sha256 ||
-      (await stat(path.join(root, file))).size !== model.bytes
-    )
-      throw new Error(`Model integrity failed: ${file}`);
-    add(file);
-    glbs++;
-  }
   // External runtime textures (for example cave pigment and limestone) are
   // declared directly on the accepted asset. Historical provenance is not shipped.
   for (const texture of runtimeTextureRecords(asset)) {
-    if (!/^\/models\/[a-z0-9-]+\/[a-z0-9-]+\.(png|jpe?g)$/.test(texture.url))
-      throw new Error(`Unexpected texture: ${texture.url}`);
+    checkTextureUrl(texture.url, texture.sha256, textureExtensions);
     const file = `public${texture.url}`;
     if (
       (await sha256(path.join(root, file))) !== texture.sha256 ||
       (texture.bytes !== undefined && (await stat(path.join(root, file))).size !== texture.bytes)
     )
       throw new Error(`Texture integrity failed: ${file}`);
+    checkTextureImage(texture, await readFile(path.join(root, file)), file);
     add(file);
   }
 }
+// Compressed models load only through the decoder Three ships with the packaged GLTFLoader.
+const decoderSource = `public/${DECODER.published}`;
+const decoder = await checkDecoder(
+  root,
+  sources.has(decoderSource) ? await readFile(sources.get(decoderSource)) : undefined,
+  { required: compressedModels, adoption },
+);
+// Quoted literals of files the adoption replaced, reported for review rather than refused: the
+// runtime loads models and cave images from their verified manifest records, and the remaining
+// literals (CAVE_EXTRA_PIGMENTS) name each frieze's original image. The graph checks above are
+// the packaged-file proof.
+const retiredLiterals = [];
+for (const [file, source] of sources)
+  if (/^(?:dist|public)\/.*\.(?:m?js|css|html)$/.test(file))
+    for (const url of retiredLiteralsIn(await readFile(source, 'utf8'), adoption))
+      retiredLiterals.push({ file, url });
 for (const { key } of CHARACTER_MODELS) add(`public/models/${key}/portrait.png`);
 for (const url of runtimeBotPortraitUrls(manifest.assets)) add(`public${url}`);
 sources.set('runtime/node.exe', process.execPath);
@@ -146,6 +195,27 @@ for (const [file, source] of [...sources].sort(([a], [b]) => a.localeCompare(b))
   if (!['exhibition.env', 'local-visibility.json'].includes(file))
     files.push({ path: file, sha256: await sha256(target) });
 }
+// Bundle after the selected profile's module replacements. Workers remain at
+// their existing /src URLs, and the local visibility table stays request-time.
+const browserBundle = await bundleBrowser(path.join(destination, 'dist'));
+for (const file of browserBundle.files) {
+  const name = `dist/${file.name}`;
+  const target = path.join(destination, name);
+  await writeFile(target, file.bytes);
+  bytes += file.bytes.length;
+  files.push({ path: name, sha256: await sha256(target) });
+}
+const indexPath = path.join(destination, 'public/index.html');
+const originalIndex = await readFile(indexPath);
+const newIndex = bundledIndex(originalIndex);
+await writeFile(indexPath, newIndex);
+bytes += newIndex.length - originalIndex.length;
+files.find((file) => file.path === 'public/index.html').sha256 = await sha256(indexPath);
+// The packaged manifests are the checked ones, and the build left the sources unchanged.
+assertSameDigests(sourceManifests, await manifestDigests(root, manifest.assets));
+for (const [file, digest] of Object.entries(sourceManifests))
+  if (files.find((packaged) => packaged.path === file)?.sha256 !== digest)
+    throw new Error(`Packaged ${file} is not the checked manifest`);
 const publicFiles = files.filter(
   (file) =>
     /^(?:dist\/(?:src|shared)\/|public\/)/.test(file.path) &&
@@ -166,6 +236,7 @@ const audit = await auditEnvironmentAssets(
 const report = {
   profile,
   audit,
+  browserBundle: browserBundle.record,
   buildId: buildId(files),
   builtAt: new Date().toISOString(),
   platform: process.platform,
@@ -173,7 +244,14 @@ const report = {
   node: process.version,
   files,
   bytes,
+  // Unique physical GLB files; glbLevels counts the logical level records they serve.
   glbs,
+  glbLevels: runtimeGraph.models.length,
+  runtimeAdoption: runtimeGraph.adoption,
+  runtimeGraph,
+  decoder,
+  retiredLiterals,
+  sourceManifests,
 };
 await writeFile(
   path.join(destination, local ? 'local-build.json' : 'exhibition-build.json'),
@@ -189,5 +267,5 @@ if (local)
     }),
   );
 console.log(
-  `${local ? 'Portable local game' : 'Offline exhibition'} ready: ${destination}\nBuild ${report.buildId}\n${files.length} verified files; ${glbs} GLBs; ${(bytes / 1024 / 1024).toFixed(1)} MiB.${local ? ' Open start-local.cmd on the destination PC.' : ' Deploy this same build to PC0, PC1, PC2 and PC3.'}`,
+  `${local ? 'Portable local game' : 'Offline exhibition'} ready: ${destination}\nBuild ${report.buildId}\n${files.length} verified files; ${glbs} GLBs (${runtimeGraph.models.length} model levels); ${(bytes / 1024 / 1024).toFixed(1)} MiB.${local ? ' Open start-local.cmd on the destination PC.' : ' Deploy this same build to PC0, PC1, PC2 and PC3.'}`,
 );

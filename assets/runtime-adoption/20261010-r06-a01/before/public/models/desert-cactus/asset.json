@@ -1,0 +1,111 @@
+{
+  "modelKey": "desert-cactus",
+  "name": "砂漠のサボテン",
+  "kind": "static",
+  "candidate": 2,
+  "status": "remake-candidate-2-integrated",
+  "environment": true,
+  "onDemand": true,
+  "url": "/models/desert-cactus/model-c2.opt-5139edee824a728f.glb",
+  "sha256": "5139edee824a728faf5391cbd793ebdbcfd3e50233fa6c088858b31fe6c8a504",
+  "bytes": 846200,
+  "triangles": 8991,
+  "upAxis": "Y",
+  "forwardAxis": "+Z",
+  "heightMetres": 2.4,
+  "widthMetres": 0.523504376411438,
+  "placement": {
+    "pivot": "ground-centred",
+    "min": [
+      -0.26156508922576904,
+      0.0003228260320611298,
+      -0.618472695350647
+    ],
+    "max": [
+      0.26193928718566895,
+      2.4000654220581055,
+      0.6181135177612305
+    ]
+  },
+  "clips": [],
+  "lods": [
+    {
+      "url": "/models/desert-cactus/lod-c2-1.opt-88c85d1b6692fd7c.glb",
+      "sha256": "88c85d1b6692fd7c7cfaf974fa72d0580e63cda414a10370f97ed95a3bdf2403",
+      "bytes": 355904,
+      "triangles": 3590,
+      "purpose": "medium-distance-lod"
+    },
+    {
+      "url": "/models/desert-cactus/lod-c2-2.opt-7ab66b3dd54dee80.glb",
+      "sha256": "7ab66b3dd54dee809c9645f851df3f825998ce498c7fb76083a8ef40cf1b2ca7",
+      "bytes": 285000,
+      "triangles": 1340,
+      "purpose": "far-distance-lod"
+    }
+  ],
+  "notes": [
+    "Candidate 2: new reference -> TRELLIS-2 1024 -> meshopt 8,991 tris (LOD 3,599 / 1,349) -> xatlas -> 2048 albedo + baked normal; 2.4 m like C1. Collision footprint re-measured from this GLB with scripts/measure-region-feature.mjs (0.25 m cells, same method)."
+  ],
+  "provenance": {
+    "provider": "Claude Code (Opus 5.5)",
+    "claudeUsed": true,
+    "referenceGenerator": "Codex CLI built-in image_gen (gpt-5.6-sol, medium), earlier approved reference attached for identity",
+    "referenceImage": "C:/Users/yurin/Desktop/projects/CRO-MAGNON/output/model-generation/models/desert-cactus/source/original/candidate2-ref-a.png",
+    "referenceSha256": "4c63e4bf0dec105d3295f67249081f5e2fc954d50dac7dd772caa22f6f0a9796",
+    "reconstruction": "Local TRELLIS-2 v0.8.1, res 1024, tex 1024, seed recorded in dense JSON",
+    "denseFile": "C:/Users/yurin/Desktop/projects/CRO-MAGNON/output/model-generation/models/desert-cactus/work/candidate-02/trellis/dense-ref2a-res1024-tex1024-seed0042.glb",
+    "denseSha256": "58c9663ff83dad90181b0b3e1590fe34fab3abca487ba46824aaa4102f306f6d",
+    "processReport": "output/model-generation/models/desert-cactus/work/candidate-02/low-poly/m01/process-report.json",
+    "rigReport": null,
+    "pipeline": "scripts/remake/ (trellis_queue.py, remake_process.py, rig_*.py); docs/asset-remake/PLAN.md",
+    "previousDelivery": {
+      "url": "/models/desert-cactus/model.glb",
+      "sha256": "df3e780323fd45808d92b2f7edcd2c7d9ee8000f1ea0c67b29baab73c939d7ed",
+      "triangles": 24435,
+      "bytes": 2122540,
+      "candidate": 1,
+      "revision": null
+    },
+    "previousProvenance": {
+      "provider": "Codex",
+      "claudeUsed": false,
+      "referenceGenerator": "Built-in imagegen",
+      "referenceImage": "output/model-generation/models/desert-cactus/source/original/reference-v1.png",
+      "referenceSha256": "b2c14d1ab18ecac5809c3e269da6e069e57a435ddd334f568bf718d7a4858efb",
+      "reconstruction": "Local TRELLIS-2; preserved dense reconstruction, source-derived reduction and separate revisions.",
+      "candidateFile": "output/model-generation/models/desert-cactus/work/low-poly/candidate-03/candidate.glb",
+      "visualReview": "output/model-generation/models/desert-cactus/qa/adoption-review.json"
+    },
+    "visualReview": "assets/asset-remake/reviews/desert-cactus.json"
+  },
+  "revision": "c2-m01",
+  "runtimeOptimization": {
+    "adoption": "20261010-r05-a02",
+    "candidateRevision": "assets/optimized-runtime/20261009-r04",
+    "selection": "ordinary-compressed",
+    "original": {
+      "url": "/models/desert-cactus/model-c2.glb",
+      "sha256": "ca57c5fe7c1db72ade391ac7a5709169e90b47be95b26258598a0a138f266473",
+      "bytes": 1895208,
+      "triangles": 8991,
+      "lods": [
+        {
+          "url": "/models/desert-cactus/lod-c2-1.glb",
+          "sha256": "9027f42c87d5300ed0c1df240251580bb55404e6039da689a8683b425af5a8c4",
+          "bytes": 827000,
+          "triangles": 3590,
+          "purpose": "medium-distance-lod"
+        },
+        {
+          "url": "/models/desert-cactus/lod-c2-2.glb",
+          "sha256": "fb81102495233710003d85cc198f61e186ae16d062d0149d63fc705274a6e614",
+          "bytes": 731448,
+          "triangles": 1340,
+          "purpose": "far-distance-lod"
+        }
+      ]
+    },
+    "adoptedBy": "20261009-r04-a01"
+  }
+}

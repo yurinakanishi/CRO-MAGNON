@@ -14,12 +14,25 @@ interface PoseAnimation {
 class OctopusClipPose {
   active = false;
   private action: THREE.AnimationAction | null = null;
-  private rest: { bone: THREE.Object3D; p: THREE.Vector3; q: THREE.Quaternion; s: THREE.Vector3 }[] = [];
+  private rest: {
+    bone: THREE.Object3D;
+    p: THREE.Vector3;
+    q: THREE.Quaternion;
+    s: THREE.Vector3;
+  }[] = [];
 
-  constructor(protected root: THREE.Object3D, private clips: THREE.AnimationClip[]) {
+  constructor(
+    protected root: THREE.Object3D,
+    private clips: THREE.AnimationClip[],
+  ) {
     root.traverse((bone) => {
       if ((bone as THREE.Bone).isBone)
-        this.rest.push({ bone, p: bone.position.clone(), q: bone.quaternion.clone(), s: bone.scale.clone() });
+        this.rest.push({
+          bone,
+          p: bone.position.clone(),
+          q: bone.quaternion.clone(),
+          s: bone.scale.clone(),
+        });
     });
   }
 
@@ -115,13 +128,15 @@ export class OctopusPettingPose {
     });
     this.bones.sort((a, b) => a.name.localeCompare(b.name));
     const tip = root.getObjectByName('GripR');
-    if (this.bones.length < 6 || !tip) throw new Error('The octopus needs its complete tentacle chain');
+    if (this.bones.length < 6 || !tip)
+      throw new Error('The octopus needs its complete tentacle chain');
     this.tip = tip;
     this.base = this.bones.map((bone) => bone.quaternion.clone());
     root.updateWorldMatrix(true, true);
     this.points = [...this.bones, tip].map((bone) => bone.getWorldPosition(new THREE.Vector3()));
     this.lengths = this.bones.map((_, i) => this.points[i].distanceTo(this.points[i + 1]));
-    if (this.lengths.some((length) => length <= 0)) throw new Error('Invalid octopus tentacle length');
+    if (this.lengths.some((length) => length <= 0))
+      throw new Error('Invalid octopus tentacle length');
   }
 
   blendWeight(weight: number, dt: number) {
@@ -144,9 +159,13 @@ export class OctopusPettingPose {
     this.root.getWorldQuaternion(this.rootQ);
     [...this.bones, this.tip].forEach((bone, i) => bone.getWorldPosition(this.points[i]));
     this.origin.copy(this.points[0]);
-    this.requested.copy(position).add(
-      this.direction.set(Math.sin(stroke * Math.PI * 4) * 0.035, 0, 0).applyQuaternion(this.rootQ),
-    );
+    this.requested
+      .copy(position)
+      .add(
+        this.direction
+          .set(Math.sin(stroke * Math.PI * 4) * 0.035, 0, 0)
+          .applyQuaternion(this.rootQ),
+      );
     const total = this.lengths.reduce((sum, value) => sum + value, 0);
     this.direction.subVectors(this.requested, this.origin).clampLength(0, total * 0.998);
     this.target.copy(this.origin).add(this.direction);

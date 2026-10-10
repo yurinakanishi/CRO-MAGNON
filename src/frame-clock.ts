@@ -1,24 +1,23 @@
+import { FRAME_RATE } from './graphics-quality.js';
+
+/** The game's only frame cap. The loading cave and the world both draw through
+ * the world loop's clock, so every game renderer runs at FRAME_RATE. */
 export class FrameClock {
-  declare interval: number;
+  readonly interval = 1000 / FRAME_RATE;
   declare next: number;
   declare lastRender: number;
 
-  constructor(now: number, framesPerSecond = 60) {
-    this.interval = 1000 / framesPerSecond;
+  constructor(now: number) {
     this.next = now;
     this.lastRender = now;
-  }
-  setRate(now: number, framesPerSecond: number) {
-    this.interval = 1000 / framesPerSecond;
-    this.next = this.lastRender = now;
   }
   advance(now: number, hidden = false): number | null {
     if (hidden) {
       this.next = this.lastRender = now;
       return null;
     }
-    // RAF timestamps on 60 Hz screens jitter around the nominal boundary.
-    // A 1 ms tolerance avoids dropping every other frame when it arrives early.
+    // RAF timestamps jitter around the nominal vsync. A 1 ms tolerance keeps a
+    // due frame that arrives slightly early instead of waiting another refresh.
     if (now + 1 < this.next) return null;
     const dt = Math.min(Math.max(0, now - this.lastRender) / 1000, 0.06);
     this.lastRender = now;

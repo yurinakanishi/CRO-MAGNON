@@ -1,0 +1,2543 @@
+{
+  "key": "neanderthal-woman",
+  "manifest": "public/models/neanderthal-woman/asset.json",
+  "served": {
+    "url": "/models/neanderthal-woman/startup.opt-caf50f3f8aa971be.glb",
+    "sha256": "caf50f3f8aa971be2119d5399bfe3226cfe3d0d283cc965c0beafcac0d6a1a21",
+    "bytes": 4922092,
+    "triangles": 78675
+  },
+  "original": {
+    "url": "/models/neanderthal-woman/model-face-r01.glb",
+    "sha256": "b4c416900e972c8850892b7a5f886e62478894d1c958cf35830dc7ea1672dde9",
+    "bytes": 10675488
+  },
+  "servedBy": {
+    "adoption": "20261010-r06-a02",
+    "candidateRevision": "assets/optimized-runtime/20261009-r04",
+    "selection": "startup-sole-primary"
+  },
+  "levels": {
+    "processed": "primary file only",
+    "lods": [],
+    "packedScene": null,
+    "oldLodsUsed": false
+  },
+  "coupling": null,
+  "baseline": {
+    "rawBytes": 4922092,
+    "gzip6Bytes": 4375015,
+    "sha256": "caf50f3f8aa971be2119d5399bfe3226cfe3d0d283cc965c0beafcac0d6a1a21",
+    "jsonChunkBytes": 250196,
+    "categories": {
+      "meshAttributes": {
+        "views": 11,
+        "storedBytes": 3140647,
+        "gzip6Bytes": 2983657
+      },
+      "meshIndices": {
+        "views": 2,
+        "storedBytes": 250797,
+        "gzip6Bytes": 178837
+      },
+      "animation": {
+        "views": 659,
+        "storedBytes": 597675,
+        "gzip6Bytes": 510449
+      },
+      "skin": {
+        "views": 1,
+        "storedBytes": 1234,
+        "gzip6Bytes": 1049
+      },
+      "images": {
+        "views": 3,
+        "storedBytes": 680356,
+        "gzip6Bytes": 680584
+      },
+      "other": {
+        "views": 0,
+        "storedBytes": 0,
+        "gzip6Bytes": 0
+      }
+    },
+    "geometry": {
+      "primitives": [
+        {
+          "mesh": 0,
+          "primitive": 0,
+          "vertices": 29382,
+          "triangles": 27875
+        },
+        {
+          "mesh": 0,
+          "primitive": 1,
+          "vertices": 68168,
+          "triangles": 50800
+        }
+      ],
+      "vertices": 97550,
+      "triangles": 78675
+    }
+  },
+  "scenes": 1,
+  "coverage": [
+    {
+      "mesh": 0,
+      "instances": [
+        {
+          "scene": 0,
+          "node": 24,
+          "skin": 0,
+          "path": [
+            25,
+            24
+          ]
+        }
+      ],
+      "skin": 0,
+      "unrenderedNodes": [],
+      "verifiable": true,
+      "reasons": []
+    }
+  ],
+  "diagnosis": [
+    {
+      "mesh": 0,
+      "forward": {
+        "up": [
+          2.81634421998735e-15,
+          0.9997938781544223,
+          -0.020302738853172332
+        ],
+        "forward": [
+          -0.002091533729235083,
+          0.020302694445822736,
+          0.9997916913462018
+        ],
+        "head": [
+          3.784979348994032e-15,
+          1.414400210297921,
+          -0.05040449524465163
+        ],
+        "headJoint": "Head",
+        "footToePairs": [
+          "Foot.L->Toe.L",
+          "Foot.R->Toe.R"
+        ],
+        "agreementWithGltfFront": 0.9997916913462018
+      },
+      "primitives": [
+        {
+          "primitive": 0,
+          "headShare": 0.000004696406104032197,
+          "welded": {
+            "triangles": 27875,
+            "edges": 41726,
+            "border": 523,
+            "nonmanifold": 555,
+            "inconsistent": 60,
+            "degenerate": 0
+          },
+          "splits": {
+            "vertices": 29382,
+            "positions": 13797,
+            "verticesPerPosition": 2.1295933898673627,
+            "splitPositions": 8744,
+            "splitsDifferingBy": {
+              "TEXCOORD_0": 7995,
+              "TANGENT": 8744,
+              "JOINTS_0": 0,
+              "WEIGHTS_0": 0,
+              "NORMAL": 4890
+            },
+            "exactDuplicateVertices": 0
+          },
+          "nearDuplicates": {
+            "epsilonMetres": 0.0000016092092698953602,
+            "positionsWithNearDuplicate": 0
+          },
+          "border": {
+            "borderVertices": 2251,
+            "share": 0.07661153086923968
+          },
+          "boundsDiagonalMetres": 1.6092092698953604
+        },
+        {
+          "primitive": 1,
+          "headShare": 0.9648665204515556,
+          "welded": {
+            "triangles": 50800,
+            "edges": 88190,
+            "border": 24624,
+            "nonmanifold": 354,
+            "inconsistent": 2,
+            "degenerate": 0
+          },
+          "splits": {
+            "vertices": 68168,
+            "positions": 34551,
+            "verticesPerPosition": 1.9729674973227982,
+            "splitPositions": 16404,
+            "splitsDifferingBy": {
+              "NORMAL": 7,
+              "TEXCOORD_0": 16224,
+              "JOINTS_0": 0,
+              "WEIGHTS_0": 0
+            },
+            "exactDuplicateVertices": 5012
+          },
+          "nearDuplicates": {
+            "epsilonMetres": 3.6315714270136645e-7,
+            "positionsWithNearDuplicate": 0
+          },
+          "border": {
+            "borderVertices": 38992,
+            "share": 0.5719985917145874
+          },
+          "boundsDiagonalMetres": 0.36315714270136645
+        }
+      ]
+    }
+  ],
+  "variants": [
+    {
+      "variant": "guarded-body",
+      "kind": "candidate",
+      "description": "head primitives retained; every other primitive reduced at a 4 mm bound with head-weighted (face, neck junction), neck, hand and foot vertices locked by skin weight, cross-primitive seams and borders locked",
+      "custom": null,
+      "primitives": [
+        {
+          "mesh": 0,
+          "primitive": 0,
+          "instances": 1,
+          "mode": "reduce",
+          "settings": {
+            "flags": [
+              "LockBorder",
+              "ErrorAbsolute"
+            ],
+            "targetRatio": 0.35,
+            "targetIndexCount": 29268,
+            "errorMetres": 0.004,
+            "localErrorMetres": 0.003999947327433292,
+            "maxInstanceStretch": 1.0000131683150792,
+            "worldGateMetres": {
+              "p99": 0.008,
+              "max": 0.024
+            },
+            "tolerances": {
+              "normal": 0.05,
+              "uv": 0.0009765625,
+              "skinWeight": 0.02
+            },
+            "attributeColumns": [
+              "NORMAL.x",
+              "NORMAL.y",
+              "NORMAL.z",
+              "TEXCOORD_0.u",
+              "TEXCOORD_0.v",
+              "weight:Hips",
+              "weight:Spine",
+              "weight:Chest",
+              "weight:Neck",
+              "weight:Head",
+              "weight:Shoulder.L",
+              "weight:UpperArm.L",
+              "weight:LowerArm.L",
+              "weight:Hand.L",
+              "weight:Shoulder.R",
+              "weight:UpperArm.R",
+              "weight:LowerArm.R",
+              "weight:Hand.R",
+              "weight:UpperLeg.L",
+              "weight:LowerLeg.L",
+              "weight:Foot.L",
+              "weight:Toe.L",
+              "weight:UpperLeg.R",
+              "weight:LowerLeg.R",
+              "weight:Foot.R",
+              "weight:Toe.R"
+            ],
+            "maxPasses": 8
+          },
+          "locks": {
+            "lockedVertices": 8692,
+            "byReason": {
+              "crossPrimitive": 66,
+              "jointBudget": 0,
+              "face": 0,
+              "head": 0,
+              "neck": 18,
+              "hands": 1334,
+              "feet": 2039,
+              "singularEdge": 3444,
+              "defectRings": 1791
+            },
+            "headRadiusMetres": null,
+            "border": "LockBorder flag: every open-border vertex"
+          },
+          "sourceTriangles": 27875,
+          "achievedTriangles": 17753,
+          "simplifierErrorMetres": 0.003957596141844988,
+          "passes": [
+            {
+              "pass": 1,
+              "lockedVertices": 6901,
+              "targetIndexCount": 29268,
+              "achievedTriangles": 17055,
+              "simplifierErrorMetres": 0.003957596141844988,
+              "defects": {
+                "newNonmanifoldEdges": 10,
+                "newInconsistentEdges": 0,
+                "newBorderEdges": 0,
+                "lostBorderEdges": 1,
+                "newFlippedTriangles": 52,
+                "newDegenerateTriangles": 0,
+                "mergedComponents": 0,
+                "splitComponents": 0,
+                "vanishedComponents": 0
+              },
+              "lockedAround": {
+                "defectPositions": 150,
+                "rings": 1,
+                "addedVertices": 1562
+              }
+            },
+            {
+              "pass": 2,
+              "lockedVertices": 8463,
+              "targetIndexCount": 29268,
+              "achievedTriangles": 17649,
+              "simplifierErrorMetres": 0.003957596141844988,
+              "defects": {
+                "newNonmanifoldEdges": 0,
+                "newInconsistentEdges": 0,
+                "newBorderEdges": 0,
+                "lostBorderEdges": 0,
+                "newFlippedTriangles": 5,
+                "newDegenerateTriangles": 0,
+                "mergedComponents": 0,
+                "splitComponents": 0,
+                "vanishedComponents": 0
+              },
+              "lockedAround": {
+                "defectPositions": 15,
+                "rings": 2,
+                "addedVertices": 229
+              }
+            },
+            {
+              "pass": 3,
+              "lockedVertices": 8692,
+              "targetIndexCount": 29268,
+              "achievedTriangles": 17753,
+              "simplifierErrorMetres": 0.003957596141844988,
+              "defects": {
+                "newNonmanifoldEdges": 0,
+                "newInconsistentEdges": 0,
+                "newBorderEdges": 0,
+                "lostBorderEdges": 0,
+                "newFlippedTriangles": 0,
+                "newDegenerateTriangles": 0,
+                "mergedComponents": 0,
+                "splitComponents": 0,
+                "vanishedComponents": 0
+              }
+            }
+          ],
+          "stall": [
+            {
+              "label": "as-policy",
+              "achievedTriangles": 17753,
+              "ratio": 0.6368789237668161,
+              "errorMetres": 0.003957596141844988
+            },
+            {
+              "label": "without-LockBorder",
+              "achievedTriangles": 17664,
+              "ratio": 0.6336860986547085,
+              "errorMetres": 0.003957596141844988
+            },
+            {
+              "label": "without-vertex-locks",
+              "achievedTriangles": 15213,
+              "ratio": 0.5457578475336323,
+              "errorMetres": 0.003975060302764177
+            },
+            {
+              "label": "without-attributes",
+              "achievedTriangles": 17511,
+              "ratio": 0.6281973094170403,
+              "errorMetres": 0.003957641310989857
+            },
+            {
+              "label": "error-x4",
+              "achievedTriangles": 14311,
+              "ratio": 0.5133991031390135,
+              "errorMetres": 0.01581783965229988
+            },
+            {
+              "label": "positions-only-unlocked-x4",
+              "achievedTriangles": 10136,
+              "ratio": 0.3636233183856502,
+              "errorMetres": 0.015816576778888702
+            }
+          ],
+          "action": "reduced",
+          "sourceVertices": 29382,
+          "achievedVertices": 21737
+        },
+        {
+          "mesh": 0,
+          "primitive": 1,
+          "instances": 1,
+          "action": "retained",
+          "reason": "head primitive (at least 50% head-family skin weight): kept whole by this variant"
+        }
+      ],
+      "status": "proof-pass-not-visually-reviewed",
+      "problems": [],
+      "proof": {
+        "structuralAndPosed": "passed",
+        "posesChecked": true
+      },
+      "storage": {
+        "budget": {
+          "rawBytes": 4922092,
+          "gzip6Bytes": 4375015,
+          "rule": "raw <= source raw AND whole-file gzip -6 < source gzip -6"
+        },
+        "chosen": "source/meshopt",
+        "verifiedOption": "source/meshopt",
+        "reason": "source/meshopt: 4530988 raw bytes <= the source's 4922092, gzip -6 4004347 < the source's 4375015",
+        "alternatives": [
+          {
+            "label": "first-use/meshopt",
+            "order": "first-use",
+            "storage": "meshopt",
+            "rawBytes": 4530892,
+            "gzip6Bytes": 4004742,
+            "sha256": "aa9a57b18df00226177a1a7659ca21df381886635fb8d81ce048abfefa117766",
+            "indexSha256": [
+              "f7bfe36beb94ff57fb18ca2766a0d871d2cb284aa947ce02919a2b520dacbee7"
+            ],
+            "withinRawBudget": true,
+            "belowSourceGzip": true
+          },
+          {
+            "label": "source/meshopt",
+            "order": "source",
+            "storage": "meshopt",
+            "rawBytes": 4530988,
+            "gzip6Bytes": 4004347,
+            "sha256": "fabb21a67061a199d24efac0e6196a0477cba02d73eab259bb6810a70e6ecd8d",
+            "indexSha256": [
+              "23fe4fb4b6ff3e148d81375968a0e3daffe7742d5a4e9edd6693aab8197a052d"
+            ],
+            "withinRawBudget": true,
+            "belowSourceGzip": true
+          },
+          {
+            "label": "first-use/plain",
+            "order": "first-use",
+            "storage": "plain",
+            "rawBytes": 8343976,
+            "gzip6Bytes": 4123549,
+            "sha256": "a2512659b1483b24fcee3d73bfd55f2dd16554ffc98e41b0ee7982c5e1548381",
+            "indexSha256": [
+              "f7bfe36beb94ff57fb18ca2766a0d871d2cb284aa947ce02919a2b520dacbee7"
+            ],
+            "withinRawBudget": false,
+            "belowSourceGzip": true
+          },
+          {
+            "label": "source/plain",
+            "order": "source",
+            "storage": "plain",
+            "rawBytes": 8343976,
+            "gzip6Bytes": 4119463,
+            "sha256": "aab7b57efd4302b348930e5d510602338df900dd12940887a0e00efe72f735d9",
+            "indexSha256": [
+              "23fe4fb4b6ff3e148d81375968a0e3daffe7742d5a4e9edd6693aab8197a052d"
+            ],
+            "withinRawBudget": false,
+            "belowSourceGzip": true
+          }
+        ]
+      },
+      "candidate": {
+        "rawBytes": 4530988,
+        "gzip6Bytes": 4004347,
+        "sha256": "fabb21a67061a199d24efac0e6196a0477cba02d73eab259bb6810a70e6ecd8d",
+        "jsonChunkBytes": 250288,
+        "categories": {
+          "meshAttributes": {
+            "views": 11,
+            "storedBytes": 2780741,
+            "gzip6Bytes": 2634385
+          },
+          "meshIndices": {
+            "views": 2,
+            "storedBytes": 219505,
+            "gzip6Bytes": 156815
+          },
+          "animation": {
+            "views": 659,
+            "storedBytes": 597675,
+            "gzip6Bytes": 510449
+          },
+          "skin": {
+            "views": 1,
+            "storedBytes": 1234,
+            "gzip6Bytes": 1049
+          },
+          "images": {
+            "views": 3,
+            "storedBytes": 680356,
+            "gzip6Bytes": 680584
+          },
+          "other": {
+            "views": 0,
+            "storedBytes": 0,
+            "gzip6Bytes": 0
+          }
+        },
+        "geometry": {
+          "primitives": [
+            {
+              "mesh": 0,
+              "primitive": 0,
+              "vertices": 21737,
+              "triangles": 17753
+            },
+            {
+              "mesh": 0,
+              "primitive": 1,
+              "vertices": 68168,
+              "triangles": 50800
+            }
+          ],
+          "vertices": 89905,
+          "triangles": 68553
+        }
+      },
+      "packing": {
+        "views": 676,
+        "compressedViews": 673,
+        "modes": {
+          "ATTRIBUTES": 671,
+          "INDICES": 2
+        },
+        "keptViews": {
+          "image": 3
+        },
+        "triangleRotationFallbacks": 2,
+        "logicalViewBytes": 8187230,
+        "compressedStreamBytes": 3599155,
+        "storedBinBytes": 4280670,
+        "fallbackBufferBytes": 7506874
+      },
+      "garbage": {
+        "accessors": 7,
+        "views": 7
+      },
+      "topology": [
+        {
+          "mesh": 0,
+          "primitive": 0,
+          "problems": [],
+          "source": {
+            "triangles": 27875,
+            "edges": 41726,
+            "border": 523,
+            "nonmanifold": 555,
+            "inconsistent": 60,
+            "degenerate": 0,
+            "components": 2
+          },
+          "candidate": {
+            "triangles": 17753,
+            "edges": 26547,
+            "border": 523,
+            "nonmanifold": 551,
+            "inconsistent": 60,
+            "degenerate": 0
+          },
+          "defects": {
+            "newNonmanifoldEdges": 0,
+            "newInconsistentEdges": 0,
+            "newBorderEdges": 0,
+            "lostBorderEdges": 0,
+            "newFlippedTriangles": 0,
+            "newDegenerateTriangles": 0,
+            "mergedComponents": 0,
+            "splitComponents": 0,
+            "vanishedComponents": 0
+          },
+          "newBadEdges": [],
+          "newBorderEdges": 0,
+          "lostBorderEdges": 0,
+          "crossPrimitiveSeamPositionsLost": 0,
+          "protectedTriangles": 5157,
+          "protectedTrianglesLost": 0,
+          "shrunkComponents": 0,
+          "faceNormalDisagreement": {
+            "source": 0.0017937219730941704,
+            "candidate": 0.002422125837886554
+          }
+        }
+      ],
+      "poses": {
+        "scenes": [
+          {
+            "scene": 0,
+            "instances": 1,
+            "primitiveInstances": 2,
+            "comparedPrimitiveInstances": 1,
+            "slotIdentity": "2 of 2 slot(s) identified by exact positions and indices",
+            "clips": [
+              "Attack",
+              "Craft",
+              "Downed",
+              "Eat",
+              "Gather",
+              "Give",
+              "Idle_Loop",
+              "Run_Loop",
+              "Walk_Loop",
+              "Wave"
+            ],
+            "clipTracks": [
+              {
+                "clip": "Attack",
+                "applicableChannels": 66,
+                "appliedTracksSource": 66,
+                "appliedTracksCandidate": 66
+              },
+              {
+                "clip": "Craft",
+                "applicableChannels": 66,
+                "appliedTracksSource": 66,
+                "appliedTracksCandidate": 66
+              },
+              {
+                "clip": "Downed",
+                "applicableChannels": 66,
+                "appliedTracksSource": 66,
+                "appliedTracksCandidate": 66
+              },
+              {
+                "clip": "Eat",
+                "applicableChannels": 66,
+                "appliedTracksSource": 66,
+                "appliedTracksCandidate": 66
+              },
+              {
+                "clip": "Gather",
+                "applicableChannels": 66,
+                "appliedTracksSource": 66,
+                "appliedTracksCandidate": 66
+              },
+              {
+                "clip": "Give",
+                "applicableChannels": 66,
+                "appliedTracksSource": 66,
+                "appliedTracksCandidate": 66
+              },
+              {
+                "clip": "Idle_Loop",
+                "applicableChannels": 66,
+                "appliedTracksSource": 66,
+                "appliedTracksCandidate": 66
+              },
+              {
+                "clip": "Run_Loop",
+                "applicableChannels": 66,
+                "appliedTracksSource": 66,
+                "appliedTracksCandidate": 66
+              },
+              {
+                "clip": "Walk_Loop",
+                "applicableChannels": 66,
+                "appliedTracksSource": 66,
+                "appliedTracksCandidate": 66
+              },
+              {
+                "clip": "Wave",
+                "applicableChannels": 66,
+                "appliedTracksSource": 66,
+                "appliedTracksCandidate": 66
+              }
+            ],
+            "clipsNotAnimatingThisScene": [],
+            "clipsBeyondMaxClips": [],
+            "poses": [
+              "rest",
+              "Attack@0.33",
+              "Attack@0.66",
+              "Craft@0.33",
+              "Craft@0.66",
+              "Downed@0.33",
+              "Downed@0.66",
+              "Eat@0.33",
+              "Eat@0.66",
+              "Gather@0.33",
+              "Gather@0.66",
+              "Give@0.33",
+              "Give@0.66",
+              "Idle_Loop@0.33",
+              "Idle_Loop@0.66",
+              "Run_Loop@0.33",
+              "Run_Loop@0.66",
+              "Walk_Loop@0.33",
+              "Walk_Loop@0.66",
+              "Wave@0.33",
+              "Wave@0.66"
+            ]
+          }
+        ],
+        "scope": "rest plus every clip that animates a scene's nodes (fractions 0.33, 0.66); sampled poses, not every frame",
+        "primitives": [
+          {
+            "mesh": 0,
+            "primitive": 0,
+            "instances": [
+              {
+                "scene": 0,
+                "node": 24,
+                "path": [
+                  25,
+                  24
+                ],
+                "skin": 0,
+                "restWorldMatrix": [
+                  1,
+                  0,
+                  0,
+                  0,
+                  0,
+                  1,
+                  0,
+                  0,
+                  0,
+                  0,
+                  1,
+                  0,
+                  0,
+                  0,
+                  0,
+                  1
+                ],
+                "transformEqual": true,
+                "stretch": {
+                  "max": 1,
+                  "min": 1
+                },
+                "correspondenceMaxMetres": 0,
+                "poses": [
+                  {
+                    "pose": "rest",
+                    "holes": {
+                      "all": {
+                        "count": 29382,
+                        "max": 0.005863318928206172,
+                        "p99": 0.0033344380146285635,
+                        "mean": 0.00036345529303078355
+                      },
+                      "body": {
+                        "count": 20690,
+                        "max": 0.005863318928206172,
+                        "p99": 0.003547259519808931,
+                        "mean": 0.0005161451628724254
+                      },
+                      "locked": {
+                        "count": 8692,
+                        "max": 0,
+                        "p99": 0,
+                        "mean": 0
+                      }
+                    },
+                    "interiors": {
+                      "all": {
+                        "count": 27875,
+                        "max": 0.006408746995487479,
+                        "p99": 0.002615433923538097,
+                        "mean": 0.000493997394214361
+                      },
+                      "body": {
+                        "count": 25086,
+                        "max": 0.006408746995487479,
+                        "p99": 0.0026836216970359886,
+                        "mean": 0.0005489188138294392
+                      },
+                      "feet": {
+                        "count": 1587,
+                        "max": 0,
+                        "p99": 0,
+                        "mean": 0
+                      },
+                      "hands": {
+                        "count": 1202,
+                        "max": 0,
+                        "p99": 0,
+                        "mean": 0
+                      }
+                    },
+                    "webbing": {
+                      "all": {
+                        "count": 71012,
+                        "max": 0.006744702579809821,
+                        "p99": 0.002737215665998454,
+                        "mean": 0.0003290883522147287
+                      },
+                      "body": {
+                        "count": 59856,
+                        "max": 0.006744702579809821,
+                        "p99": 0.002842960146315919,
+                        "mean": 0.0003904240521831114
+                      },
+                      "feet": {
+                        "count": 6348,
+                        "max": 0,
+                        "p99": 0,
+                        "mean": 0
+                      },
+                      "hands": {
+                        "count": 4808,
+                        "max": 0,
+                        "p99": 0,
+                        "mean": 0
+                      }
+                    },
+                    "shortcuts": {
+                      "holes": 21737,
+                      "interiors": 10147,
+                      "webbing": 40588,
+                      "enabled": true
+                    }
+                  },
+                  {
+                    "pose": "Attack@0.33",
+                    "holes": {
+                      "all": {
+                        "count": 29382,
+                        "max": 0.010847132753064481,
+                        "p99": 0.003805529290949007,
+                        "mean": 0.0003828879583073564
+                      },
+                      "body": {
+                        "count": 20690,
+                        "max": 0.010847132753064481,
+                        "p99": 0.004209182490102155,
+                        "mean": 0.0005437416138707948
+                      },
+                      "locked": {
+                        "count": 8692,
+                        "max": 0,
+                        "p99": 0,
+                        "mean": 0
+                      }
+                    },
+                    "interiors": {
+                      "all": {
+                        "count": 27875,
+                        "max": 0.007677623023072487,
+                        "p99": 0.003286739199432705,
+                        "mean": 0.000548042518023669
+                      },
+                      "body": {
+                        "count": 25086,
+                        "max": 0.007677623023072487,
+                        "p99": 0.003368861563814625,
+                        "mean": 0.0006089725420517329
+                      },
+                      "feet": {
+                        "count": 1587,
+                        "max": 0,
+                        "p99": 0,
+                        "mean": 0
+                      },
+                      "hands": {
+                        "count": 1202,
+                        "max": 0,
+                        "p99": 0,
+                        "mean": 0
+                      }
+                    },
+                    "webbing": {
+                      "all": {
+                        "count": 71012,
+                        "max": 0.011142897279168507,
+                        "p99": 0.0032224854080058637,
+                        "mean": 0.00035371932080420867
+                      },
+                      "body": {
+                        "count": 59856,
+                        "max": 0.011142897279168507,
+                        "p99": 0.0033451194647856875,
+                        "mean": 0.0004196457566317239
+                      },
+                      "feet": {
+                        "count": 6348,
+                        "max": 0,
+                        "p99": 0,
+                        "mean": 0
+                      },
+                      "hands": {
+                        "count": 4808,
+                        "max": 0,
+                        "p99": 0,
+                        "mean": 0
+                      }
+                    },
+                    "shortcuts": {
+                      "holes": 21737,
+                      "interiors": 10147,
+                      "webbing": 40588,
+                      "enabled": true
+                    }
+                  },
+                  {
+                    "pose": "Attack@0.66",
+                    "holes": {
+                      "all": {
+                        "count": 29382,
+                        "max": 0.011542798371809732,
+                        "p99": 0.0038071827393184056,
+                        "mean": 0.00038258736744903625
+                      },
+                      "body": {
+                        "count": 20690,
+                        "max": 0.011542798371809732,
+                        "p99": 0.0041128773664080714,
+                        "mean": 0.000543314742889685
+                      },
+                      "locked": {
+                        "count": 8692,
+                        "max": 0,
+                        "p99": 0,
+                        "mean": 0
+                      }
+                    },
+                    "interiors": {
+                      "all": {
+                        "count": 27875,
+                        "max": 0.007867219673898874,
+                        "p99": 0.0032954324953950133,
+                        "mean": 0.0005475597734007336
+                      },
+                      "body": {
+                        "count": 25086,
+                        "max": 0.007867219673898874,
+                        "p99": 0.0033744405974371985,
+                        "mean": 0.0006084361270647154
+                      },
+                      "feet": {
+                        "count": 1587,
+                        "max": 0,
+                        "p99": 0,
+                        "mean": 0
+                      },
+                      "hands": {
+                        "count": 1202,
+                        "max": 0,
+                        "p99": 0,
+                        "mean": 0
+                      }
+                    },
+                    "webbing": {
+                      "all": {
+                        "count": 71012,
+                        "max": 0.011054616352406793,
+                        "p99": 0.0032509966932699765,
+                        "mean": 0.0003531738850384338
+                      },
+                      "body": {
+                        "count": 59856,
+                        "max": 0.011054616352406793,
+                        "p99": 0.003388293830254715,
+                        "mean": 0.00041899866219508925
+                      },
+                      "feet": {
+                        "count": 6348,
+                        "max": 0,
+                        "p99": 0,
+                        "mean": 0
+                      },
+                      "hands": {
+                        "count": 4808,
+                        "max": 0,
+                        "p99": 0,
+                        "mean": 0
+                      }
+                    },
+                    "shortcuts": {
+                      "holes": 21737,
+                      "interiors": 10147,
+                      "webbing": 40588,
+                      "enabled": true
+                    }
+                  },
+                  {
+                    "pose": "Craft@0.33",
+                    "holes": {
+                      "all": {
+                        "count": 29382,
+                        "max": 0.010140672223713745,
+                        "p99": 0.003466701383709649,
+                        "mean": 0.0003605758171211738
+                      },
+                      "body": {
+                        "count": 20690,
+                        "max": 0.010140672223713745,
+                        "p99": 0.0037101353450198367,
+                        "mean": 0.0005120560009016109
+                      },
+                      "locked": {
+                        "count": 8692,
+                        "max": 0,
+                        "p99": 0,
+                        "mean": 0
+                      }
+                    },
+                    "interiors": {
+                      "all": {
+                        "count": 27875,
+                        "max": 0.008181826879838431,
+                        "p99": 0.002866769599691263,
+                        "mean": 0.0005078260374177502
+                      },
+                      "body": {
+                        "count": 25086,
+                        "max": 0.008181826879838431,
+                        "p99": 0.0029600032995681152,
+                        "mean": 0.0005642848916933662
+                      },
+                      "feet": {
+                        "count": 1587,
+                        "max": 0,
+                        "p99": 0,
+                        "mean": 0
+                      },
+                      "hands": {
+                        "count": 1202,
+                        "max": 0,
+                        "p99": 0,
+                        "mean": 0
+                      }
+                    },
+                    "webbing": {
+                      "all": {
+                        "count": 71012,
+                        "max": 0.013312146146388086,
+                        "p99": 0.0029043546605670304,
+                        "mean": 0.00033412281543901076
+                      },
+                      "body": {
+                        "count": 59856,
+                        "max": 0.013312146146388086,
+                        "p99": 0.003012469855010783,
+                        "mean": 0.0003963968419198582
+                      },
+                      "feet": {
+                        "count": 6348,
+                        "max": 0,
+                        "p99": 0,
+                        "mean": 0
+                      },
+                      "hands": {
+                        "count": 4808,
+                        "max": 0,
+                        "p99": 0,
+                        "mean": 0
+                      }
+                    },
+                    "shortcuts": {
+                      "holes": 21737,
+                      "interiors": 10147,
+                      "webbing": 40588,
+                      "enabled": true
+                    }
+                  },
+                  {
+                    "pose": "Craft@0.66",
+                    "holes": {
+                      "all": {
+                        "count": 29382,
+                        "max": 0.009992968731196919,
+                        "p99": 0.003481698005743673,
+                        "mean": 0.0003618369316967288
+                      },
+                      "body": {
+                        "count": 20690,
+                        "max": 0.009992968731196919,
+                        "p99": 0.0037374396392807776,
+                        "mean": 0.0005138469176951806
+                      },
+                      "locked": {
+                        "count": 8692,
+                        "max": 0,
+                        "p99": 0,
+                        "mean": 0
+                      }
+                    },
+                    "interiors": {
+                      "all": {
+                        "count": 27875,
+                        "max": 0.007945975125238071,
+                        "p99": 0.0028889432636947272,
+                        "mean": 0.0005081731791087869
+                      },
+                      "body": {
+                        "count": 25086,
+                        "max": 0.007945975125238071,
+                        "p99": 0.002980952895543091,
+                        "mean": 0.0005646706277468482
+                      },
+                      "feet": {
+                        "count": 1587,
+                        "max": 0,
+                        "p99": 0,
+                        "mean": 0
+                      },
+                      "hands": {
+                        "count": 1202,
+                        "max": 0,
+                        "p99": 0,
+                        "mean": 0
+                      }
+                    },
+                    "webbing": {
+                      "all": {
+                        "count": 71012,
+                        "max": 0.012707081037153817,
+                        "p99": 0.0029058416359674048,
+                        "mean": 0.0003339323144297637
+                      },
+                      "body": {
+                        "count": 59856,
+                        "max": 0.012707081037153817,
+                        "p99": 0.003001106534129528,
+                        "mean": 0.0003961708352092752
+                      },
+                      "feet": {
+                        "count": 6348,
+                        "max": 0,
+                        "p99": 0,
+                        "mean": 0
+                      },
+                      "hands": {
+                        "count": 4808,
+                        "max": 0,
+                        "p99": 0,
+                        "mean": 0
+                      }
+                    },
+                    "shortcuts": {
+                      "holes": 21737,
+                      "interiors": 10147,
+                      "webbing": 40588,
+                      "enabled": true
+                    }
+                  },
+                  {
+                    "pose": "Downed@0.33",
+                    "holes": {
+                      "all": {
+                        "count": 29382,
+                        "max": 0.013335879566941933,
+                        "p99": 0.003619423293438081,
+                        "mean": 0.0003710782735836612
+                      },
+                      "body": {
+                        "count": 20690,
+                        "max": 0.013335879566941933,
+                        "p99": 0.003871095428848383,
+                        "mean": 0.0005269706058209344
+                      },
+                      "locked": {
+                        "count": 8692,
+                        "max": 0,
+                        "p99": 0,
+                        "mean": 0
+                      }
+                    },
+                    "interiors": {
+                      "all": {
+                        "count": 27875,
+                        "max": 0.01199533087254564,
+                        "p99": 0.003071452421734777,
+                        "mean": 0.0005271003475823232
+                      },
+                      "body": {
+                        "count": 25086,
+                        "max": 0.01199533087254564,
+                        "p99": 0.0031481399020576017,
+                        "mean": 0.0005857020724251479
+                      },
+                      "feet": {
+                        "count": 1587,
+                        "max": 0,
+                        "p99": 0,
+                        "mean": 0
+                      },
+                      "hands": {
+                        "count": 1202,
+                        "max": 0,
+                        "p99": 0,
+                        "mean": 0
+                      }
+                    },
+                    "webbing": {
+                      "all": {
+                        "count": 71012,
+                        "max": 0.013694648123841762,
+                        "p99": 0.003040891028437565,
+                        "mean": 0.0003428471150561053
+                      },
+                      "body": {
+                        "count": 59856,
+                        "max": 0.013694648123841762,
+                        "p99": 0.0031736947118100097,
+                        "mean": 0.00040674718214321284
+                      },
+                      "feet": {
+                        "count": 6348,
+                        "max": 0,
+                        "p99": 0,
+                        "mean": 0
+                      },
+                      "hands": {
+                        "count": 4808,
+                        "max": 0,
+                        "p99": 0,
+                        "mean": 0
+                      }
+                    },
+                    "shortcuts": {
+                      "holes": 21737,
+                      "interiors": 10147,
+                      "webbing": 40588,
+                      "enabled": true
+                    }
+                  },
+                  {
+                    "pose": "Downed@0.66",
+                    "holes": {
+                      "all": {
+                        "count": 29382,
+                        "max": 0.008453924411123066,
+                        "p99": 0.003660666712154097,
+                        "mean": 0.00037508856865751895
+                      },
+                      "body": {
+                        "count": 20690,
+                        "max": 0.008453924411123066,
+                        "p99": 0.003956112072455358,
+                        "mean": 0.0005326656512467482
+                      },
+                      "locked": {
+                        "count": 8692,
+                        "max": 0,
+                        "p99": 0,
+                        "mean": 0
+                      }
+                    },
+                    "interiors": {
+                      "all": {
+                        "count": 27875,
+                        "max": 0.007519771261270854,
+                        "p99": 0.0030367716874553224,
+                        "mean": 0.0005262867569941215
+                      },
+                      "body": {
+                        "count": 25086,
+                        "max": 0.007519771261270854,
+                        "p99": 0.003128328200936745,
+                        "mean": 0.0005847980288292728
+                      },
+                      "feet": {
+                        "count": 1587,
+                        "max": 0,
+                        "p99": 0,
+                        "mean": 0
+                      },
+                      "hands": {
+                        "count": 1202,
+                        "max": 0,
+                        "p99": 0,
+                        "mean": 0
+                      }
+                    },
+                    "webbing": {
+                      "all": {
+                        "count": 71012,
+                        "max": 0.008779486384095533,
+                        "p99": 0.003048752362598359,
+                        "mean": 0.00034408643233955203
+                      },
+                      "body": {
+                        "count": 59856,
+                        "max": 0.008779486384095533,
+                        "p99": 0.003151623875112774,
+                        "mean": 0.0004082174841836452
+                      },
+                      "feet": {
+                        "count": 6348,
+                        "max": 0,
+                        "p99": 0,
+                        "mean": 0
+                      },
+                      "hands": {
+                        "count": 4808,
+                        "max": 0,
+                        "p99": 0,
+                        "mean": 0
+                      }
+                    },
+                    "shortcuts": {
+                      "holes": 21737,
+                      "interiors": 10147,
+                      "webbing": 40588,
+                      "enabled": true
+                    }
+                  },
+                  {
+                    "pose": "Eat@0.33",
+                    "holes": {
+                      "all": {
+                        "count": 29382,
+                        "max": 0.01053073007408321,
+                        "p99": 0.0034147822597407965,
+                        "mean": 0.0003597362859948807
+                      },
+                      "body": {
+                        "count": 20690,
+                        "max": 0.01053073007408321,
+                        "p99": 0.003587089371121991,
+                        "mean": 0.0005108637774336194
+                      },
+                      "locked": {
+                        "count": 8692,
+                        "max": 0,
+                        "p99": 0,
+                        "mean": 0
+                      }
+                    },
+                    "interiors": {
+                      "all": {
+                        "count": 27875,
+                        "max": 0.008563834942709757,
+                        "p99": 0.0027340493925273484,
+                        "mean": 0.0005001840463745391
+                      },
+                      "body": {
+                        "count": 25086,
+                        "max": 0.008563834942709757,
+                        "p99": 0.0028012825608202687,
+                        "mean": 0.0005557932828147284
+                      },
+                      "feet": {
+                        "count": 1587,
+                        "max": 0,
+                        "p99": 0,
+                        "mean": 0
+                      },
+                      "hands": {
+                        "count": 1202,
+                        "max": 0,
+                        "p99": 0,
+                        "mean": 0
+                      }
+                    },
+                    "webbing": {
+                      "all": {
+                        "count": 71012,
+                        "max": 0.009575969491445046,
+                        "p99": 0.002815588191095408,
+                        "mean": 0.00033001672026828103
+                      },
+                      "body": {
+                        "count": 59856,
+                        "max": 0.009575969491445046,
+                        "p99": 0.0029126267377094007,
+                        "mean": 0.00039152545007503295
+                      },
+                      "feet": {
+                        "count": 6348,
+                        "max": 0,
+                        "p99": 0,
+                        "mean": 0
+                      },
+                      "hands": {
+                        "count": 4808,
+                        "max": 0,
+                        "p99": 0,
+                        "mean": 0
+                      }
+                    },
+                    "shortcuts": {
+                      "holes": 21737,
+                      "interiors": 10147,
+                      "webbing": 40588,
+                      "enabled": true
+                    }
+                  },
+                  {
+                    "pose": "Eat@0.66",
+                    "holes": {
+                      "all": {
+                        "count": 29382,
+                        "max": 0.010481674494210693,
+                        "p99": 0.0034161309094514355,
+                        "mean": 0.00036115294754546
+                      },
+                      "body": {
+                        "count": 20690,
+                        "max": 0.010481674494210693,
+                        "p99": 0.0035972320830066433,
+                        "mean": 0.0005128755874712763
+                      },
+                      "locked": {
+                        "count": 8692,
+                        "max": 0,
+                        "p99": 0,
+                        "mean": 0
+                      }
+                    },
+                    "interiors": {
+                      "all": {
+                        "count": 27875,
+                        "max": 0.009791688557830873,
+                        "p99": 0.002750144681406044,
+                        "mean": 0.0005009181231921127
+                      },
+                      "body": {
+                        "count": 25086,
+                        "max": 0.009791688557830873,
+                        "p99": 0.00283579592591125,
+                        "mean": 0.0005566089724938269
+                      },
+                      "feet": {
+                        "count": 1587,
+                        "max": 0,
+                        "p99": 0,
+                        "mean": 0
+                      },
+                      "hands": {
+                        "count": 1202,
+                        "max": 0,
+                        "p99": 0,
+                        "mean": 0
+                      }
+                    },
+                    "webbing": {
+                      "all": {
+                        "count": 71012,
+                        "max": 0.008688529626091783,
+                        "p99": 0.00282021284351248,
+                        "mean": 0.0003299977164696643
+                      },
+                      "body": {
+                        "count": 59856,
+                        "max": 0.008688529626091783,
+                        "p99": 0.002913763061127874,
+                        "mean": 0.0003915029043361368
+                      },
+                      "feet": {
+                        "count": 6348,
+                        "max": 0,
+                        "p99": 0,
+                        "mean": 0
+                      },
+                      "hands": {
+                        "count": 4808,
+                        "max": 0,
+                        "p99": 0,
+                        "mean": 0
+                      }
+                    },
+                    "shortcuts": {
+                      "holes": 21737,
+                      "interiors": 10147,
+                      "webbing": 40588,
+                      "enabled": true
+                    }
+                  },
+                  {
+                    "pose": "Gather@0.33",
+                    "holes": {
+                      "all": {
+                        "count": 29382,
+                        "max": 0.008746232713194968,
+                        "p99": 0.0035416458131010795,
+                        "mean": 0.0003673303389540219
+                      },
+                      "body": {
+                        "count": 20690,
+                        "max": 0.008746232713194968,
+                        "p99": 0.0037934777313469847,
+                        "mean": 0.0005216481401231064
+                      },
+                      "locked": {
+                        "count": 8692,
+                        "max": 0,
+                        "p99": 0,
+                        "mean": 0
+                      }
+                    },
+                    "interiors": {
+                      "all": {
+                        "count": 27875,
+                        "max": 0.007299931936707683,
+                        "p99": 0.002907191459194497,
+                        "mean": 0.0005193408153858004
+                      },
+                      "body": {
+                        "count": 25086,
+                        "max": 0.007299931936707683,
+                        "p99": 0.0029859003633747323,
+                        "mean": 0.0005770798544558394
+                      },
+                      "feet": {
+                        "count": 1587,
+                        "max": 0,
+                        "p99": 0,
+                        "mean": 0
+                      },
+                      "hands": {
+                        "count": 1202,
+                        "max": 0,
+                        "p99": 0,
+                        "mean": 0
+                      }
+                    },
+                    "webbing": {
+                      "all": {
+                        "count": 71012,
+                        "max": 0.008790958983661524,
+                        "p99": 0.002968551783668011,
+                        "mean": 0.0003381324158797755
+                      },
+                      "body": {
+                        "count": 59856,
+                        "max": 0.008790958983661524,
+                        "p99": 0.0030761171762940616,
+                        "mean": 0.00040115375428452645
+                      },
+                      "feet": {
+                        "count": 6348,
+                        "max": 0,
+                        "p99": 0,
+                        "mean": 0
+                      },
+                      "hands": {
+                        "count": 4808,
+                        "max": 0,
+                        "p99": 0,
+                        "mean": 0
+                      }
+                    },
+                    "shortcuts": {
+                      "holes": 21737,
+                      "interiors": 10147,
+                      "webbing": 40588,
+                      "enabled": true
+                    }
+                  },
+                  {
+                    "pose": "Gather@0.66",
+                    "holes": {
+                      "all": {
+                        "count": 29382,
+                        "max": 0.010249177034788521,
+                        "p99": 0.003643452929682146,
+                        "mean": 0.000371733096863532
+                      },
+                      "body": {
+                        "count": 20690,
+                        "max": 0.010249177034788521,
+                        "p99": 0.00390795406531129,
+                        "mean": 0.0005279005245067326
+                      },
+                      "locked": {
+                        "count": 8692,
+                        "max": 0,
+                        "p99": 0,
+                        "mean": 0
+                      }
+                    },
+                    "interiors": {
+                      "all": {
+                        "count": 27875,
+                        "max": 0.008002307521338332,
+                        "p99": 0.0030887828223819503,
+                        "mean": 0.0005329254864480614
+                      },
+                      "body": {
+                        "count": 25086,
+                        "max": 0.008002307521338332,
+                        "p99": 0.0031809010749725623,
+                        "mean": 0.000592174835953907
+                      },
+                      "feet": {
+                        "count": 1587,
+                        "max": 0,
+                        "p99": 0,
+                        "mean": 0
+                      },
+                      "hands": {
+                        "count": 1202,
+                        "max": 0,
+                        "p99": 0,
+                        "mean": 0
+                      }
+                    },
+                    "webbing": {
+                      "all": {
+                        "count": 71012,
+                        "max": 0.011360993845792868,
+                        "p99": 0.0031040113974740323,
+                        "mean": 0.0003457386075150079
+                      },
+                      "body": {
+                        "count": 59856,
+                        "max": 0.011360993845792868,
+                        "p99": 0.003256090398087859,
+                        "mean": 0.00041017759283707133
+                      },
+                      "feet": {
+                        "count": 6348,
+                        "max": 0,
+                        "p99": 0,
+                        "mean": 0
+                      },
+                      "hands": {
+                        "count": 4808,
+                        "max": 0,
+                        "p99": 0,
+                        "mean": 0
+                      }
+                    },
+                    "shortcuts": {
+                      "holes": 21737,
+                      "interiors": 10147,
+                      "webbing": 40588,
+                      "enabled": true
+                    }
+                  },
+                  {
+                    "pose": "Give@0.33",
+                    "holes": {
+                      "all": {
+                        "count": 29382,
+                        "max": 0.008297947934517777,
+                        "p99": 0.00343803792348166,
+                        "mean": 0.0003586245921258059
+                      },
+                      "body": {
+                        "count": 20690,
+                        "max": 0.008297947934517777,
+                        "p99": 0.003680940957935775,
+                        "mean": 0.0005092850539313885
+                      },
+                      "locked": {
+                        "count": 8692,
+                        "max": 0,
+                        "p99": 0,
+                        "mean": 0
+                      }
+                    },
+                    "interiors": {
+                      "all": {
+                        "count": 27875,
+                        "max": 0.008134838468826615,
+                        "p99": 0.0027851935345501212,
+                        "mean": 0.0005019336779259582
+                      },
+                      "body": {
+                        "count": 25086,
+                        "max": 0.008134838468826615,
+                        "p99": 0.0028580634127443817,
+                        "mean": 0.0005577374341140908
+                      },
+                      "feet": {
+                        "count": 1587,
+                        "max": 0,
+                        "p99": 0,
+                        "mean": 0
+                      },
+                      "hands": {
+                        "count": 1202,
+                        "max": 0,
+                        "p99": 0,
+                        "mean": 0
+                      }
+                    },
+                    "webbing": {
+                      "all": {
+                        "count": 71012,
+                        "max": 0.008372883281642781,
+                        "p99": 0.0028462316637362494,
+                        "mean": 0.00032968372263211007
+                      },
+                      "body": {
+                        "count": 59856,
+                        "max": 0.008372883281642781,
+                        "p99": 0.0029514442927385787,
+                        "mean": 0.00039113038812402094
+                      },
+                      "feet": {
+                        "count": 6348,
+                        "max": 0,
+                        "p99": 0,
+                        "mean": 0
+                      },
+                      "hands": {
+                        "count": 4808,
+                        "max": 0,
+                        "p99": 0,
+                        "mean": 0
+                      }
+                    },
+                    "shortcuts": {
+                      "holes": 21737,
+                      "interiors": 10147,
+                      "webbing": 40588,
+                      "enabled": true
+                    }
+                  },
+                  {
+                    "pose": "Give@0.66",
+                    "holes": {
+                      "all": {
+                        "count": 29382,
+                        "max": 0.008473286772994871,
+                        "p99": 0.0034520936514187174,
+                        "mean": 0.0003591877471995222
+                      },
+                      "body": {
+                        "count": 20690,
+                        "max": 0.008473286772994871,
+                        "p99": 0.0036859178070045425,
+                        "mean": 0.0005100847940172239
+                      },
+                      "locked": {
+                        "count": 8692,
+                        "max": 0,
+                        "p99": 0,
+                        "mean": 0
+                      }
+                    },
+                    "interiors": {
+                      "all": {
+                        "count": 27875,
+                        "max": 0.008250352712704436,
+                        "p99": 0.0027851935345501212,
+                        "mean": 0.0005023345491813745
+                      },
+                      "body": {
+                        "count": 25086,
+                        "max": 0.008250352712704436,
+                        "p99": 0.0028593396785222937,
+                        "mean": 0.0005581828732532415
+                      },
+                      "feet": {
+                        "count": 1587,
+                        "max": 0,
+                        "p99": 0,
+                        "mean": 0
+                      },
+                      "hands": {
+                        "count": 1202,
+                        "max": 0,
+                        "p99": 0,
+                        "mean": 0
+                      }
+                    },
+                    "webbing": {
+                      "all": {
+                        "count": 71012,
+                        "max": 0.008296389717192487,
+                        "p99": 0.002846979750916634,
+                        "mean": 0.00032903586220262184
+                      },
+                      "body": {
+                        "count": 59856,
+                        "max": 0.008296389717192487,
+                        "p99": 0.0029507146253539072,
+                        "mean": 0.000390361779048593
+                      },
+                      "feet": {
+                        "count": 6348,
+                        "max": 0,
+                        "p99": 0,
+                        "mean": 0
+                      },
+                      "hands": {
+                        "count": 4808,
+                        "max": 0,
+                        "p99": 0,
+                        "mean": 0
+                      }
+                    },
+                    "shortcuts": {
+                      "holes": 21737,
+                      "interiors": 10147,
+                      "webbing": 40588,
+                      "enabled": true
+                    }
+                  },
+                  {
+                    "pose": "Idle_Loop@0.33",
+                    "holes": {
+                      "all": {
+                        "count": 29382,
+                        "max": 0.006382894030402115,
+                        "p99": 0.0033185813454568265,
+                        "mean": 0.000356869366757145
+                      },
+                      "body": {
+                        "count": 20690,
+                        "max": 0.006382894030402115,
+                        "p99": 0.003555321993431771,
+                        "mean": 0.0005067924472720364
+                      },
+                      "locked": {
+                        "count": 8692,
+                        "max": 0,
+                        "p99": 0,
+                        "mean": 0
+                      }
+                    },
+                    "interiors": {
+                      "all": {
+                        "count": 27875,
+                        "max": 0.006425184088639691,
+                        "p99": 0.002611571005502554,
+                        "mean": 0.0004885284358889827
+                      },
+                      "body": {
+                        "count": 25086,
+                        "max": 0.006425184088639691,
+                        "p99": 0.0026544455533566522,
+                        "mean": 0.0005428418301206008
+                      },
+                      "feet": {
+                        "count": 1587,
+                        "max": 0,
+                        "p99": 0,
+                        "mean": 0
+                      },
+                      "hands": {
+                        "count": 1202,
+                        "max": 0,
+                        "p99": 0,
+                        "mean": 0
+                      }
+                    },
+                    "webbing": {
+                      "all": {
+                        "count": 71012,
+                        "max": 0.006755597943876149,
+                        "p99": 0.00275264315290615,
+                        "mean": 0.0003250860522999099
+                      },
+                      "body": {
+                        "count": 59856,
+                        "max": 0.006755597943876149,
+                        "p99": 0.002841513736368299,
+                        "mean": 0.00038567580102113737
+                      },
+                      "feet": {
+                        "count": 6348,
+                        "max": 0,
+                        "p99": 0,
+                        "mean": 0
+                      },
+                      "hands": {
+                        "count": 4808,
+                        "max": 0,
+                        "p99": 0,
+                        "mean": 0
+                      }
+                    },
+                    "shortcuts": {
+                      "holes": 21737,
+                      "interiors": 10147,
+                      "webbing": 40588,
+                      "enabled": true
+                    }
+                  },
+                  {
+                    "pose": "Idle_Loop@0.66",
+                    "holes": {
+                      "all": {
+                        "count": 29382,
+                        "max": 0.006325083893989117,
+                        "p99": 0.0033345311063331822,
+                        "mean": 0.0003576964115413464
+                      },
+                      "body": {
+                        "count": 20690,
+                        "max": 0.006325083893989117,
+                        "p99": 0.0035601913587242216,
+                        "mean": 0.0005079669388065656
+                      },
+                      "locked": {
+                        "count": 8692,
+                        "max": 0,
+                        "p99": 0,
+                        "mean": 0
+                      }
+                    },
+                    "interiors": {
+                      "all": {
+                        "count": 27875,
+                        "max": 0.006452118662190717,
+                        "p99": 0.0026099677123988885,
+                        "mean": 0.0004896312914572269
+                      },
+                      "body": {
+                        "count": 25086,
+                        "max": 0.006452118662190717,
+                        "p99": 0.002653761926590452,
+                        "mean": 0.0005440672984680778
+                      },
+                      "feet": {
+                        "count": 1587,
+                        "max": 0,
+                        "p99": 0,
+                        "mean": 0
+                      },
+                      "hands": {
+                        "count": 1202,
+                        "max": 0,
+                        "p99": 0,
+                        "mean": 0
+                      }
+                    },
+                    "webbing": {
+                      "all": {
+                        "count": 71012,
+                        "max": 0.006780391676733738,
+                        "p99": 0.002750235014772615,
+                        "mean": 0.00032555909016886896
+                      },
+                      "body": {
+                        "count": 59856,
+                        "max": 0.006780391676733738,
+                        "p99": 0.002840764259177902,
+                        "mean": 0.0003862370039941146
+                      },
+                      "feet": {
+                        "count": 6348,
+                        "max": 0,
+                        "p99": 0,
+                        "mean": 0
+                      },
+                      "hands": {
+                        "count": 4808,
+                        "max": 0,
+                        "p99": 0,
+                        "mean": 0
+                      }
+                    },
+                    "shortcuts": {
+                      "holes": 21737,
+                      "interiors": 10147,
+                      "webbing": 40588,
+                      "enabled": true
+                    }
+                  },
+                  {
+                    "pose": "Run_Loop@0.33",
+                    "holes": {
+                      "all": {
+                        "count": 29382,
+                        "max": 0.011926770696623172,
+                        "p99": 0.003747122623391405,
+                        "mean": 0.00037938793153062485
+                      },
+                      "body": {
+                        "count": 20690,
+                        "max": 0.011926770696623172,
+                        "p99": 0.004102666312287416,
+                        "mean": 0.0005387712036845248
+                      },
+                      "locked": {
+                        "count": 8692,
+                        "max": 0,
+                        "p99": 0,
+                        "mean": 0
+                      }
+                    },
+                    "interiors": {
+                      "all": {
+                        "count": 27875,
+                        "max": 0.011068176525512433,
+                        "p99": 0.0033544190356120497,
+                        "mean": 0.0005442615913796227
+                      },
+                      "body": {
+                        "count": 25086,
+                        "max": 0.011068176525512433,
+                        "p99": 0.0034670113099859105,
+                        "mean": 0.0006047712612495807
+                      },
+                      "feet": {
+                        "count": 1587,
+                        "max": 0,
+                        "p99": 0,
+                        "mean": 0
+                      },
+                      "hands": {
+                        "count": 1202,
+                        "max": 0,
+                        "p99": 0,
+                        "mean": 0
+                      }
+                    },
+                    "webbing": {
+                      "all": {
+                        "count": 71012,
+                        "max": 0.013493797778807097,
+                        "p99": 0.003227810843865561,
+                        "mean": 0.00035568482946311434
+                      },
+                      "body": {
+                        "count": 59856,
+                        "max": 0.013493797778807097,
+                        "p99": 0.0034030205867072484,
+                        "mean": 0.0004219775980659362
+                      },
+                      "feet": {
+                        "count": 6348,
+                        "max": 0,
+                        "p99": 0,
+                        "mean": 0
+                      },
+                      "hands": {
+                        "count": 4808,
+                        "max": 0,
+                        "p99": 0,
+                        "mean": 0
+                      }
+                    },
+                    "shortcuts": {
+                      "holes": 21737,
+                      "interiors": 10147,
+                      "webbing": 40588,
+                      "enabled": true
+                    }
+                  },
+                  {
+                    "pose": "Run_Loop@0.66",
+                    "holes": {
+                      "all": {
+                        "count": 29382,
+                        "max": 0.01158795396422906,
+                        "p99": 0.0036258921429605773,
+                        "mean": 0.0003760644504565599
+                      },
+                      "body": {
+                        "count": 20690,
+                        "max": 0.01158795396422906,
+                        "p99": 0.003906668441026047,
+                        "mean": 0.0005340515071684216
+                      },
+                      "locked": {
+                        "count": 8692,
+                        "max": 0,
+                        "p99": 0,
+                        "mean": 0
+                      }
+                    },
+                    "interiors": {
+                      "all": {
+                        "count": 27875,
+                        "max": 0.00819096160874414,
+                        "p99": 0.003120090473700887,
+                        "mean": 0.000530740247856497
+                      },
+                      "body": {
+                        "count": 25086,
+                        "max": 0.00819096160874414,
+                        "p99": 0.0031933482823903593,
+                        "mean": 0.0005897466478912482
+                      },
+                      "feet": {
+                        "count": 1587,
+                        "max": 0,
+                        "p99": 0,
+                        "mean": 0
+                      },
+                      "hands": {
+                        "count": 1202,
+                        "max": 0,
+                        "p99": 0,
+                        "mean": 0
+                      }
+                    },
+                    "webbing": {
+                      "all": {
+                        "count": 71012,
+                        "max": 0.01469190351298388,
+                        "p99": 0.0030358617755047515,
+                        "mean": 0.00034301070692874263
+                      },
+                      "body": {
+                        "count": 59856,
+                        "max": 0.01469190351298388,
+                        "p99": 0.003184474328917048,
+                        "mean": 0.00040694126437489764
+                      },
+                      "feet": {
+                        "count": 6348,
+                        "max": 0,
+                        "p99": 0,
+                        "mean": 0
+                      },
+                      "hands": {
+                        "count": 4808,
+                        "max": 0,
+                        "p99": 0,
+                        "mean": 0
+                      }
+                    },
+                    "shortcuts": {
+                      "holes": 21737,
+                      "interiors": 10147,
+                      "webbing": 40588,
+                      "enabled": true
+                    }
+                  },
+                  {
+                    "pose": "Walk_Loop@0.33",
+                    "holes": {
+                      "all": {
+                        "count": 29382,
+                        "max": 0.011141547284171665,
+                        "p99": 0.0035626267234682876,
+                        "mean": 0.0003689471247924143
+                      },
+                      "body": {
+                        "count": 20690,
+                        "max": 0.011141547284171665,
+                        "p99": 0.003836677164348824,
+                        "mean": 0.0005239441479289858
+                      },
+                      "locked": {
+                        "count": 8692,
+                        "max": 0,
+                        "p99": 0,
+                        "mean": 0
+                      }
+                    },
+                    "interiors": {
+                      "all": {
+                        "count": 27875,
+                        "max": 0.010367047107889419,
+                        "p99": 0.00298339065738375,
+                        "mean": 0.0005210921284980608
+                      },
+                      "body": {
+                        "count": 25086,
+                        "max": 0.010367047107889419,
+                        "p99": 0.003070593562227037,
+                        "mean": 0.0005790258742678564
+                      },
+                      "feet": {
+                        "count": 1587,
+                        "max": 0,
+                        "p99": 0,
+                        "mean": 0
+                      },
+                      "hands": {
+                        "count": 1202,
+                        "max": 0,
+                        "p99": 0,
+                        "mean": 0
+                      }
+                    },
+                    "webbing": {
+                      "all": {
+                        "count": 71012,
+                        "max": 0.01402469476349371,
+                        "p99": 0.0029907276729255663,
+                        "mean": 0.00033879801907539243
+                      },
+                      "body": {
+                        "count": 59856,
+                        "max": 0.01402469476349371,
+                        "p99": 0.003113776977452353,
+                        "mean": 0.0004019434130343118
+                      },
+                      "feet": {
+                        "count": 6348,
+                        "max": 0,
+                        "p99": 0,
+                        "mean": 0
+                      },
+                      "hands": {
+                        "count": 4808,
+                        "max": 0,
+                        "p99": 0,
+                        "mean": 0
+                      }
+                    },
+                    "shortcuts": {
+                      "holes": 21737,
+                      "interiors": 10147,
+                      "webbing": 40588,
+                      "enabled": true
+                    }
+                  },
+                  {
+                    "pose": "Walk_Loop@0.66",
+                    "holes": {
+                      "all": {
+                        "count": 29382,
+                        "max": 0.011236428935918238,
+                        "p99": 0.0035429132775649437,
+                        "mean": 0.0003673487657058877
+                      },
+                      "body": {
+                        "count": 20690,
+                        "max": 0.011236428935918238,
+                        "p99": 0.0038246574083843597,
+                        "mean": 0.0005216743080701012
+                      },
+                      "locked": {
+                        "count": 8692,
+                        "max": 0,
+                        "p99": 0,
+                        "mean": 0
+                      }
+                    },
+                    "interiors": {
+                      "all": {
+                        "count": 27875,
+                        "max": 0.008475158179523767,
+                        "p99": 0.0029643150897463734,
+                        "mean": 0.0005212957294869079
+                      },
+                      "body": {
+                        "count": 25086,
+                        "max": 0.008475158179523767,
+                        "p99": 0.0030322116967658502,
+                        "mean": 0.0005792521111156645
+                      },
+                      "feet": {
+                        "count": 1587,
+                        "max": 0,
+                        "p99": 0,
+                        "mean": 0
+                      },
+                      "hands": {
+                        "count": 1202,
+                        "max": 0,
+                        "p99": 0,
+                        "mean": 0
+                      }
+                    },
+                    "webbing": {
+                      "all": {
+                        "count": 71012,
+                        "max": 0.010477840236168469,
+                        "p99": 0.002965121117428725,
+                        "mean": 0.00033907681222847025
+                      },
+                      "body": {
+                        "count": 59856,
+                        "max": 0.010477840236168469,
+                        "p99": 0.0030692167087031093,
+                        "mean": 0.00040227416783560765
+                      },
+                      "feet": {
+                        "count": 6348,
+                        "max": 0,
+                        "p99": 0,
+                        "mean": 0
+                      },
+                      "hands": {
+                        "count": 4808,
+                        "max": 0,
+                        "p99": 0,
+                        "mean": 0
+                      }
+                    },
+                    "shortcuts": {
+                      "holes": 21737,
+                      "interiors": 10147,
+                      "webbing": 40588,
+                      "enabled": true
+                    }
+                  },
+                  {
+                    "pose": "Wave@0.33",
+                    "holes": {
+                      "all": {
+                        "count": 29382,
+                        "max": 0.009126896649857176,
+                        "p99": 0.003484014788553473,
+                        "mean": 0.0003673768773844576
+                      },
+                      "body": {
+                        "count": 20690,
+                        "max": 0.009126896649857176,
+                        "p99": 0.0036993646064322344,
+                        "mean": 0.0005217142296428291
+                      },
+                      "locked": {
+                        "count": 8692,
+                        "max": 0,
+                        "p99": 0,
+                        "mean": 0
+                      }
+                    },
+                    "interiors": {
+                      "all": {
+                        "count": 27875,
+                        "max": 0.006552770851556682,
+                        "p99": 0.002825434149618725,
+                        "mean": 0.0005078093331076076
+                      },
+                      "body": {
+                        "count": 25086,
+                        "max": 0.006552770851556682,
+                        "p99": 0.0029132769059136703,
+                        "mean": 0.0005642663302389605
+                      },
+                      "feet": {
+                        "count": 1587,
+                        "max": 0,
+                        "p99": 0,
+                        "mean": 0
+                      },
+                      "hands": {
+                        "count": 1202,
+                        "max": 0,
+                        "p99": 0,
+                        "mean": 0
+                      }
+                    },
+                    "webbing": {
+                      "all": {
+                        "count": 71012,
+                        "max": 0.01268756605050375,
+                        "p99": 0.00289314671354301,
+                        "mean": 0.00033638825218618927
+                      },
+                      "body": {
+                        "count": 59856,
+                        "max": 0.01268756605050375,
+                        "p99": 0.0029804953953582168,
+                        "mean": 0.00039908451223345483
+                      },
+                      "feet": {
+                        "count": 6348,
+                        "max": 0,
+                        "p99": 0,
+                        "mean": 0
+                      },
+                      "hands": {
+                        "count": 4808,
+                        "max": 0,
+                        "p99": 0,
+                        "mean": 0
+                      }
+                    },
+                    "shortcuts": {
+                      "holes": 21737,
+                      "interiors": 10147,
+                      "webbing": 40588,
+                      "enabled": true
+                    }
+                  },
+                  {
+                    "pose": "Wave@0.66",
+                    "holes": {
+                      "all": {
+                        "count": 29382,
+                        "max": 0.00912689664985711,
+                        "p99": 0.00348401478855341,
+                        "mean": 0.0003664741814340375
+                      },
+                      "body": {
+                        "count": 20690,
+                        "max": 0.00912689664985711,
+                        "p99": 0.003686602062659805,
+                        "mean": 0.0005204323054081629
+                      },
+                      "locked": {
+                        "count": 8692,
+                        "max": 0,
+                        "p99": 0,
+                        "mean": 0
+                      }
+                    },
+                    "interiors": {
+                      "all": {
+                        "count": 27875,
+                        "max": 0.006552770851556639,
+                        "p99": 0.0028127541655682074,
+                        "mean": 0.0005064848606290672
+                      },
+                      "body": {
+                        "count": 25086,
+                        "max": 0.006552770851556639,
+                        "p99": 0.0029047735833526486,
+                        "mean": 0.0005627946061562326
+                      },
+                      "feet": {
+                        "count": 1587,
+                        "max": 0,
+                        "p99": 0,
+                        "mean": 0
+                      },
+                      "hands": {
+                        "count": 1202,
+                        "max": 0,
+                        "p99": 0,
+                        "mean": 0
+                      }
+                    },
+                    "webbing": {
+                      "all": {
+                        "count": 71012,
+                        "max": 0.012687566050503717,
+                        "p99": 0.0028815974814067283,
+                        "mean": 0.00033543480725143986
+                      },
+                      "body": {
+                        "count": 59856,
+                        "max": 0.012687566050503717,
+                        "p99": 0.002974649778560724,
+                        "mean": 0.00039795336361499677
+                      },
+                      "feet": {
+                        "count": 6348,
+                        "max": 0,
+                        "p99": 0,
+                        "mean": 0
+                      },
+                      "hands": {
+                        "count": 4808,
+                        "max": 0,
+                        "p99": 0,
+                        "mean": 0
+                      }
+                    },
+                    "shortcuts": {
+                      "holes": 21737,
+                      "interiors": 10147,
+                      "webbing": 40588,
+                      "enabled": true
+                    }
+                  }
+                ],
+                "worst": {
+                  "holes": {
+                    "all": {
+                      "max": 0.013335879566941933,
+                      "p99": 0.0038071827393184056,
+                      "mean": 0.0003828879583073564,
+                      "worstPose": "Downed@0.33"
+                    },
+                    "body": {
+                      "max": 0.013335879566941933,
+                      "p99": 0.004209182490102155,
+                      "mean": 0.0005437416138707948,
+                      "worstPose": "Downed@0.33"
+                    },
+                    "locked": {
+                      "max": 0,
+                      "p99": 0,
+                      "mean": 0,
+                      "worstPose": "rest"
+                    }
+                  },
+                  "interiors": {
+                    "all": {
+                      "max": 0.01199533087254564,
+                      "p99": 0.0033544190356120497,
+                      "mean": 0.000548042518023669,
+                      "worstPose": "Downed@0.33"
+                    },
+                    "body": {
+                      "max": 0.01199533087254564,
+                      "p99": 0.0034670113099859105,
+                      "mean": 0.0006089725420517329,
+                      "worstPose": "Downed@0.33"
+                    },
+                    "feet": {
+                      "max": 0,
+                      "p99": 0,
+                      "mean": 0,
+                      "worstPose": "rest"
+                    },
+                    "hands": {
+                      "max": 0,
+                      "p99": 0,
+                      "mean": 0,
+                      "worstPose": "rest"
+                    }
+                  },
+                  "webbing": {
+                    "all": {
+                      "max": 0.01469190351298388,
+                      "p99": 0.0032509966932699765,
+                      "mean": 0.00035568482946311434,
+                      "worstPose": "Run_Loop@0.66"
+                    },
+                    "body": {
+                      "max": 0.01469190351298388,
+                      "p99": 0.0034030205867072484,
+                      "mean": 0.0004219775980659362,
+                      "worstPose": "Run_Loop@0.66"
+                    },
+                    "feet": {
+                      "max": 0,
+                      "p99": 0,
+                      "mean": 0,
+                      "worstPose": "rest"
+                    },
+                    "hands": {
+                      "max": 0,
+                      "p99": 0,
+                      "mean": 0,
+                      "worstPose": "rest"
+                    }
+                  }
+                },
+                "gateMetres": {
+                  "p99": 0.008,
+                  "max": 0.024,
+                  "unit": "world metres, fixed per policy"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "file": {
+        "file": "neanderthal-woman/guarded-body.glb",
+        "sha256": "fabb21a67061a199d24efac0e6196a0477cba02d73eab259bb6810a70e6ecd8d",
+        "bytes": 4530988
+      },
+      "mappingFiles": [
+        {
+          "mesh": 0,
+          "primitive": 0,
+          "meaning": "candidate vertex i is served-file vertex u32le[i] of this primitive",
+          "file": "neanderthal-woman/guarded-body.m0p0.source-vertices.u32le",
+          "sha256": "048abe36a19379971ce26dcf75f2ee349bc6e6eafae00077d91a8b7d17bd6212",
+          "bytes": 86948
+        }
+      ]
+    }
+  ],
+  "implementation": "c7ee69f6a2c0fd96f159e5356ce75b8cc59389340bc56925ac83691db00b7806"
+}

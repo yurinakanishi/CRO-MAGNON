@@ -1,0 +1,525 @@
+{
+  "at": "2026-10-10T09:12:58.089Z",
+  "scope": "Terrain preparation overlaps remaining startup downloads; whole optimization unfinished",
+  "assetAdoption": "20261010-r06-a02",
+  "network": [
+    {
+      "label": "network-control-r01",
+      "packageId": "b6a45024c57a2beb872d91a9683089e958db9f749060f84cc7f155d2def9a1d2",
+      "profile": {
+        "downloadMbps": 10,
+        "uploadMbps": 5,
+        "latencyMs": 50,
+        "cpuSlowdown": 4,
+        "coldCache": true,
+        "viewport": [
+          390,
+          844
+        ],
+        "dpr": 1
+      },
+      "setupMs": 5892.300000071526,
+      "controlsObservedSinceQaTapStartMs": 38955.800000071526,
+      "appEventsSinceConfirm": {
+        "cro:title-interactive": -6518.100000023842,
+        "cro:game-module-ready": -1598.2999999523163,
+        "cro:confirm": 0,
+        "cro:cave-load-start": 13.600000023841858,
+        "cro:cave-catalog": 219,
+        "cro:cave-template": 6134.200000047684,
+        "cro:cave-images": 12294.799999952316,
+        "cro:cave-playable": 13354.700000047684,
+        "cro:world-start": 13356.100000023842,
+        "cro:world-critical-loaded": 30800.399999976158,
+        "cro:world-build-start": 30800.5,
+        "cro:world-build-end": 33025.60000002384,
+        "cro:world-fit": 33027.10000002384,
+        "cro:world-prepare-start": 33132.60000002384,
+        "cro:world-ready": 35532.60000002384,
+        "cro:proceed": 35638.299999952316,
+        "cro:status": 36377.299999952316,
+        "cro:socket-open": 36444.799999952316,
+        "cro:welcome": 36531.200000047684,
+        "cro:first-state": 36600.299999952316,
+        "cro:arrival-ready": 36770.89999997616,
+        "cro:controls": 36783.200000047684,
+        "cro:first-move-sent": 39072.5,
+        "cro:first-move-confirmed": 39913
+      },
+      "browserCompletedBodyBytes": 39936279,
+      "firstMovement": {
+        "start": {
+          "x": 48,
+          "z": 57
+        },
+        "end": {
+          "x": 52.9755592554206,
+          "z": 58.43074358688171
+        },
+        "distance": 5.177182352941098
+      }
+    },
+    {
+      "label": "network-candidate-r01",
+      "packageId": "ebdfc96c3e12fad435cd755e2c3457807bb6825f2189dbe2e59f89ef782bff92",
+      "profile": {
+        "downloadMbps": 10,
+        "uploadMbps": 5,
+        "latencyMs": 50,
+        "cpuSlowdown": 4,
+        "coldCache": true,
+        "viewport": [
+          390,
+          844
+        ],
+        "dpr": 1
+      },
+      "setupMs": 5814.799999952316,
+      "controlsObservedSinceQaTapStartMs": 37980.700000047684,
+      "appEventsSinceConfirm": {
+        "cro:title-interactive": -6431,
+        "cro:game-module-ready": -1529,
+        "cro:confirm": 0,
+        "cro:cave-load-start": 11.899999976158142,
+        "cro:cave-catalog": 215.79999995231628,
+        "cro:cave-template": 6140.899999976158,
+        "cro:cave-images": 12310.799999952316,
+        "cro:cave-playable": 13375.700000047684,
+        "cro:world-start": 13377.200000047684,
+        "cro:world-terrain-start": 21564.399999976158,
+        "cro:world-terrain-end": 23526.799999952316,
+        "cro:world-critical-loaded": 31856.200000047684,
+        "cro:world-build-start": 31856.399999976158,
+        "cro:world-build-end": 32179.700000047684,
+        "cro:world-fit": 32181.399999976158,
+        "cro:world-prepare-start": 32289.799999952316,
+        "cro:world-ready": 34652.10000002384,
+        "cro:proceed": 34746.5,
+        "cro:status": 35416.60000002384,
+        "cro:socket-open": 35484.700000047684,
+        "cro:welcome": 35571.799999952316,
+        "cro:first-state": 35642.299999952316,
+        "cro:arrival-ready": 35791.799999952316,
+        "cro:controls": 36429.60000002384,
+        "cro:first-move-sent": 38012.700000047684,
+        "cro:first-move-confirmed": 39107.60000002384
+      },
+      "browserCompletedBodyBytes": 39396498,
+      "firstMovement": {
+        "start": {
+          "x": 48,
+          "z": 57
+        },
+        "end": {
+          "x": 53.53002040411842,
+          "z": 58.59018128864558
+        },
+        "distance": 5.7541117647057005
+      }
+    },
+    {
+      "label": "network-candidate-r02",
+      "packageId": "ebdfc96c3e12fad435cd755e2c3457807bb6825f2189dbe2e59f89ef782bff92",
+      "profile": {
+        "downloadMbps": 10,
+        "uploadMbps": 5,
+        "latencyMs": 50,
+        "cpuSlowdown": 4,
+        "coldCache": true,
+        "viewport": [
+          390,
+          844
+        ],
+        "dpr": 1
+      },
+      "setupMs": 5753.799999952316,
+      "controlsObservedSinceQaTapStartMs": 37539.89999997616,
+      "appEventsSinceConfirm": {
+        "cro:title-interactive": -6446.399999976158,
+        "cro:game-module-ready": -1553.8999999761581,
+        "cro:confirm": 0,
+        "cro:cave-load-start": 11.799999952316284,
+        "cro:cave-catalog": 215,
+        "cro:cave-template": 6142.5,
+        "cro:cave-images": 12301.899999976158,
+        "cro:cave-playable": 13353.199999928474,
+        "cro:world-start": 13354.299999952316,
+        "cro:world-terrain-start": 21281.799999952316,
+        "cro:world-terrain-end": 23228,
+        "cro:world-critical-loaded": 31625.100000023842,
+        "cro:world-build-start": 31625.100000023842,
+        "cro:world-build-end": 31958.199999928474,
+        "cro:world-fit": 31959.399999976158,
+        "cro:world-prepare-start": 32056.799999952316,
+        "cro:world-ready": 34392.89999997616,
+        "cro:proceed": 34492.799999952316,
+        "cro:status": 35143.10000002384,
+        "cro:socket-open": 35203.39999997616,
+        "cro:welcome": 35265.10000002384,
+        "cro:first-state": 35341.60000002384,
+        "cro:arrival-ready": 35526.10000002384,
+        "cro:controls": 36183.299999952316,
+        "cro:first-move-sent": 37806.199999928474,
+        "cro:first-move-confirmed": 38631
+      },
+      "browserCompletedBodyBytes": 39538727,
+      "firstMovement": {
+        "start": {
+          "x": 48,
+          "z": 57
+        },
+        "end": {
+          "x": 53.194425498327654,
+          "z": 58.49367952178852
+        },
+        "distance": 5.40491764705873
+      }
+    },
+    {
+      "label": "network-control-r02",
+      "packageId": "b6a45024c57a2beb872d91a9683089e958db9f749060f84cc7f155d2def9a1d2",
+      "profile": {
+        "downloadMbps": 10,
+        "uploadMbps": 5,
+        "latencyMs": 50,
+        "cpuSlowdown": 4,
+        "coldCache": true,
+        "viewport": [
+          390,
+          844
+        ],
+        "dpr": 1
+      },
+      "setupMs": 5836.200000047684,
+      "controlsObservedSinceQaTapStartMs": 38847,
+      "appEventsSinceConfirm": {
+        "cro:title-interactive": -6438.099999904633,
+        "cro:game-module-ready": -1513.5,
+        "cro:confirm": 0,
+        "cro:cave-load-start": 12.600000023841858,
+        "cro:cave-catalog": 218,
+        "cro:cave-template": 6125,
+        "cro:cave-images": 12304.400000095367,
+        "cro:cave-playable": 13408.100000023842,
+        "cro:world-start": 13409.400000095367,
+        "cro:world-critical-loaded": 30874.700000047684,
+        "cro:world-build-start": 30874.900000095367,
+        "cro:world-build-end": 33086.60000002384,
+        "cro:world-fit": 33087.90000009537,
+        "cro:world-prepare-start": 33182.90000009537,
+        "cro:world-ready": 35647.40000009537,
+        "cro:proceed": 35760.60000002384,
+        "cro:status": 36443.10000002384,
+        "cro:socket-open": 36504.700000047684,
+        "cro:welcome": 36600.200000047684,
+        "cro:first-state": 36685.10000002384,
+        "cro:arrival-ready": 36862.300000071526,
+        "cro:controls": 36875.60000002384,
+        "cro:first-move-sent": 39404.5,
+        "cro:first-move-confirmed": 40407.90000009537
+      },
+      "browserCompletedBodyBytes": 39538441,
+      "firstMovement": {
+        "start": {
+          "x": 48,
+          "z": 57
+        },
+        "end": {
+          "x": 53.102015306877995,
+          "z": 58.46710657149453
+        },
+        "distance": 5.308762745097939
+      }
+    },
+    {
+      "label": "start-move-gather-r01",
+      "packageId": "ebdfc96c3e12fad435cd755e2c3457807bb6825f2189dbe2e59f89ef782bff92",
+      "profile": {
+        "downloadMbps": 10,
+        "uploadMbps": 5,
+        "latencyMs": 50,
+        "cpuSlowdown": 4,
+        "coldCache": true,
+        "viewport": [
+          390,
+          844
+        ],
+        "dpr": 1
+      },
+      "setupMs": 6053.200000047684,
+      "controlsObservedSinceQaTapStartMs": 37537,
+      "appEventsSinceConfirm": {
+        "cro:title-interactive": -6790.5,
+        "cro:game-module-ready": -1703,
+        "cro:confirm": 0,
+        "cro:cave-load-start": 11.5,
+        "cro:cave-catalog": 227,
+        "cro:cave-template": 6149.799999952316,
+        "cro:cave-images": 12311.600000023842,
+        "cro:cave-playable": 13370.399999976158,
+        "cro:world-start": 13371.600000023842,
+        "cro:world-terrain-start": 21322.600000023842,
+        "cro:world-terrain-end": 23277.199999928474,
+        "cro:world-critical-loaded": 31662.699999928474,
+        "cro:world-build-start": 31662.899999976158,
+        "cro:world-build-end": 31996.799999952316,
+        "cro:world-fit": 31998.100000023842,
+        "cro:world-prepare-start": 32100.199999928474,
+        "cro:world-ready": 34387.10000002384,
+        "cro:proceed": 34476.89999997616,
+        "cro:status": 35154.60000002384,
+        "cro:socket-open": 35216.799999952316,
+        "cro:welcome": 35276.39999997616,
+        "cro:first-state": 35336.799999952316,
+        "cro:arrival-ready": 35472.5,
+        "cro:controls": 35484.199999928474,
+        "cro:first-move-sent": 37675.799999952316,
+        "cro:first-move-confirmed": 38597.199999928474,
+        "cro:first-gather-sent": 42178.60000002384,
+        "cro:first-gather-confirmed": 43770.5
+      },
+      "browserCompletedBodyBytes": 39396498,
+      "firstMovement": {
+        "start": {
+          "x": 48,
+          "z": 57
+        },
+        "end": {
+          "x": 53.04851466972289,
+          "z": 58.45172223185062
+        },
+        "distance": 5.253094117646911
+      },
+      "firstGather": {
+        "target": {
+          "id": "wood-1",
+          "x": 56,
+          "z": 62
+        },
+        "pathSamples": [
+          {
+            "x": 53.04851466972289,
+            "z": 58.45172223185062
+          },
+          {
+            "x": 52.92357470435105,
+            "z": 59.29449395267816
+          },
+          {
+            "x": 53.09936090395751,
+            "z": 59.476354230525914
+          },
+          {
+            "x": 53.23311339930812,
+            "z": 59.59317184546174
+          },
+          {
+            "x": 53.36461476493182,
+            "z": 59.70756818018633
+          },
+          {
+            "x": 53.49115739549328,
+            "z": 59.81764340663497
+          },
+          {
+            "x": 53.5796545295341,
+            "z": 59.894624069487286
+          },
+          {
+            "x": 53.70537008443322,
+            "z": 60.0039797774644
+          },
+          {
+            "x": 53.79221306643589,
+            "z": 60.07952154942228
+          },
+          {
+            "x": 53.87657482038135,
+            "z": 60.152904985038504
+          },
+          {
+            "x": 54.00311745147117,
+            "z": 60.26298010332851
+          }
+        ],
+        "gatheredBefore": 0,
+        "gatheredAfter": 1,
+        "woodBefore": 0,
+        "woodAfter": 1,
+        "noServerStateEdits": true
+      },
+      "gatherObservedSinceQaTapStartMs": 44137.90000009537
+    }
+  ],
+  "native": [
+    {
+      "engine": "chrome",
+      "packageId": "ebdfc96c3e12fad435cd755e2c3457807bb6825f2189dbe2e59f89ef782bff92",
+      "checks": 11,
+      "contextCycles": 3,
+      "maximumActualCacheBodyAndIndexBytes": 65286164
+    },
+    {
+      "engine": "webkit",
+      "packageId": "ebdfc96c3e12fad435cd755e2c3457807bb6825f2189dbe2e59f89ef782bff92",
+      "checks": 11,
+      "contextCycles": 3,
+      "maximumActualCacheBodyAndIndexBytes": 67082338
+    }
+  ],
+  "limitations": [
+    "Windows Chrome/WebKit only; not physical Android/iPhone/Safari.",
+    "5 seconds and initial 4 MB are not achieved. r08 does not reduce mandatory asset bytes.",
+    "Completed network bytes can include optional requests after the first normal draw; not the exact mandatory minimum.",
+    "Current r08 steady-state CPU/GPU performance was not remeasured; r07 measurements remain separately recorded.",
+    "Precision candidates remain output-only. No publication, fleet distribution, commit/push, Claude or paid API."
+  ],
+  "packages": [
+    {
+      "profile": "local",
+      "buildId": "ebdfc96c3e12fad435cd755e2c3457807bb6825f2189dbe2e59f89ef782bff92",
+      "fileHashesVerified": 695,
+      "workerFiles": 0,
+      "listedBytes": 413664772,
+      "actualPublicFiles": 353,
+      "adoptedCopies": 12,
+      "adoptedModelRecords": 64,
+      "immutableModelCache": null,
+      "supervisorCreditsIncluded": true,
+      "retainedQrFiles": [
+        "title/qr-nukonuko.png",
+        "title/qr-otani.png",
+        "title/qr-r524.png",
+        "title/qr-rimo.png",
+        "title/qr-ryuichi.png",
+        "title/qr-urata.png",
+        "title/qr-yuri.png"
+      ],
+      "qrLimitation": "Offline packages preserve legacy source files; no displayed/requested QR requires independent browser verification."
+    },
+    {
+      "profile": "exhibition",
+      "buildId": "bc887b7b2061369cbb906588fb7cd3552b7e1a248b655423aa070f09c82879e1",
+      "fileHashesVerified": 700,
+      "workerFiles": 0,
+      "listedBytes": 413768523,
+      "actualPublicFiles": 352,
+      "adoptedCopies": 12,
+      "adoptedModelRecords": 64,
+      "immutableModelCache": null,
+      "supervisorCreditsIncluded": true,
+      "retainedQrFiles": [
+        "title/qr-nukonuko.png",
+        "title/qr-otani.png",
+        "title/qr-r524.png",
+        "title/qr-rimo.png",
+        "title/qr-ryuichi.png",
+        "title/qr-urata.png",
+        "title/qr-yuri.png"
+      ],
+      "qrLimitation": "Offline packages preserve legacy source files; no displayed/requested QR requires independent browser verification."
+    },
+    {
+      "profile": "mmo",
+      "buildId": "dab98d986c7e4720d500300772c3ff6b15c2dc0a46167b90be9a9acfb4c2e50d",
+      "fileHashesVerified": 569,
+      "workerFiles": 132,
+      "listedBytes": 193573584,
+      "actualPublicFiles": 569,
+      "adoptedCopies": 12,
+      "adoptedModelRecords": 64,
+      "immutableModelCache": false,
+      "supervisorCreditsIncluded": true,
+      "retainedQrFiles": [],
+      "qrLimitation": "Offline packages preserve legacy source files; no displayed/requested QR requires independent browser verification."
+    }
+  ],
+  "packageBrowserChecks": [
+    "local: actual package, supervisors/no QR, gallery, adopted actor/murals, portrait touch movement/stop",
+    "exhibition: actual package, supervisors/no QR, direct exhibition entry, adopted actor/murals, portrait touch movement/stop",
+    "mmo: actual package, supervisors/no QR, gallery, adopted actor/murals, portrait touch movement/stop"
+  ],
+  "tests": {
+    "passed": 1384,
+    "failed": 0,
+    "optionalBenchmarksSkipped": 2,
+    "syntaxFiles": 589,
+    "typesStrictArchitectureFormattingPassed": true,
+    "earlierSandboxRun": "r01 contained loopback EACCES and temporary file/junction permission failures; retained raw output, r02 ran the same tests with native access."
+  },
+  "preservation": {
+    "at": "2026-10-10T09:08:59.674Z",
+    "protectedFiles": 985,
+    "r06PlanSha256": "db0c29cdc80a6cc9ce45080ccd7b6700f61cf5ccad9055d03c920b9a3b6d60bb",
+    "compiledSourceFiles": 291,
+    "failures": [],
+    "passed": true
+  },
+  "safety": {
+    "identical": true,
+    "files": 695,
+    "endpoints": 9,
+    "existing8787Pid": 2984
+  },
+  "shading": {
+    "status": "Output-only native comparison, not adopted or packaged. Full game/material acceptance and bounded-precision adoption verification still required.",
+    "records": [
+      {
+        "engine": "chrome",
+        "key": "cro-magnon-woman",
+        "clips": 10,
+        "maxPixelChannel": 3,
+        "maxMeanChannelError": 0.004129256965944272
+      },
+      {
+        "engine": "chrome",
+        "key": "hide-tent",
+        "clips": 0,
+        "maxPixelChannel": 1,
+        "maxMeanChannelError": 0.0033107585139318884
+      },
+      {
+        "engine": "chrome",
+        "key": "camp-cave",
+        "clips": 0,
+        "maxPixelChannel": 2,
+        "maxMeanChannelError": 0.0017124613003095975
+      },
+      {
+        "engine": "chrome",
+        "key": "valley-pine",
+        "clips": 0,
+        "maxPixelChannel": 9,
+        "maxMeanChannelError": 0.0010874613003095976
+      },
+      {
+        "engine": "webkit",
+        "key": "cro-magnon-woman",
+        "clips": 10,
+        "maxPixelChannel": 3,
+        "maxMeanChannelError": 0.00411764705882353
+      },
+      {
+        "engine": "webkit",
+        "key": "hide-tent",
+        "clips": 0,
+        "maxPixelChannel": 2,
+        "maxMeanChannelError": 0.003424922600619195
+      },
+      {
+        "engine": "webkit",
+        "key": "camp-cave",
+        "clips": 0,
+        "maxPixelChannel": 2,
+        "maxMeanChannelError": 0.0015112229102167182
+      },
+      {
+        "engine": "webkit",
+        "key": "valley-pine",
+        "clips": 0,
+        "maxPixelChannel": 9,
+        "maxMeanChannelError": 0.0010893962848297213
+      }
+    ]
+  }
+}

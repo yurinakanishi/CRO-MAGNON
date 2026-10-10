@@ -32,6 +32,7 @@
 
 | 文書 | 題名 |
 | --- | --- |
+| [guarded-asset-adoption.md](history/guarded-asset-adoption.md) | 承認したローポリ本体だけを採用する検証・履歴保持（2026-10-10） |
 | [BARTER_PLAN.md](history/BARTER_PLAN.md) | 集い場での物々交換 |
 | [CARRY_SUPPORT_PLAN.md](history/CARRY_SUPPORT_PLAN.md) | 肩乗り中の支えと対象表示（2026-09-09） |
 | [CASTLE_STAIRS_FIX.md](history/CASTLE_STAIRS_FIX.md) | 中央階段の上がり口の移動 |
@@ -131,6 +132,10 @@
 | [performance-geometry-2026-09-21.md](performance-geometry-2026-09-21.md) | 敵・人物・野営地の距離LODと簡易影（2026-09-21） |
 | [performance-investigation-2026-09-19.md](performance-investigation-2026-09-19.md) | 2026-09-19 カクつきの原因調査と改善 |
 | [performance.md](performance.md) | 描画負荷の改善 |
+| [optimization-audit-2026-10-09.md](optimization-audit-2026-10-09.md) | 軽量化とスマホ対応の初期監査と変更前測定 |
+| [optimization-codex-2026-10-10.md](optimization-codex-2026-10-10.md) | Codexが引き継いだ読込・描画改善、実パッケージ検証、未達と実機の限界 |
+| [optimization-startup-2026-10-10.md](optimization-startup-2026-10-10.md) | r08の初期読込修正、実タッチの開始→採集、5秒未達と残る素材量 |
+| [optimization-assets-lowpoly-2026-10-10.md](optimization-assets-lowpoly-2026-10-10.md) | Opus 5.5 Highによる素材軽量化、候補の独立検査と不採用・修正記録 |
 | [pet-on-start-2026-10-03.md](pet-on-start-2026-10-03.md) | 撫で始めた時点でなつく |
 | [rimo-cave-mural-2026-10-02.md](rimo-cave-mural-2026-10-02.md) | りもねこの壁画を524の反対側へ復活（2026-10-02） |
 | [rimo-neko-c2-adoption-2026-10-02.md](rimo-neko-c2-adoption-2026-10-02.md) | りもねこ：C2表面01をゲームへ採用 |
@@ -140,6 +145,7 @@
 | [shape-bots-2026-10-01.md](shape-bots-2026-10-01.md) | 追加画像の4種類のbot |
 | [single-hand-controls-2026-10-05.md](single-hand-controls-2026-10-05.md) | 右手／左手だけで遊ぶ（2026-10-05） |
 | [threejs_upper_body_motion_codex_prompt.md](threejs_upper_body_motion_codex_prompt.md) | Three.js製MMOに「上半身だけのカメラ操作」を追加する |
+| [contributors-cave-visit-2026-10-09.md](contributors-cave-visit-2026-10-09.md) | 紹介ダイアログの壁画画像・注釈を撤去し、洞窟へ直接ワープ |
 | [title-mural-2026-10-07.md](title-mural-2026-10-07.md) | ホーム画面を洞窟の壁画中心に（MMO）／展示はQRクレジットを維持 |
 | [touch-portrait-2026-10-06.md](touch-portrait-2026-10-06.md) | スマホ縦持ちのタッチ操作（2026-10-06） |
 | [trellis-update-2026-09-27.md](trellis-update-2026-09-27.md) | TRELLIS実行環境の更新 — 2026-09-27 |

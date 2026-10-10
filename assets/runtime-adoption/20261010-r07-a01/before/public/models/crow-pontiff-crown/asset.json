@@ -1,0 +1,64 @@
+{
+  "modelKey": "crow-pontiff-crown",
+  "name": "白羽教皇の冠",
+  "kind": "prop",
+  "candidate": 2,
+  "revision": "c2-m01",
+  "status": "remake-candidate-2-integrated",
+  "url": "/models/crow-pontiff-crown/model-c2.opt-2d08c7f7cbcd36ae.glb",
+  "sha256": "2d08c7f7cbcd36ae4a798ab20643c3ed78a5d073cf5c83b02823acae56b4d8c5",
+  "bytes": 813380,
+  "triangles": 2929,
+  "upAxis": "Y",
+  "forwardAxis": "+Z",
+  "heightMetres": 0.3886,
+  "widthMetres": 0.4495,
+  "placement": {
+    "pivot": "ground-centred",
+    "min": [
+      -0.22480157017707825,
+      0,
+      -0.2240283489227295
+    ],
+    "max": [
+      0.2246675044298172,
+      0.38863369822502136,
+      0.22305074334144592
+    ],
+    "attachment": "crow rig bone (src/crow-faction-visuals.ts CROW_RANK_PARTS)"
+  },
+  "clips": [],
+  "lods": [],
+  "notes": [
+    "Replaces the code-built primitive CrowPontiffHalo/Spire1-7 (torus + seven cones). Codex image_gen reference -> TRELLIS-2 1024 -> meshopt 2929 tris -> xatlas -> albedo + baked normal. Ground-centred pivot, +Y up."
+  ],
+  "onDemand": true,
+  "replaces": "code-built primitives: CrowPontiffHalo/Spire1-7 (torus + seven cones)",
+  "provenance": {
+    "provider": "Claude Code (Opus 5.5)",
+    "claudeUsed": true,
+    "referenceGenerator": "Codex CLI built-in image_gen (gpt-5.6-sol, medium)",
+    "referenceImage": "C:/Users/yurin/Desktop/projects/CRO-MAGNON/output/model-generation/models/crow-pontiff-crown/source/original/candidate2-ref-a.png",
+    "referenceSha256": "0c1894c79f6c4d0d2dccb4e107e4a72462668e146dcc53b44be14b1f7af8801d",
+    "reconstruction": "Local TRELLIS-2 v0.8.1, res 1024, tex 1024, seed recorded in dense JSON",
+    "denseFile": "C:/Users/yurin/Desktop/projects/CRO-MAGNON/output/model-generation/models/crow-pontiff-crown/work/candidate-02/trellis/dense-ref2a-res1024-tex1024-seed0042.glb",
+    "denseSha256": "9f82ae137fdd8852d38b759af542388cd5a3bd79cdf8f86731197a0ecad152bb",
+    "processReport": "output/model-generation/models/crow-pontiff-crown/work/candidate-02/low-poly/m01/process-report.json",
+    "pipeline": "scripts/remake/ (trellis_queue.py, meshopt_reduce.mjs, xatlas_unwrap.py, remake_process.py); docs/asset-remake/PLAN.md",
+    "previousDelivery": null,
+    "visualReview": "assets/asset-remake/reviews/crow-pontiff-crown.json"
+  },
+  "runtimeOptimization": {
+    "adoption": "20261010-r06-a02",
+    "candidateRevision": "assets/optimized-runtime/20261009-r04",
+    "selection": "ordinary-compressed",
+    "original": {
+      "url": "/models/crow-pontiff-crown/model-c2.glb",
+      "sha256": "2c229f2d05ee8cd15532553b8f0497dea6ed89e6796448c11ad757788184a388",
+      "bytes": 866568,
+      "triangles": 2929,
+      "lods": []
+    },
+    "adoptedBy": "20261009-r04-a01"
+  }
+}

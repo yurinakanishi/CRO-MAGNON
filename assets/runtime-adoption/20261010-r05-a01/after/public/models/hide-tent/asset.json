@@ -1,0 +1,103 @@
+{
+  "modelKey": "hide-tent",
+  "name": "皮のテント",
+  "kind": "static",
+  "candidate": 2,
+  "status": "remake-candidate-2-integrated",
+  "url": "/models/hide-tent/model-c2.opt-b5c28634111da93e.glb",
+  "sha256": "b5c28634111da93eeda88f8713beb3d9e1b500ab0285a0f9c4cf6d1dba458bdf",
+  "bytes": 1781652,
+  "triangles": 17991,
+  "upAxis": "Y",
+  "forwardAxis": "+Z",
+  "heightMetres": 3.1749,
+  "widthMetres": null,
+  "placement": {
+    "pivot": "ground-centred"
+  },
+  "clips": [],
+  "notes": [
+    "2026-10-07 remake Candidate 2: new Codex reference (patchwork tan/brown hides, sinew stitching, fur ridge, hem stones), TRELLIS-2 1024/tex1024 seed 42, 17,991-triangle reduction with a 2048 tangent-space normal map baked from the 284k-triangle dense surface, 2048 albedo and 1024 PBR roughness (WebP). Previous Candidate 1 files are retained.",
+    "Medium LOD from the same dense surface (8,539 triangles; seam-preserving collapse stalls there) shares the identical albedo image and omits the normal map.",
+    "r02: uniformly scaled to 3.176 m (C1-equivalent footprint: the remade hide skirt is wider, so the collision box stays within C1); normal bake with miss fill and back-face flip."
+  ],
+  "provenance": {
+    "provider": "Claude Code (Opus 5.5)",
+    "claudeUsed": true,
+    "referenceGenerator": "Codex CLI built-in image_gen (gpt-5.6-sol, medium), earlier approved reference attached for identity",
+    "referenceImage": "C:/Users/yurin/Desktop/projects/CRO-MAGNON/output/model-generation/models/hide-tent/source/original/candidate2-ref-b.png",
+    "referenceSha256": "981b823d3184df7f16735c2661455e5ba9a23c2ba43436792559ce3bb992dd4b",
+    "reconstruction": "Local TRELLIS-2 v0.8.1, res 1024, tex 1024, seed recorded in dense JSON",
+    "denseFile": "C:/Users/yurin/Desktop/projects/CRO-MAGNON/output/model-generation/models/hide-tent/work/candidate-02/trellis/dense-ref2b-res1024-tex1024-seed0042.glb",
+    "denseSha256": "51f6c5c39797b7e68b9c381b454db63f72918d7dcf920b153aa110e471cfa853",
+    "processReport": "output/model-generation/models/hide-tent/work/candidate-02/low-poly/r02/process-report.json",
+    "rigReport": null,
+    "pipeline": "scripts/remake/ (trellis_queue.py, remake_process.py, rig_*.py); docs/asset-remake/PLAN.md",
+    "previousDelivery": {
+      "url": "/models/hide-tent/model.glb",
+      "sha256": "7c7aef410b4f8eee268cd32f75faa65f0b7ea3f2d8e4cf53b6d810e5a1e20de7",
+      "triangles": 24603,
+      "bytes": 3426740,
+      "candidate": 1,
+      "revision": null
+    },
+    "previousProvenance": {
+      "provider": "Codex",
+      "claudeUsed": false,
+      "referenceGenerator": "Built-in imagegen",
+      "referenceImage": "output/model-generation/models/hide-tent/source/original/reference-v1.png",
+      "referenceSha256": "c862d2659c559241b0ad5b3c3651e6f08706b5bb7fd6d4bbb01e6d0c9d1e1b75",
+      "reconstruction": "Local TRELLIS-2; settings and dense SHA in model workspace",
+      "candidateFile": "output/model-generation/models/hide-tent/work/low-poly/candidate-01/candidate.glb",
+      "visualReview": "output/model-generation/models/hide-tent/qa/adoption-review.json"
+    },
+    "visualReview": "assets/asset-remake/reviews/hide-tent.json"
+  },
+  "lods": [
+    {
+      "url": "/models/hide-tent/lod-c2.opt-9290eb05f57d052d.glb",
+      "sha256": "9290eb05f57d052d586534cfd6242f17a4183f53a85556ad91aed09ed1f21e40",
+      "bytes": 756756,
+      "triangles": 8550,
+      "distanceMetres": 14,
+      "purpose": "medium-distance-lod"
+    }
+  ],
+  "revision": "c2-r02",
+  "runtimeOptimization": {
+    "adoption": "20261010-r05-a01",
+    "candidateRevision": "assets/optimized-runtime/20261010-r05",
+    "selection": "ordinary-compressed",
+    "original": {
+      "url": "/models/hide-tent/model-c2.glb",
+      "sha256": "e3fa5084524b3fd141f8aa05838e9da2f612f2987d35f04c4743209c4bc29120",
+      "bytes": 4508752,
+      "triangles": 17991,
+      "lods": [
+        {
+          "url": "/models/hide-tent/lod-c2.glb",
+          "sha256": "5932dd616ad5c13d52683c689a64c17f5071104b1477bf6fd5d7334341225e69",
+          "bytes": 1786616,
+          "triangles": 8550,
+          "distanceMetres": 14,
+          "purpose": "medium-distance-lod"
+        }
+      ]
+    },
+    "supersedes": {
+      "adoption": "20261009-r04-a01",
+      "candidateRevision": "assets/optimized-runtime/20261009-r04",
+      "url": "/models/hide-tent/model-c2.opt-4d0c634ae45b31db.glb",
+      "sha256": "4d0c634ae45b31db097471a8469dbb9f9f9a975fae3466a308a5c446775a91ea",
+      "bytes": 2223204,
+      "lods": [
+        {
+          "url": "/models/hide-tent/lod-c2.opt-9290eb05f57d052d.glb",
+          "sha256": "9290eb05f57d052d586534cfd6242f17a4183f53a85556ad91aed09ed1f21e40",
+          "bytes": 756756
+        }
+      ]
+    },
+    "adoptedBy": "20261010-r05-a01"
+  }
+}

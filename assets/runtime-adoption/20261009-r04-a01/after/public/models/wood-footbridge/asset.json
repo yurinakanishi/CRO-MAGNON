@@ -1,0 +1,93 @@
+{
+  "modelKey": "wood-footbridge",
+  "name": "木造の橋",
+  "kind": "bridge",
+  "candidate": 2,
+  "status": "remake-candidate-2-integrated",
+  "url": "/models/wood-footbridge/model-c2.opt-6ec7bca35b5e07b9.glb",
+  "sha256": "6ec7bca35b5e07b9863a73d9ece6083fea4243636750da7917e65a568773f413",
+  "bytes": 811604,
+  "triangles": 8987,
+  "upAxis": "Y",
+  "forwardAxis": "+Z",
+  "heightMetres": 1.5245,
+  "widthMetres": 11,
+  "placement": {
+    "pivot": "ground-centred",
+    "deckHeightMetres": 0.6571,
+    "walkBounds": {
+      "minX": -5.121252209981283,
+      "maxX": 4.988082171758016,
+      "minZ": -1.2622603230953215,
+      "maxZ": 1.3524676167488099
+    }
+  },
+  "clips": [],
+  "notes": [
+    "2026-10-07 remake Candidate 2: new reference (weathered log footbridge: split-plank deck, round posts, lashed rails); scaled x1.05 so the flat deck between the rails is 2.34 m wide like C1 (2.33 m); walkBounds/BRIDGE passage unchanged, deck height re-measured by downward rays (scripts/remake/measure_bridge.py, output/asset-remake/bridge-width.py). TRELLIS-2 1024/tex1024; 8987 triangles (meshopt reduction, xatlas charts, albedo and tangent-space normal baked from the 290831-triangle dense surface; p95 surface error 6.3 mm). Candidate 1 files retained."
+  ],
+  "provenance": {
+    "provider": "Claude Code (Opus 5.5)",
+    "claudeUsed": true,
+    "referenceGenerator": "Codex CLI built-in image_gen (gpt-5.6-sol, medium), earlier approved reference attached for identity",
+    "referenceImage": "C:/Users/yurin/Desktop/projects/CRO-MAGNON/output/model-generation/models/wood-footbridge/source/original/candidate2-ref-a.png",
+    "referenceSha256": "575397b7c95e8b53cacced3acbf7a1b88e5d19484c7246da4b20fdfb643ea1e6",
+    "reconstruction": "Local TRELLIS-2 v0.8.1, res 1024, tex 1024, seed recorded in dense JSON",
+    "denseFile": "C:/Users/yurin/Desktop/projects/CRO-MAGNON/output/model-generation/models/wood-footbridge/work/candidate-02/trellis/dense-ref2a-res1024-tex1024-seed0042.glb",
+    "denseSha256": "dbdee63e1b3c79b36187c58f743a71f8421bdda44af3866d3509ef1163d1c359",
+    "processReport": "output/model-generation/models/wood-footbridge/work/candidate-02/low-poly/m02/process-report.json",
+    "rigReport": null,
+    "pipeline": "scripts/remake/ (trellis_queue.py, remake_process.py, rig_*.py); docs/asset-remake/PLAN.md",
+    "previousDelivery": {
+      "url": "/models/wood-footbridge/model.glb",
+      "sha256": "629a8ec5db3dd16b7a126b1c8ea4877a5ec0bc4037017e0a2a53ec2f63e3a369",
+      "triangles": 5876,
+      "bytes": 1821888,
+      "candidate": 1,
+      "revision": null
+    },
+    "previousProvenance": {
+      "provider": "Codex",
+      "claudeUsed": false,
+      "referenceGenerator": "Built-in imagegen",
+      "referenceImage": "output/model-generation/models/wood-footbridge/source/original/reference-v1.png",
+      "referenceSha256": "767a3b8822b0e427ca8c8e6f8def897a14aeca302e40c4406fbf583314b68465",
+      "reconstruction": "Local TRELLIS-2; settings and dense SHA in model workspace",
+      "candidateFile": "output/model-generation/models/wood-footbridge/work/low-poly/candidate-01/candidate.glb",
+      "visualReview": "output/model-generation/models/wood-footbridge/qa/adoption-review.json"
+    },
+    "visualReview": "assets/asset-remake/reviews/wood-footbridge.json"
+  },
+  "lods": [
+    {
+      "url": "/models/wood-footbridge/lod-c2.opt-59ea980f0d34210a.glb",
+      "sha256": "59ea980f0d34210a00f31053c3ca5b652bdec4c08085506b03314374461c8110",
+      "bytes": 335096,
+      "triangles": 2969,
+      "distanceMetres": 18,
+      "purpose": "medium-distance-lod"
+    }
+  ],
+  "revision": "c2-m02",
+  "runtimeOptimization": {
+    "adoption": "20261009-r04-a01",
+    "candidateRevision": "assets/optimized-runtime/20261009-r04",
+    "selection": "ordinary-compressed",
+    "original": {
+      "url": "/models/wood-footbridge/model-c2.glb",
+      "sha256": "88a56d09a717e9ae0a2b01c9c3635d69a4bf219aa0d7a0630c0ddc0609feddfe",
+      "bytes": 1814304,
+      "triangles": 8987,
+      "lods": [
+        {
+          "url": "/models/wood-footbridge/lod-c2.glb",
+          "sha256": "a901811113428ab6108241bccf0bbfc15864ee7869d9d31e8f346296e09e7576",
+          "bytes": 794156,
+          "triangles": 2969,
+          "distanceMetres": 18,
+          "purpose": "medium-distance-lod"
+        }
+      ]
+    }
+  }
+}

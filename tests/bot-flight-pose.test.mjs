@@ -83,7 +83,6 @@ function fixture() {
     camera: { position: new THREE.Vector3(50, 5, 50) },
     players: new Map([['owner', { model: new THREE.Group() }]]),
     collision: { segmentFree: () => true },
-    graphics: { tier: 'standard' },
     actorBudget: new ActorUpdateBudget(),
     worldAssets: {
       createAnimal: actor,

@@ -1,0 +1,77 @@
+{
+  "modelKey": "berry-bush",
+  "name": "ベリーの茂み",
+  "kind": "foliage",
+  "candidate": 2,
+  "status": "remake-candidate-2-integrated",
+  "url": "/models/berry-bush/model-c2.opt-11d2fb5e1a87bfca.glb",
+  "sha256": "11d2fb5e1a87bfcaac3c9a6f5c7737395830ca1e81a39d1aadf0dcaa3e636f83",
+  "bytes": 1559636,
+  "triangles": 11691,
+  "upAxis": "Y",
+  "forwardAxis": "+Z",
+  "heightMetres": 1.1933,
+  "widthMetres": null,
+  "placement": {
+    "pivot": "ground-centred"
+  },
+  "clips": [],
+  "notes": [
+    "2026-10-07 remake Candidate 2: new reference without fruit (dense glossy leaves on woody stems): the visible berries are now only the harvestable amount drawn by the game, so a picked-clean bush no longer shows baked berries; no LOD (11.7k triangles vs C1 103.6k + 12.4k LOD); xatlas charts; TRELLIS-2 1024/tex1024; 11691 triangles (meshopt reduction, fresh UVs, albedo and tangent-space normal baked from the 294359-triangle dense surface; p95 surface error 14.2 mm). Candidate 1 files retained."
+  ],
+  "provenance": {
+    "provider": "Claude Code (Opus 5.5)",
+    "claudeUsed": true,
+    "referenceGenerator": "Codex CLI built-in image_gen (gpt-5.6-sol, medium), earlier approved reference attached for identity",
+    "referenceImage": "C:/Users/yurin/Desktop/projects/CRO-MAGNON/output/model-generation/models/berry-bush/source/original/candidate2-ref-c.png",
+    "referenceSha256": "f81d5fb1db17c929bc9889b8ef8245f2cb82fc9fbfd068cd8c57df470976bb0f",
+    "reconstruction": "Local TRELLIS-2 v0.8.1, res 1024, tex 1024, seed recorded in dense JSON",
+    "denseFile": "C:/Users/yurin/Desktop/projects/CRO-MAGNON/output/model-generation/models/berry-bush/work/candidate-02/trellis/dense-ref2c-res1024-tex1024-seed0042.glb",
+    "denseSha256": "b4922a297479c0da848928da3161617a18e436fa9ad96f780ba91a7a110a84cf",
+    "processReport": "output/model-generation/models/berry-bush/work/candidate-02/low-poly/m02/process-report.json",
+    "rigReport": null,
+    "pipeline": "scripts/remake/ (trellis_queue.py, remake_process.py, rig_*.py); docs/asset-remake/PLAN.md",
+    "previousDelivery": {
+      "url": "/models/berry-bush/model.glb",
+      "sha256": "3d405ba99daa2d984810e9a2cf4418ad2008c0ee9279c0157fb68fc5a3008ee1",
+      "triangles": 103563,
+      "bytes": 9032376,
+      "candidate": 1,
+      "revision": null
+    },
+    "previousProvenance": {
+      "provider": "Codex",
+      "claudeUsed": false,
+      "referenceGenerator": "Built-in imagegen",
+      "referenceImage": "output/model-generation/models/berry-bush/source/original/reference-v1.png",
+      "referenceSha256": "4663b4c3a4e019868453f3c0edcd48aaf4a132e7152caf573f87301ea43c2e99",
+      "reconstruction": "Local TRELLIS-2; settings and dense SHA in model workspace",
+      "candidateFile": "output/model-generation/models/berry-bush/work/low-poly/candidate-02/candidate.glb",
+      "visualReview": "output/model-generation/models/berry-bush/qa/adoption-review.json"
+    },
+    "visualReview": "assets/asset-remake/reviews/berry-bush.json"
+  },
+  "lods": [],
+  "revision": "c2-m02",
+  "runtimeOptimization": {
+    "adoption": "20261010-r05-a01",
+    "candidateRevision": "assets/optimized-runtime/20261010-r05",
+    "selection": "ordinary-compressed",
+    "original": {
+      "url": "/models/berry-bush/model-c2.glb",
+      "sha256": "4b145e254ee604e1563784d08bf59b5181e70c40e617bcb0a6936bd39a710c3b",
+      "bytes": 2415948,
+      "triangles": 11691,
+      "lods": []
+    },
+    "supersedes": {
+      "adoption": "20261009-r04-a01",
+      "candidateRevision": "assets/optimized-runtime/20261009-r04",
+      "url": "/models/berry-bush/model-c2.opt-8b9da70146d6f3c7.glb",
+      "sha256": "8b9da70146d6f3c7b947467fe282be955437ea6b7b1373ca405c2be8ab1a1b7a",
+      "bytes": 2048808,
+      "lods": []
+    },
+    "adoptedBy": "20261010-r05-a01"
+  }
+}

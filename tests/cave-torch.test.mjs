@@ -17,6 +17,7 @@ import { configureActorPerformance, updateActorPerformance } from '../dist/src/p
 import { CHARACTER_MODELS } from '../dist/shared/characters.mjs';
 import { loadMotion } from '../scripts/motion-glb.mjs';
 import { deliveredModel } from './delivered-model.mjs';
+import { deliveredActor, originalPair } from './original-actor-pairs.mjs';
 import { EventEmitter } from 'node:events';
 import { createGameCore } from '../dist/application/game-core.mjs';
 
@@ -144,93 +145,108 @@ test('all nine delivered rigs hold the torch while walking and restore every bon
   }
 });
 
-test('all nine hands curl only their original left-hand surface; LOD, other actors and unequipping preserve source geometry', async () => {
-  for (const character of CHARACTER_MODELS) {
-    const asset = JSON.parse(
-      await readFile(
-        new URL(`../public/models/${character.key}/asset.json`, import.meta.url),
-        'utf8',
-      ),
+/** Fingers of `key` curl only the left-hand surface of its body and of its far level (`low`,
+ * or, for a sole primary configured without one, the same body); a second actor of the model
+ * and unequipping keep the source geometry. `levels` is the record the level switch reads. */
+function assertGraspKeepsSource(key, asset, gltf, low, levels) {
+  const a = clone(gltf.scene),
+    b = clone(gltf.scene);
+  configureActorPerformance(a, low, levels);
+  configureActorPerformance(b, low, levels);
+  if (!low)
+    for (const entry of a.userData.actorDetail.meshes)
+      assert.equal(entry.low, entry.high, `${key}: no low file; far away is the same body`);
+  const source = a.userData.actorDetail.meshes.map((entry) => ({
+    high: entry.high,
+    low: entry.low,
+  }));
+  const diameter = THREE.MathUtils.clamp(asset.heightMetres * 0.021, 0.017, 0.044);
+  const first = new TorchGrasp(a, diameter),
+    second = new TorchGrasp(b, diameter);
+  let totalChanged = 0;
+  for (const [index, entry] of a.userData.actorDetail.meshes.entries()) {
+    assert.equal(
+      entry.high,
+      b.userData.actorDetail.meshes[index].high,
+      'same model shares the grip geometry',
     );
-    const gltf = await loadMotion(await deliveredModel(character.key));
-    const lod = await loadMotion(new URL(`../public${asset.lods[0].url}`, import.meta.url));
-    const a = clone(gltf.scene),
-      b = clone(gltf.scene);
-    configureActorPerformance(a, lod.scene, asset);
-    configureActorPerformance(b, lod.scene, asset);
-    const source = a.userData.actorDetail.meshes.map((entry) => ({
-      high: entry.high,
-      low: entry.low,
-    }));
-    const diameter = THREE.MathUtils.clamp(asset.heightMetres * 0.021, 0.017, 0.044);
-    const first = new TorchGrasp(a, diameter),
-      second = new TorchGrasp(b, diameter);
-    let totalChanged = 0;
-    for (const [index, entry] of a.userData.actorDetail.meshes.entries()) {
-      assert.equal(
-        entry.high,
-        b.userData.actorDetail.meshes[index].high,
-        'same model shares the grip geometry',
-      );
-      for (const level of ['high', 'low']) {
-        const g = entry[level],
-          original = source[index][level],
-          target = g.morphAttributes.position?.at(-1);
-        assert.deepEqual(g.attributes.position.array, original.attributes.position.array);
-        assert.deepEqual(g.attributes.uv.array, original.attributes.uv.array);
-        assert.deepEqual(g.attributes.skinIndex.array, original.attributes.skinIndex.array);
-        assert.deepEqual(g.attributes.skinWeight.array, original.attributes.skinWeight.array);
-        assert.deepEqual(g.index?.array, original.index?.array);
-        if (!target) {
-          assert.equal(g, original);
-          continue;
-        }
-        let changed = 0;
-        const hand = entry.mesh.skeleton.bones.findIndex((bone) => bone.name === 'HandL');
-        for (let i = 0; i < target.count; i++) {
-          const delta = new THREE.Vector3().fromBufferAttribute(target, i);
-          assert.ok(delta.toArray().every(Number.isFinite));
-          if (delta.lengthSq() < 1e-16) continue;
-          changed++;
-          assert.ok(
-            [0, 1, 2, 3].some(
-              (j) =>
-                g.attributes.skinIndex.getComponent(i, j) === hand &&
-                g.attributes.skinWeight.getComponent(i, j) > 0.01,
-            ),
-            'only left-hand vertices curl',
-          );
-          assert.ok(
-            delta.length() < asset.heightMetres * 0.2,
-            `${character.key}: bounded finger motion`,
-          );
-        }
-        totalChanged += changed;
+    for (const level of ['high', 'low']) {
+      const g = entry[level],
+        original = source[index][level],
+        target = g.morphAttributes.position?.at(-1);
+      assert.deepEqual(g.attributes.position.array, original.attributes.position.array);
+      assert.deepEqual(g.attributes.uv.array, original.attributes.uv.array);
+      assert.deepEqual(g.attributes.skinIndex.array, original.attributes.skinIndex.array);
+      assert.deepEqual(g.attributes.skinWeight.array, original.attributes.skinWeight.array);
+      assert.deepEqual(g.index?.array, original.index?.array);
+      if (!target) {
+        assert.equal(g, original);
+        continue;
       }
+      let changed = 0;
+      const hand = entry.mesh.skeleton.bones.findIndex((bone) => bone.name === 'HandL');
+      for (let i = 0; i < target.count; i++) {
+        const delta = new THREE.Vector3().fromBufferAttribute(target, i);
+        assert.ok(delta.toArray().every(Number.isFinite));
+        if (delta.lengthSq() < 1e-16) continue;
+        changed++;
+        assert.ok(
+          [0, 1, 2, 3].some(
+            (j) =>
+              g.attributes.skinIndex.getComponent(i, j) === hand &&
+              g.attributes.skinWeight.getComponent(i, j) > 0.01,
+          ),
+          'only left-hand vertices curl',
+        );
+        assert.ok(delta.length() < asset.heightMetres * 0.2, `${key}: bounded finger motion`);
+      }
+      totalChanged += changed;
     }
-    assert.ok(totalChanged > 0, `${character.key}: fingers actually curl`);
-    first.update(1);
-    updateActorPerformance(a, 50);
-    for (const entry of a.userData.actorDetail.meshes) {
-      assert.equal(entry.mesh.geometry, entry.low);
-      if (entry.mesh.morphTargetDictionary?.TorchGrasp !== undefined)
-        assert.equal(entry.mesh.morphTargetInfluences.at(-1), 1);
+  }
+  assert.ok(totalChanged > 0, `${key}: fingers actually curl`);
+  first.update(1);
+  updateActorPerformance(a, 50);
+  for (const entry of a.userData.actorDetail.meshes) {
+    assert.equal(entry.mesh.geometry, entry.low);
+    if (entry.mesh.morphTargetDictionary?.TorchGrasp !== undefined)
+      assert.equal(entry.mesh.morphTargetInfluences.at(-1), 1);
+  }
+  for (const entry of b.userData.actorDetail.meshes)
+    if (entry.mesh.morphTargetDictionary?.TorchGrasp !== undefined)
+      assert.equal(entry.mesh.morphTargetInfluences.at(-1), 0);
+  first.update(0);
+  first.dispose();
+  for (const [index, entry] of a.userData.actorDetail.meshes.entries()) {
+    assert.equal(entry.high, source[index].high);
+    assert.equal(entry.low, source[index].low);
+    assert.equal(entry.mesh.geometry, source[index].low);
+  }
+  second.update(1);
+  assert.ok(
+    b.userData.actorDetail.meshes.some((entry) => entry.mesh.morphTargetInfluences?.at(-1) === 1),
+  );
+  second.dispose();
+}
+
+test('all nine hands curl only their original left-hand surface; LOD, other actors and unequipping preserve source geometry', async () => {
+  // The original full models and far LODs, verified (original-actor-pairs.mjs).
+  for (const character of CHARACTER_MODELS) {
+    const { asset, full, lod, levels } = await originalPair(character.key, loadMotion);
+    assertGraspKeepsSource(character.key, asset, full, lod.scene, levels);
+  }
+});
+
+// What the game delivers now: after r04 a player body is a sole primary, so near and far its
+// fingers curl the same served body; no low file is invented for it.
+test('delivered hands curl the served body near and far, as many levels as the manifest lists', async (t) => {
+  for (const character of CHARACTER_MODELS) {
+    const delivery = await deliveredActor(character.key);
+    if (delivery.original) {
+      t.diagnostic(`${character.key} is delivered as its original pair, proven above`);
+      continue;
     }
-    for (const entry of b.userData.actorDetail.meshes)
-      if (entry.mesh.morphTargetDictionary?.TorchGrasp !== undefined)
-        assert.equal(entry.mesh.morphTargetInfluences.at(-1), 0);
-    first.update(0);
-    first.dispose();
-    for (const [index, entry] of a.userData.actorDetail.meshes.entries()) {
-      assert.equal(entry.high, source[index].high);
-      assert.equal(entry.low, source[index].low);
-      assert.equal(entry.mesh.geometry, source[index].low);
-    }
-    second.update(1);
-    assert.ok(
-      b.userData.actorDetail.meshes.some((entry) => entry.mesh.morphTargetInfluences?.at(-1) === 1),
-    );
-    second.dispose();
+    const { primary, lod } = await delivery.load(loadMotion);
+    assertGraspKeepsSource(character.key, delivery.asset, primary, lod?.scene, delivery.asset);
   }
 });
 

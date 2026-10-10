@@ -1,0 +1,1360 @@
+{
+  "schema": "cro-magnon/optimized-runtime-verification@1",
+  "revision": "20261010-r07",
+  "recipe": "guarded-surface@1",
+  "base": {
+    "adoption": "20261010-r06-a02",
+    "planSha256": "db0c29cdc80a6cc9ce45080ccd7b6700f61cf5ccad9055d03c920b9a3b6d60bb"
+  },
+  "scope": {
+    "complete": false,
+    "only": [
+      "berry-cluster",
+      "cockle-shell",
+      "cro-magnon-woman",
+      "crow-brute-axe",
+      "crow-pontiff-crown",
+      "crow-pontiff-crozier",
+      "crow-prelate-glaive",
+      "crow-soldier-spear",
+      "desert-fennec-mage",
+      "drying-rack",
+      "dugout-canoe",
+      "firewood-log",
+      "firewood-pile",
+      "flint-spear",
+      "giant-ape",
+      "kunoichi-katana",
+      "mammoth-meat",
+      "neanderthal-woman",
+      "obsidian-blade",
+      "obsidian-spear",
+      "orb-bot-beret",
+      "orb-bot-blue",
+      "orb-bot-green",
+      "orb-bot-orange",
+      "orb-bot-purple",
+      "orb-bot-white",
+      "rimo-neko",
+      "wooden-spear"
+    ],
+    "models": [
+      "berry-cluster",
+      "cockle-shell",
+      "cro-magnon-woman",
+      "crow-brute-axe",
+      "crow-pontiff-crown",
+      "crow-pontiff-crozier",
+      "crow-prelate-glaive",
+      "crow-soldier-spear",
+      "desert-fennec-mage",
+      "drying-rack",
+      "dugout-canoe",
+      "firewood-log",
+      "firewood-pile",
+      "flint-spear",
+      "giant-ape",
+      "kunoichi-katana",
+      "mammoth-meat",
+      "neanderthal-woman",
+      "obsidian-blade",
+      "obsidian-spear",
+      "orb-bot-beret",
+      "orb-bot-blue",
+      "orb-bot-green",
+      "orb-bot-orange",
+      "orb-bot-purple",
+      "orb-bot-white",
+      "rimo-neko",
+      "wooden-spear"
+    ]
+  },
+  "status": "passed",
+  "candidateStatus": "candidate-pending-visual-qa",
+  "verified": "local files only: base applied and current; every archived proof summary judged by the same strict policy check as at generation, one implementation and policy, disjoint keys; evidence fail closed against the source (every scene, slot, instance, delivered clip and applicable channel, every pose label and measurement, worst statistics, fixed world gate); mapping one-to-one, decoded surviving attributes exact, rig/clips/images/untouched geometry exact, identity-based topology, index digests, whole-file raw and gzip -6 budget",
+  "notVerified": [
+    "native rendering and visual acceptance",
+    "every animation frame (the proof samples poses)",
+    "in-game QA, transfer and startup time",
+    "mobile devices",
+    "the proof engine's own files once archived (their identity is the recorded digest)"
+  ],
+  "checks": [
+    {
+      "name": "the base adoption is still applied with the recorded records",
+      "status": "passed"
+    },
+    {
+      "name": "the inputs are the base's current manifests",
+      "status": "passed"
+    },
+    {
+      "name": "runtime-index.json is exactly derived from manifest.json",
+      "status": "passed"
+    },
+    {
+      "name": "every record is an unadopted candidate",
+      "status": "passed"
+    },
+    {
+      "name": "the scope is the recorded explicit list",
+      "status": "passed"
+    },
+    {
+      "name": "every archived proof summary is a complete, strict full-coverage run of the one recorded implementation, covering each scoped key exactly once",
+      "status": "passed"
+    },
+    {
+      "name": "no record outside the scope or twice",
+      "status": "passed"
+    },
+    {
+      "name": "the revision folder holds only recorded files",
+      "status": "passed"
+    }
+  ],
+  "files": [
+    {
+      "id": "model:berry-cluster",
+      "status": "passed",
+      "verification": {
+        "status": "passed",
+        "recipe": "guarded-surface@1",
+        "triangles": {
+          "source": 1172,
+          "candidate": 1036
+        },
+        "vertices": {
+          "source": 1699,
+          "candidate": 1581
+        },
+        "rawBytes": {
+          "source": 256136,
+          "candidate": 251136
+        },
+        "gzip6Bytes": {
+          "source": 248509,
+          "candidate": 244039
+        },
+        "reduced": [
+          {
+            "mesh": 0,
+            "primitive": 0,
+            "sourceVertices": 1699,
+            "candidateVertices": 1581,
+            "sourceTriangles": 1172,
+            "candidateTriangles": 1036,
+            "indexSha256": "3faf5e1f78478d27b129d8e84373c52d1da844687c7bf252eded717a3da035dd",
+            "mappingSha256": "ed9690dd4489bebd9354b82f72331e2d4d731246ebbe98738f7f0fa93f9281da"
+          }
+        ],
+        "proof": {
+          "tool": "proof-lowpoly-high-r04",
+          "implementation": "c7ee69f6a2c0fd96f159e5356ce75b8cc59389340bc56925ac83691db00b7806",
+          "variant": "guarded-body",
+          "storage": "source/meshopt",
+          "posedInstances": 1,
+          "scenes": 1
+        }
+      }
+    },
+    {
+      "id": "model:cockle-shell",
+      "status": "passed",
+      "verification": {
+        "status": "passed",
+        "recipe": "guarded-surface@1",
+        "triangles": {
+          "source": 1474,
+          "candidate": 1140
+        },
+        "vertices": {
+          "source": 1521,
+          "candidate": 1301
+        },
+        "rawBytes": {
+          "source": 228772,
+          "candidate": 219300
+        },
+        "gzip6Bytes": {
+          "source": 222271,
+          "candidate": 213385
+        },
+        "reduced": [
+          {
+            "mesh": 0,
+            "primitive": 0,
+            "sourceVertices": 1521,
+            "candidateVertices": 1301,
+            "sourceTriangles": 1474,
+            "candidateTriangles": 1140,
+            "indexSha256": "bb33c5c86d1a891b85f90e6578959b44681cec1afc72008d87ba4b73ef3cabca",
+            "mappingSha256": "c9196776d4234dde772e30871c4d3d0883d438f31f117bbd928cd9a30285c58b"
+          }
+        ],
+        "proof": {
+          "tool": "proof-lowpoly-high-r04",
+          "implementation": "c7ee69f6a2c0fd96f159e5356ce75b8cc59389340bc56925ac83691db00b7806",
+          "variant": "guarded-body",
+          "storage": "source/meshopt",
+          "posedInstances": 1,
+          "scenes": 1
+        }
+      }
+    },
+    {
+      "id": "model:cro-magnon-woman",
+      "status": "passed",
+      "verification": {
+        "status": "passed",
+        "recipe": "guarded-surface@1",
+        "triangles": {
+          "source": 82869,
+          "candidate": 72851
+        },
+        "vertices": {
+          "source": 108574,
+          "candidate": 101134
+        },
+        "rawBytes": {
+          "source": 5412384,
+          "candidate": 5023664
+        },
+        "gzip6Bytes": {
+          "source": 4829154,
+          "candidate": 4461491
+        },
+        "reduced": [
+          {
+            "mesh": 0,
+            "primitive": 0,
+            "sourceVertices": 33908,
+            "candidateVertices": 26468,
+            "sourceTriangles": 29959,
+            "candidateTriangles": 19941,
+            "indexSha256": "d269aaecd75a1318ef0c45cdb369cd07a857b4d7f41833d61ef1266914a6c3bc",
+            "mappingSha256": "d9dcffdebad4ccaf3d38e9b525312d4bf4347cf93a8feacdc1a78f18719646a6"
+          }
+        ],
+        "proof": {
+          "tool": "proof-lowpoly-high-r04",
+          "implementation": "c7ee69f6a2c0fd96f159e5356ce75b8cc59389340bc56925ac83691db00b7806",
+          "variant": "guarded-body",
+          "storage": "first-use/meshopt",
+          "posedInstances": 1,
+          "scenes": 1
+        }
+      }
+    },
+    {
+      "id": "model:crow-brute-axe",
+      "status": "passed",
+      "verification": {
+        "status": "passed",
+        "recipe": "guarded-surface@1",
+        "triangles": {
+          "source": 3457,
+          "candidate": 2941
+        },
+        "vertices": {
+          "source": 4141,
+          "candidate": 3727
+        },
+        "rawBytes": {
+          "source": 757952,
+          "candidate": 740416
+        },
+        "gzip6Bytes": {
+          "source": 742283,
+          "candidate": 726150
+        },
+        "reduced": [
+          {
+            "mesh": 0,
+            "primitive": 0,
+            "sourceVertices": 4141,
+            "candidateVertices": 3727,
+            "sourceTriangles": 3457,
+            "candidateTriangles": 2941,
+            "indexSha256": "d2fe340168486cd7c7b00e80f2ed12b6b812ced77724bf4bf65b2f49751fa9fb",
+            "mappingSha256": "e809671fd505ce88136738e48d57fe082c1fe2857229ba7d6d6dc8c183ae0f2d"
+          }
+        ],
+        "proof": {
+          "tool": "proof-lowpoly-high-r04",
+          "implementation": "c7ee69f6a2c0fd96f159e5356ce75b8cc59389340bc56925ac83691db00b7806",
+          "variant": "guarded-body",
+          "storage": "source/meshopt",
+          "posedInstances": 1,
+          "scenes": 1
+        }
+      }
+    },
+    {
+      "id": "model:crow-pontiff-crown",
+      "status": "passed",
+      "verification": {
+        "status": "passed",
+        "recipe": "guarded-surface@1",
+        "triangles": {
+          "source": 2929,
+          "candidate": 2415
+        },
+        "vertices": {
+          "source": 4242,
+          "candidate": 3771
+        },
+        "rawBytes": {
+          "source": 813380,
+          "candidate": 793608
+        },
+        "gzip6Bytes": {
+          "source": 797539,
+          "candidate": 779422
+        },
+        "reduced": [
+          {
+            "mesh": 0,
+            "primitive": 0,
+            "sourceVertices": 4242,
+            "candidateVertices": 3771,
+            "sourceTriangles": 2929,
+            "candidateTriangles": 2415,
+            "indexSha256": "1e56def9eddc9bcffefaaf98ce316845a32d196aca86e2a1ccabb147d71a9edf",
+            "mappingSha256": "0264b33d7447607a1e8f99e26834140f171696ee780e1ffcfd2dcbe891edbf5a"
+          }
+        ],
+        "proof": {
+          "tool": "proof-lowpoly-high-r04",
+          "implementation": "c7ee69f6a2c0fd96f159e5356ce75b8cc59389340bc56925ac83691db00b7806",
+          "variant": "guarded-body",
+          "storage": "source/meshopt",
+          "posedInstances": 1,
+          "scenes": 1
+        }
+      }
+    },
+    {
+      "id": "model:crow-pontiff-crozier",
+      "status": "passed",
+      "verification": {
+        "status": "passed",
+        "recipe": "guarded-surface@1",
+        "triangles": {
+          "source": 3494,
+          "candidate": 2776
+        },
+        "vertices": {
+          "source": 3702,
+          "candidate": 3198
+        },
+        "rawBytes": {
+          "source": 624764,
+          "candidate": 603172
+        },
+        "gzip6Bytes": {
+          "source": 609958,
+          "candidate": 589954
+        },
+        "reduced": [
+          {
+            "mesh": 0,
+            "primitive": 0,
+            "sourceVertices": 3702,
+            "candidateVertices": 3198,
+            "sourceTriangles": 3494,
+            "candidateTriangles": 2776,
+            "indexSha256": "276acbbbbdbd31ea9bb91858e14ff8070de712cab9ad54102b0b5728f2f872d1",
+            "mappingSha256": "ccfb2d4dd8733a676a59585f1f0e092143ed055e42a26a5207189353821710f8"
+          }
+        ],
+        "proof": {
+          "tool": "proof-lowpoly-high-r04",
+          "implementation": "c7ee69f6a2c0fd96f159e5356ce75b8cc59389340bc56925ac83691db00b7806",
+          "variant": "guarded-body",
+          "storage": "source/meshopt",
+          "posedInstances": 1,
+          "scenes": 1
+        }
+      }
+    },
+    {
+      "id": "model:crow-prelate-glaive",
+      "status": "passed",
+      "verification": {
+        "status": "passed",
+        "recipe": "guarded-surface@1",
+        "triangles": {
+          "source": 2949,
+          "candidate": 2359
+        },
+        "vertices": {
+          "source": 3282,
+          "candidate": 2830
+        },
+        "rawBytes": {
+          "source": 554084,
+          "candidate": 535120
+        },
+        "gzip6Bytes": {
+          "source": 541519,
+          "candidate": 523912
+        },
+        "reduced": [
+          {
+            "mesh": 0,
+            "primitive": 0,
+            "sourceVertices": 3282,
+            "candidateVertices": 2830,
+            "sourceTriangles": 2949,
+            "candidateTriangles": 2359,
+            "indexSha256": "8679b25e4309b20e12dbf1e924c818279d6bbbb3ec496bd2b26bf1c43c82d1ab",
+            "mappingSha256": "c554a2ea8e4961081a691b817e67f514c0cc770d9e9b21413e0e0c5de0404f0e"
+          }
+        ],
+        "proof": {
+          "tool": "proof-lowpoly-high-r04",
+          "implementation": "c7ee69f6a2c0fd96f159e5356ce75b8cc59389340bc56925ac83691db00b7806",
+          "variant": "guarded-body",
+          "storage": "source/meshopt",
+          "posedInstances": 1,
+          "scenes": 1
+        }
+      }
+    },
+    {
+      "id": "model:crow-soldier-spear",
+      "status": "passed",
+      "verification": {
+        "status": "passed",
+        "recipe": "guarded-surface@1",
+        "triangles": {
+          "source": 2993,
+          "candidate": 2363
+        },
+        "vertices": {
+          "source": 3147,
+          "candidate": 2684
+        },
+        "rawBytes": {
+          "source": 515608,
+          "candidate": 496104
+        },
+        "gzip6Bytes": {
+          "source": 503225,
+          "candidate": 485210
+        },
+        "reduced": [
+          {
+            "mesh": 0,
+            "primitive": 0,
+            "sourceVertices": 3147,
+            "candidateVertices": 2684,
+            "sourceTriangles": 2993,
+            "candidateTriangles": 2363,
+            "indexSha256": "012c84eb9e62e2f4c354f501c1d5223e3e0f30eecfe269cec63c053f8b68616f",
+            "mappingSha256": "40e906490524f5330579fcf3077e2126f93c32c9d8655e8a3295c90197d4a35a"
+          }
+        ],
+        "proof": {
+          "tool": "proof-lowpoly-high-r04",
+          "implementation": "c7ee69f6a2c0fd96f159e5356ce75b8cc59389340bc56925ac83691db00b7806",
+          "variant": "guarded-body",
+          "storage": "source/meshopt",
+          "posedInstances": 1,
+          "scenes": 1
+        }
+      }
+    },
+    {
+      "id": "model:desert-fennec-mage",
+      "status": "passed",
+      "verification": {
+        "status": "passed",
+        "recipe": "guarded-surface@1",
+        "triangles": {
+          "source": 53151,
+          "candidate": 43901
+        },
+        "vertices": {
+          "source": 73164,
+          "candidate": 65548
+        },
+        "rawBytes": {
+          "source": 4533712,
+          "candidate": 4126308
+        },
+        "gzip6Bytes": {
+          "source": 3836253,
+          "candidate": 3466394
+        },
+        "reduced": [
+          {
+            "mesh": 0,
+            "primitive": 0,
+            "sourceVertices": 73164,
+            "candidateVertices": 65548,
+            "sourceTriangles": 53151,
+            "candidateTriangles": 43901,
+            "indexSha256": "90df6b74a4433cb718bf6b64b4efc8a7ef9a95ef0e0a442f203afd7c2853042f",
+            "mappingSha256": "15813a1e25f13e9392f7586cb9ea740dd38b99c44d0cb6784b914c96c10d1c73"
+          }
+        ],
+        "proof": {
+          "tool": "proof-lowpoly-high-r04",
+          "implementation": "c7ee69f6a2c0fd96f159e5356ce75b8cc59389340bc56925ac83691db00b7806",
+          "variant": "guarded-body",
+          "storage": "source/meshopt",
+          "posedInstances": 1,
+          "scenes": 1
+        }
+      }
+    },
+    {
+      "id": "model:drying-rack",
+      "status": "passed",
+      "verification": {
+        "status": "passed",
+        "recipe": "guarded-surface@1",
+        "triangles": {
+          "source": 11816,
+          "candidate": 11154
+        },
+        "vertices": {
+          "source": 14255,
+          "candidate": 13751
+        },
+        "rawBytes": {
+          "source": 982720,
+          "candidate": 961388
+        },
+        "gzip6Bytes": {
+          "source": 929898,
+          "candidate": 910086
+        },
+        "reduced": [
+          {
+            "mesh": 0,
+            "primitive": 0,
+            "sourceVertices": 14255,
+            "candidateVertices": 13751,
+            "sourceTriangles": 11816,
+            "candidateTriangles": 11154,
+            "indexSha256": "45eb05c6a52564ef946dee7c1365dd8a438598c744762caad573cbc26c051367",
+            "mappingSha256": "09ca96d817a0f8babe954d363536a2103fcd952bd6202b691cb482112372b920"
+          }
+        ],
+        "proof": {
+          "tool": "proof-lowpoly-high-r04",
+          "implementation": "c7ee69f6a2c0fd96f159e5356ce75b8cc59389340bc56925ac83691db00b7806",
+          "variant": "guarded-body",
+          "storage": "source/meshopt",
+          "posedInstances": 1,
+          "scenes": 1
+        }
+      }
+    },
+    {
+      "id": "model:dugout-canoe",
+      "status": "passed",
+      "verification": {
+        "status": "passed",
+        "recipe": "guarded-surface@1",
+        "triangles": {
+          "source": 13998,
+          "candidate": 7466
+        },
+        "vertices": {
+          "source": 9036,
+          "candidate": 5381
+        },
+        "rawBytes": {
+          "source": 638784,
+          "candidate": 480856
+        },
+        "gzip6Bytes": {
+          "source": 612945,
+          "candidate": 462883
+        },
+        "reduced": [
+          {
+            "mesh": 0,
+            "primitive": 0,
+            "sourceVertices": 9036,
+            "candidateVertices": 5381,
+            "sourceTriangles": 13998,
+            "candidateTriangles": 7466,
+            "indexSha256": "1cd36d747134884ea52670bb03feb64896a8847a77f0caf4642afe54b42494fe",
+            "mappingSha256": "599a29513e3296eac5ca245110d50e3085a17fd88f2d034dff82fbaa044cc710"
+          }
+        ],
+        "proof": {
+          "tool": "proof-lowpoly-high-r04",
+          "implementation": "c7ee69f6a2c0fd96f159e5356ce75b8cc59389340bc56925ac83691db00b7806",
+          "variant": "guarded-body",
+          "storage": "source/meshopt",
+          "posedInstances": 1,
+          "scenes": 1
+        }
+      }
+    },
+    {
+      "id": "model:firewood-log",
+      "status": "passed",
+      "verification": {
+        "status": "passed",
+        "recipe": "guarded-surface@1",
+        "triangles": {
+          "source": 2984,
+          "candidate": 2622
+        },
+        "vertices": {
+          "source": 3505,
+          "candidate": 3272
+        },
+        "rawBytes": {
+          "source": 559552,
+          "candidate": 549400
+        },
+        "gzip6Bytes": {
+          "source": 545628,
+          "candidate": 536242
+        },
+        "reduced": [
+          {
+            "mesh": 0,
+            "primitive": 0,
+            "sourceVertices": 3505,
+            "candidateVertices": 3272,
+            "sourceTriangles": 2984,
+            "candidateTriangles": 2622,
+            "indexSha256": "7ea923ff8301103fb55f604896d290ed32f23d37b59a2eba4da069156ad46edb",
+            "mappingSha256": "ac97206035acfcc6f61428897f334bb79823526304bcd8dc09b65d46238a3636"
+          }
+        ],
+        "proof": {
+          "tool": "proof-lowpoly-high-r04",
+          "implementation": "c7ee69f6a2c0fd96f159e5356ce75b8cc59389340bc56925ac83691db00b7806",
+          "variant": "guarded-body",
+          "storage": "source/meshopt",
+          "posedInstances": 1,
+          "scenes": 1
+        }
+      }
+    },
+    {
+      "id": "model:firewood-pile",
+      "status": "passed",
+      "verification": {
+        "status": "passed",
+        "recipe": "guarded-surface@1",
+        "triangles": {
+          "source": 5907,
+          "candidate": 5049
+        },
+        "vertices": {
+          "source": 5993,
+          "candidate": 5480
+        },
+        "rawBytes": {
+          "source": 671976,
+          "candidate": 649888
+        },
+        "gzip6Bytes": {
+          "source": 651466,
+          "candidate": 630336
+        },
+        "reduced": [
+          {
+            "mesh": 0,
+            "primitive": 0,
+            "sourceVertices": 5993,
+            "candidateVertices": 5480,
+            "sourceTriangles": 5907,
+            "candidateTriangles": 5049,
+            "indexSha256": "a6a61cc269d76fef3397aca8e3b6f58c4af1b3bbfb34b8d9d850bdaf9aa0f18c",
+            "mappingSha256": "0d4c637d7cb7c4aba20cc9f9786e8b6f86df6634e87e2f4301dee44bc746898f"
+          }
+        ],
+        "proof": {
+          "tool": "proof-lowpoly-high-r04",
+          "implementation": "c7ee69f6a2c0fd96f159e5356ce75b8cc59389340bc56925ac83691db00b7806",
+          "variant": "guarded-body",
+          "storage": "source/meshopt",
+          "posedInstances": 1,
+          "scenes": 1
+        }
+      }
+    },
+    {
+      "id": "model:flint-spear",
+      "status": "passed",
+      "verification": {
+        "status": "passed",
+        "recipe": "guarded-surface@1",
+        "triangles": {
+          "source": 5679,
+          "candidate": 3065
+        },
+        "vertices": {
+          "source": 6207,
+          "candidate": 4067
+        },
+        "rawBytes": {
+          "source": 934232,
+          "candidate": 874712
+        },
+        "gzip6Bytes": {
+          "source": 914776,
+          "candidate": 860672
+        },
+        "reduced": [
+          {
+            "mesh": 0,
+            "primitive": 0,
+            "sourceVertices": 4279,
+            "candidateVertices": 2567,
+            "sourceTriangles": 4178,
+            "candidateTriangles": 2004,
+            "indexSha256": "f3ef83a6be26fe58e736e657af707d310652e0b5c1946929383f9cc251507fbb",
+            "mappingSha256": "9788ae48b9ec73be4e14fd4eaf6ec8824a1b1d0d0e8cb8ada606a30a7b2de0d2"
+          },
+          {
+            "mesh": 0,
+            "primitive": 1,
+            "sourceVertices": 1928,
+            "candidateVertices": 1500,
+            "sourceTriangles": 1501,
+            "candidateTriangles": 1061,
+            "indexSha256": "15da95ac66cc1317902093a6037f6460fbf3c8042711b03dc460f5282cc31521",
+            "mappingSha256": "08a1361080ce546ec503c70c7850b0715f8fae022d5a31fcb929b88f54bd7f5e"
+          }
+        ],
+        "proof": {
+          "tool": "proof-lowpoly-high-r04",
+          "implementation": "c7ee69f6a2c0fd96f159e5356ce75b8cc59389340bc56925ac83691db00b7806",
+          "variant": "guarded-body",
+          "storage": "source/meshopt",
+          "posedInstances": 2,
+          "scenes": 1
+        }
+      }
+    },
+    {
+      "id": "model:giant-ape",
+      "status": "passed",
+      "verification": {
+        "status": "passed",
+        "recipe": "guarded-surface@1",
+        "triangles": {
+          "source": 58216,
+          "candidate": 50670
+        },
+        "vertices": {
+          "source": 69802,
+          "candidate": 63967
+        },
+        "rawBytes": {
+          "source": 5202164,
+          "candidate": 4886300
+        },
+        "gzip6Bytes": {
+          "source": 4383367,
+          "candidate": 4093838
+        },
+        "reduced": [
+          {
+            "mesh": 0,
+            "primitive": 0,
+            "sourceVertices": 69802,
+            "candidateVertices": 63967,
+            "sourceTriangles": 58216,
+            "candidateTriangles": 50670,
+            "indexSha256": "93de584f17076fbe9deddf193cefc9e57787bf8d64a72fea03dce931357e56b2",
+            "mappingSha256": "eb4435073381182be161b052e1cd9a1ad8db1dfcc4a34baa1c7e7c1cf46efc24"
+          }
+        ],
+        "proof": {
+          "tool": "proof-lowpoly-high-r04",
+          "implementation": "c7ee69f6a2c0fd96f159e5356ce75b8cc59389340bc56925ac83691db00b7806",
+          "variant": "guarded-body",
+          "storage": "source/meshopt",
+          "posedInstances": 1,
+          "scenes": 1
+        }
+      }
+    },
+    {
+      "id": "model:kunoichi-katana",
+      "status": "passed",
+      "verification": {
+        "status": "passed",
+        "recipe": "guarded-surface@1",
+        "triangles": {
+          "source": 5997,
+          "candidate": 2097
+        },
+        "vertices": {
+          "source": 4584,
+          "candidate": 1945
+        },
+        "rawBytes": {
+          "source": 283844,
+          "candidate": 201432
+        },
+        "gzip6Bytes": {
+          "source": 268538,
+          "candidate": 164762
+        },
+        "reduced": [
+          {
+            "mesh": 0,
+            "primitive": 0,
+            "sourceVertices": 4584,
+            "candidateVertices": 1945,
+            "sourceTriangles": 5997,
+            "candidateTriangles": 2097,
+            "indexSha256": "be63a3bfface76e8b1bada4088997e0021a8695537bf1ed3df2cd4cd30f9b199",
+            "mappingSha256": "b88b2a056ee8e8627566b01a5c3f1984d2fe3513e0854e5ad831845be2c9e80d"
+          }
+        ],
+        "proof": {
+          "tool": "proof-lowpoly-high-r04",
+          "implementation": "c7ee69f6a2c0fd96f159e5356ce75b8cc59389340bc56925ac83691db00b7806",
+          "variant": "guarded-body",
+          "storage": "source/plain",
+          "posedInstances": 1,
+          "scenes": 1
+        }
+      }
+    },
+    {
+      "id": "model:mammoth-meat",
+      "status": "passed",
+      "verification": {
+        "status": "passed",
+        "recipe": "guarded-surface@1",
+        "triangles": {
+          "source": 2996,
+          "candidate": 2192
+        },
+        "vertices": {
+          "source": 2691,
+          "candidate": 2159
+        },
+        "rawBytes": {
+          "source": 577312,
+          "candidate": 554340
+        },
+        "gzip6Bytes": {
+          "source": 567387,
+          "candidate": 545837
+        },
+        "reduced": [
+          {
+            "mesh": 0,
+            "primitive": 0,
+            "sourceVertices": 2691,
+            "candidateVertices": 2159,
+            "sourceTriangles": 2996,
+            "candidateTriangles": 2192,
+            "indexSha256": "74e3c73c9b1611e36496982f62be3dc10e2c896eb6c0576c7438e31342f93327",
+            "mappingSha256": "7c9871d6cc834e9131c946cf2161cf971d073986a5f1f70f6d0253a4ffe80a39"
+          }
+        ],
+        "proof": {
+          "tool": "proof-lowpoly-high-r04",
+          "implementation": "c7ee69f6a2c0fd96f159e5356ce75b8cc59389340bc56925ac83691db00b7806",
+          "variant": "guarded-body",
+          "storage": "source/meshopt",
+          "posedInstances": 1,
+          "scenes": 1
+        }
+      }
+    },
+    {
+      "id": "model:neanderthal-woman",
+      "status": "passed",
+      "verification": {
+        "status": "passed",
+        "recipe": "guarded-surface@1",
+        "triangles": {
+          "source": 78675,
+          "candidate": 68553
+        },
+        "vertices": {
+          "source": 97550,
+          "candidate": 89905
+        },
+        "rawBytes": {
+          "source": 4922092,
+          "candidate": 4530988
+        },
+        "gzip6Bytes": {
+          "source": 4375015,
+          "candidate": 4004347
+        },
+        "reduced": [
+          {
+            "mesh": 0,
+            "primitive": 0,
+            "sourceVertices": 29382,
+            "candidateVertices": 21737,
+            "sourceTriangles": 27875,
+            "candidateTriangles": 17753,
+            "indexSha256": "23fe4fb4b6ff3e148d81375968a0e3daffe7742d5a4e9edd6693aab8197a052d",
+            "mappingSha256": "048abe36a19379971ce26dcf75f2ee349bc6e6eafae00077d91a8b7d17bd6212"
+          }
+        ],
+        "proof": {
+          "tool": "proof-lowpoly-high-r04",
+          "implementation": "c7ee69f6a2c0fd96f159e5356ce75b8cc59389340bc56925ac83691db00b7806",
+          "variant": "guarded-body",
+          "storage": "source/meshopt",
+          "posedInstances": 1,
+          "scenes": 1
+        }
+      }
+    },
+    {
+      "id": "model:obsidian-blade",
+      "status": "passed",
+      "verification": {
+        "status": "passed",
+        "recipe": "guarded-surface@1",
+        "triangles": {
+          "source": 1500,
+          "candidate": 524
+        },
+        "vertices": {
+          "source": 1173,
+          "candidate": 499
+        },
+        "rawBytes": {
+          "source": 170456,
+          "candidate": 146988
+        },
+        "gzip6Bytes": {
+          "source": 165284,
+          "candidate": 137974
+        },
+        "reduced": [
+          {
+            "mesh": 0,
+            "primitive": 0,
+            "sourceVertices": 1173,
+            "candidateVertices": 499,
+            "sourceTriangles": 1500,
+            "candidateTriangles": 524,
+            "indexSha256": "3747ef04580e4a5f4398917a266e57bf459f6c6860e2d4c1a9e19927b4cd9b3c",
+            "mappingSha256": "fe4abe03b47bd4568f574d1e02510c1652caea15b3e1e365c28021ae7100e154"
+          }
+        ],
+        "proof": {
+          "tool": "proof-lowpoly-high-r04",
+          "implementation": "c7ee69f6a2c0fd96f159e5356ce75b8cc59389340bc56925ac83691db00b7806",
+          "variant": "guarded-body",
+          "storage": "source/plain",
+          "posedInstances": 1,
+          "scenes": 1
+        }
+      }
+    },
+    {
+      "id": "model:obsidian-spear",
+      "status": "passed",
+      "verification": {
+        "status": "passed",
+        "recipe": "guarded-surface@1",
+        "triangles": {
+          "source": 3995,
+          "candidate": 1397
+        },
+        "vertices": {
+          "source": 3073,
+          "candidate": 1369
+        },
+        "rawBytes": {
+          "source": 210168,
+          "candidate": 138084
+        },
+        "gzip6Bytes": {
+          "source": 199388,
+          "candidate": 132004
+        },
+        "reduced": [
+          {
+            "mesh": 0,
+            "primitive": 0,
+            "sourceVertices": 3073,
+            "candidateVertices": 1369,
+            "sourceTriangles": 3995,
+            "candidateTriangles": 1397,
+            "indexSha256": "a1cf44d2143cd30429c80768101b77c3774b9a83770a98b1f2a34006a7942073",
+            "mappingSha256": "1f1f536d950f426c302b9ed1006465b03860685c07ae3eb394824bdda40d672a"
+          }
+        ],
+        "proof": {
+          "tool": "proof-lowpoly-high-r04",
+          "implementation": "c7ee69f6a2c0fd96f159e5356ce75b8cc59389340bc56925ac83691db00b7806",
+          "variant": "guarded-body",
+          "storage": "source/meshopt",
+          "posedInstances": 1,
+          "scenes": 1
+        }
+      }
+    },
+    {
+      "id": "model:orb-bot-beret",
+      "status": "passed",
+      "verification": {
+        "status": "passed",
+        "recipe": "guarded-surface@1",
+        "triangles": {
+          "source": 3914,
+          "candidate": 2672
+        },
+        "vertices": {
+          "source": 3514,
+          "candidate": 2744
+        },
+        "rawBytes": {
+          "source": 469592,
+          "candidate": 435908
+        },
+        "gzip6Bytes": {
+          "source": 435321,
+          "candidate": 404211
+        },
+        "reduced": [
+          {
+            "mesh": 0,
+            "primitive": 0,
+            "sourceVertices": 3514,
+            "candidateVertices": 2744,
+            "sourceTriangles": 3914,
+            "candidateTriangles": 2672,
+            "indexSha256": "dddbeb879988c069ec7aa92af1fe126fdd52b1dbe3e5987203df459c0c212094",
+            "mappingSha256": "77fd6a8c3e3f11a70fa19eeb6d6e3227438d6fff8f825c4e2bb7fcebf0105154"
+          }
+        ],
+        "proof": {
+          "tool": "proof-lowpoly-high-r04",
+          "implementation": "c7ee69f6a2c0fd96f159e5356ce75b8cc59389340bc56925ac83691db00b7806",
+          "variant": "guarded-body",
+          "storage": "source/meshopt",
+          "posedInstances": 1,
+          "scenes": 1
+        }
+      }
+    },
+    {
+      "id": "model:orb-bot-blue",
+      "status": "passed",
+      "verification": {
+        "status": "passed",
+        "recipe": "guarded-surface@1",
+        "triangles": {
+          "source": 4000,
+          "candidate": 1400
+        },
+        "vertices": {
+          "source": 2346,
+          "candidate": 1005
+        },
+        "rawBytes": {
+          "source": 181036,
+          "candidate": 122340
+        },
+        "gzip6Bytes": {
+          "source": 153747,
+          "candidate": 97457
+        },
+        "reduced": [
+          {
+            "mesh": 0,
+            "primitive": 0,
+            "sourceVertices": 2346,
+            "candidateVertices": 1005,
+            "sourceTriangles": 4000,
+            "candidateTriangles": 1400,
+            "indexSha256": "9b84984c3c963ace642c76affee0af8be739bf3468076fb69f10c41653529b49",
+            "mappingSha256": "d912584bd231721f48afc2cebcde86f6d2c35325e5c1e8c94a74affc6ba6febe"
+          }
+        ],
+        "proof": {
+          "tool": "proof-lowpoly-high-r04",
+          "implementation": "c7ee69f6a2c0fd96f159e5356ce75b8cc59389340bc56925ac83691db00b7806",
+          "variant": "guarded-body",
+          "storage": "source/meshopt",
+          "posedInstances": 1,
+          "scenes": 1
+        }
+      }
+    },
+    {
+      "id": "model:orb-bot-green",
+      "status": "passed",
+      "verification": {
+        "status": "passed",
+        "recipe": "guarded-surface@1",
+        "triangles": {
+          "source": 4000,
+          "candidate": 1400
+        },
+        "vertices": {
+          "source": 2383,
+          "candidate": 1028
+        },
+        "rawBytes": {
+          "source": 169800,
+          "candidate": 110864
+        },
+        "gzip6Bytes": {
+          "source": 142131,
+          "candidate": 85893
+        },
+        "reduced": [
+          {
+            "mesh": 0,
+            "primitive": 0,
+            "sourceVertices": 2383,
+            "candidateVertices": 1028,
+            "sourceTriangles": 4000,
+            "candidateTriangles": 1400,
+            "indexSha256": "060be4cf8aa362b0842978207a00e0074b47a187471e339fbcb1d7d16b45fe10",
+            "mappingSha256": "f1165a93403a15e97bd1bc887b6f6dec40e659e23d56a1b356fdfbc759f2851c"
+          }
+        ],
+        "proof": {
+          "tool": "proof-lowpoly-high-r04",
+          "implementation": "c7ee69f6a2c0fd96f159e5356ce75b8cc59389340bc56925ac83691db00b7806",
+          "variant": "guarded-body",
+          "storage": "source/meshopt",
+          "posedInstances": 1,
+          "scenes": 1
+        }
+      }
+    },
+    {
+      "id": "model:orb-bot-orange",
+      "status": "passed",
+      "verification": {
+        "status": "passed",
+        "recipe": "guarded-surface@1",
+        "triangles": {
+          "source": 2531,
+          "candidate": 885
+        },
+        "vertices": {
+          "source": 1434,
+          "candidate": 591
+        },
+        "rawBytes": {
+          "source": 124640,
+          "candidate": 87788
+        },
+        "gzip6Bytes": {
+          "source": 99109,
+          "candidate": 63779
+        },
+        "reduced": [
+          {
+            "mesh": 0,
+            "primitive": 0,
+            "sourceVertices": 1434,
+            "candidateVertices": 591,
+            "sourceTriangles": 2531,
+            "candidateTriangles": 885,
+            "indexSha256": "43c2e9c19bf31e43f39bd4be49afa9009160ad516cd3ef84fcd94803162ce390",
+            "mappingSha256": "692caef854cf1900cec094a56135ccba6bcbb459af7873c58d2c3358c533a526"
+          }
+        ],
+        "proof": {
+          "tool": "proof-lowpoly-high-r04",
+          "implementation": "c7ee69f6a2c0fd96f159e5356ce75b8cc59389340bc56925ac83691db00b7806",
+          "variant": "guarded-body",
+          "storage": "source/meshopt",
+          "posedInstances": 1,
+          "scenes": 1
+        }
+      }
+    },
+    {
+      "id": "model:orb-bot-purple",
+      "status": "passed",
+      "verification": {
+        "status": "passed",
+        "recipe": "guarded-surface@1",
+        "triangles": {
+          "source": 4000,
+          "candidate": 1400
+        },
+        "vertices": {
+          "source": 2357,
+          "candidate": 1007
+        },
+        "rawBytes": {
+          "source": 176072,
+          "candidate": 116896
+        },
+        "gzip6Bytes": {
+          "source": 148831,
+          "candidate": 92056
+        },
+        "reduced": [
+          {
+            "mesh": 0,
+            "primitive": 0,
+            "sourceVertices": 2357,
+            "candidateVertices": 1007,
+            "sourceTriangles": 4000,
+            "candidateTriangles": 1400,
+            "indexSha256": "43470666a5e897dfc760aed818bf46ef208b03972053291e7a706a0d509aa18c",
+            "mappingSha256": "4e0178a2ab3142e67e9f91e26823c5e59ca0b74aa804e8e33d163ace4a8db31c"
+          }
+        ],
+        "proof": {
+          "tool": "proof-lowpoly-high-r04",
+          "implementation": "c7ee69f6a2c0fd96f159e5356ce75b8cc59389340bc56925ac83691db00b7806",
+          "variant": "guarded-body",
+          "storage": "source/meshopt",
+          "posedInstances": 1,
+          "scenes": 1
+        }
+      }
+    },
+    {
+      "id": "model:orb-bot-white",
+      "status": "passed",
+      "verification": {
+        "status": "passed",
+        "recipe": "guarded-surface@1",
+        "triangles": {
+          "source": 4000,
+          "candidate": 1400
+        },
+        "vertices": {
+          "source": 2426,
+          "candidate": 1064
+        },
+        "rawBytes": {
+          "source": 176448,
+          "candidate": 116456
+        },
+        "gzip6Bytes": {
+          "source": 148668,
+          "candidate": 91103
+        },
+        "reduced": [
+          {
+            "mesh": 0,
+            "primitive": 0,
+            "sourceVertices": 2426,
+            "candidateVertices": 1064,
+            "sourceTriangles": 4000,
+            "candidateTriangles": 1400,
+            "indexSha256": "d75071fc61dfdba349a3f9b208df376d0db0f8dfbddd0999d04f6ed134ab4e05",
+            "mappingSha256": "fd8aaccb56772e3cfe3c1265faa59ac63228417adb80ed04244afa15bebbc11f"
+          }
+        ],
+        "proof": {
+          "tool": "proof-lowpoly-high-r04",
+          "implementation": "c7ee69f6a2c0fd96f159e5356ce75b8cc59389340bc56925ac83691db00b7806",
+          "variant": "guarded-body",
+          "storage": "source/meshopt",
+          "posedInstances": 1,
+          "scenes": 1
+        }
+      }
+    },
+    {
+      "id": "model:rimo-neko",
+      "status": "passed",
+      "verification": {
+        "status": "passed",
+        "recipe": "guarded-surface@1",
+        "triangles": {
+          "source": 27474,
+          "candidate": 25590
+        },
+        "vertices": {
+          "source": 46239,
+          "candidate": 44358
+        },
+        "rawBytes": {
+          "source": 3600960,
+          "candidate": 3502368
+        },
+        "gzip6Bytes": {
+          "source": 3031994,
+          "candidate": 2943551
+        },
+        "reduced": [
+          {
+            "mesh": 0,
+            "primitive": 0,
+            "sourceVertices": 46239,
+            "candidateVertices": 44358,
+            "sourceTriangles": 27474,
+            "candidateTriangles": 25590,
+            "indexSha256": "86659723d7ac79fa60a8cf18225aab87a829d4f7707ec8a4029021003fba6948",
+            "mappingSha256": "cbbddfb5a828522ca30e84f1fade197a592f497ae35b7d6916f35e8bc36cf22e"
+          }
+        ],
+        "proof": {
+          "tool": "proof-lowpoly-high-r04",
+          "implementation": "c7ee69f6a2c0fd96f159e5356ce75b8cc59389340bc56925ac83691db00b7806",
+          "variant": "guarded-body",
+          "storage": "source/meshopt",
+          "posedInstances": 1,
+          "scenes": 1
+        }
+      }
+    },
+    {
+      "id": "model:wooden-spear",
+      "status": "passed",
+      "verification": {
+        "status": "passed",
+        "recipe": "guarded-surface@1",
+        "triangles": {
+          "source": 2500,
+          "candidate": 874
+        },
+        "vertices": {
+          "source": 1742,
+          "candidate": 752
+        },
+        "rawBytes": {
+          "source": 140588,
+          "candidate": 97860
+        },
+        "gzip6Bytes": {
+          "source": 134247,
+          "candidate": 93908
+        },
+        "reduced": [
+          {
+            "mesh": 0,
+            "primitive": 0,
+            "sourceVertices": 1742,
+            "candidateVertices": 752,
+            "sourceTriangles": 2500,
+            "candidateTriangles": 874,
+            "indexSha256": "995037048ceffb8ef214397f43f475336cb08fdb813bfd01eb90aa016101f93b",
+            "mappingSha256": "e33543592644043e59ad57d1f485dba4b39d7e9fbd8ce9b2af7e758326dff43c"
+          }
+        ],
+        "proof": {
+          "tool": "proof-lowpoly-high-r04",
+          "implementation": "c7ee69f6a2c0fd96f159e5356ce75b8cc59389340bc56925ac83691db00b7806",
+          "variant": "guarded-body",
+          "storage": "source/meshopt",
+          "posedInstances": 1,
+          "scenes": 1
+        }
+      }
+    }
+  ]
+}

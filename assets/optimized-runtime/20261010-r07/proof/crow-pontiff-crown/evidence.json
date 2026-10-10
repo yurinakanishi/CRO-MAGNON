@@ -1,0 +1,660 @@
+{
+  "key": "crow-pontiff-crown",
+  "manifest": "public/models/crow-pontiff-crown/asset.json",
+  "served": {
+    "url": "/models/crow-pontiff-crown/model-c2.opt-2d08c7f7cbcd36ae.glb",
+    "sha256": "2d08c7f7cbcd36ae4a798ab20643c3ed78a5d073cf5c83b02823acae56b4d8c5",
+    "bytes": 813380,
+    "triangles": 2929
+  },
+  "original": {
+    "url": "/models/crow-pontiff-crown/model-c2.glb",
+    "sha256": "2c229f2d05ee8cd15532553b8f0497dea6ed89e6796448c11ad757788184a388",
+    "bytes": 866568
+  },
+  "servedBy": {
+    "adoption": "20261010-r06-a02",
+    "candidateRevision": "assets/optimized-runtime/20261009-r04",
+    "selection": "ordinary-compressed"
+  },
+  "levels": {
+    "processed": "primary file only",
+    "lods": [],
+    "packedScene": null,
+    "oldLodsUsed": false
+  },
+  "coupling": null,
+  "baseline": {
+    "rawBytes": 813380,
+    "gzip6Bytes": 797539,
+    "sha256": "2d08c7f7cbcd36ae4a798ab20643c3ed78a5d073cf5c83b02823acae56b4d8c5",
+    "jsonChunkBytes": 2728,
+    "categories": {
+      "meshAttributes": {
+        "views": 4,
+        "storedBytes": 155544,
+        "gzip6Bytes": 141583
+      },
+      "meshIndices": {
+        "views": 1,
+        "storedBytes": 11624,
+        "gzip6Bytes": 10705
+      },
+      "animation": {
+        "views": 0,
+        "storedBytes": 0,
+        "gzip6Bytes": 0
+      },
+      "skin": {
+        "views": 0,
+        "storedBytes": 0,
+        "gzip6Bytes": 0
+      },
+      "images": {
+        "views": 2,
+        "storedBytes": 643452,
+        "gzip6Bytes": 643670
+      },
+      "other": {
+        "views": 0,
+        "storedBytes": 0,
+        "gzip6Bytes": 0
+      }
+    },
+    "geometry": {
+      "primitives": [
+        {
+          "mesh": 0,
+          "primitive": 0,
+          "vertices": 4242,
+          "triangles": 2929
+        }
+      ],
+      "vertices": 4242,
+      "triangles": 2929
+    }
+  },
+  "scenes": 1,
+  "coverage": [
+    {
+      "mesh": 0,
+      "instances": [
+        {
+          "scene": 0,
+          "node": 0,
+          "skin": null,
+          "path": [
+            0
+          ]
+        }
+      ],
+      "skin": null,
+      "unrenderedNodes": [],
+      "verifiable": true,
+      "reasons": []
+    }
+  ],
+  "diagnosis": [
+    {
+      "mesh": 0,
+      "forward": null,
+      "primitives": [
+        {
+          "primitive": 0,
+          "headShare": 0,
+          "welded": {
+            "triangles": 2929,
+            "edges": 4386,
+            "border": 93,
+            "nonmanifold": 83,
+            "inconsistent": 0,
+            "degenerate": 0
+          },
+          "splits": {
+            "vertices": 4242,
+            "positions": 1443,
+            "verticesPerPosition": 2.9397089397089395,
+            "splitPositions": 1250,
+            "splitsDifferingBy": {
+              "NORMAL": 1174,
+              "TEXCOORD_0": 1163,
+              "TANGENT": 1250
+            },
+            "exactDuplicateVertices": 0
+          },
+          "nearDuplicates": {
+            "epsilonMetres": 7.435982215980582e-7,
+            "positionsWithNearDuplicate": 0
+          },
+          "border": {
+            "borderVertices": 417,
+            "share": 0.0983026874115983
+          },
+          "boundsDiagonalMetres": 0.7435982215980582
+        }
+      ]
+    }
+  ],
+  "variants": [
+    {
+      "variant": "guarded-body",
+      "kind": "candidate",
+      "description": "head primitives retained; every other primitive reduced at a 4 mm bound with head-weighted (face, neck junction), neck, hand and foot vertices locked by skin weight, cross-primitive seams and borders locked",
+      "custom": null,
+      "primitives": [
+        {
+          "mesh": 0,
+          "primitive": 0,
+          "instances": 1,
+          "mode": "reduce",
+          "settings": {
+            "flags": [
+              "LockBorder",
+              "ErrorAbsolute"
+            ],
+            "targetRatio": 0.35,
+            "targetIndexCount": 3075,
+            "errorMetres": 0.004,
+            "localErrorMetres": 0.004,
+            "maxInstanceStretch": 1,
+            "worldGateMetres": {
+              "p99": 0.008,
+              "max": 0.024
+            },
+            "tolerances": {
+              "normal": 0.05,
+              "uv": 0.0009765625,
+              "skinWeight": 0.02
+            },
+            "attributeColumns": [
+              "NORMAL.x",
+              "NORMAL.y",
+              "NORMAL.z",
+              "TEXCOORD_0.u",
+              "TEXCOORD_0.v"
+            ],
+            "maxPasses": 8
+          },
+          "locks": {
+            "lockedVertices": 829,
+            "byReason": {
+              "crossPrimitive": 0,
+              "jointBudget": 0,
+              "face": 0,
+              "head": 0,
+              "neck": 0,
+              "hands": 0,
+              "feet": 0,
+              "singularEdge": 640,
+              "defectRings": 189
+            },
+            "headRadiusMetres": null,
+            "border": "LockBorder flag: every open-border vertex"
+          },
+          "sourceTriangles": 2929,
+          "achievedTriangles": 2415,
+          "simplifierErrorMetres": 0.003960904665291309,
+          "passes": [
+            {
+              "pass": 1,
+              "lockedVertices": 640,
+              "targetIndexCount": 3075,
+              "achievedTriangles": 2373,
+              "simplifierErrorMetres": 0.003973952494561672,
+              "defects": {
+                "newNonmanifoldEdges": 8,
+                "newInconsistentEdges": 0,
+                "newBorderEdges": 0,
+                "lostBorderEdges": 0,
+                "newFlippedTriangles": 1,
+                "newDegenerateTriangles": 0,
+                "mergedComponents": 0,
+                "splitComponents": 0,
+                "vanishedComponents": 0
+              },
+              "lockedAround": {
+                "defectPositions": 17,
+                "rings": 1,
+                "addedVertices": 189
+              }
+            },
+            {
+              "pass": 2,
+              "lockedVertices": 829,
+              "targetIndexCount": 3075,
+              "achievedTriangles": 2415,
+              "simplifierErrorMetres": 0.003960904665291309,
+              "defects": {
+                "newNonmanifoldEdges": 0,
+                "newInconsistentEdges": 0,
+                "newBorderEdges": 0,
+                "lostBorderEdges": 0,
+                "newFlippedTriangles": 0,
+                "newDegenerateTriangles": 0,
+                "mergedComponents": 0,
+                "splitComponents": 0,
+                "vanishedComponents": 0
+              }
+            }
+          ],
+          "stall": [
+            {
+              "label": "as-policy",
+              "achievedTriangles": 2415,
+              "ratio": 0.8245134858313418,
+              "errorMetres": 0.003960904665291309
+            },
+            {
+              "label": "without-LockBorder",
+              "achievedTriangles": 2405,
+              "ratio": 0.8210993513144418,
+              "errorMetres": 0.003960904665291309
+            },
+            {
+              "label": "without-vertex-locks",
+              "achievedTriangles": 2373,
+              "ratio": 0.8101741208603619,
+              "errorMetres": 0.003973952494561672
+            },
+            {
+              "label": "without-attributes",
+              "achievedTriangles": 2319,
+              "ratio": 0.7917377944691021,
+              "errorMetres": 0.003998438827693462
+            },
+            {
+              "label": "error-x4",
+              "achievedTriangles": 2037,
+              "ratio": 0.695459201092523,
+              "errorMetres": 0.015796739608049393
+            },
+            {
+              "label": "positions-only-unlocked-x4",
+              "achievedTriangles": 1806,
+              "ratio": 0.6165926937521339,
+              "errorMetres": 0.01577984169125557
+            }
+          ],
+          "action": "reduced",
+          "sourceVertices": 4242,
+          "achievedVertices": 3771
+        }
+      ],
+      "status": "proof-pass-not-visually-reviewed",
+      "problems": [],
+      "proof": {
+        "structuralAndPosed": "passed",
+        "posesChecked": true
+      },
+      "storage": {
+        "budget": {
+          "rawBytes": 813380,
+          "gzip6Bytes": 797539,
+          "rule": "raw <= source raw AND whole-file gzip -6 < source gzip -6"
+        },
+        "chosen": "source/meshopt",
+        "verifiedOption": "source/meshopt",
+        "reason": "source/meshopt: 793608 raw bytes <= the source's 813380, gzip -6 779422 < the source's 797539",
+        "alternatives": [
+          {
+            "label": "first-use/meshopt",
+            "order": "first-use",
+            "storage": "meshopt",
+            "rawBytes": 796040,
+            "gzip6Bytes": 784285,
+            "sha256": "dfe6ba57f4fd32d88ec17666a7b751fbedeab83f2ff210126e3b23d601e61773",
+            "indexSha256": [
+              "8006555859533541b9e040d2bf856beb183248459b8dadfc3c32646f3d756587"
+            ],
+            "withinRawBudget": true,
+            "belowSourceGzip": true
+          },
+          {
+            "label": "source/meshopt",
+            "order": "source",
+            "storage": "meshopt",
+            "rawBytes": 793608,
+            "gzip6Bytes": 779422,
+            "sha256": "6cd6301778b4126a3d798c0af38735c605a0bd3ae3af7b1f79e7fc3735f09fbd",
+            "indexSha256": [
+              "1e56def9eddc9bcffefaaf98ce316845a32d196aca86e2a1ccabb147d71a9edf"
+            ],
+            "withinRawBudget": true,
+            "belowSourceGzip": true
+          },
+          {
+            "label": "first-use/plain",
+            "order": "first-use",
+            "storage": "plain",
+            "rawBytes": 840940,
+            "gzip6Bytes": 767839,
+            "sha256": "f1efb556897b92e66f96f6396dfd80872ff4a9155a39f87b7d3dad16173aa238",
+            "indexSha256": [
+              "8006555859533541b9e040d2bf856beb183248459b8dadfc3c32646f3d756587"
+            ],
+            "withinRawBudget": false,
+            "belowSourceGzip": true
+          },
+          {
+            "label": "source/plain",
+            "order": "source",
+            "storage": "plain",
+            "rawBytes": 840940,
+            "gzip6Bytes": 766048,
+            "sha256": "0a5ffd5d16a68d72340ea55c4a67b7f7b75999c2969774368fa156b0a05c14a7",
+            "indexSha256": [
+              "1e56def9eddc9bcffefaaf98ce316845a32d196aca86e2a1ccabb147d71a9edf"
+            ],
+            "withinRawBudget": false,
+            "belowSourceGzip": true
+          }
+        ]
+      },
+      "candidate": {
+        "rawBytes": 793608,
+        "gzip6Bytes": 779422,
+        "sha256": "6cd6301778b4126a3d798c0af38735c605a0bd3ae3af7b1f79e7fc3735f09fbd",
+        "jsonChunkBytes": 2792,
+        "categories": {
+          "meshAttributes": {
+            "views": 4,
+            "storedBytes": 137616,
+            "gzip6Bytes": 124972
+          },
+          "meshIndices": {
+            "views": 1,
+            "storedBytes": 9711,
+            "gzip6Bytes": 8951
+          },
+          "animation": {
+            "views": 0,
+            "storedBytes": 0,
+            "gzip6Bytes": 0
+          },
+          "skin": {
+            "views": 0,
+            "storedBytes": 0,
+            "gzip6Bytes": 0
+          },
+          "images": {
+            "views": 2,
+            "storedBytes": 643452,
+            "gzip6Bytes": 643670
+          },
+          "other": {
+            "views": 0,
+            "storedBytes": 0,
+            "gzip6Bytes": 0
+          }
+        },
+        "geometry": {
+          "primitives": [
+            {
+              "mesh": 0,
+              "primitive": 0,
+              "vertices": 3771,
+              "triangles": 2415
+            }
+          ],
+          "vertices": 3771,
+          "triangles": 2415
+        }
+      },
+      "packing": {
+        "views": 7,
+        "compressedViews": 5,
+        "modes": {
+          "ATTRIBUTES": 4,
+          "INDICES": 1
+        },
+        "keptViews": {
+          "image": 2
+        },
+        "triangleRotationFallbacks": 1,
+        "logicalViewBytes": 838950,
+        "compressedStreamBytes": 147327,
+        "storedBinBytes": 790787,
+        "fallbackBufferBytes": 195498
+      },
+      "garbage": {
+        "accessors": 5,
+        "views": 5
+      },
+      "topology": [
+        {
+          "mesh": 0,
+          "primitive": 0,
+          "problems": [],
+          "source": {
+            "triangles": 2929,
+            "edges": 4386,
+            "border": 93,
+            "nonmanifold": 83,
+            "inconsistent": 0,
+            "degenerate": 0,
+            "components": 5
+          },
+          "candidate": {
+            "triangles": 2415,
+            "edges": 3615,
+            "border": 93,
+            "nonmanifold": 83,
+            "inconsistent": 0,
+            "degenerate": 0
+          },
+          "defects": {
+            "newNonmanifoldEdges": 0,
+            "newInconsistentEdges": 0,
+            "newBorderEdges": 0,
+            "lostBorderEdges": 0,
+            "newFlippedTriangles": 0,
+            "newDegenerateTriangles": 0,
+            "mergedComponents": 0,
+            "splitComponents": 0,
+            "vanishedComponents": 0
+          },
+          "newBadEdges": [],
+          "newBorderEdges": 0,
+          "lostBorderEdges": 0,
+          "crossPrimitiveSeamPositionsLost": 0,
+          "protectedTriangles": 177,
+          "protectedTrianglesLost": 0,
+          "shrunkComponents": 0,
+          "faceNormalDisagreement": {
+            "source": 0,
+            "candidate": 0
+          }
+        }
+      ],
+      "poses": {
+        "scenes": [
+          {
+            "scene": 0,
+            "instances": 1,
+            "primitiveInstances": 1,
+            "comparedPrimitiveInstances": 1,
+            "slotIdentity": "1 of 1 slot(s) identified by exact positions and indices",
+            "clips": [],
+            "clipTracks": [],
+            "clipsNotAnimatingThisScene": [],
+            "clipsBeyondMaxClips": [],
+            "poses": [
+              "rest"
+            ]
+          }
+        ],
+        "scope": "rest plus every clip that animates a scene's nodes (fractions 0.33, 0.66); sampled poses, not every frame",
+        "primitives": [
+          {
+            "mesh": 0,
+            "primitive": 0,
+            "instances": [
+              {
+                "scene": 0,
+                "node": 0,
+                "path": [
+                  0
+                ],
+                "skin": null,
+                "restWorldMatrix": [
+                  1,
+                  0,
+                  0,
+                  0,
+                  0,
+                  1,
+                  0,
+                  0,
+                  0,
+                  0,
+                  1,
+                  0,
+                  0,
+                  0,
+                  0,
+                  1
+                ],
+                "transformEqual": true,
+                "stretch": {
+                  "max": 1,
+                  "min": 1
+                },
+                "correspondenceMaxMetres": 0,
+                "poses": [
+                  {
+                    "pose": "rest",
+                    "holes": {
+                      "all": {
+                        "count": 4242,
+                        "max": 0.004837628480445576,
+                        "p99": 0.0025403251436449618,
+                        "mean": 0.00013129609206182673
+                      },
+                      "locked": {
+                        "count": 829,
+                        "max": 0,
+                        "p99": 0,
+                        "mean": 0
+                      },
+                      "static": {
+                        "count": 3413,
+                        "max": 0.004837628480445576,
+                        "p99": 0.0026570444693582236,
+                        "mean": 0.0001631872319151096
+                      }
+                    },
+                    "interiors": {
+                      "all": {
+                        "count": 2929,
+                        "max": 0.0030293237380273085,
+                        "p99": 0.001626171915454394,
+                        "mean": 0.00020803589671362043
+                      },
+                      "static": {
+                        "count": 2929,
+                        "max": 0.0030293237380273085,
+                        "p99": 0.001626171915454394,
+                        "mean": 0.00020803589671362043
+                      }
+                    },
+                    "webbing": {
+                      "all": {
+                        "count": 9660,
+                        "max": 0.004456398498298672,
+                        "p99": 0.001800546733229541,
+                        "mean": 0.00010820733682508718
+                      },
+                      "static": {
+                        "count": 9660,
+                        "max": 0.004456398498298672,
+                        "p99": 0.001800546733229541,
+                        "mean": 0.00010820733682508718
+                      }
+                    },
+                    "shortcuts": {
+                      "holes": 3771,
+                      "interiors": 1862,
+                      "webbing": 7448,
+                      "enabled": true
+                    }
+                  }
+                ],
+                "worst": {
+                  "holes": {
+                    "all": {
+                      "max": 0.004837628480445576,
+                      "p99": 0.0025403251436449618,
+                      "mean": 0.00013129609206182673,
+                      "worstPose": "rest"
+                    },
+                    "locked": {
+                      "max": 0,
+                      "p99": 0,
+                      "mean": 0,
+                      "worstPose": "rest"
+                    },
+                    "static": {
+                      "max": 0.004837628480445576,
+                      "p99": 0.0026570444693582236,
+                      "mean": 0.0001631872319151096,
+                      "worstPose": "rest"
+                    }
+                  },
+                  "interiors": {
+                    "all": {
+                      "max": 0.0030293237380273085,
+                      "p99": 0.001626171915454394,
+                      "mean": 0.00020803589671362043,
+                      "worstPose": "rest"
+                    },
+                    "static": {
+                      "max": 0.0030293237380273085,
+                      "p99": 0.001626171915454394,
+                      "mean": 0.00020803589671362043,
+                      "worstPose": "rest"
+                    }
+                  },
+                  "webbing": {
+                    "all": {
+                      "max": 0.004456398498298672,
+                      "p99": 0.001800546733229541,
+                      "mean": 0.00010820733682508718,
+                      "worstPose": "rest"
+                    },
+                    "static": {
+                      "max": 0.004456398498298672,
+                      "p99": 0.001800546733229541,
+                      "mean": 0.00010820733682508718,
+                      "worstPose": "rest"
+                    }
+                  }
+                },
+                "gateMetres": {
+                  "p99": 0.008,
+                  "max": 0.024,
+                  "unit": "world metres, fixed per policy"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "file": {
+        "file": "crow-pontiff-crown/guarded-body.glb",
+        "sha256": "6cd6301778b4126a3d798c0af38735c605a0bd3ae3af7b1f79e7fc3735f09fbd",
+        "bytes": 793608
+      },
+      "mappingFiles": [
+        {
+          "mesh": 0,
+          "primitive": 0,
+          "meaning": "candidate vertex i is served-file vertex u32le[i] of this primitive",
+          "file": "crow-pontiff-crown/guarded-body.m0p0.source-vertices.u32le",
+          "sha256": "0264b33d7447607a1e8f99e26834140f171696ee780e1ffcfd2dcbe891edbf5a",
+          "bytes": 15084
+        }
+      ]
+    }
+  ],
+  "implementation": "c7ee69f6a2c0fd96f159e5356ce75b8cc59389340bc56925ac83691db00b7806"
+}

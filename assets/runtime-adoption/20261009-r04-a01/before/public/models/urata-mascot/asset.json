@@ -1,0 +1,138 @@
+{
+  "modelKey": "urata-mascot",
+  "name": "うらた",
+  "kind": "companion",
+  "candidate": 1,
+  "revision": "r02",
+  "status": "friend-mascot-integrated",
+  "url": "/models/urata-mascot/model-r02.glb",
+  "sha256": "39c47be2d4bcb2232a7e3bd67329f2ce3db4adb25f2c939c4f42572cfabd5f45",
+  "bytes": 6444916,
+  "triangles": 23877,
+  "bones": 23,
+  "upAxis": "Y",
+  "forwardAxis": "+Z",
+  "heightMetres": 0.52,
+  "widthMetres": 0.4377224722984491,
+  "lengthMetres": 0.23777674432475082,
+  "petContactMetres": 0.5199999809265137,
+  "placement": {
+    "pivot": "ground-between-shoes",
+    "scale": 1
+  },
+  "portrait": {
+    "url": "/models/urata-mascot/portrait.png",
+    "sha256": "1491de9f3047f99263f7b542495d8f16a2ac59000e8780417b0bb2b39cff3936"
+  },
+  "clips": [
+    {
+      "name": "Idle_Loop",
+      "seconds": 3,
+      "loop": true,
+      "fps": 60,
+      "rootMotion": "in-place"
+    },
+    {
+      "name": "Walk_Loop",
+      "seconds": 0.7166666666666667,
+      "loop": true,
+      "fps": 60,
+      "rootMotion": "in-place"
+    },
+    {
+      "name": "Run_Loop",
+      "seconds": 0.4,
+      "loop": true,
+      "fps": 60,
+      "rootMotion": "in-place"
+    },
+    {
+      "name": "Pet",
+      "seconds": 1.4,
+      "loop": false,
+      "fps": 60,
+      "rootMotion": "in-place"
+    },
+    {
+      "name": "Happy",
+      "seconds": 1.4,
+      "loop": false,
+      "fps": 60,
+      "rootMotion": "in-place"
+    },
+    {
+      "name": "Hit",
+      "seconds": 0.65,
+      "loop": false,
+      "fps": 60,
+      "rootMotion": "in-place"
+    },
+    {
+      "name": "Wave",
+      "seconds": 1.8,
+      "loop": false,
+      "fps": 60,
+      "rootMotion": "in-place"
+    },
+    {
+      "name": "Bow",
+      "seconds": 1.6,
+      "loop": false,
+      "fps": 60,
+      "rootMotion": "in-place"
+    }
+  ],
+  "locomotion": {
+    "Walk_Loop": {
+      "metresPerSecond": 0.1800452947540748,
+      "cycleSeconds": 0.72
+    },
+    "Run_Loop": {
+      "metresPerSecond": 0.6772350807676065,
+      "cycleSeconds": 0.4
+    }
+  },
+  "lods": [
+    {
+      "url": "/models/urata-mascot/lod-r02.glb",
+      "sha256": "1888b45a8326590c1d8ea966acd464ca415f295e255d2a625480ca3477bc9388",
+      "bytes": 409068,
+      "triangles": 4773,
+      "distanceMetres": 8,
+      "purpose": "animated-medium-lod-geometry"
+    }
+  ],
+  "provenance": {
+    "provider": "Claude Code (Opus 5.5)",
+    "claudeUsed": true,
+    "referenceGenerator": "Codex CLI 0.162.0-alpha.2 built-in image_gen (configured default model, unelevated sandbox); request and prompt saved beside the reference",
+    "referenceImage": "assets/friend-mascots/urata-mascot/source/reference-v1.png",
+    "referenceSha256": "cbba1e464914d8f51f7b537b4b2bac9817ce08c7445e2583acb2b13669be9c88",
+    "identitySources": [
+      "assets/friend-mascots/urata-mascot/source/x-avatar-400.jpg"
+    ],
+    "reconstruction": "Local TRELLIS-2 v0.8.1, res 1024, tex 1024, seed 42",
+    "denseSha256": "96abd7e0d1fa1647ca341af56f7518aa1a44a950a9f3a9865f3c061399335995",
+    "reduction": "meshoptimizer position-only quadric reduction of the dense surface; fresh Smart UV; 2048 diffuse-colour bake from the dense TRELLIS albedo (Blender 3.6 Cycles, selected to active)",
+    "deviationMetres": {
+      "denseToLow": {
+        "rms": 0.0004399838518772896,
+        "p95": 0.0008460937011491458,
+        "max": 0.0019532272249356765
+      },
+      "lowToDense": {
+        "rms": 0.00044066578142119524,
+        "p95": 0.0008452856899274894,
+        "max": 0.0023389897556501983
+      }
+    },
+    "surfaceSha256": "5967a908b504b7bcd03eea2b39cef4db83ce5924ae9f04bfe9f5aa832a112159",
+    "rig": "assets/friend-mascots/workflow/rig.py with assets/friend-mascots/urata-mascot/rig.json",
+    "rigSha256": "39c47be2d4bcb2232a7e3bd67329f2ce3db4adb25f2c939c4f42572cfabd5f45",
+    "pipeline": "assets/friend-mascots/README.md",
+    "visualReview": "output/model-generation/models/urata-mascot/work/rig/revision-02/poses"
+  },
+  "notes": [
+    "Contributor companion. 23877 triangles, 23 bones, 8 in-place 60 fps clips; LOD 4773 triangles shares the skeleton from 8 m. Lowest authored vertex 0.0010 m."
+  ]
+}

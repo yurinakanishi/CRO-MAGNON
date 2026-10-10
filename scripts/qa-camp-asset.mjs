@@ -9,6 +9,13 @@ const dressed = process.argv.includes('--dressed');
 const tag = process.argv.find((arg) => arg.startsWith('--tag='))?.split('=')[1];
 if (tag && !/^[a-z0-9-]+$/.test(tag)) throw new Error('Invalid QA tag');
 const folder = `output/playwright/${key}/asset-${revision}${dressed ? '-dressed' : ''}${tag ? `-${tag}` : ''}`;
+// The production mountain material ends at the measured shoreline, which it samples in world
+// coordinates; a dressed mountain is therefore reviewed as the game draws that level. Raw and
+// cave reviews keep the source frame (and their summaries carry no view note).
+const view =
+  dressed && key === 'camp-mountain'
+    ? 'Game placement: the revision fitted by the camp-mountain river-bed fit (expanded x/z, cave foot, river bed), placed at CAMP_MOUNTAIN in world coordinates, with the production materials and the measured shoreline clip. The streamed ground and ocean are not drawn, so the background shows at sea and where the flat apron yields to that ground within 5 m of a shore. Clay views show the fitted geometry without materials.'
+    : undefined;
 await mkdir(folder, { recursive: true });
 const game = createGameServer({ port: 0, host: '127.0.0.1' });
 const { port } = await game.listen();
@@ -41,7 +48,7 @@ const s=new T.Scene();s.background=new T.Color('#8b939b');s.add(new T.Hemisphere
 const model=(await new GLTFLoader().loadAsync('/qa-source.glb')).scene;s.add(model);model.updateMatrixWorld(true);
 const fire=new T.PointLight('#ffd6a4',35,16,1.6);fire.position.set(3,2.3,0);fire.visible=false;s.add(fire);
 if(${dressed && key === 'camp-cave'}) {const p=await new T.TextureLoader().loadAsync('/qa-pigment.png');p.colorSpace=T.SRGBColorSpace;p.anisotropy=8;const a=await(await fetch('/models/camp-cave/asset.json')).json();const stone=await new T.TextureLoader().loadAsync(a.rockSurface.url);stone.colorSpace=T.SRGBColorSpace;stone.wrapS=stone.wrapT=T.RepeatWrapping;stone.anisotropy=8;const character=await new T.TextureLoader().loadAsync(a.characterPigment.url);character.colorSpace=T.SRGBColorSpace;character.anisotropy=8;const rimo=await new T.TextureLoader().loadAsync(a.rimoPigment.url);rimo.colorSpace=T.SRGBColorSpace;rimo.anisotropy=8;const extra={};for(const [key,entry]of Object.entries((await import('/src/cave-gallery-layout.js')).CAVE_EXTRA_PIGMENTS)){const texture=await new T.TextureLoader().loadAsync(entry.url);texture.colorSpace=T.SRGBColorSpace;texture.anisotropy=8;extra[key]=texture;}extra.comingSoon=(await import('/src/cave-preview-label.js')).createCavePreviewLabel();(await import('/src/cave-materials.js')).prepareCaveMaterials(model,p,stone,character,rimo,extra);}
-if(${dressed && key === 'camp-mountain'}) (await import('/src/mountain-materials.js')).prepareMountainMaterials(model);
+if(${dressed && key === 'camp-mountain'}){const {CAMP_MOUNTAIN}=await import('/shared/camp-cave-layout.mjs');const {RiverBankBuilder}=await import('/src/river-bank-builder.js');const builder=new RiverBankBuilder();try{await (await import('/src/mountain-river.js')).prepareMountainRiverBedAsync(model,builder);}finally{builder.dispose();}model.position.set(CAMP_MOUNTAIN.x,0,CAMP_MOUNTAIN.z);model.rotation.y=CAMP_MOUNTAIN.yaw;model.scale.setScalar(CAMP_MOUNTAIN.scale);model.updateMatrixWorld(true);(await import('/src/mountain-materials.js')).prepareMountainMaterials(model,(await import('/src/paleo-materials.js')).createEarthTextures());}
 window.lightFire=(lit,position)=>{fire.visible=lit;if(position){fire.position.set(...position);fire.distance=24;}};
 const box=new T.Box3().setFromObject(model),size=box.getSize(new T.Vector3()),centre=box.getCenter(new T.Vector3());
 const c=new T.PerspectiveCamera(48,1100/850,.01,1500);const originals=new Map();model.traverse(n=>{if(n.isMesh)originals.set(n,n.material);});
@@ -112,9 +119,11 @@ window.review=(direction,clay=false,inside=false,targetPosition)=>{model.travers
   }
   await writeFile(
     `${folder}/summary.json`,
-    JSON.stringify({ key, revision, results, errors }, null, 2),
+    JSON.stringify({ key, revision, view, results, errors }, null, 2),
   );
-  console.log(JSON.stringify({ folder: path.resolve(folder), bounds: results[0].bounds, errors }));
+  console.log(
+    JSON.stringify({ folder: path.resolve(folder), view, bounds: results[0].bounds, errors }),
+  );
 } finally {
   await browser.close();
   await game.close();

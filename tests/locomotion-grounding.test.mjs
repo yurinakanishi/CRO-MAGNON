@@ -1,17 +1,15 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { readFile } from 'node:fs/promises';
 import * as T from 'three';
-import { loadMotion } from '../scripts/motion-glb.mjs';
 import { CharacterAnimation } from '../dist/src/character-animation.js';
 import { configureActorPerformance, disposeActorPerformance } from '../dist/src/performance-lod.js';
+import { deliveredWomanRig, originalWomanRig } from './cro-magnon-woman-rig.mjs';
 
-test('human gait transitions keep skinned soles above a translated, rotated and scaled actor floor', async () => {
-  const asset = JSON.parse(await readFile('public/models/cro-magnon-woman/asset.json'));
-  const g = await loadMotion('public' + asset.url),
-    container = new T.Group();
-  const lod = await loadMotion('public' + asset.lods[0].url);
-  configureActorPerformance(g.scene, lod.scene, asset);
+/** Live gait crossfades of `g` (configured with `lowScene` as its LOD, none for a sole
+ * primary) keep its skinned soles above a translated, rotated and scaled actor floor. */
+function assertGrounded(g, lowScene, levels, asset) {
+  const container = new T.Group();
+  configureActorPerformance(g.scene, lowScene, levels);
   container.position.set(31, 4, -19);
   container.rotation.y = 1.2;
   container.scale.setScalar(1.4);
@@ -77,4 +75,16 @@ test('human gait transitions keep skinned soles above a translated, rotated and 
   assert.ok(hips.position.distanceTo(idle) < 1e-7, 'no retained lift after the gait transition');
   animation.dispose();
   disposeActorPerformance(g.scene);
+}
+
+test('human gait transitions keep skinned soles above a translated, rotated and scaled actor floor', async () => {
+  // The original full model with its far LOD bound (cro-magnon-woman-rig.mjs).
+  const { asset, full, lod, levels } = await originalWomanRig();
+  assertGrounded(full, lod.scene, levels, asset);
+});
+
+test('the delivered body, a sole primary after the r04 adoption, keeps its soles grounded too', async () => {
+  // The body the game delivers now, bound to its LOD only while the manifest lists one.
+  const { asset, primary, lod } = await deliveredWomanRig();
+  assertGrounded(primary, lod?.scene, asset, asset);
 });

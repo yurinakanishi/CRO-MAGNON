@@ -32,7 +32,8 @@ export class LeanPose {
 
   constructor(private root: THREE.Object3D) {
     this.joints = JOINTS.map(([name]) => root.getObjectByName(name)!);
-    if (this.joints.some((bone) => !bone)) throw new Error('The leaning character is missing its spine');
+    if (this.joints.some((bone) => !bone))
+      throw new Error('The leaning character is missing its spine');
     this.base = this.joints.map((bone) => bone.quaternion.clone());
   }
 
@@ -65,7 +66,10 @@ export class LeanPose {
       bone.parent!.getWorldQuaternion(this.parentQ);
       this.inverseParentQ.copy(this.parentQ).invert();
       this.pitch.setFromAxisAngle(this.axis, this.lean * JOINTS[i][1]);
-      bone.quaternion.premultiply(this.parentQ).premultiply(this.pitch).premultiply(this.inverseParentQ);
+      bone.quaternion
+        .premultiply(this.parentQ)
+        .premultiply(this.pitch)
+        .premultiply(this.inverseParentQ);
       bone.updateWorldMatrix(false, true);
     });
     this.applied = true;

@@ -83,19 +83,48 @@ uniform sampler2D earthCoast;
 vec2 earthUV(vec2 p){return (p-vec2(${WORLD_BOUNDS.minX.toFixed(1)},${WORLD_BOUNDS.minZ.toFixed(1)}))/vec2(${WORLD_BOUNDS.width.toFixed(1)},${WORLD_BOUNDS.depth.toFixed(1)});}
 float shoreline(vec2 p){return (texture2D(earthCoast,earthUV(p)).r*255.0-128.0)/4.0;}
 `;
-export function clipRiverAtCoast(shader, textures) {
+function replaceInclude(source: string, include: string, code: string) {
+  if (!source.includes(include)) throw new Error(`Coast clipping needs ${include} in its shader`);
+  return source.replace(include, `${include}\n${code}`);
+}
+// How far inland the streamed ground's coast treatment reaches: the beach tint below (the
+// coastal lowering stops at 4 m, the clip at the shoreline). Beyond it coastal and plain ground
+// shading are identical.
+export const COAST_TREATMENT_METRES = 5;
+// Landmark ground standing in for the flat streamed ground near a shore. terrainHeight
+// (shared/terrain.mts) walks on the ground, not on hill heights up to flatY, and that ground is
+// drawn with the coast treatment within metres of the shore.
+export const COAST_STAND_IN = Object.freeze({ flatY: 0.02, metres: COAST_TREATMENT_METRES });
+// Ends a surface where the shared signed distance field says sea, as the streamed ground does:
+// the field walking, boats, the map and EarthOcean use, sampled at the fragment's world
+// position. River water needs it, and so does landmark ground reaching past the measured
+// shoreline: the camp mountain's 280 m source square is merged into the coast only by the hull
+// of its raised cells, and east of the valley river its apron is flattened to ground level.
+// With flatGround, a fragment at or below COAST_STAND_IN.flatY also gives way to the streamed
+// ground within COAST_STAND_IN.metres of the shore, so the drawn surface is the coast-lowered
+// one actors walk on; higher (actual mountain) surfaces end only at the sea.
+export function clipAtCoast(shader, textures, { flatGround = false } = {}) {
+  if (!textures?.coast) throw new Error('A surface was clipped before the coast field existed');
   shader.uniforms.earthCoast = { value: textures.coast };
-  shader.vertexShader = 'varying vec2 vRiverWorld;\n' + shader.vertexShader;
-  shader.vertexShader = shader.vertexShader.replace(
+  shader.vertexShader = replaceInclude(
+    'varying vec3 vCoastWorld;\n' + shader.vertexShader,
     '#include <begin_vertex>',
-    '#include <begin_vertex>\nvRiverWorld=(modelMatrix*vec4(transformed,1.0)).xz;',
+    `vec4 coastPoint=vec4(transformed,1.0);
+    #ifdef USE_INSTANCING
+    coastPoint=instanceMatrix*coastPoint;
+    #endif
+    vCoastWorld=(modelMatrix*coastPoint).xyz;`,
   );
-  shader.fragmentShader = earthShader + 'varying vec2 vRiverWorld;\n' + shader.fragmentShader;
-  shader.fragmentShader = shader.fragmentShader.replace(
+  const { flatY, metres } = COAST_STAND_IN;
+  shader.fragmentShader = replaceInclude(
+    earthShader + 'varying vec3 vCoastWorld;\n' + shader.fragmentShader,
     '#include <color_fragment>',
-    '#include <color_fragment>\nif(shoreline(vRiverWorld)<=0.0)discard;',
+    flatGround
+      ? `float coastWorld=shoreline(vCoastWorld.xz);if(coastWorld<=0.0||(coastWorld<${metres.toFixed(1)}&&vCoastWorld.y<=${flatY.toFixed(2)}))discard;`
+      : 'if(shoreline(vCoastWorld.xz)<=0.0)discard;',
   );
 }
+export const clipRiverAtCoast = clipAtCoast;
 // Measured 2026-09-11 from the delivered grass GLBs after the root recolour
 // (meadow-grass sha256 6356602b…, meadow-sprig sha256 e946fd0e…; the baked
 // brown root band was re-hued green by scripts/recolor-grass-root.mjs): the
@@ -195,7 +224,7 @@ export function earthTerrainMaterial(original, biome, textures) {
       float transition=clamp(length(climate-sourceClimate)*8.0,0.0,1.0);
       float relief=clamp(dot(diffuseColor.rgb,vec3(.2126,.7152,.0722))/max(.04,dot(sourceClimate,vec3(.2126,.7152,.0722))),.65,1.45);
       diffuseColor.rgb=mix(diffuseColor.rgb,climate*relief,transition);
-      float beach=1.0-smoothstep(0.0,5.0,coast);
+      float beach=1.0-smoothstep(0.0,${COAST_TREATMENT_METRES.toFixed(1)},coast);
       diffuseColor.rgb=mix(diffuseColor.rgb,${biome.id === 'ice' || biome.id === 'snow' ? 'climate*.8' : 'vec3(.38,.32,.20)'},beach*.55);
       float shadowGarden=1.0-smoothstep(${(shadow.radius - 18).toFixed(1)},${shadow.radius.toFixed(1)},distance(vTerrainWorld.xz,vec2(${shadow.x.toFixed(1)},${shadow.z.toFixed(1)})));
       diffuseColor.rgb=mix(diffuseColor.rgb,vec3(.045,.038,.09)*relief,shadowGarden);
@@ -240,6 +269,7 @@ export function earthTerrainMaterial(original, biome, textures) {
 
 // The ocean reuses the accepted river-water GLB, scaled as overlapping tiles.
 // It is a runtime water effect; no primitive substitutes or new model assets.
+export const OCEAN_SURFACE_Y = -0.52;
 export class EarthOcean {
   declare world: any;
   declare parts: any[];
@@ -312,7 +342,7 @@ export class EarthOcean {
     this.time.value = time;
     let count = 0;
     for (const c of chunks) {
-      this.matrix.makeTranslation(c.x, -0.52, c.z);
+      this.matrix.makeTranslation(c.x, OCEAN_SURFACE_Y, c.z);
       for (const p of this.parts) p.mesh.setMatrixAt(count, this.matrix);
       count++;
     }

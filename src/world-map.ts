@@ -22,6 +22,7 @@ import { MOUNTAIN_RIVER_SAMPLES } from '../shared/mountain-river.mjs';
 import { mountainLakePoint } from '../shared/mountain-lake.mjs';
 import { ENEMY_RULES } from '../shared/enemies.mjs';
 import { HUNTING } from '../shared/hunting.mjs';
+import { MINIMAP_RASTER, minimapRasterWindow, type RasterWindow } from './minimap-raster.js';
 import { enemyStatusLabel } from './enemy-state.js';
 import {
   MAP_ARROW_PATH,
@@ -54,8 +55,8 @@ import {
   adventureProgress,
 } from '../shared/adventure-regions.mjs';
 
-let background,
-  selection = null;
+let background: { canvas: HTMLCanvasElement; window: RasterWindow } | null = null;
+let selection = null;
 let mapZoom = 1,
   mapCenter = null;
 /** Fire ids whose name label found room in the last big draw; the DOM shows exactly these. */
@@ -112,27 +113,38 @@ export function panWorldMap(canvas, self, dx, dy) {
 export function setWorldMapSelection(point) {
   selection = point;
 }
-/** The minimap's fixed 2048 × 1024 raster: it never zooms, so one bitmap stays sharp. */
-function baseMap() {
-  if (background) return background;
-  const width = 2048,
-    height = 1024,
-    canvas = document.createElement('canvas');
-  canvas.width = width;
-  canvas.height = height;
+/** A retained window of the same fixed global raster. No whole-world bitmap is
+ * computed on the first join; travel samples new windows at identical centres. */
+function baseMap(view: {
+  width: number;
+  height: number;
+  scale: number;
+  center: { x: number; z: number };
+}) {
+  const window = minimapRasterWindow(view, WORLD, background?.window);
+  if (!window) return null;
+  if (window === background?.window) return background;
+  const { width, height } = window,
+    canvas = background?.canvas ?? document.createElement('canvas');
+  if (!background) {
+    // Keep the original image extent and draw transform: changing those can
+    // change a browser's bilinear rounding. Only the sampled region is filled.
+    canvas.width = MINIMAP_RASTER.width;
+    canvas.height = MINIMAP_RASTER.height;
+  }
   const ctx = canvas.getContext('2d'),
     pixels = ctx.createImageData(width, height);
   for (let z = 0; z < height; z++)
     for (let x = 0; x < width; x++) {
-      const wx = WORLD.minX + ((x + 0.5) / width) * WORLD.width,
-        wz = WORLD.minZ + ((z + 0.5) / height) * WORLD.depth,
+      const wx = WORLD.minX + ((window.x + x + 0.5) / MINIMAP_RASTER.width) * WORLD.width,
+        wz = WORLD.minZ + ((window.y + z + 0.5) / MINIMAP_RASTER.height) * WORLD.depth,
         i = (z * width + x) * 4;
       localColor(wx, wz, pixels.data, i);
       pixels.data[i + 3] = 255;
     }
-  ctx.putImageData(pixels, 0, 0);
-  background = canvas;
-  return canvas;
+  ctx.putImageData(pixels, window.x, window.y);
+  background = { canvas, window };
+  return background;
 }
 let palette: number[][] | null = null;
 const ATLAS_LAND_BASE = [35, 37, 22];
@@ -498,7 +510,8 @@ export function drawWorldMap(canvas, state, selfId, big = false) {
     withMapTransform(ctx, { scale, center }, w, h, () => strokeCoastline(ctx, scale, zoom));
   } else {
     const [left, top] = point(WORLD.minX, WORLD.minZ);
-    ctx.drawImage(baseMap(), left, top, WORLD.width * scale, WORLD.depth * scale);
+    const tile = baseMap({ width: w, height: h, scale, center });
+    if (tile) ctx.drawImage(tile.canvas, left, top, WORLD.width * scale, WORLD.depth * scale);
   }
   if (big) {
     ctx.strokeStyle = '#c2d0c51a';
