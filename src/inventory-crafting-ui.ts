@@ -8,7 +8,14 @@ import { icon } from './icons.js';
 import { setAttr, setText } from './hud-dom.js';
 
 /** This section lives inside the bag. Its nodes remain stable across snapshots. */
-export function installInventoryCrafting({ player, world, now, connected, request }) {
+export function installInventoryCrafting({
+  player,
+  world,
+  now,
+  connected,
+  request,
+  offerEquipment,
+}) {
   let pending: string | null = null;
   const root = () => document.querySelector<HTMLElement>('#inventory-crafting');
   function markup() {
@@ -85,6 +92,9 @@ export function installInventoryCrafting({ player, world, now, connected, reques
     pending = null;
     status(message.text, message.ok);
     update();
+    const button = root()?.querySelector<HTMLButtonElement>(`[data-craft="${message.recipeId}"]`);
+    if (message.ok && message.equipment && button && !button.closest('[hidden]'))
+      offerEquipment(message.equipment, button);
   }
-  return { markup, bind, update, result };
+  return { markup, bind, update, result, status };
 }

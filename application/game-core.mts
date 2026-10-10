@@ -520,7 +520,7 @@ export function createGameCore({
       if (
         player.downedUntil &&
         ['move', 'gait', 'action'].includes(message.type) &&
-        !(message.type === 'action' && message.action === 'inventoryCraft')
+        !(message.type === 'action' && ['inventoryCraft', 'equipItem'].includes(message.action))
       ) {
         if (message.type === 'action')
           notice(player, '回復を待っています。間もなく焚き火へ戻ります。', 'info');
@@ -563,6 +563,7 @@ export function createGameCore({
         message.type === 'action' &&
         typeof message.action === 'string' &&
         (message.action === 'inventoryCraft' ||
+          message.action === 'equipItem' ||
           message.action === 'attack' ||
           message.action === 'jump' ||
           message.action === 'cancelCook' ||

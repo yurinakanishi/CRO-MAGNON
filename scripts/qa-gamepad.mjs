@@ -236,6 +236,8 @@ try {
   await until(() => player().tool, 'craft through menu');
   assert.equal(player().inventory.wood, 12);
   assert.equal(player().inventory.stone, 0);
+  await tap(PAD.cross); // Decline equipping the crafted axe; the inventory stays open.
+  assert.equal(await page.locator('#equipment-confirm').count(), 0);
   await back();
   await tap(PAD.up);
   await select('#expedition-destination');

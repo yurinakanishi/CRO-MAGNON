@@ -7,6 +7,7 @@ import {
 import { WORLD } from '../shared/world.mjs';
 import { withinAttackReach } from '../shared/combat.mjs';
 import { caveInteriorWeight } from '../shared/cave-light.mjs';
+import { equippedItem } from '../shared/equipment.mjs';
 
 import { CROP_INVENTORY } from '../shared/crops.mjs';
 
@@ -116,6 +117,7 @@ export function huntInteraction(state, player, collision) {
 export function attackReady(player, animal) {
   return (
     !!player &&
+    equippedItem(player) !== 'axe' &&
     caveInteriorWeight(player) === 0 &&
     !player.mountId &&
     !player.downedUntil &&

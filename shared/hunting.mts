@@ -132,9 +132,11 @@ export function handleHuntingAction(room, player, message, now = Date.now()) {
       return response(
         result.reason === 'cave'
           ? '洞窟の中では攻撃できません。'
-          : profile.key === 'spear'
-            ? '槍を構え直しています。'
-            : '次の攻撃を準備しています。',
+          : result.reason === 'equipment'
+            ? '石斧は採集用です。持ち物から武器を装備できます。'
+            : profile.key === 'spear'
+              ? '槍を構え直しています。'
+              : '次の攻撃を準備しています。',
         'info',
       );
     return response(

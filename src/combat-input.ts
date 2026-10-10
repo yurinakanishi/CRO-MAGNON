@@ -1,6 +1,7 @@
 import { attackProfile, shoulderMagic } from '../shared/combat-profiles.mjs';
 import { jumpProgress } from '../shared/jumping.mjs';
 import { caveInteriorWeight } from '../shared/cave-light.mjs';
+import { equippedItem } from '../shared/equipment.mjs';
 
 // The server starts neutral and clears movement on defeat. A target command also
 // replaces keyboard motion, so the next idle pulse must not cancel that path.
@@ -60,6 +61,7 @@ export function canStartAttack(player, serverNow) {
 /** Share the actual attack gate with feedback instead of silently dropping a gesture. */
 export function attackBlockReason(player, serverNow): string | null {
   if (!player || player.downedUntil) return '今は攻撃できません。復帰を待ってください。';
+  if (equippedItem(player) === 'axe') return '石斧は採集用です。持ち物から武器を装備できます。';
   if (caveInteriorWeight(player) > 0) return '洞窟の中では攻撃できません。';
   if (player.mountId || player.boatId || player.passengerId)
     return '乗り物から降りると攻撃できます。';

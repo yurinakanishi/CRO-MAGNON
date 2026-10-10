@@ -257,7 +257,7 @@ test('authoritative hand and tool gathering remove exactly the number of stones 
     );
     assert.ok(spot);
     assert.ok(Math.hypot(spot.x - resource.x, spot.z - resource.z) < GATHER_RANGE);
-    Object.assign(player, spot, { tool });
+    Object.assign(player, spot, { tool, equippedItem: tool ? 'axe' : 'spear' });
     const { assets } = fixture(),
       world = renderer(assets, [resource]);
     world.syncResources();

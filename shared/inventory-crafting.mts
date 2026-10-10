@@ -6,6 +6,7 @@ import { attackProfile } from './combat-profiles.mjs';
 import { jumpProgress } from './jumping.mjs';
 import { HUNTING, usableCookingFire } from './hunting.mjs';
 import { ensureGulfPlayer } from './gulf-life.mjs';
+import { equippedItem } from './equipment.mjs';
 
 export interface InventoryRecipe {
   id: string;
@@ -26,7 +27,7 @@ export const INVENTORY_RECIPES: readonly InventoryRecipe[] = [
     icon: 'axe',
     cost: { wood: 3, stone: 2 },
     equipment: 'axe',
-    note: '木材・石の採集量が2倍',
+    note: '装備中は木材・石の採集量が2倍',
   },
   {
     id: 'boat',
@@ -51,7 +52,7 @@ export const INVENTORY_RECIPES: readonly InventoryRecipe[] = [
     icon: 'spear',
     cost: { obsidianBlade: 1, wood: COASTAL.haftWood },
     equipment: 'spear',
-    note: '木槍を強化・攻撃力2倍',
+    note: '装備中は木槍の攻撃力2倍',
   },
   {
     id: 'meat',
@@ -145,6 +146,8 @@ export function craftInventory(room, player, id: unknown, now: number) {
   if (!recipe) return { ok: false, text: 'この品は作れません。' };
   const reason = inventoryCraftReason(room, player, recipe, now);
   if (reason) return { ok: false, text: reason };
+  // Crafting grants ownership only, including when an old save has no explicit slot.
+  player.equippedItem = equippedItem(player);
   for (const [key, n] of Object.entries(recipe.cost)) player.inventory[key] -= n;
   if (recipe.equipment === 'axe') player.tool = true;
   else if (recipe.equipment === 'spear') player.spearHead = 'obsidian';
@@ -153,5 +156,9 @@ export function craftInventory(room, player, id: unknown, now: number) {
     ensureGulfPlayer(player).bladesKnapped++;
     player.energy = Math.max(0, player.energy - 2);
   }
-  return { ok: true, text: `${recipe.name}を持ち物に追加しました。` };
+  return {
+    ok: true,
+    text: `${recipe.name}を持ち物に追加しました。`,
+    equipment: recipe.equipment === 'spear' ? 'obsidianSpear' : recipe.equipment,
+  };
 }

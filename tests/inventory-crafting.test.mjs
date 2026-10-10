@@ -4,6 +4,7 @@ import { createGameCore } from '../dist/shared/game-core.mjs';
 import { craftInventory, INVENTORY_RECIPES } from '../dist/shared/inventory-crafting.mjs';
 import { confirmedAction } from '../dist/src/character-animation.js';
 import { CollisionWorld } from '../dist/shared/collision.mjs';
+import { equippedItem } from '../dist/shared/equipment.mjs';
 
 function fixture() {
   const player = {
@@ -47,6 +48,7 @@ for (const recipe of INVENTORY_RECIPES) {
     assert.equal(player.cookingEndsAt, undefined);
     assert.equal(player.coastalActivity, undefined);
     assert.equal(confirmedAction(before, player), null);
+    assert.equal(equippedItem(player), equippedItem(before), 'crafting never auto-equips');
     if (recipe.id === 'blade') assert.equal(player.inventory.stone, before.inventory.stone);
   });
 }
@@ -156,11 +158,20 @@ test('five peers receive the crafted inventory; rapid requests acknowledge succe
     assert.equal(player.inventory.wood, 11);
     assert.equal(player.inventory.boat, 1);
     assert.equal(room.boats.length, 0);
+    assert.equal(player.equippedItem, 'spear');
+    const equip = (id) => peers[0].input({ type: 'action', action: 'equipItem', targetId: id });
+    equip('axe');
+    equip('obsidianSpear');
+    assert.deepEqual(
+      peers[0].messages.filter((m) => m.type === 'equipmentResult').map((m) => m.ok),
+      [true, true],
+    );
     for (const peer of peers) {
       const state = peer.messages.filter((m) => m.type === 'state').at(-1);
       const copy = state.players.find((p) => p.id === player.id);
       assert.equal(copy.tool, true);
       assert.equal(copy.spearHead, 'obsidian');
+      assert.equal(copy.equippedItem, 'obsidianSpear');
       assert.equal(copy.inventory.boat, 1);
       assert.equal(copy.inventory.wood, 11);
     }
@@ -168,6 +179,10 @@ test('five peers receive the crafted inventory; rapid requests acknowledge succe
     request('boat');
     assert.equal(peers[0].messages.at(-1).type, 'inventoryCraftResult');
     assert.equal(peers[0].messages.at(-1).ok, false);
+    equip('axe');
+    assert.equal(peers[0].messages.at(-1).type, 'equipmentResult');
+    assert.equal(peers[0].messages.at(-1).ok, false);
+    assert.equal(player.equippedItem, 'obsidianSpear');
     restored = createGameCore({ keepEmptyRooms: true });
     restored.importState(JSON.parse(JSON.stringify(core.exportState())));
     restored.connect(
@@ -181,6 +196,7 @@ test('five peers receive the crafted inventory; rapid requests acknowledge succe
     const saved = [...restored.rooms.get('CRAFT-QA').players.values()][0];
     assert.equal(saved.tool, true);
     assert.equal(saved.spearHead, 'obsidian');
+    assert.equal(saved.equippedItem, 'obsidianSpear');
     assert.deepEqual(saved.inventory, player.inventory);
   } finally {
     restored?.close();

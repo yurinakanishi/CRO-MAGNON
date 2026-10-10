@@ -26,6 +26,7 @@ export interface PlayerSnapshot extends Point {
   inventory: Inventory;
   gathered: number;
   tool: boolean;
+  equippedItem?: import('./types.mjs').EquipmentId;
   caveTorchOff?: boolean;
   ready: boolean;
   energy: number;

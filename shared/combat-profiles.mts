@@ -17,6 +17,7 @@ interface AttackProfile {
   projectileRadius?: number;
 }
 import { characterModel } from './characters.mjs';
+import { equippedItem } from './equipment.mjs';
 
 // This is shared presentation data; the server always selects it from the
 // normalized character, never from a weapon/damage field supplied by a client.
@@ -133,7 +134,7 @@ export const ATTACK_PROFILES = Object.freeze({
 export function attackProfile(character: CharacterProfile): Readonly<AttackProfile> {
   return ATTACK_PROFILES[
     characterModel(character).weapon ||
-      (character.spearHead === 'obsidian' ? 'obsidianSpear' : 'spear')
+      (equippedItem(character) === 'obsidianSpear' ? 'obsidianSpear' : 'spear')
   ];
 }
 

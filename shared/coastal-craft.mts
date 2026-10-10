@@ -10,6 +10,7 @@ import { interactionVisible } from './interactions.mjs';
 import { stopActor } from './combat.mjs';
 import { attackProfile } from './combat-profiles.mjs';
 import { characterModel } from './characters.mjs';
+import { equippedItem } from './equipment.mjs';
 
 const distance = (a, b) => Math.hypot(a.x - b.x, a.z - b.z);
 const moving = (p) => !!(p.target || p.path?.length || Math.hypot(p.dx || 0, p.dz || 0) > 0.01);
@@ -86,8 +87,9 @@ export function handleCoastalAction(room, player, message, now) {
       return response('黒曜石の刃1・木材1が必要です。先に原石を削ろう。');
     inv.obsidianBlade--;
     inv.wood -= COASTAL.haftWood;
+    player.equippedItem = equippedItem(player);
     player.spearHead = 'obsidian';
-    return response('黒曜石の刃を槍先に取り付けた。木槍より強く突けます。', true);
+    return response('黒曜石の槍を持ち物に追加しました。持ち物から装備できます。', true);
   }
   if (moving(player)) return response('移動を止めてから作業しよう。');
   if (action === 'gatherShellfish') {

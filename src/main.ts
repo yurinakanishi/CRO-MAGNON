@@ -33,6 +33,9 @@ import {
 import type { ViewState } from './view-state.js';
 import { normalizeCharacter, characterModel } from '../shared/characters.mjs';
 import { attackProfile } from '../shared/combat-profiles.mjs';
+import type { EquipmentId } from '../shared/types.mjs';
+import { equippedItem, equipmentInfo, ownsEquipment } from '../shared/equipment.mjs';
+import { installEquipmentUI } from './equipment-ui.js';
 import {
   characterChoicesMarkup,
   bindCharacterSelection,
@@ -596,6 +599,18 @@ const inventoryCrafting = installInventoryCrafting({
   now: () => renderer.serverNow(),
   connected: () => joined && !renderUnavailable,
   request: (id: string) => send({ type: 'action', action: 'inventoryCraft', targetId: id }),
+  offerEquipment: (id: EquipmentId, button: HTMLElement) => {
+    closeItemActions();
+    equipmentUI.open(id, true, button);
+  },
+});
+const equipmentUI = installEquipmentUI({
+  player,
+  now: () => renderer.serverNow(),
+  connected: () => joined && !renderUnavailable,
+  request: (id: EquipmentId) => send({ type: 'action', action: 'equipItem', targetId: id }),
+  settle: () => gamepadControls?.suspend(),
+  status: (text: string, ok: boolean) => inventoryCrafting.status(text, ok),
 });
 const villageUI = installVillageUI({
   player,
@@ -891,6 +906,7 @@ async function connect(automatic = false) {
       if (message.popup !== false) notify(message.text, message.tone);
     }
     if (message.type === 'inventoryCraftResult') inventoryCrafting.result(message);
+    if (message.type === 'equipmentResult') equipmentUI.result(message);
     if (message.type === 'chat') {
       addChat(message);
       if (message.mapPin) notify(`${message.name}：${message.text}`);
@@ -1065,6 +1081,7 @@ function modalActionsBlocked() {
 function updateModalHUD() {
   updateInventory();
   inventoryCrafting.update();
+  equipmentUI.update();
   updateMascotMenu($('#modal-body'), state, selfId);
   const list = $('#tribe-list');
   if (list) {
@@ -1092,6 +1109,15 @@ function action(type, targetId?, cropId?) {
   if (type === 'attack' && !canStartAttack(player(), renderer.serverNow())) return;
   if (type === 'throwBot' && !canThrowBot(player(), renderer.serverNow())) return;
   renderer.endCompanionView();
+  if (type === 'craft' || type === 'haftSpear') {
+    openInventory();
+    const button = document.querySelector<HTMLButtonElement>(
+      `[data-craft="${type === 'craft' ? 'axe' : 'spear'}"]`,
+    );
+    button?.focus({ preventScroll: true });
+    button?.click();
+    return;
+  }
   if (type === 'cropFoodOpen') {
     cropFoodUI.open();
     return;
@@ -2079,6 +2105,9 @@ interface ItemUse {
 }
 const eatUse = (action: string): ItemUse => ({ label: '使う（食べる）', action, eats: true });
 const ITEM_USES: Record<string, ItemUse[]> = {
+  weapon: [],
+  axe: [],
+  obsidianSpear: [],
   boat: [{ label: '船を出す', action: 'launchBoat' }],
   berry: [eatUse('eat')],
   rawMeat: [
@@ -2117,10 +2146,23 @@ function inventoryEntries() {
     count: inv[key],
     glyph: itemIcon(key),
   }));
-  const weapon = attackProfile(me ?? profile);
-  if (me && weapon.modelKey)
-    items.push({ key: 'weapon', label: weapon.noun, note: '装備中', count: 1, glyph: weapon.key });
-  if (me?.tool) items.push({ key: 'axe', label: '石斧', note: '装備中', count: 1, glyph: 'axe' });
+  if (me) {
+    const base = equipmentForKey('weapon')!;
+    const ids: EquipmentId[] =
+      base === 'spear' || attackProfile(me).modelKey || me.tool ? [base] : [];
+    if (ownsEquipment(me, 'obsidianSpear')) ids.push('obsidianSpear');
+    if (me.tool) ids.push('axe');
+    for (const id of ids) {
+      const item = equipmentInfo(me, id);
+      items.push({
+        key: id === base ? 'weapon' : id,
+        label: item.name,
+        note: equippedItem(me) === id ? '装備中' : '装備する',
+        count: 1,
+        glyph: item.icon,
+      });
+    }
+  }
   if (me?.gulf?.fishingKit)
     items.push({ key: 'fishingKit', label: '釣り道具', note: '', count: 1, glyph: 'wave' });
   return items;
@@ -2128,6 +2170,10 @@ function inventoryEntries() {
 function inventoryMarkup() {
   const model = characterModel(player() ?? profile);
   return `<header class="inventory-header"><span class="portrait ${model.species} ${model.key}" role="img" aria-label="${model.name}"><i></i></span><div class="inventory-status"><h2>持ち物</h2><div id="inventory-energy-track" class="energy-track" role="progressbar" aria-label="体力" aria-valuemin="0" aria-valuemax="100"><span id="inventory-energy-bar" class="energy-fill"></span><em class="energy-label">${icon('leaf')}<b>体力</b><span id="inventory-energy-label"></span></em></div></div></header><div class="inventory-workspace"><section class="inventory-storage" aria-label="所持品"><div class="inventory-section-heading"><h3>持っているもの</h3></div><div class="inventory-grid"></div></section>${inventoryCrafting.markup()}</div>`;
+}
+function equipmentForKey(key: string): EquipmentId | null {
+  if (key === 'weapon') return characterModel(player() ?? profile).weapon ? 'character' : 'spear';
+  return key === 'axe' || key === 'obsidianSpear' ? key : null;
 }
 function itemChoices(key: string) {
   const me = player();
@@ -2173,7 +2219,7 @@ function updateInventory() {
       ? entries
           .map(
             ({ key, label, note, count, glyph }) =>
-              `<div class="inventory-card${ITEM_USES[key] ? ' inventory-usable' : ''}" data-item="${key}" tabindex="0" ${ITEM_USES[key] ? 'role="button"' : ''} aria-label="${label} ${count}個"><span class="resource-icon ${key}">${icon(glyph)}</span><strong>${label}<b data-modal-count="${key}">${count}</b></strong>${note ? `<p>${note}</p>` : ''}</div>`,
+              `<div class="inventory-card${ITEM_USES[key] ? ' inventory-usable' : ''}${note === '装備中' ? ' inventory-equipped' : ''}" data-item="${key}" tabindex="0" ${ITEM_USES[key] ? 'role="button"' : ''} aria-label="${label} ${count}個${equipmentForKey(key) ? ` ${note}` : ''}"><span class="resource-icon ${key}">${icon(glyph)}</span><strong>${label}<b data-modal-count="${key}">${count}</b></strong>${note ? `<p>${note}</p>` : ''}</div>`,
           )
           .join('')
       : '<p class="inventory-none" tabindex="0">持ち物はありません。</p>';
@@ -2207,6 +2253,13 @@ function itemActionsSignature(key: string) {
   return JSON.stringify(itemChoices(key).map((use) => [use.action, itemUseReason(key, use)]));
 }
 function openItemActions(card: HTMLElement) {
+  const equipment = equipmentForKey(card.dataset.item!);
+  if (equipment) {
+    closeItemActions();
+    if (equippedItem(player()) === equipment) inventoryCrafting.status('すでに装備しています。');
+    else equipmentUI.open(equipment, false, card);
+    return;
+  }
   const oldAction = card.querySelector('.item-actions')?.contains(document.activeElement)
     ? (document.activeElement as HTMLElement).dataset.itemAction
     : undefined;
@@ -2731,10 +2784,10 @@ $('#setup-form').onsubmit = (e) => {
   enterGame();
 };
 $('#modal-close').onclick = () => {
-  if (!cancelRoomReset()) $('#modal').close();
+  if (!equipmentUI.close() && !cancelRoomReset()) $('#modal').close();
 };
 $('#modal').addEventListener('cancel', (event) => {
-  if (cancelRoomReset() || closeCharacterConfirm()) event.preventDefault();
+  if (equipmentUI.close() || cancelRoomReset() || closeCharacterConfirm()) event.preventDefault();
 });
 $('#modal').addEventListener('click', (e) => {
   if (e.target === $('#modal')) {
@@ -2895,6 +2948,7 @@ gamepadControls = new GamepadControls({
   },
   cancelMenu: () => {
     if (chatUI?.dialog.open) return chatUI.setOpen(false);
+    if (equipmentUI.close()) return;
     if (cancelRoomReset()) return;
     if (closeCharacterConfirm()) {
       gamepadControls?.suspend();

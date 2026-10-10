@@ -2116,6 +2116,7 @@ dialog:has(.character-switch) {
   object-fit: contain;
 }
 /* Confirmation raised over the grid the moment a card is picked; はい is focused first. */
+.equipment-confirm,
 .character-confirm {
   position: fixed;
   inset: 0;
@@ -2126,6 +2127,63 @@ dialog:has(.character-switch) {
   background: radial-gradient(80% 70% at 50% 50%, #0b1610d8, #04090bf0);
   backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px);
+}
+.equipment-confirm {
+  z-index: 12;
+  overflow: auto;
+}
+.equipment-confirm-card {
+  width: min(440px, 100%);
+  max-height: 100%;
+  overflow: auto;
+  padding: clamp(18px, 4vw, 28px);
+  border: 1px solid #e0b07077;
+  border-radius: 18px;
+  background: #152119;
+  box-shadow: 0 24px 80px #000b;
+}
+.equipment-confirm-card > .resource-icon {
+  width: 52px;
+  height: 52px;
+  color: #edc98c;
+}
+.equipment-confirm-name {
+  color: #edc98c;
+  margin: 12px 0 6px;
+  font-weight: 700;
+}
+.equipment-confirm-card h3 {
+  margin: 0 0 18px;
+  font-size: clamp(19px, 5vw, 24px);
+}
+#equipment-current {
+  font-weight: 700;
+}
+#equipment-confirm-note,
+#equipment-confirm-result {
+  font-size: 14px;
+  line-height: 1.7;
+  color: #cad1be;
+}
+#equipment-confirm-result:empty {
+  display: none;
+}
+.equipment-confirm-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 20px;
+}
+.equipment-confirm-actions .button {
+  flex: 1 1 120px;
+  min-height: 48px;
+}
+.inventory-card.inventory-equipped {
+  border-color: #edc98c;
+}
+.inventory-equipped > p {
+  color: #edc98c;
+  font-weight: 700;
 }
 .character-confirm-card {
   position: relative;

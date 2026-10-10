@@ -61,6 +61,15 @@ async function open(roomName, mobile = false) {
     ({ mobile }) => {
       localStorage.setItem('cro-species', 'cro');
       localStorage.setItem('cro-gender', 'female');
+      window.qaEquipRequests = [];
+      const originalSend = WebSocket.prototype.send;
+      WebSocket.prototype.send = function (data) {
+        try {
+          const message = JSON.parse(data);
+          if (message.action === 'equipItem') window.qaEquipRequests.push(message);
+        } catch {}
+        return originalSend.call(this, data);
+      };
       if (!mobile) {
         window.qaPad = {
           id: 'Wireless Controller',
@@ -128,12 +137,48 @@ async function craft(page, id, input = 'click') {
     `${id} acknowledged`,
   );
   assert.equal(await page.locator('#modal').evaluate((el) => el.open), true);
+  if (id === 'axe' || id === 'spear') {
+    await page.locator('#equipment-confirm').waitFor();
+    assert.match(await page.locator('#equipment-confirm-title').innerText(), /これを装備しますか/);
+    assert.equal(
+      await page
+        .locator('#equipment-confirm')
+        .evaluate((el) => el.contains(document.activeElement)),
+      true,
+    );
+    return;
+  }
   if (input !== 'touch')
     assert.equal(await button.evaluate((el) => el === document.activeElement), true);
   assert.ok(
     Math.abs((await page.locator('.pause-panels').evaluate((el) => el.scrollTop)) - before) <= 2,
     `${id}: crafting preserves scroll position`,
   );
+}
+async function padButton(page, button) {
+  await page.evaluate((index) => {
+    window.qaPad.buttons[index] = { pressed: true, value: 1 };
+  }, button);
+  await sleep(120);
+  await page.evaluate((index) => {
+    window.qaPad.buttons[index] = { pressed: false, value: 0 };
+  }, button);
+  await sleep(160);
+}
+async function equipmentIs(page, me, id) {
+  await until(() => me.equippedItem === id, `server equips ${id}`);
+  await until(
+    async () =>
+      (await page.locator('.inventory-equipped').count()) === 1 &&
+      (await page.locator('.inventory-equipped').getAttribute('data-item')) ===
+        (id === 'spear' ? 'weapon' : id),
+    `one equipped card: ${id}`,
+  );
+  await until(async () => {
+    const data = await page.locator('#world').evaluate((el) => ({ ...el.dataset }));
+    return data.toolVisible === String(id === 'axe') && data.weaponVisible === String(id !== 'axe');
+  }, `only selected GLB visible: ${id}`);
+  assert.equal(await page.locator('#modal').evaluate((el) => el.open), true);
 }
 try {
   let user = await open('CRAFT-UI');
@@ -153,13 +198,62 @@ try {
   await craft(page, 'axe');
   assert.equal(me.tool, true);
   assert.equal(await page.locator('[data-item="axe"]').count(), 1);
+  await equipmentIs(page, me, 'spear');
+  await page.screenshot({ path: `${out}/axe-offer.png` });
+  for (let i = 0; i < 4; i++) {
+    await page.keyboard.press('Tab');
+    assert.equal(
+      await page
+        .locator('#equipment-confirm')
+        .evaluate((el) => el.contains(document.activeElement)),
+      true,
+    );
+  }
+  await page.keyboard.press('Escape');
+  assert.equal(await page.locator('#equipment-confirm').count(), 0);
+  assert.equal(
+    await page.locator('[data-craft="axe"]').evaluate((el) => el === document.activeElement),
+    true,
+  );
+  await equipmentIs(page, me, 'spear');
+  assert.equal(await page.evaluate(() => window.qaEquipRequests.length), 0);
+  pass(
+    'Crafting grants the axe but keeps the spear; Tab is trapped and Escape declines without closing inventory or sending an equip request',
+  );
+  await page.locator('[data-item="axe"]').click();
+  await page.locator('#equipment-confirm-no').click();
+  await equipmentIs(page, me, 'spear');
+  await page.locator('[data-item="axe"]').click();
+  await page.keyboard.press('Enter');
+  await equipmentIs(page, me, 'axe');
+  assert.equal(await page.locator('#equipment-confirm').count(), 0);
+  assert.equal(
+    await page.locator('[data-item="axe"]').evaluate((el) => el === document.activeElement),
+    true,
+  );
+  assert.equal(await page.evaluate(() => window.qaEquipRequests.length), 1);
+  pass(
+    'Choosing the axe asks again; declining preserves the spear, keyboard acceptance switches one slot and the rendered model',
+  );
   await craft(page, 'blade');
   assert.equal(me.inventory.obsidianBlade, 1);
   assert.equal(me.inventory.stone, 3);
   await craft(page, 'spear', 'pad');
   assert.equal(me.spearHead, 'obsidian');
   assert.equal(me.inventory.obsidianBlade, 0);
-  assert.match(await page.locator('[data-item="weapon"]').innerText(), /黒曜石の槍/);
+  assert.match(await page.locator('[data-item="obsidianSpear"]').innerText(), /黒曜石の槍/);
+  await equipmentIs(page, me, 'axe');
+  await page.screenshot({ path: `${out}/spear-offer.png` });
+  await padButton(page, PAD.cross);
+  assert.equal(await page.locator('#equipment-confirm').count(), 0);
+  await equipmentIs(page, me, 'axe');
+  await page.locator('[data-item="obsidianSpear"]').click();
+  await padButton(page, PAD.circle);
+  await equipmentIs(page, me, 'obsidianSpear');
+  assert.equal(await page.evaluate(() => window.qaEquipRequests.length), 2);
+  pass(
+    'Crafted obsidian spear stays stored on controller cancel; one controller confirmation switches from axe to spear with no double request',
+  );
   pass(
     'Mouse and simulated controller craft axe, reusable-tool blade and spear; equipment is listed immediately',
   );
@@ -204,7 +298,25 @@ try {
   await page.keyboard.press('Escape');
   await page.keyboard.press('i');
   assert.equal(await page.locator('[data-item="boat"] b').innerText(), '2');
-  assert.match(await page.locator('[data-item="weapon"]').innerText(), /黒曜石の槍/);
+  assert.match(await page.locator('[data-item="obsidianSpear"]').innerText(), /黒曜石の槍/);
+  await equipmentIs(page, me, 'obsidianSpear');
+  // A fresh, memory-only ownership fixture exercises the retained number-key entry.
+  me.tool = false;
+  await until(
+    async () =>
+      (await page.locator('[data-craft="axe"]').getAttribute('aria-disabled')) === 'false',
+    'new axe fixture',
+  );
+  await page.keyboard.press('Escape');
+  await page.keyboard.press('2');
+  await page.locator('#equipment-confirm').waitFor();
+  assert.equal(me.tool, true);
+  await equipmentIs(page, me, 'obsidianSpear');
+  await page.keyboard.press('Escape');
+  assert.equal(await page.locator('#modal').evaluate((el) => el.open), true);
+  pass(
+    'Number-key crafting opens the inventory and offers equipment without replacing the current spear',
+  );
   await page.close();
   user = await open('CRAFT-TOUCH', true);
   ({ page } = user);
@@ -214,6 +326,35 @@ try {
     { width: 844, height: 390 },
   ]) {
     await page.setViewportSize(viewport);
+    if (!user.me.tool) {
+      await craft(page, 'axe', 'touch');
+      await page.locator('#equipment-confirm-no').tap();
+      await equipmentIs(page, user.me, 'spear');
+    }
+    await page.locator('[data-item="axe"]').tap();
+    const yes = page.locator('#equipment-confirm-yes');
+    const rect = await yes.boundingBox();
+    assert.ok(
+      rect.height >= 44 &&
+        rect.width >= 44 &&
+        rect.y >= 0 &&
+        rect.y + rect.height <= viewport.height,
+    );
+    assert.equal(
+      await page
+        .locator('#equipment-confirm')
+        .evaluate((el) => el.scrollWidth > el.clientWidth + 1),
+      false,
+    );
+    await page.screenshot({ path: `${out}/equip-${viewport.width}x${viewport.height}.png` });
+    await yes.tap();
+    await equipmentIs(page, user.me, 'axe');
+    await page.locator('[data-item="weapon"]').tap();
+    await page.locator('#equipment-confirm-yes').tap();
+    await equipmentIs(page, user.me, 'spear');
+    pass(
+      `${viewport.width}x${viewport.height}: touch confirms each equipment change with visible 44px targets and one held model`,
+    );
     await craft(page, 'boat', 'touch');
     assert.equal(
       await page.locator('#modal').evaluate((el) => el.scrollWidth > el.clientWidth + 1),

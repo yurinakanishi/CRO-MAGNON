@@ -8,6 +8,7 @@ import { hitFriend } from './friend-mascots.mjs';
 import { hitCompanion524, companion524OnGround } from './companion-524.mjs';
 import { roomRules } from './room-rules.mjs';
 import { caveInteriorWeight } from './cave-light.mjs';
+import { equippedItem } from './equipment.mjs';
 
 export const COMBAT = Object.freeze({
   attackDamage: 15,
@@ -110,6 +111,7 @@ const clearLine = (room, player, target) =>
 export function startAttack(room, player, message: { targetId?: string } = {}, now = Date.now()) {
   const profile = attackProfile(player);
   if (player.downedUntil) return { accepted: false, reason: 'downed' };
+  if (equippedItem(player) === 'axe') return { accepted: false, reason: 'equipment' };
   const carrier = player.carrierId && room.players.get(player.carrierId);
   if (caveInteriorWeight(player) > 0 || (carrier && caveInteriorWeight(carrier) > 0))
     return { accepted: false, reason: 'cave' };

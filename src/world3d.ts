@@ -91,6 +91,7 @@ import {
   resizePrayerSeal,
 } from './crow-faction-visuals.js';
 import { attackProfile } from '../shared/combat-profiles.mjs';
+import { equippedItem } from '../shared/equipment.mjs';
 import { CollisionWorld } from '../shared/collision.mjs';
 import { CHARACTER_MODELS, characterModel } from '../shared/characters.mjs';
 import { enemyAnimationState, playerRecovered } from './enemy-state.js';
@@ -2462,10 +2463,8 @@ export class WorldRenderer {
             petting.weight === 0 &&
             !p.fishing &&
             !p.coastalActivity &&
-            p.tool &&
-            (profile.key === 'spear'
-              ? !entity.actor.animation.oneShot
-              : entity.actor.animation.name === 'Gather');
+            equippedItem(p) === 'axe' &&
+            (!entity.actor.animation.oneShot || entity.actor.animation.name === 'Gather');
           if (entity.weapon) {
             entity.weapon.visible =
               caveInteriorWeight(p) === 0 &&
@@ -2473,8 +2472,8 @@ export class WorldRenderer {
               petting.weight === 0 &&
               !p.fishing &&
               !p.coastalActivity &&
-              (attack ||
-                (!entity.actor.animation.oneShot && (profile.key === 'katana' || !p.tool)));
+              equippedItem(p) !== 'axe' &&
+              (attack || !entity.actor.animation.oneShot);
             if (profile.key === 'katana')
               orientKatana(
                 entity.weapon,

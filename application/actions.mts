@@ -5,6 +5,8 @@ import { ALL_CONTENT, characterVisible } from '../shared/content-visibility.mjs'
 import { handleAdventureAction, recordAdventureGather } from '../shared/adventures.mjs';
 import { handleBoatAction } from '../shared/boats.mjs';
 import { craftInventory } from '../shared/inventory-crafting.mjs';
+import { equippedItem } from '../shared/equipment.mjs';
+import { equipItem } from '../shared/equipment-actions.mjs';
 import { attackProfile, shoulderMagic } from '../shared/combat-profiles.mjs';
 import { handleHuntingAction } from '../shared/hunting.mjs';
 import { GATHER_RANGE, interactionVisible } from '../shared/interactions.mjs';
@@ -56,6 +58,12 @@ export function createActionHandler({
     sendNotice(player, text, tone, false);
   return function act(room, player, message, now) {
     const action = message.action;
+    if (action === 'equipItem') {
+      const result = equipItem(player, message.targetId, now);
+      if (result.ok) broadcast(room, snapshot(room, true));
+      reply(player, { type: 'equipmentResult', itemId: message.targetId, ...result });
+      return;
+    }
     if (action === 'inventoryCraft') {
       const result = craftInventory(room, player, message.targetId, now);
       if (result.ok) broadcast(room, snapshot(room, true));
@@ -349,7 +357,10 @@ export function createActionHandler({
             : '資源に近づいてから採集しよう。遮られている場合は回り込もう。',
           'error',
         );
-      const amount = Math.min(nearest.amount, player.tool && nearest.type !== 'berry' ? 2 : 1);
+      const amount = Math.min(
+        nearest.amount,
+        equippedItem(player) === 'axe' && nearest.type !== 'berry' ? 2 : 1,
+      );
       if (player.inventory[nearest.type] >= 99)
         return notice(player, '持ち物がいっぱいです。焚き火に届けよう。', 'error');
       const collected = Math.min(amount, 99 - player.inventory[nearest.type]);
@@ -394,8 +405,13 @@ export function createActionHandler({
         return notice(player, '石斧には木材 3・石 2 が必要です。', 'error');
       player.inventory.wood -= 3;
       player.inventory.stone -= 2;
+      player.equippedItem = equippedItem(player);
       player.tool = true;
-      notice(player, '石斧ができた！ 木材と石を一度に2つ採集できます。', 'success');
+      notice(
+        player,
+        '石斧を持ち物に追加しました。装備すると木材と石を一度に2つ採集できます。',
+        'success',
+      );
     } else if (action === 'trade') {
       if (distance(player, NPC) > 10)
         return notice(player, 'オルに近づいて話しかけよう。', 'error');

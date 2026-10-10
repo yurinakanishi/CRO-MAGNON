@@ -7,10 +7,13 @@ export type Species = 'cro' | 'nea' | 'cat' | 'bear' | 'ape' | 'howkey' | 'marui
 export type Gender = 'female' | 'male';
 export type Difficulty = import('./difficulty.mjs').Difficulty;
 export type ResourceKind = 'wood' | 'stone' | 'berry' | 'obsidian';
+export type EquipmentId = 'axe' | 'spear' | 'obsidianSpear' | 'character';
 export interface CharacterProfile {
   species?: unknown;
   gender?: unknown;
   spearHead?: 'wood' | 'obsidian';
+  tool?: boolean;
+  equippedItem?: EquipmentId;
   difficulty?: Difficulty;
 }
 export interface CharacterModel {
