@@ -6,6 +6,10 @@ import { mkdir, realpath } from 'node:fs/promises';
 import { WebSocketServer } from 'ws';
 import { createGameCore } from './application/game-core.mjs';
 import { MIME, serveStatic } from './infrastructure/node/static-files.mjs';
+import {
+  type DeliveryOverlay,
+  readDeliveryOverlay,
+} from './infrastructure/node/delivery-overlay.mjs';
 import { readLocalVisibility } from './infrastructure/node/local-visibility.mjs';
 import { localVerificationSettings } from './infrastructure/node/local-verification.mjs';
 import { ALL_CONTENT } from './shared/content-visibility.mjs';
@@ -47,6 +51,8 @@ export function createGameServer({
   assetRoot = ROOT,
   environment = null as EnvironmentId | null,
   runtimeConfig = null as object | null,
+  /** Cooked delivery files and manifests naming them (infrastructure/node/delivery-overlay.mts). */
+  delivery = null as DeliveryOverlay | null,
 } = {}) {
   const { rooms, snapshot, tick } = core;
   let interval;
@@ -123,7 +129,7 @@ export function createGameServer({
         return;
       }
       if (serveAssets)
-        await serveStatic(request, response, url.pathname, assetRoot, core.visibility);
+        await serveStatic(request, response, url.pathname, assetRoot, core.visibility, delivery);
       else response.writeHead(404).end('Multiplayer synchronization only. Use your local client.');
     } catch (error) {
       response
@@ -440,6 +446,9 @@ export async function startServer() {
         process.env.EXHIBITION_RULES === '1'
           ? ALL_CONTENT
           : await readLocalVisibility(path.join(ROOT, 'local-visibility.json')),
+      // The packaged builds ship cooked delivery files; the local server sends them too once
+      // `npm run cook` prepared the overlay. CRO_DELIVERY=masters sends the masters.
+      delivery: process.env.CRO_DELIVERY === 'masters' ? null : await readDeliveryOverlay(ROOT),
     });
     const { port } = await game.listen();
     console.log(`CRO-MAGNON running at http://localhost:${port} (local autosave every 10s)`);

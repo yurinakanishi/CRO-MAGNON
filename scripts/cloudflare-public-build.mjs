@@ -19,6 +19,13 @@ import {
   manifestDigests,
   retiredLiteralsIn,
 } from './runtime-graph.mjs';
+import {
+  deliveredAsset,
+  deliveryGraph,
+  deliveryLedger,
+  textureLedger,
+} from './delivery/delivery-graph.mjs';
+import { cookedFixedPng } from './delivery/delivery-cache.mjs';
 import './build.mjs';
 if (process.exitCode) throw new Error('TypeScript build failed');
 const { CHARACTER_MODELS } = await import('../dist/shared/characters.mjs');
@@ -237,17 +244,29 @@ const runtimeGraph = checkRuntimeGraph(assets, adoption, {
   textureRecords: runtimeTextureRecords,
   textureExtensions: ['png'],
 });
+// The checked masters ship as their cooked delivery files (scripts/delivery): the same scenes,
+// rigs, clips and materials with lossy-filtered floats and re-encoded PNG colour, each verified
+// against its master when cooked. Manifests are rewritten to name them; masters stay unchanged.
+const delivery = await deliveryGraph(root, assets, { textureRecords: runtimeTextureRecords });
+const masters = new Map();
 let compressedModels = false;
 for (const asset of assets) {
   for (const record of [asset, ...(asset.lods || [])]) {
     checkModelUrl(record.url, record.sha256);
     if (downloads.has(record.url)) continue;
-    const bytes = await readFile(path.join(root, `public${record.url}`));
-    if (hash(bytes) !== record.sha256 || bytes.length !== record.bytes)
+    const master = await readFile(path.join(root, `public${record.url}`));
+    if (hash(master) !== record.sha256 || master.length !== record.bytes)
       throw new Error(`Model mismatch: ${record.url}`);
-    if (glbExtensionsRequired(bytes, record.url).includes(MESHOPT_EXTENSION))
+    masters.set(record.url, { sha256: record.sha256, bytes: record.bytes });
+    const cooked = delivery.deliveries.get(record.url);
+    if (!cooked) throw new Error(`No delivery file for ${record.url}`);
+    const bytes = cooked.cooked ? await readFile(cooked.file) : master;
+    if (hash(bytes) !== cooked.sha256 || bytes.length !== cooked.bytes)
+      throw new Error(`Delivery mismatch: ${cooked.url} for ${record.url}`);
+    checkModelUrl(cooked.url, cooked.sha256);
+    if (glbExtensionsRequired(bytes, cooked.url).includes(MESHOPT_EXTENSION))
       compressedModels = true;
-    const download = { url: record.url, sha256: record.sha256, bytes: record.bytes };
+    const download = { url: cooked.url, sha256: cooked.sha256, bytes: cooked.bytes };
     if (bytes.length > fileLimit) {
       download.parts = [];
       for (let offset = 0, part = 0; offset < bytes.length; offset += partSize, part++) {
@@ -265,7 +284,8 @@ for (const asset of assets) {
         throw new Error(`Model reconstruction failed: ${record.url}`);
     } else await publish(download.url, bytes);
     downloads.set(record.url, download);
-    models.push(download);
+    // Packed levels share one delivery file: list each physical file once.
+    if (!models.some((model) => model.url === download.url)) models.push(download);
   }
   const textures = runtimeTextureRecords(asset);
   for (const texture of textures) {
@@ -277,7 +297,18 @@ for (const asset of assets) {
     )
       throw new Error(`Runtime texture mismatch: ${texture.url}`);
     checkTextureImage(texture, bytes, texture.url);
-    await publish(texture.url, bytes);
+    // The checked master ships as its cooked delivery file (same decoded size).
+    const cooked = delivery.textures.get(texture.url) ?? {
+      ...texture,
+      bytes: bytes.length,
+      cooked: false,
+      report: { master: texture },
+    };
+    const shipped = cooked.cooked ? await readFile(cooked.file) : bytes;
+    if (hash(shipped) !== cooked.sha256 || shipped.length !== cooked.bytes)
+      throw new Error(`Texture delivery mismatch: ${cooked.url} for ${texture.url}`);
+    checkTextureUrl(cooked.url, cooked.sha256, ['png', 'webp']);
+    await publish(cooked.url, shipped);
   }
 }
 // Compressed models load only through the decoder Three ships with the published GLTFLoader.
@@ -288,11 +319,16 @@ const decoder = await checkDecoder(
     : undefined,
   { required: compressedModels, adoption },
 );
-const transform = (asset) => ({
-  ...asset,
-  ...downloads.get(asset.url),
-  ...(asset.lods ? { lods: asset.lods.map((lod) => ({ ...lod, ...downloads.get(lod.url) })) } : {}),
-});
+const transform = (asset) => {
+  const delivered = deliveredAsset(asset, delivery.deliveries, delivery.textures);
+  return {
+    ...delivered,
+    ...downloads.get(asset.url),
+    ...(asset.lods
+      ? { lods: delivered.lods.map((lod, i) => ({ ...lod, ...downloads.get(asset.lods[i].url) })) }
+      : {}),
+  };
+};
 for (const asset of assets) {
   const source = mascotAsset(
     JSON.parse(
@@ -307,17 +343,22 @@ for (const asset of assets) {
       textureExtensions: ['png'],
     });
     for (const record of [source, ...(source.lods || [])]) {
-      const shipped = downloads.get(record.url);
+      const shipped = masters.get(record.url);
       if (!shipped || shipped.sha256 !== record.sha256 || shipped.bytes !== record.bytes)
         throw new Error(
           `/models/${asset.modelKey}/asset.json names ${record.url}, which this build does not ship`,
         );
     }
-    for (const texture of runtimeTextureRecords(source))
-      if (files.get(texture.url.slice(1))?.sha256 !== texture.sha256)
+    for (const texture of runtimeTextureRecords(source)) {
+      const shipped = delivery.textures.get(texture.url) ?? texture;
+      if (
+        (shipped !== texture && shipped.report.master.sha256 !== texture.sha256) ||
+        files.get(shipped.url.slice(1))?.sha256 !== shipped.sha256
+      )
         throw new Error(
           `/models/${asset.modelKey}/asset.json names ${texture.url}, which this build does not ship`,
         );
+    }
   }
   await publish(
     `/models/${asset.modelKey}/asset.json`,
@@ -328,16 +369,23 @@ await publish(
   '/models/world-assets.json',
   Buffer.from(JSON.stringify({ ...catalog, assets: worldAssets.map(transform) }, null, 2)),
 );
+// Portraits keep their fixed .png URLs (markup and CSS name them); each ships as its palette PNG
+// when that is smaller and within the delivery quality bound (scripts/delivery/cook-texture.mjs).
+// A portrait a manifest declares as a runtime texture keeps its master bytes, so the recorded
+// SHA-256 stays true.
+const declaredTextures = new Set(
+  assets.flatMap((asset) => runtimeTextureRecords(asset).map((texture) => texture.url)),
+);
+const portrait = async (url) =>
+  declaredTextures.has(url)
+    ? await readFile(path.join(root, `public${url}`))
+    : (await cookedFixedPng(root, `public${url}`)).bytes;
 for (const { key } of publicCharacters)
-  await publish(
-    `/models/${key}/portrait.png`,
-    await readFile(path.join(root, `public/models/${key}/portrait.png`)),
-  );
-for (const url of runtimeBotPortraitUrls(assets))
-  await publish(url, await readFile(path.join(root, `public${url}`)));
+  await publish(`/models/${key}/portrait.png`, await portrait(`/models/${key}/portrait.png`));
+for (const url of runtimeBotPortraitUrls(assets)) await publish(url, await portrait(url));
 for (const friend of FRIEND_MASCOTS.filter((friend) => ACTIVE_MASCOT_MODELS.includes(friend.key))) {
   const url = `/models/${friend.key}/portrait.png`;
-  await publish(url, await readFile(path.join(root, `public${url}`)));
+  await publish(url, await portrait(url));
 }
 // A year-long immutable cache is only safe when every shipped GLB name is content-addressed.
 const immutableModels =
@@ -413,6 +461,12 @@ const report = {
   runtimeAdoption: runtimeGraph.adoption,
   runtimeGraph,
   decoder,
+  delivery: {
+    recipe: delivery.recipe,
+    summary: delivery.summary,
+    files: deliveryLedger(delivery.deliveries),
+    textures: textureLedger(delivery.textures),
+  },
   immutableModelCache: immutableModels,
   retiredLiterals,
   sourceManifests,
@@ -435,5 +489,5 @@ await writeFile(
   JSON.stringify(report, null, 2),
 );
 console.log(
-  `Cloudflare assets: ${files.size} files, ${(total / 1024 / 1024).toFixed(1)} MiB; ${models.length} exact GLBs, ${models.filter((model) => model.parts).length} split. Credits: ${release.credits}. Runtime adoption: ${adoption ? adoption.id : 'none (exact manifest files)'}; meshopt decoder ${decoder.required ? 'included' : 'not needed'}; immutable GLB cache ${immutableModels ? 'on' : 'off'}; ${retiredLiterals.length} quoted literal(s) of replaced files in shipped code (listed in the report).`,
+  `Cloudflare assets: ${files.size} files, ${(total / 1024 / 1024).toFixed(1)} MiB; ${models.length} GLBs (${delivery.summary.cooked} cooked for delivery, ${(delivery.summary.masterBytes / 1024 / 1024).toFixed(1)} → ${(delivery.summary.deliveryBytes / 1024 / 1024).toFixed(1)} MiB), ${models.filter((model) => model.parts).length} split. Credits: ${release.credits}. Runtime adoption: ${adoption ? adoption.id : 'none (exact manifest files)'}; meshopt decoder ${decoder.required ? 'included' : 'not needed'}; immutable GLB cache ${immutableModels ? 'on' : 'off'}; ${retiredLiterals.length} quoted literal(s) of replaced files in shipped code (listed in the report).`,
 );

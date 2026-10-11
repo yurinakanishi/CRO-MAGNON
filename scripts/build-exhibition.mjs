@@ -1,3 +1,4 @@
+import { createHash } from 'node:crypto';
 import { existsSync } from 'node:fs';
 import { mkdir, readdir, readFile, copyFile, stat, writeFile } from 'node:fs/promises';
 import path from 'node:path';
@@ -17,6 +18,13 @@ import {
   retiredLiteralsIn,
 } from './runtime-graph.mjs';
 import { checkPhysicalModels, runtimeFiles } from './packaged-models.mjs';
+import {
+  deliveredAsset,
+  deliveryGraph,
+  deliveryLedger,
+  textureLedger,
+} from './delivery/delivery-graph.mjs';
+import { cookedFixedPng } from './delivery/delivery-cache.mjs';
 import './build.mjs';
 if (process.exitCode) throw new Error('TypeScript build failed');
 if (process.platform !== 'win32')
@@ -50,6 +58,8 @@ if ((await readdir(destination)).length)
   );
 const sources = new Map();
 const add = (file) => sources.set(file, path.join(root, file));
+// Package files written from bytes made here (the delivery manifests), not copied.
+const generated = new Map();
 async function collect(directory, filter = () => true) {
   for (const entry of await readdir(path.join(root, directory), { withFileTypes: true })) {
     if (entry.name.startsWith('.')) continue;
@@ -75,7 +85,6 @@ for (const file of [
   'public/index.html',
   'public/favicon.svg',
   'public/multiplayer-config.json',
-  'public/models/world-assets.json',
   'scripts/exhibition-integrity.mjs',
   ...(local
     ? ['scripts/start-local.mjs', 'start-local.cmd', 'README-LOCAL.md', 'local-visibility.json']
@@ -114,7 +123,29 @@ const runtimeGraph = checkRuntimeGraph(manifest.assets, adoption, {
 // Each physical GLB is checked and packaged once: a packed template's levels are scenes of one
 // file. runtimeGraph.models keeps every logical level record with its scene.
 const physicalModels = await checkPhysicalModels(root, runtimeGraph);
-for (const file of physicalModels.files) add(file);
+// The checked masters are packaged as their cooked delivery files (scripts/delivery) and the
+// packaged manifests name those; the masters and source manifests stay unchanged.
+const delivery = await deliveryGraph(root, manifest.assets, {
+  textureRecords: runtimeTextureRecords,
+});
+for (const file of physicalModels.files) {
+  const cooked = delivery.deliveries.get(file.slice('public'.length));
+  if (!cooked) throw new Error(`No delivery file for ${file}`);
+  if (cooked.cooked) sources.set(`public${cooked.url}`, cooked.file);
+  else add(file);
+}
+const deliveredJson = async (file, rewrite) => {
+  const text = await readFile(path.join(root, file), 'utf8');
+  const json = rewrite(JSON.parse(text));
+  const newline = text.endsWith('\n') ? '\n' : '';
+  generated.set(file, Buffer.from(JSON.stringify(json, null, 2) + newline));
+};
+await deliveredJson('public/models/world-assets.json', (catalog) => ({
+  ...catalog,
+  assets: catalog.assets.map((asset) =>
+    deliveredAsset(asset, delivery.deliveries, delivery.textures),
+  ),
+}));
 const glbs = physicalModels.files.length,
   compressedModels = physicalModels.compressed;
 for (const asset of manifest.assets) {
@@ -134,7 +165,9 @@ for (const asset of manifest.assets) {
       textureRecords: runtimeTextureRecords,
       textureExtensions,
     });
-  add(`public/models/${asset.modelKey}/asset.json`);
+  await deliveredJson(`public/models/${asset.modelKey}/asset.json`, (own) =>
+    deliveredAsset(own, delivery.deliveries, delivery.textures),
+  );
   // External runtime textures (for example cave pigment and limestone) are
   // declared directly on the accepted asset. Historical provenance is not shipped.
   for (const texture of runtimeTextureRecords(asset)) {
@@ -146,7 +179,10 @@ for (const asset of manifest.assets) {
     )
       throw new Error(`Texture integrity failed: ${file}`);
     checkTextureImage(texture, await readFile(path.join(root, file)), file);
-    add(file);
+    // The checked master is packaged as its cooked delivery file (same decoded size).
+    const cooked = delivery.textures.get(texture.url);
+    if (cooked?.cooked) sources.set(`public${cooked.url}`, cooked.file);
+    else add(file);
   }
 }
 // Compressed models load only through the decoder Three ships with the packaged GLTFLoader.
@@ -165,8 +201,27 @@ for (const [file, source] of sources)
   if (/^(?:dist|public)\/.*\.(?:m?js|css|html)$/.test(file))
     for (const url of retiredLiteralsIn(await readFile(source, 'utf8'), adoption))
       retiredLiterals.push({ file, url });
-for (const { key } of CHARACTER_MODELS) add(`public/models/${key}/portrait.png`);
-for (const url of runtimeBotPortraitUrls(manifest.assets)) add(`public${url}`);
+// Portraits keep their fixed .png URLs; each is packaged as its palette PNG when that is smaller
+// and within the delivery quality bound (scripts/delivery/cook-texture.mjs). One a manifest
+// declares as a runtime texture keeps its master bytes (its recorded SHA-256 stays true) and is
+// packaged once with the other texture records.
+const declaredTextures = new Set(
+  manifest.assets.flatMap((asset) =>
+    runtimeTextureRecords(asset).map((texture) => `public${texture.url}`),
+  ),
+);
+for (const file of [
+  ...CHARACTER_MODELS.map(({ key }) => `public/models/${key}/portrait.png`),
+  ...runtimeBotPortraitUrls(manifest.assets).map((url) => `public${url}`),
+]) {
+  if (declaredTextures.has(file)) {
+    add(file);
+    continue;
+  }
+  const cooked = await cookedFixedPng(root, file);
+  if (cooked.cooked) generated.set(file, cooked.bytes);
+  else add(file);
+}
 sources.set('runtime/node.exe', process.execPath);
 // Keep the license for the exact bundled runtime. New Node versions need their
 // matching license added during preparation, never fetched at exhibition startup.
@@ -183,11 +238,17 @@ files.push({
   path: 'public/build-profile.json',
   sha256: await sha256(path.join(destination, 'public/build-profile.json')),
 });
-for (const [file, source] of [...sources].sort(([a], [b]) => a.localeCompare(b))) {
+for (const file of generated.keys())
+  if (sources.has(file)) throw new Error(`${file} is both copied and generated`);
+for (const [file, source] of [
+  ...[...sources].sort(([a], [b]) => a.localeCompare(b)),
+  ...[...generated.keys()].sort().map((file) => [file, null]),
+]) {
   const target = path.join(destination, file);
   await mkdir(path.dirname(target), { recursive: true });
   const publicPath = file.replace(/^(?:dist|public)\//, '');
-  if (['src/build-profile.js', 'src/hand-controls.js', 'index.html'].includes(publicPath))
+  if (source === null) await writeFile(target, generated.get(file));
+  else if (['src/build-profile.js', 'src/hand-controls.js', 'index.html'].includes(publicPath))
     await writeFile(target, environmentAsset(publicPath, await readFile(source), profile));
   else await copyFile(source, target);
   bytes += (await stat(target)).size;
@@ -211,11 +272,17 @@ const newIndex = bundledIndex(originalIndex);
 await writeFile(indexPath, newIndex);
 bytes += newIndex.length - originalIndex.length;
 files.find((file) => file.path === 'public/index.html').sha256 = await sha256(indexPath);
-// The packaged manifests are the checked ones, and the build left the sources unchanged.
+// The packaged manifests are the checked ones with delivery files named, and the build left the
+// sources unchanged.
 assertSameDigests(sourceManifests, await manifestDigests(root, manifest.assets));
-for (const [file, digest] of Object.entries(sourceManifests))
-  if (files.find((packaged) => packaged.path === file)?.sha256 !== digest)
-    throw new Error(`Packaged ${file} is not the checked manifest`);
+for (const file of Object.keys(sourceManifests)) {
+  const packaged = files.find((entry) => entry.path === file)?.sha256;
+  const expected = createHash('sha256')
+    .update(generated.get(file) ?? Buffer.alloc(0))
+    .digest('hex');
+  if (!generated.has(file) || packaged !== expected)
+    throw new Error(`Packaged ${file} is not the checked manifest with its delivery files`);
+}
 const publicFiles = files.filter(
   (file) =>
     /^(?:dist\/(?:src|shared)\/|public\/)/.test(file.path) &&
@@ -250,6 +317,12 @@ const report = {
   runtimeAdoption: runtimeGraph.adoption,
   runtimeGraph,
   decoder,
+  delivery: {
+    recipe: delivery.recipe,
+    summary: delivery.summary,
+    files: deliveryLedger(delivery.deliveries),
+    textures: textureLedger(delivery.textures),
+  },
   retiredLiterals,
   sourceManifests,
 };

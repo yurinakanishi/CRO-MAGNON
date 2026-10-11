@@ -14,7 +14,8 @@ let server,
   timer,
   building = false,
   dirty = false,
-  stopping = false;
+  stopping = false,
+  overlayPrepared = false;
 const watchers = [];
 async function stopServer(child) {
   if (!child || child.exitCode !== null || child.signalCode) return;
@@ -48,6 +49,20 @@ async function rebuild() {
       const [code] = await once(builder, 'exit');
       builder = undefined;
       if (code || stopping) continue;
+      // Once per session, after the first successful build: the cooked delivery overlay the
+      // server sends (scripts/delivery/prepare-overlay.mjs). Without it the masters are sent.
+      if (!overlayPrepared && process.env.CRO_DELIVERY !== 'masters') {
+        builder = spawn(process.execPath, ['scripts/delivery/prepare-overlay.mjs'], {
+          cwd: root,
+          stdio: 'inherit',
+          windowsHide: true,
+        });
+        const [cooked] = await once(builder, 'exit');
+        builder = undefined;
+        if (stopping) continue;
+        if (cooked) console.error('Delivery overlay not prepared; the server sends the masters.');
+        overlayPrepared = true;
+      }
       if (server) {
         await stopServer(server);
       }

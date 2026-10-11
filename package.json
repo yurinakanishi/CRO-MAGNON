@@ -6,13 +6,13 @@
   "description": "A five-player prehistoric gathering game.",
   "scripts": {
     "prepare:vendor": "node scripts/prepare-vendor.mjs",
-    "prestart": "node scripts/prepare-vendor.mjs && node scripts/build.mjs",
+    "prestart": "node scripts/prepare-vendor.mjs && node scripts/build.mjs && node scripts/delivery/prepare-overlay.mjs",
     "predev": "node scripts/prepare-vendor.mjs",
     "start": "node server.mjs",
     "dev": "node scripts/dev.mjs",
     "predev:local": "node scripts/prepare-vendor.mjs",
     "dev:local": "node scripts/dev.mjs --local",
-    "prestart:local": "node scripts/prepare-vendor.mjs && node scripts/build.mjs",
+    "prestart:local": "node scripts/prepare-vendor.mjs && node scripts/build.mjs && node scripts/delivery/prepare-overlay.mjs",
     "start:local": "node scripts/start-verification.mjs",
     "build:mmo": "node scripts/build-cloudflare.mjs --exact-assets",
     "preview:mmo": "node scripts/preview-mmo.mjs",
@@ -25,6 +25,7 @@
     "check:cloudflare": "wrangler deploy --dry-run",
     "deploy:cloudflare": "node scripts/deploy-cloudflare.mjs",
     "build": "node scripts/build.mjs",
+    "cook": "node scripts/build.mjs && node scripts/delivery/prepare-overlay.mjs",
     "build:exhibition": "node scripts/build-exhibition.mjs",
     "typecheck": "node scripts/build.mjs --check",
     "pretest": "node scripts/build.mjs",
@@ -51,6 +52,7 @@
     "meshoptimizer": "1.1.1",
     "miniflare": "5.20260903.0-alpha",
     "prettier": "^3.9.6",
+    "sharp": "0.35.2",
     "typescript": "^6.0.2",
     "wrangler": "4.129.0"
   }

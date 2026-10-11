@@ -136,6 +136,7 @@
 | [optimization-audit-2026-10-09.md](optimization-audit-2026-10-09.md) | 軽量化とスマホ対応の初期監査と変更前測定 |
 | [optimization-codex-2026-10-10.md](optimization-codex-2026-10-10.md) | Codexが引き継いだ読込・描画改善、実パッケージ検証、未達と実機の限界 |
 | [optimization-startup-2026-10-10.md](optimization-startup-2026-10-10.md) | r08の初期読込修正、実タッチの開始→採集、5秒未達と残る素材量 |
+| [delivery-cooking-2026-10-11.md](delivery-cooking-2026-10-11.md) | 正本と配信物を分ける配信用変換、転送量半減・洞窟6.5秒、残る根本課題 |
 | [optimization-assets-lowpoly-2026-10-10.md](optimization-assets-lowpoly-2026-10-10.md) | Opus 5.5 Highによる素材軽量化、候補の独立検査と不採用・修正記録 |
 | [pet-on-start-2026-10-03.md](pet-on-start-2026-10-03.md) | 撫で始めた時点でなつく |
 | [rimo-cave-mural-2026-10-02.md](rimo-cave-mural-2026-10-02.md) | りもねこの壁画を524の反対側へ復活（2026-10-02） |

@@ -1,9 +1,14 @@
 import type { IncomingMessage, ServerResponse } from 'node:http';
 import type { Stats } from 'node:fs';
-import { open, stat } from 'node:fs/promises';
+import { open, readFile, stat } from 'node:fs/promises';
 import path from 'node:path';
 import { ALL_CONTENT, type ContentVisibility } from '../../shared/content-visibility.mjs';
 import { localContentOverride } from './local-visibility.mjs';
+import {
+  type DeliveryOverlay,
+  deliveredManifestText,
+  isDeliveryManifest,
+} from './delivery-overlay.mjs';
 import { COMPRESSIBLE, negotiateEncoding, sendBody, sendText } from './static-transport.mjs';
 export const MIME: Readonly<Record<string, string>> = {
   '.html': 'text/html; charset=utf-8',
@@ -34,6 +39,7 @@ export async function serveStatic(
   urlPath: string,
   root: string,
   visibility: ContentVisibility = ALL_CONTENT,
+  delivery: DeliveryOverlay | null = null,
 ): Promise<void> {
   const pathname = decodeURIComponent(urlPath);
   const mount = pathname.startsWith('/src/')
@@ -48,24 +54,36 @@ export async function serveStatic(
         ? 'index.html'
         : pathname.replace(/^\/+/, '')
       : pathname.slice(mount.length + 2);
-  const filename = path.resolve(base, relative);
-  const allowed = path.relative(base, filename);
+  const resolved = path.resolve(base, relative);
+  const allowed = path.relative(base, resolved);
   if (
     pathname.includes('\\') ||
     !allowed ||
     allowed.startsWith('..') ||
     path.isAbsolute(allowed) ||
     allowed.split(path.sep).some((segment) => segment.startsWith('.')) ||
-    !MIME[path.extname(filename)]
+    !MIME[path.extname(resolved)]
   ) {
     response.writeHead(403).end('Forbidden');
     return;
   }
   const servedPath = `${mount === 'public' ? '' : `${mount}/`}${allowed.split(path.sep).join('/')}`;
-  const override = await localContentOverride(servedPath, root, visibility);
+  let override = await localContentOverride(servedPath, root, visibility);
   if (override === null) {
     response.writeHead(404, { 'Cache-Control': 'no-store' }).end('Not found');
     return;
+  }
+  // A prepared delivery overlay: manifests name the cooked files, which are read from its cache.
+  let filename = resolved;
+  if (delivery && mount === 'public') {
+    const cooked = delivery.files.get(servedPath);
+    if (cooked) filename = cooked;
+    else if (isDeliveryManifest(servedPath))
+      override = deliveredManifestText(
+        servedPath,
+        override ?? (await readFile(resolved, 'utf8')),
+        delivery,
+      );
   }
   // Text and GLBs may travel gzip-encoded (static-transport.mts); every other type, and every
   // client that does not ask for it, receives the stored bytes. The decoded bytes and

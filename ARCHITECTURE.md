@@ -33,7 +33,10 @@ npm run check
 npm run format:check
 npm run build:cloudflare
 npm run check:cloudflare
+npm run cook
 ```
+
+Models and runtime textures are delivered as cooked derivatives of the adopted masters (`scripts/delivery/`, [record](docs/delivery-cooking-2026-10-11.md)). The masters in `public/models` and their manifests stay the source of truth; the package builders check them exactly as before, then ship content-addressed `*.cook-<sha16>.*` files with manifests rewritten to name them. `npm run cook` (also run before `npm start` and once by `npm run dev`) prepares `dist/delivery/overlay.json`, through which the local server sends the same files; `CRO_DELIVERY=masters` sends the masters.
 
 `start` and `test` build first. `dev` watches TypeScript and CSS, rebuilds, and restarts its own server only after a successful build. It keeps the previous server running on compiler errors and saves before its own restart. `dev:local` selects loopback port 3100 and a dedicated verification save directory; the legacy 3000 entry stays compatible.
 

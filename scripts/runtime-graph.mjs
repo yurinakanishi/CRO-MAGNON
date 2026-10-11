@@ -39,10 +39,13 @@ export const DECODER = Object.freeze({
 });
 
 const HASH = /^[0-9a-f]{64}$/;
-const MODEL_URL = /^\/models\/[a-z0-9-]+\/([a-z0-9-]+)(?:\.opt-([0-9a-f]{16}))?\.glb$/;
+// A master is named as before or content-addressed by its adoption (.opt-); a delivery file cooked
+// from one (scripts/delivery) is content-addressed by its own SHA-256 (.cook-).
+const MODEL_URL = /^\/models\/[a-z0-9-]+\/([a-z0-9-]+)(?:\.(?:opt|cook)-([0-9a-f]{16}))?\.glb$/;
 // The original model and LOD names the builds have always accepted.
 const ORIGINAL_MODEL = /^(?:model(?:-[a-z0-9]+)*|lod(?:\d+|-[a-z0-9-]+))$/;
-const TEXTURE_URL = /^\/models\/[a-z0-9-]+\/[a-z0-9-]+(?:\.opt-([0-9a-f]{16}))?\.([a-z]+)$/;
+const TEXTURE_URL =
+  /^\/models\/[a-z0-9-]+\/[a-z0-9-]+(?:\.(?:opt|cook)-([0-9a-f]{16}))?\.([a-z]+)$/;
 const GLB_MAGIC = 0x46546c67,
   CHUNK_JSON = 0x4e4f534a;
 
