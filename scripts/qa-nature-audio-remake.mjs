@@ -131,8 +131,11 @@ try {
   await page.goto(base);
   await page.locator('#title-start').click();
   await page.locator('#setup-form .character-choice:has(input[value="cro-female"])').click();
-  await page.locator('[data-choose-difficulty="normal"]').click();
   await page.locator('#setup-flow-yes').click();
+  // The difficulty is fixed (2026-10-10); the world is entered from the loading cave, whose
+  // proceed press is the first gesture for audio.
+  await page.locator('#loading-cave[data-world-ready="true"]').waitFor({ timeout: 180000 });
+  await page.locator('[data-cave-proceed]').click();
   await page
     .locator('#world[data-world-asset="ready"][data-character-asset="ready"]')
     .waitFor({ timeout: 180000 });
