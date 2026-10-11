@@ -33,6 +33,45 @@ export function handGripPlacement(root) {
   return { grip, rotation };
 }
 
+// The stone axe (+Y haft, blade toward +X) is held across the fist: the haft
+// leaves the hand at right angles to the forearm and the blade faces where the
+// forearm points. The roll is taken from the first Idle_Loop frame, ahead of a
+// hanging arm or upward from one reaching forward. Socket rolls differ between
+// rigs, so only the elbow-to-hand line is used. The pose is restored afterwards.
+export function axeGripPlacement(root, grip, idle?: THREE.AnimationClip) {
+  const rotation = new THREE.Quaternion();
+  const hand = grip?.parent,
+    elbow = hand?.parent;
+  if (!elbow) return rotation;
+  const mixer = idle ? new THREE.AnimationMixer(root) : null;
+  if (mixer) {
+    mixer.clipAction(idle).play();
+    mixer.update(0);
+  }
+  root.updateMatrixWorld(true);
+  const forearm = hand
+    .getWorldPosition(new THREE.Vector3())
+    .sub(elbow.getWorldPosition(new THREE.Vector3()))
+    .normalize();
+  const facing = root.getWorldQuaternion(new THREE.Quaternion());
+  const ahead = new THREE.Vector3(0, 0, 1).applyQuaternion(facing),
+    above = new THREE.Vector3(0, 1, 0).applyQuaternion(facing);
+  const haft = (Math.abs(forearm.dot(ahead)) < Math.abs(forearm.dot(above)) ? ahead : above)
+    .projectOnPlane(forearm)
+    .normalize();
+  rotation
+    .setFromRotationMatrix(
+      new THREE.Matrix4().makeBasis(forearm, haft, new THREE.Vector3().crossVectors(forearm, haft)),
+    )
+    .premultiply(grip.getWorldQuaternion(new THREE.Quaternion()).invert());
+  if (mixer) {
+    mixer.stopAllAction();
+    mixer.uncacheRoot(root);
+    root.updateMatrixWorld(true);
+  }
+  return rotation;
+}
+
 /** A verified character: its models as parseEmbeddedGLB() keeps them (scenes and
  * clips, no parser) and its manifest. */
 export type CharacterTemplate = {
@@ -176,7 +215,12 @@ export class CharacterAssets {
           : tint(node.material);
       });
       configureActorPerformance(root, lod?.scene, asset);
-      const { rotation: gripUp } = handGripPlacement(root);
+      const { grip, rotation: gripUp } = handGripPlacement(root);
+      const axeGrip = axeGripPlacement(
+        root,
+        grip,
+        gltf.animations.find((clip) => clip.name === 'Idle_Loop'),
+      );
       installSkinnedBounds(root);
       const ridingPose = octopus
         ? new octopus.OctopusRidingPose(root, gltf.animations)
@@ -204,6 +248,7 @@ export class CharacterAssets {
         animation,
         asset,
         gripUp,
+        axeGrip,
         ridingPose,
         shoulderSeat,
         carrySupportPose,

@@ -1,10 +1,16 @@
-export const AUDIO_SETTINGS_KEY = 'cro-nature-audio-v1';
+/**
+ * v2 (2026-10-11): sounds are calibrated to real-world levels, so 100 % is the intended
+ * mix and the sliders only turn categories down. Volumes saved for the old, uncalibrated
+ * mix are not carried over; the on/off choice is.
+ */
+export const AUDIO_SETTINGS_KEY = 'cro-nature-audio-v2';
+const PREVIOUS_SETTINGS_KEY = 'cro-nature-audio-v1';
 export type AudioSettings = { enabled: boolean; ambience: number; music: number; effects: number };
 export const DEFAULT_AUDIO: Readonly<AudioSettings> = Object.freeze({
   enabled: true,
-  ambience: 0.7,
-  music: 0.3,
-  effects: 0.5,
+  ambience: 1,
+  music: 1,
+  effects: 1,
 });
 export function normalizeAudioSettings(raw: unknown): AudioSettings {
   const value = raw && typeof raw === 'object' ? (raw as Partial<AudioSettings>) : {};
@@ -21,7 +27,10 @@ export function normalizeAudioSettings(raw: unknown): AudioSettings {
 }
 export function readAudioSettings() {
   try {
-    return normalizeAudioSettings(JSON.parse(localStorage.getItem(AUDIO_SETTINGS_KEY) || 'null'));
+    const saved = localStorage.getItem(AUDIO_SETTINGS_KEY);
+    if (saved) return normalizeAudioSettings(JSON.parse(saved));
+    const previous = JSON.parse(localStorage.getItem(PREVIOUS_SETTINGS_KEY) || 'null');
+    return normalizeAudioSettings({ enabled: previous?.enabled });
   } catch {
     return { ...DEFAULT_AUDIO };
   }

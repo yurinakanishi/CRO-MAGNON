@@ -1,7 +1,11 @@
 import { biomeAt } from '../shared/biomes.mjs';
 import { caveInteriorWeight } from '../shared/cave-light.mjs';
 import { riverX, riverHalfWidth, WATER_LEVEL } from '../shared/terrain.mjs';
-import { MOUNTAIN_RIVER, mountainWaterHeight } from '../shared/mountain-river.mjs';
+import {
+  MOUNTAIN_RIVER,
+  MOUNTAIN_WATERFALL,
+  mountainWaterHeight,
+} from '../shared/mountain-river.mjs';
 import { coastDistance, isLand } from '../shared/paleo-geography.mjs';
 import { maritimeWeight } from '../shared/maritime-weather.mjs';
 
@@ -49,6 +53,55 @@ export function nearestRiver(p: SoundPoint) {
   return { point, distance };
 }
 
+export type WaterSource = { point: SoundPoint; edge: number };
+const FAR: WaterSource = { point: { x: 0, y: -1000, z: 0 }, edge: Infinity };
+/**
+ * Nearest audible water, measured from the water's edge rather than the centre line:
+ * the slow valley river (and the flat tail of the mountain river) and the turbulent
+ * mountain stream. The waterfall itself is a separate point source.
+ */
+export function nearestWaters(p: SoundPoint) {
+  let river = FAR,
+    stream = FAR;
+  const segment = (
+    a: SoundPoint,
+    b: SoundPoint,
+    half: (t: number) => number,
+    kind: 'river' | 'stream',
+  ) => {
+    const dx = b.x - a.x,
+      dy = b.y - a.y,
+      dz = b.z - a.z;
+    const t = unit(
+      ((p.x - a.x) * dx + (p.y - a.y) * dy + (p.z - a.z) * dz) /
+        Math.max(0.001, dx * dx + dy * dy + dz * dz),
+    );
+    const point = { x: a.x + dx * t, y: a.y + dy * t, z: a.z + dz * t };
+    const edge = Math.max(0.5, Math.hypot(p.x - point.x, p.y - point.y, p.z - point.z) - half(t));
+    if (kind === 'river' ? edge < river.edge : edge < stream.edge) {
+      if (kind === 'river') river = { point, edge };
+      else stream = { point, edge };
+    }
+  };
+  if (p.x > -60 && p.x < 200 && p.z > -130 && p.z < 260) {
+    const centreZ = Math.max(-64, Math.min(184, p.z));
+    for (let z = Math.max(-64, centreZ - 60); z < Math.min(184, centreZ + 60); z += 3) {
+      const a = { x: riverX(z), y: WATER_LEVEL, z },
+        b = { x: riverX(z + 3), y: WATER_LEVEL, z: z + 3 };
+      segment(a, b, (t) => riverHalfWidth(z + 3 * t), 'river');
+    }
+  }
+  if (p.x > -160 && p.x < 200 && p.z > 70 && p.z < 420)
+    for (let i = 1; i < MOUNTAIN_RIVER.length; i++) {
+      const a = MOUNTAIN_RIVER[i - 1],
+        b = MOUNTAIN_RIVER[i];
+      if (a === MOUNTAIN_WATERFALL.lip && b === MOUNTAIN_WATERFALL.foot) continue;
+      const half = (t: number) => (a.width + (b.width - a.width) * t) / 2;
+      segment(a, b, half, Math.max(a.y, b.y) > 1 ? 'stream' : 'river');
+    }
+  return { river, stream };
+}
+
 export function waterAt(p: SoundPoint) {
   const mountain = mountainWaterHeight(p.x, p.z);
   if (Number.isFinite(mountain) && p.y < mountain + 0.12) return mountain;
@@ -61,7 +114,9 @@ export function natureEnvironment(p: SoundPoint, time: number, weather?: { kind?
   const cave = caveInteriorWeight(p);
   const biome = biomeAt(p.x, p.z).id;
   const water = cave < 0.5 ? waterAt(p) : null;
-  const shore = cave < 0.5 ? 1 - unit(Math.abs(coastDistance(p.x, p.z)) / 22) : 0;
+  // Metres to the sea's edge; the shared coastline grid only resolves a 32 m band.
+  const coast = Math.abs(coastDistance(p.x, p.z));
+  const shore = cave < 0.5 ? 1 - unit(coast / 22) : 0;
   const rain = weather?.kind === 'rain' ? maritimeWeight(p.x, p.z) * (1 - cave) : 0;
   const surface: FootSurface =
     water !== null
@@ -78,10 +133,11 @@ export function natureEnvironment(p: SoundPoint, time: number, weather?: { kind?
     biome,
     water,
     shore,
+    coast,
     rain,
     surface,
     wind: natureWind(time, p.x, p.z),
-    river: nearestRiver(p),
+    flow: nearestWaters(p),
   };
 }
 

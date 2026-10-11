@@ -1,8 +1,17 @@
 # Nature audio sources
 
-The runtime uses only `public/audio/nature/` (51 MP3 files, 6,550,373 bytes).
-See its `manifest.json` for original file SHA-256 hashes, source pages, authors, CC0
-licenses, extraction intervals, processing, output hashes and exact sizes.
+**Current: revision 4 (2026-10-11).** The runtime uses only `public/audio/nature/`
+(79 MP3 files, 11,939,396 bytes, of which the three streamed place themes are 5,091,569).
+Every sound and theme was rebuilt from new CC0 sources and is played at a level derived
+from its real-world sound pressure level (`src/nature-audio-levels.ts`). Sources,
+reproduction and the previous files: `remake-20261011/README.md` and
+`before-remake-20261011/`; design and verification:
+`docs/nature-audio-remake-2026-10-11.md`. `manifest.json` lists every source, interval,
+filter, score note, measured loudness, size and SHA-256.
+
+The rest of this file describes revisions 1–3, kept for their records only.
+
+Revision 3 used only `public/audio/nature/` (51 MP3 files, 6,550,373 bytes).
 
 `source/` preserves the original first-version sources, including Fantozzi footsteps.
 `quality-source/` adds the explicitly licensed CC0 field recordings and VSCO 2 CE
