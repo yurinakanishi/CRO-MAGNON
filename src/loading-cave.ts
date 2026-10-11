@@ -14,6 +14,9 @@ import { prepareCaveMaterials } from './cave-materials.js';
 import { createCavePreviewLabel } from './cave-preview-label.js';
 import { MeshRayGrid } from './mesh-ray-grid.js';
 import { LoadingCaveMovement } from './loading-cave-movement.js';
+import { movementKey } from './combat-input.js';
+import { combineMovement, readStick, STICK } from './gamepad-input.js';
+import { touchStick } from './touch-input.js';
 import { CHARACTER_MODELS } from '../shared/characters.mjs';
 import { LOAD_TIER, LoadTicket } from './asset-load-queue.js';
 import { compileScene } from './context-recovery.js';
@@ -50,7 +53,9 @@ export class LoadingCave {
   private entering = false;
   private yaw = Math.PI + 0.65;
   private pitch = 0.1;
-  private stick = { x: 0, y: 0 };
+  private stick = { x: 0, y: 0, running: false };
+  private runMode = false;
+  private padRunning = false;
   private padConfirm = true;
   private lastPercent = -1;
   private pointers = new Map<number, { x: number; y: number; stick: boolean }>();
@@ -127,7 +132,7 @@ export class LoadingCave {
       };
     const signal = this.events.signal;
     document.addEventListener('keydown', this.keydown, { signal, capture: true });
-    document.addEventListener('keyup', (e) => this.keys.delete(e.key.toLowerCase()), { signal });
+    document.addEventListener('keyup', (e) => this.keys.delete(movementKey(e)), { signal });
     window.addEventListener('blur', () => this.stop(), { signal });
     document.addEventListener('visibilitychange', () => this.stop(), { signal });
     this.overlay.addEventListener('pointerdown', this.pointerDown, { signal });
@@ -136,7 +141,7 @@ export class LoadingCave {
       this.overlay.addEventListener(
         name,
         (e: PointerEvent) => {
-          if (this.pointers.get(e.pointerId)?.stick) this.stick = { x: 0, y: 0 };
+          if (this.pointers.get(e.pointerId)?.stick) this.stick = { x: 0, y: 0, running: false };
           this.pointers.delete(e.pointerId);
           this.showStick();
         },
@@ -269,7 +274,9 @@ export class LoadingCave {
 
   private stop() {
     this.keys.clear();
-    this.stick = { x: 0, y: 0 };
+    this.stick = { x: 0, y: 0, running: false };
+    this.runMode = false;
+    this.padRunning = false;
     this.pointers.clear();
     this.showStick();
   }
@@ -285,15 +292,20 @@ export class LoadingCave {
   private keydown = (e: KeyboardEvent) => {
     // The open dialog keeps its own keys: Escape closes it, arrows move its focus.
     if (this.paused()) return;
-    const key = e.key.toLowerCase();
+    const key = movementKey(e);
+    // Match the world's walk/run toggle, including a tap and held-key repeats.
+    if (key === 'shift') {
+      e.preventDefault();
+      e.stopImmediatePropagation();
+      if (!e.repeat) this.runMode = !this.runMode;
+      return;
+    }
     if (key === 'l' && !e.ctrlKey && !e.metaKey && !e.altKey) {
       e.preventDefault();
       e.stopImmediatePropagation();
       if (!e.repeat) this.toggleTorch();
     }
-    if (
-      ['w', 'a', 's', 'd', 'arrowup', 'arrowdown', 'arrowleft', 'arrowright', 'shift'].includes(key)
-    ) {
+    if (['w', 'a', 's', 'd', 'arrowup', 'arrowdown', 'arrowleft', 'arrowright'].includes(key)) {
       e.preventDefault();
       e.stopImmediatePropagation();
       this.keys.add(key);
@@ -321,8 +333,7 @@ export class LoadingCave {
     const x = e.clientX - pointer.x,
       y = e.clientY - pointer.y;
     if (pointer.stick) {
-      const length = Math.max(42, Math.hypot(x, y));
-      this.stick = { x: x / length, y: y / length };
+      this.stick = touchStick(x, y, 42, this.stick.running);
       this.showStick();
     } else {
       this.yaw -= x * 0.006;
@@ -376,22 +387,26 @@ export class LoadingCave {
         Math.abs(pad?.axes[index] ?? 0) > 0.18 ? pad!.axes[index] : 0;
       const x =
         Number(this.keys.has('d') || this.keys.has('arrowright')) -
-        Number(this.keys.has('a') || this.keys.has('arrowleft')) +
-        this.stick.x +
-        axis(0);
+        Number(this.keys.has('a') || this.keys.has('arrowleft'));
       const y =
         Number(this.keys.has('s') || this.keys.has('arrowdown')) -
-        Number(this.keys.has('w') || this.keys.has('arrowup')) +
-        this.stick.y +
-        axis(1);
+        Number(this.keys.has('w') || this.keys.has('arrowup'));
       this.yaw -= axis(2) * dt * 2.2;
       this.pitch = THREE.MathUtils.clamp(this.pitch + axis(3) * dt * 1.4, -0.45, 0.7);
       const confirm = !!pad?.buttons[0]?.pressed;
       if (confirm && !this.padConfirm) this.continue();
       this.padConfirm = confirm;
-      const running = this.keys.has('shift') || !!pad?.buttons[10]?.pressed;
-      this.movement.step(this.world.collision, x, y, this.yaw, dt, running);
-      this.actor?.animation.update(dt, this.movement.speed, running);
+      const left = readStick(pad?.axes[0], pad?.axes[1]);
+      this.padRunning = left.magnitude >= (this.padRunning ? STICK.runExit : STICK.runEnter);
+      const analog = combineMovement(this.stick.x, this.stick.y, this.stick.running, {
+        x: left.x,
+        y: left.y,
+        running: this.padRunning,
+      });
+      // Each device owns its gait; a keyboard run toggle never forces a small tilt to run.
+      const motion = combineMovement(x, y, this.runMode, analog);
+      this.movement.step(this.world.collision, motion.x, motion.y, this.yaw, dt, motion.running);
+      this.actor?.animation.update(dt, this.movement.speed, motion.running);
     } else this.actor?.animation.update(dt, 0, false);
     if (this.disposed) return;
     this.updateCamera();
