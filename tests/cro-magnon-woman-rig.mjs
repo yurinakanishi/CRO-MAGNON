@@ -49,12 +49,34 @@ export async function exactModel(file, root = 'public') {
   return bytes;
 }
 
+const sha256 = (bytes) => createHash('sha256').update(bytes).digest('hex');
+
+/** The manifest record an accepted source revision (scripts/source-model-revision.mjs)
+ * superseded: its archived copy, bound by SHA-256 to the revision record. A manifest without
+ * one is its own record. */
+export async function supersededManifest(asset) {
+  if (!asset.sourceRevision) return asset;
+  const record = await readFile(asset.sourceRevision.record);
+  assert.equal(sha256(record), asset.sourceRevision.sha256, `${asset.modelKey}: revision record`);
+  const { previous } = JSON.parse(record),
+    archived = await readFile(previous.manifest);
+  assert.equal(sha256(archived), previous.manifestSha256, `${asset.modelKey}: archived manifest`);
+  return JSON.parse(archived);
+}
+
+/** The original record of an actor manifest: its `runtimeOptimization.original` after the
+ * adoption, itself before it; after an accepted source revision, the superseded manifest's. */
+export async function recordedOriginal(asset) {
+  const stamped = await supersededManifest(asset);
+  return stamped.runtimeOptimization?.original ?? stamped;
+}
+
 /** The original pair, parsed: `full` and `lod`, `levels` the actor record the level switch
  * reads (the original LOD distance), and `asset` the current manifest, whose gameplay
  * metadata (locomotion, clips) the adoption keeps. */
 export async function originalWomanRig() {
   const asset = await womanManifest(),
-    original = asset.runtimeOptimization?.original ?? asset;
+    original = await recordedOriginal(asset);
   assert.deepEqual(fileOf(original), fileOf(ORIGINAL_WOMAN.full), 'the original full model');
   assert.deepEqual(fileOf(original.lods?.[0]), fileOf(ORIGINAL_WOMAN.lod), 'the original LOD');
   const { distanceMetres } = ORIGINAL_WOMAN.lod;

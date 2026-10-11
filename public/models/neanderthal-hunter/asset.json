@@ -4,10 +4,10 @@
   "kind": "humanoid",
   "candidate": 2,
   "status": "remake-candidate-2-integrated",
-  "url": "/models/neanderthal-hunter/startup.opt-ef3e3fa2f2931daf.glb",
-  "sha256": "ef3e3fa2f2931dafe233560f29715b484440b46460f225dfd44c31c6e44faaeb",
-  "bytes": 8091164,
-  "triangles": 99379,
+  "url": "/models/neanderthal-hunter/model-face-lp-r08.glb",
+  "sha256": "c5c93e0298d70f684fd274aef29bf655a89733d1d0b23bb0341ceb534d4c6ed6",
+  "bytes": 7548664,
+  "triangles": 66095,
   "upAxis": "Y",
   "forwardAxis": "+Z",
   "heightMetres": 1.7200000000000002,
@@ -74,7 +74,8 @@
     }
   ],
   "notes": [
-    "Candidate 2: new body reference + dedicated head reference, TRELLIS body/head graft (head cut 1.40 m, body neck 1.48 m, chin band 1.38-1.48 m, white plinth and bust trimmed), 22-bone rig at the delivered 1.72 m, spear thrust / Downed / CMU locomotion rebuilt. Replaces the putty-like C1 head."
+    "Candidate 2: new body reference + dedicated head reference, TRELLIS body/head graft (head cut 1.40 m, body neck 1.48 m, chin band 1.38-1.48 m, white plinth and bust trimmed), 22-bone rig at the delivered 1.72 m, spear thrust / Downed / CMU locomotion rebuilt. Replaces the putty-like C1 head.",
+    "Low-poly head r08: the face-remake head 59898 -> 26614 triangles (face within 0.8 mm, other skin 2 mm, hair about 5-6 mm), new UVs and a 1024 albedo baked from the 2048 face-remake texture; kept vertices keep their positions and weights; body, rig and clips unchanged. 99379 -> 66095 triangles."
   ],
   "provenance": {
     "provider": "Claude Code (Opus 5.5); Codex built-in image_gen reference; local TRELLIS-2 reconstruction",
@@ -294,7 +295,7 @@
     ],
     "reference": "assets/human-locomotion/README.md"
   },
-  "revision": "face-r01",
+  "revision": "face-lp-r08",
   "headGraft": {
     "reference": "C:/Users/yurin/Desktop/projects/CRO-MAGNON/output/model-generation/models/neanderthal-hunter/source/original/candidate2-head-a.png",
     "dense": "C:/Users/yurin/Desktop/projects/CRO-MAGNON/output/model-generation/models/neanderthal-hunter/work/candidate-02/trellis/dense-head2a-res1024-tex512-seed0042.glb",
@@ -500,32 +501,24 @@
       "renderer": "scripts/qa-female-faces.mjs (FACE_QA_PORTRAIT=1, Idle_Loop 20%, 420x480, three.js)"
     }
   },
-  "runtimeOptimization": {
-    "adoption": "20261010-r07-a01",
-    "candidateRevision": "assets/optimized-runtime/20261009-r04",
-    "selection": "startup-sole-primary",
-    "original": {
-      "url": "/models/neanderthal-hunter/model-face-r01.glb",
-      "sha256": "6910fd3396bcde7934e9af23fa2130ca5c1bca9a08da0d00fe5582076b94352b",
-      "bytes": 15858864,
-      "triangles": 99893,
-      "lods": [
-        {
-          "url": "/models/neanderthal-hunter/lod-face-r01.glb",
-          "sha256": "27f7e96e7c3e377db6be2b38bb9c9740a907b5c5a412cd1731fe7ea6885faa89",
-          "bytes": 1006052,
-          "triangles": 13413,
-          "distanceMetres": 28,
-          "purpose": "animated-medium-lod-geometry"
-        }
-      ]
+  "lowpolyHead": {
+    "revision": "lowpoly-head-r08",
+    "review": "assets/neanderthal-hunter/qa/lowpoly-head-r08.json",
+    "headTriangles": {
+      "before": 59898,
+      "after": 26614
     },
-    "startupCandidate": {
-      "record": "startup:neanderthal-hunter",
+    "previous": {
       "url": "/models/neanderthal-hunter/startup.opt-ef3e3fa2f2931daf.glb",
       "sha256": "ef3e3fa2f2931dafe233560f29715b484440b46460f225dfd44c31c6e44faaeb",
-      "bytes": 8091164
-    },
-    "adoptedBy": "20261009-r04-a01"
+      "bytes": 8091164,
+      "triangles": 99379,
+      "adoption": "20261010-r07-a01",
+      "manifest": "assets/neanderthal-hunter/archive-manifest-20261010-r07-a01-20261011.json"
+    }
+  },
+  "sourceRevision": {
+    "record": "assets/neanderthal-hunter/qa/source-revision-lowpoly-head-r08.json",
+    "sha256": "81ca4828ae647757497b4516e67e91da10a78d92d052bb2465bffc59309934e7"
   }
 }

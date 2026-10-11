@@ -1,0 +1,28 @@
+{
+  "schema": "cro-magnon/source-model-revision@1",
+  "modelKey": "neanderthal-woman",
+  "decision": "adopt",
+  "previous": {
+    "adoption": "20261010-r07-a01",
+    "files": [
+      {
+        "url": "/models/neanderthal-woman/startup.opt-fabb21a67061a199.glb",
+        "sha256": "fabb21a67061a199d24efac0e6196a0477cba02d73eab259bb6810a70e6ecd8d",
+        "bytes": 4530988
+      }
+    ],
+    "manifest": "assets/neanderthal-woman/archive-manifest-20261010-r07-a01-20261011.json",
+    "manifestSha256": "8ab47eed9b03b52eb81cd6763ca2c055c6a003db82e7f17a63316bf47debc7e0"
+  },
+  "files": [
+    {
+      "url": "/models/neanderthal-woman/model-face-lp-r08.glb",
+      "sha256": "343c7ae31d2c39ba13cb69a69e6fc5d6b2095055872a43bd085db9bf28b0e52a",
+      "bytes": 4859144
+    }
+  ],
+  "review": {
+    "path": "assets/neanderthal-woman/qa/lowpoly-head-r08.json",
+    "sha256": "ef018e6c7041932d814116a36b12ce5dd291644ae94c98c9dc4d3f9fd66cd853"
+  }
+}

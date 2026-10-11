@@ -1,0 +1,243 @@
+{
+  "adopted": "public/models/neanderthal-woman/startup.opt-fabb21a67061a199.glb",
+  "candidate": "output/head-lowpoly/neanderthal-woman/r08/neanderthal-woman-r08.glb",
+  "views": [
+    {
+      "sheet": "face-bind",
+      "label": "front",
+      "clip": null,
+      "fraction": 0,
+      "view": "front",
+      "distance": 0.55,
+      "mode": "lit",
+      "psnr": 33.05
+    },
+    {
+      "sheet": "face-bind",
+      "label": "three-quarter",
+      "clip": null,
+      "fraction": 0,
+      "view": "three",
+      "distance": 0.55,
+      "mode": "lit",
+      "psnr": 33.13
+    },
+    {
+      "sheet": "face-bind",
+      "label": "side",
+      "clip": null,
+      "fraction": 0,
+      "view": "side",
+      "distance": 0.55,
+      "mode": "lit",
+      "psnr": 32.99
+    },
+    {
+      "sheet": "face-bind",
+      "label": "back",
+      "clip": null,
+      "fraction": 0,
+      "view": "back",
+      "distance": 0.7,
+      "mode": "lit",
+      "psnr": 33.47
+    },
+    {
+      "sheet": "face-bind",
+      "label": "below-chin",
+      "clip": null,
+      "fraction": 0,
+      "view": "chin",
+      "distance": 0.5,
+      "mode": "lit",
+      "psnr": 31.79
+    },
+    {
+      "sheet": "face-albedo",
+      "label": "front",
+      "clip": null,
+      "fraction": 0,
+      "view": "front",
+      "distance": 0.55,
+      "mode": "albedo",
+      "psnr": 33.97
+    },
+    {
+      "sheet": "face-albedo",
+      "label": "three-quarter",
+      "clip": null,
+      "fraction": 0,
+      "view": "three",
+      "distance": 0.55,
+      "mode": "albedo",
+      "psnr": 34.31
+    },
+    {
+      "sheet": "face-albedo",
+      "label": "side",
+      "clip": null,
+      "fraction": 0,
+      "view": "side",
+      "distance": 0.55,
+      "mode": "albedo",
+      "psnr": 34.28
+    },
+    {
+      "sheet": "face-albedo",
+      "label": "below-chin",
+      "clip": null,
+      "fraction": 0,
+      "view": "chin",
+      "distance": 0.5,
+      "mode": "albedo",
+      "psnr": 32.62
+    },
+    {
+      "sheet": "head-poses",
+      "label": "bind",
+      "clip": null,
+      "fraction": 0,
+      "view": "three",
+      "distance": 1.3,
+      "mode": "lit",
+      "psnr": 41.2
+    },
+    {
+      "sheet": "head-poses",
+      "label": "walk",
+      "clip": "Walk_Loop",
+      "fraction": 0.5,
+      "view": "three",
+      "distance": 1.3,
+      "mode": "lit",
+      "psnr": 41.24
+    },
+    {
+      "sheet": "head-poses",
+      "label": "run",
+      "clip": "Run_Loop",
+      "fraction": 0.5,
+      "view": "front",
+      "distance": 1.3,
+      "mode": "lit",
+      "psnr": 41.04
+    },
+    {
+      "sheet": "head-poses",
+      "label": "attack",
+      "clip": "Attack",
+      "fraction": 0.5,
+      "view": "three",
+      "distance": 1.3,
+      "mode": "lit",
+      "psnr": 41.74
+    },
+    {
+      "sheet": "body",
+      "label": "idle",
+      "clip": "Idle_Loop",
+      "fraction": 0.3,
+      "view": "body",
+      "distance": 3.2,
+      "mode": "lit",
+      "psnr": 46.24
+    },
+    {
+      "sheet": "body",
+      "label": "walk",
+      "clip": "Walk_Loop",
+      "fraction": 0.25,
+      "view": "body",
+      "distance": 3.2,
+      "mode": "lit",
+      "psnr": 46.06
+    }
+  ],
+  "seam": [
+    {
+      "name": "adopted",
+      "label": "bind",
+      "sewn": 47,
+      "worst": 0,
+      "normalDegrees": 0.648
+    },
+    {
+      "name": "candidate",
+      "label": "bind",
+      "sewn": 55,
+      "worst": 0,
+      "normalDegrees": 0.648
+    },
+    {
+      "name": "adopted",
+      "label": "walk",
+      "sewn": 47,
+      "worst": 0,
+      "normalDegrees": 0.648
+    },
+    {
+      "name": "candidate",
+      "label": "walk",
+      "sewn": 55,
+      "worst": 0,
+      "normalDegrees": 0.648
+    },
+    {
+      "name": "adopted",
+      "label": "run",
+      "sewn": 47,
+      "worst": 0,
+      "normalDegrees": 0.648
+    },
+    {
+      "name": "candidate",
+      "label": "run",
+      "sewn": 55,
+      "worst": 0,
+      "normalDegrees": 0.648
+    },
+    {
+      "name": "adopted",
+      "label": "attack",
+      "sewn": 47,
+      "worst": 0,
+      "normalDegrees": 0.648
+    },
+    {
+      "name": "candidate",
+      "label": "attack",
+      "sewn": 55,
+      "worst": 0,
+      "normalDegrees": 0.648
+    },
+    {
+      "name": "adopted",
+      "label": "idle",
+      "sewn": 47,
+      "worst": 0,
+      "normalDegrees": 0.648
+    },
+    {
+      "name": "candidate",
+      "label": "idle",
+      "sewn": 55,
+      "worst": 0,
+      "normalDegrees": 0.648
+    },
+    {
+      "name": "adopted",
+      "label": "downed",
+      "sewn": 47,
+      "worst": 0,
+      "normalDegrees": 0.648
+    },
+    {
+      "name": "candidate",
+      "label": "downed",
+      "sewn": 55,
+      "worst": 0,
+      "normalDegrees": 0.648
+    }
+  ],
+  "errors": []
+}

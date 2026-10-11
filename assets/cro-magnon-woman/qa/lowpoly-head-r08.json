@@ -1,0 +1,253 @@
+{
+  "schema": "cro-magnon/lowpoly-head-review@1",
+  "date": "2026-10-11",
+  "decision": "adopt",
+  "approved": "User approved in chat on 2026-10-11 (「採用して進めて」) after the comparison images in assets/face-remake/lowpoly-head-r08/review/ and the measured numbers were presented.",
+  "modelKey": "cro-magnon-woman",
+  "revision": "lowpoly-head-r08",
+  "url": "/models/cro-magnon-woman/model-face-lp-r08.glb",
+  "sha256": "c495179a518d8d557ef9d0ef8795b85a58403da9debef4212039e944a064314a",
+  "bytes": 5278800,
+  "triangles": 41021,
+  "reproducedBy": {
+    "revision": "r09",
+    "sha256": "c495179a518d8d557ef9d0ef8795b85a58403da9debef4212039e944a064314a"
+  },
+  "master": {
+    "url": "/models/cro-magnon-woman/startup.opt-f414686fe312f6e3.glb",
+    "sha256": "f414686fe312f6e3d67855644dc0d3b79a1c942484e2a60b0c977e4af370fb2b",
+    "bytes": 5023664,
+    "triangles": 72851
+  },
+  "textureSource": {
+    "url": "/models/cro-magnon-woman/model-face-r01.glb",
+    "sha256": "c8082f13995cebd42d674f6d4b5c87a61d441597d5670aec8803ca5006fdf2c1",
+    "bytes": 11552512
+  },
+  "head": {
+    "before": {
+      "sha256": "f414686fe312f6e3d67855644dc0d3b79a1c942484e2a60b0c977e4af370fb2b",
+      "headTriangles": 52910,
+      "headVertices": 74666
+    },
+    "after": {
+      "triangles": 21080,
+      "vertices": 26942,
+      "lowVertices": 11387,
+      "rewoundTriangles": 1006,
+      "texture": "1024x1024 PNG 1779932 B",
+      "atlas": {
+        "face": {
+          "atlasShare": 0.2104,
+          "texelsPerMm2": 3.151
+        },
+        "rest": {
+          "atlasShare": 0.1481,
+          "texelsPerMm2": 0.788
+        }
+      },
+      "uvRepair": [
+        1814,
+        38,
+        4,
+        0
+      ]
+    }
+  },
+  "method": "The adopted face-remake head, welded by position (coincident double layers dropped), crack-repaired and turned outward, simplified by region (hair, other skin, face) with the neck seam band locked, and wound consistently per connected surface. A new UV layout (the face one conformal chart; every fold or overlap cut out and re-projected until no bake texel is shared; face islands at twice the texel density of the rest) and its albedo baked in Blender 3.6 from the 2048 face-remake texture, delivered at 1024. Every kept vertex keeps its adopted position, joints and weights. Body primitives, skin, inverse binds, nodes and every clip are unchanged (assemble-head.mjs).",
+  "landmarks": {
+    "eye": 1.5325,
+    "chin": 1.435
+  },
+  "options": {
+    "target": 12000,
+    "weld": 0.0001,
+    "error": 0.02,
+    "crack": 0.001,
+    "face-crack": 0.0025,
+    "band": 0.025,
+    "dilate": 0,
+    "pad": 12,
+    "skin-error": 0.002,
+    "face-error": 0.0008,
+    "min-island": 150
+  },
+  "bake": {
+    "size": 2048,
+    "face-scale": 2,
+    "margin": 4,
+    "angle": 66
+  },
+  "passes": {
+    "hair": {
+      "trianglesBefore": 26976,
+      "trianglesAfter": 6716,
+      "borderTriangles": 1903,
+      "errorMetres": 0.005059,
+      "errorLimitMetres": 0.005081
+    },
+    "skin": {
+      "trianglesBefore": 6729,
+      "trianglesAfter": 3983,
+      "borderTriangles": 1903,
+      "errorMetres": 0.00198,
+      "errorLimitMetres": 0.002
+    },
+    "face": {
+      "trianglesBefore": 12878,
+      "trianglesAfter": 8731,
+      "borderTriangles": 1903,
+      "errorMetres": 0.000798,
+      "errorLimitMetres": 0.0008
+    },
+    "distance": {
+      "hair": {
+        "vertices": 17126,
+        "p50Millimetres": 0.396,
+        "p99Millimetres": 3.501,
+        "maxMillimetres": 15.827
+      },
+      "skin": {
+        "vertices": 4125,
+        "p50Millimetres": 0,
+        "p99Millimetres": 1.091,
+        "maxMillimetres": 3.008
+      },
+      "face": {
+        "vertices": 6604,
+        "p50Millimetres": 0,
+        "p99Millimetres": 0.598,
+        "maxMillimetres": 1.047
+      }
+    },
+    "openEdgesByRegion": [
+      9336,
+      1145,
+      485
+    ],
+    "farthestFaceVertex": {
+      "distance": 0.0010473842539526742,
+      "vertex": 8697,
+      "position": [
+        -0.05992995575070381,
+        1.566956877708435,
+        -0.049172718077898026
+      ]
+    },
+    "lowTrianglesByRegion": [
+      6501,
+      4753,
+      9826
+    ],
+    "winding": {
+      "duplicateTrianglesDropped": {
+        "welded": 614,
+        "low": 253
+      },
+      "components": 505,
+      "reversedTriangles": 2467,
+      "reversedNormals": 1922,
+      "inconsistentEdges": 3,
+      "nonManifoldEdges": 666
+    }
+  },
+  "orientation": {
+    "reversedTriangles": 8281,
+    "reversedNormals": 10875
+  },
+  "neckSeam": {
+    "vertices": 43,
+    "clusters": 43,
+    "kept": 43,
+    "sewnVertices": 64,
+    "worstMetres": 0,
+    "normalDegrees": 4.307,
+    "adoptedNormalDegrees": 4.307
+  },
+  "psnr": {
+    "0:front": 31.72,
+    "1:three-quarter": 32.09,
+    "2:side": 32.38,
+    "3:back": 32.37,
+    "4:below-chin": 32.56,
+    "5:front": 31.53,
+    "6:three-quarter": 32.4,
+    "7:side": 32.99,
+    "8:below-chin": 32.8,
+    "9:bind": 39.88,
+    "10:walk": 39.89,
+    "11:run": 38.68,
+    "12:attack": 40.14,
+    "13:idle": 47.48,
+    "14:walk": 47.21
+  },
+  "sheets": [
+    {
+      "path": "assets/cro-magnon-woman/qa/lowpoly-head-r08/sheet-face-bind.jpg",
+      "sha256": "99993bdac667b8e1e0d03be5d70e6c3247b561d5c435265f65aaaeef3df57776"
+    },
+    {
+      "path": "assets/cro-magnon-woman/qa/lowpoly-head-r08/sheet-face-albedo.jpg",
+      "sha256": "04420b1aee2b899e73c3bd81f90a8544d275faa3e8326d53e26ff41d5bda6055"
+    },
+    {
+      "path": "assets/cro-magnon-woman/qa/lowpoly-head-r08/sheet-head-poses.jpg",
+      "sha256": "ed65ef24174b207319a3695b1d4d3f99e664cba114df9a0aee72cddee676d55a"
+    },
+    {
+      "path": "assets/cro-magnon-woman/qa/lowpoly-head-r08/sheet-body.jpg",
+      "sha256": "d5a976a26d78adb313fb42bd77abb76f04738ef0b88726a191d48afed2333a07"
+    },
+    {
+      "path": "assets/cro-magnon-woman/qa/lowpoly-head-r08/report.json",
+      "sha256": "1aed28fb0acbb55962c028e60939b7558eee74f00191cda15113c97a2110ace4"
+    }
+  ],
+  "userReview": [
+    {
+      "path": "assets/face-remake/lowpoly-head-r08/review/faces-close.jpg",
+      "sha256": "88fe600fc3932b80c1209466d80dca058cea378ebe09039bd8099fd259d679bc"
+    },
+    {
+      "path": "assets/face-remake/lowpoly-head-r08/review/faces-albedo.jpg",
+      "sha256": "360079ab26a8979269e890e152e27578110572eec5e004d2a5be09cbfb12e4cc"
+    },
+    {
+      "path": "assets/face-remake/lowpoly-head-r08/review/poses-body.jpg",
+      "sha256": "e0fa7a5a68793606f9f2def6cccff7281a95facfc138d538241106ffc863381a"
+    }
+  ],
+  "production": {
+    "folder": "output/head-lowpoly/cro-magnon-woman/r08",
+    "intermediates": {
+      "output/head-lowpoly/cro-magnon-woman/r08/geometry.json": "39a7280ea102c43e15c7598ead1e3a6fc712a99840d409056aca3eb15caea160",
+      "output/head-lowpoly/cro-magnon-woman/r08/high.obj": "6fd54f398cc4bd4cbcc663e3768bbdb25453159000657b53b35fb78eeb634ec7",
+      "output/head-lowpoly/cro-magnon-woman/r08/high-albedo.png": "0f499c0c5944fa8b13e96c22524c1059080a0ef44684774e1d764a327ff99617",
+      "output/head-lowpoly/cro-magnon-woman/r08/low.obj": "a1f1b2599ea65826022f3ed34675b5335b9f9f1bdac674a6165d10e52eee68a0",
+      "output/head-lowpoly/cro-magnon-woman/r08/face-faces.json": "539d2885eb300981c545cd05daad24a1d4ad18f9b8498f5f602f2a85667206d5",
+      "output/head-lowpoly/cro-magnon-woman/r08/low-regions.json": "d3c00772c5ce95ffcf072163e7b22b90ca27db2c9aa39038a60f0bef9f0e681e",
+      "output/head-lowpoly/cro-magnon-woman/r08/low-uv.json": "18734a00fbc6535ce51984562c5b995400036658fd8bda3226524a16c69b475b",
+      "output/head-lowpoly/cro-magnon-woman/r08/low-albedo.png": "09580cdf9fcb9fe8b3ef94a38488880df1177bfb3fc2884dbc0a16dc5ca9b327",
+      "output/head-lowpoly/cro-magnon-woman/r08/cro-magnon-woman-r08.glb.json": "c1ff79f4ae1253d6b7beb2b7b6db01822cc26ba0562d3084c9060724a8f10fe1"
+    },
+    "scripts": {
+      "scripts/face-remake/lowpoly-heads.mjs": "7554a7f11e6460d153521fada9ff2cd13d872ebd4a7ba6b96f4bff8675fed847",
+      "scripts/face-remake/lowpoly-head.mjs": "28ce1a3ca823a9f406f265f5f4d36bb1db72fb71ed237e245396fb5d57f0bbb0",
+      "scripts/face-remake/bake-head.py": "b9db59036fa947ff9afeb95c2fb6b119a4da9329ff8950f91828ad8f3576ee03",
+      "scripts/face-remake/assemble-head.mjs": "b32ca931a8459b842da0ed22b78ce3867b742d5ef48efb3823b7b096f7bc6a88",
+      "scripts/face-remake/qa-lowpoly-head.mjs": "ffb2bb1d5b8a67f3c64251780bcf0ee9158cf1b900d7b6e992e372de86db9a9c"
+    },
+    "tools": {
+      "node": "v24.15.0",
+      "blender": "Blender 3.6.2 (hash e53e55951e7a built 2023-08-16 23:35:13)",
+      "meshoptimizer": "1.1.1",
+      "sharp": "0.35.2"
+    }
+  },
+  "provenance": {
+    "provider": "Claude Code (Opus 5.5)",
+    "claudeUsed": true,
+    "geometrySource": "TRELLIS-2 face-remake head of the adopted model (faceRemake in the archived manifest)"
+  },
+  "limits": "Face review in Chrome (ANGLE D3D11) with the game Three.js at 0.55 m, 1.3 m and 3.2 m, the bind pose and four clips; not on a physical phone. The hair is simplified within about 5-6 mm and is slightly more faceted at close range. Seen from below the chin, the light band of the face-remake neck join (present in the adopted model too) has a slightly more jagged edge."
+}

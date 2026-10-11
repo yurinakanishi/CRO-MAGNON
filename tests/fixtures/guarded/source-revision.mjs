@@ -13,21 +13,34 @@ export async function assertAppliedOrRevisedSource(root, id, report) {
   const catalogPath = 'public/models/world-assets.json';
   const catalogBytes = await read(catalogPath),
     catalog = JSON.parse(catalogBytes);
-  const revisions = catalog.assets.filter((asset) => asset.sourceRevision);
-  if (!revisions.length) {
+  // Manifests the adoption wrote outside the catalog (the startup actors): an accepted revision
+  // there is proven the same way, from its own manifest.
+  const plan = JSON.parse(await read(`assets/runtime-adoption/${id}/plan.json`)),
+    individual = [];
+  for (const { path: manifestPath } of plan.operations.manifests) {
+    if (manifestPath === catalogPath) continue;
+    const asset = JSON.parse(await read(manifestPath));
+    if (!catalog.assets.some((entry) => entry.modelKey === asset.modelKey)) individual.push(asset);
+  }
+  const revisions = catalog.assets.filter((asset) => asset.sourceRevision),
+    actorRevisions = individual.filter((asset) => asset.sourceRevision);
+  if (!revisions.length && !actorRevisions.length) {
     assert.equal(report.status, 'passed', JSON.stringify(report.checks));
     return;
   }
-  const active = await activeAdoption(root, catalog.assets, runtimeTextureRecords);
+  const assets = [...catalog.assets, ...individual];
+  const active = await activeAdoption(root, assets, runtimeTextureRecords);
   assert.equal(active.id, id);
-  checkRuntimeGraph(catalog.assets, active, {
+  checkRuntimeGraph(assets, active, {
     requireAdoption: true,
     textureRecords: runtimeTextureRecords,
   });
   const restored = structuredClone(catalog),
     changed = [catalogPath],
-    expectedRecords = [];
-  for (const asset of revisions) {
+    expectedRecords = [],
+    expectedStartup = [];
+  for (const asset of [...revisions, ...actorRevisions]) {
+    const inCatalog = revisions.includes(asset);
     const proof = JSON.parse(await read(asset.sourceRevision.record));
     const manifestPath = `public/models/${asset.modelKey}/asset.json`;
     assert.deepEqual(
@@ -41,8 +54,9 @@ export async function assertAppliedOrRevisedSource(root, id, report) {
       JSON.parse(old),
       JSON.parse(await read(`assets/runtime-adoption/${id}/after/${manifestPath}`)),
     );
-    restored.assets[restored.assets.findIndex((a) => a.modelKey === asset.modelKey)] =
-      JSON.parse(old);
+    if (inCatalog)
+      restored.assets[restored.assets.findIndex((a) => a.modelKey === asset.modelKey)] =
+        JSON.parse(old);
     changed.push(manifestPath);
     for (const file of [asset, ...asset.lods]) {
       const bytes = await read(`public${file.url}`);
@@ -57,11 +71,16 @@ export async function assertAppliedOrRevisedSource(root, id, report) {
       );
     }
     expectedRecords.push(
-      ...[catalogPath, manifestPath].map(
+      ...(inCatalog ? [catalogPath, manifestPath] : [manifestPath]).map(
         (p) =>
           `${p} ${asset.modelKey}: does not serve exactly the planned files (and packed scenes)`,
       ),
     );
+    // A revised startup actor serves its accepted new primary instead of its startup file.
+    if (active.graph.models[asset.modelKey]?.selection === 'startup-sole-primary')
+      expectedStartup.push(
+        `${manifestPath} ${asset.modelKey}: serves ${asset.url}, not its startup file`,
+      );
   }
   assert.deepEqual(
     restored,
@@ -73,14 +92,25 @@ export async function assertAppliedOrRevisedSource(root, id, report) {
     failures.map((c) => c.name),
     [
       'the current manifests hold exactly the adopted bytes',
+      ...(expectedStartup.length
+        ? ['every startup actor serves only its startup file, with no LOD']
+        : []),
       'every adopted record serves exactly the planned candidate',
     ],
   );
+  const [manifests, ...rest] = failures,
+    startup = expectedStartup.length ? rest.shift() : null,
+    [records] = rest;
+  if (!revisions.length) changed.shift(); // the catalog itself is unchanged
   const expectedManifests = await Promise.all(
     changed.map(async (p) => `${p} is not the adopted bytes (SHA-256 ${sha(await read(p))})`),
   );
-  assert.deepEqual(failures[0].problems.sort(), expectedManifests.sort());
-  assert.equal(failures[0].problemCount, expectedManifests.length);
-  assert.deepEqual(failures[1].problems.sort(), expectedRecords.sort());
-  assert.equal(failures[1].problemCount, expectedRecords.length);
+  assert.deepEqual(manifests.problems.sort(), expectedManifests.sort());
+  assert.equal(manifests.problemCount, expectedManifests.length);
+  if (startup) {
+    assert.deepEqual(startup.problems.sort(), expectedStartup.sort());
+    assert.equal(startup.problemCount, expectedStartup.length);
+  }
+  assert.deepEqual(records.problems.sort(), expectedRecords.sort());
+  assert.equal(records.problemCount, expectedRecords.length);
 }

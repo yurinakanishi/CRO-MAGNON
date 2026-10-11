@@ -97,3 +97,13 @@ Blender 3.6（このPC）では WebP の glTF を読めないため、確認描�
 ## 再現
 
 `scripts/face-remake/`：`write-requests.mjs` → `run-codex-refs.ps1` → `reconstruct-head.mjs` → `project-reference.py`（`output/face-remake/final-projections.sh`）→ `graft-head.py`（`output/face-remake/final-grafts.sh`）→ `verify-graft.py` / `measure-face-rigidity.py` → `write-review.mjs` → `adopt-face.mjs`。クロマニョン男性は `rigid-head-weights.py` → `verify-graft.py` → `adopt-face.mjs`。大きな途中ファイル（TRELLISの復元、PLY、作業GLB）は無視対象の `output/face-remake/` に保持。
+
+## 低ポリ頭部 r08（2026-10-11、採用）
+
+ユーザー指定「頭部の作り直し、進めて」。上の新しい頭部（5.1〜6.0万三角形、xatlasの継ぎはぎ）を、形を保ったまま軽くした。顔・目・口・ひげの見た目は比較画像を見たユーザーの確認（「採用して進めて」）を得て採用した。詳しい経緯と計測は [docs/head-lowpoly-2026-10-11.md](../../docs/head-lowpoly-2026-10-11.md)。
+
+- 方法：採用中の頭部を位置で溶接し、割れ目を閉じ、二重層を除き、首の継ぎ目から2.5cmを固定して部位別に簡略化（顔0.8mm・顔以外の肌2mm・髪は頭の2%）。巻き方向を面ごとに一貫させ、新しいUV（顔は1枚の等角チャート、重なりは切り出し、共有テクセル0を証明）へ、上の2048pxテクスチャから色だけをBlender 3.6（`-t 1`）で焼いて1024pxで配信。残る頂点は採用中の頂点そのもので、位置・関節・ウェイトを写す。体・骨・逆バインド・全動作は正本と一致。
+- 頭部：クロマニョン女性 52,910→21,080、ネアンデルタール女性 50,800→17,563、ネアンデルタール男性 59,898→26,614三角形。人物全体 72,851→41,021、68,553→35,316、99,379→66,095。
+- 新しい正本：各 `public/models/<key>/model-face-lp-r08.glb`（SHAは各 `asset.json`）。置き換えた起動用ファイル（`startup.opt-*.glb`）と `model-face-r01.glb`／`lod-face-r01.glb` は残す。
+- 記録：各 `assets/<key>/qa/lowpoly-head-r08.json`（レビュー・承認・設定・中間ファイルとスクリプトのSHA）、`assets/<key>/qa/source-revision-lowpoly-head-r08.json`、`assets/<key>/archive-manifest-20261010-r07-a01-20261011.json`、QAシート `assets/<key>/qa/lowpoly-head-r08/`、ユーザーが見た比較画像 `lowpoly-head-r08/review/`。中間ファイル・失敗版（r01〜r09、試験用t-*）は無視対象の `output/head-lowpoly/` に保持。
+- 再現：`node scripts/face-remake/lowpoly-heads.mjs --revision rNN`（形状→焼き付け→組み立て→比較。r08とr09は全件バイト一致）→ `node scripts/face-remake/adopt-lowpoly-head.mjs --revision r08 --reproduced r09 --approved "…"`。

@@ -6,7 +6,7 @@
 // Every file is read only once its exact length and SHA-256 match.
 import assert from 'node:assert/strict';
 import { readFile } from 'node:fs/promises';
-import { ORIGINAL_WOMAN, exactModel } from './cro-magnon-woman-rig.mjs';
+import { ORIGINAL_WOMAN, exactModel, recordedOriginal } from './cro-magnon-woman-rig.mjs';
 
 /** A full model and its far LOD, each `[url, sha256, bytes]`; every LOD is drawn from 28 m. */
 const pair = ([url, sha256, bytes], [lodUrl, lodSha256, lodBytes]) =>
@@ -16,7 +16,8 @@ const pair = ([url, sha256, bytes], [lodUrl, lodSha256, lodBytes]) =>
   });
 
 /** The original pair of each actor: what its manifest delivers before the adoption and records
- * as its original (`runtimeOptimization.original`, scripts/optimization/adoption.mjs) after. */
+ * as its original (`runtimeOptimization.original`, scripts/optimization/adoption.mjs) after, or
+ * the manifest an accepted source revision superseded records (recordedOriginal). */
 export const ORIGINAL_PAIRS = Object.freeze({
   'cro-magnon-woman': ORIGINAL_WOMAN,
   'cro-magnon-hunter': pair(
@@ -179,7 +180,7 @@ export async function actorManifest(key) {
 export async function originalPair(key, parse) {
   const known = ORIGINAL_PAIRS[key],
     asset = await actorManifest(key),
-    original = asset.runtimeOptimization?.original ?? asset;
+    original = await recordedOriginal(asset);
   assert.ok(known, `${key}: no recorded original pair`);
   assert.deepEqual(fileOf(original), fileOf(known.full), `${key}: the original full model`);
   assert.deepEqual(fileOf(original.lods?.[0]), fileOf(known.lod), `${key}: the original LOD`);

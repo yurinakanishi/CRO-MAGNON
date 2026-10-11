@@ -4,10 +4,10 @@
   "kind": "humanoid",
   "candidate": 2,
   "status": "remake-candidate-2-integrated",
-  "url": "/models/cro-magnon-woman/startup.opt-f414686fe312f6e3.glb",
-  "sha256": "f414686fe312f6e3d67855644dc0d3b79a1c942484e2a60b0c977e4af370fb2b",
-  "bytes": 5023664,
-  "triangles": 72851,
+  "url": "/models/cro-magnon-woman/model-face-lp-r08.glb",
+  "sha256": "c495179a518d8d557ef9d0ef8795b85a58403da9debef4212039e944a064314a",
+  "bytes": 5278800,
+  "triangles": 41021,
   "upAxis": "Y",
   "forwardAxis": "+Z",
   "heightMetres": 1.67,
@@ -78,7 +78,8 @@
   "gender": "female",
   "species": "cro",
   "notes": [
-    "Remake C2 of the user-approved face-repair r10 (approved head and body kept): body and head reduced separately with locked shared borders (55,478+134,897 -> 33,419+34,712 triangles), welded at the neck, each with its own 2048 albedo + baked normal atlas; 22 bones and 10 clips unchanged. Posed deviation from the delivered skin 0 m (kept vertices are a subset); clip curves within 0.04 deg (resampling). 67133 triangles (was 190402), textures 2048 WebP + baked normal."
+    "Remake C2 of the user-approved face-repair r10 (approved head and body kept): body and head reduced separately with locked shared borders (55,478+134,897 -> 33,419+34,712 triangles), welded at the neck, each with its own 2048 albedo + baked normal atlas; 22 bones and 10 clips unchanged. Posed deviation from the delivered skin 0 m (kept vertices are a subset); clip curves within 0.04 deg (resampling). 67133 triangles (was 190402), textures 2048 WebP + baked normal.",
+    "Low-poly head r08: the face-remake head 52910 -> 21080 triangles (face within 0.8 mm, other skin 2 mm, hair about 5-6 mm), new UVs and a 1024 albedo baked from the 2048 face-remake texture; kept vertices keep their positions and weights; body, rig and clips unchanged. 72851 -> 41021 triangles."
   ],
   "provenance": {
     "provider": "Claude Code (Opus 5.5); Codex built-in image_gen reference; local TRELLIS-2 reconstruction",
@@ -324,7 +325,7 @@
       "modelSha256": "55c0728b99376581695712f4010bcf948b3d4cc23ca64922dd000234f22c9b5a"
     }
   },
-  "revision": "face-r01",
+  "revision": "face-lp-r08",
   "faceRemake": {
     "revision": "r01",
     "kind": "new-head",
@@ -525,40 +526,24 @@
       "renderer": "scripts/qa-female-faces.mjs (FACE_QA_PORTRAIT=1, Idle_Loop 20%, 420x480, three.js)"
     }
   },
-  "runtimeOptimization": {
-    "adoption": "20261010-r07-a01",
-    "candidateRevision": "assets/optimized-runtime/20261010-r07",
-    "selection": "startup-sole-primary",
-    "original": {
-      "url": "/models/cro-magnon-woman/model-face-r01.glb",
-      "sha256": "c8082f13995cebd42d674f6d4b5c87a61d441597d5670aec8803ca5006fdf2c1",
-      "bytes": 11552512,
-      "triangles": 85829,
-      "lods": [
-        {
-          "url": "/models/cro-magnon-woman/lod-face-r01.glb",
-          "sha256": "af0fdffd99f893e08b3fd3e5411b629d7dec8ac321495f4b1129ba9f45ce2eb4",
-          "bytes": 736684,
-          "triangles": 12627,
-          "distanceMetres": 28,
-          "purpose": "animated-medium-lod-geometry"
-        }
-      ]
+  "lowpolyHead": {
+    "revision": "lowpoly-head-r08",
+    "review": "assets/cro-magnon-woman/qa/lowpoly-head-r08.json",
+    "headTriangles": {
+      "before": 52910,
+      "after": 21080
     },
-    "startupCandidate": {
-      "record": "model:cro-magnon-woman",
+    "previous": {
       "url": "/models/cro-magnon-woman/startup.opt-f414686fe312f6e3.glb",
       "sha256": "f414686fe312f6e3d67855644dc0d3b79a1c942484e2a60b0c977e4af370fb2b",
-      "bytes": 5023664
-    },
-    "adoptedBy": "20261010-r07-a01",
-    "supersedes": {
-      "adoption": "20261009-r04-a01",
-      "candidateRevision": "assets/optimized-runtime/20261009-r04",
-      "url": "/models/cro-magnon-woman/startup.opt-7d7616b26f06a2ac.glb",
-      "sha256": "7d7616b26f06a2ac950141233d975151d6496e7c0d32722d2dd67234bd5e1eb5",
-      "bytes": 5412384,
-      "lods": []
+      "bytes": 5023664,
+      "triangles": 72851,
+      "adoption": "20261010-r07-a01",
+      "manifest": "assets/cro-magnon-woman/archive-manifest-20261010-r07-a01-20261011.json"
     }
+  },
+  "sourceRevision": {
+    "record": "assets/cro-magnon-woman/qa/source-revision-lowpoly-head-r08.json",
+    "sha256": "35a7345c8d89bc29a5317c085b22888483e81dbec2c4417506f25110e37c3d5e"
   }
 }

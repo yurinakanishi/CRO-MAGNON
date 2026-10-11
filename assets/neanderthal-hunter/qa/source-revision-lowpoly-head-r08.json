@@ -1,0 +1,28 @@
+{
+  "schema": "cro-magnon/source-model-revision@1",
+  "modelKey": "neanderthal-hunter",
+  "decision": "adopt",
+  "previous": {
+    "adoption": "20261010-r07-a01",
+    "files": [
+      {
+        "url": "/models/neanderthal-hunter/startup.opt-ef3e3fa2f2931daf.glb",
+        "sha256": "ef3e3fa2f2931dafe233560f29715b484440b46460f225dfd44c31c6e44faaeb",
+        "bytes": 8091164
+      }
+    ],
+    "manifest": "assets/neanderthal-hunter/archive-manifest-20261010-r07-a01-20261011.json",
+    "manifestSha256": "2b4a778f7f0c38b6586500f4e9cde12738d768b70928c8ee8a47f58e18d9dc3a"
+  },
+  "files": [
+    {
+      "url": "/models/neanderthal-hunter/model-face-lp-r08.glb",
+      "sha256": "c5c93e0298d70f684fd274aef29bf655a89733d1d0b23bb0341ceb534d4c6ed6",
+      "bytes": 7548664
+    }
+  ],
+  "review": {
+    "path": "assets/neanderthal-hunter/qa/lowpoly-head-r08.json",
+    "sha256": "c7b7edef815648d751072815d9fd15d2315304f58a89d83cb172cb1a882d77ce"
+  }
+}

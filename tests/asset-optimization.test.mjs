@@ -12,6 +12,8 @@ import * as THREE from 'three';
 import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
 import { runtimeIndexOf } from '../scripts/optimization/contract.mjs';
 import { assertGuardedHistoryStep } from './fixtures/guarded/lineage.mjs';
+import { supersededManifest } from './cro-magnon-woman-rig.mjs';
+import { readSourceModelRevisions } from '../scripts/source-model-revision.mjs';
 import {
   MESHOPT,
   accessorElements,
@@ -2351,13 +2353,16 @@ test('every eligible public character merges its adopted LOD into a verified sta
         `${label}: r04's recorded startup proofs`,
       );
       // The root keeps r04's verified startup. The active graph may serve a reviewed reduction,
-      // linked back to that root by the history checks above, with no old LOD restored.
-      const served = JSON.parse(
+      // linked back to that root by the history checks above, with no old LOD restored. An
+      // accepted source revision may then supersede the startup file with a reviewed new primary
+      // (scripts/source-model-revision.mjs); the record it superseded still serves the graph's.
+      const current = JSON.parse(
           await readFile(
             path.join(REPO_ROOT, 'public', 'models', model.modelKey, 'asset.json'),
             'utf8',
           ),
         ),
+        served = await supersededManifest(current),
         entry = adoption.plan.graph.models[model.modelKey],
         originalEntry = adoption.originalPlan.graph.models[model.modelKey],
         file = await readFile(path.join(REPO_ROOT, 'public', ...served.url.slice(1).split('/')));
@@ -2386,6 +2391,18 @@ test('every eligible public character merges its adopted LOD into a verified sta
         `${label}: the original identity it replaced`,
       );
       assert.deepEqual(served.runtimeOptimization.original.lods, model.saved.lods);
+      if (current.sourceRevision) {
+        const revisions = await readSourceModelRevisions(REPO_ROOT, [current], {
+          id: adoption.id,
+          graph: adoption.plan.graph,
+        });
+        assert.deepEqual(
+          revisions[model.modelKey].files,
+          [fileIdentity(current)],
+          `${label}: the accepted source revision`,
+        );
+        assert.equal(current.runtimeOptimization, undefined, `${label}: no stamp on the revision`);
+      }
     }
     // Every separable head (human women and men, the cat) keeps the full model's geometry. The
     // single-primitive fennec and ape (damaged LOD faces in the r02 review) keep their whole

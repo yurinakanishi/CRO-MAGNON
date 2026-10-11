@@ -1,0 +1,252 @@
+{
+  "schema": "cro-magnon/lowpoly-head-review@1",
+  "date": "2026-10-11",
+  "decision": "adopt",
+  "approved": "User approved in chat on 2026-10-11 (「採用して進めて」) after the comparison images in assets/face-remake/lowpoly-head-r08/review/ and the measured numbers were presented.",
+  "modelKey": "neanderthal-hunter",
+  "revision": "lowpoly-head-r08",
+  "url": "/models/neanderthal-hunter/model-face-lp-r08.glb",
+  "sha256": "c5c93e0298d70f684fd274aef29bf655a89733d1d0b23bb0341ceb534d4c6ed6",
+  "bytes": 7548664,
+  "triangles": 66095,
+  "reproducedBy": {
+    "revision": "r09",
+    "sha256": "c5c93e0298d70f684fd274aef29bf655a89733d1d0b23bb0341ceb534d4c6ed6"
+  },
+  "master": {
+    "url": "/models/neanderthal-hunter/startup.opt-ef3e3fa2f2931daf.glb",
+    "sha256": "ef3e3fa2f2931dafe233560f29715b484440b46460f225dfd44c31c6e44faaeb",
+    "bytes": 8091164,
+    "triangles": 99379
+  },
+  "textureSource": {
+    "url": "/models/neanderthal-hunter/model-face-r01.glb",
+    "sha256": "6910fd3396bcde7934e9af23fa2130ca5c1bca9a08da0d00fe5582076b94352b",
+    "bytes": 15858864
+  },
+  "head": {
+    "before": {
+      "sha256": "ef3e3fa2f2931dafe233560f29715b484440b46460f225dfd44c31c6e44faaeb",
+      "headTriangles": 59898,
+      "headVertices": 114420
+    },
+    "after": {
+      "triangles": 26614,
+      "vertices": 38535,
+      "lowVertices": 13757,
+      "rewoundTriangles": 2426,
+      "texture": "1024x1024 PNG 1613913 B",
+      "atlas": {
+        "face": {
+          "atlasShare": 0.1836,
+          "texelsPerMm2": 2.456
+        },
+        "rest": {
+          "atlasShare": 0.1564,
+          "texelsPerMm2": 0.614
+        }
+      },
+      "uvRepair": [
+        2543,
+        60,
+        0
+      ]
+    }
+  },
+  "method": "The adopted face-remake head, welded by position (coincident double layers dropped), crack-repaired and turned outward, simplified by region (hair, other skin, face) with the neck seam band locked, and wound consistently per connected surface. A new UV layout (the face one conformal chart; every fold or overlap cut out and re-projected until no bake texel is shared; face islands at twice the texel density of the rest) and its albedo baked in Blender 3.6 from the 2048 face-remake texture, delivered at 1024. Every kept vertex keeps its adopted position, joints and weights. Body primitives, skin, inverse binds, nodes and every clip are unchanged (assemble-head.mjs).",
+  "landmarks": {
+    "eye": 1.5625,
+    "chin": 1.43
+  },
+  "options": {
+    "target": 12000,
+    "weld": 0.0001,
+    "error": 0.02,
+    "crack": 0.001,
+    "face-crack": 0.0025,
+    "band": 0.025,
+    "dilate": 0,
+    "pad": 12,
+    "skin-error": 0.002,
+    "face-error": 0.0008,
+    "min-island": 150
+  },
+  "bake": {
+    "size": 2048,
+    "face-scale": 2,
+    "margin": 4,
+    "angle": 66
+  },
+  "passes": {
+    "hair": {
+      "trianglesBefore": 33214,
+      "trianglesAfter": 11029,
+      "borderTriangles": 2150,
+      "errorMetres": 0.006122,
+      "errorLimitMetres": 0.006122
+    },
+    "skin": {
+      "trianglesBefore": 6174,
+      "trianglesAfter": 2844,
+      "borderTriangles": 2150,
+      "errorMetres": 0.001981,
+      "errorLimitMetres": 0.002
+    },
+    "face": {
+      "trianglesBefore": 13894,
+      "trianglesAfter": 11227,
+      "borderTriangles": 2150,
+      "errorMetres": 0.000794,
+      "errorLimitMetres": 0.0008
+    },
+    "distance": {
+      "hair": {
+        "vertices": 19787,
+        "p50Millimetres": 0.397,
+        "p99Millimetres": 3.51,
+        "maxMillimetres": 12.222
+      },
+      "skin": {
+        "vertices": 3825,
+        "p50Millimetres": 0,
+        "p99Millimetres": 1.435,
+        "maxMillimetres": 5.998
+      },
+      "face": {
+        "vertices": 7100,
+        "p50Millimetres": 0,
+        "p99Millimetres": 0.737,
+        "maxMillimetres": 1.5
+      }
+    },
+    "openEdgesByRegion": [
+      12184,
+      1066,
+      601
+    ],
+    "farthestFaceVertex": {
+      "distance": 0.001500296641455721,
+      "vertex": 29153,
+      "position": [
+        0.02931547909975052,
+        1.4848965406417847,
+        0.07970781624317169
+      ]
+    },
+    "lowTrianglesByRegion": [
+      10435,
+      3602,
+      12577
+    ],
+    "winding": {
+      "duplicateTrianglesDropped": {
+        "welded": 1773,
+        "low": 636
+      },
+      "components": 1691,
+      "reversedTriangles": 1679,
+      "reversedNormals": 1307,
+      "inconsistentEdges": 5,
+      "nonManifoldEdges": 2059
+    }
+  },
+  "orientation": {
+    "reversedTriangles": 6511,
+    "reversedNormals": 14608
+  },
+  "neckSeam": {
+    "vertices": 0,
+    "clusters": 0,
+    "kept": 0,
+    "sewnVertices": 0,
+    "worstMetres": 0,
+    "normalDegrees": 0,
+    "adoptedNormalDegrees": 0
+  },
+  "psnr": {
+    "0:front": 33.95,
+    "1:three-quarter": 32.13,
+    "2:side": 30.64,
+    "3:back": 33.34,
+    "4:below-chin": 33.56,
+    "5:front": 34.14,
+    "6:three-quarter": 31.54,
+    "7:side": 29.83,
+    "8:below-chin": 32.78,
+    "9:bind": 40.7,
+    "10:walk": 40.65,
+    "11:run": 42.9,
+    "12:attack": 41.43,
+    "13:idle": 52.23,
+    "14:walk": 51.69
+  },
+  "sheets": [
+    {
+      "path": "assets/neanderthal-hunter/qa/lowpoly-head-r08/sheet-face-bind.jpg",
+      "sha256": "3b6d52a28b731cd932b5cbf829e090688ed643d0bfec64ea8884dd54c74b00ac"
+    },
+    {
+      "path": "assets/neanderthal-hunter/qa/lowpoly-head-r08/sheet-face-albedo.jpg",
+      "sha256": "90abf98fcf05d36514046a0d267231ee419a1fa988ebe8dc053c61ab1ca24565"
+    },
+    {
+      "path": "assets/neanderthal-hunter/qa/lowpoly-head-r08/sheet-head-poses.jpg",
+      "sha256": "cfe22736e079c161a78e016fca4314d87cf224b62b0324c1e34e13298496d8bf"
+    },
+    {
+      "path": "assets/neanderthal-hunter/qa/lowpoly-head-r08/sheet-body.jpg",
+      "sha256": "4177d3cbce1e589e8ab3d40f05ee27a0ff2f6b5f02b2d4a422d7c9d812f47e6c"
+    },
+    {
+      "path": "assets/neanderthal-hunter/qa/lowpoly-head-r08/report.json",
+      "sha256": "4f1ceff51948386d157d2be5adc245694d143c5ee20c19b1650b6c130a6c7d04"
+    }
+  ],
+  "userReview": [
+    {
+      "path": "assets/face-remake/lowpoly-head-r08/review/faces-close.jpg",
+      "sha256": "88fe600fc3932b80c1209466d80dca058cea378ebe09039bd8099fd259d679bc"
+    },
+    {
+      "path": "assets/face-remake/lowpoly-head-r08/review/faces-albedo.jpg",
+      "sha256": "360079ab26a8979269e890e152e27578110572eec5e004d2a5be09cbfb12e4cc"
+    },
+    {
+      "path": "assets/face-remake/lowpoly-head-r08/review/poses-body.jpg",
+      "sha256": "e0fa7a5a68793606f9f2def6cccff7281a95facfc138d538241106ffc863381a"
+    }
+  ],
+  "production": {
+    "folder": "output/head-lowpoly/neanderthal-hunter/r08",
+    "intermediates": {
+      "output/head-lowpoly/neanderthal-hunter/r08/geometry.json": "c3f8dbf7a3d0d34d16250d1478b793ad9df3ee7bb630d58a8f39f93213bb4573",
+      "output/head-lowpoly/neanderthal-hunter/r08/high.obj": "66f74284f7c668732792c5b79e116b962b500f7327530f80663f4135652887e3",
+      "output/head-lowpoly/neanderthal-hunter/r08/high-albedo.png": "7f964a506b44bb5e36a564299ce1932f89777750cdf5977752bda8d3c83ae1d6",
+      "output/head-lowpoly/neanderthal-hunter/r08/low.obj": "bdfaf6e8833739f248dcc42e110e904c318d63e247408ef39ac67f5d610e9f0d",
+      "output/head-lowpoly/neanderthal-hunter/r08/face-faces.json": "edb6d1ae5a71c5400a2ec05d1c0a922747797f8b2e0c01057eb598dada707aca",
+      "output/head-lowpoly/neanderthal-hunter/r08/low-regions.json": "5309e91f39d14f9498cf2a350378387ae5c52dd498cf66a4bb3a3f8cc363ce44",
+      "output/head-lowpoly/neanderthal-hunter/r08/low-uv.json": "49177dfa537726750ecb0388d8fbcdec588300982cefcce4e26c45c54de9e9ff",
+      "output/head-lowpoly/neanderthal-hunter/r08/low-albedo.png": "f90070be18ac73de318363de2279362838b911ad8d4e6b439f2a7564730f6e1e",
+      "output/head-lowpoly/neanderthal-hunter/r08/neanderthal-hunter-r08.glb.json": "3e87e087dd40ddf05fc7aa0e9eeaec1a4135fbae26de4ed00bea49bfaf7b3bde"
+    },
+    "scripts": {
+      "scripts/face-remake/lowpoly-heads.mjs": "7554a7f11e6460d153521fada9ff2cd13d872ebd4a7ba6b96f4bff8675fed847",
+      "scripts/face-remake/lowpoly-head.mjs": "28ce1a3ca823a9f406f265f5f4d36bb1db72fb71ed237e245396fb5d57f0bbb0",
+      "scripts/face-remake/bake-head.py": "b9db59036fa947ff9afeb95c2fb6b119a4da9329ff8950f91828ad8f3576ee03",
+      "scripts/face-remake/assemble-head.mjs": "b32ca931a8459b842da0ed22b78ce3867b742d5ef48efb3823b7b096f7bc6a88",
+      "scripts/face-remake/qa-lowpoly-head.mjs": "ffb2bb1d5b8a67f3c64251780bcf0ee9158cf1b900d7b6e992e372de86db9a9c"
+    },
+    "tools": {
+      "node": "v24.15.0",
+      "blender": "Blender 3.6.2 (hash e53e55951e7a built 2023-08-16 23:35:13)",
+      "meshoptimizer": "1.1.1",
+      "sharp": "0.35.2"
+    }
+  },
+  "provenance": {
+    "provider": "Claude Code (Opus 5.5)",
+    "claudeUsed": true,
+    "geometrySource": "TRELLIS-2 face-remake head of the adopted model (faceRemake in the archived manifest)"
+  },
+  "limits": "Face review in Chrome (ANGLE D3D11) with the game Three.js at 0.55 m, 1.3 m and 3.2 m, the bind pose and four clips; not on a physical phone. The hair is simplified within about 5-6 mm and is slightly more faceted at close range. Seen from below the chin, the light band of the face-remake neck join (present in the adopted model too) has a slightly more jagged edge."
+}

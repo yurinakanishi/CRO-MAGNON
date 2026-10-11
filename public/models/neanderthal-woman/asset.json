@@ -4,10 +4,10 @@
   "kind": "humanoid",
   "candidate": 2,
   "status": "remake-candidate-2-integrated",
-  "url": "/models/neanderthal-woman/startup.opt-fabb21a67061a199.glb",
-  "sha256": "fabb21a67061a199d24efac0e6196a0477cba02d73eab259bb6810a70e6ecd8d",
-  "bytes": 4530988,
-  "triangles": 68553,
+  "url": "/models/neanderthal-woman/model-face-lp-r08.glb",
+  "sha256": "343c7ae31d2c39ba13cb69a69e6fc5d6b2095055872a43bd085db9bf28b0e52a",
+  "bytes": 4859144,
+  "triangles": 35316,
   "upAxis": "Y",
   "forwardAxis": "+Z",
   "heightMetres": 1.6,
@@ -78,7 +78,8 @@
   "gender": "female",
   "species": "nea",
   "notes": [
-    "Remake C2 of the user-approved face-repair r10 (approved head and body kept): body and head reduced separately with locked shared borders (53,338+164,812 -> 32,913+34,389 triangles), welded at the neck, each with its own 2048 albedo + baked normal atlas; 22 bones and 10 clips unchanged. Posed deviation from the delivered skin 0 m (kept vertices are a subset); clip curves within 0.04 deg (resampling). 66179 triangles (was 218163), textures 2048 WebP + baked normal."
+    "Remake C2 of the user-approved face-repair r10 (approved head and body kept): body and head reduced separately with locked shared borders (53,338+164,812 -> 32,913+34,389 triangles), welded at the neck, each with its own 2048 albedo + baked normal atlas; 22 bones and 10 clips unchanged. Posed deviation from the delivered skin 0 m (kept vertices are a subset); clip curves within 0.04 deg (resampling). 66179 triangles (was 218163), textures 2048 WebP + baked normal.",
+    "Low-poly head r08: the face-remake head 50800 -> 17563 triangles (face within 0.8 mm, other skin 2 mm, hair about 5-6 mm), new UVs and a 1024 albedo baked from the 2048 face-remake texture; kept vertices keep their positions and weights; body, rig and clips unchanged. 68553 -> 35316 triangles."
   ],
   "provenance": {
     "provider": "Claude Code (Opus 5.5); Codex built-in image_gen reference; local TRELLIS-2 reconstruction",
@@ -324,7 +325,7 @@
       "modelSha256": "21da70ddc2c5cfc7a2199dad4782b7d4822c3451d33d0d2275b405a2f3a78311"
     }
   },
-  "revision": "face-r01",
+  "revision": "face-lp-r08",
   "faceRemake": {
     "revision": "r01",
     "kind": "new-head",
@@ -525,40 +526,24 @@
       "renderer": "scripts/qa-female-faces.mjs (FACE_QA_PORTRAIT=1, Idle_Loop 20%, 420x480, three.js)"
     }
   },
-  "runtimeOptimization": {
-    "adoption": "20261010-r07-a01",
-    "candidateRevision": "assets/optimized-runtime/20261010-r07",
-    "selection": "startup-sole-primary",
-    "original": {
-      "url": "/models/neanderthal-woman/model-face-r01.glb",
-      "sha256": "b4c416900e972c8850892b7a5f886e62478894d1c958cf35830dc7ea1672dde9",
-      "bytes": 10675488,
-      "triangles": 83447,
-      "lods": [
-        {
-          "url": "/models/neanderthal-woman/lod-face-r01.glb",
-          "sha256": "867a3908acf4a85918aded67c2ae4a0529c860f9455ec613337d707c0e044156",
-          "bytes": 716252,
-          "triangles": 12894,
-          "distanceMetres": 28,
-          "purpose": "animated-medium-lod-geometry"
-        }
-      ]
+  "lowpolyHead": {
+    "revision": "lowpoly-head-r08",
+    "review": "assets/neanderthal-woman/qa/lowpoly-head-r08.json",
+    "headTriangles": {
+      "before": 50800,
+      "after": 17563
     },
-    "startupCandidate": {
-      "record": "model:neanderthal-woman",
+    "previous": {
       "url": "/models/neanderthal-woman/startup.opt-fabb21a67061a199.glb",
       "sha256": "fabb21a67061a199d24efac0e6196a0477cba02d73eab259bb6810a70e6ecd8d",
-      "bytes": 4530988
-    },
-    "adoptedBy": "20261010-r07-a01",
-    "supersedes": {
-      "adoption": "20261009-r04-a01",
-      "candidateRevision": "assets/optimized-runtime/20261009-r04",
-      "url": "/models/neanderthal-woman/startup.opt-caf50f3f8aa971be.glb",
-      "sha256": "caf50f3f8aa971be2119d5399bfe3226cfe3d0d283cc965c0beafcac0d6a1a21",
-      "bytes": 4922092,
-      "lods": []
+      "bytes": 4530988,
+      "triangles": 68553,
+      "adoption": "20261010-r07-a01",
+      "manifest": "assets/neanderthal-woman/archive-manifest-20261010-r07-a01-20261011.json"
     }
+  },
+  "sourceRevision": {
+    "record": "assets/neanderthal-woman/qa/source-revision-lowpoly-head-r08.json",
+    "sha256": "5ea041b0466e904d03912bd79d6b80ac895730227522f14d022a5a2202a71eeb"
   }
 }
