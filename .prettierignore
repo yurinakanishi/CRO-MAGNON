@@ -8,3 +8,7 @@ shared/castle-surface-data.mts
 shared/camp-cave-surface-data.mts
 shared/camp-mountain-surface-data.mts
 shared/landmark-bounds.mts
+shared/paleo-coast-baked.mts
+shared/camp-mountain-surface-baked.mts
+shared/castle-surface-baked.mts
+shared/scenery-answers-baked.mts

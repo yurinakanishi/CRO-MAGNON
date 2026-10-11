@@ -26,6 +26,7 @@
     "deploy:cloudflare": "node scripts/deploy-cloudflare.mjs",
     "build": "node scripts/build.mjs",
     "cook": "node scripts/build.mjs && node scripts/delivery/prepare-overlay.mjs",
+    "bake:world": "node scripts/build.mjs && node scripts/bake-world-data.mjs && node scripts/build.mjs",
     "build:exhibition": "node scripts/build-exhibition.mjs",
     "typecheck": "node scripts/build.mjs --check",
     "pretest": "node scripts/build.mjs",

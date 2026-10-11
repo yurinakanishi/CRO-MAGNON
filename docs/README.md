@@ -138,6 +138,7 @@
 | [optimization-startup-2026-10-10.md](optimization-startup-2026-10-10.md) | r08の初期読込修正、実タッチの開始→採集、5秒未達と残る素材量 |
 | [delivery-cooking-2026-10-11.md](delivery-cooking-2026-10-11.md) | 正本と配信物を分ける配信用変換、転送量半減・洞窟6.5秒、残る根本課題 |
 | [head-lowpoly-2026-10-11.md](head-lowpoly-2026-10-11.md) | 顔を作り直した人物3体の頭部の軽量化（r08採用）、UVの折り返し・使用率・再現性の修正、採用と確認 |
+| [world-data-bake-2026-10-11.md](world-data-bake-2026-10-11.md) | 起動時のワールド計算（海岸・地表・景観）をビルド時へ移し、人物選択まで5.7→3.5秒 |
 | [optimization-assets-lowpoly-2026-10-10.md](optimization-assets-lowpoly-2026-10-10.md) | Opus 5.5 Highによる素材軽量化、候補の独立検査と不採用・修正記録 |
 | [pet-on-start-2026-10-03.md](pet-on-start-2026-10-03.md) | 撫で始めた時点でなつく |
 | [rimo-cave-mural-2026-10-02.md](rimo-cave-mural-2026-10-02.md) | りもねこの壁画を524の反対側へ復活（2026-10-02） |

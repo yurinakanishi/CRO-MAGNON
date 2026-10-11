@@ -1,5 +1,5 @@
 import { CAMP_MOUNTAIN, CAVE_HILL, caveFootHeight } from './camp-cave-layout.mjs';
-import { CAMP_MOUNTAIN_SURFACE_DATA as D } from './camp-mountain-surface-data.mjs';
+import { CAMP_MOUNTAIN_SURFACE_DATA as D } from './camp-mountain-surface-baked.mjs';
 import {
   expandedMountainZ,
   expandedMountainX,

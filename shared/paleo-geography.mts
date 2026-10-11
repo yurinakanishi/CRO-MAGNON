@@ -1,18 +1,10 @@
-import { COAST_GRID, COAST_RUNS } from './paleo-coast-data.mjs';
+import { COAST_BAKED } from './paleo-coast-baked.mjs';
+import { decodeRuns, patchGrid } from './baked-data.mjs';
 import { WORLD_BOUNDS } from './world-bounds.mjs';
-import { mountainLandDistance, MOUNTAIN_BOUNDS } from './camp-mountain.mjs';
-import { LEGACY_GULF, legacyGulfDistance, inLegacyGulf } from './gulf-legacy.mjs';
+import { inLegacyGulf } from './gulf-legacy.mjs';
 
-export const EARTH = Object.freeze({
-  width: 4096,
-  height: 2048,
-  minX: -2240,
-  minZ: -416,
-  maxX: 1856,
-  maxZ: 1632,
-  epochYearsBP: 50000,
-  seaLevelMetres: -68.3,
-});
+import { EARTH } from './paleo-earth.mjs';
+export { EARTH };
 export const geoToWorld = (longitude, latitude) => ({
   x: EARTH.minX + ((longitude + 180) / 360) * EARTH.width,
   z: EARTH.minZ + ((90 - latitude) / 180) * EARTH.height,
@@ -21,49 +13,32 @@ export const worldToGeo = (x, z) => ({
   longitude: ((x - EARTH.minX) / EARTH.width) * 360 - 180,
   latitude: 90 - ((z - EARTH.minZ) / EARTH.height) * 180,
 });
-const { cell } = COAST_GRID;
+// The shoreline grids, baked at build time (scripts/bake-world-data.mjs from
+// shared/paleo-coast-build.mts): the verified Earth grid's runs, copied into the world grid, then
+// the final values of the legacy gulf's scatter inputs (Earth grid) and of the mountain foothill
+// join (world grid). Decoding replaces the per-load derivation; the bytes are the same.
+const { cell } = COAST_BAKED;
+const COAST_GRID = { width: COAST_BAKED.base.width, height: COAST_BAKED.base.height, cell };
 const width = WORLD_BOUNDS.width / cell,
   height = WORLD_BOUNDS.depth / cell;
-const base = new Uint8Array(COAST_GRID.width * COAST_GRID.height);
-let cursor = 0;
-for (let i = 0; i < COAST_RUNS.length; i += 2) {
-  base.fill(COAST_RUNS[i + 1], cursor, cursor + COAST_RUNS[i]);
-  cursor += COAST_RUNS[i];
-}
-if (cursor !== base.length) throw new Error('Incomplete verified Earth shoreline');
-COAST_RUNS.length = 0;
+if (COAST_BAKED.world.width !== width || COAST_BAKED.world.height !== height)
+  throw new Error('Baked shoreline does not match the world bounds');
+const base = decodeRuns(COAST_BAKED.base.runs, COAST_GRID.width * COAST_GRID.height);
 const coast = new Uint8Array(width * height);
-const baseX = (EARTH.minX - WORLD_BOUNDS.minX) / cell,
-  baseZ = (EARTH.minZ - WORLD_BOUNDS.minZ) / cell;
+const baseX = COAST_BAKED.world.baseX,
+  baseZ = COAST_BAKED.world.baseZ;
+if (
+  baseX !== (EARTH.minX - WORLD_BOUNDS.minX) / cell ||
+  baseZ !== (EARTH.minZ - WORLD_BOUNDS.minZ) / cell
+)
+  throw new Error('Baked shoreline is placed elsewhere in the world');
 for (let row = 0; row < COAST_GRID.height; row++)
   coast.set(
     base.subarray(row * COAST_GRID.width, (row + 1) * COAST_GRID.width),
     (row + baseZ) * width + baseX,
   );
-// Preserve the old global scatter's exact inputs while the playable gulf moves.
-for (
-  let iz = (LEGACY_GULF.minZ - EARTH.minZ) / cell;
-  iz < (LEGACY_GULF.maxZ - EARTH.minZ) / cell;
-  iz++
-)
-  for (
-    let ix = (LEGACY_GULF.minX - EARTH.minX) / cell;
-    ix < (LEGACY_GULF.maxX - EARTH.minX) / cell;
-    ix++
-  ) {
-    const i = iz * COAST_GRID.width + ix;
-    const value = Math.max(
-      0,
-      Math.min(
-        255,
-        Math.round(
-          128 +
-            4 * legacyGulfDistance(EARTH.minX + (ix + 0.5) * cell, EARTH.minZ + (iz + 0.5) * cell),
-        ),
-      ),
-    );
-    if (base[i] <= 128) base[i] = Math.max(base[i], value);
-  }
+if (COAST_BAKED.basePatch) patchGrid(base, COAST_GRID.width, COAST_BAKED.basePatch);
+if (COAST_BAKED.worldPatch) patchGrid(coast, width, COAST_BAKED.worldPatch);
 export function legacySceneryLand(x, z, margin = 0) {
   const u = Math.max(0, Math.min(COAST_GRID.width - 1, (x - EARTH.minX) / cell - 0.5));
   const v = Math.max(0, Math.min(COAST_GRID.height - 1, (z - EARTH.minZ) / cell - 0.5));
@@ -80,25 +55,6 @@ export function legacySceneryLand(x, z, margin = 0) {
     margin
   );
 }
-// Join the new source-derived southern foothill to the existing shoreline.
-// This same grid controls sea rendering, walking, boats and the map.
-for (
-  let iz = Math.floor((MOUNTAIN_BOUNDS.minZ - 5 - WORLD_BOUNDS.minZ) / cell);
-  iz < Math.ceil((MOUNTAIN_BOUNDS.maxZ + 5 - WORLD_BOUNDS.minZ) / cell);
-  iz++
-)
-  for (
-    let ix = Math.floor((MOUNTAIN_BOUNDS.minX - 5 - WORLD_BOUNDS.minX) / cell);
-    ix < Math.ceil((MOUNTAIN_BOUNDS.maxX + 5 - WORLD_BOUNDS.minX) / cell);
-    ix++
-  ) {
-    const d = mountainLandDistance(
-      WORLD_BOUNDS.minX + (ix + 0.5) * cell,
-      WORLD_BOUNDS.minZ + (iz + 0.5) * cell,
-    );
-    const value = Math.max(0, Math.min(255, Math.round(128 + 4 * d)));
-    coast[iz * width + ix] = Math.max(coast[iz * width + ix], value);
-  }
 export const coastTextureData = () => ({
   data: coast,
   width,
