@@ -1,9 +1,9 @@
 {
-  "checkedAt": "2026-10-06T13:42:03.622Z",
+  "checkedAt": "2026-10-11T06:02:15.366Z",
   "accountId": "a211102818d484cb668c6b62bebff3f9",
   "accountName": "CRO-MAGNON Free",
   "workersPlan": "Free",
-  "evidence": "Observed exact CRO-MAGNON Free Workers plans dashboard in Chrome: Free, , disabled Current plan; account a211102818d484cb668c6b62bebff3f9. No billing changes. CUA tab 1179538902.",
+  "evidence": "Observed the exact CRO-MAGNON Free Workers plans dashboard in Chrome: Free, $0, disabled Current plan; account a211102818d484cb668c6b62bebff3f9. Accessibility state and screenshot confirmed the current plan. No billing changes. CUA tab 1179540713.",
   "dashboard": "https://dash.cloudflare.com/a211102818d484cb668c6b62bebff3f9/workers/plans",
   "deploymentAllowed": true
 }

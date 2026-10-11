@@ -1,3 +1,5 @@
+import { installLanguageUI } from './language-ui.js';
+
 /** The same conversation stays in the desktop HUD or a mobile bottom dialog. */
 export class ChatUI {
   readonly dialog: HTMLDialogElement;
@@ -25,6 +27,7 @@ export class ChatUI {
     this.dialog.id = 'chat-dialog';
     this.dialog.setAttribute('aria-labelledby', 'chat-title');
     document.body.append(this.dialog);
+    installLanguageUI(this.dialog);
     this.toggle.setAttribute('aria-controls', 'chat-content');
     this.toggle.onclick = () => this.setOpen(!!this.content.hidden);
     this.dialog.addEventListener('close', this.finishClose);

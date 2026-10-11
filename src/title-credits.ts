@@ -100,7 +100,7 @@ export function contributorsDialogMarkup(
   const roles: Contributor['role'][] = ['制作', '開発者', '監修', '友情出演'];
   const card = (person: Contributor) => {
     const handle = contributorHandle(person.profile);
-    const body = `<img class="contributor-avatar" src="${person.avatar}" width="56" height="56" alt="" decoding="async"><span class="contributor-text"><strong>${escape(person.name)}</strong>${handle ? `<small>@${handle}</small>` : ''}</span>`;
+    const body = `<img class="contributor-avatar" src="${person.avatar}" width="56" height="56" alt="" decoding="async"><span class="contributor-text"><strong translate="no">${escape(person.name)}</strong>${handle ? `<small>@${handle}</small>` : ''}</span>`;
     return links && handle
       ? `<li><a class="contributor" href="${person.profile}" target="_blank" rel="noopener noreferrer" aria-label="${escape(`${person.name}のXプロフィールを開く`)}">${body}${xGlyph}</a></li>`
       : `<li><div class="contributor">${body}</div></li>`;
@@ -114,7 +114,7 @@ export function contributorsDialogMarkup(
     )
     .join('');
   const invitation = visit
-    ? '<p class="modal-intro">アプレノ洞窟に残る壁画に会いに来てください。</p><button id="contributors-cave" type="button" class="button button-accent">アプレノ洞窟に行く</button>'
+    ? '<p class="modal-intro">アプデの洞窟に残る壁画に会いに来てください。</p><button id="contributors-cave" type="button" class="button button-accent">アプデの洞窟に行く</button>'
     : '';
   return `<div class="contributors-dialog"><h2>関わってくれた人たち</h2>${invitation}${groups}</div>`;
 }

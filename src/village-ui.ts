@@ -1,3 +1,4 @@
+import { setText } from './dom-updates.js';
 import {
   RESIDENTS,
   VILLAGE,
@@ -53,7 +54,7 @@ export function installVillageUI({ player, state, available, action, openModal, 
     `<button id="${id}" class="button button-outline">${text}</button>`;
   const text = (id: string, value: string) => {
     const n = $(id);
-    if (n && n.textContent !== value) n.textContent = value;
+    if (n) setText(n, value);
   };
   const enable = (id: string, yes: boolean) => {
     const b = $<HTMLButtonElement>(id);

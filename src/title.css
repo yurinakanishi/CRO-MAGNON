@@ -106,6 +106,22 @@
 #screen-title .menu-item {
   min-height: 44px;
 }
+#screen-title #title-language {
+  flex-direction: row;
+  gap: 10px;
+  font-size: 15px;
+  letter-spacing: 0.02em;
+}
+.title-language span[lang] {
+  opacity: 0.6;
+}
+.title-language[data-language='ja'] [lang='ja'],
+.title-language[data-language='en'] [lang='en'] {
+  color: var(--accent);
+  opacity: 1;
+  text-decoration: underline;
+  text-underline-offset: 5px;
+}
 .title-credits {
   display: contents;
 }
@@ -500,6 +516,9 @@ body #screen-title[data-variant='classic'] .menu-item {
 .touch-mode .loading-cave-help::after {
   content: '左のパッドで移動 · 画面をドラッグして見回す';
   font-size: 11px;
+}
+:lang(en) .touch-mode .loading-cave-help::after {
+  content: 'Left pad to move · Drag to look';
 }
 .loading-cave-active .scene-shade {
   display: none;

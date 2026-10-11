@@ -1,3 +1,4 @@
+import { setText } from './dom-updates.js';
 import * as THREE from 'three';
 import { characterModel } from '../shared/characters.mjs';
 import { RESIDENTS } from '../shared/village-sites.mjs';
@@ -148,7 +149,7 @@ export class VillageRenderer {
         root.position.y + (asset.heightMetres ?? 1.7) + 0.3,
         root.position.z,
       );
-      if (entity.detail.textContent !== p.activity) entity.detail.textContent = p.activity;
+      setText(entity.detail, p.activity);
     }
     for (const id of this.entities.keys()) if (!present.has(id)) this.remove(id);
     w.canvas.dataset.residentModels = String(

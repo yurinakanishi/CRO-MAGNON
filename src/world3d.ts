@@ -1524,6 +1524,7 @@ export class WorldRenderer {
           new THREE.Vector3(p.x, 0, p.z),
         );
         const countryLabel = document.createElement('small');
+        label.title.setAttribute('translate', 'no');
         label.element.append(countryLabel);
         // The holder keeps state for gameplay; residency loads its actor nearby.
         entity = { model, label, countryLabel, state: p, residency: new ActorResidency() };

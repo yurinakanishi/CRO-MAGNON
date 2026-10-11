@@ -74,7 +74,9 @@
 
 | 文書 | 題名 |
 | --- | --- |
+| [git-pull-2026-10-11.md](git-pull-2026-10-11.md) | 未コミット40ファイルを保持してpull・競合解消・英語UIを統合 |
 | [neanderthal-retirement-2026-10-11.md](neanderthal-retirement-2026-10-11.md) | ネアンデルタール人男女と交易NPCを除外し、素材・保存済み外見を保持して再導入可能にする |
+| [language-toggle-2026-10-11.md](language-toggle-2026-10-11.md) | タイトルの日本語／English切替・設定保存・英語UIと実Chrome検証 |
 | [524-bond-2026-10-02.md](524-bond-2026-10-02.md) | 524の仲間状態を期限なく保持する |
 | [524-cave-frieze-2026-10-06.md](524-cave-frieze-2026-10-06.md) | 524を動物の壁画へなじませる（2026-10-06） |
 | [524-dots-2026-10-02.md](524-dots-2026-10-02.md) | 524を撫で終えるとdotsの仲間へ追加 |
@@ -123,6 +125,7 @@
 | [maruimo-mascot-2026-10-07.md](maruimo-mascot-2026-10-07.md) | まるぃもを仲間と洞窟壁画へ追加 |
 | [meshmell-upload.md](meshmell-upload.md) | Meshmell CLI アップロード手順 |
 | [mmo-deploy-2026-10-06.md](mmo-deploy-2026-10-06.md) | MMO公開版を更新（2026-10-06） |
+| [mmo-deploy-2026-10-11.md](mmo-deploy-2026-10-11.md) | 軽量化・起動改善・音源更新を公開MMOへ反映（2026-10-11） |
 | [mobile-chat-journal-removal-2026-10-06.md](mobile-chat-journal-removal-2026-10-06.md) | スマホの会話と手帳の撤去（2026-10-06） |
 | [mobile-start-screen-2026-10-07.md](mobile-start-screen-2026-10-07.md) | スマホの開始画面を縦持ちへ合わせる |
 | [mountain-river-2026-10-01.md](mountain-river-2026-10-01.md) | 山から既存の川へつながる渓流と滝 |

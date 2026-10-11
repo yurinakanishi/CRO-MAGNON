@@ -3,6 +3,7 @@ import { contributorsDialogMarkup } from './title-credits.js';
 import { BUILD_PROFILE } from './build-profile.js';
 import type { MultiplayerConfig } from './multiplayer-config.js';
 import { ScreenManager } from './screens.js';
+import { bindLanguageToggle, installLanguageUI } from './language-ui.js';
 
 /**
  * The title before the game module: the same title screen and dialog the game
@@ -24,6 +25,7 @@ export function titleScreenMarkup(): string {
           <nav class="title-menu" aria-label="タイトルメニュー">
             <button id="title-start" class="menu-item">はじめる</button>
             <button id="title-contributors" class="menu-item">関わってくれた人たち</button>
+            <button id="title-language" class="menu-item title-language" type="button" translate="no" aria-label="Switch to English" aria-pressed="false"><span lang="ja">日本語</span><span aria-hidden="true"> / </span><span lang="en">English</span></button>
           </nav>
           </div>
           </div>
@@ -266,6 +268,8 @@ export function renderTitleShell(
     },
   };
   current = session = new TitleShellSession(view, config);
+  installLanguageUI(app);
+  bindLanguageToggle(title, signal);
 
   const on = (selector: string, listener: () => void) =>
     title.querySelector(selector)!.addEventListener('click', listener, { signal });

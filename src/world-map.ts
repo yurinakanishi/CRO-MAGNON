@@ -1,3 +1,4 @@
+import { translateText } from './language.js';
 import { FISHING_SITES } from '../shared/fishing-sites.mjs';
 import { BEHEMOTH, BEHEMOTH_GROUND, BEHEMOTH_MARSH } from '../shared/behemoth-rules.mjs';
 import { SABERTOOTH, SABERTOOTH_GROUND } from '../shared/sabertooth-rules.mjs';
@@ -481,6 +482,7 @@ export function drawWorldMap(canvas, state, selfId, big = false) {
     y: number,
     style: { color: string; font?: string; align?: CanvasTextAlign },
   ) => {
+    text = translateText(text);
     ctx.font = style.font ?? '12px sans-serif';
     const width = ctx.measureText(text).width,
       height = parseInt(ctx.font, 10) || 12,
@@ -541,8 +543,8 @@ export function drawWorldMap(canvas, state, selfId, big = false) {
       ctx.fillStyle = '#ede1bcaa';
       ctx.strokeStyle = '#18313a';
       ctx.lineWidth = 4;
-      ctx.strokeText(item.name, x, y);
-      ctx.fillText(item.name, x, y);
+      ctx.strokeText(translateText(String(item.name)), x, y);
+      ctx.fillText(translateText(String(item.name)), x, y);
     }
     ctx.shadowBlur = 0;
     ctx.textAlign = 'start';
@@ -554,7 +556,7 @@ export function drawWorldMap(canvas, state, selfId, big = false) {
       const p = geoToWorld(lon, lat);
       ctx.fillStyle = '#b0cbd2a0';
       ctx.font = '13px sans-serif';
-      ctx.fillText(name, ...point(p.x, p.z));
+      ctx.fillText(translateText(String(name)), ...point(p.x, p.z));
     }
   }
   const dot = (x, z, color, r = 3) => {
@@ -681,7 +683,9 @@ export function drawWorldMap(canvas, state, selfId, big = false) {
     ctx.fillStyle = '#bcebef';
     ctx.font = '12px sans-serif';
     ctx.fillText(
-      `${SEA_WEATHER[state.maritime.kind].name} · ${currentDirection(state.maritime)} · 矢印に沿うと速く進む`,
+      translateText(
+        `${SEA_WEATHER[state.maritime.kind].name} · ${currentDirection(state.maritime)} · 矢印に沿うと速く進む`,
+      ),
       10,
       36,
     );
@@ -950,7 +954,7 @@ export function drawWorldMap(canvas, state, selfId, big = false) {
     ctx.stroke();
     ctx.fill();
     if (big) {
-      const text = `${pin.name}：ここへ行こう`;
+      const text = translateText(`${pin.name}：ここへ行こう`);
       ctx.font = '600 12px sans-serif';
       ctx.textAlign = 'center';
       const half = ctx.measureText(text).width / 2 + 4;
@@ -965,9 +969,11 @@ export function drawWorldMap(canvas, state, selfId, big = false) {
   ctx.font = big ? '12px sans-serif' : '10px sans-serif';
   if (!big)
     ctx.fillText(
-      inGulf(self.x, self.z)
-        ? GULF.name
-        : (regionAt(self.x, self.z)?.name ?? biomeAt(self.x, self.z).short),
+      translateText(
+        inGulf(self.x, self.z)
+          ? GULF.name
+          : (regionAt(self.x, self.z)?.name ?? biomeAt(self.x, self.z).short),
+      ),
       10,
       18,
     );

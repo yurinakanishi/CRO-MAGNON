@@ -1,6 +1,7 @@
 import { loadMultiplayerConfig } from './multiplayer-config.js';
 import { renderTitleShell, type TitleShellSession } from './title-shell.js';
 import { startupMarks } from './startup-marks.js';
+import { installLanguageUI } from './language-ui.js';
 
 /**
  * The page entry. The title is drawn and usable from modules that load no 3D or
@@ -10,6 +11,7 @@ import { startupMarks } from './startup-marks.js';
  */
 const GAME_FAILED = 'ゲームを読み込めませんでした。通信を確認して再読み込みしてください。';
 const app = document.getElementById('app')!;
+installLanguageUI(app);
 
 /** The game module failed after it took the title: an explicit panel with a reload. */
 function failedAfterHandoff(message: string) {

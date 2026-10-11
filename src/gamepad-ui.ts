@@ -1,3 +1,4 @@
+import { setText } from './dom-updates.js';
 import {
   GamepadInput,
   type Direction,
@@ -180,7 +181,7 @@ export class GamepadControls {
     )[data.gamepadStatus];
     // Keep connection state available in settings, without a separate help screen.
     for (const connection of document.querySelectorAll('.gamepad-connection'))
-      if (connection.textContent !== label) connection.textContent = label;
+      setText(connection, label);
     if (frame.active || newlyConnected) this.setActive(true);
     this.options.onFrame?.(devices.find((pad) => pad?.index === frame.index) ?? null, frame, mode);
     if (mode === 'menu' && this.active) {

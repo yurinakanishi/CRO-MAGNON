@@ -81,15 +81,15 @@ test('the dialog lists every contributor without QR codes and exhibition cards h
   );
   assert.doesNotMatch(dialog, /qr-/);
   assert.doesNotMatch(dialog, /contributors-mark|この世界は|たくさんの人|<em>|壁画：/);
-  assert.match(dialog, /アプレノ洞窟に残る壁画に会いに来てください。/);
-  assert.match(dialog, /id="contributors-cave"[^>]*>アプレノ洞窟に行く<\/button>/);
+  assert.match(dialog, /アプデの洞窟に残る壁画に会いに来てください。/);
+  assert.match(dialog, /id="contributors-cave"[^>]*>アプデの洞窟に行く<\/button>/);
   const exhibition = contributorsDialogMarkup(undefined, { links: false });
   assert.equal((exhibition.match(/class="contributor-avatar"/g) ?? []).length, people.length);
   assert.doesNotMatch(exhibition, /qr-/);
   assert.doesNotMatch(exhibition, /<a\b/);
   assert.match(
     dialog,
-    /<div class="contributor"><img class="contributor-avatar" src="\/title\/avatar-dots\.jpg"[^>]*><span class="contributor-text"><strong>OpenAI Dots<\/strong><\/span><\/div>/,
+    /<div class="contributor"><img class="contributor-avatar" src="\/title\/avatar-dots\.jpg"[^>]*><span class="contributor-text"><strong translate="no">OpenAI Dots<\/strong><\/span><\/div>/,
   );
 });
 
@@ -102,7 +102,7 @@ test('the loading cave opens the same credits without offering a visit to the ca
     (cave.match(/<a class="contributor"/g) ?? []).length,
     people.filter((p) => p.profile).length,
   );
-  assert.doesNotMatch(cave, /contributors-cave|アプレノ洞窟|modal-intro/);
+  assert.doesNotMatch(cave, /contributors-cave|アプデの洞窟|アプレノ洞窟|modal-intro/);
 });
 
 test('the public build rewrites every credit table the dialog imports and ships the dots icon', async () => {

@@ -6,7 +6,11 @@ const base = process.argv[2] || 'https://cromagnonmmo.cro-magnon.workers.dev';
 const build = JSON.parse(await readFile('output/cloudflare-build.json', 'utf8'));
 assert.ok(['public', 'full'].includes(build.credits), 'Unknown credits profile');
 const includeSupervisors = build.credits === 'full';
-// The page entry is the title shell; it imports main.js once the title is painted.
+// Verify the browser bundle served by the page as well as its source modules.
+const browserBundle = build.browserBundle;
+assert.ok(browserBundle?.entry, 'release omits browser bundle metadata');
+const browserBundleFiles = browserBundle.outputs.map((file) => file.name);
+assert.ok(browserBundleFiles.includes(browserBundle.entry), 'browser bundle omits its entry');
 const titleShellFiles = [
   'src/boot.js',
   'src/title-shell.js',
@@ -14,13 +18,14 @@ const titleShellFiles = [
   'src/startup-marks.js',
   'shared/friend-mascot-roster.mjs',
 ];
-for (const required of titleShellFiles)
+for (const required of [...titleShellFiles, ...browserBundleFiles])
   assert.ok(
     build.publicFiles.some((file) => file.path === required),
     `release omits ${required}`,
   );
 const paths = new Set([
   ...titleShellFiles,
+  ...browserBundleFiles,
   'src/main.js',
   'src/asset-download.js',
   'src/title-credits.js',
@@ -49,8 +54,8 @@ for (const file of files) {
 const page = await fetch(`${base}/`).then((r) => r.text());
 assert.deepEqual(
   [...page.matchAll(/<script type="module" src="([^"]+)"/g)].map((match) => match[1]),
-  ['/src/boot.js'],
-  'the released page starts from the title shell',
+  [`/${browserBundle.entry}`],
+  'the released page starts from the recorded browser bundle',
 );
 const profiles = await fetch(`${base}/src/title-credit-profiles.js`).then((r) => r.text());
 assert.match(profiles, /yuri/);
@@ -96,6 +101,7 @@ const report = {
   status: 'passed',
   servedFilesVerified: files.length,
   titleShellFilesVerified: titleShellFiles.length,
+  browserBundleFilesVerified: browserBundleFiles.length,
   publicCreditsOnly: !includeSupervisors,
   supervisorCreditsIncluded: includeSupervisors,
   includedSupervisorFiles,

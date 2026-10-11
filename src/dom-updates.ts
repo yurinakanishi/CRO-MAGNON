@@ -1,3 +1,5 @@
+import { setLocalizedText } from './language-ui.js';
+
 export function setText(node: Node, text: string): void {
-  if (node.textContent !== text) node.textContent = text;
+  setLocalizedText(node, text);
 }

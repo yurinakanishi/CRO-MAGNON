@@ -1,28 +1,32 @@
 {
-  "checkedAt": "2026-10-06T13:49:34.061Z",
+  "checkedAt": "2026-10-11T06:10:58.494Z",
   "base": "https://cromagnonmmo.cro-magnon.workers.dev",
   "status": "passed",
-  "servedFilesVerified": 49,
-  "publicCreditsOnly": true,
+  "servedFilesVerified": 52,
+  "titleShellFilesVerified": 5,
+  "browserBundleFilesVerified": 3,
+  "publicCreditsOnly": false,
+  "supervisorCreditsIncluded": true,
+  "includedSupervisorFiles": [
+    "/title/avatar-ryuichi.jpg",
+    "/title/avatar-nukonuko.jpg",
+    "/title/avatar-otani.jpg",
+    "/title/avatar-urata.jpg"
+  ],
   "excludedSupervisorFiles": [
     "/title/qr-ryuichi.png",
-    "/title/avatar-ryuichi.jpg",
-    "/title/qr-otani.png",
-    "/title/avatar-otani.jpg",
-    "/title/qr-urata.png",
-    "/title/avatar-urata.jpg",
     "/title/qr-nukonuko.png",
-    "/title/avatar-nukonuko.jpg"
+    "/title/qr-otani.png",
+    "/title/qr-urata.png"
   ],
-  "runtimeTexturesVerified": 8,
-  "publicCharacterCount": 8,
+  "runtimeTexturesVerified": 10,
+  "publicCharacterCount": 7,
   "excludedCharacterFiles": [
     "/models/maruimo-octopus/asset.json",
     "/models/maruimo-octopus/portrait.png",
-    "/models/maruimo-octopus/model-r10.glb",
-    "/models/maruimo-octopus/lod-r10-bind-r03.glb",
+    "/models/maruimo-octopus/model-c2.glb",
+    "/models/maruimo-octopus/lod-c2.glb",
     "/src/octopus-pose.js",
-    "/models/maruimo-octopus/model-r10-09366f85545b.part-1.bin",
-    "/models/maruimo-octopus/model-r10-09366f85545b.part-2.bin"
+    "/models/maruimo-octopus/model-c2-12886dd609a4.part-1.bin"
   ]
 }

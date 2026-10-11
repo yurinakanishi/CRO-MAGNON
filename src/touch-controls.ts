@@ -1,3 +1,4 @@
+import { setText } from './dom-updates.js';
 import type { CueAction, CueContext } from './input-cues.js';
 import { touchActions, touchStick, type TouchMovement } from './touch-input.js';
 
@@ -127,7 +128,7 @@ export class TouchControls {
             )!
             .append(button);
         }
-        button.textContent = item.label;
+        setText(button, item.label);
       }
     }
     this.root.querySelector<HTMLButtonElement>('[data-touch-action="jump"]')!.disabled =
@@ -207,11 +208,10 @@ export class TouchControls {
       scale = Math.min(1, radius / (length || 1));
     this.knob.style.transform = `translate(${dx * scale}px, ${dy * scale}px)`;
     this.pad.classList.toggle('is-active', !!this.movement.x || !!this.movement.y);
-    this.root.querySelector('.touch-gait')!.textContent = this.movement.running
-      ? '走る'
-      : this.movement.x || this.movement.y
-        ? '歩く'
-        : '移動';
+    setText(
+      this.root.querySelector('.touch-gait')!,
+      this.movement.running ? '走る' : this.movement.x || this.movement.y ? '歩く' : '移動',
+    );
     this.hooks.move();
   };
 
@@ -225,7 +225,7 @@ export class TouchControls {
     this.movement = { x: 0, y: 0, running: false };
     this.knob.style.transform = '';
     this.pad.classList.remove('is-active');
-    this.root.querySelector('.touch-gait')!.textContent = '移動';
+    setText(this.root.querySelector('.touch-gait')!, '移動');
     if (pointer !== null && this.pad.hasPointerCapture(pointer))
       this.pad.releasePointerCapture(pointer);
     if (pointer !== null) this.hooks.move();

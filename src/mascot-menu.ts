@@ -1,3 +1,5 @@
+import { setText } from './dom-updates.js';
+import { setAttr } from './hud-dom.js';
 import { BOT_DESIGNS, BOT_KINDS } from '../shared/orb-bots.mjs';
 import { MASCOT_KEYS, type MascotKey } from '../shared/mascot-selection.mjs';
 import { FRIEND_MASCOTS } from '../shared/friend-mascots.mjs';
@@ -120,14 +122,17 @@ export function updateMascotMenu(root: HTMLElement, state: ViewState, selfId: st
     if (!current.unavailable) selectable++;
     button.disabled = current.unavailable;
     button.setAttribute('aria-pressed', String(current.selected));
-    button.querySelector<HTMLElement>('.mascot-card-status')!.textContent = current.status;
-    button.setAttribute(
+    setText(button.querySelector<HTMLElement>('.mascot-card-status')!, current.status);
+    setAttr(
+      button,
       'aria-label',
-      `${button.querySelector('strong')!.textContent}を${current.selected ? 'キャンプへ帰す' : '連れて行く'}${current.unavailable ? '・ほかの旅人と一緒' : ''}`,
+      `${portraits[key]?.name ?? BOT_DESIGNS[key]?.name ?? key}を${current.selected ? 'キャンプへ帰す' : '連れて行く'}${current.unavailable ? '・ほかの旅人と一緒' : ''}`,
     );
   }
-  root.querySelector<HTMLElement>('#mascot-selection-count')!.textContent =
-    `${selected} / ${selectable}体を選択中`;
+  setText(
+    root.querySelector<HTMLElement>('#mascot-selection-count')!,
+    `${selected} / ${selectable}体を選択中`,
+  );
   root.querySelector<HTMLButtonElement>('[data-mascot-all="select"]')!.disabled =
     selected >= selectable;
   root.querySelector<HTMLButtonElement>('[data-mascot-all="clear"]')!.disabled = selected === 0;

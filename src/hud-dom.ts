@@ -5,18 +5,11 @@
  * the plain assignment it stands for would leave, and reports whether it had to write.
  */
 
-const TEXT_NODE = 3;
+import { setLocalizedAttribute, setLocalizedText } from './language-ui.js';
 
 /** `node.textContent = value`: null and undefined clear it, anything else becomes a string. */
 export function setText(node: Node, value: unknown): boolean {
-  const text = value == null ? '' : String(value),
-    first = node.firstChild;
-  const same = text
-    ? first?.nodeType === TEXT_NODE && !first.nextSibling && (first as Text).data === text
-    : !first;
-  if (same) return false;
-  node.textContent = text;
-  return true;
+  return setLocalizedText(node, value);
 }
 
 /** `element.hidden = value` or `element.disabled = value`: an empty attribute when true, none
@@ -34,6 +27,8 @@ export function setFlag(
 /** `element.setAttribute(name, value)`, which `className` (`class`) and `title` also set. */
 export function setAttr(element: Element, name: string, value: unknown): boolean {
   const text = String(value);
+  if (['aria-label', 'aria-valuetext', 'title', 'placeholder', 'alt'].includes(name))
+    return setLocalizedAttribute(element, name, text);
   if (element.getAttribute(name) === text) return false;
   element.setAttribute(name, text);
   return true;

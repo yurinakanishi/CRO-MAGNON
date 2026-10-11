@@ -1,3 +1,4 @@
+import { setText } from './dom-updates.js';
 import * as THREE from 'three';
 import { isMesh } from './three-types.js';
 import { SHELL_BEDS, MIDDEN_SITES, KNAPPING_SITES, middenScale } from '../shared/coastal-sites.mjs';
@@ -72,7 +73,7 @@ export class CoastalRenderer {
       const amount = w.state.gulf?.shellBeds?.find((b) => b.id === s.id)?.amount ?? 0;
       const label = this.labels.get(s.id);
       label.active = near(s, 23);
-      label.title.textContent = `${s.name} · ${amount}/12`;
+      setText(label.title, `${s.name} · ${amount}/12`);
       if (!amount || !near(s) || !this.request('cockle-shell', time)) continue;
       for (let i = 0; i < amount; i++) {
         const a = i * 2.39996,
@@ -100,9 +101,7 @@ export class CoastalRenderer {
       const amount = w.state.gulf?.middens?.find((m) => m.id === s.id)?.shells ?? 0;
       const label = this.labels.get(s.id);
       label.active = near(s, 23);
-      label.title.textContent = amount
-        ? `貝塚 · 貝殻${amount}個`
-        : '貝塚を築く場所 · 貝殻を持ち帰ろう';
+      setText(label.title, amount ? `貝塚 · 貝殻${amount}個` : '貝塚を築く場所 · 貝殻を持ち帰ろう');
       let root = this.middens.get(s.id);
       if (near(s) && amount && this.request('shell-midden', time)) {
         if (!root) {

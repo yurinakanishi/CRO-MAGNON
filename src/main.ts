@@ -150,6 +150,11 @@ import {
   type TitleHandoff,
 } from './title-shell.js';
 import { startupMarks } from './startup-marks.js';
+import { registerTranslations } from './language.js';
+import { bindLanguageToggle, installLanguageUI } from './language-ui.js';
+import { ENGLISH_GAME } from './language-en.js';
+
+registerTranslations(ENGLISH_GAME);
 
 const $ = (s) => document.querySelector(s);
 const query = new URLSearchParams(location.search);
@@ -248,7 +253,7 @@ const viewportMarkup = `
     <div id="damage-flash" class="damage-flash" aria-hidden="true" hidden></div>
     <div id="combat-status" class="combat-status" role="status" hidden></div>
     <div id="area-banner" class="area-banner" aria-live="polite" hidden><small></small><strong></strong></div>
-    <button id="status-plate" class="status-plate" title="部族の仲間・招待"><span class="energy-track" id="energy-track" data-level="ok"><span id="energy-bar" class="energy-fill"></span><em class="energy-label">${icon('leaf')}<b>体力</b><span id="energy-label">100 / 100</span></em></span><span class="status-main"><span class="portrait cro cro-magnon-woman" id="my-portrait"><i></i></span><span class="status-text"><strong id="profile-name"></strong><small><span id="room-label"></span><i>·</i><b id="online-count">0/${hudPlayerLimit()}</b><i>·</i><span id="day-label">1日目</span></small></span></span></button>
+    <button id="status-plate" class="status-plate" title="部族の仲間・招待"><span class="energy-track" id="energy-track" data-level="ok"><span id="energy-bar" class="energy-fill"></span><em class="energy-label">${icon('leaf')}<b>体力</b><span id="energy-label">100 / 100</span></em></span><span class="status-main"><span class="portrait cro cro-magnon-woman" id="my-portrait"><i></i></span><span class="status-text"><strong id="profile-name" translate="no"></strong><small><span id="room-label" translate="no"></span><i>·</i><b id="online-count">0/${hudPlayerLimit()}</b><i>·</i><span id="day-label">1日目</span></small></span></span></button>
     <div class="map-hud"><button id="map-button" class="minimap-button" aria-label="世界地図を開く" title="世界地図 [${fixedIdentity ? controllerLabels().map : 'M'}]"><canvas id="minimap" width="160" height="115"></canvas><span class="map-north">N</span><span class="map-area" id="map-area">はじまりの谷</span>${fixedIdentity ? '' : '<kbd class="map-key">M</kbd>'}</button><div class="connection"><i class="status-dot" id="connection-dot"></i><span id="connection-label">未接続</span><span id="ping-label">— ms</span></div></div>
     <div id="toast-stack" class="toast-stack" aria-live="polite"></div>
     ${fixedIdentity ? '' : `<div class="chat-panel"><button class="chat-heading" id="chat-toggle">${icon('chat')}<strong>焚き火の会話</strong><kbd>Enter</kbd><span class="chat-collapse">−</span></button><div id="chat-content"><div id="chat-messages" class="chat-messages" role="log" aria-live="polite"><p class="chat-system">この谷での物語が、ここから始まります。</p></div><form id="chat-form"><input id="chat-input" maxlength="180" placeholder="仲間に話しかける…" aria-label="チャットメッセージ" autocomplete="off"><button aria-label="メッセージを送信" type="submit">${icon('arrow')}</button></form></div></div>`}
@@ -267,6 +272,8 @@ if (titleHandoff) {
   titleHandoff.viewport.remove();
   $('#screens').prepend(titleHandoff.title);
 } else $('#app').innerHTML = `${viewportMarkup}\n  ${modalMarkup()}`;
+installLanguageUI($('#app'));
+bindLanguageToggle($('#screen-title'));
 
 const areaBanner = new AreaBanner($('#area-banner'));
 // Covers the loading cave's own load, warps and the entries that do not pass through
@@ -758,6 +765,7 @@ function addChat(message) {
     p.className = 'chat-system';
     p.textContent = message.text;
   } else {
+    p.setAttribute('translate', 'no');
     const name = document.createElement('strong');
     name.textContent = `${message.name} `;
     p.append(name, document.createTextNode(message.text));
@@ -1187,6 +1195,7 @@ function updateModalHUD() {
         const row = document.createElement('div');
         row.className = 'tribe-member';
         row.innerHTML = `<span class="portrait ${normalizeCharacter(p).species} ${characterModel(p).key}"><i></i></span><div><strong></strong><small>${characterModel(p).name}</small></div><span class="member-status"><i class="status-dot"></i> ${p.id === selfId ? 'あなた' : 'オンライン'}</span>`;
+        row.querySelector('strong').setAttribute('translate', 'no');
         row.querySelector('strong').textContent = p.name;
         list.append(row);
       }
@@ -2309,7 +2318,7 @@ function updateInventory() {
   const grid = document.querySelector<HTMLElement>('.inventory-grid');
   if (!grid) return;
   const energy = Math.round(player()?.energy ?? 100);
-  $('#inventory-energy-label').textContent = `${energy} / 100`;
+  setText($('#inventory-energy-label'), `${energy} / 100`);
   $('#inventory-energy-bar').style.width = `${energy}%`;
   $('#inventory-energy-track').dataset.level =
     energy <= 25 ? 'critical' : energy <= 50 ? 'low' : 'ok';
@@ -3497,8 +3506,7 @@ window.addEventListener('beforeunload', () => {
 let titleClock = 0;
 function titleIdle(now: number) {
   const audioStatus = document.querySelector('[data-audio-status]');
-  if (audioStatus && audioStatus.textContent !== renderer.audio.status)
-    audioStatus.textContent = renderer.audio.status;
+  if (audioStatus) setText(audioStatus, renderer.audio.status);
   if (screens.active === 'title')
     renderer.rotateCamera(Math.min(0.05, (now - titleClock) / 1000) * 0.05, 0);
   titleClock = now;

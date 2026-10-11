@@ -1,3 +1,4 @@
+import { setText } from './dom-updates.js';
 import { controllerKind } from './controller-labels.js';
 import { type PadDevice } from './gamepad-input.js';
 import {
@@ -72,11 +73,11 @@ export class InputCues {
     const look = this.root.querySelector<HTMLElement>('.input-look');
     if (look) look.hidden = this.automaticCamera;
     const moveLabel = this.root.querySelector('.input-move > span:nth-child(2)');
-    if (moveLabel) moveLabel.textContent = this.automaticCamera ? '前後・旋回' : '歩く';
+    if (moveLabel) setText(moveLabel, this.automaticCamera ? '前後・旋回' : '歩く');
     const lookLabel = this.root.querySelector('.input-look span');
-    if (lookLabel) lookLabel.textContent = context.viewing ? '回す' : '見渡す';
+    if (lookLabel) setText(lookLabel, context.viewing ? '回す' : '見渡す');
     const captions = this.root.querySelectorAll('.pad-caption');
-    if (captions[1]) captions[1].textContent = this.automaticCamera ? '視点は自動' : '見渡す';
+    if (captions[1]) setText(captions[1], this.automaticCamera ? '視点は自動' : '見渡す');
     const cues = contextCues(context, this.pad);
     const signature = JSON.stringify(cues);
     if (signature !== this.signature) {
@@ -90,9 +91,9 @@ export class InputCues {
         button.className = 'input-action';
         button.dataset.cue = cue.action;
         const key = document.createElement('kbd');
-        key.textContent = this.pad ? cue.controls.map(controlLabel).join(' / ') : cue.key;
+        setText(key, this.pad ? cue.controls.map(controlLabel).join(' / ') : cue.key);
         const label = document.createElement('span');
-        label.textContent = cue.label;
+        setText(label, cue.label);
         button.append(key, label);
         button.onclick = () => this.perform(cue.action);
         actions.append(button);
@@ -114,18 +115,20 @@ export class InputCues {
       const cue = this.cues.find((item) => item.controls.includes(changed));
       const feedback = this.root.querySelector('.input-feedback');
       if (feedback) {
-        feedback.textContent =
+        setText(
+          feedback,
           cue?.label ??
-          (this.automaticCamera && ['rs', 'b4', 'b5', 'b11'].includes(changed)
-            ? '視点は自動'
-            : this.automaticCamera && changed === 'ls'
-              ? '前後・旋回'
-              : controlAction(changed));
+            (this.automaticCamera && ['rs', 'b4', 'b5', 'b11'].includes(changed)
+              ? '視点は自動'
+              : this.automaticCamera && changed === 'ls'
+                ? '前後・旋回'
+                : controlAction(changed)),
+        );
         this.feedbackUntil = performance.now() + 1400;
       }
     }
     const feedback = this.root.querySelector('.input-feedback');
-    if (feedback && performance.now() > this.feedbackUntil) feedback.textContent = '';
+    if (feedback && performance.now() > this.feedbackUntil) setText(feedback, '');
     if (this.visible) this.paint();
   }
 

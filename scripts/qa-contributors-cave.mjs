@@ -153,9 +153,9 @@ try {
       assert.equal(await page.locator('.contributors-mark, .contributor-text em').count(), 0);
       assert.equal(
         await page.locator('.contributors-dialog .modal-intro').textContent(),
-        'アプレノ洞窟に残る壁画に会いに来てください。',
+        'アプデの洞窟に残る壁画に会いに来てください。',
       );
-      assert.equal(await page.locator('#contributors-cave').textContent(), 'アプレノ洞窟に行く');
+      assert.equal(await page.locator('#contributors-cave').textContent(), 'アプデの洞窟に行く');
       assert.equal(
         await page.locator('.contributors-dialog a').count(),
         view.mode === 'exhibition' ? 0 : linked,

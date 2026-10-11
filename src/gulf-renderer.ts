@@ -1,3 +1,4 @@
+import { setText } from './dom-updates.js';
 import { FISHING_SITES } from '../shared/fishing-sites.mjs';
 import { BOATING } from '../shared/boats.mjs';
 import * as THREE from 'three';
@@ -173,7 +174,10 @@ export class GulfRenderer {
     for (const label of this.labels) label.active = near(label.position, 60);
     this.plotLabel.active = !!nearest;
     if (nearest) {
-      this.plotLabel.title.textContent = `${nearest.stage === 'empty' ? '共同の畑' : plotCrop(nearest).name} · ${{ empty: '作物を選んで植える', planted: '水が必要', growing: '成長中', ripe: '収穫できる' }[nearest.stage]}`;
+      setText(
+        this.plotLabel.title,
+        `${nearest.stage === 'empty' ? '共同の畑' : plotCrop(nearest).name} · ${{ empty: '作物を選んで植える', planted: '水が必要', growing: '成長中', ripe: '収穫できる' }[nearest.stage]}`,
+      );
       this.plotLabel.position.set(nearest.x, walkHeight(nearest.x, nearest.z) + 1.7, nearest.z);
     }
     world.canvas.dataset.gulfPlots = String(index / 4);
