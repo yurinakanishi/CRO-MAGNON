@@ -9,6 +9,21 @@ const percentile = (values: number[], fraction: number) => {
   return sorted[Math.min(sorted.length - 1, Math.floor(sorted.length * fraction))];
 };
 
+/** A skinned stand-in, with the mesh's material and grasped geometry, for each
+ * torch-grasped shape of `root`'s skinned meshes that actors hold now. An actor
+ * cloned from `root` that takes a torch of the same fit shares that geometry, so
+ * compiling these with `root` prepares the programs it draws with then. Nothing is
+ * copied, and the stand-ins are never drawn. */
+export function graspStandIns(root: THREE.Object3D): THREE.SkinnedMesh[] {
+  const standIns: THREE.SkinnedMesh[] = [];
+  root.traverse((node) => {
+    if (isSkinnedMesh(node))
+      for (const { geometry } of cache.get(node.geometry)?.values() ?? [])
+        standIns.push(new THREE.SkinnedMesh(geometry, node.material));
+  });
+  return standIns;
+}
+
 /** A reversible finger curl of the delivered surface, in the hand's bind frame.
  * The original vertices, UVs, weights and GLBs stay untouched. */
 export class TorchGrasp {

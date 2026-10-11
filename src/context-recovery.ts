@@ -101,6 +101,22 @@ export function compileScene(
   });
 }
 
+/** A small offscreen target that Three r185 draws with the programs it draws the
+ * canvas with. For a plain target Three compiles and links every material again,
+ * for linear output without tone mapping (WebGLPrograms.getParameters and
+ * setProgram); an XR target, the flag Three sets on its own XR targets, is drawn
+ * as the canvas is: in its texture's colour space with the renderer's tone
+ * mapping. A draw into it shows nothing and does what a canvas frame's draw of
+ * the same scene does first: the programs compileScene prepared are used, and the
+ * vertex arrays, geometry and textures they draw are uploaded. Engine-version
+ * specific by nature: context-release.test.mjs pins it to the installed r185. */
+export function canvasProgramTarget(renderer: THREE.WebGLRenderer, size = 8) {
+  const target = new THREE.WebGLRenderTarget(size, size);
+  Object.assign(target, { isXRRenderTarget: true });
+  target.texture.colorSpace = renderer.outputColorSpace;
+  return target;
+}
+
 /** The CPU objects whose GPU allocations Three releases through 'dispose', and
  * the materials whose programs bind further textures (programUniforms()). */
 export type GpuResources = {

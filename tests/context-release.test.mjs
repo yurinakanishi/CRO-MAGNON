@@ -4,12 +4,14 @@ import * as THREE from 'three';
 import { clone as cloneSkeleton } from 'three/addons/utils/SkeletonUtils.js';
 import {
   GraphicsContextState,
+  canvasProgramTarget,
   collectGpuResources,
   recordEngineResources,
   releaseLostContext,
 } from '../dist/src/context-recovery.js';
 import { WorldRenderer } from '../dist/src/world3d.js';
 import { CharacterAssets } from '../dist/src/character-assets.js';
+import { TorchGrasp, graspStandIns } from '../dist/src/torch-grasp.js';
 import { LandscapeInstances, WorldAssets } from '../dist/src/world-assets.js';
 import { LoadingCave } from '../dist/src/loading-cave.js';
 import { FrameClock } from '../dist/src/frame-clock.js';
@@ -216,6 +218,42 @@ function disposeAll({ map, mesh, grass, body, target }) {
   body.geometry.dispose();
   target.dispose();
 }
+
+test('Three r185 draws the entry target with the programs it draws the canvas with', (t) => {
+  quiet(t);
+  const gl = webglCanvas(),
+    renderer = new THREE.WebGLRenderer({ canvas: gl.canvas });
+  // The world's output (WorldRenderer): sRGB with filmic tone mapping.
+  renderer.outputColorSpace = THREE.SRGBColorSpace;
+  renderer.toneMapping = THREE.ACESFilmicToneMapping;
+  const { scene, camera } = resources();
+  const label = new THREE.Mesh(
+    new THREE.PlaneGeometry(),
+    new THREE.MeshBasicMaterial({ toneMapped: false }),
+  );
+  label.frustumCulled = false;
+  scene.add(label, new THREE.HemisphereLight(), new THREE.DirectionalLight());
+  // compileScene's renderer.compile prepares the canvas programs.
+  renderer.compile(scene, camera);
+  const compiled = renderer.info.programs.length;
+  const drawInto = (target) => {
+    renderer.setRenderTarget(target);
+    renderer.render(scene, camera);
+    renderer.setRenderTarget(null);
+  };
+  const entry = canvasProgramTarget(renderer);
+  drawInto(entry);
+  assert.equal(renderer.info.programs.length, compiled, 'the entry draw compiles nothing');
+  renderer.render(scene, camera);
+  assert.equal(renderer.info.programs.length, compiled, 'the canvas draws those same programs');
+  // A plain target is drawn with programs of its own: linear output, no tone mapping.
+  const plain = new THREE.WebGLRenderTarget(8, 8);
+  drawInto(plain);
+  assert.ok(renderer.info.programs.length > compiled, 'a plain target compiles its own');
+  entry.dispose();
+  plain.dispose();
+  renderer.dispose();
+});
 
 test('Three r185 deletes handles of a lost context when a resource is disposed after a restore', (t) => {
   quiet(t);
@@ -496,6 +534,86 @@ async function rigTemplate() {
     asset,
   };
 }
+
+test('an arriving actor holding a torch draws with programs compiled before it joined', async (t) => {
+  quiet(t);
+  // Every torch, actor, provider and renderer is released afterwards, newest first: the
+  // grasp cache is shared by every TorchGrasp of the module.
+  const cleanups = [];
+  t.after(() => cleanups.reverse().forEach((cleanup) => cleanup()));
+  /** A world scene (four lights) with a character whose gallery actor holds a torch. */
+  const world = async () => {
+    const gl = webglCanvas(),
+      renderer = new THREE.WebGLRenderer({ canvas: gl.canvas });
+    renderer.outputColorSpace = THREE.SRGBColorSpace;
+    renderer.toneMapping = THREE.ACESFilmicToneMapping;
+    const scene = new THREE.Scene(),
+      camera = new THREE.PerspectiveCamera(57, 1, 0.15, 360);
+    camera.position.set(0, 1.2, 6);
+    scene.add(
+      new THREE.HemisphereLight(),
+      new THREE.DirectionalLight(),
+      new THREE.PointLight(),
+      new THREE.PointLight(),
+    );
+    const people = new CharacterAssets('/models/cro-magnon-woman/asset.json', {
+      loadModel: rigTemplate,
+    });
+    cleanups.push(() => {
+      people.dispose();
+      renderer.dispose();
+    });
+    const template = await people.load(),
+      diameter = THREE.MathUtils.clamp(template.asset.heightMetres * 0.021, 0.017, 0.044);
+    // CaveTorch's grip, without its firewood mesh and flame.
+    const torch = async () => {
+      const actor = await people.create({ color: '#b04a2a' }),
+        grasp = new TorchGrasp(actor.root, diameter);
+      cleanups.push(() => {
+        grasp.dispose();
+        actor.dispose();
+      });
+      return actor;
+    };
+    await torch();
+    /** prepareEntry: the template (and `extra`) in an invisible group, compiled. */
+    const prepare = (extra) => {
+      const holder = new THREE.Group();
+      holder.visible = false;
+      scene.add(holder.add(template.gltf.scene, ...extra));
+      renderer.compile(scene, camera);
+      scene.remove(holder);
+      holder.remove(template.gltf.scene);
+      return renderer.info.programs.length;
+    };
+    /** The arrival: the local actor takes a torch and is drawn. */
+    const arrive = async () => {
+      const local = await torch();
+      scene.add(local.root);
+      renderer.render(scene, camera);
+      // Nothing of the preparation stays: every drawn skin is the local actor's.
+      scene.traverse((node) => {
+        if (!node.isSkinnedMesh) return;
+        let root = node;
+        while (root.parent !== scene) root = root.parent;
+        assert.equal(root, local.root, 'only the local actor is in the scene');
+      });
+      return renderer.info.programs.length;
+    };
+    return { template, prepare, arrive };
+  };
+  const prepared = await world();
+  const standIns = graspStandIns(prepared.template.gltf.scene);
+  assert.ok(standIns.length > 0, "the gallery's grasp is a shape of the template's skin");
+  for (const standIn of standIns)
+    assert.ok(standIn.geometry.morphAttributes.position?.length, 'a grasped shape');
+  const compiled = prepared.prepare(standIns);
+  assert.equal(await prepared.arrive(), compiled, 'the arrival compiles nothing');
+  // Without the stand-ins the grasped hand is compiled on the arrival's draw.
+  const unprepared = await world();
+  const before = unprepared.prepare([]);
+  assert.ok((await unprepared.arrive()) > before, 'the grasp needs a program of its own');
+});
 
 /** A texture whose source stands in for an ImageBitmap and records close(). */
 function bitmapTexture(closed, name) {

@@ -212,8 +212,11 @@ try {
         maxFrameMs: frames.at(-1),
         p95FrameMs: frames[Math.floor(frames.length * 0.95)],
         worldPreparedMs: document.querySelector('#world').dataset.worldPreparedMs,
+        worldPreparedPrograms: document.querySelector('#world').dataset.worldPreparedPrograms,
       };
     });
+    // The offscreen draw uses the programs compiled for the canvas (canvasProgramTarget).
+    assert.equal(timing.worldPreparedPrograms, '0', 'the entry draw compiled no program');
     pass('Background loading frame timing (single local Chrome run)', timing);
     await sleep(800);
     assert.equal(sockets.length, 0);

@@ -126,9 +126,7 @@ try {
     const height = (grid, x, z) => {
       let y = -Infinity;
       grid.ray.set(new T.Vector3(x, 100, z), new T.Vector3(0, -1, 0));
-      for (const id of grid.cells.get(
-        `${Math.floor(x / grid.cellSize)},${Math.floor(z / grid.cellSize)}`,
-      ) ?? []) {
+      for (const id of grid.cell(x, z)) {
         grid.a.fromArray(grid.vertices, id * 9);
         grid.b.fromArray(grid.vertices, id * 9 + 3);
         grid.c.fromArray(grid.vertices, id * 9 + 6);

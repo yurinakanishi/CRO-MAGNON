@@ -31,6 +31,7 @@ import { COMPANION_524, companion524OnGround } from '../shared/companion-524.mjs
 import { chooseCompanionView, companionViewDistances } from './companion-view.js';
 import { pettingProgress } from './petting-pose.js';
 import { isMesh } from './three-types.js';
+import { graspStandIns } from './torch-grasp.js';
 import { setText } from './dom-updates.js';
 import { VisibleActorGroup } from './visible-actor-group.js';
 import type { RegionalScenery } from './regional-scenery.js';
@@ -69,6 +70,7 @@ import { STARTUP, criticalStartup, type CriticalStartup } from './startup-plan.j
 import { startupMarks } from './startup-marks.js';
 import {
   GraphicsContextState,
+  canvasProgramTarget,
   compileScene,
   recordEngineResources,
   releaseLostContext,
@@ -228,6 +230,8 @@ export class WorldRenderer {
   declare actorEvictions: number;
   /** The arrival's critical startup set (preparation and diagnostics). */
   declare startupPlan: CriticalStartup | undefined;
+  /** The local player's character (prepareSelf), whose actor joins at arrival. */
+  declare selfCharacter: string | undefined;
   /** Distance-owned templates of the herd, boats and companions. */
   readonly streamDemand = new LoadDemand();
   /** The camp NPC is one actor: it loads and releases by distance like a player. */
@@ -579,6 +583,7 @@ export class WorldRenderer {
       attack = attackProfile(profile),
       provider = this.humanAssets.get(model.key);
     if (!provider) throw new Error(`Missing verified character ${model.key}`);
+    this.selfCharacter = model.key;
     await this.worldAssets.loadCatalog();
     const props = new Set<string>();
     if (attack.modelKey) props.add(attack.modelKey);
@@ -765,7 +770,7 @@ export class WorldRenderer {
   private async prepareEntry(plan: CriticalStartup) {
     const started = performance.now();
     const nextFrame = () => new Promise<void>((resolve) => requestAnimationFrame(() => resolve()));
-    const target = new THREE.WebGLRenderTarget(8, 8);
+    const target = canvasProgramTarget(this.renderer);
     try {
       // Each landmark update instances at most four; their templates are loaded.
       const passes = 1 + Math.ceil(plan.landmarkIds.length / 4);
@@ -778,13 +783,29 @@ export class WorldRenderer {
         if (this.landmarks.hasInstances(plan.landmarkIds)) break;
       }
       if (this.disposed || this.failed) return;
-      // Ends early if the context is lost: a restored context compiles on first use.
-      await compileScene(this.renderer, this.scene, this.camera);
+      // The local actor joins at arrival with its template's materials (actors share
+      // them: character-assets.ts). Compiled here with this scene's lights, hidden, they
+      // are not first compiled and linked on the arrival's frame. The template held by
+      // the gallery is attached to an invisible group only for the compile, with
+      // stand-ins for the torch grasp its hands take (graspStandIns).
+      const self = this.humanAssets.get(this.selfCharacter)?.template?.gltf.scene,
+        holder = new THREE.Group();
+      holder.visible = false;
+      if (self && !self.parent) this.scene.add(holder.add(self, ...graspStandIns(self)));
+      try {
+        // Ends early if the context is lost: a restored context compiles on first use.
+        await compileScene(this.renderer, this.scene, this.camera);
+      } finally {
+        this.scene.remove(holder);
+        if (self?.parent === holder) holder.remove(self);
+      }
       await nextFrame();
       if (this.disposed || this.failed) return;
-      // Texture upload also needs a first draw. Keep it offscreen so the visitor
-      // sees their cave throughout preparation (a lost context uploads after restore).
+      // The programs' first use and the uploads need a draw. Keep it offscreen so the
+      // visitor sees their cave throughout preparation, in a target drawn with the
+      // canvas programs just compiled (a lost context uploads after restore).
       if (!this.graphicsContext.lost) {
+        const programs = this.renderer.info.programs?.length ?? 0;
         const previous = this.renderer.getRenderTarget();
         this.renderer.setRenderTarget(target);
         try {
@@ -792,6 +813,10 @@ export class WorldRenderer {
         } finally {
           this.renderer.setRenderTarget(previous);
         }
+        // Programs the draw needed beyond those compiled (QA expects none).
+        this.canvas.dataset.worldPreparedPrograms = String(
+          (this.renderer.info.programs?.length ?? 0) - programs,
+        );
       }
       this.canvas.dataset.worldPreparedMs = (performance.now() - started).toFixed(0);
     } finally {
