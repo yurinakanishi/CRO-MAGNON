@@ -117,6 +117,7 @@
 | [mae-2026-10-03.md](mae-2026-10-03.md) | mae — 丸い袋のペット |
 | [mammoth-ground-2026-09-22.md](mammoth-ground-2026-09-22.md) | マンモスを崖へ登らせない（2026-09-22） |
 | [git-integration-2026-10-08.md](git-integration-2026-10-08.md) | リモートmainとローカル変更の統合 |
+| [git-integration-2026-10-11.md](git-integration-2026-10-11.md) | 最新mainへ音源・石斧・展示方針の全ローカル変更を統合 |
 | [loading-cave-2026-10-07.md](loading-cave-2026-10-07.md) | 開始後に歩けるローディング洞窟 |
 | [maruimo-mascot-2026-10-07.md](maruimo-mascot-2026-10-07.md) | まるぃもを仲間と洞窟壁画へ追加 |
 | [meshmell-upload.md](meshmell-upload.md) | Meshmell CLI アップロード手順 |
@@ -127,6 +128,7 @@
 | [nature-audio-only-2026-10-06.md](nature-audio-only-2026-10-06.md) | 自然音と場所別BGMだけを残す変更 |
 | [nature-audio-quality-plan.md](nature-audio-quality-plan.md) | 自然音の品質改善 — 2026-10-06 |
 | [nature-audio-soft-foley-plan.md](nature-audio-soft-foley-plan.md) | 風・川を控えめにし、効果音を素材から作り直す |
+| [nature-audio-remake-2026-10-11.md](nature-audio-remake-2026-10-11.md) | 全音源・BGMの作り直しと現実の音量への調整 |
 | [nature-immersion-plan.md](nature-immersion-plan.md) | 自然の没入感を高める実装計画 |
 | [orb-bots-2026-10-01.md](orb-bots-2026-10-01.md) | 画像の5色bot：調査・制作・操作 |
 | [pacific-island-removal-2026-09-22.md](pacific-island-removal-2026-09-22.md) | 太平洋の架空島の撤去（2026-09-22） |

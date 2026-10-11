@@ -1569,7 +1569,7 @@ export class WorldRenderer {
         for (const tool of [weapon, axe].filter(Boolean)) {
           grip.add(tool);
           tool.position.set(0, 0, 0);
-          tool.quaternion.copy(actor.gripUp);
+          tool.quaternion.copy(tool === entity.axe ? actor.axeGrip : actor.gripUp);
         }
         if (entity.state.species === 'bear') axe.scale.setScalar(0.55);
         axe.visible = false;

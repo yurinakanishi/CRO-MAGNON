@@ -1,0 +1,670 @@
+{
+ "piano": [
+  {
+   "sample": "UR1_C2_mf_RR1.wav",
+   "nominal": 36,
+   "cents": 0.0
+  },
+  {
+   "sample": "UR1_C2_mf_RR2.wav",
+   "nominal": 36,
+   "cents": 0.0
+  },
+  {
+   "sample": "UR1_C3_mf_RR1.wav",
+   "nominal": 48,
+   "cents": -5.8
+  },
+  {
+   "sample": "UR1_C3_mf_RR2.wav",
+   "nominal": 48,
+   "cents": -5.8
+  },
+  {
+   "sample": "UR1_C4_mf_RR1.wav",
+   "nominal": 60,
+   "cents": -2.4
+  },
+  {
+   "sample": "UR1_C4_mf_RR2.wav",
+   "nominal": 60,
+   "cents": -2.4
+  },
+  {
+   "sample": "UR1_C5_mf_RR1.wav",
+   "nominal": 72,
+   "cents": -1.3
+  },
+  {
+   "sample": "UR1_C5_mf_RR2.wav",
+   "nominal": 72,
+   "cents": -1.9
+  },
+  {
+   "sample": "UR1_C6_mf_RR1.wav",
+   "nominal": 84,
+   "cents": 6.5
+  },
+  {
+   "sample": "UR1_C6_mf_RR2.wav",
+   "nominal": 84,
+   "cents": 3.1
+  },
+  {
+   "sample": "UR1_C7_mf_RR1.wav",
+   "nominal": 96,
+   "cents": 12.4
+  },
+  {
+   "sample": "UR1_C7_mf_RR2.wav",
+   "nominal": 96,
+   "cents": 11.4
+  },
+  {
+   "sample": "UR1_G1_mf_RR1.wav",
+   "nominal": 31,
+   "cents": 0.0
+  },
+  {
+   "sample": "UR1_G1_mf_RR2.wav",
+   "nominal": 31,
+   "cents": 0.0
+  },
+  {
+   "sample": "UR1_G2_mf_RR1.wav",
+   "nominal": 43,
+   "cents": -10.5
+  },
+  {
+   "sample": "UR1_G2_mf_RR2.wav",
+   "nominal": 43,
+   "cents": -10.5
+  },
+  {
+   "sample": "UR1_G3_mf_RR1.wav",
+   "nominal": 55,
+   "cents": -4.6
+  },
+  {
+   "sample": "UR1_G3_mf_RR2.wav",
+   "nominal": 55,
+   "cents": -6.1
+  },
+  {
+   "sample": "UR1_G4_mf_RR1.wav",
+   "nominal": 67,
+   "cents": -4.6
+  },
+  {
+   "sample": "UR1_G4_mf_RR2.wav",
+   "nominal": 67,
+   "cents": -5.3
+  },
+  {
+   "sample": "UR1_G5_mf_RR1.wav",
+   "nominal": 79,
+   "cents": -1.6
+  },
+  {
+   "sample": "UR1_G5_mf_RR2.wav",
+   "nominal": 79,
+   "cents": -2.0
+  },
+  {
+   "sample": "UR1_G6_mf_RR1.wav",
+   "nominal": 91,
+   "cents": 1.6
+  },
+  {
+   "sample": "UR1_G6_mf_RR2.wav",
+   "nominal": 91,
+   "cents": 1.4
+  },
+  {
+   "sample": "UR1_G7_mf_RR1.wav",
+   "nominal": 103,
+   "cents": 3.5
+  },
+  {
+   "sample": "UR1_G7_mf_RR2.wav",
+   "nominal": 103,
+   "cents": -2.3
+  }
+ ],
+ "harp": [
+  {
+   "sample": "KSHarp_A2_mf.wav",
+   "nominal": 45,
+   "cents": -7.6
+  },
+  {
+   "sample": "KSHarp_A4_mf.wav",
+   "nominal": 69,
+   "cents": -13.0
+  },
+  {
+   "sample": "KSHarp_A6_mf.wav",
+   "nominal": 93,
+   "cents": -19.0
+  },
+  {
+   "sample": "KSHarp_B1_mf.wav",
+   "nominal": 35,
+   "cents": 0.0
+  },
+  {
+   "sample": "KSHarp_B3_mf.wav",
+   "nominal": 59,
+   "cents": -14.1
+  },
+  {
+   "sample": "KSHarp_B5_mf.wav",
+   "nominal": 83,
+   "cents": -9.3
+  },
+  {
+   "sample": "KSHarp_B6_mf.wav",
+   "nominal": 95,
+   "cents": -10.1
+  },
+  {
+   "sample": "KSHarp_C3_mf.wav",
+   "nominal": 48,
+   "cents": -3.5
+  },
+  {
+   "sample": "KSHarp_C5_mf.wav",
+   "nominal": 72,
+   "cents": -11.4
+  },
+  {
+   "sample": "KSHarp_D2_mf.wav",
+   "nominal": 38,
+   "cents": 0.0
+  },
+  {
+   "sample": "KSHarp_D4_mf.wav",
+   "nominal": 62,
+   "cents": -13.6
+  },
+  {
+   "sample": "KSHarp_D6_mf.wav",
+   "nominal": 86,
+   "cents": -7.6
+  },
+  {
+   "sample": "KSHarp_D7_f.wav",
+   "nominal": 98,
+   "cents": -4.9
+  },
+  {
+   "sample": "KSHarp_E1_f.wav",
+   "nominal": 28,
+   "cents": 0.0
+  },
+  {
+   "sample": "KSHarp_E3_mf.wav",
+   "nominal": 52,
+   "cents": -6.6
+  },
+  {
+   "sample": "KSHarp_E5_mf.wav",
+   "nominal": 76,
+   "cents": -7.4
+  },
+  {
+   "sample": "KSHarp_F2_mf.wav",
+   "nominal": 41,
+   "cents": -10.0
+  },
+  {
+   "sample": "KSHarp_F4_mf.wav",
+   "nominal": 65,
+   "cents": -0.8
+  },
+  {
+   "sample": "KSHarp_F6_mf.wav",
+   "nominal": 89,
+   "cents": -6.4
+  },
+  {
+   "sample": "KSHarp_F7_f.wav",
+   "nominal": 101,
+   "cents": 0.0
+  },
+  {
+   "sample": "KSHarp_G1_mp.wav",
+   "nominal": 31,
+   "cents": 0.0
+  },
+  {
+   "sample": "KSHarp_G3_mf.wav",
+   "nominal": 55,
+   "cents": -9.0
+  },
+  {
+   "sample": "KSHarp_G5_mf.wav",
+   "nominal": 79,
+   "cents": -4.6
+  }
+ ],
+ "flute": [
+  {
+   "sample": "LDFlute_susvib_A3_v1_1.wav",
+   "nominal": 69,
+   "cents": -1.7
+  },
+  {
+   "sample": "LDFlute_susvib_A4_v1_1.wav",
+   "nominal": 81,
+   "cents": -0.3
+  },
+  {
+   "sample": "LDFlute_susvib_A5_v1_1.wav",
+   "nominal": 93,
+   "cents": 5.8
+  },
+  {
+   "sample": "LDFlute_susvib_C3_v1_1.wav",
+   "nominal": 60,
+   "cents": -4.1
+  },
+  {
+   "sample": "LDFlute_susvib_C4_v1_1.wav",
+   "nominal": 72,
+   "cents": 0.9
+  },
+  {
+   "sample": "LDFlute_susvib_C5_v1_1.wav",
+   "nominal": 84,
+   "cents": 2.7
+  },
+  {
+   "sample": "LDFlute_susvib_C6_v1_1.wav",
+   "nominal": 96,
+   "cents": 3.4
+  },
+  {
+   "sample": "LDFlute_susvib_E3_v1_1.wav",
+   "nominal": 64,
+   "cents": -3.0
+  },
+  {
+   "sample": "LDFlute_susvib_E4_v1_1.wav",
+   "nominal": 76,
+   "cents": 2.1
+  },
+  {
+   "sample": "LDFlute_susvib_E5_v1_1.wav",
+   "nominal": 88,
+   "cents": 2.4
+  }
+ ],
+ "flute_pure": [
+  {
+   "sample": "LDFlute_susNV_A3_v1_1.wav",
+   "nominal": 69,
+   "cents": -0.2
+  },
+  {
+   "sample": "LDFlute_susNV_A4_v1_1.wav",
+   "nominal": 81,
+   "cents": 0.0
+  },
+  {
+   "sample": "LDFlute_susNV_A5_v1_1.wav",
+   "nominal": 93,
+   "cents": 0.0
+  },
+  {
+   "sample": "LDFlute_susNV_C3_v1_1.wav",
+   "nominal": 60,
+   "cents": -3.9
+  },
+  {
+   "sample": "LDFlute_susNV_C4_v1_1.wav",
+   "nominal": 72,
+   "cents": -0.0
+  },
+  {
+   "sample": "LDFlute_susNV_C5_v1_1.wav",
+   "nominal": 84,
+   "cents": 0.1
+  },
+  {
+   "sample": "LDFlute_susNV_C6_v1_1.wav",
+   "nominal": 96,
+   "cents": -0.1
+  },
+  {
+   "sample": "LDFlute_susNV_E3_v1_1.wav",
+   "nominal": 64,
+   "cents": -2.1
+  },
+  {
+   "sample": "LDFlute_susNV_E4_v1_1.wav",
+   "nominal": 76,
+   "cents": 0.1
+  },
+  {
+   "sample": "LDFlute_susNV_E5_v1_1.wav",
+   "nominal": 88,
+   "cents": -0.0
+  }
+ ],
+ "violins": [
+  {
+   "sample": "VlnEns_susVib_A2_v1.wav",
+   "nominal": 57,
+   "cents": -1.2
+  },
+  {
+   "sample": "VlnEns_susVib_A3_v1.wav",
+   "nominal": 69,
+   "cents": -6.3
+  },
+  {
+   "sample": "VlnEns_susVib_B2_v1.wav",
+   "nominal": 59,
+   "cents": -0.3
+  },
+  {
+   "sample": "VlnEns_susVib_B4_v1.wav",
+   "nominal": 83,
+   "cents": 2.5
+  },
+  {
+   "sample": "VlnEns_susVib_C4_v1.wav",
+   "nominal": 72,
+   "cents": -0.8
+  },
+  {
+   "sample": "VlnEns_susVib_D3_v1.wav",
+   "nominal": 62,
+   "cents": -0.6
+  },
+  {
+   "sample": "VlnEns_susVib_D5_v1.wav",
+   "nominal": 86,
+   "cents": 2.5
+  },
+  {
+   "sample": "VlnEns_susVib_E4_v1.wav",
+   "nominal": 76,
+   "cents": -3.0
+  },
+  {
+   "sample": "VlnEns_susVib_F#3_v1.wav",
+   "nominal": 66,
+   "cents": -1.5
+  },
+  {
+   "sample": "VlnEns_susVib_G2_v1.wav",
+   "nominal": 55,
+   "cents": -2.7
+  },
+  {
+   "sample": "VlnEns_susVib_G4_v1.wav",
+   "nominal": 79,
+   "cents": 4.2
+  }
+ ],
+ "violas": [
+  {
+   "sample": "ViolaEns_susvib_A3_v1_1.wav",
+   "nominal": 69,
+   "cents": 1.7
+  },
+  {
+   "sample": "ViolaEns_susvib_B2_v1_1.wav",
+   "nominal": 59,
+   "cents": -1.1
+  },
+  {
+   "sample": "ViolaEns_susvib_B4_v1_1.wav",
+   "nominal": 83,
+   "cents": -1.8
+  },
+  {
+   "sample": "ViolaEns_susvib_C2_v1_1.wav",
+   "nominal": 48,
+   "cents": 0.9
+  },
+  {
+   "sample": "ViolaEns_susvib_C4_v1_1.wav",
+   "nominal": 72,
+   "cents": -2.2
+  },
+  {
+   "sample": "ViolaEns_susvib_D2_v1_1.wav",
+   "nominal": 50,
+   "cents": -2.6
+  },
+  {
+   "sample": "ViolaEns_susvib_D3_v1_1.wav",
+   "nominal": 62,
+   "cents": 2.6
+  },
+  {
+   "sample": "ViolaEns_susvib_D5_v1_1.wav",
+   "nominal": 86,
+   "cents": 3.2
+  },
+  {
+   "sample": "ViolaEns_susvib_E2_v1_1.wav",
+   "nominal": 52,
+   "cents": 4.9
+  },
+  {
+   "sample": "ViolaEns_susvib_E4_v1_1.wav",
+   "nominal": 76,
+   "cents": 6.5
+  },
+  {
+   "sample": "ViolaEns_susvib_F3_v1_1.wav",
+   "nominal": 65,
+   "cents": -0.8
+  },
+  {
+   "sample": "ViolaEns_susvib_G2_v1_1.wav",
+   "nominal": 55,
+   "cents": 3.2
+  },
+  {
+   "sample": "ViolaEns_susvib_G4_v1_1.wav",
+   "nominal": 79,
+   "cents": 3.6
+  }
+ ],
+ "cellos": [
+  {
+   "sample": "susvib_A2_v1_1.wav",
+   "nominal": 57,
+   "cents": -3.6
+  },
+  {
+   "sample": "susvib_B1_v1_1.wav",
+   "nominal": 47,
+   "cents": -4.6
+  },
+  {
+   "sample": "susvib_B3_v1_1.wav",
+   "nominal": 71,
+   "cents": -4.0
+  },
+  {
+   "sample": "susvib_C1_v1_1.wav",
+   "nominal": 36,
+   "cents": -1.3
+  },
+  {
+   "sample": "susvib_C3_v1_1.wav",
+   "nominal": 60,
+   "cents": 0.2
+  },
+  {
+   "sample": "susvib_D2_v1_1.wav",
+   "nominal": 50,
+   "cents": 4.3
+  },
+  {
+   "sample": "susvib_D4_v1_1.wav",
+   "nominal": 74,
+   "cents": -3.6
+  },
+  {
+   "sample": "susvib_E1_v1_1.wav",
+   "nominal": 40,
+   "cents": -5.4
+  },
+  {
+   "sample": "susvib_E3_v1_1.wav",
+   "nominal": 64,
+   "cents": 4.1
+  },
+  {
+   "sample": "susvib_F2_v1_1.wav",
+   "nominal": 53,
+   "cents": 0.1
+  },
+  {
+   "sample": "susvib_F4_v1_1.wav",
+   "nominal": 77,
+   "cents": -9.8
+  },
+  {
+   "sample": "susvib_G1_v1_1.wav",
+   "nominal": 43,
+   "cents": -1.6
+  },
+  {
+   "sample": "susvib_G3_v1_1.wav",
+   "nominal": 67,
+   "cents": -0.8
+  }
+ ],
+ "bass": [
+  {
+   "sample": "BKCtbss_SusNV_A#0_v1_rr1.wav",
+   "nominal": 34,
+   "cents": 0.6
+  },
+  {
+   "sample": "BKCtbss_SusNV_A1_v1_rr1.wav",
+   "nominal": 45,
+   "cents": 0.3
+  },
+  {
+   "sample": "BKCtbss_SusNV_B2_v1_rr1.wav",
+   "nominal": 59,
+   "cents": -1.1
+  },
+  {
+   "sample": "BKCtbss_SusNV_C#2_v1_rr1.wav",
+   "nominal": 49,
+   "cents": 0.4
+  },
+  {
+   "sample": "BKCtbss_SusNV_C1_v1_rr1.wav",
+   "nominal": 36,
+   "cents": -0.6
+  },
+  {
+   "sample": "BKCtbss_SusNV_D1_v1_rr1.wav",
+   "nominal": 38,
+   "cents": 0.2
+  },
+  {
+   "sample": "BKCtbss_SusNV_E0_v1_rr1.wav",
+   "nominal": 28,
+   "cents": 0.5
+  },
+  {
+   "sample": "BKCtbss_SusNV_E1_v1_rr1.wav",
+   "nominal": 40,
+   "cents": -0.4
+  },
+  {
+   "sample": "BKCtbss_SusNV_E2_v1_rr1.wav",
+   "nominal": 52,
+   "cents": -0.4
+  },
+  {
+   "sample": "BKCtbss_SusNV_F#0_v1_rr1.wav",
+   "nominal": 30,
+   "cents": 0.5
+  },
+  {
+   "sample": "BKCtbss_SusNV_F#1_v1_rr1.wav",
+   "nominal": 42,
+   "cents": 0.5
+  },
+  {
+   "sample": "BKCtbss_SusNV_G#1_v1_rr1.wav",
+   "nominal": 44,
+   "cents": -0.5
+  },
+  {
+   "sample": "BKCtbss_SusNV_G#2_v1_rr1.wav",
+   "nominal": 56,
+   "cents": -0.0
+  },
+  {
+   "sample": "BKCtbss_SusNV_G0_v1_rr1.wav",
+   "nominal": 31,
+   "cents": 0.1
+  }
+ ],
+ "horn": [
+  {
+   "sample": "MOHorn_sus_A#1_v1_1.wav",
+   "nominal": 46,
+   "cents": 4.4
+  },
+  {
+   "sample": "MOHorn_sus_A2_v1_1.wav",
+   "nominal": 57,
+   "cents": -4.3
+  },
+  {
+   "sample": "MOHorn_sus_C1_v1_1.wav",
+   "nominal": 36,
+   "cents": -3.5
+  },
+  {
+   "sample": "MOHorn_sus_C3_v1_1.wav",
+   "nominal": 60,
+   "cents": 2.0
+  },
+  {
+   "sample": "MOHorn_sus_D#1_v1_1.wav",
+   "nominal": 39,
+   "cents": -1.3
+  },
+  {
+   "sample": "MOHorn_sus_D2_v1_1.wav",
+   "nominal": 50,
+   "cents": -1.0
+  },
+  {
+   "sample": "MOHorn_sus_D4_v1_1.wav",
+   "nominal": 74,
+   "cents": 0.4
+  },
+  {
+   "sample": "MOHorn_sus_F2_v1_1.wav",
+   "nominal": 53,
+   "cents": -0.8
+  },
+  {
+   "sample": "MOHorn_sus_F4_v1_1.wav",
+   "nominal": 77,
+   "cents": 0.9
+  },
+  {
+   "sample": "MOHorn_sus_G1_v1_1.wav",
+   "nominal": 43,
+   "cents": -1.6
+  }
+ ]
+}

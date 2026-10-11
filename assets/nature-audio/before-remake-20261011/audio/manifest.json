@@ -1,0 +1,2350 @@
+{
+  "version": 3,
+  "prepared": "2026-10-06",
+  "format": "44.1 kHz MP3 VBR q2; stereo beds/music, mono positioned fire/birds/drops; lossless masters archived",
+  "sources": [
+    {
+      "file": "wind-field.wav",
+      "url": "https://opengameart.org/sites/default/files/park_ambience_wind.wav",
+      "author": "Thimras",
+      "page": "https://opengameart.org/content/park-ambiences",
+      "license": "CC0-1.0",
+      "bytes": 73960096,
+      "sha256": "5c381856745b4706e7eba55eb9271a61a530e90c05df8126adb2db89ecfa6c5a"
+    },
+    {
+      "file": "river-field.wav",
+      "url": "https://opengameart.org/sites/default/files/park_ambience_river.wav",
+      "author": "Thimras",
+      "page": "https://opengameart.org/content/park-ambiences",
+      "license": "CC0-1.0",
+      "bytes": 99072736,
+      "sha256": "da0c0c9b1249a83a1611cc116d5737b0864a8db9f45f1ae8dcc079d0f7c0bbbf"
+    },
+    {
+      "file": "rain-field.ogg",
+      "url": "https://opengameart.org/sites/default/files/Ove%20Melaa%20-%20Rainy%20%28NOT%20loopable%29%20Long%20Version.ogg",
+      "author": "Ove Melaa",
+      "page": "https://opengameart.org/content/rain-ambient-not-loopable-2-versions-available",
+      "license": "CC0-1.0",
+      "bytes": 5470927,
+      "sha256": "0022bccf5a8ade5fdcbb7e99ca3437ee6520a3951fd1c442298c38d90a05e2a3"
+    },
+    {
+      "file": "drips.flac",
+      "url": "https://opengameart.org/sites/default/files/atmosbasement.mp3_.flac",
+      "author": "Independent.nu / qubodup",
+      "page": "https://opengameart.org/content/dripping-water-loop",
+      "license": "CC0-1.0",
+      "bytes": 1309638,
+      "sha256": "247c0ef181c8ba8d190a6194f6ea02d9defb23b70194c52c7f9187b5b7b1cc61"
+    },
+    {
+      "file": "LDFlute_susNV_C3_v1_1.wav",
+      "url": "https://raw.githubusercontent.com/sgossner/VSCO-2-CE/440300901dfe9275fd84e0b7763af1f8443ae62e/Woodwinds/Flute/susNV/LDFlute_susNV_C3_v1_1.wav",
+      "author": "Versilian Studios / Sam Gossner & Simon Dalzell; cutting: Elan Hickler",
+      "page": "https://versilian-studios.com/vsco-community/",
+      "license": "CC0-1.0",
+      "bytes": 2642490,
+      "sha256": "4f221909317e257e4d0bc49f10479643c80cb213a0486455c1bdc1d6ed13a450"
+    },
+    {
+      "file": "LDFlute_susNV_E3_v1_1.wav",
+      "url": "https://raw.githubusercontent.com/sgossner/VSCO-2-CE/440300901dfe9275fd84e0b7763af1f8443ae62e/Woodwinds/Flute/susNV/LDFlute_susNV_E3_v1_1.wav",
+      "author": "Versilian Studios / Sam Gossner & Simon Dalzell; cutting: Elan Hickler",
+      "page": "https://versilian-studios.com/vsco-community/",
+      "license": "CC0-1.0",
+      "bytes": 2874126,
+      "sha256": "87c667c2af888ed86dff87f2452248de3e3d958fc93848a4426b7c16f85f09da"
+    },
+    {
+      "file": "LDFlute_susNV_A3_v1_1.wav",
+      "url": "https://raw.githubusercontent.com/sgossner/VSCO-2-CE/440300901dfe9275fd84e0b7763af1f8443ae62e/Woodwinds/Flute/susNV/LDFlute_susNV_A3_v1_1.wav",
+      "author": "Versilian Studios / Sam Gossner & Simon Dalzell; cutting: Elan Hickler",
+      "page": "https://versilian-studios.com/vsco-community/",
+      "license": "CC0-1.0",
+      "bytes": 2706216,
+      "sha256": "6fc8d707afddfaaf3003551b95a83b52f514adbe488bfea1c8c5250080a07278"
+    },
+    {
+      "file": "LDFlute_susNV_C4_v1_1.wav",
+      "url": "https://raw.githubusercontent.com/sgossner/VSCO-2-CE/440300901dfe9275fd84e0b7763af1f8443ae62e/Woodwinds/Flute/susNV/LDFlute_susNV_C4_v1_1.wav",
+      "author": "Versilian Studios / Sam Gossner & Simon Dalzell; cutting: Elan Hickler",
+      "page": "https://versilian-studios.com/vsco-community/",
+      "license": "CC0-1.0",
+      "bytes": 2722056,
+      "sha256": "105a6dbced98de7ae04a317bdd3ba1a5c6b90dc94034439b68cce6635e2781df"
+    },
+    {
+      "file": "LDFlute_susNV_E4_v1_1.wav",
+      "url": "https://raw.githubusercontent.com/sgossner/VSCO-2-CE/440300901dfe9275fd84e0b7763af1f8443ae62e/Woodwinds/Flute/susNV/LDFlute_susNV_E4_v1_1.wav",
+      "author": "Versilian Studios / Sam Gossner & Simon Dalzell; cutting: Elan Hickler",
+      "page": "https://versilian-studios.com/vsco-community/",
+      "license": "CC0-1.0",
+      "bytes": 2591256,
+      "sha256": "b609d37fb577e2a0f64f20800fba4bed067151375349bf713c0d4e803f862580"
+    },
+    {
+      "file": "KSHarp_D2_mf.wav",
+      "url": "https://raw.githubusercontent.com/sgossner/VSCO-2-CE/440300901dfe9275fd84e0b7763af1f8443ae62e/Strings/Harp/KSHarp_D2_mf.wav",
+      "author": "Versilian Studios / Sam Gossner & Simon Dalzell; cutting: Elan Hickler",
+      "page": "https://versilian-studios.com/vsco-community/",
+      "license": "CC0-1.0",
+      "bytes": 1741118,
+      "sha256": "b9cbdc08e43fc0b28ac70246df991cb390f5cbd7f31519b3cc7f70d283b70566"
+    },
+    {
+      "file": "KSHarp_A2_mf.wav",
+      "url": "https://raw.githubusercontent.com/sgossner/VSCO-2-CE/440300901dfe9275fd84e0b7763af1f8443ae62e/Strings/Harp/KSHarp_A2_mf.wav",
+      "author": "Versilian Studios / Sam Gossner & Simon Dalzell; cutting: Elan Hickler",
+      "page": "https://versilian-studios.com/vsco-community/",
+      "license": "CC0-1.0",
+      "bytes": 2007670,
+      "sha256": "1df9f4d138ca3931fcb458bcdf01304cadf2e5f4eef67bbc17b0e42c0e60fce6"
+    },
+    {
+      "file": "KSHarp_C3_mf.wav",
+      "url": "https://raw.githubusercontent.com/sgossner/VSCO-2-CE/440300901dfe9275fd84e0b7763af1f8443ae62e/Strings/Harp/KSHarp_C3_mf.wav",
+      "author": "Versilian Studios / Sam Gossner & Simon Dalzell; cutting: Elan Hickler",
+      "page": "https://versilian-studios.com/vsco-community/",
+      "license": "CC0-1.0",
+      "bytes": 1586172,
+      "sha256": "e5d232771704e140959819de8cf2a3e0ba49d021ca77354c42664ce4fce6d9f3"
+    },
+    {
+      "file": "KSHarp_E3_mf.wav",
+      "url": "https://raw.githubusercontent.com/sgossner/VSCO-2-CE/440300901dfe9275fd84e0b7763af1f8443ae62e/Strings/Harp/KSHarp_E3_mf.wav",
+      "author": "Versilian Studios / Sam Gossner & Simon Dalzell; cutting: Elan Hickler",
+      "page": "https://versilian-studios.com/vsco-community/",
+      "license": "CC0-1.0",
+      "bytes": 2461138,
+      "sha256": "aafa9d41ec0f77da8f2891055af8b3f9557e0ba1f1df93d53ae6e1fda07afae5"
+    },
+    {
+      "file": "KSHarp_G3_mf.wav",
+      "url": "https://raw.githubusercontent.com/sgossner/VSCO-2-CE/440300901dfe9275fd84e0b7763af1f8443ae62e/Strings/Harp/KSHarp_G3_mf.wav",
+      "author": "Versilian Studios / Sam Gossner & Simon Dalzell; cutting: Elan Hickler",
+      "page": "https://versilian-studios.com/vsco-community/",
+      "license": "CC0-1.0",
+      "bytes": 1806874,
+      "sha256": "62600eb1b37bc2829ca65351f7ca7e506c9ae472abd5bea0765a8b8fa7df2772"
+    },
+    {
+      "file": "KSHarp_B3_mf.wav",
+      "url": "https://raw.githubusercontent.com/sgossner/VSCO-2-CE/440300901dfe9275fd84e0b7763af1f8443ae62e/Strings/Harp/KSHarp_B3_mf.wav",
+      "author": "Versilian Studios / Sam Gossner & Simon Dalzell; cutting: Elan Hickler",
+      "page": "https://versilian-studios.com/vsco-community/",
+      "license": "CC0-1.0",
+      "bytes": 1981130,
+      "sha256": "f6f71be8c640822ef48a448b245585659acdfcc7ed5774e10f37be2fc02fcab4"
+    },
+    {
+      "file": "KSHarp_D4_mf.wav",
+      "url": "https://raw.githubusercontent.com/sgossner/VSCO-2-CE/440300901dfe9275fd84e0b7763af1f8443ae62e/Strings/Harp/KSHarp_D4_mf.wav",
+      "author": "Versilian Studios / Sam Gossner & Simon Dalzell; cutting: Elan Hickler",
+      "page": "https://versilian-studios.com/vsco-community/",
+      "license": "CC0-1.0",
+      "bytes": 1921690,
+      "sha256": "ebfde8aab4411019e37e3426f4dd88d6a52a38c2d0261d7f10ec63d8ff584dc7"
+    },
+    {
+      "file": "KSHarp_F4_mf.wav",
+      "url": "https://raw.githubusercontent.com/sgossner/VSCO-2-CE/440300901dfe9275fd84e0b7763af1f8443ae62e/Strings/Harp/KSHarp_F4_mf.wav",
+      "author": "Versilian Studios / Sam Gossner & Simon Dalzell; cutting: Elan Hickler",
+      "page": "https://versilian-studios.com/vsco-community/",
+      "license": "CC0-1.0",
+      "bytes": 1913498,
+      "sha256": "db27ebbb37334c10e06f2ae63f4d9ff555e4d11704fcc6f0bcf503863867e577"
+    },
+    {
+      "file": "KSHarp_A4_mf.wav",
+      "url": "https://raw.githubusercontent.com/sgossner/VSCO-2-CE/440300901dfe9275fd84e0b7763af1f8443ae62e/Strings/Harp/KSHarp_A4_mf.wav",
+      "author": "Versilian Studios / Sam Gossner & Simon Dalzell; cutting: Elan Hickler",
+      "page": "https://versilian-studios.com/vsco-community/",
+      "license": "CC0-1.0",
+      "bytes": 2143618,
+      "sha256": "3665f3975cad4a33f46784aa4f896f4b4319ba2b7831e892d975bc38c9f09f23"
+    },
+    {
+      "file": "LICENSE",
+      "url": "https://raw.githubusercontent.com/sgossner/VSCO-2-CE/440300901dfe9275fd84e0b7763af1f8443ae62e/LICENSE",
+      "author": "Versilian Studios / Sam Gossner & Simon Dalzell; cutting: Elan Hickler",
+      "page": "https://versilian-studios.com/vsco-community/",
+      "license": "CC0-1.0",
+      "bytes": 6555,
+      "sha256": "36ffd9dc085d529a7e60e1276d73ae5a030b020313e6c5408593a6ae2af39673"
+    },
+    {
+      "file": "birds.ogg",
+      "author": "isaiah658",
+      "page": "https://opengameart.org/content/ambient-bird-sounds",
+      "kind": "Bird field recording",
+      "sha256": "359e4e3f9da9d75aac64cede511c7e3ef8b461f9d9f8c230f8f80e44c4b3e35f",
+      "license": "CC0-1.0"
+    },
+    {
+      "file": "fire.wav",
+      "author": "PagDev",
+      "page": "https://opengameart.org/content/fireplace-sound-loop",
+      "kind": "Wood-burning fireplace sound loop",
+      "sha256": "85ca0cc60d0c037fff8b185e31ad1fcdbda6ce45eee17c3ee1318d1b8f59e330",
+      "license": "CC0-1.0"
+    },
+    {
+      "file": "river.mp3",
+      "author": "RandomMind",
+      "page": "https://opengameart.org/content/sea-and-river-wave-sounds",
+      "kind": "Vistula river field recording",
+      "sha256": "8c24607e41edd6f018ec3582a07e5a8dbc57347276339cb68440951a0fb4cfb1",
+      "license": "CC0-1.0"
+    },
+    {
+      "file": "impact.zip",
+      "author": "Kenney",
+      "page": "https://kenney.nl/assets/impact-sounds",
+      "url": "https://kenney.nl/media/pages/assets/impact-sounds/87b4ddecda-1677589768/kenney_impact-sounds.zip",
+      "license": "CC0-1.0",
+      "sha256": "029d734af1582474edf3a694d1b0cebc97c1c152f2f39fa34d4c2bafc5de77f8",
+      "bytes": 800850
+    },
+    {
+      "file": "cloth.zip",
+      "author": "HaelDB",
+      "page": "https://opengameart.org/content/footsteps-leather-cloth-armor",
+      "url": "https://opengameart.org/sites/default/files/footsteps.zip",
+      "license": "CC0-1.0",
+      "sha256": "94b5155d119d9378315c2b4457c00098d78a36f2a2c436d5145687d1d3bad257",
+      "bytes": 87827
+    },
+    {
+      "file": "snow.7z",
+      "author": "Corsica_S / Iwan Gabovitch",
+      "page": "https://opengameart.org/content/42-snow-and-gravel-footsteps",
+      "url": "https://opengameart.org/sites/default/files/corsica_s-walking_in_snow.7z",
+      "license": "CC0-1.0",
+      "sha256": "206306b51f8eeedf82043d6628174ec8ff9b16230dffb5192a5c74688e62abd4",
+      "bytes": 4041779
+    },
+    {
+      "file": "water.zip",
+      "author": "rubberduck",
+      "page": "https://opengameart.org/content/40-cc0-water-splash-slime-sfx",
+      "url": "https://opengameart.org/sites/default/files/water-splash-slime-sfx.zip",
+      "license": "CC0-1.0",
+      "sha256": "7cd39abb49d4362a37ba18dc0e454c7dc1d08029d4e5b683149046bc237b2eba",
+      "bytes": 2259262
+    },
+    {
+      "file": "swish.7z",
+      "author": "qubodup",
+      "page": "https://opengameart.org/content/swish-bamboo-stick-weapon-swhoshes",
+      "url": "https://opengameart.org/sites/default/files/swoshes.7z",
+      "license": "CC0-1.0",
+      "sha256": "2d55b26f918a4d8042e2c97a4db81392757195f5aaac9039f5ec2c557b6f11f2",
+      "bytes": 4858146
+    },
+    {
+      "file": "cat-hiss.mp3",
+      "author": "Zabuhailo",
+      "page": "https://freesound.org/people/Zabuhailo/sounds/146963/",
+      "url": "https://cdn.freesound.org/previews/146/146963_2580450-hq.mp3",
+      "license": "CC0-1.0",
+      "format": "public HQ MP3 preview of CC0 recording; original 96 kHz WAV requires login",
+      "sha256": "ccdeed8f1e35ef68c108f42eded3300743d5544e3102ce6941cbebf45537ee78",
+      "bytes": 35808
+    },
+    {
+      "file": "fantozzi.7z",
+      "author": "Fantozzi / edits by qubodup",
+      "page": "https://opengameart.org/content/fantozzis-footsteps-grasssand-stone",
+      "kind": "Recorded sand and stone footsteps",
+      "sha256": "415d360e0911c1c1c5355ee94023b772e6f4044f59b9b580610e7dbffd1840fd",
+      "license": "CC0-1.0"
+    }
+  ],
+  "files": [
+    {
+      "name": "wind",
+      "url": "/audio/nature/wind.mp3",
+      "source": "wind-field.wav",
+      "processing": {
+        "start": 70,
+        "seconds": 43,
+        "crossfade": 3,
+        "filters": "highpass=f=170,highpass=f=170,highshelf=f=900:g=-6,equalizer=f=1600:t=o:w=1.5:g=-3,lowpass=f=1800"
+      },
+      "loop": true,
+      "rate": 44100,
+      "channels": 2,
+      "seconds": 40.0,
+      "rmsDB": -40.6,
+      "peak": 0.18169,
+      "bands": {
+        "0-80": 0.00093,
+        "80-500": 0.57325,
+        "500-2500": 0.41358,
+        "2500-7000": 0.01222,
+        "7000-22050": 2e-05
+      },
+      "correlation": 0.155,
+      "rms": 0.009334737434983253,
+      "lufs": -37.99,
+      "truePeakDB": -14.8,
+      "masterGainDB": 17.31,
+      "bytes": 728864,
+      "sha256": "878606deaab13e029a0b12aff933914e29455cdbd4f660a41c2540f79ef0bfeb"
+    },
+    {
+      "name": "river",
+      "url": "/audio/nature/river.mp3",
+      "source": "river-field.wav",
+      "processing": {
+        "start": 16,
+        "seconds": 37,
+        "crossfade": 3,
+        "filters": "highpass=f=85,highshelf=f=3200:g=-4,lowpass=f=8000"
+      },
+      "loop": true,
+      "rate": 44100,
+      "channels": 2,
+      "seconds": 34.0,
+      "rmsDB": -32.94,
+      "peak": 0.13091,
+      "bands": {
+        "0-80": 0.00499,
+        "80-500": 0.22693,
+        "500-2500": 0.61448,
+        "2500-7000": 0.14735,
+        "7000-22050": 0.00625
+      },
+      "correlation": 0.822,
+      "rms": 0.022550376132130623,
+      "lufs": -28.98,
+      "truePeakDB": -17.62,
+      "masterGainDB": 11.49,
+      "bytes": 766636,
+      "sha256": "15f91d5494b5c1d49fc0303e19c51a8e6f9e2b3b6d6893707b87e764e697a5d3"
+    },
+    {
+      "name": "shore",
+      "url": "/audio/nature/shore.mp3",
+      "source": "river.mp3",
+      "processing": {
+        "start": 74,
+        "seconds": 41,
+        "crossfade": 4,
+        "filters": "highpass=f=75,highshelf=f=4500:g=-3,lowpass=f=11000"
+      },
+      "loop": true,
+      "rate": 44100,
+      "channels": 2,
+      "seconds": 37.0,
+      "rmsDB": -29.06,
+      "peak": 0.36922,
+      "bands": {
+        "0-80": 0.00101,
+        "80-500": 0.34063,
+        "500-2500": 0.60658,
+        "2500-7000": 0.05112,
+        "7000-22050": 0.00066
+      },
+      "correlation": 0.802,
+      "rms": 0.03523092716932297,
+      "lufs": -25.99,
+      "truePeakDB": -8.64,
+      "masterGainDB": -9.42,
+      "bytes": 686935,
+      "sha256": "0db48f379cd4056c75980e4ecaf3f338fc5ea16330443ffec97789a31ba09edf"
+    },
+    {
+      "name": "fire",
+      "url": "/audio/nature/fire.mp3",
+      "source": "fire.wav",
+      "processing": {
+        "start": 1,
+        "seconds": 27,
+        "crossfade": 2,
+        "filters": "highpass=f=65,lowpass=f=7500"
+      },
+      "loop": true,
+      "rate": 44100,
+      "channels": 1,
+      "seconds": 25.0,
+      "rmsDB": -28.83,
+      "peak": 0.55765,
+      "bands": {
+        "0-80": 0.1004,
+        "80-500": 0.86349,
+        "500-2500": 0.0219,
+        "2500-7000": 0.01128,
+        "7000-22050": 0.00293
+      },
+      "correlation": 1,
+      "rms": 0.036167170852422714,
+      "lufs": -30.19,
+      "truePeakDB": -5.04,
+      "masterGainDB": 12.193,
+      "bytes": 321142,
+      "sha256": "9d652fe766aa2df98ab7fea12a6b032aee8739302de07e0e2f0d1fe1db832e56"
+    },
+    {
+      "name": "torch",
+      "url": "/audio/nature/torch.mp3",
+      "source": "fire.wav",
+      "processing": {
+        "start": 7,
+        "seconds": 16,
+        "crossfade": 2,
+        "filters": "highpass=f=240,highshelf=f=2000:g=-4,lowpass=f=4800"
+      },
+      "loop": true,
+      "rate": 44100,
+      "channels": 1,
+      "seconds": 14.0,
+      "rmsDB": -33.47,
+      "peak": 0.56069,
+      "bands": {
+        "0-80": 0.00728,
+        "80-500": 0.9046,
+        "500-2500": 0.06803,
+        "2500-7000": 0.0184,
+        "7000-22050": 0.00168
+      },
+      "correlation": 1,
+      "rms": 0.021213971078395844,
+      "lufs": -34.43,
+      "truePeakDB": -4.97,
+      "masterGainDB": 15.809,
+      "bytes": 172125,
+      "sha256": "1ea4c8afdba61fddc180e0b290c198e02ba7d71c598ef1f0b888103e64fc8cf8"
+    },
+    {
+      "name": "rain",
+      "url": "/audio/nature/rain.mp3",
+      "source": "rain-field.ogg",
+      "processing": {
+        "start": 5,
+        "seconds": 39,
+        "crossfade": 3,
+        "filters": "highpass=f=110,equalizer=f=1400:t=o:w=1.4:g=-3,lowpass=f=8500"
+      },
+      "loop": true,
+      "rate": 44100,
+      "channels": 2,
+      "seconds": 36.0,
+      "rmsDB": -31.61,
+      "peak": 0.25335,
+      "bands": {
+        "0-80": 0.01102,
+        "80-500": 0.41892,
+        "500-2500": 0.46587,
+        "2500-7000": 0.10129,
+        "7000-22050": 0.0029
+      },
+      "correlation": 0.985,
+      "rms": 0.026257503777742386,
+      "lufs": -27.96,
+      "truePeakDB": -11.82,
+      "masterGainDB": 8.86,
+      "bytes": 821347,
+      "sha256": "010a48060749f37289c4d61c5e078856851202e5d5114d66eb22826f3b00ca91"
+    },
+    {
+      "name": "birds-0",
+      "url": "/audio/nature/birds-0.mp3",
+      "source": "birds.ogg",
+      "processing": {
+        "start": 1,
+        "seconds": 6.5,
+        "fadeIn": 0.65,
+        "fadeOut": 0.9,
+        "filters": "highpass 1100; high shelf 5200 -4 dB; lowpass 10500"
+      },
+      "loop": false,
+      "rate": 44100,
+      "channels": 1,
+      "seconds": 6.5,
+      "rmsDB": -29.02,
+      "peak": 0.47228,
+      "bands": {
+        "0-80": 0.0,
+        "80-500": 0.0,
+        "500-2500": 0.10998,
+        "2500-7000": 0.84923,
+        "7000-22050": 0.04079
+      },
+      "correlation": 1,
+      "rms": 0.035407405346632004,
+      "lufs": -26.0,
+      "truePeakDB": -6.5,
+      "masterGainDB": 1.05,
+      "bytes": 72668,
+      "sha256": "f8f5dbbadd056ac34733744c75c1d427e89d68799de86f79e7a643722daebd86"
+    },
+    {
+      "name": "birds-1",
+      "url": "/audio/nature/birds-1.mp3",
+      "source": "birds.ogg",
+      "processing": {
+        "start": 10,
+        "seconds": 7,
+        "fadeIn": 0.65,
+        "fadeOut": 0.9,
+        "filters": "highpass 1100; high shelf 5200 -4 dB; lowpass 10500"
+      },
+      "loop": false,
+      "rate": 44100,
+      "channels": 1,
+      "seconds": 7.0,
+      "rmsDB": -30.35,
+      "peak": 0.41912,
+      "bands": {
+        "0-80": 0.0,
+        "80-500": 0.0,
+        "500-2500": 0.25144,
+        "2500-7000": 0.70154,
+        "7000-22050": 0.04702
+      },
+      "correlation": 1,
+      "rms": 0.030367538332939148,
+      "lufs": -25.99,
+      "truePeakDB": -7.4,
+      "masterGainDB": -0.55,
+      "bytes": 74158,
+      "sha256": "68ba91314e7a1839985f98692052143c1ee50090d99535c0b821f223e63ba5ed"
+    },
+    {
+      "name": "birds-2",
+      "url": "/audio/nature/birds-2.mp3",
+      "source": "birds.ogg",
+      "processing": {
+        "start": 20,
+        "seconds": 7.5,
+        "fadeIn": 0.65,
+        "fadeOut": 0.9,
+        "filters": "highpass 1100; high shelf 5200 -4 dB; lowpass 10500"
+      },
+      "loop": false,
+      "rate": 44100,
+      "channels": 1,
+      "seconds": 7.5,
+      "rmsDB": -32.61,
+      "peak": 0.29264,
+      "bands": {
+        "0-80": 0.0,
+        "80-500": 0.0,
+        "500-2500": 0.00475,
+        "2500-7000": 0.86602,
+        "7000-22050": 0.12922
+      },
+      "correlation": 1,
+      "rms": 0.023420823737978935,
+      "lufs": -25.93,
+      "truePeakDB": -10.61,
+      "masterGainDB": -2.55,
+      "bytes": 82055,
+      "sha256": "bdbfc2b05acf519e3bd2ec3e1d5d56999fcc9e3a69ff3a7f05d39709faa9a47e"
+    },
+    {
+      "name": "drop-0",
+      "url": "/audio/nature/drop-0.mp3",
+      "source": "drips.flac",
+      "processing": {
+        "start": 4.35,
+        "seconds": 1.2,
+        "fadeIn": 0.08,
+        "fadeOut": 0.35,
+        "filters": "highpass 250; lowpass 7200"
+      },
+      "loop": false,
+      "rate": 44100,
+      "channels": 1,
+      "seconds": 1.2,
+      "rmsDB": -35.45,
+      "peak": 0.56138,
+      "bands": {
+        "0-80": 0.00037,
+        "80-500": 0.07358,
+        "500-2500": 0.64549,
+        "2500-7000": 0.25633,
+        "7000-22050": 0.02423
+      },
+      "correlation": 1,
+      "rms": 0.016884315758943558,
+      "lufs": -32.05,
+      "truePeakDB": -4.7,
+      "masterGainDB": 13.755,
+      "bytes": 14052,
+      "sha256": "b6957f402540d0acbd754a9dd23156d4c1e8bb5c757adddb202b3613e72ccf46"
+    },
+    {
+      "name": "drop-1",
+      "url": "/audio/nature/drop-1.mp3",
+      "source": "drips.flac",
+      "processing": {
+        "start": 12.45,
+        "seconds": 1.2,
+        "fadeIn": 0.08,
+        "fadeOut": 0.35,
+        "filters": "highpass 250; lowpass 7200"
+      },
+      "loop": false,
+      "rate": 44100,
+      "channels": 1,
+      "seconds": 1.2,
+      "rmsDB": -33.3,
+      "peak": 0.5462,
+      "bands": {
+        "0-80": 7e-05,
+        "80-500": 0.01648,
+        "500-2500": 0.41661,
+        "2500-7000": 0.24675,
+        "7000-22050": 0.32009
+      },
+      "correlation": 1,
+      "rms": 0.02163759060204029,
+      "lufs": -29.94,
+      "truePeakDB": -5.04,
+      "masterGainDB": 10.32,
+      "bytes": 14573,
+      "sha256": "69bf43e2097a4005e61940ba9c2078b4480299bd18148b11d9c5dcb8f99c434c"
+    },
+    {
+      "name": "bgm-explore",
+      "url": "/audio/nature/bgm-explore.mp3",
+      "source": [
+        "KSHarp_B3_mf.wav",
+        "KSHarp_C3_mf.wav",
+        "KSHarp_D4_mf.wav",
+        "KSHarp_G3_mf.wav",
+        "LDFlute_susNV_A3_v1_1.wav",
+        "LDFlute_susNV_C3_v1_1.wav",
+        "LDFlute_susNV_E3_v1_1.wav"
+      ],
+      "processing": {
+        "score": [
+          {
+            "instrument": "harp",
+            "at": 0,
+            "midi": 50,
+            "duration": 7,
+            "velocity": 0.43,
+            "sample": "KSHarp_C3_mf.wav",
+            "rate": 1.125152367499646
+          },
+          {
+            "instrument": "harp",
+            "at": 0.25,
+            "midi": 57,
+            "duration": 6,
+            "velocity": 0.28,
+            "sample": "KSHarp_B3_mf.wav",
+            "rate": 0.8979591836734694
+          },
+          {
+            "instrument": "harp",
+            "at": 8,
+            "midi": 62,
+            "duration": 6,
+            "velocity": 0.24,
+            "sample": "KSHarp_D4_mf.wav",
+            "rate": 1.0074263050339882
+          },
+          {
+            "instrument": "harp",
+            "at": 13,
+            "midi": 55,
+            "duration": 8,
+            "velocity": 0.34,
+            "sample": "KSHarp_G3_mf.wav",
+            "rate": 1.0051165025173059
+          },
+          {
+            "instrument": "harp",
+            "at": 20,
+            "midi": 50,
+            "duration": 7,
+            "velocity": 0.35,
+            "sample": "KSHarp_C3_mf.wav",
+            "rate": 1.125152367499646
+          },
+          {
+            "instrument": "harp",
+            "at": 25,
+            "midi": 57,
+            "duration": 6,
+            "velocity": 0.27,
+            "sample": "KSHarp_B3_mf.wav",
+            "rate": 0.8979591836734694
+          },
+          {
+            "instrument": "harp",
+            "at": 33,
+            "midi": 55,
+            "duration": 7,
+            "velocity": 0.31,
+            "sample": "KSHarp_G3_mf.wav",
+            "rate": 1.0051165025173059
+          },
+          {
+            "instrument": "harp",
+            "at": 39,
+            "midi": 50,
+            "duration": 7,
+            "velocity": 0.32,
+            "sample": "KSHarp_C3_mf.wav",
+            "rate": 1.125152367499646
+          },
+          {
+            "instrument": "harp",
+            "at": 40.2,
+            "midi": 62,
+            "duration": 6,
+            "velocity": 0.2,
+            "sample": "KSHarp_D4_mf.wav",
+            "rate": 1.0074263050339882
+          },
+          {
+            "instrument": "flute",
+            "at": 2,
+            "midi": 62,
+            "duration": 2.5,
+            "velocity": 0.62,
+            "sample": "LDFlute_susNV_C3_v1_1.wav",
+            "rate": 1.125152367499646
+          },
+          {
+            "instrument": "flute",
+            "at": 6,
+            "midi": 69,
+            "duration": 2,
+            "velocity": 0.49,
+            "sample": "LDFlute_susNV_A3_v1_1.wav",
+            "rate": 1.0
+          },
+          {
+            "instrument": "flute",
+            "at": 9.2,
+            "midi": 67,
+            "duration": 2.6,
+            "velocity": 0.52,
+            "sample": "LDFlute_susNV_A3_v1_1.wav",
+            "rate": 0.8908987181403393
+          },
+          {
+            "instrument": "flute",
+            "at": 14,
+            "midi": 64,
+            "duration": 3,
+            "velocity": 0.56,
+            "sample": "LDFlute_susNV_E3_v1_1.wav",
+            "rate": 1.0019074678202733
+          },
+          {
+            "instrument": "flute",
+            "at": 21,
+            "midi": 62,
+            "duration": 2.6,
+            "velocity": 0.49,
+            "sample": "LDFlute_susNV_C3_v1_1.wav",
+            "rate": 1.125152367499646
+          },
+          {
+            "instrument": "flute",
+            "at": 26,
+            "midi": 64,
+            "duration": 2,
+            "velocity": 0.47,
+            "sample": "LDFlute_susNV_E3_v1_1.wav",
+            "rate": 1.0019074678202733
+          },
+          {
+            "instrument": "flute",
+            "at": 29,
+            "midi": 67,
+            "duration": 2.7,
+            "velocity": 0.53,
+            "sample": "LDFlute_susNV_A3_v1_1.wav",
+            "rate": 0.8908987181403393
+          },
+          {
+            "instrument": "flute",
+            "at": 34,
+            "midi": 69,
+            "duration": 3,
+            "velocity": 0.47,
+            "sample": "LDFlute_susNV_A3_v1_1.wav",
+            "rate": 1.0
+          },
+          {
+            "instrument": "flute",
+            "at": 39,
+            "midi": 62,
+            "duration": 3.5,
+            "velocity": 0.43,
+            "sample": "LDFlute_susNV_C3_v1_1.wav",
+            "rate": 1.125152367499646
+          }
+        ],
+        "reverbSeconds": 1.9,
+        "tailFade": 4
+      },
+      "loop": false,
+      "rate": 44100,
+      "channels": 2,
+      "seconds": 48.0,
+      "rmsDB": -29.33,
+      "peak": 0.17331,
+      "bands": {
+        "0-80": 1e-05,
+        "80-500": 0.94629,
+        "500-2500": 0.05336,
+        "2500-7000": 0.00034,
+        "7000-22050": 0.0
+      },
+      "correlation": 0.17,
+      "rms": 0.03417748957872391,
+      "lufs": -26.0,
+      "truePeakDB": -15.22,
+      "masterGainDB": 2.07,
+      "bytes": 880169,
+      "sha256": "b82edec211a0846043caad74ea056d79f3bfa3ba8d041f1bff220d415d7ab74e"
+    },
+    {
+      "name": "bgm-camp",
+      "url": "/audio/nature/bgm-camp.mp3",
+      "source": [
+        "KSHarp_B3_mf.wav",
+        "KSHarp_C3_mf.wav",
+        "KSHarp_D4_mf.wav",
+        "KSHarp_G3_mf.wav",
+        "LDFlute_susNV_A3_v1_1.wav",
+        "LDFlute_susNV_C3_v1_1.wav",
+        "LDFlute_susNV_E3_v1_1.wav"
+      ],
+      "processing": {
+        "score": [
+          {
+            "instrument": "harp",
+            "at": 0,
+            "midi": 50,
+            "duration": 7,
+            "velocity": 0.44,
+            "sample": "KSHarp_C3_mf.wav",
+            "rate": 1.125152367499646
+          },
+          {
+            "instrument": "harp",
+            "at": 0.32,
+            "midi": 57,
+            "duration": 7,
+            "velocity": 0.35,
+            "sample": "KSHarp_B3_mf.wav",
+            "rate": 0.8979591836734694
+          },
+          {
+            "instrument": "harp",
+            "at": 1.3,
+            "midi": 62,
+            "duration": 7,
+            "velocity": 0.26,
+            "sample": "KSHarp_D4_mf.wav",
+            "rate": 1.0074263050339882
+          },
+          {
+            "instrument": "harp",
+            "at": 6,
+            "midi": 59,
+            "duration": 6,
+            "velocity": 0.32,
+            "sample": "KSHarp_B3_mf.wav",
+            "rate": 1.007925104604335
+          },
+          {
+            "instrument": "harp",
+            "at": 10,
+            "midi": 54,
+            "duration": 7,
+            "velocity": 0.38,
+            "sample": "KSHarp_G3_mf.wav",
+            "rate": 0.9487036479785498
+          },
+          {
+            "instrument": "harp",
+            "at": 10.4,
+            "midi": 62,
+            "duration": 7,
+            "velocity": 0.22,
+            "sample": "KSHarp_D4_mf.wav",
+            "rate": 1.0074263050339882
+          },
+          {
+            "instrument": "harp",
+            "at": 17,
+            "midi": 55,
+            "duration": 7,
+            "velocity": 0.39,
+            "sample": "KSHarp_G3_mf.wav",
+            "rate": 1.0051165025173059
+          },
+          {
+            "instrument": "harp",
+            "at": 18.2,
+            "midi": 62,
+            "duration": 6,
+            "velocity": 0.3,
+            "sample": "KSHarp_D4_mf.wav",
+            "rate": 1.0074263050339882
+          },
+          {
+            "instrument": "harp",
+            "at": 22,
+            "midi": 59,
+            "duration": 7,
+            "velocity": 0.29,
+            "sample": "KSHarp_B3_mf.wav",
+            "rate": 1.007925104604335
+          },
+          {
+            "instrument": "harp",
+            "at": 28,
+            "midi": 57,
+            "duration": 7,
+            "velocity": 0.33,
+            "sample": "KSHarp_B3_mf.wav",
+            "rate": 0.8979591836734694
+          },
+          {
+            "instrument": "harp",
+            "at": 34,
+            "midi": 50,
+            "duration": 9,
+            "velocity": 0.43,
+            "sample": "KSHarp_C3_mf.wav",
+            "rate": 1.125152367499646
+          },
+          {
+            "instrument": "harp",
+            "at": 35.2,
+            "midi": 57,
+            "duration": 8,
+            "velocity": 0.29,
+            "sample": "KSHarp_B3_mf.wav",
+            "rate": 0.8979591836734694
+          },
+          {
+            "instrument": "harp",
+            "at": 38,
+            "midi": 62,
+            "duration": 7,
+            "velocity": 0.21,
+            "sample": "KSHarp_D4_mf.wav",
+            "rate": 1.0074263050339882
+          },
+          {
+            "instrument": "flute",
+            "at": 4,
+            "midi": 66,
+            "duration": 2.8,
+            "velocity": 0.47,
+            "sample": "LDFlute_susNV_E3_v1_1.wav",
+            "rate": 1.1246031085460013
+          },
+          {
+            "instrument": "flute",
+            "at": 8,
+            "midi": 64,
+            "duration": 2.1,
+            "velocity": 0.4,
+            "sample": "LDFlute_susNV_E3_v1_1.wav",
+            "rate": 1.0019074678202733
+          },
+          {
+            "instrument": "flute",
+            "at": 11,
+            "midi": 62,
+            "duration": 3,
+            "velocity": 0.5,
+            "sample": "LDFlute_susNV_C3_v1_1.wav",
+            "rate": 1.125152367499646
+          },
+          {
+            "instrument": "flute",
+            "at": 20,
+            "midi": 69,
+            "duration": 2.8,
+            "velocity": 0.42,
+            "sample": "LDFlute_susNV_A3_v1_1.wav",
+            "rate": 1.0
+          },
+          {
+            "instrument": "flute",
+            "at": 24,
+            "midi": 66,
+            "duration": 2.2,
+            "velocity": 0.43,
+            "sample": "LDFlute_susNV_E3_v1_1.wav",
+            "rate": 1.1246031085460013
+          },
+          {
+            "instrument": "flute",
+            "at": 28,
+            "midi": 64,
+            "duration": 2.7,
+            "velocity": 0.42,
+            "sample": "LDFlute_susNV_E3_v1_1.wav",
+            "rate": 1.0019074678202733
+          },
+          {
+            "instrument": "flute",
+            "at": 35,
+            "midi": 62,
+            "duration": 4,
+            "velocity": 0.44,
+            "sample": "LDFlute_susNV_C3_v1_1.wav",
+            "rate": 1.125152367499646
+          }
+        ],
+        "reverbSeconds": 1.9,
+        "tailFade": 4
+      },
+      "loop": false,
+      "rate": 44100,
+      "channels": 2,
+      "seconds": 48.0,
+      "rmsDB": -29.97,
+      "peak": 0.2173,
+      "bands": {
+        "0-80": 1e-05,
+        "80-500": 0.93386,
+        "500-2500": 0.06577,
+        "2500-7000": 0.00036,
+        "7000-22050": 0.0
+      },
+      "correlation": 0.26,
+      "rms": 0.03172246366739273,
+      "lufs": -26.04,
+      "truePeakDB": -13.25,
+      "masterGainDB": 2.04,
+      "bytes": 878399,
+      "sha256": "316ed0ef6d03c1d71e6c89b3cd2b9f4aca59e21b8c444435e6b36aa2617ab509"
+    },
+    {
+      "name": "bgm-cave",
+      "url": "/audio/nature/bgm-cave.mp3",
+      "source": [
+        "KSHarp_A2_mf.wav",
+        "KSHarp_B3_mf.wav",
+        "KSHarp_C3_mf.wav",
+        "KSHarp_D2_mf.wav",
+        "KSHarp_D4_mf.wav",
+        "LDFlute_susNV_C3_v1_1.wav",
+        "LDFlute_susNV_E3_v1_1.wav"
+      ],
+      "processing": {
+        "score": [
+          {
+            "instrument": "harp",
+            "at": 0,
+            "midi": 38,
+            "duration": 10,
+            "velocity": 0.44,
+            "sample": "KSHarp_D2_mf.wav",
+            "rate": 1.0057012599911217
+          },
+          {
+            "instrument": "harp",
+            "at": 1.8,
+            "midi": 57,
+            "duration": 8,
+            "velocity": 0.21,
+            "sample": "KSHarp_B3_mf.wav",
+            "rate": 0.8979591836734694
+          },
+          {
+            "instrument": "harp",
+            "at": 12,
+            "midi": 50,
+            "duration": 9,
+            "velocity": 0.33,
+            "sample": "KSHarp_C3_mf.wav",
+            "rate": 1.125152367499646
+          },
+          {
+            "instrument": "harp",
+            "at": 21,
+            "midi": 45,
+            "duration": 10,
+            "velocity": 0.34,
+            "sample": "KSHarp_A2_mf.wav",
+            "rate": 1.004566210045662
+          },
+          {
+            "instrument": "harp",
+            "at": 23,
+            "midi": 62,
+            "duration": 8,
+            "velocity": 0.18,
+            "sample": "KSHarp_D4_mf.wav",
+            "rate": 1.0074263050339882
+          },
+          {
+            "instrument": "harp",
+            "at": 33,
+            "midi": 50,
+            "duration": 10,
+            "velocity": 0.31,
+            "sample": "KSHarp_C3_mf.wav",
+            "rate": 1.125152367499646
+          },
+          {
+            "instrument": "flute",
+            "at": 5,
+            "midi": 62,
+            "duration": 3.3,
+            "velocity": 0.42,
+            "sample": "LDFlute_susNV_C3_v1_1.wav",
+            "rate": 1.125152367499646
+          },
+          {
+            "instrument": "flute",
+            "at": 15,
+            "midi": 57,
+            "duration": 3,
+            "velocity": 0.35,
+            "sample": "LDFlute_susNV_C3_v1_1.wav",
+            "rate": 0.842911877394636
+          },
+          {
+            "instrument": "flute",
+            "at": 24,
+            "midi": 64,
+            "duration": 2.8,
+            "velocity": 0.31,
+            "sample": "LDFlute_susNV_E3_v1_1.wav",
+            "rate": 1.0019074678202733
+          },
+          {
+            "instrument": "flute",
+            "at": 33,
+            "midi": 62,
+            "duration": 4,
+            "velocity": 0.35,
+            "sample": "LDFlute_susNV_C3_v1_1.wav",
+            "rate": 1.125152367499646
+          }
+        ],
+        "reverbSeconds": 3.1,
+        "tailFade": 4
+      },
+      "loop": false,
+      "rate": 44100,
+      "channels": 2,
+      "seconds": 48.0,
+      "rmsDB": -30.96,
+      "peak": 0.21621,
+      "bands": {
+        "0-80": 0.00059,
+        "80-500": 0.96103,
+        "500-2500": 0.03821,
+        "2500-7000": 0.00016,
+        "7000-22050": 0.0
+      },
+      "correlation": 0.159,
+      "rms": 0.02831791341304779,
+      "lufs": -26.0,
+      "truePeakDB": -13.3,
+      "masterGainDB": 3.4,
+      "bytes": 805013,
+      "sha256": "b1b2eed376b71968feb176ecb2d7460e94d7f90e39207dfd080a575aa532001c"
+    },
+    {
+      "name": "fx-step-grass-0",
+      "url": "/audio/nature/fx-step-grass-0.mp3",
+      "source": "impact.zip",
+      "processing": {
+        "recordings": [
+          "assets/nature-audio/foley-source/impact/Audio/footstep_grass_000.ogg",
+          "highpass=f=95,highshelf=f=2200:g=-4,lowpass=f=5500"
+        ],
+        "treatment": "DC removal; high/low-pass EQ; 8ms onset/60ms release maximum; fixed gain; silent padding to 500ms for loudness measurement"
+      },
+      "loop": false,
+      "rate": 44100,
+      "channels": 1,
+      "seconds": 0.5,
+      "rmsDB": -30.14,
+      "peak": 0.37818,
+      "bands": {
+        "0-80": 0.01378,
+        "80-500": 0.62079,
+        "500-2500": 0.34007,
+        "2500-7000": 0.02488,
+        "7000-22050": 0.00049
+      },
+      "correlation": 1,
+      "rms": 0.031128985807299614,
+      "lufs": -30.05,
+      "truePeakDB": -8.42,
+      "masterGainDB": 3.85,
+      "bytes": 4108,
+      "sha256": "860aec6685580aa6bfa76b051e20c8364efa677a07547ebb2d04c3cb57e6d2e6"
+    },
+    {
+      "name": "fx-step-sand-0",
+      "url": "/audio/nature/fx-step-sand-0.mp3",
+      "source": "fantozzi.7z",
+      "processing": {
+        "recordings": [
+          "assets/nature-audio/source/footsteps/Fantozzi-footsteps/flac/Fantozzi-SandL1.flac",
+          "highpass=f=95,highshelf=f=3000:g=-3,lowpass=f=7000"
+        ],
+        "treatment": "DC removal; high/low-pass EQ; 8ms onset/60ms release maximum; fixed gain; silent padding to 500ms for loudness measurement"
+      },
+      "loop": false,
+      "rate": 44100,
+      "channels": 1,
+      "seconds": 0.5,
+      "rmsDB": -30.07,
+      "peak": 0.49002,
+      "bands": {
+        "0-80": 0.00016,
+        "80-500": 0.0539,
+        "500-2500": 0.55498,
+        "2500-7000": 0.37452,
+        "7000-22050": 0.01644
+      },
+      "correlation": 1,
+      "rms": 0.031364258378744125,
+      "lufs": -28.93,
+      "truePeakDB": -6.18,
+      "masterGainDB": -5.37,
+      "bytes": 6693,
+      "sha256": "3ef9a3404f21e977c5e6d83b819ea08887ea52e0a75b3147f0d7601ef068a261"
+    },
+    {
+      "name": "fx-step-stone-0",
+      "url": "/audio/nature/fx-step-stone-0.mp3",
+      "source": "fantozzi.7z",
+      "processing": {
+        "recordings": [
+          "assets/nature-audio/source/footsteps/Fantozzi-footsteps/flac/Fantozzi-StoneL1.flac",
+          "highpass=f=95,highshelf=f=3000:g=-3,lowpass=f=7000"
+        ],
+        "treatment": "DC removal; high/low-pass EQ; 8ms onset/60ms release maximum; fixed gain; silent padding to 500ms for loudness measurement"
+      },
+      "loop": false,
+      "rate": 44100,
+      "channels": 1,
+      "seconds": 0.5,
+      "rmsDB": -28.55,
+      "peak": 0.35874,
+      "bands": {
+        "0-80": 0.0001,
+        "80-500": 0.0141,
+        "500-2500": 0.64277,
+        "2500-7000": 0.32763,
+        "7000-22050": 0.0154
+      },
+      "correlation": 1,
+      "rms": 0.037369128316640854,
+      "lufs": -28.99,
+      "truePeakDB": -8.79,
+      "masterGainDB": -8.41,
+      "bytes": 5494,
+      "sha256": "8511b11c452e42f8f4e1a433e321d7163862a51ecdd05560875a6bacfa24b675"
+    },
+    {
+      "name": "fx-step-snow-0",
+      "url": "/audio/nature/fx-step-snow-0.mp3",
+      "source": "snow.7z",
+      "processing": {
+        "recordings": [
+          "assets/nature-audio/foley-source/snow/Corsica_S-Walking_in_Snow/Corsica_S-Walking_on_snow_covered_gravel_01.flac",
+          "highpass=f=100,highshelf=f=2200:g=-4,lowpass=f=5000"
+        ],
+        "treatment": "DC removal; high/low-pass EQ; 8ms onset/60ms release maximum; fixed gain; silent padding to 500ms for loudness measurement"
+      },
+      "loop": false,
+      "rate": 44100,
+      "channels": 1,
+      "seconds": 0.5,
+      "rmsDB": -30.68,
+      "peak": 0.35742,
+      "bands": {
+        "0-80": 0.00769,
+        "80-500": 0.1821,
+        "500-2500": 0.77139,
+        "2500-7000": 0.03862,
+        "7000-22050": 0.00019
+      },
+      "correlation": 1,
+      "rms": 0.029228918254375458,
+      "lufs": -29.94,
+      "truePeakDB": -8.94,
+      "masterGainDB": 3.54,
+      "bytes": 6015,
+      "sha256": "27b515b4d0506aa47a7827ffd0ec5479fb6d47004976bb175b3e02b2431dd9c9"
+    },
+    {
+      "name": "fx-step-water-0",
+      "url": "/audio/nature/fx-step-water-0.mp3",
+      "source": "water.zip",
+      "processing": {
+        "recordings": [
+          "assets/nature-audio/foley-source/water/splash_02.ogg",
+          "highpass=f=130,highshelf=f=4000:g=-3,lowpass=f=7000"
+        ],
+        "treatment": "DC removal; high/low-pass EQ; 8ms onset/60ms release maximum; fixed gain; silent padding to 500ms for loudness measurement"
+      },
+      "loop": false,
+      "rate": 44100,
+      "channels": 1,
+      "seconds": 0.651,
+      "rmsDB": -30.86,
+      "peak": 0.55924,
+      "bands": {
+        "0-80": 1e-05,
+        "80-500": 0.028,
+        "500-2500": 0.82164,
+        "2500-7000": 0.1415,
+        "7000-22050": 0.00885
+      },
+      "correlation": 1,
+      "rms": 0.028644908219575882,
+      "lufs": -29.53,
+      "truePeakDB": -5.0,
+      "masterGainDB": -4.562,
+      "bytes": 8858,
+      "sha256": "b036f70c94234f76829e7d0d8b7f7611a68f15c12423a75f2fd48fee2546ab4b"
+    },
+    {
+      "name": "fx-attack-0",
+      "url": "/audio/nature/fx-attack-0.mp3",
+      "source": "swish.7z",
+      "processing": {
+        "recordings": [
+          "assets/nature-audio/foley-source/swish/swosh-02.flac",
+          "highpass=f=130,lowpass=f=6500"
+        ],
+        "treatment": "DC removal; high/low-pass EQ; 8ms onset/60ms release maximum; fixed gain; silent padding to 500ms for loudness measurement"
+      },
+      "loop": false,
+      "rate": 44100,
+      "channels": 1,
+      "seconds": 0.5,
+      "rmsDB": -24.84,
+      "peak": 0.40404,
+      "bands": {
+        "0-80": 0.16479,
+        "80-500": 0.74328,
+        "500-2500": 0.05621,
+        "2500-7000": 0.03355,
+        "7000-22050": 0.00217
+      },
+      "correlation": 1,
+      "rms": 0.05728575959801674,
+      "lufs": -26.97,
+      "truePeakDB": -7.87,
+      "masterGainDB": 13.17,
+      "bytes": 4578,
+      "sha256": "1fa985f257cf2871d82a3ae0f392954960df094a33b763f54b3f7d5d0d1d4016"
+    },
+    {
+      "name": "fx-throw-0",
+      "url": "/audio/nature/fx-throw-0.mp3",
+      "source": "swish.7z",
+      "processing": {
+        "recordings": [
+          "assets/nature-audio/foley-source/swish/swosh-11.flac",
+          "highpass=f=200,lowpass=f=5000"
+        ],
+        "treatment": "DC removal; high/low-pass EQ; 8ms onset/60ms release maximum; fixed gain; silent padding to 500ms for loudness measurement"
+      },
+      "loop": false,
+      "rate": 44100,
+      "channels": 1,
+      "seconds": 0.5,
+      "rmsDB": -27.65,
+      "peak": 0.40705,
+      "bands": {
+        "0-80": 0.00045,
+        "80-500": 0.51869,
+        "500-2500": 0.47937,
+        "2500-7000": 0.00144,
+        "7000-22050": 5e-05
+      },
+      "correlation": 1,
+      "rms": 0.04144594073295593,
+      "lufs": -30.0,
+      "truePeakDB": -7.8,
+      "masterGainDB": -7.19,
+      "bytes": 4866,
+      "sha256": "7ceef1ed596eab11034a8d935eff810828d2e6f7637303ebe6e10911b15903a9"
+    },
+    {
+      "name": "fx-step-grass-1",
+      "url": "/audio/nature/fx-step-grass-1.mp3",
+      "source": "impact.zip",
+      "processing": {
+        "recordings": [
+          "assets/nature-audio/foley-source/impact/Audio/footstep_grass_001.ogg",
+          "highpass=f=95,highshelf=f=2200:g=-4,lowpass=f=5500"
+        ],
+        "treatment": "DC removal; high/low-pass EQ; 8ms onset/60ms release maximum; fixed gain; silent padding to 500ms for loudness measurement"
+      },
+      "loop": false,
+      "rate": 44100,
+      "channels": 1,
+      "seconds": 0.5,
+      "rmsDB": -30.68,
+      "peak": 0.39035,
+      "bands": {
+        "0-80": 0.01512,
+        "80-500": 0.54971,
+        "500-2500": 0.39659,
+        "2500-7000": 0.03789,
+        "7000-22050": 0.00069
+      },
+      "correlation": 1,
+      "rms": 0.029246632009744644,
+      "lufs": -30.05,
+      "truePeakDB": -8.17,
+      "masterGainDB": -0.05,
+      "bytes": 4108,
+      "sha256": "09d7bff6263d19595066afe21ff71992af845c105d94f7d608d77ba5d4604739"
+    },
+    {
+      "name": "fx-step-sand-1",
+      "url": "/audio/nature/fx-step-sand-1.mp3",
+      "source": "fantozzi.7z",
+      "processing": {
+        "recordings": [
+          "assets/nature-audio/source/footsteps/Fantozzi-footsteps/flac/Fantozzi-SandR2.flac",
+          "highpass=f=95,highshelf=f=3000:g=-3,lowpass=f=7000"
+        ],
+        "treatment": "DC removal; high/low-pass EQ; 8ms onset/60ms release maximum; fixed gain; silent padding to 500ms for loudness measurement"
+      },
+      "loop": false,
+      "rate": 44100,
+      "channels": 1,
+      "seconds": 0.5,
+      "rmsDB": -32.52,
+      "peak": 0.56135,
+      "bands": {
+        "0-80": 3e-05,
+        "80-500": 0.04359,
+        "500-2500": 0.54065,
+        "2500-7000": 0.40713,
+        "7000-22050": 0.00861
+      },
+      "correlation": 1,
+      "rms": 0.0236470028758049,
+      "lufs": -30.1,
+      "truePeakDB": -5.01,
+      "masterGainDB": -6.69,
+      "bytes": 5701,
+      "sha256": "cec941a55d8627de650262bb034d17fab26ad72c55f95ab6b28744d0f278b311"
+    },
+    {
+      "name": "fx-step-stone-1",
+      "url": "/audio/nature/fx-step-stone-1.mp3",
+      "source": "fantozzi.7z",
+      "processing": {
+        "recordings": [
+          "assets/nature-audio/source/footsteps/Fantozzi-footsteps/flac/Fantozzi-StoneR2.flac",
+          "highpass=f=95,highshelf=f=3000:g=-3,lowpass=f=7000"
+        ],
+        "treatment": "DC removal; high/low-pass EQ; 8ms onset/60ms release maximum; fixed gain; silent padding to 500ms for loudness measurement"
+      },
+      "loop": false,
+      "rate": 44100,
+      "channels": 1,
+      "seconds": 0.5,
+      "rmsDB": -29.68,
+      "peak": 0.37006,
+      "bands": {
+        "0-80": 0.0002,
+        "80-500": 0.01423,
+        "500-2500": 0.78947,
+        "2500-7000": 0.18575,
+        "7000-22050": 0.01035
+      },
+      "correlation": 1,
+      "rms": 0.03279081732034683,
+      "lufs": -28.98,
+      "truePeakDB": -8.61,
+      "masterGainDB": -10.52,
+      "bytes": 5570,
+      "sha256": "70fc674182f03dafd23279eef85c8d13f20548903f8317daffbb690d5137fc60"
+    },
+    {
+      "name": "fx-step-snow-1",
+      "url": "/audio/nature/fx-step-snow-1.mp3",
+      "source": "snow.7z",
+      "processing": {
+        "recordings": [
+          "assets/nature-audio/foley-source/snow/Corsica_S-Walking_in_Snow/Corsica_S-Walking_on_snow_covered_gravel_02.flac",
+          "highpass=f=100,highshelf=f=2200:g=-4,lowpass=f=5000"
+        ],
+        "treatment": "DC removal; high/low-pass EQ; 8ms onset/60ms release maximum; fixed gain; silent padding to 500ms for loudness measurement"
+      },
+      "loop": false,
+      "rate": 44100,
+      "channels": 1,
+      "seconds": 0.694,
+      "rmsDB": -30.29,
+      "peak": 0.22424,
+      "bands": {
+        "0-80": 0.00151,
+        "80-500": 0.22682,
+        "500-2500": 0.75758,
+        "2500-7000": 0.01396,
+        "7000-22050": 0.00013
+      },
+      "correlation": 1,
+      "rms": 0.030574200674891472,
+      "lufs": -29.99,
+      "truePeakDB": -12.96,
+      "masterGainDB": 4.89,
+      "bytes": 7945,
+      "sha256": "6ac38e12ef039db718a54eb35a2137f4cfb602748228d4417c64e67af108d224"
+    },
+    {
+      "name": "fx-step-water-1",
+      "url": "/audio/nature/fx-step-water-1.mp3",
+      "source": "water.zip",
+      "processing": {
+        "recordings": [
+          "assets/nature-audio/foley-source/water/splash_06.ogg",
+          "highpass=f=130,highshelf=f=4000:g=-3,lowpass=f=7000"
+        ],
+        "treatment": "DC removal; high/low-pass EQ; 8ms onset/60ms release maximum; fixed gain; silent padding to 500ms for loudness measurement"
+      },
+      "loop": false,
+      "rate": 44100,
+      "channels": 1,
+      "seconds": 0.5,
+      "rmsDB": -32.78,
+      "peak": 0.31374,
+      "bands": {
+        "0-80": 5e-05,
+        "80-500": 0.00052,
+        "500-2500": 0.0944,
+        "2500-7000": 0.83983,
+        "7000-22050": 0.0652
+      },
+      "correlation": 1,
+      "rms": 0.0229630209505558,
+      "lufs": -28.99,
+      "truePeakDB": -10.06,
+      "masterGainDB": -7.67,
+      "bytes": 8991,
+      "sha256": "34e6857e40769420c2e0a7fceafa869e75b126684c00699f7e03c3cef3dae4ca"
+    },
+    {
+      "name": "fx-attack-1",
+      "url": "/audio/nature/fx-attack-1.mp3",
+      "source": "swish.7z",
+      "processing": {
+        "recordings": [
+          "assets/nature-audio/foley-source/swish/swosh-04.flac",
+          "highpass=f=130,lowpass=f=6500"
+        ],
+        "treatment": "DC removal; high/low-pass EQ; 8ms onset/60ms release maximum; fixed gain; silent padding to 500ms for loudness measurement"
+      },
+      "loop": false,
+      "rate": 44100,
+      "channels": 1,
+      "seconds": 0.5,
+      "rmsDB": -24.63,
+      "peak": 0.41673,
+      "bands": {
+        "0-80": 0.01021,
+        "80-500": 0.96188,
+        "500-2500": 0.0141,
+        "2500-7000": 0.0129,
+        "7000-22050": 0.00092
+      },
+      "correlation": 1,
+      "rms": 0.058692507445812225,
+      "lufs": -27.09,
+      "truePeakDB": -7.6,
+      "masterGainDB": 8.7,
+      "bytes": 4918,
+      "sha256": "800ae08efe7a42ba88fe6e7f40f8516eaf890dbcf0b30ea1735098be5e8ce5df"
+    },
+    {
+      "name": "fx-throw-1",
+      "url": "/audio/nature/fx-throw-1.mp3",
+      "source": "swish.7z",
+      "processing": {
+        "recordings": [
+          "assets/nature-audio/foley-source/swish/swosh-14.flac",
+          "highpass=f=200,lowpass=f=5000"
+        ],
+        "treatment": "DC removal; high/low-pass EQ; 8ms onset/60ms release maximum; fixed gain; silent padding to 500ms for loudness measurement"
+      },
+      "loop": false,
+      "rate": 44100,
+      "channels": 1,
+      "seconds": 0.5,
+      "rmsDB": -27.89,
+      "peak": 0.43953,
+      "bands": {
+        "0-80": 0.00122,
+        "80-500": 0.72895,
+        "500-2500": 0.26784,
+        "2500-7000": 0.00194,
+        "7000-22050": 6e-05
+      },
+      "correlation": 1,
+      "rms": 0.040306106209754944,
+      "lufs": -29.99,
+      "truePeakDB": -7.14,
+      "masterGainDB": -8.11,
+      "bytes": 5203,
+      "sha256": "886b9eea8415ec19883babaee98b52813b29ebf989e310f7c14ec83d81e2f308"
+    },
+    {
+      "name": "fx-step-grass-2",
+      "url": "/audio/nature/fx-step-grass-2.mp3",
+      "source": "impact.zip",
+      "processing": {
+        "recordings": [
+          "assets/nature-audio/foley-source/impact/Audio/footstep_grass_002.ogg",
+          "highpass=f=95,highshelf=f=2200:g=-4,lowpass=f=5500"
+        ],
+        "treatment": "DC removal; high/low-pass EQ; 8ms onset/60ms release maximum; fixed gain; silent padding to 500ms for loudness measurement"
+      },
+      "loop": false,
+      "rate": 44100,
+      "channels": 1,
+      "seconds": 0.5,
+      "rmsDB": -30.58,
+      "peak": 0.34564,
+      "bands": {
+        "0-80": 0.00952,
+        "80-500": 0.54866,
+        "500-2500": 0.40592,
+        "2500-7000": 0.03528,
+        "7000-22050": 0.00062
+      },
+      "correlation": 1,
+      "rms": 0.029586579650640488,
+      "lufs": -29.95,
+      "truePeakDB": -9.21,
+      "masterGainDB": 1.25,
+      "bytes": 4160,
+      "sha256": "d9f017fd7aaa573991152e519a18f5baec848af4656206c7fa93ab1c2b147859"
+    },
+    {
+      "name": "fx-step-sand-2",
+      "url": "/audio/nature/fx-step-sand-2.mp3",
+      "source": "fantozzi.7z",
+      "processing": {
+        "recordings": [
+          "assets/nature-audio/source/footsteps/Fantozzi-footsteps/flac/Fantozzi-SandL3.flac",
+          "highpass=f=95,highshelf=f=3000:g=-3,lowpass=f=7000"
+        ],
+        "treatment": "DC removal; high/low-pass EQ; 8ms onset/60ms release maximum; fixed gain; silent padding to 500ms for loudness measurement"
+      },
+      "loop": false,
+      "rate": 44100,
+      "channels": 1,
+      "seconds": 0.5,
+      "rmsDB": -32.35,
+      "peak": 0.55662,
+      "bands": {
+        "0-80": 9e-05,
+        "80-500": 0.06663,
+        "500-2500": 0.46747,
+        "2500-7000": 0.44635,
+        "7000-22050": 0.01946
+      },
+      "correlation": 1,
+      "rms": 0.024130897596478462,
+      "lufs": -30.89,
+      "truePeakDB": -4.92,
+      "masterGainDB": -4.795,
+      "bytes": 5180,
+      "sha256": "b96236eced50dce5a7ab995dd10482780c1c3417cd9e19b57a7ee52203a14964"
+    },
+    {
+      "name": "fx-step-stone-2",
+      "url": "/audio/nature/fx-step-stone-2.mp3",
+      "source": "fantozzi.7z",
+      "processing": {
+        "recordings": [
+          "assets/nature-audio/source/footsteps/Fantozzi-footsteps/flac/Fantozzi-StoneL3.flac",
+          "highpass=f=95,highshelf=f=3000:g=-3,lowpass=f=7000"
+        ],
+        "treatment": "DC removal; high/low-pass EQ; 8ms onset/60ms release maximum; fixed gain; silent padding to 500ms for loudness measurement"
+      },
+      "loop": false,
+      "rate": 44100,
+      "channels": 1,
+      "seconds": 0.5,
+      "rmsDB": -30.88,
+      "peak": 0.27907,
+      "bands": {
+        "0-80": 2e-05,
+        "80-500": 0.00329,
+        "500-2500": 0.66208,
+        "2500-7000": 0.32278,
+        "7000-22050": 0.01184
+      },
+      "correlation": 1,
+      "rms": 0.028574444353580475,
+      "lufs": -28.92,
+      "truePeakDB": -11.0,
+      "masterGainDB": -11.71,
+      "bytes": 5180,
+      "sha256": "c7fd93fb9fd60ddb13aab2bb0a181065f51cf4a03e8ba3b680f6cce5242216ee"
+    },
+    {
+      "name": "fx-step-snow-2",
+      "url": "/audio/nature/fx-step-snow-2.mp3",
+      "source": "snow.7z",
+      "processing": {
+        "recordings": [
+          "assets/nature-audio/foley-source/snow/Corsica_S-Walking_in_Snow/Corsica_S-Walking_on_snow_covered_gravel_03.flac",
+          "highpass=f=100,highshelf=f=2200:g=-4,lowpass=f=5000"
+        ],
+        "treatment": "DC removal; high/low-pass EQ; 8ms onset/60ms release maximum; fixed gain; silent padding to 500ms for loudness measurement"
+      },
+      "loop": false,
+      "rate": 44100,
+      "channels": 1,
+      "seconds": 0.65,
+      "rmsDB": -29.54,
+      "peak": 0.28474,
+      "bands": {
+        "0-80": 0.00095,
+        "80-500": 0.14335,
+        "500-2500": 0.83815,
+        "2500-7000": 0.01728,
+        "7000-22050": 0.00028
+      },
+      "correlation": 1,
+      "rms": 0.03333800286054611,
+      "lufs": -30.0,
+      "truePeakDB": -10.9,
+      "masterGainDB": 7.9,
+      "bytes": 7843,
+      "sha256": "9d84d8b1da1995aa38be06346d92b609003118d916fd0095d61904b35d940659"
+    },
+    {
+      "name": "fx-step-water-2",
+      "url": "/audio/nature/fx-step-water-2.mp3",
+      "source": "water.zip",
+      "processing": {
+        "recordings": [
+          "assets/nature-audio/foley-source/water/splash_09.ogg",
+          "highpass=f=130,highshelf=f=4000:g=-3,lowpass=f=7000"
+        ],
+        "treatment": "DC removal; high/low-pass EQ; 8ms onset/60ms release maximum; fixed gain; silent padding to 500ms for loudness measurement"
+      },
+      "loop": false,
+      "rate": 44100,
+      "channels": 1,
+      "seconds": 0.5,
+      "rmsDB": -30.1,
+      "peak": 0.56412,
+      "bands": {
+        "0-80": 3e-05,
+        "80-500": 0.7993,
+        "500-2500": 0.15558,
+        "2500-7000": 0.04217,
+        "7000-22050": 0.00292
+      },
+      "correlation": 1,
+      "rms": 0.03125518932938576,
+      "lufs": -29.65,
+      "truePeakDB": -4.97,
+      "masterGainDB": -1.898,
+      "bytes": 4629,
+      "sha256": "bb86e7d7f4c8cfbdc71bbcfa8e613f235d352f69aeac6b412d42c518c0af00a7"
+    },
+    {
+      "name": "fx-attack-2",
+      "url": "/audio/nature/fx-attack-2.mp3",
+      "source": "swish.7z",
+      "processing": {
+        "recordings": [
+          "assets/nature-audio/foley-source/swish/swosh-07.flac",
+          "highpass=f=130,lowpass=f=6500"
+        ],
+        "treatment": "DC removal; high/low-pass EQ; 8ms onset/60ms release maximum; fixed gain; silent padding to 500ms for loudness measurement"
+      },
+      "loop": false,
+      "rate": 44100,
+      "channels": 1,
+      "seconds": 0.5,
+      "rmsDB": -24.58,
+      "peak": 0.52703,
+      "bands": {
+        "0-80": 0.01492,
+        "80-500": 0.81783,
+        "500-2500": 0.16465,
+        "2500-7000": 0.00247,
+        "7000-22050": 0.00013
+      },
+      "correlation": 1,
+      "rms": 0.058996837586164474,
+      "lufs": -26.97,
+      "truePeakDB": -5.56,
+      "masterGainDB": -3.43,
+      "bytes": 5074,
+      "sha256": "256dece6e2ab30e5cfb3e3782fee027098a23f14c8df89479c9ad246cecb7db7"
+    },
+    {
+      "name": "fx-throw-2",
+      "url": "/audio/nature/fx-throw-2.mp3",
+      "source": "swish.7z",
+      "processing": {
+        "recordings": [
+          "assets/nature-audio/foley-source/swish/swosh-17.flac",
+          "highpass=f=200,lowpass=f=5000"
+        ],
+        "treatment": "DC removal; high/low-pass EQ; 8ms onset/60ms release maximum; fixed gain; silent padding to 500ms for loudness measurement"
+      },
+      "loop": false,
+      "rate": 44100,
+      "channels": 1,
+      "seconds": 0.5,
+      "rmsDB": -27.81,
+      "peak": 0.47639,
+      "bands": {
+        "0-80": 0.00041,
+        "80-500": 0.38471,
+        "500-2500": 0.61199,
+        "2500-7000": 0.00281,
+        "7000-22050": 7e-05
+      },
+      "correlation": 1,
+      "rms": 0.04070533439517021,
+      "lufs": -30.01,
+      "truePeakDB": -6.44,
+      "masterGainDB": -7.09,
+      "bytes": 4968,
+      "sha256": "89c6d550c0002e0b1bef9f89f197826976482cb953733b0bb3bc39b610e14d38"
+    },
+    {
+      "name": "fx-jump-0",
+      "url": "/audio/nature/fx-jump-0.mp3",
+      "source": "cloth.zip",
+      "processing": {
+        "recordings": [
+          "assets/nature-audio/foley-source/cloth/footsteps/step_cloth1.ogg",
+          "highpass=f=90,lowpass=f=6500"
+        ],
+        "treatment": "DC removal; high/low-pass EQ; 8ms onset/60ms release maximum; fixed gain; silent padding to 500ms for loudness measurement"
+      },
+      "loop": false,
+      "rate": 44100,
+      "channels": 1,
+      "seconds": 0.5,
+      "rmsDB": -28.64,
+      "peak": 0.3997,
+      "bands": {
+        "0-80": 0.00825,
+        "80-500": 0.88094,
+        "500-2500": 0.0774,
+        "2500-7000": 0.03151,
+        "7000-22050": 0.0019
+      },
+      "correlation": 1,
+      "rms": 0.03700077906250954,
+      "lufs": -31.03,
+      "truePeakDB": -7.95,
+      "masterGainDB": 21.84,
+      "bytes": 4709,
+      "sha256": "8480e1e9b7e0f87c8ef482120c2ce0b93e2154d5e9f0a0d369dea6dab7fb46fd"
+    },
+    {
+      "name": "fx-pet-0",
+      "url": "/audio/nature/fx-pet-0.mp3",
+      "source": "cloth.zip",
+      "processing": {
+        "recordings": [
+          "assets/nature-audio/foley-source/cloth/footsteps/step_cloth3.ogg",
+          "highpass=f=150,lowpass=f=3500"
+        ],
+        "treatment": "DC removal; high/low-pass EQ; 8ms onset/60ms release maximum; fixed gain; silent padding to 500ms for loudness measurement"
+      },
+      "loop": false,
+      "rate": 44100,
+      "channels": 1,
+      "seconds": 0.5,
+      "rmsDB": -30.7,
+      "peak": 0.32979,
+      "bands": {
+        "0-80": 0.00061,
+        "80-500": 0.8398,
+        "500-2500": 0.12799,
+        "2500-7000": 0.03136,
+        "7000-22050": 0.00025
+      },
+      "correlation": 1,
+      "rms": 0.029158327728509903,
+      "lufs": -33.0,
+      "truePeakDB": -9.64,
+      "masterGainDB": 20.4,
+      "bytes": 4605,
+      "sha256": "1abc3dabde1cc75635c3b5eb978bd9f1d4e35b4b301cc7b64ed8b52554df72b1"
+    },
+    {
+      "name": "fx-mount-0",
+      "url": "/audio/nature/fx-mount-0.mp3",
+      "source": "cloth.zip",
+      "processing": {
+        "recordings": [
+          "assets/nature-audio/foley-source/cloth/footsteps/step_lth1.ogg",
+          "highpass=f=90,lowpass=f=4500"
+        ],
+        "treatment": "DC removal; high/low-pass EQ; 8ms onset/60ms release maximum; fixed gain; silent padding to 500ms for loudness measurement"
+      },
+      "loop": false,
+      "rate": 44100,
+      "channels": 1,
+      "seconds": 0.5,
+      "rmsDB": -28.33,
+      "peak": 0.34521,
+      "bands": {
+        "0-80": 0.00349,
+        "80-500": 0.54184,
+        "500-2500": 0.42766,
+        "2500-7000": 0.02659,
+        "7000-22050": 0.00042
+      },
+      "correlation": 1,
+      "rms": 0.038315657526254654,
+      "lufs": -29.98,
+      "truePeakDB": -9.23,
+      "masterGainDB": 16.9,
+      "bytes": 4761,
+      "sha256": "750ee0fb717e25c3125f8d89a7966b0ca2b0cdaba97c166a4c47898b8c9dc63e"
+    },
+    {
+      "name": "fx-hurt-0",
+      "url": "/audio/nature/fx-hurt-0.mp3",
+      "source": "impact.zip",
+      "processing": {
+        "recordings": [
+          "assets/nature-audio/foley-source/impact/Audio/impactSoft_medium_000.ogg",
+          "highpass=f=60,lowpass=f=3800"
+        ],
+        "treatment": "DC removal; high/low-pass EQ; 8ms onset/60ms release maximum; fixed gain; silent padding to 500ms for loudness measurement"
+      },
+      "loop": false,
+      "rate": 44100,
+      "channels": 1,
+      "seconds": 0.5,
+      "rmsDB": -25.69,
+      "peak": 0.54848,
+      "bands": {
+        "0-80": 0.02581,
+        "80-500": 0.97419,
+        "500-2500": 0.0,
+        "2500-7000": 0.0,
+        "7000-22050": 0.0
+      },
+      "correlation": 1,
+      "rms": 0.05192548409104347,
+      "lufs": -26.85,
+      "truePeakDB": -5.22,
+      "masterGainDB": -6.05,
+      "bytes": 3089,
+      "sha256": "3ccc3979c78ed7196aa721754808972fcf8346a8b6f3ba4fdc836cf3ec52f13a"
+    },
+    {
+      "name": "fx-jump-1",
+      "url": "/audio/nature/fx-jump-1.mp3",
+      "source": "cloth.zip",
+      "processing": {
+        "recordings": [
+          "assets/nature-audio/foley-source/cloth/footsteps/step_cloth2.ogg",
+          "highpass=f=90,lowpass=f=6500"
+        ],
+        "treatment": "DC removal; high/low-pass EQ; 8ms onset/60ms release maximum; fixed gain; silent padding to 500ms for loudness measurement"
+      },
+      "loop": false,
+      "rate": 44100,
+      "channels": 1,
+      "seconds": 0.5,
+      "rmsDB": -28.74,
+      "peak": 0.33117,
+      "bands": {
+        "0-80": 0.06265,
+        "80-500": 0.80952,
+        "500-2500": 0.07956,
+        "2500-7000": 0.04617,
+        "7000-22050": 0.0021
+      },
+      "correlation": 1,
+      "rms": 0.03654848784208298,
+      "lufs": -30.97,
+      "truePeakDB": -9.6,
+      "masterGainDB": 20.47,
+      "bytes": 4814,
+      "sha256": "aa7cc37e9de2978682f339057c60cbc43c4a005c73197ad4db69877b18044330"
+    },
+    {
+      "name": "fx-pet-1",
+      "url": "/audio/nature/fx-pet-1.mp3",
+      "source": "cloth.zip",
+      "processing": {
+        "recordings": [
+          "assets/nature-audio/foley-source/cloth/footsteps/step_cloth4.ogg",
+          "highpass=f=150,lowpass=f=3500"
+        ],
+        "treatment": "DC removal; high/low-pass EQ; 8ms onset/60ms release maximum; fixed gain; silent padding to 500ms for loudness measurement"
+      },
+      "loop": false,
+      "rate": 44100,
+      "channels": 1,
+      "seconds": 0.5,
+      "rmsDB": -33.39,
+      "peak": 0.2161,
+      "bands": {
+        "0-80": 0.00054,
+        "80-500": 0.76627,
+        "500-2500": 0.18789,
+        "2500-7000": 0.04474,
+        "7000-22050": 0.00056
+      },
+      "correlation": 1,
+      "rms": 0.021414926275610924,
+      "lufs": -33.05,
+      "truePeakDB": -13.31,
+      "masterGainDB": 17.65,
+      "bytes": 4109,
+      "sha256": "87c40cc4a5a9cf1b8a0d2adbf6c0a6b8cc429e74a746a0f382b50bac56d93881"
+    },
+    {
+      "name": "fx-mount-1",
+      "url": "/audio/nature/fx-mount-1.mp3",
+      "source": "cloth.zip",
+      "processing": {
+        "recordings": [
+          "assets/nature-audio/foley-source/cloth/footsteps/step_lth2.ogg",
+          "highpass=f=90,lowpass=f=4500"
+        ],
+        "treatment": "DC removal; high/low-pass EQ; 8ms onset/60ms release maximum; fixed gain; silent padding to 500ms for loudness measurement"
+      },
+      "loop": false,
+      "rate": 44100,
+      "channels": 1,
+      "seconds": 0.5,
+      "rmsDB": -28.0,
+      "peak": 0.34562,
+      "bands": {
+        "0-80": 0.02922,
+        "80-500": 0.67585,
+        "500-2500": 0.25287,
+        "2500-7000": 0.04143,
+        "7000-22050": 0.00063
+      },
+      "correlation": 1,
+      "rms": 0.03983110189437866,
+      "lufs": -29.93,
+      "truePeakDB": -9.22,
+      "masterGainDB": 17.62,
+      "bytes": 5021,
+      "sha256": "fe43f2558174357cf51952e7ce52bf81e46bc266806a7be02c6a8bdcc700478b"
+    },
+    {
+      "name": "fx-hurt-1",
+      "url": "/audio/nature/fx-hurt-1.mp3",
+      "source": "impact.zip",
+      "processing": {
+        "recordings": [
+          "assets/nature-audio/foley-source/impact/Audio/impactSoft_medium_001.ogg",
+          "highpass=f=60,lowpass=f=3800"
+        ],
+        "treatment": "DC removal; high/low-pass EQ; 8ms onset/60ms release maximum; fixed gain; silent padding to 500ms for loudness measurement"
+      },
+      "loop": false,
+      "rate": 44100,
+      "channels": 1,
+      "seconds": 0.5,
+      "rmsDB": -25.39,
+      "peak": 0.44335,
+      "bands": {
+        "0-80": 0.12183,
+        "80-500": 0.87817,
+        "500-2500": 0.0,
+        "2500-7000": 0.0,
+        "7000-22050": 0.0
+      },
+      "correlation": 1,
+      "rms": 0.053755469620227814,
+      "lufs": -27.05,
+      "truePeakDB": -7.07,
+      "masterGainDB": -6.65,
+      "bytes": 3036,
+      "sha256": "22dce024cc923736d4c43261c51e071d026958614836383876f62f9661743478"
+    },
+    {
+      "name": "fx-gather-stone",
+      "url": "/audio/nature/fx-gather-stone.mp3",
+      "source": "impact.zip",
+      "processing": {
+        "recordings": [
+          "assets/nature-audio/foley-source/impact/Audio/impactMining_000.ogg",
+          "highpass=f=100,highshelf=f=3000:g=-3,lowpass=f=6500"
+        ],
+        "treatment": "DC removal; high/low-pass EQ; 8ms onset/60ms release maximum; fixed gain; silent padding to 500ms for loudness measurement"
+      },
+      "loop": false,
+      "rate": 44100,
+      "channels": 1,
+      "seconds": 0.747,
+      "rmsDB": -24.39,
+      "peak": 0.54383,
+      "bands": {
+        "0-80": 0.1279,
+        "80-500": 0.86433,
+        "500-2500": 0.00324,
+        "2500-7000": 0.00425,
+        "7000-22050": 0.00027
+      },
+      "correlation": 1,
+      "rms": 0.0603288896381855,
+      "lufs": -29.0,
+      "truePeakDB": -5.29,
+      "masterGainDB": -2.5,
+      "bytes": 5691,
+      "sha256": "f82a71f4c5e6a5a866ef3ff5f321a872064c676a8b4c8b345294ffc061353ab5"
+    },
+    {
+      "name": "fx-gather-wood",
+      "url": "/audio/nature/fx-gather-wood.mp3",
+      "source": "impact.zip",
+      "processing": {
+        "recordings": [
+          "assets/nature-audio/foley-source/impact/Audio/impactWood_light_001.ogg",
+          "highpass=f=100,highshelf=f=3000:g=-3,lowpass=f=6500"
+        ],
+        "treatment": "DC removal; high/low-pass EQ; 8ms onset/60ms release maximum; fixed gain; silent padding to 500ms for loudness measurement"
+      },
+      "loop": false,
+      "rate": 44100,
+      "channels": 1,
+      "seconds": 0.5,
+      "rmsDB": -29.15,
+      "peak": 0.44068,
+      "bands": {
+        "0-80": 0.00035,
+        "80-500": 0.78412,
+        "500-2500": 0.21552,
+        "2500-7000": 0.0,
+        "7000-22050": 0.0
+      },
+      "correlation": 1,
+      "rms": 0.03489244356751442,
+      "lufs": -28.95,
+      "truePeakDB": -7.12,
+      "masterGainDB": 1.05,
+      "bytes": 3115,
+      "sha256": "a48e9eef1331ac0cee02e5ce0b39eade63763f601c65869f4959d4975c1b754f"
+    },
+    {
+      "name": "fx-gather-plant",
+      "url": "/audio/nature/fx-gather-plant.mp3",
+      "source": "impact.zip",
+      "processing": {
+        "recordings": [
+          "assets/nature-audio/foley-source/impact/Audio/footstep_grass_004.ogg",
+          "highpass=f=100,highshelf=f=3000:g=-3,lowpass=f=6500"
+        ],
+        "treatment": "DC removal; high/low-pass EQ; 8ms onset/60ms release maximum; fixed gain; silent padding to 500ms for loudness measurement"
+      },
+      "loop": false,
+      "rate": 44100,
+      "channels": 1,
+      "seconds": 0.5,
+      "rmsDB": -29.23,
+      "peak": 0.52801,
+      "bands": {
+        "0-80": 0.00508,
+        "80-500": 0.56244,
+        "500-2500": 0.39073,
+        "2500-7000": 0.04046,
+        "7000-22050": 0.00128
+      },
+      "correlation": 1,
+      "rms": 0.034570325165987015,
+      "lufs": -28.95,
+      "truePeakDB": -5.54,
+      "masterGainDB": 5.45,
+      "bytes": 3925,
+      "sha256": "b8cd932e35ef8ecd1793f13fcf438857ad3c8c1f43537559433ac1119ae57243"
+    },
+    {
+      "name": "fx-torch-switch",
+      "url": "/audio/nature/fx-torch-switch.mp3",
+      "source": "fire.wav",
+      "processing": {
+        "recordings": [
+          "fire.wav: 8.3–8.85 seconds"
+        ],
+        "treatment": "DC removal; high/low-pass EQ; 8ms onset/60ms release maximum; fixed gain; silent padding to 500ms for loudness measurement"
+      },
+      "loop": false,
+      "rate": 44100,
+      "channels": 1,
+      "seconds": 0.55,
+      "rmsDB": -32.58,
+      "peak": 0.25955,
+      "bands": {
+        "0-80": 0.00989,
+        "80-500": 0.71569,
+        "500-2500": 0.16316,
+        "2500-7000": 0.1053,
+        "7000-22050": 0.00597
+      },
+      "correlation": 1,
+      "rms": 0.023506905883550644,
+      "lufs": -31.95,
+      "truePeakDB": -11.71,
+      "masterGainDB": 20.05,
+      "bytes": 7632,
+      "sha256": "11439a00b7cbd41a27c2832ad09715033bef8b37a3615fec4109c33a1e7e963d"
+    },
+    {
+      "name": "fx-hiss",
+      "url": "/audio/nature/fx-hiss.mp3",
+      "source": "cat-hiss.mp3",
+      "processing": {
+        "recordings": [
+          "assets/nature-audio/foley-source/cat-hiss.mp3",
+          "highpass=f=280,highshelf=f=3000:g=-3,lowpass=f=7200"
+        ],
+        "treatment": "DC removal; high/low-pass EQ; 8ms onset/60ms release maximum; fixed gain; silent padding to 500ms for loudness measurement"
+      },
+      "loop": false,
+      "rate": 44100,
+      "channels": 1,
+      "seconds": 1.514,
+      "rmsDB": -31.14,
+      "peak": 0.21184,
+      "bands": {
+        "0-80": 0.0,
+        "80-500": 0.21116,
+        "500-2500": 0.50781,
+        "2500-7000": 0.23244,
+        "7000-22050": 0.0486
+      },
+      "correlation": 1,
+      "rms": 0.027733398601412773,
+      "lufs": -27.99,
+      "truePeakDB": -13.46,
+      "masterGainDB": 4.44,
+      "bytes": 17956,
+      "sha256": "ee84e2064f91b4742f74fe3e25048ad2a5ba0a56556c7dd43b3d724fd3a7ffc3"
+    },
+    {
+      "name": "fx-recall",
+      "url": "/audio/nature/fx-recall.mp3",
+      "source": "LDFlute_susNV_C3_v1_1.wav",
+      "processing": {
+        "recordings": [
+          "LDFlute_susNV_C3_v1_1.wav",
+          "unshifted recorded C4; short breath"
+        ],
+        "treatment": "DC removal; high/low-pass EQ; 8ms onset/60ms release maximum; fixed gain; silent padding to 500ms for loudness measurement"
+      },
+      "loop": false,
+      "rate": 44100,
+      "channels": 1,
+      "seconds": 1.1,
+      "rmsDB": -29.02,
+      "peak": 0.08982,
+      "bands": {
+        "0-80": 0.0,
+        "80-500": 0.94321,
+        "500-2500": 0.05649,
+        "2500-7000": 0.0003,
+        "7000-22050": 0.0
+      },
+      "correlation": 1,
+      "rms": 0.035394132137298584,
+      "lufs": -28.98,
+      "truePeakDB": -20.93,
+      "masterGainDB": -4.48,
+      "bytes": 9541,
+      "sha256": "61d4dea0ead13b72d8a4d5a7108cb6ee8557728585ece672545f885a6ea4b71f"
+    },
+    {
+      "name": "fx-confirm",
+      "url": "/audio/nature/fx-confirm.mp3",
+      "source": "KSHarp_D4_mf.wav",
+      "processing": {
+        "recordings": [
+          "KSHarp_D4_mf.wav",
+          "unshifted D4; short release"
+        ],
+        "treatment": "DC removal; high/low-pass EQ; 8ms onset/60ms release maximum; fixed gain; silent padding to 500ms for loudness measurement"
+      },
+      "loop": false,
+      "rate": 44100,
+      "channels": 1,
+      "seconds": 1.141,
+      "rmsDB": -30.36,
+      "peak": 0.16066,
+      "bands": {
+        "0-80": 0.0,
+        "80-500": 0.83465,
+        "500-2500": 0.16512,
+        "2500-7000": 0.00023,
+        "7000-22050": 0.0
+      },
+      "correlation": 1,
+      "rms": 0.030334243550896645,
+      "lufs": -31.98,
+      "truePeakDB": -15.88,
+      "masterGainDB": 0.63,
+      "bytes": 9542,
+      "sha256": "1f0a746f622ec942afcef4674d27ffb60f391f431631143b343a7d85af9f751c"
+    },
+    {
+      "name": "fx-discovery",
+      "url": "/audio/nature/fx-discovery.mp3",
+      "source": [
+        "KSHarp_D4_mf.wav",
+        "KSHarp_A4_mf.wav"
+      ],
+      "processing": {
+        "recordings": [
+          "KSHarp_D4_mf.wav",
+          "KSHarp_A4_mf.wav"
+        ],
+        "treatment": "DC removal; high/low-pass EQ; 8ms onset/60ms release maximum; fixed gain; silent padding to 500ms for loudness measurement"
+      },
+      "loop": false,
+      "rate": 44100,
+      "channels": 1,
+      "seconds": 2.7,
+      "rmsDB": -31.64,
+      "peak": 0.20007,
+      "bands": {
+        "0-80": 0.0,
+        "80-500": 0.8498,
+        "500-2500": 0.14992,
+        "2500-7000": 0.00027,
+        "7000-22050": 0.0
+      },
+      "correlation": 1,
+      "rms": 0.026174873113632202,
+      "lufs": -31.01,
+      "truePeakDB": -13.98,
+      "masterGainDB": 2.53,
+      "bytes": 20609,
+      "sha256": "1726de38869bed225f9e6f0a887dbdffb58df44b4e87bb9cd71af726b705adfd"
+    }
+  ],
+  "totalBytes": 6550373,
+  "decodedBytesAt48000Hz": 128284224
+}

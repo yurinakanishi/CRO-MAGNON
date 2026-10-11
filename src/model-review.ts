@@ -3,7 +3,7 @@ import { CHARACTER_MODELS } from '../shared/characters.mjs';
 import * as THREE from 'three';
 import { clone } from 'three/addons/utils/SkeletonUtils.js';
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
-import { handGripPlacement } from './character-assets.js';
+import { axeGripPlacement, handGripPlacement } from './character-assets.js';
 import { disposeModels, loadVerifiedGLB, parseEmbeddedGLB } from './embedded-glb.js';
 import { downloadVerifiedAsset } from './asset-download.js';
 import { sha256 } from './asset-hash.js';
@@ -267,7 +267,15 @@ function populateActors() {
     let gear = null;
     if (equipment) {
       gear = equipment.gltf.scene.clone(true);
-      gear.quaternion.copy(rotation);
+      gear.quaternion.copy(
+        ui.equipment.value === 'stone-axe'
+          ? axeGripPlacement(
+              root,
+              grip,
+              model.animations.find((clip) => clip.name === 'Idle_Loop'),
+            )
+          : rotation,
+      );
       grip.add(gear);
       gear.traverse((object) => {
         if (isMesh(object)) {
@@ -477,7 +485,7 @@ renderer.setAnimationLoop((now) => {
           actor.action?.time ?? 0,
           actor.gripUp,
         );
-      else
+      else if (ui.equipment.value !== 'stone-axe')
         orientSpear(
           actor.gear,
           actor.root,

@@ -40,3 +40,8 @@ assets/camp-mountain/work/
 assets/female-face-repair/*/work/**/*.glb
 assets/female-face-repair/*/work/**/*.ply
 assets/female-face-repair/*/work/**/*.png
+
+# Audio remake originals and lossless masters are re-fetchable/reproducible;
+# sources.json records every URL, licence and SHA-256.
+assets/nature-audio/remake-20261011/source/
+assets/nature-audio/remake-20261011/masters/

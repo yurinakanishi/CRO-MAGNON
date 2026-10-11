@@ -1,148 +1,119 @@
-CRO-MAGNON audio revision 3 — recorded ambience, sampled original music, recorded foley
+CRO-MAGNON audio revision 4 (2026-10-11): CC0 field recordings, CC0 foley, original music from CC0 VSCO 2 CE samples
 
-wind-field.wav
-Thimras
-https://opengameart.org/content/park-ambiences
+Wind through the grass — strangy
+https://freesound.org/people/strangy/sounds/176249/
 CC0-1.0 https://creativecommons.org/publicdomain/zero/1.0/
 
-river-field.wav
-Thimras
-https://opengameart.org/content/park-ambiences
+Murmuring Stream — borralbi
+https://freesound.org/people/borralbi/sounds/337614/
 CC0-1.0 https://creativecommons.org/publicdomain/zero/1.0/
 
-rain-field.ogg
-Ove Melaa
-https://opengameart.org/content/rain-ambient-not-loopable-2-versions-available
+Ambiance_Stream_Moderate_Skaftafell_Loop_Stereo_01 — Nox_Sound
+https://freesound.org/people/Nox_Sound/sounds/690215/
 CC0-1.0 https://creativecommons.org/publicdomain/zero/1.0/
 
-drips.flac
-Independent.nu / qubodup
-https://opengameart.org/content/dripping-water-loop
+Ambiance_Waterfall_Small_Close_Loop_Stereo — Nox_Sound
+https://freesound.org/people/Nox_Sound/sounds/698306/
 CC0-1.0 https://creativecommons.org/publicdomain/zero/1.0/
 
-LDFlute_susNV_C3_v1_1.wav
-Versilian Studios / Sam Gossner & Simon Dalzell; cutting: Elan Hickler
-https://versilian-studios.com/vsco-community/
+Ambiance_Ocean_Praia_dos_Moinhos_Loop_Stereo_02 — Nox_Sound
+https://freesound.org/people/Nox_Sound/sounds/829627/
 CC0-1.0 https://creativecommons.org/publicdomain/zero/1.0/
 
-LDFlute_susNV_E3_v1_1.wav
-Versilian Studios / Sam Gossner & Simon Dalzell; cutting: Elan Hickler
-https://versilian-studios.com/vsco-community/
+Light rain in a field of bananas trees — felix.blume
+https://freesound.org/people/felix.blume/sounds/512334/
 CC0-1.0 https://creativecommons.org/publicdomain/zero/1.0/
 
-LDFlute_susNV_A3_v1_1.wav
-Versilian Studios / Sam Gossner & Simon Dalzell; cutting: Elan Hickler
-https://versilian-studios.com/vsco-community/
+fire small campfire crackling short +air tone — kyles
+https://freesound.org/people/kyles/sounds/637523/
 CC0-1.0 https://creativecommons.org/publicdomain/zero/1.0/
 
-LDFlute_susNV_C4_v1_1.wav
-Versilian Studios / Sam Gossner & Simon Dalzell; cutting: Elan Hickler
-https://versilian-studios.com/vsco-community/
+campfire.wav — Spandau
+https://freesound.org/people/Spandau/sounds/40699/
 CC0-1.0 https://creativecommons.org/publicdomain/zero/1.0/
 
-LDFlute_susNV_E4_v1_1.wav
-Versilian Studios / Sam Gossner & Simon Dalzell; cutting: Elan Hickler
-https://versilian-studios.com/vsco-community/
+Birds singing in the countryside, Oklahoma, USA — felix.blume
+https://freesound.org/people/felix.blume/sounds/202900/
 CC0-1.0 https://creativecommons.org/publicdomain/zero/1.0/
 
-KSHarp_D2_mf.wav
-Versilian Studios / Sam Gossner & Simon Dalzell; cutting: Elan Hickler
-https://versilian-studios.com/vsco-community/
+Blackbird 252.wav — nigelcoop
+https://freesound.org/people/nigelcoop/sounds/116791/
 CC0-1.0 https://creativecommons.org/publicdomain/zero/1.0/
 
-KSHarp_A2_mf.wav
-Versilian Studios / Sam Gossner & Simon Dalzell; cutting: Elan Hickler
-https://versilian-studios.com/vsco-community/
+Dripping water — Electroviolence
+https://freesound.org/people/Electroviolence/sounds/234554/
 CC0-1.0 https://creativecommons.org/publicdomain/zero/1.0/
 
-KSHarp_C3_mf.wav
-Versilian Studios / Sam Gossner & Simon Dalzell; cutting: Elan Hickler
-https://versilian-studios.com/vsco-community/
+IR_Cathedral_5m_Stereo — Nox_Sound
+https://freesound.org/people/Nox_Sound/sounds/648945/
 CC0-1.0 https://creativecommons.org/publicdomain/zero/1.0/
 
-KSHarp_E3_mf.wav
-Versilian Studios / Sam Gossner & Simon Dalzell; cutting: Elan Hickler
-https://versilian-studios.com/vsco-community/
+IR_Church_Small_5m_Stereo — Nox_Sound
+https://freesound.org/people/Nox_Sound/sounds/585739/
 CC0-1.0 https://creativecommons.org/publicdomain/zero/1.0/
 
-KSHarp_G3_mf.wav
-Versilian Studios / Sam Gossner & Simon Dalzell; cutting: Elan Hickler
-https://versilian-studios.com/vsco-community/
+Footsteps_Mountain_Boots_Grass_Mono — Nox_Sound
+https://freesound.org/people/Nox_Sound/sounds/556042/
 CC0-1.0 https://creativecommons.org/publicdomain/zero/1.0/
 
-KSHarp_B3_mf.wav
-Versilian Studios / Sam Gossner & Simon Dalzell; cutting: Elan Hickler
-https://versilian-studios.com/vsco-community/
+Footsteps_Mountain_Boots_Wet_Sand_Sequence_Mono — Nox_Sound
+https://freesound.org/people/Nox_Sound/sounds/564893/
 CC0-1.0 https://creativecommons.org/publicdomain/zero/1.0/
 
-KSHarp_D4_mf.wav
-Versilian Studios / Sam Gossner & Simon Dalzell; cutting: Elan Hickler
-https://versilian-studios.com/vsco-community/
+Footsteps_Mountain_Boots_Rock_Walk_Sequence_Mono — Nox_Sound
+https://freesound.org/people/Nox_Sound/sounds/558472/
 CC0-1.0 https://creativecommons.org/publicdomain/zero/1.0/
 
-KSHarp_F4_mf.wav
-Versilian Studios / Sam Gossner & Simon Dalzell; cutting: Elan Hickler
-https://versilian-studios.com/vsco-community/
+Footsteps_Mountain_Boots_Snow_Walk_Mono — Nox_Sound
+https://freesound.org/people/Nox_Sound/sounds/613849/
 CC0-1.0 https://creativecommons.org/publicdomain/zero/1.0/
 
-KSHarp_A4_mf.wav
-Versilian Studios / Sam Gossner & Simon Dalzell; cutting: Elan Hickler
-https://versilian-studios.com/vsco-community/
+Splashing Footsteps Shallow Water — ChristopherJngs
+https://freesound.org/people/ChristopherJngs/sounds/861369/
 CC0-1.0 https://creativecommons.org/publicdomain/zero/1.0/
 
-LICENSE
-Versilian Studios / Sam Gossner & Simon Dalzell; cutting: Elan Hickler
-https://versilian-studios.com/vsco-community/
+Short Whoosh, 13x — Kinoton
+https://freesound.org/people/Kinoton/sounds/427979/
 CC0-1.0 https://creativecommons.org/publicdomain/zero/1.0/
 
-birds.ogg
-isaiah658
-https://opengameart.org/content/ambient-bird-sounds
+Power Kick, Body Impact, 7x — Kinoton
+https://freesound.org/people/Kinoton/sounds/586841/
 CC0-1.0 https://creativecommons.org/publicdomain/zero/1.0/
 
-fire.wav
-PagDev
-https://opengameart.org/content/fireplace-sound-loop
+Cloth - heavy - shake - run - trouser — ValentinPetiteau
+https://freesound.org/people/ValentinPetiteau/sounds/624478/
 CC0-1.0 https://creativecommons.org/publicdomain/zero/1.0/
 
-river.mp3
-RandomMind
-https://opengameart.org/content/sea-and-river-wave-sounds
+Cloth Rustle 1 — zazz.sound.design
+https://freesound.org/people/zazz.sound.design/sounds/435291/
 CC0-1.0 https://creativecommons.org/publicdomain/zero/1.0/
 
-impact.zip
-Kenney
-https://kenney.nl/assets/impact-sounds
+fabric rubbing / pulling — dynamique
+https://freesound.org/people/dynamique/sounds/554561/
 CC0-1.0 https://creativecommons.org/publicdomain/zero/1.0/
 
-cloth.zip
-HaelDB
-https://opengameart.org/content/footsteps-leather-cloth-armor
+rock_collisions.wav — Plaban2001
+https://freesound.org/people/Plaban2001/sounds/579409/
 CC0-1.0 https://creativecommons.org/publicdomain/zero/1.0/
 
-snow.7z
-Corsica_S / Iwan Gabovitch
-https://opengameart.org/content/42-snow-and-gravel-footsteps
+Foley_Object_Basket_WithWood_Stick_PickUp_Into_Sequence_Stereo — Nox_Sound
+https://freesound.org/people/Nox_Sound/sounds/846927/
 CC0-1.0 https://creativecommons.org/publicdomain/zero/1.0/
 
-water.zip
-rubberduck
-https://opengameart.org/content/40-cc0-water-splash-slime-sfx
+Foley_Movement_High_Grass_Mono — Nox_Sound
+https://freesound.org/people/Nox_Sound/sounds/559082/
 CC0-1.0 https://creativecommons.org/publicdomain/zero/1.0/
 
-swish.7z
-qubodup
-https://opengameart.org/content/swish-bamboo-stick-weapon-swhoshes
+Foley_Object_Match_Ignition_Sequence_Stereo — Nox_Sound
+https://freesound.org/people/Nox_Sound/sounds/846930/
 CC0-1.0 https://creativecommons.org/publicdomain/zero/1.0/
 
-cat-hiss.mp3
-Zabuhailo
+catHisses1 — Zabuhailo
 https://freesound.org/people/Zabuhailo/sounds/146963/
 CC0-1.0 https://creativecommons.org/publicdomain/zero/1.0/
 
-fantozzi.7z
-Fantozzi / edits by qubodup
-https://opengameart.org/content/fantozzis-footsteps-grasssand-stone
+Versilian Studios Chamber Orchestra 2 Community Edition — Versilian Studios / Sam Gossner & Simon Dalzell; cutting: Elan Hickler
+https://versilian-studios.com/vsco-community/
 CC0-1.0 https://creativecommons.org/publicdomain/zero/1.0/
 
-Recordings edited/EQ/level adjusted. Original compositions and every sample/processing interval/SHA are in manifest.json. Cat uses the public HQ MP3 of the CC0 recording.
+Edited, filtered and loudness-mastered for the game. Every interval, filter, score note and SHA-256 is in manifest.json.
