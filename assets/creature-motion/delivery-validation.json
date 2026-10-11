@@ -1,14 +1,14 @@
 {
   "status": "passed",
-  "at": "2026-10-07T05:43:02.563Z",
+  "at": "2026-10-11T03:18:41.084Z",
   "originalGLBsPreserved": 55,
   "originalGLBsSupersededByLaterAdoptions": 4,
   "results": [
     {
       "key": "cro-magnon-woman",
       "remake": {
-        "url": "/models/cro-magnon-woman/model-c2.glb",
-        "sha256": "70906c8c538c4b15d20d615ea0c20f44234b5130c24cab8fcea49d34e83d9561"
+        "url": "/models/cro-magnon-woman/model-face-lp-r08.glb",
+        "sha256": "c495179a518d8d557ef9d0ef8795b85a58403da9debef4212039e944a064314a"
       },
       "sha256": "55c0728b99376581695712f4010bcf948b3d4cc23ca64922dd000234f22c9b5a",
       "clips": 10,
@@ -18,8 +18,8 @@
     {
       "key": "cro-magnon-hunter",
       "remake": {
-        "url": "/models/cro-magnon-hunter/model-c2.glb",
-        "sha256": "507db5d9e0e08cdb3c509da0e3f2574b0d8166838e278d7d58ead8d7ada421b1"
+        "url": "/models/cro-magnon-hunter/startup.opt-d9197fbdf6e1ae99.glb",
+        "sha256": "d9197fbdf6e1ae9968c5b88422761a5420b14db1f085c611906abb8f9a6e9b9f"
       },
       "sha256": "b2d51d01d095bb5e995e6a6f7a9e9b084f2796e47f675370900dea7ac20d2720",
       "clips": 10,
@@ -29,8 +29,8 @@
     {
       "key": "neanderthal-woman",
       "remake": {
-        "url": "/models/neanderthal-woman/model-c2.glb",
-        "sha256": "e7dab0a525aa566c96521ea135b0e884b0e751d8c815eeddd77d22efcffb73a8"
+        "url": "/models/neanderthal-woman/model-face-lp-r08.glb",
+        "sha256": "343c7ae31d2c39ba13cb69a69e6fc5d6b2095055872a43bd085db9bf28b0e52a"
       },
       "sha256": "21da70ddc2c5cfc7a2199dad4782b7d4822c3451d33d0d2275b405a2f3a78311",
       "clips": 10,
@@ -40,8 +40,8 @@
     {
       "key": "neanderthal-hunter",
       "remake": {
-        "url": "/models/neanderthal-hunter/model-c2.glb",
-        "sha256": "23b91d45cca119ecc9bb2696b47cc255dd5e8bc480243a301acb08184ae18ec7"
+        "url": "/models/neanderthal-hunter/model-face-lp-r08.glb",
+        "sha256": "c5c93e0298d70f684fd274aef29bf655a89733d1d0b23bb0341ceb534d4c6ed6"
       },
       "sha256": "93047f04342a5880dc4574956846f130b3d97c5041408c07f790d2ae09f55000",
       "clips": 10,
@@ -51,8 +51,8 @@
     {
       "key": "cat-kunoichi",
       "remake": {
-        "url": "/models/cat-kunoichi/model-c2.glb",
-        "sha256": "0f2fecf9409bfea07ea0eadb25d3038ebe0cd8f9ca64e37214c4a4a42b4eb90e"
+        "url": "/models/cat-kunoichi/startup.opt-ca2213d32f027f41.glb",
+        "sha256": "ca2213d32f027f41011d32ee2d35401f9ceeea0e2ad58cb8558e2cf1b599006a"
       },
       "sha256": "c81c37512be0502decf46495868a0c8521470098117b422b167ffce8da59cd9b",
       "clips": 10,
@@ -62,8 +62,8 @@
     {
       "key": "desert-fennec-mage",
       "remake": {
-        "url": "/models/desert-fennec-mage/model-c2.glb",
-        "sha256": "82ec1d4303e25bb37bef594c118861b9d7216d1b3b996091a93b89f62c0cc3b5"
+        "url": "/models/desert-fennec-mage/startup.opt-3a6ce65bf5d2c4ab.glb",
+        "sha256": "3a6ce65bf5d2c4ab9da606555fa3183fe5491139717d46dee651be5f4ff41616"
       },
       "sha256": "1df80588345196a75382afbd437b6ec9349bc717688433801dc3fdd72c8e0841",
       "clips": 10,
@@ -73,8 +73,8 @@
     {
       "key": "crow-shaman",
       "remake": {
-        "url": "/models/crow-shaman/model-c2.glb",
-        "sha256": "4719f03aa5df820d70123e64e49ba88255182dbe34087ea7f315224cd4b8b89e"
+        "url": "/models/crow-shaman/model-c2.opt-fe59e1be880f3297.glb",
+        "sha256": "fe59e1be880f329707ef6028a83ab6bbd5ce516135b8b3b0a5e9f8e9273310c5"
       },
       "sha256": "0fdb13ce4ace078b93694a898e58aa4fc05ac64eb11d128ac83e7935a5a55e63",
       "clips": 6,
@@ -84,8 +84,8 @@
     {
       "key": "woolly-mammoth",
       "remake": {
-        "url": "/models/woolly-mammoth/model-c2.glb",
-        "sha256": "1a4b70113c94aec36e6a24f1216f9c1b9d2f6975a7a4604b861fbce783b907d5"
+        "url": "/models/woolly-mammoth/model-c2.opt-123d25330b9ae714.glb",
+        "sha256": "123d25330b9ae7149ba7ff2eddb733b326f95c888f68d19951706929466caeda"
       },
       "sha256": "dc8ddadd93b9ef078cf75e0e6c182521ad167a30d4ecae57b75daf5d01e13ba8",
       "clips": 5,

@@ -93,6 +93,6 @@ face remake（2026-10-07）で接いだ3体の頭部は、TRELLISのxatlasチャ
 
 - テスト（採用後）：全体1,445件中1,441件合格・失敗0・条件付き4件未実行。新しい形状処理（二重層の除去・巻き方向の一貫化）は `tests/lowpoly-head.test.mjs`。`npm run check`（型・strict・603 JS構文・依存境界）合格。UV展開と焼き付けはBlender内の処理なので、各実行の最後の証明（共有テクセル0）とQAシートで確かめている。
 - 確認していないもの：実Android／iPhone、実回線、発熱・電池。公開サイトへのデプロイ、展示機への配布は行っていない。
-- 既存の失敗（今回と無関係）：`scripts/verify-motion-delivery.mjs` は cro-magnon-woman の `provenance.previousDelivery`（C2の `model-c2.glb`）を2026-09の動作の元データと前方一致で比べて食い違い、差分の作成でメモリ不足になって止まる。比べる値とファイル（`status`・`provenance.previousDelivery`・`motionReview` と、その指すGLB）は今回変えていない（コードで確認。採用前の状態での実行比較はしていない）。
+- 既存の失敗（今回と無関係）：`scripts/verify-motion-delivery.mjs` は cro-magnon-woman の `provenance.previousDelivery`（C2の `model-c2.glb`）を2026-09の動作の元データと前方一致で比べて食い違い、差分の作成でメモリ不足になって止まる。比べる値とファイル（`status`・`provenance.previousDelivery`・`motionReview` と、その指すGLB）は今回変えていない（コードで確認。採用前の状態での実行比較はしていない）。→ 同日修正：顔を作り直した人物は `previousDeliveries` に残る候補1の配信を比べ、目録は実行時採用の元（`runtimeOptimization.original`）と比べるようにした。動作の配信8件・71クリップ・以前のGLB 55件を照合（`assets/creature-motion/delivery-validation.json`）。
 - 分析に使った道具（解像度・使用率・重なり・巻き方向・継ぎ目の法線・比較撮影）は `output/head-lowpoly/tools/`、各候補の中間ファイル・ログ・QAは `output/head-lowpoly/<key>/<revision>/`、失敗版を含む全候補（r01〜r09と試験用のt-*）も同じフォルダーに残している。
 - 既存の3000／8787／4173の停止・再起動、ユーザー保存の編集、公開、commit／pushは行っていない。

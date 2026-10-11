@@ -15,10 +15,19 @@ for (const key of MOTION_KEYS) {
   // previousProvenance); the remake itself is covered by verify-world-assets.mjs, its adoption review,
   // scripts/remake/check_clip_parity.mjs and the tests. Catalog/world consistency is checked on the current record.
   const remade = current.status?.startsWith('remake-');
+  // That earlier delivery is the last candidate-1 file. A candidate-2 remake records it as its
+  // previousDelivery; the 2026-10-07 face remake on top of candidate 2 records the candidate-2
+  // file there instead and keeps the candidate-1 delivery in previousDeliveries.
+  const history = remade
+    ? [current.provenance.previousDelivery, ...(current.provenance.previousDeliveries ?? [])].find(
+        (delivery) => delivery?.candidate === 1,
+      )
+    : null;
+  if (remade) assert.ok(history, `${key}: no candidate-1 delivery recorded`);
   const asset = remade
     ? {
         ...current,
-        ...current.provenance.previousDelivery,
+        ...history,
         provenance: current.provenance.previousProvenance,
         clips: null,
       }
@@ -118,8 +127,11 @@ for (const key of MOTION_KEYS) {
   assert.equal(review.sha256, asset.sha256);
   const spec = catalog.assets.find((a) => a.key === key);
   if (spec) {
-    assert.equal(spec.sha256, current.sha256);
-    assert.equal(spec.delivery, current.url);
+    // The catalog names the production model: under a runtime adoption the original it
+    // optimized (runtimeOptimization.original), otherwise the served record itself.
+    const production = current.runtimeOptimization?.original ?? current;
+    assert.equal(spec.sha256, production.sha256);
+    assert.equal(spec.delivery, production.url);
   }
   const record = world.assets.find((a) => a.modelKey === key);
   if (record) assert.deepEqual(record, current);
