@@ -51,4 +51,5 @@ CPU4倍制限ではこれが約2.3秒になり、ページ表示から人物選�
 - 見た目・動作の変化はない：海岸・地表・景観は元と同じ値で、元の計算と照合している。
 - 公開MMOのWorker（wrangler の空実行で測った送信量）：8,491KiB／gzip 1,077KiB → **5,251KiB／gzip 694KiB**。Workers Free の上限（gzip 3MB）に余裕が増えた。元のデータモジュールは `shared` ごと写される作業用フォルダーには残るが、`main` からたどれないので送られない。
 - 作り直した持ち運び版（`output/bake-local-a01`）と公開MMO版（`output/bake-mmo-a01`、隔離Miniflare）で、開始→洞窟→通常世界→実タッチの移動・停止を確認（`output/playwright/delivery-r01/bake-packages-r01/`）。
+  このパッケージ2件（ビルドID `efecde1abae9a2d8ae7557cd0e5b862c8ab07233804bfc7ad990148de322b28c`・`ade02b3339b7c257b03bd13677438acc42930cce851274c230bdcf2fd9226140`）は、ユーザー指定により2026-10-11に削除した（Windowsのごみ箱へ移動）。ビルドの記録とwranglerの空実行のログは `output/package-records-20261011/` に保存した。
 - 元のデータモジュール（`paleo-coast-data`・`camp-mountain-surface-data`・`castle-surface-data`）は生成元として残し、書き出しとテストだけが読む。生成スクリプト（`scripts/build-paleo-geography.py` など）は変えていない。データを作り直したら `node scripts/bake-world-data.mjs` を実行する。

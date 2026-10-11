@@ -75,3 +75,5 @@
 - 未検証：実Android／iPhone、実回線、物理パッド、5人接続（モデル・動作は変えていない）。既存の3000／8787／4173、保存、公開、展示配布、commit／pushは変更していない。
 
 記録：`output/playwright/delivery-r01/`（`prepare-profile-r0*`・最終版 `-r09`・`-r10`、`handover-state-r0*`、`ab-*-r1*`〜`r4*`、`entry-final-net-r0*`）、計測の道具 `output/head-lowpoly/tools/`（`prepare-profile.mjs`、`arrival-frames.mjs`、`handover-state.mjs`、`audio-init-split.mjs`、`grid-bench.mjs`）。
+
+測定に使った持ち運び版・公開MMO版のパッケージ（`output/bake-local-a01`、`output/entry-local-a01`〜`a05`、`output/entry-mmo-a01`）は、ユーザー指定により2026-10-11に削除した（Windowsのごみ箱へ移動）。各ビルドID・全配信ファイルのSHA・ビルドのログは `output/package-records-20261011/` に保存した（最終版 `entry-local-a04` はビルドID `e29eb3f12162f89acf8792a8efe0de7af3c890c30d2bfd652035803de938736e`）。統合後の `AGENTS.md` により、通常の検証では `scripts/build-exhibition.mjs` で同じものを作り直さない。
