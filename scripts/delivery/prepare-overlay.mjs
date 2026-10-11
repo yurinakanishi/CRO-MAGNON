@@ -9,13 +9,14 @@ import { fileURLToPath } from 'node:url';
 import { runtimeTextureRecords } from '../environment-assets.mjs';
 import { pruneCache } from './delivery-cache.mjs';
 import { deliveryGraph } from './delivery-graph.mjs';
+import { characterModelReleased } from '../../dist/shared/character-roster.mjs';
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../..');
 const started = Date.now();
 const catalog = JSON.parse(
   await readFile(path.join(root, 'public/models/world-assets.json'), 'utf8'),
 );
-const assets = [...catalog.assets];
+const assets = catalog.assets.filter((asset) => characterModelReleased(asset.modelKey));
 for (const entry of await readdir(path.join(root, 'public/models'), { withFileTypes: true })) {
   if (!entry.isDirectory()) continue;
   let own;
@@ -27,7 +28,7 @@ for (const entry of await readdir(path.join(root, 'public/models'), { withFileTy
     if (error.code === 'ENOENT') continue;
     throw error;
   }
-  if (typeof own.url !== 'string') continue;
+  if (typeof own.url !== 'string' || !characterModelReleased(own.modelKey)) continue;
   const listed = assets.find((asset) => asset.modelKey === own.modelKey);
   // A model's own manifest naming other files than the catalog is served as it is.
   if (!listed) assets.push(own);

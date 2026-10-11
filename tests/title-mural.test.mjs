@@ -37,15 +37,20 @@ test('the title mural is the baked strip of the unmodified cave friezes', async 
 test('contributors link only to verified x.com profiles', () => {
   const people = titleContributors();
   assert.equal(people[0].name, 'yuri');
-  assert.equal(people.length, TITLE_CREDITS.length + 2);
+  assert.equal(people.length, TITLE_CREDITS.length + 3);
   assert.deepEqual(
     people.filter((p) => p.role === '監修').map((p) => p.key),
     ['ryuichi', 'nukonuko', 'otani', 'urata'],
   );
   assert.deepEqual(
     people.filter((p) => p.role === '友情出演').map((p) => p.key),
-    ['r524', 'rimo'],
+    ['r524', 'rimo', 'dots'],
   );
+  // OpenAI's dots, which the camp's dots follow, have no X profile: a card without a link.
+  const dots = people.find((p) => p.key === 'dots');
+  assert.equal(dots.name, 'OpenAI Dots');
+  assert.equal(dots.profile, '');
+  assert.equal(dots.mural, undefined);
   for (const person of people) {
     assert.ok(person.profile === '' || contributorHandle(person.profile), person.name);
     assert.match(person.avatar, /^\/title\/avatar-[a-z0-9]+\.jpg$/);
@@ -82,6 +87,55 @@ test('the dialog lists every contributor without QR codes and exhibition cards h
   assert.equal((exhibition.match(/class="contributor-avatar"/g) ?? []).length, people.length);
   assert.doesNotMatch(exhibition, /qr-/);
   assert.doesNotMatch(exhibition, /<a\b/);
+  assert.match(
+    dialog,
+    /<div class="contributor"><img class="contributor-avatar" src="\/title\/avatar-dots\.jpg"[^>]*><span class="contributor-text"><strong>OpenAI Dots<\/strong><\/span><\/div>/,
+  );
+});
+
+test('the loading cave opens the same credits without offering a visit to the cave it is in', () => {
+  const people = titleContributors();
+  const cave = contributorsDialogMarkup(undefined, { visit: false });
+  assert.match(cave, /<h2>関わってくれた人たち<\/h2>/);
+  assert.equal((cave.match(/class="contributor-avatar"/g) ?? []).length, people.length);
+  assert.equal(
+    (cave.match(/<a class="contributor"/g) ?? []).length,
+    people.filter((p) => p.profile).length,
+  );
+  assert.doesNotMatch(cave, /contributors-cave|アプレノ洞窟|modal-intro/);
+});
+
+test('the public build rewrites every credit table the dialog imports and ships the dots icon', async () => {
+  const build = await readFile(new URL('scripts/cloudflare-public-build.mjs', root), 'utf8');
+  const credits = await readFile(new URL('src/title-credits.ts', root), 'utf8');
+  const imported = /import \{([^}]+)\} from '\.\/title-credit-profiles\.js'/
+    .exec(credits)[1]
+    .split(',')
+    .map((name) => name.trim())
+    .filter(Boolean);
+  assert.ok(imported.includes('TITLE_DOTS'));
+  const start = build.indexOf("'/src/title-credit-profiles.js'");
+  assert.ok(start > 0);
+  const written = build.slice(start, build.indexOf('\n);', start));
+  // A table missing here would stop the public title's module from loading.
+  for (const name of imported) assert.match(written, new RegExp(`export const ${name} =`), name);
+  assert.match(build, /\[\.\.\.credits, TITLE_GUEST, TITLE_SUPPORT, TITLE_DOTS, \.\.\.friends\]/);
+});
+
+test('the OpenAI Dots icon is the recorded composition of the shipped dot portraits', async () => {
+  const record = JSON.parse(
+    await readFile(new URL('assets/title-credits/dots-avatar.json', root), 'utf8'),
+  );
+  const icon = await readFile(new URL(`public/title/avatar-dots.jpg`, root));
+  assert.equal(record.output.file, 'public/title/avatar-dots.jpg');
+  assert.equal(createHash('sha256').update(icon).digest('hex'), record.output.sha256);
+  assert.equal(icon.length, record.output.bytes);
+  assert.ok(record.sources.length >= 3);
+  for (const source of record.sources) {
+    assert.match(source.file, /^public\/models\/orb-bot-[a-z]+\/portrait\.png$/);
+    const bytes = await readFile(new URL(source.file, root));
+    assert.equal(createHash('sha256').update(bytes).digest('hex'), source.sha256, source.file);
+  }
 });
 
 test('every title offers contributors immediately without home credit cards or a loading gate', async () => {

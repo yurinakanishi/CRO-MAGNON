@@ -118,7 +118,8 @@ export function staticObstacles(): Obstacle[] {
       s: 0,
       height: 1.1,
     });
-  result.push({ id: 'orl', type: 'circle', x: NPC.x, z: NPC.z, radius: 0.36, height: 1.72 });
+  if (NPC)
+    result.push({ id: 'orl', type: 'circle', x: NPC.x, z: NPC.z, radius: 0.36, height: 1.72 });
   return result;
 }
 export function overlap(point, radius, obstacle) {

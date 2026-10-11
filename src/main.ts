@@ -43,6 +43,15 @@ import {
 } from './character-selection.js';
 import { WorldRenderer } from './world3d.js';
 import { LoadingCave } from './loading-cave.js';
+import {
+  LOADING_TEXT,
+  LoadingCover,
+  TipDeck,
+  loadingScreenView,
+  type LoadingPlace,
+} from './loading-screen.js';
+import { LOADING_TIPS } from './loading-tips.js';
+import { warpDestination } from '../shared/warp-sites.mjs';
 
 import { WORLD, CAMP, NPC, INITIAL_RESOURCES } from '../shared/world.mjs';
 import { EXHIBITION_PLAYER_LIMIT } from '../shared/room-rules.mjs';
@@ -92,7 +101,11 @@ import {
   movementKey,
   acceptsGameShortcut,
 } from './combat-input.js';
-import { GATHER_RANGE, interactionVisible } from '../shared/interactions.mjs';
+import {
+  CAMP_CONTRIBUTION_RANGE,
+  GATHER_RANGE,
+  interactionVisible,
+} from '../shared/interactions.mjs';
 import { campContribution } from '../shared/camp-contribution.mjs';
 import { caveFireInteraction } from '../shared/cave-fire.mjs';
 import { caveTorchAvailable, caveTorchLit } from '../shared/cave-light.mjs';
@@ -178,7 +191,7 @@ let state: ViewState = {
   players: [],
   resources: INITIAL_RESOURCES,
   camp: { ...CAMP },
-  npc: { ...NPC },
+  npc: NPC,
   day: 1,
 };
 let selfId = null,
@@ -256,6 +269,12 @@ if (titleHandoff) {
 } else $('#app').innerHTML = `${viewportMarkup}\n  ${modalMarkup()}`;
 
 const areaBanner = new AreaBanner($('#area-banner'));
+// Covers the loading cave's own load, warps and the entries that do not pass through
+// the cave.
+const loadingScreen = new LoadingCover(
+  loadingScreenView($('.game-viewport')),
+  new TipDeck(LOADING_TIPS),
+);
 const orbBotUI = new OrbBotUI({
   bots: () => state.orbBots ?? [],
   player,
@@ -370,6 +389,7 @@ function showRenderError(text) {
   graphicsLost = false;
   $('#context-recovery')?.remove();
   if (loadingCave) closeLoadingCave();
+  loadingScreen.cancel();
   renderer?.audio.setActive(false);
   stopInput();
   if ($('#render-error')) return;
@@ -401,14 +421,69 @@ let spawnChoice = spawnSite(readSaved('cro-spawn', 'camp')).id;
 let contributorsCavePending = false;
 let contributorsCaveArriving = false;
 // Play is offered only once the local character is drawn in a ready world
-// (latched per join; a character switch later does not withdraw it).
+// (latched per join; a character switch later does not withdraw it). The loading
+// screen holds play until it starts to fade.
 let arrived = false;
 function playReady() {
-  if (!arrived && joined && !loadingCave && renderer.selfRenderReady?.()) {
+  if (!arrived && joined && !loadingCave && !loadingScreen.active && renderer.selfRenderReady?.()) {
     arrived = true;
     controlsOffered();
   }
-  return arrived && !graphicsLost;
+  return arrived && !graphicsLost && !loadingScreen.active;
+}
+/** The warp this player asked for, until its arrival is seen. Only an own warp is
+ * covered; a refused one is forgotten after WARP_REQUEST_MS. */
+let warpRequest: { target: string; at: number } | null = null;
+const WARP_REQUEST_MS = 15000;
+function warpPlace(target: string): LoadingPlace {
+  const destination = warpDestination(target);
+  // The six pictured sights have a photo; the map's fires do not.
+  const sight = destination && 'look' in destination ? destination : null;
+  return {
+    eyebrow: 'ワープ',
+    name: destination?.name ?? '',
+    ...(sight ? { image: `/spawn/${sight.id}.jpg` } : {}),
+  };
+}
+/** Resolves after the next frame has been painted. */
+function nextPaint() {
+  return new Promise<void>((resolve) => requestAnimationFrame(() => setTimeout(resolve, 0)));
+}
+/** Cover the world with the loading screen until the local player stands in it with
+ * the landmarks around them drawn (WorldRenderer.surroundingsReady). A later cover,
+ * such as the warp right after a contributors-cave entry, takes over the same screen. */
+async function coverArrival(place: LoadingPlace) {
+  const request = loadingScreen.show(place);
+  const current = () => loadingScreen.current(request) && !manualLeave;
+  let shown = '';
+  const progress = () => {
+    if (!current()) return;
+    const { phase, loaded, total } = renderer.loadProgress;
+    // The world's first download, reported as the loading cave reports it.
+    let fraction: number | null = null,
+      text = LOADING_TEXT;
+    if (phase === 'build') [fraction, text] = [0.96, '世界を組み立てています'];
+    else if (phase === 'download') {
+      fraction = total ? (0.92 * loaded) / total : 0;
+      text = `世界を読み込んでいます ${Math.floor(fraction * 100)}%`;
+    }
+    if (text !== shown) loadingScreen.status(text, fraction);
+    shown = text;
+    requestAnimationFrame(progress);
+  };
+  progress();
+  try {
+    // Painted before the arrival's work starts: a warp admits the floor around it in
+    // one go, which would otherwise hold the first paint until it is nearly done.
+    await nextPaint();
+    await renderer.surroundingsReady(current);
+  } catch {
+    // A newer cover, the title, setup or a failure took over. A cover nobody else
+    // removes (the player left without either) does not stay over the world.
+    if (loadingScreen.current(request)) loadingScreen.cancel();
+    return;
+  }
+  loadingScreen.release(request);
 }
 /** Startup timing only: the visitor's first movement and gather after controls,
  * each as the command sent and as the authoritative state showing its effect
@@ -738,7 +813,7 @@ async function connect(automatic = false) {
       players: [],
       resources: INITIAL_RESOURCES,
       camp: { ...CAMP },
-      npc: { ...NPC },
+      npc: NPC,
       day: 1,
     };
     renderer.setState(state, selfId);
@@ -867,11 +942,26 @@ async function connect(automatic = false) {
         stopInput();
         if ($('#character-switch-form')) $('#modal').close();
       }
+      // Like a fast travel, the player's own warp is hidden behind the loading screen
+      // until the destination is drawn.
+      let coveredWarp: string | null = null;
       if (warped) {
         stopInput();
         if ($('#big-map') || $('#exhibition-warp')) $('#modal').close();
+        const request = warpRequest;
+        warpRequest = null;
+        if (
+          request &&
+          performance.now() - request.at < WARP_REQUEST_MS &&
+          !loadingCave &&
+          !renderUnavailable
+        )
+          coveredWarp = request.target;
       }
       renderer.setState(state, selfId);
+      // In this same task, so no frame draws the destination first, and after setState,
+      // so the cover waits for the floor around the new position.
+      if (coveredWarp !== null) void coverArrival(warpPlace(coveredWarp));
       if (warped && contributorsCaveArriving) {
         contributorsCaveArriving = false;
         renderer.focusPlayer(player().facing + Math.PI);
@@ -1002,9 +1092,9 @@ function nearby(): { action: string; label: string; targetId?: string } | null {
       ...state.camp,
       action: 'contribute',
       label: '焚き火に資材を届ける',
-      range: GATHER_RANGE,
+      range: CAMP_CONTRIBUTION_RANGE,
     });
-  if (!fixedIdentity)
+  if (!fixedIdentity && state.npc)
     objects.push({ ...state.npc, action: 'trade', label: 'オルと物々交換する', range: 10 });
   const available = objects
     .filter(
@@ -1048,7 +1138,8 @@ function updateHUD() {
   const region = regionAt(me?.x ?? 50, me?.z ?? 50);
   const areaName = region?.name ?? locationName(me?.x ?? 50, me?.z ?? 50);
   setText($('#map-area'), areaName);
-  if (me && joined && !screens.active)
+  // A place reached behind the loading screen is announced once it lifts.
+  if (me && joined && !screens.active && !loadingScreen.active)
     areaBanner.update(
       inGulf(me.x, me.z) ? '三つの岸の湾' : (region?.kind ?? biome.short),
       areaName,
@@ -1148,6 +1239,7 @@ function action(type, targetId?, cropId?) {
     return;
   if (player()?.mountId && !['ride', 'recallBots', 'selectMascot', 'deselectMascot'].includes(type))
     return;
+  if (type === 'trade' && !state.npc) return;
   if (
     type === 'gulfOpen' ||
     (inGulf(player()?.x, player()?.z) && ['contribute', 'trade'].includes(type))
@@ -1155,6 +1247,7 @@ function action(type, targetId?, cropId?) {
     gulfUI.open(targetId);
     return;
   }
+  if (type === 'warp') warpRequest = { target: targetId ?? '', at: performance.now() };
   send({
     type: 'action',
     action: type,
@@ -1899,6 +1992,7 @@ function applyProfileForm(form: HTMLFormElement) {
 }
 function showTitle() {
   renderer.releaseArrivalLoads?.();
+  loadingScreen.cancel();
   contributorsCavePending = false;
   contributorsCaveArriving = false;
   chatUI?.setOpen(false);
@@ -1908,6 +2002,7 @@ function showTitle() {
 }
 function showSetup(error = '') {
   renderer.releaseArrivalLoads?.();
+  loadingScreen.cancel();
   contributorsCavePending = false;
   contributorsCaveArriving = false;
   // A join refused while the gallery waited for the arrival returns to setup.
@@ -1966,9 +2061,19 @@ function enterGame(skipGallery = false) {
         if (entering) leaveToTitle();
         else showTitle();
       },
-      { character },
+      {
+        character,
+        // The credits open over the cave; it is already the cave, so no visit is offered.
+        onContributors: () =>
+          openModal(contributorsDialogMarkup(undefined, { links: onlineTitle, visit: false })),
+        paused: () => $('#modal').open,
+      },
     );
     loadingCave = renderer.loadingCave = cave;
+    // The cave itself loads behind the loading screen and its tips; once the cave is
+    // shown, the visitor walks in it without them.
+    const caveCover = loadingScreen.show({ ...warpPlace('spawn-cave'), eyebrow: '世界への旅支度' });
+    loadingScreen.status('洞窟を準備しています');
     void (async () => {
       try {
         // The gallery shows the selected character, loading its verified template
@@ -1976,6 +2081,7 @@ function enterGame(skipGallery = false) {
         // arrival's critical set and the character's held props are ready too.
         await cave.load();
         if (loadingCave !== cave) return;
+        loadingScreen.release(caveCover);
         await Promise.all([renderer.startWorld(), renderer.prepareSelf(profile)]);
         if (loadingCave === cave) cave.markWorldReady();
       } catch (error) {
@@ -1996,6 +2102,10 @@ function beginGame() {
   void renderer.audio.start();
   showPlay();
   connect();
+  // Without the cave, the loading screen covers the world until the player stands in
+  // it. Started after connect() has begun the join, which the cover waits for. The QA
+  // shortcut ?autostart=1 skips it as it skips the title (its own label shows the load).
+  if (query.get('autostart') !== '1') void coverArrival({ eyebrow: '旅の準備', name: '' });
 }
 /** The game's screen. Its controls still wait for playReady(). */
 function showPlay() {
@@ -2029,7 +2139,7 @@ function leaveToTitle() {
   previous?.close();
   selfId = null;
   arrived = false;
-  state = { players: [], resources: INITIAL_RESOURCES, camp: { ...CAMP }, npc: { ...NPC }, day: 1 };
+  state = { players: [], resources: INITIAL_RESOURCES, camp: { ...CAMP }, npc: NPC, day: 1 };
   renderer.setState(state, selfId);
   connection(false, '未接続');
   updateHUD();

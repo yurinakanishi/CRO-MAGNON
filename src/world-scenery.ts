@@ -373,14 +373,16 @@ export function buildCampAssets(world) {
   caveFire.light.decay = 2;
   caveFire.light.color.set('#ffd6a4');
   world.campLabel = world.createLabel('みんなの野営地', 'camp', new THREE.Vector3(50, 3, 50));
-  world.npcLabel = world.createLabel(
-    'オル',
-    'npc',
-    new THREE.Vector3(NPC.x, walkHeight(NPC.x, NPC.z) + 2.17, NPC.z),
-    'ネアンデルタール人 · 交易',
-  );
-  // The NPC streams in as a nearby actor; its label waits for its body.
-  world.npcLabel.active = false;
+  if (NPC) {
+    world.npcLabel = world.createLabel(
+      NPC.name,
+      'npc',
+      new THREE.Vector3(NPC.x, walkHeight(NPC.x, NPC.z) + 2.17, NPC.z),
+      'ネアンデルタール人 · 交易',
+    );
+    // The NPC streams in as a nearby actor; its label waits for its body.
+    world.npcLabel.active = false;
+  }
   world.regionalScenery = new RegionalScenery(world, { buildFireEffect });
   world.regionalScenery.initialize(world.focus);
 }

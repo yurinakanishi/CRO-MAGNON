@@ -1,5 +1,6 @@
 import {
   TITLE_CREDITS,
+  TITLE_DOTS,
   TITLE_FRIENDS,
   TITLE_GUEST,
   TITLE_SUPPORT,
@@ -9,6 +10,7 @@ import { FRIEND_MASCOTS } from '../shared/friend-mascot-roster.mjs';
 import { mascotCreditReleased } from '../shared/mascot-roster.mjs';
 export {
   TITLE_CREDITS,
+  TITLE_DOTS,
   TITLE_FRIENDS,
   TITLE_GUEST,
   TITLE_SUPPORT,
@@ -84,13 +86,16 @@ export function titleContributors(): Contributor[] {
     ...[TITLE_GUEST, TITLE_SUPPORT, ...TITLE_FRIENDS]
       .filter((credit) => mascotCreditReleased(credit.qr))
       .map((credit) => person(credit, '友情出演')),
+    // The dots are always in the world, so their credit is never held back.
+    person(TITLE_DOTS, '友情出演'),
   ];
 }
 
-/** All credits live in this QR-free dialog; exhibition cards never navigate away. */
+/** All credits live in this QR-free dialog; exhibition cards never navigate away.
+ * `visit` offers the cave visit; the loading cave, already in the cave, leaves it out. */
 export function contributorsDialogMarkup(
   people = titleContributors(),
-  { links = true }: { links?: boolean } = {},
+  { links = true, visit = true }: { links?: boolean; visit?: boolean } = {},
 ): string {
   const roles: Contributor['role'][] = ['制作', '開発者', '監修', '友情出演'];
   const card = (person: Contributor) => {
@@ -108,5 +113,8 @@ export function contributorsDialogMarkup(
         `<section class="contributor-group"><h3>${role}</h3><ul class="contributor-list">${list.map(card).join('')}</ul></section>`,
     )
     .join('');
-  return `<div class="contributors-dialog"><h2>関わってくれた人たち</h2><p class="modal-intro">アプレノ洞窟に残る壁画に会いに来てください。</p><button id="contributors-cave" type="button" class="button button-accent">アプレノ洞窟に行く</button>${groups}</div>`;
+  const invitation = visit
+    ? '<p class="modal-intro">アプレノ洞窟に残る壁画に会いに来てください。</p><button id="contributors-cave" type="button" class="button button-accent">アプレノ洞窟に行く</button>'
+    : '';
+  return `<div class="contributors-dialog"><h2>関わってくれた人たち</h2>${invitation}${groups}</div>`;
 }

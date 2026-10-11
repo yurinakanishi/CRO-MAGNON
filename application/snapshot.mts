@@ -294,7 +294,7 @@ export function snapshot(
           resources: room.resources.map(({ regeneratedAt, ...resource }) => ({ ...resource })),
           camp: { ...room.camp },
           cookingFires: room.cookingFires,
-          npc: { ...NPC },
+          npc: NPC ? { ...NPC } : undefined,
           gulf: structuredClone(room.gulf),
         }
       : {}),

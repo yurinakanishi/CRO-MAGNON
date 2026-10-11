@@ -29,10 +29,12 @@ import { cookedFixedPng } from './delivery/delivery-cache.mjs';
 import './build.mjs';
 if (process.exitCode) throw new Error('TypeScript build failed');
 const { CHARACTER_MODELS } = await import('../dist/shared/characters.mjs');
+const { CHARACTER_ROSTER, characterModelReleased, characterSpeciesReleased } =
+  await import('../dist/shared/character-roster.mjs');
 const { FRIEND_MASCOTS } = await import('../dist/shared/friend-mascots.mjs');
 const { mascotModelReleased, mascotCreditReleased, mascotAsset, ACTIVE_MASCOT_MODELS } =
   await import('../dist/shared/mascot-roster.mjs');
-const { TITLE_CREDITS, TITLE_GUEST, TITLE_SUPPORT, TITLE_FRIENDS } =
+const { TITLE_CREDITS, TITLE_GUEST, TITLE_SUPPORT, TITLE_DOTS, TITLE_FRIENDS } =
   await import('../dist/src/title-credit-profiles.js');
 
 const root = path.dirname(path.dirname(fileURLToPath(import.meta.url)));
@@ -72,10 +74,17 @@ if (
 )
   throw new Error('Invalid excluded characters');
 const excludedSpecies = new Set(release.excludedCharacters);
+const hiddenPortraitSpecies = new Set([
+  ...excludedSpecies,
+  ...CHARACTER_ROSTER.filter((entry) => !entry.enabled).map((entry) => entry.species),
+]);
 const excludedModels = CHARACTER_MODELS.filter((model) => excludedSpecies.has(model.species));
 const excludedKeys = new Set(excludedModels.map((model) => model.key));
 const publicCharacters = CHARACTER_MODELS.filter(
-  (model) => model.playable !== false && !excludedSpecies.has(model.species),
+  (model) =>
+    model.playable !== false &&
+    !excludedSpecies.has(model.species) &&
+    characterSpeciesReleased(model.species),
 );
 if (!publicCharacters.some((model) => model.species === 'cro'))
   throw new Error('Missing default public character');
@@ -83,7 +92,7 @@ const hasOctopus = publicCharacters.some((model) => model.bodyPlan === 'octopus'
 const credits = release.credits === 'full' ? TITLE_CREDITS : TITLE_CREDITS.slice(0, 1);
 const friends = TITLE_FRIENDS.filter((person) => mascotCreditReleased(person.qr));
 const visibleProfiles = new Set(
-  [...credits, TITLE_GUEST, TITLE_SUPPORT, ...friends].map((person) => person.qr),
+  [...credits, TITLE_GUEST, TITLE_SUPPORT, TITLE_DOTS, ...friends].map((person) => person.qr),
 );
 const fileLimit = 25 * 1024 * 1024;
 const partSize = 24 * 1024 * 1024;
@@ -97,6 +106,8 @@ async function publish(url, bytes) {
   const name = url.replace(/^\//, '');
   if (name.startsWith('models/') && !mascotModelReleased(name.split('/')[1]))
     throw new Error(`Dormant mascot file in MMO release: ${url}`);
+  if (name.startsWith('models/') && !characterModelReleased(name.split('/')[1]))
+    throw new Error(`Dormant character file in MMO release: ${url}`);
   bytes = environmentAsset(name, bytes, profile);
   if (bytes === undefined) return;
   if (!name || name.split('/').some((part) => !part || part === '.' || part === '..'))
@@ -141,13 +152,17 @@ async function collect(directory, extensions, keep = () => true) {
         const css = bytes
           .toString('utf8')
           .replace(/([^{}]+)\{([^{}]*)\}/g, (rule, selectors, body) => {
-            if (![...excludedSpecies].some((species) => selectors.includes(`.portrait.${species}`)))
+            if (
+              ![...hiddenPortraitSpecies].some((species) =>
+                selectors.includes(`.portrait.${species}`),
+              )
+            )
               return rule;
             const visible = selectors
               .split(',')
               .filter(
                 (selector) =>
-                  ![...excludedSpecies].some((species) =>
+                  ![...hiddenPortraitSpecies].some((species) =>
                     selector.includes(`.portrait.${species}`),
                   ),
               );
@@ -197,7 +212,7 @@ await publish(
 await publish(
   '/src/title-credit-profiles.js',
   Buffer.from(
-    `export const TITLE_CREDITS = ${JSON.stringify(credits)};\nexport const TITLE_GUEST = ${JSON.stringify(TITLE_GUEST)};\nexport const TITLE_SUPPORT = ${JSON.stringify(TITLE_SUPPORT)};\nexport const TITLE_FRIENDS = ${JSON.stringify(friends)};\n`,
+    `export const TITLE_CREDITS = ${JSON.stringify(credits)};\nexport const TITLE_GUEST = ${JSON.stringify(TITLE_GUEST)};\nexport const TITLE_SUPPORT = ${JSON.stringify(TITLE_SUPPORT)};\nexport const TITLE_DOTS = ${JSON.stringify(TITLE_DOTS)};\nexport const TITLE_FRIENDS = ${JSON.stringify(friends)};\n`,
   ),
 );
 
@@ -221,7 +236,8 @@ const worldAssets = catalog.assets
     (asset) =>
       !excludedKeys.has(asset.modelKey) &&
       !excludedSpecies.has(asset.species) &&
-      mascotModelReleased(asset.modelKey),
+      mascotModelReleased(asset.modelKey) &&
+      characterModelReleased(asset.modelKey),
   )
   .map(mascotAsset);
 const assets = [...worldAssets];
@@ -411,10 +427,16 @@ for (const name of files.keys())
 assertSameDigests(sourceManifests, await manifestDigests(root, assets));
 const audit = await auditEnvironmentDirectory(staging, files.keys(), profile);
 if (files.size > 20000) throw new Error('Static asset file count exceeds the Free plan');
-// Server modules use the same filtered character list as the browser. Never bundle
-// the local-only catalog into the uploaded Worker or expose server modules as assets.
+// The Worker applies the same release policy, retaining dormant appearance data
+// for saves. Explicitly excluded public characters still stay out of its catalog.
 await mkdir(workerStaging, { recursive: true });
 await cp(path.join(staging, 'shared'), path.join(workerStaging, 'shared'), { recursive: true });
+// Keep dormant appearances only in the server registry so existing saves can
+// retain and later restore them. Browser choices and model files remain filtered.
+await writeFile(
+  path.join(workerStaging, 'shared/character-profiles.mjs'),
+  `export const CHARACTER_MODELS = Object.freeze(${JSON.stringify(CHARACTER_MODELS.filter((model) => model.playable !== false && !excludedSpecies.has(model.species)))}.map(Object.freeze));\n`,
+);
 for (const directory of ['application', 'cloudflare']) {
   await mkdir(path.join(workerStaging, directory), { recursive: true });
   for (const file of await readdir(path.join(root, 'dist', directory))) {
@@ -471,6 +493,9 @@ const report = {
   retiredLiterals,
   sourceManifests,
   excludedCharacters: [...excludedSpecies],
+  dormantCharacters: CHARACTER_ROSTER.filter((entry) => !entry.enabled).map(
+    (entry) => entry.species,
+  ),
   activeMascotModels: ACTIVE_MASCOT_MODELS,
   characters: publicCharacters,
   workerMain: path

@@ -1,6 +1,7 @@
 import { readFile } from 'node:fs/promises';
 import path from 'node:path';
 import { CHARACTER_MODELS } from '../../shared/characters.mjs';
+import { characterSpeciesReleased } from '../../shared/character-roster.mjs';
 import {
   ALL_CONTENT,
   visibleCharacters,
@@ -48,15 +49,15 @@ export async function localContentOverride(
 ): Promise<string | null | undefined> {
   if (servedPath.toLowerCase() === 'shared/character-profiles.mjs')
     return `export const CHARACTER_MODELS = Object.freeze(${JSON.stringify(visibleCharacters(visibility))}.map(Object.freeze));\n`;
-  if (!visibility.hiddenCharacters.length && !visibility.hideMae) return undefined;
-  const hiddenModels = CHARACTER_MODELS.filter((model) =>
-    visibility.hiddenCharacters.includes(model.species),
+  const hiddenModels = CHARACTER_MODELS.filter(
+    (model) =>
+      !characterSpeciesReleased(model.species) ||
+      visibility.hiddenCharacters.includes(model.species),
   ).map((model) => model.key);
   if (visibility.hideMae) hiddenModels.push('mae');
+  if (!hiddenModels.length) return undefined;
   const normalized = servedPath.toLowerCase();
   if (hiddenModels.some((key) => normalized.startsWith(`models/${key}/`))) return null;
-  if (normalized === 'shared/character-profiles.mjs')
-    return `export const CHARACTER_MODELS = Object.freeze(${JSON.stringify(visibleCharacters(visibility))}.map(Object.freeze));\n`;
   if (normalized === 'models/world-assets.json') {
     const catalog = JSON.parse(
       await readFile(path.join(root, 'public/models/world-assets.json'), 'utf8'),

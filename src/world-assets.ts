@@ -2,6 +2,7 @@ import { isTexture, isMesh, isSkinnedMesh } from './three-types.js';
 import * as THREE from 'three';
 import { clone as cloneSkeleton } from 'three/addons/utils/SkeletonUtils.js';
 import { requireEnemyClips } from './enemy-state.js';
+import { characterModelReleased } from '../shared/character-roster.mjs';
 import { PlacementGrid } from '../shared/spatial-grid.mjs';
 import { createSurfaceTemplate } from './biome-surfaces.js';
 import { coalesceTextures, disposeModels, loadVerifiedGLB } from './embedded-glb.js';
@@ -92,7 +93,9 @@ export class WorldAssets {
       catalog.assets.push(asset);
     }
     catalog.assets = catalog.assets
-      .filter((asset) => mascotModelReleased(asset.modelKey))
+      .filter(
+        (asset) => mascotModelReleased(asset.modelKey) && characterModelReleased(asset.modelKey),
+      )
       .map(mascotAsset);
     this.catalog = catalog;
     return catalog;

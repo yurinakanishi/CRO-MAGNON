@@ -66,7 +66,12 @@ import { biomeById, nearbyChunks } from '../shared/biomes.mjs';
 import { SCENERY } from '../shared/scenery-layout.mjs';
 import { CAMP_MOUNTAIN, campMountainVisualLod } from '../shared/camp-cave-layout.mjs';
 import { RIMO_NEKO } from '../shared/rimo-neko.mjs';
-import { STARTUP, criticalStartup, type CriticalStartup } from './startup-plan.js';
+import {
+  STARTUP,
+  criticalLandmarks,
+  criticalStartup,
+  type CriticalStartup,
+} from './startup-plan.js';
 import { startupMarks } from './startup-marks.js';
 import {
   GraphicsContextState,
@@ -96,6 +101,7 @@ import { attackProfile } from '../shared/combat-profiles.mjs';
 import { equippedItem } from '../shared/equipment.mjs';
 import { CollisionWorld } from '../shared/collision.mjs';
 import { CHARACTER_MODELS, characterModel } from '../shared/characters.mjs';
+import { characterSpeciesReleased } from '../shared/character-roster.mjs';
 import { enemyAnimationState, playerRecovered } from './enemy-state.js';
 import { isLand } from '../shared/paleo-geography.mjs';
 import { FrameClock } from './frame-clock.js';
@@ -144,6 +150,8 @@ const tempPoint = new THREE.Vector3();
 const drawingSize = new THREE.Vector2();
 const focusHeight = (profile) =>
   profile.species === 'bear' ? 0.64 : profile.species === 'ape' ? 1.55 : 1.4;
+/** The polling interval of an arrival's waits. */
+const arrivalPause = () => new Promise((resolve) => setTimeout(resolve, 50));
 
 function mesh(geometry, material, parent, position: [number, number, number] = [0, 0, 0]) {
   const object = new THREE.Mesh(geometry, material);
@@ -391,14 +399,14 @@ export class WorldRenderer {
     this.worldAssets = new WorldAssets();
     // Character templates share the world's bounded, prioritized load queue.
     this.humanAssets = new Map(
-      CHARACTER_MODELS.map((model) => [
+      CHARACTER_MODELS.filter((model) => characterSpeciesReleased(model.species)).map((model) => [
         model.key,
         new CharacterAssets(`/models/${model.key}/asset.json`, {
           queue: this.worldAssets.loadQueue,
         }),
       ]),
     );
-    this.npcAssets = this.humanAssets.get(characterModel(NPC).key);
+    this.npcAssets = NPC ? this.humanAssets.get(characterModel(NPC).key) : undefined;
     this.actorEvictions = 0;
     this.landscapes = [];
     this.canvas.dataset.characterAsset = 'not-loaded';
@@ -617,16 +625,14 @@ export class WorldRenderer {
    * actors and farther scenery never delay it. Rejects with LoadCancelled when
    * `current()` turns false (the visitor left), with the cause if the world fails. */
   async arrival(current: () => boolean = () => true) {
-    const pause = () => new Promise((resolve) => setTimeout(resolve, 50));
-    const check = () => {
-      if (this.failed) throw new Error('The world failed before arrival');
-      if (this.disposed || !current()) throw new LoadCancelled('arrival', 'the visitor left');
-    };
+    const check = this.arrivalCheck(current);
     let self = null;
     while (!this.assetsReady || !(self = this.players.get(this.selfId))) {
       check();
-      await pause();
+      await arrivalPause();
     }
+    // Where the floor was awaited (diagnostics).
+    const floor = { x: self.state.x, z: self.state.z };
     try {
       // The prepared arrival usually covers this; another spawn makes its floor urgent.
       await this.openWorld?.arrive(self.state, performance.now() / 1000);
@@ -636,8 +642,51 @@ export class WorldRenderer {
     }
     while (!this.selfRenderReady()) {
       check();
-      await pause();
+      await arrivalPause();
     }
+    return floor;
+  }
+
+  /** What a loading screen waits for before it lifts (a warp, or an entry without the
+   * cave): the arrival, then the landmarks framing the player's view instanced and
+   * drawn twice behind the screen, so the destination appears whole. Landmarks are
+   * awaited at most `landmarkMs`; a slower one streams in afterwards like any other.
+   * Rejects as arrival() does. */
+  async surroundingsReady(current: () => boolean = () => true, landmarkMs = 10_000) {
+    const started = performance.now();
+    const floor = await this.arrival(current);
+    const arrived = performance.now();
+    const check = this.arrivalCheck(current);
+    const self = this.players.get(this.selfId)?.state;
+    const ids = self ? criticalLandmarks(LANDMARK_PLACEMENTS, self).map((item) => item.id) : [];
+    const until = arrived + landmarkMs;
+    while (!this.landmarks?.hasInstances(ids) && performance.now() < until) {
+      check();
+      await arrivalPause();
+    }
+    const instanced = performance.now();
+    for (let frame = 0; frame < 2; frame++) {
+      check();
+      await new Promise<void>((resolve) => requestAnimationFrame(() => resolve()));
+    }
+    check();
+    // What the lifted screen waited for, and how long each part took (diagnostics).
+    const ms = (from: number, to: number) => Math.round(to - from);
+    this.canvas.dataset.arrivalLandmarks = JSON.stringify({
+      floor: [Math.round(floor.x * 10) / 10, Math.round(floor.z * 10) / 10],
+      ids,
+      instanced: !!this.landmarks?.hasInstances(ids),
+      arrivalMs: ms(started, arrived),
+      landmarkMs: ms(arrived, instanced),
+      framesMs: ms(instanced, performance.now()),
+    });
+  }
+
+  private arrivalCheck(current: () => boolean) {
+    return () => {
+      if (this.failed) throw new Error('The world failed before arrival');
+      if (this.disposed || !current()) throw new LoadCancelled('arrival', 'the visitor left');
+    };
   }
 
   /** The bounded set an arrival at the current focus needs (startup-plan.ts):
@@ -939,9 +988,14 @@ export class WorldRenderer {
    * grace period beyond it, as a remote player is. */
   private updateNpc(time: number) {
     const residency = this.npcResidency;
+    const npc = this.state.npc;
+    if (!npc) {
+      if (residency.state !== 'absent') this.releaseNpc();
+      return;
+    }
     const action = stepResidency(
       residency,
-      residencyPriority(this.residencyDistance(NPC), false, residency.state !== 'absent'),
+      residencyPriority(this.residencyDistance(npc), false, residency.state !== 'absent'),
       time,
     );
     if (action === 'load') void this.loadNpc();
@@ -952,11 +1006,13 @@ export class WorldRenderer {
   }
 
   private async loadNpc() {
+    const npc = this.state.npc;
+    if (!npc) return;
     const residency = this.npcResidency,
       token = residency.token,
       ticket = residency.ticket;
     if (!token || !ticket) return;
-    const current = () => !this.disposed && residency.token === token;
+    const current = () => !this.disposed && !!this.state.npc && residency.token === token;
     let actor = null,
       attached = false;
     try {
@@ -964,7 +1020,7 @@ export class WorldRenderer {
       if (!actor || !current()) return;
       this.npcActor = actor;
       this.npc = actor.root;
-      this.npc.position.set(NPC.x, walkHeight(NPC.x, NPC.z), NPC.z);
+      this.npc.position.set(npc.x, walkHeight(npc.x, npc.z), npc.z);
       this.npc.rotation.y = -1.9;
       this.scene.add(this.npc);
       if (this.npcLabel) this.npcLabel.active = true;

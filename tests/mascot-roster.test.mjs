@@ -92,11 +92,11 @@ test('hidden companion checkpoints survive multiple saves and can be restored wi
   restored.close();
 });
 
-test('guest icons and links are limited to rimo and 524, with adviser credits retained', () => {
+test('guest icons and links are limited to rimo, 524 and the always-present dots, with adviser credits retained', () => {
   const people = titleContributors();
   assert.deepEqual(
     people.filter((p) => p.role === '友情出演').map((p) => p.key),
-    ['r524', 'rimo'],
+    ['r524', 'rimo', 'dots'],
   );
   const dialog = contributorsDialogMarkup();
   for (const key of ['maruimo', 'mae', 'risa', 'saber', 'fairy', 'sagasa', 'hawkie', 'asahina'])

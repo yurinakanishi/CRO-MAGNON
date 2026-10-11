@@ -9,6 +9,7 @@ import {
   TITLE_CREDITS,
   TITLE_GUEST,
   TITLE_SUPPORT,
+  TITLE_DOTS,
   TITLE_FRIENDS,
 } from '../dist/src/title-credit-profiles.js';
 import { runtimeTextureRecords } from './environment-assets.mjs';
@@ -55,6 +56,9 @@ assert.deepEqual(
 );
 for (const person of profiles.TITLE_CREDITS)
   assert.ok(files.has(`title/avatar-${person.qr}.jpg`), person.qr);
+// The dots are in every build, so their credit and icon always ship.
+assert.deepEqual(profiles.TITLE_DOTS, TITLE_DOTS);
+assert.ok(files.has(`title/avatar-${TITLE_DOTS.qr}.jpg`), TITLE_DOTS.qr);
 const guestCredits = [TITLE_GUEST, TITLE_SUPPORT, ...TITLE_FRIENDS]
   .filter((person) => mascotCreditReleased(person.qr))
   .map((person) => person.qr);

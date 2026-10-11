@@ -9,7 +9,11 @@ import { equippedItem } from '../shared/equipment.mjs';
 import { equipItem } from '../shared/equipment-actions.mjs';
 import { attackProfile, shoulderMagic } from '../shared/combat-profiles.mjs';
 import { handleHuntingAction } from '../shared/hunting.mjs';
-import { GATHER_RANGE, interactionVisible } from '../shared/interactions.mjs';
+import {
+  CAMP_CONTRIBUTION_RANGE,
+  GATHER_RANGE,
+  interactionVisible,
+} from '../shared/interactions.mjs';
 import { campContribution } from '../shared/camp-contribution.mjs';
 import { handleRidingAction } from '../shared/riding.mjs';
 import { NPC } from '../shared/world.mjs';
@@ -376,7 +380,7 @@ export function createActionHandler({
       ];
       notice(player, `${label} +${collected}`, 'success');
     } else if (action === 'contribute') {
-      if (distance(player, room.camp) > GATHER_RANGE)
+      if (distance(player, room.camp) > CAMP_CONTRIBUTION_RANGE)
         return notice(player, '焚き火に近づいてから届けよう。', 'error');
       if (!interactionVisible(room.collision, player, room.camp))
         return notice(player, '焚き火までの間がふさがれています。回り込もう。', 'error');
@@ -413,6 +417,7 @@ export function createActionHandler({
         'success',
       );
     } else if (action === 'trade') {
+      if (!NPC) return notice(player, 'この交易は現在利用できません。', 'error');
       if (distance(player, NPC) > 10)
         return notice(player, 'オルに近づいて話しかけよう。', 'error');
       if (!interactionVisible(room.collision, player, NPC))

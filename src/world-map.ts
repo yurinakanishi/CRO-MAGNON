@@ -4,7 +4,7 @@ import { SABERTOOTH, SABERTOOTH_GROUND } from '../shared/sabertooth-rules.mjs';
 import { HOUSEHOLDS } from '../shared/household-sites.mjs';
 import { SEA_WEATHER, currentDirection, seaConditions } from '../shared/maritime-weather.mjs';
 import { SHELL_BEDS, MIDDEN_SITES, KNAPPING_SITES } from '../shared/coastal-sites.mjs';
-import { WORLD, worldClamp, CAMP, NPC } from '../shared/world.mjs';
+import { WORLD, worldClamp, CAMP } from '../shared/world.mjs';
 import { BIOMES, biomeAt, biomeWeights } from '../shared/biomes.mjs';
 import {
   EARTH,
@@ -796,7 +796,7 @@ export function drawWorldMap(canvas, state, selfId, big = false) {
   if (near) {
     for (const fire of state.cookingFires ?? []) dot(fire.x, fire.z, '#efb573', big ? 3 : 2);
     dot(CAMP.x, CAMP.z, '#efb573', 4);
-    dot(NPC.x, NPC.z, '#dad3a9', 3);
+    if (state.npc) dot(state.npc.x, state.npc.z, '#dad3a9', 3);
   }
   if (near) {
     let shown = 0;

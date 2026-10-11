@@ -1,4 +1,5 @@
 import type { Resource, ResourceKind } from './types.mjs';
+import { characterSpeciesReleased } from './character-roster.mjs';
 import { EARTH, EXPEDITION_STOPS, geographicBiome } from './paleo-geography.mjs';
 import { ADVENTURE_RESOURCES } from './adventure-regions.mjs';
 import { GULF_RESOURCES, OBSIDIAN_OUTCROPS } from './gulf-region.mjs';
@@ -33,7 +34,7 @@ export const CAMP = Object.freeze({
   caveFireLit: false,
 });
 
-export const NPC = Object.freeze({
+export const RETAINED_TRADER = Object.freeze({
   x: 70,
   z: 41,
   name: 'オル',
@@ -41,6 +42,7 @@ export const NPC = Object.freeze({
   gender: 'male',
   greeting: '火は、ひとりでは守れない。木か石を2つ、ベリー3つと交換しよう。',
 });
+export const NPC = characterSpeciesReleased(RETAINED_TRADER.species) ? RETAINED_TRADER : undefined;
 
 const nodes: [ResourceKind, number, number, number][] = [
   ['wood', 56, 62, 7],

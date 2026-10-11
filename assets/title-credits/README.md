@@ -1,5 +1,11 @@
 # タイトル画像・クレジット
 
+## 2026-10-11 OpenAI Dotsを友情出演に追加
+
+ユーザー指定「OpenAI Dotsも関わってくれた人に加える」。dotsの仲間9体の元になったOpenAIのdots（2026-09-29発表）を「友情出演」の最後に追加（`TITLE_DOTS`、`src/title-credit-profiles.ts`）。dotsは常にゲームにいるので全ビルドに載る。専用のXアカウントが見つからないためリンクなし。
+アイコン `public/title/avatar-dots.jpg`（200×200）は、メニューが既に表示している3体の肖像（`public/models/orb-bot-{beret,triangle,white}/portrait.png`、無加工）をアイコン背景色に並べたもの。作成は `scripts/build-dots-avatar.py`、元画像と出力のSHAは `dots-avatar.json`。
+公開ビルドの書き出しにも含める。詳細は `docs/loading-screen-2026-10-11.md`。
+
 ## 2026-10-07 MMOは洞窟の壁画、展示はQRクレジット
 
 展示（LAN・展示ビルド）は下記の既存クレジット（アイコン・名前・QR、リンクなし）を維持。

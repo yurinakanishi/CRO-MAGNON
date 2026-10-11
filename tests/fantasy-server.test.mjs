@@ -23,7 +23,7 @@ test('five mixed characters synchronize real magic flight, late join, hostile da
   const snapshots=await Promise.all(clients.map(c=>c.wait(m=>m.type==='state'&&m.players.length===5)));
   for(const state of snapshots){
     assert.equal(state.characterVersion,2);assert.equal(state.combatVersion,3);
-    assert.deepEqual(state.players.map(p=>`${p.species}/${p.gender}`).sort(),['bear/female','bear/female','cat/female','cro/female','nea/male']);
+    assert.deepEqual(state.players.map(p=>`${p.species}/${p.gender}`).sort(),['bear/female','bear/female','cat/female','cro/female','cro/male']);
   }
   const sixth=client(url,{name:'Sixth'});assert.equal((await sixth.wait(m=>m.type==='error')).code,'ROOM_FULL');
   const separate=client(url,{name:'Separate',species:'bear'},'SEPARATE');await separate.wait(m=>m.type==='welcome');

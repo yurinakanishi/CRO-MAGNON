@@ -198,7 +198,7 @@ test('three local toggles independently control the served catalog and direct mo
           const { CHARACTER_MODELS } = await import(
             `data:text/javascript,${encodeURIComponent(module)}`
           );
-          assert.equal(CHARACTER_MODELS.length, 7 + Number(maruimo));
+          assert.equal(CHARACTER_MODELS.length, 5 + Number(maruimo));
           assert.equal(
             CHARACTER_MODELS.some((p) => p.species === 'maruimo'),
             maruimo,

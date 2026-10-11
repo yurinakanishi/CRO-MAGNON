@@ -18,7 +18,7 @@ Billing follow-up on the unrelated original account on 2026-09-07: an active bil
 
 ## Public and local credits
 
-The local source `src/title-credit-profiles.ts` retains yuri, all four supervisors and all guest profiles and images. All home screens put the developer, supervisors and guests in the **関わってくれた人たち** dialog, with icons and names and no QR codes. Online cards link to X; exhibition cards have no external links. The local contributor dialog retains the supervisors; guest icons and links follow the currently enabled mascot roster. The MMO asset manifest omits unused QR images while their source files remain in the repository.
+The local source `src/title-credit-profiles.ts` retains yuri, all four supervisors and all guest profiles and images. All home screens put the developer, supervisors and guests in the **関わってくれた人たち** dialog, with icons and names and no QR codes. Online cards link to X; exhibition cards have no external links. The local contributor dialog retains the supervisors; guest icons and links follow the currently enabled mascot roster. OpenAI Dots, whose characters the always-present dots follow, is credited in every build without a link (`TITLE_DOTS`); the public build writes it into its credit file and ships its icon. The MMO asset manifest omits unused QR images while their source files remain in the repository.
 
 `cloudflare/public-release.json` controls only the Cloudflare build:
 

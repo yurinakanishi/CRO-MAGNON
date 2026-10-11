@@ -5,10 +5,11 @@ import { SETTLEMENTS, GULF_STOPS } from './gulf-region.mjs';
 import { jumpProgress } from './jumping.mjs';
 import { attackProfile } from './combat-profiles.mjs';
 import { SPAWN_SITES } from './spawn-sites.mjs';
+import { NPC } from './world.mjs';
 
 const names = new Map([
   ['fire-50-50', 'はじまりの焚き火'],
-  ['fire-75-40', 'オルの集落'],
+  ['fire-75-40', NPC ? 'オルの集落' : '谷の集落'],
   ...EXPEDITION_STOPS.map((s) => [`fire-${s.id}`, s.name]),
   ...ADVENTURE_REGIONS.map((s) => [`adventure-fire-${s.id}`, s.name]),
   ...[...SETTLEMENTS, ...GULF_STOPS].map((s) => [`gulf-fire-${s.id}`, s.name]),

@@ -1,4 +1,5 @@
 import { CHARACTER_MODELS } from './characters.mjs';
+import { characterSpeciesReleased } from './character-roster.mjs';
 import type { CharacterModel } from './types.mjs';
 
 /** Host policy, independent of character/model source files and saved progress. */
@@ -21,6 +22,9 @@ export function characterVisible(
   visibility: ContentVisibility,
 ) {
   return (
-    !!model && model.playable !== false && !visibility.hiddenCharacters.includes(model.species)
+    !!model &&
+    model.playable !== false &&
+    characterSpeciesReleased(model.species) &&
+    !visibility.hiddenCharacters.includes(model.species)
   );
 }

@@ -45,10 +45,10 @@ function fixture(kind, pet, assisting = false) {
   const room = core.rooms.get('GATHER');
   const player = [...room.players.values()][0];
   const resource = room.resources.find((r) => r.type === kind);
-  const spot = [0, 1, 2, 3]
+  const spot = Array.from({ length: 16 }, (_, n) => n)
     .map((n) => ({
-      x: resource.x + Math.sin((n * Math.PI) / 2) * 2.5,
-      z: resource.z + Math.cos((n * Math.PI) / 2) * 2.5,
+      x: resource.x + Math.sin((n * Math.PI) / 8) * 0.98,
+      z: resource.z + Math.cos((n * Math.PI) / 8) * 0.98,
     }))
     .find(
       (p) =>

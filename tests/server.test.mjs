@@ -75,7 +75,7 @@ test('five actual clients synchronize, sixth is refused, and rooms are isolated'
   assert.equal(game.rooms.has('OTHER'), false);
 });
 
-test('female is the server default and all four appearances synchronize to peers', async (t) => {
+test('female is the server default and dormant appearances resolve consistently for five peers', async (t) => {
   const { url } = await start(t);
   const appearances = [
     {},
@@ -92,13 +92,13 @@ test('female is the server default and all four appearances synchronize to peers
       client.wait((message) => message.type === 'state' && message.players.length === 5),
     ),
   );
-  const expected = ['cro/female', 'cro/male', 'nea/female', 'nea/female', 'nea/male'];
+  const expected = ['cro/female', 'cro/female', 'cro/female', 'cro/male', 'cro/male'];
   for (const state of states)
     assert.deepEqual(
       state.players.map((player) => `${player.species}/${player.gender}`).sort(),
       expected,
     );
-  assert.equal(states[0].npc.gender, 'male');
+  assert.equal(states[0].npc, undefined);
 });
 
 test('resource gathering and camp completion are decided by the server', async (t) => {
@@ -215,7 +215,7 @@ test('depleted solid resources cannot regenerate inside a player', async (t) => 
   assert.equal(resource.amount, 1);
 });
 
-test('crafting, trading, and regeneration enforce resource costs and proximity', async (t) => {
+test('crafting and regeneration retain resource costs while dormant trading cannot spend items', async (t) => {
   const { game, url } = await start(t);
   const client = connect(url);
   const { id } = await client.wait((message) => message.type === 'welcome');
@@ -255,19 +255,25 @@ test('crafting, trading, and regeneration enforce resource costs and proximity',
   player.lastAction = 0;
   client.send({ type: 'action', action: 'trade' });
   await client.wait(
-    (message) => message.type === 'notice' && message.text.startsWith('オルに近づいて'),
+    (message) => message.type === 'notice' && message.text === 'この交易は現在利用できません。',
   );
   assert.equal(player.inventory.berry, 0);
   player.x = 70;
   player.z = 41;
   player.lastAction = 0;
+  const previousMessages = client.messages.length;
   client.send({ type: 'action', action: 'trade' });
-  await client.wait((message) => message.type === 'notice' && message.text.includes('ベリー +3'));
+  await client.wait(
+    (message) =>
+      client.messages.slice(previousMessages).includes(message) &&
+      message.type === 'notice' &&
+      message.text === 'この交易は現在利用できません。',
+  );
   assert.deepEqual(player.inventory, {
     boat: 0,
-    wood: 0,
+    wood: 2,
     stone: 0,
-    berry: 3,
+    berry: 0,
     rawMeat: 0,
     cookedMeat: 0,
     obsidian: 0,

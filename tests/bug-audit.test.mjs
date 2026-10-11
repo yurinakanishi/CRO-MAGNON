@@ -11,7 +11,7 @@ import { acceptsGameShortcut, movementKey } from '../dist/src/combat-input.js';
 import { selectedHuntTarget, attackReady, huntInteraction } from '../dist/src/hunting-ui.js';
 import { sha256 } from '../dist/src/asset-hash.js';
 import { OpenWorldTerrain } from '../dist/src/open-world.js';
-import { NPC } from '../dist/shared/world.mjs';
+import { RETAINED_TRADER as NPC } from '../dist/shared/world.mjs';
 
 const sleep = ms => new Promise(resolve => setTimeout(resolve, ms));
 async function until(predicate) {
@@ -95,13 +95,13 @@ test('the NPC map arrival is body-clear and on the accessible side of the bridge
 test('gathering cannot cross a wall, skips full item types and tracks only collected resources',async t=>{
   const {room,player,action,game}=await session(t);
   Object.assign(player,{x:10,z:10});
-  room.resources=[{id:'wood',type:'wood',x:12,z:10,amount:6,maxAmount:6,regeneratedAt:Date.now()},
-    {id:'berry',type:'berry',x:10,z:13,amount:5,maxAmount:5,regeneratedAt:Date.now()}];
-  room.collision=new CollisionWorld([{type:'box',x:11,z:10,hx:.2,hz:.8,c:1,s:0}]);
+  room.resources=[{id:'wood',type:'wood',x:10.75,z:10,amount:6,maxAmount:6,regeneratedAt:Date.now()},
+    {id:'berry',type:'berry',x:10,z:10.95,amount:5,maxAmount:5,regeneratedAt:Date.now()}];
+  room.collision=new CollisionWorld([{type:'box',x:10.45,z:10,hx:.1,hz:.3,c:1,s:0}]);
   await action('gather');assert.equal(player.inventory.wood,0);assert.equal(player.inventory.berry,1);assert.equal(player.gathered,1);
   room.collision=new CollisionWorld([]);player.inventory.wood=99;
   await action('gather');assert.equal(player.inventory.wood,99);assert.equal(player.inventory.berry,2);assert.equal(player.gathered,2);
-  Object.assign(player,{x:70,z:41});await action('trade');assert.equal(player.inventory.berry,5);assert.equal(player.gathered,2);
+  Object.assign(player,{x:70,z:41});await action('trade');assert.equal(player.inventory.berry,2);assert.equal(player.gathered,2);
   assert.equal(game.snapshot(room).players[0].gathered,2);
 });
 

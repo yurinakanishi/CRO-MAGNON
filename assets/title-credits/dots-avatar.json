@@ -1,0 +1,42 @@
+{
+  "credit": "dots",
+  "name": "OpenAI Dots",
+  "reason": "No X profile of their own; the card shows the dots instead of a profile photo.",
+  "script": "scripts/build-dots-avatar.py",
+  "sources": [
+    {
+      "file": "public/models/orb-bot-beret/portrait.png",
+      "sha256": "0b9b7c2accf86d2a0fcbe3db4a586ba716bcd15c5519ef189758a06202c3e33d",
+      "heightShare": 0.47,
+      "centre": [
+        0.3,
+        0.37
+      ]
+    },
+    {
+      "file": "public/models/orb-bot-triangle/portrait.png",
+      "sha256": "abb0d9213901714801ea6d10d09d73b00fe52cd0c6cd83248f4c6126627c3bf9",
+      "heightShare": 0.43,
+      "centre": [
+        0.71,
+        0.39
+      ]
+    },
+    {
+      "file": "public/models/orb-bot-white/portrait.png",
+      "sha256": "c5aa0cf8a7761b2a036ab222bf2d57702a5c68c7f41d06bf7993e778ef3c7f90",
+      "heightShare": 0.52,
+      "centre": [
+        0.5,
+        0.67
+      ]
+    }
+  ],
+  "output": {
+    "file": "public/title/avatar-dots.jpg",
+    "width": 200,
+    "height": 200,
+    "bytes": 8640,
+    "sha256": "4151a9a63a4f1cf7dac29a508bb98594b5136eb7541e40225dfa328d7d69ceb4"
+  }
+}

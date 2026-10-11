@@ -6,7 +6,11 @@ import vm from 'node:vm';
 import { createGameCore } from '../dist/application/game-core.mjs';
 import { CollisionWorld } from '../dist/shared/collision.mjs';
 import { campContribution } from '../dist/shared/camp-contribution.mjs';
-import { GATHER_RANGE, interactionVisible } from '../dist/shared/interactions.mjs';
+import {
+  CAMP_CONTRIBUTION_RANGE,
+  GATHER_RANGE,
+  interactionVisible,
+} from '../dist/shared/interactions.mjs';
 import { coastalInteraction } from '../dist/src/coastal-ui.js';
 import { fishingInteraction } from '../dist/src/fishing-ui.js';
 import { huntInteraction } from '../dist/src/hunting-ui.js';
@@ -62,6 +66,7 @@ function fixture() {
       adventureInteraction,
       residentInteraction,
       gulfInteraction,
+      CAMP_CONTRIBUTION_RANGE,
       GATHER_RANGE,
       interactionVisible,
       distance: (a, b) => Math.hypot(a.x - b.x, a.z - b.z),
@@ -92,18 +97,19 @@ test('stone alone can be delivered while the camp still needs stone', () => {
   assert.notEqual(f.hint()?.action, 'contribute');
 });
 
-test('the HUD and server both use the gathering boundary, including exactly 3.5 metres', () => {
+test('camp delivery retains its 3.5 metre boundary independently of the shorter gathering range', () => {
   const f = fixture();
   f.player.inventory.wood = 5;
-  assert.equal(GATHER_RANGE, 3.5);
-  for (const distance of [10, GATHER_RANGE + 0.001]) {
+  assert.equal(CAMP_CONTRIBUTION_RANGE, 3.5);
+  assert.ok(GATHER_RANGE < CAMP_CONTRIBUTION_RANGE);
+  for (const distance of [10, CAMP_CONTRIBUTION_RANGE + 0.001]) {
     f.player.z = f.room.camp.z + distance;
     assert.notEqual(f.hint()?.action, 'contribute');
     f.act({ x: f.room.camp.x, z: f.room.camp.z, range: 100 });
     assert.equal(f.room.camp.wood, 0);
     assert.equal(f.player.inventory.wood, 5);
   }
-  f.player.z = f.room.camp.z + GATHER_RANGE;
+  f.player.z = f.room.camp.z + CAMP_CONTRIBUTION_RANGE;
   assert.equal(f.hint()?.action, 'contribute');
   f.act();
   assert.equal(f.room.camp.wood, 5);

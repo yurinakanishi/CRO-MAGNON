@@ -249,8 +249,8 @@ test('authoritative hand and tool gathering remove exactly the number of stones 
       player = [...room.players.values()][0];
     const resource = room.resources.find((r) => r.type === 'stone');
     const spot = Array.from({ length: 16 }, (_, n) => ({
-      x: resource.x + Math.sin((n * Math.PI) / 8) * 2.5,
-      z: resource.z + Math.cos((n * Math.PI) / 8) * 2.5,
+      x: resource.x + Math.sin((n * Math.PI) / 8) * 0.98,
+      z: resource.z + Math.cos((n * Math.PI) / 8) * 0.98,
     })).find(
       (p) =>
         room.collision.free(p, player.radius) && interactionVisible(room.collision, p, resource),

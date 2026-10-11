@@ -307,7 +307,11 @@ button kbd {
     #15231dc8 100%
   );
 }
-.game-viewport > [class]:not(.scene-shade):not(.tps-reticle):not(.world-labels) {
+/* The HUD shares one layer. Full-screen overlays keep their own order below. */
+.game-viewport
+  > [class]:not(.scene-shade):not(.tps-reticle):not(.world-labels):not(.loading-screen):not(
+    .render-error
+  ):not(.context-recovery) {
   z-index: 2;
 }
 .world-labels {
@@ -475,7 +479,8 @@ progress::-moz-progress-bar {
   border: 1px solid #c8c59460;
   padding: 30px;
   border-radius: 9px;
-  z-index: 40;
+  /* Above the loading cave and the loading screen. */
+  z-index: 43;
   width: min(380px, 80%);
   text-align: center;
 }
@@ -496,6 +501,208 @@ progress::-moz-progress-bar {
 }
 .context-recovery button[hidden] {
   display: none;
+}
+
+/* ---- Loading screen: the cave's own load, warps and entries without the cave ---- */
+/* Above the HUD, its hand controls, the screens and the loading cave (40), whose own
+   load it covers; below a failure and the lost-context notice. */
+.loading-screen {
+  position: absolute;
+  inset: 0;
+  z-index: 42;
+  isolation: isolate;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  overflow: hidden;
+  color: #f3ead2;
+  background:
+    radial-gradient(ellipse 70% 55% at 18% 92%, #e0b07024, transparent 70%),
+    radial-gradient(ellipse at 50% 38%, #201c15, #0c0b08 78%);
+  user-select: none;
+  touch-action: none;
+  transition: opacity 0.32s ease;
+}
+.loading-screen[hidden] {
+  display: none;
+}
+.loading-screen[data-state='leaving'] {
+  opacity: 0;
+  pointer-events: none;
+}
+.loading-screen-art {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  opacity: 0;
+  transition: opacity 0.45s ease;
+}
+.loading-screen-art[hidden] {
+  display: none;
+}
+.loading-screen-art.loaded {
+  opacity: 1;
+}
+.loading-screen-art img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0.36;
+  /* Softened, so the picture reads as the destination's art rather than the live view. */
+  filter: saturate(0.75) sepia(0.25) blur(2px);
+  transform: scale(1.04);
+}
+.loading-screen-art::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse at 50% 42%, transparent 25%, #0c0b08d0 88%),
+    linear-gradient(#0c0b0899, transparent 30%, transparent 45%, #0c0b08f2 90%);
+}
+.loading-screen-place {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: max(28px, env(safe-area-inset-top)) max(36px, env(safe-area-inset-right)) 0
+    max(36px, env(safe-area-inset-left));
+}
+.loading-screen-place small {
+  color: #d6c79a;
+  font-size: 11px;
+  letter-spacing: 0.3em;
+}
+.loading-screen-place strong {
+  font: 500 clamp(22px, 3vw, 32px) / 1.3 var(--display);
+  letter-spacing: 0.04em;
+  text-shadow: 0 2px 14px #000c;
+}
+.loading-screen-place strong:empty {
+  display: none;
+}
+.loading-screen-bottom {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 24px;
+  padding: 0 max(36px, env(safe-area-inset-right)) max(30px, env(safe-area-inset-bottom))
+    max(36px, env(safe-area-inset-left));
+}
+/* The Cro-Magnon tip card of the loading screen and the loading cave. */
+.loading-tip {
+  margin: 0;
+  padding: 16px 22px;
+  border-left: 2px solid #e0b07099;
+  background: linear-gradient(90deg, #0c0b08b8, #0c0b0800);
+}
+.loading-tip.turned {
+  animation: loading-tip-in 0.45s ease both;
+}
+.loading-tip figcaption {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--accent);
+  font-size: 11px;
+  letter-spacing: 0.24em;
+}
+.loading-tip figcaption .icon {
+  flex: none;
+  width: 15px;
+  height: 15px;
+}
+.loading-tip strong {
+  display: block;
+  margin: 10px 0 6px;
+  color: #fff4da;
+  font-size: 18px;
+  font-weight: 600;
+  line-height: 1.5;
+}
+.loading-tip p {
+  margin: 0;
+  color: #e6dcc3;
+  font-size: 14px;
+  line-height: 1.85;
+}
+.loading-screen-tip {
+  max-width: 620px;
+}
+.loading-screen-status {
+  display: flex;
+  flex: none;
+  align-items: center;
+  gap: 10px;
+  color: #e6dcc3;
+  font-size: 12px;
+  letter-spacing: 0.12em;
+  white-space: nowrap;
+}
+.loading-screen-ember .icon {
+  display: block;
+  width: 26px;
+  height: 26px;
+  color: #f0b25e;
+  filter: drop-shadow(0 0 8px #f0a04c99);
+  animation: loading-ember 1.6s ease-in-out infinite;
+}
+.loading-screen-status progress {
+  width: 120px;
+  height: 4px;
+  accent-color: var(--accent);
+}
+.loading-screen-status progress[hidden] {
+  display: none;
+}
+@keyframes loading-ember {
+  0%,
+  100% {
+    transform: scale(1) rotate(-3deg);
+    opacity: 0.8;
+  }
+  50% {
+    transform: scale(1.12) rotate(3deg);
+    opacity: 1;
+  }
+}
+@keyframes loading-tip-in {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+}
+@media (max-width: 600px) {
+  .loading-screen-place {
+    padding: max(18px, env(safe-area-inset-top)) 16px 0;
+  }
+  .loading-screen-bottom {
+    flex-direction: column-reverse;
+    align-items: stretch;
+    gap: 14px;
+    padding: 0 16px max(18px, env(safe-area-inset-bottom));
+  }
+  .loading-screen-status {
+    justify-content: flex-end;
+  }
+  .loading-tip {
+    padding: 14px 16px;
+  }
+  .loading-tip strong {
+    font-size: 16px;
+  }
+  .loading-tip p {
+    font-size: 13px;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .loading-screen,
+  .loading-screen-art {
+    transition: none;
+  }
+  .loading-tip.turned,
+  .loading-screen-ember .icon {
+    animation: none;
+  }
 }
 .damage-flash {
   position: absolute;
@@ -538,7 +745,7 @@ body:not(.in-game)
   .game-viewport
   > :not(#world):not(.scene-shade):not(.screens):not(.world-loading):not(.render-error):not(
     #loading-cave
-  ):not(.context-recovery) {
+  ):not(.context-recovery):not(.loading-screen) {
   display: none;
 }
 body[data-screen] .world-loading,

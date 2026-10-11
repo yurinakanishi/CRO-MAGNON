@@ -114,7 +114,8 @@ try {
     await page.waitForFunction(() => {
       const avatars = [...document.querySelectorAll('.contributor-avatar')];
       return (
-        avatars.length === 7 && avatars.every((image) => image.complete && image.naturalWidth > 0)
+        // Seven people and OpenAI Dots, every icon loaded.
+        avatars.length === 8 && avatars.every((image) => image.complete && image.naturalWidth > 0)
       );
     });
     assert.equal(await page.locator('.contributors-dialog a, img[src*="/qr-"]').count(), 0);
@@ -135,6 +136,8 @@ try {
     await page
       .locator('#world[data-world-asset="ready"][data-character-asset="ready"]')
       .waitFor({ timeout: 120000 });
+    // The exhibition start has no loading cave: its loading screen lifts at the arrival.
+    await page.locator('#loading-screen').waitFor({ state: 'hidden', timeout: 120000 });
     if (process.env.QA_CHARACTER === 'howkey-female') {
       assert.equal(actor(layout).species, 'howkey');
       assert.match(
@@ -152,7 +155,7 @@ try {
     await shot(page, `${layout}-no-trade-prompt`);
     Object.assign(nearOr, start);
     await sleep(500);
-    pass(`${layout}: all six title avatars load; no trade prompt beside Or`);
+    pass(`${layout}: all eight title avatars load; no trade prompt beside Or`);
     await menu(page);
     assert.deepEqual(
       await page
@@ -269,6 +272,8 @@ try {
     const inventory = structuredClone(p.inventory);
     await tap(page, 1);
     await until(() => p.warpSequence === sequence + 1, `warp ${site.id}`);
+    // The menu opens again once the warp's loading screen has lifted.
+    await page.locator('#loading-screen').waitFor({ state: 'hidden', timeout: 60000 });
     assert.ok(Math.hypot(p.x - site.x, p.z - site.z) <= 8);
     assert.deepEqual(p.inventory, inventory);
     await until(

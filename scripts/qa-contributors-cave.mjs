@@ -6,6 +6,10 @@ import path from 'node:path';
 import { createGameServer } from '../dist/server.mjs';
 import { MIME } from '../dist/infrastructure/node/static-files.mjs';
 import { spawnSite } from '../dist/shared/spawn-sites.mjs';
+import { titleContributors } from '../dist/src/title-credits.js';
+// Every credit has an icon; only those with an X profile link out (OpenAI Dots does not).
+const people = titleContributors();
+const linked = people.filter((person) => person.profile).length;
 const { chromium } = await import(
   process.env.PLAYWRIGHT_MODULE ||
     'file:///C:/Users/yurin/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/node_modules/playwright/index.mjs'
@@ -154,9 +158,9 @@ try {
       assert.equal(await page.locator('#contributors-cave').textContent(), 'アプレノ洞窟に行く');
       assert.equal(
         await page.locator('.contributors-dialog a').count(),
-        view.mode === 'exhibition' ? 0 : 7,
+        view.mode === 'exhibition' ? 0 : linked,
       );
-      assert.equal(await page.locator('.contributor-avatar').count(), 7);
+      assert.equal(await page.locator('.contributor-avatar').count(), people.length);
       assert(!requests.some((url) => /cave-mural-strip|\/title\/qr-/.test(url)));
       const box = await page.locator('#contributors-cave').boundingBox();
       await page.screenshot({ path: out + '/' + label + '-dialog.png' });
@@ -180,6 +184,8 @@ try {
         assert.equal(await page.evaluate(() => document.activeElement?.id), 'contributors-cave');
         await page.keyboard.press('Enter');
       } else await activate('#contributors-cave');
+      // The visit is covered by the loading screen until the player stands in the cave.
+      await page.locator('#loading-screen[data-state="shown"]').waitFor({ timeout: 5000 });
       const cave = spawnSite('cave');
       const arrived = (sequence) => {
         const me = states.at(-1)?.players.find((p) => p.id === welcome.at(-1)?.id);
@@ -210,6 +216,7 @@ try {
         { timeout: 180000 },
       );
       assert.equal(await page.locator('#render-error').count(), 0);
+      await page.locator('#loading-screen').waitFor({ state: 'hidden', timeout: 180000 });
       await page.screenshot({ path: out + '/' + label + '-arrival.png' });
       if (view.resume) {
         // Only this isolated room is prepared with possessions for the return-to-title check.
@@ -235,7 +242,8 @@ try {
       const data = {
         label,
         input: view.touch ? 'tap' : view.keyboard ? 'Tab/Enter' : 'click',
-        credits: 7,
+        credits: people.length,
+        loadingScreen: true,
         caveArrival: true,
         possessionsPreserved: !!view.resume,
       };

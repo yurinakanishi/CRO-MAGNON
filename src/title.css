@@ -408,6 +408,12 @@ body #screen-title[data-variant='classic'] .menu-item {
   min-height: 44px;
   background: #1b211dcc;
 }
+.loading-cave-actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 8px;
+}
 .loading-cave-footer {
   padding: 28px max(24px, env(safe-area-inset-right)) max(20px, env(safe-area-inset-bottom))
     max(24px, env(safe-area-inset-left));
@@ -518,6 +524,14 @@ body #screen-title[data-variant='classic'] .menu-item {
   }
   .loading-cave-footer {
     padding: 24px 16px max(12px, env(safe-area-inset-bottom));
+  }
+}
+/* A phone held upright stacks the two header buttons beside the cave's name. */
+@media (max-width: 440px) {
+  .loading-cave-actions {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 6px;
   }
 }
 @media (max-height: 520px) and (orientation: landscape) {

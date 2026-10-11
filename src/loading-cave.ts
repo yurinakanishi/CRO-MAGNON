@@ -62,6 +62,9 @@ export class LoadingCave {
   private readonly character: string;
   private readonly color: string;
   private readonly eyeHeight: number;
+  /** A dialog over the gallery (the contributors) owns the keys and the controller. */
+  private readonly paused: () => boolean;
+  private wasPaused = false;
   /** The start attempt this gallery belongs to (startup timing only). */
   private readonly marks = startupMarks.current;
 
@@ -73,11 +76,21 @@ export class LoadingCave {
       character = 'cro-magnon-hunter',
       color = '#b7a27a',
       images = {},
-    }: { character?: string; color?: string; images?: VerifiedTextureOptions } = {},
+      onContributors,
+      paused = () => false,
+    }: {
+      character?: string;
+      color?: string;
+      images?: VerifiedTextureOptions;
+      /** Opens the contributors dialog over the gallery; without it there is no button. */
+      onContributors?: () => void;
+      paused?: () => boolean;
+    } = {},
   ) {
     this.character = character;
     this.color = color;
     this.imageOptions = images;
+    this.paused = paused;
     // The world's camera focus heights: the small fennec mage, the tall ape.
     const species = CHARACTER_MODELS.find((model) => model.key === character)?.species;
     this.eyeHeight = species === 'bear' ? 0.64 : species === 'ape' ? 1.55 : 1.45;
@@ -91,7 +104,7 @@ export class LoadingCave {
     this.scene.add(light, light.target);
     this.overlay.id = 'loading-cave';
     this.overlay.setAttribute('aria-label', 'アプデの洞窟');
-    this.overlay.innerHTML = `<header class="loading-cave-heading"><div><small>世界への旅支度</small><h2>アプデの洞窟</h2></div><button class="button button-outline" data-cave-back>タイトルへ戻る</button></header>
+    this.overlay.innerHTML = `<header class="loading-cave-heading"><div><small>世界への旅支度</small><h2>アプデの洞窟</h2></div><div class="loading-cave-actions">${onContributors ? '<button class="button button-outline" data-cave-contributors>関わってくれた人たち</button>' : ''}<button class="button button-outline" data-cave-back>タイトルへ戻る</button></div></header>
       <div class="loading-cave-wait" role="status">洞窟を準備しています…</div>
       <div class="loading-cave-stick" aria-label="ドラッグして移動"><i></i><span>移動</span></div>
       <button class="button button-outline loading-cave-torch" data-cave-torch aria-pressed="true">松明を消す</button>
@@ -105,6 +118,13 @@ export class LoadingCave {
     this.overlay.querySelector<HTMLButtonElement>('[data-cave-torch]')!.onclick = () =>
       this.toggleTorch();
     this.overlay.querySelector<HTMLButtonElement>('[data-cave-back]')!.onclick = onBack;
+    const contributors = this.overlay.querySelector<HTMLButtonElement>('[data-cave-contributors]');
+    if (contributors && onContributors)
+      contributors.onclick = () => {
+        // The visitor stops where they stand while the dialog is open.
+        this.stop();
+        onContributors();
+      };
     const signal = this.events.signal;
     document.addEventListener('keydown', this.keydown, { signal, capture: true });
     document.addEventListener('keyup', (e) => this.keys.delete(e.key.toLowerCase()), { signal });
@@ -263,6 +283,8 @@ export class LoadingCave {
   }
 
   private keydown = (e: KeyboardEvent) => {
+    // The open dialog keeps its own keys: Escape closes it, arrows move its focus.
+    if (this.paused()) return;
     const key = e.key.toLowerCase();
     if (key === 'l' && !e.ctrlKey && !e.metaKey && !e.altKey) {
       e.preventDefault();
@@ -339,7 +361,16 @@ export class LoadingCave {
     dt = Math.min(dt, 0.05);
     this.elapsed += dt;
     this.torch?.pose.restore();
-    if (this.ready && !document.hidden && document.hasFocus()) {
+    const paused = this.paused();
+    if (paused !== this.wasPaused) {
+      this.wasPaused = paused;
+      // Held keys and drags end when a dialog opens (keys pressed after it closes
+      // count at once); a controller button still held when it closes, the press
+      // that closed it, must be released before it proceeds.
+      if (paused) this.stop();
+      this.padConfirm = true;
+    }
+    if (!paused && this.ready && !document.hidden && document.hasFocus()) {
       const pad = [...(navigator.getGamepads?.() ?? [])].find((p) => p?.connected);
       const axis = (index: number) =>
         Math.abs(pad?.axes[index] ?? 0) > 0.18 ? pad!.axes[index] : 0;

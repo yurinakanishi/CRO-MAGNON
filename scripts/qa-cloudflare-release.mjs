@@ -56,6 +56,7 @@ const profiles = await fetch(`${base}/src/title-credit-profiles.js`).then((r) =>
 assert.match(profiles, /yuri/);
 assert.match(profiles, /R-524/);
 assert.match(profiles, /vibe_walking/);
+assert.match(profiles, /OpenAI Dots/);
 for (const handle of ['WabisukeTyper', 'nukonuko', 'otani_ai_memo', 'yuki_urata'])
   if (includeSupervisors) assert.ok(profiles.includes(handle), handle);
   else assert.ok(!profiles.includes(handle), handle);

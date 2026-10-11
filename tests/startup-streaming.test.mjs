@@ -19,7 +19,8 @@ import { LoadingCave } from '../dist/src/loading-cave.js';
 import { CharacterAssets } from '../dist/src/character-assets.js';
 import { ActorResidency } from '../dist/src/actor-residency.js';
 import { BIOMES, biomeById, chunkDescription, nearbyChunks } from '../dist/shared/biomes.mjs';
-import { WORLD, CAMP, NPC } from '../dist/shared/world.mjs';
+// Retained NPC fixture exercises its streaming lifecycle independently of the release roster.
+import { WORLD, CAMP, RETAINED_TRADER as NPC } from '../dist/shared/world.mjs';
 import { CAMP_SPAWN, spawnSite } from '../dist/shared/spawn-sites.mjs';
 import { CASTLE } from '../dist/shared/castle-layout.mjs';
 import { campMountainVisualLod } from '../dist/shared/camp-cave-layout.mjs';

@@ -1,5 +1,5 @@
 import { attackProfile } from './combat-profiles.mjs';
-import { GATHER_RANGE } from './interactions.mjs';
+import { CAMP_CONTRIBUTION_RANGE } from './interactions.mjs';
 import { jumpProgress } from './jumping.mjs';
 import type { CampSnapshot, PlayerSnapshot } from './snapshots.mjs';
 
@@ -17,7 +17,7 @@ export function campContribution(
     !player?.inventory ||
     !Number.isFinite(player.x) ||
     !Number.isFinite(player.z) ||
-    Math.hypot(player.x! - camp.x, player.z! - camp.z) > GATHER_RANGE ||
+    Math.hypot(player.x! - camp.x, player.z! - camp.z) > CAMP_CONTRIBUTION_RANGE ||
     player.downedUntil ||
     player.mountId ||
     player.boatId ||

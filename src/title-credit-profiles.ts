@@ -24,6 +24,17 @@ export const TITLE_SUPPORT = {
 } as const;
 
 /**
+ * OpenAI's dots, the characters the camp's dots follow. Credited in every build
+ * because the dots are always in the world. They have no X profile of their own,
+ * so the card does not link out; the icon is composed from the dots' portraits.
+ */
+export const TITLE_DOTS = {
+  name: 'OpenAI Dots',
+  profile: '',
+  qr: 'dots',
+} as const;
+
+/**
  * Retained guest profiles for future releases, named as on X. The mascot roster
  * controls which guests appear in the dialog and MMO asset manifest. They have
  * no QR code; all credit displays use the contributors dialog.

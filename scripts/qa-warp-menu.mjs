@@ -61,6 +61,8 @@ async function pageAt(url, lan = false) {
     .locator('#world[data-world-asset="ready"][data-character-asset="ready"]')
     .waitFor({ timeout: 120000 });
   await until(() => seen.id, 'welcome');
+  // A start without the loading cave (the exhibition) is covered until the arrival.
+  await page.locator('#loading-screen').waitFor({ state: 'hidden', timeout: 120000 });
   return { page, seen };
 }
 async function menu(page) {
@@ -76,8 +78,12 @@ async function choose(user, room, id) {
   const button = user.page.locator(`[data-warp-spawn="${id}"]`);
   await until(() => button.getAttribute('aria-disabled').then((v) => v === 'false'), 'warp ready');
   await button.click();
+  // The own warp is covered by the loading screen until the destination is drawn;
+  // the menu opens again only after it lifts.
+  await user.page.locator('#loading-screen[data-state="shown"]').waitFor({ timeout: 5000 });
   await until(() => p.warpSequence === before + 1, `${id} server arrival`);
   await user.page.waitForFunction(() => !document.querySelector('#modal').open);
+  await user.page.locator('#loading-screen').waitFor({ state: 'hidden', timeout: 60000 });
   const site = SPAWN_SITES.find((s) => s.id === id);
   assert.ok(Math.hypot(p.x - site.x, p.z - site.z) <= 8, `${id} safe arrival`);
   assert.ok(room.collision.free(p, p.radius));
