@@ -1,0 +1,264 @@
+{
+  "schema": "cro-magnon/character-remake-review@1",
+  "date": "2026-10-12",
+  "decision": "adopt",
+  "approved": "User chose candidate 3 in chat on 2026-10-12 (「候補3を採用する」) after the current/candidate-3/candidate-4 comparison (sheets compare-current-c3-c4.jpg) and in-game previews were presented.",
+  "modelKey": "cro-magnon-woman",
+  "revision": "c3-r03",
+  "candidate": 3,
+  "url": "/models/cro-magnon-woman/model-c3-r03.glb",
+  "sha256": "e899cf58f9a0700034a0ba9c177a2e752fa14f3c8d04db8e7d14b167c2bef38f",
+  "bytes": 2517496,
+  "triangles": 7689,
+  "bones": 22,
+  "clips": [
+    "Craft",
+    "Eat",
+    "Gather",
+    "Give",
+    "Idle_Loop",
+    "Run_Loop",
+    "Walk_Loop",
+    "Wave",
+    "Attack",
+    "Downed"
+  ],
+  "heightMetres": 1.6700000000000002,
+  "request": "User (2026-10-12): クロマニョン人の女性の3dアセットの品質が悪いので、作り直してください。なるべくローポリで。かわいく。 (later: 顔がおかしい)",
+  "workspace": "output/model-generation/models/cro-magnon-woman",
+  "sources": [
+    {
+      "path": "assets/cro-magnon-woman/source/c3-r03/candidate3-ref-b.png",
+      "source": "output/model-generation/models/cro-magnon-woman/source/original/candidate3-ref-b.png",
+      "sha256": "56c6eba518ece6f60fb8aed06e1b971a42867bb4822066a454b4a4df973e22ed"
+    },
+    {
+      "path": "assets/cro-magnon-woman/source/c3-r03/prompts-c3.json",
+      "source": "output/model-generation/models/cro-magnon-woman/source/original/prompts-c3.json",
+      "sha256": "5b47be34de05d072cce6f7033665bf9fbd45ceeb09ca17b2b09dd2ffabb67585"
+    },
+    {
+      "path": "assets/cro-magnon-woman/source/c3-r03/codex-request-c3.txt",
+      "source": "output/model-generation/models/cro-magnon-woman/source/original/codex-request-c3.txt",
+      "sha256": "2c192c6bb8e6369947734215c2f994354d45214c4d8115a2aaa039b39472d3c8"
+    }
+  ],
+  "candidateRecord": {
+    "path": "output/model-generation/models/cro-magnon-woman/work/candidate-03/candidate.json",
+    "sha256": "25ac9aa9cff9105044a1107f41803123ab55285964fe0da040b52bbd6e1e6526"
+  },
+  "production": {
+    "reference": {
+      "generator": "Codex built-in image_gen (codex-cli 0.162.0-alpha.17.2, gpt-5.6-sol, reasoning medium)",
+      "request": {
+        "path": "source/original/codex-request-c3.txt",
+        "sha256": "2c192c6bb8e6369947734215c2f994354d45214c4d8115a2aaa039b39472d3c8",
+        "bytes": 4090
+      },
+      "prompts": {
+        "path": "source/original/prompts-c3.json",
+        "sha256": "5b47be34de05d072cce6f7033665bf9fbd45ceeb09ca17b2b09dd2ffabb67585",
+        "bytes": 7330
+      },
+      "variants": [
+        {
+          "path": "source/original/candidate3-ref-a.png",
+          "sha256": "938f9f286a64dbdf0ec262381df2f96c6d18b81c95652cb18aa2327a501927ea",
+          "bytes": 1719847
+        },
+        {
+          "path": "source/original/candidate3-ref-b.png",
+          "sha256": "56c6eba518ece6f60fb8aed06e1b971a42867bb4822066a454b4a4df973e22ed",
+          "bytes": 1488042
+        },
+        {
+          "path": "source/original/candidate3-ref-c.png",
+          "sha256": "fc14bb31c4d941eca3620e0d246fb5775421971786f7053d52954c6b3a33e46c",
+          "bytes": 1741209
+        }
+      ],
+      "chosen": "b (two buns; the hair stays clear of the shoulders; readable silhouette)"
+    },
+    "conditioning": {
+      "path": "work/candidate-03/source/prepared-ref3b/conditioning.png",
+      "sha256": "fd50733ca5638bab815c4a95c52cb9f44c71fa9331acd8deadab720b14abc348",
+      "bytes": 349997
+    },
+    "referenceMatte": {
+      "path": "work/candidate-03/source/prepared-ref3b/reference-mask.png",
+      "sha256": "20494fe10be19d9c5734440cfa450935e6f4309a9362df02c865fb822d5d145e",
+      "bytes": 42714,
+      "method": "BiRefNet cutout of the TRELLIS preparation moved onto the reference (offset 270,35 px, NCC 0.9967)"
+    },
+    "trellis": {
+      "dense": {
+        "path": "work/candidate-03/trellis/dense-ref3b-res1024-tex1024-seed0042.glb",
+        "sha256": "a52271d1663d6d07c0f6ecff9c8ec5abfa55fed8fca1fb7e112db159fa306ae8",
+        "bytes": 21055776
+      },
+      "record": {
+        "path": "work/candidate-03/trellis/dense-ref3b-res1024-tex1024-seed0042.json",
+        "sha256": "3002e2a656b12d7861db1386f879942c84c3f7d6636ea4fe4e8cbf195bc49db4",
+        "bytes": 1340
+      },
+      "settings": "local TRELLIS-2 C++ GGUF, res 1024, tex 1024, seed 42, BiRefNet matte, xatlas atlas 2048",
+      "faces": 282264,
+      "failedAttempt": "output/asset-remake/trellis-queue/failed/cro-magnon-woman-c3-ref3b.failed-sac-1.json: Windows Smart App Control blocked ggml.dll (0xC0E90002); rerun after the user changed the setting"
+    },
+    "eyeSockets": {
+      "record": {
+        "path": "work/candidate-03/trellis/dense-ref3b-eyeclose-r02.json",
+        "sha256": "de5d30e7dad24c9ad76f798afb139dbc5ea53ee0d74d2f1af0a5c56f834ad3dd",
+        "bytes": 1613
+      },
+      "dense": {
+        "path": "work/candidate-03/trellis/dense-ref3b-eyeclose-r02.glb",
+        "sha256": "e6ed7dba259b7d933f110232108e69d4d5113b2112ca69c3f7788e5fe97a6d00",
+        "bytes": 20952780
+      },
+      "script": "scripts/remake/fill_eye_sockets.py",
+      "reason": "TRELLIS rebuilt the painted eyes as funnels about 7.5 cm deep; reduction turned them into sliver triangles from the eyes across the cheeks",
+      "rejected": [
+        "dense-ref3b-eyes-smoothed-r01/r02: Laplacian smoothing barely filled the funnels (r02 also lacked the front-layer guard)",
+        "dense-ref3b-eyefill-r01: sparse per-pixel front depth let back-of-head vertices count as face",
+        "dense-ref3b-eyefill-r02: raised the rims, the funnels remained",
+        "dense-ref3b-eyeclose-r01: selected the back of the head behind the eyes (kept as *-rejected-back-of-head)"
+      ]
+    },
+    "reduction": {
+      "meshopt": {
+        "path": "work/candidate-03/low-poly/meshopt-8000-ec.glb",
+        "sha256": "e9a2fb452367a81b7a7ae93fc3edc6bd75b10228dc7aef32bfd3cf9caadd68d6",
+        "bytes": 141204
+      },
+      "budgetsTried": {
+        "m01 4,854 triangles": "faceted face silhouette and boots",
+        "m02 7,783 triangles": "chosen budget",
+        "m03 11,773 triangles": "smoother, 1.5x the triangles"
+      },
+      "split": "faces with centroid y >= 0.273 (dense units, the neck) form the head; body and head get separate xatlas atlases",
+      "body": {
+        "path": "work/candidate-03/low-poly/split-body-r02/candidate.glb",
+        "sha256": "b275b7dc6a28a43b6aa33b4e2e0a91c00e51b21ed61cc396e034a25de338a024",
+        "bytes": 940788,
+        "atlas": "1024 albedo, 1024 normal"
+      },
+      "head": {
+        "path": "work/candidate-03/low-poly/split-head-r03/candidate.glb",
+        "sha256": "1d507b319ab0280411a5fc9abb254044db89a7ed6a23f8b92eeef3a07b5cc728",
+        "bytes": 1102060,
+        "atlas": "2048 bake (albedo, normal), delivered at 1024"
+      }
+    },
+    "face": {
+      "script": "scripts/remake/project_face.py",
+      "report": {
+        "path": "work/candidate-03/face/head-r05/report.json",
+        "sha256": "5b29a75fac7ae646d9cfad4908cb9ccb7f4b860eae2030e441ab3f62bbe7f620",
+        "bytes": 1849
+      },
+      "head": {
+        "path": "work/candidate-03/face/head-r05/face.glb",
+        "sha256": "7262771939a06c03851495a3659d3807b3ebae47041f1e9027644efadf03944b",
+        "bytes": 497056
+      },
+      "settings": "replace mode, skin tone matched to the body, facing 0-0.2, face ellipse 0.8/1.15/0.06/0.3, normals flattened in the two eye ellipses, registration 826.881 px/m at (504.03, 1420.74) fitted on the whole-body silhouette (IoU 0.908), output 1024, WebP q92"
+    },
+    "merged": {
+      "path": "work/candidate-03/graft/merged-r05.glb",
+      "sha256": "552648d45a77ff97d77365278479ef3e7ea45190a78641c462cadcf020644a0d",
+      "bytes": 1437396,
+      "script": "scripts/remake/merge_head.py --no-tone"
+    },
+    "rig": {
+      "report": {
+        "path": "work/candidate-03/rig/r03/rig-report.json",
+        "sha256": "23ec9aaf02460ddbb012045e860cdba5c6d2c1dfd002633fd0fb1971b51c8aed",
+        "bytes": 26868
+      },
+      "proportions": {
+        "path": "work/candidate-03/rig/proportions-c3.json",
+        "sha256": "ffe5139de42f2ce9c8b300f960e4efce2fb95966bfe319a391c8103e8276983c",
+        "bytes": 990
+      },
+      "candidate": {
+        "path": "work/candidate-03/rig/r03/candidate.glb",
+        "sha256": "9a5b5cae029b5c899a76a1a9610caacaa26688970683048535ddab0e45aaefcd",
+        "bytes": 2135140
+      },
+      "options": "--accent none --measure-subdiv 2 --arm-band .03 --arm-gate .60",
+      "rejected": {
+        "r01": "A-pose elbows next to the waist put arm weights on the dress (the skirt lifted with Wave, Attack, Eat)",
+        "r02": "arm gate without crack bridging: half of each forearm lost its weights (ghost arms)"
+      }
+    },
+    "motion": "output/asset-remake/motion/cro-magnon-woman-r03 (scripts/remake/human_chain.sh: rig_human_c2 -> spear thrust r1 -> Downed -> CMU locomotion r1); the 20% LOD it also builds is kept as final/lod-performance-unused.glb"
+  },
+  "qa": {
+    "poses": "output/playwright/female-faces/c3-rig-r03-poses (10 clips x 3 phases x 3 views, Chrome + three.js, 0 errors)",
+    "faces": "output/playwright/female-faces/c3-rig-r03-faces (head close-up for every clip phase)",
+    "downed": "work/candidate-03/qa/rig-r03-downed",
+    "game": "output/playwright/c3-candidate-game-r03 (isolated in-memory server, real title/selection/entry, routed manifest+GLB; renderer actor SHA = candidate; Idle/Walk/Run/Attack seen; 0 page errors)",
+    "comparison": "output/playwright/female-faces/compare-current-vs-c3.jpg"
+  },
+  "sheets": [
+    {
+      "path": "assets/cro-magnon-woman/qa/c3-r03/compare-current-c3-c4.jpg",
+      "source": "output/asset-remake/adopt-c3-r03-sheets/compare-current-c3-c4.jpg",
+      "sha256": "54a311e587b8ca183c3638b5dd0c7fca566263493ed4e8911f742094bcf671ee"
+    },
+    {
+      "path": "assets/cro-magnon-woman/qa/c3-r03/compare-current-vs-c3.jpg",
+      "source": "output/asset-remake/adopt-c3-r03-sheets/compare-current-vs-c3.jpg",
+      "sha256": "ba2084fcba409a0c2aa79500c4ab8c58d4b00637dd60d9fe572c877d0201a104"
+    },
+    {
+      "path": "assets/cro-magnon-woman/qa/c3-r03/downed.jpg",
+      "source": "output/asset-remake/adopt-c3-r03-sheets/downed.jpg",
+      "sha256": "0eff9d952ea104f3d600257ef697a945633d1250d677afe0ad47794b0bf82387"
+    },
+    {
+      "path": "assets/cro-magnon-woman/qa/c3-r03/face-closeup-albedo-lit.jpg",
+      "source": "output/asset-remake/adopt-c3-r03-sheets/face-closeup-albedo-lit.jpg",
+      "sha256": "1fa85a109474de06636121724324d7a40be634595916c1b06fcedf9483efe735"
+    },
+    {
+      "path": "assets/cro-magnon-woman/qa/c3-r03/faces-by-clip.jpg",
+      "source": "output/asset-remake/adopt-c3-r03-sheets/faces-by-clip.jpg",
+      "sha256": "fec77fe7942077e8a8be4681fd8a2e2b1db955b1c573901b36950f5dd06113ea"
+    },
+    {
+      "path": "assets/cro-magnon-woman/qa/c3-r03/game-close.jpg",
+      "source": "output/asset-remake/adopt-c3-r03-sheets/game-close.jpg",
+      "sha256": "3a945ec10eb22437ba3bc21f5ae616661116bfc7c264db65457bbe891808961f"
+    },
+    {
+      "path": "assets/cro-magnon-woman/qa/c3-r03/game-preview.jpg",
+      "source": "output/asset-remake/adopt-c3-r03-sheets/game-preview.jpg",
+      "sha256": "f6afde791c06b01ad55cc1b59c0ae79cf27448bd7a908fd0190f7162c54f1c4e"
+    },
+    {
+      "path": "assets/cro-magnon-woman/qa/c3-r03/poses-front.jpg",
+      "source": "output/asset-remake/adopt-c3-r03-sheets/poses-front.jpg",
+      "sha256": "634e3eed030aeace5abef37038661a38c51237c182c13c9ef059e231c6e3a424"
+    },
+    {
+      "path": "assets/cro-magnon-woman/qa/c3-r03/poses-side.jpg",
+      "source": "output/asset-remake/adopt-c3-r03-sheets/poses-side.jpg",
+      "sha256": "4dd5d7d6fb28c484277dc8bd16f7189aa376a169f9b9ac1349c411a257026968"
+    }
+  ],
+  "previous": {
+    "url": "/models/cro-magnon-woman/model-face-lp-r08.glb",
+    "sha256": "c495179a518d8d557ef9d0ef8795b85a58403da9debef4212039e944a064314a",
+    "bytes": 5278800,
+    "triangles": 41021,
+    "revision": "face-lp-r08",
+    "manifest": "assets/cro-magnon-woman/archive-manifest-face-lp-r08-20261012.json"
+  },
+  "provenance": {
+    "provider": "Claude Code (Opus 5.5); Codex built-in image_gen references; local TRELLIS-2 reconstruction",
+    "claudeUsed": true,
+    "geometrySource": "TRELLIS-2 reconstruction of the chosen generated reference (meshopt reduction, xatlas atlases, Blender bakes; eye sockets closed in the dense surface)"
+  }
+}

@@ -11,6 +11,13 @@ import { LandscapeInstances } from '../dist/src/world-assets.js';
 // Exercise the real placement update with real world placements, without loading
 // textures or needing a GPU. This measures CPU work and requested buffer bytes,
 // not FPS or GPU execution time. Empty meshes stand in only for the upload sinks.
+
+// The delivered spruce's crown profile (crownProfile of valley-pine model-c2, measured
+// 2026-10-12): 0.5 m bands, each widened to its neighbours. Its geometry is not loaded here.
+const SPRUCE_CROWN = Float32Array.from([
+  0.75, 0.75, 0.26, 1.87, 1.98, 1.98, 1.98, 1.98, 1.9, 1.9, 1.86, 1.7, 1.65, 1.48, 1.41, 1.12,
+  0.93, 0.82, 0.62, 0.41,
+]);
 export function landscapeFixtures(Type = LandscapeInstances) {
   const grassPlacement = (item) => ({
     ...item,
@@ -65,9 +72,8 @@ export function landscapeFixtures(Type = LandscapeInstances) {
       nextUpdate: 0,
       generated: new Map(),
       castNearbyShadows: !spec.foliage,
-      canopyOcclusion: spec.key === 'valley-pine',
-      sightLine: new THREE.Line3(),
-      sightPoint: new THREE.Vector3(),
+      crown: spec.key === 'valley-pine' ? SPRUCE_CROWN : null,
+      crownWidest: spec.key === 'valley-pine' ? Math.max(...SPRUCE_CROWN) : 0,
       matrix: new THREE.Matrix4(),
       composed: new THREE.Matrix4(),
       rotation: new THREE.Quaternion(),

@@ -3,6 +3,7 @@ import * as THREE from 'three';
 import { LANDMARKS } from '../shared/landmarks.mjs';
 import { CASTLE } from '../shared/castle-layout.mjs';
 import { MeshRayGrid } from './mesh-ray-grid.js';
+import { MountainCamera } from './mountain-camera.js';
 import { REGION_FEATURES } from '../shared/region-features.mjs';
 import { terrainHeight } from '../shared/terrain.mjs';
 import { regionFeatureDiagnostics } from './region-feature-diagnostics.js';
@@ -152,6 +153,7 @@ export class WorldLandmarks {
   declare coatings: AdventureMaterials;
   declare castleCamera: MeshRayGrid | null | undefined;
   declare caveCamera: MeshRayGrid | null | undefined;
+  declare mountainCamera: MountainCamera | null | undefined;
   declare cavePigment: THREE.Texture | undefined;
   declare caveCharacter524: THREE.Texture | undefined;
   declare caveRimoPigment: THREE.Texture | undefined;
@@ -381,6 +383,7 @@ export class WorldLandmarks {
         for (const material of root.userData.ownedMaterials ?? []) material.dispose();
         this.instances.delete(id);
         if (id === CASTLE.id) this.castleCamera = null;
+        if (id === CAMP_MOUNTAIN.id) this.mountainCamera = null;
         if (id === CAMP_CAVE.id) {
           this.caveCamera = null;
           this.caveSpring?.dispose();
@@ -459,6 +462,7 @@ export class WorldLandmarks {
         this.instances.set(item.id, root);
         this.world.scene.add(root);
         if (item.id === CASTLE.id) this.castleCamera = new MeshRayGrid(root);
+        if (item.id === CAMP_MOUNTAIN.id) this.mountainCamera = new MountainCamera(root);
         if (item.id === CAMP_CAVE.id) {
           this.caveCamera = new MeshRayGrid(root);
           this.caveSpring = new CaveSpring();
@@ -539,6 +543,6 @@ export class WorldLandmarks {
     this.caveImages?.cancel();
     this.caveImages = null;
     this.releaseCaveTextures();
-    this.caveCamera = this.castleCamera = null;
+    this.caveCamera = this.castleCamera = this.mountainCamera = null;
   }
 }

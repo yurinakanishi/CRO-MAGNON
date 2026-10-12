@@ -366,10 +366,10 @@ test('the gallery finishes preparing while the context is lost and holds no keys
   assert.equal(network.blobs.size, 0, 'every blob URL revoked');
   // Keys held as the context is lost are forgotten, not replayed after restoration.
   cave.keys.add('w');
-  cave.stick = { x: 1, y: 0 };
+  cave.stick = { x: 1, y: 0, running: true };
   cave.releaseInput();
   assert.equal(cave.keys.size, 0);
-  assert.deepEqual(cave.stick, { x: 0, y: 0 });
+  assert.deepEqual(cave.stick, { x: 0, y: 0, running: false });
   assert.ok(
     network.images.every((image) => image.closed === 0),
     'the gallery still owns its images',

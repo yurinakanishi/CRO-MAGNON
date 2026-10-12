@@ -19,6 +19,7 @@ import { groundcoverVisible } from './scenery-visibility.js';
 import { ActionBlender, gaitPhase } from './action-blender.js';
 import { applyBehemothPalette } from './behemoth-palette.js';
 import { installSkinnedBounds } from './skinned-bounds.js';
+import { SIGHT_MARGIN, crownProfile, segmentNearTree } from './tree-sight.js';
 import { configureActorPerformance, disposeActorPerformance } from './performance-lod.js';
 import { AssetLoadQueue, LOAD_TIER, LoadTicket } from './asset-load-queue.js';
 import {
@@ -678,6 +679,8 @@ function renderImpostor(renderer, root, resolution = 512) {
   return { target, geometry, material, draw };
 }
 
+const NONE: Set<never> = new Set();
+
 interface LandscapePlacement {
   x: number;
   z: number;
@@ -704,9 +707,14 @@ export class LandscapeInstances {
   declare generateCell: any;
   declare generated: Map<any, any>;
   declare castNearbyShadows: boolean;
-  declare canopyOcclusion: boolean;
-  declare sightLine: THREE.Line3;
-  declare sightPoint: THREE.Vector3;
+  /** A tree's crown profile (tree-sight.ts): the view hides a tree its sight would pass
+   * through. Null for landscapes that are never hidden. */
+  declare crown: Float32Array | null;
+  declare crownWidest: number;
+  /** The widest horizontal scale among the placements. */
+  declare crownReach: number | undefined;
+  /** The trees hidden from the current view. */
+  declare hidden: Set<LandscapePlacement> | undefined;
   declare capacity: number;
   declare key: any;
   declare surface: any;
@@ -745,9 +753,6 @@ export class LandscapeInstances {
     this.generateCell = generateCell;
     this.generated = new Map();
     this.castNearbyShadows = !foliage;
-    this.canopyOcclusion = key === 'valley-pine';
-    this.sightLine = new THREE.Line3();
-    this.sightPoint = new THREE.Vector3();
     const generatorCapacity = generateCell ? 250 * (Math.ceil(distances[2] / 32) * 2 + 2) ** 2 : 0;
     this.capacity = this.grid.maximumNearby(distances[2]) + generatorCapacity;
     this.key = key;
@@ -755,6 +760,8 @@ export class LandscapeInstances {
     if (!surface && (key === 'meadow-grass' || key === 'meadow-sprig'))
       this.grassTints = new WeakMap();
     const template = assets.get(key, surface);
+    this.crown = key === 'valley-pine' ? crownProfile(template.gltf.scene) : null;
+    this.crownWidest = this.crown ? Math.max(...this.crown) : 0;
     for (const model of [template.gltf, template.lods[0]]) {
       if (!model) {
         this.levels.push([]);
@@ -821,15 +828,22 @@ export class LandscapeInstances {
   update(camera, time, riderFocus = null, foliageDensity = 1) {
     if (this.windTime) this.windTime.value = time;
     const density = !this.castNearbyShadows ? foliageDensity : 1;
-    const changed = density !== this.density;
+    // The trees this view would look through are checked every frame, so one is hidden on
+    // the frame the camera reaches it rather than at the next scheduled rebuild.
+    const hidden = this.viewHidden(camera.position, riderFocus),
+      previous = (this.hidden ??= NONE);
+    const changed =
+      density !== this.density ||
+      hidden.size !== previous.size ||
+      [...hidden].some((item) => !previous.has(item));
     this.density = density;
     if (!(this.viewUpdate ??= new ViewUpdateGate()).shouldUpdate(camera, time, riderFocus, changed))
       return;
+    this.hidden = hidden;
     this.updates = (this.updates ?? 0) + 1;
     this.projection.multiplyMatrices(camera.projectionMatrix, camera.matrixWorldInverse);
     this.frustum.setFromProjectionMatrix(this.projection);
     const counts = [0, 0, 0];
-    if (riderFocus) this.sightLine.set(camera.position, riderFocus);
     const nearby = [...this.grid.near(camera.position.x, camera.position.z, this.distances[2])];
     if (this.generateCell) {
       const active = new Set(),
@@ -863,15 +877,9 @@ export class LandscapeInstances {
         continue;
       const distance = item.position.distanceTo(camera.position);
       if (distance > this.distances[2]) continue;
-      // Walking and riding cameras can both enter a canopy. Cull only the trees
-      // blocking this view's sight line; body colliders and other views remain.
-      if (this.canopyOcclusion && riderFocus && distance < 22) {
-        this.sphere.center.copy(item.position);
-        this.sphere.center.y += item.height * 0.65;
-        this.sightLine.closestPointToPoint(this.sphere.center, true, this.sightPoint);
-        if (this.sightPoint.distanceToSquared(this.sphere.center) < (item.height * 0.34 + 0.5) ** 2)
-          continue;
-      }
+      // Walking and riding cameras pass through trees: this view does not draw the trees
+      // its sight would cross; body colliders and other views remain.
+      if (hidden.has(item)) continue;
       this.sphere.center.copy(item.position);
       this.sphere.center.y += item.height * 0.5;
       this.sphere.radius = item.height * 0.75;
@@ -914,6 +922,23 @@ export class LandscapeInstances {
           this.colorUploadBytes =
             (this.colorUploadBytes ?? 0) + markActiveAttribute(mesh.instanceColor, mesh.count);
       }
+  }
+  /** The trees the sight from the camera to its focus would pass through or graze. */
+  private viewHidden(eye: THREE.Vector3, focus: THREE.Vector3 | null): Set<LandscapePlacement> {
+    if (!this.crown || !focus) return NONE;
+    const reach = (this.crownReach ??= Math.max(
+      0,
+      ...this.placements.map((item) => Math.max(item.scale.x, item.scale.z)),
+    ));
+    let hidden: Set<LandscapePlacement> | null = null;
+    for (const item of this.grid.near(
+      (eye.x + focus.x) / 2,
+      (eye.z + focus.z) / 2,
+      Math.hypot(eye.x - focus.x, eye.z - focus.z) / 2 + this.crownWidest * reach + SIGHT_MARGIN,
+    ))
+      if (segmentNearTree(this.crown, this.crownWidest, item, eye, focus))
+        (hidden ??= new Set()).add(item);
+    return hidden ?? NONE;
   }
   dispose() {
     for (const meshes of this.levels)

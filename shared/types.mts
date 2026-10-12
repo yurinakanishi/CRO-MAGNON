@@ -88,6 +88,8 @@ export interface Obstacle extends Point {
   groundY?: number;
   groundZ?: number;
   groundOffset?: number;
+  /** The camera passes through it; the renderer hides it from that view instead (a tree). */
+  cameraPassable?: boolean;
 }
 export interface EnemyGround extends Point {
   id: string;

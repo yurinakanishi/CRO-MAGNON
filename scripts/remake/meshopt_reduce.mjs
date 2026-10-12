@@ -8,6 +8,8 @@ import { unpack, pack } from '../motion-glb.mjs';
 
 const [src, dst, targetText, errorText = '.01', flagText = ''] = process.argv.slice(2);
 // flagText 'LockBorder': keep open borders fixed (a part split from a larger mesh must meet its neighbour exactly).
+// Env MESHOPT_BOOST=AXIS:CUT:FACTOR (e.g. y:0.306:2): the error metric sees the part above CUT scaled by FACTOR (ramped over
+// 2% of the extent), so a face keeps more of the budget; the output keeps the original positions.
 const { doc, binary } = unpack(await readFile(src));
 const read = (index) => {
   const a = doc.accessors[index], v = doc.bufferViews[a.bufferView];
@@ -40,14 +42,35 @@ for (let i = 0; i < remap.length; i++) {
   remap[i] = j;
 }
 const P = new Float32Array(welded);
+let Q = P, boostReport = null;
+if (process.env.MESHOPT_BOOST) {
+  const [axisName, cutText, factorText] = process.env.MESHOPT_BOOST.split(':');
+  const axis = 'xyz'.indexOf(axisName), cut = Number(cutText), factor = Number(factorText);
+  let lo = Infinity, hi = -Infinity;
+  for (let i = axis; i < P.length; i += 3) { lo = Math.min(lo, P[i]); hi = Math.max(hi, P[i]); }
+  const ramp = 0.02 * (hi - lo);
+  // pivot: the centroid of the boosted part, on the cut plane
+  const pivot = [0, 0, 0];
+  let count = 0;
+  for (let i = 0; i < P.length; i += 3) if (P[i + axis] >= cut) { pivot[0] += P[i]; pivot[1] += P[i + 1]; pivot[2] += P[i + 2]; count++; }
+  for (let c = 0; c < 3; c++) pivot[c] /= Math.max(count, 1);
+  pivot[axis] = cut;
+  Q = new Float32Array(P.length);
+  for (let i = 0; i < P.length; i += 3) {
+    const t = Math.min(1, Math.max(0, (P[i + axis] - (cut - ramp)) / (2 * ramp)));
+    const s = 1 + (factor - 1) * t * t * (3 - 2 * t);
+    for (let c = 0; c < 3; c++) Q[i + c] = pivot[c] + (P[i + c] - pivot[c]) * s;
+  }
+  boostReport = { axis: axisName, cut, factor, rampUnits: ramp, boostedVertices: count };
+}
 const I = Uint32Array.from(indices, (i) => remap[i]);
 await MeshoptSimplifier.ready;
 const target = Math.min(Math.floor(Number(targetText)) * 3, I.length); // never above the source count
 const flags = flagText ? flagText.split(',') : [];
-let [out, error] = MeshoptSimplifier.simplify(I, P, 3, target, Number(errorText), flags);
+let [out, error] = MeshoptSimplifier.simplify(I, Q, 3, target, Number(errorText), flags);
 let method = 'meshopt simplify (topology-preserving quadric)' + (flags.length ? ' ' + flags.join('+') : '');
 if (out.length > target * 1.15) {
-  [out, error] = MeshoptSimplifier.simplifySloppy(I, P, 3, null, target, Number(errorText));
+  [out, error] = MeshoptSimplifier.simplifySloppy(I, Q, 3, null, target, Number(errorText));
   method = 'meshopt simplifySloppy (topology-free, used because the quadric pass stalled above budget)';
 }
 // Compact vertices.
@@ -73,4 +96,4 @@ const outDoc = {
   accessors: [{ bufferView: 0, componentType: 5126, count: compact.length / 3, type: 'VEC3', min, max }, { bufferView: 1, componentType: 5125, count: finalIdx.length, type: 'SCALAR' }],
 };
 await writeFile(dst, pack(outDoc, Buffer.concat([posBuf, idxBuf])));
-console.log(JSON.stringify({ source: src, before: I.length / 3, welded: P.length / 3, after: finalIdx.length / 3, error, method }));
+console.log(JSON.stringify({ source: src, before: I.length / 3, welded: P.length / 3, after: finalIdx.length / 3, error, method, boost: boostReport }));

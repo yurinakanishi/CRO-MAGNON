@@ -1,7 +1,7 @@
 """Humanoid Candidate 2 rig (2026-10 remake) on a processed (and optionally head-grafted) surface.
 
 blender -b --python rig_human_c2.py -- --source <mesh.glb> --out DIR [--landmarks-only]
-    [--accent auto|none] [--skin-radius .085] [--skin-smooth 22]
+    [--accent auto|none] [--skin-radius .085] [--skin-smooth 22] [--proportions fractions.json]
 
 Reuses the project's humanoid library (scripts/remake/riglib/blender_rig.py, clips_data.py,
 skin_weights.py): measured landmarks -> 22-bone plan (Root, Hips, Spine, Chest, Neck, Head,
@@ -34,6 +34,14 @@ ap.add_argument('--skin-radius', type=float, default=.085)
 ap.add_argument('--skin-smooth', type=int, default=22)
 ap.add_argument('--name', default='Character')
 ap.add_argument('--height', type=float, default=None, help='uniformly rescale the merged surface about the feet to this height (delivered character height)')
+ap.add_argument('--arm-band', type=float, default=.05, help='radius (fraction of height) around the shoulder-fingertip axis '
+                'whose surface points give the elbow and wrist; a slim arm needs less, or the torso and hip pouch pull them inward')
+ap.add_argument('--arm-gate', type=float, default=0.0, help='height fraction below the armpit: there the arms are separate '
+                'surfaces, and any vertex not connected to a hand within that height loses its arm weights (A-pose elbows next '
+                'to the waist otherwise pull the dress); 0 = off')
+ap.add_argument('--measure-subdiv', type=int, default=0, help='measure the landmarks on a copy split by this many simple '
+                '(shape-preserving) subdivision levels: a low-poly surface has too few vertices for the band statistics')
+ap.add_argument('--proportions', default='', help='JSON of landmark height fractions overriding blender_rig.FRACTIONS (a stylized character with a larger head)')
 args = ap.parse_args(sys.argv[sys.argv.index('--') + 1:])
 out = Path(args.out)
 out.mkdir(parents=True, exist_ok=True)
@@ -52,6 +60,25 @@ if args.height:
     obj.data.update()
 H = float(P[:, 2].max() - P[:, 2].min())
 base.H = H  # landmark fractions are relative to this character's own height
+proportions = json.loads(Path(args.proportions).read_text(encoding='utf-8'))['fractions'] if args.proportions else {}
+unknown = set(proportions) - set(base.FRACTIONS) - {'mouth'}
+assert not unknown, f'unknown landmark fractions: {sorted(unknown)}'
+base.FRACTIONS.update(proportions)
+
+measure_obj = obj
+if args.measure_subdiv:
+    # same surface, more (coplanar) vertices: the landmark band statistics count vertices, not area
+    measure_obj = obj.copy()
+    measure_obj.data = obj.data.copy()
+    bpy.context.collection.objects.link(measure_obj)
+    mod = measure_obj.modifiers.new('Measure', 'SUBSURF')
+    mod.subdivision_type = 'SIMPLE'
+    mod.levels = mod.render_levels = args.measure_subdiv
+    bpy.ops.object.select_all(action='DESELECT')
+    measure_obj.select_set(True)
+    bpy.context.view_layer.objects.active = measure_obj
+    bpy.ops.object.modifier_apply(modifier='Measure')
+    P = base.positions(measure_obj.data)
 
 # ---- arms measured along the actual limb (the A-pose angle differs between references)
 def arm_chain(sign):
@@ -61,7 +88,8 @@ def arm_chain(sign):
     hand = band[sign * band[:, 0] > lateral - .07 * H]  # the hanging hand, clear of skirt and thigh
     return hand[np.argmin(hand[:, 2])]
 
-marks, detail = base.build_landmarks(obj)
+marks, detail = base.build_landmarks(measure_obj)
+detail['measured_on'] = {'subdivision_levels': args.measure_subdiv, 'vertices': len(measure_obj.data.vertices)}
 arm_fix = {}
 # Symmetric shoulder joints (one-sided cloth or fur on a shoulder must not shift the joint).
 sx = (abs(marks['shoulder_L'][0]) + abs(marks['shoulder_R'][0])) / 2
@@ -78,7 +106,7 @@ for side, sign in (('L', 1.0), ('R', -1.0)):
         rel = P - c
         t = rel @ axis
         radial = np.linalg.norm(rel - np.outer(t, axis), axis=1)
-        band = P[(radial < .05 * H) & (np.abs(t) < .012 * H)]
+        band = P[(radial < args.arm_band * H) & (np.abs(t) < .012 * H)]
         return tuple(band.mean(0)) if len(band) > 8 else tuple(c)
     # adult arm proportions along the shoulder-to-fingertip span
     marks['elbow_' + side] = along(.43)
@@ -86,6 +114,9 @@ for side, sign in (('L', 1.0), ('R', -1.0)):
     marks['hand_' + side] = along(.87)
     arm_fix[side] = dict(tip=tip.tolist(), length=float(length), axis=axis.tolist())
 detail['arm_chain'] = arm_fix
+if measure_obj is not obj:
+    bpy.data.objects.remove(measure_obj, do_unlink=True)
+    bpy.context.view_layer.objects.active = obj
 (out / 'landmarks.json').write_text(json.dumps({'H': H, 'marks': {k: list(map(float, v)) for k, v in marks.items()}, 'detail': detail}, indent=2, default=float) + '\n')
 print('LANDMARKS', json.dumps({k: [round(float(c), 3) for c in v] for k, v in marks.items()}), flush=True)
 if args.landmarks_only:
@@ -121,9 +152,65 @@ plan = base.bone_plan(marks)
 rig = base.build_armature(plan)
 sockets = base.add_grip_sockets(rig, marks)
 geodesic = base.geodesic_bind(obj, rig, args.skin_radius, args.skin_smooth)
+arm_gate = None
+if args.arm_gate:
+    # Below the armpit the arms hang free of the body: the vertices connected to a hand through vertices under
+    # the gate height are the arms; every other vertex there (dress, waist, legs) keeps no arm weight.
+    import bmesh
+    Pm = base.positions(obj.data)
+    gate_z = args.arm_gate * H
+    bm_gate = bmesh.new()
+    bm_gate.from_mesh(obj.data)
+    bm_gate.verts.ensure_lookup_table()
+    below = Pm[:, 2] < gate_z
+    # reconstruction cracks can split a forearm lengthwise into sheets joined only above the elbow: vertices within
+    # 15 mm of each other count as connected (a low-poly crack has unaligned vertices on its two sides; a hand
+    # hangs about 10 cm clear of the dress)
+    from mathutils.kdtree import KDTree
+    index_below = np.nonzero(below)[0]
+    tree = KDTree(len(index_below))
+    for i in index_below:
+        tree.insert(Vector(Pm[i]), int(i))
+    tree.balance()
+    arm_vertex = np.zeros(len(Pm), bool)
+    for side in ('L', 'R'):
+        hand = np.array(marks['hand_' + side])
+        start = int(np.argmin(np.where(below, np.linalg.norm(Pm - hand, axis=1), np.inf)))
+        stack = [start]
+        arm_vertex[start] = True
+        while stack:
+            current = stack.pop()
+            vert = bm_gate.verts[current]
+            near = [other for other in (e.other_vert(vert).index for e in vert.link_edges) if below[other]]
+            near += [int(found[1]) for found in tree.find_range(Vector(Pm[current]), 0.015)]
+            for other in near:
+                if not arm_vertex[other]:
+                    arm_vertex[other] = True
+                    stack.append(other)
+    bm_gate.free()
+    arm_bones = [g.index for g in obj.vertex_groups if g.name.split('.')[0] in ('Shoulder', 'UpperArm', 'LowerArm', 'Hand')]
+    body_segments = {name: seg for name, seg in base.bone_segments(rig).items()
+                     if name.split('.')[0] not in ('Shoulder', 'UpperArm', 'LowerArm', 'Hand')}
+    cleared = reassigned = 0
+    for vert in obj.data.vertices:
+        if not below[vert.index] or arm_vertex[vert.index]:
+            continue
+        removed = [g.group for g in vert.groups if g.group in arm_bones and g.weight > 0]
+        if removed:
+            cleared += 1
+            for group in removed:
+                obj.vertex_groups[group].remove([vert.index])
+            if not any(g.weight > 1e-5 for g in vert.groups):
+                point = Vector(vert.co)
+                name = min(body_segments, key=lambda n: base.distance_to_segment(point, *body_segments[n]))
+                obj.vertex_groups[name].add([vert.index], 1.0, 'REPLACE')
+                reassigned += 1
+    arm_gate = {'height_fraction': args.arm_gate, 'gate_metres': round(gate_z, 4), 'crack_bridge_metres': 0.015, 'arm_vertices_below_gate': int(arm_vertex.sum()),
+                'body_vertices_cleared_of_arm_weights': cleared, 'reassigned_to_nearest_body_bone': reassigned}
+    print('ARM_GATE', json.dumps(arm_gate), flush=True)
 coverage = base.weight_coverage(obj, rig)
 weights = base.normalise_weights(obj, rig)
-weights.update(deform_coverage=round(coverage, 5), geodesic=geodesic)
+weights.update(deform_coverage=round(coverage, 5), geodesic=geodesic, arm_gate=arm_gate)
 
 bpy.context.scene.render.fps = base.FPS
 solvers = {s: LegSolver(marks['hip_' + s], marks['knee_' + s], marks['ankle_' + s]) for s in ('L', 'R')}
@@ -153,7 +240,7 @@ bpy.ops.export_scene.gltf(filepath=str(glb), export_format='GLB', use_selection=
 bpy.ops.wm.save_as_mainfile(filepath=str(out / 'source.blend'), compress=True)
 report = {'author': 'Claude Code (Opus 5.5)', 'claude_used': True, 'script': 'scripts/remake/rig_human_c2.py',
           'source': args.source, 'sha256': hashlib.sha256(glb.read_bytes()).hexdigest(), 'bytes': glb.stat().st_size,
-          'heightMetres': H, 'heightScale': height_scale, 'triangles': int(sum(len(p.vertices) - 2 for p in obj.data.polygons)), 'topology': topology,
+          'heightMetres': H, 'heightScale': height_scale, 'proportions': {'file': args.proportions or None, 'fractions': dict(base.FRACTIONS)}, 'triangles': int(sum(len(p.vertices) - 2 for p in obj.data.polygons)), 'topology': topology,
           'materials': [m.name for m in obj.data.materials], 'tribeAccent': accent_report,
           'bones': [p[0] for p in plan], 'sockets': sockets, 'weights': weights, 'groundLock': locks, 'deformationProbe': probe,
           'clips': [{'name': c['name'], 'loop': c['loop'], 'seconds': round((c['poses'][-1][0] - c['poses'][0][0]) / base.FPS, 4)} for c in clips]}

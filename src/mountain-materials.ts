@@ -11,6 +11,50 @@ import { meadowShader, MEADOW_BLADE_ALBEDO, MEADOW_MATCH, clipAtCoast } from './
 import { caveGroundShader } from './cave-ground-style.js';
 import { CAMP_CAVE_SURFACE_DATA as cave } from '../shared/camp-cave-surface-data.mjs';
 
+// The cave's rock envelope in the hillside, in cave-local metres: half its width beside the
+// bent centre line (wide at the mouth, narrowing 3-7 m inside), the measured roofs it applies
+// to, and how far below a roof the hill gives way to the cave model.
+const MOUTH = Object.freeze({ wide: 6.6, narrow: 6.0, from: 3, to: 7, roof: 1.3, below: 0.15 });
+const glsl = (value: number) => (Number.isInteger(value) ? value.toFixed(1) : String(value));
+
+/** The measured roof height (linear, clamped to the edge) the mountain shader samples. */
+function roofAt(u: number, v: number) {
+  const x = Math.min(Math.max(u * cave.nx - 0.5, 0), cave.nx - 1),
+    z = Math.min(Math.max(v * cave.nz - 0.5, 0), cave.nz - 1);
+  const x0 = Math.floor(x),
+    z0 = Math.floor(z),
+    x1 = Math.min(x0 + 1, cave.nx - 1),
+    z1 = Math.min(z0 + 1, cave.nz - 1),
+    fx = x - x0,
+    fz = z - z0,
+    roofs = cave.roofs;
+  const near =
+      roofs[z0 * cave.nx + x0] + (roofs[z0 * cave.nx + x1] - roofs[z0 * cave.nx + x0]) * fx,
+    far = roofs[z1 * cave.nx + x0] + (roofs[z1 * cave.nx + x1] - roofs[z1 * cave.nx + x0]) * fx;
+  return near + (far - near) * fz;
+}
+
+/** Whether the mountain shader below discards its hillside at this point of the mountain
+ * model (its own coordinates, as the shader's hillPosition): there the cave model is seen
+ * instead, and the camera passes (mountain-camera.ts). */
+export function mountainCaveClipped(x: number, y: number, z: number) {
+  const localX = CAMP_CAVE.x - (CAMP_MOUNTAIN.x - x),
+    localZ = CAMP_CAVE.z - (CAMP_MOUNTAIN.z - z);
+  const u = (localX - cave.minX) / (cave.nx * cave.step),
+    v = (localZ - cave.minZ) / (cave.nz * cave.step);
+  if (u < 0 || v < 0 || u > 1 || v > 1) return false;
+  const roof = roofAt(u, v);
+  const bend = Math.min(Math.max(-localZ / CAVE_BEND.depth, 0), 1),
+    centre = CAVE_BEND.offset * bend * bend * (3 - 2 * bend);
+  const t = Math.min(Math.max((localZ - MOUTH.from) / (MOUTH.to - MOUTH.from), 0), 1),
+    width = MOUTH.wide + (MOUTH.narrow - MOUTH.wide) * t * t * (3 - 2 * t);
+  return (
+    Math.abs(localX - centre) < width &&
+    roof > MOUTH.roof &&
+    y < CAMP_CAVE.elevation + CAMP_CAVE.groundOffset + roof - MOUTH.below
+  );
+}
+
 // Tint the existing source surface along the measured, walkable switchback.
 // The 280 m source square reaches past the measured shoreline: it ends at the sea, and its flat
 // apron gives way near the shore to the coast-lowered streamed ground (clipAtCoast). The coast
@@ -95,8 +139,8 @@ export function prepareMountainMaterials(
             // Extending an imaginary portal over the apron exposes the hollow hill.
             float bend=clamp(-caveLocal.y/${CAVE_BEND.depth.toFixed(6)},0.0,1.0);
             float centre=${CAVE_BEND.offset.toFixed(6)}*bend*bend*(3.0-2.0*bend);
-            float innerWidth=mix(6.6,6.0,smoothstep(3.0,7.0,caveLocal.y));
-            if(abs(caveLocal.x-centre)<innerWidth && roofHeight>1.3 && hillPosition.y<${(CAMP_CAVE.elevation + CAMP_CAVE.groundOffset).toFixed(2)}+roofHeight-.15)discard;
+            float innerWidth=mix(${glsl(MOUTH.wide)},${glsl(MOUTH.narrow)},smoothstep(${glsl(MOUTH.from)},${glsl(MOUTH.to)},caveLocal.y));
+            if(abs(caveLocal.x-centre)<innerWidth && roofHeight>${glsl(MOUTH.roof)} && hillPosition.y<${(CAMP_CAVE.elevation + CAMP_CAVE.groundOffset).toFixed(2)}+roofHeight-${glsl(MOUTH.below)})discard;
           }
           diffuseColor.rgb=meadowGreen(diffuseColor.rgb,p);
           float trail=1000.0;${segments}

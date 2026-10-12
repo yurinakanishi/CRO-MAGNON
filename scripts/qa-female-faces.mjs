@@ -17,12 +17,13 @@ const html = `<!doctype html><style>body{margin:0;background:#bec3c7}canvas{disp
 <script type="module">
 import * as T from 'three';
 import {GLTFLoader} from 'three/addons/loaders/GLTFLoader.js';
+import {MeshoptDecoder} from 'three/addons/libs/meshopt_decoder.module.js';
 const renderer=new T.WebGLRenderer({antialias:true,preserveDrawingBuffer:true});renderer.setSize(${width},${height});renderer.setPixelRatio(1);renderer.toneMapping=T.ACESFilmicToneMapping;document.body.appendChild(renderer.domElement);
 const scene=new T.Scene();scene.background=new T.Color('#bec3c7');scene.add(new T.HemisphereLight(0xffffff,0x817268,2));
 for(const [p,power] of [[[2,3,4],2.5],[[-3,1,2],1.4],[[0,2,-3],1]]){const l=new T.DirectionalLight(0xffffff,power);l.position.set(...p);scene.add(l);}
 const cam=new T.OrthographicCamera(-.21,.21,.21,-.21,.001,20);let model,mixer,gltf;
 window.inspectFace=async function(url,view='front',clay=false,clip='',phase=0,whole=false){
-if(model){scene.remove(model);const textures=new Set();model.traverse(o=>{if(o.isMesh){o.geometry.dispose();for(const mat of [o.material].flat()){for(const value of Object.values(mat))if(value?.isTexture)textures.add(value);mat.dispose();}}});for(const tex of textures){tex.dispose();tex.image?.close?.();}}gltf=await new GLTFLoader().loadAsync(url);model=gltf.scene;scene.add(model);
+if(model){scene.remove(model);const textures=new Set();model.traverse(o=>{if(o.isMesh){o.geometry.dispose();for(const mat of [o.material].flat()){for(const value of Object.values(mat))if(value?.isTexture)textures.add(value);mat.dispose();}}});for(const tex of textures){tex.dispose();tex.image?.close?.();}}gltf=await new GLTFLoader().setMeshoptDecoder(MeshoptDecoder).loadAsync(url);model=gltf.scene;scene.add(model);
 if(clay)model.traverse(o=>{if(o.isMesh)o.material=clay==='albedo'?new T.MeshBasicMaterial({map:o.material.map}):new T.MeshStandardMaterial({color:0xaaaaaa,roughness:.7});});
 if(clip){mixer=new T.AnimationMixer(model);const c=gltf.animations.find(c=>c.name===clip);const a=mixer.clipAction(c);a.setLoop(T.LoopOnce,1);a.clampWhenFinished=true;a.play();mixer.setTime(c.duration*phase);}
 scene.updateMatrixWorld(true);model.traverse(o=>{if(o.isSkinnedMesh)o.skeleton.update();});

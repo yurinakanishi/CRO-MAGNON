@@ -50,6 +50,43 @@ function boneBounds(mesh: THREE.SkinnedMesh): Bounds {
   return bounds;
 }
 
+const posed = new THREE.Matrix4(),
+  boneWorld = new THREE.Matrix4();
+
+/** The distance from a world point to the nearest bone box (boneBounds) of the skinned mesh
+ * as posed by its bones' current world matrices. The boxes hold each vertex as its bones move
+ * it, so this is about the distance to the drawn surface (a vertex blended across a bent joint
+ * can lie slightly outside them). A few dozen boxes: cheap enough for every frame's camera. */
+export function skinnedDistance(mesh: THREE.SkinnedMesh, point: THREE.Vector3) {
+  const bounds = boneBounds(mesh);
+  posed.multiplyMatrices(mesh.matrixWorld, mesh.bindMatrixInverse);
+  let nearest = Infinity;
+  for (let i = 0; i < bounds.boxes.length; i++) {
+    if (bounds.boxes[i].isEmpty()) continue;
+    const e = boneWorld.multiplyMatrices(posed, mesh.skeleton.bones[i].matrixWorld).elements,
+      c = bounds.centres[i],
+      h = bounds.halves[i];
+    // The box's world AABB (as computeBoundingSphere below), then the point's distance to it.
+    const dx = Math.max(
+        Math.abs(e[0] * c.x + e[4] * c.y + e[8] * c.z + e[12] - point.x) -
+          (Math.abs(e[0]) * h.x + Math.abs(e[4]) * h.y + Math.abs(e[8]) * h.z),
+        0,
+      ),
+      dy = Math.max(
+        Math.abs(e[1] * c.x + e[5] * c.y + e[9] * c.z + e[13] - point.y) -
+          (Math.abs(e[1]) * h.x + Math.abs(e[5]) * h.y + Math.abs(e[9]) * h.z),
+        0,
+      ),
+      dz = Math.max(
+        Math.abs(e[2] * c.x + e[6] * c.y + e[10] * c.z + e[14] - point.z) -
+          (Math.abs(e[2]) * h.x + Math.abs(e[6]) * h.y + Math.abs(e[10]) * h.z),
+        0,
+      );
+    nearest = Math.min(nearest, Math.hypot(dx, dy, dz));
+  }
+  return nearest;
+}
+
 /** A skinned vertex is a convex combination of its bone-transformed positions.
  * Union the transformed influence boxes to enclose every vertex without skinning
  * tens of thousands of vertices on its first visible frame. Transforming all

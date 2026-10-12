@@ -11,7 +11,7 @@ import {
   type VerifiedTextureOptions,
 } from './verified-texture.js';
 import { prepareCaveMaterials } from './cave-materials.js';
-import { MeshRayGrid } from './mesh-ray-grid.js';
+import { MeshRayGrid, nearPlaneReach } from './mesh-ray-grid.js';
 import { LoadingCaveMovement } from './loading-cave-movement.js';
 import { movementKey } from './combat-input.js';
 import { combineMovement, readStick, STICK } from './gamepad-input.js';
@@ -357,11 +357,12 @@ export class LoadingCave {
       Math.sin(this.pitch),
       Math.cos(this.yaw) * Math.cos(this.pitch),
     );
-    const distance = Math.max(0.15, (this.walls?.distance(focus, direction, 3.4) ?? 3.4) - 0.18);
-    this.camera.position.copy(focus).addScaledVector(direction, distance);
-    this.camera.lookAt(focus);
     this.camera.aspect = this.world.camera.aspect;
     this.camera.updateProjectionMatrix();
+    // The near plane keeps clear of the rock: a sphere is swept, not a ray.
+    const distance = this.walls?.sweep(focus, direction, 3.4, nearPlaneReach(this.camera)) ?? 3.4;
+    this.camera.position.copy(focus).addScaledVector(direction, distance);
+    this.camera.lookAt(focus);
   }
 
   render(dt: number) {
