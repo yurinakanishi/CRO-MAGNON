@@ -1,181 +1,53 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { EventEmitter } from 'node:events';
 import { readFile } from 'node:fs/promises';
 import { createHash } from 'node:crypto';
 import * as THREE from 'three';
-const { createGameCore } = await import(
-  process.env.MARUIMO_CORE || '../dist/application/game-core.mjs'
-);
-import { CollisionWorld } from '../dist/shared/collision.mjs';
 import { caveWorldAt } from '../dist/shared/camp-cave-layout.mjs';
-import { MASCOT_KEYS } from '../dist/shared/mascot-selection.mjs';
-import { FRIEND_MASCOTS } from '../dist/shared/friend-mascots.mjs';
 import { ALL_MASCOT_MODELS } from '../dist/shared/mascot-roster.mjs';
-import { mascotMenuMarkup } from '../dist/src/mascot-menu.js';
+import { MASCOT_KEYS } from '../dist/shared/mascot-selection.mjs';
 import { CAVE_EXTRA_PIGMENTS } from '../dist/src/cave-gallery-layout.js';
 import { loadMotion, unpack, pose } from '../scripts/motion-glb.mjs';
 import { assertPublicCharacterData } from '../scripts/public-character-audit.mjs';
+import { mascotCore } from './mascot-fixture.mjs';
+import { companionBehavior } from './companion-behavior.mjs';
+companionBehavior('maruimo-mascot');
 
-class Socket extends EventEmitter {
-  readyState = 1;
-  bufferedAmount = 0;
-  messages = [];
-  send(data) {
-    this.messages.push(JSON.parse(data));
-  }
-  close() {
-    this.readyState = 3;
-    this.emit('close');
-  }
-  ping() {
-    this.emit('pong');
-  }
-}
-function fixture() {
-  let now = 10000,
-    id = 0;
-  const options = {
-    mascotModels: ALL_MASCOT_MODELS,
-    runtime: { now: () => now, id: () => `m-${++id}`, token: () => `s-${++id}` },
-    persistentSessions: true,
-    keepEmptyRooms: true,
-  };
-  let core = createGameCore(options);
-  const join = (session = '') => {
-    const socket = new Socket();
-    core.connect(socket, new URLSearchParams({ room: 'MARUIMO', resume: '1', session }));
-    return { socket, welcome: socket.messages.find((m) => m.type === 'welcome') };
-  };
-  const owner = join(),
-    observer = join();
-  const room = () => core.rooms.get('MARUIMO');
-  room().collision = new CollisionWorld([], { coast: false, river: false, walkSurfaces: [] });
-  room().animals = [];
-  room().enemies = [];
-  room().behemoth = null;
-  room().sabertooth = null;
-  const player = () => room().players.get(owner.welcome.id);
-  Object.assign(player(), { x: room().maruimo.x, z: room().maruimo.z - 1, facing: 0 });
-  const action = (action, targetId, actor = owner) => {
-    now += 200;
-    actor.socket.emit(
-      'message',
-      Buffer.from(JSON.stringify({ type: 'action', action, targetId })),
-      false,
-    );
-  };
-  const step = (seconds) => {
-    for (let i = 0; i < seconds * 20; i++) {
-      now += 50;
-      core.tick();
-    }
-  };
-  return {
-    room,
-    player,
-    owner,
-    observer,
-    join,
-    action,
-    step,
-    get core() {
-      return core;
-    },
-    restore(saved) {
-      core = createGameCore(options);
-      core.importState(saved);
-    },
-  };
-}
-
-test('the fourteenth mascot is selectable, follows, returns, and preserves another player’s ownership', () => {
-  const f = fixture(),
-    c = f.room().maruimo;
-  assert.equal(MASCOT_KEYS.length, 14 + FRIEND_MASCOTS.length);
-  assert.match(mascotMenuMarkup(f.core.snapshot(f.room())), /data-mascot="maruimo-mascot"/);
-  f.action('selectMascot', 'maruimo-mascot');
-  assert.equal(c.followPlayerId, f.owner.welcome.id);
-  f.action('selectMascot', 'maruimo-mascot', f.observer);
-  assert.equal(c.followPlayerId, f.owner.welcome.id);
-  const q = f.room().players.get(f.observer.welcome.id);
-  Object.assign(q, { x: c.x, z: c.z - 1 });
-  f.action('petMaruimo', null, f.observer);
-  assert.equal(c.petPlayerId, null);
-  const before = c.x;
-  f.player().x += 5;
-  f.step(3);
-  assert.ok(c.x > before + 1);
-  f.action('deselectMascot', 'maruimo-mascot');
-  f.step(12);
-  assert.equal(c.followPlayerId, null);
-  assert.equal(c.mode, 'idle');
-  assert.ok(Math.hypot(c.x - c.home.x, c.z - c.home.z) < 0.08);
+test('Maruimo is a separate companion for each chooser and a visitor can pet it', (t) => {
+  const w = mascotCore(t, { mascotModels: ALL_MASCOT_MODELS });
+  const a = w.join('A'),
+    b = w.join('B', '', { x: 56, z: 50 });
+  w.act(a, 'selectMascot', 'maruimo-mascot');
+  w.act(b, 'selectMascot', 'maruimo-mascot');
+  const ca = w.active(a),
+    cb = w.active(b);
+  assert.notEqual(ca.id, cb.id);
+  Object.assign(b.player(), { x: ca.x, z: ca.z - 1 });
+  w.act(b, 'petMascot', ca.id);
+  assert.equal(ca.petPlayerId, b.id);
+  assert.equal(ca.ownerId, a.id);
+  assert.equal(cb.ownerId, b.id);
+  w.act(a, 'deselectMascot');
+  w.step(50, 30);
+  assert.ok(!w.room().companions.includes(ca));
+  assert.equal(w.active(b), cb);
 });
-
-test('pet contact bonds and completes; another pet cannot start concurrently; recall cancels only the stroke', () => {
-  const f = fixture(),
-    c = f.room().maruimo;
-  f.action('petMaruimo');
-  assert.equal(c.petPlayerId, f.owner.welcome.id);
-  f.step(0.7);
-  assert.ok(c.petContactAt > 0);
-  Object.assign(f.room().kohaku, { x: c.x, z: c.z });
-  f.action('petKohaku');
-  assert.equal(f.room().kohaku.petPlayerId, null);
-  f.step(3);
-  assert.equal(c.petPlayerId, null);
-  assert.equal(c.followPlayerId, f.owner.welcome.id);
-  f.action('petMaruimo');
-  assert.equal(c.petPlayerId, f.owner.welcome.id);
-  f.action('recallBots');
-  assert.equal(c.petPlayerId, null);
-  assert.equal(c.followPlayerId, f.owner.welcome.id);
-  f.action('travelAlone');
-  assert.equal(c.followPlayerId, null);
-});
-
-test('bond survives snapshot, disconnect, save and resume; old saves add an unowned mascot', () => {
-  const f = fixture();
-  f.player().inventory.wood = 7;
-  f.action('petMaruimo');
-  const snapshot = f.core.snapshot(f.room());
-  assert.equal(snapshot.maruimo.followPlayerId, f.owner.welcome.id);
-  assert.equal(snapshot.maruimo.path, undefined);
-  f.owner.socket.close();
-  f.step(0.2);
-  assert.equal(f.room().maruimo.petPlayerId, null);
-  const saved = JSON.parse(JSON.stringify(f.core.exportState())),
-    before = structuredClone(saved);
-  f.restore(saved);
-  assert.deepEqual(saved, before);
-  assert.equal(f.room().maruimo.followPlayerId, f.owner.welcome.id);
-  const resumed = f.join(f.owner.welcome.session);
-  assert.equal(resumed.welcome.resumed, true);
-  assert.equal(f.room().players.get(resumed.welcome.id).inventory.wood, 7);
-  assert.equal(f.room().maruimo.petPlayerId, null);
-  delete saved.rooms[0].maruimo;
-  f.restore(saved);
-  assert.equal(f.room().maruimo.followPlayerId, null);
-  assert.equal(f.room().maruimo.id, 'maruimo-mascot');
-});
-
-test('cave still refuses attacks and throwing while permitting Maruimo petting', () => {
-  const f = fixture(),
-    p = f.player(),
-    c = f.room().maruimo;
+test('the cave permits Maruimo petting but refuses attacks and throwing', (t) => {
+  const w = mascotCore(t, { mascotModels: ALL_MASCOT_MODELS }),
+    a = w.join();
+  w.act(a, 'selectMascot', 'maruimo-mascot');
+  const c = w.active(a),
+    p = a.player();
   Object.assign(p, caveWorldAt(-12));
   Object.assign(c, { x: p.x, z: p.z + 1 });
-  const attack = p.attackSequence,
-    hits = c.hitSequence;
-  f.action('attack', c.id);
-  f.step(1);
-  assert.equal(p.attackSequence, attack);
-  assert.equal(c.hitSequence, hits);
-  f.action('throwBot', c.id);
-  assert.equal(c.mode, 'idle');
-  f.action('petMaruimo');
+  const before = p.attackSequence;
+  w.act(a, 'attack', c.id);
+  assert.equal(p.attackSequence, before);
+  w.act(a, 'throwBot', c.id);
+  assert.equal(c.squadMode, 'following');
+  w.act(a, 'petMascot', c.id);
   assert.equal(c.petPlayerId, p.id);
+  assert.equal(c.ownerId, p.id);
 });
 
 test('the retained pre-remake mascot preserves every original octopus geometry, skin, UV, texture and animation buffer', async () => {

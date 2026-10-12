@@ -1,8 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import * as THREE from 'three';
-import { EventEmitter } from 'node:events';
-import { createGameCore } from '../dist/application/game-core.mjs';
 import { CollisionWorld } from '../dist/shared/collision.mjs';
 import { walkHeight, riverX, WATER_LEVEL } from '../dist/shared/terrain.mjs';
 import { mountainWaterHeight } from '../dist/shared/mountain-river.mjs';
@@ -10,7 +8,6 @@ import { CHARACTER_MODELS } from '../dist/shared/characters.mjs';
 import {
   BOT_KINDS,
   ORB_BOTS,
-  syncOrbBots,
   updateOrbBots,
   handleOrbBotAction,
   orbBotSnapshots,
@@ -22,34 +19,13 @@ import {
   nextOrbBot,
   posingOrbBot,
 } from '../dist/shared/orb-bots.mjs';
+import { chooseMascot } from '../dist/shared/mascot-selection.mjs';
 import { OrbBotPose } from '../dist/src/orb-bot-pose.js';
 import { loadMotion } from '../scripts/motion-glb.mjs';
 import { deliveredModel } from './delivered-model.mjs';
-
-function fixture(obstacles = []) {
-  const p = {
-    id: 'p',
-    x: 50,
-    z: 50,
-    facing: 0,
-    radius: 0.32,
-    species: 'cro',
-    gender: 'female',
-    speed: 0,
-    energy: 100,
-    attackAt: 0,
-    attackSequence: 0,
-    jumpAt: 0,
-    jumpSequence: 0,
-  };
-  const collision = new CollisionWorld(obstacles, { coast: false, river: false, walkSurfaces: [] });
-  const room = { collision, players: new Map([[p.id, p]]) };
-  syncOrbBots(room, 10000);
-  // Throw/recall fixtures start with explicitly recruited companions.
-  for (const b of room.orbBots)
-    Object.assign(b, { ownerId: p.id, mode: 'following', lastOwner: { x: p.x, z: p.z } });
-  for (let i = 0; i < 80; i++) updateOrbBots(room, 0.05, 6000 + i * 50);
-  return { p, room, b: room.orbBots[0] };
+import { mascotFixture, mascotCore, MascotSocket } from './mascot-fixture.mjs';
+function fixture(obstacles = [], kind = 'white') {
+  return mascotFixture(kind, obstacles);
 }
 function advance(room, start, seconds, move) {
   for (let t = 0.05; t < seconds + 0.025; t += 0.05) {
@@ -67,52 +43,9 @@ function throwOne(f, kind = 'white', now = 10000) {
   return f.room.orbBots.find((b) => b.kind === kind);
 }
 
-test('nine shared dots retain completed bonds when connections change', () => {
-  assert.deepEqual(BOT_KINDS, [
-    'white',
-    'blue',
-    'green',
-    'purple',
-    'orange',
-    'beret',
-    'frog',
-    'triangle',
-    'heart',
-  ]);
-  const f = fixture();
-  for (const b of f.room.orbBots) {
-    assert.ok(
-      Math.hypot(b.x - f.p.x, b.z - f.p.z) < ORB_BOTS.pickupRange,
-      `${b.kind} is reachable from the formation`,
-    );
-    for (const other of f.room.orbBots.filter((entry) => entry.id !== b.id))
-      assert.ok(
-        Math.hypot(b.x - other.x, b.z - other.z) >= ORB_BOTS.diameter,
-        'The two rows do not overlap',
-      );
-  }
-  for (let i = 1; i < 5; i++) f.room.players.set(`p${i}`, { ...f.p, id: `p${i}`, x: 50 + i * 2 });
-  syncOrbBots(f.room, 10001);
-  syncOrbBots(f.room, 10002);
-  assert.equal(f.room.orbBots.length, 9);
-  assert.equal(new Set(f.room.orbBots.map((b) => b.id)).size, 9);
-  throwOne(f);
-  f.room.players.delete('p');
-  syncOrbBots(f.room, 11000);
-  assert.equal(f.room.orbBots.length, 9);
-  f.room.players.set('p', f.p);
-  syncOrbBots(f.room, 12000);
-  assert.deepEqual(
-    f.room.orbBots.filter((b) => b.ownerId === 'p').map((b) => b.kind),
-    BOT_KINDS,
-  );
-  assert.equal(f.b.sequence, 1);
-  assert.ok(orbBotSnapshots(f.room).every((b) => !('path' in b) && !('lastOwner' in b)));
-});
-
 test('one command throws each kind from the hand; it stays at the landing until recalled', () => {
   for (const kind of BOT_KINDS) {
-    const f = fixture(),
+    const f = fixture([], kind),
       b = throwOne(f, kind);
     assert.equal(b.mode, 'windup');
     assert.equal(handleOrbBotAction(f.room, f.p, 'holdBot', 'blue', 10550), false);
@@ -139,62 +72,33 @@ test('one command throws each kind from the hand; it stays at the landing until 
   }
 });
 
-test('nine quick presses reserve nine distinct bots, throw in order, and never auto-repeat', () => {
-  const f = fixture();
-  for (let i = 0; i < 9; i++) {
-    assert.equal(handleOrbBotAction(f.room, f.p, 'throwBot', 'white', 10000 + i * 20), true);
-  }
-  assert.equal(handleOrbBotAction(f.room, f.p, 'throwBot', 'white', 10180), false);
-  assert.equal(f.room.orbBots.filter((b) => b.mode === 'windup').length, 1);
-  assert.equal(f.room.orbBots.filter((b) => b.mode === 'queued').length, 8);
-  const releases = [];
-  advance(f.room, 10200, 8, () => {
-    const windup = f.room.orbBots.filter((b) => b.mode === 'windup');
-    assert.ok(windup.length <= 1, 'only one bot occupies the throwing hand');
-    for (const b of f.room.orbBots) {
-      if (b.mode === 'airborne' && !releases.includes(b.kind)) releases.push(b.kind);
-    }
-  });
-  assert.deepEqual(releases, BOT_KINDS);
-  assert.ok(f.room.orbBots.every((b) => b.mode === 'waiting' && b.sequence === 1));
-  for (const b of f.room.orbBots)
-    for (const other of f.room.orbBots) {
-      if (b !== other) assert.ok(Math.hypot(b.x - other.x, b.z - other.z) >= ORB_BOTS.diameter);
-    }
-  assert.equal(nextOrbBot(f.room.orbBots, f.p), undefined);
-  handleOrbBotAction(f.room, f.p, 'recallBots', null, 18200);
-  advance(f.room, 18200, 10);
-  assert.ok(f.room.orbBots.every((b) => b.mode === 'following' && b.sequence === 1));
-  assert.equal(nextOrbBot(f.room.orbBots, f.p)?.kind, 'white');
-});
-
 test("recalled bots face their owner's heading on arrival and after a formation turn", () => {
-  for (const facing of [0, Math.PI / 2, Math.PI, -Math.PI / 2]) {
-    const f = fixture();
-    f.p.facing = facing;
-    advance(f.room, 10000, 3);
-    for (let i = 0; i < BOT_KINDS.length; i++)
-      assert.ok(handleOrbBotAction(f.room, f.p, 'throwBot', 'white', 13000 + i * 20));
-    advance(f.room, 13200, 6);
-    assert.ok(f.room.orbBots.every((b) => b.mode === 'waiting'));
-    handleOrbBotAction(f.room, f.p, 'recallBots', null, 19200);
-    const arrivals = new Set();
-    advance(f.room, 19200, 8, () => {
-      for (const b of f.room.orbBots) {
-        if (b.mode !== 'catching') continue;
-        arrivals.add(b.kind);
-        assert.ok(Math.cos(b.facing - f.p.facing) > 0.999999, `${b.kind} arrives facing forward`);
+  for (const kind of BOT_KINDS)
+    for (const facing of [0, Math.PI / 2, Math.PI, -Math.PI / 2]) {
+      const f = fixture([], kind);
+      f.p.facing = facing;
+      advance(f.room, 10000, 3);
+      assert.ok(handleOrbBotAction(f.room, f.p, 'throwBot', kind, 13000));
+      advance(f.room, 13200, 6);
+      assert.ok(f.room.orbBots.every((b) => b.mode === 'waiting'));
+      handleOrbBotAction(f.room, f.p, 'recallBots', null, 19200);
+      const arrivals = new Set();
+      advance(f.room, 19200, 8, () => {
+        for (const b of f.room.orbBots) {
+          if (b.mode !== 'catching') continue;
+          arrivals.add(b.kind);
+          assert.ok(Math.cos(b.facing - f.p.facing) > 0.999999, `${b.kind} arrives facing forward`);
+        }
+      });
+      assert.deepEqual([...arrivals], [kind]);
+      assert.ok(f.room.orbBots.every((b) => b.mode === 'following'));
+      f.p.facing += 0.8;
+      advance(f.room, 27200, 4);
+      for (const b of orbBotSnapshots(f.room)) {
+        assert.equal(b.speed, 0);
+        assert.ok(Math.cos(b.facing - f.p.facing) > 0.999999, `${b.kind} settles facing forward`);
       }
-    });
-    assert.equal(arrivals.size, BOT_KINDS.length);
-    assert.ok(f.room.orbBots.every((b) => b.mode === 'following'));
-    f.p.facing += 0.8;
-    advance(f.room, 27200, 4);
-    for (const b of orbBotSnapshots(f.room)) {
-      assert.equal(b.speed, 0);
-      assert.ok(Math.cos(b.facing - f.p.facing) > 0.999999, `${b.kind} settles facing forward`);
     }
-  }
 });
 
 test('waiting bots stay put when their owner walks away, warps, mounts, or respawns', () => {
@@ -225,45 +129,6 @@ test('waiting bots stay put when their owner walks away, warps, mounts, or respa
   handleOrbBotAction(f.room, f.p, 'recallBots', null, 28000);
   advance(f.room, 28000, 8);
   assert.equal(b.mode, 'following');
-});
-
-test("recall and interruption cancel pending throws without summoning another owner's bots", () => {
-  for (const action of ['recallBots', 'cancelBotThrows', 'attack']) {
-    const f = fixture();
-    const other = { ...f.p, id: 'other', x: 55 };
-    f.room.players.set(other.id, other);
-    syncOrbBots(f.room, 10000);
-    const otherBot = f.room.orbBots.find((b) => b.kind === 'heart');
-    Object.assign(otherBot, {
-      ownerId: other.id,
-      x: other.x,
-      z: other.z - 1,
-      lastOwner: { x: other.x, z: other.z },
-    });
-    handleOrbBotAction(f.room, other, 'throwBot', 'heart', 10000);
-    updateOrbBots(f.room, 0.05, 10300);
-    for (let i = 0; i < 4; i++) handleOrbBotAction(f.room, f.p, 'throwBot', 'white', 10300 + i);
-    if (action === 'attack') {
-      Object.assign(f.p, { attackAt: 10310, attackSequence: 1 });
-      updateOrbBots(f.room, 0.05, 10310);
-    } else handleOrbBotAction(f.room, f.p, action, null, 10310);
-    advance(f.room, 10310, 8);
-    assert.ok(
-      f.room.orbBots.filter((b) => b.ownerId === f.p.id).every((b) => b.mode === 'following'),
-    );
-    assert.equal(
-      f.room.orbBots.find((b) => b.ownerId === other.id && b.kind === 'heart').mode,
-      'waiting',
-    );
-  }
-});
-
-test('the current windup takes arm priority over an earlier airborne bot', () => {
-  const f = fixture();
-  throwOne(f);
-  updateOrbBots(f.room, 0.05, 10760);
-  handleOrbBotAction(f.room, f.p, 'throwBot', 'blue', 10860);
-  assert.equal(posingOrbBot(f.room.orbBots, f.p.id, 10870)?.kind, 'blue');
 });
 
 test('foreign IDs, unavailable actions, and grabbing through walls are rejected', () => {
@@ -512,7 +377,7 @@ test('call gesture uses a shared timestamp, expires, and is cancelled by a new t
   const f = fixture();
   const other = { ...f.p, id: 'other' };
   f.room.players.set(other.id, other);
-  syncOrbBots(f.room, 10000);
+  chooseMascot(f.room, other, 'blue', 10000);
   handleOrbBotAction(f.room, f.p, 'recallBots', null, 12000);
   const called = orbBotSnapshots(f.room);
   assert.ok(called.filter((b) => b.ownerId === f.p.id).every((b) => b.recallAt === 12000));
@@ -532,109 +397,56 @@ test('call gesture uses a shared timestamp, expires, and is cancelled by a new t
   updateOrbBots(f.room, 0.05, 12800);
   assert.ok(f.room.orbBots.every((b) => !b.recallAt));
 });
-
-test('five real command connections share throws, reject a sixth, and preserve player saves', () => {
-  let now = 10000,
-    id = 0;
-  class Socket extends EventEmitter {
-    readyState = 1;
-    bufferedAmount = 0;
-    messages = [];
-    ping() {
-      this.emit('pong');
-    }
-    send(data) {
-      this.messages.push(JSON.parse(data));
-    }
-    close() {
-      this.readyState = 3;
-      this.emit('close');
-    }
-  }
-  const core = createGameCore({
-    runtime: { now: () => now, id: () => `bot-${++id}`, token: () => `bot-token-${++id}` },
-    keepEmptyRooms: true,
-    persistentSessions: true,
-  });
-  const sockets = Array.from({ length: 5 }, () => new Socket());
-  for (const socket of sockets)
-    core.connect(socket, new URLSearchParams({ room: 'BOTS-QA', resume: '1' }));
-  now += 50;
-  core.tick();
-  const room = core.rooms.get('BOTS-QA');
-  assert.equal(room.players.size, 5);
-  assert.equal(room.orbBots.length, 9);
-  assert.ok(room.orbBots.every((b) => b.ownerId === ''));
-  const sixth = new Socket();
-  core.connect(sixth, new URLSearchParams({ room: 'BOTS-QA' }));
-  assert.equal(room.players.size, 5);
-  const p = [...room.players.values()][0];
-  Object.assign(p, { x: 50, z: 50, facing: 0, moving: false, speed: 0 });
-  for (const b of room.orbBots)
-    Object.assign(b, { ownerId: p.id, mode: 'following', lastOwner: { x: p.x, z: p.z } });
-  now += 500;
-  core.tick();
-  // Let the newly joined bots settle at the real camp before grabbing them.
-  for (let i = 0; i < 100; i++) {
-    now += 50;
-    core.tick();
-  }
-  const before = structuredClone(p.inventory);
-  const send = (action) =>
-    sockets[0].emit(
-      'message',
-      Buffer.from(JSON.stringify({ type: 'action', action, targetId: 'green' })),
-      false,
+test('rapid repeated throws reserve just the one chosen dot and never borrow another owner', () => {
+  const f = fixture();
+  const other = { ...f.p, id: 'other', x: 55, mascot: null };
+  f.room.players.set(other.id, other);
+  chooseMascot(f.room, other, 'white', 10000);
+  assert.equal(handleOrbBotAction(f.room, f.p, 'throwBot', 'white', 10000), true);
+  for (let i = 1; i < 10; i++)
+    assert.equal(handleOrbBotAction(f.room, f.p, 'throwBot', 'white', 10000 + i * 20), false);
+  assert.equal(f.room.orbBots.length, 2);
+  assert.equal(f.room.orbBots.filter((b) => b.mode === 'windup').length, 1);
+  assert.equal(f.room.orbBots.find((b) => b.ownerId === other.id).sequence, 0);
+  advance(f.room, 10200, 8);
+  assert.equal(f.b.mode, 'waiting');
+  assert.equal(f.b.sequence, 1);
+  assert.equal(nextOrbBot(f.room.orbBots, f.p), undefined);
+});
+test('five real connections each choose a separate dot, share only its state, and reject a sixth player', (t) => {
+  const w = mascotCore(t),
+    people = Array.from({ length: 5 }, (_, i) =>
+      w.join('Person ' + i, '', { x: 50 + i * 4, z: 50 }),
     );
-  now += 500;
-  send('throwBot');
-  assert.equal(room.orbBots.filter((b) => b.mode === 'windup').length, 1);
-  for (let i = 0; i < 8; i++) {
-    now += 10;
-    send('throwBot');
-  }
-  assert.equal(
-    room.orbBots.filter((b) => b.mode === 'queued').length,
-    8,
-    'rapid commands bypass the unrelated 450 ms action gate',
-  );
-  const states = sockets.map((s) => s.messages.filter((m) => m.type === 'state').at(-1));
-  assert.ok(states.every((s) => JSON.stringify(s.orbBots) === JSON.stringify(states[0].orbBots)));
-  for (let i = 0; i < 160; i++) {
-    now += 50;
-    core.tick();
-  }
-  const bot = room.orbBots.find((b) => b.ownerId === p.id && b.kind === 'green');
+  assert.deepEqual(w.room().orbBots, []);
+  for (const who of people) w.act(who, 'selectMascot', 'white');
+  assert.equal(w.room().orbBots.length, 5);
+  assert.equal(new Set(w.room().orbBots.map((b) => b.id)).size, 5);
+  const sixth = new MascotSocket();
+  w.core().connect(sixth, new URLSearchParams({ room: 'MASCOTS' }));
+  assert.equal(w.room().players.size, 5);
+  assert.ok(!sixth.messages.some((m) => m.type === 'welcome'));
+  const a = people[0],
+    before = structuredClone(a.player().inventory);
+  w.act(a, 'throwBot', 'white');
+  w.step(50, 40);
+  const bot = w.room().orbBots.find((b) => b.ownerId === a.id);
   assert.equal(bot.mode, 'waiting');
-  assert.ok(room.orbBots.filter((b) => b.ownerId === p.id).every((b) => b.mode === 'waiting'));
-  send('recallBots');
-  const calls = sockets.map((s) =>
-    s.messages
-      .filter((m) => m.type === 'state')
-      .at(-1)
-      .orbBots.filter((b) => b.ownerId === p.id)
-      .map((b) => b.recallAt),
-  );
-  const recalledCount = room.orbBots.filter((b) => b.ownerId === p.id).length;
-  assert.ok(recalledCount >= 9, 'the whistle also invites available NPC companions');
+  for (const who of people) assert.deepEqual(w.state(who).orbBots, w.state(a).orbBots);
   assert.ok(
-    calls.every((times) => times.length === recalledCount && times.every((at) => at === now)),
+    w
+      .room()
+      .orbBots.filter((b) => b.ownerId !== a.id)
+      .every((b) => b.sequence === 0),
   );
-  for (let i = 0; i < 160; i++) {
-    now += 50;
-    core.tick();
-  }
+  w.act(a, 'recallBots');
+  w.step(50, 160);
   assert.equal(bot.mode, 'following');
-  assert.deepEqual(p.inventory, before);
-  const saved = core.exportState();
-  assert.equal(saved.rooms[0].orbBots.length, 9);
-  const restored = createGameCore({
-    runtime: { now: () => now, id: () => `next-${++id}`, token: () => `next-token-${++id}` },
-  });
-  restored.importState(saved);
-  assert.equal(restored.rooms.get('BOTS-QA').orbBots.filter((b) => b.ownerId === p.id).length, 9);
-  sockets[0].close();
-  now += 50;
-  core.tick();
-  assert.equal(room.orbBots.filter((b) => b.home).length, 9);
+  assert.deepEqual(a.player().inventory, before);
+  const saved = w.core().exportState();
+  assert.equal(saved.rooms[0].orbBots, undefined);
+  w.load(saved);
+  assert.deepEqual(w.room().orbBots, []);
+  for (const who of people) w.join('Resumed', who.session, null);
+  assert.equal(w.room().orbBots.length, 5);
 });

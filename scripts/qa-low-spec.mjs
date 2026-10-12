@@ -1,3 +1,4 @@
+import { chooseMascot } from '../dist/shared/mascot-selection.mjs';
 // Isolated in-memory five-player scene. Fixtures are prepared on this server only.
 import assert from 'node:assert/strict';
 import { readFile, writeFile, mkdir } from 'node:fs/promises';
@@ -7,7 +8,7 @@ import { createGameServer } from '../dist/server.mjs';
 import { MIME } from '../dist/infrastructure/node/static-files.mjs';
 const { chromium } =
   await import('file:///C:/Users/yurin/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/node_modules/playwright/index.mjs');
-const build = path.resolve(process.env.PERF_BUILD ?? 'dist-cloudflare');
+const build = path.resolve(process.env.PERF_BUILD ?? 'dist');
 const out = process.env.PERF_OUT ?? `output/playwright/low-spec/${Date.now()}`;
 const duration = Number(process.env.PERF_MS ?? 15000);
 // A preference stored before the one fixed profile. It must be neither used nor rewritten.
@@ -46,6 +47,8 @@ try {
     const url = new URL(request.url, 'http://127.0.0.1');
     if (url.pathname.startsWith('/api/')) return normalRequest(request, response);
     const rel = url.pathname === '/' ? 'index.html' : url.pathname.slice(1);
+    if (!process.env.PERF_BUILD && rel !== 'src/world3d.js')
+      return normalRequest(request, response);
     const file = path.resolve(build, rel);
     if (path.relative(build, file).startsWith('..')) return response.writeHead(403).end();
     try {
@@ -66,6 +69,9 @@ try {
   });
   await page.goto(`http://127.0.0.1:${port}/`);
   console.log('title loaded');
+  await page.waitForFunction(
+    () => typeof document.querySelector('#title-start')?.onclick === 'function',
+  );
   await page.locator('#title-start').click();
   await page.locator('#setup-form .character-choice:has(input[value="cro-female"])').click();
   await page.locator('#setup-flow-yes').click();
@@ -132,15 +138,16 @@ try {
   [...room.players.values()].forEach((p, i) =>
     Object.assign(p, { x: positions[i][0], z: positions[i][1], facing: Math.PI, moving: false }),
   );
-  Object.assign(room.companion524, { x: 50, z: 56 });
-  Object.assign(room.rimoNeko, { x: 50, z: 55 });
+  [...room.players.values()].forEach((p, i) =>
+    chooseMascot(room, p, ['white', '524', 'rimo-neko', 'blue', 'heart'][i], Date.now()),
+  );
   await page.waitForFunction(
     () =>
       qa.players.size === 5 &&
       [...qa.players.values()].every((e) => e.actor) &&
-      qa.orbBotRenderer?.bots.size === 45 &&
-      qa.companion524Renderer &&
-      qa.rimoNekoRenderer,
+      qa.orbBotRenderer?.bots.size === 3 &&
+      qa.companionRenderers.renderers.size === 2,
+    undefined,
     { timeout: 180000 },
   );
   await page.evaluate(() => {
@@ -200,7 +207,9 @@ try {
     };
   }, duration);
   result.averageFps = (result.frames * 1000) / result.elapsed;
-  checks.push('one real Chrome view plus four protocol clients, 45 bots and both companions');
+  checks.push(
+    'one real Chrome view plus four protocol clients, five personal mascots (three Dots, 524 and rimo-neko)',
+  );
   await page.screenshot({ path: `${out}/five-players.png` });
   // One fixed profile whatever was stored: 30 FPS, 720p at DPR ≤ 1, no sun shadow map.
   const profile = await page.evaluate(() => {
@@ -231,19 +240,19 @@ try {
   await page.screenshot({ path: `${out}/settings.png` });
   await page.locator('#modal-close').click();
   await page.locator('#world').focus();
-  for (let i = 0; i < 9; i++) await page.keyboard.press('c');
+  await page.keyboard.press('c');
   await until(
-    () => room.orbBots.filter((b) => b.ownerId === self.id && b.mode === 'waiting').length === 9,
-    'all nine land',
+    () => room.orbBots.filter((b) => b.ownerId === self.id && b.mode === 'waiting').length === 1,
+    'selected mascot lands',
     15000,
   );
   await page.keyboard.press('q');
   await until(
-    () => room.orbBots.filter((b) => b.ownerId === self.id && b.mode === 'following').length === 9,
-    'all nine recall',
+    () => room.orbBots.filter((b) => b.ownerId === self.id && b.mode === 'following').length === 1,
+    'selected mascot returns',
     15000,
   );
-  checks.push('nine throws, wait and recall through keyboard');
+  checks.push('one selected mascot throws, waits and returns through keyboard');
   for (const [width, height] of [
     [390, 844],
     [844, 390],

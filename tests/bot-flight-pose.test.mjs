@@ -10,8 +10,9 @@ import {
   botFlightPosition,
   botGroundHeight,
 } from '../dist/shared/orb-bots.mjs';
-import { COMPANION_524, createCompanion524 } from '../dist/shared/companion-524.mjs';
-import { CollisionWorld } from '../dist/shared/collision.mjs';
+import { COMPANION_524 } from '../dist/shared/companion-524.mjs';
+import { createCompanion } from '../dist/shared/companions.mjs';
+import { person } from './mascot-fixture.mjs';
 import { ActorUpdateBudget } from '../dist/src/actor-update-budget.js';
 
 test('one forward turn keeps the body centre fixed and returns upright at every heading', () => {
@@ -42,11 +43,11 @@ test('one forward turn keeps the body centre fixed and returns upright at every 
 
 function fixture() {
   let now = 10000;
-  const c = createCompanion524(new CollisionWorld([], { coast: false, river: false }));
-  c.squadPlayerId = 'owner';
+  const c = createCompanion('524', '524@owner', person('owner'), { x: 50, z: 50 });
   const bots = [...BOT_KINDS, '524'].map((kind) => ({
     id: `bot:${kind}`,
-    ownerId: 'owner',
+    ownerId: kind === '524' ? 'owner' : `owner-${kind}`,
+    companionId: kind === '524' ? c.id : undefined,
     kind,
     mode: 'airborne',
     x: 50,
@@ -77,7 +78,7 @@ function fixture() {
   });
   const world = {
     scene: new THREE.Scene(),
-    state: { orbBots: bots, companion524: c },
+    state: { orbBots: bots, companions: [c] },
     selfId: 'owner',
     focus: new THREE.Vector3(50, 0, 50),
     camera: { position: new THREE.Vector3(50, 5, 50) },
@@ -93,6 +94,7 @@ function fixture() {
   const dots = new OrbBotRenderer(world);
   const mascot = Object.assign(Object.create(Companion524Renderer.prototype), {
     world,
+    id: c.id,
     root: new THREE.Group(),
     tilt: new THREE.Group(),
     actor: actor(COMPANION_524.modelKey),
@@ -138,17 +140,20 @@ test('all nine rendered dots and 524 share the flight phase, including a late fi
   assert.equal(f.mascot.tilt.rotation.x, late.mascot.tilt.rotation.x);
 });
 
-test('home dots and recruited dots remain visible without an online owner', () => {
+test('dots remain visible when owner models are streamed out and disappear when their snapshot is removed', () => {
   const f = fixture();
   f.world.players.clear();
-  f.bots[0].mode = 'home';
-  f.bots[0].ownerId = '';
   f.at(0.5);
   assert.equal(f.dots.bots.size, 9);
   for (const [id, { actor }] of f.dots.bots) {
     assert.equal(actor.root.visible, true);
     assert.equal(actor.root.userData.animalId, id);
   }
+  const removed = [...f.dots.bots.values()].map(({ actor }) => actor.root);
+  f.world.state.orbBots = [];
+  f.at(0.6);
+  assert.equal(f.dots.bots.size, 0);
+  for (const root of removed) assert.equal(root.parent, null);
 });
 
 test('landing and recall clear the flight rotation for every companion', () => {

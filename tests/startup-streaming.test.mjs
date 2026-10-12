@@ -695,10 +695,16 @@ test('companions, the herd and the camp NPC load by distance: owned and near fir
     npc: NPC,
     // The herd and 524 are beyond actor range; one bot is the player's own.
     animals: [{ id: 'mammoth-1', x: CAMP_SPAWN.x, z: CAMP_SPAWN.z + 350 }],
-    companion524: { x: 300, z: 300 },
+    companions: [{ id: '524@other', key: '524', ownerId: 'other', x: 300, z: 300 }],
     orbBots: [
       { id: 'mine', kind: 'white', ownerId: 'self', x: CAMP_SPAWN.x + 1, z: CAMP_SPAWN.z },
-      { id: 'wild', kind: 'blue', ownerId: null, x: CAMP_SPAWN.x, z: CAMP_SPAWN.z + 103 },
+      {
+        id: 'distant-blue',
+        kind: 'blue',
+        ownerId: 'other',
+        x: CAMP_SPAWN.x,
+        z: CAMP_SPAWN.z + 103,
+      },
     ],
   };
   const world = Object.assign(Object.create(WorldRenderer.prototype), {
@@ -728,16 +734,16 @@ test('companions, the herd and the camp NPC load by distance: owned and near fir
   world.focus.set(900, 0, 900);
   world.updateStreamedTemplates(1);
   await settle();
-  assert.equal(assets.loadQueue.stats.cancelled, 2, 'the wild bot and the NPC');
+  assert.equal(assets.loadQueue.stats.cancelled, 2, 'the distant companion and the NPC');
   assert.equal(assets.loadQueue.queued.length, 0);
   assert.equal(world.npcResidency.state, 'absent');
   assert.equal(people.calls.length, 0);
   loader.calls[0].resolve(model());
   await settle();
   assert.deepEqual(installed, ['orb-bot-white'], 'an owned companion loads wherever it is');
-  // Back at the camp, 524 has come close: it starts, then the NPC before the wild bot.
+  // Back at camp, 524 has come close: it starts, then the NPC before the distant dot.
   world.focus.set(CAMP_SPAWN.x, 0, CAMP_SPAWN.z);
-  state.companion524 = { x: CAMP_SPAWN.x + 4, z: CAMP_SPAWN.z + 13 };
+  Object.assign(state.companions[0], { x: CAMP_SPAWN.x + 4, z: CAMP_SPAWN.z + 13 });
   world.updateStreamedTemplates(2);
   assert.deepEqual(loader.keys(), ['orb-bot-white', 'yellow-524-mascot']);
   loader.calls[1].resolve(model());

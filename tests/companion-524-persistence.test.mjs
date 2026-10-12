@@ -1,212 +1,98 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { EventEmitter } from 'node:events';
-import { createGameCore } from '../dist/application/game-core.mjs';
-import { ownedBotKinds } from '../dist/shared/orb-bots.mjs';
+import { mascotCore, distance } from './mascot-fixture.mjs';
+import { mascotKeyOf, formerMascotBonds } from '../dist/shared/mascot-selection.mjs';
 
-class Socket extends EventEmitter {
-  readyState = 1;
-  bufferedAmount = 0;
-  messages = [];
-  send(data) {
-    this.messages.push(JSON.parse(data));
-  }
-  close() {
-    this.readyState = 3;
-    this.emit('close');
-  }
-  ping() {
-    this.emit('pong');
-  }
-  terminate() {
-    this.close();
-  }
-}
-
-function fixture() {
-  let now = 10000,
-    id = 0;
-  const runtime = { now: () => now, id: () => `pet-${++id}`, token: () => `session-${++id}` };
-  const options = { runtime, persistentSessions: true, keepEmptyRooms: true };
-  let core = createGameCore(options);
-  function join(session = '') {
-    const socket = new Socket();
-    core.connect(socket, new URLSearchParams({ room: 'BOND', resume: '1', session }));
-    const welcome = socket.messages.find((m) => m.type === 'welcome');
-    assert.ok(welcome);
-    return { socket, welcome };
-  }
-  const owner = join();
-  const observer = join();
-  const step = (seconds) => {
-    for (let i = 0; i < Math.round(seconds / 0.05); i++) {
-      now += 50;
-      core.tick();
-    }
-  };
-  const room = () => core.rooms.get('BOND');
-  const player = () => room().players.get(owner.welcome.id);
-  Object.assign(player(), { x: room().companion524.x, z: room().companion524.z + 1.5 });
-  player().inventory.wood = 7;
-  function action(name, kind, socket = owner.socket) {
-    now += 200;
-    socket.emit(
-      'message',
-      Buffer.from(JSON.stringify({ type: 'action', action: name, targetId: kind })),
-      false,
+for (const key of ['524', 'rimo-neko', 'white'])
+  for (const mode of [
+    'following',
+    'windup',
+    'airborne',
+    'waiting',
+    'returning',
+    'stowed',
+    'petting',
+  ])
+    test(
+      key + ' ' + mode + ': checkpoint keeps only selection and a fresh body arrives on resume',
+      (t) => {
+        const w = mascotCore(t),
+          a = w.join();
+        w.act(a, 'selectMascot', key);
+        a.player().inventory.wood = 7;
+        const body = w.active(a),
+          bot = w.room().orbBots.find((b) => b.ownerId === a.id);
+        // A checkpoint boundary may arrive in any transient presentation/flight phase.
+        Object.assign(bot, {
+          mode,
+          x: 80,
+          z: 80,
+          petPlayerId: mode === 'petting' ? a.id : null,
+          petAt: w.now(),
+        });
+        if (body !== bot)
+          Object.assign(body, {
+            squadMode: mode,
+            x: 80,
+            z: 80,
+            petPlayerId: mode === 'petting' ? a.id : null,
+          });
+        const saved = w.core().exportState(),
+          copy = structuredClone(saved);
+        for (const field of ['companions', 'orbBots', 'companion524', 'rimoNeko', 'mae', 'friends'])
+          assert.ok(!(field in saved.rooms[0]), field);
+        assert.equal(saved.rooms[0].sessions[0].player.mascot, key);
+        w.load(saved);
+        assert.deepEqual(saved, copy);
+        assert.deepEqual(w.room().companions, []);
+        assert.deepEqual(w.room().orbBots, []);
+        const back = w.join('A', a.session, null),
+          fresh = w.active(back);
+        assert.equal(back.id, a.id);
+        assert.equal(back.player().inventory.wood, 7);
+        assert.equal(mascotKeyOf(fresh), key);
+        assert.ok(distance(fresh, back.player()) < 2.5);
+        assert.equal(fresh.petPlayerId, null);
+        assert.equal('kind' in fresh ? fresh.mode : fresh.squadMode, 'following');
+      },
     );
-  }
-  return {
-    owner,
-    observer,
-    room,
-    player,
-    join,
-    step,
-    action,
-    get core() {
-      return core;
-    },
-    get bot() {
-      return room().orbBots.find((b) => b.kind === '524');
-    },
-    elapse(ms) {
-      now += ms;
-      core.tick();
-    },
-    recruit() {
-      action('pet524');
-      step(5);
-      assert.equal(room().companion524.squadPlayerId, owner.welcome.id);
-      assert.equal(this.bot.ownerId, owner.welcome.id);
-    },
-    restart() {
-      const saved = core.exportState();
-      const before = structuredClone(saved);
-      core = createGameCore(options);
-      core.importState(saved);
-      assert.deepEqual(saved, before, 'loading never mutates the checkpoint');
-      return saved;
-    },
-  };
-}
-
-test('a completed bond has no online or offline time limit and remains throwable after session resume', () => {
-  const f = fixture();
-  f.recruit();
-  for (const days of [1, 7, 365]) {
-    f.elapse(days * 86400000);
-    assert.equal(f.room().companion524.squadPlayerId, f.owner.welcome.id);
-    assert.equal(ownedBotKinds(f.core.snapshot(f.room()).orbBots, f.owner.welcome.id).length, 1);
-  }
-  f.owner.socket.close();
-  f.elapse(365 * 86400000);
-  assert.equal(f.room().companion524.squadPlayerId, f.owner.welcome.id);
-  const next = f.join(f.owner.welcome.session);
-  assert.equal(next.welcome.id, f.owner.welcome.id);
-  assert.equal(next.welcome.resumed, true);
-  assert.equal(f.player().inventory.wood, 7);
-  f.step(2);
-  f.action('throwBot', '524', next.socket);
-  f.step(2);
-  assert.equal(f.bot.mode, 'waiting');
-  f.action('recallBots', undefined, next.socket);
-  f.step(5);
-  assert.equal(f.bot.mode, 'following');
-});
-
-for (const phase of ['following', 'airborne', 'waiting', 'returning'])
-  test(`saved ${phase} 524 stays recruited after restart; deployed bodies wait for a call`, () => {
-    const f = fixture();
-    f.recruit();
-    if (phase !== 'following') {
-      f.action('throwBot', '524');
-      f.step(phase === 'airborne' ? 0.4 : 2);
-      if (phase === 'returning') {
-        f.action('recallBots');
-        f.step(0.1);
-      }
-      assert.equal(f.bot.mode, phase);
-    }
-    const deployed = ['airborne', 'waiting'].includes(phase);
-    const destination = phase === 'airborne' ? { ...f.bot.landing } : { ...f.bot };
-    const saved = f.restart();
-    const savedCompanion = saved.rooms[0].companion524;
-    assert.equal(savedCompanion.squadPlayerId, f.owner.welcome.id);
-    assert.equal(savedCompanion.squadMode, deployed ? 'waiting' : 'following');
-    f.elapse(86400000 * 365);
-    const c = f.room().companion524;
-    assert.equal(c.squadPlayerId, f.owner.welcome.id);
-    assert.equal(c.petPlayerId, null);
-    const next = f.join(f.owner.welcome.session);
-    assert.equal(next.welcome.resumed, true);
-    f.step(3);
-    assert.equal(f.room().orbBots.filter((b) => b.kind === '524').length, 1);
-    assert.equal(f.player().inventory.wood, 7);
-    assert.equal(f.bot.mode, deployed ? 'waiting' : 'following');
-    if (deployed) {
-      assert.deepEqual({ x: c.x, z: c.z }, { x: destination.x, z: destination.z });
-      f.action('recallBots', undefined, next.socket);
-      f.step(5);
-    }
-    f.action('throwBot', '524', next.socket);
-    f.step(2);
-    assert.equal(f.bot.mode, 'waiting');
-    const wire = f.core.snapshot(f.room(), true);
-    assert.ok(!JSON.stringify(wire).includes(f.owner.welcome.session));
-    assert.equal(wire.orbBots.filter((b) => b.kind === '524').length, 1);
+for (const key of ['524', 'rimo-neko', 'white'])
+  test(key + ': explicit goodbye stays alone through restart', (t) => {
+    const w = mascotCore(t),
+      a = w.join();
+    w.act(a, 'selectMascot', key);
+    w.act(a, 'deselectMascot');
+    const saved = w.core().exportState();
+    w.load(saved);
+    const back = w.join('A', a.session, null);
+    assert.equal(back.player().mascot, null);
+    assert.equal(w.active(back), undefined);
+    assert.deepEqual(w.room().companions, []);
+    assert.deepEqual(w.room().orbBots, []);
   });
-
-test('an explicit goodbye persists, while a started pet immediately becomes a saved bond', () => {
-  for (const complete of [false, true]) {
-    const f = fixture();
-    if (complete) {
-      f.recruit();
-      f.action('dismiss524');
-    } else {
-      f.action('pet524');
-      f.step(0.1);
-    }
-    f.restart();
-    const next = f.join(f.owner.welcome.session);
-    f.step(5);
-    assert.equal(f.room().companion524.squadPlayerId, complete ? null : next.welcome.id);
-    f.action('throwBot', '524', next.socket);
-    f.step(2);
-    if (complete) assert.equal(f.bot, undefined);
-    else assert.equal(f.bot.mode, 'waiting');
-    assert.equal(
-      ownedBotKinds(f.core.snapshot(f.room()).orbBots, next.welcome.id).length,
-      complete ? 0 : 1,
-    );
-  }
-});
-
-test('a saved offline follower returns to camp after restart with no proxy or owner connected', () => {
-  const f = fixture();
-  f.recruit();
-  const originalOwner = f.owner.welcome.id;
-  const c = f.room().companion524;
-  Object.assign(c, { x: 90.34324606935557, z: 34.88484921119597 });
-  c.trail = [{ ...c.home }, { x: c.x, z: c.z }];
-  f.restart();
-  assert.equal(f.bot, undefined, 'saved 524 has no online-owner proxy');
-  const sessionBefore = structuredClone(f.core.exportState().rooms[0].sessions);
-  f.step(2);
-  assert.equal(f.room().companion524.mode, 'returning');
-  f.restart();
-  f.step(120);
-  const restored = f.room().companion524;
-  assert.ok(Math.hypot(restored.x - restored.home.x, restored.z - restored.home.z) < 0.08);
-  assert.equal(restored.squadPlayerId, originalOwner);
-  assert.equal(restored.mode, 'idle');
-  assert.deepEqual(f.core.exportState().rooms[0].sessions, sessionBefore);
-  const next = f.join(f.owner.welcome.session);
-  assert.equal(next.welcome.id, originalOwner);
-  f.step(5);
-  assert.equal(f.bot.ownerId, originalOwner);
-  assert.equal(f.player().inventory.wood, 7);
-  f.action('throwBot', '524', next.socket);
-  f.step(2);
-  assert.equal(f.bot.mode, 'waiting');
+test('old shared bodies migrate known owners in card order; absent owners and invalid keys do not create bodies', (t) => {
+  const w = mascotCore(t),
+    a = w.join('A'),
+    b = w.join('B');
+  const saved = w.core().exportState(),
+    r = saved.rooms[0];
+  for (const s of r.sessions) delete s.player.mascot;
+  r.rimoNeko = { followPlayerId: a.id };
+  r.companion524 = { squadPlayerId: a.id, radius: 0.58, x: 99999, z: 99999 };
+  r.orbBots = [
+    { ownerId: a.id, kind: 'white' },
+    { ownerId: b.id, kind: 'green' },
+    { ownerId: b.id, kind: '__proto__' },
+    { ownerId: 'offline-without-session', kind: 'heart' },
+  ];
+  const copy = structuredClone(saved);
+  assert.deepEqual(formerMascotBonds(null), new Map());
+  w.load(saved);
+  assert.deepEqual(saved, copy);
+  const aa = w.join('A', a.session),
+    bb = w.join('B', b.session);
+  assert.equal(aa.player().mascot, 'rimo-neko');
+  assert.equal(bb.player().mascot, 'green');
+  assert.equal(w.room().companions.length, 1);
+  assert.ok(w.room().orbBots.every((c) => [a.id, b.id].includes(c.ownerId)));
 });

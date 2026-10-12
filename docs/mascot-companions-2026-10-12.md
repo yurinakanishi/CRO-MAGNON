@@ -11,12 +11,12 @@
 - mae・こはくちゃん・まるぃもは仲間（`GROUND_MASCOTS`）の共通の動きへ統合。休止の扱い（`mascot-roster.mts` の `enabled`、`local-visibility.json`）は従来どおり。
 - 旧保存の部屋単位の所属は、持ち主ごとにカードの並び順（りもねこ、524、仲間、Dots）で最初の1匹へ引き継ぐ（`formerMascotBonds`）。旧フィールドは書き戻さない。
 
-## 確認（途中）
+## 実装時の確認
 
 - `npm run check`（型・strict・625 JS構文・依存境界）合格。
 - 新規 `tests/mascot-companions.test.mjs` 14件合格。入力案内の3テストファイル17件合格。
 - 実Chrome `scripts/qa-mascot-companions.mjs`（2人・同じ524・他人の子を撫でる・別れ・投げて放置・切断）27項目合格、ブラウザーエラー0。証拠 `output/playwright/mascot-companions-20261012/r01/`。
-- 未完了：旧仕様を前提にした既存テスト23ファイルの書き換え（途中で中断）、QAスクリプトの残りの更新と実行。
+- 当時未完了だった旧仕様の既存テストとQAは、2026-10-12の追加依頼で移行・検証を完了した。全体は1,631件中1,627合格・失敗0・条件付きスキップ4。[最終結果と検証範囲](mascot-tests-2026-10-12.md)。以下のコミット前確認は移行前の履歴。
 
 ## コミット前の確認
 

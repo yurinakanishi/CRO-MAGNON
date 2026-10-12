@@ -1,141 +1,103 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { CollisionWorld } from '../dist/shared/collision.mjs';
-import { createRimoNeko } from '../dist/shared/rimo-neko.mjs';
-import { createCompanion524 } from '../dist/shared/companion-524.mjs';
-import { createMae } from '../dist/shared/mae.mjs';
-import { createKohaku } from '../dist/shared/kohaku.mjs';
-import { createMaruimo } from '../dist/shared/maruimo-mascot.mjs';
-import { createFriendMascots } from '../dist/shared/friend-mascots.mjs';
-import { BOT_KINDS, botRadius, syncOrbBots, updateOrbBots } from '../dist/shared/orb-bots.mjs';
-import { setMascotSelection } from '../dist/shared/mascot-selection.mjs';
+import { mascotFixture, mascotCore, person, flatCollision, distance } from './mascot-fixture.mjs';
+import { ALL_MASCOT_MODELS } from '../dist/shared/mascot-roster.mjs';
+import {
+  MASCOT_KEYS,
+  chooseMascot,
+  activeMascot,
+  mascotBodies,
+  mascotKeyOf,
+  syncMascots,
+} from '../dist/shared/mascot-selection.mjs';
+import { mascotMenuMarkup } from '../dist/src/mascot-menu.js';
 
-function fixture() {
-  const collision = new CollisionWorld([], { coast: false, river: false, walkSurfaces: [] });
-  const p = {
-    id: 'p',
-    x: 44,
-    z: 54,
-    facing: 0,
-    radius: 0.32,
-    species: 'cro',
-    gender: 'female',
-    speed: 0,
-    moving: false,
-    downedUntil: 0,
-    attackAt: 0,
-    attackSequence: 0,
-  };
-  const q = { ...p, id: 'q', x: 46 };
-  const room = {
-    collision,
-    players: new Map([
-      [p.id, p],
-      [q.id, q],
-    ]),
-    rimoNeko: createRimoNeko(collision),
-    companion524: createCompanion524(collision),
-    mae: createMae(collision),
-    kohaku: createKohaku(collision),
-    maruimo: createMaruimo(collision),
-    friends: createFriendMascots(collision),
-  };
-  syncOrbBots(room, 10000);
-  const select = (target, enabled, player = p) =>
-    setMascotSelection(room, player, target, enabled, 10000);
-  return { room, p, q, select };
-}
-
-test('one card selects exactly one mascot and returns it without changing the others', () => {
-  const f = fixture();
-  const white = f.room.orbBots.find((b) => b.kind === 'white');
-  assert.ok(f.select('white', true));
-  assert.equal(white.ownerId, f.p.id);
-  assert.equal(white.mode, 'following');
-  assert.equal(f.room.orbBots.filter((b) => b.ownerId === f.p.id).length, 1);
-  assert.ok(f.select('white', false));
-  assert.equal(white.ownerId, '');
-  assert.equal(white.returnHome, true);
-  assert.equal(f.select('white', false), false);
-});
-
-test('all cards select and clear every available mascot, including the five unique companions', () => {
-  const f = fixture();
-  assert.ok(f.select('all', true));
-  assert.equal(
-    f.room.orbBots.filter((b) => BOT_KINDS.includes(b.kind) && b.ownerId === 'p').length,
-    9,
+test('every available card selects one personal body; replacing it dismisses only the previous choice', (t) => {
+  const w = mascotCore(t, { mascotModels: ALL_MASCOT_MODELS }),
+    a = w.join('A'),
+    b = w.join('B', '', { x: 56, z: 50 });
+  assert.deepEqual(w.room().companions, []);
+  assert.deepEqual(w.room().orbBots, []);
+  for (const key of MASCOT_KEYS) {
+    w.act(a, 'selectMascot', key);
+    w.act(b, 'selectMascot', key);
+    const mine = w.active(a),
+      theirs = w.active(b);
+    assert.equal(mascotKeyOf(mine), key);
+    assert.equal(mascotKeyOf(theirs), key);
+    assert.notEqual(mine.id, theirs.id);
+    assert.equal(mine.ownerId, a.id);
+    assert.equal(theirs.ownerId, b.id);
+    for (const who of [a, b])
+      assert.equal(
+        mascotBodies(w.room()).filter((c) => c.ownerId === who.id && !c.leavingAt).length,
+        1,
+      );
+    w.step(50, 25);
+    assert.equal(mascotBodies(w.room()).length, 2);
+  }
+  const other = w.active(b);
+  w.act(a, 'deselectMascot');
+  w.step(50, 25);
+  assert.equal(w.active(a), undefined);
+  assert.equal(w.active(b), other);
+  assert.equal(a.player().mascot, null);
+  const markup = mascotMenuMarkup(w.room().mascotKeys);
+  assert.deepEqual(
+    [...markup.matchAll(/data-mascot="([^"]+)"/g)].map((m) => m[1]),
+    [...MASCOT_KEYS],
   );
-  for (const key of ['rimoNeko', 'companion524', 'mae', 'kohaku', 'maruimo'])
-    assert.equal(f.room[key].followPlayerId, 'p', key);
-  for (const friend of f.room.friends) assert.equal(friend.followPlayerId, 'p', friend.key);
-  assert.equal(f.room.orbBots.filter((b) => b.ownerId === 'p').length, 11);
-  updateOrbBots(f.room, 0.05, 10050);
-  assert.ok(f.select('all', false));
-  assert.equal(f.room.orbBots.filter((b) => b.ownerId === 'p').length, 0);
-  for (const key of ['rimoNeko', 'companion524', 'mae', 'kohaku', 'maruimo'])
-    assert.equal(f.room[key].followPlayerId, null, key);
-  for (const friend of f.room.friends) assert.equal(friend.followPlayerId, null, friend.key);
+  assert.doesNotMatch(markup, /data-mascot="all"|data-mascot-all/);
+  assert.match(markup, /data-mascot-none/);
 });
-
-test('another connected player keeps their mascots during individual and bulk selection', () => {
-  const f = fixture();
-  assert.ok(f.select('white', true, f.q));
-  assert.ok(f.select('mae', true, f.q));
-  assert.equal(f.select('white', true), false);
-  assert.equal(f.select('mae', true), false);
-  assert.ok(f.select('all', true));
-  assert.equal(f.room.orbBots.find((b) => b.kind === 'white').ownerId, 'q');
-  assert.equal(f.room.mae.followPlayerId, 'q');
-  assert.ok(f.select('all', false));
-  assert.equal(f.room.orbBots.find((b) => b.kind === 'white').ownerId, 'q');
-  assert.equal(f.room.mae.followPlayerId, 'q');
+test('invalid, hidden and bulk choices leave the current choice and body intact', (t) => {
+  const w = mascotCore(t),
+    a = w.join();
+  w.act(a, 'selectMascot', '524');
+  const before = w.active(a);
+  for (const value of ['all', 'mae', '__proto__', '', {}, [], true]) {
+    w.act(a, 'selectMascot', value);
+    assert.equal(w.active(a), before);
+    assert.equal(a.player().mascot, '524');
+  }
+  a.player().downedUntil = w.now() + 20000;
+  w.act(a, 'selectMascot', 'blue');
+  assert.equal(w.active(a), before);
 });
-
-test('invalid targets and a downed player cannot change the roster', () => {
-  const f = fixture();
-  assert.equal(f.select('__proto__', true), false);
-  f.p.downedUntil = 20000;
-  assert.equal(f.select('all', true), false);
-  assert.equal(f.room.orbBots.filter((b) => b.ownerId).length, 0);
+test('a selected mascot waits for room beside its person and retries after the obstruction clears', () => {
+  const p = person(),
+    room = {
+      players: new Map([[p.id, p]]),
+      companions: [],
+      orbBots: [],
+      collision: flatCollision([{ id: 'blocked', type: 'circle', x: 50, z: 50, radius: 8 }]),
+    };
+  assert.equal(chooseMascot(room, p, '524', 10000), true);
+  assert.equal(p.mascot, '524');
+  assert.equal(activeMascot(room, p.id), undefined);
+  syncMascots(room, 10010);
+  assert.deepEqual(room.companions, []);
+  room.collision = flatCollision();
+  syncMascots(room, 10510);
+  assert.equal(activeMascot(room, p.id).key, '524');
+  assert.ok(distance(activeMascot(room, p.id), p) < 2.5);
 });
-
-test('an absent owner can be replaced, while a hidden mascot stays out of bulk selection', () => {
-  const f = fixture();
-  assert.ok(f.select('white', true, f.q));
-  assert.ok(f.select('mae', true, f.q));
-  f.room.players.delete(f.q.id);
-  assert.ok(f.select('white', true));
-  assert.ok(f.select('mae', true));
-  assert.equal(f.room.orbBots.find((b) => b.kind === 'white').ownerId, 'p');
-  assert.equal(f.room.mae.followPlayerId, 'p');
-  delete f.room.mae;
-  assert.ok(f.select('all', true));
-  assert.equal(f.room.mae, undefined);
-});
-
-test('selecting from far away places companions safely near the player', () => {
-  const f = fixture();
-  Object.assign(f.p, { x: 120, z: 120 });
-  delete f.room.orbBots;
-  assert.ok(f.select('all', true));
-  const mascots = [
-    ...f.room.orbBots.filter((b) => BOT_KINDS.includes(b.kind)),
-    f.room.rimoNeko,
-    f.room.companion524,
-    f.room.mae,
-    f.room.kohaku,
-    f.room.maruimo,
-    ...f.room.friends,
-  ];
-  const radius = (mascot) => (mascot.kind ? botRadius(mascot.kind) : mascot.radius);
-  for (const mascot of mascots) assert.ok(Math.hypot(mascot.x - f.p.x, mascot.z - f.p.z) < 6);
-  for (const mascot of mascots)
-    for (const other of mascots)
-      if (mascot !== other)
-        assert.ok(
-          Math.hypot(mascot.x - other.x, mascot.z - other.z) >=
-            radius(mascot) + radius(other) - 0.0001,
-          `${mascot.kind ?? mascot.id} overlaps ${other.kind ?? other.id}`,
-        );
+test('a pending choice arrives after dismount; a cancelled pending choice never appears', () => {
+  const { room, p } = mascotFixture('white');
+  chooseMascot(room, p, null, 10000);
+  syncMascots(room, 11000);
+  p.mountId = 'm';
+  chooseMascot(room, p, 'rimo-neko', 12000);
+  assert.equal(activeMascot(room, p.id), undefined);
+  p.mountId = null;
+  syncMascots(room, 12550);
+  assert.equal(activeMascot(room, p.id).key, 'rimo-neko');
+  chooseMascot(room, p, null, 13000);
+  syncMascots(room, 14000);
+  p.mountId = 'm';
+  chooseMascot(room, p, '524', 14010);
+  chooseMascot(room, p, null, 14020);
+  p.mountId = null;
+  syncMascots(room, 15000);
+  assert.deepEqual(mascotBodies(room), []);
 });

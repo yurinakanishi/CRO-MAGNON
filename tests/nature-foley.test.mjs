@@ -90,7 +90,9 @@ test('many companions produce one recall / throw / pet, delayed throws wait for 
 });
 test('cat hiss follows impact at the cat, beyond masking range is silent, cannot repeat', () => {
   const { sounds, world, update } = fixture();
-  world.state.rimoNeko = { id: 'cat', x: 4, z: 0, hitAt: 1100, hitSequence: 1 };
+  world.state.companions = [
+    { id: 'cat', key: 'rimo-neko', ownerId: 'other', x: 4, z: 0, hitAt: 1100, hitSequence: 1 },
+  ];
   update(1100);
   assert.equal(sounds.length, 0);
   update(1100 + RIMO_NEKO.hitMs);
@@ -98,7 +100,7 @@ test('cat hiss follows impact at the cat, beyond masking range is silent, cannot
   assert.equal(sounds.length, 1);
   assert.equal(sounds[0].name, 'hiss');
   assert.deepEqual([sounds[0].point.x, sounds[0].point.z], [4, 0]);
-  Object.assign(world.state.rimoNeko, { x: 20, hitAt: 4000, hitSequence: 2 });
+  Object.assign(world.state.companions[0], { x: 20, hitAt: 4000, hitSequence: 2 });
   update(4000 + RIMO_NEKO.hitMs);
   assert.equal(sounds.length, 1);
 });

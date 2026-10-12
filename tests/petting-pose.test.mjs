@@ -6,29 +6,26 @@ import { deliveredModel } from './delivered-model.mjs';
 import { CHARACTER_MODELS } from '../dist/shared/characters.mjs';
 import { PettingPose, pettingProgress } from '../dist/src/petting-pose.js';
 import { companion524Pose } from '../dist/src/companion-524-renderer.js';
-import {
-  COMPANION_524,
-  createCompanion524,
-  handleCompanion524Action,
-} from '../dist/shared/companion-524.mjs';
+import { COMPANION_524 } from '../dist/shared/companion-524.mjs';
+import { createCompanion, petCompanion } from '../dist/shared/companions.mjs';
 import { CollisionWorld } from '../dist/shared/collision.mjs';
 
 function fixture(character) {
   const collision = new CollisionWorld([], { coast: false, river: false, walkSurfaces: [] });
-  const c = createCompanion524(collision);
   const p = {
     ...character,
     id: 'p',
-    x: c.x,
-    z: c.z - 2,
+    x: 50,
+    z: 50,
     facing: 0,
     radius: character.radius || 0.32,
     speed: 0,
     jumpAt: 0,
     jumpSequence: 0,
   };
-  const room = { collision, companion524: c, players: new Map([[p.id, p]]) };
-  assert.ok(handleCompanion524Action(room, p, 'pet524', 10000));
+  const c = createCompanion('524', '524@p', p, { x: p.x, z: p.z + 2 });
+  const room = { collision, companions: [c], players: new Map([[p.id, p]]) };
+  assert.ok(petCompanion(room, p, c, 10000));
   Object.assign(c, c.petGoal);
   c.petContactAt = 11200;
   return { c, p };

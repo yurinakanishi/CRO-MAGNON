@@ -1,3 +1,5 @@
+import { enterPreparedWorld } from './qa-game-entry.mjs';
+import { ALL_MASCOT_MODELS } from '../dist/shared/mascot-roster.mjs';
 // Real Chrome and five connections against disposable in-memory hosts only.
 import assert from 'node:assert/strict';
 import { mkdir, writeFile } from 'node:fs/promises';
@@ -8,7 +10,7 @@ const { chromium } = await import(
   process.env.PLAYWRIGHT_MODULE ||
     'file:///C:/Users/yurin/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/node_modules/playwright/index.mjs'
 );
-const out = `output/playwright/local-visibility/${Date.now()}`;
+const out = process.argv[2] || `output/playwright/local-visibility/${Date.now()}`;
 await mkdir(out, { recursive: true });
 const game = createGameServer({
   port: 0,
@@ -71,14 +73,31 @@ async function pageFor(host, name, oldProfile = false) {
     },
     { name, oldProfile },
   );
+  if (host === shown)
+    await page.route('**/shared/mascot-roster.mjs', async (route) => {
+      const response = await route.fetch();
+      await route.fulfill({
+        response,
+        body: (await response.text()).replaceAll('enabled: false', 'enabled: true'),
+      });
+    });
   await page.goto(`http://127.0.0.1:${host.address().port}/?room=VISIBILITY`);
   return { context, page, seen, player: () => host.rooms.get('VISIBILITY').players.get(seen.id) };
+}
+async function openSetup(page) {
+  // The initial loading shell contains this button before main.ts binds it.
+  await page.waitForFunction(
+    () => typeof document.querySelector('#title-start')?.onclick === 'function',
+  );
+  await page.locator('#title-start').click();
+  await page.locator('#setup-form .character-choice').first().waitFor();
 }
 async function start(user, value) {
   await user.page
     .locator('#setup-form .character-choice:has(input[value="' + value + '"])')
     .click();
   await user.page.locator('#setup-flow-yes').click();
+  await enterPreparedWorld(user.page, false);
   await user.page
     .locator(
       '#world[data-world-asset="ready"][data-character-asset="ready"][data-companion-assets="ready"]',
@@ -90,14 +109,14 @@ async function start(user, value) {
 let shown, failure;
 try {
   const a = await pageFor(game, '非表示QA A', true);
-  await a.page.locator('#title-start').click();
-  assert.equal(await a.page.locator('#setup-form .character-choice').count(), 7);
+  await openSetup(a.page);
+  assert.equal(await a.page.locator('#setup-form .character-choice').count(), 5);
   assert.equal(await a.page.locator('input[value="maruimo-male"]').count(), 0);
   assert.equal(await a.page.locator('input[value="howkey-female"]').count(), 0);
   await shot(a.page, '01-hidden-choices');
   await start(a, 'cro-female');
   const b = await pageFor(game, '非表示QA B');
-  await b.page.locator('#title-start').click();
+  await openSetup(b.page);
   await start(b, 'cro-male');
   const room = game.rooms.get('VISIBILITY');
   for (let i = 0; i < 3; i++) {
@@ -117,11 +136,12 @@ try {
   for (const user of [a, b]) {
     assert.equal(user.seen.state.mae, undefined);
     assert.ok(user.seen.state.players.every((p) => !['maruimo', 'howkey'].includes(p.species)));
-    assert.ok(user.seen.state.companion524 && user.seen.state.rimoNeko);
-    assert.equal(await user.page.locator('#world').getAttribute('data-mae'), 'null');
+    assert.deepEqual(user.seen.state.companions, []);
+    assert.deepEqual(user.seen.state.orbBots, []);
+    assert.equal(user.seen.state.players[0].mascot, null);
   }
   pass(
-    'Two real Chrome clients and three stale-profile peers see seven characters and no Howkey, maruimo or mae; 524 and rimo remain',
+    'Two real Chrome clients and three stale-profile peers see five playable characters, no hidden choices and no unselected mascots',
   );
   const before = { x: a.player().x, z: a.player().z };
   await a.page.keyboard.down('w');
@@ -133,8 +153,9 @@ try {
   );
   await a.page.keyboard.press('Escape');
   assert.doesNotMatch(await a.page.locator('#modal-body').innerText(), /mae|まるぃも|Howkey/i);
+  await a.page.locator('[data-pause-tab="settings"]').click();
   await a.page.locator('[data-controller-menu="character"]').click();
-  assert.equal(await a.page.locator('#character-switch-form .character-choice').count(), 7);
+  assert.equal(await a.page.locator('#character-switch-form .character-choice').count(), 5);
   assert.equal(
     await a.page.locator('#character-switch-form input[value="howkey-female"]').count(),
     0,
@@ -169,8 +190,11 @@ try {
   ]) {
     await a.page.setViewportSize(viewport);
     await a.page.keyboard.press('Escape');
+    await a.page.locator('[data-pause-tab="settings"]').click();
+    if (await a.page.locator('.pause-more').isVisible())
+      await a.page.locator('.pause-more').click();
     await a.page.locator('[data-controller-menu="character"]').click();
-    assert.equal(await a.page.locator('#character-switch-form .character-choice').count(), 7);
+    assert.equal(await a.page.locator('#character-switch-form .character-choice').count(), 5);
     assert.equal(
       await a.page.evaluate(() => document.documentElement.scrollWidth <= innerWidth),
       true,
@@ -180,8 +204,8 @@ try {
   }
   const oldId = a.seen.id;
   await a.page.reload();
-  await a.page.locator('#title-start').click();
-  assert.equal(await a.page.locator('#setup-form .character-choice').count(), 7);
+  await openSetup(a.page);
+  assert.equal(await a.page.locator('#setup-form .character-choice').count(), 5);
   await start(a, 'cro-female');
   assert.equal(a.seen.id, oldId);
   for (const user of [a, b])
@@ -204,32 +228,47 @@ try {
     port: 0,
     host: '127.0.0.1',
     visibility: await readLocalVisibility(`${out}/shown-config.json`),
+    mascotModels: ALL_MASCOT_MODELS,
   });
   await shown.listen();
   const restored = await pageFor(shown, '再表示QA');
-  await restored.page.locator('#title-start').click();
-  assert.equal(await restored.page.locator('#setup-form .character-choice').count(), 9);
+  await openSetup(restored.page);
+  assert.equal(await restored.page.locator('#setup-form .character-choice').count(), 6);
   await shot(restored.page, '05-restored-choices');
-  await start(restored, 'howkey-female');
-  assert.equal(restored.player().species, 'howkey');
-  assert.ok(restored.seen.state.mae);
-  await until(
-    async () => JSON.parse(await restored.page.locator('#world').getAttribute('data-mae'))?.visible,
-    'restored mae drawn',
-  );
-  assert.ok(restored.seen.models.some((url) => /^\/models\/mae\/.+\.glb$/.test(url)));
-  assert.ok(restored.seen.models.some((url) => /^\/models\/howkey-scientist\/.+\.glb$/.test(url)));
-  await shot(restored.page, '06-restored-world');
+  await start(restored, 'cro-female');
+  for (const key of ['mae', 'howkey-scientist']) {
+    await restored.page.keyboard.press('Escape');
+    await restored.page.locator('[data-pause-tab="mascots"]').click();
+    await restored.page.locator('[data-mascot="' + key + '"]').click();
+    await until(() => restored.player().mascot === key, 'restored mascot choice');
+    await restored.page.keyboard.press('Escape');
+    await until(
+      async () =>
+        JSON.parse(await restored.page.locator('#world').getAttribute('data-companions')).some(
+          (c) => c.key === key && c.visible,
+        ),
+      'restored mascot drawn',
+    );
+    assert.ok(
+      restored.seen.models.some(
+        (url) => url.startsWith('/models/' + key + '/') && url.endsWith('.glb'),
+      ),
+    );
+    await shot(restored.page, '06-restored-' + key);
+  }
   await restored.page.keyboard.press('Escape');
+  await restored.page.locator('[data-pause-tab="settings"]').click();
   await restored.page.locator('[data-controller-menu="character"]').click();
   await restored.page.locator('#character-switch-form input[value="maruimo-male"]').click();
   await restored.page.locator('#character-confirm-yes').click();
   await until(() => restored.player().species === 'maruimo', 'restored maruimo');
-  await restored.page.locator('#world[data-character-asset="ready"]').waitFor({ timeout: 120000 });
+  await restored.page
+    .locator('#world[data-character-asset="ready"][data-player-model="maruimo-octopus"]')
+    .waitFor({ timeout: 120000 });
   assert.ok(restored.seen.models.some((url) => /^\/models\/maruimo-octopus\/.+\.glb$/.test(url)));
   await shot(restored.page, '07-restored-maruimo');
   pass(
-    'Setting all flags to true in a separate test host restores all nine choices and renders Howkey, maruimo and mae using the original models',
+    'Setting all flags to true in a separate test host restores six playable choices and separately selected Howkey/mae companions using the original models',
   );
   assert.deepEqual(errors, []);
 } catch (error) {

@@ -321,7 +321,7 @@ function companionWorld(placements, me = { id: 'me', x: 10, z: 20 }) {
     players: new Map([[me.id, { state: me }]]),
     camera,
     state: {},
-    friendRenderers: new Map(),
+    companionRenderers: { viewTargets: () => [] },
     orbBotRenderer: { bots },
     companionViewTargets: WorldRenderer.prototype.companionViewTargets,
     collision: {

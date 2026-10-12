@@ -2480,7 +2480,7 @@ export class WorldRenderer {
       const petted = pettingMascot(this.state, p.id);
       const petDot = petted && 'kind' in petted ? petted : undefined;
       const petBody = petted && !('kind' in petted) ? petted : undefined;
-      // 524 floats up to a standing hand; every other companion is stroked crouching.
+      // 524 floats up to a standing hand; other companions set the reach height.
       const pet524 = petBody?.key === '524' ? petBody : undefined;
       const groundCompanion = pet524 ? undefined : petted;
       const groundPetting = petDot

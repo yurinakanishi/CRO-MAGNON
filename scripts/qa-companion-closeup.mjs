@@ -4,12 +4,14 @@ import { mkdir, writeFile } from 'node:fs/promises';
 import WebSocket from 'ws';
 import { createGameServer } from '../dist/server.mjs';
 import { readLocalVisibility } from '../dist/infrastructure/node/local-visibility.mjs';
+import { chooseMascot, activeMascot } from '../dist/shared/mascot-selection.mjs';
+import { enterPreparedWorld } from './qa-game-entry.mjs';
 import { stopActor } from '../dist/shared/combat.mjs';
 const { chromium } = await import(
   process.env.PLAYWRIGHT_MODULE ||
     'file:///C:/Users/yurin/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/node_modules/playwright/index.mjs'
 );
-const out = `output/playwright/companion-closeup/${Date.now()}`;
+const out = process.argv[2] || `output/playwright/companion-closeup/${Date.now()}`;
 await mkdir(out, { recursive: true });
 const game = createGameServer({
   port: 0,
@@ -86,6 +88,7 @@ async function open(name) {
   await page.locator('#title-start').click();
   await page.locator('#setup-form .character-choice:has(input[value="cro-female"])').click();
   await page.locator('#setup-flow-yes').click();
+  await enterPreparedWorld(page, false);
   await page
     .locator(
       '#world[data-world-asset="ready"][data-character-asset="ready"][data-companion-assets="ready"]',
@@ -163,13 +166,16 @@ try {
     () => a.seen.state.players?.length === 5 && b.seen.state.players?.length === 5,
     'five players',
   );
-  await stage(a, room.rimoNeko);
+  chooseMascot(room, b.player(), 'rimo-neko', Date.now());
+  await sleep(1300);
+  let cat = activeMascot(room, b.seen.id);
+  await stage(a, cat);
   await a.page.locator('[data-cue="inspect"]').waitFor();
   assert.match(await a.page.locator('[data-cue="inspect"]').innerText(), /りもねこ/);
   const original = { x: a.player().x, z: a.player().z };
   const beforeActions = a.seen.sent.filter((m) => m.type === 'action').length;
   await a.page.locator('[data-cue="inspect"]').click();
-  const initial = await inspected(room.rimoNeko.id);
+  const initial = await inspected(cat.id);
   await shot('01-rimo-closeup');
   assert.equal(a.player().x, original.x);
   assert.equal(a.player().z, original.z);
@@ -201,11 +207,14 @@ try {
   assert.equal(await a.page.locator('#modal').isVisible(), false);
   pass('keyboard zoom, orbit, safe canvas click and Escape return');
 
-  await stage(a, room.companion524, 0.8);
+  chooseMascot(room, b.player(), '524', Date.now());
+  await sleep(1300);
+  const yellow = activeMascot(room, b.seen.id);
+  await stage(a, yellow, 0.8);
   assert.match(await a.page.locator('[data-cue="inspect"]').innerText(), /524/);
   const beforeWalk = { x: a.player().x, z: a.player().z };
   await a.page.keyboard.press('x');
-  await inspected(room.companion524.id);
+  await inspected(yellow.id);
   await shot('03-524-closeup');
   await a.page.keyboard.down('w');
   await sleep(350);
@@ -214,10 +223,13 @@ try {
   assert.ok(Math.hypot(a.player().x - beforeWalk.x, a.player().z - beforeWalk.z) > 0.1);
   pass('524 is framed at its real floating height; walking returns to play');
 
-  await stage(a, room.rimoNeko);
+  chooseMascot(room, b.player(), 'rimo-neko', Date.now());
+  await sleep(1300);
+  cat = activeMascot(room, b.seen.id);
+  await stage(a, cat);
   await pad();
   await tap(5);
-  await inspected(room.rimoNeko.id);
+  await inspected(cat.id);
   assert.equal(await a.page.locator('#input-cues').getAttribute('data-device'), 'gamepad');
   assert.equal(
     await a.page
@@ -247,7 +259,7 @@ try {
     'controller disconnect processed before keyboard input',
   );
   await a.page.keyboard.press('x');
-  await inspected(room.rimoNeko.id);
+  await inspected(cat.id);
   for (const [width, height, name] of [
     [390, 844, 'portrait'],
     [844, 390, 'landscape'],
@@ -255,7 +267,9 @@ try {
     await a.page.setViewportSize({ width, height });
     await sleep(1100);
     const visible = await a.page.evaluate(() => {
-      const point = qa.rimoNekoRenderer.root.position.clone();
+      const point = [...qa.companionRenderers.renderers.values()]
+        .find((r) => r.state?.key === 'rimo-neko')
+        .root.position.clone();
       point.y += 0.26;
       point.project(qa.camera);
       return { x: point.x, y: point.y, z: point.z };
@@ -267,7 +281,9 @@ try {
   await a.page.keyboard.press('Escape');
   await a.page.setViewportSize({ width: 1280, height: 800 });
 
-  const heart = room.orbBots.find((bot) => bot.kind === 'heart');
+  chooseMascot(room, b.player(), 'heart', Date.now());
+  await sleep(1300);
+  const heart = activeMascot(room, b.seen.id);
   await stage(a, heart);
   const point = await a.page.evaluate((id) => {
     const root = qa.orbBotRenderer.bots.get(id).actor.root;
@@ -299,4 +315,6 @@ try {
   await game.close();
 }
 console.log(JSON.stringify({ out, passed: !failure, checks: checks.length }));
+if (failure) process.exitCode = 1;
+
 if (failure) process.exitCode = 1;

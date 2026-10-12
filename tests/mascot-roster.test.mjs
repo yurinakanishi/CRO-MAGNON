@@ -5,13 +5,14 @@ import { readFile } from 'node:fs/promises';
 import { createGameCore } from '../dist/application/game-core.mjs';
 import { ALL_MASCOT_MODELS, MASCOT_ROSTER } from '../dist/shared/mascot-roster.mjs';
 import { BOT_KINDS } from '../dist/shared/orb-bots.mjs';
-import { setMascotSelection } from '../dist/shared/mascot-selection.mjs';
+import { chooseMascot } from '../dist/shared/mascot-selection.mjs';
 import { mascotMenuMarkup } from '../dist/src/mascot-menu.js';
 import { titleContributors, contributorsDialogMarkup } from '../dist/src/title-credits.js';
 import { WorldAssets } from '../dist/src/world-assets.js';
 import { friendDefinition } from '../dist/shared/friend-mascots.mjs';
 import { characterChoicesMarkup } from '../dist/src/character-selection.js';
 import { createHash } from 'node:crypto';
+import { mascotCore } from './mascot-fixture.mjs';
 import { runtimeTextureRecords } from '../scripts/environment-assets.mjs';
 
 class Socket extends EventEmitter {
@@ -41,55 +42,58 @@ function fixture(options = {}) {
   return { core, room, socket, player: [...room.players.values()][0] };
 }
 
-test('default rooms and selection contain only nine Dots, rimo-neko and 524, with five players', () => {
-  const f = fixture();
-  for (let i = 1; i < 5; i++) f.core.connect(new Socket(), new URLSearchParams({ room: 'ROSTER' }));
-  assert.equal(f.room.players.size, 5);
-  f.core.tick();
-  assert.ok(f.room.rimoNeko && f.room.companion524);
-  for (const key of ['mae', 'kohaku', 'maruimo']) assert.equal(f.room[key], undefined);
-  assert.deepEqual(f.room.friends, []);
-  setMascotSelection(f.room, f.player, 'all', true, 100000);
-  assert.equal(f.room.orbBots.filter((bot) => bot.ownerId === f.player.id).length, 11);
-  const keys = [
-    ...mascotMenuMarkup(f.core.snapshot(f.room)).matchAll(/data-mascot="([^"]+)"/g),
-  ].map((m) => m[1]);
+test('default five-player rooms offer nine Dots, rimo-neko and 524 without camp bodies', (t) => {
+  const w = mascotCore(t),
+    players = Array.from({ length: 5 }, (_, i) => w.join('Player ' + i));
+  assert.deepEqual(w.room().companions, []);
+  assert.deepEqual(w.room().orbBots, []);
+  const keys = [...mascotMenuMarkup(w.room().mascotKeys).matchAll(/data-mascot="([^"]+)"/g)].map(
+    (m) => m[1],
+  );
   assert.deepEqual(new Set(keys), new Set([...BOT_KINDS, 'rimo-neko', '524']));
-  for (const key of ['mae', 'kohaku', 'maruimo-mascot', 'saber-mascot'])
-    assert.equal(setMascotSelection(f.room, f.player, key, true, 100000), false);
-  const state = f.core.snapshot(f.room);
-  assert.equal(state.mae, undefined);
-  assert.equal(state.kohaku, undefined);
-  assert.equal(state.maruimo, undefined);
-  assert.deepEqual(state.friends, []);
-  f.core.close();
+  for (const player of players) w.act(player, 'selectMascot', '524');
+  assert.equal(w.room().companions.length, 5);
+  assert.equal(new Set(w.room().companions.map((c) => c.id)).size, 5);
+  for (const player of players) assert.equal(w.active(player).ownerId, player.id);
+  for (const key of ['mae', 'kohaku', 'maruimo-mascot', 'saber-mascot', 'all'])
+    assert.equal(chooseMascot(w.room(), players[0].player(), key, w.now()), false);
+  assert.equal(players[0].player().mascot, '524');
+  const state = w.core().snapshot(w.room());
+  for (const field of ['mae', 'kohaku', 'maruimo', 'friends', 'companion524', 'rimoNeko'])
+    assert.equal(field in state, false, field);
 });
 
-test('hidden companion checkpoints survive multiple saves and can be restored without remaking assets', () => {
-  const source = fixture({ mascotModels: ALL_MASCOT_MODELS });
-  setMascotSelection(source.room, source.player, 'all', true, 100000);
-  const original = source.core.exportState();
-  const hidden = createGameCore({ persistentSessions: true });
-  hidden.importState(original);
-  const room = hidden.rooms.get('ROSTER');
-  assert.equal(room.mae, undefined);
-  assert.equal(room.kohaku, undefined);
-  assert.equal(room.maruimo, undefined);
-  assert.deepEqual(room.friends, []);
-  for (let i = 0; i < 3; i++) hidden.tick();
-  const saved = hidden.exportState();
-  for (const field of ['mae', 'kohaku', 'maruimo', 'friends'])
-    assert.deepEqual(saved.rooms[0][field], original.rooms[0][field], field);
-  const restored = createGameCore({ persistentSessions: true, mascotModels: ALL_MASCOT_MODELS });
-  restored.importState(saved);
-  const shown = restored.rooms.get('ROSTER');
-  for (const field of ['mae', 'kohaku', 'maruimo'])
-    assert.equal(shown[field].followPlayerId, source.player.id, field);
-  assert.equal(shown.friends.length, 8);
-  assert.ok(shown.friends.every((friend) => friend.followPlayerId === source.player.id));
-  source.core.close();
-  hidden.close();
-  restored.close();
+test('each dormant selection survives hidden saves and appears only when enabled and reconnected', (t) => {
+  for (const key of MASCOT_ROSTER.filter((entry) => !entry.enabled).map(
+    (entry) => entry.modelKey,
+  )) {
+    const w = mascotCore(t, { mascotModels: ALL_MASCOT_MODELS }),
+      a = w.join();
+    w.act(a, 'selectMascot', key);
+    assert.equal(a.player().mascot, key);
+    assert.equal(w.active(a).key, key);
+    let saved = w.core().exportState();
+    for (let round = 0; round < 3; round++) {
+      w.load(saved, { mascotModels: undefined });
+      const b = w.join('Hidden', a.session, null);
+      w.step();
+      assert.equal(b.player().mascot, key);
+      assert.equal(w.active(b), undefined);
+      assert.deepEqual(w.room().companions, []);
+      assert.deepEqual(w.room().orbBots, []);
+      saved = w.core().exportState();
+      assert.equal(saved.rooms[0].sessions[0].player.mascot, key);
+      for (const field of ['mae', 'kohaku', 'maruimo', 'friends', 'companions', 'orbBots'])
+        assert.equal(field in saved.rooms[0], false, field);
+    }
+    w.load(saved, { mascotModels: ALL_MASCOT_MODELS });
+    assert.deepEqual(w.room().companions, [], 'offline selections have no bodies');
+    const c = w.join('Visible', a.session, null);
+    assert.equal(w.active(c).key, key);
+    assert.equal(w.active(c).ownerId, c.id);
+    assert.equal(w.room().companions.length, 1);
+    w.core().close();
+  }
 });
 
 test('guest icons and links are limited to rimo, 524 and the always-present dots, with adviser credits retained', () => {

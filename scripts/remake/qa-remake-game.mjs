@@ -1,3 +1,5 @@
+import { chooseMascot, activeMascot } from '../../dist/shared/mascot-selection.mjs';
+import { enterPreparedWorld } from '../qa-game-entry.mjs';
 // In-game QA for remade assets: real Chrome + isolated in-memory server (never port 3000).
 // Staging (player/animal positions, health, camera) is preparation on this throwaway server; moves,
 // mounting (R), riding (W), attacks (F) and the server-side outcomes are real game input/state.
@@ -66,9 +68,13 @@ const key = async (k, ms = 120) => {
 const report = { character, scenes: {} };
 try {
   await page.goto(`http://127.0.0.1:${port}/`);
+  await page.waitForFunction(
+    () => typeof document.querySelector('#title-start')?.onclick === 'function',
+  );
   await page.locator('#title-start').click();
   await page.locator(`#setup-form .character-choice:has(input[value="${character}"])`).click();
   await page.locator('#setup-flow-yes').click();
+  await enterPreparedWorld(page, false);
   await page
     .locator('#world[data-world-asset="ready"][data-character-asset="ready"]')
     .waitFor({ timeout: 300000 });
@@ -158,7 +164,11 @@ try {
     // thrust shows it in the hands.
     Object.assign(me, { x: 49, z: 60, facing: Math.PI, spearHead: 'obsidian' });
     await until(
-      () => page.evaluate((id) => qa.players.get(id)?.weapon?.userData?.assetKey === 'obsidian-spear', me.id),
+      () =>
+        page.evaluate(
+          (id) => qa.players.get(id)?.weapon?.userData?.assetKey === 'obsidian-spear',
+          me.id,
+        ),
       'obsidian spear held',
       60000,
     );
@@ -281,17 +291,25 @@ try {
   if (scenes.includes('guests')) {
     Object.assign(me, { x: 49, z: 56, facing: Math.PI });
     await sleep(6000);
-    const c524 = room.companion524;
-    if (c524) {
-      await cam({ yaw: Math.atan2(me.x - c524.x, me.z - c524.z), pitch: 0.15, targetDistance: 6 });
-      await sleep(1200);
-      await shot('guest-524');
-    }
+    chooseMascot(room, me, '524', Date.now());
+    const c524 = activeMascot(room, me.id);
+    if (!c524) throw Error('The guest QA could not select its personal 524');
+    await until(
+      () => page.evaluate((id) => qa.companionRenderers.renderers.get(id)?.root.visible, c524.id),
+      '524 drawn',
+    );
+    await cam({ yaw: Math.atan2(me.x - c524.x, me.z - c524.z), pitch: 0.15, targetDistance: 6 });
+    await sleep(1200);
+    await shot('guest-524');
     await cam({ yaw: 0, pitch: 0.3, targetDistance: 14 });
     await sleep(1200);
     await shot('guests-camp');
     report.scenes.guests = await page.evaluate(
-      () => document.querySelector('#world').dataset.characterAsset,
+      (id) => ({
+        character: document.querySelector('#world').dataset.characterAsset,
+        companion: qa.companionRenderers.renderers.get(id).diagnostics(),
+      }),
+      c524.id,
     );
   }
   if (scenes.includes('landmarks')) {
@@ -398,3 +416,4 @@ console.log(
     1,
   ),
 );
+if (report.failure || errors.length) process.exitCode = 1;

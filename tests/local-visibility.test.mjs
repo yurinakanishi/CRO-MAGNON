@@ -12,6 +12,7 @@ import {
 } from '../dist/server.mjs';
 import { ALL_MASCOT_MODELS } from '../dist/shared/mascot-roster.mjs';
 import { readLocalVisibility } from '../dist/infrastructure/node/local-visibility.mjs';
+import { chooseMascot } from '../dist/shared/mascot-selection.mjs';
 import { ALL_CONTENT } from '../dist/shared/content-visibility.mjs';
 
 const hidden = { hiddenCharacters: ['maruimo', 'howkey'], hideMae: true };
@@ -48,7 +49,7 @@ function fixture(visibility = ALL_CONTENT) {
   return {
     core,
     advance: () => {
-      now += 200;
+      now += 500;
       core.tick();
     },
   };
@@ -81,7 +82,7 @@ test('hidden content is absent from joins and snapshots, including stale/forged 
   assert.equal(a.room.mae, undefined);
   act(a.socket, 'changeCharacter', 'maruimo-octopus');
   advance();
-  act(a.socket, 'petMae');
+  act(a.socket, 'selectMascot', 'mae');
   advance();
   act(a.socket, 'dismissMae');
   advance();
@@ -91,7 +92,8 @@ test('hidden content is absent from joins and snapshots, including stale/forged 
     assert.ok(states.length);
     for (const state of states) {
       assert.equal(state.mae, undefined);
-      assert.ok(state.companion524 && state.rimoNeko);
+      assert.deepEqual(state.companions, []);
+      assert.deepEqual(state.orbBots, []);
       assert.ok(state.players.every((p) => p.species !== 'maruimo' && !p.unavailableCharacter));
     }
   }
@@ -99,11 +101,12 @@ test('hidden content is absent from joins and snapshots, including stale/forged 
 });
 
 for (const species of ['maruimo'])
-  test(`hiding ${species} preserves the private appearance, mae checkpoint, and player progress across saves`, () => {
+  test(`hiding ${species} preserves the private appearance, mae selection, and player progress across saves`, () => {
     const source = fixture();
     const a = join(source.core, { species, gender: species === 'howkey' ? 'female' : 'male' });
     a.player.inventory.berry = 12;
     a.player.gathered = 27;
+    assert.equal(chooseMascot(a.room, a.player, 'mae', Date.now()), true);
     const checkpoint = source.core.exportState();
     const originalProgress = structuredClone(progress(a.player));
     const concealed = fixture(hidden);
@@ -114,7 +117,9 @@ for (const species of ['maruimo'])
     assert.equal(b.player.species, 'cro');
     assert.deepEqual(progress(b.player), originalProgress);
     const saved = concealed.core.exportState();
-    assert.deepEqual(saved.rooms[0].mae, checkpoint.rooms[0].mae);
+    assert.equal(saved.rooms[0].sessions[0].player.mascot, 'mae');
+    assert.deepEqual(b.room.companions, []);
+    assert.equal('mae' in saved.rooms[0], false);
     assert.equal(saved.rooms[0].sessions[0].player.unavailableCharacter.species, species);
     assert.equal(checkpoint.rooms[0].sessions[0].player.species, species);
     act(b.socket, 'changeCharacter', species === 'howkey' ? 'howkey-scientist' : 'maruimo-octopus');
@@ -134,7 +139,11 @@ for (const species of ['maruimo'])
     assert.equal(c.player.radius, a.player.radius);
     assert.equal(c.player.unavailableCharacter, undefined);
     assert.deepEqual(progress(c.player), originalProgress);
-    assert.ok(shown.core.snapshot(c.room).mae);
+    assert.ok(
+      shown.core
+        .snapshot(c.room)
+        .companions.some((body) => body.key === 'mae' && body.ownerId === c.player.id),
+    );
     for (const { core } of [source, concealed, shown]) core.close();
   });
 
@@ -252,14 +261,18 @@ test('three local toggles independently control the served catalog and direct mo
               `ws://127.0.0.1:${port}/ws?room=VISIBILITY&species=${species}&gender=${gender}`,
             );
             try {
+              let welcome;
               const state = await new Promise((resolve, reject) => {
                 socket.on('error', reject);
                 socket.on('message', (bytes) => {
                   const message = JSON.parse(String(bytes));
+                  if (message.type === 'welcome') welcome = message;
                   if (message.type === 'state') resolve(message);
                 });
               });
-              assert.equal(!!state.mae, mae);
+              assert.equal(welcome.mascots.includes('mae'), mae);
+              assert.deepEqual(state.companions, []);
+              assert.deepEqual(state.orbBots, []);
               assert.ok(state.players.some((p) => p.species === (visible ? species : 'cro')));
               if (!visible) assert.ok(state.players.every((p) => p.species !== species));
             } finally {
@@ -304,7 +317,7 @@ for (const species of ['maruimo'])
     let game = await createPersistentGameServer({ saveDirectory, port: 0 });
     const a = join(game.core, { species, gender: species === 'howkey' ? 'female' : 'male' });
     a.player.inventory.wood = 7;
-    const mae = structuredClone(a.room.mae);
+    assert.equal(chooseMascot(a.room, a.player, 'mae', Date.now()), true);
     await game.close();
     game = await createPersistentGameServer({ saveDirectory, port: 0, visibility: hidden });
     assert.equal(game.core.visibility.hideMae, true);
@@ -316,12 +329,16 @@ for (const species of ['maruimo'])
     await game.saveNow();
     await game.close();
     const bytes = JSON.parse(await readFile(path.join(saveDirectory, 'world.json'), 'utf8'));
-    assert.deepEqual(bytes.state.rooms[0].mae, mae);
+    assert.equal(bytes.state.rooms[0].sessions[0].player.mascot, 'mae');
+    assert.equal('mae' in bytes.state.rooms[0], false);
     game = await createPersistentGameServer({ saveDirectory, port: 0 });
-    assert.ok(game.rooms.get('VISIBILITY').mae);
-    assert.equal(
-      game.rooms.get('VISIBILITY').sessions.get(a.welcome.session).player.species,
-      species,
+    assert.deepEqual(game.rooms.get('VISIBILITY').companions, []);
+    const resumed = join(game.core, { session: a.welcome.session });
+    assert.ok(
+      resumed.room.companions.some(
+        (body) => body.key === 'mae' && body.ownerId === resumed.player.id,
+      ),
     );
+    assert.equal(resumed.player.species, species);
     await game.close();
   });

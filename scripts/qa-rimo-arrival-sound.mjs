@@ -1,3 +1,5 @@
+import { enterPreparedWorld } from './qa-game-entry.mjs';
+import { activeMascot } from '../dist/shared/mascot-selection.mjs';
 // Supplementary checks: ordinary initial arrival, magic and the real sound setting.
 import assert from 'node:assert/strict';
 import { mkdir, writeFile } from 'node:fs/promises';
@@ -43,25 +45,39 @@ await page.route('**/src/world3d.js', async (route) => {
       '\nconst observe=WorldRenderer.prototype.render;WorldRenderer.prototype.render=function(...args){window.rimoWorld=this;return observe.apply(this,args);};',
   });
 });
-await page.route('**/src/cat-hiss.js', async (route) => {
+await page.route('**/src/nature-audio.js', async (route) => {
   const r = await route.fetch();
   await route.fulfill({
     response: r,
-    body: (await r.text()).replace(
-      'export function playCatHiss(context, gainValue) {',
-      'export function playCatHiss(context, gainValue) { window.rimoHisses=(window.rimoHisses||0)+1;',
-    ),
+    body:
+      (await r.text()) +
+      `
+const observeHiss = NatureAudio.prototype.play;
+NatureAudio.prototype.play = function(...args) {
+  const played = observeHiss.apply(this, args);
+  if (args[0] === 'fx-hiss' && played) window.rimoHisses = (window.rimoHisses || 0) + 1;
+  return played;
+};`,
   });
 });
 let failure;
 try {
   await page.goto(`http://127.0.0.1:${port}/?room=RIMO-ARRIVAL&autostart=1`);
+  await enterPreparedWorld(page, false);
+  await page.keyboard.press('Escape');
+  await page.locator('[data-pause-tab="mascots"]').click();
+  await page.locator('[data-mascot="rimo-neko"]').click();
+  await page.keyboard.press('Escape');
+  await until(() => !!activeMascot(game.rooms.get('RIMO-ARRIVAL'), id), 'selected cat arrives');
+  await page.waitForFunction(() =>
+    [...rimoWorld.companionRenderers.renderers.values()].some((r) => r.state?.key === 'rimo-neko'),
+  );
   await page
     .locator('#world[data-world-asset="ready"][data-character-asset="ready"]')
     .waitFor({ timeout: 120000 });
   const room = game.rooms.get('RIMO-ARRIVAL'),
     p = room.players.get(id),
-    c = room.rimoNeko;
+    c = activeMascot(room, id);
   const initial = { player: { x: p.x, z: p.z }, cat: { x: c.x, z: c.z } };
   const yaw = Math.atan2(p.x - c.x, p.z - c.z);
   await page.evaluate((yaw) => {
@@ -80,11 +96,14 @@ try {
   await until(() => c.petContactAt > 0, 'initial camp pet');
   await sleep(600);
   await page.screenshot({ path: `${out}/initial-camp-pet.png` });
-  await until(() => c.followPlayerId === id, 'initial friendship');
+  await until(() => c.ownerId === id, 'initial friendship');
   await sleep(950);
-  checks.push({ check: 'initial camp arrival and V pet without position fixtures', initial });
+  checks.push({ check: 'selected companion arrival and V pet without position fixtures', initial });
   await page.keyboard.press('Escape');
   await page.locator('[data-pause-tab="settings"]').click();
+  // New visits currently start with sound enabled; exercise the actual off/on control.
+  if ((await page.locator('[data-setting="sound"]').getAttribute('aria-pressed')) === 'true')
+    await page.locator('[data-setting="sound"]').click();
   await page.locator('[data-setting="sound"]').click();
   await until(
     () =>
@@ -109,6 +128,9 @@ try {
     'mage GLB',
   );
   if (await page.locator('#modal').isVisible()) await page.keyboard.press('Escape');
+  await page.waitForFunction(
+    () => rimoWorld.audio.context?.state === 'running' && rimoWorld.audio.buffers.has('fx-hiss'),
+  );
   await sleep(500);
   for (const audible of [true, false]) {
     if (!audible) {
@@ -142,7 +164,9 @@ try {
     await sleep(350);
     const screen = await page.evaluate(() => {
       const r = rimoWorld,
-        cat = r.rimoNekoRenderer;
+        cat = [...r.companionRenderers.renderers.values()].find(
+          (c) => c.state?.key === 'rimo-neko',
+        );
       const v = cat.actor.root
         .getObjectByName('Head')
         .getWorldPosition(cat.root.position.clone())
@@ -196,6 +220,26 @@ try {
   assert.equal(rms.start, 0);
   assert.equal(rms.tail, 0);
   checks.push({ check: 'hiss audio renders a finite attack/release envelope', ...rms });
+  const delivered = await page.evaluate(() => {
+    const audio = rimoWorld.audio,
+      buffer = audio.buffers.get('fx-hiss');
+    const samples = buffer.getChannelData(0);
+    return {
+      seconds: buffer.duration,
+      frames: buffer.length,
+      sampleRate: buffer.sampleRate,
+      url: audio.manifest.get('fx-hiss').url,
+      finite: samples.every(Number.isFinite),
+      rms: Math.sqrt(samples.reduce((sum, n) => sum + n * n, 0) / samples.length),
+      errors: audio.errors,
+    };
+  });
+  assert.ok(delivered.finite && delivered.rms > 0.01 && delivered.seconds > 0);
+  assert.deepEqual(delivered.errors, []);
+  checks.push({
+    check: 'the delivered hiss used by NatureAudio decodes to a non-silent finite buffer',
+    ...delivered,
+  });
   assert.deepEqual(errors, []);
   console.log('PASS', checks.length, 'arrival/audio checks');
 } catch (e) {
@@ -205,7 +249,7 @@ try {
     `${out}/failure-state.json`,
     JSON.stringify(
       {
-        cat: room?.rimoNeko,
+        cat: room?.companions,
         player: room?.players.get(id),
         attacks,
         commands: commands.filter((c) => c.type === 'action'),

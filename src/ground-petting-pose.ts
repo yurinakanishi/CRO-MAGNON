@@ -120,12 +120,23 @@ export class GroundPettingPose {
       ],
     }));
     const extraCrouch = lowTarget ? Math.max(0, 0.45 - (target.y - floor)) * 0.9 : 0;
+    // Ground companions include the retained human-sized Howkey. Keep the existing
+    // low-pet crouch, but stand up smoothly when the stroked point is above the hips.
+    const crouch =
+      1 -
+      THREE.MathUtils.smoothstep(
+        target.y - floor,
+        Math.max(0.6, hipHeight * 0.9),
+        Math.max(0.8, hipHeight + 0.3),
+      );
     this.depth =
       THREE.MathUtils.clamp(
         (hipHeight - 0.23) * 0.83 + extraCrouch,
         0.035,
         lowTarget ? hipHeight - 0.17 : 0.7,
-      ) * weight;
+      ) *
+      weight *
+      crouch;
     this.hips.parent!.getWorldQuaternion(this.parentQ).invert();
     this.hips.parent!.getWorldScale(this.scale);
     this.v
@@ -137,7 +148,7 @@ export class GroundPettingPose {
     this.root.updateWorldMatrix(true, true);
     const pitch = new THREE.Quaternion().setFromAxisAngle(
       new THREE.Vector3(1, 0, 0).applyQuaternion(this.rootQ),
-      (lowTarget ? 0.95 : hipHeight < 0.4 ? 0.15 : 0.55) * weight,
+      (lowTarget ? 0.95 : hipHeight < 0.4 ? 0.15 : 0.55) * weight * crouch,
     );
     this.spine.getWorldQuaternion(this.q).premultiply(pitch);
     this.spine.parent!.getWorldQuaternion(this.parentQ).invert();

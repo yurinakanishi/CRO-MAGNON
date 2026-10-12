@@ -3,36 +3,69 @@ import assert from 'node:assert/strict';
 import { createGameCore } from '../dist/shared/game-core.mjs';
 import { freshBudget, reserve, nextDay } from '../dist/cloudflare/free-budget.mjs';
 class Socket {
-  readyState = 1; bufferedAmount = 0; handlers = {}; messages = [];
-  on(name, fn) { this.handlers[name] = fn; }
-  send(data) { this.messages.push(JSON.parse(data)); }
-  close() { this.readyState = 3; this.handlers.close?.(); }
+  readyState = 1;
+  bufferedAmount = 0;
+  handlers = {};
+  messages = [];
+  on(name, fn) {
+    this.handlers[name] = fn;
+  }
+  send(data) {
+    this.messages.push(JSON.parse(data));
+  }
+  close() {
+    this.readyState = 3;
+    this.handlers.close?.();
+  }
 }
 test('cloud save restores private sessions, inventory and world after a fresh process', () => {
   const core = createGameCore({ resumeGraceMs: 86400000, keepEmptyRooms: true });
   const socket = new Socket();
-  core.connect(socket, new URLSearchParams({ room: 'EMBER', name: 'Save test', species: 'cat', resume: '1' }));
-  const welcome = socket.messages.find(m => m.type === 'welcome');
-  const room = core.rooms.get('EMBER'), player = room.players.get(welcome.id);
-  player.inventory.wood = 7; player.inventory.rawMeat = 2; player.gathered = 9; player.tool = true;
-  player.cookingEndsAt = Date.now() + 2000; room.camp.wood = 19;
-  room.resources[0].amount = 0; room.animals[0].phase = 'meat'; room.animals[0].health = 0; room.animals[0].meatRemaining = 2;
+  core.connect(
+    socket,
+    new URLSearchParams({ room: 'EMBER', name: 'Save test', species: 'cat', resume: '1' }),
+  );
+  const welcome = socket.messages.find((m) => m.type === 'welcome');
+  const room = core.rooms.get('EMBER'),
+    player = room.players.get(welcome.id);
+  player.inventory.wood = 7;
+  player.inventory.rawMeat = 2;
+  player.gathered = 9;
+  player.tool = true;
+  player.cookingEndsAt = Date.now() + 2000;
+  room.camp.wood = 19;
+  room.resources[0].amount = 0;
+  room.animals[0].phase = 'meat';
+  room.animals[0].health = 0;
+  room.animals[0].meatRemaining = 2;
   const saved = JSON.parse(JSON.stringify(core.exportState()));
   assert.equal(saved.rooms[0].sessions[0].player.socket, undefined);
   const restored = createGameCore({ resumeGraceMs: 86400000, keepEmptyRooms: true });
   restored.importState(saved);
   const fresh = new Socket();
-  restored.connect(fresh, new URLSearchParams({ room: 'EMBER', name: 'Spoof', resume: '1', session: welcome.session }));
-  const resumed = fresh.messages.find(m => m.type === 'welcome');
-  assert.equal(resumed.id, welcome.id); assert.equal(resumed.resumed, true); assert.equal(resumed.profile.name, 'Save test');
-  const result = restored.rooms.get('EMBER'), me = result.players.get(resumed.id);
-  assert.equal(me.inventory.wood, 7); assert.equal(me.inventory.rawMeat, 2); assert.equal(me.cookingEndsAt, 0);
-  assert.equal(me.gathered, 9); assert.equal(me.tool, true); assert.equal(result.camp.wood, 19);
-  assert.equal(result.resources[0].amount, 0); assert.equal(result.animals[0].meatRemaining, 2);
+  restored.connect(
+    fresh,
+    new URLSearchParams({ room: 'EMBER', name: 'Spoof', resume: '1', session: welcome.session }),
+  );
+  const resumed = fresh.messages.find((m) => m.type === 'welcome');
+  assert.equal(resumed.id, welcome.id);
+  assert.equal(resumed.resumed, true);
+  assert.equal(resumed.profile.name, 'Save test');
+  const result = restored.rooms.get('EMBER'),
+    me = result.players.get(resumed.id);
+  assert.equal(me.inventory.wood, 7);
+  assert.equal(me.inventory.rawMeat, 2);
+  assert.equal(me.cookingEndsAt, 0);
+  assert.equal(me.gathered, 9);
+  assert.equal(me.tool, true);
+  assert.equal(result.camp.wood, 19);
+  assert.equal(result.resources[0].amount, 0);
+  assert.equal(result.animals[0].meatRemaining, 2);
   assert.ok(!JSON.stringify(restored.snapshot(result, true)).includes(welcome.session));
 });
 test('free quotas refuse excess usage and reserved usage survives restart', () => {
-  const now = Date.parse('2026-09-07T15:00:00Z'), budget = freshBudget(now);
+  const now = Date.parse('2026-09-07T15:00:00Z'),
+    budget = freshBudget(now);
   assert.equal(reserve(budget, 'messages', 400000, now), true);
   const reloaded = JSON.parse(JSON.stringify(budget));
   assert.equal(reserve(reloaded, 'messages', 1, now), false);
@@ -49,8 +82,11 @@ test('unknown saved schema fails closed instead of silently resetting progress',
 test('legacy version 2 cloud checkpoint preserves progress and supplies later world features', () => {
   const core = createGameCore({ resumeGraceMs: 86400000, keepEmptyRooms: true });
   const socket = new Socket();
-  core.connect(socket, new URLSearchParams({ room: 'EMBER', name: 'Legacy traveller', resume: '1' }));
-  const welcome = socket.messages.find(m => m.type === 'welcome');
+  core.connect(
+    socket,
+    new URLSearchParams({ room: 'EMBER', name: 'Legacy traveller', resume: '1' }),
+  );
+  const welcome = socket.messages.find((m) => m.type === 'welcome');
   const room = core.rooms.get('EMBER');
   room.camp.wood = 8;
   room.players.get(welcome.id).inventory.wood = 11;
@@ -63,13 +99,22 @@ test('legacy version 2 cloud checkpoint preserves progress and supplies later wo
   const restored = createGameCore({ resumeGraceMs: 86400000, keepEmptyRooms: true });
   restored.importState(saved);
   const fresh = new Socket();
-  restored.connect(fresh, new URLSearchParams({ room: 'EMBER', resume: '1', session: welcome.session }));
-  assert.equal(fresh.messages.find(m => m.type === 'welcome').resumed, true);
+  restored.connect(
+    fresh,
+    new URLSearchParams({ room: 'EMBER', resume: '1', session: welcome.session }),
+  );
+  assert.equal(fresh.messages.find((m) => m.type === 'welcome').resumed, true);
   const recovered = restored.rooms.get('EMBER');
   assert.equal(recovered.camp.wood, 8);
   assert.equal(recovered.players.get(welcome.id).inventory.wood, 11);
   assert.equal(recovered.resources[0].amount, 2);
-  assert.ok(recovered.rimoNeko && recovered.companion524 && recovered.gulf);
+  assert.ok(recovered.gulf);
+  assert.deepEqual(recovered.companions, []);
+  assert.deepEqual(recovered.orbBots, []);
+  assert.equal(recovered.players.get(welcome.id).mascot, null);
   assert.equal(JSON.stringify(saved), before);
-  assert.throws(() => createGameCore().importState({ ...saved, worldVersion: 999 }), /Unsupported saved world/);
+  assert.throws(
+    () => createGameCore().importState({ ...saved, worldVersion: 999 }),
+    /Unsupported saved world/,
+  );
 });

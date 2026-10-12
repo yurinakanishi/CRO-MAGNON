@@ -1,147 +1,63 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { EventEmitter } from 'node:events';
-import { createGameCore } from '../dist/application/game-core.mjs';
+import { mascotCore } from './mascot-fixture.mjs';
 import { ALL_MASCOT_MODELS } from '../dist/shared/mascot-roster.mjs';
-import { CollisionWorld } from '../dist/shared/collision.mjs';
+import { mascotBodies } from '../dist/shared/mascot-selection.mjs';
 
-class Socket extends EventEmitter {
-  readyState = 1;
-  bufferedAmount = 0;
-  messages = [];
-  send(raw) {
-    this.messages.push(JSON.parse(raw));
-  }
-  close() {
-    this.readyState = 3;
-    this.emit('close');
-  }
-  ping() {}
-  terminate() {
-    this.close();
-  }
-}
-const cases = [
-  ['rimoNeko', 'petRimo', 'dismissRimo'],
-  ['mae', 'petMae', 'dismissMae'],
-  ['companion524', 'pet524', 'dismiss524'],
-  ['orbBots', 'petBots', 'dismissBots'],
-];
-function fixture(key) {
-  let now = 10000,
-    serial = 0;
-  const options = {
-    mascotModels: ALL_MASCOT_MODELS,
-    persistentSessions: true,
-    keepEmptyRooms: true,
-    runtime: { now: () => now, id: () => `start-${++serial}`, token: () => `session-${++serial}` },
-  };
-  let core = createGameCore(options);
-  const join = (session = '') => {
-    const socket = new Socket();
-    core.connect(socket, new URLSearchParams({ room: 'START', resume: '1', session }));
-    return { socket, welcome: socket.messages.find((m) => m.type === 'welcome') };
-  };
-  const owner = join(),
-    observer = join();
-  const room = () => core.rooms.get('START');
-  const player = () => room().players.get(owner.welcome.id);
-  room().collision = new CollisionWorld([], { coast: false, river: false, walkSurfaces: [] });
-  room().enemies = [];
-  room().animals = [];
-  const c = key === 'orbBots' ? { x: 44, z: 56 } : room()[key];
-  Object.assign(player(), { x: c.x, z: c.z - 1.8 });
-  player().inventory.wood = 7;
-  const pet = () =>
-    key === 'orbBots' ? room().orbBots.filter((b) => b.kind !== '524') : [room()[key]];
-  const bond = (b) =>
-    key === 'orbBots' ? b.ownerId : key === 'companion524' ? b.squadPlayerId : b.followPlayerId;
-  const action = (action, socket = owner.socket) => {
-    now += 200;
-    socket.emit('message', JSON.stringify({ type: 'action', action }));
-  };
-  const step = (ms = 50) => {
-    now += ms;
-    core.tick();
-  };
-  return {
-    owner,
-    observer,
-    room,
-    player,
-    join,
-    pet,
-    bond,
-    action,
-    step,
-    restart() {
-      const saved = core.exportState(),
-        original = structuredClone(saved);
-      core.close();
-      core = createGameCore(options);
-      core.importState(saved);
-      assert.deepEqual(saved, original);
-      return saved;
-    },
-    close: () => core.close(),
-  };
-}
-
-for (const [key, action, dismiss] of cases) {
-  test(`${key}: accepted pet is bonded in the first broadcast and survives recall before any contact`, () => {
-    const f = fixture(key);
-    try {
-      f.action(action);
-      const pets = f.pet();
-      assert.equal(pets.length, key === 'orbBots' ? 9 : 1);
-      assert.ok(pets.every((b) => b.petPlayerId === f.owner.welcome.id && !b.petContactAt));
-      assert.ok(pets.every((b) => f.bond(b) === f.owner.welcome.id));
-      for (const client of [f.owner, f.observer]) {
-        const state = client.socket.messages.filter((m) => m.type === 'state').at(-1);
-        const shared = key === 'orbBots' ? state.orbBots : [state[key]];
-        assert.ok(shared.every((b) => f.bond(b) === f.owner.welcome.id));
+for (const key of ['rimo-neko', '524', 'mae', 'white']) {
+  test(
+    key + ': the first pet broadcast names the visitor without transferring the companion',
+    (t) => {
+      const w = mascotCore(t, { mascotModels: ALL_MASCOT_MODELS }),
+        owner = w.join('Owner'),
+        visitor = w.join('Visitor');
+      w.act(owner, 'selectMascot', key);
+      const c = w.active(owner);
+      Object.assign(visitor.player(), { x: c.x, z: c.z - 1.3 });
+      w.act(visitor, 'petMascot', c.id);
+      assert.equal(c.petPlayerId, visitor.id);
+      assert.equal(c.ownerId, owner.id);
+      assert.equal(visitor.player().mascot, null);
+      for (const who of [owner, visitor]) {
+        const sent = mascotBodies(w.state(who)).find((b) => b.id === c.id);
+        assert.equal(sent.petPlayerId, visitor.id);
+        assert.equal(sent.ownerId, owner.id);
       }
-      f.action('recallBots');
-      f.step();
-      assert.ok(f.pet().every((b) => !b.petPlayerId && f.bond(b) === f.owner.welcome.id));
-      f.action(dismiss);
-      f.step();
-      assert.ok(
-        f.pet().every((b) => !f.bond(b)),
-        'explicit dismissal still removes the bond',
-      );
-    } finally {
-      f.close();
-    }
-  });
-
-  test(`${key}: immediate disconnect and restart retain the new bond, progress and a single original body`, () => {
-    const f = fixture(key);
-    try {
-      f.action(action);
-      const ids = f.pet().map((b) => b.id);
-      f.owner.socket.close();
-      f.step();
-      assert.ok(f.pet().every((b) => f.bond(b) === f.owner.welcome.id));
-      f.restart();
-      assert.ok(f.pet().every((b) => f.bond(b) === f.owner.welcome.id && !b.petPlayerId));
-      const resumed = f.join(f.owner.welcome.session);
-      assert.equal(resumed.welcome.id, f.owner.welcome.id);
-      f.step();
-      assert.deepEqual(
-        f.pet().map((b) => b.id),
-        ids,
-      );
-      assert.equal(f.player().inventory.wood, 7);
-      assert.ok(f.pet().every((b) => f.bond(b) === f.owner.welcome.id));
-      f.action('travelAlone', resumed.socket);
-      f.restart();
-      assert.ok(
-        f.pet().every((b) => !f.bond(b)),
-        'dismissal survives saving too',
-      );
-    } finally {
-      f.close();
-    }
-  });
+      w.act(visitor, 'recallBots');
+      assert.equal(c.petPlayerId, null);
+      assert.equal(c.ownerId, owner.id);
+      assert.equal(w.active(visitor), undefined);
+      assert.equal(w.active(owner), c);
+    },
+  );
+  test(
+    key +
+      ': disconnect and restart during a visitor stroke preserve the owner selection and both inventories',
+    (t) => {
+      const w = mascotCore(t, { mascotModels: ALL_MASCOT_MODELS }),
+        owner = w.join('Owner'),
+        visitor = w.join('Visitor');
+      owner.player().inventory.wood = 8;
+      visitor.player().inventory.berry = 5;
+      w.act(owner, 'selectMascot', key);
+      const c = w.active(owner);
+      Object.assign(visitor.player(), { x: c.x, z: c.z - 1.3 });
+      w.act(visitor, 'petMascot', c.id);
+      visitor.socket.close();
+      w.step();
+      assert.equal(c.petPlayerId, null);
+      assert.equal(c.ownerId, owner.id);
+      const saved = w.core().exportState();
+      w.load(saved);
+      const a = w.join('Owner', owner.session),
+        b = w.join('Visitor', visitor.session);
+      assert.equal(a.player().inventory.wood, 8);
+      assert.equal(b.player().inventory.berry, 5);
+      assert.equal(a.player().mascot, key);
+      assert.equal(b.player().mascot, null);
+      assert.equal(w.active(a).petPlayerId, null);
+      assert.equal(w.active(b), undefined);
+      assert.equal(mascotBodies(w.room()).length, 1);
+    },
+  );
 }

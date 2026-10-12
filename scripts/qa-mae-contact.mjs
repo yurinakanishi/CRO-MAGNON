@@ -1,8 +1,9 @@
 import assert from 'node:assert/strict';
-import { writeFile } from 'node:fs/promises';
+import { mkdir, writeFile } from 'node:fs/promises';
+import { dirname } from 'node:path';
 import * as THREE from 'three';
 import { CollisionWorld } from '../dist/shared/collision.mjs';
-import { createMae, handleMaeAction } from '../dist/shared/mae.mjs';
+import { createCompanion, petCompanion } from '../dist/shared/companions.mjs';
 import { GroundPettingPose } from '../dist/src/ground-petting-pose.js';
 import { CHARACTER_MODELS } from '../dist/shared/characters.mjs';
 import { deliveredModel } from '../tests/delivered-model.mjs';
@@ -19,7 +20,7 @@ for (const character of CHARACTER_MODELS.filter((c) => c.bodyPlan !== 'octopus')
     mixer = new THREE.AnimationMixer(gltf.scene);
   mixer.clipAction(gltf.animations.find((a) => a.name === 'Idle_Loop')).play();
   const collision = new CollisionWorld([], { coast: false, river: false, walkSurfaces: [] }),
-    c = createMae(collision);
+    c = createCompanion('mae', 'mae@p', { id: 'p', facing: 0 }, { x: 50, z: 50 });
   const p = {
     ...character,
     id: 'p',
@@ -30,7 +31,7 @@ for (const character of CHARACTER_MODELS.filter((c) => c.bodyPlan !== 'octopus')
     jumpAt: 0,
     jumpSequence: 0,
   };
-  assert.ok(handleMaeAction({ collision, mae: c }, p, 'petMae', 10000));
+  assert.ok(petCompanion({ collision, companions: [c] }, p, c, 10000));
   pet.scene.position.set(c.petGoal.x - p.x, 0, c.petGoal.z - p.z);
   pet.scene.rotation.y = Math.PI;
   const samples = [];
@@ -70,10 +71,9 @@ for (const character of CHARACTER_MODELS.filter((c) => c.bodyPlan !== 'octopus')
   });
   console.log(character.key, records.at(-1).gap, records.at(-1).footDelta);
 }
-await writeFile(
-  'output/model-generation/models/mae/qa/contact.json',
-  JSON.stringify(records, null, 2),
-);
+const output = process.argv[2] || 'output/model-generation/models/mae/qa/contact.json';
+await mkdir(dirname(output), { recursive: true });
+await writeFile(output, JSON.stringify(records, null, 2));
 assert.ok(
   records.every((r) => r.gap < 0.045 && r.footDelta < 0.006),
   'moving crown reachable with planted feet',

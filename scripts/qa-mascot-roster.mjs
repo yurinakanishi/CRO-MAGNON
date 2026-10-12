@@ -1,3 +1,5 @@
+import { enterPreparedWorld } from './qa-game-entry.mjs';
+import { activeMascot } from '../dist/shared/mascot-selection.mjs';
 // Real Chrome and four websocket peers, in a separate memory-only world.
 import assert from 'node:assert/strict';
 import { mkdir, writeFile } from 'node:fs/promises';
@@ -16,6 +18,7 @@ const cards = withHowkey ? 12 : 11;
 await mkdir(out, { recursive: true });
 const game = createGameServer({
   ...localVerificationSettings(out),
+  runtimeConfig: { mode: 'online', serverUrl: '', room: 'ROSTERQA' },
   port: 0,
   mascotModels: withHowkey ? [...ACTIVE_MASCOT_MODELS, 'howkey-scientist'] : ACTIVE_MASCOT_MODELS,
 });
@@ -65,7 +68,7 @@ try {
   const guests = page
     .locator('.contributor-group')
     .filter({ has: page.locator('h3', { hasText: '友情出演' }) });
-  assert.equal(await guests.locator('.contributor-avatar').count(), withHowkey ? 3 : 2);
+  assert.equal(await guests.locator('.contributor-avatar').count(), withHowkey ? 4 : 3);
   assert.deepEqual(
     await guests.locator('a').evaluateAll((links) => links.map((link) => link.href)),
     [
@@ -78,7 +81,7 @@ try {
   pass(
     withHowkey
       ? 'guest icons and X links restore Howkey alongside 524 and rimo'
-      : 'guest icons and X links show only 524 and rimo',
+      : 'guest cards show 524, rimo and Dots; only known X profiles have links',
   );
   await page.locator('#modal-close').click();
   await page.locator('#title-start').click();
@@ -104,10 +107,8 @@ try {
   assert.equal(room().mae, undefined);
   assert.equal(room().kohaku, undefined);
   assert.equal(room().maruimo, undefined);
-  assert.deepEqual(
-    room().friends.map((f) => f.key),
-    withHowkey ? ['howkey-scientist'] : [],
-  );
+  assert.deepEqual(room().companions, []);
+  assert.deepEqual(room().orbBots, []);
   await page.keyboard.press('Escape');
   await page.locator('[data-pause-tab="mascots"]').click();
   assert.deepEqual(
@@ -125,24 +126,24 @@ try {
         .evaluateAll((images) => images.every((image) => image.complete && image.naturalWidth > 0)),
     'all eleven portraits load',
   );
-  await page.locator('[data-mascot-all="select"]').click();
-  await until(
-    () => room().orbBots.filter((bot) => bot.ownerId === playerId).length === 11,
-    'select eleven mascots',
-  );
-  if (withHowkey)
-    await until(
-      () => room().friends[0].followPlayerId === playerId,
-      'Howkey joins the selected companions',
+  assert.equal(await page.locator('[data-mascot-all]').count(), 0);
+  for (const key of [
+    ...BOT_KINDS,
+    'rimo-neko',
+    '524',
+    ...(withHowkey ? ['howkey-scientist'] : []),
+  ]) {
+    await page.locator('[data-mascot="' + key + '"]').click();
+    await until(() => room().players.get(playerId).mascot === key, 'single card selection');
+    await sleep(1100);
+    assert.equal(
+      [...room().companions, ...room().orbBots.filter((b) => !b.companionId)].filter(
+        (c) => c.ownerId === playerId,
+      ).length,
+      1,
     );
-  await until(
-    () =>
-      page
-        .locator('#mascot-selection-count')
-        .textContent()
-        .then((text) => text.includes(`${cards} / ${cards}`)),
-    'eleven cards reflect server selection',
-  );
+    assert.equal(await page.locator('[data-mascot][aria-pressed="true"]').count(), 1);
+  }
   for (const [width, height, label] of [
     [1440, 900, 'desktop'],
     [390, 844, 'portrait'],
@@ -153,15 +154,19 @@ try {
     await page.screenshot({ path: `${out}/mascots-${label}.png` });
   }
   pass(`five clients and ${cards} selection cards, including three viewport sizes`);
-  await page.locator('[data-mascot-all="clear"]').click();
-  await until(() => room().orbBots.every((bot) => bot.ownerId !== playerId), 'all eleven released');
+  await page.locator('[data-mascot-none]').click();
+  await until(
+    () => room().companions.length === 0 && room().orbBots.length === 0,
+    'goodbye removes the selected body',
+  );
   for (const peer of peers)
     for (const state of peer.messages.filter((m) => m.type === 'state')) {
-      for (const field of ['mae', 'kohaku', 'maruimo'])
-        assert.equal(state[field], undefined, field);
-      assert.deepEqual(
-        state.friends.map((f) => f.key),
-        withHowkey ? ['howkey-scientist'] : [],
+      for (const field of ['mae', 'kohaku', 'maruimo', 'friends', 'companion524', 'rimoNeko'])
+        assert.equal(field in state, false, field);
+      assert.ok(
+        [...state.companions, ...state.orbBots.filter((b) => !b.companionId)].filter(
+          (c) => !c.leavingAt,
+        ).length <= 1,
       );
     }
   for (const entry of MASCOT_ROSTER.filter(
@@ -183,8 +188,10 @@ try {
     );
   if (withHowkey) {
     await page.setViewportSize({ width: 1440, height: 900 });
+    await page.locator('[data-mascot="howkey-scientist"]').click();
+    await until(() => !!activeMascot(room(), playerId), 'Howkey selected');
     await page.keyboard.press('Escape');
-    const howkey = room().friends[0];
+    const howkey = activeMascot(room(), playerId);
     const player = room().players.get(playerId);
     // Preparation only: place the player at the retained mascot's home. The
     // actual V input below must start and complete the server's pet interaction.
@@ -203,13 +210,15 @@ try {
     await until(() => howkey.petContactAt > 0, 'Howkey hand contact', 10000);
     await page.screenshot({ path: `${out}/howkey-pet.png` });
     await until(
-      () => !howkey.petPlayerId && howkey.followPlayerId === playerId,
+      () => !howkey.petPlayerId && howkey.ownerId === playerId,
       'Howkey pet completes',
       15000,
     );
     assert.ok(requests.includes('/models/howkey-scientist/model-c2.glb'));
     assert.ok(requests.includes('/models/howkey-flask/model-r01.glb'));
-    pass('retained Howkey rig and flask load; real V pet contact completes and bonds the mascot');
+    pass(
+      'retained Howkey rig and flask load; real V pet contact completes without changing its owner',
+    );
   }
   assert.deepEqual(errors, []);
   pass('no dormant mascot downloads; their four mural textures still load; browser errors zero');
