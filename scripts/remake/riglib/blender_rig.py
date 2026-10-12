@@ -22,6 +22,13 @@ from clips_data import EAT_HAND, LegSolver, build_clips  # noqa: E402
 
 FPS = 30
 H = TARGET_HEIGHT
+# Landmark heights (and two lateral offsets) as fractions of the character's own height. The
+# defaults are adult proportions; a stylized character with a larger head overrides them
+# (rig_human_c2.py --proportions). `mouth` (absent by default) replaces the nose-profile mouth.
+FRACTIONS = dict(pelvis=0.530, spine=0.618, chest=0.726, neck=0.842, head=0.884, head_tip=0.980,
+                 knee=0.285, hip=0.530, hip_x=0.049, shoulder=0.795, shoulder_in=0.812,
+                 shoulder_in_x=0.028, elbow=0.632, wrist=0.522, hand=0.462, ankle=0.062,
+                 foot=0.021, toe=0.017)
 
 
 def argv_after_dashes():
@@ -465,13 +472,17 @@ def mouth_landmark(P, neck_z, head_tip_z, drop=0.028):
 def build_landmarks(obj):
     """Derive every joint from this mesh, in metres, after alignment."""
     P = positions(obj.data)
+    F = FRACTIONS
     marks = dict()
-    spine = (('pelvis', 0.530), ('spine', 0.618), ('chest', 0.726),
-             ('neck', 0.842), ('head', 0.884), ('head_tip', 0.980))
-    for name, fraction in spine:
-        marks[name] = (0.0, torso_depth(P, fraction * H), fraction * H)
+    for name in ('pelvis', 'spine', 'chest', 'neck', 'head', 'head_tip'):
+        marks[name] = (0.0, torso_depth(P, F[name] * H), F[name] * H)
 
     face, face_detail = mouth_landmark(P, marks['neck'][2], marks['head_tip'][2])
+    if 'mouth' in F:
+        rows = face_profile(P, marks['neck'][2], marks['head_tip'][2])
+        near = min(rows, key=lambda row: abs(row[0] - F['mouth'] * H))
+        face['mouth'] = (0.0, near[1], near[0])
+        face_detail['mouth_from_fraction'] = F['mouth']
     marks.update(face)
 
     detail = dict(feet=dict(), arm_samples=dict(), leg_samples=dict(),
@@ -485,23 +496,23 @@ def build_landmarks(obj):
         ankle_xy = heel + span * 0.30
         ball_xy = heel + span * 0.78
         tip_xy = heel + span * 0.98
-        marks['ankle_' + side] = (float(ankle_xy[0]), float(ankle_xy[1]), 0.062 * H)
-        marks['foot_' + side] = (float(ball_xy[0]), float(ball_xy[1]), 0.021 * H)
-        marks['toe_' + side] = (float(tip_xy[0]), float(tip_xy[1]), 0.017 * H)
+        marks['ankle_' + side] = (float(ankle_xy[0]), float(ankle_xy[1]), F['ankle'] * H)
+        marks['foot_' + side] = (float(ball_xy[0]), float(ball_xy[1]), F['foot'] * H)
+        marks['toe_' + side] = (float(tip_xy[0]), float(tip_xy[1]), F['toe'] * H)
 
-        knee = leg_centre(P, 0.285 * H, sign)
+        knee = leg_centre(P, F['knee'] * H, sign)
         detail['leg_samples'][side] = dict(knee=knee)
         marks['knee_' + side] = knee
-        marks['hip_' + side] = (sign * 0.049 * H, marks['pelvis'][1], 0.530 * H)
+        marks['hip_' + side] = (sign * F['hip_x'] * H, marks['pelvis'][1], F['hip'] * H)
 
-        shoulder = arm_centre(P, 0.795 * H, sign)
-        elbow = arm_centre(P, 0.632 * H, sign)
-        wrist = arm_centre(P, 0.522 * H, sign)
-        hand = arm_centre(P, 0.462 * H, sign)
+        shoulder = arm_centre(P, F['shoulder'] * H, sign)
+        elbow = arm_centre(P, F['elbow'] * H, sign)
+        wrist = arm_centre(P, F['wrist'] * H, sign)
+        hand = arm_centre(P, F['hand'] * H, sign)
         detail['arm_samples'][side] = dict(shoulder=shoulder, elbow=elbow,
                                            wrist=wrist, hand=hand)
-        marks['shoulder_' + side] = (shoulder[0] * 0.84, shoulder[1], 0.795 * H)
-        marks['shoulder_in_' + side] = (sign * 0.028 * H, marks['chest'][1], 0.812 * H)
+        marks['shoulder_' + side] = (shoulder[0] * 0.84, shoulder[1], F['shoulder'] * H)
+        marks['shoulder_in_' + side] = (sign * F['shoulder_in_x'] * H, marks['chest'][1], F['shoulder_in'] * H)
         marks['elbow_' + side] = elbow
         marks['wrist_' + side] = wrist
         marks['hand_' + side] = hand

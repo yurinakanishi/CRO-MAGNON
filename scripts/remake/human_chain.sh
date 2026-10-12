@@ -3,11 +3,12 @@
 # rig_human_c2 (height-normalised) -> spear thrust (if the character carries a spear) -> Downed -> CMU locomotion
 # -> animated LOD (scripts/build-performance-lods.py, ratio 0.2). Output: output/asset-remake/motion/<key>-<rigRev>/
 # Env: RIG_EXTRA (rig_human_c2.py args, e.g. '--accent none' for characters without a TribeAccent slot),
-# RETARGET_ATTACK_FROM (delivered GLB whose Attack clip is retargeted instead of the spear thrust).
+# RETARGET_ATTACK_FROM (delivered GLB whose Attack clip is retargeted instead of the spear thrust),
+# CANDIDATE (default candidate-02: the work/<candidate> folder of a later candidate).
 key=$1; merged=$2; rev=$3; height=$4; name=$5; spear=${6:-spear}
 cd "$(dirname "$0")/../.."
 B="/c/Program Files/Blender Foundation/Blender 5.2/blender.exe"
-H=C:/Users/yurin/Desktop/projects/CRO-MAGNON/output/model-generation/models/$key/work/candidate-02
+H=C:/Users/yurin/Desktop/projects/CRO-MAGNON/output/model-generation/models/$key/work/${CANDIDATE:-candidate-02}
 "$B" -b --python scripts/remake/rig_human_c2.py -- --source "$merged" --out "$H/rig/$rev" --name $name --height $height $RIG_EXTRA 2>&1 | grep -E "RIG_DONE|Error|Traceback" | cut -c1-120
 S=output/asset-remake/motion/$key-$rev; rm -rf $S; mkdir -p $S/stage0
 cp $H/rig/$rev/candidate.glb $S/stage0/model.glb
