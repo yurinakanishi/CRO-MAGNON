@@ -545,8 +545,8 @@
       "sha256": "f3e513c9f311ba2bafdc8ebb8a846a9de0eba15be4c1f35b302e10efbd58b75b",
       "triangles": 74458,
       "delivery": "/models/camp-cave/model-r27-rounded.glb",
-      "gameQA": "assets/camp-cave/qa/adoption-r27-rounded.json",
-      "galleryRevision": "35",
+      "gameQA": "output/playwright/cave-murals-20261012/game-r03/summary.json",
+      "galleryRevision": "36",
       "revision": "27-rounded"
     },
     {

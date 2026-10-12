@@ -1,0 +1,93 @@
+{
+  "date": "2026-10-12",
+  "revision": "36",
+  "files": [
+    {
+      "path": "src/cave-gallery-layout.ts",
+      "sha256": "bb5bed87b29b5d22509c5454886ca0bf6081b6ecc5e61602700e48704391d77f"
+    },
+    {
+      "path": "src/cave-materials.ts",
+      "sha256": "371a5d0bbff7d1a7d661743c2f982482abc5700ebe8a24b64afca43ca65c956f"
+    },
+    {
+      "path": "src/loading-cave.ts",
+      "sha256": "d3fe1a500db38c9800ce0f344e4530e7cbcf368e429a5975223658807541d413"
+    },
+    {
+      "path": "src/world-landmarks.ts",
+      "sha256": "134bd5b642c9d322a1e301084795c32bee1acea9e156c906283e0e8711b982db"
+    },
+    {
+      "path": "cave-mural-visibility.json",
+      "sha256": "f6c110ad2fd92e980b49b7a65abd63d6c3bff37f2202af2b0f09e1f8d80fe496"
+    },
+    {
+      "path": "assets/camp-cave/modular-r36/recipe.json",
+      "sha256": "c439b24fea1b06fcaca03397e01f09ef683d26235791c1ee678a37a48851ed9f"
+    },
+    {
+      "path": "assets/camp-cave/modular-r36/prompts.json",
+      "sha256": "af55604fcd31435731df6e3a29900d8bc67eddc837112e03850090d74661cf5e"
+    },
+    {
+      "path": "assets/camp-cave/modular-r36/friendsMeadow-r02-prompt.txt",
+      "sha256": "9ffe78c213835f28c8e16f58477dbd75f5307641c1d7eb63058b50ae29bfd82e"
+    },
+    {
+      "path": "public/models/camp-cave/asset.json",
+      "sha256": "8d78ba46efb6434375ef86e39f48b367746b73e1db4a6c96f1ea3107a905fcf8"
+    },
+    {
+      "path": "public/models/world-assets.json",
+      "sha256": "84ce1d1bc5595c2680ad90b9b20c24a220278641f664774a2b31b93902e4c4c0"
+    }
+  ],
+  "layout": {
+    "before": 13,
+    "after": 30,
+    "primaryWidth": 7.5,
+    "primaryBottom": 1.4,
+    "primaryStrength": 0.84,
+    "hidden": []
+  },
+  "tests": {
+    "relatedPassed": 55,
+    "optimizationPassed": 8,
+    "optimizationSkipped": 1,
+    "skipReason": "OPTIMIZATION_PYTHON not configured for optional Pillow worker test",
+    "check": "TypeScript/strict, 620 JS syntax checks and architecture boundaries passed",
+    "format": "Changed application code and maintained scripts/tests formatted; git diff --check passed"
+  },
+  "browser": {
+    "summary": "output/playwright/cave-murals-20261012/game-r03/summary.json",
+    "version": "154.0.8037.93",
+    "checks": [
+      "Waiting cave: eight processions, upper animals, real walking and torch controls",
+      "Same murals in live game, one real Chrome renderer and four WebSocket peers",
+      "Ten verified images; no Coming Soon canvas, sampler or label"
+    ],
+    "screenshots": 22,
+    "errors": [],
+    "fixture": "Ephemeral memory-only server. Camera and player positions are preparation; entry, walking, torch and proceed are real inputs. One Chrome plus four protocol peers. Mobile viewport emulation, not a physical phone. No user saves or standard servers touched."
+  },
+  "coverage": {
+    "samples": 3319,
+    "rejected": 0,
+    "report": "assets/camp-cave/qa/gallery-pigment-coverage-r36.json"
+  },
+  "sources": "assets/camp-cave/modular-r36/recipe.json",
+  "notes": [
+    "Imagegen generated eight animal variants and one meadow correction; originals archived; 1024x341 derivative layers are offline only.",
+    "No live character removal requested: all 22 current mural characters are retained.",
+    "Initial sandbox localhost and temporary-rename restrictions cleared by approved isolated QA reruns.",
+    "No user-save access, standard-server restart, publication, exhibition build, commit or push."
+  ],
+  "unverified": [
+    "Physical phones",
+    "Safari",
+    "Physical controllers",
+    "Five simultaneously rendered browsers",
+    "Performance comparisons"
+  ]
+}

@@ -97,7 +97,11 @@ test('the served camp-cave manifests map every mural in its original pixel space
       const bytes = await readFile(`public${record.url}`);
       assert.equal(createHash('sha256').update(bytes).digest('hex'), record.sha256, record.url);
       assert.equal(bytes.length, record.bytes, record.url);
-      assert.deepEqual(size(bytes.readUInt32BE(16), bytes.readUInt32BE(20)), record.image, record.url);
+      assert.deepEqual(
+        size(bytes.readUInt32BE(16), bytes.readUInt32BE(20)),
+        record.image,
+        record.url,
+      );
     }
   }
 });
@@ -111,7 +115,10 @@ test('a whole-image resize keeps every normalised rectangle', () => {
     assert.notDeepEqual(after.image, before.image, `${motif} is served smaller`);
     assert.ok(after.image.width === 1024 || after.image.height === 1024);
     assert.deepEqual(caveUvSource(after), caveUvSource(before));
-    assert.deepEqual(caveMotifUV(motif, caveUvSource(after)), caveMotifUV(motif, caveUvSource(before)));
+    assert.deepEqual(
+      caveMotifUV(motif, caveUvSource(after)),
+      caveMotifUV(motif, caveUvSource(before)),
+    );
     // What the mural shader is built with.
     assert.deepEqual(caveMotifUV(motif, caveUvSource(after)), caveMotifUV(motif));
     // Dividing the original pixel rectangle by the resized size would move the artwork.
@@ -121,7 +128,8 @@ test('a whole-image resize keeps every normalised rectangle', () => {
   assert.deepEqual(resized.pigment.image, size(1024, 1024));
   assert.deepEqual(resized.characterPigment.image, size(1024, 341));
   assert.deepEqual(resized.rimoPigment.image, size(1024, 341));
-  for (const record of Object.values(resized.extras)) assert.deepEqual(record.image, size(1024, 341));
+  for (const record of Object.values(resized.extras))
+    assert.deepEqual(record.image, size(1024, 341));
   // Served URLs come from the manifest, not from the table naming the originals.
   for (const [key, pigment] of Object.entries(CAVE_EXTRA_PIGMENTS)) {
     assert.match(resized.extras[key].url, /\.opt-0123456789abcdef\.png$/);
@@ -157,7 +165,10 @@ test('a record mapped through any other pixel space fails clearly', () => {
     (manifest) => (manifest.characterPigment.uvSource = { width: 2171 }),
     /camp-cave characterPigment: uvSource needs a width and a height/,
   );
-  check((manifest) => delete manifest.pigment.image, /camp-cave pigment: no image width and height/);
+  check(
+    (manifest) => delete manifest.pigment.image,
+    /camp-cave pigment: no image width and height/,
+  );
   check(
     (manifest) => delete manifest.mascotPigments.roundBots,
     /camp-cave mascotPigments\.roundBots: the manifest records no image/,
@@ -183,15 +194,17 @@ test('checking and mapping never change the rectangles or the manifest', () => {
  * then the shader three would compile. */
 function prepare(manifest) {
   const images = caveMuralImages(manifest),
-    texture = (record) => new THREE.Texture({ width: record.image.width, height: record.image.height });
+    texture = (record) =>
+      new THREE.Texture({ width: record.image.width, height: record.image.height });
   const textures = {
     pigment: texture(images.pigment),
     limestone: texture(manifest.rockSurface),
     character524: texture(images.characterPigment),
     rimo: texture(images.rimoPigment),
     extras: {
-      ...Object.fromEntries(Object.entries(images.extras).map(([key, record]) => [key, texture(record)])),
-      comingSoon: new THREE.Texture({ width: 2048, height: 512 }),
+      ...Object.fromEntries(
+        Object.entries(images.extras).map(([key, record]) => [key, texture(record)]),
+      ),
     },
   };
   const root = new THREE.Group(),

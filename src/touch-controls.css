@@ -1,165 +1,393 @@
-/* Phone controls belong to the game, with their own semantic actions and thumb space. */
+/* ---- Phone HUD ----
+   The world stays the picture. One family of translucent round controls at the edges,
+   labelled only where the action changes with the situation.
+   Left: who you are, a slim menu rail, and a pad that appears under the thumb.
+   Right: where you are, then attack and jump with abilities in an arc around them and up to
+   three things to do here, the first nearest the thumb. No backdrop blur over the 3D canvas. */
+body.touch-mode .game-viewport {
+  --gl: max(14px, env(safe-area-inset-left));
+  --gr: max(14px, env(safe-area-inset-right));
+  --gt: max(10px, env(safe-area-inset-top));
+  --gb: max(18px, env(safe-area-inset-bottom));
+  --map: 84px;
+  --plate: 232px;
+  --plate-height: 54px;
+  --attack: 78px;
+  --jump: 60px;
+  --skill: 50px;
+  --prompt: 46px;
+  --hud-ink: #fff8e8;
+  --hud-dim: #ddd3ba;
+  --hud-glass: #0b1510a8;
+  --hud-solid: #0b1510e3;
+  --hud-edge: #fff0cf42;
+  --hud-ember: #efbb6c;
+  --hud-ember-ink: #2a1a06;
+  --hud-shadow: 0 3px 14px #0005;
+}
 #touch-controls {
   position: absolute;
   inset: 0;
   pointer-events: none;
-  --touch-left: max(16px, env(safe-area-inset-left));
-  --touch-right: max(16px, env(safe-area-inset-right));
-  --touch-bottom: max(24px, env(safe-area-inset-bottom));
-  --touch-top: max(12px, env(safe-area-inset-top));
+  color: var(--hud-ink);
 }
-#touch-controls[hidden] {
-  display: none;
+#touch-controls[hidden],
+#touch-controls [hidden] {
+  display: none !important;
 }
 #touch-controls button {
   pointer-events: auto;
   touch-action: none;
   user-select: none;
   -webkit-user-select: none;
-  min-height: 48px;
-  border: 1px solid #f3ecd657;
-  color: #fff5df;
-  background: #15271fa3;
-  border-radius: 16px;
-  box-shadow: 0 3px 12px #06140d30;
-  text-shadow: 0 1px 3px #07150e;
-  font-size: 12px;
+  -webkit-touch-callout: none;
+  position: relative;
+  display: grid;
+  place-items: center;
+  margin: 0;
+  padding: 0;
+  border: 1.5px solid var(--hud-edge);
+  border-radius: 50%;
+  color: var(--hud-ink);
+  background: var(--hud-glass);
+  box-shadow:
+    var(--hud-shadow),
+    inset 0 1px #ffffff12;
+  font-size: 13px;
   font-weight: 600;
+  line-height: 1.25;
+  text-shadow: 0 1px 2px #000b;
+  transition:
+    transform 0.1s ease-out,
+    background-color 0.12s,
+    border-color 0.12s,
+    opacity 0.18s;
 }
-#touch-controls button:active {
-  background: #dcc599ab;
-  color: #16251b;
-  text-shadow: none;
+#touch-controls button .icon {
+  width: 24px;
+  height: 24px;
+  stroke-width: 1.7;
+  pointer-events: none;
+}
+#touch-controls button:is(.is-pressed, :active):not(:disabled) {
+  transform: scale(0.92);
+  background-color: #f6e0b452;
+  border-color: #fff4dcb0;
 }
 #touch-controls button:disabled {
-  opacity: 0.4;
+  opacity: 0.34;
+  box-shadow: none;
 }
+
+/* Menus: a slim rail under the status plate. */
 .touch-toolbar {
   position: absolute;
-  top: calc(var(--touch-top) + 92px);
-  left: var(--touch-left);
+  left: var(--gl);
+  top: calc(var(--gt) + var(--plate-height) + 12px);
   display: flex;
-  gap: 8px;
+  flex-direction: column;
+  gap: 10px;
 }
-.touch-toolbar button {
-  width: 52px;
+#touch-controls .touch-toolbar button {
+  width: 44px;
+  height: 44px;
+}
+#touch-controls .touch-toolbar .icon {
+  width: 20px;
+  height: 20px;
+}
+#touch-controls .touch-toolbar [data-unread='true']::after {
+  content: '';
+  position: absolute;
+  top: 1px;
+  right: 1px;
+  width: 11px;
+  height: 11px;
+  border-radius: 50%;
+  background: var(--hud-ember);
+  box-shadow: 0 0 0 2px #0b1510;
+}
+.touch-chat-peek {
+  position: absolute;
+  margin: 0;
+  max-width: min(250px, calc(100vw - var(--gl) - var(--gr) - 70px));
+  padding: 7px 12px;
+  border: 1px solid var(--hud-edge);
+  border-radius: 14px;
+  background: var(--hud-solid);
+  box-shadow: var(--hud-shadow);
+  color: var(--hud-ink);
+  font-size: 13px;
+  line-height: 1.45;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  overflow: hidden;
+  overflow-wrap: anywhere;
+  pointer-events: none;
+  animation: touch-fade 0.2s ease-out;
+}
+.touch-chat-peek[data-side='beside'] {
+  transform: translateY(-50%);
+}
+.touch-chat-peek b {
+  margin-right: 6px;
+  color: var(--hud-ember);
+}
+
+/* Left thumb: the pad rests in the corner and moves to wherever the thumb lands. */
+.touch-move {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 50%;
+  height: 40%;
+  pointer-events: auto;
+  touch-action: none;
+  user-select: none;
+  -webkit-user-select: none;
+}
+.touch-move[data-disabled='true'] {
+  pointer-events: none;
+}
+.touch-stick {
+  position: absolute;
+  left: var(--gl);
+  bottom: var(--gb);
+  width: 124px;
+  height: 124px;
+  border: 1.5px solid #fff3d873;
+  border-radius: 50%;
+  background: radial-gradient(circle, #0b151026 0 55%, #0b15106b 56% 100%);
+  box-shadow: var(--hud-shadow);
+  opacity: 0.55;
+  pointer-events: none;
+  transition:
+    transform 0.2s ease-out,
+    opacity 0.2s,
+    border-color 0.15s,
+    box-shadow 0.15s;
+}
+.touch-move[data-disabled='true'] .touch-stick {
+  opacity: 0.2;
+}
+.touch-stick::before {
+  content: '';
+  position: absolute;
+  inset: 14px;
+  border: 1px solid #fff3d830;
+  border-radius: 50%;
+}
+.touch-stick.is-active {
+  opacity: 1;
+  transition:
+    opacity 0.08s,
+    border-color 0.15s,
+    box-shadow 0.15s;
+}
+/* Pushed far enough to run, the pad glows. */
+.touch-stick[data-gait='run'] {
+  border-color: var(--hud-ember);
+  box-shadow:
+    var(--hud-shadow),
+    0 0 18px #efbb6c70;
+}
+.touch-stick[data-gait='run']::before {
+  border-color: #efbb6c80;
+}
+.touch-stick-knob {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 54px;
+  height: 54px;
+  margin: -27px 0 0 -27px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 38% 32%, #fffaf0, #e9dcbf 60%, #cdbd9a);
+  box-shadow:
+    0 4px 12px #0007,
+    inset 0 -2px 4px #0002;
+  opacity: 0.92;
+}
+.touch-stick:not(.is-active) .touch-stick-knob {
+  transition: transform 0.15s ease-out;
+}
+
+/* Right thumb: things to do here, stacked upward just above the highest ability. */
+.touch-prompts {
+  position: absolute;
+  right: var(--gr);
+  bottom: calc(var(--gb) + var(--attack) + 14px);
+  display: flex;
+  flex-direction: column-reverse;
+  align-items: flex-end;
+  gap: 8px;
+  width: min(248px, 66vw);
+}
+#touch-controls .touch-prompt {
   display: flex;
   align-items: center;
-  justify-content: center;
-  padding: 8px;
+  justify-content: flex-start;
+  gap: 9px;
+  max-width: 100%;
+  min-width: 0;
+  min-height: var(--prompt);
+  padding: 4px 16px 4px 4px;
+  border-radius: calc(var(--prompt) / 2);
+  font-size: 14px;
+  text-align: left;
+  animation: touch-slide 0.18s ease-out;
 }
-.touch-toolbar button > .icon {
+.touch-prompt-icon,
+.touch-skill-icon,
+.touch-attack-icon {
+  display: grid;
+  place-items: center;
+  flex: none;
+  pointer-events: none;
+}
+.touch-prompt-icon {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: #ffffff17;
+}
+#touch-controls .touch-prompt .icon {
+  width: 20px;
+  height: 20px;
+}
+/* A long target name wraps to a second line rather than losing its end. */
+.touch-prompt-label {
+  min-width: 0;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  overflow: hidden;
+  line-height: 1.25;
+}
+/* The bottom prompt is the one to reach for. */
+#touch-controls .touch-prompt:first-child {
+  border-color: #efbb6cb8;
+  background: #2b1d0bd6;
+}
+#touch-controls .touch-prompt:first-child .touch-prompt-icon {
+  background: var(--hud-ember);
+  color: var(--hud-ember-ink);
+}
+
+/* Attack in the corner, jump beside it, abilities on an arc above. */
+.touch-pad {
+  position: absolute;
+  right: var(--gr);
+  bottom: var(--gb);
+  width: 0;
+  height: 0;
+}
+#touch-controls .touch-pad > button {
+  position: absolute;
+}
+#touch-controls .touch-attack {
+  right: 0;
+  bottom: 0;
+  width: var(--attack);
+  height: var(--attack);
+  border-color: #ffd9c670;
+  background: radial-gradient(circle at 50% 35%, #713626d6, #3b1a12db);
+}
+#touch-controls .touch-attack .icon {
+  width: 34px;
+  height: 34px;
+  stroke-width: 1.6;
+}
+/* The recharge sweeps away clockwise, so a resting attack shows when it returns. */
+.touch-attack::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  background: conic-gradient(#050a07b3 calc(var(--cooldown, 0) * 1turn), #0000 0);
+  pointer-events: none;
+}
+#touch-controls .touch-attack[data-cooling='true']:disabled {
+  opacity: 1;
+}
+#touch-controls .touch-jump {
+  right: calc(var(--attack) / 2 + 96px - var(--jump) / 2);
+  bottom: calc(var(--attack) / 2 - 6px - var(--jump) / 2);
+  width: var(--jump);
+  height: var(--jump);
+}
+#touch-controls .touch-jump .icon {
+  width: 26px;
+  height: 26px;
+}
+#touch-controls .touch-skill {
+  width: var(--skill);
+  height: var(--skill);
+  animation: touch-fade 0.2s ease-out;
+}
+#touch-controls .touch-skill .icon {
   width: 22px;
   height: 22px;
 }
-.touch-move {
+.touch-skill-label {
   position: absolute;
-  left: var(--touch-left);
-  bottom: var(--touch-bottom);
-  width: 136px;
-  text-align: center;
-}
-#touch-controls #touch-stick {
-  width: 136px;
-  height: 136px;
-  border-radius: 50%;
-  display: grid;
-  place-items: center;
-  padding: 0;
-  background: #1733264a;
-  border: 1px solid #f3ecd647;
-}
-.touch-stick-ring {
-  width: 96px;
-  height: 96px;
-  border: 1px solid #fff2c84a;
-  border-radius: 50%;
-  display: grid;
-  place-items: center;
+  right: calc(100% + 6px);
+  top: 50%;
+  transform: translateY(-50%);
+  padding: 2px 8px;
+  border-radius: 9px;
+  background: #0b15109e;
+  color: var(--hud-ink);
+  font-size: 11px;
+  font-weight: 600;
+  line-height: 16px;
+  white-space: nowrap;
   pointer-events: none;
 }
-.touch-stick-knob {
-  display: block;
-  width: 52px;
-  height: 52px;
-  border-radius: 50%;
-  background: #efe7cf73;
-  border: 1px solid #fff9e6a3;
-  box-shadow: 0 3px 12px #06140d40;
+#touch-controls .touch-skill[data-slot='near'] {
+  right: calc(var(--attack) / 2 + 82px - var(--skill) / 2);
+  bottom: calc(var(--attack) / 2 + 57px - var(--skill) / 2);
 }
-.is-active .touch-stick-knob {
-  background: #efe7cfa8;
+#touch-controls .touch-skill[data-slot='far'] {
+  right: calc(var(--attack) / 2 + 18px - var(--skill) / 2);
+  bottom: calc(var(--attack) / 2 + 102px - var(--skill) / 2);
 }
-.touch-gait {
-  display: block;
-  position: absolute;
-  bottom: -18px;
-  width: 100%;
-  color: #fff2db;
-  font-size: 11px;
-  text-shadow: 0 1px 4px #07180c;
+#touch-controls .touch-skill[data-slot='high'] {
+  right: calc(var(--attack) / 2 + 98px - var(--skill) / 2);
+  bottom: calc(var(--attack) / 2 + 139px - var(--skill) / 2);
 }
-.touch-base {
-  position: absolute;
-  right: var(--touch-right);
-  bottom: calc(var(--touch-bottom) + 2px);
-  display: flex;
-  gap: 10px;
+#touch-controls[data-reach='near'] .touch-prompts {
+  bottom: calc(var(--gb) + var(--attack) / 2 + 57px + var(--skill) / 2 + 12px);
 }
-#touch-controls .touch-base button {
-  width: 62px;
-  height: 62px;
-  border-radius: 50%;
-  font-size: 11px;
+#touch-controls[data-reach='far'] .touch-prompts {
+  bottom: calc(var(--gb) + var(--attack) / 2 + 102px + var(--skill) / 2 + 12px);
 }
-.touch-base [data-touch-action='attack'] {
-  background: #5e3025a3 !important;
+#touch-controls[data-reach='high'] .touch-prompts {
+  bottom: calc(var(--gb) + var(--attack) / 2 + 139px + var(--skill) / 2 + 12px);
 }
-.touch-context {
-  position: absolute;
-  right: var(--touch-right);
-  bottom: calc(var(--touch-bottom) + 84px);
-  width: 134px;
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-  pointer-events: auto;
+/* Viewing a companion or waiting on a task leaves only its own prompts, by the thumb. */
+#touch-controls:is([data-mode='viewing'], [data-mode='busy']) .touch-pad {
+  display: none;
 }
-.touch-context button {
-  width: 100%;
-  padding: 9px 8px;
-  flex-shrink: 0;
+#touch-controls:is([data-mode='viewing'], [data-mode='busy']) .touch-prompts {
+  right: var(--gr);
+  bottom: var(--gb);
 }
-.touch-context button:first-child {
-  border-color: #f1ce83a1 !important;
-  background: #493d25b0 !important;
+@keyframes touch-slide {
+  from {
+    opacity: 0;
+    translate: 14px 0;
+  }
 }
-.touch-utilities {
-  position: absolute;
-  left: var(--touch-left);
-  bottom: calc(var(--touch-bottom) + 170px);
-  width: 136px;
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
+@keyframes touch-fade {
+  from {
+    opacity: 0;
+    translate: 0 4px;
+  }
 }
-.touch-utilities button {
-  flex: 1 1 60px;
-  padding: 8px 4px;
-  font-size: 10px !important;
-}
-#touch-controls .touch-center {
-  position: absolute;
-  right: var(--touch-right);
-  top: calc(var(--touch-top) + 148px);
-  padding: 8px 12px;
-  font-size: 10px;
-}
-#touch-controls[data-context-count='5'] .touch-center {
-  left: var(--touch-left);
-  right: auto;
-  top: calc(var(--touch-top) + 204px);
-}
+
+/* The keyboard and controller HUD gives way to the touch HUD. */
 body.touch-mode {
   overscroll-behavior: none;
 }
@@ -169,69 +397,347 @@ body.touch-mode {
 .touch-mode #interaction-hint,
 .touch-mode #companion524-controls,
 .touch-mode .riding-controls,
-.touch-mode #boat-board,
-.touch-mode #boat-hint,
+.touch-mode .hunt-controls,
+.touch-mode .boat-controls,
+.touch-mode #cancel-cook,
+.touch-mode .tps-reticle,
 .touch-mode .gamepad-connection {
   display: none !important;
 }
+
+/* Status: one capsule with the portrait, name, party and health. */
 .touch-mode .status-plate {
-  top: max(12px, env(safe-area-inset-top));
-  left: max(16px, env(safe-area-inset-left));
-  max-width: calc(100% - 120px);
+  top: var(--gt);
+  left: var(--gl);
+  display: grid;
+  grid-template-columns: 40px minmax(0, 1fr) auto;
+  grid-template-areas:
+    'face name meta'
+    'face bar bar';
+  align-items: center;
+  column-gap: 9px;
+  row-gap: 5px;
+  width: min(var(--plate), calc(100vw - var(--gl) - var(--gr) - var(--map) - 16px));
+  height: var(--plate-height);
+  padding: 6px 13px 6px 6px;
+  border: 1px solid var(--hud-edge);
+  border-radius: calc(var(--plate-height) / 2);
+  background: var(--hud-glass);
+  box-shadow: var(--hud-shadow);
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
 }
-.touch-mode .status-text {
-  min-width: 0;
+.touch-mode .status-main,
+.touch-mode .status-plate .status-text {
+  display: contents;
+}
+.touch-mode .status-plate .portrait {
+  grid-area: face;
+  width: 40px;
+  height: 40px;
+  border: 1.5px solid #fff0cf5c;
+  border-radius: 50%;
 }
 .touch-mode .status-text strong {
-  max-width: 130px;
+  grid-area: name;
+  min-width: 0;
+  max-width: none;
   overflow: hidden;
+  color: var(--hud-ink);
+  font-size: 13px;
+  line-height: 16px;
   text-overflow: ellipsis;
   white-space: nowrap;
 }
-.touch-mode .energy-track {
-  width: min(208px, calc(100vw - 136px));
+.touch-mode .status-text small {
+  grid-area: meta;
+  gap: 4px;
+  color: var(--hud-dim);
+  font-size: 10.5px;
+  line-height: 16px;
+  white-space: nowrap;
 }
+.touch-mode #room-label,
+.touch-mode #room-label + i {
+  display: none;
+}
+.touch-mode .energy-track {
+  grid-area: bar;
+  width: auto;
+  height: 14px;
+  border-color: #ffffff24;
+  border-radius: 7px;
+}
+.touch-mode .energy-label {
+  gap: 0;
+  padding: 0 7px;
+  font-size: 10px;
+}
+.touch-mode .energy-label b,
+.touch-mode .energy-label .icon {
+  display: none;
+}
+
+/* Map: a round window on the area, its name below; online is the quiet default. */
 .touch-mode .map-hud {
-  top: max(12px, env(safe-area-inset-top));
-  right: max(16px, env(safe-area-inset-right));
-  width: 84px;
+  top: var(--gt);
+  right: var(--gr);
+  width: var(--map);
+  gap: 0;
 }
 .touch-mode .minimap-button {
-  width: 84px;
-  height: 76px;
+  width: var(--map);
+  height: var(--map);
+  padding: 0;
+  border: 1.5px solid var(--hud-edge);
+  border-radius: 50%;
+  overflow: visible;
+  background: #193948;
+  box-shadow: var(--hud-shadow);
 }
 .touch-mode .minimap-button > canvas {
-  height: 54px;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  object-fit: cover;
+  opacity: 1;
 }
-.touch-mode .connection {
-  min-height: 18px;
-  font-size: 7px;
-  padding: 2px 4px;
+.touch-mode .map-north {
+  top: -6px;
+  left: 50%;
+  right: auto;
+  transform: translateX(-50%);
+  padding: 0 5px;
+  border-radius: 7px;
+  background: var(--hud-solid);
+  font-size: 9px;
+  line-height: 14px;
+}
+/* Centred under the map, but shifted left rather than past the screen edge. */
+.touch-mode .map-area,
+.touch-mode .status-dot.offline ~ #connection-label {
+  left: auto;
+  right: 0;
+  width: max-content;
+  max-width: min(180px, calc(100vw - var(--gl) - var(--gr) - 70px));
+  transform: translateX(min(calc(50% - var(--map) / 2), calc(var(--gr) - 6px)));
 }
 .touch-mode .map-area {
-  padding-right: 3px;
-  font-size: 8px;
+  top: calc(100% + 6px);
+  bottom: auto;
+  padding: 2px 9px;
+  border-radius: 10px;
+  background: var(--hud-glass);
+  font-size: 10.5px;
+  line-height: 15px;
+  letter-spacing: 0.02em;
+  text-align: center;
 }
+.touch-mode .map-key {
+  display: none;
+}
+.touch-mode .connection {
+  position: absolute;
+  inset: 0;
+  display: block;
+  width: auto;
+  min-height: 0;
+  padding: 0;
+  border: 0;
+  background: none;
+  box-shadow: none;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+  pointer-events: none;
+}
+.touch-mode .connection .status-dot {
+  position: absolute;
+  top: 3px;
+  left: 3px;
+  width: 10px;
+  height: 10px;
+  box-shadow: 0 0 0 2px #0b1510;
+}
+.touch-mode #connection-label,
+.touch-mode #ping-label {
+  display: none;
+}
+.touch-mode .status-dot.offline ~ #connection-label {
+  display: block;
+  position: absolute;
+  top: calc(var(--map) + 30px);
+  padding: 2px 9px;
+  border-radius: 10px;
+  background: #6a2c1fe6;
+  color: #ffe6d8;
+  font-size: 10.5px;
+  line-height: 15px;
+}
+
+/* Announcements stay short and centred between the side columns, each in its own band:
+   area names, then notices (the latest two), then the combat state. */
 .touch-mode .area-banner {
-  top: 29%;
+  top: 21%;
+  width: max-content;
+  max-width: calc(100vw - 48px);
   pointer-events: none;
 }
-.touch-mode .combat-status {
-  pointer-events: none;
-  top: calc(max(12px, env(safe-area-inset-top)) + 214px);
-  max-width: calc(100vw - 32px);
-  font-size: 11px;
-  padding: 8px 12px;
+.touch-mode .area-banner small {
+  font-size: 9px;
+  letter-spacing: 4px;
+}
+.touch-mode .area-banner strong {
+  margin-top: 6px;
+  padding-left: 0.1em;
+  font-size: 23px;
+  letter-spacing: 0.1em;
+  text-wrap: balance;
+}
+.touch-mode .area-banner strong:after {
+  width: 84px;
+  margin-top: 10px;
 }
 .touch-mode .toast-stack {
-  top: 32%;
+  top: 30%;
+  width: max-content;
+  max-width: calc(100vw - 2 * var(--gl) - 120px);
+  gap: 6px;
   pointer-events: none;
 }
 .touch-mode .toast {
   min-width: 0;
-  max-width: calc(100vw - 32px);
-  font-size: 12px;
+  max-width: 100%;
+  padding: 8px 14px;
+  gap: 8px;
+  border-radius: 20px;
+  background: var(--hud-solid);
+  font-size: 13px;
+  line-height: 1.45;
+  white-space: normal;
+  text-wrap: pretty;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
 }
+.touch-mode .toast.error {
+  background: #4c2a22ee;
+}
+.touch-mode .toast:nth-last-child(n + 3) {
+  display: none;
+}
+.touch-mode .toast .icon {
+  width: 17px;
+  height: 17px;
+}
+.touch-mode .combat-status {
+  top: 41%;
+  max-width: calc(100vw - 2 * var(--gl) - 120px);
+  padding: 9px 16px;
+  border-radius: 18px;
+  font-size: 13px;
+  line-height: 1.55;
+  text-wrap: balance;
+  pointer-events: none;
+}
+.touch-mode .combat-status.downed {
+  top: 42%;
+  max-width: calc(100vw - 48px);
+  padding: 14px 20px;
+  font-size: 15px;
+}
+/* Above the shared HUD layer (style.css gives every HUD child z-index 2), so notices
+   arriving while downed never cover it. */
+.touch-mode #combat-status.downed {
+  z-index: 3;
+}
+/* Only a task's progress remains of the hotbar (its buttons are touch prompts); it sits
+   just above that task's cancel prompt. */
+.touch-mode .hotbar-wrap {
+  top: auto;
+  left: auto;
+  right: var(--gr);
+  bottom: calc(var(--gb) + var(--prompt) + 10px);
+  align-items: flex-end;
+  width: max-content;
+  max-width: calc(100vw - var(--gl) - var(--gr));
+  transform: none;
+  pointer-events: none;
+}
+.touch-mode .cooking-status {
+  flex-direction: column;
+  align-items: stretch;
+  gap: 6px;
+  width: min(220px, 60vw);
+  margin: 0;
+  padding: 8px 14px 10px;
+  border-color: var(--hud-edge);
+  border-radius: 16px;
+  background: var(--hud-solid);
+  font-size: 13px;
+}
+.touch-mode .cooking-status progress {
+  flex: none;
+  width: 100%;
+  height: 6px;
+  accent-color: var(--hud-ember);
+}
+
+/* Landscape: the rail runs beside the status plate; prompts stand left of the pad. */
+@media (orientation: landscape) {
+  body.touch-mode .game-viewport {
+    --map: 76px;
+  }
+  .touch-toolbar {
+    flex-direction: row;
+    top: calc(var(--gt) + (var(--plate-height) - 44px) / 2);
+    left: calc(var(--gl) + var(--plate) + 12px);
+  }
+  .touch-move {
+    width: 40%;
+    height: 74%;
+  }
+  /* Beside the pad: past jump alone, or past the captions of the abilities beside it. */
+  #touch-controls[data-reach] .touch-prompts {
+    right: calc(var(--gr) + var(--attack) / 2 + 96px + var(--jump) / 2 + 14px);
+    bottom: var(--gb);
+    width: min(232px, 30vw);
+  }
+  #touch-controls:is([data-slots~='near'], [data-slots~='high']) .touch-prompts {
+    right: calc(var(--gr) + 262px);
+  }
+  #touch-controls:is([data-mode='viewing'], [data-mode='busy']) .touch-prompts {
+    right: var(--gr);
+  }
+}
+/* Short or narrow phones keep every target at least 44px. */
+@media (max-width: 359px), (max-height: 600px) and (orientation: portrait) {
+  body.touch-mode .game-viewport {
+    --gl: max(10px, env(safe-area-inset-left));
+    --gr: max(10px, env(safe-area-inset-right));
+    --map: 72px;
+    --plate: 210px;
+    --attack: 70px;
+    --jump: 56px;
+    --skill: 46px;
+    --prompt: 44px;
+  }
+  .touch-stick {
+    width: 116px;
+    height: 116px;
+  }
+  .touch-skill-label {
+    padding: 1px 6px;
+    font-size: 10px;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  #touch-controls *,
+  .touch-stick {
+    animation: none !important;
+    transition: none !important;
+  }
+}
+
+/* The conversation opens as a sheet from the bottom edge. */
 .touch-mode .game-viewport > .chat-panel {
   display: none;
 }
@@ -337,14 +843,6 @@ body.touch-mode {
     animation: none;
   }
 }
-.touch-mode .hotbar-wrap {
-  bottom: calc(max(24px, env(safe-area-inset-bottom)) + 260px);
-  max-width: calc(100vw - 32px);
-}
-.touch-mode .hunt-button {
-  min-height: 44px;
-  font-size: 12px;
-}
 .touch-mode #motion-controls[data-state='OFF'] {
   display: none;
 }
@@ -362,76 +860,88 @@ body.touch-mode {
 .touch-mode dialog .icon-button {
   min-width: 44px;
 }
-.touch-mode .pause-tabs {
-  gap: 8px;
-}
-.touch-mode .pause-tab {
-  padding: 10px 12px;
-  min-height: 48px;
-}
 .touch-mode input,
 .touch-mode select {
   font-size: 16px;
 }
 
-@media (max-width: 359px) {
-  #touch-controls {
-    --touch-left: max(10px, env(safe-area-inset-left));
-    --touch-right: max(10px, env(safe-area-inset-right));
+/* Pause menu on a phone: the tabs share one row, icon over name, beside the back button. */
+@media (max-width: 860px) {
+  .touch-mode dialog:has(.pause-menu) .modal-top {
+    top: 10px;
+    right: 10px;
   }
-  .touch-move,
-  #touch-controls #touch-stick {
-    width: 122px;
+  .touch-mode dialog:has(.pause-menu) .modal-top .modal-back {
+    min-width: 0;
+    min-height: 44px;
+    padding: 6px 14px;
+    border-radius: 22px;
   }
-  #touch-controls #touch-stick {
-    height: 122px;
+  .touch-mode .pause-rail {
+    padding: 10px 10px 8px;
   }
-  .touch-context {
-    width: 130px;
-  }
-  #touch-controls .touch-base button {
-    width: 58px;
-    height: 58px;
-  }
-}
-@media (max-height: 660px) and (orientation: portrait) {
-  .touch-mode .hotbar-wrap {
-    bottom: calc(max(24px, env(safe-area-inset-bottom)) + 215px);
-  }
-  .touch-mode .area-banner {
-    top: 35%;
-  }
-}
-@media (orientation: landscape) {
-  .touch-toolbar {
-    top: var(--touch-top);
-    left: 50%;
-    transform: translateX(-50%);
-  }
-  #touch-controls .touch-center {
-    left: 50%;
-    right: auto;
-    transform: translateX(-50%);
-    top: calc(var(--touch-top) + 56px);
-  }
-  #touch-controls[data-context-count='5'] .touch-center {
-    left: calc(var(--touch-left) + 148px);
-    right: auto;
-    top: calc(var(--touch-top) + 128px);
-    transform: none;
-  }
-  .touch-context {
-    width: 264px;
+  .touch-mode .pause-tabs {
     display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-auto-flow: column;
+    grid-auto-columns: auto;
+    gap: 4px;
+    margin-right: 76px;
+    padding-bottom: 0;
+    overflow: visible;
   }
-  .touch-utilities {
-    bottom: var(--touch-bottom);
-    left: calc(var(--touch-left) + 148px);
-    width: 136px;
+  .touch-mode .pause-tab {
+    flex-direction: column;
+    justify-content: center;
+    gap: 4px;
+    min-width: 0;
+    min-height: 56px;
+    padding: 6px 4px;
+    border-radius: 12px;
+    font-size: 10.5px;
+    line-height: 1.2;
+    letter-spacing: 0;
+    text-align: center;
+    white-space: normal;
+    overflow-wrap: anywhere;
   }
-  .touch-mode .hotbar-wrap {
-    bottom: calc(max(24px, env(safe-area-inset-bottom)) + 140px);
+  .touch-mode .pause-tab .icon {
+    width: 20px;
+    height: 20px;
+  }
+  .touch-mode .pause-tab[aria-selected='true'] {
+    background: linear-gradient(0deg, #e0b07029, #e0b07008);
+    box-shadow: inset 0 -3px 0 var(--accent);
+  }
+  .touch-mode .pause-more {
+    align-self: stretch;
+    justify-content: center;
+    min-height: 40px;
+    margin-top: 8px;
+  }
+}
+/* On a phone the menu takes the whole screen, inside the safe area. */
+@media (max-width: 520px) {
+  .touch-mode dialog:has(.pause-menu) {
+    width: 100vw;
+    max-width: 100vw;
+    height: 100dvh;
+    max-height: 100dvh;
+    margin: 0;
+    border: 0;
+    border-radius: 0;
+  }
+  .touch-mode dialog:has(.pause-menu) .modal-top {
+    top: max(10px, env(safe-area-inset-top));
+    right: max(10px, env(safe-area-inset-right));
+  }
+  .touch-mode .pause-rail {
+    padding: max(10px, env(safe-area-inset-top)) 10px 8px max(10px, env(safe-area-inset-left));
+  }
+  .touch-mode .pause-tabs {
+    margin-right: 70px;
+  }
+  .touch-mode .pause-panels {
+    padding-bottom: max(20px, env(safe-area-inset-bottom));
   }
 }
 

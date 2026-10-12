@@ -136,7 +136,7 @@ export function prepareCaveMaterials(
           '#include <lights_fragment_end>\nreflectedLight.indirectDiffuse*=caveDaylight;',
         );
       };
-      material.customProgramCacheKey = () => 'camp-cave-dim-spring-v22';
+      material.customProgramCacheKey = () => 'camp-cave-continuous-murals-v23';
       material.needsUpdate = true;
     }
   });

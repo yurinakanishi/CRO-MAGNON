@@ -39,7 +39,8 @@
     "Gallery r32 integrates the faithful small 524 with a mammoth, two horses and an aurochs in one weathered transparent frieze, matching the opposite Rimo frieze. It replaces three separated west-wall placements. Earlier paintings and source models remain archived.",
     "Gallery r33 adds Maruimo among a bison, horse and deer. All 14 released mascots are represented; the Coming Soon reserve and original GLB remain unchanged.",
     "Gallery r34 adds two contributor processions on the west wall (Saber, Fairy, nukonuko, Saga; the Otani duck, Urata, Howkey). They replace the lone deer and bison, whose species reappear inside the friezes. The original GLB is unchanged.",
-    "Gallery r35 repaints the west-wall river procession to add Rei-chan beside the Otani duck, Urata and Howkey; the r34 friezes (Saber, Fairy, nukonuko, Saga; duck, Urata, Howkey) replaced the lone deer and bison. The original GLB is unchanged."
+    "Gallery r35 repaints the west-wall river procession to add Rei-chan beside the Otani duck, Urata and Howkey; the r34 friezes (Saber, Fairy, nukonuko, Saga; duck, Urata, Howkey) replaced the lone deer and bison. The original GLB is unchanged.",
+    "Gallery r36 uses eight equally scaled 7.5 m processions, eighteen additional upper animal paintings and four hand/sign motifs. Coming Soon is removed. Pigment follows inward limestone folds. Per-character animal replacement recipes preserve visible neighbours and avoid runtime texture additions."
   ],
   "provenance": {
     "provider": "Codex",
@@ -89,7 +90,7 @@
       }
     ],
     "styleReference": "assets/camp-cave/source/mural-side-r04.png",
-    "application": "Existing animal, hand and sign motifs frame the new Rimo/Lascaux frieze. Two east-wall animal placements are replaced by one continuous five-subject frieze; remaining twelve placements and the 524 scale are retained.",
+    "application": "Eighteen animal figures and four hand/sign motifs projected onto the existing interior limestone. The eight main processions share 7.5 m width, local Y=1.4 and pigment strength 0.84.",
     "layout": "src/cave-gallery-layout.ts",
     "review": "assets/camp-cave/qa/gallery-r30.json",
     "previous": {
@@ -118,7 +119,7 @@
       }
     }
   },
-  "gameQA": "output/playwright/maruimo-mascot-20261007/mmo-assets-r03/summary.json",
+  "gameQA": "output/playwright/cave-murals-20261012/game-r03/summary.json",
   "rockSurface": {
     "url": "/models/camp-cave/limestone-r05.opt-373ad7d95a04bc2c.png",
     "source": "assets/camp-cave/source/limestone-r05.png",
@@ -222,7 +223,7 @@
       }
     }
   },
-  "galleryRevision": "35",
+  "galleryRevision": "36",
   "rimoPigment": {
     "source": "assets/camp-cave/source/rimo-lascaux-frieze-r30.png",
     "url": "/models/camp-cave/rimo-lascaux-frieze-r30.opt-8a2acbfbfaa6d2c2.png",
@@ -301,7 +302,7 @@
         "public/models/orb-bot-purple/portrait.png",
         "public/models/orb-bot-orange/portrait.png"
       ],
-      "application": "Unmodified transparent mineral-pigment frieze, projected on original cave wall triangles, interwoven with horses, aurochs and deer.",
+      "application": "Gallery r36: 7.5 m wide roundBots procession, local Y=1.4, strength 0.84. The complete generated painting is retained; individual characters can be exchanged for matching animal pigment through the offline modular-r36 recipe.",
       "uvSource": {
         "width": 2172,
         "height": 724
@@ -345,7 +346,7 @@
         "public/models/orb-bot-triangle/portrait.png",
         "public/models/orb-bot-heart/portrait.png"
       ],
-      "application": "Unmodified transparent mineral-pigment frieze, projected on original cave wall triangles, interwoven with horses, aurochs and deer.",
+      "application": "Gallery r36: 7.5 m wide shapeBots procession, local Y=1.4, strength 0.84. The complete generated painting is retained; individual characters can be exchanged for matching animal pigment through the offline modular-r36 recipe.",
       "uvSource": {
         "width": 2172,
         "height": 724
@@ -392,7 +393,7 @@
         "public/models/mae/portrait.png",
         "public/models/kohaku/portrait-r05.png"
       ],
-      "application": "Unmodified transparent mineral-pigment frieze, projected on original cave wall triangles, interwoven with horses, aurochs and deer.",
+      "application": "Gallery r36: 7.5 m wide maeKohaku procession, local Y=1.4, strength 0.84. The complete generated painting is retained; individual characters can be exchanged for matching animal pigment through the offline modular-r36 recipe.",
       "uvSource": {
         "width": 2172,
         "height": 724
@@ -450,7 +451,7 @@
           "sha256": "b750045fda524816577747197874d173d41161e2b55d9acfe772a8f37f8d01df"
         }
       ],
-      "application": "5 m wide east-wall frieze. The small octopus shares earth pigments and overlapping composition with the animals. Unmodified transparent PNG projected onto the original limestone triangles.",
+      "application": "Gallery r36: 7.5 m wide maruimoFrieze procession, local Y=1.4, strength 0.84. The complete generated painting is retained; individual characters can be exchanged for matching animal pigment through the offline modular-r36 recipe.",
       "review": "assets/camp-cave/qa/gallery-surfaces-r33.json",
       "uvSource": {
         "width": 2172,
@@ -524,7 +525,7 @@
           "sha256": "f67ea277c3d42c93877139b44150ee6fddbb2eb41854418ea09ac4bd40eed732"
         }
       ],
-      "application": "5.6 m wide west-wall frieze replacing the lone deer: Saber, Fairy, nukonuko and Saga among a horse, an ibex and a stag. Unmodified transparent PNG projected onto the original limestone triangles.",
+      "application": "Gallery r36: 7.5 m wide friendsMeadow procession, local Y=1.4, strength 0.84. The complete generated painting is retained; individual characters can be exchanged for matching animal pigment through the offline modular-r36 recipe.",
       "review": "assets/camp-cave/qa/gallery-surfaces-r35.json",
       "uvSource": {
         "width": 2172,
@@ -602,7 +603,7 @@
           "sha256": "f67ea277c3d42c93877139b44150ee6fddbb2eb41854418ea09ac4bd40eed732"
         }
       ],
-      "application": "5 m wide west-wall frieze replacing the lone bison: the Otani duck, Urata, Howkey with her Erlenmeyer flask and Rei-chan with a book among an aurochs, a bison and a horse (r35 repaints r34 to add Rei). Unmodified transparent PNG projected onto the original limestone triangles.",
+      "application": "Gallery r36: 7.5 m wide friendsRiver procession, local Y=1.4, strength 0.84. The complete generated painting is retained; individual characters can be exchanged for matching animal pigment through the offline modular-r36 recipe.",
       "review": "assets/camp-cave/qa/gallery-surfaces-r35.json",
       "uvSource": {
         "width": 2172,
@@ -636,5 +637,10 @@
   "sourceRevision": {
     "record": "assets/camp-cave/qa/source-revision-r27-rounded.json",
     "sha256": "68dd3e252e35078908d4030fc6484250bd3ec425a7306f159b1cc42e4a40d3b3"
+  },
+  "muralComposition": {
+    "recipe": "assets/camp-cave/modular-r36/recipe.json",
+    "visibility": "cave-mural-visibility.json",
+    "characters": 22
   }
 }

@@ -5,11 +5,7 @@ import { CAMP_CAVE, CAVE_APPROACH, caveWorldAt } from '../dist/shared/camp-cave-
 import { walkHeight } from '../dist/shared/terrain.mjs';
 import { CollisionWorld } from '../dist/shared/collision.mjs';
 import { spawnSite } from '../dist/shared/spawn-sites.mjs';
-import {
-  CAVE_EXTRA_PIGMENTS,
-  CAVE_UPCOMING_CHARACTERS,
-  CAVE_MURALS,
-} from '../dist/src/cave-gallery-layout.js';
+import { CAVE_EXTRA_PIGMENTS, CAVE_MURALS } from '../dist/src/cave-gallery-layout.js';
 import { r04AdoptedCave, verifyRgbaImage } from './cave-runtime-identity.mjs';
 
 /** Every extra frieze was generated as a 2172x724 RGBA painting. */
@@ -45,8 +41,7 @@ test('all extra friezes retain the original generated RGBA bytes and registered 
     assert.equal(original.url, pigment.url, `${key}: the table names the original painting`);
     assert.ok(CAVE_MURALS.some((m) => m.motif === key));
   }
-  assert.deepEqual(CAVE_UPCOMING_CHARACTERS, [], 'do not invent forthcoming characters');
-  assert.ok(CAVE_MURALS.some((m) => m.motif === 'comingSoon'));
+  assert.ok(!CAVE_MURALS.some((m) => m.motif === 'comingSoon'));
 });
 
 test('the r04 adoption of every extra frieze verifies on its candidate file', async () => {

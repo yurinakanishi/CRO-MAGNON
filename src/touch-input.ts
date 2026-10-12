@@ -6,6 +6,25 @@ export interface TouchMovement {
   running: boolean;
 }
 
+/** Touch can also reach the hotbar's cooking, boat and carry-refusal buttons, which have no
+ * keyboard cue. */
+export type TouchCommand = CueAction | 'cook' | 'launch' | 'recover' | 'decline';
+export interface TouchItem {
+  action: TouchCommand;
+  label: string;
+}
+export interface TouchContext extends CueContext {
+  cook?: string;
+  launch?: string;
+  recover?: string;
+  decline?: string;
+  /** The attack profile key, shown as the attack button's glyph. */
+  weapon?: string;
+  /** Share of the attack recharge still to run: 1 just after an attack, 0 when ready. */
+  cooldown?: number;
+}
+export type TouchSkillSlot = 'near' | 'far' | 'high';
+
 /** Radial deadzone and gait hysteresis keep a resting thumb still. */
 export function touchStick(
   dx: number,
@@ -47,6 +66,100 @@ export function touchActions(context: CueContext): { action: CueAction; label: s
   add('torch', context.torch);
   return actions;
 }
+
+const SKILLS: readonly TouchCommand[] = ['throw', 'torch', 'recall'];
+const PROMPT_ORDER: readonly TouchCommand[] = [
+  'zoomIn',
+  'zoomOut',
+  'endInspect',
+  'cancel',
+  'pet',
+  'interact',
+  'cook',
+  'ride',
+  'decline',
+  'board',
+  'recover',
+  'launch',
+  'inspect',
+];
+
+/**
+ * The phone layout: up to three things to do here (the first is nearest the thumb), and the
+ * abilities that keep their own places around the attack button.
+ */
+export function touchLayout(context: TouchContext): { prompts: TouchItem[]; skills: TouchItem[] } {
+  const items: TouchItem[] = touchActions(context);
+  if (!context.busy && !(context.viewing && !context.automaticCamera))
+    for (const action of ['cook', 'decline', 'recover', 'launch'] as const) {
+      const label = context[action];
+      if (label) items.push({ action, label });
+    }
+  return {
+    prompts: items
+      .filter((item) => !SKILLS.includes(item.action))
+      .sort((a, b) => PROMPT_ORDER.indexOf(a.action) - PROMPT_ORDER.indexOf(b.action))
+      .slice(0, 3),
+    skills: items.filter((item) => SKILLS.includes(item.action)),
+  };
+}
+
+/** A place a thumb can learn: calling back sits high, throwing and the torch (a cave allows
+ * only the torch) take the place nearest the thumb; anything further waits above. */
+export function touchSkillSlots(skills: readonly TouchItem[]): Map<TouchCommand, TouchSkillSlot> {
+  const free: TouchSkillSlot[] = ['near', 'far', 'high'],
+    slots = new Map<TouchCommand, TouchSkillSlot>();
+  for (const { action } of skills) {
+    const preferred = free.indexOf(action === 'recall' ? 'far' : 'near');
+    const [slot] = free.splice(preferred < 0 ? 0 : preferred, 1);
+    if (slot) slots.set(action, slot);
+  }
+  return slots;
+}
+
+const ICONS: Partial<Record<TouchCommand, string>> = {
+  pet: 'heart',
+  inspect: 'eye',
+  board: 'boat',
+  launch: 'boat',
+  recover: 'boat',
+  cook: 'flame',
+  decline: 'close',
+  recall: 'call',
+  throw: 'throw',
+  torch: 'torch',
+  cancel: 'close',
+  zoomIn: 'plus',
+  zoomOut: 'minus',
+  endInspect: 'back',
+  bag: 'bag',
+  jump: 'jump',
+};
+
+/** One glyph per action; an interaction or a ride reads its target from the label. */
+export function touchIcon(action: TouchCommand, label = ''): string {
+  if (action === 'interact')
+    return /木材|木を/.test(label)
+      ? 'wood'
+      : /石/.test(label)
+        ? 'stone'
+        : /ベリー/.test(label)
+          ? 'berry'
+          : /貝/.test(label)
+            ? 'shell'
+            : /交換/.test(label)
+              ? 'exchange'
+              : /肉/.test(label)
+                ? 'meat'
+                : /火/.test(label)
+                  ? 'flame'
+                  : 'hand';
+  if (action === 'ride') return /マンモス/.test(label) ? 'mammoth' : 'people';
+  return ICONS[action] ?? 'hand';
+}
+
+const WEAPON_ICONS = ['spear', 'katana', 'magic', 'science', 'unarmed', 'tentacle'];
+export const touchWeaponIcon = (weapon = '') => (WEAPON_ICONS.includes(weapon) ? weapon : 'spear');
 
 const wrap = (angle: number) => Math.atan2(Math.sin(angle), Math.cos(angle));
 

@@ -140,9 +140,10 @@ try {
       icons: b.querySelectorAll('svg').length,
     })),
   );
+  // The menu opens on the bag, so the rail holds menu, companions, chat and the camera reset.
   assert.deepEqual(
     toolbar.map((b) => b.action),
-    ['menu', 'bag', 'mascots', 'chat'],
+    ['menu', 'mascots', 'chat', 'center'],
   );
   for (const b of toolbar) {
     assert.equal(b.text, '');
@@ -164,9 +165,12 @@ try {
   const cdp = await phone.context().newCDPSession(phone);
   const stick = await phone.locator('#touch-stick').boundingBox(),
     chat = await phone.locator('[data-touch-action="chat"]').boundingBox();
-  const points = [{ id: 1, x: stick.x + stick.width / 2, y: stick.y + stick.height / 2 - 40 }];
+  // The pad appears where the thumb lands; pushing it from there walks.
+  const points = [{ id: 1, x: stick.x + stick.width / 2, y: stick.y + stick.height / 2 }];
   await cdp.send('Input.dispatchTouchEvent', { type: 'touchStart', touchPoints: points });
-  await sleep(350);
+  points[0] = { ...points[0], y: points[0].y - 40 };
+  await cdp.send('Input.dispatchTouchEvent', { type: 'touchMove', touchPoints: points });
+  await until(() => p.moving, 'thumb moves before the second finger');
   await cdp.send('Input.dispatchTouchEvent', {
     type: 'touchStart',
     touchPoints: [...points, { id: 2, x: chat.x + chat.width / 2, y: chat.y + chat.height / 2 }],

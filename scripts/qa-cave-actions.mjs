@@ -7,6 +7,7 @@ import { createGameServer } from '../dist/server.mjs';
 import { localVerificationSettings } from '../dist/infrastructure/node/local-verification.mjs';
 import { caveWorldAt, CAVE_HEARTH } from '../dist/shared/camp-cave-layout.mjs';
 import { stopActor } from '../dist/shared/combat.mjs';
+import { enterPreparedWorld } from './qa-game-entry.mjs';
 const { chromium } = await import(
   process.env.PLAYWRIGHT_MODULE ||
     'file:///C:/Users/yurin/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/node_modules/playwright/index.mjs'
@@ -96,9 +97,8 @@ async function enter(mobile, name) {
   await use('#title-start');
   await use('#setup-form .character-choice:has(input[value="cro-female"])');
   await use('#setup-flow-yes');
-  await page
-    .locator('#world[data-world-asset="ready"][data-character-asset="ready"]')
-    .waitFor({ timeout: 180000 });
+  // The world joins only after the loading cave's own button.
+  await enterPreparedWorld(page, mobile);
   await until(() => seen.id && game.rooms.get('LOCAL_VERIFY')?.players.has(seen.id), 'joined');
   return {
     page,
@@ -234,6 +234,8 @@ try {
     await phone.page.touchscreen.tap(box.x + box.width / 2, box.y + box.height / 2);
     const torch = phone.page.locator('[data-touch-action="torch"]');
     assert.equal(await torch.innerText(), '松明を消す');
+    // The server ignores a toggle within 450 ms of the previous size's relight.
+    await until(() => Date.now() - phone.p.lastAction > 500, 'toggle cooldown');
     await torch.tap();
     await until(() => phone.p.caveTorchOff, 'touch extinguish');
     await display(phone, false);

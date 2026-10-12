@@ -622,7 +622,7 @@ test('the world draws the cave only once its ten verified images are installed',
   assert.equal(uniforms.caveRimoPigment.value, landmarks.caveRimoPigment);
   for (const key of Object.keys(CAVE_EXTRA_PIGMENTS))
     assert.equal(uniforms[`cave_${key}`].value, landmarks.caveExtraPigments[key]);
-  assert.ok(uniforms.cave_comingSoon.value.isCanvasTexture);
+  assert.equal(uniforms.cave_comingSoon, undefined);
   assert.equal(landmarks.caveLimestone.wrapS, THREE.RepeatWrapping);
   const installed = [
     landmarks.cavePigment,
@@ -684,11 +684,16 @@ test('one cave image failing fails the world once and releases every sibling', a
 
 test('a cave that cannot be installed fails the world once and keeps no half-installed image', async (t) => {
   browser(t);
-  // A browser that cannot allocate the preview label's 2D canvas (getContext → null).
-  globalThis.document.createElement = () => ({ ...element(), getContext: () => null });
   const disposedWith = watchDisposals(t);
   const { manifest, files } = caveManifest();
   const { world, assets, template, failures, camera } = caveWorld(manifest);
+  // An installation failure must still release all verified textures after the
+  // obsolete canvas label is removed.
+  const traverse = template.gltf.scene.traverse;
+  template.gltf.scene.traverse = () => {
+    template.gltf.scene.traverse = traverse;
+    throw new TypeError('material installation failed');
+  };
   const { requests, transport } = network(files);
   const decoder = pngDecoder();
   const images = { download: verified(transport), decode: decoder.decode };

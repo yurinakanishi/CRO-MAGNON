@@ -19,7 +19,6 @@ import {
   type VerifiedTextureBatch,
   type VerifiedTextureOptions,
 } from './verified-texture.js';
-import { createCavePreviewLabel } from './cave-preview-label.js';
 import { prepareMountainMaterials } from './mountain-materials.js';
 import { prepareMountainRiverBedAsync } from './mountain-river.js';
 import { RiverBankBuilder } from './river-bank-builder.js';
@@ -267,8 +266,8 @@ export class WorldLandmarks {
     return false;
   }
   /** Install the taken textures in the template's materials, all or nothing. Never
-   * throws: when installing fails (a browser without a 2D canvas for the label) every
-   * taken texture and the label are released once and the world fails once. */
+   * throws: when installing fails every taken texture is released once and the
+   * world fails once. */
   private installCave(template, textures: Record<CaveTextureKey, THREE.Texture>) {
     const taken: THREE.Texture[] = Object.values(textures);
     if (this.disposed || this.assets.templates.get(CAMP_CAVE.key) !== template) {
@@ -276,10 +275,8 @@ export class WorldLandmarks {
       return;
     }
     try {
-      const comingSoon = createCavePreviewLabel();
-      taken.push(comingSoon);
       const { pigment, rockSurface, characterPigment, rimoPigment, ...extras } = textures;
-      const extraPigments = { ...extras, comingSoon };
+      const extraPigments = extras;
       for (const gltf of [template.gltf, ...template.lods])
         prepareCaveMaterials(
           gltf.scene,

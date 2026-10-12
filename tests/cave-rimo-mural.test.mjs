@@ -174,11 +174,11 @@ test('material uses the separate Rimo pigment on existing mesh triangles', () =>
     material = new THREE.MeshStandardMaterial();
   root.add(new THREE.Mesh(new THREE.BufferGeometry(), material));
   const textures = Array.from(
-    { length: 5 + Object.keys(CAVE_EXTRA_PIGMENTS).length },
+    { length: 4 + Object.keys(CAVE_EXTRA_PIGMENTS).length },
     () => new THREE.Texture(),
   );
   const extra = Object.fromEntries(
-    [...Object.keys(CAVE_EXTRA_PIGMENTS), 'comingSoon'].map((key, i) => [key, textures[i + 4]]),
+    Object.keys(CAVE_EXTRA_PIGMENTS).map((key, i) => [key, textures[i + 4]]),
   );
   prepareCaveMaterials(root, ...textures.slice(0, 4), extra);
   const shader = {

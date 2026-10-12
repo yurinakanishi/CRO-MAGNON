@@ -929,6 +929,8 @@ export function drawWorldMap(canvas, state, selfId, big = false) {
       ctx.stroke();
     }
   }
+  // The phone shows the minimap as a circle cropped to its centre, naming the area beside it.
+  const compact = !big && canvas.dataset.compact === 'true';
   const pins = (state.mapPins ?? []).filter((pin) => pin.expiresAt > state.serverTime);
   for (const pin of pins) {
     let [x, y] = point(pin.x, pin.z);
@@ -938,7 +940,9 @@ export function drawWorldMap(canvas, state, selfId, big = false) {
       // Keep distant invitations on the minimap edge, in the actual direction of travel.
       const dx = x - w / 2,
         dy = y - h / 2;
-      const ratio = Math.max(1, Math.abs(dx) / (w / 2 - 12), Math.abs(dy) / (h / 2 - 26));
+      const ratio = compact
+        ? Math.max(1, Math.hypot(dx, dy) / (Math.min(w, h) / 2 - 12))
+        : Math.max(1, Math.abs(dx) / (w / 2 - 12), Math.abs(dy) / (h / 2 - 26));
       x = w / 2 + dx / ratio;
       y = h / 2 + dy / ratio;
     }
@@ -967,7 +971,7 @@ export function drawWorldMap(canvas, state, selfId, big = false) {
   canvas.dataset.mapPinCount = String(pins.length);
   ctx.fillStyle = '#fff0d3';
   ctx.font = big ? '12px sans-serif' : '10px sans-serif';
-  if (!big)
+  if (!big && !compact)
     ctx.fillText(
       translateText(
         inGulf(self.x, self.z)
@@ -981,10 +985,12 @@ export function drawWorldMap(canvas, state, selfId, big = false) {
       ? ([10, 25, 50, 100, 200, 500, 1000].filter((m) => m * scale < w / 5).at(-1) ?? 10)
       : 25,
     pixels = metres * scale;
-  ctx.fillRect(w - pixels - 12, h - 12, pixels, 1);
-  ctx.textAlign = 'right';
-  ctx.fillText(`${metres} m`, w - 12, h - 18);
-  ctx.textAlign = 'start';
+  if (!compact) {
+    ctx.fillRect(w - pixels - 12, h - 12, pixels, 1);
+    ctx.textAlign = 'right';
+    ctx.fillText(`${metres} m`, w - 12, h - 18);
+    ctx.textAlign = 'start';
+  }
   canvas.dataset.mapMode = big ? 'atlas' : 'local';
   canvas.dataset.mapZoom = big ? zoom.toFixed(2) : '1';
   canvas.dataset.seaWeather = state.maritime?.kind ?? '';

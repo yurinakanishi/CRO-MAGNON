@@ -38,6 +38,8 @@ else if (!checkOnly) {
     'adventure-ui.js.map',
     'graphics-settings.js',
     'graphics-settings.js.map',
+    'cave-preview-label.js',
+    'cave-preview-label.js.map',
   ])
     await rm(path.join(root, 'dist/src', file), { force: true });
   // Module workers do not inherit the document's import map. Publish the exact

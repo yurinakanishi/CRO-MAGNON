@@ -193,7 +193,6 @@ export const ENGLISH_GAME: Readonly<Record<string, string>> = {
   所持品: 'Items',
   仲間: 'Companions',
   会話: 'Chat',
-  仲間と道具: 'Companions and tools',
   探索のメニュー: 'Exploration menu',
   タッチ操作: 'Touch controls',
   移動: 'Move',
@@ -230,7 +229,9 @@ export const ENGLISH_GAME: Readonly<Record<string, string>> = {
   移動パッドで移動: 'Use the movement pad',
   左スティックで移動: 'Move with the left stick',
   WASDで移動: 'WASD to move',
-  '移動。浅く倒すと歩き、深く倒すと走ります': 'Move. Push gently to walk, farther to run.',
+  '移動パッド。触れた所から、浅く倒すと歩き、深く倒すと走ります':
+    'Movement pad. From where you touch, push gently to walk, farther to run.',
+  行動ボタン: 'Action buttons',
   肩から降りる: 'Climb down',
   肩に乗る: 'Ride on shoulders',
   '{name}を降ろす': 'Put {name} down',
@@ -758,8 +759,8 @@ export const ENGLISH_GAME: Readonly<Record<string, string>> = {
   通常: 'Standard',
   'かんたん・視点自動': 'Easy · Auto camera',
   'タッチ・視点追従': 'Touch · Follow camera',
-  '移動パッドを浅く倒すと歩き、深く倒すと走ります。視点は移動に合わせて追従し、画面をなぞると見渡せます。':
-    'Push the pad gently to walk, farther to run. The camera follows you; drag to look around.',
+  '左下に触れた所に移動パッドが現れます。浅く倒すと歩き、深く倒すと走ります。視点は移動に合わせて追従し、画面をなぞると見渡せます。':
+    'The movement pad appears wherever you touch the lower left. Push it gently to walk, farther to run. The camera follows you; drag to look around.',
   コントローラー: 'Controller',
   コントローラー接続済み: 'Controller connected',
   '接続待ち · コントローラーのボタンを押してください': 'Waiting · Press a controller button',

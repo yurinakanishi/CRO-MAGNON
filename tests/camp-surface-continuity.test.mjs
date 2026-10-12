@@ -130,7 +130,18 @@ test('both animal galleries retain a broad room and full standing height all the
     const paintings = CAVE_MURALS.filter((m) => m.wall === wall);
     assert.deepEqual(
       paintings
-        .filter((m) => animals.includes(m.motif))
+        .filter((m) =>
+          [
+            'maruimoFrieze',
+            'rimoFrieze',
+            'roundBots',
+            'maeKohaku',
+            'creature524',
+            'friendsMeadow',
+            'friendsRiver',
+            'shapeBots',
+          ].includes(m.motif),
+        )
         .map((m) => m.motif)
         .sort(),
       (wall === 'east'

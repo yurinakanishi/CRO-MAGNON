@@ -74,6 +74,8 @@
 
 | 文書 | 題名 |
 | --- | --- |
+| [mobile-hud-2026-10-12.md](mobile-hud-2026-10-12.md) | スマホHUDの刷新：左右2列・浮く移動パッド・攻撃の弧と最大3つの行動・丸いミニマップ・会話の未読 |
+| [cave-murals-2026-10-12.md](cave-murals-2026-10-12.md) | 壁画の縮尺統一・30配置への増量・22人の個別差し替え・Coming Soon撤去 |
 | [git-pull-2026-10-11.md](git-pull-2026-10-11.md) | 未コミット40ファイルを保持してpull・競合解消・英語UIを統合 |
 | [neanderthal-retirement-2026-10-11.md](neanderthal-retirement-2026-10-11.md) | ネアンデルタール人男女と交易NPCを除外し、素材・保存済み外見を保持して再導入可能にする |
 | [language-toggle-2026-10-11.md](language-toggle-2026-10-11.md) | タイトルの日本語／English切替・設定保存・英語UIと実Chrome検証 |

@@ -386,6 +386,19 @@ function performCue(command: TouchAction) {
     case 'bag':
       openInventory();
       break;
+    // The phone offers the hotbar's buttons as prompts; their own handlers decide.
+    case 'cook':
+      cook();
+      break;
+    case 'launch':
+      $('#boat-launch').click();
+      break;
+    case 'recover':
+      $('#boat-recover').click();
+      break;
+    case 'decline':
+      $('#carry-decline').click();
+      break;
   }
   if (!$('#modal').open && !chatUI?.open) $('#world').focus({ preventScroll: true });
 }
@@ -747,8 +760,12 @@ function clearMovementInput() {
 }
 function notify(text, tone = 'info') {
   if (tone === 'success') renderer?.audio.confirm();
+  // A repeated message moves to the newest place with a fresh timer instead of stacking.
+  for (const shown of [...$('#toast-stack').children])
+    if (shown.dataset.text === text && shown.dataset.tone === tone) shown.remove();
   const toast = document.createElement('div');
   toast.className = `toast ${tone}`;
+  Object.assign(toast.dataset, { text, tone });
   const mark = document.createElement('span');
   mark.innerHTML = icon(tone === 'success' ? 'check' : 'leaf');
   const label = document.createElement('span');
@@ -1008,6 +1025,9 @@ async function connect(automatic = false) {
     if (message.type === 'chat') {
       addChat(message);
       if (message.mapPin) notify(`${message.name}：${message.text}`);
+      // The phone's log is closed during play; another traveller's line peeks out briefly.
+      else if (!message.system && !chatUI?.open && message.name !== profile.name)
+        touchControls?.chatPeek(message.name, message.text);
     }
     if (message.type === 'pong') {
       ping = Math.max(0, Date.now() - message.at);
@@ -1853,10 +1873,6 @@ function updateHuntingHUD() {
     !motionControls?.ownsInput &&
     !document.activeElement?.closest('input,textarea,select,[contenteditable]');
   inputCues?.update(cueContext, playVisible && !touchMode());
-  touchControls?.update(
-    downed ? { automaticCamera: assistedControls() } : { ...cueContext, attack: attackAvailable },
-    touchPlayable('menu'),
-  );
   const combat = attackProfile(me ?? profile);
   const cooldownLeft =
     me?.attackSequence > 0 ? Math.max(0, combat.cooldownMs - (serverNow - me.attackAt)) : 0;
@@ -1883,6 +1899,24 @@ function updateHuntingHUD() {
     !!usableCookingFire(state, me, renderer.collision);
   setFlag($('#cook-button'), 'hidden', !canCook);
   setFlag($('#cook-button'), 'disabled', !canCook);
+  const usable = (selector: string, label: string) =>
+    !$(selector).hidden && !$(selector).disabled ? label : undefined;
+  touchControls?.update(
+    downed
+      ? { automaticCamera: assistedControls(), weapon: combat.key }
+      : {
+          ...cueContext,
+          attack: attackAvailable,
+          // The fire's own interaction already cooks when it is the nearest thing to do.
+          cook: canCook && closeAction?.action !== 'cook' ? '肉を焼く' : undefined,
+          launch: usable('#boat-launch', '船を出す'),
+          recover: usable('#boat-recover', '船を回収'),
+          decline: usable('#carry-decline', '断る'),
+          weapon: combat.key,
+          cooldown: cooldownLeft / Math.max(1, combat.cooldownMs),
+        },
+    touchPlayable('menu'),
+  );
   setFlag($('#cooking-status'), 'hidden', !cooking && !fishing && !coastal);
   if (cooking || fishing || coastal) {
     const remaining = Math.max(
@@ -2678,7 +2712,7 @@ function openPauseMenu(tab?: string) {
     controlsSetting.querySelector('[data-controls="normal"]').textContent = 'タッチ・視点追従';
     const note = document.createElement('p');
     note.textContent =
-      '移動パッドを浅く倒すと歩き、深く倒すと走ります。視点は移動に合わせて追従し、画面をなぞると見渡せます。';
+      '左下に触れた所に移動パッドが現れます。浅く倒すと歩き、深く倒すと走ります。視点は移動に合わせて追従し、画面をなぞると見渡せます。';
     controlsSetting.firstElementChild.append(note);
     root.querySelector('.gamepad-connection')?.closest('.settings-item')?.remove();
   }
@@ -3211,8 +3245,15 @@ touchControls = new TouchControls($('.game-viewport'), {
     inputCues?.hide();
     updateHintLabels();
     updateHuntingHUD();
+    compactMinimap();
+    drawMinimap();
   },
 });
+/** The phone's round minimap leaves out the corner captions its own HUD already shows. */
+function compactMinimap() {
+  $('#minimap').dataset.compact = String(touchMode());
+}
+compactMinimap();
 renderer.manualInputAllowed = () =>
   joined &&
   playReady() &&

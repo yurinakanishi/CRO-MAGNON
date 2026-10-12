@@ -3,6 +3,10 @@ import assert from 'node:assert/strict';
 import {
   touchStick,
   touchActions,
+  touchLayout,
+  touchSkillSlots,
+  touchIcon,
+  touchWeaponIcon,
   TouchCameraFollow,
   touchFieldOfView,
 } from '../dist/src/touch-input.js';
@@ -48,6 +52,109 @@ test('touch can reach pet, interaction, boarding, throwing, recall and torch tog
     }).some((a) => a.action === 'inspect'),
     false,
   );
+});
+
+test('the phone shows at most three prompts, nearest-the-thumb first; abilities keep fixed slots', () => {
+  const crowded = touchLayout({
+    pet: '撫でる',
+    interaction: '木材を採集する',
+    ride: 'マンモスに乗る',
+    board: '船に乗る',
+    inspect: '524',
+    recall: true,
+    throw: true,
+    cook: '肉を焼く',
+  });
+  assert.deepEqual(
+    crowded.prompts.map((a) => a.action),
+    ['pet', 'interact', 'cook'],
+  );
+  assert.deepEqual(
+    crowded.skills.map((a) => a.action),
+    ['recall', 'throw'],
+  );
+  assert.deepEqual(
+    [...touchSkillSlots(crowded.skills)],
+    [
+      ['recall', 'far'],
+      ['throw', 'near'],
+    ],
+  );
+  // A cave allows only the torch, which takes the place nearest the thumb.
+  const cave = touchLayout({ torch: '松明を消す', recall: true, interaction: '焚き火で暖まる' });
+  assert.deepEqual(
+    [...touchSkillSlots(cave.skills)],
+    [
+      ['recall', 'far'],
+      ['torch', 'near'],
+    ],
+  );
+  assert.deepEqual(
+    cave.prompts.map((a) => a.action),
+    ['interact'],
+  );
+  assert.deepEqual(
+    [...touchSkillSlots([{ action: 'throw' }, { action: 'torch' }, { action: 'recall' }])].map(
+      ([, slot]) => slot,
+    ),
+    ['near', 'far', 'high'],
+  );
+  // Each hotbar button reaches the phone when it can be used; ride and boarding stay reachable.
+  assert.deepEqual(
+    touchLayout({ launch: '船を出す', recover: '船を回収', board: '船に乗る' }).prompts.map(
+      (a) => a.action,
+    ),
+    ['board', 'recover', 'launch'],
+  );
+  assert.deepEqual(
+    touchLayout({ ride: '肩に乗る', decline: '断る' }).prompts.map((a) => a.action),
+    ['ride', 'decline'],
+  );
+  // A task or a close-up view offers only its own controls.
+  assert.deepEqual(touchLayout({ busy: true, cook: '肉を焼く', recall: true }), {
+    prompts: [{ action: 'cancel', label: 'やめる' }],
+    skills: [],
+  });
+  assert.deepEqual(
+    touchLayout({ viewing: true, inspect: '524', launch: '船を出す' }).prompts.map((a) => a.action),
+    ['zoomIn', 'zoomOut', 'endInspect'],
+  );
+  assert.deepEqual(touchLayout({ jump: true, attack: true }), { prompts: [], skills: [] });
+});
+
+test('every touch action and weapon has a glyph; targets come from the label', () => {
+  for (const [label, glyph] of [
+    ['木材を採集する', 'wood'],
+    ['黒曜石を採掘する', 'stone'],
+    ['ベリーを採集する', 'berry'],
+    ['焚き火に資材を届ける', 'flame'],
+    ['貝を探す', 'shell'],
+    ['村人と話す', 'hand'],
+  ])
+    assert.equal(touchIcon('interact', label), glyph, label);
+  assert.equal(touchIcon('ride', 'マンモスに乗る'), 'mammoth');
+  assert.equal(touchIcon('ride', 'たろうを担ぐ'), 'people');
+  for (const action of [
+    'pet',
+    'board',
+    'launch',
+    'recover',
+    'cook',
+    'decline',
+    'inspect',
+    'recall',
+    'throw',
+    'torch',
+    'cancel',
+    'zoomIn',
+    'zoomOut',
+    'endInspect',
+  ])
+    assert.notEqual(touchIcon(action), 'hand', action);
+  for (const weapon of ['spear', 'katana', 'magic', 'science', 'unarmed', 'tentacle'])
+    assert.equal(touchWeaponIcon(weapon), weapon);
+  assert.equal(touchWeaponIcon('obsidianSpear'), 'spear');
+  assert.equal(touchWeaponIcon(undefined), 'spear');
 });
 
 test('touch camera yields throughout a swipe and its grace interval, resumes smoothly while moving', () => {

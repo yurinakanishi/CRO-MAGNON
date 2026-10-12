@@ -38,12 +38,30 @@ const icons = {
     '<circle cx="12" cy="12" r="7"/><circle cx="12" cy="12" r="2"/><path d="M12 1v4m0 14v4M1 12h4m14 0h4"/>',
   chat: '<path d="M21 15a3 3 0 0 1-3 3H9l-6 4V6a3 3 0 0 1 3-3h12a3 3 0 0 1 3 3v9Z"/><path d="M7 8h10M7 12h7"/>',
   check: '<path d="m5 12 4 4L19 6"/>',
-  jump: '<path d="M12 17V3m-5 5 5-5 5 5M5 20h14"/>',
+  jump: '<path d="m6 12.5 6-6 6 6"/><path d="m6 18.5 6-6 6 6"/>',
   leaf: '<path d="M20 3C4 1 1 13 8 17c7 5 14-4 12-14Z"/><path d="M4 22 16 8"/>',
   link: '<path d="m10 14 4-4m-6 6-2 2a4 4 0 0 1-6-6l5-5a4 4 0 0 1 6 0m2 1 2-2a4 4 0 0 1 6 6l-5 5a4 4 0 0 1-6 0" transform="translate(1 -1)"/>',
   help: '<circle cx="12" cy="12" r="9"/><path d="M9 9a3 3 0 0 1 6 0c0 2-3 2-3 5m0 3v.1"/>',
   exchange: '<path d="M3 7h17l-4-4m4 14H3l4 4M20 7l-4 4M3 17l4-4"/>',
   wave: '<path d="M5 12V8a2 2 0 0 1 3 0V4a2 2 0 0 1 3 0v7-8a2 2 0 0 1 3 0v8-6a2 2 0 0 1 3 0v8l2-3c2-2 4 0 3 2l-4 8c-4 4-13 1-13-4v-4Z"/>',
+  // Phone action glyphs: what the finger does here, read without a label.
+  heart:
+    '<path d="M12 20s-7.5-4.6-7.5-10.2A4.2 4.2 0 0 1 12 7.4a4.2 4.2 0 0 1 7.5 2.4C19.5 15.4 12 20 12 20Z"/>',
+  hand: '<path d="M7.5 12.5V6a1.5 1.5 0 0 1 3 0v5m0-6.5a1.5 1.5 0 0 1 3 0V11m0-5a1.5 1.5 0 0 1 3 0v5.5m0-3a1.5 1.5 0 0 1 3 0V15c0 3.9-3.1 7-7 7h-.6c-2.4 0-4.2-1.1-5.5-3.1l-2.8-4.4a1.5 1.5 0 0 1 2.5-1.7l1.4 1.9"/>',
+  eye: '<path d="M2.5 12s3.5-6.5 9.5-6.5 9.5 6.5 9.5 6.5-3.5 6.5-9.5 6.5S2.5 12 2.5 12Z"/><circle cx="12" cy="12" r="2.8"/>',
+  mammoth:
+    '<path d="M3.5 19v-5.5C3.5 9 6.5 6 10.5 6h2c2.6 0 4.7 1.6 5.6 3.9l.6 1.6c.4 1.1.6 2.3.6 3.5 0 1.9.6 3.2 1.7 4"/><path d="M7.5 19v-3m5 3v-3.5"/><path d="M19.2 12.5c-2.3-.4-4 .7-4.7 2.9"/><path d="M13 9.5h.01"/>',
+  call: '<circle cx="12" cy="9" r="2.6"/><path d="M7.5 18.5a4.5 4.5 0 0 1 9 0"/><path d="M5 5.5a8.5 8.5 0 0 0 0 9M19 5.5a8.5 8.5 0 0 1 0 9M7.6 7.6a4.6 4.6 0 0 0 0 4.8M16.4 7.6a4.6 4.6 0 0 1 0 4.8"/>',
+  recenter:
+    '<path d="M20 12a8 8 0 1 1-2.3-5.7"/><path d="M20 4v4h-4"/><circle cx="12" cy="12" r="2.2"/>',
+  throw:
+    '<circle cx="18" cy="6" r="2.6"/><path d="M4 20c1.6-6.4 5.4-10.6 10.6-12.4"/><path d="m11.8 6.4 3 1.2-1.4 2.9"/>',
+  torch:
+    '<path d="M10 21.5h4l1.2-9H8.8l1.2 9Z"/><path d="M12 2.5c2.4 2.3 3.6 4.2 3.6 6.1a3.6 3.6 0 0 1-7.2 0c0-1.4.6-2.6 1.7-3.6.1 1.3.8 2 1.9 2.1-.7-1.6-.7-3.1 0-4.6Z"/>',
+  minus: '<path d="M5 12h14"/>',
+  back: '<path d="M19 12H5m6-6-6 6 6 6"/>',
+  tentacle:
+    '<path d="M8 21c-2.5-3-2-7 1.5-9 3-1.7 5.5-1.4 6.5-4 .8-2-.8-3.8-2.7-3.4-1.6.3-2.2 2.2-1 3"/><path d="M12.5 21c-.5-2.4.6-4.3 3.2-5 2-.6 3.3.4 3.3 1.8"/>',
 };
 export const icon = (name, cls = '') =>
   `<svg class="icon ${cls}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${icons[name] || icons.leaf}</svg>`;

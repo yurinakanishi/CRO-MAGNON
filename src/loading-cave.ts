@@ -11,7 +11,6 @@ import {
   type VerifiedTextureOptions,
 } from './verified-texture.js';
 import { prepareCaveMaterials } from './cave-materials.js';
-import { createCavePreviewLabel } from './cave-preview-label.js';
 import { MeshRayGrid } from './mesh-ray-grid.js';
 import { LoadingCaveMovement } from './loading-cave-movement.js';
 import { movementKey } from './combat-input.js';
@@ -210,9 +209,7 @@ export class LoadingCave {
     for (const texture of [pigment, rockSurface, characterPigment, rimoPigment])
       this.textures.add(texture);
     for (const texture of Object.values(extras)) this.textures.add(texture);
-    const comingSoon = createCavePreviewLabel();
-    this.textures.add(comingSoon);
-    const extraPigments = { ...extras, comingSoon } as Record<CaveExtraPigment, THREE.Texture>;
+    const extraPigments = extras as Record<CaveExtraPigment, THREE.Texture>;
     prepareCaveMaterials(cave, pigment, rockSurface, characterPigment, rimoPigment, extraPigments);
     cave.position.set(CAMP_CAVE.x, CAMP_CAVE.elevation + CAMP_CAVE.groundOffset, CAMP_CAVE.z);
     cave.rotation.y = CAMP_CAVE.yaw;

@@ -4,6 +4,7 @@ import { mkdir, writeFile } from 'node:fs/promises';
 import { WebSocket } from 'ws';
 import { createGameServer } from '../dist/server.mjs';
 import { stopActor } from '../dist/shared/combat.mjs';
+import { enterPreparedWorld } from './qa-game-entry.mjs';
 const { chromium } = await import(
   process.env.PLAYWRIGHT_MODULE ||
     'file:///C:/Users/yurin/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/node_modules/playwright/index.mjs'
@@ -74,9 +75,8 @@ async function open(name) {
   await page.locator('#title-start').click();
   await page.locator('#setup-form .character-choice:has(input[value="cro-female"])').click();
   await page.locator('#setup-flow-yes').click();
-  await page
-    .locator('#world[data-world-asset="ready"][data-character-asset="ready"]')
-    .waitFor({ timeout: 120000 });
+  // The world joins only after the loading cave's own button.
+  await enterPreparedWorld(page, false);
   await until(() => seen.id && game.rooms.get(roomName)?.players.has(seen.id), 'join');
   room = game.rooms.get(roomName);
   await page.locator('#world').focus();
