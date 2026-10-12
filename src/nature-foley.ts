@@ -92,15 +92,7 @@ export class FoleyEvents {
     }
     this.previous = current;
     const bots = world.state.orbBots ?? [];
-    const companions = [
-      world.state.rimoNeko,
-      world.state.mae,
-      world.state.kohaku,
-      world.state.maruimo,
-      ...(world.state.friends ?? []),
-      world.state.companion524,
-      ...bots,
-    ].filter(Boolean);
+    const companions = [...(world.state.companions ?? []), ...bots];
     for (const b of bots) {
       if (b.ownerId !== p.id) continue;
       const recall = `recall:${b.id}`,
@@ -120,18 +112,19 @@ export class FoleyEvents {
     }
     // Keep recent companion tokens across brief removals/ownership changes.
     while (this.seen.size > 64) this.seen.delete(this.seen.keys().next().value!);
-    const cat = world.state.rimoNeko;
-    if (
-      cat?.hitAt > 0 &&
-      this.fresh(
-        'cat',
-        `${cat.hitSequence}/${cat.hitAt}`,
-        cat.hitAt + RIMO_NEKO.hitMs,
-        now,
-        baseline,
+    // Every player's own cat hisses when struck, wherever it is in hearing.
+    for (const cat of world.state.companions ?? []) {
+      if (cat.key !== 'rimo-neko' || !(cat.hitAt > 0)) continue;
+      if (
+        this.fresh(
+          `hiss:${cat.id}`,
+          `${cat.hitSequence}/${cat.hitAt}`,
+          cat.hitAt + RIMO_NEKO.hitMs,
+          now,
+          baseline,
+        ) &&
+        Math.hypot(p.x - cat.x, p.z - cat.z) <= HISS_RANGE
       )
-    ) {
-      if (Math.hypot(p.x - cat.x, p.z - cat.z) <= HISS_RANGE)
         emit('hiss', { x: cat.x, y: (p.y ?? 0) + 0.3, z: cat.z }, 1200);
     }
   }

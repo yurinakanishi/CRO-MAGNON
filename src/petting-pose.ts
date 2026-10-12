@@ -1,5 +1,6 @@
 import * as THREE from 'three';
-import { COMPANION_524, type Companion524Snapshot } from '../shared/companion-524.mjs';
+import { COMPANION_524 } from '../shared/companion-524.mjs';
+import type { CompanionSnapshot } from '../shared/companion-types.mjs';
 import type { PlayerSnapshot } from '../shared/snapshots.mjs';
 import { jumpProgress } from '../shared/jumping.mjs';
 import { attackProfile } from '../shared/combat-profiles.mjs';
@@ -12,7 +13,7 @@ const smooth = (value: number) => {
 
 /** Seek the shared event, including a late join, instead of replaying an old pet. */
 export function pettingProgress(
-  c: Partial<Pick<Companion524Snapshot, 'petPlayerId' | 'petAt' | 'petContactAt'>> | undefined,
+  c: Partial<Pick<CompanionSnapshot, 'petPlayerId' | 'petAt' | 'petContactAt'>> | undefined,
   p: PlayerSnapshot,
   now: number,
   timing: { petApproachMs: number; petStrokeMs: number } = COMPANION_524,

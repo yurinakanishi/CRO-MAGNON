@@ -11,7 +11,7 @@ import {
 } from '../dist/src/controller-labels.js';
 
 test('context only suggests one meaning for the shared bottom button', () => {
-  for (const pet of ['りもねこを撫でる', '524を撫でる', 'maeを撫でる', 'botたちを撫でる']) {
+  for (const pet of ['りもねこを撫でる', '524を撫でる', 'maeを撫でる', 'しろbotを撫でる']) {
     const context = {
       pet,
       interaction: '木材を採集する',
@@ -61,11 +61,13 @@ test('deployed companions and food needs take priority over a generic jump hint'
     contextCues({ recall: true, throw: true, needsFood: true, jump: true }, false).map((c) => [
       c.action,
       c.key,
+      c.label,
     ]),
     [
-      ['recall', 'Q'],
-      ['throw', 'C'],
-      ['bag', 'I'],
+      // One companion each: it is thrown, and called back, on its own.
+      ['recall', 'Q', '呼び戻す'],
+      ['throw', 'C', '投げる'],
+      ['bag', 'I', 'もちもの'],
     ],
   );
   assert.deepEqual(
@@ -78,7 +80,7 @@ test('deployed companions and food needs take priority over a generic jump hint'
   );
 });
 
-test('a nearby invitation keeps the whistle visible among the three contextual actions', () => {
+test('a thrown companion keeps its recall visible among the three contextual actions', () => {
   for (const pad of [false, true]) {
     const cues = contextCues(
       {

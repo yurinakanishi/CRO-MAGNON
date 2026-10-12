@@ -289,7 +289,10 @@ try {
   assert.deepEqual(tabs, ['inventory', 'warp', 'crafting', 'mascots', 'settings']);
   await select('[data-controller-menu="mascots"]');
   await tap(PAD.circle);
-  assert.equal(await page.locator('[data-mascot]').count(), 14);
+  // One choice among the default roster: りもねこ, 524 and the nine Dots.
+  assert.equal(await page.locator('[data-mascot]').count(), 11);
+  assert.equal(await page.locator('[data-mascot-none]').count(), 1);
+  assert.equal(await page.locator('[data-mascot-all]').count(), 0);
   assert.equal(await page.locator('[data-controller-menu="bots"]').count(), 0);
   assert.equal(await page.locator('[data-controller-menu="travelAlone"]').count(), 0);
   await select('[data-controller-menu="settings"]');

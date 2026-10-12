@@ -233,29 +233,20 @@ export function updateHunting(
   let changed = false;
   const reportHit = (player, strike) => {
     changed = true;
-    if (strike.kind === 'kohaku') {
-      notify(player, 'こはくちゃんがびっくりして身を引いた。', 'info', false);
-      return;
-    }
-    if (strike.kind === 'friend') {
-      const name = friendDefinition(strike.target.key)?.name ?? '仲間';
-      notify(player, `${name}がびっくりして身を引いた。`, 'info', false);
-      return;
-    }
-    if (strike.kind === 'maruimo') {
-      notify(player, 'まるぃもがびっくりして身を引いた。', 'info', false);
-      return;
-    }
-    if (strike.kind === 'mae') {
-      notify(player, 'maeがぽよんと身を引いた。', 'info', false);
-      return;
-    }
-    if (strike.kind === 'rimoNeko') {
-      notify(player, 'りもねこが身を引いて、シャーッと威嚇した。', 'info', false);
-      return;
-    }
-    if (strike.kind === 'companion524') {
-      notify(player, '524がぽんっと浮かんだ。', 'info', false);
+    if (strike.kind === 'companion') {
+      const key = strike.target.key;
+      notify(
+        player,
+        key === 'rimo-neko'
+          ? 'りもねこが身を引いて、シャーッと威嚇した。'
+          : key === '524'
+            ? '524がぽんっと浮かんだ。'
+            : key === 'mae'
+              ? 'maeがぽよんと身を引いた。'
+              : `${friendDefinition(key)?.name ?? '仲間'}がびっくりして身を引いた。`,
+        'info',
+        false,
+      );
       return;
     }
     const label = strike.kind === 'animal' ? 'マンモス' : strike.target.name || '敵';

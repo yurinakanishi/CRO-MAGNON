@@ -6,7 +6,7 @@ import { WebSocket } from 'ws';
 import { qaGamePackage } from './qa-game-package.mjs';
 import { enterPreparedWorld } from './qa-game-entry.mjs';
 import { stopActor } from '../dist/shared/combat.mjs';
-import { RIMO_NEKO } from '../dist/shared/rimo-neko.mjs';
+import { chooseMascot } from '../dist/shared/mascot-selection.mjs';
 import { CAMP } from '../dist/shared/world.mjs';
 import { caveWorldAt } from '../dist/shared/camp-cave-layout.mjs';
 const { chromium } = await import(
@@ -191,7 +191,13 @@ try {
   pass('The pad appears under the thumb, runs from a deep push and stops on release');
 
   // Prompts stack above the pad, the first nearest the thumb; abilities keep fixed slots.
-  await place(RIMO_NEKO.home.x + 1, RIMO_NEKO.home.z);
+  // The player's own cat arrives beside them; no companion waits at camp any more.
+  chooseMascot(room, me(), 'rimo-neko', Date.now());
+  const cat = () => room.companions.find((c) => c.ownerId === selfId && c.key === 'rimo-neko');
+  await until(
+    () => !!cat() && Math.hypot(cat().x - me().x, cat().z - me().z) < 2.4,
+    'own cat arrives beside the player',
+  );
   await page.locator('[data-touch-action="pet"]').waitFor();
   const promptOrder = await page
     .locator('.touch-prompt')
@@ -208,12 +214,12 @@ try {
   await targets();
   await shot('03-prompts');
   await page.locator('[data-touch-action="pet"]').tap();
-  await until(() => room.rimoNeko.followPlayerId === selfId, 'pet by prompt');
+  await until(() => cat().petPlayerId === selfId, 'pet by prompt');
   await sleep(700);
   await place(76, 68);
   await page.locator('[data-touch-action="throw"]').waitFor();
   assert.equal(await page.locator('[data-touch-action="throw"]').getAttribute('data-slot'), 'near');
-  assert.equal(await page.locator('[data-touch-action="throw"]').innerText(), '1匹投げる');
+  assert.equal(await page.locator('[data-touch-action="throw"]').innerText(), '投げる');
   await targets();
   await shot('04-ability');
   pass('Up to three prompts above the pad with the primary at the bottom; abilities keep slots');
@@ -317,8 +323,14 @@ try {
   await page.locator('.combat-status.downed').waitFor({ state: 'hidden' });
   pass('A repeated notice shows once; the downed card stays above the notices');
 
-  // A close-up view leaves zoom and return prompts by the thumb.
-  await place(RIMO_NEKO.home.x + 1, RIMO_NEKO.home.z);
+  // A close-up view leaves zoom and return prompts by the thumb; the own cat walks along.
+  await until(
+    () =>
+      room.companions.some(
+        (c) => c.ownerId === selfId && Math.hypot(c.x - me().x, c.z - me().z) < 3,
+      ),
+    'own cat beside the player',
+  );
   const inspect = page.locator('[data-touch-action="inspect"]');
   if (await inspect.count()) {
     await inspect.tap();

@@ -1,11 +1,6 @@
 import { WORLD } from './world.mjs';
 import { attackProfile, ATTACK_PROFILES, shoulderMagic } from './combat-profiles.mjs';
-import { hitRimoNeko, rimoNekoOnGround } from './rimo-neko.mjs';
-import { hitMae } from './mae.mjs';
-import { hitKohaku } from './kohaku.mjs';
-import { hitMaruimo } from './maruimo-mascot.mjs';
-import { hitFriend } from './friend-mascots.mjs';
-import { hitCompanion524, companion524OnGround } from './companion-524.mjs';
+import { companionOnGround, hitCompanion } from './companions.mjs';
 import { roomRules } from './room-rules.mjs';
 import { caveInteriorWeight } from './cave-light.mjs';
 import { equippedItem } from './equipment.mjs';
@@ -55,20 +50,14 @@ const actors = (collection) =>
 
 // Only server-owned damageable collections participate. Other players and the
 // friendly village NPC are never searched or selected by a client-supplied ID.
-// 524 is a separate, explicitly hittable companion; it has no health or death.
+// Companions are explicitly hittable; they recoil, with no health or death.
 export function damageableTargets(room) {
   const playerIds = new Set(room.players.keys());
+  const companions = (room.companions ?? []).filter(
+    (target) => companionOnGround(target) && !target.leavingAt,
+  );
   return [
-    ...(room.rimoNeko && rimoNekoOnGround(room.rimoNeko)
-      ? [{ target: room.rimoNeko, kind: 'rimoNeko' }]
-      : []),
-    ...(room.mae ? [{ target: room.mae, kind: 'mae' }] : []),
-    ...(room.kohaku ? [{ target: room.kohaku, kind: 'kohaku' }] : []),
-    ...(room.maruimo ? [{ target: room.maruimo, kind: 'maruimo' }] : []),
-    ...(room.friends ?? []).map((target) => ({ target, kind: 'friend' })),
-    ...(room.companion524 && companion524OnGround(room.companion524)
-      ? [{ target: room.companion524, kind: 'companion524' }]
-      : []),
+    ...companions.map((target) => ({ target, kind: 'companion' })),
     ...actors(room.animals)
       .filter((target) => !target.riderId)
       .map((target) => ({ target, kind: 'animal' })),
@@ -79,13 +68,7 @@ export function damageableTargets(room) {
   ].filter(
     ({ target }) =>
       !playerIds.has(target.id) &&
-      (target === room.companion524 ||
-        target === room.rimoNeko ||
-        target === room.mae ||
-        target === room.kohaku ||
-        target === room.maruimo ||
-        room.friends?.includes(target) ||
-        alive(target)) &&
+      (companions.includes(target) || alive(target)) &&
       Number.isFinite(target.x) &&
       Number.isFinite(target.z) &&
       Number.isFinite(target.radius) &&
@@ -224,28 +207,8 @@ function applyHit(
   attackerId = null,
   direction = { x: 0, z: 1 },
 ) {
-  if (kind === 'rimoNeko') {
-    hitRimoNeko(target, direction.x, direction.z, now);
-    return { hit: true, target, kind, killed: false, weapon: profile.key };
-  }
-  if (kind === 'kohaku') {
-    hitKohaku(target, direction.x, direction.z, now);
-    return { hit: true, target, kind, killed: false, weapon: profile.key };
-  }
-  if (kind === 'maruimo') {
-    hitMaruimo(target, direction.x, direction.z, now);
-    return { hit: true, target, kind, killed: false, weapon: profile.key };
-  }
-  if (kind === 'friend') {
-    hitFriend(target, direction.x, direction.z, now);
-    return { hit: true, target, kind, killed: false, weapon: profile.key };
-  }
-  if (kind === 'mae') {
-    hitMae(target, direction.x, direction.z, now);
-    return { hit: true, target, kind, killed: false, weapon: profile.key };
-  }
-  if (kind === 'companion524') {
-    hitCompanion524(target, direction.x, direction.z, now);
+  if (kind === 'companion') {
+    hitCompanion(target, direction.x, direction.z, now);
     return { hit: true, target, kind, killed: false, weapon: profile.key };
   }
   // A castle crow praying behind the seal is struck but not hurt: the blow is

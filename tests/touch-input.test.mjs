@@ -40,6 +40,9 @@ test('touch can reach pet, interaction, boarding, throwing, recall and torch tog
     actions.map((a) => a.action),
     ['pet', 'interact', 'ride', 'board', 'inspect', 'recall', 'throw', 'torch'],
   );
+  // The player's one companion is thrown and called back by name-free labels.
+  assert.equal(actions.find((a) => a.action === 'recall').label, '呼び戻す');
+  assert.equal(actions.find((a) => a.action === 'throw').label, '投げる');
   assert.deepEqual(touchActions({ busy: true, pet: '撫でる' }), [
     { action: 'cancel', label: 'やめる' },
   ]);

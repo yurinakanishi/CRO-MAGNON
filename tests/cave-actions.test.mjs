@@ -13,7 +13,6 @@ import {
   canThrowBot,
   handleOrbBotAction,
   updateOrbBots,
-  syncOrbBots,
 } from '../dist/shared/orb-bots.mjs';
 
 function fixture(character = CHARACTER_MODELS[0]) {
@@ -117,14 +116,17 @@ test('torch-only hands reject companion throws and cancel a queued pickup on ent
   Object.assign(player, caveWorldAt(-21));
   assert.equal(canHandleBot(player, now), true, 'care and recall remain available');
   assert.equal(canThrowBot(player, now), false);
-  syncOrbBots(room, now);
+  // The player's own dot, chosen in the menu, arrives beside them in the cave.
+  socket.emit(
+    'message',
+    Buffer.from(JSON.stringify({ type: 'action', action: 'selectMascot', targetId: 'white' })),
+    false,
+  );
+  assert.equal(room.orbBots.length, 1);
   const bot = room.orbBots[0];
-  Object.assign(bot, {
-    ownerId: player.id,
-    mode: 'following',
-    ...caveWorldAt(-20),
-    lastOwner: { x: player.x, z: player.z },
-  });
+  assert.equal(bot.ownerId, player.id);
+  assert.equal(bot.mode, 'following');
+  assert.ok(caveInteriorWeight(bot) > 0, 'the dot is inside the cave too');
   assert.equal(handleOrbBotAction(room, player, 'throwBot', bot.kind, now), false);
   for (const mode of ['queued', 'windup']) {
     Object.assign(bot, { mode, throwAt: now, origin: { x: bot.x, y: bot.y, z: bot.z } });

@@ -57,6 +57,8 @@ export interface PlayerSnapshot extends Point {
   carryOfferUntil?: number;
   mountId: string | null;
   boatId: string | null;
+  /** The chosen companion's selection key; null travels alone. */
+  mascot?: string | null;
   adventure: { regions: Record<string, AdventureProgress> };
   gulf?: GulfProgress;
 }
@@ -179,12 +181,9 @@ export interface NpcSnapshot extends Point {
   greeting: string;
 }
 export interface GameSnapshot {
-  companion524?: import('./companion-524-types.mjs').Companion524Snapshot;
-  rimoNeko?: import('./rimo-neko-types.mjs').RimoNekoSnapshot;
-  mae?: import('./mae-types.mjs').MaeSnapshot;
-  kohaku?: import('./kohaku-types.mjs').KohakuSnapshot;
-  maruimo?: import('./maruimo-mascot-types.mjs').MaruimoSnapshot;
-  friends?: import('./friend-mascot-types.mjs').FriendMascotSnapshot[];
+  /** Each player's own 524, りもねこ or walking friend. */
+  companions?: import('./companion-types.mjs').CompanionSnapshot[];
+  /** Each player's own dot, and the throwable side of 524 and りもねこ. */
   orbBots?: import('./orb-bot-types.mjs').OrbBotSnapshot[];
   mapPins?: import('./map-pins.mjs').MapPin[];
   type: 'state';

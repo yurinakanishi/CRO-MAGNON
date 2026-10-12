@@ -1,11 +1,12 @@
 import * as THREE from 'three';
 import { PettingPose, pettingProgress } from './petting-pose.js';
-import { RIMO_NEKO, type RimoNekoSnapshot } from '../shared/rimo-neko.mjs';
+import { RIMO_NEKO } from '../shared/rimo-neko.mjs';
+import type { CompanionSnapshot } from '../shared/companion-types.mjs';
 import type { PlayerSnapshot } from '../shared/snapshots.mjs';
 
 const up = new THREE.Vector3(0, 1, 0);
 export function groundPettingProgress(
-  c: RimoNekoSnapshot | undefined,
+  c: CompanionSnapshot | undefined,
   p: PlayerSnapshot,
   now: number,
 ) {

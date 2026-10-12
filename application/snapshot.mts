@@ -9,12 +9,7 @@ import { VILLAGE, villageDay } from '../shared/village-sites.mjs';
 import { maritimeWeather } from '../shared/maritime-weather.mjs';
 import { barterSnapshots } from '../shared/barter.mjs';
 import { activeMapPins } from '../shared/map-pins.mjs';
-import { rimoNekoSnapshot } from '../shared/rimo-neko.mjs';
-import { maeSnapshot } from '../shared/mae.mjs';
-import { kohakuSnapshot } from '../shared/kohaku.mjs';
-import { maruimoSnapshot } from '../shared/maruimo-mascot.mjs';
-import { friendSnapshots } from '../shared/friend-mascots.mjs';
-import { companion524Snapshot } from '../shared/companion-524.mjs';
+import { companionSnapshots } from '../shared/companions.mjs';
 import { orbBotSnapshots } from '../shared/orb-bots.mjs';
 export function snapshot(
   room,
@@ -22,12 +17,7 @@ export function snapshot(
   now = Date.now(),
 ): import('../shared/snapshots.mjs').GameSnapshot {
   return {
-    companion524: companion524Snapshot(room.companion524),
-    rimoNeko: rimoNekoSnapshot(room.rimoNeko),
-    mae: maeSnapshot(room.mae),
-    kohaku: kohakuSnapshot(room.kohaku),
-    maruimo: maruimoSnapshot(room.maruimo),
-    friends: friendSnapshots(room.friends),
+    companions: companionSnapshots(room),
     orbBots: orbBotSnapshots(room),
     mapPins: activeMapPins(room, now),
     barters: barterSnapshots(room),
@@ -231,6 +221,7 @@ export function snapshot(
         carryOfferUntil,
         mountId,
         boatId,
+        mascot,
         adventure,
         gulf,
       }) => ({
@@ -285,6 +276,7 @@ export function snapshot(
         carryOfferUntil,
         mountId,
         boatId,
+        mascot: mascot ?? null,
         adventure: JSON.parse(JSON.stringify(adventure ?? { regions: {} })),
         gulf: gulf ? structuredClone(gulf) : undefined,
       }),

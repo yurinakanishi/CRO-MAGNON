@@ -27,25 +27,9 @@ import { cancelBarter } from '../shared/barter.mjs';
 import { carrying, handleCarryAction } from '../shared/carrying.mjs';
 import { toggleCaveFire } from '../shared/cave-fire.mjs';
 import { toggleCaveTorch } from '../shared/cave-light.mjs';
-import { setMascotSelection } from '../shared/mascot-selection.mjs';
-import { handleRimoNekoAction, returnRimoNeko, cancelRimoNekoPet } from '../shared/rimo-neko.mjs';
-import { handleMaeAction, cancelMaePet } from '../shared/mae.mjs';
-import { handleKohakuAction, cancelKohakuPet } from '../shared/kohaku.mjs';
-import { handleMaruimoAction, cancelMaruimoPet } from '../shared/maruimo-mascot.mjs';
-import {
-  handleFriendAction,
-  cancelFriendPetsBy,
-  dismissFriendsOf,
-  pettingFriend,
-} from '../shared/friend-mascots.mjs';
-import { handleCompanion524Action, cancelCompanion524Pet } from '../shared/companion-524.mjs';
+import { cancelMascotPets, chooseMascot, petMascot } from '../shared/mascot-selection.mjs';
 import { stopActor } from '../shared/combat.mjs';
-import {
-  handleOrbBotAction,
-  pettingOrbBot,
-  releaseHeldOrbBot,
-  syncOrbBots,
-} from '../shared/orb-bots.mjs';
+import { handleOrbBotAction, releaseHeldOrbBot } from '../shared/orb-bots.mjs';
 const distance = (a, b) => Math.hypot(a.x - b.x, a.z - b.z);
 export function createActionHandler({
   notice: sendNotice,
@@ -74,8 +58,12 @@ export function createActionHandler({
       reply(player, { type: 'inventoryCraftResult', recipeId: message.targetId, ...result });
       return;
     }
+    // One companion per person: choosing another one, or none, sends the current one
+    // off with a goodbye. Others may choose the same mascot at the same time.
     if (action === 'selectMascot' || action === 'deselectMascot') {
-      if (setMascotSelection(room, player, message.targetId, action === 'selectMascot', now))
+      if (
+        chooseMascot(room, player, action === 'selectMascot' ? (message.targetId ?? '') : null, now)
+      )
         broadcast(room, snapshot(room));
       return;
     }
@@ -83,150 +71,20 @@ export function createActionHandler({
       if (toggleCaveTorch(player)) broadcast(room, snapshot(room));
       return;
     }
-    if (action === 'travelAlone') {
-      if (room.kohaku?.petPlayerId === player.id) cancelKohakuPet(room.kohaku);
-      if (room.maruimo?.petPlayerId === player.id) cancelMaruimoPet(room.maruimo);
-      handleKohakuAction(room, player, 'dismissKohaku', now);
-      handleMaruimoAction(room, player, 'dismissMaruimo', now);
-      dismissFriendsOf(room, player.id);
-      if (room.mae?.petPlayerId === player.id) cancelMaePet(room.mae);
-      handleMaeAction(room, player, 'dismissMae', now);
-      handleOrbBotAction(room, player, 'dismissBots', null, now);
-      handleCompanion524Action(room, player, 'dismiss524', now);
-      if (room.rimoNeko?.petPlayerId === player.id) returnRimoNeko(room.rimoNeko);
-      else handleRimoNekoAction(room, player, 'dismissRimo', now);
-      syncOrbBots(room, now);
-      broadcast(room, snapshot(room));
-      return;
-    }
-    if (
-      [
-        'throwBot',
-        'recallBots',
-        'cancelBotThrows',
-        'petBot',
-        'petBots',
-        'dismissBot',
-        'dismissBots',
-      ].includes(action)
-    ) {
-      if (action === 'recallBots') {
-        if (room.kohaku?.petPlayerId === player.id) cancelKohakuPet(room.kohaku);
-        if (room.maruimo?.petPlayerId === player.id) cancelMaruimoPet(room.maruimo);
-        cancelFriendPetsBy(room, player.id);
-        if (room.mae?.petPlayerId === player.id) cancelMaePet(room.mae);
-        if (room.rimoNeko?.petPlayerId === player.id) cancelRimoNekoPet(room.rimoNeko);
-        if (room.companion524?.petPlayerId === player.id) cancelCompanion524Pet(room.companion524);
-      }
-      if (handleOrbBotAction(room, player, action, message.targetId, now)) {
-        if (action === 'petBot' || action === 'petBots') stopActor(player);
+    if (['throwBot', 'recallBots', 'cancelBotThrows'].includes(action)) {
+      // Calling one's companion ends one's own stroke of any companion.
+      if (action === 'recallBots') cancelMascotPets(room, player.id, now);
+      if (handleOrbBotAction(room, player, action, message.targetId, now))
         broadcast(room, snapshot(room));
-      }
       return;
     }
     // A held companion never occupies the hand during another action.
     if (!['cancelCook', 'cancelFishing', 'cancelCoastal'].includes(action))
       releaseHeldOrbBot(room, player, now);
-    if (action === 'petFriend' || action === 'dismissFriend') {
-      if (
-        action === 'petFriend' &&
-        (room.kohaku?.petPlayerId === player.id ||
-          room.maruimo?.petPlayerId === player.id ||
-          room.mae?.petPlayerId === player.id ||
-          room.companion524?.petPlayerId === player.id ||
-          room.rimoNeko?.petPlayerId === player.id ||
-          room.friends?.some((f) => f.petPlayerId === player.id && f.key !== message.targetId) ||
-          pettingOrbBot(room.orbBots, player.id))
-      )
-        return;
-      if (handleFriendAction(room, player, action, message.targetId, now)) {
-        if (action === 'petFriend') stopActor(player);
-        broadcast(room, snapshot(room));
-      }
-      return;
-    }
-    if (action === 'petMaruimo' || action === 'dismissMaruimo') {
-      if (
-        action === 'petMaruimo' &&
-        (room.kohaku?.petPlayerId === player.id ||
-          room.mae?.petPlayerId === player.id ||
-          room.companion524?.petPlayerId === player.id ||
-          room.rimoNeko?.petPlayerId === player.id ||
-          pettingFriend(room.friends, player.id) ||
-          pettingOrbBot(room.orbBots, player.id))
-      )
-        return;
-      if (handleMaruimoAction(room, player, action, now)) {
-        if (action === 'petMaruimo') stopActor(player);
-        broadcast(room, snapshot(room));
-      }
-      return;
-    }
-    if (action === 'petKohaku' || action === 'dismissKohaku') {
-      if (
-        action === 'petKohaku' &&
-        (room.maruimo?.petPlayerId === player.id ||
-          room.mae?.petPlayerId === player.id ||
-          room.companion524?.petPlayerId === player.id ||
-          room.rimoNeko?.petPlayerId === player.id ||
-          pettingFriend(room.friends, player.id) ||
-          pettingOrbBot(room.orbBots, player.id))
-      )
-        return;
-      if (handleKohakuAction(room, player, action, now)) {
-        if (action === 'petKohaku') stopActor(player);
-        broadcast(room, snapshot(room));
-      }
-      return;
-    }
-    if (action === 'petMae' || action === 'dismissMae') {
-      if (
-        action === 'petMae' &&
-        (room.kohaku?.petPlayerId === player.id ||
-          room.maruimo?.petPlayerId === player.id ||
-          room.companion524?.petPlayerId === player.id ||
-          room.rimoNeko?.petPlayerId === player.id ||
-          pettingFriend(room.friends, player.id) ||
-          pettingOrbBot(room.orbBots, player.id))
-      )
-        return;
-      if (handleMaeAction(room, player, action, now)) {
-        if (action === 'petMae') stopActor(player);
-        broadcast(room, snapshot(room));
-      }
-      return;
-    }
-    if (action === 'petRimo' || action === 'dismissRimo') {
-      if (
-        action === 'petRimo' &&
-        (room.companion524?.petPlayerId === player.id ||
-          room.mae?.petPlayerId === player.id ||
-          room.kohaku?.petPlayerId === player.id ||
-          room.maruimo?.petPlayerId === player.id ||
-          pettingFriend(room.friends, player.id) ||
-          pettingOrbBot(room.orbBots, player.id))
-      )
-        return;
-      if (handleRimoNekoAction(room, player, action, now)) {
-        if (action === 'petRimo') stopActor(player);
-        broadcast(room, snapshot(room));
-      }
-      return;
-    }
-    if (action === 'pet524' || action === 'dismiss524') {
-      if (
-        action === 'pet524' &&
-        (room.rimoNeko?.petPlayerId === player.id ||
-          room.mae?.petPlayerId === player.id ||
-          room.kohaku?.petPlayerId === player.id ||
-          room.maruimo?.petPlayerId === player.id ||
-          pettingFriend(room.friends, player.id) ||
-          pettingOrbBot(room.orbBots, player.id))
-      )
-        return;
-      if (handleCompanion524Action(room, player, action, now)) {
-        if (action === 'pet524') stopActor(player);
-        syncOrbBots(room, now);
+    // Anyone may pet any companion; it is happy, and stays with its own person.
+    if (action === 'petMascot') {
+      if (petMascot(room, player, message.targetId, now)) {
+        stopActor(player);
         broadcast(room, snapshot(room));
       }
       return;

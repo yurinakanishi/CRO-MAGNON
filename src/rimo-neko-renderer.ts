@@ -11,6 +11,7 @@ import {
   type OrbBotSnapshot,
 } from '../shared/orb-bots.mjs';
 import { applyBotFlightTurn } from './bot-flight-pose.js';
+import { farewellAge, farewellScale } from './companion-farewell.js';
 import type { WorldRenderer } from './world3d.js';
 
 /** Grounded quadruped. The delivered GLB owns all body/ear/tail/jaw motion. */
@@ -31,22 +32,28 @@ export class RimoNekoRenderer {
   private renderedSpeed = 0;
   private wasFlying = false;
 
+  get state() {
+    return this.world.state.companions?.find((c) => c.id === this.id);
+  }
+
   get squadBot() {
-    return this.world.state.orbBots?.find(
-      (b) => b.kind === 'rimo-neko' && b.ownerId === this.world.state.rimoNeko?.squadPlayerId,
-    );
+    return this.world.state.orbBots?.find((b) => b.companionId === this.id);
   }
 
   get inHand() {
     return this.squadBot?.mode === 'windup';
   }
 
-  constructor(private world: WorldRenderer) {
+  /** One player's own りもねこ: every player who chooses the cat has a separate body. */
+  constructor(
+    private world: WorldRenderer,
+    readonly id: string,
+  ) {
     this.root.name = 'Rimo-neko ground companion';
     this.actor = world.worldAssets.createAnimal(RIMO_NEKO.modelKey);
     this.contactBone = this.actor.root.getObjectByName('PetContact')!;
     if (!this.contactBone) throw new Error('Rimo-neko is missing the verified head contact socket');
-    this.root.userData.animalId = RIMO_NEKO.id;
+    this.root.userData.animalId = id;
     this.slope.add(this.actor.root);
     this.root.add(this.slope);
     world.scene.add(this.root);
@@ -90,6 +97,7 @@ export class RimoNekoRenderer {
       facing = owner.model.rotation.y;
     }
     const flight = bot.mode === 'airborne' ? botFlightPosition(bot, now) : null;
+    this.root.scale.setScalar(1);
     this.slope.rotation.set(0, 0, 0);
     this.slope.scale.setScalar(1);
     if (flight) {
@@ -122,7 +130,7 @@ export class RimoNekoRenderer {
   }
 
   update(dt: number) {
-    const c = this.world.state.rimoNeko;
+    const c = this.state;
     if (!c) {
       this.root.visible = false;
       this.label.active = this.hissLabel.active = false;
@@ -167,7 +175,7 @@ export class RimoNekoRenderer {
     const x = this.root.position.x,
       z = this.root.position.z,
       yaw = this.root.rotation.y;
-    this.floor = bot ? botGroundHeight(x, z) : walkHeight(x, z);
+    this.floor = botGroundHeight(x, z);
     this.root.position.y = this.floor + 0.002;
     const front = walkHeight(x + Math.sin(yaw) * 0.2, z + Math.cos(yaw) * 0.2);
     const back = walkHeight(x - Math.sin(yaw) * 0.2, z - Math.cos(yaw) * 0.2);
@@ -175,12 +183,18 @@ export class RimoNekoRenderer {
     const right = walkHeight(x + Math.cos(yaw) * 0.12, z - Math.sin(yaw) * 0.12);
     const left = walkHeight(x - Math.cos(yaw) * 0.12, z + Math.sin(yaw) * 0.12);
     this.slope.rotation.z = THREE.MathUtils.clamp(Math.atan2(right - left, 0.24), -0.3, 0.3);
+    const leaving = farewellAge(c.leavingAt, now);
+    this.root.scale.setScalar(farewellScale(leaving));
     const distance = this.root.position.distanceTo(this.world.camera.position);
-    this.root.visible = distance < 85 && bot?.mode !== 'stowed';
+    this.root.visible = distance < 85 && c.squadMode !== 'stowed' && this.root.scale.x > 0.001;
     const hitAge = c.hitSequence ? now - c.hitAt : Infinity;
     const petAge = c.petPlayerId && c.petContactAt > 0 ? now - c.petContactAt : -1;
     this.happyAge = -1;
-    if (hitAge >= 0 && hitAge < RIMO_NEKO.hitMs) {
+    if (leaving >= 0) {
+      // The goodbye is the cat's own happy hop, then it is gone.
+      this.actor.sampleOnce('Happy', leaving / 1000);
+      this.reaction = 'leaving';
+    } else if (hitAge >= 0 && hitAge < RIMO_NEKO.hitMs) {
       this.actor.sampleOnce('Hit', hitAge / 1000);
       this.reaction = 'hit';
     } else if (hitAge >= RIMO_NEKO.hitMs && hitAge < RIMO_NEKO.hitMs + RIMO_NEKO.hissMs) {
@@ -241,7 +255,11 @@ export class RimoNekoRenderer {
     const bot = this.squadBot;
     const owner = bot ? this.world.players.get(bot.ownerId) : null;
     return {
-      ownerId: bot?.ownerId ?? null,
+      id: this.id,
+      key: 'rimo-neko',
+      ownerId: this.state?.ownerId ?? null,
+      leaving: !!this.state?.leavingAt,
+      squadOwner: bot?.ownerId ?? null,
       mode: bot?.mode ?? null,
       pitch: this.root.rotation.x,
       handError:

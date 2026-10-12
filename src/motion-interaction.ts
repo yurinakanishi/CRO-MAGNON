@@ -2,7 +2,7 @@ import type { MotionIntent, Offset } from './motion-input.js';
 
 export { interactionTarget as motionTarget } from './interaction-target.js';
 export type {
-  PreferredPet as MotionPet,
+  InteractionTarget as MotionPet,
   InteractionTarget as MotionTarget,
 } from './interaction-target.js';
 interface MovementSample {

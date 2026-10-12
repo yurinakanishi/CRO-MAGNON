@@ -1,30 +1,12 @@
 import {
-  createRimoNeko,
-  updateRimoNeko,
-  restoreRimoNeko,
-  saveRimoNeko,
-  cancelRimoNekoPet,
-} from '../shared/rimo-neko.mjs';
-import { createMae, updateMae, restoreMae, cancelMaePet } from '../shared/mae.mjs';
-import { createKohaku, updateKohaku, restoreKohaku, cancelKohakuPet } from '../shared/kohaku.mjs';
-import {
-  createMaruimo,
-  updateMaruimo,
-  restoreMaruimo,
-  cancelMaruimoPet,
-} from '../shared/maruimo-mascot.mjs';
-import {
-  createFriendMascots,
-  updateFriendMascots,
-  restoreFriendMascots,
-  cancelFriendPetsBy,
-} from '../shared/friend-mascots.mjs';
-import {
-  updateOrbBots,
-  saveOrbBots,
-  restoreOrbBots,
-  cancelPlayerBotPet,
-} from '../shared/orb-bots.mjs';
+  MASCOT_KEYS,
+  cancelMascotPets,
+  formerMascotBonds,
+  mascotSelectable,
+  syncMascots,
+  updateMascots,
+} from '../shared/mascot-selection.mjs';
+import { BOT_KINDS } from '../shared/orb-bots.mjs';
 import { caveInteriorWeight } from '../shared/cave-light.mjs';
 import { updateFishing, cancelFishing } from '../shared/fishing.mjs';
 import { DEFAULT_RULES, EXHIBITION_RULES, clientRules, roomRules } from '../shared/room-rules.mjs';
@@ -66,13 +48,7 @@ import {
 } from '../shared/content-visibility.mjs';
 import { CollisionWorld, overlap } from '../shared/collision.mjs';
 import { attackProfile } from '../shared/combat-profiles.mjs';
-import {
-  createCompanion524,
-  updateCompanion524,
-  restoreCompanion524,
-  saveCompanion524,
-  cancelCompanion524Pet,
-} from '../shared/companion-524.mjs';
+import { COMPANION_524 } from '../shared/companion-524.mjs';
 import { handleBarterCommand, cancelBarter, updateBarters } from '../shared/barter.mjs';
 import { updateSuppers } from '../shared/supper.mjs';
 import { updateForaging } from '../shared/foraging.mjs';
@@ -143,8 +119,16 @@ export function createGameCore({
   const characters = visibleCharacters(visibility);
   const mascotEnabled = (key: string) =>
     mascotModels.includes(key) &&
-    (key !== 'howkey-scientist' || !visibility.hiddenCharacters.includes('howkey'));
-  const enabledMascots = mascotModels.filter(mascotEnabled);
+    (key !== 'howkey-scientist' || !visibility.hiddenCharacters.includes('howkey')) &&
+    (key !== 'mae' || !visibility.hideMae);
+  // Dots are always available; the others while their models are released and visible.
+  const mascotKeys = Object.freeze(
+    MASCOT_KEYS.filter(
+      (key) =>
+        BOT_KINDS.some((kind) => kind === key) ||
+        mascotEnabled(key === '524' ? COMPANION_524.modelKey : key),
+    ),
+  );
   const fallback = characters.find((model) => model.species === 'cro');
   if (!fallback) throw new Error('The default character must remain available');
   function proposedAppearance(requested) {
@@ -253,12 +237,10 @@ export function createGameCore({
         room.collision.obstacles.filter((o) => o.resourceId).map((o) => [o.resourceId, o]),
       );
       room.animals = createAnimals(room.collision);
-      room.companion524 = createCompanion524(room.collision);
-      room.rimoNeko = createRimoNeko(room.collision);
-      if (!visibility.hideMae && mascotEnabled('mae')) room.mae = createMae(room.collision);
-      if (mascotEnabled('kohaku')) room.kohaku = createKohaku(room.collision);
-      if (mascotEnabled('maruimo-mascot')) room.maruimo = createMaruimo(room.collision);
-      room.friends = createFriendMascots(room.collision, enabledMascots);
+      // No companion waits at camp: each arrives beside the person who chose it.
+      room.mascotKeys = mascotKeys;
+      room.companions = [];
+      room.orbBots = [];
       room.enemies = createEnemies(room.collision, room.animals);
       createResidents(room, [], runtime.now());
       rooms.set(roomName, room);
@@ -341,6 +323,8 @@ export function createGameCore({
         socket,
         sessionToken: resumable ? runtime.token() : null,
         difficulty: normalizeDifficulty(params.get('difficulty')),
+        // A newcomer travels alone until choosing a companion in the menu.
+        mascot: null,
       };
     // Only an explicit confirmed title start picks a new appearance and camp
     // spawn. A dropped connection continues with the saved player and position.
@@ -425,6 +409,8 @@ export function createGameCore({
     Object.assign(player, spawn);
     if (startAtCamp && site !== CAMP_SPAWN) player.facing = spawnFacing(player, site);
     room.players.set(player.id, player);
+    // The chosen companion arrives beside them, as it does on every return.
+    syncMascots(room, now);
     send(socket, {
       type: 'welcome',
       persistentSession: persistentSessions,
@@ -437,6 +423,7 @@ export function createGameCore({
       resumed,
       session: player.sessionToken,
       rules: clientRules(room),
+      mascots: room.mascotKeys,
       profile: {
         name: player.name,
         species: player.species,
@@ -529,16 +516,8 @@ export function createGameCore({
       if (message.type === 'move' && Number.isFinite(message.dx) && Number.isFinite(message.dz)) {
         // An explicit steering input can turn in place; it is still an intentional
         // departure from petting. Cancellation keeps each companion's owner.
-        if (message.facing !== undefined && controlled === player) {
-          if (room.rimoNeko?.petPlayerId === player.id) cancelRimoNekoPet(room.rimoNeko);
-          if (room.mae?.petPlayerId === player.id) cancelMaePet(room.mae);
-          if (room.kohaku?.petPlayerId === player.id) cancelKohakuPet(room.kohaku);
-          if (room.maruimo?.petPlayerId === player.id) cancelMaruimoPet(room.maruimo);
-          cancelFriendPetsBy(room, player.id);
-          if (room.companion524?.petPlayerId === player.id)
-            cancelCompanion524Pet(room.companion524);
-          cancelPlayerBotPet(room, player.id, now);
-        }
+        if (message.facing !== undefined && controlled === player)
+          cancelMascotPets(room, player.id, now);
         if (Math.hypot(message.dx, message.dz) > 0.01) {
           cancelBarter(room, player.id, now, '移動を始めたので、交換を中止しました。');
           cancelFishing(player);
@@ -572,9 +551,6 @@ export function createGameCore({
           message.action === 'throwBot' ||
           message.action === 'recallBots' ||
           message.action === 'cancelBotThrows' ||
-          message.action === 'dismissBot' ||
-          message.action === 'dismissBots' ||
-          message.action === 'travelAlone' ||
           message.action === 'selectMascot' ||
           message.action === 'deselectMascot' ||
           message.action === 'rift' ||
@@ -591,9 +567,6 @@ export function createGameCore({
             'cancelCook',
             'cancelBotThrows',
             'recallBots',
-            'dismissBot',
-            'dismissBots',
-            'travelAlone',
             'selectMascot',
             'deselectMascot',
             'wave',
@@ -607,9 +580,6 @@ export function createGameCore({
             'cancelBotThrows',
             'throwBot',
             'recallBots',
-            'dismissBot',
-            'dismissBots',
-            'travelAlone',
             'selectMascot',
             'deselectMascot',
             'jump',
@@ -653,6 +623,8 @@ export function createGameCore({
         (projectile) => projectile.ownerId !== player.id,
       );
       room.players.delete(player.id);
+      // A companion leaves with its person; the choice stays with their save.
+      syncMascots(room, runtime.now());
       room.mapPins = activeMapPins(room, runtime.now());
       if (!room.players.size)
         for (const resident of room.residents) {
@@ -689,13 +661,7 @@ export function createGameCore({
       for (const [token, entry] of room.sessions)
         if (now >= entry.expiresAt) room.sessions.delete(token);
       if (!room.players.size) {
-        updateCompanion524(room, dt, now);
-        updateRimoNeko(room, dt, now);
-        updateMae(room, dt, now);
-        updateKohaku(room, dt, now);
-        updateMaruimo(room, dt, now);
-        updateFriendMascots(room, dt, now);
-        updateOrbBots(room, dt, now);
+        updateMascots(room, dt, now);
         updateBarters(room, now);
         for (const resident of room.residents) {
           resident.forageWork = null;
@@ -748,13 +714,7 @@ export function createGameCore({
       const wateringChanged = updateWatering(room, dt, now);
       const supperChanged = updateSuppers(room, now);
       const huntingChanged = updateHunting(room, now, notice);
-      updateCompanion524(room, dt, now);
-      updateRimoNeko(room, dt, now);
-      updateMae(room, dt, now);
-      updateKohaku(room, dt, now);
-      updateMaruimo(room, dt, now);
-      updateFriendMascots(room, dt, now);
-      updateOrbBots(room, dt, now);
+      updateMascots(room, dt, now);
       updateAnimals(room, dt, now);
       const enemiesChanged = updateEnemies(room, dt, now, notice);
       updateCarrying(room, now);
@@ -844,19 +804,8 @@ export function createGameCore({
               camp: room.camp,
               resources: room.resources,
               animals: room.animals,
-              companion524: saveCompanion524(
-                room.companion524,
-                room.orbBots?.find((bot) => bot.kind === '524'),
-              ),
-              rimoNeko: saveRimoNeko(
-                room.rimoNeko,
-                room.orbBots?.find((bot) => bot.kind === 'rimo-neko'),
-              ),
-              mae: room.mae ?? room.hiddenMae,
-              kohaku: room.kohaku ?? room.hiddenKohaku,
-              maruimo: room.maruimo ?? room.hiddenMaruimo,
-              friends: [...(room.friends ?? []), ...(room.hiddenFriends ?? [])],
-              orbBots: saveOrbBots(room),
+              // Companions are not world bodies to save: each player's choice is in
+              // their session, and the companion arrives beside them on return.
               enemies: room.enemies,
               boats: room.boats,
               gulf: room.gulf,
@@ -992,9 +941,14 @@ export function createGameCore({
               Object.assign(actor, post);
           }
         }
+      // Saves from before companions belonged to one person: each owner keeps one.
+      const formerBonds = formerMascotBonds(record);
       for (const entry of record.sessions)
         if (entry.expiresAt > runtime.now()) {
           const player = entry.player;
+          if (player.mascot === undefined)
+            player.mascot =
+              formerBonds.get(player.id)?.find((key) => mascotSelectable(room, key)) ?? null;
           // Restored profiles must belong to this build's available catalog too.
           applyAppearance(player, proposedAppearance(player.unavailableCharacter ?? player));
           player.radius = characterModel(player).radius ?? WORLD.playerRadius;
@@ -1033,19 +987,6 @@ export function createGameCore({
         }
       room.households = createHouseholds(record.households, runtime.now());
       createResidents(room, record.residents, runtime.now());
-      restoreCompanion524(room, record.companion524);
-      restoreRimoNeko(room, record.rimoNeko);
-      if (visibility.hideMae || !mascotEnabled('mae')) room.hiddenMae = record.mae;
-      else restoreMae(room, record.mae);
-      if (mascotEnabled('kohaku')) restoreKohaku(room, record.kohaku);
-      else room.hiddenKohaku = record.kohaku;
-      if (mascotEnabled('maruimo-mascot')) restoreMaruimo(room, record.maruimo);
-      else room.hiddenMaruimo = record.maruimo;
-      restoreFriendMascots(room, record.friends, enabledMascots);
-      room.hiddenFriends = Array.isArray(record.friends)
-        ? record.friends.filter((friend) => !mascotEnabled(friend.key))
-        : [];
-      restoreOrbBots(room, record.orbBots, runtime.now());
     }
   }
 

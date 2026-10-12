@@ -13,8 +13,6 @@ export type BotKind =
   | '524'
   | 'rimo-neko';
 export type BotMode =
-  | 'home'
-  | 'goingHome'
   | 'following'
   | 'queued'
   | 'windup'
@@ -23,12 +21,15 @@ export type BotMode =
   | 'waiting'
   | 'returning'
   | 'catching'
-  | 'stowed';
+  | 'stowed'
+  | 'leaving';
 export interface OrbBotSnapshot extends Point {
   id: string;
-  /** Empty until invited by petting or a whistle; each kind is shared by the room. */
+  /** The player this companion travels with; every dot belongs to exactly one person. */
   ownerId: string;
   kind: BotKind;
+  /** The 524 or りもねこ body this squad entry throws and recalls; absent for a dot. */
+  companionId?: string;
   mode: BotMode;
   y: number;
   facing: number;
@@ -42,15 +43,15 @@ export interface OrbBotSnapshot extends Point {
   recall: boolean;
   /** Shared gesture time, independent of the companion's return/landing phase. */
   recallAt?: number;
-  /** A recruited companion can be occupied by petting or an impact reaction. */
+  /** A companion can be occupied by petting or an impact reaction. */
   busy?: boolean;
+  /** Whoever is stroking this dot now. Petting never changes the owner. */
   petPlayerId?: string | null;
   petAt?: number;
   petContactAt?: number;
   petFacing?: number;
-  /** Every participant shares one gesture, contact time and completion. */
-  petGroupLeaderId?: string;
-  returnHome?: boolean;
+  /** Server time the goodbye began, 0 while travelling (mode 'leaving'). */
+  leavingAt: number;
 }
 export interface OrbBot extends OrbBotSnapshot {
   path: Point[];
@@ -58,7 +59,6 @@ export interface OrbBot extends OrbBotSnapshot {
   lastOwner: Point;
   warpSequence: number;
   stuckAt: number;
-  home?: Point;
   petOrigin?: Point | null;
   petGoal?: Point | null;
   petCharacter?: string;

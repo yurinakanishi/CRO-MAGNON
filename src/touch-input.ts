@@ -61,8 +61,8 @@ export function touchActions(context: CueContext): { action: CueAction; label: s
   add('ride', context.ride);
   add('board', context.board);
   if (context.inspect && !context.automaticCamera) add('inspect', `${context.inspect}を見る`);
-  if (context.recall) add('recall', 'みんなを呼ぶ');
-  if (context.throw) add('throw', '1匹投げる');
+  if (context.recall) add('recall', '呼び戻す');
+  if (context.throw) add('throw', '投げる');
   add('torch', context.torch);
   return actions;
 }

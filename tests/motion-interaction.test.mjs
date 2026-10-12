@@ -1,13 +1,14 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { MotionPetHold, motionTarget } from '../dist/src/motion-interaction.js';
+import { mascotName } from '../dist/src/mascot-menu.js';
 import { CollisionWorld } from '../dist/shared/collision.mjs';
-import { createRimoNeko, handleRimoNekoAction, updateRimoNeko } from '../dist/shared/rimo-neko.mjs';
 import {
-  createCompanion524,
-  handleCompanion524Action,
-  updateCompanion524,
-} from '../dist/shared/companion-524.mjs';
+  activeMascot,
+  chooseMascot,
+  petMascot,
+  updateMascots,
+} from '../dist/shared/mascot-selection.mjs';
 
 const intent = (time, forward = 0.1, turn = 0.1, sessionId = 1) => ({
   active: true,
@@ -20,48 +21,65 @@ const intent = (time, forward = 0.1, turn = 0.1, sessionId = 1) => ({
   sampledAtMainMs: time,
 });
 const sample = (push = 0.16, x = 0.08) => ({ push, offset: { x, y: 0 }, roll: 0 });
+/** The pet prompt the client offers for a companion body: one action, the body's id. */
+const petTarget = (key, id) => ({
+  action: 'petMascot',
+  targetId: id,
+  label: `${mascotName(key)}を撫でる`,
+});
 test('one target supplies both the label and action, with petting before nearby resources', () => {
   const resource = { label: '木材を採集する', action: 'gather', targetId: 'wood' };
-  assert.deepEqual(motionTarget('rimo', resource), {
-    action: 'petRimo',
+  assert.deepEqual(motionTarget(petTarget('rimo-neko', 'rimo-neko@a#1'), resource), {
+    action: 'petMascot',
+    targetId: 'rimo-neko@a#1',
     label: 'りもねこを撫でる',
   });
-  assert.deepEqual(motionTarget('524', resource), { action: 'pet524', label: '524を撫でる' });
+  assert.deepEqual(motionTarget(petTarget('524', '524@b#2'), resource), {
+    action: 'petMascot',
+    targetId: '524@b#2',
+    label: '524を撫でる',
+  });
   assert.equal(motionTarget(null, resource), resource);
   assert.equal(motionTarget(null, null), null);
 });
-for (const kind of ['rimo', '524'])
-  test(`${kind}: waving then small movement jitter completes actual domain petting`, () => {
+const person = (id, x, z) => ({
+  id,
+  x,
+  z,
+  facing: 0,
+  radius: 0.32,
+  species: 'cro',
+  gender: 'female',
+  speed: 0,
+  energy: 100,
+  inventory: {},
+  attackAt: 0,
+  attackSequence: 0,
+  jumpAt: 0,
+  jumpSequence: 0,
+});
+for (const key of ['rimo-neko', '524'])
+  test(`${key}: waving then small movement jitter completes actual domain petting`, () => {
     const collision = new CollisionWorld([], { coast: false, river: false, walkSurfaces: [] });
-    const c = kind === 'rimo' ? createRimoNeko(collision) : createCompanion524(collision);
-    const p = {
-      id: 'p',
-      x: c.x,
-      z: c.z - 2,
-      facing: 0,
-      radius: 0.32,
-      species: 'cro',
-      gender: 'female',
-      speed: 0,
-      energy: 100,
-      inventory: {},
-      attackAt: 0,
-      attackSequence: 0,
-      jumpAt: 0,
-      jumpSequence: 0,
-    };
+    // Someone else's companion: petting it is a reaction and never changes whose it is.
+    const owner = person('owner', 0, 0);
     const room = {
       collision,
-      players: new Map([[p.id, p]]),
+      players: new Map([[owner.id, owner]]),
       animals: [],
       enemies: [],
-      ...(kind === 'rimo' ? { rimoNeko: c } : { companion524: c }),
+      orbBots: [],
+      companions: [],
     };
-    const start = kind === 'rimo' ? handleRimoNekoAction : handleCompanion524Action;
-    const update = kind === 'rimo' ? updateRimoNeko : updateCompanion524;
+    assert.equal(chooseMascot(room, owner, key, 10000), true);
+    const c = activeMascot(room, owner.id);
+    assert.equal(c.key, key);
+    const p = person('p', c.x, c.z - 2);
+    room.players.set(p.id, p);
     const hold = new MotionPetHold();
     hold.begin(1, 10000, sample());
-    assert.equal(start(room, p, kind === 'rimo' ? 'petRimo' : 'pet524', 10000), true);
+    assert.equal(petMascot(room, p, c.id, 10000), true);
+    let touched = false;
     for (let time = 10050; time < 15000; time += 50) {
       const i = hold.filter(
         intent(time),
@@ -73,9 +91,12 @@ for (const kind of ['rimo', '524'])
       assert.equal(i.turn, 0);
       p.moving = Math.abs(i.forward) > 0.01;
       p.z += i.forward * 0.15;
-      update(room, 0.05, time);
+      updateMascots(room, 0.05, time);
+      touched ||= c.petPlayerId === p.id && c.petContactAt > 0;
     }
-    assert.equal(c.followPlayerId, p.id);
+    assert.ok(touched, 'the stroke reached the hand');
+    assert.equal(c.ownerId, owner.id, 'petting never changes the owner');
+    assert.equal(activeMascot(room, p.id), undefined);
     assert.equal(c.petPlayerId, null);
   });
 test('a deliberate new push or lateral gesture cancels assistance, but repeated render frames cannot fake the dwell', () => {

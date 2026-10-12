@@ -9,6 +9,9 @@ const root = path.resolve(process.argv[2] || '.');
 const out = path.resolve(process.argv[3] || `output/playwright/motion-controls-${Date.now()}`);
 await mkdir(out, { recursive: true });
 const { createGameServer } = await import(pathToFileURL(path.join(root, 'dist/server.mjs')));
+const { chooseMascot } = await import(
+  pathToFileURL(path.join(root, 'dist/shared/mascot-selection.mjs'))
+);
 const { createExhibitionClient } = await import(
   pathToFileURL(path.join(root, 'dist/infrastructure/node/exhibition-client.mjs'))
 );
@@ -585,27 +588,21 @@ try {
   pass('interact uses the existing visible nearby resource and server gather checks');
   await gesture(p, {}, 0);
   Object.assign(me, { x: 40, z: 56.8, dx: 0, dz: 0, target: null, path: [] });
-  Object.assign(room().rimoNeko, {
-    x: 40,
-    z: 55,
-    home: { x: 40, z: 55 },
-    mode: 'idle',
-    facing: 0,
-    followPlayerId: null,
-    petPlayerId: null,
-    petAt: 0,
-    petContactAt: 0,
-    path: [],
-    velocityX: 0,
-    velocityZ: 0,
-  });
-  await p.locator('#pet-rimo-button').waitFor({ state: 'visible' });
+  // The player's own cat arrives beside them; there is no camp cat to borrow any more.
+  chooseMascot(room(), me, 'rimo-neko', Date.now());
+  const cat = room().companions.find((c) => c.ownerId === me.id && c.key === 'rimo-neko');
+  assert.ok(cat && Math.hypot(cat.x - me.x, cat.z - me.z) < 2.4, 'own cat beside the player');
+  await p.waitForFunction(() =>
+    JSON.parse(document.querySelector('#world').dataset.companions ?? '[]').some(
+      (c) => c.key === 'rimo-neko' && c.visible,
+    ),
+  );
   assert.equal(await p.locator('#interaction-hint').isVisible(), false);
-  const petSequence = room().rimoNeko.petSequence;
+  const petSequence = cat.petSequence;
   await start(p);
   await wave(p);
-  assert.equal(room().rimoNeko.petSequence, petSequence + 1);
-  assert.equal(room().rimoNeko.petPlayerId, me.id);
+  assert.equal(cat.petSequence, petSequence + 1);
+  assert.equal(cat.petPlayerId, me.id);
   await p.locator('#motion-quick-stop').click();
   await stopped(p);
   pass('interact reuses preferred companion selection and begins existing Rimo petting');

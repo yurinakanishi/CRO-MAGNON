@@ -1,5 +1,6 @@
 import * as THREE from 'three';
-import { COMPANION_524, type Companion524Snapshot } from '../shared/companion-524.mjs';
+import { COMPANION_524 } from '../shared/companion-524.mjs';
+import type { CompanionSnapshot } from '../shared/companion-types.mjs';
 import { walkHeight } from '../shared/terrain.mjs';
 import {
   botFlightPosition,
@@ -11,16 +12,20 @@ import { updateActorPerformance } from './performance-lod.js';
 import { VisibleActorGroup } from './visible-actor-group.js';
 import { companionHeartTexture } from './companion-heart-texture.js';
 import { botFlightTurn } from './bot-flight-pose.js';
+import { farewellAge, farewellScale } from './companion-farewell.js';
 import type { WorldRenderer } from './world3d.js';
 
 /** Additive placement motion; the delivered bones and Floating_Ripple stay intact. */
-export function companion524Pose(c: Companion524Snapshot, now: number) {
+export function companion524Pose(c: CompanionSnapshot, now: number) {
   const petAge = c.petPlayerId ? now - c.petAt : -1;
   const contactAge = c.petContactAt > 0 ? now - c.petContactAt : -1;
-  const happyAge = contactAge >= 0 ? contactAge - COMPANION_524.petStrokeMs : Infinity;
+  let happyAge = contactAge >= 0 ? contactAge - COMPANION_524.petStrokeMs : Infinity;
   const hitAge = c.hitSequence > 0 ? now - c.hitAt : Infinity;
   const hit = hitAge >= 0 && hitAge < COMPANION_524.hitMs;
-  const happy = !hit && happyAge >= 0 && happyAge < COMPANION_524.happyMs;
+  // A goodbye spins once more, like a happy 524, before it is gone.
+  const leaving = farewellAge(c.leavingAt, now);
+  const happy = !hit && ((happyAge >= 0 && happyAge < COMPANION_524.happyMs) || leaving >= 0);
+  if (leaving >= 0) happyAge = Math.min(leaving, COMPANION_524.happyMs - 1);
   const hp = hit ? hitAge / COMPANION_524.hitMs : 0;
   const jp = happy ? happyAge / COMPANION_524.happyMs : 0;
   const kick = hit ? Math.sin(hp * Math.PI) * (1 - hp) : 0;
@@ -39,7 +44,7 @@ export function companion524Pose(c: Companion524Snapshot, now: number) {
   const floatPhase =
     ((now % COMPANION_524.hoverPeriodMs) / COMPANION_524.hoverPeriodMs) * Math.PI * 2;
   return {
-    reaction: hit ? 'hit' : happy ? 'happy' : 'floating',
+    reaction: hit ? 'hit' : leaving >= 0 ? 'leaving' : happy ? 'happy' : 'floating',
     height:
       COMPANION_524.hoverHeight * (1 - petBlend) +
       c.petHeight * petBlend +
@@ -52,7 +57,8 @@ export function companion524Pose(c: Companion524Snapshot, now: number) {
     roll:
       kick * 0.38 * (-c.hitDirectionX * Math.cos(c.facing) + c.hitDirectionZ * Math.sin(c.facing)) +
       (happy ? Math.sin(jp * Math.PI * 6) * Math.sin(jp * Math.PI) * 0.12 : 0),
-    happyAge: happy ? happyAge : -1,
+    happyAge: happy && leaving < 0 ? happyAge : -1,
+    scale: farewellScale(leaving),
   };
 }
 
@@ -68,21 +74,26 @@ export class Companion524Renderer {
   private height: number = COMPANION_524.hoverHeight;
   private reaction = 'floating';
 
+  get state() {
+    return this.world.state.companions?.find((c) => c.id === this.id);
+  }
   private get squadBot() {
-    return this.world.state.orbBots?.find(
-      (b) => b.kind === '524' && b.ownerId === this.world.state.companion524?.squadPlayerId,
-    );
+    return this.world.state.orbBots?.find((b) => b.companionId === this.id);
   }
   get inHand() {
     return this.squadBot?.mode === 'windup';
   }
 
-  constructor(private world: WorldRenderer) {
+  /** One player's own 524: every player who chooses 524 has a separate body. */
+  constructor(
+    private world: WorldRenderer,
+    readonly id: string,
+  ) {
     this.root.name = '524 floating companion';
     this.actor = world.worldAssets.createAnimal(COMPANION_524.modelKey, 'Floating_Ripple');
     this.actor.update(0.25);
     this.actor.root.scale.setScalar(COMPANION_524.scale);
-    this.root.userData.animalId = COMPANION_524.id;
+    this.root.userData.animalId = id;
     this.tilt.add(this.actor.root);
     this.root.add(this.tilt);
     world.scene.add(this.root);
@@ -104,7 +115,7 @@ export class Companion524Renderer {
   }
 
   update(dt: number) {
-    const c = this.world.state.companion524;
+    const c = this.state;
     if (!c) {
       this.root.visible = false;
       this.label.active = false;
@@ -115,7 +126,7 @@ export class Companion524Renderer {
     const pose = companion524Pose(c, now);
     const bot = this.squadBot;
     this.reaction = pose.reaction;
-    const ground = bot ? botGroundHeight(c.x, c.z) : walkHeight(c.x, c.z);
+    const ground = botGroundHeight(c.x, c.z);
     const blend = 1 - Math.exp(-dt * 14);
     const flying = bot && !bot.busy && ['windup', 'airborne', 'landing'].includes(bot.mode);
     if (flying) {
@@ -176,8 +187,9 @@ export class Companion524Renderer {
       this.root.rotation.y += delta * blend;
     }
     this.tilt.rotation.set(pose.pitch, pose.spin, pose.roll);
+    this.root.scale.setScalar(pose.scale);
     const distance = this.root.position.distanceTo(this.world.camera.position);
-    this.root.visible = distance < 85 && bot?.mode !== 'stowed';
+    this.root.visible = distance < 85 && c.squadMode !== 'stowed' && pose.scale > 0.001;
     if (this.root.visible) {
       // Absolute server phase also resumes correctly after culling or a late join.
       const step = this.world.actorBudget.step(
@@ -187,6 +199,7 @@ export class Companion524Renderer {
         now / 1000,
         dt,
         !!c.petPlayerId ||
+          !!c.leavingAt ||
           (!!bot && ['windup', 'airborne', 'landing', 'catching'].includes(bot.mode)),
       );
       if (step !== null) this.actor.mixer.setTime((now / 1000) % 4);
@@ -213,6 +226,10 @@ export class Companion524Renderer {
     const bot = this.squadBot;
     const contact = bot && this.world.players.get(bot.ownerId)?.actor?.orbBotPose.contact;
     return {
+      id: this.id,
+      key: '524',
+      ownerId: this.state?.ownerId ?? null,
+      leaving: !!this.state?.leavingAt,
       squadOwner: bot?.ownerId ?? null,
       squadMode: bot?.mode ?? null,
       handError:

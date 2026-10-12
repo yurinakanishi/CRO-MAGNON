@@ -1,16 +1,17 @@
 import * as THREE from 'three';
 import { FRIEND_TIMING, type FriendMascotDefinition } from '../shared/friend-mascots.mjs';
-import type { FriendMascotSnapshot } from '../shared/friend-mascot-types.mjs';
 import { walkHeight } from '../shared/terrain.mjs';
 import { VisibleActorGroup } from './visible-actor-group.js';
 import { updateActorPerformance } from './performance-lod.js';
 import { companionHeartTexture } from './companion-heart-texture.js';
 import type { WorldRenderer } from './world3d.js';
 import { orientFlask } from './flask-pose.js';
+import { farewellAge, farewellScale } from './companion-farewell.js';
 
 /**
- * One contributor's rigged mascot: its biped gait, pet/happy/hit reactions,
- * idle wave and bow all come from the reconstructed skin's authored clips.
+ * One player's own walking mascot: its biped gait, pet/happy/hit reactions, idle
+ * wave and bow all come from the reconstructed skin's authored clips. Every player
+ * who chooses the same mascot has a separate body.
  */
 export class FriendMascotRenderer {
   readonly root = new VisibleActorGroup();
@@ -26,13 +27,13 @@ export class FriendMascotRenderer {
   private floor = 0;
   private reaction = 'idle';
   private renderedSpeed = 0;
-  /** Spread the idle gestures so the camp friends never wave in unison. */
+  /** Spread the idle gestures so companions side by side never wave in unison. */
   private readonly gestureOffset: number;
 
   constructor(
     private world: WorldRenderer,
     readonly def: FriendMascotDefinition,
-    index: number,
+    readonly id: string,
     private readonly equipment?: THREE.Object3D,
   ) {
     this.root.name = `${def.key} ground companion`;
@@ -46,11 +47,11 @@ export class FriendMascotRenderer {
       if (!grip) throw new Error(`${def.key} is missing the equipment grip`);
       grip.add(equipment);
     }
-    this.root.userData.animalId = def.key;
+    this.root.userData.animalId = id;
     this.slope.add(this.actor.root);
     this.root.add(this.slope);
     world.scene.add(this.root);
-    this.gestureOffset = 3 + index * 4.3;
+    this.gestureOffset = 3 + ([...id].reduce((sum, c) => sum + c.charCodeAt(0), 0) % 7) * 4.3;
     this.label = world.createLabel(def.name, 'companion', new THREE.Vector3());
     for (let i = 0; i < 5; i++) {
       const heart = new THREE.Sprite(
@@ -68,8 +69,8 @@ export class FriendMascotRenderer {
     }
   }
 
-  get state(): FriendMascotSnapshot | undefined {
-    return this.world.state.friends?.find((f) => f.key === this.def.key);
+  get state() {
+    return this.world.state.companions?.find((c) => c.id === this.id);
   }
 
   petTarget(out: THREE.Vector3) {
@@ -121,12 +122,21 @@ export class FriendMascotRenderer {
     const right = walkHeight(x + Math.cos(yaw) * 0.12, z - Math.sin(yaw) * 0.12);
     const left = walkHeight(x - Math.cos(yaw) * 0.12, z + Math.sin(yaw) * 0.12);
     this.slope.rotation.z = THREE.MathUtils.clamp(Math.atan2(right - left, 0.24), -0.3, 0.3);
+    const leaving = farewellAge(c.leavingAt, now);
+    this.root.scale.setScalar(farewellScale(leaving));
     const distance = this.root.position.distanceTo(this.world.camera.position);
-    this.root.visible = distance < 85;
+    this.root.visible = distance < 85 && c.squadMode !== 'stowed' && this.root.scale.x > 0.001;
     const hitAge = c.hitSequence ? now - c.hitAt : Infinity;
     const petAge = c.petPlayerId && c.petContactAt > 0 ? now - c.petContactAt : -1;
     this.happyAge = -1;
-    if (hitAge >= 0 && hitAge < FRIEND_TIMING.hitMs) {
+    if (leaving >= 0) {
+      // Goodbye: a wave, or the happy hop of a skin without one.
+      this.actor.sampleOnce(
+        this.def.gestures === false ? (this.def.reactions?.happy ?? 'Happy') : 'Wave',
+        leaving / 1000,
+      );
+      this.reaction = 'leaving';
+    } else if (hitAge >= 0 && hitAge < FRIEND_TIMING.hitMs) {
       this.actor.sampleOnce(this.def.reactions?.hit ?? 'Hit', hitAge / 1000);
       this.reaction = 'hit';
     } else if (petAge >= 0 && petAge < FRIEND_TIMING.petStrokeMs) {
@@ -144,12 +154,14 @@ export class FriendMascotRenderer {
       this.happyAge = petAge - FRIEND_TIMING.petStrokeMs;
     } else {
       const speed = this.renderedSpeed > 0.05 ? this.renderedSpeed : 0;
-      const clip = speed > 0.4 ? 'Run_Loop' : speed > 0 ? 'Walk_Loop' : 'Idle_Loop';
+      const clip =
+        speed > (this.def.runSpeed ?? 0.4) ? 'Run_Loop' : speed > 0 ? 'Walk_Loop' : 'Idle_Loop';
       const reference = this.actor.asset.locomotion?.[clip]?.metresPerSecond ?? 1;
       const gestureTime = (now / 1000 + this.gestureOffset) % 30;
-      if (speed === 0 && gestureTime < 1.8) {
+      const gestures = this.def.gestures !== false;
+      if (gestures && speed === 0 && gestureTime < 1.8) {
         this.actor.sampleOnce('Wave', gestureTime);
-      } else if (speed === 0 && gestureTime >= 12 && gestureTime < 13.6) {
+      } else if (gestures && speed === 0 && gestureTime >= 12 && gestureTime < 13.6) {
         this.actor.sampleOnce(this.def.reactions?.bow ?? 'Bow', gestureTime - 12);
       } else {
         this.actor.play(clip, speed > 0 ? speed / reference : 1);
@@ -191,7 +203,10 @@ export class FriendMascotRenderer {
 
   diagnostics() {
     return {
+      id: this.id,
       key: this.def.key,
+      ownerId: this.state?.ownerId ?? null,
+      leaving: !!this.state?.leavingAt,
       visible: this.root.visible,
       clip: this.actor.name,
       reaction: this.reaction,

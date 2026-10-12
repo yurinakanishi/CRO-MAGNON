@@ -10,24 +10,15 @@ import { enemyIsSolid } from '../shared/combat.mjs';
 import { activateMiddenObstacle } from '../shared/coastal-sites.mjs';
 import { CoastalRenderer } from './coastal-renderer.js';
 import { VillageRenderer } from './village-renderer.js';
-import { RimoNekoRenderer } from './rimo-neko-renderer.js';
-import { rimoNekoOnGround } from '../shared/rimo-neko.mjs';
-import { MaeRenderer } from './mae-renderer.js';
-import { MAE } from '../shared/mae.mjs';
-import { KohakuRenderer } from './kohaku-renderer.js';
-import { FriendMascotRenderer } from './friend-mascot-renderer.js';
+import { CompanionRenderers, companionModelKey } from './companion-renderers.js';
 import { flaskVisible, orientFlask } from './flask-pose.js';
-import { FRIEND_MASCOTS, FRIEND_TIMING, pettingFriend } from '../shared/friend-mascots.mjs';
-import { MaruimoRenderer } from './maruimo-mascot-renderer.js';
-import { KOHAKU } from '../shared/kohaku.mjs';
-import { MARUIMO } from '../shared/maruimo-mascot.mjs';
+import { FRIEND_TIMING } from '../shared/friend-mascots.mjs';
 import { OrbBotRenderer } from './orb-bot-renderer.js';
-import { ORB_BOTS, pettingOrbBot, posingOrbBot } from '../shared/orb-bots.mjs';
+import { ORB_BOTS, isCompanionBot, posingOrbBot } from '../shared/orb-bots.mjs';
+import { pettingMascot } from '../shared/mascot-selection.mjs';
 import { GroundPettingPose, groundPettingProgress } from './ground-petting-pose.js';
 import { CaveTorch } from './cave-torch.js';
 import { caveInteriorWeight, caveTorchAvailable, caveTorchLit } from '../shared/cave-light.mjs';
-import { Companion524Renderer } from './companion-524-renderer.js';
-import { COMPANION_524, companion524OnGround } from '../shared/companion-524.mjs';
 import { chooseCompanionView, companionViewDistances } from './companion-view.js';
 import { pettingProgress } from './petting-pose.js';
 import { isMesh } from './three-types.js';
@@ -65,7 +56,6 @@ import {
 import { biomeById, nearbyChunks } from '../shared/biomes.mjs';
 import { SCENERY } from '../shared/scenery-layout.mjs';
 import { CAMP_MOUNTAIN, campMountainVisualLod } from '../shared/camp-cave-layout.mjs';
-import { RIMO_NEKO } from '../shared/rimo-neko.mjs';
 import {
   STARTUP,
   criticalLandmarks,
@@ -339,12 +329,8 @@ export class WorldRenderer {
   declare gulfRenderer: GulfRenderer | undefined;
   declare coastalRenderer: CoastalRenderer | undefined;
   declare villageRenderer: VillageRenderer | undefined;
-  declare companion524Renderer: Companion524Renderer | undefined;
-  declare rimoNekoRenderer: RimoNekoRenderer | undefined;
-  declare maeRenderer: MaeRenderer | undefined;
-  declare kohakuRenderer: KohakuRenderer | undefined;
-  readonly friendRenderers = new Map<string, FriendMascotRenderer>();
-  declare maruimoRenderer: MaruimoRenderer | undefined;
+  /** Each player's own 524, りもねこ or walking friend, one renderer per body. */
+  readonly companionRenderers = new CompanionRenderers(this);
   declare orbBotRenderer: OrbBotRenderer | undefined;
   declare npcActor: any;
   declare npc: any;
@@ -924,23 +910,13 @@ export class WorldRenderer {
     const companion = (key: string, point, own = false) => {
       if (this.companionKeys?.has(key)) want(key, point, own);
     };
-    const { companion524, rimoNeko } = this.state;
-    companion(COMPANION_524.modelKey, companion524, companion524?.squadPlayerId === this.selfId);
-    companion(RIMO_NEKO.modelKey, rimoNeko, rimoNeko?.squadPlayerId === this.selfId);
-    companion(MAE.modelKey, this.state.mae);
-    companion(KOHAKU.modelKey, this.state.kohaku);
-    companion(MARUIMO.modelKey, this.state.maruimo);
-    for (const friend of this.state.friends ?? []) companion(friend.key, friend);
+    // Only companions that travel with someone exist: the player's own first, then
+    // others within actor range. 524 and りもねこ squad entries share their body's model.
+    for (const c of this.state.companions ?? [])
+      companion(companionModelKey(c.key), c, c.ownerId === this.selfId);
     for (const bot of this.state.orbBots ?? [])
-      companion(
-        bot.kind === '524'
-          ? COMPANION_524.modelKey
-          : bot.kind === 'rimo-neko'
-            ? RIMO_NEKO.modelKey
-            : `orb-bot-${bot.kind}`,
-        bot,
-        bot.ownerId === this.selfId,
-      );
+      if (!isCompanionBot(bot.kind))
+        companion(`orb-bot-${bot.kind}`, bot, bot.ownerId === this.selfId);
     this.streamDemand.update(wanted, (key, ticket) => this.requestStreamed(key, ticket));
     // Ready once every companion wanted within actor range has its renderer.
     const companions = [...this.streamDemand.keys()].some((key) => this.companionKeys?.has(key))
@@ -978,32 +954,8 @@ export class WorldRenderer {
     if (!this.mammoths.length && loaded('woolly-mammoth') && loaded('mammoth-meat'))
       buildAnimalAssets(this);
     if (key === 'dugout-canoe' && !this.boatRenderer) this.boatRenderer = new BoatRenderer(this);
-    if (key === COMPANION_524.modelKey)
-      this.companion524Renderer ??= new Companion524Renderer(this);
-    if (key === RIMO_NEKO.modelKey) this.rimoNekoRenderer ??= new RimoNekoRenderer(this);
-    if (key === MAE.modelKey) this.maeRenderer ??= new MaeRenderer(this);
-    if (key === KOHAKU.modelKey) this.kohakuRenderer ??= new KohakuRenderer(this);
-    if (key === MARUIMO.modelKey) this.maruimoRenderer ??= new MaruimoRenderer(this);
-    const friend = FRIEND_MASCOTS.findIndex((f) => f.key === key);
-    if (friend >= 0) void this.installFriend(friend);
+    // Companion bodies get their renderers in the frame loop once their model is here.
     this.updateAssetDiagnostics();
-  }
-
-  private async installFriend(index: number) {
-    const def = FRIEND_MASCOTS[index];
-    try {
-      const equipment = def.equipment
-        ? await this.worldAssets.createEquipment(def.equipment.key)
-        : undefined;
-      if (this.disposed || this.friendRenderers.has(def.key)) return;
-      this.friendRenderers.set(
-        def.key,
-        new FriendMascotRenderer(this, def, index, equipment ?? undefined),
-      );
-    } catch (error) {
-      if (!this.disposed && !isLoadCancelled(error))
-        this.failWorld('仲間の3D素材を読み込めませんでした。再読み込みしてください。', error);
-    }
   }
 
   /** The camp's trading NPC loads within actor range and is released after the
@@ -1407,12 +1359,7 @@ export class WorldRenderer {
           this.camera,
         );
         const animalRoots = [
-          ...(this.companion524Renderer ? [this.companion524Renderer.root] : []),
-          ...(this.rimoNekoRenderer ? [this.rimoNekoRenderer.root] : []),
-          ...(this.maeRenderer ? [this.maeRenderer.root] : []),
-          ...(this.kohakuRenderer ? [this.kohakuRenderer.root] : []),
-          ...(this.maruimoRenderer ? [this.maruimoRenderer.root] : []),
-          ...[...this.friendRenderers.values()].map((friend) => friend.root),
+          ...this.companionRenderers.roots(),
           ...[...(this.orbBotRenderer?.bots.values() ?? [])].map(({ actor }) => actor.root),
           ...this.mammoths.flatMap((animal) => [animal.model, animal.meat]),
           ...[...this.enemies.values()].map((enemy) => enemy.model),
@@ -1966,48 +1913,10 @@ export class WorldRenderer {
           ) * 0.5,
       });
     };
-    if (this.state.rimoNeko && rimoNekoOnGround(this.state.rimoNeko) && this.rimoNekoRenderer)
-      add(
-        this.state.rimoNeko.id,
-        'りもねこ',
-        this.rimoNekoRenderer.root,
-        this.rimoNekoRenderer.actor.asset,
-      );
-    if (this.state.kohaku && this.kohakuRenderer)
-      add(
-        this.state.kohaku.id,
-        'こはくちゃん',
-        this.kohakuRenderer.root,
-        this.kohakuRenderer.actor.asset,
-      );
-    if (this.state.maruimo && this.maruimoRenderer)
-      add(
-        this.state.maruimo.id,
-        'まるぃも',
-        this.maruimoRenderer.root,
-        this.maruimoRenderer.actor.asset,
-      );
-    if (this.state.mae && this.maeRenderer)
-      add(this.state.mae.id, 'mae', this.maeRenderer.root, this.maeRenderer.actor.asset);
-    for (const friend of this.state.friends ?? []) {
-      const renderer = this.friendRenderers.get(friend.key);
-      if (renderer) add(friend.id, renderer.def.name, renderer.root, renderer.actor.asset);
-    }
-    if (
-      this.state.companion524 &&
-      companion524OnGround(this.state.companion524) &&
-      this.companion524Renderer
-    )
-      add(
-        this.state.companion524.id,
-        '524',
-        this.companion524Renderer.root,
-        this.companion524Renderer.actor.asset,
-        COMPANION_524.scale,
-        true,
-      );
+    for (const target of this.companionRenderers.viewTargets())
+      add(target.id, target.label, target.root, target.asset, target.scale, target.centered);
     for (const [id, entry] of this.orbBotRenderer?.bots ?? [])
-      if (!['windup', 'airborne', 'landing', 'stowed'].includes(entry.state.mode))
+      if (!['windup', 'airborne', 'landing', 'stowed', 'leaving'].includes(entry.state.mode))
         add(id, entry.actor.asset.name, entry.actor.root, entry.actor.asset);
     return targets;
   }
@@ -2403,12 +2312,8 @@ export class WorldRenderer {
       }
     }
     this.boatRenderer?.update(time, dt);
-    if (!this.companion524Renderer?.inHand) this.companion524Renderer?.update(dt);
-    if (!this.rimoNekoRenderer?.inHand) this.rimoNekoRenderer?.update(dt);
-    this.maeRenderer?.update(dt);
-    this.kohakuRenderer?.update(dt);
-    for (const friend of this.friendRenderers.values()) friend.update(dt);
-    this.maruimoRenderer?.update(dt);
+    this.companionRenderers.sync();
+    this.companionRenderers.update(dt, false);
     // Update the carrier's animated shoulder before its passenger, regardless of join order.
     for (const entity of [...this.players.values()].sort(
       (a, b) => Number(!!a.state.carrierId) - Number(!!b.state.carrierId),
@@ -2557,29 +2462,20 @@ export class WorldRenderer {
       // Position reconciliation can move a model backwards by a few centimetres.
       // It is not a turn or a step: use the collision-checked simulation motion.
       const motionSpeed = p.moving ? p.speed : 0;
-      const petDot = pettingOrbBot(this.state.orbBots, p.id);
-      const petMae = this.state.mae?.petPlayerId === p.id ? this.state.mae : undefined;
-      const petKohaku = this.state.kohaku?.petPlayerId === p.id ? this.state.kohaku : undefined;
-      const petMaruimo = this.state.maruimo?.petPlayerId === p.id ? this.state.maruimo : undefined;
-      const petFriend = pettingFriend(this.state.friends, p.id);
-      const groundCompanion =
-        petDot ?? petFriend ?? petMaruimo ?? petKohaku ?? petMae ?? this.state.rimoNeko;
+      // Whatever this person strokes, their own companion or anyone else's.
+      const petted = pettingMascot(this.state, p.id);
+      const petDot = petted && 'kind' in petted ? petted : undefined;
+      const petBody = petted && !('kind' in petted) ? petted : undefined;
+      // 524 floats up to a standing hand; every other companion is stroked crouching.
+      const pet524 = petBody?.key === '524' ? petBody : undefined;
+      const groundCompanion = pet524 ? undefined : petted;
       const groundPetting = petDot
-        ? pettingProgress(petDot, p, this.serverNow(), {
-            ...ORB_BOTS,
-            petApproachMs: petDot.petGroupLeaderId
-              ? ORB_BOTS.petGroupApproachMs
-              : ORB_BOTS.petApproachMs,
-          })
-        : petFriend
-          ? pettingProgress(petFriend, p, this.serverNow(), FRIEND_TIMING)
-          : petMaruimo
-            ? pettingProgress(petMaruimo, p, this.serverNow(), MARUIMO)
-            : petKohaku
-              ? pettingProgress(petKohaku, p, this.serverNow(), KOHAKU)
-              : petMae
-                ? pettingProgress(petMae, p, this.serverNow(), MAE)
-                : groundPettingProgress(this.state.rimoNeko, p, this.serverNow());
+        ? pettingProgress(petDot, p, this.serverNow(), ORB_BOTS)
+        : petBody?.key === 'rimo-neko'
+          ? groundPettingProgress(petBody, p, this.serverNow())
+          : petBody && !pet524
+            ? pettingProgress(petBody, p, this.serverNow(), FRIEND_TIMING)
+            : { weight: 0, stroke: 0 };
       if (entity.actor) {
         if (p.downedUntil || airborne !== null || p.mountId || p.boatId || p.carrierId) {
           entity.actor.groundPettingPose.weight = 0;
@@ -2591,9 +2487,9 @@ export class WorldRenderer {
           );
         }
       }
-      const petting524 = pettingProgress(this.state.companion524, p, this.serverNow());
+      const petting524 = pettingProgress(pet524, p, this.serverNow());
       const petting = groundPetting.weight > 0 ? groundPetting : petting524;
-      const petCompanion = groundPetting.weight > 0 ? groundCompanion : this.state.companion524;
+      const petCompanion = groundPetting.weight > 0 ? groundCompanion : pet524;
       const facing =
         petting.weight > 0 && petCompanion?.petPlayerId === p.id
           ? (petCompanion.petFacing ?? p.facing)
@@ -2631,25 +2527,19 @@ export class WorldRenderer {
           if (petDot) {
             if (this.orbBotRenderer) this.orbBotRenderer.petTarget(petDot, tempPoint);
             else tempPoint.set(petDot.x, petDot.y + ORB_BOTS.diameter * 0.9, petDot.z);
-          } else if (petFriend && this.friendRenderers.has(petFriend.key))
-            this.friendRenderers.get(petFriend.key)!.petTarget(tempPoint);
-          else if (petKohaku && this.kohakuRenderer) this.kohakuRenderer.petTarget(tempPoint);
-          else if (petMaruimo && this.maruimoRenderer) this.maruimoRenderer.petTarget(tempPoint);
-          else if (petMae && this.maeRenderer) this.maeRenderer.petTarget(tempPoint);
-          else if (this.state.rimoNeko?.petPlayerId === p.id && this.rimoNekoRenderer)
-            this.rimoNekoRenderer.petTarget(tempPoint);
-          else tempPoint.copy(entity.actor.groundPettingPose.requested);
+          } else if (!petBody || !this.companionRenderers.petTarget(petBody.id, tempPoint))
+            tempPoint.copy(entity.actor.groundPettingPose.requested);
           const pose = entity.actor.groundPettingPose;
           if (pose instanceof GroundPettingPose)
             pose.update(
               tempPoint,
               groundPetting.weight,
               groundPetting.stroke,
-              !!petDot || !!petMae || !!petKohaku || !!petMaruimo || !!petFriend,
+              !!petDot || (!!petBody && petBody.key !== 'rimo-neko'),
             );
           else pose.update(tempPoint, groundPetting.weight, groundPetting.stroke);
-        } else if (petting524.weight > 0 && this.companion524Renderer) {
-          tempPoint.copy(this.companion524Renderer.root.position);
+        } else if (petting524.weight > 0 && this.companionRenderers.renderers.has(pet524!.id)) {
+          tempPoint.copy(this.companionRenderers.renderers.get(pet524!.id)!.root.position);
           const petNear = p.species === 'bear' ? 0.13 : 0.08;
           tempPoint.x -= Math.sin(facing) * petNear;
           tempPoint.z -= Math.cos(facing) * petNear;
@@ -2725,8 +2615,7 @@ export class WorldRenderer {
         model.position.z,
       );
     }
-    if (this.companion524Renderer?.inHand) this.companion524Renderer.update(dt);
-    if (this.rimoNekoRenderer?.inHand) this.rimoNekoRenderer.update(dt);
+    this.companionRenderers.update(dt, true);
     this.orbBotRenderer?.update(dt);
     const self = this.players.get(this.selfId);
     const viewing = this.companionView;
@@ -3077,14 +2966,7 @@ export class WorldRenderer {
       data.glbNpcs = String(this.npcActor ? 1 : 0);
       data.glbAnimals = String(this.mammoths.filter((a) => a.model.visible).length);
       data.animals = JSON.stringify(this.state.animals || []);
-      data.companion524 = JSON.stringify(this.companion524Renderer?.diagnostics() ?? null);
-      data.rimoNeko = JSON.stringify(this.rimoNekoRenderer?.diagnostics() ?? null);
-      data.kohaku = JSON.stringify(this.kohakuRenderer?.diagnostics() ?? null);
-      data.friends = JSON.stringify(
-        [...this.friendRenderers.values()].map((friend) => friend.diagnostics()),
-      );
-      data.maruimo = JSON.stringify(this.maruimoRenderer?.diagnostics() ?? null);
-      data.mae = JSON.stringify(this.maeRenderer?.diagnostics() ?? null);
+      data.companions = JSON.stringify(this.companionRenderers.diagnostics());
       data.orbBots = JSON.stringify(this.orbBotRenderer?.diagnostics() ?? []);
       data.meatPiles = String(this.mammoths.filter((a) => a.meat.visible).length);
       data.animalAnimations = JSON.stringify(
@@ -3232,13 +3114,7 @@ export class WorldRenderer {
     this.gulfRenderer?.dispose();
     this.coastalRenderer?.dispose();
     this.villageRenderer?.dispose();
-    this.companion524Renderer?.dispose();
-    this.rimoNekoRenderer?.dispose();
-    this.maeRenderer?.dispose();
-    this.kohakuRenderer?.dispose();
-    for (const friend of this.friendRenderers.values()) friend.dispose();
-    this.friendRenderers.clear();
-    this.maruimoRenderer?.dispose();
+    this.companionRenderers.dispose();
     this.orbBotRenderer?.dispose();
     this.contactShadows.dispose();
     this.regionalScenery?.dispose();

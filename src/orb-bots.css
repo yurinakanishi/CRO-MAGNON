@@ -17,6 +17,8 @@
 
 .mascot-menu-heading .modal-intro {
   margin: 0;
+  /* Break the Japanese note between phrases on a narrow phone. */
+  word-break: auto-phrase;
 }
 
 .mascot-bulk {

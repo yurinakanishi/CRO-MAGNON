@@ -19,17 +19,10 @@ export type SpawnSite = {
 const site = (id, name, blurb, x, z, look): SpawnSite =>
   Object.freeze({ id, name, blurb, x, z, look: Object.freeze({ x: look.x, z: look.z }) });
 
-export const CAMP_SPAWN = site(
-  'camp',
-  '拠点の焚き火',
-  '仲間と524がいる、はじまりの野営地',
-  48,
-  57,
-  {
-    x: 50,
-    z: 50,
-  },
-);
+export const CAMP_SPAWN = site('camp', '拠点の焚き火', '旅人が集まる、はじまりの野営地', 48, 57, {
+  x: 50,
+  z: 50,
+});
 export const SPAWN_SITES: readonly SpawnSite[] = Object.freeze([
   CAMP_SPAWN,
   site('mammoth', 'マンモスの近く', '背中に乗れる大きなマンモス', 33, 32, HUNTING_GROUNDS[0]),

@@ -5,6 +5,7 @@ import { botFlightPosition, botGroundHeight, ORB_BOTS } from '../shared/orb-bots
 import { updateActorPerformance } from './performance-lod.js';
 import { applyBotFlightTurn } from './bot-flight-pose.js';
 import { companionHeartTexture } from './companion-heart-texture.js';
+import { farewellAge, farewellScale } from './companion-farewell.js';
 
 type Actor = ReturnType<WorldRenderer['worldAssets']['createAnimal']>;
 type Entry = {
@@ -12,6 +13,8 @@ type Entry = {
   state: OrbBotSnapshot;
   mode: string;
   sequence: number;
+  /** The template's own scale; a goodbye shrinks from it. */
+  scale: number;
   hearts?: THREE.Sprite[];
 };
 
@@ -40,7 +43,7 @@ export class OrbBotRenderer {
   update(dt: number) {
     const { world } = this;
     const now = world.serverNow();
-    // Recruited NPC companions keep their original single renderer and GLB.
+    // 524 and りもねこ squad entries are drawn by their own companion renderers.
     const states = (world.state.orbBots ?? []).filter(
       (b) => b.kind !== '524' && b.kind !== 'rimo-neko',
     );
@@ -60,7 +63,13 @@ export class OrbBotRenderer {
         actor.root.userData.animalId = b.id;
         actor.root.position.set(b.x, b.y, b.z);
         world.scene.add(actor.root);
-        entry = { actor, state: b, mode: b.mode, sequence: b.sequence };
+        entry = {
+          actor,
+          state: b,
+          mode: b.mode,
+          sequence: b.sequence,
+          scale: actor.root.scale.x,
+        };
         this.bots.set(b.id, entry);
       }
       const { actor } = entry;
@@ -76,7 +85,13 @@ export class OrbBotRenderer {
       const distance = actor.root.position.distanceTo(world.camera.position);
       updateActorPerformance(actor.root, distance);
       const position = new THREE.Vector3(b.x, b.y, b.z);
-      if (b.mode === 'windup' && owner?.actor?.orbBotPose.weight > 0) {
+      const leaving = farewellAge(b.leavingAt, now);
+      actor.root.scale.setScalar(entry.scale * farewellScale(leaving));
+      if (leaving >= 0) {
+        // The goodbye is the catch hop where it stands, then it is gone.
+        actor.root.position.copy(position);
+        actor.sampleOnce('Catch', leaving / 1000);
+      } else if (b.mode === 'windup' && owner?.actor?.orbBotPose.weight > 0) {
         position.copy(owner.actor.orbBotPose.contact);
         if (b.origin) {
           const t = THREE.MathUtils.clamp((now - b.throwAt) / ORB_BOTS.pickupMs, 0, 1);

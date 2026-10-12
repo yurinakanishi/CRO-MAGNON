@@ -1,199 +1,262 @@
 import type { CollisionWorld } from './collision.mjs';
 import type { PlayerSnapshot } from './snapshots.mjs';
-import type { OrbBot } from './orb-bot-types.mjs';
-import type { Mae } from './mae-types.mjs';
-import type { Kohaku } from './kohaku-types.mjs';
-import type { Maruimo } from './maruimo-mascot-types.mjs';
-import type { FriendMascot } from './friend-mascot-types.mjs';
-import type { RimoNeko } from './rimo-neko-types.mjs';
-import type { Companion524 } from './companion-524-types.mjs';
-import type { Point } from './types.mjs';
-import { BOT_KINDS, botRadius, setOrbBotSelected, syncOrbBots } from './orb-bots.mjs';
-import { cancelMaePet, returnMae } from './mae.mjs';
-import { cancelKohakuPet, returnKohaku } from './kohaku.mjs';
-import { cancelMaruimoPet, returnMaruimo } from './maruimo-mascot.mjs';
-import { FRIEND_MASCOT_KEYS, cancelFriendPet, returnFriend } from './friend-mascots.mjs';
-import { cancelRimoNekoPet, returnRimoNeko } from './rimo-neko.mjs';
-import { cancelCompanion524Pet, returnCompanion524 } from './companion-524.mjs';
+import type { OrbBot, OrbBotSnapshot } from './orb-bot-types.mjs';
+import {
+  BOT_KINDS,
+  botRadius,
+  cancelBotFarewell,
+  cancelPlayerBotPet,
+  createOrbBot,
+  isCompanionBot,
+  petOrbBot,
+  pettingOrbBot,
+  startBotFarewell,
+  updateOrbBots,
+} from './orb-bots.mjs';
+import {
+  MASCOT_FAREWELL_MS,
+  cancelCompanionPet,
+  cancelCompanionPetsBy,
+  companionArrival,
+  companionProfile,
+  createCompanion,
+  petCompanion,
+  pettingCompanion,
+  updateCompanions,
+  type Companion,
+  type CompanionSnapshot,
+} from './companions.mjs';
+import { GROUND_MASCOT_KEYS } from './friend-mascots.mjs';
 
-export const MASCOT_KEYS = [
-  ...BOT_KINDS,
-  'rimo-neko',
-  '524',
-  'mae',
-  'kohaku',
-  'maruimo-mascot',
-  ...FRIEND_MASCOT_KEYS,
-] as const;
+/** Every mascot a person can choose, in selection card order. */
+export const MASCOT_KEYS = ['rimo-neko', '524', ...GROUND_MASCOT_KEYS, ...BOT_KINDS] as const;
 export type MascotKey = (typeof MASCOT_KEYS)[number];
-const isFriendKey = (key: string) => FRIEND_MASCOT_KEYS.includes(key);
 
-type MascotBody = Mae | Kohaku | Maruimo | FriendMascot | RimoNeko | Companion524;
-type MascotRoom = {
+type MascotPlayer = PlayerSnapshot & {
+  /** The chosen companion, kept with the player's save; null travels alone. */
+  mascot?: string | null;
+};
+export type MascotRoom = {
   collision: CollisionWorld;
-  players: Map<string, PlayerSnapshot>;
+  players: Map<string, MascotPlayer>;
   orbBots?: OrbBot[];
-  mae?: Mae;
-  kohaku?: Kohaku;
-  maruimo?: Maruimo;
-  friends?: FriendMascot[];
-  rimoNeko?: RimoNeko;
-  companion524?: Companion524;
-  sessions?: Map<string, { player: { id: string } }>;
+  companions?: Companion[];
+  /** The keys this build offers, in card order (all of MASCOT_KEYS by default). */
+  mascotKeys?: readonly string[];
+  mascotSerial?: number;
+};
+type MascotBodies<B extends OrbBotSnapshot, C extends CompanionSnapshot> = {
+  orbBots?: readonly B[];
+  companions?: readonly C[];
 };
 
-const distance = (a: { x: number; z: number }, b: { x: number; z: number }) =>
-  Math.hypot(a.x - b.x, a.z - b.z);
+const isDot = (key: string) => BOT_KINDS.some((kind) => kind === key);
+const finished = (leavingAt: number, now: number) =>
+  leavingAt > 0 && now - leavingAt >= MASCOT_FAREWELL_MS;
+/** Arrival waits a moment after finding no room beside the person. */
+const nextArrival = new WeakMap<object, number>();
 
-function mascotBody(room: MascotRoom, key: MascotKey) {
-  if (BOT_KINDS.some((kind) => kind === key)) return room.orbBots?.find((bot) => bot.kind === key);
-  if (key === 'mae') return room.mae;
-  if (key === 'kohaku') return room.kohaku;
-  if (key === 'maruimo-mascot') return room.maruimo;
-  if (isFriendKey(key)) return room.friends?.find((f) => f.key === key);
-  if (key === 'rimo-neko') return room.rimoNeko;
-  return room.companion524;
+export function mascotSelectable(room: Pick<MascotRoom, 'mascotKeys'>, key: unknown) {
+  return typeof key === 'string' && (room.mascotKeys ?? MASCOT_KEYS).includes(key);
 }
 
-function reunionPoint(room: MascotRoom, p: PlayerSnapshot, key: MascotKey): Point | null {
-  const body = mascotBody(room, key);
-  if (!body) return null;
-  const radius = 'kind' in body ? botRadius(body.kind) : body.radius;
-  const occupied = [
-    ...(room.orbBots ?? []),
-    room.rimoNeko,
-    room.companion524,
-    room.mae,
-    room.kohaku,
-    room.maruimo,
-    ...(room.friends ?? []),
-  ]
-    .filter((other) => other && other !== body && distance(p, other) < 5)
-    .map((other) => ({
-      id: 'mascot',
-      type: 'circle' as const,
-      x: other!.x,
-      z: other!.z,
-      radius: 'kind' in other! ? botRadius(other!.kind) : other!.radius,
-    }));
-  const index = MASCOT_KEYS.indexOf(key);
-  for (let step = 0; step < MASCOT_KEYS.length; step++) {
-    const angle = p.facing + Math.PI + ((index + step) / MASCOT_KEYS.length) * Math.PI * 2;
-    const desired = { x: p.x + Math.sin(angle) * 2.2, z: p.z + Math.cos(angle) * 2.2 };
-    const near = room.collision.nearestFree(desired, radius, occupied, 1.2);
-    if (near && room.collision.segmentFree(p, near, radius)) return near;
-  }
-  return null;
+export function mascotKeyOf(body: OrbBotSnapshot | CompanionSnapshot) {
+  return 'kind' in body ? body.kind : body.key;
 }
 
-function setBodySelected(
-  room: MascotRoom,
-  p: PlayerSnapshot,
-  key: Exclude<MascotKey, (typeof BOT_KINDS)[number]>,
-  selected: boolean,
-  near: Point | null,
-) {
-  const friend = isFriendKey(key) ? room.friends?.find((f) => f.key === key) : undefined;
-  const c =
-    friend ??
-    (key === 'mae'
-      ? room.mae
-      : key === 'maruimo-mascot'
-        ? room.maruimo
-        : key === 'kohaku'
-          ? room.kohaku
-          : key === 'rimo-neko'
-            ? room.rimoNeko
-            : room.companion524);
-  if (!c) return false;
-  const squadOwner =
-    key === 'rimo-neko'
-      ? room.rimoNeko?.squadPlayerId
-      : key === '524'
-        ? room.companion524?.squadPlayerId
-        : null;
-  const owner = squadOwner || c.followPlayerId;
-  if (!selected) {
-    if (owner !== p.id) return false;
-    if (friend) returnFriend(friend);
-    else if (key === 'mae') returnMae(room.mae!);
-    else if (key === 'kohaku') returnKohaku(room.kohaku!);
-    else if (key === 'maruimo-mascot') returnMaruimo(room.maruimo!);
-    else if (key === 'rimo-neko') returnRimoNeko(room.rimoNeko!);
-    else returnCompanion524(room.companion524!);
+/** The companion travelling with this person, if any. A goodbye no longer counts. */
+export function activeMascot<B extends OrbBotSnapshot, C extends CompanionSnapshot>(
+  bodies: MascotBodies<B, C>,
+  playerId: string | null | undefined,
+): B | C | undefined {
+  if (!playerId) return undefined;
+  return (
+    bodies.orbBots?.find(
+      (b) => b.ownerId === playerId && !isCompanionBot(b.kind) && !b.leavingAt,
+    ) ?? bodies.companions?.find((c) => c.ownerId === playerId && !c.leavingAt)
+  );
+}
+
+/** The body this person is stroking, whoever it travels with. */
+export function pettingMascot<B extends OrbBotSnapshot, C extends CompanionSnapshot>(
+  bodies: MascotBodies<B, C>,
+  playerId: string | null | undefined,
+): B | C | undefined {
+  const dot = pettingOrbBot(bodies.orbBots, playerId ?? undefined) as B | undefined;
+  return dot ?? pettingCompanion(bodies.companions, playerId);
+}
+
+/** Every companion a person can see and touch: dots, and the bodies of the others. */
+export function mascotBodies<B extends OrbBotSnapshot, C extends CompanionSnapshot>(
+  bodies: MascotBodies<B, C>,
+): (B | C)[] {
+  return [
+    ...(bodies.orbBots ?? []).filter((b) => !isCompanionBot(b.kind)),
+    ...(bodies.companions ?? []),
+  ];
+}
+
+/** The companion waves goodbye where it is and leaves after the farewell. */
+function bidFarewell(room: MascotRoom, playerId: string, now: number) {
+  for (const b of room.orbBots ?? [])
+    if (b.ownerId === playerId && !isCompanionBot(b.kind)) startBotFarewell(b, now);
+  for (const c of room.companions ?? [])
+    if (c.ownerId === playerId && !c.leavingAt) {
+      cancelCompanionPet(c);
+      c.leavingAt = now;
+      // Out of the hand or the air, it says goodbye on the ground where it is.
+      if (c.squadMode !== 'stowed') c.squadMode = 'following';
+    }
+  // A body saying goodbye is no longer thrown or called.
+  room.orbBots = room.orbBots?.filter(
+    (b) => !b.companionId || room.companions?.some((c) => c.id === b.companionId && !c.leavingAt),
+  );
+}
+
+/** The chosen companion arrives beside its person on foot. A goodbye of the same
+ * companion still in progress turns back instead of a second body appearing. */
+function arrive(room: MascotRoom, p: MascotPlayer, key: string, now: number) {
+  const leavingDot = room.orbBots?.find((b) => b.ownerId === p.id && b.kind === key && b.leavingAt);
+  if (leavingDot) {
+    cancelBotFarewell(leavingDot, now);
     return true;
   }
-  if (owner && owner !== p.id && room.players.has(owner)) return false;
-  if (c.petPlayerId && c.petPlayerId !== p.id && room.players.has(c.petPlayerId)) return false;
-  const far = distance(p, c) > 8;
-  if (far && !near) return false;
-  if (
-    owner === p.id &&
-    c.mode === 'following' &&
-    !c.petPlayerId &&
-    !far &&
-    (key === 'mae' ||
-      key === 'kohaku' ||
-      key === 'maruimo-mascot' ||
-      !!friend ||
-      (key === 'rimo-neko' ? room.rimoNeko?.squadMode : room.companion524?.squadMode) ===
-        'following')
-  )
-    return false;
-  if (friend) cancelFriendPet(friend);
-  else if (key === 'mae') cancelMaePet(room.mae!);
-  else if (key === 'kohaku') cancelKohakuPet(room.kohaku!);
-  else if (key === 'maruimo-mascot') cancelMaruimoPet(room.maruimo!);
-  else if (key === 'rimo-neko') cancelRimoNekoPet(room.rimoNeko!);
-  else cancelCompanion524Pet(room.companion524!);
-  if (near) Object.assign(c, near);
-  c.followPlayerId = p.id;
-  c.mode = 'following';
-  c.path = [];
-  c.goal = null;
-  c.nextPathAt = 0;
-  c.followSpeed = 0;
-  c.velocityX = c.velocityZ = 0;
-  c.ownerPosition = { x: p.x, z: p.z };
-  c.facing = Math.atan2(p.x - c.x, p.z - c.z);
-  if (near) c.trail = [{ x: c.x, z: c.z }];
-  if (key === 'rimo-neko') {
-    room.rimoNeko!.squadPlayerId = p.id;
-    room.rimoNeko!.squadMode = 'following';
-  } else if (key === '524') {
-    room.companion524!.squadPlayerId = p.id;
-    room.companion524!.squadMode = 'following';
+  const leaving = room.companions?.find((c) => c.ownerId === p.id && c.key === key && c.leavingAt);
+  if (leaving) {
+    leaving.leavingAt = 0;
+    leaving.squadMode = 'following';
+    if (companionProfile(key)?.throwable)
+      (room.orbBots ??= []).push(
+        createOrbBot(
+          leaving.key as OrbBot['kind'],
+          `orb:${leaving.id}`,
+          p,
+          leaving,
+          now,
+          leaving.id,
+        ),
+      );
+    return true;
   }
+  if (p.mountId || p.boatId || p.carrierId || p.downedUntil) return false;
+  const profile = companionProfile(key);
+  const radius = isDot(key) ? botRadius(key as OrbBot['kind']) : profile?.radius;
+  if (radius === undefined) return false;
+  const occupied = [
+    ...(room.orbBots ?? [])
+      .filter((b) => !isCompanionBot(b.kind))
+      .map((b) => ({ x: b.x, z: b.z, radius: botRadius(b.kind) })),
+    ...(room.companions ?? []),
+  ];
+  const at = companionArrival(room.collision, p, radius, occupied);
+  if (!at) return false;
+  room.mascotSerial = (room.mascotSerial ?? 0) + 1;
+  const id = `${key}@${p.id}#${room.mascotSerial}`;
+  if (isDot(key)) {
+    (room.orbBots ??= []).push(createOrbBot(key as OrbBot['kind'], id, p, at, now));
+    return true;
+  }
+  const c = createCompanion(key, id, p, at);
+  (room.companions ??= []).push(c);
+  if (profile?.throwable)
+    (room.orbBots ??= []).push(createOrbBot(key as OrbBot['kind'], `orb:${id}`, p, at, now, id));
   return true;
 }
 
-/** Server-authoritative card selection; one bulk command applies to every available mascot. */
-export function setMascotSelection(
-  room: MascotRoom,
-  p: PlayerSnapshot,
-  target: unknown,
-  selected: boolean,
-  now: number,
-) {
+/**
+ * One companion per person, any of them, however many others chose the same one.
+ * A new choice sends the previous companion off with a goodbye; null travels alone.
+ */
+export function chooseMascot(room: MascotRoom, p: MascotPlayer, key: unknown, now: number) {
   if (p.downedUntil > now) return false;
-  const keys = target === 'all' ? MASCOT_KEYS : MASCOT_KEYS.filter((key) => key === target);
-  if (!keys.length) return false;
-  syncOrbBots(room, now);
-  let changed = false;
-  for (const key of keys) {
-    const body = mascotBody(room, key);
-    const near = selected && body && distance(p, body) > 8 ? reunionPoint(room, p, key) : null;
-    const applied = BOT_KINDS.some((kind) => kind === key)
-      ? setOrbBotSelected(room, p, key, selected, now, near)
-      : setBodySelected(
-          room,
-          p,
-          key as Exclude<MascotKey, (typeof BOT_KINDS)[number]>,
-          selected,
-          near,
-        );
-    changed = applied || changed;
+  if (key !== null && !mascotSelectable(room, key)) return false;
+  const next = key as string | null;
+  const current = activeMascot(room, p.id);
+  const travelling = current ? mascotKeyOf(current) : null;
+  if ((p.mascot ?? null) === next && travelling === next) return false;
+  p.mascot = next;
+  if (travelling !== next) bidFarewell(room, p.id, now);
+  nextArrival.delete(p);
+  if (next && travelling !== next) arrive(room, p, next, now);
+  return true;
+}
+
+/**
+ * Bodies follow the choices: goodbyes end, a companion leaves with its person's
+ * connection, and a connected person's choice arrives (on joining, or once on foot).
+ */
+export function syncMascots(room: MascotRoom, now: number) {
+  room.companions = (room.companions ?? []).filter(
+    (c) => room.players.has(c.ownerId) && !finished(c.leavingAt, now),
+  );
+  const companions = room.companions;
+  room.orbBots = (room.orbBots ?? []).filter(
+    (b) =>
+      room.players.has(b.ownerId) &&
+      !finished(b.leavingAt, now) &&
+      (!b.companionId || companions.some((c) => c.id === b.companionId && !c.leavingAt)),
+  );
+  for (const p of room.players.values()) {
+    if (!p.mascot || !mascotSelectable(room, p.mascot) || activeMascot(room, p.id)) continue;
+    if ((nextArrival.get(p) ?? 0) > now) continue;
+    if (!arrive(room, p, p.mascot, now)) nextArrival.set(p, now + 500);
   }
-  if (changed) syncOrbBots(room, now);
-  return changed;
+}
+
+export function updateMascots(room: MascotRoom, dt: number, now: number) {
+  syncMascots(room, now);
+  updateCompanions(room, dt, now);
+  updateOrbBots(room, dt, now);
+}
+
+/** Anyone may pet any companion within reach; it never changes whose it is. */
+export function petMascot(room: MascotRoom, p: MascotPlayer, id: unknown, now: number) {
+  if (pettingMascot(room, p.id)) return false;
+  const c = room.companions?.find((candidate) => candidate.id === id);
+  return c ? petCompanion(room, p, c, now) : petOrbBot(room, p, id, now);
+}
+
+/** Steering away or calling interrupts this person's stroke. */
+export function cancelMascotPets(room: MascotRoom, playerId: string, now: number) {
+  cancelCompanionPetsBy(room, playerId);
+  cancelPlayerBotPet(room, playerId, now);
+}
+
+/**
+ * Saves made before companions belonged to one person recorded shared camp bodies with
+ * owners. Each such owner keeps one of them, preferring the selection card order.
+ */
+export function formerMascotBonds(record: unknown): Map<string, string[]> {
+  const bonds = new Map<string, string[]>();
+  if (!record || typeof record !== 'object') return bonds;
+  const saved = record as Record<string, unknown>;
+  const bond = (owner: unknown, key: unknown) => {
+    if (typeof owner !== 'string' || !owner || typeof key !== 'string') return;
+    bonds.set(owner, [...(bonds.get(owner) ?? []), key]);
+  };
+  const body = (value: unknown) =>
+    value && typeof value === 'object' ? (value as Record<string, unknown>) : undefined;
+  const cat = body(saved.rimoNeko);
+  bond(cat?.squadPlayerId || cat?.followPlayerId, 'rimo-neko');
+  bond(body(saved.companion524)?.squadPlayerId, '524');
+  for (const [field, key] of [
+    ['mae', 'mae'],
+    ['kohaku', 'kohaku'],
+    ['maruimo', 'maruimo-mascot'],
+  ])
+    bond(body(saved[field])?.followPlayerId, key);
+  for (const friend of Array.isArray(saved.friends) ? saved.friends : [])
+    bond(body(friend)?.followPlayerId, body(friend)?.key);
+  for (const dot of Array.isArray(saved.orbBots) ? saved.orbBots : [])
+    bond(body(dot)?.ownerId, body(dot)?.kind);
+  for (const [owner, keys] of bonds)
+    bonds.set(
+      owner,
+      [...new Set(keys)].sort(
+        (a, b) =>
+          (MASCOT_KEYS as readonly string[]).indexOf(a) -
+          (MASCOT_KEYS as readonly string[]).indexOf(b),
+      ),
+    );
+  return bonds;
 }

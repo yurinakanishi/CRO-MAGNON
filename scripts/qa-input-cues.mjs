@@ -210,9 +210,18 @@ try {
     'Switch hotplug; both sticks, top button, L/R, ZL/ZR, stick click and center feedback release correctly',
   );
 
-  await until(() => room.orbBots.length >= 9, 'bots ready');
-  const home = room.orbBots.find((b) => b.kind === 'white');
-  await place(a, { x: home.x, z: home.z + 1.7 });
+  // Choose a companion through the real menu; it arrives beside the player in open ground.
+  await place(a, { x: 120, z: 120 });
+  await tap(a.page, 9);
+  await a.page.locator('[data-pause-tab="mascots"]').click();
+  await a.page.locator('[data-mascot="white"]').click();
+  const white = () =>
+    room.orbBots.find((b) => b.ownerId === a.seen.id && b.kind === 'white' && !b.leavingAt);
+  await until(
+    () => !!white() && Math.hypot(white().x - a.player().x, white().z - a.player().z) < 3,
+    'white arrives beside the player',
+  );
+  await a.page.locator('#modal-close').click();
   await a.page.locator('[data-cue="pet"]').waitFor();
   assert.equal(
     await a.page
@@ -222,32 +231,12 @@ try {
   );
   await shot(a.page, '04-pet-cue');
   await tap(a.page, 0);
-  await until(
-    () => room.orbBots.some((b) => b.petPlayerId === a.seen.id || b.ownerId === a.seen.id),
-    'pad pet starts',
-  );
-  await until(() => room.orbBots.some((b) => b.ownerId === a.seen.id), 'pad pet completes');
-  await until(() => !room.orbBots.some((b) => b.petPlayerId === a.seen.id), 'pet gesture settles');
-  // The camp's pet/whistle/look cues fill three slots. Use the new roster to
-  // bring one bot into open ground before checking the throw cue.
-  await place(a, { x: 120, z: 120 });
-  await tap(a.page, 9);
-  await a.page.locator('[data-pause-tab="mascots"]').click();
-  await a.page.locator('[data-mascot="white"]').click();
-  await until(() => home.ownerId === '', 'white returns');
-  await a.page.locator('[data-mascot="white"]').click();
-  await until(
-    () =>
-      home.ownerId === a.seen.id && Math.hypot(home.x - a.player().x, home.z - a.player().z) < 3,
-    'white rejoins nearby',
-  );
-  await a.page.locator('#modal-close').click();
+  await until(() => white()?.petPlayerId === a.seen.id, 'pad pet starts');
+  await until(() => !white()?.petPlayerId, 'pet gesture settles');
+  assert.equal(white().ownerId, a.seen.id, 'petting keeps the owner');
   await a.page.locator('[data-cue="throw"]').waitFor();
   await tap(a.page, 10);
-  await until(
-    () => room.orbBots.some((b) => b.ownerId === a.seen.id && b.mode === 'waiting'),
-    'throw lands',
-  );
+  await until(() => white()?.mode === 'waiting', 'throw lands');
   await a.page.locator('[data-cue="recall"]').waitFor();
   assert.equal(
     await a.page
@@ -257,18 +246,15 @@ try {
   );
   await shot(a.page, '05-recall-cue');
   await tap(a.page, 12);
-  await until(
-    () => !room.orbBots.some((b) => b.ownerId === a.seen.id && b.mode === 'waiting'),
-    'recall',
-  );
+  await until(() => white()?.mode !== 'waiting', 'recall');
   pass(
     'Nearby pet cue matches bottom button; pet, heart completion, throw and recall work on the server',
   );
 
-  // Nearby recruited bots deliberately take E priority; dismiss them through the real menu.
+  // A companion nearby takes the bottom button; travel alone before gathering.
   await tap(a.page, 9);
   await a.page.locator('[data-pause-tab="mascots"]').click();
-  await a.page.locator('[data-mascot-all="clear"]').click();
+  await a.page.locator('[data-mascot-none]').click();
   await until(
     () => !room.orbBots.some((bot) => bot.ownerId === a.seen.id),
     'dismiss before gathering',

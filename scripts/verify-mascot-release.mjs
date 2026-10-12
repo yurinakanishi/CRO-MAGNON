@@ -109,18 +109,17 @@ try {
   assert.equal(room.players.size, 5);
   const snapshot = core.snapshot(room);
   assert.ok(snapshot.players.every((p) => p.species !== 'howkey'));
-  for (const [field, key] of [
-    ['mae', 'mae'],
-    ['kohaku', 'kohaku'],
-    ['maruimo', 'maruimo-mascot'],
-  ])
-    assert.equal(!!room[field], MASCOT_ROSTER.find((entry) => entry.modelKey === key).enabled);
-  assert.ok(
-    room.friends.every((f) =>
-      MASCOT_ROSTER.some((entry) => entry.modelKey === f.key && entry.enabled),
-    ),
-  );
-  assert.ok(room.rimoNeko && room.companion524);
+  // Every enabled mascot is offered as a choice and nothing dormant is; no companion waits
+  // in the world until someone chooses one.
+  const offered = new Set(room.mascotKeys);
+  for (const entry of MASCOT_ROSTER)
+    assert.equal(
+      offered.has(entry.modelKey === 'yellow-524-mascot' ? '524' : entry.modelKey),
+      entry.enabled,
+      entry.modelKey,
+    );
+  assert.deepEqual(room.companions, []);
+  assert.deepEqual(room.orbBots, []);
 } finally {
   core.close();
 }

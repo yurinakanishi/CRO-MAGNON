@@ -100,13 +100,13 @@ function fixture(kind, pet, assisting = false) {
 }
 
 test('nearby companions cannot replace the actual gathering hint or E / right face-button target', () => {
+  // Any companion, one's own or someone else's, is stroked with the same action.
   const pets = [
-    'rimo',
-    '524',
-    { action: 'petBots', label: 'botたちを撫でる' },
-    { action: 'petBot', label: 'botを撫でる', targetId: 'bot-white' },
-    { action: 'petMae', label: 'maeを撫でる' },
-    { action: 'petKohaku', label: 'こはくちゃんを撫でる' },
+    { action: 'petMascot', label: 'りもねこを撫でる', targetId: 'rimo-neko@p1#1' },
+    { action: 'petMascot', label: '524を撫でる', targetId: '524@p2#2' },
+    { action: 'petMascot', label: 'しろbotを撫でる', targetId: 'white@p1#3' },
+    { action: 'petMascot', label: 'maeを撫でる', targetId: 'mae@p3#4' },
+    { action: 'petMascot', label: 'こはくちゃんを撫でる', targetId: 'kohaku@p4#5' },
   ];
   for (const kind of ['wood', 'stone', 'berry'])
     for (const pet of pets)
@@ -130,7 +130,7 @@ test('nearby companions cannot replace the actual gathering hint or E / right fa
 
 test('gathering still hides outside range, behind obstacles, when depleted, full or unloaded', () => {
   for (const blocked of ['range', 'wall', 'empty', 'full', 'unloaded', 'downed', 'mounted']) {
-    const f = fixture('stone', { action: 'petBots', label: '撫でる' });
+    const f = fixture('stone', { action: 'petMascot', label: '撫でる', targetId: 'white@p1#1' });
     if (blocked === 'range') f.player.z = f.resource.z + GATHER_RANGE + 0.01;
     if (blocked === 'wall') f.context.renderer.collision = { segmentFree: () => false };
     if (blocked === 'empty') f.resource.amount = 0;
@@ -143,9 +143,9 @@ test('gathering still hides outside range, behind obstacles, when depleted, full
   }
 });
 
-test('gathering has an independent visible cue with companions, whistle, inspection and combat competing for three slots', () => {
+test('gathering has an independent visible cue with companions, recall, inspection and combat competing for three slots', () => {
   const context = {
-    pet: 'botたちを撫でる',
+    pet: 'しろbotを撫でる',
     interaction: '石を採集する',
     recall: true,
     inspect: 'りもねこ',

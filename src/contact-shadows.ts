@@ -1,6 +1,7 @@
 import * as THREE from 'three';
 import { walkHeight } from '../shared/terrain.mjs';
 import type { WorldRenderer } from './world3d.js';
+import { companionShadowRadius } from './companion-renderers.js';
 
 /** Lightweight ground contact effect: one instanced draw, no shadow-map pass. */
 export class ContactShadows {
@@ -59,13 +60,11 @@ export class ContactShadows {
       if (!p.state.boatId && !p.state.mountId && !p.state.carrierId)
         add(p.model, p.state.radius ?? 0.32);
     for (const a of this.world.mammoths) add(a.model, 0.85);
-    for (const b of this.world.orbBotRenderer?.bots.values() ?? []) add(b.actor.root, 0.16);
-    add(this.world.rimoNekoRenderer?.root, 0.28);
-    add(this.world.maeRenderer?.root, 0.24);
-    add(this.world.kohakuRenderer?.root, 0.2);
-    add(this.world.maruimoRenderer?.root, 0.2);
-    for (const friend of this.world.friendRenderers.values()) add(friend.root, 0.2);
-    add(this.world.companion524Renderer?.root, 0.18);
+    // A goodbye's shadow shrinks with its body.
+    for (const b of this.world.orbBotRenderer?.bots.values() ?? [])
+      add(b.actor.root, 0.16 * (b.actor.root.scale.x / b.scale));
+    for (const renderer of this.world.companionRenderers.renderers.values())
+      add(renderer.root, companionShadowRadius(renderer.state?.key ?? '') * renderer.root.scale.x);
     this.mesh.count = count;
     this.mesh.instanceMatrix.clearUpdateRanges();
     if (count) {

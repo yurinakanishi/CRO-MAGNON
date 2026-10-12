@@ -4,7 +4,7 @@ import assert from 'node:assert/strict';
 import { mkdir, writeFile } from 'node:fs/promises';
 import { qaGamePackage } from './qa-game-package.mjs';
 import { stopActor } from '../dist/shared/combat.mjs';
-import { RIMO_NEKO } from '../dist/shared/rimo-neko.mjs';
+import { chooseMascot } from '../dist/shared/mascot-selection.mjs';
 import { BOT_KINDS } from '../dist/shared/orb-bots.mjs';
 import { enterPreparedWorld } from './qa-game-entry.mjs';
 const { chromium } = await import(
@@ -274,28 +274,28 @@ try {
   );
 
   await sleep(1100);
-  await place(RIMO_NEKO.home.x + 1, RIMO_NEKO.home.z);
+  // The player's own cat arrives beside them (no companion waits at camp any more).
+  chooseMascot(room, phone.player(), 'rimo-neko', Date.now());
+  const cat = () =>
+    room.companions.find((c) => c.ownerId === phone.seen.id && c.key === 'rimo-neko');
+  const squad = () => room.orbBots.find((b) => b.companionId === cat()?.id);
+  await until(
+    () => !!cat() && Math.hypot(cat().x - phone.player().x, cat().z - phone.player().z) < 2.4,
+    'own cat arrives beside the player',
+  );
   await phone.page.locator('[data-touch-action="pet"]').waitFor();
   await phone.tap('[data-touch-action="pet"]');
-  await until(() => room.rimoNeko.followPlayerId === phone.seen.id, 'pet joins immediately');
+  await until(() => cat().petPlayerId === phone.seen.id, 'pet starts immediately');
   await sleep(600);
   await place(76, 68);
   await phone.page.locator('[data-touch-action="throw"]').waitFor();
   await phone.tap('[data-touch-action="throw"]');
-  await until(
-    () =>
-      room.orbBots.some(
-        (b) => b.kind === 'rimo-neko' && ['airborne', 'landing', 'waiting'].includes(b.mode),
-      ),
-    'throw cat',
-  );
+  await until(() => ['airborne', 'landing', 'waiting'].includes(squad()?.mode), 'throw cat');
   await phone.page.locator('[data-touch-action="recall"]').waitFor();
   await phone.tap('[data-touch-action="recall"]');
-  await until(
-    () => room.orbBots.some((b) => b.kind === 'rimo-neko' && b.mode === 'following'),
-    'recall cat',
-  );
-  pass('Touch pet, throw and whistle preserve companion ownership and perform their real actions');
+  await until(() => squad()?.mode === 'following', 'recall cat');
+  assert.equal(cat().ownerId, phone.seen.id);
+  pass('Touch pet, throw and recall drive the player’s own companion with their real actions');
 
   await stick(0, -44);
   await sleep(200);

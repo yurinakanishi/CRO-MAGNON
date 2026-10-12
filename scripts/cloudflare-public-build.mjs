@@ -31,7 +31,7 @@ if (process.exitCode) throw new Error('TypeScript build failed');
 const { CHARACTER_MODELS } = await import('../dist/shared/characters.mjs');
 const { CHARACTER_ROSTER, characterModelReleased, characterSpeciesReleased } =
   await import('../dist/shared/character-roster.mjs');
-const { FRIEND_MASCOTS } = await import('../dist/shared/friend-mascots.mjs');
+const { GROUND_MASCOTS } = await import('../dist/shared/friend-mascots.mjs');
 const { mascotModelReleased, mascotCreditReleased, mascotAsset, ACTIVE_MASCOT_MODELS } =
   await import('../dist/shared/mascot-roster.mjs');
 const { TITLE_CREDITS, TITLE_GUEST, TITLE_SUPPORT, TITLE_DOTS, TITLE_FRIENDS } =
@@ -399,8 +399,9 @@ const portrait = async (url) =>
 for (const { key } of publicCharacters)
   await publish(`/models/${key}/portrait.png`, await portrait(`/models/${key}/portrait.png`));
 for (const url of runtimeBotPortraitUrls(assets)) await publish(url, await portrait(url));
-for (const friend of FRIEND_MASCOTS.filter((friend) => ACTIVE_MASCOT_MODELS.includes(friend.key))) {
-  const url = `/models/${friend.key}/portrait.png`;
+// Every released walking companion's selection card picture.
+for (const friend of GROUND_MASCOTS.filter((friend) => ACTIVE_MASCOT_MODELS.includes(friend.key))) {
+  const url = friend.portrait ?? `/models/${friend.key}/portrait.png`;
   await publish(url, await portrait(url));
 }
 // A year-long immutable cache is only safe when every shipped GLB name is content-addressed.
