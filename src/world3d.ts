@@ -125,6 +125,9 @@ import {
   obsidianScale,
 } from './resource-visuals.js';
 import { updateActorPerformance } from './performance-lod.js';
+import { ActorFade, actorDistance } from './camera-fade.js';
+import { nearPlaneReach } from './mesh-ray-grid.js';
+import { PASSABLE_PLANTS, crownProfile, segmentNearTree } from './tree-sight.js';
 import {
   LOAD_TIER,
   LoadCancelled,
@@ -147,6 +150,12 @@ const DEFAULT_DISTANCE = 5.5;
 // Decorative ground cover is drawn at half density in the one graphics profile.
 const GROUNDCOVER_DENSITY = 0.5;
 const tempPoint = new THREE.Vector3();
+const orbit = new THREE.Vector3(),
+  liftedPath = new THREE.Vector3(),
+  actorPlace = new THREE.Vector3();
+/** The unit direction from the camera's focus to the camera on this orbit. */
+const orbitDirection = (target: THREE.Vector3, yaw: number, pitch: number) =>
+  target.set(Math.sin(yaw) * Math.cos(pitch), Math.sin(pitch), Math.cos(yaw) * Math.cos(pitch));
 const drawingSize = new THREE.Vector2();
 const focusHeight = (profile) =>
   profile.species === 'bear' ? 0.64 : profile.species === 'ape' ? 1.55 : 1.4;
@@ -210,6 +219,19 @@ export class WorldRenderer {
   private automaticCameraActive = false;
   private touchCamera = new TouchCameraFollow();
   private automaticDistance: number | null = null;
+  /** How far the camera has risen over the player's head from a wall it was pressed to (0-1),
+   * toward liftTarget, which is reconsidered at liftCheckedAt and a few times a second after. */
+  private cameraLift = 0;
+  private liftTarget = 0;
+  private liftCheckedAt = -Infinity;
+  /** The player's own actor, faded as the camera comes close (camera-fade.ts), and its actor. */
+  private selfFade: ActorFade | null = null;
+  private selfFadeActor: THREE.Object3D | null = null;
+  private selfFadeSince = 0;
+  /** Other actors the camera is inside, not drawn while it is. */
+  private actorFades = new Map<THREE.Object3D, ActorFade>();
+  /** Crown profiles (tree-sight.ts) of the plants a view hides when its sight crosses one. */
+  private plantShapes = new Map<string, { profile: Float32Array; widest: number } | null>();
   private manualCamera: { pitch: number; distance: number } | null = null;
   private assistMarkers = new Map<
     string,
@@ -2058,6 +2080,118 @@ export class WorldRenderer {
     this.canvas.dataset.companionView = '';
     return true;
   }
+  /** The lowest the camera may be at (x, z): `clearance` over the ground or the cave floor,
+   * and above the sea, the river and the mountain's water. */
+  private cameraFloor(x: number, z: number, clearance: number) {
+    const aboveWater =
+      !isLand(x, z) || (riverHalfWidth(z) > 0.7 && Math.abs(x - riverX(z)) < riverHalfWidth(z));
+    return Math.max(
+      cameraFloorHeight(x, z) + clearance,
+      aboveWater ? WATER_LEVEL + 0.3 : -Infinity,
+      mountainWaterHeight(x, z) + 0.3,
+    );
+  }
+
+  /** How far the camera can stand from `aim` toward `direction`, at most `distance`. The
+   * place is first raised over the ground and water (cameraFloor); the sight from the aim to
+   * it must then keep `reach` from every solid model: the boxed rocks and props, the cave, the
+   * castle and the mountain. Trees are hidden from the view instead (LandscapeInstances).
+   * `out` receives the direction to the raised place. */
+  private cameraReach(
+    aim: THREE.Vector3,
+    direction: THREE.Vector3,
+    distance: number,
+    reach: number,
+    out: THREE.Vector3,
+  ) {
+    out.copy(aim).addScaledVector(direction, distance);
+    out.y = Math.max(out.y, this.cameraFloor(out.x, out.z, Math.max(0.25, reach)));
+    const length = out.sub(aim).length();
+    if (length < 1e-6) {
+      out.copy(direction);
+      return 0;
+    }
+    out.divideScalar(length);
+    let free = this.collision.cameraDistance(aim, out, length, reach);
+    const landmarks = this.landmarks;
+    if (landmarks?.castleCamera) free = landmarks.castleCamera.sweep(aim, out, free, reach);
+    if (landmarks?.caveCamera) free = landmarks.caveCamera.sweep(aim, out, free, reach);
+    if (landmarks?.mountainCamera) free = landmarks.mountainCamera.sweep(aim, out, free, reach);
+    return free;
+  }
+
+  /** Whether the sight from the camera to `focus` passes through or near this plant, a
+   * placed `key` model (its crown profile at the placement's scale). */
+  private sightThroughPlant(key: string, root: THREE.Object3D, focus: THREE.Vector3) {
+    let shape = this.plantShapes.get(key);
+    if (shape === undefined) {
+      const scene = this.worldAssets.templates.get(key)?.gltf.scene;
+      const profile = scene ? crownProfile(scene) : null;
+      shape = profile?.length ? { profile, widest: Math.max(...profile) } : null;
+      this.plantShapes.set(key, shape);
+    }
+    return (
+      !!shape && segmentNearTree(shape.profile, shape.widest, root, this.camera.position, focus)
+    );
+  }
+
+  /** The camera beside an actor. The player's own fades, dithered from 0.55 m beyond the near
+   * plane's reach and not drawn within it; its dithered programs are compiled once the world
+   * has settled, or two seconds after the actor arrived. Another actor whose body holds the
+   * camera is not drawn while it does. */
+  private fadeNearCamera(self, viewed: boolean, reach: number, time: number) {
+    const eye = this.camera.position,
+      actor = self?.actor?.root ?? null;
+    if (this.selfFade && this.selfFadeActor !== actor) {
+      this.selfFade.dispose();
+      this.selfFade = this.selfFadeActor = null;
+    }
+    if (actor && !this.selfFade) {
+      this.selfFade = new ActorFade([self.model, self.torch?.root].filter(Boolean));
+      this.selfFadeActor = actor;
+      this.selfFadeSince = time;
+    }
+    if (this.selfFade) {
+      // The companion view does not draw the player at all (self.model.visible).
+      if (viewed) this.selfFade.restore();
+      else {
+        self.model.updateMatrixWorld();
+        const t = Math.min(
+          Math.max((actorDistance(this.selfFade.roots, eye) - reach) / 0.55, 0),
+          1,
+        );
+        this.selfFade.set(t * t * (3 - 2 * t));
+      }
+      if (this.selfFade.opacity === 1 && (this.streamingSettled || time - this.selfFadeSince > 2))
+        this.selfFade.prepare(this.renderer, this.scene, this.camera);
+    }
+    const inside = new Set<THREE.Object3D>();
+    const test = (
+      model: THREE.Object3D | null | undefined,
+      roots: THREE.Object3D[],
+      bound: number,
+    ) => {
+      if (!model?.visible || model.getWorldPosition(actorPlace).distanceTo(eye) > bound) return;
+      model.updateMatrixWorld();
+      if (actorDistance(roots, eye) >= reach) return;
+      inside.add(model);
+      let fade = this.actorFades.get(model);
+      if (!fade) this.actorFades.set(model, (fade = new ActorFade(roots)));
+      fade.set(0);
+    };
+    for (const [id, entity] of this.players)
+      if (id !== this.selfId && entity.actor)
+        test(entity.model, [entity.model, entity.torch?.root].filter(Boolean), 4);
+    for (const animal of this.mammoths) test(animal.model, [animal.model], 10);
+    for (const enemy of this.enemies.values()) test(enemy.model, [enemy.model], 10);
+    if (this.npc) test(this.npc, [this.npc], 4);
+    for (const [model, fade] of this.actorFades)
+      if (!inside.has(model)) {
+        fade.dispose();
+        this.actorFades.delete(model);
+      }
+  }
+
   /** `force` reapplies the drawing buffer even at an unchanged size (a restored context). */
   resize(force = false) {
     const r = this.canvas.getBoundingClientRect();
@@ -2648,22 +2782,51 @@ export class WorldRenderer {
     }
     this.distance += (this.targetDistance - this.distance) * (1 - Math.exp(-dt * 10));
     const aim = this.focus.clone();
-    const offset = new THREE.Vector3(
-      Math.sin(this.yaw) * Math.cos(this.pitch),
-      Math.sin(this.pitch),
-      Math.cos(this.yaw) * Math.cos(this.pitch),
+    const reach = nearPlaneReach(this.camera);
+    this.landmarks?.mountainCamera?.frame();
+    const offset = new THREE.Vector3();
+    let cameraDistance = this.cameraReach(
+      aim,
+      orbitDirection(orbit, this.yaw, this.pitch),
+      this.distance,
+      reach,
+      offset,
     );
-    let cameraDistance = this.distance;
-    cameraDistance = this.collision.cameraDistance(aim, offset, this.distance);
-    this.camera.position.copy(aim).addScaledVector(offset, cameraDistance);
-    if (this.landmarks?.castleCamera) {
-      cameraDistance = this.landmarks.castleCamera.distance(aim, offset, cameraDistance);
-      this.camera.position.copy(aim).addScaledVector(offset, cameraDistance);
+    // Pressed to a wall or a rock: rise over the head and look down at the player where that
+    // leaves the camera more room. Whether it would is reconsidered a few times a second; the
+    // lift eases in and out, and the reach still bounds it.
+    const liftedPitch = Math.min(1.05, this.pitch + 0.7);
+    if (
+      viewed ||
+      liftedPitch <= this.pitch + 0.05 ||
+      cameraDistance >= Math.min(1.6, this.distance - 0.5)
+    )
+      this.liftTarget = 0;
+    else if (time - this.liftCheckedAt >= 0.12) {
+      this.liftCheckedAt = time;
+      this.liftTarget =
+        this.cameraReach(
+          aim,
+          orbitDirection(orbit, this.yaw, liftedPitch),
+          this.distance,
+          reach,
+          liftedPath,
+        ) >
+        cameraDistance + 0.3
+          ? 1
+          : 0;
     }
-    if (this.landmarks?.caveCamera) {
-      cameraDistance = this.landmarks.caveCamera.distance(aim, offset, cameraDistance);
-      this.camera.position.copy(aim).addScaledVector(offset, cameraDistance);
-    }
+    this.cameraLift +=
+      (this.liftTarget - this.cameraLift) *
+      (1 - Math.exp(-dt * (this.liftTarget > this.cameraLift ? 6 : 2.5)));
+    if (this.cameraLift > 0.001)
+      cameraDistance = this.cameraReach(
+        aim,
+        orbitDirection(orbit, this.yaw, this.pitch + (liftedPitch - this.pitch) * this.cameraLift),
+        this.distance,
+        reach,
+        offset,
+      );
     if ((this.automaticHeading !== null || this.touchCamera.enabled) && !viewed) {
       // Obstructions pull in immediately; clearance releases the distance slowly.
       this.automaticDistance =
@@ -2672,22 +2835,16 @@ export class WorldRenderer {
           : this.automaticDistance +
             (cameraDistance - this.automaticDistance) * (1 - Math.exp(-dt * 2.4));
       cameraDistance = this.automaticDistance;
-      this.camera.position.copy(aim).addScaledVector(offset, cameraDistance);
     } else this.automaticDistance = null;
-    const aboveWater =
-      !isLand(this.camera.position.x, this.camera.position.z) ||
-      (riverHalfWidth(this.camera.position.z) > 0.7 &&
-        Math.abs(this.camera.position.x - riverX(this.camera.position.z)) <
-          riverHalfWidth(this.camera.position.z));
-    const mountainWater = mountainWaterHeight(this.camera.position.x, this.camera.position.z);
+    this.camera.position.copy(aim).addScaledVector(offset, cameraDistance);
+    // A camera held short of its raised place can still meet a bump of ground on the way.
     this.camera.position.y = Math.max(
       this.camera.position.y,
-      cameraFloorHeight(this.camera.position.x, this.camera.position.z) + 0.25,
-      aboveWater ? WATER_LEVEL + 0.3 : -Infinity,
-      mountainWater + 0.3,
+      this.cameraFloor(this.camera.position.x, this.camera.position.z, 0.25),
     );
     this.camera.lookAt(aim);
     this.camera.updateMatrixWorld();
+    this.fadeNearCamera(self, !!viewed, reach, time);
     for (const marker of this.assistMarkers.values()) {
       const screen = this.assistScreenPoint(marker.point);
       marker.element.hidden = !screen || this.occluded() || !!viewed;
@@ -2708,20 +2865,27 @@ export class WorldRenderer {
     this.villageRenderer?.update(dt, time);
     if (time >= this.nextStaticCull) {
       this.nextStaticCull = time + 0.2;
-      for (const { root, radius } of this.staticScenery) {
-        root.visible =
+      for (const record of this.staticScenery) {
+        record.inRange =
           Math.hypot(
-            root.position.x - this.camera.position.x,
-            root.position.z - this.camera.position.z,
+            record.root.position.x - this.camera.position.x,
+            record.root.position.z - this.camera.position.z,
           ) <
-          (this.scene.fog as THREE.Fog).far + radius;
+          (this.scene.fog as THREE.Fog).far + record.radius;
+        record.root.visible = record.inRange;
       }
     }
+    // A bush the camera's sight to the player passes through is not drawn from this view,
+    // as a tree is not (LandscapeInstances); the body walks through both.
+    for (const record of this.staticScenery)
+      if (record.plant && record.inRange)
+        record.root.visible = !this.sightThroughPlant(record.plant, record.root, aim);
     for (const item of this.resources.values()) {
       item.model.visible =
         item.resource.amount > 0 &&
         item.model.position.distanceTo(this.camera.position) <
-          (this.scene.fog as THREE.Fog).far + 5;
+          (this.scene.fog as THREE.Fog).far + 5 &&
+        !(PASSABLE_PLANTS.has(item.key) && this.sightThroughPlant(item.key, item.model, aim));
     }
     if (this.waterMaterial) this.waterMaterial.userData.time.value = time;
     if (this.npc) {
@@ -3056,6 +3220,9 @@ export class WorldRenderer {
   destroy() {
     // First: providers below dispose the materials whose programs name them.
     this.releaseEngineResources();
+    this.selfFade?.dispose();
+    for (const fade of this.actorFades.values()) fade.dispose();
+    this.actorFades.clear();
     this.audio.dispose();
     this.natureEffects.dispose();
     this.boatRenderer?.dispose();

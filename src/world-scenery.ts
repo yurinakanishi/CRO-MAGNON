@@ -24,6 +24,7 @@ import { CAVE_HEARTH } from '../shared/camp-cave-layout.mjs';
 import { buildMountainRiver } from './mountain-river.js';
 import { DECORATIVE_GRASS_ENABLED, groundcoverVisible } from './scenery-visibility.js';
 import { BIOME_SCENERY } from '../shared/biome-scenery.mjs';
+import { PASSABLE_PLANTS } from './tree-sight.js';
 
 const TAU = Math.PI * 2;
 const random = seededRandom;
@@ -354,17 +355,22 @@ export function buildForestAssets(world) {
     freezeStatic(world, rock);
   }
 }
-function freezeStatic(world, root) {
+function freezeStatic(world, root, key: string | null = null) {
   root.updateMatrixWorld(true);
   root.traverse((node) => {
     node.matrixAutoUpdate = false;
   });
   const bounds = new THREE.Box3().setFromObject(root);
-  world.staticScenery.push({ root, radius: bounds.getSize(new THREE.Vector3()).length() * 0.5 });
+  world.staticScenery.push({
+    root,
+    radius: bounds.getSize(new THREE.Vector3()).length() * 0.5,
+    // A plant the camera passes through is hidden from its sight (world3d.ts).
+    ...(key && PASSABLE_PLANTS.has(key) ? { plant: key } : {}),
+  });
 }
 export function buildCampAssets(world) {
   for (const item of [...SCENERY.tents, ...SCENERY.props].filter((item) => !item.surface))
-    freezeStatic(world, addModel(world, item.key, item.x, item.z, item.yaw, item.scale));
+    freezeStatic(world, addModel(world, item.key, item.x, item.z, item.yaw, item.scale), item.key);
   for (const item of SCENERY.fires.filter((item) => !item.surface))
     buildFireEffect(world, item.x, item.z, item.scale);
   const caveFire = buildFireEffect(world, CAVE_HEARTH.x, CAVE_HEARTH.z, 0.6);

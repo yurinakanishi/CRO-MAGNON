@@ -147,6 +147,7 @@
 | [head-lowpoly-2026-10-11.md](head-lowpoly-2026-10-11.md) | 顔を作り直した人物3体の頭部の軽量化（r08採用）、UVの折り返し・使用率・再現性の修正、採用と確認 |
 | [world-data-bake-2026-10-11.md](world-data-bake-2026-10-11.md) | 起動時のワールド計算（海岸・地表・景観）をビルド時へ移し、人物選択まで5.7→3.5秒 |
 | [world-entry-2026-10-11.md](world-entry-2026-10-11.md) | 通常世界の入場条件の調査（変えない）、準備の二重シェーダー・到着時の同期コンパイル・カメラ格子の修正、入場可能まで約2秒短縮 |
+| [camera-clearance-2026-10-12.md](camera-clearance-2026-10-12.md) | カメラが洞窟・木・岩・自分の人物に埋まる問題：球の掃引、山の判定、樹冠の実測形で木と茂みを省く、近いと人物を点描、実Chromeの変更前後 |
 | [loading-screen-2026-10-11.md](loading-screen-2026-10-11.md) | OpenAI Dotsのクレジット、アプデの洞窟で「関わってくれた人たち」、ワープ・入り直し・洞窟自体の読み込みのローディング画面とクロマニョン人の豆知識 |
 | [optimization-assets-lowpoly-2026-10-10.md](optimization-assets-lowpoly-2026-10-10.md) | Opus 5.5 Highによる素材軽量化、候補の独立検査と不採用・修正記録 |
 | [pet-on-start-2026-10-03.md](pet-on-start-2026-10-03.md) | 撫で始めた時点でなつく |

@@ -7,6 +7,7 @@ import { terrainHeight, walkHeight } from '../shared/terrain.mjs';
 import { LandscapeInstances } from './world-assets.js';
 import { WORLD } from '../shared/world.mjs';
 import { groundcoverVisible } from './scenery-visibility.js';
+import { PASSABLE_PLANTS } from './tree-sight.js';
 
 export const regionalId = (key, surface) => `${key}:${surface}`;
 // Source-space metres for the complete 8 cm root-disc cut; scale with the plant.
@@ -175,6 +176,8 @@ export class RegionalScenery {
       const record = {
         root,
         radius: new THREE.Box3().setFromObject(root).getSize(new THREE.Vector3()).length() * 0.5,
+        // A plant the camera passes through is hidden from its sight (world3d.ts).
+        ...(PASSABLE_PLANTS.has(key) ? { plant: key } : {}),
       };
       this.world.staticScenery.push(record);
       this.props.set(item.instanceId, { id, root, fire, record });

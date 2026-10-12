@@ -53,6 +53,7 @@ function modelBox(item) {
     groundX: item.x,
     groundZ: item.z,
     groundY: item.elevation === undefined ? undefined : item.elevation + (item.groundOffset ?? 0),
+    ...(item.key === 'valley-pine' ? { cameraPassable: true } : {}),
   };
 }
 export function staticObstacles(): Obstacle[] {
@@ -628,14 +629,20 @@ export class CollisionWorld {
     }
     return result;
   }
-  cameraDistance(origin, direction, maximum) {
+  /**
+   * How far a sphere of `radius` moves from `origin` along the unit `direction`, at most
+   * `maximum`, before it meets a solid box (rocks, tents, props, landmarks): the camera's
+   * reach. A tree is passed through; the renderer hides it from that view instead. A box the
+   * sphere already reaches at the origin keeps only the clearance it has there.
+   */
+  cameraDistance(origin, direction, maximum, radius = 0) {
     let distance = maximum;
     const middle = {
       x: origin.x + (direction.x * maximum) / 2,
       z: origin.z + (direction.z * maximum) / 2,
     };
-    for (const o of this.nearby(middle, maximum / 2 + 0.25)) {
-      if (o.type !== 'box') continue;
+    for (const o of this.nearby(middle, maximum / 2 + radius + 0.25)) {
+      if (o.type !== 'box' || o.cameraPassable) continue;
       const ox = o.c * (origin.x - o.x) - o.s * (origin.z - o.z),
         oz = o.s * (origin.x - o.x) + o.c * (origin.z - o.z);
       const dx = o.c * direction.x - o.s * direction.z,
@@ -644,10 +651,19 @@ export class CollisionWorld {
         hi = maximum;
       const base =
         o.groundY ?? terrainHeight(o.groundX ?? o.x, o.groundZ ?? o.z) + (o.groundOffset ?? 0);
+      const top = base + o.height;
+      // The box grows by the sphere on every side (square, so a little beyond a sphere at its
+      // edges); an origin that would be inside it keeps only the margin it has on its
+      // farthest side. One inside the box itself (a misfit footprint) never pins the camera.
+      const pad = Math.min(
+        radius,
+        Math.max(Math.abs(ox) - o.hx, Math.abs(oz) - o.hz, base - origin.y, origin.y - top) - 0.01,
+      );
+      if (pad < 0) continue;
       for (const [p, d, min, max] of [
-        [ox, dx, -o.hx - 0.12, o.hx + 0.12],
-        [oz, dz, -o.hz - 0.12, o.hz + 0.12],
-        [origin.y, direction.y, base, base + o.height + 0.12],
+        [ox, dx, -o.hx - pad, o.hx + pad],
+        [oz, dz, -o.hz - pad, o.hz + pad],
+        [origin.y, direction.y, base - pad, top + pad],
       ]) {
         if (Math.abs(d) < 1e-8) {
           if (p < min || p > max) {
@@ -661,7 +677,7 @@ export class CollisionWorld {
           hi = Math.min(hi, Math.max(a, b));
         }
       }
-      if (hi >= lo && hi >= 0) distance = Math.min(distance, Math.max(0.6, lo - 0.15));
+      if (hi >= lo && hi >= 0) distance = Math.min(distance, lo);
     }
     return distance;
   }
