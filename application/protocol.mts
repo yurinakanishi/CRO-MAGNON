@@ -7,6 +7,7 @@ export type ClientCommand =
   | { type: 'gait'; running: boolean }
   | { type: 'action'; action: string; targetId?: string; regionId?: string; cropId?: string }
   | { type: 'chat'; text: string }
+  | { type: 'introduce'; text: string }
   | { type: 'mapPin'; x: number; z: number }
   | { type: 'clearMapPin' }
   | { type: 'ping'; at: number | string };
@@ -118,6 +119,11 @@ export function decodeCommand(text: string): ClientCommand | null {
         : null;
     case 'chat':
       return typeof message.text === 'string' ? { type: 'chat', text: message.text } : null;
+    // The server trims it to INTRO_MAX_LENGTH; an absurdly long payload is not a profile.
+    case 'introduce':
+      return typeof message.text === 'string' && message.text.length <= 1000
+        ? { type: 'introduce', text: message.text }
+        : null;
     case 'ping':
       return typeof message.at === 'string' || finite(message.at)
         ? { type: 'ping', at: message.at }

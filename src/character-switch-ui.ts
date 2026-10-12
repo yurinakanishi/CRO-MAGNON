@@ -52,12 +52,13 @@ export function updateCharacterSwitch(player, now, connected) {
       ?.focus({ preventScroll: true });
 }
 
-export function characterSwitchMarkup() {
-  return `<form id="character-switch-form" class="character-switch"><h2>キャラクターを変える</h2><p class="modal-intro">キャラクターを選ぶと確認が出ます。今いる場所で切り替わり、もちもの・元気・進行はそのまま。</p>${characterChoicesMarkup()}</form>`;
+/** `extra` comes between the introduction and the characters (the clothing colours). */
+export function characterSwitchMarkup(extra = '') {
+  return `<form id="character-switch-form" class="character-switch"><h2>キャラクターを変える</h2><p class="modal-intro">キャラクターを選ぶと確認が出ます。今いる場所で切り替わり、もちもの・元気・進行はそのまま。</p>${extra}${characterChoicesMarkup()}</form>`;
 }
 
 export function openCharacterSwitch(options) {
-  options.openModal(characterSwitchMarkup());
+  options.openModal(characterSwitchMarkup(options.extra));
   bindCharacterSwitch(options);
 }
 

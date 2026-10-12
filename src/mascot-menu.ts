@@ -2,7 +2,7 @@ import { setText } from './dom-updates.js';
 import { setAttr, setFlag } from './hud-dom.js';
 import { BOT_DESIGNS } from '../shared/orb-bots.mjs';
 import { GROUND_MASCOTS } from '../shared/friend-mascots.mjs';
-import { activeMascot, mascotKeyOf } from '../shared/mascot-selection.mjs';
+import { activeMascot, mascotKeyOf, mascotName } from '../shared/mascot-selection.mjs';
 import type { ViewState } from './view-state.js';
 
 const portraits: Record<string, { name: string; image: string; color: string }> = {
@@ -16,12 +16,7 @@ const portraits: Record<string, { name: string; image: string; color: string }> 
   ),
 };
 
-/** The name a mascot goes by on its card, in prompts and above its head. */
-export function mascotName(key: string) {
-  return (
-    portraits[key]?.name ?? BOT_DESIGNS[key as keyof typeof BOT_DESIGNS]?.name ?? key ?? '仲間'
-  );
-}
+export { mascotName };
 
 function mascotCard(key: string) {
   const portrait = portraits[key];

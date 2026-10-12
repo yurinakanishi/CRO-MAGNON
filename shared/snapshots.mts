@@ -66,6 +66,8 @@ export interface PlayerSnapshot extends Point {
   boatId: string | null;
   /** The chosen companion's selection key; null travels alone. */
   mascot?: string | null;
+  /** A chosen clothing dye (CLOTHING_DYES key); null keeps the character's own colours. */
+  dye?: import('./clothing-dye.mjs').ClothingDye | null;
   adventure: { regions: Record<string, AdventureProgress> };
   gulf?: GulfProgress;
 }

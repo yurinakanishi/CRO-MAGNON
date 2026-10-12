@@ -1366,10 +1366,17 @@ export class WorldRenderer {
           ...this.mammoths.flatMap((animal) => [animal.model, animal.meat]),
           ...[...this.enemies.values()].map((enemy) => enemy.model),
         ].filter((root) => root.visible);
-        const animalHit = this.raycaster.intersectObjects(animalRoots, true)[0];
-        if (animalHit) {
-          let root = animalHit.object;
-          while (root && !root.userData.animalId) root = root.parent;
+        const travelers = [...this.players.entries()]
+          .filter(([id, entity]) => id !== this.selfId && entity.model.visible)
+          .map(([, entity]) => entity.model);
+        const hit = this.raycaster.intersectObjects([...animalRoots, ...travelers], true)[0];
+        if (hit) {
+          let root = hit.object;
+          while (root && !root.userData.animalId && !root.userData.playerId) root = root.parent;
+          if (root?.userData.playerId) {
+            if (this.manualCameraAllowed()) this.viewCompanion(root.userData.playerId);
+            return;
+          }
           if (root) {
             this.onAnimal(root.userData.animalId);
             return;
@@ -1400,8 +1407,8 @@ export class WorldRenderer {
         )[0];
         if (hit) {
           let node = hit.object;
-          while (node && !node.userData.animalId) node = node.parent;
-          if (node && this.viewCompanion(node.userData.animalId)) return;
+          while (node && !node.userData.animalId && !node.userData.playerId) node = node.parent;
+          if (node && this.viewCompanion(node.userData.animalId ?? node.userData.playerId)) return;
         }
       }
       const target = this.companionViewTargets().find((t) => t.id === this.companionView?.id);
@@ -1490,6 +1497,7 @@ export class WorldRenderer {
         // Yaw outermost, so a knockback tilt rocks the body in its own frame.
         model.rotation.order = 'YXZ';
         model.rotation.y = p.facing ?? 0;
+        model.userData.playerId = p.id;
         this.scene.add(model);
         const label = this.createLabel(
           p.name,
@@ -1520,6 +1528,7 @@ export class WorldRenderer {
         );
       else if (action && action !== 'Attack' && !p.moving) entity.actor?.animation.play(action);
       entity.state = p;
+      entity.actor?.setDye(p.dye ?? null);
       if (entity.countryLabel) {
         const country = COUNTRIES.find((c) => c.id === p.gulf?.countryId);
         setText(entity.countryLabel, country?.name ?? '');
@@ -1592,7 +1601,11 @@ export class WorldRenderer {
       await this.assetsPromise;
       if (!current() || !this.assetsReady) return;
       const provider = this.humanAssets.get(characterModel(entity.state).key);
-      actor = await provider.create({ color: entity.state.color, ticket });
+      actor = await provider.create({
+        color: entity.state.color,
+        dye: entity.state.dye ?? null,
+        ticket,
+      });
       if (!actor || !current()) return;
       actor.root.position.set(0, 0, 0);
       const grip = actor.root.getObjectByName(THREE.PropertyBinding.sanitizeNodeName('Grip.R'));
@@ -1645,6 +1658,8 @@ export class WorldRenderer {
       entity.model.add(actor.root);
       Object.assign(entity, { gripRight: grip, gripLeft, weapon, spears, axe, flask, torch });
       entity.actor = actor;
+      // A dye chosen while it loaded.
+      actor.setDye(entity.state.dye ?? null);
       attached = true;
       if (residency) residencyAttached(residency, token);
       this.updateAssetDiagnostics();
@@ -1922,7 +1937,17 @@ export class WorldRenderer {
     for (const [id, entry] of this.orbBotRenderer?.bots ?? [])
       if (!['windup', 'airborne', 'landing', 'stowed', 'leaving'].includes(entry.state.mode))
         add(id, entry.actor.asset.name, entry.actor.root, entry.actor.asset);
+    for (const [id, entity] of this.players) {
+      const p = entity.state;
+      if (id === this.selfId || p.mountId || p.boatId || p.carrierId) continue;
+      add(id, p.name, entity.model, entity.actor?.asset);
+    }
     return targets;
+  }
+
+  /** The traveler or companion being looked at closely, if any. */
+  get viewedId() {
+    return this.companionView?.id ?? null;
   }
 
   companionViewChoice(id?: string) {
@@ -3097,6 +3122,7 @@ export class WorldRenderer {
         distance < (label.kind === 'resource' ? 16 : label.kind === 'camp' ? 35 : 60);
       if (label.kind === 'self') visible = false;
       if (this.companionView && label.kind === 'companion') visible = false;
+      if (label === this.players.get(this.companionView?.id ?? '')?.label) visible = false;
       const toPoint = tempPoint.copy(label.position).sub(this.camera.position);
       if (toPoint.dot(viewDirection) < 0) visible = false;
       if (visible) {

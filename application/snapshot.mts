@@ -228,6 +228,7 @@ export function snapshot(
         mountId,
         boatId,
         mascot,
+        dye,
         adventure,
         gulf,
       }) => ({
@@ -294,6 +295,7 @@ export function snapshot(
         mountId,
         boatId,
         mascot: mascot ?? null,
+        dye: dye ?? null,
         adventure: JSON.parse(JSON.stringify(adventure ?? { regions: {} })),
         gulf: gulf ? structuredClone(gulf) : undefined,
       }),

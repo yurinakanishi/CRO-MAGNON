@@ -65,6 +65,8 @@ export class LoadingCave {
   private readonly ticket = LoadTicket.of(LOAD_TIER.essential);
   private readonly character: string;
   private readonly color: string;
+  /** The clothing colour the traveler wears ('' or null: the character's own). */
+  private readonly dye: string | null;
   private readonly eyeHeight: number;
   /** A dialog over the gallery (the contributors) owns the keys and the controller. */
   private readonly paused: () => boolean;
@@ -79,12 +81,14 @@ export class LoadingCave {
     {
       character = 'cro-magnon-hunter',
       color = '#b7a27a',
+      dye = null,
       images = {},
       onContributors,
       paused = () => false,
     }: {
       character?: string;
       color?: string;
+      dye?: string | null;
       images?: VerifiedTextureOptions;
       /** Opens the contributors dialog over the gallery; without it there is no button. */
       onContributors?: () => void;
@@ -93,6 +97,7 @@ export class LoadingCave {
   ) {
     this.character = character;
     this.color = color;
+    this.dye = dye;
     this.imageOptions = images;
     this.paused = paused;
     // The world's camera focus heights: the small fennec mage, the tall ape.
@@ -159,7 +164,7 @@ export class LoadingCave {
     if (!provider) throw new Error(`Missing verified character ${this.character}`);
     const [template, actor] = await Promise.all([
       this.world.worldAssets.ensureInitial(CAMP_CAVE.key),
-      provider.create({ color: this.color, ticket: this.ticket }).then((actor) => {
+      provider.create({ color: this.color, dye: this.dye, ticket: this.ticket }).then((actor) => {
         if (this.disposed) actor?.dispose();
         else this.actor = actor;
         return actor;

@@ -30,6 +30,7 @@ import { toggleCaveTorch } from '../shared/cave-light.mjs';
 import { cancelMascotPets, chooseMascot, petMascot } from '../shared/mascot-selection.mjs';
 import { stopActor } from '../shared/combat.mjs';
 import { handleOrbBotAction, releaseHeldOrbBot } from '../shared/orb-bots.mjs';
+import { DYE_COOLDOWN_MS, normalizeDye } from '../shared/clothing-dye.mjs';
 const distance = (a, b) => Math.hypot(a.x - b.x, a.z - b.z);
 export function createActionHandler({
   notice: sendNotice,
@@ -65,6 +66,16 @@ export function createActionHandler({
         chooseMascot(room, player, action === 'selectMascot' ? (message.targetId ?? '') : null, now)
       )
         broadcast(room, snapshot(room));
+      return;
+    }
+    // One of the clothing dyes, or the character's own colours ('' or anything unknown).
+    if (action === 'dyeClothes') {
+      const dye = normalizeDye(message.targetId);
+      if (dye === (player.dye ?? null) || now - (player.lastDyeAt ?? -Infinity) < DYE_COOLDOWN_MS)
+        return;
+      player.lastDyeAt = now;
+      player.dye = dye;
+      broadcast(room, snapshot(room));
       return;
     }
     if (action === 'toggleCaveTorch') {

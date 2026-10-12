@@ -116,6 +116,11 @@ import { locationName } from '../shared/paleo-geography.mjs';
 import { regionAt } from '../shared/adventure-regions.mjs';
 import { adventureInteraction } from './adventure-interaction.js';
 import { ChatUI } from './chat-ui.js';
+import { PlayerProfileCard } from './player-profile-card.js';
+import { bindDyePickers, dyePickerMarkup, updateDyePickers } from './dye-picker.js';
+import { clothingDyeAvailable } from './clothing-dye.js';
+import { normalizeDye } from '../shared/clothing-dye.mjs';
+import { INTRO_MAX_LENGTH } from '../shared/player-profile.mjs';
 import { installFishingUI, fishingInteraction } from './fishing-ui.js';
 import { FISHING, FISHING_SITES } from '../shared/fishing-sites.mjs';
 import { COASTAL } from '../shared/coastal-sites.mjs';
@@ -181,6 +186,8 @@ let profile = {
   room: fixedIdentity
     ? cleanRoom(multiplayer.room || '') || 'EXHIBITION'
     : cleanRoom(query.get('room') || multiplayer.room || readSaved('cro-room', 'EMBER')) || 'EMBER',
+  // The clothing colour last worn on this browser; '' is the character's own colours.
+  dye: fixedIdentity ? '' : (normalizeDye(readSaved('cro-dye', '')) ?? ''),
 };
 let state: ViewState = {
   players: [],
@@ -266,6 +273,15 @@ installLanguageUI($('#app'));
 bindLanguageToggle($('#screen-title'));
 
 const areaBanner = new AreaBanner($('#area-banner'));
+/** Everyone's self-introduction in this room, sent on arrivals and changes only. */
+let intros = new Map<string, string>();
+const profileCard = new PlayerProfileCard($('.game-viewport'));
+/** Looking closely at another traveler shows their card. */
+function updateProfileCard() {
+  const id = renderer?.viewedId;
+  const traveler = id && id !== selfId ? state.players.find((p) => p.id === id) : undefined;
+  profileCard.update(traveler, traveler ? (intros.get(traveler.id) ?? '') : '');
+}
 // Covers the loading cave's own load, warps and the entries that do not pass through
 // the cave.
 const loadingScreen = new LoadingCover(
@@ -900,6 +916,10 @@ async function connect(automatic = false) {
         ...message.profile,
         room: message.room,
         difficulty: FIXED_DIFFICULTY,
+        dye:
+          message.profile?.dye === undefined
+            ? profile.dye
+            : (normalizeDye(message.profile.dye) ?? ''),
       };
       persistentSession = message.persistentSession === true;
       resumeStored = saveSession(sessionKey(profile.room), message.session, persistentSession);
@@ -926,6 +946,18 @@ async function connect(automatic = false) {
       if (message.resumed && !startAtCamp)
         notify('接続が戻りました。持ち物と進行を復元しました。', 'success');
       startAtCamp = false;
+    }
+    if (message.type === 'intros') {
+      intros = new Map(
+        Object.entries(message.intros ?? {}).filter(
+          (entry): entry is [string, string] => typeof entry[1] === 'string',
+        ),
+      );
+      updateProfileCard();
+      const input = document.querySelector<HTMLTextAreaElement>('#intro-input');
+      if (input && input.value.trim() === (intros.get(selfId) ?? ''))
+        setText($('#intro-status'), '保存しました');
+      return;
     }
     if (message.type === 'roomReset') {
       restartAfterRoomReset();
@@ -960,6 +992,11 @@ async function connect(automatic = false) {
         save('cro-gender', profile.gender);
         stopInput();
         if ($('#character-switch-form')) $('#modal').close();
+      }
+      const wornDye = normalizeDye(player()?.dye) ?? '';
+      if (player() && !fixedIdentity && wornDye !== profile.dye) {
+        profile = { ...profile, dye: wornDye };
+        save('cro-dye', wornDye);
       }
       // Like a fast travel, the player's own warp is hidden behind the loading screen
       // until the destination is drawn.
@@ -1154,6 +1191,7 @@ function updateHUD() {
   setFlag($('#interaction-hint'), 'hidden', !target);
   setText($('#interaction-hint span'), target?.label ?? '');
   setAttr($('#my-portrait'), 'class', `portrait ${profile.species} ${characterModel(profile).key}`);
+  updateProfileCard();
   setAttr($('#status-plate'), 'title', `${characterModel(profile).name} · 部族の仲間と招待`);
   updateHuntingHUD();
   const biome = biomeAt(me?.x ?? 50, me?.z ?? 50);
@@ -1196,6 +1234,7 @@ function updateModalHUD() {
   inventoryCrafting.update();
   equipmentUI.update();
   updateMascotMenu($('#modal-body'), state, selfId);
+  updateDyePickers(player()?.dye);
   const list = $('#tribe-list');
   if (list) {
     const signature = JSON.stringify(
@@ -1759,6 +1798,7 @@ function applyProfileForm(form: HTMLFormElement) {
     room,
     ...parseCharacterValue(data.get('character')),
     difficulty: FIXED_DIFFICULTY,
+    dye: profile.dye,
   };
   spawnChoice = spawnSite(data.get('spawn')).id;
   save('cro-spawn', spawnChoice);
@@ -1840,6 +1880,7 @@ function enterGame(skipGallery = false) {
       },
       {
         character,
+        dye: profile.dye,
         // The credits open over the cave; it is already the cave, so no visit is offered.
         onContributors: () =>
           openModal(contributorsDialogMarkup(undefined, { links: onlineTitle, visit: false })),
@@ -2210,13 +2251,49 @@ function bindInventory() {
 function openInventory() {
   openPauseMenu('inventory');
 }
+/** One's own words for the profile card travelers nearby can read. */
+function introFormMarkup() {
+  return `<form id="intro-form" class="intro-form"><label for="intro-input">あなたの自己紹介</label><textarea id="intro-input" maxlength="${INTRO_MAX_LENGTH}" rows="2" placeholder="はじめまして。いっしょにマンモスを狩りましょう。"></textarea><div class="intro-actions"><small id="intro-status" role="status"></small><button type="submit" class="button button-outline">保存する</button></div></form>`;
+}
+function bindIntroForm() {
+  const form = document.querySelector<HTMLFormElement>('#intro-form');
+  if (!form) return;
+  const input = form.querySelector('textarea')!;
+  input.value = intros.get(selfId) ?? '';
+  form.onsubmit = (event) => {
+    event.preventDefault();
+    if (!joined) return notify('接続を待っています。', 'error');
+    send({ type: 'introduce', text: input.value });
+    setText($('#intro-status'), '保存しています…');
+  };
+  // A short note on one line: Enter saves it.
+  input.onkeydown = (event) => {
+    if (event.key !== 'Enter' || event.isComposing) return;
+    event.preventDefault();
+    form.requestSubmit();
+  };
+}
+/** The clothing colours, for a character whose dye rule is tuned; nothing in the exhibition. */
+function dyeMarkup() {
+  const me = player();
+  return !fixedIdentity && clothingDyeAvailable(characterModel(me ?? profile).key)
+    ? dyePickerMarkup(me ? me.dye : profile.dye)
+    : '';
+}
+/** A cosmetic change: allowed on a mount or a boat and while recovering. */
+function chooseDye(dye: string) {
+  if (!joined) return notify('サーバーへの接続を待っています。', 'error');
+  send({ type: 'action', action: 'dyeClothes', ...(dye ? { targetId: dye } : {}) });
+}
 function tribeMarkup() {
-  return `<h2>同じ火を囲む仲間。</h2><p class="modal-intro" id="tribe-summary">いま、この谷で暮らしている ${state.players.length} 人。</p><div id="tribe-list" class="tribe-list"></div><button id="tribe-invite" class="button button-accent wide">${icon('plus')} 仲間を招待する</button>`;
+  return `<h2>同じ火を囲む仲間。</h2><p class="modal-intro" id="tribe-summary">いま、この谷で暮らしている ${state.players.length} 人。</p>${fixedIdentity ? '' : introFormMarkup()}${dyeMarkup()}<div id="tribe-list" class="tribe-list"></div><button id="tribe-invite" class="button button-accent wide">${icon('plus')} 仲間を招待する</button>`;
 }
 function openTribe() {
   openModal(tribeMarkup());
   updateModalHUD();
   $('#tribe-invite').onclick = openInvite;
+  bindIntroForm();
+  bindDyePickers($('#modal-body'), chooseDye);
 }
 function updateGamepadHints(active: boolean) {
   usingGamepad = active;
@@ -2286,7 +2363,9 @@ function openCharacterSwitchMenu() {
     connected: () => joined,
     action,
     settle: () => gamepadControls?.suspend(),
+    extra: dyeMarkup(),
   });
+  bindDyePickers($('#modal-body'), chooseDye);
 }
 /**
  * Game-style pause menu: a tab rail on the left, one panel on the right, exits as

@@ -49,6 +49,8 @@ import {
 import { CollisionWorld, overlap } from '../shared/collision.mjs';
 import { attackProfile } from '../shared/combat-profiles.mjs';
 import { COMPANION_524 } from '../shared/companion-524.mjs';
+import { INTRO_COOLDOWN_MS, INTRO_MAX_LENGTH } from '../shared/player-profile.mjs';
+import { normalizeDye } from '../shared/clothing-dye.mjs';
 import { handleBarterCommand, cancelBarter, updateBarters } from '../shared/barter.mjs';
 import { updateSuppers } from '../shared/supper.mjs';
 import { updateForaging } from '../shared/foraging.mjs';
@@ -172,6 +174,16 @@ export function createGameCore({
 
   function snapshot(room, includeWorld = false) {
     return createSnapshot(room, includeWorld, runtime.now());
+  }
+
+  /** Everyone present learns everyone's self-introduction: on each arrival and on each
+   * change, never in the frequent state snapshots. Exhibition visits carry no free text. */
+  function broadcastIntros(room) {
+    if (exhibition) return;
+    broadcast(room, {
+      type: 'intros',
+      intros: Object.fromEntries([...room.players.values()].map((p) => [p.id, p.intro ?? ''])),
+    });
   }
 
   function systemChat(room, text) {
@@ -326,6 +338,9 @@ export function createGameCore({
         difficulty: normalizeDifficulty(params.get('difficulty')),
         // A newcomer travels alone until choosing a companion in the menu.
         mascot: null,
+        intro: '',
+        // The clothing colour last chosen on this browser, or the character's own.
+        dye: normalizeDye(params.get('dye')),
       };
     // Only an explicit confirmed title start picks a new appearance and camp
     // spawn. A dropped connection continues with the saved player and position.
@@ -389,6 +404,7 @@ export function createGameCore({
     applyAppearance(player, appearance);
     if (startAtCamp) {
       player.name = cleanText(params.get('name'), 16) || player.name;
+      player.dye = normalizeDye(params.get('dye'));
     }
     Object.assign(player, {
       socket,
@@ -432,9 +448,11 @@ export function createGameCore({
         species: player.species,
         gender: player.gender,
         difficulty: player.difficulty,
+        dye: player.dye ?? null,
       },
     });
     broadcast(room, snapshot(room, true));
+    broadcastIntros(room);
     systemChat(room, `${player.name} が谷に${resumed ? '戻ってきた' : 'やってきた'}。`);
     socket.on('pong', () => {
       if (player.socket === socket) player.alive = true;
@@ -510,7 +528,10 @@ export function createGameCore({
       if (
         player.downedUntil &&
         ['move', 'gait', 'action'].includes(message.type) &&
-        !(message.type === 'action' && ['inventoryCraft', 'equipItem'].includes(message.action))
+        !(
+          message.type === 'action' &&
+          ['inventoryCraft', 'equipItem', 'dyeClothes'].includes(message.action)
+        )
       ) {
         if (message.type === 'action')
           notice(player, '回復を待っています。間もなく焚き火へ戻ります。', 'info');
@@ -556,6 +577,7 @@ export function createGameCore({
           message.action === 'cancelBotThrows' ||
           message.action === 'selectMascot' ||
           message.action === 'deselectMascot' ||
+          message.action === 'dyeClothes' ||
           message.action === 'rift' ||
           message.action === 'warp' ||
           message.action === 'changeCharacter' ||
@@ -572,6 +594,7 @@ export function createGameCore({
             'recallBots',
             'selectMascot',
             'deselectMascot',
+            'dyeClothes',
             'wave',
           ].includes(message.action)
         )
@@ -585,6 +608,7 @@ export function createGameCore({
             'recallBots',
             'selectMascot',
             'deselectMascot',
+            'dyeClothes',
             'jump',
           ].includes(message.action)
         )
@@ -601,6 +625,13 @@ export function createGameCore({
           text: chatText,
           at: now,
         });
+      } else if (message.type === 'introduce') {
+        if (exhibition || now - (player.lastIntroAt ?? -Infinity) < INTRO_COOLDOWN_MS) return;
+        player.lastIntroAt = now;
+        const intro = cleanText(message.text, INTRO_MAX_LENGTH);
+        if (intro === (player.intro ?? '')) return;
+        player.intro = intro;
+        broadcastIntros(room);
       } else if (
         message.type === 'ping' &&
         (typeof message.at === 'number' || typeof message.at === 'string')
@@ -823,6 +854,8 @@ export function createGameCore({
               [
                 'socket',
                 'lastMapPinAt',
+                'lastIntroAt',
+                'lastDyeAt',
                 'jumpAt',
                 'jumpSequence',
                 'carrierId',
@@ -959,6 +992,8 @@ export function createGameCore({
       for (const entry of record.sessions)
         if (entry.expiresAt > runtime.now()) {
           const player = entry.player;
+          player.intro = cleanText(player.intro, INTRO_MAX_LENGTH);
+          player.dye = normalizeDye(player.dye);
           if (player.mascot === undefined)
             player.mascot =
               formerBonds.get(player.id)?.find((key) => mascotSelectable(room, key)) ?? null;

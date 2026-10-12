@@ -2,6 +2,7 @@ import type { CollisionWorld } from './collision.mjs';
 import type { PlayerSnapshot } from './snapshots.mjs';
 import type { OrbBot, OrbBotSnapshot } from './orb-bot-types.mjs';
 import {
+  BOT_DESIGNS,
   BOT_KINDS,
   botRadius,
   cancelBotFarewell,
@@ -26,7 +27,7 @@ import {
   type Companion,
   type CompanionSnapshot,
 } from './companions.mjs';
-import { GROUND_MASCOT_KEYS } from './friend-mascots.mjs';
+import { GROUND_MASCOT_KEYS, friendDefinition } from './friend-mascots.mjs';
 
 /** Every mascot a person can choose, in selection card order. */
 export const MASCOT_KEYS = ['rimo-neko', '524', ...GROUND_MASCOT_KEYS, ...BOT_KINDS] as const;
@@ -55,6 +56,11 @@ const finished = (leavingAt: number, now: number) =>
   leavingAt > 0 && now - leavingAt >= MASCOT_FAREWELL_MS;
 /** Arrival waits a moment after finding no room beside the person. */
 const nextArrival = new WeakMap<object, number>();
+
+/** The name a mascot goes by on its card, in prompts, above its head and on profiles. */
+export function mascotName(key: string) {
+  return friendDefinition(key)?.name ?? BOT_DESIGNS[key as keyof typeof BOT_DESIGNS]?.name ?? key;
+}
 
 export function mascotSelectable(room: Pick<MascotRoom, 'mascotKeys'>, key: unknown) {
   return typeof key === 'string' && (room.mascotKeys ?? MASCOT_KEYS).includes(key);

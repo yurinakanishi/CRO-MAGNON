@@ -366,6 +366,28 @@ body.touch-mode .game-viewport {
 #touch-controls[data-reach='high'] .touch-prompts {
   bottom: calc(var(--gb) + var(--attack) / 2 + 139px + var(--skill) / 2 + 12px);
 }
+/* Viewing a traveler: their card takes the corner the hidden pad leaves free. */
+.touch-mode .player-profile {
+  top: auto;
+  left: var(--gl);
+  bottom: var(--gb);
+  width: min(290px, calc(100vw - var(--gl) - var(--gr) - 132px));
+  padding: 11px 13px 10px;
+  border-color: var(--hud-edge);
+  border-radius: 16px;
+  background: var(--hud-solid);
+  box-shadow: var(--hud-shadow);
+  color: var(--hud-ink);
+  transform: none;
+}
+.touch-mode .player-profile-stats {
+  gap: 5px 10px;
+}
+/* Clothing colours: a full finger target each. */
+.touch-mode .dye-swatch {
+  width: 44px;
+  height: 44px;
+}
 /* Viewing a companion or waiting on a task leaves only its own prompts, by the thumb. */
 #touch-controls:is([data-mode='viewing'], [data-mode='busy']) .touch-pad {
   display: none;

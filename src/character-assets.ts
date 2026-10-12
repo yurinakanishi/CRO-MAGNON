@@ -18,6 +18,7 @@ import {
   type RuntimeGLTF,
 } from './embedded-glb.js';
 import { configureActorPerformance, disposeActorPerformance } from './performance-lod.js';
+import { installClothingDye } from './clothing-dye.js';
 import { AssetLoadQueue, LOAD_TIER, LoadTicket } from './asset-load-queue.js';
 
 export function handGripPlacement(root) {
@@ -185,7 +186,17 @@ export class CharacterAssets {
     return pending;
   }
 
-  async create({ color, ticket = LoadTicket.of(LOAD_TIER.essential) }) {
+  /** `dye` gives a traveler's actor its own clothing that takes a dye (null: its own colours
+   * for now); without it, as for residents, the actor wears the shared materials. */
+  async create({
+    color,
+    dye,
+    ticket = LoadTicket.of(LOAD_TIER.essential),
+  }: {
+    color: string;
+    dye?: string | null;
+    ticket?: LoadTicket;
+  }) {
     if (this.disposed) return null;
     this.creating++;
     this.touched = true;
@@ -214,6 +225,7 @@ export class CharacterAssets {
           ? node.material.map(tint)
           : tint(node.material);
       });
+      const clothing = dye === undefined ? null : installClothingDye(root, asset.modelKey, dye);
       configureActorPerformance(root, lod?.scene, asset);
       const { grip, rotation: gripUp } = handGripPlacement(root);
       const axeGrip = axeGripPlacement(
@@ -257,6 +269,10 @@ export class CharacterAssets {
         pettingPose,
         groundPettingPose,
         orbBotPose,
+        clothing,
+        setDye: (next: string | null) => {
+          if (clothing && (clothing.dye ?? null) !== (next ?? null)) clothing.set(next);
+        },
         dispose: () => {
           if (!this.instances.delete(instance)) return;
           animation.dispose();
@@ -265,6 +281,7 @@ export class CharacterAssets {
             if (isSkinnedMesh(node)) node.skeleton.dispose();
           });
           personalMaterials.forEach((material) => material.dispose());
+          clothing?.dispose();
           this.touched = true;
         },
       };

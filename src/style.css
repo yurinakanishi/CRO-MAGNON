@@ -3138,6 +3138,203 @@ dialog:has(.character-switch) {
   gap: 9px;
   margin-bottom: 22px;
 }
+/* One's own self-introduction, read by travelers nearby on their profile card. */
+.intro-form {
+  display: grid;
+  gap: 8px;
+  margin: 0 0 20px;
+}
+.intro-form label {
+  font: 500 13px/1 var(--display);
+  letter-spacing: 0.18em;
+  color: #d6c79a;
+}
+.intro-form textarea {
+  width: 100%;
+  min-height: 64px;
+  padding: 10px 12px;
+  border: 1px solid #e0b07040;
+  border-radius: 10px;
+  background: #0b151080;
+  color: var(--cream);
+  font: inherit;
+  font-size: 15px;
+  line-height: 1.5;
+  resize: vertical;
+}
+.intro-form textarea:focus {
+  outline: none;
+  border-color: var(--accent);
+}
+.intro-actions {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+.intro-actions small {
+  color: var(--muted);
+  font-size: 12px;
+}
+
+/* The clothing colours: one row of round swatches, wrapping on a narrow screen. */
+.dye-picker {
+  min-width: 0;
+  margin: 0 0 20px;
+  padding: 0;
+  border: 0;
+}
+.dye-picker legend {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  margin-bottom: 10px;
+  padding: 0;
+  font: 500 13px/1 var(--display);
+  letter-spacing: 0.18em;
+  color: #d6c79a;
+}
+.dye-name {
+  color: var(--cream);
+  letter-spacing: 0.08em;
+}
+.dye-swatches {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+.dye-swatch {
+  position: relative;
+  width: 40px;
+  height: 40px;
+  padding: 0;
+  border: 2px solid #f4ead624;
+  border-radius: 50%;
+  background: var(--dye);
+  box-shadow: inset 0 -6px 10px #00000030;
+  cursor: pointer;
+  transition: transform 0.12s ease;
+}
+/* The character's own colours: earth tones, as most travelers wear them. */
+.dye-swatch.dye-own {
+  background: linear-gradient(135deg, #7d5d3c 0 50%, #d9c59d 50% 100%);
+}
+.dye-swatch:hover {
+  transform: scale(1.06);
+}
+.dye-swatch:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+}
+.dye-swatch[aria-pressed='true'] {
+  border-color: var(--cream);
+  box-shadow:
+    0 0 0 3px #0b1510,
+    0 0 0 5px var(--cream);
+}
+.dye-swatch[aria-pressed='true']::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  width: 14px;
+  height: 8px;
+  margin: auto;
+  border: solid #fff;
+  border-width: 0 0 3px 3px;
+  transform: translateY(-2px) rotate(-45deg);
+  filter: drop-shadow(0 0 1px #000a);
+}
+.dye-swatch[data-dye='yellow'][aria-pressed='true']::after,
+.dye-swatch[data-dye='white'][aria-pressed='true']::after {
+  border-color: #1d1a14;
+  filter: none;
+}
+
+/* The card beside a traveler being looked at closely: their words and visible state. */
+.player-profile {
+  position: absolute;
+  top: 50%;
+  left: 24px;
+  z-index: 2;
+  width: min(360px, calc(100vw - 48px));
+  padding: 14px 16px 12px;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  background: var(--panel);
+  box-shadow: var(--shadow);
+  color: var(--cream);
+  transform: translateY(-50%);
+  pointer-events: none;
+  animation: profile-in 0.18s ease-out;
+}
+.player-profile[hidden] {
+  display: none;
+}
+.player-profile-heading {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.player-profile-heading .portrait {
+  width: 40px;
+  height: 44px;
+  border-radius: 9px;
+}
+.player-profile-heading strong {
+  display: block;
+  font-size: 16px;
+  line-height: 1.25;
+  overflow-wrap: anywhere;
+}
+.player-profile-heading small {
+  color: var(--muted);
+  font-size: 12px;
+}
+.player-profile-intro {
+  margin: 10px 0;
+  font-size: 14px;
+  line-height: 1.55;
+  overflow-wrap: anywhere;
+}
+.player-profile-intro[data-empty='true'] {
+  color: var(--muted);
+}
+.player-profile-stats {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 6px 14px;
+  margin: 0;
+}
+.player-profile-stats div {
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
+  min-width: 0;
+}
+.player-profile-stats div[hidden] {
+  display: none;
+}
+.player-profile-stats [data-stat='title'] {
+  grid-column: 1 / -1;
+}
+.player-profile-stats dt {
+  color: var(--muted);
+  font-size: 12px;
+  white-space: nowrap;
+}
+.player-profile-stats dd {
+  margin: 0;
+  font-size: 12px;
+  font-weight: 700;
+  text-align: right;
+  overflow-wrap: anywhere;
+}
+@keyframes profile-in {
+  from {
+    opacity: 0;
+    translate: -8px 0;
+  }
+}
 .tribe-member {
   display: flex;
   align-items: center;
