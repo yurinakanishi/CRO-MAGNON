@@ -2,6 +2,7 @@ import * as THREE from 'three';
 import { isMesh } from './three-types.js';
 import { woodPileLayout } from '../shared/wood-pile-layout.mjs';
 import { WorldAssets } from './world-assets.js';
+import { instancedMaterial } from './material-variants.js';
 
 /** Each instance is one entire verified image-to-3D log, including both ends. */
 export function buildWoodPile(assets: WorldAssets, total: number, surface: string | null) {
@@ -21,7 +22,12 @@ export function buildWoodPile(assets: WorldAssets, total: number, surface: strin
     source.scene.updateMatrixWorld(true);
     source.scene.traverse((node) => {
       if (!isMesh(node)) return;
-      const batch = new THREE.InstancedMesh(node.geometry, node.material, slots.length);
+      // The held torch and the camp's loose logs draw plain copies of this template.
+      const batch = new THREE.InstancedMesh(
+        node.geometry,
+        instancedMaterial(node.material),
+        slots.length,
+      );
       batch.name = 'whole-firewood-logs';
       batch.castShadow = node.castShadow;
       batch.receiveShadow = node.receiveShadow;
@@ -46,7 +52,8 @@ export function buildWoodPile(assets: WorldAssets, total: number, surface: strin
       root.visible = count > 0;
     },
     dispose() {
-      // Only the instance buffers belong to this pile. Templates own the mesh and material.
+      // Only the instance buffers belong to this pile. Templates own the mesh and material
+      // (and the instanced copy, released with it).
       for (const batch of batches) batch.dispose();
     },
   };

@@ -1,0 +1,247 @@
+{
+  "date": "2026-10-12T02:01:34.005Z",
+  "attackerCharacter": "cro-male",
+  "victimCharacter": "cro-female",
+  "viewport": [
+    1280,
+    800
+  ],
+  "rounds": [
+    {
+      "round": "blow-1",
+      "shots": [
+        "blow-1-attacker-page-settled.png",
+        "blow-1-victim-page-settled.png"
+      ],
+      "captures": {
+        "attacker": [
+          {
+            "file": "blow-1-attacker-page-0ms.jpg",
+            "since": 32,
+            "tiltDegrees": 10.4
+          },
+          {
+            "file": "blow-1-attacker-page-80ms.jpg",
+            "since": 99,
+            "tiltDegrees": 17.1
+          },
+          {
+            "file": "blow-1-attacker-page-220ms.jpg",
+            "since": 225,
+            "tiltDegrees": 14.4
+          },
+          {
+            "file": "blow-1-attacker-page-700ms.jpg",
+            "since": 702,
+            "tiltDegrees": 0
+          }
+        ],
+        "victim": [
+          {
+            "file": "blow-1-victim-page-0ms.jpg",
+            "since": 16,
+            "tiltDegrees": 4.9
+          },
+          {
+            "file": "blow-1-victim-page-80ms.jpg",
+            "since": 83,
+            "tiltDegrees": 17.2
+          },
+          {
+            "file": "blow-1-victim-page-220ms.jpg",
+            "since": 247,
+            "tiltDegrees": 13.5
+          },
+          {
+            "file": "blow-1-victim-page-700ms.jpg",
+            "since": 719,
+            "tiltDegrees": 0
+          }
+        ]
+      },
+      "server": {
+        "knockbackAt": 1791770510829,
+        "sequence": 1,
+        "distance": 1.6,
+        "expected": 1.6,
+        "slid": 1.6,
+        "towardZ": 1.6,
+        "settledWithinMs": 467,
+        "movingDuringSlide": false,
+        "energyBefore": 100,
+        "energyAfter": 100,
+        "hurtSequenceBefore": 0,
+        "hurtSequenceAfter": 0,
+        "attackerEnergySpent": 2
+      },
+      "attackerPage": {
+        "frames": 44,
+        "fpsDuringSlide": 30.8,
+        "shownSlide": 1.6,
+        "shownDirectionZ": 1.6,
+        "maxStepPerFrame": 0.252,
+        "maxTiltDegrees": 17.1,
+        "tiltPeakAfterMs": 116,
+        "uprightAtEnd": true,
+        "attackerMoved": 0,
+        "damageFlash": false,
+        "sequenceSeen": 1
+      },
+      "victimPage": {
+        "frames": 45,
+        "fpsDuringSlide": 30.9,
+        "shownSlide": 1.6,
+        "shownDirectionZ": 1.6,
+        "maxStepPerFrame": 0.251,
+        "maxTiltDegrees": 17.2,
+        "tiltPeakAfterMs": 103,
+        "uprightAtEnd": true,
+        "attackerMoved": 0,
+        "damageFlash": false,
+        "sequenceSeen": 1
+      }
+    },
+    {
+      "round": "blow-2",
+      "shots": [
+        "blow-2-attacker-page-settled.png",
+        "blow-2-victim-page-settled.png"
+      ],
+      "captures": {
+        "attacker": [
+          {
+            "file": "blow-2-attacker-page-0ms.jpg",
+            "since": 33,
+            "tiltDegrees": 10.1
+          },
+          {
+            "file": "blow-2-attacker-page-80ms.jpg",
+            "since": 102,
+            "tiltDegrees": 17.1
+          },
+          {
+            "file": "blow-2-attacker-page-220ms.jpg",
+            "since": 231,
+            "tiltDegrees": 14
+          },
+          {
+            "file": "blow-2-attacker-page-700ms.jpg",
+            "since": 705,
+            "tiltDegrees": 0
+          }
+        ],
+        "victim": [
+          {
+            "file": "blow-2-victim-page-0ms.jpg",
+            "since": 20,
+            "tiltDegrees": 5.2
+          },
+          {
+            "file": "blow-2-victim-page-80ms.jpg",
+            "since": 85,
+            "tiltDegrees": 17.2
+          },
+          {
+            "file": "blow-2-victim-page-220ms.jpg",
+            "since": 224,
+            "tiltDegrees": 14.5
+          },
+          {
+            "file": "blow-2-victim-page-700ms.jpg",
+            "since": 717,
+            "tiltDegrees": 0
+          }
+        ]
+      },
+      "server": {
+        "knockbackAt": 1791770516229,
+        "sequence": 2,
+        "distance": 1.6,
+        "expected": 1.6,
+        "slid": 1.6,
+        "towardZ": 1.6,
+        "settledWithinMs": 507,
+        "movingDuringSlide": false,
+        "energyBefore": 100,
+        "energyAfter": 100,
+        "hurtSequenceBefore": 0,
+        "hurtSequenceAfter": 0,
+        "attackerEnergySpent": 2
+      },
+      "attackerPage": {
+        "frames": 43,
+        "fpsDuringSlide": 30,
+        "shownSlide": 1.6,
+        "shownDirectionZ": 1.6,
+        "maxStepPerFrame": 0.252,
+        "maxTiltDegrees": 17.1,
+        "tiltPeakAfterMs": 120,
+        "uprightAtEnd": true,
+        "attackerMoved": 0,
+        "damageFlash": false,
+        "sequenceSeen": 2
+      },
+      "victimPage": {
+        "frames": 43,
+        "fpsDuringSlide": 31.8,
+        "shownSlide": 1.6,
+        "shownDirectionZ": 1.6,
+        "maxStepPerFrame": 0.253,
+        "maxTiltDegrees": 17.2,
+        "tiltPeakAfterMs": 109,
+        "uprightAtEnd": true,
+        "attackerMoved": 0,
+        "damageFlash": false,
+        "sequenceSeen": 2
+      }
+    }
+  ],
+  "players": 5,
+  "environment": {
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/154.0.0.0 Safari/537.36",
+    "devicePixelRatio": 1,
+    "renderer": "ANGLE (Intel, Intel(R) Iris(R) Xe Graphics (0x0000A7A0) Direct3D11 vs_5_0 ps_5_0, D3D11)"
+  },
+  "spot": {
+    "a": {
+      "x": 41.306667563398385,
+      "z": 47.670628594077314
+    },
+    "v": {
+      "x": 41.306667563398385,
+      "z": 49.060628594077315
+    }
+  },
+  "victimHud": {
+    "knockbackSequence": "2",
+    "hurtSequence": "0"
+  },
+  "bots": [
+    {
+      "name": "QA Bot 3",
+      "states": 110,
+      "sawVictim": {
+        "sequence": 2,
+        "energy": 100
+      }
+    },
+    {
+      "name": "QA Bot 4",
+      "states": 109,
+      "sawVictim": {
+        "sequence": 2,
+        "energy": 100
+      }
+    },
+    {
+      "name": "QA Bot 5",
+      "states": 108,
+      "sawVictim": {
+        "sequence": 2,
+        "energy": 100
+      }
+    }
+  ],
+  "errors": [],
+  "pass": true
+}

@@ -15,8 +15,8 @@ import { LandscapeInstances } from '../dist/src/world-assets.js';
 // The delivered spruce's crown profile (crownProfile of valley-pine model-c2, measured
 // 2026-10-12): 0.5 m bands, each widened to its neighbours. Its geometry is not loaded here.
 const SPRUCE_CROWN = Float32Array.from([
-  0.75, 0.75, 0.26, 1.87, 1.98, 1.98, 1.98, 1.98, 1.9, 1.9, 1.86, 1.7, 1.65, 1.48, 1.41, 1.12,
-  0.93, 0.82, 0.62, 0.41,
+  0.75, 0.75, 0.26, 1.87, 1.98, 1.98, 1.98, 1.98, 1.9, 1.9, 1.86, 1.7, 1.65, 1.48, 1.41, 1.12, 0.93,
+  0.82, 0.62, 0.41,
 ]);
 export function landscapeFixtures(Type = LandscapeInstances) {
   const grassPlacement = (item) => ({
@@ -40,7 +40,9 @@ export function landscapeFixtures(Type = LandscapeInstances) {
       key: 'meadow-grass',
       distances: [1.1, 1.1, 28],
       foliage: true,
-      placements: SCENERY.grass.filter((p) => (p.key ?? 'meadow-grass') === 'meadow-grass').map(grassPlacement),
+      placements: SCENERY.grass
+        .filter((p) => (p.key ?? 'meadow-grass') === 'meadow-grass')
+        .map(grassPlacement),
       generateCell: (x, z) =>
         grassForChunk(x - WORLD.minX / 32, z - WORLD.minZ / 32)
           .filter((p) => !p.surface && p.key === 'meadow-grass')

@@ -233,6 +233,13 @@ export function updateHunting(
   let changed = false;
   const reportHit = (player, strike) => {
     changed = true;
+    if (strike.kind === 'player') {
+      // Seen in the slide itself; both sides only get quiet notices.
+      if (!strike.knockedBack) return;
+      notify(player, `${strike.target.name}を押し返した。`, 'info', false);
+      notify(strike.target, `${player.name}に押し返された。元気は減りません。`, 'info', false);
+      return;
+    }
     if (strike.kind === 'companion') {
       const key = strike.target.key;
       notify(

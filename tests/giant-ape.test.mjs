@@ -55,6 +55,8 @@ test('ape strike uses server timing, one forward hostile and no client supplied 
     animals: [],
     enemies: [front, rear],
     collision: new CollisionWorld([], { river: false }),
+    // Without the knockback rule the peer is passed by (tests/player-knockback.test.mjs).
+    rules: { playerKnockback: false },
   };
   const profile = attackProfile(player);
   assert.equal(

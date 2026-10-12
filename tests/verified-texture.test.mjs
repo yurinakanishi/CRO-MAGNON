@@ -801,7 +801,9 @@ test('the gallery paints only verified images and releases them when it closes',
   assert.equal(requests.length, 10);
   let mesh = null;
   cave.scene.traverse((node) => {
-    if (node.isMesh && node.material.customProgramCacheKey().startsWith('camp-cave-')) mesh = node;
+    // The spring draws its two sides with a material each (material-variants.ts).
+    const materials = node.isMesh ? [node.material].flat() : [];
+    if (materials.some((m) => m.customProgramCacheKey().startsWith('camp-cave-'))) mesh = node;
   });
   const uniforms = caveUniforms(mesh.material);
   const samplers = [

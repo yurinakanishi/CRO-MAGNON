@@ -1,5 +1,6 @@
 import { movePlayer } from '../shared/movement.mjs';
 import { attackProfile } from '../shared/combat-profiles.mjs';
+import { knockbackSliding, stepKnockback } from '../shared/knockback.mjs';
 
 /** Display-only simulation. Inventory, combat outcomes and world state stay authoritative. */
 export class LocalPrediction {
@@ -86,11 +87,16 @@ export class LocalPrediction {
   step(dt: number, now: number, serverNow: number, collision, obstacles, configuredSpeed?: number) {
     const p = this.actor;
     if (!this.enabled || !p) return null;
+    const move = (actor, dx, dz) => collision.move(actor, dx, dz, p.radius, obstacles);
+    // A blow from another player slides the body along the server's curve, even
+    // during our own attack; steering resumes once the slide settles.
+    const sliding = now - this.receivedAt <= 250 && knockbackSliding(p);
     if (
-      now - this.receivedAt > 250 ||
-      p.downedUntil ||
-      p.carrierId ||
-      (p.attackSequence && serverNow - p.attackAt < attackProfile(p).durationMs)
+      !sliding &&
+      (now - this.receivedAt > 250 ||
+        p.downedUntil ||
+        p.carrierId ||
+        (p.attackSequence && serverNow - p.attackAt < attackProfile(p).durationMs))
     ) {
       p.moving = false;
       p.running = false;
@@ -101,24 +107,30 @@ export class LocalPrediction {
         ? Object.assign(this.display, p, { x: this.display.x, z: this.display.z })
         : p;
     }
-    const input = now - this.inputAt < 250 ? this.input : { dx: 0, dz: 0, running: false };
-    Object.assign(p, {
-      dx: input.dx,
-      dz: input.dz,
-      inputFacing: 'facing' in input ? input.facing : undefined,
-      lastInput: now,
-      runningRequested: input.running,
-    });
-    // A small, bounded RTT estimate covers the packet's trip; the next snapshot
-    // still corrects the position. No client clock is trusted by the server.
-    const age = Math.min(100, Math.max(0, this.latencyMs / 2));
-    const catchup = p.predictionStarted ? 0 : age / 1000;
-    p.predictionStarted = true;
-    const move = (actor, dx, dz) => collision.move(actor, dx, dz, p.radius, obstacles);
-    if (catchup) movePlayer(p, catchup, now, move, configuredSpeed, this.speedScale);
-    const beforeX = p.x,
+    let beforeX = p.x,
       beforeZ = p.z;
-    movePlayer(p, Math.min(0.05, dt), now, move, configuredSpeed, this.speedScale);
+    if (sliding) {
+      stepKnockback(p, serverNow, move);
+      Object.assign(p, { moving: false, running: false, speed: 0, predictionStarted: true });
+    } else {
+      const input = now - this.inputAt < 250 ? this.input : { dx: 0, dz: 0, running: false };
+      Object.assign(p, {
+        dx: input.dx,
+        dz: input.dz,
+        inputFacing: 'facing' in input ? input.facing : undefined,
+        lastInput: now,
+        runningRequested: input.running,
+      });
+      // A small, bounded RTT estimate covers the packet's trip; the next snapshot
+      // still corrects the position. No client clock is trusted by the server.
+      const age = Math.min(100, Math.max(0, this.latencyMs / 2));
+      const catchup = p.predictionStarted ? 0 : age / 1000;
+      p.predictionStarted = true;
+      if (catchup) movePlayer(p, catchup, now, move, configuredSpeed, this.speedScale);
+      beforeX = p.x;
+      beforeZ = p.z;
+      movePlayer(p, Math.min(0.05, dt), now, move, configuredSpeed, this.speedScale);
+    }
     if (!this.display) this.display = { ...p };
     if (this.reconcile) {
       // Continue this frame's actual movement from the last displayed position.

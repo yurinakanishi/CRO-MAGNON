@@ -76,6 +76,8 @@ import { resourceAppearance } from '../shared/biome-scenery.mjs';
 import { CharacterAssets } from './character-assets.js';
 import { confirmedAction } from './character-animation.js';
 import { jumpHeight, jumpProgress } from '../shared/jumping.mjs';
+import { knockbackLead } from '../shared/knockback.mjs';
+import { applyKnockbackTilt } from './knockback-tilt.js';
 import { orientSpear } from './spear-pose.js';
 import { orientKatana } from './katana-pose.js';
 import { SpellEffects } from './spell-effects.js';
@@ -1485,6 +1487,8 @@ export class WorldRenderer {
       if (!entity) {
         const model = new VisibleActorGroup();
         model.position.set(p.x, walkHeight(p.x, p.z), p.z);
+        // Yaw outermost, so a knockback tilt rocks the body in its own frame.
+        model.rotation.order = 'YXZ';
         model.rotation.y = p.facing ?? 0;
         this.scene.add(model);
         const label = this.createLabel(
@@ -2045,9 +2049,9 @@ export class WorldRenderer {
   }
 
   /** The camera beside an actor. The player's own fades, dithered from 0.55 m beyond the near
-   * plane's reach and not drawn within it; its dithered programs are compiled once the world
-   * has settled, or two seconds after the actor arrived. Another actor whose body holds the
-   * camera is not drawn while it does. */
+   * plane's reach and not drawn within it; it wears its dithered materials once they are
+   * compiled, in the background from two seconds after it arrived or once the world has
+   * settled (ActorFade). Another actor whose body holds the camera is not drawn meanwhile. */
   private fadeNearCamera(self, viewed: boolean, reach: number, time: number) {
     const eye = this.camera.position,
       actor = self?.actor?.root ?? null;
@@ -2056,23 +2060,27 @@ export class WorldRenderer {
       this.selfFade = this.selfFadeActor = null;
     }
     if (actor && !this.selfFade) {
-      this.selfFade = new ActorFade([self.model, self.torch?.root].filter(Boolean));
+      this.selfFade = new ActorFade([self.model, self.torch?.root].filter(Boolean), true);
       this.selfFadeActor = actor;
       this.selfFadeSince = time;
     }
     if (this.selfFade) {
+      let opacity = 1;
       // The companion view does not draw the player at all (self.model.visible).
-      if (viewed) this.selfFade.restore();
-      else {
+      if (!viewed) {
         self.model.updateMatrixWorld();
         const t = Math.min(
           Math.max((actorDistance(this.selfFade.roots, eye) - reach) / 0.55, 0),
           1,
         );
-        this.selfFade.set(t * t * (3 - 2 * t));
+        opacity = t * t * (3 - 2 * t);
       }
-      if (this.selfFade.opacity === 1 && (this.streamingSettled || time - this.selfFadeSince > 2))
-        this.selfFade.prepare(this.renderer, this.scene, this.camera);
+      this.selfFade.set(
+        opacity,
+        this.streamingSettled || time - this.selfFadeSince > 2
+          ? { renderer: this.renderer, scene: this.scene, camera: this.camera }
+          : null,
+      );
     }
     const inside = new Set<THREE.Object3D>();
     const test = (
@@ -2328,6 +2336,8 @@ export class WorldRenderer {
       entity.actor?.pettingPose.restore();
       entity.actor?.leanPose?.restore();
       entity.actor?.carrySupportPose?.restore();
+      // Upright unless the walking branch below rocks it along a knockback.
+      model.rotation.x = model.rotation.z = 0;
       if (p.mountId || p.boatId || p.carrierId || p.downedUntil) {
         entity.actor?.carrySupportPose?.reset();
         entity.actor?.leanPose?.reset();
@@ -2437,7 +2447,11 @@ export class WorldRenderer {
         model.position.set(p.x, walkHeight(p.x, p.z), p.z);
         model.rotation.y = p.facing;
       }
-      let remaining = Math.hypot(p.x - model.position.x, p.z - model.position.z);
+      // Between snapshots a knockback slide continues along its shared curve.
+      const lead = p === predicted ? null : knockbackLead(p, this.serverNow()),
+        targetX = p.x + (lead?.x ?? 0),
+        targetZ = p.z + (lead?.z ?? 0);
+      let remaining = Math.hypot(targetX - model.position.x, targetZ - model.position.z);
       // A long suspension or server recovery can skip many movement snapshots.
       // Accept that authoritative correction instead of interpolating through a
       // building along a route the player never actually took.
@@ -2448,8 +2462,8 @@ export class WorldRenderer {
       }
       const next = this.collision.move(
         model.position,
-        (p.x - model.position.x) * (p === predicted || remaining < 0.012 ? 1 : factor),
-        (p.z - model.position.z) * (p === predicted || remaining < 0.012 ? 1 : factor),
+        (targetX - model.position.x) * (p === predicted || remaining < 0.012 ? 1 : factor),
+        (targetZ - model.position.z) * (p === predicted || remaining < 0.012 ? 1 : factor),
         p.radius ?? WORLD.playerRadius,
         this.villageRenderer?.obstacles() ?? [],
       );
@@ -2499,6 +2513,8 @@ export class WorldRenderer {
         Math.cos(facing - model.rotation.y),
       );
       model.rotation.y += diff * (1 - Math.exp(-dt * 24));
+      // An ape carrying someone slides upright, so the shoulder seat stays level.
+      if (!p.passengerId) applyKnockbackTilt(model, p, this.serverNow());
       if (entity.actor) {
         if (caveInteriorWeight(p) > 0 && entity.actor.animation.name === 'Attack')
           entity.actor.animation.change('Idle_Loop', 0.05);

@@ -4,6 +4,7 @@ import { EventEmitter } from 'node:events';
 import * as THREE from 'three';
 import { WorldAssets } from '../dist/src/world-assets.js';
 import { buildStonePile } from '../dist/src/stone-pile.js';
+import { instancedMaterial } from '../dist/src/material-variants.js';
 import { WorldRenderer } from '../dist/src/world3d.js';
 import { RegionalScenery } from '../dist/src/regional-scenery.js';
 import {
@@ -61,7 +62,8 @@ test('collection removes whole stones at every LOD without shrinking or moving s
   assert.equal(list.length, 3);
   list.forEach((batch) => {
     assert.equal(batch.geometry, geometry);
-    assert.equal(batch.material, material);
+    // The template material's one instanced copy (material-variants.ts).
+    assert.equal(batch.material, instancedMaterial(material));
   });
   const world = Object.create(WorldRenderer.prototype);
   for (let amount = 8; amount >= 0; amount--) {

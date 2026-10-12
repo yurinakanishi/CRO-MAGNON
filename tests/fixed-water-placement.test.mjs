@@ -5,6 +5,7 @@ import * as THREE from 'three';
 import { geometryScene } from '../scripts/measure-collision-bounds.mjs';
 import { WorldAssets } from '../dist/src/world-assets.js';
 import { buildWaterAssets } from '../dist/src/world-scenery.js';
+import { drawnInTwoPasses } from '../dist/src/material-variants.js';
 
 // The delivered river-water GLB (meshes only), as the world's verified template.
 const manifest = JSON.parse(await readFile('public/models/river-water/asset.json', 'utf8'));
@@ -183,16 +184,40 @@ test('shader time still reaches every fixed water material', () => {
     fixed.scene.traverse((node) => (found ??= node.name === name ? node.material : null));
     return found;
   };
+  // River tiles and marsh pools draw their back and front faces with a material each.
+  const tile = fixed.water.children[0].material,
+    pool = fixed.marsh.pools.children[0].children[0].material;
+  for (const sides of [tile, pool])
+    assert.deepEqual(
+      sides.map((side) => side.side),
+      [THREE.BackSide, THREE.FrontSide],
+    );
   const bound = [
     compiled(fixed.waterMaterial).flowTime,
+    ...tile.map((side) => compiled(side).flowTime),
     compiled(material('Source river water 0')).flowTime,
     compiled(material('Source water with calm lake ripples')).lakeTime,
     compiled(material('Waterfall splash droplets')).flowTime,
-    compiled(fixed.marsh.pools.children[0].children[0].material).marshTime,
+    ...pool.map((side) => compiled(side).marshTime),
   ];
   for (const uniform of bound) assert.equal(uniform, time);
   frame(fixed, 8);
   assert.equal(bound[0].value, 8 / 30);
+});
+
+test("no fixed water is drawn in Three's two transparent passes", () => {
+  // Each such draw marks its material changed twice, so its program is looked up again on
+  // every frame (material-variants.ts).
+  const fixed = world();
+  for (const root of fixedRoots(fixed))
+    root.traverse((node) => {
+      for (const material of [node.material ?? []].flat())
+        assert.equal(drawnInTwoPasses(material), false, node.name);
+    });
+  // The pools share their own copy of the tile's buffers, not the template's.
+  const pools = fixed.marsh.pools.children.map((root) => root.children[0].geometry);
+  assert.ok(pools.every((geometry) => geometry === pools[0]));
+  assert.ok(nodes(source.scene).every((node) => node.geometry !== pools[0]));
 });
 
 test('a moving child and an explicit parent update still propagate through the fixed water', () => {

@@ -12,6 +12,8 @@ interface AttackProfile {
   reach: number;
   halfAngle: number;
   energy: number;
+  /** How far a blow slides another player (metres); players are never hurt. */
+  knockback: number;
   modelKey?: string;
   projectileSpeed?: number;
   projectileRadius?: number;
@@ -36,6 +38,7 @@ export const ATTACK_PROFILES = Object.freeze({
     reach: 1.05,
     halfAngle: (45 * Math.PI) / 180,
     energy: 3,
+    knockback: 1.8,
   }),
   unarmed: Object.freeze({
     id: 'unarmed',
@@ -50,6 +53,7 @@ export const ATTACK_PROFILES = Object.freeze({
     reach: 0.24,
     halfAngle: (55 * Math.PI) / 180,
     energy: 3,
+    knockback: 2.6,
   }),
   spear: Object.freeze({
     id: 'spear',
@@ -64,6 +68,7 @@ export const ATTACK_PROFILES = Object.freeze({
     reach: 1.65,
     halfAngle: (55 * Math.PI) / 180,
     energy: 2,
+    knockback: 1.6,
     modelKey: 'wooden-spear',
   }),
   obsidianSpear: Object.freeze({
@@ -79,6 +84,7 @@ export const ATTACK_PROFILES = Object.freeze({
     reach: 1.65,
     halfAngle: (55 * Math.PI) / 180,
     energy: 2,
+    knockback: 1.9,
     modelKey: 'obsidian-spear',
   }),
   katana: Object.freeze({
@@ -94,6 +100,7 @@ export const ATTACK_PROFILES = Object.freeze({
     reach: 0.8,
     halfAngle: (65 * Math.PI) / 180,
     energy: 2,
+    knockback: 1.4,
     modelKey: 'kunoichi-katana',
   }),
   magic: Object.freeze({
@@ -110,6 +117,7 @@ export const ATTACK_PROFILES = Object.freeze({
     reach: 8,
     halfAngle: (12 * Math.PI) / 180,
     energy: 4,
+    knockback: 2.2,
     projectileSpeed: 7,
     projectileRadius: 0.16,
   }),
@@ -126,6 +134,7 @@ export const ATTACK_PROFILES = Object.freeze({
     reach: 7,
     halfAngle: (12 * Math.PI) / 180,
     energy: 3,
+    knockback: 1.6,
     projectileSpeed: 9,
     projectileRadius: 0.14,
   }),

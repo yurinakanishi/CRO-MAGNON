@@ -1,10 +1,11 @@
 import * as THREE from 'three';
 import { CAVE_SPRING, caveSpringEdge } from '../shared/cave-spring.mjs';
+import { drawSidesInTurn } from './material-variants.js';
 
 /** Water is a runtime effect over the basin of the verified source-derived GLB.
  * It owns no rock model, lights, reflection render target or new texture. */
 export class CaveSpring {
-  readonly root: THREE.Mesh<THREE.BufferGeometry, THREE.MeshPhysicalMaterial>;
+  readonly root: THREE.Mesh;
   private time = { value: 0 };
 
   constructor() {
@@ -65,6 +66,8 @@ export class CaveSpring {
     this.root = new THREE.Mesh(geometry, material);
     this.root.name = 'cave-spring-water';
     this.root.renderOrder = 2;
+    // Three's two transparent passes, drawn with a material per side (material-variants.ts).
+    drawSidesInTurn(this.root);
   }
 
   update(time: number) {
@@ -74,6 +77,6 @@ export class CaveSpring {
   dispose() {
     this.root.removeFromParent();
     this.root.geometry.dispose();
-    this.root.material.dispose();
+    for (const material of [this.root.material].flat()) material.dispose();
   }
 }

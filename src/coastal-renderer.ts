@@ -1,6 +1,7 @@
 import { setText } from './dom-updates.js';
 import * as THREE from 'three';
 import { isMesh } from './three-types.js';
+import { instancedMaterial } from './material-variants.js';
 import { SHELL_BEDS, MIDDEN_SITES, KNAPPING_SITES, middenScale } from '../shared/coastal-sites.mjs';
 import { walkHeight } from '../shared/terrain.mjs';
 
@@ -43,7 +44,7 @@ export class CoastalRenderer {
             if (!isMesh(node)) return;
             const mesh = new THREE.InstancedMesh(
               node.geometry,
-              node.material,
+              instancedMaterial(node.material),
               SHELL_BEDS.length * 12,
             );
             mesh.userData.sourceTransform = node.matrixWorld.clone();

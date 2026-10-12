@@ -61,6 +61,7 @@ import { animalIsSolid, updateHunting } from '../shared/hunting.mjs';
 import { movePlayer } from '../shared/movement.mjs';
 import { CAMP_SPAWN, spawnFacing, spawnSite } from '../shared/spawn-sites.mjs';
 import { canStartJump, jumpProgress } from '../shared/jumping.mjs';
+import { stepKnockback } from '../shared/knockback.mjs';
 import { normalizeDifficulty } from '../shared/difficulty.mjs';
 
 import { carrying, updateCarrying, releaseCarry, clearCarryOffer } from '../shared/carrying.mjs';
@@ -400,6 +401,8 @@ export function createGameCore({
       lastChat: 0,
       jumpAt: 0,
       jumpSequence: 0,
+      // A reconnection arrives standing; any slide from before it is over.
+      knockbackDone: 1,
       runningRequested: false,
       needsWorld: false,
       ready: room.camp.level > 0,
@@ -680,7 +683,17 @@ export function createGameCore({
             room.residents,
           )
           .map(actorObstacle);
-        if (
+        const move = (p, dx, dz) => room.collision.move(p, dx, dz, player.radius, dynamic);
+        const beforeX = player.x,
+          beforeZ = player.z;
+        if (stepKnockback(player, now, move)) {
+          // Knocked back by another player: slide first, steer once it settles.
+          player.speed = 0;
+          player.moving = false;
+          player.running = false;
+          player.velocityX = dt > 0 ? (player.x - beforeX) / dt : 0;
+          player.velocityZ = dt > 0 ? (player.z - beforeZ) / dt : 0;
+        } else if (
           player.downedUntil ||
           (player.attackSequence && now - player.attackAt < attackProfile(player).durationMs)
         ) {
@@ -688,14 +701,7 @@ export function createGameCore({
           player.moving = false;
           player.running = false;
         } else if (!player.mountId && !player.boatId && !player.carrierId) {
-          movePlayer(
-            player,
-            dt,
-            now,
-            (p, dx, dz) => room.collision.move(p, dx, dz, player.radius, dynamic),
-            undefined,
-            roomRules(room).speedScale,
-          );
+          movePlayer(player, dt, now, move, undefined, roomRules(room).speedScale);
         }
         if (player.caveTorchOff && caveInteriorWeight(player) === 0) player.caveTorchOff = false;
         if (heartbeat) {
@@ -826,6 +832,13 @@ export function createGameCore({
                 'carryOfferUntil',
                 'carrySafePoint',
                 'carryHurtSequence',
+                'knockbackAt',
+                'knockbackSequence',
+                'knockbackX',
+                'knockbackZ',
+                'knockbackDistance',
+                'knockbackDone',
+                'knockbackWarp',
               ].includes(key)
                 ? undefined
                 : value,

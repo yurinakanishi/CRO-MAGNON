@@ -36,22 +36,33 @@ export function actorDistance(roots: readonly THREE.Object3D[], point: THREE.Vec
 
 /**
  * An actor drawn faded for the camera, which has come close to it: dithered (alphaHash keeps
- * it opaque-sorted and depth-tested, no blending order) and, at no opacity, not drawn. The
- * actor's meshes wear this fade's own copies of their materials meanwhile: actors of one
- * model share theirs (character-assets.ts), and those never change. A mesh given another
- * material while faded (an actor LOD switch) wears that one's copy from the next frame.
+ * it opaque-sorted and depth-tested, with no blending order) and, at no opacity, not drawn.
+ * The meshes wear this fade's own copies of their materials, since actors of one model share
+ * theirs (character-assets.ts) and those never change. A copy is drawn only once its program
+ * is linked (link): a mesh whose copy is still compiling is shown as it is, or not drawn
+ * (a copy that is not drawn needs no program).
+ *
+ * A steady fade (the player's own actor) keeps wearing its linked copies at full opacity
+ * too: they are then compiled whenever the scene's lights change, as the actor's own
+ * materials would be, and a fade only sets a uniform, never a program, on its frame. Another
+ * fade wears copies only while the actor is hidden. A mesh given another material (an actor
+ * LOD switch) wears that material's copy once it is linked.
  */
 export class ActorFade {
   private copies = new Map<THREE.Material, THREE.Material>();
   private made = new Set<THREE.Material>();
+  /** Copies whose programs are linked. */
+  private linked = new Set<THREE.Material>();
+  private linking = false;
+  /** Each mesh's own material while it wears a copy. */
   private worn = new Map<THREE.Mesh, Worn>();
-  private prepared = false;
-  /** The dithered copies' programs are linked (prepare): partial fades draw from then on. */
-  ready = false;
   opacity = 1;
 
   /** `roots` hold what is drawn of the actor: its model and anything it carries outside it. */
-  constructor(readonly roots: readonly THREE.Object3D[]) {}
+  constructor(
+    readonly roots: readonly THREE.Object3D[],
+    readonly steady = false,
+  ) {}
 
   private meshes(visit: (mesh: THREE.Mesh) => void) {
     for (const root of this.roots)
@@ -82,51 +93,81 @@ export class ActorFade {
     return Array.isArray(worn) ? worn.every((m) => this.made.has(m)) : this.made.has(worn);
   }
 
-  /** Draw the actor at this opacity: 1 gives its meshes back their own materials. Until the
-   * dithered programs are ready, a partial fade would link them on its frame, so the actor
-   * is shown or not drawn instead (an undrawn copy needs no program). */
-  set(opacity: number) {
-    let value = Math.min(Math.max(opacity, 0), 1);
-    if (!this.ready && value > 0 && value < 0.999) value = value < 0.5 ? 0 : 1;
-    this.opacity = value;
-    if (this.opacity >= 0.999) {
-      this.restore();
-      return;
-    }
+  private copiesOf(materials: Worn) {
+    return Array.isArray(materials)
+      ? materials.map((material) => this.copyOf(material))
+      : this.copyOf(materials);
+  }
+
+  private isLinked(copies: Worn) {
+    return Array.isArray(copies)
+      ? copies.every((m) => this.linked.has(m))
+      : this.linked.has(copies);
+  }
+
+  /**
+   * Draw the actor at this opacity, every frame it may change. With `link`, copies not yet
+   * linked are compiled in the background with that scene's lights (compileAsync); without
+   * it, nothing is compiled.
+   */
+  set(
+    opacity: number,
+    link: { renderer: THREE.WebGLRenderer; scene: THREE.Scene; camera: THREE.Camera } | null = null,
+  ) {
+    this.opacity = Math.min(Math.max(opacity, 0), 1);
+    const hidden = this.opacity <= 0.02,
+      unlinked: [THREE.Mesh, Worn][] = [];
     this.meshes((mesh) => {
-      const current = mesh.material;
-      if (this.isCopy(current)) return;
-      this.worn.set(mesh, current);
-      mesh.material = Array.isArray(current)
-        ? current.map((material) => this.copyOf(material))
-        : this.copyOf(current);
+      const current = mesh.material,
+        own = this.isCopy(current) ? this.worn.get(mesh)! : current,
+        copies = this.copiesOf(own);
+      const ready = this.isLinked(copies),
+        // Not linked yet: shown as it is, or not drawn below half.
+        out = hidden || (!ready && this.opacity < 0.5),
+        wear = out || (ready && (this.steady || this.opacity < 0.999));
+      if (wear) {
+        this.worn.set(mesh, own);
+        mesh.material = copies;
+      } else {
+        mesh.material = own;
+        this.worn.delete(mesh);
+      }
+      if (!ready) unlinked.push([mesh, copies]);
     });
     for (const [original, copy] of this.copies) {
       copy.opacity = original.opacity * this.opacity;
-      copy.visible = original.visible && this.opacity > 0.02;
+      copy.visible = original.visible && !hidden && (this.linked.has(copy) || this.opacity >= 0.5);
     }
+    if (link && unlinked.length && !this.linking) this.link(unlinked, link);
   }
 
-  /** Compile the dithered copies' programs with the scene's lights, while nothing is faded;
-   * a parallel-compiling driver links them in the background, and `ready` follows. */
-  prepare(renderer: THREE.WebGLRenderer, scene: THREE.Scene, camera: THREE.Camera) {
-    if (this.prepared || this.worn.size) return;
-    this.prepared = true;
-    const restore: [THREE.Mesh, Worn][] = [];
-    this.meshes((mesh) => {
-      restore.push([mesh, mesh.material]);
-      mesh.material = Array.isArray(mesh.material)
-        ? mesh.material.map((material) => this.copyOf(material))
-        : this.copyOf(mesh.material);
-    });
-    let linked: Promise<unknown>;
+  /** Compile these meshes' copies (their programs follow these meshes' kinds: skinned, morph
+   * targets) and mark them linked when a parallel-compiling driver has linked them. */
+  private link(
+    meshes: [THREE.Mesh, Worn][],
+    {
+      renderer,
+      scene,
+      camera,
+    }: { renderer: THREE.WebGLRenderer; scene: THREE.Scene; camera: THREE.Camera },
+  ) {
+    this.linking = true;
+    const worn = meshes.map(([mesh]) => [mesh, mesh.material] as const),
+      copies = new Set(meshes.flatMap(([, copies]) => (Array.isArray(copies) ? copies : [copies])));
+    for (const [mesh, copies] of meshes) mesh.material = copies;
+    let compiled: Promise<unknown>;
     try {
-      // compileAsync compiles before it first waits: the copies can be taken off at once.
-      linked = Promise.all(this.roots.map((root) => renderer.compileAsync(root, camera, scene)));
+      // compileAsync compiles before it first waits: the meshes take back what they wore.
+      compiled = Promise.all(this.roots.map((root) => renderer.compileAsync(root, camera, scene)));
     } finally {
-      for (const [mesh, material] of restore) mesh.material = material;
+      for (const [mesh, material] of worn) mesh.material = material;
     }
-    linked.then(() => (this.ready = true)).catch(() => {});
+    compiled
+      .then(() => {
+        for (const copy of copies) if (this.made.has(copy)) this.linked.add(copy);
+      })
+      .catch(() => {})
+      .finally(() => (this.linking = false));
   }
 
   /** The actor's own materials, back on every mesh that still wears this fade's copies. */
@@ -142,5 +183,6 @@ export class ActorFade {
     for (const copy of this.made) copy.dispose();
     this.copies.clear();
     this.made.clear();
+    this.linked.clear();
   }
 }

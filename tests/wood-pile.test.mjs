@@ -3,6 +3,7 @@ import assert from 'node:assert/strict';
 import * as THREE from 'three';
 import { WorldAssets } from '../dist/src/world-assets.js';
 import { buildWoodPile } from '../dist/src/wood-pile.js';
+import { instancedMaterial } from '../dist/src/material-variants.js';
 import { WorldRenderer } from '../dist/src/world3d.js';
 import { woodPileBounds, woodPileLayout } from '../dist/shared/wood-pile-layout.mjs';
 import { MODEL_BOUNDS } from '../dist/shared/model-bounds.mjs';
@@ -39,7 +40,8 @@ test('each collection removes exactly one whole log at every LOD, leaving other 
   const original = batches.map((b) => [...b.instanceMatrix.array]);
   for (const batch of batches) {
     assert.equal(batch.geometry, geometry);
-    assert.equal(batch.material, material);
+    // The template material's one instanced copy (material-variants.ts).
+    assert.equal(batch.material, instancedMaterial(material));
     assert.ok(!batch.material.clippingPlanes?.length);
   }
   const world = Object.create(WorldRenderer.prototype);

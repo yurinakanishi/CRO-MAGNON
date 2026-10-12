@@ -211,6 +211,12 @@ export function snapshot(
         spearHead,
         hurtSequence,
         hurtAt,
+        knockbackAt,
+        knockbackSequence,
+        knockbackX,
+        knockbackZ,
+        knockbackDistance,
+        knockbackDone,
         defeatSequence,
         downedUntil,
         invulnerableUntil,
@@ -266,6 +272,17 @@ export function snapshot(
         spearHead: spearHead === 'obsidian' ? 'obsidian' : 'wood',
         hurtSequence,
         hurtAt,
+        // Only a player who has been knocked back carries the slide (shared/knockback.mts).
+        ...(knockbackAt
+          ? {
+              knockbackAt,
+              knockbackSequence,
+              knockbackX,
+              knockbackZ,
+              knockbackDistance,
+              knockbackDone,
+            }
+          : {}),
         defeatSequence,
         downedUntil,
         invulnerableUntil,

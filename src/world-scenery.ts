@@ -25,6 +25,7 @@ import { buildMountainRiver } from './mountain-river.js';
 import { DECORATIVE_GRASS_ENABLED, groundcoverVisible } from './scenery-visibility.js';
 import { BIOME_SCENERY } from '../shared/biome-scenery.mjs';
 import { PASSABLE_PLANTS } from './tree-sight.js';
+import { drawSidesInTurn } from './material-variants.js';
 
 const TAU = Math.PI * 2;
 const random = seededRandom;
@@ -157,6 +158,9 @@ export function buildWaterAssets(world) {
       geometry.computeBoundingSphere();
       world.water.add(new THREE.Mesh(geometry, world.waterMaterial));
     }
+  // Each tile draws Three's two transparent passes with a material per side, so the shared
+  // material is not marked changed twice per tile on every frame (material-variants.ts).
+  for (const tile of world.water.children) drawSidesInTurn(tile);
   world.scene.add(world.water);
   fixPlacement(world.water);
   world.mountainRiver = buildMountainRiver(waterTemplate, world.waterMaterial.userData.time);
@@ -179,6 +183,8 @@ function buildMarshAssets(world) {
     centre = box.getCenter(new THREE.Vector3());
   const pools = new THREE.Group();
   pools.name = 'behemoth marsh pools';
+  // The pools' own copy of the tile's buffers, which holds their two side passes as groups.
+  const poolGeometry = new Map<THREE.BufferGeometry, THREE.BufferGeometry>();
   for (const pool of M.pools) {
     // The river tile's own ripple texture, tinted toward still tea-coloured water.
     const material = new THREE.MeshStandardMaterial({
@@ -216,7 +222,10 @@ function buildMarshAssets(world) {
     const root = world.worldAssets.create('river-water');
     root.traverse((node) => {
       if (!isMesh(node)) return;
+      if (!poolGeometry.has(node.geometry)) poolGeometry.set(node.geometry, node.geometry.clone());
+      node.geometry = poolGeometry.get(node.geometry);
       node.material = material;
+      drawSidesInTurn(node);
       // The shore is cut in the colour pass only; the square tile must not shadow the floor.
       node.castShadow = false;
       node.receiveShadow = false;

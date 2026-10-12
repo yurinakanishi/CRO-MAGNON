@@ -47,6 +47,13 @@ export interface PlayerSnapshot extends Point {
   fishing?: FishingActivity | null;
   hurtSequence: number;
   hurtAt: number;
+  /** A blow from another player: the slide's start, direction, length and applied share. */
+  knockbackAt?: number;
+  knockbackSequence?: number;
+  knockbackX?: number;
+  knockbackZ?: number;
+  knockbackDistance?: number;
+  knockbackDone?: number;
   defeatSequence: number;
   downedUntil: number;
   invulnerableUntil: number;

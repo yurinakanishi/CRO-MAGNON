@@ -28,6 +28,8 @@ export type RoomRules = {
   crowMinionsOneBlow: boolean;
   /** Title starts may name one of the six SPAWN_SITES. Menu warps are available in every room. */
   spawnChoice: boolean;
+  /** Players' blows knock other players back without costing them energy (MMO, 2026-10-12). */
+  playerKnockback: boolean;
 };
 export const DEFAULT_RULES: RoomRules = Object.freeze({
   recoveryEnergy: 50,
@@ -42,6 +44,7 @@ export const DEFAULT_RULES: RoomRules = Object.freeze({
   castleSeal: true,
   crowMinionsOneBlow: false,
   spawnChoice: false,
+  playerKnockback: true,
 });
 export const EXHIBITION_RULES: RoomRules = Object.freeze({
   recoveryEnergy: 100,
@@ -56,6 +59,8 @@ export const EXHIBITION_RULES: RoomRules = Object.freeze({
   castleSeal: false,
   crowMinionsOneBlow: true,
   spawnChoice: true,
+  // The finished exhibition keeps its recorded rules: a blow passes other players by.
+  playerKnockback: false,
 });
 // Fixtures and old saves may carry only some fields.
 export const roomRules = (room): RoomRules => ({ ...DEFAULT_RULES, ...room?.rules });

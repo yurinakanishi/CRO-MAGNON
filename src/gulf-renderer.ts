@@ -3,6 +3,7 @@ import { FISHING_SITES } from '../shared/fishing-sites.mjs';
 import { BOATING } from '../shared/boats.mjs';
 import * as THREE from 'three';
 import { isMesh } from './three-types.js';
+import { instancedMaterial } from './material-variants.js';
 import { FARM_PLOTS, SPRINGS, SETTLEMENTS, LANDINGS, GULF_STOPS } from '../shared/gulf-region.mjs';
 import { walkHeight } from '../shared/terrain.mjs';
 import { plotCrop } from '../shared/crops.mjs';
@@ -25,7 +26,11 @@ export class GulfRenderer {
     template.updateMatrixWorld(true);
     template.traverse((node) => {
       if (!isMesh(node)) return;
-      const mesh = new THREE.InstancedMesh(node.geometry, node.material, FARM_PLOTS.length * 4);
+      const mesh = new THREE.InstancedMesh(
+        node.geometry,
+        instancedMaterial(node.material),
+        FARM_PLOTS.length * 4,
+      );
       mesh.userData.sourceTransform = node.matrixWorld.clone();
       mesh.count = 0;
       world.scene.add(mesh);

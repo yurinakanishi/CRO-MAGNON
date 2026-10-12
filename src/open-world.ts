@@ -1,5 +1,6 @@
 import { isMesh } from './three-types.js';
 import { markActiveInstances, markActiveAttribute } from './instance-updates.js';
+import { instancedMaterial } from './material-variants.js';
 import * as THREE from 'three';
 import { WORLD } from '../shared/world.mjs';
 import { BIOMES, biomeById, nearbyChunks } from '../shared/biomes.mjs';
@@ -230,8 +231,10 @@ export class OpenWorldTerrain {
           'earthCoastal',
           new THREE.InstancedBufferAttribute(new Float32Array(CAPACITY), 1),
         );
+        // River-bank chunks draw `material` on plain meshes; the tiles wear its instanced
+        // copy, released with it (material-variants.ts).
         const material = earthTerrainMaterial(node.material, biome, this.earthTextures),
-          mesh = new THREE.InstancedMesh(geometry, material, CAPACITY);
+          mesh = new THREE.InstancedMesh(geometry, instancedMaterial(material), CAPACITY);
         mesh.count = 0;
         mesh.instanceMatrix.setUsage(THREE.DynamicDrawUsage);
         mesh.frustumCulled = false;

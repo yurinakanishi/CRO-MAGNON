@@ -1725,6 +1725,7 @@ function updateHuntingHUD() {
     enemyAttackSequence: String(nearestEnemy?.attackSequence ?? 0),
     enemyHitSequence: String(nearestEnemy?.hitSequence ?? 0),
     hurtSequence: String(me?.hurtSequence ?? 0),
+    knockbackSequence: String(me?.knockbackSequence ?? 0),
     defeatSequence: String(me?.defeatSequence ?? 0),
     downed: String(downed),
     invulnerable: String(protectedNow),

@@ -21,6 +21,7 @@ import { applyBehemothPalette } from './behemoth-palette.js';
 import { installSkinnedBounds } from './skinned-bounds.js';
 import { SIGHT_MARGIN, crownProfile, segmentNearTree } from './tree-sight.js';
 import { configureActorPerformance, disposeActorPerformance } from './performance-lod.js';
+import { instancedMaterial } from './material-variants.js';
 import { AssetLoadQueue, LOAD_TIER, LoadTicket } from './asset-load-queue.js';
 import {
   packedLevels,
@@ -778,11 +779,12 @@ export class LandscapeInstances {
           this.grassMaterials.add(material);
           return material;
         };
+        // Resources and props draw plain copies of the same template (material-variants.ts).
         const material = this.grassTints
           ? Array.isArray(node.material)
             ? node.material.map(grassMaterial)
             : grassMaterial(node.material)
-          : node.material;
+          : instancedMaterial(node.material);
         const mesh = new THREE.InstancedMesh(node.geometry, material, this.capacity);
         mesh.instanceMatrix.setUsage(THREE.DynamicDrawUsage);
         mesh.count = 0;

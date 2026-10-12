@@ -347,7 +347,7 @@ test('the mountain is discarded only inside the cave envelope, below its measure
   assert.equal(mountainCaveClipped(CAMP_MOUNTAIN.x - 200, -5, CAMP_MOUNTAIN.z), false);
 });
 
-test('a fade dithers its own copies, spares the actors sharing them and gives them back', () => {
+test('a fade dithers linked copies, spares the actors sharing them and gives them back', async () => {
   const shared = new THREE.MeshStandardMaterial({ color: 0x886644 }),
     accent = new THREE.MeshStandardMaterial({ transparent: true, opacity: 0.8 }),
     hook = () => {};
@@ -357,17 +357,35 @@ test('a fade dithers its own copies, spares the actors sharing them and gives th
     body = new THREE.Mesh(new THREE.BoxGeometry(), shared),
     parts = new THREE.Mesh(new THREE.BoxGeometry(), [shared, accent]);
   actor.add(body, parts);
-  const fade = new ActorFade([actor]);
-  // Before its dithered programs are linked, the actor is shown or not drawn, never dithered.
+  // A renderer stand-in: compileAsync sees what the meshes wear while it compiles.
+  const compiled = [],
+    renderer = {
+      compileAsync(root) {
+        compiled.push(body.material);
+        return Promise.resolve(root);
+      },
+    },
+    link = { renderer, scene: new THREE.Scene(), camera: new THREE.PerspectiveCamera() };
+  const settle = () => new Promise((resolve) => setTimeout(resolve, 0));
+  const fade = new ActorFade([actor], true);
+  // Nothing linked: the actor is shown as it is, or not drawn below half; never dithered.
   fade.set(0.6);
   assert.equal(body.material, shared);
   fade.set(0.4);
   assert.equal(body.material.visible, false);
-  assert.equal(fade.opacity, 0);
-  fade.ready = true; // As prepare() leaves it once the renderer has linked the programs.
-  fade.set(0.5);
-  assert.notEqual(body.material, shared);
   assert.equal(body.material.alphaHash, true);
+  fade.set(1, link);
+  assert.equal(compiled.length, 1);
+  assert.notEqual(compiled[0], shared, 'the copies are compiled');
+  assert.equal(body.material, shared, 'and taken off again at once');
+  await settle();
+  // Linked: a steady fade wears its copies at full opacity as well.
+  fade.set(1, link);
+  assert.equal(compiled.length, 1, 'compiled once');
+  assert.equal(body.material, compiled[0]);
+  assert.equal(body.material.opacity, 1);
+  assert.equal(body.material.visible, true);
+  fade.set(0.5);
   assert.equal(body.material.opacity, 0.5);
   assert.equal(body.material.onBeforeCompile, hook, 'program hooks are kept');
   assert.equal(parts.material[1].opacity, 0.4);
@@ -377,21 +395,30 @@ test('a fade dithers its own copies, spares the actors sharing them and gives th
   assert.equal(shared.alphaHash, false);
   fade.set(0);
   assert.equal(body.material.visible, false, 'not drawn at all');
-  // An actor LOD gives the mesh another material while it is faded.
+  // An actor LOD gives the mesh another material: shown as it is until its copy is linked.
   const reduced = new THREE.MeshStandardMaterial();
   body.material = reduced;
-  fade.set(0.3);
+  fade.set(0.7, link);
+  assert.equal(body.material, reduced);
+  await settle();
+  fade.set(0.7, link);
   assert.equal(body.material.alphaHash, true);
-  assert.notEqual(body.material, reduced);
+  assert.equal(body.material.opacity, 0.7);
   const disposed = [];
   for (const m of [parts.material[0], body.material])
     m.addEventListener('dispose', () => disposed.push(m));
-  fade.set(1);
+  fade.dispose();
   assert.equal(body.material, reduced);
   assert.equal(parts.material[0], shared);
   assert.equal(parts.material[1], accent);
-  fade.dispose();
   assert.equal(disposed.length, 2);
+  // Any other actor wears copies only while it is not drawn.
+  const hiding = new ActorFade([actor]);
+  hiding.set(0);
+  assert.equal(body.material.visible, false);
+  hiding.set(1);
+  assert.equal(body.material, reduced);
+  hiding.dispose();
 });
 
 test('the distance to a posed skinned actor never exceeds the distance to its vertices', () => {

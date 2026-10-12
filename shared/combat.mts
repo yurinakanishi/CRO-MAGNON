@@ -4,6 +4,7 @@ import { companionOnGround, hitCompanion } from './companions.mjs';
 import { roomRules } from './room-rules.mjs';
 import { caveInteriorWeight } from './cave-light.mjs';
 import { equippedItem } from './equipment.mjs';
+import { knockBack } from './knockback.mjs';
 
 export const COMBAT = Object.freeze({
   attackDamage: 15,
@@ -49,7 +50,8 @@ const actors = (collection) =>
   collection instanceof Map ? [...collection.values()] : collection || [];
 
 // Only server-owned damageable collections participate. Other players and the
-// friendly village NPC are never searched or selected by a client-supplied ID.
+// friendly village NPC are never searched or selected by a client-supplied ID;
+// a blow reaches another player only through shoveablePlayers (no damage).
 // Companions are explicitly hittable; they recoil, with no health or death.
 export function damageableTargets(room) {
   const playerIds = new Set(room.players.keys());
@@ -74,6 +76,30 @@ export function damageableTargets(room) {
       Number.isFinite(target.radius) &&
       target.radius >= 0,
   );
+}
+
+// Other players a blow can reach where the room allows it: knocked back, never
+// hurt. Riders, passengers, the downed, the freshly recovered and anyone inside
+// a cave are out of reach, and a shoulder caster never strikes its own carrier.
+export function shoveablePlayers(room, attacker, now) {
+  if (!roomRules(room).playerKnockback) return [];
+  return [...room.players.values()]
+    .filter(
+      (target) =>
+        target !== attacker &&
+        target.id !== attacker.carrierId &&
+        !target.downedUntil &&
+        !(target.invulnerableUntil > now) &&
+        !target.mountId &&
+        !target.boatId &&
+        !target.carrierId &&
+        caveInteriorWeight(target) === 0 &&
+        Number.isFinite(target.x) &&
+        Number.isFinite(target.z) &&
+        Number.isFinite(target.radius) &&
+        target.radius >= 0,
+    )
+    .map((target) => ({ target, kind: 'player' }));
 }
 export function inAttackArc(
   player,
@@ -183,8 +209,8 @@ export function resolveAttack(room, player, now = Date.now()) {
     return { hit: false, launched: true };
   }
   // Resolve against the world on the thrust frame, allowing a creature to enter
-  // or leave the attack during windup. A swing can damage only one forward target.
-  const hit = damageableTargets(room)
+  // or leave the attack during windup. A swing can reach only one forward target.
+  const hit = [...damageableTargets(room), ...shoveablePlayers(room, player, now)]
     .filter(
       ({ target }) =>
         withinAttackReach(player, target, profile) &&
@@ -193,10 +219,18 @@ export function resolveAttack(room, player, now = Date.now()) {
     )
     .sort((a, b) => combatDistance(player, a.target) - combatDistance(player, b.target))[0];
   if (!hit) return { hit: false };
-  return applyHit(room, hit, profile, now, player.id, {
-    x: Math.sin(strike.facing),
-    z: Math.cos(strike.facing),
-  });
+  // A struck player is driven straight away from the attacker.
+  const away = { x: hit.target.x - player.x, z: hit.target.z - player.z };
+  return applyHit(
+    room,
+    hit,
+    profile,
+    now,
+    player.id,
+    hit.kind === 'player' && Math.hypot(away.x, away.z) > 1e-6
+      ? away
+      : { x: Math.sin(strike.facing), z: Math.cos(strike.facing) },
+  );
 }
 
 function applyHit(
@@ -207,6 +241,12 @@ function applyHit(
   attackerId = null,
   direction = { x: 0, z: 1 },
 ) {
+  if (kind === 'player') {
+    // Energy stays: the blow only slides the body and interrupts cooking.
+    const knockedBack = knockBack(target, direction.x, direction.z, profile.knockback, now);
+    if (knockedBack) target.cookingEndsAt = 0;
+    return { hit: true, target, kind, killed: false, weapon: profile.key, knockedBack };
+  }
   if (kind === 'companion') {
     hitCompanion(target, direction.x, direction.z, now);
     return { hit: true, target, kind, killed: false, weapon: profile.key };
@@ -348,7 +388,7 @@ export function updateProjectiles(room, now = Date.now()) {
       z: projectile.z + projectile.dz * travel,
     };
     const wall = projectileWallEntry(room.collision, projectile, end, profile.projectileRadius);
-    const hit = damageableTargets(room)
+    const hit = [...damageableTargets(room), ...shoveablePlayers(room, owner, now)]
       .map((target) => ({
         ...target,
         t: circleEntry(

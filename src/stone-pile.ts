@@ -2,6 +2,7 @@ import * as THREE from 'three';
 import { isMesh } from './three-types.js';
 import { stonePileLayout } from '../shared/stone-pile-layout.mjs';
 import { WorldAssets } from './world-assets.js';
+import { instancedMaterial } from './material-variants.js';
 
 /** Whole stones share the verified asset and regional materials at every LOD. */
 export function buildStonePile(assets: WorldAssets, total: number, surface: string | null) {
@@ -22,7 +23,12 @@ export function buildStonePile(assets: WorldAssets, total: number, surface: stri
     source.scene.updateMatrixWorld(true);
     source.scene.traverse((node) => {
       if (!isMesh(node)) return;
-      const batch = new THREE.InstancedMesh(node.geometry, node.material, slots.length);
+      // Shared with the boulder landscape; resources and props draw plain copies of the template.
+      const batch = new THREE.InstancedMesh(
+        node.geometry,
+        instancedMaterial(node.material),
+        slots.length,
+      );
       batch.name = 'whole-stones';
       batch.castShadow = node.castShadow;
       batch.receiveShadow = node.receiveShadow;
@@ -48,7 +54,8 @@ export function buildStonePile(assets: WorldAssets, total: number, surface: stri
       root.visible = count > 0;
     },
     dispose() {
-      // Templates own the geometry and material; this pile owns its instance buffers.
+      // Templates own the geometry and material (and the instanced copy, released with it);
+      // this pile owns its instance buffers.
       for (const batch of batches) batch.dispose();
     },
   };

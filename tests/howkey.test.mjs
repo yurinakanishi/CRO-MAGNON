@@ -100,6 +100,8 @@ test('science cannot pass thin walls, hurt players, or survive its maximum range
   const { p, room } = fixture([
     { type: 'box', x: 20, z: 22, hx: 2, hz: 0.02, c: 1, s: 0, height: 2 },
   ]);
+  // Without the knockback rule the player in front is passed by (tests/player-knockback.test.mjs).
+  room.rules = { playerKnockback: false };
   const enemy = target('enemy', 20, 24),
     friend = target('friend', 20, 21);
   room.enemies.push(enemy);

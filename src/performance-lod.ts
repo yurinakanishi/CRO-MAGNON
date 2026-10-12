@@ -1,5 +1,6 @@
 import * as THREE from 'three';
 import { isMesh, isSkinnedMesh } from './three-types.js';
+import { materialCopy } from './material-variants.js';
 
 export const ACTOR_LOD_DISTANCE = 28;
 export const ACTOR_LOD_HYSTERESIS = 2;
@@ -40,8 +41,8 @@ function finalState(geometry: THREE.BufferGeometry) {
 
 // The adopted material for the reduced geometry: the same object when the two geometries need the
 // same final state, otherwise one variant per adopted material and change, owned by this actor. A
-// variant keeps everything the adopted material has (textures by reference, colour, the
-// onBeforeCompile/customProgramCacheKey hooks Material.copy drops, and its userData object).
+// variant keeps everything the adopted material has (materialCopy: textures by reference, colour,
+// the onBeforeCompile/customProgramCacheKey hooks Material.copy drops, and its userData object).
 function compatibleMaterial(
   material: ActorMaterial,
   from: THREE.BufferGeometry,
@@ -72,13 +73,7 @@ function compatibleMaterial(
     owned.set(source, byChange);
     const existing = byChange.get(change);
     if (existing) return existing;
-    const copy = source.clone() as typeof standard;
-    const hooks = source as unknown as Record<string, unknown>,
-      target = copy as unknown as Record<string, unknown>;
-    for (const key of Object.keys(hooks))
-      if (typeof hooks[key] === 'function') target[key] = hooks[key];
-    copy.userData = source.userData;
-    if (source.defines) copy.defines = { ...source.defines };
+    const copy = materialCopy(source) as typeof standard;
     if (flip) {
       if (copy.normalScale) copy.normalScale.y *= -1;
       if (copy.clearcoatNormalScale) copy.clearcoatNormalScale.y *= -1;

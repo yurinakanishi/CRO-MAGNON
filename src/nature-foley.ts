@@ -26,6 +26,8 @@ export const FOLEY_FILES = [
 ];
 /** A hissing cat further away than this is masked by wind and footsteps. */
 export const HISS_RANGE = 14;
+/** The blow on another player is heard at close quarters, as by its attacker. */
+export const KNOCKBACK_SOUND_RANGE = 4;
 
 /** Only fresh authoritative transitions. Snapshots are copied because render state can mutate. */
 export class FoleyEvents {
@@ -63,6 +65,14 @@ export class FoleyEvents {
     for (const key of ['attack', 'jump', 'hurt'])
       if (this.fresh(key, `${p[key + 'At']}/${p[key + 'Sequence']}`, p[key + 'At'], now, baseline))
         emit(key);
+    // A blow between players sounds on the struck body: ours, or one close beside us.
+    for (const other of world.state?.players ?? []) {
+      if (other.id !== p.id && Math.hypot(other.x - p.x, other.z - p.z) > KNOCKBACK_SOUND_RANGE)
+        continue;
+      const token = `${other.knockbackAt}/${other.knockbackSequence}`;
+      if (this.fresh(`knockback:${other.id}`, token, other.knockbackAt ?? 0, now, baseline))
+        emit('hurt');
+    }
     const visited = Object.values(p.adventure?.regions ?? {}).reduce<number>(
       (n, r: any) => n + (r.visited?.length ?? 0),
       0,

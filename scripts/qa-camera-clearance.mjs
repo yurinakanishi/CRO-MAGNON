@@ -40,6 +40,14 @@ const only = option('--only', null)?.split(',') ?? null;
 const profiling = process.argv.includes('--profile');
 // --cost-only measures just the frame cost (no clearance views or probed turns).
 const costOnly = process.argv.includes('--cost-only');
+// --ablate measures the cost turn at cave-21L with parts of the new camera code switched off on
+// the renderer instance, interleaved: what each part costs in the same page.
+const ablate = process.argv.includes('--ablate');
+// --views spot:yaw:pitch,... photographs just these views (to compare builds view for view).
+const views = (option('--views', null)?.split(',') ?? []).map((view) => {
+  const [name, yaw, pitch] = view.split(':');
+  return { name, yaw: Number(yaw), pitch: Number(pitch) };
+});
 await mkdir(out, { recursive: true });
 const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 async function until(fn, label, timeout = 30000) {
@@ -54,6 +62,20 @@ async function until(fn, label, timeout = 30000) {
 // page entry module is extended in transit; the document itself is served unchanged (a
 // fulfilled document would lose its local address space and its socket to this server).
 const PATCH = `import { WorldRenderer as ReviewedRenderer } from './world3d.js';
+// How long the player's fade takes to start compiling its programs (camera-fade.ts, absent
+// from builds before 2026-10-12).
+import('./camera-fade.js')
+  .then((ReviewedFade) => {
+    const link = ReviewedFade.ActorFade?.prototype.link;
+    if (link)
+      ReviewedFade.ActorFade.prototype.link = function (...args) {
+        const started = performance.now(),
+          value = link.apply(this, args);
+        (window.cameraFadeLinks ??= []).push({ at: started, ms: performance.now() - started });
+        return value;
+      };
+  })
+  .catch(() => {});
 {
   const render = ReviewedRenderer.prototype.render;
   ReviewedRenderer.prototype.render = function (...args) {
@@ -388,8 +410,14 @@ try {
   });
   seen = { id: null };
   page.on('pageerror', (e) => errors.push(String(e)));
+  // An earlier build (--browser) has no camera-fade module for the optional timing import.
+  const expected = (url) => !!browserBuild && url.endsWith('/src/camera-fade.js');
+  page.on('response', (response) => {
+    if (response.status() >= 400 && !expected(response.url()))
+      errors.push(`${response.status()} ${response.url()}`);
+  });
   page.on('console', (m) => {
-    if (m.type() === 'error') errors.push(m.text());
+    if (m.type() === 'error' && !expected(m.location().url ?? '')) errors.push(m.text());
   });
   page.on('websocket', (ws) =>
     ws.on('framereceived', ({ payload }) => {
@@ -543,7 +571,21 @@ try {
   // A view through geometry first, then the least clearance.
   const score = (s) => (s.blocked ? 10 : 0) + s.nearCorner - s.clearance;
   const worst = (samples) => samples.reduce((w, s) => (score(s) > score(w) ? s : w));
-  for (const spot of spots.filter((s) => !costOnly && (!only || only.includes(s.name)))) {
+  for (const view of views) {
+    const spot = spots.find((s) => s.name === view.name);
+    if (!spot) continue;
+    await place(spot);
+    await pose(view.yaw, view.pitch, 5.5, 1200);
+    const file = `view-${view.name}-${view.yaw}-${view.pitch}.png`;
+    await page.screenshot({ path: path.join(out, file) });
+    facts.views = [
+      ...(facts.views ?? []),
+      { ...view, file, probe: await page.evaluate(() => window.cameraProbe()) },
+    ];
+  }
+  for (const spot of spots.filter(
+    (s) => !costOnly && !views.length && (!only || only.includes(s.name)),
+  )) {
     await place(spot);
     const samples = [];
     for (const pitch of PITCHES)
@@ -607,7 +649,7 @@ try {
   // A continuous turn at 90 degrees per second, one probe per drawn frame.
   for (const name of ['tree0-skirt', 'tree1-trunk', 'cave-21L', 'cave6R', 'rock0']) {
     const spot = spots.find((s) => s.name === name);
-    if (!spot || costOnly || (only && !only.includes(name))) continue;
+    if (!spot || costOnly || views.length || (only && !only.includes(name))) continue;
     await place(spot);
     for (const pitch of [0.19, 0.7]) {
       await pose(0, pitch);
@@ -653,7 +695,7 @@ try {
   // the renderer's simulation time (its 0.8/0.2 running mean, unrolled to each frame).
   for (const name of ['cave-21L', 'cave6R', 'tree0-skirt', 'rock0']) {
     const spot = spots.find((s) => s.name === name);
-    if (!spot || (only && !only.includes(name))) continue;
+    if (!spot || views.length || (only && !only.includes(name))) continue;
     await place(spot);
     await pose(0, 0.19);
     const cdp = profiling ? await page.context().newCDPSession(page) : null;
@@ -669,15 +711,18 @@ try {
             costs = [],
             start = performance.now();
           let mean = r.simulationMs,
-            prepared = !!r.selfFade?.prepared;
+            links = window.cameraFadeLinks?.length ?? 0;
           window.cameraFrameHook = () => {
             const t = (performance.now() - start) / 1000;
             costs.push((r.simulationMs - 0.8 * mean) / 0.2);
             mean = r.simulationMs;
-            // The frame on which the player's fade compiled its programs (camera-fade.ts).
-            if (!prepared && r.selfFade?.prepared) {
-              prepared = true;
-              window.cameraFadePrepared = { frame: costs.length - 1, cost: costs.at(-1) };
+            // Frames on which the player's fade started compiling programs (camera-fade.ts).
+            if ((window.cameraFadeLinks?.length ?? 0) > links) {
+              links = window.cameraFadeLinks.length;
+              (window.cameraFadeLinked ??= []).push({
+                frame: costs.length - 1,
+                cost: costs.at(-1),
+              });
             }
             if (t >= seconds) {
               window.cameraFrameHook = null;
@@ -687,9 +732,9 @@ try {
         }),
       { seconds: 8, speed: Math.PI / 2 },
     );
-    const prepared = await page.evaluate(() => {
-      const value = window.cameraFadePrepared ?? null;
-      window.cameraFadePrepared = null;
+    const linked = await page.evaluate(() => {
+      const value = window.cameraFadeLinked ?? null;
+      window.cameraFadeLinked = null;
       return value;
     });
     const sorted = frames.slice(2).sort((a, b) => a - b),
@@ -704,7 +749,7 @@ try {
         .map((ms, frame) => ({ frame, ms: +ms.toFixed(1) }))
         .sort((p, q) => q.ms - p.ms)
         .slice(0, 3),
-      ...(prepared ? { fadePrepared: prepared } : {}),
+      ...(linked ? { fadeLinked: linked } : {}),
     };
     if (cdp) {
       // Self and inclusive time per function (each counted once per sampled stack), per frame.
@@ -741,6 +786,58 @@ try {
     facts.cost.push(cost);
     console.log(JSON.stringify({ cost }));
   }
+  if (ablate) {
+    const spot = spots.find((s) => s.name === 'cave-21L');
+    await place(spot);
+    // Each variant patches the renderer instance and undoes the patch afterwards.
+    const variants = ['full', 'no-fade', 'no-plants', 'no-lift', 'no-mountain', 'full'];
+    facts.ablation = [];
+    for (let round = 0; round < 3; round++)
+      for (const variant of variants) {
+        await pose(0, 0.19);
+        const costs = await page.evaluate(
+          ({ variant, seconds, speed }) =>
+            new Promise((resolve) => {
+              const r = window.cameraReview,
+                undo = [];
+              const patch = (object, key, value) => {
+                const own = Object.prototype.hasOwnProperty.call(object, key),
+                  before = object[key];
+                object[key] = value;
+                undo.push(() => (own ? (object[key] = before) : delete object[key]));
+              };
+              if (variant === 'no-fade') patch(r, 'fadeNearCamera', () => {});
+              if (variant === 'no-plants') patch(r, 'sightThroughPlant', () => false);
+              if (variant === 'no-lift') patch(r, 'liftCheckedAt', Infinity);
+              if (variant === 'no-mountain' && r.landmarks?.mountainCamera)
+                patch(r.landmarks.mountainCamera, 'sweep', (o, d, maximum) => maximum);
+              const costs = [],
+                start = performance.now();
+              let mean = r.simulationMs;
+              window.cameraFrameHook = () => {
+                const t = (performance.now() - start) / 1000;
+                costs.push((r.simulationMs - 0.8 * mean) / 0.2);
+                mean = r.simulationMs;
+                if (t >= seconds) {
+                  window.cameraFrameHook = null;
+                  for (const step of undo.reverse()) step();
+                  resolve(costs);
+                } else r.yaw = speed * t;
+              };
+            }),
+          { variant, seconds: 6, speed: Math.PI / 2 },
+        );
+        const sorted = costs.slice(2).sort((a, b) => a - b);
+        facts.ablation.push({
+          round,
+          variant,
+          frames: sorted.length,
+          median: +sorted[Math.floor(sorted.length / 2)].toFixed(3),
+          p95: +sorted[Math.floor(sorted.length * 0.95)].toFixed(3),
+        });
+        console.log(JSON.stringify({ ablation: facts.ablation.at(-1) }));
+      }
+  }
   facts.totals = {
     samples: facts.spots.reduce((n, s) => n + s.samples, 0),
     clipped: facts.spots.reduce((n, s) => n + s.clipped, 0),
@@ -751,6 +848,7 @@ try {
     turnClipped: facts.turns.reduce((n, t) => n + t.clipped, 0),
     turnBlocked: facts.turns.reduce((n, t) => n + t.blocked, 0),
   };
+  facts.fadeLinks = await page.evaluate(() => window.cameraFadeLinks ?? []);
   facts.dataset = await page.locator('#world').evaluate((el) => ({
     fps: el.dataset.fps,
     frameSimulationMs: el.dataset.frameSimulationMs,
