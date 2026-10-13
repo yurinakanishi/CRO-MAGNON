@@ -1112,9 +1112,6 @@ body.touch-mode[data-screen] {
 .touch-mode .setup-heading h2::after {
   margin-top: 4px;
 }
-.touch-mode .setup-eyebrow {
-  font-size: 10px;
-}
 .touch-mode .setup-identity {
   flex-shrink: 0;
   grid-template-columns: repeat(2, minmax(0, 1fr));

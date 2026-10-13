@@ -114,7 +114,7 @@ export function contributorsDialogMarkup(
     )
     .join('');
   const invitation = visit
-    ? '<p class="modal-intro">アプデの洞窟に残る壁画に会いに来てください。</p><button id="contributors-cave" type="button" class="button button-accent">アプデの洞窟に行く</button>'
+    ? '<button id="contributors-cave" type="button" class="button button-accent">アプデの洞窟に行く</button>'
     : '';
   return `<div class="contributors-dialog"><h2>関わってくれた人たち</h2>${invitation}${groups}</div>`;
 }

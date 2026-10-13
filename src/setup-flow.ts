@@ -63,7 +63,7 @@ function render(step: Step) {
   const model = characterModel(parseCharacterValue(card.value));
   const [name, variant] = model.name.split(' ');
   if (step === 'spawn') return renderSpawn(`${name}${variant ? ` ${variant}` : ''}`);
-  const who = `<p class="setup-flow-eyebrow">Ready</p><h3 id="setup-flow-title"><strong>${name}</strong>${variant ? `<small>${variant}</small>` : ''}</h3>`;
+  const who = `<h3 id="setup-flow-title"><strong>${name}</strong>${variant ? `<small>${variant}</small>` : ''}</h3>`;
   const body = `${who}<p class="setup-flow-question">これでいいですか？</p><div class="character-confirm-actions"><button id="setup-flow-yes" class="button button-accent" type="submit">はい</button><button id="setup-flow-no" class="button button-outline" type="button">いいえ</button></div>`;
   overlay(form)?.remove();
   form.insertAdjacentHTML(

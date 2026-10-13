@@ -112,7 +112,7 @@ try {
   await shot('03-confirm-en');
   await page.locator('#setup-flow-yes').click();
   await page.locator('#loading-screen').waitFor({ state: 'visible' });
-  await expectText('.loading-screen-tip figcaption span', 'Cro-Magnon facts');
+  assert.equal(await page.locator('.loading-screen-tip figcaption').count(), 0);
   await englishOnly('#loading-screen');
   await shot('03b-loading-screen-en');
   await page.locator('#loading-screen').waitFor({ state: 'hidden', timeout: 180000 });
@@ -176,12 +176,30 @@ try {
   await englishOnly('[data-pause-panel="warp"]');
   await page.locator('[data-pause-tab="mascots"]').click();
   await englishOnly('[data-pause-panel="mascots"]');
+  await page.locator('[data-mascot="white"]').click();
+  await page.locator('[data-mascot="white"][aria-pressed="true"]').waitFor();
+  assert.equal(player.mascot, 'white');
+  await page.locator('[data-mascot-none]').click();
+  await page.waitForFunction(() => !document.querySelector('[data-mascot][aria-pressed="true"]'));
+  assert.equal(player.mascot, null);
+  await shot('07b-mascots-en');
   pass(
     'Inventory, crafting results, equipment confirmation, settings and travel cards use English',
   );
 
   await page.keyboard.press('Escape');
+  await page.locator('#status-plate').click();
+  await expectText('#modal-body > h2', 'Players');
+  await expectText('#tribe-summary', 'Players: 1');
+  await shot('07c-players-en');
+  await page.locator('#tribe-invite').click();
+  await expectText('#modal-body > h2', 'Invite');
+  await shot('07d-invite-en');
+  await page.locator('#modal-close').click();
+  pass('Player count and invitation titles use English; companion selection still works');
+
   await page.locator('#chat-toggle').click();
+  await expectText('#chat-toggle strong', 'Chat');
   await page.locator('#chat-input').fill('はじめる 木材 <b>そのまま</b>');
   await page.locator('#chat-input').press('Enter');
   await expectText('#chat-messages p:last-child', 'はい はじめる 木材 <b>そのまま</b>');

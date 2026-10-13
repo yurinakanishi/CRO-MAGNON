@@ -253,13 +253,13 @@ const viewportMarkup = `
     <button id="status-plate" class="status-plate" title="部族の仲間・招待"><span class="energy-track" id="energy-track" data-level="ok"><span id="energy-bar" class="energy-fill"></span><em class="energy-label">${icon('leaf')}<b>体力</b><span id="energy-label">100 / 100</span></em></span><span class="status-main"><span class="portrait cro cro-magnon-woman" id="my-portrait"><i></i></span><span class="status-text"><strong id="profile-name" translate="no"></strong><small><span id="room-label" translate="no"></span><i>·</i><b id="online-count">0/${hudPlayerLimit()}</b><i>·</i><span id="day-label">1日目</span></small></span></span></button>
     <div class="map-hud"><button id="map-button" class="minimap-button" aria-label="世界地図を開く" title="世界地図 [${fixedIdentity ? controllerLabels().map : 'M'}]"><canvas id="minimap" width="160" height="115"></canvas><span class="map-north">N</span><span class="map-area" id="map-area">はじまりの谷</span>${fixedIdentity ? '' : '<kbd class="map-key">M</kbd>'}</button><div class="connection"><i class="status-dot" id="connection-dot"></i><span id="connection-label">未接続</span><span id="ping-label">— ms</span></div></div>
     <div id="toast-stack" class="toast-stack" aria-live="polite"></div>
-    ${fixedIdentity ? '' : `<div class="chat-panel"><button class="chat-heading" id="chat-toggle">${icon('chat')}<strong>焚き火の会話</strong><kbd>Enter</kbd><span class="chat-collapse">−</span></button><div id="chat-content"><div id="chat-messages" class="chat-messages" role="log" aria-live="polite"><p class="chat-system">この谷での物語が、ここから始まります。</p></div><form id="chat-form"><input id="chat-input" maxlength="180" placeholder="仲間に話しかける…" aria-label="チャットメッセージ" autocomplete="off"><button aria-label="メッセージを送信" type="submit">${icon('arrow')}</button></form></div></div>`}
+    ${fixedIdentity ? '' : `<div class="chat-panel"><button class="chat-heading" id="chat-toggle">${icon('chat')}<strong>チャット</strong><kbd>Enter</kbd><span class="chat-collapse">−</span></button><div id="chat-content"><div id="chat-messages" class="chat-messages" role="log" aria-live="polite"></div><form id="chat-form"><input id="chat-input" maxlength="180" placeholder="仲間に話しかける…" aria-label="チャットメッセージ" autocomplete="off"><button aria-label="メッセージを送信" type="submit">${icon('arrow')}</button></form></div></div>`}
     <div class="hotbar-wrap"><div class="interaction-hint" id="interaction-hint" hidden><kbd>E</kbd><span></span></div></div>
     <div id="prompt-bar" class="prompt-bar" aria-label="操作の案内"></div>
     <div id="screens" class="screens">
       ${titleHandoff ? '' : titleScreenMarkup()}
       <section id="screen-setup" class="screen setup-screen" hidden>
-        <form id="setup-form" class="setup-card"><header class="setup-heading"><span class="setup-eyebrow">${GAME_TITLE}</span><h2>旅人を選ぶ</h2></header><p class="form-error" id="setup-error" hidden></p>${joinFields()}<div class="setup-actions"><button type="button" id="setup-back" class="button button-outline setup-back">戻る</button></div></form>
+        <form id="setup-form" class="setup-card"><header class="setup-heading"><h2>旅人を選ぶ</h2></header><p class="form-error" id="setup-error" hidden></p>${joinFields()}<div class="setup-actions"><button type="button" id="setup-back" class="button button-outline setup-back">戻る</button></div></form>
       </section>
     </div>
   </section>`;
@@ -490,10 +490,9 @@ async function coverArrival(place: LoadingPlace) {
     // The world's first download, reported as the loading cave reports it.
     let fraction: number | null = null,
       text = LOADING_TEXT;
-    if (phase === 'build') [fraction, text] = [0.96, '世界を組み立てています'];
-    else if (phase === 'download') {
-      fraction = total ? (0.92 * loaded) / total : 0;
-      text = `世界を読み込んでいます ${Math.floor(fraction * 100)}%`;
+    if (phase === 'build' || phase === 'download') {
+      fraction = phase === 'build' ? 0.96 : total ? (0.92 * loaded) / total : 0;
+      text = `読み込み中 ${Math.floor(fraction * 100)}%`;
     }
     if (text !== shown) loadingScreen.status(text, fraction);
     shown = text;
@@ -1243,7 +1242,7 @@ function updateModalHUD() {
     if (list.dataset.signature !== signature) {
       list.dataset.signature = signature;
       list.replaceChildren();
-      $('#tribe-summary').textContent = `いま、この谷で暮らしている ${state.players.length} 人。`;
+      $('#tribe-summary').textContent = `参加者 ${state.players.length}人`;
       for (const p of state.players) {
         const row = document.createElement('div');
         row.className = 'tribe-member';
@@ -1890,7 +1889,7 @@ function enterGame(skipGallery = false) {
     loadingCave = renderer.loadingCave = cave;
     // The cave itself loads behind the loading screen and its tips; once the cave is
     // shown, the visitor walks in it without them.
-    const caveCover = loadingScreen.show({ ...warpPlace('spawn-cave'), eyebrow: '世界への旅支度' });
+    const caveCover = loadingScreen.show({ ...warpPlace('spawn-cave'), eyebrow: '' });
     loadingScreen.status('洞窟を準備しています');
     void (async () => {
       try {
@@ -1923,7 +1922,7 @@ function beginGame() {
   // Without the cave, the loading screen covers the world until the player stands in
   // it. Started after connect() has begun the join, which the cover waits for. The QA
   // shortcut ?autostart=1 skips it as it skips the title (its own label shows the load).
-  if (query.get('autostart') !== '1') void coverArrival({ eyebrow: '旅の準備', name: '' });
+  if (query.get('autostart') !== '1') void coverArrival({ eyebrow: '', name: '' });
 }
 /** The game's screen. Its controls still wait for playReady(). */
 function showPlay() {
@@ -1966,7 +1965,7 @@ function leaveToTitle() {
 }
 async function openInvite() {
   openModal(
-    `<span class="modal-illustration">${icon('people')}</span><h2>ひとつの火を、仲間と。</h2><p class="modal-intro">同じ部屋のリンクを仲間に渡して、一緒に谷を探索しよう。</p><div class="invite-code"><small>ROOM CODE</small><strong id="invite-code"></strong><span>現在の部屋の接続上限は ${hudPlayerLimit()}人</span></div><label>招待リンク<input id="invite-url" readonly aria-label="招待リンク"></label><button id="copy-invite" class="button button-accent wide">${icon('link')} 招待リンクをコピー</button><p id="invite-note" class="form-note">このPCと同じWi-Fi・LANにいる仲間が参加できます。インターネット越しの参加には、サーバーの公開が必要です。</p><button id="change-room" class="text-button">別の部屋に参加する ${icon('arrow')}</button>`,
+    `<span class="modal-illustration">${icon('people')}</span><h2>招待</h2><div class="invite-code"><small>ROOM CODE</small><strong id="invite-code"></strong><span>現在の部屋の接続上限は ${hudPlayerLimit()}人</span></div><label>招待リンク<input id="invite-url" readonly aria-label="招待リンク"></label><button id="copy-invite" class="button button-accent wide">${icon('link')} 招待リンクをコピー</button><p id="invite-note" class="form-note">このPCと同じWi-Fi・LANにいる仲間が参加できます。インターネット越しの参加には、サーバーの公開が必要です。</p><button id="change-room" class="text-button">別の部屋に参加する ${icon('arrow')}</button>`,
   );
   $('#invite-code').textContent = profile.room;
   let base = location.origin;
@@ -2097,7 +2096,7 @@ function inventoryEntries() {
 }
 function inventoryMarkup() {
   const model = characterModel(player() ?? profile);
-  return `<header class="inventory-header"><span class="portrait ${model.species} ${model.key}" role="img" aria-label="${model.name}"><i></i></span><div class="inventory-status"><h2>持ち物</h2><div id="inventory-energy-track" class="energy-track" role="progressbar" aria-label="体力" aria-valuemin="0" aria-valuemax="100"><span id="inventory-energy-bar" class="energy-fill"></span><em class="energy-label">${icon('leaf')}<b>体力</b><span id="inventory-energy-label"></span></em></div></div></header><div class="inventory-workspace"><section class="inventory-storage" aria-label="所持品"><div class="inventory-section-heading"><h3>持っているもの</h3></div><div class="inventory-grid"></div></section>${inventoryCrafting.markup()}</div>`;
+  return `<header class="inventory-header"><span class="portrait ${model.species} ${model.key}" role="img" aria-label="${model.name}"><i></i></span><div class="inventory-status"><h2>持ち物</h2><div id="inventory-energy-track" class="energy-track" role="progressbar" aria-label="体力" aria-valuemin="0" aria-valuemax="100"><span id="inventory-energy-bar" class="energy-fill"></span><em class="energy-label">${icon('leaf')}<b>体力</b><span id="inventory-energy-label"></span></em></div></div></header><div class="inventory-workspace"><section class="inventory-storage" aria-label="所持品"><div class="inventory-grid"></div></section>${inventoryCrafting.markup()}</div>`;
 }
 function equipmentForKey(key: string): EquipmentId | null {
   if (key === 'weapon') return characterModel(player() ?? profile).weapon ? 'character' : 'spear';
@@ -2253,7 +2252,7 @@ function openInventory() {
 }
 /** One's own words for the profile card travelers nearby can read. */
 function introFormMarkup() {
-  return `<form id="intro-form" class="intro-form"><label for="intro-input">あなたの自己紹介</label><textarea id="intro-input" maxlength="${INTRO_MAX_LENGTH}" rows="2" placeholder="はじめまして。いっしょにマンモスを狩りましょう。"></textarea><div class="intro-actions"><small id="intro-status" role="status"></small><button type="submit" class="button button-outline">保存する</button></div></form>`;
+  return `<form id="intro-form" class="intro-form"><label for="intro-input">あなたの自己紹介</label><textarea id="intro-input" maxlength="${INTRO_MAX_LENGTH}" rows="2"></textarea><div class="intro-actions"><small id="intro-status" role="status"></small><button type="submit" class="button button-outline">保存する</button></div></form>`;
 }
 function bindIntroForm() {
   const form = document.querySelector<HTMLFormElement>('#intro-form');
@@ -2286,7 +2285,7 @@ function chooseDye(dye: string) {
   send({ type: 'action', action: 'dyeClothes', ...(dye ? { targetId: dye } : {}) });
 }
 function tribeMarkup() {
-  return `<h2>同じ火を囲む仲間。</h2><p class="modal-intro" id="tribe-summary">いま、この谷で暮らしている ${state.players.length} 人。</p>${fixedIdentity ? '' : introFormMarkup()}${dyeMarkup()}<div id="tribe-list" class="tribe-list"></div><button id="tribe-invite" class="button button-accent wide">${icon('plus')} 仲間を招待する</button>`;
+  return `<h2>参加者</h2><p class="modal-intro" id="tribe-summary">参加者 ${state.players.length}人</p>${fixedIdentity ? '' : introFormMarkup()}${dyeMarkup()}<div id="tribe-list" class="tribe-list"></div><button id="tribe-invite" class="button button-accent wide">${icon('plus')} 仲間を招待する</button>`;
 }
 function openTribe() {
   openModal(tribeMarkup());

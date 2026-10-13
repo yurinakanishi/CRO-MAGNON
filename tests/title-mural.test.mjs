@@ -81,7 +81,7 @@ test('the dialog lists every contributor without QR codes and exhibition cards h
   );
   assert.doesNotMatch(dialog, /qr-/);
   assert.doesNotMatch(dialog, /contributors-mark|この世界は|たくさんの人|<em>|壁画：/);
-  assert.match(dialog, /アプデの洞窟に残る壁画に会いに来てください。/);
+  assert.doesNotMatch(dialog, /class="modal-intro"/);
   assert.match(dialog, /id="contributors-cave"[^>]*>アプデの洞窟に行く<\/button>/);
   const exhibition = contributorsDialogMarkup(undefined, { links: false });
   assert.equal((exhibition.match(/class="contributor-avatar"/g) ?? []).length, people.length);

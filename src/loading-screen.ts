@@ -3,7 +3,7 @@ import type { LoadingTip } from './loading-tips.js';
 
 /** What the screen is loading toward: a warp's destination, or the world itself. */
 export interface LoadingPlace {
-  /** A short label above the name (ワープ, 旅の準備). */
+  /** The action above a destination name (ワープ); empty for startup. */
   eyebrow: string;
   name: string;
   /** A photo of the destination, for the pictured sights. */
@@ -186,12 +186,11 @@ export class LoadingCover {
   }
 }
 
-/** The tip card of every loading view (the loading screen and the loading cave): the
- * label, the tip's heading and its text, fading in at each new tip. */
+/** The loading tip's heading and text, fading in at each new tip. */
 export function tipCard(className: string) {
   const element = document.createElement('figure');
   element.className = `loading-tip ${className}`;
-  element.innerHTML = `<figcaption>${icon('flame')}<span>クロマニョン人の豆知識</span></figcaption><strong></strong><p></p>`;
+  element.innerHTML = '<strong></strong><p></p>';
   return {
     element,
     show(tip: LoadingTip) {
@@ -230,6 +229,7 @@ export function loadingScreenView(parent: HTMLElement): LoadingView {
   return {
     content(next, nextTip) {
       place.querySelector('small')!.textContent = next.eyebrow;
+      place.querySelector('small')!.hidden = !next.eyebrow;
       place.querySelector('strong')!.textContent = next.name;
       if ((next.image ?? '') !== (image.getAttribute('src') ?? '')) {
         art.classList.remove('loaded');

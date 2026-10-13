@@ -24,8 +24,9 @@ test('new loading screens, tips and renamed warp places also support English', (
   for (const text of [
     '読み込み中',
     '読み込みの進み具合',
-    '旅の準備',
-    'クロマニョン人の豆知識',
+    '招待',
+    '参加者',
+    'チャット',
     ...LOADING_TIPS.flatMap((tip) => [tip.title, tip.text]),
     ...WARP_POINTS.map((place) => place.name),
   ]) {
@@ -85,7 +86,8 @@ test('title exposes one focusable bilingual toggle alongside Start and Contribut
 test('templates preserve numbers, arbitrary player names, whitespace and unknown messages', () => {
   assert.equal(en('  戻る\n'), '  Back\n');
   assert.equal(en('12日目'), 'Day 12');
-  assert.equal(en('世界を読み込んでいます 43%'), 'Loading the world 43%');
+  assert.equal(en('読み込み中 43%'), 'Loading 43%');
+  assert.equal(en('参加者 5人'), 'Players: 5');
   assert.equal(en('今の装備：木槍'), 'Current equipment: Wooden spear');
   assert.equal(en('木材 あと2・石 あと1'), 'Wood: need 2 more · Stone: need 1 more');
   assert.equal(en('肉を焼いています · 2.9秒'), 'Cooking meat · 2.9s');

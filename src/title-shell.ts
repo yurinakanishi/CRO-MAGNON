@@ -36,7 +36,7 @@ export function titleScreenMarkup(): string {
 }
 
 export function modalMarkup(): string {
-  return `<dialog id="modal"><div class="modal-top"><span class="eyebrow">${GAME_TITLE}</span><button id="modal-close" class="button button-outline modal-back" type="button">戻る</button></div><div id="modal-body"></div></dialog>`;
+  return `<dialog id="modal"><div class="modal-top"><button id="modal-close" class="button button-outline modal-back" type="button">戻る</button></div><div id="modal-body"></div></dialog>`;
 }
 
 /** The game's rule (main.ts onlineTitle): exhibition and LAN titles never link out. */

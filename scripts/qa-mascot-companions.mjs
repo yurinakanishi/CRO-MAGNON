@@ -119,15 +119,12 @@ try {
   assert.equal(await a.page.locator('[data-mascot]').count(), 11);
   assert.equal(await a.page.locator('[data-mascot-all]').count(), 0, 'no select-all');
   assert.equal(await a.page.locator('[data-mascot-none]').isDisabled(), true);
-  assert.match(
-    await a.page.locator('#mascot-selection-count').innerText(),
-    /ひとりで旅をしています/,
-  );
+  assert.equal(await a.page.locator('#mascot-selection-count').count(), 0);
   await a.page.screenshot({ path: `${output}/menu-alone.png`, animations: 'disabled' });
   await closeMenu(a);
 
   await choose(a, '524');
-  assert.match(await a.page.locator('#mascot-selection-count').innerText(), /524と旅をしています/);
+  assert.equal(await a.page.locator('#mascot-selection-count').count(), 0);
   assert.match(await a.page.locator('[data-mascot="524"]').innerText(), /一緒に行く/);
   assert.equal(await a.page.locator('[data-mascot-none]').isDisabled(), false);
   await a.page.screenshot({ path: `${output}/menu-524.png`, animations: 'disabled' });
@@ -231,16 +228,13 @@ try {
     12000,
   );
 
-  // T sends one's own companion off; the menu shows travelling alone.
+  // T sends one's own companion off; no card remains selected.
   await a.page.keyboard.press('t');
   await until(() => white.mode === 'leaving', 'T waves the dot goodbye');
   await until(() => !room().orbBots.includes(white), 'the dot left after its goodbye', 3000);
   assert.equal(a.player().mascot, null);
   await openMascots(a);
-  assert.match(
-    await a.page.locator('#mascot-selection-count').innerText(),
-    /ひとりで旅をしています/,
-  );
+  assert.equal(await a.page.locator('[data-mascot][aria-pressed="true"]').count(), 0);
   await closeMenu(a);
 
   // B's companion leaves with B.

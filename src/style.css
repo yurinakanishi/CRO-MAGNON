@@ -598,22 +598,9 @@ progress::-moz-progress-bar {
 .loading-tip.turned {
   animation: loading-tip-in 0.45s ease both;
 }
-.loading-tip figcaption {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  color: var(--accent);
-  font-size: 11px;
-  letter-spacing: 0.24em;
-}
-.loading-tip figcaption .icon {
-  flex: none;
-  width: 15px;
-  height: 15px;
-}
 .loading-tip strong {
   display: block;
-  margin: 10px 0 6px;
+  margin: 0 0 6px;
   color: #fff4da;
   font-size: 18px;
   font-weight: 600;
@@ -966,13 +953,6 @@ body[data-screen] .world-labels {
   align-items: center;
   gap: 8px;
   text-align: center;
-}
-.setup-eyebrow {
-  font: 500 12px/1 var(--display);
-  letter-spacing: 0.5em;
-  padding-left: 0.5em;
-  color: var(--accent);
-  text-transform: uppercase;
 }
 .setup-heading h2 {
   margin: 0;
@@ -1823,7 +1803,7 @@ dialog::backdrop {
 }
 .modal-top {
   display: flex;
-  justify-content: space-between;
+  justify-content: flex-end;
   align-items: center;
   margin-bottom: 18px;
   position: sticky;
@@ -1839,11 +1819,6 @@ dialog::backdrop {
   background: var(--panel-solid);
   z-index: -1;
   pointer-events: none;
-}
-.modal-top .eyebrow {
-  font-size: 8px;
-  color: #d6c79a;
-  letter-spacing: 4px;
 }
 .modal-top .modal-back {
   min-height: 40px;
@@ -1904,8 +1879,7 @@ dialog:has(.pause-menu) .modal-top {
   background: none;
   z-index: 3;
 }
-dialog:has(.pause-menu) .modal-top:before,
-dialog:has(.pause-menu) .modal-top .eyebrow {
+dialog:has(.pause-menu) .modal-top:before {
   display: none;
 }
 
@@ -2951,6 +2925,11 @@ dialog:has(.character-switch) {
   color: #d2e9ad;
   background: #293722;
 }
+#inventory-craft-result:empty {
+  min-height: 0;
+  margin: 0;
+  padding: 0;
+}
 .inventory-recipes {
   display: grid;
   gap: 10px;
@@ -3295,9 +3274,6 @@ dialog:has(.character-switch) {
   font-size: 14px;
   line-height: 1.55;
   overflow-wrap: anywhere;
-}
-.player-profile-intro[data-empty='true'] {
-  color: var(--muted);
 }
 .player-profile-stats {
   display: grid;
@@ -4145,8 +4121,7 @@ dialog:has(.atlas) .modal-top {
   background: none;
   z-index: 10;
 }
-dialog:has(.atlas) .modal-top:before,
-dialog:has(.atlas) .modal-top .eyebrow {
+dialog:has(.atlas) .modal-top:before {
   display: none;
 }
 dialog:has(.atlas) #modal-body {

@@ -113,7 +113,7 @@ export class LoadingCave {
     this.scene.add(light, light.target);
     this.overlay.id = 'loading-cave';
     this.overlay.setAttribute('aria-label', 'アプデの洞窟');
-    this.overlay.innerHTML = `<header class="loading-cave-heading"><div><small>世界への旅支度</small><h2>アプデの洞窟</h2></div><div class="loading-cave-actions">${onContributors ? '<button class="button button-outline" data-cave-contributors>関わってくれた人たち</button>' : ''}<button class="button button-outline" data-cave-back>タイトルへ戻る</button></div></header>
+    this.overlay.innerHTML = `<header class="loading-cave-heading"><div><h2>アプデの洞窟</h2></div><div class="loading-cave-actions">${onContributors ? '<button class="button button-outline" data-cave-contributors>関わってくれた人たち</button>' : ''}<button class="button button-outline" data-cave-back>タイトルへ戻る</button></div></header>
       <div class="loading-cave-wait" role="status">洞窟を準備しています…</div>
       <div class="loading-cave-stick" aria-label="ドラッグして移動"><i></i><span>移動</span></div>
       <button class="button button-outline loading-cave-torch" data-cave-torch aria-pressed="true">松明を消す</button>
@@ -238,7 +238,7 @@ export class LoadingCave {
     this.overlay.querySelector<HTMLElement>('.loading-cave-wait')!.hidden = true;
     this.overlay.dataset.ready = 'true';
     this.world.canvas.dataset.loadingCave = 'exploring';
-    this.status.textContent = '世界を読み込んでいます — 壁画を見て回れます';
+    this.status.textContent = '読み込み中 0%';
     // Present the small scene before starting the world's download and decoding.
     this.render(0);
     await new Promise<void>((resolve) => requestAnimationFrame(() => resolve()));
@@ -422,8 +422,7 @@ export class LoadingCave {
       if (percent !== this.lastPercent) {
         this.lastPercent = percent;
         this.progress.value = fraction;
-        this.status.textContent =
-          phase === 'build' ? '世界を組み立てています' : `世界を読み込んでいます ${percent}%`;
+        this.status.textContent = `読み込み中 ${percent}%`;
       }
     }
     if (this.ready) this.world.renderer.render(this.scene, this.camera);

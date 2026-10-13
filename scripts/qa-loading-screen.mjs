@@ -319,7 +319,7 @@ try {
   releaseCave();
   await caveReady(page);
   const caveLoad = await coverRun(page, since);
-  assert.equal(caveLoad.shown.eyebrow, '世界への旅支度');
+  assert.equal(caveLoad.shown.eyebrow, '');
   assert.equal(caveLoad.shown.place, site('cave').name);
   assert.equal(caveLoad.shown.image, '/spawn/cave.jpg');
   // Lifted once the cave is shown: inside the cave there are no tips.
@@ -516,7 +516,7 @@ try {
   since = await now(page);
   await start(page);
   const reentry = await coverRun(page, since);
-  assert.equal(reentry.shown.eyebrow, '旅の準備');
+  assert.equal(reentry.shown.eyebrow, '');
   assert.equal(reentry.shown.place, '');
   assert.equal(await page.locator('#loading-cave').count(), 0);
   assert.equal(desktop.seen.sockets, 2);
@@ -619,7 +619,7 @@ try {
   );
   await visit.page.screenshot({ path: `${out}/visit-loading.png` });
   const visitRun = await coverRun(visit.page, 0);
-  assert.equal(visitRun.shown.eyebrow, '旅の準備');
+  assert.equal(visitRun.shown.eyebrow, '');
   // The same screen turns to the cave once the join's warp is seen, then lifts there.
   const retargeted = visitRun.log.find(
     (entry) => entry.eyebrow === 'ワープ' && entry.place === cave.name,
