@@ -378,10 +378,11 @@ try {
     );
   }
   assert.equal(user.me.inventory.boat, 3);
-  await page.locator('.pause-more').tap();
-  assert.equal(await page.locator('.pause-more').getAttribute('aria-expanded'), 'true');
+  // The exits are the last tab of the phone's row; the bag tab brings the crafting back.
+  await page.locator('[data-pause-tab="more"]').tap();
   assert.ok(await page.locator('[data-controller-menu="title"]').isVisible());
-  await page.locator('.pause-more').tap();
+  assert.equal(await page.locator('#pause-panel-inventory').isVisible(), false);
+  await page.locator('[data-pause-tab="inventory"]').tap();
   user.me.inventory.wood = 0;
   await until(
     async () =>

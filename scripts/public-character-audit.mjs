@@ -1,3 +1,9 @@
+/** Filter model-specific browser settings with the released character list. */
+export function publicModelRules(rules, characters) {
+  const releasedKeys = new Set(characters.map((model) => model.key));
+  return Object.fromEntries(Object.entries(rules).filter(([key]) => releasedKeys.has(key)));
+}
+
 /** Mascots may share a person's name with a hidden playable character. Audit
  * playable model identities and runtime URLs, not the person's display name. */
 export function assertPublicCharacterData(name, bytes, excludedKeys, excludedSpecies) {

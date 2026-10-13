@@ -929,7 +929,7 @@ export function drawWorldMap(canvas, state, selfId, big = false) {
       ctx.stroke();
     }
   }
-  // The phone shows the minimap as a circle cropped to its centre, naming the area beside it.
+  // The phone crops the minimap to a circle without corner captions.
   const compact = !big && canvas.dataset.compact === 'true';
   const pins = (state.mapPins ?? []).filter((pin) => pin.expiresAt > state.serverTime);
   for (const pin of pins) {

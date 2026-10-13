@@ -146,7 +146,7 @@ try {
     timeout: 90000,
   });
   await expectText('#profile-name', 'はい');
-  await expectText('#day-label', 'Day 1');
+  assert.equal(await page.locator('#day-label, #map-area').count(), 0);
   await shot('05-game-en');
   pass(
     'Character selection, confirmation, loading cave and in-game HUD use English; player name stays verbatim',
@@ -172,8 +172,6 @@ try {
   await page.locator('[data-pause-tab="settings"]').click();
   await englishOnly('[data-pause-panel="settings"]');
   await shot('07-settings-en');
-  await page.locator('[data-pause-tab="warp"]').click();
-  await englishOnly('[data-pause-panel="warp"]');
   await page.locator('[data-pause-tab="mascots"]').click();
   await englishOnly('[data-pause-panel="mascots"]');
   await page.locator('[data-mascot="white"]').click();
@@ -183,11 +181,20 @@ try {
   await page.waitForFunction(() => !document.querySelector('[data-mascot][aria-pressed="true"]'));
   assert.equal(player.mascot, null);
   await shot('07b-mascots-en');
-  pass(
-    'Inventory, crafting results, equipment confirmation, settings and travel cards use English',
-  );
+  pass('Inventory, crafting results, equipment confirmation, settings and companions use English');
 
   await page.keyboard.press('Escape');
+  // Fast travel to the pictured sights lives in the map: its photo row and the chosen card.
+  await page.locator('#world').focus();
+  await page.keyboard.press('m');
+  await page.locator('[data-map-place="spawn-mammoth"]').click();
+  await page.locator('#map-card[data-state="ready"]').waitFor();
+  await englishOnly('.atlas-places');
+  await englishOnly('#map-card');
+  await shot('07b2-map-sights-en');
+  await page.keyboard.press('Escape');
+  await page.waitForFunction(() => !document.querySelector('#modal').open);
+  pass('The map’s landmark photos and the chosen landmark’s card use English');
   await page.locator('#status-plate').click();
   await expectText('#modal-body > h2', 'Players');
   await expectText('#tribe-summary', 'Players: 1');

@@ -37,7 +37,8 @@ export type PadAction =
   | 'center'
   | 'zoomIn'
   | 'zoomOut'
-  | 'pin';
+  | 'pin'
+  | 'places';
 export type PadDevice = Pick<
   Gamepad,
   'index' | 'id' | 'connected' | 'mapping' | 'axes' | 'buttons'
@@ -87,13 +88,15 @@ const menuBindings: [number, PadAction][] = [
   [PAD.options, 'menu'],
 ];
 /**
- * The open atlas: circle confirms, the bottom button backs out, square pins, R3
- * recentres, OPTIONS/L2 close, and the map buttons (SHARE / touchpad) toggle it shut.
+ * The open atlas: circle confirms, the bottom button backs out, square pins, triangle
+ * steps through the 名所 row, R3 recentres, OPTIONS/L2 close, and the map buttons
+ * (SHARE / touchpad) toggle it shut.
  */
 const mapBindings: [number, PadAction][] = [
   [PAD.cross, 'cancel'],
   [PAD.circle, 'confirm'],
   [PAD.square, 'pin'],
+  [PAD.triangle, 'places'],
   [PAD.r3, 'center'],
   [PAD.r1, 'zoomIn'],
   [PAD.l1, 'zoomOut'],

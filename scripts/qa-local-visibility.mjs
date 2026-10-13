@@ -191,8 +191,8 @@ try {
     await a.page.setViewportSize(viewport);
     await a.page.keyboard.press('Escape');
     await a.page.locator('[data-pause-tab="settings"]').click();
-    if (await a.page.locator('.pause-more').isVisible())
-      await a.page.locator('.pause-more').click();
+    if (await a.page.locator('[data-pause-tab="more"]').isVisible())
+      await a.page.locator('[data-pause-tab="more"]').click();
     await a.page.locator('[data-controller-menu="character"]').click();
     assert.equal(await a.page.locator('#character-switch-form .character-choice').count(), 5);
     assert.equal(

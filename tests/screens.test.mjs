@@ -121,9 +121,21 @@ test('setup asks character → final はい with no difficulty controls', async 
   assert.doesNotMatch(css, /\.difficulty-choice-grid|\.setup-launch/);
 });
 
-test('the atlas is a full-bleed canvas with a pointer, a small card and zoom controls, without toolbar or list', async () => {
+test('the atlas is a full-bleed canvas with a pointer, the 名所 photos, a small card and zoom controls, without a toolbar or fire list', async () => {
   const { mapScreen, mapEmptyPrompt } = await import('../dist/src/map-screen.js');
+  const { SPAWN_SITES } = await import('../dist/shared/spawn-sites.mjs');
   const html = mapScreen((name) => `<i class="icon-${name}"></i>`);
+  // Fast travel to the pictured sights moved here from the menu; the exhibition keeps its tab.
+  assert.match(html, /名所へワープ/);
+  assert.deepEqual(
+    [...html.matchAll(/data-map-place="([^"]+)"/g)].map((match) => match[1]),
+    SPAWN_SITES.map((site) => `spawn-${site.id}`),
+  );
+  for (const site of SPAWN_SITES) assert.match(html, new RegExp(`src="/spawn/${site.id}.jpg"`));
+  assert.doesNotMatch(
+    mapScreen(() => '', true),
+    /data-map-place|名所/,
+  );
   for (const id of [
     'big-map',
     'warp-map-points',

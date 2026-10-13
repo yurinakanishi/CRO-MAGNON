@@ -4,7 +4,7 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { prepareVendor } from './prepare-vendor.mjs';
 import { bundleBrowser, bundledIndex } from './bundle-browser.mjs';
-import { assertPublicCharacterData } from './public-character-audit.mjs';
+import { assertPublicCharacterData, publicModelRules } from './public-character-audit.mjs';
 import {
   DECODER,
   MESHOPT_EXTENSION,
@@ -29,6 +29,7 @@ import { cookedFixedPng } from './delivery/delivery-cache.mjs';
 import './build.mjs';
 if (process.exitCode) throw new Error('TypeScript build failed');
 const { CHARACTER_MODELS } = await import('../dist/shared/characters.mjs');
+const { CLOTHING_DYE_RULES } = await import('../dist/src/clothing-dye-rules.js');
 const { CHARACTER_ROSTER, characterModelReleased, characterSpeciesReleased } =
   await import('../dist/shared/character-roster.mjs');
 const { GROUND_MASCOTS } = await import('../dist/shared/friend-mascots.mjs');
@@ -135,6 +136,7 @@ async function collect(directory, extensions, keep = () => true) {
       // Generate this module from the chosen profiles, never copy it unfiltered.
       if (
         file === 'dist/src/title-credit-profiles.js' ||
+        file === 'dist/src/clothing-dye-rules.js' ||
         file === 'dist/shared/character-profiles.mjs' ||
         (!hasOctopus && file === 'dist/src/octopus-pose.js')
       )
@@ -179,6 +181,12 @@ await publish(
   '/shared/character-profiles.mjs',
   Buffer.from(
     `export const CHARACTER_MODELS = Object.freeze(${JSON.stringify(publicCharacters)}.map(Object.freeze));\n`,
+  ),
+);
+await publish(
+  '/src/clothing-dye-rules.js',
+  Buffer.from(
+    `export const CLOTHING_DYE_RULES = Object.freeze(${JSON.stringify(publicModelRules(CLOTHING_DYE_RULES, publicCharacters))});\n`,
   ),
 );
 for (const directory of ['dist/src', 'dist/shared']) await collect(directory, /\.(js|mjs|css)$/);

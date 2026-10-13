@@ -180,7 +180,7 @@ export const ENGLISH_GAME: Readonly<Record<string, string>> = {
   いま使える行動: 'Available actions',
   メニュー: 'Menu',
   メニューの項目: 'Menu tabs',
-  その他の操作: 'More actions',
+  その他: 'More',
   地図: 'Map',
   もちもの: 'Bag',
   持ち物: 'Inventory',
@@ -432,6 +432,8 @@ export const ENGLISH_GAME: Readonly<Record<string, string>> = {
   '世界地図。ポインタを焚き火に合わせて決定するとワープ先になります。':
     'World map. Select a campfire to choose a fast travel destination.',
   焚き火のワープ地点: 'Campfire destinations',
+  名所: 'Landmark',
+  名所へワープ: 'Fast travel to a landmark',
   ワープする: 'Fast travel',
   ワープする場所: 'Fast travel destination',
   ワープ: 'Travel',

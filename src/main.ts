@@ -250,8 +250,8 @@ const viewportMarkup = `
     <div id="damage-flash" class="damage-flash" aria-hidden="true" hidden></div>
     <div id="combat-status" class="combat-status" role="status" hidden></div>
     <div id="area-banner" class="area-banner" aria-live="polite" hidden><small></small><strong></strong></div>
-    <button id="status-plate" class="status-plate" title="部族の仲間・招待"><span class="energy-track" id="energy-track" data-level="ok"><span id="energy-bar" class="energy-fill"></span><em class="energy-label">${icon('leaf')}<b>体力</b><span id="energy-label">100 / 100</span></em></span><span class="status-main"><span class="portrait cro cro-magnon-woman" id="my-portrait"><i></i></span><span class="status-text"><strong id="profile-name" translate="no"></strong><small><span id="room-label" translate="no"></span><i>·</i><b id="online-count">0/${hudPlayerLimit()}</b><i>·</i><span id="day-label">1日目</span></small></span></span></button>
-    <div class="map-hud"><button id="map-button" class="minimap-button" aria-label="世界地図を開く" title="世界地図 [${fixedIdentity ? controllerLabels().map : 'M'}]"><canvas id="minimap" width="160" height="115"></canvas><span class="map-north">N</span><span class="map-area" id="map-area">はじまりの谷</span>${fixedIdentity ? '' : '<kbd class="map-key">M</kbd>'}</button><div class="connection"><i class="status-dot" id="connection-dot"></i><span id="connection-label">未接続</span><span id="ping-label">— ms</span></div></div>
+    <button id="status-plate" class="status-plate" title="部族の仲間・招待"><span class="energy-track" id="energy-track" data-level="ok"><span id="energy-bar" class="energy-fill"></span><em class="energy-label">${icon('leaf')}<b>体力</b><span id="energy-label">100 / 100</span></em></span><span class="status-main"><span class="portrait cro cro-magnon-woman" id="my-portrait"><i></i></span><span class="status-text"><strong id="profile-name" translate="no"></strong><small><span id="room-label" translate="no"></span><i>·</i><b id="online-count">0/${hudPlayerLimit()}</b></small></span></span></button>
+    <div class="map-hud"><button id="map-button" class="minimap-button" aria-label="世界地図を開く" title="世界地図 [${fixedIdentity ? controllerLabels().map : 'M'}]"><canvas id="minimap" width="160" height="115"></canvas><span class="map-north">N</span>${fixedIdentity ? '' : '<kbd class="map-key">M</kbd>'}</button><span class="connection"><i class="status-dot" id="connection-dot"></i><span id="connection-label">未接続</span><span id="ping-label">— ms</span></span></div>
     <div id="toast-stack" class="toast-stack" aria-live="polite"></div>
     ${fixedIdentity ? '' : `<div class="chat-panel"><button class="chat-heading" id="chat-toggle">${icon('chat')}<strong>チャット</strong><kbd>Enter</kbd><span class="chat-collapse">−</span></button><div id="chat-content"><div id="chat-messages" class="chat-messages" role="log" aria-live="polite"></div><form id="chat-form"><input id="chat-input" maxlength="180" placeholder="仲間に話しかける…" aria-label="チャットメッセージ" autocomplete="off"><button aria-label="メッセージを送信" type="submit">${icon('arrow')}</button></form></div></div>`}
     <div class="hotbar-wrap"><div class="interaction-hint" id="interaction-hint" hidden><kbd>E</kbd><span></span></div></div>
@@ -1000,6 +1000,8 @@ async function connect(automatic = false) {
       // Like a fast travel, the player's own warp is hidden behind the loading screen
       // until the destination is drawn.
       let coveredWarp: string | null = null;
+      // A pictured destination (名所), from the map or the exhibition menu, faces its sight.
+      let facingSight = !!$('#exhibition-warp');
       if (warped) {
         stopInput();
         if ($('#big-map') || $('#exhibition-warp')) $('#modal').close();
@@ -1012,6 +1014,11 @@ async function connect(automatic = false) {
           !renderUnavailable
         )
           coveredWarp = request.target;
+        if (
+          request?.target.startsWith('spawn-') &&
+          performance.now() - request.at < WARP_REQUEST_MS
+        )
+          facingSight = true;
       }
       renderer.setState(state, selfId);
       // In this same task, so no frame draws the destination first, and after setState,
@@ -1026,7 +1033,7 @@ async function connect(automatic = false) {
         contributorsCaveArriving = true;
         action('warp', 'spawn-cave');
       }
-      if (warped && $('#exhibition-warp')) renderer.focusPlayer(player().facing + Math.PI);
+      if (warped && facingSight) renderer.focusPlayer(player().facing + Math.PI);
       updateCharacterSwitch(player(), renderer.serverNow(), joined);
       updateExhibitionWarp(player(), renderer.serverNow(), joined);
       if ($('#big-map'))
@@ -1179,8 +1186,6 @@ function updateHUD() {
   // below, it no longer recalculates style in the middle of them.
   drawMinimap();
   setText($('#online-count'), `${state.players.length}/${hudPlayerLimit()}`);
-  // Each exhibition visit is day one; the world's simulation clock keeps running.
-  setText($('#day-label'), `${fixedIdentity ? 1 : state.day || 1}日目`);
   const energy = Math.round(me?.energy ?? 100),
     energyBar = $('#energy-bar');
   setText($('#energy-label'), `${energy} / 100`);
@@ -1196,7 +1201,6 @@ function updateHUD() {
   const biome = biomeAt(me?.x ?? 50, me?.z ?? 50);
   const region = regionAt(me?.x ?? 50, me?.z ?? 50);
   const areaName = region?.name ?? locationName(me?.x ?? 50, me?.z ?? 50);
-  setText($('#map-area'), areaName);
   // A place reached behind the loading screen is announced once it lifts.
   if (me && joined && !screens.active && !loadingScreen.active)
     areaBanner.update(
@@ -2368,9 +2372,11 @@ function openCharacterSwitchMenu() {
 }
 /**
  * Game-style pause menu: a tab rail on the left, one panel on the right, exits as
- * buttons below the tabs. The exhibition layout opens on Warp; the normal layout
- * opens on the bag with the first food card focused.
+ * buttons below the tabs. Where the tabs become one sliding row (phones, narrow
+ * windows), the exits are its last tab, その他. The exhibition layout opens on Warp;
+ * the normal layout opens on the bag with the first food card focused.
  */
+const PAUSE_TAB_ROW = '(max-width: 860px)'; // The breakpoint of the tab row in the CSS.
 function localResetMarkup() {
   return localRoomReset
     ? '<div class="settings-item local-reset-setting"><div><strong>部屋の進行をリセット</strong><p>この部屋を最初からやり直します。</p></div><button type="button" class="button button-outline" data-setting="reset-room">リセット</button></div>'
@@ -2442,11 +2448,11 @@ function openPauseMenu(tab?: string) {
         ['character', 'people', 'キャラクターを変える'],
         ['inventory', 'bag', '持ち物'],
       ]
-    : [
+    : // Fast travel lives in the map: its 名所 bar and the fires.
+      [
         ['inventory', 'bag', '持ち物'],
-        ['warp', 'compass', 'ワープする'],
         ['mascots', 'people', '連れていく仲間'],
-        ['settings', 'sound', '設定'],
+        ['settings', 'gear', '設定'],
       ];
   const exits: [string, string, string, () => void][] = [
     ...(caveTorchAvailable(player())
@@ -2494,15 +2500,19 @@ function openPauseMenu(tab?: string) {
     tabs.some(([key]) => key === id)
       ? `<section class="pause-panel" data-pause-panel="${id}" role="tabpanel" id="pause-panel-${id}" ${pauseTab === id ? '' : 'hidden'}>${body}</section>`
       : '';
+  // The exits sit under the rail; in the one-row layout they are the panel of the last tab.
   openModal(
-    `<div class="pause-menu${fixedIdentity ? ' exhibition-menu' : ''}"><aside class="pause-rail"><nav class="pause-tabs" role="tablist" aria-label="メニューの項目">${tabs
+    `<div class="pause-menu${fixedIdentity ? ' exhibition-menu' : ''}" data-tab="${pauseTab}"><aside class="pause-rail"><nav class="pause-tabs" role="tablist" aria-label="メニューの項目">${[
+      ...tabs,
+      ['more', 'more', 'その他'],
+    ]
       .map(
         ([id, glyph, label]) =>
-          `<button type="button" class="pause-tab" role="tab" data-pause-tab="${id}" data-controller-menu="${id}" aria-selected="${pauseTab === id}" aria-controls="pause-panel-${id}">${icon(glyph)}<span>${label}</span></button>`,
+          `<button type="button" class="pause-tab${id === 'more' ? ' pause-tab-more' : ''}" role="tab" data-pause-tab="${id}" data-controller-menu="${id}" aria-selected="${pauseTab === id}" aria-controls="pause-panel-${id}">${icon(glyph)}<span>${label}</span></button>`,
       )
       .join(
         '',
-      )}</nav><button type="button" class="pause-more button button-outline" aria-expanded="false" aria-controls="pause-menu-actions">その他の操作</button><div id="pause-menu-actions" class="pause-exits">${exits.map(menuButton).join('')}</div></aside><div class="pause-panels">${panel(
+      )}</nav></aside><section id="pause-panel-more" class="pause-exits" aria-label="その他">${exits.map(menuButton).join('')}</section><div class="pause-panels">${panel(
       'inventory',
       inventoryMarkup(),
     )}${panel('character', characterSwitchMarkup())}${panel('warp', exhibitionWarpMarkup())}${panel('mascots', mascotMenuMarkup(availableMascots))}${panel(
@@ -2511,12 +2521,6 @@ function openPauseMenu(tab?: string) {
     )}</div></div>`,
   );
   const root = $('#modal-body') as HTMLElement;
-  const more = root.querySelector<HTMLButtonElement>('.pause-more')!;
-  more.onclick = () => {
-    const expanded = more.getAttribute('aria-expanded') !== 'true';
-    more.setAttribute('aria-expanded', String(expanded));
-    root.querySelector('.pause-rail')?.classList.toggle('pause-actions-open', expanded);
-  };
   const controlsSetting = document.createElement('div');
   controlsSetting.className = 'settings-item';
   controlsSetting.innerHTML = `<div><strong>操作</strong></div><div class="settings-buttons" role="group" aria-label="操作モード"><button class="button button-outline" data-controls="normal" aria-pressed="${!easyControls}">通常</button><button class="button button-outline" data-controls="easy" aria-pressed="${easyControls}">かんたん・視点自動</button></div>`;
@@ -2556,15 +2560,39 @@ function openPauseMenu(tab?: string) {
         );
     };
   }
+  const menu = root.querySelector<HTMLElement>('.pause-menu')!;
+  const tabRow = root.querySelector<HTMLElement>('.pause-tabs')!;
   const tabButtons = [...root.querySelectorAll<HTMLButtonElement>('.pause-tab')];
+  // The sliding row fades at a side with more tabs beyond it.
+  const fadeTabRow = () => {
+    const end = tabRow.scrollWidth - tabRow.clientWidth;
+    const sides = [
+      ...(tabRow.scrollLeft > 1 ? ['start'] : []),
+      ...(tabRow.scrollLeft < end - 1 ? ['end'] : []),
+    ];
+    if (sides.length) tabRow.dataset.fade = sides.join(' ');
+    else delete tabRow.dataset.fade;
+  };
+  const revealTab = (tab: HTMLElement | undefined) => {
+    if (!tab || tabRow.scrollWidth <= tabRow.clientWidth) return;
+    const row = tabRow.getBoundingClientRect(),
+      box = tab.getBoundingClientRect(),
+      margin = 24;
+    if (box.left < row.left + margin) tabRow.scrollLeft -= row.left + margin - box.left;
+    else if (box.right > row.right - margin) tabRow.scrollLeft += box.right - row.right + margin;
+  };
+  tabRow.addEventListener('scroll', fadeTabRow, { passive: true });
   const showTab = (id: string) => {
     pauseTab = id;
+    menu.dataset.tab = id;
     closeItemActions();
     for (const tab of tabButtons)
       tab.setAttribute('aria-selected', String(tab.dataset.pauseTab === id));
     for (const section of root.querySelectorAll<HTMLElement>('.pause-panel'))
       section.hidden = section.dataset.pausePanel !== id;
-    root.querySelector<HTMLElement>(`[data-pause-tab="${id}"]`)?.focus({ preventScroll: true });
+    const selected = root.querySelector<HTMLElement>(`[data-pause-tab="${id}"]`);
+    selected?.focus({ preventScroll: true });
+    revealTab(selected);
     if (id === 'character')
       root
         .querySelector<HTMLElement>('#character-switch-form input:checked')
@@ -2577,6 +2605,24 @@ function openPauseMenu(tab?: string) {
   for (const [id, , , handler] of exits)
     if ($(`[data-controller-menu="${id}"]`))
       $(`[data-controller-menu="${id}"]`).onclick = () => handler();
+  // Wider than the row layout, the exits stand under the rail again and その他 has no tab.
+  const tabLayout = matchMedia(PAUSE_TAB_ROW);
+  const tabSizes =
+    typeof ResizeObserver === 'undefined' ? null : new ResizeObserver(() => fitTabs());
+  const stopFitting = () => {
+    tabLayout.removeEventListener('change', fitTabs);
+    tabSizes?.disconnect();
+  };
+  function fitTabs() {
+    if (!menu.isConnected) return stopFitting();
+    if (!tabLayout.matches && pauseTab === 'more') showTab(tabs[0][0]);
+    fadeTabRow();
+  }
+  tabLayout.addEventListener('change', fitTabs);
+  for (const element of [tabRow, ...tabButtons]) tabSizes?.observe(element);
+  $('#modal').addEventListener('close', stopFitting, { once: true });
+  fadeTabRow();
+  revealTab(tabButtons.find((tab) => tab.dataset.pauseTab === pauseTab));
   const menuActions = {
     player,
     now: () => renderer.serverNow(),
@@ -3052,6 +3098,7 @@ touchControls = new TouchControls($('.game-viewport'), {
     updateHintLabels();
     updateHuntingHUD();
     compactMinimap();
+    placeConnection();
     drawMinimap();
   },
 });
@@ -3060,6 +3107,18 @@ function compactMinimap() {
   $('#minimap').dataset.compact = String(touchMode());
 }
 compactMinimap();
+/**
+ * The phone shows the connection as a dot before the party count in the status capsule (top
+ * left), leaving the round minimap to the map; the PC keeps its labelled row under the minimap.
+ */
+function placeConnection() {
+  const status = $('.connection'),
+    count = $('#online-count');
+  if (touchMode()) {
+    if (status.nextElementSibling !== count) count.before(status);
+  } else if (status.parentElement !== $('.map-hud')) $('.map-hud').append(status);
+}
+placeConnection();
 renderer.manualInputAllowed = () =>
   joined &&
   playReady() &&

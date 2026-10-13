@@ -190,10 +190,19 @@ async function credits(page) {
   });
   return dialog;
 }
-async function warpMenu(page) {
-  await page.keyboard.press('Escape');
-  await page.locator('.pause-menu').waitFor();
-  await page.locator('[data-pause-tab="warp"]').click();
+/** The pictured sights (名所) are chosen in the map's row, then sent with its warp button. */
+async function warpToSight(page, id, mobile = false) {
+  if (mobile) await page.locator('#map-button').tap();
+  else await page.keyboard.press('m');
+  const sight = page.locator(`[data-map-place="spawn-${id}"]`);
+  await sight.scrollIntoViewIfNeeded();
+  if (mobile) await sight.tap();
+  else await sight.click();
+  await page.waitForFunction(() => !document.querySelector('#map-warp').disabled);
+  const since = await now(page);
+  if (mobile) await page.locator('#map-warp').tap();
+  else await page.locator('#map-warp').click();
+  return since;
 }
 /** The cover from its appearance after `since` until it is hidden again. */
 async function coverRun(page, since, timeout = 240000) {
@@ -387,19 +396,11 @@ try {
   });
   pass('A after closing the dialog proceeds as before; the cave entry shows no loading screen');
 
-  // A warp from the menu: the destination, its photo and a tip until it is drawn.
+  // A warp to a pictured sight: the destination, its photo and a tip until it is drawn.
   const room = game.rooms.get('COVERQA');
   const me = () => room.players.get(desktop.seen.id);
-  await warpMenu(page);
   const castle = site('castle');
-  const castleCard = page.locator('[data-warp-spawn="castle"]');
-  await page.waitForFunction(
-    () =>
-      document.querySelector('[data-warp-spawn="castle"]')?.getAttribute('aria-disabled') ===
-      'false',
-  );
-  since = await now(page);
-  await castleCard.click();
+  since = await warpToSight(page, 'castle');
   await page.waitForFunction(
     (since) => window.__paint.some((entry) => entry.at > since && entry.state === 'shown'),
     since,
@@ -435,7 +436,7 @@ try {
   await page.locator('.pause-menu').waitFor({ timeout: 3000 });
   await page.keyboard.press('Escape');
   await page.waitForFunction(() => !document.querySelector('#modal').open);
-  pass('Menu warp: castle name, photo and a tip; input held, landmarks drawn, play resumes', {
+  pass('Sight warp: castle name, photo and a tip; input held, landmarks drawn, play resumes', {
     shownMs: covers.at(-1).shownMs,
     arrival,
   });
@@ -510,7 +511,8 @@ try {
   // Back to the title and in again, with the world already loaded: covered, no cave.
   await page.keyboard.press('Escape');
   await page.locator('.pause-menu').waitFor();
-  if (await page.locator('.pause-more').isVisible()) await page.locator('.pause-more').click();
+  if (await page.locator('[data-pause-tab="more"]').isVisible())
+    await page.locator('[data-pause-tab="more"]').click();
   await page.locator('[data-controller-menu="title"]').click();
   await page.locator('#title-start').waitFor();
   since = await now(page);
@@ -572,14 +574,8 @@ try {
   await phone.page.locator('#loading-cave[data-world-ready="true"]').waitFor({ timeout: 240000 });
   await phone.page.locator('[data-cave-proceed]').tap();
   await phone.page.locator('#loading-cave').waitFor({ state: 'detached', timeout: 180000 });
-  await warpMenu(phone.page);
   const cave = site('cave');
-  await phone.page.waitForFunction(
-    () =>
-      document.querySelector('[data-warp-spawn="cave"]')?.getAttribute('aria-disabled') === 'false',
-  );
-  since = await now(phone.page);
-  await phone.page.locator('[data-warp-spawn="cave"]').tap();
+  since = await warpToSight(phone.page, 'cave', true);
   await phone.page.locator('#loading-screen[data-state="shown"]').waitFor({ timeout: 5000 });
   await fit(phone.page, [
     '.loading-screen-place strong',

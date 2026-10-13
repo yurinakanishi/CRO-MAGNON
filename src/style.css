@@ -1170,7 +1170,6 @@ body[data-screen] .world-labels {
 .minimap-button {
   position: relative;
   width: 172px;
-  height: 150px;
   padding: 4px;
   background: var(--panel);
   border: 1px solid var(--line);
@@ -1196,20 +1195,6 @@ body[data-screen] .world-labels {
   font-weight: 700;
   color: #f2eac9;
   text-shadow: 0 1px 3px #000;
-}
-.map-area {
-  position: absolute;
-  left: 8px;
-  right: 8px;
-  bottom: 7px;
-  font-size: 9px;
-  letter-spacing: 0.6px;
-  color: #e6e2c8;
-  text-align: left;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  padding-right: 26px;
 }
 .map-key {
   position: absolute;
@@ -1912,16 +1897,18 @@ dialog:has(.pause-menu) #modal-body {
 .pause-menu {
   display: grid;
   grid-template-columns: 248px minmax(0, 1fr);
+  grid-template-rows: minmax(0, 1fr) auto;
   width: 100%;
   min-width: 0;
   min-height: 0;
 }
 .pause-rail {
+  grid-area: 1 / 1;
   display: flex;
   flex-direction: column;
   min-width: 0;
   min-height: 0;
-  padding: 26px 18px 22px 24px;
+  padding: 26px 18px 0 24px;
   background: #121b16;
   border-right: 1px solid #ffffff0c;
 }
@@ -1989,16 +1976,24 @@ dialog:has(.pause-menu) #modal-body {
   outline-offset: -3px !important;
   box-shadow: none !important;
 }
+/* The exits continue the rail below its tabs; the one-row layout gives them a tab instead. */
+.pause-tab-more {
+  display: none;
+}
 .pause-exits {
+  grid-area: 2 / 1;
   display: grid;
   grid-template-columns: minmax(0, 1fr);
   gap: 6px;
-  margin-top: 16px;
-  padding-top: 16px;
-  border-top: 1px solid #ffffff0c;
+  min-width: 0;
+  padding: 0 18px 22px 24px;
+  background: #121b16;
+  border-right: 1px solid #ffffff0c;
 }
-.pause-more {
-  display: none;
+.pause-exits:before {
+  content: '';
+  margin: 16px 0 10px;
+  border-top: 1px solid #ffffff0c;
 }
 .pause-exits .button {
   min-width: 0;
@@ -2024,6 +2019,7 @@ dialog:has(.pause-menu) #modal-body {
   color: #d8b5a8;
 }
 .pause-panels {
+  grid-area: 1 / 2 / 3 / 3;
   display: flex;
   flex-direction: column;
   min-width: 0;
@@ -2126,18 +2122,8 @@ dialog:has(.pause-menu) #modal-body {
   border-color: #c3d88f88;
   color: #dcecc2;
 }
+/* Narrow: the tabs slide in one row, その他 last; a chosen tab's panel fills the space below. */
 @media (max-width: 860px) {
-  .pause-more {
-    display: flex;
-    align-self: flex-start;
-    margin-top: 6px;
-    min-height: 36px;
-    padding: 6px 12px;
-    font-size: 11px;
-  }
-  .pause-rail:not(.pause-actions-open) .pause-exits {
-    display: none;
-  }
   .pause-menu {
     grid-template-columns: minmax(0, 1fr);
     grid-template-rows: auto minmax(0, 1fr);
@@ -2158,26 +2144,77 @@ dialog:has(.pause-menu) #modal-body {
     flex: none;
     overflow-x: auto;
     overflow-y: hidden;
+    overscroll-behavior-x: contain;
+    scroll-snap-type: x proximity;
+    scrollbar-width: none;
     gap: 4px;
     padding-bottom: 4px;
   }
+  .pause-tabs::-webkit-scrollbar {
+    display: none;
+  }
+  /* A side with more tabs beyond it fades out. */
+  .pause-tabs[data-fade='end'] {
+    -webkit-mask-image: linear-gradient(to right, #000 calc(100% - 36px), transparent);
+    mask-image: linear-gradient(to right, #000 calc(100% - 36px), transparent);
+  }
+  .pause-tabs[data-fade='start'] {
+    -webkit-mask-image: linear-gradient(to left, #000 calc(100% - 36px), transparent);
+    mask-image: linear-gradient(to left, #000 calc(100% - 36px), transparent);
+  }
+  .pause-tabs[data-fade='start end'] {
+    -webkit-mask-image: linear-gradient(
+      to right,
+      transparent,
+      #000 36px,
+      #000 calc(100% - 36px),
+      transparent
+    );
+    mask-image: linear-gradient(
+      to right,
+      transparent,
+      #000 36px,
+      #000 calc(100% - 36px),
+      transparent
+    );
+  }
   .pause-tab {
+    flex: 0 0 auto;
     width: auto;
     min-height: 40px;
     padding: 8px 12px;
     font-size: 11px;
     white-space: nowrap;
+    scroll-snap-align: start;
+  }
+  .pause-tab-more {
+    display: flex;
+  }
+  .pause-panels,
+  .pause-exits {
+    grid-area: 2 / 1;
+  }
+  .pause-menu:not([data-tab='more']) .pause-exits,
+  .pause-menu[data-tab='more'] .pause-panels {
+    display: none;
   }
   .pause-exits {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-    margin-top: 10px;
-    padding-top: 10px;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    align-content: start;
+    gap: 8px;
+    overflow-y: auto;
+    padding: 18px 16px 20px;
+    background: none;
+    border-right: 0;
+  }
+  .pause-exits:before {
+    display: none;
   }
   .pause-exits .button {
-    min-height: 38px;
-    font-size: 10px;
-    padding: 6px 8px;
-    gap: 6px;
+    min-height: 48px;
+    font-size: 12px;
+    padding: 8px 14px;
+    gap: 10px;
   }
   .pause-panels {
     padding: 18px 16px 20px;
@@ -2191,14 +2228,6 @@ dialog:has(.pause-menu) #modal-body {
   }
   .settings-buttons {
     justify-content: flex-start;
-  }
-}
-@media (max-width: 520px) {
-  .pause-exits {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-  .pause-exits [data-controller-menu='resume'] {
-    grid-column: 1/-1;
   }
 }
 @media (max-width: 860px) and (max-height: 500px) {
@@ -3429,7 +3458,6 @@ dialog:has(.earth-map) {
   }
   .minimap-button {
     width: 190px;
-    height: 162px;
   }
   .minimap-button > canvas {
     height: 126px;
@@ -3503,15 +3531,9 @@ dialog:has(.earth-map) {
   }
   .minimap-button {
     width: 112px;
-    height: 100px;
   }
   .minimap-button > canvas {
     height: 72px;
-  }
-  .map-area {
-    font-size: 8px;
-    bottom: 5px;
-    padding-right: 18px;
   }
   .map-key {
     display: none;
@@ -3612,7 +3634,6 @@ dialog:has(.earth-map) {
   }
   .minimap-button {
     width: 92px;
-    height: 86px;
   }
   .minimap-button > canvas {
     height: 60px;
@@ -3782,15 +3803,9 @@ dialog:has(.earth-map) {
   }
   .minimap-button {
     width: 90px;
-    height: 80px;
   }
   .minimap-button > canvas {
     height: 56px;
-  }
-  .map-area {
-    font-size: 7px;
-    bottom: 4px;
-    padding-right: 0;
   }
   .map-key {
     display: none;
@@ -4124,20 +4139,30 @@ dialog:has(.atlas) .modal-top {
 dialog:has(.atlas) .modal-top:before {
   display: none;
 }
+/* Over pale ice or sand the back button keeps a solid panel, like the atlas's other controls. */
+dialog:has(.atlas) .modal-top .modal-back {
+  background: #0f2429e6;
+  border-color: #89ada050;
+}
+dialog:has(.atlas) .modal-top .modal-back:hover {
+  background: #183439f0;
+  border-color: #89ada080;
+}
 dialog:has(.atlas) #modal-body {
   height: 100%;
   min-height: 0;
 }
 .atlas {
   height: 100%;
-  display: grid;
-  grid-template-rows: minmax(0, 1fr);
+  display: flex;
+  flex-direction: column;
   color: #f0e6c9;
 }
 .atlas .warp-map-wrap {
   position: relative;
+  flex: 1 1 0;
   width: 100%;
-  height: 100%;
+  height: auto;
   min-height: 0;
   max-width: none;
   margin: 0;
@@ -4416,6 +4441,109 @@ dialog:has(.atlas) #modal-body {
 .atlas-legend-enemy {
   color: #ffb8ad;
 }
+/* 名所: the pictured sights slide in one bar above the map (covering none of it); choosing
+   one centres it on the map. The back button stands at the bar's right end. */
+.atlas-places {
+  position: relative;
+  z-index: 9;
+  flex: none;
+  display: flex;
+  justify-content: center;
+  padding: 10px 120px;
+  background: #0f2429;
+  border-bottom: 1px solid #89ada030;
+  box-shadow: 0 6px 18px #04101255;
+}
+.atlas-places-panel {
+  display: grid;
+  gap: 5px;
+  min-width: 0;
+  max-width: 100%;
+}
+.atlas-places h3 {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 0 2px;
+  font-size: 10px;
+  font-weight: 600;
+  line-height: 1.2;
+  letter-spacing: 0.16em;
+  color: #e9d7a6;
+}
+.atlas-places-key {
+  display: none;
+  font: 600 9px/1 var(--display);
+  letter-spacing: 0;
+  padding: 2px 5px;
+  border: 1px solid #ffffff33;
+  border-radius: 3px;
+  color: #d7ccad;
+}
+.using-gamepad .atlas-places-key {
+  display: inline-block;
+}
+.atlas-places-row {
+  display: flex;
+  gap: 6px;
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  scroll-snap-type: x proximity;
+  scrollbar-width: none;
+  touch-action: pan-x;
+}
+.atlas-places-row::-webkit-scrollbar {
+  display: none;
+}
+.atlas-place {
+  position: relative;
+  flex: 0 0 auto;
+  width: 120px;
+  aspect-ratio: 16 / 9;
+  padding: 0;
+  overflow: hidden;
+  border: 1.5px solid #d1bc8550;
+  border-radius: 8px;
+  background: #0c1d21;
+  color: #fff4da;
+  cursor: pointer;
+  scroll-snap-align: start;
+}
+.atlas-place img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  pointer-events: none;
+}
+.atlas-place span {
+  position: absolute;
+  inset: auto 0 0;
+  padding: 14px 7px 4px;
+  overflow: hidden;
+  font-size: 11px;
+  font-weight: 600;
+  line-height: 1.25;
+  text-align: left;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  text-shadow: 0 1px 2px #000;
+  background: linear-gradient(transparent, #071418e6 65%);
+}
+.atlas-place:hover {
+  border-color: #f2c67aaa;
+}
+.atlas-place:focus-visible {
+  outline: 2px solid #fff0b0;
+  outline-offset: -2px;
+}
+.atlas-place[aria-pressed='true'] {
+  border-color: #ffe2a0;
+  box-shadow: inset 0 0 0 1.5px #ffe2a0;
+}
+.atlas-place[aria-pressed='true'] span {
+  color: #ffe8b4;
+}
 /* The destination card: bottom left, small, with the confirmation right under the name. */
 .atlas-card {
   position: absolute;
@@ -4465,8 +4593,10 @@ dialog:has(.atlas) #modal-body {
 }
 .atlas #map-selection {
   font-size: 11.5px;
+  line-height: 1.5;
   color: #a8c2b8;
   margin: 0;
+  white-space: pre-line;
 }
 .atlas #map-selection:empty {
   display: none;
@@ -4606,6 +4736,13 @@ dialog:has(.atlas) #modal-body {
   .atlas-legend {
     display: none;
   }
+  .atlas-places {
+    justify-content: flex-start;
+    padding: 8px 78px 8px 8px;
+  }
+  .atlas-place {
+    width: 104px;
+  }
   .atlas-card {
     left: 8px;
     bottom: 8px;
@@ -4643,6 +4780,16 @@ dialog:has(.atlas) #modal-body {
   }
   .atlas-legend {
     display: none;
+  }
+  /* A short screen keeps only the photos; their names and the card say the rest. */
+  .atlas-places {
+    padding: 6px 96px 6px 8px;
+  }
+  .atlas-places h3 {
+    display: none;
+  }
+  .atlas-place {
+    width: 96px;
   }
   .atlas-card {
     left: 8px;

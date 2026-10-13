@@ -33,6 +33,8 @@ const paths = new Set([
   'src/title.css',
   'src/style.css',
   'src/character-assets.js',
+  'src/clothing-dye.js',
+  'src/clothing-dye-rules.js',
   'shared/characters.mjs',
   'shared/character-profiles.mjs',
   'multiplayer-config.json',
@@ -82,6 +84,9 @@ assert.equal(config.room, 'EMBER');
 assert.equal(config.movementRefreshMs, 140);
 const publicCharacters = await fetch(`${base}/shared/character-profiles.mjs`).then((r) => r.text());
 assert.doesNotMatch(publicCharacters, /maruimo|まる[ぃい]も/i);
+const dyeRules = await fetch(`${base}/src/clothing-dye-rules.js`).then((r) => r.text());
+assert.doesNotMatch(dyeRules, /maruimo-octopus|MaruimoOctopusSurface/);
+assert.match(dyeRules, /cro-magnon-woman/);
 const privateAsset = JSON.parse(await readFile('public/models/maruimo-octopus/asset.json', 'utf8'));
 const excludedCharacterFiles = [
   '/models/maruimo-octopus/asset.json',
@@ -109,6 +114,7 @@ const report = {
   runtimeTexturesVerified: files.filter((file) => /^models\/camp-cave\/.*\.png$/.test(file.path))
     .length,
   publicCharacterCount: build.characters.length,
+  publicClothingDyeRulesVerified: true,
   excludedCharacterFiles,
 };
 await writeFile('assets/cloudflare/public-release-qa.json', JSON.stringify(report, null, 2));

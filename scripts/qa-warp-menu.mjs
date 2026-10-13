@@ -1,4 +1,5 @@
-// Real Chrome menu actions in memory-only rooms. No user's save is opened.
+// Real Chrome fast travel to the six pictured sights in memory-only rooms: the map's 名所 row
+// in the ordinary game, the menu's ワープする tab in the exhibition. No user's save is opened.
 import assert from 'node:assert/strict';
 import path from 'node:path';
 import { mkdir, writeFile } from 'node:fs/promises';
@@ -65,19 +66,36 @@ async function pageAt(url, lan = false) {
   await page.locator('#loading-screen').waitFor({ state: 'hidden', timeout: 120000 });
   return { page, seen };
 }
-async function menu(page) {
-  await page.keyboard.press('Escape');
-  await page.locator('.pause-menu').waitFor();
-  await page.locator('[data-pause-tab="warp"]').click();
-  assert.equal(await page.locator('[data-warp-spawn]').count(), 6);
+/** The ordinary game's sights are photos in the map's row. */
+async function sights(page) {
+  await page.locator('#world').focus();
+  await page.keyboard.press('m');
+  await page.locator('.atlas-places').waitFor();
+  assert.equal(await page.locator('[data-map-place]').count(), 6);
 }
-async function choose(user, room, id) {
+/** A photo chooses its sight; the warp button (or the chosen photo again) sends it. */
+async function inMap(page, id, how) {
+  const photo = page.locator(`[data-map-place="spawn-${id}"]`);
+  await photo.scrollIntoViewIfNeeded();
+  await photo.click();
+  await page.locator(`#map-card[data-state="ready"]`).waitFor();
+  assert.equal(await photo.getAttribute('aria-pressed'), 'true');
+  assert.equal(await page.locator('#map-region').innerText(), '名所');
+  if (how === 'photo') await photo.click();
+  else await page.locator('#map-warp').click();
+}
+/** The exhibition keeps its own menu tab of the same six cards. */
+async function inMenu(page, id) {
+  const button = page.locator(`[data-warp-spawn="${id}"]`);
+  await until(() => button.getAttribute('aria-disabled').then((v) => v === 'false'), 'warp ready');
+  await button.click();
+}
+async function choose(user, room, id, how = 'button') {
   const p = room.players.get(user.seen.id);
   const before = p.warpSequence ?? 0,
     inventory = structuredClone(p.inventory);
-  const button = user.page.locator(`[data-warp-spawn="${id}"]`);
-  await until(() => button.getAttribute('aria-disabled').then((v) => v === 'false'), 'warp ready');
-  await button.click();
+  if (how === 'menu') await inMenu(user.page, id);
+  else await inMap(user.page, id, how);
   // The own warp is covered by the loading screen until the destination is drawn;
   // the menu opens again only after it lifts.
   await user.page.locator('#loading-screen[data-state="shown"]').waitFor({ timeout: 5000 });
@@ -109,23 +127,29 @@ try {
     peer.once('open', resolve);
     peer.once('error', reject);
   });
-  await menu(page);
-  await page.waitForFunction(() =>
-    [...document.querySelectorAll('[data-warp-spawn] img')].every(
-      (image) => image.complete && image.naturalWidth > 0,
-    ),
-  );
+  // The menu no longer has a warp tab; the map shows the six photos.
+  await page.keyboard.press('Escape');
+  await page.locator('.pause-menu').waitFor();
   assert.deepEqual(
     await page
       .locator('[data-pause-tab]')
       .evaluateAll((nodes) => nodes.map((node) => node.dataset.pauseTab)),
-    ['inventory', 'warp', 'mascots', 'settings'],
+    ['inventory', 'mascots', 'settings', 'more'],
   );
-  await page.screenshot({ path: `${out}/ordinary-menu.png` });
+  await page.keyboard.press('Escape');
+  await page.waitForFunction(() => !document.querySelector('#modal').open);
+  await sights(page);
+  await page.waitForFunction(() =>
+    [...document.querySelectorAll('[data-map-place] img')].every(
+      (image) => image.complete && image.naturalWidth > 0,
+    ),
+  );
+  await page.screenshot({ path: `${out}/ordinary-map.png` });
   if (!layoutOnly) {
     for (const site of SPAWN_SITES) {
-      if (site !== SPAWN_SITES[0]) await menu(page);
-      await choose(user, room, site.id);
+      if (site !== SPAWN_SITES[0]) await sights(page);
+      // Alternate the warp button and a second press on the chosen photo.
+      await choose(user, room, site.id, SPAWN_SITES.indexOf(site) % 2 ? 'photo' : 'button');
       await until(
         () =>
           peerSeen.state?.players.some(
@@ -137,49 +161,56 @@ try {
         'observer receives arrival',
       );
       if (site === SPAWN_SITES[0]) {
-        await menu(page);
-        assert.equal(
-          await page.locator('[data-warp-spawn="cave"]').getAttribute('aria-disabled'),
-          'true',
-        );
-        assert.match(await page.locator('#exhibition-warp-status').innerText(), /3秒/);
+        await sights(page);
+        await page.locator('[data-map-place="spawn-cave"]').click();
+        await page.locator('#map-card[data-state="blocked"]').waitFor();
+        assert.equal(await page.locator('#map-warp').isDisabled(), true);
+        assert.match(await page.locator('#map-warp-status').innerText(), /3秒/);
         await page.keyboard.press('Escape');
+        await page.waitForFunction(() => !document.querySelector('#modal').open);
       }
     }
     pass(
-      'ordinary menu has all six pictured destinations; every click arrives safely with possessions and synchronized observer',
+      "the map's 名所 row has all six pictured destinations; every warp arrives safely with possessions and synchronized observer",
     );
-    pass('three-second cooldown disables the cards and displays its explanation');
+    pass('three-second cooldown blocks the chosen sight and displays its explanation');
     await page.keyboard.press('Escape');
     await page.locator('[data-pause-tab="settings"]').click();
     assert.equal(await page.locator('[data-difficulty]').count(), 0);
-    await page.locator('[data-pause-tab="warp"]').click();
+    await page.keyboard.press('Escape');
+    await page.waitForFunction(() => !document.querySelector('#modal').open);
+    await sights(page);
     await choose(user, room, 'camp');
     assert.equal(p.difficulty, 'normal');
-    pass('menu warps preserve fixed normal difficulty and settings offer no difficulty choice');
-  } else await page.keyboard.press('Escape');
+    pass('sight warps preserve fixed normal difficulty and settings offer no difficulty choice');
+  } else {
+    await page.keyboard.press('Escape');
+    await page.waitForFunction(() => !document.querySelector('#modal').open);
+  }
   for (const viewport of [
     { width: 390, height: 844 },
     { width: 844, height: 390 },
   ]) {
     await page.setViewportSize(viewport);
-    await menu(page);
-    const target = page.locator('[data-warp-spawn="cave"]');
+    await sights(page);
+    const target = page.locator('[data-map-place="spawn-cave"]');
     await target.scrollIntoViewIfNeeded();
-    const nameBox = await target.locator('strong').boundingBox();
-    const panelBox = await page.locator('.pause-panels').boundingBox();
+    const photoBox = await target.boundingBox();
+    const rowBox = await page.locator('.atlas-places-row').boundingBox();
     assert.ok(
-      nameBox.y >= panelBox.y && nameBox.y + nameBox.height <= panelBox.y + panelBox.height,
-      'destination name fits the visible panel',
+      photoBox.x >= rowBox.x - 1 &&
+        photoBox.x + photoBox.width <= rowBox.x + rowBox.width + 1 &&
+        photoBox.x + photoBox.width <= viewport.width,
+      'the last photo slides fully into view',
     );
     assert.equal(
       await page.locator('#modal').evaluate((node) => node.scrollWidth > node.clientWidth + 1),
       false,
     );
-    await page.screenshot({ path: `${out}/menu-${viewport.width}.png` });
+    await page.screenshot({ path: `${out}/map-${viewport.width}.png` });
     await choose(user, room, 'cave');
   }
-  pass('phone portrait and landscape reach the cave card, fit the dialog and complete the warp');
+  pass('phone portrait and landscape slide to the cave photo, fit the map and complete the warp');
   await page.close();
   peer.close();
   if (!layoutOnly) {
@@ -204,7 +235,7 @@ try {
       'true',
     );
     await visitor.page.screenshot({ path: `${out}/exhibition-menu.png` });
-    await choose(visitor, exhibition.rooms.get(roomName), 'cave');
+    await choose(visitor, exhibition.rooms.get(roomName), 'cave', 'menu');
     pass('exhibition still opens directly to the same six destinations and warps to the cave');
   }
   assert.deepEqual(errors, []);

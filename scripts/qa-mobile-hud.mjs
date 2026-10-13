@@ -148,11 +148,30 @@ try {
     .evaluateAll((buttons) => buttons.map((b) => b.dataset.touchAction));
   assert.deepEqual(rail, ['menu', 'mascots', 'chat', 'center']);
   const plate = await box('.status-plate'),
-    map = await box('.minimap-button'),
-    area = await box('.map-area');
+    map = await box('.minimap-button');
   assert.ok(plate.x < 30 && plate.y < 30 && plate.h <= 60, JSON.stringify(plate));
   assert.ok(map.right > 360 && Math.abs(map.w - map.h) < 1, JSON.stringify(map));
-  assert.ok(area.x >= 0 && area.right <= 391 && area.y > map.bottom, JSON.stringify(area));
+  assert.equal(await page.locator('#map-area, #day-label').count(), 0);
+  assert.equal(await page.locator('#connection-dot.offline').count(), 0);
+  assert.equal(await box('#connection-label'), null);
+  // The connection is a dot before the party count in the capsule, not on the map.
+  assert.equal(await page.locator('.map-hud #connection-dot').count(), 0);
+  const dot = await box('.status-plate #connection-dot'),
+    count = await box('#online-count');
+  assert.ok(
+    dot.x >= plate.x &&
+      dot.right <= plate.right &&
+      dot.y >= plate.y &&
+      dot.bottom <= plate.bottom &&
+      dot.right <= count.x,
+    JSON.stringify({ dot, count, plate }),
+  );
+  const connectedDot = await page.locator('#connection-dot').evaluate((el) => ({
+    fill: getComputedStyle(el).backgroundColor,
+    outline: getComputedStyle(el).boxShadow,
+  }));
+  assert.equal(connectedDot.fill, 'rgb(164, 208, 138)');
+  assert.equal(connectedDot.outline, 'rgb(11, 21, 16) 0px 0px 0px 2px');
   assert.equal(await page.locator('#minimap').getAttribute('data-compact'), 'true');
   assert.equal(
     await page.locator('#minimap').evaluate((c) => getComputedStyle(c).borderRadius),
@@ -167,7 +186,9 @@ try {
   assert.equal(await page.locator('[data-touch-action="bag"]').count(), 0);
   await targets();
   await shot('01-idle');
-  pass('Left status and slim rail, round minimap with its area, no blur and no duplicate bag');
+  pass(
+    'Left status with the connection dot before the party count, slim rail, round minimap without captions, no blur or duplicate bag',
+  );
 
   // The pad appears where the thumb lands and glows when pushed far enough to run.
   const landing = { x: 150, y: 640 };
@@ -379,14 +400,30 @@ try {
   assert.ok(english.length > 0);
   for (const text of english) assert.doesNotMatch(text, /[\u3040-\u30ff\u3400-\u9fff]/, text);
   await shot('12-english');
+  pass('English prompt and ability labels');
+
+  // The bag opens the menu. Its tabs slide in one row with その他 (the exits) last; no
+  // separate actions row, a gear for the settings and no warp tab (fast travel is in the map).
   await page.evaluate(async () => (await import('/src/language.js')).setLanguage('ja'));
   await page.locator('[data-touch-action="menu"]').tap();
   await page.locator('.pause-menu').waitFor();
+  const glyph = (selector) => page.locator(`${selector} svg`).innerHTML();
+  assert.equal(
+    await glyph('[data-touch-action="menu"]'),
+    await glyph('[data-pause-tab="inventory"]'),
+    'the menu button is the bag it opens on',
+  );
+  assert.doesNotMatch(await glyph('[data-touch-action="menu"]'), /M4 6h16M4 12h16M4 18h16/);
+  assert.doesNotMatch(await glyph('[data-pause-tab="settings"]'), /M11 4 5 9H2v6h3l6 5V4Z/);
   const tabs = await page.locator('.pause-tab').evaluateAll((list) =>
     list.map((tab) => {
       const r = tab.getBoundingClientRect();
-      return { x: r.x, y: r.y, right: r.right };
+      return { id: tab.dataset.pauseTab, x: r.x, y: r.y, right: r.right };
     }),
+  );
+  assert.deepEqual(
+    tabs.map((t) => t.id),
+    ['inventory', 'mascots', 'settings', 'more'],
   );
   const close = await box('#modal-close');
   assert.ok(
@@ -397,9 +434,54 @@ try {
     tabs.every((t) => t.right <= close.x + 1),
     'tabs stay clear of the back button',
   );
+  assert.equal(await page.locator('.pause-more, [data-pause-tab="warp"]').count(), 0);
+  assert.equal(await page.locator('[data-controller-menu="title"]').isVisible(), false);
   await shot('13-menu');
+  await page.locator('[data-pause-tab="more"]').tap();
+  await page.locator('[data-controller-menu="title"]').waitFor();
+  assert.equal(await page.locator('#pause-panel-inventory').isVisible(), false);
+  const exits = await page.locator('.pause-exits .button').evaluateAll((list) =>
+    list.map((b) => {
+      const r = b.getBoundingClientRect();
+      return { x: r.x, y: r.y, h: r.height, right: r.right, bottom: r.bottom };
+    }),
+  );
+  const row = await box('.pause-tabs');
+  assert.ok(
+    exits.length >= 4 &&
+      exits.every((b) => b.h >= 44 && b.x >= 0 && b.right <= 391 && b.y > row.bottom),
+    JSON.stringify(exits),
+  );
+  await shot('13b-menu-more');
+  // English names outgrow the row: it fades at the edge with more tabs and slides by finger.
+  await page.evaluate(async () => (await import('/src/language.js')).setLanguage('en'));
+  await until(
+    () => page.locator('.pause-tabs').evaluate((el) => el.scrollWidth > el.clientWidth + 1),
+    'English tabs overflow the row',
+  );
+  await page.locator('.pause-tabs[data-fade~="end"]').waitFor();
+  await page.locator('.pause-tabs').evaluate((el) => (el.scrollLeft = 0));
+  await page.locator('.pause-tabs[data-fade="end"]').waitFor();
+  const y = row.y + row.h / 2;
+  await touch('touchStart', [{ id: 1, x: 260, y }]);
+  for (const x of [230, 190, 150, 110, 70, 40]) {
+    await touch('touchMove', [{ id: 1, x, y }]);
+    await sleep(16);
+  }
+  await touch('touchEnd');
+  await until(
+    () => page.locator('.pause-tabs').evaluate((el) => el.scrollLeft > 20),
+    'the tab row slides under a finger',
+  );
+  await page.locator('.pause-tabs[data-fade~="start"]').waitFor();
+  const more = await box('[data-pause-tab="more"]');
+  assert.ok(more.x >= row.x - 1 && more.right <= close.x + 1, JSON.stringify(more));
+  await shot('13c-menu-english-slid');
+  await page.evaluate(async () => (await import('/src/language.js')).setLanguage('ja'));
   await page.locator('#modal-close').tap();
-  pass('English prompt and ability labels; the phone menu keeps all tabs in one row');
+  pass(
+    'The bag opens the menu; its tabs slide in one row with その他 last, a gear for settings, no warp tab',
+  );
 
   for (const size of [
     { width: 320, height: 568 },
@@ -409,11 +491,42 @@ try {
     await page.setViewportSize(size);
     await sleep(700);
     await targets();
-    const mapArea = await box('.map-area');
-    assert.ok(mapArea.x >= 0 && mapArea.right <= size.width + 1, JSON.stringify(mapArea));
+    const miniMap = await box('.minimap-button');
+    assert.ok(miniMap.x >= 0 && miniMap.right <= size.width + 1, JSON.stringify(miniMap));
     await shot(`14-${size.width}x${size.height}`);
   }
-  pass('320x568, 430x932 and 844x390 keep whole, separate targets and the area name on screen');
+  pass('320x568, 430x932 and 844x390 keep whole, separate targets and the minimap on screen');
+
+  // Close only this disposable actor's real socket, then watch the usual reconnect.
+  await page.setViewportSize({ width: 390, height: 844 });
+  me().socket.close(1012, 'HUD QA reconnect');
+  await page.locator('#connection-dot.offline').waitFor({ state: 'visible' });
+  assert.ok(await page.locator('#connection-label').isVisible());
+  assert.equal(await page.locator('#online-count').isVisible(), false);
+  const offlineLabel = await box('#connection-label'),
+    offlinePlate = await box('.status-plate');
+  assert.ok(
+    offlineLabel.x >= offlinePlate.x &&
+      offlineLabel.right <= offlinePlate.right &&
+      offlineLabel.y >= offlinePlate.y &&
+      offlineLabel.bottom <= offlinePlate.bottom,
+    JSON.stringify({ offlineLabel, offlinePlate }),
+  );
+  await targets();
+  await shot('15-reconnecting');
+  await until(
+    () =>
+      page
+        .locator('#connection-dot.offline')
+        .count()
+        .then((n) => n === 0),
+    'reconnect',
+  );
+  assert.equal(await box('#connection-label'), null);
+  assert.ok(await page.locator('#online-count').isVisible());
+  pass(
+    'Real disconnection names itself in the capsule in place of the count; reconnect returns to the green dot',
+  );
   assert.deepEqual(errors, []);
   pass('No browser exceptions');
 } catch (error) {
