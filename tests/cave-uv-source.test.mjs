@@ -16,6 +16,7 @@ import {
   caveMuralPigment,
   caveMuralShader,
   caveUvSource,
+  hiddenMuralSubjects,
 } from '../dist/src/cave-gallery-layout.js';
 import { prepareCaveMaterials } from '../dist/src/cave-materials.js';
 
@@ -104,6 +105,19 @@ test('the served camp-cave manifests map every mural in its original pixel space
       );
     }
   }
+});
+
+test('the people the murals leave out are read from the composed images’ provenance', async () => {
+  const catalog = JSON.parse(await readFile('public/models/world-assets.json', 'utf8'));
+  const served = catalog.assets.find((entry) => entry.modelKey === 'camp-cave');
+  assert.deepEqual(hiddenMuralSubjects(served), [], 'cave-mural-visibility.json hides nobody');
+  // As scripts/compose-cave-murals.mjs records a composition that hid two subjects.
+  const manifest = originalManifest();
+  manifest.mascotPigments.friendsRiver.provenance = {
+    muralComposition: { hidden: ['howkey-scientist'] },
+  };
+  manifest.mascotPigments.maeKohaku.provenance = { muralComposition: { hidden: ['mae'] } };
+  assert.deepEqual(hiddenMuralSubjects(manifest).sort(), ['howkey-scientist', 'mae']);
 });
 
 test('a whole-image resize keeps every normalised rectangle', () => {

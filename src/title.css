@@ -285,11 +285,7 @@
   }
 }
 
-/* ---- Contributors dialog ---- */
-#contributors-cave {
-  min-height: 44px;
-  max-width: 100%;
-}
+/* ---- Contributors and mural people dialogs (the same cards) ---- */
 .contributor-group h3 {
   margin: 18px 0 10px;
   color: #d6c79a;
@@ -441,28 +437,48 @@ body #screen-title[data-variant='classic'] .menu-item {
   color: #ede1c9;
   text-shadow: 0 1px 4px #000;
 }
-.loading-cave-load {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-wrap: wrap;
-  gap: 16px;
-}
-.loading-cave-load progress {
-  width: min(180px, 30vw);
-  height: 6px;
-  accent-color: #e0b070;
-}
-.loading-cave-load [data-cave-status] {
-  font-size: 13px;
-}
-.loading-cave-load .button {
+/* One control: a spinner in a quiet pill while the world loads (and while entering it),
+   then, in the same place, the button that can be pressed at once. No words, no bar. */
+.loading-cave-proceed {
+  position: relative;
   min-width: 160px;
   min-height: 48px;
 }
-.loading-cave-load .button:disabled {
-  opacity: 0.5;
+.loading-cave-spinner {
+  display: none;
+}
+.loading-cave-proceed[aria-busy='true'] {
+  opacity: 1;
+  border: 1px solid #f3e1b833;
+  background: #1b211dcc;
+  box-shadow: none;
   cursor: wait;
+}
+/* Kept for the accessible name, not shown. */
+.loading-cave-proceed[aria-busy='true'] > span {
+  opacity: 0;
+}
+.loading-cave-proceed[aria-busy='true'] .loading-cave-spinner {
+  display: block;
+  position: absolute;
+  inset: 0;
+  width: 22px;
+  height: 22px;
+  margin: auto;
+  border: 2.5px solid #f3e1b840;
+  border-top-color: #f3d8a0;
+  border-radius: 50%;
+  animation: loading-cave-spin 0.9s linear infinite;
+}
+@keyframes loading-cave-spin {
+  to {
+    transform: rotate(1turn);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .loading-cave-proceed[aria-busy='true'] .loading-cave-spinner {
+    animation-duration: 2.4s;
+  }
 }
 .loading-cave-wait {
   position: absolute;
@@ -534,12 +550,6 @@ body #screen-title[data-variant='classic'] .menu-item {
   .loading-cave-heading .button {
     padding: 8px 10px;
     font-size: 11px;
-  }
-  .loading-cave-load {
-    gap: 10px;
-  }
-  .loading-cave-load [data-cave-status] {
-    width: 100%;
   }
   .loading-cave-footer {
     padding: 24px 16px max(12px, env(safe-area-inset-bottom));

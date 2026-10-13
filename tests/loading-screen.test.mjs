@@ -280,10 +280,11 @@ test('own warps and entries without the cave are covered; the title, setup and f
     /await cave\.load\(\);\s*if \(loadingCave !== cave\)\s*return;\s*loadingScreen\.release\(caveCover\);\s*await Promise\.all\(\[renderer\.startWorld\(\), renderer\.prepareSelf\(profile\)\]\);/,
   );
   assert.doesNotMatch(main, /tips: /);
-  // The loading cave opens the credits over itself and pauses its own input meanwhile.
+  // The loading cave opens its mural people over itself (the murals it leaves out are not
+  // listed) and pauses its own input meanwhile.
   assert.match(
     slice('const cave = new LoadingCave(', 'loadingCave = renderer.loadingCave = cave;'),
-    /onContributors: \(\) =>\s*openModal\(contributorsDialogMarkup\(undefined, \{ links: onlineTitle, visit: false \}\)\),\s*paused: \(\) => \$\('#modal'\)\.open,/,
+    /onMurals: \(hidden\) =>\s*openModal\(muralPeopleDialogMarkup\(muralPeople\(hidden\), \{ links: onlineTitle \}\)\),\s*paused: \(\) => \$\('#modal'\)\.open,/,
   );
 });
 

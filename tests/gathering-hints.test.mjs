@@ -13,6 +13,7 @@ const { StableAssistTarget } = await import(new URL('dist/src/assisted-controls.
 const { contextCues } = await import(new URL('dist/src/input-cues.js', repo));
 const { touchActions } = await import(new URL('dist/src/touch-input.js', repo));
 const { interactionTarget } = await import(new URL('dist/src/interaction-target.js', repo));
+const { WorldRenderer } = await import(new URL('dist/src/world3d.js', repo));
 const main = await readFile(new URL('dist/src/main.js', repo), 'utf8');
 const nearbySource = main.slice(
   main.indexOf('function nearby()'),
@@ -126,6 +127,27 @@ test('nearby companions cannot replace the actual gathering hint or E / right fa
         assert.equal(f.resource.amount, amount - 1);
         f.core.close();
       }
+});
+
+test('a berry bush the camera hides while the player stands in it stays a gathering target', () => {
+  const f = fixture('berry', null);
+  // The 1 m reach is inside the walk-through bush; the camera, looking at the player through
+  // it, does not draw it this frame. The renderer's own check must still offer it.
+  Object.assign(f.player, { x: f.resource.x, z: f.resource.z });
+  const world = {
+    resources: new Map([[f.resource.id, { model: { visible: false }, resource: f.resource }]]),
+  };
+  f.context.renderer.resourceVisible = (id) =>
+    WorldRenderer.prototype.resourceVisible.call(world, id);
+  const hint = f.hint();
+  assert.equal(hint?.action, 'gather');
+  assert.equal(hint.targetId, f.resource.id);
+  f.resource.amount = 0;
+  assert.equal(f.hint() ?? null, null, 'an emptied bush is no target');
+  f.resource.amount = 3;
+  world.resources.clear();
+  assert.equal(f.hint() ?? null, null, 'a bush not loaded yet is no target');
+  f.core.close();
 });
 
 test('gathering still hides outside range, behind obstacles, when depleted, full or unloaded', () => {

@@ -216,6 +216,17 @@ export function caveMuralImages(asset): CaveMuralImages {
   return images;
 }
 
+/** Painted subjects the mural composition replaced with animals (cave-mural-visibility.json),
+ * as each composed image's provenance records them. */
+export function hiddenMuralSubjects(asset): string[] {
+  const { extras, ...main } = caveMuralImages(asset);
+  return [...Object.values(main), ...Object.values(extras)].flatMap(
+    (image) =>
+      (image as { provenance?: { muralComposition?: { hidden?: string[] } } }).provenance
+        ?.muralComposition?.hidden ?? [],
+  );
+}
+
 const f = (n: number) => n.toFixed(6);
 export const caveMuralShader = CAVE_MURALS.map((m) => {
   const extra = m.motif in CAVE_EXTRA_PIGMENTS;

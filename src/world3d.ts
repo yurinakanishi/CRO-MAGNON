@@ -1076,9 +1076,14 @@ export class WorldRenderer {
     return label;
   }
 
-  /** Whether the resource's model is loaded and currently drawn (amount > 0). */
+  /**
+   * Whether the resource's model is loaded and still has something to take. Not this frame's
+   * drawing: a berry bush the player stands in is hidden from the camera looking through it,
+   * and it must stay a gathering target (the 1 m reach is inside the bush).
+   */
   resourceVisible(id: string): boolean {
-    return !!this.resources.get(id)?.model.visible;
+    const item = this.resources.get(id);
+    return !!item && item.resource.amount > 0;
   }
 
   syncResources() {

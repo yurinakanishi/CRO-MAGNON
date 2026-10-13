@@ -62,7 +62,8 @@ try {
   assert.equal(await page.locator('html').getAttribute('lang'), 'en');
   await page.locator('#title-contributors').click();
   await expectText('.contributors-dialog h2', 'Contributors');
-  await expectText('#contributors-cave', 'Visit Update Cave');
+  // The credits are only a list: no way into the cave from here.
+  assert.equal(await page.locator('.contributors-dialog button, #contributors-cave').count(), 0);
   assert.ok((await page.locator('.contributor-text [translate="no"]').count()) > 0);
   await shot('01-shell-contributors-en');
   await page.locator('#modal-close').click();
@@ -77,7 +78,7 @@ try {
   await expectText('.setup-heading h2', 'Choose your traveler');
   assert.equal(await page.locator('#setup-form').count(), 1);
   pass(
-    'The lightweight title toggles immediately; credits and a pending start survive the game handoff',
+    'The lightweight title toggles immediately; the credits list and a pending start survive the game handoff',
   );
 
   await page.locator('input[name="name"]').fill('はい');
@@ -117,26 +118,31 @@ try {
   await shot('03b-loading-screen-en');
   await page.locator('#loading-screen').waitFor({ state: 'hidden', timeout: 180000 });
   await expectText('.loading-cave-heading h2', 'Update Cave');
-  await page.locator('[data-cave-contributors]').click();
-  await expectText('.contributors-dialog h2', 'Contributors');
-  assert.equal(await page.locator('#contributors-cave').count(), 0);
+  await expectText('[data-cave-murals]', 'People in the murals');
+  await page.locator('[data-cave-murals]').click();
+  await expectText('.mural-people-dialog h2', 'People in the murals');
+  assert.equal(await page.locator('.mural-people-dialog .contributor-group').count(), 0);
   assert.equal(
     await page
-      .locator('.contributor-text strong[translate="no"]')
+      .locator('.mural-people-dialog .contributor-text strong[translate="no"]')
       .allTextContents()
       .then((names) => names.includes('OpenAI Dots')),
     true,
   );
+  // Painted characters take the companion menu's English names; people's names stay verbatim.
+  const painted = await page
+    .locator('.mural-people-dialog .contributor-text small span')
+    .allTextContents();
+  for (const name of ['Rimo Neko', 'Kohaku', 'Round and shape bots'])
+    assert.ok(painted.includes(name), `${name} in ${JSON.stringify(painted)}`);
   await page.waitForFunction(() =>
-    [...document.querySelectorAll('.contributors-dialog .contributor-avatar')].every(
+    [...document.querySelectorAll('.mural-people-dialog .contributor-avatar')].every(
       (image) => image.complete && image.naturalWidth > 0,
     ),
   );
-  await shot('03c-cave-contributors-en');
+  await shot('03c-cave-murals-en');
   await page.locator('#modal-close').click();
-  pass(
-    'Merged loading tips and cave credits use English, retain Dots and omit the redundant cave visit',
-  );
+  pass('Merged loading tips and the cave’s mural people use English and retain the Dots');
   await shot('04-loading-en');
   await page.locator('[data-cave-proceed]').click({ timeout: 180000 });
   await page

@@ -37,6 +37,7 @@ const { mascotModelReleased, mascotCreditReleased, mascotAsset, ACTIVE_MASCOT_MO
   await import('../dist/shared/mascot-roster.mjs');
 const { TITLE_CREDITS, TITLE_GUEST, TITLE_SUPPORT, TITLE_DOTS, TITLE_FRIENDS } =
   await import('../dist/src/title-credit-profiles.js');
+const { muralPeople } = await import('../dist/src/title-credits.js');
 
 const root = path.dirname(path.dirname(fileURLToPath(import.meta.url)));
 const {
@@ -91,7 +92,12 @@ if (!publicCharacters.some((model) => model.species === 'cro'))
   throw new Error('Missing default public character');
 const hasOctopus = publicCharacters.some((model) => model.bodyPlan === 'octopus');
 const credits = release.credits === 'full' ? TITLE_CREDITS : TITLE_CREDITS.slice(0, 1);
-const friends = TITLE_FRIENDS.filter((person) => mascotCreditReleased(person.qr));
+// The credits name only released companions, but the update cave's 「壁画の人」 lists
+// everyone painted on its walls (user instruction 2026-10-13), so their profiles ship too.
+const painted = new Set(muralPeople().map((person) => person.key));
+const friends = TITLE_FRIENDS.filter(
+  (person) => mascotCreditReleased(person.qr) || painted.has(person.qr),
+);
 const visibleProfiles = new Set(
   [...credits, TITLE_GUEST, TITLE_SUPPORT, TITLE_DOTS, ...friends].map((person) => person.qr),
 );

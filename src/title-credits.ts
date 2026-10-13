@@ -91,30 +91,105 @@ export function titleContributors(): Contributor[] {
   ];
 }
 
-/** All credits live in this QR-free dialog; exhibition cards never navigate away.
- * `visit` offers the cave visit; the loading cave, already in the cave, leaves it out. */
+/** One person's card: a link to their X profile when allowed and well formed. A painted
+ * character's name (translated like the companion menu's) may stand before the handle. */
+function personCard(
+  person: Pick<Contributor, 'name' | 'profile' | 'avatar'>,
+  links: boolean,
+  character = '',
+) {
+  const handle = contributorHandle(person.profile);
+  const line = [character && `<span>${escape(character)}</span>`, handle && `@${handle}`]
+    .filter(Boolean)
+    .join(' · ');
+  const body = `<img class="contributor-avatar" src="${person.avatar}" width="56" height="56" alt="" decoding="async"><span class="contributor-text"><strong translate="no">${escape(person.name)}</strong>${line ? `<small>${line}</small>` : ''}</span>`;
+  return links && handle
+    ? `<li><a class="contributor" href="${person.profile}" target="_blank" rel="noopener noreferrer" aria-label="${escape(`${person.name}のXプロフィールを開く`)}">${body}${xGlyph}</a></li>`
+    : `<li><div class="contributor">${body}</div></li>`;
+}
+
+/** All credits live in this QR-free dialog; exhibition cards never navigate away. */
 export function contributorsDialogMarkup(
   people = titleContributors(),
-  { links = true, visit = true }: { links?: boolean; visit?: boolean } = {},
+  { links = true }: { links?: boolean } = {},
 ): string {
   const roles: Contributor['role'][] = ['制作', '開発者', '監修', '友情出演'];
-  const card = (person: Contributor) => {
-    const handle = contributorHandle(person.profile);
-    const body = `<img class="contributor-avatar" src="${person.avatar}" width="56" height="56" alt="" decoding="async"><span class="contributor-text"><strong translate="no">${escape(person.name)}</strong>${handle ? `<small>@${handle}</small>` : ''}</span>`;
-    return links && handle
-      ? `<li><a class="contributor" href="${person.profile}" target="_blank" rel="noopener noreferrer" aria-label="${escape(`${person.name}のXプロフィールを開く`)}">${body}${xGlyph}</a></li>`
-      : `<li><div class="contributor">${body}</div></li>`;
-  };
   const groups = roles
     .map((role) => [role, people.filter((p) => p.role === role)] as const)
     .filter(([, list]) => list.length)
     .map(
       ([role, list]) =>
-        `<section class="contributor-group"><h3>${role}</h3><ul class="contributor-list">${list.map(card).join('')}</ul></section>`,
+        `<section class="contributor-group"><h3>${role}</h3><ul class="contributor-list">${list.map((person) => personCard(person, links)).join('')}</ul></section>`,
     )
     .join('');
-  const invitation = visit
-    ? '<button id="contributors-cave" type="button" class="button button-accent">アプデの洞窟に行く</button>'
-    : '';
-  return `<div class="contributors-dialog"><h2>関わってくれた人たち</h2>${invitation}${groups}</div>`;
+  return `<div class="contributors-dialog"><h2>関わってくれた人たち</h2>${groups}</div>`;
+}
+
+/**
+ * Who each painted subject of the cave's processions is (assets/camp-cave/modular-r36), in
+ * the cave's order from the entrance; the round and shape bots are the Dots.
+ */
+const MURAL_SUBJECTS: readonly (readonly [subject: string, credit: string])[] = [
+  ['maruimo-mascot', 'maruimo'],
+  ['saber-mascot', 'saber'],
+  ['fairy-mascot', 'fairy'],
+  ['nukonuko-mascot', 'nukonuko'],
+  ['sagasa-mascot', 'sagasa'],
+  ['rimo-neko', 'rimo'],
+  ['524', 'r524'],
+  ['mae', 'mae'],
+  ['kohaku', 'risa'],
+  ['otani-mascot', 'otani'],
+  ['urata-mascot', 'urata'],
+  ['howkey-scientist', 'hawkie'],
+  ['rei-mascot', 'asahina'],
+  ...['white', 'blue', 'green', 'purple', 'orange', 'beret', 'frog', 'triangle', 'heart'].map(
+    (bot) => [bot, 'dots'] as const,
+  ),
+];
+
+export interface MuralPerson {
+  key: string;
+  name: string;
+  /** Verified X profile, or empty. */
+  profile: string;
+  avatar: string;
+  /** The character painted for them. */
+  character: string;
+}
+
+/**
+ * The people painted in the cave, once each: subjects the mural composition replaced with
+ * animals are left out, and so is anyone whose profile this build does not carry (the public
+ * build ships filtered credit tables).
+ */
+export function muralPeople(hidden: readonly string[] = []): MuralPerson[] {
+  const profiles = new Map<string, { name: string; profile: string; qr: string }>(
+    [...TITLE_CREDITS, TITLE_GUEST, TITLE_SUPPORT, TITLE_DOTS, ...TITLE_FRIENDS].map((credit) => [
+      credit.qr,
+      credit,
+    ]),
+  );
+  const people: MuralPerson[] = [];
+  for (const [subject, credit] of MURAL_SUBJECTS) {
+    const profile = profiles.get(credit);
+    if (hidden.includes(subject) || !profile || people.some((p) => p.key === credit)) continue;
+    people.push({
+      key: credit,
+      name: profile.name,
+      profile: contributorHandle(profile.profile) ? profile.profile : '',
+      avatar: `/title/avatar-${credit}.jpg`,
+      character:
+        credit === 'dots' ? '丸いBot・形のBot' : (CONTRIBUTOR_CHARACTERS[credit]?.name ?? ''),
+    });
+  }
+  return people;
+}
+
+/** The cave's own dialog: who is painted on its walls, with their X profiles. */
+export function muralPeopleDialogMarkup(
+  people = muralPeople(),
+  { links = true }: { links?: boolean } = {},
+): string {
+  return `<div class="contributors-dialog mural-people-dialog"><h2>壁画の人</h2><ul class="contributor-list">${people.map((person) => personCard(person, links, person.character)).join('')}</ul></div>`;
 }

@@ -12,6 +12,7 @@ import {
   TITLE_DOTS,
   TITLE_FRIENDS,
 } from '../dist/src/title-credit-profiles.js';
+import { muralPeople } from '../dist/src/title-credits.js';
 import { runtimeTextureRecords } from './environment-assets.mjs';
 
 const buildRoot = process.argv[2] || '.';
@@ -62,31 +63,52 @@ assert.ok(files.has(`title/avatar-${TITLE_DOTS.qr}.jpg`), TITLE_DOTS.qr);
 const guestCredits = [TITLE_GUEST, TITLE_SUPPORT, ...TITLE_FRIENDS]
   .filter((person) => mascotCreditReleased(person.qr))
   .map((person) => person.qr);
+// The credits hold dormant companions back, but the update cave's 「壁画の人」 lists everyone
+// painted, so a painted friend's profile and icon ship and an unpainted dormant one's do not.
+const painted = muralPeople().map((person) => person.key);
 assert.deepEqual(
   profiles.TITLE_FRIENDS,
-  TITLE_FRIENDS.filter((p) => mascotCreditReleased(p.qr)),
+  TITLE_FRIENDS.filter((p) => mascotCreditReleased(p.qr) || painted.includes(p.qr)),
 );
-for (const key of [
-  'maruimo',
-  'mae',
-  'risa',
-  'saber',
-  'fairy',
-  'sagasa',
-  'hawkie',
-  'asahina',
-].filter((key) => !guestCredits.includes(key)))
-  assert.ok(
-    ![...files].some((name) => new RegExp(`^title/(?:qr|avatar)-${key}\\.`).test(name)),
-    key,
+for (const person of TITLE_FRIENDS)
+  assert.equal(
+    files.has(`title/avatar-${person.qr}.jpg`),
+    guestCredits.includes(person.qr) || painted.includes(person.qr),
+    person.qr,
   );
+// What the shipped title modules show: everyone painted (supervisors only with full credits),
+// each with a shipped icon, while the credits still name only released companions.
+const shipped = await import(
+  pathToFileURL(path.resolve(buildRoot, 'dist-cloudflare/src/title-credits.js')).href
+);
+const listed = shipped.muralPeople();
+assert.deepEqual(
+  listed.map((person) => person.key),
+  painted.filter(
+    (key) => build.credits === 'full' || !TITLE_CREDITS.slice(1).some((c) => c.qr === key),
+  ),
+);
+for (const person of listed) assert.ok(files.has(person.avatar.slice(1)), person.avatar);
+assert.deepEqual(
+  shipped
+    .titleContributors()
+    .filter((person) => person.role === '友情出演')
+    .map((person) => person.key),
+  [...guestCredits, TITLE_DOTS.qr],
+);
 const sourceCave = JSON.parse(await readFile('public/models/camp-cave/asset.json', 'utf8'));
 const textures = runtimeTextureRecords(sourceCave);
+// Each recorded master ships as its delivery from the build's ledger: a cooked derivative of
+// exactly that master, or the master itself.
+const ledger = new Map((build.delivery?.textures ?? []).map((t) => [t.master.url, t]));
 for (const record of textures) {
-  const filename = record.url.slice(1);
-  assert.ok(files.has(filename), record.url);
+  const entry = ledger.get(record.url);
+  if (entry) assert.equal(entry.master.sha256, record.sha256, record.url);
+  const shipped = entry?.delivery ?? record;
+  const filename = shipped.url.slice(1);
+  assert.ok(files.has(filename), shipped.url);
   const bytes = await readFile(`${buildRoot}/dist-cloudflare/${filename}`);
-  assert.equal(createHash('sha256').update(bytes).digest('hex'), record.sha256, record.url);
+  assert.equal(createHash('sha256').update(bytes).digest('hex'), shipped.sha256, shipped.url);
 }
 // Exercise the actual generated Worker rules without ports, user saves or uploads.
 const { createGameCore } = await import(

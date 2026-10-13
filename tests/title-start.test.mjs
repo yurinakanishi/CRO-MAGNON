@@ -159,52 +159,26 @@ test('the title Start button opens setup even with a saved session', async () =>
   assert.equal(setup, 2);
 });
 
-test('the contributors cave button starts once at the cave without an extra setup or loading-gallery choice', async () => {
+test('the title contributors button only opens the credits', async () => {
   const main = await readFile(new URL('../dist/src/main.js', import.meta.url), 'utf8');
-  // The visit is bound by a function the title-shell handoff also uses.
-  const start = main.indexOf('function bindContributorsVisit(');
+  const start = main.indexOf("$('#title-contributors')");
   const handler = main.slice(start, main.indexOf("$('#title-fullscreen').onclick", start));
-  assert.ok(start >= 0 && handler.includes("$('#title-contributors').addEventListener"));
-  const visit = { disabled: false };
-  const calls = [];
+  assert.ok(start >= 0 && handler.length > 0);
+  assert.doesNotMatch(handler, /contributors-cave|enterGame|spawnChoice/);
   let open;
-  const context = {
-    $: (selector) =>
-      selector === '#title-contributors'
-        ? {
-            addEventListener: (_event, callback) => {
-              open = callback;
-            },
-          }
-        : selector === '#contributors-cave'
-          ? visit
-          : { close: () => calls.push('close') },
-    openModal: () => calls.push('dialog'),
-    contributorsDialogMarkup: () => '',
+  const opened = [];
+  vm.runInNewContext(handler, {
+    $: () => ({ addEventListener: (_event, callback) => (open = callback) }),
+    openModal: (html) => opened.push(html),
+    contributorsDialogMarkup: (_people, { links }) => `credits:${links}`,
     onlineTitle: true,
-    renderUnavailable: false,
-    loadingCave: null,
-    spawnChoice: 'camp',
-    startAtCamp: false,
-    contributorsCavePending: false,
-    enterGame: (skipGallery) => calls.push(['enterGame', skipGallery]),
-  };
-  vm.runInNewContext(handler, context);
+  });
   open();
-  context.renderUnavailable = true;
-  visit.onclick();
-  assert.equal(visit.disabled, false);
-  context.renderUnavailable = false;
-  visit.onclick();
-  visit.onclick();
-  assert.equal(context.spawnChoice, 'cave');
-  assert.equal(context.startAtCamp, true);
-  assert.equal(context.contributorsCavePending, true);
-  assert.deepEqual(calls, ['dialog', 'close', ['enterGame', true]]);
+  assert.deepEqual(opened, ['credits:true']);
 });
 
 for (const persistentSessions of [false, true]) {
-  test(`visiting the contributors cave resumes the same person and possessions (persistent=${persistentSessions})`, () => {
+  test(`a resumed join that starts at the cave keeps the same person and possessions (persistent=${persistentSessions})`, () => {
     const { core, join } = fixture({ persistentSessions, exhibition: !persistentSessions });
     const first = join({ species: 'bear', difficulty: 'easy' });
     Object.assign(first.p, { x: 100, z: 120, energy: 64, gathered: 9 });

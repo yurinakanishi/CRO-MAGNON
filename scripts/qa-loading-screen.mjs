@@ -1,5 +1,5 @@
 // Real Chrome against an isolated, unsaved local world (saves stay under the output
-// folder): the contributors dialog over the loading cave, and the loading screen over
+// folder): the mural people dialog over the loading cave, and the loading screen over
 // warps and over entries that do not pass through the cave. No user room or save.
 import assert from 'node:assert/strict';
 import { mkdir, writeFile } from 'node:fs/promises';
@@ -9,7 +9,7 @@ import { SPAWN_SITES } from '../dist/shared/spawn-sites.mjs';
 import { WARP_POINTS } from '../dist/shared/warp-sites.mjs';
 import { LOADING_TIPS } from '../dist/src/loading-tips.js';
 import { LOADING_TIMING } from '../dist/src/loading-screen.js';
-import { titleContributors } from '../dist/src/title-credits.js';
+import { muralPeople } from '../dist/src/title-credits.js';
 const { chromium } = await import(
   process.env.PLAYWRIGHT_MODULE ||
     'file:///C:/Users/yurin/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/node_modules/playwright/index.mjs'
@@ -175,13 +175,18 @@ async function tap(page, button) {
   await pad(page);
   await sleep(250);
 }
-async function credits(page) {
-  const dialog = page.locator('#modal[open] .contributors-dialog');
+/** The cave's own dialog: the people painted on its walls, not the credits. */
+async function murals(page) {
+  const dialog = page.locator('#modal[open] .mural-people-dialog');
   await dialog.waitFor();
-  const people = titleContributors();
+  assert.equal(await dialog.locator('h2').innerText(), '壁画の人');
+  const people = muralPeople();
   assert.equal(await dialog.locator('.contributor').count(), people.length);
-  assert.equal(await page.locator('#contributors-cave').count(), 0, 'no visit from the cave');
-  assert.equal(await dialog.locator('.modal-intro').count(), 0);
+  assert.equal(
+    await dialog.locator('a.contributor').count(),
+    people.filter((person) => person.profile).length,
+  );
+  assert.equal(await dialog.locator('.contributor-group, .modal-intro').count(), 0);
   const dots = dialog.locator('div.contributor', { hasText: 'OpenAI Dots' });
   assert.equal(await dots.count(), 1, 'OpenAI Dots is listed without a link');
   await page.waitForFunction(() => {
@@ -247,7 +252,7 @@ const now = (page) => page.evaluate(() => performance.now());
 
 let failure;
 try {
-  // Desktop: the credits over the loading cave, with keyboard and controller.
+  // Desktop: the mural people over the loading cave, with keyboard and controller.
   const desktop = await open();
   const { page } = desktop;
   let release, releaseCave;
@@ -341,10 +346,20 @@ try {
     shownMs: covers.at(-1).shownMs,
     firstPaintMs: covers.at(-1).firstPaintMs,
   });
-  await fit(page, ['[data-cave-contributors]', '[data-cave-back]', '[data-cave-proceed]']);
-  await page.locator('[data-cave-contributors]').click();
-  await credits(page);
-  await page.screenshot({ path: `${out}/cave-credits-desktop.png` });
+  // While the world loads (held here) the footer's one control is a spinner: no words, no bar.
+  const proceed = page.locator('[data-cave-proceed]');
+  assert.equal(await proceed.getAttribute('aria-busy'), 'true');
+  assert.equal(await proceed.isDisabled(), true);
+  assert.equal(await page.locator('.loading-cave-spinner').isVisible(), true);
+  assert.equal(await page.locator('#loading-cave progress, [data-cave-status]').count(), 0);
+  assert.doesNotMatch(
+    await page.locator('.loading-cave-footer').innerText(),
+    /世界を|準備ができ|読み込み中|入っています|%/,
+  );
+  await fit(page, ['[data-cave-murals]', '[data-cave-back]', '[data-cave-proceed]']);
+  await page.locator('[data-cave-murals]').click();
+  await murals(page);
+  await page.screenshot({ path: `${out}/cave-murals-desktop.png` });
   const before = await cavePosition(page);
   await page.keyboard.down('w');
   await sleep(700);
@@ -359,10 +374,12 @@ try {
   await sleep(700);
   await page.keyboard.up('w');
   assert.ok(gap(before, await cavePosition(page)) > 0.5, 'the cave walks again after closing');
-  pass('Loading-cave credits: OpenAI Dots listed, no cave visit, keys held by the dialog');
+  pass(
+    'Loading-cave mural people: everyone painted with their X, Dots unlinked, keys held by the dialog',
+  );
 
-  await page.locator('[data-cave-contributors]').click();
-  await credits(page);
+  await page.locator('[data-cave-murals]').click();
+  await murals(page);
   const still = await cavePosition(page);
   await pad(page, { axes: [0, -1, 0, 0] });
   await sleep(700);
@@ -379,6 +396,17 @@ try {
   await page.waitForFunction(() => !document.querySelector('#modal').open);
   assert.equal(desktop.seen.sockets, 0);
   pass('Controller in the dialog: the stick does not walk and A does not enter the world');
+  // Ready: the spinner is gone and the button can be pressed at once, still without words.
+  assert.equal(await proceed.getAttribute('aria-busy'), 'false');
+  assert.equal(await proceed.isEnabled(), true);
+  assert.equal(await page.locator('.loading-cave-spinner').isVisible(), false);
+  assert.equal(await proceed.innerText(), '世界へ進む');
+  assert.doesNotMatch(
+    await page.locator('.loading-cave-footer').innerText(),
+    /世界を|準備ができ|読み込み中|入っています|%/,
+  );
+  await page.screenshot({ path: `${out}/cave-ready-desktop.png` });
+  pass('The cave footer is a spinner until the world is ready, then only the button');
   await tap(page, 0);
   await page.locator('#loading-cave').waitFor({ state: 'detached', timeout: 180000 });
   await page.waitForFunction(() => document.querySelector('#world').dataset.glbPlayers === '1', {
@@ -558,16 +586,16 @@ try {
     await phone.page.setViewportSize(viewport);
     await sleep(300);
     await fit(phone.page, [
-      '[data-cave-contributors]',
+      '[data-cave-murals]',
       '[data-cave-back]',
       '[data-cave-proceed]',
       '.loading-cave-heading h2',
     ]);
     await phone.page.screenshot({ path: `${out}/cave-header-${viewport.width}.png` });
   }
-  await phone.page.locator('[data-cave-contributors]').tap();
-  await credits(phone.page);
-  await phone.page.screenshot({ path: `${out}/cave-credits-phone.png` });
+  await phone.page.locator('[data-cave-murals]').tap();
+  await murals(phone.page);
+  await phone.page.screenshot({ path: `${out}/cave-murals-phone.png` });
   await phone.page.locator('#modal-close').tap();
   await phone.page.waitForFunction(() => !document.querySelector('#modal').open);
   assert.equal(await phone.page.locator('#loading-cave').count(), 1);
@@ -595,50 +623,9 @@ try {
   assert.ok(gap(phoneMe, cave) <= 8);
   await phone.page.screenshot({ path: `${out}/warp-cave-phone-arrived.png` });
   pass(
-    "Phone: the cave's load covered upright, then no tip; header fits 320–844 px, credits by touch, warp cover fits",
+    "Phone: the cave's load covered upright, then no tip; header fits 320–844 px, mural people by touch, warp cover fits",
   );
   await phone.context.close();
-
-  // The title's cave visit: covered from the start through its warp to the cave.
-  const visit = await open();
-  await home(visit.page, 'COVERVISIT');
-  await visit.page.locator('#title-contributors').click();
-  await visit.page.locator('#contributors-cave').click();
-  await visit.page.locator('#loading-screen[data-state="shown"]').waitFor({ timeout: 5000 });
-  await visit.page.waitForFunction(
-    () =>
-      /世界を読み込んでいます \d+%|世界を組み立てています/.test(
-        document.querySelector('[data-loading-status]').textContent,
-      ),
-    null,
-    { timeout: 30000 },
-  );
-  await visit.page.screenshot({ path: `${out}/visit-loading.png` });
-  const visitRun = await coverRun(visit.page, 0);
-  assert.equal(visitRun.shown.eyebrow, '');
-  // The same screen turns to the cave once the join's warp is seen, then lifts there.
-  const retargeted = visitRun.log.find(
-    (entry) => entry.eyebrow === 'ワープ' && entry.place === cave.name,
-  );
-  assert.ok(retargeted && retargeted.image === '/spawn/cave.jpg', JSON.stringify(visitRun.log));
-  assert.ok(
-    visitRun.log.findIndex((entry) => entry.state === 'leaving') > visitRun.log.indexOf(retargeted),
-    'one cover: it does not start lifting before it reaches the cave',
-  );
-  const visitor = game.rooms.get('COVERVISIT').players.get(visit.seen.id);
-  assert.ok(gap(visitor, cave) <= 8, 'arrived at the cave');
-  assert.deepEqual(visit.seen.warps, ['spawn-cave']);
-  assert.equal(await visit.page.locator('#loading-cave').count(), 0);
-  const visitArrival = JSON.parse(
-    await visit.page.locator('#world').getAttribute('data-arrival-landmarks'),
-  );
-  assert.ok(visitArrival.instanced, JSON.stringify(visitArrival));
-  assert.ok(gap(floorAt(visitArrival), cave) <= 8, JSON.stringify(visitArrival));
-  await visit.page.screenshot({ path: `${out}/visit-arrived.png` });
-  pass('Title cave visit: one cover from the first download through the warp to the cave', {
-    arrival: visitArrival,
-  });
-  await visit.context.close();
 
   assert.deepEqual(errors, []);
 } catch (error) {

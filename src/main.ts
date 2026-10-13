@@ -129,7 +129,7 @@ import { installGulfUI, gulfInteraction } from './gulf-ui.js';
 import { installVillageUI, residentInteraction } from './village-ui.js';
 import { inGulf } from '../shared/gulf-region.mjs';
 import { ScreenManager, AreaBanner, keyPrompts } from './screens.js';
-import { contributorsDialogMarkup } from './title-credits.js';
+import { contributorsDialogMarkup, muralPeople, muralPeopleDialogMarkup } from './title-credits.js';
 import { BUILD_PROFILE } from './build-profile.js';
 import { FIXED_DIFFICULTY } from '../shared/difficulty.mjs';
 import { bindSetupFlow, closeSetupFlow, setupFlowBack, setupFlowOpen } from './setup-flow.js';
@@ -446,8 +446,6 @@ let tuning = { alwaysRun: false, speedScale: 1 };
 let availableMascots: readonly string[] = MASCOT_KEYS;
 // The sight chosen in the setup flow; only a room with spawnChoice honours it.
 let spawnChoice = spawnSite(readSaved('cro-spawn', 'camp')).id;
-let contributorsCavePending = false;
-let contributorsCaveArriving = false;
 // Play is offered only once the local character is drawn in a ready world
 // (latched per join; a character switch later does not withdraw it). The loading
 // screen holds play until it starts to fade.
@@ -479,7 +477,7 @@ function nextPaint() {
 }
 /** Cover the world with the loading screen until the local player stands in it with
  * the landmarks around them drawn (WorldRenderer.surroundingsReady). A later cover,
- * such as the warp right after a contributors-cave entry, takes over the same screen. */
+ * such as a warp just after joining, takes over the same screen. */
 async function coverArrival(place: LoadingPlace) {
   const request = loadingScreen.show(place);
   const current = () => loadingScreen.current(request) && !manualLeave;
@@ -1024,15 +1022,6 @@ async function connect(automatic = false) {
       // In this same task, so no frame draws the destination first, and after setState,
       // so the cover waits for the floor around the new position.
       if (coveredWarp !== null) void coverArrival(warpPlace(coveredWarp));
-      if (warped && contributorsCaveArriving) {
-        contributorsCaveArriving = false;
-        renderer.focusPlayer(player().facing + Math.PI);
-      }
-      if (contributorsCavePending && joined && player()) {
-        contributorsCavePending = false;
-        contributorsCaveArriving = true;
-        action('warp', 'spawn-cave');
-      }
       if (warped && facingSight) renderer.focusPlayer(player().facing + Math.PI);
       updateCharacterSwitch(player(), renderer.serverNow(), joined);
       updateExhibitionWarp(player(), renderer.serverNow(), joined);
@@ -1072,7 +1061,6 @@ async function connect(automatic = false) {
       $('#ping-label').textContent = `${ping} ms`;
     }
     if (message.type === 'error') {
-      contributorsCaveArriving = false;
       manualLeave = true;
       notify(message.text, 'error');
       connection(false, '参加できません');
@@ -1813,8 +1801,6 @@ function applyProfileForm(form: HTMLFormElement) {
 function showTitle() {
   renderer.releaseArrivalLoads?.();
   loadingScreen.cancel();
-  contributorsCavePending = false;
-  contributorsCaveArriving = false;
   chatUI?.setOpen(false);
   motionControls?.stop();
   $('#modal').close();
@@ -1823,8 +1809,6 @@ function showTitle() {
 function showSetup(error = '') {
   renderer.releaseArrivalLoads?.();
   loadingScreen.cancel();
-  contributorsCavePending = false;
-  contributorsCaveArriving = false;
   // A join refused while the gallery waited for the arrival returns to setup.
   if (loadingCave) closeLoadingCave();
   chatUI?.setOpen(false);
@@ -1884,9 +1868,9 @@ function enterGame(skipGallery = false) {
       {
         character,
         dye: profile.dye,
-        // The credits open over the cave; it is already the cave, so no visit is offered.
-        onContributors: () =>
-          openModal(contributorsDialogMarkup(undefined, { links: onlineTitle, visit: false })),
+        // Who is painted on these walls, apart from the credits.
+        onMurals: (hidden) =>
+          openModal(muralPeopleDialogMarkup(muralPeople(hidden), { links: onlineTitle })),
         paused: () => $('#modal').open,
       },
     );
@@ -2749,27 +2733,9 @@ async function toggleFullscreen() {
     notify('この画面では全画面表示を利用できません。');
   }
 }
-/** The open contributors dialog's cave visit (also one the title shell opened). */
-function bindContributorsVisit() {
-  const visit = $('#contributors-cave');
-  visit.onclick = () => {
-    if (visit.disabled || renderUnavailable || loadingCave) return;
-    visit.disabled = true;
-    $('#modal').close();
-    visitContributorsCave();
-  };
-}
-function visitContributorsCave() {
-  // Use the existing safe cave arrival and resume path, retaining possessions.
-  spawnChoice = 'cave';
-  startAtCamp = true;
-  contributorsCavePending = true;
-  enterGame(true);
-}
 $('#title-start').onclick = () => showSetup();
 $('#title-contributors').addEventListener('click', () => {
   openModal(contributorsDialogMarkup(undefined, { links: onlineTitle }));
-  bindContributorsVisit();
 });
 $('#title-fullscreen').onclick = toggleFullscreen;
 document.addEventListener('fullscreenchange', () => {
@@ -3405,17 +3371,14 @@ function titleIdle(now: number) {
 requestAnimationFrame(titleIdle);
 /** The title once this module owns it. A title shell's last pending action is
  * performed here exactly once (the handoff consumed it); an open contributors
- * dialog stays open with this module's cave visit. */
+ * dialog stays open. */
 function resumeTitle(handoff: TitleHandoff | null) {
   if (handoff?.contributorsOpen) {
     screens.show('title');
-    bindContributorsVisit();
     return;
   }
   showTitle();
   if (handoff?.intent === 'start') showSetup();
-  else if (handoff?.intent === 'contributors-cave' && !renderUnavailable && !loadingCave)
-    visitContributorsCave();
 }
 startupMarks.page('game-module-ready');
 if (query.get('autostart') === '1') {

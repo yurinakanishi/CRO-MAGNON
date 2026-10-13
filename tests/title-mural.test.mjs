@@ -6,9 +6,16 @@ import { existsSync } from 'node:fs';
 import {
   contributorHandle,
   contributorsDialogMarkup,
+  muralPeople,
+  muralPeopleDialogMarkup,
   titleContributors,
   TITLE_CREDITS,
+  TITLE_DOTS,
+  TITLE_FRIENDS,
+  TITLE_GUEST,
+  TITLE_SUPPORT,
 } from '../dist/src/title-credits.js';
+import { mascotCreditReleased } from '../dist/shared/mascot-roster.mjs';
 import { CAVE_MURAL_SPOTS, CAVE_MURAL_STRIP } from '../dist/src/cave-mural-strip.js';
 
 const root = new URL('../', import.meta.url);
@@ -82,7 +89,8 @@ test('the dialog lists every contributor without QR codes and exhibition cards h
   assert.doesNotMatch(dialog, /qr-/);
   assert.doesNotMatch(dialog, /contributors-mark|この世界は|たくさんの人|<em>|壁画：/);
   assert.doesNotMatch(dialog, /class="modal-intro"/);
-  assert.match(dialog, /id="contributors-cave"[^>]*>アプデの洞窟に行く<\/button>/);
+  // The credits no longer offer a trip to the cave.
+  assert.doesNotMatch(dialog, /contributors-cave|アプデの洞窟|<button/);
   const exhibition = contributorsDialogMarkup(undefined, { links: false });
   assert.equal((exhibition.match(/class="contributor-avatar"/g) ?? []).length, people.length);
   assert.doesNotMatch(exhibition, /qr-/);
@@ -93,16 +101,51 @@ test('the dialog lists every contributor without QR codes and exhibition cards h
   );
 });
 
-test('the loading cave opens the same credits without offering a visit to the cave it is in', () => {
-  const people = titleContributors();
-  const cave = contributorsDialogMarkup(undefined, { visit: false });
-  assert.match(cave, /<h2>関わってくれた人たち<\/h2>/);
-  assert.equal((cave.match(/class="contributor-avatar"/g) ?? []).length, people.length);
-  assert.equal(
-    (cave.match(/<a class="contributor"/g) ?? []).length,
-    people.filter((p) => p.profile).length,
+test('the loading cave lists the people painted on its walls with their X, apart from the credits', () => {
+  const people = muralPeople();
+  const dialog = muralPeopleDialogMarkup(people);
+  assert.match(dialog, /<h2>壁画の人<\/h2>/);
+  assert.doesNotMatch(dialog, /関わってくれた人たち|contributor-group|contributors-cave|<button/);
+  // Each painted person once, in the cave's order; the round and shape bots are the Dots.
+  assert.deepEqual(
+    people.map((person) => person.key),
+    [
+      'maruimo',
+      'saber',
+      'fairy',
+      'nukonuko',
+      'sagasa',
+      'rimo',
+      'r524',
+      'mae',
+      'risa',
+      'otani',
+      'urata',
+      'hawkie',
+      'asahina',
+      'dots',
+    ],
   );
-  assert.doesNotMatch(cave, /contributors-cave|アプデの洞窟|アプレノ洞窟|modal-intro/);
+  const linked = people.filter((person) => contributorHandle(person.profile));
+  assert.equal(linked.length, people.length - 1, 'everyone but the Dots has an X profile');
+  assert.equal((dialog.match(/<a class="contributor"/g) ?? []).length, linked.length);
+  for (const person of linked) assert.match(dialog, new RegExp(`href="${person.profile}"`));
+  for (const person of people)
+    assert.ok(existsSync(new URL(`public${person.avatar}`, root)), person.avatar);
+  // The painted character stands before the handle.
+  assert.match(dialog, /<small><span>りもねこ<\/span> · @vibe_walking<\/small>/);
+  assert.match(dialog, /<small><span>丸いBot・形のBot<\/span><\/small>/);
+  assert.doesNotMatch(muralPeopleDialogMarkup(people, { links: false }), /<a\b/);
+});
+
+test('the mural list leaves out subjects the composition painted over with animals', () => {
+  const keys = (hidden) => muralPeople(hidden).map((person) => person.key);
+  assert.ok(!keys(['howkey-scientist']).includes('hawkie'));
+  assert.ok(keys(['howkey-scientist']).includes('otani'), 'only that subject');
+  // The Dots stay while any of their bots is still painted.
+  assert.ok(keys(['white', 'frog']).includes('dots'));
+  const bots = ['white', 'blue', 'green', 'purple', 'orange', 'beret', 'frog', 'triangle', 'heart'];
+  assert.ok(!keys(bots).includes('dots'));
 });
 
 test('the public build rewrites every credit table the dialog imports and ships the dots icon', async () => {
@@ -120,6 +163,37 @@ test('the public build rewrites every credit table the dialog imports and ships 
   // A table missing here would stop the public title's module from loading.
   for (const name of imported) assert.match(written, new RegExp(`export const ${name} =`), name);
   assert.match(build, /\[\.\.\.credits, TITLE_GUEST, TITLE_SUPPORT, TITLE_DOTS, \.\.\.friends\]/);
+});
+
+test('the public build ships everyone painted for the cave’s mural list; the credits still hold dormant friends back', async () => {
+  const build = await readFile(new URL('scripts/cloudflare-public-build.mjs', root), 'utf8');
+  assert.match(
+    build,
+    /const painted = new Set\(muralPeople\(\)\.map\(\(person\) => person\.key\)\);/,
+  );
+  assert.match(
+    build,
+    /TITLE_FRIENDS\.filter\(\s*\(person\) => mascotCreditReleased\(person\.qr\) \|\| painted\.has\(person\.qr\),?\s*\)/,
+  );
+  const release = JSON.parse(
+    await readFile(new URL('cloudflare/public-release.json', root), 'utf8'),
+  );
+  const credits = release.credits === 'full' ? TITLE_CREDITS : TITLE_CREDITS.slice(0, 1);
+  const painted = muralPeople().map((person) => person.key);
+  const friends = TITLE_FRIENDS.filter(
+    (friend) => mascotCreditReleased(friend.qr) || painted.includes(friend.qr),
+  );
+  const shipped = new Set(
+    [...credits, TITLE_GUEST, TITLE_SUPPORT, TITLE_DOTS, ...friends].map((credit) => credit.qr),
+  );
+  // Everyone painted is listed in public too; only a setting that hides supervisors drops them.
+  const supervisors = TITLE_CREDITS.slice(1).map((credit) => credit.qr);
+  for (const key of painted)
+    assert.equal(shipped.has(key), release.credits === 'full' || !supervisors.includes(key), key);
+  // The credits read the release state themselves, so shipping a profile credits no one.
+  const credited = titleContributors().map((person) => person.key);
+  for (const friend of TITLE_FRIENDS)
+    assert.equal(credited.includes(friend.qr), mascotCreditReleased(friend.qr), friend.qr);
 });
 
 test('the OpenAI Dots icon is the recorded composition of the shipped dot portraits', async () => {

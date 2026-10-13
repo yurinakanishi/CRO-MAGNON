@@ -30,10 +30,6 @@ function fakeView() {
       this.calls.push(['open', links]);
       this.open = true;
     },
-    closeContributors() {
-      this.calls.push(['close']);
-      this.open = false;
-    },
     contributorsOpen() {
       return this.open;
     },
@@ -74,14 +70,13 @@ test('a pending start is handed to the game once with the shell nodes; later act
   assert.equal(view.released, 1, 'listeners are released once');
   const before = view.statuses.length;
   session.start();
-  session.visitCave();
   session.fail('late');
   session.notice('late');
   assert.equal(view.statuses.length, before, 'a taken shell no longer changes the page');
   assert.deepEqual(view.calls, []);
 });
 
-test('the latest title action wins; the cave visit closes the dialog and is handed off', async () => {
+test('the latest title action wins: reading the credits withdraws a pending start', async () => {
   const view = fakeView();
   const session = new TitleShellSession(view, Promise.resolve({ mode: 'online' }));
   session.start();
@@ -90,12 +85,6 @@ test('the latest title action wins; the cave visit closes the dialog and is hand
   assert.equal(session.intent, null);
   assert.equal(view.statuses.at(-1), null);
   assert.deepEqual(view.calls, [['open', titleLinks({ mode: 'online' })]]);
-  session.visitCave();
-  assert.deepEqual(view.calls.at(-1), ['close']);
-  assert.deepEqual(view.statuses.at(-1), { kind: 'busy' });
-  const handoff = session.take();
-  assert.equal(handoff.intent, 'contributors-cave');
-  assert.equal(handoff.contributorsOpen, false);
 });
 
 test('an open contributors dialog is handed over open, without replaying an action', async () => {
@@ -207,12 +196,8 @@ test('the game module performs the handed-off action once and keeps an open dial
     vm.runInNewContext(source, {
       handoff,
       screens: { show: (id) => calls.push(['show', id]) },
-      bindContributorsVisit: () => calls.push('bind'),
       showTitle: () => calls.push('title'),
       showSetup: () => calls.push('setup'),
-      visitContributorsCave: () => calls.push('visit'),
-      renderUnavailable: false,
-      loadingCave: null,
       ...extra,
     });
     return calls;
@@ -220,13 +205,5 @@ test('the game module performs the handed-off action once and keeps an open dial
   assert.deepEqual(run(null), ['title']);
   assert.deepEqual(run({ intent: null, contributorsOpen: false }), ['title']);
   assert.deepEqual(run({ intent: 'start', contributorsOpen: false }), ['title', 'setup']);
-  assert.deepEqual(run({ intent: 'contributors-cave', contributorsOpen: false }), [
-    'title',
-    'visit',
-  ]);
-  assert.deepEqual(
-    run({ intent: 'contributors-cave', contributorsOpen: false }, { renderUnavailable: true }),
-    ['title'],
-  );
-  assert.deepEqual(run({ intent: null, contributorsOpen: true }), [['show', 'title'], 'bind']);
+  assert.deepEqual(run({ intent: null, contributorsOpen: true }), [['show', 'title']]);
 });
