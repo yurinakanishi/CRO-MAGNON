@@ -27,6 +27,10 @@ import {
 import { ActorFade } from '../dist/src/camera-fade.js';
 import { CharacterAssets } from '../dist/src/character-assets.js';
 import { deliveredWomanRig } from './cro-magnon-woman-rig.mjs';
+import {
+  assertPublicCharacterData,
+  publicClothingDyeRulesModule,
+} from '../scripts/public-character-audit.mjs';
 
 class Socket extends EventEmitter {
   readyState = 1;
@@ -202,6 +206,34 @@ test('every playable character has a dye rule naming clothing materials its deli
   assert.equal(clothingDyeAvailable('howkey-scientist'), false, 'a companion, not a traveler');
   assert.equal(clothingDyeAvailable('constructor'), false);
   assert.equal(clothingDyeAvailable(undefined), false);
+});
+
+test('the public build ships the dye rules without an excluded character’s, the shader as built', async () => {
+  const release = JSON.parse(readFileSync('cloudflare/public-release.json', 'utf8'));
+  const excludedSpecies = new Set(release.excludedCharacters);
+  const excludedKeys = new Set(
+    CHARACTER_MODELS.filter((model) => excludedSpecies.has(model.species)).map(({ key }) => key),
+  );
+  const audit = (name, code) =>
+    assertPublicCharacterData(name, Buffer.from(code), excludedKeys, excludedSpecies);
+  // The shader module names no character: the public build copies it unchanged.
+  audit('src/clothing-dye.js', readFileSync('dist/src/clothing-dye.js', 'utf8'));
+  const code = publicClothingDyeRulesModule(CLOTHING_DYE_RULES, excludedKeys);
+  audit('src/clothing-dye-rules.js', code);
+  const { CLOTHING_DYE_RULES: shipped } = await import(
+    `data:text/javascript,${encodeURIComponent(code)}`
+  );
+  assert.ok(Object.isFrozen(shipped));
+  for (const key of excludedKeys) assert.ok(!Object.hasOwn(shipped, key), key);
+  const kept = Object.keys(CLOTHING_DYE_RULES).filter((key) => !excludedKeys.has(key));
+  assert.deepEqual(shipped, Object.fromEntries(kept.map((key) => [key, CLOTHING_DYE_RULES[key]])));
+  // The build writes that copy in place of the local table, before it bundles the browser code.
+  const build = readFileSync('scripts/cloudflare-public-build.mjs', 'utf8');
+  assert.match(build, /file === 'dist\/src\/clothing-dye-rules\.js'/);
+  assert.match(build, /publicClothingDyeRulesModule\(CLOTHING_DYE_RULES, excludedKeys\)/);
+  assert.ok(
+    build.indexOf("'/src/clothing-dye-rules.js'") < build.indexOf('bundleBrowser(staging)'),
+  );
 });
 
 function geometry({ tangent = false, top = 1.7 } = {}) {

@@ -79,7 +79,11 @@ test('old appearances survive repeated saves, restore when enabled, and reject f
     assert.equal(b.welcome.resumed, true);
     assert.equal(b.player.species, 'cro');
     assert.equal(b.player.gender, gender);
-    assert.deepEqual(b.player.unavailableCharacter, { species: 'nea', gender });
+    assert.deepEqual(b.player.unavailableCharacter, {
+      species: 'nea',
+      gender,
+      character: gender === 'male' ? 'neanderthal-hunter' : 'neanderthal-woman',
+    });
     const before = structuredClone(b.player.inventory);
     for (const targetId of ['neanderthal-woman', 'neanderthal-hunter']) {
       b.player.lastAction = 0;
@@ -103,6 +107,7 @@ test('old appearances survive repeated saves, restore when enabled, and reject f
     assert.deepEqual(again.exportState().rooms[0].sessions[0].player.unavailableCharacter, {
       species: 'nea',
       gender,
+      character: gender === 'male' ? 'neanderthal-hunter' : 'neanderthal-woman',
     });
     // Simulate the one roster edit in this test process only; never edit production files/saves.
     const roster = CHARACTER_ROSTER.find((entry) => entry.species === 'nea');

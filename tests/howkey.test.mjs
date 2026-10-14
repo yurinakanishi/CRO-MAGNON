@@ -57,8 +57,13 @@ test('Howkey retains its original scientist rig metadata but is no longer a play
   assert.deepEqual(normalizeCharacter({ species: 'howkey', gender: 'male' }), {
     species: 'howkey',
     gender: 'female',
+    character: 'howkey-scientist',
   });
-  assert.deepEqual(parseCharacterValue('howkey-female'), { species: 'howkey', gender: 'female' });
+  assert.deepEqual(parseCharacterValue('howkey-female'), {
+    species: 'howkey',
+    gender: 'female',
+    character: 'howkey-scientist',
+  });
   assert.equal(characterModel({ species: 'howkey' }).key, 'howkey-scientist');
   assert.equal(isCarryable({ species: 'howkey' }), false);
   assert.equal(attackProfile({ species: 'howkey', spearHead: 'obsidian' }).key, 'science');

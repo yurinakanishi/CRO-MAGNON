@@ -1,7 +1,7 @@
 """Humanoid Candidate 2 rig (2026-10 remake) on a processed (and optionally head-grafted) surface.
 
 blender -b --python rig_human_c2.py -- --source <mesh.glb> --out DIR [--landmarks-only]
-    [--accent auto|none] [--skin-radius .085] [--skin-smooth 22] [--proportions fractions.json]
+    [--accent auto|none] [--skin-radius .085] [--skin-smooth 22] [--proportions fractions.json] [--arm-fractions .43,.77,.87]
 
 Reuses the project's humanoid library (scripts/remake/riglib/blender_rig.py, clips_data.py,
 skin_weights.py): measured landmarks -> 22-bone plan (Root, Hips, Spine, Chest, Neck, Head,
@@ -41,6 +41,29 @@ ap.add_argument('--arm-gate', type=float, default=0.0, help='height fraction bel
                 'to the waist otherwise pull the dress); 0 = off')
 ap.add_argument('--measure-subdiv', type=int, default=0, help='measure the landmarks on a copy split by this many simple '
                 '(shape-preserving) subdivision levels: a low-poly surface has too few vertices for the band statistics')
+ap.add_argument('--rigid-feet', default='', help='LOW,HIGH metres about the ankle joint height: vertices of each leg below '
+                'LOW move with the foot only, blending into the surface weights up to HIGH (a chunky boot, whose short foot bone '
+                'otherwise leaves the sole to the shin and no vertex for the sole contact of the locomotion builder), e.g. -.015,.02')
+ap.add_argument('--rigid-hands', default='', help='T0,T1 fractions of the shoulder-to-fingertip span: vertices of an arm beyond T1 '
+                'move with the hand only, blending into the surface weights from T0 (a short chibi hand bone otherwise leaves its '
+                'mitten hand shared with the forearm, and the torch grasp finds no hand vertex), e.g. .60,.68')
+ap.add_argument('--arm-fractions', default='.43,.77,.87', help='elbow,wrist,hand as fractions of the shoulder-to-fingertip span '
+                '(adult proportions by default; a chibi hand is longer: its wrist leaves the sleeve cuff earlier)')
+ap.add_argument('--hips-over-knees', action='store_true', help='put the pelvis and hip joints above the mean knee depth '
+                '(a chibi body in a full skirt with a pouch or a cape: its measured pelvis depth leaves the legs slanted)')
+ap.add_argument('--shoulder-x', type=float, default=0.0, help='metres: the shoulder joints this far from the body axis '
+                'instead of the measured outer limb mass at the shoulder height (a cape over the shoulders widens it: the '
+                'arm then starts at the cape edge and falls short of the spear held in front)')
+ap.add_argument('--arm-axis-depth', action='store_true', help='the elbow, wrist and hand at the depth of the straight '
+                'shoulder-to-fingertip line instead of the mean of the arm surface there (a wide sleeve or a fur cuff that '
+                'bulges forward bends the rest forearm backward; the axe, held across the forearm as in the idle pose, then '
+                'tilts toward the ground in the gathering crouch)')
+ap.add_argument('--body-over-knees', action='store_true', help='as --hips-over-knees, and the spine, chest, neck and '
+                'shoulder joints too (a cape or hood behind a chibi pulls their measured depth back: the arms then start '
+                'behind the body and fall short of what the hands reach for)')
+ap.add_argument('--depth-trim', type=float, default=0.0, help='fraction of the torso points cut off at the front and at the back '
+                'before the midpoint of a torso depth (pelvis, spine, chest, neck, head): a tail or a cape hem behind the hips '
+                'otherwise pulls the hips back from the knees (0 = the full depth range)')
 ap.add_argument('--proportions', default='', help='JSON of landmark height fractions overriding blender_rig.FRACTIONS (a stylized character with a larger head)')
 args = ap.parse_args(sys.argv[sys.argv.index('--') + 1:])
 out = Path(args.out)
@@ -64,6 +87,14 @@ proportions = json.loads(Path(args.proportions).read_text(encoding='utf-8'))['fr
 unknown = set(proportions) - set(base.FRACTIONS) - {'mouth'}
 assert not unknown, f'unknown landmark fractions: {sorted(unknown)}'
 base.FRACTIONS.update(proportions)
+if args.depth_trim > 0:
+    def trimmed_torso_depth(P, z, half=0.026, limit=0.115):
+        selection = base.band_mask(P, z, half) & (np.abs(P[:, 0]) < limit)
+        if selection.sum() < 8:
+            selection = base.band_mask(P, z, half * 2.0) & (np.abs(P[:, 0]) < limit * 1.4)
+        lo, hi = np.percentile(P[selection][:, 1], [100 * args.depth_trim, 100 * (1 - args.depth_trim)])
+        return float(0.5 * (lo + hi))
+    base.torso_depth = trimmed_torso_depth
 
 measure_obj = obj
 if args.measure_subdiv:
@@ -89,10 +120,25 @@ def arm_chain(sign):
     return hand[np.argmin(hand[:, 2])]
 
 marks, detail = base.build_landmarks(measure_obj)
+if args.hips_over_knees or args.body_over_knees:
+    # the pelvis depth of a body whose hips hide in a full skirt, a hanging pouch or a cape hem is not the leg line:
+    # the hips go straight above the mean knee depth (the spine above them keeps its own measured depth)
+    knee_depth = 0.5 * (marks['knee_L'][1] + marks['knee_R'][1])
+    detail['hipsOverKnees'] = dict(measuredPelvisDepth=marks['pelvis'][1], kneeDepth=knee_depth)
+    marks['pelvis'] = (marks['pelvis'][0], knee_depth, marks['pelvis'][2])
+    for side in ('L', 'R'):
+        marks['hip_' + side] = (marks['hip_' + side][0], knee_depth, marks['hip_' + side][2])
+    if args.body_over_knees:
+        detail['bodyOverKnees'] = {name: marks[name][1] for name in ('spine', 'chest', 'neck', 'shoulder_L', 'shoulder_R')}
+        for name in ('spine', 'chest', 'neck', 'shoulder_in_L', 'shoulder_in_R', 'shoulder_L', 'shoulder_R'):
+            marks[name] = (marks[name][0], knee_depth, marks[name][2])
 detail['measured_on'] = {'subdivision_levels': args.measure_subdiv, 'vertices': len(measure_obj.data.vertices)}
 arm_fix = {}
 # Symmetric shoulder joints (one-sided cloth or fur on a shoulder must not shift the joint).
 sx = (abs(marks['shoulder_L'][0]) + abs(marks['shoulder_R'][0])) / 2
+if args.shoulder_x:
+    detail['shoulderX'] = dict(measured=sx, given=args.shoulder_x)
+    sx = args.shoulder_x
 sy = (marks['shoulder_L'][1] + marks['shoulder_R'][1]) / 2
 for side, sign in (('L', 1.0), ('R', -1.0)):
     marks['shoulder_' + side] = (sign * sx, sy, marks['shoulder_' + side][2])
@@ -108,10 +154,15 @@ for side, sign in (('L', 1.0), ('R', -1.0)):
         radial = np.linalg.norm(rel - np.outer(t, axis), axis=1)
         band = P[(radial < args.arm_band * H) & (np.abs(t) < .012 * H)]
         return tuple(band.mean(0)) if len(band) > 8 else tuple(c)
-    # adult arm proportions along the shoulder-to-fingertip span
-    marks['elbow_' + side] = along(.43)
-    marks['wrist_' + side] = along(.77)
-    marks['hand_' + side] = along(.87)
+    # arm proportions along the shoulder-to-fingertip span (adult by default)
+    f_elbow, f_wrist, f_hand = map(float, args.arm_fractions.split(','))
+    marks['elbow_' + side] = along(f_elbow)
+    marks['wrist_' + side] = along(f_wrist)
+    marks['hand_' + side] = along(f_hand)
+    if args.arm_axis_depth:
+        for name, f in (('elbow_', f_elbow), ('wrist_', f_wrist), ('hand_', f_hand)):
+            x, _, z = marks[name + side]
+            marks[name + side] = (x, float(s[1] + axis[1] * length * f), z)
     arm_fix[side] = dict(tip=tip.tolist(), length=float(length), axis=axis.tolist())
 detail['arm_chain'] = arm_fix
 if measure_obj is not obj:
@@ -208,9 +259,70 @@ if args.arm_gate:
     arm_gate = {'height_fraction': args.arm_gate, 'gate_metres': round(gate_z, 4), 'crack_bridge_metres': 0.015, 'arm_vertices_below_gate': int(arm_vertex.sum()),
                 'body_vertices_cleared_of_arm_weights': cleared, 'reassigned_to_nearest_body_bone': reassigned}
     print('ARM_GATE', json.dumps(arm_gate), flush=True)
+rigid_hands = None
+if args.rigid_hands:
+    t0, t1 = map(float, args.rigid_hands.split(','))
+    group_by_name = dict((g.name, g) for g in obj.vertex_groups)
+    Pv = base.positions(obj.data)
+    rigid_hands = dict(span_fractions=[t0, t1], radius_metres=0.1)
+    for side in ('L', 'R'):
+        chain = arm_fix[side]
+        s0 = np.array(marks['shoulder_' + side])
+        axis = np.array(chain['axis'])
+        rel = Pv - s0
+        t = rel @ axis / chain['length']
+        radial = np.linalg.norm(rel - np.outer(rel @ axis, axis), axis=1)
+        hand_group = group_by_name['Hand.' + side]
+        rigid = blended = 0
+        for index in np.nonzero((t > t0) & (radial < 0.1))[0]:
+            vert = obj.data.vertices[int(index)]
+            w = float(np.clip((t[index] - t0) / (t1 - t0), 0, 1))
+            old_hand = 0.0
+            for element in vert.groups:
+                if element.group == hand_group.index:
+                    old_hand = element.weight
+                element.weight *= 1.0 - w
+            hand_group.add([vert.index], w + (1.0 - w) * old_hand, 'REPLACE')
+            if w >= 1.0:
+                rigid += 1
+            else:
+                blended += 1
+        rigid_hands[side] = dict(rigidVertices=rigid, blendedVertices=blended)
+    print('RIGID_HANDS', json.dumps(rigid_hands), flush=True)
+rigid_feet = None
+if args.rigid_feet:
+    band_lo, band_hi = map(float, args.rigid_feet.split(','))
+    group_by_name = dict((g.name, g) for g in obj.vertex_groups)
+    rigid_feet = dict(band_metres=[band_lo, band_hi], radius_metres=0.15)
+    for side, sign in (('L', 1.0), ('R', -1.0)):
+        ankle = marks['ankle_' + side]
+        foot_group = group_by_name['Foot.' + side]
+        foot_index = foot_group.index
+        rigid = blended = 0
+        for vert in obj.data.vertices:
+            x, y, z = vert.co
+            if sign * x <= 0.0 or math.hypot(x - ankle[0], y - ankle[1]) > 0.15:
+                continue
+            t = (z - (ankle[2] + band_lo)) / (band_hi - band_lo)
+            if t >= 1.0:
+                continue
+            t = max(0.0, t)
+            old_foot = 0.0
+            for element in vert.groups:
+                if element.group == foot_index:
+                    old_foot = element.weight
+                element.weight *= t
+            foot_group.add([vert.index], (1.0 - t) + t * old_foot, 'REPLACE')
+            if t == 0.0:
+                rigid += 1
+            else:
+                blended += 1
+        rigid_feet[side] = dict(ankleHeightMetres=round(ankle[2], 4), rigidVertices=rigid, blendedVertices=blended)
+    print('RIGID_FEET', json.dumps(rigid_feet), flush=True)
 coverage = base.weight_coverage(obj, rig)
 weights = base.normalise_weights(obj, rig)
-weights.update(deform_coverage=round(coverage, 5), geodesic=geodesic, arm_gate=arm_gate)
+weights.update(deform_coverage=round(coverage, 5), geodesic=geodesic, arm_gate=arm_gate, rigid_feet=rigid_feet,
+               rigid_hands=rigid_hands)
 
 bpy.context.scene.render.fps = base.FPS
 solvers = {s: LegSolver(marks['hip_' + s], marks['knee_' + s], marks['ankle_' + s]) for s in ('L', 'R')}
@@ -240,7 +352,7 @@ bpy.ops.export_scene.gltf(filepath=str(glb), export_format='GLB', use_selection=
 bpy.ops.wm.save_as_mainfile(filepath=str(out / 'source.blend'), compress=True)
 report = {'author': 'Claude Code (Opus 5.5)', 'claude_used': True, 'script': 'scripts/remake/rig_human_c2.py',
           'source': args.source, 'sha256': hashlib.sha256(glb.read_bytes()).hexdigest(), 'bytes': glb.stat().st_size,
-          'heightMetres': H, 'heightScale': height_scale, 'proportions': {'file': args.proportions or None, 'fractions': dict(base.FRACTIONS)}, 'triangles': int(sum(len(p.vertices) - 2 for p in obj.data.polygons)), 'topology': topology,
+          'heightMetres': H, 'heightScale': height_scale, 'proportions': {'file': args.proportions or None, 'fractions': dict(base.FRACTIONS), 'arm': args.arm_fractions, 'depthTrim': args.depth_trim, 'hipsOverKnees': args.hips_over_knees, 'bodyOverKnees': args.body_over_knees, 'armAxisDepth': args.arm_axis_depth, 'shoulderX': args.shoulder_x or None}, 'triangles': int(sum(len(p.vertices) - 2 for p in obj.data.polygons)), 'topology': topology,
           'materials': [m.name for m in obj.data.materials], 'tribeAccent': accent_report,
           'bones': [p[0] for p in plan], 'sockets': sockets, 'weights': weights, 'groundLock': locks, 'deformationProbe': probe,
           'clips': [{'name': c['name'], 'loop': c['loop'], 'seconds': round((c['poses'][-1][0] - c['poses'][0][0]) / base.FPS, 4)} for c in clips]}

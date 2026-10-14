@@ -14,6 +14,8 @@ function fixture(character) {
   const collision = new CollisionWorld([], { coast: false, river: false, walkSurfaces: [] });
   const p = {
     ...character,
+    // a player names its look by key (several looks share a species and gender)
+    character: character.key,
     id: 'p',
     x: 50,
     z: 50,

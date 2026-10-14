@@ -27,7 +27,8 @@ test('all delivered characters crouch, keep both soles planted and reach the cat
       mixer = new THREE.AnimationMixer(gltf.scene);
     mixer.clipAction(gltf.animations.find((c) => c.name === 'Idle_Loop')).play();
     const { c, p, room } = fixture();
-    Object.assign(p, character);
+    // a player names its look by key (several looks share a species and gender)
+    Object.assign(p, character, { character: character.key });
     assert.equal(petMascot(room, p, c.id, 10000), true);
     outer.add(cat.scene);
     cat.scene.position.set(c.petGoal.x - p.x, 0, c.petGoal.z - p.z);

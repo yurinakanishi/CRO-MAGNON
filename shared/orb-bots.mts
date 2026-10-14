@@ -374,7 +374,7 @@ function botPetPosition(p: PlayerSnapshot, b: OrbBotSnapshot) {
           ? [1.08, 0.12]
           : p.species === 'howkey'
             ? [0.4, 0.12]
-            : [0.5, 0.12];
+            : [0.5 * (characterModel(p).petReachScale ?? 1), 0.12];
   return {
     facing,
     goal: {

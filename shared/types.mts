@@ -11,6 +11,8 @@ export type EquipmentId = 'axe' | 'spear' | 'obsidianSpear' | 'character';
 export interface CharacterProfile {
   species?: unknown;
   gender?: unknown;
+  /** The chosen model key: several looks can share a species and gender (the chibi cast). */
+  character?: unknown;
   spearHead?: 'wood' | 'obsidian';
   tool?: boolean;
   equippedItem?: EquipmentId;
@@ -31,6 +33,11 @@ export interface CharacterModel {
   radius?: number;
   walkSpeed?: number;
   runSpeed?: number;
+  /** Where the follow camera aims above the feet when the body is unlike its species' (metres). */
+  cameraFocus?: number;
+  /** Scales how far ahead a companion offers its head to this character's hand, and how low 524
+   * floats down to it (short arms). */
+  petReachScale?: number;
 }
 export interface Resource extends Point {
   id: string;

@@ -17,7 +17,7 @@ import { configureActorPerformance, updateActorPerformance } from '../dist/src/p
 import { CHARACTER_MODELS } from '../dist/shared/characters.mjs';
 import { loadMotion } from '../scripts/motion-glb.mjs';
 import { deliveredModel } from './delivered-model.mjs';
-import { deliveredActor, originalPair } from './original-actor-pairs.mjs';
+import { deliveredActor, hasOriginalPair, originalPair } from './original-actor-pairs.mjs';
 import { EventEmitter } from 'node:events';
 import { createGameCore } from '../dist/application/game-core.mjs';
 
@@ -229,8 +229,9 @@ function assertGraspKeepsSource(key, asset, gltf, low, levels) {
 }
 
 test('all nine hands curl only their original left-hand surface; LOD, other actors and unequipping preserve source geometry', async () => {
-  // The original full models and far LODs, verified (original-actor-pairs.mjs).
-  for (const character of CHARACTER_MODELS) {
+  // The original full models and far LODs, verified (original-actor-pairs.mjs); characters added
+  // after r04 have none and are proven by their delivered body below.
+  for (const character of CHARACTER_MODELS.filter((model) => hasOriginalPair(model.key))) {
     const { asset, full, lod, levels } = await originalPair(character.key, loadMotion);
     assertGraspKeepsSource(character.key, asset, full, lod.scene, levels);
   }

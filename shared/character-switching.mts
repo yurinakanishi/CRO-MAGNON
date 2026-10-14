@@ -16,6 +16,11 @@ export function handleCharacterSwitch(room, player, message, now) {
   player.runningRequested = false;
   player.pendingStrike = null;
   room.projectiles = (room.projectiles ?? []).filter((p) => p.ownerId !== player.id);
-  Object.assign(player, { species: model.species, gender: model.gender, radius });
+  Object.assign(player, {
+    species: model.species,
+    gender: model.gender,
+    character: model.key,
+    radius,
+  });
   return { ok: true, text: `${model.name}に変わりました。` };
 }

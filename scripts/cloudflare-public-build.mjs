@@ -4,7 +4,10 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { prepareVendor } from './prepare-vendor.mjs';
 import { bundleBrowser, bundledIndex } from './bundle-browser.mjs';
-import { assertPublicCharacterData } from './public-character-audit.mjs';
+import {
+  assertPublicCharacterData,
+  publicClothingDyeRulesModule,
+} from './public-character-audit.mjs';
 import {
   DECODER,
   MESHOPT_EXTENSION,
@@ -36,6 +39,7 @@ const { mascotModelReleased, mascotCreditReleased, mascotAsset, ACTIVE_MASCOT_MO
   await import('../dist/shared/mascot-roster.mjs');
 const { TITLE_CREDITS, TITLE_GUEST, TITLE_SUPPORT, TITLE_DOTS, TITLE_FRIENDS } =
   await import('../dist/src/title-credit-profiles.js');
+const { CLOTHING_DYE_RULES } = await import('../dist/src/clothing-dye-rules.js');
 
 const root = path.dirname(path.dirname(fileURLToPath(import.meta.url)));
 const {
@@ -135,6 +139,7 @@ async function collect(directory, extensions, keep = () => true) {
       // Generate this module from the chosen profiles, never copy it unfiltered.
       if (
         file === 'dist/src/title-credit-profiles.js' ||
+        file === 'dist/src/clothing-dye-rules.js' ||
         file === 'dist/shared/character-profiles.mjs' ||
         (!hasOctopus && file === 'dist/src/octopus-pose.js')
       )
@@ -180,6 +185,10 @@ await publish(
   Buffer.from(
     `export const CHARACTER_MODELS = Object.freeze(${JSON.stringify(publicCharacters)}.map(Object.freeze));\n`,
   ),
+);
+await publish(
+  '/src/clothing-dye-rules.js',
+  Buffer.from(publicClothingDyeRulesModule(CLOTHING_DYE_RULES, excludedKeys)),
 );
 for (const directory of ['dist/src', 'dist/shared']) await collect(directory, /\.(js|mjs|css)$/);
 await collect('public/vendor', /\.(js|mjs|wasm|txt)$/);

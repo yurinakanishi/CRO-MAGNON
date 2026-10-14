@@ -10,6 +10,10 @@
 // Writes public/models/<key>/model-<revision>.glb (never replacing a file), the archived manifest, the
 // review (with the production hashes of the git-ignored candidate workspace), the review images and the
 // source-revision record under assets/<key>/, and the manifest. Run only after the user accepted the review.
+// --new adopts the first model of a new character key (no served manifest yet): its identity comes from the
+// candidate's asset.json, and there is no previous model to archive and no source revision to follow (a new
+// key carries no sourceRevision: scripts/runtime-graph.mjs ships it as an original model). --original replaces such an
+// original model by a later revision: the old manifest is archived and its GLB kept, and the key stays an original.
 import { createHash } from 'node:crypto';
 import { copyFile, mkdir, readFile, writeFile } from 'node:fs/promises';
 import path from 'node:path';
@@ -27,7 +31,14 @@ const { values: args } = parseArgs({
     sheet: { type: 'string', multiple: true, default: [] },
     source: { type: 'string', multiple: true, default: [] },
     date: { type: 'string', default: new Date().toISOString().slice(0, 10) },
+    'geometry-source': {
+      type: 'string',
+      default:
+        'TRELLIS-2 reconstruction of the chosen generated reference (meshopt reduction, xatlas atlases, Blender bakes; eye sockets closed in the dense surface)',
+    },
     'dry-run': { type: 'boolean', default: false },
+    new: { type: 'boolean', default: false },
+    original: { type: 'boolean', default: false },
   },
 });
 for (const name of ['key', 'revision', 'glb', 'asset', 'record', 'approved'])
@@ -65,16 +76,30 @@ const record = JSON.parse(recordBytes);
 if (record.final?.glb?.sha256 !== sha256(candidate))
   throw new Error('the candidate record does not describe this GLB');
 
-// The manifest must still serve the accepted source revision the candidate replaces.
+// The manifest must still serve the accepted source revision the candidate replaces (a new key has none).
 const manifestFile = `public/models/${key}/asset.json`;
-const manifestText = (await read(manifestFile)).toString();
-const manifest = JSON.parse(manifestText);
-if (!manifest.sourceRevision)
+const fresh = args.new;
+const manifestText = await read(manifestFile).then(
+  (bytes) => bytes.toString(),
+  (error) => {
+    if (error.code === 'ENOENT' && fresh) return null;
+    throw error;
+  },
+);
+if (fresh && manifestText !== null) throw new Error(`--new: ${manifestFile} already exists`);
+const manifest = fresh ? null : JSON.parse(manifestText);
+const original = args.original;
+if (original && manifest?.sourceRevision)
+  throw new Error(`--original: ${manifestFile} follows an accepted source revision`);
+if (manifest && !manifest.sourceRevision && !original)
   throw new Error(`${manifestFile} has no accepted source revision to follow`);
-const currentProofBytes = await read(manifest.sourceRevision.record);
-if (sha256(currentProofBytes) !== manifest.sourceRevision.sha256)
+const proven = manifest && !original;
+const currentProofBytes = proven ? await read(manifest.sourceRevision.record) : null;
+if (proven && sha256(currentProofBytes) !== manifest.sourceRevision.sha256)
   throw new Error('current source-revision record changed');
-const currentProof = JSON.parse(currentProofBytes);
+const currentProof = proven ? JSON.parse(currentProofBytes) : null;
+if (fresh && built.modelKey !== key)
+  throw new Error('--new: the candidate asset.json names another key');
 
 // 1. The new GLB under a new name.
 const url = `/models/${key}/model-${revision}.glb`;
@@ -82,8 +107,10 @@ await place(`public${url}`, candidate);
 const file = { url, sha256: sha256(candidate), bytes: candidate.length };
 
 // 2. The archived manifest and the review images.
-const archive = `assets/${key}/archive-manifest-${manifest.revision}-${date.replaceAll('-', '')}.json`;
-await place(archive, Buffer.from(manifestText));
+const archive = manifest
+  ? `assets/${key}/archive-manifest-${manifest.revision}-${date.replaceAll('-', '')}.json`
+  : null;
+if (archive) await place(archive, Buffer.from(manifestText));
 const qa = `assets/${key}/qa/${revision}`;
 const sheets = [];
 for (const sheet of args.sheet) {
@@ -135,34 +162,39 @@ const review = {
     referenceMatte: record.referenceMatte,
     trellis: record.trellis,
     eyeSockets: record.eyeSockets,
+    blankFace: record.blankFace,
+    rejectedFaceRepairs: record.rejectedFaceRepairs,
     reduction: record.reduction,
+    colour: record.colour,
     face: record.face,
     merged: record.merged,
+    skinMaterial: record.skinMaterial,
     rig: record.rig,
-    motion: record.final?.motion,
+    motion: record.motion ?? record.final?.motion,
   },
   qa: record.qa,
   sheets,
-  previous: {
-    url: manifest.url,
-    sha256: manifest.sha256,
-    bytes: manifest.bytes,
-    triangles: manifest.triangles,
-    revision: manifest.revision,
-    manifest: archive,
-  },
+  previous: manifest
+    ? {
+        url: manifest.url,
+        sha256: manifest.sha256,
+        bytes: manifest.bytes,
+        triangles: manifest.triangles,
+        revision: manifest.revision,
+        manifest: archive,
+      }
+    : null,
   provenance: {
     provider:
       'Claude Code (Opus 5.5); Codex built-in image_gen references; local TRELLIS-2 reconstruction',
     claudeUsed: true,
-    geometrySource:
-      'TRELLIS-2 reconstruction of the chosen generated reference (meshopt reduction, xatlas atlases, Blender bakes; eye sockets closed in the dense surface)',
+    geometrySource: args['geometry-source'],
   },
 };
 const reviewFile = `assets/${key}/qa/${revision}.json`;
 const reviewBytes = Buffer.from(json(review));
 await place(reviewFile, reviewBytes);
-const proof = {
+const proof = proven && {
   schema: 'cro-magnon/source-model-revision@1',
   modelKey: key,
   decision: 'adopt',
@@ -171,9 +203,9 @@ const proof = {
   files: [file],
   review: { path: reviewFile, sha256: sha256(reviewBytes) },
 };
-const proofFile = `assets/${key}/qa/source-revision-${revision}.json`;
-const proofBytes = Buffer.from(json(proof));
-await place(proofFile, proofBytes);
+const proofFile = proven ? `assets/${key}/qa/source-revision-${revision}.json` : null;
+const proofBytes = proven ? Buffer.from(json(proof)) : null;
+if (proven) await place(proofFile, proofBytes);
 
 // 4. The manifest: identity and gameplay data of the new model; the old model's history stays in the archive.
 const keep = [
@@ -187,8 +219,9 @@ const keep = [
   'gender',
   'species',
 ];
+const identity = manifest ?? built;
 const next = {
-  ...Object.fromEntries(keep.filter((k) => manifest[k] !== undefined).map((k) => [k, manifest[k]])),
+  ...Object.fromEntries(keep.filter((k) => identity[k] !== undefined).map((k) => [k, identity[k]])),
   candidate: record.candidate,
   status: `remake-candidate-${record.candidate}-adopted`,
   revision,
@@ -205,7 +238,7 @@ const next = {
   spearThrust: { ...built.spearThrust, status: 'adopted' },
   downedMotion: built.downedMotion,
   notes: [
-    `Candidate ${record.candidate} (${date}): a new stylized low-poly design from a generated reference (${record.reference?.chosen}), reconstructed with TRELLIS-2 and reduced to ${triangles} triangles (body and head in separate 1024 atlases, the face painted from the reference), rigged with the 22-bone humanoid skeleton and all ${review.clips.length} clips. Review: ${reviewFile}.`,
+    `Candidate ${record.candidate} (${date}): ${manifest ? 'a new' : 'the first model of this character, a'} stylized low-poly design from a generated reference (${record.reference?.chosen}), reconstructed with TRELLIS-2 and reduced to ${triangles} triangles (body and head in separate 1024 atlases, the face painted from the reference), rigged with the 22-bone humanoid skeleton and all ${review.clips.length} clips. Review: ${reviewFile}.`,
   ],
   provenance: {
     provider: review.provenance.provider,
@@ -217,9 +250,9 @@ const next = {
     review: reviewFile,
     previousManifest: archive,
   },
-  sourceRevision: { record: proofFile, sha256: sha256(proofBytes) },
+  ...(proven ? { sourceRevision: { record: proofFile, sha256: sha256(proofBytes) } } : {}),
 };
 await write(manifestFile, json(next));
 console.log(
-  `${key}: ${manifest.url} -> ${url} (${file.bytes} B, ${manifest.triangles} -> ${triangles} triangles)`,
+  `${key}: ${manifest?.url ?? '(new)'} -> ${url} (${file.bytes} B, ${manifest?.triangles ?? 0} -> ${triangles} triangles)`,
 );

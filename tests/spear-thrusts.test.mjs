@@ -69,8 +69,11 @@ for (const profile of CHARACTER_MODELS.filter((m) => ['cro', 'nea'].includes(m.s
           rear.y - bounds.min.y > 0.2 && rear.y - bounds.min.y < 0.23,
           'rear hand holds about 21 cm from the actual spear butt',
         );
+        // The guiding hand sits the measured hand spacing ahead (about 0.2 of the height: 0.29 m
+        // for the 1.45 m chibi woman, 0.33-0.36 m for the adults), still on the rear of the shaft.
         assert.ok(
-          front.y - bounds.min.y > 0.52 && front.y - bounds.min.y < 0.59,
+          Math.abs(front.y - rear.y - asset.spearThrust.handSpacingMetres) < 0.03 &&
+            front.y - bounds.min.y < 0.59,
           'front hand also holds the rear part of the shaft',
         );
       }

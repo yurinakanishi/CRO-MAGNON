@@ -130,8 +130,14 @@ ap.add_argument('--mask', default='', help='foreground matte in reference pixels
                 'cutout of the TRELLIS preparation moved onto the reference; default: a colour distance from the border')
 ap.add_argument('--hair-guard', action='store_true', help='keep the reconstruction where either image shows hair: dark-brown '
                 'reconstruction texels, and large connected hair regions of the reference (eyebrows are small and stay)')
+ap.add_argument('--guard-free', default='', help='U,V,RX,RY[;...]: ellipses in reference pixels where --hair-guard does not apply '
+                '(painted lashes are dark brown like hair; a reconstruction can carry faint brown marks there)')
+ap.add_argument('--guard-min-width', type=int, default=0, help='with --hair-guard: dark reconstruction regions thinner than '
+                'this many atlas texels are not guarded as hair (a painted line on the forehead); 0 = guard all')
 ap.add_argument('--tone-match', action='store_true', help='scale the projected skin to the skin colour of the reconstruction '
                 '(per channel, fitted on skin inside the face ellipse; eye whites and dark features keep their colour)')
+ap.add_argument('--tone-strength', type=float, default=1.0, help='with --tone-match: how far the projected skin moves toward the '
+                'reconstruction (1 = all the way; 0.5 = halfway, per channel)')
 ap.add_argument('--flat-normals', type=float, default=0.0, help='0..1: blend the tangent-space normal map toward flat by '
                 'this much times the projection weight (the painted face replaces the baked eye sockets and lips)')
 ap.add_argument('--registration', default='', help='SCALE,CX,CY: use this registration (pixels per metre and offsets) '
@@ -330,7 +336,9 @@ if args.tone_match:
     core = sil & mask_bool & (rr < 0.85)
     both = core & (skin_likeness(before) > 0.9) & (skin_likeness(ref_aligned) > 0.9)
     gain = np.median(before[both], axis=0) / np.maximum(np.median(ref_aligned[both], axis=0), 1e-3)
-    tone = dict(gain=gain.round(4).tolist(), pixels=int(both.sum()))
+    full_gain = gain.copy()
+    gain = 1 + args.tone_strength * (gain - 1)
+    tone = dict(gain=gain.round(4).tolist(), fullGain=full_gain.round(4).tolist(), strength=args.tone_strength, pixels=int(both.sum()))
     ref_aligned = ref_aligned * (1 + (gain - 1) * skin_likeness(ref_aligned)[..., None])
 ref_hair = np.zeros((RH, RW))
 if args.hair_guard:
@@ -399,7 +407,20 @@ if args.hair_guard:
     lum_o = own @ LUM
     # dark-brown hair of the reconstruction (its black eyebrows and eye lines are darker and are replaced)
     hair_o = smooth(lum_o, 0.05, 0.08) * (1 - smooth(lum_o, 0.30, 0.38)) * smooth(own[:, 0] - own[:, 2], 0.04, 0.08)
-    weight = weight * (1 - hair_o) * (1 - bilinear(ref_hair[..., None], u - 0.5, v - 0.5)[:, 0])
+    if args.guard_min_width:
+        # a thin dark line of the reconstruction (a painted hairline shadow on the forehead) is not hair: in atlas space
+        # an opening by --guard-min-width texels keeps only the broad hair regions under the guard
+        img = np.zeros((AH, AW), np.float32)
+        img[covered] = hair_o
+        k = np.ones((args.guard_min_width, args.guard_min_width), np.uint8)
+        broad = cv2.dilate(cv2.erode((img > 0.5).astype(np.uint8), k), k).astype(np.float32)
+        hair_o = hair_o * broad[covered]
+    free = np.zeros(len(u))
+    for spec in filter(None, args.guard_free.split(';')):
+        gu, gv, grx, gry = map(float, spec.split(','))
+        t = np.clip((1 - np.sqrt(((u - gu) / grx) ** 2 + ((v - gv) / gry) ** 2)) / 0.25, 0, 1)
+        free = np.maximum(free, t * t * (3 - 2 * t))
+    weight = weight * (1 - hair_o * (1 - free)) * (1 - bilinear(ref_hair[..., None], u - 0.5, v - 0.5)[:, 0] * (1 - free))
 
 refc = bilinear(front_image, u - 0.5, v - 0.5)
 src = albedo[covered]
@@ -488,7 +509,7 @@ report = dict(
     alignmentFlowMeanPx=float(np.linalg.norm(flow, axis=2)[inner].mean()) if inner.any() else 0.0,
     alignmentFlowMaxPx=float(np.linalg.norm(flow, axis=2).max()),
     projectedTexels=int((weight > 0.01).sum()), fullTexels=int((weight > 0.99).sum()), coveredTexels=int(covered.sum()),
-    faceTexelsOverHalfWeight=int(face_texels), atlas=[AW, AH], outputSize=args.output_size or AW, mode=args.mode, sigma=args.sigma, toneMatch=tone, hairGuard=args.hair_guard, flatNormals=normal_report,
+    faceTexelsOverHalfWeight=int(face_texels), atlas=[AW, AH], outputSize=args.output_size or AW, mode=args.mode, sigma=args.sigma, toneMatch=tone, hairGuard=args.hair_guard, guardFree=args.guard_free or None, guardMinWidth=args.guard_min_width, flatNormals=normal_report,
     facing=[f0, f1], occlusion=[o_full, o_zero], geometry='unchanged (only the base colour and normal images are replaced)')
 (out / 'report.json').write_text(json.dumps(report, indent=2) + '\n')
 print('PROJECT_FACE_DONE', json.dumps(dict(registration=report['registration'], flow=report['alignmentFlowMeanPx'],

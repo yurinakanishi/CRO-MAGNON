@@ -6,6 +6,13 @@ export const CHARACTER_MODELS: readonly Readonly<CharacterModel>[] = Object.free
     key: 'cro-magnon-woman',
     carryable: false,
     name: 'クロマニョン人 女性',
+    // The chibi body (2026-10-13, assets/cro-magnon-woman/qa/c5-r01.json): a 1.45 m figure whose head is
+    // two fifths of it; from the shoulder at 0.77 m its arm reaches 0.23 m to the wrist, 0.36 m to the
+    // fingertips.
+    height: 1.45,
+    botHandRatios: { side: 0.12, front: 0.13, height: 0.6 },
+    cameraFocus: 1.15,
+    petReachScale: 0.75,
   }),
   Object.freeze({
     species: 'cro',
@@ -93,5 +100,114 @@ export const CHARACTER_MODELS: readonly Readonly<CharacterModel>[] = Object.free
     radius: 0.6,
     walkSpeed: 0.8,
     runSpeed: 2.2,
+  }),
+  // The chibi cast (2026-10-13, docs/cro-magnon-woman-chibi-2026-10-13.md): the body plan of the chibi
+  // woman (1.45 m, the head two fifths of it, short arms), told apart from her by its model key.
+  Object.freeze({
+    species: 'cro',
+    gender: 'female',
+    key: 'cro-magnon-girl-feather',
+    carryable: false,
+    name: 'クロマニョン人 羽根飾りの女の子',
+    height: 1.45,
+    botHandRatios: { side: 0.12, front: 0.13, height: 0.6 },
+    cameraFocus: 1.15,
+    petReachScale: 0.75,
+  }),
+  Object.freeze({
+    species: 'cro',
+    gender: 'female',
+    // Her arms hang under the cape further back than the woman's: 524 is offered closer.
+    key: 'cro-magnon-girl-bear',
+    carryable: false,
+    name: 'クロマニョン人 子グマずきんの女の子',
+    height: 1.45,
+    botHandRatios: { side: 0.12, front: 0.13, height: 0.6 },
+    cameraFocus: 1.15,
+    petReachScale: 0.6,
+  }),
+  Object.freeze({
+    species: 'cro',
+    gender: 'female',
+    // Her arms hang under the cape 4-5 cm further back than the woman's: 524 is offered closer.
+    key: 'cro-magnon-girl-wolf',
+    carryable: false,
+    name: 'クロマニョン人 子オオカミずきんの女の子',
+    height: 1.45,
+    botHandRatios: { side: 0.12, front: 0.13, height: 0.6 },
+    cameraFocus: 1.15,
+    petReachScale: 0.6,
+  }),
+  // Her arms hang above the knees (rig --body-over-knees): 524 is offered closer than to the woman.
+  Object.freeze({
+    species: 'cro',
+    gender: 'female',
+    key: 'cro-magnon-girl-twintails',
+    carryable: false,
+    name: 'クロマニョン人 赤毛ふたつ結びの女の子',
+    height: 1.45,
+    botHandRatios: { side: 0.12, front: 0.13, height: 0.6 },
+    cameraFocus: 1.15,
+    petReachScale: 0.6,
+  }),
+  // Her arms hang above the knees (rig --body-over-knees): 524 is offered closer than to the woman.
+  Object.freeze({
+    species: 'cro',
+    gender: 'female',
+    key: 'cro-magnon-girl-reindeer',
+    carryable: false,
+    name: 'クロマニョン人 トナカイ革パーカーの女の子',
+    height: 1.45,
+    botHandRatios: { side: 0.12, front: 0.13, height: 0.6 },
+    cameraFocus: 1.15,
+    petReachScale: 0.6,
+  }),
+  // The chibi cast's first boy: the girls' body plan (his arms hang above the knees: 524 is offered closer).
+  Object.freeze({
+    species: 'cro',
+    gender: 'male',
+    key: 'cro-magnon-boy-headband',
+    carryable: false,
+    name: 'クロマニョン人 貝の鉢巻きの男の子',
+    height: 1.45,
+    botHandRatios: { side: 0.12, front: 0.13, height: 0.6 },
+    cameraFocus: 1.15,
+    petReachScale: 0.6,
+  }),
+  // His arms hang above the knees (rig --body-over-knees): 524 is offered closer than to the woman.
+  Object.freeze({
+    species: 'cro',
+    gender: 'male',
+    key: 'cro-magnon-boy-lion',
+    carryable: false,
+    name: 'クロマニョン人 子ライオンずきんの男の子',
+    height: 1.45,
+    botHandRatios: { side: 0.12, front: 0.13, height: 0.6 },
+    cameraFocus: 1.15,
+    petReachScale: 0.6,
+  }),
+  // His arms hang above the knees (rig --body-over-knees): 524 is offered closer than to the woman.
+  Object.freeze({
+    species: 'cro',
+    gender: 'male',
+    key: 'cro-magnon-boy-braid',
+    carryable: false,
+    name: 'クロマニョン人 三つ編みの男の子',
+    height: 1.45,
+    botHandRatios: { side: 0.12, front: 0.13, height: 0.6 },
+    cameraFocus: 1.15,
+    petReachScale: 0.6,
+  }),
+  // His arms hang above the knees (rig --body-over-knees): 524 is offered closer than to the woman.
+  Object.freeze({
+    species: 'cro',
+    gender: 'male',
+    key: 'cro-magnon-boy-topknot',
+    carryable: false,
+    name: 'クロマニョン人 ちょんまげの男の子',
+    height: 1.45,
+    botHandRatios: { side: 0.12, front: 0.13, height: 0.6 },
+    cameraFocus: 1.15,
+    petReachScale: 0.6,
   }),
 ]);

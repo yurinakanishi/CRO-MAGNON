@@ -69,6 +69,10 @@ interface CompanionProfile {
   hand(player: PetPlayer): [number, number, number];
 }
 
+/** A human with shorter arms than the tribe's (the chibi woman) is offered the head closer, and 524
+ * floats down lower to that hand. */
+const humanReach = (player: PetPlayer) => characterModel(player).petReachScale ?? 1;
+
 const PROFILE_524: CompanionProfile = {
   ...COMPANION_524,
   petHeight: COMPANION_524.hoverHeight,
@@ -84,7 +88,7 @@ const PROFILE_524: CompanionProfile = {
         ? [0.7, 0.32, 1.02]
         : characterModel(player).bodyPlan === 'octopus'
           ? [1.08, 0.12, COMPANION_524.hoverHeight]
-          : [0.52, 0.12, COMPANION_524.hoverHeight],
+          : [0.52 * humanReach(player), 0.12, COMPANION_524.hoverHeight * humanReach(player)],
 };
 const PROFILE_RIMO: CompanionProfile = {
   ...RIMO_NEKO,
@@ -103,7 +107,7 @@ const PROFILE_RIMO: CompanionProfile = {
           ? [1.08, 0.12, RIMO_NEKO.headHeight]
           : player.species === 'howkey'
             ? [0.54, 0.12, RIMO_NEKO.headHeight]
-            : [0.6, 0.12, RIMO_NEKO.headHeight],
+            : [0.6 * humanReach(player), 0.12, RIMO_NEKO.headHeight],
 };
 const groundProfiles = new Map<string, CompanionProfile>();
 
@@ -132,7 +136,7 @@ export function companionProfile(key: string): CompanionProfile | undefined {
               ? [1.08, 0.12, def.headHeight]
               : player.species === 'howkey'
                 ? [0.4, 0.12, def.headHeight]
-                : [0.48, 0.12, def.headHeight],
+                : [0.48 * humanReach(player), 0.12, def.headHeight],
     };
     groundProfiles.set(key, profile);
   }

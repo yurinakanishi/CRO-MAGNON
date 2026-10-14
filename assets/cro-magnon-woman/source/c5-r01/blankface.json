@@ -1,0 +1,43 @@
+{
+  "source": "output/model-generation/models/cro-magnon-woman/source/original/candidate5-ref-b.png",
+  "seedEllipses_uv_rx_ry": [
+    [
+      412,
+      438,
+      53,
+      51
+    ],
+    [
+      612,
+      438,
+      53,
+      51
+    ],
+    [
+      391,
+      505,
+      27,
+      17
+    ],
+    [
+      634,
+      505,
+      31,
+      17
+    ],
+    [
+      512,
+      520,
+      32,
+      10
+    ],
+    [
+      512,
+      482,
+      7,
+      6
+    ]
+  ],
+  "mask": "pixels farther than dE 12 (CIELAB) from the median cheek skin, grown from the ellipses within 1.4x of them; hair-coloured pixels (dE<16 from the median hair) outside 1.15x of the ellipses are never taken; holes filled, dilated 3 px",
+  "fill": "per-channel quadratic colour field fitted to the visible face skin (dE<10 inside the face ellipse 510,470,150,105), blended with a 2 px Gaussian edge"
+}

@@ -19,6 +19,7 @@ const player = (model = CHARACTER_MODELS[0]) => ({
   name: '旅人',
   species: model.species,
   gender: model.gender,
+  character: model.key,
   x: 48,
   z: 57,
   facing: 1.2,
@@ -296,4 +297,64 @@ test('wire switch reaches both players and checkpoint resume preserves the chang
     { x: resumed.x, z: resumed.z, inventory: resumed.inventory, id: resumed.id },
     original,
   );
+});
+
+test('a look sharing its species and gender joins, switches, broadcasts and resumes by its key', () => {
+  let serial = 0;
+  const options = {
+    persistentSessions: true,
+    keepEmptyRooms: true,
+    runtime: { now: () => 10000, id: () => `cast-${++serial}`, token: () => `token-${++serial}` },
+  };
+  const core = createGameCore(options),
+    a = new Socket(),
+    b = new Socket();
+  // A title start with the chibi girl's card: species and gender as the woman's, plus the key.
+  core.connect(
+    a,
+    new URLSearchParams({
+      room: 'CAST',
+      name: 'a',
+      resume: '1',
+      startAtCamp: '1',
+      species: 'cro',
+      gender: 'female',
+      character: 'cro-magnon-girl-feather',
+    }),
+  );
+  core.connect(b, new URLSearchParams({ room: 'CAST', name: 'b', resume: '1' }));
+  const r = core.rooms.get('CAST'),
+    p = [...r.players.values()][0];
+  const welcome = a.messages.find((m) => m.type === 'welcome');
+  assert.equal(welcome.profile.character, 'cro-magnon-girl-feather');
+  assert.equal(characterModel(p).key, 'cro-magnon-girl-feather');
+  const seen = () =>
+    b.messages
+      .filter((m) => m.type === 'state')
+      .at(-1)
+      .players.find((v) => v.id === p.id);
+  a.emit(
+    'message',
+    JSON.stringify({ type: 'action', action: 'changeCharacter', targetId: 'cro-magnon-woman' }),
+  );
+  assert.equal(characterModel(p).key, 'cro-magnon-woman');
+  assert.equal(seen().character, 'cro-magnon-woman');
+  p.lastAction = 0;
+  a.emit(
+    'message',
+    JSON.stringify({
+      type: 'action',
+      action: 'changeCharacter',
+      targetId: 'cro-magnon-girl-feather',
+    }),
+  );
+  assert.equal(characterModel(p).key, 'cro-magnon-girl-feather');
+  assert.equal(characterModel(seen()).key, 'cro-magnon-girl-feather');
+  const restored = createGameCore(options);
+  restored.importState(core.exportState());
+  const c = new Socket();
+  restored.connect(c, new URLSearchParams({ room: 'CAST', resume: '1', session: welcome.session }));
+  const resumed = [...restored.rooms.get('CAST').players.values()].find((v) => v.id === p.id);
+  assert.equal(characterModel(resumed).key, 'cro-magnon-girl-feather');
+  assert.equal(c.messages.find((m) => m.type === 'welcome').profile.character, resumed.character);
 });

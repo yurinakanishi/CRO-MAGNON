@@ -1,0 +1,265 @@
+{
+  "schema": "cro-magnon/character-remake-review@1",
+  "date": "2026-10-13",
+  "decision": "adopt",
+  "approved": "Revision of the adopted candidate 1 (same reconstruction and textures), straight forearms; adopted after the delivered-character tests in this session (2026-10-13).",
+  "modelKey": "cro-magnon-girl-reindeer",
+  "revision": "c1-r02",
+  "candidate": 1,
+  "url": "/models/cro-magnon-girl-reindeer/model-c1-r02.glb",
+  "sha256": "dd54a2b5c5aff66a112246a12e16182731a05b132d124d74c368ab55c4471a36",
+  "bytes": 2750732,
+  "triangles": 7862,
+  "bones": 22,
+  "clips": [
+    "Craft",
+    "Eat",
+    "Gather",
+    "Give",
+    "Idle_Loop",
+    "Run_Loop",
+    "Walk_Loop",
+    "Wave",
+    "Attack",
+    "Downed"
+  ],
+  "heightMetres": 1.45,
+  "request": "User (2026-10-13): 全員採用。 (all ten chibi cast designs), 次 (G2), 次 (G3), 次 (G4), 次 (this one: G5)",
+  "workspace": "output/model-generation/models/cro-magnon-girl-reindeer",
+  "sources": [
+    {
+      "path": "assets/cro-magnon-girl-reindeer/source/c1-r02/cast1-g5.png",
+      "source": "output/model-generation/models/cro-magnon-girl-reindeer/source/original/cast1-g5.png",
+      "sha256": "d0b1aee84866cbc08231833e7c8cb89cd0ca00fe4442e04c005ded0b91ce1da1"
+    }
+  ],
+  "candidateRecord": {
+    "path": "output/model-generation/models/cro-magnon-girl-reindeer/work/candidate-01/candidate-r02.json",
+    "sha256": "0c1f142288e824fbf0634121ad9fb2aeb7686463fda434de4196ea061e3d155d"
+  },
+  "production": {
+    "reference": {
+      "generator": "Codex built-in image_gen (codex-cli 0.162.0-alpha.17.2, gpt-5.6-sol, reasoning medium; ChatGPT plan, no API key); the adopted chibi woman and the user style image attached to every call",
+      "styleImage": {
+        "path": "source/original/candidate5-style-user.png",
+        "sha256": "2705471c8c1736003232fd87f7ed4938e3dfaf2799c3773dabb849f91897f763",
+        "bytes": 235155,
+        "note": "user-supplied in chat; style only"
+      },
+      "request": {
+        "path": "source/original/codex-request-cast1.txt",
+        "sha256": "f94052041e20025534c61150c41f6d9272630619b2070060c5978d014cb6889d",
+        "bytes": 11430
+      },
+      "prompts": {
+        "path": "source/original/prompts-cast1.json",
+        "sha256": "d127dc6b0b2dac48cac47c8aa14aef17594f2c00a98af90eea0e783ca4953488",
+        "bytes": 35829
+      },
+      "castSheet": {
+        "path": "output/model-generation/models/chibi-cast/review/cast1-sheet.png",
+        "sha256": "3a0c8d293bcae50037cd59eb5334e290a88a1829235deb2ef500e425538235ac",
+        "bytes": 2610990
+      },
+      "chosen": {
+        "path": "source/original/cast1-g5.png",
+        "sha256": "d0b1aee84866cbc08231833e7c8cb89cd0ca00fe4442e04c005ded0b91ce1da1",
+        "bytes": 1715108,
+        "design": "G5: a neat chin-length very dark brown bob with a side part and a carved antler-tine hairpin, dark brown eyes, deep warm-brown skin, a row of white-clay dots along each cheekbone, a pale grey-brown reindeer-hide parka with the hood down, a creamy fur ruff at the collar and cuffs, red-ochre reindeer figures along the hem, a belt with a pouch, short fur boots"
+      }
+    },
+    "referenceMatte": {
+      "path": "work/candidate-01/source/prepared-g5-blank/reference-mask.png",
+      "sha256": "dddd7973f77aed3ffc28e60b3b2940dd90aade5634c8a96adee162f897798fc9",
+      "bytes": 11450,
+      "method": "scripts/remake/reference_matte.py (offset 271,19 px, NCC 0.988)"
+    },
+    "trellis": {
+      "settings": "local TRELLIS-2 C++ GGUF, res 1024, tex 1024, BiRefNet matte, xatlas atlas 2048",
+      "chosen": {
+        "dense": {
+          "path": "work/candidate-01/trellis/dense-g5-blank-res1024-tex1024-seed0123.glb",
+          "sha256": "f513f378f227a1dc56f274bee447aac5eea003f8255ef00c4cf118495813aad9",
+          "bytes": 20930764
+        },
+        "record": {
+          "path": "work/candidate-01/trellis/dense-g5-blank-res1024-tex1024-seed0123.json",
+          "sha256": "4c4d81b9950d963da8a39a9f37147136495ae697345a8be3dcb047b36977bd8a",
+          "bytes": 1374
+        },
+        "seed": 123,
+        "seconds": 665,
+        "reference": "blank face"
+      }
+    },
+    "blankFace": {
+      "script": "scripts/remake/blank_face.py --fill-mode residual with --force ellipses over the eyelid crease arcs 412,376,34,9 and 612,376,34,9, the inner lid marks 444,385,9,6 and 574,385,9,6 and the white cheek dots 398,493,40,19 and 624,493,40,19; eyes, nose and mouth as regions; lash tips left unfilled (the lessons of G3 and G4: no rerun needed)",
+      "image": {
+        "path": "work/candidate-01/source/cast1-g5-blankface.png",
+        "sha256": "4e8b65b82d8af537c57f72faa031db0dea2807b19dbbabcfba43be4e686ecb12",
+        "bytes": 1479434
+      },
+      "mask": {
+        "path": "work/candidate-01/source/blankface-mask.png",
+        "sha256": "3c022e761543cc29a54694a5618cc2430546640581d6730a40ac5e6866e172ac",
+        "bytes": 2921
+      },
+      "record": {
+        "path": "work/candidate-01/source/blankface.json",
+        "sha256": "97c01ffca284cf8d9fd387fda6af1f0cc59fc6962460b7caece174b63986d786",
+        "bytes": 2951
+      }
+    },
+    "reduction": {
+      "script": "scripts/remake/chibi_surface.sh (BUDGET=8000 BOOST=1.2 CUT=0.1242 FACEBOX=-0.14:0.14:0.133:0.325:0.03:0.2)",
+      "meshopt": {
+        "path": "work/candidate-01/low-poly/meshopt-8000.glb",
+        "sha256": "504f877d06f72c4e79ac166e84bc16bc2a9dd3f76560dbab9f65cf5c5258612c",
+        "bytes": 141972
+      },
+      "body": {
+        "atlas": {
+          "path": "work/candidate-01/low-poly/xatlas-body-1024.glb",
+          "sha256": "641433638df6689a5e138dbd319f519d05e85f91afd12bf070dd99843699f6fb",
+          "bytes": 140920
+        },
+        "baked": {
+          "path": "work/candidate-01/low-poly/bake-body/candidate.glb",
+          "sha256": "7c69fccb02348963e6ade670947fd569f58863ae3888b6cfa0c7a856b9e064fb",
+          "bytes": 848476
+        }
+      },
+      "head": {
+        "atlas": {
+          "path": "work/candidate-01/low-poly/xatlas-head-2048.glb",
+          "sha256": "b1ed2c6e5abe141bee1923e3740b4cfb26db55eb67b92fffc5ba99aeccae0227",
+          "bytes": 145676
+        },
+        "baked": {
+          "path": "work/candidate-01/low-poly/bake-head/candidate.glb",
+          "sha256": "4dc8c10d7f89894c09b1b386cfd47a83b3c96c38d1955a2d7e2934614d0eea2c",
+          "bytes": 1557204
+        }
+      }
+    },
+    "colour": {
+      "body": {
+        "path": "work/candidate-01/colour/body.glb",
+        "sha256": "8c10d57024062a0da3479ec12df54296dc92fe806c0ea836957fbe5511f3cb38",
+        "bytes": 928372,
+        "settings": "CIELAB quantiles to the reference rows 582-1472"
+      },
+      "head": {
+        "path": "work/candidate-01/colour/head.glb",
+        "sha256": "cd4033a792b83c250d54e2d5b2db522b308b147182706f0158bd4fecc2c7fa8d",
+        "bytes": 1675924,
+        "settings": "hair class to the reference rows 52-582"
+      }
+    },
+    "face": {
+      "report": {
+        "path": "work/candidate-01/face/head/report.json",
+        "sha256": "4147c4f069edee82754653e2bd1cd2a4d034eaf6c702c9f0f3a5a81fe1c19473",
+        "bytes": 1966
+      },
+      "head": {
+        "path": "work/candidate-01/face/head/face.glb",
+        "sha256": "039c838146256efdec029fec46929cac80175edd8859271ac146f9b027764813",
+        "bytes": 720884
+      },
+      "settings": "replace mode, eye and chin rows 428/570, hair guard except in the eye ellipses 406,428,70,64 and 616,428,70,64 and the lower face 512,490,80,45, dark regions thinner than 9 texels, skin tone halfway, face normals flattened"
+    },
+    "merged": {
+      "path": "work/candidate-01/graft/merged.glb",
+      "sha256": "68e0401af31665b9554c051be4a0239d1f46c43863155555953af303ea9cafae",
+      "bytes": 1648732,
+      "script": "scripts/remake/merge_head.py --no-tone",
+      "triangles": 7862
+    },
+    "skinMaterial": {
+      "path": "work/candidate-01/graft/merged-skin-r01.glb",
+      "sha256": "2903e7effef62bc5268bcb347155b07dacaf103d996ddd7083d24f33d4a9c5bc",
+      "bytes": 1693528,
+      "script": "scripts/remake/split_skin_material.py --arm 0.13,0.78,0.40,0.507 --cuff 0.66 --legs 0.27,0.38 --neck 0.85,0.92,0.09 --tone 199,138,106",
+      "faces": {
+        "body": 3816,
+        "skin": 300,
+        "hands": 167,
+        "legs": 105,
+        "neck": 28
+      },
+      "tone": {
+        "targetSrgb": "199,138,106",
+        "strength": 1,
+        "texels": 68728,
+        "beforeLab": [
+          55.11000061035156,
+          18.860000610351562,
+          25.360000610351562
+        ],
+        "targetLab": [
+          62.77000045776367,
+          19.3799991607666,
+          26.6200008392334
+        ]
+      }
+    },
+    "rig": {
+      "report": {
+        "path": "work/candidate-01/rig/r02/rig-report.json",
+        "sha256": "173360fdf31795f48e1c2615793297bbdc63d7830fa3146772f9a2e44b67c67d",
+        "bytes": 27615
+      },
+      "proportions": {
+        "path": "work/candidate-01/rig/proportions-g5.json",
+        "sha256": "be2da0a484be74b4d90420edca8ff6f463be711c87ea7a501a576bc21a06fe17",
+        "bytes": 770
+      },
+      "candidate": {
+        "path": "work/candidate-01/rig/r02/candidate.glb",
+        "sha256": "30c813c17f8b2fa69a293d30ae7a89959c220d7faa219c2646f1d44cb1ccdfea",
+        "bytes": 2368372
+      },
+      "options": "--accent none --measure-subdiv 4 --arm-band .03 --arm-gate .47 --arm-fractions .40,.64,.80 --rigid-hands .60,.68 --rigid-feet=-.015,.02 --body-over-knees --arm-axis-depth --proportions rig/proportions-g5.json"
+    },
+    "motion": {
+      "chain": "scripts/remake/human_chain.sh with LOCOMOTION_CADENCE=Walk_Loop:1.7,Run_Loop:1.5 and TEMPLATE_ASSET",
+      "folder": "output/asset-remake/motion/cro-magnon-girl-reindeer-r02",
+      "locomotion": {
+        "Walk_Loop": {
+          "metresPerSecond": 0.933259858509678,
+          "strideMetres": 0.6130236325504748,
+          "cycleSeconds": 0.6568627450980392,
+          "dutyFactor": 0.61,
+          "method": "CMU measured human locomotion, anatomical retarget and sole contact"
+        },
+        "Run_Loop": {
+          "metresPerSecond": 2.3572459834571755,
+          "strideMetres": 1.1524313696901747,
+          "cycleSeconds": 0.4888888888888889,
+          "dutyFactor": 0.36,
+          "method": "CMU measured human locomotion, anatomical retarget and sole contact"
+        }
+      }
+    }
+  },
+  "qa": {
+    "renders": "work/candidate-01/qa (scripts/remake/cast_qa_renders.sh): final, final-face, final-poses, poses-front/side.jpg (10 clips x 3 phases), review.jpg",
+    "clips": "all 10 clips with finite keys",
+    "game": "output/playwright/g5-candidate-game-r01 (routed into the chibi woman's slot; Idle/Walk/Run/Attack seen; 0 page errors)"
+  },
+  "sheets": [],
+  "previous": {
+    "url": "/models/cro-magnon-girl-reindeer/model-c1-r01.glb",
+    "sha256": "0219f5f44a0e27dd0d674e8b42f5749b46fc901be758dde479d71cf974e52457",
+    "bytes": 2750656,
+    "triangles": 7862,
+    "revision": "c1-r01",
+    "manifest": "assets/cro-magnon-girl-reindeer/archive-manifest-c1-r01-20261013.json"
+  },
+  "provenance": {
+    "provider": "Claude Code (Opus 5.5); Codex built-in image_gen references; local TRELLIS-2 reconstruction",
+    "claudeUsed": true,
+    "geometrySource": "TRELLIS-2 reconstruction of the chosen generated reference (meshopt reduction, xatlas atlases, Blender bakes; eye sockets closed in the dense surface)"
+  }
+}

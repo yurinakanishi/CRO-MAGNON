@@ -21,6 +21,8 @@ export interface PlayerSnapshot extends Point {
   name: string;
   species: Species;
   gender: Gender;
+  /** The model key (several looks can share a species and gender). */
+  character?: string;
   radius: number;
   color: string;
   inventory: Inventory;

@@ -164,7 +164,8 @@ test('retired group, recruitment and dismissal commands cannot steal or create b
 test('all delivered character rigs reach the dot crown at the authoritative pet position and restore their bones', async () => {
   for (const character of CHARACTER_MODELS) {
     const f = fixture();
-    Object.assign(f.p, character, { x: f.b.x, z: f.b.z - 1.3 });
+    // a player names its look by key (several looks share a species and gender)
+    Object.assign(f.p, character, { character: character.key, x: f.b.x, z: f.b.z - 1.3 });
     assert.ok(petMascot(f.room, f.p, f.b.id, f.now));
     const gltf = await loadMotion(await deliveredModel(character.key));
     const outer = new THREE.Group();

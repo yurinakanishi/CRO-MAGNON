@@ -33,7 +33,11 @@ const enemy = (id, z) => ({
 test('giant ape keeps its identity in old gender fields and cannot acquire spear upgrades', () => {
   for (const gender of [undefined, 'female', 'male', '<invalid>']) {
     const profile = { species: 'ape', gender, spearHead: 'obsidian' };
-    assert.deepEqual(normalizeCharacter(profile), { species: 'ape', gender: 'male' });
+    assert.deepEqual(normalizeCharacter(profile), {
+      species: 'ape',
+      gender: 'male',
+      character: 'giant-ape',
+    });
     assert.equal(characterModel(profile).key, 'giant-ape');
     assert.equal(attackProfile(profile).key, 'unarmed');
     assert.equal(attackProfile(profile).modelKey, undefined);

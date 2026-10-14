@@ -150,7 +150,8 @@ const orbitDirection = (target: THREE.Vector3, yaw: number, pitch: number) =>
   target.set(Math.sin(yaw) * Math.cos(pitch), Math.sin(pitch), Math.cos(yaw) * Math.cos(pitch));
 const drawingSize = new THREE.Vector2();
 const focusHeight = (profile) =>
-  profile.species === 'bear' ? 0.64 : profile.species === 'ape' ? 1.55 : 1.4;
+  characterModel(profile).cameraFocus ??
+  (profile.species === 'bear' ? 0.64 : profile.species === 'ape' ? 1.55 : 1.4);
 /** The polling interval of an arrival's waits. */
 const arrivalPause = () => new Promise((resolve) => setTimeout(resolve, 50));
 

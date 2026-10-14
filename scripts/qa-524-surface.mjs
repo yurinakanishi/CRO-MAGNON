@@ -1,5 +1,6 @@
 // Preserved exact delivered-GLB surface assertions, sampled in an isolated Chrome scene.
 import assert from 'node:assert/strict';
+import { readFileSync } from 'node:fs';
 export async function verify524Surface(page) {
   const surface = await page.evaluate(async () => {
     const T = qaThree,
@@ -93,7 +94,9 @@ export async function verify524Surface(page) {
     JSON.stringify(surface),
   );
   assert.ok(surface.loopError < 1e-5);
-  assert.ok(Math.abs(surface.humanHeight - 1.67) < 1e-12);
+  // The human in the scene is the delivered woman (1.45 m since the 2026-10-13 chibi remake).
+  const woman = JSON.parse(readFileSync('public/models/cro-magnon-woman/asset.json', 'utf8'));
+  assert.ok(Math.abs(surface.humanHeight - woman.heightMetres) < 1e-12);
 
   return surface;
 }

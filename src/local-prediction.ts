@@ -53,6 +53,7 @@ export class LocalPrediction {
       this.latest.id !== player.id ||
       this.latest.species !== player.species ||
       this.latest.gender !== player.gender ||
+      this.latest.character !== player.character ||
       this.latest.mountId !== player.mountId ||
       this.latest.boatId !== player.boatId ||
       this.latest.carrierId !== player.carrierId ||

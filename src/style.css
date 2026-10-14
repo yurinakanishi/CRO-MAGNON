@@ -4015,12 +4015,45 @@ dialog:has(.earth-map) {
 .portrait.ape i {
   display: none;
 }
-/* HUD portraits of the four humans use the same rendered portraits as the character cards. */
+/* HUD portraits of the four humans use the same rendered portraits as the character cards.
+   The chibi woman (2026-10-13) has a head of about 2/5 of her height: a wider crop, lower. */
 .portrait.cro-magnon-woman {
-  background: #6d6d6d url('/models/cro-magnon-woman/portrait.png') 50% 4%/330% auto no-repeat;
+  background: #6d6d6d url('/models/cro-magnon-woman/portrait.png') 50% 12%/280% auto no-repeat;
 }
 .portrait.cro-magnon-hunter {
   background: #6d6d6d url('/models/cro-magnon-hunter/portrait.png') 50% 3%/330% auto no-repeat;
+}
+/* The chibi cast: the woman's crop. */
+.portrait.cro-magnon-boy-topknot {
+  background: #6d6d6d url('/models/cro-magnon-boy-topknot/portrait.png') 50% 12%/280% auto no-repeat;
+}
+.portrait.cro-magnon-boy-braid {
+  background: #6d6d6d url('/models/cro-magnon-boy-braid/portrait.png') 50% 12%/280% auto no-repeat;
+}
+.portrait.cro-magnon-boy-lion {
+  background: #6d6d6d url('/models/cro-magnon-boy-lion/portrait.png') 50% 12%/280% auto no-repeat;
+}
+.portrait.cro-magnon-boy-headband {
+  background: #6d6d6d url('/models/cro-magnon-boy-headband/portrait.png') 50% 12%/280% auto
+    no-repeat;
+}
+.portrait.cro-magnon-girl-reindeer {
+  background: #6d6d6d url('/models/cro-magnon-girl-reindeer/portrait.png') 50% 12%/280% auto
+    no-repeat;
+}
+.portrait.cro-magnon-girl-twintails {
+  background: #6d6d6d url('/models/cro-magnon-girl-twintails/portrait.png') 50% 12%/280% auto
+    no-repeat;
+}
+.portrait.cro-magnon-girl-wolf {
+  background: #6d6d6d url('/models/cro-magnon-girl-wolf/portrait.png') 50% 12%/280% auto no-repeat;
+}
+.portrait.cro-magnon-girl-bear {
+  background: #6d6d6d url('/models/cro-magnon-girl-bear/portrait.png') 50% 12%/280% auto no-repeat;
+}
+.portrait.cro-magnon-girl-feather {
+  background: #6d6d6d url('/models/cro-magnon-girl-feather/portrait.png') 50% 12%/280% auto
+    no-repeat;
 }
 .portrait.neanderthal-woman {
   background: #6d6d6d url('/models/neanderthal-woman/portrait.png') 50% 4%/330% auto no-repeat;
@@ -4031,6 +4064,33 @@ dialog:has(.earth-map) {
 .portrait.cro-magnon-woman:before,
 .portrait.cro-magnon-woman:after,
 .portrait.cro-magnon-woman i,
+.portrait.cro-magnon-boy-topknot:before,
+.portrait.cro-magnon-boy-topknot:after,
+.portrait.cro-magnon-boy-topknot i,
+.portrait.cro-magnon-boy-braid:before,
+.portrait.cro-magnon-boy-braid:after,
+.portrait.cro-magnon-boy-braid i,
+.portrait.cro-magnon-boy-lion:before,
+.portrait.cro-magnon-boy-lion:after,
+.portrait.cro-magnon-boy-lion i,
+.portrait.cro-magnon-boy-headband:before,
+.portrait.cro-magnon-boy-headband:after,
+.portrait.cro-magnon-boy-headband i,
+.portrait.cro-magnon-girl-reindeer:before,
+.portrait.cro-magnon-girl-reindeer:after,
+.portrait.cro-magnon-girl-reindeer i,
+.portrait.cro-magnon-girl-twintails:before,
+.portrait.cro-magnon-girl-twintails:after,
+.portrait.cro-magnon-girl-twintails i,
+.portrait.cro-magnon-girl-wolf:before,
+.portrait.cro-magnon-girl-wolf:after,
+.portrait.cro-magnon-girl-wolf i,
+.portrait.cro-magnon-girl-bear:before,
+.portrait.cro-magnon-girl-bear:after,
+.portrait.cro-magnon-girl-bear i,
+.portrait.cro-magnon-girl-feather:before,
+.portrait.cro-magnon-girl-feather:after,
+.portrait.cro-magnon-girl-feather i,
 .portrait.cro-magnon-hunter:before,
 .portrait.cro-magnon-hunter:after,
 .portrait.cro-magnon-hunter i,

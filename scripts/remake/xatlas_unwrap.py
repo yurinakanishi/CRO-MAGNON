@@ -25,6 +25,8 @@ ap.add_argument('--max-cost', type=float, default=2.0, help='xatlas ChartOptions
 ap.add_argument('--boost', default='', help='AXIS:CUT:FACTOR, e.g. y:0.273:2 - faces whose centroid lies at or above CUT on AXIS '
                 'are unwrapped as a separate part scaled by FACTOR, so their charts get FACTOR x the texel density (a face '
                 'and head on a full-body character); output positions are unchanged, the cut becomes a UV seam')
+ap.add_argument('--boost-box', default='', help='X0:X1:Y0:Y1:Z0:Z1:FACTOR - like --boost, for the faces whose centroid lies in this '
+                'box (source units): a chibi face, whose painted eyes need more texels than the hair around them')
 ap.add_argument('--select', default='', help='AXIS:CUT:above|below, e.g. y:0.273:above - unwrap only the faces whose centroid lies '
                 'above (>=) or below (<) CUT on AXIS (a head and a body baked into separate atlases, joined later by merge_head.py)')
 args = ap.parse_args()
@@ -56,10 +58,16 @@ if args.select:
     P, F = P[used], local.reshape(-1, 3).astype(np.uint32)
 t0 = time.time()
 atlas = xatlas.Atlas()
-if args.boost:
-    axis, cut, factor = args.boost.split(':')
-    column, cut, factor = 'xyz'.index(axis), float(cut), float(factor)
-    boosted = P[F].mean(axis=1)[:, column] >= cut
+if args.boost or args.boost_box:
+    if args.boost_box:
+        values = [float(x) for x in args.boost_box.split(':')]
+        lo_b, hi_b, factor = np.array(values[0:6:2]), np.array(values[1:6:2]), values[6]
+        centroid = P[F].mean(axis=1)
+        boosted = np.all((centroid >= lo_b) & (centroid <= hi_b), axis=1)
+    else:
+        axis, cut, factor = args.boost.split(':')
+        column, cut, factor = 'xyz'.index(axis), float(cut), float(factor)
+        boosted = P[F].mean(axis=1)[:, column] >= cut
     parts = [F[~boosted], F[boosted]]
     for k, part in enumerate(parts):
         used, local = np.unique(part, return_inverse=True)
@@ -77,7 +85,7 @@ po.rotate_charts = True
 po.bruteForce = False
 atlas.generate(co, po)
 seconds = time.time() - t0
-if args.boost:
+if args.boost or args.boost_box:
     # each part's vertex map indexes its own (unscaled) vertex subset
     pieces = [atlas[k] for k in range(2)]
     P2 = np.concatenate([P[parts[k][vm]] for k, (vm, _, _) in enumerate(pieces)]).astype(np.float32)
@@ -122,7 +130,7 @@ Path(args.dst).write_bytes(glb)
 report = {'source': args.src, 'triangles': int(len(F)), 'vertices_in': int(len(P)), 'vertices_out': int(len(P2)),
           'charts': int(atlas.chart_count), 'atlas': [int(atlas.width), int(atlas.height)], 'utilization': float(atlas.utilization) if hasattr(atlas, 'utilization') else None,
           'uv_area_coverage': area, 'resolution': args.resolution, 'padding': args.padding, 'max_cost': args.max_cost, 'seconds': round(seconds, 1),
-          'select': args.select or None, 'boost': ({'spec': args.boost, 'boosted_triangles': int(boosted.sum()),
-                     'boosted_uv_share': float(tri_area[pieces[0][1].size // 3:].sum() / area)} if args.boost else None)}
+          'select': args.select or None, 'boost': ({'spec': args.boost or None, 'box': args.boost_box or None, 'boosted_triangles': int(boosted.sum()),
+                     'boosted_uv_share': float(tri_area[pieces[0][1].size // 3:].sum() / area)} if args.boost or args.boost_box else None)}
 Path(args.dst).with_suffix('.json').write_text(json.dumps(report, indent=2), newline='\n')
 print('XATLAS_DONE', json.dumps(report))

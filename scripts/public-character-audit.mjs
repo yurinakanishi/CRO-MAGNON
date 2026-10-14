@@ -28,3 +28,10 @@ export function assertPublicCharacterData(name, bytes, excludedKeys, excludedSpe
     }
   }
 }
+
+/** The public build's src/clothing-dye-rules.js: the local dye rules without an excluded
+ * character's, whose key the audit above refuses in shipped code. */
+export function publicClothingDyeRulesModule(rules, excludedKeys) {
+  const kept = Object.entries(rules).filter(([key]) => !excludedKeys.has(key));
+  return `export const CLOTHING_DYE_RULES = Object.freeze(${JSON.stringify(Object.fromEntries(kept))});\n`;
+}

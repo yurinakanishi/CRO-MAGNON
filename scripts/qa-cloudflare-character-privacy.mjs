@@ -31,15 +31,17 @@ await audit('dist-cloudflare');
 await audit('dist-cloudflare-worker');
 const upload = await readFile('output/cloudflare-dry-run/worker.js', 'utf8');
 check('worker.js', upload);
-assert.equal(CHARACTER_MODELS.length, 9);
+assert.equal(CHARACTER_MODELS.length, 18);
 assert.equal(characterModel({ species: 'maruimo' }).key, 'maruimo-octopus');
-assert.equal(publicCharacters.length, 7);
+assert.equal(publicCharacters.length, 16);
 assert.ok(publicCharacters.every((model) => model.species !== 'howkey'));
 assert.deepEqual(normalizeCharacter({ species: 'maruimo', gender: 'male' }), {
   species: 'cro',
   gender: 'male',
+  character: 'cro-magnon-hunter',
 });
-for (const model of publicCharacters) assert.deepEqual(model, characterModel(model));
+for (const model of publicCharacters)
+  assert.deepEqual(model, characterModel({ ...model, character: model.key }));
 
 class Socket {
   readyState = 1;

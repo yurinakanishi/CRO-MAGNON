@@ -1,0 +1,315 @@
+{
+  "schema": "cro-magnon/character-remake-review@1",
+  "date": "2026-10-13",
+  "decision": "adopt",
+  "approved": "The user in the Claude Code session on 2026-10-13 adopted all ten chibi cast designs of chibi-cast/review/cast1-sheet.png ('全員採用。') and asked for the next ones ('次', '次'): design G3. Adopted after the QA of qa/review.jpg (Chrome renders, all clips, the routed in-game preview); the user had not yet seen the 3D model.",
+  "modelKey": "cro-magnon-girl-wolf",
+  "revision": "c1-r01",
+  "candidate": 1,
+  "url": "/models/cro-magnon-girl-wolf/model-c1-r01.glb",
+  "sha256": "aed180fbd541dfdd3606687813edb9fe4182dc43c95bcf8940ff6782e60ae944",
+  "bytes": 3280724,
+  "triangles": 7477,
+  "bones": 22,
+  "clips": [
+    "Craft",
+    "Eat",
+    "Gather",
+    "Give",
+    "Idle_Loop",
+    "Run_Loop",
+    "Walk_Loop",
+    "Wave",
+    "Attack",
+    "Downed"
+  ],
+  "heightMetres": 1.45,
+  "request": "User (2026-10-13): 全員採用。 (all ten chibi cast designs), 次 (G2), 次 (this one: G3)",
+  "workspace": "output/model-generation/models/cro-magnon-girl-wolf",
+  "sources": [
+    {
+      "path": "assets/cro-magnon-girl-wolf/source/c1-r01/cast1-g3.png",
+      "source": "output/model-generation/models/cro-magnon-girl-wolf/source/original/cast1-g3.png",
+      "sha256": "da94fb701c3ef0f67e75e77112b7ad79801b9ae34e40b3bdf71ad4dd34c35d64"
+    },
+    {
+      "path": "assets/cro-magnon-girl-wolf/source/c1-r01/prompts-cast1.json",
+      "source": "output/model-generation/models/cro-magnon-girl-wolf/source/original/prompts-cast1.json",
+      "sha256": "d127dc6b0b2dac48cac47c8aa14aef17594f2c00a98af90eea0e783ca4953488"
+    },
+    {
+      "path": "assets/cro-magnon-girl-wolf/source/c1-r01/codex-request-cast1.txt",
+      "source": "output/model-generation/models/cro-magnon-girl-wolf/source/original/codex-request-cast1.txt",
+      "sha256": "f94052041e20025534c61150c41f6d9272630619b2070060c5978d014cb6889d"
+    },
+    {
+      "path": "assets/cro-magnon-girl-wolf/source/c1-r01/cast1-g3-blankface.png",
+      "source": "output/model-generation/models/cro-magnon-girl-wolf/work/candidate-01/source/r2/cast1-g3-blankface.png",
+      "sha256": "217c28e51f47de24e221dc88ccb956a66eeb8965662219b3b0e9295f8f2c58c3"
+    },
+    {
+      "path": "assets/cro-magnon-girl-wolf/source/c1-r01/blankface.json",
+      "source": "output/model-generation/models/cro-magnon-girl-wolf/work/candidate-01/source/r2/blankface.json",
+      "sha256": "0b109f2b99e3a49c0c2efde24df6ea404b64e49a0b0e4e8e8131e70607cc9fa7"
+    }
+  ],
+  "candidateRecord": {
+    "path": "output/model-generation/models/cro-magnon-girl-wolf/work/candidate-01/candidate.json",
+    "sha256": "7afaea4312dd4e858f0973081281ef450e7b946d964d08b4ca9d1563af0b5f4c"
+  },
+  "production": {
+    "reference": {
+      "generator": "Codex built-in image_gen (codex-cli 0.162.0-alpha.17.2, gpt-5.6-sol, reasoning medium; ChatGPT plan, no API key); the adopted chibi woman and the user style image attached to every call",
+      "styleImage": {
+        "path": "source/original/candidate5-style-user.png",
+        "sha256": "2705471c8c1736003232fd87f7ed4938e3dfaf2799c3773dabb849f91897f763",
+        "bytes": 235155,
+        "note": "user-supplied in chat; style only"
+      },
+      "request": {
+        "path": "source/original/codex-request-cast1.txt",
+        "sha256": "f94052041e20025534c61150c41f6d9272630619b2070060c5978d014cb6889d",
+        "bytes": 11430
+      },
+      "prompts": {
+        "path": "source/original/prompts-cast1.json",
+        "sha256": "d127dc6b0b2dac48cac47c8aa14aef17594f2c00a98af90eea0e783ca4953488",
+        "bytes": 35829
+      },
+      "castSheet": {
+        "path": "output/model-generation/models/chibi-cast/review/cast1-sheet.png",
+        "sha256": "3a0c8d293bcae50037cd59eb5334e290a88a1829235deb2ef500e425538235ac",
+        "bytes": 2610990
+      },
+      "chosen": {
+        "path": "source/original/cast1-g3.png",
+        "sha256": "da94fb701c3ef0f67e75e77112b7ad79801b9ae34e40b3bdf71ad4dd34c35d64",
+        "bytes": 1702217,
+        "design": "G3: wolf-pup pelt hood with pointed ears and a white fur rim, black-brown bangs, pale blue-grey eyes, a red-ochre chevron on each cheek, the grey pelt continuing as a short cape, dark-brown hide dress with a light fur hem, a line of shell beads, fur-cuffed laced boots"
+      }
+    },
+    "referenceMatte": {
+      "path": "work/candidate-01/source/prepared-g3-blank2/reference-mask.png",
+      "sha256": "dfb9962f26a5c1a5311d66f0ebf21d1a6c4c4e6f5d9f219c1ff0be30acfe88aa",
+      "bytes": 10532,
+      "method": "scripts/remake/reference_matte.py (offset 285,46 px, NCC 0.980)"
+    },
+    "trellis": {
+      "settings": "local TRELLIS-2 C++ GGUF, res 1024, tex 1024, BiRefNet matte, xatlas atlas 2048",
+      "chosen": {
+        "dense": {
+          "path": "work/candidate-01/trellis/dense-g3-blank2-res1024-tex1024-seed0123.glb",
+          "sha256": "8e26366accdd039eb8111104362c781d34a9622d21f4fb147177f97d92eb30bc",
+          "bytes": 24147420
+        },
+        "record": {
+          "path": "work/candidate-01/trellis/dense-g3-blank2-res1024-tex1024-seed0123.json",
+          "sha256": "9f18e821cbc2b6ea8932df9c0b5d1d8af6fb82c23869bab8f316bfa877198fa7",
+          "bytes": 1378
+        },
+        "seed": 123,
+        "seconds": 2715.5,
+        "reference": "blank face r2"
+      },
+      "note": "TRELLIS added a wolf tail behind the dress and painted a dark patch over the lower face (replaced by the projected face); the face keeps a slight bulge around the nose and mouth"
+    },
+    "blankFace": {
+      "script": "scripts/remake/blank_face.py (eyes 406,432,50,48 and 617,432,50,48, cheek chevrons, nose, mouth; the blush filled whole with --force 398,498,50,34 and 628,498,50,34; limit 1.3, blur 3)",
+      "image": {
+        "path": "work/candidate-01/source/r2/cast1-g3-blankface.png",
+        "sha256": "217c28e51f47de24e221dc88ccb956a66eeb8965662219b3b0e9295f8f2c58c3",
+        "bytes": 1504575
+      },
+      "mask": {
+        "path": "work/candidate-01/source/r2/blankface-mask.png",
+        "sha256": "1c8da0746e0d80a2dccb259088e4d79ab8de314191f435a3a78335612a1dc31d",
+        "bytes": 3151
+      },
+      "record": {
+        "path": "work/candidate-01/source/r2/blankface.json",
+        "sha256": "0b109f2b99e3a49c0c2efde24df6ea404b64e49a0b0e4e8e8131e70607cc9fa7",
+        "bytes": 2605
+      },
+      "rejected": {
+        "image": {
+          "path": "work/candidate-01/source/cast1-g3-blankface.png",
+          "sha256": "e40a59d57892b0ece7719d87df07c6eb2093718b45ebca220c9446bc1a09ddb5",
+          "bytes": 1506475
+        },
+        "dense": {
+          "path": "work/candidate-01/trellis/dense-g3-blank-res1024-tex1024-seed0123.glb",
+          "sha256": "92b05d25a5684cc33945e3a90f108397d82dbad49262ea49a55230ab71cb6b99",
+          "bytes": 25329268
+        },
+        "note": "the first blank face left pink blush patches and bright filled lash tips: TRELLIS made two raised nubs on the cheeks under pink discs; pressing them onto a fitted face surface (face_plate.py, trellis/dense-g3-pressed.glb) moved 17 vertices by 1.2 mm only"
+      }
+    },
+    "reduction": {
+      "script": "scripts/remake/chibi_surface.sh (BUDGET=8000 BOOST=1.2 CUT=0.1215 FACEBOX=-0.14:0.14:0.128:0.314:0.05:0.28)",
+      "meshopt": {
+        "path": "work/candidate-01/low-poly/meshopt-8000.glb",
+        "sha256": "64d1707bd871f9cf21ff7f413e07afb8dba9a4b3deca4f208111c93f627799d1",
+        "bytes": 137436,
+        "triangles": {
+          "head": 4952,
+          "body": 2922
+        }
+      },
+      "body": {
+        "atlas": {
+          "path": "work/candidate-01/low-poly/xatlas-body-1024.glb",
+          "sha256": "8ff39f9be6964dea33a986b9f891fc6e74ac828ea309e3b7de8da2987527cbc4",
+          "bytes": 115576
+        },
+        "baked": {
+          "path": "work/candidate-01/low-poly/bake-body/candidate.glb",
+          "sha256": "e879abf9ca9d3680bbfa73280d4e3d315972bf13ed63a8215a1eb229410a48a9",
+          "bytes": 955064
+        }
+      },
+      "head": {
+        "atlas": {
+          "path": "work/candidate-01/low-poly/xatlas-head-2048.glb",
+          "sha256": "943192f5ba590b872519bd2d3ab99216f16ae25252bbc556942608f1bbfc8afe",
+          "bytes": 221196
+        },
+        "baked": {
+          "path": "work/candidate-01/low-poly/bake-head/candidate.glb",
+          "sha256": "3183429b2401e98b6ef6cba42448b61586a7ae43093aa6865678bf934c99ba41",
+          "bytes": 2400008
+        }
+      }
+    },
+    "colour": {
+      "body": {
+        "path": "work/candidate-01/colour/body.glb",
+        "sha256": "73893df486fa27f9205ede12e22eb54d576cc7d9333fe189eeebe77085cca520",
+        "bytes": 1011524,
+        "settings": "CIELAB quantiles to the reference rows 585-1475"
+      },
+      "head": {
+        "path": "work/candidate-01/colour/head.glb",
+        "sha256": "4d99c708955ab6e38d9bd3ab3d6fad42c5dca5ad7ad29ba9ce1c5b3c6de2a1eb",
+        "bytes": 2396132,
+        "settings": "hair class to the reference rows 27-585"
+      }
+    },
+    "face": {
+      "report": {
+        "path": "work/candidate-01/face/head/report.json",
+        "sha256": "c19ab0a161e68bc41d2c8566e0fe4861bb4bec4253f5d85985f2b45d7a66f068",
+        "bytes": 1955
+      },
+      "head": {
+        "path": "work/candidate-01/face/head/face.glb",
+        "sha256": "df6c16c0a3ee416c22f0adb79143c28dda6f25ce3f08d479a9a43812e41daa0b",
+        "bytes": 1112208
+      },
+      "settings": "replace mode, eye and chin rows 432/575, hair guard except in the eye ellipses 406,432,70,64 and 617,432,70,64 and the dark lower-face patch 512,497,85,55 (TRELLIS painted it hair-coloured), dark regions thinner than 9 texels, skin tone halfway, face normals flattened"
+    },
+    "merged": {
+      "path": "work/candidate-01/graft/merged.glb",
+      "sha256": "370adc254a8a848722b32e7e87b2361934e9b91732c81fa2266394d0643c631c",
+      "bytes": 2123316,
+      "script": "scripts/remake/merge_head.py --no-tone",
+      "triangles": 7477
+    },
+    "skinMaterial": {
+      "path": "work/candidate-01/graft/merged-skin-r01.glb",
+      "sha256": "108d9b118abba423a02a8efd4616b6cac6ef0f64fbf39fc5398ffe58f99b6614",
+      "bytes": 2152720,
+      "script": "scripts/remake/split_skin_material.py --arm 0.13,0.78,0.39,0.507 --cuff 0.66 --legs 0.28,0.40 --neck 0.85,0.90,0.09 --tone 226,176,148",
+      "faces": {
+        "body": 2671,
+        "skin": 189,
+        "hands": 133,
+        "legs": 56,
+        "neck": 0
+      },
+      "tone": {
+        "targetSrgb": "226,176,148",
+        "strength": 1,
+        "texels": 54827,
+        "beforeLab": [
+          78.63999938964844,
+          16.979999542236328,
+          22.280000686645508
+        ],
+        "targetLab": [
+          75.58999633789062,
+          14.359999656677246,
+          21.270000457763672
+        ]
+      }
+    },
+    "rig": {
+      "report": {
+        "path": "work/candidate-01/rig/r02/rig-report.json",
+        "sha256": "7070de0a5f6d84cde8cb2ec85580f36dea7116b3d5784327678ac757805b5a0a",
+        "bytes": 27534
+      },
+      "proportions": {
+        "path": "work/candidate-01/rig/proportions-g3.json",
+        "sha256": "3e94160c080da45f744706245910550d714a8692f66ec8783df2d7a2b97e2bd4",
+        "bytes": 880
+      },
+      "candidate": {
+        "path": "work/candidate-01/rig/r02/candidate.glb",
+        "sha256": "e06702eae05191d9abc407d43cb43f385a12a74f07e49d26943a6cee39ab3d15",
+        "bytes": 2898376
+      },
+      "options": "--accent none --measure-subdiv 4 --arm-band .03 --arm-gate .47 --arm-fractions .40,.64,.80 --rigid-hands .60,.68 --rigid-feet=-.015,.02 --hips-over-knees --proportions rig/proportions-g3.json",
+      "rejected": {
+        "r01": "rigged before centring: the feet stood 18 cm in front of the origin"
+      }
+    },
+    "motion": {
+      "chain": "scripts/remake/human_chain.sh with LOCOMOTION_CADENCE=Walk_Loop:1.7,Run_Loop:1.5 and TEMPLATE_ASSET",
+      "folder": "output/asset-remake/motion/cro-magnon-girl-wolf-r02",
+      "locomotion": {
+        "Walk_Loop": {
+          "metresPerSecond": 0.9276842919916775,
+          "strideMetres": 0.6093612506219842,
+          "cycleSeconds": 0.6568627450980392,
+          "dutyFactor": 0.61,
+          "method": "CMU measured human locomotion, anatomical retarget and sole contact"
+        },
+        "Run_Loop": {
+          "metresPerSecond": 2.343163108617747,
+          "strideMetres": 1.145546408657565,
+          "cycleSeconds": 0.4888888888888889,
+          "dutyFactor": 0.36,
+          "method": "CMU measured human locomotion, anatomical retarget and sole contact"
+        }
+      }
+    }
+  },
+  "qa": {
+    "renders": "work/candidate-01/qa (scripts/remake/cast_qa_renders.sh): final, final-face, final-poses, poses-front/side.jpg (10 clips x 3 phases), review.jpg",
+    "clips": "all 10 clips with finite keys",
+    "game": "output/playwright/g3-candidate-game-r01 (routed into the chibi woman's slot; Idle/Walk/Run/Attack seen; 0 page errors; in game-front and game-close a tent pulled the camera in and faded the player out)"
+  },
+  "sheets": [
+    {
+      "path": "assets/cro-magnon-girl-wolf/qa/c1-r01/review.jpg",
+      "source": "output/model-generation/models/cro-magnon-girl-wolf/work/candidate-01/qa/review.jpg",
+      "sha256": "d1360fb61fd8796092492b9b7f7b53d822f532a8862e5b34ff45dd1b96612b23"
+    },
+    {
+      "path": "assets/cro-magnon-girl-wolf/qa/c1-r01/poses-front.jpg",
+      "source": "output/model-generation/models/cro-magnon-girl-wolf/work/candidate-01/qa/poses-front.jpg",
+      "sha256": "8becc2f35de1447cfee058d2fdc19cbcb7de6b0113c5b832d71dd13aa011385b"
+    },
+    {
+      "path": "assets/cro-magnon-girl-wolf/qa/c1-r01/poses-side.jpg",
+      "source": "output/model-generation/models/cro-magnon-girl-wolf/work/candidate-01/qa/poses-side.jpg",
+      "sha256": "b536b36cb657ba302b8be5a69d387be89b92f95b543f4443bf4cf8952f9f1862"
+    }
+  ],
+  "previous": null,
+  "provenance": {
+    "provider": "Claude Code (Opus 5.5); Codex built-in image_gen references; local TRELLIS-2 reconstruction",
+    "claudeUsed": true,
+    "geometrySource": "TRELLIS-2 reconstruction of a copy of the chosen generated reference whose painted eyes, cheek chevrons, blush, mouth and nose were filled with the surrounding skin (a smooth face), meshopt reduction, xatlas atlases with a denser face, Blender bakes, the reference's colours restored, the painted face projected from the original reference, the bare skin in a second material toned to the face, centred on the feet"
+  }
+}

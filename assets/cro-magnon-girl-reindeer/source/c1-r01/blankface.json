@@ -1,0 +1,172 @@
+{
+  "source": "output/model-generation/models/cro-magnon-girl-reindeer/source/original/cast1-g5.png",
+  "sourceSha256": "d0b1aee84866cbc08231833e7c8cb89cd0ca00fe4442e04c005ded0b91ce1da1",
+  "output": {
+    "path": "output/model-generation/models/cro-magnon-girl-reindeer/work/candidate-01/source/cast1-g5-blankface.png",
+    "sha256": "4e8b65b82d8af537c57f72faa031db0dea2807b19dbbabcfba43be4e686ecb12"
+  },
+  "seedEllipses_uv_rx_ry": [
+    [
+      406.0,
+      428.0,
+      50.0,
+      48.0
+    ],
+    [
+      616.0,
+      428.0,
+      50.0,
+      48.0
+    ],
+    [
+      398.0,
+      493.0,
+      34.0,
+      14.0
+    ],
+    [
+      624.0,
+      493.0,
+      34.0,
+      14.0
+    ],
+    [
+      511.0,
+      477.0,
+      7.0,
+      6.0
+    ],
+    [
+      511.0,
+      516.0,
+      32.0,
+      9.0
+    ]
+  ],
+  "forcedEllipses_uv_rx_ry": [
+    [
+      412.0,
+      376.0,
+      34.0,
+      9.0
+    ],
+    [
+      612.0,
+      376.0,
+      34.0,
+      9.0
+    ],
+    [
+      444.0,
+      385.0,
+      9.0,
+      6.0
+    ],
+    [
+      574.0,
+      385.0,
+      9.0,
+      6.0
+    ],
+    [
+      398.0,
+      493.0,
+      40.0,
+      19.0
+    ],
+    [
+      624.0,
+      493.0,
+      40.0,
+      19.0
+    ]
+  ],
+  "skinBoxes": [
+    [
+      505,
+      520,
+      430,
+      450
+    ],
+    [
+      430,
+      450,
+      520,
+      535
+    ],
+    [
+      570,
+      590,
+      520,
+      535
+    ]
+  ],
+  "hairBoxes": [
+    [
+      310,
+      330,
+      430,
+      450
+    ],
+    [
+      720,
+      740,
+      430,
+      450
+    ],
+    [
+      420,
+      445,
+      290,
+      310
+    ],
+    [
+      330,
+      345,
+      500,
+      520
+    ],
+    [
+      695,
+      710,
+      500,
+      520
+    ]
+  ],
+  "skinLab": [
+    67.29000091552734,
+    20.389999389648438,
+    26.459999084472656
+  ],
+  "hairLab": [
+    [
+      33.66999816894531,
+      13.670000076293945,
+      8.300000190734863
+    ],
+    [
+      32.709999084472656,
+      13.359999656677246,
+      8.09000015258789
+    ],
+    [
+      35.779998779296875,
+      15.0600004196167,
+      10.5
+    ],
+    [
+      29.770000457763672,
+      12.40999984741211,
+      6.880000114440918
+    ],
+    [
+      35.27000045776367,
+      14.4399995803833,
+      9.75
+    ]
+  ],
+  "maskPixels": 26207,
+  "skinFitPixels": 36449,
+  "mask": "pixels farther than dE 12 (CIELAB) from the median skin, grown from the ellipses within 1.3x of them; hair-coloured pixels (dE<16 from the median of any hair box) outside 1.15x of the ellipses are never taken; holes filled, dilated 3 px",
+  "fill": "per-channel quadratic colour field fitted to the visible face skin (dE<10 inside the face ellipse 512,450,175,125), plus a harmonic fill (3000 Jacobi steps) of the skin-minus-field difference on the mask edge, blended with a 1.5 px Gaussian edge"
+}

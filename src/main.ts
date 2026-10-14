@@ -181,6 +181,7 @@ let profile = {
   ...normalizeCharacter({
     species: readSaved('cro-species', 'cro'),
     gender: readSaved('cro-gender', 'female'),
+    character: readSaved('cro-character', ''),
   }),
   difficulty: FIXED_DIFFICULTY,
   room: fixedIdentity
@@ -987,9 +988,13 @@ async function connect(automatic = false) {
       const changedCharacter =
         previous && player() && characterModel(previous).key !== characterModel(player()).key;
       if (changedCharacter) {
-        profile = { ...profile, species: player().species, gender: player().gender };
+        profile = {
+          ...profile,
+          ...normalizeCharacter(player()),
+        };
         save('cro-species', profile.species);
         save('cro-gender', profile.gender);
+        save('cro-character', profile.character);
         stopInput();
         if ($('#character-switch-form')) $('#modal').close();
       }
@@ -1238,7 +1243,13 @@ function updateModalHUD() {
   const list = $('#tribe-list');
   if (list) {
     const signature = JSON.stringify(
-      state.players.map(({ id, name, species, gender }) => ({ id, name, species, gender })),
+      state.players.map(({ id, name, species, gender, character }) => ({
+        id,
+        name,
+        species,
+        gender,
+        character,
+      })),
     );
     if (list.dataset.signature !== signature) {
       list.dataset.signature = signature;

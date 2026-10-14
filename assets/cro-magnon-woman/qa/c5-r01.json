@@ -1,0 +1,357 @@
+{
+  "schema": "cro-magnon/character-remake-review@1",
+  "date": "2026-10-13",
+  "decision": "adopt",
+  "approved": "The user in the Claude Code session on 2026-10-13 (answer 'Adopt into the game (Recommended)') after reviewing qa/review-c5.jpg: the current model next to candidate 5, face close-ups, the routed in-game view and sample clips. The adopted file differs from the reviewed one only by the bare skin moved to a second material (same geometry, textures and clips) for the clothing dye and by rigid hand weights for the torch grasp.",
+  "modelKey": "cro-magnon-woman",
+  "revision": "c5-r01",
+  "candidate": 5,
+  "url": "/models/cro-magnon-woman/model-c5-r01.glb",
+  "sha256": "bc6493a2e8bd8cc3b6f2320b483851cd2c4151b5a0d0e3623fa7f4627690863e",
+  "bytes": 2620260,
+  "triangles": 6913,
+  "bones": 22,
+  "clips": [
+    "Craft",
+    "Eat",
+    "Gather",
+    "Give",
+    "Idle_Loop",
+    "Run_Loop",
+    "Walk_Loop",
+    "Wave",
+    "Attack",
+    "Downed"
+  ],
+  "heightMetres": 1.45,
+  "request": "User (2026-10-13): クロマニョン人女性を、ローポリのかわいい系にしたい。添付画像の感じで。クロマニョン人要素を入れて。trellis2は、使っても使わなくてもいい。 (style image: three Japanese mobile-game chibi characters with hand-painted anime textures)",
+  "workspace": "output/model-generation/models/cro-magnon-woman",
+  "sources": [
+    {
+      "path": "assets/cro-magnon-woman/source/c5-r01/candidate5-ref-b.png",
+      "source": "output/model-generation/models/cro-magnon-woman/source/original/candidate5-ref-b.png",
+      "sha256": "12b79bc51309817feec2590879ffa3d3e45100afdf52653bb600829292a2ff11"
+    },
+    {
+      "path": "assets/cro-magnon-woman/source/c5-r01/prompts-c5.json",
+      "source": "output/model-generation/models/cro-magnon-woman/source/original/prompts-c5.json",
+      "sha256": "2f932588dfa0b0ea6b893f742db88d4a708bb31b440000dad4cb1d90d52534b9"
+    },
+    {
+      "path": "assets/cro-magnon-woman/source/c5-r01/codex-request-c5.txt",
+      "source": "output/model-generation/models/cro-magnon-woman/source/original/codex-request-c5.txt",
+      "sha256": "b47b746fcd6e3f9e2fb370547ef37cf2f240904f07cf60ffb3a53490dd7270de"
+    },
+    {
+      "path": "assets/cro-magnon-woman/source/c5-r01/candidate5-ref-b-blankface.png",
+      "source": "output/model-generation/models/cro-magnon-woman/work/candidate-05/source/candidate5-ref-b-blankface.png",
+      "sha256": "38878872c1e566b5261cb9cd78a699811d8ca12db2675a1ec8e3ac7f9d7b9167"
+    },
+    {
+      "path": "assets/cro-magnon-woman/source/c5-r01/blankface.json",
+      "source": "output/model-generation/models/cro-magnon-woman/work/candidate-05/source/blankface.json",
+      "sha256": "4c2262413c1fd1166d3fdeacbb20d3b418d84d4c0e9c60d34119078544a97ea1"
+    }
+  ],
+  "candidateRecord": {
+    "path": "output/model-generation/models/cro-magnon-woman/work/candidate-05/candidate.json",
+    "sha256": "35e351a601c9c353a7cd512efa62045c6fceecabcfb140afd6b9f449d59e3df6"
+  },
+  "production": {
+    "reference": {
+      "generator": "Codex built-in image_gen (codex-cli 0.162.0-alpha.17.2, gpt-5.6-sol, reasoning medium); the user-supplied style image was attached as a style reference only",
+      "styleImage": {
+        "path": "source/original/candidate5-style-user.png",
+        "sha256": "2705471c8c1736003232fd87f7ed4938e3dfaf2799c3773dabb849f91897f763",
+        "bytes": 235155,
+        "note": "user-supplied in chat (450x315); kept in the git-ignored production folder only"
+      },
+      "request": {
+        "path": "source/original/codex-request-c5.txt",
+        "sha256": "b47b746fcd6e3f9e2fb370547ef37cf2f240904f07cf60ffb3a53490dd7270de",
+        "bytes": 5641
+      },
+      "prompts": {
+        "path": "source/original/prompts-c5.json",
+        "sha256": "2f932588dfa0b0ea6b893f742db88d4a708bb31b440000dad4cb1d90d52534b9",
+        "bytes": 10496
+      },
+      "variants": [
+        {
+          "path": "source/original/candidate5-ref-a.png",
+          "sha256": "b422bc83c1c21d8629efef0cced920755f344013636fe32b2aa60cd8a32a4855",
+          "bytes": 1560052
+        },
+        {
+          "path": "source/original/candidate5-ref-b.png",
+          "sha256": "12b79bc51309817feec2590879ffa3d3e45100afdf52653bb600829292a2ff11",
+          "bytes": 1590905
+        },
+        {
+          "path": "source/original/candidate5-ref-c.png",
+          "sha256": "cd9065ac5deb9207f5698242ed6123350707689b9c02515e99855905905ed434",
+          "bytes": 1700816
+        }
+      ],
+      "chosen": "b (two round buns with bone hairpins, green eyes, sheepskin collar, long-sleeved hide tunic with a red-ochre zigzag hem, shell-and-tooth necklace, ochre cheek stripes, fur leg warmers)",
+      "notRecommended": "a (a feather with painted face stripes could read as a Native American motif)"
+    },
+    "referenceMatte": {
+      "path": "work/candidate-05/source/prepared-ref5b/reference-mask.png",
+      "sha256": "38e77e90544231d778a9e7cef058f0299e796e0b195afef9f37ac911de9096a1",
+      "bytes": 11531,
+      "method": "BiRefNet cutout of the TRELLIS preparation moved onto the reference (offset 278,33 px, NCC 0.997)"
+    },
+    "trellis": {
+      "settings": "local TRELLIS-2 C++ GGUF, res 1024, tex 1024, BiRefNet matte, xatlas atlas 2048",
+      "chosen": {
+        "dense": {
+          "path": "work/candidate-05/trellis/dense-ref5b-blank-res1024-tex1024-seed0123.glb",
+          "sha256": "ca34146e51eb0b0b04d4b7fd011f222d85ac43ffc439dcd1c6066e91651bd5f8",
+          "bytes": 17815268
+        },
+        "record": {
+          "path": "work/candidate-05/trellis/dense-ref5b-blank-res1024-tex1024-seed0123.json",
+          "sha256": "fd6de6a7a0c68bc1afb6abfe1ddcc92c80edc5d9d93a2d142db425e07c37cfc7",
+          "bytes": 1387
+        },
+        "faces": 273928,
+        "seed": 123,
+        "reference": "blank face"
+      },
+      "other": [
+        {
+          "dense": {
+            "path": "work/candidate-05/trellis/dense-ref5b-res1024-tex1024-seed0042.glb",
+            "sha256": "e153e87e1819affd99d4ddba8ebe740f79e79ee99f6d7b3ccfb4576d09ff1d2d",
+            "bytes": 19826552
+          },
+          "note": "original reference, seed 42: eye recesses and lash ridges, the ochre cheek stripes carved as red slashes"
+        },
+        {
+          "dense": {
+            "path": "work/candidate-05/trellis/dense-ref5b-res1024-tex1024-seed0123.glb",
+            "sha256": "731eb840fe2200967377922a1463df3a89cce1a6d864dadc2433fa5a458af82d",
+            "bytes": 21353256
+          },
+          "note": "original reference, seed 123: cleaner eyes, no cheek slashes, still 2-3 cm eye recesses"
+        },
+        {
+          "log": "output/model-generation/models/cro-magnon-woman/work/candidate-05/trellis/dense-ref5b-blank-res1024-tex1024-seed0042.log",
+          "note": "blank face, seed 42: queued as an alternative; not used"
+        }
+      ]
+    },
+    "blankFace": {
+      "reason": "TRELLIS-2 carved the painted anime eyes of the reference into recesses 2-3 cm deep with lash ridges (dense meshes ref5b seed 42 and 123); cutting or pressing them out of the dense mesh left folded triangles (see rejectedFaceRepairs). A copy of the reference whose eyes, cheek stripes, mouth and nose are filled with the surrounding skin colour reconstructs a smooth featureless face; the painted face of the original reference is projected afterwards.",
+      "image": {
+        "path": "work/candidate-05/source/candidate5-ref-b-blankface.png",
+        "sha256": "38878872c1e566b5261cb9cd78a699811d8ca12db2675a1ec8e3ac7f9d7b9167",
+        "bytes": 1417062
+      },
+      "mask": {
+        "path": "work/candidate-05/source/blankface-mask.png",
+        "sha256": "39feb3c77e88d16386d0ee25d4c82ca3509b32a5c215c52ad7a19ca528d9a3dd",
+        "bytes": 3276
+      },
+      "record": {
+        "path": "work/candidate-05/source/blankface.json",
+        "sha256": "4c2262413c1fd1166d3fdeacbb20d3b418d84d4c0e9c60d34119078544a97ea1",
+        "bytes": 907
+      }
+    },
+    "rejectedFaceRepairs": {
+      "script": "scripts/remake/face_plate.py (kept with its records; the blank-face reference replaced it)",
+      "attempts": [
+        "plate r01-r05 (dense seed 42 and 123): thin-plate-spline face fit and z-only press; eye recess rims and lashes stayed (move limits, per-vertex facing), then folded undercut walls",
+        "face7000 r01: the reduced head from the pressed dense mesh had inverted triangles; the projected face became a mosaic of unprojected triangles",
+        "untangle (Tutte steps over the feature ellipses): hidden interior layers made it worse (7,673 inverted triangles)",
+        "plate r07 (cut out the features and refill with ring caps): the TRELLIS dense mesh has about 2,000 non-manifold edges; the holes split into 7 loops with overlapping caps"
+      ]
+    },
+    "reduction": {
+      "meshopt": {
+        "path": "work/candidate-05/low-poly/blank-meshopt-7000-b16.glb",
+        "sha256": "b071c0ff888943b163651ec236ec7c5c39dd226bf45b726b03d1bdeb9b625026",
+        "bytes": 124964,
+        "settings": "budget 7000, error .01, MESHOPT_BOOST=y:0.1161:1.6 (the head above the neck keeps more triangles)",
+        "triangles": 6952
+      },
+      "split": "faces with centroid y >= 0.1161 (dense units; 0.893 m placed, between the hair tips and the collar) form the head",
+      "body": {
+        "atlas": {
+          "path": "work/candidate-05/low-poly/blank-xatlas-7000-body-1024.glb",
+          "sha256": "cabe016a590ef4907c9dc6080badf25eed30f943746db9e7a55f013ee424c359",
+          "bytes": 96636
+        },
+        "baked": {
+          "path": "work/candidate-05/low-poly/blank7000-body-r01/candidate.glb",
+          "sha256": "cf56b9e1eb401914ad770376e10b34862b14dd6167ea1b3567613be7b0044323",
+          "bytes": 736660
+        },
+        "textures": "1024 albedo, 1024 normal"
+      },
+      "head": {
+        "atlas": {
+          "path": "work/candidate-05/low-poly/blank-xatlas-7000-head-2048-face18.glb",
+          "sha256": "50082ebba1878119d949cb926cf0b794f202d24aa5ce924dba6de6bc8f852cfa",
+          "bytes": 148324
+        },
+        "baked": {
+          "path": "work/candidate-05/low-poly/blank7000-head-r02/candidate.glb",
+          "sha256": "b949d43f222abb56163ea77f5736327da336e7b13d66dca0f985bbddb79f7000",
+          "bytes": 1572860
+        },
+        "textures": "2048 bake (albedo, normal) delivered at 1024",
+        "faceTexels": "xatlas_unwrap.py --boost-box=-0.1454:0.1452:0.1209:0.3077:0.0634:0.2848:1.8 (the face front: 31% of the head atlas, 1.8x the texel density)"
+      },
+      "budgetsLookedAt": "5000 / 7000 / 9000 (meshopt clay sheet qa/meshopt-budgets.png); 7000 chosen"
+    },
+    "colour": {
+      "script": "scripts/remake/match_reference_colours.py",
+      "reason": "the TRELLIS albedo was darker and more saturated than the reference (hair luminance about half, tunic 25% darker)",
+      "body": {
+        "path": "work/candidate-05/colour/body-quantile-r01.glb",
+        "sha256": "aa0a1daafb8b7d49a4c2d294ff49a1683197ae0e49d4feb0d4d57e51899396c5",
+        "bytes": 799536,
+        "settings": "CIELAB quantile matching of every covered texel to the reference subject pixels in rows 590-1480"
+      },
+      "head": {
+        "path": "work/candidate-05/colour/head-hair-r01.glb",
+        "sha256": "6900cfea1e8475d6ae49a14033ecf42c346ce9918b15b56c9e3a3e0dd8dffe02",
+        "bytes": 1680276,
+        "settings": "hair class only (hue <35 or >345, saturation >0.4, value 0.06-0.75): CIELAB mean and spread moved onto the reference hair in rows 30-590"
+      }
+    },
+    "face": {
+      "script": "scripts/remake/project_face.py",
+      "report": {
+        "path": "work/candidate-05/face/colour-head-half/report.json",
+        "sha256": "4c2f47cf5ff5ae40439d76da9f2a50d896ec7d96a8e4d34bc337a2b6f0062f97",
+        "bytes": 1878
+      },
+      "head": {
+        "path": "work/candidate-05/face/colour-head-half/face.glb",
+        "sha256": "cef5d9009d72982a3a55f6e0e0ac9d2f2ad346a3c1c91e8128dd61ff696728eb",
+        "bytes": 739392
+      },
+      "settings": "replace mode, ellipse 1.339/1.386/-0.171/0.2 from the eye and chin rows 445/572, facing 0.05-0.3, hair guard except in the eye ellipses 417,440,72,64 and 606,440,72,64 and except dark regions thinner than 9 texels, skin tone matched halfway to the reconstruction (--tone-match --tone-strength 0.5), no optical flow (the blank face has no features to align to), registration 986.984 px/m at (508.875, 1467.994), output 1024, WebP q92"
+    },
+    "merged": {
+      "path": "work/candidate-05/graft/colour-merged-half.glb",
+      "sha256": "818aa52c992f3714369aaa25a56bab2064dfd4310384adc9a5e032b787efae76",
+      "bytes": 1538428,
+      "script": "scripts/remake/merge_head.py --no-tone",
+      "materials": [
+        "BodySurface",
+        "HeadSurface"
+      ],
+      "triangles": 6913
+    },
+    "skinMaterial": {
+      "path": "work/candidate-05/graft/colour-merged-skin-r03.glb",
+      "sha256": "1782062d096d41e7de8f4460bbffc865307727f36aaf5fc7202ff3409a1e73af",
+      "bytes": 1571748,
+      "script": "scripts/remake/split_skin_material.py --arm 0.13,0.768,0.371,0.503 --cuff 0.66 --legs 0.28,0.42 --neck 0.85,0.93,0.09",
+      "record": {
+        "path": "work/candidate-05/graft/colour-merged-skin-r03.json",
+        "sha256": "74186d7cb1e05f5f2e654505ae2ef78aebd27392d8497ba33740c54f4b970216",
+        "bytes": 889
+      },
+      "reason": "the hands have the colour of the cream fur (hue 30, saturation 0.29 against 0.22-0.28): the clothing dye, which classifies colours, cannot dye the cuffs and keep the hands; the bare skin (hands beyond the cuffs, most of the legs between the warmers and the hem, the front of the neck: 118 faces) is a second material with the same textures, which the dye rule does not name",
+      "rejected": [
+        "r01/r02: one texture sample per face missed long faces running from the skin into the fur"
+      ]
+    },
+    "rig": {
+      "report": {
+        "path": "work/candidate-05/rig/r04/rig-report.json",
+        "sha256": "7a3fc3ebe951078f8005311e3d2aebbe173892429010b73875e67e4ec7f4871a",
+        "bytes": 27496
+      },
+      "proportions": {
+        "path": "work/candidate-05/rig/proportions-c5.json",
+        "sha256": "9c24263a453516a54e43be066774ff05dc3514e36ff2a47e112a5e80038115be",
+        "bytes": 1040
+      },
+      "candidate": {
+        "path": "work/candidate-05/rig/r04/candidate.glb",
+        "sha256": "b8811bd69da7eac4ac92b87c482b5dbe22a4afe4570a78fd58ddf30d066e25b1",
+        "bytes": 2237912
+      },
+      "source": "graft/colour-merged-skin-r03.glb",
+      "options": "--accent none --measure-subdiv 4 --arm-band .03 --arm-gate .47 --arm-fractions .40,.64,.80 --rigid-hands .60,.68 --rigid-feet=-.015,.02 --proportions rig/proportions-c5.json",
+      "rejected": {
+        "r01 (first try)": "adult arm fractions .43/.77/.87 left no vertex on the Hand bones (the chibi hand leaves the sleeve cuff at 0.63 of the arm span)",
+        "r01 (second try)": "the chunky boots stayed on the shin bones: no sole vertex for the locomotion builder, NaN hips in Walk_Loop/Run_Loop (rigid feet added)",
+        "r02": "the textures before the colour matching and the skin material",
+        "r03": "the hand weights peaked at 0.53-0.6 (shared with the forearm): src/torch-grasp.ts found no hand vertex above 0.65 and the torch grip became NaN (rigid hands added)"
+      }
+    },
+    "motion": {
+      "chain": "scripts/remake/human_chain.sh (rig_human_c2 -> spear thrust r1 -> Downed -> CMU locomotion r1) with LOCOMOTION_CADENCE=Walk_Loop:1.7,Run_Loop:1.5",
+      "folder": "output/asset-remake/motion/cro-magnon-woman-r04",
+      "locomotion": {
+        "Walk_Loop": {
+          "metresPerSecond": 0.9306544717733931,
+          "strideMetres": 0.6113122510668366,
+          "cycleSeconds": 0.6568627450980392,
+          "dutyFactor": 0.61,
+          "method": "CMU measured human locomotion, anatomical retarget and sole contact"
+        },
+        "Run_Loop": {
+          "metresPerSecond": 2.3506652467379645,
+          "strideMetres": 1.1492141206274493,
+          "cycleSeconds": 0.4888888888888889,
+          "dutyFactor": 0.36,
+          "method": "CMU measured human locomotion, anatomical retarget and sole contact"
+        }
+      },
+      "cadenceReason": "legs 0.37 m long (legScale 0.42): at the captured cadence the walk clip would be 0.55 m/s against the default 2.0 m/s walk and its 1.35x playback limit; 1.7x / 1.5x keep the sliding at or below that of the current woman"
+    }
+  },
+  "qa": {
+    "renders": "work/candidate-05/qa (scripts/remake/chibi_views.mjs: three.js in Chrome as in the game): chain-r01-both.png (10 clips x 3 phases, front and side; r01 has the same rig and clips as r02 with earlier textures), final-c5*, review-c5.jpg",
+    "ground": "lowest skinned vertex per clip over 25 samples: 0 to 5 mm (Run_Loop flight phase up to 3 cm)",
+    "rig": "max 4 influences, 0 unweighted, coverage 1.0, ground lock residual 0",
+    "game": "output/playwright/c5-candidate-game-r02 (isolated in-memory server, real title/selection/entry, routed manifest+GLB of the same rig and textures before the skin material split; Idle/Walk/Run/Attack seen; 0 page errors); the adopted files are checked again with five connections after the adoption",
+    "notes": [
+      "in the inspection cameras game-front/game-close the camera, pulled in by a tent, faded the 1.45 m player out: the camera focus of the human tribes is 1.4 m (src/world3d.ts focusHeight), at the top of the new head"
+    ]
+  },
+  "sheets": [
+    {
+      "path": "assets/cro-magnon-woman/qa/c5-r01/review-c5.jpg",
+      "source": "output/model-generation/models/cro-magnon-woman/work/candidate-05/qa/review-c5.jpg",
+      "sha256": "c95bc387e4f8cb3966d2c63270926695999b9aeeaa458c814986f30cd63654a7"
+    },
+    {
+      "path": "assets/cro-magnon-woman/qa/c5-r01/poses-front.jpg",
+      "source": "output/model-generation/models/cro-magnon-woman/work/candidate-05/qa/poses-front.jpg",
+      "sha256": "376c2fde91883b1637b554dac102dbf7a90bab96b3e90f3198fae03e31a34e19"
+    },
+    {
+      "path": "assets/cro-magnon-woman/qa/c5-r01/poses-side.jpg",
+      "source": "output/model-generation/models/cro-magnon-woman/work/candidate-05/qa/poses-side.jpg",
+      "sha256": "6060d9181ad7c67f593e055e07473f1b250e2761a7a0b0211793c207097d123c"
+    },
+    {
+      "path": "assets/cro-magnon-woman/qa/c5-r01/faces-by-clip.jpg",
+      "source": "output/model-generation/models/cro-magnon-woman/work/candidate-05/qa/faces-by-clip.jpg",
+      "sha256": "2cbd87e40d8a7b555ff0dd655d905c8469e0cb384b3665709af3152335e5f30c"
+    }
+  ],
+  "previous": {
+    "url": "/models/cro-magnon-woman/model-c3-r03.glb",
+    "sha256": "e899cf58f9a0700034a0ba9c177a2e752fa14f3c8d04db8e7d14b167c2bef38f",
+    "bytes": 2517496,
+    "triangles": 7689,
+    "revision": "c3-r03",
+    "manifest": "assets/cro-magnon-woman/archive-manifest-c3-r03-20261013.json"
+  },
+  "provenance": {
+    "provider": "Claude Code (Opus 5.5); Codex built-in image_gen references; local TRELLIS-2 reconstruction",
+    "claudeUsed": true,
+    "geometrySource": "TRELLIS-2 reconstruction of a copy of the chosen generated reference whose painted eyes, cheek stripes, mouth and nose were filled with the surrounding skin (a smooth face), meshopt reduction, xatlas atlases with a denser face, Blender bakes, the reference's colours restored, the painted face projected from the original reference, the bare skin in a second material"
+  }
+}

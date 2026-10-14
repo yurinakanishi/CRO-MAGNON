@@ -22,8 +22,10 @@ function fixture(obstacles = []) {
 const target = (id, x, z) => ({ id, x, z, radius: .35, health: 75, maxHealth: 75, hostile: true, phase: 'alive' });
 
 test('Maruimo is selectable, survives saved-profile normalization and keeps the octopus body plan', () => {
-  assert.deepEqual(normalizeCharacter({ species: 'maruimo', gender: 'female' }), { species: 'maruimo', gender: 'male' });
-  assert.deepEqual(parseCharacterValue('maruimo-male'), { species: 'maruimo', gender: 'male' });
+  const octopus = { species: 'maruimo', gender: 'male', character: 'maruimo-octopus' };
+  assert.deepEqual(normalizeCharacter({ species: 'maruimo', gender: 'female' }), octopus);
+  assert.deepEqual(parseCharacterValue('maruimo-male'), octopus);
+  assert.deepEqual(parseCharacterValue('maruimo-octopus'), octopus);
   assert.equal(characterModel({ species: 'maruimo' }).bodyPlan, 'octopus');
   assert.equal(isCarryable({ species: 'maruimo' }), false);
   assert.equal(attackProfile({ species: 'maruimo', spearHead: 'obsidian' }).key, 'tentacle');

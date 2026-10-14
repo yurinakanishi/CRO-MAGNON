@@ -263,7 +263,14 @@ test('all nine delivered rigs draw back, release from the hand, call, and restor
       if (n.isBone) original.push([n, n.position.clone(), n.quaternion.clone(), n.scale.clone()]);
     });
     const pose = new OrbBotPose(gltf.scene);
-    const p = { ...fixture().p, species: model.species, gender: model.gender, x: 0, z: 0 };
+    const p = {
+      ...fixture().p,
+      species: model.species,
+      gender: model.gender,
+      character: model.key,
+      x: 0,
+      z: 0,
+    };
     const bot = { mode: 'windup', phaseAt: 10000, throwAt: 10000 };
     pose.update(bot, p, 10130, parent);
     assert.equal(pose.weight, 1, model.key);

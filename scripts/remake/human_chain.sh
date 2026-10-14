@@ -4,7 +4,8 @@
 # -> animated LOD (scripts/build-performance-lods.py, ratio 0.2). Output: output/asset-remake/motion/<key>-<rigRev>/
 # Env: RIG_EXTRA (rig_human_c2.py args, e.g. '--accent none' for characters without a TribeAccent slot),
 # RETARGET_ATTACK_FROM (delivered GLB whose Attack clip is retargeted instead of the spear thrust),
-# CANDIDATE (default candidate-02: the work/<candidate> folder of a later candidate).
+# CANDIDATE (default candidate-02: the work/<candidate> folder of a later candidate),
+# TEMPLATE_ASSET (an asset.json to start the staged asset from, for a new key without a delivered asset).
 key=$1; merged=$2; rev=$3; height=$4; name=$5; spear=${6:-spear}
 cd "$(dirname "$0")/../.."
 B="/c/Program Files/Blender Foundation/Blender 5.2/blender.exe"
@@ -14,7 +15,7 @@ S=output/asset-remake/motion/$key-$rev; rm -rf $S; mkdir -p $S/stage0
 cp $H/rig/$rev/candidate.glb $S/stage0/model.glb
 node -e "
 const fs=require('fs'),c=require('crypto');const b=fs.readFileSync('$S/stage0/model.glb');
-const a=JSON.parse(require('child_process').execFileSync('git',['show','HEAD:public/models/$key/asset.json'],{encoding:'utf8'}));
+const a=JSON.parse(process.env.TEMPLATE_ASSET?fs.readFileSync(process.env.TEMPLATE_ASSET,'utf8'):require('child_process').execFileSync('git',['show','HEAD:public/models/$key/asset.json'],{encoding:'utf8'}));
 const rep=JSON.parse(fs.readFileSync('$H/rig/$rev/rig-report.json','utf8'));
 for (const k of ['humanLocomotion','spearThrust','downedMotion','hunting','motionReview','locomotion']) delete a[k];
 Object.assign(a,{url:'/models/$key/stage0.glb',sha256:c.createHash('sha256').update(b).digest('hex'),bytes:b.length,heightMetres:rep.heightMetres,triangles:rep.triangles,clips:rep.clips});

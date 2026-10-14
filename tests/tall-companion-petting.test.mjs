@@ -43,10 +43,31 @@ for (const gender of ['female', 'male'])
           .map((b) => [b, b.getWorldPosition(new THREE.Vector3())]);
         const target = friend.scene.getObjectByName('Head').getWorldPosition(new THREE.Vector3());
         pose.update(target, 1, i / 29, true);
-        assert.ok(
-          pose.contact.distanceTo(pose.requested) < 0.045,
-          `hand gap ${pose.contact.distanceTo(pose.requested)}`,
-        );
+        // The arm solver (PettingPose, the private fields of the built module) and its reach.
+        const arm = pose.arm,
+          [upper, lower] = arm.lengths;
+        const shortfall =
+          arm.shoulder.distanceTo(pose.requested) - (upper + lower + arm.palmLength);
+        if (shortfall <= 0)
+          assert.ok(
+            pose.contact.distanceTo(pose.requested) < 0.045,
+            `hand gap ${pose.contact.distanceTo(pose.requested)}`,
+          );
+        else {
+          // A body too short for the head (the 1.45 m chibi woman, 2026-10-13) reaches up with
+          // the arm straight at it instead of lowering away from it.
+          const wrist = player.scene.getObjectByName('HandR').getWorldPosition(new THREE.Vector3());
+          assert.ok(
+            Math.abs(wrist.distanceTo(arm.shoulder) - (upper + lower)) < 0.01,
+            'the short arm is fully extended',
+          );
+          const aim = new THREE.Vector3().subVectors(wrist, arm.shoulder).normalize();
+          const toHead = new THREE.Vector3().subVectors(pose.requested, arm.shoulder).normalize();
+          assert.ok(
+            aim.angleTo(toHead) < 0.2,
+            `the arm points at the head (${aim.angleTo(toHead)})`,
+          );
+        }
         assert.ok(pose.depth < 0.05, 'stands to reach the human-height head');
         for (const [b, at] of feet)
           assert.ok(b.getWorldPosition(new THREE.Vector3()).distanceTo(at) < 0.006);

@@ -9,7 +9,7 @@ import {
 } from '../dist/src/performance-lod.js';
 import { installSkinnedBounds } from '../dist/src/skinned-bounds.js';
 import { CHARACTER_MODELS } from '../dist/shared/characters.mjs';
-import { deliveredActor, originalPair } from './original-actor-pairs.mjs';
+import { deliveredActor, hasOriginalPair, originalPair } from './original-actor-pairs.mjs';
 
 const PHASES = [0, 0.37, 0.83];
 
@@ -110,11 +110,13 @@ for (const key of [
   'sabertooth-tiger',
   'violet-behemoth',
 ]) {
-  // The original full model and far LOD, verified (original-actor-pairs.mjs): the real pair.
-  test(`${key}: the distant LOD matches independently animated low geometry in every delivered clip`, async () => {
-    const { full, lod, levels } = await originalPair(key, loadMotion);
-    assertDistantFollows(key, full, lod, levels);
-  });
+  // The original full model and far LOD, verified (original-actor-pairs.mjs): the real pair
+  // (a character added after r04 has none: only its delivered body below).
+  if (hasOriginalPair(key))
+    test(`${key}: the distant LOD matches independently animated low geometry in every delivered clip`, async () => {
+      const { full, lod, levels } = await originalPair(key, loadMotion);
+      assertDistantFollows(key, full, lod, levels);
+    });
   // What the game delivers now: a (compressed) pair follows the same rule; a sole primary,
   // as the player bodies and the behemoth after r04, draws its own body at every distance.
   test(`${key}: the delivered body far away is exactly the levels its manifest lists`, async (t) => {

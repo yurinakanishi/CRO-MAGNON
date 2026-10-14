@@ -136,7 +136,7 @@ export function createGameCore({
   if (!fallback) throw new Error('The default character must remain available');
   function proposedAppearance(requested) {
     const preferred = normalizeCharacter(requested);
-    const available = characters.some((model) => model.species === preferred.species);
+    const available = characters.some((model) => model.key === preferred.character);
     // Keep the old look in the private save while its content is hidden. An explicit
     // later choice replaces it; re-enabling the content can otherwise restore it.
     const appearance = available
@@ -297,7 +297,11 @@ export function createGameCore({
       saved?.player || {
         id: runtime.id(),
         name: cleanText(params.get('name'), 16) || '旅人',
-        ...normalizeCharacter({ species: params.get('species'), gender: params.get('gender') }),
+        ...normalizeCharacter({
+          species: params.get('species'),
+          gender: params.get('gender'),
+          character: params.get('character'),
+        }),
         x: 48 + room.players.size * 1.1,
         z: 57 + (room.players.size % 2),
         color: COLORS.find((color) => !usedColors.has(color)) || COLORS[0],
@@ -347,7 +351,11 @@ export function createGameCore({
     const startAtCamp = params.get('startAtCamp') === '1';
     const appearance = proposedAppearance(
       startAtCamp
-        ? { species: params.get('species'), gender: params.get('gender') }
+        ? {
+            species: params.get('species'),
+            gender: params.get('gender'),
+            character: params.get('character'),
+          }
         : (player.unavailableCharacter ?? player),
     );
     const radius = characterModel(appearance).radius ?? WORLD.playerRadius;
@@ -447,6 +455,7 @@ export function createGameCore({
         name: player.name,
         species: player.species,
         gender: player.gender,
+        character: player.character,
         difficulty: player.difficulty,
         dye: player.dye ?? null,
       },

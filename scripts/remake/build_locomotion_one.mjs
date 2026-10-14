@@ -31,6 +31,19 @@ function worldRotate(bone, desired) {
   bone.quaternion.copy(bone.parent.getWorldQuaternion(q()).invert().multiply(desired));
   bone.updateMatrixWorld(true);
 }
+// LOCOMOTION_CADENCE=Walk_Loop:1.7,Run_Loop:1.6 plays a captured cycle that many times faster (same poses and
+// stride): a short-legged (chibi) body keeps its feet planted at the game's walking and running speeds within
+// the playback-rate limits of src/character-animation.ts (LOCOMOTION_RATE). Default 1 (the captured timing).
+const cadence = Object.fromEntries(
+  (process.env.LOCOMOTION_CADENCE || '')
+    .split(',')
+    .filter(Boolean)
+    .map((entry) => {
+      const [name, value] = entry.split(':');
+      assert.ok(Number(value) > 0, `LOCOMOTION_CADENCE ${entry}`);
+      return [name, Number(value)];
+    }),
+);
 const sources = [];
 for (const spec of [
   { name: 'Walk_Loop', trial: '35_01', start: 139, end: 273, duty: 0.61 },
@@ -86,7 +99,8 @@ for (const spec of [
     ...spec,
     ...motion,
     samples: filtered.map((_, f) => filtered[(f + (spec.offset || 0)) % span]),
-    duration: span / 120,
+    duration: span / 120 / (cadence[spec.name] ?? 1),
+    cadence: cadence[spec.name] ?? 1,
     distance,
   });
 }
@@ -337,7 +351,7 @@ for (const key of [process.env.REMAKE_KEY]) {
       asset.clips.find((c) => c.name === source.name),
       {
         seconds: source.duration,
-        fps: 120,
+        fps: 120 * source.cadence,
         frames: count + 1,
         loop: true,
         description: `CMU ${source.trial} human ${source.name === 'Walk_Loop' ? 'walking' : 'running'} retargeted to the existing skeleton with stable anatomical joint planes and sole contact.`,
@@ -363,6 +377,7 @@ for (const key of [process.env.REMAKE_KEY]) {
       seconds: source.duration,
       legScale,
       strideMetres: stride,
+      ...(source.cadence !== 1 ? { cadence: source.cadence } : {}),
     });
   }
   doc.buffers[0].byteLength = byteLength;

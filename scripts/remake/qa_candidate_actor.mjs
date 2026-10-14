@@ -5,6 +5,8 @@
 //
 //   node scripts/remake/qa_candidate_actor.mjs <key> <choice> <candidate.glb> <candidate-asset.json> <outFolder>
 //   e.g. node scripts/remake/qa_candidate_actor.mjs cro-magnon-woman cro-female output/.../model.glb output/.../asset.json output/playwright/c3
+// <choice> is the selection card's value: species-gender for the first look of a pair, the model key for
+// further looks of the same species and gender (the chibi cast, 2026-10-13).
 //
 // Screenshots: the game camera after entry, a front inspection camera (renderer yaw/pitch/distance only),
 // walking and running with real keys, an attack with the real key, and a close camera. report.json records

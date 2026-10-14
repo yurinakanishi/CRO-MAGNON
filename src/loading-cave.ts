@@ -100,9 +100,12 @@ export class LoadingCave {
     this.dye = dye;
     this.imageOptions = images;
     this.paused = paused;
-    // The world's camera focus heights: the small fennec mage, the tall ape.
-    const species = CHARACTER_MODELS.find((model) => model.key === character)?.species;
-    this.eyeHeight = species === 'bear' ? 0.64 : species === 'ape' ? 1.55 : 1.45;
+    // The world's camera focus heights: the small fennec mage, the tall ape, a body unlike its
+    // species' (the chibi woman) by its own focus.
+    const model = CHARACTER_MODELS.find((entry) => entry.key === character);
+    this.eyeHeight =
+      model?.cameraFocus ??
+      (model?.species === 'bear' ? 0.64 : model?.species === 'ape' ? 1.55 : 1.45);
     this.scene.background = new THREE.Color(CAVE_LIGHT.background);
     this.scene.fog = new THREE.Fog(CAVE_LIGHT.background, CAVE_LIGHT.fogNear, CAVE_LIGHT.fogFar);
     this.scene.add(

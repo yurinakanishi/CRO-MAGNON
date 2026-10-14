@@ -166,6 +166,10 @@ export const ORIGINAL_PAIRS = Object.freeze({
   ),
 });
 
+/** Whether `key` was delivered as a recorded original pair: characters added after r04 (the chibi
+ * cast) never were, and deliver a sole primary from the start. */
+export const hasOriginalPair = (key) => Object.hasOwn(ORIGINAL_PAIRS, key);
+
 const fileOf = (record) => ({ url: record?.url, sha256: record?.sha256, bytes: record?.bytes });
 const sameFile = (a, b) => JSON.stringify(fileOf(a)) === JSON.stringify(fileOf(b));
 
@@ -192,17 +196,17 @@ export async function originalPair(key, parse) {
 }
 
 /** What the game delivers now for `key`: its manifest, whether that is still exactly the
- * original pair, and `load(parse)` for its verified primary and first LOD (null when the
- * manifest lists none: a sole primary). */
+ * original pair (never for a character without one), and `load(parse)` for its verified
+ * primary and first LOD (null when the manifest lists none: a sole primary). */
 export async function deliveredActor(key) {
   const asset = await actorManifest(key),
     known = ORIGINAL_PAIRS[key],
     lods = asset.lods ?? [],
     lod = lods[0] ?? null;
-  assert.ok(known, `${key}: no recorded original pair`);
   return {
     asset,
-    original: sameFile(asset, known.full) && lods.length === 1 && sameFile(lod, known.lod),
+    original:
+      !!known && sameFile(asset, known.full) && lods.length === 1 && sameFile(lod, known.lod),
     load: async (parse) => ({
       primary: await parse(await exactModel(asset)),
       lod: lod && (await parse(await exactModel(lod))),

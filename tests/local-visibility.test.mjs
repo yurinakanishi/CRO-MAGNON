@@ -207,7 +207,8 @@ test('three local toggles independently control the served catalog and direct mo
           const { CHARACTER_MODELS } = await import(
             `data:text/javascript,${encodeURIComponent(module)}`
           );
-          assert.equal(CHARACTER_MODELS.length, 5 + Number(maruimo));
+          // The five released looks and the chibi cast members added so far, with maruimo when shown.
+          assert.equal(CHARACTER_MODELS.length, 14 + Number(maruimo));
           assert.equal(
             CHARACTER_MODELS.some((p) => p.species === 'maruimo'),
             maruimo,
