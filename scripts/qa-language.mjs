@@ -64,7 +64,7 @@ try {
   await expectText('.contributors-dialog h2', 'Contributors');
   // The credits are only a list: no way into the cave from here.
   assert.equal(await page.locator('.contributors-dialog button, #contributors-cave').count(), 0);
-  assert.ok((await page.locator('.contributor-text [translate="no"]').count()) > 0);
+  assert.ok((await page.locator('.contributor strong[translate="no"]').count()) > 0);
   await shot('01-shell-contributors-en');
   await page.locator('#modal-close').click();
   await page.locator('#title-start').click();
@@ -124,17 +124,18 @@ try {
   assert.equal(await page.locator('.mural-people-dialog .contributor-group').count(), 0);
   assert.equal(
     await page
-      .locator('.mural-people-dialog .contributor-text strong[translate="no"]')
+      .locator('.mural-people-dialog .contributor strong[translate="no"]')
       .allTextContents()
       .then((names) => names.includes('OpenAI Dots')),
     true,
   );
-  // A card is the icon and the person's name, verbatim: no character name or handle.
+  // A card is the person's name, verbatim: no image, platform mark, character name or handle.
   assert.equal(await page.locator('.mural-people-dialog .contributor small').count(), 0);
-  await page.waitForFunction(() =>
-    [...document.querySelectorAll('.mural-people-dialog .contributor-avatar')].every(
-      (image) => image.complete && image.naturalWidth > 0,
-    ),
+  assert.equal(
+    await page
+      .locator('.mural-people-dialog .contributor img, .mural-people-dialog .contributor svg')
+      .count(),
+    0,
   );
   await shot('03c-cave-murals-en');
   await page.locator('#modal-close').click();

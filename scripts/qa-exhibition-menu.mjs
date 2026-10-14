@@ -112,12 +112,16 @@ try {
     await page.goto(`http://127.0.0.1:${local.port}`);
     await page.locator('#title-contributors').click();
     await page.waitForFunction(() => {
-      const avatars = [...document.querySelectorAll('.contributor-avatar')];
+      const cards = [...document.querySelectorAll('.contributors-dialog .contributor')];
       return (
-        // Seven people and OpenAI Dots, every icon loaded.
-        avatars.length === 8 && avatars.every((image) => image.complete && image.naturalWidth > 0)
+        // Seven people and OpenAI Dots, names only.
+        cards.length === 8 && cards.every((card) => card.textContent.trim())
       );
     });
+    assert.equal(
+      await page.locator('.contributors-dialog img, .contributors-dialog svg').count(),
+      0,
+    );
     assert.equal(await page.locator('.contributors-dialog a, img[src*="/qr-"]').count(), 0);
     await page.locator('#modal-close').click();
     await page.locator('#title-start').click();

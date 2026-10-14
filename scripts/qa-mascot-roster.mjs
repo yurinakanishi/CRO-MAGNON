@@ -68,7 +68,7 @@ try {
   const guests = page
     .locator('.contributor-group')
     .filter({ has: page.locator('h3', { hasText: '友情出演' }) });
-  assert.equal(await guests.locator('.contributor-avatar').count(), withHowkey ? 4 : 3);
+  assert.equal(await guests.locator('.contributor').count(), withHowkey ? 4 : 3);
   assert.deepEqual(
     await guests.locator('a').evaluateAll((links) => links.map((link) => link.href)),
     [

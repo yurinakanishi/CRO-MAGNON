@@ -26,7 +26,7 @@ export const TITLE_SUPPORT = {
 /**
  * OpenAI's dots, the characters the camp's dots follow. Credited in every build
  * because the dots are always in the world. They have no X profile of their own,
- * so the card does not link out; the icon is composed from the dots' portraits.
+ * so the card does not link out.
  */
 export const TITLE_DOTS = {
   name: 'OpenAI Dots',

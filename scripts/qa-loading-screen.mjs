@@ -181,8 +181,9 @@ async function murals(page) {
   const dialog = page.locator('#modal[open] .mural-people-dialog');
   await dialog.waitFor();
   assert.equal(await dialog.locator('h2').innerText(), '壁画の人々');
-  // Each card is the icon and the name only: no character name and no @handle.
+  // Each card is the name only: no images, platform marks, character name or @handle.
   assert.equal(await dialog.locator('.contributor small').count(), 0);
+  assert.equal(await dialog.locator('.contributor img, .contributor svg').count(), 0);
   const text = await dialog.innerText();
   for (const person of muralPeople())
     if (person.profile) assert.ok(!text.includes(`@${person.profile.split('/').pop()}`));
@@ -195,10 +196,6 @@ async function murals(page) {
   assert.equal(await dialog.locator('.contributor-group, .modal-intro').count(), 0);
   const dots = dialog.locator('div.contributor', { hasText: 'OpenAI Dots' });
   assert.equal(await dots.count(), 1, 'OpenAI Dots is listed without a link');
-  await page.waitForFunction(() => {
-    const image = document.querySelector('img[src="/title/avatar-dots.jpg"]');
-    return image?.complete && image.naturalWidth === 200;
-  });
   return dialog;
 }
 /** The pictured sights (名所) are chosen in the map's row, then sent with its warp button. */

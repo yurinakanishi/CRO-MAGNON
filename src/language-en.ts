@@ -431,6 +431,7 @@ export const ENGLISH_GAME: Readonly<Record<string, string>> = {
   '1人1匹まで。同じ仲間をほかの旅人も連れていけます。':
     'One companion each. Other travelers may bring the same one.',
   連れていかない: 'Travel alone',
+  ねこ: 'Cat',
   一緒に行く: 'Traveling with you',
   投げた場所で待っている: 'Waiting where thrown',
   まもなく来る: 'On the way',

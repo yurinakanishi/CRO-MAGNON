@@ -6,8 +6,6 @@ import { activeMascot, mascotKeyOf, mascotName } from '../shared/mascot-selectio
 import type { ViewState } from './view-state.js';
 
 const portraits: Record<string, { name: string; image: string; color: string }> = {
-  'rimo-neko': { name: 'りもねこ', image: '/title/avatar-rimo.jpg', color: '#d2c9c2' },
-  '524': { name: '524', image: '/title/avatar-r524.jpg', color: '#ffdf58' },
   ...Object.fromEntries(
     GROUND_MASCOTS.map((f) => [
       f.key,

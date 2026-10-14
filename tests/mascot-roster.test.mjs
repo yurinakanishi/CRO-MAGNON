@@ -7,7 +7,7 @@ import { ALL_MASCOT_MODELS, MASCOT_ROSTER } from '../dist/shared/mascot-roster.m
 import { BOT_KINDS } from '../dist/shared/orb-bots.mjs';
 import { chooseMascot } from '../dist/shared/mascot-selection.mjs';
 import { mascotMenuMarkup } from '../dist/src/mascot-menu.js';
-import { titleContributors, contributorsDialogMarkup } from '../dist/src/title-credits.js';
+import { titleContributors } from '../dist/src/title-credits.js';
 import { WorldAssets } from '../dist/src/world-assets.js';
 import { friendDefinition } from '../dist/shared/friend-mascots.mjs';
 import { characterChoicesMarkup } from '../dist/src/character-selection.js';
@@ -96,15 +96,14 @@ test('each dormant selection survives hidden saves and appears only when enabled
   }
 });
 
-test('guest icons and links are limited to rimo, 524 and the always-present dots, with adviser credits retained', () => {
+test('guest profiles are limited to rimo, 524 and the always-present dots, with adviser credits retained', () => {
   const people = titleContributors();
   assert.deepEqual(
     people.filter((p) => p.role === '友情出演').map((p) => p.key),
     ['r524', 'rimo', 'dots'],
   );
-  const dialog = contributorsDialogMarkup();
   for (const key of ['maruimo', 'mae', 'risa', 'saber', 'fairy', 'sagasa', 'hawkie', 'asahina'])
-    assert.ok(!dialog.includes(`/title/avatar-${key}.jpg`), key);
+    assert.ok(!people.some((person) => person.key === key), key);
   for (const key of ['otani', 'urata', 'nukonuko']) {
     const adviser = people.find((p) => p.key === key);
     assert.equal(adviser.role, '監修');

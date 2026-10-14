@@ -2,7 +2,6 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { createHash } from 'node:crypto';
 import { readFile } from 'node:fs/promises';
-import { existsSync } from 'node:fs';
 import {
   contributorHandle,
   contributorsDialogMarkup,
@@ -60,7 +59,6 @@ test('contributors link only to verified x.com profiles', () => {
   assert.equal(dots.mural, undefined);
   for (const person of people) {
     assert.ok(person.profile === '' || contributorHandle(person.profile), person.name);
-    assert.match(person.avatar, /^\/title\/avatar-[a-z0-9]+\.jpg$/);
   }
   assert.equal(contributorHandle('https://x.com/R5ni4'), 'R5ni4');
   for (const bad of ['javascript:alert(1)', 'https://evil.example/x.com/a', 'http://x.com/a', ''])
@@ -73,15 +71,12 @@ test('contributors link only to verified x.com profiles', () => {
     r524: '524',
     rimo: 'りもねこ',
   });
-  // Everyone listed has a delivered X icon.
-  for (const person of people)
-    assert.ok(existsSync(new URL(`public${person.avatar}`, root)), person.avatar);
 });
 
 test('the dialog lists every contributor without QR codes and exhibition cards have no links', () => {
   const dialog = contributorsDialogMarkup();
   const people = titleContributors();
-  assert.equal((dialog.match(/class="contributor-avatar"/g) ?? []).length, people.length);
+  assert.equal((dialog.match(/<strong translate="no">/g) ?? []).length, people.length);
   assert.equal(
     (dialog.match(/<a class="contributor"/g) ?? []).length,
     people.filter((p) => p.profile).length,
@@ -89,8 +84,8 @@ test('the dialog lists every contributor without QR codes and exhibition cards h
   assert.doesNotMatch(dialog, /qr-/);
   assert.doesNotMatch(dialog, /contributors-mark|この世界は|たくさんの人|<em>|壁画：/);
   assert.doesNotMatch(dialog, /class="modal-intro"/);
-  // A card is the icon and the name only, with no @handle (a display name may hold an @).
-  assert.doesNotMatch(dialog, /<small>/);
+  // A card is the name only, with no image, platform mark or @handle.
+  assert.doesNotMatch(dialog, /<small>|<img\b|<svg\b|avatar-/);
   for (const person of people) {
     const handle = contributorHandle(person.profile);
     if (handle) assert.ok(!dialog.includes(`@${handle}`), handle);
@@ -98,12 +93,12 @@ test('the dialog lists every contributor without QR codes and exhibition cards h
   // The credits no longer offer a trip to the cave.
   assert.doesNotMatch(dialog, /contributors-cave|アプデの洞窟|<button/);
   const exhibition = contributorsDialogMarkup(undefined, { links: false });
-  assert.equal((exhibition.match(/class="contributor-avatar"/g) ?? []).length, people.length);
+  assert.equal((exhibition.match(/<strong translate="no">/g) ?? []).length, people.length);
   assert.doesNotMatch(exhibition, /qr-/);
   assert.doesNotMatch(exhibition, /<a\b/);
   assert.match(
     dialog,
-    /<div class="contributor"><img class="contributor-avatar" src="\/title\/avatar-dots\.jpg"[^>]*><span class="contributor-text"><strong translate="no">OpenAI Dots<\/strong><\/span><\/div>/,
+    /<div class="contributor"><strong translate="no">OpenAI Dots<\/strong><\/div>/,
   );
 });
 
@@ -137,15 +132,13 @@ test('the loading cave lists the people painted on its walls with their X, apart
   assert.equal(linked.length, people.length - 1, 'everyone but the Dots has an X profile');
   assert.equal((dialog.match(/<a class="contributor"/g) ?? []).length, linked.length);
   for (const person of linked) assert.match(dialog, new RegExp(`href="${person.profile}"`));
-  for (const person of people)
-    assert.ok(existsSync(new URL(`public${person.avatar}`, root)), person.avatar);
-  // A card is the icon and the name only: no character name and no @handle.
-  assert.doesNotMatch(dialog, /<small>|りもねこ|丸いBot/);
+  // Names and links only: no images, platform marks, character names or @handles.
+  assert.doesNotMatch(dialog, /<small>|<img\b|<svg\b|avatar-|りもねこ|丸いBot/);
   for (const person of linked)
     assert.ok(!dialog.includes(`@${contributorHandle(person.profile)}`), person.key);
   assert.match(
     dialog,
-    /<a class="contributor" href="https:\/\/x\.com\/vibe_walking"[^>]*><img class="contributor-avatar" src="\/title\/avatar-rimo\.jpg"[^>]*><span class="contributor-text"><strong translate="no">[^<]+<\/strong><\/span><svg class="x-glyph"/,
+    /<a class="contributor" href="https:\/\/x\.com\/vibe_walking"[^>]*><strong translate="no">[^<]+<\/strong><\/a>/,
   );
   assert.doesNotMatch(muralPeopleDialogMarkup(people, { links: false }), /<a\b/);
 });
@@ -160,7 +153,7 @@ test('the mural list leaves out subjects the composition painted over with anima
   assert.ok(!keys(bots).includes('dots'));
 });
 
-test('the public build rewrites every credit table the dialog imports and ships the dots icon', async () => {
+test('the public build rewrites every credit table the dialog imports, including the dots', async () => {
   const build = await readFile(new URL('scripts/cloudflare-public-build.mjs', root), 'utf8');
   const credits = await readFile(new URL('src/title-credits.ts', root), 'utf8');
   const imported = /import \{([^}]+)\} from '\.\/title-credit-profiles\.js'/
@@ -174,7 +167,6 @@ test('the public build rewrites every credit table the dialog imports and ships 
   const written = build.slice(start, build.indexOf('\n);', start));
   // A table missing here would stop the public title's module from loading.
   for (const name of imported) assert.match(written, new RegExp(`export const ${name} =`), name);
-  assert.match(build, /\[\.\.\.credits, TITLE_GUEST, TITLE_SUPPORT, TITLE_DOTS, \.\.\.friends\]/);
 });
 
 test('the public build ships everyone painted for the cave’s mural list; the credits still hold dormant friends back', async () => {
@@ -206,22 +198,6 @@ test('the public build ships everyone painted for the cave’s mural list; the c
   const credited = titleContributors().map((person) => person.key);
   for (const friend of TITLE_FRIENDS)
     assert.equal(credited.includes(friend.qr), mascotCreditReleased(friend.qr), friend.qr);
-});
-
-test('the OpenAI Dots icon is the recorded composition of the shipped dot portraits', async () => {
-  const record = JSON.parse(
-    await readFile(new URL('assets/title-credits/dots-avatar.json', root), 'utf8'),
-  );
-  const icon = await readFile(new URL(`public/title/avatar-dots.jpg`, root));
-  assert.equal(record.output.file, 'public/title/avatar-dots.jpg');
-  assert.equal(createHash('sha256').update(icon).digest('hex'), record.output.sha256);
-  assert.equal(icon.length, record.output.bytes);
-  assert.ok(record.sources.length >= 3);
-  for (const source of record.sources) {
-    assert.match(source.file, /^public\/models\/orb-bot-[a-z]+\/portrait\.png$/);
-    const bytes = await readFile(new URL(source.file, root));
-    assert.equal(createHash('sha256').update(bytes).digest('hex'), source.sha256, source.file);
-  }
 });
 
 test('every title offers contributors immediately without home credit cards or a loading gate', async () => {

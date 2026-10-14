@@ -24,6 +24,7 @@ const build = JSON.parse(
 );
 const files = new Set(build.publicFiles.map((file) => file.path));
 assert.ok(![...files].some((name) => name.startsWith('title/qr-')));
+assert.ok(![...files].some((name) => name.startsWith('title/avatar-')));
 const catalog = JSON.parse(
   await readFile(`${buildRoot}/dist-cloudflare/models/world-assets.json`, 'utf8'),
 );
@@ -55,29 +56,20 @@ assert.deepEqual(
   profiles.TITLE_CREDITS,
   build.credits === 'full' ? TITLE_CREDITS : TITLE_CREDITS.slice(0, 1),
 );
-for (const person of profiles.TITLE_CREDITS)
-  assert.ok(files.has(`title/avatar-${person.qr}.jpg`), person.qr);
-// The dots are in every build, so their credit and icon always ship.
+// The dots are in every build, so their credit always ships.
 assert.deepEqual(profiles.TITLE_DOTS, TITLE_DOTS);
-assert.ok(files.has(`title/avatar-${TITLE_DOTS.qr}.jpg`), TITLE_DOTS.qr);
 const guestCredits = [TITLE_GUEST, TITLE_SUPPORT, ...TITLE_FRIENDS]
   .filter((person) => mascotCreditReleased(person.qr))
   .map((person) => person.qr);
 // The credits hold dormant companions back, but the update cave's 「壁画の人々」 lists everyone
-// painted, so a painted friend's profile and icon ship and an unpainted dormant one's do not.
+// painted, so a painted friend's profile ships and an unpainted dormant one's does not.
 const painted = muralPeople().map((person) => person.key);
 assert.deepEqual(
   profiles.TITLE_FRIENDS,
   TITLE_FRIENDS.filter((p) => mascotCreditReleased(p.qr) || painted.includes(p.qr)),
 );
-for (const person of TITLE_FRIENDS)
-  assert.equal(
-    files.has(`title/avatar-${person.qr}.jpg`),
-    guestCredits.includes(person.qr) || painted.includes(person.qr),
-    person.qr,
-  );
 // What the shipped title modules show: everyone painted (supervisors only with full credits),
-// each with a shipped icon, while the credits still name only released companions.
+// while the credits still name only released companions.
 const shipped = await import(
   pathToFileURL(path.resolve(buildRoot, 'dist-cloudflare/src/title-credits.js')).href
 );
@@ -88,7 +80,8 @@ assert.deepEqual(
     (key) => build.credits === 'full' || !TITLE_CREDITS.slice(1).some((c) => c.qr === key),
   ),
 );
-for (const person of listed) assert.ok(files.has(person.avatar.slice(1)), person.avatar);
+assert.doesNotMatch(shipped.muralPeopleDialogMarkup(listed), /<img\b|<svg\b|avatar-/);
+assert.doesNotMatch(shipped.contributorsDialogMarkup(), /<img\b|<svg\b|avatar-/);
 assert.deepEqual(
   shipped
     .titleContributors()

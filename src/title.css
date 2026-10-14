@@ -304,9 +304,8 @@
 .contributor {
   display: flex;
   align-items: center;
-  gap: 12px;
-  min-height: 72px;
-  padding: 10px 12px;
+  min-height: 48px;
+  padding: 12px 14px;
   border: 1px solid #e0c99a26;
   border-radius: 12px;
   background: #ffffff06;
@@ -320,35 +319,12 @@ a.contributor.gamepad-focus {
   background: #f3c77a14;
   outline: none;
 }
-.contributor-avatar {
-  flex: none;
-  width: 52px;
-  height: 52px;
-  border: 2px solid #dbc895b3;
-  border-radius: 50%;
-  background: #17221c;
-  object-fit: cover;
-}
-.contributor-text {
-  display: flex;
-  flex-direction: column;
-  gap: 2px;
-  min-width: 0;
-}
-.contributor-text strong {
+.contributor strong {
   color: #f2ead4;
   font-size: 14px;
   font-weight: 600;
   line-height: 1.4;
   overflow-wrap: anywhere;
-}
-.contributor .x-glyph {
-  flex: none;
-  width: 16px;
-  height: 16px;
-  margin-left: auto;
-  color: #d8cfb8;
-  opacity: 0.7;
 }
 
 /* The online home keeps the original logo and immediate menu, with no mural band. */

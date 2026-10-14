@@ -68,14 +68,11 @@ for (const handle of ['WabisukeTyper', 'nukonuko', 'otani_ai_memo', 'yuki_urata'
   if (includeSupervisors) assert.ok(profiles.includes(handle), handle);
   else assert.ok(!profiles.includes(handle), handle);
 const excluded = [];
-const includedSupervisorFiles = [];
 for (const name of ['ryuichi', 'nukonuko', 'otani', 'urata']) {
   for (const file of [`qr-${name}.png`, `avatar-${name}.jpg`]) {
     const url = `/title/${file}`;
-    const included = includeSupervisors && file.startsWith('avatar-');
-    assert.equal((await fetch(base + url)).status, included ? 200 : 404, url);
-    if (included) includedSupervisorFiles.push(url);
-    else excluded.push(url);
+    assert.equal((await fetch(base + url)).status, 404, url);
+    excluded.push(url);
   }
 }
 const config = await fetch(`${base}/multiplayer-config.json`).then((r) => r.json());
@@ -109,7 +106,6 @@ const report = {
   browserBundleFilesVerified: browserBundleFiles.length,
   publicCreditsOnly: !includeSupervisors,
   supervisorCreditsIncluded: includeSupervisors,
-  includedSupervisorFiles,
   excludedSupervisorFiles: excluded,
   runtimeTexturesVerified: files.filter((file) => /^models\/camp-cave\/.*\.png$/.test(file.path))
     .length,

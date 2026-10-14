@@ -101,9 +101,6 @@ const painted = new Set(muralPeople().map((person) => person.key));
 const friends = TITLE_FRIENDS.filter(
   (person) => mascotCreditReleased(person.qr) || painted.has(person.qr),
 );
-const visibleProfiles = new Set(
-  [...credits, TITLE_GUEST, TITLE_SUPPORT, TITLE_DOTS, ...friends].map((person) => person.qr),
-);
 const fileLimit = 25 * 1024 * 1024;
 const partSize = 24 * 1024 * 1024;
 const hash = (bytes) => createHash('sha256').update(bytes).digest('hex');
@@ -202,9 +199,7 @@ await collect('public/audio', /\.(wav|mp3|json|txt)$/);
 await collect('public/spawn', /\.jpg$/);
 await collect('public/title', /\.(png|jpe?g|webp)$/, (name) => {
   if (name === 'cro-magnon-mmo-transparent.png') return false;
-  if (name.startsWith('qr-')) return false;
-  const profile = /^avatar-([a-z0-9]+)\./.exec(name);
-  return !profile || visibleProfiles.has(profile[1]);
+  return !name.startsWith('qr-') && !name.startsWith('avatar-');
 });
 for (const file of ['favicon.svg'])
   await publish('/' + file, await readFile(path.join(root, 'public', file)));
