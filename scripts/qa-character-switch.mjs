@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import { mkdir, writeFile } from 'node:fs/promises';
 import { createGameCore } from '../dist/application/game-core.mjs';
 import { createGameServer } from '../dist/server.mjs';
-import { CHARACTER_MODELS } from '../dist/shared/characters.mjs';
+import { PLAYABLE_CHARACTER_MODELS as CHARACTER_MODELS } from '../dist/shared/characters.mjs';
 const { chromium } =
   await import('file:///C:/Users/yurin/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/node_modules/playwright/index.mjs');
 const output = 'output/playwright/character-switch';
@@ -19,6 +19,16 @@ const passed = (text) => {
   checks.push(text);
   console.log('PASS', text);
 };
+// The first entry and a resume pass through the update cave until its button is ready.
+const leaveCave = async (page) => {
+  await page
+    .locator('#loading-cave[data-ready="true"], #world[data-world-asset="ready"]')
+    .first()
+    .waitFor({ timeout: 180000 });
+  if (await page.locator('#loading-cave[data-ready="true"]').count())
+    await page.locator('[data-cave-proceed]').click({ timeout: 180000 });
+};
+const last = CHARACTER_MODELS.at(-1);
 try {
   browser = await chromium.launch({ channel: 'chrome', headless: true });
   const pages = [];
@@ -49,6 +59,7 @@ try {
     await page.locator('#title-start').click();
     await page.locator('#setup-form .character-choice:has(input:checked)').click();
     await page.locator('#setup-flow-yes').click();
+    await leaveCave(page);
     await page.waitForSelector('#world[data-world-asset="ready"][data-character-asset="ready"]', {
       timeout: 90000,
     });
@@ -66,7 +77,7 @@ try {
   const open = async () => {
     await page.locator('#world').focus();
     await page.keyboard.press('Escape');
-    await page.locator('[data-controller-menu="character"]').click();
+    await page.locator('[data-pause-tab="character"]').click();
     await page.waitForSelector('#character-switch-form');
   };
   const choose = async (model) =>
@@ -83,10 +94,17 @@ try {
       { timeout: 90000 },
     );
   await open();
-  assert.equal(await page.locator('#character-switch-form input[type="radio"]').count(), 7);
+  assert.equal(
+    await page.locator('#character-switch-form input[type="radio"]').count(),
+    CHARACTER_MODELS.length,
+  );
   assert.equal(await page.locator('#character-switch-form input:not([type="radio"])').count(), 0);
   assert.equal(await page.locator('#character-confirm').count(), 0);
-  await choose(CHARACTER_MODELS[6]);
+  // The character and colour already worn ask nothing.
+  await choose(CHARACTER_MODELS[0]);
+  await page.waitForTimeout(200);
+  assert.equal(await page.locator('#character-confirm').count(), 0);
+  await choose(last);
   assert.equal(me().species, 'cro');
   await page.waitForSelector('#character-confirm');
   assert.equal(
@@ -104,9 +122,7 @@ try {
   );
   assert.equal(
     await page
-      .locator(
-        `#character-switch-form input[value="${CHARACTER_MODELS[6].species}-${CHARACTER_MODELS[6].gender}"]`,
-      )
+      .locator(`#character-switch-form input[value="${last.species}-${last.gender}"]`)
       .evaluate((el) => document.activeElement === el),
     true,
     'declining returns focus to the declined card',
@@ -114,7 +130,7 @@ try {
   await page.locator('#modal-close').click();
   assert.equal(me().species, 'cro');
   passed(
-    'Seven image choices, no submit button; picking asks はい/いいえ with はい focused, いいえ and back do not change character',
+    'One image card per playable character, no submit button; the worn one asks nothing, another asks はい/いいえ with はい focused, いいえ and back do not change character',
   );
   for (const model of [...CHARACTER_MODELS.slice(1), CHARACTER_MODELS[0]]) {
     await open();
@@ -137,7 +153,7 @@ try {
     await page.screenshot({ path: `${output}/${model.key}.png` });
   }
   passed(
-    'All seven actual 3D models on both screens, exact coordinates/identity/inventory/energy retained',
+    'Every playable 3D model on both screens, exact coordinates/identity/inventory/energy retained',
   );
   for (const viewport of [
     { width: 390, height: 844 },
@@ -145,7 +161,7 @@ try {
   ]) {
     await page.setViewportSize(viewport);
     await open();
-    await choose(CHARACTER_MODELS[6]);
+    await choose(last);
     await page.waitForTimeout(250);
     await page.screenshot({ path: `${output}/${viewport.width}x${viewport.height}-selection.png` });
     assert.equal(
@@ -199,20 +215,26 @@ try {
   );
   await page.reload();
   await page.locator('#title-start').click();
+  // The start screen offers the changed character, already chosen.
+  await page.locator('#setup-form .character-choice:has(input:checked)').click();
+  await page.locator('#setup-flow-yes').click();
+  await leaveCave(page);
   await rendered(page, CHARACTER_MODELS[1]);
+  // Entering again through the update cave starts at the camp; the person stays the same.
   assert.equal(me().id, id);
   assert.deepEqual(
-    { x: me().x, z: me().z, inventory: me().inventory, energy: me().energy },
-    original,
+    { inventory: me().inventory, energy: me().energy },
+    { inventory: original.inventory, energy: original.energy },
   );
-  passed('Reload and resume restore the changed appearance at the same location');
-  // Real movement following a change is independent of the retained position checks.
+  passed('Reload and resume restore the changed appearance, identity and possessions');
+  // Real movement following a change, measured from where the resumed player stands.
+  const resumed = { x: me().x, z: me().z };
   await page.locator('#world').focus();
   await page.keyboard.down('w');
   await page.waitForTimeout(450);
   await page.keyboard.up('w');
   await page.waitForTimeout(200);
-  assert.ok(Math.hypot(me().x - original.x, me().z - original.z) > 0.1);
+  assert.ok(Math.hypot(me().x - resumed.x, me().z - resumed.z) > 0.1);
   await page.keyboard.press('f');
   await page.waitForTimeout(950);
   assert.ok(me().attackSequence > 0);

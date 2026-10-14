@@ -19,7 +19,7 @@ import {
   loadVerifiedTexture,
   releaseVerifiedTexture,
 } from '../dist/src/verified-texture.js';
-import { CAVE_EXTRA_PIGMENTS } from '../dist/src/cave-gallery-layout.js';
+import { CAVE_EXTRA_PIGMENTS, caveMotifSource } from '../dist/src/cave-gallery-layout.js';
 import { WorldAssets } from '../dist/src/world-assets.js';
 import { WorldLandmarks } from '../dist/src/world-landmarks.js';
 import { LoadingCave } from '../dist/src/loading-cave.js';
@@ -130,9 +130,17 @@ const CAVE_SIZES = {
   rockSurface: [1254, 1254],
   characterPigment: [2171, 724],
   rimoPigment: [2172, 724],
-  ...Object.fromEntries(Object.keys(CAVE_EXTRA_PIGMENTS).map((key) => [key, [2172, 724]])),
+  // Each frieze at the size its rectangle was measured in (2172x724, or 1024x341 for r37's).
+  ...Object.fromEntries(
+    Object.keys(CAVE_EXTRA_PIGMENTS).map((key) => {
+      const { width, height } = caveMotifSource(key);
+      return [key, [width, height]];
+    }),
+  ),
 };
 const CAVE_KEYS = Object.keys(CAVE_SIZES);
+/** The images a camp cave loads: the four main ones and every extra frieze. */
+const CAVE_IMAGES = CAVE_KEYS.length;
 /** A camp-cave manifest of PNG-shaped files: originals, or whole-image resizes to a
  * 1024 px edge served under new URLs with their original size as uvSource. */
 function caveManifest({ resized = false, corrupt = [] } = {}) {
@@ -455,7 +463,7 @@ test('one failed image ends the batch once and releases its siblings, late ones 
   assert.throws(() => batch.take(), /not ready/);
 });
 
-test('the cave loads its ten images from the manifest records, resized copies included', async () => {
+test('the cave loads every image from the manifest records, resized copies included', async () => {
   const { manifest, files } = caveManifest({ resized: true });
   const { requests, transport } = network(files);
   const decoder = pngDecoder();
@@ -589,7 +597,7 @@ function caveUniforms(material) {
   return shader.uniforms;
 }
 
-test('the world draws the cave only once its ten verified images are installed', async (t) => {
+test('the world draws the cave only once all its verified images are installed', async (t) => {
   browser(t);
   const disposedWith = watchDisposals(t);
   const { manifest, files } = caveManifest();
@@ -603,10 +611,10 @@ test('the world draws the cave only once its ten verified images are installed',
   landmarks.update(camera, 0);
   assert.ok(landmarks.caveImages, 'verifying');
   assert.ok(landmarks.pending.has(CAMP_CAVE.key), 'in flight, so never released meanwhile');
-  await until(() => decoder.calls.length === 10);
+  await until(() => decoder.calls.length === CAVE_IMAGES);
   landmarks.update(camera, 0.4);
   landmarks.update(camera, 0.8);
-  assert.equal(requests.length, 10, 'loaded once, not every frame');
+  assert.equal(requests.length, CAVE_IMAGES, 'loaded once, not every frame');
   assert.equal(landmarks.instances.size, 0, 'no cave before its images');
   assert.equal(template.cavePrepared, undefined);
   for (const key of CAVE_KEYS) open(urlOf(manifest, key));
@@ -635,7 +643,7 @@ test('the world draws the cave only once its ten verified images are installed',
   assert.deepEqual(new Set(installedImages), new Set(decoder.images));
   landmarks.update(camera, 1.2);
   assert.ok(landmarks.instances.has(CAMP_CAVE.id));
-  assert.equal(requests.length, 10);
+  assert.equal(requests.length, CAVE_IMAGES);
   landmarks.dispose();
   for (const image of decoder.images) {
     assert.equal(image.closed, 1);
@@ -657,7 +665,7 @@ test('one cave image failing fails the world once and releases every sibling', a
   const landmarks = new WorldLandmarks(world, [CAMP_CAVE], { images });
   landmarks.update(camera, 0);
   const preparing = landmarks.pending.get(CAMP_CAVE.key);
-  await until(() => decoder.calls.length === 10);
+  await until(() => decoder.calls.length === CAVE_IMAGES);
   // Some siblings finish first, the Rimo frieze fails, the rest arrive late.
   for (const key of ['pigment', 'rockSurface', 'roundBots']) open(urlOf(manifest, key));
   open(urlOf(manifest, 'rimoPigment'));
@@ -666,13 +674,13 @@ test('one cave image failing fails the world once and releases every sibling', a
   assert.equal(failures[0].message, RIMO_FAILURE);
   assert.match(failures[0].error.message, /rimoPigment\.png: undecodable/);
   for (const key of CAVE_KEYS) open(urlOf(manifest, key));
-  await until(() => allClosed(decoder.images, 9));
+  await until(() => allClosed(decoder.images, CAVE_IMAGES - 1));
   for (const image of decoder.images) {
     assert.equal(image.closed, 1);
     assert.equal(disposedWith(image), 1);
   }
   for (let time = 0.4; time < 3; time += 0.4) landmarks.update(camera, time);
-  assert.equal(requests.length, 10, 'not requested again');
+  assert.equal(requests.length, CAVE_IMAGES, 'not requested again');
   assert.equal(failures.length, 1, 'the world fails once');
   assert.equal(landmarks.instances.size, 0, 'no cave with unverified or missing paintings');
   assert.equal(template.cavePrepared, undefined);
@@ -704,7 +712,7 @@ test('a cave that cannot be installed fails the world once and keeps no half-ins
   assert.equal(failures.length, 1);
   assert.equal(failures[0].message, MURAL_FAILURE);
   assert.ok(failures[0].error instanceof TypeError);
-  assert.equal(decoder.images.length, 10, 'all ten were verified and taken');
+  assert.equal(decoder.images.length, CAVE_IMAGES, 'every image was verified and taken');
   for (const image of decoder.images) {
     assert.equal(image.closed, 1);
     assert.equal(disposedWith(image), 1);
@@ -713,7 +721,7 @@ test('a cave that cannot be installed fails the world once and keeps no half-ins
   assert.equal(landmarks.cavePigment, undefined);
   assert.deepEqual(landmarks.caveExtraPigments, {});
   for (let time = 0.4; time < 3; time += 0.4) landmarks.update(camera, time);
-  assert.equal(requests.length, 10, 'not loaded again');
+  assert.equal(requests.length, CAVE_IMAGES, 'not loaded again');
   assert.equal(failures.length, 1, 'the world fails once');
   assert.equal(landmarks.instances.size, 0);
   landmarks.dispose();
@@ -736,14 +744,14 @@ test('leaving the world while cave images load releases them once as they arrive
   const batch = landmarks.caveImages;
   assert.ok(batch, 'started with the world');
   const preparing = landmarks.pending.get(CAMP_CAVE.key);
-  await until(() => decoder.calls.length === 10);
+  await until(() => decoder.calls.length === CAVE_IMAGES);
   for (const key of CAVE_KEYS.slice(0, 4)) open(urlOf(manifest, key));
   await until(() => batch.textures.size === 4);
   landmarks.dispose();
   assert.equal(landmarks.caveImages, null);
   for (const key of CAVE_KEYS) open(urlOf(manifest, key));
   await preparing;
-  await until(() => allClosed(decoder.images, 10));
+  await until(() => allClosed(decoder.images, CAVE_IMAGES));
   for (const image of decoder.images) {
     assert.equal(image.closed, 1);
     assert.equal(disposedWith(image), 1);
@@ -798,7 +806,7 @@ test('the gallery paints only verified images and releases them when it closes',
   const decoder = pngDecoder();
   const cave = gallery(manifest, { download: verified(transport), decode: decoder.decode });
   await cave.load();
-  assert.equal(requests.length, 10);
+  assert.equal(requests.length, CAVE_IMAGES);
   let mesh = null;
   cave.scene.traverse((node) => {
     // The spring draws its two sides with a material each (material-variants.ts).
@@ -845,13 +853,13 @@ test('the gallery fails on one bad image, releasing the rest, and leaving mid-de
   const transport = network(files).transport;
   const cave = gallery(manifest, { download: verified(transport), decode: decoder.decode });
   const loading = cave.load();
-  await until(() => decoder.calls.length === 10);
+  await until(() => decoder.calls.length === CAVE_IMAGES);
   for (const key of CAVE_KEYS.slice(0, 4)) open(urlOf(manifest, key));
   await until(() => cave.images?.textures.size === 4);
   cave.dispose();
   for (const key of CAVE_KEYS) open(urlOf(manifest, key));
   assert.equal(await loading, undefined, 'the visit ends quietly');
-  await until(() => allClosed(decoder.images, 10));
+  await until(() => allClosed(decoder.images, CAVE_IMAGES));
   for (const image of decoder.images) {
     assert.equal(image.closed, 1);
     assert.equal(disposedWith(image), 1);

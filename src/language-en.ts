@@ -7,7 +7,6 @@ export const ENGLISH_GAME: Readonly<Record<string, string>> = {
   部屋のコード: 'Room code',
   '英数字・ハイフン・アンダースコア / 最大16文字':
     'Letters, numbers, hyphens and underscores / up to 16 characters',
-  旅人を選ぶ: 'Choose your traveler',
   キャラクターを選ぶ: 'Choose a character',
   左右にスワイプして選ぶ: 'Swipe to choose',
   'これでいいですか？': 'Ready to begin?',
@@ -62,8 +61,7 @@ export const ENGLISH_GAME: Readonly<Record<string, string>> = {
   洞窟を準備しています: 'Preparing the cave',
   世界へ進む: 'Enter the world',
   '読み込み中 {percent}%': 'Loading {percent}%',
-  壁画の人: 'People in the murals',
-  '丸いBot・形のBot': 'Round and shape bots',
+  壁画の人々: 'People in the murals',
   'WASDで移動 · ドラッグで見回す · Shiftで走る': 'WASD to move · Drag to look · Shift to run',
   '左のパッドで移動 · 画面をドラッグして見回す': 'Left pad to move · Drag to look',
   ドラッグして移動: 'Drag to move',
@@ -197,7 +195,7 @@ export const ENGLISH_GAME: Readonly<Record<string, string>> = {
   いま使える行動: 'Available actions',
   メニュー: 'Menu',
   メニューの項目: 'Menu tabs',
-  その他: 'More',
+  メニューの操作: 'Menu actions',
   地図: 'Map',
   もちもの: 'Bag',
   持ち物: 'Inventory',
@@ -832,6 +830,10 @@ export const ENGLISH_GAME: Readonly<Record<string, string>> = {
   '予備の保存から再開しました。直前の進行の一部は戻っていない場合があります。':
     'Resumed from the backup save. Some recent progress may not have been restored.',
   保存した持ち物で再接続する: 'Reconnect with saved items',
+  続きから再開する: 'Resume your journey',
+  自動退出: 'Left due to inactivity',
+  '30秒間操作がなかったため、部屋から退出しました。':
+    'You left the room after 30 seconds without input.',
   参加できません: 'Unable to join',
   サービス停止中: 'Service unavailable',
   '現在ゲームは停止中です。': 'The game is currently unavailable.',

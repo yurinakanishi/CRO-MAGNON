@@ -1,5 +1,6 @@
 // Real Chrome travelers in an isolated, unsaved room choose clothing colours: from the status
-// plate on a desktop and on a phone, and from the character menu. Each sees the others' colours
+// plate on a desktop and on a phone, where a tap dyes at once, and in the menu's character tab,
+// where a colour is worn with the card's confirmation. Each sees the others' colours
 // drawn by the dye shader; a new browser's remembered colour reaches the loading cave and the
 // room. A read-only observer reports each actor's clothing and the compiled dye program.
 import assert from 'node:assert/strict';
@@ -231,25 +232,52 @@ try {
   await wears(b, a, 'blue', 'B draws A blue');
   measurements.blueWithBlue = await hueShare(b.page, 217, `${output}/b-sees-a-blue.png`);
   const own = a.page.locator('#modal [data-dye=""]');
-  // A returns to the own colours from the character menu, then picks yellow there.
+  const card = (value) =>
+    a.page.locator(`#character-switch-form .character-choice:has(input[value="${value}"])`);
+  // A returns to the own colours from the character tab, then picks yellow there. Beside the
+  // cards a swatch only picks; the card's confirmation wears it, on the same character too.
   await a.page.locator('#world').focus();
   await a.page.keyboard.press('Escape');
-  await a.page.locator('[data-controller-menu="character"]').click();
+  await a.page.locator('[data-pause-tab="character"]').click();
   await a.page.waitForSelector('#character-switch-form .dye-picker');
+  await card('cro-male').click();
+  await sleep(200);
+  assert.equal(
+    await a.page.locator('#character-confirm').count(),
+    0,
+    'the character and colour worn ask nothing',
+  );
   await own.click();
-  await until(() => a.player().dye === null, 'the character menu returns A to the own colours');
-  assert.equal(await a.page.locator('#character-confirm').count(), 0, 'nothing to confirm');
+  await sleep(300);
+  assert.equal(a.player().dye, 'blue', 'a swatch beside the cards only picks');
+  assert.equal(await a.page.locator('#character-switch-form .dye-name').innerText(), '元の色');
+  await card('cro-male').click();
+  await a.page.locator('#character-confirm').waitFor();
+  assert.match(await a.page.locator('.character-confirm-dye').innerText(), /服の色\s*元の色/);
+  await a.page.locator('#character-confirm-yes').click();
+  await until(() => a.player().dye === null, 'the same character is confirmed in the own colours');
+  await until(
+    () => a.page.evaluate(() => !document.querySelector('#modal').open),
+    'a new colour alone leaves the menu',
+  );
   await wears(b, a, null, 'B draws A in the own colours');
   await sleep(500);
   measurements.blueWithOwn = await hueShare(b.page, 217, `${output}/b-sees-a-own.png`);
   measurements.yellowWithOwn = await hueShare(b.page, 47, `${output}/b-sees-a-own-2.png`);
   await sleep(300);
+  await a.page.locator('#world').focus();
+  await a.page.keyboard.press('Escape');
+  await a.page.locator('[data-pause-tab="character"]').click();
   await a.page.locator('#modal [data-dye="yellow"]').click();
-  await until(() => a.player().dye === 'yellow', 'the character menu dyes A yellow');
+  await a.page.screenshot({ path: `${output}/a-character-menu-picker.png` });
+  await card('cro-male').click();
+  await a.page.locator('#character-confirm').waitFor();
+  await a.page.screenshot({ path: `${output}/a-character-menu-confirm.png` });
+  await a.page.locator('#character-confirm-yes').click();
+  await until(() => a.player().dye === 'yellow', 'the character tab dyes A yellow');
   await wears(b, a, 'yellow', 'B draws A yellow');
   await sleep(500);
   measurements.yellowWithYellow = await hueShare(b.page, 47, `${output}/b-sees-a-yellow.png`);
-  await a.page.screenshot({ path: `${output}/a-character-menu-picker.png` });
   assert.ok(
     measurements.blueWithBlue > measurements.blueWithOwn + 0.02,
     `blue drawn: ${JSON.stringify(measurements)}`,
@@ -259,7 +287,6 @@ try {
     `yellow drawn: ${JSON.stringify(measurements)}`,
   );
   checks.push("B's frames show A's dye and its removal");
-  await a.page.keyboard.press('Escape');
   await b.page.keyboard.press('Escape');
 
   // B's own menu, in English.
@@ -365,18 +392,28 @@ try {
   await sleep(2000);
   await b.page.screenshot({ path: `${output}/gathering.png` });
 
-  // In the character menu, Enter on a swatch dyes without submitting the menu; a character
-  // chosen there afterwards arrives in the same colour.
+  // In the character tab, Enter on a swatch picks it without submitting anything; the character
+  // chosen next arrives in that colour with one confirmation.
   await a.page.locator('#world').focus();
   await a.page.keyboard.press('Escape');
-  await a.page.locator('[data-controller-menu="character"]').click();
+  await a.page.locator('[data-pause-tab="character"]').click();
   await a.page.locator('#character-switch-form [data-dye="teal"]').focus();
   await a.page.keyboard.press('Enter');
-  await until(() => a.player().dye === 'teal', 'Enter on a swatch dyes A teal');
-  assert.equal(await a.page.locator('#character-confirm').count(), 0, 'no character confirmation');
+  await until(
+    () =>
+      a.page
+        .locator('#character-switch-form [data-dye="teal"]')
+        .getAttribute('aria-pressed')
+        .then((v) => v === 'true'),
+    'Enter on a swatch picks teal',
+  );
+  assert.equal(await a.page.locator('#character-confirm').count(), 0, 'no confirmation yet');
+  assert.equal(a.player().dye, 'yellow', 'picking is not wearing');
   assert.equal(a.player().species, 'cro');
   assert.equal(a.player().gender, 'male');
   await a.page.locator('#character-switch-form input[value="cro-female"]').check();
+  await a.page.locator('#character-confirm').waitFor();
+  assert.match(await a.page.locator('.character-confirm-dye').innerText(), /水色/);
   await a.page.locator('#character-confirm-yes').click();
   await until(() => a.player().gender === 'female', 'A becomes the Cro-Magnon woman');
   for (const viewer of [a, b])
@@ -388,7 +425,7 @@ try {
       `${viewer.name} draws the new character in the chosen colour`,
       120000,
     );
-  assert.equal(a.player().dye, 'teal', 'a character change keeps the colour');
+  assert.equal(a.player().dye, 'teal', 'the new character wears the colour picked with it');
 
   assert.deepEqual(errors, []);
   result = { passed: true, checks, measurements, errors };

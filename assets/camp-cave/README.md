@@ -1,3 +1,15 @@
+# 洞窟を奥へ7.9m伸ばし、9番目の行列に @daredaro_F を描く（2026-10-14・形状r28-deep・壁画r37）
+
+ユーザー指定「これで壁画追加して」（参照画像：銀髪・黒スーツ・紫のネクタイ・目元の帯）。既存の壁画を描き替えず「洞窟の奥行きを伸ばす」、壁に名前は出さない。
+
+形状はCodexが `workflow/deepen-gallery.mjs`（依頼 `workflow/codex-request-r28.txt`）で、採用済みTRELLIS殻 `model-r27-rounded.glb` の頂点だけを動かした。曲がった中心線に沿った深さ2mまでは位置・法線ともバイト一致、2〜29.5mの回廊は一様に×1.287（27.5m→35.4m）、それより奥の丸い奥室と泉の窪みは7.9m奥へ平行移動。三角形・インデックス・UV・埋込1024px画像は不変で、プリミティブや新しい岩は作っていない。`model-r28-deep.glb`：74,458三角形、2,147,212 bytes、SHA `932c96905891f77b766c9e668ca80f42c7f3073a4f992a559e87f4f53e770c4d`。旧GLBは保持。
+
+壁画はCodex CLIの内蔵image_genで描いた一枚（`source/daredaro-lascaux-r37.png`、2172×724、SHA `51810bdee3343dddab128950d00e2a4b75deed00609d987d85e2004bfbc7c225`）。新しい素材は1024px以下という方針で、配信はその全体をLanczosで1024×341へ縮小しただけの `daredaro-lascaux-r37.png`（SHA `672fd8d9…`、同じ縮小の再計算と画素一致）。2026-10-10の配信最適化の後に加えた画像なので最適化の記録は持たず、記録の `source` は配信画像の写し、`generated` に元の絵を残す。東壁の新しい区画（局所Z=-37.0、幅7.5m、下端Y=1.4、濃さ0.84）に、ケサイ・トナカイ・アイベックスと並ぶ。上段の動物を東西2体ずつ延長し、全35配置。
+
+人物の差し替えは [modular-r37](modular-r37/recipe.json) に、Codexの動物版と入れ替え領域を追加した（`npm run cave:murals -- --hide daredaro`）。最適化されていない区画の合成は `-hidden-daredaro.png` として配信し、合成の記録に元の絵を残す。旧最適化の監査は、後から加えた額を除いた10画像を今の実装で再計画し、加えた額は最適化なし・1024px以下で配信されていることを別に確かめる（`scripts/optimization/standalone-images.mjs` の `extrasAddedSince`）。
+
+検証：全35配置が深くした壁に当たり欠け0（`qa/gallery-surfaces-r37.json`）。テストで、採用GLBの全頂点が記録した変換と一致すること、回廊が-39.4mまで歩け、床が-37.4mまで平ら、-45.5mの奥が塞がっていることを確認。実Chromeと4人の通信で、待機中と本編の9行列・泉・松明・歩行・5人表示を確認（`output/playwright/cave-murals-r37/`、`cave-spring-r28/`）。採用記録 `qa/adoption-r28-deep.json`、変更証明 `qa/source-revision-r28-deep.json`、採用前のmanifest `archive-mural-r37.json`。以下は当時の履歴。
+
 # 壁画を増やして縮尺を揃え、人物ごとに差し替え可能にする（2026-10-12・壁画r36）
 
 主な8群を7.5m幅・下端Y=1.4・濃さ0.84に統一。動物を上段へ18配置追加して計30配置とし、Coming Soonを撤去した。岩の凹凸で動物の頭や脚が消える描画条件も修正。洞窟GLBは保持。

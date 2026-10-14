@@ -1,0 +1,2269 @@
+{
+  "version": 1,
+  "image": {
+    "width": 1024,
+    "height": 341
+  },
+  "generator": "Built-in imagegen; r37 panel: Codex CLI 0.162.0-alpha.17.2 built-in image_gen (gpt-5.6-sol)",
+  "panels": {
+    "roundBots": {
+      "entry": "mascotPigments.roundBots",
+      "original": {
+        "url": "/models/camp-cave/bot-round-lascaux-r31.opt-9dc5292302335e65.png",
+        "subjects": [
+          "white",
+          "blue",
+          "green",
+          "purple",
+          "orange"
+        ],
+        "source": "assets/camp-cave/source/bot-round-lascaux-r31.png",
+        "sha256": "9dc5292302335e65a6b3dafc7c22a6a2691261a08c7193832b64cbc79854fb7c",
+        "bytes": 463714,
+        "image": {
+          "width": 1024,
+          "height": 341
+        },
+        "generator": "Built-in imagegen",
+        "references": [
+          "public/models/orb-bot-white/portrait.png",
+          "public/models/orb-bot-blue/portrait.png",
+          "public/models/orb-bot-green/portrait.png",
+          "public/models/orb-bot-purple/portrait.png",
+          "public/models/orb-bot-orange/portrait.png"
+        ],
+        "application": "Unmodified transparent mineral-pigment frieze, projected on original cave wall triangles, interwoven with horses, aurochs and deer.",
+        "uvSource": {
+          "width": 2172,
+          "height": 724
+        },
+        "provenance": {
+          "runtimeOptimization": {
+            "adoption": "20261010-r07-a01",
+            "candidateRevision": "assets/optimized-runtime/20261009-r04",
+            "original": {
+              "url": "/models/camp-cave/bot-round-lascaux-r31.png",
+              "sha256": "94da10a2db5962f7e66af1617a310091c4852d9a1d6c9d322c09e6d01656c93c",
+              "bytes": 1885445,
+              "image": {
+                "width": 2172,
+                "height": 724
+              }
+            },
+            "adoptedBy": "20261009-r04-a01"
+          }
+        }
+      },
+      "source": {
+        "path": "assets/camp-cave/modular-r36/roundBots-animals-source.png",
+        "bytes": 1849038,
+        "sha256": "5856ba79a8ff507b4351d8ee154bf2e9d3831a5a9e86f5b76a1a4cea27006102",
+        "image": {
+          "width": 2170,
+          "height": 725
+        }
+      },
+      "animals": {
+        "path": "assets/camp-cave/modular-r36/roundBots-animals.png",
+        "bytes": 457905,
+        "sha256": "cf5a9616cdfb914ba3e10b59d83b9bf816e0077709bb9809ca75d32eeebcf814",
+        "image": {
+          "width": 1024,
+          "height": 341
+        }
+      },
+      "slots": [
+        {
+          "character": "white",
+          "feather": 4,
+          "polygon": [
+            [
+              0,
+              132
+            ],
+            [
+              136,
+              132
+            ],
+            [
+              136,
+              288
+            ],
+            [
+              0,
+              288
+            ]
+          ],
+          "characterPolygon": [
+            [
+              1,
+              144
+            ],
+            [
+              126,
+              144
+            ],
+            [
+              129,
+              283
+            ],
+            [
+              1,
+              283
+            ]
+          ]
+        },
+        {
+          "character": "blue",
+          "feather": 4,
+          "polygon": [
+            [
+              248,
+              148
+            ],
+            [
+              378,
+              148
+            ],
+            [
+              378,
+              288
+            ],
+            [
+              248,
+              288
+            ]
+          ],
+          "characterPolygon": [
+            [
+              257,
+              160
+            ],
+            [
+              369,
+              160
+            ],
+            [
+              371,
+              283
+            ],
+            [
+              255,
+              283
+            ]
+          ]
+        },
+        {
+          "character": "green",
+          "feather": 4,
+          "polygon": [
+            [
+              519,
+              150
+            ],
+            [
+              643,
+              150
+            ],
+            [
+              643,
+              290
+            ],
+            [
+              519,
+              290
+            ]
+          ],
+          "characterPolygon": [
+            [
+              526,
+              162
+            ],
+            [
+              636,
+              162
+            ],
+            [
+              636,
+              285
+            ],
+            [
+              526,
+              285
+            ]
+          ]
+        },
+        {
+          "character": "purple",
+          "feather": 4,
+          "polygon": [
+            [
+              653,
+              172
+            ],
+            [
+              790,
+              172
+            ],
+            [
+              790,
+              324
+            ],
+            [
+              653,
+              324
+            ]
+          ],
+          "characterPolygon": [
+            [
+              662,
+              184
+            ],
+            [
+              783,
+              184
+            ],
+            [
+              783,
+              319
+            ],
+            [
+              660,
+              319
+            ]
+          ]
+        },
+        {
+          "character": "orange",
+          "feather": 4,
+          "polygon": [
+            [
+              900,
+              157
+            ],
+            [
+              1024,
+              157
+            ],
+            [
+              1024,
+              308
+            ],
+            [
+              900,
+              308
+            ]
+          ],
+          "characterPolygon": [
+            [
+              907,
+              169
+            ],
+            [
+              1023,
+              169
+            ],
+            [
+              1023,
+              303
+            ],
+            [
+              907,
+              303
+            ]
+          ]
+        }
+      ]
+    },
+    "shapeBots": {
+      "entry": "mascotPigments.shapeBots",
+      "original": {
+        "url": "/models/camp-cave/bot-shapes-lascaux-r31.opt-86a06da8e6789d84.png",
+        "subjects": [
+          "beret",
+          "frog",
+          "triangle",
+          "heart"
+        ],
+        "source": "assets/camp-cave/source/bot-shapes-lascaux-r31.png",
+        "sha256": "86a06da8e6789d8443800509043ad58ac300960fdd5eb01ba93d54d180dc1cb9",
+        "bytes": 499457,
+        "image": {
+          "width": 1024,
+          "height": 341
+        },
+        "generator": "Built-in imagegen",
+        "references": [
+          "public/models/orb-bot-beret/portrait.png",
+          "public/models/orb-bot-frog/portrait.png",
+          "public/models/orb-bot-triangle/portrait.png",
+          "public/models/orb-bot-heart/portrait.png"
+        ],
+        "application": "Unmodified transparent mineral-pigment frieze, projected on original cave wall triangles, interwoven with horses, aurochs and deer.",
+        "uvSource": {
+          "width": 2172,
+          "height": 724
+        },
+        "provenance": {
+          "runtimeOptimization": {
+            "adoption": "20261010-r07-a01",
+            "candidateRevision": "assets/optimized-runtime/20261010-r06",
+            "original": {
+              "url": "/models/camp-cave/bot-shapes-lascaux-r31.png",
+              "sha256": "18cac2271a651fe11b223ac5fb3abab2a126ee25153ca0851f749ebd195e8dde",
+              "bytes": 2083858,
+              "image": {
+                "width": 2172,
+                "height": 724
+              }
+            },
+            "adoptedBy": "20261010-r06-a02",
+            "supersedes": {
+              "adoption": "20261009-r04-a01",
+              "candidateRevision": "assets/optimized-runtime/20261009-r04",
+              "url": "/models/camp-cave/bot-shapes-lascaux-r31.opt-b6ee4b02e4be9c02.png",
+              "sha256": "b6ee4b02e4be9c02226776ebf7828096b4184475f9dcbefd7b90c66e49f887a1",
+              "bytes": 501873
+            }
+          }
+        }
+      },
+      "source": {
+        "path": "assets/camp-cave/modular-r36/shapeBots-animals-source.png",
+        "bytes": 2045816,
+        "sha256": "6f38b550c0ac869659139e677741fdbf9515f1a8f1a24ca217fe5f4872a6d81a",
+        "image": {
+          "width": 2170,
+          "height": 725
+        }
+      },
+      "animals": {
+        "path": "assets/camp-cave/modular-r36/shapeBots-animals.png",
+        "bytes": 481156,
+        "sha256": "6949ed982953565e97c40cf13a5398a5ca44db0b5b166369a9458b1738515551",
+        "image": {
+          "width": 1024,
+          "height": 341
+        }
+      },
+      "slots": [
+        {
+          "character": "beret",
+          "feather": 4,
+          "polygon": [
+            [
+              50,
+              181
+            ],
+            [
+              233,
+              181
+            ],
+            [
+              233,
+              337
+            ],
+            [
+              50,
+              337
+            ]
+          ],
+          "characterPolygon": [
+            [
+              57,
+              193
+            ],
+            [
+              226,
+              193
+            ],
+            [
+              225,
+              332
+            ],
+            [
+              58,
+              332
+            ]
+          ]
+        },
+        {
+          "character": "frog",
+          "feather": 4,
+          "polygon": [
+            [
+              350,
+              185
+            ],
+            [
+              540,
+              185
+            ],
+            [
+              540,
+              338
+            ],
+            [
+              350,
+              338
+            ]
+          ],
+          "characterPolygon": [
+            [
+              360,
+              197
+            ],
+            [
+              531,
+              197
+            ],
+            [
+              533,
+              333
+            ],
+            [
+              357,
+              333
+            ]
+          ]
+        },
+        {
+          "character": "triangle",
+          "feather": 4,
+          "polygon": [
+            [
+              656,
+              190
+            ],
+            [
+              837,
+              190
+            ],
+            [
+              837,
+              338
+            ],
+            [
+              656,
+              338
+            ]
+          ],
+          "characterPolygon": [
+            [
+              668,
+              202
+            ],
+            [
+              827,
+              202
+            ],
+            [
+              830,
+              333
+            ],
+            [
+              663,
+              333
+            ]
+          ]
+        },
+        {
+          "character": "heart",
+          "feather": 4,
+          "polygon": [
+            [
+              872,
+              187
+            ],
+            [
+              1024,
+              187
+            ],
+            [
+              1024,
+              339
+            ],
+            [
+              872,
+              339
+            ]
+          ],
+          "characterPolygon": [
+            [
+              879,
+              199
+            ],
+            [
+              1023,
+              199
+            ],
+            [
+              1023,
+              334
+            ],
+            [
+              879,
+              334
+            ]
+          ]
+        }
+      ]
+    },
+    "maruimoFrieze": {
+      "entry": "mascotPigments.maruimoFrieze",
+      "original": {
+        "source": "assets/camp-cave/source/maruimo-lascaux-r33.png",
+        "url": "/models/camp-cave/maruimo-lascaux-r33.opt-60597acdd04df58d.png",
+        "sha256": "60597acdd04df58d8dfa5da63a1f4a7b2d99e717d297a7543582cf7c44a299cf",
+        "bytes": 498678,
+        "image": {
+          "width": 1024,
+          "height": 341
+        },
+        "generator": "Built-in imagegen",
+        "prompt": "assets/camp-cave/maruimo-lascaux-prompt-r33.txt",
+        "subjects": [
+          "maruimo-mascot"
+        ],
+        "animals": [
+          "bison",
+          "wild horse",
+          "deer"
+        ],
+        "references": [
+          {
+            "path": "public/models/maruimo-octopus/portrait.png",
+            "sha256": "167b344c270543846d0a2870e94e0ac12320b57f23d702a8d2a32a99487a40bc"
+          },
+          {
+            "path": "assets/camp-cave/source/rimo-lascaux-frieze-r30.png",
+            "sha256": "b750045fda524816577747197874d173d41161e2b55d9acfe772a8f37f8d01df"
+          }
+        ],
+        "application": "5 m wide east-wall frieze. The small octopus shares earth pigments and overlapping composition with the animals. Unmodified transparent PNG projected onto the original limestone triangles.",
+        "review": "assets/camp-cave/qa/gallery-surfaces-r33.json",
+        "uvSource": {
+          "width": 2172,
+          "height": 724
+        },
+        "provenance": {
+          "runtimeOptimization": {
+            "adoption": "20261010-r07-a01",
+            "candidateRevision": "assets/optimized-runtime/20261010-r06",
+            "original": {
+              "url": "/models/camp-cave/maruimo-lascaux-r33.png",
+              "sha256": "eff36cf28d83cf69e61e2e345a4d90e08c790ae58306450be1ab657dd7614a1e",
+              "bytes": 1961184,
+              "image": {
+                "width": 2172,
+                "height": 724
+              }
+            },
+            "adoptedBy": "20261010-r06-a02",
+            "supersedes": {
+              "adoption": "20261009-r04-a01",
+              "candidateRevision": "assets/optimized-runtime/20261009-r04",
+              "url": "/models/camp-cave/maruimo-lascaux-r33.opt-cf90962462cefa64.png",
+              "sha256": "cf90962462cefa648cbef2fc9c74390e8365bd355bc2791a8a324053023522c2",
+              "bytes": 500299
+            }
+          }
+        }
+      },
+      "source": {
+        "path": "assets/camp-cave/modular-r36/maruimoFrieze-animals-source.png",
+        "bytes": 2015171,
+        "sha256": "abec975103aaebe28bc51d172e51b8837c152caeca4901cffa3196515c8eea91",
+        "image": {
+          "width": 2170,
+          "height": 725
+        }
+      },
+      "animals": {
+        "path": "assets/camp-cave/modular-r36/maruimoFrieze-animals.png",
+        "bytes": 481240,
+        "sha256": "891a654372f400df934f2c353f5c3489af60d1a82421f773e59795aa389d53fa",
+        "image": {
+          "width": 1024,
+          "height": 341
+        }
+      },
+      "slots": [
+        {
+          "character": "maruimo-mascot",
+          "feather": 4,
+          "polygon": [
+            [
+              562,
+              118
+            ],
+            [
+              801,
+              118
+            ],
+            [
+              801,
+              337
+            ],
+            [
+              562,
+              337
+            ]
+          ],
+          "characterPolygon": [
+            [
+              630,
+              130
+            ],
+            [
+              742,
+              130
+            ],
+            [
+              753,
+              217
+            ],
+            [
+              794,
+              256
+            ],
+            [
+              794,
+              332
+            ],
+            [
+              573,
+              332
+            ],
+            [
+              569,
+              250
+            ],
+            [
+              580,
+              169
+            ],
+            [
+              624,
+              158
+            ],
+            [
+              635,
+              204
+            ]
+          ]
+        }
+      ]
+    },
+    "maeKohaku": {
+      "entry": "mascotPigments.maeKohaku",
+      "original": {
+        "url": "/models/camp-cave/mae-kohaku-lascaux-r31.opt-b265fa99d4bf3980.png",
+        "subjects": [
+          "mae",
+          "kohaku"
+        ],
+        "source": "assets/camp-cave/source/mae-kohaku-lascaux-r31.png",
+        "sha256": "b265fa99d4bf398007245e0290d37a3be6645881e435cb5da4171d3852e69559",
+        "bytes": 467125,
+        "image": {
+          "width": 1024,
+          "height": 341
+        },
+        "generator": "Built-in imagegen",
+        "references": [
+          "public/models/mae/portrait.png",
+          "public/models/kohaku/portrait-r05.png"
+        ],
+        "application": "Unmodified transparent mineral-pigment frieze, projected on original cave wall triangles, interwoven with horses, aurochs and deer.",
+        "uvSource": {
+          "width": 2172,
+          "height": 724
+        },
+        "provenance": {
+          "runtimeOptimization": {
+            "adoption": "20261010-r07-a01",
+            "candidateRevision": "assets/optimized-runtime/20261010-r06",
+            "original": {
+              "url": "/models/camp-cave/mae-kohaku-lascaux-r31.png",
+              "sha256": "f67ea277c3d42c93877139b44150ee6fddbb2eb41854418ea09ac4bd40eed732",
+              "bytes": 1953261,
+              "image": {
+                "width": 2172,
+                "height": 724
+              }
+            },
+            "adoptedBy": "20261010-r06-a02",
+            "supersedes": {
+              "adoption": "20261009-r04-a01",
+              "candidateRevision": "assets/optimized-runtime/20261009-r04",
+              "url": "/models/camp-cave/mae-kohaku-lascaux-r31.opt-a9fee23d61be6387.png",
+              "sha256": "a9fee23d61be63879e45a96a1e59d11276a0be25238085bf15f30f55928d5fc7",
+              "bytes": 468227
+            }
+          }
+        }
+      },
+      "source": {
+        "path": "assets/camp-cave/modular-r36/maeKohaku-animals-source.png",
+        "bytes": 1890649,
+        "sha256": "d720e23346a1a2a965e3fe1bfe6c8850680ae2ff4791ce060b681e7b93360f6e",
+        "image": {
+          "width": 2170,
+          "height": 725
+        }
+      },
+      "animals": {
+        "path": "assets/camp-cave/modular-r36/maeKohaku-animals.png",
+        "bytes": 471934,
+        "sha256": "1e2d2a5d217352301082a7da9a6c398514d181eb23df46ea55982cbb2e6f03cd",
+        "image": {
+          "width": 1024,
+          "height": 341
+        }
+      },
+      "slots": [
+        {
+          "character": "mae",
+          "feather": 4,
+          "polygon": [
+            [
+              251,
+              193
+            ],
+            [
+              433,
+              193
+            ],
+            [
+              433,
+              336
+            ],
+            [
+              251,
+              336
+            ]
+          ],
+          "characterPolygon": [
+            [
+              260,
+              205
+            ],
+            [
+              415,
+              205
+            ],
+            [
+              426,
+              331
+            ],
+            [
+              258,
+              331
+            ]
+          ]
+        },
+        {
+          "character": "kohaku",
+          "feather": 4,
+          "polygon": [
+            [
+              566,
+              108
+            ],
+            [
+              802,
+              108
+            ],
+            [
+              802,
+              340
+            ],
+            [
+              566,
+              340
+            ]
+          ],
+          "characterPolygon": [
+            [
+              636,
+              120
+            ],
+            [
+              751,
+              120
+            ],
+            [
+              781,
+              219
+            ],
+            [
+              795,
+              275
+            ],
+            [
+              758,
+              335
+            ],
+            [
+              580,
+              333
+            ],
+            [
+              573,
+              238
+            ],
+            [
+              602,
+              207
+            ],
+            [
+              627,
+              194
+            ]
+          ]
+        }
+      ]
+    },
+    "friendsMeadow": {
+      "entry": "mascotPigments.friendsMeadow",
+      "original": {
+        "source": "assets/camp-cave/source/friends-meadow-lascaux-r34.png",
+        "url": "/models/camp-cave/friends-meadow-lascaux-r34.opt-d730fdda31b98b8b.png",
+        "sha256": "d730fdda31b98b8bc225cc60451a6e3502a79cd0b597e5ab01b84e030dc0e405",
+        "bytes": 472897,
+        "image": {
+          "width": 1024,
+          "height": 341
+        },
+        "generator": "Codex CLI 0.162.0-alpha.2 built-in image_gen (configured default model)",
+        "prompt": "assets/camp-cave/friends-meadow-lascaux-prompt-r34.txt",
+        "subjects": [
+          "saber-mascot",
+          "fairy-mascot",
+          "nukonuko-mascot",
+          "sagasa-mascot"
+        ],
+        "animals": [
+          "wild horse",
+          "ibex",
+          "red deer stag"
+        ],
+        "references": [
+          {
+            "path": "assets/friend-mascots/saber-mascot/source/reference-v1.png",
+            "sha256": "3cc39bfe25ef085f33cb88e1f2628868c08f414a0288d5a61bc0a25167becf42"
+          },
+          {
+            "path": "assets/friend-mascots/fairy-mascot/source/reference-v1.png",
+            "sha256": "11c8f34f854dc95652a141940923fa56a0e8b73966e7ef74c57af0625048fa17"
+          },
+          {
+            "path": "assets/friend-mascots/nukonuko-mascot/source/reference-v1.png",
+            "sha256": "7c8bcdcc1fc0101d920ffa77720128901b19fea5413313674ffe14328bc796d5"
+          },
+          {
+            "path": "assets/friend-mascots/sagasa-mascot/source/reference-v1.png",
+            "sha256": "1a0c52e325c8d4666476757918916ea69a44eec7ba847574028fc4de79202e70"
+          },
+          {
+            "path": "public/models/camp-cave/mae-kohaku-lascaux-r31.png",
+            "sha256": "f67ea277c3d42c93877139b44150ee6fddbb2eb41854418ea09ac4bd40eed732"
+          }
+        ],
+        "application": "5.6 m wide west-wall frieze replacing the lone deer: Saber, Fairy, nukonuko and Saga among a horse, an ibex and a stag. Unmodified transparent PNG projected onto the original limestone triangles.",
+        "review": "assets/camp-cave/qa/gallery-surfaces-r35.json",
+        "uvSource": {
+          "width": 2172,
+          "height": 724
+        },
+        "provenance": {
+          "runtimeOptimization": {
+            "adoption": "20261010-r07-a01",
+            "candidateRevision": "assets/optimized-runtime/20261010-r06",
+            "original": {
+              "url": "/models/camp-cave/friends-meadow-lascaux-r34.png",
+              "sha256": "707e1920df0342a1806082874b8baa3ab33cc2c8ecea9311d3c6ff364caea148",
+              "bytes": 2071821,
+              "image": {
+                "width": 2172,
+                "height": 724
+              }
+            },
+            "adoptedBy": "20261010-r06-a02",
+            "supersedes": {
+              "adoption": "20261009-r04-a01",
+              "candidateRevision": "assets/optimized-runtime/20261009-r04",
+              "url": "/models/camp-cave/friends-meadow-lascaux-r34.opt-e6153063bca167d1.png",
+              "sha256": "e6153063bca167d1d618581f1065725d2e90d28d60a8a22d5c4962a58a9069ed",
+              "bytes": 475063
+            }
+          }
+        }
+      },
+      "source": {
+        "path": "assets/camp-cave/modular-r36/friendsMeadow-animals-source-r02.png",
+        "bytes": 1468416,
+        "sha256": "694919140c005ded3051cf89fe26187e9bfbbb07fc22282278c73e1d2cd8f2c4",
+        "image": {
+          "width": 2172,
+          "height": 724
+        }
+      },
+      "animals": {
+        "path": "assets/camp-cave/modular-r36/friendsMeadow-animals.png",
+        "bytes": 388166,
+        "sha256": "41568aa841dc17cd17f143ba5dbe2916afc3da85da4be329c8761f5517b73ee2",
+        "image": {
+          "width": 1024,
+          "height": 341
+        }
+      },
+      "slots": [
+        {
+          "character": "saber-mascot",
+          "feather": 4,
+          "polygon": [
+            [
+              176,
+              91
+            ],
+            [
+              417,
+              91
+            ],
+            [
+              417,
+              341
+            ],
+            [
+              176,
+              341
+            ]
+          ],
+          "characterPolygon": [
+            [
+              274,
+              103
+            ],
+            [
+              383,
+              105
+            ],
+            [
+              410,
+              140
+            ],
+            [
+              387,
+              177
+            ],
+            [
+              404,
+              224
+            ],
+            [
+              378,
+              237
+            ],
+            [
+              390,
+              280
+            ],
+            [
+              401,
+              325
+            ],
+            [
+              365,
+              337
+            ],
+            [
+              327,
+              293
+            ],
+            [
+              279,
+              314
+            ],
+            [
+              230,
+              331
+            ],
+            [
+              222,
+              285
+            ],
+            [
+              186,
+              278
+            ],
+            [
+              183,
+              216
+            ],
+            [
+              214,
+              190
+            ],
+            [
+              236,
+              154
+            ]
+          ]
+        },
+        {
+          "character": "fairy-mascot",
+          "feather": 4,
+          "polygon": [
+            [
+              493,
+              108
+            ],
+            [
+              657,
+              108
+            ],
+            [
+              657,
+              341
+            ],
+            [
+              493,
+              341
+            ]
+          ],
+          "characterPolygon": [
+            [
+              548,
+              120
+            ],
+            [
+              623,
+              125
+            ],
+            [
+              647,
+              153
+            ],
+            [
+              623,
+              192
+            ],
+            [
+              648,
+              217
+            ],
+            [
+              650,
+              245
+            ],
+            [
+              619,
+              246
+            ],
+            [
+              631,
+              277
+            ],
+            [
+              650,
+              313
+            ],
+            [
+              631,
+              337
+            ],
+            [
+              601,
+              315
+            ],
+            [
+              579,
+              283
+            ],
+            [
+              546,
+              304
+            ],
+            [
+              521,
+              326
+            ],
+            [
+              500,
+              314
+            ],
+            [
+              522,
+              264
+            ],
+            [
+              526,
+              235
+            ],
+            [
+              506,
+              188
+            ],
+            [
+              508,
+              165
+            ],
+            [
+              538,
+              176
+            ]
+          ]
+        },
+        {
+          "character": "nukonuko-mascot",
+          "feather": 4,
+          "polygon": [
+            [
+              626,
+              111
+            ],
+            [
+              802,
+              111
+            ],
+            [
+              802,
+              340
+            ],
+            [
+              626,
+              340
+            ]
+          ],
+          "characterPolygon": [
+            [
+              685,
+              123
+            ],
+            [
+              770,
+              127
+            ],
+            [
+              795,
+              174
+            ],
+            [
+              776,
+              204
+            ],
+            [
+              776,
+              224
+            ],
+            [
+              790,
+              236
+            ],
+            [
+              774,
+              257
+            ],
+            [
+              768,
+              286
+            ],
+            [
+              787,
+              319
+            ],
+            [
+              762,
+              335
+            ],
+            [
+              717,
+              299
+            ],
+            [
+              693,
+              325
+            ],
+            [
+              668,
+              330
+            ],
+            [
+              656,
+              311
+            ],
+            [
+              674,
+              269
+            ],
+            [
+              654,
+              249
+            ],
+            [
+              633,
+              214
+            ],
+            [
+              654,
+              186
+            ]
+          ]
+        },
+        {
+          "character": "sagasa-mascot",
+          "feather": 4,
+          "polygon": [
+            [
+              753,
+              111
+            ],
+            [
+              918,
+              111
+            ],
+            [
+              918,
+              341
+            ],
+            [
+              753,
+              341
+            ]
+          ],
+          "characterPolygon": [
+            [
+              803,
+              123
+            ],
+            [
+              865,
+              127
+            ],
+            [
+              892,
+              167
+            ],
+            [
+              880,
+              194
+            ],
+            [
+              900,
+              211
+            ],
+            [
+              910,
+              235
+            ],
+            [
+              881,
+              244
+            ],
+            [
+              880,
+              278
+            ],
+            [
+              911,
+              314
+            ],
+            [
+              881,
+              337
+            ],
+            [
+              853,
+              316
+            ],
+            [
+              825,
+              276
+            ],
+            [
+              799,
+              308
+            ],
+            [
+              777,
+              311
+            ],
+            [
+              766,
+              286
+            ],
+            [
+              794,
+              252
+            ],
+            [
+              772,
+              246
+            ],
+            [
+              760,
+              222
+            ],
+            [
+              781,
+              206
+            ],
+            [
+              779,
+              171
+            ]
+          ]
+        }
+      ]
+    },
+    "friendsRiver": {
+      "entry": "mascotPigments.friendsRiver",
+      "original": {
+        "source": "assets/camp-cave/source/friends-river-lascaux-r35.png",
+        "url": "/models/camp-cave/friends-river-lascaux-r35.opt-7eb5d96e7f0afd5a.png",
+        "sha256": "7eb5d96e7f0afd5a063e711860fa41cfe00739f205cf8a029b1813bd2d47dec1",
+        "bytes": 482100,
+        "image": {
+          "width": 1024,
+          "height": 341
+        },
+        "generator": "Codex CLI 0.162.0-alpha.2 built-in image_gen (configured default model)",
+        "prompt": "assets/camp-cave/friends-river-lascaux-prompt-r35.txt",
+        "subjects": [
+          "otani-mascot",
+          "urata-mascot",
+          "howkey-scientist",
+          "rei-mascot"
+        ],
+        "animals": [
+          "aurochs",
+          "bison",
+          "wild horse"
+        ],
+        "references": [
+          {
+            "path": "assets/friend-mascots/otani-mascot/source/reference-v1.png",
+            "sha256": "e6ac386f6f560e0eeca784441715c2962e8e4986312bf21142ca2d71dc568639"
+          },
+          {
+            "path": "assets/friend-mascots/urata-mascot/source/reference-v1.png",
+            "sha256": "cbba1e464914d8f51f7b537b4b2bac9817ce08c7445e2583acb2b13669be9c88"
+          },
+          {
+            "path": "public/models/howkey-scientist/portrait.png",
+            "sha256": "62f60254e41ef1cab392847f976d91d91df00850bfb178db0d3130f85d17020c"
+          },
+          {
+            "path": "assets/friend-mascots/rei-mascot/source/reference-v1.png",
+            "sha256": "3f47898c4e427b94af22a441f7decf3898327d59dd9030301aa5bf88915f8b57"
+          },
+          {
+            "path": "assets/camp-cave/source/friends-river-lascaux-r34.png",
+            "sha256": "faad98ddff2b01878a34cb0bbbbf83021c1b84a8a452f0ecc95d87900d2cf684"
+          },
+          {
+            "path": "public/models/camp-cave/mae-kohaku-lascaux-r31.png",
+            "sha256": "f67ea277c3d42c93877139b44150ee6fddbb2eb41854418ea09ac4bd40eed732"
+          }
+        ],
+        "application": "5 m wide west-wall frieze replacing the lone bison: the Otani duck, Urata, Howkey with her Erlenmeyer flask and Rei-chan with a book among an aurochs, a bison and a horse (r35 repaints r34 to add Rei). Unmodified transparent PNG projected onto the original limestone triangles.",
+        "review": "assets/camp-cave/qa/gallery-surfaces-r35.json",
+        "uvSource": {
+          "width": 2172,
+          "height": 724
+        },
+        "provenance": {
+          "runtimeOptimization": {
+            "adoption": "20261010-r07-a01",
+            "candidateRevision": "assets/optimized-runtime/20261010-r06",
+            "original": {
+              "url": "/models/camp-cave/friends-river-lascaux-r35.png",
+              "sha256": "fb4fead40844b3ca672b191e2771e6e3904f88a28964e4249f4b6bb57996f04c",
+              "bytes": 2119578,
+              "image": {
+                "width": 2172,
+                "height": 724
+              }
+            },
+            "adoptedBy": "20261010-r06-a02",
+            "supersedes": {
+              "adoption": "20261009-r04-a01",
+              "candidateRevision": "assets/optimized-runtime/20261009-r04",
+              "url": "/models/camp-cave/friends-river-lascaux-r35.opt-62aa0628be8c4b05.png",
+              "sha256": "62aa0628be8c4b054a17b571ea8efa35c9f9d6f619e93f7a1c756e49f07e84a8",
+              "bytes": 487174
+            }
+          }
+        }
+      },
+      "source": {
+        "path": "assets/camp-cave/modular-r36/friendsRiver-animals-source.png",
+        "bytes": 1830026,
+        "sha256": "b028758a00313309f7813f97dfd305c705fe63f6cd6ecf16806a37e7d9e93cc6",
+        "image": {
+          "width": 2170,
+          "height": 725
+        }
+      },
+      "animals": {
+        "path": "assets/camp-cave/modular-r36/friendsRiver-animals.png",
+        "bytes": 467947,
+        "sha256": "2d869f68bc7f527638d61bab91c2ed91b2cc6b0b4b71d450172b5fc7626ce5a2",
+        "image": {
+          "width": 1024,
+          "height": 341
+        }
+      },
+      "slots": [
+        {
+          "character": "otani-mascot",
+          "feather": 4,
+          "polygon": [
+            [
+              167,
+              124
+            ],
+            [
+              333,
+              124
+            ],
+            [
+              333,
+              308
+            ],
+            [
+              167,
+              308
+            ]
+          ],
+          "characterPolygon": [
+            [
+              184,
+              137
+            ],
+            [
+              281,
+              136
+            ],
+            [
+              324,
+              170
+            ],
+            [
+              318,
+              196
+            ],
+            [
+              326,
+              210
+            ],
+            [
+              316,
+              244
+            ],
+            [
+              323,
+              294
+            ],
+            [
+              280,
+              303
+            ],
+            [
+              245,
+              278
+            ],
+            [
+              218,
+              299
+            ],
+            [
+              183,
+              290
+            ],
+            [
+              192,
+              245
+            ],
+            [
+              174,
+              207
+            ]
+          ]
+        },
+        {
+          "character": "urata-mascot",
+          "feather": 4,
+          "polygon": [
+            [
+              291,
+              111
+            ],
+            [
+              497,
+              111
+            ],
+            [
+              497,
+              309
+            ],
+            [
+              291,
+              309
+            ]
+          ],
+          "characterPolygon": [
+            [
+              351,
+              128
+            ],
+            [
+              419,
+              123
+            ],
+            [
+              453,
+              145
+            ],
+            [
+              451,
+              183
+            ],
+            [
+              484,
+              188
+            ],
+            [
+              490,
+              218
+            ],
+            [
+              448,
+              243
+            ],
+            [
+              458,
+              259
+            ],
+            [
+              470,
+              284
+            ],
+            [
+              445,
+              304
+            ],
+            [
+              406,
+              273
+            ],
+            [
+              384,
+              288
+            ],
+            [
+              348,
+              291
+            ],
+            [
+              298,
+              283
+            ],
+            [
+              305,
+              259
+            ],
+            [
+              353,
+              251
+            ],
+            [
+              346,
+              228
+            ],
+            [
+              318,
+              211
+            ],
+            [
+              312,
+              194
+            ],
+            [
+              334,
+              188
+            ],
+            [
+              327,
+              159
+            ]
+          ]
+        },
+        {
+          "character": "howkey-scientist",
+          "feather": 4,
+          "polygon": [
+            [
+              551,
+              124
+            ],
+            [
+              743,
+              124
+            ],
+            [
+              743,
+              324
+            ],
+            [
+              551,
+              324
+            ]
+          ],
+          "characterPolygon": [
+            [
+              614,
+              136
+            ],
+            [
+              671,
+              138
+            ],
+            [
+              686,
+              161
+            ],
+            [
+              701,
+              149
+            ],
+            [
+              723,
+              145
+            ],
+            [
+              736,
+              194
+            ],
+            [
+              716,
+              211
+            ],
+            [
+              688,
+              207
+            ],
+            [
+              678,
+              230
+            ],
+            [
+              705,
+              270
+            ],
+            [
+              720,
+              292
+            ],
+            [
+              695,
+              319
+            ],
+            [
+              655,
+              293
+            ],
+            [
+              633,
+              273
+            ],
+            [
+              610,
+              299
+            ],
+            [
+              577,
+              310
+            ],
+            [
+              558,
+              290
+            ],
+            [
+              580,
+              270
+            ],
+            [
+              591,
+              224
+            ],
+            [
+              571,
+              208
+            ],
+            [
+              581,
+              187
+            ]
+          ]
+        },
+        {
+          "character": "rei-mascot",
+          "feather": 4,
+          "polygon": [
+            [
+              700,
+              107
+            ],
+            [
+              886,
+              107
+            ],
+            [
+              886,
+              338
+            ],
+            [
+              700,
+              338
+            ]
+          ],
+          "characterPolygon": [
+            [
+              759,
+              119
+            ],
+            [
+              808,
+              120
+            ],
+            [
+              840,
+              148
+            ],
+            [
+              841,
+              185
+            ],
+            [
+              826,
+              215
+            ],
+            [
+              853,
+              214
+            ],
+            [
+              879,
+              225
+            ],
+            [
+              873,
+              257
+            ],
+            [
+              844,
+              265
+            ],
+            [
+              867,
+              294
+            ],
+            [
+              863,
+              321
+            ],
+            [
+              837,
+              333
+            ],
+            [
+              800,
+              291
+            ],
+            [
+              782,
+              269
+            ],
+            [
+              759,
+              302
+            ],
+            [
+              729,
+              318
+            ],
+            [
+              707,
+              294
+            ],
+            [
+              731,
+              258
+            ],
+            [
+              711,
+              242
+            ],
+            [
+              715,
+              212
+            ],
+            [
+              734,
+              169
+            ]
+          ]
+        }
+      ]
+    },
+    "creature524": {
+      "entry": "characterPigment",
+      "original": {
+        "source": "assets/camp-cave/source/524-lascaux-frieze-r32.png",
+        "url": "/models/camp-cave/524-lascaux-frieze-r32.opt-2f9a4a74cb9c0e9d.png",
+        "sha256": "2f9a4a74cb9c0e9d3a94cf394a3b843655a273690b94dbb1d9c406fb40da3c51",
+        "bytes": 560426,
+        "image": {
+          "width": 1024,
+          "height": 341
+        },
+        "generator": "Built-in imagegen",
+        "prompt": "assets/camp-cave/524-lascaux-prompt-r32.txt",
+        "references": [
+          {
+            "path": "assets/camp-cave/source/character-524-mural-r06.png",
+            "sha256": "9fc9d9d635989a1e928a5ccdac2a7ed3889a1442930ff07f8503c7d2832fd071"
+          },
+          {
+            "path": "assets/camp-cave/source/rimo-lascaux-frieze-r30.png",
+            "sha256": "b750045fda524816577747197874d173d41161e2b55d9acfe772a8f37f8d01df"
+          },
+          {
+            "path": "assets/camp-cave/source/character-524-reference-user.png",
+            "sha256": "8231914f43d9e8454823a923c8004df44c0bad1ee1aec9e2f140493d5f2af273"
+          }
+        ],
+        "subjects": [
+          "524",
+          "woolly mammoth",
+          "ochre wild horse",
+          "red wild horse",
+          "aurochs"
+        ],
+        "application": "One 7.5 m wide transparent mineral-pigment frieze on the west wall opposite Rimo. The small floating 524 shares muted ochre, charcoal, worn edges and overlapping animal composition. Direct projection on original limestone triangles; no extra geometry or backing.",
+        "review": "assets/camp-cave/qa/gallery-surfaces-r32.json",
+        "uvSource": {
+          "width": 2171,
+          "height": 724
+        },
+        "provenance": {
+          "runtimeOptimization": {
+            "adoption": "20261010-r07-a01",
+            "candidateRevision": "assets/optimized-runtime/20261010-r06",
+            "original": {
+              "url": "/models/camp-cave/524-lascaux-frieze-r32.png",
+              "sha256": "5fc419d77d0155133b0f231a07ad80a03c78ed99850ced492f79108bea5a765a",
+              "bytes": 2355756,
+              "image": {
+                "width": 2171,
+                "height": 724
+              }
+            },
+            "adoptedBy": "20261010-r06-a02",
+            "supersedes": {
+              "adoption": "20261009-r04-a01",
+              "candidateRevision": "assets/optimized-runtime/20261009-r04",
+              "url": "/models/camp-cave/524-lascaux-frieze-r32.opt-78de0e1c4a23835d.png",
+              "sha256": "78de0e1c4a23835dc5b0b95a6a8bd08d8a5cba27a9a50bad5552e3386e5f564c",
+              "bytes": 565002
+            }
+          }
+        }
+      },
+      "source": {
+        "path": "assets/camp-cave/modular-r36/creature524-animals-source.png",
+        "bytes": 2359079,
+        "sha256": "0d129a4142407e7396cb2f194b68dc4c70307db6f7610e4cc40e754414bd0212",
+        "image": {
+          "width": 2170,
+          "height": 725
+        }
+      },
+      "animals": {
+        "path": "assets/camp-cave/modular-r36/creature524-animals.png",
+        "bytes": 590396,
+        "sha256": "e79c99b78872015b39605abd4471e410f8edd85e1b302e7914a186345a31663f",
+        "image": {
+          "width": 1024,
+          "height": 341
+        }
+      },
+      "slots": [
+        {
+          "character": "524",
+          "feather": 4,
+          "polygon": [
+            [
+              479,
+              128
+            ],
+            [
+              639,
+              128
+            ],
+            [
+              639,
+              315
+            ],
+            [
+              479,
+              315
+            ]
+          ],
+          "characterPolygon": [
+            [
+              513,
+              145
+            ],
+            [
+              590,
+              140
+            ],
+            [
+              613,
+              177
+            ],
+            [
+              632,
+              212
+            ],
+            [
+              626,
+              261
+            ],
+            [
+              627,
+              299
+            ],
+            [
+              587,
+              310
+            ],
+            [
+              572,
+              286
+            ],
+            [
+              522,
+              288
+            ],
+            [
+              490,
+              257
+            ],
+            [
+              486,
+              207
+            ]
+          ]
+        }
+      ]
+    },
+    "rimoFrieze": {
+      "entry": "rimoPigment",
+      "original": {
+        "source": "assets/camp-cave/source/rimo-lascaux-frieze-r30.png",
+        "url": "/models/camp-cave/rimo-lascaux-frieze-r30.opt-8a2acbfbfaa6d2c2.png",
+        "sha256": "8a2acbfbfaa6d2c22c83e38cda85615a4da7064b52e3231f7b8a83bcc890ec25",
+        "bytes": 560138,
+        "image": {
+          "width": 1024,
+          "height": 341
+        },
+        "generator": "Built-in imagegen",
+        "prompt": "assets/camp-cave/rimo-lascaux-prompt-r30.txt",
+        "reference": {
+          "path": "assets/rimo-neko/source/user-reference.jpg",
+          "sha256": "3a0ebdfadbb383d170318a0cd4d3cb9540ccb113822bc0a44836dfcaeeebdf41"
+        },
+        "styleReference": "assets/camp-cave/source/mural-atlas-r05.png",
+        "subjects": [
+          "Rimo-neko",
+          "ochre wild horse",
+          "red wild horse",
+          "aurochs",
+          "red deer"
+        ],
+        "application": "One 7.5 x 2.5 m transparent pigment frieze on the east wall, centred at local Z -21.2 opposite the existing 524. Direct projection on the existing limestone, no decal plane or opaque backing.",
+        "review": "assets/camp-cave/qa/gallery-r30.json",
+        "uvSource": {
+          "width": 2172,
+          "height": 724
+        },
+        "provenance": {
+          "runtimeOptimization": {
+            "adoption": "20261010-r07-a01",
+            "candidateRevision": "assets/optimized-runtime/20261010-r06",
+            "original": {
+              "url": "/models/camp-cave/rimo-lascaux-frieze-r30.png",
+              "sha256": "b750045fda524816577747197874d173d41161e2b55d9acfe772a8f37f8d01df",
+              "bytes": 2272546,
+              "image": {
+                "width": 2172,
+                "height": 724
+              }
+            },
+            "adoptedBy": "20261010-r06-a02",
+            "supersedes": {
+              "adoption": "20261009-r04-a01",
+              "candidateRevision": "assets/optimized-runtime/20261009-r04",
+              "url": "/models/camp-cave/rimo-lascaux-frieze-r30.opt-65fa961cf8b88827.png",
+              "sha256": "65fa961cf8b888270eeb3f7bbeb93fc454a89139a06a456fd14a4efd2fed02b2",
+              "bytes": 560607
+            }
+          }
+        }
+      },
+      "source": {
+        "path": "assets/camp-cave/modular-r36/rimoFrieze-animals-source.png",
+        "bytes": 2099923,
+        "sha256": "14e0caab0d70f847f0be4c57aa7ee7116f9cae723e9df92a4f4d7f824ca18dce",
+        "image": {
+          "width": 2163,
+          "height": 727
+        }
+      },
+      "animals": {
+        "path": "assets/camp-cave/modular-r36/rimoFrieze-animals.png",
+        "bytes": 538446,
+        "sha256": "7717295993fb4fc68704ab44aacb1cc8f23020908f3287ea06cfbe51e914c756",
+        "image": {
+          "width": 1024,
+          "height": 341
+        }
+      },
+      "slots": [
+        {
+          "character": "rimo-neko",
+          "feather": 4,
+          "polygon": [
+            [
+              368,
+              59
+            ],
+            [
+              622,
+              59
+            ],
+            [
+              622,
+              340
+            ],
+            [
+              368,
+              340
+            ]
+          ],
+          "characterPolygon": [
+            [
+              433,
+              72
+            ],
+            [
+              535,
+              71
+            ],
+            [
+              561,
+              134
+            ],
+            [
+              594,
+              135
+            ],
+            [
+              615,
+              172
+            ],
+            [
+              603,
+              214
+            ],
+            [
+              598,
+              263
+            ],
+            [
+              612,
+              321
+            ],
+            [
+              552,
+              335
+            ],
+            [
+              419,
+              332
+            ],
+            [
+              377,
+              309
+            ],
+            [
+              375,
+              250
+            ],
+            [
+              407,
+              213
+            ],
+            [
+              436,
+              220
+            ],
+            [
+              432,
+              182
+            ],
+            [
+              425,
+              129
+            ]
+          ]
+        }
+      ]
+    },
+    "daredaroFrieze": {
+      "entry": "mascotPigments.daredaroFrieze",
+      "original": {
+        "url": "/models/camp-cave/daredaro-lascaux-r37.png",
+        "subjects": [
+          "daredaro"
+        ],
+        "source": "assets/camp-cave/source/daredaro-lascaux-r37-1024.png",
+        "sha256": "672fd8d9ed8de4d9364bf895be3c1f7a4ec1dda9e3d5e0841dadd10c9259fbc1",
+        "bytes": 545811,
+        "image": {
+          "width": 1024,
+          "height": 341
+        },
+        "generator": "Codex CLI 0.162.0-alpha.17.2 built-in image_gen (gpt-5.6-sol, reasoning medium)",
+        "prompt": "assets/camp-cave/daredaro-lascaux-prompt-r37.txt",
+        "animals": [
+          "woolly rhinoceros",
+          "reindeer",
+          "ibex"
+        ],
+        "references": [
+          {
+            "path": "assets/camp-cave/source/daredaro-reference-user.png",
+            "sha256": "857463e4e35ea8a8ee88c3d44190bf565ab3043087f7b71e4f0b46aa6cfad727"
+          },
+          {
+            "path": "public/models/camp-cave/mae-kohaku-lascaux-r31.png",
+            "sha256": "f67ea277c3d42c93877139b44150ee6fddbb2eb41854418ea09ac4bd40eed732"
+          }
+        ],
+        "application": "Gallery r37: 7.5 m wide east-wall procession on the bay the deepened gallery added (local Z -37.0, Y 1.4, strength 0.84), projected onto the retained limestone triangles. Individual characters can be exchanged for matching animal pigment through the offline modular-r37 recipe.",
+        "review": "assets/camp-cave/qa/gallery-surfaces-r37.json",
+        "generated": {
+          "path": "assets/camp-cave/source/daredaro-lascaux-r37.png",
+          "bytes": 2326615,
+          "sha256": "51810bdee3343dddab128950d00e2a4b75deed00609d987d85e2004bfbc7c225",
+          "image": {
+            "width": 2172,
+            "height": 724
+          },
+          "resize": "whole image, Lanczos-3, 2172x724 to 1024x341 (sharp)"
+        }
+      },
+      "source": {
+        "path": "assets/camp-cave/modular-r37/daredaroFrieze-animals-source.png",
+        "bytes": 1956511,
+        "sha256": "9d9cdedbfeaeeffe99ff548a592e38709735883d5e57a19982d46d8a0f8020cc",
+        "image": {
+          "width": 2170,
+          "height": 725
+        }
+      },
+      "animals": {
+        "path": "assets/camp-cave/modular-r37/daredaroFrieze-animals.png",
+        "bytes": 505644,
+        "sha256": "443be71398fee8aa51c3f264743e9ae5f08cbae88a5a4015f71f6aa1e753a5a1",
+        "image": {
+          "width": 1024,
+          "height": 341
+        }
+      },
+      "slots": [
+        {
+          "character": "daredaro",
+          "feather": 4,
+          "polygon": [
+            [
+              390,
+              60
+            ],
+            [
+              560,
+              60
+            ],
+            [
+              560,
+              332
+            ],
+            [
+              390,
+              332
+            ]
+          ],
+          "characterPolygon": [
+            [
+              418,
+              66
+            ],
+            [
+              527,
+              66
+            ],
+            [
+              550,
+              108
+            ],
+            [
+              549,
+              196
+            ],
+            [
+              522,
+              210
+            ],
+            [
+              527,
+              320
+            ],
+            [
+              436,
+              320
+            ],
+            [
+              440,
+              210
+            ],
+            [
+              398,
+              192
+            ],
+            [
+              396,
+              110
+            ]
+          ]
+        }
+      ]
+    }
+  }
+}

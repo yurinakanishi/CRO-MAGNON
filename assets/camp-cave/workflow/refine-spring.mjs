@@ -6,7 +6,10 @@ import * as THREE from 'three';
 import { decodeDocument, packCandidate } from '../../../scripts/optimization/guarded/document.mjs';
 import { accessorElements, sha256 } from '../../../scripts/optimization/glb.mjs';
 import { caveCentreOffset } from '../../../dist/shared/camp-cave-layout.mjs';
-import { CAVE_SPRING, caveSpringRadius } from '../../../dist/shared/cave-spring.mjs';
+import {
+  CAVE_SPRING_R27 as CAVE_SPRING,
+  caveSpringRadius,
+} from '../../../dist/shared/cave-spring.mjs';
 
 const revision = process.argv[2] ?? 'r27';
 assert.match(revision, /^r27(?:-[a-z0-9]+)?$/);
@@ -76,7 +79,7 @@ for (let i = 0; i < count; i++) {
   }
   // Sculpt the existing lower shell into a shallow, irregular stone basin.
   // The water's contour shares the same radial definition. No raised circular rim.
-  const radius = caveSpringRadius(x, z);
+  const radius = caveSpringRadius(x, z, CAVE_SPRING);
   if (radius < 1.28 && y < 2.75) {
     const edge = smooth(0.66, 1.22, radius);
     const bed = CAVE_SPRING.bottomY + (1.12 - CAVE_SPRING.bottomY) * edge;

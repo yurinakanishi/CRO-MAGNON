@@ -5,7 +5,7 @@ import { fileURLToPath } from 'node:url';
 import { mkdir, realpath } from 'node:fs/promises';
 import { WebSocketServer } from 'ws';
 import { createGameCore } from './application/game-core.mjs';
-import { MIME, serveStatic } from './infrastructure/node/static-files.mjs';
+import { MIME, sendFailure, serveStatic } from './infrastructure/node/static-files.mjs';
 import {
   type DeliveryOverlay,
   readDeliveryOverlay,
@@ -132,9 +132,7 @@ export function createGameServer({
         await serveStatic(request, response, url.pathname, assetRoot, core.visibility, delivery);
       else response.writeHead(404).end('Multiplayer synchronization only. Use your local client.');
     } catch (error) {
-      response
-        .writeHead(error.code === 'ENOENT' || error.code === 'ENOTDIR' ? 404 : 400)
-        .end('Not found');
+      sendFailure(response, error);
     }
   });
   const wss = new WebSocketServer({ noServer: true, maxPayload: 2048, perMessageDeflate: false });

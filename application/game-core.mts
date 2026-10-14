@@ -76,6 +76,7 @@ import { decodeCommand } from './protocol.mjs';
 import { activeMapPins, MAP_PIN_COOLDOWN_MS, MAP_PIN_LIFETIME_MS } from '../shared/map-pins.mjs';
 import { locationName } from '../shared/paleo-geography.mjs';
 import { snapshot as createSnapshot } from './snapshot.mjs';
+import { IDLE_TIMEOUT_MS, IDLE_CLOSE_CODE, IDLE_MESSAGE } from '../shared/player-inactivity.mjs';
 const COLORS = ['#e4ac65', '#87b899', '#b49cd2', '#76a7c3', '#ce8c8b'];
 const cleanText = (value, max) =>
   typeof value === 'string'
@@ -423,6 +424,7 @@ export function createGameCore({
       lastInput: 0,
       lastAction: 0,
       lastChat: 0,
+      lastActivityAt: now,
       jumpAt: 0,
       jumpSequence: 0,
       // A reconnection arrives standing; any slide from before it is over.
@@ -483,6 +485,18 @@ export function createGameCore({
       player.tokens -= 1;
       const message = decodeCommand(data.toString());
       if (!message) return;
+      // Heartbeats and automatic stop/cancel frames do not prove someone is playing.
+      if (
+        message.type !== 'ping' &&
+        message.type !== 'leave' &&
+        (message.type !== 'move' ||
+          Math.hypot(message.dx, message.dz) > 0.01 ||
+          (message.facing !== undefined && message.facing !== player.facing)) &&
+        (message.type !== 'action' ||
+          !['cancelBotThrows', 'cancelFishing', 'cancelCoastal'].includes(message.action))
+      )
+        player.lastActivityAt = now;
+      if (message.type === 'activity') return;
       if (message.type === 'mapPin' || message.type === 'clearMapPin') {
         room.mapPins = activeMapPins(room, now);
         if (
@@ -715,6 +729,13 @@ export function createGameCore({
         continue;
       }
       for (const player of room.players.values()) {
+        if (player.socket.readyState !== 1) continue;
+        if (now - player.lastActivityAt >= IDLE_TIMEOUT_MS) {
+          send(player.socket, { type: 'error', code: 'IDLE_TIMEOUT', text: IDLE_MESSAGE });
+          // Use the ordinary disconnect path so possessions and resume tokens survive.
+          player.socket.close(IDLE_CLOSE_CODE, 'Idle timeout');
+          continue;
+        }
         const dynamic = [...room.players.values()]
           .filter((p) => p !== player && !p.carrierId)
           .concat(
@@ -862,6 +883,7 @@ export function createGameCore({
             (key, value) =>
               [
                 'socket',
+                'lastActivityAt',
                 'lastMapPinAt',
                 'lastIntroAt',
                 'lastDyeAt',

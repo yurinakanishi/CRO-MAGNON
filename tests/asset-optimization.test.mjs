@@ -45,7 +45,10 @@ import {
   prepareSourceSimplifier,
   simplifySourcePrimitive,
 } from '../scripts/optimization/source-simplify.mjs';
-import { planStandaloneImages } from '../scripts/optimization/standalone-images.mjs';
+import {
+  extrasAddedSince,
+  planStandaloneImages,
+} from '../scripts/optimization/standalone-images.mjs';
 import { STARTUP_TOLERANCE, buildStartupActor } from '../scripts/optimization/startup-actor.mjs';
 import {
   applyTextures,
@@ -3303,6 +3306,87 @@ test('standalone cave textures come only from configured, audited runtime entrie
   }
 });
 
+test('an audit re-plans the adopted cave images without a frieze the runtime gained later, once it is served unadopted within the edge', async () => {
+  const root = await mkdtemp(path.join(os.tmpdir(), 'cro-cave-added-'));
+  try {
+    // Saved before the adoption: friezeA only. Today the runtime and both manifests add friezeB.
+    const images = {
+        ...caveImages(),
+        'frieze-b.png': encodePng(400, 100, 4, (x) => [90, 40, 20, x % 2 ? 255 : 0]),
+        'frieze-big.png': encodePng(700, 200, 4, () => [90, 40, 20, 255]),
+      },
+      saved = caveAsset(images),
+      added = (name = 'frieze-b.png', extra = {}) => ({
+        ...saved,
+        mascotPigments: {
+          ...saved.mascotPigments,
+          friezeB: { ...caveRecord(images, name), ...extra },
+        },
+      }),
+      layout = (url = '/models/camp-cave/frieze-b.png') =>
+        caveLayoutText({
+          extra: `\n  friezeB: { url: '${url}', subjects: ['someone else'] },`,
+        }).replace(
+          'friezeA: [0, 0, 600, 200],',
+          'friezeA: [0, 0, 600, 200],\n  friezeB: [0, 0, 400, 100],',
+        ),
+      readSaved = async (relative) =>
+        Buffer.from(
+          JSON.stringify(relative.endsWith('world-assets.json') ? { assets: [saved] } : saved),
+        );
+    await writeCaveFixture(root, { images, asset: added(), layout: layout() });
+    const proof = await extrasAddedSince(root, saved, 512);
+    assert.deepEqual(proof, { keys: ['friezeB'], problems: [] });
+    // Its motif is left out with it, never measured against an image the re-plan does not load.
+    const plan = await planStandaloneImages(
+      root,
+      caveContext({ readManifest: readSaved, added: proof.keys }),
+    );
+    assert.deepEqual(
+      plan.images.map((item) => item.id),
+      [
+        'image:/models/camp-cave/mural-atlas.png',
+        'image:/models/camp-cave/limestone.png',
+        'image:/models/camp-cave/frieze-a.png',
+      ],
+      'the adopted images are re-planned as before; the later frieze is not',
+    );
+    assert.deepEqual(plan.added, ['friezeB']);
+    // Without the proof the saved manifests and today's runtime disagree, as before.
+    await assert.rejects(
+      planStandaloneImages(root, caveContext({ readManifest: readSaved })),
+      /CAVE_EXTRA_PIGMENTS \(friezeA, friezeB\) and .* mascotPigments \(friezeA\) differ/,
+    );
+    // Only an entry the saved manifests lack can be left out.
+    await assert.rejects(
+      planStandaloneImages(root, caveContext({ readManifest: readSaved, added: ['friezeA'] })),
+      /CAVE_EXTRA_PIGMENTS\.friezeA is not an entry the runtime gained/,
+    );
+    // A later frieze that needs a resize, claims an adoption or disagrees is a problem.
+    for (const [variant, pattern] of [
+      [
+        { asset: added('frieze-big.png'), layout: layout('/models/camp-cave/frieze-big.png') },
+        /700x200 exceeds the 512 px edge/,
+      ],
+      [
+        { asset: added('frieze-b.png', { uvSource: { width: 800, height: 200 } }) },
+        /added after the adoption, yet recorded as adopted/,
+      ],
+      [{ layout: layout('/models/camp-cave/frieze-a.png') }, /CAVE_EXTRA_PIGMENTS\.friezeB names/],
+      [{ catalogAsset: saved }, /world-assets\.json camp-cave mascotPigments\.friezeB: needs url/],
+    ]) {
+      const options = { images, asset: added(), layout: layout(), ...variant };
+      await writeCaveFixture(root, { catalogAsset: options.asset, ...options });
+      const { keys, problems } = await extrasAddedSince(root, saved, 512);
+      assert.deepEqual(keys, ['friezeB']);
+      assert.equal(problems.length, 1, String(pattern));
+      assert.match(problems[0], pattern);
+    }
+  } finally {
+    await rm(root, { recursive: true, force: true });
+  }
+});
+
 // The verified loader (loadCaveTextures → caveImageRecords → caveMuralImages) in miniature, in
 // the shape of src/verified-texture.ts today: the settings are built inside the map callback,
 // from a `const repeat`.
@@ -3558,9 +3642,10 @@ test('a standalone texture candidate must be exactly the planned whole-image res
   }
 });
 
-// The real configuration, read-only and hash-checked: exactly the ten images the cave loads.
+// The real configuration, read-only and hash-checked: exactly the ten images the adoption planned.
 // Once an adoption is applied, the manifests name the candidates. The sources then come from that
-// adoption's saved pre-apply bytes, never from the rewritten records.
+// adoption's saved pre-apply bytes, never from the rewritten records; a frieze the runtime gained
+// later is served unadopted within the edge and left out of the re-plan (extrasAddedSince).
 /** The adoption whose before/ holds the pre-adoption manifests: `id` itself, or for a chained
  * adoption (`plan.base`) its base, followed by the plan hashes each chain recorded. */
 async function preAdoptionRecord(id) {
@@ -3575,7 +3660,7 @@ async function preAdoptionRecord(id) {
   return preAdoptionRecord(plan.base.adoption);
 }
 
-test('the current camp-cave plan covers the ten runtime textures with their audited hashes and source UV sizes', async (t) => {
+test('the current camp-cave plan covers the ten adopted runtime textures with their audited hashes and source UV sizes', async (t) => {
   const current = JSON.parse(
       await readFile(path.join(REPO_ROOT, 'public', 'models', 'camp-cave', 'asset.json'), 'utf8'),
     ),
@@ -3597,11 +3682,18 @@ test('the current camp-cave plan covers the ten runtime textures with their audi
       : undefined,
     rules = await loadEligibilityRules(REPO_ROOT),
     inventory = await buildInventory(REPO_ROOT, rules),
+    added = readManifest
+      ? await extrasAddedSince(
+          REPO_ROOT,
+          JSON.parse(await readManifest('public/models/camp-cave/asset.json')),
+          1024,
+        )
+      : { keys: [], problems: [] },
     plan = await planStandaloneImages(REPO_ROOT, {
       inventory,
       rules,
       edges: new Map([['camp-cave', 1024]]),
-      ...(readManifest ? { readManifest } : {}),
+      ...(readManifest ? { readManifest, added: added.keys } : {}),
     }),
     asset = readManifest
       ? JSON.parse(await readManifest('public/models/camp-cave/asset.json'))
@@ -3611,6 +3703,13 @@ test('the current camp-cave plan covers the ten runtime textures with their audi
       ...Object.values(asset.mascotPigments),
     ];
   assert.equal(plan.owner.eligible, true);
+  // Every later frieze is served as the current manifest records it: unadopted, at most 1024 px.
+  assert.deepEqual(added.problems, []);
+  for (const key of added.keys) {
+    const record = current.mascotPigments[key];
+    assert.equal(record.uvSource, undefined, key);
+    assert.ok(Math.max(record.image.width, record.image.height) <= 1024, key);
+  }
   // Today's runtime loads them through the verified loader, read from its actual syntax.
   assert.ok(plan.inputs.some((input) => input.path === 'src/verified-texture.ts'));
   for (const item of plan.images)

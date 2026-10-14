@@ -12,7 +12,7 @@ import { LandscapeInstances, WorldAssets } from '../dist/src/world-assets.js';
 import { LoadingCave } from '../dist/src/loading-cave.js';
 import { FrameClock } from '../dist/src/frame-clock.js';
 import { CollisionWorld } from '../dist/shared/collision.mjs';
-import { caveGalleryImages, caveImageNetwork } from './camp-cave-fixture.mjs';
+import { CAVE_IMAGE_COUNT, caveGalleryImages, caveImageNetwork } from './camp-cave-fixture.mjs';
 
 const wait = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
@@ -321,7 +321,7 @@ test('the gallery finishes preparing while the context is lost and holds no keys
   });
   let compiled = 0;
   const avatar = await createGalleryActor();
-  // The ten images pass the game's verified download and decoder; only the network
+  // The images pass the game's verified download and decoder; only the network
   // and the image element are stand-ins (camp-cave-fixture.mjs).
   const asset = caveGalleryImages(),
     network = caveImageNetwork(asset);
@@ -362,7 +362,7 @@ test('the gallery finishes preparing while the context is lost and holds no keys
   await cave.load();
   assert.equal(compiled, 0, 'compiling waits for the restored context');
   assert.equal(world.canvas.dataset.loadingCave, 'exploring');
-  assert.equal(network.images.length, 10, 'every verified image decoded while lost');
+  assert.equal(network.images.length, CAVE_IMAGE_COUNT, 'every verified image decoded while lost');
   assert.equal(network.blobs.size, 0, 'every blob URL revoked');
   // Keys held as the context is lost are forgotten, not replayed after restoration.
   cave.keys.add('w');

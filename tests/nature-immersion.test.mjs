@@ -88,7 +88,7 @@ test('every shipped sound has CC0 provenance, a measured reference level and bou
   const manifest = JSON.parse(await readFile('public/audio/nature/manifest.json'));
   let bytes = 0,
     musicBytes = 0;
-  const cues = ['fx-confirm', 'fx-discovery', 'fx-recall'];
+  const cues = ['fx-confirm', 'fx-discovery'];
   for (const item of manifest.files) {
     const data = await readFile(`public${item.url}`);
     if (item.kind === 'music') musicBytes += data.length;
@@ -117,6 +117,15 @@ test('every shipped sound has CC0 provenance, a measured reference level and bou
     assert.equal(item.channels, stereo ? 2 : 1, item.name);
     if (stereo && item.kind !== 'impulse') assert.ok(item.correlation < 0.995, item.name);
     if (item.kind === 'loop') assert.ok(item.processing.crossfade >= 2 && item.seconds >= 17);
+    // The recall whistle is lips, not a flute: mono and dry, rising then falling, and over
+    // within the 1.1 s call gesture (scripts/render-recall-whistle.py).
+    if (item.name === 'fx-recall') {
+      assert.equal(item.processing.synthesis, 'scripts/render-recall-whistle.py');
+      assert.ok(item.seconds <= 1.1, `${item.seconds}`);
+      const hz = item.processing.pitch.map((point) => point.hz);
+      const top = hz.indexOf(Math.max(...hz));
+      assert.ok(top > 0 && top < hz.length - 1 && hz.at(-1) < hz[0], hz.join());
+    }
     // Full-band recordings: nothing is muffled by the old 1.8-8 kHz low-passes.
     if (['wind', 'river', 'stream', 'waterfall', 'rain', 'fire'].includes(item.name))
       assert.ok(item.above8kHz > 0.005, `${item.name} ${item.above8kHz}`);

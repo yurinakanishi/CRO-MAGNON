@@ -117,7 +117,7 @@ export class LoadingCave {
     this.scene.add(light, light.target);
     this.overlay.id = 'loading-cave';
     this.overlay.setAttribute('aria-label', 'アプデの洞窟');
-    this.overlay.innerHTML = `<header class="loading-cave-heading"><div><h2>アプデの洞窟</h2></div><div class="loading-cave-actions">${onMurals ? '<button class="button button-outline" data-cave-murals>壁画の人</button>' : ''}<button class="button button-outline" data-cave-back>タイトルへ戻る</button></div></header>
+    this.overlay.innerHTML = `<header class="loading-cave-heading"><div><h2>アプデの洞窟</h2></div><div class="loading-cave-actions">${onMurals ? '<button class="button button-outline" data-cave-murals>壁画の人々</button>' : ''}<button class="button button-outline" data-cave-back>タイトルへ戻る</button></div></header>
       <div class="loading-cave-wait" role="status">洞窟を準備しています…</div>
       <div class="loading-cave-stick" aria-label="ドラッグして移動"><i></i><span>移動</span></div>
       <button class="button button-outline loading-cave-torch" data-cave-torch aria-pressed="true">松明を消す</button>

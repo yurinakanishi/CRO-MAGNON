@@ -79,8 +79,10 @@ const definitions = [
     id: 'amber-oasis',
     name: '琥珀のオアシス',
     kind: 'オアシス',
-    x: -160,
-    z: 416,
+    // 2026-10-14: moved off the camp mountain's expanded northern flank, which had grown under
+    // its ring, bushes and stones, to the nearest flat dry desert to the west.
+    x: -293,
+    z: 361,
     radius: 65,
     color: '#e0ba72',
     description: '砂岩の輪に囲まれた泉で、旅の疲れを癒やす。',

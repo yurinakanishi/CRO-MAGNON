@@ -704,12 +704,12 @@
       "height": 9.098231315612793,
       "status": "integrated-and-game-qa-passed",
       "geometryResolution": 1024,
-      "sha256": "f3e513c9f311ba2bafdc8ebb8a846a9de0eba15be4c1f35b302e10efbd58b75b",
+      "sha256": "932c96905891f77b766c9e668ca80f42c7f3073a4f992a559e87f4f53e770c4d",
       "triangles": 74458,
-      "delivery": "/models/camp-cave/model-r27-rounded.glb",
+      "delivery": "/models/camp-cave/model-r28-deep.glb",
       "gameQA": "output/playwright/cave-murals-20261012/game-r03/summary.json",
-      "galleryRevision": "36",
-      "revision": "27-rounded"
+      "galleryRevision": "37",
+      "revision": "28-deep"
     },
     {
       "key": "yellow-524-mascot",

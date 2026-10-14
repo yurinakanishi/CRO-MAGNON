@@ -63,7 +63,7 @@ assert.ok(files.has(`title/avatar-${TITLE_DOTS.qr}.jpg`), TITLE_DOTS.qr);
 const guestCredits = [TITLE_GUEST, TITLE_SUPPORT, ...TITLE_FRIENDS]
   .filter((person) => mascotCreditReleased(person.qr))
   .map((person) => person.qr);
-// The credits hold dormant companions back, but the update cave's 「壁画の人」 lists everyone
+// The credits hold dormant companions back, but the update cave's 「壁画の人々」 lists everyone
 // painted, so a painted friend's profile and icon ship and an unpainted dormant one's do not.
 const painted = muralPeople().map((person) => person.key);
 assert.deepEqual(

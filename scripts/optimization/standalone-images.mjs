@@ -1,5 +1,5 @@
 // Standalone runtime textures: images the game loads by URL rather than from a GLB. Today these
-// are the ten camp-cave mural, limestone and frieze PNGs. The plan is derived without executing
+// are the camp-cave mural, limestone and frieze PNGs. The plan is derived without executing
 // project code. The camp-cave manifest and its world-catalog copy give every image's audited
 // SHA-256, length and size. The TypeScript syntax trees of the runtime files say which images
 // the game loads, and how the mural shader maps them (CAVE_MOTIFS and its normalisation sizes).
@@ -590,7 +590,9 @@ function risksOf(item) {
  * maximum edge; owners missing from it (not selected) contribute nothing. `readManifest`
  * supplies the two manifests' bytes by repository path. By default they come from disk; an
  * adoption audit passes its saved pre-apply bytes instead. Images and runtime files always
- * come from disk.
+ * come from disk. `added` (an audit only) names the CAVE_EXTRA_PIGMENTS entries the runtime
+ * gained after those manifests, as extrasAddedSince proved them: they and the motifs that
+ * sample them are left out of the re-plan, and none may be in the manifests.
  */
 export async function planStandaloneImages(
   root,
@@ -601,6 +603,7 @@ export async function planStandaloneImages(
     colorFilter = 'lanczos',
     webpQuality = 90,
     readManifest = (relative) => readFile(path.join(root, ...relative.split('/'))),
+    added = [],
   },
 ) {
   const owner = inventory.models.find((model) => model.modelKey === CAVE_OWNER);
@@ -642,7 +645,14 @@ export async function planStandaloneImages(
       if (!read.extras)
         throw new Error(`${CAVE_LOADERS[index]} does not load every CAVE_EXTRA_PIGMENTS entry`);
     });
-  const extraKeys = Object.keys(extras).sort(),
+  for (const key of added)
+    if (!Object.hasOwn(extras, key) || Object.hasOwn(asset.mascotPigments ?? {}, key))
+      throw new Error(
+        `CAVE_EXTRA_PIGMENTS.${key} is not an entry the runtime gained after ${CAVE_MANIFEST}`,
+      );
+  const extraKeys = Object.keys(extras)
+      .filter((key) => !added.includes(key))
+      .sort(),
     mascotKeys = Object.keys(asset.mascotPigments ?? {}).sort();
   if (extraKeys.join() !== mascotKeys.join())
     throw new Error(
@@ -709,7 +719,7 @@ export async function planStandaloneImages(
   const motifsByImage = new Map(images.map(({ entry }) => [entry.key, []]));
   for (const [motif, rect] of Object.entries(motifs)) {
     const key = imageOfMotif(motif, extras);
-    if (key === null) continue;
+    if (key === null || added.includes(key)) continue;
     const image = images.find(({ entry }) => entry.key === key);
     if (!image)
       throw new Error(`CAVE_MOTIFS.${motif} samples ${key}, which the runtime does not load`);
@@ -818,5 +828,62 @@ export async function planStandaloneImages(
     ],
     images: planned,
     skipped,
+    ...(added.length ? { added: [...added].sort() } : {}),
   };
+}
+
+/**
+ * The CAVE_EXTRA_PIGMENTS entries the current runtime gained after `saved` (a past adoption's
+ * saved pre-apply camp-cave manifest), so that adoption's audit can re-plan its own images without
+ * them. Each must be served exactly as both current manifests record it and need no resize:
+ * named by the runtime table, never adopted (no uvSource or runtime stamp), inside the camp-cave
+ * folder, and its verified file within `edge`. Anything else is a problem. `{ keys, problems }`.
+ */
+export async function extrasAddedSince(root, saved, edge) {
+  const layout = await syntaxTree(root, CAVE_LAYOUT),
+    extras = exportedConstant(layout, 'CAVE_EXTRA_PIGMENTS'),
+    keys = Object.keys(extras)
+      .filter((key) => !Object.hasOwn(saved?.mascotPigments ?? {}, key))
+      .sort(),
+    problems = [];
+  if (!keys.length) return { keys, problems };
+  const read = async (relative) =>
+      JSON.parse(await readFile(path.join(root, ...relative.split('/')), 'utf8')),
+    asset = await read(CAVE_MANIFEST),
+    catalogAsset = (await read(CATALOG)).assets?.find((entry) => entry.modelKey === CAVE_OWNER);
+  for (const key of keys) {
+    const where = `${CAVE_MANIFEST} mascotPigments.${key}`,
+      current = asset.mascotPigments?.[key];
+    try {
+      const record = imageRecord(current, where),
+        catalogRecord = imageRecord(
+          catalogAsset?.mascotPigments?.[key],
+          `${CATALOG} ${CAVE_OWNER} mascotPigments.${key}`,
+        );
+      if (JSON.stringify(record) !== JSON.stringify(catalogRecord))
+        throw new Error(`${where} and ${CATALOG} disagree on mascotPigments.${key}`);
+      // The table names the painting; a copy composed with animals records it as its original.
+      const painted = current.provenance?.muralComposition?.original?.url ?? record.url;
+      if (extras[key]?.url !== painted)
+        throw new Error(
+          `CAVE_EXTRA_PIGMENTS.${key} names ${extras[key]?.url}, the manifest serves ${painted}`,
+        );
+      if (record.url.split('/')[2] !== CAVE_OWNER)
+        throw new Error(`${where}: ${record.url} is outside /models/${CAVE_OWNER}/`);
+      if (Object.hasOwn(current, 'uvSource') || current.provenance?.runtimeOptimization)
+        throw new Error(`${where}: added after the adoption, yet recorded as adopted`);
+      const info = sniffImage(await readVerifiedImage(root, record));
+      if (info.width !== record.width || info.height !== record.height)
+        throw new Error(
+          `${record.url} is ${info.width}x${info.height}, the manifest records ${record.width}x${record.height}`,
+        );
+      if (targetDimensions(info.width, info.height, edge).resized)
+        throw new Error(
+          `${where}: ${info.width}x${info.height} exceeds the ${edge} px edge, so it needs an adoption of its own`,
+        );
+    } catch (error) {
+      problems.push(error.message);
+    }
+  }
+  return { keys, problems };
 }

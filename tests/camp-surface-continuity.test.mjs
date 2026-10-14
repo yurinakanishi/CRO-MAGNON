@@ -18,6 +18,7 @@ import {
 import { CAMP_CAVE_SURFACE } from '../dist/shared/camp-cave-surface.mjs';
 import { walkHeight } from '../dist/shared/terrain.mjs';
 import { CAVE_MURALS } from '../dist/src/cave-gallery-layout.js';
+import { R28_DEEP, deepenedZ } from './cave-deepening.mjs';
 
 test('every exposed mountain triangle has matching ground, including former shoreline and steep flanks', async () => {
   const asset = JSON.parse(await readFile('public/models/camp-mountain/asset.json'));
@@ -60,23 +61,31 @@ test('the extended chamber retains its measured aisle and complete wall painting
     b = new THREE.Box3().setFromObject(next.scene);
   assert.ok(Math.abs(b.max.z - a.max.z) < 0.001, 'entrance moved');
   assert.ok((b.max.z - b.min.z) / (a.max.z - a.min.z) > 1.5);
+  const rounded = await geometryScene('public/models/camp-cave/model-r27-rounded.glb');
   const before = measureCaveAisle(old.scene),
+    spring = measureCaveAisle(rounded.scene, caveCentreOffset),
     after = measureCaveAisle(next.scene, caveCentreOffset),
     ratio = after.lengthMetres / before.lengthMetres;
-  // The rounded spring adds about four metres beyond the r26 gallery.
-  assert.ok(ratio > 2.2 && ratio < 2.3, `walkable length ratio ${ratio}`);
+  // The rounded spring added about four metres beyond the r26 gallery; the r28 deepening
+  // lengthens the gallery by 7.9 m, more along the bend, which curves as it goes deeper.
+  assert.ok(spring.lengthMetres / before.lengthMetres > 2.2, 'the rounded spring');
+  assert.ok(
+    after.lengthMetres - spring.lengthMetres >= R28_DEEP.constants.DELTA,
+    `deepened by ${after.lengthMetres - spring.lengthMetres} m`,
+  );
+  assert.ok(ratio > 2.6 && ratio < 2.7, `walkable length ratio ${ratio}`);
   t.diagnostic(
-    `Measured aisle: ${before.lengthMetres.toFixed(2)} m → ${after.lengthMetres.toFixed(2)} m`,
+    `Measured aisle: ${before.lengthMetres.toFixed(2)} m → ${spring.lengthMetres.toFixed(2)} m → ${after.lengthMetres.toFixed(2)} m`,
   );
   assert.ok(CAVE_MURAL_VIEW.z - (CAMP_CAVE.z - 18) > 40);
   const first = caveWorldAt(16);
   let previous = walkHeight(first.x, first.z);
-  for (let localZ = 15.9; localZ >= -31.5; localZ -= 0.1) {
+  for (let localZ = 15.9; localZ >= deepenedZ(-31.5); localZ -= 0.1) {
     const p = caveWorldAt(localZ);
     assert.ok(CAMP_CAVE_SURFACE.free(p.x, p.z, 0.76), `blocked interior ${localZ}`);
     const h = walkHeight(p.x, p.z);
     assert.ok(Math.abs(h - previous) < 0.08, `floor discontinuity ${localZ}`);
-    if (localZ >= -29.5) assert.ok(Math.abs(h - CAMP_CAVE.elevation) < 0.65);
+    if (localZ >= deepenedZ(-29.5)) assert.ok(Math.abs(h - CAMP_CAVE.elevation) < 0.65);
     else
       assert.ok(
         h >= CAMP_CAVE.elevation - 0.81 && h < CAMP_CAVE.elevation + 0.65,
@@ -84,7 +93,7 @@ test('the extended chamber retains its measured aisle and complete wall painting
       );
     previous = h;
   }
-  const end = caveWorldAt(-37.6);
+  const end = caveWorldAt(deepenedZ(-37.6));
   assert.equal(CAMP_CAVE_SURFACE.free(end.x, end.z, 0.32), false);
   for (const mural of CAVE_MURALS) {
     const entranceEdge = mural.centre + mural.width / 2,
@@ -125,6 +134,7 @@ test('both animal galleries retain a broad room and full standing height all the
     'creature524',
     'friendsMeadow',
     'friendsRiver',
+    'daredaroFrieze',
   ];
   for (const wall of ['east', 'west']) {
     const paintings = CAVE_MURALS.filter((m) => m.wall === wall);
@@ -140,12 +150,13 @@ test('both animal galleries retain a broad room and full standing height all the
             'friendsMeadow',
             'friendsRiver',
             'shapeBots',
+            'daredaroFrieze',
           ].includes(m.motif),
         )
         .map((m) => m.motif)
         .sort(),
       (wall === 'east'
-        ? ['maruimoFrieze', 'rimoFrieze', 'roundBots', 'maeKohaku']
+        ? ['maruimoFrieze', 'rimoFrieze', 'roundBots', 'maeKohaku', 'daredaroFrieze']
         : ['creature524', 'friendsMeadow', 'friendsRiver', 'shapeBots']
       ).sort(),
     );
@@ -161,6 +172,8 @@ test('the blind end shares closed seam edges with the delivered original cave wa
   const asset = JSON.parse(await readFile('public/models/camp-cave/asset.json'));
   const { scene } = await geometryScene(`public${asset.url}`);
   scene.updateMatrixWorld(true);
+  // The seam lay at local Z -24.5 until the r28 deepening stretched the gallery around it.
+  const seam = Math.fround(deepenedZ(-24.5));
   const edges = new Map();
   scene.traverse((mesh) => {
     if (!mesh.isMesh) return;
@@ -175,7 +188,7 @@ test('the blind end shares closed seam edges with the delivered original cave wa
       for (let j = 0; j < 3; j++) {
         const a = points[j],
           b = points[(j + 1) % 3];
-        if (Math.abs(a.z + 24.5) > 0.00001 || Math.abs(b.z + 24.5) > 0.00001) continue;
+        if (Math.abs(a.z - seam) > 0.00001 || Math.abs(b.z - seam) > 0.00001) continue;
         if (a.distanceTo(b) < 0.00001) continue;
         const key = [a, b]
           .map((p) =>

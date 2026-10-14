@@ -23,6 +23,7 @@ import { createGameCore } from '../dist/application/game-core.mjs';
 import { EventEmitter } from 'node:events';
 import { waterBodyFree } from '../dist/shared/boats.mjs';
 import { verifyModelSource, assertSameGeometry } from './runtime-model-identity.mjs';
+import { deepenedZ } from './cave-deepening.mjs';
 
 const R04_ADOPTION = 'assets/runtime-adoption/20261009-r04-a01';
 
@@ -194,11 +195,12 @@ test('cave walls stop walking out sideways and the roof has room over the main a
     p = { x: CAMP_CAVE.x, z: CAMP_CAVE.z - 3 };
   for (let i = 0; i < 120; i++) Object.assign(p, collision.move(p, 0.1, 0, 0.32));
   assert.ok(p.x < CAMP_CAVE.x + 6, JSON.stringify(p));
-  for (let localZ = 16; localZ >= -31.5; localZ -= 0.2) {
+  // The aisle reaches the rear chamber, which the r28 deepening carried 7.9 m back.
+  for (let localZ = 16; localZ >= deepenedZ(-31.5); localZ -= 0.2) {
     const aisle = caveWorldAt(localZ);
     assert.ok(CAMP_CAVE_SURFACE.free(aisle.x, aisle.z, 0.76), `aisle ${localZ}`);
   }
-  const blindEnd = caveWorldAt(-37.6);
+  const blindEnd = caveWorldAt(deepenedZ(-37.6));
   assert.equal(collision.free(blindEnd, 0.32), false, 'natural blind end is solid');
   for (const localZ of [-20, -25, -31]) {
     const aisle = caveWorldAt(localZ);

@@ -95,7 +95,7 @@ if (!publicCharacters.some((model) => model.species === 'cro'))
   throw new Error('Missing default public character');
 const hasOctopus = publicCharacters.some((model) => model.bodyPlan === 'octopus');
 const credits = release.credits === 'full' ? TITLE_CREDITS : TITLE_CREDITS.slice(0, 1);
-// The credits name only released companions, but the update cave's 「壁画の人」 lists
+// The credits name only released companions, but the update cave's 「壁画の人々」 lists
 // everyone painted on its walls (user instruction 2026-10-13), so their profiles ship too.
 const painted = new Set(muralPeople().map((person) => person.key));
 const friends = TITLE_FRIENDS.filter(

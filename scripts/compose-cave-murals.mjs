@@ -47,12 +47,20 @@ const [assetText, worldText] = await Promise.all([
 const asset = JSON.parse(assetText),
   world = JSON.parse(worldText);
 const report = { recipe: MURAL_RECIPE, hidden: [...hidden].sort(), panels: [] };
+// The painting a panel's served image comes from: the runtime optimization's original for the
+// eight adopted processions. A later procession serves its painting itself, which a composed
+// copy records as the composition's original.
+const fileOf = ({ url, sha256, bytes, image }) => ({ url, sha256, bytes, image });
+const baseOf = (record) =>
+  record?.provenance?.runtimeOptimization?.original ??
+  record?.provenance?.muralComposition?.original ??
+  fileOf(record);
 const writes = [];
 for (const [key, panel] of Object.entries(recipe.panels)) {
   const current = entryAt(asset, panel.entry);
   assert.equal(
-    current.provenance?.runtimeOptimization?.original.sha256,
-    panel.original.provenance.runtimeOptimization.original.sha256,
+    baseOf(current)?.sha256,
+    baseOf(panel.original).sha256,
     `${key}: source revised; review the recipe first`,
   );
   assert.ok(
@@ -63,12 +71,15 @@ for (const [key, panel] of Object.entries(recipe.panels)) {
   const data = await composeMural(panel, [...hidden]);
   const sha256 = digest(data),
     changed = sha256 !== panel.original.sha256;
-  const url = changed
-    ? panel.original.provenance.runtimeOptimization.original.url.replace(
-        '.png',
-        `.opt-${sha256.slice(0, 16)}.png`,
-      )
-    : panel.original.url;
+  const shown = panel.slots.filter((s) => hidden.has(s.character)).map((s) => s.character);
+  // A content-addressed name is the runtime optimization's; a later procession's composed
+  // copy is named by the characters it hides.
+  const adopted = !!panel.original.provenance?.runtimeOptimization;
+  const url = !changed
+    ? panel.original.url
+    : adopted
+      ? baseOf(panel.original).url.replace('.png', `.opt-${sha256.slice(0, 16)}.png`)
+      : baseOf(panel.original).url.replace('.png', `-hidden-${shown.join('-')}.png`);
   const record = {
     ...current,
     url,
@@ -77,12 +88,18 @@ for (const [key, panel] of Object.entries(recipe.panels)) {
     provenance: structuredClone(panel.original.provenance),
   };
   if (changed)
-    record.provenance.muralComposition = {
-      recipe: MURAL_RECIPE,
-      baseSha256: panel.original.sha256,
-      animalsSha256: panel.animals.sha256,
-      hidden: panel.slots.filter((s) => hidden.has(s.character)).map((s) => s.character),
+    record.provenance = {
+      ...record.provenance,
+      muralComposition: {
+        recipe: MURAL_RECIPE,
+        baseSha256: panel.original.sha256,
+        animalsSha256: panel.animals.sha256,
+        hidden: shown,
+        ...(adopted ? {} : { original: baseOf(panel.original) }),
+      },
     };
+  // A procession served as painted has no provenance until a composition records one.
+  if (!record.provenance) delete record.provenance;
   report.panels.push({ key, url, sha256, bytes: data.length, changed });
   if (preview) {
     await mkdir(preview, { recursive: true });
@@ -92,6 +109,9 @@ for (const [key, panel] of Object.entries(recipe.panels)) {
     assert.equal(digest(await readFile(`public${url}`)), sha256, `${key}: delivered file mismatch`);
   } else {
     writes.push([`public${url}`, data]);
+    // Restoring a procession served as painted drops its composition provenance.
+    for (const field of Object.keys(current))
+      if (!Object.hasOwn(record, field)) delete current[field];
     Object.assign(current, record);
   }
 }

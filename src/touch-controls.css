@@ -869,8 +869,8 @@ body.touch-mode {
   font-size: 16px;
 }
 
-/* Pause menu on a phone: the tabs slide in one row beside the back button, icon over name.
-   They share the row's width while they fit; その他 (the exits) is the last tab. */
+/* Pause menu on a phone: the tabs, then the menu's actions, slide in one row beside the back
+   button, icon over name. The tabs share the row's width while everything fits. */
 @media (max-width: 860px) {
   .touch-mode dialog:has(.pause-menu) .modal-top {
     top: 10px;
@@ -885,12 +885,16 @@ body.touch-mode {
   .touch-mode .pause-rail {
     padding: 10px 10px 8px;
   }
-  .touch-mode .pause-tabs {
-    gap: 4px;
+  .touch-mode .pause-row {
     margin-right: 76px;
     padding-bottom: 0;
   }
-  .touch-mode .pause-tab {
+  .touch-mode .pause-tabs {
+    flex: 1 0 auto;
+    gap: 4px;
+  }
+  .touch-mode .pause-tab,
+  .touch-mode .pause-exits .button {
     flex: 1 0 auto;
     flex-direction: column;
     justify-content: center;
@@ -904,9 +908,13 @@ body.touch-mode {
     letter-spacing: 0;
     text-align: center;
   }
-  .touch-mode .pause-tab .icon {
+  .touch-mode .pause-tab .icon,
+  .touch-mode .pause-exits .button .icon {
     width: 20px;
     height: 20px;
+  }
+  .touch-mode .pause-exits .button {
+    flex-grow: 0;
   }
   .touch-mode .pause-tab[aria-selected='true'] {
     background: linear-gradient(0deg, #e0b07029, #e0b07008);
@@ -931,11 +939,10 @@ body.touch-mode {
   .touch-mode .pause-rail {
     padding: max(10px, env(safe-area-inset-top)) 10px 8px max(10px, env(safe-area-inset-left));
   }
-  .touch-mode .pause-tabs {
+  .touch-mode .pause-row {
     margin-right: 70px;
   }
-  .touch-mode .pause-panels,
-  .touch-mode .pause-exits {
+  .touch-mode .pause-panels {
     padding-bottom: max(20px, env(safe-area-inset-bottom));
   }
 }

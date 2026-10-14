@@ -91,18 +91,11 @@ export function titleContributors(): Contributor[] {
   ];
 }
 
-/** One person's card: a link to their X profile when allowed and well formed. A painted
- * character's name (translated like the companion menu's) may stand before the handle. */
-function personCard(
-  person: Pick<Contributor, 'name' | 'profile' | 'avatar'>,
-  links: boolean,
-  character = '',
-) {
+/** One person's card: their icon and name only, no handle or character name (user request
+ * 2026-10-14), linking to their X profile when allowed and well formed. */
+function personCard(person: Pick<Contributor, 'name' | 'profile' | 'avatar'>, links: boolean) {
   const handle = contributorHandle(person.profile);
-  const line = [character && `<span>${escape(character)}</span>`, handle && `@${handle}`]
-    .filter(Boolean)
-    .join(' · ');
-  const body = `<img class="contributor-avatar" src="${person.avatar}" width="56" height="56" alt="" decoding="async"><span class="contributor-text"><strong translate="no">${escape(person.name)}</strong>${line ? `<small>${line}</small>` : ''}</span>`;
+  const body = `<img class="contributor-avatar" src="${person.avatar}" width="56" height="56" alt="" decoding="async"><span class="contributor-text"><strong translate="no">${escape(person.name)}</strong></span>`;
   return links && handle
     ? `<li><a class="contributor" href="${person.profile}" target="_blank" rel="noopener noreferrer" aria-label="${escape(`${person.name}のXプロフィールを開く`)}">${body}${xGlyph}</a></li>`
     : `<li><div class="contributor">${body}</div></li>`;
@@ -143,6 +136,8 @@ const MURAL_SUBJECTS: readonly (readonly [subject: string, credit: string])[] = 
   ['urata-mascot', 'urata'],
   ['howkey-scientist', 'hawkie'],
   ['rei-mascot', 'asahina'],
+  // The deepened gallery's east wall (2026-10-14).
+  ['daredaro', 'daredaro'],
   ...['white', 'blue', 'green', 'purple', 'orange', 'beret', 'frog', 'triangle', 'heart'].map(
     (bot) => [bot, 'dots'] as const,
   ),
@@ -154,8 +149,6 @@ export interface MuralPerson {
   /** Verified X profile, or empty. */
   profile: string;
   avatar: string;
-  /** The character painted for them. */
-  character: string;
 }
 
 /**
@@ -179,8 +172,6 @@ export function muralPeople(hidden: readonly string[] = []): MuralPerson[] {
       name: profile.name,
       profile: contributorHandle(profile.profile) ? profile.profile : '',
       avatar: `/title/avatar-${credit}.jpg`,
-      character:
-        credit === 'dots' ? '丸いBot・形のBot' : (CONTRIBUTOR_CHARACTERS[credit]?.name ?? ''),
     });
   }
   return people;
@@ -191,5 +182,5 @@ export function muralPeopleDialogMarkup(
   people = muralPeople(),
   { links = true }: { links?: boolean } = {},
 ): string {
-  return `<div class="contributors-dialog mural-people-dialog"><h2>壁画の人</h2><ul class="contributor-list">${people.map((person) => personCard(person, links, person.character)).join('')}</ul></div>`;
+  return `<div class="contributors-dialog mural-people-dialog"><h2>壁画の人々</h2><ul class="contributor-list">${people.map((person) => personCard(person, links)).join('')}</ul></div>`;
 }

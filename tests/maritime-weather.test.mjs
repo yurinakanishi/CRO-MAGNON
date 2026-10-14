@@ -241,6 +241,8 @@ test('eight clients share forecast; forged weather cannot change it; old export/
       peers.push(peer);
     }
     now = atPhase(2);
+    // The fixture jumps across weather phases; these clients are actively checking the forecast.
+    for (const peer of peers) peer.input({ type: 'activity' });
     core.tick();
     const room = core.rooms.get('SEA-QA'),
       expected = core.snapshot(room).maritime;

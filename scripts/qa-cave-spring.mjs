@@ -5,6 +5,9 @@ import { readFile, mkdir, writeFile } from 'node:fs/promises';
 import { WebSocket } from 'ws';
 import { createGameServer } from '../dist/server.mjs';
 import { caveWorldAt } from '../dist/shared/camp-cave-layout.mjs';
+import { CAVE_SPRING } from '../dist/shared/cave-spring.mjs';
+// The bank 4.5 m before the spring, wherever the cave's revision put it.
+const BANK = CAVE_SPRING.z + 4.5;
 import { stopActor } from '../dist/shared/combat.mjs';
 const { chromium } = await import(
   process.env.PLAYWRIGHT_MODULE ||
@@ -147,7 +150,7 @@ try {
     qaCave.movement.facing = 0;
     qaCave.yaw = Math.PI;
     qaCave.pitch = 0.22;
-  }, caveWorldAt(-28.5));
+  }, caveWorldAt(BANK));
   const waitingLit = await capture('waiting-lit', 'waiting');
   assert.equal(waitingLit.spring, true);
   assert.equal(await page.locator('#world').getAttribute('data-cave-torch-held'), 'true');
@@ -174,7 +177,7 @@ try {
   room.enemies = [];
   room.camp.caveFireLit = false;
   stopActor(me);
-  Object.assign(me, caveWorldAt(-28.5), { y: 0, facing: 0, caveTorchOff: false });
+  Object.assign(me, caveWorldAt(BANK), { y: 0, facing: 0, caveTorchOff: false });
   await page.evaluate(() => {
     qaWorld.yaw = Math.PI;
     qaWorld.pitch = 0.22;
@@ -206,7 +209,7 @@ try {
   for (const [i, p] of [...room.players.values()].entries())
     if (p !== me) {
       stopActor(p);
-      Object.assign(p, caveWorldAt(-25 + i * 0.8, (i % 2 ? 1 : -1) * 2), {
+      Object.assign(p, caveWorldAt(BANK + 3.5 + i * 0.8, (i % 2 ? 1 : -1) * 2), {
         y: 0,
         caveTorchOff: false,
       });

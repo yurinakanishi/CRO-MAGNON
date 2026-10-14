@@ -44,9 +44,11 @@ export const RETAINED_TRADER = Object.freeze({
 });
 export const NPC = characterSpeciesReleased(RETAINED_TRADER.species) ? RETAINED_TRADER : undefined;
 
+// 2026-10-14: piles that stood in the valley river, on its bank or on the mountain's foothill
+// slopes moved to the nearest dry, flat, clear ground (ids and stock kept; saves match by id).
 const nodes: [ResourceKind, number, number, number][] = [
   ['wood', 56, 62, 7],
-  ['wood', 62, 66, 7],
+  ['wood', 58.5, 69.5, 7],
   ['wood', 68, 58, 6],
   ['wood', 30, 54, 7],
   ['wood', 26, 60, 6],
@@ -57,25 +59,24 @@ const nodes: [ResourceKind, number, number, number][] = [
   ['wood', 57, 24, 7],
   ['wood', 77, 29, 6],
   ['wood', 82, 54, 8],
-  ['wood', 68, 79, 6],
-  ['wood', 39, 77, 7],
-  ['wood', 17, 75, 8],
+  ['wood', 64, 77.5, 6],
+  ['wood', 33.5, 57, 7],
+  ['wood', 15.5, 64.5, 8],
   ['wood', 86, 75, 7],
   ['stone', 43, 63, 6],
   ['stone', 37, 60, 6],
   ['stone', 60, 37, 7],
   ['stone', 20, 33, 8],
   ['stone', 79, 68, 6],
-  // Moved a few metres clear of the new cave's rear wall; stock/id retained.
-  ['stone', 42, 86, 7],
+  ['stone', 21.5, 59, 7],
   ['stone', 82, 19, 8],
   ['stone', 16, 51, 6],
-  ['berry', 60, 53, 5],
+  ['berry', 71, 53, 5],
   ['berry', 40, 41, 5],
-  ['berry', 32, 69, 5],
+  ['berry', 26.5, 56, 5],
   ['berry', 72, 49, 5],
   ['berry', 49, 28, 5],
-  ['berry', 78, 83, 5],
+  ['berry', 80, 80, 5],
 ];
 for (const stop of EXPEDITION_STOPS.slice(1)) {
   const biome = geographicBiome(stop.x, stop.z);

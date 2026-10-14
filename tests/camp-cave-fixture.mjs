@@ -5,7 +5,7 @@
 // metadata and native decoding are proven separately (verified-texture.test.mjs,
 // cave-uv-source.test.mjs and the native integrity checks).
 import { createHash } from 'node:crypto';
-import { CAVE_EXTRA_PIGMENTS } from '../dist/src/cave-gallery-layout.js';
+import { CAVE_EXTRA_PIGMENTS, caveMotifSource } from '../dist/src/cave-gallery-layout.js';
 import { downloadVerifiedAsset } from '../dist/src/asset-download.js';
 import { decodeImageWith } from '../dist/src/verified-texture.js';
 
@@ -46,12 +46,15 @@ export function caveGalleryImages() {
     characterPigment: image('524', 2171, 724),
     rimoPigment: image('rimo', 2172, 724),
     mascotPigments: Object.fromEntries(
-      Object.keys(CAVE_EXTRA_PIGMENTS).map((key) => [key, image(key, 2172, 724)]),
+      Object.keys(CAVE_EXTRA_PIGMENTS).map((key) => {
+        const { width, height } = caveMotifSource(key);
+        return [key, image(key, width, height)];
+      }),
     ),
   };
 }
 
-/** The ten records of a manifest made by caveGalleryImages(). */
+/** Every record of a manifest made by caveGalleryImages(). */
 const recordsOf = (asset) => [
   asset.pigment,
   asset.rockSurface,
@@ -59,6 +62,8 @@ const recordsOf = (asset) => [
   asset.rimoPigment,
   ...Object.values(asset.mascotPigments),
 ];
+/** How many images the gallery decodes: one per record. */
+export const CAVE_IMAGE_COUNT = recordsOf(caveGalleryImages()).length;
 
 /** The gallery's image loading for a LoadingCave (`images: network.options`): the
  * game's downloadVerifiedAsset over a stand-in transport serving `asset`'s files, and

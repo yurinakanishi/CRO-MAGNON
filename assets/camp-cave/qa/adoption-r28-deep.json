@@ -1,0 +1,382 @@
+{
+  "schema": "cro-magnon/cave-deepening-review@1",
+  "date": "2026-10-14",
+  "decision": "adopt",
+  "modelKey": "camp-cave",
+  "sha256": "932c96905891f77b766c9e668ca80f42c7f3073a4f992a559e87f4f53e770c4d",
+  "revision": "r28-deep",
+  "request": "User, 2026-10-14: deepen the cave so a new mural (@daredaro_F) fits, rather than repainting an existing one.",
+  "producer": "Codex CLI 0.162.0-alpha.17.2 (gpt-5.6-sol, reasoning high) from assets/camp-cave/workflow/codex-request-r28.txt; Claude Code coordinated, wrote no geometry",
+  "geometry": {
+    "revision": "r28-deep",
+    "source": "public/models/camp-cave/model-r27-rounded.glb",
+    "sourceSha256": "f3e513c9f311ba2bafdc8ebb8a846a9de0eba15be4c1f35b302e10efbd58b75b",
+    "sha256": "932c96905891f77b766c9e668ca80f42c7f3073a4f992a559e87f4f53e770c4d",
+    "bytes": 2147212,
+    "vertices": 47437,
+    "triangles": 74458,
+    "changedVertices": 35188,
+    "unchangedVerticesByteIdentical": true,
+    "constants": {
+      "D0": 2,
+      "D1": 29.5,
+      "DELTA": 7.9,
+      "K": 1.2872727272727271
+    },
+    "min": [
+      -8.94336223602295,
+      0.25,
+      -50.5
+    ],
+    "max": [
+      32.38653564453125,
+      9.348231315612793,
+      18.207656860351562
+    ],
+    "deepestLocalZ": {
+      "before": -42.599998474121094,
+      "after": -50.5
+    },
+    "crossSections": [
+      {
+        "depthBefore": 10,
+        "depthAfter": 12.298181818181817,
+        "before": {
+          "depth": 10,
+          "localZ": -10,
+          "centreX": 1.9622112998172276,
+          "innerWallHalfWidth": {
+            "1.5": {
+              "left": 5.299668239047651,
+              "right": 5.6394975324163195,
+              "halfWidth": 5.469582885731985
+            },
+            "2.5": {
+              "left": 5.410126348616285,
+              "right": 5.5561179600253965,
+              "halfWidth": 5.48312215432084
+            },
+            "3.5": {
+              "left": 5.502920339512212,
+              "right": 5.407370678794449,
+              "halfWidth": 5.455145509153331
+            }
+          },
+          "centreHeadroom": {
+            "lowestCeilingY": 6.562462515129079,
+            "highestFloorY": 1.0465414490087723,
+            "minimum": 5.525374487940432,
+            "samples": 21
+          }
+        },
+        "after": {
+          "depth": 12.298181818181817,
+          "localZ": -12.298181818181817,
+          "centreX": 2.8988307826738238,
+          "innerWallHalfWidth": {
+            "1.5": {
+              "left": 5.297910396217726,
+              "right": 5.641589594395534,
+              "halfWidth": 5.46974999530663
+            },
+            "2.5": {
+              "left": 5.3684182487346,
+              "right": 5.557287414885587,
+              "halfWidth": 5.4628528318100935
+            },
+            "3.5": {
+              "left": 5.5000429857829864,
+              "right": 5.410914813505328,
+              "halfWidth": 5.455478899644158
+            }
+          },
+          "centreHeadroom": {
+            "lowestCeilingY": 6.563375862751072,
+            "highestFloorY": 1.046738779361013,
+            "minimum": 5.526237720638508,
+            "samples": 21
+          }
+        }
+      },
+      {
+        "depthBefore": 20,
+        "depthAfter": 25.17090909090909,
+        "before": {
+          "depth": 20,
+          "localZ": -20,
+          "centreX": 7.055712095058228,
+          "innerWallHalfWidth": {
+            "1.5": {
+              "left": 5.610115482984439,
+              "right": 5.938515125227685,
+              "halfWidth": 5.774315304106062
+            },
+            "2.5": {
+              "left": 5.6335021388200275,
+              "right": 5.774171148821045,
+              "halfWidth": 5.703836643820536
+            },
+            "3.5": {
+              "left": 5.490359475249072,
+              "right": 5.522817274436173,
+              "halfWidth": 5.5065883748426225
+            }
+          },
+          "centreHeadroom": {
+            "lowestCeilingY": 6.410844263179336,
+            "highestFloorY": 1.060429176501242,
+            "minimum": 5.359952238790376,
+            "samples": 21
+          }
+        },
+        "after": {
+          "depth": 25.17090909090909,
+          "localZ": -25.17090909090909,
+          "centreX": 10.52619391664747,
+          "innerWallHalfWidth": {
+            "1.5": {
+              "left": 5.6097940255891094,
+              "right": 5.938531386168696,
+              "halfWidth": 5.7741627058789025
+            },
+            "2.5": {
+              "left": 5.633058221706204,
+              "right": 5.774231053627025,
+              "halfWidth": 5.703644637666614
+            },
+            "3.5": {
+              "left": 5.490223966586045,
+              "right": 5.522832488228682,
+              "halfWidth": 5.5065282274073635
+            }
+          },
+          "centreHeadroom": {
+            "lowestCeilingY": 6.4109192860119935,
+            "highestFloorY": 1.0604419821619455,
+            "minimum": 5.3600191455160955,
+            "samples": 21
+          }
+        }
+      },
+      {
+        "depthBefore": 29.5,
+        "depthAfter": 37.4,
+        "before": {
+          "depth": 29.5,
+          "localZ": -29.5,
+          "centreX": 13.711301427455114,
+          "innerWallHalfWidth": {
+            "1.5": {
+              "left": 5.59567317209183,
+              "right": 5.819740754102247,
+              "halfWidth": 5.7077069630970385
+            },
+            "2.5": {
+              "left": 5.565881527945976,
+              "right": 5.7513402412519365,
+              "halfWidth": 5.658610884598956
+            },
+            "3.5": {
+              "left": 5.516403565722085,
+              "right": 5.616031479507809,
+              "halfWidth": 5.566217522614947
+            }
+          },
+          "centreHeadroom": {
+            "lowestCeilingY": 6.5165220369099375,
+            "highestFloorY": 1.067037203649194,
+            "minimum": 5.46361453454595,
+            "samples": 21
+          }
+        },
+        "after": {
+          "depth": 37.4,
+          "localZ": -37.4,
+          "centreX": 19.847217180530176,
+          "innerWallHalfWidth": {
+            "1.5": {
+              "left": 5.596330121885719,
+              "right": 5.819764487737981,
+              "halfWidth": 5.70804730481185
+            },
+            "2.5": {
+              "left": 5.56646652048404,
+              "right": 5.751394263280034,
+              "halfWidth": 5.658930391882037
+            },
+            "3.5": {
+              "left": 5.516682605847095,
+              "right": 5.615903908169514,
+              "halfWidth": 5.566293257008304
+            }
+          },
+          "centreHeadroom": {
+            "lowestCeilingY": 6.516688283241539,
+            "highestFloorY": 1.0668867564246378,
+            "minimum": 5.466683421471437,
+            "samples": 21
+          }
+        }
+      },
+      {
+        "depthBefore": 33,
+        "depthAfter": 40.9,
+        "before": {
+          "depth": 33,
+          "localZ": -33,
+          "centreX": 16.402079839718375,
+          "innerWallHalfWidth": {
+            "1.5": {
+              "left": 4.9779232820602175,
+              "right": 5.316890335998217,
+              "halfWidth": 5.147406809029217
+            },
+            "2.5": {
+              "left": 5.371463243171714,
+              "right": 5.532823179768485,
+              "halfWidth": 5.4521432114701
+            },
+            "3.5": {
+              "left": 5.415787836127292,
+              "right": 5.484052334636246,
+              "halfWidth": 5.449920085381769
+            }
+          },
+          "centreHeadroom": {
+            "lowestCeilingY": 6.419673491546249,
+            "highestFloorY": 0.25,
+            "minimum": 6.169673491546249,
+            "samples": 21
+          }
+        },
+        "after": {
+          "depth": 40.9,
+          "localZ": -40.9,
+          "centreX": 22.574838211750233,
+          "innerWallHalfWidth": {
+            "1.5": {
+              "left": 4.978052011032872,
+              "right": 5.316765738272039,
+              "halfWidth": 5.147408874652456
+            },
+            "2.5": {
+              "left": 5.371590673114522,
+              "right": 5.532697765197639,
+              "halfWidth": 5.4521442191560805
+            },
+            "3.5": {
+              "left": 5.415914709438603,
+              "right": 5.483926578363828,
+              "halfWidth": 5.4499206439012156
+            }
+          },
+          "centreHeadroom": {
+            "lowestCeilingY": 6.41966283326357,
+            "highestFloorY": 0.25,
+            "minimum": 6.16966283326357,
+            "samples": 21
+          }
+        }
+      },
+      {
+        "depthBefore": 37,
+        "depthAfter": 44.9,
+        "before": {
+          "depth": 37,
+          "localZ": -37,
+          "centreX": 19.533527961762992,
+          "innerWallHalfWidth": {
+            "1.5": {
+              "left": null,
+              "right": null,
+              "halfWidth": null
+            },
+            "2.5": {
+              "left": 3.0115079227786055,
+              "right": 3.159539077835131,
+              "halfWidth": 3.085523500306868
+            },
+            "3.5": {
+              "left": 1.7164779988061802,
+              "right": 1.7619813496503127,
+              "halfWidth": 1.7392296742282465
+            }
+          },
+          "centreHeadroom": {
+            "lowestCeilingY": 4.423103240136188,
+            "highestFloorY": 3.0880977176180315,
+            "minimum": 1.3428024622054844,
+            "samples": 21
+          }
+        },
+        "after": {
+          "depth": 44.9,
+          "localZ": -44.9,
+          "centreX": 25.607412774757737,
+          "innerWallHalfWidth": {
+            "1.5": {
+              "left": null,
+              "right": null,
+              "halfWidth": null
+            },
+            "2.5": {
+              "left": 3.0115335148887326,
+              "right": 3.159520045186998,
+              "halfWidth": 3.085526780037865
+            },
+            "3.5": {
+              "left": 1.7164943954924219,
+              "right": 1.7619750135380379,
+              "halfWidth": 1.7392347045152299
+            }
+          },
+          "centreHeadroom": {
+            "lowestCeilingY": 4.42310222063318,
+            "highestFloorY": 3.0880912990661797,
+            "minimum": 1.3428005634070068,
+            "samples": 21
+          }
+        }
+      }
+    ],
+    "method": "source-shell vertex remap; uniform gallery stretch and rear translation; no primitive or replacement rock",
+    "preserved": [
+      "source topology and indices",
+      "all UVs",
+      "all 1024px embedded textures",
+      "all vertices and original normal bytes through depth 2m",
+      "rear chamber and spring-basin shape under exact translation"
+    ],
+    "report": "assets/camp-cave/work/deepen/r28-deep/report.json"
+  },
+  "measurement": "assets/camp-cave/work/deepen/r28-deep/surface.json",
+  "checks": [
+    "tests/cave-spring.test.mjs: every vertex of the adopted GLB is exactly the recorded remap of model-r27-rounded (Z through D0 byte-identical with its normal; deeper vertices stretched by K or moved DELTA along the bend); indices, UVs, materials and embedded textures unchanged; the spring basin moved with its floor",
+    "tests/camp-surface-continuity.test.mjs, camp-landform.test.mjs, measured-walk-surface-equivalence.test.mjs: the aisle is walkable to the remapped -39.4 m, the gallery floor is level to -37.4 m, the blind end at -45.5 m is solid, the closed seam moved with the stretch, the measured aisle grew 10.1 m (r07 x2.65)",
+    "scripts/measure-cave-gallery.mjs: all 35 murals hit the deepened wall, 0 missing samples (assets/camp-cave/qa/gallery-surfaces-r37.json)",
+    "Waiting: held torch, keyboard and button switching, readable unlit stone, actual walking toward spring",
+    "Live: same spring and dim environment; actual L switches personal lighting without blacking out cave",
+    "Bank movement reaches the server from real keyboard input",
+    "Five connected players retain independent torches; actual movement at spring has a valid measured floor",
+    "Waiting cave: 9 processions, upper animals, real walking and torch controls",
+    "Same murals in live game, one real Chrome renderer and four WebSocket peers",
+    "11 verified images; no Coming Soon canvas, sampler or label",
+    "qa-cave-running: 26 walking, running, gamepad and touch checks in the loading cave"
+  ],
+  "browser": "154.0.8037.93",
+  "evidence": [
+    "output/playwright/cave-spring-r28/summary.json",
+    "output/playwright/cave-murals-r37/summary.json",
+    "output/playwright/cave-running-r28/report.json",
+    "output/playwright/loading-cave-r28/"
+  ],
+  "screenshots": [
+    "output/playwright/cave-spring-r28/live-lit.png",
+    "output/playwright/cave-spring-r28/five-players.png",
+    "output/playwright/cave-murals-r37/waiting-daredaroFrieze.png",
+    "output/playwright/cave-murals-r37/live-daredaroFrieze.png",
+    "output/playwright/cave-murals-r37/live-deep-bay.png",
+    "output/playwright/cave-murals-r37/live-five-players.png"
+  ],
+  "limits": "One real Chrome renderer plus four WebSocket peers on a memory-only server. Positions and cameras are fixtures; walking, torch and proceed are real inputs. Phone sizes are viewport emulation, not a physical smartphone. No FPS claim."
+}

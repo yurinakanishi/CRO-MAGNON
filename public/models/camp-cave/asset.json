@@ -3,11 +3,11 @@
   "name": "アプデの洞窟",
   "kind": "static",
   "candidate": 1,
-  "revision": "27-rounded",
+  "revision": "28-deep",
   "status": "integrated-and-game-qa-passed",
-  "url": "/models/camp-cave/model-r27-rounded.glb",
-  "sha256": "f3e513c9f311ba2bafdc8ebb8a846a9de0eba15be4c1f35b302e10efbd58b75b",
-  "bytes": 2122080,
+  "url": "/models/camp-cave/model-r28-deep.glb",
+  "sha256": "932c96905891f77b766c9e668ca80f42c7f3073a4f992a559e87f4f53e770c4d",
+  "bytes": 2147212,
   "triangles": 74458,
   "upAxis": "Y",
   "forwardAxis": "+Z",
@@ -18,10 +18,10 @@
     "min": [
       -8.94336223602295,
       0.25,
-      -42.599998474121094
+      -50.5
     ],
     "max": [
-      26.44704818725586,
+      32.38653564453125,
       9.348231315612793,
       18.207656860351562
     ]
@@ -29,6 +29,8 @@
   "clips": [],
   "lods": [],
   "notes": [
+    "Geometry r28-deep (user request 2026-10-14) remaps the same retained TRELLIS shell: the mouth and apron unchanged, the gallery uniformly lengthened by 7.9 m (x1.287) and the rounded rear chamber with its spring basin moved back 7.9 m along the bend, so one more 7.5 m procession fits on each wall. Topology, UVs and the embedded 1024 px textures are unchanged; model-r27-rounded.glb is kept.",
+    "Gallery r37 paints @daredaro_F, a silver-haired gentleman whose eyes are hidden behind a bar, among a woolly rhinoceros, a reindeer and an ibex on the new east-wall bay; the upper animal register continues over the new bay on both walls.",
     "Geometry r27-rounded sculpts the retained TRELLIS shell into a rounded rear chamber and irregular shallow spring basin. The gallery through local Z=-29.5, all topology, UVs and 1024px textures are retained. Shared dim lighting, held torches and runtime water are identical in the waiting cave and live world. Earlier r26 files and immutable optimization records remain archived.",
     "The deep gallery keeps approximately 11 m width and 5.5 m centre headroom up to the back chamber. Existing measured source relief is expanded without moving the accepted mouth or replacing the cave with primitive geometry.",
     "Geometry r26 historical note: only its final 1.2 m rounded into a broad rear wall. The r27-rounded rear chamber now extends that same connected shell into a curved vault and spring basin.",
@@ -64,7 +66,11 @@
         "sha256": "1debf5dafc216ce01c46bd620e43d232026e0b5a4ad282a91e25676078384005"
       }
     ],
-    "refinementWorkflow": "assets/camp-cave/workflow/refine-spring.mjs"
+    "refinementWorkflow": "assets/camp-cave/workflow/deepen-gallery.mjs",
+    "refinementHistory": [
+      "assets/camp-cave/workflow/refine-spring.mjs (r27-rounded)",
+      "assets/camp-cave/workflow/deepen-gallery.mjs (r28-deep, from model-r27-rounded.glb)"
+    ]
   },
   "pigment": {
     "url": "/models/camp-cave/mural-atlas-r05.opt-94ca1aebe422e2a0.png",
@@ -223,7 +229,7 @@
       }
     }
   },
-  "galleryRevision": "36",
+  "galleryRevision": "37",
   "rimoPigment": {
     "source": "assets/camp-cave/source/rimo-lascaux-frieze-r30.png",
     "url": "/models/camp-cave/rimo-lascaux-frieze-r30.opt-8a2acbfbfaa6d2c2.png",
@@ -632,15 +638,57 @@
           }
         }
       }
+    },
+    "daredaroFrieze": {
+      "url": "/models/camp-cave/daredaro-lascaux-r37.png",
+      "subjects": [
+        "daredaro"
+      ],
+      "source": "assets/camp-cave/source/daredaro-lascaux-r37-1024.png",
+      "sha256": "672fd8d9ed8de4d9364bf895be3c1f7a4ec1dda9e3d5e0841dadd10c9259fbc1",
+      "bytes": 545811,
+      "image": {
+        "width": 1024,
+        "height": 341
+      },
+      "generator": "Codex CLI 0.162.0-alpha.17.2 built-in image_gen (gpt-5.6-sol, reasoning medium)",
+      "prompt": "assets/camp-cave/daredaro-lascaux-prompt-r37.txt",
+      "animals": [
+        "woolly rhinoceros",
+        "reindeer",
+        "ibex"
+      ],
+      "references": [
+        {
+          "path": "assets/camp-cave/source/daredaro-reference-user.png",
+          "sha256": "857463e4e35ea8a8ee88c3d44190bf565ab3043087f7b71e4f0b46aa6cfad727"
+        },
+        {
+          "path": "public/models/camp-cave/mae-kohaku-lascaux-r31.png",
+          "sha256": "f67ea277c3d42c93877139b44150ee6fddbb2eb41854418ea09ac4bd40eed732"
+        }
+      ],
+      "application": "Gallery r37: 7.5 m wide east-wall procession on the bay the deepened gallery added (local Z -37.0, Y 1.4, strength 0.84), projected onto the retained limestone triangles. Individual characters can be exchanged for matching animal pigment through the offline modular-r37 recipe.",
+      "review": "assets/camp-cave/qa/gallery-surfaces-r37.json",
+      "generated": {
+        "path": "assets/camp-cave/source/daredaro-lascaux-r37.png",
+        "bytes": 2326615,
+        "sha256": "51810bdee3343dddab128950d00e2a4b75deed00609d987d85e2004bfbc7c225",
+        "image": {
+          "width": 2172,
+          "height": 724
+        },
+        "resize": "whole image, Lanczos-3, 2172x724 to 1024x341 (sharp)"
+      }
     }
   },
   "sourceRevision": {
-    "record": "assets/camp-cave/qa/source-revision-r27-rounded.json",
-    "sha256": "68dd3e252e35078908d4030fc6484250bd3ec425a7306f159b1cc42e4a40d3b3"
+    "record": "assets/camp-cave/qa/source-revision-r28-deep.json",
+    "sha256": "d1dfbd766730cfb9e585f14f983d603e186969d287e4b23e5aa276715a324690"
   },
   "muralComposition": {
-    "recipe": "assets/camp-cave/modular-r36/recipe.json",
+    "recipe": "assets/camp-cave/modular-r37/recipe.json",
     "visibility": "cave-mural-visibility.json",
-    "characters": 22
+    "characters": 23
   }
 }

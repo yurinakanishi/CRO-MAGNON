@@ -1,6 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { readFile, writeFile, mkdir, mkdtemp, copyFile, rm } from 'node:fs/promises';
+import { createHash } from 'node:crypto';
 import { tmpdir } from 'node:os';
 import path from 'node:path';
 import { execFile } from 'node:child_process';
@@ -10,6 +11,7 @@ import {
   CAVE_MURALS,
   CAVE_EXTRA_PIGMENTS,
   caveMuralHeight,
+  caveMotifSource,
 } from '../dist/src/cave-gallery-layout.js';
 import {
   MURAL_RECIPE,
@@ -21,26 +23,28 @@ import {
 const recipe = await readJson(MURAL_RECIPE);
 const raw = async (bytes) => sharp(bytes).ensureAlpha().raw().toBuffer();
 
-test('eight complete processions share scale, baseline, density and even gaps', () => {
+test('the nine complete processions share scale, baseline, density and even gaps', () => {
   const main = CAVE_MURALS.filter((m) => m.motif in recipe.panels);
-  assert.equal(main.length, 8);
+  assert.equal(main.length, 9);
   for (const m of main) {
     assert.equal(m.width, 7.5);
     assert.equal(m.bottom, 1.4);
     assert.equal(m.strength, 0.84);
-    assert(Math.abs(caveMuralHeight(m) - 2.5) < 0.002);
+    // 2.5 m tall to within one pixel of its image (a 1024 px frieze has 341 rows, not 341.3).
+    assert(Math.abs(caveMuralHeight(m) - 2.5) < m.width / caveMotifSource(m.motif).width, m.motif);
   }
   for (const wall of ['east', 'west']) {
     const group = main.filter((m) => m.wall === wall).sort((a, b) => b.centre - a.centre);
     for (let i = 1; i < group.length; i++)
       assert(Math.abs(group[i - 1].centre - group[i].centre - 7.9) < 1e-6);
   }
-  assert.equal(CAVE_MURALS.length, 30);
+  // The deepened gallery's bay (r28) carries the upper register on to both walls.
+  assert.equal(CAVE_MURALS.length, 35);
   assert.equal(
     CAVE_MURALS.filter((m) =>
       ['mammoth', 'bison', 'deer', 'redHorse', 'ochreHorse'].includes(m.motif),
     ).length,
-    18,
+    22,
   );
   assert(!CAVE_MURALS.some((m) => m.motif === 'comingSoon'));
 });
@@ -53,7 +57,7 @@ test('each current character has its own verified, transparent animal replacemen
   ];
   const slots = Object.values(recipe.panels).flatMap((p) => p.slots.map((s) => s.character));
   assert.deepEqual(slots.sort(), characters.sort());
-  assert.equal(slots.length, 22);
+  assert.equal(slots.length, 23);
   for (const panel of Object.values(recipe.panels)) {
     await exactBytes(panel.source.path, panel.source);
     const bytes = await exactBytes(panel.animals.path, panel.animals);
@@ -176,6 +180,35 @@ test('the operator command hides and restores one character, keeps manifests ali
   assert.deepEqual(await readJson(assetFile), after, 'failed request changes nothing');
   await run('--show', 'howkey-scientist');
   assert.deepEqual(await readJson(assetFile), before, 'restore original bytes and provenance');
+  // A procession served as painted (not runtime-optimized) composes under its own name and
+  // records its painting as the composition's original; showing it again drops that record.
+  await run('--hide', 'daredaro');
+  const hidden = (await readJson(assetFile)).mascotPigments.daredaroFrieze,
+    painted = before.mascotPigments.daredaroFrieze;
+  assert.equal(hidden.url, painted.url.replace('.png', '-hidden-daredaro.png'));
+  assert.deepEqual(hidden.provenance, {
+    muralComposition: {
+      recipe: MURAL_RECIPE,
+      baseSha256: painted.sha256,
+      animalsSha256: recipe.panels.daredaroFrieze.animals.sha256,
+      hidden: ['daredaro'],
+      original: {
+        url: painted.url,
+        sha256: painted.sha256,
+        bytes: painted.bytes,
+        image: painted.image,
+      },
+    },
+  });
+  assert.equal(
+    createHash('sha256')
+      .update(await readFile(path.join(root, `public${hidden.url}`)))
+      .digest('hex'),
+    hidden.sha256,
+  );
+  await run('--check');
+  await run('--show', 'daredaro');
+  assert.deepEqual(await readJson(assetFile), before, 'restore the painting and no provenance');
   // A damaged replacement must fail before either manifest or config changes.
   const animals = recipe.panels.friendsRiver.animals.path;
   await writeFile(path.join(root, animals), Buffer.alloc(10));

@@ -7440,41 +7440,95 @@
    "name": "fx-recall",
    "url": "/audio/nature/fx-recall.mp3",
    "kind": "oneshot",
-   "channels": 2,
+   "channels": 1,
    "rate": 44100,
-   "seconds": 1.45,
-   "loudness": -23.1,
-   "integrated": -26.0,
-   "momentaryMax": -23.1,
-   "truePeak": -19.1,
-   "above8kHz": 0.001,
-   "correlation": -0.559,
-   "masterGainDB": 6.9,
-   "sources": [
-    "VSCO 2 CE: Woodwinds/Flute/susNV/LDFlute_susNV_A4_v1_1.wav",
-    "VSCO 2 CE: Woodwinds/Flute/susNV/LDFlute_susNV_E5_v1_1.wav",
-    "Nox_Sound IR 585739 small church"
-   ],
+   "seconds": 1.0,
+   "loudness": -22.9,
+   "integrated": -24.0,
+   "momentaryMax": -22.9,
+   "truePeak": -19.9,
+   "above8kHz": 0.0001,
+   "correlation": 1.0,
+   "masterGainDB": -21.1,
+   "sources": [],
    "processing": {
-    "score": [
+    "synthesis": "scripts/render-recall-whistle.py",
+    "seed": 20261014,
+    "pitch": [
      {
-      "instrument": "flute_pure",
-      "note": "A5",
       "time": 0.0,
-      "seconds": 0.32,
-      "velocity": 0.5
+      "hz": 1480.0
      },
      {
-      "instrument": "flute_pure",
-      "note": "D6",
-      "time": 0.36,
-      "seconds": 0.55,
-      "velocity": 0.52
+      "time": 0.13,
+      "hz": 2190.0
+     },
+     {
+      "time": 0.175,
+      "hz": 2150.0
+     },
+     {
+      "time": 0.33,
+      "hz": 2120.0
+     },
+     {
+      "time": 0.425,
+      "hz": 1560.0
+     },
+     {
+      "time": 0.5,
+      "hz": 1500.0
+     },
+     {
+      "time": 0.82,
+      "hz": 1465.0
+     },
+     {
+      "time": 0.95,
+      "hz": 1385.0
      }
-    ]
+    ],
+    "level": [
+     {
+      "time": 0.0,
+      "level": 0.0
+     },
+     {
+      "time": 0.012,
+      "level": 0.0
+     },
+     {
+      "time": 0.05,
+      "level": 1.0
+     },
+     {
+      "time": 0.3,
+      "level": 0.97
+     },
+     {
+      "time": 0.375,
+      "level": 0.36
+     },
+     {
+      "time": 0.45,
+      "level": 0.92
+     },
+     {
+      "time": 0.82,
+      "level": 0.78
+     },
+     {
+      "time": 0.95,
+      "level": 0.0
+     }
+    ],
+    "vibrato": "5.6 Hz; 8 cents on the high note, 22 cents on the low note",
+    "harmonics": "2nd -30 dB, 3rd -42 dB",
+    "breath": "noise 480 Hz wide around the pitch at -22 dB; 2.5-9 kHz air at the onset (-27 dB) and throughout (-38 dB)",
+    "note": "replaces the stereo flute notes and church reverb of revision 4; mono and dry"
    },
-   "bytes": 30695,
-   "sha256": "885dd58ec316f703d4f0524d39999072fcc28f4eca85986c8471a024da510a47"
+   "bytes": 8446,
+   "sha256": "1fa91c18ead82769d679eb1c26bc77c6ec5b40d8057dde386978fd668be70492"
   },
   {
    "name": "cave-ir",
@@ -7500,6 +7554,6 @@
    "sha256": "c023da54bb5f6a7da4f14e496a03085a1a1ed56186adf30a434a976c2eaf4e3c"
   }
  ],
- "totalBytes": 11939396,
- "decodedBytesAt48000Hz": 107354112
+ "totalBytes": 11917147,
+ "decodedBytesAt48000Hz": 106989312
 }

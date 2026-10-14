@@ -61,12 +61,13 @@ test('the mage recharge is a continuous bar without a numbered countdown', async
   assert.match(css, /#magic-cooldown progress/);
 });
 
-test('pause tab focus stays inside the scrollport for keyboard and controller navigation', async () => {
+test('pause tab and action focus stays inside the scrollport for keyboard and controller navigation', async () => {
   const css = await readFile(new URL('src/style.css', root), 'utf8');
+  // The actions after the tabs share the row's scrollport, so they share the inset ring.
   const rule = css.match(
-    /\.pause-tab\.gamepad-focus,\s*\.pause-tab:focus-visible\s*\{([^}]+)\}/,
+    /\.pause-tab\.gamepad-focus,\s*\.pause-tab:focus-visible,\s*\.pause-exits \.button\.gamepad-focus,\s*\.pause-exits \.button:focus-visible\s*\{([^}]+)\}/,
   )?.[1];
-  assert.ok(rule, 'both input devices share the pause-tab focus rule');
+  assert.ok(rule, 'both input devices share the focus rule of the tabs and the actions');
   assert.match(rule, /outline: 3px solid #[\da-f]+ !important/);
   assert.match(rule, /outline-offset: -3px !important/);
   assert.match(

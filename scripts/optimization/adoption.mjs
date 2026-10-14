@@ -78,7 +78,13 @@ import {
   resolveCandidateFile,
   resolveRevisionDirectory,
 } from './paths.mjs';
-import { planStandaloneImages, readVerifiedImage } from './standalone-images.mjs';
+import {
+  CAVE_MANIFEST,
+  CAVE_OWNER,
+  extrasAddedSince,
+  planStandaloneImages,
+  readVerifiedImage,
+} from './standalone-images.mjs';
 
 export const AUDIT_SCHEMA = 'cro-magnon/runtime-adoption-audit@1';
 // Codex's r04 decision and image review (2026-10-09); their hashes become the plan's QA identity.
@@ -610,7 +616,8 @@ export const IMAGE_PLAN_DESCRIPTORS = Object.freeze(['runtimeEntry', 'configured
  * `readManifest` supplies the manifest bytes. A plan uses the current manifests, which must equal
  * the revision's inputs. An audit uses the saved pre-apply bytes, never the rewritten manifests.
  * Both descriptor versions and the current input hashes are recorded. Any other difference is a
- * problem.
+ * problem. An audit leaves out the friezes the runtime gained after its saved manifests, once
+ * extrasAddedSince proves each is served unadopted within the edge; they are recorded as added.
  */
 export async function runtimeCompatibility(root, manifest, { inventory, rules, readManifest }) {
   const recorded = manifest.images ?? [];
@@ -622,15 +629,22 @@ export async function runtimeCompatibility(root, manifest, { inventory, rules, r
         .map((model) => [model.modelKey, stricter.includes(model.modelKey) ? 512 : 1024]),
     ),
     problems = [];
-  let current;
+  let current,
+    added = { keys: [], problems: [] };
   try {
+    if (readManifest && edges.has(CAVE_OWNER))
+      added = await extrasAddedSince(
+        root,
+        JSON.parse(await readManifest(CAVE_MANIFEST)),
+        edges.get(CAVE_OWNER),
+      );
     current = await planStandaloneImages(root, {
       inventory,
       rules,
       edges,
       colorFilter: manifest.options?.colorFilter,
       webpQuality: manifest.options?.webpQuality,
-      ...(readManifest ? { readManifest } : {}),
+      ...(readManifest ? { readManifest, added: added.keys } : {}),
     });
   } catch (error) {
     return {
@@ -646,6 +660,7 @@ export async function runtimeCompatibility(root, manifest, { inventory, rules, r
       Object.fromEntries(IMAGE_PLAN_DESCRIPTORS.map((key) => [key, plan[key]])),
     ids = (list) => list.map((item) => item.id).sort(byText),
     images = [];
+  problems.push(...added.problems);
   if (ids(recorded).join('\n') !== ids(current.images).join('\n'))
     problems.push(
       `the current runtime loads ${ids(current.images).join(', ') || 'no standalone image'}; the revision recorded ${ids(recorded).join(', ')}`,
@@ -675,6 +690,14 @@ export async function runtimeCompatibility(root, manifest, { inventory, rules, r
       inputs: current.inputs,
       recordedInputs: manifest.inputs?.standaloneImages ?? [],
       images,
+      ...(added.keys.length
+        ? {
+            added: {
+              rule: 'CAVE_EXTRA_PIGMENTS entries added after the saved manifests are served unadopted within the edge, as the current manifests record them; they are not re-planned',
+              keys: added.keys,
+            },
+          }
+        : {}),
     },
   };
 }

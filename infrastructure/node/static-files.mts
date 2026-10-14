@@ -159,3 +159,18 @@ export async function serveStatic(
   const source = handle.createReadStream(opened.size ? { start: 0, end: opened.size - 1 } : {});
   void sendBody(source, response, coding);
 }
+
+/**
+ * Answer a request whose handler threw: 404 for a missing file, otherwise 400. A
+ * response already begun is never followed by another; an unfinished one is
+ * destroyed with its socket, as a failed body is (static-transport.mts), and a
+ * client that has left gets nothing.
+ */
+export function sendFailure(response: ServerResponse, error: unknown): void {
+  if (response.headersSent || response.destroyed) {
+    if (!response.writableEnded) response.destroy();
+    return;
+  }
+  const code = (error as NodeJS.ErrnoException | undefined)?.code;
+  response.writeHead(code === 'ENOENT' || code === 'ENOTDIR' ? 404 : 400).end('Not found');
+}

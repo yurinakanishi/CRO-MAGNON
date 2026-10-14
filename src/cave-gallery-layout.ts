@@ -13,6 +13,8 @@ export const CAVE_MOTIFS = {
   // Contributors' companions among horses, an ibex, a stag, an aurochs and a bison.
   friendsMeadow: [0, 0, 2172, 724],
   friendsRiver: [0, 0, 2172, 724],
+  // The deepened gallery's ninth procession is served as painted, at 1024 px.
+  daredaroFrieze: [0, 0, 1024, 341],
   bison: [805, 40, 1254, 418],
   redHorse: [3, 443, 431, 779],
   ochreHorse: [435, 442, 827, 779],
@@ -43,6 +45,7 @@ export const CAVE_EXTRA_PIGMENTS = {
     url: '/models/camp-cave/friends-river-lascaux-r35.png',
     subjects: ['otani-mascot', 'urata-mascot', 'howkey-scientist', 'rei-mascot'],
   },
+  daredaroFrieze: { url: '/models/camp-cave/daredaro-lascaux-r37.png', subjects: ['daredaro'] },
 } as const;
 export type CaveExtraPigment = keyof typeof CAVE_EXTRA_PIGMENTS;
 
@@ -55,9 +58,10 @@ export type CaveMural = {
   strength: number;
 };
 
-// One scale and pigment density for all eight main processions. The upper
-// animal register fills the limestone between the processions and the roof.
-// Wall coordinates follow local Z; Rimo and 524 still face each other.
+// One scale and pigment density for all main processions. The upper animal
+// register fills the limestone between the processions and the roof. Wall
+// coordinates follow local Z; Rimo and 524 still face each other. The cave's
+// r28 deepening added one 7.9 m bay: its east wall holds the ninth procession.
 export const CAVE_MURALS: readonly CaveMural[] = [
   { motif: 'roundBots', wall: 'east', centre: -5.4, bottom: 1.4, width: 7.5, strength: 0.84 },
   { motif: 'maruimoFrieze', wall: 'east', centre: -13.3, bottom: 1.4, width: 7.5, strength: 0.84 },
@@ -67,6 +71,7 @@ export const CAVE_MURALS: readonly CaveMural[] = [
   { motif: 'friendsMeadow', wall: 'west', centre: -13.3, bottom: 1.4, width: 7.5, strength: 0.84 },
   { motif: 'creature524', wall: 'west', centre: -21.2, bottom: 1.4, width: 7.5, strength: 0.84 },
   { motif: 'friendsRiver', wall: 'west', centre: -29.1, bottom: 1.4, width: 7.5, strength: 0.84 },
+  { motif: 'daredaroFrieze', wall: 'east', centre: -37.0, bottom: 1.4, width: 7.5, strength: 0.84 },
   { motif: 'redHorse', wall: 'east', centre: -2.9, bottom: 3.75, width: 1.59, strength: 0.8 },
   { motif: 'bison', wall: 'east', centre: -6.4, bottom: 3.75, width: 1.48, strength: 0.8 },
   { motif: 'ochreHorse', wall: 'east', centre: -9.9, bottom: 3.75, width: 1.45, strength: 0.8 },
@@ -76,6 +81,8 @@ export const CAVE_MURALS: readonly CaveMural[] = [
   { motif: 'ochreHorse', wall: 'east', centre: -23.9, bottom: 3.75, width: 1.45, strength: 0.8 },
   { motif: 'bison', wall: 'east', centre: -27.4, bottom: 3.75, width: 1.48, strength: 0.8 },
   { motif: 'deer', wall: 'east', centre: -30.9, bottom: 3.75, width: 1.16, strength: 0.8 },
+  { motif: 'mammoth', wall: 'east', centre: -34.4, bottom: 3.75, width: 1.54, strength: 0.8 },
+  { motif: 'redHorse', wall: 'east', centre: -37.9, bottom: 3.75, width: 1.59, strength: 0.8 },
   { motif: 'mammoth', wall: 'west', centre: -2.9, bottom: 3.75, width: 1.54, strength: 0.8 },
   { motif: 'ochreHorse', wall: 'west', centre: -6.4, bottom: 3.75, width: 1.45, strength: 0.8 },
   { motif: 'deer', wall: 'west', centre: -9.9, bottom: 3.75, width: 1.16, strength: 0.8 },
@@ -85,6 +92,8 @@ export const CAVE_MURALS: readonly CaveMural[] = [
   { motif: 'mammoth', wall: 'west', centre: -23.9, bottom: 3.75, width: 1.54, strength: 0.8 },
   { motif: 'ochreHorse', wall: 'west', centre: -27.4, bottom: 3.75, width: 1.45, strength: 0.8 },
   { motif: 'redHorse', wall: 'west', centre: -30.9, bottom: 3.75, width: 1.59, strength: 0.8 },
+  { motif: 'bison', wall: 'west', centre: -34.4, bottom: 3.75, width: 1.48, strength: 0.8 },
+  { motif: 'deer', wall: 'west', centre: -37.9, bottom: 3.75, width: 1.16, strength: 0.8 },
   { motif: 'hands', wall: 'east', centre: -11.65, bottom: 4.3, width: 0.75, strength: 0.64 },
   { motif: 'signs', wall: 'east', centre: -25.65, bottom: 4.35, width: 0.8, strength: 0.64 },
   { motif: 'signs', wall: 'west', centre: -11.65, bottom: 4.35, width: 0.8, strength: 0.64 },

@@ -402,8 +402,9 @@ try {
   await shot('12-english');
   pass('English prompt and ability labels');
 
-  // The bag opens the menu. Its tabs slide in one row with その他 (the exits) last; no
-  // separate actions row, a gear for the settings and no warp tab (fast travel is in the map).
+  // The bag opens the menu. Its tabs, the character among them, slide in one row and the menu's
+  // actions follow them there: no その他 tab, no separate actions row, no 探索に戻る (that is the
+  // 戻る at the top right), a gear for the settings and no warp tab (fast travel is in the map).
   await page.evaluate(async () => (await import('/src/language.js')).setLanguage('ja'));
   await page.locator('[data-touch-action="menu"]').tap();
   await page.locator('.pause-menu').waitFor();
@@ -415,6 +416,11 @@ try {
   );
   assert.doesNotMatch(await glyph('[data-touch-action="menu"]'), /M4 6h16M4 12h16M4 18h16/);
   assert.doesNotMatch(await glyph('[data-pause-tab="settings"]'), /M11 4 5 9H2v6h3l6 5V4Z/);
+  assert.notEqual(
+    await glyph('[data-pause-tab="character"]'),
+    await glyph('[data-pause-tab="mascots"]'),
+    'one figure for the character, two for the companions',
+  );
   const tabs = await page.locator('.pause-tab').evaluateAll((list) =>
     list.map((tab) => {
       const r = tab.getBoundingClientRect();
@@ -423,45 +429,54 @@ try {
   );
   assert.deepEqual(
     tabs.map((t) => t.id),
-    ['inventory', 'mascots', 'settings', 'more'],
+    ['inventory', 'mascots', 'character', 'settings'],
   );
   const close = await box('#modal-close');
   assert.ok(
     tabs.every((t) => Math.abs(t.y - tabs[0].y) < 1),
     'one tab row',
   );
-  assert.ok(
-    tabs.every((t) => t.right <= close.x + 1),
-    'tabs stay clear of the back button',
+  assert.equal(
+    await page
+      .locator(
+        '[data-pause-tab="more"], .pause-more, [data-pause-tab="warp"], [data-controller-menu="resume"]',
+      )
+      .count(),
+    0,
   );
-  assert.equal(await page.locator('.pause-more, [data-pause-tab="warp"]').count(), 0);
-  assert.equal(await page.locator('[data-controller-menu="title"]').isVisible(), false);
-  await shot('13-menu');
-  await page.locator('[data-pause-tab="more"]').tap();
-  await page.locator('[data-controller-menu="title"]').waitFor();
-  assert.equal(await page.locator('#pause-panel-inventory').isVisible(), false);
+  const row = await box('.pause-row');
   const exits = await page.locator('.pause-exits .button').evaluateAll((list) =>
     list.map((b) => {
       const r = b.getBoundingClientRect();
-      return { x: r.x, y: r.y, h: r.height, right: r.right, bottom: r.bottom };
+      return { id: b.dataset.controllerMenu, x: r.x, y: r.y, h: r.height, right: r.right };
     }),
   );
-  const row = await box('.pause-tabs');
-  assert.ok(
-    exits.length >= 4 &&
-      exits.every((b) => b.h >= 44 && b.x >= 0 && b.right <= 391 && b.y > row.bottom),
-    JSON.stringify(exits),
+  assert.deepEqual(
+    exits.map((b) => b.id),
+    ['profile', 'title'],
   );
-  await shot('13b-menu-more');
-  // English names outgrow the row: it fades at the edge with more tabs and slides by finger.
+  assert.ok(
+    exits.every((b) => b.h >= 44 && Math.abs(b.y - tabs[0].y) < 1) &&
+      exits[0].x >= tabs.at(-1).right,
+    `the actions continue the row after the tabs: ${JSON.stringify(exits)}`,
+  );
+  await page.locator('.pause-row[data-fade="end"]').waitFor();
+  await shot('13-menu');
+  // At the end of the row the actions sit clear of the back button; the bag stays below.
+  await page.locator('[data-controller-menu="title"]').scrollIntoViewIfNeeded();
+  await page.locator('.pause-row[data-fade~="start"]').waitFor();
+  const title = await box('[data-controller-menu="title"]');
+  assert.ok(title.x >= row.x - 1 && title.right <= close.x + 1, JSON.stringify(title));
+  assert.equal(await page.locator('#pause-panel-inventory').isVisible(), true);
+  await shot('13b-menu-actions');
+  // English names are longer still: the row fades at the edge with more beyond and slides by finger.
   await page.evaluate(async () => (await import('/src/language.js')).setLanguage('en'));
   await until(
-    () => page.locator('.pause-tabs').evaluate((el) => el.scrollWidth > el.clientWidth + 1),
+    () => page.locator('.pause-row').evaluate((el) => el.scrollWidth > el.clientWidth + 1),
     'English tabs overflow the row',
   );
-  await page.locator('.pause-tabs[data-fade~="end"]').waitFor();
-  await page.locator('.pause-tabs').evaluate((el) => (el.scrollLeft = 0));
-  await page.locator('.pause-tabs[data-fade="end"]').waitFor();
+  await page.locator('.pause-row').evaluate((el) => (el.scrollLeft = 0));
+  await page.locator('.pause-row[data-fade="end"]').waitFor();
   const y = row.y + row.h / 2;
   await touch('touchStart', [{ id: 1, x: 260, y }]);
   for (const x of [230, 190, 150, 110, 70, 40]) {
@@ -470,17 +485,15 @@ try {
   }
   await touch('touchEnd');
   await until(
-    () => page.locator('.pause-tabs').evaluate((el) => el.scrollLeft > 20),
-    'the tab row slides under a finger',
+    () => page.locator('.pause-row').evaluate((el) => el.scrollLeft > 20),
+    'the row slides under a finger',
   );
-  await page.locator('.pause-tabs[data-fade~="start"]').waitFor();
-  const more = await box('[data-pause-tab="more"]');
-  assert.ok(more.x >= row.x - 1 && more.right <= close.x + 1, JSON.stringify(more));
+  await page.locator('.pause-row[data-fade~="start"]').waitFor();
   await shot('13c-menu-english-slid');
   await page.evaluate(async () => (await import('/src/language.js')).setLanguage('ja'));
   await page.locator('#modal-close').tap();
   pass(
-    'The bag opens the menu; its tabs slide in one row with その他 last, a gear for settings, no warp tab',
+    'The bag opens the menu; its tabs, the character among them, slide in one row with the actions after them, a gear for settings, no その他 or warp tab',
   );
 
   for (const size of [

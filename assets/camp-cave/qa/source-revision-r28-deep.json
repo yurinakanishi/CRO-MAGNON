@@ -1,0 +1,28 @@
+{
+  "schema": "cro-magnon/source-model-revision@1",
+  "modelKey": "camp-cave",
+  "decision": "adopt",
+  "previous": {
+    "adoption": "20261010-r07-a01",
+    "files": [
+      {
+        "url": "/models/camp-cave/model-r26.opt-1debf5dafc216ce0.glb",
+        "sha256": "1debf5dafc216ce01c46bd620e43d232026e0b5a4ad282a91e25676078384005",
+        "bytes": 2120208
+      }
+    ],
+    "manifest": "assets/camp-cave/archive-geometry-r26-20261010.json",
+    "manifestSha256": "5504823bd77b7df0ebf13a5d17000f2df98583932c647e2e950d2362c7d26432"
+  },
+  "files": [
+    {
+      "url": "/models/camp-cave/model-r28-deep.glb",
+      "sha256": "932c96905891f77b766c9e668ca80f42c7f3073a4f992a559e87f4f53e770c4d",
+      "bytes": 2147212
+    }
+  ],
+  "review": {
+    "path": "assets/camp-cave/qa/adoption-r28-deep.json",
+    "sha256": "af48e0df812c9af82650fee6d72d54ccf1b4461404c5871cb52b30ccba166b26"
+  }
+}

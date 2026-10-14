@@ -20,6 +20,8 @@ const icons = {
   bag: '<path d="M6.5 11a5 5 0 0 1 5-5h1a5 5 0 0 1 5 5v8a2 2 0 0 1-2 2h-7a2 2 0 0 1-2-2v-8Z"/><path d="M10.2 6V4.6a1.8 1.8 0 0 1 3.6 0V6M9 21v-3.2a1.3 1.3 0 0 1 1.3-1.3h3.4a1.3 1.3 0 0 1 1.3 1.3V21M9 12h6"/><path d="M6.5 13.5H5a1 1 0 0 0-1 1V18a1.5 1.5 0 0 0 1.5 1.5h1m11-6H19a1 1 0 0 1 1 1V18a1.5 1.5 0 0 1-1.5 1.5h-1"/>',
   people:
     '<circle cx="9" cy="8" r="3"/><path d="M3 21v-3a6 6 0 0 1 12 0v3M16 5a3 3 0 0 1 0 6m1 4a5 5 0 0 1 4 5"/>',
+  // One figure: the player's own character, beside the companions' two.
+  person: '<circle cx="12" cy="7.5" r="3.5"/><path d="M5 21v-1.5a7 7 0 0 1 14 0V21"/>',
   book: '<path d="M3 4h7l2 2 2-2h7v16h-7l-2 1-2-1H3V4Zm9 2v15M6 8h3m-3 4h3m6-4h3m-3 4h3"/>',
   arrow: '<path d="M5 12h14m-5-5 5 5-5 5"/>',
   plus: '<path d="M12 5v14M5 12h14"/>',

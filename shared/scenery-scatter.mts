@@ -35,6 +35,7 @@ import { ADVENTURE_SCENERY } from './adventure-layout.mjs';
 import { inGulf, GULF_SCENERY, gulfLandDistance, gulfActivitySpace } from './gulf-region.mjs';
 import { inBehemothClearing, inBehemothPool } from './behemoth-rules.mjs';
 import { SABERTOOTH, SABERTOOTH_GROUND } from './sabertooth-rules.mjs';
+import { spaceScenery } from './scenery-spacing.mjs';
 // Body-sized animals need a continuous clearing, not just a free spawn point.
 // Existing harvestable resources sit outside the five-metre roaming footprint.
 export const HUNTING_GROUNDS = Object.freeze([
@@ -432,7 +433,7 @@ export function scatterScenery(ask: SceneryQuestions) {
       surface: BIOME_SCENERY[biome].surface ?? null,
     });
   }
-  return Object.fromEntries(
+  const reserved = Object.fromEntries(
     Object.entries({ trees, grass, rocks, ridges, tents, props, fires, animals }).map(
       ([key, items]) => [
         key,
@@ -444,5 +445,11 @@ export function scatterScenery(ask: SceneryQuestions) {
         ),
       ],
     ),
+  );
+  // Last, and asking nothing: off the mountain's slopes and clear of one another and of
+  // every harvest pile where it really stands.
+  return spaceScenery(
+    reserved,
+    INITIAL_RESOURCES.filter((r) => !r.id.startsWith('gulf-')),
   );
 }

@@ -15,7 +15,6 @@ import {
   bindCharacterSwitch,
   characterSwitchMarkup,
   closeCharacterConfirm,
-  openCharacterSwitch,
   updateCharacterSwitch,
 } from './character-switch-ui.js';
 import {
@@ -54,6 +53,7 @@ import { LOADING_TIPS } from './loading-tips.js';
 import { warpDestination } from '../shared/warp-sites.mjs';
 
 import { WORLD, CAMP, NPC, INITIAL_RESOURCES } from '../shared/world.mjs';
+import { IDLE_CLOSE_CODE, IDLE_MESSAGE } from '../shared/player-inactivity.mjs';
 import { EXHIBITION_PLAYER_LIMIT } from '../shared/room-rules.mjs';
 import { spawnSite } from '../shared/spawn-sites.mjs';
 import { HUNTING, usableCookingFire } from '../shared/hunting.mjs';
@@ -205,6 +205,7 @@ let selfId = null,
   ping = 0;
 let connectAttempt = 0,
   retryCount = 0;
+let lastActivitySent = -Infinity;
 let localRoomReset = false,
   roomResetVersion = 0;
 let renderUnavailable = false;
@@ -260,7 +261,7 @@ const viewportMarkup = `
     <div id="screens" class="screens">
       ${titleHandoff ? '' : titleScreenMarkup()}
       <section id="screen-setup" class="screen setup-screen" hidden>
-        <form id="setup-form" class="setup-card"><header class="setup-heading"><h2>旅人を選ぶ</h2></header><p class="form-error" id="setup-error" hidden></p>${joinFields()}<div class="setup-actions"><button type="button" id="setup-back" class="button button-outline setup-back">戻る</button></div></form>
+        <form id="setup-form" class="setup-card"><header class="setup-heading"><h2>キャラクターを選ぶ</h2></header><p class="form-error" id="setup-error" hidden></p>${joinFields()}<div class="setup-actions"><button type="button" id="setup-back" class="button button-outline setup-back">戻る</button></div></form>
       </section>
     </div>
   </section>`;
@@ -734,6 +735,14 @@ function send(message) {
   socket.send(JSON.stringify(message));
   if (firstActions) firstCommand(message);
 }
+/** Report only actual foreground input, with at most one extra message a second. */
+function reportPlayerActivity() {
+  if (!joined || manualLeave || document.hidden || !document.hasFocus()) return;
+  const now = performance.now();
+  if (now - lastActivitySent < 1000) return;
+  send({ type: 'activity' });
+  lastActivitySent = now;
+}
 function stopInput() {
   touchControls?.hide();
   renderer?.endCompanionView();
@@ -908,6 +917,7 @@ async function connect(automatic = false) {
     if (message.type === 'welcome') {
       startupMarks.mark('welcome', marks);
       retryCount = 0;
+      lastActivitySent = -Infinity;
       selfId = message.id;
       profile = {
         ...profile,
@@ -1066,6 +1076,10 @@ async function connect(automatic = false) {
       $('#ping-label').textContent = `${ping} ms`;
     }
     if (message.type === 'error') {
+      if (message.code === 'IDLE_TIMEOUT') {
+        showIdleExit();
+        return;
+      }
       manualLeave = true;
       notify(message.text, 'error');
       connection(false, '参加できません');
@@ -1079,8 +1093,13 @@ async function connect(automatic = false) {
       }
     }
   });
-  ws.addEventListener('close', () => {
+  ws.addEventListener('close', (event) => {
     if (ws !== socket) return;
+    // A suspended tab may miss the explanation frame; the close code still stops retrying.
+    if (event.code === IDLE_CLOSE_CODE) {
+      showIdleExit();
+      return;
+    }
     touchControls?.stop();
     renderer.setTouchMovement?.(0, 0);
     connection(false, manualLeave ? '未接続' : '再接続中…');
@@ -1962,6 +1981,25 @@ function leaveToTitle() {
   document.body.classList.remove('in-game');
   showTitle();
 }
+function showIdleExit() {
+  manualLeave = true;
+  clearTimeout(retry);
+  ++connectAttempt;
+  const previous = socket;
+  socket = null;
+  previous?.close();
+  stopInput();
+  connection(false, '自動退出');
+  showSetup(IDLE_MESSAGE);
+  if (savedSession(sessionKey(profile.room))) {
+    $('#setup-error').insertAdjacentHTML(
+      'afterend',
+      '<button id="retry-session" class="button button-accent wide" type="button">続きから再開する</button>',
+    );
+    $('#retry-session').onclick = () => enterGame();
+    $('#retry-session').focus();
+  }
+}
 async function openInvite() {
   openModal(
     `<span class="modal-illustration">${icon('people')}</span><h2>招待</h2><div class="invite-code"><small>ROOM CODE</small><strong id="invite-code"></strong><span>現在の部屋の接続上限は ${hudPlayerLimit()}人</span></div><label>招待リンク<input id="invite-url" readonly aria-label="招待リンク"></label><button id="copy-invite" class="button button-accent wide">${icon('link')} 招待リンクをコピー</button><p id="invite-note" class="form-note">このPCと同じWi-Fi・LANにいる仲間が参加できます。インターネット越しの参加には、サーバーの公開が必要です。</p><button id="change-room" class="text-button">別の部屋に参加する ${icon('arrow')}</button>`,
@@ -2271,11 +2309,14 @@ function bindIntroForm() {
     form.requestSubmit();
   };
 }
-/** The clothing colours, for a character whose dye rule is tuned; nothing in the exhibition. */
-function dyeMarkup() {
+/**
+ * The clothing colours, for a character whose dye rule is tuned; nothing in the exhibition.
+ * With `choice` they only pick, for the character change to wear with its confirmation.
+ */
+function dyeMarkup(choice = false) {
   const me = player();
   return !fixedIdentity && clothingDyeAvailable(characterModel(me ?? profile).key)
-    ? dyePickerMarkup(me ? me.dye : profile.dye)
+    ? dyePickerMarkup(me ? me.dye : profile.dye, { choice })
     : '';
 }
 /** A cosmetic change: allowed on a mount or a boat and while recovering. */
@@ -2353,23 +2394,11 @@ function updateSaveStatus() {
         ? `自動保存済み ${new Date(localSaveStatus.savedAt).toLocaleTimeString()} · タイトルへ戻っても続きから再開できます。${localSaveStatus.recovered ? ' 予備の保存から復元しました。' : ''}`
         : '自動保存を準備しています。';
 }
-function openCharacterSwitchMenu() {
-  openCharacterSwitch({
-    openModal,
-    player,
-    now: () => renderer.serverNow(),
-    connected: () => joined,
-    action,
-    settle: () => gamepadControls?.suspend(),
-    extra: dyeMarkup(),
-  });
-  bindDyePickers($('#modal-body'), chooseDye);
-}
 /**
- * Game-style pause menu: a tab rail on the left, one panel on the right, exits as
- * buttons below the tabs. Where the tabs become one sliding row (phones, narrow
- * windows), the exits are its last tab, その他. The exhibition layout opens on Warp;
- * the normal layout opens on the bag with the first food card focused.
+ * Game-style pause menu: a tab rail on the left, one panel on the right, the menu's
+ * actions as buttons below the tabs. Where the tabs become one sliding row (phones,
+ * narrow windows), the actions follow them in that row. The exhibition layout opens on
+ * Warp; the normal layout opens on the bag with the first food card focused.
  */
 const PAUSE_TAB_ROW = '(max-width: 860px)'; // The breakpoint of the tab row in the CSS.
 function localResetMarkup() {
@@ -2440,13 +2469,14 @@ function openPauseMenu(tab?: string) {
   const tabs: [string, string, string][] = fixedIdentity
     ? [
         ['warp', 'compass', 'ワープする'],
-        ['character', 'people', 'キャラクターを変える'],
+        ['character', 'person', 'キャラクターを変える'],
         ['inventory', 'bag', '持ち物'],
       ]
     : // Fast travel lives in the map: its 名所 bar and the fires.
       [
         ['inventory', 'bag', '持ち物'],
         ['mascots', 'people', '連れていく仲間'],
+        ['character', 'person', 'キャラクターを変える'],
         ['settings', 'gear', '設定'],
       ];
   const exits: [string, string, string, () => void][] = [
@@ -2463,20 +2493,9 @@ function openPauseMenu(tab?: string) {
           ] as [string, string, string, () => void],
         ]
       : []),
+    // Back to exploring is the 戻る at the top right; the character is a tab.
     ...(!fixedIdentity
       ? [
-          ['character', 'people', 'キャラクターを変える', openCharacterSwitchMenu] as [
-            string,
-            string,
-            string,
-            () => void,
-          ],
-          ['resume', 'compass', '探索に戻る', () => $('#modal').close()] as [
-            string,
-            string,
-            string,
-            () => void,
-          ],
           ['profile', 'people', '部屋を変える（参加し直す）', () => showSetup()] as [
             string,
             string,
@@ -2495,22 +2514,19 @@ function openPauseMenu(tab?: string) {
     tabs.some(([key]) => key === id)
       ? `<section class="pause-panel" data-pause-panel="${id}" role="tabpanel" id="pause-panel-${id}" ${pauseTab === id ? '' : 'hidden'}>${body}</section>`
       : '';
-  // The exits sit under the rail; in the one-row layout they are the panel of the last tab.
+  // The actions sit under the rail's tabs; in the one-row layout they follow the tabs.
   openModal(
-    `<div class="pause-menu${fixedIdentity ? ' exhibition-menu' : ''}" data-tab="${pauseTab}"><aside class="pause-rail"><nav class="pause-tabs" role="tablist" aria-label="メニューの項目">${[
-      ...tabs,
-      ['more', 'more', 'その他'],
-    ]
+    `<div class="pause-menu${fixedIdentity ? ' exhibition-menu' : ''}" data-tab="${pauseTab}"><aside class="pause-rail"><div class="pause-row"><nav class="pause-tabs" role="tablist" aria-label="メニューの項目">${tabs
       .map(
         ([id, glyph, label]) =>
-          `<button type="button" class="pause-tab${id === 'more' ? ' pause-tab-more' : ''}" role="tab" data-pause-tab="${id}" data-controller-menu="${id}" aria-selected="${pauseTab === id}" aria-controls="pause-panel-${id}">${icon(glyph)}<span>${label}</span></button>`,
+          `<button type="button" class="pause-tab" role="tab" data-pause-tab="${id}" data-controller-menu="${id}" aria-selected="${pauseTab === id}" aria-controls="pause-panel-${id}">${icon(glyph)}<span>${label}</span></button>`,
       )
       .join(
         '',
-      )}</nav></aside><section id="pause-panel-more" class="pause-exits" aria-label="その他">${exits.map(menuButton).join('')}</section><div class="pause-panels">${panel(
+      )}</nav><div class="pause-exits" role="group" aria-label="メニューの操作">${exits.map(menuButton).join('')}</div></div></aside><div class="pause-panels">${panel(
       'inventory',
       inventoryMarkup(),
-    )}${panel('character', characterSwitchMarkup())}${panel('warp', exhibitionWarpMarkup())}${panel('mascots', mascotMenuMarkup(availableMascots))}${panel(
+    )}${panel('character', characterSwitchMarkup(dyeMarkup(true)))}${panel('warp', exhibitionWarpMarkup())}${panel('mascots', mascotMenuMarkup(availableMascots))}${panel(
       'settings',
       `<h2>設定</h2><div class="settings-list">${audioSettingsMarkup(renderer.audio.settings)}<div class="settings-item"><div><strong>全画面表示</strong></div><button class="button button-outline" data-setting="fullscreen">${icon('expand')} 切り替え</button></div><div class="settings-item"><div><strong>視点</strong></div><div class="settings-buttons"><button class="button button-outline" data-setting="zoom-out">− 遠く</button><button class="button button-outline" data-setting="zoom-in">+ 近く</button><button class="button button-outline" data-setting="camera">${icon('target')} 視点を戻す</button></div></div><div class="settings-item"><div><strong>コントローラー</strong><p class="gamepad-connection" role="status">${usingGamepad ? '' : '未接続'}</p></div></div></div><p id="local-save-status" class="form-note" role="status" hidden></p>${localResetMarkup()}`,
     )}</div></div>`,
@@ -2556,9 +2572,10 @@ function openPauseMenu(tab?: string) {
     };
   }
   const menu = root.querySelector<HTMLElement>('.pause-menu')!;
-  const tabRow = root.querySelector<HTMLElement>('.pause-tabs')!;
+  // In the one-row layout the tabs and then the actions slide together in this row.
+  const tabRow = root.querySelector<HTMLElement>('.pause-row')!;
   const tabButtons = [...root.querySelectorAll<HTMLButtonElement>('.pause-tab')];
-  // The sliding row fades at a side with more tabs beyond it.
+  // The sliding row fades at a side with more buttons beyond it.
   const fadeTabRow = () => {
     const end = tabRow.scrollWidth - tabRow.clientWidth;
     const sides = [
@@ -2570,9 +2587,10 @@ function openPauseMenu(tab?: string) {
   };
   const revealTab = (tab: HTMLElement | undefined) => {
     if (!tab || tabRow.scrollWidth <= tabRow.clientWidth) return;
+    // Out of the 36 px fade at either edge, like the row's scroll padding.
     const row = tabRow.getBoundingClientRect(),
       box = tab.getBoundingClientRect(),
-      margin = 24;
+      margin = 36;
     if (box.left < row.left + margin) tabRow.scrollLeft -= row.left + margin - box.left;
     else if (box.right > row.right - margin) tabRow.scrollLeft += box.right - row.right + margin;
   };
@@ -2600,7 +2618,7 @@ function openPauseMenu(tab?: string) {
   for (const [id, , , handler] of exits)
     if ($(`[data-controller-menu="${id}"]`))
       $(`[data-controller-menu="${id}"]`).onclick = () => handler();
-  // Wider than the row layout, the exits stand under the rail again and その他 has no tab.
+  // Switching between the rail and the row, or resizing, measures the row's fades again.
   const tabLayout = matchMedia(PAUSE_TAB_ROW);
   const tabSizes =
     typeof ResizeObserver === 'undefined' ? null : new ResizeObserver(() => fitTabs());
@@ -2610,11 +2628,11 @@ function openPauseMenu(tab?: string) {
   };
   function fitTabs() {
     if (!menu.isConnected) return stopFitting();
-    if (!tabLayout.matches && pauseTab === 'more') showTab(tabs[0][0]);
     fadeTabRow();
   }
   tabLayout.addEventListener('change', fitTabs);
-  for (const element of [tabRow, ...tabButtons]) tabSizes?.observe(element);
+  for (const element of [tabRow, ...tabRow.querySelectorAll<HTMLElement>('button')])
+    tabSizes?.observe(element);
   $('#modal').addEventListener('close', stopFitting, { once: true });
   fadeTabRow();
   revealTab(tabButtons.find((tab) => tab.dataset.pauseTab === pauseTab));
@@ -2625,7 +2643,8 @@ function openPauseMenu(tab?: string) {
     action,
     settle: () => gamepadControls?.suspend(),
   };
-  if (fixedIdentity) bindCharacterSwitch(menuActions, false);
+  // A colour alone changes nothing that would close the menu, so its はい leaves it.
+  bindCharacterSwitch({ ...menuActions, chooseDye, done: () => $('#modal').close() }, false);
   bindExhibitionWarp(menuActions);
   updateModalHUD();
   inventoryCrafting.bind();
@@ -2915,6 +2934,14 @@ document.addEventListener('keyup', (e) => {
   if (!DIRECTION_KEYS.some((k) => keys.has(k))) dashing = false;
 });
 window.addEventListener('blur', stopInput);
+for (const type of ['keydown', 'pointerdown', 'pointermove', 'wheel', 'input'])
+  document.addEventListener(
+    type,
+    (event) => {
+      if (event.isTrusted) reportPlayerActivity();
+    },
+    { capture: true, passive: true },
+  );
 document.addEventListener('visibilitychange', () => {
   if (document.hidden) stopInput();
 });
@@ -2956,6 +2983,7 @@ gamepadControls = new GamepadControls({
   },
   onActivity: updateGamepadHints,
   onFrame: (pad, _frame, mode) => {
+    if (mode !== 'blocked' && _frame.active) reportPlayerActivity();
     if (setConnectedController(pad?.id ?? null, fixedIdentity)) {
       inputCues?.device(controllerHints());
       updateHintLabels();

@@ -118,7 +118,8 @@ async function start(page, mobile = false) {
   const press = (selector) =>
     mobile ? page.locator(selector).tap() : page.locator(selector).click();
   await press('#title-start');
-  await press('.character-choice:has(input[value="cro-male"])');
+  // The setup screen's card: the menu's character tab keeps its own cards while closed.
+  await press('#setup-form .character-choice:has(input[value="cro-male"])');
   await press('#setup-flow-yes');
 }
 async function caveReady(page) {
@@ -179,7 +180,12 @@ async function tap(page, button) {
 async function murals(page) {
   const dialog = page.locator('#modal[open] .mural-people-dialog');
   await dialog.waitFor();
-  assert.equal(await dialog.locator('h2').innerText(), '壁画の人');
+  assert.equal(await dialog.locator('h2').innerText(), '壁画の人々');
+  // Each card is the icon and the name only: no character name and no @handle.
+  assert.equal(await dialog.locator('.contributor small').count(), 0);
+  const text = await dialog.innerText();
+  for (const person of muralPeople())
+    if (person.profile) assert.ok(!text.includes(`@${person.profile.split('/').pop()}`));
   const people = muralPeople();
   assert.equal(await dialog.locator('.contributor').count(), people.length);
   assert.equal(
@@ -539,8 +545,6 @@ try {
   // Back to the title and in again, with the world already loaded: covered, no cave.
   await page.keyboard.press('Escape');
   await page.locator('.pause-menu').waitFor();
-  if (await page.locator('[data-pause-tab="more"]').isVisible())
-    await page.locator('[data-pause-tab="more"]').click();
   await page.locator('[data-controller-menu="title"]').click();
   await page.locator('#title-start').waitFor();
   since = await now(page);

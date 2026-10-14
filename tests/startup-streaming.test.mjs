@@ -26,7 +26,7 @@ import { CASTLE } from '../dist/shared/castle-layout.mjs';
 import { campMountainVisualLod } from '../dist/shared/camp-cave-layout.mjs';
 import { CollisionWorld } from '../dist/shared/collision.mjs';
 import { deliveredWomanRig } from './cro-magnon-woman-rig.mjs';
-import { caveGalleryImages, caveImageNetwork } from './camp-cave-fixture.mjs';
+import { CAVE_IMAGE_COUNT, caveGalleryImages, caveImageNetwork } from './camp-cave-fixture.mjs';
 
 const settle = () => new Promise((resolve) => setImmediate(resolve));
 
@@ -213,7 +213,7 @@ function element() {
   };
 }
 
-/** Browser globals for the gallery; restored after the test. Its ten images pass the
+/** Browser globals for the gallery; restored after the test. Its images pass the
  * game's verified download and decoder over a stand-in network and image element:
  * each visit gets `images: caveImageNetwork().options` (camp-cave-fixture.mjs). */
 function installGalleryDom(t) {
@@ -786,7 +786,7 @@ test('the gallery shows the selected character, loads its verified template once
     },
   );
   await cave.load();
-  assert.equal(network.images.length, 10, 'the gallery shows its ten verified images');
+  assert.equal(network.images.length, CAVE_IMAGE_COUNT, 'the gallery shows its verified images');
   assert.deepEqual(loads, { 'neanderthal-woman': 1, 'cro-magnon-hunter': 0 }, 'no substitute');
   const provider = humanAssets.get('neanderthal-woman');
   assert.equal(provider.instances.size, 1, 'the gallery avatar');
@@ -1063,7 +1063,7 @@ test('leaving the gallery while the character loads and returning attaches only 
   assert.equal(await firstLoad, 'returned', 'the left visit ends quietly');
   assert.equal(provider.instances.size, 1, "only the second visit's avatar exists");
   assert.deepEqual(left.requests, [], 'the left visit requests no image');
-  assert.equal(returned.images.length, 10);
+  assert.equal(returned.images.length, CAVE_IMAGE_COUNT);
   second.dispose();
   assert.equal(provider.instances.size, 0);
   assert.ok(returned.images.every((image) => image.closed === 1));

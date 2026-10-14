@@ -7,6 +7,7 @@ import { CAMP_CAVE_SURFACE } from '../dist/shared/camp-cave-surface.mjs';
 import { CollisionWorld } from '../dist/shared/collision.mjs';
 import { castleWorld, castleLocal } from '../dist/shared/castle-layout.mjs';
 import { caveWorldAt } from '../dist/shared/camp-cave-layout.mjs';
+import { deepenedZ } from './cave-deepening.mjs';
 import { CHARACTER_MODELS } from '../dist/shared/characters.mjs';
 import { movePlayer } from '../dist/shared/movement.mjs';
 import { WORLD } from '../dist/shared/world.mjs';
@@ -685,12 +686,13 @@ test('canonical outcomes: open ground reads level, a solid cell blocks, a wall s
     assert.equal(surface.deviation(wall.x, wall.z, 0.32), null);
     assert.equal(surface.free(wall.x, wall.z, 0), false);
   }
-  // The measured cave aisle stays walkable at the widest body (camp-surface-continuity).
-  for (let localZ = 15.9; localZ >= -31.5; localZ -= 0.5) {
+  // The measured cave aisle stays walkable at the widest body (camp-surface-continuity), to
+  // where the r28 deepening carried the rear chamber.
+  for (let localZ = 15.9; localZ >= deepenedZ(-31.5); localZ -= 0.5) {
     const p = caveWorldAt(localZ);
     assert.ok(CAMP_CAVE_SURFACE.free(p.x, p.z, 0.76), `blocked aisle ${localZ}`);
   }
-  const end = caveWorldAt(-37.6);
+  const end = caveWorldAt(deepenedZ(-37.6));
   assert.equal(CAMP_CAVE_SURFACE.free(end.x, end.z, 0.32), false, 'the natural blind end is solid');
 });
 

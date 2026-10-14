@@ -1,15 +1,18 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
+import { once } from 'node:events';
 import http from 'node:http';
 import os from 'node:os';
 import path from 'node:path';
-import { mkdir, mkdtemp, rm, utimes, writeFile } from 'node:fs/promises';
+import { mkdir, mkdtemp, open, rm, utimes, writeFile } from 'node:fs/promises';
 import { gunzipSync } from 'node:zlib';
-import { serveStatic } from '../dist/infrastructure/node/static-files.mjs';
+import { sendFailure, serveStatic } from '../dist/infrastructure/node/static-files.mjs';
 import { localContentOverride } from '../dist/infrastructure/node/local-visibility.mjs';
 import {
   activeStaticStreams,
   negotiateEncoding,
+  sendBody,
+  sendText,
 } from '../dist/infrastructure/node/static-transport.mjs';
 
 // Every check below reads the actual HTTP response bytes from a real server that
@@ -77,12 +80,55 @@ async function serve(t, root, visibility) {
       const url = new URL(request.url, 'http://localhost');
       await serveStatic(request, response, url.pathname, root, visibility);
     } catch (error) {
-      response.writeHead(error.code === 'ENOENT' || error.code === 'ENOTDIR' ? 404 : 400).end();
+      sendFailure(response, error);
     }
   });
   await new Promise((resolve) => server.listen(0, '127.0.0.1', resolve));
   t.after(() => new Promise((resolve) => server.close(resolve)));
   return server.address().port;
+}
+
+/** Server-side responses whose clients left before anything was written. */
+async function abandoner(t) {
+  let arrived;
+  const server = http.createServer((request, response) => arrived(response));
+  await new Promise((resolve) => server.listen(0, '127.0.0.1', resolve));
+  t.after(() => new Promise((resolve) => server.close(resolve)));
+  return async () => {
+    const received = new Promise((resolve) => (arrived = resolve));
+    const request = http.request({ host: '127.0.0.1', port: server.address().port, agent: false });
+    request.on('error', () => {});
+    request.end();
+    const response = await received;
+    const closed = once(response, 'close');
+    request.destroy();
+    await closed;
+    return response;
+  };
+}
+
+/** Status, body and completeness of a response, however its connection ends. */
+function fetchEnd(port, url) {
+  return new Promise((resolve, reject) => {
+    const request = http.request(
+      { host: '127.0.0.1', port, path: url, agent: false },
+      (response) => {
+        const chunks = [];
+        response.on('data', (chunk) => chunks.push(chunk));
+        // A cut-off body errors; it is reported as incomplete instead.
+        response.on('error', () => {});
+        response.on('close', () =>
+          resolve({
+            status: response.statusCode,
+            complete: response.complete,
+            body: Buffer.concat(chunks).toString(),
+          }),
+        );
+      },
+    );
+    request.on('error', reject);
+    request.end();
+  });
 }
 
 /** Raw response bytes: Node's client never decodes content codings itself. */
@@ -388,6 +434,138 @@ test('a client leaving mid-body releases the streams and the server keeps servin
     assert.equal(body.toString(), files.large);
   }
   await settled();
+});
+
+// pipeline throws ERR_STREAM_UNABLE_TO_PIPE (instead of calling back) for a response
+// already closed; unhandled, that rejection ended the whole server (2026-10-14).
+test('a response closed before its body begins is released and never rejects', async (t) => {
+  const { root, files } = await fixture(t);
+  const abandoned = await abandoner(t);
+  for (const coding of ['identity', 'gzip']) {
+    for (const kind of ['file', 'text']) {
+      const label = `${kind}, ${coding}`;
+      const response = await abandoned();
+      assert.ok(response.destroyed, `${label}: the client left before the body began`);
+      response.writeHead(200); // as serveStatic has by then
+      const before = activeStaticStreams();
+      const source =
+        kind === 'file'
+          ? (await open(path.join(root, 'dist/src/game.js'))).createReadStream()
+          : null;
+      const sending = source
+        ? sendBody(source, response, coding)
+        : sendText(files.module, response, coding);
+      const outcome = await Promise.race([
+        sending.then(
+          () => 'resolved',
+          (error) => error,
+        ),
+        new Promise((resolve) => setTimeout(resolve, 2000, 'still pending')),
+      ]);
+      assert.equal(outcome, 'resolved', label);
+      assert.equal(activeStaticStreams(), before, `${label}: released once`);
+      if (source) {
+        assert.ok(source.destroyed, `${label}: the file stream is destroyed`);
+        if (!source.closed) await once(source, 'close'); // and its handle closed
+      }
+    }
+  }
+  await settled();
+});
+
+test('a client that leaves before its body begins neither ends the server nor leaks', async (t) => {
+  const { root, files } = await fixture(t);
+  const unhandled = [];
+  const record = (reason) => unhandled.push(reason);
+  process.on('unhandledRejection', record);
+  t.after(() => process.off('unhandledRejection', record));
+  let arrived, served;
+  const server = http.createServer(async (request, response) => {
+    const leaving = request.headers['x-leave'] === '1';
+    if (leaving) {
+      // A browser cancelling the request while serveStatic would still be opening the file.
+      const closed = once(response, 'close');
+      arrived();
+      await closed;
+    }
+    try {
+      const url = new URL(request.url, 'http://localhost');
+      await serveStatic(request, response, url.pathname, root, HIDDEN);
+    } catch (error) {
+      sendFailure(response, error);
+    }
+    if (leaving) served();
+  });
+  await new Promise((resolve) => server.listen(0, '127.0.0.1', resolve));
+  t.after(() => new Promise((resolve) => server.close(resolve)));
+  const { port } = server.address();
+  // A file body, and filtered content sent from memory.
+  for (const url of ['/src/game.js', '/models/world-assets.json']) {
+    for (const accept of [{ 'Accept-Encoding': 'gzip' }, {}]) {
+      const reached = new Promise((resolve) => (arrived = resolve));
+      const finished = new Promise((resolve) => (served = resolve));
+      const request = http.request({
+        host: '127.0.0.1',
+        port,
+        path: url,
+        headers: { ...accept, 'X-Leave': '1' },
+        agent: false,
+      });
+      request.on('error', () => {});
+      request.end();
+      await reached;
+      request.destroy();
+      await finished;
+      await settled();
+    }
+  }
+  await new Promise((resolve) => setImmediate(resolve));
+  assert.deepEqual(unhandled, [], 'no rejection was left unhandled');
+  const full = await fetchRaw(port, '/src/game.js', { headers: { 'Accept-Encoding': 'gzip' } });
+  assert.equal(full.status, 200, 'the same server still answers');
+  assert.equal(gunzipSync(full.body).toString(), files.module);
+  await settled();
+});
+
+test('a failure is answered once: a begun response is cut off', { timeout: 20000 }, async (t) => {
+  const thrown = [];
+  const fail = (response, error) => {
+    try {
+      sendFailure(response, error);
+    } catch (failure) {
+      thrown.push(failure);
+      response.destroy(); // reported below rather than left hanging
+    }
+  };
+  const server = http.createServer((request, response) => {
+    if (request.url === '/missing') fail(response, Object.assign(new Error(), { code: 'ENOENT' }));
+    else if (request.url === '/malformed') fail(response, new URIError('URI malformed'));
+    else if (request.url === '/begun') {
+      response.writeHead(200, { 'Content-Length': 1000 });
+      // The head and part of the body are on the wire when the handler fails.
+      response.write('partial', () => fail(response, new Error('read failed')));
+    } else {
+      response.writeHead(200).end('complete');
+      fail(response, new Error('after the response'));
+    }
+  });
+  await new Promise((resolve) => server.listen(0, '127.0.0.1', resolve));
+  t.after(() => new Promise((resolve) => server.close(resolve)));
+  const { port } = server.address();
+  const missing = await fetchEnd(port, '/missing');
+  assert.deepEqual(missing, { status: 404, complete: true, body: 'Not found' });
+  assert.equal((await fetchEnd(port, '/malformed')).status, 400);
+  const begun = await fetchEnd(port, '/begun');
+  assert.equal(begun.status, 200);
+  assert.equal(begun.complete, false, 'an unfinished body is cut off, not left hanging');
+  assert.equal(begun.body, 'partial', 'and no second response follows it');
+  const finished = await fetchEnd(port, '/finished');
+  assert.deepEqual(finished, { status: 200, complete: true, body: 'complete' });
+  // A client that already left gets nothing at all.
+  const left = await (await abandoner(t))();
+  fail(left, Object.assign(new Error(), { code: 'ENOENT' }));
+  assert.deepEqual(thrown, [], 'answering a failure never throws');
+  assert.equal(left.headersSent, false, 'nothing is written for a client that has left');
 });
 
 test('a missing file is still an ordinary not-found for the caller', async (t) => {

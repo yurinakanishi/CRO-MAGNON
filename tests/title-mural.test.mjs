@@ -89,6 +89,12 @@ test('the dialog lists every contributor without QR codes and exhibition cards h
   assert.doesNotMatch(dialog, /qr-/);
   assert.doesNotMatch(dialog, /contributors-mark|この世界は|たくさんの人|<em>|壁画：/);
   assert.doesNotMatch(dialog, /class="modal-intro"/);
+  // A card is the icon and the name only, with no @handle (a display name may hold an @).
+  assert.doesNotMatch(dialog, /<small>/);
+  for (const person of people) {
+    const handle = contributorHandle(person.profile);
+    if (handle) assert.ok(!dialog.includes(`@${handle}`), handle);
+  }
   // The credits no longer offer a trip to the cave.
   assert.doesNotMatch(dialog, /contributors-cave|アプデの洞窟|<button/);
   const exhibition = contributorsDialogMarkup(undefined, { links: false });
@@ -104,7 +110,7 @@ test('the dialog lists every contributor without QR codes and exhibition cards h
 test('the loading cave lists the people painted on its walls with their X, apart from the credits', () => {
   const people = muralPeople();
   const dialog = muralPeopleDialogMarkup(people);
-  assert.match(dialog, /<h2>壁画の人<\/h2>/);
+  assert.match(dialog, /<h2>壁画の人々<\/h2>/);
   assert.doesNotMatch(dialog, /関わってくれた人たち|contributor-group|contributors-cave|<button/);
   // Each painted person once, in the cave's order; the round and shape bots are the Dots.
   assert.deepEqual(
@@ -123,6 +129,7 @@ test('the loading cave lists the people painted on its walls with their X, apart
       'urata',
       'hawkie',
       'asahina',
+      'daredaro',
       'dots',
     ],
   );
@@ -132,9 +139,14 @@ test('the loading cave lists the people painted on its walls with their X, apart
   for (const person of linked) assert.match(dialog, new RegExp(`href="${person.profile}"`));
   for (const person of people)
     assert.ok(existsSync(new URL(`public${person.avatar}`, root)), person.avatar);
-  // The painted character stands before the handle.
-  assert.match(dialog, /<small><span>りもねこ<\/span> · @vibe_walking<\/small>/);
-  assert.match(dialog, /<small><span>丸いBot・形のBot<\/span><\/small>/);
+  // A card is the icon and the name only: no character name and no @handle.
+  assert.doesNotMatch(dialog, /<small>|りもねこ|丸いBot/);
+  for (const person of linked)
+    assert.ok(!dialog.includes(`@${contributorHandle(person.profile)}`), person.key);
+  assert.match(
+    dialog,
+    /<a class="contributor" href="https:\/\/x\.com\/vibe_walking"[^>]*><img class="contributor-avatar" src="\/title\/avatar-rimo\.jpg"[^>]*><span class="contributor-text"><strong translate="no">[^<]+<\/strong><\/span><svg class="x-glyph"/,
+  );
   assert.doesNotMatch(muralPeopleDialogMarkup(people, { links: false }), /<a\b/);
 });
 

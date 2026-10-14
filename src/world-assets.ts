@@ -426,10 +426,12 @@ export class WorldAssets {
     });
     this.templates.set(key, { gltf, lods: [], asset });
   }
-  createAnimal(key, initialClip = 'Idle_Loop') {
+  /** `dress` changes the clone's materials before its LOD adopts them (e.g. a Dot's lids). */
+  createAnimal(key, initialClip = 'Idle_Loop', dress?: (root: THREE.Object3D) => void) {
     const { gltf, lods, asset } = this.get(key),
       root = cloneSkeleton(gltf.scene),
       mixer = new THREE.AnimationMixer(root);
+    dress?.(root);
     configureActorPerformance(root, lods?.[0]?.scene, asset);
     installSkinnedBounds(root);
     const actions = new Map<string, THREE.AnimationAction>(

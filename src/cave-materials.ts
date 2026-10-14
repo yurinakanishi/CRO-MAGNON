@@ -74,7 +74,7 @@ export function prepareCaveMaterials(
           // Follow the curved chamber when classifying inner rock. A fixed
           // origin misclassifies the far left wall as exterior and exposes
           // untextured source/lining patches at the terminal join.
-          float roomZ=clamp(cavePosition.z,-31.8,12.0);
+          float roomZ=clamp(cavePosition.z,-39.7,12.0);
           float roomT=clamp(-roomZ/${CAVE_BEND.depth.toFixed(6)},0.0,1.0);
           float roomX=${CAVE_BEND.offset.toFixed(6)}*roomT*roomT*(3.0-2.0*roomT);
           vec3 roomToRock=cavePosition-vec3(roomX,2.8,roomZ);
@@ -136,7 +136,7 @@ export function prepareCaveMaterials(
           '#include <lights_fragment_end>\nreflectedLight.indirectDiffuse*=caveDaylight;',
         );
       };
-      material.customProgramCacheKey = () => 'camp-cave-continuous-murals-v23';
+      material.customProgramCacheKey = () => 'camp-cave-continuous-murals-v24';
       material.needsUpdate = true;
     }
   });

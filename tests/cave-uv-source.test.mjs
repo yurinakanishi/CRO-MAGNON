@@ -40,7 +40,11 @@ function originalManifest() {
     characterPigment: record('524-frieze', size(2171, 724)),
     rimoPigment: record('rimo-frieze', size(2172, 724)),
     mascotPigments: Object.fromEntries(
-      Object.keys(CAVE_EXTRA_PIGMENTS).map((key) => [key, record(key, size(2172, 724))]),
+      // Each frieze at the size its rectangle was measured in (r37's is served as painted).
+      Object.keys(CAVE_EXTRA_PIGMENTS).map((key) => {
+        const { width, height } = caveMotifSource(key);
+        return [key, record(key, size(width, height))];
+      }),
     ),
   };
 }
@@ -126,7 +130,9 @@ test('a whole-image resize keeps every normalised rectangle', () => {
   for (const motif of motifs) {
     const before = recordOf(original, motif),
       after = recordOf(resized, motif);
-    assert.notDeepEqual(after.image, before.image, `${motif} is served smaller`);
+    // A painting over 1024 px is served smaller; r37's was painted at 1024 px.
+    const resizedImage = Math.max(before.image.width, before.image.height) > 1024;
+    if (resizedImage) assert.notDeepEqual(after.image, before.image, `${motif} is served smaller`);
     assert.ok(after.image.width === 1024 || after.image.height === 1024);
     assert.deepEqual(caveUvSource(after), caveUvSource(before));
     assert.deepEqual(
@@ -136,7 +142,7 @@ test('a whole-image resize keeps every normalised rectangle', () => {
     // What the mural shader is built with.
     assert.deepEqual(caveMotifUV(motif, caveUvSource(after)), caveMotifUV(motif));
     // Dividing the original pixel rectangle by the resized size would move the artwork.
-    assert.notDeepEqual(caveMotifUV(motif, after.image), caveMotifUV(motif));
+    if (resizedImage) assert.notDeepEqual(caveMotifUV(motif, after.image), caveMotifUV(motif));
   }
   // The r04 candidate sizes.
   assert.deepEqual(resized.pigment.image, size(1024, 1024));
@@ -280,8 +286,10 @@ test('the custom shader samples each served image at its original-space rectangl
       [f(uv.offset[0]), f(uv.offset[1]), f(uv.scale[0]), f(uv.scale[1]), sampler],
       `${mural.motif} on the ${mural.wall} wall`,
     );
-    // Never the served (resized) size.
-    if (record) assert.notDeepEqual(caveMotifUV(mural.motif, record.image), uv);
+    // Never the served (resized) size, where the image was resized.
+    const source = record && caveUvSource(record);
+    if (record && (source.width !== record.image.width || source.height !== record.image.height))
+      assert.notDeepEqual(caveMotifUV(mural.motif, record.image), uv);
   });
   // Full-image friezes span exactly their image; atlas motifs keep their own windows.
   const rimo = blocks[CAVE_MURALS.findIndex((mural) => mural.motif === 'rimoFrieze')];

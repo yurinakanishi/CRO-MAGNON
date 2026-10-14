@@ -127,10 +127,14 @@ try {
   await select('#title-start');
   await tap(PAD.circle);
   await select('#setup-form input[name="character"]:checked');
+  // Picking the card asks at once, with はい focused.
   await tap(PAD.circle);
-  await tap(PAD.circle);
+  await page.waitForSelector('#setup-flow-yes');
   await select('#setup-flow-yes');
   await tap(PAD.circle);
+  // The first entry passes through the update cave; the bottom button leaves it once ready.
+  await page.locator('[data-cave-proceed][aria-busy="false"]').waitFor({ timeout: 180000 });
+  await tap(PAD.cross);
   await page.waitForSelector('body.in-game', { timeout: 60000 });
   await page.waitForSelector('#world[data-world-asset="ready"][data-character-asset="ready"]', {
     timeout: 60000,
@@ -286,7 +290,7 @@ try {
   const tabs = await page
     .locator('.pause-tab')
     .evaluateAll((els) => els.map((el) => el.dataset.pauseTab));
-  assert.deepEqual(tabs, ['inventory', 'warp', 'crafting', 'mascots', 'settings']);
+  assert.deepEqual(tabs, ['inventory', 'mascots', 'character', 'settings']);
   await select('[data-controller-menu="mascots"]');
   await tap(PAD.circle);
   // One choice among the default roster: りもねこ, 524 and the nine Dots.
@@ -300,13 +304,14 @@ try {
   assert.equal(await page.locator('[data-pause-panel="settings"]').isVisible(), true);
   await focusInsideModal('settings tab');
   await page.screenshot({ path: `${output}/05-settings.png`, animations: 'disabled' });
-  passed('Five menu tabs, including the unified mascot cards, work with the controller');
+  passed('Four menu tabs, including the unified mascot cards, work with the controller');
 
-  // 22: character change sits directly above "back to exploring" and completes on the pad.
+  // 22: the character is a tab like the bag and completes on the pad; back to play is the
+  // 戻る at the top, so the actions under the tabs are only the room and the title.
   const exits = await page
     .locator('.pause-exits [data-controller-menu]')
     .evaluateAll((els) => els.map((el) => el.dataset.controllerMenu));
-  assert.equal(exits.indexOf('character') + 1, exits.indexOf('resume'), exits.join(','));
+  assert.deepEqual(exits, ['profile', 'title'], exits.join(','));
   await select('[data-controller-menu="character"]');
   await tap(PAD.circle);
   await page.waitForSelector('#character-switch-form', { state: 'visible' });
@@ -347,11 +352,9 @@ try {
   await until(() => player().gender === 'male', 'character changed on the server');
   await until(async () => !(await modalOpen()), 'menu closes after the change');
   await page.screenshot({ path: `${output}/06-after-switch.png`, animations: 'disabled' });
-  passed(
-    'Character change from the exits column completes with the controller and returns to play',
-  );
+  passed('Character change from its tab completes with the controller and returns to play');
 
-  // 24: bottom button inside the character form goes back to play as well.
+  // 24: bottom button inside the character tab goes back to play as well.
   await tap(PAD.options);
   await select('[data-controller-menu="character"]');
   await tap(PAD.circle);
@@ -359,7 +362,7 @@ try {
   await input();
   await tap(PAD.cross);
   assert.equal(await modalOpen(), false);
-  passed('The bottom face button leaves the character form');
+  passed('The bottom face button leaves the character tab');
 
   await writeFile(
     `${output}/summary.json`,

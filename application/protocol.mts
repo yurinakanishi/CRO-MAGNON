@@ -2,6 +2,7 @@ import type { BarterCommand } from '../shared/barter-types.mjs';
 import { validMapPinPoint } from '../shared/map-pins.mjs';
 export type ClientCommand =
   | BarterCommand
+  | { type: 'activity' }
   | { type: 'leave'; keepSession?: boolean }
   | { type: 'move'; dx: number; dz: number; running?: boolean; facing?: number }
   | { type: 'gait'; running: boolean }
@@ -27,6 +28,9 @@ export function decodeCommand(text: string): ClientCommand | null {
   if (!value || typeof value !== 'object' || Array.isArray(value)) return null;
   const message = value as Record<string, unknown>;
   switch (message.type) {
+    case 'activity':
+      // The server's receive clock owns the deadline, never a client timestamp.
+      return { type: 'activity' };
     case 'mapPin':
       return validMapPinPoint(message.x, message.z)
         ? { type: 'mapPin', x: message.x as number, z: message.z as number }

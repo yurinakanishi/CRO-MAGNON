@@ -103,8 +103,9 @@ test('the 2026-10 remake mascot keeps the octopus rig and clips at 55 cm with it
   }
   assert.deepEqual(
     new Set(['rimo-neko', '524', ...Object.values(CAVE_EXTRA_PIGMENTS).flatMap((p) => p.subjects)]),
-    // Every mascot is painted; Howkey is the one playable character in a frieze.
-    new Set([...MASCOT_KEYS, 'howkey-scientist']),
+    // Every mascot is painted; Howkey is the one playable character in a frieze, and
+    // @daredaro_F the one person painted as themself rather than as a mascot.
+    new Set([...MASCOT_KEYS, 'howkey-scientist', 'daredaro']),
   );
 });
 

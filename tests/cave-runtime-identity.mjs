@@ -4,7 +4,9 @@
 // record serves a verified, hash-addressed derivative, and the adoption stamp records
 // the original: `runtimeOptimization.original` on the model record and
 // `provenance.runtimeOptimization.original` on an image record
-// (scripts/optimization/adoption.mjs adoptModel / adoptTexture).
+// (scripts/optimization/adoption.mjs adoptModel / adoptTexture). A procession added after the
+// adoption serves its own original; a copy composed with animals in place of hidden characters
+// records it as `provenance.muralComposition.original` (scripts/compose-cave-murals.mjs).
 import assert from 'node:assert/strict';
 import { readFile } from 'node:fs/promises';
 import { createHash } from 'node:crypto';
@@ -69,12 +71,29 @@ export function modelIdentities(asset, where = 'camp-cave') {
 
 /** The original and served files of a camp-cave image record. Without any adoption
  * field they are one file. A uvSource or provenance without a complete stamp is an
- * error, never read as the original. */
+ * error, never read as the original, except an unadopted composition's own record. */
 export function imageIdentities(record, where) {
   assert.ok(isFile(record) && isSize(record.image), `${where}: not a served image record`);
   const served = { ...fileOf(record), image: sizeOf(record.image) };
   if (!Object.hasOwn(record, 'provenance') && !Object.hasOwn(record, 'uvSource'))
     return { adopted: false, original: served, served };
+  const composed = record.provenance?.muralComposition;
+  if (
+    !Object.hasOwn(record, 'uvSource') &&
+    plain(record.provenance) &&
+    Object.keys(record.provenance).join() === 'muralComposition' &&
+    isFile(composed?.original)
+  ) {
+    assert.ok(
+      isSize(composed.original.image),
+      `${where}: the composition records no original size`,
+    );
+    assert.equal(composed.baseSha256, composed.original.sha256, `${where}: the composition's base`);
+    assert.notEqual(served.sha256, composed.original.sha256, `${where}: nothing was composed`);
+    const original = { ...fileOf(composed.original), image: sizeOf(composed.original.image) };
+    assert.deepEqual(served.image, original.image, `${where}: a composition keeps the size`);
+    return { adopted: false, original, served };
+  }
   const stamped = plain(record.provenance) && Object.hasOwn(record.provenance, RUNTIME_FIELD);
   assert.ok(stamped, `${where}: uvSource or provenance without an adoption stamp`);
   const stamp = adoptionStamp(record.provenance, `${where}.provenance.${RUNTIME_FIELD}`);

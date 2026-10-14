@@ -1,0 +1,18 @@
+{
+  "verifiedOn": "2026-10-14",
+  "source": "Handle given by the user in chat with a request to add a cave mural. The public X profile was opened in the app built-in browser (not signed in); page title and profile-photo URL read there. The user approved saving the 200x200 icon in chat.",
+  "processing": "Original 200x200 JPEG bytes for the mural people list (壁画の人); not re-encoded.",
+  "profiles": [
+    {
+      "key": "daredaro",
+      "name": "匿名F＠構造婚",
+      "profile": "https://x.com/daredaro_F",
+      "pageTitle": "匿名F＠構造婚 (@daredaro_F) / X",
+      "source": "https://pbs.twimg.com/profile_images/1997483271824044032/x5SELgiW_200x200.jpg",
+      "file": "public/title/avatar-daredaro.jpg",
+      "bytes": 13620,
+      "sha256": "51ea6595972569d6ef4ccc1e900e99b0def1265a4c278cba0aa40736d269bbca",
+      "character": "Silver-haired chibi in a black suit and purple tie, eyes hidden behind a magenta bar (user-supplied assets/camp-cave/source/daredaro-reference-user.png, sha256 857463e4e35ea8a8ee88c3d44190bf565ab3043087f7b71e4f0b46aa6cfad727); no character name is shown, at the user's choice"
+    }
+  ]
+}

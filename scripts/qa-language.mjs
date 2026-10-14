@@ -75,7 +75,7 @@ try {
   await expectText('[data-title-status]', 'Getting ready…');
   release();
   await page.locator('#screen-setup').waitFor({ state: 'visible', timeout: 90000 });
-  await expectText('.setup-heading h2', 'Choose your traveler');
+  await expectText('.setup-heading h2', 'Choose a character');
   assert.equal(await page.locator('#setup-form').count(), 1);
   pass(
     'The lightweight title toggles immediately; the credits list and a pending start survive the game handoff',
@@ -129,12 +129,8 @@ try {
       .then((names) => names.includes('OpenAI Dots')),
     true,
   );
-  // Painted characters take the companion menu's English names; people's names stay verbatim.
-  const painted = await page
-    .locator('.mural-people-dialog .contributor-text small span')
-    .allTextContents();
-  for (const name of ['Rimo Neko', 'Kohaku', 'Round and shape bots'])
-    assert.ok(painted.includes(name), `${name} in ${JSON.stringify(painted)}`);
+  // A card is the icon and the person's name, verbatim: no character name or handle.
+  assert.equal(await page.locator('.mural-people-dialog .contributor small').count(), 0);
   await page.waitForFunction(() =>
     [...document.querySelectorAll('.mural-people-dialog .contributor-avatar')].every(
       (image) => image.complete && image.naturalWidth > 0,
@@ -323,7 +319,7 @@ try {
     );
     await shot(`08-touch-${width}x${height}`, mobile);
     await mobile.locator('#title-start').tap();
-    await expectText('.setup-heading h2', 'Choose your traveler', mobile);
+    await expectText('.setup-heading h2', 'Choose a character', mobile);
     await mobile.locator('.character-choice:has(input[value="cro-female"])').tap();
     await englishOnly('#setup-flow', mobile);
     await shot(`09-touch-confirm-${width}x${height}`, mobile);

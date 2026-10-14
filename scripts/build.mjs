@@ -1,7 +1,8 @@
 import ts from 'typescript';
-import { mkdir, readdir, copyFile, readFile, writeFile, rm } from 'node:fs/promises';
+import { readdir, readFile, rm } from 'node:fs/promises';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { removeStaleTemporaries, writeFileAtomic, writeFilesAtomic } from './atomic-write.mjs';
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const checkOnly = process.argv.includes('--check');
@@ -31,7 +32,18 @@ for (const configName of ['tsconfig.json', 'tsconfig.cloudflare.json', 'tsconfig
 }
 if (failed) process.exitCode = 1;
 else if (!checkOnly) {
-  for (const program of programs) program.emit();
+  // The server and tests read dist/ while builds run: every output replaces its file in one
+  // rename (atomic-write.mjs) instead of the default host's truncate-and-rewrite. As before,
+  // a later program's copy of a shared module is the one written.
+  const emitted = new Map();
+  for (const program of programs)
+    program.emit(undefined, (file, text, writeByteOrderMark) =>
+      emitted.set(
+        path.resolve(file),
+        writeByteOrderMark ? String.fromCharCode(0xfeff) + text : text,
+      ),
+    );
+  await writeFilesAtomic(emitted);
   // Removed journal and graphics-selector modules must not survive incremental builds or be packaged.
   for (const file of [
     'adventure-ui.js',
@@ -61,12 +73,16 @@ else if (!checkOnly) {
         "from './river-bank-worker-utils.js'",
       )
       .replace(/^\/\/# sourceMappingURL=.*$/gm, '');
-    await writeFile(path.join(root, target), code);
+    await writeFileAtomic(path.join(root, target), code);
   }
-  await mkdir(path.join(root, 'dist/src'), { recursive: true });
   for (const name of await readdir(path.join(root, 'src'))) {
     if (name.endsWith('.css'))
-      await copyFile(path.join(root, 'src', name), path.join(root, 'dist/src', name));
+      await writeFileAtomic(
+        path.join(root, 'dist/src', name),
+        await readFile(path.join(root, 'src', name)),
+      );
   }
+  for (const directory of new Set([...emitted.keys()].map((file) => path.dirname(file))))
+    await removeStaleTemporaries(directory);
   console.log('Built browser, shared domain, application, Node and Cloudflare modules.');
 } else console.log('TypeScript checks passed.');

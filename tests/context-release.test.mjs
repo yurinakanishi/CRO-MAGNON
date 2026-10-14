@@ -18,7 +18,7 @@ import { FrameClock } from '../dist/src/frame-clock.js';
 import { CollisionWorld } from '../dist/shared/collision.mjs';
 import { CAMP_CAVE } from '../dist/shared/camp-cave-layout.mjs';
 import { deliveredWomanRig } from './cro-magnon-woman-rig.mjs';
-import { caveGalleryImages, caveImageNetwork } from './camp-cave-fixture.mjs';
+import { CAVE_IMAGE_COUNT, caveGalleryImages, caveImageNetwork } from './camp-cave-fixture.mjs';
 import { coalesceTextures, parseEmbeddedGLB } from '../dist/src/embedded-glb.js';
 import { arrayBuffer, compressedModel, decodeImages } from './glb-fixtures.mjs';
 
@@ -711,7 +711,7 @@ function playingWorld(gl, renderer, owned) {
   return { world, events, releases };
 }
 
-/** Browser globals for the gallery. Its ten images load through the game's verified
+/** Browser globals for the gallery. Its images load through the game's verified
  * download and decoder over a stand-in network and image element (caveImageNetwork),
  * and arrive as uploadable textures of their recorded sizes. */
 function galleryDom(t) {
@@ -728,13 +728,13 @@ function galleryDom(t) {
   });
 }
 
-/** The gallery's ten verified images, for the cave template of `assets`. */
+/** The gallery's verified images, for the cave template of `assets`. */
 function galleryImages(assets) {
   const network = caveImageNetwork(assets.get(CAMP_CAVE.key).asset);
   /** Each served file requested once, decoded once, and no blob URL left. */
   network.assertLoaded = () => {
     assert.deepEqual([...network.requests].sort(), [...network.files.keys()].sort());
-    assert.equal(network.images.length, 10, 'each verified image decoded once');
+    assert.equal(network.images.length, CAVE_IMAGE_COUNT, 'each verified image decoded once');
     assert.equal(network.blobs.size, 0, 'every blob URL revoked');
   };
   /** Whether every decoded image has been closed exactly `times` times. */

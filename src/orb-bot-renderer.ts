@@ -6,6 +6,7 @@ import { updateActorPerformance } from './performance-lod.js';
 import { applyBotFlightTurn } from './bot-flight-pose.js';
 import { companionHeartTexture } from './companion-heart-texture.js';
 import { farewellAge, farewellScale } from './companion-farewell.js';
+import { installDotBlink, type DotBlink } from './dot-blink.js';
 
 type Actor = ReturnType<WorldRenderer['worldAssets']['createAnimal']>;
 type Entry = {
@@ -16,6 +17,8 @@ type Entry = {
   /** The template's own scale; a goodbye shrinks from it. */
   scale: number;
   hearts?: THREE.Sprite[];
+  /** Lids painted over the eyes; none for a Dot whose eyes cannot be seen open. */
+  blink: DotBlink | null;
 };
 
 /** Draw only the reviewed, image-derived companion GLBs. */
@@ -53,13 +56,17 @@ export class OrbBotRenderer {
         this.removeHearts(entry);
         world.scene.remove(entry.actor.root);
         entry.actor.dispose();
+        entry.blink?.dispose();
         this.bots.delete(id);
       }
     for (const b of states) {
       let entry = this.bots.get(b.id);
       if (!entry) {
         if (!world.worldAssets.templates.has(`orb-bot-${b.kind}`)) continue;
-        const actor = world.worldAssets.createAnimal(`orb-bot-${b.kind}`);
+        let blink: DotBlink | null = null;
+        const actor = world.worldAssets.createAnimal(`orb-bot-${b.kind}`, 'Idle_Loop', (root) => {
+          blink = installDotBlink(root, b.kind, performance.now() / 1000);
+        });
         actor.root.userData.animalId = b.id;
         actor.root.position.set(b.x, b.y, b.z);
         world.scene.add(actor.root);
@@ -69,6 +76,7 @@ export class OrbBotRenderer {
           mode: b.mode,
           sequence: b.sequence,
           scale: actor.root.scale.x,
+          blink,
         };
         this.bots.set(b.id, entry);
       }
@@ -81,6 +89,7 @@ export class OrbBotRenderer {
         (b.ownerId === world.selfId || Math.hypot(b.x - world.focus.x, b.z - world.focus.z) < 60);
       for (const heart of entry.hearts ?? []) heart.visible = false;
       if (!actor.root.visible) continue;
+      entry.blink?.update(performance.now() / 1000);
       actor.root.rotation.x = actor.root.rotation.z = 0;
       const distance = actor.root.position.distanceTo(world.camera.position);
       updateActorPerformance(actor.root, distance);
@@ -201,6 +210,7 @@ export class OrbBotRenderer {
       this.removeHearts(entry);
       this.world.scene.remove(actor.root);
       actor.dispose();
+      entry.blink?.dispose();
     }
     this.bots.clear();
     this.heartTexture?.dispose();

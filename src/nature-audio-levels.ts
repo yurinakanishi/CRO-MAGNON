@@ -62,7 +62,7 @@ export const LEVELS = {
   'gather-plant': { dba: 46, at: 0, spread: 'bed', note: 'plants pulled' },
   'torch-switch': { dba: 53, at: 0, spread: 'bed', note: 'torch flaring / smothered' },
   hiss: { dba: 62, at: 1, spread: 'point', note: 'cat hiss' },
-  recall: { dba: 68, at: 0, spread: 'bed', note: 'bone-flute call by the player' },
+  recall: { dba: 68, at: 0, spread: 'bed', note: 'the player whistling through the lips' },
 } satisfies Record<string, SoundLevel>;
 export type LevelName = keyof typeof LEVELS;
 

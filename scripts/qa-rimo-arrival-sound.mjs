@@ -146,7 +146,7 @@ try {
             .then((x) => x === 'false'),
         'muted setting',
       );
-      await page.locator('[data-controller-menu="resume"]').click();
+      await page.locator('#modal-close').click();
       await page.locator('#modal').waitFor({ state: 'hidden' });
     }
     await until(

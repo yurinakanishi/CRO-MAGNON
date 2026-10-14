@@ -18,6 +18,12 @@ const out = process.argv[2] || 'output/playwright/nature-audio-remake-20261011/g
 await mkdir(out, { recursive: true });
 const manifest = JSON.parse(await readFile('public/audio/nature/manifest.json', 'utf8'));
 const game = createGameServer({ ...localVerificationSettings(out), port: 0 });
+// The 30-second idle exit (2026-10-14) would end these long unattended recordings: the server's
+// activity clock is kept fresh as preparation. Every measured input is still a real one.
+const keepActive = setInterval(() => {
+  for (const room of game.rooms.values())
+    for (const player of room.players.values()) player.lastActivityAt = Date.now();
+}, 5000);
 const { port } = await game.listen(),
   base = `http://127.0.0.1:${port}`;
 const browser = await chromium.launch({
@@ -375,6 +381,7 @@ try {
     `${out}/summary.json`,
     JSON.stringify({ checks, levels, requests: requests.length, errors, failure }, null, 2),
   );
+  clearInterval(keepActive);
   await browser.close();
   await game.close();
 }

@@ -1,5 +1,5 @@
 import { Readable, pipeline } from 'node:stream';
-import { createGzip } from 'node:zlib';
+import { createGzip, type Gzip } from 'node:zlib';
 import type { ServerResponse } from 'node:http';
 
 /** Text and GLB containers benefit from transport compression. Even meshopt GLBs
@@ -82,9 +82,10 @@ export function activeStaticStreams(): number {
 
 /**
  * Send `source` into an already-written response, gzip-encoding it when asked,
- * with backpressure. On any failure (a read error, the client leaving) pipeline
- * destroys every stream, the socket included: a partly sent body is never
- * followed by another response.
+ * with backpressure. On any failure (a read error, the client leaving) every
+ * stream is destroyed, the socket included: a partly sent body is never
+ * followed by another response. The promise never rejects: it resolves once,
+ * when the body is complete or abandoned.
  */
 export function sendBody(
   source: Readable,
@@ -93,12 +94,29 @@ export function sendBody(
 ): Promise<void> {
   active++;
   return new Promise((resolve) => {
+    let released = false;
     const done = () => {
+      if (released) return;
+      released = true;
       active--;
       resolve();
     };
-    if (coding === 'gzip') pipeline(source, createGzip({ level: GZIP_LEVEL }), response, done);
-    else pipeline(source, response, done);
+    let gzip: Gzip | undefined;
+    try {
+      if (coding === 'gzip') {
+        gzip = createGzip({ level: GZIP_LEVEL });
+        pipeline(source, gzip, response, done);
+      } else pipeline(source, response, done);
+    } catch {
+      // pipeline throws instead of calling back when a stream is already closed, as
+      // the response is when its client left before the body began
+      // (ERR_STREAM_UNABLE_TO_PIPE), and it has then destroyed nothing. Release
+      // every stream here; a failed close of the file is ignored, as pipeline would.
+      source.on('error', () => {}).destroy();
+      gzip?.destroy();
+      response.destroy();
+      done();
+    }
   });
 }
 

@@ -1,6 +1,6 @@
 import http from 'node:http';
 import type { AddressInfo } from 'node:net';
-import { MIME, serveStatic } from './static-files.mjs';
+import { MIME, sendFailure, serveStatic } from './static-files.mjs';
 import type { ControllerLayout } from '../../shared/controller-layout.mjs';
 
 /** Assets are loopback-only. There is deliberately no WebSocket proxy here. */
@@ -50,9 +50,7 @@ export function createExhibitionClient({
       }
       await serveStatic(request, response, url.pathname, root);
     } catch (error) {
-      response
-        .writeHead(error.code === 'ENOENT' || error.code === 'ENOTDIR' ? 404 : 400)
-        .end('Not found');
+      sendFailure(response, error);
     }
   });
   return {

@@ -6,7 +6,9 @@ import { WebSocket } from 'ws';
 import { createGameServer } from '../dist/server.mjs';
 import { caveWorldAt } from '../dist/shared/camp-cave-layout.mjs';
 import { stopActor } from '../dist/shared/combat.mjs';
-import { CAVE_MURALS } from '../dist/src/cave-gallery-layout.js';
+import { CAVE_EXTRA_PIGMENTS, CAVE_MURALS } from '../dist/src/cave-gallery-layout.js';
+// The full-size processions; the upper register and the signs are seen above them.
+const PROCESSIONS = CAVE_MURALS.filter((m) => m.width >= 7);
 const { chromium } = await import(
   process.env.PLAYWRIGHT_MODULE ||
     'file:///C:/Users/yurin/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/node_modules/playwright/index.mjs'
@@ -92,7 +94,10 @@ try {
   await page.locator('.character-choice:first-child').click();
   await page.locator('#setup-flow-yes').click();
   await page.locator('#loading-cave[data-ready="true"]').waitFor({ timeout: 180000 });
-  for (const m of CAVE_MURALS.slice(0, 8)) await capture(`waiting-${m.motif}`, 'waiting', m);
+  for (const m of PROCESSIONS) await capture(`waiting-${m.motif}`, 'waiting', m);
+  // The deepened bay (r28): the ninth procession under the continued upper register.
+  const bay = PROCESSIONS.find((m) => m.motif === 'daredaroFrieze');
+  await capture('waiting-deep-bay', 'waiting', bay, true);
   const maruimo = CAVE_MURALS.find((m) => m.motif === 'maruimoFrieze');
   await capture('waiting-east-procession', 'waiting', maruimo, true);
   await page.keyboard.press('l');
@@ -108,7 +113,9 @@ try {
   await page.keyboard.up('w');
   const after = await page.evaluate(() => ({ ...qaCave.movement.position }));
   assert(Math.hypot(after.x - before.x, after.z - before.z) > 0.2);
-  checks.push('Waiting cave: eight processions, upper animals, real walking and torch controls');
+  checks.push(
+    `Waiting cave: ${PROCESSIONS.length} processions, upper animals, real walking and torch controls`,
+  );
   await page.setViewportSize({ width: 390, height: 844 });
   await capture('waiting-portrait', 'waiting', maruimo);
   await page.setViewportSize({ width: 844, height: 390 });
@@ -127,7 +134,8 @@ try {
   room.sabertooth = null;
   await capture('live-maruimo', 'live', maruimo);
   await until(() => page.evaluate(() => !!qaWorld.landmarks.cavePigment), 'live cave textures');
-  for (const m of CAVE_MURALS.slice(0, 8)) await capture(`live-${m.motif}`, 'live', m);
+  for (const m of PROCESSIONS) await capture(`live-${m.motif}`, 'live', m);
+  await capture('live-deep-bay', 'live', bay, true);
   for (let i = 0; i < 4; i++) {
     const ws = new WebSocket(`ws://127.0.0.1:${port}/ws?room=MURALR36&name=MuralPeer${i}`);
     peers.push(ws);
@@ -149,9 +157,9 @@ try {
     comingSoon: 'comingSoon' in qaWorld.landmarks.caveExtraPigments,
     programs: qaWorld.renderer.info.programs.length,
   }));
-  assert.equal(textures.count, 10);
+  assert.equal(textures.count, Object.keys(CAVE_EXTRA_PIGMENTS).length + 4);
   assert.equal(textures.comingSoon, false);
-  checks.push('Ten verified images; no Coming Soon canvas, sampler or label');
+  checks.push(`${textures.count} verified images; no Coming Soon canvas, sampler or label`);
   assert.deepEqual(errors, []);
 } catch (error) {
   failure = String(error.stack ?? error);

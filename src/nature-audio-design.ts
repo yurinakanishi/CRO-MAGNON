@@ -27,7 +27,7 @@ export const AMBIENCE_FILES = [
 ] as const;
 /** Streamed through media elements: long pieces never sit decoded in memory. */
 export const MUSIC_FILES = ['bgm-explore', 'bgm-camp', 'bgm-cave'] as const;
-export const NATURE_AUDIO_REVISION = 'remake-v4-20261011';
+export const NATURE_AUDIO_REVISION = 'remake-v4-20261014';
 
 /** Separate entry/exit thresholds avoid repeatedly restarting music at a region edge. */
 export function musicRegion(previous: MusicPlace, cave: number, campDistance: number): MusicPlace {
