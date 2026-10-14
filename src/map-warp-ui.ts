@@ -1,8 +1,9 @@
-import { WARP_POINTS, warpPointById, warpUnavailable } from '../shared/warp-sites.mjs';
+import { WARP_POINTS, warpDestination, warpUnavailable } from '../shared/warp-sites.mjs';
 import { locationName } from '../shared/paleo-geography.mjs';
 import { MAP_PIN_COOLDOWN_MS } from '../shared/map-pins.mjs';
 import type { PadFrame } from './gamepad-input.js';
 import {
+  MAP_TIERS,
   MAP_ZOOM,
   PICK_RADIUS,
   clampPointer,
@@ -28,11 +29,16 @@ export function selectedWarpId(): string {
 }
 
 const metres = (a, b) => `${Math.round(Math.hypot(a.x - b.x, a.z - b.z))} m`;
+/** A pictured sight (名所) adds its one-line description above the distance. */
+const selectionText = (point, from) =>
+  `${point.blurb ? `${point.blurb}\n` : ''}現在地から ${metres(point, from)}`;
+/** World metres across the map's shorter side when a sight is chosen: its whole valley shows. */
+const SIGHT_VIEW_SPAN = 200;
 
 export function updateMapWarp(player, now, connected = true) {
   const button = document.querySelector<HTMLButtonElement>('#map-warp');
   if (!button) return;
-  const point = warpPointById(selectedWarpId());
+  const point = warpDestination(selectedWarpId());
   const reason = warpUnavailable(player, point, now);
   button.disabled = !!reason || !connected;
   button.setAttribute('aria-label', point ? `${point.name}へワープ` : 'ワープ');
@@ -112,29 +118,72 @@ export function installMapWarp({
       `<button class="warp-map-point" data-warp-point="${p.id}" title="${p.name}" aria-label="${p.name}の焚き火を選ぶ" aria-pressed="false">${icon('flame')}<span class="warp-point-label">${p.name}</span></button>`,
   ).join('');
   const buttons = [...root.querySelectorAll<HTMLButtonElement>('[data-warp-point]')];
+  const sights = [...document.querySelectorAll<HTMLButtonElement>('[data-map-place]')];
 
-  // Selection: the card names the fire; a gold ring marks it on the canvas.
-  const choose = (point) => {
-    card.dataset.warpId = warpPointById(point?.id)?.id ?? '';
+  // Selection: the card names the fire or sight; a gold ring marks it on the canvas.
+  const choose = (id: string | null) => {
+    const point = id ? warpDestination(id) : null;
+    card.dataset.warpId = point ? id : '';
     setWorldMapSelection(point);
-    document.querySelector('#map-region').textContent = point ? warpRegionName(point) : '';
-    document.querySelector('#map-destination').textContent = point?.name ?? mapEmptyPrompt();
-    document.querySelector('#map-selection').textContent = point
-      ? `現在地から ${metres(point, me())}`
+    document.querySelector('#map-region').textContent = point
+      ? id.startsWith('spawn-')
+        ? '名所'
+        : warpRegionName(point)
       : '';
+    document.querySelector('#map-destination').textContent = point?.name ?? mapEmptyPrompt();
+    document.querySelector('#map-selection').textContent = point ? selectionText(point, me()) : '';
+    for (const sight of sights)
+      sight.setAttribute('aria-pressed', String(!!point && sight.dataset.mapPlace === id));
     redraw();
     updateMapWarp(player(), now(), connected());
   };
   const travel = () => {
-    const point = warpPointById(card.dataset.warpId);
-    if (connected() && point && !warpUnavailable(player(), point, now())) action('warp', point.id);
+    const id = card.dataset.warpId;
+    const point = warpDestination(id);
+    if (connected() && point && !warpUnavailable(player(), point, now())) action('warp', id);
   };
-  /** First confirm on a fire selects it; a second confirm on the same fire warps. */
+  /** A sight from the row is shown at the map's centre, close enough to tell the sights apart. */
+  const showSight = (id: string) => {
+    const point = warpDestination(id);
+    if (!point) return;
+    const view = projection(),
+      fit = Math.min(canvas.width, canvas.height) / SIGHT_VIEW_SPAN / (view.scale / view.zoom);
+    resetWorldMap(point, Math.max(view.zoom, MAP_TIERS.sites, Math.min(MAP_ZOOM.max, fit)));
+    pointer = { x: canvas.width / 2, y: canvas.height / 2 };
+    choose(id);
+  };
+  /** The controller's top button steps through the sights in their row order. */
+  const nextSight = () => {
+    if (!sights.length) return;
+    const index = sights.findIndex((sight) => sight.dataset.mapPlace === card.dataset.warpId);
+    const sight = sights[(index + 1) % sights.length];
+    sight.scrollIntoView({ block: 'nearest', inline: 'nearest' });
+    showSight(sight.dataset.mapPlace);
+  };
+  /** How far the chosen sight lies from the pointer, in pixels; none chosen is infinitely far. */
+  const chosenSightAway = () => {
+    const id = card.dataset.warpId;
+    const sight = id?.startsWith('spawn-') ? warpDestination(id) : null;
+    if (!sight) return Infinity;
+    const [x, y] = projection().point(sight.x, sight.z);
+    return Math.hypot(x - pointer.x, y - pointer.y);
+  };
+  /**
+   * Confirm acts on the nearest target under the pointer. First confirm on a fire selects it;
+   * a second confirm on the same fire warps. A chosen sight warps: choosing it put the pointer
+   * on it.
+   */
   const confirm = () => {
     const hit = fireNear(pointer);
+    const sightAway = chosenSightAway();
+    if (
+      sightAway <= PICK_RADIUS &&
+      (!hit || sightAway <= Math.hypot(hit.x - pointer.x, hit.y - pointer.y))
+    )
+      return travel();
     if (!hit) return;
     if (card.dataset.warpId === hit.fire.id) travel();
-    else choose(hit.fire);
+    else choose(hit.fire.id);
   };
   const placePin = () => {
     if (!pinEnabled() || !connected() || now() - sentAt < MAP_PIN_COOLDOWN_MS) return;
@@ -152,7 +201,7 @@ export function installMapWarp({
   const refreshPointer = () => {
     position(cursor, pointer.x, pointer.y);
     const near = fireNear(pointer);
-    cursor.classList.toggle('is-near', !!near);
+    cursor.classList.toggle('is-near', !!near || chosenSightAway() <= PICK_RADIUS);
     for (const button of buttons) {
       const isNear = near?.fire.id === button.dataset.warpPoint;
       button.classList.toggle('is-near', isNear);
@@ -230,9 +279,8 @@ export function installMapWarp({
         !!p.fire.requiredSeals && !!warpUnavailable(player(), p.fire, now()),
       );
     }
-    const chosen = warpPointById(selectedId);
-    if (chosen)
-      document.querySelector('#map-selection').textContent = `現在地から ${metres(chosen, me())}`;
+    const chosen = warpDestination(selectedId);
+    if (chosen) document.querySelector('#map-selection').textContent = selectionText(chosen, me());
     document.querySelector('#map-zoom-level').textContent = `${level.toFixed(level % 1 ? 1 : 0)}×`;
     document.querySelector<HTMLButtonElement>('#map-zoom-in').disabled = level >= MAP_ZOOM.max;
     document.querySelector<HTMLButtonElement>('#map-zoom-out').disabled = level <= MAP_ZOOM.min;
@@ -259,6 +307,12 @@ export function installMapWarp({
       const p = firePixels().find((q) => q.fire.id === button.dataset.warpPoint);
       if (p) setPointer(p.x, p.y);
       confirm();
+    };
+  // A sight's photo chooses it; the chosen photo, like the button, warps.
+  for (const sight of sights)
+    sight.onclick = () => {
+      if (card.dataset.warpId === sight.dataset.mapPlace) travel();
+      else showSight(sight.dataset.mapPlace);
     };
   warp.onclick = travel;
   pinSend.onclick = placePin;
@@ -436,6 +490,7 @@ export function installMapWarp({
     }
     for (const act of new Set(frame.actions)) {
       if (act === 'confirm') confirm();
+      else if (act === 'places') nextSight();
       else if (act === 'pin') togglePin();
       else if (act === 'center') centerOnPlayer();
       else if (act === 'zoomIn') zoom(MAP_ZOOM.step);

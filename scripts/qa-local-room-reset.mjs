@@ -5,6 +5,7 @@ import path from 'node:path';
 import WebSocket from 'ws';
 import { createPersistentGameServer } from '../server.mjs';
 import { PAD } from '../dist/src/gamepad-input.js';
+import { villageDay } from '../dist/shared/village-sites.mjs';
 const { chromium } = await import(
   process.env.PLAYWRIGHT_MODULE ||
     'file:///C:/Users/yurin/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/node_modules/playwright/index.mjs'
@@ -178,7 +179,8 @@ try {
       .innerText()
       .then((text) => text === '100 / 100'),
   );
-  assert.equal(await page.locator('#day-label').innerText(), '1日目');
+  assert.equal(villageDay(Date.now(), fresh.createdAt), 1);
+  assert.equal(await page.locator('#day-label').count(), 0);
   assert.equal(await page.locator('#profile-name').innerText(), 'Reset A');
   assert.equal(await observer.locator('#profile-name').innerText(), 'Reset B');
   assert.equal(await page.locator('#chat-input').count(), 1);

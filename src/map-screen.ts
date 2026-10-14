@@ -1,6 +1,8 @@
 import { expeditionById } from '../shared/paleo-geography.mjs';
 import { ADVENTURE_REGIONS } from '../shared/adventure-regions.mjs';
 import { GULF } from '../shared/gulf-region.mjs';
+import { SPAWN_SITES } from '../shared/spawn-sites.mjs';
+import { controllerLabels } from './controller-labels.js';
 import { MAP_ARROW_PATH, MAP_ARROW_SIZE } from './map-layout.js';
 
 /** Where a fire sits, in the words the rest of the game already uses. */
@@ -20,12 +22,21 @@ export const mapEmptyPrompt = () => '行き先を選ぶ';
 export const mapArrowSvg = () =>
   `<svg class="map-arrow" viewBox="0 0 ${MAP_ARROW_SIZE} ${MAP_ARROW_SIZE}" aria-hidden="true"><path d="${MAP_ARROW_PATH}"/></svg>`;
 
+/** The six pictured sights (名所) in a sliding row; choosing one shows it on the map. */
+const sightsMarkup = () =>
+  `<section class="atlas-places" aria-labelledby="atlas-places-title"><div class="atlas-places-panel"><h3 id="atlas-places-title">名所へワープ<kbd class="atlas-places-key">${controllerLabels().top}</kbd></h3><div class="atlas-places-row">${SPAWN_SITES.map(
+    (site) =>
+      `<button type="button" class="atlas-place" data-map-place="spawn-${site.id}" aria-pressed="false"><img src="/spawn/${site.id}.jpg" width="640" height="360" alt="" draggable="false" decoding="async"><span>${site.name}</span></button>`,
+  ).join('')}</div></div></section>`;
+
 /**
- * Full-bleed atlas: one canvas, a free pointer, a small destination card at the bottom left
- * and the zoom controls at the bottom right. No toolbar, no list.
+ * Atlas: the 名所 row as a bar along the top (it covers none of the map), then one full-bleed
+ * canvas with a free pointer, a small destination card at the bottom left and the zoom controls
+ * at the bottom right. The exhibition keeps its sights in its own menu.
  */
-export function mapScreen(icon, _controllerOnly = false) {
+export function mapScreen(icon, controllerOnly = false) {
   return `<section class="atlas" aria-label="世界地図とワープ">
+    ${controllerOnly ? '' : sightsMarkup()}
     <div class="warp-map-wrap">
       <canvas id="big-map" width="960" height="600" class="big-map earth-map" aria-label="世界地図。ポインタを焚き火に合わせて決定するとワープ先になります。"></canvas>
       <div id="warp-map-points" class="warp-map-points" aria-label="焚き火のワープ地点"></div>

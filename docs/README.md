@@ -26,6 +26,8 @@
 
 新しい作業はこれらの先頭へ日付付きで追記する。
 
+最新の公開MMOの更新: [2026-10-12 デプロイと検証](mmo-deploy-2026-10-12.md)。
+
 ## 機能ごとの設計・検証の記録（`docs/history/`）
 
 実装済みの機能の当時の計画と検証。現在の仕様はREADMEとゲームガイドが正。
@@ -74,6 +76,7 @@
 
 | 文書 | 題名 |
 | --- | --- |
+| [menu-icons-map-sights-2026-10-13.md](menu-icons-map-sights-2026-10-13.md) | スマホのメニューボタンをリュックに、設定を歯車に。メニューのタブを1行でスライドさせ「その他」を最後のタブに。ワープを地図の「名所へワープ」の帯へ移した設計と検証 |
 | [git-pull-2026-10-12.md](git-pull-2026-10-12.md) | 未コミット53ファイルを保持して最新mainを統合：戦闘と仲間の競合解消、実Chrome確認、リモートにもある40件のテスト失敗の照合 |
 | [mascot-companions-2026-10-12.md](mascot-companions-2026-10-12.md) | マスコットを1人1匹・各自の分身へ統一：選択だけの保存・撫でる反応・別れ・投げて放置・確認範囲 |
 | [mascot-tests-2026-10-12.md](mascot-tests-2026-10-12.md) | 旧マスコット仕様の既存テスト・Chrome QAの移行、接触姿勢の修正と検証 |
@@ -160,7 +163,7 @@
 | [world-entry-2026-10-11.md](world-entry-2026-10-11.md) | 通常世界の入場条件の調査（変えない）、準備の二重シェーダー・到着時の同期コンパイル・カメラ格子の修正、入場可能まで約2秒短縮 |
 | [camera-clearance-2026-10-12.md](camera-clearance-2026-10-12.md) | カメラが洞窟・木・岩・自分の人物に埋まる問題：球の掃引、山の判定、樹冠の実測形で木と茂みを省く、近いと人物を点描、実Chromeの変更前後 |
 | [program-lookups-2026-10-12.md](program-lookups-2026-10-12.md) | 毎フレームのシェーダープログラムの選び直し：透明・両面の水の2回描きとインスタンスの材質共有、材質の複製と面ごとの組、選び直しの回数・プロファイル・実GPUの画素比較 |
-| [loading-screen-2026-10-11.md](loading-screen-2026-10-11.md) | OpenAI Dotsのクレジット、アプデの洞窟で「関わってくれた人たち」、ワープ・入り直し・洞窟自体の読み込みのローディング画面とクロマニョン人の豆知識 |
+| [loading-screen-2026-10-11.md](loading-screen-2026-10-11.md) | OpenAI Dotsのクレジット、アプデの洞窟で「関わってくれた人たち」（2026-10-13に「壁画の人」へ置き換え）、ワープ・入り直し・洞窟自体の読み込みのローディング画面とクロマニョン人の豆知識 |
 | [optimization-assets-lowpoly-2026-10-10.md](optimization-assets-lowpoly-2026-10-10.md) | Opus 5.5 Highによる素材軽量化、候補の独立検査と不採用・修正記録 |
 | [pet-on-start-2026-10-03.md](pet-on-start-2026-10-03.md) | 撫で始めた時点でなつく |
 | [rimo-cave-mural-2026-10-02.md](rimo-cave-mural-2026-10-02.md) | りもねこの壁画を524の反対側へ復活（2026-10-02） |
@@ -171,7 +174,7 @@
 | [shape-bots-2026-10-01.md](shape-bots-2026-10-01.md) | 追加画像の4種類のbot |
 | [single-hand-controls-2026-10-05.md](single-hand-controls-2026-10-05.md) | 右手／左手だけで遊ぶ（2026-10-05） |
 | [threejs_upper_body_motion_codex_prompt.md](threejs_upper_body_motion_codex_prompt.md) | Three.js製MMOに「上半身だけのカメラ操作」を追加する |
-| [contributors-cave-visit-2026-10-09.md](contributors-cave-visit-2026-10-09.md) | 紹介ダイアログの壁画画像・注釈を撤去し、洞窟へ直接ワープ |
+| [contributors-cave-visit-2026-10-09.md](contributors-cave-visit-2026-10-09.md) | 紹介ダイアログの壁画画像・注釈を撤去し、洞窟へ直接ワープ（訪問ボタンは2026-10-13に撤去） |
 | [title-mural-2026-10-07.md](title-mural-2026-10-07.md) | ホーム画面を洞窟の壁画中心に（MMO）／展示はQRクレジットを維持 |
 | [touch-portrait-2026-10-06.md](touch-portrait-2026-10-06.md) | スマホ縦持ちのタッチ操作（2026-10-06） |
 | [trellis-update-2026-09-27.md](trellis-update-2026-09-27.md) | TRELLIS実行環境の更新 — 2026-09-27 |

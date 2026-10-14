@@ -32,7 +32,7 @@ function mascotCard(key: string) {
  * travelers may bring the same one, so no card is ever taken by someone else. */
 export function mascotMenuMarkup(keys: readonly string[]) {
   const cards = keys.map(mascotCard).join('');
-  return `<div class="mascot-menu"><header class="mascot-menu-heading"><div><h2>連れていく仲間</h2><p class="modal-intro">1人1匹まで。同じ仲間をほかの旅人も連れていけます。</p><p class="modal-intro" id="mascot-selection-count" role="status"></p></div><div class="mascot-bulk"><button type="button" class="button button-outline" data-mascot-none>連れていかない</button></div></header><div class="mascot-cards">${cards}</div></div>`;
+  return `<div class="mascot-menu"><header class="mascot-menu-heading"><div><h2>連れていく仲間</h2><p class="modal-intro">1人1匹まで。同じ仲間をほかの旅人も連れていけます。</p></div><div class="mascot-bulk"><button type="button" class="button button-outline" data-mascot-none>連れていかない</button></div></header><div class="mascot-cards">${cards}</div></div>`;
 }
 
 export function bindMascotMenu(root: HTMLElement, action: (name: string, target?: string) => void) {
@@ -74,9 +74,5 @@ export function updateMascotMenu(root: HTMLElement, state: ViewState, selfId: st
       `${mascotName(key)}を${selected ? '連れていくのをやめる' : '連れて行く'}`,
     );
   }
-  setText(
-    root.querySelector<HTMLElement>('#mascot-selection-count')!,
-    chosen ? `${mascotName(chosen)}と旅をしています` : 'ひとりで旅をしています',
-  );
   root.querySelector<HTMLButtonElement>('[data-mascot-none]')!.disabled = !chosen;
 }

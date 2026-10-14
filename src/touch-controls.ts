@@ -61,8 +61,9 @@ export class TouchControls {
     this.root.id = 'touch-controls';
     this.root.setAttribute('aria-label', 'タッチ操作');
     this.root.hidden = true;
+    // The menu opens on the bag, so its button is the bag, as in most phone games.
     this.root.innerHTML = `<nav class="touch-toolbar" aria-label="探索のメニュー">${[
-      ['menu', 'menu', 'メニュー'],
+      ['menu', 'bag', 'メニュー'],
       ['mascots', 'people', '仲間'],
       ...(hooks.chat ? [['chat', 'chat', '会話']] : []),
       ['center', 'recenter', '視点を戻す'],

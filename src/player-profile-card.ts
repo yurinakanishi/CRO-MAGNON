@@ -51,11 +51,10 @@ export class PlayerProfileCard {
     setAttr(this.portrait, 'class', `portrait ${player.species} ${characterModel(player).key}`);
     setText(this.name, profile.name);
     setText(this.character, profile.character);
-    // Their own words stay as written (marked before writing); only the empty note follows
-    // the interface language.
-    setAttr(this.intro, 'translate', profile.intro ? 'no' : 'yes');
-    setData(this.intro, { empty: !profile.intro });
-    setText(this.intro, profile.intro || 'まだ自己紹介はありません');
+    // Their own words stay as written; an empty introduction takes no space.
+    setAttr(this.intro, 'translate', 'no');
+    setFlag(this.intro, 'hidden', !profile.intro);
+    setText(this.intro, profile.intro);
     const values: Record<string, string | null> = {
       energy: `${profile.energy} / 100`,
       equipment: profile.equipment,

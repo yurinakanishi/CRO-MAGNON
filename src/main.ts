@@ -129,7 +129,7 @@ import { installGulfUI, gulfInteraction } from './gulf-ui.js';
 import { installVillageUI, residentInteraction } from './village-ui.js';
 import { inGulf } from '../shared/gulf-region.mjs';
 import { ScreenManager, AreaBanner, keyPrompts } from './screens.js';
-import { contributorsDialogMarkup } from './title-credits.js';
+import { contributorsDialogMarkup, muralPeople, muralPeopleDialogMarkup } from './title-credits.js';
 import { BUILD_PROFILE } from './build-profile.js';
 import { FIXED_DIFFICULTY } from '../shared/difficulty.mjs';
 import { bindSetupFlow, closeSetupFlow, setupFlowBack, setupFlowOpen } from './setup-flow.js';
@@ -251,16 +251,16 @@ const viewportMarkup = `
     <div id="damage-flash" class="damage-flash" aria-hidden="true" hidden></div>
     <div id="combat-status" class="combat-status" role="status" hidden></div>
     <div id="area-banner" class="area-banner" aria-live="polite" hidden><small></small><strong></strong></div>
-    <button id="status-plate" class="status-plate" title="部族の仲間・招待"><span class="energy-track" id="energy-track" data-level="ok"><span id="energy-bar" class="energy-fill"></span><em class="energy-label">${icon('leaf')}<b>体力</b><span id="energy-label">100 / 100</span></em></span><span class="status-main"><span class="portrait cro cro-magnon-woman" id="my-portrait"><i></i></span><span class="status-text"><strong id="profile-name" translate="no"></strong><small><span id="room-label" translate="no"></span><i>·</i><b id="online-count">0/${hudPlayerLimit()}</b><i>·</i><span id="day-label">1日目</span></small></span></span></button>
-    <div class="map-hud"><button id="map-button" class="minimap-button" aria-label="世界地図を開く" title="世界地図 [${fixedIdentity ? controllerLabels().map : 'M'}]"><canvas id="minimap" width="160" height="115"></canvas><span class="map-north">N</span><span class="map-area" id="map-area">はじまりの谷</span>${fixedIdentity ? '' : '<kbd class="map-key">M</kbd>'}</button><div class="connection"><i class="status-dot" id="connection-dot"></i><span id="connection-label">未接続</span><span id="ping-label">— ms</span></div></div>
+    <button id="status-plate" class="status-plate" title="部族の仲間・招待"><span class="energy-track" id="energy-track" data-level="ok"><span id="energy-bar" class="energy-fill"></span><em class="energy-label">${icon('leaf')}<b>体力</b><span id="energy-label">100 / 100</span></em></span><span class="status-main"><span class="portrait cro cro-magnon-woman" id="my-portrait"><i></i></span><span class="status-text"><strong id="profile-name" translate="no"></strong><small><span id="room-label" translate="no"></span><i>·</i><b id="online-count">0/${hudPlayerLimit()}</b></small></span></span></button>
+    <div class="map-hud"><button id="map-button" class="minimap-button" aria-label="世界地図を開く" title="世界地図 [${fixedIdentity ? controllerLabels().map : 'M'}]"><canvas id="minimap" width="160" height="115"></canvas><span class="map-north">N</span>${fixedIdentity ? '' : '<kbd class="map-key">M</kbd>'}</button><span class="connection"><i class="status-dot" id="connection-dot"></i><span id="connection-label">未接続</span><span id="ping-label">— ms</span></span></div>
     <div id="toast-stack" class="toast-stack" aria-live="polite"></div>
-    ${fixedIdentity ? '' : `<div class="chat-panel"><button class="chat-heading" id="chat-toggle">${icon('chat')}<strong>焚き火の会話</strong><kbd>Enter</kbd><span class="chat-collapse">−</span></button><div id="chat-content"><div id="chat-messages" class="chat-messages" role="log" aria-live="polite"><p class="chat-system">この谷での物語が、ここから始まります。</p></div><form id="chat-form"><input id="chat-input" maxlength="180" placeholder="仲間に話しかける…" aria-label="チャットメッセージ" autocomplete="off"><button aria-label="メッセージを送信" type="submit">${icon('arrow')}</button></form></div></div>`}
+    ${fixedIdentity ? '' : `<div class="chat-panel"><button class="chat-heading" id="chat-toggle">${icon('chat')}<strong>チャット</strong><kbd>Enter</kbd><span class="chat-collapse">−</span></button><div id="chat-content"><div id="chat-messages" class="chat-messages" role="log" aria-live="polite"></div><form id="chat-form"><input id="chat-input" maxlength="180" placeholder="仲間に話しかける…" aria-label="チャットメッセージ" autocomplete="off"><button aria-label="メッセージを送信" type="submit">${icon('arrow')}</button></form></div></div>`}
     <div class="hotbar-wrap"><div class="interaction-hint" id="interaction-hint" hidden><kbd>E</kbd><span></span></div></div>
     <div id="prompt-bar" class="prompt-bar" aria-label="操作の案内"></div>
     <div id="screens" class="screens">
       ${titleHandoff ? '' : titleScreenMarkup()}
       <section id="screen-setup" class="screen setup-screen" hidden>
-        <form id="setup-form" class="setup-card"><header class="setup-heading"><span class="setup-eyebrow">${GAME_TITLE}</span><h2>旅人を選ぶ</h2></header><p class="form-error" id="setup-error" hidden></p>${joinFields()}<div class="setup-actions"><button type="button" id="setup-back" class="button button-outline setup-back">戻る</button></div></form>
+        <form id="setup-form" class="setup-card"><header class="setup-heading"><h2>旅人を選ぶ</h2></header><p class="form-error" id="setup-error" hidden></p>${joinFields()}<div class="setup-actions"><button type="button" id="setup-back" class="button button-outline setup-back">戻る</button></div></form>
       </section>
     </div>
   </section>`;
@@ -447,8 +447,6 @@ let tuning = { alwaysRun: false, speedScale: 1 };
 let availableMascots: readonly string[] = MASCOT_KEYS;
 // The sight chosen in the setup flow; only a room with spawnChoice honours it.
 let spawnChoice = spawnSite(readSaved('cro-spawn', 'camp')).id;
-let contributorsCavePending = false;
-let contributorsCaveArriving = false;
 // Play is offered only once the local character is drawn in a ready world
 // (latched per join; a character switch later does not withdraw it). The loading
 // screen holds play until it starts to fade.
@@ -480,7 +478,7 @@ function nextPaint() {
 }
 /** Cover the world with the loading screen until the local player stands in it with
  * the landmarks around them drawn (WorldRenderer.surroundingsReady). A later cover,
- * such as the warp right after a contributors-cave entry, takes over the same screen. */
+ * such as a warp just after joining, takes over the same screen. */
 async function coverArrival(place: LoadingPlace) {
   const request = loadingScreen.show(place);
   const current = () => loadingScreen.current(request) && !manualLeave;
@@ -491,10 +489,9 @@ async function coverArrival(place: LoadingPlace) {
     // The world's first download, reported as the loading cave reports it.
     let fraction: number | null = null,
       text = LOADING_TEXT;
-    if (phase === 'build') [fraction, text] = [0.96, '世界を組み立てています'];
-    else if (phase === 'download') {
-      fraction = total ? (0.92 * loaded) / total : 0;
-      text = `世界を読み込んでいます ${Math.floor(fraction * 100)}%`;
+    if (phase === 'build' || phase === 'download') {
+      fraction = phase === 'build' ? 0.96 : total ? (0.92 * loaded) / total : 0;
+      text = `読み込み中 ${Math.floor(fraction * 100)}%`;
     }
     if (text !== shown) loadingScreen.status(text, fraction);
     shown = text;
@@ -1006,6 +1003,8 @@ async function connect(automatic = false) {
       // Like a fast travel, the player's own warp is hidden behind the loading screen
       // until the destination is drawn.
       let coveredWarp: string | null = null;
+      // A pictured destination (名所), from the map or the exhibition menu, faces its sight.
+      let facingSight = !!$('#exhibition-warp');
       if (warped) {
         stopInput();
         if ($('#big-map') || $('#exhibition-warp')) $('#modal').close();
@@ -1018,21 +1017,17 @@ async function connect(automatic = false) {
           !renderUnavailable
         )
           coveredWarp = request.target;
+        if (
+          request?.target.startsWith('spawn-') &&
+          performance.now() - request.at < WARP_REQUEST_MS
+        )
+          facingSight = true;
       }
       renderer.setState(state, selfId);
       // In this same task, so no frame draws the destination first, and after setState,
       // so the cover waits for the floor around the new position.
       if (coveredWarp !== null) void coverArrival(warpPlace(coveredWarp));
-      if (warped && contributorsCaveArriving) {
-        contributorsCaveArriving = false;
-        renderer.focusPlayer(player().facing + Math.PI);
-      }
-      if (contributorsCavePending && joined && player()) {
-        contributorsCavePending = false;
-        contributorsCaveArriving = true;
-        action('warp', 'spawn-cave');
-      }
-      if (warped && $('#exhibition-warp')) renderer.focusPlayer(player().facing + Math.PI);
+      if (warped && facingSight) renderer.focusPlayer(player().facing + Math.PI);
       updateCharacterSwitch(player(), renderer.serverNow(), joined);
       updateExhibitionWarp(player(), renderer.serverNow(), joined);
       if ($('#big-map'))
@@ -1071,7 +1066,6 @@ async function connect(automatic = false) {
       $('#ping-label').textContent = `${ping} ms`;
     }
     if (message.type === 'error') {
-      contributorsCaveArriving = false;
       manualLeave = true;
       notify(message.text, 'error');
       connection(false, '参加できません');
@@ -1185,8 +1179,6 @@ function updateHUD() {
   // below, it no longer recalculates style in the middle of them.
   drawMinimap();
   setText($('#online-count'), `${state.players.length}/${hudPlayerLimit()}`);
-  // Each exhibition visit is day one; the world's simulation clock keeps running.
-  setText($('#day-label'), `${fixedIdentity ? 1 : state.day || 1}日目`);
   const energy = Math.round(me?.energy ?? 100),
     energyBar = $('#energy-bar');
   setText($('#energy-label'), `${energy} / 100`);
@@ -1202,7 +1194,6 @@ function updateHUD() {
   const biome = biomeAt(me?.x ?? 50, me?.z ?? 50);
   const region = regionAt(me?.x ?? 50, me?.z ?? 50);
   const areaName = region?.name ?? locationName(me?.x ?? 50, me?.z ?? 50);
-  setText($('#map-area'), areaName);
   // A place reached behind the loading screen is announced once it lifts.
   if (me && joined && !screens.active && !loadingScreen.active)
     areaBanner.update(
@@ -1254,7 +1245,7 @@ function updateModalHUD() {
     if (list.dataset.signature !== signature) {
       list.dataset.signature = signature;
       list.replaceChildren();
-      $('#tribe-summary').textContent = `いま、この谷で暮らしている ${state.players.length} 人。`;
+      $('#tribe-summary').textContent = `参加者 ${state.players.length}人`;
       for (const p of state.players) {
         const row = document.createElement('div');
         row.className = 'tribe-member';
@@ -1821,8 +1812,6 @@ function applyProfileForm(form: HTMLFormElement) {
 function showTitle() {
   renderer.releaseArrivalLoads?.();
   loadingScreen.cancel();
-  contributorsCavePending = false;
-  contributorsCaveArriving = false;
   chatUI?.setOpen(false);
   motionControls?.stop();
   $('#modal').close();
@@ -1831,8 +1820,6 @@ function showTitle() {
 function showSetup(error = '') {
   renderer.releaseArrivalLoads?.();
   loadingScreen.cancel();
-  contributorsCavePending = false;
-  contributorsCaveArriving = false;
   // A join refused while the gallery waited for the arrival returns to setup.
   if (loadingCave) closeLoadingCave();
   chatUI?.setOpen(false);
@@ -1892,16 +1879,16 @@ function enterGame(skipGallery = false) {
       {
         character,
         dye: profile.dye,
-        // The credits open over the cave; it is already the cave, so no visit is offered.
-        onContributors: () =>
-          openModal(contributorsDialogMarkup(undefined, { links: onlineTitle, visit: false })),
+        // Who is painted on these walls, apart from the credits.
+        onMurals: (hidden) =>
+          openModal(muralPeopleDialogMarkup(muralPeople(hidden), { links: onlineTitle })),
         paused: () => $('#modal').open,
       },
     );
     loadingCave = renderer.loadingCave = cave;
     // The cave itself loads behind the loading screen and its tips; once the cave is
     // shown, the visitor walks in it without them.
-    const caveCover = loadingScreen.show({ ...warpPlace('spawn-cave'), eyebrow: '世界への旅支度' });
+    const caveCover = loadingScreen.show({ ...warpPlace('spawn-cave'), eyebrow: '' });
     loadingScreen.status('洞窟を準備しています');
     void (async () => {
       try {
@@ -1934,7 +1921,7 @@ function beginGame() {
   // Without the cave, the loading screen covers the world until the player stands in
   // it. Started after connect() has begun the join, which the cover waits for. The QA
   // shortcut ?autostart=1 skips it as it skips the title (its own label shows the load).
-  if (query.get('autostart') !== '1') void coverArrival({ eyebrow: '旅の準備', name: '' });
+  if (query.get('autostart') !== '1') void coverArrival({ eyebrow: '', name: '' });
 }
 /** The game's screen. Its controls still wait for playReady(). */
 function showPlay() {
@@ -1977,7 +1964,7 @@ function leaveToTitle() {
 }
 async function openInvite() {
   openModal(
-    `<span class="modal-illustration">${icon('people')}</span><h2>ひとつの火を、仲間と。</h2><p class="modal-intro">同じ部屋のリンクを仲間に渡して、一緒に谷を探索しよう。</p><div class="invite-code"><small>ROOM CODE</small><strong id="invite-code"></strong><span>現在の部屋の接続上限は ${hudPlayerLimit()}人</span></div><label>招待リンク<input id="invite-url" readonly aria-label="招待リンク"></label><button id="copy-invite" class="button button-accent wide">${icon('link')} 招待リンクをコピー</button><p id="invite-note" class="form-note">このPCと同じWi-Fi・LANにいる仲間が参加できます。インターネット越しの参加には、サーバーの公開が必要です。</p><button id="change-room" class="text-button">別の部屋に参加する ${icon('arrow')}</button>`,
+    `<span class="modal-illustration">${icon('people')}</span><h2>招待</h2><div class="invite-code"><small>ROOM CODE</small><strong id="invite-code"></strong><span>現在の部屋の接続上限は ${hudPlayerLimit()}人</span></div><label>招待リンク<input id="invite-url" readonly aria-label="招待リンク"></label><button id="copy-invite" class="button button-accent wide">${icon('link')} 招待リンクをコピー</button><p id="invite-note" class="form-note">このPCと同じWi-Fi・LANにいる仲間が参加できます。インターネット越しの参加には、サーバーの公開が必要です。</p><button id="change-room" class="text-button">別の部屋に参加する ${icon('arrow')}</button>`,
   );
   $('#invite-code').textContent = profile.room;
   let base = location.origin;
@@ -2108,7 +2095,7 @@ function inventoryEntries() {
 }
 function inventoryMarkup() {
   const model = characterModel(player() ?? profile);
-  return `<header class="inventory-header"><span class="portrait ${model.species} ${model.key}" role="img" aria-label="${model.name}"><i></i></span><div class="inventory-status"><h2>持ち物</h2><div id="inventory-energy-track" class="energy-track" role="progressbar" aria-label="体力" aria-valuemin="0" aria-valuemax="100"><span id="inventory-energy-bar" class="energy-fill"></span><em class="energy-label">${icon('leaf')}<b>体力</b><span id="inventory-energy-label"></span></em></div></div></header><div class="inventory-workspace"><section class="inventory-storage" aria-label="所持品"><div class="inventory-section-heading"><h3>持っているもの</h3></div><div class="inventory-grid"></div></section>${inventoryCrafting.markup()}</div>`;
+  return `<header class="inventory-header"><span class="portrait ${model.species} ${model.key}" role="img" aria-label="${model.name}"><i></i></span><div class="inventory-status"><h2>持ち物</h2><div id="inventory-energy-track" class="energy-track" role="progressbar" aria-label="体力" aria-valuemin="0" aria-valuemax="100"><span id="inventory-energy-bar" class="energy-fill"></span><em class="energy-label">${icon('leaf')}<b>体力</b><span id="inventory-energy-label"></span></em></div></div></header><div class="inventory-workspace"><section class="inventory-storage" aria-label="所持品"><div class="inventory-grid"></div></section>${inventoryCrafting.markup()}</div>`;
 }
 function equipmentForKey(key: string): EquipmentId | null {
   if (key === 'weapon') return characterModel(player() ?? profile).weapon ? 'character' : 'spear';
@@ -2264,7 +2251,7 @@ function openInventory() {
 }
 /** One's own words for the profile card travelers nearby can read. */
 function introFormMarkup() {
-  return `<form id="intro-form" class="intro-form"><label for="intro-input">あなたの自己紹介</label><textarea id="intro-input" maxlength="${INTRO_MAX_LENGTH}" rows="2" placeholder="はじめまして。いっしょにマンモスを狩りましょう。"></textarea><div class="intro-actions"><small id="intro-status" role="status"></small><button type="submit" class="button button-outline">保存する</button></div></form>`;
+  return `<form id="intro-form" class="intro-form"><label for="intro-input">あなたの自己紹介</label><textarea id="intro-input" maxlength="${INTRO_MAX_LENGTH}" rows="2"></textarea><div class="intro-actions"><small id="intro-status" role="status"></small><button type="submit" class="button button-outline">保存する</button></div></form>`;
 }
 function bindIntroForm() {
   const form = document.querySelector<HTMLFormElement>('#intro-form');
@@ -2297,7 +2284,7 @@ function chooseDye(dye: string) {
   send({ type: 'action', action: 'dyeClothes', ...(dye ? { targetId: dye } : {}) });
 }
 function tribeMarkup() {
-  return `<h2>同じ火を囲む仲間。</h2><p class="modal-intro" id="tribe-summary">いま、この谷で暮らしている ${state.players.length} 人。</p>${fixedIdentity ? '' : introFormMarkup()}${dyeMarkup()}<div id="tribe-list" class="tribe-list"></div><button id="tribe-invite" class="button button-accent wide">${icon('plus')} 仲間を招待する</button>`;
+  return `<h2>参加者</h2><p class="modal-intro" id="tribe-summary">参加者 ${state.players.length}人</p>${fixedIdentity ? '' : introFormMarkup()}${dyeMarkup()}<div id="tribe-list" class="tribe-list"></div><button id="tribe-invite" class="button button-accent wide">${icon('plus')} 仲間を招待する</button>`;
 }
 function openTribe() {
   openModal(tribeMarkup());
@@ -2380,9 +2367,11 @@ function openCharacterSwitchMenu() {
 }
 /**
  * Game-style pause menu: a tab rail on the left, one panel on the right, exits as
- * buttons below the tabs. The exhibition layout opens on Warp; the normal layout
- * opens on the bag with the first food card focused.
+ * buttons below the tabs. Where the tabs become one sliding row (phones, narrow
+ * windows), the exits are its last tab, その他. The exhibition layout opens on Warp;
+ * the normal layout opens on the bag with the first food card focused.
  */
+const PAUSE_TAB_ROW = '(max-width: 860px)'; // The breakpoint of the tab row in the CSS.
 function localResetMarkup() {
   return localRoomReset
     ? '<div class="settings-item local-reset-setting"><div><strong>部屋の進行をリセット</strong><p>この部屋を最初からやり直します。</p></div><button type="button" class="button button-outline" data-setting="reset-room">リセット</button></div>'
@@ -2454,11 +2443,11 @@ function openPauseMenu(tab?: string) {
         ['character', 'people', 'キャラクターを変える'],
         ['inventory', 'bag', '持ち物'],
       ]
-    : [
+    : // Fast travel lives in the map: its 名所 bar and the fires.
+      [
         ['inventory', 'bag', '持ち物'],
-        ['warp', 'compass', 'ワープする'],
         ['mascots', 'people', '連れていく仲間'],
-        ['settings', 'sound', '設定'],
+        ['settings', 'gear', '設定'],
       ];
   const exits: [string, string, string, () => void][] = [
     ...(caveTorchAvailable(player())
@@ -2506,15 +2495,19 @@ function openPauseMenu(tab?: string) {
     tabs.some(([key]) => key === id)
       ? `<section class="pause-panel" data-pause-panel="${id}" role="tabpanel" id="pause-panel-${id}" ${pauseTab === id ? '' : 'hidden'}>${body}</section>`
       : '';
+  // The exits sit under the rail; in the one-row layout they are the panel of the last tab.
   openModal(
-    `<div class="pause-menu${fixedIdentity ? ' exhibition-menu' : ''}"><aside class="pause-rail"><nav class="pause-tabs" role="tablist" aria-label="メニューの項目">${tabs
+    `<div class="pause-menu${fixedIdentity ? ' exhibition-menu' : ''}" data-tab="${pauseTab}"><aside class="pause-rail"><nav class="pause-tabs" role="tablist" aria-label="メニューの項目">${[
+      ...tabs,
+      ['more', 'more', 'その他'],
+    ]
       .map(
         ([id, glyph, label]) =>
-          `<button type="button" class="pause-tab" role="tab" data-pause-tab="${id}" data-controller-menu="${id}" aria-selected="${pauseTab === id}" aria-controls="pause-panel-${id}">${icon(glyph)}<span>${label}</span></button>`,
+          `<button type="button" class="pause-tab${id === 'more' ? ' pause-tab-more' : ''}" role="tab" data-pause-tab="${id}" data-controller-menu="${id}" aria-selected="${pauseTab === id}" aria-controls="pause-panel-${id}">${icon(glyph)}<span>${label}</span></button>`,
       )
       .join(
         '',
-      )}</nav><button type="button" class="pause-more button button-outline" aria-expanded="false" aria-controls="pause-menu-actions">その他の操作</button><div id="pause-menu-actions" class="pause-exits">${exits.map(menuButton).join('')}</div></aside><div class="pause-panels">${panel(
+      )}</nav></aside><section id="pause-panel-more" class="pause-exits" aria-label="その他">${exits.map(menuButton).join('')}</section><div class="pause-panels">${panel(
       'inventory',
       inventoryMarkup(),
     )}${panel('character', characterSwitchMarkup())}${panel('warp', exhibitionWarpMarkup())}${panel('mascots', mascotMenuMarkup(availableMascots))}${panel(
@@ -2523,12 +2516,6 @@ function openPauseMenu(tab?: string) {
     )}</div></div>`,
   );
   const root = $('#modal-body') as HTMLElement;
-  const more = root.querySelector<HTMLButtonElement>('.pause-more')!;
-  more.onclick = () => {
-    const expanded = more.getAttribute('aria-expanded') !== 'true';
-    more.setAttribute('aria-expanded', String(expanded));
-    root.querySelector('.pause-rail')?.classList.toggle('pause-actions-open', expanded);
-  };
   const controlsSetting = document.createElement('div');
   controlsSetting.className = 'settings-item';
   controlsSetting.innerHTML = `<div><strong>操作</strong></div><div class="settings-buttons" role="group" aria-label="操作モード"><button class="button button-outline" data-controls="normal" aria-pressed="${!easyControls}">通常</button><button class="button button-outline" data-controls="easy" aria-pressed="${easyControls}">かんたん・視点自動</button></div>`;
@@ -2568,15 +2555,39 @@ function openPauseMenu(tab?: string) {
         );
     };
   }
+  const menu = root.querySelector<HTMLElement>('.pause-menu')!;
+  const tabRow = root.querySelector<HTMLElement>('.pause-tabs')!;
   const tabButtons = [...root.querySelectorAll<HTMLButtonElement>('.pause-tab')];
+  // The sliding row fades at a side with more tabs beyond it.
+  const fadeTabRow = () => {
+    const end = tabRow.scrollWidth - tabRow.clientWidth;
+    const sides = [
+      ...(tabRow.scrollLeft > 1 ? ['start'] : []),
+      ...(tabRow.scrollLeft < end - 1 ? ['end'] : []),
+    ];
+    if (sides.length) tabRow.dataset.fade = sides.join(' ');
+    else delete tabRow.dataset.fade;
+  };
+  const revealTab = (tab: HTMLElement | undefined) => {
+    if (!tab || tabRow.scrollWidth <= tabRow.clientWidth) return;
+    const row = tabRow.getBoundingClientRect(),
+      box = tab.getBoundingClientRect(),
+      margin = 24;
+    if (box.left < row.left + margin) tabRow.scrollLeft -= row.left + margin - box.left;
+    else if (box.right > row.right - margin) tabRow.scrollLeft += box.right - row.right + margin;
+  };
+  tabRow.addEventListener('scroll', fadeTabRow, { passive: true });
   const showTab = (id: string) => {
     pauseTab = id;
+    menu.dataset.tab = id;
     closeItemActions();
     for (const tab of tabButtons)
       tab.setAttribute('aria-selected', String(tab.dataset.pauseTab === id));
     for (const section of root.querySelectorAll<HTMLElement>('.pause-panel'))
       section.hidden = section.dataset.pausePanel !== id;
-    root.querySelector<HTMLElement>(`[data-pause-tab="${id}"]`)?.focus({ preventScroll: true });
+    const selected = root.querySelector<HTMLElement>(`[data-pause-tab="${id}"]`);
+    selected?.focus({ preventScroll: true });
+    revealTab(selected);
     if (id === 'character')
       root
         .querySelector<HTMLElement>('#character-switch-form input:checked')
@@ -2589,6 +2600,24 @@ function openPauseMenu(tab?: string) {
   for (const [id, , , handler] of exits)
     if ($(`[data-controller-menu="${id}"]`))
       $(`[data-controller-menu="${id}"]`).onclick = () => handler();
+  // Wider than the row layout, the exits stand under the rail again and その他 has no tab.
+  const tabLayout = matchMedia(PAUSE_TAB_ROW);
+  const tabSizes =
+    typeof ResizeObserver === 'undefined' ? null : new ResizeObserver(() => fitTabs());
+  const stopFitting = () => {
+    tabLayout.removeEventListener('change', fitTabs);
+    tabSizes?.disconnect();
+  };
+  function fitTabs() {
+    if (!menu.isConnected) return stopFitting();
+    if (!tabLayout.matches && pauseTab === 'more') showTab(tabs[0][0]);
+    fadeTabRow();
+  }
+  tabLayout.addEventListener('change', fitTabs);
+  for (const element of [tabRow, ...tabButtons]) tabSizes?.observe(element);
+  $('#modal').addEventListener('close', stopFitting, { once: true });
+  fadeTabRow();
+  revealTab(tabButtons.find((tab) => tab.dataset.pauseTab === pauseTab));
   const menuActions = {
     player,
     now: () => renderer.serverNow(),
@@ -2715,27 +2744,9 @@ async function toggleFullscreen() {
     notify('この画面では全画面表示を利用できません。');
   }
 }
-/** The open contributors dialog's cave visit (also one the title shell opened). */
-function bindContributorsVisit() {
-  const visit = $('#contributors-cave');
-  visit.onclick = () => {
-    if (visit.disabled || renderUnavailable || loadingCave) return;
-    visit.disabled = true;
-    $('#modal').close();
-    visitContributorsCave();
-  };
-}
-function visitContributorsCave() {
-  // Use the existing safe cave arrival and resume path, retaining possessions.
-  spawnChoice = 'cave';
-  startAtCamp = true;
-  contributorsCavePending = true;
-  enterGame(true);
-}
 $('#title-start').onclick = () => showSetup();
 $('#title-contributors').addEventListener('click', () => {
   openModal(contributorsDialogMarkup(undefined, { links: onlineTitle }));
-  bindContributorsVisit();
 });
 $('#title-fullscreen').onclick = toggleFullscreen;
 document.addEventListener('fullscreenchange', () => {
@@ -3064,6 +3075,7 @@ touchControls = new TouchControls($('.game-viewport'), {
     updateHintLabels();
     updateHuntingHUD();
     compactMinimap();
+    placeConnection();
     drawMinimap();
   },
 });
@@ -3072,6 +3084,18 @@ function compactMinimap() {
   $('#minimap').dataset.compact = String(touchMode());
 }
 compactMinimap();
+/**
+ * The phone shows the connection as a dot before the party count in the status capsule (top
+ * left), leaving the round minimap to the map; the PC keeps its labelled row under the minimap.
+ */
+function placeConnection() {
+  const status = $('.connection'),
+    count = $('#online-count');
+  if (touchMode()) {
+    if (status.nextElementSibling !== count) count.before(status);
+  } else if (status.parentElement !== $('.map-hud')) $('.map-hud').append(status);
+}
+placeConnection();
 renderer.manualInputAllowed = () =>
   joined &&
   playReady() &&
@@ -3358,17 +3382,14 @@ function titleIdle(now: number) {
 requestAnimationFrame(titleIdle);
 /** The title once this module owns it. A title shell's last pending action is
  * performed here exactly once (the handoff consumed it); an open contributors
- * dialog stays open with this module's cave visit. */
+ * dialog stays open. */
 function resumeTitle(handoff: TitleHandoff | null) {
   if (handoff?.contributorsOpen) {
     screens.show('title');
-    bindContributorsVisit();
     return;
   }
   showTitle();
   if (handoff?.intent === 'start') showSetup();
-  else if (handoff?.intent === 'contributors-cave' && !renderUnavailable && !loadingCave)
-    visitContributorsCave();
 }
 startupMarks.page('game-module-ready');
 if (query.get('autostart') === '1') {

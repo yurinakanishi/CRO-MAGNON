@@ -1,8 +1,8 @@
 {
-  "checkedAt": "2026-10-11T06:10:58.494Z",
+  "checkedAt": "2026-10-12T06:41:40.529Z",
   "base": "https://cromagnonmmo.cro-magnon.workers.dev",
   "status": "passed",
-  "servedFilesVerified": 52,
+  "servedFilesVerified": 53,
   "titleShellFilesVerified": 5,
   "browserBundleFilesVerified": 3,
   "publicCreditsOnly": false,
@@ -20,7 +20,8 @@
     "/title/qr-urata.png"
   ],
   "runtimeTexturesVerified": 10,
-  "publicCharacterCount": 7,
+  "publicCharacterCount": 5,
+  "publicClothingDyeRulesVerified": true,
   "excludedCharacterFiles": [
     "/models/maruimo-octopus/asset.json",
     "/models/maruimo-octopus/portrait.png",

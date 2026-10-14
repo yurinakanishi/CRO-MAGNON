@@ -136,7 +136,7 @@ try {
     assert.equal(await page.locator('.pause-hint').count(), 0);
     assert.deepEqual(
       await page
-        .locator('[data-pause-tab]')
+        .locator('[data-pause-tab]:visible')
         .evaluateAll((tabs) => tabs.map((tab) => tab.dataset.pauseTab)),
       ['warp', 'character', 'inventory'],
     );

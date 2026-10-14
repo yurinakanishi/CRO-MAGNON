@@ -137,8 +137,12 @@ try {
   ]) {
     await page.setViewportSize(viewport);
     const size = `${viewport.width}x${viewport.height}`;
+    // In the one-row layout the exits are the last tab, その他; wider, they stand under the rail.
+    const row = viewport.width <= 860;
+    assert.equal(await page.locator('[data-pause-tab="more"]').isVisible(), row);
+    assert.equal(await page.locator('[data-pause-tab="warp"]').count(), 0, 'warp is in the map');
     for (const device of ['keyboard', 'pad']) {
-      for (const id of ['inventory', 'mascots', 'settings']) {
+      for (const id of ['inventory', 'mascots', 'settings', ...(row ? ['more'] : [])]) {
         const selector = `[data-pause-tab="${id}"]`;
         await inspect(selector, device, `${size}-${device}-${id}`);
         if (device === 'pad') {
@@ -146,30 +150,34 @@ try {
           await pad();
         } else await page.keyboard.press('Enter');
         assert.equal(await page.locator(selector).getAttribute('aria-selected'), 'true');
-        assert.equal(await page.locator(`[data-pause-panel="${id}"]`).isVisible(), true);
+        assert.equal(await page.locator(`#pause-panel-${id}`).isVisible(), true);
+        assert.equal(
+          await page.locator('[data-controller-menu="title"]').isVisible(),
+          !row || id === 'more',
+        );
       }
     }
     assert.equal(await page.locator('[data-pause-tab="info"]').count(), 0);
     assert.equal(await page.locator('[data-pause-subtab]').count(), 0);
     pass(`${size}: all menu tabs activate from keyboard and simulated controller`);
   }
+  // その他 was chosen last in the one-row layout; widening the window returns to the first tab.
+  assert.equal(await page.locator('[data-pause-tab="more"]').getAttribute('aria-selected'), 'true');
   await page.setViewportSize({ width: 1440, height: 900 });
+  await page.locator('[data-pause-tab="inventory"][aria-selected="true"]').waitFor();
+  assert.equal(await page.locator('#pause-panel-inventory').isVisible(), true);
+  assert.equal(await page.locator('[data-controller-menu="title"]').isVisible(), true);
+  pass('Widening from the その他 tab shows the first tab with the exits under the rail');
   await page.keyboard.press('Shift');
   await page.locator('[data-pause-tab="inventory"]').focus();
   await page.keyboard.press('ArrowDown');
-  assert.equal(
-    await page.locator('[data-pause-tab="warp"]').evaluate((el) => el === document.activeElement),
-    true,
-  );
-  await pad();
-  await pad([13]);
-  await pad();
   assert.equal(
     await page
       .locator('[data-pause-tab="mascots"]')
       .evaluate((el) => el === document.activeElement),
     true,
   );
+  await pad();
   await pad([13]);
   await pad();
   assert.equal(
@@ -177,6 +185,15 @@ try {
       .locator('[data-pause-tab="settings"]')
       .evaluate((el) => el === document.activeElement),
     true,
+  );
+  await pad([13]);
+  await pad();
+  assert.equal(
+    await page
+      .locator('[data-controller-menu="character"]')
+      .evaluate((el) => el === document.activeElement),
+    true,
+    'the rail continues into the exits below it',
   );
   pass('Real keyboard and controller directional navigation still follows the tab rail');
   const clipped = observations.filter((sample) => sample.clips.length);

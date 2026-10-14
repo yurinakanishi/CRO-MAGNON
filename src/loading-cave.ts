@@ -2,7 +2,7 @@ import * as THREE from 'three';
 import type { WorldRenderer } from './world3d.js';
 import { isMesh } from './three-types.js';
 import { CAMP_CAVE } from '../shared/camp-cave-layout.mjs';
-import { type CaveExtraPigment } from './cave-gallery-layout.js';
+import { hiddenMuralSubjects, type CaveExtraPigment } from './cave-gallery-layout.js';
 import {
   loadCaveTextures,
   releaseVerifiedTexture,
@@ -56,11 +56,11 @@ export class LoadingCave {
   private runMode = false;
   private padRunning = false;
   private padConfirm = true;
-  private lastPercent = -1;
   private pointers = new Map<number, { x: number; y: number; stick: boolean }>();
-  private status: HTMLElement;
-  private progress: HTMLProgressElement;
+  /** Shows a spinner, not a label, until the world can be entered (aria-busy). */
   private proceed: HTMLButtonElement;
+  /** Painted subjects this cave's murals do not show (read from its manifest). */
+  private muralHidden: string[] = [];
   /** The visitor's interest in their character's load; leaving withdraws it. */
   private readonly ticket = LoadTicket.of(LOAD_TIER.essential);
   private readonly character: string;
@@ -68,7 +68,7 @@ export class LoadingCave {
   /** The clothing colour the traveler wears ('' or null: the character's own). */
   private readonly dye: string | null;
   private readonly eyeHeight: number;
-  /** A dialog over the gallery (the contributors) owns the keys and the controller. */
+  /** A dialog over the gallery (the mural people) owns the keys and the controller. */
   private readonly paused: () => boolean;
   private wasPaused = false;
   /** The start attempt this gallery belongs to (startup timing only). */
@@ -83,15 +83,16 @@ export class LoadingCave {
       color = '#b7a27a',
       dye = null,
       images = {},
-      onContributors,
+      onMurals,
       paused = () => false,
     }: {
       character?: string;
       color?: string;
       dye?: string | null;
       images?: VerifiedTextureOptions;
-      /** Opens the contributors dialog over the gallery; without it there is no button. */
-      onContributors?: () => void;
+      /** Opens the dialog of the people painted here, given the subjects the murals leave
+       * out; without it there is no button. */
+      onMurals?: (hidden: string[]) => void;
       paused?: () => boolean;
     } = {},
   ) {
@@ -116,13 +117,11 @@ export class LoadingCave {
     this.scene.add(light, light.target);
     this.overlay.id = 'loading-cave';
     this.overlay.setAttribute('aria-label', 'アプデの洞窟');
-    this.overlay.innerHTML = `<header class="loading-cave-heading"><div><small>世界への旅支度</small><h2>アプデの洞窟</h2></div><div class="loading-cave-actions">${onContributors ? '<button class="button button-outline" data-cave-contributors>関わってくれた人たち</button>' : ''}<button class="button button-outline" data-cave-back>タイトルへ戻る</button></div></header>
+    this.overlay.innerHTML = `<header class="loading-cave-heading"><div><h2>アプデの洞窟</h2></div><div class="loading-cave-actions">${onMurals ? '<button class="button button-outline" data-cave-murals>壁画の人</button>' : ''}<button class="button button-outline" data-cave-back>タイトルへ戻る</button></div></header>
       <div class="loading-cave-wait" role="status">洞窟を準備しています…</div>
       <div class="loading-cave-stick" aria-label="ドラッグして移動"><i></i><span>移動</span></div>
       <button class="button button-outline loading-cave-torch" data-cave-torch aria-pressed="true">松明を消す</button>
-      <footer class="loading-cave-footer"><p class="loading-cave-help">WASDで移動 · ドラッグで見回す · Shiftで走る</p><div class="loading-cave-load"><span data-cave-status role="status">洞窟を準備しています</span><progress max="1" value="0" aria-label="世界の読み込み"></progress><button class="button button-accent" data-cave-proceed disabled>世界へ進む</button></div></footer>`;
-    this.status = this.overlay.querySelector('[data-cave-status]')!;
-    this.progress = this.overlay.querySelector('progress')!;
+      <footer class="loading-cave-footer"><p class="loading-cave-help">WASDで移動 · ドラッグで見回す · Shiftで走る</p><button class="button button-accent loading-cave-proceed" data-cave-proceed disabled aria-busy="true"><i class="loading-cave-spinner" aria-hidden="true"></i><span>世界へ進む</span></button></footer>`;
     this.proceed = this.overlay.querySelector('[data-cave-proceed]')!;
     this.world.canvas.parentElement!.append(this.overlay);
     document.body.classList.add('loading-cave-active');
@@ -130,12 +129,12 @@ export class LoadingCave {
     this.overlay.querySelector<HTMLButtonElement>('[data-cave-torch]')!.onclick = () =>
       this.toggleTorch();
     this.overlay.querySelector<HTMLButtonElement>('[data-cave-back]')!.onclick = onBack;
-    const contributors = this.overlay.querySelector<HTMLButtonElement>('[data-cave-contributors]');
-    if (contributors && onContributors)
-      contributors.onclick = () => {
+    const murals = this.overlay.querySelector<HTMLButtonElement>('[data-cave-murals]');
+    if (murals && onMurals)
+      murals.onclick = () => {
         // The visitor stops where they stand while the dialog is open.
         this.stop();
-        onContributors();
+        onMurals(this.muralHidden);
       };
     const signal = this.events.signal;
     document.addEventListener('keydown', this.keydown, { signal, capture: true });
@@ -184,6 +183,7 @@ export class LoadingCave {
     // against the rectangles that sample them), decoded only after verification.
     const anisotropy = Math.min(8, this.world.renderer.capabilities.getMaxAnisotropy());
     const images = (this.images = loadCaveTextures(template.asset, anisotropy, this.imageOptions));
+    this.muralHidden = hiddenMuralSubjects(template.asset);
     const cave = this.world.worldAssets.create(CAMP_CAVE.key);
     // Clone only materials. The game keeps ownership of source geometry and textures.
     const copies = new Map<THREE.Material, THREE.Material>();
@@ -241,29 +241,28 @@ export class LoadingCave {
     this.overlay.querySelector<HTMLElement>('.loading-cave-wait')!.hidden = true;
     this.overlay.dataset.ready = 'true';
     this.world.canvas.dataset.loadingCave = 'exploring';
-    this.status.textContent = '世界を読み込んでいます — 壁画を見て回れます';
     // Present the small scene before starting the world's download and decoding.
     this.render(0);
     await new Promise<void>((resolve) => requestAnimationFrame(() => resolve()));
     if (!this.disposed) startupMarks.mark('cave-playable', this.marks);
   }
 
+  /** The spinner gives way to the button, which can be pressed at once. */
   markWorldReady() {
     if (this.disposed) return;
     this.worldReady = true;
-    this.progress.value = 1;
     this.proceed.disabled = false;
-    this.status.textContent = '世界の準備ができました';
+    this.proceed.setAttribute('aria-busy', 'false');
     this.overlay.dataset.worldReady = 'true';
   }
 
-  /** The visitor chose to proceed: the gallery stays on screen until their
+  /** The visitor chose to proceed: the gallery stays on screen, spinning again, until their
    * character stands in the world, then the game replaces it. */
   enterWorld() {
     if (this.disposed) return;
     this.entering = true;
     this.proceed.disabled = true;
-    this.status.textContent = '世界に入っています';
+    this.proceed.setAttribute('aria-busy', 'true');
     this.overlay.dataset.entering = 'true';
     this.world.canvas.dataset.loadingCave = 'entering';
   }
@@ -418,17 +417,6 @@ export class LoadingCave {
     this.updateCamera();
     this.torch?.update(true, this.elapsed, dt, this.world.renderer.getPixelRatio(), this.torchLit);
     this.spring?.update(this.elapsed);
-    if (!this.worldReady && this.ready) {
-      const { phase, loaded, total } = this.world.loadProgress;
-      const fraction = phase === 'build' ? 0.96 : total ? (0.92 * loaded) / total : 0;
-      const percent = Math.floor(fraction * 100);
-      if (percent !== this.lastPercent) {
-        this.lastPercent = percent;
-        this.progress.value = fraction;
-        this.status.textContent =
-          phase === 'build' ? '世界を組み立てています' : `世界を読み込んでいます ${percent}%`;
-      }
-    }
     if (this.ready) this.world.renderer.render(this.scene, this.camera);
     Object.assign(this.world.canvas.dataset, {
       cavePosition: `${this.movement.position.x.toFixed(3)},${this.movement.position.z.toFixed(3)}`,

@@ -222,6 +222,10 @@ try {
     'white arrives beside the player',
   );
   await a.page.locator('#modal-close').click();
+  // The mouse made the keyboard the last device; the pad becomes current again, as below.
+  await input(a.page);
+  await input(a.page, [], [0, 0, 0.4, 0]);
+  await input(a.page);
   await a.page.locator('[data-cue="pet"]').waitFor();
   assert.equal(
     await a.page
@@ -315,6 +319,15 @@ try {
     await a.page.locator('#modal-body').innerText(),
     /SHARE|OPTIONS|Enter|ポインタを合わせて/,
   );
+  // The top button steps through the 名所 photos, marked with its own label.
+  assert.ok((await a.page.locator('.atlas-places-key').innerText()).trim());
+  await tap(a.page, 3);
+  await a.page.locator('[data-map-place="spawn-camp"][aria-pressed="true"]').waitFor();
+  await a.page.locator('#map-card[data-state="ready"]').waitFor();
+  await tap(a.page, 3);
+  await a.page.locator('[data-map-place="spawn-mammoth"][aria-pressed="true"]').waitFor();
+  assert.equal(await a.page.locator('#map-destination').innerText(), 'マンモスの近く');
+  await shot(a.page, '05b-map-sights-pad');
   await tap(a.page, 8);
   assert.equal(await a.page.locator('#modal').evaluate((el) => el.open), false);
   for (const [id, kind] of [
@@ -345,7 +358,9 @@ try {
     async () => (await a.page.locator('#input-cues').getAttribute('data-device')) === 'keyboard',
     'disconnect returns keyboard',
   );
-  pass('Menu/map central buttons, back, PS/Xbox/generic layouts, last-used device and disconnect');
+  pass(
+    'Menu/map central buttons, back, the top button through the map sights, PS/Xbox/generic layouts, last-used device and disconnect',
+  );
 
   const b = await open('操作QA B');
   for (let i = 0; i < 3; i++) {

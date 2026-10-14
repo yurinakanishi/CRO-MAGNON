@@ -124,8 +124,5 @@ registerTranslations({
   開発者: 'Developer',
   監修: 'Advisers',
   友情出演: 'Special appearances',
-  'アプデの洞窟に残る壁画に会いに来てください。':
-    'Meet our contributors in the murals of Update Cave.',
-  アプデの洞窟に行く: 'Visit Update Cave',
   '{name}のXプロフィールを開く': 'Open {name} on X',
 });

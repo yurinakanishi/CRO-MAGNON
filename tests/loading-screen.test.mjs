@@ -130,7 +130,7 @@ test('a newer request takes the cover over: one screen, one tip, released only b
   const clock = fakeClock(),
     view = fakeView();
   const cover = new LoadingCover(view, new TipDeck(tips, () => 0.5), clock);
-  const entry = cover.show({ eyebrow: '旅の準備', name: '' });
+  const entry = cover.show({ eyebrow: '', name: '' });
   const tip = view.lastContent()[2];
   clock.advance(200);
   const arrival = cover.show(warp);
@@ -163,8 +163,8 @@ test('a long load turns to the next tip, and cancelling removes the cover at onc
   const second = view.lastContent()[2];
   assert.notEqual(second, first);
   assert.equal(view.lastContent()[1], warp);
-  cover.status('世界を読み込んでいます 50%', 0.5);
-  assert.deepEqual(view.calls.at(-1), ['status', '世界を読み込んでいます 50%', 0.5]);
+  cover.status('読み込み中 50%', 0.5);
+  assert.deepEqual(view.calls.at(-1), ['status', '読み込み中 50%', 0.5]);
   cover.cancel();
   assert.equal(cover.active, false);
   assert.equal(cover.current(request), false);
@@ -244,7 +244,7 @@ test('own warps and entries without the cave are covered; the title, setup and f
   // The QA shortcut skips the entry cover as it skips the title.
   assert.match(
     slice('function beginGame()', '\n}\n'),
-    /connect\(\);[\s\S]*if \(query\.get\('autostart'\) !== '1'\)\s*void coverArrival\(\{ eyebrow: '旅の準備', name: '' \}\);/,
+    /connect\(\);[\s\S]*if \(query\.get\('autostart'\) !== '1'\)\s*void coverArrival\(\{ eyebrow: '', name: '' \}\);/,
   );
   // Only a warp this player asked for: a test fixture moving a player stays uncovered.
   const warp = slice('let coveredWarp = null;', 'updateCharacterSwitch(');
@@ -273,17 +273,18 @@ test('own warps and entries without the cave are covered; the title, setup and f
   const cave = slice('loadingCave = renderer.loadingCave = cave;', 'renderer.failWorld(');
   assert.match(
     cave,
-    /const caveCover = loadingScreen\.show\(\{ \.\.\.warpPlace\('spawn-cave'\), eyebrow: '世界への旅支度' \}\);\s*loadingScreen\.status\('洞窟を準備しています'\);/,
+    /const caveCover = loadingScreen\.show\(\{ \.\.\.warpPlace\('spawn-cave'\), eyebrow: '' \}\);\s*loadingScreen\.status\('洞窟を準備しています'\);/,
   );
   assert.match(
     cave,
     /await cave\.load\(\);\s*if \(loadingCave !== cave\)\s*return;\s*loadingScreen\.release\(caveCover\);\s*await Promise\.all\(\[renderer\.startWorld\(\), renderer\.prepareSelf\(profile\)\]\);/,
   );
   assert.doesNotMatch(main, /tips: /);
-  // The loading cave opens the credits over itself and pauses its own input meanwhile.
+  // The loading cave opens its mural people over itself (the murals it leaves out are not
+  // listed) and pauses its own input meanwhile.
   assert.match(
     slice('const cave = new LoadingCave(', 'loadingCave = renderer.loadingCave = cave;'),
-    /onContributors: \(\) =>\s*openModal\(contributorsDialogMarkup\(undefined, \{ links: onlineTitle, visit: false \}\)\),\s*paused: \(\) => \$\('#modal'\)\.open,/,
+    /onMurals: \(hidden\) =>\s*openModal\(muralPeopleDialogMarkup\(muralPeople\(hidden\), \{ links: onlineTitle \}\)\),\s*paused: \(\) => \$\('#modal'\)\.open,/,
   );
 });
 

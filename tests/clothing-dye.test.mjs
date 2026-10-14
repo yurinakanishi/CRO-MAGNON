@@ -30,7 +30,25 @@ import { deliveredWomanRig } from './cro-magnon-woman-rig.mjs';
 import {
   assertPublicCharacterData,
   publicClothingDyeRulesModule,
+  publicModelRules,
 } from '../scripts/public-character-audit.mjs';
+
+test('public clothing rules retain released dyes while excluding private and dormant characters', () => {
+  const characters = CHARACTER_MODELS.filter(
+    (model) => model.playable !== false && model.species !== 'maruimo' && model.species !== 'nea',
+  );
+  const rules = publicModelRules(CLOTHING_DYE_RULES, characters);
+  assert.equal(Object.keys(rules).length, 14);
+  for (const character of characters)
+    assert.deepEqual(rules[character.key], CLOTHING_DYE_RULES[character.key]);
+  assert.ok(CLOTHING_DYE_RULES['maruimo-octopus'], 'the local rule is retained');
+  assertPublicCharacterData(
+    'src/clothing-dye-rules.js',
+    Buffer.from(JSON.stringify(rules)),
+    new Set(['maruimo-octopus', 'neanderthal-woman', 'neanderthal-hunter']),
+    new Set(['maruimo', 'nea']),
+  );
+});
 
 class Socket extends EventEmitter {
   readyState = 1;

@@ -154,7 +154,7 @@ try {
     __cavePad.axes = [0, 0, 0, 0];
   });
   // Opening a dialog discards held input. Closing cannot leave movement stuck.
-  await page.locator('[data-cave-contributors]').click();
+  await page.locator('[data-cave-murals]').click();
   await page.keyboard.press('Shift');
   await page.locator('#modal-close').click();
   await page.keyboard.down('w');

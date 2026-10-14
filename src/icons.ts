@@ -1,7 +1,6 @@
 // Line icons shared by the title shell and the game screens.
 const icons = {
   boat: '<path d="M3 12h18l-3 6H6l-3-6Zm9-9v9M5 21c2-2 4 2 7 0s5 2 7 0"/>',
-  menu: '<path d="M4 6h16M4 12h16M4 18h16"/>',
   unarmed:
     '<path d="M5 12V8a2 2 0 0 1 4 0V6a2 2 0 0 1 4 0v1a2 2 0 0 1 4 0v2a2 2 0 0 1 4 0v7l-4 5H9l-6-7a2 2 0 0 1 2-2Z"/>',
   shell:
@@ -17,7 +16,8 @@ const icons = {
   flame:
     '<path d="M12 3c1 5 7 7 7 12a7 7 0 0 1-14 0c0-3 2-5 4-7-1 4 2 5 3-5Z"/><path d="M10 17c0-2 2-3 2-5 3 3 4 6 0 7-1 0-2-1-2-2Z"/>',
   compass: '<circle cx="12" cy="12" r="9"/><path d="m16 8-2 6-6 2 2-6 6-2Z"/>',
-  bag: '<path d="M8 7V5a4 4 0 0 1 8 0v2M6 7h12l2 14H4L6 7Z"/><path d="M8 13h8v5H8z"/>',
+  // A backpack with side pockets: the menu opens on it, and small it must not read as a padlock.
+  bag: '<path d="M6.5 11a5 5 0 0 1 5-5h1a5 5 0 0 1 5 5v8a2 2 0 0 1-2 2h-7a2 2 0 0 1-2-2v-8Z"/><path d="M10.2 6V4.6a1.8 1.8 0 0 1 3.6 0V6M9 21v-3.2a1.3 1.3 0 0 1 1.3-1.3h3.4a1.3 1.3 0 0 1 1.3 1.3V21M9 12h6"/><path d="M6.5 13.5H5a1 1 0 0 0-1 1V18a1.5 1.5 0 0 0 1.5 1.5h1m11-6H19a1 1 0 0 1 1 1V18a1.5 1.5 0 0 1-1.5 1.5h-1"/>',
   people:
     '<circle cx="9" cy="8" r="3"/><path d="M3 21v-3a6 6 0 0 1 12 0v3M16 5a3 3 0 0 1 0 6m1 4a5 5 0 0 1 4 5"/>',
   book: '<path d="M3 4h7l2 2 2-2h7v16h-7l-2 1-2-1H3V4Zm9 2v15M6 8h3m-3 4h3m6-4h3m-3 4h3"/>',
@@ -33,6 +33,8 @@ const icons = {
   sun: '<circle cx="12" cy="12" r="4"/><path d="M12 1v2m0 18v2M1 12h2m18 0h2M4 4l2 2m12 12 2 2M4 20l2-2M18 6l2-2"/>',
   sound: '<path d="M11 4 5 9H2v6h3l6 5V4Zm4 4a6 6 0 0 1 0 8m3-11a10 10 0 0 1 0 14"/>',
   muted: '<path d="M11 4 5 9H2v6h3l6 5V4Zm5 5 6 6m0-6-6 6"/>',
+  gear: '<path d="M10.08 4.85 10.66 2.5a9.6 9.6 0 0 1 2.68 0l.58 2.35a7.4 7.4 0 0 1 1.78.74l2.08-1.26a9.6 9.6 0 0 1 1.89 1.89L18.41 8.3a7.4 7.4 0 0 1 .74 1.78l2.36.58a9.6 9.6 0 0 1 0 2.68l-2.36.58a7.4 7.4 0 0 1-.74 1.78l1.26 2.08a9.6 9.6 0 0 1-1.89 1.89l-2.08-1.26a7.4 7.4 0 0 1-1.78.74l-.58 2.36a9.6 9.6 0 0 1-2.68 0l-.58-2.36a7.4 7.4 0 0 1-1.78-.74l-2.08 1.26a9.6 9.6 0 0 1-1.89-1.89l1.26-2.08a7.4 7.4 0 0 1-.74-1.78l-2.36-.58a9.6 9.6 0 0 1 0-2.68l2.36-.58a7.4 7.4 0 0 1 .74-1.78L4.33 6.22a9.6 9.6 0 0 1 1.89-1.89L8.3 5.59a7.4 7.4 0 0 1 1.78-.74Z"/><circle cx="12" cy="12" r="3"/>',
+  more: '<circle cx="5.5" cy="12" r="1.6" fill="currentColor"/><circle cx="12" cy="12" r="1.6" fill="currentColor"/><circle cx="18.5" cy="12" r="1.6" fill="currentColor"/>',
   expand: '<path d="M9 3H3v6m12-6h6v6M3 15v6h6m12-6v6h-6"/>',
   target:
     '<circle cx="12" cy="12" r="7"/><circle cx="12" cy="12" r="2"/><path d="M12 1v4m0 14v4M1 12h4m14 0h4"/>',

@@ -276,7 +276,7 @@ test('releasing the stick emits a stop, while idle polling preserves a newly sel
   assert.equal(commands.next({ dx: 0, dz: 0, running: true }), null);
 });
 
-test('map mode: the left stick becomes the pointer, the right stick the zoom, and the face buttons confirm or pin', () => {
+test('map mode: the left stick becomes the pointer, the right stick the zoom, and the face buttons confirm, pin or step through the sights', () => {
   const { pad, sample, press } = setup('map');
   pad.axes = [0.5, 0, 0, -0.6];
   let frame = sample();
@@ -295,6 +295,7 @@ test('map mode: the left stick becomes the pointer, the right stick the zoom, an
     [PAD.cross, 'cancel'],
     [PAD.circle, 'confirm'],
     [PAD.square, 'pin'],
+    [PAD.triangle, 'places'],
     [PAD.r3, 'center'],
     [PAD.r1, 'zoomIn'],
     [PAD.l1, 'zoomOut'],
@@ -309,7 +310,7 @@ test('map mode: the left stick becomes the pointer, the right stick the zoom, an
     press(button, false);
     sample();
   }
-  for (const button of [PAD.triangle, PAD.r2, PAD.l3]) {
+  for (const button of [PAD.r2, PAD.l3]) {
     press(button);
     assert.deepEqual(sample().actions, [], 'unbound buttons do nothing on the atlas');
     press(button, false);

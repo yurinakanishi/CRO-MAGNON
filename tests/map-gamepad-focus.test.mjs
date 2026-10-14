@@ -56,17 +56,23 @@ class El {
     return true;
   }
   focus() {}
+  scrollIntoView() {}
 }
 const dialog = new El('modal');
 dialog.open = true;
 dialog.closed = 0;
 dialog.close = () => dialog.closed++;
-const canvas = new El('big-map');
-canvas.width = 1000;
-canvas.height = 620;
-canvas.parentElement = { clientWidth: 1000, clientHeight: 620 };
-canvas.getBoundingClientRect = () => ({ left: 0, top: 0, width: 1000, height: 620 });
-canvas.isConnected = true;
+// Each opening of the atlas renders a new canvas.
+const atlasCanvas = () => {
+  const canvas = new El('big-map');
+  canvas.width = 1000;
+  canvas.height = 620;
+  canvas.parentElement = { clientWidth: 1000, clientHeight: 620 };
+  canvas.getBoundingClientRect = () => ({ left: 0, top: 0, width: 1000, height: 620 });
+  canvas.isConnected = true;
+  return canvas;
+};
+const canvas = atlasCanvas();
 const root = new El('warp-map-points');
 Object.defineProperty(root, 'innerHTML', {
   set(html) {
@@ -100,18 +106,24 @@ elements['big-map'] = canvas;
 elements['warp-map-points'] = root;
 const selfName = new El();
 const pinActions = new El();
+const sights = []; // The 名所 photos; the first test's atlas has none.
 const byId = (id) => elements[id] ?? null;
 globalThis.document = {
   querySelector: (selector) =>
     selector === '#map-self b' ? selfName : byId(selector.replace(/^#/, '')),
   querySelectorAll: (selector) =>
-    selector === '.map-pin-actions,#map-pin-status' ? [pinActions, elements['map-pin-status']] : [],
+    selector === '.map-pin-actions,#map-pin-status'
+      ? [pinActions, elements['map-pin-status']]
+      : selector === '[data-map-place]'
+        ? sights
+        : [],
   getElementById: byId,
 };
 
 const { installMapWarp, selectedWarpId } = await import('../dist/src/map-warp-ui.js');
 const { mapProjection } = await import('../dist/src/world-map.js');
 const { WARP_POINTS } = await import('../dist/shared/warp-sites.mjs');
+const { SPAWN_SITES } = await import('../dist/shared/spawn-sites.mjs');
 const { mapEmptyPrompt } = await import('../dist/src/map-screen.js');
 elements['map-destination'].textContent = mapEmptyPrompt(); // As the markup renders it.
 
@@ -223,4 +235,91 @@ test('controller: the stick moves the pointer, confirm selects the fire under it
   map.input(frame({ actions: ['menu'] }), 0.016);
   assert.equal(dialog.closed, 1);
   assert.equal(WARP_POINTS.length, root.children.length, 'every fire has a marker');
+});
+
+test('名所: a photo chooses its sight at the centre, the chosen photo, ○ or the button warps, and △ steps through the row', () => {
+  const view = atlasCanvas();
+  elements['big-map'] = view;
+  delete elements['map-card'].dataset.warpId; // A new atlas starts without a choice.
+  for (const site of SPAWN_SITES) {
+    const photo = new El();
+    photo.dataset.mapPlace = `spawn-${site.id}`;
+    sights.push(photo);
+  }
+  const me = { id: 'me', x: 50, z: 50, facing: 0, seals: 0 };
+  const actions = [];
+  const map = installMapWarp({
+    player: () => me,
+    pins: () => [],
+    pinEnabled: () => true,
+    send: () => {},
+    now: () => 100000,
+    action: (type, id) => actions.push([type, id]),
+    icon: () => '',
+    connected: () => true,
+    redraw: () => view.dispatchEvent(new Event('mapdraw')),
+  });
+  const photo = (id) => sights.find((sight) => sight.dataset.mapPlace === `spawn-${id}`);
+
+  photo('mammoth').onclick();
+  assert.equal(selectedWarpId(), 'spawn-mammoth');
+  assert.deepEqual(actions, [], 'choosing a sight must not itself travel');
+  assert.equal(elements['map-region'].textContent, '名所');
+  assert.equal(elements['map-destination'].textContent, 'マンモスの近く');
+  assert.match(
+    elements['map-selection'].textContent,
+    /^背中に乗れる大きなマンモス\n現在地から \d+ m$/,
+  );
+  assert.equal(elements['map-card'].dataset.state, 'ready');
+  assert.deepEqual(
+    sights.map((sight) => sight.attrs['aria-pressed']),
+    SPAWN_SITES.map((site) => String(site.id === 'mammoth')),
+  );
+  const shown = mapProjection(view, true, me);
+  assert.ok(Math.abs(620 / shown.scale - 200) < 1e-6, '200 m across the shorter side');
+  assert.ok(shown.zoom > 8 && shown.zoom < 32, `zoom ${shown.zoom}`);
+  assert.deepEqual(shown.point(33, 32).map(Math.round), [500, 310], 'the sight is centred');
+  assert.equal(elements['map-cursor'].style.left, '500px');
+  assert.ok(elements['map-cursor'].classList.contains('is-near'), 'the pointer is on it');
+
+  photo('mammoth').onclick();
+  assert.deepEqual(actions, [['warp', 'spawn-mammoth']], 'the chosen photo warps');
+  map.input(frame({ actions: ['confirm'] }), 0.016);
+  elements['map-warp'].onclick();
+  assert.deepEqual(actions.slice(1), [
+    ['warp', 'spawn-mammoth'],
+    ['warp', 'spawn-mammoth'],
+  ]);
+
+  // △ follows the row's order and wraps from the last sight to the first.
+  map.input(frame({ actions: ['places'] }), 0.016);
+  assert.equal(selectedWarpId(), `spawn-${SPAWN_SITES[2].id}`);
+  for (let step = 3; step < SPAWN_SITES.length; step++)
+    map.input(frame({ actions: ['places'] }), 0.016);
+  assert.equal(selectedWarpId(), `spawn-${SPAWN_SITES.at(-1).id}`);
+  map.input(frame({ actions: ['places'] }), 0.016);
+  assert.equal(selectedWarpId(), 'spawn-camp');
+
+  // The camp lies 7 m from the home fire. Zoomed out until the fire is within reach of the
+  // pointer, ○ still takes the sight under it; the fire's own marker then chooses the fire.
+  map.input(frame({ actions: ['zoomOut'] }), 0.016);
+  const [fireX, fireY] = mapProjection(view, true, me).point(50, 50);
+  assert.ok(Math.hypot(fireX - 500, fireY - 310) < 22, 'the fire is within reach');
+  map.input(frame({ actions: ['confirm'] }), 0.016);
+  assert.deepEqual(actions.at(-1), ['warp', 'spawn-camp']);
+  root.children.find((marker) => marker.dataset.warpPoint === 'fire-50-50').onclick();
+  assert.equal(selectedWarpId(), 'fire-50-50');
+  assert.equal(actions.length, 4, 'moving onto the fire chooses it');
+  assert.ok(sights.every((sight) => sight.attrs['aria-pressed'] === 'false'));
+  assert.match(elements['map-selection'].textContent, /^現在地から \d+ m$/);
+
+  // The usual travel rules hold for sights: riding blocks the card and the photo.
+  me.mountId = 'mammoth-1';
+  photo('cave').onclick();
+  assert.equal(elements['map-card'].dataset.state, 'blocked');
+  assert.equal(elements['map-warp'].disabled, true);
+  assert.match(elements['map-warp-status'].textContent, /降りてから/);
+  photo('cave').onclick();
+  assert.equal(actions.length, 4, 'a blocked sight does not travel');
+  sights.length = 0;
 });

@@ -36,7 +36,7 @@ export function titleScreenMarkup(): string {
 }
 
 export function modalMarkup(): string {
-  return `<dialog id="modal"><div class="modal-top"><span class="eyebrow">${GAME_TITLE}</span><button id="modal-close" class="button button-outline modal-back" type="button">戻る</button></div><div id="modal-body"></div></dialog>`;
+  return `<dialog id="modal"><div class="modal-top"><button id="modal-close" class="button button-outline modal-back" type="button">戻る</button></div><div id="modal-body"></div></dialog>`;
 }
 
 /** The game's rule (main.ts onlineTitle): exhibition and LAN titles never link out. */
@@ -45,7 +45,7 @@ export function titleLinks(config: Pick<MultiplayerConfig, 'mode'>): boolean {
 }
 
 /** A title action that needs the game module: performed once by main.ts. */
-export type TitleIntent = 'start' | 'contributors-cave';
+export type TitleIntent = 'start';
 
 export type TitleStatus =
   | { kind: 'busy' }
@@ -65,7 +65,7 @@ export interface TitleNodes {
 export interface TitleHandoff extends TitleNodes {
   /** The visitor's last pending action; null when the contributors dialog is open. */
   intent: TitleIntent | null;
-  /** The contributors dialog is open: the game binds its cave-visit button. */
+  /** The contributors dialog is open: the game keeps it open. */
   contributorsOpen: boolean;
 }
 
@@ -73,7 +73,6 @@ export interface TitleHandoff extends TitleNodes {
 export interface TitleShellView {
   status(status: TitleStatus): void;
   openContributors(links: boolean): void;
-  closeContributors(): void;
   contributorsOpen(): boolean;
   /** Remove every shell listener and the shell's screen handling; detach the title. */
   release(): TitleNodes;
@@ -112,13 +111,6 @@ export class TitleShellSession {
 
   start(): void {
     this.act('start');
-  }
-
-  /** The dialog's cave visit: the dialog closes and the game performs the visit. */
-  visitCave(): void {
-    if (this.handedOff) return;
-    this.view.closeContributors();
-    this.act('contributors-cave');
   }
 
   /** The credits need only the configuration (whether profiles may link out). */
@@ -243,19 +235,6 @@ export function renderTitleShell(
         links,
       });
       if (!dialog.open) dialog.showModal();
-      const visit = dialog.querySelector<HTMLButtonElement>('#contributors-cave')!;
-      visit.addEventListener(
-        'click',
-        () => {
-          if (visit.disabled) return;
-          visit.disabled = true;
-          current.visitCave();
-        },
-        { signal },
-      );
-    },
-    closeContributors() {
-      dialog.close();
     },
     contributorsOpen() {
       return dialog.open;

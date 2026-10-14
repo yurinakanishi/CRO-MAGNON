@@ -159,7 +159,7 @@ try {
     await menu(page);
     assert.deepEqual(
       await page
-        .locator('[data-pause-tab]')
+        .locator('[data-pause-tab]:visible')
         .evaluateAll((nodes) => nodes.map((el) => el.dataset.pauseTab)),
       ['warp', 'character', 'inventory'],
     );
@@ -336,7 +336,7 @@ try {
     .locator('#world[data-world-asset="ready"][data-character-asset="ready"]')
     .waitFor({ timeout: 120000 });
   await menu(page);
-  assert.equal(await page.locator('[data-pause-tab]').count(), 3);
+  assert.equal(await page.locator('[data-pause-tab]:visible').count(), 3);
   pass('Return to title, reload and rejoin retain the exhibition menu');
   assert.deepEqual(errors, []);
 } finally {
